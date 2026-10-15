@@ -6,7 +6,7 @@ extends RefCounted
 ## chaîne (texte seul), soit un objet (docs/tech/jalon-03.md §2.4) :
 ## [codeblock]
 ## { "text": "Moi, je suis prêt.", "pause": 0.6 }
-## { "text": "...enfin, presque.", "react": "leo_rattata", "pause": 0.5 }
+## { "text": "...enfin, presque.", "react": "nils_rattata", "pause": 0.5 }
 ## [/codeblock]
 ## Les didascalies du dossier 02 (« il regarde le joueur », « petit silence »,
 ## « Rattata réagit », « il regarde les hautes herbes ») deviennent [member face_player],

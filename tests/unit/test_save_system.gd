@@ -474,8 +474,8 @@ func test_the_real_v1_save_loads_identically_after_migration() -> void:
 		dex[species]["notes"] = []
 	dex["charmander"]["times_seen"] = 1.0
 	assert_eq(after["pokedex"]["entries"], dex, "Pokédex identique, notes en plus, starter vu 1")
-	assert_eq(after.keys().size(), before.keys().size() + 4,
-		"aucun champ perdu ; argent, rencontre, rival, apparence et compagnon en plus")
+	assert_eq(after.keys().size(), before.keys().size() + 5,
+		"aucun champ perdu ; argent, rencontre, rival, apparence, compagnon et Pension en plus")
 
 
 func test_a_migrated_v1_save_is_rewritten_in_v4_and_reads_back_identically() -> void:
@@ -544,13 +544,14 @@ func _without_v3(content: Dictionary) -> Dictionary:
 ## Le contenu d'une sauvegarde sans ce que la v4, la v5 et la v6 ajoutent (pour comparer à la
 ## v3) : la version, le statut (« status »), le compteur (« status_turns ») et l'identifiant
 ## (« uid ») de chaque Pokémon de l'équipe et du stockage, le prénom du rival et l'apparence du
-## joueur (v5, OUV.1), le compagnon (v6, J11).
+## joueur (v5, OUV.1), le compagnon (v6, J11), la Pension (v7, J15).
 func _without_v4(content: Dictionary) -> Dictionary:
 	var copy: Dictionary = _json(content)
 	copy.erase("version")
 	copy.erase("rival_name")
 	copy.erase("player_look")
 	copy.erase("companion")
+	copy.erase("daycare")
 	for key: String in ["party", "storage"]:
 		for member: Variant in JsonFields.get_array(copy, key):
 			if member is Dictionary:
@@ -599,7 +600,8 @@ func test_the_real_v2_save_loads_and_is_rewritten_identically_in_v4() -> void:
 	assert_eq(written["money"], 3000.0)
 	assert_eq(written["first_wild_encounter"]["species"], "pidgey")
 	assert_eq(_without_v3(written), _without_v3(v2), "tout le reste réécrit à l'identique")
-	assert_eq(written.keys().size(), v2.keys().size() + 5, "aucun champ perdu (v3, v5 et v6 en plus)")
+	assert_eq(written.keys().size(), v2.keys().size() + 6,
+		"aucun champ perdu (v3, v5, v6 et v7 en plus)")
 	var again := _state()
 	assert_true(again.load_dict(_save.read(), _data))
 	assert_eq(again.to_dict(), state.to_dict(), "aller-retour v4 stable")
@@ -632,7 +634,8 @@ func test_the_real_end_of_j6_save_migrates_to_v4_and_rewrites_identically() -> v
 	var written: Dictionary = JSON.parse_string((_fs as MemoryFs).files[PATH])
 	assert_eq(int(written["version"]), SaveSystem.VERSION)
 	assert_eq(_without_v3(written), _without_v3(v2), "tout le reste réécrit à l'identique")
-	assert_eq(written.keys().size(), v2.keys().size() + 5, "aucun champ perdu (v3, v5 et v6 en plus)")
+	assert_eq(written.keys().size(), v2.keys().size() + 6,
+		"aucun champ perdu (v3, v5, v6 et v7 en plus)")
 
 
 func test_v3_round_trip_keeps_money_and_the_first_wild_encounter() -> void:
@@ -779,8 +782,8 @@ func test_the_real_v3_save_loads_with_no_status_and_is_rewritten_identically_in_
 	for member: Dictionary in written["party"]:
 		assert_eq(member.get("status"), "", "statut écrit vide")
 	assert_eq(_without_v4(written), _without_v4(v3), "tout le reste réécrit à l'identique")
-	assert_eq(written.keys().size(), v3.keys().size() + 3,
-		"aucun champ perdu ; prénom du rival, apparence (v5) et compagnon (v6) en plus")
+	assert_eq(written.keys().size(), v3.keys().size() + 4,
+		"aucun champ perdu ; rival, apparence (v5), compagnon (v6) et Pension (v7) en plus")
 	var again := _state()
 	assert_true(again.load_dict(_save.read(), _data))
 	assert_eq(_save.read_version, SaveSystem.VERSION, "relue à la version courante : plus de migration")
@@ -854,7 +857,7 @@ func test_upgrade_4_to_5_changes_nothing_but_the_version() -> void:
 	var bare := {"version": 4}
 	assert_eq(SaveSystem.upgrade(bare, 5), OK)
 	assert_eq(bare, {"version": 5}, "aucun champ inventé : les défauts viennent de load_dict")
-	assert_eq(SaveSystem.VERSION, 6, "v6 depuis le J11 (par-dessus la v5 d'OUV.1)")
+	assert_eq(SaveSystem.VERSION, 7, "v7 depuis le J15 (par-dessus la v6 du J11)")
 	assert_eq(SaveSystem.migration_note(4, 5), "sauvegarde v4 → v5")
 
 

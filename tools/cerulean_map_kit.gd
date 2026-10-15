@@ -96,13 +96,14 @@ var _pieces: Dictionary = {}
 
 
 ## Comme la boîte d'Argenta, mais les praticables sont ceux de la grille ; [param quay_seed] :
-## tirage des variantes de modules de quai.
+## tirage des variantes de modules de quai ; [param plan_variant] : variante de la grille
+## (« J14 » : Azuria après le jalon 14), vide = la base.
 func _init(plan_path: String, map_size: Vector2i, seed_value: int, decor_seed: int,
-		quay_seed: int = 0) -> void:
-	super(plan_path, map_size, seed_value, decor_seed)
+		quay_seed: int = 0, plan_variant: String = "") -> void:
+	super(plan_path, map_size, seed_value, decor_seed, plan_variant)
 	_quay_rng.seed = quay_seed
 	var own := PlanGrid.new()
-	if own.load_file(plan_path):
+	if own.load_file(plan_path, plan_variant):
 		plan.set(&"walkable", own.walkable)
 		if own.walkable.contains(WATER_MARK):
 			errors.append("l'eau « %s » est praticable dans la grille" % WATER_MARK)

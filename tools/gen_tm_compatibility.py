@@ -6,7 +6,7 @@ Source : les CSV publics de PokeAPI (dépôt PokeAPI/pokeapi, `data/v2/csv/`) : 
 `moves.csv`, `pokemon.csv`, `machines.csv`, `version_groups.csv`, `pokemon_move_methods.csv`.
 Écrit `data/pokemon/tm_compatibility.json` (CT 01–50 → capacité, espèce → numéros de CT), pour
 **toutes** les espèces des fichiers `data/pokemon/species/*.json` (jalon 12 : `kanto.json` et
-`kanto_mt_moon.json` ; les fichiers à part des jalons suivants aussi), par numéro de Pokédex.
+`kanto_mt_moon.json` ; J15 : `kanto_vermilion.json` ; les fichiers à part des jalons suivants aussi), par numéro de Pokédex.
 Fichier **généré** : en cas de conflit de fusion, le régénérer, ne jamais le fusionner à la main. Lu par `PokemonData`
 (`can_learn_tm`, lot CT 11B, `jalon-11.md` §2.6).
 

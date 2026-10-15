@@ -1,0 +1,23 @@
+{
+	"walker": {
+		"cell": [30, 30],
+		"facing": "right",
+		"sprite": "hiker",
+		"dialogue": "route_5_walker"
+	},
+	"traveler": {
+		"cell": [24, 48],
+		"facing": "right",
+		"sprite": "traveler",
+		"dialogue": "route_5_traveler"
+	},
+	"route_5_item_1": {
+		"cell": [11, 15],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "route_5_item_1",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": ["got_route_5_item_1"]
+	}
+}

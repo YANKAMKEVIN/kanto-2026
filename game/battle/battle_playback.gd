@@ -51,6 +51,10 @@ extends RefCounted
 ## STATUS_TAG (« DOR » se pose), puis le message ; TRAP_DAMAGED → DAMAGE (coup et barre), puis le
 ## message ; SELF_KO → DAMAGE (la barre du lanceur tombe à zéro ; le FAINTED suit) ; TRAPPED,
 ## TRAP_ENDED, MOVE_DISABLED, DISABLE_ENDED : le message seulement.
+## Jalon 14 : CHARGE_STARTED : le message, puis BURROW si la capacité rend invulnérable (Tunnel) ;
+## CHARGE_RELEASED : SURFACE (sans phrase) ; CHARGE_BROKEN : SURFACE puis le message ; TELEPORTED :
+## VANISH puis le message ; DODGED, BALL_BLOCKED, NOTHING_HAPPENED : le message seulement (pas de
+## THROW : la Ball n'est pas lancée).
 ## Les phrases viennent de [BattleText] : rien n'est écrit ici.
 
 
@@ -126,6 +130,22 @@ static func beats(event: BattleEvent, texts: BattleText, data: PokemonData,
 		BattleEvent.Kind.CONFUSION_CHECK:
 			result.append_array(messages)
 			result.append(BattleBeat.new(BattleBeat.Kind.CONFUSION, event))
+		BattleEvent.Kind.CHARGE_STARTED:
+			# Message d'abord (« … creuse un trou ! »), puis le sol l'avale si l'effet rend
+			# invulnérable ; sinon (charge visible) rien de plus que le message.
+			result.append_array(messages)
+			var charge := data.get_move(event.move_id)
+			var effect := charge.charge_effect() if charge != null else null
+			if effect != null and effect.invulnerable:
+				result.append(BattleBeat.new(BattleBeat.Kind.BURROW, event))
+		BattleEvent.Kind.CHARGE_RELEASED:
+			result.append(BattleBeat.new(BattleBeat.Kind.SURFACE, event))
+		BattleEvent.Kind.CHARGE_BROKEN:
+			result.append(BattleBeat.new(BattleBeat.Kind.SURFACE, event))
+			result.append_array(messages)
+		BattleEvent.Kind.TELEPORTED:
+			result.append(BattleBeat.new(BattleBeat.Kind.VANISH, event))
+			result.append_array(messages)
 		BattleEvent.Kind.WITHDRAWN:
 			result.append_array(messages)
 			result.append(BattleBeat.new(BattleBeat.Kind.WITHDRAW, event))

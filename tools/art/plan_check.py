@@ -34,8 +34,15 @@ entre cartes, rebord unique, eau et ponts, Centre premier bâtiment, rival, Ondi
 `repaire_ascenseur.txt` → `plan_check_repaire.py` (dalles tournantes, raccords, atteignabilité en six
 états, deux moitiés disjointes du B4F ; les contrôles globaux sont lancés par `repaire_ascenseur`).
 
+**Azuria après J14** (variante `J14` de `azuria.txt`, jalon 14 T20a) : `plan_check_azuria_j14.py`,
+lancé à part (jardin, impasse, poursuite, vue du Rocket, aucune case coincée, sortie sud).
+
+**Route 25** (`route_25.txt`, jalon 14) : `verifier_route_25`, dans `plan_check_route_25.py`
+(raccord ouest, maison de Léo, D1 et D2 inévitables, H3 obligatoire, rebord de la terrasse,
+largeur du chemin, durée de traversée).
+
 Usage : python3 tools/art/plan_check.py [grille.txt ...]   (code 1 si un critère échoue)
-        sans argument : toutes les grilles connues (Route 2, Forêt de Jade, Route 3, J13).
+        sans argument : toutes les grilles connues (Route 2, Forêt de Jade, Route 3, J13, Route 25).
 """
 from __future__ import annotations
 
@@ -614,6 +621,18 @@ def verifier_route_3(chemin: Path) -> bool:
 	return verifier(chemin)
 
 
+def verifier_route_6(chemin: Path) -> bool:
+	"""Route 6 (jalon 15, dossier 18 §6) : profil dans `plan_check_carmin.py`."""
+	from plan_check_carmin import verifier_route_6 as verifier
+	return verifier(chemin)
+
+
+def verifier_vermilion_city(chemin: Path) -> bool:
+	"""Carmin-sur-Mer (jalon 15, dossier 18 §8) : profil dans `plan_check_carmin.py`."""
+	from plan_check_carmin import verifier_vermilion_city as verifier
+	return verifier(chemin)
+
+
 def _azuria(nom: str):
 	"""Grilles du jalon 13 : profils dans `plan_check_azuria.py` (import tardif, comme la Route 3)."""
 	def verifier(chemin: Path) -> bool:
@@ -622,8 +641,15 @@ def _azuria(nom: str):
 	return verifier
 
 
+def verifier_route_25(chemin: Path) -> bool:
+	"""Route 25 et Cap d'Azuria (jalon 14) : profil dans `plan_check_route_25.py`."""
+	from plan_check_route_25 import verifier_route_25 as verifier
+	return verifier(chemin)
+
+
 VERIFICATEURS = {"route_2": verifier_route_2, "viridian_forest": verifier_foret,
-	"route_3": verifier_route_3,
+	"route_3": verifier_route_3, "route_25": verifier_route_25, "route_6": verifier_route_6,
+	"vermilion_city": verifier_vermilion_city,
 	**{n: _azuria(n) for n in ("route_4", "azuria", "route_24", "azuria_arene", "azuria_velos",
 		"azuria_maison")}}
 

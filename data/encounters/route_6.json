@@ -1,0 +1,15 @@
+{
+	"route_6_grass": {
+		"maps": ["route_6"],
+		"terrain": "grass",
+		"rate": 25,
+		"ramp": { "from_step": 15, "max_steps": 20 },
+		"slots": [
+			{ "species": "pidgey", "levels": [13, 16], "weight": 30 },
+			{ "species": "oddish", "levels": [13, 16], "weight": 15 },
+			{ "species": "bellsprout", "levels": [13, 16], "weight": 15 },
+			{ "species": "mankey", "levels": [10, 16], "weight": 20 },
+			{ "species": "meowth", "levels": [10, 16], "weight": 20 }
+		]
+	}
+}

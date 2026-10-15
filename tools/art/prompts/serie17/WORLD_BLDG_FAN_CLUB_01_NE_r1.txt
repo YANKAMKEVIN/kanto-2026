@@ -1,0 +1,24 @@
+WORLD_BLDG_FAN_CLUB_01 — NOUVELLE image : un seul asset de jeu isolé, pas une scène.
+Images jointes : REF_CA_FAN_CLUB = référence de forme, de matériaux et de couleurs, extraite d'une vue d'ensemble validée (minuscule : n'en copie pas le rendu) : dessine l'élément comme s'il avait été extrait de cette image puis agrandi, avec le même angle, mais avec la finesse des ancres. WORLD_PROP_SOUCHE_01_NE_r1 et WORLD_TREE_A_01_NE_r1 et WORLD_BLDG_MAISON_ARGENTA_01_NE_r1 = ancres de style de la série (rendu peint, contour coloré, finesse, même angle de vue, même lumière neutre). Les vues sont en lumière d'ambiance : l'élément garde la lumière NEUTRE des ancres (le jeu ajoute la lumière lui-même).
+
+ADN VISUEL KANTO 2026 — v1 (à respecter strictement)
+- Rendu : illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus de trois quarts, en projection oblique frontale, sans aucun point de fuite. Les verticales restent strictement verticales et les horizontales strictement horizontales. On voit le dessus des objets et leur face avant (côté sud), jamais leurs côtés. Pas de vue isométrique, pas de rotation. Le sol est vu à plat, comme sur un plan.
+- Proportions : légèrement stylisées, trapues et rassurantes. Échelle commune : 1 case de jeu = 1 mètre environ ; un adulte mesure 1,33 case ; une porte simple mesure 1 case de large et 1,5 case de haut.
+- Contours : aucun trait noir. Contour fin et doux, d'une teinte plus sombre et plus saturée que la couleur locale, qui s'efface presque du côté éclairé.
+- Volumes : trois valeurs nettes par matériau (lumière, ombre propre, reflet ambiant), transitions douces, petits accents de lumière sur les arêtes.
+- Matériaux : reconnaissables (bois, pierre, tuile, feuillage, verre) à leur forme et à quelques touches de texture, jamais à une texture photographique.
+- Couleurs : chaudes, lumineuses et saturées sans être fluo. Verts allant du vert-jaune ensoleillé au vert sapin. Ombres colorées tirant vers le bleu-vert ou le violet froid, jamais grises ni noires. Couleurs franches pour les toits.
+- Texture : pinceau net et propre, légère granularité picturale ; pas de bruit, pas de flou, pas de netteté artificielle.
+- Lumière : une seule source, le soleil, en haut à gauche de l'image (la fiche précise la variante).
+- Ombres : aucune ombre portée au sol (le jeu l'ajoute lui-même). Les ombres propres et internes (sous le feuillage, sous un avant-toit) sont peintes.
+- Isolement : un seul objet, entier, centré, sur fond transparent ; rien autour : ni sol, ni herbe, ni décor, ni personnage.
+- Interdits partout : texte, lettres, chiffres, logo (sauf l'emblème demandé), signature, filigrane, cadre, personnage, Pokémon, ombre portée, sol sous l'objet, flou de profondeur, vignettage.
+
+LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche ; volumes conservés par un ombrage doux ; aucune teinte dorée ou orangée, aucun liseré chaud ; ombres propres neutres, légèrement bleutées.
+
+ASSET : le FAN CLUB POKÉMON de Carmin-sur-Mer, une maison de club cossue et chaleureuse, façade de face (base de 8 cases de large, environ 6 cases de haut avec le toit), même main que la maison jointe WORLD_BLDG_MAISON_ARGENTA_01 : murs de pierre crème, grand toit de TUILES VERT SAPIN (la couleur qui le distingue), deux lucarnes ; au milieu exact du bas (4e et 5e colonnes sur 8), une PORTE DOUBLE de bois brun chaud vitrée de 2 cases sous une marquise de toile rayée vert et crème ; deux grandes fenêtres de chaque côté, rideaux crème, jardinières fleuries ; au-dessus de la porte, une ROSETTE de ruban rouge et or sculptée (un ruban de concours, pas un cercle plein). Sans panneau, sans Pokémon, aucune inscription.
+Format : PNG paysage 1536 × 1024 ; l'élément occupe environ 1 300 px dans sa plus grande dimension, centré. Échelle : 8 cases de large et environ 6 de haut ; un adulte mesure 1,33 case.
+Fond : PNG avec une vraie transparence (canal alpha), aucun damier dessiné. La base de l'objet est une ligne de sol droite et horizontale ; rien sous cette ligne ; aucun sol autour, aucune ombre portée.
+Interdit : personnage, Pokémon, sol, herbe ou pavés autour, texte, lettres, chiffres, ombre portée.
+Interdits de la série : texte, lettres, chiffres, logo, nom de navire, AUCUN emblème rond de type balle (ni cercle partagé en deux, ni médaillon à bande centrale) nulle part, animaux réels ou faune non-Pokémon (mouettes, oiseaux, poissons réels, crabes, insectes), Pikachu et tout Pokémon non demandé, personnage qui ressemble au héros (casquette rouge, t-shirt blanc, sac à dos jaune), élément effrayant.

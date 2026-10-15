@@ -46,6 +46,10 @@ PLANCHES_OBJETS_SUIVANTES = [
 	("UI_OBJETS_J12_PLANCHE_r3.png", ["moon_stone", "escape_rope", "dome_fossil", "helix_fossil"]),
 	# Série 15 (J13 T5) : la Pépite, recadrée dans sa colonne (`serie15.py --retouches`, _r3).
 	("UI_OBJETS_J13_PLANCHE_r3.png", ["nugget"]),
+	# Série 16 (J14 T13) : Passe Bateau et Super Bonbon (`serie16.ICONES_IDS`).
+	("UI_OBJETS_J14_PLANCHE_r1.png", ["ss_ticket", "rare_candy"]),
+	# Série 17 (J15 T11) : Super Potion et Guérison (`serie17.ICONES_IDS`).
+	("UI_OBJETS_J15_PLANCHE_r1.png", ["super_potion", "full_restore"]),
 ]
 
 

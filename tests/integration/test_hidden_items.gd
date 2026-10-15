@@ -5,7 +5,7 @@ extends GutTest
 ## - EXAMINER → toast standard seul (« Réveil ×1 » / « Ajouté au Sac »), aucune bulle, Sac + 1,
 ##   journal des objets trouvés, drapeau `got_<id>` ;
 ## - ensuite plus de cible, même après un rechargement de la partie.
-## Caches : Route 3 (T18), Route 24 nord (T22, Antidote). Le 1F et le B2F s'ajoutent au T21 / T25 ([constant CACHES]).
+## Caches : Route 3 (T18), Route 24 nord (T22, Antidote), souterrain (J15 T19, Guérison), Route 5 (J15 T13, Antidote du tronc), Route 6 (J15 T14/T15, Super Potion des joncs). Le 1F et le B2F s'ajoutent au T21 / T25 ([constant CACHES]).
 
 const MemoryFs := preload("res://tests/helpers/memory_file_system.gd")
 const FixedClock := preload("res://tests/helpers/fixed_clock.gd")
@@ -19,6 +19,17 @@ const CACHES: Array = [
 		Vector2i(36, 18), &"awakening", ["Réveil ×1", "Ajouté au Sac"]],
 	[&"route_24", "res://tools/debug_start/route_24_north.json", &"north_land",
 		"route_24_antidote", Vector2i(16, 6), &"antidote", ["Antidote ×1", "Ajouté au Sac"]],
+	# Jalon 15 (T19) : la Guérison du souterrain, seule cache avec une phrase (T-19, en page
+	# avant le toast).
+	[&"underground_path", "res://tools/debug_start/underground_path.json", &"from_route_5_w",
+		"underground_hidden_1", Vector2i(11, 9), &"full_restore",
+		["Guérison ×1", "Ajoutée au Sac"], ["page", "toast"]],
+	[&"route_5", "res://tools/debug_start/route_5.json", &"from_cerulean_c", "route_5_hidden_1",
+		Vector2i(16, 31), &"antidote", ["Antidote ×1", "Ajouté au Sac"]],
+	# Jalon 15 (T14 / T15) : la Super Potion des joncs, rive ouest de l'étang de la Route 6.
+	[&"route_6", "res://tools/debug_start/route_6.json", &"from_underground",
+		"route_6_hidden_1", Vector2i(10, 32), &"super_potion",
+		["Super Potion ×1", "Ajoutée au Sac"]],
 ]
 const SIDES: Array[Vector2i] = [Vector2i.LEFT, Vector2i.RIGHT, Vector2i.DOWN]
 
@@ -129,7 +140,10 @@ func _check_cache(cache: Array) -> void:
 	assert_eq(GameState.bag.count_of(cache[5]), before + 1, "Sac + 1")
 	assert_eq(_found(cache), 1, "journal des objets trouvés")
 	assert_true(GameState.flags.has_flag(flag), "drapeau %s" % flag)
-	assert_eq(_events, ["toast"] as Array[String], "toast seul, aucune bulle")
+	var expected_events: Array[String] = ["toast"]
+	if cache.size() > 7:
+		expected_events.assign(cache[7])
+	assert_eq(_events, expected_events, "toast seul (T-19 : une page avant le toast)")
 	assert_eq(_toasts, [PackedStringArray(cache[6])] as Array[PackedStringArray])
 	assert_null(_target(), "plus de cible une fois trouvé")
 	# Rechargement : toujours rien face à l'indice, le Sac ne bouge pas.
@@ -152,3 +166,15 @@ func test_route_3_awakening_behind_the_pebble() -> void:
 
 func test_route_24_antidote_behind_the_stump() -> void:
 	await _check_cache(CACHES[1])
+
+
+func test_underground_full_restore_behind_the_loose_stone() -> void:
+	await _check_cache(CACHES[2])
+
+
+func test_route_5_antidote_behind_the_trunk() -> void:
+	await _check_cache(CACHES[3])
+
+
+func test_route_6_super_potion_behind_the_rushes() -> void:
+	await _check_cache(CACHES[4])

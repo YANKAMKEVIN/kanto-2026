@@ -322,7 +322,16 @@ func test_every_known_action_is_accepted() -> void:
 		assert_true(_library.add_from_dict({String(action): {"pages": ["x"],
 			"action": String(action)}}, "test"), String(action))
 	assert_eq(DialogueLibrary.ACTIONS, [&"heal", &"center_heal", &"open_shop",
-		&"open_storage"] as Array[StringName])
+		&"open_storage", &"open_daycare"] as Array[StringName], "J15 : la Pension")
+
+
+## J15 : le gardien de la Pension n'a pas de réplique à lui (action seule, sans page).
+func test_daycare_keeper_is_an_action_without_page() -> void:
+	assert_true(_library.add_from_dict({"keeper": {"speaker": "Gardien",
+		"action": "open_daycare"}}, "test"))
+	var variant := _library.get_dialogue(&"keeper").variants[0]
+	assert_eq(variant.action, &"open_daycare")
+	assert_eq(variant.pages.size(), 0)
 
 
 func test_unknown_action_is_rejected() -> void:
@@ -430,6 +439,15 @@ func test_the_question_of_a_choice_has_no_token() -> void:
 		"jeton permis avant la question")
 
 
+## J15 : seuls les jetons « de contexte » de la Pension (toujours fournis par son directeur) sont
+## permis dans la question (T-7, T-8 : « Tu veux le reprendre ? Ce sera {price} ₽. »).
+func test_context_tokens_are_allowed_in_the_question_of_a_choice() -> void:
+	assert_true(_library.add_from_dict({"visit": {"pages": ["{pokemon} va très bien.",
+		"Tu veux le reprendre ? Ce sera {price} ₽."],
+		"choice": {"confirm": "OUI", "cancel": "NON"}}}, "test"))
+	assert_false(_library.add_from_dict({"mixed": {"pages": ["{player}, {price} ₽ ?"],
+		"choice": {"confirm": "OUI", "cancel": "NON"}}}, "test"), "un jeton hors contexte")
+	assert_push_error("la question d'un choix (dernière page) n'a pas de jeton")
 # --- Choix qui pose un drapeau (jalon-13.md §2.13, T16) --------------------------------------
 
 func test_choice_flags_are_read_and_listed_as_set() -> void:

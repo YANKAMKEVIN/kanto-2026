@@ -11,6 +11,7 @@ func _valid() -> Dictionary:
 			"zone_arrival": {"title": "{zone}"},
 			"badge": {"title": "{badge}", "detail": "À {city} contre {leader} ({zone})."},
 			"fossil": {"title": "Rocket", "detail": "{fossil} obtenu."},
+			"bill_restored": {"title": "Léo est humain", "detail": ""},
 		},
 		"outcomes": {"win": {"text": "Gagné."}},
 		"zone_arrivals": {"route_1": {"title": "Départ", "detail": "Vers la {zone}."}},
@@ -195,3 +196,14 @@ func test_missing_or_broken_file() -> void:
 	var list := MomentLibrary.new()
 	assert_false(list.add_from_dict({"moments": []}, "t"))
 	assert_push_error("« moments » doit être un objet")
+
+
+## Jalon 14 (dossier 17 §15 n° 69) : le Grand moment de Léo, titre seul, lieu = la zone.
+func test_real_data_j14_bill_restored_moment() -> void:
+	var library := MomentLibrary.new()
+	library.load_file()
+	var text := library.get_text(MomentLibrary.BILL_RESTORED)
+	assert_not_null(text)
+	assert_eq(text.title, "Léo a retrouvé forme humaine")
+	assert_eq(text.detail, "", "détail vide")
+	assert_false(text.draft)

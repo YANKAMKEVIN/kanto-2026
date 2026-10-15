@@ -3,7 +3,7 @@ extends GutTest
 ## dossier 16 §7, §11 à §13) sur la vraie scène : métadonnées, **grille de la scène = grille
 ## fonctionnelle** `tools/plans/route_24.txt`, eau jamais praticable, pont de 2 cases sur 25 rangées
 ## (tabliers alternés), berges naturelles et quais de pierre sans jamais couvrir une case
-## praticable, raccords (Azuria au sud, « ROUTE 25 — À venir » à l'est), **vues du rival et des
+## praticable, raccords (Azuria au sud, Route 25 à l'est, J14 T15), **vues du rival et des
 ## cinq Dresseurs lues sur la grille** (le rival couvre tout le goulet à ≥ 3 cases, chacun des
 ## Dresseurs du pont est inévitable et ne coince jamais le joueur), cases réservées libres, deux
 ## zones d'herbes évitables, nœuds. Sans PNJ, objet ni donnée (T17 / T19 / T22).
@@ -202,7 +202,7 @@ func test_the_whole_map_is_reachable_and_closed_from_azuria() -> void:
 	assert_true(blocked.has(EAST[1]), "et la prairie jusqu'à la Route 25")
 
 
-func test_south_edge_leads_to_azuria_east_edge_is_route_25_coming_soon() -> void:
+func test_south_edge_leads_to_azuria_east_edge_to_route_25() -> void:
 	var suffixes := ["w", "c", "e"]
 	for i: int in SOUTH.size():
 		var warp := _map.get_warps().find_on_push(SOUTH[i], Vector2i.DOWN)
@@ -217,11 +217,12 @@ func test_south_edge_leads_to_azuria_east_edge_is_route_25_coming_soon() -> void
 		assert_not_null(warp, "raccord est %s" % EAST[i])
 		if warp == null:
 			continue
-		assert_true(warp.is_coming_soon())
-		assert_eq(warp.coming_soon, "Route 25")
-		assert_eq(warp.target_spawn, StringName("from_route_25_" + rows[i]))
-		assert_eq(_map.get_spawn_cell(warp.target_spawn), EAST[i], "retour sur la case")
-		assert_eq(warp.facing, Vector2i.LEFT)
+		# Jalon 14 T15 : la vraie Route 25, rangée pour rangée ((0, 13..15)), tournée vers l'est.
+		assert_false(warp.is_coming_soon())
+		assert_eq([warp.target_map, warp.target_spawn, warp.facing],
+			[&"route_25", StringName("from_route_24_" + rows[i]), Vector2i.RIGHT])
+		assert_eq(_map.get_spawn_cell(StringName("from_route_25_" + rows[i])), EAST[i],
+			"arrivée de la Route 25 sur la case du raccord")
 	assert_eq(_map.get_warps().size(), 6)
 	assert_eq(_plan.cells_at("warp_sud"), SOUTH)
 	assert_eq(_plan.cells_at("raccord_est"), EAST)

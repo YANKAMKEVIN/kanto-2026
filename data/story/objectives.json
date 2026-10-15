@@ -1,5 +1,33 @@
 [
 	{
+		"id": "explore_vermilion",
+		"text": "explorer Carmin-sur-Mer.",
+		"if": ["vermilion_reached"]
+	},
+	{
+		"id": "go_vermilion",
+		"text": "rejoindre Carmin-sur-Mer, au sud.",
+		"if": ["route_5_entered"],
+		"unless": ["vermilion_reached"]
+	},
+	{
+		"id": "ss_anne",
+		"text": "le S.S. Anne fait escale à Carmin-sur-Mer.",
+		"if": ["got_ss_ticket"]
+	},
+	{
+		"id": "help_bill",
+		"text": "aider Léo.",
+		"if": ["bill_met"],
+		"unless": ["bill_restored"]
+	},
+	{
+		"id": "go_cerulean_cape",
+		"text": "rejoindre le Cap d'Azuria.",
+		"if": ["badge_cascade", "beaten_nugget_rocket"],
+		"unless": ["bill_met"]
+	},
+	{
 		"id": "explore_cerulean",
 		"text": "explorer les environs d'Azuria.",
 		"if": ["badge_cascade", "beaten_nugget_rocket"]

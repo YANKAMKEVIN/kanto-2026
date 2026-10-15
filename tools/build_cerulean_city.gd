@@ -5,6 +5,16 @@ extends SceneTree
 ## habitants, des examens et des déclencheurs sont réservées (la forêt s'en écarte, la grille les
 ## laisse libres ou bloquées comme le plan).
 ##
+## **Jalon 14 (T20b, 14C)** : la grille lue est la variante `J14` de `tools/plans/azuria.txt`
+## (jardin de la maison cambriolée et impasse praticables, trou praticable, porte cambriolée
+## ouverte au warp, couloir sud jusqu'au raccord de la Route 5 — « À venir » au J14, la vraie
+## Route 5 depuis le J15 T21). Caractères `J` (jardin
+## ouvert) et `Y` (trou) praticables ; l'arbre dense en (22, 3) ferme l'impasse ; la planche
+## clouée (14, 2) et la porte condamnée de la maison suivent `cerulean_rocket_beaten`
+## ([FlagGate]) ; les déclencheurs de la poursuite, du combat et du barrage sud sont posés ici,
+## leurs scènes (`data/cutscenes/cerulean_rocket.json`) décident selon les drapeaux. Les PNJ
+## (Rocket, ruban, barrage) sont dans `data/npcs/cerulean_city.json`.
+##
 ##   godot --headless --path . -s res://tools/build_cerulean_city.gd
 ##   godot --headless --path . --import
 ##   (première fois, ou si le masque change : relancer l'outil après l'import)
@@ -32,6 +42,8 @@ const PLAN_PATH: String = "res://tools/plans/azuria.txt"
 const OUT_PATH: String = "res://game/world/maps/cerulean_city.tscn"
 const MASK_PATH: String = "res://assets/world/maps/cerulean_city_ground.png"
 const NPCS_PATH: String = "res://data/npcs/cerulean_city.json"
+## Variante de la grille (jalon 14 T20b) : Azuria après le J14.
+const PLAN_VARIANT: String = "J14"
 const SIZE := Vector2i(56, 41)
 const SEED: int = 2131
 const DECOR_SEED: int = 2132
@@ -42,7 +54,7 @@ const MAP_ID: StringName = &"cerulean_city"
 const DISPLAY_NAME: String = "Azuria"
 ## Sous-titre du titre de zone (dossier 16 §21 n° 5).
 const REGION: String = "La ville aux eaux claires"
-const WALKABLE_MARKS: String = ".=pqBD"
+const WALKABLE_MARKS: String = ".=pqBDJY"
 
 ## Tabliers par pont (clé = case du coin nord-ouest du pont) : central 3 de large, Arène 2 de
 ## large (`ns`), pont ouest `ew`.
@@ -77,6 +89,15 @@ const INTERIOR_SPAWN: StringName = &"entrance"
 ## sombre (toit brun de la vue) ; porte condamnée posée par-dessus.
 const BURGLED_HOUSE := Vector2i(10, 9)
 const BURGLED_TINT := Color(0.8, 0.7, 0.66)
+## Drapeau de la victoire sur le Rocket d'Azuria (J14) : planche clouée, porte condamnée.
+const VICTORY_FLAG: StringName = &"cerulean_rocket_beaten"
+## Arbre dense qui ferme l'impasse à l'est (22, 3), posé à la main : la forêt autour du point
+## d'arrêt du Rocket (21, 3) est dégagée pour qu'aucune cime ne le cache.
+const IMPASSE_TREE := Vector2i(22, 3)
+## Spawns de débogage : devant la clôture arrachée du jardin, et dans l'impasse juste avant la bande.
+const DEBUG_GARDEN := Vector2i(5, 2)
+const DEBUG_IMPASSE := Vector2i(16, 3)
+const IMPASSE_TREE_ID: String = "tree_foret_03"
 ## Îlot de la Grotte Azurée : ancre du pied (bord bas, entre les colonnes 52 et 53).
 const ISLET_ANCHOR := Vector2i(53, 6)
 ## Escalier de quai posé à la main sur la rive nord du canal horizontal (module 192 × 101).
@@ -92,12 +113,24 @@ const SIGNS: Array = [
 ## Examens (T17, dossier 16 §6, §4.2) : [position de la grille, nœud, dialogue, orientation
 ## exigée] ; taille et ancre déduites de la grille. Aucun marqueur, aucun objectif : le
 ## décor seul porte l'indice.
+## J14 : la porte cambriolée est un passage (ruban = PNJ objet qui s'examine), la palissade du
+## sud est un couloir (barrage = PNJ) ; le trou (14, 3) s'examine depuis (13, 3) tourné → (n° 29).
 const EXAMS: Array = [
-	["porte_cambriolee", "BurgledDoor", &"cerulean_burgled_door", Vector2i.UP],
 	["cloture_arrachee", "TornFence", &"cerulean_torn_fence", Vector2i.RIGHT],
+	["trou_cloture", "FenceHole", &"cerulean_fence_hole", Vector2i.RIGHT],
 	["barriere_est", "EastBarrier", &"cerulean_closed_exit", Vector2i.RIGHT],
-	["barriere_sud", "SouthBarrier", &"cerulean_closed_exit", Vector2i.DOWN],
 ]
+## Déclencheurs de scène du J14 : [position de la grille, nœud, direction du pas, scène].
+const SCENE_TRIGGERS: Array = [
+	["poursuite", "RocketChase", Vector2i.RIGHT, &"cerulean_rocket_chase"],
+	["combat_rocket", "RocketFight", Vector2i.RIGHT, &"cerulean_rocket_fight"],
+	["barrage_sud", "SouthGuard", Vector2i.DOWN, &"cerulean_south_guard"],
+]
+## Raccord sud : trois cases PUSH ↓ (J14) ; arrivées ici `from_route_5_w|c|e`. **Jalon 15 T21** :
+## la vraie Route 5 (`route_5` / `from_cerulean_w|c|e`, colonne pour colonne, tournée ↓) remplace
+## « ROUTE 5 — À venir ».
+const SOUTH_SUFFIXES: Array[String] = ["w", "c", "e"]
+const SOUTH_MAP: StringName = &"route_5"
 ## Arrivée à Azuria : déclencheurs silencieux [position de la grille, nœud, direction].
 const ARRIVALS: Array = [
 	["arrivee_ouest", "ArrivalWest", Vector2i.RIGHT],
@@ -120,7 +153,7 @@ var _kit: Object
 
 
 func _init() -> void:
-	_kit = Kit.new(PLAN_PATH, SIZE, SEED, DECOR_SEED, QUAY_SEED)
+	_kit = Kit.new(PLAN_PATH, SIZE, SEED, DECOR_SEED, QUAY_SEED, PLAN_VARIANT)
 	if not (_kit.get(&"errors") as PackedStringArray).is_empty():
 		push_error("build_cerulean_city : %s" % _kit.get(&"errors"))
 		quit(1)
@@ -139,6 +172,7 @@ func _init() -> void:
 	var entities: Node2D = _kit.get(&"entities")
 	var decals: Node2D = _kit.get(&"decals")
 	_add_passages()
+	_add_burgled_door()
 	_add_life()
 
 	_kit.call(&"place_border_decals", SEED)
@@ -190,7 +224,8 @@ func _prepare_cells() -> void:
 	for cell: Vector2i in _plan().call(&"cells_of", "KA"):
 		water[cell] = true
 	var path: Dictionary = _kit.get(&"path_cells")
-	for cell: Vector2i in _plan().call(&"cells_of", "ja"):
+	# Jardin clos et trou (J14 : praticables, toujours de la terre), sentiers peints.
+	for cell: Vector2i in _plan().call(&"cells_of", "jJYa"):
 		path[cell] = true
 	var paved: Dictionary = _kit.get(&"paved_cells")
 	for cell: Vector2i in _plan().call(&"cells_of", "G"):
@@ -214,6 +249,12 @@ func _add_passages() -> void:
 			Kit.PUSH, Vector2i.UP, &"route_24", StringName("from_cerulean_" + NORTH_SUFFIXES[i]),
 			Vector2i.UP)
 		_kit.call(&"add_spawn", "from_route_24_" + NORTH_SUFFIXES[i], NORTH_CELLS[i])
+	var south: Array[Vector2i] = _plan().call(&"cells_at", "warp_sud")
+	for i: int in south.size():
+		_kit.call(&"add_warp", "Route5" + SOUTH_SUFFIXES[i].to_upper(), south[i], Kit.PUSH,
+			Vector2i.DOWN, SOUTH_MAP, StringName("from_cerulean_" + SOUTH_SUFFIXES[i]),
+			Vector2i.DOWN)
+		_kit.call(&"add_spawn", "from_route_5_" + SOUTH_SUFFIXES[i], south[i])
 	for entry: Array in BUILDINGS:
 		var doors: Array = _plan().call(&"cells_at", entry[3])
 		var front: Vector2i = (doors[-1] as Vector2i) + Vector2i.DOWN
@@ -232,6 +273,18 @@ func _add_passages() -> void:
 					StringName(entry[5]), Vector2i.DOWN, entry[6])
 
 
+## Maison cambriolée (J14) : porte (10, 9) STEP_ON ↑ vers l'intérieur ; le ruban (PNJ) l'occupe
+## jusqu'à la victoire sur le Rocket. Arrivée devant la porte, tourné ↓.
+func _add_burgled_door() -> void:
+	var door: Vector2i = _cell("porte_cambriolee")
+	_kit.call(&"add_warp", "DoorBurgledHouse", door, Kit.STEP_ON, Vector2i.UP,
+		&"cerulean_burgled_house", INTERIOR_SPAWN, Vector2i.ZERO)
+	_kit.call(&"add_spawn", "from_burgled_house", door + Vector2i.DOWN)
+	# Départs de débogage (tools/debug_start/) : rue du jardin, bout de l'impasse (avant la bande).
+	_kit.call(&"add_spawn", "garden_start", DEBUG_GARDEN)
+	_kit.call(&"add_spawn", "impasse_start", DEBUG_IMPASSE)
+
+
 ## Vie d'Azuria (T17) : panneaux, examens, déclencheurs d'arrivée.
 func _add_life() -> void:
 	for entry: Array in SIGNS:
@@ -243,6 +296,9 @@ func _add_life() -> void:
 	for entry: Array in ARRIVALS:
 		var box := _box(entry[0])
 		_kit.call(&"add_trigger", entry[1], box[0], box[1], entry[2], &"cerulean_arrival")
+	for entry: Array in SCENE_TRIGGERS:
+		var box := _box(entry[0])
+		_kit.call(&"add_trigger", entry[1], box[0], box[1], entry[2], entry[3])
 
 
 ## Rectangle d'une position de la grille : [ancre (bas-gauche), taille].
@@ -271,22 +327,28 @@ func _place_buildings(entities: Node2D) -> void:
 		BURGLED_HOUSE, "HouseBurgled")
 	burgled.modulate = BURGLED_TINT
 	# Décor de la maison cambriolée (fiche série 15 : planche du cambriolage) — décor seul.
-	_kit.call(&"add_prop_at", entities, "prop_porte_condamnee_01", BURGLED_HOUSE, "BoardedDoor")
+	# J14 : la porte est un passage (sans emprise) ; les planches de la porte disparaissent avec
+	# le ruban, à la victoire sur le Rocket (FlagGate, visuel seulement).
+	_add_gated(entities, "prop_porte_condamnee_01", BURGLED_HOUSE, "BoardedDoor", [],
+		[VICTORY_FLAG])
 	_kit.call(&"add_prop_at", entities, "prop_pot_renverse_01", _cell("pot_renverse"),
 		"SpilledPot")
-	_kit.call(&"add_prop_at", entities, "prop_cloture_trou_01", _cell("trou_cloture"),
-		"FenceGap")
+	# Le trou du fond (14, 3) est praticable : l'image du trou n'a plus d'emprise.
+	var hole: Node2D = _kit.call(&"add_prop", entities, "prop_cloture_trou_01",
+		(_kit.get(&"rules") as GDScript).call(&"foot_position", &"prop_cloture_trou_01",
+			_cell("trou_cloture")), "FenceGap")
+	_kit.call(&"clear_footprint", hole)
+	# La planche clouée (fiche série 15, « clôture réparée ») sur la clôture voisine (14, 2) : décor
+	# seul, le trou reste praticable.
+	_add_gated(entities, "prop_cloture_reparee_01", _cell("planche_clouee"), "NailedBoard",
+		[VICTORY_FLAG], [])
 	_kit.call(&"add_prop_at", entities, "prop_cloture_arrachee_01", Vector2i(7, 1),
 		"FenceTorn")
-	# Palissade de chantier au sud (x 30..34, y 38..39) : deux modules de 3 qui se chevauchent.
-	_kit.call(&"add_prop_at", entities, "prop_palissade_chantier_01", Vector2i(31, 39),
-		"HoardingW")
-	_kit.call(&"add_prop_at", entities, "prop_palissade_chantier_02", Vector2i(33, 39),
-		"HoardingE")
 	# Clôtures : jardin clos (nord : x 9..14, ouest x 6, est x 14) et barrière est (x 53).
 	_kit.call(&"add_prop_at", entities, "prop_cloture_01", Vector2i(11, 1), "FenceGardenN")
+	# (J14 : la clôture ouest du jardin (6, 2..3) est arrachée, on entre par là.)
 	for cell: Vector2i in [Vector2i(13, 1), Vector2i(14, 1), Vector2i(14, 2), Vector2i(14, 4),
-			Vector2i(14, 5), Vector2i(6, 2), Vector2i(6, 3)]:
+			Vector2i(14, 5)]:
 		_kit.call(&"add_prop_at", entities, "prop_cloture_courte_01", cell,
 			"FenceShort%d_%d" % [cell.x, cell.y])
 	_kit.call(&"add_prop_at", entities, "prop_cloture_v_01", Vector2i(14, 9), "FenceGardenE")
@@ -294,8 +356,26 @@ func _place_buildings(entities: Node2D) -> void:
 	_kit.call(&"add_prop_at", entities, "tree_c_01", Vector2i(53, 23), "TreeEast")
 
 
+## Décor suivant les drapeaux : un [FlagGate] au pied de l'objet, l'objet en enfant (visuel
+## seulement, sans emprise : la grille décide des cases).
+func _add_gated(entities: Node2D, id: String, cell: Vector2i, node_name: String,
+		if_flags: Array[StringName], unless_flags: Array[StringName]) -> void:
+	var foot: Vector2 = (_kit.get(&"rules") as GDScript).call(&"foot_position",
+		StringName(id), cell)
+	var gate := Node2D.new()
+	gate.set_script(load("res://game/world/flag_gate.gd"))
+	gate.name = node_name + "Gate"
+	gate.position = foot.round()
+	gate.set(&"if_flags", if_flags)
+	gate.set(&"unless_flags", unless_flags)
+	_kit.call(&"attach", entities, gate)
+	var prop: Node2D = _kit.call(&"add_prop", gate, id, Vector2.ZERO, node_name)
+	_kit.call(&"clear_footprint", prop)
+
+
 func _place_props(entities: Node2D) -> void:
 	var tile := float(Kit.TILE)
+	_kit.call(&"add_prop_at", entities, IMPASSE_TREE_ID, IMPASSE_TREE, "ImpasseTree")
 	var index := 0
 	for cell: Vector2i in _plan().call(&"cells_of", "G"):
 		_kit.call(&"add_prop_at", entities, "prop_arbre_bac_01", cell, "Planter%02d" % index)

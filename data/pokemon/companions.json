@@ -25,12 +25,14 @@
 		"nidorino": { "sprite": "pokemon/nidorino" },
 		"nidorina": { "sprite": "pokemon/nidorina" },
 		"raticate": { "sprite": "pokemon/raticate" },
-		"fearow": { "sprite": "pokemon/fearow" }
+		"fearow": { "sprite": "pokemon/fearow" },
+		"meowth": { "sprite": "pokemon/meowth" }
 	},
 	"contexts": {
 		"viridian_forest": "forest",
 		"viridian_city": "city",
 		"pewter_city": "city",
+		"vermilion_city": "city",
 		"mt_moon_1f": "cave",
 		"mt_moon_b1f": "cave",
 		"mt_moon_b2f": "cave"

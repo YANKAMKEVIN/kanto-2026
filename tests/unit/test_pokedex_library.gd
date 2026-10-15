@@ -14,7 +14,15 @@ const ENCOUNTERABLE: Array[StringName] = [
 	&"jigglypuff", &"ekans", &"zubat", &"paras", &"clefairy", &"voltorb", &"koffing",
 	# Jalon 13 (annexe A de jalon-13.md, validée le 2026-10-11) : les six formes de base.
 	&"staryu", &"horsea", &"shellder", &"goldeen", &"oddish", &"bellsprout",
+	# Jalon 14 (dossier 17 §15, n° 63–65, validés le 2026-10-12) : Abra, Machoc (Dresseur), et
+	# Kadabra, première évolution qui a sa note.
+	&"abra", &"kadabra", &"machop",
+	# Jalon 15 (annexe A.5 de jalon-15.md, validée le 2026-10-14) : Miaouss.
+	&"meowth",
 ]
+## Notes validées par Kevin qui parlent de l'évolution (exception à « jamais de divulgation ») :
+## celle de Kadabra (dossier 17 §15, n° 64) cite son origine, Abra, déjà vue pour l'avoir.
+const EVOLUTION_NOTES: Array[StringName] = [&"kadabra_bond"]
 
 var _data: PokemonData
 var _lib: PokedexLibrary
@@ -75,6 +83,7 @@ func test_real_heights_and_weights_are_the_official_ones() -> void:
 		&"caterpie": [0.3, 2.9], &"metapod": [0.7, 9.9], &"butterfree": [1.1, 32.0],
 		&"weedle": [0.3, 3.2], &"kakuna": [0.6, 10.0], &"beedrill": [1.0, 29.5],
 		&"pikachu": [0.4, 6.0], &"raichu": [0.8, 30.0],
+		&"abra": [0.9, 19.5], &"kadabra": [1.3, 56.5], &"machop": [0.8, 19.5],
 	}
 	for id: StringName in official:
 		assert_almost_eq(_lib.get_species(id).height, float(official[id][0]), 0.001, id)
@@ -89,7 +98,8 @@ func test_real_texts_are_validated_and_never_spoil() -> void:
 		var texts: Array[String] = [info.description]
 		for note: PokedexNoteData in info.notes:
 			assert_false(note.draft, "%s : note validée (2026-10-06)" % note.id)
-			texts.append(note.text)
+			if not EVOLUTION_NOTES.has(note.id):
+				texts.append(note.text)
 		for text: String in texts:
 			var lower := text.to_lower()
 			for word: String in ["évolu", "niveau", "pokédex"]:
@@ -243,3 +253,12 @@ func test_forest_texts_are_the_locked_ones() -> void:
 	for id: StringName in [&"caterpie", &"weedle", &"pikachu"]:
 		ids.append(_lib.get_notes(id)[0].id)
 	assert_eq(ids, [&"caterpie_leaf", &"weedle_curl", &"pikachu_scorch"] as Array[StringName])
+
+
+## Jalon 14 : la note de Kadabra (n° 64), mot pour mot.
+func test_real_kadabra_note() -> void:
+	_lib.load_file()
+	var notes := _lib.get_notes(&"kadabra")
+	assert_eq(notes.size(), 1)
+	assert_eq(notes[0].text,
+		"Évolué d'Abra. On dit qu'il en devient un autre encore, par un lien très particulier.")
