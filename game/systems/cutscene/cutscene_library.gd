@@ -94,6 +94,8 @@ extends RefCounted
 ## « variants » ou des clés d'une variante unique) = scène enchaînée à la fin de celle-ci
 ## ([member Cutscene.next]). Après [method load_dir], chaque « next » doit nommer une scène
 ## connue, autre que la scène elle-même ([method check_next_references]).
+## Jalon 14 (jalon-14.md §2.7) :
+## - flash : nombre entier d'éclairs ≥ 1 (`{ "flash": 1 }`).
 ## Acteur = « player », identifiant d'un PNJ de la carte courante, ou **alias** « $nom »
 ## (forme $[a-z_]+, [method CutsceneStep.is_alias]) : PNJ choisi par le code qui lance la
 ## scène (CutsceneDirector.play(id, alias)), résolu au début de chaque étape. Les alias
@@ -114,6 +116,7 @@ const _EXTRA_KEYS: Array[Array] = [
 	["at", "facing"], ["to"],
 	["to"], [], ["player_pokemon", "foe_pokemon", "win", "lose"], ["count", "found"],
 	[], ["count"], [], [], [], ["kind"], [], [], ["details"],
+	[],
 ]
 ## Conditions permises sur toute étape sauf spawn.
 const _CONDITION_KEYS: Array[String] = ["if", "unless"]
@@ -482,6 +485,12 @@ func _parse_step(value: Variant, where: String) -> CutsceneStep:
 				step.badge_id = v) and ok
 		CutsceneStep.Kind.MOMENT:
 			ok = _parse_moment(entry, step, where) and ok
+		CutsceneStep.Kind.FLASH:
+			if not (main is float or main is int) or float(main) != floorf(float(main)) \
+					or int(main) < 1:
+				ok = _fail("%s : « flash » doit être un nombre entier d'éclairs ≥ 1" % where)
+			else:
+				step.count = int(main)
 	return step if ok else null
 
 
@@ -533,7 +542,7 @@ func _parse_spawn(entry: Dictionary, step: CutsceneStep, where: String) -> bool:
 		ok = _fail("%s : un PNJ créé a un vrai identifiant, pas un alias" % where)
 	var npc_entry := entry.duplicate()
 	npc_entry.erase("spawn")
-	for key: String in ["if", "unless"]:
+	for key: String in ["if", "unless", "moved"]:
 		if npc_entry.has(key):
 			ok = _fail("%s : « %s » n'a pas de sens dans une étape (conditions : variante)"
 				% [where, key])

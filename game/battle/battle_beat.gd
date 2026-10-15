@@ -49,6 +49,10 @@ extends RefCounted
 ## [member side], au moment du test (après « … est confus… »).
 ## Jalon 12 : HP — la barre de PV du Pokémon de [member side] va à [member BattleEvent.hp]
 ## ([member BattleEvent.max_hp]) sans coup ni voile (drain d'une attaque, Repos).
+## Jalon 14 (Tunnel, Téléport) :
+## - BURROW : le Pokémon de [member side] s'enfonce dans le sol et disparaît (ombre comprise) ;
+## - SURFACE : il remonte (charge libérée ou rompue) ;
+## - VANISH : il scintille puis s'efface (Téléport) ; « Réduire les animations » : fondus courts.
 ## Jalon 7 (changement de Pokémon) :
 ## - WITHDRAW : le Pokémon du joueur est rappelé dans sa Poké Ball (il rétrécit dans un éclat
 ##   rouge), sa carte et les pastilles sortent ; le SEND_OUT du suivant les ramène.
@@ -61,6 +65,7 @@ enum Kind {
 	POISON, STATUS_TAG,
 	CONFUSION,
 	HP,
+	BURROW, SURFACE, VANISH,
 }
 
 var kind: Kind = Kind.MESSAGE

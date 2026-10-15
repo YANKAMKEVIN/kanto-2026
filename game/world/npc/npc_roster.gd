@@ -38,6 +38,11 @@ extends RefCounted
 ## voir [method _read_trainer_j12]) } ; exige « facing » écrit et « dialogue »
 ## (la réplique « après »), le verbe « talk », et refuse « route », « look », « shy » et « idle_react » (un
 ## Dresseur qui bouge ou se tourne changerait sa vision), voir [method _read_trainer].
+## moved (jalon 14, jalon-14.md §2.8) : { "if": [...], "unless": [...], "cell": [x, y],
+## "facing": "left" } : autre place quand ses drapeaux sont remplis (au moins un drapeau ;
+## « facing » facultatif, celle de l'entrée par défaut) ; refusée avec « trainer » (sa vision
+## lit l'orientation de l'entrée) et « route » (la boucle part de « cell »), voir
+## [method _read_moved].
 ## Le verbe « meet » (Rencontrer) est refusé : il est posé par le code (jalon 4 §3.5).
 ## Toute autre clé est une erreur. Pas de fichier = aucun PNJ sur la carte (sans erreur).
 ## L'identifiant « player » est réservé au joueur.
@@ -52,6 +57,7 @@ const KEYS: Array[String] = [
 	"cell", "facing", "sprite", "dialogue", "verb", "turn_to_player", "keep_facing", "lift",
 	"hop_style", "shy", "route", "if", "unless", "species", "idle_react", "look",
 	"trainer",
+	"moved",
 ]
 ## Clés du bloc « trainer » ([method _read_trainer]).
 const TRAINER_KEYS: Array[String] = ["id", "sight", "before", "defeated", "rematch", "leave"]
@@ -60,6 +66,8 @@ const LOOK_KEYS: Array[String] = ["facings", "every"]
 ## Clés d'une routine « route » ([method _read_route]).
 const ROUTE_KEYS: Array[String] = ["cells", "pause", "start", "enter"]
 const _ENTER_KEYS: Array[String] = ["cell", "seconds"]
+## Clés d'une autre place « moved » ([method _read_moved], jalon 14).
+const MOVED_KEYS: Array[String] = ["if", "unless", "cell", "facing"]
 
 var _specs: Array[NpcSpec] = []
 var _errors: PackedStringArray = PackedStringArray()
@@ -233,7 +241,52 @@ static func parse_entry(value: Variant, errors: PackedStringArray) -> NpcSpec:
 			spec.species = StringName(entry["species"])
 	if entry.has("trainer"):
 		_read_trainer(entry, spec, errors)
+	if entry.has("moved"):
+		_read_moved(entry, spec, errors)
 	return spec if errors.size() == count else null
+
+
+## Lit l'autre place « moved » (jalon 14) : { "if", "unless" (au moins un drapeau en tout),
+## "cell" (obligatoire, différente de « cell »), "facing" (facultatif) }. Refusée avec
+## « trainer » et « route ».
+static func _read_moved(entry: Dictionary, spec: NpcSpec, errors: PackedStringArray) -> void:
+	var value: Variant = entry["moved"]
+	if not value is Dictionary:
+		errors.append("« moved » doit être { \"if\", \"unless\", \"cell\", \"facing\" }")
+		return
+	var block: Dictionary = value
+	var count := errors.size()
+	for key: Variant in block:
+		if not MOVED_KEYS.has(str(key)):
+			errors.append("« moved » : clé inconnue « %s »" % key)
+	var if_flags: Array[StringName] = []
+	var unless_flags: Array[StringName] = []
+	_read_flags(block, "if", if_flags, errors)
+	_read_flags(block, "unless", unless_flags, errors)
+	if not block.has("if") and not block.has("unless"):
+		errors.append("« moved » exige « if » ou « unless » (sinon, changer « cell »)")
+	var cell := NpcSpec.NO_MOVED_CELL
+	if not is_cell(block.get("cell")):
+		errors.append("« moved.cell » doit être [x, y] (entiers ≥ 0)")
+	else:
+		cell = Vector2i(int(block["cell"][0]), int(block["cell"][1]))
+		if cell == spec.cell:
+			errors.append("« moved.cell » est déjà « cell » %s" % cell)
+	var facing := spec.facing
+	if block.has("facing"):
+		if not block["facing"] is String or not Grid.is_direction_name(block["facing"]):
+			errors.append("« moved.facing » vaut down, up, left ou right")
+		else:
+			facing = Grid.direction_from_name(block["facing"])
+	for key: String in ["trainer", "route"]:
+		if entry.has(key):
+			errors.append("« moved » interdit avec « %s »" % key)
+	if errors.size() != count:
+		return
+	spec.moved_cell = cell
+	spec.moved_facing = facing
+	spec.moved_if_flags = if_flags
+	spec.moved_unless_flags = unless_flags
 
 
 ## Lit le bloc « trainer » (jalon 9) : { "id", "sight" (entier 1..8), "before", "defeated"

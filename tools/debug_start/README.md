@@ -91,6 +91,18 @@ rm "$HOME/Library/Application Support/Godot/app_userdata/Kanto 2026/debug_start.
 | `nugget_rocket.json` | J13 (T22) : même partie, P1 à P5 battus, en haut du pont (spawn `bridge_top` (33, 26)) : monter jusqu'à la rangée 23 déclenche le recruteur (félicitations, Pépite, proposition OUI / NON, combat Abo N15 / Nosferapti N15) |
 | `route_24_north.json` | J13 (T22) : recruteur battu et Pépite au Sac, sur la rive nord (spawn `north_land` (33, 17)) : prairies H1 (21, 12) et H2 (43, 13), Potion (44, 3), Antidote caché (souche (16, 6), à examiner depuis (16, 7)), raccord est « ROUTE 25 — À venir » ; objectif « explorer les environs d'Azuria. » |
 | `nugget_sell.json` | J13 (T22) : même partie, devant la Boutique d'Azuria (spawn `from_mart`) avec **1 Pépite** : VENDRE → 5 000 ₽ |
+| `route_25.json` | J14 (T14) : Badge Roche obtenu, Charmander N22, Papilusion N20, Roucool N18, 10 Poké Balls, 6 000 ₽, à l'entrée ouest de la Route 25 (spawn `from_route_24_c`, tourné vers l'est). Sans PNJ ni rencontres jusqu'au T16 ; le raccord ouest affiche « Route 24 — À venir » jusqu'au T15 |
+| `route_25_cape.json` | J14 (T14) : même partie, devant la maison de Léo (spawn `from_bill_house_w`, tourné vers le nord : un pas en haut pour entrer) |
+| `bill_house.json` | J14 (T14) : même partie, dans la maison de Léo sur le paillasson (spawn `from_route_25`, tourné vers le nord). Léo-Mélofée y attend (T17) : partie complète de la scène, depuis l'accueil |
+| `bill_after.json` | J14 (T17) : même partie, Léo déjà aidé (`bill_restored`, `got_ss_ticket`, `got_bill_rare_candy`), Passe Bateau et Super Bonbon au Sac, sur le paillasson de la maison : Léo humain devant la cabine B |
+| `rare_candy_qa.json` | J14 (T18b) : même partie que `bill_after` (maison de Léo), **5 Super Bonbons** : Abra N15 (bonbon → N16, n° 62, puis évolution en Kadabra **annulable** : ARRÊTER ou retour Android ; Choc Mental appris), Papilusion N20 à quatre capacités (→ N21 : Ultrason, écran « oublier une capacité »), Roucarnage **N100** (« Sans effet »), Rattata N12 **K.O.** (« Ce Pokémon est K.O. »), Salamèche N22. Sac → AVENTURE → Super Bonbon → UTILISER |
+| `cerulean_garden.json` | J14 (T20b) : Badge Roche, Salamèche N22, Papilusion N20, Roucool N18, devant la clôture arrachée du jardin de la maison cambriolée (spawn `garden_start` (5, 2), tourné vers l'est) : le premier pas sur la colonne 7 lance la poursuite (« ! », n° 30), puis combat par la bande (17, 2..3) |
+| `cerulean_rocket_weak.json` | J14 (T20b) : Rocket déjà repéré (`cerulean_rocket_spotted`), Salamèche **N5** seul, dans l'impasse (spawn `impasse_start` (16, 3)) : un pas à l'est = combat à perdre (réveil au Centre, retour : n° 32) |
+| `cerulean_after.json` | J14 (T20b) : Rocket battu et CT28 reçue, devant la maison cambriolée (spawn `from_burgled_house`, tourné vers le nord) : la porte s'ouvre sur la victime ; le policier du sud est encore là (n° 41 en passant par la bande (31..33, 37)) |
+
+La carte de QA `qa_charge_j14` (J14, T10), ses données, son outil de construction et de capture,
+son test et les départs `charge_qa` et `teleport_qa` ont été **retirés au T24** (Tunnel, Téléport
+et l'IA qui creuse sont couverts par les tests de combat ; Abra se rencontre sur la Route 25).
 
 La carte de QA `qa_switch_j13` (J13, T14), ses données, son outil de construction et de capture,
 son test et le départ `switch_qa` ont été **retirés au T22** (les Dresseurs qui changent de

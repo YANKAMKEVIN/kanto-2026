@@ -93,11 +93,13 @@ var _npcs_path: String = ""
 
 
 ## Lit la grille [param plan_path] (praticables [constant WALKABLE]) ; [member errors] non vide
-## si elle est illisible ou n'a pas la taille [param map_size].
-func _init(plan_path: String, map_size: Vector2i, seed_value: int, decor_seed: int) -> void:
+## si elle est illisible ou n'a pas la taille [param map_size]. [param plan_variant] : variante
+## de la grille (« J14 » : Azuria après le jalon 14), vide = la base.
+func _init(plan_path: String, map_size: Vector2i, seed_value: int, decor_seed: int,
+		plan_variant: String = "") -> void:
 	size = map_size
 	plan = PlanGrid.new()
-	if not plan.call(&"load_file", plan_path):
+	if not plan.call(&"load_file", plan_path, plan_variant):
 		errors.append("grille illisible : %s" % plan.get(&"error"))
 		return
 	plan.set(&"walkable", walkable)

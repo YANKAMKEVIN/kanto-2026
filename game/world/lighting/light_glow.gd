@@ -18,6 +18,7 @@ extends Sprite2D
 ## Au-dessus de `Entities` (0, tri par les pieds), sous `Overhead` (10).
 const Z_GLOW: int = 5
 const SHADER: Shader = preload("res://game/world/lighting/shaders/light_glow.gdshader")
+const SHADER_MIX: Shader = preload("res://game/world/lighting/shaders/light_glow_mix.gdshader")
 ## Côté de la texture du dégradé (pixels) ; le sprite est mis à l'échelle du rayon.
 const TEXTURE_SIZE: int = 256
 ## Image générée d'une colonne de lumière (pixels) ; mise à l'échelle de la largeur et de la
@@ -27,8 +28,10 @@ const COLUMN_HEIGHT: int = 256
 
 static var _library: LightGlowLibrary
 static var _texture: GradientTexture2D
+static var _plateau_texture: GradientTexture2D
 static var _column_texture: ImageTexture
 static var _steady_material: CanvasItemMaterial
+static var _steady_mix_material: CanvasItemMaterial
 static var _flicker_materials: Dictionary[StringName, ShaderMaterial] = {}
 static var _reduce_motion: bool = false
 
@@ -101,7 +104,7 @@ func _apply() -> void:
 		scale = Vector2(type.radius * 2.0 * Grid.TILE_SIZE / COLUMN_WIDTH,
 			type.height * Grid.TILE_SIZE / COLUMN_HEIGHT)
 	else:
-		texture = _gradient()
+		texture = _plateau() if type.blend == LightGlowLibrary.BLEND_MIX else _gradient()
 		centered = true
 		offset = Vector2.ZERO
 		scale = Vector2.ONE * scale_for(type.radius)
@@ -117,14 +120,20 @@ static func _amplitude_of(id: StringName) -> float:
 
 
 static func _material_for(type: LightGlowLibrary.GlowType) -> Material:
+	var mix := type.blend == LightGlowLibrary.BLEND_MIX
 	if type.flicker <= 0.0:
+		if mix:
+			if _steady_mix_material == null:
+				_steady_mix_material = CanvasItemMaterial.new()
+				_steady_mix_material.blend_mode = CanvasItemMaterial.BLEND_MODE_MIX
+			return _steady_mix_material
 		if _steady_material == null:
 			_steady_material = CanvasItemMaterial.new()
 			_steady_material.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
 		return _steady_material
 	if not _flicker_materials.has(type.id):
 		var shader_material := ShaderMaterial.new()
-		shader_material.shader = SHADER
+		shader_material.shader = SHADER_MIX if mix else SHADER
 		_flicker_materials[type.id] = shader_material
 	_flicker_materials[type.id].set_shader_parameter(&"amplitude", _amplitude_of(type.id))
 	return _flicker_materials[type.id]
@@ -161,3 +170,21 @@ static func _gradient() -> GradientTexture2D:
 		_texture.width = TEXTURE_SIZE
 		_texture.height = TEXTURE_SIZE
 	return _texture
+
+
+## Disque doux à cœur plein (halos « mix ») : la teinte couvre l'objet entier avant de s'éteindre,
+## au lieu du dégradé pointu des lampes (qui ne tient que sur le centre).
+static func _plateau() -> GradientTexture2D:
+	if _plateau_texture == null:
+		var gradient := Gradient.new()
+		gradient.offsets = PackedFloat32Array([0.0, 0.45, 0.75, 1.0])
+		gradient.colors = PackedColorArray([Color(1, 1, 1, 1.0), Color(1, 1, 1, 0.85),
+			Color(1, 1, 1, 0.3), Color(1, 1, 1, 0.0)])
+		_plateau_texture = GradientTexture2D.new()
+		_plateau_texture.gradient = gradient
+		_plateau_texture.fill = GradientTexture2D.FILL_RADIAL
+		_plateau_texture.fill_from = Vector2(0.5, 0.5)
+		_plateau_texture.fill_to = Vector2(1.0, 0.5)
+		_plateau_texture.width = TEXTURE_SIZE
+		_plateau_texture.height = TEXTURE_SIZE
+	return _plateau_texture

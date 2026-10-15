@@ -11,7 +11,8 @@ extends RefCounted
 ## un halo éclaire sans effacer le décor ni les personnages), « flicker » (amplitude du
 ## vacillement, dans [0, [constant FLICKER_MAX]] ; 0 = fixe). Clés facultatives (passe « lumière
 ## rare ») : « shape » (« radial » par défaut, ou « column » : colonne de lumière douce d'un puits
-## de jour, posée à son pied, « radius » = demi-largeur) et « height » (hauteur de la colonne en
+## de jour, posée à son pied, « radius » = demi-largeur), « blend » (« add » par défaut, ou « mix »
+## pour un décor clair) ) et « height » (hauteur de la colonne en
 ## cases, dans ]0, [constant RADIUS_MAX]], obligatoire pour « column »). Racine : « types » et
 ## « _doc » (texte libre). Toute clé inconnue est une erreur ; un type invalide est écarté, l'erreur
 ## signalée ([method get_errors], push_error).
@@ -30,13 +31,22 @@ class GlowType:
 	var shape: StringName = &"radial"
 	## Hauteur d'une colonne, en cases (0 pour un halo radial).
 	var height: float = 0.0
+	## [constant BLEND_ADD] ou [constant BLEND_MIX].
+	var blend: StringName = &"add"
 
 
 const SHAPE_RADIAL: StringName = &"radial"
 const SHAPE_COLUMN: StringName = &"column"
+## Fusion avec le décor : additive (lumière, défaut) ou « mix » (teinte posée sur le décor,
+## pour un décor clair où l'additif se perd : lueur d'aide du jalon 14).
+const BLEND_ADD: StringName = &"add"
+const BLEND_MIX: StringName = &"mix"
 const DATA_PATH: String = "res://data/world/light_glows.json"
 ## Intensité maximale d'un halo (plan du J12 §2.4).
 const ALPHA_MAX: float = 0.35
+## Intensité maximale d'un halo « mix » : il teinte le décor sans jamais l'éclaircir, il ne peut
+## donc pas le « brûler » ; sur un décor clair, 0,35 reste imperceptible (jalon 14, lueur d'aide).
+const ALPHA_MAX_MIX: float = 0.7
 const RADIUS_MAX: float = 8.0
 const FLICKER_MAX: float = 0.5
 ## Budget de halos par carte (plan du J12 §2.4 : ≤ 16 par étage), vérifié par les tests des
@@ -44,7 +54,7 @@ const FLICKER_MAX: float = 0.5
 const MAX_PER_MAP: int = 16
 const _ROOT_KEYS: Array[String] = ["_doc", "types"]
 const _TYPE_KEYS: Array[String] = ["color", "radius", "alpha", "flicker"]
-const _OPTIONAL_KEYS: Array[String] = ["shape", "height"]
+const _OPTIONAL_KEYS: Array[String] = ["shape", "height", "blend"]
 
 var _types: Dictionary[StringName, GlowType] = {}
 var _errors: PackedStringArray = PackedStringArray()
@@ -133,7 +143,6 @@ func _parse_type(raw: Variant, where: String) -> GlowType:
 	if not color is String or not _is_hex_color(color):
 		valid = _fail("%s : « color » doit être « #rrggbb »" % where)
 	valid = _check_number(entry["radius"], 0.0, RADIUS_MAX, false, "radius", where) and valid
-	valid = _check_number(entry["alpha"], 0.0, ALPHA_MAX, false, "alpha", where) and valid
 	valid = _check_number(entry["flicker"], 0.0, FLICKER_MAX, true, "flicker", where) and valid
 	var shape := SHAPE_RADIAL
 	if entry.has("shape"):
@@ -142,6 +151,15 @@ func _parse_type(raw: Variant, where: String) -> GlowType:
 			shape = StringName(raw_shape)
 		else:
 			valid = _fail("%s : « shape » doit être « radial » ou « column »" % where)
+	var blend := BLEND_ADD
+	if entry.has("blend"):
+		var raw_blend: Variant = entry["blend"]
+		if raw_blend is String and StringName(raw_blend) in [BLEND_ADD, BLEND_MIX]:
+			blend = StringName(raw_blend)
+		else:
+			valid = _fail("%s : « blend » doit être « add » ou « mix »" % where)
+	var alpha_max := ALPHA_MAX_MIX if blend == BLEND_MIX else ALPHA_MAX
+	valid = _check_number(entry["alpha"], 0.0, alpha_max, false, "alpha", where) and valid
 	if shape == SHAPE_COLUMN and not entry.has("height"):
 		valid = _fail("%s : « height » manquant (colonne)" % where)
 	if entry.has("height"):
@@ -150,6 +168,7 @@ func _parse_type(raw: Variant, where: String) -> GlowType:
 		return null
 	var type := GlowType.new()
 	type.shape = shape
+	type.blend = blend
 	type.height = float(entry.get("height", 0.0))
 	type.color = Color.html(color)
 	type.radius = float(entry["radius"])

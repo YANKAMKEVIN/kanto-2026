@@ -23,6 +23,10 @@
 		"fossil": {
 			"title": "La Team Rocket repoussée",
 			"detail": "{fossil} obtenu."
+		},
+		"bill_restored": {
+			"title": "Léo a retrouvé forme humaine",
+			"detail": ""
 		}
 	},
 	"outcomes": {

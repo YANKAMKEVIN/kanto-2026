@@ -1371,6 +1371,15 @@
    "cases": 4,
    "ombre": false,
    "contact": null
+  },
+  {
+   "id": "bldg_maison_leo_01",
+   "source": "WORLD_BLDG_MAISON_LEO_01_NE_r1.png",
+   "sortie": "assets/world/buildings/bldg_maison_leo_01.png",
+   "axe": "w",
+   "cases": 8,
+   "ombre": true,
+   "contact": 0.12
   }
  ],
  "hautes_herbes": {
@@ -1493,6 +1502,15 @@
    "cases": [
     17,
     13
+   ]
+  },
+  {
+   "id": "int_maison_leo_coque",
+   "source": "INT_MAISON_LEO_COQUE_NE_r1.png",
+   "sortie": "assets/world/interiors/int_maison_leo_coque.png",
+   "cases": [
+    16,
+    11
    ]
   }
  ],
@@ -1917,6 +1935,12 @@
    "id": "nageuse",
    "source": "PNJ_NAGEUSE_NE_r1.png",
    "sortie": "assets/sprites/characters/painted/nageuse_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "leo_humain",
+   "source": "PNJ_LEO_HUMAIN_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/leo_humain_sheet.png",
    "hauteur": 128
   }
  ],
@@ -2344,6 +2368,12 @@
    "source": "NAGEUSE_ATTENTE_r1.png",
    "sortie": "assets/sprites/characters/painted/nageuse_idle_sheet.png",
    "marche": "nageuse"
+  },
+  {
+   "id": "leo_humain_idle",
+   "source": "LEO_HUMAIN_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/leo_humain_idle_sheet.png",
+   "marche": "leo_humain"
   }
  ],
  "images_objets": [
@@ -2752,6 +2782,56 @@
     2,
     2,
     4
+   ],
+   "contact": 0.2
+  },
+  {
+   "source": "WORLD_RELIEF_RIVAGE_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/relief/",
+   "colonnes": 4,
+   "lignes": 2,
+   "ids": [
+    "relief_rivage_01",
+    "relief_rivage_02",
+    "relief_rivage_03",
+    "relief_rivage_04",
+    "relief_rivage_05",
+    "relief_rivage_06",
+    "prop_indice_coquillage_01",
+    "prop_cloture_reparee_01"
+   ],
+   "cases": [
+    2,
+    2,
+    1,
+    1,
+    1,
+    1,
+    0.35,
+    1
+   ],
+   "contact": 0.0
+  },
+  {
+   "source": "INT_MAISON_LEO_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/interiors/",
+   "colonnes": 3,
+   "lignes": 2,
+   "ids": [
+    "int_cabine_teleport_01",
+    "int_console_leo_01",
+    "int_module_leo_01",
+    "int_ecran_diagnostic_01",
+    "int_bureau_leo_01",
+    "int_bibliotheque_cote_01"
+   ],
+   "cases": [
+    3,
+    2,
+    1,
+    1.3,
+    3,
+    1
    ],
    "contact": 0.2
   }

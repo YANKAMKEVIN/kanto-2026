@@ -48,9 +48,9 @@ const PLAN: Dictionary = {
 		&"aoki_pidgey_2": [Vector2i(28, 14), Vector2i.UP, &"pokemon/pidgey",
 			&"observe_aoki_pidgey",
 			OBSERVE, 0],
-		&"leo": [Vector2i(18, 9), Vector2i.LEFT, &"leo", &"leo", TALK, 0],
-		&"leo_rattata": [Vector2i(17, 9), Vector2i.RIGHT, &"pokemon/rattata",
-			&"observe_leo_rattata", OBSERVE, 0],
+		&"nils": [Vector2i(18, 9), Vector2i.LEFT, &"leo", &"nils", TALK, 0],
+		&"nils_rattata": [Vector2i(17, 9), Vector2i.RIGHT, &"pokemon/rattata",
+			&"observe_nils_rattata", OBSERVE, 0],
 		&"haru": [Vector2i(3, 29), Vector2i.LEFT, &"haru", &"haru", TALK, 0],
 		# Prairie du Nord (jalon 3B §3.1) : Pokémon d'ambiance, non interactifs.
 		&"prairie_pidgey": [Vector2i(20, 3), Vector2i.DOWN, &"pokemon/pidgey", &"", TALK, 0],
@@ -453,7 +453,7 @@ func test_pidgeys_and_rattata_block_and_are_observable_except_the_meadow_ones() 
 	# Jalon 6 §6.9 : les Pokémon de Mme Aoki et de Léo s'OBSERVENT (Pokédex, Q-7) ;
 	# ceux des prés restent du décor au 6C.
 	var observable: Dictionary[StringName, StringName] = {
-		&"aoki_pidgey_1": &"pidgey", &"aoki_pidgey_2": &"pidgey", &"leo_rattata": &"rattata"}
+		&"aoki_pidgey_1": &"pidgey", &"aoki_pidgey_2": &"pidgey", &"nils_rattata": &"rattata"}
 	for id: StringName in observable:
 		var observed := map.get_npc(id)
 		assert_not_null(observed.get_interaction(), "%s interactif" % id)

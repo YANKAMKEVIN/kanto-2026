@@ -49,7 +49,35 @@ func test_compatibilities_of_rouge_bleu() -> void:
 	for id: StringName in _data.get_species_ids():
 		if _data.can_learn_tm(id, 34):
 			count += 1
-	assert_eq(count, 55, "55 espèces sur 59 (dossier 14 §6.1 ; + 12 du jalon 12, + 9 du jalon 13)")
+	assert_eq(count, 58,
+		"58 espèces sur 62 (dossier 14 §6.1 ; + 12 du jalon 12, + 9 du jalon 13, + 3 du jalon 14)")
+
+
+## Jalon 14 (T5, jalon-14.md §2.4) : CT19 Frappe Atlas (Route 25) et CT28 Tunnel (Rocket).
+func test_j14_tms() -> void:
+	var rows := {
+		&"tm19": ["CT19 — Frappe Atlas", 19, &"seismic_toss", "Projette la cible au sol."],
+		&"tm28": ["CT28 — Tunnel", 28, &"dig", "Le Pokémon creuse au premier tour et frappe au"
+			+ " second. Sous terre, il évite les attaques."],
+	}
+	for id: StringName in rows:
+		var tm := _items.get_item(id)
+		assert_not_null(tm, String(id))
+		if tm == null:
+			continue
+		assert_eq([tm.name, tm.category, tm.tm_number, tm.teaches, tm.price, tm.description],
+			[rows[id][0], ItemData.Category.TM, rows[id][1], rows[id][2], 0, rows[id][3]])
+		assert_eq(_items.get_tm(rows[id][1]), id)
+		assert_eq(_data.tm_move(rows[id][1]), rows[id][2], "même capacité que Rouge/Bleu")
+	assert_true(_items.check_moves(_data))
+	assert_false(_data.can_learn_tm(&"abra", 28), "Abra : pas de CT28")
+	assert_true(_data.can_learn_tm(&"kadabra", 28))
+	assert_true(_data.can_learn_tm(&"machop", 28))
+	assert_true(_data.can_learn_tm(&"abra", 19))
+	assert_eq(TmTeach.check(_mon(&"machop", 15), _items.get_item(&"tm28"), _data),
+		TmTeach.Check.COMPATIBLE)
+	assert_eq(TmTeach.check(_mon(&"abra", 15), _items.get_item(&"tm28"), _data),
+		TmTeach.Check.INCOMPATIBLE)
 
 
 func test_check_and_teach() -> void:

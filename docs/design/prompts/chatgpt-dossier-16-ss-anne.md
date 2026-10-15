@@ -4,11 +4,11 @@
 > arbitrages G-1 à G-10 de `docs/design/passes/j16-v2-alignement.md`. Joindre la V2 de ChatGPT et la
 > passe d'alignement. Le texte entre les deux lignes est le prompt ; **remplacer le bloc
 > « Réponses de Kevin »** avant de l'envoyer. Numéro de dossier : le premier libre au moment du push
-> (passe, §2 n° 17) : 16 et 17 sont déjà pris par le J13 et le J14.
+> (passe, §2 n° 17) : 16 = J13, 17 = J14, 20 = J17, 22 = J19 → le J16 prend le **19** (à revérifier au push).
 
 ---
 
-Tu m'aides à **consolider le dossier du jalon 16** de *Kanto 2026* (S.S. Anne + Arène de Major Bob), à partir
+Tu m'aides à **consolider le dossier 19 (jalon 16)** de *Kanto 2026* (S.S. Anne + Arène de Major Bob), à partir
 de ta V2 et de la passe d'alignement de Claude, que je te joins. Claude implémente à partir de ton
 dossier : tout ce que tu ne tranches pas, il devra me le redemander. Ne rouvre **aucune** décision
 listée ci-dessous.
@@ -30,7 +30,8 @@ listée ci-dessous.
 - **Valeurs des capacités = valeurs actuelles** (convention du projet) : Coupe 50 / 95 % / 30 PP,
   Tonnerre 90 / 100 % / 15 PP / paralysie 10 %, Sonicboom 20 dégâts fixes / 90 % / 20 PP.
 - **Mécaniques absentes, à ne pas utiliser** : Destruction / Explosion, Entrave, Téléport en combat de
-  Dresseur, Mur Lumière, Protection, Reflet, changement de Pokémon par l'IA. Si une équipe en a
+  Dresseur (il ne sert qu'à fuir un sauvage), Mur Lumière, Protection (donnée présente, effet non joué),
+  Reflet, changement de Pokémon par l'IA. Si une équipe en a
   besoin, choisis d'autres capacités et dis-le.
 - **Défauts de Claude** : Grand moment du rival n° 4 à la victoire seulement ; arbuste sans Pokémon
   compatible = une réplique sans choix ; « Utiliser Coupe ? » → **COUPER** / **LAISSER** ; Passe Bateau
@@ -50,19 +51,19 @@ Tranchés le 2026-10-11 (détail : passe d'alignement, §8). À appliquer tels q
 - **G-4** : arbuste coupé **définitif**.
 - **G-5** : arbuste devant l'Arène de Carmin (posé au J15, coupé au J16).
 - **G-6** : au moins une espèce compatible Coupe capturable avant Carmin quel que soit le starter :
-  c'est déjà le cas (Dardargnan, Sabelette, Paras).
+  c'est déjà le cas (Dardargnan, Sabelette, Paras, Chétiflor, Mystherbe).
 - **G-7** : rival n° 4 = **Roucoups, Rattatac, Kadabra, starter évolué** (avantage de type), niveaux
-  de référence 19 / 16 / 18 / 20 ; Kadabra sans Entrave. **Pas d'Abra au rival n° 3** (décision D-6 du J13, 2026-10-13) : Kadabra arrive directement au n° 4.
+  de référence 19 / 16 / 18 / 20 ; Kadabra sans Entrave. **Rival n° 3 réel (J13, dans le jeu)** : Roucoups 16, Rattata 14, starter évolué 16, sans Abra ; Kadabra arrive directement au n° 4.
 - **G-8** : **puzzle Rouge/Bleu strict**. Premier interrupteur tiré au hasard, second voisin, toute
   erreur remet tout à zéro. Interrupteurs cachés dans des objets à fouiller bien lisibles, sans indice
   qui désigne le bon ; nouveau tirage à chaque entrée tant que ce n'est pas résolu ; résolu = ouvert
   pour toujours.
-- **G-9** : au plus **3 espèces nouvelles** (Kadabra, Abra s'il n'existe pas encore après le J14, + au plus une de marin) ; **10 Dresseurs**
+- **G-9** : au plus **3 espèces nouvelles**. Abra, Kadabra et Machoc **existent déjà** (J14), comme Voltorbe, Pikachu, Raichu, Roucoups et Rattatac : le rival et Major Bob n'en demandent aucune. Les nouvelles éventuelles servent aux Dresseurs du navire (Kokiyas, Stari, Poissirène, Hypotrempe et Machoc existent déjà ; Tentacool serait nouveau) ; liste-les ; **10 Dresseurs**
   sur le navire, au plus 2 inévitables hors rival.
 - **G-10** : confirmation à la passerelle après la CS01 : **PARTIR** / **PAS ENCORE** ; avant, sortie
   libre.
 
-## Ce que j'attends : le dossier du J16 complet
+## Ce que j'attends : le dossier 19 (J16) complet
 
 1. **Intention** en deux phrases.
 2. **Contrat d'entrée** (G-1) mot pour mot : ce que J13–J15 doivent livrer (drapeaux, objets,

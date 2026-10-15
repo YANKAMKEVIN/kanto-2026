@@ -39,6 +39,8 @@ const LOOK_EVERY_MIN: float = 0.5
 const LOOK_EVERY_MAX: float = 120.0
 ## Jalon 12 : nombre maximal d'étapes de marche du départ d'un Dresseur ([member leave_cells]).
 const LEAVE_STEPS_MAX: int = 4
+## Pas d'autre place ([member moved_cell], jalon 14).
+const NO_MOVED_CELL: Vector2i = Vector2i(-1, -1)
 
 ## Identifiant unique sur la carte (cible des indications « react » des dialogues).
 var id: StringName = &""
@@ -126,6 +128,14 @@ var leave_cells: Array[Vector2i] = []
 ## Vrai si le bloc « trainer » a une clé « leave » (même vide) : il quitte la carte après sa
 ## défaite et l'entrée porte « unless »: [beaten_<id>] (absent ensuite).
 var leaves: bool = false
+## Autre place (jalon 14, jalon-14.md §2.8 : le Rocket qui attend au fond de l'impasse) : si
+## tous les drapeaux de [member moved_if_flags] sont levés et aucun de
+## [member moved_unless_flags], le PNJ est créé sur [member moved_cell], tourné vers
+## [member moved_facing] ([method placed_for]). [constant NO_MOVED_CELL] = aucune autre place.
+var moved_cell: Vector2i = NO_MOVED_CELL
+var moved_facing: Vector2i = Vector2i.DOWN
+var moved_if_flags: Array[StringName] = []
+var moved_unless_flags: Array[StringName] = []
 
 
 ## Vrai si l'on peut interagir avec lui (un dialogue est renseigné).
@@ -199,3 +209,32 @@ func get_leave_path_cells() -> Array[Vector2i]:
 	for offset: Vector2i in leave_cells:
 		cells.append(cell + offset)
 	return cells
+
+
+## Vrai si le PNJ a une autre place selon les drapeaux (clé « moved », jalon 14).
+func has_moved_place() -> bool:
+	return moved_cell != NO_MOVED_CELL
+
+
+## Description à utiliser avec les drapeaux [param flags] (null = aucun drapeau) : une
+## **copie** placée sur [member moved_cell], tournée vers [member moved_facing], si les
+## conditions de « moved » sont remplies ; sinon cette description elle-même. La copie
+## partage les listes (description en lecture seule) et n'a plus d'autre place.
+func placed_for(flags: StoryFlags) -> NpcSpec:
+	if not has_moved_place() or not _moved_applies(flags):
+		return self
+	var copy := NpcSpec.new()
+	for property: Dictionary in get_property_list():
+		if property["usage"] & PROPERTY_USAGE_SCRIPT_VARIABLE:
+			var key: StringName = property["name"]
+			copy.set(key, get(key))
+	copy.cell = moved_cell
+	copy.facing = moved_facing
+	copy.moved_cell = NO_MOVED_CELL
+	return copy
+
+
+func _moved_applies(flags: StoryFlags) -> bool:
+	if flags == null:
+		return moved_if_flags.is_empty()
+	return flags.has_all(moved_if_flags) and flags.has_none(moved_unless_flags)

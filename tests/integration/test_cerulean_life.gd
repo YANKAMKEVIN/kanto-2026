@@ -240,7 +240,8 @@ func test_the_seven_residents_stand_on_their_planned_cells() -> void:
 		assert_not_null(npc, "%s posé" % npc_id)
 		if npc != null:
 			assert_eq(npc.get_cell(), plan.cell_of(expected[npc_id]), "%s à sa case" % npc_id)
-	assert_eq(map.get_npcs().size(), 7, "ni plus ni moins (Clara, rival, Ondine : ailleurs)")
+	# J14 : + le Rocket, le ruban, le policier et les deux barrières du sud (avant la victoire).
+	assert_eq(map.get_npcs().size(), 7 + 5, "ni plus ni moins (Clara, rival, Ondine : ailleurs)")
 
 
 func test_residents_say_the_validated_lines() -> void:
@@ -304,13 +305,17 @@ func test_the_burgled_house_gives_two_clues_and_nothing_else() -> void:
 	var fence: Array[String] = await _examine(CITY, &"from_route_4_c", Vector2i(5, 1),
 		Vector2i.RIGHT)
 	assert_eq(fence, ["La clôture a été arrachée."] as Array[String], "clôture (n° 13)")
-	# Planche, pot, trou : décor seul, aucun texte ; aucune porte (aucun warp) ; rien au tableau.
+	# Pot : décor seul, aucun texte. J14 : le trou se lit depuis (13, 3) (n° 29) ; la porte est un
+	# vrai passage, que le ruban (PNJ) occupe jusqu'à la victoire ; rien au tableau.
+	var hole: Array[String] = await _examine(CITY, &"from_route_4_c", Vector2i(13, 3),
+		Vector2i.RIGHT)
+	assert_eq(hole, ["Un trou dans le mur. Quelqu'un est passé par ici."] as Array[String],
+		"trou (n° 29)")
 	await _start(CITY, &"from_route_4_c", Vector2i(10, 10), Vector2i.UP, "cerulean_city")
 	var map := _boot.get_map()
-	for cell: Vector2i in [Vector2i(9, 2), Vector2i(14, 3)]:
-		assert_eq(map.get_interactions().get_at(cell).size(), 0, "%s : décor seul" % cell)
-	for warp: Warp in map.get_warps().get_all():
-		assert_ne(warp.cell, Vector2i(10, 9), "la porte de la maison cambriolée n'est pas un warp")
+	assert_eq(map.get_interactions().get_at(Vector2i(9, 2)).size(), 0, "pot : décor seul")
+	assert_not_null(map.get_warps().find_on_step(Vector2i(10, 9), Vector2i.UP), "porte = warp")
+	assert_not_null(map.get_npc(&"cerulean_police_tape"), "ruban sur la porte")
 	var objectives := ObjectiveLibrary.new()
 	assert_true(objectives.load_file())
 	for id: StringName in objectives.get_ids():

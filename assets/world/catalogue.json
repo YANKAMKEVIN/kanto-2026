@@ -4832,6 +4832,303 @@
      30
     ]
    }
+  },
+  "bldg_maison_leo_01": {
+   "fichier": "res://assets/world/buildings/bldg_maison_leo_01.png",
+   "taille": [
+    768,
+    569
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_maison_leo_01_shadow.png",
+    "decalage": [
+     -409,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     462,
+     57
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_maison_leo_01_contact.png",
+    "decalage": [
+     -392,
+     -50
+    ],
+    "echelle": 2,
+    "taille": [
+     392,
+     44
+    ]
+   }
+  },
+  "relief_rivage_01": {
+   "fichier": "res://assets/world/relief/relief_rivage_01.png",
+   "taille": [
+    192,
+    98
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_rivage_01_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "relief_rivage_02": {
+   "fichier": "res://assets/world/relief/relief_rivage_02.png",
+   "taille": [
+    192,
+    103
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_rivage_02_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "relief_rivage_03": {
+   "fichier": "res://assets/world/relief/relief_rivage_03.png",
+   "taille": [
+    96,
+    211
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_rivage_03_contact.png",
+    "decalage": [
+     -56,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     11
+    ]
+   }
+  },
+  "relief_rivage_04": {
+   "fichier": "res://assets/world/relief/relief_rivage_04.png",
+   "taille": [
+    96,
+    107
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_rivage_04_contact.png",
+    "decalage": [
+     -56,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     11
+    ]
+   }
+  },
+  "relief_rivage_05": {
+   "fichier": "res://assets/world/relief/relief_rivage_05.png",
+   "taille": [
+    96,
+    108
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_rivage_05_contact.png",
+    "decalage": [
+     -56,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     11
+    ]
+   }
+  },
+  "relief_rivage_06": {
+   "fichier": "res://assets/world/relief/relief_rivage_06.png",
+   "taille": [
+    96,
+    90
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_rivage_06_contact.png",
+    "decalage": [
+     -56,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     11
+    ]
+   }
+  },
+  "prop_indice_coquillage_01": {
+   "fichier": "res://assets/world/relief/prop_indice_coquillage_01.png",
+   "taille": [
+    34,
+    31
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/prop_indice_coquillage_01_contact.png",
+    "decalage": [
+     -25,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     25,
+     11
+    ]
+   }
+  },
+  "prop_cloture_reparee_01": {
+   "fichier": "res://assets/world/relief/prop_cloture_reparee_01.png",
+   "taille": [
+    96,
+    54
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/prop_cloture_reparee_01_contact.png",
+    "decalage": [
+     -56,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     11
+    ]
+   }
+  },
+  "int_cabine_teleport_01": {
+   "fichier": "res://assets/world/interiors/int_cabine_teleport_01.png",
+   "taille": [
+    288,
+    263
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_cabine_teleport_01_contact.png",
+    "decalage": [
+     -152,
+     -35
+    ],
+    "echelle": 2,
+    "taille": [
+     152,
+     37
+    ]
+   }
+  },
+  "int_console_leo_01": {
+   "fichier": "res://assets/world/interiors/int_console_leo_01.png",
+   "taille": [
+    192,
+    118
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_console_leo_01_contact.png",
+    "decalage": [
+     -104,
+     -6
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     22
+    ]
+   }
+  },
+  "int_module_leo_01": {
+   "fichier": "res://assets/world/interiors/int_module_leo_01.png",
+   "taille": [
+    96,
+    111
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_module_leo_01_contact.png",
+    "decalage": [
+     -56,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     21
+    ]
+   }
+  },
+  "int_ecran_diagnostic_01": {
+   "fichier": "res://assets/world/interiors/int_ecran_diagnostic_01.png",
+   "taille": [
+    125,
+    164
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_ecran_diagnostic_01_contact.png",
+    "decalage": [
+     -70,
+     -15
+    ],
+    "echelle": 2,
+    "taille": [
+     71,
+     27
+    ]
+   }
+  },
+  "int_bureau_leo_01": {
+   "fichier": "res://assets/world/interiors/int_bureau_leo_01.png",
+   "taille": [
+    288,
+    177
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_bureau_leo_01_contact.png",
+    "decalage": [
+     -152,
+     -17
+    ],
+    "echelle": 2,
+    "taille": [
+     152,
+     28
+    ]
+   }
+  },
+  "int_bibliotheque_cote_01": {
+   "fichier": "res://assets/world/interiors/int_bibliotheque_cote_01.png",
+   "taille": [
+    96,
+    356
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_bibliotheque_cote_01_contact.png",
+    "decalage": [
+     -56,
+     -53
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     46
+    ]
+   }
   }
  },
  "personnages": {
@@ -6490,6 +6787,38 @@
     "droite",
     "haut"
    ]
+  },
+  "leo_humain": {
+   "fichier": "res://assets/sprites/characters/painted/leo_humain_sheet.png",
+   "cellule": [
+    68,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "leo_humain_idle": {
+   "fichier": "res://assets/sprites/characters/painted/leo_humain_idle_sheet.png",
+   "cellule": [
+    68,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
   }
  },
  "images": {
@@ -6946,6 +7275,13 @@
    "taille": [
     384,
     384
+   ]
+  },
+  "int_maison_leo_coque": {
+   "fichier": "res://assets/world/interiors/int_maison_leo_coque.png",
+   "taille": [
+    1536,
+    1056
    ]
   }
  }

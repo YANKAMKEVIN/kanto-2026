@@ -5,7 +5,8 @@ extends CanvasLayer
 ## une capacité » existant ([MoveLearnPrompt.teach] : « {pokemon} apprend {move} ! », ou
 ## « veut apprendre… », le panneau d'oubli, GARDER / NE PAS APPRENDRE). Aucune règle ici : Boot
 ## l'ouvre, lance le déroulé, le referme. Placement repris de l'écran d'évolution (bandeau
-## centré en bas).
+## centré en bas). Jalon 14 (T18b) : sert aussi au Super Bonbon (« {pokemon} monte au niveau
+## {niveau} ! », puis les capacités du niveau).
 
 const BANNER_SCENE: PackedScene = preload("res://game/ui/battle/battle_message_banner.tscn")
 

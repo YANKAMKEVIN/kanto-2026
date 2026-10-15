@@ -58,10 +58,13 @@ const _EFFECT_KEYS: Dictionary[MoveEffect.Kind, Array] = {
 	MoveEffect.Kind.DISABLE: ["kind", "turns"],
 	MoveEffect.Kind.REST: ["kind"],
 	MoveEffect.Kind.SELF_KO: ["kind"],
+	MoveEffect.Kind.CHARGE: ["kind", "texts", "invulnerable"],
+	MoveEffect.Kind.TELEPORT: ["kind"],
 }
 ## Clés d'effet facultatives (toutes les autres de [constant _EFFECT_KEYS] sont obligatoires).
-## « amount » : obligatoire pour FIXED_DAMAGE « value » seulement ([method _parse_effect]).
-const _EFFECT_OPTIONAL: Array[String] = ["chance", "immune_types", "amount"]
+## « amount » : obligatoire pour FIXED_DAMAGE « value » seulement ([method _parse_effect]) ;
+## « invulnerable » : CHARGE seulement (jalon 14).
+const _EFFECT_OPTIONAL: Array[String] = ["chance", "immune_types", "amount", "invulnerable"]
 ## Bornes des nombres de tours de TRAP et DISABLE, et des dégâts de FIXED_DAMAGE « value ».
 const _EFFECT_MAX_TURNS: int = 8
 const _FIXED_VALUE_MAX: int = 999
@@ -489,6 +492,8 @@ func _parse_move(value: Variant, where: String) -> MoveData:
 		ok = _fail("%s : une capacité de statut n'a pas de « power »" % where)
 	if entry.has("effects"):
 		ok = _read_effects(entry["effects"], move.effects, where) and ok
+	if ok and move.charge_effect() != null and not move.is_damaging():
+		ok = _fail("%s : « charge » ne va qu'à une capacité offensive" % where)
 	if entry.has("pending_effects"):
 		var pending: Variant = entry["pending_effects"]
 		if not pending is Array:
@@ -573,6 +578,8 @@ func _parse_effect(value: Variant, where: String) -> MoveEffect:
 				", ".join(PackedStringArray(MoveEffect.FIXED_MODES))])
 		ok = _read_fixed_amount(entry, effect, where) and ok
 		return effect if ok else null
+	if effect.kind == MoveEffect.Kind.CHARGE:
+		return _parse_charge(entry, effect, where) if ok else null
 	if effect.kind == MoveEffect.Kind.STATUS:
 		if entry.has("status"):
 			if not entry["status"] is String \
@@ -611,6 +618,20 @@ func _parse_effect(value: Variant, where: String) -> MoveEffect:
 		else:
 			ok = false
 	return effect if ok else null
+
+
+## Effet « charge » (jalon 14) : « texts » identifiant en snake_case, « invulnerable » booléen.
+func _parse_charge(entry: Dictionary, effect: MoveEffect, where: String) -> MoveEffect:
+	var texts: Variant = entry.get("texts")
+	if not texts is String or not (texts as String).is_valid_ascii_identifier() \
+			or (texts as String) != (texts as String).to_lower():
+		return _null_fail("%s : « texts » doit être un identifiant en minuscules" % where)
+	effect.texts = StringName(texts)
+	if entry.has("invulnerable"):
+		if not entry["invulnerable"] is bool:
+			return _null_fail("%s : « invulnerable » vaut true ou false" % where)
+		effect.invulnerable = entry["invulnerable"]
+	return effect
 
 
 # --- Références croisées ---------------------------------------------------------------

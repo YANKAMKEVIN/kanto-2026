@@ -44,6 +44,8 @@ const MAPS: Array[StringName] = [
 	&"mt_moon_b2f",
 	# Jalon 12 (T28) : arrivée dans le sas de la Route 4.
 	&"route_4",
+	# Jalon 14 (T17) : l'entrée de la maison de Léo.
+	&"bill_house",
 ]
 ## Jalon 7 (T18) : partie qui revient au labo avec le colis (rival parti après le combat).
 const PARCEL_FLAGS: Array[StringName] = [
@@ -109,6 +111,9 @@ const VARIANT_FLAGS: Dictionary = {
 	&"viridian_forest_item_6": [ROUTE22_FLAGS],
 	# Jalon 10 (T8) : Route 2 nord et Argenta.
 	&"route_2_north_item_1": [PEWTER_FLAGS],
+	# Jalon 14 (T16) : les 3 objets visibles et l'objet caché de la Route 25.
+	&"route_25_item_1": [PEWTER_FLAGS], &"route_25_item_2": [PEWTER_FLAGS],
+	&"route_25_item_3": [PEWTER_FLAGS], &"route_25_hidden_1": [PEWTER_FLAGS],
 	&"pewter_arrival": [PEWTER_FLAGS],
 	# Jalon 13 (T17) : arrivée à Azuria, Poké Ball de la Route 4, Potion de la Route 24.
 	&"cerulean_arrival": [PEWTER_FLAGS],
@@ -149,6 +154,15 @@ const VARIANT_FLAGS: Dictionary = {
 	&"mt_moon_researcher": [R3_FLAGS],
 	&"mt_moon_fossil_dome": [R3_FLAGS + [&"beaten_mt_moon_researcher"]],
 	&"mt_moon_fossil_helix": [R3_FLAGS + [&"beaten_mt_moon_researcher"]],
+	# Jalon 14 (T17) : la maison de Léo (entrée : avant la rencontre, puis Léo dans la cabine).
+	&"bill_house_enter": [PEWTER_FLAGS, PEWTER_FLAGS + [&"bill_met", &"bill_in_cabin"]],
+	&"bill_screen": [PEWTER_FLAGS + [&"bill_met"]],
+	&"bill_module": [PEWTER_FLAGS + [&"bill_met", &"bill_screen_checked"]],
+	&"bill_machine": [PEWTER_FLAGS + [&"bill_met", &"bill_screen_checked", &"bill_in_cabin"]],
+	# Jalon 14 (T20b) : poursuite, combat du Rocket d'Azuria, barrage sud.
+	&"cerulean_rocket_chase": [PEWTER_FLAGS],
+	&"cerulean_rocket_fight": [PEWTER_FLAGS + [&"cerulean_rocket_spotted"]],
+	&"cerulean_south_guard": [PEWTER_FLAGS + [&"cerulean_rocket_beaten"]],
 }
 ## Scènes jouées par le code (pas de déclencheur) → carte où elles sont jouées.
 ## Jalon 7 (T18) : la scène du colis est lancée par la variante « cutscene » du dialogue de Chen.
@@ -161,6 +175,9 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"viridian_forest_item_5": &"viridian_forest",
 	# Jalon 10 (T8) : Potion de la Route 2 nord (PNJ « objet »), Pierre (son dialogue).
 	&"route_2_north_item_1": &"route_2_north", &"pewter_gym_brock": &"pewter_gym",
+	# Jalon 14 (T16) : objets de la Route 25 (PNJ « objet » et point d'examen du coquillage).
+	&"route_25_item_1": &"route_25", &"route_25_item_2": &"route_25",
+	&"route_25_item_3": &"route_25", &"route_25_hidden_1": &"route_25",
 	# Jalon 11 (T14) : remise tardive de la CT34 (dialogue de Pierre).
 	&"pewter_gym_brock_tm_late": &"pewter_gym",
 	# Jalon 13 (T17) : objets visibles des Routes 4 et 24 (PNJ « objet »).
@@ -181,6 +198,8 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"mt_moon_b1f_item_1": &"mt_moon_b1f", &"mt_moon_b2f_item_1": &"mt_moon_b2f",
 	&"mt_moon_b2f_hidden_1": &"mt_moon_b2f",
 	&"mt_moon_fossil_dome": &"mt_moon_b2f", &"mt_moon_fossil_helix": &"mt_moon_b2f",
+	# Jalon 14 (T17) : les trois objets de Léo (dialogue de l'écran, du module, de la console).
+	&"bill_screen": &"bill_house", &"bill_module": &"bill_house", &"bill_machine": &"bill_house",
 }
 ## Scènes à déclencheur dont la carte n'est pas encore construite → leur carte (simulées sur les
 ## PNJ de son fichier). Vidée au T19 du jalon 9 (la forêt existe), puis au T11 du jalon 10 (les
@@ -235,21 +254,31 @@ func test_library_loads_without_error() -> void:
 	var library := CutsceneLibrary.new()
 	assert_true(library.load_dir(), "data/cutscenes/ se charge")
 	assert_eq(library.get_errors().size(), 0, str(library.get_errors()))
-	assert_eq(library.get_ids(), [&"cerulean_arrival", &"cerulean_gym_misty",
+	assert_eq(library.get_ids(), _sorted([&"bill_house_enter", &"bill_machine", &"bill_module",
+		&"bill_screen", &"cerulean_arrival", &"cerulean_gym_misty",
+		&"cerulean_rocket_chase", &"cerulean_rocket_fight", &"cerulean_south_guard",
 		&"cerulean_gym_misty_tm_late", &"mart_parcel", &"mt_moon_1f_hidden_1", &"mt_moon_1f_item_1",
 		&"mt_moon_b1f_item_1", &"mt_moon_b1f_item_2", &"mt_moon_b2f_hidden_1",
 		&"mt_moon_b2f_item_1", &"mt_moon_fossil_dome", &"mt_moon_fossil_helix",
 		&"mt_moon_researcher", &"oak_lab_exit", &"oak_parcel", &"pewter_arrival",
 		&"pewter_gym_brock", &"pewter_gym_brock_tm_late", &"rival_route22", &"route1_grass",
 		&"route_1_potion", &"route_24_antidote", &"route_24_item_1", &"route_24_misty",
-		&"route_24_rival", &"route_24_rocket",
+		&"route_24_rival", &"route_24_rocket", &"route_25_hidden_1", &"route_25_item_1",
+		&"route_25_item_2", &"route_25_item_3",
 		&"route_2_item_1", &"route_2_item_2", &"route_2_item_3", &"route_2_item_4",
 		&"route_2_north_item_1", &"route_3_entered", &"route_3_guard", &"route_3_hidden_1",
 		&"route_3_item_1", &"route_3_item_2", &"route_3_item_3", &"route_4_item_1",
 		&"route_4_reached", &"starter_chosen",
 		&"viridian_arrival", &"viridian_forest_item_1", &"viridian_forest_item_2",
 		&"viridian_forest_item_3", &"viridian_forest_item_4", &"viridian_forest_item_5",
-		&"viridian_forest_item_6"] as Array[StringName])
+		&"viridian_forest_item_6"]))
+
+
+func _sorted(values: Array) -> Array[StringName]:
+	var result: Array[StringName] = []
+	result.assign(values)
+	result.sort_custom(func(a: StringName, b: StringName) -> bool: return String(a) < String(b))
+	return result
 
 
 func test_route1_grass_ends_with_the_starter_offer() -> void:
@@ -349,7 +378,9 @@ func test_only_world_items_are_found_items() -> void:
 	assert_eq(found, ["mt_moon_1f_hidden_1:awakening", "mt_moon_1f_item_1:escape_rope",
 		"mt_moon_b1f_item_1:moon_stone", "mt_moon_b1f_item_2:potion",
 		"mt_moon_b2f_hidden_1:moon_stone", "mt_moon_b2f_item_1:tm01", "route_1_potion:potion",
-		"route_24_antidote:antidote", "route_24_item_1:potion", "route_2_item_1:poke_ball", "route_2_item_2:potion",
+		"route_24_antidote:antidote", "route_24_item_1:potion", "route_25_hidden_1:potion",
+		"route_25_item_1:tm19", "route_25_item_2:potion", "route_25_item_3:poke_ball",
+		"route_2_item_1:poke_ball", "route_2_item_2:potion",
 		"route_2_item_3:poke_ball", "route_2_item_4:potion", "route_2_north_item_1:potion",
 		"route_3_hidden_1:awakening", "route_3_item_1:poke_ball", "route_3_item_2:potion",
 		"route_3_item_3:paralyze_heal", "route_4_item_1:poke_ball",
