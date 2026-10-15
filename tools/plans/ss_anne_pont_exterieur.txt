@@ -1,0 +1,39 @@
+# S.S. Anne — pont extérieur (ss_anne_outer_deck) — grille fonctionnelle.
+# Jalon 16, dossier 19 (S.S. Anne et Badge Foudre) ; préparée par Claude le 2026-10-15,
+# À VALIDER par Kevin (avec la vue générale peinte). Valeurs par défaut (règle 4) : tailles,
+# positions, mobilier. Vérifiée par tools/art/plan_check_ss_anne.py. La grille fait foi sur
+# les coordonnées du §3 du dossier (R-14).
+#
+# Le pont promenade : la mer au nord et au sud, rambardes, chaises longues, bouées. La seule
+# porte (ouest) ramène au pont principal. Respiration visuelle ; facultatif.
+#
+# Légende :
+#   K mur de la superstructure   . pont (praticable)   D porte (warp terminal)
+#   w mer (jamais praticable)   r rambarde   l chaise longue   u bouée (bloqués)
+#
+# Format : section GRILLE (« NN » + espace + 26 caractères par rangée), puis POSITIONS.
+
+PRATICABLES .D
+
+GRILLE 26 11
+00 wwwwwwwwwwwwwwwwwwwwwwwwww
+01 wwwwwwwwwwwwwwwwwwwwwwwwww
+02 rrrrrrrrrrrrrrrrrrrrrrrrrr
+03 K.............u..........r
+04 K....ll..................r
+05 K........................r
+06 D........................r
+07 K....ll..................r
+08 K.....................u..r
+09 rrrrrrrrrrrrrrrrrrrrrrrrrr
+10 wwwwwwwwwwwwwwwwwwwwwwwwww
+FIN
+
+POSITIONS
+porte               warp           0,6          libre   # → ss_anne_pont_principal (porte_exterieur)
+entree              spawn          1,6          libre   # tourné →
+yann                dresseur       10,3         bloque  role=T05 facing=down sight=3 trainer=ss_anne_sailor_yann
+remi                dresseur       19,7         bloque  role=T06 facing=left sight=4 trainer=ss_anne_sailor_remi
+anti_para           objet          23,5         bloque  item=paralyze_heal  # R-6 : remplace l'Huile
+passagere           pnj            16,4         bloque  facing=up  # regarde la mer
+FIN

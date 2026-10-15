@@ -1,0 +1,41 @@
+# S.S. Anne — restaurant (ss_anne_restaurant) — grille fonctionnelle.
+# Jalon 16, dossier 19 (S.S. Anne et Badge Foudre) ; préparée par Claude le 2026-10-15,
+# À VALIDER par Kevin (avec la vue générale peinte). Valeurs par défaut (règle 4) : tailles,
+# positions, mobilier. Vérifiée par tools/art/plan_check_ss_anne.py. La grille fait foi sur
+# les coordonnées du §3 du dossier (R-14).
+#
+# Salle à manger : quatre tables, le comptoir de la cuisine au nord (décor, cuisine non jouable),
+# un serveur, des passagers. Facultatif.
+#
+# Légende :
+#   K mur (bloqué)      . sol (praticable)
+#   X sortie (praticable, warp PUSH ↓)   D porte (praticable, warp terminal)   S escalier (warp terminal)
+#   t table (bloqué)   c comptoir de la cuisine (bloqué)
+#
+# Format : section GRILLE (« NN » + espace + 18 caractères par rangée), puis POSITIONS.
+
+PRATICABLES .D
+
+GRILLE 18 11
+00 KKKKKKKKKKKKKKKKKK
+01 KKKKKKKKKKKKKKKKKK
+02 K..........cccc..K
+03 K..tt...tt.......K
+04 K................K
+05 K................K
+06 K..tt...tt......DK
+07 K................K
+08 K................K
+09 KKKKKKKKKKKKKKKKKK
+10 KKKKKKKKKKKKKKKKKK
+FIN
+
+POSITIONS
+porte               warp           16,6         libre   # → ss_anne_pont_principal (porte_restaurant)
+entree              spawn          15,6         libre   # tourné ←
+emile               dresseur       6,5          bloque  role=T04 facing=right sight=3 trainer=ss_anne_gentleman_emile
+super_potion        objet          14,8         bloque  item=super_potion
+potion_cache        cache          11,2         bloque  item=potion  # EXAMINER le comptoir depuis (11, 3) ↑
+serveur             pnj            12,5         bloque  facing=left
+convive             pnj            4,4          bloque  facing=up  # assis à la table (3..4, 3)
+FIN

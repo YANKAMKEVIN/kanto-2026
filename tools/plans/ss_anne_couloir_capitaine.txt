@@ -1,0 +1,35 @@
+# S.S. Anne — couloir du capitaine (ss_anne_captain_corridor) — grille fonctionnelle.
+# Jalon 16, dossier 19 (S.S. Anne et Badge Foudre) ; préparée par Claude le 2026-10-15,
+# À VALIDER par Kevin (avec la vue générale peinte). Valeurs par défaut (règle 4) : tailles,
+# positions, mobilier. Vérifiée par tools/art/plan_check_ss_anne.py. La grille fait foi sur
+# les coordonnées du §3 du dossier (R-14).
+#
+# Couloir de 3 cases de large. Le rival l'occupe tant qu'il n'est pas battu : le déclencheur T
+# couvre toute la largeur (colonne 7), on ne peut pas le contourner. Après sa défaite, il part.
+#
+# Légende :
+#   K mur (bloqué)      . sol (praticable)
+#   X sortie (praticable, warp PUSH ↓)   D porte (praticable, warp terminal)   S escalier (warp terminal)
+#   T déclencheur du rival (praticable)
+#
+# Format : section GRILLE (« NN » + espace + 18 caractères par rangée), puis POSITIONS.
+
+PRATICABLES .XDT
+
+GRILLE 18 7
+00 KKKKKKKKKKKKKKKKKK
+01 KKKKKKKKKKKKKKKDKK
+02 K......T.........K
+03 K......T.........K
+04 K......T.........K
+05 KKXKKKKKKKKKKKKKKK
+06 KKKKKKKKKKKKKKKKKK
+FIN
+
+POSITIONS
+sortie              warp           2,5          libre   # PUSH ↓ → ss_anne_pont_principal (porte_capitaine)
+entree              spawn          2,4          libre   # tourné ↑
+porte_capitaine     warp           15,1         libre   # → ss_anne_cabine_capitaine
+rival               pnj            10,3         bloque  role=R facing=left unless=beaten_rival_ss_anne  # rival n° 4
+declencheur_rival   declencheur    7,2..4       libre   unless=beaten_rival_ss_anne  # scène ss_anne_rival
+FIN

@@ -1,0 +1,35 @@
+# S.S. Anne — ss_anne_cabine_c — grille fonctionnelle.
+# Jalon 16, dossier 19 (S.S. Anne et Badge Foudre) ; préparée par Claude le 2026-10-15,
+# À VALIDER par Kevin (avec la vue générale peinte). Valeurs par défaut (règle 4) : tailles,
+# positions, mobilier. Vérifiée par tools/art/plan_check_ss_anne.py. La grille fait foi sur
+# les coordonnées du §3 du dossier (R-14).
+#
+# Cabine de passagers : un Dresseur, un objet. Facultative : on l'évite en n'y entrant pas.
+#
+# Légende :
+#   K mur (bloqué)      . sol (praticable)
+#   X sortie (praticable, warp PUSH ↓)   D porte (praticable, warp terminal)   S escalier (warp terminal)
+#   L lit   n table sous le hublot   a armoire
+#
+# Format : section GRILLE (« NN » + espace + 12 caractères par rangée), puis POSITIONS.
+
+PRATICABLES .X
+
+GRILLE 12 9
+00 KKKKKKKKKKKK
+01 KKKKKKKKKKKK
+02 K.nn....LL.K
+03 K.......LL.K
+04 K..........K
+05 K..........K
+06 K.........aK
+07 KKKKKXXKKKKK
+08 KKKKKKKKKKKK
+FIN
+
+POSITIONS
+sortie              warp           5..6,7       libre   # PUSH ↓ → ss_anne_pont_principal (porte_cabine_c)
+entree              spawn          5,6          libre   # tourné ↑
+victor              dresseur       5,3          bloque  facing=down sight=2 trainer=ss_anne_gentleman_victor
+objet               objet          2,5          bloque  item=super_potion
+FIN

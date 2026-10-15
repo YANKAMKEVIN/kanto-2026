@@ -56,6 +56,28 @@
    trois noms changés (R-10).
 2. **Relire le §0** : toute correction contestée se tranche avant le 16.0.
 
+### 0.4 Grilles et vues générales (préparées le 2026-10-15, à valider)
+
+- **Grilles** (font foi sur le §3, R-14) : `tools/plans/ss_anne_pont_principal.txt` (26 × 13),
+  `ss_anne_couloir_capitaine.txt` (18 × 7), `ss_anne_cabine_capitaine.txt` (14 × 10),
+  `ss_anne_restaurant.txt` (18 × 11), `ss_anne_pont_inferieur.txt` (22 × 11),
+  `ss_anne_pont_exterieur.txt` (26 × 11), `ss_anne_cabine_a|b|c.txt` (12 × 9),
+  `carmin_arene.txt` (17 × 15). Le quai reste au J15.
+- **Contrôle** : `python3 tools/art/plan_check_ss_anne.py` — tout est vert : tout est atteignable ;
+  Armand et Paul évitables, **0 Dresseur inévitable** hors rival ; rival inévitable (déclencheur sur
+  les 3 cases de largeur du couloir) ; barrière fermée = Major Bob inaccessible, ouverte =
+  accessible ; 15 objets fouillables. Les 3 Dresseurs de l'Arène sont **évitables** (défaut ; Rouge/Bleu
+  en impose au moins un).
+- **Planche** : `docs/design/reference/ss-anne-plans-v1.png` (`python3 tools/art/plan_ss_anne.py`).
+- **Vues générales à générer sur le Mac** (Codex, `tools/art/generer.sh`) :
+  - `tools/art/generer.sh CONCEPT_SS_ANNE_PONT_PRINCIPAL_r1 tools/art/prompts/CONCEPT_SS_ANNE_PONT_PRINCIPAL_r1.txt docs/design/reference/labo-chen-v1.png`
+  - `tools/art/generer.sh CONCEPT_SS_ANNE_PONT_EXTERIEUR_r1 tools/art/prompts/CONCEPT_SS_ANNE_PONT_EXTERIEUR_r1.txt docs/design/reference/azuria-vue-generale-v1.png docs/design/reference/labo-chen-v1.png`
+  - `tools/art/generer.sh CONCEPT_ARENE_CARMIN_r1 tools/art/prompts/CONCEPT_ARENE_CARMIN_r1.txt docs/design/reference/labo-chen-v1.png`
+
+  Une fois validées par Kevin : `reference/ss-anne-pont-principal-v1.png`,
+  `ss-anne-pont-exterieur-v1.png`, `arene-carmin-v1.png` ; les autres salles du navire suivent le
+  rendu du pont principal.
+
 Aucune autre décision de game design n'est ouverte : Q-1 à Q-11 (§16) sont techniques et seront
 réglées au plan `docs/tech/jalon-16.md`.
 

@@ -1,0 +1,20 @@
+CONCEPT ART — S.S. ANNE, LE PONT PRINCIPAL (grand hall d'accueil) (Kanto 2026), image de référence de direction artistique (agencement et rendu cible des intérieurs du navire).
+
+Une image est jointe : le LABORATOIRE DU PROFESSEUR CHEN, un autre intérieur du même jeu. Respecte EXACTEMENT son style de rendu : même pinceau, même perspective, même épaisseur des murs, même lumière intérieure, même façon de peindre les meubles. Ne reprends PAS sa composition ni ses meubles.
+
+Format : PAYSAGE 1536 × 1024. Vue de dessus de trois quarts, projection oblique frontale, sans point de fuite, comme l'image jointe : on voit le mur du fond (nord) de face, le sol en entier, et l'ouverture de la passerelle au milieu du bas (sud). Une seule grande salle rectangulaire, environ 22 cases de large sur 9 de profondeur (une case ≈ la largeur d'un personnage).
+
+AGENCEMENT (à respecter à la lettre, gauche = ouest) :
+- Mur du fond : trois PORTES de cabine en bois verni avec plaque de laiton (à gauche, au centre gauche, à droite) ; entre elles, des HUBLOTS ronds cerclés de laiton, des appliques murales.
+- Mur ouest : une porte à double battant vitrée vers le restaurant. Mur est : une porte vers le pont extérieur (on devine la lumière du large).
+- En bas à droite : un ESCALIER qui descend vers le pont inférieur, avec rampe de laiton.
+- Au centre droit, près du bas : un COMPTOIR D'ACCUEIL en bois sombre, une sonnette, un registre.
+- Trois BANQUETTES capitonnées contre le mur du fond, deux PLANTES en pot dans des coins.
+- Le reste du sol est LIBRE et lisible : un grand tapis sobre, uni avec une simple bordure, au milieu d'un parquet de pont.
+- Au milieu du bord bas : l'ouverture de la passerelle d'embarquement.
+
+AMBIANCE — paquebot ancien, chaleureux, « fidèle à Pokémon » : boiseries chaleureuses, laiton, tapis sobres, grandes fenêtres et hublots, lumière naturelle du matin sur la mer. Élégant mais pas luxueux : jamais un paquebot de luxe contemporain, jamais de marbre ni de dorures excessives. Pas de personnage, pas de Pokémon : la salle est vide.
+
+INTERDITS : texte, lettres, chiffres, logo, signature, filigrane, cadre, interface ; personnages ; Pokémon ; néons ; style moderne ; tapis aux motifs complexes ; pixel art, 3D, photo.
+
+L'image doit raconter, sans texte : on vient de monter à bord d'un beau navire, et chaque porte promet une découverte.

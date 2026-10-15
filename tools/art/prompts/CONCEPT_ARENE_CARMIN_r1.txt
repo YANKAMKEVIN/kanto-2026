@@ -1,0 +1,16 @@
+CONCEPT ART — L'ARÈNE DE CARMIN-SUR-MER, salle de Major Bob (Kanto 2026), image de référence de direction artistique (agencement et rendu cible de cet intérieur).
+
+Une image est jointe : le LABORATOIRE DU PROFESSEUR CHEN, un autre intérieur du même jeu. Respecte EXACTEMENT son style de rendu : même pinceau, même perspective, même épaisseur des murs, même lumière. Ne reprends PAS sa composition ni ses meubles.
+
+Format : PAYSAGE 1536 × 1024. Vue de dessus de trois quarts, projection oblique frontale, sans point de fuite : mur du fond (nord) de face, sol en entier, entrée au milieu du bas (sud). Une salle d'environ 13 cases de large sur 11 de profondeur.
+
+AGENCEMENT (à respecter à la lettre) :
+- Au fond, au centre : l'estrade du Champion, sol métallique, un grand panneau électrique, des câbles épais.
+- Devant l'estrade, sur toute la largeur : une rangée de MACHINES électriques (transformateurs, armoires grises à voyants) interrompue au centre par une BARRIÈRE ÉLECTRIQUE de 3 cases (deux bornes et un rideau d'arcs bleus crépitants entre elles).
+- Dans la moitié sud : QUINZE objets à fouiller identiques, en grille régulière de 5 colonnes × 3 rangées, bien espacés (une case libre entre deux) : des poubelles métalliques à couvercle et des armoires électriques basses, toutes de même taille et lisibles. AUCUN ne doit se distinguer des autres.
+- Le sol entre eux est LIBRE : allées nettes, sol technique (dalles métalliques, bandes de signalisation jaunes et noires discrètes).
+- Au milieu du bord bas : l'entrée.
+
+AMBIANCE — tension et discipline : salle technique, militaire et électrique, éclairage froid de tubes, lueur bleue de la barrière, contraste avec l'Arène d'Ondine (eau, lumière douce). Lisible sur un écran de téléphone. Pas de personnage, pas de Pokémon.
+
+INTERDITS : texte, lettres, chiffres, logo, signature, filigrane, cadre, interface ; personnages ; Pokémon ; un objet à fouiller différent des autres ; étincelles ou flèches désignant un objet ; pixel art, 3D, photo.

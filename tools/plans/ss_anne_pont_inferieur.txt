@@ -1,0 +1,42 @@
+# S.S. Anne — pont inférieur (ss_anne_lower_deck) — grille fonctionnelle.
+# Jalon 16, dossier 19 (S.S. Anne et Badge Foudre) ; préparée par Claude le 2026-10-15,
+# À VALIDER par Kevin (avec la vue générale peinte). Valeurs par défaut (règle 4) : tailles,
+# positions, mobilier. Vérifiée par tools/art/plan_check_ss_anne.py. La grille fait foi sur
+# les coordonnées du §3 du dossier (R-14).
+#
+# Quartiers de l'équipage et réserves : caisses empilées, deux marins Dresseurs, la porte de la
+# cabine B au nord. Cul-de-sac facultatif : on y descend et on remonte par le même escalier.
+#
+# Légende :
+#   K mur (bloqué)      . sol (praticable)
+#   X sortie (praticable, warp PUSH ↓)   D porte (praticable, warp terminal)   S escalier (warp terminal)
+#   k caisses (bloqué)
+#
+# Format : section GRILLE (« NN » + espace + 22 caractères par rangée), puis POSITIONS.
+
+PRATICABLES .DS
+
+GRILLE 22 11
+00 KKKKKKKKKKKKKKKKKKKKKK
+01 KKKKKKKKKKDKKKKKKKKKKK
+02 K.SS...............kkK
+03 K.............kkk....K
+04 K.............kkk....K
+05 K....................K
+06 K....kk..............K
+07 K....kk..............K
+08 K....................K
+09 KKKKKKKKKKKKKKKKKKKKKK
+10 KKKKKKKKKKKKKKKKKKKKKK
+FIN
+
+POSITIONS
+escalier_haut       warp           2..3,2       libre   # → ss_anne_pont_principal (escalier_bas)
+entree              spawn          2,3          libre   # spawn « from_main_deck », tourné ↓
+porte_cabine_b      warp           10,1         libre   # → ss_anne_cabine_b
+erwan               dresseur       12,7         bloque  role=T02 facing=up sight=3 trainer=ss_anne_sailor_erwan
+loic                dresseur       18,5         bloque  role=T03 facing=left sight=3 trainer=ss_anne_sailor_loic
+super_potion        objet          19,8         bloque  item=super_potion
+antidote_cache      cache          5,6          bloque  item=antidote  # EXAMINER la caisse depuis (5, 5) ↓
+matelot             pnj            8,3          bloque  facing=right
+FIN
