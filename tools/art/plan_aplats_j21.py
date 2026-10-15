@@ -167,8 +167,6 @@ def dessiner_route_16(sortie: Path) -> Path:
 			x0, y0 = coin(x, y)
 			if car in "=D":
 				fond = TERRE
-			elif car == "Y":
-				fond = HAUTES
 			elif car == "P":
 				fond = POSTE_MUR
 			elif car == "R":
@@ -184,14 +182,10 @@ def dessiner_route_16(sortie: Path) -> Path:
 			dedans = 0 <= x < plan.width and 0 <= y < plan.height
 			car = bord(x, y) if dedans else ("=" if x >= plan.width and y in (21, 22, 23) else "T")
 			cx, cy = centre(x, y)
-			if car in "TW":
+			if car in "TWY":
 				for _ in range(2):
 					pa._disque(d, cx + alea.uniform(-6, 6), cy + alea.uniform(-6, 6),
 						case * alea.uniform(0.45, 0.62), FORET, FORET_BORD)
-			elif car == "Y":
-				for _ in range(3):
-					pa._disque(d, cx + alea.uniform(-9, 9), cy + alea.uniform(-9, 9),
-						alea.uniform(3, 6), HAUTES_FIN)
 			elif car == "R":
 				for _ in range(2):
 					pa._disque(d, cx + alea.uniform(-8, 8), cy + alea.uniform(-8, 8),
@@ -209,6 +203,11 @@ def dessiner_route_16(sortie: Path) -> Path:
 		cx0, cy0 = coin(min(xs), min(ys))
 		cx1, cy1 = coin(max(xs) + 1, max(ys) + 1)
 		pa._disque(d, (cx0 + cx1) / 2, (cy0 + cy1) / 2, (cx1 - cx0) * 0.58, FORET, FORET_BORD)
+	# Ronflex endormi 2 × 2 en (24..25, 22..23) : masse bleu-vert sombre, ventre crème.
+	rx0, ry0 = coin(24, 22)
+	d.ellipse([rx0 + 2, ry0 + 2, rx0 + 2 * case - 3, ry0 + 2 * case - 3], fill=(40, 70, 90),
+		outline=(20, 40, 55), width=2)
+	d.ellipse([rx0 + case * 0.45, ry0 + case * 0.8, rx0 + case * 1.55, ry0 + case * 1.8], fill=(235, 220, 180))
 	# 3. Poste : toit sur les 3/5 hauts de l'emprise, façade dessous, porte.
 	poste = plan.cells_of("P")
 	xs = [x for x, _ in poste]
