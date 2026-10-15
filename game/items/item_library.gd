@@ -28,17 +28,25 @@ extends RefCounted
 ## (« evolution_stone », T23).
 ## Jalon 12 (T23) : « obtained » facultatif (booléen) : toast « obtenu » d'une CT
 ## ([member ItemData.obtained], les fossiles).
+## Jalon 16 : une CS est une CT (« tm ») qui porte « hm » (numéro de 1 à 5, unique) **au lieu**
+## de « tm » ([member ItemData.hm_number]) ; « hm » est refusée hors de la catégorie CT.
 
 const DATA_DIR: String = "res://data/items/"
 
 const _KEYS: Array[String] = [
 	"name", "plural", "feminine", "category", "catch_bonus", "heal_amount", "cures",
 	"description", "draft", "price", "tm", "teaches", "field_use", "obtained",
+	"hm",
 ]
 ## Numéros des CT de Rouge/Bleu (dossier 14 §6.1).
 const TM_MIN: int = 1
 const TM_MAX: int = 50
+## Numéros des CS de Rouge/Bleu (jalon 16).
+const HM_MIN: int = 1
+const HM_MAX: int = 5
 const _REQUIRED: Array[String] = ["name", "plural", "feminine", "category", "description"]
+## Jalon 17 : « teachable » (booléen, CT et CS seulement ; [member ItemData.teachable]).
+const _KEYS_J17: Array[String] = ["teachable"]
 
 var _items: Dictionary[StringName, ItemData] = {}
 var _errors: PackedStringArray = PackedStringArray()
@@ -137,7 +145,7 @@ func _parse_item(value: Variant, where: String) -> ItemData:
 	var entry: Dictionary = value
 	var ok := true
 	for key: Variant in entry:
-		if not _KEYS.has(str(key)):
+		if not _KEYS.has(str(key)) and not _KEYS_J17.has(str(key)):
 			ok = _fail("%s : clé inconnue « %s »" % [where, key])
 	for key: String in _REQUIRED:
 		if not entry.has(key):
@@ -186,7 +194,23 @@ func _parse_item(value: Variant, where: String) -> ItemData:
 		for key: String in ["heal_amount", "cures"]:
 			if entry.has(key):
 				ok = _fail("%s : « %s » est réservé aux soins" % [where, key])
-	if item.category == ItemData.Category.TM:
+	if item.category == ItemData.Category.TM and entry.has("hm"):
+		var hm: Variant = entry["hm"]
+		var teaches_hm: Variant = entry.get("teaches")
+		if entry.has("tm"):
+			ok = _fail("%s : une CS a « hm », jamais « tm »" % where)
+		elif not JsonFields.is_int(hm) or int(hm) < HM_MIN or int(hm) > HM_MAX:
+			ok = _fail("%s : « hm » doit être un numéro de %d à %d pour une CS" % [where, HM_MIN,
+				HM_MAX])
+		elif _hm_taken(int(hm)) != &"":
+			ok = _fail("%s : CS%02d déjà définie par « %s »" % [where, int(hm), _hm_taken(int(hm))])
+		else:
+			item.hm_number = int(hm)
+		if not teaches_hm is String or (teaches_hm as String).is_empty():
+			ok = _fail("%s : « teaches » doit être un identifiant de capacité pour une CS" % where)
+		else:
+			item.teaches = StringName(teaches_hm)
+	elif item.category == ItemData.Category.TM:
 		var number: Variant = entry.get("tm")
 		var teaches: Variant = entry.get("teaches")
 		if not JsonFields.is_int(number) or int(number) < TM_MIN or int(number) > TM_MAX:
@@ -202,7 +226,7 @@ func _parse_item(value: Variant, where: String) -> ItemData:
 		else:
 			item.teaches = StringName(teaches)
 	else:
-		for key: String in ["tm", "teaches"]:
+		for key: String in ["tm", "teaches", "hm"]:
 			if entry.has(key):
 				ok = _fail("%s : « %s » est réservé aux CT" % [where, key])
 	if entry.has("field_use"):
@@ -212,6 +236,13 @@ func _parse_item(value: Variant, where: String) -> ItemData:
 			item.obtained = entry["obtained"]
 		else:
 			ok = _fail("%s : « obtained » vaut true ou false" % where)
+	if entry.has("teachable"):
+		if not entry["teachable"] is bool:
+			ok = _fail("%s : « teachable » vaut true ou false" % where)
+		elif not item.is_tm():
+			ok = _fail("%s : « teachable » est réservé aux CT et aux CS" % where)
+		else:
+			item.teachable = entry["teachable"]
 	if entry.has("price"):
 		var price: Variant = entry["price"]
 		if not JsonFields.is_int(price) or int(price) < 0:
@@ -240,7 +271,19 @@ func get_tm(number: int) -> StringName:
 
 func _tm_taken(number: int) -> StringName:
 	for item: ItemData in _items.values():
-		if item.is_tm() and item.tm_number == number:
+		if item.is_tm() and not item.is_hm() and item.tm_number == number:
+			return item.id
+	return &""
+
+
+## CS de numéro [param number] déjà chargée (son identifiant), ou &"" (jalon 16).
+func get_hm(number: int) -> StringName:
+	return _hm_taken(number)
+
+
+func _hm_taken(number: int) -> StringName:
+	for item: ItemData in _items.values():
+		if item.is_hm() and item.hm_number == number:
 			return item.id
 	return &""
 

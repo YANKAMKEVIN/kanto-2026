@@ -70,6 +70,10 @@ var price: int = 0
 ## CT (catégorie TM) : numéro (1 à 50, « CT34 ») et capacité enseignée ; 0 et &"" ailleurs.
 var tm_number: int = 0
 var teaches: StringName = &""
+## CS (jalon 16, dossier 19 §0 R-17) : une CS est rangée dans la catégorie TM, avec un numéro de
+## CS (1 à 5, « CS01 ») **à la place** du numéro de CT ; elle s'apprend comme une CT réutilisable
+## ([TmTeach]) et débloque sa capacité de terrain ([FieldMoves]). 0 pour une CT ou tout autre objet.
+var hm_number: int = 0
 ## Rang dans les données (0, 1, 2… dans l'ordre de lecture des fichiers) : ordre « pertinence »
 ## du Sac hors combat. Posé par [ItemLibrary].
 var order: int = 0
@@ -83,6 +87,11 @@ var field_use: StringName = &""
 ## « Fossile Dôme » / « obtenu ») au lieu de « ajouté aux objets clés ». Clé « obtained » des
 ## données, facultative (faux par défaut).
 var obtained: bool = false
+## Jalon 17 (TODO(Q-1), `jalon-17.md` §0.4) : une CT ou une CS qui ne s'apprend pas encore
+## (la CS05, tant que Kevin n'a pas tranché « Flash en combat ») : aucun usage, donc pas de
+## bouton APPRENDRE ([method contexts] vide), et [TmTeach] la refuse. Clé « teachable » des
+## données, facultative (vrai par défaut), réservée aux CT et CS.
+var teachable: bool = true
 
 
 ## Identifiant de la catégorie dans les fichiers (&"ball", &"heal"…) : onglet du Sac.
@@ -105,6 +114,8 @@ func contexts() -> Array[StringName]:
 				return []
 			return [CONTEXT_FIELD]
 		Category.TM:
+			if not teachable:
+				return []
 			return [CONTEXT_FIELD]
 	return []
 
@@ -129,6 +140,11 @@ func cures_status(status: StringName) -> bool:
 ## CT (jalon 11) : enseigne une capacité ([member teaches]).
 func is_tm() -> bool:
 	return category == Category.TM
+
+
+## CS (jalon 16) : une CT de numéro de CS ([member hm_number]).
+func is_hm() -> bool:
+	return is_tm() and hm_number > 0
 
 
 ## Objet permanent (les CT) : jamais consommé par un usage, une seule fois dans le Sac.

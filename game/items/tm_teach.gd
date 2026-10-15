@@ -1,6 +1,8 @@
 class_name TmTeach
 extends RefCounted
-## Apprendre une CT (jalon 11, dossier 14 §6.1) : classe statique et pure.
+## Apprendre une CT (jalon 11, dossier 14 §6.1) : classe statique et pure. Jalon 16 : une CS
+## ([method ItemData.is_hm]) s'apprend de la même façon, compatibilité lue par
+## [method PokemonData.can_learn_hm].
 ##
 ## Une CT ([method ItemData.is_tm]) enseigne sa capacité ([member ItemData.teaches]) à un Pokémon
 ## dont l'espèce est compatible ([method PokemonData.can_learn_tm]), hors combat seulement. Elle
@@ -26,9 +28,14 @@ const IN_BATTLE_TEXT: String = "Les CT s'utilisent hors combat."
 static func check(pokemon: Pokemon, item: ItemData, data: PokemonData) -> Check:
 	if pokemon == null or item == null or not item.is_tm() or not data.has_move(item.teaches):
 		return Check.INCOMPATIBLE
+	# Jalon 17, TODO(Q-1) : une CS qui ne s'apprend pas encore ([member ItemData.teachable]).
+	if not item.teachable:
+		return Check.INCOMPATIBLE
 	if pokemon.knows_move(item.teaches):
 		return Check.KNOWN
-	if not data.can_learn_tm(pokemon.species_id, item.tm_number):
+	var compatible := data.can_learn_hm(pokemon.species_id, item.hm_number) if item.is_hm() \
+		else data.can_learn_tm(pokemon.species_id, item.tm_number)
+	if not compatible:
 		return Check.INCOMPATIBLE
 	return Check.COMPATIBLE
 
