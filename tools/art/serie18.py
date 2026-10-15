@@ -419,7 +419,7 @@ PLANCHES = [
 		"Fond avec une vraie transparence (canal alpha), aucun sol, aucune ombre portée.",
 		[MACHINES, ARENE_CARMIN], LUMIERE_NE, 1),
 	("WORLD_RELIEF_PONT_EXTERIEUR_PLANCHE", ["REF_PE_BASTINGAGE_N", "REF_PE_BASTINGAGE_S",
-			"REF_PE_ANGLE_EST", "REF_PE_CHAISES", "REF_PE_BOUEE"],
+			"REF_PE_CHAISES", "REF_PE_BOUEE"],
 		"PLANCHE de 8 ÉLÉMENTS du PONT PROMENADE du S.S. Anne (pont extérieur, la mer de chaque côté) "
 		"dans une image 1536 × 1024 : grille invisible de 4 colonnes × 2 lignes (cellules de 384 × 512), "
 		"un élément par cellule, centré, à une échelle COMMUNE de 1 case = 180 px, tous vus de dessus en "
@@ -440,7 +440,7 @@ PLANCHES = [
 		"accrochée à un petit support de bois ; 1 case (≈ 180 px).\n"
 		"Fond avec une vraie transparence (canal alpha), AUCUNE mer, aucune écume, aucun plancher (le jeu "
 		"les ajoute), aucune ombre portée, aucune mouette.",
-		[NAVIRE, QUAI, CAISSES], LUMIERE_NE, 1),
+		[NAVIRE], LUMIERE_NE, 1),
 	("FX_COUPE_PLANCHE", [],
 		"PLANCHE de 4 IMAGES d'un EFFET DE COUPE générique (le trait de lame d'un Pokémon qui tranche un "
 		"arbuste), dans une image 1536 × 1024 : une seule LIGNE de 4 cellules de 384 × 512 dans la moitié "
@@ -454,7 +454,7 @@ PLANCHES = [
 		"Rendu peint de la série (contour fin coloré, aucun trait noir), formes nettes et lisibles, AUCUN "
 		"flou, AUCUN halo diffus, aucune étincelle électrique, aucun Pokémon, aucun arbuste, aucun "
 		"personnage. Fond avec une vraie transparence (canal alpha).",
-		[], LUMIERE_NE, 1),
+		["WORLD_TREE_A_01_NE_r1.png"], LUMIERE_NE, 1),
 ]
 
 ## Décors isolés : (identifiant, référence, largeur en cases, hauteur visée, description, ancres,
@@ -668,8 +668,24 @@ DECORS = [
 ]
 
 ## Corrections (T2) : (identifiant sans _NE_rN, révision) → texte qui remplace la description
-## d'origine. Vide au T1.
-CORRECTIONS: dict[tuple[str, int], str] = {}
+## d'origine. T2 : la description d'origine suivie d'une phrase qui corrige l'essai précédent (joint).
+def _corriger(ident: str, phrase: str) -> str:
+	return next(t[4] for t in COQUES if t[0] == ident) + " " + phrase
+
+
+CORRECTIONS: dict[tuple[str, int], str] = {
+	("INT_SS_ANNE_PONT_PRINCIPAL_COQUE", 2): _corriger("INT_SS_ANNE_PONT_PRINCIPAL_COQUE",
+		"CORRECTION de l'essai précédent (joint en premier) : sa porte du MILIEU était décalée d'une case et "
+		"demie vers la droite. Les trois portes du mur du fond sont CENTRÉES sur x = 325, x = 680 et "
+		"x = 1212 (de gauche à droite), chacune large d'une case (≈ 59 px) ; la porte du milieu est donc "
+		"nettement plus à GAUCHE que le milieu de l'image (x = 768). Le reste de l'essai précédent est bon : "
+		"le conserver à l'identique."),
+	("INT_SS_ANNE_RESTAURANT_COQUE", 2): _corriger("INT_SS_ANNE_RESTAURANT_COQUE",
+		"CORRECTION de l'essai précédent (joint en premier) : sa porte du mur de DROITE était trop haute. "
+		"Elle doit se trouver dans l'épaisseur du mur de droite, centrée sur y = 605 (de y = 559 à y = 652), "
+		"dans la moitié BASSE de la pièce, bien visible, et non au milieu de la hauteur. Le reste de l'essai "
+		"précédent est bon : le conserver à l'identique."),
+}
 
 # --- Prompts ----------------------------------------------------------------------------
 
@@ -857,6 +873,7 @@ def _images() -> list[dict]:
 		coque = next((t for t in COQUES if t[0] == ident), None)
 		if coque is not None:
 			_, grille, cadre, ancres_, _, particulier, _ = coque
+			ancres_ = ancres_[:4]  # Codex : 5 images jointes au plus
 			ajouter(nom, PROMPTS / f"{nom}.txt", _prompt_coque(ident, grille, cadre, [precedent] + ancres_,
 				description, particulier), [precedent] + ancres_, 3, True, groupe=groupe)
 	return images
@@ -962,6 +979,8 @@ def commandes() -> str:
 def _generer(image: dict) -> str:
 	texte = image["fichier"].read_text()
 	jointes = [RACINE / j if "/" in j else ART / j for j in image["jointes"]]
+	if len(jointes) > 5:  # Codex refuse plus de 5 images jointes
+		return f"{image['nom']} : ÉCHEC, {len(jointes)} images jointes (5 au plus)"
 	return _lancer(image["nom"], texte, jointes)
 
 
