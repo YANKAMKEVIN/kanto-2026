@@ -228,6 +228,23 @@ une scène. La barrière `B` est praticable et **bloquée par 3 PNJ objets** tan
   - décors de combat (CB.3) : intérieur du navire, pont extérieur, Arène électrique.
 - **D — abandonnés** : cuisine jouable, oiseaux marins (souhaitable seulement, dossier §12).
 
+**Mise à jour du T1 (2026-10-16) : série 18** (numéro provisoire, revérifié au push ; 17 = J15,
+19 = J17, 20 = J19). Fiche `docs/design/fiches-assets/serie-18-ss-anne.md`, outil
+`tools/art/serie18.py`, prompts `tools/art/prompts/serie18/`, planche `build/art/J16_KIT_v1.png`.
+**30 images nouvelles** (17 en vague 1, 13 en vague 2) + 3 conditionnelles :
+
+| Famille | Retenu au T1 | Écart au plan ci-dessus |
+|---|---|---|
+| A réutilisés | navire amarré (3 tranches), passerelle, jeune arbre, caisses du port (série 17) ; `int_plante` ; `rival`, `lass` (Léna), `scout` (Basile), `traveler` (passager_1), `clerk` (**serveur**), `gym_guide`, **`sailor`** (marin, matelot, 6 Marins) | `swimmer`, `naturalist` non utilisés ; `clerk` = serveur, pas l'hôtesse |
+| B variations | pont de teck = planches du quai éclaircies ; mer = `ground_eau_01` assombrie ; cabines A/B/C = une coque ; couchette = lit de cabine | marin : `sailor` livré par le J15 (plus de `swimmer` habillé) ; serveur sans veste neuve |
+| C personnages | capitaine (+ attente + **poses malade**), Major Bob, gentleman, rockeur, **hôtesse**, **passagère** | hôtesse et passagère **nouvelles** (à valider) ; cuisinier en **conditionnel** (aucune case dans la grille) |
+| C coques | pont principal et Arène (vague 1, recalées sur les vues), couloir (bande), cabine du capitaine, restaurant (passe-plat), pont inférieur (escalier), cabine A/B/C (vague 2) | escaliers peints dans les coques |
+| C pont extérieur | planche des bastingages (N ×2, S + flanc, E, angles, chaises longues, bouée), superstructure ouest | — |
+| C objets | planche A (banquette, comptoir d'accueil, table, comptoir de cuisine, lit, armoire), planche B (table sous hublot, bureau, lavabo 1 case, table à cartes, caisses 2 × 2 et 3 × 2), planche de l'Arène (**poubelle unique ×15**, armoires A/B, barrière active / coupée) | barrière « absente » = sans image ; navire « parti » = sans image (nœud caché) |
+| C effet, Sac | Coupe : 4 images ; icônes Anti-Para et Réveil | icônes ajoutées (objets trouvés à bord) |
+| C combat (CB.3) | `ss_anne_salon` (tout l'intérieur), `ss_anne_pont`, `vermilion_gym_salle` | — |
+| conditionnels | `WORLD_GROUND_PONT_TECK_01`, `PNJ_CUISINIER` | — |
+
 ---
 
 ## 2. Conception technique
@@ -493,6 +510,10 @@ le J15. Chaque tâche : `tools/test.sh` vert, import propre, capture relue si vi
 Fiche `docs/design/fiches-assets/serie-<n>-ss-anne.md` (emprises d'après les grilles, ancrages,
 jointes), `tools/art/serie<n>.py` (`--prompts`, `--refs`, `--commandes`, `--planche`, `--manifeste`),
 prompts versionnés. Personnages du §1.4 C, coques, objets, effet, décors de combat.
+
+**Fait le 2026-10-16** (branche `j16-t1-kit`) : série **18** (§1.4, « Mise à jour du T1 »), 33
+prompts, planche de contrôle relue. Au T10 : `serie18.py --manifeste`, et la découpe `boite` du
+couloir dans `preparer.pieces` (deux lignes).
 
 #### T2 — constructeur-monde (Mac, Codex) : génération → planche de contact — après T1
 
