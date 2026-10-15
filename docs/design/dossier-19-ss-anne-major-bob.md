@@ -1,7 +1,8 @@
 # Dossier 19 — S.S. Anne et Badge Foudre (jalon 16)
 
-> **Statut : consolidé, en attente de Kevin pour les textes** (§15 et répliques du §4) et la
-> relecture du §0. Base : la V3 de ChatGPT du 2026-10-15 (copie intacte :
+> **Statut : VERROUILLÉ le 2026-10-15** : textes validés par Kevin (lot du §0.5, qui remplace le
+> §15 et complète le §4), grilles validées (§0.4), plan `docs/tech/jalon-16.md` validé sur le
+> principe. Reste : les trois vues générales (Mac). Base : la V3 de ChatGPT du 2026-10-15 (copie intacte :
 > `passes/j16-v3-chatgpt.md`), relue par Claude le même jour contre `main` (J14 fusionné).
 > Historique : V2 de Kevin → passe `passes/j16-v2-alignement.md` (G-1 à G-10, corrections des
 > 13 et 14 octobre) → prompt `prompts/chatgpt-dossier-16-ss-anne.md` → V3.
@@ -55,6 +56,79 @@
 1. **Valider les textes** : TXT-01 à TXT-33 (§15) et les 39 répliques des 13 Dresseurs (§4), avec les
    trois noms changés (R-10).
 2. **Relire le §0** : toute correction contestée se tranche avant le 16.0.
+
+### 0.5 Lot de textes VALIDÉ par Kevin le 2026-10-15 (remplace le §15)
+
+Recommandations de Claude du 2026-10-15, retenues en entier. `{rival}` = prénom du rival,
+`{pokemon}` = nom du Pokémon qui coupe. Les 39 répliques des Dresseurs du §4 sont validées telles
+quelles, avec les noms de R-10 (Scout Basile, Marin Erwan, Marin Loïc).
+
+**Navire et passerelle**
+1. Titre de zone : « S.S. ANNE » / « Le grand paquebot de Kanto »
+2. TXT-01, marin, Passe Bateau : « Ton Passe Bateau, s'il te plaît. » / « Parfait, bienvenue à bord ! »
+3. TXT-02, sans Passe Bateau : « Il te faut un Passe Bateau » / « pour monter sur ce navire. »
+4. TXT-03, sortie avant la CS01 (une fois) : « Tu redescends à terre ? Le navire reste à quai pour l'instant. »
+5. TXT-04, DEP-01 : « Si tu pars, le navire appareille. » / « Tu ne pourras plus remonter. »
+6. TXT-05 : cartes **PARTIR** / **PAS ENCORE**
+7. Marin, après PAS ENCORE : « Prends ton temps. On ne part pas sans toi. »
+8. TXT-06, DEP-02 (légende) : « Le S.S. Anne quitte Carmin. »
+9. TXT-07, DEP-03 (quai, ensuite) : « Le S.S. Anne a pris le large. »
+
+**PNJ d'ambiance**
+10. Hôtesse : « Bienvenue à bord du S.S. Anne ! Les cabines sont au nord. »
+11. Passager : « Le capitaine ? On ne l'a pas vu depuis le départ… »
+12. Matelot : « Le pont inférieur, c'est chez nous. Les passagers se perdent toujours ici. »
+13. Serveur : « Désolé, la cuisine est réservée au personnel. »
+14. Convive : « Le repas est délicieux. Dommage que la mer bouge autant. »
+15. Passagère, pont extérieur : « Regarde, on voit tout Carmin d'ici ! »
+
+**Rival n° 4**
+16. Introduction : « Tiens. Toi aussi, tu as un billet. » / « Le capitaine ? Il a le mal de mer. Il ne quitte plus sa cabine. » / « Moi, j'ai déjà fait le tour du navire. Voyons si tu as avancé, toi aussi. »
+17. Le joueur perd : « Tu vois ? Toujours une longueur d'avance. » / « Va te soigner à Carmin. Je ne bouge pas. »
+18. Reprise : « Déjà de retour ? » / « Bien. Cette fois, ne me déçois pas. »
+19. Le joueur gagne : « …D'accord. Cette fois, je l'admets. » / « Tu avances vite. Trop vite. » / « Va voir ton capitaine. Moi, j'ai mieux à faire. »
+
+**Capitaine**
+20. CAP-01 : « Ooh… ce roulis… » / « Le capitaine qui a le mal de mer… C'est le comble. »
+21. Narration : « Tu lui frottes doucement le dos. »
+22. CAP-02 : « Ah… merci. Ça va beaucoup mieux. »
+23. CAP-03 : « Tiens, prends ça. C'est la CS01, Coupe. » / « Avec elle, un Pokémon de ton équipe peut tailler les petits arbres. Il faut le Badge Cascade, par contre. » / « Tu peux aussi la lui apprendre, comme une CT. »
+24. CAP-04 : « Merci encore ! » / « Profite bien de la traversée. »
+
+**Arbuste**
+25. ARB-00, sans la CS01 : « Un arbuste barre le passage. » / « Il faudrait savoir le couper. »
+26. ARB-01, sans le Badge Cascade : « Sans le Badge Cascade, {pokemon} n'ose pas couper cet arbuste. »
+27. ARB-02, équipe incompatible : « Aucun Pokémon de l'équipe » / « ne peut couper cet arbuste. »
+28. ARB-03 : « {pokemon} peut couper cet arbuste. » / « Utiliser Coupe ? » → **COUPER** / **LAISSER**
+29. ARB-04 : « {pokemon} utilise Coupe ! »
+
+Note : ARB-01 nomme un Pokémon compatible s'il y en a un ; sinon (pas de badge et aucun compatible),
+ARB-01 prime avec le premier Pokémon de l'équipe (défaut, dossier §7).
+
+**Arène de Carmin**
+30. Panneau : « ARÈNE DE CARMIN » / « Champion : Major Bob — L'homme électrique »
+31. Guide : « Major Bob s'est retranché derrière une barrière électrique ! » / « Les interrupteurs sont cachés dans les poubelles. Il en faut deux, côte à côte. » / « Une erreur, et tout se remet à zéro. »
+32. GYM-01 : « Rien… juste des papiers froissés. »
+33. GYM-02 : « Un interrupteur ! » / « Le premier verrou cède. »
+34. GYM-03 : « Le second interrupteur ! » / « La barrière s'ouvre ! »
+35. GYM-04 : « Mauvais interrupteur ! » / « Les verrous se referment. »
+
+**Major Bob**
+36. Introduction : « Hé, petit ! Tu as réussi à ouvrir ma barrière ? » / « Pas mal. Mais ici, c'est l'électricité qui commande. » / « Voyons si tu tiens le choc ! »
+37. Le joueur perd : « Trop lent, petit ! » / « Reviens quand tu tiendras la charge. »
+38. Reprise : « Encore toi ? J'aime ça. En position ! »
+39. Le joueur gagne : « Ouch ! Tu m'as bien secoué. » / « Du cran, petit. Tu as gagné. »
+40. Badge : « Voici le Badge Foudre. » / « Il prouve que tu as tenu le choc face à Major Bob. »
+41. Légende : « BADGE FOUDRE »
+42. CT24 : « Prends aussi ceci. » / « C'est la CT24, Tonnerre. Un Pokémon qui l'apprend la garde, et tu peux t'en resservir. »
+43. Rattrapage de la CT : « J'allais oublier. » (puis 42)
+44. Après, en lui reparlant : « Fais bon usage du Badge Foudre ! »
+
+**Objectifs** (R-9) : « aider le capitaine. », « obtenir le Badge Cascade. », « rejoindre l'Arène
+de Carmin. », « ouvrir le passage vers Major Bob. », « affronter Major Bob. ».
+
+**Restent au plan (annexe A, T3)** : descriptions de Coupe, Tonnerre, CS01, CT24, Super Potion ;
+zone du Pokédex et de la Carte.
 
 ### 0.4 Grilles et vues générales (grilles **validées par Kevin le 2026-10-15** ; vues générales à générer)
 

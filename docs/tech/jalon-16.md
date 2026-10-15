@@ -1,7 +1,8 @@
 # Jalon 16 — Le S.S. Anne et le Badge Foudre
 
-> **Plan technique, écrit le 2026-10-15** (architecte, branche `ccr-fa255d49-wvvacc`, conception
-> seule). À valider par Kevin sur le principe, comme les plans des J11–J14.
+> **Plan technique, écrit le 2026-10-15, VALIDÉ par Kevin sur le principe le même jour.** Textes
+> validés (dossier 19 §0.5). Reste : vues générales (Mac de Kevin, indisponible pour l'instant) et
+> annexe A (descriptions de capacités et d'objets).
 
 > Objectif jouable sur le téléphone : **le S.S. Anne et Major Bob**. Depuis le quai de Carmin
 > (J15), la passerelle contrôle le **Passe Bateau** et ouvre un navire de **9 cartes** : pont
