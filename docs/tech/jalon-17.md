@@ -1083,6 +1083,8 @@ verts, import propre, budgets tenus.
 
 ## 8. Questions pour Kevin
 
+> **Tranchées par Kevin le 2026-10-16** : **Q-1 « tout J17 »** (Flash enseignable en combat comme Coupe, précision 70 % ; allumage **automatique** à l'entrée d'une grotte obscure ; le J18 aligne son §5.3 et son §8) ; **Q-2 : annexe A validée** telle quelle ; **planche de la série 19 validée** (Soporifik `_r3`, Ronflex, icône CS05, poste de Safrania réemployé).
+
 - **Q-1 — Flash : dossier 20 ou dossier 21 ?** (§0.2 n° 1, vraie décision de game design) Les deux
   dossiers validés le même jour se contredisent : le 20 fait de Flash une capacité de combat
   (CS05 enseignable, précision 70 %) **déclenchée automatiquement** à l'entrée d'une grotte obscure ;
@@ -1102,7 +1104,7 @@ verts, import propre, budgets tenus.
 
 ---
 
-## Annexe A — Textes à valider (Q-2, brouillons)
+## Annexe A — Textes (Q-2 : validés par Kevin le 2026-10-16)
 
 Conventions des lots précédents : descriptions de Pokédex en deux phrases, ton d'observation, sans
 statistique ; tailles et poids officiels (vérifiés sur PokeAPI à l'écriture des données).

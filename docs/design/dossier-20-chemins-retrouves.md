@@ -8,6 +8,9 @@
 > **Plan** : `docs/tech/jalon-17.md` (écrit le 2026-10-15, à valider par Kevin ; questions Q-1 Flash
 > dossier 20 / dossier 21, Q-2 textes de l'annexe A).
 >
+> **2026-10-16, Q-1 du plan** : Kevin confirme H-6 et H-7 (« tout J17 ») face au dossier 21 du J18,
+> qui s'aligne (Flash en combat comme Coupe ; allumage automatique, sans question ni menu).
+>
 > **Numérotation** : 16 (J13), 17 (J14), 18 (J15) pris, 19 réservé au J16 → **20** (vérifié sur
 > toutes les branches locales et distantes le 2026-10-14).
 >
