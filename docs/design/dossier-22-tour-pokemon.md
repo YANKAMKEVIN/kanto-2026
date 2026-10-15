@@ -307,7 +307,7 @@ drapeau. Elles **remplacent** les lignes du J18 qui parlent de Fuji au présent.
 |---|---|
 | Enfant, maison de Fuji (J18) | Fuji est monté à la Tour **et n'est pas redescendu**. |
 | Homme, maison de Fuji | Fuji avait vu des gens étranges monter à la Tour, la nuit (K-15). |
-| Fille, maison d'Osselait | Osselait attend sa mère ; on dit qu'elle est morte en fuyant des gens. Rien ne nomme la Team Rocket. |
+| Fille, **Maison des Pokémon de M. Fuji** (Q-2 = A, Kevin, 2026-10-15 : pas de nouveau bâtiment) | Osselait, recueilli chez Fuji, attend sa mère ; on dit qu'elle est morte en fuyant des gens. Rien ne nomme la Team Rocket. |
 | Gentleman, Centre de Lavanville | **La rumeur du Casino de Céladopole** (K-16). |
 | **Panneau** près de la Tour | Publicité pour le **Scope Sylphe** (K-16). |
 
@@ -379,6 +379,13 @@ Rien de nouveau au J19.
   capturer.
 - **Combat** : fond **CB.3 `tour_pokemon`** (dalles, stèles, brume), qui sert à tous les étages.
 
+### 12.4 bis Lot d'art 19.0 (série 20) — VALIDÉ par Kevin le 2026-10-15
+
+- Fiche `fiches-assets/serie-20-tour-pokemon.md`, script `tools/art/serie20.py`.
+- Silhouette SPECTRE (brume indistincte, taille constante quelle que soit l'espèce cachée) ; dos de
+  Fantominus **provisoire IA** (pas de modèle 3D 092) ; décor CB.3 `tour_pokemon` (brume ajoutée
+  dans Godot) ; panneau du Scope (2 cases, sans texte). La planche Exorciste vient du J18.
+
 ### 12.5 Vue générale peinte v1 — VALIDÉE par Kevin le 2026-10-14
 
 - **Image** : `reference/tour-pokemon-vue-generale-v1.png` (essai 4,
@@ -401,6 +408,7 @@ Rien de nouveau au J19.
 | Drapeau | Posé par |
 |---|---|
 | `tower_stairs_open` | Scène de la gardienne (§6.4) |
+| `tower_ghost_met` | Première rencontre du SPECTRE du 6F (§6.3) ; sert aux objectifs (§15.7) |
 | `rival_tower_won`, `rival_tower_lost_once`, `rival_tower_retried` | Rival n° 5 |
 | `beaten_tower_channeler_1` … `_9` | Exorcistes (mécanisme existant) |
 | Objets ramassés | Mécanisme existant |
@@ -509,12 +517,47 @@ pas. Reposez-vous. »
    toujours, d'habitude. »
 2. *(homme, maison de Fuji)* « M. Fuji m'a dit avoir vu des gens monter à la Tour, la nuit. Pas des
    visiteurs. Il est allé voir. Depuis… »
-3. *(fille, maison d'Osselait)* « Osselait attend sa maman. On dit qu'elle s'est fait attraper en
+3. *(fille, Maison des Pokémon de M. Fuji, près d'Osselait)* « Osselait attend sa maman. On dit qu'elle s'est fait attraper en
    protégeant son petit… par des gens qui ne venaient pas prier. »
 4. *(gentleman, Centre de Lavanville)* « Des hommes en noir, j'en ai vu traîner autour du Casino de
    Céladopole. Toujours là où il y a de l'argent, ces gens-là. »
 5. *(panneau)* « SCOPE SYLPHE — Voir ce que l'œil ne voit pas. Une innovation Sylphe SARL. »
 6. *(légende de la Tour, inchangée depuis le J18)* « TOUR POKÉMON »
+
+### 15.7 Textes complémentaires (Q-1 du plan technique) — À VALIDER
+
+> Rédigés par Claude le 2026-10-15 (T2 du plan `docs/tech/jalon-19.md`). Même ton que le Pokédex
+> et les capacités existants. Osselait et Ossatueur n'ont pas d'entrée au J19 (jamais vus).
+
+**Pokédex** (taille et poids officiels) :
+
+| Espèce | Taille / poids | Description |
+|---|---|---|
+| Fantominus | 1,3 m · 0,1 kg | « Un corps de gaz autour d'un noyau sombre. Il se dissipe au moindre souffle de vent, alors il préfère les lieux clos et silencieux. » |
+| Spectrum | 1,6 m · 0,1 kg | « Il traverse les murs sans bruit. On dit qu'il aime surprendre, mais il fuit dès qu'on le regarde vraiment. » |
+| Caninos | 0,7 m · 19,0 kg | « Fidèle et courageux, il aboie pour protéger ceux qu'il aime. Son flair ne le trompe jamais. » |
+| Léviator | 6,5 m · 235,0 kg | « Sa colère soulève les vagues. Peu de Dresseurs gardent son respect après l'avoir fait évoluer. » |
+| Noeunoeuf | 0,4 m · 2,5 kg | « Six œufs qui communiquent entre eux par télépathie. Si l'un d'eux s'égare, les autres l'attendent. » |
+
+**Capacités nouvelles** (une ligne, comme les existantes) :
+- **Léchouille** : « Un coup de langue glacé. Peut paralyser la cible. »
+- **Ténèbres** : « Une vision effrayante. Inflige des dégâts égaux au niveau du lanceur. »
+- **Hypnose** : « Une berceuse hypnotique qui endort la cible. Peu précise. »
+- **Massd'Os** : « Un coup d'os. Peut apeurer la cible. »
+- **Draco-Rage** *(si absente)* : « Une onde de choc draconique. Inflige toujours 40 PV de dégâts. »
+
+**Combat** :
+- Nom affiché de l'adversaire masqué : **« SPECTRE »** (déjà validé au §15.3).
+- **Forme « effrayée »** : proposition **neutre**, pour éviter l'accord masculin / féminin selon le
+  Pokémon : « **{pokemon} a trop peur pour bouger !** » (remplace §15.3.3 si tu l'acceptes).
+- **Défaite d'une Exorciste** (fin de combat, encore possédée) : « Les esprits… se taisent… »
+
+**Objectifs du tableau de bord** (`data/story/objectives.json`, sans flèche ni marqueur) :
+- `climb_tower` : « monter dans la Tour Pokémon. » — si `tower_stairs_open`, sauf `tower_ghost_met`.
+- `see_the_ghosts` : « trouver un moyen de voir les spectres. » — si `tower_ghost_met`.
+  (Le J20 le remplace quand le Scope est obtenu.)
+
+**Nom de zone des étages** : aucun nouveau [D]. Les étages gardent la légende « TOUR POKÉMON ».
 
 ## 16. Cas limites (à couvrir au plan technique)
 

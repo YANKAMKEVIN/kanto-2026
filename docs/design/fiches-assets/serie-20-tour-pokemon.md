@@ -1,5 +1,7 @@
 # Série 20 — Tour Pokémon, lot d'art 19.0 (jalon 19)
 
+> **VALIDÉE par Kevin le 2026-10-15** (planche `build/art/SERIE20_CONTROLE_v1.png` : SPECTRE r1, dos IA de Fantominus r1 provisoire, décor `tour_pokemon` r1, panneau du Scope r1).
+
 > Rédigée le 2026-10-15 (branche `docs/dossier-j19`, à jour de `main` à `f9d4ab7`). Conception :
 > `docs/design/dossier-22-tour-pokemon.md` §6.2 (silhouette SPECTRE), §10 (panneau), §11
 > (ambiance), §12.1 et §12.4 (lot 19.0), §12.5 (vue validée). Référence de DA :
