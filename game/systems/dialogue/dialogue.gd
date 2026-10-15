@@ -23,9 +23,11 @@ var variants: Array[DialogueVariant] = []
 ## Variante à tirage ([member DialogueVariant.one_in], jalon 14) : ses drapeaux d'abord, puis
 ## un tirage de [param rng] (1 sur N) ; perdu, on passe à la suivante. Sans [param rng], une
 ## telle variante est sautée sans tirage (tests déterministes, simple consultation).
-func pick(flags: StoryFlags, rng: GameRng = null) -> DialogueVariant:
+## [param caught] : espèces capturées au Pokédex, pour les variantes « if_caught_at_least » /
+## « unless_caught_at_least » (jalon 17) ; 0 par défaut.
+func pick(flags: StoryFlags, rng: GameRng = null, caught: int = 0) -> DialogueVariant:
 	for variant: DialogueVariant in variants:
-		if not variant.matches(flags):
+		if not variant.matches(flags, caught):
 			continue
 		if variant.is_random() and (rng == null or rng.roll(variant.one_in) != 1):
 			continue

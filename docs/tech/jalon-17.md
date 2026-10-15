@@ -45,7 +45,7 @@ Références : `CLAUDE.md` (règles 1 à 10), `docs/design/dossier-20-chemins-re
 |---|---|---|---|
 | Compteur d'espèces | `Pokedex.caught_count()` (`game/pokemon/pokedex.gd:128`) ; starter compté (`boot.gd:1255`) ; relâcher / déposer ne touche pas le Pokédex | — | rien |
 | Condition de dialogue | `DialogueVariant.matches(flags)` : `if` / `unless` sur des drapeaux seulement (`dialogue_variant.gd`) ; `Dialogue.pick(flags)` appelé par `DialogueRunner` (l. 134, 169) | — | condition « au moins N espèces capturées » (§2.5) |
-| Jetons de texte | `DialogueTokens.KNOWN = [first_wild_species, player, rival, pokemon]` ; `Boot._dialogue_token_values` (`boot.gd:1210`) ; page à jeton sans valeur **omise** | J15 : `{pokemon}` (Pension), `{levels}`, `{price}` (plan) | `{caught}`, `{caught_missing}` (§2.5) |
+| Jetons de texte | `DialogueTokens.KNOWN = [first_wild_species, player, rival, pokemon, levels, price]` (J15 fusionné : `CONTEXT` = Pension) ; `Boot._dialogue_token_values` (`boot.gd:1297`, fusionne `_daycare.token_values()`) ; page à jeton sans valeur **omise** | — | `{caught}`, `{caught_missing}` (§2.5) |
 | Remise « une seule fois » atomique | modèle CT34 : scène `give` puis `set` (`data/cutscenes/pewter_gym.json`) ; sauvegarde écrite seulement en état stable, scène interrompue rejouée | — | rien (§2.6) |
 | Objets CT | `ItemData.Category.TM` (`item_data.gd:22`), `tm_number` 1..50 (`ItemLibrary` : `TM_MIN`, `TM_MAX`), `TmTeach` (jamais consommée), onglet « CT » (`bag_screen.gd:54`) | J16 (passe) : « catégorie `hm` ou CS rangée avec les CT » | CS : champ `hm`, section CS des compatibilités (§2.7) |
 | Compatibilités | `data/pokemon/tm_compatibility.json` (généré, `tms` 01..50, `species`) ; `tools/gen_tm_compatibility.py` exclut les numéros ≥ 101 de PokeAPI ; `PokemonData.can_learn_tm` | J16 (passe) : « étendre le script aux CS » | section `hms` + `hm_species` (§2.7) |
@@ -329,6 +329,25 @@ de la Cave, canyon vu du ciel, clairières trop larges) sont respectés.
   de la vraie scène), `escape` et `escapes` exclusifs. `FieldItemRules.escape_target(map, caves,
   cell)` et l'appel de `boot.gd:1527` passent la case du joueur. Tests : `test_cave_library`
   (plages, exclusivité, erreurs), `test_escape_rope` (deux moitiés, rangée frontière 39/40).
+- **Réalignement T6 (2026-10-15)** — fait ainsi, écarts au texte ci-dessus :
+  - l'appel est à `boot.gd:1634` (`_on_field_item_requested`), avec `_player.get_cell()` ;
+  - `CaveExit.first_row` / `last_row` (−1 = sortie unique) et `covers_row(row)` ;
+    `CaveLibrary.escape_target(map_id, cell := NO_CELL)` : sortie unique → la case est ignorée
+    (Mont Sélénite inchangé, tests existants intacts) ; plusieurs bouches → la plage de `cell.y`,
+    **null** sans case ou hors de toute plage (aucune bouche devinée). `get_exits(cave)` liste
+    toutes les sorties.
+  - Validation au chargement : `escape` / `escapes` exclusifs, liste non vide, `rows` =
+    `[première, dernière]` entiers ≥ 0 dans l'ordre, plages **disjointes**, clés inconnues
+    refusées, aucune sortie vers une carte de la grotte. La **couverture** de toute la hauteur
+    se vérifie avec la vraie scène : `test_map_catalog.test_cave_mouth_ranges_cover_every_row`
+    (passe tant qu'il n'y a pas de grotte à deux bouches ; en attente tant que la carte manque).
+  - `test_map_catalog.test_cave_escape_targets_exist_with_their_spawn` parcourt désormais
+    **toutes** les sorties (`get_exits`) au lieu de la seule sortie de la première carte.
+  - `test_escape_rope` : deux tests dans le vrai Boot avec une **grotte de test** ajoutée sur la
+    Route 3 (rangées 13 et 27 → deux points d'apparition d'Argenta), car la Cave n'existe pas
+    encore ; la frontière 39/40 est testée en pur (`test_cave_library`,
+    `test_field_item_rules`). `caves.json` **non modifié** : l'entrée `digletts_cave` vient avec
+    la carte (T15).
 - **Rencontres** : gravats seulement (`data/encounters/digletts_cave.json`, terrain `rubble`, `rate`
   25, `ramp` 15 → 20 comme le Mont Sélénite) ; intro éboulis existante.
 - **Taupiqueur d'ambiance** : PNJ `shy = hide` (réaction existante, `ambient_watcher.gd:56`), sprite
@@ -402,6 +421,23 @@ func apply_to_grid(grid: GridWorld) -> void        # occupe (affiché) / libère
   sans `Callable`), `test_dialogue_library` (clés, valeurs refusées), `test_dialogue_tokens`
   (jetons connus, omis à n ≥ 10), `test_assistant_dialogue` (variantes T-1/T-2/T-3/T-4 selon n et
   drapeaux, accord n = 1).
+- **Réalignement T4 (2026-10-15, code de `jalon-17` à `369a20e`)** — écarts au texte ci-dessus :
+  - `Dialogue.pick` a déjà un 2e paramètre `rng` (J14, « one_in ») : signature réelle
+    `pick(flags, rng := null, caught := 0)` ; le compte est vérifié **avant** le tirage.
+    `DialogueVariant.matches_caught(caught)` isole la règle ; `matches(null, n)` applique aussi
+    le compte.
+  - `DialogueRunner.caught_count` est lu à **chaque choix de variante** (`play` et
+    `has_auto_variant`), pas seulement au début du dialogue.
+  - Les jetons ne passent pas par `values_for` (signature inchangée) : `DialogueTokens.caught_values(n)`
+    (pur) est fusionné par `Boot._dialogue_token_values` ; ni l'un ni l'autre n'est un jeton de
+    contexte (refusés dans une question de choix).
+  - Validation en plus : `if_caught_at_least` ≥ `unless_caught_at_least` sur la même variante est
+    refusé (variante qui ne s'appliquerait jamais).
+  - Tests réels : `test_dialogue_variant_caught` (lecture, refus, seuil 9 / 10 / 11, drapeaux, table
+    de l'assistant §2.6 **en mémoire** avec l'accord n = 1, jetons omis à n ≥ 10),
+    `test_dialogue_tokens` (`KNOWN`), `test_dialogue_runner` (compte relu, sans source = 0),
+    `test_boot_caught_count` (branchement, évolution comptée). `test_assistant_dialogue` sur les
+    **vraies** données reste au T8 (le fichier `route_2_east.json` n'existe pas encore).
 
 ### 2.6 L'assistant et la remise de la CS05 (T8, T19)
 

@@ -65,6 +65,10 @@ var token_values: Callable
 ## [method play] (la partie chargée remplace son aléatoire). Non valide : ces variantes sont
 ## sautées. Posé par [Boot] (GameState.rng).
 var rng_source: Callable
+## Espèces capturées au Pokédex (`func() -> int`, jalon 17, jalon-17.md §2.5) : lu à chaque choix
+## de variante (« if_caught_at_least », « unless_caught_at_least »). Non valide : 0. Posé par
+## [Boot] (GameState.pokedex).
+var caught_count: Callable
 
 var _library: DialogueLibrary
 var _flags: StoryFlags
@@ -138,7 +142,7 @@ func play(dialogue_id: StringName, npc: Npc = null, map: GameMap = null,
 	if dialogue == null:
 		push_error("DialogueRunner : dialogue inconnu « %s »" % dialogue_id)
 		return false
-	var variant := dialogue.pick(_flags, _rng())
+	var variant := dialogue.pick(_flags, _rng(), _caught())
 	if variant == null:
 		push_error("DialogueRunner : aucune variante de « %s » ne s'applique" % dialogue_id)
 		return false
@@ -174,7 +178,7 @@ func has_auto_variant(dialogue_id: StringName) -> bool:
 	var dialogue := _library.get_dialogue(dialogue_id) if _library != null else null
 	if dialogue == null:
 		return false
-	var variant := dialogue.pick(_flags)
+	var variant := dialogue.pick(_flags, null, _caught())
 	return variant != null and variant.auto
 
 
@@ -399,6 +403,13 @@ func _on_advance_requested() -> void:
 	if Engine.get_process_frames() == _play_frame:
 		return
 	_advance()
+
+
+## Espèces capturées ([member caught_count]) ; 0 sans source.
+func _caught() -> int:
+	if not caught_count.is_valid():
+		return 0
+	return int(caught_count.call())
 
 
 ## Aléatoire des tirages « one_in » ([member rng_source]), ou null.

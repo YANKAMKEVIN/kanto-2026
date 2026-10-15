@@ -300,6 +300,8 @@ func _ready() -> void:
 	_runner.token_values = _dialogue_token_values
 	# Variantes « une fois sur N » (jalon 14) : l'aléatoire de la partie courante.
 	_runner.rng_source = func() -> GameRng: return GameState.rng
+	# J17 (§2.5) : variantes selon les espèces capturées (assistant de Chen, CS05).
+	_runner.caught_count = func() -> int: return GameState.pokedex.caught_count()
 	# OUV.2 : prénoms du joueur et du rival (`{player}`, `{rival}`) aussi dans le nom du dresseur.
 	_texts.token_values = _dialogue_token_values
 	_runner.cutscene_requested.connect(_on_cutscene_requested)
@@ -1331,6 +1333,8 @@ func _dialogue_token_values() -> Dictionary[StringName, String]:
 	# {pokemon} (le Pokémon gardé ou rendu) passe alors avant celui du compagnon (J11).
 	if _daycare != null:
 		values.merge(_daycare.token_values(), true)
+	# J17 (§2.5) : {caught}, {caught_missing} (assistant de Chen).
+	values.merge(DialogueTokens.caught_values(GameState.pokedex.caught_count()))
 	return values
 
 
@@ -1661,7 +1665,8 @@ func get_caves() -> CaveLibrary:
 ## pendant le fondu laisse la sauvegarde d'avant, Corde comprise. Ni soin ni point de repos.
 func _on_field_item_requested(item_id: StringName) -> void:
 	var item := _items.get_item(item_id)
-	var exit := FieldItemRules.escape_target(_current_map_id(), _caves)
+	# J17 (§2.3) : la case du joueur choisit la bouche d'une grotte à deux bouches.
+	var exit := FieldItemRules.escape_target(_current_map_id(), _caves, _player.get_cell())
 	if item == null or exit == null or not GameState.bag.has(item_id):
 		return
 	_menu.close()
