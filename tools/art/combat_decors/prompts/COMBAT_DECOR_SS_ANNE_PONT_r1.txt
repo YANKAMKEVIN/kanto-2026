@@ -1,0 +1,26 @@
+DÉCOR DE COMBAT — S.S. ANNE, PONT PROMENADE EN MER (Kanto 2026). Image de PRODUCTION : le fond peint d'un écran de combat Pokémon sur smartphone en paysage. AUCUN Pokémon, AUCUN personnage, AUCUNE interface, AUCUN texte.
+
+Images jointes.
+IMAGE 1 : un écran de combat de référence. Reprends sa VUE (caméra à hauteur d'yeux, légèrement plongeante, horizon dans le tiers haut, grand sol dégagé au centre), sa profondeur et sa qualité de peinture. Ne reprends PAS : les Pokémon, les cartes, les boutons, la rivière, le pont, le coucher de soleil orange.
+IMAGE 2 : une planche d'intention de décors de combat (guide de facture).
+IMAGE 3 : la vue d'ensemble (de dessus) du pont promenade du S.S. Anne : pont de teck clair, bastingage blanc à main courante de teck, mer bleu profond scintillante (guide de palette ; ses mouettes ne sont PAS à reprendre).
+
+FORMAT : paysage très large, rapport 2,17 : 1 (comme 2340 × 1080), la plus grande résolution possible, OPAQUE, cadrage plein, sans bord.
+
+LIEU : le pont promenade d'un paquebot en pleine mer : un large PONT DE TECK clair au premier plan, le BASTINGAGE blanc à main courante de teck qui court en travers au fond, une bouée rouge et blanche accrochée, et derrière la MER bleu profond scintillante jusqu'à l'horizon, un ciel clair aux nuages légers.
+
+COMPOSITION (fractions depuis le coin haut gauche) :
+- Horizon de la mer vers 33 % de la hauteur ; le bastingage traverse l'image de 34 à 42 % de la hauteur, plus bas que l'horizon.
+- De 45 % de la hauteur jusqu'en bas : GRAND SOL DÉGAGÉ et PLAT de lattes de teck qui fuient vers le fond.
+- Point A (x 67 %, y 58 %) : sol nu, plat et bien lisible, une créature y posera les pieds. Rien de haut dans un rayon de 12 % de la largeur autour.
+- Point B (x 31 %, y 97 %) : sol plat et nu, une grande créature vue de dos y sera au premier plan. Rien de haut autour.
+- ZONE CALME en HAUT À GAUCHE (de 0 à 50 % de la largeur, de 0 à 45 % de la hauteur) : peu de détails et peu de contraste, valeurs simples.
+- ZONE CALME en BAS À DROITE (de 50 à 100 % de la largeur, de 55 à 100 % de la hauteur) : sol simple, presque sans objet, valeurs moyennes, sans contraste fort.
+- Les deux coins du bas restent du SOL nu : pas de meuble ni de gros objet en gros plan.
+- Les 9 % de gauche et de droite de l'image ne contiennent rien d'important (ils seront rognés sur certains écrans).
+
+LUMIÈRE : golden hour, soleil bas venant du haut à gauche (hors cadre), lumière dorée chaude sur le teck et le bastingage, éclats dorés sur la mer, ombres douces ; ciel bleu pâle voilé, nuages teintés de rose doré, pas de soleil visible, pas de contre-jour.
+
+RENDU (ADN visuel Kanto 2026) : illustration 2D peinte numériquement, RPG Pokémon moderne « HD-2D peint », formes simples, lisibles et arrondies, grandes masses douces (jamais en petits points ni en pixels), aucun trait noir (contours fins et doux plus sombres que la couleur), couleurs riches sans être fluo. Netteté partout (aucun flou de profondeur, pas de vignettage). Perspective à hauteur d'yeux, un peu plongeante, le sol recule nettement vers le fond.
+
+INTERDITS : Pokémon, animal, oiseau, mouette, personnage, silhouette, texte, lettres, chiffres, panneau lisible, logo, nom de navire, signature, filigrane, cadre, interface, pixel art, flou, vignettage, terre, côte, île, autre bateau, voile, cheminée, chaise longue en gros plan.
