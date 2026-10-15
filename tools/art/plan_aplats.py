@@ -36,6 +36,8 @@ Codex ; les plans seuls ne montrent ni personnage, ni case cachée, ni indice).
 « Y » ; --annote ajoute les bandes de déclenchement et les conditions (if / unless) des positions.
 tools/plans/route_25.txt → build/art/PLAN_ROUTE25_v1.png (J14, `dessiner_route_25`) : PAYSAGE,
 mer, rivage, falaise, plage, maison de Léo ; --annote comme la Route 3.
+tools/plans/celadopole.txt (J20, dossier 23) → build/art/PLAN_CELADOPOLE_v1.png
+(`dessiner_celadopole`, PAYSAGE 1536 × 1024, non annoté : aucun personnage, aucune case cachée).
 Reproductible : même grille → même image (fleurs tirées avec une graine fixe).
 """
 from __future__ import annotations
@@ -1736,6 +1738,157 @@ def dessiner_route_25(grille: Path, sortie: Path) -> Path:
 	return sortie
 
 
+# --- Jalon 20 : Céladopole (dossier 23) -------------------------------------------------------
+# Même filière que `dessiner_j13` (paysage 1536 × 1024, marges prolongées, aucun personnage, aucune
+# case cachée), mais la légende de Céladopole réemploie des lettres d'Azuria avec un autre sens
+# (M, Z, K, s…) : fonction à part, mêmes couleurs de base (forêt, herbe, pavé, quai, eau, haies,
+# Centre).
+CEL_BAT = {                                        # (mur, toit)
+	"H": ((238, 230, 212), (170, 178, 168)),       # grand magasin : toit-terrasse gris clair
+	"R": ((218, 178, 128), (88, 94, 122)),         # Résidence : briques miel, toit d'ardoise
+	"U": ((206, 186, 152), (120, 108, 96)),        # escalier de service
+	"C": BATIMENTS["C"],                           # Centre (mêmes couleurs que partout)
+	"K": ((64, 36, 74), (196, 40, 150)),           # Casino : mur sombre, toit magenta (néons)
+	"L": ((150, 146, 142), (104, 100, 100)),       # façade de l'ancien Coin à lots, éteinte
+	"Z": ((222, 234, 222), (118, 186, 138)),       # Arène : serre, verrière verte
+	"M": BATIMENTS["m"],                           # maison du chef
+	"Q": ((236, 222, 196), (176, 108, 58)),        # restaurant
+	"I": ((232, 226, 214), (104, 116, 150)),       # hôtel
+}
+CEL_OR = (236, 196, 70)
+CEL_VITRINE = (46, 48, 56)
+CEL_TALUS = (138, 104, 66)
+CEL_ARBUSTE = (120, 176, 84)
+CEL_FLEURS = ((240, 200, 220), (250, 240, 200), (214, 170, 230))
+CEL_RUELLE = _melange(J_PAVE, (40, 40, 60), 0.35)
+J_CARTES["celadopole"] = 24
+
+
+def dessiner_celadopole(grille: Path, sortie: Path) -> Path:
+	"""Plan en aplats de Céladopole (J20, dossier 23), paysage 1536 × 1024, non annoté."""
+	plan = lire(grille)
+	case, ox, oy = _geom_j13(plan, "celadopole")
+	img = Image.new("RGB", TAILLE_PAYSAGE, FORET)
+	d = ImageDraw.Draw(img)
+	alea = random.Random(GRAINE + 20)
+	ruelle = {(x, y) for x in (46, 47) for y in range(27, 33)}
+
+	def coin(x: int, y: int) -> tuple[int, int]:
+		return ox + x * case, oy + y * case
+
+	def centre(x: int, y: int) -> tuple[float, float]:
+		return ox + (x + 0.5) * case, oy + (y + 0.5) * case
+
+	def car_de(x: int, y: int) -> str:
+		if 0 <= x < plan.width and 0 <= y < plan.height:
+			return plan.at(x, y)
+		car = plan.at(min(max(x, 0), plan.width - 1), min(max(y, 0), plan.height - 1))
+		return "p" if car == "p" else "T"          # l'avenue sort à l'est, tout le reste est forêt
+
+	def fond(car: str, x: int, y: int):
+		if (x, y) in ruelle:
+			return CEL_RUELLE
+		if car in CEL_BAT:
+			return CEL_BAT[car][0]
+		return {"w": J_EAU, "q": J_QUAI, "p": J_PAVE, "n": J_PAVE, "F": J_PAVE, "D": PORTE,
+			"T": FORET, "j": J_JARDIN, "s": CEL_TALUS}.get(car, HERBE)
+
+	# 1. Aplats, marges comprises.
+	for y in range(-(oy // case) - 1, plan.height + (TAILLE_PAYSAGE[1] - oy) // case + 1):
+		for x in range(-(ox // case) - 1, plan.width + (TAILLE_PAYSAGE[0] - ox) // case + 1):
+			car = car_de(x, y)
+			x0, y0 = coin(x, y)
+			d.rectangle([x0, y0, x0 + case - 1, y0 + case - 1], fill=fond(car, x, y))
+			if car == "q":
+				d.rectangle([x0, y0, x0 + case - 1, y0 + case - 1], outline=J_QUAI_BORD)
+			elif car in "pnF":
+				d.rectangle([x0, y0, x0 + case - 1, y0 + case - 1],
+					outline=_melange(fond(car, x, y), (0, 0, 0), 0.08))
+			elif car == "w" and alea.random() < 0.10:
+				cx, cy = x0 + case / 2, y0 + case / 2
+				d.line([cx - case * 0.3, cy, cx + case * 0.3, cy], fill=J_EAU_REFLET, width=1)
+			elif car == "s":                           # talus : stries de pente
+				d.line([x0 + 2, y0 + case // 3, x0 + case - 3, y0 + case // 3],
+					fill=_melange(CEL_TALUS, (0, 0, 0), 0.25))
+				d.line([x0 + 2, y0 + case * 2 // 3, x0 + case - 3, y0 + case * 2 // 3],
+					fill=_melange(CEL_TALUS, (0, 0, 0), 0.25))
+			elif car == "j":                           # massifs taillés fleuris
+				for _ in range(2):
+					fx, fy = x0 + alea.uniform(4, case - 4), y0 + alea.uniform(4, case - 4)
+					_disque(d, fx, fy, 2.2, alea.choice(CEL_FLEURS))
+
+	# 2. Végétation, mobilier.
+	for x, y in plan.cells_of("T"):
+		if (x * 7 + y * 3) % 5 == 0:
+			cx, cy = centre(x, y)
+			_disque(d, cx, cy, case * 0.45, _melange(FORET, (0, 0, 0), 0.12))
+	for x, y in plan.cells_of("x"):
+		cx, cy = centre(x, y)
+		_disque(d, cx, cy, case * 0.42, BUISSON, SOMBRE_BORD)
+	for x, y in plan.cells_of("W"):
+		cx, cy = centre(x, y)
+		_disque(d, cx, cy, case * 0.4, CEL_ARBUSTE, _melange(CEL_ARBUSTE, (0, 0, 0), 0.4))
+	for x, y in plan.cells_of("G"):
+		cx, cy = centre(x, y)
+		_disque(d, cx, cy - case * 0.4, case * 0.8, ARBRE, ARBRE_BORD)
+	for x, y in plan.cells_of("n"):
+		cx, cy = centre(x, y)
+		d.rectangle([cx - case * 0.4, cy - case * 0.15, cx + case * 0.4, cy + case * 0.15], fill=BANC)
+	fontaine = plan.cells_of("F")
+	if fontaine:
+		xs = [x for x, _ in fontaine]
+		ys = [y for _, y in fontaine]
+		x0, y0 = coin(min(xs), min(ys))
+		x1, y1 = coin(max(xs) + 1, max(ys) + 1)
+		d.ellipse([x0 + 1, y0 + 1, x1 - 2, y1 - 2], fill=J_QUAI, outline=J_QUAI_BORD, width=2)
+		d.ellipse([x0 + 6, y0 + 6, x1 - 7, y1 - 7], fill=J_EAU)
+		_disque(d, (x0 + x1) / 2, (y0 + y1) / 2, 3, J_EAU_REFLET)
+
+	# 3. Bâtiments : toit sur les 3/5 hauts de l'emprise, signes distinctifs, portes.
+	for car, (mur, toit) in CEL_BAT.items():
+		for groupe in _composantes_cases(plan.cells_of(car) + [
+				(x, y) for x, y in plan.cells_of("D")
+				if any(0 <= x + dx < plan.width and plan.at(x + dx, y) == car for dx in (-1, 1))]):
+			xs = [x for x, _ in groupe]
+			ys = [y for _, y in groupe]
+			x0, y0 = coin(min(xs), min(ys))
+			x1, y1 = coin(max(xs) + 1, max(ys) + 1)
+			ty = y0 + (y1 - y0) * 3 // 5
+			d.rectangle([x0, y0, x1 - 1, ty], fill=toit)
+			if car == "H":                             # toit-terrasse : parapet et bacs de plantes
+				d.rectangle([x0 + 4, y0 + 4, x1 - 5, ty - 4], fill=_melange(toit, BLANC, 0.35),
+					outline=_melange(toit, (0, 0, 0), 0.3), width=2)
+				for k in range(4):
+					_disque(d, x0 + 18 + k * (x1 - x0 - 36) / 3, y0 + 14, 5, J_JARDIN)
+			elif car == "Z":                           # serre : verrière à montants
+				for gx in range(x0 + case, x1, case):
+					d.line([gx, y0, gx, ty], fill=_melange(toit, BLANC, 0.45), width=1)
+				d.line([x0, (y0 + ty) // 2, x1 - 1, (y0 + ty) // 2], fill=_melange(toit, BLANC, 0.45))
+			elif car == "K":                           # néons magenta et or
+				d.rectangle([x0 + 2, ty + 3, x1 - 3, ty + 7], fill=CEL_OR)
+				d.rectangle([x0, y0, x1 - 1, y1 - 1], outline=CEL_OR, width=2)
+			elif car == "L":                           # vitrine éteinte, sans porte
+				d.rectangle([x0 + case // 2, y1 - case - case // 2, x1 - case // 2 - 1, y1 - 4],
+					fill=CEL_VITRINE)
+			elif car == "Q":                           # auvent du restaurant
+				d.rectangle([x0 + 3, ty + 1, x1 - 4, ty + 6], fill=(214, 220, 190))
+			if car != "K":
+				d.rectangle([x0, y0, x1 - 1, y1 - 1], outline=_melange(toit, (0, 0, 0), 0.35))
+	for x, y in plan.cells_of("D"):
+		x0, y0 = coin(x, y)
+		d.rectangle([x0 + case // 5, y0 + case // 4, x0 + case - case // 5 - 1, y0 + case - 1],
+			fill=PORTE)
+
+	# 4. Panneaux (sans texte). Personnages, case cachée et examens NON dessinés.
+	for p in plan.of_kind("panneau"):
+		for x, y in p.cells:
+			cx, cy = centre(x, y)
+			d.rectangle([cx - 5, cy - 5, cx + 5, cy + 5], fill=PANNEAU, outline=PANNEAU_BORD)
+	sortie.parent.mkdir(parents=True, exist_ok=True)
+	img.save(sortie)
+	return sortie
+
+
 # Grille → (fonction, sortie par défaut).
 PLANS = {
 	"route_2": (dessiner, "build/art/PLAN_ROUTE2_v1.png"),
@@ -1747,6 +1900,7 @@ PLANS = {
 	"route_24": (dessiner_j13, "build/art/PLAN_ROUTE24_v1.png"),
 	"azuria_arene": (dessiner_j13, "build/art/PLAN_AZURIA_ARENE_v1.png"),
 	"route_25": (dessiner_route_25, "build/art/PLAN_ROUTE25_v1.png"),
+	"celadopole": (dessiner_celadopole, "build/art/PLAN_CELADOPOLE_v1.png"),
 }
 
 

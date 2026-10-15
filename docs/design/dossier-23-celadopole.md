@@ -104,6 +104,50 @@ des maisons du sud. Aucune porte, aucun accès ni aucune rue n'a changé.
 3. **Distances** (Arène à 74 pas, grand magasin à 63) et **Arène plus haute que l'écran** : à juger
    sur S24 au 20-I (caméra qui suit).
 
+## Vue générale peinte v1 (à valider par Kevin)
+
+> Produite le 2026-10-15 selon la filière du J13 (plan en aplats non annoté + vue d'Azuria comme
+> ancre de style, Codex, sans nom de licence dans les prompts). **Référence de DA et de composition
+> seulement** ; la grille `tools/plans/celadopole.txt` fait foi pour toute coordonnée, et rien
+> n'est implémenté parce qu'il est sur l'image (règle 10).
+
+- **Vue retenue** : `docs/design/reference/celadopole-vue-generale-v1.png` (essai 4,
+  `tools/art/prompts/CONCEPT_CELADOPOLE_VUE_GENERALE_r4.txt`, plan joint
+  `docs/design/reference/celadopole-plan-v1.png`, ancre `azuria-vue-generale-v1.png` : même pinceau,
+  même lumière, même Centre ; composition non reprise).
+- **Plan** : `python3 tools/art/plan_aplats.py tools/plans/celadopole.txt` → `build/art/PLAN_CELADOPOLE_v1.png`
+  (`dessiner_celadopole`, paysage 1536 × 1024, 1 case = 21 px ; aucun personnage, aucune case
+  cachée). Fonction à part de `dessiner_j13`, car la légende de Céladopole redonne un autre sens à
+  des lettres d'Azuria (M, Z, K, s) ; mêmes couleurs de base. Les autres plans sont inchangés
+  (contrôle `plan_check.py` : 38 plans conformes).
+- **Essais** : 4. r1 composition et style justes, mais passerelle de bois au lieu du talus, ni
+  pêcheur ni créature, pas d'arbuste devant l'enclos ; r2 talus, pêcheur et créature, arbuste
+  clair dans la haie, grand magasin et Résidence plus hauts, mais étang sans quai distinct et
+  aucune silhouette dans la ruelle ; r3 quai blanc-crème et silhouette dans la ruelle, mais une
+  allée sort par le bas de l'image et le talus devient une falaise ; **r4 retenu** (sud fermé,
+  talus de terre, arbuste vert-jaune aligné dans la haie est).
+- **Écarts connus avec la grille (la grille gagne)** :
+  - la **ruelle de service** au nord de la Résidence (y 5..6) ne se lit pas : la tour d'escalier
+    de service est collée au toit, entre des haies ;
+  - un **petit escalier** est peint dans le jardin en terrasse au nord du Casino (aucun escalier
+    dans la grille ; à ignorer) ;
+  - la **créature** du pêcheur est une forme ronde à spirale **sans bras** (le dossier dit le
+    Tartard du pêcheur, §7.1) ;
+  - le Rocket en civil de la porte du Casino est **juste devant la porte** (grille : (37, 33), à
+    gauche) ; celui de la ruelle est à son **entrée sud** (grille : (47, 30)) ; aucun détail rouge
+    visible (§7.1) ;
+  - l'**ouverture de la haie** de l'enclos se lit peu : l'arbuste est plus clair et aligné dans la
+    haie, mais on ne voit pas qu'il bouche un passage ;
+  - le grand magasin a **trois niveaux** visibles sous le toit-terrasse ; l'hôtel ressemble à une
+    grande maison (lucarnes) ; les panneaux ocre du plan ne sont pas peints ;
+  - le parc ouest, la pelouse est et les massifs de l'avenue sont proches du plan, sans
+    correspondance case à case.
+- **Points à juger par Kevin** :
+  1. lisibilité des deux silhouettes (« deux hommes qui ne bougent pas ») et des néons du Casino ;
+  2. lecture de l'arbuste devant l'Arène (faut-il un essai qui montre mieux l'ouverture ?) ;
+  3. la créature du pêcheur (forme ronde sans bras) : acceptable comme référence d'ambiance ?
+  4. équilibre « prospère et verte » : densité des massifs, hauteur du grand magasin.
+
 ## 1. Intention
 
 Céladopole est **la grande ville du milieu du voyage** : prospère, verte, commerçante, élégante. Le
