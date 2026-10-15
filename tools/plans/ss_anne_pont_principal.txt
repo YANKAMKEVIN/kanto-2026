@@ -1,6 +1,6 @@
 # S.S. Anne — pont principal (ss_anne_main_deck) — grille fonctionnelle.
 # Jalon 16, dossier 19 (S.S. Anne et Badge Foudre) ; préparée par Claude le 2026-10-15,
-# À VALIDER par Kevin (avec la vue générale peinte). Valeurs par défaut (règle 4) : tailles,
+# VALIDÉE par Kevin le 2026-10-15 (plans v1). Valeurs par défaut (règle 4) : tailles,
 # positions, mobilier. Vérifiée par tools/art/plan_check_ss_anne.py. La grille fait foi sur
 # les coordonnées du §3 du dossier (R-14).
 #

@@ -56,7 +56,7 @@
    trois noms changés (R-10).
 2. **Relire le §0** : toute correction contestée se tranche avant le 16.0.
 
-### 0.4 Grilles et vues générales (préparées le 2026-10-15, à valider)
+### 0.4 Grilles et vues générales (grilles **validées par Kevin le 2026-10-15** ; vues générales à générer)
 
 - **Grilles** (font foi sur le §3, R-14) : `tools/plans/ss_anne_pont_principal.txt` (26 × 13),
   `ss_anne_couloir_capitaine.txt` (18 × 7), `ss_anne_cabine_capitaine.txt` (14 × 10),
@@ -66,8 +66,8 @@
 - **Contrôle** : `python3 tools/art/plan_check_ss_anne.py` — tout est vert : tout est atteignable ;
   Armand et Paul évitables, **0 Dresseur inévitable** hors rival ; rival inévitable (déclencheur sur
   les 3 cases de largeur du couloir) ; barrière fermée = Major Bob inaccessible, ouverte =
-  accessible ; 15 objets fouillables. Les 3 Dresseurs de l'Arène sont **évitables** (défaut ; Rouge/Bleu
-  en impose au moins un).
+  accessible ; 15 objets fouillables. Les 3 Dresseurs de l'Arène sont **évitables** (défaut validé avec les
+  plans ; Rouge/Bleu en impose au moins un).
 - **Planche** : `docs/design/reference/ss-anne-plans-v1.png` (`python3 tools/art/plan_ss_anne.py`).
 - **Vues générales à générer sur le Mac** (Codex, `tools/art/generer.sh`) :
   - `tools/art/generer.sh CONCEPT_SS_ANNE_PONT_PRINCIPAL_r1 tools/art/prompts/CONCEPT_SS_ANNE_PONT_PRINCIPAL_r1.txt docs/design/reference/labo-chen-v1.png`
