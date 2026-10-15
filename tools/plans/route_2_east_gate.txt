@@ -1,0 +1,42 @@
+# Poste de la Route 2 est (route_2_east_gate) — grille fonctionnelle (jalon 17, dossier 20 §8 ;
+# préparée le 2026-10-14, défauts de la règle 4). Intérieur d'UNE pièce, même enveloppe (15 × 10)
+# et même convention que les intérieurs d'Argenta (tools/plans/argenta_maison_chercheuse.txt,
+# tools/build_painted_interiors.gd). Contrôle : tools/art/plan_check_j17.py.
+#
+# Habitants : l'assistant du Professeur Chen (dialogue CS05, T-1 à T-4) derrière son bureau, face à
+# la porte, et un visiteur qui parle des grottes obscures (T-5). Aucun Dresseur, aucun objet.
+# Défaut : le poste est vu comme un petit poste de recherche en bois (cartes de Kanto, bocaux,
+# lampes de grotte posées au sol : rappel de Flash), pas un laboratoire.
+#
+# Légende :
+#   K mur (bloqué)          . sol (praticable)
+#   X sortie vers la Route 2 est (praticable : paillasson, PUSH ↓)
+#   B bibliothèque (grandes étagères, cartes) (1..4, 3)
+#   N bureau de l'assistant (7..9, 3) et sa chaise (8, 4)   f classeur (10, 3)
+#   E étagère du poste (bocaux, lampes de grotte) (12..13, 3)
+#   T table de lecture (2..4, 6..7)   x plante (1, 8), (13, 8)
+#   a assistant (8, 5)   v visiteur (11, 7)
+#
+# Format : section GRILLE (« NN » + espace + 15 caractères par rangée), puis POSITIONS.
+
+PRATICABLES .X
+
+GRILLE 15 10
+00 KKKKKKKKKKKKKKK
+01 KKKKKKKKKKKKKKK
+02 KKKKKKKKKKKKKKK
+03 KBBBB..NNNf.EEK
+04 K.......N.....K
+05 K.......a.....K
+06 K.TTT.........K
+07 KxTTT......v.xK
+08 KKKKKKXXXKKKKKK
+09 KKKKKKKKKKKKKKK
+FIN
+
+POSITIONS
+sortie              warp           6..8,8       libre   # PUSH ↓ → route_2_east, from_gate
+entree              spawn          7,8          libre   # spawn « entrance », tourné ↑
+assistant           pnj            8,5          bloque  role=P1 facing=down  # assistant de Chen : T-1 à T-4, CS05
+visiteur            pnj            11,7         bloque  role=P2 facing=left  # visiteur : T-5
+FIN
