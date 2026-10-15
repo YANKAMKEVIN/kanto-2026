@@ -110,6 +110,25 @@ rm "$HOME/Library/Application Support/Godot/app_userdata/Kanto 2026/debug_start.
 | `cerulean_rocket_weak.json` | J14 (T20b) : Rocket déjà repéré (`cerulean_rocket_spotted`), Salamèche **N5** seul, dans l'impasse (spawn `impasse_start` (16, 3)) : un pas à l'est = combat à perdre (réveil au Centre, retour : n° 32) |
 | `cerulean_after.json` | J14 (T20b) : Rocket battu et CT28 reçue, devant la maison cambriolée (spawn `from_burgled_house`, tourné vers le nord) : la porte s'ouvre sur la victime ; le policier du sud est encore là (n° 41 en passant par la bande (31..33, 37)) |
 
+## Jalon 17 — voile d'obscurité et Flash (carte de QA provisoire, retirée au T28)
+
+Clé **`veil`** (J17 T9, `"dark"` ou `"lit"`, avec `map`) : voile d'obscurité **forcé sur la carte
+de départ** pour la session (`"lit"` : halo de Flash ouvert), même hors d'une grotte obscure ;
+jamais sauvegardé. Ex. sur le Mont Sélénite (qui n'a pas de voile en jeu) : ajouter
+`"veil": "dark"` à `mt_moon_1f.json`.
+
+Cartes : `qa_flash` (grotte **obscure** de QA, 32 × 16, `caves.json` `"dark": true` ; gravats sans
+rencontre, randonneur immobile « sous le voile » en (17, 9), lampe en (23, 2) dont le halo perce
+le voile, deux masses, rochers) et sa pièce éclairée `qa_flash_entry` (12 × 8, hors grotte). Outil
+`tools/build_qa_flash.gd`, grilles `tools/plans/qa_flash*.txt`. Équipe commune : **Pikachu N20
+compagnon**, Reptincel N22, Roucoups N19 ; 5 Poké Balls, 3 Potions, 2 Cordes Sortie, 3 000 ₽.
+
+| Fichier | Partie |
+|---|---|
+| `flash_qa.json` | Dans la **pièce éclairée** `qa_flash_entry` (spawn `from_qa_flash_w`, tourné vers le nord) : aucun voile ; deux pas vers le nord → `qa_flash`, voile sombre posé pendant l'écran noir (halo ≈ 2,5 cases). Corde Sortie dans la grotte → retour dans la pièce, voile retiré. **À compléter au T7 / T24** : CS05 (`hm05`) au Sac quand l'objet existera ; départs `flash_qa_no_pokemon`, `flash_qa_no_hm`, `flash_qa_ko` du plan §2.17 avec la mise en scène (T24) |
+| `flash_qa_dark.json` | Dans `qa_flash`, à l'entrée (spawn `from_qa_flash_entry_w` (4, 14), tourné vers le nord) : **joueur au bord de la carte** (coin sud-ouest, caméra bornée) ; voile sombre ; le trou suit le joueur, pas l'écran |
+| `flash_qa_lit.json` | Même place, clé `"veil": "lit"` : **halo de Flash ouvert** (≈ 7 cases) dès l'arrivée |
+
 La carte de QA `qa_charge_j14` (J14, T10), ses données, son outil de construction et de capture,
 son test et les départs `charge_qa` et `teleport_qa` ont été **retirés au T24** (Tunnel, Téléport
 et l'IA qui creuse sont couverts par les tests de combat ; Abra se rencontre sur la Route 25).

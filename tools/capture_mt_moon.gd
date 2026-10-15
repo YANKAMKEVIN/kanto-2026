@@ -13,7 +13,8 @@ extends SceneTree
 ## (fps, appels de dessin, mémoire des textures toutes les 30 images), `--meta=<fichier.json>`
 ## (écrit à l'image 20 : carte, centre de l'écran en pixels du monde, zoom, taille de la vue,
 ## case du joueur), `--voile=dark|lit` (voile d'obscurité du J17 T9 / J18 §2.11 posé sur la
-## carte, sans Boot : « lit » = halo de Flash ouvert). Série complète : `tools/capture_mt_moon.sh`.
+## carte, sans Boot : « lit » = halo de Flash ouvert), `--invisible` (joueur présent mais caché :
+## vue `_vide` du contraste du héros sous le voile, même caméra et même trou). Série complète : `tools/capture_mt_moon.sh`.
 
 const MAPS_DIR: String = "res://game/world/maps/"
 const TILE: int = 96
@@ -48,6 +49,8 @@ func _setup() -> void:
 		_player = (load("res://game/player/player.tscn") as PackedScene).instantiate()
 		_map.call(&"spawn_player_at", _player, cell, facing)
 		_player.call(&"set_input_enabled", false)
+		if _args.has("invisible"):
+			(_player as CanvasItem).visible = false
 		if _args.has("steps"):
 			var step: PackedStringArray = String(_args["steps"]).split(":")
 			_walk(_player, _direction(step[0]), int(step[1]))

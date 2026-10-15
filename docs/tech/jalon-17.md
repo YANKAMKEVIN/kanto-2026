@@ -781,6 +781,12 @@ et annexe A validée).
 #### T10 — constructeur-monde : `qa_flash` et départs — **(A)**, après T9
 - §2.17. **CA** : départs chargés sans erreur ; README à jour ; captures relues (voile sombre, halo
   ouvert, joueur au bord de la carte).
+- **Fait (2026-10-15)** : `qa_flash` (32 × 16, obscure) + `qa_flash_entry` (12 × 8), outil
+  `tools/build_qa_flash.gd`, départs `flash_qa`, `flash_qa_dark`, `flash_qa_lit` (clé `veil`).
+  Reportés au T7 / T24 : CS05 au Sac, `flash_qa_no_pokemon`, `flash_qa_no_hm`, `flash_qa_ko`. À
+  retirer au T28 : cartes, assets `assets/world/maps/qa_flash*`, grilles, outils
+  `build_qa_flash.gd` / `capture_qa_flash.gd`, `data/npcs/qa_flash.json`, entrée de `caves.json`,
+  départs, `test_qa_flash`, listes de `test_map_catalog` et `test_cave_library`.
 
 #### T11 — architecte : kit d'assets série 19 — **(A)**
 - §1.4 ; fiche `docs/design/fiches-assets/serie-19-chemins.md`, `tools/art/serie19.py`

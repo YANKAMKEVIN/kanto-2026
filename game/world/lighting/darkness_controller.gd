@@ -39,6 +39,12 @@ func _init() -> void:
 	set_process(false)
 
 
+func _notification(what: int) -> void:
+	# Voile jamais posé dans un monde (setup non appelé) : libéré avec le contrôleur.
+	if what == NOTIFICATION_PREDELETE and is_instance_valid(_veil) and _veil.get_parent() == null:
+		_veil.free()
+
+
 func _process(_delta: float) -> void:
 	_follow()
 
