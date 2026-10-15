@@ -446,6 +446,7 @@ func _ready() -> void:
 	SceneRouter.setup(_world, _player, _fade)
 	# Destinations « à venir » (dossier-07 §12, build de développement) : l'écran provisoire.
 	SceneRouter.coming_soon_presenter = _coming_soon.present
+	SceneRouter.arrival_flags = func() -> StoryFlags: return GameState.flags
 	# Branchés avant start() : la première carte passe aussi par le contrôleur.
 	SceneRouter.transition_started.connect(_on_transition_started)
 	# Via Boot (ordre garanti) : présence des PNJ, puis le contrôleur, puis le directeur.
