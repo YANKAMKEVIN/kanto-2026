@@ -106,8 +106,6 @@ const MAPS: Array[StringName] = [
 	&"bill_house",
 	# Jalon 14 (T16) : la Route 25.
 	&"route_25",
-	# Jalon 15 (T6) : carte de QA provisoire de la Pension (retirée au T23).
-	&"qa_daycare",
 	# Jalon 15 (T18, T19) : le passage souterrain (passant T-18, indice T-19).
 	&"underground_path",
 	# Jalon 15 (T14) : la Route 6, Carmin-sur-Mer et ses intérieurs.

@@ -27,9 +27,8 @@ func test_has_map() -> void:
 
 ## Cartes de QA encore livrées. Clôture du jalon 9 (T23) : la carte de QA des systèmes
 ## est retirée ; jalon 12 (T28) : `qa_moves_j12` ; jalon 13 (T22) : `qa_switch_j13` ; jalon 14
-## (T24) : `qa_charge_j14`. Jalon 15 (T6) : `qa_daycare` est PROVISOIRE, à retirer au T23
-## (liste alors vide).
-const QA_MAPS_SHIPPED: Array[String] = ["qa_daycare.tscn"]
+## (T24) : `qa_charge_j14` ; jalon 15 (T23) : `qa_daycare`.
+const QA_MAPS_SHIPPED: Array[String] = []
 
 
 func test_only_planned_qa_maps_are_shipped() -> void:
@@ -37,6 +36,7 @@ func test_only_planned_qa_maps_are_shipped() -> void:
 	assert_false(MapCatalog.has_map(&"qa_moves_j12"))
 	assert_false(MapCatalog.has_map(&"qa_switch_j13"))
 	assert_false(MapCatalog.has_map(&"qa_charge_j14"))
+	assert_false(MapCatalog.has_map(&"qa_daycare"))
 	for file: String in DirAccess.get_files_at(MapCatalog.MAPS_DIR):
 		if file.begins_with("qa_"):
 			assert_true(QA_MAPS_SHIPPED.has(file), "%s : carte de QA non prévue" % file)

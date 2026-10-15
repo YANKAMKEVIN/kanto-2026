@@ -922,6 +922,7 @@ ligne du journal citée). Les étapes marquées (opt.) se sautent si le temps ma
   embarquement, navire, `vermilion_dock` non créé), J17 (arbre, porte de l'Arène), J14 (séquence
   `OffBattleLevelUp` pour le Super Bonbon), phase 10 (souterrain sans ciel). Fusion dans `main`
   (copie d'intégration ; `project.godot` et filtre d'export vérifiés).
+- **Fait (2026-10-16, branche `j15-t23-cloture`)** : §9.
 
 ---
 
@@ -1026,6 +1027,100 @@ Aucune décision de game design ne manque : tout le reste a une valeur par défa
 
 **À fournir par Kevin** (pas une question) : la sauvegarde v6 de sa vraie partie pour T3 et la QA
 finale.
+
+---
+
+## 9. Clôture et passation (T23 — 2026-10-16, architecte ; branche `j15-t23-cloture` depuis `jalon-15` à `5a8b50f2`)
+
+**J15 TERMINÉ** : 15.0 (Pension seule, sauvegarde v7 ; S24 et S21), 15A et 15B (+ 15B-bis) validés
+par Kevin sur le S21 ; Miaouss compagnon agrandi à 64 px (décision du 2026-10-16).
+
+### 9.1 Retraits de la clôture
+
+- Carte de QA provisoire **`qa_daycare`** (T6) : scène `game/world/maps/qa_daycare.tscn`, PNJ
+  `data/npcs/qa_daycare.json`, entrées de `interiors.json`, `lighting.json` et de la zone
+  `viridian_city` (`zones.json`) ; constante `QA`, option `--qa` et `_qa_daycare` de
+  `tools/build_painted_interiors.gd` ; `tools/capture_qa_daycare.gd`.
+- Les **7 départs** `daycare_qa`, `daycare_companion`, `daycare_ready`, `daycare_evolve`,
+  `daycare_poor`, `daycare_full`, `daycare_lv99` (et leurs lignes du README) ; leur test
+  `tests/unit/test_daycare_qa_starts.gd`.
+- Exceptions « à retirer au T23 » : `QA_MAPS_SHIPPED` **vide** (`test_map_catalog`, qui vérifie en
+  plus que `qa_daycare` n'existe plus), `test_zone_library` (Jadielle = la ville et ses deux
+  intérieurs), liste des cartes de `test_dialogue_data`.
+- **Gardés** : les départs de la vraie Pension (`route_5_daycare`, `route_5_daycare_last`,
+  `route_5_daycare_ready`), `daycare_v7_qa` (Jadielle, migration v7) et les autres départs du J15
+  sur les vraies cartes (`test_j15_qa_starts`).
+- `project.godot` : scène principale `res://game/boot.tscn` ; filtre d'export inchangé
+  (`tests/*, tools/*, docs/*, addons/gut/*, build/*, proto/*, …battle_proto/*`) ; aucune carte
+  `qa_*` dans `game/world/maps/`.
+
+### 9.2 Passation au J16 (S.S. Anne, Major Bob ; dossier **19** sur `ccr-fa255d49-wvvacc`, contrat : dossier 18 §17)
+
+- **Quai** (`vermilion_city`, grille `tools/plans/vermilion_city.txt`) : passerelle
+  d'embarquement **(31..32, 27)** = deux warps « S.S. Anne — À venir » (`BoardingW`, `BoardingE`,
+  arrivées de retour `from_ss_anne_w|e` sur la passerelle, tournées ↑) ; **marin** en **(31, 26)**
+  (`data/npcs/vermilion_city.json`, `sailor`, dialogue `vermilion_sailor` = **T-26 provisoire**,
+  identique avec et sans Passe Bateau) : il garde la passerelle avec le cordage. Le J16 remplace
+  la réplique, lève les `coming_soon` et contrôle le Passe Bateau (`ss_ticket`, `got_ss_ticket`).
+- **S.S. Anne** : **trois objets** séparés (proue, milieu, poupe) + passerelle, chacun sous une
+  `FlagGate` `unless ss_anne_departed` (`tools/build_vermilion_city.gd`, `SHIP_FLAG`) : le navire
+  disparaît quand le J16 lève le drapeau. La coque est de l'eau (`N`) dans la grille : rien ne
+  passe au sud, avec ou sans navire.
+- **Jeune arbre de l'Arène** : objet de décor `prop_jeune_arbre_arene_01` en (49..50, 10) sous une
+  `FlagGate` `unless cut_vermilion_gym_bush` dont `blocking_cells` occupe les deux cases `A`
+  (praticables dans `Ground`) ; examen `vermilion_gym_tree` (T-29). Aucune mécanique de Coupe au
+  J15. **Porte de l'Arène** : warp `DoorGym` « Arène de Carmin-sur-Mer — À venir » (arrivée
+  `from_gym`), à brancher sur `vermilion_gym` par le J16.
+- **Noms alignés** : le J16 a adopté ce contrat le 2026-10-16 (`ccr-fa255d49-wvvacc` à
+  `ed7f5214` : `cut_vermilion_gym_bush`, arbuste en `FlagGate`, quai dans `vermilion_city`,
+  sauvegarde v7 ; sa capacité de terrain accepte un décor de la carte). À vérifier à sa fusion :
+  `test_vermilion_city` (navire, arbuste, budget de nœuds) reste vert.
+- **Centre de Carmin** (`vermilion_center`) = point de retour après une défaite à bord (soin,
+  Stockage) ; Boutique `vermilion_mart` (Super Potion, Corde Sortie).
+- **`vermilion_dock` non créé** (F-12) : le quai fait partie de `vermilion_city` (≤ 3 000 nœuds,
+  `test_vermilion_city`). Sortie est « ROUTE 11 — À venir » (63, 11..13).
+- **Sauvegarde : v7** (Pension). Le J16 n'en crée pas de nouvelle (ses drapeaux vont dans
+  `flags`) ; son code est encore en v6 au 2026-10-16 : il passe en v7 en fusionnant `main`, et la
+  vraie partie de Kevin à relire est en v7.
+- Drapeaux du J15 (tous dans `flags`) : `route_5_entered`, `route_5_gate_warned`,
+  `vermilion_reached`, `beaten_route_6_*` (six Dresseurs), `got_route_5_*` / `got_route_6_*` /
+  `got_underground_*` (objets au sol et cachés) ; objectifs
+  `explore_vermilion`, `go_vermilion`, `ss_anne` (`data/story/objectives.json`).
+
+### 9.3 Passation au J14 (déjà dans `main`)
+
+- **Super Bonbon séparé d'`OffBattleLevelUp`** (décision de Kevin, 2026-10-15) : `RareCandy` et
+  son déroulé dans `boot.gd` restent tels quels ; seule la Pension utilise
+  `game/systems/evolution/off_battle_level_up.gd`. Le voile d'apprentissage `_learn_overlay()`
+  (`TmLearnOverlay`) est le seul élément partagé. Réunir les deux séquences n'est pas demandé.
+- **Victoire avec équipe entière K.O.** (`jalon-14.md` §9.2) : corrigée au J15 (T24, règle
+  Rouge/Bleu, Q-T24).
+
+### 9.4 Phase DA (rendu, rien à corriger avant)
+
+- **Souterrain sans ciel** : ni grotte ni intérieur (`interior = false`, hors `caves.json`) ;
+  `CaveLibrary.has_sky` le dirait « à ciel ouvert ». Aucun usage avant le jour/nuit (phase 10) :
+  à traiter alors (§0.2 point 11, §2.3), avec son rendu (profil `underground`, appliques).
+- **Mémoire des textures** relevée sur le S21 (moniteur `tex`, socle compris) : ≈ **70 Mo** sur la
+  Route 5, ≈ **94 Mo** sur la Route 6 et à Carmin (> 64 Mo, sans ralentissement : 60 fps, creux aux
+  transitions) ; la mesure « carte + voisines » (`tools/measure_map_cache.gd`) reste ≤ 36 Mo.
+- **Reportés** (rendu, non corrigés) :
+  - ouverture nord peinte de l'enveloppe des postes (prairie en lumière) visible derrière
+    l'escalier des deux bâtiments d'entrée du souterrain ; grande plante du poste de la Route 5
+    (5, 2) qui masque à moitié l'ouverture vers Safrania ;
+  - compagnon peut-être invisible dans le bâtiment de la Route 6 (à confirmer) ;
+  - écran d'oubli de capacités hors combat : panneau décalé à droite, en partie hors du cadre ;
+  - panneau de la Route 5 : « Azuria ↔ Safrania » (T-13 validé) alors que la grille parle de
+    Carmin-sur-Mer ;
+  - départ de débogage `route_5` sans `route_5_entered` : l'objectif affiche « obtenir le Badge
+    Cascade. » jusqu'au premier pas (outil de QA seulement) ;
+  - Miaouss compagnon à 64 px à rejuger en marche (S21/S24) ;
+  - mémoire des textures (ci-dessus).
+
+### 9.5 Tests
+
+- Branche de clôture : import sans erreur ; `tools/test.sh` **4 956 / 4 956** (417 scripts, 250 674 assertions ; 4 965 avant le retrait des 9 tests de `test_daycare_qa_starts`).
+- Fusion dans `main` : import et `tools/test.sh` relancés sur le commit de fusion (résultat dans son message).
 
 ---
 

@@ -18,7 +18,7 @@
 		},
 		"viridian_city": {
 			"name": "Jadielle", "kind": "town",
-			"maps": ["viridian_city", "viridian_center", "viridian_mart", "qa_daycare"],
+			"maps": ["viridian_city", "viridian_center", "viridian_mart"],
 			"services": [
 				{ "id": "pokemon_center", "found_on": "viridian_center" },
 				{ "id": "poke_mart", "found_on": "viridian_mart" },

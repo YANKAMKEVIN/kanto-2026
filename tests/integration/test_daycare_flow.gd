@@ -1,6 +1,6 @@
 extends GutTest
 ## La Pension sur la carte (J15, T4 ; jalon-15.md §2.5, §5 ; dossier 18 §4, textes T-1 à T-12)
-## avec le vrai Boot (Centre de Jadielle comme décor : la carte de QA `qa_daycare` vient au T6),
+## avec le vrai Boot (Centre de Jadielle comme décor),
 ## une sauvegarde en mémoire et le dialogue du gardien joué tel qu'un PNJ le jouerait :
 ## - dépôt (T-2 → OUI → T-4 → écran du dépôt → T-6), écriture **immédiate** (le disque a la
 ##   Pension pleine dès T-6), compagnon effacé ; NON (T-3), ANNULER, retour Android, dernier apte ;
