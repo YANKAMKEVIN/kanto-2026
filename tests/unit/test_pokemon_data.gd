@@ -77,14 +77,18 @@ func test_real_data_loads_without_error() -> void:
 		&"paras", &"parasect",
 		# Jalon 15 (T12) : Miaouss et Persan (kanto_vermilion.json).
 		&"meowth", &"persian",
-		&"mankey", &"primeape", &"abra", &"kadabra", &"machop",
-		&"bellsprout", &"weepinbell",
+		&"mankey", &"primeape",
+		# Jalon 21 (T5) : Ptitard, Tentacool, Ronflex (kanto_j21.json).
+		&"poliwag",
+		&"abra", &"kadabra", &"machop",
+		&"bellsprout", &"weepinbell", &"tentacool",
 		&"geodude", &"graveler", &"golem", &"shellder", &"onix", &"voltorb", &"koffing",
-		&"horsea", &"goldeen", &"staryu", &"starmie"] as Array[StringName])
-	assert_eq(_data.get_move_ids().size(), 104,
+		&"horsea", &"goldeen", &"staryu", &"starmie", &"snorlax"] as Array[StringName])
+	assert_eq(_data.get_move_ids().size(), 106,
 		"47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10) + Patience (J11) "
 		+ "+ 21 du Mont Sélénite (jalon 12) + 8 du jalon 13 (les 5 du J12 qu'il reprenait : "
-		+ "entrées du J12) + 6 du Cap d'Azuria (jalon 14) + Jackpot (J15) + Amnésie (J21)")
+		+ "entrées du J12) + 6 du Cap d'Azuria (jalon 14) + Jackpot (J15) "
+		+ "+ Amnésie, Constriction, Bouclier (J21)")
 	assert_true(_data.has_move(&"struggle"))
 
 

@@ -4,5 +4,19 @@
 		"accuracy": 0, "pp": 20,
 		"effects": [{ "kind": "stat_stage", "stat": "spd", "stages": 2, "target": "self" }],
 		"description": "Le lanceur fait le vide dans sa tête. Augmente beaucoup sa Défense Spéciale."
+	},
+	"constrict": {
+		"name": "Constriction", "type": "normal", "category": "physical",
+		"power": 10, "accuracy": 100, "pp": 35,
+		"effects": [{ "kind": "stat_stage", "stat": "spe", "stages": -1, "target": "foe", "chance": 10 }],
+		"description": "Enserre la cible dans de longs tentacules. Peut baisser sa Vitesse.",
+		"draft": true
+	},
+	"barrier": {
+		"name": "Bouclier", "type": "psychic", "category": "status",
+		"accuracy": 0, "pp": 20,
+		"effects": [{ "kind": "stat_stage", "stat": "def", "stages": 2, "target": "self" }],
+		"description": "Le lanceur dresse un mur solide devant lui. Augmente beaucoup sa Défense.",
+		"draft": true
 	}
 }

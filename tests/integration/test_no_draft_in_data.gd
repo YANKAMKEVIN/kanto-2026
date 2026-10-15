@@ -11,6 +11,10 @@ const DATA_DIR := "res://data"
 ## Jalon 21 (T4) : Poké Flûte et CT39, textes du lot §15 du dossier 24 à valider par Kevin.
 const PENDING_DRAFTS: Array[String] = [
 	"items/items_j21.json/poke_flute", "items/items_j21.json/tm39",
+	# T5 : capacités ajoutées pour les learnsets complets (hors §15) et Pokédex (§15.10, Q-3).
+	"pokemon/moves/j21.json/constrict", "pokemon/moves/j21.json/barrier",
+	"pokedex/kanto.json/species/poliwag", "pokedex/kanto.json/species/tentacool",
+	"pokedex/kanto.json/species/marowak", "pokedex/kanto.json/species/snorlax",
 ]
 
 
