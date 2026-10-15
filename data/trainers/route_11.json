@@ -1,0 +1,59 @@
+{
+	"route_11_youngster_lucas": {
+		"name": "Gamin Lucas", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true,
+		"prize_money": 0, "prize_per_level": 15,
+		"team": [{ "species": "ekans", "level": 21 }]
+	},
+	"route_11_youngster_arthur": {
+		"name": "Gamin Arthur", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true,
+		"prize_money": 0, "prize_per_level": 15,
+		"team": [{ "species": "sandshrew", "level": 19 }, { "species": "zubat", "level": 19 }]
+	},
+	"route_11_youngster_louis": {
+		"name": "Gamin Louis", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true,
+		"prize_money": 0, "prize_per_level": 15,
+		"team": [
+			{ "species": "rattata", "level": 17 }, { "species": "rattata", "level": 17 },
+			{ "species": "raticate", "level": 17 }
+		]
+	},
+	"route_11_youngster_raphael": {
+		"name": "Gamin Raphaël", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true,
+		"prize_money": 0, "prize_per_level": 15,
+		"team": [{ "species": "nidoran_m", "level": 18 }, { "species": "nidorino", "level": 18 }]
+	},
+	"route_11_gambler_marcel": {
+		"name": "Joueur Marcel", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true,
+		"prize_money": 0, "prize_per_level": 70,
+		"team": [{ "species": "voltorb", "level": 18 }, { "species": "magnemite", "level": 18 }]
+	},
+	"route_11_gambler_roger": {
+		"name": "Joueur Roger", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true,
+		"prize_money": 0, "prize_per_level": 70,
+		"team": [
+			{ "species": "growlithe", "level": 18, "moves": ["bite", "leer", "ember"] },
+			{ "species": "vulpix", "level": 18 }
+		]
+	},
+	"route_11_engineer_bruno": {
+		"name": "Ingénieur Bruno", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true,
+		"prize_money": 0, "prize_per_level": 50,
+		"team": [{ "species": "magnemite", "level": 21 }]
+	},
+	"route_11_engineer_victor": {
+		"name": "Ingénieur Victor", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true,
+		"prize_money": 0, "prize_per_level": 50,
+		"team": [
+			{ "species": "magnemite", "level": 16 }, { "species": "magnemite", "level": 16 },
+			{ "species": "magneton", "level": 16 }
+		]
+	}
+}
