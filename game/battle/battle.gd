@@ -10,7 +10,7 @@ extends RefCounted
 ## Un tour ([method submit]) : choix de l'IA adverse, ordre (priorité de la capacité, puis
 ## Vitesse effective, puis tirage roll(2) à égalité : 1 = le joueur d'abord), exécution. Un
 ## Pokémon K.O. n'agit plus ; le combat s'arrête dès qu'un camp n'a plus de Pokémon valide
-## (si les deux tombent pendant la même action, le camp du lanceur gagne). En fin de tour,
+## (si les deux tombent ensemble, le joueur perd : J15 T24, Rouge/Bleu). En fin de tour,
 ## l'adversaire dont le Pokémon est K.O. envoie le suivant ; le joueur choisit le sien
 ## (jalon 7, [constant State.REPLACING]). Sans PP, seule Lutte est permise
 ## ([constant BattleAction.STRUGGLE]) : sans type, recul d'¼ des PV max du lanceur.
@@ -91,8 +91,8 @@ extends RefCounted
 ## TRAP_DAMAGED, TRAP_ENDED ; fuite et changement refusés par [method is_legal],
 ## [method is_player_trapped]), Entrave (MOVE_DISABLED ; capacité exclue de
 ## [method get_usable_moves], [method get_disabled_move] ; décompte en fin de tour, DISABLE_ENDED),
-## Repos (RESTED, [method StatusRules.apply_rest]), Destruction / Explosion (SELF_KO : le camp du
-## lanceur perd si les deux derniers Pokémon tombent ensemble), Sonicboom (dégâts fixes
+## Repos (RESTED, [method StatusRules.apply_rest]), Destruction / Explosion (SELF_KO ; si les deux
+## derniers Pokémon tombent ensemble, le joueur perd, J15 T24), Sonicboom (dégâts fixes
 ## « value »). Tirages ajoutés : range_int des tours du piège, après ceux des dégâts. Fin de tour,
 ## pour chaque camp (le joueur d'abord) : graine, statut, piège, Entrave.
 ##
@@ -552,7 +552,7 @@ func _drain_seed(side: BattleSide, events: Array[BattleEvent]) -> void:
 	events.append(drained)
 	if victim.is_fainted():
 		_faint(side, events)
-		_check_end(other_side, events)
+		_check_end(events)
 
 
 ## Statut à dégâts en fin de tour ([method StatusRules.end_turn_damage]) : le Pokémon de
@@ -570,7 +570,7 @@ func _status_damage(side: BattleSide, events: Array[BattleEvent]) -> void:
 	events.append(damaged)
 	if victim.is_fainted():
 		_faint(side, events)
-		_check_end(_foe if side == _player else _player, events)
+		_check_end(events)
 
 
 func _player_goes_second(player_action: BattleAction, foe_action: BattleAction) -> bool:
@@ -661,7 +661,7 @@ func _execute(side: BattleSide, action: BattleAction, events: Array[BattleEvent]
 		_faint(target_side, events)
 	if user.pokemon.is_fainted():
 		_faint(side, events)
-	_check_end(side, events)
+	_check_end(events)
 
 
 ## Le lanceur peut-il agir ? Dans l'ordre (`jalon-11.md` §2.2) : statut durable
@@ -699,7 +699,7 @@ func _can_act(side: BattleSide, events: Array[BattleEvent]) -> bool:
 			events.append(hurt)
 			if pokemon.is_fainted():
 				_faint(side, events)
-				_check_end(_foe if side == _player else _player, events)
+				_check_end(events)
 			return false
 	return true
 
@@ -732,7 +732,7 @@ func _continue_bide(side: BattleSide, target_side: BattleSide, events: Array[Bat
 	_record_hit(target_side, damage.amount)
 	if target.pokemon.is_fainted():
 		_faint(target_side, events)
-	_check_end(side, events)
+	_check_end(events)
 
 
 ## Rupture de la Patience du Pokémon de [param side] (s'il en avait une) : BIDE_BROKEN, sauf
@@ -1002,17 +1002,15 @@ func _append_missed(side: BattleSide, move_id: StringName, events: Array[BattleE
 	events.append(missed)
 
 
-## Fin du combat si un camp n'a plus de Pokémon valide ([param acting] : camp du lanceur,
-## vainqueur si les deux tombent ensemble).
-func _check_end(acting: BattleSide, events: Array[BattleEvent]) -> void:
-	var player_out := not _player.has_able()
-	var foe_out := not _foe.has_able()
-	if not player_out and not foe_out:
-		return
-	if player_out and foe_out:
-		_finish(Outcome.WIN if acting == _player else Outcome.LOSS, events)
-	else:
-		_finish(Outcome.WIN if foe_out else Outcome.LOSS, events)
+## Fin du combat si un camp n'a plus de Pokémon valide. Le joueur sans Pokémon valide perd
+## **toujours**, même si l'adversaire tombe dans le même coup (J15 T24, Rouge/Bleu : la défaite
+## l'emporte ; contrecoup de Lutte, Destruction / Explosion des deux côtés, confusion…) : une
+## victoire implique donc toujours un Pokémon valide dans l'équipe du joueur.
+func _check_end(events: Array[BattleEvent]) -> void:
+	if not _player.has_able():
+		_finish(Outcome.LOSS, events)
+	elif not _foe.has_able():
+		_finish(Outcome.WIN, events)
 
 
 ## Met en jeu [param pokemon] pour [param side] (null : son premier Pokémon valide).
@@ -1232,7 +1230,7 @@ func _trap_damage(side: BattleSide, events: Array[BattleEvent]) -> void:
 	victim.trap_turns -= 1
 	if pokemon.is_fainted():
 		_faint(side, events)
-		_check_end(other_side, events)
+		_check_end(events)
 		return
 	if victim.trap_turns == 0:
 		var ended := _event(BattleEvent.Kind.TRAP_ENDED, side)
@@ -1298,7 +1296,7 @@ func _rest(move: MoveData, side: BattleSide, events: Array[BattleEvent]) -> void
 ## Destruction, Explosion : si [param move] porte SELF_KO, le lanceur (qui a pu agir) perd ses
 ## derniers PV après la capacité, même ratée ou sans effet : SELF_KO, puis le FAINTED de la cible
 ## si elle tombe (XP : le lanceur, à 0 PV, n'en reçoit pas), puis le sien. Si les deux derniers
-## Pokémon tombent ensemble, le camp du lanceur perd. Vrai si la capacité en porte un.
+## Pokémon tombent ensemble, le joueur perd (J15 T24). Vrai si la capacité en porte un.
 func _self_ko(move: MoveData, side: BattleSide, target_side: BattleSide,
 		events: Array[BattleEvent]) -> bool:
 	if move.effect_of(MoveEffect.Kind.SELF_KO) == null:
@@ -1311,7 +1309,7 @@ func _self_ko(move: MoveData, side: BattleSide, target_side: BattleSide,
 	if target_side.active.pokemon.is_fainted():
 		_faint(target_side, events)
 	_faint(side, events)
-	_check_end(target_side, events)
+	_check_end(events)
 	return true
 
 

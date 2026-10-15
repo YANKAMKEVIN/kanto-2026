@@ -227,7 +227,7 @@ func _ready() -> void:
 	# Dresseurs (jalon-09.md §2.4.6) : branchés sur le pas du joueur APRÈS le directeur de scènes
 	# et AVANT l'EncounterDirector (setup plus bas) : un pas qui entre dans un champ de vision ne
 	# tire aucune rencontre sauvage. Défi à la parole par le contrôleur d'interactions.
-	_trainer_watcher.setup(_player, GameState.flags, _cutscenes_node)
+	_trainer_watcher.setup(_player, GameState.flags, _cutscenes_node, GameState)
 	_interactions.set_story_flags(GameState.flags)
 	_interactions.challenge_requested.connect(_trainer_watcher.challenge)
 	_pokemon.load_dir()

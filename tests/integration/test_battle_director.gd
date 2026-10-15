@@ -569,6 +569,61 @@ func test_empty_party_is_refused() -> void:
 	assert_push_error("aucun Pokémon valide")
 
 
+## J15 T24 (garde-fou) : une équipe entière K.O. (pas vide) est refusée avant tout, en Dresseur
+## comme en sauvage : aucun aléatoire consommé, rien d'affiché, joueur libre.
+func test_a_knocked_out_party_is_refused_before_anything() -> void:
+	_prepare(&"charmander", 1)
+	(_state.party as Party).get_lead().hp = 0
+	watch_signals(_director)
+	var actors: Dictionary[StringName, StringName] = {}
+	var outcome: int = await _director.run(&"forest_scout_theo", _map, actors)
+	assert_eq(outcome, Battle.Outcome.NONE)
+	var request := BattleRequest.wild(WildEncounter.new(&"rattata", 3, &"route_1_grass"), _data,
+		GameRng.new(4), Vector2i(5, 4), _items)
+	outcome = await _director.run_request(request, _map)
+	assert_eq(outcome, Battle.Outcome.NONE)
+	assert_push_error("aucun Pokémon valide", "Dresseur refusé")
+	assert_push_error("aucun Pokémon valide", "sauvage refusé")
+	assert_eq((_state.rng as GameRng).roll(1000), GameRng.new(1).roll(1000),
+		"aucun aléatoire consommé (équipe du Dresseur non tirée)")
+	assert_signal_not_emitted(_director, "battle_started")
+	assert_false(_director.is_running())
+	assert_true(_player.is_input_enabled(), "joueur libre")
+
+
+## J15 T24 (Rouge/Bleu) : le dernier Pokémon du joueur, sans PP, met K.O. le seul Pokémon du
+## Dresseur avec Lutte et tombe sur le contrecoup : DÉFAITE. Ni prix (« Tu remportes… » absent),
+## ni argent perdu, ni XP ; l'équipe reste K.O. (le réveil au Centre est l'affaire de la scène).
+func test_a_struggle_double_ko_against_a_trainer_is_a_loss() -> void:
+	var party := Party.new()
+	var strong := PokemonFactory.create(_data, &"charmander", 50, GameRng.new(PLAYER_SEED))
+	for slot: MoveSlot in strong.moves:
+		slot.pp = 0
+	strong.hp = 1
+	var experience := strong.experience
+	party.add(strong)
+	_state.party = party
+	_state.starter_species = &"charmander"
+	_state.rng = GameRng.new(5)
+	_state.money = 3000
+	watch_signals(_director)
+	var played: Array = await _play(&"forest_scout_theo")
+	assert_eq(played[0], Battle.Outcome.LOSS)
+	var fainted: Array = []
+	for e: BattleEvent in played[1]:
+		if e.kind == BattleEvent.Kind.FAINTED:
+			fainted.append(e.side)
+		assert_ne(e.kind, BattleEvent.Kind.EXP_GAINED, "aucune XP")
+	assert_eq(fainted, [BattleEvent.SideId.FOE, BattleEvent.SideId.PLAYER], "double K.O.")
+	assert_signal_emitted_with_parameters(_director, "battle_finished",
+		[&"forest_scout_theo", Battle.Outcome.LOSS])
+	assert_eq(_state.money, 3000, "ni prix ni perte")
+	assert_ne(_hud.get_message_banner().get_text(), "Tu remportes %s." % MenuFormat.money(72))
+	assert_eq(strong.experience, experience)
+	assert_true(strong.is_fainted(), "pas de soin ici")
+	assert_true(_player.is_input_enabled())
+
+
 # --- XP, niveaux, apprentissage et oubli (jalon 5C, T11) --------------------------------
 
 ## Équipe d'un seul Pokémon : [param species] au niveau [param level] ; [param to_next] XP avant
