@@ -89,5 +89,14 @@
 	},
 	"route_11_engineer_victor_after": {
 		"speaker": "Ingénieur Victor", "pages": ["Mon Magnéton a besoin de réglages."]
+	},
+	"route_11_item_1": {
+		"cutscene": "route_11_item_1"
+	},
+	"route_11_item_2": {
+		"cutscene": "route_11_item_2"
+	},
+	"route_11_hidden_1": {
+		"cutscene": "route_11_hidden_1"
 	}
 }

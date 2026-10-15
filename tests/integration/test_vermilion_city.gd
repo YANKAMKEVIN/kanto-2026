@@ -142,17 +142,16 @@ func test_north_edge_leads_to_route_6() -> void:
 		assert_eq(_map.get_spawn_cell(StringName("from_route_6_" + suffixes[i])), cell)
 
 
-func test_east_edge_is_route_11_coming_soon() -> void:
+func test_east_edge_leads_to_route_11_row_by_row() -> void:
 	var suffixes := ["n", "c", "s"]
 	for i: int in 3:
 		var cell := Vector2i(63, 11 + i)
 		var warp := _map.get_warps().find_on_push(cell, Vector2i.RIGHT)
 		assert_not_null(warp, "raccord est %s" % cell)
 		if warp != null:
-			assert_true(warp.is_coming_soon(), "Route 11 — À venir")
-			assert_eq(warp.coming_soon, "Route 11")
-			assert_eq([warp.target_spawn, warp.facing],
-				[StringName("from_route_11_" + suffixes[i]), Vector2i.LEFT])
+			assert_false(warp.is_coming_soon(), "plus de « Route 11 — À venir »")
+			assert_eq([warp.target_map, warp.target_spawn, warp.facing],
+				[&"route_11", StringName("from_vermilion_" + suffixes[i]), Vector2i.RIGHT])
 		assert_eq(_map.get_spawn_cell(StringName("from_route_11_" + suffixes[i])), cell)
 	assert_true(_reach(_terrain(_grid)).has(Vector2i(63, 12)), "sortie est atteignable")
 
