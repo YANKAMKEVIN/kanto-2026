@@ -104,7 +104,7 @@ des maisons du sud. Aucune porte, aucun accès ni aucune rue n'a changé.
 3. **Distances** (Arène à 74 pas, grand magasin à 63) et **Arène plus haute que l'écran** : à juger
    sur S24 au 20-I (caméra qui suit).
 
-## Vue générale peinte v1 (à valider par Kevin)
+## Vue générale peinte v1 — VALIDÉE par Kevin le 2026-10-15 (telle quelle)
 
 > Produite le 2026-10-15 selon la filière du J13 (plan en aplats non annoté + vue d'Azuria comme
 > ancre de style, Codex, sans nom de licence dans les prompts). **Référence de DA et de composition
