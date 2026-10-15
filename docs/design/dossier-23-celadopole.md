@@ -42,7 +42,11 @@
 | 18 | Aucun ordre imposé entre Erika et le repaire | V, passe §2.3 |
 | 19 | Le J20 ne touche ni Lavanville, ni M. Fuji, ni Ossatueur, ni la Poké Flûte, ni Ronflex | V |
 
-## Grilles v1 — EN ATTENTE de la validation de Kevin (2026-10-15)
+## Grilles v1 — VALIDÉES par Kevin le 2026-10-15
+
+> Validées avec la densification de Céladopole et le raccord recalé sur Lavanville. Maison du chef :
+> deux habitants ordinaires (valeur par défaut retenue). Textes manquants : lot complémentaire au
+> plan technique.
 
 29 grilles nouvelles dans `tools/plans/` (la grille fait foi pour la géométrie). Contrôle global :
 `python3 tools/art/plan_check.py` → **38 plans conformes** (9 existants + 29 du J20), profils
