@@ -1,14 +1,33 @@
 CONCEPT ART — S.S. ANNE, LE PONT EXTÉRIEUR (pont promenade) (Kanto 2026), image de référence de direction artistique.
 
-Deux images sont jointes : la VUE GÉNÉRALE D'AZURIA (extérieur du même jeu : rendu de l'eau, de la lumière, des matières) et le LABORATOIRE DU PROFESSEUR CHEN (rendu des objets construits). Respecte EXACTEMENT leur style de rendu peint. Ne reprends PAS leurs compositions.
+Trois images sont jointes.
 
-Format : PAYSAGE 1536 × 1024. Vue de dessus, orthogonale comme les extérieurs du jeu (angles droits, sans perspective isométrique). Une longue bande de pont en bois clair, environ 24 cases de large sur 6 de profondeur, bordée au nord et au sud par une RAMBARDE blanche à main courante de bois ; au-delà, la MER, calme et lumineuse, des deux côtés.
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. Une longue bande de pont en bois clair, environ 24 cases de large sur 6 de profondeur, qui traverse TOUTE la largeur de l'image (une case ≈ la largeur d'un personnage).
+Légende du plan (gauche = ouest, haut = nord) :
+- bleu = la MER, calme et lumineuse, au nord et au sud du pont, jusqu'aux bords de l'image ;
+- beige strié = le PONT en lames de bois clair parallèles, d'ouest en est ;
+- deux lignes blanches à liseré brun, en haut et en bas, et une à droite = la RAMBARDE blanche à main courante de bois, qui ferme le pont au nord, au sud et à l'est ;
+- blanc à gauche = la PAROI BLANCHE de la superstructure du navire (vue de dessus, son toit et sa face) ; le rectangle brun dans cette paroi = une PORTE (retour à l'intérieur) ;
+- quatre carrés bruns à gauche, deux en haut et deux en bas = quatre CHAISES LONGUES en bois, deux par deux ;
+- deux anneaux rouges = deux BOUÉES de sauvetage rouge et blanc, posées contre la rambarde (une en haut au centre, une en bas à droite).
+Respecte ce plan À LA LETTRE : place de la porte, des chaises longues, des bouées et des rambardes. Rien d'autre sur le pont : le reste est LIBRE et lisible. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
 
-AGENCEMENT (gauche = ouest) :
-- Bord gauche : la paroi blanche de la superstructure du navire, avec une PORTE (retour à l'intérieur).
-- Quatre CHAISES LONGUES en bois deux par deux à gauche, deux BOUÉES de sauvetage accrochées à la rambarde, quelques bittes d'amarrage et cordages lovés.
-- Le reste du pont est LIBRE et lisible, lames de bois parallèles d'ouest en est.
+RÈGLE ABSOLUE : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; le pont, les rambardes et la paroi sont RECTILIGNES, à ANGLES DROITS, alignés sur les axes de l'image : AUCUNE courbe, aucune diagonale, pas de proue pointue visible. Le pont est plat.
 
-AMBIANCE — respiration : grand air, soleil de fin de matinée, reflets sur l'eau, quelques mouettes au loin. Fidèle à Pokémon, jamais un paquebot de luxe contemporain. Pas de personnage, pas de Pokémon.
+IMAGE 2 : la VUE GÉNÉRALE DE CARMIN-SUR-MER, où ce même navire (le S.S. Anne) est amarré : reprends le style de ses ponts (bois clair, rambardes blanches, superstructure blanche) et EXACTEMENT le rendu de la mer (bleu profond, reflets dorés scintillants). Ne reprends PAS sa composition : ni ville, ni quai, ni coque entière.
+IMAGE 3 : la VUE GÉNÉRALE D'AZURIA (même jeu) : même pinceau, même lumière, même saturation pour l'eau et les matières. Ne reprends PAS sa composition.
 
-INTERDITS : texte, lettres, chiffres, logo, signature, filigrane, cadre, interface ; personnages ; Pokémon ; cheminées ou ponts supérieurs empilés ; pixel art, 3D, photo.
+Format : PAYSAGE 1536 × 1024, vue plongeante sur toute la bande de pont, comme le plan.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus, axes de l'image alignés sur la grille, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE, comme les images 2 et 3. Les verticales restent verticales.
+- Aucun trait noir : contours fins et doux. Ombres colorées bleu-vert ou violet froid, jamais grises.
+
+AMBIANCE — respiration : grand air, soleil de fin de matinée, reflets sur l'eau, quelques mouettes suggérées au loin par de petites formes blanches sans détail. Fidèle à Pokémon, jamais un paquebot de luxe contemporain.
+
+PERSONNE : aucun personnage, aucun Pokémon, aucun animal sur le pont.
+
+INTERDITS : texte, lettres, chiffres, logo, signature, filigrane, cadre, interface ; personnages ; Pokémon ; Poké Ball ou objet posé au sol ; objets non prévus par le plan (pas de bittes d'amarrage, de cordages, de canots, de tables, de parasols ni de piscine) ; cheminées ou ponts supérieurs empilés ; autres navires, terre, côte ; pixel art, 3D, photo.
+
+L'image doit raconter, sans texte : on sort prendre l'air sur le pont d'un beau navire, entre deux mers scintillantes.

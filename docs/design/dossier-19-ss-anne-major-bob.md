@@ -152,6 +152,11 @@ zone du Pokédex et de la Carte.
   - `tools/art/generer.sh CONCEPT_SS_ANNE_PONT_EXTERIEUR_r1 tools/art/prompts/CONCEPT_SS_ANNE_PONT_EXTERIEUR_r1.txt docs/design/reference/azuria-vue-generale-v1.png docs/design/reference/labo-chen-v1.png`
   - `tools/art/generer.sh CONCEPT_ARENE_CARMIN_r1 tools/art/prompts/CONCEPT_ARENE_CARMIN_r1.txt docs/design/reference/labo-chen-v1.png`
 
+  Fait le 2026-10-15 (branche `j16-vues-generales`) : plans en aplats sans annotation joints en image 1
+  (`python3 tools/art/plan_aplats_ss_anne.py` → `build/art/PLAN_*_v1.png`), coque validée de
+  `carmin-vue-generale-v1.png` jointe pour le pont extérieur ; meilleurs essais : pont principal `_r3`,
+  pont extérieur `_r2`, Arène `_r3` (prompts `tools/art/prompts/CONCEPT_*_r1..r3.txt`), à valider par Kevin.
+
   Une fois validées par Kevin : `reference/ss-anne-pont-principal-v1.png`,
   `ss-anne-pont-exterieur-v1.png`, `arene-carmin-v1.png` ; les autres salles du navire suivent le
   rendu du pont principal.
