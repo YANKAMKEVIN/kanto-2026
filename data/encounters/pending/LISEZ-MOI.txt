@@ -1,0 +1,6 @@
+Tables de la Tour Pokémon (jalon 19, T5) en attente des espèces de T3 (gastly, haunter, cubone).
+
+EncounterLibrary.load_dir() ne lit pas ce sous-dossier. Quand T3 est fusionné dans jalon-19,
+déplacer pokemon_tower.json dans data/encounters/ (git mv) et supprimer ce dossier :
+tests/unit/test_tower_encounters.gd échoue tant que les espèces existent et que le fichier
+est encore ici.
