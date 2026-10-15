@@ -2,7 +2,7 @@
 """Vérifie les trois grilles du jalon 21 (lot 21.0, dossier 24 §6, §9, §10) par recherche de chemin.
 
 Grilles : `tools/plans/pokemon_tower_7f.txt`, `route_12.txt` (Route 12 nord), `route_16.txt` (Route 16
-est). Lecture par `plan_grille.lire` ; un pas = une case, 4 directions ; une porte (`D`) et un escalier
+est), plus la variante `celadopole_j21.txt` (bande ouest de Céladopole, T8). Lecture par `plan_grille.lire` ; un pas = une case, 4 directions ; une porte (`D`) et un escalier
 (`V`) mènent à une autre carte : on y entre, on ne les traverse pas — sauf les deux portes du poste de la
 Route 12, reliées par l'intérieur (attribut `lie=`), qui forment un passage.
 
@@ -26,7 +26,7 @@ Critères :
     objet, ni panneau.
 
 Usage : python3 tools/art/plan_check_j21.py [pokemon_tower_7f|route_12|route_16 ...] [--sans-voisines]
-        [--apercu]    (sans nom : les trois ; code 1 si un critère échoue)
+        [--apercu]    (sans nom : les quatre ; code 1 si un critère échoue)
 
 Enregistrement dans `plan_check.py` (non fait ici : J17, J19 et J20 modifient les mêmes lignes ; à
 appliquer à l'intégration, comme `_profil` du J20) :
@@ -79,6 +79,9 @@ class Rapport:
 def voisine(nom: str) -> tuple[Plan | None, str]:
 	"""Grille voisine : `tools/plans/<nom>.txt`, sinon la première branche connue qui l'a."""
 	chemin = PLANS / f"{nom}.txt"
+	if nom == "celadopole" and (PLANS / "celadopole_j21.txt").exists():
+		chemin = PLANS / "celadopole_j21.txt"  # variante du J21 (avant l'application de T22)
+		return lire(chemin), "tools/plans/celadopole_j21.txt"
 	if chemin.exists():
 		return lire(chemin), f"tools/plans/{nom}.txt"
 	for ref in REFS.get(nom, []):
@@ -622,6 +625,83 @@ def verifier_route_16(r: Rapport, apercu: bool) -> None:
 		apercu_carte(k, {})
 
 
+# --------------------------------------------------------------------------- Céladopole (variante)
+
+
+def verifier_celadopole_j21(r: Rapport, apercu: bool) -> None:
+	"""Variante `celadopole_j21.txt` : la grille du J20 (`celadopole.txt`) à l'identique, sauf la
+	bande ouest (0..3, 21..23) ouverte vers la Route 16."""
+	k = Carte("celadopole_j21")
+	base, src = voisine_j20()
+	r.titre("1. Dimensions et écart avec la grille du J20")
+	r.critere(k.largeur == 70 and k.hauteur == 46, f"{k.largeur} × {k.hauteur} (attendu 70 × 46)")
+	if base is None:
+		r.critere(SANS_VOISINES, "grille du J20 introuvable (--sans-voisines pour passer)")
+		return
+	b = Carte("celadopole_j20", base)
+	bande = {(x, y) for x in range(4) for y in (21, 22, 23)}
+	diff = {(x, y) for y in range(b.hauteur) for x in range(b.largeur)
+		if k.plan.rows[y][x] != b.plan.rows[y][x]}
+	r.critere(diff == bande, f"seules différences de caractères : les 12 cases (0..3, 21..23) "
+		f"({sorted(diff - bande) or 'aucune autre'}) — base {src}")
+	r.critere(all(k.car(c) == "p" for c in bande) and all(b.car(c) in "sT" for c in bande),
+		"ces 12 cases passent de haie « T » / talus « s » à pavé « p »")
+	r.critere(k.plan.praticables == b.plan.praticables, "mêmes caractères praticables")
+
+	r.titre("2. Positions")
+	ajoutees = set(k.pos) - set(b.pos)
+	retirees = set(b.pos) - set(k.pos)
+	r.critere(ajoutees == {"warp_ouest", "from_route_16"} and retirees == {"obstacle_ouest"},
+		f"ajoutées {sorted(ajoutees)}, retirées {sorted(retirees)}")
+	communes_ok = all(k.pos[i].cells == b.pos[i].cells and k.pos[i].kind == b.pos[i].kind
+		and k.pos[i].attrs == b.pos[i].attrs for i in set(k.pos) & set(b.pos))
+	r.critere(communes_ok, "toutes les autres positions sont identiques")
+	w, f = k.pos["warp_ouest"], k.pos["from_route_16"]
+	r.critere(w.kind == "warp" and w.cells == [(0, 21), (0, 22), (0, 23)] and w.attrs.get("to") == "route_16"
+		and w.attrs.get("spawn") == "from_celadon", "warp_ouest (0, 21..23) → route_16 / from_celadon")
+	r.critere(f.kind == "spawn" and f.cells == [(1, 21), (1, 22), (1, 23)] and all(k.libre(c) for c in f.cells),
+		"from_route_16 (1, 21..23) : sol libre, tournée →")
+	est = k.pos["warp_est"]
+	r.critere(est.cells == [(69, 21), (69, 22), (69, 23)], "le raccord est (Route 7) est inchangé")
+
+	r.titre("3. Passage et raccord avec la Route 16")
+	r.critere(all(k.car((x, y)) in "sT" for x in range(4) for y in (20, 24)),
+		"les rangées 20 et 24 restent haie / talus de chaque côté du passage (3 cases de large)")
+	r.critere(all(k.car((4, y)) == "p" for y in (20, 21, 22, 23)) and k.car((4, 24)) == ".",
+		"l'avenue (x 4) se resserre de 5 rangées à 3 au passage, comme à l'est")
+	d = k.distances([f.cells[0]])
+	e = k.distances([est.cells[0]])
+	r.critere(all(c in e for c in w.cells) and all(c in e for c in f.cells),
+		f"le passage ouest est atteint depuis la Route 7 ({e.get((0, 22))} pas)")
+	r.critere(len(d) > 500, f"{len(d)} cases atteignables depuis l'arrivée de la Route 16")
+	bk = b.distances([b.pos["from_route_7"].cells[0]])
+	r.critere(all(c in e for c in bk if b.libre(c)), "toute case atteinte au J20 l'est toujours")
+	r16 = Carte("route_16")
+	r.critere(r16.pos["warp_est"].cells == [(43, 21), (43, 22), (43, 23)]
+		and r16.pos["warp_est"].attrs.get("spawn") == "from_route_16",
+		"Route 16 : warp_est (43, 21..23) → celadon_city / from_route_16 (jumelle)")
+	if apercu:
+		apercu_carte(k, {})
+
+
+def voisine_j20() -> tuple[Plan | None, str]:
+	"""Grille du J20 (`celadopole.txt`) : tools/plans/ si elle y est (après T9), sinon la branche."""
+	chemin = PLANS / "celadopole.txt"
+	if chemin.exists():
+		return lire(chemin), "tools/plans/celadopole.txt"
+	for ref in REFS["celadopole"]:
+		res = subprocess.run(["git", "-C", str(RACINE), "show", f"{ref}:tools/plans/celadopole.txt"],
+			capture_output=True, text=True)
+		if res.returncode == 0 and res.stdout.strip():
+			with tempfile.NamedTemporaryFile("w", suffix=".txt", delete=False, encoding="utf-8") as fh:
+				fh.write(res.stdout)
+			try:
+				return lire(fh.name), f"{ref}:tools/plans/celadopole.txt"
+			finally:
+				Path(fh.name).unlink(missing_ok=True)
+	return None, ""
+
+
 def apercu_carte(k: Carte, vues: dict[str, list[Case]]) -> None:
 	print(f"\n=== {k.nom} ({k.largeur} × {k.hauteur}) ===")
 	grille = [list(row) for row in k.plan.rows]
@@ -643,7 +723,8 @@ def apercu_carte(k: Carte, vues: dict[str, list[Case]]) -> None:
 
 
 VERIFICATEURS = {}
-PROFILS = {"pokemon_tower_7f": verifier_7f, "route_12": verifier_route_12, "route_16": verifier_route_16}
+PROFILS = {"pokemon_tower_7f": verifier_7f, "route_12": verifier_route_12, "route_16": verifier_route_16,
+	"celadopole_j21": verifier_celadopole_j21}
 
 
 def _enveloppe(nom: str):
