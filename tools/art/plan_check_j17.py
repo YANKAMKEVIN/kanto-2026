@@ -556,7 +556,7 @@ def verifier_cave() -> bool:
 def _bord_ouest_route_2() -> list[int]:
 	"""Rangées du bord est de la Route 2 sud où le sentier « b » arrive (route_2.txt)."""
 	p = _lire("route_2")
-	return sorted(y for y in range(p.height) if p.at(p.width - 1, y) == "b")
+	return sorted(y for y in range(p.height) if p.at(p.width - 1, y) in "b=")
 
 
 def verifier_route_2_est() -> bool:
@@ -687,52 +687,37 @@ def verifier_poste() -> bool:
 
 # ------------------------------------------------------------------- Retouches de la Route 2 --
 
+# Rangées de route_2.txt AVANT le report des retouches (jalon 17 T21) : « a » et « b » sont les
+# sentiers peints fermés, remplacés par la clairière de FUTUR A et le sentier praticable de FUTUR B.
+AVANT_ROUTE_2 = {
+	16: "TTTTTTT==TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT",
+	17: "TTTTTTT==TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT",
+	18: "TTTTTTT==TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT",
+	19: "aaaaA====TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT",
+	20: "TTTTTTT==TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT",
+	21: "TTTTTTT==TTTTTTTTTT.............TTTTTTTTTT",
+	22: "TTTTTTT==TTTTTTTTTT.............xxxxxTTTTT",
+	43: "TTTTTTTTT==......TT===============Bbbbbbbb",
+	44: "TTTTTTTTT==......TT===============Bbbbbbbb",
+}
+
+
 def _route_2_retouchee() -> tuple[Plan, set[Case], dict[str, object]]:
-	"""Route 2 sud avec les rangées de route_2_j17_retouches.txt ; cases modifiées."""
-	base = (PLANS / "route_2.txt").read_text(encoding="utf-8").split("\n")
-	ret = (PLANS / "route_2_j17_retouches.txt").read_text(encoding="utf-8").split("\n")
-	nouvelles: dict[int, str] = {}
-	section = ""
-	positions_ret: list[str] = []
-	supprime: set[str] = set()
-	for ligne in ret:
-		mots = ligne.split("#", 1)[0].split()
-		if not mots:
-			continue
-		if mots[0] in ("GRILLE_RETOUCHEE", "POSITIONS_RETOUCHEES", "SUPPRIME"):
-			section = mots[0]
-			continue
-		if mots[0] == "FIN":
-			section = ""
-			continue
-		if section == "GRILLE_RETOUCHEE":
-			nouvelles[int(mots[0])] = mots[1]
-		elif section == "POSITIONS_RETOUCHEES":
-			positions_ret.append(ligne)
-		elif section == "SUPPRIME":
-			supprime.add(mots[0])
-	sortie, dans_grille = [], False
-	for ligne in base:
+	"""Route 2 sud APRÈS report des retouches (route_2.txt, jalon 17 T21), la grille d'avant
+	(rangées d'origine) et les cases modifiées. Le fichier route_2_j17_retouches.txt reste le
+	document de conception ; route_2.txt est désormais la source unique."""
+	apres = lire(PLANS / "route_2.txt")
+	lignes = (PLANS / "route_2.txt").read_text(encoding="utf-8").split("\n")
+	sortie = []
+	for ligne in lignes:
 		m = re.match(r"^(\d\d) (\S{42})$", ligne)
-		if m and int(m[1]) in nouvelles:
-			ligne = f"{m[1]} {nouvelles[int(m[1])]}"
-		mots = ligne.split("#", 1)[0].split()
-		if mots and mots[0] in supprime:
-			continue
-		if ligne.strip() == "FIN" and dans_grille is True:
-			pass
-		if mots and mots[0] == "POSITIONS":
-			sortie.append(ligne)
-			sortie += positions_ret
-			continue
-		if mots and mots[0] == "GRILLE":
-			dans_grille = True
+		if m and int(m[1]) in AVANT_ROUTE_2:
+			ligne = f"{m[1]} {AVANT_ROUTE_2[int(m[1])]}"
 		sortie.append(ligne)
-	avant = lire(PLANS / "route_2.txt")
 	with tempfile.TemporaryDirectory() as tmp:
-		f = Path(tmp) / "route_2_retouchee.txt"
+		f = Path(tmp) / "route_2_avant.txt"
 		f.write_text("\n".join(sortie), encoding="utf-8")
-		apres = lire(f)
+		avant = lire(f)
 	modifiees = {(x, y) for y in range(avant.height) for x in range(avant.width)
 		if avant.at(x, y) != apres.at(x, y)}
 	return apres, modifiees, avant
@@ -742,7 +727,7 @@ def verifier_retouches_route_2() -> bool:
 	r = Rapport()
 	apres, modifiees, avant = _route_2_retouchee()
 	print(f"Retouches {_nom(PLANS / 'route_2_j17_retouches.txt')} sur route_2.txt "
-		f"({apres.width} × {apres.height}, route_2.txt inchangé)")
+		f"({apres.width} × {apres.height}, reportées dans route_2.txt)")
 	zone_claire = {(x, y) for x in range(0, 4) for y in range(16, 23)}
 	clairiere = {c for c in zone_claire if apres.at(*c) == "."}   # (3, 16) reste forêt
 	sentier = {(x, y) for x in range(35, 42) for y in (43, 44)}
@@ -756,8 +741,9 @@ def verifier_retouches_route_2() -> bool:
 		f"sentier « b » : {len(modifiees & sentier)} cases → chemin de terre")
 	arbuste = apres.positions["arbuste_futur_a"]
 	r.critere(arbuste.cells == [(4, 19)] and apres.at(4, 19) == "A"
-		and "examen_arbre_dense" not in apres.positions,
-		"l'arbuste coupable (4, 19) remplace l'arbre dense (case « A », bloquée jusqu'au drapeau)")
+		and apres.positions["examen_arbre_dense"].cells == [(4, 19)],
+		"l'arbuste coupable (4, 19) remplace l'arbre dense (case « A », bloquée jusqu'au drapeau) ; "
+		"le point d'examen T7 reste tant que la Coupe n'existe pas")
 	barriere = [(34, 43), (34, 44)]
 	r.critere(all(apres.at(*c) == "B" for c in barriere),
 		f"la barrière {barriere} reste « B » (bloquée) dans la grille")

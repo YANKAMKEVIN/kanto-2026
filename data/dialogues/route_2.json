@@ -68,5 +68,8 @@
 		"narration": true,
 		"set": ["route_2_east_gate_open"],
 		"pages": ["La barrière s'ouvre de ce côté.", "Le sentier rejoint la Route 2."]
+	},
+	"route_2_item_5": {
+		"cutscene": "route_2_item_5"
 	}
 }

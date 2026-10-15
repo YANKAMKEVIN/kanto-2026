@@ -179,6 +179,10 @@ const VARIANT_FLAGS: Dictionary = {
 	&"route_6_gate_rule_s": [PEWTER_FLAGS], &"vermilion_arrival": [PEWTER_FLAGS],
 	# Jalon 17 (T8) : remise de la CS05 par l'assistant (10 espèces capturées).
 	&"route_2_east_give_hm05": [PEWTER_FLAGS],
+	# Jalon 17 (T20) : Pierre Lune et Super Bonbon du couloir de la Route 2 est.
+	&"route_2_east_item_1": [PEWTER_FLAGS], &"route_2_east_item_2": [PEWTER_FLAGS],
+	# Jalon 17 (T21) : Super Potion de la clairière de FUTUR A.
+	&"route_2_item_5": [PEWTER_FLAGS],
 }
 ## Scènes jouées par le code (pas de déclencheur) → carte où elles sont jouées.
 ## Jalon 7 (T18) : la scène du colis est lancée par la variante « cutscene » du dialogue de Chen.
@@ -226,6 +230,10 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	# Jalon 17 (T8) : remise de la CS05 (variante « cutscene » du dialogue de l'assistant), dans
 	# le poste de la Route 2 est (carte du T19 ; la scène n'a aucun acteur).
 	&"route_2_east_give_hm05": &"route_2_east_gate",
+	# Jalon 17 (T20) : objets visibles du couloir (PNJ « objet » de son fichier).
+	&"route_2_east_item_1": &"route_2_east", &"route_2_east_item_2": &"route_2_east",
+	# Jalon 17 (T21) : Super Potion de la clairière de FUTUR A (PNJ « objet » de la Route 2).
+	&"route_2_item_5": &"route_2",
 }
 ## Scènes à déclencheur dont la carte n'est pas encore construite → leur carte (simulées sur les
 ## PNJ de son fichier). Vidée au T19 du jalon 9 (la forêt existe), puis au T11 du jalon 10 (les
@@ -301,8 +309,9 @@ func test_library_loads_without_error() -> void:
 		&"viridian_arrival", &"viridian_forest_item_1", &"viridian_forest_item_2",
 		&"viridian_forest_item_3", &"viridian_forest_item_4", &"viridian_forest_item_5",
 		&"viridian_forest_item_6",
-		# Jalon 17 (T8) : remise de la CS05.
-		&"route_2_east_give_hm05"]))
+		# Jalon 17 (T8) : remise de la CS05 ; (T20) objets du couloir.
+		&"route_2_east_give_hm05", &"route_2_east_item_1", &"route_2_east_item_2",
+		&"route_2_item_5"]))
 
 
 func _sorted(values: Array) -> Array[StringName]:
@@ -411,8 +420,9 @@ func test_only_world_items_are_found_items() -> void:
 		"mt_moon_b2f_hidden_1:moon_stone", "mt_moon_b2f_item_1:tm01", "route_1_potion:potion",
 		"route_24_antidote:antidote", "route_24_item_1:potion", "route_25_hidden_1:potion",
 		"route_25_item_1:tm19", "route_25_item_2:potion", "route_25_item_3:poke_ball",
+		"route_2_east_item_1:moon_stone", "route_2_east_item_2:rare_candy",
 		"route_2_item_1:poke_ball", "route_2_item_2:potion",
-		"route_2_item_3:poke_ball", "route_2_item_4:potion", "route_2_north_item_1:potion",
+		"route_2_item_3:poke_ball", "route_2_item_4:potion", "route_2_item_5:super_potion", "route_2_north_item_1:potion",
 		"route_3_hidden_1:awakening", "route_3_item_1:poke_ball", "route_3_item_2:potion",
 		"route_3_item_3:paralyze_heal", "route_4_item_1:poke_ball",
 		"route_5_hidden_1:antidote", "route_5_item_1:super_potion",

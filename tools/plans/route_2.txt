@@ -11,8 +11,9 @@
 #   T forêt (bloquée)               . herbe rase                  = chemin de terre
 #   h hautes herbes                 v rebord (sauté vers le sud ; ne se monte pas)
 #   P emprise du poste (bloquée)    D porte du poste (STEP_ON ↑ → « Forêt de Jade — À venir »)
-#   A arbre dense, FUTUR A (bloqué) a sentier peint derrière l'arbre (bloqué)
-#   B barrière, FUTUR B (bloquée)   b sentier peint derrière la barrière (bloqué)
+#   A arbuste coupable, FUTUR A (bloqué ; J17 : arbre dense jusqu'à la Coupe)
+#   B barrière, FUTUR B (bloquée jusqu'à l'ouverture depuis l'est, J17) ; « a » et « b » (sentiers
+#     peints fermés) ont disparu au J17 : clairière de FUTUR A et sentier de FUTUR B praticables
 #   R grande pierre claire (bloquée) S souche (bloquée)
 #   G pied d'un grand arbre repère (bloqué)   c clôture basse (bloquée)
 #   x végétation basse (buissons, ronces) ou panneau (bloqué ; panneaux : voir POSITIONS)
@@ -36,13 +37,13 @@ GRILLE 42 60
 13 TTT..........TTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 14 TTT..........TTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 15 TTT..........TTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-16 TTTTTTT==TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-17 TTTTTTT==TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-18 TTTTTTT==TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-19 aaaaA====TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-20 TTTTTTT==TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-21 TTTTTTT==TTTTTTTTTT.............TTTTTTTTTT
-22 TTTTTTT==TTTTTTTTTT.............xxxxxTTTTT
+16 ...TTTT==TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+17 ....TTT==TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+18 ....TTT==TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+19 ....A====TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+20 ....TTT==TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+21 ....TTT==TTTTTTTTTT.............TTTTTTTTTT
+22 ....TTT==TTTTTTTTTT.............xxxxxTTTTT
 23 TTTTTTT==TTTTTTTTTT.......RRR...x...xTTTTT
 24 TTTTTTT==TTTTTTTTTT.......RRR...x...xTTTTT
 25 TTTTTTT==TTTTTTTTTT.............x...xTTTTT
@@ -63,8 +64,8 @@ GRILLE 42 60
 40 TTTTTTTTT==......TTTTTTTTTTTTTTTTTTTTTTTTT
 41 TTTTTTTTT==......TTTTTTTTTTTTTTTTTTTTTTTTT
 42 TTTTTTTTT==...S..TTTTTTTTTTTTTTTTxTTTTTTTT
-43 TTTTTTTTT==......TT===============Bbbbbbbb
-44 TTTTTTTTT==......TT===============Bbbbbbbb
+43 TTTTTTTTT==......TT===============B=======
+44 TTTTTTTTT==......TT===============B=======
 45 TTTTTTTTT==TTTTTT..===....TTTTTTTTTTTTTTTT
 46 TTTTTTTTT==TTTTTT..===....TTTTTTTTTTTTTTTT
 47 TTTTTTTTT=============....TTTTTTTTTTTTTTTT
@@ -99,8 +100,8 @@ from_forest_gate    spawn          20,9         libre   # retour devant la porte
 panneau_route       panneau        22,56        bloque  # T1, lu depuis (22, 57) tourné ↑
 panneau_foret       panneau        23,9         bloque  # T2 « FORÊT DE JADE », lu depuis (23, 10) ↑
 panneau_ferme       panneau        33,42        bloque  # T8, lu depuis (33, 43) ↑
-examen_arbre_dense  examen         4,19         libre   # T7, depuis (5, 19) tourné ←
-examen_barriere     examen         34,43..44    libre   # T9, depuis (33, 43..44) tourné →
+examen_arbre_dense  examen         4,19         libre   # T7 (dossier 11), depuis (5, 19) tourné ← ; l'arbuste (A) garde ce texte tant que la Coupe n'existe pas (J17 T21)
+examen_barriere     examen         34,43..44    libre   # T9, depuis (33, 43..44) tourné → ; seulement tant que la barrière est fermée
 hiker               pnj            23,46..48    bloque  # P1, boucle (23,48)→(23,47)→(23,46)→(23,47), pause 1,6 s
 youngster           pnj            29,26        bloque  # P2, look ; aucun combat
 youngster_pokemon   pokemon        30,26        bloque  # Nidoran ♂, idle_react 5 s
@@ -116,4 +117,10 @@ h2_sud              repere         17,37        libre   # mesure « H2 contre ch
 h2_nord             repere         8,27         libre   # mesure « H2 contre chemin sûr » (arrivée)
 rebord_haut         repere         13,28        libre   # mesure « retour par le rebord » (départ)
 rebord_bas          repere         10,38        libre   # mesure « retour par le rebord » (arrivée)
+arbuste_futur_a     arbuste        4,19         bloque  flag=cut_route_2_futur_a  # J17 : arbuste coupable (A) ; avant la CS01 : T7 du dossier 11 (point examen_arbre_dense) ; avec Coupe : textes génériques du J16
+route_2_item_5      objet_visible  1,17         bloque  role=O5 item=super_potion  # J17 : clairière FUTUR A, bout du sentier
+warp_est            warp           41,43..44    libre   # J17 : PUSH → → route_2_east, from_route_2_n|s (le sentier « b » est praticable)
+from_route_2_east   spawn          41,43..44    libre   # J17 : arrivée du couloir est, tournée ←
+examen_barriere_est examen         34,43..44    libre   # J17 : T-8 depuis (35, 43..44) tourné ← ; ouvre la barrière (route_2_east_gate_open)
+barriere_porte      repere         34,43..44    bloque  flag=route_2_east_gate_open  # J17 : « B » libre quand le drapeau est posé (définitif)
 FIN

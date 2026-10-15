@@ -45,9 +45,10 @@ const GATE_GUARDS: Array[StringName] = [&"forest_gate_north_guard", &"forest_gat
 ## T11 : la Route 2 nord et Argenta (extérieur) sont dans [constant MAPS] : liste vide.
 ## Jalon 14 (T23) : D5 et D6 posés, leurs répliques (n° 50, 51) sortent de la liste.
 ## Jalon 15 (T14) : les Dresseurs de la Route 6 sont posés avec la carte : liste vide.
-## Jalon 17 (T8) : Route 11 et Route 2 est, en attente de leurs cartes (T16, T17, T19) ; la
+## Jalon 17 (T8) : Route 11, en attente de sa carte (T16, T17) ; la Route 2 est est posée (T19) ; la
 ## réplique de la barrière vue de l'est (T-8), en attente du T21. Retirées carte par carte.
 const UNUSED_YET: Array[StringName] = [
+	# (T21 : la barrière vue de l'est, `route_2_gate_east`, est posée avec la Route 2.)
 	&"route_11_sign", &"route_11_cave_sign", &"route_11_snorlax",
 	&"route_11_youngster_lucas_before", &"route_11_youngster_lucas_defeated",
 	&"route_11_youngster_lucas_after", &"route_11_youngster_arthur_before",
@@ -61,8 +62,6 @@ const UNUSED_YET: Array[StringName] = [
 	&"route_11_engineer_bruno_before", &"route_11_engineer_bruno_defeated",
 	&"route_11_engineer_bruno_after", &"route_11_engineer_victor_before",
 	&"route_11_engineer_victor_defeated", &"route_11_engineer_victor_after",
-	&"route_2_east_cave_sign", &"route_2_east_assistant", &"route_2_east_visitor",
-	&"route_2_gate_east",
 ]
 ## Jalon 17 (T8) : répliques de la remise de la CS05, jouées par sa scène, lancée par le dialogue
 ## de l'assistant (dans [constant UNUSED_YET] jusqu'à la carte du poste, T19).
@@ -151,6 +150,8 @@ const MAPS: Array[StringName] = [
 	&"vermilion_house_2",
 	# Jalon 15 (T13) : la Route 5, la Pension, le poste nord et l'entrée du souterrain.
 	&"route_5", &"route_5_daycare", &"route_5_gate", &"route_5_underground_gate",
+	# Jalon 17 (T19) : le couloir de la Route 2 est et le poste de l'assistant.
+	&"route_2_east", &"route_2_east_gate",
 ]
 ## Lot de textes validé par Kevin le 2026-10-06 (anciens brouillons : panneau, observations,
 ## soin de Maman, terminal du Stockage, portes de Jadielle…) : source des textes hors dossiers.
@@ -333,6 +334,7 @@ const IDS_J17: Array[StringName] = [
 	&"route_11_engineer_victor_defeated", &"route_11_engineer_victor_after",
 	&"route_2_east_cave_sign", &"route_2_east_assistant", &"route_2_east_assistant_hm05_system",
 	&"route_2_east_assistant_hm05_use", &"route_2_east_visitor", &"route_2_gate_east",
+	&"route_2_east_item_1", &"route_2_east_item_2", &"route_2_item_5",
 ]
 ## Jalon 14 (T17, dossier 17 §15 n° 1 à 27) : dialogues de la maison de Léo, ajoutés aux autres.
 const IDS_J14_BILL: Array[StringName] = [
@@ -684,7 +686,8 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		# Jalon 15 (T14) : Route 6 (Poké Ball, Super Potion cachée), arrivée à Carmin.
 		&"got_route_6_hidden_1", &"got_route_6_item_1", &"vermilion_reached",
 		# Jalon 17 (T8) : remise de la CS05 par l'assistant.
-		&"got_hm05"]
+		&"got_hm05", &"got_route_2_east_item_1", &"got_route_2_east_item_2",
+		&"got_route_2_item_5"]
 		+ SET_J14_BILL_CUTSCENES + SET_J14_ROCKET_CUTSCENES))
 	assert_eq(_used_on.get(&"oak_lab_reunion"), [&"oak_lab"], "joué au labo, après le fondu")
 	assert_eq(_used_on.get(&"oak_starter_offer"), [&"oak_lab"], "joué au labo")
@@ -1121,11 +1124,11 @@ func test_oak_parcel_lines() -> void:
 	# la Route 25 (T16). Jalon 15 (T19) : la Guérison cachée du souterrain.
 	# Jalon 15 (T14) : la Poké Ball et la Super Potion cachée de la Route 6.
 	# Jalon 15 (T13) : la Super Potion et l'Antidote caché de la Route 5.
-	# Jalon 17 (T8) : la remise de la CS05 par l'assistant.
-	assert_eq(launched, 42, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
+	# Jalon 17 (T8) : la remise de la CS05 par l'assistant ; (T20) Pierre Lune et Super Bonbon.
+	assert_eq(launched, 45, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
 		+ "sa CT34, Ondine (pont, Arène et rattrapage), écran, module, console, objets de la "
 		+ "Route 25, le Rocket d'Azuria (2) et le barrage sud ; J15 : objets de la Route 5 ; "
-		+ "J17 : la CS05")
+		+ "J17 : la CS05, deux objets du couloir et la Super Potion de la clairière")
 	# Le jeton n'apparaît que dans la réplique de l'espèce, « {pokemon} » dans les phrases du
 	# compagnon (J11), et ceux de la Pension dans ses répliques (J15).
 	for row: Array in _pages():
