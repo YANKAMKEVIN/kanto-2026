@@ -12,7 +12,7 @@
 # De haut en bas (§6.1) :
 #   ① LA SORTIE (x 3..22, y 5..11) : place devant le bâtiment, puis goulet de Chloé (x 13..22,
 #      y 8..10, trois cases de haut) entre la forêt et deux niches : D1 Chloé (16, 5), inévitable
-#      (sa ligne descend la colonne 16 sur les trois rangées du goulet) ; D2 Lucas (18, 5) juste à
+#      (sa ligne descend la colonne 16 sur les trois rangées du goulet) ; D2 Gabin (18, 5) juste à
 #      côté, sa ligne ne couvre que les rangées 8 et 9 (la rangée 10 reste libre : évitable).
 #      Poche ouest (x 3..12, y 12..23) : hautes herbes H1 et D3 Axel.
 #   ② LA PRAIRIE (x 22..39, y 6..24) : le chemin tourne au sud (x 25..27) ; branche est jusqu'au
@@ -21,7 +21,7 @@
 #      Manon voisins sur la rive est (x 22), tournés vers le chemin (leur vue couvre x 23..26 :
 #      la colonne 27 est libre) ; le pêcheur sans canne sur la rive (22, 35) ; hautes herbes H3 ;
 #      objet caché (rive ouest).
-#   ④ LE DÉTOUR (x 28..39, y 41..46) : sentier de 2 cases vers un belvédère (D6 Timéo, Poké Ball),
+#   ④ LE DÉTOUR (x 28..39, y 41..46) : sentier de 2 cases vers un belvédère (D6 Basile, Poké Ball),
 #      première vue sur le port.
 #   ⑤ L'APPROCHE (x 20..34, y 47..54) : hautes herbes H4, panneau, clôture ; le chemin se resserre
 #      sur les 3 cases du raccord de Carmin.
@@ -114,14 +114,14 @@ porte_safrania      warp           36,7         libre   # STEP_ON ↑ → « SAF
 garde_safrania      pnj            36,8         bloque  role=P1 facing=down  # devant la porte du poste (§7) ; indique le souterrain
 verrou_safrania     declencheur    35,8;37,8;35..37,9  libre  # règle du garde puis recul d'une case (modèle du garde d'Argenta)
 chloe               dresseur       16,5         bloque  role=D1 facing=down sight=5 trainer=route_6_lass_chloe  # Jeune Dresseuse, Roucool 16 ×3, 320 ₽ ; INÉVITABLE (goulet, 3 rangées)
-lucas               dresseur       18,5         bloque  role=D2 facing=down sight=4 trainer=route_6_camper_lucas  # Campeur, Piafabec 16 + Rattatac 16, 320 ₽ ; évitable par la rangée 10 du goulet
+lucas               dresseur       18,5         bloque  role=D2 facing=down sight=4 trainer=route_6_camper_gabin  # Campeur, Piafabec 16 + Rattatac 16, 320 ₽ ; évitable par la rangée 10 du goulet
 axel                dresseur       10,16        bloque  role=D3 facing=left sight=4 trainer=route_6_scout_axel  # Scout, Aspicot + Chenipan + Aspicot 16, 192 ₽ ; garde H1 dans la poche ouest
 mathis              dresseur       22,29        bloque  role=D4 facing=right sight=4 trainer=route_6_camper_mathis  # Campeur, Carapuce 20, 400 ₽ ; évitable par la colonne 27
 manon               dresseur       22,31        bloque  role=D5 facing=right sight=4 trainer=route_6_lass_manon  # Jeune Dresseuse, Rattata 16 + Pikachu 16, 320 ₽ ; voisine de Mathis
-timeo               dresseur       38,43        bloque  role=D6 facing=left sight=4 trainer=route_6_scout_timeo  # Scout, Papilusion 20, 240 ₽ ; garde le belvédère (détour)
+timeo               dresseur       38,43        bloque  role=D6 facing=left sight=4 trainer=route_6_scout_basile  # Scout, Papilusion 20, 240 ₽ ; garde le belvédère (détour)
 pecheur             pnj            22,35        bloque  role=P2 facing=left  # pêcheur sans canne, au bord de l'étang ; parle de Carmin
 promeneur           pnj            30,12        bloque  role=P3 facing=down  # respiration dans la prairie (le vent, la mer)
-route_6_item_1      objet_visible  38,41        bloque  role=O1 item=poke_ball  # fond du belvédère, hors de la vue de Timéo
+route_6_item_1      objet_visible  38,41        bloque  role=O1 item=poke_ball  # fond du belvédère, hors de la vue de Basile
 route_6_hidden_1    cache          10,32        bloque  role=O2 item=super_potion indice=joncs  # rive ouest de l'étang (EXAMINER depuis (10, 31) ou (10, 33) ou (9, 32))
 roucool_1           pokemon        29,15        bloque  shy=fly  # prairie
 rattata_1           pokemon        24,26        bloque  shy=flee  # rive nord de l'étang

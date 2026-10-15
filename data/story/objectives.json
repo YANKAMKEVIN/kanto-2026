@@ -5,6 +5,11 @@
 		"if": ["got_ss_ticket"]
 	},
 	{
+		"id": "explore_vermilion",
+		"text": "explorer Carmin-sur-Mer.",
+		"if": ["vermilion_reached"]
+	},
+	{
 		"id": "help_bill",
 		"text": "aider Léo.",
 		"if": ["bill_met"],

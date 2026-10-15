@@ -90,7 +90,16 @@
 			"description": "Au nord d'Azuria, un long pont franchit la rivière. Au-delà, une prairie tranquille où l'herbe pousse haut."
 		},
 		"vermilion_city": {
-			"name": "Carmin-sur-Mer", "kind": "town", "maps": [],
+			"name": "Carmin-sur-Mer", "kind": "town",
+			"maps": [
+				"vermilion_city", "vermilion_center", "vermilion_mart", "vermilion_fan_club",
+				"vermilion_fisher_house", "vermilion_house_1", "vermilion_house_2"
+			],
+			"services": [
+				{ "id": "pokemon_center", "found_on": "vermilion_center" },
+				{ "id": "poke_mart", "found_on": "vermilion_mart" },
+				{ "id": "gym", "found_on": "vermilion_city" }
+			],
 			"description": "Une ville tournée vers le large, où les grands navires font escale. La lumière dorée y danse sur l'eau des quais."
 		},
 		"lavender_town": { "name": "Lavanville", "kind": "town", "maps": [] },
@@ -112,6 +121,11 @@
 			"name": "Cap d'Azuria", "kind": "place", "maps": ["bill_house"],
 			"subtitle": "Route 25",
 			"description": "La pointe la plus avancée de la côte. Un chercheur un peu à part y vit seul, entouré de ses machines."
+		},
+		"route_6": {
+			"name": "Route 6", "kind": "route", "maps": ["route_6", "route_6_underground_gate"],
+			"subtitle": "Safrania — Carmin-sur-Mer",
+			"description": "Une route ouverte où l'air sent déjà le sel. Au bout, les grues et les mâts du port de Carmin."
 		}
 	}
 }

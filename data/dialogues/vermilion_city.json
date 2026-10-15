@@ -1,0 +1,92 @@
+{
+	"vermilion_city_sign": {
+		"pages": ["CARMIN-SUR-MER — Le port des grands départs"]
+	},
+	"vermilion_gym_sign": {
+		"pages": ["ARÈNE DE CARMIN-SUR-MER — Champion : Major Bob", "Le Soldat de la Foudre"]
+	},
+	"vermilion_dock_sign": {
+		"pages": ["QUAIS — S.S. ANNE"]
+	},
+	"vermilion_gym_tree": {
+		"narration": true,
+		"pages": ["Un jeune arbre pousse devant l'entrée. Impossible de passer."]
+	},
+	"vermilion_sailor": {
+		"speaker": "Marin",
+		"pages": [
+			"Le S.S. Anne est à quai pour\nquelques jours.",
+			"L'équipage prépare la croisière.\nL'embarquement n'a pas encore\ncommencé."
+		]
+	},
+	"vermilion_docker_1": {
+		"speaker": "Docker",
+		"pages": [
+			"Ce paquebot fait le tour du monde.\nLes Dresseurs à bord viennent\nde partout."
+		]
+	},
+	"vermilion_docker_2": {
+		"speaker": "Docker",
+		"pages": [
+			"On charge depuis l'aube.\nDes caisses, des malles… et des\nPokémon de toutes les régions."
+		]
+	},
+	"vermilion_old_man": {
+		"speaker": "Vieil homme",
+		"pages": [
+			"Major Bob a servi dans l'armée,\nautrefois.",
+			"Ses Pokémon Électrik l'ont sorti\nde bien des situations."
+		]
+	},
+	"vermilion_resident": {
+		"speaker": "Habitante",
+		"pages": [
+			"Cet arbre devant l'Arène ?\nIl a poussé tout seul.",
+			"Major Bob dit que les vrais\nchallengers trouveront un moyen."
+		]
+	},
+	"vermilion_kid": {
+		"speaker": "Enfant",
+		"pages": [
+			"Un jour, je monterai sur ce grand\nbateau. Tout là-haut, sur le pont !"
+		]
+	},
+	"vermilion_fan_club_chairman": {
+		"speaker": "Président du Fan Club",
+		"pages": [
+			"Tu aimes les Pokémon ? Alors écoute-moi\nparler de mon Ponyta !",
+			"Sa crinière, sa démarche…\nun champion !",
+			"Reviens quand tu veux, j'ai toujours\nune histoire à raconter !"
+		]
+	},
+	"vermilion_fan_club_member": {
+		"speaker": "Membre du Fan Club",
+		"pages": ["Ici, on ne se bat pas.\nOn se raconte nos Pokémon."]
+	},
+	"vermilion_fan_club_member_2": {
+		"speaker": "Membre du Fan Club",
+		"pages": [
+			"Mon Miaouss adore qu'on parle de lui.\nRegarde comme il se tient droit !"
+		]
+	},
+	"vermilion_fisher": {
+		"speaker": "Pêcheur",
+		"pages": [
+			"Je suis le meilleur pêcheur\nde Carmin !",
+			"La mer est pleine de Pokémon.\nUn jour, je t'apprendrai."
+		]
+	},
+	"vermilion_house_1_resident": {
+		"speaker": "Habitant",
+		"pages": [
+			"Safrania est fermée depuis quelque\ntemps. Personne ne sait vraiment\npourquoi."
+		]
+	},
+	"vermilion_house_2_resident": {
+		"speaker": "Habitante",
+		"pages": [
+			"Le S.S. Anne ne reste jamais\nlongtemps.",
+			"Quand il repart, toute la ville\nvient le saluer."
+		]
+	}
+}

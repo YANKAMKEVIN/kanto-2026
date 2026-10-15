@@ -14,7 +14,9 @@ func test_real_data_loads_without_error() -> void:
 	var library := ObjectiveLibrary.new()
 	assert_true(library.load_file(), "\n".join(library.get_errors()))
 	assert_eq(library.get_errors().size(), 0)
-	assert_eq(library.get_ids(), [&"ss_anne", &"help_bill", &"go_cerulean_cape",
+	# Jalon 15 (T14) : « explorer Carmin-sur-Mer. » après le S.S. Anne.
+	assert_eq(library.get_ids(), [&"ss_anne", &"explore_vermilion", &"help_bill",
+		&"go_cerulean_cape",
 		&"explore_cerulean", &"cross_nugget_bridge",
 		&"get_cascade_badge", &"go_cerulean", &"cross_mt_moon", &"go_route_3",
 		&"get_boulder_badge", &"go_north",

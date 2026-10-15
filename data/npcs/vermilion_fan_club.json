@@ -1,0 +1,17 @@
+{
+	"chairman": {
+		"cell": [6, 4], "facing": "down", "sprite": "fan_club_chairman",
+		"dialogue": "vermilion_fan_club_chairman"
+	},
+	"member_1": {
+		"cell": [2, 6], "facing": "right", "sprite": "lass_young",
+		"dialogue": "vermilion_fan_club_member"
+	},
+	"member_2": {
+		"cell": [11, 6], "facing": "right", "sprite": "traveler",
+		"dialogue": "vermilion_fan_club_member_2"
+	},
+	"meowth": {
+		"cell": [12, 6], "facing": "left", "sprite": "pokemon/meowth"
+	}
+}

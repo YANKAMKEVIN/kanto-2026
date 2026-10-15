@@ -46,6 +46,8 @@ const MAPS: Array[StringName] = [
 	&"route_4",
 	# Jalon 14 (T17) : l'entrée de la maison de Léo.
 	&"bill_house",
+	# Jalon 15 (T14) : reculs du garde de Safrania (Route 6), arrivée à Carmin.
+	&"route_6", &"vermilion_city",
 ]
 ## Jalon 7 (T18) : partie qui revient au labo avec le colis (rival parti après le combat).
 const PARCEL_FLAGS: Array[StringName] = [
@@ -163,6 +165,11 @@ const VARIANT_FLAGS: Dictionary = {
 	&"cerulean_rocket_chase": [PEWTER_FLAGS],
 	&"cerulean_rocket_fight": [PEWTER_FLAGS + [&"cerulean_rocket_spotted"]],
 	&"cerulean_south_guard": [PEWTER_FLAGS + [&"cerulean_rocket_beaten"]],
+	# Jalon 15 (T14) : Route 6 (Poké Ball, Super Potion cachée, reculs du garde), arrivée à
+	# Carmin-sur-Mer.
+	&"route_6_item_1": [PEWTER_FLAGS], &"route_6_hidden_1": [PEWTER_FLAGS],
+	&"route_6_gate_rule_w": [PEWTER_FLAGS], &"route_6_gate_rule_e": [PEWTER_FLAGS],
+	&"route_6_gate_rule_s": [PEWTER_FLAGS], &"vermilion_arrival": [PEWTER_FLAGS],
 }
 ## Scènes jouées par le code (pas de déclencheur) → carte où elles sont jouées.
 ## Jalon 7 (T18) : la scène du colis est lancée par la variante « cutscene » du dialogue de Chen.
@@ -178,6 +185,9 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	# Jalon 14 (T16) : objets de la Route 25 (PNJ « objet » et point d'examen du coquillage).
 	&"route_25_item_1": &"route_25", &"route_25_item_2": &"route_25",
 	&"route_25_item_3": &"route_25", &"route_25_hidden_1": &"route_25",
+	# Jalon 15 (T14) : Poké Ball (PNJ « objet ») et Super Potion cachée (point d'examen des
+	# joncs) de la Route 6.
+	&"route_6_item_1": &"route_6", &"route_6_hidden_1": &"route_6",
 	# Jalon 11 (T14) : remise tardive de la CT34 (dialogue de Pierre).
 	&"pewter_gym_brock_tm_late": &"pewter_gym",
 	# Jalon 13 (T17) : objets visibles des Routes 4 et 24 (PNJ « objet »).
@@ -265,6 +275,8 @@ func test_library_loads_without_error() -> void:
 		&"route_1_potion", &"route_24_antidote", &"route_24_item_1", &"route_24_misty",
 		&"route_24_rival", &"route_24_rocket", &"route_25_hidden_1", &"route_25_item_1",
 		&"route_25_item_2", &"route_25_item_3",
+		&"route_6_gate_rule_e", &"route_6_gate_rule_s", &"route_6_gate_rule_w",
+		&"route_6_hidden_1", &"route_6_item_1", &"vermilion_arrival",
 		&"route_2_item_1", &"route_2_item_2", &"route_2_item_3", &"route_2_item_4",
 		&"route_2_north_item_1", &"route_3_entered", &"route_3_guard", &"route_3_hidden_1",
 		&"route_3_item_1", &"route_3_item_2", &"route_3_item_3", &"route_4_item_1",
@@ -384,6 +396,7 @@ func test_only_world_items_are_found_items() -> void:
 		"route_2_item_3:poke_ball", "route_2_item_4:potion", "route_2_north_item_1:potion",
 		"route_3_hidden_1:awakening", "route_3_item_1:poke_ball", "route_3_item_2:potion",
 		"route_3_item_3:paralyze_heal", "route_4_item_1:poke_ball",
+		"route_6_hidden_1:super_potion", "route_6_item_1:poke_ball",
 		"viridian_forest_item_1:antidote", "viridian_forest_item_2:poke_ball",
 		"viridian_forest_item_3:potion", "viridian_forest_item_4:antidote",
 		"viridian_forest_item_5:poke_ball", "viridian_forest_item_6:potion"]

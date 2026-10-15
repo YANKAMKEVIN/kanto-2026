@@ -17,11 +17,6 @@
 			"name": "Passage souterrain", "kind": "place", "maps": ["underground_path"],
 			"subtitle": "Route 5 — Route 6",
 			"description": "Un long couloir de pierre qui passe sous Safrania. Le silence n'y est troublé que par l'écho des pas."
-		},
-		"route_6": {
-			"name": "Route 6", "kind": "route", "maps": ["route_6", "route_6_underground_gate"],
-			"subtitle": "Safrania — Carmin-sur-Mer",
-			"description": "Une route ouverte où l'air sent déjà le sel. Au bout, les grues et les mâts du port de Carmin."
 		}
 	}
 }
