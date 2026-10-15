@@ -301,7 +301,7 @@ func test_zones_wait_for_their_maps() -> void:
 		assert_true(areas.has(String(id)), "%s : rectangle proposé" % id)
 		assert_true(PokedexScene.all_scenes().has(scenes.get(String(id), "")),
 			"%s : décor du Pokédex existant" % id)
-	_check_zones(staged)
+	_check_zones(staged, zones)
 	assert_false(zones.get_zone(&"route_2").maps.has(&"route_2_east"), "avec la carte (T19)")
 
 
@@ -315,7 +315,9 @@ func test_companion_contexts() -> void:
 
 # --- Outils ---------------------------------------------------------------------------
 
-func _check_zones(zones: ZoneLibrary) -> void:
+## [param zones] : zones posées ou en attente ; [param posed] : `zones.json`, où la Cave Taupiqueur
+## est posée avec sa carte (T15) pendant que la Route 11 attend la sienne (T16).
+func _check_zones(zones: ZoneLibrary, posed: ZoneLibrary = null) -> void:
 	var expected := {
 		&"route_11": ["Route 11", ZoneData.KIND_ROUTE, "T-13", "Carmin-sur-Mer — Route 12"],
 		&"digletts_cave": ["Cave Taupiqueur", ZoneData.KIND_PLACE, "T-14",
@@ -323,6 +325,8 @@ func _check_zones(zones: ZoneLibrary) -> void:
 	}
 	for id: StringName in expected:
 		var zone := zones.get_zone(id)
+		if zone == null and posed != null:
+			zone = posed.get_zone(id)
 		assert_not_null(zone, String(id))
 		if zone == null:
 			continue

@@ -5,6 +5,13 @@
 			"maps": ["mt_moon_1f", "mt_moon_b1f", "mt_moon_b2f"],
 			"escape": { "map": "route_3", "spawn": "from_mt_moon_w", "facing": "down" }
 		},
+		"digletts_cave": {
+			"maps": ["digletts_cave"],
+			"escapes": [
+				{ "rows": [0, 39], "map": "route_2_east", "spawn": "from_cave_w", "facing": "down" },
+				{ "rows": [40, 79], "map": "route_11", "spawn": "from_cave_w", "facing": "down" }
+			]
+		},
 		"qa_flash": {
 			"maps": ["qa_flash"],
 			"escape": { "map": "qa_flash_entry", "spawn": "from_qa_flash_w", "facing": "down" },

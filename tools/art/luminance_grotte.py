@@ -48,6 +48,7 @@ PLANS = {
 	"mt_moon_1f": "tools/plans/mont_selenite_1f.txt",
 	"mt_moon_b1f": "tools/plans/mont_selenite_b1f.txt",
 	"mt_moon_b2f": "tools/plans/mont_selenite_b2f.txt",
+	"digletts_cave": "tools/plans/digletts_cave.txt",
 }
 SOL = set(".gjUVE")
 PAROI = set("#*")
@@ -55,6 +56,9 @@ SEUIL_SOL = 0.22
 SEUIL_RAPPORT = 2.0
 SEUIL_HEROS = 3.0
 SEUIL_ECART = 1.25
+# Cartes sans voile de pénombre (Cave Taupiqueur, J17 T15 : lumière naturelle, aucun voile) : l'écart
+# centre / pourtour est donné pour information, il n'y a pas de pénombre à mesurer.
+SANS_VOILE = {"digletts_cave"}
 REPERES = set("LjUVE*")
 RAYON_JOUEUR = 2.5
 RAYON_REPERE = 2.0
@@ -183,7 +187,8 @@ def mesurer(png: Path, fiche: dict) -> dict | None:
 	plancher = min(proches) if proches else resultat["sol"]
 	resultat["rapport_proche"] = round(plancher / max(resultat["paroi"], 1e-6), 2)
 	resultat["ok"] = plancher >= SEUIL_SOL and resultat["rapport_proche"] >= SEUIL_RAPPORT \
-		and (resultat["ecart"] is None or resultat["ecart"] >= SEUIL_ECART)
+		and (fiche["map"] in SANS_VOILE or resultat["ecart"] is None
+			or resultat["ecart"] >= SEUIL_ECART)
 	vide = png.with_name(png.stem + "_vide.png")
 	if joueur and vide.exists():
 		resultat["contraste_heros"] = contraste_heros(image, Image.open(vide).convert("RGB"),

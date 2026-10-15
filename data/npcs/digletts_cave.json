@@ -1,0 +1,14 @@
+{
+	"taupiqueur_1": {
+		"cell": [17, 62], "facing": "down", "sprite": "pokemon/diglett",
+		"shy": { "action": "hide", "radius": 1 }
+	},
+	"taupiqueur_2": {
+		"cell": [22, 29], "facing": "down", "sprite": "pokemon/diglett",
+		"shy": { "action": "hide", "radius": 1 }
+	},
+	"taupiqueur_3": {
+		"cell": [18, 13], "facing": "down", "sprite": "pokemon/diglett",
+		"shy": { "action": "hide", "radius": 1 }
+	}
+}
