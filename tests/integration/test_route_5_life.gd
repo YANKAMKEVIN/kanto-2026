@@ -174,3 +174,74 @@ func test_saffron_gate_guard_warns_then_points_to_the_underground() -> void:
 		assert_eq(_player.get_facing(), Vector2i.UP, "toujours tourné vers le garde")
 		assert_eq(_boot.get_map().map_id, &"route_5_gate", "Safrania reste fermée")
 	assert_push_error_count(0)
+
+
+# --- T15 / T16 : objectif, objet visible, Miaouss vu (jalon-15.md §2.7.9, §2.8, §3 T16) ---------
+
+func _objective() -> String:
+	return _boot.get_menu_director().build_dashboard().objective_text
+
+
+## T-42 : l'entrée sur la Route 5 affiche « rejoindre Carmin-sur-Mer, au sud. » au tableau de bord.
+func test_entering_shows_the_go_vermilion_objective() -> void:
+	await _start(&"route_5", &"from_cerulean_c", Vector2i.DOWN)
+	assert_ne(_objective(), "Objectif : rejoindre Carmin-sur-Mer, au sud.", "pas encore")
+	Input.action_press(&"move_down")
+	await wait_until(func() -> bool: return GameState.flags.has_flag(&"route_5_entered"),
+		TIMEOUT)
+	Input.action_release(&"move_down")
+	await wait_until(func() -> bool: return not _player.is_moving(), TIMEOUT)
+	assert_eq(_objective(), "Objectif : rejoindre Carmin-sur-Mer, au sud.")
+
+
+## Super Potion visible (11, 15) : PRENDRE depuis la case voisine, Sac + 1, absente ensuite.
+func test_visible_super_potion_is_taken_once() -> void:
+	await _start(&"route_5", &"from_cerulean_c", Vector2i.DOWN)
+	var map := _boot.get_map()
+	var ball := map.get_npc(&"route_5_item_1")
+	assert_not_null(ball, "Super Potion posée")
+	if ball == null:
+		return
+	var cell := ball.get_cell()
+	assert_eq(cell, Vector2i(11, 15))
+	var from := Vector2i(-1, -1)
+	for side: Vector2i in [Vector2i.DOWN, Vector2i.UP, Vector2i.RIGHT, Vector2i.LEFT]:
+		if from.x < 0 and map.get_grid().is_free(cell + side):
+			from = cell + side
+	assert_gt(from.x, -1, "une case voisine libre")
+	map.spawn_player_at(_player, from, cell - from)
+	await wait_process_frames(3)
+	var before := GameState.bag.count_of(&"super_potion")
+	Input.action_press(&"interact")
+	await wait_process_frames(2)
+	Input.action_release(&"interact")
+	await wait_until(func() -> bool: return GameState.flags.has_flag(&"got_route_5_item_1"),
+		TIMEOUT)
+	await _finish_scene()
+	assert_eq(GameState.bag.count_of(&"super_potion"), before + 1, "Sac + 1")
+	assert_null(_boot.get_map().get_npc(&"route_5_item_1"), "plus d'objet au sol")
+	assert_push_error_count(0)
+
+
+## Miaouss vu sur la vraie Route 5 (T16) : table des herbes réduite à Miaouss (taux maximal),
+## un pas dans H1 → combat sauvage contre Miaouss, marqué « vu » au Pokédex.
+func test_meowth_is_seen_in_the_real_tall_grass() -> void:
+	await _start(&"route_5", &"from_cerulean_c", Vector2i.DOWN)
+	var grass := Vector2i(24, 9)
+	var map := _boot.get_map()
+	assert_true(map.get_grid().is_tall_grass(grass), "H1 de la grille")
+	assert_true(_boot.get_encounter_library().override_table(&"route_5", &"grass",
+		{"rate": 255, "slots": [{"species": "meowth", "levels": [12, 12], "weight": 1}]},
+		"test"))
+	assert_false(GameState.pokedex.is_seen(&"meowth"), "pas encore vu")
+	var started: Array[StringName] = []
+	_boot.get_encounter_director().encounter_started.connect(
+		func(species: StringName, _level: int) -> void: started.append(species))
+	map.spawn_player_at(_player, grass + Vector2i.LEFT, Vector2i.RIGHT)
+	await wait_process_frames(3)
+	Input.action_press(&"move_right")
+	await wait_until(func() -> bool: return not started.is_empty(), TIMEOUT)
+	Input.action_release(&"move_right")
+	assert_eq(started, [&"meowth"] as Array[StringName], "rencontre de Miaouss")
+	await wait_until(func() -> bool: return _boot.get_battle_director().is_running(), TIMEOUT)
+	assert_true(GameState.pokedex.is_seen(&"meowth"), "Miaouss vu")

@@ -5,7 +5,7 @@ extends GutTest
 ## - EXAMINER → toast standard seul (« Réveil ×1 » / « Ajouté au Sac »), aucune bulle, Sac + 1,
 ##   journal des objets trouvés, drapeau `got_<id>` ;
 ## - ensuite plus de cible, même après un rechargement de la partie.
-## Caches : Route 3 (T18), Route 24 nord (T22, Antidote), souterrain (J15 T19, Guérison), Route 5 (J15 T13, Antidote du tronc). Le 1F et le B2F s'ajoutent au T21 / T25 ([constant CACHES]).
+## Caches : Route 3 (T18), Route 24 nord (T22, Antidote), souterrain (J15 T19, Guérison), Route 5 (J15 T13, Antidote du tronc), Route 6 (J15 T14/T15, Super Potion des joncs). Le 1F et le B2F s'ajoutent au T21 / T25 ([constant CACHES]).
 
 const MemoryFs := preload("res://tests/helpers/memory_file_system.gd")
 const FixedClock := preload("res://tests/helpers/fixed_clock.gd")
@@ -26,6 +26,10 @@ const CACHES: Array = [
 		["Guérison ×1", "Ajoutée au Sac"], ["page", "toast"]],
 	[&"route_5", "res://tools/debug_start/route_5.json", &"from_cerulean_c", "route_5_hidden_1",
 		Vector2i(16, 31), &"antidote", ["Antidote ×1", "Ajouté au Sac"]],
+	# Jalon 15 (T14 / T15) : la Super Potion des joncs, rive ouest de l'étang de la Route 6.
+	[&"route_6", "res://tools/debug_start/route_6.json", &"from_underground",
+		"route_6_hidden_1", Vector2i(10, 32), &"super_potion",
+		["Super Potion ×1", "Ajoutée au Sac"]],
 ]
 const SIDES: Array[Vector2i] = [Vector2i.LEFT, Vector2i.RIGHT, Vector2i.DOWN]
 
@@ -170,3 +174,7 @@ func test_underground_full_restore_behind_the_loose_stone() -> void:
 
 func test_route_5_antidote_behind_the_trunk() -> void:
 	await _check_cache(CACHES[3])
+
+
+func test_route_6_super_potion_behind_the_rushes() -> void:
+	await _check_cache(CACHES[4])

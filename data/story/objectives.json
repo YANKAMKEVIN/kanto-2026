@@ -1,13 +1,19 @@
 [
 	{
-		"id": "ss_anne",
-		"text": "le S.S. Anne fait escale à Carmin-sur-Mer.",
-		"if": ["got_ss_ticket"]
-	},
-	{
 		"id": "explore_vermilion",
 		"text": "explorer Carmin-sur-Mer.",
 		"if": ["vermilion_reached"]
+	},
+	{
+		"id": "go_vermilion",
+		"text": "rejoindre Carmin-sur-Mer, au sud.",
+		"if": ["route_5_entered"],
+		"unless": ["vermilion_reached"]
+	},
+	{
+		"id": "ss_anne",
+		"text": "le S.S. Anne fait escale à Carmin-sur-Mer.",
+		"if": ["got_ss_ticket"]
 	},
 	{
 		"id": "help_bill",

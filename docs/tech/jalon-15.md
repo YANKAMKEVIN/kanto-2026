@@ -778,6 +778,12 @@ et annexe A validée).
   Boutique ; Pension sur la vraie carte (gardien, `daycare_keeper`). Tests `test_route_5_life`,
   `test_route_6_trainers` (Chloé, réplique « après », récompenses), `test_vermilion_life`
   (marin, arbre, Fan Club, Boutique : Super Potion 700 ₽), `test_objective_library`.
+- **Fait (2026-10-15, branche `j15-t15-t20`)** : audit des écarts après T13/T14/T18 ; comblés :
+  objectif `go_vermilion` + ordre de tête `explore_vermilion`, `go_vermilion`, `ss_anne` (§2.7.9),
+  `test_route_6_trainers` (Chloé jouée, Jackpot dans le vrai combat, six répliques « après »),
+  `test_vermilion_life` (arrivée + objectif, T-26 avec / sans Passe Bateau, dockers, T-29, Fan
+  Club, achat de la Super Potion 700 ₽), `test_route_5_life` (+ objectif, Super Potion prise,
+  Miaouss vu en vraie scène), `test_hidden_items` (+ joncs de la Route 6), départs du §3 T22.
 
 #### T16 — architecte : rencontres + Corde Sortie au stock — **(A depuis le 2026-10-14 : J12 et J13 dans `main`, §1.2)**
 - §2.7.5, §2.7.6 ; `test_encounter_library` (tables par carte), Miaouss vu sur la Route 5 en vraie
@@ -797,6 +803,10 @@ et annexe A validée).
 
 #### T20 — constructeur-monde : compagnon — **(A : J11 11D dans `main`, §1.2)**
 - §2.10. **CA** : Miaouss compagnon dans la galerie et le souterrain ; dépôt du compagnon → aucun.
+- **Fait (2026-10-15)** : `test_companion_j15` (Miaouss suit sur Route 5, Route 6, Carmin,
+  souterrain ; rentré dans les cinq intérieurs ; phrase générique au souterrain, « ville » à
+  Carmin — contexte `vermilion_city: city` ajouté [D] ; dépôt à la vraie Pension → aucun, même
+  après rechargement) ; captures `tools/capture_companion_j15.gd`.
 
 #### T21 — constructeur-monde : raccord nord réel et Passe Bateau — **(A depuis le 2026-10-15 : J13 et J14 dans `main`, §1.2)**
 - Route 5 : bord nord (19..21, 0) → `cerulean_city` / `from_route_5_w|c|e` (sans `coming_soon`) ;
@@ -859,6 +869,53 @@ et annexe A validée).
 - **15B** : Route 6 (Chloé inévitable, cinq autres, Papilusion : paralysie / sommeil), poste est,
   Carmin (Centre et point de repos, Boutique, Arène, arbre, Fan Club, Pêcheur, maisons, quai, marin,
   dockers), Route 11, Jackpot, objectifs ; **QA finale** sur la vraie partie de Kevin.
+
+**Protocole des sessions (T15/T20, 2026-10-15)** — APK debug, départ déposé par
+`tools/deploy_s24.sh --debug-start <départ>` (relancer l'appli depuis l'icône entre deux départs
+du même fichier ; le journal `logcat -s godot` affiche « Départ de débogage (…) »). Durée bornée :
+**30–45 min par session** ; une étape qui bloque est notée (capture + journal) et la session
+continue. Preuve = capture `build/screenshot.png` renommée `15a_<n>.png` / `15b_<n>.png` (ou
+ligne du journal citée). Les étapes marquées (opt.) se sautent si le temps manque.
+
+*Session 15A* (≈ 40 min)
+
+| n° | Départ | Geste | Attendu | Preuve |
+|---|---|---|---|---|
+| 1 | `route_5` | 1 pas vers le sud ; ouvrir le menu | arrivée silencieuse ; « Objectif : rejoindre Carmin-sur-Mer, au sud. » | capture du tableau de bord |
+| 2 | (suite) | 1 pas vers le nord, puis revenir | Azuria (fondu, titre), retour sur la même colonne | capture Azuria |
+| 3 | (suite) | lire le panneau (22, 5), parler à la promeneuse (30, 30) et au voyageur (24, 48) | T-13, T-21, T-22 mot pour mot | 3 captures |
+| 4 | (suite) | prendre la Super Potion (11, 15) ; examiner le tronc (16, 31) depuis (16, 32) | toast « Super Potion ×1 » ; toast « Antidote ×1 » ; plus rien ensuite | 2 captures |
+| 5 | (suite) | marcher dans H1 (24..28, 8..13) | rencontres N10–16 ; Miaouss possible (20 %) | capture d'un combat |
+| 6 | (suite) | entrer au poste (34, 44), monter deux fois vers le garde | T-15 puis T-16, recul d'une case à chaque fois | 2 captures |
+| 7 | `route_5_daycare` | parler au gardien, OUI, choisir Miaouss (compagnon) | T-1/T-2 → T-4 → sélecteur (Roucool K.O. choisissable) → T-6 ; sortir : **personne ne suit** | captures du sélecteur et de la Route 5 |
+| 8 | `route_5_daycare_last` | parler au gardien, OUI | carte de Miaouss refusée avec T-5 ; un K.O. se dépose | capture du sélecteur |
+| 9 | `route_5_daycare_ready` | parler au gardien, OUI | T-8 (300 ₽) → T-10 → Groz'Yeux : écran d'oubli (refuser une fois) → évolution proposée (ARRÊTER) → T-12 ; Salamèche rendu PV pleins, sans poison ; 4 700 ₽ | captures oubli, évolution, résumé |
+| 10 | `route_5_daycare_ready` (relancé) | sortir, marcher 20 pas puis courir 20 pas dehors ; pousser un mur ; revenir | 40 pas = 40 XP de plus : le retrait annonce le niveau attendu (pas de saut au-delà de N16 sauf seuil franchi) ; le mur ne compte pas | capture du T-8 |
+| 11 | (opt.) `daycare_poor`, `daycare_full` (carte de QA) | retirer | T-11 (tout l'argent pris, Pokémon rendu) ; T-9 (rien ne change) | 2 captures |
+| 12 | `underground_path` | descendre la galerie avec le compagnon (Reptincel) | lisible **sans monter la luminosité** ; le compagnon suit, passe le renflement du passant | 2 captures |
+| 13 | (suite) | parler au passant (11, 14) ; examiner la pierre (11, 9) depuis (11, 10) | T-18 ; T-19 puis toast « Guérison ×1 » ; plus rien ensuite | 2 captures |
+| 14 | (suite) | aller au bout, monter l'escalier, ressortir | bâtiment de la Route 6 ; retour possible ; aucune rencontre dans tout le souterrain | capture |
+| 15 | (fps) | pendant 1 à 14 | ≥ 58 fps moyens, creux ≥ 50 (Route 5, souterrain) | `[perf]` du journal |
+
+*Session 15B* (≈ 45 min)
+
+| n° | Départ | Geste | Attendu | Preuve |
+|---|---|---|---|---|
+| 1 | `route_6` | descendre la place, traverser le goulet | Chloé repère le joueur sur n'importe quelle rangée ; combat ; « défaite » ; +320 ₽ ; « après » en lui reparlant | captures avant / fin |
+| 2 | (suite) | passer par la rangée 10 du goulet | Gabin ne voit pas ; lui parler → combat (+320 ₽) | capture |
+| 3 | (suite) | panneau du poste (31, 7), garde (36, 8) de face, puis cases (35..37, 8..9) | T-17 ; recul | capture |
+| 4 | (suite) | étang : pêcheur (22, 35) ; joncs (10, 32) depuis (10, 31) | T-23 ; toast « Super Potion ×1 » | 2 captures |
+| 5 | (suite) | longer la colonne 27 devant Mathis et Manon | aucun défi ; leur parler : combats (+400 ₽, +320 ₽) | capture |
+| 6 | `route_6_basile` | 1 pas vers le nord | Basile ; Papilusion : Para-Spore / Poudre Dodo / Poudre Toxik (statuts lisibles, Anti-Para et Réveil utilisables) ; +240 ₽ ; Poké Ball (38, 41) | captures des statuts |
+| 7 | `route_5_pay_day` | marcher dans H1, Jackpot, gagner | « Des pièces s'éparpillent partout ! » ; fin : « Tu ramasses 34 ₽. » (2 × 17) en plus de rien d'autre | capture du bilan |
+| 8 | `vermilion` | 1 pas vers le sud ; menu | « Objectif : explorer Carmin-sur-Mer. » ; panneau T-25 (29, 2) | capture |
+| 9 | (suite) | Centre (soin, point de repos, Stockage) ; Boutique : acheter 1 Super Potion | point de repos enregistré ; 700 ₽ | 2 captures |
+| 10 | (suite) | panneau de l'Arène (47, 10) ; examiner l'arbre (49..50, 10) ; vieil homme, habitante | T-30 + « Le Soldat de la Foudre » ; T-29 ; porte inatteignable ; T-31, T-32 | captures |
+| 11 | (suite) | Fan Club, Pêcheur, maisons 1 et 2 | T-33, T-34, A.4 ; T-35 (aucune Canne) ; T-36 ; A.4 | captures |
+| 12 | (suite) | quai : marin, deux dockers ; bord est (63, 11..13) | T-26, T-27, T-28 ; « ROUTE 11 — À venir » et retour sur la case | captures |
+| 13 | `vermilion_ss_ticket` | parler au marin | T-26 **identique** ; passerelle toujours gardée | capture |
+| 14 | (fps / budgets) | Carmin, quai | ≥ 58 fps moyens, creux ≥ 50 | `[perf]` |
+| 15 | **vraie partie de Kevin** (QA finale, après les fusions) | la charger, aller d'Azuria à Carmin | aucune régression, rien perdu (équipe, Sac, Stockage, compagnon) | 2 captures + journal |
 
 #### T23 — architecte : clôture
 - Retrait de `qa_daycare` et de ses départs ; `etat-projet.md`, roadmap ; passation : J16 (marin et

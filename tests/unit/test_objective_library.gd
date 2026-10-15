@@ -14,8 +14,9 @@ func test_real_data_loads_without_error() -> void:
 	var library := ObjectiveLibrary.new()
 	assert_true(library.load_file(), "\n".join(library.get_errors()))
 	assert_eq(library.get_errors().size(), 0)
-	# Jalon 15 (T14) : « explorer Carmin-sur-Mer. » après le S.S. Anne.
-	assert_eq(library.get_ids(), [&"ss_anne", &"explore_vermilion", &"help_bill",
+	# Jalon 15 (T15, jalon-15.md §2.7.9) : « explorer Carmin-sur-Mer. » puis « rejoindre
+	# Carmin-sur-Mer, au sud. » en tête (ordre du voyage), devant le S.S. Anne du J14.
+	assert_eq(library.get_ids(), [&"explore_vermilion", &"go_vermilion", &"ss_anne", &"help_bill",
 		&"go_cerulean_cape",
 		&"explore_cerulean", &"cross_nugget_bridge",
 		&"get_cascade_badge", &"go_cerulean", &"cross_mt_moon", &"go_route_3",
@@ -92,6 +93,40 @@ func test_j10_north_then_boulder_badge_then_route_3() -> void:
 	assert_false(library.is_draft(&"go_route_3"), "texte verrouillé (dossier 12)")
 	flags.set_flag(&"pewter_arrived", false)
 	assert_eq(library.current_id(flags), &"go_route_3", "le badge passe en tête")
+
+
+## Jalon 15 (dossier 18 §12, T-42 ; jalon-15.md §2.7.9) : la Route 5 → « rejoindre
+## Carmin-sur-Mer, au sud. » (dans les deux ordres des histoires du J14, avec ou sans Passe
+## Bateau), Carmin → « explorer Carmin-sur-Mer. ».
+func test_j15_route_5_then_vermilion() -> void:
+	var library := ObjectiveLibrary.new()
+	library.load_file()
+	var flags := StoryFlags.new()
+	for flag: StringName in [&"rival_battle_done", &"viridian_arrived",
+			StoryFlags.POKEDEX_ACTIVATED, &"pewter_arrived", &"badge_boulder", &"route_3_entered",
+			&"route_4_reached", &"cerulean_reached", &"cerulean_rocket_beaten",
+			&"cerulean_south_guard_left"]:
+		flags.set_flag(flag)
+	assert_eq(library.current_id(flags), &"get_cascade_badge", "Azuria, avant la Route 5")
+	flags.set_flag(&"route_5_entered")
+	assert_eq(library.current(flags), "rejoindre Carmin-sur-Mer, au sud.", "T-42")
+	assert_eq(library.current_id(flags), &"go_vermilion")
+	# Léo rencontré mais pas aidé (les deux histoires du J14 dans n'importe quel ordre) : le
+	# voyage vers le sud passe devant.
+	flags.set_flag(&"bill_met")
+	assert_eq(library.current_id(flags), &"go_vermilion", "Léo pas encore aidé")
+	flags.set_flag(&"bill_restored")
+	flags.set_flag(&"got_ss_ticket")
+	assert_eq(library.current_id(flags), &"go_vermilion", "avec le Passe Bateau")
+	flags.set_flag(&"vermilion_reached")
+	assert_eq(library.current(flags), "explorer Carmin-sur-Mer.", "T-42")
+	assert_eq(library.current_id(flags), &"explore_vermilion")
+	flags.set_flag(&"got_ss_ticket", false)
+	assert_eq(library.current_id(flags), &"explore_vermilion", "sans le Passe Bateau")
+	flags.set_flag(&"route_5_entered", false)
+	assert_eq(library.current_id(flags), &"explore_vermilion", "l'arrivée seule suffit")
+	for id: StringName in [&"go_vermilion", &"explore_vermilion"]:
+		assert_false(library.is_draft(id), "texte validé (T-42)")
 
 
 ## Jalon 13 (dossier 16 §18, jalon-13.md §2.16, textes 61 à 63) : les quatre états d'Azuria, et le
