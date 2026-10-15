@@ -273,6 +273,33 @@ func test_glows_within_budget_and_no_light2d() -> void:
 		assert_eq(lights.size(), 0, "%s : aucune Light2D" % map_id)
 
 
+func test_candle_and_purified_halos_and_one_mist_per_floor() -> void:
+	var previous_alpha := 0.0
+	for map_id: StringName in FLOORS:
+		var map: GameMap = _maps[map_id]
+		assert_eq(map.light_profile, &"tower", String(map_id))
+		var steles: int = _plans[map_id].call(&"cells_of", "S").size()
+		var candles: Array[Node] = []
+		_find_all(map, candles, func(n: Node) -> bool:
+			return n is LightGlow and (n as LightGlow).glow_type == &"candle")
+		assert_eq(candles.size(), steles, "%s : un halo « candle » par stèle" % map_id)
+		var purified: Array[Node] = []
+		_find_all(map, purified, func(n: Node) -> bool:
+			return n is LightGlow and (n as LightGlow).glow_type == &"purified")
+		assert_eq(purified.size(), 1 if map_id == &"pokemon_tower_5f" else 0, String(map_id))
+		var mists: Array[Node] = []
+		_find_all(map, mists, func(n: Node) -> bool: return n is MistLayer)
+		assert_eq(mists.size(), 1, "%s : une brume" % map_id)
+		var mist := mists[0] as MistLayer
+		assert_eq(mist.area, SIZE * 96, "%s : brume à la taille de la carte" % map_id)
+		assert_lte(mist.alpha, MistLayer.ALPHA_MAX)
+		assert_gt(mist.alpha, previous_alpha, "%s : plus brumeux que l'étage du dessous" % map_id)
+		previous_alpha = mist.alpha
+		assert_lt(mist.z_index, 0, "sous les personnages")
+	assert_eq((_maps[&"pokemon_tower_6f"] as GameMap).get_node("Mist").get(&"alpha"),
+		previous_alpha, "le 6F est le plus brumeux")
+
+
 func test_node_budget() -> void:
 	for map_id: StringName in _maps:
 		var nodes := _count(_maps[map_id])

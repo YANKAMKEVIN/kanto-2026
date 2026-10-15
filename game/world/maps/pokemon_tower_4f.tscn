@@ -1,34 +1,36 @@
 [gd_scene format=4]
 
-[ext_resource type="Script" path="res://game/world/map.gd" id="1_tgr6c"]
-[ext_resource type="TileSet" path="res://assets/tiles/overworld.tres" id="2_6gcs2"]
-[ext_resource type="Shader" path="res://game/world/lighting/shaders/ground_blend.gdshader" id="3_jg1je"]
-[ext_resource type="Texture2D" path="res://assets/world/ground/ground_dalles_souterrain_01.png" id="4_r10v8"]
-[ext_resource type="Texture2D" path="res://assets/world/maps/pokemon_tower_4f_ground.png" id="5_bbqsd"]
-[ext_resource type="Texture2D" path="res://assets/world/ground/ground_masse_roche_01.png" id="6_w6mur"]
-[ext_resource type="Texture2D" path="res://assets/world/ground/ground_traces_souterrain_01.png" id="7_2bdd7"]
-[ext_resource type="Script" path="res://game/world/ground/painted_ground.gd" id="8_u7my7"]
-[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="9_x4rxt"]
-[ext_resource type="Texture2D" path="res://assets/world/relief/relief_mur_souterrain_03.png" id="10_hh5nw"]
-[ext_resource type="PackedScene" path="res://game/world/props/painted/prop_escalier_souterrain_descend_01.tscn" id="11_vecyn"]
-[ext_resource type="PackedScene" path="res://game/world/props/painted/prop_escalier_souterrain_monte_01.tscn" id="12_srasn"]
-[ext_resource type="Material" path="res://game/world/lighting/materials/cave_shade.tres" id="13_toewp"]
-[ext_resource type="Texture2D" path="res://assets/world/maps/pokemon_tower_4f_shade.png" id="14_rnqye"]
-[ext_resource type="Material" path="res://game/world/lighting/materials/cave_floor_light.tres" id="15_vrs20"]
-[ext_resource type="Texture2D" path="res://assets/world/maps/pokemon_tower_4f_floor_light.png" id="16_ylryv"]
-[ext_resource type="Texture2D" path="res://assets/world/relief/relief_mur_souterrain_02.png" id="17_h53ch"]
-[ext_resource type="Texture2D" path="res://assets/world/relief/relief_mur_souterrain_01.png" id="18_qfyah"]
-[ext_resource type="Texture2D" path="res://assets/world/relief/relief_mur_souterrain_04.png" id="19_bry6q"]
-[ext_resource type="PackedScene" path="res://game/world/props/painted/prop_stele_01.tscn" id="20_cuq5q"]
-[ext_resource type="Texture2D" path="res://assets/world/props/prop_stele_01.png" id="21_nuyyu"]
-[ext_resource type="Script" path="res://game/world/warp_point.gd" id="22_cpwwk"]
+[ext_resource type="Script" path="res://game/world/map.gd" id="1_jg1je"]
+[ext_resource type="TileSet" path="res://assets/tiles/overworld.tres" id="2_r10v8"]
+[ext_resource type="Shader" path="res://game/world/lighting/shaders/ground_blend.gdshader" id="3_bbqsd"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/ground_dalles_souterrain_01.png" id="4_w6mur"]
+[ext_resource type="Texture2D" path="res://assets/world/maps/pokemon_tower_4f_ground.png" id="5_2bdd7"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/ground_masse_roche_01.png" id="6_u7my7"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/ground_traces_souterrain_01.png" id="7_x4rxt"]
+[ext_resource type="Script" path="res://game/world/ground/painted_ground.gd" id="8_hh5nw"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="9_vecyn"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_mur_souterrain_03.png" id="10_srasn"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/prop_escalier_souterrain_descend_01.tscn" id="11_toewp"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/prop_escalier_souterrain_monte_01.tscn" id="12_rnqye"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/cave_shade.tres" id="13_vrs20"]
+[ext_resource type="Texture2D" path="res://assets/world/maps/pokemon_tower_4f_shade.png" id="14_ylryv"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/cave_floor_light.tres" id="15_h53ch"]
+[ext_resource type="Texture2D" path="res://assets/world/maps/pokemon_tower_4f_floor_light.png" id="16_qfyah"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_mur_souterrain_02.png" id="17_bry6q"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_mur_souterrain_01.png" id="18_cuq5q"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_mur_souterrain_04.png" id="19_nuyyu"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/prop_stele_01.tscn" id="20_cpwwk"]
+[ext_resource type="Texture2D" path="res://assets/world/props/prop_stele_01.png" id="21_p5n85"]
+[ext_resource type="Script" path="res://game/world/lighting/light_glow.gd" id="22_1lv8t"]
+[ext_resource type="Script" path="res://game/world/warp_point.gd" id="23_bj4bn"]
+[ext_resource type="Script" path="res://game/world/lighting/mist_layer.gd" id="24_14nqg"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_p5n85"]
-shader = ExtResource("3_jg1je")
-shader_parameter/grass_texture = ExtResource("4_r10v8")
-shader_parameter/paving_texture = ExtResource("7_2bdd7")
-shader_parameter/path_texture = ExtResource("6_w6mur")
-shader_parameter/ground_mask = ExtResource("5_bbqsd")
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6je10"]
+shader = ExtResource("3_bbqsd")
+shader_parameter/grass_texture = ExtResource("4_w6mur")
+shader_parameter/paving_texture = ExtResource("7_x4rxt")
+shader_parameter/path_texture = ExtResource("6_u7my7")
+shader_parameter/ground_mask = ExtResource("5_2bdd7")
 shader_parameter/tile_size = 96.0
 shader_parameter/texture_size = 384.0
 shader_parameter/paving_scale = 1.0
@@ -40,813 +42,836 @@ shader_parameter/water_texture_size = null
 shader_parameter/foam_strength = null
 shader_parameter/square_shore = null
 
-[node name="PokemonTower4F" type="Node2D" unique_id=1427619859]
-script = ExtResource("1_tgr6c")
+[node name="PokemonTower4F" type="Node2D" unique_id=1299885978]
+script = ExtResource("1_jg1je")
 map_id = &"pokemon_tower_4f"
 display_name = "Tour Pokémon"
 size = Vector2i(20, 18)
-light_profile = &"underground"
+light_profile = &"tower"
 
-[node name="Ground" type="TileMapLayer" parent="." unique_id=2015194527]
+[node name="Ground" type="TileMapLayer" parent="." unique_id=343225108]
 visible = false
 tile_map_data = PackedByteArray("AAAAAAAAAAAAAAcAAAABAAAAAAAAAAcAAAACAAAAAAAAAAcAAAADAAAAAAABAAcAAAAEAAAAAAAAAAcAAAAFAAAAAAAAAAcAAAAGAAAAAAABAAcAAAAHAAAAAAABAAcAAAAIAAAAAAABAAcAAAAJAAAAAAAAAAcAAAAKAAAAAAAAAAcAAAALAAAAAAABAAcAAAAMAAAAAAABAAcAAAANAAAAAAAAAAcAAAAOAAAAAAAAAAcAAAAPAAAAAAABAAcAAAAQAAAAAAABAAcAAAARAAAAAAABAAcAAAASAAAAAAAAAAcAAAATAAAAAAAAAAcAAAAAAAEAAAAAAAcAAAABAAEAAAAAAAcAAAACAAEAAAABAAcAAAADAAEAAAABAAcAAAAEAAEAAAAAAAcAAAAFAAEAAAAAAAcAAAAGAAEAAAABAAcAAAAHAAEAAAABAAcAAAAIAAEAAAABAAcAAAAJAAEAAAAAAAcAAAAKAAEAAAACAAIAAAALAAEAAAAAAAIAAAAMAAEAAAABAAcAAAANAAEAAAABAAcAAAAOAAEAAAABAAcAAAAPAAEAAAABAAcAAAAQAAEAAAAAAAcAAAARAAEAAAABAAcAAAASAAEAAAABAAcAAAATAAEAAAAAAAcAAAAAAAIAAAABAAcAAAABAAIAAAABAAcAAAACAAIAAAABAAcAAAADAAIAAAAAAAcAAAAEAAIAAAABAAcAAAAFAAIAAAABAAcAAAAGAAIAAAAAAAcAAAAHAAIAAAAAAAcAAAAIAAIAAAAAAAcAAAAJAAIAAAACAAIAAAAKAAIAAAACAAIAAAALAAIAAAACAAIAAAAMAAIAAAACAAIAAAANAAIAAAACAAIAAAAOAAIAAAAAAAcAAAAPAAIAAAABAAcAAAAQAAIAAAABAAcAAAARAAIAAAAAAAcAAAASAAIAAAAAAAcAAAATAAIAAAAAAAcAAAAAAAMAAAABAAcAAAABAAMAAAABAAcAAAACAAMAAAAAAAcAAAADAAMAAAABAAcAAAAEAAMAAAAAAAcAAAAFAAMAAAAAAAcAAAAGAAMAAAABAAcAAAAHAAMAAAAAAAcAAAAIAAMAAAAAAAcAAAAJAAMAAAACAAIAAAAKAAMAAAACAAIAAAALAAMAAAACAAIAAAAMAAMAAAAAAAIAAAANAAMAAAABAAIAAAAOAAMAAAACAAIAAAAPAAMAAAACAAIAAAAQAAMAAAABAAcAAAARAAMAAAAAAAcAAAASAAMAAAAAAAcAAAATAAMAAAAAAAcAAAAAAAQAAAAAAAcAAAABAAQAAAABAAcAAAACAAQAAAAAAAcAAAADAAQAAAABAAcAAAAEAAQAAAABAAcAAAAFAAQAAAAAAAcAAAAGAAQAAAACAAIAAAAHAAQAAAABAAIAAAAIAAQAAAACAAIAAAAJAAQAAAAAAAIAAAAKAAQAAAABAAcAAAALAAQAAAAAAAIAAAAMAAQAAAAAAAIAAAANAAQAAAACAAIAAAAOAAQAAAAAAAcAAAAPAAQAAAABAAcAAAAQAAQAAAAAAAcAAAARAAQAAAABAAcAAAASAAQAAAABAAcAAAATAAQAAAAAAAcAAAAAAAUAAAABAAcAAAABAAUAAAAAAAcAAAACAAUAAAABAAcAAAADAAUAAAAAAAcAAAAEAAUAAAABAAcAAAAFAAUAAAAAAAIAAAAGAAUAAAAAAAIAAAAHAAUAAAAAAAcAAAAIAAUAAAABAAcAAAAJAAUAAAACAAIAAAAKAAUAAAAAAAcAAAALAAUAAAABAAIAAAAMAAUAAAABAAcAAAANAAUAAAABAAcAAAAOAAUAAAAAAAIAAAAPAAUAAAABAAIAAAAQAAUAAAABAAIAAAARAAUAAAABAAcAAAASAAUAAAABAAcAAAATAAUAAAABAAcAAAAAAAYAAAAAAAcAAAABAAYAAAAAAAcAAAACAAYAAAABAAcAAAADAAYAAAABAAcAAAAEAAYAAAABAAIAAAAFAAYAAAABAAIAAAAGAAYAAAABAAIAAAAHAAYAAAACAAIAAAAIAAYAAAACAAIAAAAJAAYAAAABAAIAAAAKAAYAAAABAAcAAAALAAYAAAABAAIAAAAMAAYAAAAAAAIAAAANAAYAAAACAAIAAAAOAAYAAAACAAIAAAAPAAYAAAABAAcAAAAQAAYAAAABAAcAAAARAAYAAAACAAIAAAASAAYAAAABAAcAAAATAAYAAAAAAAcAAAAAAAcAAAAAAAcAAAABAAcAAAAAAAcAAAACAAcAAAABAAcAAAADAAcAAAACAAIAAAAEAAcAAAACAAIAAAAFAAcAAAACAAIAAAAGAAcAAAABAAIAAAAHAAcAAAABAAcAAAAIAAcAAAABAAcAAAAJAAcAAAAAAAIAAAAKAAcAAAAAAAIAAAALAAcAAAAAAAcAAAAMAAcAAAABAAcAAAANAAcAAAABAAcAAAAOAAcAAAACAAIAAAAPAAcAAAACAAIAAAAQAAcAAAAAAAIAAAARAAcAAAABAAIAAAASAAcAAAAAAAIAAAATAAcAAAABAAcAAAAAAAgAAAABAAcAAAABAAgAAAAAAAcAAAACAAgAAAAAAAcAAAADAAgAAAAAAAIAAAAEAAgAAAAAAAIAAAAFAAgAAAABAAIAAAAGAAgAAAAAAAIAAAAHAAgAAAABAAIAAAAIAAgAAAACAAIAAAAJAAgAAAACAAIAAAAKAAgAAAABAAcAAAALAAgAAAAAAAIAAAAMAAgAAAACAAIAAAANAAgAAAABAAIAAAAOAAgAAAACAAIAAAAPAAgAAAACAAIAAAAQAAgAAAABAAIAAAARAAgAAAABAAIAAAASAAgAAAABAAIAAAATAAgAAAAAAAcAAAAAAAkAAAABAAcAAAABAAkAAAABAAcAAAACAAkAAAAAAAcAAAADAAkAAAAAAAIAAAAEAAkAAAAAAAIAAAAFAAkAAAABAAcAAAAGAAkAAAACAAIAAAAHAAkAAAACAAIAAAAIAAkAAAAAAAcAAAAJAAkAAAABAAcAAAAKAAkAAAACAAIAAAALAAkAAAAAAAIAAAAMAAkAAAABAAcAAAANAAkAAAABAAcAAAAOAAkAAAABAAIAAAAPAAkAAAABAAIAAAAQAAkAAAABAAIAAAARAAkAAAABAAIAAAASAAkAAAAAAAIAAAATAAkAAAAAAAcAAAAAAAoAAAABAAcAAAABAAoAAAABAAcAAAACAAoAAAAAAAcAAAADAAoAAAACAAIAAAAEAAoAAAABAAIAAAAFAAoAAAAAAAIAAAAGAAoAAAAAAAIAAAAHAAoAAAACAAIAAAAIAAoAAAAAAAcAAAAJAAoAAAAAAAIAAAAKAAoAAAABAAIAAAALAAoAAAAAAAcAAAAMAAoAAAAAAAIAAAANAAoAAAACAAIAAAAOAAoAAAAAAAIAAAAPAAoAAAAAAAIAAAAQAAoAAAAAAAcAAAARAAoAAAAAAAIAAAASAAoAAAAAAAIAAAATAAoAAAABAAcAAAAAAAsAAAABAAcAAAABAAsAAAAAAAcAAAACAAsAAAABAAcAAAADAAsAAAABAAcAAAAEAAsAAAACAAIAAAAFAAsAAAAAAAIAAAAGAAsAAAACAAIAAAAHAAsAAAAAAAIAAAAIAAsAAAAAAAcAAAAJAAsAAAABAAcAAAAKAAsAAAABAAIAAAALAAsAAAAAAAIAAAAMAAsAAAABAAcAAAANAAsAAAAAAAcAAAAOAAsAAAABAAIAAAAPAAsAAAABAAcAAAAQAAsAAAABAAcAAAARAAsAAAABAAcAAAASAAsAAAAAAAcAAAATAAsAAAAAAAcAAAAAAAwAAAABAAcAAAABAAwAAAAAAAcAAAACAAwAAAABAAcAAAADAAwAAAAAAAcAAAAEAAwAAAAAAAcAAAAFAAwAAAACAAIAAAAGAAwAAAAAAAcAAAAHAAwAAAAAAAIAAAAIAAwAAAACAAIAAAAJAAwAAAACAAIAAAAKAAwAAAACAAIAAAALAAwAAAAAAAIAAAAMAAwAAAACAAIAAAANAAwAAAABAAIAAAAOAAwAAAACAAIAAAAPAAwAAAABAAIAAAAQAAwAAAAAAAIAAAARAAwAAAAAAAcAAAASAAwAAAAAAAcAAAATAAwAAAAAAAcAAAAAAA0AAAABAAcAAAABAA0AAAABAAcAAAACAA0AAAABAAcAAAADAA0AAAAAAAcAAAAEAA0AAAAAAAcAAAAFAA0AAAACAAIAAAAGAA0AAAABAAIAAAAHAA0AAAAAAAcAAAAIAA0AAAACAAIAAAAJAA0AAAABAAcAAAAKAA0AAAACAAIAAAALAA0AAAACAAIAAAAMAA0AAAAAAAIAAAANAA0AAAAAAAcAAAAOAA0AAAAAAAcAAAAPAA0AAAABAAIAAAAQAA0AAAAAAAIAAAARAA0AAAABAAcAAAASAA0AAAABAAcAAAATAA0AAAABAAcAAAAAAA4AAAABAAcAAAABAA4AAAAAAAcAAAACAA4AAAABAAcAAAADAA4AAAAAAAcAAAAEAA4AAAABAAcAAAAFAA4AAAAAAAcAAAAGAA4AAAABAAIAAAAHAA4AAAABAAIAAAAIAA4AAAACAAIAAAAJAA4AAAACAAIAAAAKAA4AAAABAAIAAAALAA4AAAABAAcAAAAMAA4AAAACAAIAAAANAA4AAAABAAIAAAAOAA4AAAAAAAIAAAAPAA4AAAAAAAIAAAAQAA4AAAAAAAcAAAARAA4AAAAAAAcAAAASAA4AAAABAAcAAAATAA4AAAAAAAcAAAAAAA8AAAABAAcAAAABAA8AAAABAAcAAAACAA8AAAABAAcAAAADAA8AAAAAAAcAAAAEAA8AAAAAAAcAAAAFAA8AAAAAAAcAAAAGAA8AAAABAAcAAAAHAA8AAAABAAcAAAAIAA8AAAABAAcAAAAJAA8AAAABAAIAAAAKAA8AAAABAAIAAAALAA8AAAAAAAIAAAAMAA8AAAAAAAcAAAANAA8AAAABAAcAAAAOAA8AAAABAAcAAAAPAA8AAAAAAAcAAAAQAA8AAAABAAcAAAARAA8AAAABAAcAAAASAA8AAAAAAAcAAAATAA8AAAABAAcAAAAAABAAAAABAAcAAAABABAAAAABAAcAAAACABAAAAAAAAcAAAADABAAAAAAAAcAAAAEABAAAAAAAAcAAAAFABAAAAAAAAcAAAAGABAAAAAAAAcAAAAHABAAAAAAAAcAAAAIABAAAAAAAAcAAAAJABAAAAABAAcAAAAKABAAAAABAAcAAAALABAAAAACAAIAAAAMABAAAAABAAIAAAANABAAAAAAAAcAAAAOABAAAAABAAcAAAAPABAAAAAAAAcAAAAQABAAAAABAAcAAAARABAAAAABAAcAAAASABAAAAABAAcAAAATABAAAAABAAcAAAAAABEAAAABAAcAAAABABEAAAAAAAcAAAACABEAAAABAAcAAAADABEAAAABAAcAAAAEABEAAAABAAcAAAAFABEAAAABAAcAAAAGABEAAAABAAcAAAAHABEAAAABAAcAAAAIABEAAAAAAAcAAAAJABEAAAAAAAcAAAAKABEAAAABAAcAAAALABEAAAAAAAcAAAAMABEAAAAAAAcAAAANABEAAAAAAAcAAAAOABEAAAAAAAcAAAAPABEAAAABAAcAAAAQABEAAAAAAAcAAAARABEAAAAAAAcAAAASABEAAAABAAcAAAATABEAAAABAAcAAAA=")
-tile_set = ExtResource("2_6gcs2")
+tile_set = ExtResource("2_r10v8")
 
-[node name="Detail" type="TileMapLayer" parent="." unique_id=1006769513]
+[node name="Detail" type="TileMapLayer" parent="." unique_id=1978034697]
 visible = false
-tile_set = ExtResource("2_6gcs2")
+tile_set = ExtResource("2_r10v8")
 
-[node name="Obstacles" type="TileMapLayer" parent="." unique_id=529180151]
+[node name="Obstacles" type="TileMapLayer" parent="." unique_id=253408590]
 visible = false
-tile_set = ExtResource("2_6gcs2")
+tile_set = ExtResource("2_r10v8")
 
-[node name="PaintedGround" type="Node2D" parent="." unique_id=344617981]
+[node name="PaintedGround" type="Node2D" parent="." unique_id=1902327899]
 z_index = -3
-material = SubResource("ShaderMaterial_p5n85")
-script = ExtResource("8_u7my7")
+material = SubResource("ShaderMaterial_6je10")
+script = ExtResource("8_hh5nw")
 size = Vector2i(20, 18)
-mask = ExtResource("5_bbqsd")
-base_texture = ExtResource("4_r10v8")
-r_texture = ExtResource("7_2bdd7")
-g_texture = ExtResource("6_w6mur")
+mask = ExtResource("5_2bdd7")
+base_texture = ExtResource("4_w6mur")
+r_texture = ExtResource("7_x4rxt")
+g_texture = ExtResource("6_u7my7")
 
-[node name="GroundDecals" type="Node2D" parent="." unique_id=276517273]
+[node name="GroundDecals" type="Node2D" parent="." unique_id=1257422893]
 z_index = -1
 
-[node name="Lip000" type="Sprite2D" parent="GroundDecals" unique_id=526861353]
+[node name="Lip000" type="Sprite2D" parent="GroundDecals" unique_id=1494383249]
 modulate = Color(0.7943282, 0.7943282, 0.7943282, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(1008, 417)
-texture = ExtResource("10_hh5nw")
+texture = ExtResource("10_srasn")
 centered = false
 offset = Vector2(-48, -33)
 region_enabled = true
 region_rect = Rect2(48, 0, 96, 33)
 
-[node name="Lip001" type="Sprite2D" parent="GroundDecals" unique_id=114158900]
+[node name="Lip001" type="Sprite2D" parent="GroundDecals" unique_id=1765349889]
 modulate = Color(0.81613106, 0.81613106, 0.81613106, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(816, 897)
-texture = ExtResource("10_hh5nw")
+texture = ExtResource("10_srasn")
 centered = false
 offset = Vector2(-48, -33)
 flip_h = true
 region_enabled = true
 region_rect = Rect2(48, 0, 96, 33)
 
-[node name="Lip002" type="Sprite2D" parent="GroundDecals" unique_id=621240275]
+[node name="Lip002" type="Sprite2D" parent="GroundDecals" unique_id=361485945]
 modulate = Color(0.88648957, 0.88648957, 0.88648957, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(1584, 993)
-texture = ExtResource("10_hh5nw")
+texture = ExtResource("10_srasn")
 centered = false
 offset = Vector2(-48, -33)
 flip_h = true
 region_enabled = true
 region_rect = Rect2(48, 0, 96, 33)
 
-[node name="Lip003" type="Sprite2D" parent="GroundDecals" unique_id=1496307427]
+[node name="Lip003" type="Sprite2D" parent="GroundDecals" unique_id=481520427]
 modulate = Color(0.9576282, 0.9576282, 0.9576282, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(336, 1089)
-texture = ExtResource("10_hh5nw")
+texture = ExtResource("10_srasn")
 centered = false
 offset = Vector2(-48, -33)
 flip_h = true
 region_enabled = true
 region_rect = Rect2(48, 0, 96, 33)
 
-[node name="Lip004" type="Sprite2D" parent="GroundDecals" unique_id=1342332576]
+[node name="Lip004" type="Sprite2D" parent="GroundDecals" unique_id=1859198761]
 modulate = Color(0.9788754, 0.9788754, 0.9788754, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(1728, 1089)
-texture = ExtResource("10_hh5nw")
+texture = ExtResource("10_srasn")
 centered = false
 offset = Vector2(-96, -33)
 flip_h = true
 
-[node name="Lip005" type="Sprite2D" parent="GroundDecals" unique_id=1133920804]
+[node name="Lip005" type="Sprite2D" parent="GroundDecals" unique_id=153207755]
 modulate = Color(0.8462918, 0.8462918, 0.8462918, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(432, 1185)
-texture = ExtResource("10_hh5nw")
+texture = ExtResource("10_srasn")
 centered = false
 offset = Vector2(-48, -33)
 flip_h = true
 region_enabled = true
 region_rect = Rect2(48, 0, 96, 33)
 
-[node name="Lip006" type="Sprite2D" parent="GroundDecals" unique_id=1810219447]
+[node name="Lip006" type="Sprite2D" parent="GroundDecals" unique_id=1777768188]
 modulate = Color(0.8250939, 0.8250939, 0.8250939, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(528, 1377)
-texture = ExtResource("10_hh5nw")
+texture = ExtResource("10_srasn")
 centered = false
 offset = Vector2(-48, -33)
 region_enabled = true
 region_rect = Rect2(48, 0, 96, 33)
 
-[node name="Lip007" type="Sprite2D" parent="GroundDecals" unique_id=1154041493]
+[node name="Lip007" type="Sprite2D" parent="GroundDecals" unique_id=1610417366]
 modulate = Color(0.78406173, 0.78406173, 0.78406173, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(1584, 1377)
-texture = ExtResource("10_hh5nw")
+texture = ExtResource("10_srasn")
 centered = false
 offset = Vector2(-48, -33)
 flip_h = true
 region_enabled = true
 region_rect = Rect2(48, 0, 96, 33)
 
-[node name="Lip008" type="Sprite2D" parent="GroundDecals" unique_id=1639864155]
+[node name="Lip008" type="Sprite2D" parent="GroundDecals" unique_id=1756203777]
 modulate = Color(0.8345133, 0.8345133, 0.8345133, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(672, 1473)
-texture = ExtResource("10_hh5nw")
+texture = ExtResource("10_srasn")
 centered = false
 offset = Vector2(-96, -33)
 flip_h = true
 
-[node name="Lip009" type="Sprite2D" parent="GroundDecals" unique_id=459379408]
+[node name="Lip009" type="Sprite2D" parent="GroundDecals" unique_id=1721426772]
 modulate = Color(0.8143288, 0.8143288, 0.8143288, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(768, 1473)
-texture = ExtResource("10_hh5nw")
+texture = ExtResource("10_srasn")
 centered = false
 offset = Vector2(-96, -33)
 flip_h = true
 
-[node name="Lip010" type="Sprite2D" parent="GroundDecals" unique_id=1164192334]
+[node name="Lip010" type="Sprite2D" parent="GroundDecals" unique_id=807762030]
 modulate = Color(0.79102767, 0.79102767, 0.79102767, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(1344, 1473)
-texture = ExtResource("10_hh5nw")
+texture = ExtResource("10_srasn")
 centered = false
 offset = Vector2(-96, -33)
 
-[node name="Lip011" type="Sprite2D" parent="GroundDecals" unique_id=877653373]
+[node name="Lip011" type="Sprite2D" parent="GroundDecals" unique_id=568913614]
 modulate = Color(0.82498056, 0.82498056, 0.82498056, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(1440, 1473)
-texture = ExtResource("10_hh5nw")
+texture = ExtResource("10_srasn")
 centered = false
 offset = Vector2(-96, -33)
 flip_h = true
 
-[node name="Lip012" type="Sprite2D" parent="GroundDecals" unique_id=1074152512]
+[node name="Lip012" type="Sprite2D" parent="GroundDecals" unique_id=1488876911]
 modulate = Color(0.8183529, 0.8183529, 0.8183529, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(960, 1569)
-texture = ExtResource("10_hh5nw")
+texture = ExtResource("10_srasn")
 centered = false
 offset = Vector2(-96, -33)
 
-[node name="Lip013" type="Sprite2D" parent="GroundDecals" unique_id=652205409]
+[node name="Lip013" type="Sprite2D" parent="GroundDecals" unique_id=1240750197]
 modulate = Color(0.8372901, 0.8372901, 0.8372901, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(1152, 1665)
-texture = ExtResource("10_hh5nw")
+texture = ExtResource("10_srasn")
 centered = false
 offset = Vector2(-96, -33)
 flip_h = true
 
-[node name="StairsT34" parent="GroundDecals" unique_id=464896860 instance=ExtResource("11_vecyn")]
+[node name="StairsT34" parent="GroundDecals" unique_id=464896860 instance=ExtResource("11_toewp")]
 position = Vector2(1776, 960)
 scale = Vector2(0.5, 0.5)
 
-[node name="StairsT45" parent="GroundDecals" unique_id=944618879 instance=ExtResource("12_srasn")]
+[node name="StairsT45" parent="GroundDecals" unique_id=944618879 instance=ExtResource("12_rnqye")]
 position = Vector2(336, 960)
 scale = Vector2(0.5, 0.5)
 
-[node name="CaveShade" type="Sprite2D" parent="." unique_id=1727826443]
+[node name="CaveShade" type="Sprite2D" parent="." unique_id=137849562]
 z_index = -1
-material = ExtResource("13_toewp")
+material = ExtResource("13_vrs20")
 scale = Vector2(12, 12)
-texture = ExtResource("14_rnqye")
+texture = ExtResource("14_ylryv")
 centered = false
 
-[node name="CaveFloorLight" type="Sprite2D" parent="." unique_id=924140259]
+[node name="CaveFloorLight" type="Sprite2D" parent="." unique_id=1924421927]
 z_index = -1
-material = ExtResource("15_vrs20")
+material = ExtResource("15_h53ch")
 scale = Vector2(12, 12)
-texture = ExtResource("16_ylryv")
+texture = ExtResource("16_qfyah")
 centered = false
 
-[node name="Entities" type="Node2D" parent="." unique_id=1881203091]
+[node name="Entities" type="Node2D" parent="." unique_id=1301236232]
 unique_name_in_owner = true
 y_sort_enabled = true
 
-[node name="Face000" type="Sprite2D" parent="Entities" unique_id=613756513]
+[node name="Face000" type="Sprite2D" parent="Entities" unique_id=2006693419]
 modulate = Color(0.9581392, 0.9581392, 0.9581392, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(960, 96)
-texture = ExtResource("17_h53ch")
+texture = ExtResource("17_bry6q")
 centered = false
 offset = Vector2(-96, -92)
 flip_h = true
 
-[node name="Face001" type="Sprite2D" parent="Entities" unique_id=2078530741]
+[node name="Face001" type="Sprite2D" parent="Entities" unique_id=1611743909]
 modulate = Color(0.9880357, 0.9880357, 0.9880357, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(1152, 96)
-texture = ExtResource("18_qfyah")
+texture = ExtResource("18_cuq5q")
 centered = false
 offset = Vector2(-96, -89)
 
-[node name="Face002" type="Sprite2D" parent="Entities" unique_id=812950582]
+[node name="Face002" type="Sprite2D" parent="Entities" unique_id=2016827671]
 modulate = Color(0.87465125, 0.87465125, 0.87465125, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(1296, 192)
-texture = ExtResource("18_qfyah")
+texture = ExtResource("18_cuq5q")
 centered = false
 offset = Vector2(-48, -89)
 region_enabled = true
 region_rect = Rect2(48, 0, 96, 89)
 
-[node name="Face003" type="Sprite2D" parent="Entities" unique_id=1975171543]
+[node name="Face003" type="Sprite2D" parent="Entities" unique_id=1951032186]
 modulate = Color(0.8206666, 0.8206666, 0.8206666, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(1440, 288)
-texture = ExtResource("18_qfyah")
+texture = ExtResource("18_cuq5q")
 centered = false
 offset = Vector2(-96, -89)
 
-[node name="Face004" type="Sprite2D" parent="Entities" unique_id=483970390]
+[node name="Face004" type="Sprite2D" parent="Entities" unique_id=203308239]
 modulate = Color(0.7847314, 0.7847314, 0.7847314, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(672, 384)
-texture = ExtResource("17_h53ch")
+texture = ExtResource("17_bry6q")
 centered = false
 offset = Vector2(-96, -92)
 
-[node name="Face005" type="Sprite2D" parent="Entities" unique_id=569237476]
+[node name="Face005" type="Sprite2D" parent="Entities" unique_id=272827229]
 modulate = Color(0.81437945, 0.81437945, 0.81437945, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(768, 384)
-texture = ExtResource("18_qfyah")
+texture = ExtResource("18_cuq5q")
 centered = false
 offset = Vector2(-96, -89)
 
-[node name="Face006" type="Sprite2D" parent="Entities" unique_id=549339175]
+[node name="Face006" type="Sprite2D" parent="Entities" unique_id=782484152]
 modulate = Color(0.8789866, 0.8789866, 0.8789866, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(528, 480)
-texture = ExtResource("17_h53ch")
+texture = ExtResource("17_bry6q")
 centered = false
 offset = Vector2(-48, -92)
 region_enabled = true
 region_rect = Rect2(48, 0, 96, 92)
 
-[node name="Face007" type="Sprite2D" parent="Entities" unique_id=661644721]
+[node name="Face007" type="Sprite2D" parent="Entities" unique_id=885398298]
 modulate = Color(0.8086706, 0.8086706, 0.8086706, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(1440, 480)
-texture = ExtResource("17_h53ch")
+texture = ExtResource("17_bry6q")
 centered = false
 offset = Vector2(-96, -92)
 flip_h = true
 
-[node name="Face008" type="Sprite2D" parent="Entities" unique_id=618029822]
+[node name="Face008" type="Sprite2D" parent="Entities" unique_id=1131686122]
 modulate = Color(0.78130573, 0.78130573, 0.78130573, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(1536, 480)
-texture = ExtResource("17_h53ch")
+texture = ExtResource("17_bry6q")
 centered = false
 offset = Vector2(-96, -92)
 
-[node name="Face009" type="Sprite2D" parent="Entities" unique_id=2063556103]
+[node name="Face009" type="Sprite2D" parent="Entities" unique_id=663998997]
 modulate = Color(0.8750073, 0.8750073, 0.8750073, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(432, 576)
-texture = ExtResource("17_h53ch")
+texture = ExtResource("17_bry6q")
 centered = false
 offset = Vector2(-48, -92)
 region_enabled = true
 region_rect = Rect2(48, 0, 96, 92)
 
-[node name="Face010" type="Sprite2D" parent="Entities" unique_id=1456779744]
+[node name="Face010" type="Sprite2D" parent="Entities" unique_id=524034026]
 modulate = Color(0.7834252, 0.7834252, 0.7834252, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(768, 576)
-texture = ExtResource("17_h53ch")
+texture = ExtResource("17_bry6q")
 centered = false
 offset = Vector2(-96, -92)
 
-[node name="Face011" type="Sprite2D" parent="Entities" unique_id=1233312316]
+[node name="Face011" type="Sprite2D" parent="Entities" unique_id=861966917]
 modulate = Color(0.8235526, 0.8235526, 0.8235526, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(1248, 576)
-texture = ExtResource("17_h53ch")
+texture = ExtResource("17_bry6q")
 centered = false
 offset = Vector2(-96, -92)
 
-[node name="Face012" type="Sprite2D" parent="Entities" unique_id=1690071266]
+[node name="Face012" type="Sprite2D" parent="Entities" unique_id=1906836582]
 modulate = Color(0.8037165, 0.8037165, 0.8037165, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(1680, 576)
-texture = ExtResource("17_h53ch")
+texture = ExtResource("17_bry6q")
 centered = false
 offset = Vector2(-48, -92)
 region_enabled = true
 region_rect = Rect2(48, 0, 96, 92)
 
-[node name="Face013" type="Sprite2D" parent="Entities" unique_id=1272489984]
+[node name="Face013" type="Sprite2D" parent="Entities" unique_id=91697860]
 modulate = Color(0.8693369, 0.8693369, 0.8693369, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(336, 672)
-texture = ExtResource("18_qfyah")
+texture = ExtResource("18_cuq5q")
 centered = false
 offset = Vector2(-48, -89)
 flip_h = true
 region_enabled = true
 region_rect = Rect2(48, 0, 96, 89)
 
-[node name="Face014" type="Sprite2D" parent="Entities" unique_id=1392683155]
+[node name="Face014" type="Sprite2D" parent="Entities" unique_id=1951363559]
 modulate = Color(0.8090963, 0.8090963, 0.8090963, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(1008, 672)
-texture = ExtResource("18_qfyah")
+texture = ExtResource("18_cuq5q")
 centered = false
 offset = Vector2(-48, -89)
 flip_h = true
 region_enabled = true
 region_rect = Rect2(48, 0, 96, 89)
 
-[node name="Face015" type="Sprite2D" parent="Entities" unique_id=2055391133]
+[node name="Face015" type="Sprite2D" parent="Entities" unique_id=468957323]
 modulate = Color(0.8547547, 0.8547547, 0.8547547, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(1536, 672)
-texture = ExtResource("18_qfyah")
+texture = ExtResource("18_cuq5q")
 centered = false
 offset = Vector2(-96, -89)
 
-[node name="Face016" type="Sprite2D" parent="Entities" unique_id=557267593]
+[node name="Face016" type="Sprite2D" parent="Entities" unique_id=331309930]
 modulate = Color(0.87637293, 0.87637293, 0.87637293, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(1776, 672)
-texture = ExtResource("18_qfyah")
+texture = ExtResource("18_cuq5q")
 centered = false
 offset = Vector2(-48, -89)
 region_enabled = true
 region_rect = Rect2(48, 0, 96, 89)
 
-[node name="Face017" type="Sprite2D" parent="Entities" unique_id=1611152061]
+[node name="Face017" type="Sprite2D" parent="Entities" unique_id=1835447472]
 modulate = Color(0.8440274, 0.8440274, 0.8440274, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(768, 768)
-texture = ExtResource("18_qfyah")
+texture = ExtResource("18_cuq5q")
 centered = false
 offset = Vector2(-96, -89)
 flip_h = true
 
-[node name="Face018" type="Sprite2D" parent="Entities" unique_id=1303402941]
+[node name="Face018" type="Sprite2D" parent="Entities" unique_id=629517273]
 modulate = Color(0.7988139, 0.7988139, 0.7988139, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(1152, 768)
-texture = ExtResource("18_qfyah")
+texture = ExtResource("18_cuq5q")
 centered = false
 offset = Vector2(-96, -89)
 flip_h = true
 
-[node name="Face019" type="Sprite2D" parent="Entities" unique_id=1713047559]
+[node name="Face019" type="Sprite2D" parent="Entities" unique_id=1960735327]
 modulate = Color(0.7928436, 0.7928436, 0.7928436, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(1248, 768)
-texture = ExtResource("18_qfyah")
+texture = ExtResource("18_cuq5q")
 centered = false
 offset = Vector2(-96, -89)
 flip_h = true
 
-[node name="Face020" type="Sprite2D" parent="Entities" unique_id=1689478959]
+[node name="Face020" type="Sprite2D" parent="Entities" unique_id=94800509]
 modulate = Color(0.8523397, 0.8523397, 0.8523397, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(1008, 864)
-texture = ExtResource("17_h53ch")
+texture = ExtResource("17_bry6q")
 centered = false
 offset = Vector2(-48, -92)
 flip_h = true
 region_enabled = true
 region_rect = Rect2(48, 0, 96, 92)
 
-[node name="Face021" type="Sprite2D" parent="Entities" unique_id=921236496]
+[node name="Face021" type="Sprite2D" parent="Entities" unique_id=159410529]
 modulate = Color(0.83753204, 0.83753204, 0.83753204, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(528, 960)
-texture = ExtResource("17_h53ch")
+texture = ExtResource("17_bry6q")
 centered = false
 offset = Vector2(-48, -92)
 region_enabled = true
 region_rect = Rect2(48, 0, 96, 92)
 
-[node name="Face022" type="Sprite2D" parent="Entities" unique_id=59478505]
+[node name="Face022" type="Sprite2D" parent="Entities" unique_id=1275508273]
 modulate = Color(0.80076784, 0.80076784, 0.80076784, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(912, 960)
-texture = ExtResource("18_qfyah")
+texture = ExtResource("18_cuq5q")
 centered = false
 offset = Vector2(-48, -89)
 region_enabled = true
 region_rect = Rect2(48, 0, 96, 89)
 
-[node name="Face023" type="Sprite2D" parent="Entities" unique_id=813729165]
+[node name="Face023" type="Sprite2D" parent="Entities" unique_id=530355800]
 modulate = Color(0.83512884, 0.83512884, 0.83512884, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(1248, 960)
-texture = ExtResource("18_qfyah")
+texture = ExtResource("18_cuq5q")
 centered = false
 offset = Vector2(-96, -89)
 flip_h = true
 
-[node name="Face024" type="Sprite2D" parent="Entities" unique_id=882706640]
+[node name="Face024" type="Sprite2D" parent="Entities" unique_id=1112999872]
 modulate = Color(0.8238492, 0.8238492, 0.8238492, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(864, 1152)
-texture = ExtResource("17_h53ch")
+texture = ExtResource("17_bry6q")
 centered = false
 offset = Vector2(-96, -92)
 
-[node name="Face025" type="Sprite2D" parent="Entities" unique_id=1163329514]
+[node name="Face025" type="Sprite2D" parent="Entities" unique_id=2106389970]
 modulate = Color(0.7939586, 0.7939586, 0.7939586, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(1248, 1152)
-texture = ExtResource("17_h53ch")
+texture = ExtResource("17_bry6q")
 centered = false
 offset = Vector2(-96, -92)
 
-[node name="Face026" type="Sprite2D" parent="Entities" unique_id=1621413102]
+[node name="Face026" type="Sprite2D" parent="Entities" unique_id=36930532]
 modulate = Color(0.8794797, 0.8794797, 0.8794797, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(1536, 1152)
-texture = ExtResource("18_qfyah")
+texture = ExtResource("18_cuq5q")
 centered = false
 offset = Vector2(-96, -89)
 flip_h = true
 
-[node name="Face027" type="Sprite2D" parent="Entities" unique_id=1480650071]
+[node name="Face027" type="Sprite2D" parent="Entities" unique_id=1896289845]
 modulate = Color(0.79147565, 0.79147565, 0.79147565, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(624, 1248)
-texture = ExtResource("17_h53ch")
+texture = ExtResource("17_bry6q")
 centered = false
 offset = Vector2(-48, -92)
 flip_h = true
 region_enabled = true
 region_rect = Rect2(48, 0, 96, 92)
 
-[node name="Face028" type="Sprite2D" parent="Entities" unique_id=148325769]
+[node name="Face028" type="Sprite2D" parent="Entities" unique_id=596975150]
 modulate = Color(0.8024146, 0.8024146, 0.8024146, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(720, 1344)
-texture = ExtResource("18_qfyah")
+texture = ExtResource("18_cuq5q")
 centered = false
 offset = Vector2(-48, -89)
 flip_h = true
 region_enabled = true
 region_rect = Rect2(48, 0, 96, 89)
 
-[node name="Face029" type="Sprite2D" parent="Entities" unique_id=753897232]
+[node name="Face029" type="Sprite2D" parent="Entities" unique_id=627849864]
 modulate = Color(0.82434326, 0.82434326, 0.82434326, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(1344, 1344)
-texture = ExtResource("17_h53ch")
+texture = ExtResource("17_bry6q")
 centered = false
 offset = Vector2(-96, -92)
 
-[node name="Face030" type="Sprite2D" parent="Entities" unique_id=1772581762]
+[node name="Face030" type="Sprite2D" parent="Entities" unique_id=1938568095]
 modulate = Color(0.790141, 0.790141, 0.790141, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(1200, 1536)
-texture = ExtResource("18_qfyah")
+texture = ExtResource("18_cuq5q")
 centered = false
 offset = Vector2(-48, -89)
 flip_h = true
 region_enabled = true
 region_rect = Rect2(48, 0, 96, 89)
 
-[node name="Side000" type="Sprite2D" parent="Entities" unique_id=768498503]
+[node name="Side000" type="Sprite2D" parent="Entities" unique_id=2113161766]
 modulate = Color(0.91149247, 0.91149247, 0.91149247, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(271, 768)
-texture = ExtResource("19_bry6q")
+texture = ExtResource("19_nuyyu")
 centered = false
 offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 0, 34, 96)
 
-[node name="Side001" type="Sprite2D" parent="Entities" unique_id=1196010717]
+[node name="Side001" type="Sprite2D" parent="Entities" unique_id=907273810]
 modulate = Color(0.96161085, 0.96161085, 0.96161085, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(271, 864)
-texture = ExtResource("19_bry6q")
+texture = ExtResource("19_nuyyu")
 centered = false
 offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 25, 34, 96)
 
-[node name="Side002" type="Sprite2D" parent="Entities" unique_id=2082560065]
+[node name="Side002" type="Sprite2D" parent="Entities" unique_id=700524757]
 modulate = Color(0.97883534, 0.97883534, 0.97883534, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(271, 960)
-texture = ExtResource("19_bry6q")
+texture = ExtResource("19_nuyyu")
 centered = false
 offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 25, 34, 96)
 
-[node name="Side003" type="Sprite2D" parent="Entities" unique_id=1247214495]
+[node name="Side003" type="Sprite2D" parent="Entities" unique_id=1112669435]
 modulate = Color(0.92276317, 0.92276317, 0.92276317, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(271, 1056)
-texture = ExtResource("19_bry6q")
+texture = ExtResource("19_nuyyu")
 centered = false
 offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 50, 34, 96)
 
-[node name="Side004" type="Sprite2D" parent="Entities" unique_id=1937550036]
+[node name="Side004" type="Sprite2D" parent="Entities" unique_id=157249672]
 modulate = Color(0.8535298, 0.8535298, 0.8535298, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(367, 1152)
-texture = ExtResource("19_bry6q")
+texture = ExtResource("19_nuyyu")
 centered = false
 offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 50, 34, 96)
 
-[node name="Side005" type="Sprite2D" parent="Entities" unique_id=938194333]
+[node name="Side005" type="Sprite2D" parent="Entities" unique_id=2011529784]
 modulate = Color(0.7337041, 0.7337041, 0.7337041, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(463, 1248)
-texture = ExtResource("19_bry6q")
+texture = ExtResource("19_nuyyu")
 centered = false
 offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 0, 34, 96)
 
-[node name="Side006" type="Sprite2D" parent="Entities" unique_id=1605909029]
+[node name="Side006" type="Sprite2D" parent="Entities" unique_id=766833906]
 modulate = Color(0.8045807, 0.8045807, 0.8045807, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(463, 1344)
-texture = ExtResource("19_bry6q")
+texture = ExtResource("19_nuyyu")
 centered = false
 offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 50, 34, 96)
 
-[node name="Side007" type="Sprite2D" parent="Entities" unique_id=1260760825]
+[node name="Side007" type="Sprite2D" parent="Entities" unique_id=1811865641]
 modulate = Color(0.82337344, 0.82337344, 0.82337344, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(559, 1440)
-texture = ExtResource("19_bry6q")
+texture = ExtResource("19_nuyyu")
 centered = false
 offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 50, 34, 96)
 
-[node name="Side008" type="Sprite2D" parent="Entities" unique_id=415604387]
+[node name="Side008" type="Sprite2D" parent="Entities" unique_id=905239102]
 modulate = Color(0.9710573, 0.9710573, 0.9710573, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(847, 192)
-texture = ExtResource("19_bry6q")
+texture = ExtResource("19_nuyyu")
 centered = false
 offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 0, 34, 96)
 
-[node name="Side009" type="Sprite2D" parent="Entities" unique_id=1750743847]
+[node name="Side009" type="Sprite2D" parent="Entities" unique_id=12752709]
 modulate = Color(0.9790151, 0.9790151, 0.9790151, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(847, 288)
-texture = ExtResource("19_bry6q")
+texture = ExtResource("19_nuyyu")
 centered = false
 offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 50, 34, 96)
 
-[node name="Side010" type="Sprite2D" parent="Entities" unique_id=1492400915]
+[node name="Side010" type="Sprite2D" parent="Entities" unique_id=1239245757]
 modulate = Color(0.9242963, 0.9242963, 0.9242963, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(785, 960)
-texture = ExtResource("19_bry6q")
+texture = ExtResource("19_nuyyu")
 centered = false
 offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 0, 34, 96)
 
-[node name="Side011" type="Sprite2D" parent="Entities" unique_id=212411310]
+[node name="Side011" type="Sprite2D" parent="Entities" unique_id=1577159516]
 modulate = Color(0.8288756, 0.8288756, 0.8288756, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(847, 1056)
-texture = ExtResource("19_bry6q")
+texture = ExtResource("19_nuyyu")
 centered = false
 offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 50, 34, 96)
 
-[node name="Side012" type="Sprite2D" parent="Entities" unique_id=2024307108]
+[node name="Side012" type="Sprite2D" parent="Entities" unique_id=377446584]
 modulate = Color(0.78877807, 0.78877807, 0.78877807, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(847, 1536)
-texture = ExtResource("19_bry6q")
+texture = ExtResource("19_nuyyu")
 centered = false
 offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 50, 34, 96)
 
-[node name="Side013" type="Sprite2D" parent="Entities" unique_id=1962144113]
+[node name="Side013" type="Sprite2D" parent="Entities" unique_id=1459148619]
 modulate = Color(0.81727946, 0.81727946, 0.81727946, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(1039, 480)
-texture = ExtResource("19_bry6q")
+texture = ExtResource("19_nuyyu")
 centered = false
 offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 0, 34, 96)
 
-[node name="Side014" type="Sprite2D" parent="Entities" unique_id=136612696]
+[node name="Side014" type="Sprite2D" parent="Entities" unique_id=1820201838]
 modulate = Color(0.7218579, 0.7218579, 0.7218579, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(1039, 576)
-texture = ExtResource("19_bry6q")
+texture = ExtResource("19_nuyyu")
 centered = false
 offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 50, 34, 96)
 
-[node name="Side015" type="Sprite2D" parent="Entities" unique_id=823431000]
+[node name="Side015" type="Sprite2D" parent="Entities" unique_id=1427648798]
 modulate = Color(0.7957614, 0.7957614, 0.7957614, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(1039, 1632)
-texture = ExtResource("19_bry6q")
+texture = ExtResource("19_nuyyu")
 centered = false
 offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 50, 34, 96)
 
-[node name="Side016" type="Sprite2D" parent="Entities" unique_id=1263501517]
+[node name="Side016" type="Sprite2D" parent="Entities" unique_id=501826580]
 modulate = Color(0.8220108, 0.8220108, 0.8220108, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(1265, 1632)
-texture = ExtResource("19_bry6q")
+texture = ExtResource("19_nuyyu")
 centered = false
 offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 50, 34, 96)
 
-[node name="Side017" type="Sprite2D" parent="Entities" unique_id=69309195]
+[node name="Side017" type="Sprite2D" parent="Entities" unique_id=1027304591]
 modulate = Color(0.829174, 0.829174, 0.829174, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(1553, 384)
-texture = ExtResource("19_bry6q")
+texture = ExtResource("19_nuyyu")
 centered = false
 offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 50, 34, 96)
 
-[node name="Side018" type="Sprite2D" parent="Entities" unique_id=1821903501]
+[node name="Side018" type="Sprite2D" parent="Entities" unique_id=639153156]
 modulate = Color(0.925776, 0.925776, 0.925776, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(1615, 1056)
-texture = ExtResource("19_bry6q")
+texture = ExtResource("19_nuyyu")
 centered = false
 offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 50, 34, 96)
 
-[node name="Side019" type="Sprite2D" parent="Entities" unique_id=1816886426]
+[node name="Side019" type="Sprite2D" parent="Entities" unique_id=1174358005]
 modulate = Color(0.7829913, 0.7829913, 0.7829913, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(1553, 1440)
-texture = ExtResource("19_bry6q")
+texture = ExtResource("19_nuyyu")
 centered = false
 offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 50, 34, 96)
 
-[node name="Side020" type="Sprite2D" parent="Entities" unique_id=698562015]
+[node name="Side020" type="Sprite2D" parent="Entities" unique_id=1701933842]
 modulate = Color(0.8623636, 0.8623636, 0.8623636, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(1649, 1248)
-texture = ExtResource("19_bry6q")
+texture = ExtResource("19_nuyyu")
 centered = false
 offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 0, 34, 96)
 
-[node name="Side021" type="Sprite2D" parent="Entities" unique_id=139297285]
+[node name="Side021" type="Sprite2D" parent="Entities" unique_id=1321078496]
 modulate = Color(0.791378, 0.791378, 0.791378, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(1649, 1344)
-texture = ExtResource("19_bry6q")
+texture = ExtResource("19_nuyyu")
 centered = false
 offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 50, 34, 96)
 
-[node name="Side022" type="Sprite2D" parent="Entities" unique_id=351488255]
+[node name="Side022" type="Sprite2D" parent="Entities" unique_id=171843550]
 modulate = Color(0.92343783, 0.92343783, 0.92343783, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(1841, 768)
-texture = ExtResource("19_bry6q")
+texture = ExtResource("19_nuyyu")
 centered = false
 offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 0, 34, 96)
 
-[node name="Side023" type="Sprite2D" parent="Entities" unique_id=1118165038]
+[node name="Side023" type="Sprite2D" parent="Entities" unique_id=1738950718]
 modulate = Color(1.0079005, 1.0079005, 1.0079005, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(1841, 864)
-texture = ExtResource("19_bry6q")
+texture = ExtResource("19_nuyyu")
 centered = false
 offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 25, 34, 96)
 
-[node name="Side024" type="Sprite2D" parent="Entities" unique_id=2102537032]
+[node name="Side024" type="Sprite2D" parent="Entities" unique_id=478410949]
 modulate = Color(0.958058, 0.958058, 0.958058, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(1841, 960)
-texture = ExtResource("19_bry6q")
+texture = ExtResource("19_nuyyu")
 centered = false
 offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 25, 34, 96)
 
-[node name="Side025" type="Sprite2D" parent="Entities" unique_id=347632096]
+[node name="Side025" type="Sprite2D" parent="Entities" unique_id=1687929995]
 modulate = Color(0.98640054, 0.98640054, 0.98640054, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(1841, 1056)
-texture = ExtResource("19_bry6q")
+texture = ExtResource("19_nuyyu")
 centered = false
 offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 50, 34, 96)
 
-[node name="Stele00" parent="Entities" unique_id=1803846368 instance=ExtResource("20_cuq5q")]
+[node name="Stele00" parent="Entities" unique_id=1803846368 instance=ExtResource("20_cpwwk")]
 position = Vector2(912, 192)
 
-[node name="Stele01" parent="Entities" unique_id=705380640 instance=ExtResource("20_cuq5q")]
+[node name="Stele01" parent="Entities" unique_id=109194184 instance=ExtResource("20_cpwwk")]
 position = Vector2(1200, 192)
 
-[node name="Tomb00" type="Sprite2D" parent="Entities" unique_id=1286248959]
+[node name="Tomb00" type="Sprite2D" parent="Entities" unique_id=724532112]
 modulate = Color(0.8, 0.78, 0.86, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(1104, 1056)
 scale = Vector2(0.62, 0.62)
-texture = ExtResource("21_nuyyu")
+texture = ExtResource("21_p5n85")
 centered = false
 offset = Vector2(-48, -160)
 
-[node name="Tomb01" type="Sprite2D" parent="Entities" unique_id=1230262264]
+[node name="Tomb01" type="Sprite2D" parent="Entities" unique_id=1313098634]
 modulate = Color(0.8, 0.78, 0.86, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(912, 1344)
 scale = Vector2(0.62, 0.62)
-texture = ExtResource("21_nuyyu")
+texture = ExtResource("21_p5n85")
 centered = false
 offset = Vector2(-48, -160)
 flip_h = true
 
-[node name="Tomb02" type="Sprite2D" parent="Entities" unique_id=1989167378]
+[node name="Tomb02" type="Sprite2D" parent="Entities" unique_id=2026035241]
 modulate = Color(0.8, 0.78, 0.86, 1)
-material = ExtResource("9_x4rxt")
+material = ExtResource("9_vecyn")
 position = Vector2(1104, 1440)
 scale = Vector2(0.62, 0.62)
-texture = ExtResource("21_nuyyu")
+texture = ExtResource("21_p5n85")
 centered = false
 offset = Vector2(-48, -160)
 
-[node name="Glows" type="Node2D" parent="." unique_id=936796476]
+[node name="Glows" type="Node2D" parent="." unique_id=728582581]
 
-[node name="Overhead" type="TileMapLayer" parent="." unique_id=490438130]
+[node name="CandleGlow00" type="Sprite2D" parent="Glows" unique_id=2003548923]
+z_index = 5
+z_as_relative = false
+position = Vector2(912, 176)
+script = ExtResource("22_1lv8t")
+glow_type = &"candle"
+
+[node name="CandleGlow01" type="Sprite2D" parent="Glows" unique_id=189707312]
+z_index = 5
+z_as_relative = false
+position = Vector2(1200, 176)
+script = ExtResource("22_1lv8t")
+glow_type = &"candle"
+
+[node name="Overhead" type="TileMapLayer" parent="." unique_id=1430362930]
 visible = false
 z_index = 10
-tile_set = ExtResource("2_6gcs2")
+tile_set = ExtResource("2_r10v8")
 
-[node name="Warps" type="Node2D" parent="." unique_id=1074505501]
+[node name="Warps" type="Node2D" parent="." unique_id=1346624015]
 
-[node name="StairsT34Warp" type="Marker2D" parent="Warps" unique_id=223670728]
+[node name="StairsT34Warp" type="Marker2D" parent="Warps" unique_id=484831293]
 position = Vector2(1776, 960)
-script = ExtResource("22_cpwwk")
+script = ExtResource("23_bj4bn")
 target_map = &"pokemon_tower_3f"
 target_spawn = &"arrivee_T34"
 arrival_facing = Vector2i(-1, 0)
 
-[node name="StairsT45Warp" type="Marker2D" parent="Warps" unique_id=1225368031]
+[node name="StairsT45Warp" type="Marker2D" parent="Warps" unique_id=37102138]
 position = Vector2(336, 960)
-script = ExtResource("22_cpwwk")
+script = ExtResource("23_bj4bn")
 target_map = &"pokemon_tower_5f"
 target_spawn = &"arrivee_T45"
 arrival_facing = Vector2i(1, 0)
 
-[node name="Interactables" type="Node2D" parent="." unique_id=1082979819]
+[node name="Interactables" type="Node2D" parent="." unique_id=1525157123]
 
-[node name="Spawns" type="Node2D" parent="." unique_id=1529256521]
+[node name="Spawns" type="Node2D" parent="." unique_id=1241024908]
 
-[node name="arrivee_T34" type="Marker2D" parent="Spawns" unique_id=1737725103]
+[node name="arrivee_T34" type="Marker2D" parent="Spawns" unique_id=889638380]
 position = Vector2(1680, 960)
 
-[node name="arrivee_T45" type="Marker2D" parent="Spawns" unique_id=1364919248]
+[node name="arrivee_T45" type="Marker2D" parent="Spawns" unique_id=231223711]
 position = Vector2(432, 960)
 
-[node name="Triggers" type="Node2D" parent="." unique_id=1128518773]
+[node name="Triggers" type="Node2D" parent="." unique_id=339490050]
+
+[node name="Mist" type="Sprite2D" parent="." unique_id=1496908351]
+self_modulate = Color(1, 1, 1, 0.12)
+z_index = -1
+z_as_relative = false
+texture_repeat = 2
+centered = false
+region_enabled = true
+script = ExtResource("24_14nqg")

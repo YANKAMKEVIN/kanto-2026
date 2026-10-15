@@ -25,9 +25,9 @@ extends SceneTree
 ##   n'existent pas) : rival (2F, sans direction), zone purifiée (5F, une par case `Z` et par
 ##   direction qui vient du dehors, §2.8), SPECTRE (6F, sans direction).
 ## - `calm_cells` (5F seulement) : cases `Z` et leurs 8 voisines praticables (§2.2).
-## - Pas posés ici : PNJ, Dresseurs, objets, halos (`candle`, `purified`) et profil `tower` (T19),
-##   `caves.json` et `zones.json` (T16). Le profil de lumière est le `underground` du J15 en
-##   attendant. Racine **extérieure** (`interior = false`).
+## - Lumière (T19) : profil `tower`, halos `candle` (stèles) et `purified` (zone du 5F), brume
+##   (`MistLayer`) ; pas posés ici : PNJ, Dresseurs, objets, `caves.json` et `zones.json` (T16).
+##   Racine **extérieure** (`interior = false`).
 
 const Kit := preload("res://tools/cave_map_kit.gd")
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
@@ -41,8 +41,8 @@ const WALL_MARK: String = "#"
 const TOMB_MARK: String = "T"
 const STELE_MARK: String = "S"
 const ZONE_MARK: String = "Z"
-## Profil de lumière provisoire (T19 crée `tower`).
-const PROFILE: StringName = &"underground"
+## Profil de lumière de la Tour (T19).
+const PROFILE: StringName = &"tower"
 
 ## Étage → [identifiant, nœud racine, graine logique, graine du décor, graine des murs, ambient].
 const FLOORS: Dictionary = {
@@ -52,6 +52,8 @@ const FLOORS: Dictionary = {
 	"5f": [&"pokemon_tower_5f", "PokemonTower5F", 1931, 1932, 1933, 0.90],
 	"6f": [&"pokemon_tower_6f", "PokemonTower6F", 1941, 1942, 1943, 0.88],
 }
+## Opacité de la brume par étage (≤ `MistLayer.ALPHA_MAX`) : 2F le plus clair, 6F le plus brumeux.
+const MIST_ALPHA: Dictionary = {"2f": 0.08, "3f": 0.10, "4f": 0.12, "5f": 0.14, "6f": 0.18}
 const PLAN_PATH: String = "res://tools/plans/pokemon_tower_%s.txt"
 
 ## Sols provisoires (souterrain, J15).
@@ -174,6 +176,7 @@ func _build(key: String) -> int:
 			print("build_pokemon_tower %s : voile écrit ; importer (--import) puis relancer" % key)
 			_kit.call(&"discard")
 			return 2
+	_place_mist(key)
 	if not _errors().is_empty():
 		push_error("build_pokemon_tower %s :\n%s" % [key, "\n".join(_errors())])
 		_kit.call(&"discard")
@@ -199,6 +202,17 @@ func _fail(message: String) -> void:
 	var errors := _errors()
 	errors.append(message)
 	_kit.set(&"errors", errors)
+
+
+## Brume lente (T19) : un `MistLayer` à la taille de la carte, posé après le voile (sous
+## `Entities`), sans `Light2D` ni particule.
+func _place_mist(key: String) -> void:
+	var mist := Sprite2D.new()
+	mist.set_script(load("res://game/world/lighting/mist_layer.gd"))
+	mist.name = "Mist"
+	mist.set(&"area", SIZE * TILE)
+	mist.set(&"alpha", MIST_ALPHA[key])
+	_kit.call(&"attach", _kit.get(&"root"), mist)
 
 
 # --- Cases calmes (§2.2) -------------------------------------------------------------------
@@ -366,16 +380,15 @@ func _pieces(run: Vector2i) -> Array[Vector2i]:
 # --- Repères, zone purifiée, escaliers ----------------------------------------------------
 
 
-## Stèles `S` (props pleins, une source de voile « candle » chacune ; le halo `candle` arrive
-## avec T19) et tombes `T` (stèle réduite et sombre). Les cases sont solides dans la grille.
+## Stèles `S` (props pleins, un halo `candle` chacun, qui éclaire aussi le voile) et tombes `T` (stèle réduite et sombre). Les cases sont solides dans la grille.
 func _place_landmarks() -> void:
 	var entities: Node2D = _kit.get(&"entities")
 	var rules: GDScript = _kit.get(&"rules")
 	var index := 0
 	for cell: Vector2i in _plan().call(&"cells_of", STELE_MARK):
 		_kit.call(&"add_prop_at", entities, STELE_PROP, cell, "Stele%02d" % index)
-		_kit.call(&"add_shade_source", &"candle", _kit.call(&"cell_center", cell)
-			+ Vector2(0.0, STELE_LIGHT_HEIGHT - TILE / 2.0))
+		_kit.call(&"add_glow", &"candle", _kit.call(&"cell_center", cell)
+			+ Vector2(0.0, STELE_LIGHT_HEIGHT - TILE / 2.0), "CandleGlow%02d" % index)
 		index += 1
 	index = 0
 	for cell: Vector2i in _plan().call(&"cells_of", TOMB_MARK):
@@ -388,7 +401,7 @@ func _place_landmarks() -> void:
 		index += 1
 
 
-## Dalle claire des cases `Z` (5F) : un aplat au sol, source de voile « purified ».
+## Dalle claire des cases `Z` (5F) : un aplat au sol, halo « purified » (fixe).
 func _place_zone() -> void:
 	var cells: Array[Vector2i] = _plan().call(&"cells_of", ZONE_MARK)
 	if cells.is_empty():
@@ -404,7 +417,7 @@ func _place_zone() -> void:
 	slab.polygon = PackedVector2Array([origin, origin + Vector2(extent.x, 0.0), origin + extent,
 		origin + Vector2(0.0, extent.y)])
 	_kit.call(&"attach", _kit.get(&"decals"), slab)
-	_kit.call(&"add_shade_source", &"purified", origin + extent / 2.0)
+	_kit.call(&"add_glow", &"purified", origin + extent / 2.0, "PurifiedGlow")
 
 
 ## Escalier d'une case : image du souterrain ramenée à la largeur d'une case, au sol.
