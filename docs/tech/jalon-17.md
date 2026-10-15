@@ -943,10 +943,21 @@ et annexe A validée).
   coupé = définitif après rechargement ; FUTUR A → clairière → Super Potion.
 
 #### T24 — architecte : mise en scène de Flash — **(A)**, après T3, T9
+- **Contrat commun avec le J18** (demande du J18, 2026-10-16) : reprendre `jalon-18.md` §3.2–3.3 et
+  ses noms (`FlashRules.entry_action`, `flags_to_clear`, `FlashRules.is_lit(...)` passé à `set_map`
+  dans Boot, **un seul `FlashDirector`**). Si Kevin tranche Q-1 « tout J17 », `entry_action` rend
+  l'allumage automatique, l'avertissement T-3 du J18 seulement sans Flash, et le drapeau « allumée »
+  peut disparaître (rallumage à chaque entrée) : décision à notifier à la session du J18.
 - §2.11 ; branchement dans Boot (bloc « J17 ») : voile posé à l'arrivée, `FlashDirector`.
 - Tests `test_flash_director`. **CA** : tests verts ; la Cave et le Mont Sélénite sans voile.
 
 #### T25 — ui-mobile : rendu de Flash et mesures — **(A)**, après T10, T24
+- **Contraste du héros** : T9/T10 ont mesuré 2,69 (milieu) et 2,38 (bord) sur `qa_flash`, **sous le
+  seuil 3,0** (identiques avec et sans voile : plancher lumineux de la carte de QA) ; à corriger avant
+  la QA 17C ou à faire trancher par Kevin. Captures à refaire en 2340 × 1080.
+- **Budgets demandés par le J18** : S24 avec et sans voile, ≤ 2 fps d'écart, ≥ 58 fps moyens, creux
+  ≥ 50 ; seuil « sol hors du halo ≥ 0,10 » dans `luminance_grotte.py --halo`. Ajouter un test du
+  suivi du trou pendant la **course** (aujourd'hui testé sur un pas de marche seulement).
 - Bandeau, éclair, couleur et opacité du voile, tramage si besoin ; `tools/capture_flash.gd`
   (sans Flash, au milieu de la mise en scène, avec Flash, joueur au bord) en 2340 × 1080 et
   1170 × 540 ; `luminance_grotte.py --halo` ; jetons d'interface (fin de `ui_tokens.gd`).
@@ -961,6 +972,7 @@ et annexe A validée).
   partie de Kevin ; arbustes si le J16 est arrivé ; §4 « 17D ».
 
 #### T28 — architecte : clôture
+- Retirer `qa_flash` (carte, pièce d'entrée, entrée de `caves.json`, départs `flash_qa*`) **avant** la fusion dans `main` (rappel du J18).
 - Retrait de `qa_flash`, `qa_flash_entry`, de leur entrée `caves.json` et des départs `flash_qa*` ;
   `etat-projet.md`, roadmap (et la ligne J17 des branches de conception, §0.2 n° 2) ; **passation
   au J18** (voile : lampes qui percent, bulle « ! », respiration, réglage avec l'art de la grotte ;
