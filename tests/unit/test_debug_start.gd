@@ -743,7 +743,7 @@ func test_veil_forces_the_darkness_on_the_start_map() -> void:
 	var none := DebugStart.new()
 	assert_true(none.add_from_dict({"party": party}, _data, _items, "t"))
 	assert_eq(none.veil, &"", "absent : aucun voile forcé")
-	for value: String in ["dark", "lit"]:
+	for value: String in ["dark", "lit", "off"]:
 		var start := DebugStart.new()
 		assert_true(start.add_from_dict({"map": "mt_moon_1f", "spawn": "arrivee_a",
 			"party": party, "veil": value},
@@ -751,6 +751,7 @@ func test_veil_forces_the_darkness_on_the_start_map() -> void:
 		assert_eq(start.veil, StringName(value))
 	assert_eq(DebugStart.VEIL_DARK, &"dark")
 	assert_eq(DebugStart.VEIL_LIT, &"lit")
+	assert_eq(DebugStart.VEIL_OFF, &"off")
 
 
 func test_veil_is_validated() -> void:

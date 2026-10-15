@@ -104,7 +104,7 @@ func test_flash_plays_once_per_entry_and_relights_on_return() -> void:
 	assert_eq(seen, {"locked": true, "stable": false, "dark": true, "controls": false})
 	assert_eq(flash.get_cue_count(), 1, "une fois par arrivée")
 	assert_true(darkness.is_lit(), "halo de Flash ouvert")
-	assert_eq(banners, ["PIKACHU UTILISE FLASH !"] as Array[String], "T-17, le compagnon")
+	assert_eq(banners, ["Pikachu utilise Flash !"] as Array[String], "T-17, le compagnon")
 	assert_false(_boot.get_player().is_blocked_by(FlashDirector.LOCK_REASON))
 	assert_null(flash.get_cameo(), "Pokémon montré rentré à la fin")
 	assert_false(GameState.flags.has_flag(&"qa_flash_lit"), "aucun drapeau « allumée »")
@@ -175,7 +175,7 @@ func test_fainted_user_still_lights_and_shows_up() -> void:
 	assert_eq(cameo.get("species"), &"pikachu")
 	assert_eq(cameo.get("distance"), 1, "à côté du joueur (derrière s'il le peut)")
 	assert_null(flash.get_cameo(), "rentré dans sa Ball à la fin")
-	assert_eq(banners, ["PIKACHU UTILISE FLASH !"] as Array[String])
+	assert_eq(banners, ["Pikachu utilise Flash !"] as Array[String])
 	assert_true(_boot.get_darkness().is_lit())
 
 

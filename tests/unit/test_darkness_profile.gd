@@ -40,6 +40,27 @@ func test_real_data() -> void:
 	assert_lt(profile.center_offset, 0.0, "centre du trou au-dessus des pieds")
 
 
+func test_floor_lift_is_optional_and_bounded() -> void:
+	_expected_errors = 0
+	var profile := DarknessProfile.new()
+	assert_true(profile.load_dict(_valid()), "clé facultative")
+	assert_almost_eq(profile.floor_lift, 0.07, 0.0001, "défaut")
+	var data := _valid()
+	data["floor_lift"] = 0.12
+	assert_true(profile.load_dict(data))
+	assert_almost_eq(profile.floor_lift, 0.12, 0.0001)
+	data["floor_lift"] = 0.0
+	assert_true(profile.load_dict(data), "0 = aucune lueur")
+	data["floor_lift"] = 0.5
+	_rejects(data, "lueur trop forte")
+	data["floor_lift"] = -0.1
+	_rejects(data, "lueur négative")
+	assert_push_error_count(_expected_errors, "une erreur signalée par cas")
+	var real := DarknessProfile.new()
+	assert_true(real.load_file())
+	assert_gt(real.floor_lift, 0.0, "données livrées : lueur au sol")
+
+
 func test_tiles_to_pixels_and_states() -> void:
 	var profile := DarknessProfile.new()
 	assert_true(profile.load_dict(_valid()))

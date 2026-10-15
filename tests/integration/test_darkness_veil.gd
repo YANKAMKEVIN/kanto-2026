@@ -121,6 +121,58 @@ func test_center_follows_the_player_frame_by_frame() -> void:
 	assert_true(moved, "le joueur a bougé")
 
 
+func test_center_follows_the_player_while_running() -> void:
+	# Course : plusieurs pas enchaînés, plus rapides que la marche ; le centre du trou (voile et
+	# lueur au sol) égale le corps du joueur à CHAQUE image, et le joueur ne sort jamais du trou.
+	_darkness.set_map(_map, true, false)
+	var veil := _darkness.get_veil()
+	var floor_light := _darkness.get_floor_light()
+	var direction := Vector2i.UP
+	var sim := FrameSim.new(get_tree(), [_player, _darkness])
+	var start := _player.global_position
+	var steps := 0
+	var frames := 0
+	var farthest := 0.0
+	while steps < 4 and frames < 400:
+		if not _player.is_moving():
+			if not _map.get_grid().is_free(_player.get_cell() + direction):
+				break
+			assert_true(_player.script_step(direction, true), "pas de course %d" % steps)
+			steps += 1
+		await sim.frame()
+		frames += 1
+		assert_true(_player.is_running() or not _player.is_moving(), "en course")
+		assert_eq(veil.get_center(), _body(), "image %d : voile = corps" % frames)
+		assert_eq(floor_light.lift_at(_body()), floor_light.get_strength(), "lueur = corps")
+		assert_eq(veil.alpha_at(_player.global_position), 0.0, "joueur jamais voilé")
+		farthest = maxf(farthest, start.distance_to(_player.global_position))
+	while _player.is_moving() and frames < 600:
+		await sim.frame()
+		frames += 1
+	sim.finish()
+	assert_eq(steps, 4, "quatre pas de course enchaînés")
+	assert_almost_eq(farthest, 4.0 * Grid.TILE_SIZE, Grid.TILE_SIZE, "il a bien avancé")
+	assert_eq(veil.get_center(), _body(), "centre final")
+
+
+func test_floor_light_follows_and_matches_the_math() -> void:
+	var floor_light := _darkness.get_floor_light()
+	assert_false(floor_light.visible, "caché avant la carte")
+	_darkness.set_map(_map, true, false)
+	assert_true(floor_light.visible)
+	assert_false(floor_light.z_as_relative)
+	assert_eq(floor_light.z_index, WorldLighting.Z_GROUND_DECALS, "sous les personnages")
+	assert_eq(floor_light.get_parent(), _world)
+	assert_true(floor_light.get_view_rect_for_test().encloses(_view()))
+	var strength := floor_light.get_strength()
+	assert_almost_eq(strength, _darkness.get_profile().floor_lift, 0.0001)
+	assert_gt(strength, 0.0)
+	assert_almost_eq(floor_light.lift_at(_body()), strength, 0.0001, "plein au centre")
+	assert_eq(floor_light.lift_at(_body() + Vector2(4.5 * 96.0, 0.0)), 0.0, "nul hors du fondu")
+	_darkness.set_map(_map, false, false)
+	assert_false(floor_light.visible, "caché hors du noir")
+
+
 func test_open_runs_its_duration() -> void:
 	_darkness.set_map(_map, true, false)
 	watch_signals(_darkness)

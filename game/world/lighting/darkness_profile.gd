@@ -8,12 +8,14 @@ extends RefCounted
 ##   "dark": { "clear": 2.5, "fade": 4.0, "outside": 0.6 },
 ##   "lit":  { "clear": 7.0, "fade": 9.0, "outside": 0.3 },
 ##   "center_offset": -48, "breath": 0.03, "breath_period": 3.5,
-##   "open_duration": 0.6, "glow_hole_scale": 1.0, "dither": 0.004 }
+##   "open_duration": 0.6, "glow_hole_scale": 1.0, "dither": 0.004,
+##   "floor_lift": 0.07 }
 ## [/codeblock]
 ## Deux états : « dark » (sans Flash) et « lit » (Flash) ; rayons en **cases**, rendus en pixels
 ## ([method params_at]) ; [method params_at] interpole de l'un à l'autre (ouverture animée du
 ## halo). Garde-fous : 0 < clear < fade, 0 < outside ≤ [constant MAX_OUTSIDE] (« jamais de noir
-## total »), durée d'ouverture > 0. Toutes les clés sont obligatoires sauf « _doc » ; toute clé
+## total »), « floor_lift » (clé facultative : éclaircissement du sol dans le halo,
+## [HaloFloorLight], 0 = aucune lueur), durée d'ouverture > 0. Toutes les clés sont obligatoires sauf « _doc » ; toute clé
 ## inconnue est une erreur ; en cas d'erreur, les valeurs par défaut (celles du fichier livré)
 ## restent en place ([method get_errors], push_error).
 
@@ -25,7 +27,9 @@ const MAX_RADIUS: float = 20.0
 const MAX_BREATH: float = 0.2
 const MAX_DITHER: float = 0.05
 const _ROOT_KEYS: Array[String] = ["_doc", "color", "dark", "lit", "center_offset", "breath",
-	"breath_period", "open_duration", "glow_hole_scale", "dither"]
+	"breath_period", "open_duration", "glow_hole_scale", "dither", "floor_lift"]
+const _OPTIONAL_KEYS: Array[String] = ["floor_lift"]
+const MAX_FLOOR_LIFT: float = 0.3
 const _STATE_KEYS: Array[String] = ["clear", "fade", "outside"]
 
 ## Couleur du voile (opaque ; l'opacité vient de « outside »).
@@ -41,6 +45,8 @@ var breath_period: float = 3.5
 var open_duration: float = 0.6
 var glow_hole_scale: float = 1.0
 var dither: float = 0.004
+## Éclaircissement du sol au cœur du halo (ajouté, 0 = aucun).
+var floor_lift: float = 0.07
 
 var _errors: PackedStringArray = PackedStringArray()
 
@@ -65,7 +71,7 @@ func load_dict(data: Dictionary, source: String = "") -> bool:
 		if not _ROOT_KEYS.has(str(key)):
 			ok = _fail("%s : clé inconnue « %s »" % [source, key])
 	for key: String in _ROOT_KEYS:
-		if key != "_doc" and not data.has(key):
+		if key != "_doc" and not _OPTIONAL_KEYS.has(key) and not data.has(key):
 			ok = _fail("%s : clé « %s » manquante" % [source, key])
 	if not ok:
 		return false
@@ -84,6 +90,8 @@ func load_dict(data: Dictionary, source: String = "") -> bool:
 	ok = _positive(data["open_duration"], "open_duration", source) and ok
 	ok = _number(data["glow_hole_scale"], 0.0, 4.0, "glow_hole_scale", source) and ok
 	ok = _number(data["dither"], 0.0, MAX_DITHER, "dither", source) and ok
+	if data.has("floor_lift"):
+		ok = _number(data["floor_lift"], 0.0, MAX_FLOOR_LIFT, "floor_lift", source) and ok
 	if not ok:
 		return false
 	color = new_color
@@ -95,6 +103,7 @@ func load_dict(data: Dictionary, source: String = "") -> bool:
 	open_duration = float(data["open_duration"])
 	glow_hole_scale = float(data["glow_hole_scale"])
 	dither = float(data["dither"])
+	floor_lift = float(data.get("floor_lift", floor_lift))
 	return true
 
 
