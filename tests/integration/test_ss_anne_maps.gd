@@ -155,10 +155,10 @@ func test_internal_links_are_reversible() -> void:
 			assert_true(back, "%s : passage retour à côté de l'arrivée" % label)
 
 
-## Carmin (vraie carte du J15, inchangée au T11) : la passerelle du navire ramène sur
-## `from_ss_anne_w|e` (31..32, 27), juste au-dessus de l'embarquement `BoardingW|E`, dont les
-## arrivées (`from_ss_anne_w|e`) existent sur le pont principal (le T15 n'aura qu'à donner la
-## carte cible) ; idem pour l'Arène (`from_gym` ; porte `DoorGymW|E` → `entrance` au T14).
+## Carmin (vraie carte du J15, branchée au T15) : la passerelle du navire ramène sur
+## `from_ss_anne_w|e` (31..32, 27), juste au-dessus de l'embarquement `BoardingW|E`, qui mène au
+## pont principal (`from_ss_anne_w|e`, juste au-dessus de la passerelle) ; l'Arène ramène sur
+## `from_gym`, la porte `DoorGymW|E` mène à son `entrance`.
 func test_links_to_carmin_by_identifiers() -> void:
 	var city := (load(MapCatalog.scene_path(&"vermilion_city")) as PackedScene).instantiate() \
 		as GameMap
@@ -173,7 +173,8 @@ func test_links_to_carmin_by_identifiers() -> void:
 		assert_eq(city.get_spawn_cell(pair[1]), pair[2], "quai de Carmin")
 		var boarding := city.get_node(NodePath("Warps/" + String(pair[3]))) as WarpPoint
 		assert_eq(boarding.target_spawn, pair[1])
-		assert_eq(boarding.coming_soon, "S.S. Anne", "embarquement branché au T15")
+		assert_eq(boarding.target_map, &"ss_anne_main_deck", "embarquement branché (T15)")
+		assert_eq(boarding.coming_soon, "", "plus « à venir »")
 		assert_true(deck.has_spawn(boarding.target_spawn), "arrivée de l'embarquement à bord")
 		assert_true(Grid.is_cardinal(deck.get_spawn_cell(pair[1]) - (pair[0] as Vector2i)),
 			"arrivée à bord juste au-dessus de la passerelle")
@@ -187,7 +188,8 @@ func test_links_to_carmin_by_identifiers() -> void:
 	assert_eq(gym.get_spawn_cell(&"entrance"), Vector2i(8, 12))
 	for door: String in ["DoorGymW", "DoorGymE"]:
 		var point := city.get_node(NodePath("Warps/" + door)) as WarpPoint
-		assert_false(point.coming_soon.is_empty(), "porte de l'Arène branchée au T14")
+		assert_eq([point.target_map, point.target_spawn, point.coming_soon],
+			[&"vermilion_gym", &"entrance", ""], "porte de l'Arène branchée (T15)")
 
 
 ## Vue de chaque Dresseur des grilles sur la vraie carte (occupants : les positions `bloque` des

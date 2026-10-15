@@ -42,10 +42,9 @@ const MAP_IDS: Array[StringName] = [
 	&"ss_anne_restaurant", &"ss_anne_lower_deck", &"ss_anne_outer_deck", &"ss_anne_cabin_a",
 	&"ss_anne_cabin_b", &"ss_anne_cabin_c", &"vermilion_gym",
 ]
-## Jalon 16 (T11) : retours pas encore branchés côté Carmin (embarquement `BoardingW|E` au T15,
-## porte de l'Arène `DoorGymW|E` au T14, encore « à venir ») : [carte d'origine, carte cible].
-const PENDING_RETURNS: Array = [[&"ss_anne_main_deck", &"vermilion_city"],
-	[&"vermilion_gym", &"vermilion_city"]]
+## Retours pas encore branchés : [carte d'origine, carte cible]. Jalon 16 (T15) : vide (Carmin
+## mène au pont principal du S.S. Anne et à l'Arène ; les retours sont vérifiés).
+const PENDING_RETURNS: Array = []
 ## Cartes construites par une autre tâche en parallèle (jalon 7 : la Route 22, T22 ; jalon 10 :
 ## Argenta, T11, pendant les intérieurs du T13) : un warp qui y mène est vérifié seulement si la
 ## carte existe déjà (sinon le test le signale).
@@ -138,10 +137,9 @@ func test_every_coming_soon_warp_returns_to_a_walkable_spawn_of_its_own_map() ->
 			assert_ne(warp.facing, Vector2i.ZERO, "%s : orientation au retour" % label)
 	# Jalon 15 (T13, T21) : le sud d'Azuria mène à la vraie Route 5 ; reste l'ouverture
 	# nord du poste vers Safrania (2 cases, jamais atteinte). Jalon 15 (T14) : Route 11
-	# (trois cases), Arène de Carmin (deux), S.S. Anne (deux), Safrania (porte nord de la
-	# Route 6, une).
-	assert_eq(found, 10, "« SAFRANIA » (2), « Route 11 » (3), Arène de Carmin (2), "
-		+ "S.S. Anne (2), Safrania (1)")
+	# (trois cases), Safrania (porte nord de la Route 6, une). Jalon 16 (T15) : l'Arène de
+	# Carmin et l'embarquement du S.S. Anne sont branchés.
+	assert_eq(found, 6, "« SAFRANIA » (2), « Route 11 » (3), Safrania (1)")
 
 
 ## Warp de [param map] qui ramène à [param origin] depuis [param arrival] : sur la case
@@ -261,5 +259,7 @@ func test_no_trigger_on_a_step_on_warp() -> void:
 					"%s : déclencheur « %s » sur un warp STEP_ON en %s" % [map_id,
 					trigger.cutscene_id, trigger.cell])
 				shared += 1
-	assert_eq(shared, 1, "seul partage : le tapis de sortie du labo (warp PUSH)")
+	# Jalon 16 (T15) : la passerelle du pont principal du S.S. Anne (2 cases PUSH, départ).
+	assert_eq(shared, 3, "partages : le tapis de sortie du labo, la passerelle du S.S. Anne "
+		+ "(warps PUSH)")
 	assert_push_error_count(0)

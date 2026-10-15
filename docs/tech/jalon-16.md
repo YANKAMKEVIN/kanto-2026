@@ -620,6 +620,37 @@ rattrapage.
 §2.4, §2.11 ; d'abord sur `qa_dock_j16`, puis sur le quai du J15 après sa fusion (navire `FlagGate`,
 marin de retour en (31, 26), garde-fou `blocking_cells` (31..32, 27..28), arrivée `dock`, arbuste réel `Entities/GymTree` et son point `GymTreeExamine`, §0.3).
 
+**Fait (2026-10-16)** directement sur la vraie Carmin (branche `j16-t15-depart`) :
+- `build_vermilion_city.gd` : `BoardingW|E` → `ss_anne_main_deck` / `from_ss_anne_w|e` ;
+  `DoorGymW|E` → `vermilion_gym` / `entrance` ; `GymTreeExamine` → dialogue `cut_tree` ;
+  garde-fou `Entities/GangwayGuard` (`FlagGate if:[ss_anne_departed]`, sans image, cases
+  (31..32, 27..28)) ; spawn de débogage `gym_tree` (49, 11) sous l'arbuste ;
+- pont principal : déclencheur `DepartureTrigger` sur les deux cases de sortie, **de tous côtés**
+  (un pas de côté sur la passerelle ne contourne pas la confirmation) → scène
+  `ss_anne_departure` (`data/cutscenes/ss_anne_departure.json`, dialogues
+  `data/dialogues/ss_anne_departure.json`) : TXT-03 une fois avant la CS01 ; après, DEP-01 et
+  PARTIR / PAS ENCORE (modèle du T16 : `confirm_set ss_anne_departure_chosen`) ; PARTIR →
+  `change_map` quai (`dock`), `set ss_anne_departed`, `save`, puis le spectacle (navire réaffiché,
+  DEP-02, `animate` de `Entities/SsAnne` de (−32, +2) cases en 5 s, fondu) ≈ 9,2 s ;
+- marin : **variante DEP-03 en tête de `vermilion_sailor`** (`if ss_anne_departed`) plutôt qu'un
+  second PNJ : un PNJ conditionnel n'apparaît qu'au chargement de la carte, la réplique est juste
+  dès la fin du spectacle. **Au T12** : si le marin quitte (31, 26) à l'embarquement (`moved`),
+  sa place doit revenir avec `ss_anne_departed` (`unless` dans `moved`) ;
+- Coupe : `data/dialogues/cut_tree.json` (4 variantes, `cut:no_hm` = texte T-29 du J15, puis
+  ARB-01 à ARB-03) et `data/cutscenes/cut_tree.json` (`cut_tree_vermilion_gym` : `field_move`
+  sur `Entities/GymTree`, `set cut_vermilion_gym_bush`, ARB-04) ;
+- arrivée sur une case libérée par une `FlagGate` (retour de l'Arène sur `from_gym`, case de
+  l'arbuste coupé ; passerelle avec le garde-fou) : correctif `SceneRouter.before_spawn` **du T14**
+  (repris par fusion de `jalon-16`, pas de second correctif) ;
+- départs de débogage repointés sur les vraies cartes : `ss_anne_exit` et `ss_anne_free_exit`
+  (pont principal, `from_ss_anne_w`, Passe Bateau ajouté), `cut_no_hm|no_badge|no_pokemon|ready`
+  (Carmin, `gym_tree` ; navire parti pour les trois derniers). `vermilion_gym` (QA) reste au T20 ;
+- tests : `test_ss_anne_departure` (Boot réel, sauvegarde en mémoire relevée à chaque étape),
+  `test_vermilion_city`, `test_ss_anne_maps`, `test_map_links` (plus d'exception de retour vers
+  Carmin) ; outil de capture `tools/capture_ss_anne_departure.gd`.
+- listes : `test_dialogue_data` (`vermilion_gym_tree` retiré ; `got_hm01` en `FUTURE_FLAGS`
+  jusqu'au T13), `test_cutscene_data` (`ss_anne_departure`, `cut_tree_vermilion_gym`).
+
 #### T16 — constructeur-monde : `qa_dock_j16` et départs — **maintenant**, après T7, T8
 
 **Fait (2026-10-15).** Trois cartes au lieu d'une (`tools/build_qa_j16.gd`) : `qa_dock_j16`
