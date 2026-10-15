@@ -8,12 +8,8 @@ const DATA_DIR := "res://data"
 ## Brouillons en attente de validation, nommés un par un (chemin relevé par [method _collect_drafts]).
 ## Une fois validés, retirer leur « draft » et les sortir d'ici (le test vérifie qu'ils sont
 ## encore en brouillon). Jalon 19 (T3) : descriptions des capacités ajoutées pour les learnsets
-## complets, hors du lot §15.7 du dossier 22 (à relire par Kevin).
-const PENDING_DRAFTS: Array[String] = [
-	"pokemon/moves/tower.json/dream_eater", "pokemon/moves/tower.json/bonemerang",
-	"pokemon/moves/tower.json/roar", "pokemon/moves/tower.json/take_down",
-	"pokemon/moves/tower.json/barrage", "pokemon/moves/tower.json/hyper_beam",
-]
+## complets, hors du lot §15.7 du dossier 22 : validées par Kevin le 2026-10-15.
+const PENDING_DRAFTS: Array[String] = []
 
 
 func test_data_has_json_files() -> void:

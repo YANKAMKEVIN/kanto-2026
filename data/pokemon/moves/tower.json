@@ -29,37 +29,31 @@
 	"dream_eater": {
 		"name": "Dévorêve", "type": "psychic", "category": "special",
 		"power": 100, "accuracy": 100, "pp": 15, "pending_effects": ["dream_eater"],
-		"description": "Dévore le rêve d'une cible endormie et rend au lanceur la moitié des dégâts. Sans effet dans le moteur actuel.",
-		"draft": true
+		"description": "Dévore le rêve d'une cible endormie et rend au lanceur la moitié des dégâts."
 	},
 	"bonemerang": {
 		"name": "Osmerang", "type": "ground", "category": "physical",
 		"power": 50, "accuracy": 90, "pp": 10, "effects": [{ "kind": "hits", "min": 2, "max": 2 }],
-		"description": "Lance un os qui frappe la cible deux fois : à l'aller, puis au retour.",
-		"draft": true
+		"description": "Lance un os qui frappe la cible deux fois : à l'aller, puis au retour."
 	},
 	"roar": {
 		"name": "Hurlement", "type": "normal", "category": "status",
 		"accuracy": 0, "pp": 20, "priority": -6, "pending_effects": ["force_switch"],
-		"description": "Un cri terrifiant qui fait fuir la cible. Sans effet dans le moteur actuel.",
-		"draft": true
+		"description": "Un cri terrifiant qui fait fuir la cible."
 	},
 	"take_down": {
 		"name": "Bélier", "type": "normal", "category": "physical",
 		"power": 90, "accuracy": 85, "pp": 20, "pending_effects": ["recoil_damage"],
-		"description": "Le lanceur fonce sur la cible de tout son poids et se blesse aussi. Sans effet dans le moteur actuel.",
-		"draft": true
+		"description": "Le lanceur fonce sur la cible de tout son poids et se blesse aussi."
 	},
 	"barrage": {
 		"name": "Pilonnage", "type": "normal", "category": "physical",
 		"power": 15, "accuracy": 85, "pp": 20, "effects": [{ "kind": "hits", "min": 2, "max": 5 }],
-		"description": "Bombarde la cible de projectiles ronds, deux à cinq fois d'affilée.",
-		"draft": true
+		"description": "Bombarde la cible de projectiles ronds, deux à cinq fois d'affilée."
 	},
 	"hyper_beam": {
 		"name": "Ultralaser", "type": "normal", "category": "special",
 		"power": 150, "accuracy": 90, "pp": 5, "pending_effects": ["recharge"],
-		"description": "Un rayon dévastateur. Le lanceur doit ensuite se reposer un tour. Sans effet dans le moteur actuel.",
-		"draft": true
+		"description": "Un rayon dévastateur. Le lanceur doit ensuite se reposer un tour."
 	}
 }

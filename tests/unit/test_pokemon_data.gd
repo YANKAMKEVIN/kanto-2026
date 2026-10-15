@@ -234,9 +234,7 @@ func test_real_move_values() -> void:
 ## Capacités du J19 nécessaires aux learnsets complets (plan jalon-19 §0.4 n° 1) dont la
 ## description, hors du lot §15.7 du dossier 22, attend la relecture de Kevin : « draft ».
 ## Retirer l'identifiant d'ici quand le texte est validé.
-const DRAFT_DESCRIPTIONS: Array[StringName] = [
-	&"dream_eater", &"bonemerang", &"roar", &"take_down", &"barrage", &"hyper_beam",
-]
+const DRAFT_DESCRIPTIONS: Array[StringName] = []
 
 
 func test_every_real_move_has_a_validated_description() -> void:
