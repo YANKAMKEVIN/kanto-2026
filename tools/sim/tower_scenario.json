@@ -1,7 +1,7 @@
 {
 	"version": 1,
 	"title": "Équilibrage de la Tour Pokémon : rival n° 5 et Exorcistes (jalon 19 T4, simulé au T21)",
-	"description": "Jalon 19 T4 (dossier 22 §7.3, §8 ; plan jalon-19 §2.5, §2.6, T21). Information pour Kevin : aucune donnée de jeu n'est changée. Équipes de départ = sortie supposée du J18 (équipe de référence de jalon-18.md §4.16 : starter évolué N24, Roucoups N21, Papilusion N20, Sabelette N19, Pikachu N20) et sortie directe « bas » (starter N22, Roucoups N19, Papilusion N18), soignées ; T21 les remplace par les vraies sorties des J16 à J18. Rival n° 5 en team_by_starter (valeurs Rouge/Bleu provisoires), une équipe par starter. Exorcistes inévitables : E3, E8, E9 ; facultatifs (groupe « facultatifs ») : E1, E2, E4 à E7. Aucune étape « wild » : les SPECTRES ne donnent ni XP ni objet. Zone purifiée du 5F modélisée en « center » (soin illimité ; une défaite au 6F reprend après elle, comme en jeu où les Dresseurs battus le restent). Groupe « retour_centre » : retour au Centre de Lavanville après le rival. Dresseurs recopiés de data/trainers/pokemon_tower.json (--donnees les relit).",
+	"description": "Jalon 19 T4 (dossier 22 §7.3, §8 ; plan jalon-19 §2.5, §2.6, T21). Information pour Kevin : aucune donnée de jeu n'est changée. Équipes de départ = sortie supposée du J18 (équipe de référence de jalon-18.md §4.16 : starter évolué N24, Roucoups N21, Papilusion N20, Sabelette N19, Pikachu N20) et sortie directe « bas » (starter N22, Roucoups N19, Papilusion N18), soignées ; T21 les remplace par les vraies sorties des J16 à J18. Rival n° 5 en team_by_starter, une équipe par starter : niveaux du T21 préliminaire (22, Kadabra 18 ; docs/tech/jalon-19-equilibrage.md), provisoires jusqu'à la relance après T10. Exorcistes inévitables : E3, E8, E9 ; facultatifs (groupe « facultatifs ») : E1, E2, E4 à E7. Aucune étape « wild » : les SPECTRES ne donnent ni XP ni objet. Zone purifiée du 5F modélisée en « center » (soin illimité ; une défaite au 6F reprend après elle, comme en jeu où les Dresseurs battus le restent). Groupe « retour_centre » : retour au Centre de Lavanville après le rival. Dresseurs recopiés de data/trainers/pokemon_tower.json (--donnees les relit).",
 	"seeds": 200,
 	"heal_at_start": true,
 	"teams": [
@@ -187,7 +187,7 @@
 				"bulbasaur": [
 					{
 						"species": "pidgeotto",
-						"level": 25,
+						"level": 22,
 						"moves": [
 							"gust",
 							"sand_attack",
@@ -196,7 +196,7 @@
 					},
 					{
 						"species": "exeggcute",
-						"level": 23
+						"level": 22
 					},
 					{
 						"species": "gyarados",
@@ -209,11 +209,11 @@
 					},
 					{
 						"species": "kadabra",
-						"level": 20
+						"level": 18
 					},
 					{
 						"species": "charmeleon",
-						"level": 25,
+						"level": 22,
 						"moves": [
 							"scratch",
 							"growl",
@@ -225,7 +225,7 @@
 				"charmander": [
 					{
 						"species": "pidgeotto",
-						"level": 25,
+						"level": 22,
 						"moves": [
 							"gust",
 							"sand_attack",
@@ -234,7 +234,7 @@
 					},
 					{
 						"species": "growlithe",
-						"level": 23,
+						"level": 22,
 						"moves": [
 							"bite",
 							"ember",
@@ -247,17 +247,17 @@
 					},
 					{
 						"species": "kadabra",
-						"level": 20
+						"level": 18
 					},
 					{
 						"species": "wartortle",
-						"level": 25
+						"level": 22
 					}
 				],
 				"squirtle": [
 					{
 						"species": "pidgeotto",
-						"level": 25,
+						"level": 22,
 						"moves": [
 							"gust",
 							"sand_attack",
@@ -266,7 +266,7 @@
 					},
 					{
 						"species": "gyarados",
-						"level": 23,
+						"level": 22,
 						"moves": [
 							"bite",
 							"dragon_rage",
@@ -284,11 +284,11 @@
 					},
 					{
 						"species": "kadabra",
-						"level": 20
+						"level": 18
 					},
 					{
 						"species": "ivysaur",
-						"level": 25
+						"level": 22
 					}
 				]
 			}
