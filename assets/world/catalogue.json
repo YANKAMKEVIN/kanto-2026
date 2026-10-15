@@ -5129,6 +5129,885 @@
      46
     ]
    }
+  },
+  "bldg_pension_01": {
+   "fichier": "res://assets/world/buildings/bldg_pension_01.png",
+   "taille": [
+    672,
+    502
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_pension_01_shadow.png",
+    "decalage": [
+     -361,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     408,
+     51
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_pension_01_contact.png",
+    "decalage": [
+     -344,
+     -42
+    ],
+    "echelle": 2,
+    "taille": [
+     344,
+     40
+    ]
+   }
+  },
+  "bldg_poste_safrania_01": {
+   "fichier": "res://assets/world/buildings/bldg_poste_safrania_01.png",
+   "taille": [
+    672,
+    385
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_poste_safrania_01_shadow.png",
+    "decalage": [
+     -361,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     397,
+     40
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_poste_safrania_01_contact.png",
+    "decalage": [
+     -344,
+     -28
+    ],
+    "echelle": 2,
+    "taille": [
+     344,
+     33
+    ]
+   }
+  },
+  "bldg_entree_souterrain_01": {
+   "fichier": "res://assets/world/buildings/bldg_entree_souterrain_01.png",
+   "taille": [
+    672,
+    355
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_entree_souterrain_01_shadow.png",
+    "decalage": [
+     -361,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     394,
+     37
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_entree_souterrain_01_contact.png",
+    "decalage": [
+     -344,
+     -25
+    ],
+    "echelle": 2,
+    "taille": [
+     344,
+     32
+    ]
+   }
+  },
+  "bldg_arene_carmin_01": {
+   "fichier": "res://assets/world/buildings/bldg_arene_carmin_01.png",
+   "taille": [
+    1152,
+    703
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_arene_carmin_01_shadow.png",
+    "decalage": [
+     -601,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     666,
+     69
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_arene_carmin_01_contact.png",
+    "decalage": [
+     -584,
+     -66
+    ],
+    "echelle": 2,
+    "taille": [
+     584,
+     52
+    ]
+   }
+  },
+  "bldg_fan_club_01": {
+   "fichier": "res://assets/world/buildings/bldg_fan_club_01.png",
+   "taille": [
+    768,
+    472
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_fan_club_01_shadow.png",
+    "decalage": [
+     -409,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     453,
+     48
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_fan_club_01_contact.png",
+    "decalage": [
+     -392,
+     -39
+    ],
+    "echelle": 2,
+    "taille": [
+     392,
+     39
+    ]
+   }
+  },
+  "bldg_maison_pecheur_01": {
+   "fichier": "res://assets/world/buildings/bldg_maison_pecheur_01.png",
+   "taille": [
+    672,
+    499
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_maison_pecheur_01_shadow.png",
+    "decalage": [
+     -361,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     407,
+     50
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_maison_pecheur_01_contact.png",
+    "decalage": [
+     -344,
+     -42
+    ],
+    "echelle": 2,
+    "taille": [
+     344,
+     40
+    ]
+   }
+  },
+  "bldg_ss_anne_proue_01": {
+   "fichier": "res://assets/world/buildings/bldg_ss_anne_proue_01.png",
+   "taille": [
+    960,
+    462
+   ]
+  },
+  "bldg_ss_anne_milieu_01": {
+   "fichier": "res://assets/world/buildings/bldg_ss_anne_milieu_01.png",
+   "taille": [
+    864,
+    555
+   ]
+  },
+  "bldg_ss_anne_poupe_01": {
+   "fichier": "res://assets/world/buildings/bldg_ss_anne_poupe_01.png",
+   "taille": [
+    960,
+    572
+   ]
+  },
+  "prop_vue_port_01": {
+   "fichier": "res://assets/world/props/prop_vue_port_01.png",
+   "taille": [
+    384,
+    185
+   ]
+  },
+  "relief_quai_bois_01": {
+   "fichier": "res://assets/world/relief/relief_quai_bois_01.png",
+   "taille": [
+    192,
+    102
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_quai_bois_01_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "relief_quai_bois_02": {
+   "fichier": "res://assets/world/relief/relief_quai_bois_02.png",
+   "taille": [
+    192,
+    103
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_quai_bois_02_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "relief_quai_bois_03": {
+   "fichier": "res://assets/world/relief/relief_quai_bois_03.png",
+   "taille": [
+    24,
+    93
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_quai_bois_03_contact.png",
+    "decalage": [
+     -20,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     20,
+     11
+    ]
+   }
+  },
+  "relief_quai_bois_04": {
+   "fichier": "res://assets/world/relief/relief_quai_bois_04.png",
+   "taille": [
+    192,
+    105
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_quai_bois_04_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "relief_quai_bois_05": {
+   "fichier": "res://assets/world/relief/relief_quai_bois_05.png",
+   "taille": [
+    48,
+    62
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_quai_bois_05_contact.png",
+    "decalage": [
+     -32,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     32,
+     11
+    ]
+   }
+  },
+  "prop_pieu_quai_01": {
+   "fichier": "res://assets/world/relief/prop_pieu_quai_01.png",
+   "taille": [
+    38,
+    96
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/prop_pieu_quai_01_contact.png",
+    "decalage": [
+     -27,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     27,
+     11
+    ]
+   }
+  },
+  "prop_jeune_arbre_arene_01": {
+   "fichier": "res://assets/world/props/prop_jeune_arbre_arene_01.png",
+   "taille": [
+    192,
+    224
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_jeune_arbre_arene_01_contact.png",
+    "decalage": [
+     -104,
+     -16
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     27
+    ]
+   }
+  },
+  "prop_passerelle_01": {
+   "fichier": "res://assets/world/props/prop_passerelle_01.png",
+   "taille": [
+    192,
+    238
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_passerelle_01_contact.png",
+    "decalage": [
+     -104,
+     -18
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     28
+    ]
+   }
+  },
+  "prop_grue_quai_01": {
+   "fichier": "res://assets/world/props/prop_grue_quai_01.png",
+   "taille": [
+    192,
+    218
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_grue_quai_01_contact.png",
+    "decalage": [
+     -104,
+     -15
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     27
+    ]
+   }
+  },
+  "prop_bitte_amarre_01": {
+   "fichier": "res://assets/world/props/prop_bitte_amarre_01.png",
+   "taille": [
+    96,
+    112
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_bitte_amarre_01_contact.png",
+    "decalage": [
+     -56,
+     1
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     19
+    ]
+   }
+  },
+  "prop_cordage_01": {
+   "fichier": "res://assets/world/props/prop_cordage_01.png",
+   "taille": [
+    77,
+    46
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_cordage_01_contact.png",
+    "decalage": [
+     -46,
+     11
+    ],
+    "echelle": 2,
+    "taille": [
+     47,
+     14
+    ]
+   }
+  },
+  "prop_caisses_port_01": {
+   "fichier": "res://assets/world/props/prop_caisses_port_01.png",
+   "taille": [
+    192,
+    133
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_caisses_port_01_contact.png",
+    "decalage": [
+     -104,
+     -2
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     20
+    ]
+   }
+  },
+  "prop_indice_tronc_01": {
+   "fichier": "res://assets/world/props/prop_indice_tronc_01.png",
+   "taille": [
+    96,
+    49
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_indice_tronc_01_contact.png",
+    "decalage": [
+     -56,
+     13
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     13
+    ]
+   }
+  },
+  "prop_indice_joncs_01": {
+   "fichier": "res://assets/world/props/prop_indice_joncs_01.png",
+   "taille": [
+    96,
+    79
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_indice_joncs_01_contact.png",
+    "decalage": [
+     -56,
+     10
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     14
+    ]
+   }
+  },
+  "prop_nenuphars_02": {
+   "fichier": "res://assets/world/props/prop_nenuphars_02.png",
+   "taille": [
+    35,
+    15
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_nenuphars_02_contact.png",
+    "decalage": [
+     -25,
+     16
+    ],
+    "echelle": 2,
+    "taille": [
+     26,
+     11
+    ]
+   }
+  },
+  "prop_nenuphars_03": {
+   "fichier": "res://assets/world/props/prop_nenuphars_03.png",
+   "taille": [
+    33,
+    19
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_nenuphars_03_contact.png",
+    "decalage": [
+     -24,
+     16
+    ],
+    "echelle": 2,
+    "taille": [
+     25,
+     11
+    ]
+   }
+  },
+  "prop_nenuphars_01": {
+   "fichier": "res://assets/world/props/prop_nenuphars_01.png",
+   "taille": [
+    96,
+    57
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_nenuphars_01_contact.png",
+    "decalage": [
+     -56,
+     12
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     13
+    ]
+   }
+  },
+  "relief_mur_souterrain_01": {
+   "fichier": "res://assets/world/relief/relief_mur_souterrain_01.png",
+   "taille": [
+    192,
+    89
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_souterrain_01_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "relief_mur_souterrain_02": {
+   "fichier": "res://assets/world/relief/relief_mur_souterrain_02.png",
+   "taille": [
+    192,
+    92
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_souterrain_02_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "relief_mur_souterrain_03": {
+   "fichier": "res://assets/world/relief/relief_mur_souterrain_03.png",
+   "taille": [
+    192,
+    33
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_souterrain_03_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "relief_mur_souterrain_04": {
+   "fichier": "res://assets/world/relief/relief_mur_souterrain_04.png",
+   "taille": [
+    34,
+    146
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_souterrain_04_contact.png",
+    "decalage": [
+     -25,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     25,
+     11
+    ]
+   }
+  },
+  "relief_mur_souterrain_05": {
+   "fichier": "res://assets/world/relief/relief_mur_souterrain_05.png",
+   "taille": [
+    34,
+    88
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_souterrain_05_contact.png",
+    "decalage": [
+     -25,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     25,
+     11
+    ]
+   }
+  },
+  "relief_mur_souterrain_06": {
+   "fichier": "res://assets/world/relief/relief_mur_souterrain_06.png",
+   "taille": [
+    34,
+    33
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_souterrain_06_contact.png",
+    "decalage": [
+     -25,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     25,
+     11
+    ]
+   }
+  },
+  "prop_escalier_souterrain_monte_01": {
+   "fichier": "res://assets/world/props/prop_escalier_souterrain_monte_01.png",
+   "taille": [
+    192,
+    178
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_escalier_souterrain_monte_01_contact.png",
+    "decalage": [
+     -104,
+     0
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     19
+    ]
+   }
+  },
+  "prop_escalier_souterrain_descend_01": {
+   "fichier": "res://assets/world/props/prop_escalier_souterrain_descend_01.png",
+   "taille": [
+    192,
+    183
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_escalier_souterrain_descend_01_contact.png",
+    "decalage": [
+     -104,
+     0
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     19
+    ]
+   }
+  },
+  "prop_stele_01": {
+   "fichier": "res://assets/world/props/prop_stele_01.png",
+   "taille": [
+    96,
+    160
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_stele_01_contact.png",
+    "decalage": [
+     -56,
+     2
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     18
+    ]
+   }
+  },
+  "prop_banc_souterrain_01": {
+   "fichier": "res://assets/world/props/prop_banc_souterrain_01.png",
+   "taille": [
+    96,
+    41
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_banc_souterrain_01_contact.png",
+    "decalage": [
+     -56,
+     14
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     12
+    ]
+   }
+  },
+  "prop_pierre_descellee_01": {
+   "fichier": "res://assets/world/props/prop_pierre_descellee_01.png",
+   "taille": [
+    96,
+    91
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_pierre_descellee_01_contact.png",
+    "decalage": [
+     -56,
+     9
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     15
+    ]
+   }
+  },
+  "prop_applique_01": {
+   "fichier": "res://assets/world/props/prop_applique_01.png",
+   "taille": [
+    43,
+    81
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_applique_01_contact.png",
+    "decalage": [
+     -29,
+     10
+    ],
+    "echelle": 2,
+    "taille": [
+     30,
+     14
+    ]
+   }
+  },
+  "int_comptoir_pension_01": {
+   "fichier": "res://assets/world/interiors/int_comptoir_pension_01.png",
+   "taille": [
+    288,
+    171
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_comptoir_pension_01_contact.png",
+    "decalage": [
+     -152,
+     -16
+    ],
+    "echelle": 2,
+    "taille": [
+     152,
+     27
+    ]
+   }
+  },
+  "int_escalier_descendant_01": {
+   "fichier": "res://assets/world/interiors/int_escalier_descendant_01.png",
+   "taille": [
+    192,
+    172
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_escalier_descendant_01_contact.png",
+    "decalage": [
+     -104,
+     -16
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     27
+    ]
+   }
+  },
+  "int_panier_pokemon_01": {
+   "fichier": "res://assets/world/interiors/int_panier_pokemon_01.png",
+   "taille": [
+    96,
+    61
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_panier_pokemon_01_contact.png",
+    "decalage": [
+     -56,
+     6
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     16
+    ]
+   }
+  },
+  "int_fauteuil_president_01": {
+   "fichier": "res://assets/world/interiors/int_fauteuil_president_01.png",
+   "taille": [
+    115,
+    102
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_fauteuil_president_01_contact.png",
+    "decalage": [
+     -65,
+     -2
+    ],
+    "echelle": 2,
+    "taille": [
+     66,
+     20
+    ]
+   }
+  },
+  "int_vitrine_rubans_01": {
+   "fichier": "res://assets/world/interiors/int_vitrine_rubans_01.png",
+   "taille": [
+    192,
+    180
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_vitrine_rubans_01_contact.png",
+    "decalage": [
+     -104,
+     -18
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     28
+    ]
+   }
+  },
+  "int_tableau_port_01": {
+   "fichier": "res://assets/world/interiors/int_tableau_port_01.png",
+   "taille": [
+    144,
+    103
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_tableau_port_01_contact.png",
+    "decalage": [
+     -80,
+     -3
+    ],
+    "echelle": 2,
+    "taille": [
+     80,
+     21
+    ]
+   }
   }
  },
  "personnages": {
@@ -6835,6 +7714,102 @@
     "droite",
     "haut"
    ]
+  },
+  "marin": {
+   "fichier": "res://assets/sprites/characters/painted/marin_sheet.png",
+   "cellule": [
+    71,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "docker": {
+   "fichier": "res://assets/sprites/characters/painted/docker_sheet.png",
+   "cellule": [
+    78,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "president_fan_club": {
+   "fichier": "res://assets/sprites/characters/painted/president_fan_club_sheet.png",
+   "cellule": [
+    88,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "marin_idle": {
+   "fichier": "res://assets/sprites/characters/painted/marin_idle_sheet.png",
+   "cellule": [
+    73,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "docker_idle": {
+   "fichier": "res://assets/sprites/characters/painted/docker_idle_sheet.png",
+   "cellule": [
+    78,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "president_fan_club_idle": {
+   "fichier": "res://assets/sprites/characters/painted/president_fan_club_idle_sheet.png",
+   "cellule": [
+    96,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
   }
  },
  "images": {
@@ -7298,6 +8273,34 @@
    "taille": [
     1536,
     1056
+   ]
+  },
+  "ground_planches_quai_01": {
+   "fichier": "res://assets/world/ground/ground_planches_quai_01.png",
+   "taille": [
+    384,
+    384
+   ]
+  },
+  "ground_dalles_souterrain_01": {
+   "fichier": "res://assets/world/ground/ground_dalles_souterrain_01.png",
+   "taille": [
+    384,
+    384
+   ]
+  },
+  "ground_traces_souterrain_01": {
+   "fichier": "res://assets/world/ground/ground_traces_souterrain_01.png",
+   "taille": [
+    384,
+    384
+   ]
+  },
+  "ground_planches_quai_ns_01": {
+   "fichier": "res://assets/world/ground/ground_planches_quai_ns_01.png",
+   "taille": [
+    384,
+    384
    ]
   }
  }

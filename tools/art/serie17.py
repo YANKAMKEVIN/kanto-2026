@@ -44,6 +44,8 @@ Usage :
   tools/art/serie17.py --manifeste             ajoute les entrées en fin de manifeste.json (T11 ;
                                                NE PAS lancer avant la validation des images)
   tools/art/serie17.py --controle [sortie.png] planche des assets PRÉPARÉS à l'échelle du jeu (T11)
+  tools/art/serie17.py --raccords [sortie.png] contrôle de raccord (T11) : textures en 3 × 3 avec
+                                               mesure de couture, S.S. Anne assemblé (3 tranches)
   tools/art/serie17.py [IDENTIFIANT ...]       génère avec Codex, par vagues (sans argument : la
                                                série sans les conditionnels ; --refs --ancres d'abord)
 """
@@ -644,7 +646,38 @@ DECOR_COMBAT = ("COMBAT_DECOR_ROUTE5_6_PRAIRIE_r1",
 
 ## Corrections (T9) : (identifiant sans _NE_rN, révision) → texte qui remplace la description
 ## d'origine (planche, coque ou décor). Vide au T8.
-CORRECTIONS: dict[tuple[str, int], str] = {}
+CORRECTIONS: dict[tuple[str, int], str] = {
+	# Retouche de Kevin (2026-10-15) : la proue est plus plongeante et plus haute que le milieu et la
+	# poupe ; elle doit se raccorder bout à bout. Essai 1 (`_r2`, ce texte) : coque trop haute et
+	# trop sombre, rejeté ; essai 2 (`_r3`, retenu) : prompt écrit à la main
+	# (`WORLD_BLDG_SS_ANNE_PROUE_NE_r3.txt`), image jointe `PROUE_AMORCE.png` = le tiers droit du
+	# milieu sur fond transparent, à compléter vers la gauche ; assemblage par `assembler_ss_anne.py`.
+	# Vue du port : `_r2` retenu du premier coup (sans eau, base tranchée).
+	("WORLD_BLDG_SS_ANNE_PROUE", 2):
+		"la PROUE du paquebot, à RACCORDER bout à bout avec la tranche MILIEU jointe "
+		"(WORLD_BLDG_SS_ANNE_MILIEU_NE_r1, qui est la référence d'angle et d'échelle) : MÊME échelle "
+		"(120 px par case), MÊME angle de vue que le milieu et la poupe (vue frontale presque à plat, "
+		"un peu plongeante : flanc de coque quasi vertical, JAMAIS la coque vue de dessus ni "
+		"fortement inclinée), MÊME hauteur de coque que le milieu (bande bleu marine d'environ 1,1 "
+		"case de haut puis liseré rouge sombre, ligne de flottaison droite et horizontale tout au "
+		"bas), même hauteur de pont, de bastingage et de superstructure, mêmes hublots à une seule "
+		"rangée. Seule la forme change : à gauche l'étrave s'affine en pointe élancée, vue de profil "
+		"(la ligne du haut du pont et la ligne de flottaison se rapprochent légèrement vers la pointe), "
+		"avec le mât avant, le pont avant de teck et ses cabestans ; à droite, le début de la "
+		"superstructure blanche. Le bord DROIT est coupé net à la verticale et ses lignes (flottaison, "
+		"hublots, bords de ponts, bastingages) arrivent aux mêmes hauteurs que le bord GAUCHE de la "
+		"tranche milieu jointe, pour qu'elle se raccorde sans couture. Le bas de la coque est une ligne "
+		"horizontale (rien dessous)",
+	("WORLD_PROP_VUE_PORT_01", 2):
+		"la VUE LOINTAINE DU PORT depuis le belvédère de la Route 6 : le haut d'une GRUE de port rouge "
+		"et grise, deux MÂTS fins de voiliers, et le sommet de la CHEMINÉE ROUGE à manchette noire du "
+		"paquebot ; SANS AUCUNE EAU : ni mer, ni vague, ni écume, ni reflet, ni bandeau bleu. Le BAS "
+		"de chaque élément est COUPÉ NET par une ligne horizontale droite (la base de la grue, des "
+		"mâts et de la cheminée est tranchée, comme s'ils dépassaient au-dessus d'une lisière ; les "
+		"arbres du jeu recouvrent cette ligne) ; rien en dessous, transparence totale. Plus petit, "
+		"plus clair et un peu plus bleuté qu'au premier plan (c'est LOIN) ; 4 cases de large, environ "
+		"3 de haut. Aucune maison, aucun arbre, aucune coque de navire",
+}
 
 # --- Prompts ----------------------------------------------------------------------------
 
@@ -939,9 +972,17 @@ def _revision(base: str) -> str:
 
 
 def _planche_objets(base: str, dossier: str, colonnes: int, lignes: int, ids: list[str],
-		cases: list[float], contact: float | None) -> dict:
-	return {"source": _revision(base), "dossier": f"{_W}{dossier}/", "colonnes": colonnes,
+		cases: list[float], contact: float | None, nettoyer: bool = False,
+		boites: list[list[int]] | None = None) -> dict:
+	"""`nettoyer` : retire le halo lumineux du fond (`preparer.nettoyer_halos`) ; `boites` : découpe
+	explicite quand deux éléments se touchent presque (`_taches` les fusionnerait)."""
+	entree = {"source": _revision(base), "dossier": f"{_W}{dossier}/", "colonnes": colonnes,
 		"lignes": lignes, "ids": ids, "cases": cases, "contact": contact}
+	if nettoyer:
+		entree["nettoyer"] = True
+	if boites:
+		entree["boites"] = boites
+	return entree
 
 
 def _batiment(ident: str, base: str, cases: float, dossier: str = "buildings", ombre: bool = True,
@@ -955,8 +996,10 @@ QUAI_BOIS_IDS = ["relief_quai_bois_01", "relief_quai_bois_02", "relief_quai_bois
 	"relief_quai_bois_04", "relief_quai_bois_05", "prop_pieu_quai_01"]
 CARMIN_IDS = ["prop_jeune_arbre_arene_01", "prop_passerelle_01", "prop_grue_quai_01",
 	"prop_bitte_amarre_01", "prop_cordage_01", "prop_caisses_port_01"]
-ROUTES_IDS = ["prop_indice_tronc_01", "prop_indice_joncs_01", "prop_nenuphars_01",
-	"prop_nenuphars_02"]
+## La planche porte 5 éléments (T11) : tronc, joncs, deux feuilles seules, le trio avec la fleur.
+## Ordre de lecture du préparateur (rangées par pied) : tronc, joncs / feuille, feuille / trio.
+ROUTES_IDS = ["prop_indice_tronc_01", "prop_indice_joncs_01", "prop_nenuphars_02",
+	"prop_nenuphars_03", "prop_nenuphars_01"]
 MUR_SO_IDS = ["relief_mur_souterrain_01", "relief_mur_souterrain_02", "relief_mur_souterrain_03",
 	"relief_mur_souterrain_04", "relief_mur_souterrain_05", "relief_mur_souterrain_06"]
 SOUTERRAIN_IDS = ["prop_escalier_souterrain_monte_01", "prop_escalier_souterrain_descend_01",
@@ -992,6 +1035,10 @@ def manifeste_donnees() -> dict:
 			{"id": "ground_planches_quai_01", "source": _revision("WORLD_GROUND_PLANCHES_QUAI_01_NE"),
 				"sortie": f"{_W}ground/ground_planches_quai_01.png", "taille": 384, "contraste": 1.0,
 				"couleur": 1.0, "raccord": 24},
+			# Platelage des pontons (nord-sud) : même texture tournée de 90 degrés (fiche, Alignement).
+			{"id": "ground_planches_quai_ns_01", "source": _revision("WORLD_GROUND_PLANCHES_QUAI_01_NE"),
+				"sortie": f"{_W}ground/ground_planches_quai_ns_01.png", "taille": 384, "contraste": 1.0,
+				"couleur": 1.0, "raccord": 24, "rotation": 90},
 			{"id": "ground_dalles_souterrain_01",
 				"source": _revision("WORLD_GROUND_DALLES_SOUTERRAIN_01_NE"),
 				"sortie": f"{_W}ground/ground_dalles_souterrain_01.png", "taille": 384,
@@ -1006,14 +1053,16 @@ def manifeste_donnees() -> dict:
 				[2, 2, 0.25, 2, 0.5, 0.4], 0.0),
 			_planche_objets("WORLD_PROP_CARMIN_PLANCHE_NE", "props", 3, 2, CARMIN_IDS,
 				[2, 2, 2, 1, 0.8, 2], 0.15),
-			_planche_objets("WORLD_PROP_ROUTES_J15_PLANCHE_NE", "props", 2, 2, ROUTES_IDS,
-				[1, 1, 1, 0.6], 0.1),
+			_planche_objets("WORLD_PROP_ROUTES_J15_PLANCHE_NE", "props", 2, 3, ROUTES_IDS,
+				[1, 1, 0.36, 0.34, 1], 0.1, nettoyer=True),
 			_planche_objets("WORLD_RELIEF_MUR_SOUTERRAIN_PLANCHE_NE", "relief", 3, 2, MUR_SO_IDS,
 				[2, 2, 2, 0.35, 0.35, 0.35], 0.0),
 			_planche_objets("WORLD_PROP_SOUTERRAIN_PLANCHE_NE", "props", 3, 2, SOUTERRAIN_IDS,
 				[2, 2, 1, 1, 1, 0.45], 0.1),
 			_planche_objets("INT_J15_PLANCHE_NE", "interiors", 3, 2, INT_IDS,
-				[3, 2, 1, 1.2, 2, 1.5], 0.2),
+				[3, 2, 1, 1.2, 2, 1.5], 0.2, nettoyer=True,
+				boites=[[28, 100, 636, 484], [640, 80, 1090, 484], [1144, 252, 1480, 468],
+					[96, 584, 520, 960], [556, 516, 1036, 968], [1112, 636, 1492, 912]]),
 		],
 		"personnages": [
 			{"id": nom, "source": _revision(f"PNJ_{ident}_NE"), "sortie": f"{_C}{nom}_sheet.png",
@@ -1308,6 +1357,66 @@ def contact(sortie: Path) -> Path:
 	return sortie
 
 
+def raccords(sortie: Path) -> Path:
+	"""Contrôle de raccord du T11 : (1) chaque texture de sol, posée en 3 × 3, avec la différence
+	moyenne entre ses bords opposés comparée à celle de deux colonnes voisines (rapport ≤ 1,5 =
+	couture invisible) ; (2) les trois tranches du S.S. Anne bout à bout sur leur ligne de
+	flottaison, avec l'écart de couleur aux deux coutures."""
+	import numpy as np
+	from PIL import ImageDraw
+	sols = manifeste_donnees()["sols"]
+	taille = 384
+	demi = 3 * taille // 2
+	feuille = Image.new("RGB", (len(sols) * (demi + 10) + 30, demi + 900), (118, 118, 124))
+	dessin = ImageDraw.Draw(feuille)
+	lignes = []
+	for i, e in enumerate(sols):
+		image = Image.open(RACINE / e["sortie"]).convert("RGB")
+		a = np.asarray(image).astype(float)
+		bord_h = np.abs(a[:, 0] - a[:, -1]).mean()
+		bord_v = np.abs(a[0] - a[-1]).mean()
+		voisin_h = np.abs(a[:, 100:-1] - a[:, 101:]).mean()
+		voisin_v = np.abs(a[100:-1] - a[101:]).mean()
+		rapport = max(bord_h / voisin_h, bord_v / voisin_v)
+		lignes.append(f"{e['id']} : bords/voisins = {rapport:.2f}")
+		damier = Image.new("RGB", (3 * taille, 3 * taille))
+		for x in range(3):
+			for y in range(3):
+				damier.paste(image, (x * taille, y * taille))
+		damier = damier.resize((demi, demi), Image.LANCZOS)
+		feuille.paste(damier, (20 + i * (demi + 10), 20))
+		dessin.text((20 + i * (demi + 10), 24 + demi), lignes[-1], fill=(255, 255, 255))
+	tranches_ = [Image.open(RACINE / e["sortie"]).convert("RGBA")
+		for e in manifeste_donnees()["objets"] if e["id"].startswith("bldg_ss_anne_")]
+	largeur = sum(t.width for t in tranches_)
+	hauteur = max(t.height for t in tranches_)
+	navire = Image.new("RGBA", (largeur, hauteur), (0, 0, 0, 0))
+	x = 0
+	ecarts = []
+	for t in tranches_:
+		navire.alpha_composite(t, (x, hauteur - t.height))
+		if x:
+			gauche = np.asarray(navire.crop((x - 1, 0, x, hauteur))).astype(float)
+			droite = np.asarray(navire.crop((x, 0, x + 1, hauteur))).astype(float)
+			commun = (gauche[:, 0, 3] > 128) & (droite[:, 0, 3] > 128)
+			ecarts.append(float(np.abs(gauche[commun, 0, :3] - droite[commun, 0, :3]).mean())
+				if commun.any() else 999.0)
+			ecarts.append(float(((gauche[:, 0, 3] > 128) ^ (droite[:, 0, 3] > 128)).sum()))
+		x += t.width
+	lignes.append(f"S.S. Anne : écart de couleur aux coutures {ecarts[0]:.1f} / {ecarts[2]:.1f} "
+		f"(sur 255), lignes d'alpha discordantes {int(ecarts[1])} / {int(ecarts[3])}")
+	fond = Image.new("RGBA", navire.size, (118, 118, 124, 255))
+	fond.alpha_composite(navire)
+	cible = feuille.width - 40
+	fond = fond.convert("RGB").resize((cible, round(hauteur * cible / largeur)), Image.LANCZOS)
+	feuille.paste(fond, (20, demi + 80))
+	dessin.text((20, demi + 60), lignes[-1], fill=(255, 255, 255))
+	sortie.parent.mkdir(parents=True, exist_ok=True)
+	feuille.save(sortie, optimize=True)
+	print("\n".join(lignes))
+	return sortie
+
+
 if __name__ == "__main__":
 	arguments = sys.argv[1:]
 	if "--prompts" in arguments:
@@ -1327,6 +1436,10 @@ if __name__ == "__main__":
 			RACINE / "build" / "captures" / "jalon15_assets" / "serie17_contact.png"))
 	elif "--manifeste" in arguments:
 		manifeste()
+	elif "--raccords" in arguments:
+		autres = [a for a in arguments if a != "--raccords"]
+		print(raccords(Path(autres[0]) if autres else
+			RACINE / "build" / "captures" / "jalon15_assets" / "serie17_raccords.png"))
 	elif "--controle" in arguments:
 		autres = [a for a in arguments if a != "--controle"]
 		print(controle(Path(autres[0]) if autres else
