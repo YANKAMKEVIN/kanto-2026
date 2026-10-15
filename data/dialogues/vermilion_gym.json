@@ -14,5 +14,92 @@
 	"vermilion_gym_switch_reset": {
 		"narration": true,
 		"pages": ["Mauvais interrupteur !\nLes verrous se referment."]
+	},
+	"vermilion_gym_guide": {
+		"speaker": "Guide",
+		"pages": [
+			"Major Bob s'est retranché derrière une barrière électrique !",
+			"Les interrupteurs sont cachés dans les poubelles. Il en faut deux, côte à côte.",
+			"Une erreur, et tout se remet à zéro."
+		]
+	},
+	"vermilion_gym_louis_before": {
+		"speaker": "Gentleman Louis", "pages": ["Le courant passe ici !"]
+	},
+	"vermilion_gym_louis_defeated": {
+		"speaker": "Gentleman Louis", "pages": ["Je n'ai pas résisté !"]
+	},
+	"vermilion_gym_louis_rematch": {
+		"speaker": "Gentleman Louis", "pages": ["Attention aux décharges !"]
+	},
+	"vermilion_gym_axel_before": {
+		"speaker": "Rockeur Axel", "pages": ["Ça va faire des étincelles !"]
+	},
+	"vermilion_gym_axel_defeated": {
+		"speaker": "Rockeur Axel", "pages": ["Je suis à plat !"]
+	},
+	"vermilion_gym_axel_rematch": {
+		"speaker": "Rockeur Axel", "pages": ["Mon rythme est électrique !"]
+	},
+	"vermilion_gym_marc_before": {
+		"speaker": "Marin Marc", "pages": ["Même les marins aiment l'orage !"]
+	},
+	"vermilion_gym_marc_defeated": {
+		"speaker": "Marin Marc", "pages": ["Je baisse pavillon !"]
+	},
+	"vermilion_gym_marc_rematch": {
+		"speaker": "Marin Marc", "pages": ["Tu n'as pas peur du tonnerre ?"]
+	},
+	"vermilion_gym_surge": {
+		"speaker": "Major Bob",
+		"variants": [
+			{
+				"if": ["badge_thunder"],
+				"unless": ["tm24_received"],
+				"cutscene": "vermilion_gym_surge_tm_late"
+			},
+			{
+				"if": ["badge_thunder"],
+				"pages": ["Fais bon usage du Badge Foudre !"]
+			},
+			{
+				"cutscene": "vermilion_gym_surge"
+			}
+		]
+	},
+	"vermilion_gym_surge_intro": {
+		"speaker": "Major Bob",
+		"pages": [
+			"Hé, petit ! Tu as réussi à ouvrir ma barrière ?",
+			"Pas mal. Mais ici, c'est l'électricité qui commande.",
+			"Voyons si tu tiens le choc !"
+		]
+	},
+	"vermilion_gym_surge_lost": {
+		"speaker": "Major Bob",
+		"pages": ["Trop lent, petit !", "Reviens quand tu tiendras la charge."]
+	},
+	"vermilion_gym_surge_resume": {
+		"speaker": "Major Bob", "pages": ["Encore toi ? J'aime ça. En position !"]
+	},
+	"vermilion_gym_surge_won": {
+		"speaker": "Major Bob",
+		"pages": ["Ouch ! Tu m'as bien secoué.", "Du cran, petit. Tu as gagné."]
+	},
+	"vermilion_gym_surge_badge": {
+		"speaker": "Major Bob",
+		"pages": ["Voici le Badge Foudre.", "Il prouve que tu as tenu le choc face à Major Bob."]
+	},
+	"vermilion_gym_surge_tm": {
+		"speaker": "Major Bob", "pages": ["Prends aussi ceci."]
+	},
+	"vermilion_gym_surge_tm_use": {
+		"speaker": "Major Bob",
+		"pages": [
+			"C'est la CT24, Tonnerre. Un Pokémon qui l'apprend la garde, et tu peux t'en resservir."
+		]
+	},
+	"vermilion_gym_surge_tm_late": {
+		"speaker": "Major Bob", "pages": ["J'allais oublier."]
 	}
 }

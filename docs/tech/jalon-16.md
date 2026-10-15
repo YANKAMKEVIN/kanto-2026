@@ -615,6 +615,14 @@ PNJ et répliques, 10 Dresseurs (vues des grilles), objets visibles et cachés, 
 Carte, Dresseurs, guide, panneau, Major Bob (modèle `cerulean_gym_misty`), badge, CT24 et son
 rattrapage.
 
+**Fait (2026-10-16)** (branche `j16-t14-arene`) : PNJ, dialogues et scènes en données
+(`vermilion_gym.json`), modèle d'Ondine ; panneau de Carmin au n° 30 ; objectifs « affronter
+Major Bob. » et « ouvrir le passage vers Major Bob. » en tête ; départs `vermilion_gym_solved`,
+`surge_weak`, `thunder_no_tm` ; test `test_vermilion_gym_sequence`. Correctif :
+`SceneRouter.before_spawn` (FlagGate à jour avant de poser le joueur ; la sortie de l'Arène
+tombait sur l'arbuste coupé). Écart à signaler : la poubelle 15 n'est atteignable que par la vue
+d'Axel (guide en (10, 12)). Sprites provisoires `guard`/`traveler`/`youngster`/`sailor`.
+
 #### T15 — constructeur-monde : départ du navire (16D) — après T8, T11
 
 §2.4, §2.11 ; d'abord sur `qa_dock_j16`, puis sur le quai du J15 après sa fusion (navire `FlagGate`,

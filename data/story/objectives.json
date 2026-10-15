@@ -1,5 +1,17 @@
 [
 	{
+		"id": "face_surge",
+		"text": "affronter Major Bob.",
+		"if": ["vermilion_gym_puzzle_solved"],
+		"unless": ["badge_thunder"]
+	},
+	{
+		"id": "open_surge_barrier",
+		"text": "ouvrir le passage vers Major Bob.",
+		"if": ["cut_vermilion_gym_bush"],
+		"unless": ["badge_thunder"]
+	},
+	{
 		"id": "explore_vermilion",
 		"text": "explorer Carmin-sur-Mer.",
 		"if": ["vermilion_reached"]

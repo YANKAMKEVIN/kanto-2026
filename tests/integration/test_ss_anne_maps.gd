@@ -297,6 +297,8 @@ func test_gym_puzzle_data_and_barrier() -> void:
 	var map: GameMap = _maps[&"vermilion_gym"]
 	var barrier: Array[StringName] = []
 	for npc: Npc in map.get_npcs():
+		if not String(npc.get_id()).begins_with("vermilion_gym_barrier_"):
+			continue  # Major Bob, ses Dresseurs et le guide (T14)
 		barrier.append(npc.get_id())
 		assert_eq(npc.get_cell().y, 5)
 	assert_eq(despawned, barrier, "la scène retire les trois segments")
@@ -330,7 +332,8 @@ func test_gym_puzzle_played_on_the_real_map() -> void:
 	var flags := StoryFlags.new()
 	flags.set_flag(&"vermilion_gym_puzzle_solved")
 	map.refresh_npcs(flags)
-	assert_eq(map.get_npcs().size(), 0, "barrière ouverte")
+	for npc: Npc in map.get_npcs():
+		assert_false(String(npc.get_id()).begins_with("vermilion_gym_barrier_"), "barrière ouverte")
 	assert_true(map.get_grid().find_reachable(start).has(bob_front), "Major Bob accessible")
 
 
@@ -341,7 +344,8 @@ func test_debug_starts_land_on_the_real_maps() -> void:
 	var items := ItemLibrary.new()
 	items.load_dir()
 	for pair: Array in [["ss_anne", &"ss_anne_main_deck"], ["vermilion_gym_map",
-			&"vermilion_gym"]]:
+			&"vermilion_gym"], ["vermilion_gym_solved", &"vermilion_gym"],
+			["surge_weak", &"vermilion_gym"], ["thunder_no_tm", &"vermilion_gym"]]:
 		var start := DebugStart.new()
 		assert_true(start.load_file("res://tools/debug_start/%s.json" % pair[0], data, items),
 			"\n".join(start.get_errors()))
