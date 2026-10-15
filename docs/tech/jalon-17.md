@@ -1022,6 +1022,7 @@ et annexe A validée).
   (sans Flash, au milieu de la mise en scène, avec Flash, joueur au bord) en 2340 × 1080 et
   1170 × 540 ; `luminance_grotte.py --halo` ; jetons d'interface (fin de `ui_tokens.gd`).
 - **CA** : captures relues ; contraste du héros ≥ 3,0 ; aucune couleur en dur.
+- **Fait (2026-10-16)** : contraste 3,12–4,68, sol hors halo 0,106–0,145 ; lueur du halo au sol (`HaloFloorLight`, `floor_lift`) et opacité sombre 0,38 ; bandeau en casse d'origine ; départ `flash_qa_noveil` ; S21 : 60 fps avec et sans voile (détail : `etat-projet.md`).
 
 #### T26 — qa-mobile : **session 17C** → Kevin — après T22, T24, T25
 - `flash_qa*` sur **S24** (fps) et S21 (lisibilité, précision du shader) ; apprentissage de Flash

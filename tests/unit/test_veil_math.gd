@@ -105,3 +105,19 @@ func test_cover_rect() -> void:
 	var cover := VeilMath.cover_rect(view, 96.0)
 	assert_true(cover.encloses(view))
 	assert_eq(cover.position, Vector2(4.0, -46.0))
+
+
+func test_floor_lift_matches_the_hole() -> void:
+	# Lueur du halo au sol (T25) : même profil que le trou, pleine au centre, nulle après le fondu.
+	var params := _profile.params_at(0.0)
+	var center := Vector2(500.0, 500.0)
+	assert_almost_eq(VeilMath.lift_at(center, center, params, 0.07), 0.07, 0.00001)
+	assert_almost_eq(VeilMath.lift_at(center + Vector2(params.clear_px, 0.0), center, params,
+		0.07), 0.07, 0.00001, "plein jusqu'au rayon net")
+	assert_eq(VeilMath.lift_at(center + Vector2(params.fade_px, 0.0), center, params, 0.07),
+		0.0, "nul à la fin du fondu")
+	var mid := center + Vector2((params.clear_px + params.fade_px) / 2.0, 0.0)
+	var lift := VeilMath.lift_at(mid, center, params, 0.07)
+	assert_between(lift, 0.001, 0.069)
+	assert_almost_eq(lift / 0.07 + VeilMath.alpha_at(mid, center, params,
+		PackedVector4Array()) / params.outside, 1.0, 0.00001, "lueur + voile = 1 : complémentaires")

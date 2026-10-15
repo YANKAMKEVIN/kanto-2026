@@ -222,7 +222,8 @@ func _cameo_cell() -> Vector2i:
 func _show_banner(pokemon_name: String) -> void:
 	var text := _field_moves.cue_text(MOVE, pokemon_name) if _field_moves != null else ""
 	if _hud != null and not text.is_empty():
-		_hud.show_caption(text, BANNER_HOLD)
+		# Phrase avec un nom propre : casse d'origine (les titres seuls vont en MAJUSCULES).
+		_hud.show_caption(text, BANNER_HOLD, false, false)
 
 
 func _flash_screen() -> void:

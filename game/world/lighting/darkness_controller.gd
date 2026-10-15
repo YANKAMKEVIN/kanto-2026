@@ -23,6 +23,7 @@ const VIEW_MARGIN: float = Grid.TILE_SIZE
 const PROCESS_PRIORITY: int = 100
 
 var _veil: DarknessVeil
+var _floor_light: HaloFloorLight
 var _player: Node2D
 var _profile: DarknessProfile = DarknessProfile.new()
 var _params: VeilParams = VeilParams.new()
@@ -36,13 +37,16 @@ func _init() -> void:
 	name = "DarknessController"
 	process_priority = PROCESS_PRIORITY
 	_veil = DarknessVeil.new()
+	_floor_light = HaloFloorLight.new()
 	set_process(false)
 
 
 func _notification(what: int) -> void:
 	# Voile jamais posé dans un monde (setup non appelé) : libéré avec le contrôleur.
-	if what == NOTIFICATION_PREDELETE and is_instance_valid(_veil) and _veil.get_parent() == null:
-		_veil.free()
+	if what == NOTIFICATION_PREDELETE:
+		for node: Node in [_veil, _floor_light]:
+			if is_instance_valid(node) and node.get_parent() == null:
+				node.free()
 
 
 func _process(_delta: float) -> void:
@@ -60,7 +64,11 @@ func setup(world: Node2D, player: Node2D, profile: DarknessProfile = null) -> vo
 		_profile.load_file()
 	if _veil.get_parent() != null:
 		_veil.get_parent().remove_child(_veil)
+	if _floor_light.get_parent() != null:
+		_floor_light.get_parent().remove_child(_floor_light)
+	world.add_child(_floor_light)
 	world.add_child(_veil)
+	_floor_light.set_strength(_profile.floor_lift)
 	_veil.set_color(_profile.color)
 	_veil.set_dither(_profile.dither)
 	_veil.set_breath(_profile.breath(_reduce_motion), _profile.breath_period)
@@ -76,12 +84,14 @@ func set_map(map: Node, dark: bool, lit: bool) -> void:
 	_apply_lit_amount(1.0 if dark and lit else 0.0)
 	if not dark:
 		_veil.visible = false
+		_floor_light.visible = false
 		_veil.set_sources(PackedVector4Array())
 		set_process(false)
 		return
 	_veil.set_sources(VeilMath.sources_of(_glows_of(map), LightGlow.library(),
 		_profile.glow_hole_scale))
 	_veil.visible = true
+	_floor_light.visible = _profile.floor_lift > 0.0
 	set_process(true)
 	_follow()
 
@@ -133,6 +143,10 @@ func get_veil() -> DarknessVeil:
 	return _veil
 
 
+func get_floor_light() -> HaloFloorLight:
+	return _floor_light
+
+
 func get_profile() -> DarknessProfile:
 	return _profile
 
@@ -141,6 +155,7 @@ func _apply_lit_amount(amount: float) -> void:
 	_lit_amount = clampf(amount, 0.0, 1.0)
 	_profile.fill_params(_params, _lit_amount)
 	_veil.set_params(_params)
+	_floor_light.set_params(_params)
 
 
 func _on_opened() -> void:
@@ -159,10 +174,14 @@ func _follow() -> void:
 	if not _veil.is_inside_tree():
 		return
 	if is_instance_valid(_player) and _player.is_inside_tree():
-		_veil.set_center(VeilMath.body_center(_player.global_position, _profile.center_offset))
+		var center := VeilMath.body_center(_player.global_position, _profile.center_offset)
+		_veil.set_center(center)
+		_floor_light.set_center(center)
 	var viewport := _veil.get_viewport()
 	var view := viewport.get_canvas_transform().affine_inverse() * viewport.get_visible_rect()
-	_veil.set_view_rect(VeilMath.cover_rect(view, VIEW_MARGIN))
+	var cover := VeilMath.cover_rect(view, VIEW_MARGIN)
+	_veil.set_view_rect(cover)
+	_floor_light.set_view_rect(cover)
 
 
 static func _glows_of(map: Node) -> Array[LightGlow]:

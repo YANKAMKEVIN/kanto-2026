@@ -26,6 +26,12 @@ static func alpha_at(point: Vector2, center: Vector2, params: VeilParams,
 	return params.outside * (1.0 - lit)
 
 
+## Éclaircissement du sol par la lueur du halo ([HaloFloorLight]) : miroir du shader
+## `halo_floor_light.gdshader` ; [param strength] au cœur du halo, 0 au-delà de la fin du fondu.
+static func lift_at(point: Vector2, center: Vector2, params: VeilParams, strength: float) -> float:
+	return strength * (1.0 - smoothstep(params.clear_px, params.fade_px, point.distance_to(center)))
+
+
 ## Centre du trou : les pieds du joueur ([param player_position], origine du sprite) relevés de
 ## [param offset_px] (négatif = vers le haut, centre du corps).
 static func body_center(player_position: Vector2, offset_px: float) -> Vector2:

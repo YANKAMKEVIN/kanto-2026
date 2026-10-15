@@ -1210,7 +1210,8 @@ func _apply_lighting(map: GameMap) -> void:
 ## dès l'écran noir que hors arrivée ([method FlashRules.is_lit]).
 func _apply_darkness(map: GameMap) -> void:
 	var forced := not _veil_debug.is_empty() and map.map_id == _veil_debug_map
-	var dark := forced or _caves.is_dark(map.map_id)
+	var removed := forced and _veil_debug == DebugStart.VEIL_OFF
+	var dark := not removed and (forced or _caves.is_dark(map.map_id))
 	var lit := (forced and _veil_debug == DebugStart.VEIL_LIT) \
 		or FlashRules.is_lit(_arrival_from, map.map_id, _caves, _flash.is_available())
 	_darkness.set_map(map, dark, lit)

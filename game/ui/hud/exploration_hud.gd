@@ -84,9 +84,10 @@ func hide_zone_title() -> void:
 ## tenue CAPTION_HOLD (ou [param hold] s si elle est ≥ 0 : « BADGE ROCHE », BADGE_CAPTION_HOLD),
 ## fondu. Jamais permanente. Indépendante des contrôles.
 ## [param centered] : au centre vertical de l'écran (« BADGE ROCHE »), pour ne pas couvrir
-## le Champion.
-func show_caption(text: String, hold: float = -1.0, centered: bool = false) -> void:
-	_caption.show_caption(text, hold, centered)
+## le Champion. [param uppercase] faux : texte tel quel (phrase, « Pikachu utilise Flash ! »).
+func show_caption(text: String, hold: float = -1.0, centered: bool = false,
+		uppercase: bool = true) -> void:
+	_caption.show_caption(text, hold, centered, uppercase)
 
 
 ## Éclairs plein écran de l'étape de scène « flash » (jalon-14.md §2.7) ; coroutine :
