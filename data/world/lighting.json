@@ -138,6 +138,11 @@
 		"route_5": "golden_hour",
 		"route_5_daycare": "interior_warm",
 		"route_5_gate": "interior_warm",
-		"route_5_underground_gate": "interior_warm"
+		"route_5_underground_gate": "interior_warm",
+		"pokemon_tower_2f": "underground",
+		"pokemon_tower_3f": "underground",
+		"pokemon_tower_4f": "underground",
+		"pokemon_tower_5f": "underground",
+		"pokemon_tower_6f": "underground"
 	}
 }

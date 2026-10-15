@@ -53,6 +53,8 @@ const RULES: Dictionary[StringName, Dictionary] = {
 	&"prop_banc_01": {"width": 2, "depth": 1},
 	&"prop_lampadaire_01": {"width": 1, "depth": 1},
 	&"prop_panneau_01": {"width": 1, "depth": 1},
+	# Tour Pokémon (J19 T8) : panneau du Scope, même emprise que le panneau de bois.
+	&"prop_panneau_scope_01": {"width": 1, "depth": 1},
 	&"prop_rocher_01": {"width": 2, "depth": 1},
 	&"prop_haie_01": {"width": 4, "depth": 1},
 	&"prop_cloture_01": {"width": 4, "depth": 1},

@@ -6008,6 +6008,37 @@
      21
     ]
    }
+  },
+  "prop_panneau_scope_01": {
+   "fichier": "res://assets/world/props/prop_panneau_scope_01.png",
+   "taille": [
+    168,
+    192
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/props/prop_panneau_scope_01_shadow.png",
+    "decalage": [
+     -109,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     127,
+     22
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/props/prop_panneau_scope_01_contact.png",
+    "decalage": [
+     -92,
+     -1
+    ],
+    "echelle": 2,
+    "taille": [
+     92,
+     20
+    ]
+   }
   }
  },
  "personnages": {

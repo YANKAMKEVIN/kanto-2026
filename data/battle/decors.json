@@ -73,6 +73,15 @@
 			"foe_feet": [1559, 540],
 			"player_feet": [716, 972],
 			"horizon": 440
+		},
+		"tour_pokemon": {
+			"zone": "pokemon_tower",
+			"variant": "salle",
+			"back": "res://assets/battle/decors/tour_pokemon_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 540],
+			"player_feet": [716, 972],
+			"horizon": 335
 		}
 	},
 	"places": {
@@ -106,6 +115,21 @@
 		],
 		"route_5": [
 			{ "decor": "route_5_6_prairie" }
+		],
+		"pokemon_tower_2f": [
+			{ "decor": "tour_pokemon" }
+		],
+		"pokemon_tower_3f": [
+			{ "decor": "tour_pokemon" }
+		],
+		"pokemon_tower_4f": [
+			{ "decor": "tour_pokemon" }
+		],
+		"pokemon_tower_5f": [
+			{ "decor": "tour_pokemon" }
+		],
+		"pokemon_tower_6f": [
+			{ "decor": "tour_pokemon" }
 		]
 	}
 }
