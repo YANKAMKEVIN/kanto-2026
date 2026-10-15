@@ -42,6 +42,7 @@ def main() -> None:
 	p.sols()
 	p.personnages()
 	p.attentes()
+	p.pokemon_fixes()
 	p.ecrire_catalogue()
 	preparer.reglages_import(partiel)
 
