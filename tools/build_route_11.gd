@@ -207,8 +207,19 @@ func _make_pillars() -> void:
 	var cliffs: Dictionary = _kit.get(&"cliff_cells")
 	var pillars: Dictionary = _kit.get(&"pillar_cells")
 	for component: Array in _kit.call(&"pillar_components"):
+		# Un module de paroi dépasse d'une rangée au-dessus de son pied : la rangée du haut d'un
+		# gros pilier dont le voisin du nord est praticable (goulets) reste sans module, sinon
+		# le sommet de la roche recouvrirait le chemin (Ronflex, Arthur).
+		var top := 1 << 20
 		for cell: Vector2i in component:
-			cliffs[cell] = true
+			top = mini(top, cell.y)
+		var height := 0
+		for cell: Vector2i in component:
+			height = maxi(height, cell.y - top + 1)
+		for cell: Vector2i in component:
+			var bare: bool = height >= 3 and cell.y == top and is_walkable_cell(cell + Vector2i.UP)
+			if not bare:
+				cliffs[cell] = true
 			pillars[cell] = true
 	# Petits affleurements loin de l'eau (goulet d'Arthur) : des rochers posés à la main, pas de
 	# blocs de rivage (ils se lisaient comme des parcelles labourées) ; aucun module de rivage.
@@ -219,6 +230,10 @@ func _make_pillars() -> void:
 			pillars[cell] = true
 
 
+func is_walkable_cell(cell: Vector2i) -> bool:
+	return _kit.call(&"is_walkable", cell)
+
+
 ## Le sol peint sous le bord de la digue (rangée 24) est de la pierre : aucune bande d'herbe entre
 ## la dalle et la face du mur.
 func _pave_under_dike() -> void:
@@ -226,6 +241,9 @@ func _pave_under_dike() -> void:
 	for x: int in range(DIKE_X.x, DIKE_X.y + 1):
 		if x != DIKE_GAP_X:
 			paved[Vector2i(x, DIKE_EDGE_ROW)] = true
+	# La poche du rivage (47, 24..25) est un petit débarcadère de la même pierre.
+	for row: int in [DIKE_EDGE_ROW, DIKE_EDGE_ROW + 1]:
+		paved[Vector2i(DIKE_GAP_X, row)] = true
 
 
 func _add_passages() -> void:

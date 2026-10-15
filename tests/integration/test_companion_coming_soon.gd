@@ -5,6 +5,8 @@ extends GutTest
 ## le compagnon rentre) sans jamais la fermer (ni [signal SceneRouter.map_entered], aucune carte ne
 ## change) : le compagnon restait caché jusqu'au changement de carte suivant. Il doit être visible
 ## derrière le joueur au plus tard au premier pas qui libère une case (règle J11).
+## Jalon 17 (T17) : le bord est de Carmin mène à la vraie Route 11 ; le test le remet « à venir »
+## dans la carte chargée (`tests/helpers/coming_soon_gate.gd`).
 ## Vérifié aux raccords nord et sud du bord est de Carmin-sur-Mer (jalon 15 T14 : « ROUTE 11 —
 ## À venir », couloir de 3 cases, spawns `from_route_11_n|c|s`) ; avant : le bord sud d'Azuria
 ## (« ROUTE 5 », J14 T20b, devenu la vraie Route 5 au J15 T21) et, jusqu'au T15 du J14, le bord
@@ -12,6 +14,7 @@ extends GutTest
 
 const MemoryFs := preload("res://tests/helpers/memory_file_system.gd")
 const FixedClock := preload("res://tests/helpers/fixed_clock.gd")
+const ComingSoonGate := preload("res://tests/helpers/coming_soon_gate.gd")
 const SAVE_PATH := "user://test_companion_coming_soon_save.json"
 const FADE := 0.05
 const TIMEOUT := 12.0
@@ -65,6 +68,7 @@ func _check_gate(spawn: StringName, visits: int = 1) -> void:
 	_boot.get_coming_soon_screen().fade_duration = 0.05
 	await wait_process_frames(2)
 	await wait_until(func() -> bool: return _boot.is_stable(), TIMEOUT)
+	ComingSoonGate.apply(_boot.get_map())
 	var companion := _boot.get_companion_controller()
 	var player := _boot.get_player()
 	GameState.flags.set_flag(&"starter_chosen")

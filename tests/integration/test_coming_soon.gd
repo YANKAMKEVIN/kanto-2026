@@ -3,6 +3,8 @@ extends GutTest
 ## SceneRouter (fondus raccourcis) et un [SaveSystem] en mémoire. Jalon 14 (T20b) : le raccord
 ## sud d'Azuria (PUSH ↓, (31..33, 40)) menait à « ROUTE 5 — À venir » (build de développement,
 ## libellé en majuscules), puis ramenait le joueur sur la case de sortie, tourné vers le nord.
+## Jalon 17 (T17) : le bord est de Carmin mène à la vraie Route 11 ; le test remet ses trois cases
+## « à venir » dans la carte chargée (`tests/helpers/coming_soon_gate.gd`).
 ## Jalon 15 (T21) : la vraie Route 5 l'a remplacé ; depuis le T14, c'est le bord est de
 ## Carmin-sur-Mer (PUSH →, (63, 11..13)) qui mène à « ROUTE 11 — À venir », retour sur la case
 ## de sortie, tourné vers l'ouest. (Jalons 12 et 13 : bord est de la Route 24, « ROUTE 25 »,
@@ -14,6 +16,7 @@ extends GutTest
 
 const MemoryFs := preload("res://tests/helpers/memory_file_system.gd")
 const FixedClock := preload("res://tests/helpers/fixed_clock.gd")
+const ComingSoonGate := preload("res://tests/helpers/coming_soon_gate.gd")
 const BOOT_SCENE := preload("res://game/boot.tscn")
 const SAVE_PATH := "user://test_coming_soon_save.json"
 const FADE := 0.05
@@ -64,6 +67,7 @@ func _start_at_the_gate() -> void:
 	_boot.get_coming_soon_screen().hold_duration = HOLD
 	_boot.get_coming_soon_screen().fade_duration = 0.05
 	await wait_process_frames(3)
+	ComingSoonGate.apply(_boot.get_map())
 
 
 func _writes() -> int:

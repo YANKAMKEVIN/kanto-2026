@@ -145,8 +145,7 @@
 		"route_11": {
 			"name": "Route 11", "kind": "route", "maps": ["route_11"],
 			"subtitle": "Carmin-sur-Mer — Route 12",
-			"description": "Une route côtière entre les prairies et la mer, à l'est de Carmin.",
-			"draft": true
+			"description": "Une route côtière entre les prairies et la mer, à l'est de Carmin."
 		}
 	}
 }

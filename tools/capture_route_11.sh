@@ -20,7 +20,7 @@ SHOTS=(
 	"r11_prairie_nord|40|$M --cell=34,11 --facing=right"
 	"r11_chemin_central|40|$M --cell=31,18 --facing=down"
 	"r11_digue|40|$M --cell=40,22 --facing=right"
-	"r11_ligne_droite|40|$M --cell=50,14 --facing=right"
+	"r11_ronflex_loin|40|$M --cell=55,14 --facing=right"
 	"r11_ronflex|40|$M --cell=64,14 --facing=right"
 	"r11_ensemble|20|$M --aim=38,18 --zoom=0.26 --noplayer"
 )
