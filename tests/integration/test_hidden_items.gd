@@ -5,7 +5,7 @@ extends GutTest
 ## - EXAMINER → toast standard seul (« Réveil ×1 » / « Ajouté au Sac »), aucune bulle, Sac + 1,
 ##   journal des objets trouvés, drapeau `got_<id>` ;
 ## - ensuite plus de cible, même après un rechargement de la partie.
-## Caches : Route 3 (T18), Route 24 nord (T22, Antidote), souterrain (J15 T19, Guérison). Le 1F et le B2F s'ajoutent au T21 / T25 ([constant CACHES]).
+## Caches : Route 3 (T18), Route 24 nord (T22, Antidote), souterrain (J15 T19, Guérison), Route 5 (J15 T13, Antidote du tronc). Le 1F et le B2F s'ajoutent au T21 / T25 ([constant CACHES]).
 
 const MemoryFs := preload("res://tests/helpers/memory_file_system.gd")
 const FixedClock := preload("res://tests/helpers/fixed_clock.gd")
@@ -24,6 +24,8 @@ const CACHES: Array = [
 	[&"underground_path", "res://tools/debug_start/underground_path.json", &"from_route_5_w",
 		"underground_hidden_1", Vector2i(11, 9), &"full_restore",
 		["Guérison ×1", "Ajoutée au Sac"], ["page", "toast"]],
+	[&"route_5", "res://tools/debug_start/route_5.json", &"from_cerulean_c", "route_5_hidden_1",
+		Vector2i(16, 31), &"antidote", ["Antidote ×1", "Ajouté au Sac"]],
 ]
 const SIDES: Array[Vector2i] = [Vector2i.LEFT, Vector2i.RIGHT, Vector2i.DOWN]
 
@@ -164,3 +166,7 @@ func test_route_24_antidote_behind_the_stump() -> void:
 
 func test_underground_full_restore_behind_the_loose_stone() -> void:
 	await _check_cache(CACHES[2])
+
+
+func test_route_5_antidote_behind_the_trunk() -> void:
+	await _check_cache(CACHES[3])

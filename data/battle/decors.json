@@ -103,6 +103,9 @@
 		],
 		"route_6": [
 			{ "decor": "route_5_6_prairie" }
+		],
+		"route_5": [
+			{ "decor": "route_5_6_prairie" }
 		]
 	}
 }

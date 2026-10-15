@@ -34,6 +34,10 @@ extends SceneTree
 ##   vermilion_house_1, vermilion_house_2, route_6_underground_gate — Carmin-sur-Mer et le
 ##     bâtiment de sortie du souterrain de la Route 6 (jalon 15 T14, jalon-15.md §2.2)
 ##   godot --headless --path . -s res://tools/build_painted_interiors.gd -- --carmin
+##   route_5_daycare, route_5_gate, route_5_underground_gate — Pension, poste de garde vers Safrania
+##     et bâtiment d'entrée du souterrain de la Route 5 (jalon 15 T13, jalon-15.md §2.2) ; titre
+##     « Route 5 » (nom de leur zone, `test_zone_library`)
+##   godot --headless --path . -s res://tools/build_painted_interiors.gd -- --route5
 ##   godot --headless --path . -s res://tools/build_painted_interiors.gd   (toutes les pièces)
 ##   godot --headless --path . --import
 ##
@@ -89,6 +93,8 @@ const QA := [&"qa_daycare"]
 const CARMIN := [&"vermilion_center", &"vermilion_mart", &"vermilion_fan_club",
 	&"vermilion_fisher_house", &"vermilion_house_1", &"vermilion_house_2",
 	&"route_6_underground_gate"]
+## Jalon 15 (T13) : Pension, poste nord et entrée du souterrain de la Route 5.
+const ROUTE_5 := [&"route_5_daycare", &"route_5_gate", &"route_5_underground_gate"]
 const PLANS_DIR := "res://tools/plans/"
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 const LOGIC_DIR := "res://tests/fixtures/maps/"
@@ -111,6 +117,7 @@ func _init() -> void:
 	rooms.append_array(_cerulean_rooms())
 	rooms.append(_qa_daycare())
 	rooms.append_array(_vermilion_rooms())
+	rooms.append_array(_route_5_rooms())
 	for room: Dictionary in rooms:
 		if not wanted.is_empty() and not wanted.has(room["id"]):
 			continue
@@ -150,6 +157,8 @@ func _wanted_rooms() -> Array:
 			wanted.append_array(AZURIA)
 		elif arg == "--carmin":
 			wanted.append_array(CARMIN)
+		elif arg == "--route5":
+			wanted.append_array(ROUTE_5)
 		elif arg.begins_with("--rooms="):
 			for id: String in arg.trim_prefix("--rooms=").split(","):
 				wanted.append(StringName(id))
@@ -869,6 +878,137 @@ func _cerulean_burgled_house() -> Dictionary:
 		"warps": _pewter_exits([Vector2i(6, 8), Vector2i(7, 8), Vector2i(8, 8)],
 			&"from_burgled_house", &"cerulean_city"),
 	}
+
+
+# --- Route 5 (jalon 15 T13, jalon-15.md §2.2) ---------------------------------------------
+
+
+## Les trois pièces de la Route 5, titre « Route 5 » (zone `route_5`).
+func _route_5_rooms() -> Array[Dictionary]:
+	var rooms: Array[Dictionary] = [_route_5_daycare(), _route_5_gate(),
+		_route_5_underground_gate()]
+	return rooms
+
+
+## Pension Pokémon (dossier 18 §4.1, 15 × 10 [D]) : enveloppe des maisons d'Argenta, comptoir de la
+## Pension (série 17) au milieu, le gardien (`old_man`, `data/npcs/route_5_daycare.json`) derrière,
+## en (7, 3) ; on lui parle par-dessus le comptoir (trois cases devant, tourné vers le haut,
+## modèle de la Boutique). Coin salon à l'est (canapé, lampe, table basse), paniers de Pokémon à
+## l'ouest (aucun Pokémon visible, F-4), commode, deux plantes. Murs comme le Centre (3 rangées
+## au fond) ; les cases (6, 3) et (8, 3), de part et d'autre du gardien, sont fermées.
+func _route_5_daycare() -> Dictionary:
+	return {
+		"id": &"route_5_daycare", "node": "Route5Daycare", "size": Vector2i(15, 10),
+		"shell": "res://assets/world/interiors/int_maison_argenta_coque.png",
+		"title": "Route 5", "light": &"interior_warm",
+		"back_rows": 3,
+		"exit": [Vector2i(6, 8), Vector2i(7, 8), Vector2i(8, 8)],
+		"exit_target": [&"route_5", &"from_daycare"],
+		"blocked": [Vector2i(6, 3), Vector2i(8, 3)],
+		"props": [
+			[&"int_comptoir_pension_01", Vector2i(7, 4), 5.0, "Counter"],
+			[&"int_commode_pokeball_01", Vector2i(1, 3), 3.9, "Dresser"],
+			[&"int_panier_pokemon_01", Vector2i(2, 5), 5.85, "BasketA"],
+			[&"int_panier_pokemon_01", Vector2i(3, 6), 6.85, "BasketB"],
+			[&"int_canape_01", Vector2i(11, 3), 3.9, "Sofa"],
+			[&"int_chevet_lampe_01", Vector2i(13, 3), 3.9, "Lamp"],
+			[&"int_table_basse_01", Vector2i(12, 5), 5.85, "CoffeeTable"],
+			[&"int_plante", Vector2i(1, 7), 7.8, "PlantWest"],
+			[&"int_plante", Vector2i(13, 7), 7.8, "PlantEast"],
+		],
+		"interactables": [["KeeperCounter", Vector2i(6, 4), Vector2i(3, 1), &"daycare_keeper",
+			TALK, Vector2i.UP]],
+		"spawns": {"entrance": Vector2i(7, 8), "counter": Vector2i(7, 5)},
+	}
+
+
+## Pièce 10 × 8 des postes de la Route 5 (enveloppe `int_poste_foret_coque`, mêmes meubles que les
+## postes de la forêt, `_forest_gate` inchangée) : sol (1..8, 2..6), portes (4..5, 7) au sud vers
+## la Route 5 ([param exit_spawn]), arrivée `from_route_5` (4, 6) ; [param extra] : champs propres
+## à la pièce (meubles en plus, passages nord, points, déclencheurs), ajoutés aux communs.
+func _gate_room(id: StringName, node: String, exit_spawn: StringName, extra: Dictionary) \
+		-> Dictionary:
+	var room := {
+		"id": id, "node": node, "size": Vector2i(10, 8),
+		"shell": "res://assets/world/interiors/int_poste_foret_coque.png",
+		"title": "Route 5", "light": &"interior_warm",
+		"floor": Rect2i(1, 2, 8, 5),
+		"doors": [Vector2i(4, 7), Vector2i(5, 7)],
+		"props": [
+			[&"int_meuble_bas_01", Vector2i(2, 2), 3.0, "LowCabinet"],
+			[&"int_porte_manteau_01", Vector2i(8, 2), 3.0, "CoatRack"],
+			[&"int_plante", Vector2i(1, 6), 7.0, "PlantWest"],
+			[&"int_plante", Vector2i(8, 6), 7.0, "PlantEast"],
+		],
+		"spawns": {"from_route_5": Vector2i(4, 6)},
+		"warps": [
+			["ToRoute5W", Vector2i(4, 7), STEP_ON, Vector2i.DOWN, &"route_5", exit_spawn,
+				Vector2i.DOWN],
+			["ToRoute5E", Vector2i(5, 7), STEP_ON, Vector2i.DOWN, &"route_5", exit_spawn,
+				Vector2i.DOWN],
+		],
+	}
+	for key: String in extra:
+		if room.has(key) and room[key] is Array:
+			(room[key] as Array).append_array(extra[key])
+		elif room.has(key) and room[key] is Dictionary:
+			(room[key] as Dictionary).merge(extra[key], true)
+		else:
+			room[key] = extra[key]
+	return room
+
+
+## Poste de garde nord, vers Safrania (dossier 18 §7, jalon-15.md §2.4) : le garde (`guard`,
+## `data/npcs/route_5_gate.json`) se tient en (4, 2), tourné vers le sud, devant l'ouverture nord ;
+## la case (5, 2) est fermée par une plante [D]. Le joueur qui avance sur la rangée 3 (4..5, 3), pas
+## vers le nord, déclenche `route_5_gate_rule` (T-15 puis T-16, recul d'une case). Ouverture nord
+## (4..5, 1) = « SAFRANIA — À venir » (jamais atteinte : relais du jour où la ville rouvrira).
+func _route_5_gate() -> Dictionary:
+	return _gate_room(&"route_5_gate", "Route5Gate", &"from_gate", {
+		"doors": [Vector2i(4, 1), Vector2i(5, 1)],
+		"props": [[&"int_plante", Vector2i(5, 2), 2.95, "PlantDoor"]],
+		"spawns": {"north_door": Vector2i(4, 3)},
+		"warps": [
+			["ToSaffronW", Vector2i(4, 1), STEP_ON, Vector2i.UP, &"", &"north_door",
+				Vector2i.DOWN, "Safrania"],
+			["ToSaffronE", Vector2i(5, 1), STEP_ON, Vector2i.UP, &"", &"north_door",
+				Vector2i.DOWN, "Safrania"],
+		],
+		"triggers": [["GateRule", Vector2i(4, 3), Vector2i(2, 1), &"route_5_gate_rule",
+			Vector2i.UP]],
+	})
+
+
+## Bâtiment d'entrée du souterrain (dossier 18 §5, jalon-15.md §2.2) : l'escalier descendant
+## (série 17) sur (4..5, 2), deux passages `STEP_ON` sans direction (comme les échelles du J12)
+## vers `underground_path` / `from_route_5_w|e` (arrivées de la carte du T18) ; retour du
+## souterrain sur `from_underground_w` (4, 3) (nom attendu par le T18, tourné ↓ ; `_e` (5, 3) en
+## plus), une case devant l'escalier. **Tant que la carte du souterrain (T18) n'existe pas**,
+## l'escalier mène à « PASSAGE SOUTERRAIN — À venir » (retour sur la case devant, tourné vers le
+## sud) ; relancer `--route5` une fois `underground_path.tscn` construite. Panneau T-14 au mur du
+## fond (7, 1), EXAMINER depuis (7, 2) tourné vers le haut.
+func _route_5_underground_gate() -> Dictionary:
+	var built := ResourceLoader.exists(MAPS_DIR + "underground_path.tscn")
+	var warps: Array = []
+	var index := 0
+	for suffix: String in ["w", "e"]:
+		var cell := Vector2i(4 + index, 2)
+		var back := StringName("from_underground_" + suffix)
+		if built:
+			warps.append(["ToUnderground" + suffix.to_upper(), cell, STEP_ON, Vector2i.ZERO,
+				&"underground_path", StringName("from_route_5_" + suffix), Vector2i.DOWN])
+		else:
+			warps.append(["ToUnderground" + suffix.to_upper(), cell, STEP_ON, Vector2i.ZERO, &"",
+				back, Vector2i.DOWN, "Passage souterrain"])
+		index += 1
+	return _gate_room(&"route_5_underground_gate", "Route5UndergroundGate", &"from_underground",
+		{
+			"props": [[&"int_escalier_descendant_01", Vector2i(5, 2), 3.0, "Stairs"]],
+			"spawns": {"from_underground_w": Vector2i(4, 3), "from_underground_e": Vector2i(5, 3)},
+			"warps": warps,
+			"interactables": [["UndergroundSign", Vector2i(7, 1), Vector2i.ONE,
+				&"route_5_underground_sign", EXAMINE, Vector2i.UP]],
+		})
 
 
 func _build(room: Dictionary) -> Node2D:

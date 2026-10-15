@@ -195,7 +195,6 @@ func test_underground_gate_stairs_sign_and_door() -> void:
 		if warp != null:
 			assert_eq([warp.target_map, warp.target_spawn, warp.facing],
 				[&"route_6", &"from_underground", Vector2i.DOWN])
-	var built := ResourceLoader.exists("res://game/world/maps/underground_path.tscn")
 	var suffixes := ["w", "e"]
 	for i: int in 2:
 		var cell := Vector2i(4 + i, 2)
@@ -204,12 +203,9 @@ func test_underground_gate_stairs_sign_and_door() -> void:
 		if warp == null:
 			continue
 		assert_eq(warp.direction, Vector2i.ZERO, "escalier sans direction")
-		if built:
-			assert_eq([warp.target_map, warp.target_spawn],
-				[&"underground_path", StringName("from_route_6_" + suffixes[i])])
-		else:
-			assert_eq(warp.coming_soon, "Passage souterrain", "souterrain du T18 attendu")
-			assert_true(gate.has_spawn(warp.target_spawn))
+		assert_false(warp.is_coming_soon(), "escalier %s raccordé" % cell)
+		assert_eq([warp.target_map, warp.target_spawn],
+			[&"underground_path", StringName("from_route_6_" + suffixes[i])])
 	assert_eq(gate.get_spawn_cell(&"from_route_6"), Vector2i(4, 6))
 	assert_eq(gate.get_spawn_cell(&"from_underground_w"), Vector2i(4, 3))
 	assert_eq(gate.get_spawn_cell(&"from_underground_e"), Vector2i(5, 3))

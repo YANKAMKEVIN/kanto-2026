@@ -8980,27 +8980,27 @@ position = Vector2(3024, 3936)
 script = ExtResource("75_cv7ys")
 trigger = 1
 direction = Vector2i(0, 1)
-target_spawn = &"from_route_5_w"
-arrival_facing = Vector2i(0, -1)
-coming_soon = "Route 5"
+target_map = &"route_5"
+target_spawn = &"from_cerulean_w"
+arrival_facing = Vector2i(0, 1)
 
 [node name="Route5C" type="Marker2D" parent="Warps" unique_id=47624954]
 position = Vector2(3120, 3936)
 script = ExtResource("75_cv7ys")
 trigger = 1
 direction = Vector2i(0, 1)
-target_spawn = &"from_route_5_c"
-arrival_facing = Vector2i(0, -1)
-coming_soon = "Route 5"
+target_map = &"route_5"
+target_spawn = &"from_cerulean_c"
+arrival_facing = Vector2i(0, 1)
 
 [node name="Route5E" type="Marker2D" parent="Warps" unique_id=1188710113]
 position = Vector2(3216, 3936)
 script = ExtResource("75_cv7ys")
 trigger = 1
 direction = Vector2i(0, 1)
-target_spawn = &"from_route_5_e"
-arrival_facing = Vector2i(0, -1)
-coming_soon = "Route 5"
+target_map = &"route_5"
+target_spawn = &"from_cerulean_e"
+arrival_facing = Vector2i(0, 1)
 
 [node name="DoorPokemonCenterW" type="Marker2D" parent="Warps" unique_id=1253340430]
 position = Vector2(816, 1824)

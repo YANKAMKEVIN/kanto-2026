@@ -2,7 +2,8 @@
 	"services": {
 		"pokemon_center": { "name": "Centre Pokémon" },
 		"poke_mart": { "name": "Boutique" },
-		"gym": { "name": "Arène" }
+		"gym": { "name": "Arène" },
+		"daycare": { "name": "Pension" }
 	},
 	"zones": {
 		"pallet_town": {
@@ -88,6 +89,15 @@
 			"name": "Route 24", "kind": "route", "maps": ["route_24"],
 			"subtitle": "Le Pont Pépite",
 			"description": "Au nord d'Azuria, un long pont franchit la rivière. Au-delà, une prairie tranquille où l'herbe pousse haut."
+		},
+		"route_5": {
+			"name": "Route 5", "kind": "route",
+			"maps": ["route_5", "route_5_daycare", "route_5_gate", "route_5_underground_gate"],
+			"services": [
+				{ "id": "daycare", "found_on": "route_5_daycare" }
+			],
+			"subtitle": "Azuria — Safrania",
+			"description": "Une route verdoyante entre les jardins, au sud d'Azuria. On y croise la Pension, puis l'entrée d'un vieux passage."
 		},
 		"vermilion_city": {
 			"name": "Carmin-sur-Mer", "kind": "town",

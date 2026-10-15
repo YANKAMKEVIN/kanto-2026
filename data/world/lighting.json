@@ -135,6 +135,10 @@
 		"vermilion_fisher_house": "interior_warm",
 		"vermilion_house_1": "interior_warm",
 		"vermilion_house_2": "interior_warm",
-		"route_6_underground_gate": "interior_warm"
+		"route_6_underground_gate": "interior_warm",
+		"route_5": "golden_hour",
+		"route_5_daycare": "interior_warm",
+		"route_5_gate": "interior_warm",
+		"route_5_underground_gate": "interior_warm"
 	}
 }

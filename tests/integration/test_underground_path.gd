@@ -6,10 +6,8 @@ extends GutTest
 ## appliques `sconce` dans le budget de halos, budget de nœuds, Corde Sortie refusée, zone et aire
 ## de la Carte, objet caché (T19) et passant (T-18).
 ##
-## Les bâtiments d'entrée : `route_6_underground_gate` (T14, intégré) est vérifié (carte et
-## arrivées) ; `route_5_underground_gate` est posé par le T13 en parallèle : sa carte et ses
-## arrivées ne sont pas vérifiées ici. EXCEPTION levée à l'intégration du T13 : [constant
-## GATES_PENDING].
+## Les deux bâtiments d'entrée (`route_5_underground_gate`, T13 ; `route_6_underground_gate`,
+## T14) sont vérifiés : carte et arrivées `from_underground_w|e`.
 
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 const PLAN_PATH := "res://tools/plans/underground_path.txt"
@@ -24,9 +22,6 @@ const STAIRS: Dictionary = {
 	Vector2i(19, 28): [&"route_6_underground_gate", &"from_underground_w"],
 	Vector2i(20, 28): [&"route_6_underground_gate", &"from_underground_e"],
 }
-## Bâtiments pas encore construits (T13 en parallèle) : carte et arrivée non vérifiées.
-## EXCEPTION levée à l'intégration du T13 : retirer cette ligne.
-const GATES_PENDING: Array[StringName] = [&"route_5_underground_gate"]
 
 var _plan: PlanGrid
 var _map: GameMap
@@ -202,8 +197,6 @@ func test_stairs_lead_to_the_two_entrance_buildings() -> void:
 		assert_false(warp.is_coming_soon())
 		assert_eq(warp.trigger, Warp.Trigger.STEP_ON)
 		assert_eq(warp.direction, Vector2i.ZERO, "escalier sans direction")
-		if GATES_PENDING.has(warp.target_map):
-			continue
 		assert_true(MapCatalog.has_map(warp.target_map), String(warp.target_map))
 		var gate := (load(MapCatalog.scene_path(warp.target_map)) as PackedScene) \
 				.instantiate() as GameMap

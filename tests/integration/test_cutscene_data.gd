@@ -48,6 +48,8 @@ const MAPS: Array[StringName] = [
 	&"bill_house",
 	# Jalon 15 (T14) : reculs du garde de Safrania (Route 6), arrivée à Carmin.
 	&"route_6", &"vermilion_city",
+	# Jalon 15 (T13) : arrivée sur la Route 5, recul du garde du poste nord.
+	&"route_5", &"route_5_gate",
 ]
 ## Jalon 7 (T18) : partie qui revient au labo avec le colis (rival parti après le combat).
 const PARCEL_FLAGS: Array[StringName] = [
@@ -118,6 +120,9 @@ const VARIANT_FLAGS: Dictionary = {
 	&"route_25_item_3": [PEWTER_FLAGS], &"route_25_hidden_1": [PEWTER_FLAGS],
 	# Jalon 15 (T19) : la Guérison cachée du souterrain.
 	&"underground_hidden_1": [PEWTER_FLAGS],
+	# Jalon 15 (T13) : arrivée, Super Potion, Antidote caché, garde du poste nord.
+	&"route_5_arrival": [PEWTER_FLAGS], &"route_5_item_1": [PEWTER_FLAGS],
+	&"route_5_hidden_1": [PEWTER_FLAGS], &"route_5_gate_rule": [PEWTER_FLAGS],
 	&"pewter_arrival": [PEWTER_FLAGS],
 	# Jalon 13 (T17) : arrivée à Azuria, Poké Ball de la Route 4, Potion de la Route 24.
 	&"cerulean_arrival": [PEWTER_FLAGS],
@@ -192,6 +197,8 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	# Jalon 15 (T14) : Poké Ball (PNJ « objet ») et Super Potion cachée (point d'examen des
 	# joncs) de la Route 6.
 	&"route_6_item_1": &"route_6", &"route_6_hidden_1": &"route_6",
+	# Jalon 15 (T13) : Super Potion (PNJ « objet ») et Antidote caché (point d'examen du tronc).
+	&"route_5_item_1": &"route_5", &"route_5_hidden_1": &"route_5",
 	# Jalon 11 (T14) : remise tardive de la CT34 (dialogue de Pierre).
 	&"pewter_gym_brock_tm_late": &"pewter_gym",
 	# Jalon 13 (T17) : objets visibles des Routes 4 et 24 (PNJ « objet »).
@@ -284,7 +291,8 @@ func test_library_loads_without_error() -> void:
 		&"route_2_item_1", &"route_2_item_2", &"route_2_item_3", &"route_2_item_4",
 		&"route_2_north_item_1", &"route_3_entered", &"route_3_guard", &"route_3_hidden_1",
 		&"route_3_item_1", &"route_3_item_2", &"route_3_item_3", &"route_4_item_1",
-		&"route_4_reached", &"starter_chosen", &"underground_hidden_1",
+		&"route_4_reached", &"route_5_arrival", &"route_5_gate_rule", &"route_5_hidden_1",
+		&"route_5_item_1", &"starter_chosen", &"underground_hidden_1",
 		&"viridian_arrival", &"viridian_forest_item_1", &"viridian_forest_item_2",
 		&"viridian_forest_item_3", &"viridian_forest_item_4", &"viridian_forest_item_5",
 		&"viridian_forest_item_6"]))
@@ -400,6 +408,7 @@ func test_only_world_items_are_found_items() -> void:
 		"route_2_item_3:poke_ball", "route_2_item_4:potion", "route_2_north_item_1:potion",
 		"route_3_hidden_1:awakening", "route_3_item_1:poke_ball", "route_3_item_2:potion",
 		"route_3_item_3:paralyze_heal", "route_4_item_1:poke_ball",
+		"route_5_hidden_1:antidote", "route_5_item_1:super_potion",
 		"route_6_hidden_1:super_potion", "route_6_item_1:poke_ball",
 		"underground_hidden_1:full_restore",
 		"viridian_forest_item_1:antidote", "viridian_forest_item_2:poke_ball",

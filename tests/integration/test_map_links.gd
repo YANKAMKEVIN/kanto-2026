@@ -35,15 +35,15 @@ const MAP_IDS: Array[StringName] = [
 	&"route_6", &"route_6_underground_gate", &"vermilion_city", &"vermilion_center",
 	&"vermilion_mart", &"vermilion_fan_club", &"vermilion_fisher_house", &"vermilion_house_1",
 	&"vermilion_house_2",
+	# Jalon 15 (T13, T21) : la Route 5 (raccord réel avec Azuria) et ses trois intérieurs.
+	&"route_5", &"route_5_daycare", &"route_5_gate", &"route_5_underground_gate",
 ]
 ## Cartes construites par une autre tâche en parallèle (jalon 7 : la Route 22, T22 ; jalon 10 :
 ## Argenta, T11, pendant les intérieurs du T13) : un warp qui y mène est vérifié seulement si la
 ## carte existe déjà (sinon le test le signale).
 ## Jalon 12 : Route 3, sas (T8) et étages du Mont Sélénite (T9) sont tous construits.
-const PARALLEL_MAPS: Array[StringName] = [&"route_22",
-	# Jalon 15 (T18) : bâtiment d'entrée du souterrain côté Route 5, posé par le T13 en parallèle
-	# (EXCEPTION levée à son intégration : retirer ces deux lignes ; Route 6 intégrée au T14).
-	&"route_5_underground_gate"]
+## Jalon 15 : les bâtiments d'entrée du souterrain (T13, T14) sont intégrés.
+const PARALLEL_MAPS: Array[StringName] = [&"route_22"]
 const DIRECTIONS: Array[Vector2i] = [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]
 
 var _maps: Dictionary = {}
@@ -128,10 +128,11 @@ func test_every_coming_soon_warp_returns_to_a_walkable_spawn_of_its_own_map() ->
 			var back := map.get_spawn_cell(warp.target_spawn)
 			assert_false(map.get_grid().is_solid(back), "%s : retour praticable" % label)
 			assert_ne(warp.facing, Vector2i.ZERO, "%s : orientation au retour" % label)
-	# Jalon 14 T20b : le seul « à venir » est le sud d'Azuria (« ROUTE 5 », trois cases) ;
-	# la Route 5 arrive au J15. Jalon 15 (T14) : Route 11 (trois cases), Arène de Carmin (deux),
-	# S.S. Anne (deux) et Safrania (porte nord de la Route 6, une).
-	assert_eq(found, 11, "« ROUTE 5 » (3), « Route 11 » (3), Arène de Carmin (2), "
+	# Jalon 15 (T13, T21) : le sud d'Azuria mène à la vraie Route 5 ; reste l'ouverture
+	# nord du poste vers Safrania (2 cases, jamais atteinte). Jalon 15 (T14) : Route 11
+	# (trois cases), Arène de Carmin (deux), S.S. Anne (deux), Safrania (porte nord de la
+	# Route 6, une).
+	assert_eq(found, 10, "« SAFRANIA » (2), « Route 11 » (3), Arène de Carmin (2), "
 		+ "S.S. Anne (2), Safrania (1)")
 
 
