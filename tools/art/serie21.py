@@ -300,6 +300,12 @@ RETENUS: dict[str, str] = {
 	"DOS_RAFFLESIA": "DOS_RAFFLESIA_r2", "DOS_EMPIFLOR": "DOS_EMPIFLOR_r3", "DOS_OSSELAIT": "DOS_OSSELAIT_r2",
 	"PNJ_ERIKA": "PNJ_ERIKA_NE_r1", "PNJ_ERIKA_ATTENTE": "ERIKA_ATTENTE_r1",
 	"PNJ_GIOVANNI": "PNJ_GIOVANNI_NE_r1", "PNJ_GIOVANNI_ATTENTE": "GIOVANNI_ATTENTE_r1",
+	# Reprise du 2026-10-16 (quota revenu).
+	"DOS_AQUALI": "DOS_AQUALI_r3", "DOS_ARCANIN": "DOS_ARCANIN_r2", "DOS_FEUNARD": "DOS_FEUNARD_r3",
+	"PNJ_ROCKET_CIVIL": "PNJ_ROCKET_CIVIL_NE_r1", "PNJ_ROCKET_CIVIL_ATTENTE": "ROCKET_CIVIL_ATTENTE_r1",
+	"PNJ_INTELLO": "PNJ_INTELLO_NE_r1", "PNJ_INTELLO_ATTENTE": "INTELLO_ATTENTE_r1",
+	"PNJ_BEAUTE": "PNJ_BEAUTE_NE_r1", "PNJ_BEAUTE_ATTENTE": "BEAUTE_ATTENTE_r1",
+	"PNJ_TOPDRESSEUSE": "PNJ_TOPDRESSEUSE_NE_r1", "PNJ_TOPDRESSEUSE_ATTENTE": "TOPDRESSEUSE_ATTENTE_r1",
 }
 RETENUS_DECOR: dict[str, str] = {"URBAINE": "COMBAT_DECOR_URBAINE_r1", "SERRE": "COMBAT_DECOR_SERRE_r1",
 	"REPAIRE": "COMBAT_DECOR_REPAIRE_r1"}
@@ -383,7 +389,28 @@ def images() -> list[dict]:
 			liste.append({"nom": f"{ident}_{cote}", "fichier": PROMPTS_DECOR / f"COMBAT_DECOR_TUILE_{cle}_r1.txt",
 				"texte": TUILE.format(quoi=d["tuile"]), "jointes": [str(ART / f"{ident}_crop{cote}.png")],
 				"priorite": 3, "repli": False})
+	# Compagnon d'Évoli (si budget) : planche 4 × 4 du monde, gabarit de serie14_pokemon.
+	liste.append({"nom": "POKE_EVOLI_NE_r1", "fichier": PROMPTS / "POKE_EVOLI_NE_r1.txt",
+		"texte": _prompt_compagnon_evoli(), "jointes": [str(HEROS), str(PRINCIPAL / "POKE_RATTATA_P2_r1.png")],
+		"priorite": 5, "repli": False})
 	return liste
+
+
+## Compagnon d'Évoli : hauteur en jeu par défaut 56 px (règle 4 ; Rattata 56, Miaouss 64).
+EVOLI_HAUTEUR = 56
+
+
+def _prompt_compagnon_evoli() -> str:
+	import serie14_pokemon as s14  # noqa: E402
+	entree = ("POKE_EVOLI", EVOLI_HAUTEUR, "POKE_RATTATA_P2_r1.png",
+		"petit mammifère quadrupède brun-roux chaud, fidèle à son design officiel : grande collerette "
+		"de fourrure crème duveteuse autour du cou, très grandes oreilles pointues brunes dressées, "
+		"grands yeux bruns, petit museau, queue touffue et large, brune avec le bout crème, relevée en "
+		"panache. Allure curieuse et affectueuse.",
+		"trotte à quatre pattes en 4 images, petits pas légers, oreilles et queue qui rebondissent", False)
+	if not any(e[0] == "POKE_EVOLI" for e in s14.SERIE):
+		s14.SERIE.append(entree)
+	return s14.prompt("POKE_EVOLI")
 
 
 def prompts() -> None:
@@ -502,6 +529,10 @@ def detourer() -> None:
 			subprocess.run([sys.executable, str(ICI / "decouper_attente.py"), str(ART / f"{attente}.png"),
 				str(planche), str(SORTIE / f"{court}_idle_sheet.png")], check=True)
 		print("pnj", ident, marche, attente)
+	if RETENUS.get("POKE_EVOLI"):
+		subprocess.run([sys.executable, str(ICI / "decouper_perso.py"), str(ART / f"{RETENUS['POKE_EVOLI']}.png"),
+			str(SORTIE / "evoli_sheet.png"), "--hauteur", str(EVOLI_HAUTEUR)], check=True)
+		print("compagnon evoli", RETENUS["POKE_EVOLI"])
 
 
 # --- Planches de contact --------------------------------------------------------------
@@ -590,6 +621,9 @@ def contact_pnj(sortie: Path) -> None:
 		court = ident.removeprefix("PNJ_").lower()
 		if (SORTIE / f"{court}_sheet.png").exists():
 			lignes.append((court, SORTIE / f"{court}_sheet.png", SORTIE / f"{court}_idle_sheet.png"))
+	if (SORTIE / "evoli_sheet.png").exists():
+		lignes += [("rattata (repère)", RACINE / "assets/sprites/pokemon/painted/rattata_sheet.png", Path("-")),
+			("evoli (compagnon)", SORTIE / "evoli_sheet.png", Path("-"))]
 	case = 96
 	larg, haut = 9 * case, 2 * case
 	toile = Image.new("RGBA", (larg * 2, haut * ((len(lignes) + 1) // 2)), (96, 140, 70, 255))

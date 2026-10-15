@@ -106,8 +106,8 @@ aucun combat sauvage (dossier §4).
 
 ## 2. Génération (T3) — 2026-10-15
 
-**25 appels Codex** (budget atteint ; la limite d'usage de l'abonnement est tombée sur les trois
-derniers, « try again at Oct 16th, 2026 12:34 AM »). Toutes les images produites ont une vraie
+**45 appels Codex** en deux passes : 25 le 2026-10-15 (la limite d'usage est tombée sur les trois
+derniers) et **20 le 2026-10-16** après le retour du quota (0 h 36). Toutes les images produites ont une vraie
 transparence (dos, PNJ).
 
 | Asset | Essais | Retenu | Remarques |
@@ -118,21 +118,31 @@ transparence (dos, PNJ).
 | Dos de Rafflesia | r1 **refusé**, r2 | **r2** | presque de face sans visage (pétales, pieds) : lisible, peu « de dos » |
 | Dos d'Empiflor | r1, r2 **refusés**, r3 (sans image) | **r3** | urne, liane, feuilles ; vert-jaune plus pâle que l'artwork, bord de la bouche visible |
 | Dos d'Osselait | r2 (direct, sans nom) | **r2** | crâne blanc, os en main ; bon |
-| Dos de Pyroli | r2 **refusé**, r3 **échec (limite d'usage)** | — | à relancer (r3 sans image) |
-| Dos d'Aquali, de Voltali | r2 **échec (limite d'usage)** | — | à relancer |
+| Dos de Pyroli | r2, r3, r1 **refusés** (16/10) | — | **bloqué** : repli = Kevin colle `DOS_PYROLI_r3.txt` dans l'app ChatGPT |
+| Dos de Voltali | r2, r3, r1 **refusés** (16/10) | — | **bloqué** : même repli (`DOS_VOLTALI_r3.txt`) |
+| Dos d'Aquali | r2 **refusé**, r3 (sans image) | **r3** | collerette, oreilles-nageoires, queue de sirène ; fidèle |
+| Dos d'Arcanin | r2 | **r2** | crinière et touffes crème, rayures noires ; bon |
+| Dos de Feunard | r2 **refusé**, r3 (sans image) | **r3** | neuf queues crème à pointes orange ; corps plus hirsute que l'artwork |
+| Rocket en civil marche + attente | r1, r1 | **r1** | costume et feutre noirs, lunettes, cravate rouge ; bras croisés à l'attente |
+| Intello marche + attente | r1, r1 | **r1** | lunettes rondes, nœud papillon, carnet ; carnet ouvert à l'attente |
+| Beauté marche + attente | r1, r1 | **r1** | robe rose pâle, sac blanc |
+| Topdresseuse marche + attente | r1 ; attente r1 refusée puis r1 | **r1** | veste et jupe bleu marine, queue de cheval auburn |
+| Compagnon d'Évoli | `POKE_EVOLI_NE_r1` **refusé** | — | à relancer sans image (règle de Kevin) ou repli ChatGPT |
 | Erika marche + attente | r1, r1 | **r1** | fidèle à la tenue ; **allure très jeune** (chibi du jeu, sans signe d'âge) |
 | Giovanni marche + attente | r1, r1 | **r1** | costume brique, pastille rouge, regard froid ; mains dans le dos à l'attente |
 | Décor `celadon_gym_serre` | r1 + TL / TR | **r1** | recalage 0,891 / 0,901 ; verrière, haies, bassin à droite ; lumière **plus dorée** que « verte filtrée » |
 | Décor `route_7_8_urbaine` | r1 + TL / TR | **r1** | 0,907 / 0,920 ; pavés, haies, réverbères, toits lointains, golden hour |
 | Décor `rocket_hideout_repaire` | r1 + TL / TR | **r1** | 0,900 / 0,861 ; béton, piliers, porte d'acier, caisses, néons blancs ; aucun R |
 
-**Refus de Codex** : 5 (Caninos r1, Empiflor r1 et r2, Rafflesia r1, Pyroli r2), tous en
-« modération en sortie » ; le nom de l'espèce suffit souvent à déclencher le refus (r1), parfois
+**Refus de Codex** : 5 le 15/10 (Caninos r1, Empiflor r1 et r2, Rafflesia r1, Pyroli r2) et 10 le 16/10
+(Aquali r2, Voltali r1–r3, Pyroli r1 et r3, Feunard r2, attente de la Topdresseuse une fois,
+compagnon d'Évoli r1), tous en « modération en sortie » ; **Voltali et Pyroli refusés dans les trois
+variantes** ; le nom de l'espèce suffit souvent à déclencher le refus (r1), parfois
 l'image jointe (Empiflor). Ordre conseillé pour la suite : **r2 directement**, puis r3.
 
-**Sorties préparées** (`build/art/serie21/`) : `dos_ia_133`, `_058`, `_037`, `_071`, `_045`, `_104`
-(1024²) ; `erika_sheet.png` + `erika_idle_sheet.png`, `giovanni_sheet.png` +
-`giovanni_idle_sheet.png` (128 px, `decouper_perso.py` / `decouper_attente.py`) ;
+**Sorties préparées** (`build/art/serie21/`) : `dos_ia_133`, `_058`, `_037`, `_071`, `_045`, `_104`,
+`_059`, `_038`, `_134` (1024²) ; `<pnj>_sheet.png` + `<pnj>_idle_sheet.png` pour `erika`, `giovanni`,
+`rocket_civil`, `intello`, `beaute`, `topdresseuse` (128 px, `decouper_perso.py` / `decouper_attente.py`) ;
 `route_7_8_urbaine_back`, `celadon_gym_serre_back`, `rocket_hideout_repaire_back` (`.png` et `.webp`,
 2340 × 1080 ; 948 / 802 / 360 Ko).
 
@@ -147,12 +157,13 @@ l'image jointe (Empiflor). Ordre conseillé pour la suite : **r2 directement**, 
 - `battle_proto/dos_ia_NNN.png` pour les dos ; looks `erika` → `erika`, `giovanni` → `giovanni`
   dans `build_character_frames.gd` (en fin).
 
-## 4. Reste à produire (budget ≈ 15 appels)
+## 4. Reste à produire
 
-1. Dos d'Aquali, Voltali, Pyroli (r2, sinon r3), Arcanin, Feunard (r2) : 5 à 8 appels.
-2. Rocket en civil, Intello (marche + attente) : 4 appels ; Beauté, Topdresseuse : 4 appels.
-3. Compagnon d'Évoli (si budget) : 1 à 2 appels.
-4. Reste du kit §1.4 (décors du monde, intérieurs, icônes) : série 21 bis.
+1. **Dos de Voltali et de Pyroli** : refusés par Codex dans les trois variantes (avec nom, sans nom,
+   sans image). Repli (mémoire « Codex refuse ») : Kevin colle `tools/art/prompts/serie21/DOS_VOLTALI_r3.txt`
+   et `DOS_PYROLI_r3.txt` dans l'app ChatGPT ; sinon dos pixel provisoire (T7) en attendant.
+2. **Compagnon d'Évoli** (si budget) : r1 refusé ; prochain essai sans images jointes, puis repli ChatGPT.
+3. Reste du kit §1.4 (décors du monde, intérieurs, icônes) : série 21 bis, **en attente**.
 
 Commandes : `python3 tools/art/serie21.py --commandes` (prompts déjà écrits).
 
@@ -161,7 +172,7 @@ Commandes : `python3 tools/art/serie21.py --commandes` (prompts déjà écrits).
 - `build/art/SERIE21_CONTACT_COMBAT_v1.png` : chaque dos retenu face à l'artwork officiel de la même
   espèce, aux règles de `BattleLayout` (pieds, présence, loi de taille, tailles RB), sur le décor de
   sa zone ; écran 2340 × 1080 réduit de moitié.
-- `build/art/SERIE21_CONTACT_PNJ_v1_1x.png` (et `_2x`) : Erika et Giovanni (4 directions de marche
+- `build/art/SERIE21_CONTACT_PNJ_v1_1x.png` (et `_2x`) : les six PNJ nouveaux (4 directions de marche
   puis 4 d'attente) à l'échelle du jeu (1 case = 96 px) à côté du héros, d'Ondine et du Sbire.
 - `build/art/SERIE21_CONTACT_DECORS_v1.png` : les trois décors avec Évoli de dos et de face.
 - `build/art/J20_KIT_v1.png` : faces officielles des 16 espèces et nature du dos prévue ; PNJ
@@ -177,4 +188,6 @@ Commandes : `python3 tools/art/serie21.py --commandes` (prompts déjà écrits).
    (T10) ou r2 ?
 4. **Giovanni** à 128 px comme tout adulte (le prompt le voulait un peu plus grand) : garder, ou
    découper à ≈ 136 px ?
-5. **Un seul décor** pour les Routes 7 et 8, et le repaire partagé avec le Casino [D].
+5. **Feunard** plus hirsute que l'artwork ; **Topdresseuse** et Beauté au gabarit chibi des
+   Dresseuses (même remarque qu'Erika).
+6. **Un seul décor** pour les Routes 7 et 8, et le repaire partagé avec le Casino [D].

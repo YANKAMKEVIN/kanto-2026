@@ -262,8 +262,9 @@ fait foi. Fiche `docs/design/fiches-assets/serie-<n>-celadopole.md`, outil `tool
 
 **T2 + T3 (lot 20.0a, 2026-10-15)** : série **21**, fiche `docs/design/fiches-assets/serie-21-celadopole.md`,
 outil `tools/art/serie21.py` ; périmètre espèces, personnages, fonds de combat (le reste du kit : série 21 bis).
-Produits, à valider par Kevin : 6 dos peints provisoires (Évoli, Caninos, Goupix, Empiflor, Rafflesia, Osselait),
-Erika et Giovanni (marche + attente), décors `route_7_8_urbaine`, `celadon_gym_serre`, `rocket_hideout_repaire`.
+Produits, à valider par Kevin : 9 dos peints provisoires (Évoli, Caninos, Goupix, Empiflor, Rafflesia, Osselait,
+Arcanin, Feunard, Aquali ; Voltali et Pyroli refusés par Codex), Erika, Giovanni, Rocket en civil, Intello, Beauté,
+Topdresseuse (marche + attente), décors `route_7_8_urbaine`, `celadon_gym_serre`, `rocket_hideout_repaire`.
 
 ---
 
