@@ -31,6 +31,7 @@ import math
 import re
 from pathlib import Path
 
+import numpy as np
 from PIL import Image, ImageChops, ImageDraw, ImageEnhance, ImageFilter
 
 RACINE = Path(__file__).resolve().parents[2]
@@ -222,6 +223,21 @@ def _taches(image: Image.Image, reduction: int = 4, part_min: float = 0.02
     return taches
 
 
+def nettoyer_halos(image: Image.Image, coeur: int = 235, portee: int = 4, bas: int = 170
+                   ) -> Image.Image:
+    """Retire le halo lumineux laissé par certains fonds (série 17) : on garde l'alpha à moins de
+    `portee` px d'un pixel presque opaque (≥ `coeur`), et ailleurs seulement ce qui dépasse `bas`.
+    Les bords francs de l'objet (lisse sur 1-2 px) ne bougent pas."""
+    alpha = image.getchannel("A")
+    proche = np.asarray(alpha.point(lambda v: 255 if v >= coeur else 0)
+                        .filter(ImageFilter.MaxFilter(2 * portee + 1))) > 0
+    a = np.asarray(alpha).astype(np.uint8)
+    sortie = np.where(proche | (a >= bas), a, 0).astype(np.uint8)
+    image = image.copy()
+    image.putalpha(Image.fromarray(sortie))
+    return image
+
+
 def recolorer(image: Image.Image, reglages: dict) -> Image.Image:
     """Variante de couleur (TSV) : teinte décalée, valeur relevée par un gamma, saturation
     multipliée puis réduite dans les hautes lumières (`lumieres` = [début, fin, force]).
@@ -317,6 +333,8 @@ class Preparateur:
     def objets(self) -> None:
         for e in self.m["objets"]:
             image = _recadrer(Image.open(self.source / e["source"]).convert("RGBA"), e)
+            if e.get("nettoyer"):
+                image = nettoyer_halos(image)
             image = _mettre_a_taille(_silhouette(image), e["axe"], e["cases"], self.case)
             if "alpha" in e or "flou_bord" in e:
                 image = adoucir(image, e.get("alpha", 1.0), e.get("flou_bord", 0))
@@ -366,8 +384,18 @@ class Preparateur:
         Ombre de contact préparée, jamais d'ombre portée (mobilier)."""
         for planche in self.m.get("planches_objets", []):
             image = Image.open(self.source / planche["source"]).convert("RGBA")
+            if planche.get("nettoyer"):
+                image = nettoyer_halos(image)
             colonnes, lignes = planche["colonnes"], planche["lignes"]
-            taches = _taches(image)
+            if "boites" in planche:
+                # Découpe explicite (éléments trop proches pour être séparés par `_taches`).
+                taches = []
+                for boite in planche["boites"]:
+                    masque = Image.new("L", image.size, 0)
+                    masque.paste(255, tuple(boite))
+                    taches.append((tuple(boite), masque))
+            else:
+                taches = _taches(image)
             # Nombre d'éléments = celui des identifiants (une planche 3 × 2 peut n'en porter
             # que 5 : cellule vide, série 15).
             if len(taches) != len(planche["ids"]):
@@ -437,6 +465,8 @@ class Preparateur:
                 image = ImageEnhance.Color(image).enhance(e["couleur"])
             if e.get("raccord"):
                 image = raccorder(image, e["raccord"])
+            if e.get("rotation"):  # quarts de tour (platelage des pontons nord-sud, série 17)
+                image = image.rotate(e["rotation"], expand=True)
             _ecrire(image, self._sortie(e["sortie"]))
             self.catalogue["images"][e["id"]] = {"fichier": self._res(e["sortie"]),
                                                  "taille": list(image.size)}

@@ -127,6 +127,11 @@ const LOOKS: Dictionary = {
 	"leo_humain": [CHARACTERS_DIR, "bill", ""],
 	# J15 T10 : Miaouss (compagnon), sans planche d'attente (colonne 0 de la marche).
 	"miaouss": [POKEMON_DIR, "meowth", ""],
+	# J15 T11 (série 17, Carmin-sur-Mer) : marin, docker, président du Fan Club, 128 px, avec leur
+	# planche d'attente. Le gardien de la Pension est `old_man` (décision du 2026-10-14).
+	"marin": [CHARACTERS_DIR, "sailor", ""],
+	"docker": [CHARACTERS_DIR, "docker", ""],
+	"president_fan_club": [CHARACTERS_DIR, "fan_club_chairman", ""],
 }
 ## Pokémon fixes (genre « Pokémon fixe », jalon 9 §2.8.5) : feuille 6 × 1 du catalogue
 ## (« personnages ») → identifiant de données. Ils ne marchent jamais.
