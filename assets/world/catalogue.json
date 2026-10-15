@@ -7638,10 +7638,10 @@
   "miaouss": {
    "fichier": "res://assets/sprites/pokemon/painted/miaouss_sheet.png",
    "cellule": [
-    47,
-    58
+    53,
+    66
    ],
-   "hauteur": 56,
+   "hauteur": 64,
    "colonnes": 4,
    "lignes": 4,
    "ordre_lignes": [

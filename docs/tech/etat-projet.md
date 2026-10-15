@@ -34,6 +34,7 @@ QA mobile, S21 (`RFCR40827ZZ`), APK debug de `jalon-15`, départs de débogage (
 - **Tests** : `tests/integration/test_route_6_trainers.gd` (2), `test_vermilion_life.gd` (5), `test_companion_j15.gd` (4), `tests/unit/test_j15_qa_starts.gd` (7) ; ajouts à `test_route_5_life` (+3), `test_hidden_items` (+1, joncs), `test_objective_library` (+1, ordre). `tools/test.sh` : **4 965 / 4 965** (250 761 assertions), import sans erreur.
 - **Captures relues** (Mac, 2340 × 1080, `tools/capture_companion_j15.gd`, `build/captures/j15_t20/`) : `souterrain_galerie`, `souterrain_renflement`, `carmin_rue`, `carmin_quai`, `route_5`, `route_6` — Miaouss net derrière le héros, caméra bornée, tri en profondeur correct.
 - **À valider sur S24** : taille de Miaouss compagnon (petit à côté du héros : à juger en mouvement), lisibilité du souterrain, sélecteur de la Pension sur la vraie carte, ordre des objectifs.
+- **2026-10-16 : Miaouss compagnon agrandi à 64 px de haut** (décision de Kevin ; branche `j15-miaouss-64` depuis `jalon-15`, à fusionner) : planche redécoupée depuis le brut `POKE_MIAOUSS_NE_r2.png` (cellule 53 × 66, était 47 × 58 à 56 px), `meowth_frames.tres` régénéré, `manifeste.json`, `serie14_pokemon.py` et `catalogue.json` à 64 ; `companions.json` ne déclare pas de taille. Capture `tools/capture_miaouss_64.gd` → `build/captures/j15_miaouss_64/` (Miaouss + Reptincel + héros). À rejuger sur S21 en marche.
 
 ## J15 intégration T13 + T21 (2026-10-15, branche `j15-integ-t14`, après la fusion du T14, non fusionnée, rien poussé)
 

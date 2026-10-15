@@ -2261,8 +2261,8 @@
    "id": "miaouss",
    "source": "POKE_MIAOUSS_NE_r2.png",
    "sortie": "assets/sprites/pokemon/painted/miaouss_sheet.png",
-   "hauteur": 56,
-   "note": "J15 T10 ; r1 refusee par Codex avec ancres, r2 = prompt seul ; hauteur 56 = Rattata (defaut)"
+   "hauteur": 64,
+   "note": "J15 T10 ; r1 refusee par Codex avec ancres, r2 = prompt seul ; hauteur 64 (decision de Kevin 2026-10-16 : 56 = Rattata trop petit en marche sur S21)"
   }
  ],
  "heros_images": [

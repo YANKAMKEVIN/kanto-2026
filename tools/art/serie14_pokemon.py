@@ -102,7 +102,7 @@ SERIE = [
 		"bec pointu rose pâle, crête de plumes rouges sur la tête, poitrail crème, grandes ailes "
 		"brunes bordées de rouille, queue rouge. Allure féroce.",
 		"marche en 4 images, longues enjambées d'oiseau, cou qui avance, ailes repliées", False),
-	("POKE_MIAOUSS", 56, RATTATA,
+	("POKE_MIAOUSS", 64, RATTATA,
 		"Miaouss, de Pokémon Rouge/Bleu, fidèle à son design officiel : petit chat crème beige "
 		"debout sur ses quatre pattes, museau clair, grandes oreilles pointues brun foncé "
 		"(l'intérieur et le bout), de longues moustaches, une grande pièce ovale dorée sur le "
