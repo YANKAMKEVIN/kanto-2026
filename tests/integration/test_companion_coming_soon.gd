@@ -7,9 +7,11 @@ extends GutTest
 ## derrière le joueur au plus tard au premier pas qui libère une case (règle J11).
 ## Vérifié aux raccords ouest et est du bord sud d'Azuria (jalon 14 T20b : « ROUTE 5 — À venir »,
 ## couloir de 3 cases, spawns `from_route_5_w|c|e`) ; jusqu'au T15 du J14 c'était le bord est de
-## la Route 24 (« ROUTE 25 »).
+## la Route 24 (« ROUTE 25 »). Depuis le J15 T21 (vraie Route 5), ce bord est remis « à venir »
+## dans la carte chargée seulement (`tests/helpers/coming_soon_gate.gd`).
 
 const MemoryFs := preload("res://tests/helpers/memory_file_system.gd")
+const ComingSoonGate := preload("res://tests/helpers/coming_soon_gate.gd")
 const FixedClock := preload("res://tests/helpers/fixed_clock.gd")
 const SAVE_PATH := "user://test_companion_coming_soon_save.json"
 const FADE := 0.05
@@ -64,6 +66,7 @@ func _check_gate(spawn: StringName, visits: int = 1) -> void:
 	_boot.get_coming_soon_screen().fade_duration = 0.05
 	await wait_process_frames(2)
 	await wait_until(func() -> bool: return _boot.is_stable(), TIMEOUT)
+	assert_eq(ComingSoonGate.apply(_boot.get_map()), 3, "bord « à venir » de test")
 	var companion := _boot.get_companion_controller()
 	var player := _boot.get_player()
 	GameState.flags.set_flag(&"starter_chosen")

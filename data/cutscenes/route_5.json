@@ -1,0 +1,47 @@
+{
+	"route_5_arrival": {
+		"variants": [
+			{
+				"unless": ["route_5_entered"],
+				"steps": [
+					{ "set": ["route_5_entered"] }
+				]
+			}
+		]
+	},
+	"route_5_item_1": {
+		"variants": [
+			{
+				"unless": ["got_route_5_item_1"],
+				"steps": [
+					{ "despawn": "route_5_item_1" },
+					{ "give": "super_potion", "count": 1, "found": true },
+					{ "set": ["got_route_5_item_1"] }
+				]
+			}
+		]
+	},
+	"route_5_hidden_1": {
+		"variants": [
+			{
+				"unless": ["got_route_5_hidden_1"],
+				"steps": [
+					{ "give": "antidote", "count": 1, "found": true },
+					{ "set": ["got_route_5_hidden_1"] }
+				]
+			}
+		]
+	},
+	"route_5_gate_rule": {
+		"variants": [
+			{
+				"steps": [
+					{ "face": "route_5_guard", "to": "player" },
+					{ "face": "player", "to": "route_5_guard" },
+					{ "dialogue": "route_5_guard" },
+					{ "move": "player", "path": ["down"], "keep_facing": true }
+				]
+			}
+		]
+	}
+}

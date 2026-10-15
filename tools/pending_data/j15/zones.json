@@ -1,18 +1,6 @@
 {
-	"_comment": "Zones de la Route 5, du souterrain et de la Route 6 (jalon-15.md §2.7.9), textes de l'annexe A (A.2) validés par Kevin le 2026-10-14. À recopier dans data/world/zones.json avec les cartes (T13, T14), avant vermilion_city ; maps = identifiants prévus au §2.1 ; ajouter le service daycare au catalogue et les rectangles de kanto_placeholder_areas.json (underground_path : voir etat-projet.md). test_annexe_a_texts lit ce fichier tant qu'il existe.",
-	"services": {
-		"daycare": { "name": "Pension" }
-	},
+	"_comment": "Zones du souterrain et de la Route 6 (jalon-15.md §2.7.9), textes de l'annexe A (A.2) validés par Kevin le 2026-10-14. À recopier dans data/world/zones.json avec les cartes (T14, T18), avant vermilion_city ; maps = identifiants prévus au §2.1 ; ajouter les rectangles de kanto_placeholder_areas.json (underground_path : voir etat-projet.md). La Route 5 (et le service daycare) y est depuis le T13. test_annexe_a_texts lit ce fichier tant qu'il existe.",
 	"zones": {
-		"route_5": {
-			"name": "Route 5", "kind": "route",
-			"maps": ["route_5", "route_5_daycare", "route_5_gate", "route_5_underground_gate"],
-			"services": [
-				{ "id": "daycare", "found_on": "route_5_daycare" }
-			],
-			"subtitle": "Azuria — Safrania",
-			"description": "Une route verdoyante entre les jardins, au sud d'Azuria. On y croise la Pension, puis l'entrée d'un vieux passage."
-		},
 		"underground_path": {
 			"name": "Passage souterrain", "kind": "place", "maps": ["underground_path"],
 			"subtitle": "Route 5 — Route 6",

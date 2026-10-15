@@ -148,7 +148,8 @@ def verifier_route_5(chemin: Path) -> bool:
 	# 1. Raccord nord, carte fermée.
 	entree = [(x, 0) for x in range(plan.width) if m.libre((x, 0))]
 	warps = sorted(c for c in pos["warp_nord"].cells)
-	spawns = sorted(c for c in pos["from_cerulean"].cells)
+	# Trois arrivées `from_cerulean_w|c|e` (une par case, cibles des warps Route5W|C|E d'Azuria).
+	spawns = sorted(c for k in ("w", "c", "e") for c in pos[f"from_cerulean_{k}"].cells)
 	critere(entree == warps == spawns == [(19, 0), (20, 0), (21, 0)],
 		f"raccord nord : {entree} praticables = warps = spawns (3 cases)")
 	critere(_bords_libres(plan, m) == entree, "carte fermée : seul le raccord nord touche le bord")

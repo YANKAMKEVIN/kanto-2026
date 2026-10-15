@@ -1,9 +1,11 @@
 extends GutTest
 ## Destination provisoire (jalon 5, dossier-07 §12) avec la vraie scène Boot, l'autoload
-## SceneRouter (fondus raccourcis) et un [SaveSystem] en mémoire. Depuis le jalon 14 (T20b) :
-## le raccord sud d'Azuria (PUSH ↓, (31..33, 40)) mène à « ROUTE 5 — À venir » (build de
-## développement, libellé en majuscules), puis ramène le joueur sur la case de sortie, tourné
-## vers le nord. (Jalons 12 et 13 : bord est de la Route 24, « ROUTE 25 », devenu un vrai
+## SceneRouter (fondus raccourcis) et un [SaveSystem] en mémoire. Jalon 14 (T20b) : le raccord
+## sud d'Azuria (PUSH ↓, (31..33, 40)) menait à « ROUTE 5 — À venir » (build de développement,
+## libellé en majuscules), puis ramenait le joueur sur la case de sortie, tourné vers le nord.
+## Jalon 15 (T21) : la vraie Route 5 l'a remplacé ; aucun bord extérieur n'est plus « à venir »
+## jusqu'à la Route 11 (T14) : le test remet ce bord dans son état du J14 dans la carte chargée
+## (`tests/helpers/coming_soon_gate.gd`). (Jalons 12 et 13 : bord est de la Route 24, « ROUTE 25 », devenu un vrai
 ## raccord au T15 du J14.) Rien n'est sauvegardé pendant l'écran, aucun titre de zone, aucune
 ## nouvelle carte découverte ; en release, la sortie est inerte.
 ## (Jalon 5 : bord nord de la Route 1 ; jalon 7 : sortie nord de Jadielle ; jalon 8 : porte du
@@ -11,6 +13,7 @@ extends GutTest
 ## nord ; jalon 10 : sortie est d'Argenta, devenue le passage vers la Route 3.)
 
 const MemoryFs := preload("res://tests/helpers/memory_file_system.gd")
+const ComingSoonGate := preload("res://tests/helpers/coming_soon_gate.gd")
 const FixedClock := preload("res://tests/helpers/fixed_clock.gd")
 const BOOT_SCENE := preload("res://game/boot.tscn")
 const SAVE_PATH := "user://test_coming_soon_save.json"
@@ -62,6 +65,7 @@ func _start_at_the_gate() -> void:
 	_boot.get_coming_soon_screen().hold_duration = HOLD
 	_boot.get_coming_soon_screen().fade_duration = 0.05
 	await wait_process_frames(3)
+	assert_eq(ComingSoonGate.apply(_boot.get_map()), 3, "bord « à venir » de test")
 
 
 func _writes() -> int:
@@ -102,7 +106,6 @@ func test_the_exit_shows_the_coming_soon_screen_then_returns_facing_north() -> v
 	assert_true(zones.is_empty(), "aucun titre de zone")
 	assert_false(_boot.get_hud().get_caption().is_showing())
 	assert_false(GameState.discovered_maps.has(&"route_5"), "aucune carte découverte")
-	assert_false(MapCatalog.has_map(&"route_5"), "la Route 5 n'existe pas encore (J15)")
 	assert_push_error_count(0)
 
 

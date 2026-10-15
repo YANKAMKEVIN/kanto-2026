@@ -24,6 +24,9 @@
 		"cerulean_gym",
 		"cerulean_bike_shop",
 		"cerulean_house",
-		"cerulean_burgled_house"
+		"cerulean_burgled_house",
+		"route_5_daycare",
+		"route_5_gate",
+		"route_5_underground_gate"
 	]
 }

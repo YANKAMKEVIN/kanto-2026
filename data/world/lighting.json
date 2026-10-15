@@ -113,6 +113,10 @@
 		"route_24": "golden_hour",
 		"route_25": "golden_hour",
 		"bill_house": "interior_warm",
-		"qa_daycare": "interior_warm"
+		"qa_daycare": "interior_warm",
+		"route_5": "golden_hour",
+		"route_5_daycare": "interior_warm",
+		"route_5_gate": "interior_warm",
+		"route_5_underground_gate": "interior_warm"
 	}
 }

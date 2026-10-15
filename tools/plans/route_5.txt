@@ -5,7 +5,8 @@
 # image. Contrôle : tools/art/plan_check_j15.py (profil verifier_route_5).
 #
 # 42 × 62 cases (enveloppe du dossier, §3.1) ; nord en haut ; x = colonne 0..41, y = rangée 0..61.
-# Raccord nord : (19..21, 0) ↔ Azuria (sortie sud du J14, spawn from_cerulean côté Azuria).
+# Raccord nord : (19..21, 0) ↔ Azuria (sortie sud du J14 : spawns from_route_5_w|c|e côté
+# Azuria, from_cerulean_w|c|e ici ; correction du 2026-10-15, J15 T13, géométrie inchangée).
 # Aucune sortie sud : la route se termine au carrefour (poste de garde + entrée du souterrain).
 # Angles droits uniquement ; chemins d'au moins 2 cases de large (compagnon du J11) : ici 3.
 #
@@ -113,7 +114,9 @@ FIN
 # attribut indice), jamais dessinée sur le plan joint à Codex (seulement en --annote).
 POSITIONS
 warp_nord           warp           19..21,0     libre   # PUSH ↑ → cerulean_city, raccord sud (J14)
-from_cerulean       spawn          19..21,0     libre   # arrivée d'Azuria, tournée ↓
+from_cerulean_w     spawn          19,0         libre   # arrivée d'Azuria (Route5W), tournée ↓
+from_cerulean_c     spawn          20,0         libre   # arrivée d'Azuria (Route5C), tournée ↓
+from_cerulean_e     spawn          21,0         libre   # arrivée d'Azuria (Route5E), tournée ↓
 pension_porte       warp           27,27        libre   # STEP_ON ↑ → pension (intérieur 15 × 10, gardien old_man)
 from_pension        spawn          27,28        libre   # sortie de la Pension, tournée ↓
 poste_porte         warp           34,44        libre   # STEP_ON ↑ → route_5_gate_safrania (poste 10 × 8, fermé)

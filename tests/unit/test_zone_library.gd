@@ -39,7 +39,8 @@ func _root_property(map_id: StringName, property: StringName) -> Variant:
 func test_real_data_loads_without_error() -> void:
 	assert_true(_zones.load_file(), "\n".join(_zones.get_errors()))
 	assert_eq(_zones.get_errors().size(), 0)
-	assert_eq(_zones.size(), 25, "Route 24 (jalon 13), Route 25 et Cap d'Azuria (jalon 14)")
+	assert_eq(_zones.size(), 26,
+		"Route 24 (jalon 13), Route 25 et Cap d'Azuria (jalon 14), Route 5 (jalon 15)")
 
 
 func test_every_map_belongs_to_exactly_one_zone() -> void:
@@ -159,8 +160,9 @@ func test_built_zones_have_their_map_texts() -> void:
 
 func test_service_catalog_and_the_services_of_viridian() -> void:
 	_zones.load_file()
-	assert_eq(_zones.get_service_ids(), [&"pokemon_center", &"poke_mart", &"gym"]
-		as Array[StringName])
+	assert_eq(_zones.get_service_ids(), [&"pokemon_center", &"poke_mart", &"gym", &"daycare"]
+		as Array[StringName], "jalon 15 T13 : la Pension")
+	assert_eq(_zones.service_name(&"daycare"), "Pension")
 	assert_eq(_zones.service_name(&"pokemon_center"), "Centre Pokémon")
 	assert_eq(_zones.service_name(&"poke_mart"), "Boutique")
 	assert_eq(_zones.service_name(&"gym"), "Arène")
@@ -170,12 +172,17 @@ func test_service_catalog_and_the_services_of_viridian() -> void:
 	# (test_pewter_data). Jalon 12 T8 : le Centre du Mont Sélénite (zone `mt_moon`).
 	# Jalon 13 T7 : Azuria.
 	for id: StringName in _zones.get_ids():
-		if not id in [&"viridian_city", &"pewter_city", &"mt_moon", &"cerulean_city"]:
+		if not id in [&"viridian_city", &"pewter_city", &"mt_moon", &"cerulean_city",
+				&"route_5"]:
 			assert_true(_zones.get_zone(id).services.is_empty(), "%s : aucun service" % id)
 	var mt_moon := _zones.get_zone(&"mt_moon").services
 	assert_eq(mt_moon.size(), 1, "Mont Sélénite : le Centre seul (sans Boutique)")
 	if mt_moon.size() == 1:
 		assert_eq([mt_moon[0].id, mt_moon[0].found_on], [&"pokemon_center", &"mt_moon_center"])
+	var route_5 := _zones.get_zone(&"route_5").services
+	assert_eq(route_5.size(), 1, "Route 5 : la Pension seule")
+	if route_5.size() == 1:
+		assert_eq([route_5[0].id, route_5[0].found_on], [&"daycare", &"route_5_daycare"])
 	var found: Dictionary = {}
 	for service: ZoneService in _zones.get_zone(&"viridian_city").services:
 		found[service.id] = service.found_on

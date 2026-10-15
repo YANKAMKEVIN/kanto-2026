@@ -1,0 +1,47 @@
+{
+	"route_5_sign": {
+		"pages": ["ROUTE 5\nAzuria ↔ Safrania"]
+	},
+	"route_5_daycare_sign": {
+		"pages": ["PENSION POKÉMON\nNous gardons votre Pokémon pendant votre voyage."]
+	},
+	"route_5_crossroads_sign": {
+		"pages": ["SAFRANIA →\nPASSAGE SOUTERRAIN ←"]
+	},
+	"route_5_underground_sign": {
+		"pages": ["PASSAGE SOUTERRAIN\nRoute 5 ↔ Route 6"]
+	},
+	"route_5_walker": {
+		"speaker": "Promeneuse",
+		"pages": [
+			"Le jardin de la Pension est le plus beau de la région. Les Pokémon y sont bien."
+		]
+	},
+	"route_5_traveler": {
+		"speaker": "Voyageur",
+		"pages": [
+			"Je voulais aller à Safrania, mais les gardes ne laissent passer personne.",
+			"Tant pis, je descends vers la mer."
+		]
+	},
+	"route_5_guard": {
+		"speaker": "Garde",
+		"variants": [
+			{
+				"unless": ["route_5_gate_warned"],
+				"set": ["route_5_gate_warned"],
+				"pages": [
+					"Halte ! La route de Safrania est fermée.",
+					"Ordre de la ville. Je n'en sais pas plus, désolé."
+				]
+			},
+			{
+				"pages": [
+					"Toujours fermé. Si tu vas vers Carmin-sur-Mer, prends le passage souterrain."
+				]
+			}
+		]
+	},
+	"route_5_item_1": { "cutscene": "route_5_item_1" },
+	"route_5_hidden_1": { "cutscene": "route_5_hidden_1" }
+}

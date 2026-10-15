@@ -5,7 +5,7 @@ extends GutTest
 ## - EXAMINER → toast standard seul (« Réveil ×1 » / « Ajouté au Sac »), aucune bulle, Sac + 1,
 ##   journal des objets trouvés, drapeau `got_<id>` ;
 ## - ensuite plus de cible, même après un rechargement de la partie.
-## Caches : Route 3 (T18), Route 24 nord (T22, Antidote). Le 1F et le B2F s'ajoutent au T21 / T25 ([constant CACHES]).
+## Caches : Route 3 (T18), Route 24 nord (T22, Antidote), Route 5 (J15 T13, Antidote du tronc). Le 1F et le B2F s'ajoutent au T21 / T25 ([constant CACHES]).
 
 const MemoryFs := preload("res://tests/helpers/memory_file_system.gd")
 const FixedClock := preload("res://tests/helpers/fixed_clock.gd")
@@ -19,6 +19,8 @@ const CACHES: Array = [
 		Vector2i(36, 18), &"awakening", ["Réveil ×1", "Ajouté au Sac"]],
 	[&"route_24", "res://tools/debug_start/route_24_north.json", &"north_land",
 		"route_24_antidote", Vector2i(16, 6), &"antidote", ["Antidote ×1", "Ajouté au Sac"]],
+	[&"route_5", "res://tools/debug_start/route_5.json", &"from_cerulean_c", "route_5_hidden_1",
+		Vector2i(16, 31), &"antidote", ["Antidote ×1", "Ajouté au Sac"]],
 ]
 const SIDES: Array[Vector2i] = [Vector2i.LEFT, Vector2i.RIGHT, Vector2i.DOWN]
 
@@ -152,3 +154,7 @@ func test_route_3_awakening_behind_the_pebble() -> void:
 
 func test_route_24_antidote_behind_the_stump() -> void:
 	await _check_cache(CACHES[1])
+
+
+func test_route_5_antidote_behind_the_trunk() -> void:
+	await _check_cache(CACHES[2])

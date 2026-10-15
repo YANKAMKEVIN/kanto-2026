@@ -29,6 +29,8 @@ const MAP_IDS: Array[StringName] = [
 	&"route_24",
 	# Jalon 14 (T14) : la Route 25 et la maison de Léo (raccord ouest vers la Route 24 au T15).
 	&"route_25", &"bill_house",
+	# Jalon 15 (T13, T21) : la Route 5 (raccord réel avec Azuria) et ses trois intérieurs.
+	&"route_5", &"route_5_daycare", &"route_5_gate", &"route_5_underground_gate",
 ]
 ## Cartes construites par une autre tâche en parallèle (jalon 7 : la Route 22, T22 ; jalon 10 :
 ## Argenta, T11, pendant les intérieurs du T13) : un warp qui y mène est vérifié seulement si la
@@ -119,9 +121,11 @@ func test_every_coming_soon_warp_returns_to_a_walkable_spawn_of_its_own_map() ->
 			var back := map.get_spawn_cell(warp.target_spawn)
 			assert_false(map.get_grid().is_solid(back), "%s : retour praticable" % label)
 			assert_ne(warp.facing, Vector2i.ZERO, "%s : orientation au retour" % label)
-	# Jalon 14 T20b : le seul « à venir » est le sud d'Azuria (« ROUTE 5 », trois cases) ;
-	# la Route 5 arrive au J15.
-	assert_eq(found, 3, "« ROUTE 5 — À venir » : trois cases du bord sud d'Azuria")
+	# Jalon 15 T13 / T21 : le sud d'Azuria mène à la vraie Route 5 ; restent l'ouverture nord du
+	# poste vers Safrania (2 cases, jamais atteinte) et, tant que le souterrain (T18) n'est pas
+	# construit, l'escalier du bâtiment d'entrée (2 cases).
+	var stairs := 0 if MapCatalog.has_map(&"underground_path") else 2
+	assert_eq(found, 2 + stairs, "« SAFRANIA » (2) et « PASSAGE SOUTERRAIN » (%d)" % stairs)
 
 
 ## Warp de [param map] qui ramène à [param origin] depuis [param arrival] : sur la case
