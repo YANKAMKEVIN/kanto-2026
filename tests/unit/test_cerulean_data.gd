@@ -224,15 +224,16 @@ func test_tm11_and_its_compatibilities() -> void:
 	assert_eq(items.get_tm(11), &"tm11")
 	assert_eq(_data.tm_move(11), &"bubble_beam")
 	# Table de Rouge/Bleu régénérée (tools/gen_tm_compatibility.py, 59 espèces avec le J12 ;
-	# 61 avec Miaouss et Persan du J15, compatibles).
+	# 61 avec Miaouss et Persan du J15, compatibles ; Osselait, Ossatueur et Léviator du J19).
 	var compatible: Array[StringName] = []
 	for id: StringName in _data.get_species_ids():
 		if _data.can_learn_tm(id, 11):
 			compatible.append(id)
 	assert_eq(compatible, [&"squirtle", &"wartortle", &"blastoise", &"rattata", &"raticate",
 		&"nidorina", &"nidoqueen", &"nidorino", &"nidoking", &"clefairy", &"clefable",
-		&"jigglypuff", &"wigglytuff", &"meowth", &"persian", &"shellder", &"horsea",
-		&"goldeen", &"staryu", &"starmie"] as Array[StringName])
+		&"jigglypuff", &"wigglytuff", &"meowth", &"persian", &"shellder", &"cubone",
+		&"marowak", &"horsea", &"goldeen", &"staryu", &"starmie", &"gyarados"]
+		as Array[StringName])
 	var squirtle := PokemonFactory.create(_data, &"squirtle", 20, GameRng.new(3))
 	assert_eq(TmTeach.check(squirtle, tm, _data), TmTeach.Check.COMPATIBLE)
 	var oddish := PokemonFactory.create(_data, &"oddish", 12, GameRng.new(3))

@@ -77,14 +77,20 @@ func test_real_data_loads_without_error() -> void:
 		&"paras", &"parasect",
 		# Jalon 15 (T12) : Miaouss et Persan (kanto_vermilion.json).
 		&"meowth", &"persian",
-		&"mankey", &"primeape", &"abra", &"kadabra", &"machop",
+		&"mankey", &"primeape",
+		# Jalon 19 (T3) : Caninos, Fantominus, Spectrum, Noeunoeuf, Osselait, Ossatueur, Léviator
+		# (kanto_tower.json).
+		&"growlithe",
+		&"abra", &"kadabra", &"machop",
 		&"bellsprout", &"weepinbell",
-		&"geodude", &"graveler", &"golem", &"shellder", &"onix", &"voltorb", &"koffing",
-		&"horsea", &"goldeen", &"staryu", &"starmie"] as Array[StringName])
-	assert_eq(_data.get_move_ids().size(), 103,
+		&"geodude", &"graveler", &"golem", &"shellder", &"gastly", &"haunter", &"onix",
+		&"voltorb", &"exeggcute", &"cubone", &"marowak", &"koffing",
+		&"horsea", &"goldeen", &"staryu", &"starmie", &"gyarados"] as Array[StringName])
+	assert_eq(_data.get_move_ids().size(), 114,
 		"47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10) + Patience (J11) "
 		+ "+ 21 du Mont Sélénite (jalon 12) + 8 du jalon 13 (les 5 du J12 qu'il reprenait : "
-		+ "entrées du J12) + 6 du Cap d'Azuria (jalon 14) + Jackpot (J15)")
+		+ "entrées du J12) + 6 du Cap d'Azuria (jalon 14) + Jackpot (J15) + 11 de la Tour "
+		+ "Pokémon (J19)")
 	assert_true(_data.has_move(&"struggle"))
 
 
@@ -151,6 +157,9 @@ func test_real_evolution_chains() -> void:
 		&"abra": [&"kadabra", 16],
 		# Carmin-sur-Mer (jalon 15, §2.7.1) : Rouge/Bleu.
 		&"meowth": [&"persian", 28],
+		# Tour Pokémon (jalon 19, §2.12) : Rouge/Bleu. Spectrum (échange, Ectoplasma absent),
+		# Caninos et Noeunoeuf (pierres absentes) n'en déclarent pas.
+		&"gastly": [&"haunter", 25], &"cubone": [&"marowak", 28],
 	}
 	for id: StringName in _data.get_species_ids():
 		var rules := _data.get_species(id).evolutions
@@ -222,12 +231,21 @@ func test_real_move_values() -> void:
 		[MoveEffect.Kind.STATUS, &"burn", 10])
 
 
+## Capacités du J19 nécessaires aux learnsets complets (plan jalon-19 §0.4 n° 1) dont la
+## description, hors du lot §15.7 du dossier 22, attend la relecture de Kevin : « draft ».
+## Retirer l'identifiant d'ici quand le texte est validé.
+const DRAFT_DESCRIPTIONS: Array[StringName] = [
+	&"dream_eater", &"bonemerang", &"roar", &"take_down", &"barrage", &"hyper_beam",
+]
+
+
 func test_every_real_move_has_a_validated_description() -> void:
 	_data.load_dir()
 	for id: StringName in _data.get_move_ids():
 		var move := _data.get_move(id)
 		assert_false(move.description.is_empty(), String(id))
-		assert_false(move.draft, "%s : description validé par Kevin le 2026-10-06" % id)
+		assert_eq(move.draft, DRAFT_DESCRIPTIONS.has(id),
+			"%s : description validée par Kevin (sauf brouillons listés)" % id)
 
 
 # --- Fixture valide ---------------------------------------------------------------------
@@ -414,6 +432,9 @@ func test_real_catch_rates_are_the_official_ones() -> void:
 		&"abra": 200, &"kadabra": 100, &"machop": 180,
 		# Jalon 15 (T12).
 		&"meowth": 255, &"persian": 90,
+		# Jalon 19 (T3, Tour Pokémon).
+		&"growlithe": 190, &"gastly": 190, &"haunter": 90, &"exeggcute": 90, &"cubone": 190,
+		&"marowak": 75, &"gyarados": 45,
 	}
 	assert_eq(_data.get_species_ids().size(), expected.size(), "toutes les espèces")
 	for id: StringName in _data.get_species_ids():
