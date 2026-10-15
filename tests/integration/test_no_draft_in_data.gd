@@ -5,6 +5,10 @@ extends GutTest
 ## fait échouer ce test : il doit être relu par Kevin, puis ce test (ou le texte) mis à jour.
 
 const DATA_DIR := "res://data"
+## Brouillons en attente de validation, nommés un par un (chemin relevé par [method _collect_drafts]).
+## Une fois validés, retirer leur « draft » et les sortir d'ici (le test vérifie qu'ils sont
+## encore en brouillon). Vide depuis la validation de l'annexe A du jalon 15 (2026-10-14).
+const PENDING_DRAFTS: Array[String] = []
 
 
 func test_data_has_json_files() -> void:
@@ -17,6 +21,9 @@ func test_no_draft_text_in_data() -> void:
 		var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(path))
 		assert_not_null(parsed, "%s : JSON valide" % path)
 		_collect_drafts(parsed, path.trim_prefix(DATA_DIR + "/"), drafts)
+	for pending: String in PENDING_DRAFTS:
+		assert_true(drafts.has(pending), "%s : plus en brouillon, à retirer de la liste" % pending)
+		drafts.erase(pending)
 	assert_eq(drafts, [] as Array[String], "textes provisoires à faire relire par Kevin")
 
 

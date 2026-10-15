@@ -10,6 +10,7 @@
 [ext_resource type="Script" path="res://game/ui/components/round_button_visual.gd" id="8_visual"]
 [ext_resource type="PackedScene" path="res://game/ui/components/champion_card.tscn" id="10_champion"]
 [ext_resource type="Texture2D" path="res://assets/ui/icons/menu/menu.svg" id="9_menu"]
+[ext_resource type="Script" path="res://game/ui/components/screen_flash.gd" id="11_flash"]
 
 [node name="ExplorationHud" type="CanvasLayer"]
 script = ExtResource("1_hud")
@@ -76,3 +77,15 @@ unique_name_in_owner = true
 
 [node name="InteractButton" parent="Root/CornerAnchor" instance=ExtResource("5_interact")]
 unique_name_in_owner = true
+
+[node name="ScreenFlash" type="ColorRect" parent="Root"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("11_flash")

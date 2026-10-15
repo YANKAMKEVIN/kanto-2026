@@ -1,0 +1,11 @@
+UI_OBJETS_J15_PLANCHE — NOUVELLE image pour l'interface (Sac) du jeu Kanto 2026, pas une capture d'écran.
+Les images jointes donnent la direction artistique et la forme des objets ; n'en reproduis ni la mise en page ni les textes.
+
+RENDU : illustration 2D peinte numériquement, dans le style d'un RPG Pokémon moderne « HD-2D peint » : formes simples et arrondies, contour fin et doux plus sombre que la couleur, aucun trait noir, volumes doux, couleurs chaudes et lumineuses, pinceau net. Ni pixel art, ni 3D, ni photo. Lumière douce de jour venant du haut à gauche.
+
+IMAGE : PLANCHE de DEUX icônes d'objets peintes pour le Sac, dans une image 1536 × 1024 divisée en quatre colonnes invisibles de 384 px : une icône CENTRÉE dans chacune des DEUX PREMIÈRES colonnes (x de 0 à 384, puis de 384 à 768), chacune de 260 px de large au plus et 260 px de haut au plus, avec au moins 60 px de marge vide de chaque côté ; les deux dernières colonnes restent VIDES (transparentes) ; dans le style EXACT de la planche jointe MENU_OBJETS_PLANCHE et de l'icône jointe de la Potion (même rendu, même angle de trois quarts, même lumière).
+1 (colonne 1) : la SUPER POTION, le MÊME flacon vaporisateur que la Potion jointe (même forme, même taille, même gâchette) mais au liquide et au corps VIOLET-MAGENTA, gâchette et bouchon crème.
+2 (colonne 2) : la GUÉRISON, le même flacon vaporisateur au corps JAUNE D'OR lumineux, gâchette et bouchon blancs, une fine bande verte autour du col : l'objet de soin le plus précieux.
+AUCUN halo, AUCUNE lueur, AUCUNE étincelle, AUCUN dégradé autour : chaque objet est net, avec seulement son contour fin, sur un fond entièrement transparent (canal alpha, aucune ombre).
+Format : PNG paysage 1536 × 1024, fond TRANSPARENT (canal alpha).
+Interdits de la série : texte, lettres, chiffres, logo, nom de navire, AUCUN emblème rond de type balle (ni cercle partagé en deux, ni médaillon à bande centrale) nulle part, animaux réels ou faune non-Pokémon (mouettes, oiseaux, poissons réels, crabes, insectes), Pikachu et tout Pokémon non demandé, personnage qui ressemble au héros (casquette rouge, t-shirt blanc, sac à dos jaune), élément effrayant.

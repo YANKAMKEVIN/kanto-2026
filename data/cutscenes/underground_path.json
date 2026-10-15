@@ -1,0 +1,22 @@
+{
+	"underground_hidden_1": {
+		"variants": [
+			{
+				"unless": ["got_underground_hidden_1"],
+				"steps": [
+					{
+						"dialogue": "underground_hidden_1_found"
+					},
+					{
+						"give": "full_restore",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": ["got_underground_hidden_1"]
+					}
+				]
+			}
+		]
+	}
+}

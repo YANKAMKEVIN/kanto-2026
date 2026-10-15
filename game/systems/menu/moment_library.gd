@@ -44,9 +44,12 @@ const BADGE: StringName = BadgeMoment.TYPE
 ## Fossile obtenu au Mont Sélénite (J12, dossier 15 §20 n° 30 ; détails : { "item": fossile },
 ## étape « moment » des scènes).
 const FOSSIL: StringName = &"fossil"
+## Léo redevenu humain (J14, dossier 17 §13 : `bill_restored`, texte n° 69 ; lieu = zone de la
+## carte du moment, « Cap d'Azuria »). Écrit une seule fois par l'étape de scène « moment ».
+const BILL_RESTORED: StringName = &"bill_restored"
 ## Ajouts en fin (types des jalons suivants après).
 const TYPES: Array[StringName] = [STARTER, RIVAL_BATTLE, FIRST_CAPTURE, ZONE_ARRIVAL, BADGE,
-	FOSSIL]
+	FOSSIL, BILL_RESTORED]
 ## Clé des détails d'un moment [constant FOSSIL] : l'objet obtenu (identifiant de [ItemLibrary]).
 const DETAIL_ITEM: String = "item"
 
@@ -69,6 +72,7 @@ const _MARKS: Dictionary[StringName, Array] = {
 	ZONE_ARRIVAL: [MARK_ZONE],
 	BADGE: [MARK_ZONE, MARK_BADGE, MARK_CITY, MARK_LEADER],
 	FOSSIL: [MARK_ZONE, MARK_FOSSIL],
+	BILL_RESTORED: [MARK_ZONE],
 }
 
 var _texts: Dictionary[StringName, MomentTextData] = {}

@@ -12,6 +12,8 @@ extends RefCounted
 ##   [method escape_target].
 ## - **Pierre d'évolution** ([constant ItemData.FIELD_USE_EVOLUTION_STONE], T23) : partout en
 ##   exploration ; le choix du Pokémon (COMPATIBLE / INCOMPATIBLE) est une autre règle (StoneUse).
+## - **Super Bonbon** ([constant ItemData.FIELD_USE_RARE_CANDY], jalon 14, T18b) : partout en
+##   exploration ; le choix du Pokémon (niveau 100, K.O.) est une autre règle ([RareCandy]).
 ## - Un objet sans [member ItemData.field_use] (ou absent) : NOT_FIELD_USE (pas de UTILISER).
 
 enum Check { OK, NOT_HERE, NOT_FIELD_USE }
@@ -27,7 +29,7 @@ static func check(item: ItemData, map_id: StringName, caves: CaveLibrary) -> Che
 			if caves != null and caves.is_cave(map_id):
 				return Check.OK
 			return Check.NOT_HERE
-		ItemData.FIELD_USE_EVOLUTION_STONE:
+		ItemData.FIELD_USE_EVOLUTION_STONE, ItemData.FIELD_USE_RARE_CANDY:
 			return Check.OK
 	return Check.NOT_FIELD_USE
 

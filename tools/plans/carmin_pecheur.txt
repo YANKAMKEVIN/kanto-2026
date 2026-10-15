@@ -1,0 +1,33 @@
+# Maison du Pêcheur de Carmin-sur-Mer (vermilion_fisher_house) — grille fonctionnelle (jalon 15
+# T14, défauts de la règle 4 ; dossier 18 §8.2 : le Pêcheur parle de pêche, pas de Canne (V-4)).
+# Enveloppe des maisons d'Argenta, cuisine et table des maisons, casiers de pêche (série 15).
+#
+# Légende :
+#   K mur (bloqué)          . sol (praticable)
+#   X sortie vers Carmin (praticable : paillasson, PUSH ↓)
+#   F réfrigérateur (1, 3)   C plan de travail (2..4, 3)   H cuisinière (5, 3)
+#   o casiers de pêche (10..11, 3)   d lampe (13, 3)   T table à manger (2..4, 5..6)
+#   x plante (1, 7), (13, 7)   h le Pêcheur (10, 5)
+#
+# Format : section GRILLE (« NN » + espace + 15 caractères par rangée), puis POSITIONS.
+
+PRATICABLES .Xh
+
+GRILLE 15 10
+00 KKKKKKKKKKKKKKK
+01 KKKKKKKKKKKKKKK
+02 KKKKKKKKKKKKKKK
+03 KFCCCH....oo.dK
+04 K.............K
+05 K.TTT.....h...K
+06 K.TTT.........K
+07 Kx...........xK
+08 KKKKKKXXXKKKKKK
+09 KKKKKKKKKKKKKKK
+FIN
+
+POSITIONS
+sortie              warp           6..8,8       libre   # PUSH ↓ → vermilion_city, from_fisher_house
+entree              spawn          7,8          libre   # spawn « entrance », tourné ↑
+pecheur             pnj            10,5         bloque  facing=down  # T-35
+FIN

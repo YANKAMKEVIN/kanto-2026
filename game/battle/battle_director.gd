@@ -5,7 +5,8 @@ extends Node
 ## ([BattlePlayback] → [BattleBeat]) et les joue sur le [BattleStage] (le décor recomposé et
 ## les Pokémon) et la [BattleHud] (cartes, barres de PV, messages). La boucle de choix passe
 ## par les signaux de la HUD ; la fin par [BattleConclusion] (soin ; argent gagné contre un
-## dresseur vaincu, versé par [code]add_money[/code] de [GameState], jalon 7).
+## dresseur vaincu, versé par [code]add_money[/code] de [GameState], jalon 7 ; pièces du
+## Jackpot ramassées après une victoire ou une capture, jalon 15).
 ## XP (jalon 5C, revu par la demande n° 1 du 2026-10-06) : pendant le combat, EXP_GAINED et
 ## LEVEL_UP ne montrent rien (la carte du Pokémon en jeu garde son ancien niveau et ses PV
 ## max jusqu'à la fin du bilan) ; le directeur les note dans un [ExpSummary]. À la fin du
@@ -260,17 +261,23 @@ func run_request(request: BattleRequest, map: GameMap) -> int:
 		await _play_events(_battle.submit(action), trainer)
 	# Fin : l'argent gagné (dresseur vaincu : « Tu remportes 280 ₽. », versé à GameState ; jamais
 	# rien de retiré), sortie de la vue, puis le soin éventuel du dresseur (les deux Pokémon,
-	# l'équipe du rival n'est pas gardée). Sauvage : aucun soin, aucun argent.
+	# l'équipe du rival n'est pas gardée). Sauvage : aucun soin, aucun argent de Dresseur.
+	# Jackpot (jalon 15) : « Tu ramasses … » après l'argent du Dresseur, sauvage compris.
 	var outcome := _battle.get_outcome()
-	var conclusion: BattleConclusion = null
+	var last_level := 0
 	if trainer != null:
 		var foes := request.foe_party
-		var last_level := foes.get_at(foes.size() - 1).level if foes.size() > 0 else 0
-		conclusion = BattleConclusion.resolve(trainer, outcome, last_level)
-		if conclusion.prize_money > 0:
-			if is_instance_valid(_hud) and _texts != null:
-				await _hud.show_message(_texts.prize_line(conclusion.prize_money))
-			_state.add_money(conclusion.prize_money)
+		last_level = foes.get_at(foes.size() - 1).level if foes.size() > 0 else 0
+	var conclusion := BattleConclusion.resolve(trainer, outcome, last_level,
+		_battle.get_pay_day_coins())
+	if conclusion.prize_money > 0:
+		if is_instance_valid(_hud) and _texts != null:
+			await _hud.show_message(_texts.prize_line(conclusion.prize_money))
+		_state.add_money(conclusion.prize_money)
+	if conclusion.pay_day_money > 0:
+		if is_instance_valid(_hud) and _texts != null:
+			await _hud.show_message(_texts.coins_line(conclusion.pay_day_money))
+		_state.add_money(conclusion.pay_day_money)
 	# Bilan de fin de combat (demande n° 1) : victoire ou capture seulement (décision de Kevin
 	# du 2026-10-06 : rien après une défaite). Les capacités ont été annoncées au K.O.
 	await _play_progress(outcome)
@@ -281,7 +288,7 @@ func run_request(request: BattleRequest, map: GameMap) -> int:
 	if is_instance_valid(_stage) and _stage.is_active():
 		await _stage.exit()
 	_free_panels()
-	if conclusion != null and conclusion.heal_party:
+	if conclusion.heal_party:
 		party.heal_all()
 	_running = false
 	_battle = null
@@ -604,6 +611,15 @@ func _play_beat(beat: BattleBeat) -> void:
 				_show_own_card()
 			if is_instance_valid(_hud) and _is_in_play(beat.event):
 				await _hud.animate_hp(side, beat.event.hp, beat.event.max_hp, false)
+		BattleBeat.Kind.BURROW:
+			if is_instance_valid(_stage):
+				await _stage.play_burrow(beat.side)
+		BattleBeat.Kind.SURFACE:
+			if is_instance_valid(_stage):
+				await _stage.play_surface(beat.side)
+		BattleBeat.Kind.VANISH:
+			if is_instance_valid(_stage):
+				await _stage.play_vanish(beat.side)
 		BattleBeat.Kind.WITHDRAW:
 			# Joueur : la carte est déjà sortie (panneau ÉQUIPE). Adversaire (jalon 13, IA qui
 			# change) : sa carte sort ici. Le SEND_OUT suivant ramène la nouvelle.

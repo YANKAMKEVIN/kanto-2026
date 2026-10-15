@@ -276,6 +276,27 @@ func test_no_wild_encounter_on_the_step_of_the_detection() -> void:
 	assert_eq(_wild.runs, 1)
 
 
+## J15 T24 (garde-fou) : équipe sans Pokémon valide → aucun Dresseur ne défie, ni à la vue ni
+## à la parole ; aucun combat demandé ; un Pokémon de nouveau valide → le défi revient.
+func test_no_challenge_while_the_whole_party_is_knocked_out() -> void:
+	_watcher.setup(_player, _flags, _director, _state)
+	var lead := _state.party.get_lead() as Pokemon
+	lead.hp = 0
+	_arrive(SEEN_CELL)
+	assert_false(_director.is_running(), "vu, mais aucun Pokémon valide : rien")
+	assert_signal_not_emitted(_watcher, "trainer_spotted")
+	var theo := _map.get_npc(&"theo")
+	assert_false(_watcher.challenge(theo), "pas de défi à la parole non plus")
+	assert_false(_director.is_running())
+	assert_eq(_battles.calls, [] as Array[StringName], "aucun combat demandé")
+	assert_false(_flags.has_flag(&"beaten_forest_scout_theo"), "toujours à battre")
+	# (Rebranché après l'EncounterDirector, le watcher passe ici après lui : défi à la parole.)
+	lead.hp = lead.max_hp()
+	assert_true(_watcher.challenge(theo), "soigné : il défie")
+	await _play_to_the_end()
+	assert_push_error_count(0)
+
+
 func test_challenge_by_talking_no_exclamation_no_approach() -> void:
 	var theo := _map.get_npc(&"theo")
 	watch_signals(theo)

@@ -21,6 +21,7 @@ const FIXTURE_V2_END := "res://tests/fixtures/save/v2_kevin_j6_fin.json"
 ## Vraie partie de Kevin en fin de J7 (v3), voir test_save_system.
 const FIXTURE_V3 := "res://tests/fixtures/save/v3_kevin_j7_fin.json"
 const SAVE_V4_QA := "res://tools/debug_start/save_v4_qa.json"
+const DAYCARE_V7_QA := "res://tools/debug_start/daycare_v7_qa.json"
 const DATE := "2026-10-02T14:03:05"
 const FADE := 0.05
 const TIMEOUT := 12.0
@@ -137,6 +138,9 @@ func _without_status(saved: Dictionary) -> Dictionary:
 	# J11 : aucun compagnon au départ.
 	assert_eq(copy.get("companion"), "", "aucun compagnon")
 	copy.erase("companion")
+	# J15 (v7) : Pension vide.
+	assert_eq(copy.get("daycare"), {}, "Pension vide")
+	copy.erase("daycare")
 	return copy
 
 
@@ -529,6 +533,55 @@ func test_the_save_v4_qa_start_replaces_the_save_then_resumes_poisoned() -> void
 	assert_eq(GameState.party.get_lead().status, StatusRules.POISON, "toujours empoisonné")
 	assert_eq(GameState.party.get_at(1).status, StatusRules.NONE)
 	assert_push_error_count(0)
+
+
+## Départ `daycare_v7_qa` (J15, 15.0) : il remplace la sauvegarde avec un Pokémon à la Pension,
+## puis une relance sans départ la retrouve intacte (même uid, même XP en attente).
+func test_the_daycare_v7_qa_start_is_saved_then_resumed_with_the_daycare() -> void:
+	_write_saved_game(&"oak_lab", Vector2i(5, 8), Vector2i.UP)
+	_boot = BOOT_SCENE.instantiate() as Boot
+	_boot.save_system = _save
+	_boot.force_debug_start = true
+	_boot.debug_start_path = DAYCARE_V7_QA
+	add_child_autofree(_boot)
+	_player = _boot.get_player()
+	await wait_until(func() -> bool: return _writes() >= 1, TIMEOUT)
+	var saved := _saved()
+	assert_eq(int(saved.get("version", 0)), SaveSystem.VERSION)
+	assert_eq(saved["daycare"]["pokemon"]["species"], "rattata", "Pension écrite")
+	assert_eq(int(saved["daycare"]["pending_exp"]), 500)
+	var uid: String = saved["daycare"]["pokemon"]["uid"]
+	_boot.free()
+	await _start_boot(&"player_house_1f", &"stairs", Vector2i.DOWN)
+	assert_true(_boot.has_resumed(), "relance : la partie de QA reprend")
+	assert_false(GameState.daycare.is_empty(), "Pension relue")
+	assert_eq(GameState.daycare.pokemon.uid, uid, "même Pokémon")
+	assert_eq(GameState.daycare.pending_exp, 500)
+	assert_eq(GameState.daycare.deposit_level, 10)
+	assert_push_error_count(0)
+
+
+## J15 (jalon-15.md §2.6) : une Pension illisible par cette build (espèce inconnue) n'est pas
+## perdue en silence : la partie reprend sans elle, l'original est copié à côté.
+func test_an_invalid_daycare_resumes_without_it_and_keeps_the_original_aside() -> void:
+	_write_saved_game(&"route_1", _free_route_cell(), Vector2i.UP)
+	var content: Dictionary = _saved()
+	var kept := PokemonFactory.create(_boot_data(), &"rattata", 10, GameRng.new(4)).to_dict()
+	kept["species"] = "missingno"
+	content["daycare"] = {"pokemon": kept, "pending_exp": 100, "deposit_level": 10}
+	var original := JSON.stringify(content)
+	_fs.files[SAVE_PATH] = original
+	await _start_boot()
+	assert_true(_boot.has_resumed(), "la partie reprend")
+	assert_true(GameState.daycare.is_empty(), "sans la Pension illisible")
+	assert_eq(_fs.files.get(SAVE_PATH + ".rejected"), original, "original gardé à côté")
+	assert_push_error_count(2, "Pokémon invalide puis Pension invalide")
+
+
+func _boot_data() -> PokemonData:
+	var data := PokemonData.new()
+	data.load_dir()
+	return data
 
 
 func test_a_corrupt_save_is_set_aside_then_the_new_game_is_saved_normally() -> void:

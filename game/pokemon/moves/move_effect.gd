@@ -48,10 +48,25 @@ extends RefCounted
 ## statut, récupère tous ses PV et dort deux tours ([method StatusRules.apply_rest]). SELF_KO : le
 ## lanceur tombe K.O. après sa capacité (Destruction, Explosion). FIXED_DAMAGE « value » : dégâts
 ## fixes [member amount] (Sonicboom).
+## Jalon 14 (`jalon-14.md` §2.3, §2.5 ; dossier 17 §7, §8.1) :
+## [codeblock]
+## { "kind": "charge", "texts": "dig", "invulnerable": true }   { "kind": "teleport" }
+## [/codeblock]
+## CHARGE : « charge puis frappe » (Tunnel) : la capacité offensive se charge au premier tour
+## (aucun dégât), puis frappe au second sans dépenser de PP, action imposée ([ChargeRules]).
+## [member texts] choisit les messages (« charge_<texts>_start », « charge_<texts>_broken » de
+## `messages.json`) ; [member invulnerable] (faux par défaut) : sous terre, le lanceur évite
+## toute capacité qui le vise. TELEPORT : Téléport, fuite d'un combat sauvage ([Battle]).
+## Jalon 15 (`jalon-15.md` §2.7.3, dossier 18 §10.2) : [code]{ "kind": "coins", "per_level": 2 }
+## [/code]. COINS (Jackpot) : chaque utilisation réussie **du camp du joueur** éparpille
+## [member per_level] × niveau du lanceur pièces ([PayDayPurse]), ramassées à la fin d'un combat
+## gagné ou d'une capture ([BattleConclusion]) ; le Jackpot de l'adversaire ne rapporte rien.
 
 enum Kind {
 	STAT_STAGE, RECOIL, SEED, STATUS, CONFUSION, HITS, FLINCH, CRIT_UP, FIXED_DAMAGE, BIDE,
 	DRAIN, TRAP, DISABLE, REST, SELF_KO,
+	CHARGE, TELEPORT,
+	COINS,
 }
 enum Target { SELF, FOE }
 
@@ -63,6 +78,8 @@ const KIND_NAMES: Dictionary[String, Kind] = {
 	"bide": Kind.BIDE,
 	"drain": Kind.DRAIN, "trap": Kind.TRAP, "disable": Kind.DISABLE, "rest": Kind.REST,
 	"self_ko": Kind.SELF_KO,
+	"charge": Kind.CHARGE, "teleport": Kind.TELEPORT,
+	"coins": Kind.COINS,
 }
 ## Modes de FIXED_DAMAGE.
 const FIXED_MODES: Array[StringName] = [&"half_hp", &"level", &"value"]
@@ -104,3 +121,9 @@ var max_turns: int = 0
 var messages: StringName = &""
 ## FIXED_DAMAGE « value » : dégâts infligés.
 var amount: int = 0
+## CHARGE : suffixe des messages du tour de charge (« dig » → « charge_dig_start »).
+var texts: StringName = &""
+## CHARGE : le lanceur est invulnérable pendant la charge (Tunnel ; pas Lance-Soleil).
+var invulnerable: bool = false
+## COINS : pièces par niveau du lanceur (Rouge/Bleu : 2, [constant PayDayPurse.RB_PER_LEVEL]).
+var per_level: int = 0

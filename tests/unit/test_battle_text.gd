@@ -6,6 +6,10 @@ extends GutTest
 
 const K := BattleEvent.Kind
 
+## Messages encore en brouillon : ils doivent l'être, et eux seuls. Vide depuis la validation
+## de l'annexe A du jalon 15 (Jackpot, 2026-10-14).
+const PENDING_DRAFTS: Array[StringName] = []
+
 var _data: PokemonData
 var _text: BattleText
 
@@ -43,10 +47,11 @@ func test_real_messages_load_without_error() -> void:
 		assert_false(_text.get_template(id).is_empty(), String(id))
 
 
-## Lot de textes validé par Kevin le 2026-10-06 : plus aucun message provisoire.
+## Lot de textes validé par Kevin le 2026-10-06 (et annexe A du jalon 15, le 2026-10-14) : plus
+## aucun message provisoire. Un nouveau brouillon se nomme dans [constant PENDING_DRAFTS].
 func test_no_message_is_draft() -> void:
 	for id: StringName in BattleText.TEMPLATE_IDS:
-		assert_false(_text.is_draft(id), String(id))
+		assert_eq(_text.is_draft(id), PENDING_DRAFTS.has(id), String(id))
 
 
 func test_foe_is_named_alone() -> void:

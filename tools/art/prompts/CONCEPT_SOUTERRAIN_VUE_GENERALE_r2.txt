@@ -1,0 +1,44 @@
+CONCEPT ART — VUE GÉNÉRALE DU PASSAGE SOUTERRAIN ENTRE LA ROUTE 5 ET LA ROUTE 6 (Kanto 2026), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. C'est un TUNNEL PIÉTON ANCIEN, construit de main d'homme sous la ville (pas une grotte naturelle) : on descend par un escalier en haut à gauche (côté Route 5), on suit une galerie de deux cases de large qui descend, tourne à angle droit vers l'est, file tout droit, tourne encore à angle droit vers le sud et remonte par un escalier en bas à droite (côté Route 6).
+Légende du plan :
+- brun-gris très foncé = MAÇONNERIE ET ROCHE PLEINE infranchissables (y compris toutes les marges de l'image) ;
+- gris-beige = SOL DE LA GALERIE, dallé de grandes pierres anciennes ;
+- bande beige plus claire le long de la galerie = TRACES DE PASSAGE : dalles plus usées et plus claires là où les gens marchent (même sol, même niveau) ;
+- deux bandes striées sombres, en haut à gauche et en bas à droite = les deux ESCALIERS de pierre qui remontent vers la surface (marches vues de dessus, lumière du jour qui tombe d'en haut) ;
+- trois petites salles carrées ouvertes sur la galerie = trois ALCÔVES : à gauche en haut, une STÈLE de pierre gravée de motifs (sans lettres) contre le mur du fond (carré gris) ; au milieu en haut, une PIERRE DESCELLÉE un peu plus claire, légèrement de travers, dans le mur du fond (carré jaune pâle) ; à droite en bas, un BANC de pierre contre le mur du fond (carré gris) ;
+- petit élargissement d'une rangée sous la galerie horizontale = un RENFLEMENT du couloir ; le point bleu qui s'y trouve marque seulement un emplacement : n'y dessine RIEN d'autre que le sol ;
+- points jaunes posés sur les murs = APPLIQUES MURALES : petites lampes de fer à verre jaune, fixées aux parois, chacune entourée d'un halo chaud.
+Respecte ce plan À LA LETTRE : forme de la galerie, place des deux coudes, des trois alcôves, du renflement, des escaliers et des appliques. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+RÈGLE ABSOLUE DES PASSAGES : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; la galerie et les alcôves ont des bords droits qui suivent une grille : segments horizontaux et verticaux à ANGLES DROITS, AUCUNE courbe, aucun segment en diagonale, aucune voûte arrondie vue de dessus. Les murs sont des MURS BÂTIS (pierres taillées appareillées, arêtes vives un peu usées), pas des parois rocheuses irrégulières.
+RELIEF : le sol est entièrement PLAT ; les seuls changements de niveau sont les deux escaliers aux extrémités.
+
+IMAGE 2 : la vue générale du Mont Sélénite, un donjon souterrain du même jeu. Respecte EXACTEMENT son style de rendu : même pinceau, même saturation, même finesse de détail, même façon de montrer le dessus des murs et la face avant des parois nord, même halo des petites lampes chaudes, même lisibilité (sol nettement plus clair que la masse qui l'entoure). Ne reprends RIEN de sa composition : ni grotte naturelle, ni gravats, ni échelles, ni caisses, ni cristaux, ni mare, ni colonnes.
+
+Format : CARRÉ 1024 × 1024, vue plongeante sur tout le passage, comme le plan.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus, axes de l'image alignés sur la grille, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. Les verticales restent verticales. On voit le dessus des murs et la face avant (côté sud) des parois nord de la galerie.
+- Aucun trait noir : contours fins et doux. Ombres colorées brun-violet et bleu-gris froid, jamais grises ni noires.
+
+AMBIANCE — « frais, appliques chaudes espacées, échos de pas, silence entre deux lampes » : un passage ancien, calme et sûr, qu'on traverse sans danger ; une respiration entre deux routes.
+- Palette : pierre ancienne gris-beige et ocre pâle, joints plus sombres, un peu de mousse discrète au pied des murs, ombres fraîches bleu-gris.
+- LUMIÈRE : chaque applique jette un cercle de lumière chaude orangée sur les murs et le sol ; entre deux lampes, la galerie retombe dans une pénombre fraîche, mais elle reste toujours LISIBLE. Aux deux escaliers, la lumière blanche du jour descend de la surface.
+- Les trois alcôves sont des petites niches de pierre plus anciennes, un peu plus sombres ; la stèle, la pierre descellée et le banc s'y lisent clairement. La pierre descellée est DISCRÈTE : un indice pour l'œil attentif, pas un objet qui brille.
+- Ce n'est ni une grotte, ni un égout, ni un tunnel de métro : pas de rails, pas de tuyaux, pas de câbles, pas d'eau.
+
+PERSONNE : aucun personnage, aucun Pokémon, aucun animal ; le passage est vide.
+
+INTERDITS : texte, lettres, chiffres, inscriptions lisibles sur la stèle, panneau, logo, signature, filigrane, cadre, interface ; ciel, arbres, herbe ; Poké Ball, objet posé au sol ; galeries courbes ou en diagonale ; rochers naturels, stalactites, cristaux, gravats ; eau, flaque, rails, tuyaux, graffitis ; brouillard épais, flou de profondeur, vignettage noir ; ambiance d'horreur ; pixel art.
+
+L'image doit raconter, sans texte : un vieux couloir de pierre, désert et paisible, éclairé de lampe en lampe, qui relie deux escaliers ensoleillés, avec trois petites niches qu'on a envie d'examiner.
+
+CORRECTIONS (2e essai ; le 1er essai était bon sur la géométrie, les murs bâtis, les escaliers, les alcôves et la place des appliques : garde-les à l'identique autant que possible) :
+1. AUTOUR de la galerie, il n'y a PAS de vide bleu nuit uni : toute la surface hors galerie est une MASSE DE TERRE ET DE ROCHE PLEINE, peinte et texturée (pierre brun-gris sombre, strates et blocs à peine visibles, quelques racines), comme la roche qui entoure les galeries du Mont Sélénite. Elle reste nettement plus sombre que le sol de la galerie.
+2. La lumière ne doit pas être uniforme : chaque applique fait un CERCLE de lumière chaude orangée bien marqué ; ENTRE deux appliques, le sol et les murs retombent dans une pénombre FRAÎCHE bleu-gris (toujours lisible). Seuls les deux escaliers reçoivent une lumière blanche du jour.
+3. Les dalles du sol sont anciennes et usées, de tailles inégales, avec quelques fissures et une mousse discrète dans les joints près des murs ; la bande de passage au centre est plus lisse et plus claire.
+4. Dans l'alcôve du haut au milieu, la PIERRE DESCELLÉE du mur du fond dépasse un peu, de travers, légèrement plus claire que ses voisines, avec un peu de poussière au sol devant : discret mais remarquable.

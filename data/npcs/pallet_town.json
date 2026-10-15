@@ -5,14 +5,14 @@
 		"dialogue": "observe_aoki_pidgey", "verb": "observe", "species": "pidgey" },
 	"aoki_pidgey_2": { "cell": [28, 14], "facing": "up", "sprite": "pokemon/pidgey",
 		"dialogue": "observe_aoki_pidgey", "verb": "observe", "species": "pidgey" },
-	"leo": { "cell": [18, 9], "facing": "left", "sprite": "leo", "dialogue": "leo",
+	"nils": { "cell": [18, 9], "facing": "left", "sprite": "leo", "dialogue": "nils",
 		"route": {
 			"cells": [[18, 9], [19, 9], [19, 8], [20, 8], [21, 8], [21, 9], [21, 10], [20, 10],
 				[19, 10], [18, 10], [17, 10], [17, 9]],
 			"pause": 0.6, "start": 0
 		} },
-	"leo_rattata": { "cell": [17, 9], "facing": "right", "sprite": "pokemon/rattata",
-		"dialogue": "observe_leo_rattata", "verb": "observe", "species": "rattata",
+	"nils_rattata": { "cell": [17, 9], "facing": "right", "sprite": "pokemon/rattata",
+		"dialogue": "observe_nils_rattata", "verb": "observe", "species": "rattata",
 		"route": {
 			"cells": [[18, 9], [19, 9], [19, 8], [20, 8], [21, 8], [21, 9], [21, 10], [20, 10],
 				[19, 10], [18, 10], [17, 10], [17, 9]],

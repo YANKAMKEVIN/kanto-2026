@@ -134,3 +134,65 @@ h7_habitant          pnj            51,22        bloque  role=H7 facing=right  #
 panneau_ville        panneau        3,18         bloque  # « AZURIA » / « Une ville bordée d'eau… », lu depuis (3, 19) ↑
 panneau_arene        panneau        38,10        bloque  # « ARÈNE D'AZURIA », lu depuis (38, 11) ↑
 FIN
+
+# =================================================================================================
+# VARIANTE J14 — Azuria « après J14 » (jalon 14 T20a, 2026-10-12 ; dossier 17 §3.3 et §6 ;
+# docs/tech/jalon-14.md §1.3 et §2.12). Lue SEULEMENT par `lire(chemin, "J14")`
+# (tools/art/plan_grille.py) et `load_file(chemin, "J14")` (tests/helpers/plan_grid.gd) : la grille
+# et les positions de base ci-dessus restent celles du J13, validées (G-1 à G-5), intactes.
+# Rangées remplacées en entier ; positions ajoutées ou remplaçant celles de même identifiant
+# (identifiants stables : porte_cambriolee, trou_cloture, barriere_sud, h4_policier).
+# Contrôle : tools/art/plan_check_azuria_j14.py. Plan : plan_aplats.py ... --variante J14 --annote.
+#
+# Changements de cases (les seuls) :
+#   - clôture ouest du jardin (6, 2..3) : « c » → « . » (clôture arrachée, on entre par là) ;
+#   - jardin (7..13, 2..3) : « j » → « J » jardin OUVERT (praticable) ; pot renversé (9, 2) bloqué ;
+#   - trou (14, 3) : « y » → « Y » trou PRATICABLE (le passage) ; la clôture (14, 2) reste « c » ;
+#   - impasse (15..21, 2..3) : haie et forêt → « . » : 7 de long, 2 de large, fermée à l'est par la
+#     forêt (x 22), au nord par la forêt (y 1), au sud par la haie (15, 4) et la maison ouverte ;
+#   - porte cambriolée (10, 9) : « f » → « D » (warp ; le ruban occupe la case jusqu'à la victoire) ;
+#   - sortie sud (31..33, 38..40) : palissade « s » et sentier peint « a » → chemin « = » (3 de
+#     large) ; (30, 38..39) et (34, 38..39) : palissade → forêt « T ».
+# Légende en plus : J jardin ouvert (praticable)   Y trou praticable dans la clôture du fond.
+#
+# États (drapeaux) lus par les conditions if= / unless= des positions (listes séparées par « , ») :
+#   E0 avant la poursuite {} ; E1 Rocket repéré {cerulean_rocket_spotted} ; E2 Rocket battu, même
+#   visite ou suivantes tant que le policier du sud n'est pas parti {+ cerulean_rocket_beaten} ;
+#   E3 sud ouvert {+ cerulean_south_guard_left}.
+# [D] T20a : `cerulean_south_guard_left` (drapeau nouveau). Le §2.12 met le barrage en
+# `unless cerulean_rocket_beaten` et la scène du sud en `if cerulean_rocket_beaten` : aux visites
+# suivantes, le barrage serait absent mais la bande (31..33, 37) relancerait la scène (n° 41) sans
+# policier (un EventTrigger n'a pas de condition, la scène décide). Défaut : barrage `unless
+# cerulean_south_guard_left`, scène `if cerulean_rocket_beaten unless cerulean_south_guard_left`,
+# qui pose le drapeau. Conséquence : un joueur qui quitte Azuria sans passer au sud retrouve le
+# policier, qui lui annonce la réouverture (n° 41) et part.
+PRATICABLES_J14 .=pqBDJY
+
+GRILLE_J14
+02 TTT....JJJJJJJc.......TTTTwwwwx===xTTTTTTTTTTTTTTwwwwwww
+03 TTT....JJJJJJJY.......TqqqwwwwqqpppZZZZZZZZZZZZqqwwKKKKw
+09 TTT...xMMMDMMMcxmmmDmmmqqqBBBBqqpppZZZZZDDZZZZZqqwwwwwww
+38 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT===TTTTTTTTTTTTTTTTTTTTTT
+39 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT===TTTTTTTTTTTTTTTTTTTTTT
+40 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT===TTTTTTTTTTTTTTTTTTTTTT
+FIN
+
+# Types en plus : « declencheur » (bande de déclenchement, dir = sens du pas, scene = scène).
+# npc= : identifiant du PNJ dans data/npcs/cerulean_city.json (deux positions = un PNJ et sa clé
+# « moved », jalon-14.md §2.8).
+POSITIONS_J14
+porte_cambriolee     warp           10,9         libre   # STEP_ON ↑ → cerulean_burgled_house ; recouverte par ruban_police tant que le Rocket n'est pas battu
+trou_cloture         examen         14,3         libre   # n° 29 (narration), lu depuis (13, 3) tourné → ; la case reste praticable (le passage)
+h4_policier          pnj            11,10        bloque  role=H4 facing=left unless=cerulean_rocket_beaten  # policier du J13, part après la victoire (despawn dans la scène du combat)
+ruban_police         pnj            10,9         bloque  role=ruban npc=cerulean_police_tape unless=cerulean_rocket_beaten  # PNJ objet (ruban, série 15) ; EXAMINER → n° 12 du J13
+planche_clouee       decor          14,2         bloque  if=cerulean_rocket_beaten  # FlagGate, sur la clôture à côté du trou : décor seul, le trou reste praticable (§0.2 n° 15)
+rocket_fouille       pnj            13,2         bloque  role=rocket npc=cerulean_rocket facing=up unless=cerulean_rocket_spotted,cerulean_rocket_beaten  # fouille près du trou, dos au joueur
+rocket_arret         pnj            21,3         bloque  role=rocket npc=cerulean_rocket facing=left if=cerulean_rocket_spotted unless=cerulean_rocket_beaten  # point d'arrêt au fond de l'impasse (clé moved)
+poursuite            declencheur    7,2..3       libre   dir=right scene=cerulean_rocket_chase unless=cerulean_rocket_spotted  # première colonne du jardin : « ! », n° 30, course par le trou jusqu'à (21, 3)
+combat_rocket        declencheur    17,2..3      libre   dir=right scene=cerulean_rocket_fight if=cerulean_rocket_spotted unless=cerulean_rocket_beaten  # vue du Rocket : toute la largeur de l'impasse
+policier_sud         pnj            31,38        bloque  role=policier_sud facing=up unless=cerulean_south_guard_left  # guard ; parler avant la victoire → n° 40, après → scène du sud
+barriere_sud         pnj            32..33,38    bloque  role=barrieres npc=police_barrier unless=cerulean_south_guard_left  # object/police_barrier ×2 ; avec le policier, aucun passage
+barrage_sud          declencheur    31..33,37    libre   dir=down scene=cerulean_south_guard if=cerulean_rocket_beaten unless=cerulean_south_guard_left  # n° 41, le policier part vers le nord, despawn des trois
+warp_sud             warp           31..33,40    libre   # PUSH ↓ coming_soon « Route 5 » (développement ; bord bloqué en release) ; J15 : route_5 / from_cerulean (réservés)
+from_route_5         spawn          31..33,40    libre   # from_route_5_w|c|e, tournés ↑
+FIN

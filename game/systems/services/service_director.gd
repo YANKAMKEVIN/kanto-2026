@@ -24,6 +24,9 @@ extends Node
 ## [signal storage_requested] de la même façon ; [Boot] ouvre `MenuRoute.storage()` en écran
 ## seul à la fin du dialogue (le Stockage n'existe qu'au Centre : [MenuUnlocks]).
 ##
+## Pension (J15, jalon-15.md §2.5.3) : `open_daycare` (le gardien, sans réplique) émet
+## [signal daycare_requested] ; [Boot] lance le [DaycareDirector] à la fin du dialogue.
+##
 ## Ne lit aucun autoload : l'état de la partie et les points de repos arrivent par
 ## [method setup].
 
@@ -34,11 +37,14 @@ signal center_healed(map_id: StringName, registered: bool)
 signal shop_requested(shop_id: StringName)
 ## Le terminal ouvre le Stockage (sur la carte courante).
 signal storage_requested
+## Le gardien de la Pension ouvre la conversation de la Pension (J15).
+signal daycare_requested
 
 const ACTION_HEAL: StringName = &"heal"
 const ACTION_CENTER_HEAL: StringName = &"center_heal"
 const ACTION_OPEN_SHOP: StringName = &"open_shop"
 const ACTION_OPEN_STORAGE: StringName = &"open_storage"
+const ACTION_OPEN_DAYCARE: StringName = &"open_daycare"
 const HEAL_MACHINE: NodePath = ^"%HealMachine"
 
 ## « Réduire les animations » (GameSettings.reduce_motion) : rituel deux fois plus court. Posé par
@@ -90,6 +96,8 @@ func run_action(action: StringName) -> void:
 			_open_shop()
 		ACTION_OPEN_STORAGE:
 			_open_storage()
+		ACTION_OPEN_DAYCARE:
+			daycare_requested.emit()
 		_:
 			push_error("ServiceDirector : action inconnue « %s »" % action)
 

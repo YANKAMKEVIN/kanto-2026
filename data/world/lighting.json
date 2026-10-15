@@ -71,6 +71,18 @@
 			"rim": { "color": "#b4c2e8", "strength": 0.1, "width": 3.0 },
 			"contact": { "color": "#0a0e1a", "alpha": 0.62 },
 			"wind": 0.0
+		},
+		"underground": {
+			"grade": {
+				"shadows": [0.82, 0.78, 0.76],
+				"midtones": [0.95, 0.9, 0.84],
+				"highlights": [0.98, 0.94, 0.88],
+				"strength": 1.0
+			},
+			"sun_direction": [-0.7, -0.7],
+			"rim": { "color": "#ffcf94", "strength": 0.06, "width": 3.0 },
+			"contact": { "color": "#140c06", "alpha": 0.6 },
+			"wind": 0.0
 		}
 	},
 	"maps": {
@@ -109,6 +121,23 @@
 		"cerulean_gym": "interior_warm",
 		"cerulean_bike_shop": "interior_warm",
 		"cerulean_house": "interior_warm",
-		"route_24": "golden_hour"
+		"cerulean_burgled_house": "interior_warm",
+		"route_24": "golden_hour",
+		"route_25": "golden_hour",
+		"bill_house": "interior_warm",
+		"underground_path": "underground",
+		"route_6": "golden_hour",
+		"vermilion_city": "golden_hour",
+		"vermilion_center": "interior_warm",
+		"vermilion_mart": "interior_warm",
+		"vermilion_fan_club": "interior_warm",
+		"vermilion_fisher_house": "interior_warm",
+		"vermilion_house_1": "interior_warm",
+		"vermilion_house_2": "interior_warm",
+		"route_6_underground_gate": "interior_warm",
+		"route_5": "golden_hour",
+		"route_5_daycare": "interior_warm",
+		"route_5_gate": "interior_warm",
+		"route_5_underground_gate": "interior_warm"
 	}
 }

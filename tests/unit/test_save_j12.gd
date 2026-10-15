@@ -49,7 +49,8 @@ func _round_trip(state: Node) -> Node:
 
 
 func test_the_j12_writes_no_new_save_version() -> void:
-	assert_eq(SaveSystem.VERSION, 6, "version de main après le J11 (§2.20)")
+	# v6 au J11 ; le J12 n'en ajoute pas (§2.20) ; v7 vient du J15 (Pension), intégré après.
+	assert_eq(SaveSystem.VERSION, 7, "aucune version du J12 : v6 du J11, puis v7 du J15")
 
 
 func test_a_game_in_the_b2f_before_the_researcher_survives_a_reload() -> void:

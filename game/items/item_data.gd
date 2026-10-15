@@ -37,10 +37,13 @@ const KEY_ADDED_SUFFIX := " aux objets clés"
 ## Toast d'une CT (dossier 14 §13, n° 40 : « CT34 — Patience obtenue »).
 const TM_ADDED_BASE := "obtenu"
 ## Usages d'un objet AVENTURE (jalon 12, T20 ; [member field_use]) : la Corde Sortie (sans cible,
-## [FieldItemRules]) et la pierre d'évolution (un Pokémon cible, T23). Ajouts en fin.
+## [FieldItemRules]) et la pierre d'évolution (un Pokémon cible, T23) ; jalon 14 (T18b) : le
+## Super Bonbon (un Pokémon cible, [RareCandy]). Ajouts en fin.
 const FIELD_USE_ESCAPE_ROPE: StringName = &"escape_rope"
 const FIELD_USE_EVOLUTION_STONE: StringName = &"evolution_stone"
-const FIELD_USES: Array[StringName] = [FIELD_USE_ESCAPE_ROPE, FIELD_USE_EVOLUTION_STONE]
+const FIELD_USE_RARE_CANDY: StringName = &"rare_candy"
+const FIELD_USES: Array[StringName] = [FIELD_USE_ESCAPE_ROPE, FIELD_USE_EVOLUTION_STONE,
+	FIELD_USE_RARE_CANDY]
 
 var id: StringName = &""
 ## Nom au singulier (« Poké Ball ») et au pluriel (« Poké Balls »).

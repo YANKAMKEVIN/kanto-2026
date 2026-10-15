@@ -1,0 +1,52 @@
+CONCEPT ART — VUE GÉNÉRALE DE LA ROUTE 6, VERS LA MER (Kanto 2026), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. La route part du NORD (en haut à gauche, à la sortie d'un passage souterrain) et descend vers le SUD (bord bas de l'image, où elle arrive à la ville portuaire de Carmin-sur-Mer).
+Légende du plan :
+- vert très foncé = forêt et bosquets denses infranchissables (y compris les marges de l'image) ;
+- vert moyen = herbe rase praticable ; points roses = petites fleurs ;
+- beige = chemin de terre battue : une large route horizontale en haut, puis un chemin qui descend tout droit vers le sud, avec une courte branche vers l'est en bas à droite ;
+- jaune-vert olive = HAUTES HERBES (touffues, plus hautes, où vivent les Pokémon sauvages), quatre zones en blocs nets ;
+- en haut à gauche, petit bâtiment gris-bleu = la SORTIE DU PASSAGE SOUTERRAIN : un petit pavillon de pierre au toit d'ardoise, porte au milieu de sa façade sud ;
+- en haut à droite, bâtiment gris-bleu = un POSTE DE GARDE (petit bâtiment officiel au toit d'ardoise, porte au milieu de sa façade sud), qui mène vers une grande ville à l'est, fermée pour l'instant ;
+- deux étroites bandes vertes verticales en haut au centre = deux petites NICHES d'herbe dans la forêt, au bord de la route ;
+- grand rectangle bleu = un ÉTANG d'eau douce aux bords droits (rives d'herbe et quelques joncs au bord) ;
+- carrés gris clair groupés par quatre = ROCHERS ;
+- grands disques vert sombre = GRANDS ARBRES isolés, repères ;
+- petits disques vert sombre = buissons bas ;
+- trait blanc en bas à droite = une CLÔTURE basse en bois ;
+- petits carrés ocre = panneaux en bois SANS TEXTE ; point rouge et blanc = une Poké Ball posée au sol (objet à ramasser), au fond d'un petit BELVÉDÈRE au bout de la branche est.
+Respecte ce plan À LA LETTRE : la place devant la sortie du souterrain, la grande route horizontale et son goulet entre la forêt et les deux niches, la poche d'herbe à l'ouest avec ses hautes herbes et ses rochers, la prairie à l'est avec le poste de garde, l'étang à l'ouest du chemin, le belvédère à l'est en bas, l'approche finale étroite vers le sud. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+RÈGLE ABSOLUE DES CHEMINS : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; chemins, sentiers, rives de l'étang et bords des zones suivent une grille : uniquement des segments horizontaux et verticaux à ANGLES DROITS, AUCUN segment en diagonale ni courbe, aucun escalier.
+RELIEF : le sol est lisible et plat ; aucun rebord, aucune falaise, aucune terrasse.
+
+IMAGE 2 : la vue générale de la Route 3, une autre route du même jeu. Respecte EXACTEMENT son style de rendu : même pinceau, mêmes arbres en masses arrondies, mêmes hautes herbes jaune-vert, même chemin de terre, même saturation, MÊME LUMIÈRE. Ne reprends PAS sa composition : ni montagne, ni paroi rocheuse, ni Centre Pokémon, ni grotte.
+
+Format : PORTRAIT 1024 × 1536, vue plongeante sur toute la route, comme le plan.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats. Le feuillage est peint en grandes masses douces.
+- Perspective : vue de dessus, axes de l'image alignés sur la grille, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud).
+- Aucun trait noir : contours fins et doux, plus sombres et plus saturés que la couleur locale. Ombres colorées bleu-vert ou violet froid, jamais grises.
+
+AMBIANCE — « l'air change » : en sortant du souterrain, on sent le vent de la mer avant de la voir.
+- En haut : une campagne verte et fleurie, encore celle de l'intérieur des terres.
+- En descendant vers le sud, la végétation devient CÔTIÈRE : herbe plus claire et plus sèche, quelques pins maritimes et arbustes couchés par le vent parmi les feuillus, sable fin qui affleure par endroits au bord du chemin.
+- L'étang est calme, bleu clair, quelques joncs et nénuphars sur ses rives, des reflets de ciel.
+- Lumière dorée de fin d'après-midi, ciel invisible mais présent par une lumière plus vaste et plus claire vers le sud, là où s'ouvre la mer.
+- Tout en bas, au-delà de la forêt du bord inférieur de l'image, on devine à peine le port : la pointe de deux mâts et d'une grue, et la haute cheminée rouge d'un grand paquebot qui dépasse des arbres. Discret : un appel, pas une ville.
+
+PERSONNE : aucun personnage, aucun Pokémon, aucun animal.
+
+INTERDITS : texte, lettres, chiffres, étiquettes, panneaux lisibles, logo, signature, filigrane, cadre, interface ; tout bâtiment autre que le pavillon du souterrain et le poste de garde ; maison, ville, pont ; rivière, cascade, mer visible en entier ; falaise, montagne, escaliers, terrasses ; route goudronnée, véhicule ; arbres orange ou automnaux ; neige ; brouillard, flou de profondeur, vignettage ; pixel art.
+
+L'image doit raconter, sans texte : on sort d'un vieux passage souterrain, une route verte descend vers le sud, passe près d'un étang tranquille, et l'air sent déjà la mer, dont on devine le port tout au bout.
+
+CORRECTIONS (3e essai ; le 1er essai était excellent sur la composition et le respect du plan, le 2e a bien amené la côte mais en ouvrant des clairières de sable là où le plan met de la forêt ; garde la composition du plan à l'identique) :
+1. Toute la surface vert très foncé du plan reste une FORÊT DENSE et FERMÉE, y compris en bas à gauche et en bas à droite : aucune clairière, aucune dune, aucune étendue de sable hors des zones d'herbe du plan.
+2. La côte se lit DANS cette forêt et sur les zones praticables, sans changer leurs formes : dans le tiers bas de l'image, une partie des arbres de la forêt sont des PINS MARITIMES (troncs roux, couronnes vert sombre en parasol, serrés les uns contre les autres, pas des acacias de savane) ; sur les zones d'herbe du bas, herbe plus claire et plus sèche, quelques touffes d'oyats et un peu de sable clair seulement en liseré le long du chemin.
+3. La CLÔTURE basse en bois est exactement à la place du plan : le long du bord sud de la petite zone d'herbe à l'est du chemin, juste au-dessus de la forêt du bas, à droite des deux buissons.
+4. Le POSTE DE GARDE en haut à droite : façade claire, toit d'ardoise, porte double au milieu de la façade sud, un lampadaire de chaque côté de la porte. Le pavillon de sortie du souterrain, en haut à gauche : petit édicule de pierre ancienne, large ouverture sombre au milieu de sa façade sud (l'escalier qui descend).
+5. En bas à droite, l'aperçu du port reste PETIT, dans le coin, derrière la dernière rangée d'arbres : pointe de deux mâts, une grue, la haute cheminée rouge du paquebot, un mince ruban de mer scintillante ; ni ville, ni bâtiment.

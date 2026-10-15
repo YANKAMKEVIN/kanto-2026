@@ -1,0 +1,32 @@
+{
+	"route_6_sign": {
+		"pages": ["ROUTE 6 — Safrania ↔ Carmin-sur-Mer"]
+	},
+	"route_6_gate_sign": {
+		"pages": ["SAFRANIA — Poste de garde"]
+	},
+	"route_6_underground_gate_sign": {
+		"pages": ["PASSAGE SOUTERRAIN — Route 5 ↔ Route 6"]
+	},
+	"route_6_guard": {
+		"speaker": "Garde",
+		"pages": ["Désolé, personne n'entre à Safrania\nen ce moment.", "Ordre de la ville."]
+	},
+	"route_6_fisher": {
+		"speaker": "Pêcheur",
+		"pages": [
+			"Pas de canne aujourd'hui. Je regarde\nl'eau, c'est déjà bien.",
+			"À Carmin, il y a un vrai pêcheur.\nUn drôle de type."
+		]
+	},
+	"route_6_walker": {
+		"speaker": "Promeneur",
+		"pages": ["Tu sens ce vent ?\nLa mer n'est plus très loin."]
+	},
+	"route_6_item_1": {
+		"cutscene": "route_6_item_1"
+	},
+	"route_6_hidden_1": {
+		"cutscene": "route_6_hidden_1"
+	}
+}

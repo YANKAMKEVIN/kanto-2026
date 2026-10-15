@@ -93,8 +93,8 @@ Jamais de fiche technique (« BULBIZARRE TYPE PLANTE POISON ») : on privilégie
 - **Mme Aoki** (voisine) — près de la place centrale, elle nourrit quelques Roucool.
   > **Mme Aoki** — « Ils reviennent tous les matins. » / « Je crois qu'ils savent exactement à quelle heure je sors. »
   Aucune quête, aucune récompense : elle vit ici.
-- **Léo** (enfant du village) — joue avec son Rattata près d'une clôture.
-  > **Léo** — « Regarde ! Il commence à comprendre quand je l'appelle ! » (Rattata réagit) « ...enfin, presque. »
+- **Nils** (enfant du village ; ex-« Léo », renommé au J14, dossier 17 E-1) — joue avec son Rattata près d'une clôture.
+  > **Nils** — « Regarde ! Il commence à comprendre quand je l'appelle ! » (Rattata réagit) « ...enfin, presque. »
 - **Haru** (pêcheur) — sur le littoral.
   > **Haru** — « La mer est calme aujourd'hui. » / « Les Pokémon le sentent avant nous. »
   Plus tard, il pourra parler de Pokémon inhabituels aperçus en mer.
@@ -182,7 +182,7 @@ Combat immédiat dans le laboratoire, comme dans Rouge/Bleu, mais très mis en s
   > *« Je ne devrais pas aller là sans Pokémon. »*
   La restriction disparaît une fois le starter obtenu (jalon 4).
 - **Haru** est sur la **plage**, au bord de l'eau : il se tourne légèrement vers le joueur quand on lui parle, puis se retourne vers la mer.
-- **Mme Aoki et Léo** se tournent vers le joueur pendant le dialogue, puis reprennent leur orientation et leur activité.
+- **Mme Aoki et Nils** se tournent vers le joueur pendant le dialogue, puis reprennent leur orientation et leur activité.
 - Après le 3B, le joueur continue d'explorer Bourg Palette, de parler aux habitants et d'entrer dans les bâtiments ; seule la sortie par les hautes herbes reste verrouillée jusqu'au starter.
 - **Au labo, après la scène de la Route 1 et avant le jalon 4** (décision du 2026-09-26) : Chen et le rival ne sont pas muets. Répliques d'attente, remplacées dès le jalon 4 :
   > **Prof. Chen** — « Un peu de patience. J'ai quelque chose à vous montrer. »

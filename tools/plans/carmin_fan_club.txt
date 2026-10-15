@@ -1,0 +1,39 @@
+# Fan Club Pokémon de Carmin-sur-Mer (vermilion_fan_club) — grille fonctionnelle (jalon 15 T14,
+# défauts de la règle 4 ; dossier 18 §8.2, plan jalon-15.md §2.2 : 15 × 10, président + 2 membres
+# + Miaouss). Enveloppe des maisons d'Argenta (aucune coque propre au J15 : conditionnel de la
+# série 17), mobilier de la série 17 (vitrine de rubans, fauteuil du président, tableau du port)
+# et des maisons. Pas de Bon pour Vélo (F-8).
+#
+# Légende :
+#   K mur (bloqué)          . sol (praticable)
+#   X sortie vers Carmin (praticable : paillasson, PUSH ↓)
+#   V vitrine de rubans (1..2, 3) (image 2 × 2, sa rangée haute est dans le mur)
+#   F fauteuil du président (6, 3)   S canapé (10..12, 3)   d lampe (13, 3)
+#   b table basse (10..11, 5)   x plante (1, 7), (13, 7)
+#   c président (6, 4)   a membre 1 (2, 6)   m membre 2 (11, 6)   p Miaouss (12, 6)
+#
+# Format : section GRILLE (« NN » + espace + 15 caractères par rangée), puis POSITIONS.
+
+PRATICABLES .Xcamp
+
+GRILLE 15 10
+00 KKKKKKKKKKKKKKK
+01 KKKKKKKKKKKKKKK
+02 KKKKKKKKKKKKKKK
+03 KVV...F...SSSdK
+04 K.....c.......K
+05 K.........bb..K
+06 K.a........mp.K
+07 Kx...........xK
+08 KKKKKKXXXKKKKKK
+09 KKKKKKKKKKKKKKK
+FIN
+
+POSITIONS
+sortie              warp           6..8,8       libre   # PUSH ↓ → vermilion_city, from_fan_club
+entree              spawn          7,8          libre   # spawn « entrance », tourné ↑
+president           pnj            6,4          bloque  facing=down  # T-33
+membre_1            pnj            2,6          bloque  facing=right  # T-34
+membre_2            pnj            11,6         bloque  facing=right  # annexe A.4
+miaouss             pokemon        12,6         bloque  facing=left  # le Miaouss du membre 2
+FIN

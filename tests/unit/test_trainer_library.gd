@@ -142,6 +142,39 @@ func test_real_viridian_forest_trainers() -> void:
 			expected[id][2].size(), String(id))
 
 
+## Jalon 14 (T5, jalon-14.md §2.11) : D1–D4 de la Route 25, équipes et récompenses de Rouge/Bleu
+## (base de la classe × niveau du dernier Pokémon), capacités des tables de niveau.
+func test_real_route_25_trainers() -> void:
+	var library := TrainerLibrary.new(_data)
+	assert_true(library.load_dir(), "\n".join(library.get_errors()))
+	var expected := {
+		&"route_25_youngster_jules": ["Gamin Jules", 225, [[&"rattata", 15], [&"spearow", 15]]],
+		&"route_25_hiker_gaston": ["Montagnard Gaston", 525,
+			[[&"machop", 15], [&"geodude", 15]]],
+		&"route_25_lass_zoe": ["Fillette Zoé", 225, [[&"nidoran_m", 15], [&"nidoran_f", 15]]],
+		&"route_25_hiker_bernard": ["Montagnard Bernard", 595, [[&"onix", 17]]],
+	}
+	for id: StringName in expected:
+		var trainer := library.get_trainer(id)
+		assert_not_null(trainer, String(id))
+		if trainer == null:
+			continue
+		assert_eq(trainer.name, expected[id][0], String(id))
+		assert_eq(trainer.ai, BattleAI.RANDOM, String(id))
+		assert_false(trainer.can_lose, String(id))
+		assert_false(trainer.heal_after, String(id))
+		assert_true(trainer.gives_exp, String(id))
+		assert_eq(trainer.prize_money, expected[id][1], String(id))
+		var team: Array = []
+		for slot: TrainerSlot in trainer.team_for(&"charmander"):
+			team.append([slot.species, slot.level])
+		assert_eq(team, expected[id][2], String(id))
+	var gaston := library.build_team(&"route_25_hiker_gaston", &"bulbasaur", GameRng.new(1))
+	var machop := gaston.get_at(0)
+	assert_eq(machop.moves.size(), 1, "Machoc 15 : Poing Karaté seul (table RB)")
+	assert_eq(machop.moves[0].move_id, &"karate_chop")
+
+
 func test_bag_and_prize_per_level_defaults() -> void:
 	assert_true(_library.add_from_dict({"t": _valid_entry()}), _errors())
 	var trainer := _library.get_trainer(&"t")

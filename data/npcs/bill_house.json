@@ -1,0 +1,10 @@
+{
+	"bill_clefairy": {
+		"cell": [6, 5], "facing": "down", "sprite": "pokemon/clefairy",
+		"dialogue": "bill_clefairy", "unless": ["bill_in_cabin"]
+	},
+	"bill": {
+		"cell": [12, 5], "facing": "down", "sprite": "bill",
+		"dialogue": "bill", "if": ["bill_restored"]
+	}
+}

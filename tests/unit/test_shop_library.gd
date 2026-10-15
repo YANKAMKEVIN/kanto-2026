@@ -19,8 +19,10 @@ func test_real_data_loads_without_error() -> void:
 	assert_true(_library.load_dir(), "\n".join(_library.get_errors()))
 	assert_true(_library.check_references(_items), "\n".join(_library.get_errors()))
 	assert_eq(_library.get_errors().size(), 0)
-	assert_eq(_library.get_ids(), [&"cerulean_mart", &"pewter_mart", &"viridian_mart"]
-		as Array[StringName], "jalon 10 : Argenta (test_pewter_data) ; jalon 13 : Azuria")
+	assert_eq(_library.get_ids(),
+		[&"cerulean_mart", &"pewter_mart", &"vermilion_mart", &"viridian_mart"]
+		as Array[StringName], "jalon 10 : Argenta (test_pewter_data) ; jalon 13 : Azuria ;"
+		+ " jalon 15 : Carmin (test_vermilion_data)")
 	var mart := _library.get_shop(&"viridian_mart")
 	assert_eq(mart.id, &"viridian_mart")
 	assert_eq(mart.source, "res://data/shops/viridian_mart.json")
