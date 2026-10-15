@@ -31,7 +31,7 @@
 			"description": "Un chemin de terre qui s'éloigne de Jadielle vers l'ouest, au pied d'une falaise basse. Là-haut, on devine déjà le Plateau Indigo."
 		},
 		"route_2": {
-			"name": "Route 2", "kind": "route", "maps": ["route_2", "route_2_north"],
+			"name": "Route 2", "kind": "route", "maps": ["route_2", "route_2_north", "route_2_east", "route_2_east_gate"],
 			"subtitle": "Jadielle — Forêt de Jade",
 			"description": "Un chemin bordé de prairies qui s'enfonce peu à peu sous les arbres."
 		},

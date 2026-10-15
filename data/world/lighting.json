@@ -138,6 +138,8 @@
 		"route_5": "golden_hour",
 		"route_5_daycare": "interior_warm",
 		"route_5_gate": "interior_warm",
-		"route_5_underground_gate": "interior_warm"
+		"route_5_underground_gate": "interior_warm",
+		"route_2_east": "forest",
+		"route_2_east_gate": "interior_warm"
 	}
 }

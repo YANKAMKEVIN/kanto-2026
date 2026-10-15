@@ -302,7 +302,7 @@ func test_zones_wait_for_their_maps() -> void:
 		assert_true(PokedexScene.all_scenes().has(scenes.get(String(id), "")),
 			"%s : décor du Pokédex existant" % id)
 	_check_zones(staged)
-	assert_false(zones.get_zone(&"route_2").maps.has(&"route_2_east"), "avec la carte (T19)")
+	assert_true(zones.get_zone(&"route_2").maps.has(&"route_2_east"), "avec la carte (T19)")
 
 
 func test_companion_contexts() -> void:

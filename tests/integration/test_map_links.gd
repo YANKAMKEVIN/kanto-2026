@@ -37,13 +37,17 @@ const MAP_IDS: Array[StringName] = [
 	&"vermilion_house_2",
 	# Jalon 15 (T13, T21) : la Route 5 (raccord réel avec Azuria) et ses trois intérieurs.
 	&"route_5", &"route_5_daycare", &"route_5_gate", &"route_5_underground_gate",
+	# Jalon 17 (T19) : le couloir de la Route 2 est et le poste de l'assistant.
+	&"route_2_east", &"route_2_east_gate",
 ]
 ## Cartes construites par une autre tâche en parallèle (jalon 7 : la Route 22, T22 ; jalon 10 :
 ## Argenta, T11, pendant les intérieurs du T13) : un warp qui y mène est vérifié seulement si la
 ## carte existe déjà (sinon le test le signale).
 ## Jalon 12 : Route 3, sas (T8) et étages du Mont Sélénite (T9) sont tous construits.
 ## Jalon 15 : les bâtiments d'entrée du souterrain (T13, T14) sont intégrés.
-const PARALLEL_MAPS: Array[StringName] = [&"route_22"]
+## Jalon 17 : la Cave Taupiqueur (T15) est construite en parallèle de la Route 2 est (T19) ;
+## à retirer d'ici, et à ajouter à [constant MAP_IDS], quand elle est intégrée.
+const PARALLEL_MAPS: Array[StringName] = [&"route_22", &"digletts_cave"]
 const DIRECTIONS: Array[Vector2i] = [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]
 
 var _maps: Dictionary = {}
