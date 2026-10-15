@@ -177,6 +177,8 @@ const VARIANT_FLAGS: Dictionary = {
 	&"route_6_item_1": [PEWTER_FLAGS], &"route_6_hidden_1": [PEWTER_FLAGS],
 	&"route_6_gate_rule_w": [PEWTER_FLAGS], &"route_6_gate_rule_e": [PEWTER_FLAGS],
 	&"route_6_gate_rule_s": [PEWTER_FLAGS], &"vermilion_arrival": [PEWTER_FLAGS],
+	# Jalon 17 (T8) : remise de la CS05 par l'assistant (10 espèces capturées).
+	&"route_2_east_give_hm05": [PEWTER_FLAGS],
 }
 ## Scènes jouées par le code (pas de déclencheur) → carte où elles sont jouées.
 ## Jalon 7 (T18) : la scène du colis est lancée par la variante « cutscene » du dialogue de Chen.
@@ -221,6 +223,9 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"mt_moon_fossil_dome": &"mt_moon_b2f", &"mt_moon_fossil_helix": &"mt_moon_b2f",
 	# Jalon 14 (T17) : les trois objets de Léo (dialogue de l'écran, du module, de la console).
 	&"bill_screen": &"bill_house", &"bill_module": &"bill_house", &"bill_machine": &"bill_house",
+	# Jalon 17 (T8) : remise de la CS05 (variante « cutscene » du dialogue de l'assistant), dans
+	# le poste de la Route 2 est (carte du T19 ; la scène n'a aucun acteur).
+	&"route_2_east_give_hm05": &"route_2_east_gate",
 }
 ## Scènes à déclencheur dont la carte n'est pas encore construite → leur carte (simulées sur les
 ## PNJ de son fichier). Vidée au T19 du jalon 9 (la forêt existe), puis au T11 du jalon 10 (les
@@ -295,7 +300,9 @@ func test_library_loads_without_error() -> void:
 		&"route_5_item_1", &"starter_chosen", &"underground_hidden_1",
 		&"viridian_arrival", &"viridian_forest_item_1", &"viridian_forest_item_2",
 		&"viridian_forest_item_3", &"viridian_forest_item_4", &"viridian_forest_item_5",
-		&"viridian_forest_item_6"]))
+		&"viridian_forest_item_6",
+		# Jalon 17 (T8) : remise de la CS05.
+		&"route_2_east_give_hm05"]))
 
 
 func _sorted(values: Array) -> Array[StringName]:

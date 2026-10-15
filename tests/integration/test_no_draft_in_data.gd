@@ -15,6 +15,8 @@ const PENDING_DRAFTS: Array[String] = [
 	"pokedex/kanto.json/species/growlithe", "pokedex/kanto.json/species/magnemite",
 	"pokedex/kanto.json/species/magneton", "pokedex/kanto.json/species/drowzee",
 	"pokedex/kanto.json/species/drowzee/notes/0", "pokedex/kanto.json/species/hypno",
+	# Jalon 17 (T8) : accord de T-2 à une espèce (annexe A.3, Q-2).
+	"dialogues/route_2_east.json/route_2_east_assistant/variants/3",
 ]
 
 

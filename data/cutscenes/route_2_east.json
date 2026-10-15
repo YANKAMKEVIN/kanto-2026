@@ -1,0 +1,14 @@
+{
+	"route_2_east_give_hm05": {
+		"variants": [
+			{
+				"steps": [
+					{ "give": "hm05", "count": 1, "unless": ["got_hm05"] },
+					{ "dialogue": "route_2_east_assistant_hm05_system", "unless": ["got_hm05"] },
+					{ "dialogue": "route_2_east_assistant_hm05_use", "unless": ["got_hm05"] },
+					{ "set": ["got_hm05"] }
+				]
+			}
+		]
+	}
+}

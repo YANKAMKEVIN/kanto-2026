@@ -731,6 +731,33 @@ avant le S.S. Anne, équipe Nv. 18–22 » ; niveaux **recalés** si un Dresseur
 dépasser les références de Major Bob ; tableau dans ce plan au T8 ; test
 `test_simulate_route_11` (intégration).
 
+**Fait au T8 (2026-10-15) — simulation et niveaux retenus.** Outil commun
+`tools/simulate_mt_moon.gd` avec un scénario (précédent du J14 T21) au lieu d'un
+`simulate_route_11.gd` : `tools/sim/route_11_scenario.json` (`--donnees --seeds 500`, ≈ 3 min ;
+rapports bruts non versionnés `build/sim/j17_t8/`) et `tools/sim/route_11_recalage.json` (chaque
+Dresseur seul, soigné, au premier essai). Profil « arrivé à Carmin avant le S.S. Anne » : meneur
+Nv. 20–22 (Reptincel 22 + Férosinge, Roucoups, Mystherbe ; « Kevin » estimé Reptincel 22,
+Roucoups 19, Nidorino 18, Rattata 17 ; Herbizarre 21 ; Carabaffe 22) et trois équipes basses
+(meneur Nv. 18–19). Parcours de la grille : D2 seul inévitable vers la Cave, G2 = 7 cases ; la
+Route 11 en deux allers depuis le Centre, ou avec un soin après chaque Dresseur. Cible (défaut du
+J12) : joueur attentif (Centre + 3 Potions) au bout sans défaite ≥ 85 %, aucun combat > 40 % de
+défaites, **sur les équipes du profil** (les basses : information, comme « Bulbizarre 15 » au J12).
+
+| Dresseur | Dossier (RB) | Retenu | Raison |
+|---|---|---|---|
+| D8 Ingénieur Victor | Magnéti 18, Magnéti 18, Magnéton 18 · 900 ₽ | **Nv. 16 · 800 ₽** | Magnéti et Magnéton sont Électrik / **Acier** (types actuels, T7) : Plante, Normal, Vol, Insecte et Psy résistés ; Herbizarre 21 attentif ne gagnait qu'à 61 % (expert 21 %) ; Nv. 16 : 94,8 % (Nv. 17 : 84,5 %) |
+| les sept autres | RB | **inchangés** | profil ≥ 98 % au premier essai, tous sous Major Bob (Nv. 24) |
+
+- **Chemin principal** (Arthur + Cave) : ≥ 99 % pour toutes les équipes attentives, basses
+  comprises (naïf : Herbizarre 18 à 84 %). Triopikeur Nv. 24–26 (H-15) : aucun échec mesuré.
+- **Route 11 complète, soin après chaque Dresseur, attentif** : 96,6 à 100 % (profil) ; équipes
+  basses : Herbizarre 18 à 4 %, Carabaffe 19 à 50 %, Reptincel 19 à 89 %.
+- **Gamin Louis** (3 × Rattata / Rattatac Nv. 17, Croc de Mort) reste dur pour les équipes
+  basses (victoire 31,8 % Herbizarre 18, 55,5 % Carabaffe 19) ; Nv. 15 donnerait 81 % / 92,5 %.
+  Évitable (parcours nord) : **non recalé**, question à Kevin.
+- Deux allers sans soin entre les Dresseurs : l'usure (3 Potions pour 4 Dresseurs) fait échouer
+  l'équipe Herbizarre (0 %), comme « tous les Dresseurs » du J14 : rythme de RB, pas un réglage.
+
 #### 2.12.5 Objets, dialogues, zones, Carte (T7, T8)
 
 - `data/items/j17.json` : `hm05` (§2.7). Réutilisés : `super_potion` (J15), `awakening`,
@@ -747,6 +774,33 @@ dépasser les références de Major Bob ; tableau dans ce plan au T8 ; test
   « prairie », `digletts_cave` → « grotte » [D].
 - `companions.json` `contexts` : `digletts_cave` → `cave`, `route_2_east` → `forest` [D].
 - **Objectifs** : aucun (pass §6 : rien de propre au J17).
+
+- **Fait au T8 (2026-10-15)** — écarts au texte ci-dessus :
+  - Dresseurs en `prize_per_level` (15 / 70 / 50 : argent = base de la classe × dernier niveau,
+    suit un recalage) ; Caninos `["bite", "leer", "ember"]` ; Victor Nv. 16 (§2.12.4).
+  - Dialogues : `route_11.json` (`route_11_sign` T-12, `route_11_cave_sign` T-10,
+    `route_11_snorlax` T-6 puis T-7, 24 répliques de Dresseurs), `route_2_east.json` (assistant
+    §2.6, `…_hm05_system`, `…_hm05_use`, visiteur T-5, `route_2_east_cave_sign` T-11),
+    `route_2.json` (`route_2_gate_east` T-8 + `set route_2_east_gate_open` ; variante T-9 en tête
+    de `route_2_closed_sign`). Locuteurs [D] : « Assistant », « Visiteur ». Variante d'accord à
+    une espèce en `"draft": true` (annexe A, Q-2).
+  - Scène `route_2_east_give_hm05` (`data/cutscenes/route_2_east.json`) : `give hm05` →
+    narration T-3 → deux bulles T-3 → `set got_hm05` ; les trois premières étapes `unless got_hm05`
+    (rejouée après coup : jamais deux CS05).
+  - **Zones en attente de leurs cartes** (précédent du J15) : `tools/pending_data/j17/zones.json`
+    (`route_11`, `digletts_cave`, en `draft` pour les sous-titres de l'annexe A ; rectangles de
+    l'illustration et décors du Pokédex proposés : `route_11` « prairie », `digletts_cave`
+    « plateau » comme le Mont Sélénite — aucun décor « grotte »). À poser avec T15 / T16 ;
+    `route_2.maps` += `route_2_east`, `route_2_east_gate` avec T19.
+  - `companions.json` : `digletts_cave` → `cave`, `route_2_east` → `forest`.
+  - **Non faits ici** (données de carte, avec leurs PNJ) : objets au sol et caché (scènes
+    `<carte>_item_<n>` et PNJ « objet »), `data/npcs/*.json` des Dresseurs, de l'assistant et du
+    visiteur (T17, T19, T20, T21).
+  - Tests : `test_j17_data` (Dresseurs, tables, textes mot pour mot du §16, table de l'assistant
+    sur les vraies données, scène, zones en attente), `test_simulate_route_11` ; listes recalées
+    (`test_dialogue_data` : dossier 20 et annexe A dans le contrôle « mot pour mot », dialogues
+    `UNUSED_YET` jusqu'aux cartes ; `test_cutscene_data`, `test_encounter_library`,
+    `test_no_draft_in_data`).
 
 ### 2.13 Route 2 sud, FUTUR A, FUTUR B, arbustes (T21, T23)
 
