@@ -87,6 +87,11 @@ var field_use: StringName = &""
 ## « Fossile Dôme » / « obtenu ») au lieu de « ajouté aux objets clés ». Clé « obtained » des
 ## données, facultative (faux par défaut).
 var obtained: bool = false
+## Jalon 17 (TODO(Q-1), `jalon-17.md` §0.4) : une CT ou une CS qui ne s'apprend pas encore
+## (la CS05, tant que Kevin n'a pas tranché « Flash en combat ») : aucun usage, donc pas de
+## bouton APPRENDRE ([method contexts] vide), et [TmTeach] la refuse. Clé « teachable » des
+## données, facultative (vrai par défaut), réservée aux CT et CS.
+var teachable: bool = true
 
 
 ## Identifiant de la catégorie dans les fichiers (&"ball", &"heal"…) : onglet du Sac.
@@ -109,6 +114,8 @@ func contexts() -> Array[StringName]:
 				return []
 			return [CONTEXT_FIELD]
 		Category.TM:
+			if not teachable:
+				return []
 			return [CONTEXT_FIELD]
 	return []
 

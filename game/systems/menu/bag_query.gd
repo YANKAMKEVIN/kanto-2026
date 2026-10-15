@@ -250,7 +250,7 @@ static func _entry(bag: Bag, item: ItemData, context: StringName,
 		view.targets_pokemon = true
 		view.permanent = true
 		view.description = tm_detail(item, data)
-		if not view.usable:
+		if not view.usable and item.teachable:
 			view.note = TmTeach.IN_BATTLE_TEXT
 		return view
 	if context == CONTEXT_TEAM and target != null:

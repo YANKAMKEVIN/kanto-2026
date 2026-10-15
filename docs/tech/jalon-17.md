@@ -474,6 +474,14 @@ remise ; deux visites → une seule CS05 ; sauvegarde relue pendant la scène = 
 - **Si le J16 arrive d'abord** avec une catégorie `hm` à part : la CS05 la rejoint, `TmTeach`
   suit, le test garde ses cas.
 
+**§2.7 bis — CS05 non enseignable tant que Q-1 n'est pas tranché (T7, TODO(Q-1)).** Clé
+facultative `"teachable": false` (CT et CS seulement) → `ItemData.teachable` : `contexts()` vide
+(pas de bouton APPRENDRE, pas de note « hors combat »), `TmTeach.check` → INCOMPATIBLE. La
+capacité `flash`, l'objet `hm05` et les compatibilités existent. Q-1 → dossier 20 : retirer la clé
+de `data/items/j17.json`, inverser `test_hm05_is_not_teachable_until_q1`, écrire
+`test_battle_flash`. Q-1 → dossier 21 : garder la clé (CS de terrain seulement) et retirer `flash`
+des capacités. Le texte T-15 (« Peut aussi apprendre Flash pour le combat ») suit la décision.
+
 ### 2.8 `FieldMoves` (T3)
 
 `game/systems/field_moves/field_moves.gd` — `FieldMoves` (`RefCounted`, statique, pur) +
@@ -648,6 +656,7 @@ jusqu'à ≈ Nv. 30) :
 | `psychic` Psyko | Soporifik Nv. 32, Hypno Nv. 37 | **J14** | attend le J14 (hors niveaux du jalon : sans effet sur 17A) |
 | `roar` Hurlement | Caninos (Nv. 1) | absente | **donnée** `pending_effects: ["force_switch"]` (comme `whirlwind`) ; **Dresseur** : remplacée par `leer` (Groz'Yeux), la plus proche existante (§6 du dossier) |
 | `flash` | CS05 | absente | §2.9 |
+| `take_down` Bélier | Caninos Nv. 30 (oublié par l'audit, ajouté au T7) | absente | **donnée** : 90, 85 %, PP 20, `pending_effects: ["recoil_damage"]` (comme `double_edge`) |
 
 Toutes les capacités des Dresseurs aux niveaux du §6 existent ailleurs (`wrap`, `poison_sting`,
 `bite`, `sand_attack`, `slash`, `leech_life`, `supersonic`, `tackle`, `tail_whip`, `quick_attack`,

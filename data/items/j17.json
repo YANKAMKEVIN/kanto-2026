@@ -1,0 +1,7 @@
+{
+	"hm05": {
+		"name": "CS05 — Flash", "plural": "CS05 — Flash", "feminine": true,
+		"category": "tm", "hm": 5, "teaches": "flash", "teachable": false,
+		"description": "Éclaire les grottes obscures si un Pokémon compatible est dans l'équipe. Peut aussi apprendre Flash pour le combat."
+	}
+}
