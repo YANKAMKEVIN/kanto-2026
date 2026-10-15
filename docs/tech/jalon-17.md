@@ -770,6 +770,13 @@ et annexe A validée).
 - §2.10 : `DarknessConfig`, `DarknessRules`, `DarknessVeil`, shader, `darkness.json`, `dark` dans
   `CaveLibrary`, `LAYER_WORLD_VEIL`. Tests §2.10. **CA** : tests verts ; Mont Sélénite sans voile
   (test) ; capture Mac du voile sur une carte de test.
+- **Fait (2026-10-15) — aligné sur `jalon-18.md` §2 (une seule brique)** : `DarknessProfile`,
+  `VeilParams`, `VeilMath`, `DarknessVeil` (`Node2D` dans le monde, `WorldLighting.Z_VEIL` = 20,
+  bulles en `Z_ABOVE_VEIL` = 21), `DarknessController` (Boot), shader en coordonnées du monde,
+  trous des `LightGlow`. Remplacent `DarknessConfig`, le calque `LAYER_WORLD_VEIL` et
+  `DarknessRules` (« obscure » = `CaveLibrary.is_dark` ; `should_cue` attend Q-1, T24). Tests
+  `test_darkness_profile`, `test_veil_math`, `test_darkness_veil`, `test_cave_library`,
+  `test_debug_start` (clé `veil`).
 
 #### T10 — constructeur-monde : `qa_flash` et départs — **(A)**, après T9
 - §2.17. **CA** : départs chargés sans erreur ; README à jour ; captures relues (voile sombre, halo

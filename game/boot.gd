@@ -174,6 +174,13 @@ var _caves := CaveLibrary.new()
 var _stone_item: StringName = &""
 ## Place du Pokémon qui reçoit un Super Bonbon pendant son déroulé (jalon 14, T18b) ; −1 sinon.
 var _candy_index: int = -1
+## Voile d'obscurité des grottes obscures (J17 T9, brique commune avec le J18 :
+## `docs/tech/jalon-18.md` §2) : posé à chaque changement de carte (écran noir).
+var _darkness: DarknessController
+## Départ de débogage « veil » (J18 §2.12) : voile forcé sur cette carte pour la session
+## (&"dark" ou &"lit"), jamais sauvegardé ; &"" sinon.
+var _veil_debug_map: StringName = &""
+var _veil_debug: StringName = &""
 
 @onready var _world: Node2D = %World
 @onready var _hud: ExplorationHud = %ExplorationHud
@@ -203,11 +210,15 @@ func _ready() -> void:
 	_lighting.process_mode = Node.PROCESS_MODE_PAUSABLE
 	add_child(_lighting)
 	_light_profiles.load_file()
+	_darkness = DarknessController.new()
+	_darkness.process_mode = Node.PROCESS_MODE_PAUSABLE
+	add_child(_darkness)
 	_load_settings()
 	# Compteur de fps de QA (journal « [perf] »), seulement en build debug, Boot scène principale.
 	if PerfCounter.is_allowed(OS.is_debug_build(), get_tree().current_scene == self):
 		add_child(PerfCounter.new())
 	_player = PLAYER_SCENE.instantiate() as Player
+	_darkness.setup(_world, _player)
 	_library.load_dir()
 	_cutscenes.load_dir()
 	_runner.setup(_library, GameState.flags, _dialogue_box, _player)
@@ -1062,6 +1073,8 @@ func _apply_debug_start() -> bool:
 		return false
 	start.apply(GameState, _pokemon)
 	_debug_start_autosave = start.autosave
+	_veil_debug = start.veil
+	_veil_debug_map = start.map if not start.veil.is_empty() else &""
 	if not start.wild.is_empty():
 		_encounter_library.override_table(start.map, start.wild_terrain, start.wild,
 			debug_start_path)
@@ -1124,6 +1137,7 @@ func _on_coming_soon_finished(_map: GameMap) -> void:
 func _on_map_changed(map: GameMap) -> void:
 	_observed.clear()
 	_apply_lighting(map)
+	_apply_darkness(map)
 	map.refresh_npcs(GameState.flags)
 	_interactions.set_map(map)
 	_cutscenes_node.set_map(map)
@@ -1175,6 +1189,19 @@ func _apply_lighting(map: GameMap) -> void:
 			push_error("Boot : profil de lumière inconnu « %s » (%s)" % [map.light_profile,
 				map.map_id])
 	_lighting.apply(profile, map)
+
+
+## Voile d'obscurité (J17 T9) : grotte obscure (`caves.json`, « dark ») ou voile forcé par le
+## départ de débogage. **Flash** : aucune règle ici tant que Q-1 n'est pas tranchée (T24) ; le
+## halo n'est ouvert que par le départ de débogage (« veil » : « lit »).
+func _apply_darkness(map: GameMap) -> void:
+	var forced := not _veil_debug.is_empty() and map.map_id == _veil_debug_map
+	var dark := forced or _caves.is_dark(map.map_id)
+	_darkness.set_map(map, dark, forced and _veil_debug == DebugStart.VEIL_LIT)
+
+
+func get_darkness() -> DarknessController:
+	return _darkness
 
 
 ## Arrivée sur une carte (écran visible) : zone découverte, autosave demandé, titre de zone.
@@ -1573,6 +1600,8 @@ func _apply_settings(s: GameSettings) -> void:
 	# Halos des grottes (jalon 12, T7 / T20) et lueur « hint » chez Léo (jalon 14) : vacillement
 	# coupé.
 	LightGlow.set_reduce_motion(s.reduce_motion)
+	# Voile d'obscurité (J17 T9) : battement coupé, ouverture du halo instantanée.
+	_darkness.set_reduce_motion(s.reduce_motion)
 	# Carte du Champion (jalon 10, T5) : sans glissé, un fondu court.
 	_hud.get_champion_card().reduce_motion = s.reduce_motion
 	# Étape « flash » (jalon 14) : adoucie par l'un ou l'autre réglage.
