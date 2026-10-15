@@ -74,14 +74,17 @@ func test_real_data_loads_without_error() -> void:
 		&"ekans", &"arbok", &"pikachu", &"raichu", &"sandshrew", &"sandslash", &"nidoran_f",
 		&"nidorina", &"nidoqueen", &"nidoran_m", &"nidorino", &"nidoking", &"clefairy",
 		&"clefable", &"jigglypuff", &"wigglytuff", &"zubat", &"golbat", &"oddish", &"gloom",
-		&"paras", &"parasect", &"mankey", &"primeape", &"abra", &"kadabra", &"machop",
+		&"paras", &"parasect",
+		# Jalon 15 (T12) : Miaouss et Persan (kanto_vermilion.json).
+		&"meowth", &"persian",
+		&"mankey", &"primeape", &"abra", &"kadabra", &"machop",
 		&"bellsprout", &"weepinbell",
 		&"geodude", &"graveler", &"golem", &"shellder", &"onix", &"voltorb", &"koffing",
 		&"horsea", &"goldeen", &"staryu", &"starmie"] as Array[StringName])
-	assert_eq(_data.get_move_ids().size(), 102,
+	assert_eq(_data.get_move_ids().size(), 103,
 		"47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10) + Patience (J11) "
 		+ "+ 21 du Mont Sélénite (jalon 12) + 8 du jalon 13 (les 5 du J12 qu'il reprenait : "
-		+ "entrées du J12) + 6 du Cap d'Azuria (jalon 14)")
+		+ "entrées du J12) + 6 du Cap d'Azuria (jalon 14) + Jackpot (J15)")
 	assert_true(_data.has_move(&"struggle"))
 
 
@@ -146,6 +149,8 @@ func test_real_evolution_chains() -> void:
 		# Cap d'Azuria (jalon 14, §2.13) : Kadabra (Cordon d'échange, sans source) et Machoc
 		# (Machopeur absent) n'en déclarent pas.
 		&"abra": [&"kadabra", 16],
+		# Carmin-sur-Mer (jalon 15, §2.7.1) : Rouge/Bleu.
+		&"meowth": [&"persian", 28],
 	}
 	for id: StringName in _data.get_species_ids():
 		var rules := _data.get_species(id).evolutions
@@ -407,6 +412,8 @@ func test_real_catch_rates_are_the_official_ones() -> void:
 		&"shellder": 190, &"horsea": 225, &"goldeen": 225, &"staryu": 225, &"starmie": 60,
 		# Jalon 14 (Cap d'Azuria).
 		&"abra": 200, &"kadabra": 100, &"machop": 180,
+		# Jalon 15 (T12).
+		&"meowth": 255, &"persian": 90,
 	}
 	assert_eq(_data.get_species_ids().size(), expected.size(), "toutes les espèces")
 	for id: StringName in _data.get_species_ids():

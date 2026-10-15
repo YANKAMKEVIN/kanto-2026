@@ -1,0 +1,8 @@
+{
+	"keeper": {
+		"cell": [7, 3],
+		"facing": "down",
+		"sprite": "old_man",
+		"dialogue": "daycare_keeper"
+	}
+}

@@ -92,6 +92,9 @@ extends RefCounted
 ## événement ([method get_template], T14) : « switch_reason_trapped » (raison sur les cartes de
 ## l'équipe : « Impossible de changer ») et « move_disabled_label » (carte de capacité :
 ## « BLOQUÉE »).
+## Jackpot (jalon 15, `jalon-15.md` §2.7.3) : COINS_SCATTERED → « coins_scattered » ; à la fin
+## du combat, « coins_collected » ({money}, [method coins_line]) après « prize_won ».
+## Textes de l'annexe A de `jalon-15.md` (A.1), validés par Kevin le 2026-10-14 (Q-1).
 ## Nom du dresseur (OUV.2, dossier 13 §3.5) : il peut porter un jeton de [DialogueTokens]
 ## (`"name": "{rival}"`), résolu avec [member token_values] (posé par Boot) ; sans valeur, le nom
 ## reste tel quel.
@@ -134,6 +137,7 @@ const TEMPLATE_IDS: Array[StringName] = [
 	&"move_disabled_label",
 	&"charge_dig_start", &"charge_dig_broken", &"dodged", &"ball_blocked", &"teleported",
 	&"nothing_happened", &"rare_candy_level",
+	&"coins_scattered", &"coins_collected",
 ]
 ## Entre deux gains de statistiques du bilan (« PV +2 · Attaque +1 »).
 const SUMMARY_SEPARATOR: String = " · "
@@ -373,6 +377,8 @@ func lines(event: BattleEvent, data: PokemonData, trainer: TrainerData = null) \
 			result.append(_fill(&"teleported", event, data))
 		BattleEvent.Kind.NOTHING_HAPPENED:
 			result.append(_fill(&"nothing_happened", event, data))
+		BattleEvent.Kind.COINS_SCATTERED:
+			result.append(_fill(&"coins_scattered", event, data))
 		BattleEvent.Kind.STATUS_INFLICTED, BattleEvent.Kind.STATUS_UNCHANGED, \
 				BattleEvent.Kind.STATUS_DAMAGED, BattleEvent.Kind.STATUS_CURED, \
 				BattleEvent.Kind.STATUS_PREVENTED, BattleEvent.Kind.STATUS_ENDED:
@@ -407,6 +413,14 @@ func prize_line(amount: int) -> String:
 	if not _texts.has(&"prize_won"):
 		return ""
 	return get_template(&"prize_won").format({"money": MenuFormat.money(amount)})
+
+
+## « Tu ramasses 34 ₽. » : pièces du Jackpot [param amount] ramassées en fin de combat (chaîne
+## vide si le modèle manque).
+func coins_line(amount: int) -> String:
+	if not _texts.has(&"coins_collected"):
+		return ""
+	return get_template(&"coins_collected").format({"money": MenuFormat.money(amount)})
 
 
 ## « +11 XP » (bilan de fin de combat).

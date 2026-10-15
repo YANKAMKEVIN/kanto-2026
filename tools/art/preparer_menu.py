@@ -48,6 +48,8 @@ PLANCHES_OBJETS_SUIVANTES = [
 	("UI_OBJETS_J13_PLANCHE_r3.png", ["nugget"]),
 	# Série 16 (J14 T13) : Passe Bateau et Super Bonbon (`serie16.ICONES_IDS`).
 	("UI_OBJETS_J14_PLANCHE_r1.png", ["ss_ticket", "rare_candy"]),
+	# Série 17 (J15 T11) : Super Potion et Guérison (`serie17.ICONES_IDS`).
+	("UI_OBJETS_J15_PLANCHE_r1.png", ["super_potion", "full_restore"]),
 ]
 
 

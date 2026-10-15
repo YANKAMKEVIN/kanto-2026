@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_rgt6y"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_5gxbp"]
+[ext_resource type="Texture2D" path="res://assets/world/props/prop_grue_quai_01.png" id="3_s6u7t"]
+
+[node name="PropGrueQuai01" type="Node2D" unique_id=1242792060]
+script = ExtResource("1_rgt6y")
+footprint = Array[Vector2i]([Vector2i(-1, 0), Vector2i(0, 0)])
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1027798122]
+unique_name_in_owner = true
+material = ExtResource("2_5gxbp")
+texture = ExtResource("3_s6u7t")
+centered = false
+offset = Vector2(-96, -218)

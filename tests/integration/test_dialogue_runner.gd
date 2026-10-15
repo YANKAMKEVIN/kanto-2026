@@ -540,6 +540,47 @@ func test_empty_answer_pages_end_the_dialogue() -> void:
 	assert_true(_player.is_input_enabled())
 
 
+## J15 (Pension) : la réponse au choix est émise une fois, avant l'action et les pages.
+func test_choice_made_carries_the_answer_once_before_the_answer_pages() -> void:
+	_add_service_dialogues()
+	var answers: Array[bool] = []
+	var text_at_answer: Array[String] = []
+	_runner.choice_made.connect(func(confirmed: bool) -> void:
+		answers.append(confirmed)
+		text_at_answer.append(_box.get_text()))
+	_runner.play(&"nurse")
+	await wait_process_frames(1)
+	_advance()
+	_runner.choose(false)
+	_runner.choose(true)
+	assert_eq(answers, [false] as Array[bool], "une seule réponse")
+	assert_eq(text_at_answer, [QUESTION] as Array[String], "avant les pages de la réponse")
+	_advance()
+	await _finish()
+
+
+## J15 : jetons « de contexte » de la Pension dans la question (T-7 : « Ce sera {price} ₽. »),
+## résolus au début du dialogue, choix demandé sur la question résolue.
+func test_a_context_token_in_the_question_is_resolved() -> void:
+	assert_true(_library.add_from_dict({"visit": {"pages": ["{pokemon} va bien.",
+		"Ce sera {price} ₽."], "choice": {"confirm": "OUI", "cancel": "NON"}}}, "test"))
+	_runner.token_values = func() -> Dictionary[StringName, String]:
+		return {&"pokemon": "Rattata", &"price": "300"} as Dictionary[StringName, String]
+	var views: Array[ChoiceView] = []
+	_runner.choice_requested.connect(func(view: ChoiceView) -> void: views.append(view))
+	_runner.play(&"visit")
+	await wait_process_frames(1)
+	assert_eq(_box.get_text(), "Rattata va bien.")
+	_advance()
+	assert_eq(_box.get_text(), "Ce sera 300 ₽.")
+	_advance()
+	assert_eq(views.size(), 1)
+	if views.size() == 1:
+		assert_eq(views[0].title, "Ce sera 300 ₽.")
+	_runner.choose(true)
+	await _finish()
+
+
 func test_final_action_is_awaited_with_the_box_closed_before_the_player_is_released() -> void:
 	_add_service_dialogues()
 	_runner.action_handler = _slow_action

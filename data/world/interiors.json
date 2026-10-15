@@ -23,6 +23,16 @@
 		"cerulean_gym",
 		"cerulean_bike_shop",
 		"cerulean_house",
-		"cerulean_burgled_house"
+		"cerulean_burgled_house",
+		"vermilion_center",
+		"vermilion_mart",
+		"vermilion_fan_club",
+		"vermilion_fisher_house",
+		"vermilion_house_1",
+		"vermilion_house_2",
+		"route_6_underground_gate",
+		"route_5_daycare",
+		"route_5_gate",
+		"route_5_underground_gate"
 	]
 }

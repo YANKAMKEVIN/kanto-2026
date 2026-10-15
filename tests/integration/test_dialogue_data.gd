@@ -44,8 +44,8 @@ const GATE_GUARDS: Array[StringName] = [&"forest_gate_north_guard", &"forest_gat
 ## T13 : les intérieurs d'Argenta sont dans [constant MAPS] (Musée, maisons, Arène : retirés).
 ## T11 : la Route 2 nord et Argenta (extérieur) sont dans [constant MAPS] : liste vide.
 ## Jalon 14 (T23) : D5 et D6 posés, leurs répliques (n° 50, 51) sortent de la liste.
-const UNUSED_YET: Array[StringName] = [
-]
+## Jalon 15 (T14) : les Dresseurs de la Route 6 sont posés avec la carte : liste vide.
+const UNUSED_YET: Array[StringName] = []
 ## Textes pas encore validés, exemptés du contrôle « mot pour mot » (jalon 14 T16 : ceux du
 ## coquillage de la Route 25, validés depuis : dossier 17 §15 n° 71 ; le n° 72 est retiré le 2026-10-14).
 const UNVALIDATED: Array[StringName] = []
@@ -68,6 +68,12 @@ const DOSSIER_14 := "res://docs/design/dossier-14-systemes-j11.md"
 ## du plan (A-8, console après le retour de Léo).
 const DOSSIER_17 := "res://docs/design/dossier-17-cap-azuria.md"
 const PLAN_J14 := "res://docs/tech/jalon-14.md"
+## Jalon 15 : textes validés du §15 (« … » par page ; jetons écrits tels quels).
+const DOSSIER_18 := "res://docs/design/dossier-18-carmin-sur-mer.md"
+## Jalon 15 : annexe A de son plan, validée le 2026-10-14 (panneaux A.3, personnages A.4 ; une
+## page peut ne porter qu'un morceau de la citation, comme pour le dossier 18).
+const JALON_15 := "res://docs/tech/jalon-15.md"
+const AnnexATexts := preload("res://tests/unit/test_annex_a_texts.gd")
 ## Jalon 13 : lot de textes du dossier 16 §21 (« « … » / « … » » par numéro, lignes repliées).
 const DOSSIER_16 := "res://docs/design/dossier-16-azuria.md"
 ## Jalon 12 : lot de textes du §20 du dossier 15 (« n. Libellé : « … » »).
@@ -100,6 +106,14 @@ const MAPS: Array[StringName] = [
 	&"bill_house",
 	# Jalon 14 (T16) : la Route 25.
 	&"route_25",
+	# Jalon 15 (T18, T19) : le passage souterrain (passant T-18, indice T-19).
+	&"underground_path",
+	# Jalon 15 (T14) : la Route 6, Carmin-sur-Mer et ses intérieurs.
+	&"route_6", &"route_6_underground_gate", &"vermilion_city", &"vermilion_center",
+	&"vermilion_mart", &"vermilion_fan_club", &"vermilion_fisher_house", &"vermilion_house_1",
+	&"vermilion_house_2",
+	# Jalon 15 (T13) : la Route 5, la Pension, le poste nord et l'entrée du souterrain.
+	&"route_5", &"route_5_daycare", &"route_5_gate", &"route_5_underground_gate",
 ]
 ## Lot de textes validé par Kevin le 2026-10-06 (anciens brouillons : panneau, observations,
 ## soin de Maman, terminal du Stockage, portes de Jadielle…) : source des textes hors dossiers.
@@ -152,6 +166,10 @@ const IDS: Array[StringName] = [
 	&"companion_cave", &"companion_city", &"companion_forest", &"companion_happy",
 	&"companion_sniff", &"companion_stretch", &"companion_stretch_soft", &"companion_tired",
 	&"companion_tired_f", &"companion_unwell", &"companion_watch", &"companion_water",
+	# Jalon 15 (T4) : la Pension (dossier 18 §15.1).
+	&"daycare_after", &"daycare_deposited", &"daycare_keeper", &"daycare_last_able",
+	&"daycare_offer", &"daycare_party_full", &"daycare_pick", &"daycare_returned",
+	&"daycare_returned_short", &"daycare_visit", &"daycare_visit_levels",
 	# Jalon 12 (T20) : narration de la Corde Sortie, jouée par Boot.
 	&"escape_rope_used",
 	&"forest_gate_north_guard", &"forest_gate_south_guard",
@@ -219,8 +237,19 @@ const IDS: Array[StringName] = [
 	&"route_3_sign_west", &"route_3_traveler",
 	# Jalon 12 (T28) : le panneau du sas de la Route 4 (dossier 15 §20 n° 36).
 	&"route_4_sign",
+	# Jalon 15 (T12) : Dresseurs de la Route 6 (dossier 18 §15.5).
+	&"route_6_camper_gabin_after", &"route_6_camper_gabin_before",
+	&"route_6_camper_gabin_defeated", &"route_6_camper_mathis_after",
+	&"route_6_camper_mathis_before", &"route_6_camper_mathis_defeated",
+	&"route_6_lass_chloe_after", &"route_6_lass_chloe_before", &"route_6_lass_chloe_defeated",
+	&"route_6_lass_manon_after", &"route_6_lass_manon_before", &"route_6_lass_manon_defeated",
+	&"route_6_scout_axel_after", &"route_6_scout_axel_before", &"route_6_scout_axel_defeated",
+	&"route_6_scout_basile_after", &"route_6_scout_basile_before",
+	&"route_6_scout_basile_defeated",
 	&"sign_pallet_town",
 	&"storage_terminal",
+	# Jalon 15 (T18, T19) : passant et pierre descellée du souterrain.
+	&"underground_hidden_1", &"underground_hidden_1_found", &"underground_passer",
 	&"viridian_courier",
 	# Jalon 9 (T18) : objets de la Forêt de Jade.
 	&"viridian_forest_item_1", &"viridian_forest_item_2", &"viridian_forest_item_3_found",
@@ -240,6 +269,14 @@ const IDS: Array[StringName] = [
 	&"route_25_youngster_jules_before", &"route_25_youngster_jules_defeated",
 	&"route_25_youngster_yanis_after", &"route_25_youngster_yanis_before",
 	&"route_25_youngster_yanis_defeated",
+	# Jalon 15 (T14) : Route 6 et Carmin-sur-Mer (dossier 18 §15, annexe A du plan).
+	&"route_6_sign", &"route_6_gate_sign", &"route_6_underground_gate_sign", &"route_6_guard",
+	&"route_6_fisher", &"route_6_walker", &"route_6_item_1", &"route_6_hidden_1",
+	&"vermilion_city_sign", &"vermilion_gym_sign", &"vermilion_dock_sign", &"vermilion_gym_tree",
+	&"vermilion_sailor", &"vermilion_docker_1", &"vermilion_docker_2", &"vermilion_old_man",
+	&"vermilion_resident", &"vermilion_kid", &"vermilion_fan_club_chairman",
+	&"vermilion_fan_club_member", &"vermilion_fan_club_member_2", &"vermilion_fisher",
+	&"vermilion_house_1_resident", &"vermilion_house_2_resident",
 ]
 ## Jalon 14 (T17, dossier 17 §15 n° 1 à 27) : dialogues de la maison de Léo, ajoutés aux autres.
 const IDS_J14_BILL: Array[StringName] = [
@@ -254,6 +291,14 @@ const IDS_J14_ROCKET: Array[StringName] = [
 	&"cerulean_rocket_spotted", &"cerulean_rocket_tm", &"cerulean_south_guard",
 	&"cerulean_south_guard_leaving", &"cerulean_victim",
 ]
+## Jalon 15 (T13) : la Route 5 et ses intérieurs (dossier 18 §15.2, annexe A.3).
+const IDS_J15_ROUTE_5: Array[StringName] = [
+	&"route_5_crossroads_sign", &"route_5_daycare_sign", &"route_5_guard", &"route_5_hidden_1",
+	&"route_5_item_1", &"route_5_sign", &"route_5_traveler", &"route_5_underground_sign",
+	&"route_5_walker",
+]
+## Jalon 15 (T13) : la réplique du garde du poste nord, jouée aussi par la scène du recul.
+const PLAYED_J15_ROUTE_5: Array[StringName] = [&"route_5_guard"]
 ## Dialogues joués par les scènes du Rocket et du barrage.
 const PLAYED_J14_ROCKET: Array[StringName] = [
 	&"cerulean_rocket_beaten", &"cerulean_rocket_before", &"cerulean_rocket_leaving",
@@ -315,6 +360,9 @@ func before_all() -> void:
 	rest_points.load_file()
 	for rest_map: StringName in rest_points.get_maps():
 		_use(rest_points.get_point(rest_map).wakeup_dialogue, rest_map)
+	# Jalon 15 (T4) : répliques de la Pension, jouées par le DaycareDirector (code).
+	for daycare_line: StringName in DaycareLines.PLAYED_BY_DIRECTOR:
+		_use(daycare_line, &"route_5_daycare")
 	for map_id: StringName in MAPS:
 		_npc_ids[map_id] = []
 		for spec: NpcSpec in NpcRoster.load_for_map(map_id).get_all():
@@ -407,7 +455,7 @@ func test_library_loads_without_error() -> void:
 	# Les identifiants sont comparés triés (la liste IDS est groupée par jalon).
 	var found := _without_qa(library.get_ids())
 	found.sort()
-	var expected := IDS + IDS_J14_BILL + IDS_J14_ROCKET
+	var expected := IDS + IDS_J14_BILL + IDS_J14_ROCKET + IDS_J15_ROUTE_5
 	expected.sort()
 	assert_eq(found, expected)
 
@@ -461,14 +509,17 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		&"rival_cerulean_intro", &"rival_cerulean_lost", &"rival_cerulean_resume",
 		&"rival_cerulean_resume_again", &"rival_cerulean_won",
 		&"rival_challenge", &"rival_challenge_wait", &"rival_lab_lost", &"rival_lab_won",
+		# Jalon 15 (T14) : le garde de Safrania sur la Route 6 (recul).
+		&"route_6_guard",
 		&"rival_lab_won_leaving", &"rival_parcel_greet", &"rival_parcel_leaving",
 		&"rival_parcel_return", &"rival_starter_pick", &"rival_starter_smile",
 		&"route1_grass_thought", &"route22_rival_greet", &"route22_rival_hesitates",
 		&"route22_rival_lost", &"route22_rival_won", &"route22_youngster_sigh",
-		&"route_1_potion_found", &"route_25_hidden_1_found", &"route_2_item_3_found",
+		&"route_1_potion_found", &"route_25_hidden_1_found", &"underground_hidden_1_found", &"route_2_item_3_found",
 		&"route_2_item_4_found",
 		&"viridian_forest_item_3_found", &"viridian_forest_item_4_found",
-		&"viridian_forest_item_6_found"] + PLAYED_J14_BILL + PLAYED_J14_ROCKET))
+		&"viridian_forest_item_6_found"] + PLAYED_J14_BILL + PLAYED_J14_ROCKET
+		+ PLAYED_J15_ROUTE_5))
 	for id: StringName in played:
 		assert_true(_library.has_dialogue(id), "dialogue « %s » défini" % id)
 		if UNUSED_YET.has(id):
@@ -546,6 +597,7 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 	assert_eq(_library.get_set_flags(),
 		_sorted([&"blacked_out_before", &"cerulean_neighbor_talked", &"forest_hiker_talked", &"forest_naturalist_talked",
 			&"mom_greeted", &"nugget_rocket_yes", &"pewter_researcher_talked", &"poison_unlocked", &"rival_met",
+			&"route_5_gate_warned",
 			&"route_2_hiker_talked", &"route_2_youngster_talked", &"storage_terminal_seen",
 			&"viridian_old_man_talked"] + SET_J14_BILL_DIALOGUES + SET_J14_ROCKET_DIALOGUES))
 	assert_eq(_cutscenes.get_set_flags(), _sorted([&"badge_boulder", &"badge_cascade",
@@ -557,7 +609,8 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		&"got_route_25_item_3", &"got_route_2_item_1", &"got_route_2_item_2",
 		&"got_route_2_item_3", &"got_route_2_item_4", &"got_route_2_north_item_1",
 		&"got_route_3_hidden_1", &"got_route_3_item_1", &"got_route_3_item_2",
-		&"got_route_3_item_3", &"got_route_4_poke_ball", &"got_viridian_forest_item_1",
+		&"got_route_3_item_3", &"got_route_4_poke_ball", &"got_route_5_hidden_1",
+		&"got_route_5_item_1", &"got_underground_hidden_1", &"got_viridian_forest_item_1",
 		&"got_viridian_forest_item_2", &"got_viridian_forest_item_3", &"got_viridian_forest_item_4",
 		&"got_viridian_forest_item_5", &"got_viridian_forest_item_6", &"lost_mt_moon_researcher",
 		&"misty_invited", &"misty_met", &"mt_moon_fossil_chosen", &"mt_moon_got_dome_fossil",
@@ -565,8 +618,11 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		&"pokedex_activated", &"rival_battle_done", &"rival_cerulean_lost_once",
 		&"rival_cerulean_retried", &"rival_cerulean_won", &"rival_challenged", &"rival_lab_lost",
 		&"rival_lab_won", &"rival_left_lab", &"rival_route22_lost", &"rival_route22_won",
-		&"route_3_entered", &"route_3_guard_cleared", &"route_4_reached", &"starter_chosen",
-		&"starter_offered", &"tm11_received", &"tm34_received", &"viridian_arrived"]
+		&"route_3_entered", &"route_3_guard_cleared", &"route_4_reached", &"route_5_entered",
+		&"starter_chosen",
+		&"starter_offered", &"tm11_received", &"tm34_received", &"viridian_arrived",
+		# Jalon 15 (T14) : Route 6 (Poké Ball, Super Potion cachée), arrivée à Carmin.
+		&"got_route_6_hidden_1", &"got_route_6_item_1", &"vermilion_reached"]
 		+ SET_J14_BILL_CUTSCENES + SET_J14_ROCKET_CUTSCENES))
 	assert_eq(_used_on.get(&"oak_lab_reunion"), [&"oak_lab"], "joué au labo, après le fondu")
 	assert_eq(_used_on.get(&"oak_starter_offer"), [&"oak_lab"], "joué au labo")
@@ -750,6 +806,8 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 	var dossier_12 := FileAccess.get_file_as_string(DOSSIER_12)
 	var lot_j10 := FileAccess.get_file_as_string(LOT_J10)
 	var dossier_14 := FileAccess.get_file_as_string(DOSSIER_14)
+	var dossier_18 := FileAccess.get_file_as_string(DOSSIER_18)
+	var annex_a_15 := AnnexATexts.annex_a(FileAccess.get_file_as_string(JALON_15))
 	var dossier_16 := FileAccess.get_file_as_string(DOSSIER_16).replace("\n    ", " ") \
 		.replace("\n   ", " ")
 	var dossier_15 := FileAccess.get_file_as_string(DOSSIER_15)
@@ -780,6 +838,13 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			or dossier_12.contains(_as_dossier_10(text))
 			or lot_j10.contains("| « %s » |" % text.replace("\n", "\\n"))
 			or _each_line_quoted(dossier_14, text)
+			or _in_dossier_18(dossier_18, text)
+			or _in_dossier_18(annex_a_15, text)
+			# J15 (T13) : panneaux « TITRE — texte » (§15.2, T-1) écrits sur deux lignes ; le
+			# carrefour de l'annexe A.3 (« … → · … ← ») aussi.
+			or dossier_18.contains("« %s »" % text.replace("\n", " — "))
+			or annex_a_15.contains("« %s »" % text.replace("\n", " · "))
+			or dossier_18.contains("« %s »" % row[1])
 			or _each_line_quoted(dossier_16, text)
 			or dossier_15.contains(" : « %s »" % text)
 			# J12 (T21) : bulles suivantes (« / ») et panneaux sur deux lignes du §20.
@@ -801,6 +866,17 @@ func _each_line_quoted(dossier: String, text: String) -> bool:
 		if not dossier.contains("« %s »" % line):
 			return false
 	return true
+
+
+## Jalon 15 : vrai si [param text] (retours à la ligne de la bulle remplacés par des espaces) est
+## dans une réplique « … » du lot validé du dossier 18 (§15 : une réplique longue peut tenir sur
+## plusieurs pages, coupées entre deux phrases ; test_vermilion_data vérifie la réplique entière).
+func _in_dossier_18(dossier: String, text: String) -> bool:
+	var flat := text.replace("\n", " ")
+	for quote: RegExMatch in RegEx.create_from_string("« (.+?) »").search_all(dossier):
+		if quote.get_string(1).contains(flat):
+			return true
+	return false
 
 
 func test_speakers_and_narration() -> void:
@@ -856,6 +932,10 @@ func test_speakers_and_narration() -> void:
 		&"mt_moon_researcher_before": ["Chercheur Gaspard", false],
 		&"mt_moon_researcher_talk": ["Chercheur Gaspard", false],
 		&"mt_moon_fossil_dome": ["", true], &"mt_moon_fossil_helix": ["", true],
+		# Jalon 15 (T14) : panneaux sans locuteur, l'arbre de l'Arène en narration.
+		&"route_6_sign": ["", false], &"vermilion_city_sign": ["", false],
+		&"vermilion_gym_tree": ["", true], &"route_6_guard": ["Garde", false],
+		&"vermilion_sailor": ["Marin", false],
 	}
 	for id: StringName in expected:
 		var dialogue := _library.get_dialogue(id)
@@ -957,12 +1037,14 @@ func test_oak_parcel_lines() -> void:
 	# (B1F) et la CT01 (B2F) au sol, la Pierre Lune cachée (B2F). Jalon 13 : la Poké Ball de la
 	# Route 4, la Potion de la Route 24, Ondine (pont, Arène et rattrapage), l'Antidote caché et le
 	# recruteur (T22). Jalon 14 : l'écran, le module et la console de Léo (T17), quatre objets de
-	# la Route 25 (T16).
-	assert_eq(launched, 36, "la scène du colis, quinze objets au sol, trois cachés, Pierre et "
+	# la Route 25 (T16). Jalon 15 (T19) : la Guérison cachée du souterrain.
+	# Jalon 15 (T14) : la Poké Ball et la Super Potion cachée de la Route 6.
+	# Jalon 15 (T13) : la Super Potion et l'Antidote caché de la Route 5.
+	assert_eq(launched, 41, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
 		+ "sa CT34, Ondine (pont, Arène et rattrapage), écran, module, console, objets de la "
-		+ "Route 25, le Rocket d'Azuria (2) et le barrage sud")
-	# Le jeton n'apparaît que dans la réplique de l'espèce (et « {pokemon} » dans les phrases du
-	# compagnon, J11).
+		+ "Route 25, le Rocket d'Azuria (2) et le barrage sud ; J15 : objets de la Route 5")
+	# Le jeton n'apparaît que dans la réplique de l'espèce, « {pokemon} » dans les phrases du
+	# compagnon (J11), et ceux de la Pension dans ses répliques (J15).
 	for row: Array in _pages():
 		if row[0] == &"cerulean_rocket_tm":
 			assert_eq(DialogueTokens.tokens_in(row[1]), [DialogueTokens.PLAYER] as Array[StringName])
@@ -970,6 +1052,11 @@ func test_oak_parcel_lines() -> void:
 		if IDS_J14_BILL.has(row[0]):
 			continue # {player} de Léo (dossier 17 §15) : testé dans test_bill_house
 		var tokens := DialogueTokens.tokens_in(row[1])
+		if String(row[0]).begins_with("daycare_"):
+			for token: StringName in tokens:
+				assert_true(DialogueTokens.CONTEXT.has(token),
+					"%s : jeton {%s} à sa place" % [row[0], token])
+			continue
 		var expected: Array[StringName] = []
 		if row[1] == records[2].text:
 			expected = [DialogueTokens.FIRST_WILD_SPECIES]

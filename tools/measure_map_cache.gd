@@ -12,6 +12,8 @@ extends SceneTree
 ##   (… -- --all-neighbors : comportement d'avant le jalon 10, intérieurs préchargés depuis
 ##   l'extérieur, pour comparer)
 ##   (… -- --route=mt_moon : la descente du Mont Sélénite, jalon 12)
+##   (… -- --route=vermilion : Route 6 → Carmin-sur-Mer → Centre, jalon 15)
+##   (… -- --route=route_5 : Azuria, la Route 5 et ses trois intérieurs, jalon 15)
 ##   (… -- --from=pewter_city : départ direct sur cette étape, processus neuf : le compteur
 ##   `tex=` est alors juste, aucune libération avant la mesure)
 ##
@@ -52,6 +54,25 @@ const MT_MOON_STEPS: Array[Array] = [
 	[&"mt_moon_1f", &"arrivee_b"],
 	[&"mt_moon_b2f", &"arrivee_d"],
 ]
+## Jalon 15 (T14, §2.11) : Route 6 → Carmin-sur-Mer → Centre → Carmin (`-- --route=vermilion`),
+## mémoire « carte + voisines » (la plus lourde : Carmin et son navire).
+const VERMILION_STEPS: Array[Array] = [
+	[&"route_6", &"from_underground"],
+	[&"vermilion_city", &"from_route_6_c"],
+	[&"vermilion_center", &"entrance"],
+	[&"vermilion_city", &"from_center"],
+]
+## Jalon 15 (T13, §2.11) : Azuria → Route 5 → Pension → Route 5 → poste → Route 5 → entrée du
+## souterrain (`-- --route=route_5`) : mémoire « carte + voisines ».
+const ROUTE_5_STEPS: Array[Array] = [
+	[&"cerulean_city", &"from_route_5_c"],
+	[&"route_5", &"from_cerulean_c"],
+	[&"route_5_daycare", &"entrance"],
+	[&"route_5", &"from_daycare"],
+	[&"route_5_gate", &"from_route_5"],
+	[&"route_5", &"from_gate"],
+	[&"route_5_underground_gate", &"from_route_5"],
+]
 ## Images attendues après chaque étape (textures envoyées, préchargements finis).
 const SETTLE_FRAMES: int = 20
 
@@ -81,6 +102,10 @@ func _run() -> void:
 	var steps: Array[Array] = STEPS
 	if OS.get_cmdline_user_args().has("--route=mt_moon"):
 		steps = MT_MOON_STEPS
+	if OS.get_cmdline_user_args().has("--route=vermilion"):
+		steps = VERMILION_STEPS
+	if OS.get_cmdline_user_args().has("--route=route_5"):
+		steps = ROUTE_5_STEPS
 	var first := 0
 	for arg: String in OS.get_cmdline_user_args():
 		if arg.begins_with("--from="):

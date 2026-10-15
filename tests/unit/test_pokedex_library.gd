@@ -17,6 +17,8 @@ const ENCOUNTERABLE: Array[StringName] = [
 	# Jalon 14 (dossier 17 §15, n° 63–65, validés le 2026-10-12) : Abra, Machoc (Dresseur), et
 	# Kadabra, première évolution qui a sa note.
 	&"abra", &"kadabra", &"machop",
+	# Jalon 15 (annexe A.5 de jalon-15.md, validée le 2026-10-14) : Miaouss.
+	&"meowth",
 ]
 ## Notes validées par Kevin qui parlent de l'évolution (exception à « jamais de divulgation ») :
 ## celle de Kadabra (dossier 17 §15, n° 64) cite son origine, Abra, déjà vue pour l'avoir.

@@ -198,6 +198,8 @@
 		"rested": { "text": "{pokemon} s'endort et récupère !" },
 		"switch_reason_trapped": { "text": "Impossible de changer" },
 		"move_disabled_label": { "text": "BLOQUÉE" },
+		"coins_scattered": { "text": "Des pièces s'éparpillent partout !" },
+		"coins_collected": { "text": "Tu ramasses {money}." },
 		"charge_dig_start": { "text": "{pokemon} creuse un trou !" },
 		"charge_dig_broken": { "text": "{pokemon} remonte à la surface." },
 		"dodged": { "text": "{pokemon} évite l'attaque !" },

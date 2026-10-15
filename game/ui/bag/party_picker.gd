@@ -65,7 +65,11 @@ func show_targets(view: PartyPickerView) -> void:
 	_view = view
 	_heal_generation += 1
 	_healing = 0
-	if _compact:
+	if not view.title.is_empty():
+		_title.text = view.title
+		_title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		_title.text_overrun_behavior = TextServer.OVERRUN_NO_TRIMMING
+	elif _compact:
 		_title.text = COMPACT_PERMANENT_TITLE if view.permanent else COMPACT_TITLE
 	elif view.permanent:
 		_title.text = PERMANENT_TITLE_FORMAT % view.item_name
@@ -232,6 +236,8 @@ func _refuse(index: int, target: PartyTargetView) -> void:
 	_haptic(UiTokens.HAPTIC_REFUSE_MS)
 	if refusal_in_title and not text.is_empty():
 		_title.text = text
+		if _title.autowrap_mode != TextServer.AUTOWRAP_OFF:
+			_title.text_overrun_behavior = TextServer.OVERRUN_NO_TRIMMING
 		_title.add_theme_color_override(&"font_color", UiTokens.HP_LOW)
 	target_refused.emit(index, text)
 

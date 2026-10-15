@@ -1,0 +1,33 @@
+# Maison 1 de Carmin-sur-Mer (vermilion_house_1) — grille fonctionnelle (jalon 15 T14, défauts
+# de la règle 4 ; dossier 18 §8.2, plan jalon-15.md §2.7.8 : un habitant, T-36 « Safrania »).
+# Même enveloppe et même mobilier que la maison du tailleur d'Argenta (argenta_maison_tailleur).
+#
+# Légende :
+#   K mur (bloqué)          . sol (praticable)
+#   X sortie vers Carmin (praticable : paillasson, PUSH ↓)
+#   F réfrigérateur (1, 3)   C plan de travail (2..4, 3)   H cuisinière (5, 3)
+#   T table à manger (2..4, 5..6)   S canapé (10..12, 3)   b table basse (10..11, 5)
+#   d lampe (13, 3)   p porte-manteau (5, 7)   x plante (1, 7), (13, 7)   h habitant (12, 6)
+#
+# Format : section GRILLE (« NN » + espace + 15 caractères par rangée), puis POSITIONS.
+
+PRATICABLES .Xh
+
+GRILLE 15 10
+00 KKKKKKKKKKKKKKK
+01 KKKKKKKKKKKKKKK
+02 KKKKKKKKKKKKKKK
+03 KFCCCH....SSSdK
+04 K.............K
+05 K.TTT.....bb..K
+06 K.TTT.......h.K
+07 Kx...p.......xK
+08 KKKKKKXXXKKKKKK
+09 KKKKKKKKKKKKKKK
+FIN
+
+POSITIONS
+sortie              warp           6..8,8       libre   # PUSH ↓ → vermilion_city, from_house_1
+entree              spawn          7,8          libre   # spawn « entrance », tourné ↑
+habitant            pnj            12,6         bloque  facing=left  # T-36
+FIN
