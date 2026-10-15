@@ -1,0 +1,104 @@
+# Route 16 (est) — grille fonctionnelle (jalon 21, lot 21.0, dossier 24 §9.1, §10.2, passe
+# j21-v2-alignement L-4, conçue le 2026-10-15). Source UNIQUE de la géométrie de la carte `route_16` :
+# contrôle (tools/art/plan_check_j21.py, profil route_16, qui relit Céladopole), plan en aplats, vue
+# générale peinte, puis outil de construction. Un changement de composition se fait ICI d'abord.
+#
+# 44 × 28 cases ; nord en haut ; x = colonne 0..43, y = rangée 0..27. NE CONTIENT QUE LE TRONÇON EST de
+# la Route 16 de Rouge/Bleu (pret/pokered, Route16 : 40 × 18 cases, blocs et collisions lus ; la moitié
+# est, de x 24 à 39, plus la façade du poste). Tout ce qui est à l'ouest du poste (pelouse, maison de
+# Vol, panneau « ROUTE 16 », les six Motards, bord sud vers la Route 17) est HORS JALON : la carte se
+# ferme sur le poste. Échelle ≈ ×1,4 sur RB (voie de 1 case → 3 cases, goulet de 1 → 2 cases).
+#
+# RACCORD (imposé par le dossier §10.2, partagé avec Céladopole) :
+#   EST : Route 16 (43, 21..23) ↔ Céladopole (0, 21..23), mêmes trois rangées, aucun décalage (la sortie
+#   de Céladopole est la grande avenue, resserrée à 3 cases comme à l'est vers la Route 7). Aucun
+#   autre raccord : nord, sud et ouest fermés. RB : Route 16 ↔ Céladopole avec un décalage de 4 cases
+#   (CeladonCity : connection west, Route16, 4) ; ici le décalage est supprimé, comme à la Route 7.
+#
+# MODIFICATION FUTURE de la grille du J20 (celadopole.txt ; NON faite ici, à reporter au lot 21.A) :
+#   - les 12 cases (0..3, 21..23) — haie dense (x 2..3, « T ») et talus (x 0..1, « s ») sur les trois
+#     rangées de l'avenue — deviennent « p » (pavé praticable) : le passage s'ouvre sur 3 rangées ;
+#     les rangées 20 et 24 (haie, talus) restent, comme les rangées 25 et suivantes ;
+#   - la position `obstacle_ouest` (3, 22, examen « haie et talus », H-4) est SUPPRIMÉE ;
+#   - ajouter `warp_ouest warp 0,21..23 libre to=route_16 spawn=from_celadon` (PUSH ←, jumelle de
+#     warp_est) et `from_route_16 spawn 0,21..23 libre` (arrivée de la Route 16, tournée →) ;
+#   - les cases (4, 21..23), déjà « p », ne changent pas. Le texte 21 du J20 (« Des arbres serrés et un
+#     talus. On ne passe pas. ») disparaît avec l'examen.
+#
+# Composition (de l'est à l'ouest ; RB : la voie basse est une rue de 1 case entre une rangée d'arbres et
+# une clôture, Ronflex colle presque à la porte du poste) :
+#   ① x 28..43 — LA VOIE BASSE : chemin de terre de 3 cases (rangées 21..23) entre un rideau d'arbres
+#      (rangées 17..20) et une rangée de clôtures basses (rangée 24, puis forêt). À x 38..39, l'ARBRE À
+#      COUPER de RB (en 34, 9) est dessiné en DÉCOR (« W », 2 × 2, rangées 19..20) : il ne se coupe pas
+#      (la CS Vol de la maison derrière est hors jalon, dossier §10.2) ; il n'a ni examen ni drapeau.
+#   ② x 22..27 — LE GOULET : deux affleurements (« R ») ferment les rangées 21 et 24, le chemin tombe à
+#      2 cases (rangées 22..23) ; RONFLEX 2 × 2 en (24..25, 22..23) occupe toute la largeur du goulet.
+#      Aucun contournement (forêt dense, affleurements) ; cases en face de lui : (26, 22..23) ; derrière
+#      lui, le goulet reprend en (22..23, 22..23).
+#   ③ x 11..21 — LE PARVIS ET LA FAÇADE DU POSTE : le chemin se rouvre à 3 cases et longe la façade du
+#      poste de la Piste Cyclable (emprise 12 × 8, x 10..21, y 13..20, « P ») ; PORTE de 2 cases (« D »,
+#      (15..16, 20)) FERMÉE : `coming_soon=route_16_poste`, « À venir » en développement, simplement
+#      bloquée en release (mécanisme existant des bords). Le chemin finit en cul-de-sac en x 11.
+#   VOIE HAUTE (« Y », x 26..42, y 9..16) : la clairière de RB (herbes hautes, accès par l'arbre à
+#   Couper) reste visible derrière le rideau d'arbres, JAMAIS accessible : décor, aucune herbe jouable.
+#
+# Rencontres : AUCUNE (RB : les herbes hautes de la Route 16 est sont sur la voie haute, ici décor ; la
+#   voie basse n'a pas d'herbe). Pas de table de rencontres pour cette carte [D]. Aucun Dresseur (les
+#   Motards sont derrière le poste dans RB), AUCUN objet (RB : aucun), aucun panneau, AUCUN TEXTE SUR LE
+#   VÉLO (L-4 : pas de promesse). Seule description de zone : « Une route boisée à l'ouest de Céladopole. »
+#
+# Légende :
+#   T arbres denses (bloqués)   = chemin de terre (praticable)   c clôture basse (bloquée)
+#   R affleurements (bloqués ; ferment le goulet)   Y voie haute (clairière visible, bloquée)
+#   W arbre à Couper en DÉCOR (bloqué en toute circonstance, aucune condition)
+#   P poste de la Piste Cyclable (façade, bloquée)   D porte du poste (praticable, terminale, STEP_ON ↑,
+#   FERMÉE : « À venir »)
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 44 caractères), puis POSITIONS.
+
+PRATICABLES =D
+
+GRILLE 44 28
+00 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+01 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+02 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+03 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+04 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+05 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+06 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+07 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+08 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+09 TTTTTTTTTTTTTTTTTTTTTTTTTTYYYYYYYYYYYYYYYYYT
+10 TTTTTTTTTTTTTTTTTTTTTTTTTTYYYYYYYYYYYYYYYYYT
+11 TTTTTTTTTTTTTTTTTTTTTTTTTTYYYYYYYYYYYYYYYYYT
+12 TTTTTTTTTTTTTTTTTTTTTTTTTTYYYYYYYYYYYYYYYYYT
+13 TTTTTTTTTTPPPPPPPPPPPPTTTTYYYYYYYYYYYYYYYYYT
+14 TTTTTTTTTTPPPPPPPPPPPPTTTTYYYYYYYYYYYYYYYYYT
+15 TTTTTTTTTTPPPPPPPPPPPPTTTTYYYYYYYYYYYYYYYYYT
+16 TTTTTTTTTTPPPPPPPPPPPPTTTTYYYYYYYYYYYYYYYYYT
+17 TTTTTTTTTTPPPPPPPPPPPPTTTTTTTTTTTTTTTTYYTTTT
+18 TTTTTTTTTTPPPPPPPPPPPPTTTTTTTTTTTTTTTTYYTTTT
+19 TTTTTTTTTTPPPPPPPPPPPPTTTTTTTTTTTTTTTTWWTTTT
+20 TTTTTTTTTTPPPPPDDPPPPPTTTTTTTTTTTTTTTTWWTTTT
+21 TTTTTTTTTTT===========RRRRRR================
+22 TTTTTTTTTTT=================================
+23 TTTTTTTTTTT=================================
+24 TTTTTTTTTTTcccccccccccRRRRRRcccccccccccccccc
+25 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+26 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+27 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+FIN
+
+# POSITIONS — une ligne par élément :
+#   identifiant  type  cases  bloque|libre  [cle=valeur ...]  # commentaire
+POSITIONS
+warp_est             warp           43,21..23    libre   to=celadon_city spawn=from_route_16  # PUSH → celadon_city, from_route_16 (Céladopole (0, 21..23), à créer au lot 21.A)
+from_celadon         spawn          43,21..23    libre   facing=left  # arrivée de Céladopole, tournée ←
+ronflex_16           pnj            24..25,22..23 bloque role=R1 facing=down unless=snorlax_route_16_done  # Ronflex endormi 2 × 2 (RB (26, 10)), occupe tout le goulet ; FlagGate sur snorlax_route_16_done (dossier §9.4 : un Ronflex rendormi bloque toujours) — la consigne du lot disait `unless snorlax_route_16_awake` : ÉCART signalé ; lu depuis (26, 22..23) ←
+face_ronflex         repere         26,22..23    libre   role=face_ronflex  # cases d'où on lui parle / joue la Poké Flûte (côté est, seul côté atteignable tant qu'il dort)
+poste_route_16       warp           15..16,20    libre   coming_soon=route_16_poste  # porte du poste, FERMÉE : « ROUTE 16 — À venir » (développement), bloquée en release ; aucun texte sur le Vélo (L-4)
+parvis_poste         repere         15..16,21    libre   role=parvis  # cases d'où l'on lit la porte (STEP_ON ↑)
+facade_poste         decor          10..21,13..19 bloque role=facade  # façade du poste (emprise 12 × 8 avec la rangée de la porte)
+voie_haute           decor          26..42,9..16 bloque role=voie_haute  # clairière et herbes hautes visibles derrière les arbres, inaccessibles
+arbre_coupe_decor    decor          38..39,19..20 bloque role=arbre_coupe_decor  # arbre à Couper de RB en décor dense, 2 × 2 ; ni examen ni drapeau
+FIN

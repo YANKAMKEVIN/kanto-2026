@@ -1,0 +1,216 @@
+# Route 12 (nord) — grille fonctionnelle (jalon 21, lot 21.0, dossier 24 §10.1, passe
+# j21-v2-alignement L-3, conçue le 2026-10-15). Source UNIQUE de la géométrie de la carte `route_12` :
+# contrôle (tools/art/plan_check_j21.py, profil route_12, qui relit Lavanville et la Route 11), plan en
+# aplats, vue générale peinte, puis outil de construction. Un changement de composition se fait ICI
+# d'abord, puis plan, puis image.
+#
+# 39 × 102 cases ; nord en haut ; x = colonne 0..38, y = rangée 0..101. NE CONTIENT QUE LE TRONÇON NORD de
+# la Route 12 de Rouge/Bleu (pret/pokered, Route12 : 20 × 108 cases, 10 × 54 blocs ; blocs et collisions
+# lus) : de Lavanville (y 0) au CROISEMENT de la Route 11 (RB y 62, ici y 93..95), puis quelques cases
+# de tronc jusqu'au bord sud FERMÉ (RB : le tronc continue jusqu'à la maison de la Super Canne et aux
+# Routes 13+ : jalon 22).
+#
+# ÉCHELLE : chaque BLOC de RB (2 × 2 cases) devient 3 × 3 cases (×1,5 : 2 cases de ponton → 3, comme
+# l'avenue de Lavanville et le goulet 2..3 des autres routes du projet). Les positions relatives, les
+# virages et les impasses de RB sont conservés bloc pour bloc ; seul le tronc nord est décalé d'un bloc
+# vers l'ouest dans RB (x 8..9 puis 10..11) : ici il part de x 21..23, en face de l'avenue de
+# Lavanville, puis rejoint x 24..26 par le palier (rangées 15..17), comme RB.
+#
+# RACCORDS (même nombre de cases, mêmes colonnes, aucun décalage) :
+#   NORD : Route 12 (21..23, 0) ↔ Lavanville (21..23, 35) — le bord sud « ROUTE 12 — À venir » du J18
+#     (warp_sud, coming_soon=route_12) devient ce raccord ; l'avenue de Lavanville (x 21..23, rangée 34)
+#     arrive pile sur le tronc. Lavanville : from_route_12 attendu en (21..23, 34) (déjà dans sa grille).
+#   OUEST : Route 12 (0, 93..94) ↔ Route 11 (75, 14..15) — le raccord_est « role=route_12 » du J17 :
+#     DEUX rangées de part et d'autre (RB : une seule case de large, ici deux comme la Route 11). Le
+#     joueur venant de la Route 11 débouche sur la chaussée de terre (x 0..23, rangées 93..94) et la suit
+#     jusqu'au CROISEMENT avec le tronc (palier x 24..26, rangées 93..95). Route 11 : from_route_12
+#     attendu en (74, 14..15), tournée ←. RB : connection west, Route11, décalage 27 blocs.
+#   SUD : bord (24..26, 101) FERMÉ « ROUTE 12 — À venir » (coming_soon=route_12_sud, mécanisme existant
+#     des bords) ; en release, bloqué.
+#
+# RONFLEX : il RESTE sur la carte de la Route 11 (décision L-2) en (66..67, 14..15), à 8 cases du
+#   raccord (75). Aucune case de la Route 12 n'est voisine de lui : il n'y a donc AUCUN repère face_ronflex
+#   sur cette carte ; on ne lui parle (ou ne joue la Poké Flûte devant lui) que depuis la Route 11, en
+#   (68, 14..15) côté est — accessible depuis la Route 12 par le raccord — ou en (65, 14..15) côté ouest.
+#   Avant la Flûte, le joueur qui descend de Lavanville arrive au croisement, parcourt la chaussée de terre
+#   et voit Ronflex endormi au bout du goulet de la Route 11 (comme RB, où il bouche le croisement).
+#
+# Composition (du nord au sud ; chaque BLOC de RB = 3 cases) :
+#   - BERGE NORD (y 0..5) : le chemin de terre (x 21..23) traverse la berge boisée, puis le PONTON commence.
+#   - TRONC DU PONTON (y 6..14, x 21..23) : planches sur l'eau, droit, 3 cases ; au bout, le PALIER (y 15..17,
+#     x 15..26) : bifurcation en trois : ÉPERON OUEST (x 15..17, y 18..26 : impasse de RB, 3 blocs, sans
+#     rien au bout), ÉPERON EST (x 27..35, y 18..20 : impasse de RB, avec le panneau de la route) et le
+#     TRONC (x 24..26) vers le poste.
+#   - LE POSTE (« P », x 21..29, y 24..32) : bâtiment 9 × 9 qui TRAVERSE la route (RB : Route12Gate1F, 3 × 3
+#     blocs, warps (10..11, 15) au nord et (10, 21) au sud). Deux portes de 3 cases : NORD (« D », (24..26,
+#     24)) et SUD ((24..26, 32)), reliées par l'intérieur ; le seul chemin vers le sud passe PAR le poste
+#     (RB : aucune autre route ; le contrôle le vérifie). Intérieur [D] : salle traversante (deux portes),
+#     escalier vers le 2F (CT39 Météores, dossier §10.1, remise unique got_tm39). Le « modèle de poste
+#     existant » du J20 (poste_safrania.txt) est un poste à UNE porte : celui-ci en aura deux (à signaler).
+#   - LE ZIGZAG DES PÊCHEURS (y 33..89) : chaussées de planches en lacets, 3 cases de large, placettes (« . »)
+#     aux carrefours (les carrés de RB), impasses de RB conservées (îlot isolé de la CT Jackpot de RB, bloqué).
+#     PÊCHEUR 1 (30, 47) : au bout du 1er lacet, regarde vers l'ouest : INÉVITABLE (sa vue couvre toute la
+#     traversée (24..26, 47) du coude). PÊCHEURS 2, 3, 4 : ÉVITABLES (la chaussée est large de 3 : on longe
+#     le bord opposé), comme dans RB. Portée 6 = portée RB 4 × 1,5 [D].
+#   - LE CROISEMENT (y 93..95) : palier x 24..26 ; la chaussée de la Route 11 arrive de l'ouest (x 0..23)
+#     entre deux rangées d'arbres, en pleine forêt (x 0..14) ; panneau de pêche (RB : panneau de la zone de
+#     pêche en (11, 63)). Puis le tronc descend (y 96..101) jusqu'au bord sud fermé.
+#   - CÔTÉS : eau partout (« w », jamais praticable : pas de Surf, pas de pêche) ; forêt dense à l'ouest
+#     (x 0..11) et à l'est (x 36..38), rives rocheuses (x 12..14).
+#
+# DÉFAUTS (règle 4, à relire) :
+#   - AUCUNE RENCONTRE SAUVAGE : dans RB, la seule herbe de la Route 12 est au SUD du croisement (RB
+#     y 100..107) ; ce tronçon n'a que du ponton et de l'eau (taux d'eau 0). Pas de table de rencontres
+#     ici (le dossier §10.1 dit « selon RB » : RB n'en a pas sur ce tronçon). La table RB de la Route 12
+#     (taux 15 : Roucool, Mimitoss, Mystherbe ou Chétiflor, Ortide ou Boustiflor) revient au J22 avec le
+#     tronçon sud.
+#   - AUCUN OBJET ni objet caché : RB a une CT Jackpot au sol en (14, 35), sur une plate-forme de
+#     planches ISOLÉE (RB : aucune chaussée n'y mène, il faut Surf) ; ici c'est l'ÎLOT « i » (30..32,
+#     51..56), dessiné en décor, bloqué, sans objet : pas de Surf dans le projet, et le dossier ne cite
+#     que la CT39 du poste. À trancher par Kevin (une CT de plus, ou un îlot vide). Le Fer en (5, 89) de
+#     RB est au sud du croisement (J22).
+#   - Pêcheur 5 (RB (6, 87)), Jeune Dresseur (11, 92) et Rockeur (14, 76) de RB sont au SUD du croisement :
+#     hors jalon (J22). Seuls les 4 Pêcheurs du dossier sont posés (RB (14, 31), (5, 39), (12, 40), (9, 52)).
+#   - Poste : jeune femme du 2F (CT39) dans l'intérieur, pas dans cette grille.
+#
+# Légende :
+#   T forêt et bordure d'arbres (bloquée)   w eau (JAMAIS praticable)   R rive rocheuse (bloquée)
+#   = ponton, planches (praticable)   . berge de terre et placettes de carrefour (praticable)
+#   i îlot de planches inaccessible (décor, bloqué)   P poste de la Route 12 (bâtiment, bloqué)
+#   D porte du poste (praticable, terminale, STEP_ON ; la porte nord se prend en allant vers le SUD,
+#   la porte sud en allant vers le NORD)
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 39 caractères), puis POSITIONS.
+
+PRATICABLES .=D
+
+GRILLE 39 102
+00 TTTTTTTTTTTTTTTTTTTTT...TTTTTTTTTTTTTTT
+01 TTTTTTTTTTTTTTTTTTTTT...TTTTTTTTTTTTTTT
+02 TTTTTTTTTTTTTTTTTTTTT...TTTTTTTTTTTTTTT
+03 TTTTTTTTTTTTTTTTTTTTT...TTTTTTTTTTTTTTT
+04 TTTTTTTTTTTTTTTTTTTTT...TTTTTTTTTTTTTTT
+05 TTTTTTTTTTTTTTTTTTTTT...TTTTTTTTTTTTTTT
+06 TTTTTTTTTTTTRRRwwwwww===wwwwwwwwwwwwTTT
+07 TTTTTTTTTTTTRRRwwwwww===wwwwwwwwwwwwTTT
+08 TTTTTTTTTTTTRRRwwwwww===wwwwwwwwwwwwTTT
+09 TTTTTTTTTTTTRRRwwwwww===wwwwwwwwwwwwTTT
+10 TTTTTTTTTTTTRRRwwwwww===wwwwwwwwwwwwTTT
+11 TTTTTTTTTTTTRRRwwwwww===wwwwwwwwwwwwTTT
+12 TTTTTTTTTTTTRRRwwwwww===wwwwwwwwwwwwTTT
+13 TTTTTTTTTTTTRRRwwwwww===wwwwwwwwwwwwTTT
+14 TTTTTTTTTTTTRRRwwwwww===wwwwwwwwwwwwTTT
+15 TTTTTTTTTTTTRRR======...===wwwwwwwwwTTT
+16 TTTTTTTTTTTTRRR======...===wwwwwwwwwTTT
+17 TTTTTTTTTTTTRRR======...===wwwwwwwwwTTT
+18 TTTTTTTTTTTTRRR===wwwwww===...======TTT
+19 TTTTTTTTTTTTRRR===wwwwww===...======TTT
+20 TTTTTTTTTTTTRRR===wwwwww===...======TTT
+21 TTTTTTTTTTTTRRR===wwwwww===wwwwwwwwwTTT
+22 TTTTTTTTTTTTRRR===wwwwww===wwwwwwwwwTTT
+23 TTTTTTTTTTTTRRR===wwwwww===wwwwwwwwwTTT
+24 TTTTTTTTTTTTRRR===wwwPPPDDDPPPwwwwwwTTT
+25 TTTTTTTTTTTTRRR===wwwPPPPPPPPPwwwwwwTTT
+26 TTTTTTTTTTTTRRR===wwwPPPPPPPPPwwwwwwTTT
+27 TTTTTTTTTTTTRRRwwwwwwPPPPPPPPPwwwwwwTTT
+28 TTTTTTTTTTTTRRRwwwwwwPPPPPPPPPwwwwwwTTT
+29 TTTTTTTTTTTTRRRwwwwwwPPPPPPPPPwwwwwwTTT
+30 TTTTTTTTTTTTRRRwwwwwwPPPPPPPPPwwwwwwTTT
+31 TTTTTTTTTTTTRRRwwwwwwPPPPPPPPPwwwwwwTTT
+32 TTTTTTTTTTTTRRRwwwwwwPPPDDDPPPwwwwwwTTT
+33 TTTTTTTTTTTTRRRwwwwwwwww===wwwwwwwwwTTT
+34 TTTTTTTTTTTTRRRwwwwwwwww===wwwwwwwwwTTT
+35 TTTTTTTTTTTTRRRwwwwwwwww===wwwwwwwwwTTT
+36 TTTTTTTTTTTTRRRwwwwwwwww===wwwwwwwwwTTT
+37 TTTTTTTTTTTTRRRwwwwwwwww===wwwwwwwwwTTT
+38 TTTTTTTTTTTTRRRwwwwwwwww===wwwwwwwwwTTT
+39 TTTTTTTTTTTTRRR=========...======wwwTTT
+40 TTTTTTTTTTTTRRR=========...======wwwTTT
+41 TTTTTTTTTTTTRRR=========...======wwwTTT
+42 TTTTTTTTTTTTRRRwwwwwwwwwwwwwww===wwwTTT
+43 TTTTTTTTTTTTRRRwwwwwwwwwwwwwww===wwwTTT
+44 TTTTTTTTTTTTRRRwwwwwwwwwwwwwww===wwwTTT
+45 TTTTTTTTTTTTRRR===wwwwww=========wwwTTT
+46 TTTTTTTTTTTTRRR===wwwwww=========wwwTTT
+47 TTTTTTTTTTTTRRR===wwwwww=========wwwTTT
+48 TTTTTTTTTTTTRRR===wwwwww===wwwwwwwwwTTT
+49 TTTTTTTTTTTTRRR===wwwwww===wwwwwwwwwTTT
+50 TTTTTTTTTTTTRRR===wwwwww===wwwwwwwwwTTT
+51 TTTTTTTTTTTTRRR...=========wwwiiiwwwTTT
+52 TTTTTTTTTTTTRRR...=========wwwiiiwwwTTT
+53 TTTTTTTTTTTTRRR...=========wwwiiiwwwTTT
+54 TTTTTTTTTTTTRRR===wwwwwwwwwwwwiiiwwwTTT
+55 TTTTTTTTTTTTRRR===wwwwwwwwwwwwiiiwwwTTT
+56 TTTTTTTTTTTTRRR===wwwwwwwwwwwwiiiwwwTTT
+57 TTTTTTTTTTTTRRR===wwwwwwwwwwwwwwwwwwTTT
+58 TTTTTTTTTTTTRRR===wwwwwwwwwwwwwwwwwwTTT
+59 TTTTTTTTTTTTRRR===wwwwwwwwwwwwwwwwwwTTT
+60 TTTTTTTTTTTTRRR...===...=========wwwTTT
+61 TTTTTTTTTTTTRRR...===...=========wwwTTT
+62 TTTTTTTTTTTTRRR...===...=========wwwTTT
+63 TTTTTTTTTTTTRRR===www===wwwwwwwwwwwwTTT
+64 TTTTTTTTTTTTRRR===www===wwwwwwwwwwwwTTT
+65 TTTTTTTTTTTTRRR===www===wwwwwwwwwwwwTTT
+66 TTTTTTTTTTTTRRRwwwwww=========wwwwwwTTT
+67 TTTTTTTTTTTTRRRwwwwww=========wwwwwwTTT
+68 TTTTTTTTTTTTRRRwwwwww=========wwwwwwTTT
+69 TTTTTTTTTTTTRRRwwwwwwwwwwww...===wwwTTT
+70 TTTTTTTTTTTTRRRwwwwwwwwwwww...===wwwTTT
+71 TTTTTTTTTTTTRRRwwwwwwwwwwww...===wwwTTT
+72 TTTTTTTTTTTTRRR=========www===wwwwwwTTT
+73 TTTTTTTTTTTTRRR=========www===wwwwwwTTT
+74 TTTTTTTTTTTTRRR=========www===wwwwwwTTT
+75 TTTTTTTTTTTTRRR===www===www======wwwTTT
+76 TTTTTTTTTTTTRRR===www===www======wwwTTT
+77 TTTTTTTTTTTTRRR===www===www======wwwTTT
+78 TTTTTTTTTTTTRRR===www======...===wwwTTT
+79 TTTTTTTTTTTTRRR===www======...===wwwTTT
+80 TTTTTTTTTTTTRRR===www======...===wwwTTT
+81 TTTTTTTTTTTTRRR===wwwwwwwwwwwwwwwwwwTTT
+82 TTTTTTTTTTTTRRR===wwwwwwwwwwwwwwwwwwTTT
+83 TTTTTTTTTTTTRRR===wwwwwwwwwwwwwwwwwwTTT
+84 TTTTTTTTTTTTRRR=========...======wwwTTT
+85 TTTTTTTTTTTTRRR=========...======wwwTTT
+86 TTTTTTTTTTTTRRR=========...======wwwTTT
+87 TTTTTTTTTTTTRRRwwwwwwwww===wwwwwwwwwTTT
+88 TTTTTTTTTTTTRRRwwwwwwwww===wwwwwwwwwTTT
+89 TTTTTTTTTTTTRRRwwwwwwwww===wwwwwwwwwTTT
+90 TTTTTTTTTTTTRRRwwwwwwwww===wwwwwwwwwTTT
+91 TTTTTTTTTTTTRRRwwwwwwwww===wwwwwwwwwTTT
+92 TTTTTTTTTTTTTTTTTTTTTTTT===wwwwwwwwwTTT
+93 ...........................wwwwwwwwwTTT
+94 ...........................wwwwwwwwwTTT
+95 TTTTTTTTTTTTTTTTTTTTTTTT...wwwwwwwwwTTT
+96 TTTTTTTTTTTTRRRwwwwwwwww===wwwwwwwwwTTT
+97 TTTTTTTTTTTTRRRwwwwwwwww===wwwwwwwwwTTT
+98 TTTTTTTTTTTTRRRwwwwwwwww===wwwwwwwwwTTT
+99 TTTTTTTTTTTTRRRwwwwwwwww===wwwwwwwwwTTT
+100 TTTTTTTTTTTTRRRwwwwwwwww===wwwwwwwwwTTT
+101 TTTTTTTTTTTTRRRwwwwwwwww===wwwwwwwwwTTT
+FIN
+
+# POSITIONS — une ligne par élément :
+#   identifiant  type  cases  bloque|libre  [cle=valeur ...]  # commentaire
+POSITIONS
+warp_nord            warp           21..23,0     libre   to=lavender_town spawn=from_route_12  # PUSH ↑ → lavender_town, from_route_12 (Lavanville (21..23, 34), déjà prévu par sa grille)
+from_lavender        spawn          21..23,0     libre   facing=down  # arrivée de Lavanville, tournée ↓
+warp_ouest           warp           0,93..94     libre   to=route_11 spawn=from_route_12  # PUSH ← → route_11, from_route_12 (Route 11 (74, 14..15), à créer ; raccord_est (75, 14..15) du J17)
+from_route_11        spawn          0,93..94     libre   facing=right  # arrivée de la Route 11, tournée → ; à 24 cases du croisement, Ronflex reste sur la Route 11
+warp_sud             warp           24..26,101   libre   coming_soon=route_12_sud  # « ROUTE 12 — À venir » (développement) ; en release, bord bloqué ; J22
+from_route_12_sud    spawn          24..26,100   libre   facing=up  # retour futur (Route 12 sud), tournée ↑ ; non utilisé au J21
+porte_poste_nord     warp           24..26,24    libre   to=route_12_gate spawn=entrance_nord lie=porte_poste_sud  # STEP_ON ↓ (on descend vers le sud) → intérieur du poste, porte nord
+from_poste_nord      spawn          24..26,23    libre   facing=up  # sortie du poste par la porte NORD (on revient vers Lavanville), tournée ↑
+porte_poste_sud      warp           24..26,32    libre   to=route_12_gate spawn=entrance_sud lie=porte_poste_nord  # STEP_ON ↑ (on monte vers le nord) → intérieur du poste, porte sud
+from_poste_sud       spawn          24..26,33    libre   facing=down  # sortie du poste par la porte SUD (on continue vers le sud), tournée ↓
+facade_poste         decor          21..29,24..32 bloque role=poste  # emprise 9 × 9 du poste, les deux rangées de portes comprises
+route_12_fisher_1    dresseur       30,47        bloque  trainer=route_12_fisher_1 facing=left sight=6 inevitable=oui ordre=1  # Pêcheur 1 (RB (14, 31) ←) ; au bout du 1er lacet, vue (24..29, 47) : toute la traversée du coude
+route_12_fisher_2    dresseur       17,59        bloque  trainer=route_12_fisher_2 facing=up sight=6 inevitable=non ordre=2  # Pêcheur 2 (RB (5, 39) ↑) ; au bas de l'éperon de 3 cases de large, vue (17, 53..58) : on longe x 15..16
+route_12_fisher_3    dresseur       27,60        bloque  trainer=route_12_fisher_3 facing=left sight=6 inevitable=non ordre=3  # Pêcheur 3 (RB (12, 40) ←) ; sur le bras est de la chaussée, vue (21..26, 60) : on longe la rangée 62 puis on descend en x 21..23
+route_12_fisher_4    dresseur       23,78        bloque  trainer=route_12_fisher_4 facing=right sight=6 inevitable=non ordre=4  # Pêcheur 4 (RB (9, 52) →) ; vue (24..29, 78) : on passe par les rangées 79..80
+panneau_route_12     panneau        28,20        bloque  role=T-1  # « ROUTE 12 / Lavanville — Route 11 » (dossier §15.8-1) ; RB (13, 13), sur l'éperon est ; lu depuis (28, 19) ↓
+panneau_ponton       panneau        26,96        bloque  role=T-2  # « PONTON DE PÊCHE / Prière de ne pas effrayer les poissons. » (§15.8-2) ; RB (11, 63) ; lu depuis (25, 96) →
+eperon_ouest         repere         15..17,18..26 libre  role=eperon  # impasse de RB (3 blocs), rien au bout ; ambiance (pêche)
+eperon_est           repere         27..35,18..20 libre  role=eperon  # impasse de RB, porte le panneau de la route
+ilot_ct_jackpot      decor          30..32,51..56 bloque role=ilot  # plate-forme isolée de RB (CT Jackpot, accessible seulement à Surf) : décor, aucun objet
+croisement           repere         24..26,93..95 libre  role=croisement  # palier du tronc ; la chaussée de la Route 11 y arrive de l'ouest
+FIN

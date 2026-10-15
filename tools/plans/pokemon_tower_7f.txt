@@ -1,0 +1,83 @@
+# Tour Pokémon 7F — grille fonctionnelle (jalon 21, lot 21.0, dossier 24 §6, passe j21-v2-alignement
+# L-7, conçue le 2026-10-15). Source UNIQUE de la géométrie de la carte `pokemon_tower_7f` : contrôle
+# (tools/art/plan_check_j21.py, profil pokemon_tower_7f, qui relit le 6F pour la paire T67) puis plan en
+# aplats, vue peinte et outil de construction. Un changement de composition se fait ICI d'abord.
+#
+# 20 × 18 cases (comme les étages 2F à 6F) ; nord en haut ; x = colonne 0..19, y = rangée 0..17.
+# Géométrie reprise de Rouge/Bleu (pret/pokered, PokemonTower7F : blocs lus et collisions extraites
+# du désassemblage) : UNE NEF droite, l'unique étage sans salle ni détour. Allée centrale de 4 cases
+# (x 9..12, rangées 4..12), resserrée à 2 cases (x 10..11) au nord (alcôve de l'autel, rangées 2..3)
+# comme au sud (rangées 13..15, vers l'escalier, rangée 16). Tout le reste = rangées de tombes (RB).
+# Même convention de murs que les autres étages (valeur par défaut, convention des grottes) : les murs
+# sont DANS la grille, bord de carte toujours mur ; les tombes et stèles sont des obstacles bas.
+#
+# Légende (commune aux étages 2F à 7F ; Z, U : absents du 7F) :
+#   # mur (bloqué)                      . sol de la Tour (praticable ; terrain `floor`, rencontres
+#                                         de spectre : table pokemon_tower_top, taux 15 comme RB)
+#   T tombe (bloquée, basse)            S stèle à bougie / autel (bloquée ; halo additif)
+#   V escalier qui descend              (warp STEP_ON comme une porte ; paire T67, même case que le U
+#                                         du 6F ; l'arrivée est le « spawn » de même paire)
+# Personnages, objets, déclencheurs et repères sont dans POSITIONS, pas dans la grille.
+#
+# Ce qui est propre au 7F :
+#   - TROIS SBIRES ROCKET INÉVITABLES, sur le seul chemin vers Fuji (RB : (9, 11) →, (12, 9) ←,
+#     (9, 7) →). Chacun se tient sur un bord de l'allée et voit TOUTE la largeur de sa rangée
+#     (3 cases libres, sight=3) : tower_rocket_1 couvre (10..12, 11), tower_rocket_2 (9..11, 9),
+#     tower_rocket_3 (10..12, 7). L'allée n'a que 4 cases de large et les tombes ferment les flancs :
+#     aucune rangée ne se traverse hors d'une vue (le contrôle le démontre). Ordre de rencontre en
+#     montant : 1 (y 11), 2 (y 9), 3 (y 7). Aucun chef (dossier §6.2).
+#   - M. FUJI au fond : RB (10, 3), à l'entrée de l'alcôve ; il prie devant l'autel (S, (10..11, 2)),
+#     donc tourné vers le NORD (ÉCART [D] à RB « DOWN » : le dossier §15.3 dit « il prie » puis « il se
+#     relève et se tourne vers le joueur »). Interaction depuis (10, 4) ↑ ou (11, 3) ←. Position `fuji` :
+#     pnj, présent `unless fuji_rescued` ; il ne répond qu'une fois les 3 Sbires battus (§6.3).
+#   - Stèles à bougies S : les deux statues de RB flanquent l'alcôve en (9, 3) et (12, 3) ; l'AUTEL
+#     devant Fuji est une stèle de 2 cases (10..11, 2) [D : RB n'a pas d'autel, les statues seules].
+#   - AUCUN OBJET au sol (RB : aucun objet ni bg_event sur cette carte ; dossier §6.1).
+#   - Escalier V en (9, 16), paire T67 : même case que le U du 6F (RB : warp 9, 16 → 6F 2). Arrivée
+#     depuis le 6F en (10, 16), tournée vers l'EST. Au 6F, arrivee_T67 reste à ajouter (case (10, 16),
+#     tournée vers l'est, voisine du U) : c'est aussi la case du déclencheur du SPECTRE (inactif une
+#     fois ghost_marowak_calmed posé, ce qui est toujours le cas ici).
+#   - Rencontres sauvages : TOUT le sol « . » (RB : toute la carte, taux 15) ; aucune zone calme.
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 20 caractères), puis POSITIONS.
+
+PRATICABLES .V
+
+GRILLE 20 18
+00 ####################
+01 ####################
+02 ##########SS########
+03 #########S..S#######
+04 #########....#######
+05 #######TT....TT#####
+06 #######TT....TT#####
+07 #######TT....TT#####
+08 #######TT....TT#####
+09 #######TT....TT#####
+10 #######TT....TT#####
+11 #######TT....TT#####
+12 #######TT....TT#####
+13 ##########..########
+14 ##########..########
+15 ##########..########
+16 #########V...#######
+17 ####################
+FIN
+
+# POSITIONS — une ligne par élément :
+#   identifiant  type  cases  bloque|libre  [cle=valeur ...]  # commentaire
+# Types : escalier (paire=, sens=monte|descend, vers=carte), spawn (paire=, facing=), dresseur
+# (trainer=, facing=, sight=, inevitable=oui|non, ordre=), pnj (unless=<drapeau>, facing=),
+# repere (role=). Sécurité : « sight » est la portée maximale ; la vue s'arrête à la première case
+# bloquée ou occupée.
+POSITIONS
+escalier_bas         escalier       9,16         libre   paire=T67 sens=descend vers=pokemon_tower_6f  # V : le 7F n'a qu'un escalier (qui descend) ; 6F : escalier_7f (9, 16)
+arrivee_T67          spawn          10,16        libre   paire=T67 facing=right  # arrivée depuis le 6F, voisine du V (le 6F pose arrivee_T67 en (10, 16), recul du SPECTRE en (10, 15))
+tower_rocket_1       dresseur       9,11         bloque  trainer=tower_rocket_1 facing=right sight=3 inevitable=oui ordre=1  # Sbire 1 (Nosferapti ×2, Nosferalto N25) ; vue (10..12, 11), toute la rangée ; beaten_tower_rocket_1
+tower_rocket_2       dresseur       12,9         bloque  trainer=tower_rocket_2 facing=left sight=3 inevitable=oui ordre=2  # Sbire 2 (Smogo, Soporifik N26) ; vue (9..11, 9), toute la rangée ; beaten_tower_rocket_2
+tower_rocket_3       dresseur       9,7          bloque  trainer=tower_rocket_3 facing=right sight=3 inevitable=oui ordre=3  # Sbire 3 (Nosferapti, Rattata, Rattatac, Nosferapti N23) ; vue (10..12, 7) ; beaten_tower_rocket_3
+fuji                 pnj            10,3         bloque  role=fuji facing=up unless=fuji_rescued  # M. Fuji, agenouillé devant l'autel ; lu depuis (10, 4) ↑ ou (11, 3) ← ; ne répond qu'après les 3 Sbires ; fuji_rescued posé AVANT le fondu (L-8) ; scène : dossier §6.3 et §15.3
+repere_autel         repere         10..11,2     bloque  role=autel  # stèle de 2 cases devant Fuji (halo des bougies)
+repere_stele_o       repere         9,3          bloque  role=stele  # statue à bougie ouest (RB)
+repere_stele_e       repere         12,3         bloque  role=stele  # statue à bougie est (RB)
+FIN
