@@ -237,7 +237,9 @@ func test_foe_without_pp_struggles_too() -> void:
 	assert_eq(events[3].move_id, &"struggle")
 
 
-func test_both_fainting_on_recoil_is_a_win_for_the_user() -> void:
+## J15 T24 (Rouge/Bleu) : le dernier Pokémon du joueur met K.O. le dernier adversaire et tombe
+## sur le contrecoup de Lutte : le joueur perd (jamais de victoire avec toute l'équipe K.O.).
+func test_both_fainting_on_recoil_is_a_loss_for_the_player() -> void:
 	var battle := _battle(&"charmander", &"squirtle", [1, 2, 16])
 	var player := battle.get_player_side().active.pokemon
 	for slot: MoveSlot in player.moves:
@@ -247,7 +249,9 @@ func test_both_fainting_on_recoil_is_a_win_for_the_user() -> void:
 	var events := battle.submit(BattleAction.move(BattleAction.STRUGGLE))
 	assert_eq(_kinds(events).slice(-3), [["FAINTED", "FOE"], ["FAINTED", "PLAYER"],
 		["BATTLE_ENDED", "PLAYER"]])
-	assert_eq(battle.get_outcome(), Battle.Outcome.WIN)
+	assert_eq(battle.get_outcome(), Battle.Outcome.LOSS)
+	assert_eq(_find(events, K.BATTLE_ENDED).outcome, Battle.Outcome.LOSS)
+	assert_eq(battle.get_state(), Battle.State.OVER)
 
 
 # --- Actions illégales ------------------------------------------------------------------

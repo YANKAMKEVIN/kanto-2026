@@ -182,7 +182,11 @@ d'`origin/main`.
 > **avec ou sans** `ss_ticket`, avant ou après la visite à Léo : rien du J15 ne doit supposer
 > `got_ss_ticket`, `bill_restored` ni le Badge Cascade sur la Route 5 (tests T21 dans les deux cas).
 > Bug du moteur « combat gagné avec toute l'équipe K.O. » (`jalon-14.md` §9.2) : **confié au J15**
-> par Kevin le 2026-10-15 (tâche à placer, hors T21).
+> par Kevin le 2026-10-15 → tâche **T24** (A, ci-dessous et §3), sans dépendance.
+>
+> | Tâche | Devient | Ce qui existe maintenant (vrais noms) | Ce qui reste à attendre |
+> |---|---|---|---|
+> | **T24** défaite quand toute l'équipe du joueur est K.O. | **(A)** | `Battle._check_end` (`game/battle/battle.gd`), `BattleConclusion.resolve`, `PayDayPurse.is_collected`, `DefeatRecovery.recover`, `TrainerWatcher`, garde de `BattleDirector.run` / `run_request` | rien |
 
 > **Mise à jour du 2026-10-14 — J12 et J13 dans `main`, fusionnés dans le J15** (branche
 > `j15-sync-j12` depuis `jalon-15` à `2b224be`, `origin/main` à `4f0ee90` : J12 `2b2745f` + J13).
@@ -809,6 +813,46 @@ et annexe A validée).
   Pension et Carmin jouables **sans** `got_ss_ticket` comme **avec** ; marin identique avec et
   sans `ss_ticket` (T-26).
 
+#### T24 — architecte : défaite quand toute l'équipe du joueur est K.O. — **(A, 2026-10-15)**
+- Bug (`jalon-14.md` §9.2, antérieur au J14) : le dernier Pokémon apte du joueur met l'adversaire
+  K.O. et tombe du même coup (contrecoup de Lutte ; ou Destruction / Explosion **de
+  l'adversaire**, règle J12 « le camp du lanceur perd ») → `Battle._check_end` déclarait la
+  victoire ; le joueur repartait avec toute son équipe K.O. (plus de rencontres, un Dresseur qui
+  le voit → `push_error` du `BattleDirector`, étape de combat sautée).
+- **Règle retenue (Rouge/Bleu, `pret/pokered` : `HandleEnemyMonFainted` teste d'abord
+  `AnyPartyAlive` → `HandlePlayerBlackOut`)** : **le joueur sans Pokémon valide perd toujours**,
+  quel que soit le lanceur et même si le dernier adversaire tombe dans le même coup ; une victoire
+  implique donc toujours un Pokémon valide. Correction **centrale, dans le moteur pur** :
+  `_check_end(events)` (paramètre `acting` retiré) rend LOSS dès que le joueur n'a plus de Pokémon
+  valide, sinon WIN si l'adversaire n'en a plus. Tout le reste suit le chemin d'une défaite
+  ordinaire, sans code nouveau : ni prix ni `beaten_<id>` (`BattleConclusion`, `outcome_flags`),
+  pas de pièces du Jackpot (`PayDayPurse.is_collected`), aucune XP (aucun participant debout),
+  réveil au dernier Centre (`DefeatRecovery` : `EncounterDirector` en sauvage, étape `wake_up` des
+  scènes de Dresseur), argent inchangé (règle existante : rien gagné, rien perdu), combats
+  rejouables (rival, Pierre, Rocket) et Grands moments selon leurs règles de défaite. Le
+  contournement de `tools/simulate_mt_moon.gd` (J14 T21) devient une garde de sûreté.
+- **Écart avec une valeur par défaut du J12** (`jalon-12.md` §2.10, [D, G+]) : Destruction /
+  Explosion **de l'adversaire** qui met K.O. les deux derniers Pokémon donnait la victoire au
+  joueur (avec une équipe entière K.O. : même bug) ; c'est désormais une **défaite** (RB).
+  Destruction du joueur : défaite, inchangé. Question Q-T24 (§8) pour confirmation.
+- **Garde-fou** : `TrainerWatcher.setup(…, state)` (Boot passe `GameState`) ; sans Pokémon valide,
+  aucun Dresseur ne lance sa séquence, ni à la vue ni à la parole (comme les rencontres
+  sauvages) ; `BattleDirector.run` / `run_request` refusent déjà un tel combat avant de tirer
+  l'équipe du Dresseur (testé).
+- **Tests** : `tests/unit/test_battle_party_wipe.gd` (8 : Lutte en Dresseur et en sauvage, dernier
+  Pokémon qui tombe face à un Dresseur qui en a encore, deuxième Pokémon → le combat continue,
+  victoire si le contrecoup est encaissé, poison / brûlure de fin de tour des deux côtés,
+  poison de l'adversaire seul, Jackpot puis double K.O. → ni pièces ni prix) ;
+  `test_battle.gd` et `test_battle_self_ko.gd` (double K.O. → LOSS dans les deux sens) ;
+  `tests/integration/test_battle_director.gd` (équipe K.O. refusée sans tirage, Lutte contre
+  Théo → LOSS, argent intact) ; `test_trainer_watcher.gd` (aucun défi sans Pokémon valide) ;
+  `tests/integration/test_double_ko_defeat.gd` (vraie Boot : double K.O. contre Théo → réveil
+  au Centre de Jadielle, équipe soignée, argent intact, Théo toujours à battre).
+- **Laissé de côté** : une sauvegarde déjà écrite **après** le bug (équipe entière K.O. dans le
+  monde) n'est pas réparée au chargement : le joueur peut marcher jusqu'à un Centre (aucun
+  Dresseur ni rencontre ne l'arrête) ; les scènes scriptées à combat imposé (rival, Pierre)
+  gardent le refus du `BattleDirector` (inatteignable désormais).
+
 #### T22 — qa-mobile : **sessions 15A puis 15B** → Kevin — après T13–T21
 - **15A** (départs `route_5`, `daycare_*`, vraie partie si possible) : Route 5, Pension complète
   (§4), poste nord (T-15 puis T-16, recul), souterrain (lisible sans monter la luminosité), Guérison.
@@ -916,6 +960,12 @@ Aucune décision de game design ne manque : tout le reste a une valeur par défa
   panneaux des grilles, PNJ des grilles sans réplique, sous-titre de l'Arène, note de Pokédex).
   *Recommandation : relecture en une passe, comme aux J9–J12 ; bloque quelques données (T12,
   T15, T17), pas le code.* Alternative pour les PNJ sans texte : les retirer des grilles.
+
+- **Q-T24 — Explosion / Destruction de l'adversaire qui met K.O. les deux derniers Pokémon**
+  (T24, 2026-10-15). Le J12 avait retenu par défaut « le camp du lanceur perd » [D] : le joueur
+  « gagnait » alors avec toute son équipe K.O. (le bug de T24). T24 applique la règle de
+  Rouge/Bleu : **défaite du joueur dans tous les cas**. *Recommandation : garder RB.* Revenir à
+  l'ancien sens imposerait de réveiller le joueur au Centre après une « victoire ».
 
 **À fournir par Kevin** (pas une question) : la sauvegarde v6 de sa vraie partie pour T3 et la QA
 finale.
