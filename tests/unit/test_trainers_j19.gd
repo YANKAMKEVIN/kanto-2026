@@ -1,7 +1,7 @@
 extends GutTest
 ## Dresseurs de la Tour Pokémon (jalon 19 T4 ; `jalon-19.md` §2.5, §2.6, dossier 22 §7.3, §8) :
-## les neuf Exorcistes et le rival n° 5 (`data/trainers/pokemon_tower.json`). Équipes du rival
-## en valeurs Rouge/Bleu **provisoires** : la simulation (T21) fixe les niveaux finaux.
+## les neuf Exorcistes et le rival n° 5 (`data/trainers/pokemon_tower.json`). Niveaux du rival
+## **provisoires** : T21 préliminaire (`docs/tech/jalon-19-equilibrage.md`), relancé après T10.
 
 const SOURCE := "res://data/trainers/pokemon_tower.json"
 const STARTERS: Array[StringName] = [&"bulbasaur", &"charmander", &"squirtle"]
@@ -18,15 +18,21 @@ const CHANNELERS := {
 	&"tower_channeler_8": ["Exorciste Paulette", [[&"gastly", 24]], true],
 	&"tower_channeler_9": ["Exorciste Clémence", [[&"gastly", 24]], true],
 }
-## Rival n° 5 (dossier 22 §7.3) : starter du joueur → [espèce, niveau]…
+## Rival n° 5 (dossier 22 §7.3) : starter du joueur → [espèce, niveau]… Niveaux du T21
+## préliminaire (provisoires, à relancer après T10).
 const RIVAL := {
-	&"bulbasaur": [[&"pidgeotto", 25], [&"exeggcute", 23], [&"gyarados", 22], [&"kadabra", 20],
-		[&"charmeleon", 25]],
-	&"charmander": [[&"pidgeotto", 25], [&"growlithe", 23], [&"exeggcute", 22],
-		[&"kadabra", 20], [&"wartortle", 25]],
-	&"squirtle": [[&"pidgeotto", 25], [&"gyarados", 23], [&"growlithe", 22], [&"kadabra", 20],
-		[&"ivysaur", 25]],
+	&"bulbasaur": [[&"pidgeotto", 22], [&"exeggcute", 22], [&"gyarados", 22], [&"kadabra", 18],
+		[&"charmeleon", 22]],
+	&"charmander": [[&"pidgeotto", 22], [&"growlithe", 22], [&"exeggcute", 22],
+		[&"kadabra", 18], [&"wartortle", 22]],
+	&"squirtle": [[&"pidgeotto", 22], [&"gyarados", 22], [&"growlithe", 22], [&"kadabra", 18],
+		[&"ivysaur", 22]],
 }
+## Fourchette du rival n° 5 (plan T21, K-6) : 22 à 26, starter évolué plafonné à 26 ; Kadabra
+## hors fourchette, gardé ≤ 22 [D].
+const RIVAL_MIN_LEVEL := 22
+const RIVAL_MAX_LEVEL := 26
+const RIVAL_KADABRA_MAX := 22
 
 var _data: PokemonData
 var _trainers: TrainerLibrary
@@ -114,6 +120,20 @@ func test_rival_follows_the_player_starter() -> void:
 		assert_eq(team, RIVAL[starter], String(starter))
 
 
+func test_rival_levels_stay_in_the_plan_range() -> void:
+	var rival := _trainers.get_trainer(&"rival_tower")
+	assert_not_null(rival)
+	if rival == null:
+		return
+	for starter: StringName in STARTERS:
+		for slot: TrainerSlot in rival.team_for(starter):
+			var where := "%s %s N%d" % [starter, slot.species, slot.level]
+			if slot.species == &"kadabra":
+				assert_lte(slot.level, RIVAL_KADABRA_MAX, where)
+				continue
+			assert_between(slot.level, RIVAL_MIN_LEVEL, RIVAL_MAX_LEVEL, where)
+
+
 func test_rival_rules_copy_the_third_rival() -> void:
 	var rival := _trainers.get_trainer(&"rival_tower")
 	var model := _trainers.get_trainer(&"rival_cerulean")
@@ -134,7 +154,8 @@ func test_rival_hand_picked_moves() -> void:
 		&"gyarados": [&"bite", &"dragon_rage", &"leer"],
 		&"growlithe": [&"bite", &"ember", &"leer"],
 		&"pidgeotto": [&"gust", &"sand_attack", &"quick_attack"],
-		&"kadabra": [&"teleport", &"confusion", &"disable"],
+		# Kadabra N18 (T21) : capacités naturelles, Choc Mental réappris au N16 passe en dernier.
+		&"kadabra": [&"teleport", &"disable", &"confusion"],
 		&"exeggcute": [&"barrage", &"hypnosis"],
 	}
 	for starter: StringName in STARTERS:
