@@ -396,6 +396,105 @@ const RULES: Dictionary[StringName, Dictionary] = {
 	&"int_velo_expose_02": {"width": 2, "depth": 1},
 	&"int_velo_expose_03": {"width": 2, "depth": 1},
 	&"int_etagere_casques_01": {"width": 4, "depth": 1},
+	# --- Série 16 : Route 25, Cap d'Azuria, maison de Léo (J14 T13, fiche `serie-16-*.md`). ---
+	# Maison du Cap (8 × 6, porte aux 4e et 5e colonnes de la rangée du bas, ancre (72, 11)).
+	&"bldg_maison_leo_01": {"shadow": true, "width": 8, "depth": 6, "fade": true,
+		"open": [Vector2i(-1, 0), Vector2i(0, 0)]},
+	# Rivage rocheux : modules posés **sur les cases `R` au contact de la mer** par
+	# `coast_map_kit` (rect explicite, couche du sol), jamais sur une case praticable.
+	&"relief_rivage_01": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_rivage_02": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_rivage_03": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_CENTRE},
+	&"relief_rivage_04": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_CENTRE},
+	&"relief_rivage_05": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_CENTRE},
+	&"relief_rivage_06": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_CENTRE},
+	# Indice du coquillage (objet caché O4, case `R` bloquée par la grille) ; clôture réparée
+	# d'Azuria (décor seul, T20b).
+	&"prop_indice_coquillage_01": {"width": 1, "depth": 1},
+	&"prop_cloture_reparee_01": {"width": 1, "depth": 1},
+	# Maison de Léo : cabines (machine + armoire, 3 × 2), console 2 × 1, module 1 × 1, écran
+	# 1 × 1, bureau 3 × 1, bibliothèque vue de côté 1 × 2.
+	&"int_cabine_teleport_01": {"width": 3, "depth": 2},
+	&"int_console_leo_01": {"width": 2, "depth": 1},
+	&"int_module_leo_01": {"width": 1, "depth": 1},
+	&"int_ecran_diagnostic_01": {"width": 1, "depth": 1},
+	&"int_bureau_leo_01": {"width": 3, "depth": 1},
+	&"int_bibliotheque_cote_01": {"width": 1, "depth": 2},
+	# --- Série 17 : Routes 5 et 6, souterrain, Carmin-sur-Mer (J15 T11, fiche
+	# `serie-17-carmin.md`). Bâtiments : emprise = toute l'image, porte(s) libre(s) au bas.
+	# Postes et entrées du souterrain : 7 × 4 (Route 5) ; sur la Route 6 la carte n'en bloque que
+	# 7 × 3 (même image, seule la profondeur change : la carte T14 pose ses propres cases).
+	&"bldg_pension_01": {"shadow": true, "width": 7, "depth": 6, "fade": true,
+		"open": [Vector2i(0, 0)]},
+	&"bldg_poste_safrania_01": {"shadow": true, "width": 7, "depth": 4, "fade": true,
+		"open": [Vector2i(0, 0)]},
+	&"bldg_entree_souterrain_01": {"shadow": true, "width": 7, "depth": 4, "fade": true,
+		"open": [Vector2i(0, 0)]},
+	&"bldg_arene_carmin_01": {"shadow": true, "width": 12, "depth": 7, "fade": true,
+		"open": [Vector2i(-1, 0), Vector2i(0, 0)]},
+	&"bldg_fan_club_01": {"shadow": true, "width": 8, "depth": 6, "fade": true,
+		"open": [Vector2i(-1, 0), Vector2i(0, 0)]},
+	&"bldg_maison_pecheur_01": {"shadow": true, "width": 7, "depth": 6, "fade": true,
+		"open": [Vector2i(0, 0)]},
+	# S.S. Anne : trois tranches de 10, 9 et 10 cases, objets séparés (contrat du J16 : l'état
+	# « parti » retire les trois). Sans ombre ni emprise : les cases `N` de la grille sont déjà
+	# bloquées et l'accès `E` (coupée) reste libre ; la carte T14 règle le z.
+	&"bldg_ss_anne_proue_01": {"traversable": true, "align": ALIGN_EDGE},
+	&"bldg_ss_anne_milieu_01": {"traversable": true, "align": ALIGN_CENTRE},
+	&"bldg_ss_anne_poupe_01": {"traversable": true, "align": ALIGN_EDGE},
+	# Vue lointaine du port (belvédère de la Route 6) : décor posé au-dessus des arbres.
+	&"prop_vue_port_01": {"traversable": true, "align": ALIGN_EDGE},
+	# Bords de quai en bois : modules posés **dans les cases d'eau** de la frontière (couche du
+	# sol, jamais sur une case praticable) ; 03 = côté d'un ponton (0,25 case), 05 = départ.
+	&"relief_quai_bois_01": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_quai_bois_02": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_quai_bois_03": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_CENTRE},
+	&"relief_quai_bois_04": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_quai_bois_05": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_CENTRE},
+	&"prop_pieu_quai_01": {"width": 1, "depth": 1},
+	# Port : jeune arbre de l'Arène (objet séparé, retirable par `cut_vermilion_gym_bush`),
+	# passerelle (on marche dessus), grue, bitte à amarre, cordage à plat, caisses.
+	&"prop_jeune_arbre_arene_01": {"width": 2, "depth": 1, "wind": true, "fade": true},
+	&"prop_passerelle_01": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"prop_grue_quai_01": {"width": 2, "depth": 1},
+	&"prop_bitte_amarre_01": {"width": 1, "depth": 1},
+	&"prop_cordage_01": {"traversable": true, "align": ALIGN_CENTRE},
+	&"prop_caisses_port_01": {"width": 2, "depth": 1},
+	# Routes : indices des objets cachés (case bloquée = point d'examen) ; nénuphars à plat
+	# sur l'eau (01 = trio avec fleur, 02 et 03 = feuilles seules).
+	&"prop_indice_tronc_01": {"width": 1, "depth": 1},
+	&"prop_indice_joncs_01": {"width": 1, "depth": 1},
+	&"prop_nenuphars_01": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_CENTRE},
+	&"prop_nenuphars_02": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_CENTRE},
+	&"prop_nenuphars_03": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_CENTRE},
+	# Souterrain : murs maçonnés posés sur les cases `#` (cases bloquées par la carte) ; 01/02 =
+	# face au sud, 03 = couronnement, 04 à 06 = côtés et angle. Escaliers = warps `STEP_ON`.
+	&"relief_mur_souterrain_01": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_mur_souterrain_02": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_mur_souterrain_03": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_mur_souterrain_04": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_CENTRE},
+	&"relief_mur_souterrain_05": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_CENTRE},
+	&"relief_mur_souterrain_06": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_CENTRE},
+	&"prop_escalier_souterrain_monte_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_EDGE},
+	&"prop_escalier_souterrain_descend_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_EDGE},
+	&"prop_stele_01": {"width": 1, "depth": 1},
+	&"prop_banc_souterrain_01": {"width": 1, "depth": 1},
+	&"prop_pierre_descellee_01": {"width": 1, "depth": 1},
+	&"prop_applique_01": {"traversable": true, "align": ALIGN_CENTRE},
+	# Intérieurs : comptoir de la Pension 3 × 1, escalier descendant (warp `STEP_ON`, couche du
+	# sol), panier 1 × 1, fauteuil 1 × 1, vitrine 2 × 2, tableau mural (le mur est déjà bloqué).
+	&"int_comptoir_pension_01": {"width": 3, "depth": 1},
+	&"int_escalier_descendant_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_EDGE},
+	&"int_panier_pokemon_01": {"width": 1, "depth": 1},
+	&"int_fauteuil_president_01": {"width": 1, "depth": 1},
+	&"int_vitrine_rubans_01": {"width": 2, "depth": 2},
+	&"int_tableau_port_01": {"traversable": true, "align": ALIGN_CENTRE},
 }
 
 

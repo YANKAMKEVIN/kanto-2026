@@ -55,7 +55,7 @@
 | K-14 | **9 Exorcistes** : 2, 2, 3 et 2 du 3F au 6F, dont les 3 inévitables de RB. |
 | K-15 | Un PNJ dit que Fuji avait vu des gens étranges monter à la Tour. Flou : ni « Rocket », ni « enlevé ». |
 | K-16 | Indices : panneau du Scope Sylphe, Exorciste du 2F, plus **une** rumeur sur le Casino de Céladopole. |
-| K-17 | **Seulement des objets existants**, remplacés sinon. L'Élixir caché attend les objets cachés. |
+| K-17 | **Seulement des objets existants**, remplacés sinon. L'objet caché du 5F est gardé (les objets cachés existent depuis le J12), avec un objet existant à la place de l'Élixir. |
 | K-18 | Son hors du J19. Les intentions sont notées pour le jalon audio. |
 | K-19 | Zone purifiée RB : soin complet, illimité, ni rencontre ni Dresseur. |
 | K-20 | Trois sous-jalons : **19.0, 19A, 19B**, avec deux validations S24. |
@@ -79,9 +79,9 @@ les Pokémon disparus ; on n'en fait jamais un décor d'horreur.
 
 | Dans le J19 | Hors du J19 |
 |---|---|
-| Ouverture de l'escalier du rez-de-chaussée (gardienne, K-3) | Carte du 7F, Sbires Rocket, M. Fuji (J20 ou jalon du retour) |
+| Ouverture de l'escalier du rez-de-chaussée (gardienne, K-3) | Carte du 7F, Sbires Rocket, M. Fuji (**J21**) |
 | Cartes 2F à 6F | Scope Sylphe : objet et obtention (J20) |
-| Rival n° 5 au 2F | Ossatueur révélé, combattu, apaisé (J20) |
+| Rival n° 5 au 2F | Ossatueur révélé, combattu, apaisé ; Poké Flûte (**J21**) |
 | Mode spectre : rencontres sauvages, combat, combat scripté, retour en arrière | Poké Flûte, Ronflex |
 | 9 Exorcistes, zone purifiée, objets | Capture de Fantominus, Spectrum ou Osselait (impossible sans Scope) |
 | Variantes de dialogue à Lavanville, panneau, rumeur | Son, musique, pas (K-18) |
@@ -92,9 +92,9 @@ les Pokémon disparus ; on n'en fait jamais un décor d'horreur.
 | Le J19 suppose | Jalon | Si c'est faux |
 |---|---|---|
 | Lavanville, son Centre (point de repos), la maison de M. Fuji, la maison d'Osselait | J18 | Le J19 ajoute ses variantes là où les PNJ existent. Sinon, il les place lui-même. |
-| Rez-de-chaussée de la Tour, avec une gardienne sur l'escalier (I-21, renommée par K-2) | J18 | Sans gardienne, K-3 se réduit à la ligne d'inquiétude. |
-| **Un emplacement de panneau à Lavanville** pour le Scope Sylphe | J18 | Le J19 le pose. |
-| **La sortie ouest (Route 8) ouverte**, ou au moins annoncée | J18 / J20 | Sinon, la rumeur du Casino pointe vers une impasse. Signalé au J20. |
+| Rez-de-chaussée de la Tour, avec une gardienne sur l'escalier (I-21, renommée par K-2) | J18 | **Confirmé par le J18** (2026-10-15, `docs/dossier-j18` 89b46a9a) : pnj `exorciste_gardienne` en (17, 3) de `tour_pokemon_rdc.txt`, `unless=tower_stairs_open` ; escalier (17, 2) → `pokemon_tower_2f`. La planche Exorciste est **produite par le J18** et réutilisée ici. |
+| **Un emplacement de panneau à Lavanville** pour le Scope Sylphe | J18 | **Réservé par le J18** en (42, 11) de `tools/plans/lavanville.txt` (`panneau_scope_j19`, repère libre au J18), lu depuis (41, 11) tourné →. Le J19 le passe en panneau bloquant. |
+| **La sortie ouest (Route 8) ouverte**, ou au moins annoncée | J18 / J20 | **Annoncée par le J18** : (0, 10..12) « ROUTE 8 — À venir », spawns `from_route_8` prêts ; ouverte par le J20 (grille de la Route 8 à recaler sur Lavanville). |
 | Rival n° 4 : Roucoups, Rattatac, Kadabra, starter évolué | J16 | Le n° 5 reste cohérent : Rattatac disparaît (dossier 06 §6). |
 | Kadabra existe (données, art) | J16 | Le J19 le crée. |
 | Équipe du joueur vers les niveaux 22 à 25 | J16–J18 | La simulation K-6 absorbe l'écart. |
@@ -135,8 +135,8 @@ les Pokémon disparus ; on n'en fait jamais un décor d'horreur.
 - les objets RB qui n'existent pas sont remplacés par la **Super Potion** si le J15 l'a créée,
   sinon par la **Potion** ;
 - l'Élixir, le PV Plus, le Super Bonbon et Précision + attendent leur jalon ;
-- l'Élixir caché du 5F attend le système d'objets cachés (passe J20, H-14) ;
-- au total : 3F 1, 4F 2, 5F 1, 6F 1.
+- l'Élixir caché du 5F devient une **Super Potion cachée** au même endroit (4, 12) : les objets cachés existent déjà (Route 3 au J12, Route 24 au J13) [D] ;
+- au total : 3F 1, 4F 2, 5F 1 (+ 1 caché), 6F 1.
 
 ## 5. Rencontres sauvages [V décision 4, K-7, K-10]
 
@@ -183,7 +183,7 @@ dans le Sac, le mode normal revient tout seul.
 ### 6.3 Le SPECTRE du 6F (blocage)
 
 - **Déclencheur** : la case devant l'escalier du 7F, tant que `ghost_marowak_calmed` n'est pas posé.
-  Ce drapeau est **nommé ici, mais posé seulement au J20**.
+  Ce drapeau est **nommé ici, mais posé seulement au J21**.
 - **Scène** :
   1. le joueur s'arrête, la brume s'épaissit ;
   2. une ligne de texte (§15.3) ;
@@ -192,7 +192,9 @@ dans le Sac, le mode normal revient tout seul.
   4. à la fin du combat (fuite, ou défaite impossible), le joueur est **repoussé d'une case** vers le
      nord, à l'opposé de l'escalier qui est en bas de la carte (grille : déclencheur (10, 16), recul
      (10, 15) ; RB repoussait d'une case à droite), sur le modèle de `route_3_guard`. Le déclencheur se réarme.
-- **Au J20**, avec le Scope, la même scène bascule vers la révélation. C'est la session J20 qui la
+- **Au J20**, le joueur a le Scope : les rencontres sauvages sont identifiées (K-11), mais le SPECTRE du
+  6F **reste un blocage** (dossier 23 §14 : le J20 s'arrête au Scope). **Au J21** (dossier 24), la
+  même scène bascule vers la révélation. C'est la session J21 qui la
   conçoit.
 
 ### 6.4 La gardienne de l'escalier (rez-de-chaussée) [V K-3]
@@ -295,6 +297,8 @@ Dresseurs. **C'est ainsi que le joueur les découvre.**
 
 ## 10. Lavanville au J19 [V décision 6, K-15, K-16]
 
+**PNJ du J18 à Lavanville** (dossier 21 §6.3) : un enfant et son Pokémon à la Maison des Pokémon ; il n'y a ni « homme » chez Fuji ni gentleman au Centre : **le J19 les ajoute lui-même**.
+
 **Variantes de dialogue** : elles sont ajoutées aux PNJ du J18 et actives dès la build J19, sans
 drapeau. Elles **remplacent** les lignes du J18 qui parlent de Fuji au présent.
 
@@ -335,13 +339,13 @@ suffisent.
 |---|---|---|---|
 | Fantominus (92) | Exorcistes ; sauvage caché | complètes (Spectre / Poison ; évolue au N25) | face : artwork officiel existant ; dos : **lot** |
 | Spectrum (93) | Exorcistes ; sauvage caché | complètes. L'évolution par échange vers Ectoplasma reste inactive : pas d'échange. | face : existant ; dos : `dos_ia_093` provisoire existant |
-| Osselait (104) | sauvage caché seulement | complètes (Sol ; évolue au N28) | **aucun au J19**, il ne s'affiche jamais. Art au J20. |
+| Osselait (104) | sauvage caché seulement | complètes (Sol ; évolue au N28) | **aucun au J19**, il ne s'affiche jamais. Art au J20 (capturable dès que le Scope est dans le Sac). |
 | Ossatueur (105) | spectre du 6F, caché | données de combat (N30) | aucun au J19 |
 | Caninos, Léviator, Noeunoeuf | rival n° 5 | complètes | face : artwork officiel |
 | Kadabra | rival n° 5 | créé par le J16 (sinon ici) | J16 |
 
 **Pokédex** : entrées de Fantominus, Spectrum, Caninos, Léviator et Noeunoeuf. Celles d'Osselait et
-d'Ossatueur peuvent attendre le J20, car on ne les voit jamais au J19.
+d'Ossatueur peuvent attendre le J20 (Osselait) et le J21 (Ossatueur), car on ne les voit jamais au J19.
 
 ### 12.2 Capacités
 
@@ -400,7 +404,7 @@ Rien de nouveau au J19.
 | `beaten_tower_channeler_1` … `_9` | Exorcistes (mécanisme existant) |
 | Objets ramassés | Mécanisme existant |
 
-**Réservés au J20**, nommés ici et **jamais posés ni lus par le J19** :
+**Réservés au J21** (dossier 24), nommés ici et **jamais posés ni lus par le J19 ni par le J20** :
 - `ghost_marowak_calmed` ;
 - `fuji_rescued` ;
 - `got_poke_flute` ;
@@ -513,8 +517,8 @@ pas. Reposez-vous. »
 
 ## 16. Cas limites (à couvrir au plan technique)
 
-1. **Le joueur sauvegarde au 6F, puis le J20 lui donne le Scope** : la scène du 6F bascule toute
-   seule vers la révélation, sans migration.
+1. **Le joueur sauvegarde au 6F, puis le J20 lui donne le Scope** : les rencontres sauvages sont
+   identifiées sans migration ; le SPECTRE du 6F reste un blocage jusqu'au J21.
 2. **Toute l'équipe est KO pendant un combat contre un Exorciste** : réveil au Centre de Lavanville.
    Les Exorcistes battus le restent.
 3. **SPECTRE et statuts** : un Pokémon endormi ou gelé affiche son statut, pas la peur. L'empoisonné
@@ -532,7 +536,7 @@ pas. Reposez-vous. »
 10. **Départ de débogage** au 6F sans le rival battu : le blocage fonctionne quand même. Les
     drapeaux sont indépendants.
 11. **Pokédex** : aucun combat SPECTRE n'ajoute d'espèce. Test dédié.
-12. **Aucun drapeau du J20** n'est posé par une donnée du J19. Test dédié, comme celui du J20 sur
+12. **Aucun drapeau du J21** (Ossatueur, Fuji, Flûte) n'est posé par une donnée du J19. Test dédié, comme celui du J20 sur
     Lavanville.
 
 ## 17. Valeurs par défaut (règle 4)

@@ -25,20 +25,27 @@ extends RefCounted
 ## « cutscene » (identifiant de scène). L'ancienne clé « heal »: true vaut « action »: "heal".
 ## « pages » peut manquer (ou être vide) si la variante a une « action » ou une « cutscene » ;
 ## jamais avec un « choice » (sa dernière page est la question).
+## Tirage (jalon 14, jalon-14.md §2.8) : « one_in »: N (entier ≥ 2) sur une variante, qui ne
+## s'applique alors qu'une fois sur N ([method Dialogue.pick]) ; jamais avec « auto ».
 ## Jetons de texte (jalon 7 §3.6, T18) : `{nom}` dans le texte d'une page **et dans
 ## « speaker »** (`{rival}`, OUV.2), seulement ceux de [constant DialogueTokens.KNOWN] ; toute
 ## autre accolade est une erreur. La question d'un
-## choix n'a pas de jeton (elle ne peut pas être omise).
+## choix n'a pas de jeton (elle ne peut pas être omise), sauf les jetons « de contexte » de la
+## Pension ([constant DialogueTokens.CONTEXT], J15).
 ## Une entrée invalide est écartée, l'erreur est signalée ([method get_errors], push_error).
 
 const DATA_DIR: String = "res://data/dialogues/"
 ## Actions de fin de variante ou de choix (jalon-07.md §3.3, §6.2) : soin de Maman, soin du
 ## Centre (rituel, point de repos), Boutique, Stockage.
-const ACTIONS: Array[StringName] = [&"heal", &"center_heal", &"open_shop", &"open_storage"]
+## Pension (J15, jalon-15.md §2.5.2) : `open_daycare`, le gardien (variante sans page).
+const ACTIONS: Array[StringName] = [
+	&"heal", &"center_heal", &"open_shop", &"open_storage", &"open_daycare",
+]
 
 const _DIALOGUE_KEYS: Array[String] = ["speaker", "narration", "draft", "variants"]
 const _VARIANT_KEYS: Array[String] = [
 	"pages", "if", "unless", "set", "auto", "heal", "draft", "action", "choice", "cutscene",
+	"one_in",
 ]
 const _CHOICE_KEYS: Array[String] = [
 	"confirm", "cancel", "confirm_action", "confirm_pages", "cancel_pages", "confirm_cutscene",
@@ -209,7 +216,7 @@ func _parse_variant(value: Variant, where: String) -> DialogueVariant:
 			return null
 		ok = pages_ok and ok
 	if variant.choice != null and not variant.pages.is_empty() \
-			and not DialogueTokens.tokens_in(variant.pages.back().text).is_empty():
+			and not _question_tokens_ok(variant.pages.back().text):
 		ok = _fail("%s : la question d'un choix (dernière page) n'a pas de jeton" % where)
 	ok = _read_flags(entry, "if", variant.if_flags, where) and ok
 	ok = _read_flags(entry, "unless", variant.unless_flags, where) and ok
@@ -220,7 +227,22 @@ func _parse_variant(value: Variant, where: String) -> DialogueVariant:
 	if entry.has("draft"):
 		ok = _read_bool(entry["draft"], where + " draft") and ok
 		variant.draft = entry["draft"] is bool and entry["draft"]
+	if entry.has("one_in"):
+		ok = _read_one_in(entry, variant, where) and ok
 	return variant if ok else null
+
+
+## « one_in » (jalon 14) : entier ≥ 2 ; refusé avec « auto » (une arrivée sur la carte ne
+## tire rien).
+func _read_one_in(entry: Dictionary, variant: DialogueVariant, where: String) -> bool:
+	var value: Variant = entry["one_in"]
+	if not (value is float or value is int) or float(value) != floorf(float(value)) \
+			or int(value) < 2:
+		return _fail("%s : « one_in » doit être un entier ≥ 2" % where)
+	if variant.auto:
+		return _fail("%s : « one_in » interdit avec « auto »" % where)
+	variant.one_in = int(value)
+	return true
 
 
 ## Fin de la variante : « heal » (ancienne forme), « action », « choice », « cutscene » ; une
@@ -364,6 +386,15 @@ func _check_tokens(text: String, where: String) -> bool:
 			ok = _fail("%s : jeton inconnu « {%s} » (attendu : %s)" % [where, token,
 				DialogueTokens.KNOWN])
 	return ok
+
+
+## La question d'un choix ne peut pas être omise : aucun jeton, sauf ceux « de contexte »
+## ([constant DialogueTokens.CONTEXT], toujours fournis par le directeur de la Pension, J15).
+static func _question_tokens_ok(text: String) -> bool:
+	for token: StringName in DialogueTokens.tokens_in(text):
+		if not DialogueTokens.CONTEXT.has(token):
+			return false
+	return true
 
 
 ## « turn » : objet non vide { acteur: cible }, textes non vides. Qu'une cible qui n'est ni une

@@ -5,16 +5,17 @@ extends GutTest
 ## le compagnon rentre) sans jamais la fermer (ni [signal SceneRouter.map_entered], aucune carte ne
 ## change) : le compagnon restait caché jusqu'au changement de carte suivant. Il doit être visible
 ## derrière le joueur au plus tard au premier pas qui libère une case (règle J11).
-## Vérifié aux deux raccords « à venir » restants (nord et sud du bord est). Depuis la fusion dans
-## le J13 : la vraie Route 4 mène à Azuria ; le « à venir » est le bord est de la Route 24
-## (« ROUTE 25 — À venir », chemin sans herbe, spawns `from_route_25_n|s`).
+## Vérifié aux raccords nord et sud du bord est de Carmin-sur-Mer (jalon 15 T14 : « ROUTE 11 —
+## À venir », couloir de 3 cases, spawns `from_route_11_n|c|s`) ; avant : le bord sud d'Azuria
+## (« ROUTE 5 », J14 T20b, devenu la vraie Route 5 au J15 T21) et, jusqu'au T15 du J14, le bord
+## est de la Route 24 (« ROUTE 25 »).
 
 const MemoryFs := preload("res://tests/helpers/memory_file_system.gd")
 const FixedClock := preload("res://tests/helpers/fixed_clock.gd")
 const SAVE_PATH := "user://test_companion_coming_soon_save.json"
 const FADE := 0.05
 const TIMEOUT := 12.0
-const MAP := &"route_24"
+const MAP := &"vermilion_city"
 
 var _boot: Boot
 var _saved_router: Array = []
@@ -39,20 +40,20 @@ func after_each() -> void:
 
 
 func test_north_gate_companion_follows_again_after_the_screen() -> void:
-	await _check_gate(&"from_route_25_n")
+	await _check_gate(&"from_route_11_n")
 
 
 func test_south_gate_companion_follows_again_after_the_screen() -> void:
-	await _check_gate(&"from_route_25_s")
+	await _check_gate(&"from_route_11_s")
 
 
 func test_the_companion_follows_again_after_two_visits() -> void:
-	await _check_gate(&"from_route_25_n", 2)
+	await _check_gate(&"from_route_11_c", 2)
 
 
-## Boot sur [param spawn] (case du raccord, tourné vers l'est), compagnon choisi ; un pas vers
-## l'ouest (il suit), retour au bord, poussée → écran → retour ; [param visits] fois. Puis un pas
-## vers l'ouest : il est montré, juste derrière le joueur.
+## Boot sur [param spawn] (case du raccord, tourné vers l'ouest), compagnon choisi ; un pas vers
+## l'ouest (il suit), retour au bord, poussée vers l'est → écran → retour ; [param visits] fois.
+## Puis un pas vers l'ouest : il est montré, juste derrière le joueur.
 func _check_gate(spawn: StringName, visits: int = 1) -> void:
 	_boot = (load("res://game/boot.tscn") as PackedScene).instantiate() as Boot
 	_boot.save_system = SaveSystem.new(MemoryFs.new(), SAVE_PATH)
@@ -72,7 +73,7 @@ func _check_gate(spawn: StringName, visits: int = 1) -> void:
 	GameState.set_companion(lead)
 	companion.refresh()
 	var gate := player.get_cell()
-	# Un pas vers l'ouest : le compagnon suit (route = extérieur).
+	# Un pas vers l'ouest : le compagnon suit (extérieur).
 	await _step(player, companion, &"move_left")
 	assert_true(companion.is_shown(), "%s : il suit avant l'écran" % spawn)
 	var screen := _boot.get_coming_soon_screen()
@@ -87,7 +88,7 @@ func _check_gate(spawn: StringName, visits: int = 1) -> void:
 		await wait_until(func() -> bool: return not screen.is_showing() \
 			and not SceneRouter.is_transitioning(), TIMEOUT)
 		await wait_process_frames(2)
-		assert_eq(_boot.get_map().map_id, MAP, "toujours sur la Route 24")
+		assert_eq(_boot.get_map().map_id, MAP, "toujours à Carmin")
 		assert_eq(player.get_cell(), gate, "retour sur la case de sortie")
 		assert_eq(player.get_facing(), Vector2i.LEFT)
 	# Premier pas qui libère une case : il est de nouveau là, derrière le joueur.

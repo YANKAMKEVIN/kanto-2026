@@ -22,6 +22,9 @@ extends Node2D
 ## (jalon 3B §2.5). Ils n'ont pas d'owner : les scripts de construction ne les sauvent
 ## jamais dans les `.tscn`.
 ## Le joueur est ajouté à `Entities` (y-sort) par [method spawn_player].
+## Jalon 14 (jalon-14.md §2.8) : un PNJ du fichier avec une autre place (« moved ») est créé
+## à la place que lui donnent les drapeaux ; les [FlagGate] de la carte (décor qui suit les
+## drapeaux) sont réglées par [method apply_flag_gates].
 ## DA.2 : les routines de marche des PNJ ([member NpcSpec.route_cells]) sont **retenues tant
 ## qu'aucun joueur n'est sur la carte** ([method Npc.set_routine_held]) et relâchées par
 ## [method spawn_player] / [method spawn_player_at] : une carte chargée seule (tests, outils)
@@ -169,16 +172,30 @@ func remove_npc(id: StringName) -> void:
 func refresh_npcs(flags: StoryFlags) -> void:
 	if not _npcs_spawned:
 		_spawn_npcs()
+	apply_flag_gates(flags)
 	if _roster == null:
 		return
 	for npc: Npc in _roster_npcs.duplicate():
-		if not npc.get_spec().is_present(flags):
+		var spec := npc.get_spec()
+		if not spec.is_present(flags) or _is_misplaced(spec, flags):
 			remove_npc(npc.get_id())
 	for spec: NpcSpec in _present_specs(flags):
 		if get_npc(spec.id) == null:
 			var npc := _create_npc(spec)
 			if npc != null:
 				_roster_npcs.append(npc)
+
+
+## Montre ou cache chaque [FlagGate] de la carte selon [param flags] (jalon 14) : appelé par
+## [method refresh_npcs] à l'arrivée, puis par Boot à chaque drapeau changé pendant la visite.
+## Sans effet hors de l'arbre de scènes.
+func apply_flag_gates(flags: StoryFlags) -> void:
+	if not is_inside_tree():
+		return
+	for node: Node in get_tree().get_nodes_in_group(FlagGate.GROUP):
+		if is_ancestor_of(node):
+			(node as FlagGate).apply(flags)
+			(node as FlagGate).apply_to_grid(_grid)
 
 
 ## PNJ d'identifiant [param id], ou null.
@@ -299,6 +316,14 @@ func _build_grid() -> void:
 			if prop != null:
 				_grid.add_solid_footprint(prop.get_anchor_cell(), prop.get_footprint())
 				prop.level_rows = level_rows
+	# Jalon 15 : décor qui bloque ses cases tant qu'il est affiché (FlagGate.blocking_cells).
+	for layer_path: NodePath in _PROP_LAYERS:
+		var gates := get_node_or_null(layer_path)
+		if gates == null:
+			continue
+		for child: Node in gates.get_children():
+			if child is FlagGate:
+				(child as FlagGate).apply_to_grid(_grid)
 	for npc: Npc in _npcs:
 		if not npc.enter_grid(_grid):
 			push_error("GameMap %s : PNJ « %s » ne peut plus occuper %s" % [
@@ -379,13 +404,26 @@ func _spawn_npcs() -> void:
 
 
 ## Entrées du fichier présentes avec [param flags], sans les Pokémon d'ambiance dont
-## l'apparence manque encore ([method awaits_painted_look]).
+## l'apparence manque encore ([method awaits_painted_look]), chacune à sa place pour ces
+## drapeaux ([method NpcSpec.placed_for], clé « moved » du jalon 14).
 func _present_specs(flags: StoryFlags) -> Array[NpcSpec]:
 	var present: Array[NpcSpec] = []
 	for spec: NpcSpec in _roster.get_present(flags):
 		if not awaits_painted_look(spec):
-			present.append(spec)
+			present.append(spec.placed_for(flags))
 	return present
+
+
+## Vrai si le PNJ créé avec [param spec] n'est pas à la place que lui donnent [param flags]
+## (clé « moved », jalon 14) : [method refresh_npcs] le recrée à la bonne place. Seulement à
+## l'arrivée sur la carte : dans la visite où le drapeau se lève, le PNJ reste où la scène
+## l'a mené.
+func _is_misplaced(spec: NpcSpec, flags: StoryFlags) -> bool:
+	var roster_spec := _roster.get_spec(spec.id)
+	if roster_spec == null or not roster_spec.has_moved_place():
+		return false
+	var placed := roster_spec.placed_for(flags)
+	return placed.cell != spec.cell or placed.facing != spec.facing
 
 
 ## Vrai pour un Pokémon d'ambiance (`pokemon/<espèce>`, non interactif) dont aucune planche

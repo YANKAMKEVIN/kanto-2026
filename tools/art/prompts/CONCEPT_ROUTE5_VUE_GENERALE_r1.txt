@@ -1,0 +1,43 @@
+CONCEPT ART — VUE GÉNÉRALE DE LA ROUTE 5, LA ROUTE DE LA PENSION (Kanto 2026), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. La route part du NORD (bord haut de l'image, au milieu, où elle vient de la ville d'Azuria) et descend vers le SUD jusqu'à un carrefour en bas de l'image ; elle n'a aucune sortie au sud.
+Légende du plan :
+- vert très foncé = forêt et bois denses infranchissables (y compris les marges de l'image) ;
+- vert moyen = herbe rase praticable ;
+- beige = chemin de terre battue, partout de la même largeur. Il SERPENTE à angles droits : il descend du bord haut, fait un décalage vers l'ouest, longe un couloir de forêt à l'ouest, revient vers l'est, passe devant la Pension, refait un décalage vers l'est et descend jusqu'au carrefour du bas, d'où partent une branche courte vers l'est (vers le poste de garde) et une longue branche vers l'ouest (vers l'entrée du souterrain) ; deux courtes antennes : l'une vers la porte de la Pension, l'autre vers l'ouest jusqu'au pied du petit bois (le détour) ;
+- jaune-vert olive = HAUTES HERBES (touffues, plus hautes, où vivent les Pokémon sauvages), deux blocs rectangulaires nets : un en haut à droite, un en bas à droite ;
+- bâtiment au toit orange-brique au centre = la PENSION POKÉMON : une maison de campagne accueillante, toit de tuiles chaudes, murs crème, porte au sud ;
+- grand rectangle rose entouré d'un trait brun, à droite de la Pension = son JARDIN CLOS : une clôture basse en bois qui entoure un jardin plein de fleurs (massifs colorés, petites allées de pelouse, un arbre fruitier), bien visible depuis le chemin ;
+- bloc de forêt isolé à gauche de la Pension = un PETIT BOIS, que le détour du chemin vient toucher par le sud ;
+- en bas à droite, bâtiment au toit gris-bleu = un POSTE DE GARDE (petit bâtiment officiel au toit d'ardoise, porte au milieu de sa façade sud), vers une grande ville à l'est, fermée pour l'instant ;
+- en bas à gauche, bâtiment au toit gris foncé = le BÂTIMENT D'ENTRÉE D'UN PASSAGE SOUTERRAIN : petit pavillon de pierre ancienne, porte au milieu de sa façade sud ;
+- petit bosquet isolé à gauche, au-dessus de ce bâtiment = un bouquet d'arbres ;
+- petits carrés ocre = panneaux en bois SANS TEXTE ; point rouge = une Poké Ball posée dans l'herbe (objet à ramasser), au bord ouest du couloir du haut ;
+- points bleus = simples repères techniques, à IGNORER : peins de l'herbe rase à leur place, rien d'autre.
+Respecte ce plan À LA LETTRE : l'entrée étroite au nord, la prairie de l'arrivée et ses hautes herbes à l'est, le bloc de forêt entre les deux bras du chemin, le couloir à l'ouest, la Pension et son jardin clos à l'est du chemin avec la grande prairie qui va jusqu'au bord droit, le petit bois à l'ouest, la bande de forêt qui resserre le passage sous la Pension, le carrefour du bas avec le poste de garde à droite, les hautes herbes en dessous, le pavillon du souterrain à gauche. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+RÈGLE ABSOLUE DES CHEMINS : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; chemins, clôtures et bords des zones suivent une grille : uniquement des segments horizontaux et verticaux à ANGLES DROITS, AUCUN segment en diagonale ni courbe, aucun escalier.
+RELIEF : le sol est lisible et plat ; aucun rebord, aucune falaise, aucune terrasse.
+
+IMAGE 2 : la vue générale de la Route 6, une autre route du même jeu, validée. Respecte EXACTEMENT son style de rendu : même pinceau, mêmes arbres en masses arrondies, mêmes hautes herbes jaune-vert, même chemin de terre, même saturation, MÊME LUMIÈRE. Ne reprends PAS sa composition : ni étang, ni rochers, ni port, ni mer.
+
+Format : PORTRAIT 1024 × 1536, vue plongeante sur toute la route, comme le plan.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats. Le feuillage est peint en grandes masses douces.
+- Perspective : vue de dessus, axes de l'image alignés sur la grille, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud).
+- Aucun trait noir : contours fins et doux, plus sombres et plus saturés que la couleur locale. Ombres colorées bleu-vert ou violet froid, jamais grises.
+
+AMBIANCE — « fin d'après-midi douce, jardins, odeur de foin » : une campagne verdoyante et paisible, entre deux villes.
+- Prairies d'un vert tendre semées de petites fleurs, quelques meules ou bottes de foin dorées au bord des prairies.
+- La Pension est le cœur chaleureux de l'image : toit de tuiles orange chaud, murs crème, volets verts, jardinières aux fenêtres, une cheminée ; son jardin clos déborde de fleurs (roses, jaunes, blanches, violettes) derrière sa clôture de bois blanc-crème.
+- Le petit bois à l'ouest est plus sombre et plus frais, un vieux tronc couché à son pied.
+- Lumière dorée et douce de fin d'après-midi, ombres longues mais légères vers l'est, ciel invisible.
+
+PERSONNE : aucun personnage, aucun Pokémon, aucun animal.
+
+INTERDITS : texte, lettres, chiffres, étiquettes, panneaux lisibles, logo, signature, filigrane, cadre, interface ; tout bâtiment autre que la Pension, le poste de garde et le pavillon du souterrain ; ville, village, pont ; rivière, étang, mer ; falaise, montagne, rochers, escaliers, terrasses ; route goudronnée, véhicule ; arbres orange ou automnaux ; neige ; brouillard, flou de profondeur, vignettage ; pixel art.
+
+L'image doit raconter, sans texte : en quittant la ville, une route verte serpente doucement dans la campagne, passe devant une maison chaleureuse au jardin fleuri où l'on confie ses Pokémon, et arrive à un carrefour : à l'est une ville fermée, à l'ouest un vieux passage souterrain.

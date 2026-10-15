@@ -1,0 +1,85 @@
+{
+	"daycare_keeper": {
+		"speaker": "Gardien",
+		"action": "open_daycare"
+	},
+	"daycare_offer": {
+		"speaker": "Gardien",
+		"pages": [
+			"Bienvenue à la Pension ! Je garde un Pokémon pendant que tu voyages.",
+			"Il s'entraîne un peu à chaque pas que tu fais. Tu veux m'en confier un ?"
+		],
+		"choice": {
+			"confirm": "OUI",
+			"cancel": "NON",
+			"cancel_pages": [
+				"Reviens quand tu veux."
+			]
+		}
+	},
+	"daycare_pick": {
+		"speaker": "Gardien",
+		"pages": [
+			"Lequel veux-tu me confier ?"
+		]
+	},
+	"daycare_last_able": {
+		"speaker": "Gardien",
+		"pages": [
+			"Tu ne peux pas partir sans un Pokémon en forme."
+		]
+	},
+	"daycare_deposited": {
+		"speaker": "Gardien",
+		"pages": [
+			"Très bien. Je m'occupe de {pokemon}. Reviens le chercher quand tu veux."
+		]
+	},
+	"daycare_visit": {
+		"speaker": "Gardien",
+		"pages": [
+			"{pokemon} va très bien. Il n'a pas encore beaucoup changé.",
+			"Tu veux le reprendre ? Ce sera {price} ₽."
+		],
+		"choice": {
+			"confirm": "OUI",
+			"cancel": "NON"
+		}
+	},
+	"daycare_visit_levels": {
+		"speaker": "Gardien",
+		"pages": [
+			"Ah, te voilà ! {pokemon} a gagné {levels} niveau(x).",
+			"Tu veux le reprendre ? Ce sera {price} ₽."
+		],
+		"choice": {
+			"confirm": "OUI",
+			"cancel": "NON"
+		}
+	},
+	"daycare_party_full": {
+		"speaker": "Gardien",
+		"pages": [
+			"Ton équipe est complète. Fais-lui une place d'abord."
+		]
+	},
+	"daycare_returned": {
+		"speaker": "Gardien",
+		"pages": [
+			"Merci ! Voici {pokemon}. Il est en pleine forme."
+		]
+	},
+	"daycare_returned_short": {
+		"speaker": "Gardien",
+		"pages": [
+			"Tu n'as pas tout à fait assez… Ce n'est rien, je prends ce que tu as.",
+			"Voici {pokemon}."
+		]
+	},
+	"daycare_after": {
+		"speaker": "Gardien",
+		"pages": [
+			"Je garde toujours une place. Reviens quand tu veux."
+		]
+	}
+}

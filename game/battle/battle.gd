@@ -10,7 +10,7 @@ extends RefCounted
 ## Un tour ([method submit]) : choix de l'IA adverse, ordre (priorité de la capacité, puis
 ## Vitesse effective, puis tirage roll(2) à égalité : 1 = le joueur d'abord), exécution. Un
 ## Pokémon K.O. n'agit plus ; le combat s'arrête dès qu'un camp n'a plus de Pokémon valide
-## (si les deux tombent pendant la même action, le camp du lanceur gagne). En fin de tour,
+## (si les deux tombent ensemble, le joueur perd : J15 T24, Rouge/Bleu). En fin de tour,
 ## l'adversaire dont le Pokémon est K.O. envoie le suivant ; le joueur choisit le sien
 ## (jalon 7, [constant State.REPLACING]). Sans PP, seule Lutte est permise
 ## ([constant BattleAction.STRUGGLE]) : sans type, recul d'¼ des PV max du lanceur.
@@ -91,17 +91,33 @@ extends RefCounted
 ## TRAP_DAMAGED, TRAP_ENDED ; fuite et changement refusés par [method is_legal],
 ## [method is_player_trapped]), Entrave (MOVE_DISABLED ; capacité exclue de
 ## [method get_usable_moves], [method get_disabled_move] ; décompte en fin de tour, DISABLE_ENDED),
-## Repos (RESTED, [method StatusRules.apply_rest]), Destruction / Explosion (SELF_KO : le camp du
-## lanceur perd si les deux derniers Pokémon tombent ensemble), Sonicboom (dégâts fixes
+## Repos (RESTED, [method StatusRules.apply_rest]), Destruction / Explosion (SELF_KO ; si les deux
+## derniers Pokémon tombent ensemble, le joueur perd, J15 T24), Sonicboom (dégâts fixes
 ## « value »). Tirages ajoutés : range_int des tours du piège, après ceux des dégâts. Fin de tour,
 ## pour chaque camp (le joueur d'abord) : graine, statut, piège, Entrave.
+##
+## « Charge puis frappe » (jalon 14, `jalon-14.md` §2.3, [ChargeRules]) : au tour 1, MOVE_USED
+## (PP −1) puis CHARGE_STARTED, aucun dégât ; au tour 2, action imposée (comme Patience, ni
+## changement, ni Sac, ni fuite ; l'IA adverse n'est pas consultée) : CHARGE_RELEASED, MOVE_USED
+## sans PP, puis la frappe ordinaire — ou CHARGE_BROKEN si le Pokémon ne peut pas agir ou était
+## endormi ou gelé. Invulnérable (Tunnel) : toute capacité qui le vise donne DODGED (PP dépensé),
+## la riposte de Patience aussi ; une Ball donne BALL_BLOCKED (l'adversaire joue son tour).
+## Téléport (jalon 14 §2.5) : contre un Dresseur, NOTHING_HAPPENED ; en combat sauvage,
+## TELEPORTED puis BATTLE_ENDED ([constant Outcome.FLED] pour le joueur,
+## [constant Outcome.FOE_FLED] pour le sauvage : ni XP, ni capture).
+##
+## Jackpot (jalon 15, `jalon-15.md` §2.7.3) : effet COINS, après les dégâts d'un coup réussi du
+## joueur (même si la cible tombe) : COINS_SCATTERED, pièces ajoutées à la bourse du combat
+## ([PayDayPurse], [method get_pay_day_coins]) ; celui de l'adversaire ne fait rien. Le moteur
+## ne verse rien : [BattleConclusion] décide selon l'issue. Aucun tirage propre.
 
 ## REPLACING (jalon 7) : le Pokémon du joueur est K.O., il doit en choisir un autre
 ## ([method replace]) ; ajouté en fin d'enum.
 enum State { READY, CHOOSING, OVER, REPLACING }
 ## Réponse de [method check_switch] : OK, ou la raison du refus.
 enum SwitchCheck { OK, NO_POKEMON, FAINTED, ACTIVE }
-enum Outcome { NONE, WIN, LOSS, FLED, CAUGHT }
+## FOE_FLED (jalon 14) : le Pokémon sauvage s'est enfui (Téléport) ; ajouté en fin d'enum.
+enum Outcome { NONE, WIN, LOSS, FLED, CAUGHT, FOE_FLED }
 
 const STRUGGLE_ID: StringName = &"struggle"
 ## Patience (CT34, jalon 11) : capacité dont la riposte est un DAMAGE de ce nom.
@@ -129,6 +145,8 @@ var _participants: Array[Pokemon] = []
 var _acted: Array[Battler] = []
 ## Dégâts portés par la dernière capacité offensive ([method _strike]) : drain (jalon 12).
 var _strike_damage: int = 0
+## Pièces du Jackpot éparpillées par le joueur pendant ce combat (jalon 15).
+var _purse: PayDayPurse = PayDayPurse.new()
 
 
 ## [param rules] : les règles du combat ([BattleRules]) ; null = comportement du 4B (combat
@@ -171,6 +189,12 @@ func get_foe_side() -> BattleSide:
 	return _foe
 
 
+## Pièces du Jackpot éparpillées par le joueur depuis le début du combat (versées ou non selon
+## l'issue : [method BattleConclusion.resolve]).
+func get_pay_day_coins() -> int:
+	return _purse.total()
+
+
 ## Participants actuels : Pokémon du joueur envoyés contre l'adversaire en jeu (copie).
 func get_participants() -> Array[Pokemon]:
 	return _participants.duplicate()
@@ -199,13 +223,13 @@ func get_usable_moves() -> Array[int]:
 	return _player.active.usable_moves()
 
 
-## Emplacement de la capacité imposée au Pokémon du joueur (Patience, tours 2 et 3 : le joueur
-## ne choisit rien, la présentation soumet [code]BattleAction.move(index)[/code] sans attendre),
-## ou [constant NO_LOCK].
+## Emplacement de la capacité imposée au Pokémon du joueur (Patience, tours 2 et 3 ; tour 2
+## d'une charge, jalon 14 : le joueur ne choisit rien, la présentation soumet
+## [code]BattleAction.move(index)[/code] sans attendre), ou [constant NO_LOCK].
 func get_locked_move() -> int:
-	if _player.active == null or not _player.active.is_biding():
+	if _player.active == null or not _player.active.is_action_locked():
 		return NO_LOCK
-	return _player.active.bide_slot
+	return _player.active.locked_slot()
 
 
 ## Vrai si [param action] est permise au joueur maintenant. Pendant une Patience, seule l'action
@@ -368,6 +392,8 @@ func _attempt_flee(events: Array[BattleEvent]) -> void:
 ## joue son tour.
 func _throw_ball(item_id: StringName, events: Array[BattleEvent]) -> void:
 	var item := _rules.items.get_item(item_id)
+	if _ball_blocked(item, events):
+		return
 	var target := _foe.active.pokemon
 	var species := _data.get_species(target.species_id)
 	var thrown := _event(BattleEvent.Kind.BALL_THROWN, _foe)
@@ -443,12 +469,12 @@ func _foe_turn_alone(events: Array[BattleEvent]) -> void:
 	_end_turn(events)
 
 
-## Action de l'adversaire : imposée pendant sa Patience (aucun tirage), sinon celle de son IA.
-## Un changement que le moteur refuse (combat sauvage, place invalide) est remplacé par une
-## capacité (l'IA ne change plus).
+## Action de l'adversaire : imposée pendant sa Patience ou sa charge (aucun tirage), sinon celle
+## de son IA. Un changement que le moteur refuse (combat sauvage, place invalide) est remplacé
+## par une capacité (l'IA ne change plus).
 func _foe_action() -> BattleAction:
-	if _foe.active != null and _foe.active.is_biding():
-		return BattleAction.move(_foe.active.bide_slot)
+	if _foe.active != null and _foe.active.is_action_locked():
+		return BattleAction.move(_foe.active.locked_slot())
 	var action := _foe.ai.choose(_foe, _player, _rng, _data)
 	if action.kind == BattleAction.Kind.SWITCH and not _foe_can_switch_to(action.target):
 		push_error("Battle : changement adverse refusé (place %d)" % action.target)
@@ -526,7 +552,7 @@ func _drain_seed(side: BattleSide, events: Array[BattleEvent]) -> void:
 	events.append(drained)
 	if victim.is_fainted():
 		_faint(side, events)
-		_check_end(other_side, events)
+		_check_end(events)
 
 
 ## Statut à dégâts en fin de tour ([method StatusRules.end_turn_damage]) : le Pokémon de
@@ -544,7 +570,7 @@ func _status_damage(side: BattleSide, events: Array[BattleEvent]) -> void:
 	events.append(damaged)
 	if victim.is_fainted():
 		_faint(side, events)
-		_check_end(_foe if side == _player else _player, events)
+		_check_end(events)
 
 
 func _player_goes_second(player_action: BattleAction, foe_action: BattleAction) -> bool:
@@ -590,24 +616,35 @@ func _execute(side: BattleSide, action: BattleAction, events: Array[BattleEvent]
 	if _blocked_by_disable(side, action, events):
 		return
 	# Patience : s'endormir ou geler la rompt, même si le Pokémon se réveille ou dégèle ici.
+	var status_before := user.pokemon.status
 	var bide_frozen := user.is_biding() and (user.pokemon.status == StatusRules.SLEEP
 		or user.pokemon.status == StatusRules.FREEZE)
-	if not _can_act(side, events) or bide_frozen:
+	var can_act := _can_act(side, events)
+	var charge_broken := user.is_charging() and ChargeRules.breaks_charge(status_before, can_act)
+	if not can_act or bide_frozen or charge_broken:
 		_break_bide(side, events)
+		_break_charge(side, events)
 		return
 	if user.is_biding():
 		_continue_bide(side, target_side, events)
 		return
+	var released := _release_charge(side, events)
 	var used := _event(BattleEvent.Kind.MOVE_USED, side)
 	used.move_id = move_id
 	if action.move_index == BattleAction.STRUGGLE:
 		used.pp = -1
 	else:
 		var slot := user.pokemon.moves[action.move_index]
-		slot.use()
+		if not released:
+			slot.use()
 		used.pp = slot.pp
 	events.append(used)
 	user.last_move_slot = action.move_index
+	if not released and _start_charge(side, action, move, events):
+		return
+	if _dodged(target_side, move, events):
+		_self_ko(move, side, target_side, events)
+		return
 	if move.is_damaging():
 		if not _strike(side, target_side, move, events):
 			_self_ko(move, side, target_side, events)
@@ -624,7 +661,7 @@ func _execute(side: BattleSide, action: BattleAction, events: Array[BattleEvent]
 		_faint(target_side, events)
 	if user.pokemon.is_fainted():
 		_faint(side, events)
-	_check_end(side, events)
+	_check_end(events)
 
 
 ## Le lanceur peut-il agir ? Dans l'ordre (`jalon-11.md` §2.2) : statut durable
@@ -662,7 +699,7 @@ func _can_act(side: BattleSide, events: Array[BattleEvent]) -> bool:
 			events.append(hurt)
 			if pokemon.is_fainted():
 				_faint(side, events)
-				_check_end(_foe if side == _player else _player, events)
+				_check_end(events)
 			return false
 	return true
 
@@ -684,6 +721,9 @@ func _continue_bide(side: BattleSide, target_side: BattleSide, events: Array[Bat
 	if stock <= 0 or target.pokemon.is_fainted():
 		_append_failed(side, BIDE_ID, events)
 		return
+	if target.invulnerable:
+		events.append(_event(BattleEvent.Kind.DODGED, target_side))
+		return
 	var damage := _event(BattleEvent.Kind.DAMAGE, target_side)
 	damage.move_id = BIDE_ID
 	damage.amount = target.pokemon.take_damage(mini(2 * stock, target.pokemon.hp))
@@ -692,7 +732,7 @@ func _continue_bide(side: BattleSide, target_side: BattleSide, events: Array[Bat
 	_record_hit(target_side, damage.amount)
 	if target.pokemon.is_fainted():
 		_faint(target_side, events)
-	_check_end(side, events)
+	_check_end(events)
 
 
 ## Rupture de la Patience du Pokémon de [param side] (s'il en avait une) : BIDE_BROKEN, sauf
@@ -862,7 +902,7 @@ func _apply_effect(effect: MoveEffect, move: MoveData, side: BattleSide,
 			damage.hp = target.pokemon.hp
 			events.append(damage)
 			_record_hit(target_side, damage.amount)
-		MoveEffect.Kind.HITS:
+		MoveEffect.Kind.HITS, MoveEffect.Kind.CHARGE:
 			pass
 		MoveEffect.Kind.BIDE:
 			var user := side.active
@@ -880,6 +920,10 @@ func _apply_effect(effect: MoveEffect, move: MoveData, side: BattleSide,
 			_rest(move, side, events)
 		MoveEffect.Kind.SELF_KO:
 			pass
+		MoveEffect.Kind.TELEPORT:
+			_teleport(move, side, events)
+		MoveEffect.Kind.COINS:
+			_scatter_coins(effect, side, events)
 
 
 ## Effet [code]confusion[/code] (jalon 11) sur le Pokémon de [param target_side] : comme un
@@ -958,17 +1002,15 @@ func _append_missed(side: BattleSide, move_id: StringName, events: Array[BattleE
 	events.append(missed)
 
 
-## Fin du combat si un camp n'a plus de Pokémon valide ([param acting] : camp du lanceur,
-## vainqueur si les deux tombent ensemble).
-func _check_end(acting: BattleSide, events: Array[BattleEvent]) -> void:
-	var player_out := not _player.has_able()
-	var foe_out := not _foe.has_able()
-	if not player_out and not foe_out:
-		return
-	if player_out and foe_out:
-		_finish(Outcome.WIN if acting == _player else Outcome.LOSS, events)
-	else:
-		_finish(Outcome.WIN if foe_out else Outcome.LOSS, events)
+## Fin du combat si un camp n'a plus de Pokémon valide. Le joueur sans Pokémon valide perd
+## **toujours**, même si l'adversaire tombe dans le même coup (J15 T24, Rouge/Bleu : la défaite
+## l'emporte ; contrecoup de Lutte, Destruction / Explosion des deux côtés, confusion…) : une
+## victoire implique donc toujours un Pokémon valide dans l'équipe du joueur.
+func _check_end(events: Array[BattleEvent]) -> void:
+	if not _player.has_able():
+		_finish(Outcome.LOSS, events)
+	elif not _foe.has_able():
+		_finish(Outcome.WIN, events)
 
 
 ## Met en jeu [param pokemon] pour [param side] (null : son premier Pokémon valide).
@@ -992,6 +1034,7 @@ func _send_out(side: BattleSide, events: Array[BattleEvent], pokemon: Pokemon = 
 ## un adversaire K.O. rapporte de l'XP (§2.3).
 func _faint(side: BattleSide, events: Array[BattleEvent]) -> void:
 	side.active.pokemon.cure_status()
+	side.active.clear_charge()
 	events.append(_event(BattleEvent.Kind.FAINTED, side))
 	if side == _foe and _rules != null and _rules.gives_exp:
 		_award_exp(side.active.pokemon, events)
@@ -1187,7 +1230,7 @@ func _trap_damage(side: BattleSide, events: Array[BattleEvent]) -> void:
 	victim.trap_turns -= 1
 	if pokemon.is_fainted():
 		_faint(side, events)
-		_check_end(other_side, events)
+		_check_end(events)
 		return
 	if victim.trap_turns == 0:
 		var ended := _event(BattleEvent.Kind.TRAP_ENDED, side)
@@ -1206,7 +1249,7 @@ func _release_trap_of_other(side: BattleSide) -> void:
 
 ## Entrave : bloque la dernière capacité lancée par la cible pour [member MoveEffect.min_turns]
 ## fins de tour (celle de l'Entrave comprise) : MOVE_DISABLED. Échoue (FAILED) si elle n'a encore
-## rien lancé, a déjà une capacité bloquée, ou est en pleine Patience.
+## rien lancé, a déjà une capacité bloquée, ou est en pleine Patience ou en pleine charge (J14).
 func _disable(effect: MoveEffect, move: MoveData, side: BattleSide, target_side: BattleSide,
 		events: Array[BattleEvent]) -> void:
 	var target := target_side.active
@@ -1214,7 +1257,7 @@ func _disable(effect: MoveEffect, move: MoveData, side: BattleSide, target_side:
 		return
 	var slot := target.last_move_slot
 	if slot < 0 or slot >= target.pokemon.moves.size() or target.has_disabled_move() \
-			or target.is_biding():
+			or target.is_action_locked():
 		_append_failed(side, move.id, events)
 		return
 	target.disabled_slot = slot
@@ -1253,7 +1296,7 @@ func _rest(move: MoveData, side: BattleSide, events: Array[BattleEvent]) -> void
 ## Destruction, Explosion : si [param move] porte SELF_KO, le lanceur (qui a pu agir) perd ses
 ## derniers PV après la capacité, même ratée ou sans effet : SELF_KO, puis le FAINTED de la cible
 ## si elle tombe (XP : le lanceur, à 0 PV, n'en reçoit pas), puis le sien. Si les deux derniers
-## Pokémon tombent ensemble, le camp du lanceur perd. Vrai si la capacité en porte un.
+## Pokémon tombent ensemble, le joueur perd (J15 T24). Vrai si la capacité en porte un.
 func _self_ko(move: MoveData, side: BattleSide, target_side: BattleSide,
 		events: Array[BattleEvent]) -> bool:
 	if move.effect_of(MoveEffect.Kind.SELF_KO) == null:
@@ -1266,5 +1309,99 @@ func _self_ko(move: MoveData, side: BattleSide, target_side: BattleSide,
 	if target_side.active.pokemon.is_fainted():
 		_faint(target_side, events)
 	_faint(side, events)
-	_check_end(target_side, events)
+	_check_end(events)
 	return true
+
+
+# --- Jalon 14 : « charge puis frappe » ([ChargeRules]) et Téléport --------------------------
+
+## Tour 1 d'une capacité CHARGE (après MOVE_USED, PP dépensé) : la charge commence
+## (CHARGE_STARTED, invulnérable si l'effet le dit), aucun dégât. Faux si [param move] n'a pas
+## d'effet CHARGE (rien n'est fait).
+func _start_charge(side: BattleSide, action: BattleAction, move: MoveData,
+		events: Array[BattleEvent]) -> bool:
+	var effect := move.charge_effect()
+	if effect == null or action.move_index == BattleAction.STRUGGLE:
+		return false
+	side.active.charge_slot = action.move_index
+	side.active.invulnerable = effect.invulnerable
+	var started := _event(BattleEvent.Kind.CHARGE_STARTED, side)
+	started.move_id = move.id
+	events.append(started)
+	return true
+
+
+## Tour 2 : le Pokémon de [param side] sort de sa charge pour frapper (CHARGE_RELEASED, état
+## effacé). Faux s'il ne chargeait rien.
+func _release_charge(side: BattleSide, events: Array[BattleEvent]) -> bool:
+	var user := side.active
+	if not user.is_charging():
+		return false
+	var released := _event(BattleEvent.Kind.CHARGE_RELEASED, side)
+	released.move_id = user.pokemon.moves[user.charge_slot].move_id
+	user.clear_charge()
+	events.append(released)
+	return true
+
+
+## Charge rompue au tour 2 (s'il en avait une) : CHARGE_BROKEN, sauf s'il est K.O. (le K.O.
+## suffit) ; rien n'est frappé.
+func _break_charge(side: BattleSide, events: Array[BattleEvent]) -> void:
+	var user := side.active
+	if user == null or not user.is_charging():
+		return
+	var move_id := user.pokemon.moves[user.charge_slot].move_id
+	user.clear_charge()
+	if not user.pokemon.is_fainted():
+		var broken := _event(BattleEvent.Kind.CHARGE_BROKEN, side)
+		broken.move_id = move_id
+		events.append(broken)
+
+
+## La cible de [param target_side], invulnérable, évite [param move] : DODGED (le PP est déjà
+## dépensé), rien d'autre. Faux sinon.
+func _dodged(target_side: BattleSide, move: MoveData, events: Array[BattleEvent]) -> bool:
+	if not ChargeRules.dodges(target_side.active, move):
+		return false
+	var dodged := _event(BattleEvent.Kind.DODGED, target_side)
+	dodged.move_id = move.id
+	events.append(dodged)
+	return true
+
+
+## Ball lancée sur un sauvage invulnérable : BALL_BLOCKED à la place du lancer (la Ball est
+## déjà retirée par le directeur), puis l'adversaire joue son tour. Faux sinon.
+func _ball_blocked(item: ItemData, events: Array[BattleEvent]) -> bool:
+	if not _foe.active.invulnerable:
+		return false
+	var blocked := _event(BattleEvent.Kind.BALL_BLOCKED, _foe)
+	blocked.item_id = item.id
+	blocked.item_name = item.name
+	events.append(blocked)
+	_foe_turn_alone(events)
+	return true
+
+
+## Téléport (après MOVE_USED) : contre un Dresseur, NOTHING_HAPPENED ; lanceur piégé (J12,
+## Ligotage…) : FAILED (« Mais ça échoue ! »), le combat continue ; sinon, en combat sauvage,
+## TELEPORTED puis la fin du combat (FLED pour le joueur, FOE_FLED pour le sauvage).
+func _teleport(move: MoveData, side: BattleSide, events: Array[BattleEvent]) -> void:
+	if _rules == null or not _rules.wild:
+		events.append(_event(BattleEvent.Kind.NOTHING_HAPPENED, side))
+		return
+	if side.active.is_trapped():
+		_append_failed(side, move.id, events)
+		return
+	events.append(_event(BattleEvent.Kind.TELEPORTED, side))
+	_finish(Outcome.FLED if side == _player else Outcome.FOE_FLED, events)
+
+
+## Jackpot (jalon 15) : pièces de [param effect] éparpillées par le lanceur de [param side] ;
+## seulement celles du joueur (COINS_SCATTERED, [member BattleEvent.amount]).
+func _scatter_coins(effect: MoveEffect, side: BattleSide, events: Array[BattleEvent]) -> void:
+	var amount := _purse.add(side.active.pokemon.level, effect.per_level, side == _player)
+	if amount <= 0:
+		return
+	var scattered := _event(BattleEvent.Kind.COINS_SCATTERED, side)
+	scattered.amount = amount
+	events.append(scattered)

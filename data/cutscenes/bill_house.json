@@ -1,0 +1,57 @@
+{
+	"bill_house_enter": {
+		"variants": [
+			{
+				"unless": ["bill_met"],
+				"steps": [
+					{ "emote": "bill_clefairy", "kind": "exclamation" },
+					{ "face": "bill_clefairy", "to": "player" },
+					{ "dialogue": "bill_greet" }
+				]
+			},
+			{
+				"if": ["bill_in_cabin"],
+				"unless": ["bill_restored"],
+				"steps": [
+					{ "dialogue": "bill_ready" }
+				]
+			}
+		]
+	},
+	"bill_screen": {
+		"steps": [
+			{ "dialogue": "bill_screen_next" },
+			{ "set": ["bill_screen_checked"] }
+		]
+	},
+	"bill_module": {
+		"steps": [
+			{ "dialogue": "bill_module_next" },
+			{ "move": "bill_clefairy", "to": [3, 5] },
+			{ "face": "bill_clefairy", "to": "up" },
+			{ "despawn": "bill_clefairy" },
+			{ "set": ["bill_module_checked", "bill_in_cabin"] }
+		]
+	},
+	"bill_machine": {
+		"steps": [
+			{ "flash": 1 },
+			{ "wait": 0.3 },
+			{ "flash": 1 },
+			{ "spawn": "bill", "sprite": "bill", "cell": [12, 5], "facing": "down",
+				"dialogue": "bill" },
+			{ "react": "bill" },
+			{ "face": "player", "to": "bill" },
+			{ "face": "bill", "to": "player" },
+			{ "dialogue": "bill_thanks" },
+			{ "give": "ss_ticket" },
+			{ "dialogue": "bill_give_ticket" },
+			{ "dialogue": "bill_candy_offer" },
+			{ "give": "rare_candy" },
+			{ "dialogue": "bill_give_candy" },
+			{ "dialogue": "bill_ss_anne" },
+			{ "moment": "bill_restored" },
+			{ "set": ["bill_restored", "got_ss_ticket", "got_bill_rare_candy"] }
+		]
+	}
+}

@@ -20,8 +20,14 @@ var variants: Array[DialogueVariant] = []
 
 
 ## Première variante qui s'applique à [param flags], ou null si aucune.
-func pick(flags: StoryFlags) -> DialogueVariant:
+## Variante à tirage ([member DialogueVariant.one_in], jalon 14) : ses drapeaux d'abord, puis
+## un tirage de [param rng] (1 sur N) ; perdu, on passe à la suivante. Sans [param rng], une
+## telle variante est sautée sans tirage (tests déterministes, simple consultation).
+func pick(flags: StoryFlags, rng: GameRng = null) -> DialogueVariant:
 	for variant: DialogueVariant in variants:
-		if variant.matches(flags):
-			return variant
+		if not variant.matches(flags):
+			continue
+		if variant.is_random() and (rng == null or rng.roll(variant.one_in) != 1):
+			continue
+		return variant
 	return null

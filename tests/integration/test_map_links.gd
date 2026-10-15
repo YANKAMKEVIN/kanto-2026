@@ -23,13 +23,26 @@ const MAP_IDS: Array[StringName] = [
 	# Jalon 13 (T7) : Azuria et ses intérieurs.
 	&"cerulean_city", &"cerulean_center", &"cerulean_mart", &"cerulean_gym",
 	&"cerulean_bike_shop", &"cerulean_house",
+	# Jalon 14 (T20b) : la maison cambriolée.
+	&"cerulean_burgled_house",
 	# Jalon 13 (T8) : la Route 24 (la Route 4 est devenue la vraie Route 4, même identifiant).
 	&"route_24",
+	# Jalon 14 (T14) : la Route 25 et la maison de Léo (raccord ouest vers la Route 24 au T15).
+	&"route_25", &"bill_house",
+	# Jalon 15 (T18) : le passage souterrain.
+	&"underground_path",
+	# Jalon 15 (T14) : la Route 6, son bâtiment d'entrée du souterrain, Carmin et ses intérieurs.
+	&"route_6", &"route_6_underground_gate", &"vermilion_city", &"vermilion_center",
+	&"vermilion_mart", &"vermilion_fan_club", &"vermilion_fisher_house", &"vermilion_house_1",
+	&"vermilion_house_2",
+	# Jalon 15 (T13, T21) : la Route 5 (raccord réel avec Azuria) et ses trois intérieurs.
+	&"route_5", &"route_5_daycare", &"route_5_gate", &"route_5_underground_gate",
 ]
 ## Cartes construites par une autre tâche en parallèle (jalon 7 : la Route 22, T22 ; jalon 10 :
 ## Argenta, T11, pendant les intérieurs du T13) : un warp qui y mène est vérifié seulement si la
 ## carte existe déjà (sinon le test le signale).
 ## Jalon 12 : Route 3, sas (T8) et étages du Mont Sélénite (T9) sont tous construits.
+## Jalon 15 : les bâtiments d'entrée du souterrain (T13, T14) sont intégrés.
 const PARALLEL_MAPS: Array[StringName] = [&"route_22"]
 const DIRECTIONS: Array[Vector2i] = [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]
 
@@ -115,7 +128,12 @@ func test_every_coming_soon_warp_returns_to_a_walkable_spawn_of_its_own_map() ->
 			var back := map.get_spawn_cell(warp.target_spawn)
 			assert_false(map.get_grid().is_solid(back), "%s : retour praticable" % label)
 			assert_ne(warp.facing, Vector2i.ZERO, "%s : orientation au retour" % label)
-	assert_gt(found, 0, "au moins le raccord est de la Route 24 (Route 25)")
+	# Jalon 15 (T13, T21) : le sud d'Azuria mène à la vraie Route 5 ; reste l'ouverture
+	# nord du poste vers Safrania (2 cases, jamais atteinte). Jalon 15 (T14) : Route 11
+	# (trois cases), Arène de Carmin (deux), S.S. Anne (deux), Safrania (porte nord de la
+	# Route 6, une).
+	assert_eq(found, 10, "« SAFRANIA » (2), « Route 11 » (3), Arène de Carmin (2), "
+		+ "S.S. Anne (2), Safrania (1)")
 
 
 ## Warp de [param map] qui ramène à [param origin] depuis [param arrival] : sur la case
@@ -128,9 +146,16 @@ func _return_warp(map: GameMap, arrival: Vector2i, origin: StringName) -> Warp:
 		var next := arrival + direction
 		var warp := map.get_warps().find_on_step(next, direction)
 		if warp != null and warp.target_map == origin \
-				and map.get_grid().get_step_target(arrival, direction) == next:
+				and (map.get_grid().get_step_target(arrival, direction) == next
+					or _blocked_only_by_a_character(map, next)):
 			return warp
 	return null
+
+
+## Porte condamnée par un personnage (le ruban d'Azuria, J14) : la case est praticable, un PNJ
+## l'occupe tant que le Rocket n'est pas battu.
+func _blocked_only_by_a_character(map: GameMap, cell: Vector2i) -> bool:
+	return map.get_grid().is_occupied(cell) and not map.get_grid().is_solid(cell)
 
 
 func test_every_warp_is_reversible_on_the_spot() -> void:

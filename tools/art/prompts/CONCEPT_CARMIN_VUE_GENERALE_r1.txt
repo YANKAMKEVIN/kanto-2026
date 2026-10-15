@@ -1,0 +1,50 @@
+CONCEPT ART — VUE GÉNÉRALE DE CARMIN-SUR-MER, LA VILLE PORTUAIRE (Kanto 2026), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. On entre en ville par le NORD (le chemin en haut au centre) ; la ville descend vers la MER, au sud, où un grand paquebot est amarré le long du quai.
+Légende du plan :
+- vert très foncé = forêt et végétation côtière dense infranchissables (y compris les marges de l'image) ;
+- vert moyen = herbe rase praticable ; points roses = petites fleurs ;
+- beige = rues de terre battue claire : l'avenue qui descend du nord, et la grande RUE PRINCIPALE horizontale qui traverse toute la ville d'ouest en est et sort par le bord droit ;
+- damier beige-gris = la PLACE PAVÉE au centre, avec quatre BANCS de bois (petits traits bruns) ;
+- en haut, de gauche à droite, cinq bâtiments alignés au nord de la rue principale :
+  · toit brun-rouge = une MAISON d'habitants ;
+  · toit vert-bleu = le FAN CLUB, une jolie maison plus grande, deux portes ;
+  · toit ROUGE et façade blanche = le CENTRE POKÉMON ;
+  · toit BLEU et façade blanche = la BOUTIQUE ;
+  · grand bâtiment GRIS = l'ARÈNE de la ville, la plus grande construction, sobre et solide, sur le thème de l'électricité (toit de métal gris, quelques pylônes ou paratonnerres sur le toit, porte double au milieu de sa façade sud) ;
+- deux petits disques vert clair devant la porte de l'Arène = un JEUNE ARBRE fin qui pousse en plein devant l'entrée et la bouche ;
+- au sud de la rue principale : à gauche une MAISON au toit brun-rouge (la maison du Pêcheur), à droite une autre MAISON au toit brun-rouge ;
+- grands disques vert sombre = grands arbres isolés ; petits disques vert sombre = buissons bas ;
+- bande brune striée sur toute la largeur = le QUAI en grosses planches de bois ; deux bandes brunes plus étroites qui partent vers le sud = deux PONTONS de bois perpendiculaires au rivage ;
+- petits carrés bruns sur le quai = CAISSES de port empilées ; petits disques sombres = BITTES D'AMARRAGE avec leurs cordages ;
+- bleu = la MER, bleu profond ;
+- grand rectangle gris-bleu sur la mer = le S.S. ANNE, un GRAND PAQUEBOT amarré, sa coque PARALLÈLE au quai : longue coque bleu marine et blanche, ponts blancs, superstructure blanche étagée, une haute cheminée rouge au centre ; le petit rectangle brun qui le relie au quai = la PASSERELLE d'embarquement ;
+- petits carrés ocre = panneaux en bois SANS TEXTE.
+Respecte ce plan À LA LETTRE : la place et l'orientation de chaque bâtiment, des rues, de la place pavée, du quai, des deux pontons, des caisses, de la passerelle et du paquebot. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+RÈGLE ABSOLUE DES CHEMINS : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; rues, place, quai, pontons et bords des zones suivent une grille : uniquement des segments horizontaux et verticaux à ANGLES DROITS, AUCUNE courbe, aucun segment en diagonale. Le quai est RECTILIGNE, les pontons sont perpendiculaires au rivage, la coque du navire est parallèle au quai.
+RELIEF : le sol de la ville est plat ; le quai domine la mer d'une petite hauteur (bord de planches et pieux de bois visibles côté sud) ; aucun escalier.
+
+IMAGE 2 : la vue générale d'Argenta, une autre ville du même jeu. Respecte EXACTEMENT son style de rendu : même pinceau, mêmes arbres en masses arrondies, même chemin de terre, même pavé, même saturation, MÊME LUMIÈRE, même échelle des bâtiments ; le CENTRE POKÉMON et la BOUTIQUE sont EXACTEMENT les mêmes bâtiments (identiques dans toutes les villes : Centre au toit rouge avec l'emblème Poké Ball blanc et la grande porte vitrée ; Boutique au toit bleu, même emblème, même porte vitrée). Ne reprends PAS sa composition : ni montagne, ni paroi rocheuse, ni musée, ni hautes herbes.
+
+Format : PAYSAGE 1536 × 1024, vue plongeante sur toute la ville et le port, comme le plan.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus, axes de l'image alignés sur la grille, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud). Le paquebot est vu de la même façon : on voit le dessus de ses ponts et son flanc côté sud.
+- Aucun trait noir : contours fins et doux, plus sombres et plus saturés que la couleur locale. Ombres colorées bleu-vert ou violet froid, jamais grises.
+
+AMBIANCE — « la première ville tournée vers le large » : lumière dorée sur l'eau, cordages qui grincent, sirène lointaine du navire.
+- Palette : FAÇADES CLAIRES (blanc cassé, crème, ocre pâle), TOITURES CHAUDES (tuiles brun-rouge, terre cuite), BOIS des pontons et du quai (brun chaud, planches usées), CORDAGES de chanvre, MÉTAL du port (bittes d'amarrage, anneaux, la carrure grise de l'Arène), MER BLEU PROFOND avec des reflets dorés, VÉGÉTATION CÔTIÈRE (pins maritimes, arbustes, herbe claire) dans les marges.
+- Le S.S. ANNE est le grand repère de l'image : immense, élégant, calme, plus long que la moitié de la ville, ses hublots alignés, ses canots de sauvetage blancs le long des ponts, ses amarres tendues jusqu'aux bittes du quai. AUCUN nom ni lettre sur la coque.
+- L'Arène se reconnaît comme le bâtiment le plus important après le paquebot, avec le jeune arbre qui en bloque la porte.
+- Le quai vit : caisses empilées, cordages enroulés, filets, quelques tonneaux, sans encombrer le passage.
+- Lumière de fin d'après-midi chaude et dorée ; la mer scintille ; quelques mouettes peuvent être suggérées par de petites formes blanches lointaines au-dessus de l'eau, sans détail.
+
+PERSONNE : aucun personnage, aucun Pokémon, aucun animal sur terre ni sur le quai.
+
+INTERDITS : texte, lettres, chiffres, étiquettes, panneaux lisibles, nom sur le navire, logo (seul l'emblème Poké Ball sans texte du Centre et de la Boutique est permis), signature, filigrane, cadre, interface ; tout bâtiment non prévu par le plan ; phare, grue géante au premier plan, autres navires, voiliers, bateaux de pêche ; plage de sable étendue ; route goudronnée, véhicule ; rues courbes ou en diagonale ; arbres orange ou automnaux ; neige ; brouillard, flou de profondeur, vignettage ; pixel art.
+
+L'image doit raconter, sans texte : une jolie ville claire au bord de la mer, avec son Centre, sa Boutique et son Arène sur la grand-rue, sa place, son quai de bois, et, amarré le long du quai, un paquebot immense qui promet le voyage.

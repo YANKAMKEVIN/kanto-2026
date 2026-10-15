@@ -40,6 +40,9 @@ signal heal_requested
 ## Le choix de la variante attend le joueur (la boîte garde la question) : [param view] porte la
 ## question en titre et les deux libellés. Câblé par [Boot] vers [method DialogueBox.show_choice].
 signal choice_requested(view: ChoiceView)
+## Le joueur a répondu au choix ([method choose]) ; émis avant l'action et les pages de la
+## réponse. Lu par le [DaycareDirector] (J15) pour enchaîner ses répliques.
+signal choice_made(confirmed: bool)
 ## La variante se termine par une scène : émis une fois, juste après [signal dialogue_finished]
 ## (joueur rendu ; la scène pose son propre verrou). Câblé par [Boot] vers [CutsceneDirector].
 signal cutscene_requested(cutscene_id: StringName)
@@ -58,6 +61,10 @@ var action_handler: Callable
 ## lues seulement si une page à jouer contient un jeton. Non valide : aucune valeur (les pages à
 ## jeton sont omises). Posé par [Boot] (T19) : [method DialogueTokens.values_for].
 var token_values: Callable
+## Aléatoire des variantes à tirage (« one_in », jalon 14) : `func() -> GameRng`, lu à chaque
+## [method play] (la partie chargée remplace son aléatoire). Non valide : ces variantes sont
+## sautées. Posé par [Boot] (GameState.rng).
+var rng_source: Callable
 
 var _library: DialogueLibrary
 var _flags: StoryFlags
@@ -131,7 +138,7 @@ func play(dialogue_id: StringName, npc: Npc = null, map: GameMap = null,
 	if dialogue == null:
 		push_error("DialogueRunner : dialogue inconnu « %s »" % dialogue_id)
 		return false
-	var variant := dialogue.pick(_flags)
+	var variant := dialogue.pick(_flags, _rng())
 	if variant == null:
 		push_error("DialogueRunner : aucune variante de « %s » ne s'applique" % dialogue_id)
 		return false
@@ -161,7 +168,8 @@ func is_running() -> bool:
 	return _running
 
 
-## Vrai si la variante qui s'appliquerait maintenant à [param dialogue_id] est « auto ».
+## Vrai si la variante qui s'appliquerait maintenant à [param dialogue_id] est « auto » (sans
+## tirage : une variante « one_in » n'est jamais « auto »).
 func has_auto_variant(dialogue_id: StringName) -> bool:
 	var dialogue := _library.get_dialogue(dialogue_id) if _library != null else null
 	if dialogue == null:
@@ -178,6 +186,7 @@ func choose(confirmed: bool) -> void:
 	_awaiting_choice = false
 	_choice_done = true
 	_confirmed = confirmed
+	choice_made.emit(confirmed)
 	var choice := _variant.choice
 	# Drapeaux du bouton choisi (jalon-13.md §2.13), levés tout de suite, avant la fermeture.
 	if _flags != null:
@@ -390,3 +399,10 @@ func _on_advance_requested() -> void:
 	if Engine.get_process_frames() == _play_frame:
 		return
 	_advance()
+
+
+## Aléatoire des tirages « one_in » ([member rng_source]), ou null.
+func _rng() -> GameRng:
+	if not rng_source.is_valid():
+		return null
+	return rng_source.call() as GameRng

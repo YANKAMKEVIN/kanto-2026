@@ -7,12 +7,19 @@ extends GutTest
 ## les lieux atteignables (les ponts sont nécessaires), cases réservées (PNJ, examens), objets
 ## peints sur des cases bloquées, quais hors des cases praticables, budget de nœuds.
 ## Vie (PNJ, examens, arrivée) : `test_cerulean_life`.
+##
+## **Jalon 14 (T20b)** : la grille lue est la variante `J14` (jardin et impasse praticables, porte
+## cambriolée au warp, couloir sud jusqu'au raccord « ROUTE 5 — À venir ») ; les positions
+## conditionnelles (`if=` / `unless=`) sont des PNJ ou des déclencheurs, jamais des cases solides.
+## Scènes et états : `test_cerulean_garden`, `test_cerulean_rocket`, `test_cerulean_south`.
 
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 const GridPaths := preload("res://tests/helpers/grid_paths.gd")
 const MAP_PATH := "res://game/world/maps/cerulean_city.tscn"
 const PLAN_PATH := "res://tools/plans/azuria.txt"
-const WALKABLE := ".=pqBD"
+const VARIANT := "J14"
+const WALKABLE := ".=pqBDJY"
+const SOUTH: Array[Vector2i] = [Vector2i(31, 40), Vector2i(32, 40), Vector2i(33, 40)]
 const SIZE := Vector2i(56, 41)
 const WEST: Array[Vector2i] = [Vector2i(0, 19), Vector2i(0, 20), Vector2i(0, 21)]
 const NORTH: Array[Vector2i] = [Vector2i(31, 0), Vector2i(32, 0), Vector2i(33, 0)]
@@ -37,22 +44,32 @@ var _signs: Array[Vector2i] = []
 
 func before_all() -> void:
 	_plan = PlanGrid.new()
-	assert_true(_plan.load_file(PLAN_PATH), _plan.error)
+	assert_true(_plan.load_file(PLAN_PATH, VARIANT), _plan.error)
 	_plan.walkable = WALKABLE
 	for id: String in ["panneau_ville", "panneau_arene"]:
 		_signs.append(_plan.cell_of(id))
+	# J14 : le pot renversé (9, 2) est la seule case bloquée du jardin ouvert (comme un panneau).
+	_signs.append(_plan.cell_of("pot_renverse"))
 	_map = (load(MAP_PATH) as PackedScene).instantiate() as GameMap
 	add_child(_map)
 	_grid = _map.get_grid()
 	_terrain = GridPaths.relief(_grid, SIZE)
-	for cell: Vector2i in _plan.blocking_cells():
-		_terrain.set_solid(cell)
+	for id: String in _plan.positions:
+		if _is_conditional(id) or not _plan.positions[id]["blocks"]:
+			continue
+		for cell: Vector2i in _plan.cells_at(id):
+			_terrain.set_solid(cell)
 	for cell: Vector2i in _plan.cells_of("w"):
 		_terrain.set_solid(cell)  # l'eau ne se traverse pas (is_water, pas is_solid)
 
 
 func after_all() -> void:
 	_map.free()
+
+
+func _is_conditional(id: String) -> bool:
+	var attrs: Dictionary = _plan.positions[id]["attrs"]
+	return attrs.has("if") or attrs.has("unless")
 
 
 func _doors() -> Dictionary:
@@ -182,12 +199,21 @@ func test_building_doors_lead_inside() -> void:
 		assert_not_null(building, entry[1])
 		if building != null:
 			assert_eq(building.scene_file_path.get_file().get_basename(), entry[2])
-	assert_eq(count, _plan.cells_of("D").size(), "toutes les portes de la grille")
-	assert_eq(_map.get_warps().size(), count + 6, "portes + raccords ouest et nord, rien d'autre")
+	# J14 : la porte cambriolée (10, 9) s'ajoute aux cinq bâtiments ouverts.
+	assert_eq(count + 1, _plan.cells_of("D").size(), "toutes les portes de la grille")
+	var burgled := _map.get_warps().find_on_step(Vector2i(10, 9), Vector2i.UP)
+	assert_not_null(burgled, "porte cambriolée (STEP_ON ↑)")
+	if burgled != null:
+		assert_eq([burgled.target_map, burgled.target_spawn],
+			[&"cerulean_burgled_house", &"entrance"])
+	assert_eq(_map.get_spawn_cell(&"from_burgled_house"), Vector2i(10, 10))
+	assert_eq(_map.get_warps().size(), count + 1 + 6 + 3,
+		"portes + porte cambriolée + raccords ouest, nord et sud, rien d'autre")
 
 
-func test_east_and_south_are_closed_without_any_warp() -> void:
-	for cell: Vector2i in _plan.cells_at("barriere_est") + _plan.cells_at("barriere_sud"):
+## Jalon 15 T21 : le sud mène à la vraie Route 5 (`from_cerulean_w|c|e`, arrivée tournée ↓).
+func test_east_is_closed_and_the_south_leads_to_route_5() -> void:
+	for cell: Vector2i in _plan.cells_at("barriere_est"):
 		assert_true(_grid.is_solid(cell), "barrière %s" % cell)
 		for direction: Vector2i in GridPaths.DIRECTIONS:
 			assert_null(_map.get_warps().find_on_push(cell, direction))
@@ -195,14 +221,23 @@ func test_east_and_south_are_closed_without_any_warp() -> void:
 	for y: int in SIZE.y:
 		assert_false(_plan.is_walkable(Vector2i(SIZE.x - 1, y)), "bord est fermé (%d)" % y)
 	for x: int in SIZE.x:
-		assert_false(_plan.is_walkable(Vector2i(x, SIZE.y - 1)), "bord sud fermé (%d)" % x)
+		assert_eq(_plan.is_walkable(Vector2i(x, SIZE.y - 1)), x in [31, 32, 33],
+			"bord sud : seul le couloir 31..33 est ouvert (%d)" % x)
+	for i: int in 3:
+		var warp := _map.get_warps().find_on_push(SOUTH[i], Vector2i.DOWN)
+		assert_not_null(warp, "raccord sud %s" % SOUTH[i])
+		if warp != null:
+			assert_false(warp.is_coming_soon(), "plus de « ROUTE 5 — À venir »")
+			assert_eq([warp.target_map, warp.target_spawn, warp.facing], [&"route_5",
+				StringName("from_cerulean_" + ["w", "c", "e"][i]), Vector2i.DOWN])
+		assert_eq(_map.get_spawn_cell(StringName("from_route_5_" + ["w", "c", "e"][i])),
+			SOUTH[i])
 	for warp: Warp in _map.get_warps().get_all():
-		assert_true(warp.cell.x < SIZE.x - 1 and warp.cell.y < SIZE.y - 2,
-			"aucun warp à l'est ni au sud (%s)" % warp.cell)
-	# T17 : deux déclencheurs d'arrivée (ouest 3 cases, nord 3 cases) ; deux panneaux et quatre
-	# examens (porte, clôture, barrière est × 3, barrière sud × 5).
-	assert_eq(_map.get_triggers().size(), 6, "arrivée : 3 cases à l'ouest, 3 au nord")
-	assert_eq(_map.get_interactions().size(), 2 + 1 + 1 + 3 + 5, "panneaux et examens")
+		assert_true(warp.cell.x < SIZE.x - 1, "aucun warp à l'est (%s)" % warp.cell)
+	# Déclencheurs : arrivée (3 + 3), poursuite (2), combat (2), barrage sud (3) ; points :
+	# deux panneaux, clôture arrachée, trou (n° 29), barrière est (3).
+	assert_eq(_map.get_triggers().size(), 6 + 2 + 2 + 3, "arrivée, poursuite, combat, barrage")
+	assert_eq(_map.get_interactions().size(), 2 + 1 + 1 + 3, "panneaux et examens")
 
 
 func test_reserved_cells_are_free_or_blocked_as_planned() -> void:
@@ -213,6 +248,8 @@ func test_reserved_cells_are_free_or_blocked_as_planned() -> void:
 				"pnj":
 					assert_false(_grid.is_solid(cell), "%s : case de l'habitant libre" % id)
 				"examen", "indice", "decor", "repere":
+					if id == "trou_cloture":
+						continue  # J14 : le trou est le passage (praticable, examiné de côté)
 					assert_true(_grid.is_solid(cell) or _grid.is_water(cell),
 						"%s : case bloquée" % id)
 
@@ -245,7 +282,7 @@ func test_every_place_is_reachable_and_the_bridges_matter() -> void:
 		assert_true(open.has(door), "porte %s atteignable" % door)
 	for cell: Vector2i in NORTH:
 		assert_true(open.has(cell), "sortie nord %s atteignable" % cell)
-	for cell: Vector2i in _plan.cells_of("KAfjyaMmCOZVws"):
+	for cell: Vector2i in _plan.cells_of("KAMmCOZVw"):
 		assert_false(open.has(cell), "%s inatteignable" % cell)
 	var cut := GridPaths.relief(_terrain, SIZE)
 	for bridge: Rect2i in BRIDGES:

@@ -38,7 +38,22 @@ const TRAVERSABLE: Array[StringName] = [&"relief_escalier_01", &"ground_hautes_h
 	&"prop_pont_ville_01", &"prop_pont_ville_03_01", &"prop_pont_ville_ew_01",
 	&"prop_pont_pepite_tablier_01", &"prop_pont_pepite_tablier_02",
 	&"prop_pont_pepite_tablier_03", &"relief_rebord_ardoise_01",
-	&"relief_falaise_ardoise_01", &"relief_falaise_ardoise_02"]
+	&"relief_falaise_ardoise_01", &"relief_falaise_ardoise_02",
+	# Série 16 (J14) : rivage rocheux (cases `R` bloquées par la carte).
+	&"relief_rivage_01", &"relief_rivage_02", &"relief_rivage_03", &"relief_rivage_04",
+	&"relief_rivage_05", &"relief_rivage_06",
+	# Série 17 (J15) : bords de quai, passerelle, nénuphars, murs et escaliers du souterrain,
+	# escalier d'intérieur (cases d'eau, de mur ou warps) ; navire (cases `N` de la grille),
+	# vue du port, cordage, applique et tableau (posés sur des cases déjà bloquées).
+	&"relief_quai_bois_01", &"relief_quai_bois_02", &"relief_quai_bois_03",
+	&"relief_quai_bois_04", &"relief_quai_bois_05", &"prop_passerelle_01",
+	&"prop_nenuphars_01", &"prop_nenuphars_02", &"prop_nenuphars_03",
+	&"relief_mur_souterrain_01", &"relief_mur_souterrain_02", &"relief_mur_souterrain_03",
+	&"relief_mur_souterrain_04", &"relief_mur_souterrain_05", &"relief_mur_souterrain_06",
+	&"prop_escalier_souterrain_monte_01", &"prop_escalier_souterrain_descend_01",
+	&"int_escalier_descendant_01", &"bldg_ss_anne_proue_01", &"bldg_ss_anne_milieu_01",
+	&"bldg_ss_anne_poupe_01", &"prop_vue_port_01", &"prop_cordage_01", &"prop_applique_01",
+	&"int_tableau_port_01"]
 const GROUND_LAYER: Array[StringName] = [
 	&"relief_falaise_01", &"relief_escalier_01", &"prop_massif_01", &"relief_muret_01",
 	&"relief_escalier_ville_01",
@@ -60,10 +75,23 @@ const GROUND_LAYER: Array[StringName] = [
 	&"prop_pont_pepite_tablier_01", &"prop_pont_pepite_tablier_02",
 	&"prop_pont_pepite_tablier_03", &"relief_rebord_ardoise_01",
 	&"relief_falaise_ardoise_01", &"relief_falaise_ardoise_02",
+	# Série 16 (J14) : rivage rocheux à plat.
+	&"relief_rivage_01", &"relief_rivage_02", &"relief_rivage_03", &"relief_rivage_04",
+	&"relief_rivage_05", &"relief_rivage_06",
+	# Série 17 (J15) : relief à plat (quai, nénuphars, murs, escaliers, passerelle).
+	&"relief_quai_bois_01", &"relief_quai_bois_02", &"relief_quai_bois_03",
+	&"relief_quai_bois_04", &"relief_quai_bois_05", &"prop_passerelle_01",
+	&"prop_nenuphars_01", &"prop_nenuphars_02", &"prop_nenuphars_03",
+	&"relief_mur_souterrain_01", &"relief_mur_souterrain_02", &"relief_mur_souterrain_03",
+	&"relief_mur_souterrain_04", &"relief_mur_souterrain_05", &"relief_mur_souterrain_06",
+	&"prop_escalier_souterrain_monte_01", &"prop_escalier_souterrain_descend_01",
+	&"int_escalier_descendant_01",
 ]
 ## Bâtiments sans ombre : le poste de la forêt vu du nord (série 12) continue sous le bord sud
-## de la Route 2 nord, couché dans la couche du sol (fiche `serie-12-argenta.md`).
-const SHADOWLESS_BUILDINGS: Array[String] = ["bldg_poste_foret_nord_01"]
+## de la Route 2 nord, couché dans la couche du sol (fiche `serie-12-argenta.md`) ; les trois
+## tranches du S.S. Anne (série 17) : le jeu pose lui-même le reflet et la ligne d'eau.
+const SHADOWLESS_BUILDINGS: Array[String] = ["bldg_poste_foret_nord_01",
+	"bldg_ss_anne_proue_01", "bldg_ss_anne_milieu_01", "bldg_ss_anne_poupe_01"]
 ## Objets de Bourg Palette, de ses intérieurs et de la Route 1 (DA.0) : tous au catalogue,
 ## chacun avec sa règle et sa scène (assets des scènes du prototype validé).
 const DA0_OBJECTS: Array[StringName] = [

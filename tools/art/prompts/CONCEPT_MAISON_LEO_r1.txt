@@ -1,0 +1,20 @@
+CONCEPT ART — INTÉRIEUR DE LA MAISON DE LÉO, AU CAP D'AZURIA (Kanto 2026), image de référence de direction artistique (agencement et rendu cible de cet intérieur).
+
+Une image est jointe : le LABORATOIRE DU PROFESSEUR CHEN, un autre intérieur du même jeu. Respecte EXACTEMENT son style de rendu : même pinceau, même perspective, même épaisseur des murs, même parquet, même lumière intérieure, même façon de peindre les machines et les meubles. Ne reprends PAS sa composition ni ses meubles.
+
+Format : PAYSAGE 1536 × 1024. Vue de dessus de trois quarts, projection oblique frontale, sans point de fuite, comme l'image jointe : on voit le mur du fond (nord) de face, le sol en entier, et l'ouverture de la porte au milieu du bas (sud). Une seule pièce rectangulaire, environ 16 cases de large sur 8 de profondeur (une case ≈ la largeur d'un personnage).
+
+AGENCEMENT (à respecter à la lettre, gauche = ouest) :
+- Contre le mur du fond, de gauche à droite : une CABINE DE TÉLÉPORTATION (cylindre vitré sur socle métallique, porte coulissante, assez grande pour une personne) dans le coin gauche ; un ÉCRAN DE DIAGNOSTIC fixé au mur (courbes et voyants, lueur bleutée) ; une CONSOLE de commande au centre (pupitre avec boutons, leviers et un grand bouton) ; un MODULE de téléportation (boîtier métallique, câbles et tuyaux) ; une SECONDE CABINE identique dans le coin droit. Des câbles courent au pied du mur entre les deux cabines et la console : on comprend que tout est relié.
+- À gauche, contre le mur ouest : une grande BIBLIOTHÈQUE pleine de livres et de classeurs. À droite, contre le mur est : une autre bibliothèque.
+- Au milieu gauche du sol : un BUREAU encombré (papiers, schémas, tasse, petit tournevis) et sa chaise.
+- En bas à droite : un LIT simple, un peu défait (on vit et on travaille ici).
+- Une PLANTE en pot dans le coin en bas à gauche.
+- Le reste du sol est LIBRE et lisible : un grand espace dégagé devant la console et entre les meubles, pour marcher.
+- Au milieu du bord bas : la porte d'entrée, un paillasson.
+
+AMBIANCE — « l'antre d'un passionné » : une maison chaleureuse en bois clair, un peu en désordre, où la technologie a envahi le salon. Excentrique et accueillante, jamais inquiétante, jamais un laboratoire froid. Lumière de fin d'après-midi qui entre par une fenêtre du mur du fond (mer visible au loin), mêlée à la lueur bleutée de l'écran et des voyants. Pas de personnage, pas de Pokémon : la pièce est vide.
+
+INTERDITS : texte, lettres, chiffres, logo, signature, filigrane, cadre, interface ; personnages ; Pokémon ; escalier ; deuxième pièce ; tapis aux motifs complexes ; néons, ambiance de science-fiction sombre ; pixel art, 3D, photo.
+
+L'image doit raconter, sans texte : ici vit quelqu'un de brillant et un peu fou, qui a construit dans son salon une machine capable de faire passer une personne d'une cabine à l'autre.

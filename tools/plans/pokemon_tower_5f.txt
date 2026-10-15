@@ -56,7 +56,7 @@ FIN
 #   identifiant  type  cases  bloque|libre  [cle=valeur ...]  # commentaire
 # Types : escalier (paire=, sens=monte|descend, vers=carte), spawn (paire=, facing=), rival,
 # dresseur (Exorcistes : prenom=, facing=, sight=2..3, inevitable=oui|non), pnj (combat=non),
-# objet_visible (item=), declencheur (role=), recul, zone (zone purifiée).
+# objet_visible (item=), cache (objet caché du J12, item= indice=), declencheur (role=), recul, zone (zone purifiée).
 # Sécurité : « sight » est la portée maximale ; la vue s'arrête à la première case bloquée.
 POSITIONS
 escalier_bas         escalier       3,9          libre   paire=T45 sens=descend vers=pokemon_tower_4f  # V, à gauche
@@ -69,6 +69,7 @@ tower_channeler_5    dresseur       14,3         bloque  prenom=Bérénice facin
 tower_channeler_6    dresseur       6,10         bloque  prenom=Marthe facing=right sight=2 inevitable=non  # chambre centrale, côté ouest (ne voit pas la zone)
 tower_channeler_7    dresseur       9,16         bloque  prenom=Ysée facing=right sight=3 inevitable=non  # alcôve sud
 tower_5f_objet_1     objet_visible  6,14         bloque  role=O1 item=nugget  # Pépite (RB), coin sud-ouest
+tower_5f_cache_1     cache          4,11         bloque  role=O2 item=super_potion indice=offrande  # objet caché (RB : Élixir caché en (4, 12)) ; cul-de-sac ouest, petite offrande fanée
 repere_stele_n1      repere         9,1          bloque  role=stele
 repere_stele_n2      repere         12,1         bloque  role=stele
 FIN

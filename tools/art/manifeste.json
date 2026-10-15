@@ -1371,6 +1371,105 @@
    "cases": 4,
    "ombre": false,
    "contact": null
+  },
+  {
+   "id": "bldg_maison_leo_01",
+   "source": "WORLD_BLDG_MAISON_LEO_01_NE_r1.png",
+   "sortie": "assets/world/buildings/bldg_maison_leo_01.png",
+   "axe": "w",
+   "cases": 8,
+   "ombre": true,
+   "contact": 0.12
+  },
+  {
+   "id": "bldg_pension_01",
+   "source": "WORLD_BLDG_PENSION_01_NE_r1.png",
+   "sortie": "assets/world/buildings/bldg_pension_01.png",
+   "axe": "w",
+   "cases": 7,
+   "ombre": true,
+   "contact": 0.12
+  },
+  {
+   "id": "bldg_poste_safrania_01",
+   "source": "WORLD_BLDG_POSTE_SAFRANIA_01_NE_r1.png",
+   "sortie": "assets/world/buildings/bldg_poste_safrania_01.png",
+   "axe": "w",
+   "cases": 7,
+   "ombre": true,
+   "contact": 0.12
+  },
+  {
+   "id": "bldg_entree_souterrain_01",
+   "source": "WORLD_BLDG_ENTREE_SOUTERRAIN_01_NE_r1.png",
+   "sortie": "assets/world/buildings/bldg_entree_souterrain_01.png",
+   "axe": "w",
+   "cases": 7,
+   "ombre": true,
+   "contact": 0.12
+  },
+  {
+   "id": "bldg_arene_carmin_01",
+   "source": "WORLD_BLDG_ARENE_CARMIN_01_NE_r1.png",
+   "sortie": "assets/world/buildings/bldg_arene_carmin_01.png",
+   "axe": "w",
+   "cases": 12,
+   "ombre": true,
+   "contact": 0.12
+  },
+  {
+   "id": "bldg_fan_club_01",
+   "source": "WORLD_BLDG_FAN_CLUB_01_NE_r1.png",
+   "sortie": "assets/world/buildings/bldg_fan_club_01.png",
+   "axe": "w",
+   "cases": 8,
+   "ombre": true,
+   "contact": 0.12
+  },
+  {
+   "id": "bldg_maison_pecheur_01",
+   "source": "WORLD_BLDG_MAISON_PECHEUR_01_NE_r1.png",
+   "sortie": "assets/world/buildings/bldg_maison_pecheur_01.png",
+   "axe": "w",
+   "cases": 7,
+   "ombre": true,
+   "contact": 0.12
+  },
+  {
+   "id": "bldg_ss_anne_proue_01",
+   "source": "WORLD_BLDG_SS_ANNE_PROUE_NE_r4.png",
+   "sortie": "assets/world/buildings/bldg_ss_anne_proue_01.png",
+   "axe": "w",
+   "cases": 10,
+   "ombre": false,
+   "contact": null
+  },
+  {
+   "id": "bldg_ss_anne_milieu_01",
+   "source": "WORLD_BLDG_SS_ANNE_MILIEU_NE_r4.png",
+   "sortie": "assets/world/buildings/bldg_ss_anne_milieu_01.png",
+   "axe": "w",
+   "cases": 9,
+   "ombre": false,
+   "contact": null
+  },
+  {
+   "id": "bldg_ss_anne_poupe_01",
+   "source": "WORLD_BLDG_SS_ANNE_POUPE_NE_r4.png",
+   "sortie": "assets/world/buildings/bldg_ss_anne_poupe_01.png",
+   "axe": "w",
+   "cases": 10,
+   "ombre": false,
+   "contact": null
+  },
+  {
+   "id": "prop_vue_port_01",
+   "source": "WORLD_PROP_VUE_PORT_01_NE_r2.png",
+   "sortie": "assets/world/props/prop_vue_port_01.png",
+   "axe": "w",
+   "cases": 4,
+   "ombre": false,
+   "contact": null
   }
  ],
  "hautes_herbes": {
@@ -1494,6 +1593,15 @@
     17,
     13
    ]
+  },
+  {
+   "id": "int_maison_leo_coque",
+   "source": "INT_MAISON_LEO_COQUE_NE_r1.png",
+   "sortie": "assets/world/interiors/int_maison_leo_coque.png",
+   "cases": [
+    16,
+    11
+   ]
   }
  ],
  "decor": [
@@ -1584,6 +1692,43 @@
    "id": "ground_eau_canal_01",
    "source": "WORLD_GROUND_EAU_CANAL_01_NE_r1.png",
    "sortie": "assets/world/ground/ground_eau_canal_01.png",
+   "taille": 384,
+   "contraste": 1.0,
+   "couleur": 1.0,
+   "raccord": 24
+  },
+  {
+   "id": "ground_planches_quai_01",
+   "source": "WORLD_GROUND_PLANCHES_QUAI_01_NE_r1.png",
+   "sortie": "assets/world/ground/ground_planches_quai_01.png",
+   "taille": 384,
+   "contraste": 1.0,
+   "couleur": 1.0,
+   "raccord": 24
+  },
+  {
+   "id": "ground_planches_quai_ns_01",
+   "source": "WORLD_GROUND_PLANCHES_QUAI_01_NE_r1.png",
+   "sortie": "assets/world/ground/ground_planches_quai_ns_01.png",
+   "taille": 384,
+   "contraste": 1.0,
+   "couleur": 1.0,
+   "raccord": 24,
+   "rotation": 90
+  },
+  {
+   "id": "ground_dalles_souterrain_01",
+   "source": "WORLD_GROUND_DALLES_SOUTERRAIN_01_NE_r1.png",
+   "sortie": "assets/world/ground/ground_dalles_souterrain_01.png",
+   "taille": 384,
+   "contraste": 1.0,
+   "couleur": 1.0,
+   "raccord": 24
+  },
+  {
+   "id": "ground_traces_souterrain_01",
+   "source": "WORLD_GROUND_TRACES_SOUTERRAIN_01_NE_r1.png",
+   "sortie": "assets/world/ground/ground_traces_souterrain_01.png",
    "taille": 384,
    "contraste": 1.0,
    "couleur": 1.0,
@@ -1918,6 +2063,30 @@
    "source": "PNJ_NAGEUSE_NE_r1.png",
    "sortie": "assets/sprites/characters/painted/nageuse_sheet.png",
    "hauteur": 128
+  },
+  {
+   "id": "leo_humain",
+   "source": "PNJ_LEO_HUMAIN_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/leo_humain_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "marin",
+   "source": "PNJ_MARIN_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/marin_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "docker",
+   "source": "PNJ_DOCKER_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/docker_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "president_fan_club",
+   "source": "PNJ_PRESIDENT_FAN_CLUB_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/president_fan_club_sheet.png",
+   "hauteur": 128
   }
  ],
  "pokemon": [
@@ -2087,6 +2256,13 @@
    "sortie": "assets/sprites/pokemon/painted/rapasdepic_sheet.png",
    "hauteur": 86,
    "note": "r2 = r1 reechelonne a 86 px (r1 plus petit que Piafabec)"
+  },
+  {
+   "id": "miaouss",
+   "source": "POKE_MIAOUSS_NE_r2.png",
+   "sortie": "assets/sprites/pokemon/painted/miaouss_sheet.png",
+   "hauteur": 64,
+   "note": "J15 T10 ; r1 refusee par Codex avec ancres, r2 = prompt seul ; hauteur 64 (decision de Kevin 2026-10-16 : 56 = Rattata trop petit en marche sur S21)"
   }
  ],
  "heros_images": [
@@ -2344,6 +2520,30 @@
    "source": "NAGEUSE_ATTENTE_r1.png",
    "sortie": "assets/sprites/characters/painted/nageuse_idle_sheet.png",
    "marche": "nageuse"
+  },
+  {
+   "id": "leo_humain_idle",
+   "source": "LEO_HUMAIN_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/leo_humain_idle_sheet.png",
+   "marche": "leo_humain"
+  },
+  {
+   "id": "marin_idle",
+   "source": "MARIN_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/marin_idle_sheet.png",
+   "marche": "marin"
+  },
+  {
+   "id": "docker_idle",
+   "source": "DOCKER_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/docker_idle_sheet.png",
+   "marche": "docker"
+  },
+  {
+   "id": "president_fan_club_idle",
+   "source": "PRESIDENT_FAN_CLUB_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/president_fan_club_idle_sheet.png",
+   "marche": "president_fan_club"
   }
  ],
  "images_objets": [
@@ -2754,6 +2954,232 @@
     4
    ],
    "contact": 0.2
+  },
+  {
+   "source": "WORLD_RELIEF_RIVAGE_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/relief/",
+   "colonnes": 4,
+   "lignes": 2,
+   "ids": [
+    "relief_rivage_01",
+    "relief_rivage_02",
+    "relief_rivage_03",
+    "relief_rivage_04",
+    "relief_rivage_05",
+    "relief_rivage_06",
+    "prop_indice_coquillage_01",
+    "prop_cloture_reparee_01"
+   ],
+   "cases": [
+    2,
+    2,
+    1,
+    1,
+    1,
+    1,
+    0.35,
+    1
+   ],
+   "contact": 0.0
+  },
+  {
+   "source": "INT_MAISON_LEO_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/interiors/",
+   "colonnes": 3,
+   "lignes": 2,
+   "ids": [
+    "int_cabine_teleport_01",
+    "int_console_leo_01",
+    "int_module_leo_01",
+    "int_ecran_diagnostic_01",
+    "int_bureau_leo_01",
+    "int_bibliotheque_cote_01"
+   ],
+   "cases": [
+    3,
+    2,
+    1,
+    1.3,
+    3,
+    1
+   ],
+   "contact": 0.2
+  },
+  {
+   "source": "WORLD_RELIEF_QUAI_BOIS_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/relief/",
+   "colonnes": 3,
+   "lignes": 2,
+   "ids": [
+    "relief_quai_bois_01",
+    "relief_quai_bois_02",
+    "relief_quai_bois_03",
+    "relief_quai_bois_04",
+    "relief_quai_bois_05",
+    "prop_pieu_quai_01"
+   ],
+   "cases": [
+    2,
+    2,
+    0.25,
+    2,
+    0.5,
+    0.4
+   ],
+   "contact": 0.0
+  },
+  {
+   "source": "WORLD_PROP_CARMIN_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/props/",
+   "colonnes": 3,
+   "lignes": 2,
+   "ids": [
+    "prop_jeune_arbre_arene_01",
+    "prop_passerelle_01",
+    "prop_grue_quai_01",
+    "prop_bitte_amarre_01",
+    "prop_cordage_01",
+    "prop_caisses_port_01"
+   ],
+   "cases": [
+    2,
+    2,
+    2,
+    1,
+    0.8,
+    2
+   ],
+   "contact": 0.15
+  },
+  {
+   "source": "WORLD_PROP_ROUTES_J15_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/props/",
+   "colonnes": 2,
+   "lignes": 3,
+   "ids": [
+    "prop_indice_tronc_01",
+    "prop_indice_joncs_01",
+    "prop_nenuphars_02",
+    "prop_nenuphars_03",
+    "prop_nenuphars_01"
+   ],
+   "cases": [
+    1,
+    1,
+    0.36,
+    0.34,
+    1
+   ],
+   "contact": 0.1,
+   "nettoyer": true
+  },
+  {
+   "source": "WORLD_RELIEF_MUR_SOUTERRAIN_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/relief/",
+   "colonnes": 3,
+   "lignes": 2,
+   "ids": [
+    "relief_mur_souterrain_01",
+    "relief_mur_souterrain_02",
+    "relief_mur_souterrain_03",
+    "relief_mur_souterrain_04",
+    "relief_mur_souterrain_05",
+    "relief_mur_souterrain_06"
+   ],
+   "cases": [
+    2,
+    2,
+    2,
+    0.35,
+    0.35,
+    0.35
+   ],
+   "contact": 0.0
+  },
+  {
+   "source": "WORLD_PROP_SOUTERRAIN_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/props/",
+   "colonnes": 3,
+   "lignes": 2,
+   "ids": [
+    "prop_escalier_souterrain_monte_01",
+    "prop_escalier_souterrain_descend_01",
+    "prop_stele_01",
+    "prop_banc_souterrain_01",
+    "prop_pierre_descellee_01",
+    "prop_applique_01"
+   ],
+   "cases": [
+    2,
+    2,
+    1,
+    1,
+    1,
+    0.45
+   ],
+   "contact": 0.1
+  },
+  {
+   "source": "INT_J15_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/interiors/",
+   "colonnes": 3,
+   "lignes": 2,
+   "ids": [
+    "int_comptoir_pension_01",
+    "int_escalier_descendant_01",
+    "int_panier_pokemon_01",
+    "int_fauteuil_president_01",
+    "int_vitrine_rubans_01",
+    "int_tableau_port_01"
+   ],
+   "cases": [
+    3,
+    2,
+    1,
+    1.2,
+    2,
+    1.5
+   ],
+   "contact": 0.2,
+   "nettoyer": true,
+   "boites": [
+    [
+     28,
+     100,
+     636,
+     484
+    ],
+    [
+     640,
+     80,
+     1090,
+     484
+    ],
+    [
+     1144,
+     252,
+     1480,
+     468
+    ],
+    [
+     96,
+     584,
+     520,
+     960
+    ],
+    [
+     556,
+     516,
+     1036,
+     968
+    ],
+    [
+     1112,
+     636,
+     1492,
+     912
+    ]
+   ]
   }
  ]
 }

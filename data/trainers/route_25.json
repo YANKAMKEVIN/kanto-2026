@@ -1,0 +1,32 @@
+{
+	"route_25_youngster_jules": {
+		"name": "Gamin Jules", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 225,
+		"team": [{ "species": "rattata", "level": 15 }, { "species": "spearow", "level": 15 }]
+	},
+	"route_25_hiker_gaston": {
+		"name": "Montagnard Gaston", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 525,
+		"team": [{ "species": "machop", "level": 15 }, { "species": "geodude", "level": 15 }]
+	},
+	"route_25_lass_zoe": {
+		"name": "Fillette Zoé", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 225,
+		"team": [{ "species": "nidoran_m", "level": 15 }, { "species": "nidoran_f", "level": 15 }]
+	},
+	"route_25_hiker_bernard": {
+		"name": "Montagnard Bernard", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 595,
+		"team": [{ "species": "onix", "level": 17 }]
+	},
+	"route_25_jr_trainer_adam": {
+		"name": "Jeune Dresseur Adam", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 280,
+		"team": [{ "species": "rattata", "level": 14 }, { "species": "ekans", "level": 14 }]
+	},
+	"route_25_youngster_yanis": {
+		"name": "Gamin Yanis", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 210,
+		"team": [{ "species": "ekans", "level": 14 }, { "species": "sandshrew", "level": 14 }]
+	}
+}

@@ -1,0 +1,82 @@
+{
+	"route_25_item_1": {
+		"variants": [
+			{
+				"unless": ["got_route_25_item_1"],
+				"steps": [
+					{
+						"despawn": "route_25_item_1"
+					},
+					{
+						"give": "tm19",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": ["got_route_25_item_1"]
+					}
+				]
+			}
+		]
+	},
+	"route_25_item_2": {
+		"variants": [
+			{
+				"unless": ["got_route_25_item_2"],
+				"steps": [
+					{
+						"despawn": "route_25_item_2"
+					},
+					{
+						"give": "potion",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": ["got_route_25_item_2"]
+					}
+				]
+			}
+		]
+	},
+	"route_25_item_3": {
+		"variants": [
+			{
+				"unless": ["got_route_25_item_3"],
+				"steps": [
+					{
+						"despawn": "route_25_item_3"
+					},
+					{
+						"give": "poke_ball",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": ["got_route_25_item_3"]
+					}
+				]
+			}
+		]
+	},
+	"route_25_hidden_1": {
+		"variants": [
+			{
+				"unless": ["got_route_25_hidden_1"],
+				"steps": [
+					{
+						"dialogue": "route_25_hidden_1_found"
+					},
+					{
+						"give": "potion",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": ["got_route_25_hidden_1"]
+					}
+				]
+			}
+		]
+	}
+}

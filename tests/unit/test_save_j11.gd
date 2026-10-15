@@ -249,6 +249,9 @@ func test_the_real_v5_save_of_kevin_migrates_without_any_other_change() -> void:
 			member.erase("status_turns")
 	assert_eq(saved["companion"], "", "aucun compagnon")
 	saved.erase("companion")
+	# J15 (v7) : Pension vide, seul autre champ ajouté depuis.
+	assert_eq(saved["daycare"], {}, "Pension vide")
+	saved.erase("daycare")
 	var before: Dictionary = _json(original)
 	before.erase("version")
 	assert_eq(saved, before, "rien d'autre ne change")

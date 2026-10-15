@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_ar22w"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_k3h7b"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_mur_souterrain_05.png" id="3_tvo2v"]
+
+[node name="ReliefMurSouterrain05" type="Node2D" unique_id=311362260]
+script = ExtResource("1_ar22w")
+footprint = Array[Vector2i]([])
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=846503798]
+unique_name_in_owner = true
+material = ExtResource("2_k3h7b")
+texture = ExtResource("3_tvo2v")
+centered = false
+offset = Vector2(-17, -88)

@@ -1,0 +1,30 @@
+{
+	"sailor": {
+		"cell": [31, 26], "facing": "down", "sprite": "sailor", "dialogue": "vermilion_sailor"
+	},
+	"docker_1": {
+		"cell": [25, 25], "facing": "left", "sprite": "docker", "dialogue": "vermilion_docker_1"
+	},
+	"docker_2": {
+		"cell": [43, 25], "facing": "right", "sprite": "docker", "dialogue": "vermilion_docker_2"
+	},
+	"resident": {
+		"cell": [27, 17], "facing": "down", "sprite": "lass", "dialogue": "vermilion_resident",
+		"look": { "facings": ["down", "left", "down", "right"], "every": 4.0 }
+	},
+	"kid": {
+		"cell": [35, 22], "facing": "up", "sprite": "kid", "dialogue": "vermilion_kid",
+		"look": { "facings": ["up", "down", "up", "right"], "every": 3.0 }
+	},
+	"old_man": {
+		"cell": [52, 10], "facing": "left", "sprite": "old_man", "dialogue": "vermilion_old_man"
+	},
+	"pidgey_1": {
+		"cell": [12, 25], "facing": "right", "sprite": "pokemon/pidgey",
+		"shy": { "action": "fly", "radius": 2 }
+	},
+	"pidgey_2": {
+		"cell": [60, 25], "facing": "left", "sprite": "pokemon/pidgey",
+		"shy": { "action": "fly", "radius": 2 }
+	}
+}

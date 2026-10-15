@@ -5,6 +5,8 @@ extends RefCounted
 ## menu et en combat. Construit par [method BagQuery.targets]. Contrat figé au T10 (§6.8).
 
 var item_id: StringName = &""
+## Titre imposé (vide : l'écran compose celui de l'objet). Pension : « Confier un Pokémon ».
+var title: String = ""
 ## Nom de l'objet au singulier (« Potion ») et quantité restante (l'écran écrit « ×3 »).
 var item_name: String = ""
 var quantity: int = 0
