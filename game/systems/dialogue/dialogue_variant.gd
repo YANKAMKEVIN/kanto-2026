@@ -33,13 +33,29 @@ var draft: bool = false
 ## s'applique qu'une fois sur [member one_in], tirée **après** ses drapeaux
 ## ([method Dialogue.pick]) ; 0 = toujours (aucun tirage).
 var one_in: int = 0
+## Pokédex (jalon 17, jalon-17.md §2.5 ; dossier 20 §8, H-9) : la variante ne s'applique que si
+## le joueur a capturé **au moins** ce nombre d'espèces (clé « if_caught_at_least ») ; 0 = sans
+## condition.
+var caught_at_least: int = 0
+## … et seulement s'il en a capturé **moins** que ce nombre (clé « unless_caught_at_least ») ;
+## 0 = sans condition.
+var caught_below: int = 0
 
 
-## Vrai si la variante s'applique avec les drapeaux [param flags] (null = aucun drapeau).
-func matches(flags: StoryFlags) -> bool:
+## Vrai si la variante s'applique avec les drapeaux [param flags] (null = aucun drapeau) et
+## [param caught] espèces capturées au Pokédex (jalon 17 ; 0 par défaut).
+func matches(flags: StoryFlags, caught: int = 0) -> bool:
+	if not matches_caught(caught):
+		return false
 	if flags == null:
 		return if_flags.is_empty()
 	return flags.has_all(if_flags) and flags.has_none(unless_flags)
+
+
+## Vrai si [param caught] espèces capturées satisfont [member caught_at_least] et
+## [member caught_below].
+func matches_caught(caught: int) -> bool:
+	return caught >= caught_at_least and (caught_below <= 0 or caught < caught_below)
 
 
 ## Vrai si la variante ne dépend d'aucun drapeau.

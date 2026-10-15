@@ -289,6 +289,8 @@ func _ready() -> void:
 	_runner.token_values = _dialogue_token_values
 	# Variantes « une fois sur N » (jalon 14) : l'aléatoire de la partie courante.
 	_runner.rng_source = func() -> GameRng: return GameState.rng
+	# J17 (§2.5) : variantes selon les espèces capturées (assistant de Chen, CS05).
+	_runner.caught_count = func() -> int: return GameState.pokedex.caught_count()
 	# OUV.2 : prénoms du joueur et du rival (`{player}`, `{rival}`) aussi dans le nom du dresseur.
 	_texts.token_values = _dialogue_token_values
 	_runner.cutscene_requested.connect(_on_cutscene_requested)
@@ -1303,6 +1305,8 @@ func _dialogue_token_values() -> Dictionary[StringName, String]:
 	# {pokemon} (le Pokémon gardé ou rendu) passe alors avant celui du compagnon (J11).
 	if _daycare != null:
 		values.merge(_daycare.token_values(), true)
+	# J17 (§2.5) : {caught}, {caught_missing} (assistant de Chen).
+	values.merge(DialogueTokens.caught_values(GameState.pokedex.caught_count()))
 	return values
 
 
