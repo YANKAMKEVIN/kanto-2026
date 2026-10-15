@@ -135,7 +135,7 @@ les Pokémon disparus ; on n'en fait jamais un décor d'horreur.
 - les objets RB qui n'existent pas sont remplacés par la **Super Potion** si le J15 l'a créée,
   sinon par la **Potion** ;
 - l'Élixir, le PV Plus, le Super Bonbon et Précision + attendent leur jalon ;
-- l'Élixir caché du 5F devient une **Super Potion cachée** au même endroit (4, 12) : les objets cachés existent déjà (Route 3 au J12, Route 24 au J13) [D] ;
+- l'Élixir caché du 5F devient une **Super Potion cachée** en (4, 11) de la grille (RB : (4, 12), un mur dans la grille v1) : les objets cachés existent déjà (Route 3 au J12, Route 24 au J13) [D] ;
 - au total : 3F 1, 4F 2, 5F 1 (+ 1 caché), 6F 1.
 
 ## 5. Rencontres sauvages [V décision 4, K-7, K-10]
@@ -187,7 +187,8 @@ dans le Sac, le mode normal revient tout seul.
 - **Scène** :
   1. le joueur s'arrête, la brume s'épaissit ;
   2. une ligne de texte (§15.3) ;
-  3. **combat SPECTRE scripté**, selon les règles du §6.2. L'espèce réelle est Ossatueur N30, mais
+  3. **combat SPECTRE scripté**, selon les règles du §6.2, **toujours masqué** (`ghost: always`),
+     même si le joueur a le Scope (J20) : seul le J21 change cette donnée. L'espèce réelle est Ossatueur N30, mais
      **elle n'est jamais nommée, montrée ni enregistrée** au J19 ;
   4. à la fin du combat (fuite, ou défaite impossible), le joueur est **repoussé d'une case** vers le
      nord, à l'opposé de l'escalier qui est en bas de la carte (grille : déclencheur (10, 16), recul

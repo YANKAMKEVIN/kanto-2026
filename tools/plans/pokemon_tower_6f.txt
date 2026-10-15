@@ -28,7 +28,7 @@
 # l'ouest, couvre (14..15, 5), les seules cases de la sortie nord de la salle d'arrivée ;
 # tower_channeler_9, en (6, 6) tournée vers le sud, couvre la colonne x = 6 (rangées 7 à 9), seul
 # passage vers le sud. L'escalier du 7F (U, (9, 16)) n'est accessible que par (10, 16) : c'est la
-# case du déclencheur du SPECTRE (dossier 22 §6.3 ; drapeau ghost_marowak_calmed posé au J20).
+# case du déclencheur du SPECTRE (dossier 22 §6.3 ; drapeau ghost_marowak_calmed posé au J21).
 # Le joueur est repoussé d'une case en (10, 15). ÉCART au dossier (« vers le sud ») : l'escalier
 # est au sud-ouest, donc le recul ne peut se faire qu'au NORD, à l'opposé de l'escalier.
 # Super Potion dans la poche de la colonne x = 15 (à la place de la Super Bonbon / Précision +).
