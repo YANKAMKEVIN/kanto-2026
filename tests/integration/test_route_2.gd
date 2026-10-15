@@ -8,6 +8,7 @@ extends GutTest
 ## de nœuds.
 
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
+const GridPaths := preload("res://tests/helpers/grid_paths.gd")
 const MAP_PATH := "res://game/world/maps/route_2.tscn"
 const PLAN_PATH := "res://tools/plans/route_2.txt"
 const SIZE := Vector2i(42, 60)
@@ -15,6 +16,12 @@ const SOUTH := [Vector2i(19, 59), Vector2i(20, 59), Vector2i(21, 59)]
 const GATE := Vector2i(20, 8)
 const GATE_FRONT := Vector2i(20, 9)
 const NODE_BUDGET := 3000
+## Jalon 17 (T21) : cases « bloquées » de la grille mais praticables dans la scène : l'arbuste de
+## FUTUR A (A) et la barrière de FUTUR B (B) sont occupés par leur `FlagGate`, jamais solides.
+const GATED_MARKS := "AB"
+const BUSH_FLAG := &"cut_route_2_futur_a"
+const GATE_FLAG := &"route_2_east_gate_open"
+const CLEARING := Rect2i(0, 16, 4, 7)
 ## Mesures du T0 (plan_check.py) : la scène doit les reproduire exactement.
 const SHORTEST := 88
 const SAFE_PATH := 98
@@ -173,8 +180,10 @@ func test_metadata_light_and_painted_ground() -> void:
 	assert_eq(GroundMask.kind_at(mask, Vector2i(20, 50)), GroundMask.Kind.PATH)
 	assert_eq(GroundMask.kind_at(mask, Vector2i(20, 59)), GroundMask.Kind.PAVING,
 		"pavés déchaussés de la rue nord de Jadielle")
-	assert_eq(GroundMask.kind_at(mask, Vector2i(2, 19)), GroundMask.Kind.PATH, "sentier A peint")
-	assert_eq(GroundMask.kind_at(mask, Vector2i(38, 43)), GroundMask.Kind.PATH, "sentier B peint")
+	assert_ne(GroundMask.kind_at(mask, Vector2i(2, 19)), GroundMask.Kind.PATH,
+		"J17 : clairière de FUTUR A (herbe), plus de sentier peint")
+	assert_eq(GroundMask.kind_at(mask, Vector2i(4, 19)), GroundMask.Kind.PATH, "sous l'arbuste")
+	assert_eq(GroundMask.kind_at(mask, Vector2i(38, 43)), GroundMask.Kind.PATH, "sentier B praticable")
 	assert_not_null(_map.grass_front, "cache-jambes peint")
 	for layer: Node in _map.find_children("*", "TileMapLayer", true, false):
 		assert_false((layer as TileMapLayer).visible, "%s invisible" % layer.name)
@@ -186,7 +195,8 @@ func test_scene_grid_is_the_functional_grid() -> void:
 		for x: int in SIZE.x:
 			var cell := Vector2i(x, y)
 			var mark := _plan.at(cell)
-			var ok := _grid.is_solid(cell) == not _plan.is_walkable(cell) \
+			var ok := _grid.is_solid(cell) == not (_plan.is_walkable(cell)
+					or GATED_MARKS.contains(mark)) \
 				and _grid.is_tall_grass(cell) == (mark == "h") \
 				and (_grid.get_ledge(cell) == GridWorld.Ledge.DOWN) == (mark == "v")
 			if not ok:
@@ -323,16 +333,19 @@ func test_signs_and_futur_points_are_examined_from_the_right_side() -> void:
 		if found != null:
 			assert_eq(found.kind, Interaction.Kind.EXAMINE)
 			assert_eq(found.dialogue_id, spec[3])
-		assert_true(_grid.is_solid(cell), "%s : case bloquée" % spec[0])
+		var gated := GATED_MARKS.contains(_plan.at(cell))
+		assert_true(_grid.is_occupied(cell) if gated else _grid.is_solid(cell),
+			"%s : case bloquée (occupée par sa FlagGate pour A / B)" % spec[0])
 	var dialogues := DialogueLibrary.new()
 	dialogues.load_dir()
 	for spec: Array in EXAMINE:
 		assert_true(dialogues.has_dialogue(spec[3]), String(spec[3]))
-	var tree := _map.get_entities().get_node_or_null(^"DenseTreeFuturA") as WorldProp
+	var tree := _map.get_entities().get_node_or_null(^"DenseTreeGate/DenseTreeFuturA") as WorldProp
 	assert_not_null(tree, "FUTUR A : arbre dense")
 	if tree != null:
 		assert_eq(_prop_id(tree), "tree_foret_08")
-		assert_eq(tree.get_anchor_cell(), Vector2i(4, 19))
+		var gate := tree.get_parent() as FlagGate
+		assert_eq(Grid.world_to_cell(gate.position - Vector2(0, 1)), Vector2i(4, 19))
 		assert_lt(tree.scale.x, 1.0, "réduit")
 
 
@@ -415,18 +428,152 @@ func test_nidoran_is_unreachable_in_its_pen() -> void:
 
 func test_ground_objects_are_takeable_from_a_reachable_cell() -> void:
 	var reach := _terrain.find_reachable(SOUTH[1])
+	# Jalon 17 : la Super Potion de la clairière est derrière l'arbuste (atteinte une fois levé).
+	var open_terrain := _relief(_grid)
+	for cell: Vector2i in _plan.blocking_cells():
+		if not GATED_MARKS.contains(_plan.at(cell)):
+			open_terrain.set_solid(cell)
+	var behind := open_terrain.find_reachable(SOUTH[1])
+	assert_false(reach.has(Vector2i(1, 18)), "clairière fermée tant que l'arbuste tient")
 	for spec: NpcSpec in NpcRoster.load_for_map(&"route_2").get_all():
 		if spec.verb != Interaction.Kind.TAKE:
 			continue
+		var reached := behind if spec.id == &"route_2_item_5" else reach
 		var found := false
 		for direction: Vector2i in DIRECTIONS:
 			var from := spec.cell + direction
-			if not reach.has(from):
+			if not reached.has(from):
 				continue
 			var target := InteractionFinder.find(_grid, _map.get_interactions(), from, -direction)
 			if target != null and target.kind == Interaction.Kind.TAKE:
 				found = true
 		assert_true(found, "%s : PRENDRE possible depuis une case atteignable" % spec.id)
+
+
+# --- Retouches du jalon 17 (T21, dossier 20 §3.5, jalon-17.md §2.13) ---------------------------
+
+func _flags(names: Array[StringName]) -> StoryFlags:
+	var flags := StoryFlags.new()
+	for name: StringName in names:
+		flags.set_flag(name)
+	return flags
+
+
+## Carte neuve réglée par [param flags] (arrivée avec ces drapeaux).
+func _fresh(flags: Array[StringName]) -> GameMap:
+	var map := (load(MAP_PATH) as PackedScene).instantiate() as GameMap
+	add_child_autofree(map)
+	map.refresh_npcs(_flags(flags))
+	return map
+
+
+func _find(map: GameMap, from: Vector2i, facing: Vector2i) -> Interaction:
+	return InteractionFinder.find(map.get_grid(), map.get_interactions(), from, facing)
+
+
+func test_futur_a_clearing_is_cut_off_without_the_bush_flag() -> void:
+	var closed := _fresh([])
+	var reach := closed.get_grid().find_reachable(Vector2i(20, 58))
+	var inside: Array[Vector2i] = []
+	for y: int in range(CLEARING.position.y, CLEARING.end.y):
+		for x: int in range(CLEARING.position.x, CLEARING.end.x):
+			if _plan.at(Vector2i(x, y)) == ".":
+				inside.append(Vector2i(x, y))
+	assert_eq(inside.size(), 27, "27 cases de clairière (plan_check_j17)")
+	for cell: Vector2i in inside:
+		assert_false(reach.has(cell), "%s inatteignable sans le drapeau" % cell)
+	assert_true(closed.get_grid().is_occupied(Vector2i(4, 19)), "arbuste en (4, 19)")
+	var gate := closed.get_node(^"Entities/DenseTreeGate") as FlagGate
+	assert_eq(gate.unless_flags, [BUSH_FLAG] as Array[StringName])
+	assert_eq(gate.blocking_cells, [Vector2i(4, 19)] as Array[Vector2i])
+	var open := _fresh([BUSH_FLAG])
+	var after := open.get_grid().find_reachable(Vector2i(20, 58))
+	for cell: Vector2i in inside:
+		if cell != Vector2i(1, 17):  # la Super Potion occupe sa case
+			assert_true(after.has(cell), "%s atteignable avec le drapeau" % cell)
+	assert_false(open.get_grid().is_occupied(Vector2i(4, 19)))
+	assert_false(open.get_node(^"Entities/DenseTreeGate").visible, "arbuste retiré")
+	assert_not_null(open.get_npc(&"route_2_item_5"), "Super Potion au fond de la clairière")
+
+
+func test_futur_a_keeps_its_t7_text_without_the_cut() -> void:
+	var closed := _fresh([])
+	var found := _find(closed, Vector2i(5, 19), Vector2i.LEFT)
+	assert_not_null(found, "point d'examen de l'arbuste conservé (T7 du dossier 11)")
+	if found != null:
+		assert_eq(found.dialogue_id, &"route_2_dense_tree")
+	var dialogues := DialogueLibrary.new()
+	dialogues.load_dir()
+	assert_eq(dialogues.get_dialogue(&"route_2_dense_tree").variants[0].pages[0].text,
+		"Les branches sont trop épaisses. Impossible de passer par ici.")
+
+
+func test_the_gate_is_closed_from_the_west_with_the_existing_text() -> void:
+	var closed := _fresh([])
+	for y: int in [43, 44]:
+		assert_true(closed.get_grid().is_occupied(Vector2i(34, y)), "barrière fermée (34, %d)" % y)
+		var found := _find(closed, Vector2i(33, y), Vector2i.RIGHT)
+		assert_not_null(found, "T9 lu depuis (33, %d)" % y)
+		if found != null:
+			assert_eq(found.dialogue_id, &"route_2_closed_gate", "texte existant (dossier 11, T9)")
+	assert_false(closed.get_grid().find_reachable(Vector2i(20, 58)).has(Vector2i(41, 43)),
+		"le sentier de l'est n'est pas atteignable depuis Jadielle")
+	assert_not_null(closed.get_node(^"Entities/ClosedGateGate/ClosedGate"), "barrière fermée peinte")
+	assert_false(closed.get_node(^"Entities/OpenGate").visible, "barrière ouverte cachée")
+
+
+func test_the_gate_east_reads_t8_and_opens_for_good() -> void:
+	var closed := _fresh([])
+	for y: int in [43, 44]:
+		var found := _find(closed, Vector2i(35, y), Vector2i.LEFT)
+		assert_not_null(found, "T-8 lu depuis (35, %d) tourné ←" % y)
+		if found != null:
+			assert_eq(found.dialogue_id, &"route_2_gate_east")
+	var east := closed.get_grid().find_reachable(Vector2i(41, 43))
+	assert_true(east.has(Vector2i(35, 43)), "tout le sentier est atteignable depuis le bord est")
+	assert_false(east.has(Vector2i(33, 43)), "mais pas au-delà de la barrière fermée")
+	# Ouverte (drapeau posé par le dialogue T-8) : cases libres, dans les deux sens, plus aucun
+	# point d'examen, barrière ouverte peinte.
+	var open := _fresh([GATE_FLAG])
+	for y: int in [43, 44]:
+		assert_false(open.get_grid().is_occupied(Vector2i(34, y)), "case (34, %d) libre" % y)
+		# Les points restent dans la table, mais indisponibles (`unless route_2_east_gate_open`).
+		var west_point := _find(open, Vector2i(33, y), Vector2i.RIGHT)
+		var east_point := _find(open, Vector2i(35, y), Vector2i.LEFT)
+		assert_false(west_point.is_available(_flags([GATE_FLAG])), "plus de T9")
+		assert_false(east_point.is_available(_flags([GATE_FLAG])), "plus de T-8")
+		assert_true(east_point.is_available(StoryFlags.new()))
+	var from_west := GridPaths.distances(open.get_grid(), [Vector2i(20, 58)])
+	assert_true(from_west.has(Vector2i(41, 43)), "Jadielle → bord est")
+	assert_eq(int(from_west.get(Vector2i(41, 43), -1)), 35 + 1, "35 pas depuis (21, 59)… +1 rangée")
+	var from_east := GridPaths.distances(open.get_grid(), [Vector2i(41, 44)])
+	assert_true(from_east.has(Vector2i(20, 58)), "bord est → Jadielle")
+	assert_true(open.get_node(^"Entities/OpenGate").visible, "barrière ouverte peinte")
+	assert_false(open.get_node(^"Entities/ClosedGateGate").visible, "barrière fermée retirée")
+
+
+func test_the_east_edge_is_linked_to_the_corridor() -> void:
+	var sides := ["n", "s"]
+	for i: int in 2:
+		var cell := Vector2i(41, 43 + i)
+		var warp := _map.get_warps().find_on_push(cell, Vector2i.RIGHT)
+		assert_not_null(warp, "raccord est %s" % cell)
+		if warp != null:
+			assert_eq(warp.target_map, &"route_2_east")
+			assert_eq(warp.target_spawn, StringName("from_route_2_" + sides[i]))
+			assert_eq(warp.facing, Vector2i.RIGHT)
+		assert_eq(_map.get_spawn_cell(StringName("from_route_2_east_" + sides[i])), cell)
+	assert_true(_map.has_spawn(&"debug_futur_a"), "départ de débogage dans la clairière")
+
+
+func test_the_closed_sign_changes_after_the_opening() -> void:
+	var dialogues := DialogueLibrary.new()
+	dialogues.load_dir()
+	var sign := dialogues.get_dialogue(&"route_2_closed_sign")
+	var closed := sign.pick(StoryFlags.new())
+	var opened := sign.pick(_flags([GATE_FLAG]))
+	assert_eq(closed.pages[0].text, "ACCÈS FERMÉ\nTravaux sur le sentier.")
+	assert_eq(opened.pages[0].text, "SENTIER ROUVERT\nRoute 2 — Cave Taupiqueur", "T-9")
 
 
 # --- Image -------------------------------------------------------------------------------

@@ -281,29 +281,17 @@ func test_futur_b_gate_from_the_east_and_its_sign() -> void:
 
 # --- Zones, Pokédex, compagnon ----------------------------------------------------------
 
-func test_zones_wait_for_their_maps() -> void:
+func test_zones_are_placed_with_their_maps() -> void:
 	var zones := ZoneLibrary.new()
 	assert_true(zones.load_file(), "\n".join(zones.get_errors()))
-	# Route 11 (T16) et Cave Taupiqueur (T15) posées avec leurs cartes : vérifiées dans zones.json.
+	# Route 11 (T16) et Cave Taupiqueur (T15) posées avec leurs cartes ; le fichier d'attente
+	# (tools/pending_data/j17/zones.json) a disparu à l'intégration.
 	_check_zones(zones)
-	if not FileAccess.file_exists(PENDING_ZONES):
-		# Posées avec leurs cartes (T15, T16) : le fichier d'attente a disparu.
-		_check_zones(zones)
-		return
-	var pending: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(PENDING_ZONES))
-	var areas: Dictionary = pending.get("_areas", {})
-	var scenes: Dictionary = pending.get("_pokedex_scenes", {})
-	for key: String in ["_comment", "_areas", "_pokedex_scenes"]:
-		pending.erase(key)
-	var staged := ZoneLibrary.new()
-	assert_true(staged.add_from_dict(pending, PENDING_ZONES), "\n".join(staged.get_errors()))
-	for id: StringName in staged.get_ids():
-		assert_false(zones.has_zone(id), "%s : déjà dans zones.json, à retirer d'ici" % id)
-		assert_true(areas.has(String(id)), "%s : rectangle proposé" % id)
-		assert_true(PokedexScene.all_scenes().has(scenes.get(String(id), "")),
-			"%s : décor du Pokédex existant" % id)
-	_check_zones(staged, [&"digletts_cave"])
-	assert_false(zones.get_zone(&"route_2").maps.has(&"route_2_east"), "avec la carte (T19)")
+	assert_false(FileAccess.file_exists(PENDING_ZONES), "fichier d'attente retiré")
+	# Une seule Route 2 (dossier 20 §3.6) : le couloir et le poste en font partie (T19).
+	var maps := zones.get_zone(&"route_2").maps
+	assert_true(maps.has(&"route_2_east"), "avec la carte (T19)")
+	assert_true(maps.has(&"route_2_east_gate"), "avec le poste (T19)")
 
 
 func test_companion_contexts() -> void:

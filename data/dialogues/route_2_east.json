@@ -64,5 +64,11 @@
 			"Certaines grottes de Kanto sont plongées dans le noir.",
 			"Sans lumière, on s'y perd en trois pas."
 		]
+	},
+	"route_2_east_item_1": {
+		"cutscene": "route_2_east_item_1"
+	},
+	"route_2_east_item_2": {
+		"cutscene": "route_2_east_item_2"
 	}
 }

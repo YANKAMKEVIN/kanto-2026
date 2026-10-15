@@ -137,6 +137,11 @@ La carte de QA `qa_charge_j14` (J14, T10), ses données, son outil de constructi
 son test et les départs `charge_qa` et `teleport_qa` ont été **retirés au T24** (Tunnel, Téléport
 et l'IA qui creuse sont couverts par les tests de combat ; Abra se rencontre sur la Route 25).
 
+| `route_2_east.json` | J17 (T19) : **9 espèces capturées** (équipe de 6 : Salamèche N22, Roucool, Rattata, Piafabec, Nidoran♀, Férosinge ; stockage : Nidoran♂, Chenipan, Aspicot), Badge Roche, à la **bouche nord de la Cave** côté Route 2 est (spawn `from_cave_w`, tourné vers le sud). Poste à 12 pas ; l'assistant donne T-1 puis T-2 (9 espèces : pas de CS05) ; le goulet est fermé par l'arbuste (aucune Coupe avant le J16) |
+| `route_2_east_10.json` | J17 (T19) : comme `route_2_east` avec **10 espèces** (un Nosferapti au stockage) : l'assistant remet la CS05 (T-3) une seule fois, T-4 ensuite |
+| `route_2_east_south.json` | J17 (T19, T20) : **derrière l'arbuste** du couloir (spawn `debug_south`, (6, 23)), 10 espèces : Pierre Lune (12, 26) et Super Bonbon (3, 33) ramassables, sentier ouest jusqu'à la barrière de FUTUR B (vue de l'est : T-8, elle s'ouvre). Le **seul** moyen d'y arriver tant que la Coupe (J16, tâche T23) n'est pas fusionnée ; l'arbuste reste en place (retour au nord impossible) |
+| `route_2_futur_a.json` | J17 (T21) : **dans la clairière de FUTUR A** de la Route 2 sud (spawn `debug_futur_a`, (2, 19), tourné vers l'ouest) : Super Potion en (1, 17) ; l'arbuste (4, 19) la ferme (même remarque : aucune Coupe avant le J16) |
+
 La carte de QA `qa_switch_j13` (J13, T14), ses données, son outil de construction et de capture,
 son test et le départ `switch_qa` ont été **retirés au T22** (les Dresseurs qui changent de
 Pokémon se vérifient sur la vraie partie : rival n° 3 et Ondine).

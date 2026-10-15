@@ -30,6 +30,13 @@ extends SceneTree
 ##   objets cachés.
 ## - PNJ, Pokémon d'ambiance et objets visibles : `data/npcs/route_2.json` (leurs cases restent
 ##   libres d'objets ; les arbres de forêt dont le feuillage les cacherait sont retirés).
+## - **Jalon 17 (T21, dossier 20 §3.5, jalon-17.md §2.13)** : clairière de FUTUR A (sol praticable,
+##   Super Potion `route_2_item_5`) fermée par l'arbuste (4, 19) ; sentier « b » praticable jusqu'au
+##   raccord est (41, 43..44) PUSH → → `route_2_east` ; barrière de FUTUR B en `FlagGate` fermée
+##   (`unless route_2_east_gate_open`, `blocking_cells` (34, 43..44)) + `FlagGate` ouverte (`if`) ;
+##   l'arbuste (4, 19) est un `FlagGate` `unless cut_route_2_futur_a` (arbre dense provisoire, son
+##   point d'examen T7 reste jusqu'à la Coupe du J16). Les cases `A` et `B` sont **praticables dans
+##   `Ground`** (occupées par leur `FlagGate`, jalon-17.md §2.4) bien que bloquées dans la grille.
 
 const PLAN_PATH: String = "res://tools/plans/route_2.txt"
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
@@ -125,7 +132,6 @@ const FIXED_PROPS: Array = [
 	["prop_souche_01", Vector2i(14, 42), "Stump"],
 	["prop_cloture_piquets_01_court", Vector2i(14, 58), "FenceStartW"],
 	["prop_cloture_piquets_01_court", Vector2i(26, 58), "FenceStartE"],
-	["prop_cloture_piquets_v_01", Vector2i(34, 44), "ClosedGate"],
 	["prop_panneau_01", Vector2i(22, 56), "SignRoute"],
 	["prop_panneau_01", Vector2i(23, 9), "SignForest"],
 	["prop_panneau_01", Vector2i(33, 42), "SignClosed"],
@@ -138,6 +144,22 @@ const DENSE_TREE_CELL := Vector2i(4, 19)
 const DENSE_TREE_SCALE: float = 0.55
 const DENSE_TREE_VALUE: float = 0.7
 
+## Jalon 17 : FUTUR B, barrière à deux états (`FlagGate`) : fermée (`unless`) avec ses deux cases
+## occupées, ouverte (`if`) sans occupation ; cases `B` de la grille.
+const GATE_FLAG: StringName = &"route_2_east_gate_open"
+const GATE_CLOSED_ID: String = "prop_cloture_piquets_v_01"
+const GATE_OPEN_ID: String = "prop_barriere_ouverte_01"
+const GATE_ANCHOR := Vector2i(34, 44)
+## FUTUR A : drapeau de l'arbuste (J16) et départ de débogage dans la clairière.
+const BUSH_FLAG: StringName = &"cut_route_2_futur_a"
+const DEBUG_SPAWNS: Array = [["debug_futur_a", Vector2i(2, 19)]]
+## Raccord est (jalon-17 §1.3) : [nœud, case, spawn de route_2_east, spawn d'ici].
+const EAST_EXITS: Array = [
+	["EastN", Vector2i(41, 43), &"from_route_2_n", "from_route_2_east_n"],
+	["EastS", Vector2i(41, 44), &"from_route_2_s", "from_route_2_east_s"],
+]
+## Cases praticables dans `Ground` bien que « bloquées » dans la grille (occupées par une FlagGate).
+const GATED_MARKS: String = "AB"
 ## Points d'examen : [nœud, ancre (bas-gauche), taille, orientation exigée, dialogue].
 const INTERACTABLES: Array = [
 	["SignRoute", Vector2i(22, 56), Vector2i(1, 1), Vector2i.UP, &"route_2_sign"],
@@ -145,6 +167,8 @@ const INTERACTABLES: Array = [
 	["DenseTree", Vector2i(4, 19), Vector2i(1, 1), Vector2i.LEFT, &"route_2_dense_tree"],
 	["SignClosed", Vector2i(33, 42), Vector2i(1, 1), Vector2i.UP, &"route_2_closed_sign"],
 	["ClosedGate", Vector2i(34, 44), Vector2i(1, 2), Vector2i.RIGHT, &"route_2_closed_gate"],
+	# Jalon 17 : la barrière lue depuis l'est (T-8 ; ouvre le passage, définitivement).
+	["ClosedGateEast", Vector2i(34, 44), Vector2i(1, 2), Vector2i.LEFT, &"route_2_gate_east"],
 ]
 ## Objets cachés (comme la Potion de la Route 1) : [nœud, position de la grille, scène].
 const HIDDEN_ITEMS: Array = [
@@ -210,6 +234,7 @@ func _init() -> void:
 		push_error("build_route_2 : grille illisible : %s" % _plan.get(&"error"))
 		quit(1)
 		return
+	_plan.set(&"walkable", String(_plan.get(&"walkable")) + GATED_MARKS)
 	if Vector2i(_plan.get(&"width"), _plan.get(&"height")) != SIZE:
 		push_error("build_route_2 : la grille n'est pas de %s cases" % SIZE)
 		quit(1)
@@ -280,6 +305,7 @@ func _init() -> void:
 	_place_props(root, entities)
 	_place_bushes(root, entities)
 	_place_dense_tree(root, entities)
+	_place_barrier(root, entities)
 	_place_tall_grass(root, entities)
 	var plan: Array[Dictionary] = _clear_around_npcs(_forest_script.call(&"plan",
 		_planted_forest(), SIZE, _landmark_feet(), FOREST_SEED, _shade))
@@ -319,9 +345,9 @@ func _make_shade() -> Object:
 
 func _kind_of(mark: String) -> int:
 	match mark:
-		".":
+		".", "A":
 			return _tiles.Kind.GRASS
-		"=", "D":
+		"=", "D", "B":
 			return _tiles.Kind.DIRT
 		"h":
 			return _tiles.Kind.TALL_GRASS
@@ -345,7 +371,7 @@ func _paint_logic(layer: TileMapLayer) -> void:
 					_forest_cells[cell] = true
 				"h":
 					_tall_grass_cells[cell] = true
-				"=", "D", "a", "b":
+				"=", "D", "A", "B":
 					if mark == "=" and PAVED_ROWS.has(y):
 						_paved_cells[cell] = true
 					else:
@@ -373,7 +399,7 @@ func _undergrowth() -> Dictionary:
 	for y: int in SIZE.y:
 		for x: int in SIZE.x:
 			var cell := Vector2i(x, y)
-			if _plan.call(&"at", cell) != "." or _near_open(cell):
+			if _plan.call(&"at", cell) != "." or _near_open(cell) or _in_clearing(cell):
 				continue
 			var value := 0.0
 			for entry: Array in UNDERGROWTH_ROWS:
@@ -382,6 +408,12 @@ func _undergrowth() -> Dictionary:
 			if value > 0.0:
 				values[cell] = value
 	return values
+
+
+## Vrai si [param cell] est dans la clairière de FUTUR A (colonnes 0..3, rangées 16..22) : taillée
+## dans la forêt, éclairée, sans sous-bois partiel (jalon 17 T21).
+func _in_clearing(cell: Vector2i) -> bool:
+	return cell.x <= 3 and cell.y >= 16 and cell.y <= 22
 
 
 ## Vrai si une case ouverte (chemin, hautes herbes, porte, rebord, pierre) est à une case au
@@ -415,6 +447,10 @@ func _add_spawns(root: Node) -> void:
 	for entry: Array in SOUTH_EXITS:
 		_add_spawn(root, entry[3], entry[1])
 	_add_spawn(root, String(FOREST_GATE_RETURN), FOREST_GATE_SPAWN)
+	for entry: Array in EAST_EXITS:
+		_add_spawn(root, entry[3], entry[1])
+	for entry: Array in DEBUG_SPAWNS:
+		_add_spawn(root, entry[0], entry[1])
 
 
 func _add_spawn(root: Node, spawn_name: String, cell: Vector2i) -> void:
@@ -449,6 +485,18 @@ func _add_warps(root: Node) -> void:
 	door.set(&"arrival_facing", Vector2i.DOWN if not FOREST_GATE_SOON.is_empty() else Vector2i.UP)
 	door.set(&"coming_soon", FOREST_GATE_SOON)
 	_attach(root, root.get_node(^"Warps"), door)
+	# Jalon 17 : raccord est (PUSH →) vers le couloir de la Route 2 est, mêmes rangées.
+	for entry: Array in EAST_EXITS:
+		var east := Marker2D.new()
+		east.set_script(warp_script)
+		east.name = entry[0]
+		east.position = _world(entry[1])
+		east.set(&"trigger", PUSH)
+		east.set(&"direction", Vector2i.RIGHT)
+		east.set(&"target_map", &"route_2_east")
+		east.set(&"target_spawn", entry[2])
+		east.set(&"arrival_facing", Vector2i.RIGHT)
+		_attach(root, root.get_node(^"Warps"), east)
 
 
 func _add_interactables(root: Node) -> void:
@@ -461,6 +509,10 @@ func _add_interactables(root: Node) -> void:
 		point.set(&"size", entry[2])
 		point.set(&"facing", entry[3])
 		point.set(&"dialogue_id", entry[4])
+		# Jalon 17 : la barrière ne se lit plus (ni de l'ouest, ni de l'est) une fois ouverte.
+		if String(entry[0]).begins_with("ClosedGate"):
+			var unless: Array[StringName] = [GATE_FLAG]
+			point.set(&"unless_flags", unless)
 		_attach(root, root.get_node(^"Interactables"), point)
 
 
@@ -657,13 +709,55 @@ func _place_bushes(root: Node, entities: Node2D) -> void:
 		bush.modulate = Color(value, value, value) * _row_tint(float(cell.y) + 1.0)
 
 
-## FUTUR A : l'arbre dense qui ferme le sentier de l'ouest (case `A`, déjà solide).
+## FUTUR A : l'arbre dense qui ferme le sentier de l'ouest (case `A`, praticable dans `Ground`).
+## Jalon 17 : une [FlagGate] `unless cut_route_2_futur_a` à `blocking_cells` (contrat du J16,
+## comme le jeune arbre de l'Arène de Carmin) ; l'arbre (provisoire : celui du J16 le remplacera)
+## est son décor, sans emprise propre.
 func _place_dense_tree(root: Node, entities: Node2D) -> void:
-	var tree := _add_prop_at(root, entities, DENSE_TREE_ID, DENSE_TREE_CELL, "DenseTreeFuturA")
+	var gate := _flag_gate(root, entities, "DenseTreeGate", [], [BUSH_FLAG], [DENSE_TREE_CELL],
+		_rules.call(&"foot_position", StringName(DENSE_TREE_ID), DENSE_TREE_CELL))
+	var tree := _add_prop(root, gate, DENSE_TREE_ID, Vector2.ZERO, "DenseTreeFuturA")
+	tree.set(&"footprint", [] as Array[Vector2i])
 	tree.scale = Vector2(DENSE_TREE_SCALE, DENSE_TREE_SCALE)
 	var tint := _row_tint(float(DENSE_TREE_CELL.y) + 1.0)
 	tree.modulate = Color(tint.r * DENSE_TREE_VALUE, tint.g * DENSE_TREE_VALUE,
 		tint.b * DENSE_TREE_VALUE)
+
+
+## FUTUR B : la barrière à deux états. Fermée : [FlagGate] `unless route_2_east_gate_open`, ses
+## deux cases occupées (`blocking_cells`) ; ouverte : [FlagGate] `if`, sans occupation (le passage
+## de 2 cases entre les poteaux).
+func _place_barrier(root: Node, entities: Node2D) -> void:
+	var cells: Array[Vector2i] = []
+	cells.assign(_plan.call(&"cells_of", "B"))
+	var foot: Vector2 = _rules.call(&"foot_position", StringName(GATE_CLOSED_ID), GATE_ANCHOR)
+	var closed := _flag_gate(root, entities, "ClosedGateGate", [], [GATE_FLAG], cells, foot)
+	var fence := _add_prop(root, closed, GATE_CLOSED_ID, Vector2.ZERO, "ClosedGate")
+	fence.set(&"footprint", [] as Array[Vector2i])
+	var opened := _flag_gate(root, entities, "OpenGate", [GATE_FLAG], [], [],
+		_rules.call(&"foot_position", StringName(GATE_OPEN_ID), GATE_ANCHOR))
+	_add_prop(root, opened, GATE_OPEN_ID, Vector2.ZERO, "OpenedGate")
+
+
+## Une [FlagGate] posée en [param foot] (pixels), [param blocking] cases occupées tant qu'elle
+## est affichée.
+func _flag_gate(root: Node, parent: Node, node_name: String, if_flags: Array,
+		unless_flags: Array, blocking: Array, foot: Vector2) -> Node2D:
+	var gate := Node2D.new()
+	gate.set_script(load("res://game/world/flag_gate.gd"))
+	gate.name = node_name
+	gate.position = foot.round()
+	var shown: Array[StringName] = []
+	shown.assign(if_flags)
+	gate.set(&"if_flags", shown)
+	var hidden: Array[StringName] = []
+	hidden.assign(unless_flags)
+	gate.set(&"unless_flags", hidden)
+	var cells: Array[Vector2i] = []
+	cells.assign(blocking)
+	gate.set(&"blocking_cells", cells)
+	_attach(root, parent, gate)
+	return gate
 
 
 ## Deux touffes jaune-vert par case de hautes herbes, décalées et de tailles variées ; H3

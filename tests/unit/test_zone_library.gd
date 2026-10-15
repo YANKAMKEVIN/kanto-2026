@@ -132,7 +132,9 @@ func test_built_zones_have_their_map_texts() -> void:
 	# Jalon 8 (dossier 11, T1 et T14) : sous-titre = le panneau sud, comme la Route 1.
 	var route_2 := _zones.get_zone(&"route_2")
 	# Jalon 10 (Q-3) : la Route 2 nord est la 2e carte de la zone, textes inchangés.
-	assert_eq(route_2.maps, [&"route_2", &"route_2_north"] as Array[StringName])
+	# Jalon 17 (T19) : le couloir est et son poste (une seule Route 2 dans la Carte).
+	assert_eq(route_2.maps, [&"route_2", &"route_2_north", &"route_2_east",
+		&"route_2_east_gate"] as Array[StringName])
 	assert_eq(route_2.subtitle, "Jadielle — Forêt de Jade")
 	assert_eq(route_2.description,
 		"Un chemin bordé de prairies qui s'enfonce peu à peu sous les arbres.")

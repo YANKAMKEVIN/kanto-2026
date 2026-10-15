@@ -182,6 +182,10 @@ const VARIANT_FLAGS: Dictionary = {
 	# Jalon 17 (T17) : les deux objets au sol et l'objet caché de la Route 11.
 	&"route_11_item_1": [PEWTER_FLAGS], &"route_11_item_2": [PEWTER_FLAGS],
 	&"route_11_hidden_1": [PEWTER_FLAGS],
+	# Jalon 17 (T20) : Pierre Lune et Super Bonbon du couloir de la Route 2 est.
+	&"route_2_east_item_1": [PEWTER_FLAGS], &"route_2_east_item_2": [PEWTER_FLAGS],
+	# Jalon 17 (T21) : Super Potion de la clairière de FUTUR A.
+	&"route_2_item_5": [PEWTER_FLAGS],
 }
 ## Scènes jouées par le code (pas de déclencheur) → carte où elles sont jouées.
 ## Jalon 7 (T18) : la scène du colis est lancée par la variante « cutscene » du dialogue de Chen.
@@ -232,6 +236,10 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	# Jalon 17 (T17) : objets de la Route 11 (PNJ « objet » et point d'examen du caillou).
 	&"route_11_item_1": &"route_11", &"route_11_item_2": &"route_11",
 	&"route_11_hidden_1": &"route_11",
+	# Jalon 17 (T20) : objets visibles du couloir (PNJ « objet » de son fichier).
+	&"route_2_east_item_1": &"route_2_east", &"route_2_east_item_2": &"route_2_east",
+	# Jalon 17 (T21) : Super Potion de la clairière de FUTUR A (PNJ « objet » de la Route 2).
+	&"route_2_item_5": &"route_2",
 }
 ## Scènes à déclencheur dont la carte n'est pas encore construite → leur carte (simulées sur les
 ## PNJ de son fichier). Vidée au T19 du jalon 9 (la forêt existe), puis au T11 du jalon 10 (les
@@ -307,9 +315,11 @@ func test_library_loads_without_error() -> void:
 		&"viridian_arrival", &"viridian_forest_item_1", &"viridian_forest_item_2",
 		&"viridian_forest_item_3", &"viridian_forest_item_4", &"viridian_forest_item_5",
 		&"viridian_forest_item_6",
-		# Jalon 17 (T8) : remise de la CS05 ; (T17) objets de la Route 11.
+		# Jalon 17 (T8) : remise de la CS05 ; (T17) objets de la Route 11 ; (T20, T21) objets du
+		# couloir et Super Potion de FUTUR A.
 		&"route_2_east_give_hm05", &"route_11_item_1", &"route_11_item_2",
-		&"route_11_hidden_1"]))
+		&"route_11_hidden_1", &"route_2_east_item_1", &"route_2_east_item_2",
+		&"route_2_item_5"]))
 
 
 func _sorted(values: Array) -> Array[StringName]:
@@ -420,8 +430,10 @@ func test_only_world_items_are_found_items() -> void:
 		"route_11_item_2:awakening", "route_1_potion:potion",
 		"route_24_antidote:antidote", "route_24_item_1:potion", "route_25_hidden_1:potion",
 		"route_25_item_1:tm19", "route_25_item_2:potion", "route_25_item_3:poke_ball",
+		"route_2_east_item_1:moon_stone", "route_2_east_item_2:rare_candy",
 		"route_2_item_1:poke_ball", "route_2_item_2:potion",
-		"route_2_item_3:poke_ball", "route_2_item_4:potion", "route_2_north_item_1:potion",
+		"route_2_item_3:poke_ball", "route_2_item_4:potion", "route_2_item_5:super_potion",
+		"route_2_north_item_1:potion",
 		"route_3_hidden_1:awakening", "route_3_item_1:poke_ball", "route_3_item_2:potion",
 		"route_3_item_3:paralyze_heal", "route_4_item_1:poke_ball",
 		"route_5_hidden_1:antidote", "route_5_item_1:super_potion",

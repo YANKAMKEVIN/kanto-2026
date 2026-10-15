@@ -45,16 +45,9 @@ const GATE_GUARDS: Array[StringName] = [&"forest_gate_north_guard", &"forest_gat
 ## T11 : la Route 2 nord et Argenta (extérieur) sont dans [constant MAPS] : liste vide.
 ## Jalon 14 (T23) : D5 et D6 posés, leurs répliques (n° 50, 51) sortent de la liste.
 ## Jalon 15 (T14) : les Dresseurs de la Route 6 sont posés avec la carte : liste vide.
-## Jalon 17 (T8) : Route 2 est, en attente de sa carte (T19) ; la réplique de la barrière vue de
-## l'est (T-8), en attente du T21. Retirées carte par carte (Route 11 : posée au T17).
+## Jalon 17 (T8) : Route 11 et Route 2 est, en attente de leurs cartes ; la réplique de la barrière
+## vue de l'est (T-8), en attente du T21. Toutes posées à l'intégration (T17, T19, T21) : liste vide.
 const UNUSED_YET: Array[StringName] = [
-	&"route_2_east_cave_sign", &"route_2_east_assistant", &"route_2_east_visitor",
-	&"route_2_gate_east",
-]
-## Jalon 17 (T8) : répliques de la remise de la CS05, jouées par sa scène, lancée par le dialogue
-## de l'assistant (dans [constant UNUSED_YET] jusqu'à la carte du poste, T19).
-const PLAYED_J17_AWAITING_MAP: Array[StringName] = [
-	&"route_2_east_assistant_hm05_system", &"route_2_east_assistant_hm05_use",
 ]
 ## Jalon 17 (T8) : pages à jeton (texte → jetons attendus) : l'assistant et la CS05 reçue.
 const J17_TOKENS: Dictionary[String, Array] = {
@@ -141,6 +134,8 @@ const MAPS: Array[StringName] = [
 	&"route_5", &"route_5_daycare", &"route_5_gate", &"route_5_underground_gate",
 	# Jalon 17 (T16, T17) : la Route 11 (Dresseurs, objets, panneaux, Ronflex).
 	&"route_11",
+	# Jalon 17 (T19) : le couloir de la Route 2 est et le poste de l'assistant.
+	&"route_2_east", &"route_2_east_gate",
 ]
 ## Lot de textes validé par Kevin le 2026-10-06 (anciens brouillons : panneau, observations,
 ## soin de Maman, terminal du Stockage, portes de Jadielle…) : source des textes hors dossiers.
@@ -325,6 +320,7 @@ const IDS_J17: Array[StringName] = [
 	&"route_11_item_1", &"route_11_item_2", &"route_11_hidden_1",
 	&"route_2_east_cave_sign", &"route_2_east_assistant", &"route_2_east_assistant_hm05_system",
 	&"route_2_east_assistant_hm05_use", &"route_2_east_visitor", &"route_2_gate_east",
+	&"route_2_east_item_1", &"route_2_east_item_2", &"route_2_item_5",
 ]
 ## Jalon 14 (T17, dossier 17 §15 n° 1 à 27) : dialogues de la maison de Léo, ajoutés aux autres.
 const IDS_J14_BILL: Array[StringName] = [
@@ -572,7 +568,7 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		+ [&"route_2_east_assistant_hm05_system", &"route_2_east_assistant_hm05_use"]))
 	for id: StringName in played:
 		assert_true(_library.has_dialogue(id), "dialogue « %s » défini" % id)
-		if UNUSED_YET.has(id) or PLAYED_J17_AWAITING_MAP.has(id):
+		if UNUSED_YET.has(id):
 			continue
 		assert_true(_used_on.has(id), "« %s » joué depuis un déclencheur ou par le code" % id)
 	for id: StringName in [&"oak_starter_reciprocal", &"rival_starter_pick",
@@ -675,9 +671,11 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		&"starter_offered", &"tm11_received", &"tm34_received", &"viridian_arrived",
 		# Jalon 15 (T14) : Route 6 (Poké Ball, Super Potion cachée), arrivée à Carmin.
 		&"got_route_6_hidden_1", &"got_route_6_item_1", &"vermilion_reached",
-		# Jalon 17 (T8) : remise de la CS05 par l'assistant ; (T17) objets de la Route 11.
+		# Jalon 17 (T8) : remise de la CS05 par l'assistant ; (T17) objets de la Route 11 ;
+		# (T20, T21) objets du couloir et Super Potion de FUTUR A.
 		&"got_hm05", &"got_route_11_hidden_1", &"got_route_11_item_1",
-		&"got_route_11_item_2"]
+		&"got_route_11_item_2", &"got_route_2_east_item_1", &"got_route_2_east_item_2",
+		&"got_route_2_item_5"]
 		+ SET_J14_BILL_CUTSCENES + SET_J14_ROCKET_CUTSCENES))
 	assert_eq(_used_on.get(&"oak_lab_reunion"), [&"oak_lab"], "joué au labo, après le fondu")
 	assert_eq(_used_on.get(&"oak_starter_offer"), [&"oak_lab"], "joué au labo")
@@ -1115,11 +1113,11 @@ func test_oak_parcel_lines() -> void:
 	# Jalon 15 (T14) : la Poké Ball et la Super Potion cachée de la Route 6.
 	# Jalon 15 (T13) : la Super Potion et l'Antidote caché de la Route 5.
 	# Jalon 17 (T8) : la remise de la CS05 par l'assistant ; (T17) deux objets au sol et un caché
-	# de la Route 11.
-	assert_eq(launched, 45, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
+	# de la Route 11 ; (T20) Pierre Lune et Super Bonbon ; (T21) Super Potion de FUTUR A.
+	assert_eq(launched, 48, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
 		+ "sa CT34, Ondine (pont, Arène et rattrapage), écran, module, console, objets de la "
 		+ "Route 25, le Rocket d'Azuria (2) et le barrage sud ; J15 : objets de la Route 5 ; "
-		+ "J17 : la CS05, Route 11 (3)")
+		+ "J17 : la CS05, Route 11 (3), deux objets du couloir et la Super Potion de la clairière")
 	# Le jeton n'apparaît que dans la réplique de l'espèce, « {pokemon} » dans les phrases du
 	# compagnon (J11), et ceux de la Pension dans ses répliques (J15).
 	for row: Array in _pages():

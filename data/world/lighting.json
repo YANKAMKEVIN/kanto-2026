@@ -152,6 +152,8 @@
 		"route_5_daycare": "interior_warm",
 		"route_5_gate": "interior_warm",
 		"route_5_underground_gate": "interior_warm",
-		"digletts_cave": "cave_sand"
+		"digletts_cave": "cave_sand",
+		"route_2_east": "forest",
+		"route_2_east_gate": "interior_warm"
 	}
 }

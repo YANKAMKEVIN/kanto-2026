@@ -38,6 +38,10 @@ extends SceneTree
 ##     et bâtiment d'entrée du souterrain de la Route 5 (jalon 15 T13, jalon-15.md §2.2) ; titre
 ##     « Route 5 » (nom de leur zone, `test_zone_library`)
 ##   godot --headless --path . -s res://tools/build_painted_interiors.gd -- --route5
+##   route_2_east_gate — le poste de l'assistant de Chen, sur la Route 2 est (jalon 17 T19,
+##     jalon-17.md §2.2) : enveloppe d'une maison d'Argenta, relue sur sa grille
+##     (`tools/plans/route_2_east_gate.txt`) ; titre « Route 2 » (nom de sa zone)
+##   godot --headless --path . -s res://tools/build_painted_interiors.gd -- --route2est
 ##   godot --headless --path . -s res://tools/build_painted_interiors.gd   (toutes les pièces)
 ##   godot --headless --path . --import
 ##
@@ -93,6 +97,8 @@ const CARMIN := [&"vermilion_center", &"vermilion_mart", &"vermilion_fan_club",
 	&"route_6_underground_gate"]
 ## Jalon 15 (T13) : Pension, poste nord et entrée du souterrain de la Route 5.
 const ROUTE_5 := [&"route_5_daycare", &"route_5_gate", &"route_5_underground_gate"]
+## Jalon 17 (T19) : le poste de l'assistant de Chen (Route 2 est).
+const ROUTE_2_EAST := [&"route_2_east_gate"]
 const PLANS_DIR := "res://tools/plans/"
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 const LOGIC_DIR := "res://tests/fixtures/maps/"
@@ -115,6 +121,7 @@ func _init() -> void:
 	rooms.append_array(_cerulean_rooms())
 	rooms.append_array(_vermilion_rooms())
 	rooms.append_array(_route_5_rooms())
+	rooms.append(_route_2_east_gate())
 	for room: Dictionary in rooms:
 		if not wanted.is_empty() and not wanted.has(room["id"]):
 			continue
@@ -154,6 +161,8 @@ func _wanted_rooms() -> Array:
 			wanted.append_array(CARMIN)
 		elif arg == "--route5":
 			wanted.append_array(ROUTE_5)
+		elif arg == "--route2est":
+			wanted.append_array(ROUTE_2_EAST)
 		elif arg.begins_with("--rooms="):
 			for id: String in arg.trim_prefix("--rooms=").split(","):
 				wanted.append(StringName(id))
@@ -575,6 +584,47 @@ func _bill_house() -> Dictionary:
 			["HintConsole", [&"bill_in_cabin"], [&"bill_restored"], &"hint", Vector2(768, 335)],
 		],
 	}
+
+## Poste de l'assistant de Chen (`tools/plans/route_2_east_gate.txt`, 15 × 10, jalon 17 T19,
+## dossier 20 §8) : enveloppe d'une maison d'Argenta. Petit poste de recherche en bois : deux
+## bibliothèques et la carte de Kanto au mur du fond, le bureau de l'assistant (et sa chaise)
+## face à la porte, un classeur, l'étagère aux lampes de grotte (rappel de Flash), une table de
+## lecture, deux plantes. L'assistant (8, 5) et le visiteur (11, 7) viennent de
+## `data/npcs/route_2_east_gate.json` ; leurs cases (`a`, `v`) sont praticables dans la grille
+## (le PNJ les occupe). Sortie : le paillasson (6..8, 8), PUSH ↓ → `route_2_east`.
+func _route_2_east_gate() -> Dictionary:
+	return {
+		"id": &"route_2_east_gate", "node": "Route2EastGate", "size": Vector2i(15, 10),
+		"shell": "res://assets/world/interiors/int_maison_argenta_coque.png",
+		"title": "Route 2", "light": &"interior_warm",
+		"plan": PLANS_DIR + "route_2_east_gate.txt", "walkable": ".Xav",
+		"furniture": [
+			[&"int_grande_etagere_01", Rect2i(1, 2, 2, 2), "BookshelfWest"],
+			[&"int_grande_etagere_01", Rect2i(3, 2, 2, 2), "BookshelfCentre"],
+			[&"int_bureau_chen_01", Rect2i(7, 3, 3, 1), "AssistantDesk"],
+			[&"int_chaise_bureau_01", Rect2i(8, 4, 1, 1), "DeskChair"],
+			[&"int_classeur_01", Rect2i(10, 3, 1, 1), "FileCabinet"],
+			[&"int_etagere_lampes_01", Rect2i(12, 3, 2, 1), "LampShelf"],
+			[&"int_plante", Rect2i(1, 7, 1, 1), "PlantWest"],
+			[&"int_plante", Rect2i(13, 7, 1, 1), "PlantEast"],
+		],
+		# Table de lecture : image de 3 × 1,5 cases posée sur ses deux rangées (6..7) ; carte
+		# murale accrochée au mur du fond, entre la bibliothèque et le bureau.
+		"props": [
+			[&"int_table_lecture_01", Vector2i(3, 7), 7.95, "ReadingTable"],
+			[&"int_carte_murale_01", Vector2i(6, 2), 2.7, "WallMap"],
+		],
+		"spawns": {"entrance": Vector2i(7, 8)},
+		"warps": [
+			["Exit0", Vector2i(6, 8), PUSH, Vector2i.DOWN, &"route_2_east", &"from_gate",
+				Vector2i.DOWN],
+			["Exit1", Vector2i(7, 8), PUSH, Vector2i.DOWN, &"route_2_east", &"from_gate",
+				Vector2i.DOWN],
+			["Exit2", Vector2i(8, 8), PUSH, Vector2i.DOWN, &"route_2_east", &"from_gate",
+				Vector2i.DOWN],
+		],
+	}
+
 
 ## Passages de sortie d'un intérieur d'Argenta : [param cells] PUSH ↓ → [param target]
 ## (`pewter_city` par défaut), [param spawn], tourné vers le sud.
