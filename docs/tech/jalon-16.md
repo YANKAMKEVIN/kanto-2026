@@ -23,7 +23,7 @@
 > - le **puzzle des interrupteurs** (état temporaire, tirage, remise à zéro) ;
 > - un décor animé par une scène (étape `animate`).
 >
-> **Format de sauvegarde inchangé** : v6, preuve au §2.12.
+> **Format de sauvegarde inchangé** : celui du J15 (v7), preuve au §2.12.
 
 **Pré-requis.** Dossier 19 (`docs/design/dossier-19-ss-anne-major-bob.md`) : décisions G-1 à
 G-10, V3 consolidée, §0 de relecture (R-1 à R-17, **prévaut**). **Grilles validées** par Kevin le
@@ -87,11 +87,30 @@ références `fichier:ligne` citent ce commit.
 
 ### 0.3 Ce que le J16 attend du J15 (et repli)
 
+**Livré par le J15 (message de sa session, 2026-10-15 ; `jalon-15.md` §9, dossier 18 §17)** — le
+J16 **adopte ses noms** :
+- navire = 3 objets `bldg_ss_anne_proue_01`, `_milieu_01`, `_poupe_01`, absents si
+  `ss_anne_departed` ;
+- passerelle (31..32, 27), marin (31, 26) au texte provisoire T-26, que le J16 remplace ;
+- arbuste `prop_jeune_arbre_arene_01` (49..50, 10), **`FlagGate.blocking_cells`**, retiré par
+  **`cut_vermilion_gym_bush`** (le `cut_vermilion_gym_bush` du J16 est abandonné) ;
+- Centre de Carmin = point de retour, Stockage ;
+- quai dans `vermilion_city`, **pas de `vermilion_dock`** ;
+- sauvegarde **v7** au J15 (`GameState.daycare`) : le J16 écrit la v7 telle quelle (§2.12) ;
+- numérotation : dossier 18 et série d'art 17 au J15 → **série 18** pour le J16.
+
+Questions à confirmer avec le J15 (transmises par Kevin, la session ne pouvant pas écrire à une
+autre) : l'arbuste porte-t-il un point d'interaction et quel dialogue ? (défaut J16 : un
+`InteractPoint` `vermilion_gym_bush` sur (49..50, 11) tourné ↑, ajouté par le J16) ; spawn de
+retour du navire sur le quai (défaut J16 : `from_ss_anne` en (31, 28)).
+
+Tableau d'origine (avant la livraison du J15) :
+
 | Attente (contrat G-1 corrigé) | Utilisée par | Repli tant qu'elle manque |
 |---|---|---|
 | Carte de Carmin avec quai, **cases de la passerelle** et spawn de retour `from_ss_anne` | T11, T15 | sortie du navire en `coming_soon = "Carmin"` ; carte de QA `qa_dock_j16` (quai minimal) pour 16D |
 | Navire amarré **sous `FlagGate unless:[ss_anne_departed]`** et warp de la passerelle **gardé par un PNJ objet `if:[ss_anne_departed]`** | T15 | idem |
-| Arbuste devant la porte de l'Arène, PNJ objet `object/cut_tree`, id `vermilion_gym_tree` | T14 | arbuste posé sur `qa_dock_j16` ; l'Arène atteinte par un départ de débogage |
+| Arbuste devant la porte de l'Arène, PNJ objet `object/cut_tree`, id `vermilion_gym_bush` | T14 | arbuste posé sur `qa_dock_j16` ; l'Arène atteinte par un départ de débogage |
 | Centre de Carmin dans `rest_points.json` | T12, T13 | la défaite ramène au dernier Centre enregistré (Azuria) |
 | `got_ss_ticket` (J14, livré) ; `badge_cascade` (J13, livré) | T12, T6 | — |
 
@@ -368,7 +387,7 @@ chargement ; `got_hm01` sans `hm01` → l'objet est rendu une fois. Les deux son
 - **Objectifs** (R-9, en **tête**, minuscule et point), du plus avancé au moins avancé :
   1. `badge_thunder` → laissé au J17 (aucune entrée J16) ;
   2. `vermilion_gym_puzzle_solved` → « affronter Major Bob. » ;
-  3. `cut_vermilion_gym_tree` → « ouvrir le passage vers Major Bob. » ;
+  3. `cut_vermilion_gym_bush` → « ouvrir le passage vers Major Bob. » ;
   4. `got_hm01` + `badge_cascade` → « rejoindre l'Arène de Carmin. » ;
   5. `got_hm01` → « obtenir le Badge Cascade. » ;
   6. `rival_ss_anne_won` → « aider le capitaine. » ;
@@ -405,14 +424,14 @@ chargement ; `got_hm01` sans `hm01` → l'objet est rendu une fois. Les deux son
 
 | Ce que le J16 mémorise | Champ existant | Forme |
 |---|---|---|
-| `rival_ss_anne_*`, `got_hm01`, `ss_anne_departed`, `cut_vermilion_gym_tree`, `vermilion_gym_puzzle_solved`, `surge_met`, `badge_thunder`, `tm24_received`, `beaten_ss_anne_*`, `beaten_vermilion_gym_*`, `got_ss_anne_*` | `flags` | inchangée |
+| `rival_ss_anne_*`, `got_hm01`, `ss_anne_departed`, `cut_vermilion_gym_bush`, `vermilion_gym_puzzle_solved`, `surge_met`, `badge_thunder`, `tm24_received`, `beaten_ss_anne_*`, `beaten_vermilion_gym_*`, `got_ss_anne_*` | `flags` | inchangée |
 | CS01, CT24, Super Potions, Anti-Para | `bag` | inchangée |
 | objets trouvés | `found_items` | inchangée |
 | Grand moment rival, badge | `moments` | inchangée |
 | Coupe apprise | `party`, `storage` | inchangée |
 | premier interrupteur, second | **rien** (volatils) | — |
 
-`hm` est une clé de **données d'objet**, pas de sauvegarde. Le J16 écrit la **v6**. **Garde** :
+`hm` est une clé de **données d'objet**, pas de sauvegarde. Le J16 écrit la version du J15 (**v7**, `GameState.daycare`) sans rien y ajouter. **Garde** :
 toute tâche qui voudrait un champ nouveau s'arrête et revient à l'architecte. Test `test_save_j16` :
 partie à bord (rival perdu une fois, CS01 obtenue), puis au quai après le départ, puis dans l'Arène
 (puzzle résolu, Bob non battu) → `to_dict` → JSON → `load_dict` → tout identique.
@@ -515,7 +534,7 @@ rattrapage.
 #### T15 — constructeur-monde : départ du navire (16D) — après T8, T11
 
 §2.4, §2.11 ; d'abord sur `qa_dock_j16`, puis sur le quai du J15 après sa fusion (navire `FlagGate`,
-passerelle gardée, arbuste réel `vermilion_gym_tree`).
+passerelle gardée, arbuste réel `vermilion_gym_bush`).
 
 #### T16 — constructeur-monde : `qa_dock_j16` et départs — **maintenant**, après T7, T8
 
@@ -537,7 +556,7 @@ régénéré.
 
 #### T20 — fin et clôture — après la fusion du J15
 
-Raccord réel à Carmin, retrait de `qa_dock_j16`, vraie partie de Kevin (sauvegarde v6 relue),
+Raccord réel à Carmin, retrait de `qa_dock_j16`, vraie partie de Kevin (sauvegarde v7 relue),
 `jalon-16.md` §9 (clôture), `etat-projet.md`, `CLAUDE.md`.
 
 ---
@@ -566,7 +585,7 @@ conservé ; Corde Sortie refusée à bord.
 entrée) ; résolu pour toujours, même après une défaite ; Major Bob (paralysie, Sonicboom,
 Tonnerre), aucun bonus caché ; « BADGE FOUDRE » ; CT24 une fois ; rattrapage.
 
-**16F** — raccord au Carmin du J15 ; vraie partie de Kevin sans régression J1–J15 ; sauvegarde v6
+**16F** — raccord au Carmin du J15 ; vraie partie de Kevin sans régression J1–J15 ; sauvegarde v7
 relue par l'APK final ; carte de QA retirée ; ≥ 58 fps de moyenne.
 
 ---
@@ -602,7 +621,7 @@ relue par l'APK final ; carte de QA retirée ; ≥ 58 fps de moyenne.
 | Major Bob | 2 400 ₽, `switch false` |
 | Pont extérieur | carte d'extérieur, le compagnon peut sortir |
 | TXT-03 | une seule fois |
-| Sauvegarde | v6 |
+| Sauvegarde | celle du J15 (v7), aucun champ ajouté |
 | Téléphone | S21 de Kevin (depuis le 2026-10-10) |
 
 ---

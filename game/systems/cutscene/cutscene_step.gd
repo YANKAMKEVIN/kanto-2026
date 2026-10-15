@@ -80,9 +80,10 @@ extends RefCounted
 ##   flashs » ; la scène attend la fin du dernier. Ajoutée en fin d'enum : à la fusion du J12,
 ##   FLASH passe **après** MOMENT (J12 T23), les deux gardés.
 ## Jalon 16 (`jalon-16.md` §2.3 à §2.5), le S.S. Anne :
-## - [constant Kind.FIELD_MOVE] : capacité de terrain [member field_move] (Coupe) sur le PNJ
-##   objet [member actor] (l'arbuste) : mise en scène par le gestionnaire de Boot (le Pokémon qui
-##   coupe), puis retrait du PNJ ; la scène attend la fin ;
+## - [constant Kind.FIELD_MOVE] : capacité de terrain [member field_move] (Coupe) sur la cible
+##   [member actor] (« on » : un PNJ objet, ou un nœud de la carte comme l'arbuste `FlagGate` du
+##   J15) : mise en scène par le gestionnaire de Boot (le Pokémon qui coupe), puis retrait du PNJ
+##   s'il en est un (un décor part avec le drapeau de l'étape « set » suivante) ;
 ## - [constant Kind.SAVE] : **écriture immédiate** de la partie ([member text] = raison), par le
 ##   chemin du réveil ; réservée au départ du navire (liste blanche des données, testée) ;
 ## - [constant Kind.ANIMATE] : déplace le nœud [member target] de la carte de [member offset]

@@ -43,6 +43,8 @@
 | R-16 | QA « Galaxy S24 » | les validations se font sur le **S21** depuis le 2026-10-10 | même procédure, téléphone de Kevin |
 | R-17 | CS01 « objet » | catégorie `tm` du J11 (réutilisable, compatibilités) | CS01 = objet de catégorie `tm` marqué CS, compatibilités Coupe ajoutées au générateur (Q-3) |
 
+| R-18 | `cut_tree_vermilion_gym`, carte `vermilion_dock` | le J15 a livré (2026-10-15) : arbuste `prop_jeune_arbre_arene_01` (49..50, 10) en `FlagGate.blocking_cells`, drapeau **`cut_vermilion_gym_bush`** ; quai dans `vermilion_city` ; navire = 3 objets absents si `ss_anne_departed` ; passerelle (31..32, 27), marin (31, 26) | le J16 **adopte les noms du J15** (`jalon-16.md` §0.3) |
+
 ### 0.2 Valeurs par défaut prises (règle 4)
 
 - Super Potion : 50 PV, 700 ₽ ; vendue nulle part au J16 (trouvée seulement).

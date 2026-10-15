@@ -136,7 +136,7 @@ var _state: Node
 var reduce_motion: bool = false
 ## Mise en scène d'une capacité de terrain (jalon 16, étape « field_move ») : coroutine
 ## `func(move: StringName, target: Node2D) -> void` posée par Boot (le Pokémon qui coupe) ; non
-## valide : l'arbuste se retire seul (fondu du « despawn »).
+## valide : pas de mise en scène (un PNJ cible part en fondu, un décor avec son drapeau).
 var field_move_handler: Callable
 
 
@@ -625,16 +625,23 @@ func _flash(step: CutsceneStep) -> void:
 
 
 ## Étape « field_move » (jalon 16, `jalon-16.md` §2.3) : la mise en scène de Boot
-## ([member field_move_handler]) puis le retrait du PNJ objet (l'arbuste). PNJ introuvable :
-## push_error, étape sautée.
+## ([member field_move_handler]) sur la cible [member CutsceneStep.actor], puis son retrait :
+## - un **PNJ** objet : retiré comme par « despawn » ;
+## - un **nœud de la carte** (l'arbuste de l'Arène du J15 : `FlagGate` qui bloque ses cases) :
+##   rien de plus ici ; l'étape « set » suivante lève le drapeau qui le retire.
+## Cible introuvable : push_error, étape sautée.
 func _field_move(step: CutsceneStep) -> void:
-	var target := _find_actor(step.actor) as Npc
-	if target == null:
-		_step_error("PNJ « %s » introuvable (field_move)" % step.actor)
+	var npc := _find_actor(step.actor) as Npc
+	var node: Node2D = npc
+	if node == null and is_instance_valid(_map):
+		node = _map.get_node_or_null(NodePath(String(step.actor))) as Node2D
+	if node == null:
+		_step_error("cible « %s » introuvable (field_move)" % step.actor)
 		return
 	if field_move_handler.is_valid():
-		await field_move_handler.call(step.field_move, target)
-	await _despawn(step)
+		await field_move_handler.call(step.field_move, node)
+	if npc != null:
+		await _despawn(step)
 
 
 ## Étape « animate » (jalon 16, `jalon-16.md` §2.5) : le nœud [member CutsceneStep.target] de la

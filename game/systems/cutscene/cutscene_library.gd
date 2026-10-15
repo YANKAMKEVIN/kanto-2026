@@ -495,7 +495,8 @@ func _parse_step(value: Variant, where: String) -> CutsceneStep:
 		CutsceneStep.Kind.FIELD_MOVE:
 			ok = _read_id(main, where + " field_move", func(v: StringName) -> void:
 				step.field_move = v) and ok
-			ok = _read_npc_actor(entry.get("on"), where + " on", step) and ok
+			ok = _read_id(entry.get("on"), where + " on", func(v: StringName) -> void:
+				step.actor = v) and ok
 		CutsceneStep.Kind.SAVE:
 			if not main is String or (main as String).strip_edges().is_empty():
 				ok = _fail("%s : « save » doit être une raison (texte non vide)" % where)
