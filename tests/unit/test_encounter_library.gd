@@ -121,7 +121,8 @@ func test_real_tables_load_without_error() -> void:
 	var lib := _lib()
 	assert_true(lib.load_dir(), "\n".join(lib.get_errors()))
 	assert_eq(lib.get_ids(), [&"mt_moon_1f_rubble", &"mt_moon_b1f_rubble",
-		&"mt_moon_b2f_rubble", &"route_1_grass", &"route_22_grass", &"route_24_grass",
+		&"mt_moon_b2f_rubble", &"pokemon_tower_high", &"pokemon_tower_low", &"pokemon_tower_mid",
+		&"route_1_grass", &"route_22_grass", &"route_24_grass",
 		&"route_25_grass", &"route_2_grass", &"route_2_north_grass", &"route_3_grass",
 		&"route_4_grass", &"route_5_grass", &"route_6_grass", &"viridian_forest_grass"]
 		as Array[StringName])
@@ -195,7 +196,9 @@ func test_every_wild_species_has_battle_sprites() -> void:
 	# jalon-07.md Q-2 : sprites de combat provisoires (tools/gen_placeholder_battlers.gd).
 	var lib := _lib()
 	lib.load_dir()
-	assert_eq(lib.size(), 14, "une table par couple ci-dessous")
+	# + 3 tables de la Tour Pokémon (J19) : hors de la boucle, car leurs rencontres sont des
+	# SPECTRES sans le Scope (dossier 22 §6) ; Osselait n'a pas de sprite avant le J20.
+	assert_eq(lib.size(), 17, "une table par couple ci-dessous, plus les 3 de la Tour")
 	for pair: Array in [[&"route_1", &"grass"], [&"route_2", &"grass"],
 			[&"route_22", &"grass"], [&"viridian_forest", &"grass"], [&"route_2_north", &"grass"],
 			[&"route_3", &"grass"], [&"mt_moon_1f", &"rubble"], [&"mt_moon_b1f", &"rubble"],
