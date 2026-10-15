@@ -426,7 +426,9 @@ Sélection H-9 : on retire 2 des 5 sbires du B1F (RB 11 et 12). Espèces absente
 | Évolutions par pierre | Arcanin, Feunard, Aquali, Voltali, Pyroli |
 | Dresseurs (si on ne les remplace pas) | Soporifik, Tadmorv, Sablaireau, Magnéti, Ptitard, Têtarte, Mélofée, Nidorina… : **remplacées par défaut** (§3.2) |
 
-Soit **12 espèces** au minimum. Pour chacune : données (stats, capacités, compatibilités CT),
+| Tour Pokémon (données créées au J19) | **Fantominus, Spectrum, Osselait** : capturables dès que le joueur a le Scope (règle K-11 du J19), donc **dos de combat** et art définitif à la charge du J20 |
+
+Soit **12 espèces nouvelles** au minimum, plus l'art de capture des 3 espèces de la Tour. Pour chacune : données (stats, capacités, compatibilités CT),
 artwork du Pokédex, face de combat, et dos pour les espèces capturables (Caninos, Goupix, Évoli et
 leurs évolutions).
 
