@@ -134,7 +134,7 @@ de Carmin. », « ouvrir le passage vers Major Bob. », « affronter Major Bob. 
 **Restent au plan (annexe A, T3)** : descriptions de Coupe, Tonnerre, CS01, CT24, Super Potion ;
 zone du Pokédex et de la Carte.
 
-### 0.4 Grilles et vues générales (grilles **validées par Kevin le 2026-10-15** ; vues générales à générer)
+### 0.4 Grilles et vues générales (grilles **validées par Kevin le 2026-10-15** ; **vues générales validées le 2026-10-16** : `reference/ss-anne-pont-principal-v1.png`, `ss-anne-pont-exterieur-v1.png`, `arene-carmin-v1.png` — écart : zone du Champion de l'Arène peinte plus courte que la grille, qui fait foi ; les 15 objets fouillables sont des poubelles identiques)
 
 - **Grilles** (font foi sur le §3, R-14) : `tools/plans/ss_anne_pont_principal.txt` (26 × 13),
   `ss_anne_couloir_capitaine.txt` (18 × 7), `ss_anne_cabine_capitaine.txt` (14 × 10),
