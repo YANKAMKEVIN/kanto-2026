@@ -2,19 +2,16 @@
 	"hm01": {
 		"name": "CS01 — Coupe", "plural": "CS01 — Coupe", "feminine": true,
 		"category": "tm", "hm": 1, "teaches": "cut",
-		"description": "Permet de couper les petits arbres avec un Pokémon de l'équipe. S'apprend aussi comme une CT.",
-		"draft": true
+		"description": "Permet de couper les petits arbres avec un Pokémon de l'équipe. S'apprend aussi comme une CT."
 	},
 	"tm24": {
 		"name": "CT24 — Tonnerre", "plural": "CT24 — Tonnerre", "feminine": true,
 		"category": "tm", "tm": 24, "teaches": "thunderbolt",
-		"description": "Une puissante décharge électrique frappe la cible. Peut la paralyser.",
-		"draft": true
+		"description": "Une puissante décharge électrique frappe la cible. Peut la paralyser."
 	},
 	"super_potion": {
 		"name": "Super Potion", "plural": "Super Potions", "feminine": true, "category": "heal",
 		"heal_amount": 50, "price": 700,
-		"description": "Restaure 50 PV d'un Pokémon.",
-		"draft": true
+		"description": "Restaure 50 PV d'un Pokémon."
 	}
 }

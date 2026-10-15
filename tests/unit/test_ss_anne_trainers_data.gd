@@ -69,7 +69,7 @@ func test_names_unique_across_all_trainers() -> void:
 func test_surge() -> void:
 	var bob := _trainers.get_trainer(&"vermilion_gym_surge")
 	assert_eq([bob.name, bob.ai, bob.can_lose, bob.can_switch, bob.card_name],
-		["Major Bob", BattleAI.SMART, false, false, "MAJOR BOB"])
+		["Major Bob", BattleAI.SMART, false, true, "MAJOR BOB"], "change de Pokémon (Kevin, 2026-10-15)")
 	var species: Array[StringName] = []
 	for slot: TrainerSlot in bob.team:
 		species.append(slot.species)
@@ -81,6 +81,7 @@ func test_rival_by_starter() -> void:
 	var rival := _trainers.get_trainer(&"rival_ss_anne")
 	assert_true(rival.moment_on_win, "Grand moment à la victoire seulement")
 	assert_false(rival.can_lose)
+	assert_true(rival.can_switch, "comme le rival n° 3 (Kevin, 2026-10-15)")
 	var last := {&"bulbasaur": &"charmeleon", &"charmander": &"wartortle",
 		&"squirtle": &"ivysaur"}
 	for starter: StringName in last:

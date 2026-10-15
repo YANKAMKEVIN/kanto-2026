@@ -379,7 +379,7 @@ chargement ; `got_hm01` sans `hm01` → l'objet est rendu une fois. Les deux son
   - `trainers/ss_anne.json` : 10 Dresseurs du dossier §4, avec les noms de R-10, équipes et
     capacités, argent de la V3 recalé sur `prize_per_level` au T18 ;
   - `trainers/vermilion_gym.json` : Louis, Axel, Marc ; Major Bob (`card` « MAJOR BOB » /
-    « Champion d'Arène de Carmin », IA `smart`, `can_lose false`, `switch false`, capacités du §9,
+    « Champion d'Arène de Carmin », IA `smart`, `can_lose false`, `switch true` (Kevin, R-19), capacités du §9,
     argent par défaut 2 400 ₽ comme la progression Pierre 1 300 → Ondine 2 100).
 - **Dialogues** : `ss_anne.json`, `vermilion_gym.json`, `cut_tree.json`.
 - **Scènes** : `ss_anne.json`, `vermilion_gym.json`, `cut_tree.json`.
@@ -618,7 +618,7 @@ relue par l'APK final ; carte de QA retirée ; ≥ 58 fps de moyenne.
 | Navire qui part | étape `animate`, ≤ 10 s ; réduite : fondu 0,5 s |
 | Puzzle | tirage par `GameState.rng`, second tiré au premier succès, état jamais écrit |
 | Drapeaux | `rival_ss_anne_*`, `got_hm01`, `ss_anne_departed`, `cut_<id>`, `vermilion_gym_puzzle_solved`, `surge_met`, `badge_thunder`, `tm24_received` |
-| Major Bob | 2 400 ₽, `switch false` |
+| Major Bob | 2 400 ₽, `switch true` (Kevin) |
 | Pont extérieur | carte d'extérieur, le compagnon peut sortir |
 | TXT-03 | une seule fois |
 | Sauvegarde | celle du J15 (v7), aucun champ ajouté |

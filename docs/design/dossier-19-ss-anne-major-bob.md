@@ -45,6 +45,8 @@
 
 | R-18 | `cut_tree_vermilion_gym`, carte `vermilion_dock` | le J15 a livré (2026-10-15) : arbuste `prop_jeune_arbre_arene_01` (49..50, 10) en `FlagGate.blocking_cells`, drapeau **`cut_vermilion_gym_bush`** ; quai dans `vermilion_city` ; navire = 3 objets absents si `ss_anne_departed` ; passerelle (31..32, 27), marin (31, 26) | le J16 **adopte les noms du J15** (`jalon-16.md` §0.3) |
 
+| R-19 | Rival n° 4 et Major Bob « sans changement de Pokémon » | le J13 a introduit le changement par l'IA (`switch`), utilisé par le rival n° 3 et Ondine ; la règle du dossier venait d'une erreur de Claude | **décision de Kevin du 2026-10-15** : `switch: true` pour le rival n° 4 et Major Bob (les Dresseurs ordinaires restent sans) |
+
 ### 0.2 Valeurs par défaut prises (règle 4)
 
 - Super Potion : 50 PV, 700 ₽ ; vendue nulle part au J16 (trouvée seulement).
