@@ -141,6 +141,16 @@
 			"name": "Route 6", "kind": "route", "maps": ["route_6", "route_6_underground_gate"],
 			"subtitle": "Safrania — Carmin-sur-Mer",
 			"description": "Une route ouverte où l'air sent déjà le sel. Au bout, les grues et les mâts du port de Carmin."
+		},
+		"route_11": {
+			"name": "Route 11", "kind": "route", "maps": [],
+			"subtitle": "Carmin-sur-Mer — Route 12",
+			"description": "Une route côtière entre les prairies et la mer, à l'est de Carmin."
+		},
+		"digletts_cave": {
+			"name": "Cave Taupiqueur", "kind": "place", "maps": [],
+			"subtitle": "Route 11 — Route 2",
+			"description": "Un long tunnel creusé par des Taupiqueur."
 		}
 	}
 }

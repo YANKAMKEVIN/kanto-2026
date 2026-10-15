@@ -39,8 +39,9 @@ func _root_property(map_id: StringName, property: StringName) -> Variant:
 func test_real_data_loads_without_error() -> void:
 	assert_true(_zones.load_file(), "\n".join(_zones.get_errors()))
 	assert_eq(_zones.get_errors().size(), 0)
-	assert_eq(_zones.size(), 28, "Route 24 (jalon 13), Route 25 et Cap d'Azuria (jalon 14), "
-		+ "passage souterrain (jalon 15 T18), Route 6 (jalon 15 T14), Route 5 (jalon 15 T13)")
+	assert_eq(_zones.size(), 30, "Route 24 (jalon 13), Route 25 et Cap d'Azuria (jalon 14), "
+		+ "passage souterrain (jalon 15 T18), Route 6 (jalon 15 T14), Route 5 (jalon 15 T13), "
+		+ "Route 11 et Cave Taupiqueur (jalon 17)")
 
 
 func test_every_map_belongs_to_exactly_one_zone() -> void:
@@ -284,3 +285,21 @@ func test_duplicate_zone_across_files_and_root_keys() -> void:
 func test_missing_file() -> void:
 	assert_false(_zones.load_file("res://tests/fixtures/absent_zones.json"))
 	assert_push_error("fichier introuvable")
+
+
+## Jalon 17 (annexe A.3 de jalon-17.md et T-13, T-14 du dossier 20, validés) : sous-titres et
+## descriptions de la Route 11 et de la Cave Taupiqueur ; leurs cartes arrivent avec les scènes.
+func test_j17_zone_texts() -> void:
+	_zones.load_file()
+	var route_11 := _zones.get_zone(&"route_11")
+	var cave := _zones.get_zone(&"digletts_cave")
+	assert_not_null(route_11)
+	assert_not_null(cave)
+	if route_11 == null or cave == null:
+		return
+	assert_eq([route_11.name, route_11.subtitle, route_11.description], ["Route 11",
+		"Carmin-sur-Mer — Route 12",
+		"Une route côtière entre les prairies et la mer, à l'est de Carmin."])
+	assert_eq([cave.name, cave.subtitle, cave.description], ["Cave Taupiqueur",
+		"Route 11 — Route 2", "Un long tunnel creusé par des Taupiqueur."])
+	assert_false(route_11.draft or cave.draft)

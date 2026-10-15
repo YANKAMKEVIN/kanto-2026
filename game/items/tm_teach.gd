@@ -28,9 +28,6 @@ const IN_BATTLE_TEXT: String = "Les CT s'utilisent hors combat."
 static func check(pokemon: Pokemon, item: ItemData, data: PokemonData) -> Check:
 	if pokemon == null or item == null or not item.is_tm() or not data.has_move(item.teaches):
 		return Check.INCOMPATIBLE
-	# Jalon 17, TODO(Q-1) : une CS qui ne s'apprend pas encore ([member ItemData.teachable]).
-	if not item.teachable:
-		return Check.INCOMPATIBLE
 	if pokemon.knows_move(item.teaches):
 		return Check.KNOWN
 	var compatible := data.can_learn_hm(pokemon.species_id, item.hm_number) if item.is_hm() \
