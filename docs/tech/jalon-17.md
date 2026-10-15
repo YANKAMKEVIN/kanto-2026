@@ -128,6 +128,42 @@ Références : `CLAUDE.md` (règles 1 à 10), `docs/design/dossier-20-chemins-re
 | J16 | CS01, Coupe dans le monde, arbustes définitifs, `can_cut`, textes génériques de l'arbuste, mise en scène de Coupe | **rien de codé, aucun dossier** (passe seulement) | arbuste du couloir et FUTUR A (T23) |
 | J18 | voile réglé, déclenchement de Flash, bulle « ! » au-dessus du voile | dossier 21 (Q-1) | passation (T28) |
 
+### 0.4 Réalignement sur le code (T2, 2026-10-15)
+
+Base : `jalon-17` à `369a20e` (= `main` à `440f9b1` : **J12 à J15 fusionnés**) ; J16 lu sur
+`origin/ccr-fa255d49-wvvacc` à `776ec16` (non fusionné). Les tableaux 0.1 et 0.3 restent comme
+écrits ; ce qui a changé :
+
+1. **J14 est dans `main`** : `FlagGate` + `GameMap.apply_flag_gates`, `rare_candy`, `ss_ticket`,
+   `dig`, `psychic`, `teleport` (`data/pokemon/moves/moves_j14.json`, `items_j14.json`). La
+   dépendance n° 9 du §0.2 est levée : 17A et 17B n'attendent plus le J14.
+2. **J15 est dans `main`** : **Carmin construite** (`tools/build_vermilion_city.gd`, warp est (63,
+   11..13) → `route_11` / `from_route_11_*` avec « Route 11 — À venir »), `super_potion` et
+   `full_restore` (`data/items/vermilion.json`), sauvegarde **v7**, jetons `{levels}`, `{price}`.
+   Le n° 11 du §0.2 tombe : le raccord ouest de la Route 11 (T17) est réalisable tout de suite
+   (retirer le « À venir » côté Carmin).
+3. **Le J16 a posé les CS et `FieldMoves` (contrat §1.2 : le J17 s'aligne)** :
+   - CS **identiques au §2.7** (`ItemData.hm_number`, `is_hm`, `ItemLibrary` « hm » / `get_hm`,
+     `PokemonData.can_learn_hm` / `hm_move`, `TmTeach`, générateur 101..105). **T2 reprend ce code
+     octet pour octet** (fusion future sans conflit) ; seuls les tests sont propres au J17
+     (`test_hm_j17.gd` ; le `test_hm.gd` du J16 dépend de la CS01).
+   - **`FieldMoves` diffère du §2.8** : `game/world/field/field_moves.gd` (et non
+     `game/systems/field_moves/`), **instance** chargée de `data/world/field_moves.json` (et non
+     `data/pokemon/`), règle `{ "hm": "<id d'objet>", "badge": "<drapeau>" }`, API
+     `check(move, party, bag, flags, items, data, companion) -> Result` (`state` ∈ NO_HM,
+     NO_BADGE, NO_POKEMON, READY ; `pokemon_index` ; `pokemon_name`). La CS se lit **dans le Sac**
+     (pas de drapeau `got_hm05` dans `requires`), pas de clé `cue`. **T3 adopte cette API** : le
+     `user_index` / `can_use` / `cue_text` du §2.8 deviennent `check(&"flash", …)` ; le texte
+     T-17 ira dans les données du T24 (bloqué par Q-1).
+   - Le J16 ajoute aussi des variantes de dialogue `field` (« cut:ready ») et
+     `DialogueRunner.field_source` : **T4** (`if_caught_at_least`) touche les mêmes fichiers
+     (`dialogue.gd`, `dialogue_variant.gd`, `dialogue_runner.gd`) → ajouts courts, conflits
+     attendus « garder les deux côtés ».
+   - Le J16 recrée `super_potion` dans `items_j16.json` alors que le J15 l'a dans
+     `vermilion.json` : doublon à résoudre **par le J16** à sa fusion (pas par le J17).
+4. **Q-1 non tranché** : la CS05 est créée (T7) mais **non enseignable** (`"teachable": false`,
+   §2.7 bis) ; `test_battle_flash` attend Q-1.
+
 ---
 
 ## 1. Découpage
