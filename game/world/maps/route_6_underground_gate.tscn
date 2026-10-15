@@ -1,0 +1,100 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/map.gd" id="1_h7wy2"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/int_poste_foret_coque.png" id="2_s6a6a"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_escalier_descendant_01.tscn" id="3_lnee8"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_meuble_bas_01.tscn" id="4_axrn1"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_panneau_expo_01.tscn" id="5_cby5l"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_plante.tscn" id="6_7rmf1"]
+[ext_resource type="Script" path="res://game/world/warp_point.gd" id="7_wge4p"]
+[ext_resource type="Script" path="res://game/world/interactions/interact_point.gd" id="8_jh1ga"]
+
+[node name="Route6UndergroundGate" type="Node2D" unique_id=577274274]
+script = ExtResource("1_h7wy2")
+map_id = &"route_6_underground_gate"
+display_name = "Route 6"
+size = Vector2i(10, 8)
+blocked_cells = Array[Vector2i]([Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vector2i(4, 0), Vector2i(5, 0), Vector2i(6, 0), Vector2i(7, 0), Vector2i(8, 0), Vector2i(9, 0), Vector2i(0, 1), Vector2i(1, 1), Vector2i(2, 1), Vector2i(3, 1), Vector2i(4, 1), Vector2i(5, 1), Vector2i(6, 1), Vector2i(7, 1), Vector2i(8, 1), Vector2i(9, 1), Vector2i(0, 2), Vector2i(9, 2), Vector2i(0, 3), Vector2i(9, 3), Vector2i(0, 4), Vector2i(9, 4), Vector2i(0, 5), Vector2i(9, 5), Vector2i(0, 6), Vector2i(9, 6), Vector2i(0, 7), Vector2i(1, 7), Vector2i(2, 7), Vector2i(3, 7), Vector2i(6, 7), Vector2i(7, 7), Vector2i(8, 7), Vector2i(9, 7)])
+interior = true
+light_profile = &"interior_warm"
+
+[node name="Shell" type="Sprite2D" parent="." unique_id=1412995913]
+z_index = -3
+texture = ExtResource("2_s6a6a")
+centered = false
+
+[node name="GroundDecals" type="Node2D" parent="." unique_id=936343028]
+z_index = -1
+
+[node name="StairsDown" parent="GroundDecals" unique_id=218137780 instance=ExtResource("3_lnee8")]
+position = Vector2(480, 288)
+
+[node name="Entities" type="Node2D" parent="." unique_id=900318899]
+unique_name_in_owner = true
+y_sort_enabled = true
+
+[node name="LowCabinet" parent="Entities" unique_id=1579999312 instance=ExtResource("4_axrn1")]
+position = Vector2(240, 288)
+
+[node name="SignBoard" parent="Entities" unique_id=1728563138 instance=ExtResource("5_cby5l")]
+position = Vector2(768, 288)
+
+[node name="PlantWest" parent="Entities" unique_id=1145806697 instance=ExtResource("6_7rmf1")]
+position = Vector2(144, 672)
+
+[node name="PlantEast" parent="Entities" unique_id=336317103 instance=ExtResource("6_7rmf1")]
+position = Vector2(816, 672)
+
+[node name="Warps" type="Node2D" parent="." unique_id=1653936580]
+
+[node name="ToRoute6W" type="Marker2D" parent="Warps" unique_id=802516110]
+position = Vector2(432, 768)
+script = ExtResource("7_wge4p")
+direction = Vector2i(0, 1)
+target_map = &"route_6"
+target_spawn = &"from_underground"
+arrival_facing = Vector2i(0, 1)
+
+[node name="ToRoute6E" type="Marker2D" parent="Warps" unique_id=1758054040]
+position = Vector2(528, 768)
+script = ExtResource("7_wge4p")
+direction = Vector2i(0, 1)
+target_map = &"route_6"
+target_spawn = &"from_underground"
+arrival_facing = Vector2i(0, 1)
+
+[node name="StairsW" type="Marker2D" parent="Warps" unique_id=1649123419]
+position = Vector2(432, 288)
+script = ExtResource("7_wge4p")
+target_map = &"underground_path"
+target_spawn = &"from_route_6_w"
+arrival_facing = Vector2i(0, -1)
+
+[node name="StairsE" type="Marker2D" parent="Warps" unique_id=518352188]
+position = Vector2(528, 288)
+script = ExtResource("7_wge4p")
+target_map = &"underground_path"
+target_spawn = &"from_route_6_e"
+arrival_facing = Vector2i(0, -1)
+
+[node name="Interactables" type="Node2D" parent="." unique_id=2023620731]
+
+[node name="SignBoardRead" type="Marker2D" parent="Interactables" unique_id=148206969]
+position = Vector2(720, 288)
+script = ExtResource("8_jh1ga")
+dialogue_id = &"route_6_underground_gate_sign"
+size = Vector2i(2, 1)
+facing = Vector2i(0, -1)
+
+[node name="Spawns" type="Node2D" parent="." unique_id=680499772]
+
+[node name="from_route_6" type="Marker2D" parent="Spawns" unique_id=223335755]
+position = Vector2(432, 672)
+
+[node name="from_underground_w" type="Marker2D" parent="Spawns" unique_id=319148223]
+position = Vector2(432, 384)
+
+[node name="from_underground_e" type="Marker2D" parent="Spawns" unique_id=1255582484]
+position = Vector2(528, 384)
+
+[node name="Triggers" type="Node2D" parent="." unique_id=851285287]

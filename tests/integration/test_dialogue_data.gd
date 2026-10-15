@@ -44,17 +44,8 @@ const GATE_GUARDS: Array[StringName] = [&"forest_gate_north_guard", &"forest_gat
 ## T13 : les intérieurs d'Argenta sont dans [constant MAPS] (Musée, maisons, Arène : retirés).
 ## T11 : la Route 2 nord et Argenta (extérieur) sont dans [constant MAPS] : liste vide.
 ## Jalon 14 (T23) : D5 et D6 posés, leurs répliques (n° 50, 51) sortent de la liste.
-const UNUSED_YET: Array[StringName] = [
-	# Jalon 15 (T12) : Dresseurs de la Route 6, posés avec la carte (T14, T15).
-	&"route_6_camper_gabin_after", &"route_6_camper_gabin_before",
-	&"route_6_camper_gabin_defeated", &"route_6_camper_mathis_after",
-	&"route_6_camper_mathis_before", &"route_6_camper_mathis_defeated",
-	&"route_6_lass_chloe_after", &"route_6_lass_chloe_before", &"route_6_lass_chloe_defeated",
-	&"route_6_lass_manon_after", &"route_6_lass_manon_before", &"route_6_lass_manon_defeated",
-	&"route_6_scout_axel_after", &"route_6_scout_axel_before", &"route_6_scout_axel_defeated",
-	&"route_6_scout_basile_after", &"route_6_scout_basile_before",
-	&"route_6_scout_basile_defeated",
-]
+## Jalon 15 (T14) : les Dresseurs de la Route 6 sont posés avec la carte : liste vide.
+const UNUSED_YET: Array[StringName] = []
 ## Textes pas encore validés, exemptés du contrôle « mot pour mot » (jalon 14 T16 : ceux du
 ## coquillage de la Route 25, validés depuis : dossier 17 §15 n° 71 ; le n° 72 est retiré le 2026-10-14).
 const UNVALIDATED: Array[StringName] = []
@@ -119,6 +110,10 @@ const MAPS: Array[StringName] = [
 	&"qa_daycare",
 	# Jalon 15 (T18, T19) : le passage souterrain (passant T-18, indice T-19).
 	&"underground_path",
+	# Jalon 15 (T14) : la Route 6, Carmin-sur-Mer et ses intérieurs.
+	&"route_6", &"route_6_underground_gate", &"vermilion_city", &"vermilion_center",
+	&"vermilion_mart", &"vermilion_fan_club", &"vermilion_fisher_house", &"vermilion_house_1",
+	&"vermilion_house_2",
 ]
 ## Lot de textes validé par Kevin le 2026-10-06 (anciens brouillons : panneau, observations,
 ## soin de Maman, terminal du Stockage, portes de Jadielle…) : source des textes hors dossiers.
@@ -274,6 +269,14 @@ const IDS: Array[StringName] = [
 	&"route_25_youngster_jules_before", &"route_25_youngster_jules_defeated",
 	&"route_25_youngster_yanis_after", &"route_25_youngster_yanis_before",
 	&"route_25_youngster_yanis_defeated",
+	# Jalon 15 (T14) : Route 6 et Carmin-sur-Mer (dossier 18 §15, annexe A du plan).
+	&"route_6_sign", &"route_6_gate_sign", &"route_6_underground_gate_sign", &"route_6_guard",
+	&"route_6_fisher", &"route_6_walker", &"route_6_item_1", &"route_6_hidden_1",
+	&"vermilion_city_sign", &"vermilion_gym_sign", &"vermilion_dock_sign", &"vermilion_gym_tree",
+	&"vermilion_sailor", &"vermilion_docker_1", &"vermilion_docker_2", &"vermilion_old_man",
+	&"vermilion_resident", &"vermilion_kid", &"vermilion_fan_club_chairman",
+	&"vermilion_fan_club_member", &"vermilion_fan_club_member_2", &"vermilion_fisher",
+	&"vermilion_house_1_resident", &"vermilion_house_2_resident",
 ]
 ## Jalon 14 (T17, dossier 17 §15 n° 1 à 27) : dialogues de la maison de Léo, ajoutés aux autres.
 const IDS_J14_BILL: Array[StringName] = [
@@ -498,6 +501,8 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		&"rival_cerulean_intro", &"rival_cerulean_lost", &"rival_cerulean_resume",
 		&"rival_cerulean_resume_again", &"rival_cerulean_won",
 		&"rival_challenge", &"rival_challenge_wait", &"rival_lab_lost", &"rival_lab_won",
+		# Jalon 15 (T14) : le garde de Safrania sur la Route 6 (recul).
+		&"route_6_guard",
 		&"rival_lab_won_leaving", &"rival_parcel_greet", &"rival_parcel_leaving",
 		&"rival_parcel_return", &"rival_starter_pick", &"rival_starter_smile",
 		&"route1_grass_thought", &"route22_rival_greet", &"route22_rival_hesitates",
@@ -603,7 +608,9 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		&"rival_cerulean_retried", &"rival_cerulean_won", &"rival_challenged", &"rival_lab_lost",
 		&"rival_lab_won", &"rival_left_lab", &"rival_route22_lost", &"rival_route22_won",
 		&"route_3_entered", &"route_3_guard_cleared", &"route_4_reached", &"starter_chosen",
-		&"starter_offered", &"tm11_received", &"tm34_received", &"viridian_arrived"]
+		&"starter_offered", &"tm11_received", &"tm34_received", &"viridian_arrived",
+		# Jalon 15 (T14) : Route 6 (Poké Ball, Super Potion cachée), arrivée à Carmin.
+		&"got_route_6_hidden_1", &"got_route_6_item_1", &"vermilion_reached"]
 		+ SET_J14_BILL_CUTSCENES + SET_J14_ROCKET_CUTSCENES))
 	assert_eq(_used_on.get(&"oak_lab_reunion"), [&"oak_lab"], "joué au labo, après le fondu")
 	assert_eq(_used_on.get(&"oak_starter_offer"), [&"oak_lab"], "joué au labo")
@@ -909,6 +916,10 @@ func test_speakers_and_narration() -> void:
 		&"mt_moon_researcher_before": ["Chercheur Gaspard", false],
 		&"mt_moon_researcher_talk": ["Chercheur Gaspard", false],
 		&"mt_moon_fossil_dome": ["", true], &"mt_moon_fossil_helix": ["", true],
+		# Jalon 15 (T14) : panneaux sans locuteur, l'arbre de l'Arène en narration.
+		&"route_6_sign": ["", false], &"vermilion_city_sign": ["", false],
+		&"vermilion_gym_tree": ["", true], &"route_6_guard": ["Garde", false],
+		&"vermilion_sailor": ["Marin", false],
 	}
 	for id: StringName in expected:
 		var dialogue := _library.get_dialogue(id)
@@ -1011,7 +1022,8 @@ func test_oak_parcel_lines() -> void:
 	# Route 4, la Potion de la Route 24, Ondine (pont, Arène et rattrapage), l'Antidote caché et le
 	# recruteur (T22). Jalon 14 : l'écran, le module et la console de Léo (T17), quatre objets de
 	# la Route 25 (T16). Jalon 15 (T19) : la Guérison cachée du souterrain.
-	assert_eq(launched, 37, "la scène du colis, quinze objets au sol, trois cachés, Pierre et "
+	# Jalon 15 (T14) : la Poké Ball et la Super Potion cachée de la Route 6.
+	assert_eq(launched, 39, "la scène du colis, seize objets au sol, cinq cachés, Pierre et "
 		+ "sa CT34, Ondine (pont, Arène et rattrapage), écran, module, console, objets de la "
 		+ "Route 25, le Rocket d'Azuria (2) et le barrage sud")
 	# Le jeton n'apparaît que dans la réplique de l'espèce, « {pokemon} » dans les phrases du

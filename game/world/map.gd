@@ -195,6 +195,7 @@ func apply_flag_gates(flags: StoryFlags) -> void:
 	for node: Node in get_tree().get_nodes_in_group(FlagGate.GROUP):
 		if is_ancestor_of(node):
 			(node as FlagGate).apply(flags)
+			(node as FlagGate).apply_to_grid(_grid)
 
 
 ## PNJ d'identifiant [param id], ou null.
@@ -315,6 +316,14 @@ func _build_grid() -> void:
 			if prop != null:
 				_grid.add_solid_footprint(prop.get_anchor_cell(), prop.get_footprint())
 				prop.level_rows = level_rows
+	# Jalon 15 : décor qui bloque ses cases tant qu'il est affiché (FlagGate.blocking_cells).
+	for layer_path: NodePath in _PROP_LAYERS:
+		var gates := get_node_or_null(layer_path)
+		if gates == null:
+			continue
+		for child: Node in gates.get_children():
+			if child is FlagGate:
+				(child as FlagGate).apply_to_grid(_grid)
 	for npc: Npc in _npcs:
 		if not npc.enter_grid(_grid):
 			push_error("GameMap %s : PNJ « %s » ne peut plus occuper %s" % [

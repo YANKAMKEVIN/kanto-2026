@@ -1,0 +1,74 @@
+{
+	"lass_chloe": {
+		"cell": [16, 5], "facing": "down", "sprite": "lass",
+		"dialogue": "route_6_lass_chloe_after",
+		"trainer": {
+			"id": "route_6_lass_chloe", "sight": 5,
+			"before": "route_6_lass_chloe_before", "defeated": "route_6_lass_chloe_defeated"
+		}
+	},
+	"camper_gabin": {
+		"cell": [18, 5], "facing": "down", "sprite": "camper",
+		"dialogue": "route_6_camper_gabin_after",
+		"trainer": {
+			"id": "route_6_camper_gabin", "sight": 4,
+			"before": "route_6_camper_gabin_before", "defeated": "route_6_camper_gabin_defeated"
+		}
+	},
+	"scout_axel": {
+		"cell": [10, 16], "facing": "left", "sprite": "scout",
+		"dialogue": "route_6_scout_axel_after",
+		"trainer": {
+			"id": "route_6_scout_axel", "sight": 4,
+			"before": "route_6_scout_axel_before", "defeated": "route_6_scout_axel_defeated"
+		}
+	},
+	"camper_mathis": {
+		"cell": [22, 29], "facing": "right", "sprite": "camper",
+		"dialogue": "route_6_camper_mathis_after",
+		"trainer": {
+			"id": "route_6_camper_mathis", "sight": 4,
+			"before": "route_6_camper_mathis_before", "defeated": "route_6_camper_mathis_defeated"
+		}
+	},
+	"lass_manon": {
+		"cell": [22, 31], "facing": "right", "sprite": "lass",
+		"dialogue": "route_6_lass_manon_after",
+		"trainer": {
+			"id": "route_6_lass_manon", "sight": 4,
+			"before": "route_6_lass_manon_before", "defeated": "route_6_lass_manon_defeated"
+		}
+	},
+	"scout_basile": {
+		"cell": [38, 43], "facing": "left", "sprite": "scout",
+		"dialogue": "route_6_scout_basile_after",
+		"trainer": {
+			"id": "route_6_scout_basile", "sight": 4,
+			"before": "route_6_scout_basile_before", "defeated": "route_6_scout_basile_defeated"
+		}
+	},
+	"saffron_guard": {
+		"cell": [36, 8], "facing": "down", "sprite": "guard", "dialogue": "route_6_guard",
+		"keep_facing": true
+	},
+	"pond_fisher": {
+		"cell": [22, 35], "facing": "left", "sprite": "old_man", "dialogue": "route_6_fisher"
+	},
+	"walker": {
+		"cell": [30, 12], "facing": "down", "sprite": "traveler", "dialogue": "route_6_walker",
+		"look": { "facings": ["down", "right", "down", "left"], "every": 3.5 }
+	},
+	"route_6_item_1": {
+		"cell": [38, 41], "facing": "down", "sprite": "object/poke_ball_ground",
+		"dialogue": "route_6_item_1", "verb": "take", "turn_to_player": false,
+		"unless": ["got_route_6_item_1"]
+	},
+	"roucool_1": {
+		"cell": [29, 15], "facing": "left", "sprite": "pokemon/pidgey",
+		"shy": { "action": "fly", "radius": 2 }
+	},
+	"rattata_1": {
+		"cell": [24, 26], "facing": "right", "sprite": "pokemon/rattata",
+		"shy": { "action": "flee", "radius": 2 }
+	}
+}

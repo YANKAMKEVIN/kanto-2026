@@ -30,6 +30,10 @@ extends SceneTree
 ##     grille (`tools/plans/bill_house.txt`, « plan »), sans PNJ (T17) ; affichée « Cap d'Azuria »
 ##     (nom de sa zone, `test_zone_library`)
 ##   godot --headless --path . -s res://tools/build_painted_interiors.gd -- --rooms=bill_house
+##   vermilion_center, vermilion_mart, vermilion_fan_club, vermilion_fisher_house,
+##   vermilion_house_1, vermilion_house_2, route_6_underground_gate — Carmin-sur-Mer et le
+##     bâtiment de sortie du souterrain de la Route 6 (jalon 15 T14, jalon-15.md §2.2)
+##   godot --headless --path . -s res://tools/build_painted_interiors.gd -- --carmin
 ##   godot --headless --path . -s res://tools/build_painted_interiors.gd   (toutes les pièces)
 ##   godot --headless --path . --import
 ##
@@ -81,6 +85,10 @@ const AZURIA := [&"cerulean_center", &"cerulean_mart", &"cerulean_gym", &"cerule
 	&"cerulean_house", &"cerulean_burgled_house"]
 ## Carte de QA PROVISOIRE du jalon 15 (T6) : retirée à la clôture (T23).
 const QA := [&"qa_daycare"]
+## Jalon 15 (T14) : Carmin-sur-Mer et le bâtiment de sortie du souterrain de la Route 6.
+const CARMIN := [&"vermilion_center", &"vermilion_mart", &"vermilion_fan_club",
+	&"vermilion_fisher_house", &"vermilion_house_1", &"vermilion_house_2",
+	&"route_6_underground_gate"]
 const PLANS_DIR := "res://tools/plans/"
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 const LOGIC_DIR := "res://tests/fixtures/maps/"
@@ -102,6 +110,7 @@ func _init() -> void:
 		[&"route_3", &"from_center_e"]))
 	rooms.append_array(_cerulean_rooms())
 	rooms.append(_qa_daycare())
+	rooms.append_array(_vermilion_rooms())
 	for room: Dictionary in rooms:
 		if not wanted.is_empty() and not wanted.has(room["id"]):
 			continue
@@ -139,6 +148,8 @@ func _wanted_rooms() -> Array:
 			wanted.append_array(ARGENTA)
 		elif arg == "--azuria":
 			wanted.append_array(AZURIA)
+		elif arg == "--carmin":
+			wanted.append_array(CARMIN)
 		elif arg.begins_with("--rooms="):
 			for id: String in arg.trim_prefix("--rooms=").split(","):
 				wanted.append(StringName(id))
@@ -1189,3 +1200,142 @@ func _world(cell: Vector2i) -> Vector2:
 func _attach(root: Node, parent: Node, child: Node) -> void:
 	parent.add_child(child)
 	child.owner = root
+
+
+# --- Jalon 15 (T14) : Carmin-sur-Mer et la Route 6 ----------------------------------------
+
+
+## Intérieurs de Carmin-sur-Mer (jalon 15 T14, jalon-15.md §2.2 ; dossier 18 §8.2) et bâtiment de
+## sortie du souterrain de la Route 6. Titre « Carmin-sur-Mer » (toast du point de repos),
+## lumière `interior_warm` ; sorties vers `vermilion_city`, spawns `from_<lieu>` devant les
+## portes de la ville. Maisons, Pêcheur et Fan Club relus sur leur grille
+## (`tools/plans/carmin_*.txt`) dans l'enveloppe des maisons d'Argenta.
+func _vermilion_rooms() -> Array[Dictionary]:
+	return [
+		_pokemon_center(&"vermilion_center", "VermilionCenter", "Carmin-sur-Mer",
+			[&"vermilion_city", &"from_center"]),
+		_poke_mart(&"vermilion_mart", "VermilionMart", "Carmin-sur-Mer",
+			[&"vermilion_city", &"from_mart"]),
+		_vermilion_fan_club(), _vermilion_fisher_house(), _vermilion_house_1(),
+		_vermilion_house_2(), _route_6_underground_gate(),
+	]
+
+
+## Pièce de Carmin relue sur sa grille : enveloppe des maisons d'Argenta, sortie PUSH ↓ vers
+## `vermilion_city` / [param spawn].
+func _vermilion_house(id: StringName, node: String, plan: String, walkable: String,
+		spawn: StringName) -> Dictionary:
+	return {
+		"id": id, "node": node, "size": Vector2i(15, 10),
+		"shell": "res://assets/world/interiors/int_maison_argenta_coque.png",
+		"title": "Carmin-sur-Mer", "light": &"interior_warm",
+		"plan": PLANS_DIR + plan, "walkable": walkable,
+		"spawns": {"entrance": Vector2i(7, 8)},
+		"warps": _pewter_exits([Vector2i(6, 8), Vector2i(7, 8), Vector2i(8, 8)], spawn,
+			&"vermilion_city"),
+	}
+
+
+## Fan Club (`carmin_fan_club.txt`) : vitrine de rubans, fauteuil du président, tableau du port
+## au mur, canapé et table basse ; président, deux membres et un Miaouss (data/npcs).
+func _vermilion_fan_club() -> Dictionary:
+	var room := _vermilion_house(&"vermilion_fan_club", "VermilionFanClub",
+		"carmin_fan_club.txt", ".Xcamp", &"from_fan_club")
+	room["props"] = [
+		[&"int_tableau_port_01", Vector2i(8, 2), 2.55, "PortPainting"],
+	]
+	room["furniture"] = [
+		[&"int_vitrine_rubans_01", Rect2i(1, 2, 2, 2), "RibbonCase"],
+		[&"int_fauteuil_president_01", Rect2i(6, 3, 1, 1), "ChairmanSeat"],
+		[&"int_canape_01", Rect2i(10, 3, 3, 1), "Sofa"],
+		[&"int_chevet_lampe_01", Rect2i(13, 3, 1, 1), "Lamp"],
+		[&"int_table_basse_01", Rect2i(10, 5, 2, 1), "CoffeeTable"],
+		[&"int_plante", Rect2i(1, 7, 1, 1), "PlantWest"],
+		[&"int_plante", Rect2i(13, 7, 1, 1), "PlantEast"],
+	]
+	room["rugs"] = [[&"int_tapis_rouge_01", Vector2(6.5, 5.6), "RugRed"]]
+	return room
+
+
+## Maison du Pêcheur (`carmin_pecheur.txt`) : cuisine, table, casiers de pêche ; le Pêcheur.
+func _vermilion_fisher_house() -> Dictionary:
+	var room := _vermilion_house(&"vermilion_fisher_house", "VermilionFisherHouse",
+		"carmin_pecheur.txt", ".Xh", &"from_fisher_house")
+	room["furniture"] = [
+		[&"int_frigo_01", Rect2i(1, 3, 1, 1), "Fridge"],
+		[&"int_cuisine_01", Rect2i(2, 3, 3, 1), "Kitchen"],
+		[&"int_cuisiniere_hotte_01", Rect2i(5, 3, 1, 1), "Stove"],
+		[&"prop_casiers_peche_01", Rect2i(10, 3, 2, 1), "FishingTraps"],
+		[&"int_chevet_lampe_01", Rect2i(13, 3, 1, 1), "Lamp"],
+		[&"int_table_repas_01", Rect2i(2, 5, 3, 2), "DiningTable"],
+		[&"int_plante", Rect2i(1, 7, 1, 1), "PlantWest"],
+		[&"int_plante", Rect2i(13, 7, 1, 1), "PlantEast"],
+	]
+	room["rugs"] = [[&"int_tapis_salon_01", Vector2(10.0, 5.8), "RugLiving"]]
+	return room
+
+
+## Maison 1 (`carmin_maison_1.txt`) : le mobilier de la maison du tailleur d'Argenta.
+func _vermilion_house_1() -> Dictionary:
+	var room := _vermilion_house(&"vermilion_house_1", "VermilionHouse1",
+		"carmin_maison_1.txt", ".Xh", &"from_house_1")
+	room["furniture"] = _mason_furniture()
+	return room
+
+
+## Maison 2 (`carmin_maison_2.txt`) : le mobilier de la maison d'Azuria.
+func _vermilion_house_2() -> Dictionary:
+	var room := _vermilion_house(&"vermilion_house_2", "VermilionHouse2",
+		"carmin_maison_2.txt", ".Xh", &"from_house_2")
+	var azuria := _cerulean_house()
+	room["furniture"] = azuria["furniture"]
+	room["rugs"] = azuria["rugs"]
+	return room
+
+
+## Bâtiment de sortie du souterrain, côté Route 6 (jalon-15.md §2.2) : enveloppe des postes de la
+## Forêt de Jade (10 × 8), meuble bas, plantes ; **escalier descendant** sur (4..5, 2) (couche du
+## sol), warps STEP_ON sans direction → `underground_path` / `from_route_6_w|e` (la carte du
+## souterrain est faite en parallèle par le T18 : tant qu'elle n'existe pas, « Passage
+## souterrain — À venir », retour sous l'escalier) ; panneau T-14 (panneau d'exposition, EXAMINER
+## tourné ↑). Porte sud (4..5, 7) → `route_6` / `from_underground`, tournée ↓. Titre « Route 6 »
+## (nom de sa zone, `test_zone_library`). Arrivées :
+## `from_route_6` (4, 6) depuis la route, `from_underground_w|e` (4..5, 3) sous l'escalier.
+func _route_6_underground_gate() -> Dictionary:
+	var built := ResourceLoader.exists(MAPS_DIR + "underground_path.tscn")
+	var warps: Array = [
+		["ToRoute6W", Vector2i(4, 7), STEP_ON, Vector2i.DOWN, &"route_6", &"from_underground",
+			Vector2i.DOWN],
+		["ToRoute6E", Vector2i(5, 7), STEP_ON, Vector2i.DOWN, &"route_6", &"from_underground",
+			Vector2i.DOWN],
+	]
+	for entry: Array in [["StairsW", Vector2i(4, 2), &"from_route_6_w"],
+			["StairsE", Vector2i(5, 2), &"from_route_6_e"]]:
+		if built:
+			warps.append([entry[0], entry[1], STEP_ON, Vector2i.ZERO, &"underground_path",
+				entry[2], Vector2i.UP])
+		else:
+			warps.append([entry[0], entry[1], STEP_ON, Vector2i.ZERO, &"",
+				&"from_underground_w", Vector2i.DOWN, "Passage souterrain"])
+	return {
+		"id": &"route_6_underground_gate", "node": "Route6UndergroundGate",
+		"size": Vector2i(10, 8),
+		"shell": "res://assets/world/interiors/int_poste_foret_coque.png",
+		"title": "Route 6", "light": &"interior_warm",
+		"floor": Rect2i(1, 2, 8, 5),
+		"doors": [Vector2i(4, 7), Vector2i(5, 7)],
+		"props": [
+			[&"int_meuble_bas_01", Vector2i(2, 2), 3.0, "LowCabinet"],
+			[&"int_panneau_expo_01", Vector2i(8, 2), 3.0, "SignBoard"],
+			[&"int_plante", Vector2i(1, 6), 7.0, "PlantWest"],
+			[&"int_plante", Vector2i(8, 6), 7.0, "PlantEast"],
+		],
+		# Escalier à plat (couche du sol) : pied au bas de la rangée 2, centré sur 4..5.
+		"rugs": [[&"int_escalier_descendant_01", Vector2(5.0, 3.0 - 86.0 / TILE),
+			"StairsDown"]],
+		"interactables": [["SignBoardRead", Vector2i(7, 2), Vector2i(2, 1),
+			&"route_6_underground_gate_sign", EXAMINE, Vector2i.UP]],
+		"spawns": {"from_route_6": Vector2i(4, 6), "from_underground_w": Vector2i(4, 3),
+			"from_underground_e": Vector2i(5, 3)},
+		"warps": warps,
+	}

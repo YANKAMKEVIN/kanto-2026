@@ -156,7 +156,7 @@ func test_full_restore_heals_everything() -> void:
 
 # --- Boutique de Carmin -----------------------------------------------------------------
 
-func test_vermilion_mart_stock_without_escape_rope_yet() -> void:
+func test_vermilion_mart_stock() -> void:
 	var shops := ShopLibrary.new()
 	assert_true(shops.load_dir(), "\n".join(shops.get_errors()))
 	assert_true(shops.check_references(_items), "\n".join(shops.get_errors()))
@@ -164,9 +164,11 @@ func test_vermilion_mart_stock_without_escape_rope_yet() -> void:
 	assert_not_null(shop)
 	if shop == null:
 		return
-	# Stock d'Azuria (plan J13 §2.5) + Super Potion (F-14) ; Corde Sortie au T16 (après le J12).
+	# Stock d'Azuria (plan J13 §2.5) + Super Potion (F-14) ; Corde Sortie en fin (T16, comme
+	# Azuria).
 	assert_eq(shop.item_ids(), [&"poke_ball", &"potion", &"super_potion", &"antidote",
-		&"paralyze_heal", &"awakening", &"ice_heal", &"burn_heal"] as Array[StringName])
+		&"paralyze_heal", &"awakening", &"ice_heal", &"burn_heal", &"escape_rope"]
+		as Array[StringName])
 	for entry: Dictionary in shop.stock:
 		assert_eq(entry.get("if", []).size() + entry.get("unless", []).size(), 0,
 			"aucune condition : %s" % entry)

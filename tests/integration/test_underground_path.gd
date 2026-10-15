@@ -6,9 +6,10 @@ extends GutTest
 ## appliques `sconce` dans le budget de halos, budget de nœuds, Corde Sortie refusée, zone et aire
 ## de la Carte, objet caché (T19) et passant (T-18).
 ##
-## Les bâtiments d'entrée (`route_5_underground_gate`, `route_6_underground_gate`) sont posés par
-## les T13 et T14 en parallèle : leurs cartes et leurs points d'arrivée ne sont pas vérifiés ici.
-## EXCEPTION levée à l'intégration des T13/T14 : [constant GATES_PENDING].
+## Les bâtiments d'entrée : `route_6_underground_gate` (T14, intégré) est vérifié (carte et
+## arrivées) ; `route_5_underground_gate` est posé par le T13 en parallèle : sa carte et ses
+## arrivées ne sont pas vérifiées ici. EXCEPTION levée à l'intégration du T13 : [constant
+## GATES_PENDING].
 
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 const PLAN_PATH := "res://tools/plans/underground_path.txt"
@@ -16,14 +17,16 @@ const AREAS_PATH := "res://assets/ui/map/kanto_placeholder_areas.json"
 const SIZE := Vector2i(26, 30)
 const NODE_BUDGET: int = 3000
 const WALKABLE: String = ".=E"
-## Levée à l'intégration des T13/T14 : vérifier aussi l'existence des cartes et des arrivées
-## (`from_underground_w|e`, noms supposés) dans test_map_links.
-const GATES_PENDING: Dictionary = {
+## Escaliers → bâtiment d'entrée et arrivée.
+const STAIRS: Dictionary = {
 	Vector2i(3, 1): [&"route_5_underground_gate", &"from_underground_w"],
 	Vector2i(4, 1): [&"route_5_underground_gate", &"from_underground_e"],
 	Vector2i(19, 28): [&"route_6_underground_gate", &"from_underground_w"],
 	Vector2i(20, 28): [&"route_6_underground_gate", &"from_underground_e"],
 }
+## Bâtiments pas encore construits (T13 en parallèle) : carte et arrivée non vérifiées.
+## EXCEPTION levée à l'intégration du T13 : retirer cette ligne.
+const GATES_PENDING: Array[StringName] = [&"route_5_underground_gate"]
 
 var _plan: PlanGrid
 var _map: GameMap
@@ -191,14 +194,22 @@ func test_stairs_lead_to_the_two_entrance_buildings() -> void:
 	var warps := _map.get_warps().get_all()
 	assert_eq(warps.size(), 4, "quatre cases d'escalier")
 	for warp: Warp in warps:
-		assert_true(GATES_PENDING.has(warp.cell), "escalier en %s" % warp.cell)
-		if not GATES_PENDING.has(warp.cell):
+		assert_true(STAIRS.has(warp.cell), "escalier en %s" % warp.cell)
+		if not STAIRS.has(warp.cell):
 			continue
-		assert_eq(warp.target_map, GATES_PENDING[warp.cell][0])
-		assert_eq(warp.target_spawn, GATES_PENDING[warp.cell][1])
+		assert_eq(warp.target_map, STAIRS[warp.cell][0])
+		assert_eq(warp.target_spawn, STAIRS[warp.cell][1])
 		assert_false(warp.is_coming_soon())
 		assert_eq(warp.trigger, Warp.Trigger.STEP_ON)
 		assert_eq(warp.direction, Vector2i.ZERO, "escalier sans direction")
+		if GATES_PENDING.has(warp.target_map):
+			continue
+		assert_true(MapCatalog.has_map(warp.target_map), String(warp.target_map))
+		var gate := (load(MapCatalog.scene_path(warp.target_map)) as PackedScene) \
+				.instantiate() as GameMap
+		assert_true(gate.has_spawn(warp.target_spawn), "%s/%s" % [warp.target_map,
+			warp.target_spawn])
+		gate.free()
 
 
 func test_arrivals_are_walkable_and_next_to_the_stairs() -> void:
