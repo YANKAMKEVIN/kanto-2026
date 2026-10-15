@@ -1010,6 +1010,12 @@ commit ; textes **mot pour mot** (§20 et annexe A validée).
   Giovanni comme cas faciles, Carapuce face à Erika comme cas difficile.
 - Tableau des taux de victoire pour Kevin, **sans seuil** (méthode du J10 T16). **CA** : Kevin fixe
   les niveaux et capacités (Q-3) ; données mises à jour.
+- **Fait (2026-10-16, branche `j20-t7-data`)** : `docs/tech/jalon-20-equilibrage.md`, scénario
+  `tools/sim/celadon_thresholds.json` (simulateur du J12–J13 tel quel). Constat : Erika RB =
+  Salamèche facile, Carapuce difficile (attendu) ; **Giovanni RB = mur pour les trois starters**
+  (Kangourex N29), Bulbizarre compris. Propositions : Erika E-1 (Saquedeneu 24 en tête, Empiflor
+  27, Rafflesia 29), Giovanni G-1 (Onix 23, Rhinocorne 22, Kangourex 25) ; données inchangées en
+  attendant Q-3.
 
 #### T9 — architecte : ouverture du J20 — **(B), premier**
 - Fusion de `main` (J16–J19) dans `jalon-20` ; fusion des branches T4–T8 ; réalignement : §0.1 et
