@@ -1127,6 +1127,13 @@ Flash ; aucun drapeau ni contenu du J19 ; sauvegarde à la version de `main` ; `
 
 ### 7.2 Questions pour Kevin
 
+> **Tranchées par Kevin le 2026-10-15** (« 1 ok, 2 ok, vues ok avec grotte r3, art ok ») : **Q-1 option A**
+> (Flash comme le dossier 20 : automatique à l'entrée, aussi en combat ; T-1, T-4 et le §8 du dossier 21
+> abandonnés ; le §3 ci-dessous se lit avec `entry_action` = allumage automatique ou avertissement T-3,
+> sans proposition — le code de Flash est fait par le J17, T24, sur ce contrat) ; **Q-2** oui ; **Q-3**
+> une seule brique, codée par le J17 (`origin/jalon-17`, relue conforme) ; **Q-4** oui ; **Q-5** textes
+> A-1 à A-9 validés.
+
 - **Q-1 — Flash à l'entrée de la grotte, et en combat (vraie contradiction entre deux dossiers
   verrouillés).** Dossier 20 (J17) : H-6 Flash s'apprend **aussi** pour le combat (CS réutilisable,
   comme Coupe G-2), H-7 Flash **automatique** à l'entrée, « pas de menu, pas de bouton ». Dossier 21

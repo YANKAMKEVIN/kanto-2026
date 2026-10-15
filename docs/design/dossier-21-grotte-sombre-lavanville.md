@@ -2,6 +2,9 @@
 
 > **CONSOLIDÉ — lot de textes §15 VALIDÉ par Kevin le 2026-10-14** (« Je valide tes recommandations
 > T-1 à T-56 ») ; **grilles §13.1 VALIDÉES le 2026-10-14**
+> **2026-10-15 : Flash alignée sur le dossier 20 (J17)** (« 1 ok ») — I-3 à I-6 et §8 remplacés (voir
+> « Décisions du 2026-10-15 ») ; Q-2, Q-4, Q-5 du plan validés ; vues générales peintes validées
+> (grotte r3) ; art nouveau validé (Pokémaniac, Exorciste, deux fonds CB.3).
 > (« grilles ok », avec les squares du sud de Lavanville meublés et le raccord Route 10 ↔ Lavanville
 > aligné en colonnes 21..23).
 > Consolidé par Claude le 2026-10-14. Sources : V2 de Kevin avec ChatGPT
@@ -32,10 +35,10 @@
 | — | Tour Pokémon : extérieur et rez-de-chaussée au J18, étages au J19 | [V] |
 | I-1 | **Nom « Grotte Sombre » gardé** (K26) | [V] |
 | I-2 | La barrière est d'Azuria devient l'arbre à couper du J16 ; raccord Azuria ↔ Route 9 | [V] |
-| I-3 | Flash = capacité de terrain (dossier 06 §11) : CS05 + Pokémon compatible, jamais en combat, menu du J16 | [V] |
-| I-4 | Source : assistant de Chen, poste de la Route 2, 10 espèces capturées ; posée par le J18 si le J17 ne la prévoit pas | [V] |
-| I-5 | « Utiliser Flash ? » à l'entrée, une fois par entrée ; ensuite par le menu | [V] |
-| I-6 | Flash dure jusqu'à la sortie de la grotte ; drapeau sauvegardé, effacé à la sortie | [V] |
+| I-3 | ~~jamais en combat, menu du J16~~ → **remplacé le 2026-10-15** : modèle hybride du J17 (H-6) | [V] |
+| I-4 | Source : assistant de Chen — **posée par le J17** (dossier 20 §8) ; §8 du présent dossier caduc | [V] |
+| I-5 | ~~« Utiliser Flash ? »~~ → **remplacé le 2026-10-15** : allumage automatique à l'entrée (J17 H-7) | [V] |
+| I-6 | Flash dure toute la carte et se rallume à chaque entrée d'une carte obscure (J17 H-7) ; drapeau éventuel fixé par le J17 (T24) | [V] |
 | I-7 | Halo ≈ 2,5 cases sans Flash, ≈ 7 avec ; jamais de noir total (seuil mesuré) | [V] |
 | I-8 | Le voile couvre les personnages, sauf le joueur, la bulle « ! » et les lampes | [V] |
 | I-9 | ≈ 4 000 cases, chemin principal ≈ 180 pas, 2 échelles : 1F nord → B1F → 1F sud | [V] |
@@ -56,6 +59,17 @@
 | I-24 | 18.0 → 18A → 18B → 18C | [V] |
 | I-25 | Le code attend Coupe et le menu (J16), Machoc (J14), Super Potion (J15) | [V] |
 | I-26 | Roadmap mise à jour (J16 → J19) | [V] |
+
+## Décisions du 2026-10-15 (Kevin : « 1 ok, 2 ok, vues ok avec grotte r3, art ok »)
+
+| N° | Décision | Statut |
+|---|---|---|
+| Q-1 | **Flash comme le dossier 20 (J17)** : CS05 remise par le J17 ; dans le monde, sans emplacement, dès qu'un Pokémon compatible est dans l'équipe ; **automatique** à l'entrée de chaque carte obscure (« {pokemon} utilise Flash ! », halo ouvert) ; **aussi en combat** (CS réutilisable comme Coupe, précision 70 %, Précision −1). Aucune interface nouvelle. T-1, T-4 et T-11 à T-16 abandonnés ; §8 caduc. | [V] |
+| Q-2 | Machoc capturable **sans évolution** au J18 (Machopeur absent ; créé au plus tard au J20 ; même cas Voltorbe → Électrode) | [V] |
+| Q-3 | **Une seule brique d'éclairage**, codée par le J17 selon `jalon-18.md` §2 (`origin/jalon-17`, relue conforme le 2026-10-15) | [V] |
+| Q-4 | Démarrage maintenant : art, cartes sans vie ; données et moteur après la clôture du J17 | [V] |
+| Q-5 | Textes A-1 à A-9 (sous-titres et descriptions de zones, panneau du Centre de la Route 10) validés (`jalon-18.md` annexe A) | [V] |
+| — | Vues générales peintes v1 validées, **grotte r3** ; art nouveau validé | [V] |
 
 ## 1. Intention
 
@@ -253,22 +267,23 @@ centré sur le joueur**. Les lampes et le filet de jour (`LightGlow`) percent le
 
 ### 5.3 Flash [V I-3 à I-6]
 
-- **Capacité de terrain** (dossier 06 §11, verrouillé) : n'occupe **aucun** des 4 emplacements,
-  n'existe pas en combat. Conditions : **objet clé CS05** + un **Pokémon compatible dans l'équipe**
-  (compatibilités RB de la CS05, générées comme celles des CT) + Badge Roche (déjà obtenu, RB).
-- **Proposition à l'entrée** (une fois par entrée dans la grotte, si Flash est disponible et
-  éteinte) : « Il fait très sombre. Utiliser Flash ? » OUI / NON. NON → plus de proposition jusqu'à
-  la prochaine entrée ; Flash reste utilisable par le **menu des capacités de terrain du J16**.
+> **Remplacé le 2026-10-15 (Q-1)** : Flash suit le **dossier 20 §8.1 (J17)**. Ce qui suit en reste
+> l'application à la Grotte Sombre.
+
+- **Dans le monde** (dossier 06 §11) : sans emplacement, dès que la **CS05** (remise par le J17) est
+  au Sac **et** qu'un Pokémon compatible est dans l'équipe ; aucune condition de badge (J17 H-6).
+  **En combat** : la CS05 s'apprend aussi comme une CT réutilisable (J17).
+- **Automatique à l'entrée** de chaque carte obscure (1F, B1F), Flash disponible : courte mise en
+  scène du J17 (le Pokémon compatible apparaît, éclair), puis le halo s'ouvre. Pas de question, pas
+  de menu.
 - **Sans Flash disponible**, une seule fois par entrée : « Il fait très sombre ici… Mieux vaut
   avancer prudemment. »
 - **Mise en scène** : bandeau « {pokemon} utilise Flash ! », le halo s'ouvre en ≈ 0,6 s [D]
   depuis le joueur (le compagnon, s'il est le lanceur, a un petit éclat).
-- **Durée** : jusqu'à la sortie de la grotte, **changements d'étage compris**. L'éteignent : sortie
-  à pied, Corde Sortie, Tunnel, défaite (retour au Centre).
-- **Sauvegarde** : drapeau `dark_cave_lit` dans `flags`, **effacé à la sortie** ; **aucune nouvelle
-  version** de sauvegarde. Reprise de la partie dans la grotte : Flash toujours allumée si elle
-  l'était.
-- **Utilisée ailleurs** (menu) : « Ce n'est pas utile ici. » [D], rien ne change.
+- **Durée** : toute la carte ; à chaque changement d'étage, Flash se rallume automatiquement.
+  Reprise d'une sauvegarde dans la grotte : rallumée de la même façon (règle de l'entrée).
+  Un éventuel drapeau « allumée » est fixé par le J17 (T24) ; **aucune nouvelle version** de
+  sauvegarde.
 
 ### 5.4 Rencontres (RB) [V I-10 ; poids D]
 
@@ -398,7 +413,10 @@ Pas de cinématique : **entrer, lire une tombe, entendre le silence**. L'objecti
 devient « Revenir plus tard à la Tour Pokémon. » après avoir parlé à l'Exorciste (gardienne) (§12). Rien
 d'autre ne se déclenche.
 
-## 8. Le poste de l'assistant de Chen (CS05) [V I-4, conditionnel]
+## 8. ~~Le poste de l'assistant de Chen (CS05)~~ — CADUC (2026-10-15, Q-1)
+
+> L'assistant et la CS05 sont posés par le **J17** (dossier 20 §8, Route 2 est). Le texte ci-dessous
+> est gardé pour mémoire ; il ne s'implémente pas.
 
 **Seulement si le dossier 20 (J17) ne pose pas déjà la source de Flash** — à confirmer avec la
 session du J17 avant le plan technique.
@@ -441,7 +459,7 @@ n'apparaît chez aucun adversaire.
 
 | Objet | Statut |
 |---|---|
-| CS05 (`hm05`) | nouvel objet clé (si §8) |
+| CS05 (`hm05`) | **J17** (dossier 20) |
 | Super Potion | J15 |
 | Corde Sortie | J12 |
 
@@ -461,7 +479,7 @@ n'apparaît chez aucun adversaire.
 
 - **Aucune nouvelle version de sauvegarde** (J15 : v7).
 - **Drapeaux** [D, noms indicatifs] : `beaten_<id>` (14 Dresseurs), `got_<id>` (objets),
-  `dark_cave_lit` (Flash allumée, effacé à la sortie), `got_hm05` (si §8), `lavender_reached`,
+  `lavender_reached`,
   `tower_medium_talked` (objectif). Le J19 pose `tower_stairs_open`, qui écarte la gardienne (dossier 22 K-3) ; au J18, la gardienne a `unless tower_stairs_open`.
 - **Points de repos** : Centre de la Route 10, Centre de Lavanville.
 - **Relais** : reçu du J16 (arbre à couper, menu des capacités de terrain) ; passé au J19 (escalier
@@ -511,10 +529,10 @@ Contrôles verts : `tools/art/plan_check_route_9.py`, `plan_check_route_10.py`,
 ## 14. Cas limites (à couvrir au plan)
 
 - Entrer dans la grotte sans Pokémon compatible avec Flash, avec la CS05.
-- Pokémon compatible K.O. : Flash reste utilisable hors combat (RB) [D].
+- Pokémon compatible K.O. : Flash reste utilisable hors combat (RB, règle du J17) [D].
 - Utiliser Flash puis déposer le Pokémon compatible au Centre ? Impossible dans la grotte ; à la
   sortie, Flash s'éteint de toute façon.
-- Défaite dans la grotte : retour au dernier Centre, Flash éteinte.
+- Défaite dans la grotte : retour au dernier Centre ; à la prochaine entrée, Flash se rallume.
 - Corde Sortie depuis la moitié sud du 1F : retour à l'entrée **nord** (I-11).
 - Reprise d'une sauvegarde dans la grotte, Flash allumée / éteinte.
 - Dresseur qui voit le joueur depuis l'ombre : la bulle « ! » est visible, le Dresseur sort de
@@ -534,10 +552,10 @@ Contrôles verts : `tools/art/plan_check_route_9.py`, `plan_check_route_10.py`,
 
 | # | Élément | Texte |
 |---|---|---|
-| T-1 | Proposition (Flash disponible) | « Il fait très sombre. Utiliser Flash ? » — OUI / NON |
+| ~~T-1~~ | ~~Proposition~~ (abandonné, Q-1) | « Il fait très sombre. Utiliser Flash ? » — OUI / NON |
 | T-2 | Flash utilisée | « {pokemon} utilise Flash ! » |
 | T-3 | Sans Flash (une fois par entrée) | « Il fait très sombre ici… Mieux vaut avancer prudemment. » |
-| T-4 | Flash ailleurs | « Ce n'est pas utile ici. » |
+| ~~T-4~~ | ~~Flash ailleurs~~ (abandonné, Q-1) | « Ce n'est pas utile ici. » |
 | T-5 | Panneau de l'entrée nord | « GROTTE SOMBRE / Route 10 — Lavanville » |
 | T-6 | Panneau du randonneur (1F nord) | « Prudence. Les galeries sont sombres, mais elles mènent toutes quelque part. » |
 | T-7 | Randonneur devant la grotte | « Là-dedans, on n'y voit pas à trois pas. Moi, je garde la paroi à main droite… ou à main gauche, je ne sais plus. » |
@@ -545,7 +563,7 @@ Contrôles verts : `tools/art/plan_check_route_9.py`, `plan_check_route_10.py`,
 | T-9 | Examen des racines | « Des racines traversent le plafond. Les arbres de la surface boivent jusqu'ici. » |
 | T-10 | Examen de la paroi fendue | « Un mince filet de jour passe par la fente. » |
 
-### 15.2 Assistant de Chen (si §8)
+### 15.2 ~~Assistant de Chen~~ — abandonné (Q-1 : textes du J17, dossier 20 T-1 à T-4)
 
 | # | Élément | Texte |
 |---|---|---|
@@ -636,8 +654,8 @@ réutilisées pour le gardien et l'assistant.
 | Accès | Arbre à couper à l'est d'Azuria (Coupe, J16) |
 | Grotte | 2 niveaux, ≈ 4 000 cases, ≈ 180 pas, 2 échelles, 5 repères, pas de téléportation |
 | Lumière | Voile percé (sans `Light2D`) ; 2,5 cases sans Flash, 7 avec ; jamais de noir total ; collisions identiques |
-| Flash | Capacité de terrain (CS05 + Pokémon compatible) ; proposée à l'entrée ; dure jusqu'à la sortie ; drapeau sauvegardé |
-| Source de Flash | Assistant de Chen, Route 2, 10 espèces — si le J17 ne la pose pas |
+| Flash | Dossier 20 (J17) : terrain sans emplacement + combat (CS) ; **automatique** à l'entrée de chaque carte obscure |
+| Source de Flash | J17 (assistant de Chen, Route 2 est) |
 | Rencontres | Gravats seulement ; espèces RB |
 | Dresseurs | Route 9 : 7 (2 inévitables) ; Route 10 : 2 ; grotte : 5 (2 inévitables) ; pas d'Osselait |
 | Corde Sortie / Tunnel | Entrée nord, depuis les deux étages |
