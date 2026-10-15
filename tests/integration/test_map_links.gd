@@ -29,12 +29,17 @@ const MAP_IDS: Array[StringName] = [
 	&"route_24",
 	# Jalon 14 (T14) : la Route 25 et la maison de Léo (raccord ouest vers la Route 24 au T15).
 	&"route_25", &"bill_house",
+	# Jalon 15 (T18) : le passage souterrain.
+	&"underground_path",
 ]
 ## Cartes construites par une autre tâche en parallèle (jalon 7 : la Route 22, T22 ; jalon 10 :
 ## Argenta, T11, pendant les intérieurs du T13) : un warp qui y mène est vérifié seulement si la
 ## carte existe déjà (sinon le test le signale).
 ## Jalon 12 : Route 3, sas (T8) et étages du Mont Sélénite (T9) sont tous construits.
-const PARALLEL_MAPS: Array[StringName] = [&"route_22"]
+const PARALLEL_MAPS: Array[StringName] = [&"route_22",
+	# Jalon 15 (T18) : bâtiments d'entrée du souterrain, posés par les T13/T14 en parallèle
+	# (EXCEPTION levée à leur intégration : retirer ces deux lignes).
+	&"route_5_underground_gate", &"route_6_underground_gate"]
 const DIRECTIONS: Array[Vector2i] = [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]
 
 var _maps: Dictionary = {}

@@ -96,6 +96,17 @@ var mass_cells: Dictionary = {}
 ## de halos…) : l'outil échoue s'il y en a.
 var errors: PackedStringArray = []
 
+## Réglages d'une carte **sans grotte** bâtie sur ce kit (souterrain du J15 T18) ; défauts = la
+## grotte. Cases praticables, sols (base, canal R, canal G), couleur de la frontière bruitée, et
+## nature du canal R : gravats logiques ([code]true[/code]) ou simple décor (traces, sol seul).
+var walkable_marks: String = WALKABLE
+var floor_texture_path: String = FLOOR_TEXTURE
+var rubble_texture_path: String = RUBBLE_TEXTURE
+var mass_texture_path: String = MASS_TEXTURE
+var border_color: Color = BORDER_COLOR
+var rubble_mark: String = RUBBLE_MARK
+var rubble_is_logic: bool = true
+
 ## Halos posés ([method add_glow]) : { "type": StringName, "center": Vector2 } (voile, [method
 ## add_shade]).
 var glow_sources: Array[Dictionary] = []
@@ -108,14 +119,17 @@ var _glow_count: int = 0
 
 ## Lit la grille [param plan_path] ; [member errors] non vide si elle est illisible, n'a pas la
 ## taille [param map_size] ou n'a pas les praticables d'une grotte ([constant WALKABLE]).
-func _init(plan_path: String, map_size: Vector2i, seed_value: int, decor_seed: int) -> void:
+func _init(plan_path: String, map_size: Vector2i, seed_value: int, decor_seed: int,
+		walkable_chars: String = WALKABLE) -> void:
+	walkable_marks = walkable_chars
 	size = map_size
 	plan = PlanGrid.new()
 	if not plan.call(&"load_file", plan_path):
 		errors.append("grille illisible : %s" % plan.get(&"error"))
 		return
-	if plan.get(&"walkable") != WALKABLE:
-		errors.append("praticables « %s » au lieu de « %s »" % [plan.get(&"walkable"), WALKABLE])
+	if plan.get(&"walkable") != walkable_marks:
+		errors.append("praticables « %s » au lieu de « %s »" % [plan.get(&"walkable"),
+			walkable_marks])
 	if Vector2i(plan.get(&"width"), plan.get(&"height")) != size:
 		errors.append("la grille n'est pas de %s cases" % size)
 	tiles = load("res://game/world/overworld_tiles.gd")
@@ -155,7 +169,7 @@ func build_mask() -> Image:
 ## haute, groupes. Faux tant que le masque n'est pas importé (relancer l'outil après
 ## `--import`) ou si une texture de la grotte manque ([member errors]).
 func add_ground(mask_path: String) -> bool:
-	for path: String in [FLOOR_TEXTURE, RUBBLE_TEXTURE, MASS_TEXTURE]:
+	for path: String in [floor_texture_path, rubble_texture_path, mass_texture_path]:
 		if not ResourceLoader.exists(path):
 			errors.append("texture de grotte absente (série 14, T6) : %s" % path)
 	if not errors.is_empty():
@@ -175,20 +189,20 @@ func add_ground(mask_path: String) -> bool:
 			return false
 	if not ResourceLoader.exists(mask_path):
 		return false
-	var floor_texture: Texture2D = load(FLOOR_TEXTURE)
+	var floor_texture: Texture2D = load(floor_texture_path)
 	var painted := Node2D.new()
 	painted.set_script(load("res://game/world/ground/painted_ground.gd"))
 	painted.name = "PaintedGround"
 	painted.set(&"size", size)
 	painted.set(&"mask", load(mask_path))
 	painted.set(&"base_texture", floor_texture)
-	painted.set(&"r_texture", load(RUBBLE_TEXTURE))
-	painted.set(&"g_texture", load(MASS_TEXTURE))
+	painted.set(&"r_texture", load(rubble_texture_path))
+	painted.set(&"g_texture", load(mass_texture_path))
 	var material := painted.call(&"get_shader_material") as ShaderMaterial
 	material.set_shader_parameter(&"texture_size", float(floor_texture.get_width()))
 	material.set_shader_parameter(&"paving_scale", LAYER_SCALE)
 	material.set_shader_parameter(&"path_scale", LAYER_SCALE)
-	material.set_shader_parameter(&"earth_color", BORDER_COLOR)
+	material.set_shader_parameter(&"earth_color", border_color)
 	attach(root, painted)
 	decals = Node2D.new()
 	decals.name = "GroundDecals"
@@ -219,9 +233,9 @@ func add_ground(mask_path: String) -> bool:
 
 ## Type de tuile logique d'un caractère de la grille.
 func kind_of(mark: String) -> int:
-	if mark == RUBBLE_MARK:
+	if rubble_is_logic and mark == rubble_mark:
 		return tiles.Kind.RUBBLE
-	if WALKABLE.contains(mark):
+	if walkable_marks.contains(mark):
 		return tiles.Kind.DIRT
 	return tiles.Kind.CLIFF
 
@@ -236,11 +250,11 @@ func _paint_logic(layer: TileMapLayer) -> void:
 			var kind := kind_of(mark)
 			var variant := rng.randi_range(0, tiles.variant_count(kind) - 1)
 			layer.set_cell(cell, tiles.SOURCE_ID, tiles.atlas_coords(kind, variant))
-			if mark == RUBBLE_MARK:
+			if mark == rubble_mark:
 				rubble_cells[cell] = true
 			elif WALL_MARKS.contains(mark) or is_embedded(cell):
 				mass_cells[cell] = true
-			elif WALKABLE.contains(mark):
+			elif walkable_marks.contains(mark):
 				floor_cells[cell] = true
 
 
@@ -595,7 +609,7 @@ func is_embedded(cell: Vector2i) -> bool:
 	if not _in_bounds(cell):
 		return false
 	var mark: String = plan.call(&"at", cell)
-	if WALKABLE.contains(mark) or WALL_MARKS.contains(mark):
+	if walkable_marks.contains(mark) or WALL_MARKS.contains(mark):
 		return false
 	return (is_mass(cell + Vector2i.UP) and is_mass(cell + Vector2i.DOWN)) \
 		or (is_mass(cell + Vector2i.LEFT) and is_mass(cell + Vector2i.RIGHT))

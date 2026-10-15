@@ -117,6 +117,8 @@ const MAPS: Array[StringName] = [
 	&"route_25",
 	# Jalon 15 (T6) : carte de QA provisoire de la Pension (retirée au T23).
 	&"qa_daycare",
+	# Jalon 15 (T18, T19) : le passage souterrain (passant T-18, indice T-19).
+	&"underground_path",
 ]
 ## Lot de textes validé par Kevin le 2026-10-06 (anciens brouillons : panneau, observations,
 ## soin de Maman, terminal du Stockage, portes de Jadielle…) : source des textes hors dossiers.
@@ -251,6 +253,8 @@ const IDS: Array[StringName] = [
 	&"route_6_scout_basile_defeated",
 	&"sign_pallet_town",
 	&"storage_terminal",
+	# Jalon 15 (T18, T19) : passant et pierre descellée du souterrain.
+	&"underground_hidden_1", &"underground_hidden_1_found", &"underground_passer",
 	&"viridian_courier",
 	# Jalon 9 (T18) : objets de la Forêt de Jade.
 	&"viridian_forest_item_1", &"viridian_forest_item_2", &"viridian_forest_item_3_found",
@@ -498,7 +502,7 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		&"rival_parcel_return", &"rival_starter_pick", &"rival_starter_smile",
 		&"route1_grass_thought", &"route22_rival_greet", &"route22_rival_hesitates",
 		&"route22_rival_lost", &"route22_rival_won", &"route22_youngster_sigh",
-		&"route_1_potion_found", &"route_25_hidden_1_found", &"route_2_item_3_found",
+		&"route_1_potion_found", &"route_25_hidden_1_found", &"underground_hidden_1_found", &"route_2_item_3_found",
 		&"route_2_item_4_found",
 		&"viridian_forest_item_3_found", &"viridian_forest_item_4_found",
 		&"viridian_forest_item_6_found"] + PLAYED_J14_BILL + PLAYED_J14_ROCKET))
@@ -590,7 +594,7 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		&"got_route_25_item_3", &"got_route_2_item_1", &"got_route_2_item_2",
 		&"got_route_2_item_3", &"got_route_2_item_4", &"got_route_2_north_item_1",
 		&"got_route_3_hidden_1", &"got_route_3_item_1", &"got_route_3_item_2",
-		&"got_route_3_item_3", &"got_route_4_poke_ball", &"got_viridian_forest_item_1",
+		&"got_route_3_item_3", &"got_route_4_poke_ball", &"got_underground_hidden_1", &"got_viridian_forest_item_1",
 		&"got_viridian_forest_item_2", &"got_viridian_forest_item_3", &"got_viridian_forest_item_4",
 		&"got_viridian_forest_item_5", &"got_viridian_forest_item_6", &"lost_mt_moon_researcher",
 		&"misty_invited", &"misty_met", &"mt_moon_fossil_chosen", &"mt_moon_got_dome_fossil",
@@ -1006,8 +1010,8 @@ func test_oak_parcel_lines() -> void:
 	# (B1F) et la CT01 (B2F) au sol, la Pierre Lune cachée (B2F). Jalon 13 : la Poké Ball de la
 	# Route 4, la Potion de la Route 24, Ondine (pont, Arène et rattrapage), l'Antidote caché et le
 	# recruteur (T22). Jalon 14 : l'écran, le module et la console de Léo (T17), quatre objets de
-	# la Route 25 (T16).
-	assert_eq(launched, 36, "la scène du colis, quinze objets au sol, trois cachés, Pierre et "
+	# la Route 25 (T16). Jalon 15 (T19) : la Guérison cachée du souterrain.
+	assert_eq(launched, 37, "la scène du colis, quinze objets au sol, trois cachés, Pierre et "
 		+ "sa CT34, Ondine (pont, Arène et rattrapage), écran, module, console, objets de la "
 		+ "Route 25, le Rocket d'Azuria (2) et le barrage sud")
 	# Le jeton n'apparaît que dans la réplique de l'espèce, « {pokemon} » dans les phrases du

@@ -112,6 +112,11 @@
 			"name": "Cap d'Azuria", "kind": "place", "maps": ["bill_house"],
 			"subtitle": "Route 25",
 			"description": "La pointe la plus avancée de la côte. Un chercheur un peu à part y vit seul, entouré de ses machines."
+		},
+		"underground_path": {
+			"name": "Passage souterrain", "kind": "place", "maps": ["underground_path"],
+			"subtitle": "Route 5 — Route 6",
+			"description": "Un long couloir de pierre qui passe sous Safrania. Le silence n'y est troublé que par l'écho des pas."
 		}
 	}
 }
