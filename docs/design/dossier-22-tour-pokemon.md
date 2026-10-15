@@ -470,7 +470,7 @@ Rien de nouveau au J19.
 
 1. *(ouverture)* « Un SPECTRE apparaît ! »
 2. « Impossible d'identifier le SPECTRE… »
-3. *(tour du joueur)* « {pokemon} est trop effrayé pour bouger ! »
+3. *(tour du joueur)* « {pokemon} a trop peur pour bouger ! » *(forme neutre, §15.7)*
 4. *(tour du SPECTRE)* « SPECTRE : Va-t'en… Va-t'en… »
 5. *(Ball)* « Pas question de lancer une Ball sur… ça. Elle passerait au travers. »
 6. *(fuite)* « Vous prenez la fuite ! » *(message de fuite existant, s'il convient)*
@@ -524,7 +524,7 @@ pas. Reposez-vous. »
 5. *(panneau)* « SCOPE SYLPHE — Voir ce que l'œil ne voit pas. Une innovation Sylphe SARL. »
 6. *(légende de la Tour, inchangée depuis le J18)* « TOUR POKÉMON »
 
-### 15.7 Textes complémentaires (Q-1 du plan technique) — À VALIDER
+### 15.7 Textes complémentaires (Q-1 du plan technique) — VALIDÉS par Kevin le 2026-10-15
 
 > Rédigés par Claude le 2026-10-15 (T2 du plan `docs/tech/jalon-19.md`). Même ton que le Pokédex
 > et les capacités existants. Osselait et Ossatueur n'ont pas d'entrée au J19 (jamais vus).
@@ -549,7 +549,7 @@ pas. Reposez-vous. »
 **Combat** :
 - Nom affiché de l'adversaire masqué : **« SPECTRE »** (déjà validé au §15.3).
 - **Forme « effrayée »** : proposition **neutre**, pour éviter l'accord masculin / féminin selon le
-  Pokémon : « **{pokemon} a trop peur pour bouger !** » (remplace §15.3.3 si tu l'acceptes).
+  Pokémon : « **{pokemon} a trop peur pour bouger !** » (**remplace §15.3.3**, validé).
 - **Défaite d'une Exorciste** (fin de combat, encore possédée) : « Les esprits… se taisent… »
 
 **Objectifs du tableau de bord** (`data/story/objectives.json`, sans flèche ni marqueur) :
