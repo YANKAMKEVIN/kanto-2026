@@ -1,0 +1,21 @@
+{
+	"map": "route_6",
+	"spawn": "belvedere",
+	"facing": "up",
+	"flags": [
+		"mom_greeted", "rival_met", "oak_met", "oak_lab_reunion", "starter_offered",
+		"starter_chosen", "taken_charmander", "taken_squirtle", "rival_lab_won", "rival_challenged",
+		"rival_battle_done", "rival_left_lab", "viridian_arrived", "got_oak_parcel",
+		"pokedex_activated", "poison_unlocked", "beaten_forest_scout_theo", "pewter_arrived",
+		"beaten_pewter_gym_liam", "brock_met", "badge_boulder", "beaten_route_6_lass_chloe",
+		"beaten_route_6_camper_gabin", "beaten_route_6_scout_axel", "beaten_route_6_camper_mathis",
+		"beaten_route_6_lass_manon"
+	],
+	"party": [
+		{"species": "charmander", "level": 22},
+		{"species": "pidgey", "level": 18},
+		{"species": "butterfree", "level": 20}
+	],
+	"bag": {"poke_ball": 10, "potion": 5, "antidote": 2, "paralyze_heal": 2, "awakening": 2},
+	"money": 6000
+}

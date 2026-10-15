@@ -54,3 +54,35 @@ func test_apply_sets_visibility() -> void:
 func test_gate_is_in_its_group() -> void:
 	assert_true(_gate([], []).is_in_group(FlagGate.GROUP))
 	assert_eq(FlagGate.GROUP, &"flag_gate")
+
+
+## Jalon 15 (contrat du J16, jeune arbre de Carmin) : un décor peut occuper des cases tant qu'il
+## est affiché ; caché, il les libère ; une case prise par un autre occupant n'est jamais volée.
+func test_blocking_cells_follow_the_visibility() -> void:
+	var gate := _gate([], [&"cut"])
+	gate.blocking_cells = [Vector2i(1, 1), Vector2i(2, 1)] as Array[Vector2i]
+	var grid := GridWorld.new(Vector2i(4, 4))
+	gate.apply(_flags([]))
+	gate.apply_to_grid(grid)
+	assert_eq(grid.get_occupant(Vector2i(1, 1)), gate)
+	assert_false(grid.can_enter(Vector2i(2, 1), Vector2i.RIGHT), "case bloquée")
+	gate.apply(_flags([&"cut"]))
+	gate.apply_to_grid(grid)
+	assert_false(grid.is_occupied(Vector2i(1, 1)))
+	assert_true(grid.can_enter(Vector2i(2, 1), Vector2i.RIGHT), "case libérée")
+	var other := RefCounted.new()
+	grid.occupy(Vector2i(1, 1), other)
+	gate.apply_to_grid(grid)
+	assert_eq(grid.get_occupant(Vector2i(1, 1)), other, "l'autre occupant reste")
+	gate.apply(_flags([]))
+	gate.apply_to_grid(grid)
+	assert_eq(grid.get_occupant(Vector2i(1, 1)), other, "jamais volée")
+	assert_eq(grid.get_occupant(Vector2i(2, 1)), gate)
+	gate.apply_to_grid(null)
+
+
+func test_without_blocking_cells_the_gate_never_touches_the_grid() -> void:
+	var gate := _gate([], [])
+	var grid := GridWorld.new(Vector2i(2, 2))
+	gate.apply_to_grid(grid)
+	assert_false(grid.is_occupied(Vector2i.ZERO))

@@ -8,10 +8,5 @@
 		"name": "CT24 — Tonnerre", "plural": "CT24 — Tonnerre", "feminine": true,
 		"category": "tm", "tm": 24, "teaches": "thunderbolt",
 		"description": "Une puissante décharge électrique frappe la cible. Peut la paralyser."
-	},
-	"super_potion": {
-		"name": "Super Potion", "plural": "Super Potions", "feminine": true, "category": "heal",
-		"heal_amount": 50, "price": 700,
-		"description": "Restaure 50 PV d'un Pokémon."
 	}
 }

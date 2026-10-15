@@ -62,6 +62,7 @@ const _EFFECT_KEYS: Dictionary[MoveEffect.Kind, Array] = {
 	MoveEffect.Kind.SELF_KO: ["kind"],
 	MoveEffect.Kind.CHARGE: ["kind", "texts", "invulnerable"],
 	MoveEffect.Kind.TELEPORT: ["kind"],
+	MoveEffect.Kind.COINS: ["kind", "per_level"],
 }
 ## Clés d'effet facultatives (toutes les autres de [constant _EFFECT_KEYS] sont obligatoires).
 ## « amount » : obligatoire pour FIXED_DAMAGE « value » seulement ([method _parse_effect]) ;
@@ -70,6 +71,8 @@ const _EFFECT_OPTIONAL: Array[String] = ["chance", "immune_types", "amount", "in
 ## Bornes des nombres de tours de TRAP et DISABLE, et des dégâts de FIXED_DAMAGE « value ».
 const _EFFECT_MAX_TURNS: int = 8
 const _FIXED_VALUE_MAX: int = 999
+## Borne de « per_level » de COINS (Jackpot, jalon 15).
+const _COINS_PER_LEVEL_MAX: int = 10
 
 var _chart: TypeChart = TypeChart.new()
 var _species: Dictionary[StringName, SpeciesData] = {}
@@ -598,6 +601,13 @@ func _parse_effect(value: Variant, where: String) -> MoveEffect:
 	if effect.kind in [MoveEffect.Kind.DRAIN, MoveEffect.Kind.TRAP, MoveEffect.Kind.DISABLE,
 			MoveEffect.Kind.REST, MoveEffect.Kind.SELF_KO]:
 		return effect if _read_effect_j12(entry, effect, where) and ok else null
+	if effect.kind == MoveEffect.Kind.COINS:
+		if entry.has("per_level"):
+			if _read_int(entry["per_level"], 1, _COINS_PER_LEVEL_MAX, where + " per_level"):
+				effect.per_level = int(entry["per_level"])
+			else:
+				ok = false
+		return effect if ok else null
 	if effect.kind == MoveEffect.Kind.RECOIL or effect.kind == MoveEffect.Kind.SEED:
 		if entry.has("fraction"):
 			var fraction: Variant = entry["fraction"]

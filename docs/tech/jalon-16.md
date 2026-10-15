@@ -213,7 +213,7 @@ une scène. La barrière `B` est praticable et **bloquée par 3 PNJ objets** tan
 
 ### 1.4 Kit d'assets (série suivante libre au moment du T1, défaut : 18)
 
-- **A — réutilisés** : `lass` (Fillette Léna), `scout` (Basile), `swimmer`, `traveler` et
+- **A — réutilisés** : `lass` (Fillette Léna), `scout` (Oscar, ex-Basile : T19), `swimmer`, `traveler` et
   `naturalist` (passagers), `clerk` (hôtesse), `gym_guide`, `rival`, objets `poke_ball_ground`.
 - **B — variations** : marin = `swimmer` habillé (tenue de matelot) ; serveur = `clerk` en veste.
 - **C — nouveaux** :
@@ -595,6 +595,25 @@ sans lui.
 
 Identifiants du J15 (quai, arbuste, Centre, objectifs), listes des tests, `tm_compatibility.json`
 régénéré.
+
+**Fait le 2026-10-16** (fusion de `main` à `440f9b17`, J15 terminé, branche `j16-sync-j15`) :
+- `super_potion` existait des deux côtés : le J16 la retire d'`items_j16.json` et prend celle du
+  J15 (`data/items/vermilion.json`, mêmes 50 PV / 700 ₽) ; `test_hm` inchangé ;
+- sauvegarde **v7** telle quelle (le J16 ne touche ni `GameState` ni `SaveSystem`) ;
+- `vermilion_city` réelle conforme au §0.3 (`Entities/GymTree`, `Interactables/GymTreeExamine`,
+  `Entities/SsAnne`, `GroundDecals/Gangway`, `Warps/BoardingW|E`, `Spawns/from_ss_anne_w|e`,
+  `Spawns/dock`) ;
+- **écarts des cartes de QA à reprendre au T15** (rien à changer avant) : l'arbuste d'essai est
+  un PNJ objet `qa_tree` (despawn, drapeau `cut_qa_tree`) alors que le vrai est un nœud de carte
+  (`field_move` sur `Entities/GymTree`, puis `set cut_vermilion_gym_bush`) ; le navire d'essai
+  s'appelle `Ship` (vrai : `Entities/SsAnne`), l'embarquement `ToShip11|12` (vrai :
+  `BoardingW|E`), l'arrivée unique `from_ss_anne` (vrai : `from_ss_anne_w|e` avant le départ,
+  `dock` après) ; les barrières `qa_gangway_w|e` après le départ n'ont pas d'équivalent (vrai :
+  marin de retour en (31, 26) + garde-fou `blocking_cells` posé par le J16).
+- **nom en double** : « Scout Basile » est aussi le Dresseur `route_6_scout_basile` du J15 (défaut
+  de `jalon-15.md`, validé sur S21) ; `test_names_unique_across_all_trainers` le refuse. Le nom
+  affiché de `ss_anne_scout_basile` devient **« Scout Oscar »** (défaut, règle 4 ; identifiant et
+  grille `ss_anne_cabine_b.txt` inchangés) — **à confirmer par Kevin** (R-10 du dossier 19).
 
 #### T20 — fin et clôture — après la fusion du J15
 

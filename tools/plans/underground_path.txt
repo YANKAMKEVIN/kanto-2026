@@ -1,0 +1,85 @@
+# Passage souterrain (Route 5 ↔ Route 6) — grille fonctionnelle (jalon 15, dossier 18 §5, V-3,
+# F-9 ; préparée le 2026-10-11). Source UNIQUE de la géométrie : plan en aplats
+# (tools/art/plan_aplats_j15.py), vue générale peinte, puis outil de construction et tests du 15A.
+# Contrôle : tools/art/plan_check_j15.py (profil verifier_souterrain).
+#
+# 26 × 30 cases ; nord en haut. Catégorie [D] : ni grotte ni intérieur (pas dans caves.json, pas de
+# Corde Sortie, pas de ciel). Aucune rencontre, aucun Dresseur, aucune herbe.
+#
+# GALERIE en trois segments de 2 cases de large, DEUX COUDES à angle droit :
+#   S1 vertical  x 3..4,  y 2..13  (depuis l'escalier nord, côté Route 5)
+#   S2 horizontal x 3..20, y 12..13 (premier coude en (3..4, 12..13), second en (19..20, 12..13))
+#   S3 vertical  x 19..20, y 12..27 (jusqu'à l'escalier sud, côté Route 6)
+# Longueur du trajet entre les deux points d'arrivée : 41 pas (≤ 50).
+# TROIS ALCÔVES (3 × 3, ouvertes sur un seul côté de la galerie) :
+#   A1 x 5..7,  y 5..7   à l'est de S1 ; stèle gravée au fond (7, 6)
+#   A2 x 10..12, y 9..11 au nord de S2 ; PIERRE DESCELLÉE au fond (11, 9) : Guérison cachée
+#   A3 x 21..23, y 19..21 à l'est de S3 ; banc de pierre au fond (23, 20)
+# RENFLEMENT d'une rangée au milieu de S2 (x 8..14, y 14) : le PASSANT s'y tient en (11, 14), il
+# laisse 2 cases de large (compagnon du J11) ; ce n'est pas une alcôve.
+#
+# Légende :
+#   # paroi de pierre (bloquée ; appliques murales : voir POSITIONS)   . sol de la galerie
+#   = traces de passage au sol (praticable, décor)   r stèle / banc de pierre (bloqué)
+#   n pierre descellée (bloquée ; objet caché, EXAMINER de face)
+#   E escalier (praticable, STEP_ON : ↑ au nord vers la Route 5, ↓ au sud vers la Route 6 ; terminal)
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 26 caractères), puis POSITIONS.
+
+PRATICABLES .=E
+
+GRILLE 26 30
+00 ##########################
+01 ###EE#####################
+02 ###..#####################
+03 ###=.#####################
+04 ###=.#####################
+05 ###=....##################
+06 ###=...r##################
+07 ###=....##################
+08 ###=.#####################
+09 ###=.#####.n.#############
+10 ###=.#####...#############
+11 ###=.#####...#############
+12 ###=================.#####
+13 ###.................=#####
+14 ########.......####.=#####
+15 ###################.=#####
+16 ###################.=#####
+17 ###################.=#####
+18 ###################.=#####
+19 ###################.=...##
+20 ###################.=..r##
+21 ###################.=...##
+22 ###################.=#####
+23 ###################.=#####
+24 ###################.=#####
+25 ###################.=#####
+26 ###################.=#####
+27 ###################..#####
+28 ###################EE#####
+29 ##########################
+FIN
+
+POSITIONS
+escalier_nord       warp           3..4,1       libre   # STEP_ON ↑ → route_5_underground_gate (bâtiment d'entrée de la Route 5)
+from_route_5        spawn          3..4,2       libre   # arrivée du bâtiment de la Route 5, tournée ↓
+escalier_sud        warp           19..20,28    libre   # STEP_ON ↓ → route_6_underground_gate (bâtiment d'entrée de la Route 6)
+from_route_6        spawn          19..20,27    libre   # arrivée du bâtiment de la Route 6, tournée ↑
+galerie_s1          galerie        3..4,2..13   libre   role=s1
+galerie_s2          galerie        3..20,12..13 libre   role=s2
+galerie_s3          galerie        19..20,12..27 libre  role=s3
+coude_1             repere         3..4,12..13  libre   role=coude  # S1 → S2 (angle droit)
+coude_2             repere         19..20,12..13 libre  role=coude  # S2 → S3 (angle droit)
+alcove_1            alcove         5..7,5..7    libre   role=A1 ouvre=ouest  # stèle gravée
+alcove_2            alcove         10..12,9..11 libre   role=A2 ouvre=sud   # pierre descellée au fond
+alcove_3            alcove         21..23,19..21 libre  role=A3 ouvre=ouest  # banc de pierre
+renflement          repere         8..14,14     libre   role=renflement  # élargit S2 d'une rangée
+passant             pnj            11,14        bloque  role=P1 facing=up  # respiration, indice discret sur l'alcôve voisine
+underground_hidden_1 cache         11,9         bloque  role=O1 item=full_restore indice=pierre_desellee  # Guérison, EXAMINER depuis (11, 10) tourné ↑
+stele_1             repere         7,6          bloque  role=decor
+banc_3              repere         23,20        bloque  role=decor
+applique_1          repere         2,8;5,2      bloque  role=lampe  # appliques sur la paroi ouest de S1
+applique_2          repere         9,11;16,11   bloque  role=lampe  # sur la paroi nord de S2
+applique_3          repere         18,18;21,24  bloque  role=lampe  # sur la paroi de S3
+FIN

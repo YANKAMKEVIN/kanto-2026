@@ -1,0 +1,7 @@
+{
+	"exp_per_step": 1,
+	"price_base": 100,
+	"price_per_level": 100,
+	"money_policy": "take_all",
+	"evolve_on_withdraw": true
+}

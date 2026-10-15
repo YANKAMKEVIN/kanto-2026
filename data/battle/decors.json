@@ -64,6 +64,15 @@
 			"foe_feet": [1559, 540],
 			"player_feet": [716, 972],
 			"horizon": 385
+		},
+		"route_5_6_prairie": {
+			"zone": "route_5_6",
+			"variant": "prairie",
+			"back": "res://assets/battle/decors/route_5_6_prairie_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 540],
+			"player_feet": [716, 972],
+			"horizon": 440
 		}
 	},
 	"places": {
@@ -91,6 +100,12 @@
 		],
 		"cerulean_gym": [
 			{ "decor": "cerulean_gym_bassin" }
+		],
+		"route_6": [
+			{ "decor": "route_5_6_prairie" }
+		],
+		"route_5": [
+			{ "decor": "route_5_6_prairie" }
 		]
 	}
 }

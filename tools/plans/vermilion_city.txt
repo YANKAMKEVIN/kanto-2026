@@ -1,0 +1,118 @@
+# Carmin-sur-Mer — grille fonctionnelle (jalon 15, dossier 18 §2, §8, §11 ; préparée le 2026-10-11
+# pour la vue générale peinte). Source UNIQUE de la géométrie : plan en aplats
+# (tools/art/plan_aplats.py), vue générale peinte, puis outil de construction et tests du J15
+# (15B). Un changement de composition se fait ICI d'abord, puis plan, puis image. Contrôle :
+# tools/art/plan_check_carmin.py (profil vermilion_city).
+#
+# 64 × 43 cases (≤ 64 × 48, §8.1 : le quai du S.S. Anne reste dans la carte, pas de
+# vermilion_dock) ; nord en haut ; x = colonne 0..63, y = rangée 0..42.
+# Raccords : nord (30..32, 0) ↔ Route 6 (25..27, 55), décalage de 5 colonnes (Carmin x = Route 6 x
+# + 5) ; est (63, 11..13) → Route 11 (« À venir », bord fermé, mécanisme existant). Sud : le quai,
+# puis la mer (aucune sortie de carte).
+#
+# Composition (schéma du §8.1, la grille fait foi) :
+#   - l'avenue (x 30..32) descend de l'entrée nord jusqu'à la rue principale (y 11..13) ; le CENTRE
+#     (x 21..28) et la BOUTIQUE (x 34..41) la bordent en haut, dans le premier écran ; à gauche la
+#     maison 1 et le FAN CLUB, à droite l'ARÈNE (x 44..55) dont le jeune arbre A (49..50, 10)
+#     ferme les deux cases de la porte (futur J17 : Coupe) ;
+#   - la place pavée (x 23..39, y 14..20) au centre, l'avenue la traverse jusqu'aux quais ;
+#     à l'est la maison 2 ; à l'ouest la maison du PÊCHEUR, tournée vers le quai ;
+#   - le QUAI de planches (y 24..26, toute la largeur) ; le S.S. ANNE amarré dessous, coque
+#     PARALLÈLE au quai (x 21..49, y 28..34, grand rectangle bloqué), passerelle (31..32, 27)
+#     gardée par le marin (31, 26) et un cordage (32, 26) ; deux pontons perpendiculaires au
+#     rivage (x 9..10, y 27..35 et x 54..55, y 27..33), dockers et caisses sur le quai ; mer au sud.
+#   - la rue principale traverse la ville d'ouest en est jusqu'au raccord est.
+#
+# Légende (en plus de celle de route_2.txt et argenta.txt) :
+#   T forêt et falaise côtière (bloquée)    . herbe rase          = rue de terre
+#   p pavé de la place (praticable)         q planches du quai et des pontons (praticable)
+#   g passerelle du S.S. Anne (praticable)  E accès au navire (praticable, terminal : futur J16)
+#   W mer (bloquée)                         N coque du S.S. Anne (bloquée)
+#   z bitte d'amarrage / cordage (bloqué)   k caisses du port (bloquées)
+#   n banc (bloqué)    G pied d'un grand arbre repère (bloqué)    x buissons (bloqués)
+#   A jeune arbre qui ferme l'entrée de l'Arène (bloqué, emprise 2 × 1, tombe avec Coupe)
+#   C Centre Pokémon (8 × 7)   O Boutique (8 × 7)   Z Arène de Major Bob (12 × 7)
+#   F Fan Club (8 × 6)   m maison (7 × 6, trois fois : habitants, Pêcheur)
+#   D porte d'un bâtiment (praticable, STEP_ON ↑ ; terminale), dans la rangée du bas de l'emprise
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 64 caractères), puis POSITIONS.
+
+PRATICABLES .=pqgED
+
+GRILLE 64 43
+00 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT===TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+01 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT===TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+02 TT............................===........................TTTTTTT
+03 TT...................CCCCCCCC.===.OOOOOOOO..ZZZZZZZZZZZZ.TTTTTTT
+04 TT..mmmmmmm.FFFFFFFF.CCCCCCCC.===.OOOOOOOO..ZZZZZZZZZZZZ.TTTTTTT
+05 TT..mmmmmmm.FFFFFFFF.CCCCCCCC.===.OOOOOOOO..ZZZZZZZZZZZZ.TTTTTTT
+06 TT..mmmmmmm.FFFFFFFF.CCCCCCCC.===.OOOOOOOO..ZZZZZZZZZZZZ.TTTTTTT
+07 TT..mmmmmmm.FFFFFFFF.CCCCCCCC.===.OOOOOOOO..ZZZZZZZZZZZZ.TTTTTTT
+08 TT.Gmmmmmmm.FFFFFFFF.CCCCCCCC.===.OOOOOOOO..ZZZZZZZZZZZZ.TTTTTTT
+09 TT..mmmDmmm.FFFDDFFF.CCCDDCCC.===.OOODDOOO..ZZZZZDDZZZZZ.TTTTTTT
+10 TT..................G.........===.........G......AA.........G.TT
+11 TT==============================================================
+12 TT==============================================================
+13 TT==============================================================
+14 TT.....................ppppppppppppppppp.............mmmmmmm..TT
+15 TT.G..........G........pnpppppppppppppnp.............mmmmmmm..TT
+16 TT.....................ppppppppppppppppp.....G.......mmmmmmm..TT
+17 TT...mmmmmmm...........ppppppppppppppppp.............mmmmmmm..TT
+18 TT...mmmmmmm...........ppppppppppppppppp.............mmmmmmm..TT
+19 TT.x.mmmmmmm..x........pnpppppppppppppnp.x.....x.....mmmDmmm..TT
+20 TT...mmmmmmm...........ppppppppppppppppp......................TT
+21 TT.G.mmmmmmm.G................===.x...............G...........TT
+22 TT...mmmDmmm................x.===.............................TT
+23 TT............................===.............................TT
+24 TTqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqkkqqqTT
+25 TTqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqTT
+26 TTqqqqqqqqqqqqqqqqqqqqqkkqqqqqqqzqqqqqqqqqqqkkqqqqqqqqqqqqqqqqTT
+27 TTWWWWWWWqqWWWWWWWWWWWWWWWWWWWWggWWWWWWWWWWWWWWWWWWWWWqqWWWWWWTT
+28 TTWWWWWWWqqWWWWWWWWWWNNNNNNNNNNEENNNNNNNNNNNNNNNNNWWWWqqWWWWWWTT
+29 TTWWWWWWWqqWWWWWWWWWWNNNNNNNNNNNNNNNNNNNNNNNNNNNNNWWWWqqWWWWWWTT
+30 TTWWWWWWWqqWWWWWWWWWWNNNNNNNNNNNNNNNNNNNNNNNNNNNNNWWWWqqWWWWWWTT
+31 TTWWWWWWWqqWWWWWWWWWWNNNNNNNNNNNNNNNNNNNNNNNNNNNNNWWWWqqWWWWWWTT
+32 TTWWWWWWWqqWWWWWWWWWWNNNNNNNNNNNNNNNNNNNNNNNNNNNNNWWWWqqWWWWWWTT
+33 TTWWWWWWWqqWWWWWWWWWWNNNNNNNNNNNNNNNNNNNNNNNNNNNNNWWWWzzWWWWWWTT
+34 TTWWWWWWWqqWWWWWWWWWWNNNNNNNNNNNNNNNNNNNNNNNNNNNNNWWWWWWWWWWWWTT
+35 TTWWWWWWWzzWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWTT
+36 TTWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWTT
+37 TTWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWTT
+38 TTWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWTT
+39 TTWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWTT
+40 TTWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWTT
+41 TTWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWTT
+42 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+FIN
+
+# POSITIONS (défauts du 2026-10-11, ajustables au plan du J15) — une ligne par élément :
+#   identifiant  type  cases  bloque|libre  [cle=valeur ...]  # commentaire
+# Types : ceux de route_6.txt et argenta.txt (warp, spawn, declencheur, pnj, pokemon, panneau,
+# examen, repere).
+POSITIONS
+warp_nord           warp           30..32,0     libre   # PUSH ↑ → route_6
+from_route_6        spawn          30..32,0     libre   # arrivée de la Route 6, tournée ↓ ; le Centre est dans le premier écran
+warp_est            warp           63,11..13    libre   # PUSH → → « ROUTE 11 — À venir » (bord fermé)
+from_route_11       spawn          63,11..13    libre   # réservé (retour de la Route 11), tournée ←
+porte_maison_1      warp           7,9          libre   # STEP_ON ↑ → intérieur (habitants, Major Bob)
+porte_fan_club      warp           15..16,9     libre   # STEP_ON ↑ → Fan Club (les deux cases du bas)
+porte_centre        warp           24..25,9     libre   # les deux cases « open » de bldg_centre_01
+porte_boutique      warp           37..38,9     libre   # les deux cases « open » de bldg_boutique_01
+porte_arene         warp           49..50,9     libre   # STEP_ON ↑ → Arène de Major Bob ; INATTEIGNABLE tant que l'arbre (49..50, 10) tient
+porte_pecheur       warp           8,22         libre   # STEP_ON ↑ → maison du Pêcheur
+porte_maison_2      warp           56,19        libre   # STEP_ON ↑ → intérieur (habitants, Safrania, le navire)
+embarquement        warp           31..32,28    libre   # accès au S.S. Anne (futur J16) ; INATTEIGNABLE tant que le marin garde la passerelle
+marin               pnj            31,26        bloque  role=P1 facing=down  # garde la passerelle ; réplique provisoire au J15 (§8.3)
+cordage_passerelle  repere         32,26        bloque  # bitte et cordage (caractère z) : ferme la 2e case de la passerelle
+docker_1            pnj            25,25        bloque  role=P2 facing=left  # près de ses caisses (23..24, 26)
+docker_2            pnj            43,25        bloque  role=P3 facing=right  # près de ses caisses (44..45, 26)
+habitante           pnj            27,17        bloque  role=P4 facing=down  # sur la place
+enfant              pnj            35,22        bloque  role=P5 facing=up  # entre la place et le quai
+vieil_habitant      pnj            52,10        bloque  role=P6 facing=left  # devant l'Arène, parle de Major Bob
+pidgey_1            pokemon        12,25        bloque  shy=fly  # sur le quai ouest
+pidgey_2            pokemon        60,25        bloque  shy=fly  # sur le quai est
+panneau_ville       panneau        29,2         bloque  # « CARMIN-SUR-MER », lu depuis (30, 2) tourné ←
+panneau_arene       panneau        47,10        bloque  # « ARÈNE DE CARMIN-SUR-MER », lu depuis (47, 11) tourné ↑
+panneau_quai        panneau        34,23        bloque  # « QUAIS — S.S. ANNE », lu depuis (34, 24) tourné ↑
+examen_arbre        examen         49..50,10    libre   # EXAMINER le jeune arbre, depuis (49..50, 11) tourné ↑
+FIN

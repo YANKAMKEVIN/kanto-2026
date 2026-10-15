@@ -1,7 +1,7 @@
 extends GutTest
 ## Destruction et Explosion (jalon 12 ; `jalon-12.md` §2.10, dossier 15 C-3, §20 n° 45) : le
 ## lanceur tombe K.O. après sa capacité, même ratée ; pas s'il n'a pas pu agir ; si les deux
-## derniers Pokémon tombent dans le même coup, le camp du lanceur perd ; aucune XP au lanceur K.O.
+## derniers Pokémon tombent dans le même coup, le joueur perd (J15 T24) ; aucune XP au lanceur K.O.
 ##
 ## IV 0. Vit : Racaillou N30 17 > Racaillou N21 13 > Bulbizarre N5 9. Tirages : IA (roll(1)),
 ## puis Destruction (précision, critique, aléatoire) ; Boul'Armure ne tire rien.
@@ -54,7 +54,9 @@ func test_both_faint_and_the_user_gets_no_exp() -> void:
 	assert_eq(texts.lines(self_ko, _data).size(), 0, "pas de phrase : celle du FAINTED suit")
 
 
-func test_final_double_ko_is_lost_by_the_user_side() -> void:
+## J15 T24 (Rouge/Bleu) : un double K.O. final est toujours perdu par le joueur, qu'il ait lancé
+## Destruction ou subi l'Explosion de l'adversaire (avant : « le camp du lanceur perd »).
+func test_final_double_ko_is_always_lost_by_the_player() -> void:
 	var battle := _battle([_geodude()], [_bulbasaur()], [1, Kit.HIT])
 	battle.submit(BattleAction.move(0))
 	assert_eq(battle.get_outcome(), Battle.Outcome.LOSS, "le joueur a lancé Destruction")
@@ -63,7 +65,8 @@ func test_final_double_ko_is_lost_by_the_user_side() -> void:
 	assert_eq(_rng.remaining(), 0)
 	assert_eq(Kit.kinds(events).slice(0, 5), [["MOVE_USED", "FOE"], ["DAMAGE", "PLAYER"],
 		["SELF_KO", "FOE"], ["FAINTED", "PLAYER"], ["FAINTED", "FOE"]])
-	assert_eq(foe_battle.get_outcome(), Battle.Outcome.WIN, "l'adversaire a lancé Explosion")
+	assert_eq(foe_battle.get_outcome(), Battle.Outcome.LOSS,
+		"l'adversaire a lancé Destruction : l'équipe du joueur est K.O.")
 
 
 func test_explosion_also_knocks_out_its_user() -> void:

@@ -3,8 +3,8 @@ extends GutTest
 ## sur le S21 le 2026-10-14 (v6, Jadielle, sans badge ; SHA-1 `e51ccdaa…`), relue par le code du
 ## J12 sans rien perdre. Point « non vu » de la QA finale : un départ de débogage n'écrit pas la
 ## sauvegarde, l'APK n'a donc jamais relu la vraie partie. Ici : lecture par [SaveSystem]
-## (aucune migration, version inchangée), chargement dans un [GameState] neuf, réécriture et
-## relecture identiques champ par champ ; le compagnon se choisit et se relit.
+## (J15 : migration v6 → v7, seule la Pension vide s'ajoute), chargement dans un [GameState]
+## neuf, réécriture et relecture identiques champ par champ ; le compagnon se choisit et se relit.
 ## (La reprise par le vrai Boot et les raccords vers Argenta : `test_save_kevin_j12_boot`.)
 
 const MemoryFs := preload("res://tests/helpers/memory_file_system.gd")
@@ -20,6 +20,8 @@ const KEYS: Array[String] = [
 	"play_time", "player_look", "player_name", "pokedex", "rival_name", "rng", "started_at",
 	"starter", "storage",
 ]
+## Champ ajouté par la v7 (J15, Pension) : absent de la fixture v6, écrit vide.
+const V7_KEYS: Array[String] = ["daycare"]
 
 var _fs: MemoryFs
 var _save: SaveSystem
@@ -83,16 +85,21 @@ func test_the_fixture_is_the_real_save_of_kevin() -> void:
 	keys.sort()
 	var expected := KEYS.duplicate()
 	expected.sort()
-	assert_eq(keys, expected, "mêmes champs que ceux qu'écrit le J12")
+	assert_eq(keys, expected, "mêmes champs que ceux qu'écrit le J12 (v6)")
 
 
-func test_the_j12_reads_it_without_migration() -> void:
-	assert_eq(SaveSystem.VERSION, 6, "le J12 n'a pas de version nouvelle (§2.20)")
+## J15 : le J12 n'avait pas de version nouvelle (§2.20) ; la v7 (Pension) ne change que le
+## numéro à la lecture (aucun champ inventé).
+func test_the_j15_reads_it_with_only_the_v6_to_v7_step() -> void:
+	assert_eq(SaveSystem.VERSION, 7, "v7 : jalon 15 (Pension)")
 	_fs.files[PATH] = _text()
 	var read := _save.read()
 	assert_eq(_save.last_status, OK)
-	assert_eq(int(read["version"]), 6, "version inchangée")
-	assert_eq(_json(read), _json(_original()), "lu tel quel : aucune migration")
+	assert_eq(_save.read_version, 6, "lue comme une v6")
+	assert_eq(int(read["version"]), 7, "migrée en v7")
+	var expected: Dictionary = _original()
+	expected["version"] = 7
+	assert_eq(_json(read), _json(expected), "seul le numéro de version change à la lecture")
 	assert_eq(_fs.files[PATH], _text(), "la lecture n'écrit rien")
 	assert_false(_fs.files.has(PATH + ".rejected"), "rien d'écarté")
 
@@ -128,13 +135,24 @@ func test_nothing_is_lost_when_loaded_by_the_j12() -> void:
 	for key: String in KEYS:
 		if key != "version":
 			assert_eq(saved.get(key), _json(original.get(key)), "inchangé : %s" % key)
+	assert_eq(saved.get("daycare"), {}, "J15 : Pension vide")
+	assert_true(state.daycare.is_empty())
 
 
 func test_written_then_read_again_it_is_identical() -> void:
 	var state := _load()
 	assert_eq(_save.write(state.to_dict()), OK, "écrite par le J12")
 	var once: String = _fs.files[PATH]
-	assert_eq(JSON.parse_string(once), _json(_original()), "fichier écrit = l'original (v6)")
+	var expected: Dictionary = _original()
+	expected["version"] = 7
+	expected["daycare"] = {}
+	assert_eq(JSON.parse_string(once), _json(expected),
+		"fichier écrit = l'original en v7, plus la seule Pension vide")
+	var written_keys: Array = (JSON.parse_string(once) as Dictionary).keys()
+	written_keys.sort()
+	var all_keys: Array = KEYS + V7_KEYS
+	all_keys.sort()
+	assert_eq(written_keys, all_keys, "aucun autre champ ajouté")
 	var again := _state()
 	assert_true(again.load_dict(_save.read(), _data), "relue")
 	assert_eq(_save.write(again.to_dict()), OK)

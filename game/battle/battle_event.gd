@@ -123,6 +123,10 @@ extends RefCounted
 ## « Impossible de viser ! » ; [member item_id], [member item_name]), TELEPORTED (le lanceur
 ## s'en va : suit BATTLE_ENDED, FLED ou FOE_FLED), NOTHING_HAPPENED (Téléport contre un
 ## Dresseur : « Mais rien ne se passe ! »).
+## Jalon 15 (`jalon-15.md` §2.7.3) :
+## - COINS_SCATTERED : Jackpot réussi du joueur (camp PLAYER, le lanceur), juste après ses
+##   dégâts ; [member amount] = pièces éparpillées par ce Jackpot (niveau × « per_level »). Le
+##   Jackpot de l'adversaire n'en émet aucun (il ne rapporte rien au joueur).
 ## Tous les autres événements sur un Pokémon portent dans [member status] son statut au moment
 ## de l'événement (SENT_OUT : la carte de PV l'affiche dès l'entrée ; FAINTED : toujours vide,
 ## le K.O. efface le statut).
@@ -142,6 +146,7 @@ enum Kind {
 	DRAINED_HP, TRAPPED, TRAP_DAMAGED, TRAP_ENDED, MOVE_DISABLED, DISABLE_ENDED, RESTED, SELF_KO,
 	CHARGE_STARTED, CHARGE_RELEASED, CHARGE_BROKEN, DODGED, BALL_BLOCKED,
 	TELEPORTED, NOTHING_HAPPENED,
+	COINS_SCATTERED,
 }
 enum SideId { PLAYER, FOE }
 

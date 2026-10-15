@@ -4,8 +4,8 @@ extends GutTest
 ## - avant la victoire : policier (31, 38) et barrières (32..33, 38), aucun passage, n° 40 en lui
 ##   parlant ;
 ## - après la victoire (même visite ou suivantes) : la bande (31..33, 37) joue n° 41, le policier
-##   part, les barrières aussi, `cerulean_south_guard_left` est levé, le bord sud mène à « ROUTE 5
-##   — À venir » ; plus de policier ensuite ;
+##   part, les barrières aussi, `cerulean_south_guard_left` est levé, le bord sud mène à la Route 5
+##   (« ROUTE 5 — À venir » au J14, la vraie carte depuis le J15 T21) ; plus de policier ensuite ;
 ## - victoire sans être passé au sud (partie quittée) : le policier est encore là, annonce la
 ##   réouverture et part ;
 ## - habitants (n° 38, 39) : réagissent à la victoire.
@@ -163,7 +163,7 @@ func test_after_the_victory_the_band_plays_line_41_and_the_guard_leaves() -> voi
 	var reach := map.get_grid().find_reachable(_player.get_cell(), _player)
 	for x: int in [31, 32, 33]:
 		assert_true(reach.has(Vector2i(x, 40)), "le bord sud est libre (%d)" % x)
-	# Rechargé : absent, aucune scène, le bord sud mène à « ROUTE 5 — À venir ».
+	# Rechargé : absent, aucune scène, le bord sud mène à la Route 5 (J15 T21).
 	_started.clear()
 	await SceneRouter.change_map(&"cerulean_city", &"from_mart", Vector2i.DOWN)
 	await wait_process_frames(3)
@@ -176,16 +176,15 @@ func test_after_the_victory_the_band_plays_line_41_and_the_guard_leaves() -> voi
 	await _step(Vector2i.DOWN)
 	await wait_process_frames(5)
 	assert_eq(_started.size(), 0, "la bande ne rejoue rien")
-	var screen := _boot.get_coming_soon_screen()
-	screen.hold_duration = 0.3
-	screen.fade_duration = 0.05
 	var cell := Vector2i(32, 40)
 	again.spawn_player_at(_player, cell, Vector2i.DOWN)
 	await wait_process_frames(3)
 	Input.action_press(&"move_down")
-	await wait_until(func() -> bool: return screen.is_showing(), TIMEOUT)
+	await wait_until(func() -> bool: return _boot.get_map().map_id == &"route_5", TIMEOUT)
 	Input.action_release(&"move_down")
-	assert_eq(screen.get_label().text, "ROUTE 5 — À venir")
+	await wait_until(func() -> bool: return not SceneRouter.is_transitioning(), TIMEOUT)
+	assert_eq(_boot.get_map().map_id, &"route_5", "le bord sud mène à la Route 5")
+	assert_false(_boot.get_coming_soon_screen().is_showing())
 	assert_push_error_count(0)
 
 

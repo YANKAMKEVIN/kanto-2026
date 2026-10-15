@@ -349,6 +349,18 @@
 				  "text": "Là où il s'attarde, l'air devient lourd et piquant. On le sent avant de le voir." }
 			]
 		},
+		"meowth": {
+			"height": 0.4, "weight": 4.2,
+			"description": "Il adore ce qui brille. La nuit, il rôde dans les rues à la recherche de pièces.",
+			"notes": [
+				{ "id": "meowth_docks", "unlock": { "seen": 1 },
+				  "text": "On l'entend miauler la nuit près des quais, là où traînent des pièces tombées des poches." }
+			]
+		},
+		"persian": {
+			"height": 1.0, "weight": 32.0,
+			"description": "Élégant et rapide. Le joyau de son front s'illumine quand il est sur ses gardes."
+		},
 		"abra": {
 			"height": 0.9, "weight": 19.5,
 			"description": "Il dort presque tout le temps. Au moindre danger, il disparaît avant même d'ouvrir les yeux.",
