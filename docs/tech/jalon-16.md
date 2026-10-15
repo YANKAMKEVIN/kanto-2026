@@ -99,10 +99,24 @@ J16 **adopte ses noms** :
 - sauvegarde **v7** au J15 (`GameState.daycare`) : le J16 écrit la v7 telle quelle (§2.12) ;
 - numérotation : dossier 18 et série d'art 17 au J15 → **série 18** pour le J16.
 
-Questions à confirmer avec le J15 (transmises par Kevin, la session ne pouvant pas écrire à une
-autre) : l'arbuste porte-t-il un point d'interaction et quel dialogue ? (défaut J16 : un
-`InteractPoint` `vermilion_gym_bush` sur (49..50, 11) tourné ↑, ajouté par le J16) ; spawn de
-retour du navire sur le quai (défaut J16 : `from_ss_anne` en (31, 28)).
+**Réponse du J15 (2026-10-15, transmise par Kevin ; `vermilion_city.tscn` dans `main` à
+`440f9b17`, outil `tools/build_vermilion_city.gd`)** — le J16 **reprend ces noms**, le J15 ne
+change rien (case = (x/96, y/96 − 1), nœuds posés aux pieds) :
+
+| Besoin du J16 | Dans `vermilion_city` | Usage J16 |
+|---|---|---|
+| Arbuste à couper | `Entities/GymTree` : `FlagGate unless:[cut_vermilion_gym_bush]`, `blocking_cells` (49, 10), (50, 10), enfant `YoungTree` | cible du `field_move` : **`Entities/GymTree`** (nœud de carte : pas de despawn, le `set` suivant le retire) |
+| Point d'examen de l'arbuste | `Interactables/GymTreeExamine` sur (49..50, 10), `size (2, 1)`, `facing` ↑, `unless_flags [cut_vermilion_gym_bush]`, dialogue `vermilion_gym_tree` (T-29) | **pas de second point** : au T15, le builder du J15 met `dialogue_id = cut_tree` (variante `cut:no_hm` = texte de T-29 ou ARB-00, à aligner) ; le défaut `vermilion_gym_bush` en (49..50, 11) est abandonné |
+| Porte de l'Arène | `Warps/DoorGymW|E`, « À venir », arrivée `from_gym` | T14 : `target_map` de l'Arène, `coming_soon` retiré |
+| Embarquement | `Warps/BoardingW|E` sur (31..32, 28), ↓, `coming_soon "S.S. Anne"`, `target_spawn from_ss_anne_w|e` | T11 : `target_map` = pont principal, `coming_soon` retiré ; **créer `from_ss_anne_w|e` sur la carte du navire** |
+| Arrivée en descendant du navire | `Spawns/from_ss_anne_w` (31, 27), `from_ss_anne_e` (32, 27) | sortie du navire et `change_map` du départ → **`from_ss_anne_w`** (le défaut `from_ss_anne` (31, 28) est abandonné) |
+| Navire | `Entities/SsAnne` : `FlagGate unless:[ss_anne_departed]`, enfants `SsAnneProue01`, `SsAnneMilieu01`, `SsAnnePoupe01` | cible de l'`animate` : **`Entities/SsAnne`** (réaffiché par l'étape, §2.5) |
+| Passerelle peinte | `GroundDecals/Gangway` : `FlagGate unless:[ss_anne_departed]` | rien : elle disparaît avec le drapeau (non animée) |
+
+**Passerelle fermée** : les PNJ objets « fermé » du J16 vont sur les **cases d'embarquement
+(31..32, 28)** (`if:[ss_anne_departed]`, ils bloquent `BoardingW|E`), et non sur (31..32, 27) qui
+porte les arrivées ; le joueur est replacé sur `from_ss_anne_w`. Défaut J16, à signaler au J15
+seulement si ces cases sont de l'eau ou un décor bloquant.
 
 Tableau d'origine (avant la livraison du J15) :
 
@@ -276,7 +290,7 @@ autre usage dans les données (liste blanche).
 
 **Ordre de la scène de départ** (`ss_anne_departure`) :
 
-1. `change_map` vers le quai de Carmin, spawn `from_ss_anne` (le joueur est déjà à terre) ;
+1. `change_map` vers le quai de Carmin, spawn `from_ss_anne_w` (§0.3 ; le joueur est déjà à terre) ;
 2. `set: [ss_anne_departed]` ;
 3. `save: "départ du S.S. Anne"` ;
 4. le spectacle (`animate`, légende DEP-02, 10 s au plus) ;
@@ -534,7 +548,7 @@ rattrapage.
 #### T15 — constructeur-monde : départ du navire (16D) — après T8, T11
 
 §2.4, §2.11 ; d'abord sur `qa_dock_j16`, puis sur le quai du J15 après sa fusion (navire `FlagGate`,
-passerelle gardée, arbuste réel `vermilion_gym_bush`).
+passerelle gardée sur (31..32, 28), arbuste réel `Entities/GymTree` et son point `GymTreeExamine`, §0.3).
 
 #### T16 — constructeur-monde : `qa_dock_j16` et départs — **maintenant**, après T7, T8
 
