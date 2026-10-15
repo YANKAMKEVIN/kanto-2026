@@ -9,7 +9,8 @@ const MemoryFs := preload("res://tests/helpers/memory_file_system.gd")
 const FixedClock := preload("res://tests/helpers/fixed_clock.gd")
 const GameStateScript := preload("res://game/autoload/game_state.gd")
 const DIR := "res://tools/debug_start/"
-const STARTS: Array[String] = ["flash_qa", "flash_qa_dark", "flash_qa_lit"]
+const STARTS: Array[String] = ["flash_qa", "flash_qa_dark", "flash_qa_lit", "flash_qa_no_hm",
+	"flash_qa_no_pokemon", "flash_qa_ko"]
 const FADE := 0.05
 const TIMEOUT := 12.0
 
@@ -25,7 +26,7 @@ func before_each() -> void:
 
 
 func after_each() -> void:
-	for action: StringName in [&"move_up", &"move_down", &"move_left", &"move_right"]:
+	for action: StringName in [&"move_up", &"move_down", &"move_left", &"move_right", &"interact"]:
 		Input.action_release(action)
 	get_tree().paused = false
 	SceneRouter.fade_out_duration = _fades[0]
@@ -97,6 +98,8 @@ func test_debug_starts_load_on_real_spawns() -> void:
 		var state: Node = autofree(GameStateScript.new())
 		state.clock = FixedClock.new("2026-10-15T10:00:00")
 		start.apply(state, _pokemon())
+		if name in ["flash_qa_no_pokemon", "flash_qa_ko"]:
+			continue
 		assert_eq(state.get_companion().species_id, &"pikachu", name + " : Pikachu compagnon")
 	assert_eq(_load_start("flash_qa").veil, &"")
 	assert_eq(_load_start("flash_qa_dark").veil, &"")
@@ -118,12 +121,16 @@ func test_entering_from_the_lit_room_lays_the_veil() -> void:
 	assert_false(darkness.get_veil().visible)
 	var player := _boot.get_player()
 	assert_true(player.script_step(Vector2i.UP), "pas vers le passage")
+	var runner := _boot.get_dialogue_runner()
 	await wait_until(func() -> bool: return _boot.get_map().map_id == &"qa_flash" \
-		and _boot.is_stable(), TIMEOUT)
+		and runner.is_running(), TIMEOUT)
 	assert_eq(_boot.get_map().map_id, &"qa_flash")
+	assert_eq(runner.get_dialogue_id(), FlashDirector.WARN_DIALOGUE, "sans CS05 : avertissement")
+	await _close_dialogue()
+	await wait_until(func() -> bool: return _boot.is_stable(), TIMEOUT)
 	assert_true(darkness.is_dark(), "grotte obscure : voile posé")
 	assert_true(darkness.get_veil().visible)
-	assert_false(darkness.is_lit(), "Flash éteinte (aucun déclenchement au J17 T9–T10)")
+	assert_false(darkness.is_lit(), "Flash éteinte (partie neuve : pas de CS05)")
 	await wait_process_frames(2)
 	var body := VeilMath.body_center(player.global_position,
 		darkness.get_profile().center_offset)
@@ -141,3 +148,14 @@ func test_entering_from_the_lit_room_lays_the_veil() -> void:
 	assert_false(darkness.is_dark())
 	assert_false(darkness.get_veil().visible)
 	assert_false(darkness.is_processing())
+
+
+func _close_dialogue() -> void:
+	var runner := _boot.get_dialogue_runner()
+	for i: int in 10:
+		await wait_process_frames(3)
+		if not runner.is_running():
+			return
+		Input.action_press(&"interact")
+		await wait_process_frames(2)
+		Input.action_release(&"interact")

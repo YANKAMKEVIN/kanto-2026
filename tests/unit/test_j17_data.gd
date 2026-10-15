@@ -3,7 +3,7 @@ extends GutTest
 ## Route 11, rencontres de la Route 11 et de la Cave Taupiqueur, dialogues (Route 11, Route 2 est,
 ## barrière de FUTUR B), scène de remise de la CS05, zones en attente de leurs cartes. Textes
 ## recopiés **mot pour mot** du lot validé par Kevin le 2026-10-14 (dossier 20 §16, variantes A) ;
-## la variante d'accord « 1 espèce » vient de l'annexe A du plan (Q-2) et reste en brouillon.
+## la variante d'accord « 1 espèce » vient de l'annexe A du plan (Q-2, validée le 2026-10-16).
 ## Les cartes n'existent pas encore (T15, T16, T19, T21) : rien ici ne charge de scène.
 
 const DOSSIER := "res://docs/design/dossier-20-chemins-retrouves.md"
@@ -190,12 +190,11 @@ func test_assistant_texts() -> void:
 	assert_eq(_texts(assistant, 1), t3.slice(0, 3))
 	assert_eq(_texts(assistant, 2), _bubbles("T-1"))
 	assert_eq(_texts(assistant, 4), _bubbles("T-2"))
-	# Accord de T-2 pour une seule espèce : annexe A.3 (Q-2), en brouillon.
+	# Accord de T-2 pour une seule espèce : annexe A.3 (Q-2, validée le 2026-10-16).
 	var singular := _texts(assistant, 3)
 	assert_true(_annex.contains("« %s »" % singular[0]), singular[0])
 	assert_eq(singular[1], _bubbles("T-2")[1])
-	assert_true(assistant.variants[3].draft, "Q-2")
-	for i: int in [0, 1, 2, 4]:
+	for i: int in [0, 1, 2, 3, 4]:
 		assert_false(assistant.variants[i].draft, "variante %d validée" % i)
 	var system := _dialogues.get_dialogue(&"route_2_east_assistant_hm05_system")
 	assert_true(system.narration)

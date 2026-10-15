@@ -1,5 +1,5 @@
 {
-	"_comment": "Zones de la Route 11 et de la Cave Taupiqueur (jalon-17.md §2.12.5, T8), à recopier en fin de data/world/zones.json AVEC leurs cartes (T15, T16), comme au J15 (tools/pending_data/j15/). Descriptions = T-13 et T-14 du dossier 20 §16 (validées) ; sous-titres = annexe A.3 du plan (Q-2) : « draft » jusqu'à la validation. Avec les cartes du couloir (T19), ajouter « route_2_east » et « route_2_east_gate » aux « maps » de la zone route_2 (une seule Route 2, dossier 20 §3.6). Rectangles proposés pour assets/ui/map/kanto_placeholder_areas.json (à poser en même temps : mêmes identifiants des deux côtés) : « _areas » ; décors du portrait du Pokédex pour assets/ui/pokedex/scenes.json (zones connues seulement) : « _pokedex_scenes » (Cave : « plateau » comme le Mont Sélénite, aucun décor « grotte »). test_j17_data lit ce fichier tant qu'il existe.",
+	"_comment": "Zones de la Route 11 et de la Cave Taupiqueur (jalon-17.md §2.12.5, T8), à recopier en fin de data/world/zones.json AVEC leurs cartes (T15, T16), comme au J15 (tools/pending_data/j15/). Descriptions = T-13 et T-14 du dossier 20 §16 (validées) ; sous-titres = annexe A.3 du plan (Q-2, validée le 2026-10-16). Avec les cartes du couloir (T19), ajouter « route_2_east » et « route_2_east_gate » aux « maps » de la zone route_2 (une seule Route 2, dossier 20 §3.6). Rectangles proposés pour assets/ui/map/kanto_placeholder_areas.json (à poser en même temps : mêmes identifiants des deux côtés) : « _areas » ; décors du portrait du Pokédex pour assets/ui/pokedex/scenes.json (zones connues seulement) : « _pokedex_scenes » (Cave : « plateau » comme le Mont Sélénite, aucun décor « grotte »). test_j17_data lit ce fichier tant qu'il existe.",
 	"_pokedex_scenes": {
 		"route_11": "prairie",
 		"digletts_cave": "plateau"
@@ -12,14 +12,12 @@
 		"route_11": {
 			"name": "Route 11", "kind": "route", "maps": ["route_11"],
 			"subtitle": "Carmin-sur-Mer — Route 12",
-			"description": "Une route côtière entre les prairies et la mer, à l'est de Carmin.",
-			"draft": true
+			"description": "Une route côtière entre les prairies et la mer, à l'est de Carmin."
 		},
 		"digletts_cave": {
 			"name": "Cave Taupiqueur", "kind": "place", "maps": ["digletts_cave"],
 			"subtitle": "Route 11 — Route 2",
-			"description": "Un long tunnel creusé par des Taupiqueur.",
-			"draft": true
+			"description": "Un long tunnel creusé par des Taupiqueur."
 		}
 	}
 }

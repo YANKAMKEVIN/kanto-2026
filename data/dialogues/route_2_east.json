@@ -34,7 +34,6 @@
 			},
 			{
 				"unless_caught_at_least": 2,
-				"draft": true,
 				"pages": [
 					"Ton Pokédex compte 1 espèce capturée.",
 					"Encore {caught_missing}, et c'est à toi."

@@ -181,6 +181,10 @@ var _darkness: DarknessController
 ## (&"dark" ou &"lit"), jamais sauvegardé ; &"" sinon.
 var _veil_debug_map: StringName = &""
 var _veil_debug: StringName = &""
+## Flash automatique à l'arrivée sur une carte obscure (J17 T24, Q-1 « tout J17 » ; contrat commun
+## avec le J18, `jalon-18.md` §3.3) et capacités de terrain (`data/world/field_moves.json`).
+var _flash: FlashDirector
+var _field_moves := FieldMoves.new()
 
 @onready var _world: Node2D = %World
 @onready var _hud: ExplorationHud = %ExplorationHud
@@ -213,6 +217,9 @@ func _ready() -> void:
 	_darkness = DarknessController.new()
 	_darkness.process_mode = Node.PROCESS_MODE_PAUSABLE
 	add_child(_darkness)
+	_flash = FlashDirector.new()
+	_flash.process_mode = Node.PROCESS_MODE_PAUSABLE
+	add_child(_flash)
 	_load_settings()
 	# Compteur de fps de QA (journal « [perf] »), seulement en build debug, Boot scène principale.
 	if PerfCounter.is_allowed(OS.is_debug_build(), get_tree().current_scene == self):
@@ -377,6 +384,7 @@ func _ready() -> void:
 	_menu.menu_closed.connect(_on_menu_closed)
 	_setup_companion()
 	_setup_caves()
+	_setup_flash()
 	_setup_evolution_items()
 	# L'écran (jalon-06.md §6.6) : ouverture et vue dans la même frame, sans await (un fondu
 	# coupé laisse une coroutine non reprise).
@@ -711,7 +719,8 @@ func is_stable() -> bool:
 		and is_instance_valid(SceneRouter.get_current_map()) \
 		and not SceneRouter.is_transitioning() and not _runner.is_running() \
 		and not _cutscenes_node.is_running() and not _starter_choice.is_sheet_open() \
-		and not _battle_director.is_running() and not _encounters.is_running()
+		and not _battle_director.is_running() and not _encounters.is_running() \
+		and not _flash.is_running()
 
 
 ## Garde d'ouverture du Menu Dresseur : partie stable (ce qui exclut dialogue, scène, rencontre,
@@ -1139,6 +1148,7 @@ func _on_coming_soon_finished(_map: GameMap) -> void:
 ## (jalon 3B §2.6), puis la carte passe aux contrôleurs.
 func _on_map_changed(map: GameMap) -> void:
 	_observed.clear()
+	_flash.on_map_changed(map)
 	_apply_lighting(map)
 	_apply_darkness(map)
 	map.refresh_npcs(GameState.flags)
@@ -1195,12 +1205,15 @@ func _apply_lighting(map: GameMap) -> void:
 
 
 ## Voile d'obscurité (J17 T9) : grotte obscure (`caves.json`, « dark ») ou voile forcé par le
-## départ de débogage. **Flash** : aucune règle ici tant que Q-1 n'est pas tranchée (T24) ; le
-## halo n'est ouvert que par le départ de débogage (« veil » : « lit »).
+## départ de débogage (« veil » : « lit » ouvre le halo). **Flash** (T24) : à une arrivée, le
+## voile est posé sombre et [FlashDirector] l'ouvre après sa mise en scène ; le halo n'est ouvert
+## dès l'écran noir que hors arrivée ([method FlashRules.is_lit]).
 func _apply_darkness(map: GameMap) -> void:
 	var forced := not _veil_debug.is_empty() and map.map_id == _veil_debug_map
 	var dark := forced or _caves.is_dark(map.map_id)
-	_darkness.set_map(map, dark, forced and _veil_debug == DebugStart.VEIL_LIT)
+	var lit := (forced and _veil_debug == DebugStart.VEIL_LIT) \
+		or FlashRules.is_lit(_arrival_from, map.map_id, _caves, _flash.is_available())
+	_darkness.set_map(map, dark, lit)
 
 
 func get_darkness() -> DarknessController:
@@ -1213,6 +1226,7 @@ func get_darkness() -> DarknessController:
 func _on_map_entered(map: GameMap) -> void:
 	var region := _first_exit.subtitle_for(map.map_id, _arrival_from, GameState.discovered_maps,
 		map.region)
+	var from := _arrival_from
 	_arrival_from = &""
 	GameState.discover_map(map.map_id)
 	_companion.on_map_entered(map)
@@ -1220,6 +1234,8 @@ func _on_map_entered(map: GameMap) -> void:
 	if _announcer.should_announce(map.display_name, map.interior):
 		_hud.show_zone_title(map.display_name, region)
 		zone_announced.emit(map.display_name, region)
+	# J17 T24 : Flash (ou l'avertissement) une fois par arrivée, après l'autosave d'arrivée.
+	_flash.on_map_entered(map, from)
 
 
 func _on_target_changed(kind: int) -> void:
@@ -1558,7 +1574,8 @@ func _refresh_controls() -> void:
 		and not _starter_choice.is_sheet_open() and not _battle_director.is_running()
 		and not _encounters.is_running() and not _player.is_blocked_by(EVOLUTION_ITEM)
 		and not _player.is_blocked_by(RARE_CANDY)
-		and not (_daycare != null and _daycare.is_running()))
+		and not (_daycare != null and _daycare.is_running())
+		and not _player.is_blocked_by(FlashDirector.LOCK_REASON))
 
 
 ## Lit les réglages (fichier de l'appareil, indépendant de la sauvegarde et du départ de
@@ -1605,8 +1622,10 @@ func _apply_settings(s: GameSettings) -> void:
 	# Halos des grottes (jalon 12, T7 / T20) et lueur « hint » chez Léo (jalon 14) : vacillement
 	# coupé.
 	LightGlow.set_reduce_motion(s.reduce_motion)
-	# Voile d'obscurité (J17 T9) : battement coupé, ouverture du halo instantanée.
+	# Voile d'obscurité (J17 T9) : battement coupé, ouverture du halo instantanée ; Flash (T24) :
+	# saut et sortie de Ball adoucis.
 	_darkness.set_reduce_motion(s.reduce_motion)
+	_flash.reduce_motion = s.reduce_motion
 	# Carte du Champion (jalon 10, T5) : sans glissé, un fondu court.
 	_hud.get_champion_card().reduce_motion = s.reduce_motion
 	# Étape « flash » (jalon 14) : adoucie par l'un ou l'autre réglage.
@@ -1656,6 +1675,28 @@ func _setup_caves() -> void:
 
 func get_caves() -> CaveLibrary:
 	return _caves
+
+
+# --- Jalon 17 (T24) : Flash automatique ------------------------------------------------------
+
+## [FlashDirector] : état de Flash lu dans la partie (CS05 au Sac, compatible, compagnon d'abord),
+## action d'arrivée seulement sur une partie stable, hors écran titre.
+func _setup_flash() -> void:
+	if not _field_moves.load_file():
+		for error: String in _field_moves.get_errors():
+			push_error("Boot : %s" % error)
+	_flash.setup(GameState, _darkness, _caves, _field_moves, _hud, _runner, _library, _player,
+		_companion, _companions)
+	_flash.check_flash = func() -> FieldMoves.Result:
+		return _field_moves.check(FlashDirector.MOVE, GameState.party, GameState.bag,
+			GameState.flags, _items, _pokemon, GameState.get_companion())
+	_flash.can_start = func() -> bool: return is_stable() and not _is_opening_active()
+	_flash.cue_started.connect(_refresh_controls)
+	_flash.flash_used.connect(_refresh_controls.unbind(1))
+
+
+func get_flash_director() -> FlashDirector:
+	return _flash
 
 
 ## Corde Sortie acceptée par le Sac (jalon 12, dossier 15 §11, `jalon-12.md` §2.6) : menu fermé,
