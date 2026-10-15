@@ -524,7 +524,7 @@ Contrôles verts : `tools/art/plan_check_route_9.py`, `plan_check_route_10.py`,
 | | | **4 568 cases** | chemin principal **179 pas**, 2 échelles à l'aplomb, 10 gravats obligatoires (15,8 % du sol) ; **≈ 6 min 50** |
 | Lavanville | `tools/plans/lavanville.txt` | 44 × 36 | avenue nord-sud, deux rues ; Tour 12 × 11 au nord-est ; Routes 8 et 12 « À venir » ; squares du sud meublés (bancs, parterres pâles, haies basses) ; raccord nord (21..23, 0) |
 | Tour Pokémon RDC | `tools/plans/tour_pokemon_rdc.txt` | 20 × 18 | 36 tombes dont 5 nommées, 6 bougies, escalier d'une case tenu par l'Exorciste (gardienne) |
-| Azuria (est) | `tools/plans/azuria.txt` | 56 × 41 | arbre à couper en (53, 23) entre deux pans de clôture, raccord Route 9 en (55, 22..24) |
+| Azuria (est) | `tools/plans/azuria.txt`, **variante J18** (`lire(chemin, "J18")`, cumulative sur J14 ; la scène et la grille de base restent celles du J13 jusqu'à la construction du raccord, après la Coupe du J16) | 56 × 41 | arbre à couper en (53, 23) entre deux pans de clôture, raccord Route 9 en (55, 22..24) ; contrôle `plan_check_azuria_j18.py` |
 
 ## 14. Cas limites (à couvrir au plan)
 

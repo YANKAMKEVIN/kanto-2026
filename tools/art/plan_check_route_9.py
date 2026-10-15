@@ -122,7 +122,8 @@ def _acces(monde: Route, p) -> list[Case]:
 
 
 def _rangees(chemin: Path, carte: str, ident: str, colonne: int) -> list[int]:
-	autre = lire(chemin.with_name(f"{carte}.txt"))
+	# Azuria : le raccord est n'existe que dans la variante J18 de azuria.txt (base = J13 validé).
+	autre = lire(chemin.with_name(f"{carte}.txt"), "J18" if carte == "azuria" else None)
 	col = autre.width - 1 if colonne < 0 else colonne
 	return sorted(y for x, y in autre.positions[ident].cells if x == col)
 

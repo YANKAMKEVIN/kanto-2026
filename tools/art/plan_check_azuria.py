@@ -16,8 +16,7 @@ Critères, par carte (repris par les tests des cartes au 13A–13C) :
   Azuria — 56 × 46 ; raccords ouest (Route 4) et nord (Route 24) ; eau jamais praticable, canal
     en L, aucun canal ni pont en diagonale, quais et ponts ≥ 2 cases, 3 ponts ; **Centre =
     premier bâtiment de l'avenue d'arrivée**, avant toute bifurcation ; Arène de l'autre côté du
-    canal ; sortie nord par le pont central, visible depuis la place ; sud fermé, est fermé par l'ARBRE À COUPER
-    (« k », J18 : raccord Route 9 derrière, atteignable une fois coupé) sans
+    canal ; sortie nord par le pont central, visible depuis la place ; est et sud fermés sans
     promesse ; Grotte Azurée hors d'atteinte ; maison cambriolée (porte fermée, trou impraticable,
     policier) ; 6 habitants ; emprises des bâtiments ; toutes les cases praticables connexes.
   Route 24 — 56 × 62 ; raccord sud = sortie nord d'Azuria ; **rival inévitable** (vue sur toute la
@@ -35,7 +34,6 @@ Usage : python3 tools/art/plan_check.py tools/plans/route_4.txt   (ou sans argum
 from __future__ import annotations
 
 import sys
-from dataclasses import replace
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
@@ -400,19 +398,9 @@ def verifier_azuria(chemin: Path) -> bool:
 	r.critere(nord == w_nord == s_nord and [x for x, _ in nord] == [x for x, _ in sud_r24],
 		f"raccord nord : colonnes {[x for x, _ in nord]} praticables, warps, spawns = sud de la "
 		f"Route 24 (colonnes {[x for x, _ in sud_r24]})")
-	# Raccord est (J18, dossier 21 §9) : derrière l'arbre à couper « k », atteignable seulement une
-	# fois l'arbre coupé (J16) ; mêmes rangées que le raccord ouest de la Route 9.
-	route_9 = lire(PLANS / "route_9.txt")
-	ouest_r9 = sorted(c for p in route_9.of_kind("warp") for c in p.cells if c[0] == 0)
-	est = sorted(c for c in _libres_du_bord(carte) if c[0] == plan.width - 1)
-	w_est = sorted(c for p in plan.of_kind("warp") for c in p.cells if c[0] == plan.width - 1)
-	s_est = sorted(c for p in plan.of_kind("spawn") for c in p.cells if c[0] == plan.width - 1)
-	r.critere(est == w_est == s_est and [y for _, y in est] == [y for _, y in ouest_r9],
-		f"raccord est : rangées {[y for _, y in est]} praticables, warps, spawns = ouest de la "
-		f"Route 9 (0, {ouest_r9[0][1]}..{ouest_r9[-1][1]}), aucun décalage")
 	bords = _libres_du_bord(carte)
-	r.critere(sorted(bords) == sorted(entree + nord + est),
-		"carte fermée : seuls les raccords ouest, nord et est touchent le bord (sud fermé)")
+	r.critere(sorted(bords) == sorted(entree + nord),
+		"carte fermée : seuls les raccords ouest et nord touchent le bord (est et sud fermés)")
 	eau_nord = sorted(x for x in range(plan.width) if plan.at(x, 0) == EAU and x < 40)
 	eau_r24 = sorted(x for x in range(route_24.width) if route_24.at(x, route_24.height - 1) == EAU)
 	r.critere(eau_nord == eau_r24, f"le canal descend de la Route 24 : eau en colonnes "
@@ -505,11 +493,6 @@ def verifier_azuria(chemin: Path) -> bool:
 
 	# 4. Chemin principal : Centre en premier, avant toute bifurcation.
 	dist = carte.distances(entree)
-	# Variante « arbre coupé » (Coupe, J16) : « k » devient praticable, la case de l'arbre se libère.
-	arbre_k = plan.cells_of("k")
-	coupee = Carte(replace(plan, praticables=plan.praticables | {"k"}), carte.bloquees)
-	coupee.bloquees -= set(arbre_k)
-	dist_coupe = coupee.distances(entree)
 	d_centre = min(dist.get(c, INF) for c in cdoor)
 	autres = {"Boutique": autres_portes["O"], "magasin de vélos": autres_portes["V"],
 		"Arène": autres_portes["Z"], "maison ouverte": autres_portes["m"]}
@@ -563,29 +546,18 @@ def verifier_azuria(chemin: Path) -> bool:
 	r.critere(_largeur_min(carte, (axe, 1)) >= 3, "sortie nord de 3 cases de large")
 
 	# 6. Fermetures sans promesse : est (arbre + clôture), sud (palissade).
-	arbre = plan.cells_of("k")
+	arbre = plan.cells_of("t")
 	palissade = plan.cells_of("s")
 	acces_est = [c for c in arbre for d in DIRECTIONS if carte.libre(_decale(c, d))
 		and _decale(c, d) in dist]
 	acces_sud = [c for c in palissade for d in DIRECTIONS if carte.libre(_decale(c, d))
 		and _decale(c, d) in dist]
 	warps_ferme = [p.ident for p in plan.of_kind("warp")
-		if any(c[1] >= plan.height - 3 for c in p.cells)]
-	derriere = [(x, y) for x in (54, 55) for y in (22, 23, 24)]
-	r.critere(len(arbre) == 1 and arbre[0] == (53, 23) and len(palissade) >= 5 and acces_est
-		and acces_sud and not warps_ferme and plan.at(53, 22) == "c" and plan.at(53, 24) == "c"
-		and plan.at(32, 40) == "a",
-		"est : arbre à couper « k » (53, 23) entre deux pans de clôture ; sud : palissade de chantier ; "
-		f"les deux routes y mènent et s'arrêtent là ; AUCUN warp au sud {warps_ferme}")
-	r.critere(all(plan.at(*c) == "=" for c in derriere) and all(c not in dist for c in derriere)
-		and all(c in dist_coupe for c in derriere) and all(c in dist_coupe for c in est)
-		and not any(c in dist for c in est),
-		"derrière l'arbre : sentier de 3 × 2 cases inatteignable tant que l'arbre est debout, "
-		"atteignable (raccord est compris) une fois coupé")
-	r.critere(min(dist_coupe.get(c, INF) for c in est) - max(dist.get(c, INF)
-		for c in [(52, 23)]) == 3 and dist_coupe[(53, 23)] == dist[(52, 23)] + 1,
-		"l'arbre est le seul verrou : une fois coupé, le raccord est se trouve à 3 pas de la case "
-		"devant l'arbre")
+		if any(c[0] >= plan.width - 3 or c[1] >= plan.height - 3 for c in p.cells)]
+	r.critere(len(arbre) == 1 and len(palissade) >= 5 and acces_est and acces_sud
+		and not warps_ferme and plan.at(54, 23) == "a" and plan.at(32, 40) == "a",
+		"est : arbre + clôture, sentier peint derrière ; sud : palissade de chantier ; les deux "
+		f"routes y mènent et s'arrêtent là ; AUCUN warp ni promesse {warps_ferme}")
 
 	# 7. Grotte Azurée : repère hors d'atteinte, au-delà de l'eau.
 	grotte = pos["grotte_azuree"]
@@ -657,7 +629,7 @@ def verifier_azuria(chemin: Path) -> bool:
 			fautes.append(f"examen {p.ident} {p.cells[0]} sans case d'accès")
 	for p in plan.of_kind("spawn"):
 		for c in p.cells:
-			if c not in dist_coupe:
+			if c not in dist:
 				fautes.append(f"{p.ident} {c} hors d'atteinte")
 	r.critere(not fautes, "habitants, panneaux, examens et points d'apparition bien placés"
 		+ (" : " + " ; ".join(fautes) if fautes else
@@ -666,7 +638,7 @@ def verifier_azuria(chemin: Path) -> bool:
 	# 10. Connexité.
 	orphelines = [(x, y) for y in range(plan.height) for x in range(plan.width)
 		if plan.at(x, y) in plan.praticables and (x, y) not in carte.bloquees
-		and (x, y) not in dist_coupe]
+		and (x, y) not in dist]
 	r.critere(not orphelines, "toutes les cases praticables sont connexes (atteignables depuis "
 		f"l'entrée ouest) {orphelines[:4] if orphelines else ''}")
 	r.critere(all(any(e in Monde(plan).distances([c]) for e in entree)

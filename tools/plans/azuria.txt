@@ -4,15 +4,10 @@
 # composition se fait ICI d'abord, puis plan, puis image. Contrôle : tools/art/plan_check.py
 # (profil azuria, tools/art/plan_check_azuria.py).
 #
-# 56 × 41 cases (rogné de 56 × 46 le 2026-10-11, G-4 : moins de forêt vide ; barrière est changée en
-# arbre à couper le 2026-10-14, jalon 18, dossier 21 §9) ; nord en haut ; x = colonne 0..55, y = rangée 0..40.
+# 56 × 41 cases (rogné de 56 × 46 le 2026-10-11, G-4 : moins de forêt vide) ; nord en haut ; x = colonne 0..55, y = rangée 0..40.
 # Raccords : OUEST (0, 19..21) ↔ Route 4 (63, 19..21) (mêmes rangées, aucun décalage) ; NORD
-# (31..33, 0) ↔ Route 24 (31..33, 61) (mêmes colonnes). SUD (Route 5) FERMÉ, sans aucune promesse :
-# palissade de chantier (§4.2, D-12). EST (Route 9) : l'ARBRE À COUPER « k » (53, 23), entre deux
-# pans de clôture, ferme le sentier tant que Coupe (J16) n'est pas là (texte 17, sans promesse) ; derrière lui,
-# le chemin (54..55, 22..24) mène au raccord (55, 22..24) ↔ Route 9 (0, 22..24). Le raccord n'est
-# atteignable qu'une fois l'arbre coupé (J16) ; avant, la carte est fermée à l'est. Hypothèse de
-# conception : le passage fait une case au droit de l'arbre, puis 3 cases.
+# (31..33, 0) ↔ Route 24 (31..33, 61) (mêmes colonnes). Est (Route 9) et sud (Route 5) FERMÉS, sans
+# aucune promesse : arbre + clôture à l'est, palissade de chantier au sud (§4.2, D-12).
 #
 # Composition (§4.1) :
 #   - CANAL EN L (eau, 4 cases de large, angles droits) : segment vertical x 26..29 du bord nord
@@ -43,9 +38,8 @@
 #   q quai de pierre claire (praticable)    B pont (praticable)    w eau (JAMAIS praticable)
 #   x haie, buissons (bloqués)       c clôture (bloquée)     n banc (bloqué)   G arbre repère
 #   K roc de l'îlot  A bouche de la Grotte Azurée (repère bloqué, hors d'atteinte)
-#   s palissade de chantier (Route 5 fermée)  k ARBRE À COUPER (Coupe, J16) : bloqué tant qu'il est
-#   debout, praticable une fois coupé ; mène à la Route 9 (même règle que les autres arbres à couper)
-#   a sentier peint derrière la palissade (bloqué)
+#   s palissade de chantier (Route 5 fermée)  t arbre qui barre le sentier (Route 9 fermée)
+#   a sentier peint derrière la palissade ou l'arbre (bloqué)
 #   j jardin clos de la maison cambriolée (bloqué)   y trou dans la clôture (bloqué)
 #   M maison cambriolée   f sa porte, fermée (bloquée)   m maison ouverte
 #   C Centre Pokémon  O Boutique  Z Arène  V magasin de vélos   (emprises bloquées)
@@ -78,9 +72,9 @@ GRILLE 56 41
 19 pppppppppppppppppppppppqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqTTT
 20 pppppppppppppppppppppppqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqTTT
 21 pppppppppppppppppppppppppppppppppppppppppppppppppxxxxTTT
-22 xxxxxxxxxxxxxxxxxxppppppppppppppppppppppppppppppp====c==
-23 TTTTTTTTTTTTTTTTTTpGppppppnpppppppppppnpppppppppp====k==
-24 TTTTTTTTTTTTTTTTTTppppppppppppppppppppppppppppppp====c==
+22 xxxxxxxxxxxxxxxxxxppppppppppppppppppppppppppppppp====caa
+23 TTTTTTTTTTTTTTTTTTpGppppppnpppppppppppnpppppppppp====taa
+24 TTTTTTTTTTTTTTTTTTppppppppppppppppppppppppppppppp====caa
 25 TTTTTTTTTTTTTTTTTTpppppppppppppppppppppppppppppppxxxxTTT
 26 TTTTTTTTTTTTTTTTTTpGpppppppppppppppppppppppppppGpTTTTTTT
 27 TTTTTTTTTTTTTTTTTTpppppppppppppppppppppppppppppppTTTTTTT
@@ -106,8 +100,6 @@ FIN
 POSITIONS
 warp_ouest           warp           0,19..21     libre   # PUSH ← → route_4, from_cerulean (Route 4 (63, 19..21))
 from_route_4         spawn          0,19..21     libre   # arrivée de la Route 4, tournée →
-warp_est            warp           55,22..24    libre   # PUSH → → route_9, from_cerulean (Route 9 (0, 22..24)) ; atteignable seulement une fois l'arbre « k » (53, 23) coupé (J16)
-from_route_9         spawn          55,22..24    libre   # arrivée de la Route 9, tournée ←
 warp_nord            warp           31..33,0     libre   # PUSH ↑ → route_24, from_cerulean (Route 24 (31..33, 61))
 from_route_24        spawn          31..33,0     libre   # arrivée de la Route 24, tournée ↓
 porte_centre         warp           8..9,18      libre   # STEP_ON ↑ → cerulean_center (les deux cases « open »)
@@ -117,9 +109,9 @@ porte_arene          warp           40..41,9     libre   # STEP_ON ↑ → cerul
 porte_maison         warp           19,9         libre   # STEP_ON ↑ → cerulean_house (maison ouverte)
 porte_cambriolee     examen         10,9         bloque  # porte fermée : « Un ruban interdit l'entrée. », lue depuis (10, 10) ; aucun warp
 cloture_arrachee     examen         6,1          bloque  # « La clôture a été arrachée. » (clôture du fond, coin nord-ouest), lue depuis (5, 1)
-trou_cloture         indice         14,3         bloque  # trou dans la clôture du fond-est : on devine un passage vers l'est, impraticable (indice gardé, dossier 21 §9)
+trou_cloture         indice         14,3         bloque  # trou dans la clôture du fond-est : on devine un passage vers l'est (Route 9 au J14), impraticable
 pot_renverse         decor          9,2          bloque  # pot renversé dans le jardin clos (visible, hors d'atteinte)
-barriere_est         examen         53,22..24    bloque  # arbre à couper « k » + clôture : « On ne passe pas par là pour l'instant. » (texte 17) tant que l'arbre est debout ; aucune promesse
+barriere_est         examen         53,22..24    bloque  # arbre + clôture : « On ne passe pas par là pour l'instant. » (texte 17) ; AUCUN warp, AUCUNE promesse
 barriere_sud         examen         30..34,38    bloque  # palissade de chantier : même réplique ; AUCUN warp
 arrivee_ouest        declencheur    1,19..21     libre   # déclencheur silencieux « cerulean_arrival » (T17) : tout pas vers l'est sur la 2e colonne, juste après le raccord
 arrivee_nord         declencheur    31..33,1     libre   # même scène depuis la Route 24 (arrivée par le nord, débogage) : pas vers le bas
@@ -195,4 +187,55 @@ barriere_sud         pnj            32..33,38    bloque  role=barrieres npc=poli
 barrage_sud          declencheur    31..33,37    libre   dir=down scene=cerulean_south_guard if=cerulean_rocket_beaten unless=cerulean_south_guard_left  # n° 41, le policier part vers le nord, despawn des trois
 warp_sud             warp           31..33,40    libre   # PUSH ↓ coming_soon « Route 5 » (développement ; bord bloqué en release) ; J15 : route_5 / from_cerulean (réservés)
 from_route_5         spawn          31..33,40    libre   # from_route_5_w|c|e, tournés ↑
+FIN
+
+# =================================================================================================
+# VARIANTE J18 — Azuria « après J18 » (jalon 18, 2026-10-15 ; dossier 21 §9 et §13.1 ; dossier 19
+# du J16 : arbuste coupable, mécanisme `FlagGate` / drapeau du J16). Lue SEULEMENT par
+# `lire(chemin, "J18")` (tools/art/plan_grille.py) et `load_file(chemin, "J18")`
+# (tests/helpers/plan_grid.gd) : la grille et les positions de base (J13) restent intactes, comme
+# la variante J14. CUMULATIVE : le lecteur n'applique qu'UNE variante à la fois, donc J18 reprend
+# toutes les rangées et positions de la variante J14 (état final E3, sud ouvert) PLUS les
+# changements du J18 :
+#   - barrière est (53, 22..24) : « c » / « t » / « c » + sentier « a » → clôture « c » (53, 22),
+#     ARBRE À COUPER « k » (53, 23) (bloqué tant qu'il est debout, praticable une fois coupé par
+#     Coupe, J16), clôture « c » (53, 24) ; sentier « = » derrière (54..55, 22..24) ;
+#   - warp_est (55, 22..24) → route_9 / from_cerulean (Route 9 (0, 22..24)) et spawn from_route_9,
+#     atteignables seulement une fois l'arbre coupé ;
+#   - barriere_est : examen, texte 17 tant que l'arbre est debout.
+# Hypothèse de conception : le passage fait une case au droit de l'arbre, puis 3 cases.
+# Légende en plus : k ARBRE À COUPER (bloqué debout) ; J, Y comme la variante J14.
+# Contrôle : tools/art/plan_check_azuria_j18.py.
+PRATICABLES_J18 .=pqBDJY
+
+GRILLE_J18
+02 TTT....JJJJJJJc.......TTTTwwwwx===xTTTTTTTTTTTTTTwwwwwww
+03 TTT....JJJJJJJY.......TqqqwwwwqqpppZZZZZZZZZZZZqqwwKKKKw
+09 TTT...xMMMDMMMcxmmmDmmmqqqBBBBqqpppZZZZZDDZZZZZqqwwwwwww
+22 xxxxxxxxxxxxxxxxxxppppppppppppppppppppppppppppppp====c==
+23 TTTTTTTTTTTTTTTTTTpGppppppnpppppppppppnpppppppppp====k==
+24 TTTTTTTTTTTTTTTTTTppppppppppppppppppppppppppppppp====c==
+38 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT===TTTTTTTTTTTTTTTTTTTTTT
+39 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT===TTTTTTTTTTTTTTTTTTTTTT
+40 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT===TTTTTTTTTTTTTTTTTTTTTT
+FIN
+
+POSITIONS_J18
+porte_cambriolee     warp           10,9         libre   # STEP_ON ↑ → cerulean_burgled_house ; recouverte par ruban_police tant que le Rocket n'est pas battu
+trou_cloture         examen         14,3         libre   # n° 29 (narration), lu depuis (13, 3) tourné → ; la case reste praticable (le passage)
+h4_policier          pnj            11,10        bloque  role=H4 facing=left unless=cerulean_rocket_beaten  # policier du J13, part après la victoire (despawn dans la scène du combat)
+ruban_police         pnj            10,9         bloque  role=ruban npc=cerulean_police_tape unless=cerulean_rocket_beaten  # PNJ objet (ruban, série 15) ; EXAMINER → n° 12 du J13
+planche_clouee       decor          14,2         bloque  if=cerulean_rocket_beaten  # FlagGate, sur la clôture à côté du trou : décor seul, le trou reste praticable (§0.2 n° 15)
+rocket_fouille       pnj            13,2         bloque  role=rocket npc=cerulean_rocket facing=up unless=cerulean_rocket_spotted,cerulean_rocket_beaten  # fouille près du trou, dos au joueur
+rocket_arret         pnj            21,3         bloque  role=rocket npc=cerulean_rocket facing=left if=cerulean_rocket_spotted unless=cerulean_rocket_beaten  # point d'arrêt au fond de l'impasse (clé moved)
+poursuite            declencheur    7,2..3       libre   dir=right scene=cerulean_rocket_chase unless=cerulean_rocket_spotted  # première colonne du jardin : « ! », n° 30, course par le trou jusqu'à (21, 3)
+combat_rocket        declencheur    17,2..3      libre   dir=right scene=cerulean_rocket_fight if=cerulean_rocket_spotted unless=cerulean_rocket_beaten  # vue du Rocket : toute la largeur de l'impasse
+policier_sud         pnj            31,38        bloque  role=policier_sud facing=up unless=cerulean_south_guard_left  # guard ; parler avant la victoire → n° 40, après → scène du sud
+barriere_sud         pnj            32..33,38    bloque  role=barrieres npc=police_barrier unless=cerulean_south_guard_left  # object/police_barrier ×2 ; avec le policier, aucun passage
+barrage_sud          declencheur    31..33,37    libre   dir=down scene=cerulean_south_guard if=cerulean_rocket_beaten unless=cerulean_south_guard_left  # n° 41, le policier part vers le nord, despawn des trois
+warp_sud             warp           31..33,40    libre   # PUSH ↓ coming_soon « Route 5 » (développement ; bord bloqué en release) ; J15 : route_5 / from_cerulean (réservés)
+from_route_5         spawn          31..33,40    libre   # from_route_5_w|c|e, tournés ↑
+warp_est            warp           55,22..24    libre   # PUSH → → route_9, from_cerulean (Route 9 (0, 22..24)) ; atteignable seulement une fois l'arbre « k » (53, 23) coupé (J16)
+from_route_9         spawn          55,22..24    libre   # arrivée de la Route 9, tournée ←
+barriere_est         examen         53,22..24    bloque  # arbre à couper « k » + clôture : « On ne passe pas par là pour l'instant. » (texte 17) tant que l'arbre est debout ; aucune promesse
 FIN

@@ -33,6 +33,9 @@ entre cartes, rebord unique, eau et ponts, Centre premier bâtiment, rival, Ondi
 **Azuria après J14** (variante `J14` de `azuria.txt`, jalon 14 T20a) : `plan_check_azuria_j14.py`,
 lancé à part (jardin, impasse, poursuite, vue du Rocket, aucune case coincée, sortie sud).
 
+**Azuria après J18** (variante `J18` de `azuria.txt`, cumulative sur J14, dossier 21 §9) :
+`plan_check_azuria_j18.py`, lancé à part (arbre à couper, raccord est sur la Route 9).
+
 **Route 25** (`route_25.txt`, jalon 14) : `verifier_route_25`, dans `plan_check_route_25.py`
 (raccord ouest, maison de Léo, D1 et D2 inévitables, H3 obligatoire, rebord de la terrasse,
 largeur du chemin, durée de traversée).
