@@ -1,0 +1,838 @@
+{
+	"version": 1,
+	"title": "Recalage des Dresseurs de la Route 11 (jalon 17 T8)",
+	"description": "Jalon 17 T8 : chaque Dresseur candidat joué seul, équipe soignée au Centre, 3 Potions et 1 Antidote (naïf : sans objet), sans reprise : taux de victoire au premier essai. Équipes = celles de route_11_scenario.json (joueur arrivé à Carmin avant le S.S. Anne). Candidats : Ingénieur Victor (Magnéti, Magnéti, Magnéton) aux Nv. 18 (Rouge/Bleu), 17, 16 (retenu), 15 ; Ingénieur Bruno (Magnéti Nv. 21, Rouge/Bleu ; Nv. 19 pour comparaison) ; Joueur Marcel et Gamin Louis tels que dans les données ; Gamin Louis aux Nv. 16 et 15 pour comparaison (non retenus). Information pour le plan (jalon-17.md §2.12.4) ; sans --donnees (identifiants propres à ce fichier).",
+	"seeds": 500,
+	"heal_at_start": true,
+	"teams": [
+		{
+			"name": "Reptincel 22, Férosinge 19, Roucoups 19, Mystherbe 18",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 22
+				},
+				{
+					"species": "mankey",
+					"level": 19
+				},
+				{
+					"species": "pidgeotto",
+					"level": 19
+				},
+				{
+					"species": "oddish",
+					"level": 18
+				}
+			]
+		},
+		{
+			"name": "Kevin (estimé) : Reptincel 22, Roucoups 19, Nidorino 18, Rattata 17",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 22
+				},
+				{
+					"species": "pidgeotto",
+					"level": 19
+				},
+				{
+					"species": "nidorino",
+					"level": 18
+				},
+				{
+					"species": "rattata",
+					"level": 17
+				}
+			]
+		},
+		{
+			"name": "Herbizarre 21, Roucoups 18, Papilusion 17",
+			"starter": "bulbasaur",
+			"members": [
+				{
+					"species": "ivysaur",
+					"level": 21
+				},
+				{
+					"species": "pidgeotto",
+					"level": 18
+				},
+				{
+					"species": "butterfree",
+					"level": 17,
+					"moves": [
+						"confusion",
+						"tackle",
+						"poison_powder",
+						"stun_spore"
+					]
+				}
+			]
+		},
+		{
+			"name": "Carabaffe 22, Roucoups 19, Papilusion 17",
+			"starter": "squirtle",
+			"members": [
+				{
+					"species": "wartortle",
+					"level": 22
+				},
+				{
+					"species": "pidgeotto",
+					"level": 19
+				},
+				{
+					"species": "butterfree",
+					"level": 17,
+					"moves": [
+						"confusion",
+						"tackle",
+						"poison_powder",
+						"stun_spore"
+					]
+				}
+			]
+		},
+		{
+			"name": "bas : Herbizarre 18, Roucool 15, Papilusion 13",
+			"starter": "bulbasaur",
+			"members": [
+				{
+					"species": "ivysaur",
+					"level": 18
+				},
+				{
+					"species": "pidgey",
+					"level": 15
+				},
+				{
+					"species": "butterfree",
+					"level": 13,
+					"moves": [
+						"tackle",
+						"string_shot",
+						"harden",
+						"confusion"
+					]
+				}
+			]
+		},
+		{
+			"name": "bas : Carabaffe 19, Roucool 16, Papilusion 14",
+			"starter": "squirtle",
+			"members": [
+				{
+					"species": "wartortle",
+					"level": 19
+				},
+				{
+					"species": "pidgey",
+					"level": 16
+				},
+				{
+					"species": "butterfree",
+					"level": 14,
+					"moves": [
+						"tackle",
+						"string_shot",
+						"harden",
+						"confusion"
+					]
+				}
+			]
+		},
+		{
+			"name": "bas : Reptincel 19, Férosinge 16, Roucool 16, Mystherbe 15",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 19
+				},
+				{
+					"species": "mankey",
+					"level": 16
+				},
+				{
+					"species": "pidgey",
+					"level": 16
+				},
+				{
+					"species": "oddish",
+					"level": 15
+				}
+			]
+		}
+	],
+	"tables": {},
+	"trainers": {
+		"v18": {
+			"name": "Ingénieur Victor",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 50,
+			"team": [
+				{
+					"species": "magnemite",
+					"level": 18
+				},
+				{
+					"species": "magnemite",
+					"level": 18
+				},
+				{
+					"species": "magneton",
+					"level": 18
+				}
+			]
+		},
+		"v17": {
+			"name": "Ingénieur Victor",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 50,
+			"team": [
+				{
+					"species": "magnemite",
+					"level": 17
+				},
+				{
+					"species": "magnemite",
+					"level": 17
+				},
+				{
+					"species": "magneton",
+					"level": 17
+				}
+			]
+		},
+		"v16": {
+			"name": "Ingénieur Victor",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 50,
+			"team": [
+				{
+					"species": "magnemite",
+					"level": 16
+				},
+				{
+					"species": "magnemite",
+					"level": 16
+				},
+				{
+					"species": "magneton",
+					"level": 16
+				}
+			]
+		},
+		"v15": {
+			"name": "Ingénieur Victor",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 50,
+			"team": [
+				{
+					"species": "magnemite",
+					"level": 15
+				},
+				{
+					"species": "magnemite",
+					"level": 15
+				},
+				{
+					"species": "magneton",
+					"level": 15
+				}
+			]
+		},
+		"bruno21": {
+			"name": "Ingénieur Bruno",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 50,
+			"team": [
+				{
+					"species": "magnemite",
+					"level": 21
+				}
+			]
+		},
+		"bruno19": {
+			"name": "Ingénieur Victor",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 50,
+			"team": [
+				{
+					"species": "magnemite",
+					"level": 19
+				}
+			]
+		},
+		"marcel": {
+			"name": "Joueur Marcel",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 70,
+			"team": [
+				{
+					"species": "voltorb",
+					"level": 18
+				},
+				{
+					"species": "magnemite",
+					"level": 18
+				}
+			]
+		},
+		"louis": {
+			"name": "Gamin Louis",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 15,
+			"team": [
+				{
+					"species": "rattata",
+					"level": 17
+				},
+				{
+					"species": "rattata",
+					"level": 17
+				},
+				{
+					"species": "raticate",
+					"level": 17
+				}
+			]
+		},
+		"louis16": {
+			"name": "Gamin Louis",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 15,
+			"team": [
+				{
+					"species": "rattata",
+					"level": 16
+				},
+				{
+					"species": "rattata",
+					"level": 16
+				},
+				{
+					"species": "raticate",
+					"level": 16
+				}
+			]
+		},
+		"louis15": {
+			"name": "Gamin Louis",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 15,
+			"team": [
+				{
+					"species": "rattata",
+					"level": 15
+				},
+				{
+					"species": "rattata",
+					"level": 15
+				},
+				{
+					"species": "raticate",
+					"level": 15
+				}
+			]
+		}
+	},
+	"steps": [
+		{
+			"label": "Centre (v18)",
+			"center": true,
+			"optional": "v18"
+		},
+		{
+			"label": "v18",
+			"trainer": "v18",
+			"optional": "v18"
+		},
+		{
+			"label": "Centre (v17)",
+			"center": true,
+			"optional": "v17"
+		},
+		{
+			"label": "v17",
+			"trainer": "v17",
+			"optional": "v17"
+		},
+		{
+			"label": "Centre (v16)",
+			"center": true,
+			"optional": "v16"
+		},
+		{
+			"label": "v16",
+			"trainer": "v16",
+			"optional": "v16"
+		},
+		{
+			"label": "Centre (v15)",
+			"center": true,
+			"optional": "v15"
+		},
+		{
+			"label": "v15",
+			"trainer": "v15",
+			"optional": "v15"
+		},
+		{
+			"label": "Centre (bruno21)",
+			"center": true,
+			"optional": "bruno21"
+		},
+		{
+			"label": "bruno21",
+			"trainer": "bruno21",
+			"optional": "bruno21"
+		},
+		{
+			"label": "Centre (bruno19)",
+			"center": true,
+			"optional": "bruno19"
+		},
+		{
+			"label": "bruno19",
+			"trainer": "bruno19",
+			"optional": "bruno19"
+		},
+		{
+			"label": "Centre (marcel)",
+			"center": true,
+			"optional": "marcel"
+		},
+		{
+			"label": "marcel",
+			"trainer": "marcel",
+			"optional": "marcel"
+		},
+		{
+			"label": "Centre (louis)",
+			"center": true,
+			"optional": "louis"
+		},
+		{
+			"label": "louis",
+			"trainer": "louis",
+			"optional": "louis"
+		},
+		{
+			"label": "Centre (louis16)",
+			"center": true,
+			"optional": "louis16"
+		},
+		{
+			"label": "louis16",
+			"trainer": "louis16",
+			"optional": "louis16"
+		},
+		{
+			"label": "Centre (louis15)",
+			"center": true,
+			"optional": "louis15"
+		},
+		{
+			"label": "louis15",
+			"trainer": "louis15",
+			"optional": "louis15"
+		}
+	],
+	"variants": [
+		{
+			"name": "v18 attentif",
+			"player": "attentif",
+			"center": true,
+			"retries": 0,
+			"optional": [
+				"v18"
+			],
+			"items": {
+				"potion": 3,
+				"antidote": 1
+			}
+		},
+		{
+			"name": "v18 expert",
+			"player": "expert",
+			"center": true,
+			"retries": 0,
+			"optional": [
+				"v18"
+			],
+			"items": {
+				"potion": 3,
+				"antidote": 1
+			}
+		},
+		{
+			"name": "v18 naif",
+			"player": "naif",
+			"center": true,
+			"retries": 0,
+			"optional": [
+				"v18"
+			]
+		},
+		{
+			"name": "v17 attentif",
+			"player": "attentif",
+			"center": true,
+			"retries": 0,
+			"optional": [
+				"v17"
+			],
+			"items": {
+				"potion": 3,
+				"antidote": 1
+			}
+		},
+		{
+			"name": "v17 expert",
+			"player": "expert",
+			"center": true,
+			"retries": 0,
+			"optional": [
+				"v17"
+			],
+			"items": {
+				"potion": 3,
+				"antidote": 1
+			}
+		},
+		{
+			"name": "v17 naif",
+			"player": "naif",
+			"center": true,
+			"retries": 0,
+			"optional": [
+				"v17"
+			]
+		},
+		{
+			"name": "v16 attentif",
+			"player": "attentif",
+			"center": true,
+			"retries": 0,
+			"optional": [
+				"v16"
+			],
+			"items": {
+				"potion": 3,
+				"antidote": 1
+			}
+		},
+		{
+			"name": "v16 expert",
+			"player": "expert",
+			"center": true,
+			"retries": 0,
+			"optional": [
+				"v16"
+			],
+			"items": {
+				"potion": 3,
+				"antidote": 1
+			}
+		},
+		{
+			"name": "v16 naif",
+			"player": "naif",
+			"center": true,
+			"retries": 0,
+			"optional": [
+				"v16"
+			]
+		},
+		{
+			"name": "v15 attentif",
+			"player": "attentif",
+			"center": true,
+			"retries": 0,
+			"optional": [
+				"v15"
+			],
+			"items": {
+				"potion": 3,
+				"antidote": 1
+			}
+		},
+		{
+			"name": "v15 expert",
+			"player": "expert",
+			"center": true,
+			"retries": 0,
+			"optional": [
+				"v15"
+			],
+			"items": {
+				"potion": 3,
+				"antidote": 1
+			}
+		},
+		{
+			"name": "v15 naif",
+			"player": "naif",
+			"center": true,
+			"retries": 0,
+			"optional": [
+				"v15"
+			]
+		},
+		{
+			"name": "bruno21 attentif",
+			"player": "attentif",
+			"center": true,
+			"retries": 0,
+			"optional": [
+				"bruno21"
+			],
+			"items": {
+				"potion": 3,
+				"antidote": 1
+			}
+		},
+		{
+			"name": "bruno21 expert",
+			"player": "expert",
+			"center": true,
+			"retries": 0,
+			"optional": [
+				"bruno21"
+			],
+			"items": {
+				"potion": 3,
+				"antidote": 1
+			}
+		},
+		{
+			"name": "bruno21 naif",
+			"player": "naif",
+			"center": true,
+			"retries": 0,
+			"optional": [
+				"bruno21"
+			]
+		},
+		{
+			"name": "bruno19 attentif",
+			"player": "attentif",
+			"center": true,
+			"retries": 0,
+			"optional": [
+				"bruno19"
+			],
+			"items": {
+				"potion": 3,
+				"antidote": 1
+			}
+		},
+		{
+			"name": "bruno19 expert",
+			"player": "expert",
+			"center": true,
+			"retries": 0,
+			"optional": [
+				"bruno19"
+			],
+			"items": {
+				"potion": 3,
+				"antidote": 1
+			}
+		},
+		{
+			"name": "bruno19 naif",
+			"player": "naif",
+			"center": true,
+			"retries": 0,
+			"optional": [
+				"bruno19"
+			]
+		},
+		{
+			"name": "marcel attentif",
+			"player": "attentif",
+			"center": true,
+			"retries": 0,
+			"optional": [
+				"marcel"
+			],
+			"items": {
+				"potion": 3,
+				"antidote": 1
+			}
+		},
+		{
+			"name": "marcel expert",
+			"player": "expert",
+			"center": true,
+			"retries": 0,
+			"optional": [
+				"marcel"
+			],
+			"items": {
+				"potion": 3,
+				"antidote": 1
+			}
+		},
+		{
+			"name": "marcel naif",
+			"player": "naif",
+			"center": true,
+			"retries": 0,
+			"optional": [
+				"marcel"
+			]
+		},
+		{
+			"name": "louis attentif",
+			"player": "attentif",
+			"center": true,
+			"retries": 0,
+			"optional": [
+				"louis"
+			],
+			"items": {
+				"potion": 3,
+				"antidote": 1
+			}
+		},
+		{
+			"name": "louis expert",
+			"player": "expert",
+			"center": true,
+			"retries": 0,
+			"optional": [
+				"louis"
+			],
+			"items": {
+				"potion": 3,
+				"antidote": 1
+			}
+		},
+		{
+			"name": "louis naif",
+			"player": "naif",
+			"center": true,
+			"retries": 0,
+			"optional": [
+				"louis"
+			]
+		},
+		{
+			"name": "louis16 attentif",
+			"player": "attentif",
+			"center": true,
+			"retries": 0,
+			"optional": [
+				"louis16"
+			],
+			"items": {
+				"potion": 3,
+				"antidote": 1
+			}
+		},
+		{
+			"name": "louis16 expert",
+			"player": "expert",
+			"center": true,
+			"retries": 0,
+			"optional": [
+				"louis16"
+			],
+			"items": {
+				"potion": 3,
+				"antidote": 1
+			}
+		},
+		{
+			"name": "louis16 naif",
+			"player": "naif",
+			"center": true,
+			"retries": 0,
+			"optional": [
+				"louis16"
+			]
+		},
+		{
+			"name": "louis15 attentif",
+			"player": "attentif",
+			"center": true,
+			"retries": 0,
+			"optional": [
+				"louis15"
+			],
+			"items": {
+				"potion": 3,
+				"antidote": 1
+			}
+		},
+		{
+			"name": "louis15 expert",
+			"player": "expert",
+			"center": true,
+			"retries": 0,
+			"optional": [
+				"louis15"
+			],
+			"items": {
+				"potion": 3,
+				"antidote": 1
+			}
+		},
+		{
+			"name": "louis15 naif",
+			"player": "naif",
+			"center": true,
+			"retries": 0,
+			"optional": [
+				"louis15"
+			]
+		}
+	]
+}
