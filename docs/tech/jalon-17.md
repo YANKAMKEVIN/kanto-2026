@@ -754,7 +754,7 @@ défaites, **sur les équipes du profil** (les basses : information, comme « Bu
   basses : Herbizarre 18 à 4 %, Carabaffe 19 à 50 %, Reptincel 19 à 89 %.
 - **Gamin Louis** (3 × Rattata / Rattatac Nv. 17, Croc de Mort) reste dur pour les équipes
   basses (victoire 31,8 % Herbizarre 18, 55,5 % Carabaffe 19) ; Nv. 15 donnerait 81 % / 92,5 %.
-  Évitable (parcours nord) : **non recalé**, question à Kevin.
+  Évitable (parcours nord) : **gardé au Nv. 17, décision de Kevin (2026-10-16)** : défi optionnel.
 - Deux allers sans soin entre les Dresseurs : l'usure (3 Potions pour 4 Dresseurs) fait échouer
   l'équipe Herbizarre (0 %), comme « tous les Dresseurs » du J14 : rythme de RB, pas un réglage.
 
