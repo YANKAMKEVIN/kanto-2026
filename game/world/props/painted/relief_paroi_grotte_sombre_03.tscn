@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_0lme7"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_qh04u"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_paroi_grotte_sombre_03.png" id="3_juxp6"]
+
+[node name="ReliefParoiGrotteSombre03" type="Node2D" unique_id=1570486088]
+script = ExtResource("1_0lme7")
+footprint = Array[Vector2i]([])
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1968247869]
+unique_name_in_owner = true
+material = ExtResource("2_qh04u")
+texture = ExtResource("3_juxp6")
+centered = false
+offset = Vector2(-96, -226)
