@@ -1,0 +1,63 @@
+{
+	"celadon_gym_lass_lila": {
+		"name": "Fillette Lila", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 345,
+		"team": [
+			{ "species": "bellsprout", "level": 23 },
+			{ "species": "weepinbell", "level": 23 }
+		]
+	},
+	"celadon_gym_lass_capucine": {
+		"name": "Fillette Capucine", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 345,
+		"team": [
+			{ "species": "oddish", "level": 23 },
+			{ "species": "gloom", "level": 23 }
+		]
+	},
+	"celadon_gym_beauty_violette": {
+		"name": "Beauté Violette", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 1680,
+		"team": [
+			{ "species": "bellsprout", "level": 24 },
+			{ "species": "bellsprout", "level": 24 }
+		]
+	},
+	"celadon_gym_jr_trainer_hortense": {
+		"name": "Jeune Dresseuse Hortense", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 480,
+		"team": [
+			{ "species": "bulbasaur", "level": 24 },
+			{ "species": "ivysaur", "level": 24 }
+		]
+	},
+	"celadon_gym_cooltrainer_camelia": {
+		"name": "Topdresseuse Camélia", "ai": "smart",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 840,
+		"team": [
+			{ "species": "weepinbell", "level": 24 },
+			{ "species": "gloom", "level": 24 },
+			{ "species": "ivysaur", "level": 24 }
+		]
+	},
+	"celadon_gym_erika": {
+		"name": "Erika", "ai": "smart",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 2871,
+		"start_message": false, "end_message": true, "bag": true, "switch": true,
+		"card": { "name": "ERIKA", "title": "Championne d'Arène de Céladopole" },
+		"team": [
+			{
+				"species": "victreebel", "level": 29,
+				"moves": ["razor_leaf", "wrap", "poison_powder", "sleep_powder"]
+			},
+			{
+				"species": "tangela", "level": 24,
+				"moves": ["constrict", "bind"]
+			},
+			{
+				"species": "vileplume", "level": 29,
+				"moves": ["mega_drain", "poison_powder", "stun_spore", "sleep_powder"]
+			}
+		]
+	}
+}

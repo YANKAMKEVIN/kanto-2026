@@ -384,6 +384,58 @@
 				{ "id": "machop_rocks", "unlock": { "seen": 1 },
 				  "text": "Vu dans l'équipe d'un Montagnard. Il soulève des rochers comme des cailloux." }
 			]
+		},
+		"growlithe": {
+			"height": 0.7, "weight": 19.0,
+			"description": "Fidèle et vif, il aboie dès qu'un inconnu approche de son territoire, puis se calme si son Dresseur le rassure."
+		},
+		"arcanine": {
+			"height": 1.9, "weight": 155.0,
+			"description": "Il court si vite qu'on ne voit passer qu'une traînée de feu. Les anciens le croyaient sorti d'une légende."
+		},
+		"vulpix": {
+			"height": 0.6, "weight": 9.9,
+			"description": "Ses queues bouclées s'étoffent à mesure qu'il grandit. On l'aperçoit au crépuscule, près des clairières sèches."
+		},
+		"ninetales": {
+			"height": 1.1, "weight": 19.9,
+			"description": "Ses longues queues brillent d'une lueur dorée. On raconte qu'il n'oublie jamais qui lui a manqué de respect."
+		},
+		"eevee": {
+			"height": 0.3, "weight": 6.5,
+			"description": "Son corps change au contact de certaines pierres. On ne le croise presque jamais dans la nature."
+		},
+		"vaporeon": {
+			"height": 1.0, "weight": 29.0,
+			"description": "Dans l'eau, il se fond au point de devenir invisible. Les jours de pluie, on l'entend chanter au bord des étangs."
+		},
+		"jolteon": {
+			"height": 0.8, "weight": 24.5,
+			"description": "Son poil se hérisse en aiguilles quand l'air se charge d'électricité. Il crépite dès qu'on le surprend."
+		},
+		"flareon": {
+			"height": 0.9, "weight": 25.0,
+			"description": "Il garde dans son corps une chaleur intense, qu'il rejette en soufflant. Son poil gonfle quand il se réchauffe."
+		},
+		"victreebel": {
+			"height": 1.7, "weight": 15.5,
+			"description": "Il attend, immobile dans le feuillage, qu'une proie s'approche de sa grande bouche. Un parfum sucré flotte autour de lui."
+		},
+		"tangela": {
+			"height": 1.0, "weight": 35.0,
+			"description": "Ses lianes bleues s'agitent sans cesse et cachent tout son corps. Personne ne sait vraiment ce qu'il y a dessous."
+		},
+		"vileplume": {
+			"height": 1.2, "weight": 18.6,
+			"description": "Ses larges pétales libèrent un pollen lourd qui pique les yeux. Il secoue sa fleur pour le répandre alentour."
+		},
+		"rhyhorn": {
+			"height": 1.0, "weight": 115.0,
+			"description": "Il fonce droit devant lui sans réfléchir et ne s'arrête qu'une fois l'obstacle renversé."
+		},
+		"kangaskhan": {
+			"height": 2.2, "weight": 80.0,
+			"description": "Elle ne quitte jamais le petit qu'elle porte dans sa poche, et le défend avec une force redoutable."
 		}
 	}
 }

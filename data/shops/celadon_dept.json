@@ -1,0 +1,25 @@
+{
+	"celadon_dept_4f_stones": {
+		"stock": [
+			{ "item": "fire_stone" },
+			{ "item": "water_stone" },
+			{ "item": "thunder_stone" },
+			{ "item": "leaf_stone" }
+		]
+	},
+	"celadon_dept_roof_water": {
+		"stock": [
+			{ "item": "fresh_water" }
+		]
+	},
+	"celadon_dept_roof_soda": {
+		"stock": [
+			{ "item": "soda_pop" }
+		]
+	},
+	"celadon_dept_roof_lemonade": {
+		"stock": [
+			{ "item": "lemonade" }
+		]
+	}
+}

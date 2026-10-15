@@ -10,7 +10,11 @@ var _dex: Pokedex
 func before_all() -> void:
 	_data = PokemonData.new()
 	_data.load_dir()
-	# Une lignée à branches (Évoli), absente des données du J6 : numéros hors de Kanto.
+	# Une lignée à branches (Évoli), absente des données du J6 : numéros hors de Kanto. Jalon 20
+	# (T7) : la lignée est dans les données (kanto_celadon.json) ; le complément ne sert plus
+	# qu'aux branches où elle manque encore.
+	if _data.has_species(&"eevee"):
+		return
 	var species := {}
 	for entry: Array in [["eevee", 1001, "Évoli", "normal"], ["vaporeon", 1002, "Aquali",
 			"water"], ["jolteon", 1003, "Voltali", "electric"], ["flareon", 1004, "Pyroli",
@@ -114,8 +118,8 @@ func test_no_silhouette_when_the_stage_is_not_one_species() -> void:
 	assert_false(stages[1].known)
 	stages = EvolutionReveal.chain(&"charmander", _data, _dex, false)
 	assert_eq(stages[0].number, 0, "avant l'activation : rond vide")
-	assert_eq(EvolutionReveal.chain(&"vaporeon", _data, _dex, true)[0].number, 1001,
-		"Évoli jamais vu, seul de sa colonne : silhouette")
+	assert_eq(EvolutionReveal.chain(&"vaporeon", _data, _dex, true)[0].number,
+		_data.get_species(&"eevee").dex, "Évoli jamais vu, seul de sa colonne : silhouette")
 
 
 func test_never_a_condition() -> void:

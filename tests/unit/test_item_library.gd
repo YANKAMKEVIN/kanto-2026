@@ -21,10 +21,15 @@ func test_real_data_loads_without_error() -> void:
 	# Jalon 12 : data/items/mt_moon.json (Corde Sortie, Pierre Lune, fossiles, CT01) ; jalon 14 :
 	# items_j14.json (CT19, CT28, Passe Bateau, Super Bonbon) ; jalon 15 (T12) : Super Potion et
 	# Guérison (data/items/vermilion.json).
+	# Jalon 20 (T7) : items_j20.json (Super Ball, pierres, boissons, CT13, CT21, Clé Ascenseur,
+	# Scope Sylphe).
 	assert_eq(_library.get_ids(), [&"antidote", &"awakening", &"burn_heal", &"dome_fossil",
-		&"escape_rope", &"full_restore", &"helix_fossil", &"ice_heal", &"moon_stone", &"nugget",
-		&"oak_parcel", &"paralyze_heal", &"poke_ball", &"potion", &"rare_candy", &"ss_ticket",
-		&"super_potion", &"tm01", &"tm11", &"tm19", &"tm28", &"tm34"] as Array[StringName])
+		&"escape_rope", &"fire_stone", &"fresh_water", &"full_restore", &"great_ball",
+		&"helix_fossil", &"ice_heal", &"leaf_stone", &"lemonade", &"lift_key", &"moon_stone",
+		&"nugget", &"oak_parcel", &"paralyze_heal", &"poke_ball", &"potion", &"rare_candy",
+		&"silph_scope", &"soda_pop", &"ss_ticket", &"super_potion", &"thunder_stone", &"tm01",
+		&"tm11", &"tm13", &"tm19", &"tm21", &"tm28", &"tm34", &"water_stone"]
+		as Array[StringName])
 	var ball := _library.get_item(&"poke_ball")
 	assert_eq(ball.name, "Poké Ball")
 	assert_eq(ball.plural, "Poké Balls")
@@ -42,9 +47,11 @@ func test_real_data_loads_without_error() -> void:
 	assert_eq(_library.get_ids_in_data_order(),
 		[&"poke_ball", &"potion", &"antidote", &"paralyze_heal", &"awakening", &"burn_heal", &"ice_heal",
 		&"nugget", &"tm11", &"tm34", &"oak_parcel", &"tm19", &"tm28", &"ss_ticket",
-		&"rare_candy", &"escape_rope", &"moon_stone", &"dome_fossil", &"helix_fossil", &"tm01",
+		&"rare_candy", &"great_ball", &"fire_stone", &"water_stone", &"thunder_stone",
+		&"leaf_stone", &"fresh_water", &"soda_pop", &"lemonade", &"tm13", &"tm21", &"lift_key",
+		&"silph_scope", &"escape_rope", &"moon_stone", &"dome_fossil", &"helix_fossil", &"tm01",
 		&"super_potion", &"full_restore"] as Array[StringName],
-		"fichiers dans l'ordre alphabétique (items, items_j14, mt_moon, vermilion)")
+		"fichiers dans l'ordre alphabétique (items, items_j14, items_j20, mt_moon, vermilion)")
 	assert_eq([ball.order, potion.order], [0, 1])
 
 

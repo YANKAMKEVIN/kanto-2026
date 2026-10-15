@@ -757,7 +757,7 @@ le code fusionné (un jalon a pu jouer `recoil_damage` ou les écrans). Compatib
 `tools/gen_tm_compatibility.py` relancé (fichier généré, jamais fusionné à la main) ; il couvre
 déjà toutes les CT RB par numéro.
 
-#### 2.10.4 Objets (`data/items/celadon.json` [D])
+#### 2.10.4 Objets (`data/items/celadon.json` [D] ; `items_j20.json` au T7, §2.10.7)
 
 | Id | Nom / pluriel | Catégorie | Valeurs | Prix |
 |---|---|---|---|---|
@@ -842,6 +842,37 @@ l'attribut `trainer=` des grilles (géométrie inchangée).
 7 + 5 + 10 (Casino compris) + Erika + Giovanni. Capacités : apprises au niveau, sauf capacité en
 attente (règle J12) ; Rafflesia d'Erika : Méga-Sangsue (RB). Répliques : §20 et annexe A.
 `can_lose: false`, `heal_after: false`, `gives_exp: true` (modèle existant).
+
+#### 2.10.7 Réalisé au T7 (branche `j20-t7-data`, non fusionnée)
+
+- **Fichiers nouveaux** : `species/kanto_celadon.json` (13 espèces, valeurs actuelles PokeAPI,
+  apprentissages RB ; Caninos et Goupix **identiques** à ceux du J17 : T9 garde une copie),
+  `moves/celadon.json` (9 : `mega_drain`, `constrict`, `comet_punch`, `stomp`, `dizzy_punch`,
+  `acid_armor`, `mist`, et `take_down`, `roar` **copiés mot pour mot du J17**), `items/items_j20.json`
+  (Super Ball, 4 pierres, 3 boissons, CT13, CT21, Clé Ascenseur, Scope Sylphe ; nommé comme
+  `items_j14.json` pour être lu après `items.json` : ordre « pertinence » du Sac, Poké Ball en
+  tête), `shops/celadon_dept.json`
+  (pierres du 4e, trois distributeurs du toit), `encounters/route_7.json`, `route_8.json`,
+  `trainers/route_8.json`, `celadon_gym.json`, `rocket_hideout.json` (Casino compris), sprites
+  provisoires des 13 espèces (`gen_placeholder_battlers.gd`, bloc « Jalon 20 » ; Caninos et Goupix
+  pixel pour pixel ceux du J17).
+- **Fichiers existants touchés** (une ligne chacun, comme prévu au T9) : `kanto.json` (évolutions
+  d'Ortide, de Boustiflor et de **Stari → Staross** par pierre), `pokedex/kanto.json` (13 entrées
+  en fin), `tm_compatibility.json` (régénéré, ajouts seulement).
+- **En attente du moteur (T11)** : `data/j20_pending/items_t11.json` (Rappel `revive`, Poupée Poké et
+  objets X `battle_use`, prix de la CT01) et `shops_t11.json` (2e, 2e CT, 4e, 5e). Aucune
+  bibliothèque ne lit ce dossier ; le T11 ajoute les clés puis déplace les entrées.
+- **Textes de l'annexe A** (brouillon, Q-1) : copiés mot pour mot, **sans** clé `draft` (les
+  tests partagés n'en admettent aucune : `test_no_draft_in_data`, Pokédex, capacités) ; la
+  correspondance numéro → donnée est `ANNEX_TEXTS` de `tests/unit/test_celadon_data.gd`, qui
+  compare chaque donnée à l'annexe (corriger l'annexe fait échouer le test sur la donnée à
+  remplacer ; n° 126, 154 : titres des cartes d'Erika et de Giovanni). Osselait (n° 204) : avec
+  l'espèce, au T9. Dialogues (§20 et annexe A) : au T17 / T21, avec les PNJ.
+- **Capacités sans effet retirées des équipes imposées** (règle J12) : Hurlement (Caninos, Goupix
+  de Gilles), Frénésie (Onix, Kangourex de Giovanni) ; Danse Fleur → Méga-Sangsue (Rafflesia).
+- **Tests partagés recalés** (comptes et listes : espèces, capacités, objets, boutiques, tables,
+  cartes de Champion, changement de Pokémon de l'IA, CT11, CT34, évolutions d'Ortide, Boustiflor,
+  Stari ; la lignée d'Évoli de `test_evolution_reveal` vient désormais des données).
 
 ### 2.11 Drapeaux, objectifs, zones, Grands moments (T17, T21)
 
