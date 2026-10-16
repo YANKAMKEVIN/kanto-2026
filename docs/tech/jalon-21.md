@@ -10,7 +10,8 @@
 > pour qu'elle trouve le repos. Il monte au 7F, bat 3 Sbires Rocket et sauve M. Fuji. Téléporté
 > chez Fuji, il reçoit la **Poké Flûte**. Elle réveille les deux **Ronflex** (bout est de la Route
 > 11, Route 16 est). Le joueur ouvre la **Route 12 nord** (ponton, 4 Pêcheurs, CT39) et la boucle
-> Carmin ↔ Route 11 ↔ Route 12 ↔ Lavanville.
+> Carmin ↔ Route 11 ↔ Route 12 ↔ Lavanville. **M-3 (2026-10-16)** : Ronflex « est » au croisement de la
+> Route 12 (drapeaux `snorlax_route_12_*`), retiré de la Route 11 du J17.
 >
 > Mécaniques nouvelles :
 > - le **premier objet clé utilisable** (`key_use`), en exploration et en combat ;
@@ -63,7 +64,7 @@ forme `jalon-19.md` et `jalon-17.md`, `jalon-16.md` (étapes `animate`, `field_m
 
 | Le J21 suppose | Jalon | État réel (2026-10-15) | Écart / ce que fait le J21 |
 |---|---|---|---|
-| Ronflex de la Route 11 : `FlagGate` 2 × 2 + `InteractPoint` 2 × 2 en (66..67, 14..15) | J17 | **Codé** : `tools/build_route_11.gd` (`j17-t16-route11`) l. 92-94 (`SNORLAX_FLAG = &"snorlax_route_11_awake"`), `_add_life` l. 256-306 ; dialogue `route_11_snorlax` (`data/dialogues/route_11.json` l. 8-20, T-6 puis T-7 par `snorlax_route_11_seen`) ; `FlagGate` (`game/world/flag_gate.gd` l. 21-48 : `if_flags`, `unless_flags`, `blocking_cells`, `is_open`, `apply`, `apply_to_grid`) | **Écart 1** : la porte s'ouvre sur `_awake`. Le J21 la passe sur `snorlax_route_11_done` (dossier §9.4, §19) : une ligne de donnée dans l'outil (T20). |
+| Ronflex de la Route 11 : `FlagGate` 2 × 2 + `InteractPoint` 2 × 2 en (66..67, 14..15) | J17 | **Codé** : `tools/build_route_11.gd` (`j17-t16-route11`) l. 92-94 (`SNORLAX_FLAG = &"snorlax_route_12_awake"`), `_add_life` l. 256-306 ; dialogue `route_11_snorlax` (`data/dialogues/route_11.json` l. 8-20, T-6 puis T-7 par `snorlax_route_12_seen`) ; `FlagGate` (`game/world/flag_gate.gd` l. 21-48 : `if_flags`, `unless_flags`, `blocking_cells`, `is_open`, `apply`, `apply_to_grid`) | **Écart 1** : la porte s'ouvre sur `_awake`. Le J21 la passe sur `snorlax_route_12_done` (dossier §9.4, §19) : une ligne de donnée dans l'outil (T20). |
 | Bord est de la Route 11 (75, 14..15) `raccord_est role=route_12` | J17 | **Aucun warp** : l'en-tête de `build_route_11.gd` dit « Bord est (75, 14..15) : aucun warp » ; `route_11.txt` : « praticable mais INATTEIGNABLE » | **Écart 2** : le dossier §3 parle d'un `raccord_est` ; il n'existe que dans la grille, pas dans la carte. Le J21 pose le warp PUSH → `route_12` / `from_route_11` et le spawn `from_route_12` en (74, 14..15) (§19). |
 | Lavanville : bord sud « ROUTE 12 — À venir » | J18 | Grille `lavanville.txt` (`jalon-18`) : `warp_sud` (21..23, 35) `coming_soon=route_12`, spawn `from_route_12` (21..23, 34) déjà prévu ; **carte non codée** (plan `jalon-18.md` §4) | Le J21 retire le `coming_soon` (T21). |
 | Maison des Pokémon au J19 : homme, fille, **Osselait** | J19 | Plan `jalon-19.md` §2.11 : homme et fille dans `data/npcs/pokemon_house.json` (Q-2 = A), **« sans Osselait visible (aucun art au J19) »** | **Écart 3** : Osselait n'est pas posé au J19. Le J21 le pose (L-14) : il faut un **sprite de monde d'Osselait** (lot d'art, §2.16). |
@@ -103,9 +104,9 @@ forme `jalon-19.md` et `jalon-17.md`, `jalon-16.md` (étapes `animate`, `field_m
    sauvegarde n'est écrite pendant une scène (`boot.gd` l. 695) : il n'atteint jamais le disque.
    Il est gardé pour suivre le dossier [D].
 2. **Deux drapeaux de plus** [D] (aucune version de sauvegarde) :
-   - `snorlax_route_11_woken`, `snorlax_route_16_woken` : posés au réveil, **jamais effacés**. Ils
+   - `snorlax_route_12_woken`, `snorlax_route_16_woken` : posés au réveil, **jamais effacés**. Ils
      servent au texte §15.7.5 (« dort de nouveau ») et à la réplique de Fuji §15.4.7 ;
-   - `snorlax_route_11_caught`, `snorlax_route_16_caught` : posés à la capture seulement. Ils
+   - `snorlax_route_12_caught`, `snorlax_route_16_caught` : posés à la capture seulement. Ils
      distinguent la capture (aucun texte) du K.O. (§15.7.3) ;
    - `tower_6f_mist_lifted` : posé au point 5 du §5.4, après la lumière. Il garde l'ordre du
      dossier (la brume se lève **après** les textes, pas dès la fin du combat).
@@ -527,7 +528,7 @@ variante  if [fuji_rescued]  unless_items [poke_flute]
   → `cutscene: pokemon_house_flute`.
 
 **Dialogue** `pokemon_house_fuji` (autres variantes, dans l'ordre) :
-`if [snorlax_route_11_woken]` → §15.4.7 ; `if [snorlax_route_16_woken]` → §15.4.7 ; sinon
+`if [snorlax_route_12_woken]` → §15.4.7 ; `if [snorlax_route_16_woken]` → §15.4.7 ; sinon
 §15.4.6.
 
 **Pourquoi c'est sûr** : aucune sauvegarde n'est écrite pendant une scène. Les seuls états
@@ -556,50 +557,57 @@ façon d'avoir la Flûte, et une seule.
 - `InteractPoint` 2 × 2, `unless_flags [snorlax_route_<n>_done]`, dialogue
   `snorlax_route_<n>`, **`flute_cutscene: snorlax_route_<n>_wake`**.
 
-**Dialogue** `snorlax_route_11` (remplace `route_11_snorlax` du J17 sur le point ; le J17 garde
-ses textes) :
+**Dialogue** `snorlax_route_12` (reprend les textes T-6 / T-7 de `route_11_snorlax` du J17) :
 
 | Ordre | Condition | Contenu |
 |---|---|---|
-| 1 | `if_items [poke_flute]`, `if [snorlax_route_11_woken]` | §15.7.5, puis « Jouer de la Poké Flûte ? » + choix |
+| 1 | `if_items [poke_flute]`, `if [snorlax_route_12_woken]` | §15.7.5, puis « Jouer de la Poké Flûte ? » + choix |
 | 2 | `if_items [poke_flute]` | « Jouer de la Poké Flûte ? » + choix |
-| 3 | `unless [snorlax_route_11_seen]`, `set [snorlax_route_11_seen]` | T-6 (J17) |
+| 3 | `unless [snorlax_route_12_seen]`, `set [snorlax_route_12_seen]` | T-6 (J17) |
 | 4 | — | T-7 (J17) |
 
 Choix : `"confirm": "OUI", "cancel": "NON"` (dossier §8.3), `confirm_cutscene:
-snorlax_route_11_wake` ; NON → rien.
+snorlax_route_12_wake` ; NON → rien.
 
-**Scène** `snorlax_route_11_wake` (`data/cutscenes/j21_snorlax.json`) :
+**Scène** `snorlax_route_12_wake` (`data/cutscenes/j21_snorlax.json`) :
 
 ```text
-variante  unless [snorlax_route_11_done]
+variante  unless [snorlax_route_12_done]
   flute                                         # notes ≈ 1,5 s
   dialogue snorlax_flute_played                 # §15.6.3 « {player} joue de la Poké Flûte. »
   react Snorlax ; emote Snorlax exclamation     # petit saut, « ! » (acteur de décor)
   dialogue snorlax_wakes                        # §15.7.2
-  set [snorlax_route_11_awake, snorlax_route_11_woken]
+  set [snorlax_route_12_awake, snorlax_route_12_woken]
   wild_battle snorlax 30
-      win [snorlax_route_11_done]
-      catch [snorlax_route_11_done, snorlax_route_11_caught]
-      clear [snorlax_route_11_awake]
-  dialogue snorlax_calms   if [snorlax_route_11_done]  unless [snorlax_route_11_caught]  # §15.7.3
-  dialogue snorlax_sleeps  unless [snorlax_route_11_done]                               # §15.7.4
+      win [snorlax_route_12_done]
+      catch [snorlax_route_12_done, snorlax_route_12_caught]
+      clear [snorlax_route_12_awake]
+  dialogue snorlax_calms   if [snorlax_route_12_done]  unless [snorlax_route_12_caught]  # §15.7.3
+  dialogue snorlax_sleeps  unless [snorlax_route_12_done]                               # §15.7.4
 ```
 
 - **K.O.** : `_done` → la `FlagGate` se cache (Boot `_on_flag_changed`, existant) → texte.
 - **Capture** : `_done` + `_caught` ; équipe ou Stockage (`_finish_capture`) ; aucun texte.
 - **Fuite** : `_awake` effacé ; « Ronflex bâille… » ; il reste.
 - **Défaite** : `_awake` effacé **avant** `wake_up` ; réveil au Centre ; il dort toujours.
-- **Fond de combat** : celui de la carte (`route_11_coast` au J17, existant).
+- **Fond de combat** : celui de la carte (Route 12 : `route_24_pont` [D], existant).
 - Le dialogue `snorlax_route_16` et la scène `snorlax_route_16_wake` sont identiques, avec
   leurs propres drapeaux (`snorlax_route_16_*`). Un test vérifie qu'aucune donnée d'un Ronflex
   ne cite un drapeau de l'autre.
 
+**M-3 (Kevin, 2026-10-16 ; passe du J22, dossier 25 §5)** : le Ronflex « est » est posé **sur la
+carte de la Route 12, au croisement** (grille `route_12.txt` révisée : passage de 2 cases, Ronflex
+2 × 2, repères `face_ronflex` nord / ouest / sud), et non plus sur la Route 11.
+
 **Route 11 (J17, `tools/build_route_11.gd`, bloc J21)** :
-- `SNORLAX_FLAG` → `snorlax_route_11_done` ; `flute_cutscene` sur `SnorlaxPoint` ;
+- **retirer** `SNORLAX_FLAG`, le `FlagGate` « Ronflex endormi », le `SnorlaxPoint` 2 × 2 et le sprite
+  endormi ; (66..67, 14..15) deviennent du chemin (retouche de `route_11.txt` à l'intégration) ;
+  dialogue `route_11_snorlax` (T-6, T-7) **repris** par le point de la Route 12 ;
 - **raccord est** : warp PUSH → (75, 14..15) vers `route_12` / `from_route_11` ; spawn
-  `from_route_12` (74, 14..15), tourné ← (§19) ;
-- on parle à Ronflex depuis (65, 14..15) côté ouest ou (68, 14..15) côté est (§19).
+  `from_route_12` (74, 14..15), tourné ← (§19).
+
+**Route 12** : `FlagGate` + `InteractPoint` 2 × 2 au croisement (`unless [snorlax_route_12_done]`),
+`flute_cutscene: snorlax_route_12_wake` ; on lui parle depuis les cases `face_ronflex`.
 
 ### 2.11 Route 12 nord (T21)
 
@@ -612,7 +620,7 @@ variante  unless [snorlax_route_11_done]
 - **poste** : portes `porte_poste_nord` (24..26, 24) et `porte_poste_sud` (24..26, 32) →
   `route_12_gate` / `entrance_nord|sud` ; sorties `from_poste_nord|sud` ;
 - îlot de la CT Jackpot : **décor vide** (§19) ; aucun objet ;
-- panneaux `panneau_route_12` (28, 20) → §15.8.1, `panneau_ponton` (26, 96) → §15.8.2 ;
+- panneaux `panneau_route_12` (28, 20) → §15.8.1, `panneau_ponton` (position de la grille révisée) → §15.8.2 ;
 - **aucune herbe, aucune table de rencontres** (RB : herbes au sud du croisement seulement ;
   vérifié sur `Route12.blk` : rangées 100 à 107) ;
 - lumière `golden_hour` [D] ; fond de combat `route_24_pont` [D, pont sur l'eau] dans
@@ -709,7 +717,7 @@ perd pas).
   - `ghost_marowak_calmed`, `tower_6f_mist_lifted` ;
   - `beaten_tower_rocket_1`, `_2`, `_3` ;
   - `fuji_rescued`, `got_poke_flute` ;
-  - `snorlax_route_11_awake` (jamais sur disque), `_woken`, `_caught`, `_done` ; idem `16` ;
+  - `snorlax_route_12_awake` (jamais sur disque), `_woken`, `_caught`, `_done` ; idem `16` ;
   - `got_tm39`, `route_12_visited`, `route_16_visited` ;
   - `snorlax_route_16_seen` [D, si le dialogue de la Route 16 reprend T-6 / T-7 ; sinon absent].
 - La Flûte et la CT39 sont des identifiants du Sac (existant). Ronflex capturé est un Pokémon de
@@ -753,7 +761,7 @@ Badges jusqu'au Prisme (J20). Drapeaux des J18 à J20 jusqu'à
 | `tower_marowak_weak` | 21A | Idem avec Salamèche N8 seul : défaite → Centre de Lavanville, déclencheur réarmé |
 | `tower_7f_qa` | 21A | 7F, `arrivee_T67`, `ghost_marowak_calmed`, `tower_6f_mist_lifted` ; Sbires non battus |
 | `fuji_flute_qa` | 21A | Maison des Pokémon, `fuji_rescued`, **sans** Flûte (cas « entre deux scènes ») |
-| `poke_flute_qa` | 21B | Route 11 (65, 14) tourné →, Flûte, équipe avec un endormi ; table `wild` forcée (Paras N24, Spore) pour tester la Flûte en combat |
+| `poke_flute_qa` | 21B | Route 12, case `face_ronflex` ouest, tournée →, Flûte, équipe avec un endormi ; table `wild` forcée (Paras N24, Spore) pour tester la Flûte en combat |
 | `snorlax_16_qa` | 21B | Route 16, `face_ronflex` (26, 22) tourné ←, Flûte, 1 Poké Ball (pour la fuite et la défaite) |
 | `route_12_qa` | 21B | Lavanville, `from_route_12`, Flûte ; Pêcheurs non battus ; `got_tm39` absent |
 | `j21_full_qa` | 21B | Lavanville devant la Tour (`retour_tour`), Scope, rien du J21 : parcours complet |
@@ -873,6 +881,9 @@ Kevin.
   `build_pokemon_tower.gd` sous les noms du plan ; que le J20 a livré `if_items` (dialogues) et
   `back_to_tower`.
 - Recaler l'équipe des départs (§2.15) sur les sorties réelles du J20.
+- **M-3** : retirer Ronflex de la Route 11 (`route_11.txt`, `tools/build_route_11.gd` : `FlagGate`,
+  `SnorlaxPoint`, sprite) ; régler en même temps les doublons J17 / J19 (`hypnosis`, `roar`,
+  `take_down`, `growlithe`).
 - **CA** : tests verts ; liste des écarts écrite au §0 ; T10 peut partir.
 
 ### 3.2 Sous-jalon 21A (la Tour résolue)
@@ -1007,21 +1018,23 @@ preuves `21a_<n>.png`, rapport `build/qa/jalon21_t16/`.
 - **Tests** : `test_cutscene_library` (`flute`) ; `test_prop_actor` ; `test_map_flute_targets`
   (carte de test : un point 2 × 2 → une cible ; caché par drapeau → aucune).
 
-#### T20 — C : Ronflex de la Route 11 — après T19, T5
-- `tools/build_route_11.gd` (bloc J21 : `_done`, `PropActor`, `flute_cutscene`, warp est,
-  `from_route_12`) ; `data/dialogues/j21_snorlax.json` (§15.7, choix) ; scène
-  `snorlax_route_11_wake` ; départ `poke_flute_qa`.
-- **Tests** `tests/integration/test_snorlax_route_11.gd` :
+#### T20 — C : Ronflex du croisement de la Route 12 (M-3) — après T19, T5, T21
+- `tools/build_route_12.gd` (Ronflex : `FlagGate`, `PropActor`, `InteractPoint`, `flute_cutscene`) ;
+  `tools/build_route_11.gd` (bloc J21 : **retrait** de Ronflex, warp est, `from_route_12`) ; `data/dialogues/j21_snorlax.json` (§15.7, choix) ; scène
+  `snorlax_route_12_wake` ; départ `poke_flute_qa`.
+- **Tests** `tests/integration/test_snorlax_route_12.gd` :
   - sans Flûte : T-6 puis T-7 (J17 inchangé) ; passage fermé ;
   - parler avec la Flûte : choix ; NON → rien ; OUI → réveil → combat ;
-  - Sac → UTILISER depuis (65, 14), (68, 15) → réveil ; depuis (64, 14) → « ailleurs » ;
+  - Sac → UTILISER depuis chaque case `face_ronflex` (nord, ouest, sud) → réveil ; à 2 cases → « ailleurs » ;
   - les quatre issues (§2.10), avec la sauvegarde relue (§2.14 n° 5, 7) ;
   - réveils répétés jusqu'au `_done` (§16 n° 9) ; Repos puis Flûte en combat (§16 n° 7) ;
   - équipe pleine → Stockage (§16 n° 8) ;
-  - après `_done` : (66..67, 14..15) praticables ; Route 11 ↔ Route 12 par (75, 14..15) ;
+  - avant `_done` : depuis Lavanville, ni la Route 11 ni le sud ; depuis la Route 11, ni Lavanville
+    ni le sud ; après `_done` : les cases de Ronflex praticables, les trois bras reliés ;
+  - la Route 11 n'a plus de Ronflex (66..67, 14..15 praticables dès le J21) ;
   - compagnon : passe avec le joueur après le réveil (§16 n° 10).
 
-#### T21 — C : Route 12 nord, poste, Pêcheurs, raccords — après T20, T5, T8
+#### T21 — C : Route 12 nord, poste, Pêcheurs, raccords — après T19, T5, T8 (avant T20)
 - `tools/build_route_12.gd`, `game/world/maps/route_12.tscn`, pièces `route_12_gate` et
   `route_12_gate_2f`, `data/npcs/route_12.json`, `route_12_gate.json`, dialogues (§15.8,
   annexe A), scène de la CT39 ; `build_lavender_town.gd` (bord sud) ; `zones.json`,
@@ -1029,8 +1042,7 @@ preuves `21a_<n>.png`, rapport `build/qa/jalon21_t16/`.
 - **Tests** `tests/integration/test_route_12.gd` : grille = plan ; raccords nord et ouest
   aller-retour (Lavanville (21..23, 34), Route 11 (74, 14..15)) ; bord sud « à venir » ; poste
   traversé dans les deux sens ; CT39 une fois (`got_tm39`, rechargement) ; Pêcheur 1 inévitable,
-  2 à 4 évitables (vraie scène) ; aucune rencontre en 1 000 pas ; Lavanville → croisement ≈ 145
-  pas ; ≤ 3 000 nœuds.
+  2 à 4 évitables (vraie scène) ; aucune rencontre en 1 000 pas ; Lavanville → Ronflex au croisement ; ≤ 3 000 nœuds.
 
 #### T22 — C : Route 16 est, Ronflex 16, raccord de Céladopole — après T19, T9
 - `celadopole.txt` (variante appliquée), `build_celadon_city.gd` (bloc J21),
@@ -1058,7 +1070,7 @@ preuves `21a_<n>.png`, rapport `build/qa/jalon21_t16/`.
 | 5 | (suite) | fuir | « Ronflex bâille… » ; examen : §15.7.5 |
 | 6 | (suite) | Sac → Flûte à côté, capturer | Ronflex dans l'équipe ; passage libre |
 | 7 | `snorlax_16_qa` | perdre, revenir, gagner | Centre ; il dort ; K.O. → §15.7.3 ; libre |
-| 8 | `route_12_qa` | Lavanville → poste (CT39) → Pêcheurs → croisement → Route 11 | boucle complète vers Carmin |
+| 8 | `route_12_qa` | Lavanville → poste (CT39) → Pêcheurs → Ronflex au croisement → Flûte → Route 11 | boucle complète vers Carmin |
 | 9 | `j21_full_qa` | Tour → Ossatueur → 7F → Flûte → deux Ronflex | **sans blocage** (critère de clôture) |
 | 10 | (suite) | relancer l'appli à chaque étape | état gardé (§2.14) |
 | 11 | (fps) | Route 12 (eau), 7F | ≥ 58 fps de moyenne, creux ≥ 50 |
@@ -1108,10 +1120,10 @@ Kevin, puis fusion.
 | n° 4 Coupure entre `fuji_rescued` et la Flûte | `test_save_j21` n° 3, 3 bis | une Flûte |
 | n° 5 Flûte et sauvage endormi par le joueur | `test_battle_flute` | il se réveille |
 | n° 6 Flûte en combat SPECTRE | `test_battle_flute` | effet normal |
-| n° 7 Repos puis Flûte | `test_battle_flute`, `test_snorlax_route_11` | réveillé |
-| n° 8 Équipe pleine à la capture | `test_snorlax_route_11` | Stockage |
-| n° 9 Ronflex rendormi | `test_snorlax_route_11` | réveil à volonté |
-| n° 10 Compagnon | `test_tower_6f_marowak`, `test_snorlax_route_11` | ni blocage, il passe après |
+| n° 7 Repos puis Flûte | `test_battle_flute`, `test_snorlax_route_12` | réveillé |
+| n° 8 Équipe pleine à la capture | `test_snorlax_route_12` | Stockage |
+| n° 9 Ronflex rendormi | `test_snorlax_route_12` | réveil à volonté |
+| n° 10 Compagnon | `test_tower_6f_marowak`, `test_snorlax_route_12` | ni blocage, il passe après |
 | n° 11 Corde Sortie au 7F | `test_pokemon_tower_7f` | devant la Tour, Fuji attend |
 | n° 12 Deux Ronflex | `test_route_16`, `test_save_j21` n° 7, 8 | indépendants |
 | n° 13 Aucun drapeau J21 avant | `test_j21_flags_contract` + tests J19 / J20 gardés | — |

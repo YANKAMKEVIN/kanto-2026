@@ -29,7 +29,7 @@
 | # | Décision |
 |---|---|
 | L-1 | Dossier n° 24, `dossier-24-repos-des-esprits.md`. |
-| L-2 | Le « Ronflex est » **est celui du J17**, au bout est de la Route 11 (`snorlax_route_11_*`). Il reste sur la carte de la Route 11 ; on le réveille depuis la Route 11 ou depuis le croisement de la Route 12. |
+| L-2 | Le « Ronflex est » **est celui du J17** (un seul Ronflex, comme RB). **Révisé par M-3** (passe du J22, confirmé par Kevin le 2026-10-16) : il quitte la carte de la Route 11 et dort **sur la Route 12, au croisement**, où il ferme la Route 11 et la suite vers le sud ; drapeaux `snorlax_route_12_*`. |
 | L-3 | **Route 12 nord complète** : de Lavanville au croisement de la Route 11, poste, ponton, 4 Pêcheurs RB ; bord sud « À venir ». |
 | L-4 | **Route 16 est** : sortie ouest de Céladopole (la haie du J20 est remplacée), Ronflex sur la voie basse, façade du poste fermée ; aucun texte sur le Vélo. |
 | L-5 | Ossatueur : RB, sauf la **Ball refusée avant le lancer, non consommée**. Fuite possible (recul, réarmé), défaite (Centre, réarmé), XP et « vu » au Pokédex. |
@@ -65,7 +65,7 @@ comique.
 | 7F : carte, 3 Sbires Rocket, rencontres sauvages, M. Fuji | Piste Cyclable, Vélo, poste de la Route 16 (intérieur), CS02 Vol |
 | Maison de Fuji : retour de Fuji, remise de la Poké Flûte | Safrania (accès, Thé, PNJ que RB permute) |
 | Poké Flûte : objet clé utilisable hors combat et en combat | Osselait offert ; Ronflex compagnon |
-| Ronflex de la Route 11 (J17) : réveil, combat, issue | Musique et sons (intentions notées, §11) |
+| Ronflex du croisement de la Route 12 (ex-Ronflex de la Route 11 du J17, M-3) : réveil, combat, issue | Musique et sons (intentions notées, §11) |
 | **Route 12 nord** (Lavanville → croisement), poste, ponton, 4 Pêcheurs | Toute capacité d'exploration nouvelle |
 | **Route 16 est** (Céladopole → Ronflex → façade du poste), Ronflex | |
 | Variantes de Lavanville et de la Tour ; objectifs du tableau de bord | |
@@ -75,7 +75,7 @@ comique.
 
 | Le J21 suppose | Jalon | Si c'est faux |
 |---|---|---|
-| Ronflex de la Route 11 : `FlagGate` + `InteractPoint` 2 × 2 en (66..67, 14..15), `unless snorlax_route_11_awake`, textes T-6 / T-7, bord est (75, 14..15) `raccord_est role=route_12` | J17 (codé, `jalon-17`) | Le J21 ajoute la variante « Flûte » et le raccord. |
+| Ronflex de la Route 11 : `FlagGate` + `InteractPoint` 2 × 2 en (66..67, 14..15), `unless snorlax_route_12_awake`, textes T-6 / T-7, bord est (75, 14..15) `raccord_est role=route_12` | J17 (codé, `jalon-17`) | Le J21 ajoute la variante « Flûte » et le raccord. |
 | Lavanville : bord sud « ROUTE 12 — À venir » ; Maison des Pokémon (enfant, Rondoudou, Nidoran ♀) | J18 | — |
 | Maison des Pokémon au J19 : homme, fille, **Osselait** ; textes du dossier 22 §15.6 | J19 | Le J21 les remplace par ses variantes. |
 | 6F : scène `tower_6f_ghost`, déclencheur (10, 16), étape `wild_battle marowak 30 ghost: always`, recul (10, 15), variante `unless ghost_marowak_calmed` ; escalier du 7F (9, 16), paire T67 | J19 (plan `jalon-19.md` §2.4) | Le J21 change la **donnée** de scène. |
@@ -244,7 +244,7 @@ par « Réduire les animations ». Son : jalon audio.
 
 | Id | Carte | Cases | Accès |
 |---|---|---|---|
-| `snorlax_route_11` | Route 11 (J17), goulet est | (66..67, 14..15) | depuis la Route 11 (ouest) ; depuis le croisement de la Route 12 (est), si la grille le permet |
+| `snorlax_route_12` | Route 12, croisement (M-3) | grille `route_12.txt` (passage de 2 cases) | depuis Lavanville (nord), depuis la Route 11 (ouest) ; il ferme aussi le sud |
 | `snorlax_route_16` | Route 16 est | grille `route_16.txt` | depuis Céladopole |
 
 Chacun a **ses propres drapeaux** : réveiller, capturer ou battre l'un ne change jamais l'autre.
@@ -278,7 +278,7 @@ toujours. Aucune duplication possible (la capture pose `*_done` avant tout).
 
 ### 10.1 Route 12 nord
 
-- **De Lavanville au croisement de la Route 11**. Grille `tools/plans/route_12.txt` (fait foi).
+- **De Lavanville au croisement de la Route 11**, où dort **Ronflex** (M-3). Grille `tools/plans/route_12.txt` (fait foi).
 - Le bord sud de Lavanville (« ROUTE 12 — À venir », J18) devient le raccord nord de la Route 12.
 - **Poste** traversé par la route (RB) [D : intérieur selon le modèle de poste existant] ;
   **CT39 Météores** offerte au 2F par une jeune femme (RB ; la capacité existe déjà dans
@@ -286,12 +286,15 @@ toujours. Aucune duplication possible (la capture pose `*_done` avant tout).
 - **Ponton** et eau (décor, pas de Surf ni de pêche).
 - **4 Pêcheurs** (RB) : équipes RB (Poissirène, Ptitard, Magicarpe…) ; espèces créées si absentes
   ; niveaux RB [D].
-- **Croisement** : le raccord avec le bord est de la Route 11 (75, 14..15) ; Ronflex reste sur la
-  carte de la Route 11, juste à l'ouest. **Bord sud « ROUTE 12 — À venir »** (J22).
+- **Croisement** : le raccord avec le bord est de la Route 11 (75, 14..15). **Ronflex y dort** (M-3) :
+  le passage fait 2 cases de large et ses 2 × 2 cases ferment à la fois la Route 11 (ouest) et la
+  suite vers le sud. **Bord sud « ROUTE 12 — À venir »** (J22 construit la suite).
 - Rencontres : selon RB sur ce tronçon [D].
 - **Avant la Flûte**, la Route 12 nord est ouverte depuis Lavanville : c'est un cul-de-sac au
   croisement, Ronflex endormi en vue (comme RB).
-- **Après le réveil**, boucle **Carmin ↔ Route 11 ↔ Route 12 ↔ Lavanville**.
+- Depuis Carmin, la Route 11 bute sur Ronflex au croisement.
+- **Après la capture ou le K.O.** (`snorlax_route_12_done`), boucle **Carmin ↔ Route 11 ↔ Route 12 ↔
+  Lavanville**, et le sud s'ouvre (au J22).
 
 ### 10.2 Route 16 est
 
@@ -302,10 +305,13 @@ toujours. Aucune duplication possible (la capture pose `*_done` avant tout).
 - Voie haute et arbre à Couper : **décor dense infranchissable** (CS Vol hors jalon).
 - Aucun Dresseur, **aucun texte sur le Vélo**. La seule récompense est Ronflex.
 
-### 10.3 Dépendance J22 (signalée, non tranchée ici)
+### 10.3 Dépendance J22 — tranchée par M-3
 
-Dans RB, le Ronflex du croisement bloque aussi la Route 12 vers le sud. Ici, il est sur la Route 11.
-Le J22 devra décider ce qui ferme la Route 12 sud tant que la Flûte n'est pas obtenue.
+Le J22 a proposé et Kevin a confirmé (2026-10-16, M-3 de `j22-v2-alignement.md`, dossier 25 §5) :
+**Ronflex au croisement de la Route 12**, comme RB. Il ferme la Route 12 sud tant qu'il n'est ni
+capturé ni mis K.O. Conséquence pour le J17 : son `FlagGate` et son `InteractPoint` 2 × 2 quittent
+la Route 11 (`tools/build_route_11.gd`, `route_11.txt`) ; le goulet de la Route 11 devient un simple
+chemin jusqu'au raccord est. Retouche faite à l'intégration (T9 du plan).
 
 ## 11. Lavanville et la Tour après le jalon [L-14]
 
@@ -338,8 +344,10 @@ Mises à jour en silence (existant). Rien ne montre Ronflex.
 | `beaten_tower_rocket_1..3` | Sbires du 7F (mécanisme existant) |
 | `fuji_rescued` | Scène du 7F, avant la téléportation |
 | `got_poke_flute` | Même étape que `give poke_flute` (la condition lit aussi la possession) |
-| `snorlax_route_11_awake`, `snorlax_route_16_awake` | Réveil ; effacé après fuite ou défaite |
-| `snorlax_route_11_done`, `snorlax_route_16_done` | Capture ou K.O. ; ouvre le `FlagGate` |
+| `snorlax_route_12_woken`, `snorlax_route_16_woken` | Premier réveil (jamais effacé ; sert aux répliques) |
+| `snorlax_route_12_caught`, `snorlax_route_16_caught` | Capture |
+| `snorlax_route_12_done`, `snorlax_route_16_done` | Capture ou K.O. ; ouvre le `FlagGate` |
+| `snorlax_route_*_awake` | Pendant la scène seulement, jamais sauvegardé (plan §2.10) |
 | `route_12_visited`, `route_16_visited` | Titre d'arrivée (méthode existante) |
 | `got_tm39` | Remise de la CT39 au poste de la Route 12 |
 
@@ -386,7 +394,7 @@ le 6F.
 - **Personnages** : planche **M. Fuji** (vieil homme, marche + prière agenouillée) ; **Pêcheur** (si
   absent).
 - **Pokémon** : Ossatueur (face), Ronflex (face, dos), Pêcheurs (face, dos).
-- **Combat** : fond CB.3 `tour_pokemon` (J19) au 7F ; Ronflex est : fond de la Route 11 (J17) ;
+- **Combat** : fond CB.3 `tour_pokemon` (J19) au 7F ; Ronflex est : fond de route existant [D] ;
   Route 16 : fond de route existant [D] ; Route 12 : ponton [D, ou fond de route existant].
 - **Interface** : icône de la Poké Flûte ; notes de musique (effet simple).
 
@@ -535,6 +543,9 @@ Grilles, vues, données et art avancent dès maintenant.
 
 ## 19. Grilles v1 (lot 21.0) — À VALIDER par Kevin
 
+> **M-3 (2026-10-16)** : la grille `route_12.txt` est révisée pour poser Ronflex au croisement
+> (passage de 2 cases) ; le tableau ci-dessous décrit la v1 avant révision.
+
 > Conçues le 2026-10-15 (branche `j21-grilles`, fusionnée ici). La grille fait foi pour la
 > géométrie. Contrôle : `python3 -I tools/art/plan_check_j21.py` → **TOUT EST CONFORME** (il lit
 > les grilles voisines des J17 à J20 sur leurs branches). Son enregistrement dans
@@ -547,10 +558,9 @@ Grilles, vues, données et art avancent dès maintenant.
 | `route_16.txt` | 44 × 28 | Raccord (43, 21..23) ↔ Céladopole (0, 21..23) ; Ronflex 2 × 2 en (24..25, 22..23) ferme tout le goulet ; `face_ronflex` (26, 22..23) ; porte du poste (15..16, 20) « À venir » ; voie haute et arbre en décor. |
 
 **Valeurs par défaut retenues [D]** (en attendant l'avis de Kevin) :
-- **Ronflex : le `FlagGate` s'ouvre sur `*_done`** (dossier §9.4), y compris celui du J17 sur la
-  Route 11, aujourd'hui sur `snorlax_route_11_awake` : le J21 l'aligne (donnée seulement).
-- **Ronflex de la Route 11** : on lui parle depuis la Route 11, en (68, 14..15) côté est (atteint par
-  la Route 12) ou (65, 14..15) côté ouest ; aucune case de la Route 12 ne lui est voisine.
+- **Ronflex : le `FlagGate` s'ouvre sur `*_done`** (dossier §9.4).
+- **Ronflex de la Route 12** (M-3) : au croisement, en (25..26, 93..94) [à confirmer par la grille
+  révisée] ; on lui parle depuis le nord, l'ouest ou le sud (repères `face_ronflex`).
 - **Poste de la Route 12** : deux portes (traversée) et un 2F (CT39) ; lisibilité de la porte nord
   à vérifier sur la vue peinte.
 - **Îlot de la CT Jackpot de RB** (accessible seulement en Surf dans RB) : **îlot décor vide** ; la
