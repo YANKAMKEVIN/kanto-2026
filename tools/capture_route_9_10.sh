@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Captures de la Route 9, de la Route 10 et du Centre de la Route 10 (jalon 18 T12),
+# Captures de la Route 9, de la Route 10 et du Centre de la Route 10 (jalon 18 T12 ; vie : plans
+# « t18_* », `tools/capture_route_9_10.sh build/captures/j18_t18 t18_`),
 # 2340 × 1080, Movie Maker (Mac, pas en headless), avec `tools/capture_pewter.gd` (carte,
 # joueur peint et sa caméra, WorldLighting + profil de la carte) :
 #   tools/capture_route_9_10.sh [dossier [filtre]]   (défaut : build/captures/j18_t12, tout)
@@ -50,6 +51,14 @@ SHOTS=(
 	"r10_herbes_sud|40|$R10 --cell=6,68 --facing=down"
 	"r10_raccord_lavanville|40|$R10 --cell=22,73 --facing=down"
 	"centre_route_10|40|--map=route_10_center --spawn=entrance --facing=up"
+	"t18_lou|40|$R9 --cell=10,23 --facing=up"
+	"t18_panneau_ouest|40|$R9 --cell=3,22 --facing=up"
+	"t18_adam|40|$R9 --cell=36,11 --facing=up"
+	"t18_benoit|40|$R9 --cell=54,26 --facing=down"
+	"t18_piafabec|40|$R9 --cell=50,25 --facing=right"
+	"t18_panneau_grotte|40|$R10 --cell=14,11 --facing=up"
+	"t18_randonneur|40|$R10 --cell=17,10 --facing=right"
+	"t18_centre_infirmiere|40|--map=route_10_center --spawn=heal --facing=up"
 	"perf_r9_ouest|300|$R9 --cell=10,23 --facing=right --perf"
 	"perf_r9_terrasse|300|$R9 --cell=34,14 --facing=right --perf"
 	"perf_r9_est|300|$R9 --cell=66,13 --facing=right --perf"

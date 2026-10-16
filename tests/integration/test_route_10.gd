@@ -4,7 +4,7 @@ extends GutTest
 ## secteurs non reliés à pied** (nord depuis le raccord ouest, sud depuis la sortie sud de la
 ## grotte), eau jamais praticable, centrale sans porte ni texte, raccords (Route 9, Centre,
 ## bouches de la grotte et Lavanville « à venir » tant que leurs cartes n'existent pas), cases
-## réservées libres de décor, budget de nœuds. Carte sans vie (T16 / T18).
+## réservées libres de décor, budget de nœuds. La vie : T18 (nord) et T24 (sud).
 
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 const GridPaths := preload("res://tests/helpers/grid_paths.gd")
@@ -206,8 +206,9 @@ func test_cave_mouths_and_south_edge() -> void:
 
 ## T16 : PNJ, Dresseurs et objet en données ; panneaux et déclencheurs posés au T18 / T24.
 func test_life_is_the_t16_data_only() -> void:
-	assert_eq(_map.get_node(^"Triggers").get_child_count(), 0)
-	assert_eq(_map.get_node(^"Interactables").get_child_count(), 0)
+	# T18 : un point d'examen (panneau) et un déclencheur silencieux, dans les tests de vie.
+	assert_eq(_map.get_node(^"Triggers").get_child_count(), 1)
+	assert_eq(_map.get_node(^"Interactables").get_child_count(), 1)
 	var ids := _npc_ids_and_data(_map.get_entities(), &"route_10")
 	assert_eq(ids[0], ids[1], "PNJ de data/npcs/route_10.json")
 	assert_eq((ids[1] as Array).size(), 4, "Hector, Paul, le randonneur, la Super Potion")

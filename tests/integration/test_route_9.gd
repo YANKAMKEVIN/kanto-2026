@@ -5,7 +5,7 @@ extends GutTest
 ## « à venir » tant qu'Azuria n'a pas sa variante J18, bord est vers la Route 10), critères de
 ## `tools/art/plan_check_route_9.py` refaits sur la vraie grille (Lou et Benoît inévitables, les
 ## autres évitables, hautes herbes), cases réservées libres de tout décor, budget de nœuds.
-## Carte sans vie : aucun PNJ, aucune donnée (T16 / T18).
+## La vie (PNJ, objets, rencontres, déclencheur) : T18, voir test_route_9_life et _trainers.
 
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 const GridPaths := preload("res://tests/helpers/grid_paths.gd")
@@ -134,8 +134,9 @@ func test_east_edge_leads_to_route_10_same_rows() -> void:
 
 ## T16 : PNJ, Dresseurs et objets en données ; panneau et déclencheurs posés au T18.
 func test_life_is_the_t16_data_only() -> void:
-	assert_eq(_map.get_node(^"Triggers").get_child_count(), 0)
-	assert_eq(_map.get_node(^"Interactables").get_child_count(), 0)
+	# T18 : un point d'examen (panneau) et un déclencheur silencieux, dans les tests de vie.
+	assert_eq(_map.get_node(^"Triggers").get_child_count(), 1)
+	assert_eq(_map.get_node(^"Interactables").get_child_count(), 1)
 	var ids := _npc_ids_and_data(_map.get_entities(), &"route_9")
 	assert_eq(ids[0], ids[1], "PNJ de data/npcs/route_9.json")
 	assert_eq((ids[1] as Array).size(), 12, "7 Dresseurs, 3 objets, 2 Pokémon d'ambiance")

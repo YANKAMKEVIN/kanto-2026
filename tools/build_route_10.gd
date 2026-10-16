@@ -21,9 +21,9 @@ extends SceneTree
 ##   paroi beige de la série 12 (nord et sud de la bande centrale ; le milieu de la bande est
 ##   planté d'arbres), centrale lointaine au-delà de l'eau, silhouette de la Tour au sud, rochers,
 ##   forêt serrée, hautes herbes.
-## - **Carte sans vie** : les cases du randonneur, des Dresseurs et de l'objet sont réservées ;
-##   aucune donnée de PNJ, de rencontre ni de dialogue (T16 / T18). Le panneau (14, 10) est posé
-##   sans point d'examen.
+## - **Vie** : les cases du randonneur, des Dresseurs et de l'objet sont réservées ; les PNJ
+##   viennent de `data/npcs/route_10.json`, les rencontres de `data/encounters/route_10.json`.
+##   Secteur nord (T18) : point d'examen du panneau (14, 10) et déclencheur `route_10_reached`.
 ## - Passages : porte du Centre (7..8, 11) STEP_ON ↑ → `route_10_center` ; raccord ouest (0, 12..14)
 ##   PUSH ← → `route_9` ; bouches (16..17, 7) et (8..9, 47) STEP_ON ↑ → `dark_cave_1f` (« Grotte
 ##   Sombre — À venir » tant que la carte n'existe pas) ; raccord sud (21..23, 75) PUSH ↓ →
@@ -85,6 +85,14 @@ const SOUTH_EXITS: Array = [
 const RESERVED_KINDS: Array[String] = ["dresseur", "pnj", "pokemon", "objet_visible", "cache"]
 const BALL_KINDS: Array[String] = ["objet_visible", "cache"]
 const SIGNS: Array = [["panneau_grotte", "SignCave"]]
+## Point d'examen du panneau de la grotte (lu de face, depuis (14, 11)) : [nœud, dialogue].
+const SIGN_READ: Array = ["SignCaveRead", &"route_10_cave_sign"]
+## Déclencheur silencieux de l'objectif « traverser la Grotte Sombre. » (jalon-18.md §4.13) :
+## colonne 1, rangées 12..14 (arrivée de la Route 9 ; le Centre est à 4 cases) ; l'ancre est la
+## case du bas, la boîte monte de trois cases.
+const REACHED_ANCHOR := Vector2i(1, 14)
+const REACHED_SIZE := Vector2i(1, 3)
+const REACHED_CUTSCENE: StringName = &"route_10_reached"
 
 ## Cases `K` plantées d'arbres : milieu de la bande centrale (la paroi n'est peinte qu'en haut et
 ## en bas, fiche série 21 §B2) ; bord de la terrasse de Paul.
@@ -159,6 +167,7 @@ func _init() -> void:
 	var entities: Node2D = _kit.get(&"entities")
 	var decals: Node2D = _kit.get(&"decals")
 	_add_passages()
+	_add_life_north()
 
 	_kit.call(&"place_border_decals", SEED)
 	_kit.call(&"place_meadow", MEADOW_ATTEMPTS, MEADOW_FLOWER_CHANCE, FLOWERS)
@@ -439,3 +448,12 @@ func _style_rock(rock: Node2D, decor: RandomNumberGenerator, scale: float) -> vo
 	_kit.call(&"flip", rock, decor.randf() < 0.5)
 	var value := decor.randf_range(0.9, 1.0)
 	rock.modulate = Color(value, value, value)
+
+
+## Vie du secteur nord (T18) : point d'examen du panneau de la grotte et déclencheur silencieux de
+## l'objectif. Le secteur sud (Dresseurs, objet, `dark_cave_crossed`) est celui du T24.
+func _add_life_north() -> void:
+	_kit.call(&"add_interactable", SIGN_READ[0], _cell("panneau_grotte"), Vector2i.ONE,
+		Vector2i.UP, SIGN_READ[1])
+	_kit.call(&"add_trigger", "Route10Reached", REACHED_ANCHOR, REACHED_SIZE, Vector2i.ZERO,
+		REACHED_CUTSCENE)

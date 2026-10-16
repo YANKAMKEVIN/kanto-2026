@@ -13,9 +13,10 @@ extends SceneTree
 ##
 ## - `Ground` (invisible) = source logique : `.` herbe, `=` chemin, `o` sol rocheux, `h` hautes
 ##   herbes, `v` rebord (sauté vers le sud) ; tout le reste (forêt, paroi, rochers) est solide.
-## - **Carte sans vie** : les cases des Dresseurs, PNJ, Pokémon d'ambiance et objets de la grille
-##   sont **réservées** (la forêt s'en écarte) ; aucune donnée de PNJ, de rencontre ni de dialogue
-##   (T16 / T18). Le panneau ouest est posé (décor) mais sans point d'examen (dialogue du T18).
+## - **Vie (T18)** : les cases des Dresseurs, PNJ, Pokémon d'ambiance et objets de la grille sont
+##   **réservées** (la forêt s'en écarte) ; les PNJ viennent de `data/npcs/route_9.json`, les
+##   rencontres de `data/encounters/route_9.json`. Point d'examen du panneau ouest et déclencheur
+##   silencieux `route_9_entered` (colonne 1, rangées 22..24).
 ## - Passages : bord ouest (0, 22..24) = « Azuria — À venir » tant que la variante J18 d'Azuria
 ##   n'existe pas (la Coupe du J16 ouvre l'arbre (53, 23) ; §4.4) ; bord est (79, 12..14) PUSH →
 ##   `route_10` / `from_route_9` (spawns `from_route_10`, `_n`, `_s`). Aucun bâtiment, aucune porte.
@@ -62,6 +63,14 @@ const RESERVED_KINDS: Array[String] = ["dresseur", "pnj", "pokemon", "objet_visi
 const BALL_KINDS: Array[String] = ["objet_visible", "cache"]
 ## Panneau : [position de la grille, nœud] (décor ; point d'examen au T18).
 const SIGNS: Array = [["panneau_ouest", "SignWest"]]
+## Point d'examen du panneau (lu de face, depuis le sud) : [nœud, dialogue].
+const SIGN_READ: Array = ["SignWestRead", &"route_9_sign"]
+## Déclencheur silencieux de l'objectif « traverser la Route 9 vers l'est. » (jalon-18.md §4.13) :
+## colonne 1, rangées 22..24 (les trois cases d'arrivée d'Azuria sont en colonne 0) ; l'ancre
+## est la case du bas, la boîte monte de trois cases.
+const ENTERED_ANCHOR := Vector2i(1, 24)
+const ENTERED_SIZE := Vector2i(1, 3)
+const ENTERED_CUTSCENE: StringName = &"route_9_entered"
 
 ## Cases `K` converties en forêt (arbres) : colonne isolée du bord est de la terrasse haute.
 const FOREST_K: Array[Rect2i] = [Rect2i(50, 10, 1, 7)]
@@ -121,6 +130,7 @@ func _init() -> void:
 	var entities: Node2D = _kit.get(&"entities")
 	var decals: Node2D = _kit.get(&"decals")
 	_add_passages()
+	_add_life()
 
 	_kit.call(&"place_border_decals", SEED)
 	_kit.call(&"place_meadow", MEADOW_ATTEMPTS, MEADOW_FLOWER_CHANCE, FLOWERS)
@@ -212,6 +222,16 @@ func _add_passages() -> void:
 		_kit.call(&"add_spawn", entry[2], entry[1])
 		_kit.call(&"add_warp", entry[0], entry[1], Kit.PUSH, Vector2i.RIGHT, EAST_MAP,
 			StringName(entry[3]), Vector2i.RIGHT)
+
+
+## Vie de la carte (T18) : point d'examen du panneau et déclencheur de l'objectif. Les Dresseurs,
+## Pokémon d'ambiance et objets viennent de `data/npcs/route_9.json`, les rencontres de
+## `data/encounters/route_9.json`.
+func _add_life() -> void:
+	_kit.call(&"add_interactable", SIGN_READ[0], _cell("panneau_ouest"), Vector2i.ONE, Vector2i.UP,
+		SIGN_READ[1])
+	_kit.call(&"add_trigger", "Route9Entered", ENTERED_ANCHOR, ENTERED_SIZE, Vector2i.ZERO,
+		ENTERED_CUTSCENE)
 
 
 ## Vrai si Azuria porte déjà les spawns `from_route_9_*` (variante J18, après la Coupe du J16).
