@@ -2,8 +2,9 @@ extends GutTest
 ## Carte lavender_town (Lavanville, jalon 18 T14, docs/tech/jalon-18.md §4.1 à §4.3 ; dossier 21 §6)
 ## sur la vraie scène : métadonnées, **grille de la scène = grille fonctionnelle**
 ## `tools/plans/lavanville.txt`, raccords (nord vers la Route 10, ouest et sud `coming_soon`),
-## six portes, **sans vie** (aucun PNJ, examen ni déclencheur ; case du panneau du Scope du J19
-## libre), budget de nœuds.
+## six portes, vie du T24 (quatre habitants, trois panneaux examinables, déclencheur d'arrivée ;
+## case du panneau du Scope du J19 libre ; la légende et les scènes : `test_lavender_life`),
+## budget de nœuds.
 
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 const GridPaths := preload("res://tests/helpers/grid_paths.gd")
@@ -89,9 +90,28 @@ func test_scene_grid_is_the_functional_grid() -> void:
 	assert_eq(_plan.walkable, ".pD")
 
 
-func test_without_life() -> void:
-	assert_eq(_map.get_node(^"Interactables").get_child_count(), 0, "aucun examen")
-	assert_eq(_map.get_node(^"Triggers").get_child_count(), 0, "aucun déclencheur")
+func test_life_is_the_t16_people_the_three_signs_and_the_arrival_trigger() -> void:
+	# Trois panneaux examinables (T-18 à T-20), lus depuis la case voisine de la grille.
+	var signs := {&"lavender_town_sign": "panneau_ville", &"lavender_tower_sign": "panneau_tour",
+		&"lavender_pokemon_house_sign": "panneau_fuji"}
+	var seen: Array[StringName] = []
+	for point: Node in _map.get_node(^"Interactables").get_children():
+		var dialogue: StringName = point.get(&"dialogue_id")
+		seen.append(dialogue)
+		assert_true(signs.has(dialogue), "examen inattendu %s" % dialogue)
+		if signs.has(dialogue):
+			assert_eq((point as Marker2D).call(&"get_cell"), _plan.cell_of(signs[dialogue]))
+	seen.sort()
+	assert_eq(seen.size(), 3)
+	# Un seul déclencheur : la scène silencieuse `lavender_reached`, sur les 3 cases de la 2e rangée.
+	var triggers := _map.get_node(^"Triggers")
+	assert_eq(triggers.get_child_count(), 1)
+	var arrival: Node = triggers.get_child(0)
+	assert_eq(arrival.get(&"cutscene_id"), &"lavender_reached")
+	assert_eq(arrival.get(&"direction"), Vector2i.DOWN)
+	var cells: Array[Vector2i] = arrival.call(&"get_cells")
+	cells.sort()
+	assert_eq(cells, _plan.cells_at("legende_arrivee"))
 	# T16 : les quatre habitants (data/npcs/lavender_town.json) sur leurs cases réservées.
 	var ids: Array[String] = []
 	for npc: Npc in _map.get_npcs():
@@ -111,6 +131,8 @@ func test_without_life() -> void:
 	assert_eq(scope, Vector2i(42, 11))
 	assert_false(_grid.is_solid(scope))
 	assert_true(_reach().has(scope + Vector2i.LEFT), "lisible depuis (41, 11)")
+	for interaction: Interaction in _map.get_interactions().get_all():
+		assert_ne(interaction.cell, scope, "aucun examen en (42, 11)")
 
 
 func test_north_edge_leads_to_route_10_or_coming_soon() -> void:

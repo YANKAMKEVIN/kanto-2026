@@ -67,6 +67,14 @@ const STAIRS_LABEL: String = "Tour Pokémon"
 const TOMBS: Array[String] = ["int_tombe_tour_01", "int_tombe_tour_02", "int_tombe_tour_03"]
 ## Tombes nommées (T-36 à T-40) : variantes B ou C (bouquet, offrande), plus fréquentes qu'ailleurs.
 const NAMED_TOMBS: Array[String] = ["tombe_1", "tombe_2", "tombe_3", "tombe_4", "tombe_5"]
+## Examen des tombes (T24) : dialogue de chaque tombe nommée (T-36 à T-40), puis T-41 pour les
+## 31 autres. Le gardien se parle à travers le comptoir : point d'examen sur les quatre cases.
+const NAMED_GRAVE_DIALOGUES: Array[StringName] = [
+	&"pokemon_tower_grave_1", &"pokemon_tower_grave_2", &"pokemon_tower_grave_3",
+	&"pokemon_tower_grave_4", &"pokemon_tower_grave_5",
+]
+const OTHER_GRAVE_DIALOGUE: StringName = &"pokemon_tower_grave"
+const KEEPER_DIALOGUE: StringName = &"pokemon_tower_keeper"
 const CANDLE: String = "int_bougeoir_tour_01"
 const CANDLE_GLOW: StringName = &"candle"
 ## Hauteur du halo au-dessus du pied du chandelier (flamme au sommet de l'image de 147 px).
@@ -117,6 +125,7 @@ func _build() -> int:
 	var tombs := _place_tombs()
 	_place_furniture()
 	_place_passages()
+	_add_life()
 	if not _errors().is_empty():
 		push_error("build_pokemon_tower :\n%s" % "\n".join(_errors()))
 		_kit.call(&"discard")
@@ -342,6 +351,25 @@ func _place_furniture() -> void:
 	for cell: Vector2i in _plan().call(&"cells_of", "n"):
 		_kit.call(&"add_prop_at", entities, BENCH, cell, "Bench%d" % index)
 		index += 1
+
+
+## Points d'examen (T24) : 36 tombes lues de tous côtés (les 5 nommées ont leur texte), comptoir
+## du gardien lu depuis le sud (le gardien est derrière). Les PNJ viennent des données.
+func _add_life() -> void:
+	var named: Dictionary = {}
+	for i: int in NAMED_TOMBS.size():
+		for cell: Vector2i in _plan().call(&"cells_at", NAMED_TOMBS[i]):
+			named[cell] = NAMED_GRAVE_DIALOGUES[i]
+	var index := 0
+	for cell: Vector2i in _plan().call(&"cells_of", "g"):
+		_kit.call(&"add_interactable", "GraveExamine%02d" % index, cell, Vector2i.ONE,
+			Vector2i.ZERO, named.get(cell, OTHER_GRAVE_DIALOGUE))
+		index += 1
+	var counters: Array[Vector2i] = _plan().call(&"cells_of", "W")
+	if counters.size() != 4:
+		return
+	_kit.call(&"add_interactable", "CounterExamine", counters[0], Vector2i(4, 1), Vector2i.UP,
+		KEEPER_DIALOGUE)
 
 
 func _fail(message: String) -> void:

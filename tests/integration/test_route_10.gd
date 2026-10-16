@@ -204,10 +204,13 @@ func test_cave_mouths_and_south_edge() -> void:
 		assert_true(_map.has_spawn(StringName("from_lavender_" + suffix)))
 
 
-## T16 : PNJ, Dresseurs et objet en données ; panneaux et déclencheurs posés au T18 / T24.
-func test_life_is_the_t16_data_only() -> void:
-	assert_eq(_map.get_node(^"Triggers").get_child_count(), 0)
-	assert_eq(_map.get_node(^"Interactables").get_child_count(), 0)
+## T16 : PNJ, Dresseurs et objet en données ; panneaux et déclencheurs posés au T18 (nord) et au
+## T24 (sortie sud de la grotte : `dark_cave_crossed`, testé dans `test_route_10_life`).
+func test_life_is_the_t16_data_and_the_t24_trigger() -> void:
+	var scenes: Array[StringName] = []
+	for point: Node in _map.get_node(^"Triggers").get_children():
+		scenes.append(point.get(&"cutscene_id"))
+	assert_true(scenes.has(&"dark_cave_crossed"), "sortie sud de la grotte (T24)")
 	var ids := _npc_ids_and_data(_map.get_entities(), &"route_10")
 	assert_eq(ids[0], ids[1], "PNJ de data/npcs/route_10.json")
 	assert_eq((ids[1] as Array).size(), 4, "Hector, Paul, le randonneur, la Super Potion")

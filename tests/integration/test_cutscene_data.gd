@@ -50,6 +50,8 @@ const MAPS: Array[StringName] = [
 	&"route_6", &"vermilion_city",
 	# Jalon 15 (T13) : arrivée sur la Route 5, recul du garde du poste nord.
 	&"route_5", &"route_5_gate",
+	# Jalon 18 (T24) : sortie sud de la grotte (Route 10) et arrivée à Lavanville.
+	&"route_10", &"lavender_town",
 ]
 ## Jalon 7 (T18) : partie qui revient au labo avec le colis (rival parti après le combat).
 const PARCEL_FLAGS: Array[StringName] = [
@@ -274,7 +276,6 @@ const J18_IDS: Array[StringName] = [
 ## déclencheur (la carte rejoint alors [constant MAPS]).
 const AWAITING_TRIGGER: Dictionary[StringName, StringName] = {
 	&"route_9_entered": &"route_9", &"route_10_reached": &"route_10",
-	&"dark_cave_crossed": &"route_10", &"lavender_reached": &"lavender_town",
 }
 
 var _cutscenes: CutsceneLibrary

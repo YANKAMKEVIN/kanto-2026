@@ -46,15 +46,12 @@ const GATE_GUARDS: Array[StringName] = [&"forest_gate_north_guard", &"forest_gat
 ## Jalon 14 (T23) : D5 et D6 posés, leurs répliques (n° 50, 51) sortent de la liste.
 ## Jalon 15 (T14) : les Dresseurs de la Route 6 sont posés avec la carte : liste vide.
 ## Jalon 18 (T16) : textes en données, points d'examen et déclencheurs posés par la vie des cartes
-## (T18 Route 9 / 10, T20 grotte, T24 Lavanville et Tour) ; « Il fait très sombre ici… » (T-3) est
+## (T18 Route 9 / 10, T20 grotte ; T24 : Lavanville et Tour posés, retirés de la liste) ; « Il fait très sombre ici… » (T-3) est
 ## celui du J17 (`dark_caves.json`, joué par FlashDirector : [constant PLAYED_BY_BOOT]).
 const UNUSED_YET: Array[StringName] = [
 	&"route_9_sign", &"route_10_cave_sign", &"route_10_center_sign",
 	&"dark_cave_1f_sign", &"dark_cave_column", &"dark_cave_roots", &"dark_cave_crack",
-	&"dark_cave_b1f_hidden_1", &"lavender_town_sign", &"lavender_tower_sign",
-	&"lavender_pokemon_house_sign", &"pokemon_tower_grave_1", &"pokemon_tower_grave_2",
-	&"pokemon_tower_grave_3", &"pokemon_tower_grave_4", &"pokemon_tower_grave_5",
-	&"pokemon_tower_grave",
+	&"dark_cave_b1f_hidden_1",
 ]
 ## Jalon 17 (T8) : pages à jeton (texte → jetons attendus) : l'assistant et la CS05 reçue.
 const J17_TOKENS: Dictionary[String, Array] = {

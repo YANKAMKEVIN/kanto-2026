@@ -3,7 +3,8 @@ extends GutTest
 ## dossier 21 §7) sur la vraie scène : **grille de la scène = grille fonctionnelle**
 ## `tools/plans/tour_pokemon_rdc.txt`, géométrie (l'escalier (17, 2) n'est atteignable que par
 ## (17, 3), case de la gardienne), tombes lisibles depuis une case libre, sortie, escalier
-## `coming_soon`, halos, **sans vie** (aucun PNJ, aucun examen).
+## `coming_soon`, halos, vie du T24 (36 tombes et comptoir examinables, cinq PNJ ; textes et
+## Exorciste : `test_pokemon_tower_life`).
 
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 const GridPaths := preload("res://tests/helpers/grid_paths.gd")
@@ -121,7 +122,7 @@ func test_exit_and_stairs_warps() -> void:
 	assert_eq(_map.get_warps().size(), 3)
 
 
-func test_candles_without_life_and_budget() -> void:
+func test_candles_life_and_budget() -> void:
 	var glows := get_tree().get_nodes_in_group("light_glows")
 	var candles := 0
 	for child: Node in _map.get_node(^"Glows").get_children():
@@ -129,8 +130,9 @@ func test_candles_without_life_and_budget() -> void:
 			candles += 1
 	assert_eq(candles, 6, "six halos candle")
 	assert_eq(glows.size() >= 0, true)
-	assert_eq(_map.get_node(^"Interactables").get_child_count(), 0, "aucun examen")
+	# T24 : un point d'examen par tombe (36) et un pour le comptoir ; aucun déclencheur.
+	assert_eq(_map.get_node(^"Interactables").get_child_count(), 36 + 1)
 	assert_eq(_map.get_node(^"Triggers").get_child_count(), 0)
-	# T16 : gardien, trois visiteurs, Exorciste (data/npcs/pokemon_tower_1f.json) ; tombes : T24.
+	# T16 : gardien, trois visiteurs, Exorciste (data/npcs/pokemon_tower_1f.json).
 	assert_eq(_map.get_npcs().size(), 5, "cinq PNJ")
 	assert_lte(GridPaths.count_nodes(_map), 3000)

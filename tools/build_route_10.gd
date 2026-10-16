@@ -85,6 +85,10 @@ const SOUTH_EXITS: Array = [
 const RESERVED_KINDS: Array[String] = ["dresseur", "pnj", "pokemon", "objet_visible", "cache"]
 const BALL_KINDS: Array[String] = ["objet_visible", "cache"]
 const SIGNS: Array = [["panneau_grotte", "SignCave"]]
+## Secteur sud (T24) : sortie de la grotte, rangée où le joueur doit passer pour descendre vers
+## Lavanville (largeur de la clairière, x 3..15) ; scène silencieuse `dark_cave_crossed`.
+const CROSSED_ROW := Rect2i(3, 49, 13, 1)
+const CROSSED_CUTSCENE: StringName = &"dark_cave_crossed"
 
 ## Cases `K` plantées d'arbres : milieu de la bande centrale (la paroi n'est peinte qu'en haut et
 ## en bas, fiche série 21 §B2) ; bord de la terrasse de Paul.
@@ -176,6 +180,7 @@ func _init() -> void:
 	_kit.call(&"place_tall_grass")
 	var feet: Array[Vector2] = []
 	var forest: Vector2i = _kit.call(&"place_forest", FOREST_SEED, feet, {})
+	_add_south_life()
 
 	var errors: PackedStringArray = _kit.get(&"errors")
 	if not errors.is_empty():
@@ -439,3 +444,10 @@ func _style_rock(rock: Node2D, decor: RandomNumberGenerator, scale: float) -> vo
 	_kit.call(&"flip", rock, decor.randf() < 0.5)
 	var value := decor.randf_range(0.9, 1.0)
 	rock.modulate = Color(value, value, value)
+
+
+## Secteur sud (T24) : objectif « Rejoindre Lavanville, au sud. » posé en sortant de la grotte
+## (le Pokémaniac, le Montagnard et la Super Potion viennent de `NPCS_PATH`).
+func _add_south_life() -> void:
+	_kit.call(&"add_trigger", "CaveCrossed", CROSSED_ROW.position, CROSSED_ROW.size,
+		Vector2i.ZERO, CROSSED_CUTSCENE)
