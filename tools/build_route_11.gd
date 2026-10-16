@@ -161,12 +161,44 @@ func _init() -> void:
 		_kit.call(&"discard")
 		quit(1)
 		return
+	_batch_decals(decals)
 	var counts := Vector2i(entities.get_child_count(), decals.get_child_count())
 	var result: Vector2i = _kit.call(&"save", OUT_PATH)
 	print("route_11 : %s (%d entités, %d au sol dont %d modules de paroi et %d de rivage, "
 		% [error_string(result.x), counts.x, counts.y, modules, shore]
 		+ "forêt %d → %d, %d nœuds)" % [forest.x, forest.y, result.y])
 	quit(0 if result.x == OK else 1)
+
+
+## Perf (jalon 17, S21 : 275 appels de dessin à 53 fps) : les 750 décalcomanies (terre, pavés,
+## touffes, fleurs) sont tirées dans le désordre, et un appel de dessin part à chaque changement
+## de texture (196 appels). Elles sont au sol, hors tri en profondeur : on les range par texture
+## (terre, pavés, touffes, fleurs au-dessus), ce qui les groupe en une vingtaine d'appels.
+const DECAL_ORDER: Array[String] = ["terre", "pave", "touffe", "fleur"]
+
+
+func _batch_decals(decals: Node2D) -> void:
+	var plain: Array[Sprite2D] = []
+	for child: Node in decals.get_children():
+		var sprite := child as Sprite2D
+		if sprite == null or sprite.material != null or sprite.texture == null:
+			break
+		plain.append(sprite)
+	plain.sort_custom(func(a: Sprite2D, b: Sprite2D) -> bool:
+		var ka := _decal_rank(a.texture.resource_path)
+		var kb := _decal_rank(b.texture.resource_path)
+		if ka != kb:
+			return ka < kb
+		return a.texture.resource_path < b.texture.resource_path)
+	for i in plain.size():
+		decals.move_child(plain[i], i)
+
+
+func _decal_rank(path: String) -> int:
+	for i in DECAL_ORDER.size():
+		if path.contains("decal_" + DECAL_ORDER[i]):
+			return i
+	return DECAL_ORDER.size()
 
 
 func _plan() -> Object:
