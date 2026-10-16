@@ -1,7 +1,8 @@
 # Dossier 28 — Le secret du Manoir Pokémon : Manoir, Laboratoire et Arène de Cramois'Île (jalon 25)
 
 > **Statut : arbitrages VALIDÉS par Kevin le 2026-10-16** (X-1 à X-24 selon les recommandations de
-> `docs/design/passes/j25-v2-alignement.md`). **Textes du §16 à valider en un lot.** Grilles et vues
+> `docs/design/passes/j25-v2-alignement.md`). **Textes du §16 (n° 1 à 110) VALIDÉS par Kevin le
+> 2026-10-16.** Grilles et vues
 > peintes à venir. **Aucune ligne de code** avant le plan `docs/tech/jalon-25.md`.
 >
 > Sources : V2 de Kevin (`passes/j25-v2-chatgpt.md`), passe d'alignement (même dossier), relevé
@@ -527,7 +528,7 @@ sauvegarde sont faits **dans chaque lot**.
 
 ---
 
-## 16. Textes À VALIDER
+## 16. Textes VALIDÉS par Kevin le 2026-10-16
 
 > Ton des dossiers précédents : phrases courtes, deux lignes de 40 caractères au plus par bulle
 > (« / » = retour à la ligne). {joueur} = prénom du joueur. Numérotés pour les retours.
