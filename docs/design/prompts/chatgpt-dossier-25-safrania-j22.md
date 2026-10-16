@@ -1,4 +1,8 @@
-# Prompt ChatGPT — dossier 25 : Safrania et la Sylphe SARL (jalon 22)
+# Prompt ChatGPT — Safrania et la Sylphe SARL (REPORTÉ, initialement jalon 22)
+
+> **Reporté le 2026-10-16** : Kevin a fixé le J22 sur « Les deux chemins vers Parmanie » (Routes 12 à 18
+> et Parmanie, `docs/design/passes/j22-v2-chatgpt.md`) et le J23 sur le Parc Safari, les CS et Koga.
+> Ce prompt reste valable pour le jalon de Safrania ; ses faits RB et son inventaire du code restent justes.
 
 > Préparé par Claude le 2026-10-15, à coller dans ChatGPT pour concevoir le **jalon 22** : ouverture
 > de Safrania, libération de la Sylphe SARL (rival n° 6, Giovanni n° 2), Dojo et Arène de Morgane.
