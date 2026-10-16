@@ -3,7 +3,8 @@
 > Consolidé par Claude le 2026-10-16 à partir de la V2 de ChatGPT (`passes/j24-v2-chatgpt.md`) et
 > de la passe d'alignement (`passes/j24-v2-alignement.md`). **Les 7 décisions de la V2 et les
 > arbitrages P-1 à P-22 sont validés par Kevin** (« okay pour tes reco », 2026-10-16). Les **textes
-> du §15 sont à valider** en un seul lot. **Aucun code avant la fusion du J23** (§17), sauf le
+> du §15 sont validés** par Kevin le 2026-10-16 (« pour J24 je valide ses 90 textes », relayé par une
+> autre session à sa demande). Plan technique : `docs/tech/jalon-24.md`. **Aucun code avant la fusion du J23** (§17), sauf le
 > travail indépendant listé au §17.3.
 >
 > Faits Rouge/Bleu : désassemblage `pret/pokered` (`af51989`). Marqueurs : **[V]** validé par
@@ -609,7 +610,7 @@ Pépite s'ils n'existent pas encore.
 | Intérieurs : Labo de Cramois'Île (4 pièces) | Centre et Boutique : gabarits existants |
 | Dos de combat des espèces du §14.1 | Rendu X/Y repeint |
 
-## 15. Lot de textes — À VALIDER
+## 15. Lot de textes — VALIDÉ par Kevin (2026-10-16)
 
 > Ton du projet : court, simple, lisible sur téléphone. Les noms sont des valeurs par défaut.
 
@@ -822,4 +823,5 @@ contrôle `plan_check_*.py` :
 ## Décisions verrouillées
 
 - Les 7 décisions de la V2 et les arbitrages P-1 à P-22 (2026-10-16).
-- **À valider** : les textes du §15, puis les grilles et les vues du lot 24.0.
+- Textes du §15 validés (2026-10-16).
+- **À valider** : les grilles et les vues du lot 24.0.
