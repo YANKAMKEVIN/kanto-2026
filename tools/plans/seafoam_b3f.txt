@@ -1,0 +1,70 @@
+# Îles Écume B3F — grille fonctionnelle v1 (jalon 24, T2 ; dossier 27 §7.4). Même légende que
+# seafoam_1f.txt. Grand BASSIN (eau, 14..23 × 8..11) avec le COURANT 1 : flèches v < > de (15, 8) et
+# (18..19, 7) jusqu'au passage (20, 17) → B4F, mer est. Le bassin du nord (10..19, 0..5, ~) est un
+# décor : les rochers tombés du B2F coupent le chenal (18..19, 6). Quatre rochers et deux trous (3, 16)
+# et (6, 16) au sud-ouest (leur chute coupe le courant 2 du B4F). Max Élixir caché contre x (9, 16).
+# Cases s : arrivées en Surf forcé depuis le B4F. Atterrissage du joueur dans un trou du B2F : les
+# cases de courant (18, 7) et (19, 7).
+#
+# Écarts avec RB, tous pour l'anti-blocage (dossier §7.6.2 : « une case où un rocher murerait le
+# chemin est retirée de la grille ») ; aucun ne touche aux rochers, aux trous ni à leurs poussées :
+#   - (0..1, 14) murés : le rocher (5, 14), poussé jusqu'en (2, 14), ne peut plus être ramené vers
+#     l'est par le joueur ; sinon, trou (6, 16) bouché et un rocher en (6, 14), il fermait (5, 14) ;
+#   - (2, 16) et (3, 17) en petits rochers fixes (avec les rochers de RB en (4, 15..17)) : le trou (3, 16)
+#     est un puits fermé ; sinon, une fois bouché, le joueur y montait pousser le rocher (3, 15) vers le
+#     nord et se murait dans la poche sud-ouest ;
+#   - (23..29, 16..17), (11, 0) (13, 0) (17, 0) (19, 0) : cases de sol sans accès (RB) → mur ;
+#   - bassin du nord et chenal (10..19, 0..5) : eau décor (~), jamais atteignable (RB aussi).
+#
+
+PRATICABLES .:=wBOFs^v<>UVE
+
+GRILLE 30 18
+00 #::::::::#####~~#####::::::::#
+01 #::::::::#####~~#####::::::::#
+02 #::::::::#~~~~~~~~~~#::::::::#
+03 #::::::::#~~~~~~~~~~#::::U:::#
+04 #::::::::##::::::#~~#::::V:::#
+05 #::::#==###::::::#~~##########
+06 #::::#..V.#::::::#FF#::::::::#
+07 #::::#....#::##=##v<#::::::::#
+08 #::::::::::::#wvwwvw#::::::::#
+09 #::::::::::::#wvwwvw###=#::::#
+10 #::::::::::::#wvwwvwwwww#::::#
+11 #::::::####::#w>>>>>vwww#::::#
+12 #:::nU:#..#::::::::#vw#::::::#
+13 ########..#::::::::#vw#::::::#
+14 ##...B.oBB#::::::::#vw#::U:::#
+15 ...Bo.....######==##vw########
+16 ..oOo.O..x........||vs|#######
+17 ...oo..............|vw|#######
+FIN
+
+POSITIONS
+echelle_p8           echelle        5,12         libre   paire=P8 sens=monte vers=seafoam_b2f
+arrivee_p8           spawn          5,11         libre   paire=P8
+echelle_p9           echelle        25,3         libre   paire=P9 sens=monte vers=seafoam_b2f
+arrivee_p9           spawn          24,3         libre   paire=P9
+echelle_p10          echelle        25,14        libre   paire=P10 sens=monte vers=seafoam_b2f
+arrivee_p10          spawn          25,13        libre   paire=P10
+echelle_p11          echelle        8,6          libre   paire=P11 sens=descend vers=seafoam_b4f
+arrivee_p11          spawn          8,7          libre   paire=P11
+echelle_p12          echelle        25,4         libre   paire=P12 sens=descend vers=seafoam_b4f
+arrivee_p12          spawn          24,4         libre   paire=P12
+passage_w1           passage        20,17        libre   paire=W1 sens=descend vers=seafoam_b4f  # fin du courant 1 : sens unique, arrivée en (20, 16) au B4F
+passage_w2           passage        21,17        libre   paire=W2 sens=descend vers=seafoam_b4f  # deux sens : remonter le chenal depuis le B4F
+arrivee_w2           spawn          21,16        libre   paire=W2  # arrivée depuis le B4F, en Surf (case s)
+trou_b3f_1           trou           3,16         libre   n=1 drapeau=seafoam_b3f_hole_1_filled chute=seafoam_b4f
+trou_b3f_2           trou           6,16         libre   n=2 drapeau=seafoam_b3f_hole_2_filled chute=seafoam_b4f
+chute_rocher_b3f_1   chute_rocher   18,6         libre   depuis=seafoam_b2f:1 sol=eau  # le rocher tombé coupe le chenal
+chute_rocher_b3f_2   chute_rocher   19,6         libre   depuis=seafoam_b2f:2 sol=eau
+chute_joueur_b3f_1   chute_joueur   18,7         libre   depuis=seafoam_b2f:1 surf=oui  # atterrissage du joueur : case de courant sous le point de chute
+chute_joueur_b3f_2   chute_joueur   19,7         libre   depuis=seafoam_b2f:2 surf=oui
+rocher_b3f_1         rocher         5,14         bloque  ordre=1  # sans trou : rocher d écart, il reste
+rocher_b3f_2         rocher         3,15         bloque  ordre=2 trou=1  # rocher désigné du trou 1 : retiré quand le trou est rempli
+rocher_b3f_3         rocher         8,14         bloque  ordre=3 trou=2
+rocher_b3f_4         rocher         9,14         bloque  ordre=4  # sans trou : rocher d écart, il reste
+courant_1            courant        15,8;18,7;19,7  libre  id=1 actif=sauf_b2f_trous_1_et_2 fin=passage:W1  # sources : l'escalier (15, 7) et le chenal ; le flux suit les flèches
+objet_b3f_cache      objet_cache    10,16        libre   role=C2 item=max_ether  # Max Élixir (RB : en (9, 16), sous le caillou x) ; (10, 16) est hors de portée des rochers
+panneau_rochers_b3f  panneau        4,12         bloque  texte=T-11  # près de l'échelle d'arrivée (5, 12)
+FIN
