@@ -238,21 +238,25 @@ func test_route_9_sign_and_annex_a() -> void:
 		assert_false(zone.draft, String(id))
 
 
-func test_arrival_caption_waits_for_the_list_form() -> void:
-	# T-17 : donnée prête pour le T17 (FirstExitCaption en liste) ; Bourg Palette inchangé.
+func test_arrival_caption_is_in_the_list_form() -> void:
+	# T-17 : l'arrivée à Lavanville est versée dans first_exit.json (forme liste, T24) ;
+	# Bourg Palette (OUV.3) est inchangé.
 	var data: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(
-		"res://data/opening/first_exit_j18.json"))
+		"res://data/opening/first_exit.json"))
 	var arrivals: Array = data["arrivals"]
-	assert_eq(arrivals.size(), 1)
-	assert_eq([arrivals[0]["map"], arrivals[0]["from"]], ["lavender_town", "route_10"])
+	assert_eq(arrivals.size(), 2)
+	assert_eq([arrivals[0]["map"], arrivals[0]["from"]], ["pallet_town", "player_house_1f"])
+	assert_eq([arrivals[1]["map"], arrivals[1]["from"]], ["lavender_town", "route_10"])
 	var zones := ZoneLibrary.new()
 	zones.load_file()
 	var title := "%s / %s" % [zones.get_zone(&"lavender_town").name.to_upper(),
-		arrivals[0]["subtitle"]]
+		arrivals[1]["subtitle"]]
 	assert_eq(title, _quotes(_dossier, "T-17")[0], "T-17")
 	var caption := FirstExitCaption.new()
-	assert_true(caption.load_file(), "first_exit.json d'OUV.3 intact")
+	assert_true(caption.load_file(), "first_exit.json")
 	assert_eq(caption.get_map(), &"pallet_town")
+	assert_eq(caption.get_maps(), [&"pallet_town", &"lavender_town"] as Array[StringName])
+	assert_false(FileAccess.file_exists("res://data/opening/first_exit_j18.json"))
 
 
 func test_coming_soon_labels_are_t29() -> void:

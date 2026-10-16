@@ -50,8 +50,8 @@ const MAPS: Array[StringName] = [
 	&"route_6", &"vermilion_city",
 	# Jalon 15 (T13) : arrivée sur la Route 5, recul du garde du poste nord.
 	&"route_5", &"route_5_gate",
-	# Jalon 18 (T18) : déclencheurs silencieux des objectifs (Route 9, Route 10 nord).
-	&"route_9", &"route_10",
+	# Jalon 18 (T18, T24) : déclencheurs silencieux des objectifs (Route 9, Route 10, Lavanville).
+	&"route_9", &"route_10", &"lavender_town",
 ]
 ## Jalon 7 (T18) : partie qui revient au labo avec le colis (rival parti après le combat).
 const PARCEL_FLAGS: Array[StringName] = [
@@ -276,7 +276,6 @@ const J18_IDS: Array[StringName] = [
 ## déclencheur (la carte rejoint alors [constant MAPS]).
 ## T18 : `route_9_entered` et `route_10_reached` sont posés (Route 9, Route 10 nord).
 const AWAITING_TRIGGER: Dictionary[StringName, StringName] = {
-	&"dark_cave_crossed": &"route_10", &"lavender_reached": &"lavender_town",
 }
 
 var _cutscenes: CutsceneLibrary

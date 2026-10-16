@@ -4,6 +4,7 @@ extends GutTest
 ## seulement, validation stricte.
 
 const LEGEND := "Le commencement de toute aventure"
+const LAVENDER := "La ville où reposent les souvenirs"
 
 var _caption: FirstExitCaption
 
@@ -71,3 +72,38 @@ func test_a_missing_file_is_reported() -> void:
 	assert_false(_caption.load_file("res://data/opening/absent.json"))
 	assert_push_error_count(1)
 	assert_false(_caption.is_loaded())
+
+
+# --- Jalon 18 (T24) : forme liste, Lavanville ---
+
+func test_the_real_file_holds_pallet_town_and_lavender() -> void:
+	assert_true(_caption.load_file())
+	var fresh := _discovered([&"route_10"])
+	assert_eq(_caption.subtitle_for(&"lavender_town", &"route_10", fresh, "Kanto"), LAVENDER)
+	assert_eq(_caption.subtitle_for(&"pallet_town", &"player_house_1f", _discovered([]),
+		"Kanto"), LEGEND, "Bourg Palette inchangé")
+
+
+func test_lavender_legend_once_and_never_at_a_start_or_a_resume() -> void:
+	_caption.load_file()
+	var fresh := _discovered([&"route_10"])
+	assert_true(_caption.is_first_exit(&"lavender_town", &"route_10", fresh))
+	assert_eq(_caption.subtitle_for(&"lavender_town", &"", fresh, "Kanto"), "Kanto",
+		"démarrage, reprise, départ de débogage")
+	var known := _discovered([&"route_10", &"lavender_town"])
+	assert_eq(_caption.subtitle_for(&"lavender_town", &"route_10", known, "Kanto"), "Kanto",
+		"seconde arrivée")
+	assert_eq(_caption.subtitle_for(&"lavender_town", &"pokemon_tower_1f", fresh, "Kanto"),
+		"Kanto", "arrivée par une porte : pas de légende")
+
+
+func test_list_form_is_validated_entry_by_entry() -> void:
+	assert_false(_caption.add_from_dict({"arrivals": []}, "test"))
+	assert_false(_caption.add_from_dict({"arrivals": [
+		{"map": "a", "from": "b", "subtitle": "c"}, {"map": "a", "from": "b"}]}, "test"))
+	assert_false(_caption.add_from_dict({"arrivals": [3]}, "test"))
+	assert_push_error_count(3)
+	assert_false(_caption.is_loaded(), "tout ou rien")
+	assert_true(_caption.add_from_dict({"arrivals": [
+		{"map": "a", "from": "b", "subtitle": "c"}]}, "test"))
+	assert_eq(_caption.subtitle_for(&"a", &"b", {}, "r"), "c")

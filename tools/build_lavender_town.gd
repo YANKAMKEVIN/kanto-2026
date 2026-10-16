@@ -69,9 +69,16 @@ const BUILDINGS: Array = [
 const INTERIOR_SPAWN: StringName = &"entrance"
 ## La maison 2 (`N`) est la maison 1 en miroir (fiche, variation n° 4).
 const MIRRORED: Array[String] = ["House2"]
-## Panneaux (décor seul au T14) : positions de la grille.
-const SIGNS: Array = [["panneau_ville", "SignCity"], ["panneau_tour", "SignTower"],
-	["panneau_fuji", "SignPokemonHouse"]]
+## Panneaux : [position de la grille, nom du nœud, dialogue (T-18 à T-20), orientation du
+## joueur qui lit].
+const SIGNS: Array = [
+	["panneau_ville", "SignCity", &"lavender_town_sign", Vector2i.RIGHT],
+	["panneau_tour", "SignTower", &"lavender_tower_sign", Vector2i.UP],
+	["panneau_fuji", "SignPokemonHouse", &"lavender_pokemon_house_sign", Vector2i.UP],
+]
+## Arrivée à Lavanville (T24) : scène silencieuse `lavender_reached` (objectif « Visiter la
+## Tour Pokémon. »), tout pas vers le bas sur la 2e rangée (position `legende_arrivee`).
+const ARRIVAL_CUTSCENE: StringName = &"lavender_reached"
 ## Ifs du parvis (de part et d'autre de la porte de la Tour, sur les cases de la façade) et
 ## massifs de fleurs pâles à côté.
 const YEWS: Array[Vector2i] = [Vector2i(33, 10), Vector2i(36, 10)]
@@ -114,6 +121,7 @@ func _init() -> void:
 	painted.set(&"r_texture", load(PAVING_TEXTURE))
 	var entities: Node2D = _kit.get(&"entities")
 	_add_passages()
+	_add_life()
 	_kit.call(&"place_border_decals", SEED)
 	_kit.call(&"place_meadow", MEADOW_ATTEMPTS, MEADOW_FLOWER_CHANCE, FLOWERS)
 	_place_buildings(entities)
@@ -215,6 +223,20 @@ func _add_passages() -> void:
 			else:
 				_kit.call(&"add_warp", node, door, Kit.STEP_ON, Vector2i.UP, &"",
 					StringName(entry[5]), Vector2i.DOWN, entry[6])
+
+
+# --- Vie (T24) ----------------------------------------------------------------------------
+
+
+## Examen des trois panneaux et déclencheur de l'arrivée (les PNJ viennent de `NPCS_PATH`).
+## Le panneau du Scope Sylphe (42, 11) est réservé au J19 : rien n'y est posé.
+func _add_life() -> void:
+	for entry: Array in SIGNS:
+		_kit.call(&"add_interactable", String(entry[1]) + "Point", _cell(entry[0]), Vector2i.ONE,
+			entry[3], entry[2])
+	var arrival: Array = _plan().call(&"cells_at", "legende_arrivee")
+	_kit.call(&"add_trigger", "Arrival", arrival[0], Vector2i(arrival.size(), 1), Vector2i.DOWN,
+		ARRIVAL_CUTSCENE)
 
 
 # --- Bâtiments, objets ---------------------------------------------------------------------

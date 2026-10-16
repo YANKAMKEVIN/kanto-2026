@@ -94,6 +94,11 @@ const REACHED_ANCHOR := Vector2i(1, 14)
 const REACHED_SIZE := Vector2i(1, 3)
 const REACHED_CUTSCENE: StringName = &"route_10_reached"
 
+## Secteur sud (T24) : sortie de la grotte, rangée où le joueur doit passer pour descendre vers
+## Lavanville (largeur de la clairière, x 3..15) ; scène silencieuse `dark_cave_crossed`.
+const CROSSED_ROW := Rect2i(3, 49, 13, 1)
+const CROSSED_CUTSCENE: StringName = &"dark_cave_crossed"
+
 ## Cases `K` plantées d'arbres : milieu de la bande centrale (la paroi n'est peinte qu'en haut et
 ## en bas, fiche série 21 §B2) ; bord de la terrasse de Paul.
 const FOREST_K: Array[Rect2i] = [Rect2i(0, 32, 24, 11), Rect2i(14, 58, 1, 7)]
@@ -185,6 +190,7 @@ func _init() -> void:
 	_kit.call(&"place_tall_grass")
 	var feet: Array[Vector2] = []
 	var forest: Vector2i = _kit.call(&"place_forest", FOREST_SEED, feet, {})
+	_add_south_life()
 
 	var errors: PackedStringArray = _kit.get(&"errors")
 	if not errors.is_empty():
@@ -457,3 +463,10 @@ func _add_life_north() -> void:
 		Vector2i.UP, SIGN_READ[1])
 	_kit.call(&"add_trigger", "Route10Reached", REACHED_ANCHOR, REACHED_SIZE, Vector2i.ZERO,
 		REACHED_CUTSCENE)
+
+
+## Secteur sud (T24) : objectif « Rejoindre Lavanville, au sud. » posé en sortant de la grotte
+## (le Pokémaniac, le Montagnard et la Super Potion viennent de `NPCS_PATH`).
+func _add_south_life() -> void:
+	_kit.call(&"add_trigger", "CaveCrossed", CROSSED_ROW.position, CROSSED_ROW.size,
+		Vector2i.ZERO, CROSSED_CUTSCENE)
