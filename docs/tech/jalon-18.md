@@ -995,6 +995,7 @@ Branche jetable `j18-essai-sur-j17` = `jalon-18` (4db38f17) + fusion de `origin/
 | `test_cutscene_data` | objets J17 + J18 (liste triée), `… + J18_IDS` |
 | `test_dialogue_data` | `UNUSED_YET` du J18 + `J17_TOKENS` / `DRAFT_VARIANTS` ; `IDS_J17 + IDS_J18` ; objets lancés **57** (41 + 8 J17 + 8 J18) ; dossiers 20 et 21 tous deux lus pour le « mot pour mot » |
 | `etat-projet.md` | en-tête « Mis à jour » réuni |
+| `tools/cave_map_kit.gd` (**fusion automatique fautive**, sans marqueur) | `wall_faces` / `wall_side` / `wall_lip` ajoutés par les deux jalons (J18 T11, J17 T15) → déclarés deux fois, erreur d'analyse (`tools/` n'est pas importé : vue seulement par la suite, `test_serie14_assets` en échec, `test_cave_map_kit` et `test_j18_map_kits` ignorés) ; un seul bloc gardé |
 
 **Hors conflit, aligné** : `dark_cave_too_dark` (T-3) était défini **deux fois** (J17
 `dark_caves.json`, J18 `dark_cave.json`, même texte, le J18 avec un retour à la ligne) → gardé

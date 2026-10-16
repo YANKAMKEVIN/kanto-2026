@@ -115,6 +115,7 @@ var border_color: Color = BORDER_COLOR
 ## Parois (J18 T11, la Tour a ses murs `K` et ses modules `relief_mur_tour_*`, la Grotte Sombre ses
 ## modules propres) : caractères de masse, caractère qui reçoit un module, identifiants des modules
 ## (faces, bord latéral, lèvre). Défauts = ceux du Mont Sélénite : cartes existantes inchangées.
+## (Même ajout au J17 T15 pour les parois de grès de la Cave Taupiqueur : déclaré une fois.)
 var wall_marks: String = WALL_MARKS
 var mass_mark: String = MASS_MARK
 var wall_faces: Array[String] = WALL_FACES.duplicate()
@@ -122,11 +123,6 @@ var wall_side: String = WALL_SIDE
 var wall_lip: String = WALL_LIP
 var rubble_mark: String = RUBBLE_MARK
 var rubble_is_logic: bool = true
-## Modules de paroi (faces, bord latéral, lèvre) : ceux de la série 14 par défaut ; la Cave
-## Taupiqueur (série 19, J17 T15) pose les parois de grès.
-var wall_faces: Array[String] = WALL_FACES.duplicate()
-var wall_side: String = WALL_SIDE
-var wall_lip: String = WALL_LIP
 
 ## Halos posés ([method add_glow]) : { "type": StringName, "center": Vector2 } (voile, [method
 ## add_shade]).
