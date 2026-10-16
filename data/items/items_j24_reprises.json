@@ -1,0 +1,7 @@
+{
+	"great_ball": {
+		"name": "Super Ball", "plural": "Super Balls", "feminine": true,
+		"category": "ball", "catch_bonus": 1.5, "price": 600,
+		"description": "Une Ball plus efficace que la Poké Ball."
+	}
+}

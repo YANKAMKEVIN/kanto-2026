@@ -395,7 +395,8 @@
 		"learnset": [
 			[1, "tackle"], [1, "withdraw"], [18, "supersonic"], [23, "clamp"],
 			[30, "aurora_beam"], [39, "leer"], [50, "ice_beam"]
-		]
+		],
+		"evolutions": [{ "into": "cloyster", "method": "item", "item": "water_stone" }]
 	},
 	"onix": {
 		"dex": 95, "name": "Onix", "types": ["rock", "ground"],
@@ -413,7 +414,8 @@
 		"learnset": [
 			[1, "bubble"], [19, "smokescreen"], [24, "leer"], [30, "water_gun"],
 			[37, "agility"], [45, "hydro_pump"]
-		]
+		],
+		"evolutions": [{ "into": "seadra", "method": "level", "level": 32 }]
 	},
 	"goldeen": {
 		"dex": 118, "name": "Poissirène", "types": ["water"],
@@ -422,7 +424,8 @@
 		"learnset": [
 			[1, "peck"], [1, "tail_whip"], [19, "supersonic"], [24, "horn_attack"],
 			[30, "fury_attack"], [37, "waterfall"], [45, "horn_drill"], [54, "agility"]
-		]
+		],
+		"evolutions": [{ "into": "seaking", "method": "level", "level": 33 }]
 	},
 	"staryu": {
 		"dex": 120, "name": "Stari", "types": ["water"],

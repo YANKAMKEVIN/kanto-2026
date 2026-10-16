@@ -1,0 +1,38 @@
+{
+	"poliwag": {
+		"dex": 60, "name": "Ptitard", "types": ["water"],
+		"base_stats": { "hp": 40, "atk": 50, "def": 40, "spa": 40, "spd": 40, "spe": 90 },
+		"male_ratio": 0.5, "growth_rate": "medium_slow", "base_exp": 60, "catch_rate": 255,
+		"learnset": [
+			[1, "bubble"], [16, "hypnosis"], [19, "water_gun"], [25, "double_slap"],
+			[31, "body_slam"], [38, "amnesia"], [45, "hydro_pump"]
+		]
+	},
+	"tentacool": {
+		"dex": 72, "name": "Tentacool", "types": ["water", "poison"],
+		"base_stats": { "hp": 40, "atk": 40, "def": 35, "spa": 50, "spd": 100, "spe": 70 },
+		"male_ratio": 0.5, "growth_rate": "slow", "base_exp": 67, "catch_rate": 190,
+		"learnset": [
+			[1, "acid"], [7, "supersonic"], [13, "wrap"], [18, "poison_sting"], [22, "water_gun"],
+			[27, "constrict"], [33, "barrier"], [40, "screech"], [48, "hydro_pump"]
+		]
+	},
+	"tangela": {
+		"dex": 114, "name": "Saquedeneu", "types": ["grass"],
+		"base_stats": { "hp": 65, "atk": 55, "def": 115, "spa": 100, "spd": 40, "spe": 60 },
+		"male_ratio": 0.5, "growth_rate": "medium_fast", "base_exp": 87, "catch_rate": 45,
+		"learnset": [
+			[1, "constrict"], [1, "bind"], [29, "absorb"], [32, "poison_powder"], [36, "stun_spore"],
+			[39, "sleep_powder"], [45, "slam"], [49, "growth"]
+		]
+	},
+	"gyarados": {
+		"dex": 130, "name": "Léviator", "types": ["water", "flying"],
+		"base_stats": { "hp": 95, "atk": 125, "def": 79, "spa": 60, "spd": 100, "spe": 81 },
+		"male_ratio": 0.5, "growth_rate": "slow", "base_exp": 189, "catch_rate": 45,
+		"learnset": [
+			[1, "bite"], [1, "dragon_rage"], [1, "leer"], [1, "hydro_pump"], [20, "bite"],
+			[25, "dragon_rage"], [32, "leer"], [41, "hydro_pump"], [52, "hyper_beam"]
+		]
+	}
+}

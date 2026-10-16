@@ -3,6 +3,12 @@ extends GutTest
 ## références croisées (jalon 4 §2.1, §3.2 et décisions de Kevin du §8).
 
 const FIXTURES := "res://tests/fixtures/pokemon/"
+## Descriptions en brouillon du J24 (T4, `data/pokemon/moves/j24.json`), à faire relire par Kevin :
+## une fois validées, retirer leur « draft » et les sortir d'ici (même liste que
+## `test_no_draft_in_data.gd`).
+const PENDING_DRAFT_MOVES: Array[StringName] = [
+	&"vise_grip", &"guillotine", &"crabhammer", &"spike_cannon", &"blizzard", &"splash",
+]
 
 ## Valeurs de Rouge/Bleu (PokeAPI, groupe de versions red-blue), statistiques et rendement
 ## d'XP modernes comme les espèces déjà présentes : [dex, nom, types, PV, Att, Déf, Att. Spé.,
@@ -77,14 +83,23 @@ func test_real_data_loads_without_error() -> void:
 		&"paras", &"parasect",
 		# Jalon 15 (T12) : Miaouss et Persan (kanto_vermilion.json).
 		&"meowth", &"persian",
-		&"mankey", &"primeape", &"abra", &"kadabra", &"machop",
-		&"bellsprout", &"weepinbell",
-		&"geodude", &"graveler", &"golem", &"shellder", &"onix", &"voltorb", &"koffing",
-		&"horsea", &"goldeen", &"staryu", &"starmie"] as Array[StringName])
-	assert_eq(_data.get_move_ids().size(), 103,
+		# Jalon 24 (T4) : kanto_j24.json, et les reprises à l'identique des J19 à J21
+		# (kanto_j24_reprises.json : Ptitard, Tentacool, Saquedeneu, Léviator).
+		&"psyduck", &"golduck",
+		&"mankey", &"primeape",
+		&"poliwag", &"poliwhirl", &"poliwrath",
+		&"abra", &"kadabra", &"machop",
+		&"bellsprout", &"weepinbell", &"tentacool", &"tentacruel",
+		&"geodude", &"graveler", &"golem", &"slowpoke", &"slowbro", &"seel", &"dewgong",
+		&"shellder", &"cloyster", &"onix", &"krabby", &"kingler", &"voltorb", &"koffing",
+		&"tangela", &"horsea", &"seadra", &"goldeen", &"seaking", &"staryu", &"starmie",
+		&"magikarp", &"gyarados", &"omanyte", &"omastar", &"kabuto", &"kabutops",
+		&"articuno"] as Array[StringName])
+	assert_eq(_data.get_move_ids().size(), 119,
 		"47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10) + Patience (J11) "
 		+ "+ 21 du Mont Sélénite (jalon 12) + 8 du jalon 13 (les 5 du J12 qu'il reprenait : "
-		+ "entrées du J12) + 6 du Cap d'Azuria (jalon 14) + Jackpot (J15)")
+		+ "entrées du J12) + 6 du Cap d'Azuria (jalon 14) + Jackpot (J15) "
+		+ "+ 6 du J24 (j24.json) + 10 reprises des J17 à J21 (j24_reprises.json)")
 	assert_true(_data.has_move(&"struggle"))
 
 
@@ -151,6 +166,15 @@ func test_real_evolution_chains() -> void:
 		&"abra": [&"kadabra", 16],
 		# Carmin-sur-Mer (jalon 15, §2.7.1) : Rouge/Bleu.
 		&"meowth": [&"persian", 28],
+		# Jalon 24 (T4, dossier 27 §14.1) : Rouge/Bleu. Ptitard et Tentacool sont les reprises à
+		# l'identique du J21, sans évolution : Têtarte (N25) et Tentacruel (N30) s'ajoutent sur la
+		# branche du J21 (kanto_j21.json) à la fusion.
+		&"psyduck": [&"golduck", 33], &"poliwhirl": [&"poliwrath", &"water_stone"],
+		&"slowpoke": [&"slowbro", 37], &"seel": [&"dewgong", 34],
+		&"shellder": [&"cloyster", &"water_stone"], &"krabby": [&"kingler", 28],
+		&"horsea": [&"seadra", 32], &"goldeen": [&"seaking", 33],
+		&"magikarp": [&"gyarados", 20], &"omanyte": [&"omastar", 40],
+		&"kabuto": [&"kabutops", 40],
 	}
 	for id: StringName in _data.get_species_ids():
 		var rules := _data.get_species(id).evolutions
@@ -227,6 +251,9 @@ func test_every_real_move_has_a_validated_description() -> void:
 	for id: StringName in _data.get_move_ids():
 		var move := _data.get_move(id)
 		assert_false(move.description.is_empty(), String(id))
+		if PENDING_DRAFT_MOVES.has(id):
+			assert_true(move.draft, "%s : brouillon du J24, à retirer de la liste" % id)
+			continue
 		assert_false(move.draft, "%s : description validé par Kevin le 2026-10-06" % id)
 
 
@@ -414,6 +441,12 @@ func test_real_catch_rates_are_the_official_ones() -> void:
 		&"abra": 200, &"kadabra": 100, &"machop": 180,
 		# Jalon 15 (T12).
 		&"meowth": 255, &"persian": 90,
+		# Jalon 24 (T4) ; Ptitard, Tentacool (J21), Saquedeneu (J20), Léviator (J19) repris.
+		&"psyduck": 190, &"golduck": 75, &"poliwag": 255, &"poliwhirl": 120, &"poliwrath": 45,
+		&"tentacool": 190, &"tentacruel": 60, &"slowpoke": 190, &"slowbro": 75, &"seel": 190,
+		&"dewgong": 75, &"cloyster": 60, &"krabby": 225, &"kingler": 60, &"tangela": 45,
+		&"seadra": 75, &"seaking": 60, &"magikarp": 255, &"gyarados": 45, &"omanyte": 45,
+		&"omastar": 45, &"kabuto": 45, &"kabutops": 45, &"articuno": 3,
 	}
 	assert_eq(_data.get_species_ids().size(), expected.size(), "toutes les espèces")
 	for id: StringName in _data.get_species_ids():

@@ -70,6 +70,8 @@ const DOSSIER_17 := "res://docs/design/dossier-17-cap-azuria.md"
 const PLAN_J14 := "res://docs/tech/jalon-14.md"
 ## Jalon 15 : textes validés du §15 (« … » par page ; jetons écrits tels quels).
 const DOSSIER_18 := "res://docs/design/dossier-18-carmin-sur-mer.md"
+## Jalon 24 (T4) : répliques des Dresseurs des Routes 19 à 21 (§15.4, validé le 2026-10-16).
+const DOSSIER_27 := "res://docs/design/dossier-27-iles-ecume.md"
 ## Jalon 15 : annexe A de son plan, validée le 2026-10-14 (panneaux A.3, personnages A.4 ; une
 ## page peut ne porter qu'un morceau de la citation, comme pour le dossier 18).
 const JALON_15 := "res://docs/tech/jalon-15.md"
@@ -291,6 +293,54 @@ const IDS_J14_ROCKET: Array[StringName] = [
 	&"cerulean_rocket_spotted", &"cerulean_rocket_tm", &"cerulean_south_guard",
 	&"cerulean_south_guard_leaving", &"cerulean_victim",
 ]
+## Jalon 24 (T4) : répliques des 29 Dresseurs des Routes 19 à 21 (dossier 27 §15.4), en
+## attente de leurs cartes (T8, T11) : exemptées de « utilisé par un PNJ » jusque-là.
+const IDS_J24_TRAINERS: Array[StringName] = [
+	&"route_19_cooltrainer_hugo_after", &"route_19_cooltrainer_hugo_before",
+	&"route_19_cooltrainer_hugo_defeated", &"route_19_cooltrainer_malo_after",
+	&"route_19_cooltrainer_malo_before", &"route_19_cooltrainer_malo_defeated",
+	&"route_19_swimmer_anais_after", &"route_19_swimmer_anais_before",
+	&"route_19_swimmer_anais_defeated", &"route_19_swimmer_erwan_after",
+	&"route_19_swimmer_erwan_before", &"route_19_swimmer_erwan_defeated",
+	&"route_19_swimmer_gwen_after", &"route_19_swimmer_gwen_before",
+	&"route_19_swimmer_gwen_defeated", &"route_19_swimmer_lena_after",
+	&"route_19_swimmer_lena_before", &"route_19_swimmer_lena_defeated",
+	&"route_19_swimmer_loic_after", &"route_19_swimmer_loic_before",
+	&"route_19_swimmer_loic_defeated", &"route_19_swimmer_maelle_after",
+	&"route_19_swimmer_maelle_before", &"route_19_swimmer_maelle_defeated",
+	&"route_19_swimmer_tanguy_after", &"route_19_swimmer_tanguy_before",
+	&"route_19_swimmer_tanguy_defeated", &"route_19_swimmer_yann_after",
+	&"route_19_swimmer_yann_before", &"route_19_swimmer_yann_defeated",
+	&"route_20_bird_keeper_bastien_after", &"route_20_bird_keeper_bastien_before",
+	&"route_20_bird_keeper_bastien_defeated", &"route_20_swimmer_clara_after",
+	&"route_20_swimmer_clara_before", &"route_20_swimmer_clara_defeated",
+	&"route_20_swimmer_elsa_after", &"route_20_swimmer_elsa_before",
+	&"route_20_swimmer_elsa_defeated", &"route_20_swimmer_iris_after",
+	&"route_20_swimmer_iris_before", &"route_20_swimmer_iris_defeated",
+	&"route_20_swimmer_kilian_after", &"route_20_swimmer_kilian_before",
+	&"route_20_swimmer_kilian_defeated", &"route_20_swimmer_lou_after",
+	&"route_20_swimmer_lou_before", &"route_20_swimmer_lou_defeated",
+	&"route_20_swimmer_mathis_after", &"route_20_swimmer_mathis_before",
+	&"route_20_swimmer_mathis_defeated", &"route_20_swimmer_nina_after",
+	&"route_20_swimmer_nina_before", &"route_20_swimmer_nina_defeated",
+	&"route_20_swimmer_ronan_after", &"route_20_swimmer_ronan_before",
+	&"route_20_swimmer_ronan_defeated", &"route_20_swimmer_solene_after",
+	&"route_20_swimmer_solene_before", &"route_20_swimmer_solene_defeated",
+	&"route_21_fisher_gilles_after", &"route_21_fisher_gilles_before",
+	&"route_21_fisher_gilles_defeated", &"route_21_fisher_marcel_after",
+	&"route_21_fisher_marcel_before", &"route_21_fisher_marcel_defeated",
+	&"route_21_fisher_rene_after", &"route_21_fisher_rene_before",
+	&"route_21_fisher_rene_defeated", &"route_21_fisher_yves_after",
+	&"route_21_fisher_yves_before", &"route_21_fisher_yves_defeated",
+	&"route_21_swimmer_arthur_after", &"route_21_swimmer_arthur_before",
+	&"route_21_swimmer_arthur_defeated", &"route_21_swimmer_dylan_after",
+	&"route_21_swimmer_dylan_before", &"route_21_swimmer_dylan_defeated",
+	&"route_21_swimmer_noe_after", &"route_21_swimmer_noe_before",
+	&"route_21_swimmer_noe_defeated", &"route_21_swimmer_simon_after",
+	&"route_21_swimmer_simon_before", &"route_21_swimmer_simon_defeated",
+	&"route_21_swimmer_thibault_after", &"route_21_swimmer_thibault_before",
+	&"route_21_swimmer_thibault_defeated",
+]
 ## Jalon 15 (T13) : la Route 5 et ses intérieurs (dossier 18 §15.2, annexe A.3).
 const IDS_J15_ROUTE_5: Array[StringName] = [
 	&"route_5_crossroads_sign", &"route_5_daycare_sign", &"route_5_guard", &"route_5_hidden_1",
@@ -455,7 +505,7 @@ func test_library_loads_without_error() -> void:
 	# Les identifiants sont comparés triés (la liste IDS est groupée par jalon).
 	var found := _without_qa(library.get_ids())
 	found.sort()
-	var expected := IDS + IDS_J14_BILL + IDS_J14_ROCKET + IDS_J15_ROUTE_5
+	var expected := IDS + IDS_J14_BILL + IDS_J14_ROCKET + IDS_J15_ROUTE_5 + IDS_J24_TRAINERS
 	expected.sort()
 	assert_eq(found, expected)
 
@@ -469,7 +519,8 @@ func test_every_used_dialogue_exists() -> void:
 func test_every_dialogue_is_used() -> void:
 	var played := _cutscenes.get_dialogue_ids()
 	for id: StringName in _real_ids():
-		if UNUSED_YET.has(id) or PLAYED_BY_COMPANION.has(id) or PLAYED_BY_BOOT.has(id):
+		if UNUSED_YET.has(id) or PLAYED_BY_COMPANION.has(id) or PLAYED_BY_BOOT.has(id) \
+				or IDS_J24_TRAINERS.has(id):
 			continue
 		assert_true(_used_on.has(id) or played.has(id),
 			"dialogue « %s » utilisé par un PNJ, un point ou une scène" % id)
@@ -807,6 +858,7 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 	var lot_j10 := FileAccess.get_file_as_string(LOT_J10)
 	var dossier_14 := FileAccess.get_file_as_string(DOSSIER_14)
 	var dossier_18 := FileAccess.get_file_as_string(DOSSIER_18)
+	var dossier_27 := FileAccess.get_file_as_string(DOSSIER_27)
 	var annex_a_15 := AnnexATexts.annex_a(FileAccess.get_file_as_string(JALON_15))
 	var dossier_16 := FileAccess.get_file_as_string(DOSSIER_16).replace("\n    ", " ") \
 		.replace("\n   ", " ")
@@ -840,6 +892,9 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			or _each_line_quoted(dossier_14, text)
 			or _in_dossier_18(dossier_18, text)
 			or _in_dossier_18(annex_a_15, text)
+			# J24 (T4) : Dresseurs des Routes 19 à 21 (dossier 27 §15.4 ; test_j24_data vérifie
+			# chaque réplique entière).
+			or _in_dossier_18(dossier_27, text)
 			# J15 (T13) : panneaux « TITRE — texte » (§15.2, T-1) écrits sur deux lignes ; le
 			# carrefour de l'annexe A.3 (« … → · … ← ») aussi.
 			or dossier_18.contains("« %s »" % text.replace("\n", " — "))

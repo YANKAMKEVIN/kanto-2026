@@ -120,11 +120,15 @@ func test_load_dir_keeps_valid_and_reports_broken() -> void:
 func test_real_tables_load_without_error() -> void:
 	var lib := _lib()
 	assert_true(lib.load_dir(), "\n".join(lib.get_errors()))
-	assert_eq(lib.get_ids(), [&"mt_moon_1f_rubble", &"mt_moon_b1f_rubble",
-		&"mt_moon_b2f_rubble", &"route_1_grass", &"route_22_grass", &"route_24_grass",
-		&"route_25_grass", &"route_2_grass", &"route_2_north_grass", &"route_3_grass",
-		&"route_4_grass", &"route_5_grass", &"route_6_grass", &"viridian_forest_grass"]
-		as Array[StringName])
+	# Jalon 24 (T4) : eau des Routes 19 à 21 et de Cramois'Île, herbe de la Route 21, sol des
+	# Îles Écume (test_j24_data).
+	assert_eq(lib.get_ids(), [&"cinnabar_island_water", &"mt_moon_1f_rubble",
+		&"mt_moon_b1f_rubble", &"mt_moon_b2f_rubble", &"route_19_water", &"route_1_grass",
+		&"route_20_water", &"route_21_grass", &"route_21_water", &"route_22_grass",
+		&"route_24_grass", &"route_25_grass", &"route_2_grass", &"route_2_north_grass",
+		&"route_3_grass", &"route_4_grass", &"route_5_grass", &"route_6_grass",
+		&"seafoam_1f_floor", &"seafoam_b1f_floor", &"seafoam_b2f_floor", &"seafoam_b3f_floor",
+		&"seafoam_b4f_floor", &"viridian_forest_grass"] as Array[StringName])
 
 
 func test_route_22_table_is_red_blue_with_both_nidoran_and_mankey() -> void:
@@ -195,12 +199,17 @@ func test_every_wild_species_has_battle_sprites() -> void:
 	# jalon-07.md Q-2 : sprites de combat provisoires (tools/gen_placeholder_battlers.gd).
 	var lib := _lib()
 	lib.load_dir()
-	assert_eq(lib.size(), 14, "une table par couple ci-dessous")
+	assert_eq(lib.size(), 24, "une table par couple ci-dessous")
 	for pair: Array in [[&"route_1", &"grass"], [&"route_2", &"grass"],
 			[&"route_22", &"grass"], [&"viridian_forest", &"grass"], [&"route_2_north", &"grass"],
 			[&"route_3", &"grass"], [&"mt_moon_1f", &"rubble"], [&"mt_moon_b1f", &"rubble"],
 			[&"mt_moon_b2f", &"rubble"], [&"route_4", &"grass"], [&"route_24", &"grass"],
-			[&"route_25", &"grass"], [&"route_5", &"grass"], [&"route_6", &"grass"]]:
+			[&"route_25", &"grass"], [&"route_5", &"grass"], [&"route_6", &"grass"],
+			# Jalon 24 (T4).
+			[&"route_19", &"water"], [&"route_20", &"water"], [&"route_21", &"water"],
+			[&"route_21", &"grass"], [&"cinnabar_island", &"water"],
+			[&"seafoam_1f", &"floor"], [&"seafoam_b1f", &"floor"], [&"seafoam_b2f", &"floor"],
+			[&"seafoam_b3f", &"floor"], [&"seafoam_b4f", &"floor"]]:
 		for slot: EncounterSlot in lib.get_table(pair[0], pair[1]).slots:
 			for view: String in ["front", "back"]:
 				var path := "res://assets/sprites/pokemon/placeholder/%s_%s.png" % [

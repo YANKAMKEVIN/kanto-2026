@@ -1,0 +1,16 @@
+{
+	"_doc": "Jalon 24, T4 (dossier 27 §10.3) : inventaire complet de la Boutique de Cramois'Île, dans l'ordre de Rouge/Bleu (data/items/marts.asm). data/shops/cinnabar_mart.json ne vend que les objets chargés aujourd'hui ; quand « max_repel » et « revive » (data/j24_pending/items.json) seront lus par ItemLibrary, remplacer le stock de data/shops/cinnabar_mart.json par celui-ci.",
+	"shops": {
+		"cinnabar_mart": {
+			"stock": [
+				{ "item": "ultra_ball" },
+				{ "item": "great_ball" },
+				{ "item": "hyper_potion" },
+				{ "item": "max_repel" },
+				{ "item": "escape_rope" },
+				{ "item": "full_heal" },
+				{ "item": "revive" }
+			]
+		}
+	}
+}
