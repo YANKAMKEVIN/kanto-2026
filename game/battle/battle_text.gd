@@ -55,6 +55,9 @@ extends RefCounted
 ## TELEPORTED → « teleported » ; NOTHING_HAPPENED → « nothing_happened ». Super Bonbon (T18b,
 ## n° 62) : « rare_candy_level » ({level} : le niveau atteint), sans événement du moteur (le voile
 ## du Sac le demande à [method line_for]).
+## Jalon 19 : RECHARGING → « recharging » (Ultralaser) ; SCARED_AWAY → « scared_away »
+## (Hurlement, combat sauvage) ; FORCED_OUT → « forced_out » (Hurlement contre un Dresseur, puis
+## « sent_out_player » ou « sent_out_foe » du remplaçant).
 ## Changement de Pokémon (jalon 7) : WITHDRAWN → « withdrawn » (« Reviens, Salamèche ! ») ; le
 ## Pokémon envoyé reprend « sent_out_player ». Côté adverse (jalon 13, IA qui change, §21 n° 60) :
 ## « withdrawn_foe » (« {trainer} rappelle {pokemon} ! »), puis « sent_out_foe ». Le panneau ÉQUIPE lit, sans événement
@@ -138,6 +141,7 @@ const TEMPLATE_IDS: Array[StringName] = [
 	&"charge_dig_start", &"charge_dig_broken", &"dodged", &"ball_blocked", &"teleported",
 	&"nothing_happened", &"rare_candy_level",
 	&"coins_scattered", &"coins_collected",
+	&"recharging", &"scared_away", &"forced_out",
 ]
 ## Entre deux gains de statistiques du bilan (« PV +2 · Attaque +1 »).
 const SUMMARY_SEPARATOR: String = " · "
@@ -379,6 +383,12 @@ func lines(event: BattleEvent, data: PokemonData, trainer: TrainerData = null) \
 			result.append(_fill(&"nothing_happened", event, data))
 		BattleEvent.Kind.COINS_SCATTERED:
 			result.append(_fill(&"coins_scattered", event, data))
+		BattleEvent.Kind.RECHARGING:
+			result.append(_fill(&"recharging", event, data))
+		BattleEvent.Kind.SCARED_AWAY:
+			result.append(_fill(&"scared_away", event, data))
+		BattleEvent.Kind.FORCED_OUT:
+			result.append(_fill(&"forced_out", event, data))
 		BattleEvent.Kind.STATUS_INFLICTED, BattleEvent.Kind.STATUS_UNCHANGED, \
 				BattleEvent.Kind.STATUS_DAMAGED, BattleEvent.Kind.STATUS_CURED, \
 				BattleEvent.Kind.STATUS_PREVENTED, BattleEvent.Kind.STATUS_ENDED:

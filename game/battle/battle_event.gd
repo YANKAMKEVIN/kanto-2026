@@ -127,6 +127,13 @@ extends RefCounted
 ## - COINS_SCATTERED : Jackpot réussi du joueur (camp PLAYER, le lanceur), juste après ses
 ##   dégâts ; [member amount] = pièces éparpillées par ce Jackpot (niveau × « per_level »). Le
 ##   Jackpot de l'adversaire n'en émet aucun (il ne rapporte rien au joueur).
+## Jalon 19 (Hurlement, Ultralaser) :
+## - RECHARGING : le lanceur d'un Ultralaser qui a touché se repose (« … doit se reposer ! ») ;
+##   ni MOVE_USED ni PP, son tour est perdu ;
+## - SCARED_AWAY : Hurlement en combat sauvage, la cible [member move_id] s'enfuit ; suit
+##   BATTLE_ENDED (FOE_FLED si c'est le sauvage, FLED si c'est le Pokémon du joueur) ;
+## - FORCED_OUT : Hurlement contre un Dresseur (ou d'un Dresseur), la cible quitte le terrain ;
+##   suit le SENT_OUT du remplaçant tiré au hasard dans son camp.
 ## Tous les autres événements sur un Pokémon portent dans [member status] son statut au moment
 ## de l'événement (SENT_OUT : la carte de PV l'affiche dès l'entrée ; FAINTED : toujours vide,
 ## le K.O. efface le statut).
@@ -147,6 +154,7 @@ enum Kind {
 	CHARGE_STARTED, CHARGE_RELEASED, CHARGE_BROKEN, DODGED, BALL_BLOCKED,
 	TELEPORTED, NOTHING_HAPPENED,
 	COINS_SCATTERED,
+	RECHARGING, SCARED_AWAY, FORCED_OUT,
 }
 enum SideId { PLAYER, FOE }
 
