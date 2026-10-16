@@ -152,7 +152,7 @@ func test_real_route_25_trainers() -> void:
 		&"route_25_hiker_gaston": ["Montagnard Gaston", 525,
 			[[&"machop", 15], [&"geodude", 15]]],
 		&"route_25_lass_zoe": ["Fillette Zoé", 225, [[&"nidoran_m", 15], [&"nidoran_f", 15]]],
-		&"route_25_hiker_benoit": ["Montagnard Benoît", 595, [[&"onix", 17]]],
+		&"route_25_hiker_bernard": ["Montagnard Bernard", 595, [[&"onix", 17]]],
 	}
 	for id: StringName in expected:
 		var trainer := library.get_trainer(id)

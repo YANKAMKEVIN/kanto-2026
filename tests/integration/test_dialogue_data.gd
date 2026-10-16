@@ -276,8 +276,8 @@ const IDS: Array[StringName] = [
 	&"viridian_kid",
 	&"viridian_lass", &"viridian_old_man", &"viridian_traveler",
 	# Jalon 14 (T16) : la Route 25 (dossier 17 §15 n° 42 à 51).
-	&"route_25_hidden_1", &"route_25_hidden_1_found", &"route_25_hiker_benoit_after",
-	&"route_25_hiker_benoit_before", &"route_25_hiker_benoit_defeated",
+	&"route_25_hidden_1", &"route_25_hidden_1_found", &"route_25_hiker_bernard_after",
+	&"route_25_hiker_bernard_before", &"route_25_hiker_bernard_defeated",
 	&"route_25_hiker_gaston_after", &"route_25_hiker_gaston_before",
 	&"route_25_hiker_gaston_defeated", &"route_25_item_1", &"route_25_item_2", &"route_25_item_3",
 	&"route_25_jr_trainer_adam_after", &"route_25_jr_trainer_adam_before",
