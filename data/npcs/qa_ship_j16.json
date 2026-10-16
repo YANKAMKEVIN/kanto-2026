@@ -1,5 +1,0 @@
-{
-	"qa_sailor": {
-		"cell": [3, 6], "facing": "right", "sprite": "guard", "dialogue": "qa_ship_info"
-	}
-}

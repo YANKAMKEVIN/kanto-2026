@@ -1,10 +1,5 @@
 {
-	"_doc": "Puzzles d'interrupteurs (jalon 16, jalon-16.md §2.6) : grille des objets à fouiller, textes GYM-01 à GYM-04 (dossier 19 §0.5 n° 32 à 35) et scène de la réussite. qa_vermilion_gym : carte de QA qa_gym_j16 (T16), retirée au T20 ; vermilion_gym : la vraie Arène (T11 ; Major Bob et ses Dresseurs au T14).",
-	"qa_vermilion_gym": {
-		"columns": 5, "rows": 3, "solved_flag": "vermilion_gym_puzzle_solved",
-		"nothing": "qa_gym_trash", "first": "qa_gym_switch_first", "reset": "qa_gym_switch_reset",
-		"solved_cutscene": "qa_gym_barrier_open"
-	},
+	"_doc": "Puzzles d'interrupteurs (jalon 16, jalon-16.md §2.6) : grille des objets à fouiller, textes GYM-01 à GYM-04 (dossier 19 §0.5 n° 32 à 35) et scène de la réussite. vermilion_gym : l'Arène de Carmin (T11 ; Major Bob et ses Dresseurs au T14 ; la carte de QA qa_gym_j16 et son puzzle qa_vermilion_gym ont été retirés au T20).",
 	"vermilion_gym": {
 		"columns": 5, "rows": 3, "solved_flag": "vermilion_gym_puzzle_solved",
 		"nothing": "vermilion_gym_trash", "first": "vermilion_gym_switch_first",

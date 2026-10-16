@@ -659,8 +659,8 @@ func test_oak_looks_at_the_grass_on_his_second_line_and_thinks_before_the_last()
 
 
 func test_every_condition_flag_is_set_somewhere() -> void:
-	# Sans les données des cartes de QA (`qa_*.json`, jalon 16 T16) : elles lisent des drapeaux
-	# que les vraies scènes du J16 lèveront (got_hm01…).
+	# Sans les données d'une éventuelle carte de QA (`qa_*.json` ; celles du jalon 16 sont
+	# retirées au T20).
 	var dialogues := DialogueLibrary.new()
 	var cutscenes := CutsceneLibrary.new()
 	for pair: Array in [[dialogues, "res://data/dialogues/"], [cutscenes, "res://data/cutscenes/"]]:

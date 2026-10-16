@@ -948,8 +948,8 @@ func _flags(names: Array) -> StoryFlags:
 	return flags
 
 
-## Scènes sans celles des cartes de QA (`qa_*`, jalon 16 T16, retirées au T20 ; vérifiées par
-## `test_qa_j16.gd`).
+## Scènes sans celles d'une éventuelle carte de QA (`qa_*` ; celles du jalon 16 sont retirées au
+## T20).
 func _real_ids() -> Array[StringName]:
 	return _without_qa(_cutscenes.get_ids())
 

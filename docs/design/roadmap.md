@@ -165,7 +165,7 @@ J12 Route 3 + Mont Sélénite (dossier 15)   ✅
 J13 Route 4 + Azuria + Ondine + rival n° 3 + Pont Pépite (dossier 16)   ✅
 J14 Route 25 + Cap d'Azuria + Léo + Rocket d'Azuria (dossier 17)   ✅
 J15 Route 5 + Pension + souterrain + Route 6 + Carmin-sur-Mer (dossier 18)   ✅
-J16 S.S. Anne + rival n° 4 + Coupe + Major Bob + Badge Foudre (dossier 19, branche `jalon-16`, `main` du J15 fusionné le 2026-10-16)   ← ICI
+J16 S.S. Anne + rival n° 4 + Coupe + Major Bob + Badge Foudre (dossier 19)   en clôture (16A–16E validés ; ✅ après la 16F)   ← ICI
 J17+ Suite de Kanto → Ligue → post-game
 ```
 

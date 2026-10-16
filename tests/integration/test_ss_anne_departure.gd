@@ -565,8 +565,8 @@ func test_leave_then_cut_for_good_and_round_trip_to_the_gym() -> void:
 
 # --- Données -------------------------------------------------------------------------------
 
-## L'étape « save » (écriture immédiate) n'existe que dans le départ du navire (et sa carte de
-## QA, retirée au T20) : liste blanche (`jalon-16.md` §2.4).
+## L'étape « save » (écriture immédiate) n'existe que dans le départ du navire (la scène de la
+## carte de QA est retirée au T20) : liste blanche (`jalon-16.md` §2.4).
 func test_save_step_only_in_the_departure() -> void:
 	var library := CutsceneLibrary.new()
 	library.load_dir()
@@ -577,7 +577,7 @@ func test_save_step_only_in_the_departure() -> void:
 				if step.kind == CutsceneStep.Kind.SAVE and not found.has(id):
 					found.append(id)
 	found.sort_custom(func(a: StringName, b: StringName) -> bool: return String(a) < String(b))
-	assert_eq(found, [&"qa_ship_exit", &"ss_anne_departure"] as Array[StringName])
+	assert_eq(found, [&"ss_anne_departure"] as Array[StringName])
 
 
 func test_departure_data_order_and_texts() -> void:

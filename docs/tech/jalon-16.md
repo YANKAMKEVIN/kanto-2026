@@ -921,3 +921,94 @@ décharges ! ».
    `animate`), **T9** (puzzle), **T16** (QA).
 4. Après les vues générales : **T1** → **T2** → **T10** → **T11** → **T12** ∥ **T13** ∥ **T14**.
 5. À la fusion du J15 : **T15** (quai réel), **T19**, puis **T20**.
+
+---
+
+## 9. Clôture et passation (T20, 2026-10-16)
+
+**État** : 16A à 16E validés par Kevin sur le S21 (2026-10-16). **Reste la session 16F**
+(non-régression J1–J15 sur la vraie partie de Kevin, sauvegarde v7 relue par l'APK final, ≥ 58 fps
+de moyenne), faite **après** ce nettoyage, sur l'APK de la branche `j16-t20-cloture`. Le J16 n'est
+fusionné dans `main` qu'après la 16F.
+
+### 9.1 Retiré au T20 (cartes de QA du T16)
+
+- Cartes `qa_dock_j16`, `qa_ship_j16`, `qa_gym_j16` et leurs données : `data/npcs/qa_*_j16.json`
+  (dont le **Major Bob d'essai** `qa_surge`, les piliers `qa_barrier_*`, Louis / Axel / Marc et le
+  guide d'essai), `data/dialogues/qa_j16.json`, `data/cutscenes/qa_j16.json` (`qa_cut_tree`,
+  `qa_ship_exit`, `qa_gym_barrier_open`), le puzzle `qa_vermilion_gym` de
+  `data/world/switch_puzzles.json`. Aucune entrée dans `interiors.json`, `lighting.json` ni
+  `zones.json`.
+- Objets provisoires dessinés en code : `assets/sprites/objects/painted/qa_cut_tree*`,
+  `qa_barrier*` ; outils `tools/build_qa_j16.gd`, `tools/build_qa_objects_j16.gd`.
+- Départ de débogage `vermilion_gym` (Arène d'essai) : remplacé par `vermilion_gym_map`. Les
+  départs `cut_*`, `ss_anne*`, `vermilion*`, `surge_weak`, `thunder_no_tm` visent les vraies
+  cartes depuis le T15 et restent (README des départs mis à jour).
+- Tests : `test_qa_j16.gd` supprimé ; `test_map_catalog` n'admet plus aucune carte `qa_*`
+  (`QA_MAPS_SHIPPED` retiré) ; `test_ss_anne_departure` : l'étape `save` n'existe plus que dans
+  `ss_anne_departure`.
+- `project.godot` : scène principale `res://game/boot.tscn` ; filtre d'export inchangé (`tests/*`,
+  `tools/*`, `docs/*`, `addons/gut/*`, `build/*`, `proto/*`, `battle_proto/*` exclus) ; aucune
+  carte ni ressource `qa_*` dans `game/`, `data/`, `assets/`.
+
+### 9.2 Pour le J17 : le monde après le J16
+
+**Carmin-sur-Mer** (`vermilion_city`) :
+- **navire parti** (`ss_anne_departed`) : `Entities/SsAnne` caché, marin revenu en (31, 26) avec
+  DEP-03, garde-fou `blocking_cells` (31..32, 27..28) au-dessus de la mer ; le S.S. Anne ne revient
+  pas (aucun retour prévu par le dossier 19) ; les 9 cartes `ss_anne_*` restent dans le jeu mais
+  sont **inaccessibles** après le départ ;
+- **arbuste de l'Arène coupé pour toujours** (`cut_vermilion_gym_bush`, `Entities/GymTree` en
+  `FlagGate`) : la porte de l'Arène est libre ;
+- objectif après le Badge Foudre : « explorer Carmin-sur-Mer. » (J15, `explore_vermilion`) jusqu'à
+  l'objectif que posera le J17 ; Safrania toujours fermée (J15).
+
+**Arène de Carmin** (`vermilion_gym`) : puzzle résolu (`vermilion_gym_puzzle_solved`) → barrière
+absente pour toujours, même après une défaite ; Louis, Axel, Marc (`vermilion_gym_*_defeated`) ne
+redéfient plus ; Major Bob, battu, dit sa réplique d'après-badge (n° 44) ; CT24 remise une fois
+(`tm24_received`), rattrapage n° 43 → 42 pour une partie d'avant la CT.
+
+**Drapeaux posés par le J16** (tous persistants, sauvegarde v7 inchangée) :
+
+| Drapeau | Sens |
+|---|---|
+| `ss_anne_gangway_open` | le marin du quai a contrôlé le Passe Bateau (la passerelle reste ouverte) |
+| `rival_ss_anne_lost_once`, `rival_ss_anne_won` | rival n° 4 : première défaite (reprise courte), victoire (il part) |
+| `got_hm01` | CS01 Coupe reçue du capitaine |
+| `ss_anne_exit_told` | TXT-03 dit une fois (sortie sans CS01) |
+| `ss_anne_departure_chosen` | transitoire du choix PARTIR, reste dans la sauvegarde (inoffensif, 16D) |
+| `ss_anne_departed` | départ définitif, écrit immédiatement (étape `save`) |
+| `cut_vermilion_gym_bush` | arbuste de l'Arène coupé |
+| `vermilion_gym_puzzle_solved` | les deux interrupteurs trouvés |
+| `surge_met`, `badge_thunder`, `tm24_received` | Major Bob rencontré, battu, CT24 remise |
+
+Plus les objets ramassés du navire (`ss_anne_item_01..06`, `ss_anne_hidden_*`) et les Dresseurs
+battus.
+
+**CS01 / Coupe dans le monde** : règle pure `FieldMoves` (CS en poche + Badge Cascade + Pokémon
+compatible de l'équipe, K.O. accepté ; compagnon s'il est compatible, sinon le premier compatible) ;
+dialogues ARB-00 / ARB-01 / ARB-02 / choix COUPER-LAISSER ; étape de scène `field_move` (cible :
+un décor de la carte, `Entities/<Nom>`) présentée par `FieldMovePresenter` (≤ 2 s, « Réduire les
+animations » : fondu seul). Un nouvel arbuste du J17+ = un `FlagGate` + un point d'examen + une
+scène calquée sur `data/cutscenes/cut_tree.json` avec son drapeau `cut_<id>` : **aucun code**.
+Défaut gardé : une espèce sans planche d'exploration peinte coupe sans Pokémon visible (Reportés).
+CS01 rangée dans « CT/CS », réutilisable, apprise comme une CT.
+
+**Règle de difficulté P-1 (Kevin, 2026-10-16)** : aucun combat **à enjeu** (rival, Champion, chef
+Rocket) ni **enchaînement sans soin** au-delà de **80 %** de victoire au premier essai (joueur
+prudent, ligne droite ; avantage de type choisi accepté). Les Dresseurs ordinaires n'y sont pas
+soumis. À mesurer au simulateur pour chaque jalon (`jalon-16-equilibrage.md` §10).
+
+**Mémoire des textures (S21)** : `tex` 80–138 Mo en jeu, 137–139 Mo sur le pont principal ;
+« carte + voisines » mesurée sur le Mac : pont principal 68,5 Mo (8 scènes dont Carmin), Arène
+39,5 Mo — au-dessus du repère de 64 Mo, sans effet sur les fps (60 stables, creux de 7–19 fps au
+seul changement de carte). À surveiller au J17 et à traiter à la phase DA (compression, atlas).
+
+### 9.3 Reportés (rendu, phase DA)
+
+Pikachu / Salamèche de dos encore en pixel art ; navire peu visible depuis le quai, bout de
+passerelle peint, titre de zone affiché en même temps que DEP-02 / la légende ; trémie de l'escalier
+du pont principal trop large, portes de la cabine B et du restaurant mal calées, zone du Champion
+non distinguée au sol, barrière haute, mer du pont extérieur claire et répétitive, superstructure
+étirée ; Coupe sans Pokémon visible pour une espèce sans planche ; réplique d'Armand sans point
+final ; creux de fps au changement de carte.
