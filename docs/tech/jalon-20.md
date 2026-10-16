@@ -1298,7 +1298,7 @@ capture renommée `20i_<n>.png` / `20ii_<n>.png` ou ligne du journal citée.
 
 ## 9. Questions pour Kevin
 
-- **Q-1 — Lot de textes complémentaire** (annexe A, n° 61 à 214) : habitants, intérieurs, magasin,
+- **Q-1 — Lot de textes complémentaire** — **validé par Kevin le 2026-10-16.** (annexe A, n° 61 à 214) : habitants, intérieurs, magasin,
   Dresseurs sans texte, Casino, repaire, interface (panneau d'étages, boutique), combat (objets
   nouveaux), zones, Grands moments, descriptions d'objets et de capacités, Pokédex.
   *Recommandation : relecture en une passe, comme aux J13–J15 ; bloque les données, pas le code.*
@@ -1324,8 +1324,15 @@ la liste) ; la capture n'ayant pas d'écran de surnom, le don d'Évoli n'en prop
 
 ---
 
-## Annexe A — Lot de textes complémentaire (À VALIDER, Q-1)
+## Annexe A — Lot de textes complémentaire (VALIDÉ par Kevin le 2026-10-16, Q-1)
 
+> **Validé tel quel le 2026-10-16** (« Valide les textes de J20 »). Bélier (211) et Hurlement (213) :
+> la mention « Sans effet dans le moteur actuel. » est la règle du projet depuis le J11 ; elle
+> disparaîtra quand la branche `j19-effets-capacites` (effets de Bélier, Hurlement, Dévorêve,
+> Ultralaser) sera fusionnée. **T9 s'aligne sur `data/pokemon/moves/tower.json` du J19** pour
+> `take_down` et `roar` (et sur le J17 pour Caninos et Goupix) : les copies de
+> `data/pokemon/moves/celadon.json` sont retirées à l'ouverture, sans créer de doublon.
+>
 > Numérotés à partir de 61, pour une réponse groupée (« 74 : … »). Ton du §20 : court, sobre, sans
 > caricature ; Rocket = employés d'une organisation. Bulles de 2 lignes de ~40 caractères ; `/`
 > sépare deux pages. Aucune réplique ne promet la Route 16, Safrania ou la suite de la Tour.
