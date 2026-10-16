@@ -46,6 +46,11 @@ tournantes, compagnon rentré) ; `jalon-16.md` (`field_move`, Coupe) ; `jalon-12
 - **Les tâches qui touchent `game/player/`, `game/world/grid_mover.gd`, `boot.gd`, les directeurs,
   `item_data.gd`, l'exploration HUD, ou une carte d'un autre jalon commencent après la clôture du
   J21** (`origin/main` contient alors J15 à J21) : c'est **T10**.
+- **Règle d'ancienneté** (Kevin, relayée le 2026-10-16) : le J22 ne modifie pas ce qu'une session
+  plus ancienne (J15, J17 à J21) est en train de modifier (fichiers, systèmes, données, moteur) ; il
+  attend et demande à Kevin, ou travaille ailleurs. Même priorité pour les numéros (série d'art 25,
+  la 24 étant au J19). **Avant chaque tâche qui touche un système partagé**, vérifier les branches des
+  sessions plus anciennes (`git log origin/jalon-1[5-9] origin/jalon-2[01]` sur les fichiers visés).
 - **Avant**, seulement : documents, **logique pure dans des fichiers nouveaux**, données dans des
   fichiers nouveaux, grilles, vues peintes, art, contrôles de grilles (§1.2).
 
