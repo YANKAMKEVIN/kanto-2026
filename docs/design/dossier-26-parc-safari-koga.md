@@ -2,7 +2,8 @@
 
 > **Statut : arbitrages TRANCHÉS par Kevin le 2026-10-16** (« Je valide tes recommandations de N2 à
 > 24 ») : toutes les recommandations N-2 à N-24 sont retenues (N-1 était déjà résolu par le recadrage
-> du J22). **Textes du §8 encore à valider** (un seul lot). Rédigé par Claude le 2026-10-16 à partir
+> du J22). **Textes du §8 validés par Kevin le 2026-10-16** (« J'ai relu c'est okay ») :
+> le dossier est **verrouillé**. Rédigé par Claude le 2026-10-16 à partir
 > de la V2 de Kevin (`docs/design/passes/j23-v2-chatgpt.md`). **Aucune ligne de code** avant la
 > validation des textes, la fusion J16–J22 et le plan `docs/tech/jalon-23.md`.
 >
@@ -321,7 +322,7 @@ d'une visite à l'autre (drapeau de ramassage existant) [RB].
 
 ---
 
-## 8. Scènes et dialogues (textes à valider, numérotés)
+## 8. Scènes et dialogues (textes validés par Kevin le 2026-10-16)
 
 > Bulles de 2 lignes, ~40 caractères. `{joueur}`, `{pokemon}` comme d'habitude. Textes RB adaptés,
 > jamais traduits mot à mot. **Kevin les relit en un seul lot** (réponse « 12 : … »).
