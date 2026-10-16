@@ -37,7 +37,14 @@ const MAP_IDS: Array[StringName] = [
 	&"vermilion_house_2",
 	# Jalon 15 (T13, T21) : la Route 5 (raccord réel avec Azuria) et ses trois intérieurs.
 	&"route_5", &"route_5_daycare", &"route_5_gate", &"route_5_underground_gate",
+	# Jalon 16 (T11) : les 9 pièces du S.S. Anne et l'Arène de Carmin.
+	&"ss_anne_main_deck", &"ss_anne_captain_corridor", &"ss_anne_captain_room",
+	&"ss_anne_restaurant", &"ss_anne_lower_deck", &"ss_anne_outer_deck", &"ss_anne_cabin_a",
+	&"ss_anne_cabin_b", &"ss_anne_cabin_c", &"vermilion_gym",
 ]
+## Retours pas encore branchés : [carte d'origine, carte cible]. Jalon 16 (T15) : vide (Carmin
+## mène au pont principal du S.S. Anne et à l'Arène ; les retours sont vérifiés).
+const PENDING_RETURNS: Array = []
 ## Cartes construites par une autre tâche en parallèle (jalon 7 : la Route 22, T22 ; jalon 10 :
 ## Argenta, T11, pendant les intérieurs du T13) : un warp qui y mène est vérifié seulement si la
 ## carte existe déjà (sinon le test le signale).
@@ -130,10 +137,9 @@ func test_every_coming_soon_warp_returns_to_a_walkable_spawn_of_its_own_map() ->
 			assert_ne(warp.facing, Vector2i.ZERO, "%s : orientation au retour" % label)
 	# Jalon 15 (T13, T21) : le sud d'Azuria mène à la vraie Route 5 ; reste l'ouverture
 	# nord du poste vers Safrania (2 cases, jamais atteinte). Jalon 15 (T14) : Route 11
-	# (trois cases), Arène de Carmin (deux), S.S. Anne (deux), Safrania (porte nord de la
-	# Route 6, une).
-	assert_eq(found, 10, "« SAFRANIA » (2), « Route 11 » (3), Arène de Carmin (2), "
-		+ "S.S. Anne (2), Safrania (1)")
+	# (trois cases), Safrania (porte nord de la Route 6, une). Jalon 16 (T15) : l'Arène de
+	# Carmin et l'embarquement du S.S. Anne sont branchés.
+	assert_eq(found, 6, "« SAFRANIA » (2), « Route 11 » (3), Safrania (1)")
 
 
 ## Warp de [param map] qui ramène à [param origin] depuis [param arrival] : sur la case
@@ -149,6 +155,12 @@ func _return_warp(map: GameMap, arrival: Vector2i, origin: StringName) -> Warp:
 				and (map.get_grid().get_step_target(arrival, direction) == next
 					or _blocked_only_by_a_character(map, next)):
 			return warp
+		# Jalon 16 (T11) : sortie PUSH à un pas (les pièces du S.S. Anne : arrivée de la grille
+		# une case au-dessus de la sortie, dans l'encadrement du mur).
+		var push := map.get_warps().find_on_push(next, direction)
+		if push != null and push.target_map == origin \
+				and map.get_grid().get_step_target(arrival, direction) == next:
+			return push
 	return null
 
 
@@ -163,6 +175,8 @@ func test_every_warp_is_reversible_on_the_spot() -> void:
 		for warp: Warp in (_maps[map_id] as GameMap).get_warps().get_all():
 			var target := _maps.get(warp.target_map) as GameMap
 			if target == null or warp.is_coming_soon():
+				continue
+			if PENDING_RETURNS.has([map_id, warp.target_map]):
 				continue
 			var arrival := target.get_spawn_cell(warp.target_spawn)
 			var back := _return_warp(target, arrival, map_id)
@@ -245,5 +259,7 @@ func test_no_trigger_on_a_step_on_warp() -> void:
 					"%s : déclencheur « %s » sur un warp STEP_ON en %s" % [map_id,
 					trigger.cutscene_id, trigger.cell])
 				shared += 1
-	assert_eq(shared, 1, "seul partage : le tapis de sortie du labo (warp PUSH)")
+	# Jalon 16 (T15) : la passerelle du pont principal du S.S. Anne (2 cases PUSH, départ).
+	assert_eq(shared, 3, "partages : le tapis de sortie du labo, la passerelle du S.S. Anne "
+		+ "(warps PUSH)")
 	assert_push_error_count(0)

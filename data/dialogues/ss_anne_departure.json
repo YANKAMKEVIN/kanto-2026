@@ -1,0 +1,18 @@
+{
+	"ss_anne_departure_confirm": {
+		"speaker": "Marin",
+		"pages": [
+			"Si tu pars, le navire appareille.\nTu ne pourras plus remonter."
+		],
+		"choice": {
+			"confirm": "PARTIR",
+			"cancel": "PAS ENCORE",
+			"confirm_set": [
+				"ss_anne_departure_chosen"
+			],
+			"cancel_pages": [
+				"Prends ton temps.\nOn ne part pas sans toi."
+			]
+		}
+	}
+}

@@ -1,0 +1,17 @@
+{
+	"basile": {
+		"cell": [
+			5,
+			3
+		],
+		"facing": "down",
+		"sprite": "scout",
+		"dialogue": "ss_anne_basile_after",
+		"trainer": {
+			"id": "ss_anne_scout_basile",
+			"sight": 2,
+			"before": "ss_anne_basile_before",
+			"defeated": "ss_anne_basile_defeated"
+		}
+	}
+}

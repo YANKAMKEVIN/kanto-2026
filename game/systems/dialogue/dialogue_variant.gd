@@ -33,6 +33,11 @@ var draft: bool = false
 ## s'applique qu'une fois sur [member one_in], tirée **après** ses drapeaux
 ## ([method Dialogue.pick]) ; 0 = toujours (aucun tirage).
 var one_in: int = 0
+## Capacité de terrain (jalon 16, `jalon-16.md` §2.2) : « cut:ready » (capacité et état de
+## [constant FieldMoves.STATE_NAMES]) ; la variante ne s'applique que dans cet état, lu par
+## [member DialogueRunner.field_source] ; "" = toujours. Le jeton `{pokemon}` d'une telle variante
+## nomme le Pokémon qui utiliserait la capacité.
+var field: String = ""
 
 
 ## Vrai si la variante s'applique avec les drapeaux [param flags] (null = aucun drapeau).

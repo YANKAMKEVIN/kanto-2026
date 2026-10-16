@@ -156,6 +156,8 @@ var _pending_daycare: bool = false
 ## recevoir les réglages).
 var _companions := CompanionCatalog.new()
 var _companion := CompanionController.new()
+## Mise en scène des capacités de terrain (jalon 16, Coupe : le Pokémon qui coupe, l'effet).
+var _field_presenter := FieldMovePresenter.new()
 ## Écran de la Pension (J15 T5) : choix du dépôt, bandeau et hôte des capacités du retrait.
 var _daycare_overlay: DaycareOverlay
 ## Autosave demandé, en attente d'un état stable, et sa raison (journal).
@@ -169,6 +171,13 @@ var _opening: OpeningDirector = null
 var _title_backdrop: TitleBackdrop = null
 ## Grottes de Kanto (jalon 12, T20 : Corde Sortie, `data/world/caves.json`).
 var _caves := CaveLibrary.new()
+## Capacités de terrain (jalon 16, Coupe) : data/world/field_moves.json.
+var _field_moves := FieldMoves.new()
+## Puzzles d'interrupteurs (jalon 16, Arène de Carmin) : data/world/switch_puzzles.json.
+var _switch_puzzles := SwitchPuzzleLibrary.new()
+## Puzzle de la carte courante (identifiant → [SwitchPuzzle]) : créé à la première fouille, oublié
+## à chaque arrivée sur une carte (état jamais sauvegardé, nouveau tirage au retour).
+var _active_puzzles: Dictionary[StringName, SwitchPuzzle] = {}
 ## Pierre en cours d'utilisation (jalon 12, T23) : retirée du Sac à
 ## [signal EvolutionDirector.evolution_applied], une seule fois ; &"" sinon.
 var _stone_item: StringName = &""
@@ -242,6 +251,8 @@ func _ready() -> void:
 	_trainers.load_dir()
 	_texts.load_file()
 	_items.load_dir()
+	_field_moves.load_file()
+	_switch_puzzles.load_file()
 	_items.check_moves(_pokemon)
 	_battle_director.setup(_pokemon, _trainers, _texts, _battle_stage, _battle_hud, _player,
 		GameState, _items)
@@ -289,11 +300,15 @@ func _ready() -> void:
 	_runner.token_values = _dialogue_token_values
 	# Variantes « une fois sur N » (jalon 14) : l'aléatoire de la partie courante.
 	_runner.rng_source = func() -> GameRng: return GameState.rng
+	# Capacités de terrain (jalon 16) : état de Coupe pour les variantes « field » de l'arbuste.
+	_runner.field_source = field_state
 	# OUV.2 : prénoms du joueur et du rival (`{player}`, `{rival}`) aussi dans le nom du dresseur.
 	_texts.token_values = _dialogue_token_values
 	_runner.cutscene_requested.connect(_on_cutscene_requested)
 	_cutscenes_node.set_hud(_hud)
 	_cutscenes_node.item_given.connect(_on_item_given)
+	# Jalon 16 : écriture immédiate demandée par une scène (départ du S.S. Anne).
+	_cutscenes_node.save_requested.connect(_on_cutscene_save_requested)
 	_cutscenes_node.item_found.connect(_on_item_found)
 	_battle_director.battle_started.connect(_on_battle_state_changed.unbind(1))
 	# Le titre de zone ne reste pas affiché pendant un combat (jalon 5C T11) : une rencontre
@@ -442,10 +457,13 @@ func _ready() -> void:
 	GameState.pokedex.recorded.connect(_on_pokedex_recorded)
 	GameState.flags.flag_changed.connect(_on_flag_changed)
 	_interactions.observed.connect(_on_observed)
+	_interactions.puzzle_searched.connect(_on_puzzle_searched)
 	_hud.menu_requested.connect(_menu.open)
 	SceneRouter.setup(_world, _player, _fade)
 	# Destinations « à venir » (dossier-07 §12, build de développement) : l'écran provisoire.
 	SceneRouter.coming_soon_presenter = _coming_soon.present
+	# Décors qui suivent les drapeaux à jour avant de poser le joueur (arbuste coupé, J16 T14).
+	SceneRouter.before_spawn = func(map: GameMap) -> void: map.apply_flag_gates(GameState.flags)
 	# Branchés avant start() : la première carte passe aussi par le contrôleur.
 	SceneRouter.transition_started.connect(_on_transition_started)
 	# Via Boot (ordre garanti) : présence des PNJ, puis le contrôleur, puis le directeur.
@@ -639,6 +657,67 @@ func get_trainer_library() -> TrainerLibrary:
 ## Objets chargés au démarrage (data/items/).
 func get_item_library() -> ItemLibrary:
 	return _items
+
+
+## État de la capacité de terrain [param move] pour la partie courante (jalon 16, [FieldMoves]) :
+## équipe, Sac, drapeaux, compagnon choisi.
+func field_state(move: StringName) -> FieldMoves.Result:
+	return _field_moves.check(move, GameState.party, GameState.bag, GameState.flags, _items,
+		_pokemon, GameState.get_companion())
+
+
+## Le Pokémon qui utilise la capacité de terrain [param move] (état READY), ou null.
+func _field_move_user(move: StringName) -> Pokemon:
+	var state := field_state(move)
+	if state.state != FieldMoves.State.READY:
+		return null
+	return GameState.party.get_at(state.pokemon_index)
+
+
+## Vrai si la scène [param cutscene_id] commence par une capacité de terrain que le compagnon
+## utilise lui-même (jalon 16) : il reste alors dehors pour couper.
+func _companion_cuts(cutscene_id: StringName) -> bool:
+	var cutscene := _cutscenes.get_cutscene(cutscene_id)
+	var move := cutscene.leading_field_move(GameState.flags) if cutscene != null else &""
+	if move.is_empty():
+		return false
+	var chosen := _companion.get_chosen()
+	return chosen != null and _field_move_user(move) == chosen
+
+
+## Fouille de l'objet [param slot] du puzzle [param puzzle_id] (jalon 16, `jalon-16.md` §2.6) :
+## puzzle déjà résolu (drapeau) → « rien » ; sinon le puzzle de la carte (tiré à la première
+## fouille depuis l'arrivée) répond, et Boot joue le dialogue du résultat, ou la scène de la
+## réussite (qui ouvre la barrière et lève le drapeau). Puzzle inconnu : push_error.
+func _on_puzzle_searched(puzzle_id: StringName, slot: int) -> void:
+	var spec := _switch_puzzles.get_spec(puzzle_id)
+	if spec == null:
+		push_error("Boot : puzzle inconnu « %s »" % puzzle_id)
+		return
+	var map := SceneRouter.get_current_map()
+	if GameState.flags.has_flag(spec.solved_flag):
+		_runner.play(spec.nothing, null, map)
+		return
+	var puzzle: SwitchPuzzle = _active_puzzles.get(puzzle_id)
+	if puzzle == null:
+		puzzle = SwitchPuzzle.new(GameState.rng, spec.columns, spec.rows)
+		puzzle.start()
+		_active_puzzles[puzzle_id] = puzzle
+	var result := puzzle.search(slot)
+	if OS.is_debug_build():
+		print("[qa] puzzle « %s » : objet %d → %s (premier %d, second %d)" % [puzzle_id, slot,
+			SwitchPuzzle.Result.keys()[result], puzzle.first(), puzzle.second()])
+	if result == SwitchPuzzle.Result.SOLVED:
+		_active_puzzles.erase(puzzle_id)
+		if not _cutscenes_node.play(spec.solved_cutscene):
+			push_error("Boot : la scène « %s » du puzzle n'a pas été jouée" % spec.solved_cutscene)
+		return
+	_runner.play(spec.dialogue_for(result), null, map)
+
+
+## Puzzle d'interrupteurs en cours sur la carte (tests, QA) ; null s'il n'a pas encore été fouillé.
+func get_active_puzzle(puzzle_id: StringName) -> SwitchPuzzle:
+	return _active_puzzles.get(puzzle_id)
 
 
 func get_encounter_director() -> EncounterDirector:
@@ -931,6 +1010,7 @@ func _on_opening_resumed(save: Dictionary) -> void:
 	print("Sauvegarde chargée : %s %s (temps de jeu %d s)" % [GameState.current_map,
 		GameState.player_cell, int(GameState.play_time)])
 	_log_loaded_save()
+	_repair_key_items()
 	if not _resume():
 		SceneRouter.start(start_map, start_spawn, start_facing)
 	_finish_opening()
@@ -992,6 +1072,7 @@ func _load_save() -> bool:
 			print("Sauvegarde chargée : %s %s (temps de jeu %d s)" % [GameState.current_map,
 				GameState.player_cell, int(GameState.play_time)])
 			_log_loaded_save()
+			_repair_key_items()
 			return true
 		ERR_FILE_NOT_FOUND:
 			_autosave_enabled = true
@@ -1003,6 +1084,17 @@ func _load_save() -> bool:
 			push_warning(("Boot : %s. Nouvelle partie SANS sauvegarde automatique : la "
 				+ "sauvegarde existante n'est pas touchée.") % save_system.last_error)
 	return false
+
+
+## Rattrapage des objets remis par une scène (J16 T13, [KeyItemRepair]) : CS01 sans
+## `got_hm01` → drapeau levé ; `got_hm01` sans CS01 → objet rendu une fois. Journalisé.
+func _repair_key_items() -> void:
+	var repair := KeyItemRepair.new()
+	if not repair.load_file():
+		push_warning("Boot : rattrapage des objets illisible : %s" % ", ".join(repair.get_errors()))
+		return
+	for note: String in repair.apply(GameState.flags, GameState.bag):
+		print("[qa] rattrapage : " + note)
 
 
 ## Journal de QA du chargement (build debug) : migration (une ligne, seulement si le fichier
@@ -1135,6 +1227,7 @@ func _on_map_changed(map: GameMap) -> void:
 	_daycare.set_map(map)
 	_recovery.set_map(map)
 	_companion.on_map_changed(map)
+	_field_presenter.set_map(map)
 	# Décor de combat de la carte chargé en tâche de fond (correctif QA S24 du CB.3).
 	_battle_stage.prepare_place(map.map_id)
 
@@ -1154,10 +1247,22 @@ func _setup_companion() -> void:
 	_interactions.companion_talked.connect(_companion.talk)
 	_battle_director.battle_started.connect(_companion.on_battle_started.unbind(1))
 	_menu.set_companions(_companions)
+	# Coupe (jalon 16, `jalon-16.md` §2.3) : le compagnon s'il coupe et qu'il est dehors, sinon
+	# le Pokémon de l'équipe choisi par FieldMoves, apparu le temps de couper.
+	_field_presenter.process_mode = Node.PROCESS_MODE_PAUSABLE
+	add_child(_field_presenter)
+	_field_presenter.setup(_companion, _player)
+	_field_presenter.user_source = _field_move_user
+	_cutscenes_node.field_move_handler = _field_presenter.perform
 
 
 func get_companion_controller() -> CompanionController:
 	return _companion
+
+
+## Mise en scène des capacités de terrain (jalon 16 ; tests, captures).
+func get_field_move_presenter() -> FieldMovePresenter:
+	return _field_presenter
 
 
 ## Le joueur a parlé au compagnon : sa phrase (narration, jeton « {pokemon} »).
@@ -1184,10 +1289,12 @@ func _on_map_entered(map: GameMap) -> void:
 	var region := _first_exit.subtitle_for(map.map_id, _arrival_from, GameState.discovered_maps,
 		map.region)
 	_arrival_from = &""
+	_active_puzzles.clear()
 	GameState.discover_map(map.map_id)
 	_companion.on_map_entered(map)
 	request_autosave("changement de carte")
-	if _announcer.should_announce(map.display_name, map.interior):
+	var indoors := map.interior and not _zones.interior_title_of(map.map_id)
+	if _announcer.should_announce(map.display_name, indoors):
 		_hud.show_zone_title(map.display_name, region)
 		zone_announced.emit(map.display_name, region)
 
@@ -1286,8 +1393,8 @@ func _on_center_healed(map_id: StringName, registered: bool) -> void:
 		request_autosave("soin")
 
 
-func _on_cutscene_started(_cutscene_id: StringName) -> void:
-	_companion.on_cutscene_started()
+func _on_cutscene_started(cutscene_id: StringName) -> void:
+	_companion.on_cutscene_started(_companion_cuts(cutscene_id))
 	_refresh_controls()
 
 
@@ -1397,6 +1504,17 @@ func _on_woke_up_after_defeat() -> void:
 		_write_save("réveil")
 	else:
 		request_autosave("réveil")
+
+
+## Écriture immédiate demandée par l'étape « save » d'une scène (jalon 16, `jalon-16.md` §2.4 :
+## le départ du S.S. Anne) : même chemin que le réveil après une défaite. Le joueur est déjà à sa
+## place (quai) et les drapeaux sont levés ; la scène continue ensuite (spectacle). Pendant une
+## transition : autosave demandé (écrit à la première image stable).
+func _on_cutscene_save_requested(reason: String) -> void:
+	if _can_write() and not SceneRouter.is_transitioning():
+		_write_save(reason)
+	else:
+		request_autosave(reason)
 
 
 ## Pokémon sauvage capturé et rangé (équipe ou stockage, jalon 5D) : autosave demandé, écrit à
@@ -1570,11 +1688,13 @@ func _apply_settings(s: GameSettings) -> void:
 		_evolution_screen.reduce_flashes = s.reduce_flashes
 	_services.reduce_motion = s.reduce_motion
 	_companion.set_reduce_motion(s.reduce_motion)
+	_field_presenter.reduce_motion = s.reduce_motion
 	# Halos des grottes (jalon 12, T7 / T20) et lueur « hint » chez Léo (jalon 14) : vacillement
 	# coupé.
 	LightGlow.set_reduce_motion(s.reduce_motion)
 	# Carte du Champion (jalon 10, T5) : sans glissé, un fondu court.
 	_hud.get_champion_card().reduce_motion = s.reduce_motion
+	_cutscenes_node.reduce_motion = s.reduce_motion
 	# Étape « flash » (jalon 14) : adoucie par l'un ou l'autre réglage.
 	_hud.set_flash_reduced(s.reduce_motion or s.reduce_flashes)
 	_menu_screen.speed_scale = s.menu_speed_scale()

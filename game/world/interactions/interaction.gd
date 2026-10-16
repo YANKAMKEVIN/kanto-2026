@@ -27,6 +27,10 @@ var source: Object = null
 ## Jalon 12 (jalon-12.md §2.8) : la cible disparaît dès qu'un de ces drapeaux est levé
 ## ([method is_available]) ; vide = toujours disponible. Recopié d'un [InteractPoint].
 var unless_flags: Array[StringName] = []
+## Jalon 16 : objet à fouiller d'un puzzle d'interrupteurs (identifiant, place 1..n) ; &"" / 0 =
+## interaction ordinaire. Recopié d'un [InteractPoint].
+var puzzle: StringName = &""
+var puzzle_slot: int = 0
 
 
 func _init(
@@ -52,6 +56,11 @@ func is_valid() -> bool:
 	elif dialogue_id.is_empty():
 		return false
 	return facing == Vector2i.ZERO or Grid.is_cardinal(facing)
+
+
+## Vrai si c'est un objet à fouiller d'un puzzle d'interrupteurs (jalon 16).
+func is_puzzle_slot() -> bool:
+	return not puzzle.is_empty() and puzzle_slot > 0
 
 
 ## Vrai si un joueur orienté vers [param player_facing] peut l'utiliser.

@@ -1,0 +1,10 @@
+{
+	"ss_anne_captain": {
+		"cell": [8, 3], "facing": "up", "sprite": "captain_sick", "dialogue": "ss_anne_captain",
+		"turn_to_player": false, "unless": ["got_hm01"]
+	},
+	"ss_anne_captain_well": {
+		"cell": [8, 3], "facing": "down", "sprite": "captain", "dialogue": "ss_anne_captain",
+		"if": ["got_hm01"]
+	}
+}

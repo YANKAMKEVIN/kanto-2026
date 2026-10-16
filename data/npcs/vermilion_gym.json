@@ -1,0 +1,44 @@
+{
+	"vermilion_gym_barrier_1": {
+		"cell": [7, 5], "facing": "down", "sprite": "object/electric_barrier_side",
+		"turn_to_player": false, "unless": ["vermilion_gym_puzzle_solved"]
+	},
+	"vermilion_gym_barrier_2": {
+		"cell": [8, 5], "facing": "down", "sprite": "object/electric_barrier",
+		"turn_to_player": false, "unless": ["vermilion_gym_puzzle_solved"]
+	},
+	"vermilion_gym_barrier_3": {
+		"cell": [9, 5], "facing": "down", "sprite": "object/electric_barrier_side",
+		"turn_to_player": false, "unless": ["vermilion_gym_puzzle_solved"]
+	},
+	"surge": {
+		"cell": [8, 3], "facing": "down", "sprite": "surge", "dialogue": "vermilion_gym_surge"
+	},
+	"gentleman_louis": {
+		"cell": [3, 8], "facing": "right", "sprite": "gentleman",
+		"dialogue": "vermilion_gym_louis_defeated",
+		"trainer": {
+			"id": "vermilion_gym_gentleman_louis", "sight": 3, "before": "vermilion_gym_louis_before",
+			"defeated": "vermilion_gym_louis_defeated", "rematch": "vermilion_gym_louis_rematch"
+		}
+	},
+	"rocker_axel": {
+		"cell": [12, 10], "facing": "left", "sprite": "rocker",
+		"dialogue": "vermilion_gym_axel_defeated",
+		"trainer": {
+			"id": "vermilion_gym_rocker_axel", "sight": 3, "before": "vermilion_gym_axel_before",
+			"defeated": "vermilion_gym_axel_defeated", "rematch": "vermilion_gym_axel_rematch"
+		}
+	},
+	"sailor_marc": {
+		"cell": [12, 6], "facing": "left", "sprite": "sailor",
+		"dialogue": "vermilion_gym_marc_defeated",
+		"trainer": {
+			"id": "vermilion_gym_sailor_marc", "sight": 3, "before": "vermilion_gym_marc_before",
+			"defeated": "vermilion_gym_marc_defeated", "rematch": "vermilion_gym_marc_rematch"
+		}
+	},
+	"gym_guide": {
+		"cell": [10, 12], "facing": "left", "sprite": "gym_guide", "dialogue": "vermilion_gym_guide"
+	}
+}

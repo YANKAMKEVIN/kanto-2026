@@ -1,5 +1,5 @@
 {
-	"_doc": "Compatibilités des CT (Rouge/Bleu, dossier 14 §6.1), générées par tools/gen_tm_compatibility.py depuis les CSV de PokeAPI ; lues par PokemonData (jalon 11, lot 11B). « tms » : numéro de CT → capacité (identifiants du jeu). « species » : espèce → numéros de CT compatibles (vide = aucune CT, comme Chenipan ou Aspicot). Objets CT existants : CT34 (Patience, « bide », J11) et CT01 (Ultimapoing, « mega_punch », J12) ; les autres CT arrivent avec leur capacité et leur lieu. Fichier généré : le régénérer après une fusion, jamais le fusionner à la main.",
+	"_doc": "Compatibilités des CT (Rouge/Bleu, dossier 14 §6.1), générées par tools/gen_tm_compatibility.py depuis les CSV de PokeAPI ; lues par PokemonData (jalon 11, lot 11B). « tms » : numéro de CT → capacité (identifiants du jeu). « species » : espèce → numéros de CT compatibles (vide = aucune CT, comme Chenipan ou Aspicot). Objets CT existants : CT34 (Patience, « bide », J11) et CT01 (Ultimapoing, « mega_punch », J12) ; les autres CT arrivent avec leur capacité et leur lieu. « hms » / « hm_species » (jalon 16) : CS de Rouge/Bleu, mêmes règles (CS01 Coupe, « hm01 »). Fichier généré : le régénérer après une fusion, jamais le fusionner à la main.",
 	"tms": {
 		"01": "mega_punch",
 		"02": "razor_wind",
@@ -1340,6 +1340,175 @@
 			46,
 			49,
 			50
+		]
+	},
+	"hms": {
+		"01": "cut",
+		"02": "fly",
+		"03": "surf",
+		"04": "strength",
+		"05": "flash"
+	},
+	"hm_species": {
+		"bulbasaur": [
+			1
+		],
+		"ivysaur": [
+			1
+		],
+		"venusaur": [
+			1
+		],
+		"charmander": [
+			1,
+			4
+		],
+		"charmeleon": [
+			1,
+			4
+		],
+		"charizard": [
+			1,
+			4
+		],
+		"squirtle": [
+			3,
+			4
+		],
+		"wartortle": [
+			3,
+			4
+		],
+		"blastoise": [
+			3,
+			4
+		],
+		"beedrill": [
+			1
+		],
+		"pidgey": [
+			2
+		],
+		"pidgeotto": [
+			2
+		],
+		"pidgeot": [
+			2
+		],
+		"spearow": [
+			2
+		],
+		"fearow": [
+			2
+		],
+		"ekans": [
+			4
+		],
+		"arbok": [
+			4
+		],
+		"pikachu": [
+			5
+		],
+		"raichu": [
+			5
+		],
+		"sandshrew": [
+			1,
+			4
+		],
+		"sandslash": [
+			1,
+			4
+		],
+		"nidoqueen": [
+			3,
+			4
+		],
+		"nidoking": [
+			3,
+			4
+		],
+		"clefairy": [
+			4,
+			5
+		],
+		"clefable": [
+			4,
+			5
+		],
+		"jigglypuff": [
+			4,
+			5
+		],
+		"wigglytuff": [
+			4,
+			5
+		],
+		"oddish": [
+			1
+		],
+		"gloom": [
+			1
+		],
+		"paras": [
+			1
+		],
+		"parasect": [
+			1
+		],
+		"mankey": [
+			4
+		],
+		"primeape": [
+			4
+		],
+		"abra": [
+			5
+		],
+		"kadabra": [
+			5
+		],
+		"machop": [
+			4
+		],
+		"bellsprout": [
+			1
+		],
+		"weepinbell": [
+			1
+		],
+		"geodude": [
+			4
+		],
+		"graveler": [
+			4
+		],
+		"golem": [
+			4
+		],
+		"shellder": [
+			3
+		],
+		"onix": [
+			4
+		],
+		"voltorb": [
+			5
+		],
+		"horsea": [
+			3
+		],
+		"goldeen": [
+			3
+		],
+		"staryu": [
+			3,
+			5
+		],
+		"starmie": [
+			3,
+			5
 		]
 	}
 }

@@ -45,7 +45,7 @@ const ACTIONS: Array[StringName] = [
 const _DIALOGUE_KEYS: Array[String] = ["speaker", "narration", "draft", "variants"]
 const _VARIANT_KEYS: Array[String] = [
 	"pages", "if", "unless", "set", "auto", "heal", "draft", "action", "choice", "cutscene",
-	"one_in",
+	"one_in", "field",
 ]
 const _CHOICE_KEYS: Array[String] = [
 	"confirm", "cancel", "confirm_action", "confirm_pages", "cancel_pages", "confirm_cutscene",
@@ -229,7 +229,24 @@ func _parse_variant(value: Variant, where: String) -> DialogueVariant:
 		variant.draft = entry["draft"] is bool and entry["draft"]
 	if entry.has("one_in"):
 		ok = _read_one_in(entry, variant, where) and ok
+	if entry.has("field"):
+		ok = _read_field(entry, variant, where) and ok
 	return variant if ok else null
+
+
+## « field » (jalon 16) : « capacité:état », état de [constant FieldMoves.STATE_NAMES] ; refusé
+## avec « auto ».
+func _read_field(entry: Dictionary, variant: DialogueVariant, where: String) -> bool:
+	var value: Variant = entry["field"]
+	if not value is String or (value as String).get_slice_count(":") != 2 \
+			or (value as String).get_slice(":", 0).is_empty() \
+			or not FieldMoves.STATE_NAMES.has((value as String).get_slice(":", 1)):
+		return _fail("%s : « field » vaut « capacité:état » (%s)" % [where,
+			", ".join(PackedStringArray(FieldMoves.STATE_NAMES))])
+	if variant.auto:
+		return _fail("%s : « field » interdit avec « auto »" % where)
+	variant.field = value
+	return true
 
 
 ## « one_in » (jalon 14) : entier ≥ 2 ; refusé avec « auto » (une arrivée sur la carte ne

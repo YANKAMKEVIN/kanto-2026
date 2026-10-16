@@ -104,6 +104,8 @@ rm "$HOME/Library/Application Support/Godot/app_userdata/Kanto 2026/debug_start.
 | `route_5_pay_day.json` | J15 (15B, Jackpot) : Route 5 (spawn `from_cerulean_c`), **Miaouss N17 en tête** (Griffe, Rugissement, Morsure, **Jackpot**) et compagnon, table forcée Rattata N4 (taux 255) : chaque pas dans H1 (24..28, 8..13) lance un combat ; Jackpot → « Des pièces s'éparpillent partout ! » puis « Tu ramasses … » après la victoire |
 | `route_6_basile.json` | J15 (15B) : Route 6, au **belvédère** (spawn `belvedere` (34, 44), tourné vers le nord), les cinq autres Dresseurs battus : un pas vers le nord → Basile (Papilusion N20 : Poudre Toxik, Para-Spore, Poudre Dodo) ; 2 Anti-Para, 2 Réveil au Sac ; la Poké Ball (38, 41) au fond du belvédère |
 | `vermilion_ss_ticket.json` | J15 (15B) : partie de `bill_after` (Léo aidé, **Passe Bateau** au Sac, `got_ss_ticket`), à l'entrée nord de Carmin : le marin dit T-26 **à l'identique**, embarquement inatteignable |
+| `vermilion_dock.json` | J16 (embarquement) : partie de `vermilion`, **sans Passe Bateau**, sur le quai devant le marin (spawn `dock` (31, 24)) : TXT-02, la passerelle reste fermée |
+| `vermilion_dock_ticket.json` | J16 (embarquement) : partie de `vermilion_ss_ticket` (Passe Bateau au Sac), sur le quai (spawn `dock`) : marin → TXT-01, il s'écarte en (30, 26), montée à bord |
 | `bill_after.json` | J14 (T17) : même partie, Léo déjà aidé (`bill_restored`, `got_ss_ticket`, `got_bill_rare_candy`), Passe Bateau et Super Bonbon au Sac, sur le paillasson de la maison : Léo humain devant la cabine B |
 | `rare_candy_qa.json` | J14 (T18b) : même partie que `bill_after` (maison de Léo), **5 Super Bonbons** : Abra N15 (bonbon → N16, n° 62, puis évolution en Kadabra **annulable** : ARRÊTER ou retour Android ; Choc Mental appris), Papilusion N20 à quatre capacités (→ N21 : Ultrason, écran « oublier une capacité »), Roucarnage **N100** (« Sans effet »), Rattata N12 **K.O.** (« Ce Pokémon est K.O. »), Salamèche N22. Sac → AVENTURE → Super Bonbon → UTILISER |
 | `cerulean_garden.json` | J14 (T20b) : Badge Roche, Salamèche N22, Papilusion N20, Roucool N18, devant la clôture arrachée du jardin de la maison cambriolée (spawn `garden_start` (5, 2), tourné vers l'est) : le premier pas sur la colonne 7 lance la poursuite (« ! », n° 30), puis combat par la bande (17, 2..3) |
@@ -121,6 +123,40 @@ Pokémon se vérifient sur la vraie partie : rival n° 3 et Ondine).
 La carte de QA `qa_forest_systems` (J9, T6) et ses données ont été **retirées à la clôture du
 J9 (T23)** ; les départs qui s'en servaient sont rebasés ci-dessus sur le poste sud et la vraie
 forêt.
+
+## Jalon 16 (T16) : départs de la Coupe et du départ du navire
+
+Écrits sur les cartes de QA `qa_dock_j16`, `qa_ship_j16`, `qa_gym_j16`, **retirées au T20** (avec
+leurs PNJ, dialogues, scènes, le puzzle `qa_vermilion_gym`, le Major Bob d'essai et les objets
+dessinés en code `qa_cut_tree` / `qa_barrier`) ; ces départs sont rebasés sur les vraies cartes :
+l'arbuste `gym_tree` devant l'Arène de Carmin (spawn `gym_tree`, drapeau `cut_vermilion_gym_bush`)
+et le pont principal du S.S. Anne (spawn `from_ss_anne_w`, sortie par la passerelle). Le départ
+`vermilion_gym` (Arène d'essai) est retiré : `vermilion_gym_map` le remplace. Équipe des départs
+`cut_*` : Pikachu N22 (compagnon dans `cut_ready`, **incompatible**), Sabelette N20, Mystherbe
+N20, Reptincel N24.
+
+| Fichier | Partie |
+|---|---|
+| `cut_no_hm.json` | Devant l'arbuste de Carmin (spawn `gym_tree`), Badge Cascade, **sans CS01** : « Un arbuste barre le passage. / Il faudrait savoir le couper. » (ARB-00) |
+| `cut_no_badge.json` | CS01, **sans Badge Cascade** : ARB-01 nomme Sabelette, sans choix |
+| `cut_no_pokemon.json` | CS01 et Badge Cascade, Carapuce + Pikachu (**incompatibles**) : ARB-02, sans choix |
+| `cut_ready.json` | CS01, Badge Cascade, équipe mixte : « Sabelette peut couper cet arbuste. / Utiliser Coupe ? » → COUPER / LAISSER ; COUPER : « Sabelette utilise Coupe ! », l'arbuste disparaît **pour toujours** (`cut_vermilion_gym_bush`), la porte de l'Arène s'ouvre au nord |
+| `ss_anne_free_exit.json` | Sur le pont principal, **sans CS01** : descendre par la passerelle → TXT-03 une fois, puis sortie libre vers le quai de Carmin |
+| `ss_anne_exit.json` | **16D, validé seul.** CS01 en poche, devant la sortie : PARTIR / PAS ENCORE. PAS ENCORE : « Prends ton temps… », un pas en arrière. PARTIR : fondu vers le quai, **écriture immédiate**, légende « Le S.S. Anne quitte Carmin. », le navire s'éloigne, passerelle fermée (« Le S.S. Anne a pris le large. »). **Clé `autosave: true` : ce départ REMPLACE `user://save.json`** (copier la vraie sauvegarde avant). Arrêt brutal (forcer l'arrêt Android) pendant la confirmation → relance à bord ; après la légende → relance au quai, navire parti, spectacle non rejoué |
+
+## Jalon 16 (T11) : les vraies cartes du S.S. Anne et de l'Arène (décor provisoire)
+
+Tant que Carmin n'y mène pas (embarquement au T15, porte de l'Arène au T14), on y entre par ces
+départs. Sans PNJ à bord (T12, T13) ; dans l'Arène, seule la barrière (T14 : Major Bob, Dresseurs,
+guide).
+
+| Fichier | Partie |
+|---|---|
+| `ss_anne.json` | Sur le **pont principal**, en haut de la passerelle (spawn `from_ss_anne_w`, tourné vers le nord), Passe Bateau, Badge Cascade, équipe N20–24 (celle de `ss_anne_free_exit`) : les 9 pièces reliées (portes du nord : cabines A, C, couloir et cabine du capitaine ; ouest : restaurant ; est : pont extérieur ; escalier sud-est : pont inférieur et cabine B) ; la passerelle ramène au quai de Carmin |
+| `vermilion_gym_map.json` | Dans la **vraie Arène de Carmin** (spawn `entrance`), arbuste coupé : le puzzle `vermilion_gym` (GYM-01 à GYM-04, journal `[qa] puzzle …`), barrière de 3 segments ; la sortie ramène devant l'Arène à Carmin. Équipe Sablaireau N26 (Tunnel), Racaillou N24, Herbizarre N24, Roucoups N22 ; 3 Super Potions, 3 Anti-Para. Depuis le T14 : Louis, Axel, Marc (évitables), le guide, Major Bob derrière la barrière |
+| `vermilion_gym_solved.json` | J16 (T14) : même partie, **puzzle résolu** (`vermilion_gym_puzzle_solved`) : barrière absente, Louis, Axel et Marc pas battus ; monter jusqu'à (8, 4) et parler à Major Bob (carte « MAJOR BOB », combat, « BADGE FOUDRE », CT24) |
+| `surge_weak.json` | J16 (T14) : puzzle résolu, Salamèche **N6** seul, CS01 seule au Sac : perdre contre Major Bob (n° 37, réveil au dernier Centre enregistré : **chez Maman** dans ce départ, aucun Centre n'étant enregistré ; le Centre de Carmin est couvert par `test_vermilion_gym_sequence`), barrière toujours ouverte, reprise n° 38 sans carte |
+| `thunder_no_tm.json` | J16 (T14) : Badge Foudre **sans** `tm24_received` (partie d'avant la CT) : parler à Major Bob donne la CT24 une fois (n° 43 puis 42), ensuite n° 44 |
 
 La carte de QA `qa_moves_j12` (J12, T15) ses données, son outil et les départs `moves_qa` /
 `moves_qa_solo` ont été **retirés au T28 du J12** (les capacités du J12 se vérifient sur la vraie

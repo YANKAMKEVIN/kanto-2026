@@ -40,6 +40,8 @@ var _map: GameMap
 var _node: Companion
 var _trail := CompanionTrail.new()
 var _in_cutscene: bool = false
+## Resté dehors pendant la scène en cours (jalon 16, Coupe : il coupe lui-même).
+var _kept: bool = false
 var _in_battle: bool = false
 var _in_transition: bool = false
 var _joy_pending: bool = false
@@ -137,14 +139,48 @@ func on_transition_finished() -> void:
 	_place_and_show(true)
 
 
-func on_cutscene_started() -> void:
+## Début d'une scène : il rentre (D-2). [param keep_shown] (jalon 16, Coupe) : la scène commence
+## par une capacité de terrain qu'il va utiliser lui-même ; s'il est dehors, il y reste (il
+## ne suit plus le joueur jusqu'à la fin de la scène).
+func on_cutscene_started(keep_shown: bool = false) -> void:
 	_in_cutscene = true
-	_hide(false)
+	_kept = keep_shown and is_shown() and not _node.is_moving()
+	if not _kept:
+		_hide(false)
 
 
+## Fin d'une scène : il ressort derrière le joueur ; s'il est resté dehors (Coupe), il reste où
+## il est et reprend le suivi au prochain pas.
 func on_cutscene_finished() -> void:
 	_in_cutscene = false
+	var kept := _kept
+	_kept = false
+	if kept and is_shown():
+		return
 	_place_and_show(true)
+
+
+## Vrai s'il est resté dehors pendant la scène en cours ([method on_cutscene_started]).
+func is_kept_in_cutscene() -> bool:
+	return _kept
+
+
+## Coroutine (jalon 16, Coupe) : resté dehors, il marche jusqu'à [param cell] (une case voisine
+## du joueur) et s'y tourne vers [param facing] ; le suivi repart de cette case. Sans effet s'il
+## n'est pas resté dehors.
+func step_to(cell: Vector2i, facing: Vector2i) -> void:
+	if not _kept or not is_shown():
+		return
+	if _node.get_cell() != cell:
+		var step := CompanionTrail.Step.new()
+		step.from_cell = _node.get_cell()
+		step.to_cell = cell
+		_node.move(step)
+		await _node.step_finished
+	_node.face(facing)
+	_trail.place_at(cell)
+	if is_instance_valid(_map) and _map.get_grid() != null:
+		_map.get_grid().soft_hold(cell, _node)
 
 
 ## Combat (D-1) : caché pendant tout le combat, sur place.
