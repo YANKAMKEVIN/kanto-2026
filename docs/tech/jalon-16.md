@@ -380,8 +380,8 @@ Le modèle exact est celui de `route_24_rival` :
 - IA `smart`, `can_lose false`, `"moment": "win"`, `prize_per_level 35`, `start_message true` ;
 - `team_by_starter` : Roucoups 19, Rattatac 16, Kadabra 18 (**Choc Mental, Rafale Psy**, R-12),
   starter évolué 20 avec l'avantage de type — recalé le 2026-10-16 (T21) puis **à ~40 % le même
-  jour** (`jalon-16-equilibrage.md` §10) : 19 / 16 / 19 / 20 contre Salamèche, 17 / 15 / 20 / 20
-  contre Carapuce, 13 / 12 / 13 / 15 contre Bulbizarre ;
+  jour** (`jalon-16-equilibrage.md` §10) : 19 / 16 / 19 / 20 contre Salamèche, **20 / 17 / 19 / 24**
+  contre Carapuce (§10.6, starter le plus fort), 13 / 12 / 13 / 15 contre Bulbizarre ;
 - capacités choisies à la main pour tous (dossier §5, sans mécanique interdite).
 
 R-7 : le drapeau de victoire suit le modèle du J13 (`rival_<lieu>_won`) et non `beaten_`.
@@ -819,6 +819,12 @@ Major Bob inchangé. Dresseurs ordinaires du navire et de l'Arène : > 80 % part
 les niveaux ; propositions P-1 / P-2 non appliquées (`jalon-16-equilibrage.md` §10.4).
 Tests : `test_ss_anne_trainers_data`, `test_ss_anne_rival_captain` (niveaux, 700 ₽),
 `test_simulate_ss_anne` (nouveaux scénarios valides).
+
+**Décisions de Kevin (2026-10-16, branche `j16-rival-final`, `jalon-16-equilibrage.md` §10.6)** :
+règle des 80 % = **P-1** (combats à enjeu et enchaînements sans soin, pas chaque Dresseur
+ordinaire ; aucune équipe ordinaire changée) ; Bulbizarre gardé (13 / 12 / 13 / 15) ; contre
+Carapuce **20 / 17 / 19 / Herbizarre 24** (840 ₽), starter évolué le plus fort : **45,7 %** en
+ligne droite (prudent), 77 % expert, 0,3 % naïf, 61 % avec les Dresseurs facultatifs.
 
 #### T20 — fin et clôture — après la fusion du J15
 

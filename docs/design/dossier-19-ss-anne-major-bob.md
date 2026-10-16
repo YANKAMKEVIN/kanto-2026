@@ -170,13 +170,18 @@ au §9), rapports des T7, T11 et T14. **Remplacent** les valeurs du §5, du §9 
   niveau inchangés) — **recalé le 2026-10-16 à ~40 % de victoire au premier essai** (décision de
   Kevin : « 95 % c'est trop » ; joueur prudent, ligne droite, `jalon-16-equilibrage.md` §10) :
   contre Salamèche **Roucoups 19, Rattatac 16, Kadabra 19, Carabaffe 20** (700 ₽) ; contre
-  Carapuce **Roucoups 17, Rattatac 15, Kadabra 20, Herbizarre 20** (700 ₽) ; contre Bulbizarre
-  **Roucoups 13, Rattatac 12, Kadabra 13, Reptincel 15** (525 ₽). *Remplace* 17 / 15 / 16 / 18
-  (R-1) et 16 / 14 / 15 / 16 (option (h)) du même jour.
+  Carapuce **Roucoups 20, Rattatac 17, Kadabra 19, Herbizarre 24** (840 ₽ ; décision de Kevin
+  du 2026-10-16 : le starter évolué reste le plus fort ; 46 % mesuré, au lieu de 17 / 15 / 20 /
+  20) ; contre Bulbizarre **Roucoups 13, Rattatac 12, Kadabra 13, Reptincel 15** (525 ₽, gardé
+  par Kevin, 38 %). *Remplace* 17 / 15 / 16 / 18 (R-1) et 16 / 14 / 15 / 16 (option (h)) du
+  même jour (`jalon-16-equilibrage.md` §10.6).
 - **Règle générale de Kevin (2026-10-16)** : aucun combat au-delà de **80 %** de victoire au
   premier essai par défaut (joueur prudent, ligne droite) ; il faut de la réflexion et parfois de
   l'entraînement. Les taux élevés dus à un **avantage de type choisi par le joueur** (Pokémon de
-  type Sol ou Bulbizarre contre Major Bob) sont acceptés.
+  type Sol ou Bulbizarre contre Major Bob) sont acceptés. **Portée (P-1, décision de Kevin du
+  2026-10-16)** : la règle vaut pour les **combats à enjeu** (rival, Champion, chef Rocket) et les
+  **enchaînements sans soin** (le navire entier, l'Arène avant son Champion), **pas pour chaque
+  Dresseur ordinaire** : les équipes des Dresseurs ordinaires (§4, §9, §17) ne changent pas.
 - **Major Bob** (§9, R-3) : mêmes niveaux (Voltorbe 21, Pikachu 18, Raichu 24) ; **Raichu sans
   Tonnerre** : Éclair, Cage-Éclair, Vive-Attaque. Tonnerre reste la récompense (CT24).
 - **Indice dans le jeu** : le guide de l'Arène ajoute, avant le Badge Foudre, deux bulles après le

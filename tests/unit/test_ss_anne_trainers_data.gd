@@ -98,7 +98,10 @@ func test_rival_by_starter() -> void:
 		# Recalage à ~40 % au premier essai en ligne droite (décision de Kevin du 2026-10-16,
 		# « 95 % c'est trop » ; jalon-16-equilibrage.md §10).
 		var levels: Array = {&"bulbasaur": [13, 12, 13, 15], &"charmander": [19, 16, 19, 20],
-			&"squirtle": [17, 15, 20, 20]}[starter]
+			&"squirtle": [20, 17, 19, 24]}[starter]
 		assert_eq([team[0].level, team[1].level, team[2].level, team[3].level], levels,
 			String(starter))
+		# Le starter évolué reste le plus fort (Kevin, 2026-10-16 : Carapuce 20 / 17 / 19 / 24).
+		for i in 3:
+			assert_lt(team[i].level, team[3].level, "%s : starter le plus haut" % starter)
 		assert_eq(team[2].moves, [&"confusion", &"psybeam"] as Array[StringName], "R-12")
