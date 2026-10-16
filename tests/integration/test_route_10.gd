@@ -194,11 +194,13 @@ func test_cave_mouths_and_south_edge() -> void:
 		if warp == null:
 			continue
 		if lavender_built:
-			assert_eq([warp.target_map, warp.target_spawn], [&"lavender_town", &"from_route_10"])
+			assert_eq(warp.target_map, &"lavender_town")
+			assert_eq(warp.target_spawn, StringName("from_route_10_" + "wce"[cell.x - 21]))
 		else:
 			assert_eq(warp.coming_soon, "Lavanville")
 			assert_eq(_map.get_spawn_cell(warp.target_spawn), cell)
-	assert_true(_map.has_spawn(&"from_lavender"))
+	for suffix: String in ["w", "c", "e"]:
+		assert_true(_map.has_spawn(StringName("from_lavender_" + suffix)))
 
 
 func test_no_life_yet() -> void:

@@ -53,9 +53,9 @@ const WEST_EXITS: Array = [
 	["Route9C", Vector2i(0, 13), "from_route_9", &"from_route_10"],
 	["Route9S", Vector2i(0, 14), "from_route_9_s", &"from_route_10_s"],
 ]
-## Porte du Centre : [nœud, case] ; spawns `from_center` (7, 12) et `from_center_b` (8, 12).
+## Porte du Centre : [nœud, case] ; spawns `from_center` (7, 12) et `from_center_e` (8, 12).
 const CENTER_DOORS: Array = [["DoorCenterW", Vector2i(7, 11)], ["DoorCenterE", Vector2i(8, 11)]]
-const CENTER_SPAWNS: Array = [["from_center", Vector2i(7, 12)], ["from_center_b", Vector2i(8, 12)]]
+const CENTER_SPAWNS: Array = [["from_center", Vector2i(7, 12)], ["from_center_e", Vector2i(8, 12)]]
 const CENTER_ANCHOR := Vector2i(8, 11)
 ## Bouches de la grotte : [nœud, case, spawn d'arrivée dans la grotte]. Spawns d'ici (devant,
 ## tournés ↓) : [nom, case].
@@ -64,22 +64,22 @@ const CAVE_LABEL: String = "Grotte Sombre"
 const CAVE_NORTH: Array = [["CaveNorthW", Vector2i(16, 7)], ["CaveNorthE", Vector2i(17, 7)]]
 const CAVE_NORTH_SPAWN: StringName = &"from_route_10_n"
 const CAVE_NORTH_FRONT: Array = [["from_dark_cave_n", Vector2i(16, 8)],
-	["from_dark_cave_n_b", Vector2i(17, 8)]]
+	["from_dark_cave_n_e", Vector2i(17, 8)]]
 const CAVE_NORTH_ANCHOR := Vector2i(17, 7)
 const CAVE_SOUTH: Array = [["CaveSouthW", Vector2i(8, 47)], ["CaveSouthE", Vector2i(9, 47)]]
 const CAVE_SOUTH_SPAWN: StringName = &"from_route_10_s"
 const CAVE_SOUTH_FRONT: Array = [["from_dark_cave_s", Vector2i(8, 48)],
-	["from_dark_cave_s_b", Vector2i(9, 48)]]
+	["from_dark_cave_s_e", Vector2i(9, 48)]]
 const CAVE_SOUTH_ANCHOR := Vector2i(9, 47)
 ## Module de la bouche : série 19 si elle est là, sinon l'entrée de la Route 3.
 const MOUTH_IDS: Array[String] = ["relief_bouche_paroi_01", "relief_entree_grotte_01"]
-## Raccord sud : [nœud, case, spawn d'ici] ; arrivée de Lavanville : `from_route_10`.
+## Raccord sud : [nœud, case, spawn d'ici] ; arrivée de Lavanville : `from_route_10_w|c|e` (un spawn par colonne).
 const SOUTH_MAP: StringName = &"lavender_town"
 const SOUTH_LABEL: String = "Lavanville"
 const SOUTH_EXITS: Array = [
-	["LavenderW", Vector2i(21, 75), "from_lavender_w"],
-	["LavenderC", Vector2i(22, 75), "from_lavender"],
-	["LavenderE", Vector2i(23, 75), "from_lavender_e"],
+	["LavenderW", Vector2i(21, 75), "from_lavender_w", &"from_route_10_w"],
+	["LavenderC", Vector2i(22, 75), "from_lavender_c", &"from_route_10_c"],
+	["LavenderE", Vector2i(23, 75), "from_lavender_e", &"from_route_10_e"],
 ]
 const RESERVED_KINDS: Array[String] = ["dresseur", "pnj", "pokemon", "objet_visible", "cache"]
 const BALL_KINDS: Array[String] = ["objet_visible", "cache"]
@@ -267,7 +267,7 @@ func _add_passages() -> void:
 		_kit.call(&"add_spawn", entry[2], entry[1])
 		if south_built:
 			_kit.call(&"add_warp", entry[0], entry[1], Kit.PUSH, Vector2i.DOWN, SOUTH_MAP,
-				&"from_route_10", Vector2i.DOWN)
+				StringName(entry[3]), Vector2i.DOWN)
 		else:
 			_kit.call(&"add_warp", entry[0], entry[1], Kit.PUSH, Vector2i.DOWN, &"",
 				StringName(entry[2]), Vector2i.UP, SOUTH_LABEL)
