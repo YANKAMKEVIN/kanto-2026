@@ -1,8 +1,10 @@
 # Dossier 26 — Les secrets du Parc Safari : Parc Safari, CS03 Surf, CS04 Force, Arène de Koga (jalon 23)
 
-> **Statut : audit et dossier d'alignement, À VALIDER.** Rédigé par Claude le 2026-10-16 à partir de
-> la V2 de Kevin (`docs/design/passes/j23-v2-chatgpt.md`). **Aucune ligne de code** avant la réponse
-> aux questions du §16. Les 7 décisions verrouillées de la V2 ne sont pas rouvertes.
+> **Statut : arbitrages TRANCHÉS par Kevin le 2026-10-16** (« Je valide tes recommandations de N2 à
+> 24 ») : toutes les recommandations N-2 à N-24 sont retenues (N-1 était déjà résolu par le recadrage
+> du J22). **Textes du §8 encore à valider** (un seul lot). Rédigé par Claude le 2026-10-16 à partir
+> de la V2 de Kevin (`docs/design/passes/j23-v2-chatgpt.md`). **Aucune ligne de code** avant la
+> validation des textes, la fusion J16–J22 et le plan `docs/tech/jalon-23.md`.
 >
 > **Numéro 26** : 25 = J22 (prompt `docs/design/prompts/chatgpt-dossier-25-safrania-j22.md`, branche
 > `docs/dossier-25-j22`), 24 = J21, 23 = J20. Vérifié libre sur toutes les branches locales et
@@ -40,9 +42,9 @@ J23 :
 |---|---|---|
 | Parmanie (60 × 54, échelle × 1,5) | ville + 4 intérieurs ouverts, **3 portes réservées au J23** | le J23 ouvre la **porte du Parc**, l'**Arène de Koga** (façade posée par le J22) et la **maison du Gardien** (M-19 B) |
 | Sorties de Parmanie | ouest Route 18, est Route 15, **sud Route 19 (mer)** réservée | rien à faire au J23 (la mer est au J24, P-3) |
-| Pêche (M-8 à M-11) | trois cannes, terrain `water_rod`, meilleure canne d'office | le Parc peut avoir ses **étangs pêchables** (§6.3, **N-6**) |
+| Pêche (M-8 à M-11) | trois cannes, terrain `water_rod`, meilleure canne d'office | **étangs du Parc pêchables** si le J22 livre la pêche (§6.3, N-6 A retenu) |
 | Enclos de Parmanie (M-20) | « vitrines » des Pokémon du Safari | décor du J22 ; aucun lien de code avec le Parc |
-| Maison de Vol, Route 16 (M-18 C) | **porte réservée « au J23 »** avec la CS02 | **hors du périmètre verrouillé du J23** → **N-24** |
+| Maison de Vol, Route 16 (M-18 C) | **porte réservée « au J23 »** avec la CS02 | **hors du J23** (N-24 A retenu) : la porte reste réservée à un jalon des CS / du voyage rapide |
 | Ronflex et Route 12 sud (M-3) | à trancher avec le J21 | un des deux chemins doit être praticable avant le J23 |
 
 Le présent dossier suppose donc qu'**avant le code du J23** existent : Parmanie (extérieur, Centre,
@@ -653,9 +655,10 @@ Le découpage de la V2 est repris ; deux ajustements [D, **N-21**] :
 
 ---
 
-## 16. Questions ouvertes (à trancher par numéro)
+## 16. Arbitrages (tranchés le 2026-10-16 : recommandations N-2 à N-24 retenues)
 
-> Réponse attendue sous la forme « N-1 ok, N-6 : B, … ». **Reco** = ma recommandation. Les numéros
+> **Kevin, 2026-10-16 : toutes les recommandations retenues.** La colonne « Reco » est donc la
+> décision. Pour N-6, la pêche du Parc reste conditionnée à la livraison de la pêche par le J22. Les numéros
 > laissés vides correspondent à des questions résolues depuis la première version.
 
 | # | Question | Reco |
