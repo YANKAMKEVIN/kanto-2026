@@ -610,6 +610,13 @@ PNJ et répliques, 10 Dresseurs (vues des grilles), objets visibles et cachés, 
 
 §2.7, §2.8.
 
+**Fait le 2026-10-16** (branche `j16-t13-rival-capitaine`) : données par carte
+(`data/{npcs,dialogues,cutscenes}/ss_anne_captain_{corridor,room}.json`), vue `RivalView`
+(7, 2..4), rattrapage `KeyItemRepair` (`data/story/key_item_repairs.json`, appelé par Boot au
+chargement), objectifs `help_captain`, `hm01_cascade_badge`, `go_vermilion_gym`. Écarts : pas de
+`rival_ss_anne_retried` / `resume_again` (un seul texte de reprise validé) ; drapeaux du plan, pas
+`beaten_rival_ss_anne` de la grille. La confirmation PARTIR / PAS ENCORE reste au T15.
+
 #### T14 — constructeur-monde : Arène de Carmin (16E) — après T4, T9, T10
 
 Carte, Dresseurs, guide, panneau, Major Bob (modèle `cerulean_gym_misty`), badge, CT24 et son

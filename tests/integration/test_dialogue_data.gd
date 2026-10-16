@@ -116,6 +116,8 @@ const MAPS: Array[StringName] = [
 	&"route_5", &"route_5_daycare", &"route_5_gate", &"route_5_underground_gate",
 	# Jalon 16 (T11) : l'Arène de Carmin (puzzle et barrière ; Major Bob et les siens au T14).
 	&"vermilion_gym",
+	# Jalon 16 (T13) : le couloir du rival n° 4 et la cabine du capitaine.
+	&"ss_anne_captain_corridor", &"ss_anne_captain_room",
 ]
 ## Lot de textes validé par Kevin le 2026-10-06 (anciens brouillons : panneau, observations,
 ## soin de Maman, terminal du Stockage, portes de Jadielle…) : source des textes hors dossiers.
@@ -306,6 +308,18 @@ const IDS_J16_GYM: Array[StringName] = [
 ]
 ## Jalon 16 (T11) : GYM-03, dit par la scène de la barrière ouverte.
 const PLAYED_J16_GYM: Array[StringName] = [&"vermilion_gym_switch_solved"]
+## Jalon 16 (T13) : le rival n° 4 et le capitaine (dossier 19 §0.5 n° 16 à 24).
+const IDS_J16_RIVAL_CAPTAIN: Array[StringName] = [
+	&"rival_ss_anne_intro", &"rival_ss_anne_lost", &"rival_ss_anne_resume", &"rival_ss_anne_won",
+	&"ss_anne_captain", &"ss_anne_captain_gift", &"ss_anne_captain_gift_use",
+	&"ss_anne_captain_relieved", &"ss_anne_captain_rub", &"ss_anne_captain_sick",
+]
+## Jalon 16 (T13) : tous joués par les scènes du rival et du capitaine, sauf CAP-04 (son PNJ).
+const PLAYED_J16_RIVAL_CAPTAIN: Array[StringName] = [
+	&"rival_ss_anne_intro", &"rival_ss_anne_lost", &"rival_ss_anne_resume", &"rival_ss_anne_won",
+	&"ss_anne_captain_gift", &"ss_anne_captain_gift_use", &"ss_anne_captain_relieved",
+	&"ss_anne_captain_rub", &"ss_anne_captain_sick",
+]
 ## Jalon 16 : textes validés du dossier 19 (§0.5, « … » par ligne).
 const DOSSIER_19 := "res://docs/design/dossier-19-ss-anne-major-bob.md"
 ## Jalon 15 (T13) : la réplique du garde du poste nord, jouée aussi par la scène du recul.
@@ -475,7 +489,8 @@ func test_library_loads_without_error() -> void:
 	# Les identifiants sont comparés triés (la liste IDS est groupée par jalon).
 	var found := _without_qa(library.get_ids())
 	found.sort()
-	var expected := IDS + IDS_J14_BILL + IDS_J14_ROCKET + IDS_J15_ROUTE_5 + IDS_J16_GYM
+	var expected := IDS + IDS_J14_BILL + IDS_J14_ROCKET + IDS_J15_ROUTE_5 + IDS_J16_GYM \
+		+ IDS_J16_RIVAL_CAPTAIN
 	expected.sort()
 	assert_eq(found, expected)
 
@@ -539,7 +554,7 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		&"route_2_item_4_found",
 		&"viridian_forest_item_3_found", &"viridian_forest_item_4_found",
 		&"viridian_forest_item_6_found"] + PLAYED_J14_BILL + PLAYED_J14_ROCKET
-		+ PLAYED_J15_ROUTE_5 + PLAYED_J16_GYM))
+		+ PLAYED_J15_ROUTE_5 + PLAYED_J16_GYM + PLAYED_J16_RIVAL_CAPTAIN))
 	for id: StringName in played:
 		assert_true(_library.has_dialogue(id), "dialogue « %s » défini" % id)
 		if UNUSED_YET.has(id):
@@ -652,7 +667,9 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		# Jalon 15 (T14) : Route 6 (Poké Ball, Super Potion cachée), arrivée à Carmin.
 		&"got_route_6_hidden_1", &"got_route_6_item_1", &"vermilion_reached",
 		# Jalon 16 (T11) : la barrière de l'Arène de Carmin.
-		&"vermilion_gym_puzzle_solved"]
+		&"vermilion_gym_puzzle_solved",
+		# Jalon 16 (T13) : le rival n° 4 et la CS01 du capitaine.
+		&"got_hm01", &"rival_ss_anne_lost_once", &"rival_ss_anne_won"]
 		+ SET_J14_BILL_CUTSCENES + SET_J14_ROCKET_CUTSCENES))
 	assert_eq(_used_on.get(&"oak_lab_reunion"), [&"oak_lab"], "joué au labo, après le fondu")
 	assert_eq(_used_on.get(&"oak_starter_offer"), [&"oak_lab"], "joué au labo")
@@ -1073,9 +1090,11 @@ func test_oak_parcel_lines() -> void:
 	# la Route 25 (T16). Jalon 15 (T19) : la Guérison cachée du souterrain.
 	# Jalon 15 (T14) : la Poké Ball et la Super Potion cachée de la Route 6.
 	# Jalon 15 (T13) : la Super Potion et l'Antidote caché de la Route 5.
-	assert_eq(launched, 41, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
+	# Jalon 16 (T13) : le capitaine (CS01).
+	assert_eq(launched, 42, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
 		+ "sa CT34, Ondine (pont, Arène et rattrapage), écran, module, console, objets de la "
-		+ "Route 25, le Rocket d'Azuria (2) et le barrage sud ; J15 : objets de la Route 5")
+		+ "Route 25, le Rocket d'Azuria (2) et le barrage sud ; J15 : objets de la Route 5 ; "
+		+ "J16 : le capitaine")
 	# Le jeton n'apparaît que dans la réplique de l'espèce, « {pokemon} » dans les phrases du
 	# compagnon (J11), et ceux de la Pension dans ses répliques (J15).
 	for row: Array in _pages():

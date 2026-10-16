@@ -222,7 +222,7 @@ func test_main_deck_avoids_every_trainer() -> void:
 
 
 ## Couloir : le déclencheur du rival (colonne 7) barre toute la largeur ; sans lui, la porte du
-## capitaine s'atteint (le rival, PNJ du T13, n'est pas encore posé).
+## capitaine s'atteint (le rival, PNJ du T13, est relu à part : test_ss_anne_rival_captain).
 func test_corridor_trigger_column_spans_the_corridor() -> void:
 	var id := &"ss_anne_captain_corridor"
 	var plan: PlanGrid = _plans[id]

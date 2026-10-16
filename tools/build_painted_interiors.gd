@@ -1570,6 +1570,9 @@ func _ss_anne_captain_corridor() -> Dictionary:
 		_door("DoorCaptain", Vector2i(15, 1), Vector2i.UP, &"ss_anne_captain_room", &"entrance",
 			Vector2i.UP),
 	]
+	# T13 : la vue du rival n° 4 (colonne 7, rangées 2..4, ancre en bas), toutes directions ;
+	# la scène `ss_anne_rival` ne joue plus après `rival_ss_anne_won`.
+	room["triggers"] = [["RivalView", Vector2i(7, 4), Vector2i(1, 3), &"ss_anne_rival"]]
 	return room
 
 

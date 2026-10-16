@@ -987,6 +987,7 @@ func _on_opening_resumed(save: Dictionary) -> void:
 	print("Sauvegarde chargée : %s %s (temps de jeu %d s)" % [GameState.current_map,
 		GameState.player_cell, int(GameState.play_time)])
 	_log_loaded_save()
+	_repair_key_items()
 	if not _resume():
 		SceneRouter.start(start_map, start_spawn, start_facing)
 	_finish_opening()
@@ -1048,6 +1049,7 @@ func _load_save() -> bool:
 			print("Sauvegarde chargée : %s %s (temps de jeu %d s)" % [GameState.current_map,
 				GameState.player_cell, int(GameState.play_time)])
 			_log_loaded_save()
+			_repair_key_items()
 			return true
 		ERR_FILE_NOT_FOUND:
 			_autosave_enabled = true
@@ -1059,6 +1061,17 @@ func _load_save() -> bool:
 			push_warning(("Boot : %s. Nouvelle partie SANS sauvegarde automatique : la "
 				+ "sauvegarde existante n'est pas touchée.") % save_system.last_error)
 	return false
+
+
+## Rattrapage des objets remis par une scène (J16 T13, [KeyItemRepair]) : CS01 sans
+## `got_hm01` → drapeau levé ; `got_hm01` sans CS01 → objet rendu une fois. Journalisé.
+func _repair_key_items() -> void:
+	var repair := KeyItemRepair.new()
+	if not repair.load_file():
+		push_warning("Boot : rattrapage des objets illisible : %s" % ", ".join(repair.get_errors()))
+		return
+	for note: String in repair.apply(GameState.flags, GameState.bag):
+		print("[qa] rattrapage : " + note)
 
 
 ## Journal de QA du chargement (build debug) : migration (une ligne, seulement si le fichier

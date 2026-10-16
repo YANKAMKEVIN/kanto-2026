@@ -1,0 +1,6 @@
+{
+	"rival_ss_anne": {
+		"cell": [10, 3], "facing": "left", "sprite": "rival",
+		"unless": ["rival_ss_anne_won"]
+	}
+}
