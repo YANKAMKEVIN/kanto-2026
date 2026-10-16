@@ -50,6 +50,9 @@ const MAPS: Array[StringName] = [
 	&"route_6", &"vermilion_city",
 	# Jalon 15 (T13) : arrivée sur la Route 5, recul du garde du poste nord.
 	&"route_5", &"route_5_gate",
+	# Jalon 16 (T12) : les objets du S.S. Anne (cartes à fouler ; scènes lancées par dialogue).
+	&"ss_anne_main_deck", &"ss_anne_lower_deck", &"ss_anne_restaurant", &"ss_anne_outer_deck",
+	&"ss_anne_cabin_a", &"ss_anne_cabin_b", &"ss_anne_cabin_c",
 ]
 ## Jalon 7 (T18) : partie qui revient au labo avec le colis (rival parti après le combat).
 const PARCEL_FLAGS: Array[StringName] = [
@@ -181,6 +184,12 @@ const VARIANT_FLAGS: Dictionary = {
 	&"route_6_item_1": [PEWTER_FLAGS], &"route_6_hidden_1": [PEWTER_FLAGS],
 	&"route_6_gate_rule_w": [PEWTER_FLAGS], &"route_6_gate_rule_e": [PEWTER_FLAGS],
 	&"route_6_gate_rule_s": [PEWTER_FLAGS], &"vermilion_arrival": [PEWTER_FLAGS],
+	# Jalon 16 (T12) : six objets au sol et trois cachés du S.S. Anne.
+	&"ss_anne_item_01": [PEWTER_FLAGS], &"ss_anne_item_02": [PEWTER_FLAGS],
+	&"ss_anne_item_03": [PEWTER_FLAGS], &"ss_anne_item_04": [PEWTER_FLAGS],
+	&"ss_anne_item_05": [PEWTER_FLAGS], &"ss_anne_item_06": [PEWTER_FLAGS],
+	&"ss_anne_hidden_1": [PEWTER_FLAGS], &"ss_anne_hidden_2": [PEWTER_FLAGS],
+	&"ss_anne_hidden_3": [PEWTER_FLAGS],
 }
 ## Scènes jouées par le code (pas de déclencheur) → carte où elles sont jouées.
 ## Jalon 7 (T18) : la scène du colis est lancée par la variante « cutscene » du dialogue de Chen.
@@ -207,6 +216,12 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"vermilion_gym_barrier_open": &"vermilion_gym",
 	# Jalon 16 (T14) : Major Bob, par son dialogue (scène de l'Arène et rattrapage de la CT24).
 	&"vermilion_gym_surge": &"vermilion_gym", &"vermilion_gym_surge_tm_late": &"vermilion_gym",
+	# Jalon 16 (T12) : objets du S.S. Anne (PNJ « objet » et points d'examen de l'indice).
+	&"ss_anne_item_01": &"ss_anne_main_deck", &"ss_anne_item_02": &"ss_anne_cabin_a",
+	&"ss_anne_item_03": &"ss_anne_cabin_c", &"ss_anne_item_04": &"ss_anne_lower_deck",
+	&"ss_anne_item_05": &"ss_anne_restaurant", &"ss_anne_item_06": &"ss_anne_outer_deck",
+	&"ss_anne_hidden_1": &"ss_anne_cabin_b", &"ss_anne_hidden_2": &"ss_anne_lower_deck",
+	&"ss_anne_hidden_3": &"ss_anne_restaurant",
 	# Jalon 11 (T14) : remise tardive de la CT34 (dialogue de Pierre).
 	&"pewter_gym_brock_tm_late": &"pewter_gym",
 	# Jalon 13 (T17) : objets visibles des Routes 4 et 24 (PNJ « objet »).
@@ -304,7 +319,9 @@ func test_library_loads_without_error() -> void:
 		&"route_5_item_1", &"starter_chosen", &"underground_hidden_1",
 		&"viridian_arrival", &"viridian_forest_item_1", &"viridian_forest_item_2",
 		&"viridian_forest_item_3", &"viridian_forest_item_4", &"viridian_forest_item_5",
-		&"viridian_forest_item_6"]))
+		&"viridian_forest_item_6", &"ss_anne_hidden_1", &"ss_anne_hidden_2", &"ss_anne_hidden_3",
+		&"ss_anne_item_01", &"ss_anne_item_02", &"ss_anne_item_03", &"ss_anne_item_04",
+		&"ss_anne_item_05", &"ss_anne_item_06"]))
 
 
 func _sorted(values: Array) -> Array[StringName]:
@@ -420,6 +437,10 @@ func test_only_world_items_are_found_items() -> void:
 		"route_3_item_3:paralyze_heal", "route_4_item_1:poke_ball",
 		"route_5_hidden_1:antidote", "route_5_item_1:super_potion",
 		"route_6_hidden_1:super_potion", "route_6_item_1:poke_ball",
+		"ss_anne_hidden_1:awakening", "ss_anne_hidden_2:antidote", "ss_anne_hidden_3:potion",
+		"ss_anne_item_01:potion", "ss_anne_item_02:potion", "ss_anne_item_03:super_potion",
+		"ss_anne_item_04:super_potion", "ss_anne_item_05:super_potion",
+		"ss_anne_item_06:paralyze_heal",
 		"underground_hidden_1:full_restore",
 		"viridian_forest_item_1:antidote", "viridian_forest_item_2:poke_ball",
 		"viridian_forest_item_3:potion", "viridian_forest_item_4:antidote",

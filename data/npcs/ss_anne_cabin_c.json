@@ -1,0 +1,31 @@
+{
+	"victor": {
+		"cell": [
+			5,
+			3
+		],
+		"facing": "down",
+		"sprite": "traveler",
+		"dialogue": "ss_anne_victor_after",
+		"trainer": {
+			"id": "ss_anne_gentleman_victor",
+			"sight": 2,
+			"before": "ss_anne_victor_before",
+			"defeated": "ss_anne_victor_defeated"
+		}
+	},
+	"ss_anne_item_03": {
+		"cell": [
+			2,
+			5
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "ss_anne_item_03",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_ss_anne_item_03"
+		]
+	}
+}

@@ -1,0 +1,55 @@
+{
+	"erwan": {
+		"cell": [
+			12,
+			7
+		],
+		"facing": "up",
+		"sprite": "sailor",
+		"dialogue": "ss_anne_erwan_after",
+		"trainer": {
+			"id": "ss_anne_sailor_erwan",
+			"sight": 3,
+			"before": "ss_anne_erwan_before",
+			"defeated": "ss_anne_erwan_defeated"
+		}
+	},
+	"loic": {
+		"cell": [
+			18,
+			5
+		],
+		"facing": "left",
+		"sprite": "sailor",
+		"dialogue": "ss_anne_loic_after",
+		"trainer": {
+			"id": "ss_anne_sailor_loic",
+			"sight": 3,
+			"before": "ss_anne_loic_before",
+			"defeated": "ss_anne_loic_defeated"
+		}
+	},
+	"matelot": {
+		"cell": [
+			8,
+			3
+		],
+		"facing": "right",
+		"sprite": "sailor",
+		"dialogue": "ss_anne_deckhand"
+	},
+	"ss_anne_item_04": {
+		"cell": [
+			19,
+			8
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "ss_anne_item_04",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_ss_anne_item_04"
+		]
+	}
+}

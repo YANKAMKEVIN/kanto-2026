@@ -1,0 +1,263 @@
+{
+	"ss_anne_armand_before": {
+		"speaker": "Gentleman Armand",
+		"pages": [
+			"Un voyage forme le caractère !"
+		]
+	},
+	"ss_anne_armand_defeated": {
+		"speaker": "Gentleman Armand",
+		"pages": [
+			"Tu as du talent, jeune ami."
+		]
+	},
+	"ss_anne_armand_after": {
+		"speaker": "Gentleman Armand",
+		"pages": [
+			"Reviens après t'être entraîné."
+		]
+	},
+	"ss_anne_paul_before": {
+		"speaker": "Marin Paul",
+		"pages": [
+			"On ne dort jamais au port !"
+		]
+	},
+	"ss_anne_paul_defeated": {
+		"speaker": "Marin Paul",
+		"pages": [
+			"J'aurais dû me reposer."
+		]
+	},
+	"ss_anne_paul_after": {
+		"speaker": "Marin Paul",
+		"pages": [
+			"Le prochain voyage sera mien !"
+		]
+	},
+	"ss_anne_erwan_before": {
+		"speaker": "Marin Erwan",
+		"pages": [
+			"Tu as le pied marin ?"
+		]
+	},
+	"ss_anne_erwan_defeated": {
+		"speaker": "Marin Erwan",
+		"pages": [
+			"Je manque d'entraînement !"
+		]
+	},
+	"ss_anne_erwan_after": {
+		"speaker": "Marin Erwan",
+		"pages": [
+			"La mer me donne de la force !"
+		]
+	},
+	"ss_anne_loic_before": {
+		"speaker": "Marin Loïc",
+		"pages": [
+			"Je connais ces eaux par cœur."
+		]
+	},
+	"ss_anne_loic_defeated": {
+		"speaker": "Marin Loïc",
+		"pages": [
+			"Tu connais aussi les combats !"
+		]
+	},
+	"ss_anne_loic_after": {
+		"speaker": "Marin Loïc",
+		"pages": [
+			"Cap sur une autre victoire !"
+		]
+	},
+	"ss_anne_emile_before": {
+		"speaker": "Gentleman Émile",
+		"pages": [
+			"À table, puis au combat !"
+		]
+	},
+	"ss_anne_emile_defeated": {
+		"speaker": "Gentleman Émile",
+		"pages": [
+			"Quel service remarquable !"
+		]
+	},
+	"ss_anne_emile_after": {
+		"speaker": "Gentleman Émile",
+		"pages": [
+			"Le dessert attendra !"
+		]
+	},
+	"ss_anne_yann_before": {
+		"speaker": "Marin Yann",
+		"pages": [
+			"Le vent me porte chance !"
+		]
+	},
+	"ss_anne_yann_defeated": {
+		"speaker": "Marin Yann",
+		"pages": [
+			"Le vent a tourné..."
+		]
+	},
+	"ss_anne_yann_after": {
+		"speaker": "Marin Yann",
+		"pages": [
+			"Rien ne vaut le grand air !"
+		]
+	},
+	"ss_anne_remi_before": {
+		"speaker": "Marin Rémi",
+		"pages": [
+			"Mes bras soulèvent des caisses !"
+		]
+	},
+	"ss_anne_remi_defeated": {
+		"speaker": "Marin Rémi",
+		"pages": [
+			"Ton équipe est plus forte !"
+		]
+	},
+	"ss_anne_remi_after": {
+		"speaker": "Marin Rémi",
+		"pages": [
+			"Je reprends mes exercices !"
+		]
+	},
+	"ss_anne_lena_before": {
+		"speaker": "Fillette Léna",
+		"pages": [
+			"Tu veux jouer avec nous ?"
+		]
+	},
+	"ss_anne_lena_defeated": {
+		"speaker": "Fillette Léna",
+		"pages": [
+			"Bien joué !"
+		]
+	},
+	"ss_anne_lena_after": {
+		"speaker": "Fillette Léna",
+		"pages": [
+			"On rejoue plus tard !"
+		]
+	},
+	"ss_anne_basile_before": {
+		"speaker": "Scout Oscar",
+		"pages": [
+			"Regarde mon Pokémon !"
+		]
+	},
+	"ss_anne_basile_defeated": {
+		"speaker": "Scout Oscar",
+		"pages": [
+			"Il faut qu'on progresse."
+		]
+	},
+	"ss_anne_basile_after": {
+		"speaker": "Scout Oscar",
+		"pages": [
+			"Tu as vu comme il est rapide ?"
+		]
+	},
+	"ss_anne_victor_before": {
+		"speaker": "Gentleman Victor",
+		"pages": [
+			"Je voyage pour me détendre."
+		]
+	},
+	"ss_anne_victor_defeated": {
+		"speaker": "Gentleman Victor",
+		"pages": [
+			"Quelle rencontre !"
+		]
+	},
+	"ss_anne_victor_after": {
+		"speaker": "Gentleman Victor",
+		"pages": [
+			"Un petit défi me plaît."
+		]
+	},
+	"ss_anne_item_01": {
+		"cutscene": "ss_anne_item_01"
+	},
+	"ss_anne_item_02": {
+		"cutscene": "ss_anne_item_02"
+	},
+	"ss_anne_item_03": {
+		"cutscene": "ss_anne_item_03"
+	},
+	"ss_anne_item_04": {
+		"cutscene": "ss_anne_item_04"
+	},
+	"ss_anne_item_05": {
+		"cutscene": "ss_anne_item_05"
+	},
+	"ss_anne_item_06": {
+		"cutscene": "ss_anne_item_06"
+	},
+	"ss_anne_hidden_1": {
+		"cutscene": "ss_anne_hidden_1"
+	},
+	"ss_anne_hidden_2": {
+		"cutscene": "ss_anne_hidden_2"
+	},
+	"ss_anne_hidden_3": {
+		"cutscene": "ss_anne_hidden_3"
+	},
+	"ss_anne_gangway_sailor": {
+		"speaker": "Marin",
+		"variants": [
+			{
+				"if": [
+					"got_hm01"
+				],
+				"pages": [
+					"Prends ton temps. On ne part pas sans toi."
+				]
+			},
+			{
+				"pages": [
+					"Tu redescends à terre ? Le navire reste à quai pour l'instant."
+				]
+			}
+		]
+	},
+	"ss_anne_hostess": {
+		"speaker": "Hôtesse",
+		"pages": [
+			"Bienvenue à bord du S.S. Anne ! Les cabines sont au nord."
+		]
+	},
+	"ss_anne_passenger": {
+		"speaker": "Passager",
+		"pages": [
+			"Le capitaine ? On ne l'a pas vu depuis le départ…"
+		]
+	},
+	"ss_anne_deckhand": {
+		"speaker": "Matelot",
+		"pages": [
+			"Le pont inférieur, c'est chez nous. Les passagers se perdent toujours ici."
+		]
+	},
+	"ss_anne_waiter": {
+		"speaker": "Serveur",
+		"pages": [
+			"Désolé, la cuisine est réservée au personnel."
+		]
+	},
+	"ss_anne_diner": {
+		"speaker": "Convive",
+		"pages": [
+			"Le repas est délicieux. Dommage que la mer bouge autant."
+		]
+	},
+	"ss_anne_deck_passenger": {
+		"speaker": "Passagère",
+		"pages": [
+			"Regarde, on voit tout Carmin d'ici !"
+		]
+	}
+}

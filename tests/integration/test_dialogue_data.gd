@@ -116,6 +116,9 @@ const MAPS: Array[StringName] = [
 	&"route_5", &"route_5_daycare", &"route_5_gate", &"route_5_underground_gate",
 	# Jalon 16 (T11) : l'Arène de Carmin (puzzle et barrière ; Major Bob et les siens au T14).
 	&"vermilion_gym",
+	# Jalon 16 (T12) : la vie du navire (les 7 cartes à fouler ; couloir et cabine du capitaine = T13).
+	&"ss_anne_main_deck", &"ss_anne_lower_deck", &"ss_anne_restaurant", &"ss_anne_outer_deck",
+	&"ss_anne_cabin_a", &"ss_anne_cabin_b", &"ss_anne_cabin_c",
 ]
 ## Lot de textes validé par Kevin le 2026-10-06 (anciens brouillons : panneau, observations,
 ## soin de Maman, terminal du Stockage, portes de Jadielle…) : source des textes hors dossiers.
@@ -312,6 +315,23 @@ const IDS_J16_GYM: Array[StringName] = [
 	&"vermilion_gym_surge_badge", &"vermilion_gym_surge_tm", &"vermilion_gym_surge_tm_use",
 	&"vermilion_gym_surge_tm_late",
 ]
+## Jalon 16 (T12) : la vie du navire (dossier 19 §0.5 n° 10 à 15, §4 ; objets du plan).
+const IDS_J16_SHIP: Array[StringName] = [
+	&"ss_anne_armand_after", &"ss_anne_armand_before", &"ss_anne_armand_defeated",
+	&"ss_anne_basile_after", &"ss_anne_basile_before", &"ss_anne_basile_defeated",
+	&"ss_anne_deck_passenger", &"ss_anne_deckhand", &"ss_anne_diner", &"ss_anne_emile_after",
+	&"ss_anne_emile_before", &"ss_anne_emile_defeated", &"ss_anne_erwan_after",
+	&"ss_anne_erwan_before", &"ss_anne_erwan_defeated", &"ss_anne_gangway_sailor",
+	&"ss_anne_hidden_1", &"ss_anne_hidden_2", &"ss_anne_hidden_3", &"ss_anne_hostess",
+	&"ss_anne_item_01", &"ss_anne_item_02", &"ss_anne_item_03", &"ss_anne_item_04",
+	&"ss_anne_item_05", &"ss_anne_item_06", &"ss_anne_lena_after", &"ss_anne_lena_before",
+	&"ss_anne_lena_defeated", &"ss_anne_loic_after", &"ss_anne_loic_before",
+	&"ss_anne_loic_defeated", &"ss_anne_passenger", &"ss_anne_paul_after", &"ss_anne_paul_before",
+	&"ss_anne_paul_defeated", &"ss_anne_remi_after", &"ss_anne_remi_before",
+	&"ss_anne_remi_defeated", &"ss_anne_victor_after", &"ss_anne_victor_before",
+	&"ss_anne_victor_defeated", &"ss_anne_waiter", &"ss_anne_yann_after", &"ss_anne_yann_before",
+	&"ss_anne_yann_defeated",
+]
 ## Jalon 16 (T11) : GYM-03, dit par la scène de la barrière ouverte ; (T14) les répliques de
 ## Major Bob dites par ses scènes.
 const PLAYED_J16_GYM: Array[StringName] = [&"vermilion_gym_switch_solved",
@@ -356,7 +376,9 @@ const SET_J14_BILL_CUTSCENES: Array[StringName] = [
 ## Jalon 14 (T17) : `cerulean_rocket_beaten` (lu par Léo) est levé par la scène du Rocket
 ## d'Azuria (T20b).
 ## T20b : levé (scène du combat), plus aucun drapeau futur.
-const FUTURE_FLAGS: Array[StringName] = []
+## Jalon 16 (T12) : `got_hm01` est lu par le marin de la passerelle ; la scène du capitaine (T13) le
+## lève et retire alors cette ligne.
+const FUTURE_FLAGS: Array[StringName] = [&"got_hm01"]
 var _library: DialogueLibrary
 var _cutscenes: CutsceneLibrary
 var _offer: StarterOffer
@@ -487,7 +509,7 @@ func test_library_loads_without_error() -> void:
 	# Les identifiants sont comparés triés (la liste IDS est groupée par jalon).
 	var found := _without_qa(library.get_ids())
 	found.sort()
-	var expected := IDS + IDS_J14_BILL + IDS_J14_ROCKET + IDS_J15_ROUTE_5 + IDS_J16_GYM
+	var expected := IDS + IDS_J14_BILL + IDS_J14_ROCKET + IDS_J15_ROUTE_5 + IDS_J16_GYM + IDS_J16_SHIP
 	expected.sort()
 	assert_eq(found, expected)
 
@@ -664,7 +686,11 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		# Jalon 15 (T14) : Route 6 (Poké Ball, Super Potion cachée), arrivée à Carmin.
 		&"got_route_6_hidden_1", &"got_route_6_item_1", &"vermilion_reached",
 		# Jalon 16 (T11) : la barrière de l'Arène de Carmin ; (T14) Major Bob.
-		&"vermilion_gym_puzzle_solved", &"badge_thunder", &"surge_met", &"tm24_received"]
+		&"vermilion_gym_puzzle_solved", &"badge_thunder", &"surge_met", &"tm24_received",
+		# Jalon 16 (T12) : les neuf objets du S.S. Anne (six au sol, trois cachés).
+		&"got_ss_anne_item_01", &"got_ss_anne_item_02", &"got_ss_anne_item_03",
+		&"got_ss_anne_item_04", &"got_ss_anne_item_05", &"got_ss_anne_item_06",
+		&"got_ss_anne_hidden_1", &"got_ss_anne_hidden_2", &"got_ss_anne_hidden_3"]
 		+ SET_J14_BILL_CUTSCENES + SET_J14_ROCKET_CUTSCENES))
 	assert_eq(_used_on.get(&"oak_lab_reunion"), [&"oak_lab"], "joué au labo, après le fondu")
 	assert_eq(_used_on.get(&"oak_starter_offer"), [&"oak_lab"], "joué au labo")
@@ -1085,11 +1111,11 @@ func test_oak_parcel_lines() -> void:
 	# la Route 25 (T16). Jalon 15 (T19) : la Guérison cachée du souterrain.
 	# Jalon 15 (T14) : la Poké Ball et la Super Potion cachée de la Route 6.
 	# Jalon 15 (T13) : la Super Potion et l'Antidote caché de la Route 5.
-	# Jalon 16 (T14) : Major Bob (Arène et rattrapage de la CT24).
-	assert_eq(launched, 43, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
+	# Jalon 16 (T14) : Major Bob (Arène et rattrapage de la CT24) ; (T12) neuf objets du S.S. Anne.
+	assert_eq(launched, 52, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
 		+ "sa CT34, Ondine (pont, Arène et rattrapage), écran, module, console, objets de la "
 		+ "Route 25, le Rocket d'Azuria (2) et le barrage sud ; J15 : objets de la Route 5 ; "
-		+ "J16 : Major Bob (2)")
+		+ "J16 : Major Bob (2), neuf objets du S.S. Anne")
 	# Le jeton n'apparaît que dans la réplique de l'espèce, « {pokemon} » dans les phrases du
 	# compagnon (J11), et ceux de la Pension dans ses répliques (J15).
 	for row: Array in _pages():

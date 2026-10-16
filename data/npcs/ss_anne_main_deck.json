@@ -1,0 +1,73 @@
+{
+	"armand": {
+		"cell": [
+			7,
+			6
+		],
+		"facing": "down",
+		"sprite": "traveler",
+		"dialogue": "ss_anne_armand_after",
+		"trainer": {
+			"id": "ss_anne_gentleman_armand",
+			"sight": 3,
+			"before": "ss_anne_armand_before",
+			"defeated": "ss_anne_armand_defeated"
+		}
+	},
+	"paul": {
+		"cell": [
+			18,
+			6
+		],
+		"facing": "left",
+		"sprite": "sailor",
+		"dialogue": "ss_anne_paul_after",
+		"trainer": {
+			"id": "ss_anne_sailor_paul",
+			"sight": 3,
+			"before": "ss_anne_paul_before",
+			"defeated": "ss_anne_paul_defeated"
+		}
+	},
+	"marin_passerelle": {
+		"cell": [
+			11,
+			10
+		],
+		"facing": "right",
+		"sprite": "sailor",
+		"dialogue": "ss_anne_gangway_sailor"
+	},
+	"hotesse": {
+		"cell": [
+			17,
+			8
+		],
+		"facing": "down",
+		"sprite": "lass_young",
+		"dialogue": "ss_anne_hostess"
+	},
+	"passager_1": {
+		"cell": [
+			9,
+			4
+		],
+		"facing": "down",
+		"sprite": "traveler",
+		"dialogue": "ss_anne_passenger"
+	},
+	"ss_anne_item_01": {
+		"cell": [
+			3,
+			9
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "ss_anne_item_01",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_ss_anne_item_01"
+		]
+	}
+}
