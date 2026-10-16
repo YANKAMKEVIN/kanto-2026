@@ -38,6 +38,11 @@ extends SceneTree
 ##     et bâtiment d'entrée du souterrain de la Route 5 (jalon 15 T13, jalon-15.md §2.2) ; titre
 ##     « Route 5 » (nom de leur zone, `test_zone_library`)
 ##   godot --headless --path . -s res://tools/build_painted_interiors.gd -- --route5
+##   lavender_center, lavender_mart, pokemon_house, lavender_house_1, lavender_house_2 — Lavanville
+##     (jalon 18 T14, jalon-18.md §4.1, §4.2) : Centre et Boutique = définitions de Jadielle ;
+##     Maison des Pokémon et maisons relues sur leur grille (`tools/plans/lavanville_maison_*.txt`),
+##     **sans PNJ** (T18) ; la Tour (`pokemon_tower_1f`) est en modules (`tools/build_pokemon_tower.gd`)
+##   godot --headless --path . -s res://tools/build_painted_interiors.gd -- --lavanville
 ##   godot --headless --path . -s res://tools/build_painted_interiors.gd   (toutes les pièces)
 ##   godot --headless --path . --import
 ##
@@ -93,6 +98,9 @@ const CARMIN := [&"vermilion_center", &"vermilion_mart", &"vermilion_fan_club",
 	&"route_6_underground_gate"]
 ## Jalon 15 (T13) : Pension, poste nord et entrée du souterrain de la Route 5.
 const ROUTE_5 := [&"route_5_daycare", &"route_5_gate", &"route_5_underground_gate"]
+## Jalon 18 (T14) : les cinq intérieurs peints de Lavanville.
+const LAVANVILLE := [&"lavender_center", &"lavender_mart", &"pokemon_house",
+	&"lavender_house_1", &"lavender_house_2"]
 const PLANS_DIR := "res://tools/plans/"
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 const LOGIC_DIR := "res://tests/fixtures/maps/"
@@ -115,6 +123,7 @@ func _init() -> void:
 	rooms.append_array(_cerulean_rooms())
 	rooms.append_array(_vermilion_rooms())
 	rooms.append_array(_route_5_rooms())
+	rooms.append_array(_lavender_rooms())
 	for room: Dictionary in rooms:
 		if not wanted.is_empty() and not wanted.has(room["id"]):
 			continue
@@ -154,6 +163,8 @@ func _wanted_rooms() -> Array:
 			wanted.append_array(CARMIN)
 		elif arg == "--route5":
 			wanted.append_array(ROUTE_5)
+		elif arg == "--lavanville":
+			wanted.append_array(LAVANVILLE)
 		elif arg.begins_with("--rooms="):
 			for id: String in arg.trim_prefix("--rooms=").split(","):
 				wanted.append(StringName(id))
@@ -1452,3 +1463,80 @@ func _route_6_underground_gate() -> Dictionary:
 			"from_underground_e": Vector2i(5, 3)},
 		"warps": warps,
 	}
+
+
+# --- Lavanville (jalon 18 T14, jalon-18.md §4.1, §4.2) -------------------------------------
+
+
+## Les cinq intérieurs peints de Lavanville (à la suite des autres, aucune scène existante n'est
+## réécrite par défaut) : Centre et Boutique = définitions de Jadielle, trois maisons relues sur
+## leur grille (enveloppe des maisons d'Argenta, 15 × 10 : même taille que les maisons d'Azuria et
+## de Carmin ; le plan §4.1 dit « 10 × 8 » à tort, hypothèse notée au compte rendu du T14).
+func _lavender_rooms() -> Array[Dictionary]:
+	var rooms: Array[Dictionary] = [
+		_pokemon_center(&"lavender_center", "LavenderCenter", "Lavanville",
+			[&"lavender_town", &"retour_centre"]),
+		_poke_mart(&"lavender_mart", "LavenderMart", "Lavanville",
+			[&"lavender_town", &"retour_boutique"]),
+		_pokemon_house(), _lavender_house_1(), _lavender_house_2(),
+	]
+	return rooms
+
+
+## Pièce de Lavanville relue sur sa grille : enveloppe des maisons d'Argenta, sortie PUSH ↓ vers
+## `lavender_town` / [param spawn].
+func _lavender_house(id: StringName, node: String, plan: String, walkable: String,
+		spawn: StringName) -> Dictionary:
+	return {
+		"id": id, "node": node, "size": Vector2i(15, 10),
+		"shell": "res://assets/world/interiors/int_maison_argenta_coque.png",
+		"title": "Lavanville", "light": &"interior_warm",
+		"plan": PLANS_DIR + plan, "walkable": walkable,
+		"spawns": {"entrance": Vector2i(7, 8)},
+		"warps": _pewter_exits([Vector2i(6, 8), Vector2i(7, 8), Vector2i(8, 8)], spawn,
+			&"lavender_town"),
+	}
+
+
+## Maison des Pokémon (`lavanville_maison_pokemon.txt`, dossier 21 §6.2) : cuisine, canapé,
+## table à manger, deux paniers de Pokémon à l'ouest ; l'enfant, Rondoudou et Nidoran ♀ (cases `h`)
+## = T18 ; M. Fuji est absent (« à la Tour »).
+func _pokemon_house() -> Dictionary:
+	var room := _lavender_house(&"pokemon_house", "PokemonHouse", "lavanville_maison_pokemon.txt",
+		".Xh", &"retour_fuji")
+	room["furniture"] = [
+		[&"int_frigo_01", Rect2i(1, 3, 1, 1), "Fridge"],
+		[&"int_cuisine_01", Rect2i(2, 3, 3, 1), "Kitchen"],
+		[&"int_cuisiniere_hotte_01", Rect2i(5, 3, 1, 1), "Stove"],
+		[&"int_canape_01", Rect2i(10, 3, 3, 1), "Sofa"],
+		[&"int_chevet_lampe_01", Rect2i(13, 3, 1, 1), "Lamp"],
+		[&"int_table_repas_01", Rect2i(9, 5, 3, 2), "DiningTable"],
+		[&"int_plante", Rect2i(1, 7, 1, 1), "PlantWest"],
+		[&"int_plante", Rect2i(13, 7, 1, 1), "PlantEast"],
+	]
+	room["props"] = [
+		[&"int_panier_pokemon_01", Vector2i(2, 5), 5.85, "BasketA"],
+		[&"int_panier_pokemon_01", Vector2i(3, 6), 6.85, "BasketB"],
+	]
+	room["rugs"] = [[&"int_tapis_plaid_01", Vector2(6.0, 6.2), "RugPlaid"]]
+	return room
+
+
+## Maison 1 (`lavanville_maison_1.txt`) : le mobilier de la maison du tailleur d'Argenta ; la
+## vieille dame (case `h`) = T18.
+func _lavender_house_1() -> Dictionary:
+	var room := _lavender_house(&"lavender_house_1", "LavenderHouse1",
+		"lavanville_maison_1.txt", ".Xh", &"retour_maison_1")
+	room["furniture"] = _mason_furniture()
+	return room
+
+
+## Maison 2 (`lavanville_maison_2.txt`) : le mobilier de la maison d'Azuria ; le couple (cases
+## `h`) = T18.
+func _lavender_house_2() -> Dictionary:
+	var room := _lavender_house(&"lavender_house_2", "LavenderHouse2",
+		"lavanville_maison_2.txt", ".Xh", &"retour_maison_2")
+	var azuria := _cerulean_house()
+	room["furniture"] = azuria["furniture"]
+	room["rugs"] = azuria["rugs"]
+	return room

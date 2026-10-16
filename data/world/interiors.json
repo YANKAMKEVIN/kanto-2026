@@ -33,6 +33,12 @@
 		"route_6_underground_gate",
 		"route_5_daycare",
 		"route_5_gate",
-		"route_5_underground_gate"
+		"route_5_underground_gate",
+		"lavender_center",
+		"lavender_mart",
+		"pokemon_house",
+		"lavender_house_1",
+		"lavender_house_2",
+		"pokemon_tower_1f"
 	]
 }

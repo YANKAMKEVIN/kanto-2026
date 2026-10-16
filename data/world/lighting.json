@@ -83,6 +83,29 @@
 			"rim": { "color": "#ffcf94", "strength": 0.06, "width": 3.0 },
 			"contact": { "color": "#140c06", "alpha": 0.6 },
 			"wind": 0.0
+		},
+		"lavender": {
+			"grade": {
+				"shadows": [1.02, 0.99, 1.07],
+				"midtones": [0.99, 0.98, 1.02],
+				"highlights": [0.99, 0.97, 1.0],
+				"strength": 1.0
+			},
+			"sun_direction": [-0.7, -0.7],
+			"rim": { "color": "#d9cbff", "strength": 0.5, "width": 4.0 },
+			"cast_shadow": { "color": "#1c1a3a", "alpha": 0.3, "length": 0.24, "skew_deg": -45.0 },
+			"contact": { "color": "#1f1a33", "alpha": 0.62 },
+			"wind": 2.5
+		},
+		"tower_cold": {
+			"grade": {
+				"shadows": [0.98, 0.97, 1.05],
+				"midtones": [0.97, 0.97, 1.02],
+				"highlights": [0.97, 0.97, 1.0],
+				"strength": 1.0
+			},
+			"sun_direction": [-0.7, -0.7],
+			"contact": { "color": "#1c1830", "alpha": 0.6 }
 		}
 	},
 	"maps": {
@@ -138,6 +161,13 @@
 		"route_5": "golden_hour",
 		"route_5_daycare": "interior_warm",
 		"route_5_gate": "interior_warm",
-		"route_5_underground_gate": "interior_warm"
+		"route_5_underground_gate": "interior_warm",
+		"lavender_town": "lavender",
+		"lavender_center": "interior_warm",
+		"lavender_mart": "interior_warm",
+		"pokemon_house": "interior_warm",
+		"lavender_house_1": "interior_warm",
+		"lavender_house_2": "interior_warm",
+		"pokemon_tower_1f": "tower_cold"
 	}
 }

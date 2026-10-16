@@ -6,12 +6,13 @@
 #
 # 44 × 36 cases (dossier 21 I-19) ; nord en haut ; x = colonne 0..43, y = rangée 0..35.
 #
-# RACCORD NORD (route_10 secteur sud) : 3 CASES, MILIEU DU BORD NORD : (21..23, 0) ↔ bord SUD de la
-#   Route 10, milieu du bord sud : route_10 fait 34 de large → (15..17, 75) (colonnes 15..17, rangée
-#   75). Les warps sont par cellule et par spawn (pas de décalage de colonnes à respecter) ; on
-#   garde « milieu du bord » des deux côtés pour que la sortie de la grotte, le sentier et l'avenue
-#   soient dans l'axe. Spawns : « from_route_10 » ici (21..23, 0) tourné ↓ ; « from_lavender »
-#   attendu sur route_10 (15..17, 75) tourné ↑. L'avenue (x 21..23) est à 3 cases de large sur
+# RACCORD NORD (route_10 secteur sud) : 3 CASES, (21..23, 0) ↔ bord SUD de la Route 10 :
+#   (21..23, 75) (mêmes colonnes ; route_10.txt et dossier 21 §13.1 font foi : « raccord aligné en
+#   colonnes 21..23 »). Les warps sont par cellule et par spawn ; l'avenue de Lavanville, le
+#   sentier du secteur sud et la sortie de la grotte sont ainsi dans l'axe. Spawns : « from_route_10 »
+#   ici (21..23, 0) tourné ↓ ; « from_lavender » sur route_10 (21..23, 75) tourné ↑.
+#   (Commentaire corrigé au jalon 18 T14, plan §0.2 n° 9 : il citait (15..17, 75) ; les positions
+#   de la grille étaient justes.) L'avenue (x 21..23) est à 3 cases de large sur
 #   toute la hauteur : la Tour domine l'angle nord-est, la silhouette se voit dès l'arrivée.
 # OUEST : (0, 10..12) bord FERMÉ « ROUTE 8 — À venir » (coming_soon, développement) ;
 # SUD : (21..23, 35) bord FERMÉ « ROUTE 12 — À venir ». Aucun PNJ ni texte n'annonce autre chose
@@ -88,7 +89,7 @@ FIN
 # POSITIONS (défauts du 2026-10-14, ajustables au plan du J18) — une ligne par élément :
 #   identifiant  type  cases  bloque|libre  [cle=valeur ...]  # commentaire
 POSITIONS
-warp_nord            warp           21..23,0     libre   # PUSH ↑ → route_10, from_lavender (Route 10 sud (15..17, 75))
+warp_nord            warp           21..23,0     libre   # PUSH ↑ → route_10, from_lavender (Route 10 sud (21..23, 75))
 from_route_10        spawn          21..23,0     libre   # arrivée de la Route 10, tournée ↓
 warp_ouest           warp           0,10..12     libre   coming_soon=route_8  # « ROUTE 8 — À venir » (développement) ; en release, bord bloqué
 warp_sud             warp           21..23,35    libre   coming_soon=route_12  # « ROUTE 12 — À venir » (développement) ; en release, bord bloqué
