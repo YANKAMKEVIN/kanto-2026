@@ -1,5 +1,7 @@
 # Série 24 — Tour Pokémon, étages 2F à 6F : complément de la série 21 du J18 (jalon 19)
 
+> **VALIDÉE par Kevin le 2026-10-16** (validation relayée par une autre session Claude à sa demande : « je valide la planche série 24 ») : escalier descendant `prop_escalier_tour_descend_01` r1, dalle purifiée `ground_dalle_purifiee_01` r1. Intégration après le kit Tour du J18.
+
 > **Complément de la série 21 du J18.** Le kit de l'intérieur de la Tour est produit par le J18
 > (`origin/jalon-18` à `bcb611c8`, fiche `serie-21-j18.md`, outil `tools/art/serie21.py`) sous
 > les noms du plan du J19 : `ground_dalles_tour_01` (sol), `relief_mur_tour_01..05` (murs),
