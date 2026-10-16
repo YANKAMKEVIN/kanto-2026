@@ -426,6 +426,9 @@ si le jalon précédent n'en pose pas) ; « rapporter ses dents au Gardien. » (
 - **Rocher du Gardien** : posé au J23 comme **obstacle fixe** devant le Super Bonbon, avec le texte 46 ;
   le J24 le rend poussable (son premier rocher de « monde construit »). Le Super Bonbon reste
   inaccessible jusque-là [D, **N-13**].
+  Contraintes de grille (accord avec le dossier 27 §6.5) : **même image** que les rochers de Force du
+  J24 ; le rocher ne touche ni la porte ni le Gardien, et **une case libre** reste devant la porte
+  quelle que soit sa position ; il reprend sa place à la sortie de la carte (RB, sans drapeau).
 - Après le Badge Âme, aucun texte ne promet la mer (le Guide dit seulement ce que permet le badge,
   texte 37).
 
