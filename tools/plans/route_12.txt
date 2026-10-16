@@ -22,18 +22,25 @@
 #     arrive pile sur le tronc. Lavanville : from_route_12 attendu en (21..23, 34) (déjà dans sa grille).
 #   OUEST : Route 12 (0, 93..94) ↔ Route 11 (75, 14..15) — le raccord_est « role=route_12 » du J17 :
 #     DEUX rangées de part et d'autre (RB : une seule case de large, ici deux comme la Route 11). Le
-#     joueur venant de la Route 11 débouche sur la chaussée de terre (x 0..23, rangées 93..94) et la suit
-#     jusqu'au CROISEMENT avec le tronc (palier x 24..26, rangées 93..95). Route 11 : from_route_12
+#     joueur venant de la Route 11 débouche sur la chaussée de terre (x 0..24, rangées 93..94) et la suit
+#     jusqu'au CROISEMENT, où Ronflex l'attend (contre lui, x 24). Route 11 : from_route_12
 #     attendu en (74, 14..15), tournée ←. RB : connection west, Route11, décalage 27 blocs.
-#   SUD : bord (24..26, 101) FERMÉ « ROUTE 12 — À venir » (coming_soon=route_12_sud, mécanisme existant
+#   SUD : bord (25..26, 101) FERMÉ « ROUTE 12 — À venir » (coming_soon=route_12_sud, mécanisme existant
 #     des bords) ; en release, bloqué.
 #
-# RONFLEX : il RESTE sur la carte de la Route 11 (décision L-2) en (66..67, 14..15), à 8 cases du
-#   raccord (75). Aucune case de la Route 12 n'est voisine de lui : il n'y a donc AUCUN repère face_ronflex
-#   sur cette carte ; on ne lui parle (ou ne joue la Poké Flûte devant lui) que depuis la Route 11, en
-#   (68, 14..15) côté est — accessible depuis la Route 12 par le raccord — ou en (65, 14..15) côté ouest.
-#   Avant la Flûte, le joueur qui descend de Lavanville arrive au croisement, parcourt la chaussée de terre
-#   et voit Ronflex endormi au bout du goulet de la Route 11 (comme RB, où il bouche le croisement).
+# RONFLEX (décision M-3 de Kevin, 2026-10-16 ; remplace la décision L-2) : il est ICI, AU CROISEMENT, comme
+#   Rouge/Bleu (Route12.asm : Snorlax en (10, 62) ; le raccord de la Route 11 arrive à sa hauteur). Il
+#   n'est PLUS sur la carte de la Route 11 (à retirer à l'intégration du J17, T9 : `FlagGate` et
+#   `InteractPoint` de tools/build_route_11.gd, `ronflex` de route_11.txt). Pour qu'un Ronflex 2 × 2 ferme
+#   les TROIS bras, le croisement est ramené à un passage de 2 CASES : tronc nord rétréci à x 25..26 à la
+#   rangée 92 ((24, 92) bloqué), Ronflex en (25..26, 93..94), bras ouest (chaussée de la Route 11,
+#   rangées 93..94) qui finit en x 24 contre lui, (24, 95) bloqué (panneau de pêche), tronc sud x 25..26
+#   depuis la rangée 95. Aucun déplacement diagonal n'existe : sans les 4 cases de Ronflex, on ne passe
+#   d'un bras à l'autre par aucune autre case (le contrôle le vérifie). On lui parle, ou on lui joue la
+#   Poké Flûte, depuis les cases `face_ronflex` : nord (25..26, 92) ↓, ouest (24, 93..94) →, sud
+#   (25..26, 95) ↑. Drapeaux : snorlax_route_12_woken / _caught / _done ; le passage s'ouvre sur
+#   `snorlax_route_12_done` (unless=). Depuis Lavanville, la Route 12 nord est un CUL-DE-SAC avec Ronflex
+#   en vue au bout du tronc ; depuis la Route 11, la chaussée de terre mène droit à lui.
 #
 # Composition (du nord au sud ; chaque BLOC de RB = 3 cases) :
 #   - BERGE NORD (y 0..5) : le chemin de terre (x 21..23) traverse la berge boisée, puis le PONTON commence.
@@ -52,9 +59,10 @@
 #     PÊCHEUR 1 (30, 47) : au bout du 1er lacet, regarde vers l'ouest : INÉVITABLE (sa vue couvre toute la
 #     traversée (24..26, 47) du coude). PÊCHEURS 2, 3, 4 : ÉVITABLES (la chaussée est large de 3 : on longe
 #     le bord opposé), comme dans RB. Portée 6 = portée RB 4 × 1,5 [D].
-#   - LE CROISEMENT (y 93..95) : palier x 24..26 ; la chaussée de la Route 11 arrive de l'ouest (x 0..23)
-#     entre deux rangées d'arbres, en pleine forêt (x 0..14) ; panneau de pêche (RB : panneau de la zone de
-#     pêche en (11, 63)). Puis le tronc descend (y 96..101) jusqu'au bord sud fermé.
+#   - LE CROISEMENT (y 92..95) : passage de 2 cases (x 25..26) fermé par RONFLEX 2 × 2 (25..26, 93..94) ; la
+#     chaussée de la Route 11 arrive de l'ouest (x 0..24) entre deux rangées d'arbres, en pleine forêt
+#     (x 0..14) ; panneau de pêche en (24, 95) (RB : panneau de la zone de pêche en (11, 63)). Puis le
+#     tronc descend (x 25..26, y 95..101) jusqu'au bord sud fermé.
 #   - CÔTÉS : eau partout (« w », jamais praticable : pas de Surf, pas de pêche) ; forêt dense à l'ouest
 #     (x 0..11) et à l'est (x 36..38), rives rocheuses (x 12..14).
 #
@@ -177,16 +185,16 @@ GRILLE 39 102
 89 TTTTTTTTTTTTRRRwwwwwwwww===wwwwwwwwwTTT
 90 TTTTTTTTTTTTRRRwwwwwwwww===wwwwwwwwwTTT
 91 TTTTTTTTTTTTRRRwwwwwwwww===wwwwwwwwwTTT
-92 TTTTTTTTTTTTTTTTTTTTTTTT===wwwwwwwwwTTT
+92 TTTTTTTTTTTTTTTTTTTTTTTTT==wwwwwwwwwTTT
 93 ...........................wwwwwwwwwTTT
 94 ...........................wwwwwwwwwTTT
 95 TTTTTTTTTTTTTTTTTTTTTTTT...wwwwwwwwwTTT
-96 TTTTTTTTTTTTRRRwwwwwwwww===wwwwwwwwwTTT
-97 TTTTTTTTTTTTRRRwwwwwwwww===wwwwwwwwwTTT
-98 TTTTTTTTTTTTRRRwwwwwwwww===wwwwwwwwwTTT
-99 TTTTTTTTTTTTRRRwwwwwwwww===wwwwwwwwwTTT
-100 TTTTTTTTTTTTRRRwwwwwwwww===wwwwwwwwwTTT
-101 TTTTTTTTTTTTRRRwwwwwwwww===wwwwwwwwwTTT
+96 TTTTTTTTTTTTRRRwwwwwwwwww==wwwwwwwwwTTT
+97 TTTTTTTTTTTTRRRwwwwwwwwww==wwwwwwwwwTTT
+98 TTTTTTTTTTTTRRRwwwwwwwwww==wwwwwwwwwTTT
+99 TTTTTTTTTTTTRRRwwwwwwwwww==wwwwwwwwwTTT
+100 TTTTTTTTTTTTRRRwwwwwwwwww==wwwwwwwwwTTT
+101 TTTTTTTTTTTTRRRwwwwwwwwww==wwwwwwwwwTTT
 FIN
 
 # POSITIONS — une ligne par élément :
@@ -195,9 +203,9 @@ POSITIONS
 warp_nord            warp           21..23,0     libre   to=lavender_town spawn=from_route_12  # PUSH ↑ → lavender_town, from_route_12 (Lavanville (21..23, 34), déjà prévu par sa grille)
 from_lavender        spawn          21..23,0     libre   facing=down  # arrivée de Lavanville, tournée ↓
 warp_ouest           warp           0,93..94     libre   to=route_11 spawn=from_route_12  # PUSH ← → route_11, from_route_12 (Route 11 (74, 14..15), à créer ; raccord_est (75, 14..15) du J17)
-from_route_11        spawn          0,93..94     libre   facing=right  # arrivée de la Route 11, tournée → ; à 24 cases du croisement, Ronflex reste sur la Route 11
-warp_sud             warp           24..26,101   libre   coming_soon=route_12_sud  # « ROUTE 12 — À venir » (développement) ; en release, bord bloqué ; J22
-from_route_12_sud    spawn          24..26,100   libre   facing=up  # retour futur (Route 12 sud), tournée ↑ ; non utilisé au J21
+from_route_11        spawn          0,93..94     libre   facing=right  # arrivée de la Route 11, tournée → ; à 24 cases de Ronflex (25..26, 93..94), en vue tout du long
+warp_sud             warp           25..26,101   libre   coming_soon=route_12_sud  # « ROUTE 12 — À venir » (développement) ; en release, bord bloqué ; J22
+from_route_12_sud    spawn          25..26,100   libre   facing=up  # retour futur (Route 12 sud), tournée ↑ ; non utilisé au J21
 porte_poste_nord     warp           24..26,24    libre   to=route_12_gate spawn=entrance_nord lie=porte_poste_sud  # STEP_ON ↓ (on descend vers le sud) → intérieur du poste, porte nord
 from_poste_nord      spawn          24..26,23    libre   facing=up  # sortie du poste par la porte NORD (on revient vers Lavanville), tournée ↑
 porte_poste_sud      warp           24..26,32    libre   to=route_12_gate spawn=entrance_sud lie=porte_poste_nord  # STEP_ON ↑ (on monte vers le nord) → intérieur du poste, porte sud
@@ -208,9 +216,13 @@ route_12_fisher_2    dresseur       17,59        bloque  trainer=route_12_fisher
 route_12_fisher_3    dresseur       27,60        bloque  trainer=route_12_fisher_3 facing=left sight=6 inevitable=non ordre=3  # Pêcheur 3 (RB (12, 40) ←) ; sur le bras est de la chaussée, vue (21..26, 60) : on longe la rangée 62 puis on descend en x 21..23
 route_12_fisher_4    dresseur       23,78        bloque  trainer=route_12_fisher_4 facing=right sight=6 inevitable=non ordre=4  # Pêcheur 4 (RB (9, 52) →) ; vue (24..29, 78) : on passe par les rangées 79..80
 panneau_route_12     panneau        28,20        bloque  role=T-1  # « ROUTE 12 / Lavanville — Route 11 » (dossier §15.8-1) ; RB (13, 13), sur l'éperon est ; lu depuis (28, 19) ↓
-panneau_ponton       panneau        26,96        bloque  role=T-2  # « PONTON DE PÊCHE / Prière de ne pas effrayer les poissons. » (§15.8-2) ; RB (11, 63) ; lu depuis (25, 96) →
+panneau_ponton       panneau        24,95        bloque  role=T-2  # « PONTON DE PÊCHE / Prière de ne pas effrayer les poissons. » (§15.8-2) ; RB (11, 63) ; lu depuis (24, 94) ↓ (hors du tronc, contre Ronflex)
 eperon_ouest         repere         15..17,18..26 libre  role=eperon  # impasse de RB (3 blocs), rien au bout ; ambiance (pêche)
 eperon_est           repere         27..35,18..20 libre  role=eperon  # impasse de RB, porte le panneau de la route
 ilot_ct_jackpot      decor          30..32,51..56 bloque role=ilot  # plate-forme isolée de RB (CT Jackpot, accessible seulement à Surf) : décor, aucun objet
-croisement           repere         24..26,93..95 libre  role=croisement  # palier du tronc ; la chaussée de la Route 11 y arrive de l'ouest
+ronflex_12           pnj            25..26,93..94 bloque  role=R1 facing=down unless=snorlax_route_12_done  # Ronflex 2 × 2 endormi (M-3) : ferme nord / ouest / sud ; flags snorlax_route_12_woken / _caught / _done
+face_ronflex         repere         25..26,92    libre  role=face_ronflex facing=down  # côté nord : parler / Flûte depuis (25..26, 92) ↓
+face_ronflex_ouest   repere         24,93..94    libre  role=face_ronflex facing=right  # côté ouest : depuis (24, 93..94) →
+face_ronflex_sud     repere         25..26,95    libre  role=face_ronflex facing=up  # côté sud : depuis (25..26, 95) ↑
+croisement           repere         24..26,93..95 libre  role=croisement  # carrefour des trois bras, fermé par Ronflex ; la chaussée de la Route 11 y arrive de l'ouest
 FIN
