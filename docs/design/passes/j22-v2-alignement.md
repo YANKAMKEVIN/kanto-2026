@@ -1,5 +1,9 @@
 # J22 — Les deux chemins vers Parmanie : passe d'alignement de la V2 (ChatGPT)
 
+> **VALIDÉE par Kevin le 2026-10-16** : « Je suis toutes tes recommandations M-1 à M-24. » M-3 compris
+> (Ronflex au croisement de la Route 12, revient sur L-2 du J21 ; transmis à la session du J21).
+> Dossier consolidé : `docs/design/dossier-25-deux-chemins-parmanie.md`.
+
 > Claude, 2026-10-16. **Conception seulement : aucune ligne de code.** V2 reproduite dans
 > `j22-v2-chatgpt.md`. Relue contre `vision.md`, la roadmap, le dossier 06, les dossiers et passes des
 > J15 à J21 et le code réel des branches `main` (`2bd6bbf7`, J14), `jalon-15` à `jalon-21`, plus
@@ -357,7 +361,7 @@ M-19), le J22 ne pose aucun drapeau que le J23 devrait reprendre, sauf `cut_rout
 
 ## 18. Suite
 
-1. Kevin tranche M-1 à M-24 (par numéro). **M-3 se décide avec la session du J21.**
+1. ~~Kevin tranche M-1 à M-24~~ : **toutes les recommandations suivies** (2026-10-16). M-3 transmis à la session du J21.
 2. Claude écrit `docs/design/dossier-25-deux-chemins-parmanie.md` (textes complets, numérotés), puis
    `docs/tech/jalon-22.md`.
 3. 22.0 peut commencer dès la validation : grilles, vues peintes, données, logique pure. Les cartes
