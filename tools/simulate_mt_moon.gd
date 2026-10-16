@@ -95,6 +95,8 @@ const LOSS: int = 2
 const FLED: int = 3
 ## Battle.Outcome.FOE_FLED (jalon 14 : le sauvage s'enfuit par Téléport).
 const FOE_FLED: int = 5
+## Battle.NO_LOCK (aucune capacité imposée au joueur).
+const NO_LOCK: int = -1
 ## BattleEvent.Kind (`--trace`).
 const BATTLE_EVENT_SENT_OUT: int = 1
 const BATTLE_EVENT_DAMAGE: int = 5
@@ -789,7 +791,7 @@ func _report(team: Dictionary, variant: Dictionary) -> void:
 	for step: Dictionary in _steps:
 		stats.append(_blank_stats())
 	var totals := { "end": 0, "hp": 0.0, "kos": 0, "items": {}, "levels": [], "evolved": [],
-		"names": [], "after_defeats": {}, "tries": {} }
+		"names": [], "after_defeats": {}, "tries": {}, "first": {} }
 	for seed_value: int in _seeds:
 		_play(team, variant, seed_value, stats, totals)
 	print("")
@@ -811,6 +813,7 @@ func _report(team: Dictionary, variant: Dictionary) -> void:
 				100.0 * int(totals["after_defeats"].get(n, 0)) / _seeds])
 		print("  avec reprises au Centre : arrivée après %s" % ", ".join(parts))
 		_print_tries(totals["tries"])
+		_print_first(totals["first"])
 	for i: int in _steps.size():
 		var s: Dictionary = stats[i]
 		var reached: int = s["reached"]
@@ -879,6 +882,7 @@ func _play(team: Dictionary, variant: Dictionary, seed_value: int, stats: Array[
 		if defeats > 0:
 			_tracing = false
 			var retry_lost := _play_step(step, party, rng, variant, bag, _blank_stats())
+			_count_first(totals, tries, i - 1, step, retry_lost)
 			if step["kind"] == "center":
 				restart = i
 			elif step["kind"] == "trainer" and not retry_lost:
@@ -901,6 +905,7 @@ func _play(team: Dictionary, variant: Dictionary, seed_value: int, stats: Array[
 		var fainted := _fainted(party)
 		s["top"] += _top_level(party)
 		var lost := _play_step(step, party, rng, variant, bag, s)
+		_count_first(totals, tries, i - 1, step, lost)
 		if step["kind"] == "center":
 			restart = i
 		elif step["kind"] == "trainer" and not lost:
@@ -949,6 +954,30 @@ func _add_tries(totals: Dictionary, tries: Dictionary, beaten: Dictionary) -> vo
 			t["beaten"] += 1
 			t["attempts"] += int(tries[index])
 		totals["tries"][index] = t
+
+
+## J18 T22 : premier combat contre un Dresseur ([param index]) d'une partie, défaites
+## précédentes comprises (après une défaite, réveil au Centre et reprise : pas de biais du
+## survivant) ; { parties, victoires }.
+func _count_first(totals: Dictionary, tries: Dictionary, index: int, step: Dictionary,
+		lost: bool) -> void:
+	if step["kind"] != "trainer" or int(tries.get(index, 0)) != 1:
+		return
+	var f: Dictionary = totals["first"].get(index, { "games": 0, "wins": 0 })
+	f["games"] += 1
+	f["wins"] += 0 if lost else 1
+	totals["first"][index] = f
+
+
+## J18 T22 (avec reprises) : victoire au premier essai de chaque Dresseur, parmi les parties
+## qui l'atteignent (après d'éventuelles défaites ailleurs, soignées au Centre).
+func _print_first(first: Dictionary) -> void:
+	var indexes: Array = first.keys()
+	indexes.sort()
+	for index: int in indexes:
+		var f: Dictionary = first[index]
+		print("  premier essai : %-40s %5.1f %% de %d parties" % [_steps[index]["label"],
+			100.0 * f["wins"] / maxi(int(f["games"]), 1), f["games"]])
 
 
 ## T20 (avec reprises) : tentatives moyennes jusqu'à la victoire et part des parties qui
@@ -1093,7 +1122,12 @@ func _fight(battle: RefCounted, player: RefCounted, foe: RefCounted, rng: RefCou
 			continue
 		var active: RefCounted = player.active.pokemon
 		var action: RefCounted = null
-		if flee_below > 0.0 and float(active.hp) / active.max_hp() < flee_below:
+		# J18 T22 : capacité imposée (tour 2 de Tunnel, Patience) : la présentation la soumet
+		# sans choix (Battle.get_locked_move) ; avant, le combat s'arrêtait « non terminé ».
+		var locked: int = battle.get_locked_move()
+		if locked != NO_LOCK:
+			action = _action_script.move(locked)
+		if action == null and flee_below > 0.0 and float(active.hp) / active.max_hp() < flee_below:
 			action = _action_script.run()
 			# Ligoté (piège, J12) : la fuite est refusée avant le tour ; on se bat.
 			if not battle.is_legal(action):

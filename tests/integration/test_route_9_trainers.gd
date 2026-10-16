@@ -27,19 +27,20 @@ const EAST: Array[Vector2i] = [Vector2i(79, 12), Vector2i(79, 13), Vector2i(79, 
 const INF := 1 << 30
 const FADE := 0.05
 const TIMEOUT := 12.0
-## Identifiant de grille → [Dresseur, modèle peint, nom, équipe, ₽] (dossier 21 §3.3).
+## Identifiant de grille → [Dresseur, modèle peint, nom, équipe, ₽] (dossier 21 §3.3, niveaux
+## recalés au T22).
 const TRAINERS := {
 	"lou": [&"route_9_lass_lou", "lass", "Jeune Dresseuse Lou",
 		[[&"oddish", 18], [&"bellsprout", 18], [&"oddish", 18], [&"bellsprout", 18]], 360],
 	"adam": [&"route_9_camper_adam", "camper", "Campeur Adam",
 		[[&"mankey", 20], [&"charmander", 21]], 420],
 	"jules": [&"route_9_camper_jules", "camper", "Campeur Jules",
-		[[&"rattata", 19], [&"ekans", 19], [&"sandshrew", 19]], 380],
-	"zoe": [&"route_9_lass_zoe", "lass", "Jeune Dresseuse Zoé", [[&"meowth", 23]], 460],
+		[[&"rattata", 26], [&"ekans", 26], [&"sandshrew", 26]], 520],
+	"zoe": [&"route_9_lass_zoe", "lass", "Jeune Dresseuse Zoé", [[&"meowth", 26]], 520],
 	"benoit": [&"route_9_hiker_benoit", "hiker", "Montagnard Benoît",
-		[[&"machop", 20], [&"onix", 20]], 700],
+		[[&"machop", 25], [&"onix", 23]], 805],
 	"gilles": [&"route_9_hiker_gilles", "hiker", "Montagnard Gilles",
-		[[&"geodude", 20], [&"machop", 20], [&"geodude", 20]], 700],
+		[[&"geodude", 16], [&"machop", 16], [&"geodude", 16]], 560],
 	"noa": [&"route_9_scout_noa", "scout", "Scout Noa",
 		[[&"beedrill", 19], [&"beedrill", 19]], 228],
 }

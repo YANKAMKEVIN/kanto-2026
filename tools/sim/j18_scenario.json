@@ -1,37 +1,37 @@
 {
 	"version": 1,
-	"title": "Équilibrage de la Route 9, de la Route 10 et de la Grotte Sombre (jalon 18 T10)",
-	"description": "Jalon 18, dossier 21 §3.2, §3.3, §4.3, §4.4, §5.4, §5.5 : tables RB (poids [D]) et 14 Dresseurs recopiés du dossier (substitutions * comprises, IA random, capacités apprises au niveau, récompenses du dossier ; identifiants des grilles, jalon-18.md §0.2 n° 16). Parcours lu dans les grilles validées (plan_check_route_9.py : chemin direct 107 pas par le couloir bas, 6 cases de H2 puis 4 de H4, Lou et Bernard inévitables ; plan_check_route_10.py : 0 herbe obligatoire, Centre avant la grotte ; plan_check_grotte_sombre.py : 179 pas, 10 gravats sur le chemin le moins exposé = 1F-G1 3, B1F-G1 2, B1F-G4 3, 1F-G6 2, Roger et Marcel inévitables). Équipes = sortie du J16 [défaut, règle 4 : dossier 19 absent ; Major Bob RB Raichu Nv. 24] : quatre réalistes (starter Nv. 24-25, Roucoups Nv. 22) et trois en bas de fourchette (starter Nv. 22) ; « type Kevin » = l'équipe des scénarios J13 / J14 avancée, Reptincel avec la CT28 Tunnel. Sac [défaut] : 3 Potions, 2 Super Potions, 2 Antidotes (Boutique de Carmin, J15). Départ soigné (Centre d'Azuria). La simulation ne voit pas la lumière : voile et Flash sans effet.",
+	"title": "Équilibrage de la Route 9, de la Route 10 et de la Grotte Sombre (jalon 18 T10, recalé au T22)",
+	"description": "Jalon 18, dossier 21 §3.2, §3.3, §4.3, §4.4, §5.4, §5.5 : tables RB (poids [D]) et 14 Dresseurs (substitutions * comprises, IA random, capacités apprises au niveau ; niveaux et récompenses recalés au T22, jalon-18.md §5.4 « T22 »). Parcours lu dans les grilles validées (Route 9 directe 107 pas : Lou, 6 cases de H2, Benoît, 4 cases de H4 ; Centre de la Route 10 ; grotte 179 pas : Roger, 10 gravats, Marcel ; Route 10 sud). Règle de Kevin (2026-10-16) : victoire au premier essai de 60 à 80 % par combat (plancher 60, plafond 80), joueur prudent (attentif) qui va droit au but avec son Sac et le Centre de la Route 10 ; exception : avantage de type choisi par le joueur. Mesure (T22) : chaque variante a des reprises (réveil au dernier Centre après une défaite) ; « premier essai » = premier combat contre ce Dresseur dans la partie, sans biais du survivant ; les Dresseurs évitables sont mesurés un par un (« détour <nom> » = chemin direct + ce seul Dresseur, à sa place dans le parcours) ; traversée = arrivée à Lavanville après 0 défaite. Équipes : sortie du J16 (référence de la règle) = équipes de référence du J17 (route_11_scenario.json, Carmin avant le S.S. Anne) + le gain d'un chapitre mesuré en jouant la Route 11 et la Cave (le J16 n'a pas encore de données) : seul le meneur progresse (+2,4 niveaux) ; sortie du J17 = la Route 11 et la Cave rejouées depuis la sortie du J16 ; « bas » : équipes du T10. Sac [défaut] : 3 Potions, 2 Super Potions, 2 Antidotes. Départ soigné (Centre d'Azuria). La simulation ne voit pas la lumière : voile et Flash sans effet.",
 	"seeds": 200,
 	"heal_at_start": true,
 	"teams": [
 		{
-			"name": "Reptincel 25, Roucoups 22, Férosinge 22, Ortide 21",
+			"name": "J16 : Reptincel 24, Roucoups 19, Férosinge 19, Mystherbe 18",
 			"members": [
 				{
 					"species": "charmeleon",
-					"level": 25
+					"level": 24
 				},
 				{
 					"species": "pidgeotto",
-					"level": 22
+					"level": 19
 				},
 				{
 					"species": "mankey",
-					"level": 22
+					"level": 19
 				},
 				{
-					"species": "gloom",
-					"level": 21
+					"species": "oddish",
+					"level": 18
 				}
 			]
 		},
 		{
-			"name": "type Kevin : Reptincel 25 (Tunnel), Roucoups 22, Nidorino 21, Rattatac 21",
+			"name": "J16 type Kevin : Reptincel 24 (Tunnel), Roucoups 19, Nidorino 18, Rattata 17",
 			"members": [
 				{
 					"species": "charmeleon",
-					"level": 25,
+					"level": 24,
 					"moves": [
 						"scratch",
 						"ember",
@@ -41,60 +41,154 @@
 				},
 				{
 					"species": "pidgeotto",
-					"level": 22
+					"level": 19
 				},
 				{
 					"species": "nidorino",
-					"level": 21
+					"level": 18
 				},
 				{
-					"species": "raticate",
-					"level": 21
+					"species": "rattata",
+					"level": 17
 				}
 			]
 		},
 		{
-			"name": "Herbizarre 24, Roucoups 22, Papilusion 21",
+			"name": "J16 : Herbizarre 23, Roucoups 18, Papilusion 18",
 			"members": [
 				{
 					"species": "ivysaur",
-					"level": 24
+					"level": 23
 				},
 				{
 					"species": "pidgeotto",
-					"level": 22
+					"level": 18
 				},
 				{
 					"species": "butterfree",
-					"level": 21,
+					"level": 18,
 					"moves": [
-						"tackle",
 						"confusion",
+						"tackle",
 						"poison_powder",
-						"sleep_powder"
+						"stun_spore"
 					]
 				}
 			]
 		},
 		{
-			"name": "Carabaffe 25, Roucoups 22, Papilusion 21",
+			"name": "J16 : Carabaffe 24, Roucoups 19, Papilusion 17",
 			"members": [
 				{
 					"species": "wartortle",
+					"level": 24
+				},
+				{
+					"species": "pidgeotto",
+					"level": 19
+				},
+				{
+					"species": "butterfree",
+					"level": 17,
+					"moves": [
+						"confusion",
+						"tackle",
+						"poison_powder",
+						"stun_spore"
+					]
+				}
+			]
+		},
+		{
+			"name": "J17 : Reptincel 27, Roucoups 19, Férosinge 19, Mystherbe 18",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 27
+				},
+				{
+					"species": "pidgeotto",
+					"level": 19
+				},
+				{
+					"species": "mankey",
+					"level": 19
+				},
+				{
+					"species": "oddish",
+					"level": 18
+				}
+			]
+		},
+		{
+			"name": "J17 type Kevin : Reptincel 27 (Tunnel), Roucoups 19, Nidorino 18, Rattata 17",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 27,
+					"moves": [
+						"scratch",
+						"ember",
+						"rage",
+						"dig"
+					]
+				},
+				{
+					"species": "pidgeotto",
+					"level": 19
+				},
+				{
+					"species": "nidorino",
+					"level": 18
+				},
+				{
+					"species": "rattata",
+					"level": 17
+				}
+			]
+		},
+		{
+			"name": "J17 : Herbizarre 25, Roucoups 18, Papilusion 18",
+			"members": [
+				{
+					"species": "ivysaur",
 					"level": 25
 				},
 				{
 					"species": "pidgeotto",
-					"level": 22
+					"level": 18
 				},
 				{
 					"species": "butterfree",
-					"level": 21,
+					"level": 18,
 					"moves": [
-						"tackle",
 						"confusion",
+						"tackle",
 						"poison_powder",
-						"sleep_powder"
+						"stun_spore"
+					]
+				}
+			]
+		},
+		{
+			"name": "J17 : Carabaffe 27, Roucoups 19, Papilusion 17",
+			"members": [
+				{
+					"species": "wartortle",
+					"level": 27
+				},
+				{
+					"species": "pidgeotto",
+					"level": 19
+				},
+				{
+					"species": "butterfree",
+					"level": 17,
+					"moves": [
+						"confusion",
+						"tackle",
+						"poison_powder",
+						"stun_spore"
 					]
 				}
 			]
@@ -396,19 +490,19 @@
 			"can_lose": false,
 			"heal_after": false,
 			"gives_exp": true,
-			"prize_money": 380,
+			"prize_money": 520,
 			"team": [
 				{
 					"species": "rattata",
-					"level": 19
+					"level": 26
 				},
 				{
 					"species": "ekans",
-					"level": 19
+					"level": 26
 				},
 				{
 					"species": "sandshrew",
-					"level": 19
+					"level": 26
 				}
 			]
 		},
@@ -418,11 +512,11 @@
 			"can_lose": false,
 			"heal_after": false,
 			"gives_exp": true,
-			"prize_money": 460,
+			"prize_money": 520,
 			"team": [
 				{
 					"species": "meowth",
-					"level": 23
+					"level": 26
 				}
 			]
 		},
@@ -432,15 +526,15 @@
 			"can_lose": false,
 			"heal_after": false,
 			"gives_exp": true,
-			"prize_money": 700,
+			"prize_money": 805,
 			"team": [
 				{
 					"species": "machop",
-					"level": 20
+					"level": 25
 				},
 				{
 					"species": "onix",
-					"level": 20
+					"level": 23
 				}
 			]
 		},
@@ -450,19 +544,19 @@
 			"can_lose": false,
 			"heal_after": false,
 			"gives_exp": true,
-			"prize_money": 700,
+			"prize_money": 560,
 			"team": [
 				{
 					"species": "geodude",
-					"level": 20
+					"level": 16
 				},
 				{
 					"species": "machop",
-					"level": 20
+					"level": 16
 				},
 				{
 					"species": "geodude",
-					"level": 20
+					"level": 16
 				}
 			]
 		},
@@ -490,38 +584,20 @@
 			"can_lose": false,
 			"heal_after": false,
 			"gives_exp": true,
-			"prize_money": 1000,
+			"prize_money": 1300,
 			"team": [
 				{
 					"species": "nidorino",
-					"level": 20
+					"level": 26
 				},
 				{
 					"species": "jigglypuff",
-					"level": 20
+					"level": 26
 				}
 			]
 		},
 		"route_10_hiker_paul": {
 			"name": "Montagnard Paul",
-			"ai": "random",
-			"can_lose": false,
-			"heal_after": false,
-			"gives_exp": true,
-			"prize_money": 735,
-			"team": [
-				{
-					"species": "geodude",
-					"level": 21
-				},
-				{
-					"species": "onix",
-					"level": 21
-				}
-			]
-		},
-		"dark_cave_roger": {
-			"name": "Montagnard Roger",
 			"ai": "random",
 			"can_lose": false,
 			"heal_after": false,
@@ -533,16 +609,34 @@
 					"level": 19
 				},
 				{
+					"species": "onix",
+					"level": 19
+				}
+			]
+		},
+		"dark_cave_roger": {
+			"name": "Montagnard Roger",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 700,
+			"team": [
+				{
+					"species": "geodude",
+					"level": 20
+				},
+				{
 					"species": "machop",
-					"level": 19
+					"level": 21
 				},
 				{
 					"species": "geodude",
-					"level": 19
+					"level": 20
 				},
 				{
 					"species": "geodude",
-					"level": 19
+					"level": 20
 				}
 			]
 		},
@@ -552,15 +646,15 @@
 			"can_lose": false,
 			"heal_after": false,
 			"gives_exp": true,
-			"prize_money": 1150,
+			"prize_money": 1300,
 			"team": [
 				{
 					"species": "jigglypuff",
-					"level": 23
+					"level": 26
 				},
 				{
 					"species": "koffing",
-					"level": 23
+					"level": 26
 				}
 			]
 		},
@@ -570,23 +664,23 @@
 			"can_lose": false,
 			"heal_after": false,
 			"gives_exp": true,
-			"prize_money": 380,
+			"prize_money": 440,
 			"team": [
 				{
 					"species": "pidgey",
-					"level": 19
+					"level": 22
 				},
 				{
 					"species": "rattata",
-					"level": 19
+					"level": 22
 				},
 				{
 					"species": "rattata",
-					"level": 19
+					"level": 22
 				},
 				{
 					"species": "bellsprout",
-					"level": 19
+					"level": 22
 				}
 			]
 		},
@@ -596,19 +690,19 @@
 			"can_lose": false,
 			"heal_after": false,
 			"gives_exp": true,
-			"prize_money": 700,
+			"prize_money": 595,
 			"team": [
 				{
 					"species": "onix",
-					"level": 20
+					"level": 17
 				},
 				{
 					"species": "onix",
-					"level": 20
+					"level": 17
 				},
 				{
 					"species": "geodude",
-					"level": 20
+					"level": 17
 				}
 			]
 		},
@@ -618,7 +712,7 @@
 			"can_lose": false,
 			"heal_after": false,
 			"gives_exp": true,
-			"prize_money": 1050,
+			"prize_money": 1300,
 			"team": [
 				{
 					"species": "charmander",
@@ -626,7 +720,7 @@
 				},
 				{
 					"species": "nidorino",
-					"level": 21
+					"level": 26
 				}
 			]
 		}
@@ -639,7 +733,7 @@
 		{
 			"label": "R9-2 Campeur Adam (couloir haut)",
 			"trainer": "route_9_camper_adam",
-			"optional": true
+			"optional": "adam"
 		},
 		{
 			"label": "Route 9 : H2 (6 cases, couloir bas)",
@@ -649,12 +743,12 @@
 		{
 			"label": "R9-3 Campeur Jules (H2)",
 			"trainer": "route_9_camper_jules",
-			"optional": true
+			"optional": "jules"
 		},
 		{
 			"label": "R9-7 Scout Noa (vallée)",
 			"trainer": "route_9_scout_noa",
-			"optional": true
+			"optional": "noa"
 		},
 		{
 			"label": "R9-5 Montagnard Benoît (passage)",
@@ -663,12 +757,12 @@
 		{
 			"label": "R9-4 Jeune Dresseuse Zoé (montée)",
 			"trainer": "route_9_lass_zoe",
-			"optional": true
+			"optional": "zoe"
 		},
 		{
 			"label": "R9-6 Montagnard Gilles (terrasse est)",
 			"trainer": "route_9_hiker_gilles",
-			"optional": true
+			"optional": "gilles"
 		},
 		{
 			"label": "Route 9 : H4 (4 cases)",
@@ -686,7 +780,7 @@
 		{
 			"label": "G-2 Pokémaniac Simon (1F, branche ouest)",
 			"trainer": "dark_cave_simon",
-			"optional": true
+			"optional": "simon"
 		},
 		{
 			"label": "1F : gravats 1F-G1 (3 cases)",
@@ -706,7 +800,7 @@
 		{
 			"label": "G-3 Jeune Dresseuse Elsa (B1F, flaque)",
 			"trainer": "dark_cave_elsa",
-			"optional": true
+			"optional": "elsa"
 		},
 		{
 			"label": "G-4 Montagnard Marcel (B1F, passage étroit)",
@@ -720,52 +814,22 @@
 		{
 			"label": "G-5 Pokémaniac Yanis (1F sud)",
 			"trainer": "dark_cave_yanis",
-			"optional": true
+			"optional": "yanis"
 		},
 		{
 			"label": "R10-1 Pokémaniac Hector (Route 10 sud)",
 			"trainer": "route_10_maniac_hector",
-			"optional": true
+			"optional": "hector"
 		},
 		{
 			"label": "R10-2 Montagnard Paul (Route 10 sud)",
 			"trainer": "route_10_hiker_paul",
-			"optional": true
+			"optional": "paul"
 		}
 	],
 	"variants": [
 		{
-			"name": "directe, attentif, sans Centre, sans objets",
-			"player": "attentif",
-			"center": false
-		},
-		{
-			"name": "directe, attentif, Centre, sans objets",
-			"player": "attentif",
-			"center": true
-		},
-		{
-			"name": "directe, attentif, sans Centre, 3 Potions, 2 Super Potions, 2 Antidotes",
-			"player": "attentif",
-			"center": false,
-			"items": {
-				"potion": 3,
-				"super_potion": 2,
-				"antidote": 2
-			}
-		},
-		{
-			"name": "directe, attentif, Centre, 3 Potions, 2 Super Potions, 2 Antidotes",
-			"player": "attentif",
-			"center": true,
-			"items": {
-				"potion": 3,
-				"super_potion": 2,
-				"antidote": 2
-			}
-		},
-		{
-			"name": "tous les Dresseurs, attentif, Centre, 3 Potions, 2 Super Potions, 2 Antidotes",
+			"name": "directe, attentif, Centre, Sac",
 			"player": "attentif",
 			"center": true,
 			"items": {
@@ -773,23 +837,176 @@
 				"super_potion": 2,
 				"antidote": 2
 			},
-			"optional": true
+			"retries": 5
 		},
 		{
-			"name": "directe, naïf, sans Centre",
-			"player": "naif",
-			"center": false
+			"name": "détour adam, attentif, Centre, Sac",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"antidote": 2
+			},
+			"optional": [
+				"adam"
+			],
+			"retries": 5
+		},
+		{
+			"name": "détour jules, attentif, Centre, Sac",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"antidote": 2
+			},
+			"optional": [
+				"jules"
+			],
+			"retries": 5
+		},
+		{
+			"name": "détour noa, attentif, Centre, Sac",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"antidote": 2
+			},
+			"optional": [
+				"noa"
+			],
+			"retries": 5
+		},
+		{
+			"name": "détour zoe, attentif, Centre, Sac",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"antidote": 2
+			},
+			"optional": [
+				"zoe"
+			],
+			"retries": 5
+		},
+		{
+			"name": "détour gilles, attentif, Centre, Sac",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"antidote": 2
+			},
+			"optional": [
+				"gilles"
+			],
+			"retries": 5
+		},
+		{
+			"name": "détour simon, attentif, Centre, Sac",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"antidote": 2
+			},
+			"optional": [
+				"simon"
+			],
+			"retries": 5
+		},
+		{
+			"name": "détour elsa, attentif, Centre, Sac",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"antidote": 2
+			},
+			"optional": [
+				"elsa"
+			],
+			"retries": 5
+		},
+		{
+			"name": "détour yanis, attentif, Centre, Sac",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"antidote": 2
+			},
+			"optional": [
+				"yanis"
+			],
+			"retries": 5
+		},
+		{
+			"name": "détour hector, attentif, Centre, Sac",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"antidote": 2
+			},
+			"optional": [
+				"hector"
+			],
+			"retries": 5
+		},
+		{
+			"name": "détour paul, attentif, Centre, Sac",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"antidote": 2
+			},
+			"optional": [
+				"paul"
+			],
+			"retries": 5
+		},
+		{
+			"name": "tous les Dresseurs, attentif, Centre, Sac",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"antidote": 2
+			},
+			"optional": true,
+			"retries": 5
+		},
+		{
+			"name": "directe, expert, Centre, Sac",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"antidote": 2
+			},
+			"retries": 5
 		},
 		{
 			"name": "directe, naïf, Centre",
 			"player": "naif",
-			"center": true
-		},
-		{
-			"name": "tous les Dresseurs, naïf, Centre",
-			"player": "naif",
 			"center": true,
-			"optional": true
+			"retries": 5
 		}
 	]
 }
