@@ -700,6 +700,14 @@ Outil de simulation existant (`simulate_*.gd`, méthode du J10) : rival n° 4 pa
 avec les équipes types à la sortie du navire. **Information pour Kevin**, aucune donnée changée
 sans lui.
 
+**Fait (2026-10-16, branche `j16-t18-equilibrage`)** : rapport `docs/tech/jalon-16-equilibrage.md`
+(scénarios générés par `tools/sim/gen_ss_anne_scenarios.py`, graines 0–999, clé de variante
+`keep_order` ajoutée à `simulate_mt_moon.gd`, test `test_simulate_ss_anne`). Constats : Major Bob
+= mur binaire (Sol gardé pour Raichu : 100 % ; sans Sol : 0–5 % au niveau d'arrivée, Carapuce
+0 % jusqu'au N26) à cause de Tonnerre ; rival n° 4 = mur pour Bulbizarre (0 % au N20–24), dans
+la cible pour Salamèche et Carapuce (63–72 % en directe). Recommandations R-1 à R-3 et questions
+Q-T18-1 à 5 au §6–7 du rapport ; **aucune donnée changée**.
+
 #### T19 — architecte : alignements — à chaque fusion de `main`
 
 Identifiants du J15 (quai, arbuste, Centre, objectifs), listes des tests, `tm_compatibility.json`
