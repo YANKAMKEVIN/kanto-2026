@@ -283,10 +283,10 @@ func test_sailor_identical_with_or_without_the_ticket() -> void:
 	var library := DialogueLibrary.new()
 	library.load_dir()
 	var sailor_line := library.get_dialogue(&"vermilion_sailor")
-	assert_eq(sailor_line.variants.size(), 2, "DEP-03 (J16 T15), puis T-26 sans condition")
+	assert_eq(sailor_line.variants.size(), 4, "DEP-03, TXT-01 (2 fois), puis TXT-02 sans condition")
 	assert_eq(sailor_line.variants[0].if_flags, [SHIP_FLAG] as Array[StringName])
 	assert_eq(sailor_line.variants[0].pages[0].text, "Le S.S. Anne a pris le large.")
-	assert_true(sailor_line.variants[1].if_flags.is_empty())
+	assert_true(sailor_line.variants[3].if_flags.is_empty())
 
 
 # --- Habitants et décor --------------------------------------------------------------------

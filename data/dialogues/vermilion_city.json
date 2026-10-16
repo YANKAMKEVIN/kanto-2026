@@ -16,10 +16,16 @@
 				"pages": ["Le S.S. Anne a pris le large."]
 			},
 			{
-				"pages": [
-					"Le S.S. Anne est à quai pour\nquelques jours.",
-					"L'équipage prépare la croisière.\nL'embarquement n'a pas encore\ncommencé."
-				]
+				"if": ["got_ss_ticket", "ss_anne_gangway_open"],
+				"pages": ["Parfait, bienvenue à bord !"]
+			},
+			{
+				"if": ["got_ss_ticket"],
+				"pages": ["Ton Passe Bateau, s'il te plaît.", "Parfait, bienvenue à bord !"],
+				"cutscene": "ss_anne_boarding"
+			},
+			{
+				"pages": ["Il te faut un Passe Bateau\npour monter sur ce navire."]
 			}
 		]
 	},

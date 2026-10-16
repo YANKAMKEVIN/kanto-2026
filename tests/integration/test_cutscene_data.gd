@@ -198,6 +198,7 @@ const VARIANT_FLAGS: Dictionary = {
 	# Jalon 16 (T15) : départ du S.S. Anne (après la CS01 ; avant : TXT-03), Coupe de l'arbuste.
 	&"ss_anne_departure": [PEWTER_FLAGS + [&"got_hm01"], PEWTER_FLAGS],
 	&"cut_tree_vermilion_gym": [PEWTER_FLAGS],
+	&"ss_anne_boarding": [PEWTER_FLAGS],
 }
 ## Scènes jouées par le code (pas de déclencheur) → carte où elles sont jouées.
 ## Jalon 7 (T18) : la scène du colis est lancée par la variante « cutscene » du dialogue de Chen.
@@ -234,6 +235,8 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"ss_anne_captain": &"ss_anne_captain_room",
 	# Jalon 16 (T15) : COUPER (« confirm_cutscene » de l'examen de l'arbuste).
 	&"cut_tree_vermilion_gym": &"vermilion_city",
+	# Jalon 16 : embarquement, par le dialogue du marin (TXT-01).
+	&"ss_anne_boarding": &"vermilion_city",
 	# Jalon 11 (T14) : remise tardive de la CT34 (dialogue de Pierre).
 	&"pewter_gym_brock_tm_late": &"pewter_gym",
 	# Jalon 13 (T17) : objets visibles des Routes 4 et 24 (PNJ « objet »).
@@ -325,7 +328,7 @@ func test_library_loads_without_error() -> void:
 		&"route_6_hidden_1", &"route_6_item_1", &"vermilion_arrival",
 		&"vermilion_gym_barrier_open", &"vermilion_gym_surge", &"vermilion_gym_surge_tm_late",
 		# Jalon 16 (T15) : départ du S.S. Anne, Coupe de l'arbuste de l'Arène.
-		&"ss_anne_departure", &"cut_tree_vermilion_gym",
+		&"ss_anne_departure", &"cut_tree_vermilion_gym", &"ss_anne_boarding",
 		&"route_2_item_1", &"route_2_item_2", &"route_2_item_3", &"route_2_item_4",
 		&"route_2_north_item_1", &"route_3_entered", &"route_3_guard", &"route_3_hidden_1",
 		&"route_3_item_1", &"route_3_item_2", &"route_3_item_3", &"route_4_item_1",

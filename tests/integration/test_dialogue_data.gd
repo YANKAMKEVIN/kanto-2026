@@ -722,7 +722,7 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		&"got_ss_anne_item_04", &"got_ss_anne_item_05", &"got_ss_anne_item_06",
 		&"got_ss_anne_hidden_1", &"got_ss_anne_hidden_2", &"got_ss_anne_hidden_3",
 		# Jalon 16 (T13) : le rival n° 4 et la CS01 du capitaine.
-		&"got_hm01", &"rival_ss_anne_lost_once", &"rival_ss_anne_won",
+		&"ss_anne_gangway_open", &"got_hm01", &"rival_ss_anne_lost_once", &"rival_ss_anne_won",
 		# Jalon 16 (T15) : départ du S.S. Anne, arbuste coupé.
 		&"ss_anne_departed", &"cut_vermilion_gym_bush"]
 		+ SET_J14_BILL_CUTSCENES + SET_J14_ROCKET_CUTSCENES))
@@ -1158,11 +1158,12 @@ func test_oak_parcel_lines() -> void:
 	# Jalon 15 (T13) : la Super Potion et l'Antidote caché de la Route 5.
 	# Jalon 16 (T14) : Major Bob (Arène et rattrapage de la CT24) ; (T12) neuf objets du S.S. Anne ;
 	# (T13) le capitaine (CS01).
-	# Jalon 16 : le marin de la passerelle après la CS01 (la confirmation du départ).
-	assert_eq(launched, 54, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
+	# Jalon 16 : le marin de la passerelle après la CS01 (la confirmation du départ) ; son
+	# embarquement avec le Passe Bateau (TXT-01).
+	assert_eq(launched, 55, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
 		+ "sa CT34, Ondine (pont, Arène et rattrapage), écran, module, console, objets de la "
 		+ "Route 25, le Rocket d'Azuria (2) et le barrage sud ; J15 : objets de la Route 5 ; "
-		+ "J16 : Major Bob (2), neuf objets du S.S. Anne, le capitaine, le marin")
+		+ "J16 : Major Bob (2), neuf objets du S.S. Anne, le capitaine, le marin (2)")
 	# Le jeton n'apparaît que dans la réplique de l'espèce, « {pokemon} » dans les phrases du
 	# compagnon (J11), et ceux de la Pension dans ses répliques (J15).
 	for row: Array in _pages():

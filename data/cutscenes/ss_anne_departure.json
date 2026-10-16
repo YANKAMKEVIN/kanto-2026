@@ -12,6 +12,14 @@
 						"if": ["ss_anne_departure_chosen"]
 					},
 					{ "set": ["ss_anne_departed"], "if": ["ss_anne_departure_chosen"] },
+					{
+						"move": "sailor", "path": ["right"],
+						"if": ["ss_anne_departure_chosen", "ss_anne_gangway_open"]
+					},
+					{
+						"face": "sailor", "to": "down",
+						"if": ["ss_anne_departure_chosen", "ss_anne_gangway_open"]
+					},
 					{ "save": "départ du S.S. Anne", "if": ["ss_anne_departure_chosen"] },
 					{
 						"animate": "Entities/SsAnne", "offset": [0, 0], "duration": 0.1,
