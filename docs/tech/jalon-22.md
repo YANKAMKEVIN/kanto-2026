@@ -453,10 +453,10 @@ Flûte, CS01. 8 000 ₽. Badges jusqu'au Prisme. Drapeaux jusqu'à `got_poke_flu
 | `fuchsia_qa` | 22C | Parmanie, entrée est, Canne et Bicyclette |
 | `j22_full_qa` | 22C | Lavanville, Flûte, Ronflex 12 endormi, rien du J22 : parcours complet par l'est puis l'ouest |
 
-### 2.15 Art (lot 22.0) — **série 24** proposée
+### 2.15 Art (lot 22.0) — **série 25** proposée
 
-Séries : 23 = J21 (`serie-23-repos-des-esprits.md`). **Défaut : série 24 pour le J22**, revérifiée
-au T7 (fiche `docs/design/fiches-assets/serie-24-deux-chemins.md`, outil `tools/art/serie24.py`).
+Séries prises au 2026-10-16 (branches distantes) : 20 (J19), 21 (J18), 22 (J20), 23 (J21), 24 (J19 : escalier et dalle purifiée). **Série 25 pour le J22** (conflit du 24 tranché par la règle de Kevin : priorité à la session la plus ancienne), revérifiée
+au T7 (fiche `docs/design/fiches-assets/serie-25-deux-chemins.md`, outil `tools/art/serie25.py`).
 
 | Élément | État | Besoin |
 |---|---|---|
@@ -531,7 +531,7 @@ Kevin.
   `coming_soon`.
 - **CA** : Kevin valide les grilles.
 
-#### T7 — A puis C (Mac, Codex) : art, série 24 — **maintenant**
+#### T7 — A puis C (Mac, Codex) : art, série 25 — **maintenant**
 - Fiche, kit, génération, planche de contact → K, intégration (§2.15). Dos de combat et fonds
   CB.3 sur leurs chaînes existantes.
 - **CA** : Kevin valide la planche de contact ; `test_battle_art` vert pour les 12 espèces.
@@ -758,4 +758,4 @@ Maintenant  : T1 ─→ T2 ∥ T3 ∥ T4 ∥ T5 (rédaction) ; T6 (K) ─→ T9 
 | Contextes des objets clés du J22 | exploration seulement |
 | Retrait d'objet (échange du Bon) | étape existante, sinon `give` avec `count: -1` |
 | Animation de pêche sans planche | `idle` + bulle « … » |
-| Série d'art | 24 |
+| Série d'art | 25 (24 prise par le J19) |
