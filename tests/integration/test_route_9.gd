@@ -3,7 +3,7 @@ extends GutTest
 ## scène : métadonnées et lumière, **grille de la scène = grille fonctionnelle**
 ## `tools/plans/route_9.txt` case par case (solide, hautes herbes, rebords), raccords (bord ouest
 ## « à venir » tant qu'Azuria n'a pas sa variante J18, bord est vers la Route 10), critères de
-## `tools/art/plan_check_route_9.py` refaits sur la vraie grille (Lou et Bernard inévitables, les
+## `tools/art/plan_check_route_9.py` refaits sur la vraie grille (Lou et Benoît inévitables, les
 ## autres évitables, hautes herbes), cases réservées libres de tout décor, budget de nœuds.
 ## Carte sans vie : aucun PNJ, aucune donnée (T16 / T18).
 
@@ -151,8 +151,8 @@ func test_west_reaches_east_and_every_row_of_each() -> void:
 	gut.p("route_9 : chemin principal %d pas" % _nearest(dist, EAST))
 
 
-func test_lou_and_bernard_cannot_be_avoided() -> void:
-	for id: String in ["lou", "bernard"]:
+func test_lou_and_benoit_cannot_be_avoided() -> void:
+	for id: String in ["lou", "benoit"]:
 		var sight := _sight(id)
 		assert_eq(sight.size(), int(_plan.attr(id, "sight")), "%s : vue dégagée" % id)
 		assert_eq(_nearest(GridPaths.distances(_without(sight), WEST), EAST), INF,

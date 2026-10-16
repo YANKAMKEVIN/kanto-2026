@@ -91,7 +91,7 @@ lou                 dresseur       10,19        bloque  role=R9-1 facing=down si
 adam                dresseur       36,8         bloque  role=R9-2 facing=down sight=3 trainer=route_9_camper_adam  # Campeur, Férosinge* Nv. 20 + Salamèche Nv. 21, 420 ₽ ; couloir haut de la terrasse
 jules               dresseur       35,12        bloque  role=R9-3 facing=down sight=3 trainer=route_9_camper_jules  # Campeur, Rattata + Abo + Sabelette Nv. 19, 380 ₽ ; encoche du muret, garde H2
 zoe                 dresseur       57,19        bloque  role=R9-4 facing=right sight=3 trainer=route_9_lass_zoe  # Jeune Dresseuse, Miaouss Nv. 23, 460 ₽ ; niche du sentier de la montée
-bernard             dresseur       54,31        bloque  role=R9-5 facing=up sight=5 trainer=route_9_hiker_bernard  # Montagnard, Machoc Nv. 20 + Onix Nv. 20, 700 ₽ ; inévitable
+benoit              dresseur       54,31        bloque  role=R9-5 facing=up sight=5 trainer=route_9_hiker_benoit  # Montagnard, Machoc Nv. 20 + Onix Nv. 20, 700 ₽ ; inévitable
 gilles              dresseur       75,18        bloque  role=R9-6 facing=left sight=4 trainer=route_9_hiker_gilles  # Montagnard, Racaillou/Machoc/Racaillou Nv. 20, 700 ₽ ; terrasse est
 noa                 dresseur       38,22        bloque  role=R9-7 facing=left sight=4 trainer=route_9_scout_noa  # Scout, Dardargnan Nv. 19 x2, 228 ₽ ; garde la vallée d'herbes (détour)
 route_9_item_1      objet_visible  32,9         bloque  role=O1 item=super_potion  # couloir haut de la terrasse (récompense)

@@ -154,7 +154,7 @@ Montagnard 35, Scout 12). IA `random`. Capacités apprises au niveau ; **aucune 
 | R9-2 | Campeur Adam | haut des falaises | oui | Férosinge* Nv. 20, Salamèche Nv. 21 | 420 |
 | R9-3 | Campeur Jules | herbes du milieu | oui | Rattata, Abo, Sabelette Nv. 19 (Taupiqueur retiré*) | 380 |
 | R9-4 | Jeune Dresseuse Zoé | bord du sentier | oui | Miaouss Nv. 23 | 460 |
-| R9-5 | Montagnard Bernard | passage entre deux rochers | **non** | Machoc Nv. 20, Onix Nv. 20 | 700 |
+| R9-5 | Montagnard Benoît | passage entre deux rochers | **non** | Machoc Nv. 20, Onix Nv. 20 | 700 |
 | R9-6 | Montagnard Gilles | terrasse est | oui | Racaillou, Machoc, Racaillou Nv. 20 | 700 |
 | R9-7 | Scout Noa | détour des herbes | oui | Dardargnan Nv. 19 ×2 | 228 |
 
@@ -517,7 +517,7 @@ Contrôles verts : `tools/art/plan_check_route_9.py`, `plan_check_route_10.py`,
 
 | Carte | Grille | Taille | Remarque |
 |---|---|---|---|
-| Route 9 | `tools/plans/route_9.txt` | 80 × 36 | v2 : chemin serpentant, 107 pas, 6 virages (tronçon droit ≤ 26) ; couloir haut (Adam, Super Potion) et couloir bas (herbes, Jules) qui se rejoignent ; Lou et Bernard inévitables ; ≈ 6 min |
+| Route 9 | `tools/plans/route_9.txt` | 80 × 36 | v2 : chemin serpentant, 107 pas, 6 virages (tronçon droit ≤ 26) ; couloir haut (Adam, Super Potion) et couloir bas (herbes, Jules) qui se rejoignent ; Lou et Benoît inévitables ; ≈ 6 min |
 | Route 10 | `tools/plans/route_10.txt` | 34 × 76 | secteurs nord (Centre, entrée nord) et sud (sortie sud → Lavanville, 39 pas, raccord (21..23, 75) aligné sur Lavanville) **non reliés** ; rivière et centrale derrière l'eau |
 | Grotte Sombre 1F | `tools/plans/grotte_sombre_1f.txt` | 56 × 49 | moitiés nord / sud jamais visibles l'une de l'autre (\|dy\| ≥ 12 ou \|dx\| ≥ 25) |
 | Grotte Sombre B1F | `tools/plans/grotte_sombre_b1f.txt` | 48 × 38 | colonne, paroi fendue, racines, flaque, passage étroit (Marcel) |
@@ -619,7 +619,7 @@ Phrase avant / défaite / après.
 | T-43 | R9-2 Adam | « D'en haut, je vois tout le monde arriver. Toi aussi ! » | « Je n'avais pas vu venir ça. » | « Par temps clair, on voit le toit de la centrale, de l'autre côté de l'eau. » |
 | T-44 | R9-3 Jules | « Mes Pokémon connaissent ces herbes par cœur ! » | « Ils les connaissent… mais toi, tu les traverses. » | « Les Abo et les Sabelette se disputent ce coin. » |
 | T-45 | R9-4 Zoé | « Mon Miaouss a repéré quelque chose de brillant sur toi. » | « Il voulait juste ta Poké Ball… » | « Il ramasse tout ce qui brille. Je ne sais plus où ranger. » |
-| T-46 | R9-5 Bernard | « Tu vas vers la grotte ? Alors montre-moi si tu tiens face à la roche ! » | « Solide, ton équipe. » | « Là-bas, les Pokémon sont de pierre. Prévois des attaques Eau ou Plante. » |
+| T-46 | R9-5 Benoît | « Tu vas vers la grotte ? Alors montre-moi si tu tiens face à la roche ! » | « Solide, ton équipe. » | « Là-bas, les Pokémon sont de pierre. Prévois des attaques Eau ou Plante. » |
 | T-47 | R9-6 Gilles | « J'ai porté mes Racaillou jusqu'ici. Ils ne sont pas légers ! » | « Ouf. Je vais m'asseoir. » | « Le Centre est juste avant la grotte. Repose-toi là-bas. » |
 | T-48 | R9-7 Noa | « Mes Dardargnan ont des dards tout neufs ! » | « Ils piqueront mieux la prochaine fois. » | « J'ai élevé mes Aspicot ici. Maintenant, ils me protègent. » |
 | T-49 | R10-1 Hector | « Je collectionne les Pokémon rares. Tu en as ? Montre-moi ! » | « Pas rare, ta défaite… pardon, ma défaite. » | « Un jour, j'aurai un Pokémon que personne n'a jamais vu. » |

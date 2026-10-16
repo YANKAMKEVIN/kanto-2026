@@ -25,8 +25,8 @@
 		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 460,
 		"team": [{ "species": "meowth", "level": 23 }]
 	},
-	"route_9_hiker_bernard": {
-		"name": "Montagnard Bernard", "ai": "random",
+	"route_9_hiker_benoit": {
+		"name": "Montagnard Benoît", "ai": "random",
 		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 700,
 		"team": [{ "species": "machop", "level": 20 }, { "species": "onix", "level": 20 }]
 	},

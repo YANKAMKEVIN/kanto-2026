@@ -426,8 +426,8 @@
 				}
 			]
 		},
-		"route_9_hiker_bernard": {
-			"name": "Montagnard Bernard",
+		"route_9_hiker_benoit": {
+			"name": "Montagnard Benoît",
 			"ai": "random",
 			"can_lose": false,
 			"heal_after": false,
@@ -657,8 +657,8 @@
 			"optional": true
 		},
 		{
-			"label": "R9-5 Montagnard Bernard (passage)",
-			"trainer": "route_9_hiker_bernard"
+			"label": "R9-5 Montagnard Benoît (passage)",
+			"trainer": "route_9_hiker_benoit"
 		},
 		{
 			"label": "R9-4 Jeune Dresseuse Zoé (montée)",

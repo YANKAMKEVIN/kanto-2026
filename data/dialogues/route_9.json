@@ -50,16 +50,16 @@
 		"speaker": "Jeune Dresseuse Zoé",
 		"pages": ["Il ramasse tout ce qui brille.\nJe ne sais plus où ranger."]
 	},
-	"route_9_hiker_bernard_before": {
-		"speaker": "Montagnard Bernard",
+	"route_9_hiker_benoit_before": {
+		"speaker": "Montagnard Benoît",
 		"pages": ["Tu vas vers la grotte ?", "Alors montre-moi si tu tiens\nface à la roche !"]
 	},
-	"route_9_hiker_bernard_defeated": {
-		"speaker": "Montagnard Bernard",
+	"route_9_hiker_benoit_defeated": {
+		"speaker": "Montagnard Benoît",
 		"pages": ["Solide, ton équipe."]
 	},
-	"route_9_hiker_bernard_after": {
-		"speaker": "Montagnard Bernard",
+	"route_9_hiker_benoit_after": {
+		"speaker": "Montagnard Benoît",
 		"pages": ["Là-bas, les Pokémon sont de pierre.", "Prévois des attaques Eau\nou Plante."]
 	},
 	"route_9_hiker_gilles_before": {

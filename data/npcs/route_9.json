@@ -31,12 +31,12 @@
 			"before": "route_9_lass_zoe_before", "defeated": "route_9_lass_zoe_defeated"
 		}
 	},
-	"bernard": {
+	"benoit": {
 		"cell": [54, 31], "facing": "up", "sprite": "hiker",
-		"dialogue": "route_9_hiker_bernard_after",
+		"dialogue": "route_9_hiker_benoit_after",
 		"trainer": {
-			"id": "route_9_hiker_bernard", "sight": 5,
-			"before": "route_9_hiker_bernard_before", "defeated": "route_9_hiker_bernard_defeated"
+			"id": "route_9_hiker_benoit", "sight": 5,
+			"before": "route_9_hiker_benoit_before", "defeated": "route_9_hiker_benoit_defeated"
 		}
 	},
 	"gilles": {
