@@ -210,6 +210,8 @@ const VARIANT_FLAGS: Dictionary = {
 	&"ss_anne_departure": [PEWTER_FLAGS + [&"got_hm01"], PEWTER_FLAGS],
 	&"cut_tree_vermilion_gym": [PEWTER_FLAGS],
 	&"ss_anne_boarding": [PEWTER_FLAGS],
+	# Jalon 17 (T23) : Coupe des arbustes du couloir de la Route 2 est et de FUTUR A.
+	&"cut_tree_route_2_east_bush": [PEWTER_FLAGS], &"cut_tree_route_2_futur_a": [PEWTER_FLAGS],
 }
 ## Scènes jouées par le code (pas de déclencheur) → carte où elles sont jouées.
 ## Jalon 7 (T18) : la scène du colis est lancée par la variante « cutscene » du dialogue de Chen.
@@ -246,6 +248,8 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"ss_anne_captain": &"ss_anne_captain_room",
 	# Jalon 16 (T15) : COUPER (« confirm_cutscene » de l'examen de l'arbuste).
 	&"cut_tree_vermilion_gym": &"vermilion_city",
+	# Jalon 17 (T23) : COUPER sur les arbustes du couloir de la Route 2 est et de FUTUR A.
+	&"cut_tree_route_2_east_bush": &"route_2_east", &"cut_tree_route_2_futur_a": &"route_2",
 	# Jalon 16 : embarquement, par le dialogue du marin (TXT-01).
 	&"ss_anne_boarding": &"vermilion_city",
 	# Jalon 11 (T14) : remise tardive de la CT34 (dialogue de Pierre).
@@ -367,7 +371,9 @@ func test_library_loads_without_error() -> void:
 		# couloir et Super Potion de FUTUR A.
 		&"route_2_east_give_hm05", &"route_11_item_1", &"route_11_item_2",
 		&"route_11_hidden_1", &"route_2_east_item_1", &"route_2_east_item_2",
-		&"route_2_item_5", &"digletts_cave_item_1"]))
+		&"route_2_item_5", &"digletts_cave_item_1",
+		# Jalon 17 (T23) : Coupe des deux arbustes.
+		&"cut_tree_route_2_east_bush", &"cut_tree_route_2_futur_a"]))
 
 
 func _sorted(values: Array) -> Array[StringName]:

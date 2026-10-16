@@ -4002,6 +4002,13 @@ script = ExtResource("53_lb7i6")
 dialogue_id = &"route_2_east_cave_sign"
 facing = Vector2i(0, -1)
 
+[node name="CorridorBushExamine" type="Marker2D" parent="Interactables" unique_id=1062779025]
+position = Vector2(624, 2112)
+script = ExtResource("53_lb7i6")
+dialogue_id = &"route_2_east_bush"
+size = Vector2i(2, 1)
+unless_flags = Array[StringName]([&"cut_route_2_east_bush"])
+
 [node name="Spawns" type="Node2D" parent="." unique_id=122819384]
 
 [node name="from_cave_w" type="Marker2D" parent="Spawns" unique_id=1024236696]
@@ -4021,5 +4028,8 @@ position = Vector2(48, 4320)
 
 [node name="debug_south" type="Marker2D" parent="Spawns" unique_id=2009242903]
 position = Vector2(624, 2304)
+
+[node name="debug_bush" type="Marker2D" parent="Spawns" unique_id=2035301434]
+position = Vector2(624, 2016)
 
 [node name="Triggers" type="Node2D" parent="." unique_id=2110151153]

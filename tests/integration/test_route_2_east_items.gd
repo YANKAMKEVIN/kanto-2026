@@ -3,7 +3,7 @@ extends GutTest
 ## (12, 26) et le Super Bonbon (3, 33), visibles au sol, ramassés **une seule fois** par les vraies
 ## entrées (`move_*`, `interact`), avec la vraie scène Boot ; absents après rechargement de la
 ## carte ; le Super Bonbon est utilisable (`rare_candy`, J14). Départ de débogage
-## `route_2_east_south` (derrière l'arbuste, jusqu'à la Coupe du J16).
+## `route_2_east_south` (derrière l'arbuste, sans passer par la Coupe : `test_j17_bushes`).
 
 const MemoryFs := preload("res://tests/helpers/memory_file_system.gd")
 const BOOT_SCENE := preload("res://game/boot.tscn")

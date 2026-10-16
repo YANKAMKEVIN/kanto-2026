@@ -33,7 +33,30 @@
 	},
 	"route_2_dense_tree": {
 		"narration": true,
-		"pages": ["Les branches sont trop épaisses. Impossible de passer par ici."]
+		"variants": [
+			{
+				"field": "cut:no_hm",
+				"pages": ["Les branches sont trop épaisses. Impossible de passer par ici."]
+			},
+			{
+				"field": "cut:no_badge",
+				"pages": ["Sans le Badge Cascade, {pokemon}\nn'ose pas couper cet arbuste."]
+			},
+			{
+				"field": "cut:no_pokemon",
+				"pages": ["Aucun Pokémon de l'équipe\nne peut couper cet arbuste."]
+			},
+			{
+				"field": "cut:ready",
+				"pages": ["{pokemon} peut couper cet arbuste.", "Utiliser Coupe ?"],
+				"choice": {
+					"confirm": "COUPER",
+					"cancel": "LAISSER",
+					"confirm_cutscene": "cut_tree_route_2_futur_a",
+					"cancel_pages": []
+				}
+			}
+		]
 	},
 	"route_2_closed_sign": {
 		"variants": [

@@ -20,15 +20,18 @@ extends SceneTree
 ##   derrière les éboulis), sous-bois sur la forêt et sous la paroi, forêt serrée « plus sèche »,
 ##   paroi en modules (série 12) avec la bouche de la Cave (`relief_bouche_paroi_01`) posée par
 ##   dessus, éboulis de la Route 2 nord vus de l'arrière, poste de garde (`bldg_poste_safrania_01`,
-##   7 × 4, porte au bas), arbuste du goulet (provisoire : le jeune arbre de l'Arène de Carmin,
-##   en attendant celui du J16), buissons, panneau T-11, touffes et fleurs rares.
+##   7 × 4, porte au bas), arbuste du goulet (l'arbuste coupable du J16, jeune arbre de l'Arène
+##   de Carmin), buissons, panneau T-11, touffes et fleurs rares.
 ## - Passages : bouche de la Cave (6..7, 3) STEP_ON ↑ → `digletts_cave` / `from_route_2_east_w|e` ;
 ##   porte du poste (11, 11) STEP_ON ↑ → `route_2_east_gate` / `entrance` ; bord ouest (0, 43..44)
 ##   PUSH ← → `route_2` / `from_route_2_east_n|s`. Spawns `from_cave_w|e`, `from_gate`,
-##   `from_route_2_n|s`, et `debug_south` (derrière l'arbuste, départ de débogage seulement).
+##   `from_route_2_n|s`, `debug_south` (derrière l'arbuste) et `debug_bush` (devant lui, au nord),
+##   départs de débogage.
 ## - Vie : panneau T-11 (point d'examen) ; les objets (Pierre Lune, Super Bonbon : T20) viennent
-##   de `data/npcs/route_2_east.json`, leurs cases sont réservées (la forêt s'en écarte). Aucun
-##   point d'examen sur l'arbuste avant le J16 (jalon-17.md §2.13).
+##   de `data/npcs/route_2_east.json`, leurs cases sont réservées (la forêt s'en écarte).
+## - Jalon 17 T23 (jalon-17.md §2.13) : examen de l'arbuste = dialogue `route_2_east_bush` (Coupe
+##   du J16, ARB-00 à ARB-03), point retiré avec l'arbuste (`unless cut_route_2_east_bush`), lu
+##   des deux côtés ; COUPER lance `cut_tree_route_2_east_bush` (`data/cutscenes/cut_tree.json`).
 
 const Kit := preload("res://tools/pewter_map_kit.gd")
 const PLAN_PATH: String = "res://tools/plans/route_2_east.txt"
@@ -66,12 +69,15 @@ const WEST_EXITS: Array = [
 	["Route2S", Vector2i(0, 44), &"from_route_2_east_s", "from_route_2_s"],
 ]
 const WEST_MAP: StringName = &"route_2"
-## Départ de débogage derrière l'arbuste (jusqu'à la Coupe du J16 : seul moyen d'y aller).
-const DEBUG_SPAWNS: Array = [["debug_south", Vector2i(6, 23)]]
-## Arbuste coupable du goulet : drapeau du J16, deux cases, provisoire (jeune arbre de Carmin).
+## Départs de débogage : derrière l'arbuste (partie sud sans passer par la Coupe) ; devant lui,
+## au nord, tourné vers lui (T23 : Coupe).
+const DEBUG_SPAWNS: Array = [["debug_south", Vector2i(6, 23)], ["debug_bush", Vector2i(6, 20)]]
+## Arbuste coupable du goulet (contrat du J16 : l'objet de l'arbuste de l'Arène de Carmin), deux
+## cases ; son examen (Coupe) et la scène de la coupe.
 const BUSH_FLAG: StringName = &"cut_route_2_east_bush"
 const BUSH_ID: String = "prop_jeune_arbre_arene_01"
 const BUSH_NODE: String = "CorridorBush"
+const BUSH_DIALOGUE: StringName = &"route_2_east_bush"
 const RESERVED_KINDS: Array[String] = ["dresseur", "pnj", "pokemon", "objet_visible", "cache"]
 const BALL_KINDS: Array[String] = ["objet_visible", "cache"]
 
@@ -137,6 +143,7 @@ func _init() -> void:
 	_add_passages()
 	_kit.call(&"add_interactable", "SignCave", _cell("panneau_cave"), Vector2i.ONE, Vector2i.UP,
 		&"route_2_east_cave_sign")
+	_add_bush_examine()
 
 	_kit.call(&"place_border_decals", SEED)
 	_kit.call(&"place_meadow", MEADOW_ATTEMPTS, MEADOW_FLOWER_CHANCE, FLOWERS)
@@ -286,7 +293,7 @@ func _place_rubble(entities: Node2D) -> void:
 
 ## Arbuste du goulet : une [FlagGate] `unless cut_route_2_east_bush` dont le décor est l'objet
 ## peint (sans emprise) et dont `blocking_cells` ferment les deux cases (contrat du J16, comme le
-## jeune arbre de l'Arène de Carmin). Aucun point d'examen avant le J16.
+## jeune arbre de l'Arène de Carmin).
 func _place_bush(entities: Node2D) -> void:
 	var cells: Array = _plan().call(&"cells_at", "arbuste")
 	var rules: GDScript = _kit.get(&"rules")
@@ -303,6 +310,17 @@ func _place_bush(entities: Node2D) -> void:
 	_kit.call(&"attach", entities, gate)
 	var bush: Node2D = _kit.call(&"add_prop", gate, BUSH_ID, Vector2.ZERO, "Bush")
 	_kit.call(&"clear_footprint", bush)
+
+
+## Examen de l'arbuste (T23) : ses deux cases, lu depuis le nord comme depuis le sud, retiré
+## avec lui (`unless cut_route_2_east_bush`).
+func _add_bush_examine() -> void:
+	var cells: Array = _plan().call(&"cells_at", "arbuste")
+	_kit.call(&"add_interactable", "CorridorBushExamine", cells[0], Vector2i(cells.size(), 1),
+		Vector2i.ZERO, BUSH_DIALOGUE)
+	var point: Node = _kit.get(&"root").get_node(^"Interactables").get_child(-1)
+	var unless: Array[StringName] = [BUSH_FLAG]
+	point.set(&"unless_flags", unless)
 
 
 ## Un buisson par case `x` : les trois images mélangées, jamais la même que la voisine.

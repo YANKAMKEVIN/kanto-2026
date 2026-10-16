@@ -329,6 +329,8 @@ const IDS_J17: Array[StringName] = [
 	&"route_2_east_cave_sign", &"route_2_east_assistant", &"route_2_east_assistant_hm05_system",
 	&"route_2_east_assistant_hm05_use", &"route_2_east_visitor", &"route_2_gate_east",
 	&"route_2_east_item_1", &"route_2_east_item_2", &"route_2_item_5", &"digletts_cave_item_1",
+	# T23 : examen de l'arbuste du couloir (Coupe du J16).
+	&"route_2_east_bush",
 ]
 ## Jalon 14 (T17, dossier 17 §15 n° 1 à 27) : dialogues de la maison de Léo, ajoutés aux autres.
 const IDS_J14_BILL: Array[StringName] = [
@@ -778,7 +780,9 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		# (T20, T21) objets du couloir et Super Potion de FUTUR A.
 		&"got_hm05", &"got_route_11_hidden_1", &"got_route_11_item_1",
 		&"got_route_11_item_2", &"got_route_2_east_item_1", &"got_route_2_east_item_2",
-		&"got_route_2_item_5", &"got_digletts_cave_item_1"]
+		&"got_route_2_item_5", &"got_digletts_cave_item_1",
+		# Jalon 17 (T23) : les deux arbustes coupés (couloir de la Route 2 est, FUTUR A).
+		&"cut_route_2_east_bush", &"cut_route_2_futur_a"]
 		+ SET_J14_BILL_CUTSCENES + SET_J14_ROCKET_CUTSCENES))
 	assert_eq(_used_on.get(&"oak_lab_reunion"), [&"oak_lab"], "joué au labo, après le fondu")
 	assert_eq(_used_on.get(&"oak_starter_offer"), [&"oak_lab"], "joué au labo")
@@ -1124,6 +1128,8 @@ func test_speakers_and_narration() -> void:
 		&"route_6_sign": ["", false], &"vermilion_city_sign": ["", false],
 		&"cut_tree": ["", true], &"route_6_guard": ["Garde", false],
 		&"vermilion_sailor": ["Marin", false],
+		# Jalon 17 (T23) : l'arbuste du couloir en narration, comme celui de l'Arène.
+		&"route_2_east_bush": ["", true],
 	}
 	for id: StringName in expected:
 		var dialogue := _library.get_dialogue(id)

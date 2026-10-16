@@ -3,8 +3,9 @@ extends GutTest
 ## métadonnées, **grille de la scène = grille fonctionnelle** `tools/plans/route_2_east.txt` (l'arbuste
 ## `A` est praticable : il est occupé par sa `FlagGate`), passages (bouche de la Cave, porte du
 ## poste, bord ouest), 12 pas de la bouche au poste **sans Coupe**, partie sud et bord ouest
-## inatteignables sans `cut_route_2_east_bush` et atteignables avec, panneau T-11, aucun point
-## d'examen sur l'arbuste (avant le J16), objets peints sur des cases bloquées, budget de nœuds.
+## inatteignables sans `cut_route_2_east_bush` et atteignables avec, panneau T-11, point d'examen
+## de l'arbuste (Coupe du J16, T23 : lu des deux côtés, retiré avec lui), objets peints sur des
+## cases bloquées, budget de nœuds.
 
 const GridPaths := preload("res://tests/helpers/grid_paths.gd")
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
@@ -171,7 +172,7 @@ func test_the_south_needs_the_bush_flag() -> void:
 	assert_eq(int(open.get(Vector2i(0, 44), -1)), 45 + 1, "bord ouest : 45 pas (+ la rangée)")
 
 
-func test_the_bush_is_a_flag_gate_without_examine_point() -> void:
+func test_the_bush_is_a_flag_gate_with_its_cut_examine_point() -> void:
 	var gate := _map.get_node_or_null(^"Entities/CorridorBush") as FlagGate
 	assert_not_null(gate, "arbuste du goulet")
 	if gate == null:
@@ -179,13 +180,25 @@ func test_the_bush_is_a_flag_gate_without_examine_point() -> void:
 	assert_eq(gate.unless_flags, [BUSH_FLAG] as Array[StringName])
 	assert_eq(gate.blocking_cells, BUSH_CELLS)
 	assert_true(gate.visible)
-	_map.refresh_npcs(_flags([BUSH_FLAG]))
-	assert_false(gate.visible, "arbuste coupé : retiré")
+	var bush := gate.get_node_or_null(^"Bush") as WorldProp
+	assert_not_null(bush, "décor de l'arbuste")
+	if bush != null:
+		assert_eq(bush.scene_file_path.get_file().get_basename(), "prop_jeune_arbre_arene_01",
+			"l'arbuste du J16")
+	# T23 : examiné du nord comme du sud, dialogue de Coupe ; retiré avec l'arbuste.
+	var cut := _flags([BUSH_FLAG])
 	for cell: Vector2i in BUSH_CELLS:
 		for from: Vector2i in [cell + Vector2i.UP, cell + Vector2i.DOWN]:
 			var found := InteractionFinder.find(_map.get_grid(), _map.get_interactions(), from,
 				cell - from)
-			assert_null(found, "aucun point d'examen sur l'arbuste avant le J16 (%s)" % cell)
+			assert_not_null(found, "arbuste examiné depuis %s" % from)
+			if found != null:
+				assert_eq(found.kind, Interaction.Kind.EXAMINE)
+				assert_eq(found.dialogue_id, &"route_2_east_bush")
+				assert_true(found.is_available(StoryFlags.new()), "avant la coupe")
+				assert_false(found.is_available(cut), "plus de point une fois coupé")
+	_map.refresh_npcs(cut)
+	assert_false(gate.visible, "arbuste coupé : retiré")
 
 
 func test_the_cave_sign_is_read_from_the_south() -> void:
