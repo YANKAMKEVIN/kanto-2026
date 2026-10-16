@@ -53,6 +53,8 @@ const MAPS: Array[StringName] = [
 	# Jalon 16 (T12) : les objets du S.S. Anne (cartes à fouler ; scènes lancées par dialogue).
 	&"ss_anne_main_deck", &"ss_anne_lower_deck", &"ss_anne_restaurant", &"ss_anne_outer_deck",
 	&"ss_anne_cabin_a", &"ss_anne_cabin_b", &"ss_anne_cabin_c",
+	# Jalon 16 (T13) : la vue du rival n° 4 dans le couloir du capitaine.
+	&"ss_anne_captain_corridor",
 ]
 ## Jalon 7 (T18) : partie qui revient au labo avec le colis (rival parti après le combat).
 const PARCEL_FLAGS: Array[StringName] = [
@@ -129,6 +131,8 @@ const VARIANT_FLAGS: Dictionary = {
 	&"vermilion_gym_barrier_open": [PEWTER_FLAGS],
 	# Jalon 16 (T14) : Major Bob (première rencontre et reprise), rattrapage de la CT24.
 	&"vermilion_gym_surge": [PEWTER_FLAGS], &"vermilion_gym_surge_tm_late": [PEWTER_FLAGS],
+	# Jalon 16 (T13) : le rival n° 4 (une variante, avant sa victoire) et le capitaine.
+	&"ss_anne_rival": [PEWTER_FLAGS], &"ss_anne_captain": [PEWTER_FLAGS + [&"rival_ss_anne_won"]],
 	&"route_5_hidden_1": [PEWTER_FLAGS], &"route_5_gate_rule": [PEWTER_FLAGS],
 	&"pewter_arrival": [PEWTER_FLAGS],
 	# Jalon 13 (T17) : arrivée à Azuria, Poké Ball de la Route 4, Potion de la Route 24.
@@ -222,6 +226,8 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"ss_anne_item_05": &"ss_anne_restaurant", &"ss_anne_item_06": &"ss_anne_outer_deck",
 	&"ss_anne_hidden_1": &"ss_anne_cabin_b", &"ss_anne_hidden_2": &"ss_anne_lower_deck",
 	&"ss_anne_hidden_3": &"ss_anne_restaurant",
+	# Jalon 16 (T13) : le capitaine, par son dialogue.
+	&"ss_anne_captain": &"ss_anne_captain_room",
 	# Jalon 11 (T14) : remise tardive de la CT34 (dialogue de Pierre).
 	&"pewter_gym_brock_tm_late": &"pewter_gym",
 	# Jalon 13 (T17) : objets visibles des Routes 4 et 24 (PNJ « objet »).
@@ -316,7 +322,8 @@ func test_library_loads_without_error() -> void:
 		&"route_2_north_item_1", &"route_3_entered", &"route_3_guard", &"route_3_hidden_1",
 		&"route_3_item_1", &"route_3_item_2", &"route_3_item_3", &"route_4_item_1",
 		&"route_4_reached", &"route_5_arrival", &"route_5_gate_rule", &"route_5_hidden_1",
-		&"route_5_item_1", &"starter_chosen", &"underground_hidden_1",
+		&"route_5_item_1", &"ss_anne_captain", &"ss_anne_rival", &"starter_chosen",
+		&"underground_hidden_1",
 		&"viridian_arrival", &"viridian_forest_item_1", &"viridian_forest_item_2",
 		&"viridian_forest_item_3", &"viridian_forest_item_4", &"viridian_forest_item_5",
 		&"viridian_forest_item_6", &"ss_anne_hidden_1", &"ss_anne_hidden_2", &"ss_anne_hidden_3",

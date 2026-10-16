@@ -12,6 +12,22 @@
 		"unless": ["badge_thunder"]
 	},
 	{
+		"id": "go_vermilion_gym",
+		"text": "rejoindre l'Arène de Carmin.",
+		"if": ["got_hm01", "badge_cascade"],
+		"unless": ["badge_thunder"]
+	},
+	{
+		"id": "hm01_cascade_badge",
+		"text": "obtenir le Badge Cascade.",
+		"if": ["got_hm01"]
+	},
+	{
+		"id": "help_captain",
+		"text": "aider le capitaine.",
+		"if": ["rival_ss_anne_won"]
+	},
+	{
 		"id": "explore_vermilion",
 		"text": "explorer Carmin-sur-Mer.",
 		"if": ["vermilion_reached"]
