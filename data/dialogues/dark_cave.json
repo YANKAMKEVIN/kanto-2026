@@ -56,7 +56,7 @@
 	},
 	"dark_cave_marcel_defeated": {
 		"speaker": "Montagnard Marcel",
-		"pages": ["Passe, alors."]
+		"pages": ["Passe, alors.", "La sortie n'est plus très loin.\nTu sentiras l'air frais."]
 	},
 	"dark_cave_marcel_after": {
 		"speaker": "Montagnard Marcel",

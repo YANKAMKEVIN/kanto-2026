@@ -66,7 +66,7 @@ func test_metadata_light_and_zone() -> void:
 
 
 func test_scene_grid_is_the_functional_grid() -> void:
-	var signs: Array[Vector2i] = _plan.cells_at("panneau_grotte")
+	var signs: Array[Vector2i] = _plan.cells_at("panneau_grotte") + _plan.cells_at("panneau_centre")
 	var mismatches := 0
 	for y: int in SIZE.y:
 		for x: int in SIZE.x:
@@ -213,7 +213,7 @@ func test_life_is_the_t16_data_and_the_t24_trigger() -> void:
 	assert_true(scenes.has(&"dark_cave_crossed"), "sortie sud de la grotte (T24)")
 	# T18 : un point d'examen (panneau) et un déclencheur silencieux (route_10_reached).
 	assert_eq(_map.get_node(^"Triggers").get_child_count(), 2)
-	assert_eq(_map.get_node(^"Interactables").get_child_count(), 1)
+	assert_eq(_map.get_node(^"Interactables").get_child_count(), 2)
 	var ids := _npc_ids_and_data(_map.get_entities(), &"route_10")
 	assert_eq(ids[0], ids[1], "PNJ de data/npcs/route_10.json")
 	assert_eq((ids[1] as Array).size(), 4, "Hector, Paul, le randonneur, la Super Potion")
@@ -255,7 +255,7 @@ func _props() -> Array[WorldProp]:
 
 
 func test_props_never_block_a_walkable_cell() -> void:
-	var signs: Array[Vector2i] = _plan.cells_at("panneau_grotte")
+	var signs: Array[Vector2i] = _plan.cells_at("panneau_grotte") + _plan.cells_at("panneau_centre")
 	for prop: WorldProp in _props():
 		for cell: Vector2i in prop.get_solid_cells():
 			assert_true(not _plan.is_walkable(cell) or signs.has(cell),

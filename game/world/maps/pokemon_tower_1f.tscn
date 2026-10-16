@@ -40,7 +40,7 @@ shader_parameter/water_texture_size = null
 shader_parameter/foam_strength = null
 shader_parameter/square_shore = null
 
-[node name="PokemonTower1F" type="Node2D" unique_id=714621089]
+[node name="PokemonTower1F" type="Node2D" unique_id=765753254]
 script = ExtResource("1_1b3e1")
 map_id = &"pokemon_tower_1f"
 display_name = "Tour Pokémon"
@@ -48,20 +48,20 @@ size = Vector2i(20, 18)
 interior = true
 light_profile = &"tower_cold"
 
-[node name="Ground" type="TileMapLayer" parent="." unique_id=1481522292]
+[node name="Ground" type="TileMapLayer" parent="." unique_id=1478017271]
 visible = false
 tile_map_data = PackedByteArray("AAAAAAAAAAAAAAcAAAABAAAAAAABAAcAAAACAAAAAAAAAAcAAAADAAAAAAAAAAcAAAAEAAAAAAABAAcAAAAFAAAAAAAAAAcAAAAGAAAAAAAAAAcAAAAHAAAAAAAAAAcAAAAIAAAAAAABAAcAAAAJAAAAAAAAAAcAAAAKAAAAAAAAAAcAAAALAAAAAAAAAAcAAAAMAAAAAAAAAAcAAAANAAAAAAABAAcAAAAOAAAAAAABAAcAAAAPAAAAAAABAAcAAAAQAAAAAAAAAAcAAAARAAAAAAABAAcAAAASAAAAAAABAAcAAAATAAAAAAAAAAcAAAAAAAEAAAABAAcAAAABAAEAAAABAAcAAAACAAEAAAABAAcAAAADAAEAAAABAAcAAAAEAAEAAAAAAAcAAAAFAAEAAAABAAcAAAAGAAEAAAAAAAcAAAAHAAEAAAABAAcAAAAIAAEAAAABAAcAAAAJAAEAAAABAAcAAAAKAAEAAAABAAcAAAALAAEAAAABAAcAAAAMAAEAAAAAAAcAAAANAAEAAAABAAcAAAAOAAEAAAABAAcAAAAPAAEAAAAAAAcAAAAQAAEAAAABAAcAAAARAAEAAAABAAcAAAASAAEAAAAAAAcAAAATAAEAAAAAAAcAAAAAAAIAAAAAAAcAAAABAAIAAAABAAcAAAACAAIAAAAAAAcAAAADAAIAAAAAAAcAAAAEAAIAAAABAAcAAAAFAAIAAAABAAcAAAAGAAIAAAABAAcAAAAHAAIAAAABAAcAAAAIAAIAAAABAAcAAAAJAAIAAAAAAAcAAAAKAAIAAAABAAcAAAALAAIAAAABAAcAAAAMAAIAAAAAAAcAAAANAAIAAAABAAcAAAAOAAIAAAAAAAcAAAAPAAIAAAABAAcAAAAQAAIAAAAAAAcAAAARAAIAAAAAAAIAAAASAAIAAAABAAcAAAATAAIAAAABAAcAAAAAAAMAAAABAAcAAAABAAMAAAABAAIAAAACAAMAAAABAAcAAAADAAMAAAACAAIAAAAEAAMAAAACAAIAAAAFAAMAAAAAAAIAAAAGAAMAAAAAAAIAAAAHAAMAAAACAAIAAAAIAAMAAAAAAAcAAAAJAAMAAAABAAIAAAAKAAMAAAAAAAIAAAALAAMAAAABAAcAAAAMAAMAAAAAAAIAAAANAAMAAAACAAIAAAAOAAMAAAABAAIAAAAPAAMAAAAAAAcAAAAQAAMAAAACAAIAAAARAAMAAAABAAIAAAASAAMAAAACAAIAAAATAAMAAAABAAcAAAAAAAQAAAAAAAcAAAABAAQAAAAAAAIAAAACAAQAAAACAAIAAAADAAQAAAAAAAIAAAAEAAQAAAACAAIAAAAFAAQAAAACAAIAAAAGAAQAAAAAAAIAAAAHAAQAAAAAAAIAAAAIAAQAAAAAAAIAAAAJAAQAAAABAAIAAAAKAAQAAAACAAIAAAALAAQAAAABAAIAAAAMAAQAAAACAAIAAAANAAQAAAABAAIAAAAOAAQAAAACAAIAAAAPAAQAAAABAAIAAAAQAAQAAAAAAAIAAAARAAQAAAAAAAIAAAASAAQAAAAAAAIAAAATAAQAAAAAAAcAAAAAAAUAAAABAAcAAAABAAUAAAABAAIAAAACAAUAAAACAAIAAAADAAUAAAAAAAcAAAAEAAUAAAAAAAcAAAAFAAUAAAAAAAcAAAAGAAUAAAABAAcAAAAHAAUAAAABAAcAAAAIAAUAAAABAAcAAAAJAAUAAAAAAAIAAAAKAAUAAAACAAIAAAALAAUAAAABAAcAAAAMAAUAAAAAAAcAAAANAAUAAAABAAcAAAAOAAUAAAAAAAcAAAAPAAUAAAAAAAcAAAAQAAUAAAAAAAcAAAARAAUAAAAAAAIAAAASAAUAAAABAAIAAAATAAUAAAAAAAcAAAAAAAYAAAAAAAcAAAABAAYAAAAAAAIAAAACAAYAAAACAAIAAAADAAYAAAACAAIAAAAEAAYAAAAAAAIAAAAFAAYAAAACAAIAAAAGAAYAAAACAAIAAAAHAAYAAAABAAIAAAAIAAYAAAAAAAIAAAAJAAYAAAAAAAIAAAAKAAYAAAABAAIAAAALAAYAAAABAAIAAAAMAAYAAAABAAIAAAANAAYAAAAAAAIAAAAOAAYAAAACAAIAAAAPAAYAAAACAAIAAAAQAAYAAAAAAAIAAAARAAYAAAAAAAIAAAASAAYAAAACAAIAAAATAAYAAAABAAcAAAAAAAcAAAAAAAcAAAABAAcAAAABAAIAAAACAAcAAAABAAIAAAADAAcAAAAAAAcAAAAEAAcAAAAAAAcAAAAFAAcAAAAAAAcAAAAGAAcAAAAAAAcAAAAHAAcAAAAAAAcAAAAIAAcAAAABAAcAAAAJAAcAAAAAAAIAAAAKAAcAAAABAAIAAAALAAcAAAAAAAcAAAAMAAcAAAAAAAcAAAANAAcAAAABAAcAAAAOAAcAAAAAAAcAAAAPAAcAAAABAAcAAAAQAAcAAAAAAAcAAAARAAcAAAACAAIAAAASAAcAAAAAAAIAAAATAAcAAAABAAcAAAAAAAgAAAAAAAcAAAABAAgAAAABAAIAAAACAAgAAAABAAIAAAADAAgAAAABAAIAAAAEAAgAAAACAAIAAAAFAAgAAAAAAAIAAAAGAAgAAAACAAIAAAAHAAgAAAACAAIAAAAIAAgAAAAAAAIAAAAJAAgAAAABAAIAAAAKAAgAAAABAAIAAAALAAgAAAACAAIAAAAMAAgAAAABAAIAAAANAAgAAAAAAAIAAAAOAAgAAAAAAAIAAAAPAAgAAAACAAIAAAAQAAgAAAABAAIAAAARAAgAAAABAAIAAAASAAgAAAAAAAIAAAATAAgAAAAAAAcAAAAAAAkAAAAAAAcAAAABAAkAAAACAAIAAAACAAkAAAABAAIAAAADAAkAAAAAAAcAAAAEAAkAAAABAAcAAAAFAAkAAAABAAcAAAAGAAkAAAAAAAcAAAAHAAkAAAABAAcAAAAIAAkAAAABAAcAAAAJAAkAAAAAAAIAAAAKAAkAAAAAAAIAAAALAAkAAAABAAcAAAAMAAkAAAAAAAcAAAANAAkAAAABAAcAAAAOAAkAAAABAAcAAAAPAAkAAAAAAAcAAAAQAAkAAAABAAcAAAARAAkAAAABAAIAAAASAAkAAAAAAAIAAAATAAkAAAAAAAcAAAAAAAoAAAABAAcAAAABAAoAAAABAAIAAAACAAoAAAAAAAIAAAADAAoAAAABAAIAAAAEAAoAAAACAAIAAAAFAAoAAAABAAIAAAAGAAoAAAAAAAIAAAAHAAoAAAAAAAIAAAAIAAoAAAACAAIAAAAJAAoAAAABAAIAAAAKAAoAAAABAAIAAAALAAoAAAAAAAIAAAAMAAoAAAACAAIAAAANAAoAAAAAAAIAAAAOAAoAAAAAAAIAAAAPAAoAAAACAAIAAAAQAAoAAAACAAIAAAARAAoAAAAAAAIAAAASAAoAAAAAAAIAAAATAAoAAAAAAAcAAAAAAAsAAAABAAcAAAABAAsAAAABAAIAAAACAAsAAAAAAAIAAAADAAsAAAABAAIAAAAEAAsAAAAAAAIAAAAFAAsAAAABAAIAAAAGAAsAAAAAAAIAAAAHAAsAAAACAAIAAAAIAAsAAAABAAIAAAAJAAsAAAACAAIAAAAKAAsAAAAAAAIAAAALAAsAAAAAAAIAAAAMAAsAAAABAAIAAAANAAsAAAACAAIAAAAOAAsAAAAAAAIAAAAPAAsAAAABAAIAAAAQAAsAAAAAAAIAAAARAAsAAAAAAAIAAAASAAsAAAAAAAIAAAATAAsAAAAAAAcAAAAAAAwAAAABAAcAAAABAAwAAAAAAAIAAAACAAwAAAAAAAIAAAADAAwAAAAAAAIAAAAEAAwAAAACAAIAAAAFAAwAAAACAAIAAAAGAAwAAAAAAAIAAAAHAAwAAAACAAIAAAAIAAwAAAAAAAIAAAAJAAwAAAACAAIAAAAKAAwAAAACAAIAAAALAAwAAAAAAAIAAAAMAAwAAAACAAIAAAANAAwAAAACAAIAAAAOAAwAAAACAAIAAAAPAAwAAAABAAIAAAAQAAwAAAACAAIAAAARAAwAAAAAAAIAAAASAAwAAAAAAAIAAAATAAwAAAABAAcAAAAAAA0AAAABAAcAAAABAA0AAAACAAIAAAACAA0AAAAAAAcAAAADAA0AAAAAAAcAAAAEAA0AAAABAAcAAAAFAA0AAAAAAAcAAAAGAA0AAAACAAIAAAAHAA0AAAABAAIAAAAIAA0AAAABAAIAAAAJAA0AAAABAAIAAAAKAA0AAAABAAIAAAALAA0AAAABAAIAAAAMAA0AAAAAAAcAAAANAA0AAAABAAcAAAAOAA0AAAAAAAcAAAAPAA0AAAABAAIAAAAQAA0AAAABAAcAAAARAA0AAAAAAAcAAAASAA0AAAABAAIAAAATAA0AAAAAAAcAAAAAAA4AAAABAAcAAAABAA4AAAACAAIAAAACAA4AAAABAAIAAAADAA4AAAACAAIAAAAEAA4AAAAAAAIAAAAFAA4AAAACAAIAAAAGAA4AAAAAAAIAAAAHAA4AAAACAAIAAAAIAA4AAAAAAAIAAAAJAA4AAAAAAAIAAAAKAA4AAAAAAAIAAAALAA4AAAACAAIAAAAMAA4AAAABAAIAAAANAA4AAAABAAIAAAAOAA4AAAAAAAIAAAAPAA4AAAAAAAIAAAAQAA4AAAABAAIAAAARAA4AAAACAAIAAAASAA4AAAABAAIAAAATAA4AAAABAAcAAAAAAA8AAAABAAcAAAABAA8AAAABAAcAAAACAA8AAAACAAIAAAADAA8AAAAAAAIAAAAEAA8AAAABAAIAAAAFAA8AAAAAAAIAAAAGAA8AAAAAAAIAAAAHAA8AAAACAAIAAAAIAA8AAAAAAAIAAAAJAA8AAAAAAAIAAAAKAA8AAAACAAIAAAALAA8AAAAAAAIAAAAMAA8AAAABAAIAAAANAA8AAAAAAAIAAAAOAA8AAAABAAIAAAAPAA8AAAAAAAIAAAAQAA8AAAACAAIAAAARAA8AAAABAAIAAAASAA8AAAABAAcAAAATAA8AAAABAAcAAAAAABAAAAABAAcAAAABABAAAAABAAcAAAACABAAAAAAAAcAAAADABAAAAABAAcAAAAEABAAAAAAAAcAAAAFABAAAAABAAcAAAAGABAAAAABAAcAAAAHABAAAAABAAcAAAAIABAAAAABAAcAAAAJABAAAAABAAIAAAAKABAAAAACAAIAAAALABAAAAAAAAcAAAAMABAAAAABAAcAAAANABAAAAABAAcAAAAOABAAAAABAAcAAAAPABAAAAAAAAcAAAAQABAAAAABAAcAAAARABAAAAAAAAcAAAASABAAAAABAAcAAAATABAAAAABAAcAAAAAABEAAAAAAAcAAAABABEAAAABAAcAAAACABEAAAAAAAcAAAADABEAAAAAAAcAAAAEABEAAAABAAcAAAAFABEAAAAAAAcAAAAGABEAAAABAAcAAAAHABEAAAAAAAcAAAAIABEAAAABAAcAAAAJABEAAAAAAAcAAAAKABEAAAABAAcAAAALABEAAAAAAAcAAAAMABEAAAAAAAcAAAANABEAAAABAAcAAAAOABEAAAABAAcAAAAPABEAAAABAAcAAAAQABEAAAAAAAcAAAARABEAAAAAAAcAAAASABEAAAAAAAcAAAATABEAAAAAAAcAAAA=")
 tile_set = ExtResource("2_r8kr4")
 
-[node name="Detail" type="TileMapLayer" parent="." unique_id=1783981483]
+[node name="Detail" type="TileMapLayer" parent="." unique_id=524064592]
 visible = false
 tile_set = ExtResource("2_r8kr4")
 
-[node name="Obstacles" type="TileMapLayer" parent="." unique_id=1759618936]
+[node name="Obstacles" type="TileMapLayer" parent="." unique_id=705426858]
 visible = false
 tile_set = ExtResource("2_r8kr4")
 
-[node name="PaintedGround" type="Node2D" parent="." unique_id=545013998]
+[node name="PaintedGround" type="Node2D" parent="." unique_id=56568323]
 z_index = -3
 material = SubResource("ShaderMaterial_degmg")
 script = ExtResource("7_ql8mw")
@@ -71,10 +71,10 @@ base_texture = ExtResource("4_i6o53")
 r_texture = ExtResource("4_i6o53")
 g_texture = ExtResource("6_jwfnl")
 
-[node name="GroundDecals" type="Node2D" parent="." unique_id=2063657164]
+[node name="GroundDecals" type="Node2D" parent="." unique_id=281400215]
 z_index = -1
 
-[node name="Lip000" type="Sprite2D" parent="GroundDecals" unique_id=125164961]
+[node name="Lip000" type="Sprite2D" parent="GroundDecals" unique_id=1654701016]
 modulate = Color(0.97040516, 0.97040516, 0.97040516, 1)
 material = ExtResource("8_lmhsx")
 position = Vector2(192, 1570)
@@ -83,7 +83,7 @@ centered = false
 offset = Vector2(-96, -34)
 flip_h = true
 
-[node name="Lip001" type="Sprite2D" parent="GroundDecals" unique_id=1606131322]
+[node name="Lip001" type="Sprite2D" parent="GroundDecals" unique_id=394424036]
 modulate = Color(0.9857943, 0.9857943, 0.9857943, 1)
 material = ExtResource("8_lmhsx")
 position = Vector2(384, 1570)
@@ -92,7 +92,7 @@ centered = false
 offset = Vector2(-96, -34)
 flip_h = true
 
-[node name="Lip002" type="Sprite2D" parent="GroundDecals" unique_id=143349634]
+[node name="Lip002" type="Sprite2D" parent="GroundDecals" unique_id=1602402373]
 modulate = Color(0.98707336, 0.98707336, 0.98707336, 1)
 material = ExtResource("8_lmhsx")
 position = Vector2(576, 1570)
@@ -100,7 +100,7 @@ texture = ExtResource("9_3uvqi")
 centered = false
 offset = Vector2(-96, -34)
 
-[node name="Lip003" type="Sprite2D" parent="GroundDecals" unique_id=1090237608]
+[node name="Lip003" type="Sprite2D" parent="GroundDecals" unique_id=23227615]
 modulate = Color(1.0332131, 1.0332131, 1.0332131, 1)
 material = ExtResource("8_lmhsx")
 position = Vector2(768, 1570)
@@ -109,7 +109,7 @@ centered = false
 offset = Vector2(-96, -34)
 flip_h = true
 
-[node name="Lip004" type="Sprite2D" parent="GroundDecals" unique_id=229622326]
+[node name="Lip004" type="Sprite2D" parent="GroundDecals" unique_id=774942986]
 modulate = Color(0.99348515, 0.99348515, 0.99348515, 1)
 material = ExtResource("8_lmhsx")
 position = Vector2(1152, 1570)
@@ -117,7 +117,7 @@ texture = ExtResource("9_3uvqi")
 centered = false
 offset = Vector2(-96, -34)
 
-[node name="Lip005" type="Sprite2D" parent="GroundDecals" unique_id=137559329]
+[node name="Lip005" type="Sprite2D" parent="GroundDecals" unique_id=1420972692]
 modulate = Color(0.99559855, 0.99559855, 0.99559855, 1)
 material = ExtResource("8_lmhsx")
 position = Vector2(1344, 1570)
@@ -126,7 +126,7 @@ centered = false
 offset = Vector2(-96, -34)
 flip_h = true
 
-[node name="Lip006" type="Sprite2D" parent="GroundDecals" unique_id=573281975]
+[node name="Lip006" type="Sprite2D" parent="GroundDecals" unique_id=1742999748]
 modulate = Color(0.9635081, 0.9635081, 0.9635081, 1)
 material = ExtResource("8_lmhsx")
 position = Vector2(1536, 1570)
@@ -135,7 +135,7 @@ centered = false
 offset = Vector2(-96, -34)
 flip_h = true
 
-[node name="Lip007" type="Sprite2D" parent="GroundDecals" unique_id=1514734548]
+[node name="Lip007" type="Sprite2D" parent="GroundDecals" unique_id=781111979]
 modulate = Color(0.9847839, 0.9847839, 0.9847839, 1)
 material = ExtResource("8_lmhsx")
 position = Vector2(1728, 1570)
@@ -144,7 +144,7 @@ centered = false
 offset = Vector2(-96, -34)
 flip_h = true
 
-[node name="Lip008" type="Sprite2D" parent="GroundDecals" unique_id=375894601]
+[node name="Lip008" type="Sprite2D" parent="GroundDecals" unique_id=1770316695]
 modulate = Color(0.9615157, 0.9615157, 0.9615157, 1)
 material = ExtResource("8_lmhsx")
 position = Vector2(960, 1666)
@@ -155,11 +155,11 @@ offset = Vector2(-96, -34)
 [node name="Stairs" parent="GroundDecals" unique_id=1092964182 instance=ExtResource("10_qm0ln")]
 position = Vector2(1680, 288)
 
-[node name="Entities" type="Node2D" parent="." unique_id=1979621260]
+[node name="Entities" type="Node2D" parent="." unique_id=1541030442]
 unique_name_in_owner = true
 y_sort_enabled = true
 
-[node name="Face000" type="Sprite2D" parent="Entities" unique_id=900138279]
+[node name="Face000" type="Sprite2D" parent="Entities" unique_id=1157410786]
 modulate = Color(1.0199786, 1.0199786, 1.0199786, 1)
 material = ExtResource("8_lmhsx")
 position = Vector2(192, 288)
@@ -167,7 +167,7 @@ texture = ExtResource("11_u1npi")
 centered = false
 offset = Vector2(-96, -175)
 
-[node name="Face001" type="Sprite2D" parent="Entities" unique_id=1617345467]
+[node name="Face001" type="Sprite2D" parent="Entities" unique_id=293386140]
 modulate = Color(0.96116936, 0.96116936, 0.96116936, 1)
 material = ExtResource("8_lmhsx")
 position = Vector2(384, 288)
@@ -176,7 +176,7 @@ centered = false
 offset = Vector2(-96, -175)
 flip_h = true
 
-[node name="Face002" type="Sprite2D" parent="Entities" unique_id=863183384]
+[node name="Face002" type="Sprite2D" parent="Entities" unique_id=1318299965]
 modulate = Color(1.0014684, 1.0014684, 1.0014684, 1)
 material = ExtResource("8_lmhsx")
 position = Vector2(576, 288)
@@ -184,7 +184,7 @@ texture = ExtResource("12_s64k4")
 centered = false
 offset = Vector2(-96, -175)
 
-[node name="Face003" type="Sprite2D" parent="Entities" unique_id=775480803]
+[node name="Face003" type="Sprite2D" parent="Entities" unique_id=1349203672]
 modulate = Color(1.0114809, 1.0114809, 1.0114809, 1)
 material = ExtResource("8_lmhsx")
 position = Vector2(768, 288)
@@ -192,7 +192,7 @@ texture = ExtResource("12_s64k4")
 centered = false
 offset = Vector2(-96, -175)
 
-[node name="Face004" type="Sprite2D" parent="Entities" unique_id=1557198082]
+[node name="Face004" type="Sprite2D" parent="Entities" unique_id=1978440931]
 modulate = Color(1.0383637, 1.0383637, 1.0383637, 1)
 material = ExtResource("8_lmhsx")
 position = Vector2(960, 288)
@@ -200,7 +200,7 @@ texture = ExtResource("12_s64k4")
 centered = false
 offset = Vector2(-96, -175)
 
-[node name="Face005" type="Sprite2D" parent="Entities" unique_id=1643936151]
+[node name="Face005" type="Sprite2D" parent="Entities" unique_id=1882013016]
 modulate = Color(1.0115962, 1.0115962, 1.0115962, 1)
 material = ExtResource("8_lmhsx")
 position = Vector2(1152, 288)
@@ -208,7 +208,7 @@ texture = ExtResource("12_s64k4")
 centered = false
 offset = Vector2(-96, -175)
 
-[node name="Face006" type="Sprite2D" parent="Entities" unique_id=1005275580]
+[node name="Face006" type="Sprite2D" parent="Entities" unique_id=1458829501]
 modulate = Color(0.99976933, 0.99976933, 0.99976933, 1)
 material = ExtResource("8_lmhsx")
 position = Vector2(1344, 288)
@@ -216,7 +216,7 @@ texture = ExtResource("12_s64k4")
 centered = false
 offset = Vector2(-96, -175)
 
-[node name="Face007" type="Sprite2D" parent="Entities" unique_id=169036948]
+[node name="Face007" type="Sprite2D" parent="Entities" unique_id=197955182]
 modulate = Color(0.9647752, 0.9647752, 0.9647752, 1)
 material = ExtResource("8_lmhsx")
 position = Vector2(1536, 288)
@@ -224,7 +224,7 @@ texture = ExtResource("12_s64k4")
 centered = false
 offset = Vector2(-96, -175)
 
-[node name="Face008" type="Sprite2D" parent="Entities" unique_id=527605537]
+[node name="Face008" type="Sprite2D" parent="Entities" unique_id=1606472880]
 modulate = Color(0.97462136, 0.97462136, 0.97462136, 1)
 material = ExtResource("8_lmhsx")
 position = Vector2(1776, 288)
@@ -235,7 +235,7 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(48, 0, 96, 175)
 
-[node name="Side000" type="Sprite2D" parent="Entities" unique_id=648911558]
+[node name="Side000" type="Sprite2D" parent="Entities" unique_id=615097038]
 modulate = Color(1.0015998, 1.0015998, 1.0015998, 1)
 material = ExtResource("8_lmhsx")
 position = Vector2(79, 384)
@@ -245,7 +245,7 @@ offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 0, 34, 96)
 
-[node name="Side001" type="Sprite2D" parent="Entities" unique_id=1909388340]
+[node name="Side001" type="Sprite2D" parent="Entities" unique_id=1009708476]
 modulate = Color(1.0116953, 1.0116953, 1.0116953, 1)
 material = ExtResource("8_lmhsx")
 position = Vector2(79, 480)
@@ -255,7 +255,7 @@ offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 36, 34, 96)
 
-[node name="Side002" type="Sprite2D" parent="Entities" unique_id=630928855]
+[node name="Side002" type="Sprite2D" parent="Entities" unique_id=135929847]
 modulate = Color(0.98351645, 0.98351645, 0.98351645, 1)
 material = ExtResource("8_lmhsx")
 position = Vector2(79, 576)
@@ -265,7 +265,7 @@ offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 36, 34, 96)
 
-[node name="Side003" type="Sprite2D" parent="Entities" unique_id=1565001422]
+[node name="Side003" type="Sprite2D" parent="Entities" unique_id=562764764]
 modulate = Color(0.97654724, 0.97654724, 0.97654724, 1)
 material = ExtResource("8_lmhsx")
 position = Vector2(79, 672)
@@ -275,7 +275,7 @@ offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 36, 34, 96)
 
-[node name="Side004" type="Sprite2D" parent="Entities" unique_id=1598058725]
+[node name="Side004" type="Sprite2D" parent="Entities" unique_id=1816743598]
 modulate = Color(1.0341611, 1.0341611, 1.0341611, 1)
 material = ExtResource("8_lmhsx")
 position = Vector2(79, 768)
@@ -285,7 +285,7 @@ offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 36, 34, 96)
 
-[node name="Side005" type="Sprite2D" parent="Entities" unique_id=1861304591]
+[node name="Side005" type="Sprite2D" parent="Entities" unique_id=95680197]
 modulate = Color(1.0385758, 1.0385758, 1.0385758, 1)
 material = ExtResource("8_lmhsx")
 position = Vector2(79, 864)
@@ -295,7 +295,7 @@ offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 36, 34, 96)
 
-[node name="Side006" type="Sprite2D" parent="Entities" unique_id=1105369396]
+[node name="Side006" type="Sprite2D" parent="Entities" unique_id=1450045468]
 modulate = Color(0.97417176, 0.97417176, 0.97417176, 1)
 material = ExtResource("8_lmhsx")
 position = Vector2(79, 960)
@@ -305,7 +305,7 @@ offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 36, 34, 96)
 
-[node name="Side007" type="Sprite2D" parent="Entities" unique_id=1132240023]
+[node name="Side007" type="Sprite2D" parent="Entities" unique_id=2078691686]
 modulate = Color(0.9799959, 0.9799959, 0.9799959, 1)
 material = ExtResource("8_lmhsx")
 position = Vector2(79, 1056)
@@ -315,7 +315,7 @@ offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 36, 34, 96)
 
-[node name="Side008" type="Sprite2D" parent="Entities" unique_id=1995617766]
+[node name="Side008" type="Sprite2D" parent="Entities" unique_id=1927336701]
 modulate = Color(0.9628989, 0.9628989, 0.9628989, 1)
 material = ExtResource("8_lmhsx")
 position = Vector2(79, 1152)
@@ -325,7 +325,7 @@ offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 36, 34, 96)
 
-[node name="Side009" type="Sprite2D" parent="Entities" unique_id=544767433]
+[node name="Side009" type="Sprite2D" parent="Entities" unique_id=1189174674]
 modulate = Color(1.0153525, 1.0153525, 1.0153525, 1)
 material = ExtResource("8_lmhsx")
 position = Vector2(79, 1248)
@@ -335,7 +335,7 @@ offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 36, 34, 96)
 
-[node name="Side010" type="Sprite2D" parent="Entities" unique_id=250740245]
+[node name="Side010" type="Sprite2D" parent="Entities" unique_id=262111877]
 modulate = Color(1.0120572, 1.0120572, 1.0120572, 1)
 material = ExtResource("8_lmhsx")
 position = Vector2(79, 1344)
@@ -345,7 +345,7 @@ offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 36, 34, 96)
 
-[node name="Side011" type="Sprite2D" parent="Entities" unique_id=1765081361]
+[node name="Side011" type="Sprite2D" parent="Entities" unique_id=292081159]
 modulate = Color(0.97590923, 0.97590923, 0.97590923, 1)
 material = ExtResource("8_lmhsx")
 position = Vector2(79, 1440)
@@ -355,7 +355,7 @@ offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 36, 34, 96)
 
-[node name="Side012" type="Sprite2D" parent="Entities" unique_id=1781706467]
+[node name="Side012" type="Sprite2D" parent="Entities" unique_id=1514558804]
 modulate = Color(1.0360157, 1.0360157, 1.0360157, 1)
 material = ExtResource("8_lmhsx")
 position = Vector2(79, 1536)
@@ -365,7 +365,7 @@ offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 72, 34, 96)
 
-[node name="Side013" type="Sprite2D" parent="Entities" unique_id=2035400002]
+[node name="Side013" type="Sprite2D" parent="Entities" unique_id=258913444]
 modulate = Color(1.0249751, 1.0249751, 1.0249751, 1)
 material = ExtResource("8_lmhsx")
 position = Vector2(847, 1632)
@@ -375,7 +375,7 @@ offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 72, 34, 96)
 
-[node name="Side014" type="Sprite2D" parent="Entities" unique_id=269541857]
+[node name="Side014" type="Sprite2D" parent="Entities" unique_id=101203136]
 modulate = Color(1.0063736, 1.0063736, 1.0063736, 1)
 material = ExtResource("8_lmhsx")
 position = Vector2(1073, 1632)
@@ -385,7 +385,7 @@ offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 72, 34, 96)
 
-[node name="Side015" type="Sprite2D" parent="Entities" unique_id=1179478460]
+[node name="Side015" type="Sprite2D" parent="Entities" unique_id=167793847]
 modulate = Color(0.9749546, 0.9749546, 0.9749546, 1)
 material = ExtResource("8_lmhsx")
 position = Vector2(1841, 384)
@@ -395,7 +395,7 @@ offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 0, 34, 96)
 
-[node name="Side016" type="Sprite2D" parent="Entities" unique_id=1137538555]
+[node name="Side016" type="Sprite2D" parent="Entities" unique_id=1509830958]
 modulate = Color(1.0268447, 1.0268447, 1.0268447, 1)
 material = ExtResource("8_lmhsx")
 position = Vector2(1841, 480)
@@ -405,7 +405,7 @@ offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 36, 34, 96)
 
-[node name="Side017" type="Sprite2D" parent="Entities" unique_id=554768490]
+[node name="Side017" type="Sprite2D" parent="Entities" unique_id=591264211]
 modulate = Color(1.0277219, 1.0277219, 1.0277219, 1)
 material = ExtResource("8_lmhsx")
 position = Vector2(1841, 576)
@@ -415,7 +415,7 @@ offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 36, 34, 96)
 
-[node name="Side018" type="Sprite2D" parent="Entities" unique_id=1375264289]
+[node name="Side018" type="Sprite2D" parent="Entities" unique_id=794542603]
 modulate = Color(1.0372295, 1.0372295, 1.0372295, 1)
 material = ExtResource("8_lmhsx")
 position = Vector2(1841, 672)
@@ -425,7 +425,7 @@ offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 36, 34, 96)
 
-[node name="Side019" type="Sprite2D" parent="Entities" unique_id=1148774326]
+[node name="Side019" type="Sprite2D" parent="Entities" unique_id=370479706]
 modulate = Color(0.96464837, 0.96464837, 0.96464837, 1)
 material = ExtResource("8_lmhsx")
 position = Vector2(1841, 768)
@@ -435,7 +435,7 @@ offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 36, 34, 96)
 
-[node name="Side020" type="Sprite2D" parent="Entities" unique_id=742685660]
+[node name="Side020" type="Sprite2D" parent="Entities" unique_id=1340850000]
 modulate = Color(0.99136657, 0.99136657, 0.99136657, 1)
 material = ExtResource("8_lmhsx")
 position = Vector2(1841, 864)
@@ -445,7 +445,7 @@ offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 36, 34, 96)
 
-[node name="Side021" type="Sprite2D" parent="Entities" unique_id=146896278]
+[node name="Side021" type="Sprite2D" parent="Entities" unique_id=1379809797]
 modulate = Color(0.96507764, 0.96507764, 0.96507764, 1)
 material = ExtResource("8_lmhsx")
 position = Vector2(1841, 960)
@@ -455,7 +455,7 @@ offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 36, 34, 96)
 
-[node name="Side022" type="Sprite2D" parent="Entities" unique_id=770645625]
+[node name="Side022" type="Sprite2D" parent="Entities" unique_id=189161089]
 modulate = Color(0.96433127, 0.96433127, 0.96433127, 1)
 material = ExtResource("8_lmhsx")
 position = Vector2(1841, 1056)
@@ -465,7 +465,7 @@ offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 36, 34, 96)
 
-[node name="Side023" type="Sprite2D" parent="Entities" unique_id=192343153]
+[node name="Side023" type="Sprite2D" parent="Entities" unique_id=780198426]
 modulate = Color(0.98852575, 0.98852575, 0.98852575, 1)
 material = ExtResource("8_lmhsx")
 position = Vector2(1841, 1152)
@@ -475,7 +475,7 @@ offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 36, 34, 96)
 
-[node name="Side024" type="Sprite2D" parent="Entities" unique_id=876798111]
+[node name="Side024" type="Sprite2D" parent="Entities" unique_id=123107451]
 modulate = Color(0.9760965, 0.9760965, 0.9760965, 1)
 material = ExtResource("8_lmhsx")
 position = Vector2(1841, 1248)
@@ -485,7 +485,7 @@ offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 36, 34, 96)
 
-[node name="Side025" type="Sprite2D" parent="Entities" unique_id=1049032991]
+[node name="Side025" type="Sprite2D" parent="Entities" unique_id=1667082737]
 modulate = Color(0.98504215, 0.98504215, 0.98504215, 1)
 material = ExtResource("8_lmhsx")
 position = Vector2(1841, 1344)
@@ -495,7 +495,7 @@ offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 36, 34, 96)
 
-[node name="Side026" type="Sprite2D" parent="Entities" unique_id=596408778]
+[node name="Side026" type="Sprite2D" parent="Entities" unique_id=640648243]
 modulate = Color(1.0106847, 1.0106847, 1.0106847, 1)
 material = ExtResource("8_lmhsx")
 position = Vector2(1841, 1440)
@@ -505,7 +505,7 @@ offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 36, 34, 96)
 
-[node name="Side027" type="Sprite2D" parent="Entities" unique_id=8903976]
+[node name="Side027" type="Sprite2D" parent="Entities" unique_id=1463159136]
 modulate = Color(0.99282277, 0.99282277, 0.99282277, 1)
 material = ExtResource("8_lmhsx")
 position = Vector2(1841, 1536)
@@ -521,124 +521,124 @@ position = Vector2(336, 576)
 [node name="Tomb01" parent="Entities" unique_id=704880318 instance=ExtResource("15_2mxo2")]
 position = Vector2(432, 576)
 
-[node name="Tomb02" parent="Entities" unique_id=389268711 instance=ExtResource("14_sby2o")]
+[node name="Tomb02" parent="Entities" unique_id=817945317 instance=ExtResource("14_sby2o")]
 position = Vector2(528, 576)
 
-[node name="Tomb03" parent="Entities" unique_id=296004359 instance=ExtResource("14_sby2o")]
+[node name="Tomb03" parent="Entities" unique_id=1857922552 instance=ExtResource("14_sby2o")]
 position = Vector2(624, 576)
 
 [node name="Tomb04" parent="Entities" unique_id=1032006941 instance=ExtResource("16_xe7yp")]
 position = Vector2(720, 576)
 
-[node name="Tomb05" parent="Entities" unique_id=1178865352 instance=ExtResource("14_sby2o")]
+[node name="Tomb05" parent="Entities" unique_id=930024202 instance=ExtResource("14_sby2o")]
 position = Vector2(816, 576)
 
-[node name="Tomb06" parent="Entities" unique_id=1797584148 instance=ExtResource("14_sby2o")]
+[node name="Tomb06" parent="Entities" unique_id=1351222368 instance=ExtResource("14_sby2o")]
 position = Vector2(1104, 576)
 
-[node name="Tomb07" parent="Entities" unique_id=894313713 instance=ExtResource("16_xe7yp")]
+[node name="Tomb07" parent="Entities" unique_id=1331911899 instance=ExtResource("16_xe7yp")]
 position = Vector2(1200, 576)
 
-[node name="Tomb08" parent="Entities" unique_id=2332241 instance=ExtResource("16_xe7yp")]
+[node name="Tomb08" parent="Entities" unique_id=857563952 instance=ExtResource("16_xe7yp")]
 position = Vector2(1296, 576)
 
-[node name="Tomb09" parent="Entities" unique_id=246889930 instance=ExtResource("14_sby2o")]
+[node name="Tomb09" parent="Entities" unique_id=2030443123 instance=ExtResource("14_sby2o")]
 position = Vector2(1392, 576)
 
-[node name="Tomb10" parent="Entities" unique_id=1173264448 instance=ExtResource("14_sby2o")]
+[node name="Tomb10" parent="Entities" unique_id=209004000 instance=ExtResource("14_sby2o")]
 position = Vector2(1488, 576)
 
-[node name="Tomb11" parent="Entities" unique_id=967760687 instance=ExtResource("14_sby2o")]
+[node name="Tomb11" parent="Entities" unique_id=1090071460 instance=ExtResource("14_sby2o")]
 position = Vector2(1584, 576)
 
-[node name="Tomb12" parent="Entities" unique_id=855702518 instance=ExtResource("14_sby2o")]
+[node name="Tomb12" parent="Entities" unique_id=108796731 instance=ExtResource("14_sby2o")]
 position = Vector2(336, 768)
 
-[node name="Tomb13" parent="Entities" unique_id=1703465732 instance=ExtResource("15_2mxo2")]
+[node name="Tomb13" parent="Entities" unique_id=821341967 instance=ExtResource("15_2mxo2")]
 position = Vector2(432, 768)
 
-[node name="Tomb14" parent="Entities" unique_id=1031165325 instance=ExtResource("14_sby2o")]
+[node name="Tomb14" parent="Entities" unique_id=1776753399 instance=ExtResource("14_sby2o")]
 position = Vector2(528, 768)
 
-[node name="Tomb15" parent="Entities" unique_id=897111324 instance=ExtResource("16_xe7yp")]
+[node name="Tomb15" parent="Entities" unique_id=690334956 instance=ExtResource("16_xe7yp")]
 position = Vector2(624, 768)
 
-[node name="Tomb16" parent="Entities" unique_id=1012930592 instance=ExtResource("16_xe7yp")]
+[node name="Tomb16" parent="Entities" unique_id=571876997 instance=ExtResource("16_xe7yp")]
 position = Vector2(720, 768)
 
-[node name="Tomb17" parent="Entities" unique_id=1854468710 instance=ExtResource("15_2mxo2")]
+[node name="Tomb17" parent="Entities" unique_id=1458142971 instance=ExtResource("15_2mxo2")]
 position = Vector2(816, 768)
 
-[node name="Tomb18" parent="Entities" unique_id=1972702732 instance=ExtResource("14_sby2o")]
+[node name="Tomb18" parent="Entities" unique_id=2141631217 instance=ExtResource("14_sby2o")]
 position = Vector2(1104, 768)
 
-[node name="Tomb19" parent="Entities" unique_id=1554602760 instance=ExtResource("14_sby2o")]
+[node name="Tomb19" parent="Entities" unique_id=1915223315 instance=ExtResource("14_sby2o")]
 position = Vector2(1200, 768)
 
-[node name="Tomb20" parent="Entities" unique_id=2074507756 instance=ExtResource("14_sby2o")]
+[node name="Tomb20" parent="Entities" unique_id=1598186811 instance=ExtResource("14_sby2o")]
 position = Vector2(1296, 768)
 
-[node name="Tomb21" parent="Entities" unique_id=2032641907 instance=ExtResource("14_sby2o")]
+[node name="Tomb21" parent="Entities" unique_id=84067043 instance=ExtResource("14_sby2o")]
 position = Vector2(1392, 768)
 
-[node name="Tomb22" parent="Entities" unique_id=1266788213 instance=ExtResource("16_xe7yp")]
+[node name="Tomb22" parent="Entities" unique_id=199934541 instance=ExtResource("16_xe7yp")]
 position = Vector2(1488, 768)
 
-[node name="Tomb23" parent="Entities" unique_id=10544115 instance=ExtResource("15_2mxo2")]
+[node name="Tomb23" parent="Entities" unique_id=1748797046 instance=ExtResource("15_2mxo2")]
 position = Vector2(1584, 768)
 
-[node name="Tomb24" parent="Entities" unique_id=284059448 instance=ExtResource("15_2mxo2")]
+[node name="Tomb24" parent="Entities" unique_id=879272921 instance=ExtResource("15_2mxo2")]
 position = Vector2(336, 960)
 
-[node name="Tomb25" parent="Entities" unique_id=2032925517 instance=ExtResource("16_xe7yp")]
+[node name="Tomb25" parent="Entities" unique_id=1429208963 instance=ExtResource("16_xe7yp")]
 position = Vector2(432, 960)
 
-[node name="Tomb26" parent="Entities" unique_id=820839771 instance=ExtResource("16_xe7yp")]
+[node name="Tomb26" parent="Entities" unique_id=1675135867 instance=ExtResource("16_xe7yp")]
 position = Vector2(528, 960)
 
-[node name="Tomb27" parent="Entities" unique_id=1516777197 instance=ExtResource("14_sby2o")]
+[node name="Tomb27" parent="Entities" unique_id=1808646106 instance=ExtResource("14_sby2o")]
 position = Vector2(624, 960)
 
-[node name="Tomb28" parent="Entities" unique_id=1032355116 instance=ExtResource("16_xe7yp")]
+[node name="Tomb28" parent="Entities" unique_id=319995047 instance=ExtResource("16_xe7yp")]
 position = Vector2(720, 960)
 
-[node name="Tomb29" parent="Entities" unique_id=1455628992 instance=ExtResource("16_xe7yp")]
+[node name="Tomb29" parent="Entities" unique_id=747222033 instance=ExtResource("16_xe7yp")]
 position = Vector2(816, 960)
 
-[node name="Tomb30" parent="Entities" unique_id=2077765423 instance=ExtResource("16_xe7yp")]
+[node name="Tomb30" parent="Entities" unique_id=1388366736 instance=ExtResource("16_xe7yp")]
 position = Vector2(1104, 960)
 
-[node name="Tomb31" parent="Entities" unique_id=270976585 instance=ExtResource("14_sby2o")]
+[node name="Tomb31" parent="Entities" unique_id=116290582 instance=ExtResource("14_sby2o")]
 position = Vector2(1200, 960)
 
-[node name="Tomb32" parent="Entities" unique_id=1280925817 instance=ExtResource("16_xe7yp")]
+[node name="Tomb32" parent="Entities" unique_id=1473715171 instance=ExtResource("16_xe7yp")]
 position = Vector2(1296, 960)
 
-[node name="Tomb33" parent="Entities" unique_id=723706184 instance=ExtResource("16_xe7yp")]
+[node name="Tomb33" parent="Entities" unique_id=1162572654 instance=ExtResource("16_xe7yp")]
 position = Vector2(1392, 960)
 
-[node name="Tomb34" parent="Entities" unique_id=849522992 instance=ExtResource("14_sby2o")]
+[node name="Tomb34" parent="Entities" unique_id=1375671980 instance=ExtResource("14_sby2o")]
 position = Vector2(1488, 960)
 
-[node name="Tomb35" parent="Entities" unique_id=926319982 instance=ExtResource("14_sby2o")]
+[node name="Tomb35" parent="Entities" unique_id=954071690 instance=ExtResource("14_sby2o")]
 position = Vector2(1584, 960)
 
 [node name="Candlestick0" parent="Entities" unique_id=1654213546 instance=ExtResource("17_ju76x")]
 position = Vector2(240, 384)
 
-[node name="Candlestick1" parent="Entities" unique_id=655351126 instance=ExtResource("17_ju76x")]
+[node name="Candlestick1" parent="Entities" unique_id=1617812772 instance=ExtResource("17_ju76x")]
 position = Vector2(816, 384)
 
-[node name="Candlestick2" parent="Entities" unique_id=2111944507 instance=ExtResource("17_ju76x")]
+[node name="Candlestick2" parent="Entities" unique_id=879285854 instance=ExtResource("17_ju76x")]
 position = Vector2(1104, 384)
 
-[node name="Candlestick3" parent="Entities" unique_id=1238396694 instance=ExtResource("17_ju76x")]
+[node name="Candlestick3" parent="Entities" unique_id=328976587 instance=ExtResource("17_ju76x")]
 position = Vector2(1488, 384)
 
-[node name="Candlestick4" parent="Entities" unique_id=198412320 instance=ExtResource("17_ju76x")]
+[node name="Candlestick4" parent="Entities" unique_id=485570987 instance=ExtResource("17_ju76x")]
 position = Vector2(144, 1536)
 
-[node name="Candlestick5" parent="Entities" unique_id=165789531 instance=ExtResource("17_ju76x")]
+[node name="Candlestick5" parent="Entities" unique_id=885282392 instance=ExtResource("17_ju76x")]
 position = Vector2(1776, 1536)
 
 [node name="Counter" parent="Entities" unique_id=1254396119 instance=ExtResource("18_ijijb")]
@@ -647,70 +647,70 @@ position = Vector2(384, 1344)
 [node name="Bench0" parent="Entities" unique_id=1547849762 instance=ExtResource("19_rlcxo")]
 position = Vector2(1200, 1344)
 
-[node name="Bench1" parent="Entities" unique_id=2032350757 instance=ExtResource("19_rlcxo")]
+[node name="Bench1" parent="Entities" unique_id=1905466640 instance=ExtResource("19_rlcxo")]
 position = Vector2(1296, 1344)
 
-[node name="Bench2" parent="Entities" unique_id=2084838494 instance=ExtResource("19_rlcxo")]
+[node name="Bench2" parent="Entities" unique_id=487119383 instance=ExtResource("19_rlcxo")]
 position = Vector2(1392, 1344)
 
-[node name="Bench3" parent="Entities" unique_id=1363377529 instance=ExtResource("19_rlcxo")]
+[node name="Bench3" parent="Entities" unique_id=869224996 instance=ExtResource("19_rlcxo")]
 position = Vector2(1584, 1344)
 
-[node name="Bench4" parent="Entities" unique_id=1257611888 instance=ExtResource("19_rlcxo")]
+[node name="Bench4" parent="Entities" unique_id=751177116 instance=ExtResource("19_rlcxo")]
 position = Vector2(1680, 1344)
 
-[node name="Glows" type="Node2D" parent="." unique_id=792675829]
+[node name="Glows" type="Node2D" parent="." unique_id=1388019225]
 
-[node name="GlowCandle0" type="Sprite2D" parent="Glows" unique_id=161695646]
+[node name="GlowCandle0" type="Sprite2D" parent="Glows" unique_id=1283700281]
 z_index = 5
 z_as_relative = false
 position = Vector2(240, 264)
 script = ExtResource("20_c2kx7")
 glow_type = &"candle"
 
-[node name="GlowCandle1" type="Sprite2D" parent="Glows" unique_id=130511735]
+[node name="GlowCandle1" type="Sprite2D" parent="Glows" unique_id=1946215462]
 z_index = 5
 z_as_relative = false
 position = Vector2(816, 264)
 script = ExtResource("20_c2kx7")
 glow_type = &"candle"
 
-[node name="GlowCandle2" type="Sprite2D" parent="Glows" unique_id=854703024]
+[node name="GlowCandle2" type="Sprite2D" parent="Glows" unique_id=981834291]
 z_index = 5
 z_as_relative = false
 position = Vector2(1104, 264)
 script = ExtResource("20_c2kx7")
 glow_type = &"candle"
 
-[node name="GlowCandle3" type="Sprite2D" parent="Glows" unique_id=921204608]
+[node name="GlowCandle3" type="Sprite2D" parent="Glows" unique_id=858274210]
 z_index = 5
 z_as_relative = false
 position = Vector2(1488, 264)
 script = ExtResource("20_c2kx7")
 glow_type = &"candle"
 
-[node name="GlowCandle4" type="Sprite2D" parent="Glows" unique_id=259370749]
+[node name="GlowCandle4" type="Sprite2D" parent="Glows" unique_id=1631669112]
 z_index = 5
 z_as_relative = false
 position = Vector2(144, 1416)
 script = ExtResource("20_c2kx7")
 glow_type = &"candle"
 
-[node name="GlowCandle5" type="Sprite2D" parent="Glows" unique_id=639353916]
+[node name="GlowCandle5" type="Sprite2D" parent="Glows" unique_id=914987765]
 z_index = 5
 z_as_relative = false
 position = Vector2(1776, 1416)
 script = ExtResource("20_c2kx7")
 glow_type = &"candle"
 
-[node name="Overhead" type="TileMapLayer" parent="." unique_id=1739265630]
+[node name="Overhead" type="TileMapLayer" parent="." unique_id=1700834313]
 visible = false
 z_index = 10
 tile_set = ExtResource("2_r8kr4")
 
-[node name="Warps" type="Node2D" parent="." unique_id=117356166]
+[node name="Warps" type="Node2D" parent="." unique_id=1103035115]
 
-[node name="Exit0" type="Marker2D" parent="Warps" unique_id=1105184443]
+[node name="Exit0" type="Marker2D" parent="Warps" unique_id=180711964]
 position = Vector2(912, 1632)
 script = ExtResource("21_h2g28")
 trigger = 1
@@ -719,7 +719,7 @@ target_map = &"lavender_town"
 target_spawn = &"retour_tour"
 arrival_facing = Vector2i(0, 1)
 
-[node name="Exit1" type="Marker2D" parent="Warps" unique_id=942596793]
+[node name="Exit1" type="Marker2D" parent="Warps" unique_id=1386890444]
 position = Vector2(1008, 1632)
 script = ExtResource("21_h2g28")
 trigger = 1
@@ -728,7 +728,7 @@ target_map = &"lavender_town"
 target_spawn = &"retour_tour"
 arrival_facing = Vector2i(0, 1)
 
-[node name="Stairs2F" type="Marker2D" parent="Warps" unique_id=952241297]
+[node name="Stairs2F" type="Marker2D" parent="Warps" unique_id=605490628]
 position = Vector2(1680, 288)
 script = ExtResource("21_h2g28")
 direction = Vector2i(0, -1)
@@ -736,201 +736,201 @@ target_spawn = &"from_pokemon_tower_2f"
 arrival_facing = Vector2i(0, 1)
 coming_soon = "Tour Pokémon"
 
-[node name="Interactables" type="Node2D" parent="." unique_id=385743644]
+[node name="Interactables" type="Node2D" parent="." unique_id=527343373]
 
-[node name="GraveExamine00" type="Marker2D" parent="Interactables" unique_id=124626127]
+[node name="GraveExamine00" type="Marker2D" parent="Interactables" unique_id=130212861]
 position = Vector2(336, 576)
 script = ExtResource("22_d76jx")
 dialogue_id = &"pokemon_tower_grave"
 
-[node name="GraveExamine01" type="Marker2D" parent="Interactables" unique_id=890447942]
+[node name="GraveExamine01" type="Marker2D" parent="Interactables" unique_id=956789367]
 position = Vector2(432, 576)
 script = ExtResource("22_d76jx")
 dialogue_id = &"pokemon_tower_grave_1"
 
-[node name="GraveExamine02" type="Marker2D" parent="Interactables" unique_id=1338628927]
+[node name="GraveExamine02" type="Marker2D" parent="Interactables" unique_id=1174227350]
 position = Vector2(528, 576)
 script = ExtResource("22_d76jx")
 dialogue_id = &"pokemon_tower_grave"
 
-[node name="GraveExamine03" type="Marker2D" parent="Interactables" unique_id=1908457930]
+[node name="GraveExamine03" type="Marker2D" parent="Interactables" unique_id=117770479]
 position = Vector2(624, 576)
 script = ExtResource("22_d76jx")
 dialogue_id = &"pokemon_tower_grave"
 
-[node name="GraveExamine04" type="Marker2D" parent="Interactables" unique_id=748595680]
+[node name="GraveExamine04" type="Marker2D" parent="Interactables" unique_id=530704846]
 position = Vector2(720, 576)
 script = ExtResource("22_d76jx")
 dialogue_id = &"pokemon_tower_grave"
 
-[node name="GraveExamine05" type="Marker2D" parent="Interactables" unique_id=589122231]
+[node name="GraveExamine05" type="Marker2D" parent="Interactables" unique_id=478357809]
 position = Vector2(816, 576)
 script = ExtResource("22_d76jx")
 dialogue_id = &"pokemon_tower_grave"
 
-[node name="GraveExamine06" type="Marker2D" parent="Interactables" unique_id=1724358722]
+[node name="GraveExamine06" type="Marker2D" parent="Interactables" unique_id=1165195829]
 position = Vector2(1104, 576)
 script = ExtResource("22_d76jx")
 dialogue_id = &"pokemon_tower_grave"
 
-[node name="GraveExamine07" type="Marker2D" parent="Interactables" unique_id=1723763321]
+[node name="GraveExamine07" type="Marker2D" parent="Interactables" unique_id=1434686639]
 position = Vector2(1200, 576)
 script = ExtResource("22_d76jx")
 dialogue_id = &"pokemon_tower_grave_3"
 
-[node name="GraveExamine08" type="Marker2D" parent="Interactables" unique_id=1709821368]
+[node name="GraveExamine08" type="Marker2D" parent="Interactables" unique_id=1560897929]
 position = Vector2(1296, 576)
 script = ExtResource("22_d76jx")
 dialogue_id = &"pokemon_tower_grave"
 
-[node name="GraveExamine09" type="Marker2D" parent="Interactables" unique_id=1759779989]
+[node name="GraveExamine09" type="Marker2D" parent="Interactables" unique_id=493935095]
 position = Vector2(1392, 576)
 script = ExtResource("22_d76jx")
 dialogue_id = &"pokemon_tower_grave"
 
-[node name="GraveExamine10" type="Marker2D" parent="Interactables" unique_id=974530241]
+[node name="GraveExamine10" type="Marker2D" parent="Interactables" unique_id=394436602]
 position = Vector2(1488, 576)
 script = ExtResource("22_d76jx")
 dialogue_id = &"pokemon_tower_grave"
 
-[node name="GraveExamine11" type="Marker2D" parent="Interactables" unique_id=542174084]
+[node name="GraveExamine11" type="Marker2D" parent="Interactables" unique_id=1952063518]
 position = Vector2(1584, 576)
 script = ExtResource("22_d76jx")
 dialogue_id = &"pokemon_tower_grave"
 
-[node name="GraveExamine12" type="Marker2D" parent="Interactables" unique_id=435979813]
+[node name="GraveExamine12" type="Marker2D" parent="Interactables" unique_id=1342937242]
 position = Vector2(336, 768)
 script = ExtResource("22_d76jx")
 dialogue_id = &"pokemon_tower_grave"
 
-[node name="GraveExamine13" type="Marker2D" parent="Interactables" unique_id=176384013]
+[node name="GraveExamine13" type="Marker2D" parent="Interactables" unique_id=1800955860]
 position = Vector2(432, 768)
 script = ExtResource("22_d76jx")
 dialogue_id = &"pokemon_tower_grave"
 
-[node name="GraveExamine14" type="Marker2D" parent="Interactables" unique_id=426854]
+[node name="GraveExamine14" type="Marker2D" parent="Interactables" unique_id=2082602560]
 position = Vector2(528, 768)
 script = ExtResource("22_d76jx")
 dialogue_id = &"pokemon_tower_grave"
 
-[node name="GraveExamine15" type="Marker2D" parent="Interactables" unique_id=225707819]
+[node name="GraveExamine15" type="Marker2D" parent="Interactables" unique_id=514305166]
 position = Vector2(624, 768)
 script = ExtResource("22_d76jx")
 dialogue_id = &"pokemon_tower_grave"
 
-[node name="GraveExamine16" type="Marker2D" parent="Interactables" unique_id=1278342265]
+[node name="GraveExamine16" type="Marker2D" parent="Interactables" unique_id=1016671297]
 position = Vector2(720, 768)
 script = ExtResource("22_d76jx")
 dialogue_id = &"pokemon_tower_grave_2"
 
-[node name="GraveExamine17" type="Marker2D" parent="Interactables" unique_id=1248519822]
+[node name="GraveExamine17" type="Marker2D" parent="Interactables" unique_id=1766720311]
 position = Vector2(816, 768)
 script = ExtResource("22_d76jx")
 dialogue_id = &"pokemon_tower_grave"
 
-[node name="GraveExamine18" type="Marker2D" parent="Interactables" unique_id=1377546144]
+[node name="GraveExamine18" type="Marker2D" parent="Interactables" unique_id=649602860]
 position = Vector2(1104, 768)
 script = ExtResource("22_d76jx")
 dialogue_id = &"pokemon_tower_grave"
 
-[node name="GraveExamine19" type="Marker2D" parent="Interactables" unique_id=1151906235]
+[node name="GraveExamine19" type="Marker2D" parent="Interactables" unique_id=1569786504]
 position = Vector2(1200, 768)
 script = ExtResource("22_d76jx")
 dialogue_id = &"pokemon_tower_grave"
 
-[node name="GraveExamine20" type="Marker2D" parent="Interactables" unique_id=2058753186]
+[node name="GraveExamine20" type="Marker2D" parent="Interactables" unique_id=1853573163]
 position = Vector2(1296, 768)
 script = ExtResource("22_d76jx")
 dialogue_id = &"pokemon_tower_grave"
 
-[node name="GraveExamine21" type="Marker2D" parent="Interactables" unique_id=1750406350]
+[node name="GraveExamine21" type="Marker2D" parent="Interactables" unique_id=314930593]
 position = Vector2(1392, 768)
 script = ExtResource("22_d76jx")
 dialogue_id = &"pokemon_tower_grave"
 
-[node name="GraveExamine22" type="Marker2D" parent="Interactables" unique_id=1072642998]
+[node name="GraveExamine22" type="Marker2D" parent="Interactables" unique_id=1799781103]
 position = Vector2(1488, 768)
 script = ExtResource("22_d76jx")
 dialogue_id = &"pokemon_tower_grave_4"
 
-[node name="GraveExamine23" type="Marker2D" parent="Interactables" unique_id=523185912]
+[node name="GraveExamine23" type="Marker2D" parent="Interactables" unique_id=295749589]
 position = Vector2(1584, 768)
 script = ExtResource("22_d76jx")
 dialogue_id = &"pokemon_tower_grave"
 
-[node name="GraveExamine24" type="Marker2D" parent="Interactables" unique_id=240348584]
+[node name="GraveExamine24" type="Marker2D" parent="Interactables" unique_id=1266033320]
 position = Vector2(336, 960)
 script = ExtResource("22_d76jx")
 dialogue_id = &"pokemon_tower_grave"
 
-[node name="GraveExamine25" type="Marker2D" parent="Interactables" unique_id=1314179506]
+[node name="GraveExamine25" type="Marker2D" parent="Interactables" unique_id=167917442]
 position = Vector2(432, 960)
 script = ExtResource("22_d76jx")
 dialogue_id = &"pokemon_tower_grave"
 
-[node name="GraveExamine26" type="Marker2D" parent="Interactables" unique_id=404648971]
+[node name="GraveExamine26" type="Marker2D" parent="Interactables" unique_id=872241007]
 position = Vector2(528, 960)
 script = ExtResource("22_d76jx")
 dialogue_id = &"pokemon_tower_grave_5"
 
-[node name="GraveExamine27" type="Marker2D" parent="Interactables" unique_id=482957947]
+[node name="GraveExamine27" type="Marker2D" parent="Interactables" unique_id=2034452934]
 position = Vector2(624, 960)
 script = ExtResource("22_d76jx")
 dialogue_id = &"pokemon_tower_grave"
 
-[node name="GraveExamine28" type="Marker2D" parent="Interactables" unique_id=909028576]
+[node name="GraveExamine28" type="Marker2D" parent="Interactables" unique_id=1489795371]
 position = Vector2(720, 960)
 script = ExtResource("22_d76jx")
 dialogue_id = &"pokemon_tower_grave"
 
-[node name="GraveExamine29" type="Marker2D" parent="Interactables" unique_id=589356874]
+[node name="GraveExamine29" type="Marker2D" parent="Interactables" unique_id=1177344256]
 position = Vector2(816, 960)
 script = ExtResource("22_d76jx")
 dialogue_id = &"pokemon_tower_grave"
 
-[node name="GraveExamine30" type="Marker2D" parent="Interactables" unique_id=1124717474]
+[node name="GraveExamine30" type="Marker2D" parent="Interactables" unique_id=912427317]
 position = Vector2(1104, 960)
 script = ExtResource("22_d76jx")
 dialogue_id = &"pokemon_tower_grave"
 
-[node name="GraveExamine31" type="Marker2D" parent="Interactables" unique_id=1272582247]
+[node name="GraveExamine31" type="Marker2D" parent="Interactables" unique_id=2016384630]
 position = Vector2(1200, 960)
 script = ExtResource("22_d76jx")
 dialogue_id = &"pokemon_tower_grave"
 
-[node name="GraveExamine32" type="Marker2D" parent="Interactables" unique_id=1554294883]
+[node name="GraveExamine32" type="Marker2D" parent="Interactables" unique_id=841901868]
 position = Vector2(1296, 960)
 script = ExtResource("22_d76jx")
 dialogue_id = &"pokemon_tower_grave"
 
-[node name="GraveExamine33" type="Marker2D" parent="Interactables" unique_id=1379949450]
+[node name="GraveExamine33" type="Marker2D" parent="Interactables" unique_id=228645043]
 position = Vector2(1392, 960)
 script = ExtResource("22_d76jx")
 dialogue_id = &"pokemon_tower_grave"
 
-[node name="GraveExamine34" type="Marker2D" parent="Interactables" unique_id=754122937]
+[node name="GraveExamine34" type="Marker2D" parent="Interactables" unique_id=1686945773]
 position = Vector2(1488, 960)
 script = ExtResource("22_d76jx")
 dialogue_id = &"pokemon_tower_grave"
 
-[node name="GraveExamine35" type="Marker2D" parent="Interactables" unique_id=2071980858]
+[node name="GraveExamine35" type="Marker2D" parent="Interactables" unique_id=893546825]
 position = Vector2(1584, 960)
 script = ExtResource("22_d76jx")
 dialogue_id = &"pokemon_tower_grave"
 
-[node name="CounterExamine" type="Marker2D" parent="Interactables" unique_id=388005125]
+[node name="CounterExamine" type="Marker2D" parent="Interactables" unique_id=705555596]
 position = Vector2(240, 1344)
 script = ExtResource("22_d76jx")
 dialogue_id = &"pokemon_tower_keeper"
 size = Vector2i(4, 1)
 facing = Vector2i(0, -1)
 
-[node name="Spawns" type="Node2D" parent="." unique_id=1642095964]
+[node name="Spawns" type="Node2D" parent="." unique_id=388199756]
 
-[node name="entrance" type="Marker2D" parent="Spawns" unique_id=489430596]
+[node name="entrance" type="Marker2D" parent="Spawns" unique_id=1289091637]
 position = Vector2(912, 1632)
 
-[node name="from_pokemon_tower_2f" type="Marker2D" parent="Spawns" unique_id=2073271349]
+[node name="from_pokemon_tower_2f" type="Marker2D" parent="Spawns" unique_id=733018247]
 position = Vector2(1680, 384)
 
-[node name="Triggers" type="Node2D" parent="." unique_id=799494942]
+[node name="Triggers" type="Node2D" parent="." unique_id=480938151]

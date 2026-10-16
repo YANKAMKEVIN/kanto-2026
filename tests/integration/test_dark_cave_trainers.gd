@@ -263,3 +263,18 @@ func test_marcel_leaves_the_narrow_passage_free() -> void:
 	var plan: PlanGrid = _plans[&"dark_cave_b1f"]
 	for cell: Vector2i in spec.get_leave_path_cells():
 		assert_true(plan.is_walkable(cell), "%s praticable" % cell)
+
+
+## G-4 (T-53, T-54) : la réplique de défaite de Marcel enchaîne « Passe, alors. » puis « La sortie
+## n'est plus très loin… », dites avant son départ (la réplique « après » n'est plus jamais
+## entendue : il s'efface).
+func test_marcel_says_t53_then_t54_before_leaving() -> void:
+	var spec := (_rosters[&"dark_cave_b1f"] as NpcRoster).get_spec(&"g4_marcel")
+	var lines: Array = []
+	var file := FileAccess.open("res://data/dialogues/dark_cave.json", FileAccess.READ)
+	var data: Dictionary = JSON.parse_string(file.get_as_text())
+	lines = data[String(spec.defeated_dialogue)]["pages"]
+	assert_eq(lines.size(), 2)
+	assert_eq(lines[0], "Passe, alors.")
+	assert_eq(lines[1], "La sortie n'est plus très loin.\nTu sentiras l'air frais.")
+	assert_true(spec.leaves)

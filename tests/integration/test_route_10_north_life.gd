@@ -151,6 +151,17 @@ func test_cave_sign_is_read_from_the_front() -> void:
 	assert_null(_boot.get_interaction_controller().get_target(), "de côté : rien")
 
 
+func test_center_sign_is_read_from_the_front_and_frees_the_way() -> void:
+	var sign_cell := _plan.cell_of("panneau_centre")
+	await _start(null, Vector2i.UP, &"route_10", &"from_center", START_CENTER)
+	for door: Vector2i in _plan.cells_at("porte_centre"):
+		assert_ne(sign_cell, door)
+		assert_true(_plan.is_walkable(door + Vector2i.DOWN), "devant la porte libre")
+	assert_true(_plan.is_walkable(sign_cell + Vector2i.DOWN), "lu depuis le sentier")
+	await _read(sign_cell + Vector2i.DOWN, Vector2i.UP)
+	assert_eq(_pages, ["CENTRE POKÉMON\nRoute 10"] as Array[String], "A-9")
+
+
 func test_hiker_stands_in_front_of_the_cave() -> void:
 	var cell := _plan.cell_of("randonneur")
 	await _start(null, Vector2i.UP, &"route_10", &"from_center", START_CENTER)
@@ -207,8 +218,12 @@ func test_reached_trigger_covers_the_three_west_rows() -> void:
 		as GameMap
 	add_child_autofree(map)
 	var points := map.get_node(^"Triggers").get_children()
-	assert_eq(points.size(), 1, "T24 ajoutera dark_cave_crossed")
-	var trigger := points[0] as EventTriggerPoint
+	assert_eq(points.size(), 2, "route_10_reached (T18) et dark_cave_crossed (T24)")
+	var trigger: EventTriggerPoint = null
+	for point: Node in points:
+		if (point as EventTriggerPoint).cutscene_id == &"route_10_reached":
+			trigger = point as EventTriggerPoint
+	assert_not_null(trigger)
 	assert_eq(trigger.cutscene_id, &"route_10_reached")
 	var cells := trigger.get_cells()
 	cells.sort()

@@ -49,7 +49,6 @@ const GATE_GUARDS: Array[StringName] = [&"forest_gate_north_guard", &"forest_gat
 ## (T18 Route 9 / 10, T20 grotte ; T24 : Lavanville et Tour posés, retirés de la liste) ; « Il fait très sombre ici… » (T-3) est
 ## celui du J17 (`dark_caves.json`, joué par FlashDirector : [constant PLAYED_BY_BOOT]).
 const UNUSED_YET: Array[StringName] = [
-	&"route_10_center_sign",
 	&"dark_cave_1f_sign", &"dark_cave_column", &"dark_cave_roots", &"dark_cave_crack",
 	&"dark_cave_b1f_hidden_1",
 ]

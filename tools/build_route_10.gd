@@ -84,9 +84,11 @@ const SOUTH_EXITS: Array = [
 ]
 const RESERVED_KINDS: Array[String] = ["dresseur", "pnj", "pokemon", "objet_visible", "cache"]
 const BALL_KINDS: Array[String] = ["objet_visible", "cache"]
-const SIGNS: Array = [["panneau_grotte", "SignCave"]]
+const SIGNS: Array = [["panneau_grotte", "SignCave"], ["panneau_centre", "SignCenter"]]
 ## Point d'examen du panneau de la grotte (lu de face, depuis (14, 11)) : [nœud, dialogue].
 const SIGN_READ: Array = ["SignCaveRead", &"route_10_cave_sign"]
+## Point d'examen du panneau du Centre (lu de face, depuis (12, 12)) : [nœud, dialogue] (A-9).
+const SIGN_CENTER_READ: Array = ["SignCenterRead", &"route_10_center_sign"]
 ## Déclencheur silencieux de l'objectif « traverser la Grotte Sombre. » (jalon-18.md §4.13) :
 ## colonne 1, rangées 12..14 (arrivée de la Route 9 ; le Centre est à 4 cases) ; l'ancre est la
 ## case du bas, la boîte monte de trois cases.
@@ -461,6 +463,8 @@ func _style_rock(rock: Node2D, decor: RandomNumberGenerator, scale: float) -> vo
 func _add_life_north() -> void:
 	_kit.call(&"add_interactable", SIGN_READ[0], _cell("panneau_grotte"), Vector2i.ONE,
 		Vector2i.UP, SIGN_READ[1])
+	_kit.call(&"add_interactable", SIGN_CENTER_READ[0], _cell("panneau_centre"), Vector2i.ONE,
+		Vector2i.UP, SIGN_CENTER_READ[1])
 	_kit.call(&"add_trigger", "Route10Reached", REACHED_ANCHOR, REACHED_SIZE, Vector2i.ZERO,
 		REACHED_CUTSCENE)
 
