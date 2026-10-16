@@ -111,8 +111,9 @@ func test_evolutions_by_level_only() -> void:
 		assert_eq(rules.size(), 1, String(pair[0]))
 		assert_eq([rules[0].into, rules[0].method, rules[0].level],
 			[pair[1], EvolutionRule.Method.LEVEL, 21], String(pair[0]))
-	for id: StringName in [&"gloom", &"weepinbell", &"staryu", &"starmie", &"horsea",
-			&"shellder", &"goldeen"]:
+	# Jalon 24 (T4) : Hypotrempe → Hypocéan (N32), Poissirène → Poissoroy (N33) et Kokiyas →
+	# Crustabri (Pierre Eau) ; ces formes existent désormais (test_pokemon_data).
+	for id: StringName in [&"gloom", &"weepinbell", &"staryu", &"starmie"]:
 		assert_eq(_data.get_species(id).evolutions.size(), 0, String(id))
 
 
@@ -231,8 +232,13 @@ func test_tm11_and_its_compatibilities() -> void:
 			compatible.append(id)
 	assert_eq(compatible, [&"squirtle", &"wartortle", &"blastoise", &"rattata", &"raticate",
 		&"nidorina", &"nidoqueen", &"nidorino", &"nidoking", &"clefairy", &"clefable",
-		&"jigglypuff", &"wigglytuff", &"meowth", &"persian", &"shellder", &"horsea",
-		&"goldeen", &"staryu", &"starmie"] as Array[StringName])
+		&"jigglypuff", &"wigglytuff", &"meowth", &"persian",
+		# Jalon 24 (T4) : espèces des Routes 19 à 21, des Îles Écume et des fossiles.
+		&"psyduck", &"golduck", &"poliwag", &"poliwhirl", &"poliwrath", &"tentacool",
+		&"tentacruel", &"slowpoke", &"slowbro", &"seel", &"dewgong", &"shellder", &"cloyster",
+		&"krabby", &"kingler", &"horsea", &"seadra", &"goldeen", &"seaking", &"staryu",
+		&"starmie", &"gyarados", &"omanyte", &"omastar", &"kabuto", &"kabutops", &"articuno"]
+		as Array[StringName])
 	var squirtle := PokemonFactory.create(_data, &"squirtle", 20, GameRng.new(3))
 	assert_eq(TmTeach.check(squirtle, tm, _data), TmTeach.Check.COMPATIBLE)
 	var oddish := PokemonFactory.create(_data, &"oddish", 12, GameRng.new(3))

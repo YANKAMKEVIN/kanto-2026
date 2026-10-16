@@ -43,15 +43,16 @@ func test_compatibilities_of_rouge_bleu() -> void:
 	assert_eq(_data.tm_move(99), &"")
 	assert_true(_data.can_learn_tm(&"charmander", 34))
 	assert_true(_data.can_learn_tm(&"onix", 34))
-	for species: StringName in [&"caterpie", &"metapod", &"weedle", &"kakuna"]:
+	for species: StringName in [&"caterpie", &"metapod", &"weedle", &"kakuna", &"magikarp"]:
 		assert_false(_data.can_learn_tm(species, 34), "%s : aucune CT" % species)
 	var count := 0
 	for id: StringName in _data.get_species_ids():
 		if _data.can_learn_tm(id, 34):
 			count += 1
-	# Jalon 15 (T12) : Miaouss et Persan, compatibles (Rouge/Bleu).
-	assert_eq(count, 60, "60 espèces sur 64 (dossier 14 §6.1 ; + 12 du jalon 12, + 9 du jalon"
-		+ " 13, + 3 du jalon 14, + 2 du jalon 15)")
+	# Jalon 15 (T12) : Miaouss et Persan, compatibles (Rouge/Bleu). Jalon 24 (T4) : 24 espèces,
+	# toutes compatibles sauf Magicarpe.
+	assert_eq(count, 83, "83 espèces sur 88 (dossier 14 §6.1 ; + 12 du jalon 12, + 9 du jalon"
+		+ " 13, + 3 du jalon 14, + 2 du jalon 15, + 23 du jalon 24)")
 
 
 ## Jalon 14 (T5, jalon-14.md §2.4) : CT19 Frappe Atlas (Route 25) et CT28 Tunnel (Rocket).

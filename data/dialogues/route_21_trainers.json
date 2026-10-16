@@ -1,0 +1,110 @@
+{
+	"route_21_fisher_gilles_before": {
+		"speaker": "Pêcheur Gilles",
+		"pages": ["Ça mord ? Non. Alors un combat !"]
+	},
+	"route_21_fisher_gilles_defeated": {
+		"speaker": "Pêcheur Gilles",
+		"pages": ["Toujours rien…"]
+	},
+	"route_21_fisher_gilles_after": {
+		"speaker": "Pêcheur Gilles",
+		"pages": ["La patience, c'est la moitié de la\npêche."]
+	},
+	"route_21_fisher_marcel_before": {
+		"speaker": "Pêcheur Marcel",
+		"pages": ["Six Magicarpe. Tu vas voir."]
+	},
+	"route_21_fisher_marcel_defeated": {
+		"speaker": "Pêcheur Marcel",
+		"pages": ["…Tu as vu."]
+	},
+	"route_21_fisher_marcel_after": {
+		"speaker": "Pêcheur Marcel",
+		"pages": ["Un jour, ils deviendront grands."]
+	},
+	"route_21_swimmer_thibault_before": {
+		"speaker": "Nageur Thibault",
+		"pages": ["Bourg Palette, ce n'est pas loin.\nTu viens de là ?"]
+	},
+	"route_21_swimmer_thibault_defeated": {
+		"speaker": "Nageur Thibault",
+		"pages": ["Bien joué, voisin !"]
+	},
+	"route_21_swimmer_thibault_after": {
+		"speaker": "Nageur Thibault",
+		"pages": ["Le Prof. Chen nage parfois\njusqu'ici, paraît-il."]
+	},
+	"route_21_swimmer_dylan_before": {
+		"speaker": "Nageur Dylan",
+		"pages": ["La mer, c'est mon terrain !"]
+	},
+	"route_21_swimmer_dylan_defeated": {
+		"speaker": "Nageur Dylan",
+		"pages": ["Ma route s'arrête ici."]
+	},
+	"route_21_swimmer_dylan_after": {
+		"speaker": "Nageur Dylan",
+		"pages": ["Je rentre à Cramois'Île."]
+	},
+	"route_21_swimmer_simon_before": {
+		"speaker": "Nageur Simon",
+		"pages": ["Staross, montre-lui !"]
+	},
+	"route_21_swimmer_simon_defeated": {
+		"speaker": "Nageur Simon",
+		"pages": ["Joli."]
+	},
+	"route_21_swimmer_simon_after": {
+		"speaker": "Nageur Simon",
+		"pages": ["Les étoiles de mer guérissent\nvite. Moi, moins."]
+	},
+	"route_21_swimmer_arthur_before": {
+		"speaker": "Nageur Arthur",
+		"pages": ["Mon Carabaffe est mon meilleur\nnageur !"]
+	},
+	"route_21_swimmer_arthur_defeated": {
+		"speaker": "Nageur Arthur",
+		"pages": ["Il a besoin de repos."]
+	},
+	"route_21_swimmer_arthur_after": {
+		"speaker": "Nageur Arthur",
+		"pages": ["Carabaffe et moi, on nage ensemble\ndepuis toujours."]
+	},
+	"route_21_swimmer_noe_before": {
+		"speaker": "Nageur Noé",
+		"pages": ["Encore un dresseur à la nage ?"]
+	},
+	"route_21_swimmer_noe_defeated": {
+		"speaker": "Nageur Noé",
+		"pages": ["Tu nages mieux que tu ne combats…\nnon, les deux."]
+	},
+	"route_21_swimmer_noe_after": {
+		"speaker": "Nageur Noé",
+		"pages": ["Le volcan réchauffe un peu l'eau\nprès de l'île."]
+	},
+	"route_21_fisher_rene_before": {
+		"speaker": "Pêcheur René",
+		"pages": ["Ne fais pas fuir les poissons !"]
+	},
+	"route_21_fisher_rene_defeated": {
+		"speaker": "Pêcheur René",
+		"pages": ["Ils sont partis de toute façon."]
+	},
+	"route_21_fisher_rene_after": {
+		"speaker": "Pêcheur René",
+		"pages": ["Les Kokiyas mordent mieux par\ntemps gris."]
+	},
+	"route_21_fisher_yves_before": {
+		"speaker": "Pêcheur Yves",
+		"pages": ["Un combat entre deux touches ?"]
+	},
+	"route_21_fisher_yves_defeated": {
+		"speaker": "Pêcheur Yves",
+		"pages": ["Ça ne mord pas, et je perds."]
+	},
+	"route_21_fisher_yves_after": {
+		"speaker": "Pêcheur Yves",
+		"pages": ["La mer d'ici est généreuse.\nUn jour."]
+	}
+}

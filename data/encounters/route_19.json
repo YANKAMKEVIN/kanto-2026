@@ -1,0 +1,10 @@
+{
+	"route_19_water": {
+		"maps": ["route_19"],
+		"terrain": "water",
+		"rate": 5,
+		"slots": [
+			{ "species": "tentacool", "levels": [25, 35], "weight": 256 }
+		]
+	}
+}
