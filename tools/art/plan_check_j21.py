@@ -18,8 +18,9 @@ Critères :
   Route 12 (39 × 102) : bords fermés sauf trois raccords (nord (21..23, 0) ↔ Lavanville (21..23, 35),
     ouest (0, 93..94) ↔ Route 11 (75, 14..15), sud fermé « À venir ») ; le poste est un passage
     obligatoire (sans lui, le sud est inatteignable) ; 4 Pêcheurs, vues, inévitabilité (1 oui, 2 à 4
-    non) ; tout le ponton atteignable ; aucune herbe ; Ronflex reste sur la Route 11 (aucune case de la
-    Route 12 ne lui est voisine : pas de repère face_ronflex).
+    non) ; tout le ponton atteignable ; aucune herbe ; Ronflex 2 × 2 au CROISEMENT (décision M-3,
+    2026-10-16) : avec lui, Lavanville n'atteint ni le raccord ouest ni le bord sud, la Route 11 ni
+    Lavanville ni le sud ; sans lui, tout est relié ; chaque repère face_ronflex touche Ronflex.
   Route 16 (44 × 28) : bords fermés sauf (43, 21..23) ↔ Céladopole (0, 21..23) ; Ronflex 2 × 2 sans
     contournement (avec lui, ni goulet ni porte ; sans lui, tout est atteignable) ; porte du poste
     fermée (coming_soon) ; voie haute et arbre à Couper infranchissables ; ni herbe, ni Dresseur, ni
@@ -371,7 +372,7 @@ def verifier_7f(r: Rapport, apercu: bool) -> None:
 R12 = {
 	"dims": (39, 102), "legende": "TwR=.PDi", "praticables": ".=D",
 	"nord": [(21, 0), (22, 0), (23, 0)], "ouest": [(0, 93), (0, 94)],
-	"sud": [(24, 101), (25, 101), (26, 101)],
+	"sud": [(25, 101), (26, 101)],
 }
 FISHERS = {  # id → (case RB × 1,5 du plan, facing, inévitable)
 	"route_12_fisher_1": ((30, 47), "left", True), "route_12_fisher_2": ((17, 59), "up", False),
@@ -390,7 +391,7 @@ def verifier_route_12(r: Rapport, apercu: bool) -> None:
 	r.critere(b["ouest"] == R12["ouest"], f"bord ouest : seul raccord {b['ouest']} (Route 11)")
 	r.critere(b["sud"] == R12["sud"], f"bord sud : seul passage {b['sud']} (fermé « À venir »)")
 	natures(r, k, {"warp": ".=D", "spawn": ".=", "dresseur": "=", "panneau": "=.", "repere": ".=",
-		"decor": "PDi"})
+		"decor": "PDi", "pnj": ".=", })
 	r.critere(not k.plan.cells_of("h") and not any(q.kind == "herbes" for q in pos.values()),
 		"aucune herbe haute (RB : aucune sur ce tronçon) : pas de rencontre sauvage")
 	r.critere(not any(q.kind in ("objet_visible", "cache") for q in pos.values()),
@@ -404,8 +405,8 @@ def verifier_route_12(r: Rapport, apercu: bool) -> None:
 	r.critere(wo.cells == [(0, 93), (0, 94)] and pos["from_route_11"].cells == wo.cells
 		and pos["from_route_11"].attrs.get("facing") == "right",
 		"ouest : warp et arrivée (0, 93..94), tournée →")
-	r.critere(wsud.cells == [(24, 101), (25, 101), (26, 101)] and wsud.attrs.get("coming_soon")
-		== "route_12_sud", "sud : bord fermé coming_soon=route_12_sud")
+	r.critere(wsud.cells == [(25, 101), (26, 101)] and wsud.attrs.get("coming_soon")
+		== "route_12_sud", "sud : bord fermé coming_soon=route_12_sud, tronc de 2 cases (25..26)")
 	lav, src = voisine("lavanville")
 	if lav is None:
 		r.critere(SANS_VOISINES, "Lavanville introuvable (--sans-voisines pour passer)")
@@ -429,21 +430,16 @@ def verifier_route_12(r: Rapport, apercu: bool) -> None:
 	else:
 		K = Carte("route_11", r11)
 		e = K.pos["raccord_est"]
-		ron = K.pos["ronflex"]
 		r.critere(e.cells == [(75, 14), (75, 15)] and e.attrs.get("role") == "route_12",
 			f"Route 11 ({src}) : raccord_est {e.cells} role=route_12 ↔ notre bord ouest (2 rangées)")
-		r.critere(K.largeur == 76 and all(K.car((x, y)) == "=" for x in range(68, 76) for y in (14, 15)),
-			"Route 11 : (68..75, 14..15) praticables (rive est), accessibles depuis le raccord")
-		r.critere(ron.cells == [(66, 14), (67, 14), (66, 15), (67, 15)] and ron.bloque,
-			f"Route 11 : Ronflex RESTE en {ron.cells[0]}..{ron.cells[-1]} (2 × 2, bloquant)")
-		r.critere(len(e.cells) == len(wo.cells), "2 rangées de chaque côté")
-		proche = [c for c in k.cases(".=D") if min(abs(c[0] + 76 - rc[0]) + abs(c[1] - 93 + 14 - rc[1])
-			for rc in ron.cells) <= 1]
-		r.critere(not proche and not any(q.attrs.get("role") == "face_ronflex" for q in pos.values()),
-			"aucune case de la Route 12 voisine de Ronflex : pas de repère face_ronflex ici "
-			"(on lui parle depuis la Route 11, (68, 14..15))")
-		r.info("Ronflex n'est atteignable que par la carte de la Route 11 : de la Route 12, 8 cases de "
-			"chaussée (Route 11 (68..75, 14..15)) puis (68, 14..15)")
+		r.critere(len(e.cells) == len(wo.cells) and [c[1] + 79 for c in e.cells] == [c[1] for c in wo.cells],
+			"raccord (75, 14..15) ↔ (0, 93..94) : 2 rangées de chaque côté, même ordre")
+		if "ronflex" in K.pos:
+			r.info(f"Route 11 ({src}) : le Ronflex de route_11.txt {K.pos['ronflex'].cells[0]}.. est à "
+				"RETIRER à l'intégration (T9, décision M-3) : `ronflex` de route_11.txt, `FlagGate` et "
+				"`InteractPoint` de tools/build_route_11.gd ; il est désormais sur la Route 12")
+		else:
+			r.info(f"Route 11 ({src}) : aucun Ronflex (déjà retiré, décision M-3)")
 
 	r.titre("3. Accessibilité et poste traversant")
 	for n in ("porte_poste_nord", "porte_poste_sud"):
@@ -457,31 +453,70 @@ def verifier_route_12(r: Rapport, apercu: bool) -> None:
 		and pos["from_poste_sud"].cells == [(x, 33) for x in (24, 25, 26)],
 		"sorties du poste : (24..26, 23) au nord, (24..26, 33) au sud, juste devant les portes")
 	depart = pos["from_lavender"].cells[0]
-	d = k.distances([depart])
+	ronf = pos["ronflex_12"]
+	rcases = set(ronf.cells)
+	sans_r = k.occupees - rcases  # Ronflex parti (snorlax_route_12_done) : durées et accès calculés ainsi
+	d = k.distances([depart], occupees=sans_r)
 	sol = k.cases(".=")
 	manque = [c for c in sol if c not in d and c not in k.occupees]
 	r.critere(not manque, f"tout le ponton atteignable depuis {depart} ({len(sol)} cases, le plus loin "
 		f"à {max(d.values())} pas) {manque[:6] or ''}")
-	sans_poste = k.distances([depart], portails=False)
-	croisement = [(x, y) for x in (24, 25, 26) for y in (93, 94)]
+	sans_poste = k.distances([depart], portails=False, occupees=sans_r)
+	croisement = [(x, y) for x in (24, 25, 26) for y in (92, 93, 94, 95)
+		if k.car((x, y)) in ".=" and (x, y) not in k.occupees - rcases]
 	r.critere(not any(c in sans_poste for c in croisement + [(25, 101)] + [(0, 93)]),
 		"sans traverser le poste, ni le croisement, ni le raccord ouest, ni le bord sud ne sont atteints")
 	r.critere(all(c in d for c in croisement) and (0, 93) in d and (0, 94) in d and (25, 101) in d,
-		"par le poste : croisement, raccord ouest (0, 93..94) et bord sud (24..26, 101) atteints")
-	arr_ouest = k.distances([pos["from_route_11"].cells[0]])
-	r.critere(depart in arr_ouest and croisement[0] in arr_ouest,
-		"depuis la Route 11, on rejoint le croisement puis Lavanville (retour par le poste)")
+		"Ronflex parti, par le poste : croisement, raccord ouest (0, 93..94) et bord sud (25..26, 101) atteints")
+	arr_ouest = k.distances([pos["from_route_11"].cells[0]], occupees=sans_r)
+	r.critere(depart in arr_ouest and (25, 93) in arr_ouest and (25, 101) in arr_ouest,
+		"Ronflex parti, depuis la Route 11 : croisement, bord sud, puis Lavanville (retour par le poste)")
+
+	r.titre("3 bis. Ronflex au croisement (décision M-3) : aucun contournement")
+	r.critere(rcases == {(25, 93), (26, 93), (25, 94), (26, 94)} and ronf.kind == "pnj" and ronf.bloque
+		and ronf.attrs.get("unless") == "snorlax_route_12_done" and ronf.attrs.get("role") == "R1",
+		"ronflex_12 : pnj 2 × 2 en (25..26, 93..94), unless=snorlax_route_12_done")
+	d_av = k.distances([depart])  # avec Ronflex
+	sud_atteint = [c for c in R12["sud"] if c in d_av]
+	r.critere(not sud_atteint and not any(c in d_av for c in k.plan.positions["warp_ouest"].cells)
+		and (24, 93) not in d_av and (25, 95) not in d_av,
+		"AVEC Ronflex, depuis Lavanville : ni le raccord ouest, ni le bras ouest, ni le tronc sud, ni le bord "
+		"sud ne sont atteints")
+	r.critere((25, 92) in d_av and (26, 92) in d_av,
+		f"AVEC Ronflex, Lavanville arrive jusqu'à (25..26, 92) en {d_av.get((25, 92))} pas : cul-de-sac, "
+		"Ronflex en vue")
+	depart11 = pos["from_route_11"].cells[0]
+	d11 = k.distances([depart11])
+	r.critere((24, 93) in d11 and (24, 94) in d11 and not any(c in d11 for c in [(25, 92), (25, 95), depart, (25, 101)])
+		and not any(c in d11 for c in R12["sud"]) and not (set(k.cases("D")) & set(d11)),
+		"AVEC Ronflex, depuis la Route 11 : seul le bras ouest jusqu'à (24, 93..94) ; ni Lavanville ni le sud")
+	bras = {"nord": (25, 92), "ouest": (24, 93), "sud": (25, 95)}
+	zone = {n: set(k.distances([c], occupees=k.occupees, portails=False)) for n, c in bras.items()}
+	r.critere(not (zone["nord"] & zone["ouest"]) and not (zone["nord"] & zone["sud"])
+		and not (zone["ouest"] & zone["sud"]),
+		"les trois bras (nord, ouest, sud) sont des composantes disjointes sans passer par Ronflex "
+		"(le poste est écarté : portails=False)")
+	faces = [c for q in pos.values() if q.attrs.get("role") == "face_ronflex" for c in q.cells]
+	r.critere(sorted(faces) == [(24, 93), (24, 94), (25, 92), (25, 95), (26, 92), (26, 95)]
+		and all(any(v in rcases for v in voisins(c)) for c in faces),
+		f"repères face_ronflex {sorted(faces)} : tous voisins de Ronflex")
+	r.critere(all(c in d_av for c in [(25, 92), (26, 92)]) and all(c in d11 for c in [(24, 93), (24, 94)])
+		and all(c in k.distances([(25, 101)], occupees=k.occupees, portails=False) for c in [(25, 95), (26, 95)]),
+		"chaque face_ronflex est atteignable depuis SON bras (nord depuis Lavanville, ouest depuis la "
+		"Route 11, sud depuis le bord sud)")
+	r.info(f"Lavanville → Ronflex (face nord) {d_av.get((25, 92))} pas ; Route 11 (raccord) → Ronflex "
+		f"(face ouest) {d11.get((24, 93))} pas")
 	r.critere(len({c for c in k.cases(".=") if c in d and c[1] < 24}) > 0 and all(
 		any(c in d for c in voisins(q.cells[0])) for q in pos.values() if q.kind in ("panneau", "dresseur")),
 		"panneaux et Pêcheurs sont lus depuis une case atteignable")
 	for n, q in pos.items():
 		if q.kind == "panneau":
-			lecture = {"panneau_route_12": (28, 19), "panneau_ponton": (25, 96)}[n]
+			lecture = {"panneau_route_12": (28, 19), "panneau_ponton": (24, 94)}[n]
 			r.critere(lecture in d and abs(lecture[0] - q.cells[0][0]) + abs(lecture[1] - q.cells[0][1]) == 1,
 				f"{n} {q.cells[0]} lu depuis {lecture}")
-	but = (25, 93)
-	r.info(f"Lavanville → poste (nord) {d[nord[1]]} pas ; → croisement {d[but]} pas ; → bord sud "
-		f"{d[(25, 101)]} pas ; croisement → raccord Route 11 {arr_ouest[but]} pas")
+	but = (25, 92)
+	r.info(f"Lavanville → poste (nord) {d[nord[1]]} pas ; → croisement (devant Ronflex) {d[but]} pas ; "
+		f"→ bord sud (Ronflex parti) {d[(25, 101)]} pas ; croisement → raccord Route 11 {arr_ouest[but]} pas")
 
 	r.titre("4. Pêcheurs : cases, vues, inévitabilité")
 	numeros = list(FISHERS)
@@ -498,7 +533,7 @@ def verifier_route_12(r: Rapport, apercu: bool) -> None:
 			for c in pos[n2].cells}
 		r.critere(not (set(v) & proteges), f"{i} : sa vue ne couvre ni porte, ni sortie du poste, ni arrivée")
 		# Inévitable = couper vue + case sépare Lavanville du croisement.
-		sans = k.distances([depart], set(v) | set(q.cells))
+		sans = k.distances([depart], set(v) | set(q.cells), occupees=sans_r)
 		passe = any(c in sans for c in croisement)
 		r.critere(passe != inev,
 			f"{i} {'INÉVITABLE' if inev else 'ÉVITABLE'} : "
@@ -508,14 +543,14 @@ def verifier_route_12(r: Rapport, apercu: bool) -> None:
 	tous = set()
 	for i in numeros[1:]:
 		tous |= set(k.vue(pos[i])) | set(pos[i].cells)
-	sans_tous = k.distances([depart], tous)
+	sans_tous = k.distances([depart], tous, occupees=sans_r)
 	r.critere(any(c in sans_tous for c in croisement), "une route évite les Pêcheurs 2, 3 et 4 à la fois")
 	r.critere(list(premier_pas.values()) == sorted(premier_pas.values()),
 		f"ordre de rencontre 1, 2, 3, 4 : première case vue à {list(premier_pas.values())} pas de Lavanville")
 
 	r.titre("5. Durée de traversée (information)")
 	pas = d[but]
-	r.info(f"Lavanville → croisement : {pas} pas ≈ {pas * S_PAR_PAS / 60:.1f} min de marche, hors combats "
+	r.info(f"Lavanville → croisement (devant Ronflex, calculé sans lui) : {pas} pas ≈ {pas * S_PAR_PAS / 60:.1f} min de marche, hors combats "
 		"(4 Pêcheurs : 1 inévitable) et hors poste")
 	if apercu:
 		vues = {i: k.vue(pos[i]) for i in FISHERS}
