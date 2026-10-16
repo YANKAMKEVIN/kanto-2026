@@ -4,15 +4,15 @@ extends GutTest
 ## (mêmes coordonnées, aller-retour), graphe entrée nord → A → B1F → B → moitié sud → sortie sud,
 ## moitiés du 1F **non reliées** et jamais visibles ensemble, retour à l'entrée de partout,
 ## gravats `g` = RUBBLE (aucune table de rencontre), 10 gravats sur le plus court chemin, halos,
-## budget, passage étroit. Sans vie : aucune donnée de PNJ, de Dresseur ni d'objet.
+## budget, passage étroit. Vie (T20) : PNJ des données, points d'examen et objet caché.
 
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 const WALKABLE: String = ".gjUVEe"
 const NODE_BUDGET: int = 3000
 const MAX_GLOWS: int = 16
 const FLOORS: Dictionary = {
-	&"dark_cave_1f": ["res://tools/plans/grotte_sombre_1f.txt", Vector2i(56, 49), &"cave_1f"],
-	&"dark_cave_b1f": ["res://tools/plans/grotte_sombre_b1f.txt", Vector2i(48, 38), &"cave_b1f"],
+	&"dark_cave_1f": ["res://tools/plans/grotte_sombre_1f.txt", Vector2i(56, 49), &"dark_cave_1f"],
+	&"dark_cave_b1f": ["res://tools/plans/grotte_sombre_b1f.txt", Vector2i(48, 38), &"dark_cave_b1f"],
 }
 ## Décors bloquants posés sur une case praticable de la grille (lampes, panneau).
 const DECOR_BLOCKED: Dictionary = {
@@ -111,8 +111,8 @@ func test_caves_json_entry_and_rope() -> void:
 func test_light_profile_and_battle_decor() -> void:
 	var library := LightingLibrary.new()
 	assert_true(library.load_file())
-	assert_eq(library.get_map_profile(&"dark_cave_1f"), &"cave_1f")
-	assert_eq(library.get_map_profile(&"dark_cave_b1f"), &"cave_b1f")
+	assert_eq(library.get_map_profile(&"dark_cave_1f"), &"dark_cave_1f")
+	assert_eq(library.get_map_profile(&"dark_cave_b1f"), &"dark_cave_b1f")
 	var catalog := BattleDecorCatalog.load_file()
 	for map_id: StringName in FLOORS:
 		assert_eq(catalog.default_for(map_id).id, &"dark_cave_galerie", String(map_id))
@@ -138,12 +138,15 @@ func test_node_budget() -> void:
 		assert_lte(nodes, NODE_BUDGET, String(map_id))
 
 
-## T16 : Dresseurs et objets en données ; examens, panneau et objet caché posés au T20.
-func test_cave_life_is_the_t16_data_only() -> void:
+## T16 : Dresseurs et objets en données ; T20 : examens (T-6, T-8 à T-10) et objet caché.
+func test_cave_life_is_the_t16_data_and_the_t20_examinations() -> void:
 	var expected := {&"dark_cave_1f": 5, &"dark_cave_b1f": 3}
+	# 1F : le panneau ; B1F : colonne 5 × 6, une racine, la paroi fendue, l'objet caché.
+	var points := {&"dark_cave_1f": 1, &"dark_cave_b1f": 33}
 	for map_id: StringName in _maps:
 		var map: GameMap = _maps[map_id]
-		assert_eq(map.get_node(^"Interactables").get_child_count(), 0, "%s : rien à examiner" % map_id)
+		assert_eq(map.get_node(^"Interactables").get_child_count(), points[map_id],
+			"%s : points d'examen" % map_id)
 		assert_eq(map.get_node(^"Triggers").get_child_count(), 0, "%s : aucun déclencheur" % map_id)
 		var npcs: Array[Node] = []
 		_find_all(map, npcs, func(n: Node) -> bool: return n is Npc)
@@ -157,6 +160,28 @@ func test_cave_life_is_the_t16_data_only() -> void:
 		data.sort()
 		assert_eq(on_map, data, "%s : PNJ de data/npcs/" % map_id)
 		assert_eq(data.size(), expected.get(map_id, 0), "%s : Dresseurs et objets" % map_id)
+
+
+func _interaction_dialogue(map_id: StringName, cell: Vector2i) -> StringName:
+	for point: Node in (_maps[map_id] as GameMap).get_node(^"Interactables").get_children():
+		if (point as InteractPoint).get_cell() == cell:
+			return (point as InteractPoint).dialogue_id
+	return &""
+
+
+func test_examinations_and_hidden_item_cells() -> void:
+	assert_eq(_interaction_dialogue(&"dark_cave_1f", Vector2i(26, 2)), &"dark_cave_1f_sign")
+	assert_eq(_interaction_dialogue(&"dark_cave_b1f", Vector2i(21, 14)), &"dark_cave_column")
+	assert_eq(_interaction_dialogue(&"dark_cave_b1f", Vector2i(43, 32)), &"dark_cave_roots")
+	assert_eq(_interaction_dialogue(&"dark_cave_b1f", Vector2i(32, 1)), &"dark_cave_crack")
+	# Objet caché : la racine (41, 32), face à l'indice depuis (42, 32).
+	assert_eq(_interaction_dialogue(&"dark_cave_b1f", Vector2i(41, 32)),
+		&"dark_cave_b1f_hidden_1")
+	var library := DialogueLibrary.new()
+	library.load_dir()
+	for id: StringName in [&"dark_cave_1f_sign", &"dark_cave_column", &"dark_cave_roots",
+			&"dark_cave_crack", &"dark_cave_b1f_hidden_1"]:
+		assert_not_null(library.get_dialogue(id), String(id))
 
 
 ## T16 : gravats seulement (I-10), une table par étage (test_j18_data).

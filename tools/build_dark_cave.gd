@@ -13,16 +13,18 @@ extends SceneTree
 ## - Image : sol peint (sol calme, gravats, dessus des masses), parois en modules, repères
 ##   (grande colonne `K`, rochers `o`, flaque `w`, paroi fendue `f`, racines `r`, lampes, panneau,
 ##   filet de jour `j`), échelles `V` / `U`.
-## - **Halos** [LightGlow] (≤ 16) : filet de jour et lampes ; pénombre précalculée comme le Mont
-##   Sélénite (profils `cave_1f` / `cave_b1f`). Le voile d'obscurité (J17/J18) est posé par le
+## - **Halos** [LightGlow] (≤ 16) : filet de jour et lampes ; pénombre précalculée (plus claire que
+##   celle du Mont Sélénite, profils `dark_cave_1f` / `dark_cave_b1f`). Le voile d'obscurité (J17/J18) est posé par le
 ##   moteur, pas par cet outil.
 ## - Passages : échelles A et B `STEP_ON` sans direction vers le point d'apparition de même paire
 ##   (arrivée à l'opposé de l'échelle) ; entrée nord (27..28, 0) et sortie sud (8..9, 48) vers la
 ##   Route 10 (`from_dark_cave_n_w|e`, `from_dark_cave_s_w|e`). **Repli** tant que la Route 10
 ##   n'existe pas (construite en parallèle, T12) : destination « à venir » et retour sur la case
 ##   d'arrivée ; relancer l'outil une fois la Route 10 fusionnée (`test_dark_cave_maps` le signale).
-## - **Sans vie** : les cases des Dresseurs, objets et PNJ sont réservées dans la grille, rien
-##   n'est posé (T20) ; le panneau (26, 2) est un décor bloquant, sans texte.
+## - **Vie (T20)** : Dresseurs et objets viennent de `data/npcs/dark_cave_*.json` (T16, posés par
+##   la carte au chargement). Cet outil pose les points d'examen (panneau du randonneur, grande
+##   colonne, racines, paroi fendue : T-6, T-8 à T-10) et l'objet caché du B1F (Super Potion,
+##   « face à un indice » : la racine voisine de la case `objet_cache`).
 
 const Kit := preload("res://tools/cave_map_kit.gd")
 const Refs := preload("res://tools/j18_asset_refs.gd")
@@ -32,15 +34,19 @@ const TILE: int = 96
 
 ## Étage → [identifiant, nœud racine, taille, graine logique, graine du décor, profil].
 const FLOORS: Dictionary = {
-	"1f": [&"dark_cave_1f", "DarkCave1F", Vector2i(56, 49), 1801, 1802, &"cave_1f"],
-	"b1f": [&"dark_cave_b1f", "DarkCaveB1F", Vector2i(48, 38), 1811, 1812, &"cave_b1f"],
+	"1f": [&"dark_cave_1f", "DarkCave1F", Vector2i(56, 49), 1801, 1802, &"dark_cave_1f"],
+	"b1f": [&"dark_cave_b1f", "DarkCaveB1F", Vector2i(48, 38), 1811, 1812, &"dark_cave_b1f"],
 }
-## Pénombre par étage (mêmes réglages que le Mont Sélénite, `tools/cave_shade.gd`) [D].
+## Pénombre par étage [D] (`tools/cave_shade.gd`). Propre à la Grotte Sombre (T20) : plus claire
+## que celle du Mont Sélénite (ambiance 1, pied de paroi 0,80, pourtour 0,95 au lieu de 0,95 /
+## 0,55 / 0,87), car le voile d'obscurité du J17 ôte déjà 38 % de la lumière hors du halo et le
+## sol de la série 21 est plus sombre : mesuré à 0,049–0,100 de luminance hors du halo (seuil
+## 0,10) avec la pénombre du Mont Sélénite (jalon-18.md, T15 puis T20).
 const SHADE: Dictionary = {
-	"1f": {"ambient": 0.95, "edge_min": 0.55, "edge_radius": 0.8, "room_min": 0.87,
-		"room_radius": 3.2, "tint": Color(0.80, 0.88, 1.0)},
-	"b1f": {"ambient": 0.93, "edge_min": 0.55, "edge_radius": 0.8, "room_min": 0.87,
-		"room_radius": 3.2, "tint": Color(0.78, 0.86, 1.0)},
+	"1f": {"ambient": 1.0, "edge_min": 0.92, "edge_radius": 0.8, "room_min": 1.0,
+		"room_radius": 3.2, "lift": 0.06, "tint": Color(0.84, 0.91, 1.0)},
+	"b1f": {"ambient": 1.0, "edge_min": 0.92, "edge_radius": 0.8, "room_min": 1.0,
+		"room_radius": 3.2, "lift": 0.06, "tint": Color(0.82, 0.90, 1.0)},
 }
 const SHADE_LIGHTS: Dictionary = {
 	&"lamp": {"radius": 3.4, "strength": 0.95, "offset": Vector2(0.0, 40.0), "add": 0.15,
@@ -68,6 +74,15 @@ const EXITS: Array = [
 const ROUTE_10_SOON: String = "Route 10"
 ## Position du panneau du randonneur (décor bloquant, texte au T20).
 const SIGN_POSITION: String = "panneau_randonneur"
+## Points d'examen (T20) : position de la grille → dialogue. Une position de repère (`repere_*`)
+## couvre toutes les cases de son groupe ; l'objet caché prend la racine voisine de sa case, les
+## autres racines sont examinables (T-9).
+const EXAMINABLES: Dictionary = {
+	"dark_cave_1f": {"panneau_randonneur": &"dark_cave_1f_sign"},
+	"dark_cave_b1f": {"repere_colonne": &"dark_cave_column", "repere_racines": &"dark_cave_roots",
+		"repere_paroi": &"dark_cave_crack"},
+}
+const HIDDEN_ITEMS: Array[String] = ["dark_cave_b1f_hidden_1"]
 
 var _kit: Object
 var _floor_key: String = ""
@@ -124,6 +139,7 @@ func _build(key: String) -> int:
 	var walls: Vector3i = _kit.call(&"place_walls", spec[4] + 7)
 	_place_landmarks()
 	_place_ladders(map_id)
+	_place_examinables(map_id)
 	if map_id == &"dark_cave_1f":
 		_place_exits()
 	var shade := "res://assets/world/maps/%s_shade.png" % map_id
@@ -306,6 +322,49 @@ func _blocks(mark: String) -> Array[Rect2i]:
 					stack.append(next)
 		blocks.append(rect)
 	return blocks
+
+
+# --- Points d'examen et objet caché (T20) -------------------------------------------------
+
+
+func _place_examinables(map_id: StringName) -> void:
+	var positions: Dictionary = _plan().get(&"positions")
+	var clues: Array[Vector2i] = []
+	for id: String in HIDDEN_ITEMS:
+		if not positions.has(id):
+			continue
+		var clue := _clue_of(_plan().call(&"cell_of", id))
+		if clue == Vector2i(-1, -1):
+			var errors := _errors()
+			errors.append("%s : aucun repère bloquant voisin" % id)
+			_kit.set(&"errors", errors)
+			continue
+		clues.append(clue)
+		var node_name := "Hidden_%s" % id
+		_kit.call(&"add_interactable", node_name, clue, Vector2i.ONE, Vector2i.ZERO, StringName(id))
+		var points := (_kit.get(&"root") as Node).get_node(^"Interactables")
+		points.get_node(NodePath(node_name)).set(&"unless_flags",
+			[StringName("got_" + id)] as Array[StringName])
+	var table: Dictionary = EXAMINABLES.get(String(map_id), {})
+	for id: String in table:
+		if not positions.has(id):
+			continue
+		var cells: Array = _plan().call(&"cells_at", id)
+		var index := 0
+		for cell: Vector2i in cells:
+			if clues.has(cell):
+				continue
+			_kit.call(&"add_interactable", "Examine_%s_%d" % [id, index], cell, Vector2i.ONE,
+				Vector2i.ZERO, table[id])
+			index += 1
+
+
+## Repère bloquant (racine `r`) voisin de la case où l'on se tient pour fouiller.
+func _clue_of(stand: Vector2i) -> Vector2i:
+	for step: Vector2i in [Vector2i.LEFT, Vector2i.RIGHT, Vector2i.UP, Vector2i.DOWN]:
+		if _plan().call(&"at", stand + step) == "r":
+			return stand + step
+	return Vector2i(-1, -1)
 
 
 # --- Échelles, entrées, sorties -----------------------------------------------------------
