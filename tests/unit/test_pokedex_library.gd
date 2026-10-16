@@ -25,6 +25,10 @@ const ENCOUNTERABLE: Array[StringName] = [
 ## Notes validées par Kevin qui parlent de l'évolution (exception à « jamais de divulgation ») :
 ## celle de Kadabra (dossier 17 §15, n° 64) cite son origine, Abra, déjà vue pour l'avoir.
 const EVOLUTION_NOTES: Array[StringName] = [&"kadabra_bond"]
+## Fiches autorisées à nommer une espèce que le joueur connaît forcément avant : Magnéton (« Trois
+## Magnéti liés… », texte validé par Kevin le 2026-10-16 ; Magnéti se voit avant, chez l'Ingénieur
+## Victor de la Route 11).
+const NAMED_SPECIES_OK: Dictionary[StringName, Array] = {&"magneton": [&"magnemite"]}
 
 var _data: PokemonData
 var _lib: PokedexLibrary
@@ -107,6 +111,8 @@ func test_real_texts_are_validated_and_never_spoil() -> void:
 			for word: String in ["évolu", "niveau", "pokédex"]:
 				assert_false(lower.contains(word), "« %s » dans « %s »" % [word, text])
 			for other: StringName in _data.get_species_ids():
+				if (NAMED_SPECIES_OK.get(id, []) as Array).has(other):
+					continue
 				assert_false(other != id and text.contains(_data.get_species(other).name),
 					"%s ne nomme pas une autre espèce" % id)
 
