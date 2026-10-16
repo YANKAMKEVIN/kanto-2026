@@ -156,6 +156,8 @@ var _pending_daycare: bool = false
 ## recevoir les réglages).
 var _companions := CompanionCatalog.new()
 var _companion := CompanionController.new()
+## Mise en scène des capacités de terrain (jalon 16, Coupe : le Pokémon qui coupe, l'effet).
+var _field_presenter := FieldMovePresenter.new()
 ## Écran de la Pension (J15 T5) : choix du dépôt, bandeau et hôte des capacités du retrait.
 var _daycare_overlay: DaycareOverlay
 ## Autosave demandé, en attente d'un état stable, et sa raison (journal).
@@ -662,6 +664,25 @@ func get_item_library() -> ItemLibrary:
 func field_state(move: StringName) -> FieldMoves.Result:
 	return _field_moves.check(move, GameState.party, GameState.bag, GameState.flags, _items,
 		_pokemon, GameState.get_companion())
+
+
+## Le Pokémon qui utilise la capacité de terrain [param move] (état READY), ou null.
+func _field_move_user(move: StringName) -> Pokemon:
+	var state := field_state(move)
+	if state.state != FieldMoves.State.READY:
+		return null
+	return GameState.party.get_at(state.pokemon_index)
+
+
+## Vrai si la scène [param cutscene_id] commence par une capacité de terrain que le compagnon
+## utilise lui-même (jalon 16) : il reste alors dehors pour couper.
+func _companion_cuts(cutscene_id: StringName) -> bool:
+	var cutscene := _cutscenes.get_cutscene(cutscene_id)
+	var move := cutscene.leading_field_move(GameState.flags) if cutscene != null else &""
+	if move.is_empty():
+		return false
+	var chosen := _companion.get_chosen()
+	return chosen != null and _field_move_user(move) == chosen
 
 
 ## Fouille de l'objet [param slot] du puzzle [param puzzle_id] (jalon 16, `jalon-16.md` §2.6) :
@@ -1206,6 +1227,7 @@ func _on_map_changed(map: GameMap) -> void:
 	_daycare.set_map(map)
 	_recovery.set_map(map)
 	_companion.on_map_changed(map)
+	_field_presenter.set_map(map)
 	# Décor de combat de la carte chargé en tâche de fond (correctif QA S24 du CB.3).
 	_battle_stage.prepare_place(map.map_id)
 
@@ -1225,10 +1247,22 @@ func _setup_companion() -> void:
 	_interactions.companion_talked.connect(_companion.talk)
 	_battle_director.battle_started.connect(_companion.on_battle_started.unbind(1))
 	_menu.set_companions(_companions)
+	# Coupe (jalon 16, `jalon-16.md` §2.3) : le compagnon s'il coupe et qu'il est dehors, sinon
+	# le Pokémon de l'équipe choisi par FieldMoves, apparu le temps de couper.
+	_field_presenter.process_mode = Node.PROCESS_MODE_PAUSABLE
+	add_child(_field_presenter)
+	_field_presenter.setup(_companion, _player)
+	_field_presenter.user_source = _field_move_user
+	_cutscenes_node.field_move_handler = _field_presenter.perform
 
 
 func get_companion_controller() -> CompanionController:
 	return _companion
+
+
+## Mise en scène des capacités de terrain (jalon 16 ; tests, captures).
+func get_field_move_presenter() -> FieldMovePresenter:
+	return _field_presenter
 
 
 ## Le joueur a parlé au compagnon : sa phrase (narration, jeton « {pokemon} »).
@@ -1358,8 +1392,8 @@ func _on_center_healed(map_id: StringName, registered: bool) -> void:
 		request_autosave("soin")
 
 
-func _on_cutscene_started(_cutscene_id: StringName) -> void:
-	_companion.on_cutscene_started()
+func _on_cutscene_started(cutscene_id: StringName) -> void:
+	_companion.on_cutscene_started(_companion_cuts(cutscene_id))
 	_refresh_controls()
 
 
@@ -1653,6 +1687,7 @@ func _apply_settings(s: GameSettings) -> void:
 		_evolution_screen.reduce_flashes = s.reduce_flashes
 	_services.reduce_motion = s.reduce_motion
 	_companion.set_reduce_motion(s.reduce_motion)
+	_field_presenter.reduce_motion = s.reduce_motion
 	# Halos des grottes (jalon 12, T7 / T20) et lueur « hint » chez Léo (jalon 14) : vacillement
 	# coupé.
 	LightGlow.set_reduce_motion(s.reduce_motion)

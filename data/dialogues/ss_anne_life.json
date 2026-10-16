@@ -213,13 +213,14 @@
 				"if": [
 					"got_hm01"
 				],
-				"pages": [
-					"Prends ton temps. On ne part pas sans toi."
-				]
+				"cutscene": "ss_anne_departure"
 			},
 			{
 				"pages": [
-					"Tu redescends à terre ? Le navire reste à quai pour l'instant."
+					"Tu redescends à terre ?\nLe navire reste à quai pour l'instant."
+				],
+				"set": [
+					"ss_anne_exit_told"
 				]
 			}
 		]

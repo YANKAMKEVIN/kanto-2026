@@ -356,11 +356,12 @@ const PLAYED_J16_RIVAL_CAPTAIN: Array[StringName] = [
 ## Jalon 16 (T15) : Coupe sur l'arbuste de l'Arène (examen `cut_tree` remplace
 ## `vermilion_gym_tree` du J15) et départ du S.S. Anne (dossier 19 §0.5 n° 3 à 7, 25 à 29).
 const IDS_J16_T15: Array[StringName] = [
-	&"cut_tree", &"cut_tree_used", &"ss_anne_departure_confirm", &"ss_anne_exit_free",
+	&"cut_tree", &"cut_tree_used", &"ss_anne_departure_confirm",
 ]
-## Jalon 16 (T15) : joués par les scènes du départ et de la coupe.
+## Jalon 16 (T15) : joués par les scènes du départ et de la coupe ; le marin de la passerelle
+## (TXT-03, seule source du texte) l'est aussi par la sortie, avant la CS01.
 const PLAYED_J16_T15: Array[StringName] = [
-	&"cut_tree_used", &"ss_anne_departure_confirm", &"ss_anne_exit_free",
+	&"cut_tree_used", &"ss_anne_departure_confirm", &"ss_anne_gangway_sailor",
 ]
 ## Jalon 16 : textes validés du dossier 19 (§0.5, « … » par ligne).
 const DOSSIER_19 := "res://docs/design/dossier-19-ss-anne-major-bob.md"
@@ -688,8 +689,9 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 			&"route_5_gate_warned",
 			&"route_2_hiker_talked", &"route_2_youngster_talked", &"storage_terminal_seen",
 			&"viridian_old_man_talked",
-			# Jalon 16 (T15) : PARTIR (confirmation du départ du S.S. Anne).
-			&"ss_anne_departure_chosen"] + SET_J14_BILL_DIALOGUES + SET_J14_ROCKET_DIALOGUES))
+			# Jalon 16 (T15) : PARTIR (confirmation du départ du S.S. Anne) ; TXT-03 entendu
+			# (marin de la passerelle, aussi joué par la sortie).
+			&"ss_anne_departure_chosen", &"ss_anne_exit_told"] + SET_J14_BILL_DIALOGUES + SET_J14_ROCKET_DIALOGUES))
 	assert_eq(cutscenes.get_set_flags(), _sorted([&"badge_boulder", &"badge_cascade",
 		&"beaten_mt_moon_researcher", &"beaten_nugget_rocket", &"brock_met", &"cerulean_reached", &"got_mt_moon_1f_hidden_1",
 		&"got_mt_moon_1f_item_1", &"got_mt_moon_b1f_item_1", &"got_mt_moon_b1f_item_2",
@@ -721,8 +723,8 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		&"got_ss_anne_hidden_1", &"got_ss_anne_hidden_2", &"got_ss_anne_hidden_3",
 		# Jalon 16 (T13) : le rival n° 4 et la CS01 du capitaine.
 		&"got_hm01", &"rival_ss_anne_lost_once", &"rival_ss_anne_won",
-		# Jalon 16 (T15) : départ du S.S. Anne, sortie libre (TXT-03), arbuste coupé.
-		&"ss_anne_departed", &"ss_anne_exit_told", &"cut_vermilion_gym_bush"]
+		# Jalon 16 (T15) : départ du S.S. Anne, arbuste coupé.
+		&"ss_anne_departed", &"cut_vermilion_gym_bush"]
 		+ SET_J14_BILL_CUTSCENES + SET_J14_ROCKET_CUTSCENES))
 	assert_eq(_used_on.get(&"oak_lab_reunion"), [&"oak_lab"], "joué au labo, après le fondu")
 	assert_eq(_used_on.get(&"oak_starter_offer"), [&"oak_lab"], "joué au labo")
@@ -1147,10 +1149,11 @@ func test_oak_parcel_lines() -> void:
 	# Jalon 15 (T13) : la Super Potion et l'Antidote caché de la Route 5.
 	# Jalon 16 (T14) : Major Bob (Arène et rattrapage de la CT24) ; (T12) neuf objets du S.S. Anne ;
 	# (T13) le capitaine (CS01).
-	assert_eq(launched, 53, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
+	# Jalon 16 : le marin de la passerelle après la CS01 (la confirmation du départ).
+	assert_eq(launched, 54, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
 		+ "sa CT34, Ondine (pont, Arène et rattrapage), écran, module, console, objets de la "
 		+ "Route 25, le Rocket d'Azuria (2) et le barrage sud ; J15 : objets de la Route 5 ; "
-		+ "J16 : Major Bob (2), neuf objets du S.S. Anne, le capitaine")
+		+ "J16 : Major Bob (2), neuf objets du S.S. Anne, le capitaine, le marin")
 	# Le jeton n'apparaît que dans la réplique de l'espèce, « {pokemon} » dans les phrases du
 	# compagnon (J11), et ceux de la Pension dans ses répliques (J15).
 	for row: Array in _pages():

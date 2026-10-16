@@ -1,10 +1,4 @@
 {
-	"ss_anne_exit_free": {
-		"speaker": "Marin",
-		"pages": [
-			"Tu redescends à terre ?\nLe navire reste à quai pour l'instant."
-		]
-	},
 	"ss_anne_departure_confirm": {
 		"speaker": "Marin",
 		"pages": [

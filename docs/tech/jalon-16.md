@@ -544,6 +544,20 @@ stockage) et du dialogue `cut_tree` (4 variantes, choix, `{pokemon}`).
 §2.3. Tests : directeur de scène (ordre des étapes, compagnon sorti ou non, réduction), PNJ absent
 au rechargement.
 
+**Présentation faite le 2026-10-16** (branche `j16-coupe-visible` ; le T7 n'avait livré que l'étape
+et le crochet `field_move_handler`, jamais branché) : `FieldMoveStage` (pure), `FieldMovePresenter`
+(branché par Boot), `CutSlash` (trait **provisoire** en code, remplacé par `FX_COUPE` au T10). Le
+compagnon compatible **reste dehors** pendant la scène (`CompanionController.on_cutscene_started
+(keep_shown)`, décidé par `Cutscene.leading_field_move`), marche à côté du joueur et y reste ;
+sinon le Pokémon de `FieldMoves` apparaît (éclat) puis rentre. Case : droite, gauche, derrière le
+joueur. Espèce sans planche d'exploration peinte : trait seul (défaut). Tests :
+`test_field_move_stage`, `test_field_move_presenter`.
+
+**Sortie du navire** (même branche) : le marin de la passerelle et le `DepartureTrigger` disaient
+TXT-03 chacun de leur côté, et le marin disait « Prends ton temps… » sans question. Une seule
+source : le dialogue `ss_anne_gangway_sailor` (TXT-03, lève `ss_anne_exit_told`), joué par la sortie
+avant la CS01 ; après la CS01, parler au marin lance `ss_anne_departure` (dossier 19 §8).
+
 #### T8 — architecte : étapes `save` et `animate` — **maintenant**
 
 §2.4, §2.5. Tests : écriture forcée une seule fois, gardes « combat » et « transition » intactes,

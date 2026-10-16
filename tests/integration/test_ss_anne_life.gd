@@ -208,15 +208,20 @@ func test_beaten_paul_and_the_ambient_crew_speak() -> void:
 	assert_push_error_count(0)
 
 
+## Avant la CS01 : TXT-03 (seule source du texte, aussi jouée par la sortie) ; après, le marin
+## pose la question du départ (scène `ss_anne_departure`, parcours complet dans
+## `test_ss_anne_departure`), jamais « Prends ton temps… » sans question.
 func test_gangway_sailor_changes_his_line_after_the_cut_hm() -> void:
 	await _start(&"ss_anne_main_deck", &"from_ss_anne_w")
 	await _talk_to(&"marin_passerelle")
-	assert_eq(_pages, ["Tu redescends à terre ? Le navire reste à quai pour l'instant."],
+	assert_eq(_pages, ["Tu redescends à terre ?\nLe navire reste à quai pour l'instant."],
 		"TXT-03 avant la CS01")
-	_pages.clear()
-	GameState.flags.set_flag(&"got_hm01")
-	await _talk_to(&"marin_passerelle")
-	assert_eq(_pages, ["Prends ton temps. On ne part pas sans toi."], "après la CS01")
+	assert_true(GameState.flags.has_flag(&"ss_anne_exit_told"), "la sortie ne le redira pas")
+	var sailor := _boot.get_dialogue_library().get_dialogue(&"ss_anne_gangway_sailor")
+	var flags := StoryFlags.new()
+	flags.set_flag(&"got_hm01")
+	var after := sailor.pick(flags)
+	assert_eq([after.cutscene, after.pages.size()], [&"ss_anne_departure", 0], "après la CS01")
 	assert_push_error_count(0)
 
 

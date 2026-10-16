@@ -9,7 +9,9 @@ extends SceneTree
 ## Scénarios :
 ##   departure  `ss_anne_exit` : pas vers la passerelle, DEP-01 (capture du choix), PARTIR,
 ##              quai (légende DEP-02), navire en route, quai après le départ.
-##   cut        `cut_ready` : arbuste avant, COUPER, arbuste coupé (porte de l'Arène libre).
+##   cut        `cut_ready` : arbuste avant, COUPER, trait de lame (Pokémon visible), arbuste coupé
+##              (porte de l'Arène libre). Options : `--companion=<indice|none>`, `--lead=<indice>`
+##              (voir [method _apply_cut_options]).
 ## Images : `<out>/<scénario>_NN_<moment>.png` (image affichée, lue après le dessin).
 ## 2340 × 1080 : `override.cfg` temporaire à la racine, à retirer après.
 
@@ -59,7 +61,9 @@ func _run() -> void:
 	var map: Node = _boot.call(&"get_map")
 	map.call(&"refresh_npcs", state.get(&"flags"))
 	_boot.call(&"get_dialogue_runner").set(&"chars_per_second", 0.0)
-	await _frames(20)
+	if scenario == "cut":
+		_apply_cut_options(state)
+	await _frames(40)
 	if scenario == "departure":
 		await _departure()
 	else:
@@ -108,10 +112,29 @@ func _cut() -> void:
 	await _frames(15)
 	await _shot("choice")
 	var director: Node = _boot.call(&"get_cutscene_director")
+	var presenter: Node = _boot.call(&"get_field_move_presenter")
+	(_box().call(&"get_choice_cards").call(&"get_confirm_button") as Node).emit_signal(&"pressed")
+	# Coupe visible (J16) : image au milieu du trait de lame.
+	await _until(func() -> bool:
+		var slash: Node = presenter.call(&"get_slash")
+		return slash != null and float(slash.call(&"get_progress")) >= 0.6, 600)
+	await _shot("slash")
 	await _play_until(func() -> bool:
 		return not director.call(&"is_running") and not _box().call(&"is_open"), 600)
 	await _frames(30)
 	await _shot("tree_after")
+
+
+## Options du scénario « cut » : `--companion=<indice|none>` (compagnon choisi), `--lead=<indice>`
+## (ce Pokémon passe en deuxième place, devant Sabelette : il coupe s'il est compatible).
+func _apply_cut_options(state: Node) -> void:
+	var party: Object = state.get(&"party")
+	if _args.has("lead"):
+		party.call(&"move", int(_args["lead"]), 1)
+	if _args.has("companion"):
+		var value := String(_args["companion"])
+		state.call(&"set_companion", null if value == "none" else party.call(&"get_at", int(value)))
+		_boot.call(&"get_companion_controller").call(&"refresh")
 
 
 func _box() -> Node:

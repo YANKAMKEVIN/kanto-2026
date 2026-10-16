@@ -427,6 +427,67 @@ func test_free_exit_and_round_trip_between_carmin_and_the_ship() -> void:
 	assert_push_error_count(0)
 
 
+# --- Marin de la passerelle : même parole que la sortie -----------------------------------
+
+## Avant la CS01 : le marin dit TXT-03 (une seule source : son dialogue, joué aussi par la
+## sortie) ; après l'avoir entendu de lui, la passerelle ne le répète pas.
+func test_sailor_before_the_hm_then_gangway_says_txt03_once() -> void:
+	await _start("ss_anne_free_exit")
+	assert_eq(_player.get_cell(), ABOVE_EXIT_W)
+	_player.face(Vector2i.LEFT)
+	await _interact()
+	assert_eq(_pages, [TXT_03] as Array[String], "le marin : TXT-03")
+	_pages.clear()
+	await _walk(Vector2i.DOWN, EXIT_W)
+	await _play_out()
+	assert_eq(_pages, [] as Array[String], "passerelle : pas de second TXT-03")
+	await _push_to(Vector2i.DOWN, CITY)
+	assert_false(_flag(DEPARTED))
+	assert_push_error_count(0)
+
+
+## Avant la CS01, sortie d'abord (TXT-03), puis le marin : sa parole reste TXT-03, jamais la
+## réplique de la confirmation (« Prends ton temps… »).
+func test_gangway_then_sailor_before_the_hm() -> void:
+	await _start("ss_anne_free_exit")
+	await _walk(Vector2i.DOWN, EXIT_W)
+	await _play_out()
+	assert_eq(_pages, [TXT_03] as Array[String])
+	await _walk(Vector2i.UP, ABOVE_EXIT_W)
+	_pages.clear()
+	_player.face(Vector2i.LEFT)
+	await _interact()
+	assert_eq(_pages, [TXT_03] as Array[String], "le marin redit TXT-03")
+	assert_push_error_count(0)
+
+
+## Après la CS01 : parler au marin pose la même question que la passerelle (DEP-01, PARTIR /
+## PAS ENCORE) ; « Prends ton temps… » n'est dit qu'après PAS ENCORE ; PARTIR part.
+func test_sailor_after_the_hm_asks_the_same_confirmation() -> void:
+	await _start("ss_anne_exit")
+	assert_eq(_player.get_cell(), ABOVE_EXIT_W)
+	_player.face(Vector2i.LEFT)
+	_answers = [false]
+	await _interact()
+	assert_eq(_pages, [DEP_01, NOT_YET] as Array[String], "DEP-01 puis PAS ENCORE")
+	assert_eq(_boot.get_map().map_id, DECK, "à bord")
+	assert_false(_flag(DEPARTED))
+	assert_false(_flag(&"ss_anne_departure_chosen"))
+	assert_eq(_disk_state(_disk()), "navire")
+	# Retour devant le marin, PARTIR.
+	await _walk(Vector2i.DOWN, ABOVE_EXIT_W)
+	_player.face(Vector2i.LEFT)
+	_pages.clear()
+	_answers = [true]
+	await _interact()
+	assert_true(_pages.has(DEP_01))
+	assert_false(_pages.has(NOT_YET))
+	assert_true(_flag(DEPARTED))
+	assert_eq(_disk_state(_disk()), "quai")
+	_assert_dock_after_departure("PARTIR par le marin")
+	assert_push_error_count(0)
+
+
 # --- Arbuste de l'Arène ------------------------------------------------------------------
 
 func test_tree_dialogue_for_each_state_without_cutting() -> void:

@@ -28,8 +28,7 @@
 			{
 				"unless": ["got_hm01", "ss_anne_exit_told"],
 				"steps": [
-					{ "dialogue": "ss_anne_exit_free" },
-					{ "set": ["ss_anne_exit_told"] }
+					{ "dialogue": "ss_anne_gangway_sailor" }
 				]
 			}
 		]
