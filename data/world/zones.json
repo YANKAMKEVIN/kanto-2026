@@ -112,7 +112,18 @@
 			],
 			"description": "Une ville tournée vers le large, où les grands navires font escale. La lumière dorée y danse sur l'eau des quais."
 		},
-		"lavender_town": { "name": "Lavanville", "kind": "town", "maps": [] },
+		"lavender_town": {
+			"name": "Lavanville", "kind": "town",
+			"maps": [
+				"lavender_town", "lavender_center", "lavender_mart", "pokemon_house",
+				"lavender_house_1", "lavender_house_2", "pokemon_tower_1f"
+			],
+			"services": [
+				{ "id": "pokemon_center", "found_on": "lavender_center" },
+				{ "id": "poke_mart", "found_on": "lavender_mart" }
+			],
+			"description": "Une petite ville de pierre grise, calme et fleurie. Sa haute Tour domine les toits."
+		},
 		"route_8": { "name": "Route 8", "kind": "route", "maps": [] },
 		"saffron_city": { "name": "Safrania", "kind": "town", "maps": [] },
 		"route_7": { "name": "Route 7", "kind": "route", "maps": [] },

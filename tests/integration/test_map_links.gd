@@ -42,7 +42,12 @@ const MAP_IDS: Array[StringName] = [
 	&"route_9", &"route_10", &"route_10_center",
 	# Jalon 18 (T13) : la Grotte Sombre (sorties en repli « à venir » tant que la Route 10 manque).
 	&"dark_cave_1f", &"dark_cave_b1f",
+	# Jalon 18 (T14) : Lavanville, ses intérieurs et le rez-de-chaussée de la Tour.
+	&"lavender_town", &"lavender_center", &"lavender_mart", &"pokemon_house",
+	&"lavender_house_1", &"lavender_house_2", &"pokemon_tower_1f",
 ]
+## Cartes dont les passages « à venir » sont comptés dans leur propre test (jalon 18).
+const OWN_COMING_SOON_COUNT: Array[StringName] = [&"lavender_town", &"pokemon_tower_1f"]
 ## Cartes construites par une autre tâche en parallèle (jalon 7 : la Route 22, T22 ; jalon 10 :
 ## Argenta, T11, pendant les intérieurs du T13) : un warp qui y mène est vérifié seulement si la
 ## carte existe déjà (sinon le test le signale).
@@ -125,7 +130,7 @@ func test_every_coming_soon_warp_returns_to_a_walkable_spawn_of_its_own_map() ->
 	for map_id: StringName in _maps:
 		var map: GameMap = _maps[map_id]
 		for warp: Warp in map.get_warps().get_all():
-			if not warp.is_coming_soon():
+			if not warp.is_coming_soon() or OWN_COMING_SOON_COUNT.has(map_id):
 				continue
 			found += 1
 			var label := "%s %s « %s »" % [map_id, warp.cell, warp.coming_soon]

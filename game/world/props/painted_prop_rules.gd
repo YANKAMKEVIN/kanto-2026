@@ -498,12 +498,14 @@ const RULES: Dictionary[StringName, Dictionary] = {
 	# --- Série 21 : Routes 9 et 10, Grotte Sombre, Lavanville, Tour Pokémon (J18 T6, fiche
 	# `serie-21-j18.md`). ---
 	# Tour Pokémon 12 × 11 (porte double aux 6e et 7e colonnes), Maison des Pokémon 8 (porte aux
-	# 4e et 5e colonnes), maison d'habitants 7 (fermée) : emprise = largeur de l'image.
+	# 4e et 5e colonnes), maison d'habitants 7 (porte à la 4e colonne, comme la maison d'Argenta,
+	# J18 T14) : emprise = largeur de l'image.
 	&"bldg_tour_pokemon_01": {"shadow": true, "width": 12, "depth": 11, "fade": true,
 		"open": [Vector2i(-1, 0), Vector2i(0, 0)]},
 	&"bldg_maison_pokemon_01": {"shadow": true, "width": 8, "depth": 5, "fade": true,
 		"open": [Vector2i(-1, 0), Vector2i(0, 0)]},
-	&"bldg_maison_lavanville_01": {"shadow": true, "width": 7, "depth": 5, "fade": true},
+	&"bldg_maison_lavanville_01": {"shadow": true, "width": 7, "depth": 5, "fade": true,
+		"open": [Vector2i(0, 0)]},
 	# Lointains (centrale de la Route 10, silhouette de la Tour) : la carte bloque ses cases.
 	&"bldg_centrale_lointaine_01": {"traversable": true, "align": ALIGN_CENTRE},
 	&"prop_tour_lointaine_01": {"traversable": true, "align": ALIGN_CENTRE},

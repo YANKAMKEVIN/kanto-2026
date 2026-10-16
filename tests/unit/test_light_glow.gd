@@ -27,11 +27,13 @@ func test_real_data_has_the_five_types_within_bounds() -> void:
 	assert_true(library.load_file(), "data/world/light_glows.json valide")
 	assert_eq(library.get_errors().size(), 0)
 	assert_eq(library.get_ids(), [&"lamp", &"shaft", &"shard", &"projector", &"beam", &"hint",
-		&"sconce"] as Array[StringName], "« hint » du jalon 14, « sconce » du J15 en fin")
+		&"sconce", &"candle"] as Array[StringName],
+		"« hint » du jalon 14, « sconce » du J15, « candle » du J18 en fin")
 	# Passe « lumière rare » : le puits de jour a sa colonne de lumière douce.
 	assert_eq(library.get_type(&"beam").shape, LightGlowLibrary.SHAPE_COLUMN)
 	assert_gt(library.get_type(&"beam").height, 1.0)
-	for id: StringName in [&"lamp", &"shaft", &"shard", &"projector", &"hint", &"sconce"]:
+	for id: StringName in [&"lamp", &"shaft", &"shard", &"projector", &"hint", &"sconce",
+			&"candle"]:
 		assert_eq(library.get_type(id).shape, LightGlowLibrary.SHAPE_RADIAL, String(id))
 	for id: StringName in library.get_ids():
 		var type := library.get_type(id)
