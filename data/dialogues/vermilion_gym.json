@@ -17,10 +17,25 @@
 	},
 	"vermilion_gym_guide": {
 		"speaker": "Guide",
-		"pages": [
-			"Major Bob s'est retranché derrière une barrière électrique !",
-			"Les interrupteurs sont cachés dans les poubelles. Il en faut deux, côte à côte.",
-			"Une erreur, et tout se remet à zéro."
+		"variants": [
+			{
+				"unless": ["badge_thunder"],
+				"draft": true,
+				"pages": [
+					"Major Bob s'est retranché derrière une barrière électrique !",
+					"Les interrupteurs sont cachés dans les poubelles. Il en faut deux, côte à côte.",
+					"Une erreur, et tout se remet à zéro.",
+					"Et un conseil : ses Pokémon sont tous de type Électrik.",
+					"Un Pokémon de type Sol ne craint pas leurs décharges !"
+				]
+			},
+			{
+				"pages": [
+					"Major Bob s'est retranché derrière une barrière électrique !",
+					"Les interrupteurs sont cachés dans les poubelles. Il en faut deux, côte à côte.",
+					"Une erreur, et tout se remet à zéro."
+				]
+			}
 		]
 	},
 	"vermilion_gym_louis_before": {

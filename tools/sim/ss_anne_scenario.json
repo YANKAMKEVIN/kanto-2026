@@ -911,7 +911,7 @@
 				"bulbasaur": [
 					{
 						"species": "pidgeotto",
-						"level": 19,
+						"level": 16,
 						"moves": [
 							"gust",
 							"quick_attack",
@@ -920,7 +920,7 @@
 					},
 					{
 						"species": "raticate",
-						"level": 16,
+						"level": 14,
 						"moves": [
 							"quick_attack",
 							"bite",
@@ -929,7 +929,7 @@
 					},
 					{
 						"species": "kadabra",
-						"level": 18,
+						"level": 15,
 						"moves": [
 							"confusion",
 							"psybeam"
@@ -937,7 +937,7 @@
 					},
 					{
 						"species": "charmeleon",
-						"level": 20,
+						"level": 16,
 						"moves": [
 							"ember",
 							"scratch",
@@ -948,7 +948,7 @@
 				"charmander": [
 					{
 						"species": "pidgeotto",
-						"level": 19,
+						"level": 17,
 						"moves": [
 							"gust",
 							"quick_attack",
@@ -957,7 +957,7 @@
 					},
 					{
 						"species": "raticate",
-						"level": 16,
+						"level": 15,
 						"moves": [
 							"quick_attack",
 							"bite",
@@ -966,7 +966,7 @@
 					},
 					{
 						"species": "kadabra",
-						"level": 18,
+						"level": 16,
 						"moves": [
 							"confusion",
 							"psybeam"
@@ -974,7 +974,7 @@
 					},
 					{
 						"species": "wartortle",
-						"level": 20,
+						"level": 18,
 						"moves": [
 							"water_gun",
 							"tackle",
@@ -985,7 +985,7 @@
 				"squirtle": [
 					{
 						"species": "pidgeotto",
-						"level": 19,
+						"level": 17,
 						"moves": [
 							"gust",
 							"quick_attack",
@@ -994,7 +994,7 @@
 					},
 					{
 						"species": "raticate",
-						"level": 16,
+						"level": 15,
 						"moves": [
 							"quick_attack",
 							"bite",
@@ -1003,7 +1003,7 @@
 					},
 					{
 						"species": "kadabra",
-						"level": 18,
+						"level": 16,
 						"moves": [
 							"confusion",
 							"psybeam"
@@ -1011,7 +1011,7 @@
 					},
 					{
 						"species": "ivysaur",
-						"level": 20,
+						"level": 18,
 						"moves": [
 							"vine_whip",
 							"tackle",
@@ -1116,7 +1116,7 @@
 					"moves": [
 						"thunder_shock",
 						"thunder_wave",
-						"thunderbolt"
+						"quick_attack"
 					]
 				}
 			]

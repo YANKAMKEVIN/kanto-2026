@@ -45,6 +45,12 @@ const GUIDE: Array[String] = [
 	"Les interrupteurs sont cachés dans les poubelles. Il en faut deux, côte à côte.",
 	"Une erreur, et tout se remet à zéro.",
 ]
+## Indice du type Sol avant le Badge Foudre (décision de Kevin du 2026-10-16, R-3 + indice) :
+## texte proposé par Claude, en brouillon jusqu'à sa relecture.
+const GUIDE_HINT: Array[String] = [
+	"Et un conseil : ses Pokémon sont tous de type Électrik.",
+	"Un Pokémon de type Sol ne craint pas leurs décharges !",
+]
 const INTRO: Array[String] = [
 	"Hé, petit ! Tu as réussi à ouvrir ma barrière ?",
 	"Pas mal. Mais ici, c'est l'électricité qui commande.", "Voyons si tu tiens le choc !",
@@ -318,6 +324,13 @@ func test_surge_data_and_texts_match_the_validated_lot() -> void:
 	var team := library.build_team(&"vermilion_gym_surge", &"charmander", GameRng.new(1))
 	assert_eq(team.get_all().map(func(p: Pokemon) -> Array: return [p.species_id, p.level]),
 		[[&"voltorb", 21], [&"pikachu", 18], [&"raichu", 24]])
+	# Décision de Kevin du 2026-10-16 (R-3) : niveaux gardés, Raichu sans Tonnerre.
+	assert_eq(team.get_all().map(func(p: Pokemon) -> Array:
+		return p.moves.map(func(m: MoveSlot) -> StringName: return m.move_id)), [
+			[&"tackle", &"screech", &"sonic_boom"],
+			[&"thunder_shock", &"thunder_wave", &"quick_attack"],
+			[&"thunder_shock", &"thunder_wave", &"quick_attack"],
+		])
 	var dialogues := DialogueLibrary.new()
 	assert_true(dialogues.load_dir(), "\n".join(dialogues.get_errors()))
 	var expected: Dictionary[StringName, Array] = {
@@ -329,7 +342,7 @@ func test_surge_data_and_texts_match_the_validated_lot() -> void:
 		&"vermilion_gym_surge_tm": [TM_GIVE],
 		&"vermilion_gym_surge_tm_use": [TM_USE],
 		&"vermilion_gym_surge_tm_late": [TM_LATE],
-		&"vermilion_gym_guide": GUIDE,
+		&"vermilion_gym_guide": GUIDE + GUIDE_HINT,
 		&"vermilion_gym_sign": ["ARÈNE DE CARMIN\nChampion : Major Bob — L'homme électrique"],
 	}
 	for id: StringName in expected:
@@ -353,7 +366,7 @@ func test_people_of_the_gym_and_avoidable_trainers() -> void:
 	assert_eq(map.get_npc(&"gym_guide").get_cell(), Vector2i(10, 12))
 	var expected: Dictionary[StringName, Array] = {
 		&"gentleman_louis": [Vector2i(3, 8), &"vermilion_gym_gentleman_louis"],
-		&"rocker_axel": [Vector2i(13, 10), &"vermilion_gym_rocker_axel"],
+		&"rocker_axel": [Vector2i(12, 10), &"vermilion_gym_rocker_axel"],
 		&"sailor_marc": [Vector2i(12, 6), &"vermilion_gym_sailor_marc"],
 	}
 	var grid := map.get_grid()
@@ -374,25 +387,57 @@ func test_people_of_the_gym_and_avoidable_trainers() -> void:
 		grid.set_solid(cell)
 	var reach := grid.find_reachable(ENTRANCE, _player)
 	assert_true(reach.has(TALK_CELL), "Major Bob s'atteint sans être vu (Dresseurs évitables)")
-	# Poubelles fouillables sans être vu : toutes sauf la 15, au fond de la poche est (le guide
-	# ferme la rangée 12, la vue d'Axel l'entrée en (12, 10)) — grille validée, signalé à Kevin.
+	# Poubelles fouillables sans être vu : toutes, la 15 comprise (Axel avancé d'une case vers
+	# l'ouest, en (12, 10), décision de Kevin du 2026-10-16 : on rejoint (13, 11) par (13, 9)).
 	for slot: int in range(1, 16):
 		var bin := _bin_cell(slot)
 		var near := false
 		for direction: Vector2i in DIRECTIONS:
 			near = near or reach.has(bin + direction)
-		assert_eq(near, slot != 15, "poubelle %d fouillable sans être vu" % slot)
+		assert_true(near, "poubelle %d fouillable sans être vu" % slot)
 	for cell: Vector2i in seen:
 		grid.set_solid(cell, false)
 	assert_push_error_count(0)
 
 
-func test_guide_says_the_rule() -> void:
+## Avant le Badge Foudre : la règle (n° 31, validé) puis l'indice du type Sol (brouillon) ;
+## après : la règle seule.
+func test_guide_says_the_rule_and_the_ground_hint() -> void:
 	await _start(PUZZLE_START)
 	await _walk_path(Vector2i(9, 12))
 	_player.face(Vector2i.RIGHT)
 	await _interact_and_run()
-	assert_eq(_pages(), GUIDE)
+	assert_eq(_pages(), GUIDE + GUIDE_HINT)
+	GameState.flags.set_flag(&"badge_thunder")
+	_player.face(Vector2i.RIGHT)
+	_events.clear()
+	await _interact_and_run()
+	assert_eq(_pages(), GUIDE, "après le Badge Foudre : plus d'indice")
+	assert_push_error_count(0)
+
+
+## Poubelle n° 15 (14, 11) fouillée à pied sans jamais entrer dans une vue (Axel en (12, 10)) :
+## aucun combat.
+func test_bin_15_is_searched_without_a_battle() -> void:
+	await _start(PUZZLE_START)
+	var route: Array[Vector2i] = [Vector2i(7, 12), Vector2i(7, 11), Vector2i(7, 10),
+		Vector2i(7, 9), Vector2i(7, 8), Vector2i(8, 8), Vector2i(9, 8), Vector2i(10, 8),
+		Vector2i(11, 8), Vector2i(12, 8), Vector2i(12, 9), Vector2i(13, 9), Vector2i(13, 10),
+		Vector2i(13, 11)]
+	_events.clear()
+	for cell: Vector2i in route:
+		await _walk_to(cell)
+		assert_eq(_player.get_cell(), cell, "pas à pas, hors de toute vue")
+	_player.face(Vector2i.RIGHT)
+	await _interact_and_run()
+	assert_false(_events.has("battle"), "aucun Dresseur ne voit le joueur")
+	var puzzle := _boot.get_active_puzzle(&"vermilion_gym")
+	assert_not_null(puzzle, "la poubelle 15 a bien été fouillée")
+	if puzzle != null:
+		assert_eq(_pages(), [FIRST] if puzzle.first() == 15 else [NOTHING])
+	for id: StringName in TRAINERS:
+		assert_false(GameState.flags.has_flag(StringName("beaten_" + String(
+			_boot.get_map().get_npc(id).get_spec().trainer_id))), "%s pas affronté" % id)
 	assert_push_error_count(0)
 
 

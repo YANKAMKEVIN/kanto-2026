@@ -30,7 +30,7 @@
 			},
 			{
 				"species": "raichu", "level": 24,
-				"moves": ["thunder_shock", "thunder_wave", "thunderbolt"]
+				"moves": ["thunder_shock", "thunder_wave", "quick_attack"]
 			}
 		]
 	}

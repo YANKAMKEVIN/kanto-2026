@@ -150,8 +150,8 @@
 				"ss_anne_cabin_b", "ss_anne_cabin_c"
 			],
 			"subtitle": "Le grand paquebot de Kanto",
-			"description": "Un paquebot de croisière amarré au port de Carmin. Salons, cabines et ponts promenade : on s'y croirait déjà au large.",
-			"draft": true
+			"interior_title": true,
+			"description": "Un paquebot de croisière amarré au port de Carmin. Salons, cabines et ponts promenade : on s'y croirait déjà au large."
 		}
 	}
 }

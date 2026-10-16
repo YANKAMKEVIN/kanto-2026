@@ -299,6 +299,35 @@ func test_missing_file_and_wrong_root() -> void:
 ## Jalon 14 (dossier 17 §15 n° 66 à 68, jalon-14.md §2.10) : « rejoindre le Cap d'Azuria. »
 ## après le Pont Pépite, « aider Léo. » après sa rencontre, « le S.S. Anne fait escale… » après
 ## le Passe Bateau ; en tête de liste, devant « continuer vers la Route 3. ».
+## Jalon 16 : l'enchaînement du capitaine à Major Bob, puis plus aucune ligne du J16 après le
+## Badge Foudre (décision de Kevin du 2026-10-16 : « rejoindre l'Arène de Carmin. » retiré).
+func test_j16_objectives_until_the_thunder_badge() -> void:
+	var library := ObjectiveLibrary.new()
+	library.load_file()
+	var flags := StoryFlags.new()
+	for flag: StringName in [&"badge_boulder", &"cerulean_reached", &"badge_cascade",
+			&"beaten_nugget_rocket", &"bill_met", &"bill_restored", &"got_ss_ticket",
+			&"route_5_entered", &"vermilion_reached"]:
+		flags.set_flag(flag)
+	flags.set_flag(&"rival_ss_anne_won")
+	assert_eq(library.current(flags), "aider le capitaine.")
+	flags.set_flag(&"got_hm01")
+	assert_eq(library.current(flags), "rejoindre l'Arène de Carmin.")
+	flags.set_flag(&"badge_cascade", false)
+	assert_eq(library.current(flags), "obtenir le Badge Cascade.")
+	flags.set_flag(&"badge_cascade")
+	flags.set_flag(&"cut_vermilion_gym_bush")
+	assert_eq(library.current(flags), "ouvrir le passage vers Major Bob.")
+	flags.set_flag(&"vermilion_gym_puzzle_solved")
+	assert_eq(library.current(flags), "affronter Major Bob.")
+	flags.set_flag(&"badge_thunder")
+	var j16: Array[StringName] = [&"face_surge", &"open_surge_barrier", &"go_vermilion_gym",
+		&"hm01_cascade_badge", &"help_captain"]
+	assert_false(j16.has(library.current_id(flags)),
+		"après le Badge Foudre : plus d'objectif du J16 (%s)" % library.current_id(flags))
+	assert_ne(library.current(flags), "rejoindre l'Arène de Carmin.")
+
+
 func test_bill_objectives_in_order() -> void:
 	var library := ObjectiveLibrary.new()
 	library.load_file()

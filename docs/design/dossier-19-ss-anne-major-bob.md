@@ -161,6 +161,33 @@ zone du Pokédex et de la Carte.
   `ss-anne-pont-exterieur-v1.png`, `arene-carmin-v1.png` ; les autres salles du navire suivent le
   rendu du pont principal.
 
+### 0.6 Décisions de Kevin du 2026-10-16 (« oui à tes reco », après le T18)
+
+Sources : `docs/tech/jalon-16-equilibrage.md` (R-1 à R-4, chiffres « Après décisions de Kevin »
+au §9), rapports des T7, T11 et T14. **Remplacent** les valeurs du §5, du §9 et du §17 citées :
+
+- **Rival n° 4** (§5, niveaux recalés ; espèces, ordre, capacités, `switch` et 35 ₽ × dernier
+  niveau inchangés) : contre Salamèche et Carapuce **Roucoups 17, Rattatac 15, Kadabra 16,
+  starter évolué 18** (R-1) ; contre Bulbizarre **Roucoups 16, Rattatac 14, Kadabra 15,
+  Reptincel 16** (option intermédiaire (h)).
+- **Major Bob** (§9, R-3) : mêmes niveaux (Voltorbe 21, Pikachu 18, Raichu 24) ; **Raichu sans
+  Tonnerre** : Éclair, Cage-Éclair, Vive-Attaque. Tonnerre reste la récompense (CT24).
+- **Indice dans le jeu** : le guide de l'Arène ajoute, avant le Badge Foudre, deux bulles après le
+  n° 31 (inchangé) — **texte proposé par Claude, à valider par Kevin** (brouillon `draft` dans
+  `data/dialogues/vermilion_gym.json`) : « Et un conseil : ses Pokémon sont tous de type
+  Électrik. » / « Un Pokémon de type Sol ne craint pas leurs décharges ! ».
+- **Carte** : description de la zone `ss_anne` validée (« Un paquebot de croisière amarré au port
+  de Carmin. Salons, cabines et ponts promenade : on s'y croirait déjà au large. ») ; rectangle
+  juste sous Carmin validé.
+- **Titre « S.S. ANNE »** affiché dès l'embarquement (pont principal), pas seulement au pont
+  extérieur.
+- **Arène** : Rockeur Axel avancé d'une case, (13, 10) → (12, 10) dans `carmin_arene.txt` : chaque
+  poubelle se fouille sans entrer dans une vue (la 15 imposait Axel) ; les 3 Dresseurs restent
+  évitables.
+- **Gardés** : aucun soin à bord ; le marin pose PARTIR / PAS ENCORE et le joueur recule d'une case
+  après PAS ENCORE ; un Pokémon qui coupe sans planche d'exploration (Sabelette, Mystherbe…) coupe
+  avec le trait de lame seul (planches : phase DA) ; objectifs du J16 effacés après le Badge Foudre.
+
 Aucune autre décision de game design n'est ouverte : Q-1 à Q-11 (§16) sont techniques et seront
 réglées au plan `docs/tech/jalon-16.md`.
 
@@ -333,7 +360,7 @@ Porte (25,33), guide (29,31), T10 (13,10) regard sud, T11 (38,10) regard ouest, 
 
 ## 5. Rival n°4 — obligatoire, dans le couloir
 
-**Structure verrouillée [RB] :** Roucoups N19, Rattatac N16, Kadabra N18, starter évolué N20, dans cet ordre. **Choix du dernier Pokémon :** joueur Bulbizarre → rival Reptincel ; joueur Salamèche → rival Carabaffe ; joueur Carapuce → rival Herbizarre. IA `smart`, **aucun changement volontaire de Pokémon** ; niveaux recalables uniquement après simulation et validation.
+**Structure verrouillée [RB] :** Roucoups N19, Rattatac N16, Kadabra N18, starter évolué N20, dans cet ordre (**niveaux recalés le 2026-10-16, §0.6** : 17 / 15 / 16 / 18 contre Salamèche et Carapuce, 16 / 14 / 15 / 16 contre Bulbizarre). **Choix du dernier Pokémon :** joueur Bulbizarre → rival Reptincel ; joueur Salamèche → rival Carabaffe ; joueur Carapuce → rival Herbizarre. IA `smart`, **aucun changement volontaire de Pokémon** ; niveaux recalables uniquement après simulation et validation.
 
 | Pokémon | Capacités proposées, toutes sans mécanique interdite |
 |---|---|
@@ -415,7 +442,7 @@ Après départ : aucune entrée possible, coque absente, quai intact. Les Dresse
 
 Le tirage doit être reproductible au sein d'une entrée, mais non exploitable par rechargement de sauvegarde ; l'état partiel ne persiste pas. Ne pas utiliser d'étincelles ni d'indices désignant le bon objet. Les objets à fouiller doivent être clairement interactifs et accessibles sur tactile. **Mécanique nouvelle** : RNG de puzzle, état temporaire du premier interrupteur, vérification de voisinage et reset. [RB/K26/TECH]
 
-**Major Bob :** Voltorbe N21 (Charge, Grincement, Sonicboom), Pikachu N18 (Éclair, Cage-Éclair, Vive-Attaque), Raichu N24 (Éclair, Cage-Éclair, Tonnerre). IA `smart`, aucun switch IA. Les niveaux sont de référence, à recalibrer par simulation sans changer les trois espèces sans arbitrage. **Sonicboom : 20 dégâts fixes, 90 %, 20 PP** ; **Tonnerre : 90, 100 %, 15 PP, 10 % paralysie**. Pas de Destruction, Explosion, Reflet, Mur Lumière, Protection ou Entrave. [RB composition ; REC données ; K26 capacités manuelles]
+**Major Bob :** Voltorbe N21 (Charge, Grincement, Sonicboom), Pikachu N18 (Éclair, Cage-Éclair, Vive-Attaque), Raichu N24 (Éclair, Cage-Éclair, Tonnerre ; **sans Tonnerre depuis le 2026-10-16, §0.6** : Éclair, Cage-Éclair, Vive-Attaque). IA `smart`, aucun switch IA. Les niveaux sont de référence, à recalibrer par simulation sans changer les trois espèces sans arbitrage. **Sonicboom : 20 dégâts fixes, 90 %, 20 PP** ; **Tonnerre : 90, 100 %, 15 PP, 10 % paralysie**. Pas de Destruction, Explosion, Reflet, Mur Lumière, Protection ou Entrave. [RB composition ; REC données ; K26 capacités manuelles]
 
 **BOB-AVANT :** « Je suis Major Bob ! / Voyons si tu tiens le choc ! »
 
@@ -592,7 +619,7 @@ Ces questions ne rouvrent **aucune** décision G-1 à G-10 ; elles demandent seu
 | Puzzle | Premier hasard, second voisin, erreur reset, nouveau tirage à chaque entrée, porte ouverte à vie après réussite | RB/K26 |
 | Navire Dresseurs | 10, au plus 2 inévitables hors rival | K26 |
 | Espèces nouvelles | Maximum 3 ; zéro requise si dépendances J14 vérifiées | K26 |
-| Major Bob | Voltorbe, Pikachu, Raichu ; IA smart sans switch ; aucun bonus caché | RB/K26 |
+| Major Bob | Voltorbe, Pikachu, Raichu ; IA smart sans switch ; aucun bonus caché ; Raichu sans Tonnerre (§0.6, 2026-10-16) | RB/K26 |
 | Capacités | Tonnerre 90/100/15/10 % ; Sonicboom 20 fixes/90/20 ; Coupe 50/95/30 | REC |
 | Effets exclus | Destruction, Explosion, Entrave, Téléport en combat de Dresseur, Mur Lumière, Protection, Reflet, switch IA | K26 |
 | Récompenses | Badge Foudre, vibration, CT24 Tonnerre réutilisable, remises uniques | RB/K26 |

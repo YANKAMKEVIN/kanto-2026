@@ -23,7 +23,7 @@
 		}
 	},
 	"rocker_axel": {
-		"cell": [13, 10], "facing": "left", "sprite": "youngster",
+		"cell": [12, 10], "facing": "left", "sprite": "youngster",
 		"dialogue": "vermilion_gym_axel_defeated",
 		"trainer": {
 			"id": "vermilion_gym_rocker_axel", "sight": 3, "before": "vermilion_gym_axel_before",

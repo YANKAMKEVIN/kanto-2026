@@ -874,13 +874,19 @@ func test_mom_first_variant_is_automatic_and_only_hers() -> void:
 				_library.get_dialogue(id).variants[0], "%s : auto" % id)
 
 
-## Lot de textes validé par Kevin le 2026-10-06 : plus aucun dialogue ni variante provisoire.
+## Lot de textes validé par Kevin le 2026-10-06 : plus aucun dialogue ni variante provisoire,
+## sauf ceux qui attendent sa relecture, nommés ici (« id:variante »).
+## Jalon 16 (décisions du 2026-10-16) : indice du guide de l'Arène de Carmin (type Sol).
+const PENDING_DRAFT_VARIANTS: Array[String] = ["vermilion_gym_guide:0"]
+
+
 func test_no_dialogue_nor_variant_is_draft() -> void:
 	for id: StringName in _real_ids():
 		var dialogue := _library.get_dialogue(id)
 		assert_false(dialogue.draft, String(id))
 		for i: int in dialogue.variants.size():
-			assert_false(dialogue.variants[i].draft, "%s:%d" % [id, i])
+			var key := "%s:%d" % [id, i]
+			assert_eq(dialogue.variants[i].draft, PENDING_DRAFT_VARIANTS.has(key), key)
 
 
 ## Le soin de Maman (Q22, jalon 5C) : elle soigne l'équipe, seulement après le starter.
@@ -924,7 +930,9 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 		+ dossier_15.replace("{fossil}", "Fossile Dôme") \
 		+ dossier_15.replace("{fossil}", "Fossile Nautile")
 	for row: Array in _pages():
-		if GATE_GUARDS.has(row[0]) or UNVALIDATED.has(row[0]):
+		# Une variante en brouillon (PENDING_DRAFT_VARIANTS) attend la relecture de Kevin : son
+		# texte n'est encore dans aucun dossier.
+		if GATE_GUARDS.has(row[0]) or UNVALIDATED.has(row[0]) or (row[3] as DialogueVariant).draft:
 			continue
 		var text: String = row[1]
 		for token: String in _DOSSIER_TOKENS:

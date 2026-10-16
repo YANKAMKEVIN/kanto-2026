@@ -3,6 +3,9 @@
 # VALIDÉE par Kevin le 2026-10-15 (plans v1). Valeurs par défaut (règle 4) : tailles,
 # positions, mobilier. Vérifiée par tools/art/plan_check_ss_anne.py. La grille fait foi sur
 # les coordonnées du §3 du dossier (R-14).
+# Modifiée le 2026-10-16 (décision de Kevin) : Rockeur Axel avancé d'une case vers l'ouest,
+# (13, 10) → (12, 10), pour que chaque poubelle (la 15 en (14, 11) comprise) se fouille sans
+# entrer dans une vue ; les trois Dresseurs restent évitables.
 #
 # Salle technique : 15 objets à fouiller (poubelles et armoires électriques) en grille 5 × 3,
 # une barrière électrique (B) entre deux rangées de machines (m) protège Major Bob au fond.
@@ -44,7 +47,7 @@ entree              spawn          8,12         libre   # tourné ↑
 major_bob           pnj            8,3          bloque  role=G facing=down  # scène vermilion_gym_surge
 barriere            barriere       7..9,5       bloque  unless=vermilion_gym_puzzle_solved  # s'ouvre pour toujours
 louis               dresseur       3,8          bloque  role=T10 facing=right sight=3 trainer=vermilion_gym_gentleman_louis
-axel                dresseur       13,10        bloque  role=T11 facing=left sight=3 trainer=vermilion_gym_rocker_axel
+axel                dresseur       12,10        bloque  role=T11 facing=left sight=3 trainer=vermilion_gym_rocker_axel  # 2026-10-16 : (13,10) → (12,10), poubelle 15 hors vue
 marc                dresseur       12,6         bloque  role=T12 facing=left sight=3 trainer=vermilion_gym_sailor_marc
 guide               pnj            10,12        bloque  role=U facing=left
 poubelle_01         interactif     2,7          bloque  role=I index=1  # objet à fouiller

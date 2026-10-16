@@ -20,12 +20,14 @@
 	{
 		"id": "hm01_cascade_badge",
 		"text": "obtenir le Badge Cascade.",
-		"if": ["got_hm01"]
+		"if": ["got_hm01"],
+		"unless": ["badge_cascade"]
 	},
 	{
 		"id": "help_captain",
 		"text": "aider le capitaine.",
-		"if": ["rival_ss_anne_won"]
+		"if": ["rival_ss_anne_won"],
+		"unless": ["got_hm01"]
 	},
 	{
 		"id": "explore_vermilion",

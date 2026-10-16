@@ -99,6 +99,13 @@ func test_metadata_light_zone_and_interiors() -> void:
 	var zone := zones.get_zone(&"ss_anne")
 	assert_eq(zone.name, "S.S. Anne")
 	assert_eq(zone.subtitle, "Le grand paquebot de Kanto")
+	# Décision de Kevin du 2026-10-16 : titre de zone dès le pont principal (intérieur).
+	assert_true(zone.interior_title)
+	assert_true(zones.interior_title_of(&"ss_anne_main_deck"))
+	assert_false(zones.interior_title_of(&"vermilion_gym"), "l'Arène reste sans titre")
+	for id: StringName in zones.get_ids():
+		assert_eq(zones.get_zone(id).interior_title, id == &"ss_anne",
+			"%s : titre à l'intérieur" % id)
 
 
 func test_solid_cells_follow_the_grid() -> void:

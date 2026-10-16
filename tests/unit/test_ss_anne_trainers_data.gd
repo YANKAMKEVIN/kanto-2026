@@ -74,7 +74,13 @@ func test_surge() -> void:
 	for slot: TrainerSlot in bob.team:
 		species.append(slot.species)
 	assert_eq(species, [&"voltorb", &"pikachu", &"raichu"] as Array[StringName], "F-5")
-	assert_true(bob.team[2].moves.has(&"thunderbolt"))
+	# Décision de Kevin du 2026-10-16 (R-3) : niveaux gardés, Raichu sans Tonnerre (la CT24 reste
+	# la récompense).
+	assert_eq([bob.team[0].level, bob.team[1].level, bob.team[2].level], [21, 18, 24])
+	assert_eq(bob.team[2].moves, [&"thunder_shock", &"thunder_wave", &"quick_attack"]
+		as Array[StringName])
+	for slot: TrainerSlot in bob.team:
+		assert_false(slot.moves.has(&"thunderbolt"), "aucun Tonnerre dans l'équipe")
 
 
 func test_rival_by_starter() -> void:
@@ -89,5 +95,9 @@ func test_rival_by_starter() -> void:
 		assert_eq(team.size(), 4, String(starter))
 		assert_eq([team[0].species, team[1].species, team[2].species, team[3].species],
 			[&"pidgeotto", &"raticate", &"kadabra", last[starter]], "G-7")
-		assert_eq([team[0].level, team[1].level, team[2].level, team[3].level], [19, 16, 18, 20])
+		# Décision de Kevin du 2026-10-16 : R-1 contre Salamèche et Carapuce, option (h) contre
+		# Bulbizarre (jalon-16-equilibrage.md §6, §9).
+		var levels: Array = [16, 14, 15, 16] if starter == &"bulbasaur" else [17, 15, 16, 18]
+		assert_eq([team[0].level, team[1].level, team[2].level, team[3].level], levels,
+			String(starter))
 		assert_eq(team[2].moves, [&"confusion", &"psybeam"] as Array[StringName], "R-12")

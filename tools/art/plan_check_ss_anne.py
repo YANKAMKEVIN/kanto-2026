@@ -18,8 +18,9 @@ Critères (dossier 19, §0 R-14 et G-9, G-10, G-8) :
   Couloir — **le rival est inévitable** : aucun chemin de l'entrée à la porte du capitaine sans
     passer sur le déclencheur ; le déclencheur couvre toute la largeur.
   Arène — barrière fermée : Major Bob **inaccessible** ; barrière ouverte : accessible ; les 15
-    objets à fouiller sont atteignables barrière fermée ; chaque index a au moins un voisin
-    orthogonal dans la grille 5 × 3 (G-8).
+    objets à fouiller sont atteignables barrière fermée, **chacun sans entrer dans la vue d'un
+    Dresseur** (décision de Kevin du 2026-10-16) ; chaque index a au moins un voisin orthogonal
+    dans la grille 5 × 3 (G-8).
 
 Usage : python3 tools/art/plan_check_ss_anne.py   (code 1 si un critère échoue)
 """
@@ -182,6 +183,12 @@ def main() -> int:
 	poubelles = sorted((int(p.attrs["index"]), p) for p in a.positions.values() if p.kind == "interactif")
 	r.critere(len(poubelles) == 15, f"{len(poubelles)} objets à fouiller")
 	r.critere(all(joignable(a, p, ferme) for _, p in poubelles), "les 15 objets sont fouillables barrière fermée")
+	# Décision de Kevin du 2026-10-16 : aucune fouille n'impose un combat (la poubelle 15 passait par
+	# la vue d'Axel). Chemin et case de fouille hors de toute vue, barrière fermée.
+	hors_vue = atteignables(a, entree(a), bloquees(a), zone_vue(a))
+	vues_ko = [i for i, p in poubelles if not joignable(a, p, hors_vue)]
+	r.critere(not vues_ko, "chaque objet se fouille sans entrer dans une vue"
+		+ (f" (échec : {vues_ko})" if vues_ko else ""))
 	voisins_ok = all(any(0 <= ((i - 1) // 5 + dy) < 3 and 0 <= ((i - 1) % 5 + dx) < 5
 		for dx, dy in DIRS.values()) for i, _ in poubelles)
 	r.critere(voisins_ok, "chaque index a au moins un voisin orthogonal dans la grille 5 × 3")

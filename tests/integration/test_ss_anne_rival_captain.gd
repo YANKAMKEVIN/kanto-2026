@@ -3,8 +3,9 @@ extends GutTest
 ## §6, textes validés §0.5 n° 16 à 24), avec la vraie scène Boot, les vraies cartes du couloir et
 ## de la cabine, les vraies scènes `ss_anne_rival` / `ss_anne_captain`, l'autoload SceneRouter
 ## (fondus raccourcis), le combat instantané et une sauvegarde en mémoire :
-## - équipe selon le starter (Roucoups 19, Rattatac 16, Kadabra 18 Choc Mental + Rafale Psy,
-##   starter évolué 20 avec l'avantage), IA `smart` avec `switch`, 35 ₽ × niveau, Grand moment
+## - équipe selon le starter (Roucoups 17, Rattatac 15, Kadabra 16 Choc Mental + Rafale Psy,
+##   starter évolué 18 avec l'avantage ; contre Bulbizarre 16 / 14 / 15 / 16 ; décision de
+##   Kevin du 2026-10-16), IA `smart` avec `switch`, 35 ₽ × niveau, Grand moment
 ##   à la victoire ;
 ## - vue sur les 3 cases de la colonne 7, inévitable ; défaite → réveil au dernier Centre sans
 ##   perte d'argent, rival toujours là ; reprise sans introduction ; victoire → n° 19, départ vers
@@ -283,8 +284,10 @@ func test_the_team_follows_the_starter_with_kadabra_and_the_reference_levels() -
 			continue
 		var all := team.get_all()
 		var species: Array = all.map(func(p: Pokemon) -> Array: return [p.species_id, p.level])
-		assert_eq(species, [[&"pidgeotto", 19], [&"raticate", 16], [&"kadabra", 18],
-			[expected[starter][0], 20]], "ordre et niveaux de référence (dossier §5)")
+		var levels: Array = [16, 14, 15, 16] if starter == &"bulbasaur" else [17, 15, 16, 18]
+		assert_eq(species, [[&"pidgeotto", levels[0]], [&"raticate", levels[1]],
+			[&"kadabra", levels[2]], [expected[starter][0], levels[3]]],
+			"ordre du dossier §5, niveaux de la décision de Kevin du 2026-10-16")
 		var moves: Array = all.map(func(p: Pokemon) -> Array:
 			return p.moves.map(func(m: MoveSlot) -> StringName: return m.move_id))
 		assert_eq(moves[0], [&"gust", &"quick_attack", &"sand_attack"])
@@ -294,7 +297,7 @@ func test_the_team_follows_the_starter_with_kadabra_and_the_reference_levels() -
 		for move_list: Array in moves:
 			for move: StringName in move_list:
 				assert_false([&"teleport", &"disable"].has(move), "Téléport et Entrave exclus")
-		assert_eq(trainer.prize_per_level * all.back().level, 700)
+		assert_eq(trainer.prize_per_level * all.back().level, 35 * levels[3])
 
 
 # --- Carte : vue inévitable, PNJ --------------------------------------------------------------
@@ -371,7 +374,7 @@ func test_defeat_resume_and_victory_with_a_single_moment() -> void:
 	_assert_lines(RESUME + WIN_LINES, true, "reprise, victoire")
 	_assert_lines(INTRO + LOST_LINES, false, "victoire")
 	assert_true(GameState.flags.has_flag(&"rival_ss_anne_won"))
-	assert_eq(GameState.money, before + 700, "35 × Nv. 20")
+	assert_eq(GameState.money, before + 630, "35 × Nv. 18 (décision de Kevin du 2026-10-16)")
 	var moments := _rival_moments()
 	assert_eq(moments.size(), 1, "exactement un Grand moment")
 	if moments.size() == 1:

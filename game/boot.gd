@@ -1293,7 +1293,8 @@ func _on_map_entered(map: GameMap) -> void:
 	GameState.discover_map(map.map_id)
 	_companion.on_map_entered(map)
 	request_autosave("changement de carte")
-	if _announcer.should_announce(map.display_name, map.interior):
+	var indoors := map.interior and not _zones.interior_title_of(map.map_id)
+	if _announcer.should_announce(map.display_name, indoors):
 		_hud.show_zone_title(map.display_name, region)
 		zone_announced.emit(map.display_name, region)
 

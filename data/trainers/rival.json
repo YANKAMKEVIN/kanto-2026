@@ -53,22 +53,22 @@
 		"end_message": false, "start_message": true, "bag": true, "moment": "win", "switch": true,
 		"team_by_starter": {
 			"bulbasaur": [
-				{ "species": "pidgeotto", "level": 19, "moves": ["gust", "quick_attack", "sand_attack"] },
-				{ "species": "raticate", "level": 16, "moves": ["quick_attack", "bite", "tail_whip"] },
-				{ "species": "kadabra", "level": 18, "moves": ["confusion", "psybeam"] },
-				{ "species": "charmeleon", "level": 20, "moves": ["ember", "scratch", "growl"] }
+				{ "species": "pidgeotto", "level": 16, "moves": ["gust", "quick_attack", "sand_attack"] },
+				{ "species": "raticate", "level": 14, "moves": ["quick_attack", "bite", "tail_whip"] },
+				{ "species": "kadabra", "level": 15, "moves": ["confusion", "psybeam"] },
+				{ "species": "charmeleon", "level": 16, "moves": ["ember", "scratch", "growl"] }
 			],
 			"charmander": [
-				{ "species": "pidgeotto", "level": 19, "moves": ["gust", "quick_attack", "sand_attack"] },
-				{ "species": "raticate", "level": 16, "moves": ["quick_attack", "bite", "tail_whip"] },
-				{ "species": "kadabra", "level": 18, "moves": ["confusion", "psybeam"] },
-				{ "species": "wartortle", "level": 20, "moves": ["water_gun", "tackle", "tail_whip"] }
+				{ "species": "pidgeotto", "level": 17, "moves": ["gust", "quick_attack", "sand_attack"] },
+				{ "species": "raticate", "level": 15, "moves": ["quick_attack", "bite", "tail_whip"] },
+				{ "species": "kadabra", "level": 16, "moves": ["confusion", "psybeam"] },
+				{ "species": "wartortle", "level": 18, "moves": ["water_gun", "tackle", "tail_whip"] }
 			],
 			"squirtle": [
-				{ "species": "pidgeotto", "level": 19, "moves": ["gust", "quick_attack", "sand_attack"] },
-				{ "species": "raticate", "level": 16, "moves": ["quick_attack", "bite", "tail_whip"] },
-				{ "species": "kadabra", "level": 18, "moves": ["confusion", "psybeam"] },
-				{ "species": "ivysaur", "level": 20, "moves": ["vine_whip", "tackle", "growl"] }
+				{ "species": "pidgeotto", "level": 17, "moves": ["gust", "quick_attack", "sand_attack"] },
+				{ "species": "raticate", "level": 15, "moves": ["quick_attack", "bite", "tail_whip"] },
+				{ "species": "kadabra", "level": 16, "moves": ["confusion", "psybeam"] },
+				{ "species": "ivysaur", "level": 18, "moves": ["vine_whip", "tackle", "growl"] }
 			]
 		}
 	}

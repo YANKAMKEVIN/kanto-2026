@@ -1,7 +1,7 @@
 # Jalon 16 — équilibrage par simulation (T18) : rival n° 4 et Major Bob
 
-> **Information pour Kevin. Aucune donnée de jeu n'a été changée** (`data/` intact). Les réglages
-> « essayés » n'existent que dans les scénarios de simulation (`tools/sim/`).
+> **Information pour Kevin.** Rapport du T18 : aucune donnée changée alors. **Décisions de Kevin du
+> 2026-10-16** (« oui à tes reco ») appliquées dans `data/` par le T21 : chiffres au §9.
 > Plan : `jalon-16.md` §3 « T18 » et §5 (risques « Kadabra trop fort », « Tonnerre de Raichu au
 > N24 »). Dossier : `dossier-19-ss-anne-major-bob.md` §5, §9, Q-8. Modèle : `jalon-13-equilibrage.md`.
 
@@ -216,3 +216,66 @@ python3 tools/sim/table_sim.py build/sim/j16_t18/seuils_*.txt          # tableau
 Un parcours complet (11 équipes × 16 variantes × 1 000 graines) prend ≈ 1 h 30 sur le Mac chargé,
 réparti en 5 processus par `--equipe` ; les seuils ≈ 15 min par réglage. Rapports bruts (non
 versionnés) : `build/sim/j16_t18/`. Test : `tests/integration/test_simulate_ss_anne.gd`.
+
+## 9. Après décisions de Kevin (2026-10-16)
+
+Branche `j16-decisions` (T21). **Données appliquées** : rival n° 4 contre Salamèche et Carapuce
+**17 / 15 / 16 / 18** (R-1), contre Bulbizarre **16 / 14 / 15 / 16** (option (h) de R-2) ; Major
+Bob **Voltorbe 21, Pikachu 18, Raichu 24 sans Tonnerre** (Éclair, Cage-Éclair, Vive-Attaque :
+réglage (c) de R-3) ; indice du type Sol par le guide (sans effet sur la simulation) ; Dresseurs du
+navire et de l'Arène, changement de Pokémon de l'IA et absence de soin à bord gardés (R-4, Q-T18-5).
+Scénarios régénérés (`gen_ss_anne_scenarios.py`), mêmes commandes (§8), graines 0 à 999 ; rapports
+bruts `build/sim/j16_decisions/` (non versionnés). Les réglages de comparaison des seuils sont
+inchangés (ils partent maintenant des nouvelles données : (b) = données pour Salamèche et
+Carapuce, (h) = données pour Bulbizarre, (c) = données pour Major Bob).
+
+### 9.1 Parcours (`--donnees`, premier essai attentif · expert ; entre parenthèses : battu en 6 essais)
+
+| Équipe | Rival : directe | Rival : tous | Bob : directe | Bob : tous |
+|---|---|---|---|---|
+| Reptincel 21 | **95 · 98 %** (avant : 63 · 80) | 98 · 100 % | **67 · 48 %** (100 %) (avant : 0,3 %) | 98 · 98 % |
+| « Kevin » (Nidorino) | **99 · 100 %** (63 · 77) | 100 · 100 % | **55 · 54 %** (100 %) (avant : 0 %) | 98 · 98 % |
+| Carabaffe 21 | **96 · 99 %** (72 · 91) | 99 · 100 % | **0,3 · 0,4 %** (3 %) | **11 · 14 %** (55–69 %) |
+| **Herbizarre 20** | **0,3 · 7 %** (13 · 54 %) (avant : 0) | **82 · 95 %** (98 %) (avant : 0 · 2) | — (peu y arrivent) | 100 · 99 % |
+| bas Reptincel 20 · bas Carabaffe 20 | 93 · 96 % · **72 · 90 %** (avant : 46 · 8,5) | 98 % · 100 % | 53 % · 0 % | 98 % · 0 % |
+| bas Herbizarre 18 | **0 %** (jamais en 6 essais) | — | — | — |
+| Sol, ordre gardé (Racaillou ; Nidoking ; Carabaffe + Racaillou ; Herbizarre + Racaillou) | 98 ; 100 ; 98 ; **6 %** | 99 ; 100 ; 100 ; 66 % | **100 %** partout | **100 %** partout |
+| Naïf (toutes équipes, directe) | 0–79 % | — | 0–17 % (Sol : 88–100 %) | — |
+
+- **Sans retour au quai** (10 Dresseurs du navire, puis le rival) : 0 à 12 % au rival (67 % avec
+  Nidoking), comme avant (0–9 %) : l'usure reste le danger du navire.
+- Major Bob avec « meilleur en tête » (le Racaillou part contre Voltorbe) : 68–100 % (avant 52–76).
+
+### 9.2 Seuils (attentif, premier essai ; **3 Potions | sac de Carmin**), meneur N20 · 22 · 24 · 26
+
+| Combat | Reptincel | « Kevin » | Herbizarre | Carabaffe |
+|---|---|---|---|---|
+| **Rival n° 4** (données) | 36 · 86 · 99 · 100 \| **86 · 97 · 100** | 32 · 93 · 100 \| **79 · 99 · 100** | 2 · 13 · 84 · 100 \| 14 · 41 · 96 · 100 | 32 · 90 · 100 \| **86 · 98 · 100** |
+| **Major Bob** (données) | 16 · 68 · 100 · 100 \| 56 · **94** · 100 | 4 · 44 · 98 · 100 \| 28 · **89** · 100 | 10 · 78 · 100 \| 92 · 95 · 100 | **0 · 0 · 1 · 14 \| 0 · 0 · 6 · 50** |
+
+Équipes d'appoint contre Major Bob (attentif, 3 Potions, N20 · 22 · 24) : Sol en ordre gardé 100 %
+partout ; Carabaffe + Racaillou en tête 18 · 72 · 96 % ; Carabaffe + Mystherbe 38 · 70 · 76 % ;
+Carabaffe avec Tunnel 5 · 43 · 86 % ; Reptincel avec Tunnel 88 · 98 · 100 %.
+Ces chiffres retrouvent ceux des réglages (b), (h) et (c) du T18 (écart ≤ 1 point, graines identiques).
+
+### 9.3 Constats
+
+1. **Rival n° 4 contre Salamèche et Carapuce : dans la cible** (95–99 % en directe ; 72 % pour la
+   Carabaffe « bas », 8,5 % avant).
+2. **Rival n° 4 contre Bulbizarre** : l'option (h) retenue le rend franchissable **avec les Dresseurs
+   facultatifs** (82 % au premier essai, 98 % en 6 essais) ; **en directe (meneur N20), il reste un
+   mur** (0,3 %, 13 % en 6 essais ; Herbizarre « bas » N18 : 0 %), comme R-2 l'annonçait (« il faut
+   alors les Dresseurs facultatifs »). Le chemin direct ne donne que 0 à 1 niveau depuis la fin du
+   J13 (§2).
+3. **Major Bob** : Salamèche passe à 55–67 % en directe (100 % en 6 essais), ≈ 98 % avec les
+   Dresseurs ; Bulbizarre 100 % ; tout Pokémon de type Sol gardé pour Raichu : 100 %.
+   **Carapuce sans Sol ni Plante reste bloqué** (0,3 % en directe, 11 % avec tous les Dresseurs,
+   55–69 % en 6 essais ; seuils : 0 % jusqu'au N24, 14 · 50 % au N26) : c'est le mur voulu de R-3,
+   dont la réponse (Sol, Plante, Tunnel) est désormais **annoncée par le guide**.
+
+### 9.4 Points à surveiller (pas des questions bloquantes)
+
+- Bulbizarre en chemin direct contre le rival n° 4 (constat 2) : si Kevin veut qu'il passe sans
+  détour, l'option (i) (14 / 12 / 13 / 15) donnait 31 · 82 % (N20 · 22) au T18.
+- Carapuce sans Sol contre Major Bob (constat 3) : l'indice du guide est la seule aide ; texte à
+  valider par Kevin (`jalon-16.md` T21).

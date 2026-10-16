@@ -404,6 +404,9 @@ func test_departure_show_lasts_at_most_ten_seconds() -> void:
 
 func test_free_exit_and_round_trip_between_carmin_and_the_ship() -> void:
 	await _start("ss_anne_free_exit")
+	var zones: Array[String] = []
+	_boot.zone_announced.connect(func(zone: String, region: String) -> void:
+		zones.append("%s / %s" % [zone, region]))
 	await _walk(Vector2i.DOWN, EXIT_W)
 	await _play_out()
 	assert_eq(_pages, [TXT_03] as Array[String], "TXT-03 au premier passage")
@@ -417,6 +420,11 @@ func test_free_exit_and_round_trip_between_carmin_and_the_ship() -> void:
 		return _boot.get_map().map_id == DECK and not SceneRouter.is_transitioning(), TIMEOUT)
 	await _play_out()
 	assert_eq(_player.get_cell(), ABOVE_EXIT_W, "arrivée à bord au-dessus de la passerelle")
+	# Décision de Kevin du 2026-10-16 : « S.S. ANNE » dès l'embarquement (pont principal, un
+	# intérieur ; zone `interior_title`), une fois par aller.
+	assert_eq(zones, ["Carmin-sur-Mer / Le port des grands départs",
+		"S.S. Anne / Le grand paquebot de Kanto"]
+		as Array[String], "titres de zone : Carmin, puis le navire dès le pont principal")
 	# Seconde sortie : plus de TXT-03.
 	_pages.clear()
 	await _walk(Vector2i.DOWN, EXIT_W)

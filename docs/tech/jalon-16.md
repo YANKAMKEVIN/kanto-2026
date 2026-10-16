@@ -379,7 +379,8 @@ Le modèle exact est celui de `route_24_rival` :
 **Données** : `rival_ss_anne` en fin de `rival.json` :
 - IA `smart`, `can_lose false`, `"moment": "win"`, `prize_per_level 35`, `start_message true` ;
 - `team_by_starter` : Roucoups 19, Rattatac 16, Kadabra 18 (**Choc Mental, Rafale Psy**, R-12),
-  starter évolué 20 avec l'avantage de type ;
+  starter évolué 20 avec l'avantage de type — **recalé le 2026-10-16 (T21)** : 17 / 15 / 16 / 18
+  contre Salamèche et Carapuce, 16 / 14 / 15 / 16 contre Bulbizarre ;
 - capacités choisies à la main pour tous (dossier §5, sans mécanique interdite).
 
 R-7 : le drapeau de victoire suit le modèle du J13 (`rival_<lieu>_won`) et non `beaten_`.
@@ -427,8 +428,8 @@ chargement ; `got_hm01` sans `hm01` → l'objet est rendu une fois. Les deux son
   2. `vermilion_gym_puzzle_solved` → « affronter Major Bob. » ;
   3. `cut_vermilion_gym_bush` → « ouvrir le passage vers Major Bob. » ;
   4. `got_hm01` + `badge_cascade` → « rejoindre l'Arène de Carmin. » ;
-  5. `got_hm01` → « obtenir le Badge Cascade. » ;
-  6. `rival_ss_anne_won` → « aider le capitaine. » ;
+  5. `got_hm01` sans `badge_cascade` → « obtenir le Badge Cascade. » ;
+  6. `rival_ss_anne_won` sans `got_hm01` → « aider le capitaine. » (les deux `unless` : T21) ;
   7. `got_ss_ticket` → existant (« monter à bord… », à aligner).
 - **Zones** :
   - `ss_anne` « S.S. Anne » (`kind` intérieur, les 9 cartes) ;
@@ -607,6 +608,7 @@ identifiant. Écarts au plan :
   (`kanto_placeholder_areas.json`, sous Carmin) ; `vermilion_gym` rangée dans `vermilion_city`.
   Le pont principal est un intérieur : **le titre de zone ne s'affiche qu'au pont extérieur** (carte
   d'extérieur) — à revoir au T12 (embarquement) si le titre doit tomber dès la passerelle.
+  **2026-10-16 (T21)** : description validée ; titre dès le pont principal (`interior_title`).
 Tests : `test_ss_anne_maps` (grille ↔ carte, passages, raccords à Carmin par identifiants, vision
 des 13 Dresseurs des grilles sur la vraie carte, 0 inévitable sur le pont principal, rival
 incontournable, puzzle et barrière sur la vraie Arène, départs, nœuds) ; listes de `test_map_links`
@@ -642,7 +644,7 @@ Major Bob. » et « ouvrir le passage vers Major Bob. » en tête ; départs `ve
 `surge_weak`, `thunder_no_tm` ; test `test_vermilion_gym_sequence`. Correctif :
 `SceneRouter.before_spawn` (FlagGate à jour avant de poser le joueur ; la sortie de l'Arène
 tombait sur l'arbuste coupé). Écart à signaler : la poubelle 15 n'est atteignable que par la vue
-d'Axel (guide en (10, 12)). Sprites provisoires `guard`/`traveler`/`youngster`/`sailor`.
+d'Axel (guide en (10, 12)) — **réglé au T21** (Axel en (12, 10)). Sprites provisoires `guard`/`traveler`/`youngster`/`sailor`.
 
 #### T15 — constructeur-monde : départ du navire (16D) — après T8, T11
 
@@ -720,7 +722,8 @@ sans lui.
 = mur binaire (Sol gardé pour Raichu : 100 % ; sans Sol : 0–5 % au niveau d'arrivée, Carapuce
 0 % jusqu'au N26) à cause de Tonnerre ; rival n° 4 = mur pour Bulbizarre (0 % au N20–24), dans
 la cible pour Salamèche et Carapuce (63–72 % en directe). Recommandations R-1 à R-3 et questions
-Q-T18-1 à 5 au §6–7 du rapport ; **aucune donnée changée**.
+Q-T18-1 à 5 au §6–7 du rapport ; **aucune donnée changée**. Réponses de Kevin et nouveaux
+chiffres : T21 et §9 du rapport.
 
 #### T19 — architecte : alignements — à chaque fusion de `main`
 
@@ -745,6 +748,50 @@ régénéré.
   de `jalon-15.md`, validé sur S21) ; `test_names_unique_across_all_trainers` le refuse. Le nom
   affiché de `ss_anne_scout_basile` devient **« Scout Oscar »** (défaut, règle 4 ; identifiant et
   grille `ss_anne_cabine_b.txt` inchangés) — **à confirmer par Kevin** (R-10 du dossier 19).
+
+#### T21 — architecte : décisions de Kevin du 2026-10-16 (« oui à tes reco »)
+
+**Fait le 2026-10-16** (branche `j16-decisions` depuis `jalon-16` à `c76bf96d`, données, grilles,
+textes et tests seulement ; aucune scène `.tscn` touchée, aucun builder relancé) :
+1. **Carte** : description de `ss_anne` validée (`draft` retiré de `zones.json`).
+2. **Titre « S.S. ANNE » dès l'embarquement** : clé de zone `interior_title` (`ZoneLibrary`,
+   `ZoneData.interior_title`, `zones.json` : `ss_anne`) ; Boot annonce une carte intérieure dont la
+   zone la porte (`ZoneLibrary.interior_title_of`). Aucune scène à régénérer : `display_name` et
+   `region` du pont principal sont déjà « S.S. Anne » / « Le grand paquebot de Kanto ».
+3. **Poubelle n° 15** : Rockeur Axel (13, 10) → **(12, 10)** (tourné ←, vue (9..11, 10)) dans
+   `tools/plans/carmin_arene.txt` et `data/npcs/vermilion_gym.json` ; nouveau critère de
+   `tools/art/plan_check_ss_anne.py` « chaque objet se fouille sans entrer dans une vue » (vert ;
+   l'ancienne position échoue sur la 15) ; les 3 Dresseurs restent évitables. Le PNJ est posé par
+   les données : l'Arène n'a **pas** à être régénérée (cases solides inchangées, aucune case
+   d'Axel dans `blocked_cells`). La planche `reference/ss-anne-plans-v1.png`
+   (`tools/art/plan_ss_anne.py`) montre encore l'ancienne case.
+4. **Objectifs après `badge_thunder`** : le test a montré que « rejoindre l'Arène de Carmin. »
+   disparaissait bien, mais que la ligne retombait sur « obtenir le Badge Cascade. »
+   (`hm01_cascade_badge`, `if got_hm01` seul). Corrigé en données : `hm01_cascade_badge`
+   `unless badge_cascade`, `help_captain` `unless got_hm01`. Après le Badge Foudre, la première
+   ligne vraie est celle du J15 (« explorer Carmin-sur-Mer. ») jusqu'à l'objectif du J17.
+5. **Pokémon qui coupent sans planche** : trait de lame seul, gardé (Reportés, phase DA).
+6. **Marin PARTIR / PAS ENCORE**, recul d'une case : déjà fait, inchangé.
+7. **Rival n° 4 contre Bulbizarre** : Roucoups 16, Rattatac 14, Kadabra 15, Reptincel 16.
+8. **Rival n° 4 contre Salamèche et Carapuce** (R-1) : Roucoups 17, Rattatac 15, Kadabra 16,
+   starter évolué 18 (récompense 35 ₽ × 18 = 630 ₽ ; 560 ₽ contre Bulbizarre).
+9. **Major Bob** (R-3) : niveaux gardés, Raichu **Éclair, Cage-Éclair, Vive-Attaque** (les trois
+   capacités du réglage (c) mesuré au T18 ; aucune 4e capacité n'y figurait, aucune n'est
+   ajoutée). **Indice du guide** (variante `unless badge_thunder`, n° 31 inchangé puis deux bulles,
+   marquée `draft`) — **à valider par Kevin** : « Et un conseil : ses Pokémon sont tous de type
+   Électrik. » / « Un Pokémon de type Sol ne craint pas leurs décharges ! ». Après le badge : n° 31
+   seul.
+10. **Pas de soin à bord** : gardé.
+11. Simulations relancées : `jalon-16-equilibrage.md` §9 — rival n° 4 en directe 95–99 %
+   (Salamèche, Carapuce), Bulbizarre 0,3 % en directe et 82 % avec les Dresseurs facultatifs ;
+   Major Bob : Salamèche 55–67 % en directe, Bulbizarre 100 %, Sol gardé 100 %, Carapuce sans Sol
+   ni Plante toujours bloqué (0,3 % ; 11 % avec les Dresseurs).
+Tests : `test_zone_library` (description, `interior_title`), `test_no_draft_in_data`,
+`test_dialogue_data` (variante en brouillon nommée), `test_ss_anne_maps`, `test_ss_anne_departure`
+(titres de zone à l'aller-retour), `test_vermilion_gym_sequence` (Axel, poubelle 15 fouillée à pied
+sans combat, indice avant / après le badge, capacités de Raichu), `test_ss_anne_trainers_data`,
+`test_ss_anne_rival_captain` (niveaux, récompense), `test_objective_library` (enchaînement du J16
+jusqu'au Badge Foudre).
 
 #### T20 — fin et clôture — après la fusion du J15
 
@@ -774,8 +821,8 @@ retour impossible ; **aucun état mixte** après un arrêt brutal à chaque éta
 conservé ; Corde Sortie refusée à bord.
 
 **16E** — puzzle strict (premier au hasard, second voisin, erreur → zéro, nouveau tirage à chaque
-entrée) ; résolu pour toujours, même après une défaite ; Major Bob (paralysie, Sonicboom,
-Tonnerre), aucun bonus caché ; « BADGE FOUDRE » ; CT24 une fois ; rattrapage.
+entrée) ; résolu pour toujours, même après une défaite ; Major Bob (paralysie, Sonicboom ;
+Raichu sans Tonnerre depuis le T21), aucun bonus caché ; indice du type Sol par le guide ; « BADGE FOUDRE » ; CT24 une fois ; rattrapage.
 
 **16F** — raccord au Carmin du J15 ; vraie partie de Kevin sans régression J1–J15 ; sauvegarde v7
 relue par l'APK final ; carte de QA retirée ; ≥ 58 fps de moyenne.
@@ -793,7 +840,7 @@ relue par l'APK final ; carte de QA retirée ; ≥ 58 fps de moyenne.
 | **CS01 obtenue sans Cascade** | incompréhension | ARB-01 explicite, objectif « obtenir le Badge Cascade. » |
 | **Conflits avec le J15** (scènes, objets, Sac) | fusions coûteuses | fin d'enum, fichiers nouveaux, « garder les deux » |
 | **Kadabra trop fort** (Choc Mental, Rafale Psy) | rival dur | simulation T18 |
-| **Tonnerre de Raichu au N24** | Major Bob trop fort | simulation T18, niveaux recalés avec Kevin |
+| **Tonnerre de Raichu au N24** | Major Bob trop fort | simulation T18 ; Kevin (T21) : Raichu sans Tonnerre, indice du guide |
 
 ---
 
@@ -826,6 +873,10 @@ relue par l'APK final ; carte de QA retirée ; ≥ 58 fps de moyenne.
 
 **Pour information** (défauts réversibles d'une ligne) : un Pokémon K.O. peut couper ; onglet
 « CT/CS » ; Major Bob 2 400 ₽.
+
+**À valider par Kevin (T21)** : texte de l'indice du guide de l'Arène (brouillon) : « Et un
+conseil : ses Pokémon sont tous de type Électrik. » / « Un Pokémon de type Sol ne craint pas leurs
+décharges ! ».
 
 ---
 
