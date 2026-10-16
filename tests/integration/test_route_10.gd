@@ -177,16 +177,17 @@ func test_cave_mouths_and_south_edge() -> void:
 				continue
 			if cave_built:
 				assert_eq(warp.target_map, &"dark_cave_1f")
-				assert_eq(warp.target_spawn, &"from_route_10_n" if id.ends_with("nord")
-					else &"from_route_10_s")
+				assert_eq(warp.target_spawn, StringName("from_route_10_%s_%s" % [
+					"n" if id.ends_with("nord") else "s", "we"[cell.x - _plan.cells_at(id)[0].x]]))
 			else:
 				assert_eq(warp.coming_soon, "Grotte Sombre")
 				assert_eq(warp.facing, Vector2i.DOWN)
 				assert_eq(_map.get_spawn_cell(warp.target_spawn), cell + Vector2i.DOWN)
-	for spawn: StringName in [&"from_dark_cave_n", &"from_dark_cave_s"]:
+	for spawn: StringName in [&"from_dark_cave_n_w", &"from_dark_cave_n_e",
+			&"from_dark_cave_s_w", &"from_dark_cave_s_e"]:
 		assert_true(_map.has_spawn(spawn))
-	assert_eq(_map.get_spawn_cell(&"from_dark_cave_n"), Vector2i(16, 8))
-	assert_eq(_map.get_spawn_cell(&"from_dark_cave_s"), Vector2i(8, 48))
+	assert_eq(_map.get_spawn_cell(&"from_dark_cave_n_w"), Vector2i(16, 8))
+	assert_eq(_map.get_spawn_cell(&"from_dark_cave_s_w"), Vector2i(8, 48))
 	var lavender_built := MapCatalog.has_map(&"lavender_town")
 	for cell: Vector2i in _plan.cells_at("warp_sud"):
 		var warp := _map.get_warps().find_on_push(cell, Vector2i.DOWN)

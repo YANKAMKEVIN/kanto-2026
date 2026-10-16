@@ -62,13 +62,14 @@ const CENTER_ANCHOR := Vector2i(8, 11)
 const CAVE_MAP: StringName = &"dark_cave_1f"
 const CAVE_LABEL: String = "Grotte Sombre"
 const CAVE_NORTH: Array = [["CaveNorthW", Vector2i(16, 7)], ["CaveNorthE", Vector2i(17, 7)]]
-const CAVE_NORTH_SPAWN: StringName = &"from_route_10_n"
-const CAVE_NORTH_FRONT: Array = [["from_dark_cave_n", Vector2i(16, 8)],
+## Arrivée dans la grotte : un spawn par colonne (`from_route_10_n_w|e`, `_s_w|e`, kit de grotte).
+const CAVE_NORTH_SPAWNS: Array[StringName] = [&"from_route_10_n_w", &"from_route_10_n_e"]
+const CAVE_NORTH_FRONT: Array = [["from_dark_cave_n_w", Vector2i(16, 8)],
 	["from_dark_cave_n_e", Vector2i(17, 8)]]
 const CAVE_NORTH_ANCHOR := Vector2i(17, 7)
 const CAVE_SOUTH: Array = [["CaveSouthW", Vector2i(8, 47)], ["CaveSouthE", Vector2i(9, 47)]]
-const CAVE_SOUTH_SPAWN: StringName = &"from_route_10_s"
-const CAVE_SOUTH_FRONT: Array = [["from_dark_cave_s", Vector2i(8, 48)],
+const CAVE_SOUTH_SPAWNS: Array[StringName] = [&"from_route_10_s_w", &"from_route_10_s_e"]
+const CAVE_SOUTH_FRONT: Array = [["from_dark_cave_s_w", Vector2i(8, 48)],
 	["from_dark_cave_s_e", Vector2i(9, 48)]]
 const CAVE_SOUTH_ANCHOR := Vector2i(9, 47)
 ## Module de la bouche : série 19 si elle est là, sinon l'entrée de la Route 3.
@@ -258,9 +259,9 @@ func _add_passages() -> void:
 			&"route_10_center", &"entrance", Vector2i.ZERO)
 		_kit.call(&"add_spawn", CENTER_SPAWNS[i][0], CENTER_SPAWNS[i][1])
 	for i: int in 2:
-		_add_cave_door(CAVE_NORTH[i], CAVE_NORTH_SPAWN, CAVE_NORTH_FRONT[i][0])
+		_add_cave_door(CAVE_NORTH[i], CAVE_NORTH_SPAWNS[i], CAVE_NORTH_FRONT[i][0])
 		_kit.call(&"add_spawn", CAVE_NORTH_FRONT[i][0], CAVE_NORTH_FRONT[i][1])
-		_add_cave_door(CAVE_SOUTH[i], CAVE_SOUTH_SPAWN, CAVE_SOUTH_FRONT[i][0])
+		_add_cave_door(CAVE_SOUTH[i], CAVE_SOUTH_SPAWNS[i], CAVE_SOUTH_FRONT[i][0])
 		_kit.call(&"add_spawn", CAVE_SOUTH_FRONT[i][0], CAVE_SOUTH_FRONT[i][1])
 	var south_built := _map_exists(SOUTH_MAP)
 	for entry: Array in SOUTH_EXITS:

@@ -142,11 +142,11 @@ func test_every_coming_soon_warp_returns_to_a_walkable_spawn_of_its_own_map() ->
 	# nord du poste vers Safrania (2 cases, jamais atteinte). Jalon 15 (T14) : Route 11
 	# (trois cases), Arène de Carmin (deux), S.S. Anne (deux), Safrania (porte nord de la
 	# Route 6, une).
-	# Jalon 18 (T12) : « Azuria » (3, bord ouest de la Route 9), « Grotte Sombre » (4, bouches de la
-	# Route 10), « Lavanville » (3, bord sud de la Route 10) ; à retirer au fur et à mesure que
-	# les cartes de la grotte, de Lavanville et d'Azuria (variante J18) existent.
-	assert_eq(found, 20, "« SAFRANIA » (2), « Route 11 » (3), Arène de Carmin (2), "
-		+ "S.S. Anne (2), Safrania (1), Azuria (3), Grotte Sombre (4), Lavanville (3)")
+	# Jalon 18 : seule « Azuria » (3, bord ouest de la Route 9) reste à venir (variante J18 d'Azuria
+	# après la Coupe du J16) ; la Grotte Sombre et Lavanville sont reliées à la Route 10, et les
+	# passages de Lavanville et de la Tour sont comptés dans leurs propres tests.
+	assert_eq(found, 13, "« SAFRANIA » (2), « Route 11 » (3), Arène de Carmin (2), "
+		+ "S.S. Anne (2), Safrania (1), Azuria (3)")
 
 
 ## Warp de [param map] qui ramène à [param origin] depuis [param arrival] : sur la case

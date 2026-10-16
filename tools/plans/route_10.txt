@@ -121,9 +121,9 @@ warp_ouest          warp           0,12..14     libre   # PUSH ← → route_9, 
 from_route_9        spawn          0,12..14     libre   # arrivée de la Route 9, tournée →
 porte_centre        warp           7..8,11      libre   # STEP_ON ↑ → route_10_center (les deux cases « open »)
 from_center         spawn          7..8,12      libre   # sortie du Centre, tournée ↓
-entree_grotte_nord  warp           16..17,7     libre   # STEP_ON ↑ → dark_cave_1f, from_route_10_n
+entree_grotte_nord  warp           16..17,7     libre   # STEP_ON ↑ → dark_cave_1f, from_route_10_n_w|e
 from_dark_cave_n    spawn          16..17,8     libre   # sortie de la grotte (entrée nord), Corde Sortie et Tunnel (§5.6), tournée ↓
-entree_grotte_sud   warp           8..9,47      libre   # STEP_ON ↑ → dark_cave_1f, from_route_10_s
+entree_grotte_sud   warp           8..9,47      libre   # STEP_ON ↑ → dark_cave_1f, from_route_10_s_w|e
 from_dark_cave_s    spawn          8..9,48      libre   # sortie sud de la grotte, tournée ↓
 warp_sud            warp           21..23,75    libre   # PUSH ↓ → lavender_town, from_route_10 (Lavanville (21..23, 0), mêmes colonnes)
 from_lavender       spawn          21..23,75    libre   # arrivée de Lavanville, tournée ↑
