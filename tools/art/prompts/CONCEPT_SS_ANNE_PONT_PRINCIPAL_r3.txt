@@ -1,0 +1,49 @@
+CONCEPT ART — S.S. ANNE, LE PONT PRINCIPAL (grand hall d'accueil du paquebot) (Kanto 2026), image de référence de direction artistique (agencement et rendu cible des intérieurs du navire).
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. Une seule grande salle rectangulaire d'environ 22 cases de large sur 9 de profondeur (une case ≈ la largeur d'un personnage).
+Légende du plan (gauche = ouest, haut = nord) :
+- brun très foncé = MURS et masse du navire autour de la salle (y compris les marges de l'image) : rien ne s'y dessine ;
+- bande brun clair en haut = la FACE du MUR DU FOND (nord), vue de face : boiseries vernies, HUBLOTS ronds cerclés de laiton et appliques murales entre les portes ;
+- trois rectangles brun moyen dans ce mur du fond = trois PORTES de cabine en bois verni avec plaque de laiton (à gauche, au centre gauche, à droite), exactement à ces places ;
+- rectangle brun à gauche, au milieu du mur ouest = une porte à double battant vitrée vers le RESTAURANT ; rectangle brun à droite, au milieu du mur est = une porte vers le PONT EXTÉRIEUR (on devine la lumière du large) ;
+- beige = le SOL de la salle : un parquet de pont, avec au centre un grand TAPIS sobre, uni avec une simple bordure (tapis posé à plat, il ne bloque rien) ;
+- trois paires de rectangles rouges en haut = trois BANQUETTES capitonnées rouge sombre, alignées devant le mur du fond (une case de sol libre entre elles et le mur) ;
+- deux disques verts (en haut à droite et en bas à gauche) = deux PLANTES vertes en pot ;
+- rectangle brun très sombre en bas à droite du centre = le COMPTOIR D'ACCUEIL en bois sombre, avec une sonnette et un registre fermé ;
+- rectangle strié en bas à droite = un ESCALIER qui DESCEND vers le pont inférieur, avec rampe de laiton ;
+- rectangle blanc au milieu du bord bas = l'OUVERTURE de la PASSERELLE d'embarquement (le joueur entre par là ; au-delà, rien que le bord de l'image).
+Respecte ce plan À LA LETTRE : forme de la salle, place de chaque porte, des banquettes, des plantes, du comptoir, de l'escalier et de la passerelle. Rien d'autre sur le sol : le reste est LIBRE et lisible. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+RÈGLE ABSOLUE : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; murs, meubles et bords suivent une grille : angles droits, AUCUNE courbe ni diagonale dans les murs ; le sol est entièrement plat (seul l'escalier descend).
+
+IMAGE 2 : le LABORATOIRE DU PROFESSEUR CHEN, un autre intérieur du même jeu. Respecte EXACTEMENT son style de rendu : même pinceau, même perspective, même épaisseur des murs, même lumière intérieure, même façon de peindre les meubles et le sol. Ne reprends RIEN de sa composition, de ses meubles ni de ses occupants : ni personnage, ni Pokémon, ni machine, ni ordinateur, ni bibliothèque, ni Poké Ball.
+
+Format : PAYSAGE 1536 × 1024, vue plongeante sur toute la salle, comme le plan.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus, axes de l'image alignés sur la grille, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE, comme l'image 2. Les verticales restent verticales. On voit le mur du fond (nord) de face, le sol en entier, le dessus des murs latéraux et du mur sud.
+- Aucun trait noir : contours fins et doux. Ombres colorées brun-violet, jamais grises ni noires.
+
+AMBIANCE — paquebot ancien, chaleureux, « fidèle à Pokémon » : boiseries chaleureuses, laiton, tapis sobre, hublots, lumière naturelle du matin sur la mer qui entre par les hublots et la porte du pont extérieur, appliques chaudes. Élégant mais pas luxueux : jamais un paquebot de luxe contemporain, jamais de marbre ni de dorures excessives, ni lustre de cristal.
+
+PERSONNE : aucun personnage, aucun Pokémon, aucun animal ; la salle est vide.
+
+INTERDITS : texte, lettres, chiffres, numéros de cabine, logo, signature, filigrane, cadre, interface ; personnages ; Pokémon ; Poké Ball ou objet posé au sol ; meubles non prévus par le plan (pas de tables, de fauteuils, de colonnes ni de piano) ; néons ; style moderne ; tapis aux motifs complexes ; pixel art, 3D, photo.
+
+L'image doit raconter, sans texte : on vient de monter à bord d'un beau navire, et chaque porte promet une découverte.
+
+CORRECTIONS (2e essai ; le 1er essai était excellent sur le style, la lumière, les boiseries, les hublots, les banquettes, les plantes, le comptoir, l'escalier et la passerelle : garde-les à l'identique autant que possible) :
+1. La salle est un RECTANGLE SIMPLE : aucun décrochement, aucune encoche dans les coins ni dans les murs latéraux ; les murs ouest et est sont droits sur toute leur longueur, le mur sud est droit d'un coin à l'autre (seule l'ouverture de la passerelle l'interrompt).
+2. La porte du milieu du mur du fond est au CENTRE GAUCHE, pas au centre : environ aux deux cinquièmes de la largeur en partant de la gauche, comme sur le plan. Les deux autres restent à leur place (un cinquième et quatre cinquièmes).
+3. Une seule porte (double battant) sur chaque mur latéral, au milieu de sa hauteur : à gauche vers le restaurant, à droite vers le pont extérieur.
+4. Le comptoir d'accueil est un peu plus court (environ quatre cases de long) ; l'ouverture de la passerelle fait DEUX cases de large, juste à gauche du centre du mur sud.
+5. Une case de parquet libre entre les banquettes et le mur du fond.
+
+CORRECTIONS (3e essai ; le 2e essai était excellent : salle rectangulaire simple, trois portes du fond aux bonnes places, une porte double au milieu de chaque mur latéral, banquettes, plantes, tapis, hublots, lumière : une IMAGE SUPPLÉMENTAIRE est jointe en dernier : c'est ce 2e essai ; reprends-le à l'identique (cadrage, matières, lumière) en corrigeant seulement les points ci-dessous) :
+1. L'ESCALIER du coin bas-droit DESCEND vers le pont inférieur : c'est une trémie ouverte dans le plancher, entourée d'une rampe de laiton, dont les marches s'enfoncent vers le BAS (de plus en plus sombres), et non une rampe qui monte. Il est PETIT : deux cases de large sur UNE seule case de profondeur, collé contre le mur sud et le mur est ; le parquet au-dessus de lui est libre.
+2. Le COMPTOIR D'ACCUEIL est plus COURT : quatre cases de long sur une de profondeur, posé juste au-dessus du mur sud, entre l'ouverture de la passerelle et l'escalier, avec une case de parquet libre entre lui et l'escalier.
+3. L'ouverture de la passerelle fait DEUX cases de large, juste à gauche du centre du mur sud.
+4. Lumière : garde la lumière du matin, mais un peu moins orangée et moins saturée que le 2e essai (bois chaleureux, murs crème, reflets doux).

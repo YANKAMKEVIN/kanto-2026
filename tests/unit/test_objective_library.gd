@@ -16,7 +16,11 @@ func test_real_data_loads_without_error() -> void:
 	assert_eq(library.get_errors().size(), 0)
 	# Jalon 15 (T15, jalon-15.md §2.7.9) : « explorer Carmin-sur-Mer. » puis « rejoindre
 	# Carmin-sur-Mer, au sud. » en tête (ordre du voyage), devant le S.S. Anne du J14.
-	assert_eq(library.get_ids(), [&"explore_vermilion", &"go_vermilion", &"ss_anne", &"help_bill",
+	# Jalon 16 (T13, jalon-16.md §2.9) : après le rival n° 4 et la CS01, en tête ; (T14) l'Arène
+	# de Carmin devant (dossier 19 §0.5, objectifs R-9).
+	assert_eq(library.get_ids(), [&"face_surge", &"open_surge_barrier",
+		&"go_vermilion_gym", &"hm01_cascade_badge", &"help_captain",
+		&"explore_vermilion", &"go_vermilion", &"ss_anne", &"help_bill",
 		&"go_cerulean_cape",
 		&"explore_cerulean", &"cross_nugget_bridge",
 		&"get_cascade_badge", &"go_cerulean", &"cross_mt_moon", &"go_route_3",
@@ -69,7 +73,8 @@ func test_q4_nothing_before_the_rival_battle_then_reach_viridian() -> void:
 ## Jalon 12 (T18) : `route_3_entered` est levé par la scène du déclencheur de la Route 3 ;
 ## (T28) `route_4_reached` par celle du déclencheur du sas (data/cutscenes/route_4.json), posé
 ## aussi sur la vraie Route 4 du J13 (mêmes cases).
-const _PENDING_FLAGS: Array[StringName] = [&"viridian_arrived"]
+## Jalon 16 (T14) : `cut_vermilion_gym_bush` sera levé par la scène de Coupe de l'arbuste (T15).
+const _PENDING_FLAGS: Array[StringName] = [&"viridian_arrived", &"cut_vermilion_gym_bush"]
 
 
 ## Jalon 10 (dossier 12 §16, jalon-10.md §2.10) : « continuer vers le nord. » jusqu'à Argenta,
@@ -294,6 +299,35 @@ func test_missing_file_and_wrong_root() -> void:
 ## Jalon 14 (dossier 17 §15 n° 66 à 68, jalon-14.md §2.10) : « rejoindre le Cap d'Azuria. »
 ## après le Pont Pépite, « aider Léo. » après sa rencontre, « le S.S. Anne fait escale… » après
 ## le Passe Bateau ; en tête de liste, devant « continuer vers la Route 3. ».
+## Jalon 16 : l'enchaînement du capitaine à Major Bob, puis plus aucune ligne du J16 après le
+## Badge Foudre (décision de Kevin du 2026-10-16 : « rejoindre l'Arène de Carmin. » retiré).
+func test_j16_objectives_until_the_thunder_badge() -> void:
+	var library := ObjectiveLibrary.new()
+	library.load_file()
+	var flags := StoryFlags.new()
+	for flag: StringName in [&"badge_boulder", &"cerulean_reached", &"badge_cascade",
+			&"beaten_nugget_rocket", &"bill_met", &"bill_restored", &"got_ss_ticket",
+			&"route_5_entered", &"vermilion_reached"]:
+		flags.set_flag(flag)
+	flags.set_flag(&"rival_ss_anne_won")
+	assert_eq(library.current(flags), "aider le capitaine.")
+	flags.set_flag(&"got_hm01")
+	assert_eq(library.current(flags), "rejoindre l'Arène de Carmin.")
+	flags.set_flag(&"badge_cascade", false)
+	assert_eq(library.current(flags), "obtenir le Badge Cascade.")
+	flags.set_flag(&"badge_cascade")
+	flags.set_flag(&"cut_vermilion_gym_bush")
+	assert_eq(library.current(flags), "ouvrir le passage vers Major Bob.")
+	flags.set_flag(&"vermilion_gym_puzzle_solved")
+	assert_eq(library.current(flags), "affronter Major Bob.")
+	flags.set_flag(&"badge_thunder")
+	var j16: Array[StringName] = [&"face_surge", &"open_surge_barrier", &"go_vermilion_gym",
+		&"hm01_cascade_badge", &"help_captain"]
+	assert_false(j16.has(library.current_id(flags)),
+		"après le Badge Foudre : plus d'objectif du J16 (%s)" % library.current_id(flags))
+	assert_ne(library.current(flags), "rejoindre l'Arène de Carmin.")
+
+
 func test_bill_objectives_in_order() -> void:
 	var library := ObjectiveLibrary.new()
 	library.load_file()

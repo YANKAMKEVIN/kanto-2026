@@ -1,0 +1,68 @@
+# Arène de Carmin (vermilion_gym) — grille fonctionnelle.
+# Jalon 16, dossier 19 (S.S. Anne et Badge Foudre) ; préparée par Claude le 2026-10-15,
+# VALIDÉE par Kevin le 2026-10-15 (plans v1). Valeurs par défaut (règle 4) : tailles,
+# positions, mobilier. Vérifiée par tools/art/plan_check_ss_anne.py. La grille fait foi sur
+# les coordonnées du §3 du dossier (R-14).
+# Modifiée le 2026-10-16 (décision de Kevin) : Rockeur Axel avancé d'une case vers l'ouest,
+# (13, 10) → (12, 10), pour que chaque poubelle (la 15 en (14, 11) comprise) se fouille sans
+# entrer dans une vue ; les trois Dresseurs restent évitables.
+#
+# Salle technique : 15 objets à fouiller (poubelles et armoires électriques) en grille 5 × 3,
+# une barrière électrique (B) entre deux rangées de machines (m) protège Major Bob au fond.
+# Puzzle Rouge/Bleu strict (G-8) : voisins = voisins orthogonaux dans la grille 5 × 3 des
+# index (1..15, ligne par ligne). La salle (15 rangées) dépasse l'écran : la caméra suit.
+#
+# Légende :
+#   K mur (bloqué)      . sol (praticable)
+#   X sortie (praticable, warp PUSH ↓)   D porte (praticable, warp terminal)   S escalier (warp terminal)
+#   i objet à fouiller (bloqué)   m machine électrique (bloqué)
+#   B barrière (praticable une fois ouverte ; la position « barriere » la bloque jusqu'à
+#     vermilion_gym_puzzle_solved)
+#
+# Format : section GRILLE (« NN » + espace + 17 caractères par rangée), puis POSITIONS.
+
+PRATICABLES .XB
+
+GRILLE 17 15
+00 KKKKKKKKKKKKKKKKK
+01 KKKKKKKKKKKKKKKKK
+02 KK.............KK
+03 KK.............KK
+04 KK.............KK
+05 KKmmmmmBBBmmmmmKK
+06 KK.............KK
+07 KKi..i..i..i..iKK
+08 KK.............KK
+09 KKi..i..i..i..iKK
+10 KK.............KK
+11 KKi..i..i..i..iKK
+12 KK.............KK
+13 KKKKKKKXXXKKKKKKK
+14 KKKKKKKKKKKKKKKKK
+FIN
+
+POSITIONS
+sortie              warp           7..9,13      libre   # PUSH ↓ → Carmin (carte du J15), from_gym
+entree              spawn          8,12         libre   # tourné ↑
+major_bob           pnj            8,3          bloque  role=G facing=down  # scène vermilion_gym_surge
+barriere            barriere       7..9,5       bloque  unless=vermilion_gym_puzzle_solved  # s'ouvre pour toujours
+louis               dresseur       3,8          bloque  role=T10 facing=right sight=3 trainer=vermilion_gym_gentleman_louis
+axel                dresseur       12,10        bloque  role=T11 facing=left sight=3 trainer=vermilion_gym_rocker_axel  # 2026-10-16 : (13,10) → (12,10), poubelle 15 hors vue
+marc                dresseur       12,6         bloque  role=T12 facing=left sight=3 trainer=vermilion_gym_sailor_marc
+guide               pnj            10,12        bloque  role=U facing=left
+poubelle_01         interactif     2,7          bloque  role=I index=1  # objet à fouiller
+poubelle_02         interactif     5,7          bloque  role=I index=2  # objet à fouiller
+poubelle_03         interactif     8,7          bloque  role=I index=3  # objet à fouiller
+poubelle_04         interactif     11,7         bloque  role=I index=4  # objet à fouiller
+poubelle_05         interactif     14,7         bloque  role=I index=5  # objet à fouiller
+poubelle_06         interactif     2,9          bloque  role=I index=6  # objet à fouiller
+poubelle_07         interactif     5,9          bloque  role=I index=7  # objet à fouiller
+poubelle_08         interactif     8,9          bloque  role=I index=8  # objet à fouiller
+poubelle_09         interactif     11,9         bloque  role=I index=9  # objet à fouiller
+poubelle_10         interactif     14,9         bloque  role=I index=10  # objet à fouiller
+poubelle_11         interactif     2,11         bloque  role=I index=11  # objet à fouiller
+poubelle_12         interactif     5,11         bloque  role=I index=12  # objet à fouiller
+poubelle_13         interactif     8,11         bloque  role=I index=13  # objet à fouiller
+poubelle_14         interactif     11,11        bloque  role=I index=14  # objet à fouiller
+poubelle_15         interactif     14,11        bloque  role=I index=15  # objet à fouiller
+FIN

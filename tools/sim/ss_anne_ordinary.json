@@ -1,0 +1,3178 @@
+{
+	"version": 1,
+	"title": "Dresseurs ordinaires du navire et de l'Arène, combat seul (jalon 16)",
+	"description": "Règle de Kevin du 2026-10-16 (≤ 80 % au premier essai) : un combat par partie, équipe soignée, joueur attentif avec le sac de Carmin ; équipes de la ligne droite (fin du J13). Réglages : données, + 2 / + 4 niveaux, IA smart. Information pour Kevin : aucune donnée de jeu n'est changée. Généré par tools/sim/gen_ss_anne_scenarios.py.",
+	"seeds": 1000,
+	"heal_at_start": true,
+	"teams": [
+		{
+			"name": "Reptincel 21, Férosinge 18, Roucool 17, Mystherbe 17",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 21
+				},
+				{
+					"species": "mankey",
+					"level": 18
+				},
+				{
+					"species": "pidgey",
+					"level": 17
+				},
+				{
+					"species": "oddish",
+					"level": 17
+				}
+			]
+		},
+		{
+			"name": "Kevin : Reptincel 21, Roucool 18, Nidorino 16, Rattata 16",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 21
+				},
+				{
+					"species": "pidgey",
+					"level": 18
+				},
+				{
+					"species": "nidorino",
+					"level": 16
+				},
+				{
+					"species": "rattata",
+					"level": 16
+				}
+			]
+		},
+		{
+			"name": "Herbizarre 20, Roucool 17, Papilusion 15",
+			"starter": "bulbasaur",
+			"members": [
+				{
+					"species": "ivysaur",
+					"level": 20
+				},
+				{
+					"species": "pidgey",
+					"level": 17
+				},
+				{
+					"species": "butterfree",
+					"level": 15,
+					"moves": [
+						"tackle",
+						"string_shot",
+						"harden",
+						"confusion"
+					]
+				}
+			]
+		},
+		{
+			"name": "Carabaffe 21, Roucool 18, Papilusion 16",
+			"starter": "squirtle",
+			"members": [
+				{
+					"species": "wartortle",
+					"level": 21
+				},
+				{
+					"species": "pidgey",
+					"level": 18
+				},
+				{
+					"species": "butterfree",
+					"level": 16,
+					"moves": [
+						"tackle",
+						"string_shot",
+						"harden",
+						"confusion"
+					]
+				}
+			]
+		},
+		{
+			"name": "bas : Herbizarre 18, Roucool 14, Papilusion 12",
+			"starter": "bulbasaur",
+			"members": [
+				{
+					"species": "ivysaur",
+					"level": 18
+				},
+				{
+					"species": "pidgey",
+					"level": 14
+				},
+				{
+					"species": "butterfree",
+					"level": 12,
+					"moves": [
+						"tackle",
+						"string_shot",
+						"harden",
+						"confusion"
+					]
+				}
+			]
+		},
+		{
+			"name": "bas : Carabaffe 20, Roucool 15, Papilusion 13",
+			"starter": "squirtle",
+			"members": [
+				{
+					"species": "wartortle",
+					"level": 20
+				},
+				{
+					"species": "pidgey",
+					"level": 15
+				},
+				{
+					"species": "butterfree",
+					"level": 13,
+					"moves": [
+						"tackle",
+						"string_shot",
+						"harden",
+						"confusion"
+					]
+				}
+			]
+		},
+		{
+			"name": "bas : Reptincel 20, Férosinge 17, Roucool 16, Mystherbe 16",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 20
+				},
+				{
+					"species": "mankey",
+					"level": 17
+				},
+				{
+					"species": "pidgey",
+					"level": 16
+				},
+				{
+					"species": "oddish",
+					"level": 16
+				}
+			]
+		}
+	],
+	"tables": {},
+	"trainers": {
+		"ss_anne_gentleman_armand__donnees": {
+			"name": "Gentleman Armand",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 760,
+			"team": [
+				{
+					"species": "rattata",
+					"level": 17,
+					"moves": [
+						"tackle",
+						"quick_attack"
+					]
+				},
+				{
+					"species": "raticate",
+					"level": 19,
+					"moves": [
+						"quick_attack",
+						"bite"
+					]
+				}
+			]
+		},
+		"ss_anne_gentleman_armand__plus2": {
+			"name": "Gentleman Armand",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 760,
+			"team": [
+				{
+					"species": "rattata",
+					"level": 19,
+					"moves": [
+						"tackle",
+						"quick_attack"
+					]
+				},
+				{
+					"species": "raticate",
+					"level": 21,
+					"moves": [
+						"quick_attack",
+						"bite"
+					]
+				}
+			]
+		},
+		"ss_anne_gentleman_armand__plus4": {
+			"name": "Gentleman Armand",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 760,
+			"team": [
+				{
+					"species": "rattata",
+					"level": 21,
+					"moves": [
+						"tackle",
+						"quick_attack"
+					]
+				},
+				{
+					"species": "raticate",
+					"level": 23,
+					"moves": [
+						"quick_attack",
+						"bite"
+					]
+				}
+			]
+		},
+		"ss_anne_gentleman_armand__smart": {
+			"name": "Gentleman Armand",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 760,
+			"team": [
+				{
+					"species": "rattata",
+					"level": 17,
+					"moves": [
+						"tackle",
+						"quick_attack"
+					]
+				},
+				{
+					"species": "raticate",
+					"level": 19,
+					"moves": [
+						"quick_attack",
+						"bite"
+					]
+				}
+			]
+		},
+		"ss_anne_gentleman_armand__plus2_smart": {
+			"name": "Gentleman Armand",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 760,
+			"team": [
+				{
+					"species": "rattata",
+					"level": 19,
+					"moves": [
+						"tackle",
+						"quick_attack"
+					]
+				},
+				{
+					"species": "raticate",
+					"level": 21,
+					"moves": [
+						"quick_attack",
+						"bite"
+					]
+				}
+			]
+		},
+		"ss_anne_gentleman_armand__plus4_smart": {
+			"name": "Gentleman Armand",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 760,
+			"team": [
+				{
+					"species": "rattata",
+					"level": 21,
+					"moves": [
+						"tackle",
+						"quick_attack"
+					]
+				},
+				{
+					"species": "raticate",
+					"level": 23,
+					"moves": [
+						"quick_attack",
+						"bite"
+					]
+				}
+			]
+		},
+		"ss_anne_sailor_erwan__donnees": {
+			"name": "Marin Erwan",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 360,
+			"team": [
+				{
+					"species": "machop",
+					"level": 18,
+					"moves": [
+						"low_kick",
+						"karate_chop"
+					]
+				}
+			]
+		},
+		"ss_anne_sailor_erwan__plus2": {
+			"name": "Marin Erwan",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 360,
+			"team": [
+				{
+					"species": "machop",
+					"level": 20,
+					"moves": [
+						"low_kick",
+						"karate_chop"
+					]
+				}
+			]
+		},
+		"ss_anne_sailor_erwan__plus4": {
+			"name": "Marin Erwan",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 360,
+			"team": [
+				{
+					"species": "machop",
+					"level": 22,
+					"moves": [
+						"low_kick",
+						"karate_chop"
+					]
+				}
+			]
+		},
+		"ss_anne_sailor_erwan__smart": {
+			"name": "Marin Erwan",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 360,
+			"team": [
+				{
+					"species": "machop",
+					"level": 18,
+					"moves": [
+						"low_kick",
+						"karate_chop"
+					]
+				}
+			]
+		},
+		"ss_anne_sailor_erwan__plus2_smart": {
+			"name": "Marin Erwan",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 360,
+			"team": [
+				{
+					"species": "machop",
+					"level": 20,
+					"moves": [
+						"low_kick",
+						"karate_chop"
+					]
+				}
+			]
+		},
+		"ss_anne_sailor_erwan__plus4_smart": {
+			"name": "Marin Erwan",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 360,
+			"team": [
+				{
+					"species": "machop",
+					"level": 22,
+					"moves": [
+						"low_kick",
+						"karate_chop"
+					]
+				}
+			]
+		},
+		"ss_anne_sailor_loic__donnees": {
+			"name": "Marin Loïc",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 360,
+			"team": [
+				{
+					"species": "shellder",
+					"level": 18,
+					"moves": [
+						"tackle",
+						"withdraw"
+					]
+				},
+				{
+					"species": "goldeen",
+					"level": 18,
+					"moves": [
+						"peck",
+						"tail_whip"
+					]
+				}
+			]
+		},
+		"ss_anne_sailor_loic__plus2": {
+			"name": "Marin Loïc",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 360,
+			"team": [
+				{
+					"species": "shellder",
+					"level": 20,
+					"moves": [
+						"tackle",
+						"withdraw"
+					]
+				},
+				{
+					"species": "goldeen",
+					"level": 20,
+					"moves": [
+						"peck",
+						"tail_whip"
+					]
+				}
+			]
+		},
+		"ss_anne_sailor_loic__plus4": {
+			"name": "Marin Loïc",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 360,
+			"team": [
+				{
+					"species": "shellder",
+					"level": 22,
+					"moves": [
+						"tackle",
+						"withdraw"
+					]
+				},
+				{
+					"species": "goldeen",
+					"level": 22,
+					"moves": [
+						"peck",
+						"tail_whip"
+					]
+				}
+			]
+		},
+		"ss_anne_sailor_loic__smart": {
+			"name": "Marin Loïc",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 360,
+			"team": [
+				{
+					"species": "shellder",
+					"level": 18,
+					"moves": [
+						"tackle",
+						"withdraw"
+					]
+				},
+				{
+					"species": "goldeen",
+					"level": 18,
+					"moves": [
+						"peck",
+						"tail_whip"
+					]
+				}
+			]
+		},
+		"ss_anne_sailor_loic__plus2_smart": {
+			"name": "Marin Loïc",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 360,
+			"team": [
+				{
+					"species": "shellder",
+					"level": 20,
+					"moves": [
+						"tackle",
+						"withdraw"
+					]
+				},
+				{
+					"species": "goldeen",
+					"level": 20,
+					"moves": [
+						"peck",
+						"tail_whip"
+					]
+				}
+			]
+		},
+		"ss_anne_sailor_loic__plus4_smart": {
+			"name": "Marin Loïc",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 360,
+			"team": [
+				{
+					"species": "shellder",
+					"level": 22,
+					"moves": [
+						"tackle",
+						"withdraw"
+					]
+				},
+				{
+					"species": "goldeen",
+					"level": 22,
+					"moves": [
+						"peck",
+						"tail_whip"
+					]
+				}
+			]
+		},
+		"ss_anne_gentleman_emile__donnees": {
+			"name": "Gentleman Émile",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 720,
+			"team": [
+				{
+					"species": "pikachu",
+					"level": 18,
+					"moves": [
+						"thunder_shock",
+						"quick_attack"
+					]
+				}
+			]
+		},
+		"ss_anne_gentleman_emile__plus2": {
+			"name": "Gentleman Émile",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 720,
+			"team": [
+				{
+					"species": "pikachu",
+					"level": 20,
+					"moves": [
+						"thunder_shock",
+						"quick_attack"
+					]
+				}
+			]
+		},
+		"ss_anne_gentleman_emile__plus4": {
+			"name": "Gentleman Émile",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 720,
+			"team": [
+				{
+					"species": "pikachu",
+					"level": 22,
+					"moves": [
+						"thunder_shock",
+						"quick_attack"
+					]
+				}
+			]
+		},
+		"ss_anne_gentleman_emile__smart": {
+			"name": "Gentleman Émile",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 720,
+			"team": [
+				{
+					"species": "pikachu",
+					"level": 18,
+					"moves": [
+						"thunder_shock",
+						"quick_attack"
+					]
+				}
+			]
+		},
+		"ss_anne_gentleman_emile__plus2_smart": {
+			"name": "Gentleman Émile",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 720,
+			"team": [
+				{
+					"species": "pikachu",
+					"level": 20,
+					"moves": [
+						"thunder_shock",
+						"quick_attack"
+					]
+				}
+			]
+		},
+		"ss_anne_gentleman_emile__plus4_smart": {
+			"name": "Gentleman Émile",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 720,
+			"team": [
+				{
+					"species": "pikachu",
+					"level": 22,
+					"moves": [
+						"thunder_shock",
+						"quick_attack"
+					]
+				}
+			]
+		},
+		"ss_anne_sailor_yann__donnees": {
+			"name": "Marin Yann",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 360,
+			"team": [
+				{
+					"species": "horsea",
+					"level": 18,
+					"moves": [
+						"bubble",
+						"leer"
+					]
+				},
+				{
+					"species": "shellder",
+					"level": 18,
+					"moves": [
+						"tackle",
+						"withdraw"
+					]
+				}
+			]
+		},
+		"ss_anne_sailor_yann__plus2": {
+			"name": "Marin Yann",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 360,
+			"team": [
+				{
+					"species": "horsea",
+					"level": 20,
+					"moves": [
+						"bubble",
+						"leer"
+					]
+				},
+				{
+					"species": "shellder",
+					"level": 20,
+					"moves": [
+						"tackle",
+						"withdraw"
+					]
+				}
+			]
+		},
+		"ss_anne_sailor_yann__plus4": {
+			"name": "Marin Yann",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 360,
+			"team": [
+				{
+					"species": "horsea",
+					"level": 22,
+					"moves": [
+						"bubble",
+						"leer"
+					]
+				},
+				{
+					"species": "shellder",
+					"level": 22,
+					"moves": [
+						"tackle",
+						"withdraw"
+					]
+				}
+			]
+		},
+		"ss_anne_sailor_yann__smart": {
+			"name": "Marin Yann",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 360,
+			"team": [
+				{
+					"species": "horsea",
+					"level": 18,
+					"moves": [
+						"bubble",
+						"leer"
+					]
+				},
+				{
+					"species": "shellder",
+					"level": 18,
+					"moves": [
+						"tackle",
+						"withdraw"
+					]
+				}
+			]
+		},
+		"ss_anne_sailor_yann__plus2_smart": {
+			"name": "Marin Yann",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 360,
+			"team": [
+				{
+					"species": "horsea",
+					"level": 20,
+					"moves": [
+						"bubble",
+						"leer"
+					]
+				},
+				{
+					"species": "shellder",
+					"level": 20,
+					"moves": [
+						"tackle",
+						"withdraw"
+					]
+				}
+			]
+		},
+		"ss_anne_sailor_yann__plus4_smart": {
+			"name": "Marin Yann",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 360,
+			"team": [
+				{
+					"species": "horsea",
+					"level": 22,
+					"moves": [
+						"bubble",
+						"leer"
+					]
+				},
+				{
+					"species": "shellder",
+					"level": 22,
+					"moves": [
+						"tackle",
+						"withdraw"
+					]
+				}
+			]
+		},
+		"ss_anne_sailor_remi__donnees": {
+			"name": "Marin Rémi",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 380,
+			"team": [
+				{
+					"species": "machop",
+					"level": 19,
+					"moves": [
+						"low_kick",
+						"karate_chop"
+					]
+				}
+			]
+		},
+		"ss_anne_sailor_remi__plus2": {
+			"name": "Marin Rémi",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 380,
+			"team": [
+				{
+					"species": "machop",
+					"level": 21,
+					"moves": [
+						"low_kick",
+						"karate_chop"
+					]
+				}
+			]
+		},
+		"ss_anne_sailor_remi__plus4": {
+			"name": "Marin Rémi",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 380,
+			"team": [
+				{
+					"species": "machop",
+					"level": 23,
+					"moves": [
+						"low_kick",
+						"karate_chop"
+					]
+				}
+			]
+		},
+		"ss_anne_sailor_remi__smart": {
+			"name": "Marin Rémi",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 380,
+			"team": [
+				{
+					"species": "machop",
+					"level": 19,
+					"moves": [
+						"low_kick",
+						"karate_chop"
+					]
+				}
+			]
+		},
+		"ss_anne_sailor_remi__plus2_smart": {
+			"name": "Marin Rémi",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 380,
+			"team": [
+				{
+					"species": "machop",
+					"level": 21,
+					"moves": [
+						"low_kick",
+						"karate_chop"
+					]
+				}
+			]
+		},
+		"ss_anne_sailor_remi__plus4_smart": {
+			"name": "Marin Rémi",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 380,
+			"team": [
+				{
+					"species": "machop",
+					"level": 23,
+					"moves": [
+						"low_kick",
+						"karate_chop"
+					]
+				}
+			]
+		},
+		"ss_anne_lass_lena__donnees": {
+			"name": "Fillette Léna",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 180,
+			"team": [
+				{
+					"species": "oddish",
+					"level": 18,
+					"moves": [
+						"absorb",
+						"poison_powder"
+					]
+				}
+			]
+		},
+		"ss_anne_lass_lena__plus2": {
+			"name": "Fillette Léna",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 180,
+			"team": [
+				{
+					"species": "oddish",
+					"level": 20,
+					"moves": [
+						"absorb",
+						"poison_powder"
+					]
+				}
+			]
+		},
+		"ss_anne_lass_lena__plus4": {
+			"name": "Fillette Léna",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 180,
+			"team": [
+				{
+					"species": "oddish",
+					"level": 22,
+					"moves": [
+						"absorb",
+						"poison_powder"
+					]
+				}
+			]
+		},
+		"ss_anne_lass_lena__smart": {
+			"name": "Fillette Léna",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 180,
+			"team": [
+				{
+					"species": "oddish",
+					"level": 18,
+					"moves": [
+						"absorb",
+						"poison_powder"
+					]
+				}
+			]
+		},
+		"ss_anne_lass_lena__plus2_smart": {
+			"name": "Fillette Léna",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 180,
+			"team": [
+				{
+					"species": "oddish",
+					"level": 20,
+					"moves": [
+						"absorb",
+						"poison_powder"
+					]
+				}
+			]
+		},
+		"ss_anne_lass_lena__plus4_smart": {
+			"name": "Fillette Léna",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 180,
+			"team": [
+				{
+					"species": "oddish",
+					"level": 22,
+					"moves": [
+						"absorb",
+						"poison_powder"
+					]
+				}
+			]
+		},
+		"ss_anne_scout_basile__donnees": {
+			"name": "Scout Oscar",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 360,
+			"team": [
+				{
+					"species": "beedrill",
+					"level": 18,
+					"moves": [
+						"poison_sting",
+						"fury_attack"
+					]
+				}
+			]
+		},
+		"ss_anne_scout_basile__plus2": {
+			"name": "Scout Oscar",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 360,
+			"team": [
+				{
+					"species": "beedrill",
+					"level": 20,
+					"moves": [
+						"poison_sting",
+						"fury_attack"
+					]
+				}
+			]
+		},
+		"ss_anne_scout_basile__plus4": {
+			"name": "Scout Oscar",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 360,
+			"team": [
+				{
+					"species": "beedrill",
+					"level": 22,
+					"moves": [
+						"poison_sting",
+						"fury_attack"
+					]
+				}
+			]
+		},
+		"ss_anne_scout_basile__smart": {
+			"name": "Scout Oscar",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 360,
+			"team": [
+				{
+					"species": "beedrill",
+					"level": 18,
+					"moves": [
+						"poison_sting",
+						"fury_attack"
+					]
+				}
+			]
+		},
+		"ss_anne_scout_basile__plus2_smart": {
+			"name": "Scout Oscar",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 360,
+			"team": [
+				{
+					"species": "beedrill",
+					"level": 20,
+					"moves": [
+						"poison_sting",
+						"fury_attack"
+					]
+				}
+			]
+		},
+		"ss_anne_scout_basile__plus4_smart": {
+			"name": "Scout Oscar",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 360,
+			"team": [
+				{
+					"species": "beedrill",
+					"level": 22,
+					"moves": [
+						"poison_sting",
+						"fury_attack"
+					]
+				}
+			]
+		},
+		"ss_anne_gentleman_victor__donnees": {
+			"name": "Gentleman Victor",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 760,
+			"team": [
+				{
+					"species": "staryu",
+					"level": 19,
+					"moves": [
+						"water_gun",
+						"harden"
+					]
+				}
+			]
+		},
+		"ss_anne_gentleman_victor__plus2": {
+			"name": "Gentleman Victor",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 760,
+			"team": [
+				{
+					"species": "staryu",
+					"level": 21,
+					"moves": [
+						"water_gun",
+						"harden"
+					]
+				}
+			]
+		},
+		"ss_anne_gentleman_victor__plus4": {
+			"name": "Gentleman Victor",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 760,
+			"team": [
+				{
+					"species": "staryu",
+					"level": 23,
+					"moves": [
+						"water_gun",
+						"harden"
+					]
+				}
+			]
+		},
+		"ss_anne_gentleman_victor__smart": {
+			"name": "Gentleman Victor",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 760,
+			"team": [
+				{
+					"species": "staryu",
+					"level": 19,
+					"moves": [
+						"water_gun",
+						"harden"
+					]
+				}
+			]
+		},
+		"ss_anne_gentleman_victor__plus2_smart": {
+			"name": "Gentleman Victor",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 760,
+			"team": [
+				{
+					"species": "staryu",
+					"level": 21,
+					"moves": [
+						"water_gun",
+						"harden"
+					]
+				}
+			]
+		},
+		"ss_anne_gentleman_victor__plus4_smart": {
+			"name": "Gentleman Victor",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 760,
+			"team": [
+				{
+					"species": "staryu",
+					"level": 23,
+					"moves": [
+						"water_gun",
+						"harden"
+					]
+				}
+			]
+		},
+		"ss_anne_sailor_paul__donnees": {
+			"name": "Marin Paul",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 380,
+			"team": [
+				{
+					"species": "raticate",
+					"level": 19,
+					"moves": [
+						"quick_attack",
+						"bite"
+					]
+				}
+			]
+		},
+		"ss_anne_sailor_paul__plus2": {
+			"name": "Marin Paul",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 380,
+			"team": [
+				{
+					"species": "raticate",
+					"level": 21,
+					"moves": [
+						"quick_attack",
+						"bite"
+					]
+				}
+			]
+		},
+		"ss_anne_sailor_paul__plus4": {
+			"name": "Marin Paul",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 380,
+			"team": [
+				{
+					"species": "raticate",
+					"level": 23,
+					"moves": [
+						"quick_attack",
+						"bite"
+					]
+				}
+			]
+		},
+		"ss_anne_sailor_paul__smart": {
+			"name": "Marin Paul",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 380,
+			"team": [
+				{
+					"species": "raticate",
+					"level": 19,
+					"moves": [
+						"quick_attack",
+						"bite"
+					]
+				}
+			]
+		},
+		"ss_anne_sailor_paul__plus2_smart": {
+			"name": "Marin Paul",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 380,
+			"team": [
+				{
+					"species": "raticate",
+					"level": 21,
+					"moves": [
+						"quick_attack",
+						"bite"
+					]
+				}
+			]
+		},
+		"ss_anne_sailor_paul__plus4_smart": {
+			"name": "Marin Paul",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 380,
+			"team": [
+				{
+					"species": "raticate",
+					"level": 23,
+					"moves": [
+						"quick_attack",
+						"bite"
+					]
+				}
+			]
+		},
+		"vermilion_gym_gentleman_louis__donnees": {
+			"name": "Gentleman Louis",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 800,
+			"team": [
+				{
+					"species": "pikachu",
+					"level": 20,
+					"moves": [
+						"thunder_shock",
+						"thunder_wave"
+					]
+				}
+			]
+		},
+		"vermilion_gym_gentleman_louis__plus2": {
+			"name": "Gentleman Louis",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 800,
+			"team": [
+				{
+					"species": "pikachu",
+					"level": 22,
+					"moves": [
+						"thunder_shock",
+						"thunder_wave"
+					]
+				}
+			]
+		},
+		"vermilion_gym_gentleman_louis__plus4": {
+			"name": "Gentleman Louis",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 800,
+			"team": [
+				{
+					"species": "pikachu",
+					"level": 24,
+					"moves": [
+						"thunder_shock",
+						"thunder_wave"
+					]
+				}
+			]
+		},
+		"vermilion_gym_gentleman_louis__smart": {
+			"name": "Gentleman Louis",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 800,
+			"team": [
+				{
+					"species": "pikachu",
+					"level": 20,
+					"moves": [
+						"thunder_shock",
+						"thunder_wave"
+					]
+				}
+			]
+		},
+		"vermilion_gym_gentleman_louis__plus2_smart": {
+			"name": "Gentleman Louis",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 800,
+			"team": [
+				{
+					"species": "pikachu",
+					"level": 22,
+					"moves": [
+						"thunder_shock",
+						"thunder_wave"
+					]
+				}
+			]
+		},
+		"vermilion_gym_gentleman_louis__plus4_smart": {
+			"name": "Gentleman Louis",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 800,
+			"team": [
+				{
+					"species": "pikachu",
+					"level": 24,
+					"moves": [
+						"thunder_shock",
+						"thunder_wave"
+					]
+				}
+			]
+		},
+		"vermilion_gym_rocker_axel__donnees": {
+			"name": "Rockeur Axel",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 400,
+			"team": [
+				{
+					"species": "voltorb",
+					"level": 20,
+					"moves": [
+						"tackle",
+						"sonic_boom"
+					]
+				}
+			]
+		},
+		"vermilion_gym_rocker_axel__plus2": {
+			"name": "Rockeur Axel",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 400,
+			"team": [
+				{
+					"species": "voltorb",
+					"level": 22,
+					"moves": [
+						"tackle",
+						"sonic_boom"
+					]
+				}
+			]
+		},
+		"vermilion_gym_rocker_axel__plus4": {
+			"name": "Rockeur Axel",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 400,
+			"team": [
+				{
+					"species": "voltorb",
+					"level": 24,
+					"moves": [
+						"tackle",
+						"sonic_boom"
+					]
+				}
+			]
+		},
+		"vermilion_gym_rocker_axel__smart": {
+			"name": "Rockeur Axel",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 400,
+			"team": [
+				{
+					"species": "voltorb",
+					"level": 20,
+					"moves": [
+						"tackle",
+						"sonic_boom"
+					]
+				}
+			]
+		},
+		"vermilion_gym_rocker_axel__plus2_smart": {
+			"name": "Rockeur Axel",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 400,
+			"team": [
+				{
+					"species": "voltorb",
+					"level": 22,
+					"moves": [
+						"tackle",
+						"sonic_boom"
+					]
+				}
+			]
+		},
+		"vermilion_gym_rocker_axel__plus4_smart": {
+			"name": "Rockeur Axel",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 400,
+			"team": [
+				{
+					"species": "voltorb",
+					"level": 24,
+					"moves": [
+						"tackle",
+						"sonic_boom"
+					]
+				}
+			]
+		},
+		"vermilion_gym_sailor_marc__donnees": {
+			"name": "Marin Marc",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 380,
+			"team": [
+				{
+					"species": "pikachu",
+					"level": 19,
+					"moves": [
+						"thunder_shock",
+						"quick_attack"
+					]
+				},
+				{
+					"species": "voltorb",
+					"level": 19,
+					"moves": [
+						"tackle",
+						"screech"
+					]
+				}
+			]
+		},
+		"vermilion_gym_sailor_marc__plus2": {
+			"name": "Marin Marc",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 380,
+			"team": [
+				{
+					"species": "pikachu",
+					"level": 21,
+					"moves": [
+						"thunder_shock",
+						"quick_attack"
+					]
+				},
+				{
+					"species": "voltorb",
+					"level": 21,
+					"moves": [
+						"tackle",
+						"screech"
+					]
+				}
+			]
+		},
+		"vermilion_gym_sailor_marc__plus4": {
+			"name": "Marin Marc",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 380,
+			"team": [
+				{
+					"species": "pikachu",
+					"level": 23,
+					"moves": [
+						"thunder_shock",
+						"quick_attack"
+					]
+				},
+				{
+					"species": "voltorb",
+					"level": 23,
+					"moves": [
+						"tackle",
+						"screech"
+					]
+				}
+			]
+		},
+		"vermilion_gym_sailor_marc__smart": {
+			"name": "Marin Marc",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 380,
+			"team": [
+				{
+					"species": "pikachu",
+					"level": 19,
+					"moves": [
+						"thunder_shock",
+						"quick_attack"
+					]
+				},
+				{
+					"species": "voltorb",
+					"level": 19,
+					"moves": [
+						"tackle",
+						"screech"
+					]
+				}
+			]
+		},
+		"vermilion_gym_sailor_marc__plus2_smart": {
+			"name": "Marin Marc",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 380,
+			"team": [
+				{
+					"species": "pikachu",
+					"level": 21,
+					"moves": [
+						"thunder_shock",
+						"quick_attack"
+					]
+				},
+				{
+					"species": "voltorb",
+					"level": 21,
+					"moves": [
+						"tackle",
+						"screech"
+					]
+				}
+			]
+		},
+		"vermilion_gym_sailor_marc__plus4_smart": {
+			"name": "Marin Marc",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 380,
+			"team": [
+				{
+					"species": "pikachu",
+					"level": 23,
+					"moves": [
+						"thunder_shock",
+						"quick_attack"
+					]
+				},
+				{
+					"species": "voltorb",
+					"level": 23,
+					"moves": [
+						"tackle",
+						"screech"
+					]
+				}
+			]
+		}
+	},
+	"steps": [
+		{
+			"label": "Gentleman Armand [donnees]",
+			"trainer": "ss_anne_gentleman_armand__donnees",
+			"optional": "ss_anne_gentleman_armand__donnees"
+		},
+		{
+			"label": "Gentleman Armand [plus2]",
+			"trainer": "ss_anne_gentleman_armand__plus2",
+			"optional": "ss_anne_gentleman_armand__plus2"
+		},
+		{
+			"label": "Gentleman Armand [plus4]",
+			"trainer": "ss_anne_gentleman_armand__plus4",
+			"optional": "ss_anne_gentleman_armand__plus4"
+		},
+		{
+			"label": "Gentleman Armand [smart]",
+			"trainer": "ss_anne_gentleman_armand__smart",
+			"optional": "ss_anne_gentleman_armand__smart"
+		},
+		{
+			"label": "Gentleman Armand [plus2_smart]",
+			"trainer": "ss_anne_gentleman_armand__plus2_smart",
+			"optional": "ss_anne_gentleman_armand__plus2_smart"
+		},
+		{
+			"label": "Gentleman Armand [plus4_smart]",
+			"trainer": "ss_anne_gentleman_armand__plus4_smart",
+			"optional": "ss_anne_gentleman_armand__plus4_smart"
+		},
+		{
+			"label": "Marin Erwan [donnees]",
+			"trainer": "ss_anne_sailor_erwan__donnees",
+			"optional": "ss_anne_sailor_erwan__donnees"
+		},
+		{
+			"label": "Marin Erwan [plus2]",
+			"trainer": "ss_anne_sailor_erwan__plus2",
+			"optional": "ss_anne_sailor_erwan__plus2"
+		},
+		{
+			"label": "Marin Erwan [plus4]",
+			"trainer": "ss_anne_sailor_erwan__plus4",
+			"optional": "ss_anne_sailor_erwan__plus4"
+		},
+		{
+			"label": "Marin Erwan [smart]",
+			"trainer": "ss_anne_sailor_erwan__smart",
+			"optional": "ss_anne_sailor_erwan__smart"
+		},
+		{
+			"label": "Marin Erwan [plus2_smart]",
+			"trainer": "ss_anne_sailor_erwan__plus2_smart",
+			"optional": "ss_anne_sailor_erwan__plus2_smart"
+		},
+		{
+			"label": "Marin Erwan [plus4_smart]",
+			"trainer": "ss_anne_sailor_erwan__plus4_smart",
+			"optional": "ss_anne_sailor_erwan__plus4_smart"
+		},
+		{
+			"label": "Marin Loïc [donnees]",
+			"trainer": "ss_anne_sailor_loic__donnees",
+			"optional": "ss_anne_sailor_loic__donnees"
+		},
+		{
+			"label": "Marin Loïc [plus2]",
+			"trainer": "ss_anne_sailor_loic__plus2",
+			"optional": "ss_anne_sailor_loic__plus2"
+		},
+		{
+			"label": "Marin Loïc [plus4]",
+			"trainer": "ss_anne_sailor_loic__plus4",
+			"optional": "ss_anne_sailor_loic__plus4"
+		},
+		{
+			"label": "Marin Loïc [smart]",
+			"trainer": "ss_anne_sailor_loic__smart",
+			"optional": "ss_anne_sailor_loic__smart"
+		},
+		{
+			"label": "Marin Loïc [plus2_smart]",
+			"trainer": "ss_anne_sailor_loic__plus2_smart",
+			"optional": "ss_anne_sailor_loic__plus2_smart"
+		},
+		{
+			"label": "Marin Loïc [plus4_smart]",
+			"trainer": "ss_anne_sailor_loic__plus4_smart",
+			"optional": "ss_anne_sailor_loic__plus4_smart"
+		},
+		{
+			"label": "Gentleman Émile [donnees]",
+			"trainer": "ss_anne_gentleman_emile__donnees",
+			"optional": "ss_anne_gentleman_emile__donnees"
+		},
+		{
+			"label": "Gentleman Émile [plus2]",
+			"trainer": "ss_anne_gentleman_emile__plus2",
+			"optional": "ss_anne_gentleman_emile__plus2"
+		},
+		{
+			"label": "Gentleman Émile [plus4]",
+			"trainer": "ss_anne_gentleman_emile__plus4",
+			"optional": "ss_anne_gentleman_emile__plus4"
+		},
+		{
+			"label": "Gentleman Émile [smart]",
+			"trainer": "ss_anne_gentleman_emile__smart",
+			"optional": "ss_anne_gentleman_emile__smart"
+		},
+		{
+			"label": "Gentleman Émile [plus2_smart]",
+			"trainer": "ss_anne_gentleman_emile__plus2_smart",
+			"optional": "ss_anne_gentleman_emile__plus2_smart"
+		},
+		{
+			"label": "Gentleman Émile [plus4_smart]",
+			"trainer": "ss_anne_gentleman_emile__plus4_smart",
+			"optional": "ss_anne_gentleman_emile__plus4_smart"
+		},
+		{
+			"label": "Marin Yann [donnees]",
+			"trainer": "ss_anne_sailor_yann__donnees",
+			"optional": "ss_anne_sailor_yann__donnees"
+		},
+		{
+			"label": "Marin Yann [plus2]",
+			"trainer": "ss_anne_sailor_yann__plus2",
+			"optional": "ss_anne_sailor_yann__plus2"
+		},
+		{
+			"label": "Marin Yann [plus4]",
+			"trainer": "ss_anne_sailor_yann__plus4",
+			"optional": "ss_anne_sailor_yann__plus4"
+		},
+		{
+			"label": "Marin Yann [smart]",
+			"trainer": "ss_anne_sailor_yann__smart",
+			"optional": "ss_anne_sailor_yann__smart"
+		},
+		{
+			"label": "Marin Yann [plus2_smart]",
+			"trainer": "ss_anne_sailor_yann__plus2_smart",
+			"optional": "ss_anne_sailor_yann__plus2_smart"
+		},
+		{
+			"label": "Marin Yann [plus4_smart]",
+			"trainer": "ss_anne_sailor_yann__plus4_smart",
+			"optional": "ss_anne_sailor_yann__plus4_smart"
+		},
+		{
+			"label": "Marin Rémi [donnees]",
+			"trainer": "ss_anne_sailor_remi__donnees",
+			"optional": "ss_anne_sailor_remi__donnees"
+		},
+		{
+			"label": "Marin Rémi [plus2]",
+			"trainer": "ss_anne_sailor_remi__plus2",
+			"optional": "ss_anne_sailor_remi__plus2"
+		},
+		{
+			"label": "Marin Rémi [plus4]",
+			"trainer": "ss_anne_sailor_remi__plus4",
+			"optional": "ss_anne_sailor_remi__plus4"
+		},
+		{
+			"label": "Marin Rémi [smart]",
+			"trainer": "ss_anne_sailor_remi__smart",
+			"optional": "ss_anne_sailor_remi__smart"
+		},
+		{
+			"label": "Marin Rémi [plus2_smart]",
+			"trainer": "ss_anne_sailor_remi__plus2_smart",
+			"optional": "ss_anne_sailor_remi__plus2_smart"
+		},
+		{
+			"label": "Marin Rémi [plus4_smart]",
+			"trainer": "ss_anne_sailor_remi__plus4_smart",
+			"optional": "ss_anne_sailor_remi__plus4_smart"
+		},
+		{
+			"label": "Fillette Léna [donnees]",
+			"trainer": "ss_anne_lass_lena__donnees",
+			"optional": "ss_anne_lass_lena__donnees"
+		},
+		{
+			"label": "Fillette Léna [plus2]",
+			"trainer": "ss_anne_lass_lena__plus2",
+			"optional": "ss_anne_lass_lena__plus2"
+		},
+		{
+			"label": "Fillette Léna [plus4]",
+			"trainer": "ss_anne_lass_lena__plus4",
+			"optional": "ss_anne_lass_lena__plus4"
+		},
+		{
+			"label": "Fillette Léna [smart]",
+			"trainer": "ss_anne_lass_lena__smart",
+			"optional": "ss_anne_lass_lena__smart"
+		},
+		{
+			"label": "Fillette Léna [plus2_smart]",
+			"trainer": "ss_anne_lass_lena__plus2_smart",
+			"optional": "ss_anne_lass_lena__plus2_smart"
+		},
+		{
+			"label": "Fillette Léna [plus4_smart]",
+			"trainer": "ss_anne_lass_lena__plus4_smart",
+			"optional": "ss_anne_lass_lena__plus4_smart"
+		},
+		{
+			"label": "Scout Oscar [donnees]",
+			"trainer": "ss_anne_scout_basile__donnees",
+			"optional": "ss_anne_scout_basile__donnees"
+		},
+		{
+			"label": "Scout Oscar [plus2]",
+			"trainer": "ss_anne_scout_basile__plus2",
+			"optional": "ss_anne_scout_basile__plus2"
+		},
+		{
+			"label": "Scout Oscar [plus4]",
+			"trainer": "ss_anne_scout_basile__plus4",
+			"optional": "ss_anne_scout_basile__plus4"
+		},
+		{
+			"label": "Scout Oscar [smart]",
+			"trainer": "ss_anne_scout_basile__smart",
+			"optional": "ss_anne_scout_basile__smart"
+		},
+		{
+			"label": "Scout Oscar [plus2_smart]",
+			"trainer": "ss_anne_scout_basile__plus2_smart",
+			"optional": "ss_anne_scout_basile__plus2_smart"
+		},
+		{
+			"label": "Scout Oscar [plus4_smart]",
+			"trainer": "ss_anne_scout_basile__plus4_smart",
+			"optional": "ss_anne_scout_basile__plus4_smart"
+		},
+		{
+			"label": "Gentleman Victor [donnees]",
+			"trainer": "ss_anne_gentleman_victor__donnees",
+			"optional": "ss_anne_gentleman_victor__donnees"
+		},
+		{
+			"label": "Gentleman Victor [plus2]",
+			"trainer": "ss_anne_gentleman_victor__plus2",
+			"optional": "ss_anne_gentleman_victor__plus2"
+		},
+		{
+			"label": "Gentleman Victor [plus4]",
+			"trainer": "ss_anne_gentleman_victor__plus4",
+			"optional": "ss_anne_gentleman_victor__plus4"
+		},
+		{
+			"label": "Gentleman Victor [smart]",
+			"trainer": "ss_anne_gentleman_victor__smart",
+			"optional": "ss_anne_gentleman_victor__smart"
+		},
+		{
+			"label": "Gentleman Victor [plus2_smart]",
+			"trainer": "ss_anne_gentleman_victor__plus2_smart",
+			"optional": "ss_anne_gentleman_victor__plus2_smart"
+		},
+		{
+			"label": "Gentleman Victor [plus4_smart]",
+			"trainer": "ss_anne_gentleman_victor__plus4_smart",
+			"optional": "ss_anne_gentleman_victor__plus4_smart"
+		},
+		{
+			"label": "Marin Paul [donnees]",
+			"trainer": "ss_anne_sailor_paul__donnees",
+			"optional": "ss_anne_sailor_paul__donnees"
+		},
+		{
+			"label": "Marin Paul [plus2]",
+			"trainer": "ss_anne_sailor_paul__plus2",
+			"optional": "ss_anne_sailor_paul__plus2"
+		},
+		{
+			"label": "Marin Paul [plus4]",
+			"trainer": "ss_anne_sailor_paul__plus4",
+			"optional": "ss_anne_sailor_paul__plus4"
+		},
+		{
+			"label": "Marin Paul [smart]",
+			"trainer": "ss_anne_sailor_paul__smart",
+			"optional": "ss_anne_sailor_paul__smart"
+		},
+		{
+			"label": "Marin Paul [plus2_smart]",
+			"trainer": "ss_anne_sailor_paul__plus2_smart",
+			"optional": "ss_anne_sailor_paul__plus2_smart"
+		},
+		{
+			"label": "Marin Paul [plus4_smart]",
+			"trainer": "ss_anne_sailor_paul__plus4_smart",
+			"optional": "ss_anne_sailor_paul__plus4_smart"
+		},
+		{
+			"label": "Gentleman Louis [donnees]",
+			"trainer": "vermilion_gym_gentleman_louis__donnees",
+			"optional": "vermilion_gym_gentleman_louis__donnees"
+		},
+		{
+			"label": "Gentleman Louis [plus2]",
+			"trainer": "vermilion_gym_gentleman_louis__plus2",
+			"optional": "vermilion_gym_gentleman_louis__plus2"
+		},
+		{
+			"label": "Gentleman Louis [plus4]",
+			"trainer": "vermilion_gym_gentleman_louis__plus4",
+			"optional": "vermilion_gym_gentleman_louis__plus4"
+		},
+		{
+			"label": "Gentleman Louis [smart]",
+			"trainer": "vermilion_gym_gentleman_louis__smart",
+			"optional": "vermilion_gym_gentleman_louis__smart"
+		},
+		{
+			"label": "Gentleman Louis [plus2_smart]",
+			"trainer": "vermilion_gym_gentleman_louis__plus2_smart",
+			"optional": "vermilion_gym_gentleman_louis__plus2_smart"
+		},
+		{
+			"label": "Gentleman Louis [plus4_smart]",
+			"trainer": "vermilion_gym_gentleman_louis__plus4_smart",
+			"optional": "vermilion_gym_gentleman_louis__plus4_smart"
+		},
+		{
+			"label": "Rockeur Axel [donnees]",
+			"trainer": "vermilion_gym_rocker_axel__donnees",
+			"optional": "vermilion_gym_rocker_axel__donnees"
+		},
+		{
+			"label": "Rockeur Axel [plus2]",
+			"trainer": "vermilion_gym_rocker_axel__plus2",
+			"optional": "vermilion_gym_rocker_axel__plus2"
+		},
+		{
+			"label": "Rockeur Axel [plus4]",
+			"trainer": "vermilion_gym_rocker_axel__plus4",
+			"optional": "vermilion_gym_rocker_axel__plus4"
+		},
+		{
+			"label": "Rockeur Axel [smart]",
+			"trainer": "vermilion_gym_rocker_axel__smart",
+			"optional": "vermilion_gym_rocker_axel__smart"
+		},
+		{
+			"label": "Rockeur Axel [plus2_smart]",
+			"trainer": "vermilion_gym_rocker_axel__plus2_smart",
+			"optional": "vermilion_gym_rocker_axel__plus2_smart"
+		},
+		{
+			"label": "Rockeur Axel [plus4_smart]",
+			"trainer": "vermilion_gym_rocker_axel__plus4_smart",
+			"optional": "vermilion_gym_rocker_axel__plus4_smart"
+		},
+		{
+			"label": "Marin Marc [donnees]",
+			"trainer": "vermilion_gym_sailor_marc__donnees",
+			"optional": "vermilion_gym_sailor_marc__donnees"
+		},
+		{
+			"label": "Marin Marc [plus2]",
+			"trainer": "vermilion_gym_sailor_marc__plus2",
+			"optional": "vermilion_gym_sailor_marc__plus2"
+		},
+		{
+			"label": "Marin Marc [plus4]",
+			"trainer": "vermilion_gym_sailor_marc__plus4",
+			"optional": "vermilion_gym_sailor_marc__plus4"
+		},
+		{
+			"label": "Marin Marc [smart]",
+			"trainer": "vermilion_gym_sailor_marc__smart",
+			"optional": "vermilion_gym_sailor_marc__smart"
+		},
+		{
+			"label": "Marin Marc [plus2_smart]",
+			"trainer": "vermilion_gym_sailor_marc__plus2_smart",
+			"optional": "vermilion_gym_sailor_marc__plus2_smart"
+		},
+		{
+			"label": "Marin Marc [plus4_smart]",
+			"trainer": "vermilion_gym_sailor_marc__plus4_smart",
+			"optional": "vermilion_gym_sailor_marc__plus4_smart"
+		}
+	],
+	"variants": [
+		{
+			"name": "attentif, sac de Carmin : ss_anne_gentleman_armand__donnees",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_gentleman_armand__donnees"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_gentleman_armand__plus2",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_gentleman_armand__plus2"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_gentleman_armand__plus4",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_gentleman_armand__plus4"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_gentleman_armand__smart",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_gentleman_armand__smart"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_gentleman_armand__plus2_smart",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_gentleman_armand__plus2_smart"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_gentleman_armand__plus4_smart",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_gentleman_armand__plus4_smart"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_sailor_erwan__donnees",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_sailor_erwan__donnees"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_sailor_erwan__plus2",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_sailor_erwan__plus2"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_sailor_erwan__plus4",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_sailor_erwan__plus4"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_sailor_erwan__smart",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_sailor_erwan__smart"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_sailor_erwan__plus2_smart",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_sailor_erwan__plus2_smart"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_sailor_erwan__plus4_smart",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_sailor_erwan__plus4_smart"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_sailor_loic__donnees",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_sailor_loic__donnees"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_sailor_loic__plus2",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_sailor_loic__plus2"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_sailor_loic__plus4",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_sailor_loic__plus4"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_sailor_loic__smart",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_sailor_loic__smart"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_sailor_loic__plus2_smart",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_sailor_loic__plus2_smart"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_sailor_loic__plus4_smart",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_sailor_loic__plus4_smart"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_gentleman_emile__donnees",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_gentleman_emile__donnees"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_gentleman_emile__plus2",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_gentleman_emile__plus2"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_gentleman_emile__plus4",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_gentleman_emile__plus4"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_gentleman_emile__smart",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_gentleman_emile__smart"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_gentleman_emile__plus2_smart",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_gentleman_emile__plus2_smart"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_gentleman_emile__plus4_smart",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_gentleman_emile__plus4_smart"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_sailor_yann__donnees",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_sailor_yann__donnees"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_sailor_yann__plus2",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_sailor_yann__plus2"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_sailor_yann__plus4",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_sailor_yann__plus4"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_sailor_yann__smart",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_sailor_yann__smart"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_sailor_yann__plus2_smart",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_sailor_yann__plus2_smart"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_sailor_yann__plus4_smart",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_sailor_yann__plus4_smart"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_sailor_remi__donnees",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_sailor_remi__donnees"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_sailor_remi__plus2",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_sailor_remi__plus2"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_sailor_remi__plus4",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_sailor_remi__plus4"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_sailor_remi__smart",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_sailor_remi__smart"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_sailor_remi__plus2_smart",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_sailor_remi__plus2_smart"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_sailor_remi__plus4_smart",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_sailor_remi__plus4_smart"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_lass_lena__donnees",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_lass_lena__donnees"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_lass_lena__plus2",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_lass_lena__plus2"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_lass_lena__plus4",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_lass_lena__plus4"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_lass_lena__smart",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_lass_lena__smart"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_lass_lena__plus2_smart",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_lass_lena__plus2_smart"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_lass_lena__plus4_smart",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_lass_lena__plus4_smart"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_scout_basile__donnees",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_scout_basile__donnees"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_scout_basile__plus2",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_scout_basile__plus2"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_scout_basile__plus4",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_scout_basile__plus4"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_scout_basile__smart",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_scout_basile__smart"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_scout_basile__plus2_smart",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_scout_basile__plus2_smart"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_scout_basile__plus4_smart",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_scout_basile__plus4_smart"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_gentleman_victor__donnees",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_gentleman_victor__donnees"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_gentleman_victor__plus2",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_gentleman_victor__plus2"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_gentleman_victor__plus4",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_gentleman_victor__plus4"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_gentleman_victor__smart",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_gentleman_victor__smart"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_gentleman_victor__plus2_smart",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_gentleman_victor__plus2_smart"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_gentleman_victor__plus4_smart",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_gentleman_victor__plus4_smart"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_sailor_paul__donnees",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_sailor_paul__donnees"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_sailor_paul__plus2",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_sailor_paul__plus2"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_sailor_paul__plus4",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_sailor_paul__plus4"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_sailor_paul__smart",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_sailor_paul__smart"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_sailor_paul__plus2_smart",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_sailor_paul__plus2_smart"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : ss_anne_sailor_paul__plus4_smart",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"ss_anne_sailor_paul__plus4_smart"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : vermilion_gym_gentleman_louis__donnees",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"vermilion_gym_gentleman_louis__donnees"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : vermilion_gym_gentleman_louis__plus2",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"vermilion_gym_gentleman_louis__plus2"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : vermilion_gym_gentleman_louis__plus4",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"vermilion_gym_gentleman_louis__plus4"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : vermilion_gym_gentleman_louis__smart",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"vermilion_gym_gentleman_louis__smart"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : vermilion_gym_gentleman_louis__plus2_smart",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"vermilion_gym_gentleman_louis__plus2_smart"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : vermilion_gym_gentleman_louis__plus4_smart",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"vermilion_gym_gentleman_louis__plus4_smart"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : vermilion_gym_rocker_axel__donnees",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"vermilion_gym_rocker_axel__donnees"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : vermilion_gym_rocker_axel__plus2",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"vermilion_gym_rocker_axel__plus2"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : vermilion_gym_rocker_axel__plus4",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"vermilion_gym_rocker_axel__plus4"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : vermilion_gym_rocker_axel__smart",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"vermilion_gym_rocker_axel__smart"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : vermilion_gym_rocker_axel__plus2_smart",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"vermilion_gym_rocker_axel__plus2_smart"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : vermilion_gym_rocker_axel__plus4_smart",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"vermilion_gym_rocker_axel__plus4_smart"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : vermilion_gym_sailor_marc__donnees",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"vermilion_gym_sailor_marc__donnees"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : vermilion_gym_sailor_marc__plus2",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"vermilion_gym_sailor_marc__plus2"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : vermilion_gym_sailor_marc__plus4",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"vermilion_gym_sailor_marc__plus4"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : vermilion_gym_sailor_marc__smart",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"vermilion_gym_sailor_marc__smart"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : vermilion_gym_sailor_marc__plus2_smart",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"vermilion_gym_sailor_marc__plus2_smart"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, sac de Carmin : vermilion_gym_sailor_marc__plus4_smart",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"vermilion_gym_sailor_marc__plus4_smart"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		}
+	]
+}

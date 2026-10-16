@@ -8,5 +8,12 @@
 				]
 			}
 		]
+	},
+	"ss_anne_boarding": {
+		"steps": [
+			{ "move": "sailor", "path": ["left"] },
+			{ "face": "sailor", "to": "down" },
+			{ "set": ["ss_anne_gangway_open"] }
+		]
 	}
 }

@@ -27,17 +27,16 @@ func test_has_map() -> void:
 
 ## Cartes de QA encore livrées. Clôture du jalon 9 (T23) : la carte de QA des systèmes
 ## est retirée ; jalon 12 (T28) : `qa_moves_j12` ; jalon 13 (T22) : `qa_switch_j13` ; jalon 14
-## (T24) : `qa_charge_j14` ; jalon 15 (T23) : `qa_daycare`. Jalon 17 (T10) : grotte obscure de QA
-## du voile et de Flash et sa pièce d'entrée, à retirer au T28.
+## (T24) : `qa_charge_j14` ; jalon 15 (T23) : `qa_daycare` ; jalon 16 (T20) : `qa_dock_j16`,
+## `qa_ship_j16`, `qa_gym_j16`. Jalon 17 (T10) : grotte obscure de QA du voile et de Flash et sa
+## pièce d'entrée, à retirer au T28.
 const QA_MAPS_SHIPPED: Array[String] = ["qa_flash.tscn", "qa_flash_entry.tscn"]
 
 
 func test_only_planned_qa_maps_are_shipped() -> void:
-	assert_false(MapCatalog.has_map(&"qa_forest_systems"))
-	assert_false(MapCatalog.has_map(&"qa_moves_j12"))
-	assert_false(MapCatalog.has_map(&"qa_switch_j13"))
-	assert_false(MapCatalog.has_map(&"qa_charge_j14"))
-	assert_false(MapCatalog.has_map(&"qa_daycare"))
+	for map_id: StringName in [&"qa_forest_systems", &"qa_moves_j12", &"qa_switch_j13",
+			&"qa_charge_j14", &"qa_daycare", &"qa_dock_j16", &"qa_ship_j16", &"qa_gym_j16"]:
+		assert_false(MapCatalog.has_map(map_id), "%s retirée" % map_id)
 	for file: String in DirAccess.get_files_at(MapCatalog.MAPS_DIR):
 		if file.begins_with("qa_"):
 			assert_true(QA_MAPS_SHIPPED.has(file), "%s : carte de QA non prévue" % file)

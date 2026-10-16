@@ -296,6 +296,8 @@ func _swap_map(map_id: StringName, spawn: StringName, facing: Vector2i) -> bool:
 	return true
 
 
+
+
 func _instantiate(map_id: StringName) -> GameMap:
 	if map_id.is_empty():
 		return null

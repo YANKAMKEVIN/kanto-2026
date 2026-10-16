@@ -527,6 +527,45 @@ const RULES: Dictionary[StringName, Dictionary] = {
 	&"int_carte_murale_01": {"traversable": true, "align": ALIGN_EDGE},
 	&"int_table_lecture_01": {"width": 3, "depth": 1},
 	&"int_caisse_lampes_01": {"width": 1, "depth": 1},
+	# --- Série 18 : S.S. Anne et Arène de Carmin (J16 T10, fiche `serie-18-ss-anne.md`). Les
+	# meubles sont posés par `build_painted_interiors.gd` en rectangles de la grille (« furniture »,
+	# emprise écrite dans l'instance) ; ces règles donnent la même emprise.
+	&"int_banquette_ss_anne_01": {"width": 2, "depth": 1},
+	&"int_comptoir_accueil_ss_anne_01": {"width": 4, "depth": 1},
+	&"int_table_restaurant_01": {"width": 2, "depth": 1},
+	&"int_comptoir_cuisine_01": {"width": 4, "depth": 1},
+	&"int_lit_cabine_01": {"width": 2, "depth": 2},
+	&"int_armoire_cabine_01": {"width": 1, "depth": 1},
+	&"int_table_hublot_01": {"width": 2, "depth": 1},
+	&"int_bureau_capitaine_01": {"width": 3, "depth": 1},
+	&"int_lavabo_cabine_01": {"width": 1, "depth": 1},
+	&"int_table_cartes_01": {"width": 2, "depth": 1},
+	&"int_caisses_cale_01": {"width": 2, "depth": 2},
+	&"int_caisses_cale_02": {"width": 3, "depth": 2},
+	&"int_poubelle_arene_01": {"width": 1, "depth": 1},
+	&"int_armoire_electrique_01": {"width": 1, "depth": 1},
+	&"int_armoire_electrique_02": {"width": 1, "depth": 1},
+	# Barrière : cases `B` praticables une fois ouverte (les PNJ objets `electric_barrier` les
+	# bloquent avant) ; pylônes éteints toujours là, barrière active = objet fixe du segment du
+	# milieu. `int_barriere_active_01` sert d'image à cet objet (aucune carte ne la pose).
+	&"int_barriere_active_01": {"traversable": true, "align": ALIGN_CENTRE},
+	&"int_barriere_coupee_01": {"traversable": true, "align": ALIGN_CENTRE},
+	# Pont extérieur : bastingages dans la couche du sol (cases `r` bloquées par la grille), la
+	# superstructure ouest dans `Entities` (cases `K` bloquées) ; chaises longues et bouées
+	# bloquent leurs cases.
+	&"relief_bastingage_01": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_bastingage_02": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_bastingage_sud_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_EDGE},
+	&"relief_bastingage_est_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_CENTRE},
+	&"relief_bastingage_angle_ne_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_CENTRE},
+	&"relief_bastingage_angle_se_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_CENTRE},
+	&"bldg_ss_anne_superstructure_01": {"traversable": true, "align": ALIGN_CENTRE},
+	&"prop_chaises_longues_01": {"width": 2, "depth": 1},
+	&"prop_bouee_01": {"width": 1, "depth": 1},
 }
 
 

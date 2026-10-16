@@ -50,6 +50,12 @@ const MAPS: Array[StringName] = [
 	&"route_6", &"vermilion_city",
 	# Jalon 15 (T13) : arrivée sur la Route 5, recul du garde du poste nord.
 	&"route_5", &"route_5_gate",
+	# Jalon 16 (T12) : les objets du S.S. Anne (cartes à fouler ; scènes lancées par dialogue).
+	&"ss_anne_main_deck", &"ss_anne_lower_deck", &"ss_anne_restaurant", &"ss_anne_outer_deck",
+	&"ss_anne_cabin_a", &"ss_anne_cabin_b", &"ss_anne_cabin_c",
+	# Jalon 16 (T13) : la vue du rival n° 4 dans le couloir du capitaine.
+	&"ss_anne_captain_corridor",
+	# Jalon 16 (T15) : `ss_anne_main_deck` (passerelle, départ) est déjà dans la liste (T12).
 ]
 ## Jalon 7 (T18) : partie qui revient au labo avec le colis (rival parti après le combat).
 const PARCEL_FLAGS: Array[StringName] = [
@@ -122,6 +128,12 @@ const VARIANT_FLAGS: Dictionary = {
 	&"underground_hidden_1": [PEWTER_FLAGS],
 	# Jalon 15 (T13) : arrivée, Super Potion, Antidote caché, garde du poste nord.
 	&"route_5_arrival": [PEWTER_FLAGS], &"route_5_item_1": [PEWTER_FLAGS],
+	# Jalon 16 (T11) : la barrière de l'Arène de Carmin (une variante, puzzle pas encore résolu).
+	&"vermilion_gym_barrier_open": [PEWTER_FLAGS],
+	# Jalon 16 (T14) : Major Bob (première rencontre et reprise), rattrapage de la CT24.
+	&"vermilion_gym_surge": [PEWTER_FLAGS], &"vermilion_gym_surge_tm_late": [PEWTER_FLAGS],
+	# Jalon 16 (T13) : le rival n° 4 (une variante, avant sa victoire) et le capitaine.
+	&"ss_anne_rival": [PEWTER_FLAGS], &"ss_anne_captain": [PEWTER_FLAGS + [&"rival_ss_anne_won"]],
 	&"route_5_hidden_1": [PEWTER_FLAGS], &"route_5_gate_rule": [PEWTER_FLAGS],
 	&"pewter_arrival": [PEWTER_FLAGS],
 	# Jalon 13 (T17) : arrivée à Azuria, Poké Ball de la Route 4, Potion de la Route 24.
@@ -188,6 +200,16 @@ const VARIANT_FLAGS: Dictionary = {
 	&"route_2_item_5": [PEWTER_FLAGS],
 	# Jalon 17 (intégration) : Corde Sortie du renfoncement R1 de la Cave Taupiqueur.
 	&"digletts_cave_item_1": [PEWTER_FLAGS],
+	# Jalon 16 (T12) : six objets au sol et trois cachés du S.S. Anne.
+	&"ss_anne_item_01": [PEWTER_FLAGS], &"ss_anne_item_02": [PEWTER_FLAGS],
+	&"ss_anne_item_03": [PEWTER_FLAGS], &"ss_anne_item_04": [PEWTER_FLAGS],
+	&"ss_anne_item_05": [PEWTER_FLAGS], &"ss_anne_item_06": [PEWTER_FLAGS],
+	&"ss_anne_hidden_1": [PEWTER_FLAGS], &"ss_anne_hidden_2": [PEWTER_FLAGS],
+	&"ss_anne_hidden_3": [PEWTER_FLAGS],
+	# Jalon 16 (T15) : départ du S.S. Anne (après la CS01 ; avant : TXT-03), Coupe de l'arbuste.
+	&"ss_anne_departure": [PEWTER_FLAGS + [&"got_hm01"], PEWTER_FLAGS],
+	&"cut_tree_vermilion_gym": [PEWTER_FLAGS],
+	&"ss_anne_boarding": [PEWTER_FLAGS],
 }
 ## Scènes jouées par le code (pas de déclencheur) → carte où elles sont jouées.
 ## Jalon 7 (T18) : la scène du colis est lancée par la variante « cutscene » du dialogue de Chen.
@@ -210,6 +232,22 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"route_6_item_1": &"route_6", &"route_6_hidden_1": &"route_6",
 	# Jalon 15 (T13) : Super Potion (PNJ « objet ») et Antidote caché (point d'examen du tronc).
 	&"route_5_item_1": &"route_5", &"route_5_hidden_1": &"route_5",
+	# Jalon 16 (T11) : barrière de l'Arène de Carmin, jouée par Boot quand le puzzle est résolu.
+	&"vermilion_gym_barrier_open": &"vermilion_gym",
+	# Jalon 16 (T14) : Major Bob, par son dialogue (scène de l'Arène et rattrapage de la CT24).
+	&"vermilion_gym_surge": &"vermilion_gym", &"vermilion_gym_surge_tm_late": &"vermilion_gym",
+	# Jalon 16 (T12) : objets du S.S. Anne (PNJ « objet » et points d'examen de l'indice).
+	&"ss_anne_item_01": &"ss_anne_main_deck", &"ss_anne_item_02": &"ss_anne_cabin_a",
+	&"ss_anne_item_03": &"ss_anne_cabin_c", &"ss_anne_item_04": &"ss_anne_lower_deck",
+	&"ss_anne_item_05": &"ss_anne_restaurant", &"ss_anne_item_06": &"ss_anne_outer_deck",
+	&"ss_anne_hidden_1": &"ss_anne_cabin_b", &"ss_anne_hidden_2": &"ss_anne_lower_deck",
+	&"ss_anne_hidden_3": &"ss_anne_restaurant",
+	# Jalon 16 (T13) : le capitaine, par son dialogue.
+	&"ss_anne_captain": &"ss_anne_captain_room",
+	# Jalon 16 (T15) : COUPER (« confirm_cutscene » de l'examen de l'arbuste).
+	&"cut_tree_vermilion_gym": &"vermilion_city",
+	# Jalon 16 : embarquement, par le dialogue du marin (TXT-01).
+	&"ss_anne_boarding": &"vermilion_city",
 	# Jalon 11 (T14) : remise tardive de la CT34 (dialogue de Pierre).
 	&"pewter_gym_brock_tm_late": &"pewter_gym",
 	# Jalon 13 (T17) : objets visibles des Routes 4 et 24 (PNJ « objet »).
@@ -288,7 +326,7 @@ func before_all() -> void:
 
 func _all_steps() -> Array[CutsceneStep]:
 	var steps: Array[CutsceneStep] = []
-	for id: StringName in _cutscenes.get_ids():
+	for id: StringName in _real_ids():
 		for variant: CutsceneVariant in _cutscenes.get_cutscene(id).variants:
 			steps.append_array(variant.steps)
 	return steps
@@ -298,7 +336,7 @@ func test_library_loads_without_error() -> void:
 	var library := CutsceneLibrary.new()
 	assert_true(library.load_dir(), "data/cutscenes/ se charge")
 	assert_eq(library.get_errors().size(), 0, str(library.get_errors()))
-	assert_eq(library.get_ids(), _sorted([&"bill_house_enter", &"bill_machine", &"bill_module",
+	assert_eq(_without_qa(library.get_ids()), _sorted([&"bill_house_enter", &"bill_machine", &"bill_module",
 		&"bill_screen", &"cerulean_arrival", &"cerulean_gym_misty",
 		&"cerulean_rocket_chase", &"cerulean_rocket_fight", &"cerulean_south_guard",
 		&"cerulean_gym_misty_tm_late", &"mart_parcel", &"mt_moon_1f_hidden_1", &"mt_moon_1f_item_1",
@@ -311,14 +349,20 @@ func test_library_loads_without_error() -> void:
 		&"route_25_item_2", &"route_25_item_3",
 		&"route_6_gate_rule_e", &"route_6_gate_rule_s", &"route_6_gate_rule_w",
 		&"route_6_hidden_1", &"route_6_item_1", &"vermilion_arrival",
+		&"vermilion_gym_barrier_open", &"vermilion_gym_surge", &"vermilion_gym_surge_tm_late",
+		# Jalon 16 (T15) : départ du S.S. Anne, Coupe de l'arbuste de l'Arène.
+		&"ss_anne_departure", &"cut_tree_vermilion_gym", &"ss_anne_boarding",
 		&"route_2_item_1", &"route_2_item_2", &"route_2_item_3", &"route_2_item_4",
 		&"route_2_north_item_1", &"route_3_entered", &"route_3_guard", &"route_3_hidden_1",
 		&"route_3_item_1", &"route_3_item_2", &"route_3_item_3", &"route_4_item_1",
 		&"route_4_reached", &"route_5_arrival", &"route_5_gate_rule", &"route_5_hidden_1",
-		&"route_5_item_1", &"starter_chosen", &"underground_hidden_1",
+		&"route_5_item_1", &"ss_anne_captain", &"ss_anne_rival", &"starter_chosen",
+		&"underground_hidden_1",
 		&"viridian_arrival", &"viridian_forest_item_1", &"viridian_forest_item_2",
 		&"viridian_forest_item_3", &"viridian_forest_item_4", &"viridian_forest_item_5",
-		&"viridian_forest_item_6",
+		&"viridian_forest_item_6", &"ss_anne_hidden_1", &"ss_anne_hidden_2", &"ss_anne_hidden_3",
+		&"ss_anne_item_01", &"ss_anne_item_02", &"ss_anne_item_03", &"ss_anne_item_04",
+		&"ss_anne_item_05", &"ss_anne_item_06",
 		# Jalon 17 (T8) : remise de la CS05 ; (T17) objets de la Route 11 ; (T20, T21) objets du
 		# couloir et Super Potion de FUTUR A.
 		&"route_2_east_give_hm05", &"route_11_item_1", &"route_11_item_2",
@@ -351,7 +395,7 @@ func test_every_trigger_targets_a_scene_and_every_scene_is_triggered() -> void:
 	assert_false(_triggered_on.is_empty())
 	for id: StringName in _triggered_on:
 		assert_true(_cutscenes.has_cutscene(id), "scène « %s » définie" % id)
-	for id: StringName in _cutscenes.get_ids():
+	for id: StringName in _real_ids():
 		if CODE_PLAYED.has(id):
 			assert_false(_triggered_on.has(id), "« %s » jouée par le code seulement" % id)
 			continue
@@ -396,14 +440,15 @@ func test_every_trainer_and_item_step_exists() -> void:
 ## Jalon 10 (T9) : chaque Dresseur présenté par une carte en a une, chaque badge remis existe, et
 ## l'étape « badge » d'une scène suit le combat qui lève déjà son drapeau (« win »).
 func test_every_champion_card_and_badge_step_exists() -> void:
-	assert_eq(_cutscenes.get_card_trainer_ids(), [&"cerulean_gym_misty", &"pewter_gym_brock"] as Array[StringName])
+	assert_eq(_cutscenes.get_card_trainer_ids(), [&"cerulean_gym_misty", &"pewter_gym_brock",
+		&"vermilion_gym_surge"] as Array[StringName])
 	for id: StringName in _cutscenes.get_card_trainer_ids():
 		var trainer := _trainers.get_trainer(id)
 		assert_true(trainer != null and trainer.has_card(), "« %s » a une carte" % id)
-	assert_eq(_cutscenes.get_badge_ids(), [&"boulder", &"cascade"] as Array[StringName])
+	assert_eq(_cutscenes.get_badge_ids(), [&"boulder", &"cascade", &"thunder"] as Array[StringName])
 	for id: StringName in _cutscenes.get_badge_ids():
 		assert_true(_badges.has_badge(id), "badge « %s » connu" % id)
-	for id: StringName in _cutscenes.get_ids():
+	for id: StringName in _real_ids():
 		for variant: CutsceneVariant in _cutscenes.get_cutscene(id).variants:
 			var won: Array[StringName] = []
 			for step: CutsceneStep in variant.steps:
@@ -422,7 +467,7 @@ func test_every_champion_card_and_badge_step_exists() -> void:
 ## Jalon 8 : les quatre objets de la Route 2 (dossier 11 §11) sont trouvés eux aussi.
 func test_only_world_items_are_found_items() -> void:
 	var found: Array[String] = []
-	for id: StringName in _cutscenes.get_ids():
+	for id: StringName in _real_ids():
 		for variant: CutsceneVariant in _cutscenes.get_cutscene(id).variants:
 			for step: CutsceneStep in variant.steps:
 				if step.kind == CutsceneStep.Kind.GIVE and step.found:
@@ -443,6 +488,10 @@ func test_only_world_items_are_found_items() -> void:
 		"route_3_item_3:paralyze_heal", "route_4_item_1:poke_ball",
 		"route_5_hidden_1:antidote", "route_5_item_1:super_potion",
 		"route_6_hidden_1:super_potion", "route_6_item_1:poke_ball",
+		"ss_anne_hidden_1:awakening", "ss_anne_hidden_2:antidote", "ss_anne_hidden_3:potion",
+		"ss_anne_item_01:potion", "ss_anne_item_02:potion", "ss_anne_item_03:super_potion",
+		"ss_anne_item_04:super_potion", "ss_anne_item_05:super_potion",
+		"ss_anne_item_06:paralyze_heal",
 		"underground_hidden_1:full_restore",
 		"viridian_forest_item_1:antidote", "viridian_forest_item_2:poke_ball",
 		"viridian_forest_item_3:potion", "viridian_forest_item_4:antidote",
@@ -506,11 +555,11 @@ func test_every_change_map_targets_an_existing_map_and_spawn() -> void:
 				as GameMap
 		assert_true(map.has_spawn(step.spawn), "%s : point « %s »" % [step.map_id, step.spawn])
 		map.free()
-	assert_eq(count, 1, "le retour au labo")
+	assert_eq(count, 2, "le retour au labo ; le quai de Carmin (départ du S.S. Anne, J16 T15)")
 
 
 func test_every_variant_is_chosen_by_its_flags() -> void:
-	for id: StringName in _cutscenes.get_ids():
+	for id: StringName in _real_ids():
 		assert_true(VARIANT_FLAGS.has(id), "%s : drapeaux des variantes écrits" % id)
 		var cutscene := _cutscenes.get_cutscene(id)
 		var rows: Array = VARIANT_FLAGS.get(id, [])
@@ -522,7 +571,7 @@ func test_every_variant_is_chosen_by_its_flags() -> void:
 
 func test_static_simulation_of_every_variant() -> void:
 	var checked := 0
-	for id: StringName in _cutscenes.get_ids():
+	for id: StringName in _real_ids():
 		var cutscene := _cutscenes.get_cutscene(id)
 		var rows: Array = VARIANT_FLAGS.get(id, [])
 		var maps: Array = _triggered_on.get(id, [])
@@ -752,7 +801,7 @@ func test_oak_parcel_scene_order() -> void:
 ## Une seule étape de toutes les données lève pokedex_activated (jamais un dialogue).
 func test_pokedex_activated_is_raised_only_by_the_parcel_scene() -> void:
 	var raised := 0
-	for id: StringName in _cutscenes.get_ids():
+	for id: StringName in _real_ids():
 		for variant: CutsceneVariant in _cutscenes.get_cutscene(id).variants:
 			for step: CutsceneStep in variant.steps:
 				if step.flags.has(StoryFlags.POKEDEX_ACTIVATED) \
@@ -857,6 +906,11 @@ func _simulate(label: String, variant: CutsceneVariant, start_map: StringName,
 			CutsceneStep.Kind.DIALOGUE:
 				var dialogue := _dialogues.get_dialogue(step.dialogue_id)
 				var picked: DialogueVariant = dialogue.pick(flags) if dialogue != null else null
+				# Jalon 16 (T15) : une scène de capacité de terrain (COUPER) n'est lancée que
+				# dans l'état « prêt » : ses répliques suivent cette variante.
+				if picked == null and dialogue != null:
+					picked = dialogue.pick(flags, null, 0, func(_move: StringName) -> Variant:
+						return FieldMoves.Result.new(FieldMoves.State.READY, 0))
 				assert_not_null(picked, "%s : « %s » a une variante" % [where,
 					step.dialogue_id])
 				if picked != null:
@@ -925,3 +979,17 @@ func _flags(names: Array) -> StoryFlags:
 	for flag: StringName in names:
 		flags.set_flag(flag)
 	return flags
+
+
+## Scènes sans celles d'une éventuelle carte de QA (`qa_*` ; celles du jalon 16 sont retirées au
+## T20).
+func _real_ids() -> Array[StringName]:
+	return _without_qa(_cutscenes.get_ids())
+
+
+func _without_qa(ids: Array[StringName]) -> Array[StringName]:
+	var result: Array[StringName] = []
+	for id: StringName in ids:
+		if not MapCatalog.is_qa_map(id):
+			result.append(id)
+	return result
