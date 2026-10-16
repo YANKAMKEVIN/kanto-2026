@@ -1,0 +1,33 @@
+# Labo de Cramois'Île, salle de réunion (cinnabar_lab_trade_room) — grille fonctionnelle v1 (jalon 24
+# T2, dossier 27 §10.4, P-19 : les échanges sont reportés, les trois PNJ parlent de leur Pokémon).
+# Enveloppe 15 × 10 des maisons (argenta_maison_tailleur.txt). RB : 8 × 8 cellules, 3 PNJ.
+#
+# Légende :
+#   K mur (bloqué)   . sol (praticable)   X sortie vers le hall (praticable : paillasson, PUSH ↓)
+#   S canapé (2..4, 3)   b table basse (10..11, 3)   d lampe (13, 3)
+#   T tables de réunion (4..6, 5..6) et (9..11, 5..6)   x plante (1, 7), (13, 7)
+#
+# Format : section GRILLE (« NN » + espace + 15 caractères par rangée), puis POSITIONS.
+
+PRATICABLES .X
+
+GRILLE 15 10
+00 KKKKKKKKKKKKKKK
+01 KKKKKKKKKKKKKKK
+02 KKKKKKKKKKKKKKK
+03 K.SSS.....bb.dK
+04 K.............K
+05 K...TTT..TTT..K
+06 K...TTT..TTT..K
+07 Kx...........xK
+08 KKKKKKXXXKKKKKK
+09 KKKKKKKKKKKKKKK
+FIN
+
+POSITIONS
+sortie                     warp           6..8,8            libre   # PUSH ↓ → cinnabar_labo_hall, from_reunion
+entree                     spawn          7,8               libre   # spawn « entrance », tourné ↑
+canon                      pnj            7,4               bloque  role=P1 facing=down rb=3,2 texte=T-53  # RB Super Nerd (le « Canon » du texte T-53) ; aucun échange
+papy                       pnj            2,5               bloque  role=P2 facing=right rb=1,4 texte=T-52  # RB Gramps ; Électrode « Doris » ; aucun échange
+scientifique_otaria        pnj            11,7              bloque  role=P3 facing=up rb=5,5 texte=T-54  # RB Beauty (Ponyta contre Otaria) ; T-54 est étiqueté « salle des fossiles » au dossier §15 : voir question Q-2 ; aucun échange
+FIN

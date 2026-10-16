@@ -1,0 +1,33 @@
+# Labo de Cramois'Île, salle R&D (cinnabar_lab_metronome_room) — grille fonctionnelle v1 (jalon 24 T2,
+# dossier 27 §10.4 et §10.6 : CT35 Métronome, scientifique d'Évoli, PC). Enveloppe 15 × 10 des
+# maisons. RB : 8 × 8 cellules, 2 scientifiques, un PC, un tuyau d'ambre (omis).
+#
+# Légende :
+#   K mur (bloqué)   . sol (praticable)   X sortie vers le hall (praticable : paillasson, PUSH ↓)
+#   Q ordinateurs (1..3, 3)   M machine de recherche (9..11, 3)   d lampe (13, 3)
+#   T table de travail (10..12, 6..7)   x plante (1, 7), (13, 7)
+#
+# Format : section GRILLE (« NN » + espace + 15 caractères par rangée), puis POSITIONS.
+
+PRATICABLES .X
+
+GRILLE 15 10
+00 KKKKKKKKKKKKKKK
+01 KKKKKKKKKKKKKKK
+02 KKKKKKKKKKKKKKK
+03 KQQQ.....MMM.dK
+04 K.............K
+05 K.............K
+06 K.........TTT.K
+07 Kx........TTTxK
+08 KKKKKKXXXKKKKKK
+09 KKKKKKKKKKKKKKK
+FIN
+
+POSITIONS
+sortie                     warp           6..8,8            libre   # PUSH ↓ → cinnabar_labo_hall, from_rd
+entree                     spawn          7,8               libre   # spawn « entrance », tourné ↑
+scientifique_ct35          pnj            10,4              bloque  role=P1 facing=down rb=7,2 texte=T-55,T-56 don=tm35  # CT35 Métronome une fois (got_tm35)
+scientifique_evoli         pnj            3..7,5            bloque  role=P2 facing=right move=walk_lr rb=2,3 texte=T-57  # marche de gauche à droite (RB WALK LEFT_RIGHT) ; zone entière réservée
+pc_courriel                examen         1..3,3            bloque  rb=0,4 texte=T-58  # ordinateurs (RB : clavier et écran), EXAMINER depuis (1..3,4) tourné ↑
+FIN

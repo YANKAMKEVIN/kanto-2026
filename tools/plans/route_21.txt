@@ -1,0 +1,190 @@
+# Route 21 (route marine) — grille fonctionnelle v1 (jalon 24 T2, dossier 27 §4, §5.2, §9.3-§9.5 ;
+# passe docs/design/passes/j24-v2-alignement.md §2.1). Source de la géométrie de la carte `route_21`
+# (T11). Faits RB : maps/Route21.blk décodé, ×1,5 (P-5). Contrôle : tools/art/plan_check_j24_mer.py.
+#
+# 30 × 135 cases (RB 20 × 90, ×1,5) ; nord en haut ; x = colonne 0..29, y = rangée 0..134.
+#
+# Raccords :
+#   - NORD ↔ Bourg Palette : seul le canal (colonnes 7..11, RB x5..7 élargi de 3 à 5) est ouvert.
+#     ATTENDU côté Bourg Palette (48 × 34, tools/build_pallet_town.gd) : Route 21 (x, 0) ↔ Palette
+#     (x + 3, 33), soit les colonnes 10..14 de la dernière ligne ; leurs lignes 32..33 sont déjà de l'eau
+#     (WATER [0,32,47,33], SHALLOW [3..14, 32]) à rendre SURFABLE (T11). Le décalage de 3 évite le
+#     ponton (9, 32..33) et place le canal sous la barque de Haru (12, 31) et la fin de la plage (SAND
+#     3..14, 27..31), d'où l'on embarque. Les colonnes 0..6 et 12..29 de la rangée 0 sont des récifs :
+#     le bord sud de Palette n'a pas d'autre sortie. Aucune modification de Palette n'est faite ici.
+#   - SUD ↔ Cramois'Île (bord nord, décalage 0) : colonnes 2..5, eau jointe ; colonnes 15..20, pointe
+#     de sable jointe à pied (RB : 2 cases de sable, élargie à 6 pour joindre le chemin de la ville).
+#
+# La PRAIRIE d'herbes hautes (colonnes 12..20, rangées 2..14 ; 81 cases d'herbes hautes, RB 36)
+# n'est accessible qu'en Surf : canal à l'ouest, mer au sud, récifs ailleurs. Deux îlots de Pêcheurs
+# (nord : colonnes 6..11, rangées 36..38 ; sud : colonnes 21..26, rangées 84..86).
+# Les bois (T) du nord-ouest et du nord-est sont des décors fermés (RB : tuiles non praticables).
+#
+# Légende :
+#   w eau SURFABLE (surfeur seulement)   ~ eau décor (bloquée)   R récifs, rivage rocheux (bloqués)
+#   T bois (bloqués)   y sable des îlots et de la pointe (praticable)   . herbe rase   h hautes herbes
+#   (s « Surf forcé » : inutilisé ici)
+#
+# Positions : voir route_19.txt ; mer = ouest (la Route 21 est dans la mer ouest) | ilot_nord | ilot_sud.
+
+PRATICABLES .hywD
+
+GRILLE 30 135
+00 RRRRRRRwwwwwRRRRRRRRRRRRRRRRRR
+01 RRRRRRRwwwwwRRRRRRRRRRRRRRRRRR
+02 TTTTTRRwwwww.........RRTTTTTTT
+03 TTTTTRRwwwww.........RRTTTTTTT
+04 TTTTTRRwwwww.........RRTTTTTTT
+05 TTTTTRRwwwww.........RRTTTTTTT
+06 TTTTTRRwwwwwhhhhhhhhhRRTTTTTTT
+07 TTTTTRRwwwwwhhhhhhhhhRRTTTTTTT
+08 TTTTTRRwwwwwhhhhhhhhhRRTTTTTTT
+09 TTTTTRRwwwwwhhhhhhhhhRRTTTTTTT
+10 TTTTTRRwwwwwhhhhhhhhhRRTTTTTTT
+11 TTTTTRRwwwwwhhhhhhhhhRRTTTTTTT
+12 TTTTTRRwwwwwhhhhhhhhhRRTTTTTTT
+13 TTTTTRRwwwwwhhhhhhhhhRRTTTTTTT
+14 TTTTTRRwwwwwhhhhhhhhhRRTTTTTTT
+15 TTTTTRRwwwwwwwwwwwwwwRR~~~~~~~
+16 TTTTTRRwwwwwwwwwwwwwwRR~~~~~~~
+17 TTTTTRRwwwwwwwwwwwwwwRR~~~~~~~
+18 TTTTTRRwwwwwwwwwwwwwwRR~~~~~~~
+19 TTTTTRRwwwwwwwwwwwwwwRR~~~~~~~
+20 RRRRRRRwwwwwwwwwwwwwwRR~~~~~~~
+21 RRwwwwwwwwwwwwwwwwwwwRR~~~~~~~
+22 RRwwwwwwwwwwwwwwwwwwwRR~~~~~~~
+23 RRwwwwwwwwwwwwwwwwwwwRRRRRRRRR
+24 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+25 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+26 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+27 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+28 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+29 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+30 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+31 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+32 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+33 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+34 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+35 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+36 RRwwwwyyyyyywwwwwwwwwwwwwwwwwR
+37 RRwwwwyyyyyywwwwwwwwwwwwwwwwwR
+38 RRwwwwyyyyyywwwwwwwwwwwwwwwwwR
+39 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+40 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+41 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+42 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+43 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+44 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+45 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+46 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+47 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+48 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+49 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+50 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+51 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+52 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+53 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+54 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+55 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+56 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+57 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+58 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+59 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+60 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+61 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+62 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+63 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+64 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+65 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+66 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+67 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+68 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+69 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+70 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+71 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+72 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+73 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+74 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+75 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+76 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+77 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+78 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+79 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+80 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+81 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+82 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+83 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+84 RRwwwwwwwwwwwwwwwwwwwyyyyyywwR
+85 RRwwwwwwwwwwwwwwwwwwwyyyyyywwR
+86 RRwwwwwwwwwwwwwwwwwwwyyyyyywwR
+87 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+88 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+89 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+90 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+91 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+92 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+93 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+94 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+95 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+96 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+97 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+98 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+99 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+100 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+101 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+102 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+103 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+104 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+105 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+106 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+107 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+108 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+109 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+110 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+111 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+112 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+113 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+114 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+115 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+116 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+117 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+118 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+119 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+120 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+121 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+122 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+123 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+124 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+125 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+126 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+127 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+128 RRwwwwwwwwwwwwwwwwwwwwwwRRRRRR
+129 RRwwwwwwwwwwwwwwwwwwwwwR~~~~~~
+130 RRwwwwwwwwwwwwwwwwwwwwwR~~~~~~
+131 RRwwwwwwwwwwwwwwwwwwwwwR~~~~~~
+132 RRwwwwwwwwwwwwwyyyyyywwR~~~~~~
+133 RRwwwwwwwwwwwwwyyyyyywwR~~~~~~
+134 RRwwwwRRRRRRRRRyyyyyyRRR~~~~~~
+FIN
+
+POSITIONS
+warp_nord                  warp           7..11,0           libre   surf=1  # PUSH ↑ → pallet_town, bord sud (10..14, 33) ; eau jointe, colonne Palette = colonne Route 21 + 3 ; la côte sud de Bourg Palette devient surfable (T11)
+from_pallet_town           spawn          7..11,0           libre   surf=1  # arrivée de Bourg Palette en Surf, tournée ↓
+warp_sud_eau               warp           2..5,134          libre   surf=1  # PUSH ↓ → cinnabar_island, bord nord (2..5, 0) ; eau jointe
+warp_sud_terre             warp           15..20,134        libre   # PUSH ↓ → cinnabar_island, bord nord (15..20, 0) ; pointe de sable, à pied
+from_cinnabar_island_eau   spawn          2..5,134          libre   surf=1  # arrivée de Cramois'Île en Surf, tournée ↑
+from_cinnabar_island_terre spawn          15..20,134        libre   # arrivée à pied de Cramois'Île, tournée ↑
+raccord_bourg_palette      repere         7..11,0           libre   pallet_colonnes=10..14 pallet_rangee=33 decalage=3  # ATTENDU côté Bourg Palette (48 × 34) : colonne Palette = colonne Route 21 + 3 ; eau (WATER / SHALLOW de tools/build_pallet_town.gd) aux cases (10..14, 32..33), à rendre surfable au T11 ; le ponton (9, 32..33) reste à l'ouest du canal ; la plage (SAND 3..14, 27..31) borde le canal : on embarque depuis (10..14, 31)
+prairie                    herbes         12..20,6..14      libre   role=H1  # hautes herbes (RB : 36 cases, ×1,5 : 81), accessibles seulement en Surf
+prairie_max_repousse       objet_visible  20,3              bloque  role=O1 item=max_repel  # dossier §9.5 : prairie, Max Repousse
+ilot_sud_hyper_potion      objet_visible  24,85             bloque  role=O2 item=hyper_potion  # dossier §9.5 : îlot sud, Hyper Potion
+gilles                     dresseur       6,36              bloque  role=D1 classe=pecheur mode=pied facing=left sight=0 rbsight=0 rb=4,24 mer=ilot_nord  # Gilles : Poissoroy, Poissirène, Poissoroy ×2 N28 ; vue 0, il faut lui parler (RB)
+marcel                     dresseur       9,38              bloque  role=D2 classe=pecheur mode=pied facing=down sight=0 rbsight=0 rb=6,25 mer=ilot_nord  # Marcel : Magicarpe ×6 N27 ; vue 0, il faut lui parler (RB)
+thibault                   dresseur       15,47             bloque  role=D3 classe=nageur mode=nageur facing=up sight=6 rbsight=4 rb=10,31 mer=ouest  # Thibault : Hypocéan, Tentacruel N33
+dylan                      dresseur       18,45             bloque  role=D4 classe=nageur mode=nageur facing=right sight=6 rbsight=4 rb=12,30 mer=ouest  # Dylan : Tentacool ×2, Tentacruel N31 (RB : Canon)
+simon                      dresseur       24,95             bloque  role=D5 classe=nageur mode=nageur facing=down sight=6 rbsight=4 rb=16,63 mer=ouest  # Simon : Staross N37
+arthur                     dresseur       8,107             bloque  role=D6 classe=nageur mode=nageur facing=right sight=6 rbsight=4 rb=5,71 mer=ouest  # Arthur : Stari, Carabaffe N33
+noe                        dresseur       23,107            bloque  role=D7 classe=nageur mode=nageur facing=left sight=5 rbsight=3 rb=15,71 mer=ouest  # Noé : Têtarte, Tentacool, Hypocéan N32
+rene                       dresseur       21,84             bloque  role=D8 classe=pecheur mode=pied facing=left sight=0 rbsight=0 rb=14,56 mer=ilot_sud  # René : Kokiyas, Crustabri N31 ; vue 0, il faut lui parler (RB)
+yves                       dresseur       26,86             bloque  role=D9 classe=pecheur mode=pied facing=right sight=0 rbsight=0 rb=17,57 mer=ilot_sud  # Yves : Poissoroy, Poissirène N33 ; vue 0, il faut lui parler (RB)
+FIN

@@ -1,0 +1,32 @@
+# Labo de Cramois'Île, salle des fossiles (cinnabar_lab_fossil_room) — grille fonctionnelle v1
+# (jalon 24 T2, dossier 27 §10.4-§10.5 : résurrection de Kabuto et d'Amonita). Enveloppe 15 × 10 des
+# maisons. RB : 8 × 8 cellules, 2 scientifiques ; le 2e (RB (7,6)) n'est pas repris (le dossier §10.4
+# n'en place qu'un : question Q-2).
+#
+# Légende :
+#   K mur (bloqué)   . sol (praticable)   X sortie vers le hall (praticable : paillasson, PUSH ↓)
+#   M machine de résurrection (2..6, 3)   A vitrines de fossiles (9..10, 3)   d lampe (13, 3)
+#   T table (9..11, 6)   x plante (1, 7), (13, 7)
+#
+# Format : section GRILLE (« NN » + espace + 15 caractères par rangée), puis POSITIONS.
+
+PRATICABLES .X
+
+GRILLE 15 10
+00 KKKKKKKKKKKKKKK
+01 KKKKKKKKKKKKKKK
+02 KKKKKKKKKKKKKKK
+03 K.MMMMM..AA..dK
+04 K.............K
+05 K.............K
+06 K........TTT..K
+07 Kx...........xK
+08 KKKKKKXXXKKKKKK
+09 KKKKKKKKKKKKKKK
+FIN
+
+POSITIONS
+sortie                     warp           6..8,8            libre   # PUSH ↓ → cinnabar_labo_hall, from_fossiles
+entree                     spawn          7,8               libre   # spawn « entrance », tourné ↑
+scientifique_fossiles      pnj            4,4               bloque  role=P1 facing=up move=stay rb=5,2 texte=T-60,T-61,T-62,T-63  # résurrection (§10.5) ; RB : marche de gauche à droite, rendu immobile devant la machine
+FIN
