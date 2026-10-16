@@ -22,7 +22,9 @@ extends RefCounted
 ## suffixe `_N` = N % de chances. Vocabulaire actuel (le poison est joué depuis le jalon 9 :
 ## effet [code]status[/code] de [MoveEffect], plus de `poison`, `poison_20` ni `poison_30` ;
 ## jalon 12 : `drain`, `trap`, `disable`, `rest`, `self_ko`, `fixed_value` sont joués, genres
-## d'effet de [MoveEffect]) :
+## d'effet de [MoveEffect] ; jalon 19 : Dévorêve, Hurlement, Bélier et Ultralaser jouent les
+## sortes `requires_sleep`, `force_switch`, `recoil_damage` et `recharge` de [MoveEffect] ; les
+## autres capacités qui portent encore `force_switch` ou `recoil_damage` les gardent en attente) :
 ## - `burn_10` : 10 % de chances de brûler la cible ;
 ## - `paralysis`, `paralysis_10`, `paralysis_30` : paralyse la cible (toujours, 10 %, 30 %) ;
 ## - `confusion`, `confusion_10` : rend la cible confuse (toujours, 10 %) ;

@@ -7,8 +7,8 @@ extends GutTest
 const K := BattleEvent.Kind
 
 ## Messages encore en brouillon : ils doivent l'être, et eux seuls. Vide depuis la validation
-## de l'annexe A du jalon 15 (Jackpot, 2026-10-14).
-const PENDING_DRAFTS: Array[StringName] = []
+## de l'annexe A du jalon 15 (Jackpot, 2026-10-14). Jalon 19 : Ultralaser et Hurlement, à valider.
+const PENDING_DRAFTS: Array[StringName] = [&"recharging", &"scared_away", &"forced_out"]
 
 var _data: PokemonData
 var _text: BattleText

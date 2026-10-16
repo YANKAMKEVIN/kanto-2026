@@ -28,8 +28,9 @@
 	},
 	"dream_eater": {
 		"name": "Dévorêve", "type": "psychic", "category": "special",
-		"power": 100, "accuracy": 100, "pp": 15, "pending_effects": ["dream_eater"],
-		"description": "Dévore le rêve d'une cible endormie et rend au lanceur la moitié des dégâts. Sans effet dans le moteur actuel."
+		"power": 100, "accuracy": 100, "pp": 15,
+		"effects": [{ "kind": "requires_sleep" }, { "kind": "drain", "fraction": 0.5 }],
+		"description": "Dévore le rêve d'une cible endormie et rend au lanceur la moitié des dégâts."
 	},
 	"bonemerang": {
 		"name": "Osmerang", "type": "ground", "category": "physical",
@@ -38,13 +39,14 @@
 	},
 	"roar": {
 		"name": "Hurlement", "type": "normal", "category": "status",
-		"accuracy": 0, "pp": 20, "priority": -6, "pending_effects": ["force_switch"],
-		"description": "Un cri terrifiant qui fait fuir la cible. Sans effet dans le moteur actuel."
+		"accuracy": 0, "pp": 20, "priority": -6, "effects": [{ "kind": "force_switch" }],
+		"description": "Un cri terrifiant qui fait fuir la cible."
 	},
 	"take_down": {
 		"name": "Bélier", "type": "normal", "category": "physical",
-		"power": 90, "accuracy": 85, "pp": 20, "pending_effects": ["recoil_damage"],
-		"description": "Le lanceur fonce sur la cible de tout son poids et se blesse aussi. Sans effet dans le moteur actuel."
+		"power": 90, "accuracy": 85, "pp": 20,
+		"effects": [{ "kind": "recoil_damage", "fraction": 0.25 }],
+		"description": "Le lanceur fonce sur la cible de tout son poids et se blesse aussi."
 	},
 	"barrage": {
 		"name": "Pilonnage", "type": "normal", "category": "physical",
@@ -53,7 +55,7 @@
 	},
 	"hyper_beam": {
 		"name": "Ultralaser", "type": "normal", "category": "special",
-		"power": 150, "accuracy": 90, "pp": 5, "pending_effects": ["recharge"],
-		"description": "Un rayon dévastateur. Le lanceur doit ensuite se reposer un tour. Sans effet dans le moteur actuel."
+		"power": 150, "accuracy": 90, "pp": 5, "effects": [{ "kind": "recharge" }],
+		"description": "Un rayon dévastateur. Le lanceur doit ensuite se reposer un tour."
 	}
 }

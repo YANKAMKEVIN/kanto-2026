@@ -1,6 +1,6 @@
 extends GutTest
 ## Capacités de la Tour Pokémon (jalon 19 T3 ; `jalon-19.md` §2.12, dossier 22 §12.2) : valeurs
-## actuelles, effets joués par le moteur existant (aucun code nouveau), textes du §15.7.
+## actuelles, effets joués par le moteur (jalon 19 : `test_moves_j19_effects.gd`), textes §15.7.
 ##
 ## Tirages (voir `test_battle_status_j11.gd`) : IA adverse (roll(1)), puis pour chaque Pokémon qui
 ## agit : statut (roll(100) s'il est paralysé), précision, critique (2 = non), aléatoire (16) ;
@@ -27,10 +27,10 @@ const VALUES := {
 	&"hyper_beam": ["Ultralaser", &"normal", MoveData.Category.SPECIAL, 150, 90, 5],
 }
 ## Effets que le moteur ne joue pas encore : la capacité le dit (convention des jalons 12 à 15).
-const PENDING := {
-	&"dream_eater": ["dream_eater"], &"roar": ["force_switch"],
-	&"take_down": ["recoil_damage"], &"hyper_beam": ["recharge"],
-}
+## Vide depuis le jalon 19 (Dévorêve, Hurlement, Bélier, Ultralaser : `test_moves_j19_effects.gd`).
+const PENDING := {}
+## Capacités que le J17 définit aussi (`j17.json`, ses entrées feront foi à T10).
+const FROM_J17_AT_T10 := [&"take_down", &"roar"]
 ## Descriptions du lot §15.7 (validé par Kevin le 2026-10-15), par nom affiché.
 const VALIDATED := [&"lick", &"night_shade", &"hypnosis", &"bone_club", &"dragon_rage"]
 
@@ -59,7 +59,10 @@ func test_values_are_the_current_ones() -> void:
 			continue
 		assert_eq([move.name, move.type, move.category, move.power, move.accuracy, move.pp],
 			VALUES[id], String(id))
-		assert_eq(move.source, "res://data/pokemon/moves/tower.json", String(id))
+		# Bélier et Hurlement passeront à `j17.json` à T10 (le J17 est plus ancien) : seule la
+		# valeur compte pour eux, pas le fichier.
+		if not FROM_J17_AT_T10.has(id):
+			assert_eq(move.source, "res://data/pokemon/moves/tower.json", String(id))
 		var pending: Array = PENDING.get(id, [])
 		assert_eq(Array(move.pending_effects), pending, String(id))
 		assert_eq(move.description.ends_with(" Sans effet dans le moteur actuel."),
