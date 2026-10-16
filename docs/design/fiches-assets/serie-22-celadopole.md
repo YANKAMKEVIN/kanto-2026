@@ -167,7 +167,7 @@ l'image jointe (Empiflor). Ordre conseillé pour la suite : **r2 directement**, 
 
 Commandes : `python3 tools/art/serie22.py --commandes` (prompts déjà écrits).
 
-## 5. Planches de contact (à valider par Kevin)
+## 5. Planches de contact — VALIDÉES par Kevin le 2026-10-16 (telles quelles)
 
 - `build/art/SERIE22_CONTACT_COMBAT_v1.png` : chaque dos retenu face à l'artwork officiel de la même
   espèce, aux règles de `BattleLayout` (pieds, présence, loi de taille, tailles RB), sur le décor de
@@ -178,7 +178,12 @@ Commandes : `python3 tools/art/serie22.py --commandes` (prompts déjà écrits).
 - `build/art/J20_KIT_v1.png` : faces officielles des 16 espèces et nature du dos prévue ; PNJ
   réutilisés ; nouveaux.
 
-## 6. Points à juger par Kevin
+## 6. Points à juger par Kevin — tranchés le 2026-10-16
+
+> **Art validé tel quel** (« Je valide l'art de la série 22 »). Les quatre défauts sont **reportés
+> à la phase DA** (règle 3), sans correction maintenant : air enfantin d'Erika et des PNJ adultes,
+> dos d'Empiflor proche de Boustiflor, Rocket en civil trop « gangster », serre plus dorée que le
+> vert filtré du dossier §23. Reste : dos de Voltali et de Pyroli (app ChatGPT, par Kevin).
 
 1. **Erika paraît enfant** (même gabarit chibi que la Fillette) : acceptable, ou un r2 « jeune
    femme, plus élancée, visage plus adulte » ?
