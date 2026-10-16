@@ -544,7 +544,9 @@ Grilles, vues, données et art avancent dès maintenant.
 ## 19. Grilles v1 (lot 21.0) — À VALIDER par Kevin
 
 > **M-3 (2026-10-16)** : la grille `route_12.txt` est révisée pour poser Ronflex au croisement
-> (passage de 2 cases) ; le tableau ci-dessous décrit la v1 avant révision.
+> (passage de 2 cases ; tronc en x 25..26 de la rangée 92 au bord sud ; Ronflex (25..26, 93..94) ;
+> Lavanville → devant Ronflex : 144 pas). Contrôle conforme ; vue peinte refaite (r3, Ronflex visible).
+> Le tableau ci-dessous décrit la v1 avant révision.
 
 > Conçues le 2026-10-15 (branche `j21-grilles`, fusionnée ici). La grille fait foi pour la
 > géométrie. Contrôle : `python3 -I tools/art/plan_check_j21.py` → **TOUT EST CONFORME** (il lit
@@ -559,8 +561,8 @@ Grilles, vues, données et art avancent dès maintenant.
 
 **Valeurs par défaut retenues [D]** (en attendant l'avis de Kevin) :
 - **Ronflex : le `FlagGate` s'ouvre sur `*_done`** (dossier §9.4).
-- **Ronflex de la Route 12** (M-3) : au croisement, en (25..26, 93..94) [à confirmer par la grille
-  révisée] ; on lui parle depuis le nord, l'ouest ou le sud (repères `face_ronflex`).
+- **Ronflex de la Route 12** (M-3) : au croisement, en (25..26, 93..94) ; on lui parle depuis le nord (25..26, 92), l'ouest (24, 93..94)
+  ou le sud (25..26, 95) (repères `face_ronflex`) ; panneau du ponton en (24, 95).
 - **Poste de la Route 12** : deux portes (traversée) et un 2F (CT39) ; lisibilité de la porte nord
   à vérifier sur la vue peinte.
 - **Îlot de la CT Jackpot de RB** (accessible seulement en Surf dans RB) : **îlot décor vide** ; la
