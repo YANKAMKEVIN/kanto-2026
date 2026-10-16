@@ -138,8 +138,9 @@ Coordonnées RB indicatives : la grille peut les décaler, la topologie reste.
 - Les trous sont **peints** (plancher effondré aux bords nets), visibles de loin ; on ne tombe
   jamais par surprise sur une case qui ne le montre pas.
 - Arrivées : 1F (16,14) pour les deux trous ouest, 2F (18,14) pour le trou est.
-- Système commun avec le J24 (rochers des Îles Écume) : la première session qui le code le livre ;
-  l'autre le réutilise.
+- Système commun avec le J24 (rochers des Îles Écume). **Règle d'ancienneté** (Kevin, 2026-10-16) :
+  le J24 est plus ancien ; s'il conçoit ou code des trous, le J25 **réutilise** son système et ne le
+  modifie pas (une amélioration se demande à Kevin). Le J25 ne code le sien que si le J24 n'en a pas.
 
 ### 4.5 Contrôle du puzzle
 
@@ -673,7 +674,13 @@ ce lot complémentaire.
 
 ## 17. Dépendances et propagation
 
-- **Session du J24** : cinq portes de Cramois'Île (§3) ; `Warp` « chute » commun (§4.4).
+- **Règle d'ancienneté** (Kevin, 2026-10-16 ; ordre J15, J17 … J24, J25) : le J25 est la session
+  la plus récente ; il ne modifie rien de ce qu'une session plus ancienne est en train de modifier
+  (fichiers, systèmes, données, moteur) et vérifie avant chaque système partagé.
+- **Session du J24** : cinq portes de Cramois'Île (§3) ; `Warp` « chute » (§4.4) : celui du J24 s'il
+  existe.
+- **Argenta** : `jalon-17` touche déjà les données d'Argenta (`test_pewter_data.gd`) ; la porte
+  arrière et l'arbre (§7) attendent sa fusion, puis se font sans toucher à son travail.
 - **Dossier 12** : « Ambre Vieille » → « Vieil Ambre » (fait avec ce dossier) ; la carte d'Argenta
   recevra la porte arrière et l'arbre au 25B.
 - **Dossier 17 / `trade_cord`** : sans changement ; les échanges du J25 sont des échanges fixes,
