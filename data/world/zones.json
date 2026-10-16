@@ -141,6 +141,19 @@
 			"name": "Route 6", "kind": "route", "maps": ["route_6", "route_6_underground_gate"],
 			"subtitle": "Safrania — Carmin-sur-Mer",
 			"description": "Une route ouverte où l'air sent déjà le sel. Au bout, les grues et les mâts du port de Carmin."
+		},
+		"route_9": {
+			"name": "Route 9", "kind": "route", "maps": ["route_9"],
+			"subtitle": "Azuria — Route 10",
+			"description": "Un sentier de terre qui serpente de terrasse en terrasse, au pied d'une grande falaise. Les rochers y ferment bien des passages."
+		},
+		"route_10": {
+			"name": "Route 10", "kind": "route", "maps": ["route_10", "route_10_center"],
+			"subtitle": "Route 9 — Lavanville",
+			"services": [
+				{ "id": "pokemon_center", "found_on": "route_10_center" }
+			],
+			"description": "Une route taillée par une rivière claire. D'un côté la roche et une grotte, de l'autre une forêt où l'on devine à peine une cheminée."
 		}
 	}
 }

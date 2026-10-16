@@ -131,3 +131,15 @@ func test_j13_qa_map_is_recognised_and_removed() -> void:
 	assert_false(MapCatalog.is_qa_map(&"cerulean_city"))
 	assert_false(MapCatalog.is_qa_map(&""))
 	assert_false(MapCatalog.has_map(&"qa_switch_j13"), "retirée au T22")
+
+
+## Jalon 18 (T12) : Route 9, Route 10 (extérieures) et le Centre de la Route 10 (bâtiment).
+func test_j18_route_maps_exist_with_their_category() -> void:
+	var interiors := MapCatalog.load_interiors()
+	for map_id: StringName in [&"route_9", &"route_10"]:
+		assert_true(MapCatalog.has_map(map_id), String(map_id))
+		assert_false(interiors.has(map_id), "%s : extérieur" % map_id)
+		assert_false(_scene_interior(MapCatalog.scene_path(map_id)))
+	assert_true(MapCatalog.has_map(&"route_10_center"))
+	assert_true(interiors.has(&"route_10_center"))
+	assert_true(_scene_interior(MapCatalog.scene_path(&"route_10_center")))

@@ -37,6 +37,9 @@ const MAP_IDS: Array[StringName] = [
 	&"vermilion_house_2",
 	# Jalon 15 (T13, T21) : la Route 5 (raccord réel avec Azuria) et ses trois intérieurs.
 	&"route_5", &"route_5_daycare", &"route_5_gate", &"route_5_underground_gate",
+	# Jalon 18 (T12) : Route 9, Route 10 et son Centre (Azuria, Grotte Sombre et Lavanville :
+	# « à venir » tant que leurs cartes J18 ne sont pas là).
+	&"route_9", &"route_10", &"route_10_center",
 ]
 ## Cartes construites par une autre tâche en parallèle (jalon 7 : la Route 22, T22 ; jalon 10 :
 ## Argenta, T11, pendant les intérieurs du T13) : un warp qui y mène est vérifié seulement si la
@@ -132,8 +135,11 @@ func test_every_coming_soon_warp_returns_to_a_walkable_spawn_of_its_own_map() ->
 	# nord du poste vers Safrania (2 cases, jamais atteinte). Jalon 15 (T14) : Route 11
 	# (trois cases), Arène de Carmin (deux), S.S. Anne (deux), Safrania (porte nord de la
 	# Route 6, une).
-	assert_eq(found, 10, "« SAFRANIA » (2), « Route 11 » (3), Arène de Carmin (2), "
-		+ "S.S. Anne (2), Safrania (1)")
+	# Jalon 18 (T12) : « Azuria » (3, bord ouest de la Route 9), « Grotte Sombre » (4, bouches de la
+	# Route 10), « Lavanville » (3, bord sud de la Route 10) ; à retirer au fur et à mesure que
+	# les cartes de la grotte, de Lavanville et d'Azuria (variante J18) existent.
+	assert_eq(found, 20, "« SAFRANIA » (2), « Route 11 » (3), Arène de Carmin (2), "
+		+ "S.S. Anne (2), Safrania (1), Azuria (3), Grotte Sombre (4), Lavanville (3)")
 
 
 ## Warp de [param map] qui ramène à [param origin] depuis [param arrival] : sur la case

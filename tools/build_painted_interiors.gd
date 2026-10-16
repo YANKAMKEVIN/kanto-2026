@@ -115,6 +115,9 @@ func _init() -> void:
 	rooms.append_array(_cerulean_rooms())
 	rooms.append_array(_vermilion_rooms())
 	rooms.append_array(_route_5_rooms())
+	# Jalon 18 (T12) : le Centre de la Route 10 (même définition ; pièces du J18 en fin de liste).
+	rooms.append(_pokemon_center(&"route_10_center", "Route10Center", "Route 10",
+		[&"route_10", &"from_center"]))
 	for room: Dictionary in rooms:
 		if not wanted.is_empty() and not wanted.has(room["id"]):
 			continue
