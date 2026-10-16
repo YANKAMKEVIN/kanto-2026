@@ -8,14 +8,10 @@ const DATA_DIR := "res://data"
 ## Brouillons en attente de validation, nommés un par un (chemin relevé par [method _collect_drafts]).
 ## Une fois validés, retirer leur « draft » et les sortir d'ici (le test vérifie qu'ils sont
 ## encore en brouillon). Vide depuis la validation de l'annexe A du jalon 15 (2026-10-14).
-## Jalon 21 (T4) : Poké Flûte et CT39, textes du lot §15 du dossier 24 à valider par Kevin.
-const PENDING_DRAFTS: Array[String] = [
-	"items/items_j21.json/poke_flute", "items/items_j21.json/tm39",
-	# T5 : capacités ajoutées pour les learnsets complets (hors §15) et Pokédex (§15.10, Q-3).
-	"pokemon/moves/j21.json/constrict", "pokemon/moves/j21.json/barrier",
-	"pokedex/kanto.json/species/poliwag", "pokedex/kanto.json/species/tentacool",
-	"pokedex/kanto.json/species/marowak", "pokedex/kanto.json/species/snorlax",
-]
+## Jalon 21 : Poké Flûte, CT39, Constriction, Bouclier et les fiches de Pokédex d'Ossatueur, de
+## Ronflex, de Ptitard et de Tentacool validés par Kevin le 2026-10-16 (dossier 24 §15), « draft »
+## retiré.
+const PENDING_DRAFTS: Array[String] = []
 
 
 func test_data_has_json_files() -> void:
