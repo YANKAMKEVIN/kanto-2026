@@ -1560,6 +1560,12 @@ func _ss_anne_main_deck() -> Dictionary:
 		_door("StairsDownE", Vector2i(23, 10), Vector2i.ZERO, &"ss_anne_lower_deck",
 			&"entrance", Vector2i.DOWN),
 	]
+	# Jalon 16 T15 (`jalon-16.md` §2.4, §2.11) : la passerelle (cases de sortie, de tous côtés)
+	# lance `ss_anne_departure` : TXT-03 une fois avant la CS01, confirmation et départ après.
+	room["triggers"] = [
+		["DepartureTrigger", Vector2i(12, 11), Vector2i(2, 1), &"ss_anne_departure",
+			Vector2i.ZERO],
+	]
 	return room
 
 

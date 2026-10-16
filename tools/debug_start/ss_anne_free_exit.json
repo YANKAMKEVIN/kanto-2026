@@ -1,6 +1,6 @@
 {
-	"map": "qa_ship_j16",
-	"spawn": "exit_start",
+	"map": "ss_anne_main_deck",
+	"spawn": "from_ss_anne_w",
 	"facing": "down",
 	"flags": [
 		"mom_greeted",
@@ -48,7 +48,8 @@
 	],
 	"bag": {
 		"potion": 10,
-		"poke_ball": 5
+		"poke_ball": 5,
+		"ss_ticket": 1
 	},
 	"money": 3000
 }

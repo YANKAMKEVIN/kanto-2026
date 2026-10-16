@@ -1,6 +1,6 @@
 {
-	"map": "qa_dock_j16",
-	"spawn": "cut_start",
+	"map": "vermilion_city",
+	"spawn": "gym_tree",
 	"facing": "up",
 	"flags": [
 		"mom_greeted",
@@ -28,7 +28,8 @@
 		"got_ss_ticket",
 		"badge_cascade",
 		"rival_ss_anne_won",
-		"got_hm01"
+		"got_hm01",
+		"ss_anne_departed"
 	],
 	"party": [
 		{

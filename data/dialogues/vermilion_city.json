@@ -8,15 +8,19 @@
 	"vermilion_dock_sign": {
 		"pages": ["QUAIS — S.S. ANNE"]
 	},
-	"vermilion_gym_tree": {
-		"narration": true,
-		"pages": ["Un jeune arbre pousse devant l'entrée. Impossible de passer."]
-	},
 	"vermilion_sailor": {
 		"speaker": "Marin",
-		"pages": [
-			"Le S.S. Anne est à quai pour\nquelques jours.",
-			"L'équipage prépare la croisière.\nL'embarquement n'a pas encore\ncommencé."
+		"variants": [
+			{
+				"if": ["ss_anne_departed"],
+				"pages": ["Le S.S. Anne a pris le large."]
+			},
+			{
+				"pages": [
+					"Le S.S. Anne est à quai pour\nquelques jours.",
+					"L'équipage prépare la croisière.\nL'embarquement n'a pas encore\ncommencé."
+				]
+			}
 		]
 	},
 	"vermilion_docker_1": {

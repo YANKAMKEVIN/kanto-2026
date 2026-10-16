@@ -55,6 +55,7 @@ const MAPS: Array[StringName] = [
 	&"ss_anne_cabin_a", &"ss_anne_cabin_b", &"ss_anne_cabin_c",
 	# Jalon 16 (T13) : la vue du rival n° 4 dans le couloir du capitaine.
 	&"ss_anne_captain_corridor",
+	# Jalon 16 (T15) : `ss_anne_main_deck` (passerelle, départ) est déjà dans la liste (T12).
 ]
 ## Jalon 7 (T18) : partie qui revient au labo avec le colis (rival parti après le combat).
 const PARCEL_FLAGS: Array[StringName] = [
@@ -194,6 +195,9 @@ const VARIANT_FLAGS: Dictionary = {
 	&"ss_anne_item_05": [PEWTER_FLAGS], &"ss_anne_item_06": [PEWTER_FLAGS],
 	&"ss_anne_hidden_1": [PEWTER_FLAGS], &"ss_anne_hidden_2": [PEWTER_FLAGS],
 	&"ss_anne_hidden_3": [PEWTER_FLAGS],
+	# Jalon 16 (T15) : départ du S.S. Anne (après la CS01 ; avant : TXT-03), Coupe de l'arbuste.
+	&"ss_anne_departure": [PEWTER_FLAGS + [&"got_hm01"], PEWTER_FLAGS],
+	&"cut_tree_vermilion_gym": [PEWTER_FLAGS],
 }
 ## Scènes jouées par le code (pas de déclencheur) → carte où elles sont jouées.
 ## Jalon 7 (T18) : la scène du colis est lancée par la variante « cutscene » du dialogue de Chen.
@@ -228,6 +232,8 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"ss_anne_hidden_3": &"ss_anne_restaurant",
 	# Jalon 16 (T13) : le capitaine, par son dialogue.
 	&"ss_anne_captain": &"ss_anne_captain_room",
+	# Jalon 16 (T15) : COUPER (« confirm_cutscene » de l'examen de l'arbuste).
+	&"cut_tree_vermilion_gym": &"vermilion_city",
 	# Jalon 11 (T14) : remise tardive de la CT34 (dialogue de Pierre).
 	&"pewter_gym_brock_tm_late": &"pewter_gym",
 	# Jalon 13 (T17) : objets visibles des Routes 4 et 24 (PNJ « objet »).
@@ -318,6 +324,8 @@ func test_library_loads_without_error() -> void:
 		&"route_6_gate_rule_e", &"route_6_gate_rule_s", &"route_6_gate_rule_w",
 		&"route_6_hidden_1", &"route_6_item_1", &"vermilion_arrival",
 		&"vermilion_gym_barrier_open", &"vermilion_gym_surge", &"vermilion_gym_surge_tm_late",
+		# Jalon 16 (T15) : départ du S.S. Anne, Coupe de l'arbuste de l'Arène.
+		&"ss_anne_departure", &"cut_tree_vermilion_gym",
 		&"route_2_item_1", &"route_2_item_2", &"route_2_item_3", &"route_2_item_4",
 		&"route_2_north_item_1", &"route_3_entered", &"route_3_guard", &"route_3_hidden_1",
 		&"route_3_item_1", &"route_3_item_2", &"route_3_item_3", &"route_4_item_1",
@@ -511,7 +519,7 @@ func test_every_change_map_targets_an_existing_map_and_spawn() -> void:
 				as GameMap
 		assert_true(map.has_spawn(step.spawn), "%s : point « %s »" % [step.map_id, step.spawn])
 		map.free()
-	assert_eq(count, 1, "le retour au labo")
+	assert_eq(count, 2, "le retour au labo ; le quai de Carmin (départ du S.S. Anne, J16 T15)")
 
 
 func test_every_variant_is_chosen_by_its_flags() -> void:
@@ -862,6 +870,11 @@ func _simulate(label: String, variant: CutsceneVariant, start_map: StringName,
 			CutsceneStep.Kind.DIALOGUE:
 				var dialogue := _dialogues.get_dialogue(step.dialogue_id)
 				var picked: DialogueVariant = dialogue.pick(flags) if dialogue != null else null
+				# Jalon 16 (T15) : une scène de capacité de terrain (COUPER) n'est lancée que
+				# dans l'état « prêt » : ses répliques suivent cette variante.
+				if picked == null and dialogue != null:
+					picked = dialogue.pick(flags, null, func(_move: StringName) -> Variant:
+						return FieldMoves.Result.new(FieldMoves.State.READY, 0))
 				assert_not_null(picked, "%s : « %s » a une variante" % [where,
 					step.dialogue_id])
 				if picked != null:

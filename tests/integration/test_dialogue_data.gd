@@ -121,6 +121,7 @@ const MAPS: Array[StringName] = [
 	&"ss_anne_cabin_a", &"ss_anne_cabin_b", &"ss_anne_cabin_c",
 	# Jalon 16 (T13) : le couloir du rival n° 4 et la cabine du capitaine.
 	&"ss_anne_captain_corridor", &"ss_anne_captain_room",
+	# Jalon 16 (T15) : `ss_anne_main_deck` (passerelle, départ) est déjà dans la liste (T12).
 ]
 ## Lot de textes validé par Kevin le 2026-10-06 (anciens brouillons : panneau, observations,
 ## soin de Maman, terminal du Stockage, portes de Jadielle…) : source des textes hors dossiers.
@@ -279,7 +280,7 @@ const IDS: Array[StringName] = [
 	# Jalon 15 (T14) : Route 6 et Carmin-sur-Mer (dossier 18 §15, annexe A du plan).
 	&"route_6_sign", &"route_6_gate_sign", &"route_6_underground_gate_sign", &"route_6_guard",
 	&"route_6_fisher", &"route_6_walker", &"route_6_item_1", &"route_6_hidden_1",
-	&"vermilion_city_sign", &"vermilion_gym_sign", &"vermilion_dock_sign", &"vermilion_gym_tree",
+	&"vermilion_city_sign", &"vermilion_gym_sign", &"vermilion_dock_sign",
 	&"vermilion_sailor", &"vermilion_docker_1", &"vermilion_docker_2", &"vermilion_old_man",
 	&"vermilion_resident", &"vermilion_kid", &"vermilion_fan_club_chairman",
 	&"vermilion_fan_club_member", &"vermilion_fan_club_member_2", &"vermilion_fisher",
@@ -352,6 +353,15 @@ const PLAYED_J16_RIVAL_CAPTAIN: Array[StringName] = [
 	&"ss_anne_captain_gift", &"ss_anne_captain_gift_use", &"ss_anne_captain_relieved",
 	&"ss_anne_captain_rub", &"ss_anne_captain_sick",
 ]
+## Jalon 16 (T15) : Coupe sur l'arbuste de l'Arène (examen `cut_tree` remplace
+## `vermilion_gym_tree` du J15) et départ du S.S. Anne (dossier 19 §0.5 n° 3 à 7, 25 à 29).
+const IDS_J16_T15: Array[StringName] = [
+	&"cut_tree", &"cut_tree_used", &"ss_anne_departure_confirm", &"ss_anne_exit_free",
+]
+## Jalon 16 (T15) : joués par les scènes du départ et de la coupe.
+const PLAYED_J16_T15: Array[StringName] = [
+	&"cut_tree_used", &"ss_anne_departure_confirm", &"ss_anne_exit_free",
+]
 ## Jalon 16 : textes validés du dossier 19 (§0.5, « … » par ligne).
 const DOSSIER_19 := "res://docs/design/dossier-19-ss-anne-major-bob.md"
 ## Jalon 15 (T13) : la réplique du garde du poste nord, jouée aussi par la scène du recul.
@@ -390,8 +400,8 @@ const SET_J14_BILL_CUTSCENES: Array[StringName] = [
 ## Jalon 14 (T17) : `cerulean_rocket_beaten` (lu par Léo) est levé par la scène du Rocket
 ## d'Azuria (T20b).
 ## T20b : levé (scène du combat), plus aucun drapeau futur.
-## Jalon 16 (T12) : `got_hm01` (lu par le marin de la passerelle) est levé par la scène du
-## capitaine (T13) : plus aucun drapeau futur.
+## Jalon 16 (T12, T15) : `got_hm01` (lu par le marin de la passerelle et le départ du navire) est
+## levé par la scène du capitaine (T13) : plus aucun drapeau futur.
 const FUTURE_FLAGS: Array[StringName] = []
 var _library: DialogueLibrary
 var _cutscenes: CutsceneLibrary
@@ -524,7 +534,7 @@ func test_library_loads_without_error() -> void:
 	var found := _without_qa(library.get_ids())
 	found.sort()
 	var expected := IDS + IDS_J14_BILL + IDS_J14_ROCKET + IDS_J15_ROUTE_5 + IDS_J16_GYM \
-		+ IDS_J16_SHIP + IDS_J16_RIVAL_CAPTAIN
+		+ IDS_J16_SHIP + IDS_J16_RIVAL_CAPTAIN + IDS_J16_T15
 	expected.sort()
 	assert_eq(found, expected)
 
@@ -588,7 +598,8 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		&"route_2_item_4_found",
 		&"viridian_forest_item_3_found", &"viridian_forest_item_4_found",
 		&"viridian_forest_item_6_found"] + PLAYED_J14_BILL + PLAYED_J14_ROCKET
-		+ PLAYED_J15_ROUTE_5 + PLAYED_J16_GYM + PLAYED_J16_RIVAL_CAPTAIN))
+		+ PLAYED_J15_ROUTE_5 + PLAYED_J16_GYM + PLAYED_J16_RIVAL_CAPTAIN
+		+ PLAYED_J16_T15))
 	for id: StringName in played:
 		assert_true(_library.has_dialogue(id), "dialogue « %s » défini" % id)
 		if UNUSED_YET.has(id):
@@ -676,7 +687,9 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 			&"mom_greeted", &"nugget_rocket_yes", &"pewter_researcher_talked", &"poison_unlocked", &"rival_met",
 			&"route_5_gate_warned",
 			&"route_2_hiker_talked", &"route_2_youngster_talked", &"storage_terminal_seen",
-			&"viridian_old_man_talked"] + SET_J14_BILL_DIALOGUES + SET_J14_ROCKET_DIALOGUES))
+			&"viridian_old_man_talked",
+			# Jalon 16 (T15) : PARTIR (confirmation du départ du S.S. Anne).
+			&"ss_anne_departure_chosen"] + SET_J14_BILL_DIALOGUES + SET_J14_ROCKET_DIALOGUES))
 	assert_eq(cutscenes.get_set_flags(), _sorted([&"badge_boulder", &"badge_cascade",
 		&"beaten_mt_moon_researcher", &"beaten_nugget_rocket", &"brock_met", &"cerulean_reached", &"got_mt_moon_1f_hidden_1",
 		&"got_mt_moon_1f_item_1", &"got_mt_moon_b1f_item_1", &"got_mt_moon_b1f_item_2",
@@ -707,7 +720,9 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		&"got_ss_anne_item_04", &"got_ss_anne_item_05", &"got_ss_anne_item_06",
 		&"got_ss_anne_hidden_1", &"got_ss_anne_hidden_2", &"got_ss_anne_hidden_3",
 		# Jalon 16 (T13) : le rival n° 4 et la CS01 du capitaine.
-		&"got_hm01", &"rival_ss_anne_lost_once", &"rival_ss_anne_won"]
+		&"got_hm01", &"rival_ss_anne_lost_once", &"rival_ss_anne_won",
+		# Jalon 16 (T15) : départ du S.S. Anne, sortie libre (TXT-03), arbuste coupé.
+		&"ss_anne_departed", &"ss_anne_exit_told", &"cut_vermilion_gym_bush"]
 		+ SET_J14_BILL_CUTSCENES + SET_J14_ROCKET_CUTSCENES))
 	assert_eq(_used_on.get(&"oak_lab_reunion"), [&"oak_lab"], "joué au labo, après le fondu")
 	assert_eq(_used_on.get(&"oak_starter_offer"), [&"oak_lab"], "joué au labo")
@@ -943,7 +958,9 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			or dossier_17.contains(text.replace("\n", " "))
 			or dossier_17.contains(text.replace("\n", " — "))
 			# J16 (T11) : lot de textes du dossier 19 (§0.5), une citation par ligne.
-			or _each_line_quoted(dossier_19, text),
+			or _each_line_quoted(dossier_19, text)
+			# J16 (T15) : une réplique du lot coupée en deux lignes dans sa bulle.
+			or dossier_19.contains("« %s »" % text.replace("\n", " ")),
 			"%s : « %s » dans un dossier de conception" % [row[0], text])
 
 
@@ -1022,7 +1039,7 @@ func test_speakers_and_narration() -> void:
 		&"mt_moon_fossil_dome": ["", true], &"mt_moon_fossil_helix": ["", true],
 		# Jalon 15 (T14) : panneaux sans locuteur, l'arbre de l'Arène en narration.
 		&"route_6_sign": ["", false], &"vermilion_city_sign": ["", false],
-		&"vermilion_gym_tree": ["", true], &"route_6_guard": ["Garde", false],
+		&"cut_tree": ["", true], &"route_6_guard": ["Garde", false],
 		&"vermilion_sailor": ["Marin", false],
 	}
 	for id: StringName in expected:
@@ -1155,6 +1172,9 @@ func test_oak_parcel_lines() -> void:
 			expected = [DialogueTokens.POKEMON]
 		elif row[0] == &"nugget_rocket_given":
 			expected = [DialogueTokens.PLAYER]
+		elif not (row[3] as DialogueVariant).field.is_empty() and row[1].contains("{pokemon}"):
+			# Jalon 16 (T15) : variante de capacité de terrain, Pokémon qui coupe.
+			expected = [DialogueTokens.POKEMON]
 		assert_eq(tokens, expected, "%s : jeton" % row[0])
 
 
