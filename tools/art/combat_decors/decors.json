@@ -2,112 +2,429 @@
 	"route_1_chemin": {
 		"composition": "COMBAT_DECOR_ROUTE1_r2b.png",
 		"tuiles": [
-			{ "image": "COMBAT_DECOR_ROUTE1_r2b_TL.png", "portion": [0, 0, 1000, 852] },
-			{ "image": "COMBAT_DECOR_ROUTE1_r2b_TR.png", "portion": [846, 0, 1846, 852] }
+			{
+				"image": "COMBAT_DECOR_ROUTE1_r2b_TL.png",
+				"portion": [
+					0,
+					0,
+					1000,
+					852
+				]
+			},
+			{
+				"image": "COMBAT_DECOR_ROUTE1_r2b_TR.png",
+				"portion": [
+					846,
+					0,
+					1846,
+					852
+				]
+			}
 		],
 		"avant_plan": "COMBAT_DECOR_ROUTE1_AVANT_r1a.png",
 		"flou_avant_plan": 7.0,
-		"degagement": [0.17, 0.80, 0.955, 0.03],
-		"taille": [2340, 1080],
+		"degagement": [
+			0.17,
+			0.8,
+			0.955,
+			0.03
+		],
+		"taille": [
+			2340,
+			1080
+		],
 		"qualite": 90
 	},
 	"route_3_roche": {
 		"composition": "COMBAT_DECOR_ROUTE3_r1a.png",
 		"tuiles": [
-			{ "image": "COMBAT_DECOR_ROUTE3_r1a_TL.png", "portion": [0, 0, 1000, 852] },
-			{ "image": "COMBAT_DECOR_ROUTE3_r1a_TR.png", "portion": [846, 0, 1846, 852] }
+			{
+				"image": "COMBAT_DECOR_ROUTE3_r1a_TL.png",
+				"portion": [
+					0,
+					0,
+					1000,
+					852
+				]
+			},
+			{
+				"image": "COMBAT_DECOR_ROUTE3_r1a_TR.png",
+				"portion": [
+					846,
+					0,
+					1846,
+					852
+				]
+			}
 		],
-		"taille": [2340, 1080],
+		"taille": [
+			2340,
+			1080
+		],
 		"qualite": 90
 	},
 	"mt_moon_galerie": {
 		"composition": "COMBAT_DECOR_GALERIE_r1a.png",
 		"tuiles": [
-			{ "image": "COMBAT_DECOR_GALERIE_r1a_TL.png", "portion": [0, 0, 1000, 853] },
-			{ "image": "COMBAT_DECOR_GALERIE_r1a_TR.png", "portion": [844, 0, 1844, 853] }
+			{
+				"image": "COMBAT_DECOR_GALERIE_r1a_TL.png",
+				"portion": [
+					0,
+					0,
+					1000,
+					853
+				]
+			},
+			{
+				"image": "COMBAT_DECOR_GALERIE_r1a_TR.png",
+				"portion": [
+					844,
+					0,
+					1844,
+					853
+				]
+			}
 		],
-		"taille": [2340, 1080],
+		"taille": [
+			2340,
+			1080
+		],
 		"qualite": 90
 	},
 	"mt_moon_chambre": {
 		"composition": "COMBAT_DECOR_CHAMBRE_r1a.png",
 		"tuiles": [
-			{ "image": "COMBAT_DECOR_CHAMBRE_r1a_TL.png", "portion": [0, 0, 1000, 851] },
-			{ "image": "COMBAT_DECOR_CHAMBRE_r1a_TR.png", "portion": [849, 0, 1849, 851] }
+			{
+				"image": "COMBAT_DECOR_CHAMBRE_r1a_TL.png",
+				"portion": [
+					0,
+					0,
+					1000,
+					851
+				]
+			},
+			{
+				"image": "COMBAT_DECOR_CHAMBRE_r1a_TR.png",
+				"portion": [
+					849,
+					0,
+					1849,
+					851
+				]
+			}
 		],
-		"taille": [2340, 1080],
+		"taille": [
+			2340,
+			1080
+		],
 		"qualite": 90
 	},
 	"route_4_plaine": {
 		"composition": "COMBAT_DECOR_ROUTE4_PLAINE_r1.png",
 		"tuiles": [
-			{ "image": "COMBAT_DECOR_ROUTE4_PLAINE_r1_TL.png", "portion": [0, 0, 1000, 852] },
-			{ "image": "COMBAT_DECOR_ROUTE4_PLAINE_r1_TR.png", "portion": [846, 0, 1846, 852] }
+			{
+				"image": "COMBAT_DECOR_ROUTE4_PLAINE_r1_TL.png",
+				"portion": [
+					0,
+					0,
+					1000,
+					852
+				]
+			},
+			{
+				"image": "COMBAT_DECOR_ROUTE4_PLAINE_r1_TR.png",
+				"portion": [
+					846,
+					0,
+					1846,
+					852
+				]
+			}
 		],
-		"taille": [2340, 1080],
+		"taille": [
+			2340,
+			1080
+		],
 		"qualite": 90
 	},
 	"route_24_pont": {
 		"composition": "COMBAT_DECOR_ROUTE24_PONT_r1.png",
 		"tuiles": [
-			{ "image": "COMBAT_DECOR_ROUTE24_PONT_r1_TL.png", "portion": [0, 0, 1000, 850] },
-			{ "image": "COMBAT_DECOR_ROUTE24_PONT_r1_TR.png", "portion": [850, 0, 1850, 850] }
+			{
+				"image": "COMBAT_DECOR_ROUTE24_PONT_r1_TL.png",
+				"portion": [
+					0,
+					0,
+					1000,
+					850
+				]
+			},
+			{
+				"image": "COMBAT_DECOR_ROUTE24_PONT_r1_TR.png",
+				"portion": [
+					850,
+					0,
+					1850,
+					850
+				]
+			}
 		],
-		"taille": [2340, 1080],
+		"taille": [
+			2340,
+			1080
+		],
 		"qualite": 90
 	},
 	"cerulean_gym_bassin": {
 		"composition": "COMBAT_DECOR_GYM_AZURIA_BASSIN_r2.png",
 		"tuiles": [
-			{ "image": "COMBAT_DECOR_GYM_AZURIA_BASSIN_r2_TL.png", "portion": [0, 0, 1000, 852] },
-			{ "image": "COMBAT_DECOR_GYM_AZURIA_BASSIN_r2_TR.png", "portion": [846, 0, 1846, 852] }
+			{
+				"image": "COMBAT_DECOR_GYM_AZURIA_BASSIN_r2_TL.png",
+				"portion": [
+					0,
+					0,
+					1000,
+					852
+				]
+			},
+			{
+				"image": "COMBAT_DECOR_GYM_AZURIA_BASSIN_r2_TR.png",
+				"portion": [
+					846,
+					0,
+					1846,
+					852
+				]
+			}
 		],
-		"taille": [2340, 1080],
+		"taille": [
+			2340,
+			1080
+		],
 		"qualite": 90
 	},
 	"route_5_6_prairie": {
 		"composition": "COMBAT_DECOR_ROUTE5_6_PRAIRIE_r1.png",
 		"tuiles": [
-			{ "image": "COMBAT_DECOR_ROUTE5_6_PRAIRIE_r1_TL.png", "portion": [0, 0, 1000, 850] },
-			{ "image": "COMBAT_DECOR_ROUTE5_6_PRAIRIE_r1_TR.png", "portion": [850, 0, 1850, 850] }
+			{
+				"image": "COMBAT_DECOR_ROUTE5_6_PRAIRIE_r1_TL.png",
+				"portion": [
+					0,
+					0,
+					1000,
+					850
+				]
+			},
+			{
+				"image": "COMBAT_DECOR_ROUTE5_6_PRAIRIE_r1_TR.png",
+				"portion": [
+					850,
+					0,
+					1850,
+					850
+				]
+			}
 		],
-		"taille": [2340, 1080],
+		"taille": [
+			2340,
+			1080
+		],
 		"qualite": 90
 	},
 	"route_11_coast": {
 		"composition": "COMBAT_DECOR_ROUTE11_COTE_r1.png",
 		"tuiles": [
-			{ "image": "COMBAT_DECOR_ROUTE11_COTE_r1_TL.png", "portion": [0, 0, 1000, 852] },
-			{ "image": "COMBAT_DECOR_ROUTE11_COTE_r1_TR.png", "portion": [846, 0, 1846, 852] }
+			{
+				"image": "COMBAT_DECOR_ROUTE11_COTE_r1_TL.png",
+				"portion": [
+					0,
+					0,
+					1000,
+					852
+				]
+			},
+			{
+				"image": "COMBAT_DECOR_ROUTE11_COTE_r1_TR.png",
+				"portion": [
+					846,
+					0,
+					1846,
+					852
+				]
+			}
 		],
-		"taille": [2340, 1080],
+		"taille": [
+			2340,
+			1080
+		],
 		"qualite": 90
 	},
 	"route_9_roche": {
 		"composition": "COMBAT_DECOR_ROUTE9_r1.png",
 		"tuiles": [
-			{ "image": "COMBAT_DECOR_ROUTE9_r1_TL.png", "portion": [0, 0, 1000, 852] },
-			{ "image": "COMBAT_DECOR_ROUTE9_r1_TR.png", "portion": [846, 0, 1846, 852] }
+			{
+				"image": "COMBAT_DECOR_ROUTE9_r1_TL.png",
+				"portion": [
+					0,
+					0,
+					1000,
+					852
+				]
+			},
+			{
+				"image": "COMBAT_DECOR_ROUTE9_r1_TR.png",
+				"portion": [
+					846,
+					0,
+					1846,
+					852
+				]
+			}
 		],
-		"taille": [2340, 1080],
+		"taille": [
+			2340,
+			1080
+		],
 		"qualite": 90
 	},
 	"digletts_cave_rock": {
 		"composition": "COMBAT_DECOR_CAVE_TAUPIQUEUR_r1.png",
 		"tuiles": [
-			{ "image": "COMBAT_DECOR_CAVE_TAUPIQUEUR_r1_TL.png", "portion": [0, 0, 1000, 852] },
-			{ "image": "COMBAT_DECOR_CAVE_TAUPIQUEUR_r1_TR.png", "portion": [846, 0, 1846, 852] }
+			{
+				"image": "COMBAT_DECOR_CAVE_TAUPIQUEUR_r1_TL.png",
+				"portion": [
+					0,
+					0,
+					1000,
+					852
+				]
+			},
+			{
+				"image": "COMBAT_DECOR_CAVE_TAUPIQUEUR_r1_TR.png",
+				"portion": [
+					846,
+					0,
+					1846,
+					852
+				]
+			}
 		],
-		"taille": [2340, 1080],
+		"taille": [
+			2340,
+			1080
+		],
 		"qualite": 90
 	},
 	"dark_cave_galerie": {
 		"composition": "COMBAT_DECOR_GROTTE_SOMBRE_r2.png",
 		"tuiles": [
-			{ "image": "COMBAT_DECOR_GROTTE_SOMBRE_r2_TL.png", "portion": [0, 0, 1000, 860] },
-			{ "image": "COMBAT_DECOR_GROTTE_SOMBRE_r2_TR.png", "portion": [828, 0, 1828, 860] }
+			{
+				"image": "COMBAT_DECOR_GROTTE_SOMBRE_r2_TL.png",
+				"portion": [
+					0,
+					0,
+					1000,
+					860
+				]
+			},
+			{
+				"image": "COMBAT_DECOR_GROTTE_SOMBRE_r2_TR.png",
+				"portion": [
+					828,
+					0,
+					1828,
+					860
+				]
+			}
 		],
-		"taille": [2340, 1080],
+		"taille": [
+			2340,
+			1080
+		],
+		"qualite": 90
+	},
+	"ss_anne_salon": {
+		"composition": "COMBAT_DECOR_SS_ANNE_SALON_r1.png",
+		"tuiles": [
+			{
+				"image": "COMBAT_DECOR_SS_ANNE_SALON_r1_TL.png",
+				"portion": [
+					0,
+					0,
+					1000,
+					852
+				]
+			},
+			{
+				"image": "COMBAT_DECOR_SS_ANNE_SALON_r1_TR.png",
+				"portion": [
+					846,
+					0,
+					1846,
+					852
+				]
+			}
+		],
+		"taille": [
+			2340,
+			1080
+		],
+		"qualite": 90
+	},
+	"ss_anne_pont": {
+		"composition": "COMBAT_DECOR_SS_ANNE_PONT_r1.png",
+		"tuiles": [
+			{
+				"image": "COMBAT_DECOR_SS_ANNE_PONT_r1_TL.png",
+				"portion": [
+					0,
+					0,
+					1000,
+					852
+				]
+			},
+			{
+				"image": "COMBAT_DECOR_SS_ANNE_PONT_r1_TR.png",
+				"portion": [
+					846,
+					0,
+					1846,
+					852
+				]
+			}
+		],
+		"taille": [
+			2340,
+			1080
+		],
+		"qualite": 90
+	},
+	"vermilion_gym_salle": {
+		"composition": "COMBAT_DECOR_GYM_CARMIN_r1.png",
+		"tuiles": [
+			{
+				"image": "COMBAT_DECOR_GYM_CARMIN_r1_TL.png",
+				"portion": [
+					0,
+					0,
+					1000,
+					852
+				]
+			},
+			{
+				"image": "COMBAT_DECOR_GYM_CARMIN_r1_TR.png",
+				"portion": [
+					847,
+					0,
+					1847,
+					852
+				]
+			}
+		],
+		"taille": [
+			2340,
+			1080
+		],
 		"qualite": 90
 	}
 }

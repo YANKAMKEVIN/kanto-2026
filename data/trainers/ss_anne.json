@@ -1,0 +1,61 @@
+{
+	"ss_anne_gentleman_armand": {
+		"name": "Gentleman Armand", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 760,
+		"team": [
+			{ "species": "rattata", "level": 17, "moves": ["tackle", "quick_attack"] },
+			{ "species": "raticate", "level": 19, "moves": ["quick_attack", "bite"] }
+		]
+	},
+	"ss_anne_sailor_erwan": {
+		"name": "Marin Erwan", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 360,
+		"team": [{ "species": "machop", "level": 18, "moves": ["low_kick", "karate_chop"] }]
+	},
+	"ss_anne_sailor_loic": {
+		"name": "Marin Loïc", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 360,
+		"team": [
+			{ "species": "shellder", "level": 18, "moves": ["tackle", "withdraw"] },
+			{ "species": "goldeen", "level": 18, "moves": ["peck", "tail_whip"] }
+		]
+	},
+	"ss_anne_gentleman_emile": {
+		"name": "Gentleman Émile", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 720,
+		"team": [{ "species": "pikachu", "level": 18, "moves": ["thunder_shock", "quick_attack"] }]
+	},
+	"ss_anne_sailor_yann": {
+		"name": "Marin Yann", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 360,
+		"team": [
+			{ "species": "horsea", "level": 18, "moves": ["bubble", "leer"] },
+			{ "species": "shellder", "level": 18, "moves": ["tackle", "withdraw"] }
+		]
+	},
+	"ss_anne_sailor_remi": {
+		"name": "Marin Rémi", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 380,
+		"team": [{ "species": "machop", "level": 19, "moves": ["low_kick", "karate_chop"] }]
+	},
+	"ss_anne_lass_lena": {
+		"name": "Fillette Léna", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 180,
+		"team": [{ "species": "oddish", "level": 18, "moves": ["absorb", "poison_powder"] }]
+	},
+	"ss_anne_scout_basile": {
+		"name": "Scout Oscar", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 360,
+		"team": [{ "species": "beedrill", "level": 18, "moves": ["poison_sting", "fury_attack"] }]
+	},
+	"ss_anne_gentleman_victor": {
+		"name": "Gentleman Victor", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 760,
+		"team": [{ "species": "staryu", "level": 19, "moves": ["water_gun", "harden"] }]
+	},
+	"ss_anne_sailor_paul": {
+		"name": "Marin Paul", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 380,
+		"team": [{ "species": "raticate", "level": 19, "moves": ["quick_attack", "bite"] }]
+	}
+}

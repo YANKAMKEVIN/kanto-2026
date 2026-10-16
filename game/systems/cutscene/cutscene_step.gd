@@ -79,12 +79,23 @@ extends RefCounted
 ##   légère au début de chacun ; adoucis par « Réduire les animations » ou « Réduire les
 ##   flashs » ; la scène attend la fin du dernier. Ajoutée en fin d'enum : à la fusion du J12,
 ##   FLASH passe **après** MOMENT (J12 T23), les deux gardés.
+## Jalon 16 (`jalon-16.md` §2.3 à §2.5), le S.S. Anne :
+## - [constant Kind.FIELD_MOVE] : capacité de terrain [member field_move] (Coupe) sur la cible
+##   [member actor] (« on » : un PNJ objet, ou un nœud de la carte comme l'arbuste `FlagGate` du
+##   J15) : mise en scène par le gestionnaire de Boot (le Pokémon qui coupe), puis retrait du PNJ
+##   s'il en est un (un décor part avec le drapeau de l'étape « set » suivante) ;
+## - [constant Kind.SAVE] : **écriture immédiate** de la partie ([member text] = raison), par le
+##   chemin du réveil ; réservée au départ du navire (liste blanche des données, testée) ;
+## - [constant Kind.ANIMATE] : déplace le nœud [member target] de la carte de [member offset]
+##   cases en [member seconds] s, puis le masque si [member fade] ; « Réduire les animations » :
+##   fondu sur place ; la scène attend la fin.
 
 ## Nouvelles valeurs en fin d'enum (ordre de [constant TYPE_KEYS]).
 enum Kind {
 	WAIT, DIALOGUE, FACE, SET_FLAGS, SPAWN, MOVE, CHANGE_MAP, HOP, LEAN, DESPAWN, BATTLE, GIVE,
 	CAPTION, TAKE, SCARE, WAKE_UP, REACT, EMOTE, CHAMPION_CARD, BADGE, MOMENT,
 	FLASH,
+	FIELD_MOVE, SAVE, ANIMATE,
 }
 
 ## Clé de type de chaque étape dans les fichiers, dans l'ordre de [enum Kind].
@@ -93,6 +104,7 @@ const TYPE_KEYS: Array[String] = [
 	"despawn", "battle", "give", "caption", "take", "scare", "wake_up", "react", "emote",
 	"champion_card", "badge", "moment",
 	"flash",
+	"field_move", "save", "animate",
 ]
 ## Bulles d'une étape « emote » (clé « kind ») : le « ! » du Dresseur qui repère le joueur.
 const EMOTE_KINDS: Array[StringName] = [&"exclamation"]
@@ -143,6 +155,11 @@ var badge_id: StringName = &""
 ## Étape « moment » (jalon 12) : type du Grand moment et ses détails (clés et valeurs texte).
 var moment_type: StringName = &""
 var moment_details: Dictionary = {}
+## Étape « field_move » (jalon 16) : capacité de terrain (« cut »).
+var field_move: StringName = &""
+## Étape « animate » (jalon 16) : déplacement en cases, et masquage à la fin.
+var offset: Vector2i = Vector2i.ZERO
+var fade: bool = false
 ## Conditions de l'étape (toutes levées / aucune levée), vides = toujours jouée.
 var if_flags: Array[StringName] = []
 var unless_flags: Array[StringName] = []
@@ -229,6 +246,9 @@ func copy() -> CutsceneStep:
 	other.found = found
 	other.text = text
 	other.emote = emote
+	other.field_move = field_move
+	other.offset = offset
+	other.fade = fade
 	other.badge_id = badge_id
 	other.moment_type = moment_type
 	other.moment_details = moment_details.duplicate()

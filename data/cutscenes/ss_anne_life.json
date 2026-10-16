@@ -1,0 +1,209 @@
+{
+	"ss_anne_item_01": {
+		"variants": [
+			{
+				"unless": [
+					"got_ss_anne_item_01"
+				],
+				"steps": [
+					{
+						"despawn": "ss_anne_item_01"
+					},
+					{
+						"give": "potion",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_ss_anne_item_01"
+						]
+					}
+				]
+			}
+		]
+	},
+	"ss_anne_item_02": {
+		"variants": [
+			{
+				"unless": [
+					"got_ss_anne_item_02"
+				],
+				"steps": [
+					{
+						"despawn": "ss_anne_item_02"
+					},
+					{
+						"give": "potion",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_ss_anne_item_02"
+						]
+					}
+				]
+			}
+		]
+	},
+	"ss_anne_item_03": {
+		"variants": [
+			{
+				"unless": [
+					"got_ss_anne_item_03"
+				],
+				"steps": [
+					{
+						"despawn": "ss_anne_item_03"
+					},
+					{
+						"give": "super_potion",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_ss_anne_item_03"
+						]
+					}
+				]
+			}
+		]
+	},
+	"ss_anne_item_04": {
+		"variants": [
+			{
+				"unless": [
+					"got_ss_anne_item_04"
+				],
+				"steps": [
+					{
+						"despawn": "ss_anne_item_04"
+					},
+					{
+						"give": "super_potion",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_ss_anne_item_04"
+						]
+					}
+				]
+			}
+		]
+	},
+	"ss_anne_item_05": {
+		"variants": [
+			{
+				"unless": [
+					"got_ss_anne_item_05"
+				],
+				"steps": [
+					{
+						"despawn": "ss_anne_item_05"
+					},
+					{
+						"give": "super_potion",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_ss_anne_item_05"
+						]
+					}
+				]
+			}
+		]
+	},
+	"ss_anne_item_06": {
+		"variants": [
+			{
+				"unless": [
+					"got_ss_anne_item_06"
+				],
+				"steps": [
+					{
+						"despawn": "ss_anne_item_06"
+					},
+					{
+						"give": "paralyze_heal",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_ss_anne_item_06"
+						]
+					}
+				]
+			}
+		]
+	},
+	"ss_anne_hidden_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_ss_anne_hidden_1"
+				],
+				"steps": [
+					{
+						"give": "awakening",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_ss_anne_hidden_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"ss_anne_hidden_2": {
+		"variants": [
+			{
+				"unless": [
+					"got_ss_anne_hidden_2"
+				],
+				"steps": [
+					{
+						"give": "antidote",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_ss_anne_hidden_2"
+						]
+					}
+				]
+			}
+		]
+	},
+	"ss_anne_hidden_3": {
+		"variants": [
+			{
+				"unless": [
+					"got_ss_anne_hidden_3"
+				],
+				"steps": [
+					{
+						"give": "potion",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_ss_anne_hidden_3"
+						]
+					}
+				]
+			}
+		]
+	}
+}

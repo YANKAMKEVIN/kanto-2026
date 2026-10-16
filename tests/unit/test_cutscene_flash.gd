@@ -37,7 +37,10 @@ func test_invalid_flash_is_refused() -> void:
 	assert_push_error_count(6)
 
 
-func test_flash_is_the_last_kind() -> void:
+## Jalon 16 : FLASH n'est plus le dernier ; les étapes du S.S. Anne le suivent (fin d'enum).
+func test_flash_comes_before_the_j16_kinds() -> void:
 	assert_eq(CutsceneStep.TYPE_KEYS.size(), CutsceneStep.Kind.size())
-	assert_eq(CutsceneStep.TYPE_KEYS.back(), "flash")
-	assert_eq(CutsceneStep.Kind.FLASH, CutsceneStep.Kind.size() - 1)
+	assert_eq(CutsceneStep.TYPE_KEYS[CutsceneStep.Kind.FLASH], "flash")
+	assert_eq(CutsceneStep.Kind.FIELD_MOVE, CutsceneStep.Kind.FLASH + 1)
+	assert_eq(CutsceneStep.TYPE_KEYS.slice(CutsceneStep.Kind.FLASH + 1),
+		["field_move", "save", "animate"] as Array[String])

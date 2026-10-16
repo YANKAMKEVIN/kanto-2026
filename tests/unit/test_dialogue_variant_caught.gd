@@ -46,7 +46,7 @@ func _assistant() -> Dialogue:
 
 ## Index de la variante choisie (−1 : aucune).
 func _picked(dialogue: Dialogue, flags: StoryFlags, caught: int) -> int:
-	return dialogue.variants.find(dialogue.pick(flags, null, caught))
+	return dialogue.variants.find(dialogue.pick(flags, null, Callable(), caught))
 
 
 # --- Lecture --------------------------------------------------------------------------

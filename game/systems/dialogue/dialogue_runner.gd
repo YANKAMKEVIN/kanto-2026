@@ -69,6 +69,11 @@ var rng_source: Callable
 ## de variante (« if_caught_at_least », « unless_caught_at_least »). Non valide : 0. Posé par
 ## [Boot] (GameState.pokedex).
 var caught_count: Callable
+## État d'une capacité de terrain (jalon 16, [member DialogueVariant.field]) :
+## `func(move: StringName) -> FieldMoves.Result`. Non valide : les variantes « field » sont
+## sautées. Posé par [Boot] ([FieldMoves]). Le Pokémon nommé remplace `{pokemon}` dans la variante
+## choisie.
+var field_source: Callable
 
 var _library: DialogueLibrary
 var _flags: StoryFlags
@@ -76,6 +81,8 @@ var _box: DialogueBox
 var _player: Player
 var _dialogue: Dialogue
 var _variant: DialogueVariant
+## Nom du Pokémon d'une variante « field » (jeton `{pokemon}`), "" sinon.
+var _field_name: String = ""
 var _session: DialogueSession
 var _npc: Npc
 var _map: GameMap
@@ -142,7 +149,7 @@ func play(dialogue_id: StringName, npc: Npc = null, map: GameMap = null,
 	if dialogue == null:
 		push_error("DialogueRunner : dialogue inconnu « %s »" % dialogue_id)
 		return false
-	var variant := dialogue.pick(_flags, _rng(), _caught())
+	var variant := dialogue.pick(_flags, _rng(), field_source, _caught())
 	if variant == null:
 		push_error("DialogueRunner : aucune variante de « %s » ne s'applique" % dialogue_id)
 		return false
@@ -150,6 +157,7 @@ func play(dialogue_id: StringName, npc: Npc = null, map: GameMap = null,
 	_closing = false
 	_dialogue = dialogue
 	_variant = variant
+	_field_name = _field_pokemon_name(variant)
 	_npc = npc
 	_map = map
 	_session = null
@@ -178,7 +186,7 @@ func has_auto_variant(dialogue_id: StringName) -> bool:
 	var dialogue := _library.get_dialogue(dialogue_id) if _library != null else null
 	if dialogue == null:
 		return false
-	var variant := dialogue.pick(_flags, null, _caught())
+	var variant := dialogue.pick(_flags, null, field_source, _caught())
 	return variant != null and variant.auto
 
 
@@ -261,7 +269,17 @@ func _token_values() -> Dictionary[StringName, String]:
 		var raw: Variant = token_values.call()
 		if raw is Dictionary:
 			values.assign(raw)
+	if not _field_name.is_empty():
+		values[DialogueTokens.POKEMON] = _field_name
 	return values
+
+
+## Nom du Pokémon qu'une variante « field » nomme (jeton `{pokemon}`) ; "" sinon.
+func _field_pokemon_name(variant: DialogueVariant) -> String:
+	if variant.field.is_empty() or not field_source.is_valid():
+		return ""
+	var result: Variant = field_source.call(StringName(variant.field.get_slice(":", 0)))
+	return (result as FieldMoves.Result).pokemon_name if result is FieldMoves.Result else ""
 
 
 ## Étape 3 : affichage de la page courante et sa mise en scène.

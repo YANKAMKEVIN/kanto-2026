@@ -68,7 +68,13 @@ const TRAVERSABLE: Array[StringName] = [&"relief_escalier_01", &"ground_hautes_h
 	&"relief_paroi_grotte_sombre_05", &"relief_paroi_grotte_sombre_06",
 	&"relief_paroi_fendue_01", &"relief_mur_tour_01", &"relief_mur_tour_02",
 	&"relief_mur_tour_03", &"relief_mur_tour_04", &"relief_mur_tour_05",
-	&"relief_escalier_tour_01"]
+	&"relief_escalier_tour_01",
+
+	# Série 18 (J16) : bastingages, superstructure du pont extérieur, barrière de l'Arène.
+	&"relief_bastingage_01", &"relief_bastingage_02", &"relief_bastingage_sud_01",
+	&"relief_bastingage_est_01", &"relief_bastingage_angle_ne_01",
+	&"relief_bastingage_angle_se_01", &"bldg_ss_anne_superstructure_01",
+	&"int_barriere_active_01", &"int_barriere_coupee_01"]
 const GROUND_LAYER: Array[StringName] = [
 	&"prop_flaque_grotte_01", &"relief_mur_tour_01", &"relief_mur_tour_02",
 	&"relief_mur_tour_03", &"relief_mur_tour_04", &"relief_mur_tour_05",
@@ -106,12 +112,19 @@ const GROUND_LAYER: Array[StringName] = [
 	&"int_escalier_descendant_01",
 	# Série 19 (J17) : bords de la digue à plat.
 	&"relief_digue_bord_01", &"relief_digue_bord_02",
+	# Série 18 (J16) : bastingages du pont extérieur.
+	&"relief_bastingage_01", &"relief_bastingage_02", &"relief_bastingage_sud_01",
+	&"relief_bastingage_est_01", &"relief_bastingage_angle_ne_01",
+	&"relief_bastingage_angle_se_01",
 ]
 ## Bâtiments sans ombre : le poste de la forêt vu du nord (série 12) continue sous le bord sud
 ## de la Route 2 nord, couché dans la couche du sol (fiche `serie-12-argenta.md`) ; les trois
 ## tranches du S.S. Anne (série 17) : le jeu pose lui-même le reflet et la ligne d'eau.
 const SHADOWLESS_BUILDINGS: Array[String] = ["bldg_poste_foret_nord_01",
-	"bldg_ss_anne_proue_01", "bldg_ss_anne_milieu_01", "bldg_ss_anne_poupe_01", "bldg_centrale_lointaine_01"]
+	"bldg_ss_anne_proue_01", "bldg_ss_anne_milieu_01", "bldg_ss_anne_poupe_01",
+	"bldg_centrale_lointaine_01",
+	# Série 18 : la superstructure du pont extérieur (sur le pont, sans soleil rasant).
+	"bldg_ss_anne_superstructure_01"]
 ## Objets de Bourg Palette, de ses intérieurs et de la Route 1 (DA.0) : tous au catalogue,
 ## chacun avec sa règle et sa scène (assets des scènes du prototype validé).
 const DA0_OBJECTS: Array[StringName] = [

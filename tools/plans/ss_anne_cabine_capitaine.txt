@@ -1,0 +1,36 @@
+# S.S. Anne — cabine du capitaine (ss_anne_captain_room) — grille fonctionnelle.
+# Jalon 16, dossier 19 (S.S. Anne et Badge Foudre) ; préparée par Claude le 2026-10-15,
+# VALIDÉE par Kevin le 2026-10-15 (plans v1). Valeurs par défaut (règle 4) : tailles,
+# positions, mobilier. Vérifiée par tools/art/plan_check_ss_anne.py. La grille fait foi sur
+# les coordonnées du §3 du dossier (R-14).
+#
+# Le capitaine, malade, penché sur son lavabo (v). On lui parle depuis (8, 4), tourné ↑.
+#
+# Légende :
+#   K mur (bloqué)      . sol (praticable)
+#   X sortie (praticable, warp PUSH ↓)   D porte (praticable, warp terminal)   S escalier (warp terminal)
+#   N bureau   v lavabo   L couchette   g carte marine encadrée (bloqués)
+#
+# Format : section GRILLE (« NN » + espace + 14 caractères par rangée), puis POSITIONS.
+
+PRATICABLES .X
+
+GRILLE 14 10
+00 KKKKKKKKKKKKKK
+01 KKKKKKKKKKKKKK
+02 K.NNN...v.gg.K
+03 K............K
+04 K............K
+05 K..........LLK
+06 K..........LLK
+07 K............K
+08 KKKKKKXXKKKKKK
+09 KKKKKKKKKKKKKK
+FIN
+
+POSITIONS
+sortie              warp           6..7,8       libre   # PUSH ↓ → ss_anne_couloir_capitaine (porte_capitaine)
+entree              spawn          6,7          libre   # tourné ↑
+capitaine           pnj            8,3          bloque  role=C facing=up  # scène ss_anne_captain (CAP-01..04)
+parler_capitaine    repere         8,4          libre   # tourné ↑
+FIN

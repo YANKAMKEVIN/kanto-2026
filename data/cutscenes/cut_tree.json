@@ -1,0 +1,26 @@
+{
+	"cut_tree_vermilion_gym": {
+		"variants": [
+			{
+				"unless": ["cut_vermilion_gym_bush"],
+				"steps": [
+					{ "field_move": "cut", "on": "Entities/GymTree" },
+					{ "set": ["cut_vermilion_gym_bush"] },
+					{ "dialogue": "cut_tree_used" }
+				]
+			}
+		]
+	},
+	"cut_tree_cerulean_east": {
+		"variants": [
+			{
+				"unless": ["cut_cerulean_east_bush"],
+				"steps": [
+					{ "field_move": "cut", "on": "Entities/EastTree" },
+					{ "set": ["cut_cerulean_east_bush"] },
+					{ "dialogue": "cut_tree_used" }
+				]
+			}
+		]
+	}
+}

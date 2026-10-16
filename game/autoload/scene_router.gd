@@ -46,6 +46,11 @@ var coming_soon_presenter: Callable = Callable()
 ## d'une sauvegarde cherche où poser le joueur. Branchée par Boot ; vide : rien n'est réglé ici
 ## (Boot le refait de toute façon à [signal map_changed]). Remise à vide par [method setup].
 var arrival_flags: Callable = Callable()
+## func(map: GameMap) -> void appelée quand la nouvelle carte est dans l'arbre, **avant** d'y
+## poser le joueur (branchée par Boot : décors [FlagGate] mis à l'état des drapeaux, sinon un
+## décor caché par un drapeau, comme l'arbuste coupé devant l'Arène de Carmin, occuperait encore
+## sa case d'arrivée ; jalon 16 T14). Vide : rien. Remise à vide par [method setup].
+var before_spawn: Callable = Callable()
 ## Cartes intérieures ([method MapCatalog.load_interiors]) : une carte **extérieure** ne
 ## précharge pas ses voisines intérieures et ne les garde pas en cache (jalon 10 : les sept
 ## intérieurs d'Argenta pesaient 32 Mo de textures) ; elles se lisent au disque sous le rideau.
@@ -102,6 +107,7 @@ func setup(world: Node2D, player: Player, fade: ScreenFade = null) -> void:
 	_busy = false
 	coming_soon_presenter = Callable()
 	arrival_flags = Callable()
+	before_spawn = Callable()
 	if _player != null:
 		_player.moved.connect(_on_player_moved)
 		_player.bumped.connect(_on_player_bumped)
@@ -120,7 +126,7 @@ func start(map_id: StringName, spawn: StringName, facing: Vector2i) -> GameMap:
 		return null
 	var old: GameMap = _current_map if is_instance_valid(_current_map) else null
 	_world.add_child(map)
-	_apply_arrival_flags(map)
+	_prepare(map)
 	map.spawn_player(_player, spawn, facing)
 	_finish_start(map, old)
 	return map
@@ -138,7 +144,7 @@ func start_at(map_id: StringName, cell: Vector2i, facing: Vector2i) -> GameMap:
 		return null
 	var old: GameMap = _current_map if is_instance_valid(_current_map) else null
 	_world.add_child(map)
-	_apply_arrival_flags(map)
+	_prepare(map)
 	var target := map.find_standing_cell(cell, _player)
 	if target == Vector2i(-1, -1):
 		push_warning("SceneRouter : reprise impossible, aucune case libre sur %s" % map_id)
@@ -284,7 +290,7 @@ func _swap_map(map_id: StringName, spawn: StringName, facing: Vector2i) -> bool:
 	var arrival_facing := facing if facing != Vector2i.ZERO else _player.get_facing()
 	var old: GameMap = _current_map if is_instance_valid(_current_map) else null
 	_world.add_child(map)
-	_apply_arrival_flags(map)
+	_prepare(map)
 	# Retire le joueur de l'ancienne carte (et libère sa case) avant de libérer celle-ci.
 	map.spawn_player(_player, spawn, arrival_facing)
 	if old != null:
@@ -294,6 +300,13 @@ func _swap_map(map_id: StringName, spawn: StringName, facing: Vector2i) -> bool:
 	if OS.is_debug_build():
 		print("SceneRouter : %s en %.1f ms" % [map_id, last_change_ms])
 	return true
+
+
+## Nouvelle carte dans l'arbre, joueur pas encore posé : [member before_spawn].
+func _prepare(map: GameMap) -> void:
+	if before_spawn.is_valid():
+		before_spawn.call(map)
+	_apply_arrival_flags(map)
 
 
 func _instantiate(map_id: StringName) -> GameMap:

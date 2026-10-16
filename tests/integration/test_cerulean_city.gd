@@ -8,8 +8,12 @@ extends GutTest
 ## peints sur des cases bloquées, quais hors des cases praticables, budget de nœuds.
 ## Vie (PNJ, examens, arrivée) : `test_cerulean_life`.
 ##
-## **Jalon 14 (T20b)** : la grille lue est la variante `J14` (jardin et impasse praticables, porte
-## cambriolée au warp, couloir sud jusqu'au raccord « ROUTE 5 — À venir ») ; les positions
+## **Jalon 14 (T20b)** : la grille lue (variante `J14`, puis `J18`) a le jardin et l'impasse
+## praticables, la porte cambriolée au warp, le couloir sud jusqu'au raccord de la Route 5.
+## **Jalon 18 (variante `J18`, dossier 21 §9, I-2)** : barrière est = deux pans de clôture et
+## l'arbre à couper (53, 23) (case praticable dans la grille, bloquée par le [FlagGate] tant que
+## le drapeau de Coupe n'est pas levé), sentier derrière, trois raccords PUSH → vers la Route 9
+## (`test_azuria_cut_tree`) ; les positions
 ## conditionnelles (`if=` / `unless=`) sont des PNJ ou des déclencheurs, jamais des cases solides.
 ## Scènes et états : `test_cerulean_garden`, `test_cerulean_rocket`, `test_cerulean_south`.
 
@@ -17,8 +21,10 @@ const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 const GridPaths := preload("res://tests/helpers/grid_paths.gd")
 const MAP_PATH := "res://game/world/maps/cerulean_city.tscn"
 const PLAN_PATH := "res://tools/plans/azuria.txt"
-const VARIANT := "J14"
-const WALKABLE := ".=pqBDJY"
+const VARIANT := "J18"
+const WALKABLE := ".=pqBDJYk"
+const EAST: Array[Vector2i] = [Vector2i(55, 22), Vector2i(55, 23), Vector2i(55, 24)]
+const EAST_TREE := Vector2i(53, 23)
 const SOUTH: Array[Vector2i] = [Vector2i(31, 40), Vector2i(32, 40), Vector2i(33, 40)]
 const SIZE := Vector2i(56, 41)
 const WEST: Array[Vector2i] = [Vector2i(0, 19), Vector2i(0, 20), Vector2i(0, 21)]
@@ -207,19 +213,22 @@ func test_building_doors_lead_inside() -> void:
 		assert_eq([burgled.target_map, burgled.target_spawn],
 			[&"cerulean_burgled_house", &"entrance"])
 	assert_eq(_map.get_spawn_cell(&"from_burgled_house"), Vector2i(10, 10))
-	assert_eq(_map.get_warps().size(), count + 1 + 6 + 3,
-		"portes + porte cambriolée + raccords ouest, nord et sud, rien d'autre")
+	assert_eq(_map.get_warps().size(), count + 1 + 6 + 3 + 3,
+		"portes + porte cambriolée + raccords ouest, nord, sud et est, rien d'autre")
 
 
 ## Jalon 15 T21 : le sud mène à la vraie Route 5 (`from_cerulean_w|c|e`, arrivée tournée ↓).
-func test_east_is_closed_and_the_south_leads_to_route_5() -> void:
+func test_east_has_the_cut_tree_and_the_south_leads_to_route_5() -> void:
 	for cell: Vector2i in _plan.cells_at("barriere_est"):
-		assert_true(_grid.is_solid(cell), "barrière %s" % cell)
+		# Les pans de clôture sont solides ; l'arbre (53, 23) est libre dans la grille et bloqué
+		# par son FlagGate (comme l'arbuste de l'Arène de Carmin).
+		assert_eq(_grid.is_solid(cell), cell != EAST_TREE, "barrière %s" % cell)
 		for direction: Vector2i in GridPaths.DIRECTIONS:
 			assert_null(_map.get_warps().find_on_push(cell, direction))
 			assert_null(_map.get_warps().find_on_step(cell, direction))
 	for y: int in SIZE.y:
-		assert_false(_plan.is_walkable(Vector2i(SIZE.x - 1, y)), "bord est fermé (%d)" % y)
+		assert_eq(_plan.is_walkable(Vector2i(SIZE.x - 1, y)), y in [22, 23, 24],
+			"bord est : seul le sentier de la Route 9 est ouvert (%d)" % y)
 	for x: int in SIZE.x:
 		assert_eq(_plan.is_walkable(Vector2i(x, SIZE.y - 1)), x in [31, 32, 33],
 			"bord sud : seul le couloir 31..33 est ouvert (%d)" % x)
@@ -232,8 +241,17 @@ func test_east_is_closed_and_the_south_leads_to_route_5() -> void:
 				StringName("from_cerulean_" + ["w", "c", "e"][i]), Vector2i.DOWN])
 		assert_eq(_map.get_spawn_cell(StringName("from_route_5_" + ["w", "c", "e"][i])),
 			SOUTH[i])
+	for i: int in 3:
+		var warp := _map.get_warps().find_on_push(EAST[i], Vector2i.RIGHT)
+		assert_not_null(warp, "raccord est %s" % EAST[i])
+		if warp != null:
+			assert_false(warp.is_coming_soon())
+			assert_eq([warp.target_map, warp.target_spawn, warp.facing], [&"route_9",
+				StringName("from_cerulean" + ["_n", "", "_s"][i]), Vector2i.RIGHT])
+		assert_eq(_map.get_spawn_cell(StringName("from_route_9" + ["_n", "", "_s"][i])), EAST[i])
 	for warp: Warp in _map.get_warps().get_all():
-		assert_true(warp.cell.x < SIZE.x - 1, "aucun warp à l'est (%s)" % warp.cell)
+		assert_true(warp.cell.x < SIZE.x - 1 or EAST.has(warp.cell),
+			"aucun warp au bord est hors du sentier (%s)" % warp.cell)
 	# Déclencheurs : arrivée (3 + 3), poursuite (2), combat (2), barrage sud (3) ; points :
 	# deux panneaux, clôture arrachée, trou (n° 29), barrière est (3).
 	assert_eq(_map.get_triggers().size(), 6 + 2 + 2 + 3, "arrivée, poursuite, combat, barrage")
@@ -250,6 +268,8 @@ func test_reserved_cells_are_free_or_blocked_as_planned() -> void:
 				"examen", "indice", "decor", "repere":
 					if id == "trou_cloture":
 						continue  # J14 : le trou est le passage (praticable, examiné de côté)
+					if id == "barriere_est" and cell == EAST_TREE:
+						continue  # J18 : l'arbre à couper, bloqué par son FlagGate (pas par la grille)
 					assert_true(_grid.is_solid(cell) or _grid.is_water(cell),
 						"%s : case bloquée" % id)
 

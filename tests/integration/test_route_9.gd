@@ -2,7 +2,7 @@ extends GutTest
 ## Carte route_9 (jalon 18 T12, docs/tech/jalon-18.md §4.1 à §4.3 ; dossier 21 §3) sur la vraie
 ## scène : métadonnées et lumière, **grille de la scène = grille fonctionnelle**
 ## `tools/plans/route_9.txt` case par case (solide, hautes herbes, rebords), raccords (bord ouest
-## « à venir » tant qu'Azuria n'a pas sa variante J18, bord est vers la Route 10), critères de
+## vers Azuria, variante J18 : arbre à couper du J16 ; bord est vers la Route 10), critères de
 ## `tools/art/plan_check_route_9.py` refaits sur la vraie grille (Lou et Benoît inévitables, les
 ## autres évitables, hautes herbes), cases réservées libres de tout décor, budget de nœuds.
 ## La vie (PNJ, objets, rencontres, déclencheur) : T18, voir test_route_9_life et _trainers.
@@ -105,19 +105,18 @@ func test_scene_grid_is_the_functional_grid() -> void:
 	assert_eq(_plan.walkable, ".=hvo")
 
 
-func test_west_edge_is_coming_soon_azuria_until_the_j18_variant() -> void:
+func test_west_edge_leads_to_azuria_row_by_row() -> void:
 	var rows := ["_n", "", "_s"]
 	for i: int in WEST.size():
 		var cell: Vector2i = WEST[i]
 		var warp := _map.get_warps().find_on_push(cell, Vector2i.LEFT)
 		assert_not_null(warp, "raccord ouest %s" % cell)
 		if warp != null:
-			assert_true(warp.is_coming_soon(), "tant qu'Azuria n'a pas de variante J18")
-			assert_eq(warp.coming_soon, "Azuria")
-			assert_eq(warp.facing, Vector2i.RIGHT, "retour tourné vers l'est")
-			assert_true(_map.has_spawn(warp.target_spawn))
-			assert_eq(_map.get_spawn_cell(warp.target_spawn), cell, "retour sur la case de sortie")
-		assert_true(_map.has_spawn(StringName("from_cerulean" + rows[i])))
+			assert_false(warp.is_coming_soon(), "Azuria est reliée (variante J18)")
+			assert_eq([warp.target_map, warp.target_spawn],
+				[&"cerulean_city", StringName("from_route_9" + rows[i])])
+			assert_eq(warp.facing, Vector2i.LEFT, "arrivée tournée vers l'ouest")
+		assert_eq(_map.get_spawn_cell(StringName("from_cerulean" + rows[i])), cell)
 
 
 func test_east_edge_leads_to_route_10_same_rows() -> void:

@@ -117,6 +117,7 @@ const _EXTRA_KEYS: Array[Array] = [
 	["to"], [], ["player_pokemon", "foe_pokemon", "win", "lose"], ["count", "found"],
 	[], ["count"], [], [], [], ["kind"], [], [], ["details"],
 	[],
+	["on"], [], ["offset", "duration", "fade"],
 ]
 ## Conditions permises sur toute étape sauf spawn.
 const _CONDITION_KEYS: Array[String] = ["if", "unless"]
@@ -491,7 +492,42 @@ func _parse_step(value: Variant, where: String) -> CutsceneStep:
 				ok = _fail("%s : « flash » doit être un nombre entier d'éclairs ≥ 1" % where)
 			else:
 				step.count = int(main)
+		CutsceneStep.Kind.FIELD_MOVE:
+			ok = _read_id(main, where + " field_move", func(v: StringName) -> void:
+				step.field_move = v) and ok
+			ok = _read_id(entry.get("on"), where + " on", func(v: StringName) -> void:
+				step.actor = v) and ok
+		CutsceneStep.Kind.SAVE:
+			if not main is String or (main as String).strip_edges().is_empty():
+				ok = _fail("%s : « save » doit être une raison (texte non vide)" % where)
+			else:
+				step.text = main
+		CutsceneStep.Kind.ANIMATE:
+			ok = _parse_animate(entry, main, step, where) and ok
 	return step if ok else null
+
+
+## Étape « animate » (jalon 16) : nœud de la carte, « offset » [dx, dy] en cases (entiers),
+## « duration » > 0 s, « fade » facultatif (booléen).
+func _parse_animate(entry: Dictionary, main: Variant, step: CutsceneStep, where: String) -> bool:
+	var ok := _read_id(main, where + " animate", func(v: StringName) -> void: step.target = v)
+	var offset: Variant = entry.get("offset")
+	if not offset is Array or (offset as Array).size() != 2 \
+			or not (offset as Array).all(func(v: Variant) -> bool: return JsonFields.is_int(v)):
+		ok = _fail("%s : « offset » vaut [dx, dy] (cases entières)" % where)
+	else:
+		step.offset = Vector2i(int(offset[0]), int(offset[1]))
+	var duration: Variant = entry.get("duration")
+	if not (duration is float or duration is int) or float(duration) <= 0.0:
+		ok = _fail("%s : « duration » doit être un nombre de secondes > 0" % where)
+	else:
+		step.seconds = float(duration)
+	if entry.has("fade"):
+		if entry["fade"] is bool:
+			step.fade = entry["fade"]
+		else:
+			ok = _fail("%s : « fade » doit être un booléen" % where)
+	return ok
 
 
 ## « count » facultatif d'une étape give ou take : entier ≥ 1 (1 par défaut).

@@ -76,6 +76,27 @@
 		"speaker": "Habitant",
 		"pages": ["On ne passe pas par là pour l'instant."]
 	},
+	"cerulean_east_tree": {
+		"narration": true,
+		"variants": [
+			{
+				"field": "cut:ready",
+				"pages": [
+					"{pokemon} peut couper cet arbuste.",
+					"Utiliser Coupe ?"
+				],
+				"choice": {
+					"confirm": "COUPER",
+					"cancel": "LAISSER",
+					"confirm_cutscene": "cut_tree_cerulean_east",
+					"cancel_pages": []
+				}
+			},
+			{
+				"pages": ["On ne passe pas par là pour l'instant."]
+			}
+		]
+	},
 	"cerulean_closed_exit": {
 		"narration": true,
 		"pages": ["On ne passe pas par là pour l'instant."]

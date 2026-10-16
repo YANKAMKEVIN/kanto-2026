@@ -40,6 +40,11 @@ var caught_at_least: int = 0
 ## … et seulement s'il en a capturé **moins** que ce nombre (clé « unless_caught_at_least ») ;
 ## 0 = sans condition.
 var caught_below: int = 0
+## Capacité de terrain (jalon 16, `jalon-16.md` §2.2) : « cut:ready » (capacité et état de
+## [constant FieldMoves.STATE_NAMES]) ; la variante ne s'applique que dans cet état, lu par
+## [member DialogueRunner.field_source] ; "" = toujours. Le jeton `{pokemon}` d'une telle variante
+## nomme le Pokémon qui utiliserait la capacité.
+var field: String = ""
 
 
 ## Vrai si la variante s'applique avec les drapeaux [param flags] (null = aucun drapeau) et
