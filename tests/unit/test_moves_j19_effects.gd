@@ -1,5 +1,6 @@
 extends GutTest
-## Effets du jalon 19 dans le moteur : Dévorêve, Hurlement, Bélier, Ultralaser. Règles de
+## Effets du jalon 19 dans le moteur : Dévorêve, Hurlement, Bélier, Ultralaser, puis Cyclone,
+## Damoclès et Sacrifice (mêmes sortes, décisions de Kevin du 2026-10-16). Règles de
 ## Rouge/Bleu, sauf deux décisions de Kevin du 2026-10-16 (« comme la 2e génération ») :
 ## Hurlement contre un Dresseur force un changement aléatoire, Ultralaser impose le repos même
 ## après un K.O.
@@ -250,6 +251,115 @@ func test_take_down_that_misses_has_no_recoil() -> void:
 	assert_eq(_rng.remaining(), 0)
 	assert_not_null(Kit.find(events, K.MOVE_MISSED, P))
 	assert_null(Kit.find(events, K.RECOIL))
+
+
+# --- Cyclone, Damoclès, Sacrifice (activés le 2026-10-16) --------------------------------
+
+func test_whirlwind_double_edge_and_submission_carry_their_effects() -> void:
+	var whirlwind := _data.get_move(&"whirlwind")
+	assert_not_null(whirlwind.effect_of(MoveEffect.Kind.FORCE_SWITCH))
+	assert_eq(whirlwind.priority, -6, "comme Hurlement")
+	assert_eq(whirlwind.accuracy, 100, "précision des données gardée")
+	# Damoclès : ⅓ des dégâts, valeur actuelle suivie par le projet (Rouge/Bleu : ¼).
+	var third := _data.get_move(&"double_edge").effect_of(MoveEffect.Kind.RECOIL_DAMAGE)
+	assert_almost_eq(third.fraction, 1.0 / 3.0, 1e-9)
+	assert_eq(_data.get_move(&"submission").effect_of(MoveEffect.Kind.RECOIL_DAMAGE).fraction,
+		0.25)
+	for id: StringName in [&"whirlwind", &"double_edge", &"submission"]:
+		var move := _data.get_move(id)
+		assert_eq(move.pending_effects.size(), 0, String(id))
+		assert_false(move.description.contains("Sans effet"), String(id))
+	# Le tiers écrit en données donne le tiers exact des dégâts (pas 9 pour 30).
+	for amount: int in range(1, 400):
+		assert_eq(maxi(floori(amount * third.fraction), 1), maxi(floori(amount / 3.0), 1), str(amount))
+
+
+func test_whirlwind_makes_the_wild_foe_flee() -> void:
+	var mine := Kit.mon(_data, &"rattata", 30, [&"whirlwind"])
+	var foe := Kit.mon(_data, &"rattata", 5, [&"growl"])
+	# IA roll(1), précision de Rugissement (le sauvage agit d'abord), précision de Cyclone.
+	var battle := _wild([mine], foe, [1, 50, 50])
+	var events := battle.submit(BattleAction.move(0))
+	assert_eq(_rng.remaining(), 0, "Cyclone tire sa précision")
+	assert_lt(Kit.index_of(events, K.MOVE_USED, F), Kit.index_of(events, K.MOVE_USED, P),
+		"priorité −6")
+	assert_not_null(Kit.find(events, K.SCARED_AWAY, F))
+	assert_eq(battle.get_outcome(), Battle.Outcome.FOE_FLED)
+	assert_eq(events[-1].kind, K.BATTLE_ENDED)
+
+
+func test_whirlwind_against_a_trainer_forces_the_reserve_in() -> void:
+	var mine := Kit.mon(_data, &"rattata", 30, [&"whirlwind"])
+	var first := Kit.mon(_data, &"rattata", 10, [&"growl"])
+	var second := Kit.mon(_data, &"pidgey", 10, [&"growl"])
+	var battle := _trainer([mine], [first, second], [1, 50, 50])
+	var events := battle.submit(BattleAction.move(0))
+	assert_eq(_rng.remaining(), 0, "un seul candidat : aucun tirage de réserve")
+	assert_not_null(Kit.find(events, K.FORCED_OUT, F))
+	assert_eq(Kit.find(events, K.SENT_OUT, F).species_id, &"pidgey")
+	assert_eq(battle.get_foe_side().active.pokemon, second)
+	assert_eq(battle.get_state(), Battle.State.CHOOSING)
+
+
+func test_whirlwind_fails_when_the_trainer_has_no_other_able_pokemon() -> void:
+	var mine := Kit.mon(_data, &"rattata", 30, [&"whirlwind"])
+	var only := Kit.mon(_data, &"rattata", 10, [&"growl"])
+	var battle := _trainer([mine], [only], [1, 50, 50])
+	var events := battle.submit(BattleAction.move(0))
+	assert_eq(_rng.remaining(), 0)
+	assert_not_null(Kit.find(events, K.FAILED, P))
+	assert_null(Kit.find(events, K.FORCED_OUT))
+	assert_eq(battle.get_foe_side().active.pokemon, only)
+
+
+func test_smart_ai_scores_whirlwind_like_roar() -> void:
+	var own := Battler.new(Kit.mon(_data, &"pidgey", 30, [&"whirlwind", &"roar"]), [&"normal"])
+	var foe := Battler.new(Kit.mon(_data, &"rattata", 20, [&"growl"]), [&"normal"])
+	var chart := _data.get_type_chart()
+	var whirlwind := BattleAI.score_move(_data.get_move(&"whirlwind"), own, foe, chart, 0)
+	assert_eq(whirlwind, BattleAI.score_move(_data.get_move(&"roar"), own, foe, chart, 0))
+	assert_gt(whirlwind, 0.0)
+
+
+func test_double_edge_recoil_is_a_third_of_the_damage_dealt() -> void:
+	# Damoclès : ⅓ (valeur actuelle suivie par le projet ; Rouge/Bleu disait ¼).
+	var mine := Kit.mon(_data, &"rattata", 30, [&"double_edge"])
+	var foe := Kit.mon(_data, &"geodude", 30, [&"growl"])
+	var battle := _wild([mine], foe, [1, Kit.HIT, 50])
+	var events := battle.submit(BattleAction.move(0))
+	assert_eq(_rng.remaining(), 0)
+	var damage := Kit.find(events, K.DAMAGE, F)
+	var recoil := Kit.find(events, K.RECOIL, P)
+	assert_not_null(recoil)
+	assert_false(foe.is_fainted())
+	assert_gt(damage.amount, 3, "assez de dégâts pour un tiers supérieur à 1")
+	assert_eq(recoil.amount, floori(damage.amount / 3.0))
+	assert_eq(mine.hp, mine.max_hp() - recoil.amount)
+
+
+func test_double_edge_recoil_is_at_least_one() -> void:
+	var mine := Kit.mon(_data, &"rattata", 30, [&"double_edge"])
+	var foe := Kit.mon(_data, &"pidgey", 5, [&"growl"])
+	foe.hp = 1
+	var battle := _wild([mine], foe, [1, Kit.HIT])
+	var events := battle.submit(BattleAction.move(0))
+	assert_eq(_rng.remaining(), 0)
+	assert_eq(Kit.find(events, K.DAMAGE, F).amount, 1)
+	assert_eq(Kit.find(events, K.RECOIL, P).amount, 1, "au moins 1")
+
+
+func test_submission_recoil_is_a_quarter_of_the_damage_dealt() -> void:
+	var mine := Kit.mon(_data, &"machop", 30, [&"submission"])
+	var foe := Kit.mon(_data, &"geodude", 30, [&"growl"])
+	var battle := _wild([mine], foe, [1, Kit.HIT, 50])
+	var events := battle.submit(BattleAction.move(0))
+	assert_eq(_rng.remaining(), 0)
+	var damage := Kit.find(events, K.DAMAGE, F)
+	var recoil := Kit.find(events, K.RECOIL, P)
+	assert_not_null(recoil)
+	assert_gt(damage.amount, 4, "assez de dégâts pour un quart supérieur à 1")
+	assert_eq(recoil.amount, floori(damage.amount / 4.0))
+	assert_eq(mine.hp, mine.max_hp() - recoil.amount)
 
 
 # --- Ultralaser ---------------------------------------------------------------------------

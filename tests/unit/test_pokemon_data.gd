@@ -773,12 +773,13 @@ func test_moves_without_effect_say_so() -> void:
 	# Lot de textes du jalon 9 (verrouillé le 2026-10-07) : toute capacité de statut dont
 	# l'effet n'est pas joué porte « Sans effet dans le moteur actuel. », Poudre Dodo comprise.
 	# Jalon 11 : la mention part avec l'effet (Cage-Éclair, Para-Spore, Poudre Dodo au T4).
+	# Jalon 19 : Cyclone (changement forcé, décision de Kevin du 2026-10-16).
 	_data.load_dir()
-	for id: StringName in [&"whirlwind", &"mirror_move", &"horn_drill"]:
+	for id: StringName in [&"mirror_move", &"horn_drill"]:
 		assert_true(_data.get_move(id).description.ends_with(
 			" Sans effet dans le moteur actuel."), String(id))
 	for id: StringName in [&"thunder_wave", &"stun_spore", &"sleep_powder", &"supersonic",
-			&"focus_energy", &"super_fang", &"seismic_toss"]:
+			&"focus_energy", &"super_fang", &"seismic_toss", &"whirlwind"]:
 		assert_false(_data.get_move(id).description.contains("Sans effet"), String(id))
 	assert_eq(_data.get_move(&"sleep_powder").description,
 		"Une poudre soporifique qui endort la cible.")
@@ -868,8 +869,7 @@ func test_j14_moves() -> void:
 		&"teleport": ["Téléport", &"psychic", MoveData.Category.STATUS, 0, 0, 20, []],
 		&"dig": ["Tunnel", &"ground", MoveData.Category.PHYSICAL, 100, 100, 10, []],
 		&"low_kick": ["Balayage", &"fighting", MoveData.Category.PHYSICAL, 50, 90, 20, []],
-		&"submission": ["Sacrifice", &"fighting", MoveData.Category.PHYSICAL, 80, 80, 25,
-			["recoil_damage"]],
+		&"submission": ["Sacrifice", &"fighting", MoveData.Category.PHYSICAL, 80, 80, 25, []],
 		&"psychic": ["Psyko", &"psychic", MoveData.Category.SPECIAL, 90, 100, 10, []],
 		&"reflect": ["Protection", &"psychic", MoveData.Category.STATUS, 0, 0, 20, ["reflect"]],
 	}

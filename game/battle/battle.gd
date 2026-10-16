@@ -125,7 +125,8 @@ extends RefCounted
 ##   (pick_index, aucun tirage s'il n'y en a qu'un), dans les deux sens et sans choix du joueur ;
 ##   FAILED si la cible n'a aucun autre Pokémon apte ;
 ## - Bélier (RECOIL_DAMAGE) : RECOIL, ¼ des dégâts infligés (au moins 1, `RecoilEffect_` de RB),
-##   même si la cible tombe ;
+##   même si la cible tombe ; la fraction vient des données (Damoclès ⅓, Sacrifice ¼) ;
+## - Cyclone (FORCE_SWITCH, décision de Kevin du 2026-10-16) : comme Hurlement, mais peut rater ;
 ## - Ultralaser (RECHARGE) : après un coup qui touche, le lanceur se repose au tour suivant
 ##   (action imposée comme une charge : ni choix du joueur, ni IA, ni changement) : RECHARGING,
 ##   sans MOVE_USED ni PP ni tirage, avant tout contrôle de statut [D]. **Décision de Kevin** (RB :
@@ -1493,8 +1494,8 @@ func _force_switch(move: MoveData, side: BattleSide, target_side: BattleSide,
 	_send_out(target_side, events, chosen)
 
 
-## Bélier : le lanceur perd [member MoveEffect.fraction] des dégâts portés (au moins 1) : RECOIL,
-## même si la cible est tombée. Rien si aucun dégât n'a été porté.
+## Bélier, Damoclès, Sacrifice : le lanceur perd [member MoveEffect.fraction] des dégâts portés
+## (au moins 1) : RECOIL, même si la cible est tombée. Rien si aucun dégât n'a été porté.
 func _recoil_from_damage(effect: MoveEffect, side: BattleSide,
 		events: Array[BattleEvent]) -> void:
 	var user := side.active.pokemon

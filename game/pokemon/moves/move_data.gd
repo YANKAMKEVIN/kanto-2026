@@ -23,8 +23,8 @@ extends RefCounted
 ## effet [code]status[/code] de [MoveEffect], plus de `poison`, `poison_20` ni `poison_30` ;
 ## jalon 12 : `drain`, `trap`, `disable`, `rest`, `self_ko`, `fixed_value` sont joués, genres
 ## d'effet de [MoveEffect] ; jalon 19 : Dévorêve, Hurlement, Bélier et Ultralaser jouent les
-## sortes `requires_sleep`, `force_switch`, `recoil_damage` et `recharge` de [MoveEffect] ; les
-## autres capacités qui portent encore `force_switch` ou `recoil_damage` les gardent en attente) :
+## sortes `requires_sleep`, `force_switch`, `recoil_damage` et `recharge` de [MoveEffect], puis
+## Cyclone, Damoclès et Sacrifice, sur décision de Kevin du 2026-10-16) :
 ## - `burn_10` : 10 % de chances de brûler la cible ;
 ## - `paralysis`, `paralysis_10`, `paralysis_30` : paralyse la cible (toujours, 10 %, 30 %) ;
 ## - `confusion`, `confusion_10` : rend la cible confuse (toujours, 10 %) ;
