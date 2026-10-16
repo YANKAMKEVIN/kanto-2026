@@ -1,0 +1,18 @@
+{
+	"underground_passer": {
+		"speaker": "Vieil homme",
+		"pages": [
+			"On dit que ce passage est\nplus vieux que les routes.",
+			"Il y a des recoins où personne\nne regarde jamais."
+		]
+	},
+	"underground_hidden_1": {
+		"cutscene": "underground_hidden_1"
+	},
+	"underground_hidden_1_found": {
+		"narration": true,
+		"pages": [
+			"Une pierre est descellée dans le mur.\nQuelque chose est coincé derrière."
+		]
+	}
+}

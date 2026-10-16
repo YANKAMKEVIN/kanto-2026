@@ -64,5 +64,14 @@
 		],
 		"taille": [2340, 1080],
 		"qualite": 90
+	},
+	"route_5_6_prairie": {
+		"composition": "COMBAT_DECOR_ROUTE5_6_PRAIRIE_r1.png",
+		"tuiles": [
+			{ "image": "COMBAT_DECOR_ROUTE5_6_PRAIRIE_r1_TL.png", "portion": [0, 0, 1000, 850] },
+			{ "image": "COMBAT_DECOR_ROUTE5_6_PRAIRIE_r1_TR.png", "portion": [850, 0, 1850, 850] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
 	}
 }

@@ -11,6 +11,7 @@ extends SceneTree
 ## d'Azuria du jalon 13 (Stari, Staross, Hypotrempe, Kokiyas, Poissirène, Mystherbe, Ortide,
 ## Chétiflor, Boustiflor).
 ## Jalon 14 (jalon-14.md §2.13) : les trois espèces du Cap d'Azuria (Abra, Kadabra, Machoc).
+## Jalon 15 (jalon-15.md §2.7.1) : Miaouss et Persan (Rattatac vient du jalon 12).
 ## Pixel art 64 × 64 natif, affiché en NEAREST par le BattleStage (×4 de dos, ×3 de face) :
 ##   assets/sprites/pokemon/placeholder/<espèce>_front.png   (vue de face : l'adversaire)
 ##   assets/sprites/pokemon/placeholder/<espèce>_back.png    (vue de dos : le Pokémon du joueur)
@@ -45,6 +46,8 @@ const SPECIES: Array[String] = [
 	"staryu", "starmie", "horsea", "shellder", "goldeen",
 	"oddish", "gloom", "bellsprout", "weepinbell",
 	"abra", "kadabra", "machop",
+	# Jalon 15 (jalon-15.md §2.7.1) : Miaouss et Persan (Rattatac existe depuis le J12).
+	"meowth", "persian",
 ]
 const OUTLINE := Color("#1c1c28")
 const EYE := Color("#1c1c28")
@@ -742,6 +745,50 @@ func _draw_onix(img: Image, back: bool) -> void:
 	_r(img, 19, 12, 6, 2, WHITE)
 	_r(img, 21, 12, 2, 2, EYE)
 	_r(img, 18, 18, 14, 2, rock.darkened(0.5))
+
+
+# --- Miaouss et Persan (J15) ------------------------------------------------------
+
+func _draw_meowth(img: Image, back: bool) -> void:
+	_draw_cat(img, back, Color("#f0deb0"), Color("#c8a060"), Color("#e8c040"), 0.0)
+
+
+func _draw_persian(img: Image, back: bool) -> void:
+	_draw_cat(img, back, Color("#f0dca0"), Color("#d8b880"), Color("#e04040"), 1.0)
+
+
+## Chat assis, queue relevée, pièce (ou joyau) au front. [param size] : 0 = Miaouss, 1 = Persan
+## (corps plus allongé, oreilles plus hautes).
+func _draw_cat(img: Image, back: bool, fur: Color, ear: Color, charm: Color,
+		size: float) -> void:
+	var body_rx := 15.0 + 5.0 * size
+	var ear_h := 8.0 + 3.0 * size
+	if back:
+		_line(img, Vector2(44, 56), Vector2(56, 40), fur.darkened(0.1), 3)
+		_line(img, Vector2(56, 40), Vector2(52, 30), fur.darkened(0.1), 3)
+		_e(img, 32, 46, body_rx, 15, fur, true)
+		_r(img, 21, 54, 8, 8, fur.darkened(0.15))
+		_r(img, 35, 54, 8, 8, fur.darkened(0.15))
+		_e(img, 32, 24, 16, 13, fur, true)
+		_e(img, 21, 12, 5, ear_h, ear.darkened(0.2))
+		_e(img, 43, 12, 5, ear_h, ear.darkened(0.2))
+		return
+	_line(img, Vector2(44, 57), Vector2(57, 44), fur.darkened(0.1), 3)
+	_line(img, Vector2(57, 44), Vector2(54, 33), fur.darkened(0.1), 3)
+	_e(img, 32, 47, body_rx, 15, fur, true)
+	_r(img, 21, 56, 8, 6, fur.darkened(0.12))
+	_r(img, 35, 56, 8, 6, fur.darkened(0.12))
+	_e(img, 32, 24, 17, 14, fur, true)
+	_e(img, 20, 11, 5, ear_h, fur)
+	_e(img, 44, 11, 5, ear_h, fur)
+	_e(img, 20, 12, 2, ear_h - 3.0, ear.darkened(0.3))
+	_e(img, 44, 12, 2, ear_h - 3.0, ear.darkened(0.3))
+	_e(img, 32, 13, 4, 4, charm, true)
+	_eye(img, 21, 20, Color("#3a7a3a"))
+	_eye(img, 38, 20, Color("#3a7a3a"))
+	_r(img, 30, 30, 4, 2, Color("#c06070"))
+	_line(img, Vector2(24, 31), Vector2(9, 28), fur.darkened(0.4))
+	_line(img, Vector2(40, 31), Vector2(55, 28), fur.darkened(0.4))
 
 
 # --- Jalon 13 : outils ------------------------------------------------------------

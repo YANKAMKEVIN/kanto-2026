@@ -7,7 +7,8 @@ extends SceneTree
 ##
 ## **Jalon 14 (T20b, 14C)** : la grille lue est la variante `J14` de `tools/plans/azuria.txt`
 ## (jardin de la maison cambriolée et impasse praticables, trou praticable, porte cambriolée
-## ouverte au warp, couloir sud jusqu'au raccord « ROUTE 5 — À venir »). Caractères `J` (jardin
+## ouverte au warp, couloir sud jusqu'au raccord de la Route 5 — « À venir » au J14, la vraie
+## Route 5 depuis le J15 T21). Caractères `J` (jardin
 ## ouvert) et `Y` (trou) praticables ; l'arbre dense en (22, 3) ferme l'impasse ; la planche
 ## clouée (14, 2) et la porte condamnée de la maison suivent `cerulean_rocket_beaten`
 ## ([FlagGate]) ; les déclencheurs de la poursuite, du combat et du barrage sud sont posés ici,
@@ -125,10 +126,11 @@ const SCENE_TRIGGERS: Array = [
 	["combat_rocket", "RocketFight", Vector2i.RIGHT, &"cerulean_rocket_fight"],
 	["barrage_sud", "SouthGuard", Vector2i.DOWN, &"cerulean_south_guard"],
 ]
-## Raccord sud (J14) : trois cases PUSH ↓ vers « ROUTE 5 — À venir » ; arrivées
-## `from_route_5_w|c|e`. **Réservés pour le J15** : carte `route_5`, arrivées `from_cerulean_w|c|e`.
+## Raccord sud : trois cases PUSH ↓ (J14) ; arrivées ici `from_route_5_w|c|e`. **Jalon 15 T21** :
+## la vraie Route 5 (`route_5` / `from_cerulean_w|c|e`, colonne pour colonne, tournée ↓) remplace
+## « ROUTE 5 — À venir ».
 const SOUTH_SUFFIXES: Array[String] = ["w", "c", "e"]
-const SOUTH_COMING_SOON: String = "Route 5"
+const SOUTH_MAP: StringName = &"route_5"
 ## Arrivée à Azuria : déclencheurs silencieux [position de la grille, nœud, direction].
 const ARRIVALS: Array = [
 	["arrivee_ouest", "ArrivalWest", Vector2i.RIGHT],
@@ -250,8 +252,8 @@ func _add_passages() -> void:
 	var south: Array[Vector2i] = _plan().call(&"cells_at", "warp_sud")
 	for i: int in south.size():
 		_kit.call(&"add_warp", "Route5" + SOUTH_SUFFIXES[i].to_upper(), south[i], Kit.PUSH,
-			Vector2i.DOWN, &"route_5", StringName("from_route_5_" + SOUTH_SUFFIXES[i]),
-			Vector2i.UP, SOUTH_COMING_SOON)
+			Vector2i.DOWN, SOUTH_MAP, StringName("from_cerulean_" + SOUTH_SUFFIXES[i]),
+			Vector2i.DOWN)
 		_kit.call(&"add_spawn", "from_route_5_" + SOUTH_SUFFIXES[i], south[i])
 	for entry: Array in BUILDINGS:
 		var doors: Array = _plan().call(&"cells_at", entry[3])

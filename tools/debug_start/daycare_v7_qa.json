@@ -1,0 +1,17 @@
+{
+	"map": "viridian_city", "spawn": "from_center", "facing": "down",
+	"autosave": true,
+	"flags": [
+		"mom_greeted", "rival_met", "oak_met", "oak_lab_reunion", "starter_offered",
+		"starter_chosen", "rival_challenged", "rival_battle_done", "rival_left_lab",
+		"viridian_arrived"
+	],
+	"party": [
+		{ "species": "charmander", "level": 12 },
+		{ "species": "pidgey", "level": 9 }
+	],
+	"storage": [ { "species": "caterpie", "level": 5 } ],
+	"daycare": { "species": "rattata", "level": 10, "pending_exp": 500 },
+	"bag": { "poke_ball": 3, "potion": 2 },
+	"money": 3000
+}

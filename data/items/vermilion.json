@@ -1,0 +1,13 @@
+{
+	"super_potion": {
+		"name": "Super Potion", "plural": "Super Potions", "feminine": true,
+		"category": "heal", "heal_amount": 50, "price": 700,
+		"description": "Rend 50 PV à un Pokémon."
+	},
+	"full_restore": {
+		"name": "Guérison", "plural": "Guérisons", "feminine": true,
+		"category": "heal", "heal_amount": 999,
+		"cures": ["poison", "paralysis", "sleep", "burn", "freeze"], "price": 3000,
+		"description": "Rend tous les PV et soigne le statut d'un Pokémon."
+	}
+}

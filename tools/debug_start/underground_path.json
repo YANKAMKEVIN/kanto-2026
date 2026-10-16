@@ -1,0 +1,19 @@
+{
+	"map": "underground_path", "spawn": "from_route_5_w", "facing": "right",
+	"flags": [
+		"mom_greeted", "rival_met", "oak_met", "oak_lab_reunion", "starter_offered",
+		"starter_chosen", "taken_charmander", "taken_squirtle", "rival_lab_won",
+		"rival_challenged", "rival_battle_done", "rival_left_lab", "viridian_arrived",
+		"got_oak_parcel", "pokedex_activated", "poison_unlocked", "beaten_forest_scout_theo",
+		"pewter_arrived", "beaten_pewter_gym_liam", "brock_met", "badge_boulder",
+		"route_3_guard_cleared"
+	],
+	"party": [
+		{ "species": "charmeleon", "level": 17 },
+		{ "species": "butterfree", "level": 15 },
+		{ "species": "pidgey", "level": 14 }
+	],
+	"companion": 0,
+	"bag": { "poke_ball": 5, "potion": 5, "antidote": 2 },
+	"money": 4300
+}

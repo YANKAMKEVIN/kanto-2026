@@ -26,13 +26,13 @@ func _mon(species: StringName, level: int = 10) -> Pokemon:
 
 # --- Catalogue (T19a) --------------------------------------------------------------------------
 
-func test_the_twenty_five_eligible_species_of_the_dossier() -> void:
+func test_the_twenty_six_eligible_species_of_the_dossier() -> void:
 	assert_eq(_catalog.get_species_ids(), [&"bulbasaur", &"butterfree", &"charmander",
 		&"charmeleon", &"clefairy", &"ekans", &"fearow", &"geodude", &"ivysaur", &"jigglypuff",
-		&"mankey", &"nidoran_f", &"nidoran_m", &"nidorina", &"nidorino", &"paras", &"pidgeotto",
+		&"mankey", &"meowth", &"nidoran_f", &"nidoran_m", &"nidorina", &"nidorino", &"paras", &"pidgeotto",
 		&"pidgey", &"pikachu", &"raticate", &"rattata", &"spearow", &"squirtle", &"wartortle",
 		&"zubat"] as Array[StringName],
-		"dossier 14 §8.2 : les 9 de départ + les 5 de la série 13 + les 11 de la série 14 (J12 T21)")
+		"dossier 14 §8.2 : les 9 de départ + les 5 de la série 13 + les 11 de la série 14 (J12 T21) + Miaouss (J15 T10)")
 	assert_true(_catalog.is_flying(&"zubat"), "Nosferapti en vol (J12 T21)")
 	assert_false(_catalog.is_flying(&"jigglypuff"))
 	assert_eq(_catalog.sprite_of(&"geodude"), &"pokemon/geodude_walk",

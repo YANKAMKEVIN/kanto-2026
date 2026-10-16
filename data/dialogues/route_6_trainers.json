@@ -1,0 +1,74 @@
+{
+	"route_6_lass_chloe_before": {
+		"speaker": "Jeune Dresseuse Chloé",
+		"pages": ["Tu sors du souterrain ?\nMes Roucool t'attendaient !"]
+	},
+	"route_6_lass_chloe_defeated": {
+		"speaker": "Jeune Dresseuse Chloé",
+		"pages": ["Trois contre un, et j'ai quand\nmême perdu…"]
+	},
+	"route_6_lass_chloe_after": {
+		"speaker": "Jeune Dresseuse Chloé",
+		"pages": ["Carmin est tout au bout. Tu sentiras\nla mer avant de la voir."]
+	},
+	"route_6_camper_gabin_before": {
+		"speaker": "Campeur Gabin",
+		"pages": ["Chloé a fini ? À mon tour !"]
+	},
+	"route_6_camper_gabin_defeated": {
+		"speaker": "Campeur Gabin",
+		"pages": ["D'accord, d'accord. Tu es fort."]
+	},
+	"route_6_camper_gabin_after": {
+		"speaker": "Campeur Gabin",
+		"pages": ["On attend le S.S. Anne.", "Il paraît qu'il y a des Dresseurs\ndu monde entier à bord."]
+	},
+	"route_6_scout_axel_before": {
+		"speaker": "Scout Axel",
+		"pages": ["Les herbes d'ici sont pleines\nd'insectes.", "Les miens sont les meilleurs !"]
+	},
+	"route_6_scout_axel_defeated": {
+		"speaker": "Scout Axel",
+		"pages": ["Mes Aspicot ont besoin de repos."]
+	},
+	"route_6_scout_axel_after": {
+		"speaker": "Scout Axel",
+		"pages": ["Un jour, ils évolueront tous.\nTu verras."]
+	},
+	"route_6_camper_mathis_before": {
+		"speaker": "Campeur Mathis",
+		"pages": ["Mon Carapuce s'entraîne au bord\nde l'eau. Il est prêt !"]
+	},
+	"route_6_camper_mathis_defeated": {
+		"speaker": "Campeur Mathis",
+		"pages": ["Il a fait de son mieux."]
+	},
+	"route_6_camper_mathis_after": {
+		"speaker": "Campeur Mathis",
+		"pages": ["Je l'ai choisi parce qu'il me\nressemble : têtu."]
+	},
+	"route_6_lass_manon_before": {
+		"speaker": "Jeune Dresseuse Manon",
+		"pages": ["Mathis a perdu ? Alors je vais\nle venger !"]
+	},
+	"route_6_lass_manon_defeated": {
+		"speaker": "Jeune Dresseuse Manon",
+		"pages": ["Ah… pas de vengeance aujourd'hui."]
+	},
+	"route_6_lass_manon_after": {
+		"speaker": "Jeune Dresseuse Manon",
+		"pages": ["Mon Pikachu adore l'étang. Il ne se\nbaigne jamais, mais il regarde."]
+	},
+	"route_6_scout_basile_before": {
+		"speaker": "Scout Basile",
+		"pages": ["D'ici, on voit tout le port.", "Et toi, tu vas voir mon Papilusion !"]
+	},
+	"route_6_scout_basile_defeated": {
+		"speaker": "Scout Basile",
+		"pages": ["Il vole mieux qu'il ne se bat…"]
+	},
+	"route_6_scout_basile_after": {
+		"speaker": "Scout Basile",
+		"pages": ["Regarde ce bateau. Un jour,\nje partirai avec lui."]
+	}
+}

@@ -1,0 +1,21 @@
+{
+	"meowth": {
+		"dex": 52, "name": "Miaouss", "types": ["normal"],
+		"base_stats": { "hp": 40, "atk": 45, "def": 35, "spa": 40, "spd": 40, "spe": 90 },
+		"male_ratio": 0.5, "growth_rate": "medium_fast", "base_exp": 58, "catch_rate": 255,
+		"learnset": [
+			[1, "scratch"], [1, "growl"], [12, "bite"], [17, "pay_day"], [24, "screech"],
+			[33, "fury_swipes"], [44, "slash"]
+		],
+		"evolutions": [{ "into": "persian", "method": "level", "level": 28 }]
+	},
+	"persian": {
+		"dex": 53, "name": "Persan", "types": ["normal"],
+		"base_stats": { "hp": 65, "atk": 70, "def": 60, "spa": 65, "spd": 65, "spe": 115 },
+		"male_ratio": 0.5, "growth_rate": "medium_fast", "base_exp": 154, "catch_rate": 90,
+		"learnset": [
+			[1, "scratch"], [1, "growl"], [1, "bite"], [1, "screech"], [12, "bite"],
+			[17, "pay_day"], [24, "screech"], [37, "fury_swipes"], [51, "slash"]
+		]
+	}
+}

@@ -47,8 +47,9 @@ func _round_trip(state: Node) -> Node:
 	return loaded
 
 
-func test_the_save_version_is_still_the_one_of_the_jalon_11() -> void:
-	assert_eq(SaveSystem.VERSION, 6, "le J13 n'ajoute aucune version")
+func test_the_jalon_13_adds_no_save_version() -> void:
+	# Le J13 n'ajoute aucune version ; v7 vient du J15 (Pension), intégré après.
+	assert_eq(SaveSystem.VERSION, 7, "aucune version du J13 : v6 du J11, puis v7 du J15")
 
 
 func test_every_flag_of_the_jalon_survives_a_save() -> void:

@@ -123,7 +123,7 @@ func test_real_tables_load_without_error() -> void:
 	assert_eq(lib.get_ids(), [&"mt_moon_1f_rubble", &"mt_moon_b1f_rubble",
 		&"mt_moon_b2f_rubble", &"route_1_grass", &"route_22_grass", &"route_24_grass",
 		&"route_25_grass", &"route_2_grass", &"route_2_north_grass", &"route_3_grass",
-		&"route_4_grass", &"viridian_forest_grass"]
+		&"route_4_grass", &"route_5_grass", &"route_6_grass", &"viridian_forest_grass"]
 		as Array[StringName])
 
 
@@ -195,12 +195,12 @@ func test_every_wild_species_has_battle_sprites() -> void:
 	# jalon-07.md Q-2 : sprites de combat provisoires (tools/gen_placeholder_battlers.gd).
 	var lib := _lib()
 	lib.load_dir()
-	assert_eq(lib.size(), 12, "une table par couple ci-dessous")
+	assert_eq(lib.size(), 14, "une table par couple ci-dessous")
 	for pair: Array in [[&"route_1", &"grass"], [&"route_2", &"grass"],
 			[&"route_22", &"grass"], [&"viridian_forest", &"grass"], [&"route_2_north", &"grass"],
 			[&"route_3", &"grass"], [&"mt_moon_1f", &"rubble"], [&"mt_moon_b1f", &"rubble"],
 			[&"mt_moon_b2f", &"rubble"], [&"route_4", &"grass"], [&"route_24", &"grass"],
-			[&"route_25", &"grass"]]:
+			[&"route_25", &"grass"], [&"route_5", &"grass"], [&"route_6", &"grass"]]:
 		for slot: EncounterSlot in lib.get_table(pair[0], pair[1]).slots:
 			for view: String in ["front", "back"]:
 				var path := "res://assets/sprites/pokemon/placeholder/%s_%s.png" % [

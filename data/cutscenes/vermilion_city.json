@@ -1,0 +1,12 @@
+{
+	"vermilion_arrival": {
+		"variants": [
+			{
+				"unless": ["vermilion_reached"],
+				"steps": [
+					{ "set": ["vermilion_reached"] }
+				]
+			}
+		]
+	}
+}

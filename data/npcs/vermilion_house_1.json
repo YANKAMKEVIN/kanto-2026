@@ -1,0 +1,6 @@
+{
+	"resident": {
+		"cell": [12, 6], "facing": "left", "sprite": "old_man",
+		"dialogue": "vermilion_house_1_resident"
+	}
+}

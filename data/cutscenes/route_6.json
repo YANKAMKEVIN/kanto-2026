@@ -1,0 +1,60 @@
+{
+	"route_6_item_1": {
+		"variants": [
+			{
+				"unless": ["got_route_6_item_1"],
+				"steps": [
+					{ "despawn": "route_6_item_1" },
+					{ "give": "poke_ball", "count": 1, "found": true },
+					{ "set": ["got_route_6_item_1"] }
+				]
+			}
+		]
+	},
+	"route_6_hidden_1": {
+		"variants": [
+			{
+				"unless": ["got_route_6_hidden_1"],
+				"steps": [
+					{ "give": "super_potion", "count": 1, "found": true },
+					{ "set": ["got_route_6_hidden_1"] }
+				]
+			}
+		]
+	},
+	"route_6_gate_rule_w": {
+		"variants": [
+			{
+				"steps": [
+					{ "face": "saffron_guard", "to": "player" },
+					{ "face": "player", "to": "saffron_guard" },
+					{ "dialogue": "route_6_guard" },
+					{ "move": "player", "path": ["left"], "keep_facing": true }
+				]
+			}
+		]
+	},
+	"route_6_gate_rule_e": {
+		"variants": [
+			{
+				"steps": [
+					{ "face": "saffron_guard", "to": "player" },
+					{ "face": "player", "to": "saffron_guard" },
+					{ "dialogue": "route_6_guard" },
+					{ "move": "player", "path": ["right"], "keep_facing": true }
+				]
+			}
+		]
+	},
+	"route_6_gate_rule_s": {
+		"variants": [
+			{
+				"steps": [
+					{ "face": "player", "to": "up" },
+					{ "dialogue": "route_6_guard" },
+					{ "move": "player", "path": ["down"], "keep_facing": true }
+				]
+			}
+		]
+	}
+}

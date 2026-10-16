@@ -1065,9 +1065,8 @@ func _after_battle(result: Array[int], party: RefCounted, variant: Dictionary,
 			return true
 		_:
 			s["unfinished"] += 1
-	# J14 T21 : victoire où le dernier Pokémon du joueur tombe aussi (contrecoup de Lutte, le
-	# lanceur gagne : Battle._check_end) ; l'équipe est entière K.O. : compté comme une défaite
-	# (réveil au Centre, comme dans RB), sinon le combat suivant ne peut pas commencer.
+	# J14 T21 : équipe entière K.O. après le combat = défaite. Depuis J15 T24, le moteur rend
+	# déjà LOSS dans ce cas (Battle._check_end, RB) : garde de sûreté seulement.
 	if party.first_able() == null:
 		return true
 	_evolve(party)
