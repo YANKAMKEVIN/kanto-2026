@@ -1,0 +1,66 @@
+# Manoir Pokémon 2F (pokemon_mansion_2f) — grille fonctionnelle v1 (jalon 25, dossier 28 §4). Tirée des blocs RB
+# (pret/pokered, annexe j25-annexe-rb-cramois.md §1.9), échelle 1 case = 1 pas (X-4). Contrôle :
+# tools/art/plan_check_manoir.py (relie les quatre étages, les escaliers, les trous et l'interrupteur).
+# Le mobilier n'est pas encore dessiné : il viendra avec la vue générale peinte, contrôle relancé.
+#
+# 30 × 28 cases ; nord en haut. Premier étage : galerie, bibliothèque, salle des journaux. Escalier ↓ 1F ; trois escaliers ↑ 3F.
+# Journaux n° 1 (5 juillet) et n° 2 (10 juillet). Le Pillard donne l'indice des portes alternées.
+#
+# Légende (commune aux quatre étages) :
+#   # mur, mobilier lourd (bloqué)      . plancher (praticable, rencontres)
+#   a porte de grille du jeu A : FERMÉE quand l'interrupteur est sur ARRÊT, ouverte sur MARCHE
+#   b porte de grille du jeu B : FERMÉE sur MARCHE, ouverte sur ARRÊT
+#   U escalier qui monte   V escalier qui descend (paire= ; arrivée = spawn de même paire)
+#   O trou dans le plancher (3F ; praticable, déclenche la chute)   E seuil de sortie (1F)
+#   T statue à interrupteur (bloquée)   P pupitre et journal (bloqué)
+# Personnages, objets, statues, journaux, trous et escaliers : section POSITIONS.
+
+PRATICABLES .abUVOE
+
+GRILLE 30 28
+00 ##############################
+01 ######U..#.....#......#.######
+02 ####.....#.....#..P#..#...####
+03 ####.....#.....#..##........##
+04 ##......bb.....#......###....#
+05 ##......bb.....###..#####....#
+06 #...#.#..#.............#####.#
+07 #...#.#..#.............#####.#
+08 #........#...#####aa##########
+09 ##########...###..aa..##..####
+10 #.#..V.U.....###......#......#
+11 #.T..........###......#......#
+12 #......##.....####....#......#
+13 #......##..#########..#...####
+14 #####.###..#######....##.U...#
+15 ####..###..#######....##.....#
+16 #....#####.#..################
+17 #....#####.#..################
+18 ########...#..################
+19 ######.#...#..################
+20 #......#...#..################
+21 #......#...#..################
+22 #.#P##aa......################
+23 #.####aa...#..################
+24 #......#...#..################
+25 #......#...#..################
+26 #......#...###################
+27 ##############################
+FIN
+
+POSITIONS
+escalier_a                   escalier       5,10         libre   paire=A sens=descend vers=pokemon_mansion_1f
+arrivee_a                    spawn          5,11         libre   paire=A  # arrivée depuis l'autre étage
+escalier_b                   escalier       7,10         libre   paire=B sens=monte vers=pokemon_mansion_3f
+arrivee_b                    spawn          7,11         libre   paire=B  # arrivée depuis l'autre étage
+escalier_c                   escalier       6,1          libre   paire=C sens=monte vers=pokemon_mansion_3f
+arrivee_c                    spawn          6,2          libre   paire=C  # arrivée depuis l'autre étage
+escalier_d                   escalier       25,14        libre   paire=D sens=monte vers=pokemon_mansion_3f
+arrivee_d                    spawn          25,15        libre   paire=D  # arrivée depuis l'autre étage
+chute                        spawn          18,14        libre   role=chute  # arrivée du trou_3 du 3F
+statue_1                     statue         2,11         bloque  facing=up  # interrupteur secret (textes 9–11), actionné depuis la case du dessous
+journal_1                    journal        18,2         bloque  # carnet sur pupitre, textes 1–2
+journal_2                    journal        3,22         bloque  # carnet sur pupitre, textes 3–4
+mansion_burglar_1            dresseur       3,17         bloque  facing=down sight=0  # Pillard : Salamèche 34, Reptincel 34 ; on lui parle
+pokemon_mansion_2f_item_1    objet_visible  28,7         bloque  item=rare_candy  # Super Bonbon (RB : Calcium)
+FIN

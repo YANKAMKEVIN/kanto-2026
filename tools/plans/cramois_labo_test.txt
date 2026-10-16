@@ -1,0 +1,32 @@
+# Laboratoire de Cramois'Île, Salle de test (cinnabar_lab_test) — grille fonctionnelle v1
+# (jalon 25, dossier 28 §6.2–§6.3). Convention des intérieurs peints (15 × 10).
+# Contrôle : tools/art/plan_check_cramois.py.
+#
+# Machine de résurrection (gros appareil vitré, non interactif) au fond ; Dr Kazuo, fossiles
+# (textes 55–66) ; scientifique Marc (échange Ponyta → Otaria « Bibi », textes 48–52) ; deux PC
+# décoratifs.
+#
+# Légende : K mur · . sol · X paillasson (PUSH ↓) · M machine de résurrection (bloquée) · c PC (bloqué)
+
+PRATICABLES .X
+
+GRILLE 15 10
+00 KKKKKKKKKKKKKKK
+01 KKKKKKKKKKKKKKK
+02 KKKKKKKKKKKKKKK
+03 K....MMMMM....K
+04 Kcc..MMMMM....K
+05 K.............K
+06 K.............K
+07 K.............K
+08 KKKKKKXXXKKKKKK
+09 KKKKKKKKKKKKKKK
+FIN
+
+POSITIONS
+sortie              warp           6..8,8       libre   vers=cinnabar_lab  # PUSH ↓ → hall, depuis_test
+entree              spawn          7,7          libre   # tourné ↑
+dr_kazuo            pnj            7,5          bloque  facing=down route=gauche-droite  # textes 55–66
+scientifique_marc   pnj            12,6         bloque  facing=left echange=cinnabar_trade_seel  # textes 48–52
+pc_test             examen         1..2,4       bloque  # PC décoratifs
+FIN

@@ -106,12 +106,16 @@ habillage DA.
 
 | Étage | Accès | Contenu |
 |---|---|---|
-| **1F** | Porte principale (sud, depuis l'île) ; **2ᵉ sortie sud-est**, derrière une porte du jeu A ; escalier ↑ 2F (5,10) ; escalier ↓ B1F (21,23), dans une partie qu'on atteint par la chute du 3F | Scientifique, Corde Sortie, Pépite, Pierre Lune cachée, statue (2,5) |
+| **1F** | Porte principale (sud, depuis l'île) ; **2ᵉ sortie sud-est**, derrière une porte du jeu A, **sortie seulement** (RB : l'île n'a qu'une porte de Manoir ; elle ramène devant la porte principale) ; escalier ↑ 2F (5,10) ; escalier ↓ B1F (21,23), dans une partie qu'on atteint par la chute du 3F | Scientifique, Corde Sortie, Pépite, Pierre Lune cachée, statue (2,5) |
 | **2F** | ↓ 1F ; **trois** escaliers vers 3F : (7,10), (6,1), (25,14) | Pillard, Super Bonbon, journaux n° 1 (18,2) et n° 2 (3,22), statue (2,11) |
 | **3F** | trois escaliers vers 2F ; **trous** (16,14) et (17,14) → 1F (16,14), (19,14) → 2F (18,14) | Pillard, Scientifique, Potion Max, Pépite, Rappel Max caché, journal n° 3 (6,12), statue (10,5) |
 | **B1F** | ↑ 1F seulement | Pillard, Scientifique, Super Bonbon (+ un caché), Guérison, CT14, CT22, **Clé Secrète** (5,13), journal n° 4 (16,20), statues (20,3) et (18,25) |
 
 Coordonnées RB indicatives : la grille peut les décaler, la topologie reste.
+
+**Grilles v1 faites (2026-10-16)** : `tools/plans/manoir_1f.txt`, `_2f`, `_3f`, `_b1f`, tirées des blocs RB
+(la zone sud-est du 2F, hors du bâtiment en RB, est murée). Le mobilier viendra avec les vues
+peintes, contrôle relancé.
 
 ### 4.3 Statues et portes (X-5)
 
@@ -149,8 +153,9 @@ aucun des 3 030 états atteignables n'empêche de ressortir ; chutes sur cases p
 type : 1F → 2F → 3F, statue du 3F (MARCHE), trou → 1F, escalier ↓ B1F, statue sud (ARRÊT), statue
 nord (MARCHE), salle ouest.
 
-En 25.0, `tools/art/plan_check_manoir.py` refait ce contrôle sur **nos** grilles, et le refait à
-chaque modification :
+`tools/art/plan_check_manoir.py` refait ce contrôle sur **nos** grilles (**passe sur les grilles v1
+du 2026-10-16** : 2 996 états atteignables, aucun sans retour, puzzle nécessaire, aucun Dresseur
+inévitable ; il échoue bien sur une grille cassée), et le refait à chaque modification :
 
 1. Clé atteignable depuis l'entrée, interrupteur sur ARRÊT.
 2. Depuis **tout** état atteignable (étage, case, interrupteur), une sortie est atteignable.
@@ -244,7 +249,9 @@ flashback. Mew et Mewtwo ne deviennent ni « vus » ni « capturés ».
                 ▲ sortie vers Cramois'Île
 ```
 
-Hall à la largeur RB (18 × 8) ; salles à la convention des intérieurs peints (15 × 10) [D]. Trois
+Hall à la largeur RB (18 × 8) ; salles à la convention des intérieurs peints (15 × 10) [D].
+**Grilles v1** : `tools/plans/cramois_labo.txt`, `_reunion`, `_recherche`, `_test` (contrôle
+`tools/art/plan_check_cramois.py`). Trois
 panneaux de porte (textes 26–28). Laboratoire propre et blanc, en contraste avec le Manoir :
 paillasses, écrans, plantes, lumière froide. La machine de résurrection (Salle de test) est un
 gros appareil vitré, non interactif.
@@ -310,7 +317,7 @@ Scientifique **Dr Kazuo** [D], Salle de test.
 
 - **Carte d'Argenta** (J10) : une **porte arrière** sur la façade est du Musée, devant laquelle
   pousse un **arbre à Couper** (Coupe du J16 ; buisson `InteractPoint` + drapeau, règle des CS).
-- **Réserve du Musée** (`argenta_musee_reserve`, 15 × 10 [D]) : comptoir, vitrine de l'ambre, deux
+- **Réserve du Musée** (`argenta_musee_reserve`, 15 × 10 [D], grille v1 `tools/plans/argenta_musee_reserve.txt`) : comptoir, vitrine de l'ambre, deux
   scientifiques.
   - Scientifique du comptoir : textes 67–69 (question OUI/NON sur l'ambre).
   - Scientifique de l'ambre : textes 70–71 → **Vieil Ambre** (`old_amber`, objet clé), drapeau
@@ -337,7 +344,10 @@ Scientifique **Dr Kazuo** [D], Salle de test.
 Q = machine de quiz · D = Dresseur · P = porte de quiz
 ```
 
-Grille RB 1:1, **20 × 18** (`tools/plans/cramois_arene.txt`). Ordre : Q1 → P1 → couloir nord → Q2 →
+Grille RB 1:1, **20 × 18** (`tools/plans/cramois_arene.txt`, v1 du 2026-10-16 ; la colonne x = 7 du
+relevé RB, artefact de lecture, est murée). `tools/art/plan_check_cramois.py` vérifie que chaque
+machine et son Dresseur ne s'atteignent qu'après la herse précédente, qu'Auguste exige les six
+herses et qu'aucune herse ne se contourne. Ordre : Q1 → P1 → couloir nord → Q2 →
 P2 → Q3 → P3 → Q4 → P4 → Q5 → P5 → Q6 → P6 → Auguste. Ambiance : roche volcanique sombre, braises
 dans des rigoles, chaleur qui fait trembler l'air près des grilles ; portes = herses de métal
 chaud, deux images.

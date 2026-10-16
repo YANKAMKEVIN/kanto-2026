@@ -1,0 +1,40 @@
+# Laboratoire Pokémon de Cramois'Île, hall (cinnabar_lab) — grille fonctionnelle v1 (jalon 25,
+# dossier 28 §6). Largeur RB (18 × 8 pas, X-4). Contrôle : tools/art/plan_check_cramois.py.
+#
+# 18 × 8 cases ; nord en haut. Couloir clair et propre (contraste avec le Manoir) ; au mur nord,
+# trois portes vers la Salle de réunion, la Recherche et Développement et la Salle de test, chacune
+# avec son panneau à droite (textes 26–28) ; photo du Dr Fuji (texte 30) ; chercheur (texte 29).
+# Sortie au sud-ouest, comme RB (2..3, 7).
+#
+# Légende :
+#   K mur (bloqué)   . sol (praticable)   D porte vers une salle (praticable, STEP_ON ↑)
+#   X paillasson de sortie (praticable, PUSH ↓)   x plante (bloquée)   t banc, comptoir (bloqué)
+
+PRATICABLES .DX
+
+GRILLE 18 8
+00 KKKKKKKKKKKKKKKKKK
+01 KKKKKKKKKKKKKKKKKK
+02 KKKKKDKKKKDKKKKDKK
+03 K................K
+04 K................K
+05 Kx.......tt......K
+06 K................K
+07 KKXXKKKKKKKKKKKKKK
+FIN
+
+POSITIONS
+vers_reunion        warp           5,2          libre   vers=cinnabar_lab_reunion  # STEP_ON ↑
+vers_recherche      warp           10,2         libre   vers=cinnabar_lab_recherche  # STEP_ON ↑
+vers_test           warp           15,2         libre   vers=cinnabar_lab_test  # STEP_ON ↑
+depuis_reunion      spawn          5,3          libre   # tourné ↓
+depuis_recherche    spawn          10,3         libre   # tourné ↓
+depuis_test         spawn          15,3         libre   # tourné ↓
+sortie              warp           2..3,7       libre   vers=cinnabar_island  # PUSH ↓ → Cramois'Île, devant le Labo
+entree              spawn          2,6          libre   # arrivée depuis l'île, tourné ↑
+panneau_reunion     panneau        6,2          bloque  # texte 26
+panneau_recherche   panneau        11,2         bloque  # texte 27
+panneau_test        panneau        16,2         bloque  # texte 28
+photo_fuji          examen         2,2          bloque  # texte 30, examinée depuis (2, 3)
+chercheur_hall      pnj            1,4          bloque  facing=right  # texte 29
+FIN
