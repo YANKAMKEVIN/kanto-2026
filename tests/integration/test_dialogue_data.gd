@@ -876,8 +876,9 @@ func test_mom_first_variant_is_automatic_and_only_hers() -> void:
 
 ## Lot de textes validé par Kevin le 2026-10-06 : plus aucun dialogue ni variante provisoire,
 ## sauf ceux qui attendent sa relecture, nommés ici (« id:variante »).
-## Jalon 16 (décisions du 2026-10-16) : indice du guide de l'Arène de Carmin (type Sol).
-const PENDING_DRAFT_VARIANTS: Array[String] = ["vermilion_gym_guide:0"]
+## Jalon 16 (décisions du 2026-10-16) : indice du guide de l'Arène de Carmin (type Sol), validé le
+## 2026-10-16 : liste vide.
+const PENDING_DRAFT_VARIANTS: Array[String] = []
 
 
 func test_no_dialogue_nor_variant_is_draft() -> void:

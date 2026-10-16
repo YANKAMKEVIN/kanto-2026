@@ -173,9 +173,9 @@ au §9), rapports des T7, T11 et T14. **Remplacent** les valeurs du §5, du §9 
 - **Major Bob** (§9, R-3) : mêmes niveaux (Voltorbe 21, Pikachu 18, Raichu 24) ; **Raichu sans
   Tonnerre** : Éclair, Cage-Éclair, Vive-Attaque. Tonnerre reste la récompense (CT24).
 - **Indice dans le jeu** : le guide de l'Arène ajoute, avant le Badge Foudre, deux bulles après le
-  n° 31 (inchangé) — **texte proposé par Claude, à valider par Kevin** (brouillon `draft` dans
-  `data/dialogues/vermilion_gym.json`) : « Et un conseil : ses Pokémon sont tous de type
-  Électrik. » / « Un Pokémon de type Sol ne craint pas leurs décharges ! ».
+  n° 31 (inchangé) — **validé par Kevin le 2026-10-16** (dans `data/dialogues/vermilion_gym.json`) :
+  - « Et un conseil : ses Pokémon sont tous de type Électrik. »
+  - « Un Pokémon de type Sol ne craint pas leurs décharges ! »
 - **Carte** : description de la zone `ss_anne` validée (« Un paquebot de croisière amarré au port
   de Carmin. Salons, cabines et ponts promenade : on s'y croirait déjà au large. ») ; rectangle
   juste sous Carmin validé.

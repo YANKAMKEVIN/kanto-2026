@@ -20,7 +20,6 @@
 		"variants": [
 			{
 				"unless": ["badge_thunder"],
-				"draft": true,
 				"pages": [
 					"Major Bob s'est retranché derrière une barrière électrique !",
 					"Les interrupteurs sont cachés dans les poubelles. Il en faut deux, côte à côte.",

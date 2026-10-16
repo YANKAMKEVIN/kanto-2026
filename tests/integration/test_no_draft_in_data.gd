@@ -10,10 +10,8 @@ const DATA_DIR := "res://data"
 ## encore en brouillon). Vide depuis la validation de l'annexe A du jalon 15 (2026-10-14).
 ## Jalon 16 (T11) : description de la zone du S.S. Anne sur la Carte, validée le 2026-10-16.
 ## Jalon 16 (décisions du 2026-10-16) : indice du guide de l'Arène de Carmin (type Sol contre
-## Major Bob), texte proposé par Claude, à valider par Kevin.
-const PENDING_DRAFTS: Array[String] = [
-	"dialogues/vermilion_gym.json/vermilion_gym_guide/variants/0",
-]
+## Major Bob), validé par Kevin le 2026-10-16.
+const PENDING_DRAFTS: Array[String] = []
 
 
 func test_data_has_json_files() -> void:
