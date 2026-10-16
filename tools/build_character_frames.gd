@@ -132,7 +132,19 @@ const LOOKS: Dictionary = {
 	"marin": [CHARACTERS_DIR, "sailor", ""],
 	"docker": [CHARACTERS_DIR, "docker", ""],
 	"president_fan_club": [CHARACTERS_DIR, "fan_club_chairman", ""],
+	# J21 T7 (série 23, Repos des esprits) : M. Fuji (128 → 122 px, avec ses poses de prière,
+	# [constant KNEELING]) et Osselait du monde (Maison des Pokémon, 56 px, sans attente : colonne
+	# 0 de la marche).
+	"fuji": [CHARACTERS_DIR, "mr_fuji", ""],
+	"osselait": [POKEMON_DIR, "cubone", ""],
 }
+## Poses à genoux (planche d'une ligne × 4 colonnes, calée sur la marche) d'un personnage :
+## planche de marche → planche de poses. Colonnes : 0 dos, 1 dos au souffle, 2 profil gauche,
+## 3 face. Animations ajoutées : `pray` (colonnes 0 et 1, boucle lente), `pray_left` (2) et
+## `pray_front` (3), une image chacune [D : noms du plan, « pray » seul, §2.16 / T7].
+const KNEELING: Dictionary = {"fuji": "fuji_priere"}
+## Vitesse de `pray` : une image toutes les 1,6 s (respiration).
+const PRAY_SPEED := 1.0 / 1.6
 ## Pokémon fixes (genre « Pokémon fixe », jalon 9 §2.8.5) : feuille 6 × 1 du catalogue
 ## (« personnages ») → identifiant de données. Ils ne marchent jamais.
 const FIXED_POKEMON: Dictionary = {
@@ -187,6 +199,8 @@ func _init() -> void:
 		var idle_of := sheet_id.trim_suffix(IDLE_SUFFIX)
 		if idle_of != sheet_id and LOOKS.has(idle_of):
 			continue
+		if KNEELING.values().has(sheet_id):
+			continue
 		if not LOOKS.has(sheet_id) and not RUN_ONLY.has(sheet_id) \
 				and not FIXED_POKEMON.has(sheet_id):
 			push_error("build_character_frames : planche « %s » sans correspondance" % sheet_id)
@@ -201,7 +215,7 @@ func _init() -> void:
 		var run: Dictionary = sheets.get(run_id, {}) if not run_id.is_empty() else {}
 		var idle: Dictionary = sheets.get(sheet_id + IDLE_SUFFIX, {})
 		_build(sheets[sheet_id], run, idle, String(look[0]) + String(look[1]) + "_frames.tres",
-			IDLE_FROM_WALK.get(sheet_id, {}))
+			IDLE_FROM_WALK.get(sheet_id, {}), sheets.get(String(KNEELING.get(sheet_id, "")), {}))
 	var fixed := 0
 	for sheet_id: String in FIXED_POKEMON:
 		if not sheets.has(sheet_id):
@@ -226,7 +240,7 @@ func _init() -> void:
 
 
 func _build(walk_sheet: Dictionary, run_sheet: Dictionary, idle_sheet: Dictionary,
-		path: String, idle_from_walk: Dictionary = {}) -> void:
+		path: String, idle_from_walk: Dictionary = {}, kneel_sheet: Dictionary = {}) -> void:
 	var frames := SpriteFrames.new()
 	frames.remove_animation(&"default")
 	var walk_texture := load(walk_sheet["fichier"]) as Texture2D
@@ -261,9 +275,29 @@ func _build(walk_sheet: Dictionary, run_sheet: Dictionary, idle_sheet: Dictionar
 		if run_texture != null:
 			_add_cycle(frames, StringName("run_" + dir), run_texture, run_cell, row,
 				4.0 / (2.0 * RUN_STEP))
-	_save(frames, path, "%s (%d × %d%s%s)" % [path, walk_cell.x, walk_cell.y,
+	if not kneel_sheet.is_empty():
+		_add_kneeling(frames, kneel_sheet)
+	_save(frames, path, "%s (%d × %d%s%s%s)" % [path, walk_cell.x, walk_cell.y,
 		", course" if not run_sheet.is_empty() else "",
-		", attente" if not idle_sheet.is_empty() else ""])
+		", attente" if not idle_sheet.is_empty() else "",
+		", prière" if not kneel_sheet.is_empty() else ""])
+
+
+## Poses à genoux : `pray` (dos, deux images, boucle lente), `pray_left`, `pray_front`.
+func _add_kneeling(frames: SpriteFrames, sheet: Dictionary) -> void:
+	var texture := load(sheet["fichier"]) as Texture2D
+	var cell := Vector2(sheet["cellule"][0], sheet["cellule"][1])
+	frames.add_animation(&"pray")
+	frames.set_animation_loop(&"pray", true)
+	frames.set_animation_speed(&"pray", PRAY_SPEED)
+	frames.add_frame(&"pray", _atlas(texture, cell, 0, 0))
+	frames.add_frame(&"pray", _atlas(texture, cell, 1, 0))
+	for pose: Array in [[&"pray_left", 2], [&"pray_front", 3]]:
+		var anim: StringName = pose[0]
+		frames.add_animation(anim)
+		frames.set_animation_loop(anim, true)
+		frames.set_animation_speed(anim, 1.0)
+		frames.add_frame(anim, _atlas(texture, cell, pose[1], 0))
 
 
 ## Pokémon fixe : `idle_<dir>` (repos), `react_<dir>` non bouclée (repos, réaction, repos) ;

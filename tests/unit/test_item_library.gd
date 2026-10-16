@@ -392,7 +392,7 @@ func test_real_j14_ticket_and_rare_candy() -> void:
 
 
 ## Jalon 21 (T4, jalon-21.md §2.1) : Poké Flûte (objet clé, sans « key_use » avant le T17) et
-## CT39 Météores (Route 12). Textes du dossier 24 §15.6 et §15.8 bis, à valider (draft).
+## CT39 Météores (Route 12). Textes du dossier 24 §15.6 et §15.8 bis, validés le 2026-10-16.
 func test_real_j21_poke_flute_and_tm39() -> void:
 	assert_true(_library.load_dir(), "\n".join(_library.get_errors()))
 	var flute := _library.get_item(&"poke_flute")
@@ -413,5 +413,5 @@ func test_real_j21_poke_flute_and_tm39() -> void:
 	assert_false(tm.is_sellable(), "CT jamais vendue")
 	assert_eq(_library.get_tm(39), &"tm39")
 	for item: ItemData in [flute, tm]:
-		assert_true(item.draft, "%s : texte du §15 à valider par Kevin" % item.name)
+		assert_false(item.draft, "%s : texte du §15 validé par Kevin (2026-10-16)" % item.name)
 		assert_eq(item.source, "res://data/items/items_j21.json")

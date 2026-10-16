@@ -114,3 +114,14 @@ six références de `docs/design/reference/` (vues et plans : **à valider par K
 - Dos : `assets/sprites/pokemon/battle_proto/dos_ia_143.png` ; `test_battle_art` exige déjà le dos de Ronflex.
 - Notes : 4 sprites tirés au hasard par `FluteNotes`, 1,25 case ; halo : `SpiritLight`, mode additif.
 - Aucune de ces entrées n'est ajoutée au manifeste tant que Kevin n'a pas validé `J21_KIT_v1.png`.
+
+## Intégration faite (J21 T7, 2026-10-16, après la validation de Kevin)
+
+`serie23.py --manifeste` (8 entrées en fin de manifeste), `preparer_serie.py serie23`, `--dos`, `--icone`,
+`build_character_frames.gd` ; second passage identique (somme de contrôle des 12 fichiers). Résultats :
+`fuji_sheet.png` (122 px) et `fuji_priere_sheet.png` (échelle 0,9 : têtes de même taille que debout) →
+`mr_fuji_frames.tres` avec `pray` (dos, 2 images, 1,6 s chacune), `pray_left`, `pray_front` ;
+`osselait_sheet.png` (56 px) → `cubone_frames.tres` ; `dos_ia_143.png` (1024², sujet 898 px, recadré de la r2) ;
+`assets/sprites/effects/poke_flute_note_1..4.png` (120 px) et `spirit_halo.png` (192 px, sans rognage du
+fondu) ; icône `assets/ui/icons/items/poke_flute.svg` (prise par `BagEntryView.icon_for`, rien à brancher).
+Planche peinte `UI_OBJETS_J21_PLANCHE_r1` abandonnée (le SVG est retenu). Test : `test_serie23_assets`.
