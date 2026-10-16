@@ -132,6 +132,11 @@ const LOOKS: Dictionary = {
 	"marin": [CHARACTERS_DIR, "sailor", ""],
 	"docker": [CHARACTERS_DIR, "docker", ""],
 	"president_fan_club": [CHARACTERS_DIR, "fan_club_chairman", ""],
+	# J17 T14 (série 19, Route 11 et Cave Taupiqueur) : Joueur (gambler) et Ingénieur (engineer),
+	# 128 px avec leur planche d'attente ; Soporifik (compagnon, marche 4 × 4, sans attente).
+	"parieur": [CHARACTERS_DIR, "gambler", ""],
+	"ingenieur": [CHARACTERS_DIR, "engineer", ""],
+	"soporifik": [POKEMON_DIR, "drowzee", ""],
 	# J18 T3 (planches validées le 2026-10-15) : Pokémaniac et Médium (planche `exorciste`, look
 	# `channeler`, mutualisé avec le J19), 128 px, sans planche d'attente → [constant IDLE_FROM_WALK].
 	"pokemaniac": [CHARACTERS_DIR, "pokemaniac", ""],
@@ -146,6 +151,9 @@ const FIXED_POKEMON: Dictionary = {
 	"coconfort": "kakuna",
 	# J10 (série 12) : le Racaillou du tailleur.
 	"racaillou": "geodude",
+	# J17 (série 19) : le Taupiqueur de la Cave (« sort du sol » = réaction) et le Ronflex endormi.
+	"taupiqueur": "diglett",
+	"ronflex": "snorlax",
 }
 ## Colonnes de la feuille 6 × 1 : repos et réaction de chaque direction (droite = miroir).
 const FIXED_COLUMNS := {

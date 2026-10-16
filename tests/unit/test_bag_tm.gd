@@ -98,3 +98,10 @@ func test_the_director_asks_to_learn_and_never_spends_the_tm() -> void:
 	director.finish_tm_learn(0, &"tm34", true)
 	assert_eq(pickers.back().targets[0].reason, "DÉJÀ CONNUE", "choix rafraîchi")
 	assert_eq(_state.bag.count_of(&"tm34"), 1)
+
+
+## Jalon 17 (annexe A.3, validée le 2026-10-16) : onglet « CT et CS » dans le menu ; le libellé
+## court du combat reste « CT ».
+func test_bag_tab_title_includes_hms() -> void:
+	assert_eq(BagScreen.CATEGORY_TITLES[&"tm"], "CT et CS")
+	assert_eq(BagEntryView.category_label(&"tm"), "CT")

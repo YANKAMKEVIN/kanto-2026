@@ -1,8 +1,4 @@
 {
-	"dark_cave_too_dark": {
-		"narration": true,
-		"pages": ["Il fait très sombre ici…\nMieux vaut avancer prudemment."]
-	},
 	"dark_cave_1f_sign": {
 		"pages": ["Prudence. Les galeries sont sombres,\nmais elles mènent toutes quelque part."]
 	},

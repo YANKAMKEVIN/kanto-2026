@@ -12,7 +12,9 @@ extends SceneTree
 ## `--zoom=z` (caméra libre), `--overview` (carte entière à l'écran), `--noplayer`, `--perf`
 ## (fps, appels de dessin, mémoire des textures toutes les 30 images), `--meta=<fichier.json>`
 ## (écrit à l'image 20 : carte, centre de l'écran en pixels du monde, zoom, taille de la vue,
-## case du joueur). Série complète : `tools/capture_mt_moon.sh`.
+## case du joueur), `--voile=dark|lit` (voile d'obscurité du J17 T9 / J18 §2.11 posé sur la
+## carte, sans Boot : « lit » = halo de Flash ouvert), `--invisible` (joueur présent mais caché :
+## vue `_vide` du contraste du héros sous le voile, même caméra et même trou). Série complète : `tools/capture_mt_moon.sh`.
 
 const MAPS_DIR: String = "res://game/world/maps/"
 const TILE: int = 96
@@ -47,6 +49,8 @@ func _setup() -> void:
 		_player = (load("res://game/player/player.tscn") as PackedScene).instantiate()
 		_map.call(&"spawn_player_at", _player, cell, facing)
 		_player.call(&"set_input_enabled", false)
+		if _args.has("invisible"):
+			(_player as CanvasItem).visible = false
 		if _args.has("steps"):
 			var step: PackedStringArray = String(_args["steps"]).split(":")
 			_walk(_player, _direction(step[0]), int(step[1]))
@@ -71,6 +75,12 @@ func _setup() -> void:
 	var library: Object = (load("res://game/world/lighting/lighting_library.gd") as Script).new()
 	library.call(&"load_file")
 	lighting.call(&"apply", library.call(&"get_profile", _map.get("light_profile")), _map)
+	if _args.has("voile"):
+		var darkness: Node = (load("res://game/world/lighting/darkness_controller.gd")
+			as Script).new()
+		root.add_child(darkness)
+		darkness.call(&"setup", _map, _player)
+		darkness.call(&"set_map", _map, true, String(_args["voile"]) == "lit")
 	print("capture_mt_moon : %s, vue %s, joueur %s" % [map_id, root.get_visible_rect().size,
 		cell])
 	process_frame.connect(_tick)

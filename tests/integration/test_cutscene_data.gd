@@ -177,6 +177,17 @@ const VARIANT_FLAGS: Dictionary = {
 	&"route_6_item_1": [PEWTER_FLAGS], &"route_6_hidden_1": [PEWTER_FLAGS],
 	&"route_6_gate_rule_w": [PEWTER_FLAGS], &"route_6_gate_rule_e": [PEWTER_FLAGS],
 	&"route_6_gate_rule_s": [PEWTER_FLAGS], &"vermilion_arrival": [PEWTER_FLAGS],
+	# Jalon 17 (T8) : remise de la CS05 par l'assistant (10 espèces capturées).
+	&"route_2_east_give_hm05": [PEWTER_FLAGS],
+	# Jalon 17 (T17) : les deux objets au sol et l'objet caché de la Route 11.
+	&"route_11_item_1": [PEWTER_FLAGS], &"route_11_item_2": [PEWTER_FLAGS],
+	&"route_11_hidden_1": [PEWTER_FLAGS],
+	# Jalon 17 (T20) : Pierre Lune et Super Bonbon du couloir de la Route 2 est.
+	&"route_2_east_item_1": [PEWTER_FLAGS], &"route_2_east_item_2": [PEWTER_FLAGS],
+	# Jalon 17 (T21) : Super Potion de la clairière de FUTUR A.
+	&"route_2_item_5": [PEWTER_FLAGS],
+	# Jalon 17 (intégration) : Corde Sortie du renfoncement R1 de la Cave Taupiqueur.
+	&"digletts_cave_item_1": [PEWTER_FLAGS],
 	# Jalon 18 (T16) : objets et déclencheurs silencieux des objectifs (une variante chacun).
 	&"route_9_entered": [PEWTER_FLAGS], &"route_9_item_1": [PEWTER_FLAGS],
 	&"route_9_item_2": [PEWTER_FLAGS], &"route_9_item_3": [PEWTER_FLAGS],
@@ -228,6 +239,18 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"mt_moon_fossil_dome": &"mt_moon_b2f", &"mt_moon_fossil_helix": &"mt_moon_b2f",
 	# Jalon 14 (T17) : les trois objets de Léo (dialogue de l'écran, du module, de la console).
 	&"bill_screen": &"bill_house", &"bill_module": &"bill_house", &"bill_machine": &"bill_house",
+	# Jalon 17 (T8) : remise de la CS05 (variante « cutscene » du dialogue de l'assistant), dans
+	# le poste de la Route 2 est (carte du T19 ; la scène n'a aucun acteur).
+	&"route_2_east_give_hm05": &"route_2_east_gate",
+	# Jalon 17 (T17) : objets de la Route 11 (PNJ « objet » et point d'examen du caillou).
+	&"route_11_item_1": &"route_11", &"route_11_item_2": &"route_11",
+	&"route_11_hidden_1": &"route_11",
+	# Jalon 17 (T20) : objets visibles du couloir (PNJ « objet » de son fichier).
+	&"route_2_east_item_1": &"route_2_east", &"route_2_east_item_2": &"route_2_east",
+	# Jalon 17 (T21) : Super Potion de la clairière de FUTUR A (PNJ « objet » de la Route 2).
+	&"route_2_item_5": &"route_2",
+	# Jalon 17 (intégration) : Corde Sortie de la Cave (PNJ « objet » de son fichier).
+	&"digletts_cave_item_1": &"digletts_cave",
 	# Jalon 18 (T16) : objets visibles (PNJ « objet ») et Super Potion cachée (point d'examen des
 	# racines, posé au T20).
 	&"route_9_item_1": &"route_9", &"route_9_item_2": &"route_9", &"route_9_item_3": &"route_9",
@@ -322,7 +345,12 @@ func test_library_loads_without_error() -> void:
 		&"route_5_item_1", &"starter_chosen", &"underground_hidden_1",
 		&"viridian_arrival", &"viridian_forest_item_1", &"viridian_forest_item_2",
 		&"viridian_forest_item_3", &"viridian_forest_item_4", &"viridian_forest_item_5",
-		&"viridian_forest_item_6"] + J18_IDS))
+		&"viridian_forest_item_6",
+		# Jalon 17 (T8) : remise de la CS05 ; (T17) objets de la Route 11 ; (T20, T21) objets du
+		# couloir et Super Potion de FUTUR A.
+		&"route_2_east_give_hm05", &"route_11_item_1", &"route_11_item_2",
+		&"route_11_hidden_1", &"route_2_east_item_1", &"route_2_east_item_2",
+		&"route_2_item_5", &"digletts_cave_item_1"] + J18_IDS))
 
 
 func _sorted(values: Array) -> Array[StringName]:
@@ -431,17 +459,19 @@ func test_only_world_items_are_found_items() -> void:
 					found.append("%s:%s" % [id, step.item_id])
 	assert_eq(found, ["dark_cave_1f_item_1:escape_rope", "dark_cave_1f_item_2:antidote",
 		"dark_cave_b1f_hidden_1:super_potion", "dark_cave_b1f_item_1:super_potion",
-		"mt_moon_1f_hidden_1:awakening", "mt_moon_1f_item_1:escape_rope",
-		"mt_moon_b1f_item_1:moon_stone", "mt_moon_b1f_item_2:potion",
-		"mt_moon_b2f_hidden_1:moon_stone", "mt_moon_b2f_item_1:tm01",
-		"route_10_item_1:super_potion", "route_1_potion:potion", "route_24_antidote:antidote",
-		"route_24_item_1:potion", "route_25_hidden_1:potion", "route_25_item_1:tm19",
-		"route_25_item_2:potion", "route_25_item_3:poke_ball", "route_2_item_1:poke_ball",
-		"route_2_item_2:potion", "route_2_item_3:poke_ball", "route_2_item_4:potion",
-		"route_2_north_item_1:potion", "route_3_hidden_1:awakening",
-		"route_3_item_1:poke_ball", "route_3_item_2:potion", "route_3_item_3:paralyze_heal",
-		"route_4_item_1:poke_ball", "route_5_hidden_1:antidote", "route_5_item_1:super_potion",
-		"route_6_hidden_1:super_potion", "route_6_item_1:poke_ball",
+		"digletts_cave_item_1:escape_rope", "mt_moon_1f_hidden_1:awakening",
+		"mt_moon_1f_item_1:escape_rope", "mt_moon_b1f_item_1:moon_stone",
+		"mt_moon_b1f_item_2:potion", "mt_moon_b2f_hidden_1:moon_stone", "mt_moon_b2f_item_1:tm01",
+		"route_10_item_1:super_potion", "route_11_hidden_1:poke_ball",
+		"route_11_item_1:super_potion", "route_11_item_2:awakening", "route_1_potion:potion",
+		"route_24_antidote:antidote", "route_24_item_1:potion", "route_25_hidden_1:potion",
+		"route_25_item_1:tm19", "route_25_item_2:potion", "route_25_item_3:poke_ball",
+		"route_2_east_item_1:moon_stone", "route_2_east_item_2:rare_candy",
+		"route_2_item_1:poke_ball", "route_2_item_2:potion", "route_2_item_3:poke_ball",
+		"route_2_item_4:potion", "route_2_item_5:super_potion", "route_2_north_item_1:potion",
+		"route_3_hidden_1:awakening", "route_3_item_1:poke_ball", "route_3_item_2:potion",
+		"route_3_item_3:paralyze_heal", "route_4_item_1:poke_ball", "route_5_hidden_1:antidote",
+		"route_5_item_1:super_potion", "route_6_hidden_1:super_potion", "route_6_item_1:poke_ball",
 		"route_9_item_1:super_potion", "route_9_item_2:antidote", "route_9_item_3:poke_ball",
 		"underground_hidden_1:full_restore", "viridian_forest_item_1:antidote",
 		"viridian_forest_item_2:poke_ball", "viridian_forest_item_3:potion",

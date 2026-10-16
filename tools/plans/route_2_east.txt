@@ -1,0 +1,108 @@
+# Route 2 est (route_2_east) — grille fonctionnelle (jalon 17, dossier 20 §3.4, H-2, H-3 ; préparée le
+# 2026-10-14 pour la vue générale peinte). Source UNIQUE de la géométrie : plan en aplats
+# (tools/art/plan_aplats_j17.py), vue générale peinte, puis outil de construction et tests du J17
+# (17B). Zone « route_2 » (une seule Route 2 dans la Carte et le Pokédex). Contrôle :
+# tools/art/plan_check_j17.py.
+#
+# 16 × 48 cases ; nord en haut ; x = colonne 0..15, y = rangée 0..47.
+# Bouche NORD de la Cave : (6..7, 3), dans la paroi (K), STEP_ON ↑ → digletts_cave (bouche nord),
+# arrivée from_cave (6..7, 4) tournée ↓. Raccord OUEST : (0, 43..44) ↔ Route 2 sud (41, 43..44) (le
+# sentier peint « b » devenu praticable, voir route_2_j17_retouches.txt) : MÊMES rangées 43 et 44.
+# Porte du poste : (11, 11), STEP_ON ↑ → route_2_east_gate, retour from_gate (11, 12) tourné ↓.
+#
+# Du nord au sud :
+#   ① x 0..15, y 0..7 — la PAROI et la bouche ; l'ARRIÈRE DES ÉBOULIS de la Route 2 nord au nord-ouest :
+#      éboulis E (0..1, 5..6) et sentier peint e (2..3, 5..6), visibles, bloqués ; panneau T-11 (9, 5)
+#      sur le sol rocheux devant la bouche, lu depuis (9, 6) ↑.
+#   ② y 6..19 — le CHEMIN de terre (x 6..7) descend entre bosquets ; le POSTE de l'assistant (bâtiment
+#      bloqué 7 × 4, x 8..14, y 8..11, comme les postes de la forêt, porte (11, 11) au bas) ; un petit
+#      palier de prairie. Tout ce bloc est atteignable depuis la Cave SANS couper l'arbuste (H-2).
+#   ③ y 20..22 — LE GOULET : la forêt se resserre sur un chemin de 2 cases ; l'ARBUSTE coupable
+#      (6..7, 21), position « arbuste » (drapeau cut_route_2_east_bush), ferme les deux cases : tant
+#      qu'il n'est pas coupé, la partie sud et le bord ouest sont inatteignables depuis la Cave.
+#   ④ y 23..44 — la PARTIE SUD : clairière (x 2..13, y 24..38) avec la PIERRE LUNE visible (12, 26) et
+#      le SUPER BONBON visible (3, 33), puis le chemin (x 6..7, y 39..42) et le sentier vers l'ouest
+#      (y 43..44) jusqu'au bord ouest. Aucune herbe haute, aucun Dresseur, aucune rencontre.
+#
+# Légende (en plus de celle de route_3.txt) :
+#   T forêt et bosquets (bloqués)       . herbe rase               = chemin de terre
+#   K paroi rocheuse (bloquée)          o sol rocheux praticable (devant la bouche)
+#   x buissons bas (bloqués)
+#   Q bouche de la Cave : ouverture dans la paroi (praticable, terminale, STEP_ON ↑)
+#   P poste de l'assistant (emprise 7 × 4, bloquée)   D porte du poste (praticable, terminale)
+#   A arbuste coupable (bloqué ; libre une fois cut_route_2_east_bush posé : définitif)
+#   E éboulis de la Route 2 nord vus de l'arrière (bloqués)   e sentier peint derrière (bloqué)
+#
+# DÉFAUTS (règle 4, à relire) : poste à l'est du chemin, porte au sud ; goulet de l'arbuste de 3
+# rangées (y 20..22) ; Pierre Lune en haut à droite de la clairière, Super Bonbon en bas à gauche
+# (les deux hors de la ligne du chemin, aucun sur le trajet vers l'ouest) ; 13 pas bouche → porte du
+# poste, 45 pas bouche → bord ouest (arbuste coupé).
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 16 caractères), puis POSITIONS.
+
+PRATICABLES .=oQD
+
+GRILLE 16 48
+00 KKKKKKKKKKKKKKKK
+01 KKKKKKKKKKKKKKKK
+02 KKKKKKKKKKKKKKKK
+03 KKKKKKQQKKKKKKKK
+04 KKKKooooooKKKKKK
+05 EEeeooooooTTTTTT
+06 EEee..==......TT
+07 TTTT..==......TT
+08 TT....==PPPPPPPT
+09 TTTTT.==PPPPPPPT
+10 TTTTT.==PPPPPPPT
+11 TTTTT.==PPPDPPPT
+12 TTTTT.======..TT
+13 TT....======xxTT
+14 TT....==......TT
+15 TTTT..==...TTTTT
+16 TTTT..==...TTTTT
+17 TTTT..==...TTTTT
+18 TT..x.==..TT..TT
+19 TT....==..TT..TT
+20 TTTTTT==TTTTTTTT
+21 TTTTTTAATTTTTTTT
+22 TTTTTT==TTTTTTTT
+23 TT....==......TT
+24 TTTT..==.TT...TT
+25 TTTT..==.TT...TT
+26 TTTT..==......TT
+27 TT....==......TT
+28 TT....==......TT
+29 TTTTT.==......TT
+30 TTTTT.==......TT
+31 TTTTT.==..TTT.TT
+32 TT....==..TTT.TT
+33 TT....==..TTT.TT
+34 TT....==......TT
+35 TT....==...TTTTT
+36 TT...x==...TTTTT
+37 TT...x==...TTTTT
+38 TT....==......TT
+39 TTTTTT==TTTTTTTT
+40 TTTTTT==TTTTTTTT
+41 TTTTTT==TTTTTTTT
+42 TTTTTT==TTTTTTTT
+43 ========TTTTTTTT
+44 ========TTTTTTTT
+45 TTTTTTTTTTTTTTTT
+46 TTTTTTTTTTTTTTTT
+47 TTTTTTTTTTTTTTTT
+FIN
+
+POSITIONS
+warp_cave           warp           6..7,3       libre   # STEP_ON ↑ → digletts_cave, from_route_2_east
+from_cave           spawn          6..7,4       libre   # sortie de la Cave, tournée ↓
+porte_poste         warp           11,11        libre   # STEP_ON ↑ → route_2_east_gate
+from_gate           spawn          11,12        libre   # sortie du poste, tournée ↓
+warp_ouest          warp           0,43..44     libre   # PUSH ← → route_2 (41, 43..44), from_route_2_east
+from_route_2        spawn          0,43..44     libre   # arrivée de la Route 2 sud, tournée →
+arbuste             arbuste        6..7,21      bloque  flag=cut_route_2_east_bush  # arbuste coupable en travers du goulet (J16 : Coupe, G-2) ; définitif
+panneau_cave        panneau        9,5          bloque  role=T-11  # « CAVE TAUPIQUEUR » / « Vers la Route 11 et Carmin-sur-Mer », lu depuis (9, 6) tourné ↑
+route_2_east_item_1 objet_visible  12,26        bloque  role=O1 item=moon_stone  # Pierre Lune : coin nord-est de la clairière
+route_2_east_item_2 objet_visible  3,33         bloque  role=O2 item=rare_candy  # Super Bonbon : coin sud-ouest de la clairière
+eboulis_nord        repere         0..3,5..6    bloque  role=nord_ouest  # arrière des éboulis (E) et sentier peint (e), bloqués
+FIN

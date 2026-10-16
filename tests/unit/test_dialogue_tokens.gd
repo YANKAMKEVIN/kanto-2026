@@ -22,8 +22,9 @@ func _pages(texts: Array[String]) -> Array[DialoguePage]:
 func test_known_tokens() -> void:
 	assert_eq(DialogueTokens.FIRST_WILD_SPECIES, &"first_wild_species")
 	assert_eq(DialogueTokens.KNOWN, [&"first_wild_species", &"player", &"rival", &"pokemon",
-		&"levels", &"price"] as Array[StringName],
-		"prénoms (OUV.2, dossier 13 §3.5) ; compagnon (J11, dossier 14 §13) ; Pension (J15)")
+		&"levels", &"price", &"caught", &"caught_missing"] as Array[StringName],
+		"prénoms (OUV.2, dossier 13 §3.5) ; compagnon (J11, dossier 14 §13) ; Pension (J15) ;"
+		+ " Pokédex (J17)")
 	assert_eq(DialogueTokens.CONTEXT, [&"pokemon", &"levels", &"price"] as Array[StringName])
 	assert_eq(DialogueTokens.values_for(&"", null, "", "", "Salamèche"),
 		{&"pokemon": "Salamèche"} as Dictionary[StringName, String])

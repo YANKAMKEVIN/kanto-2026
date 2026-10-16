@@ -1,0 +1,102 @@
+{
+	"route_11_sign": {
+		"pages": ["ROUTE 11\nCarmin-sur-Mer — Route 12"]
+	},
+	"route_11_cave_sign": {
+		"pages": ["CAVE TAUPIQUEUR\nVers la Route 2"]
+	},
+	"route_11_snorlax": {
+		"narration": true,
+		"variants": [
+			{
+				"unless": ["snorlax_route_11_seen"],
+				"set": ["snorlax_route_11_seen"],
+				"pages": ["Un énorme Pokémon dort au milieu du chemin.", "Il ne bouge pas d'un pouce."]
+			},
+			{
+				"pages": ["Il ronfle paisiblement.", "Rien ne semble pouvoir le réveiller."]
+			}
+		]
+	},
+	"route_11_youngster_lucas_before": {
+		"speaker": "Gamin Lucas", "pages": ["Mon Abo est prêt à mordre !"]
+	},
+	"route_11_youngster_lucas_defeated": {
+		"speaker": "Gamin Lucas", "pages": ["Il a mordu… la poussière."]
+	},
+	"route_11_youngster_lucas_after": {
+		"speaker": "Gamin Lucas", "pages": ["Je vais l'entraîner encore."]
+	},
+	"route_11_youngster_arthur_before": {
+		"speaker": "Gamin Arthur", "pages": ["Personne ne passe sans m'affronter !"]
+	},
+	"route_11_youngster_arthur_defeated": {
+		"speaker": "Gamin Arthur", "pages": ["D'accord, d'accord, tu passes."]
+	},
+	"route_11_youngster_arthur_after": {
+		"speaker": "Gamin Arthur", "pages": ["La prochaine fois, je gagnerai."]
+	},
+	"route_11_youngster_louis_before": {
+		"speaker": "Gamin Louis", "pages": ["Trois Rattata, c'est trois fois plus fort !"]
+	},
+	"route_11_youngster_louis_defeated": {
+		"speaker": "Gamin Louis", "pages": ["Le calcul était faux…"]
+	},
+	"route_11_youngster_louis_after": {
+		"speaker": "Gamin Louis", "pages": ["Il me faut d'autres Pokémon."]
+	},
+	"route_11_youngster_raphael_before": {
+		"speaker": "Gamin Raphaël", "pages": ["Mon Nidorino vient d'évoluer !"]
+	},
+	"route_11_youngster_raphael_defeated": {
+		"speaker": "Gamin Raphaël", "pages": ["Il avait pourtant grandi…"]
+	},
+	"route_11_youngster_raphael_after": {
+		"speaker": "Gamin Raphaël", "pages": ["On va continuer à progresser ensemble."]
+	},
+	"route_11_gambler_marcel_before": {
+		"speaker": "Joueur Marcel", "pages": ["On parie ? Pile, je gagne !"]
+	},
+	"route_11_gambler_marcel_defeated": {
+		"speaker": "Joueur Marcel", "pages": ["Face… Je perds ma mise."]
+	},
+	"route_11_gambler_marcel_after": {
+		"speaker": "Joueur Marcel", "pages": ["La chance tourne, parfois."]
+	},
+	"route_11_gambler_roger_before": {
+		"speaker": "Joueur Roger", "pages": ["Mes Pokémon de feu sont mon porte-bonheur."]
+	},
+	"route_11_gambler_roger_defeated": {
+		"speaker": "Joueur Roger", "pages": ["Mon porte-bonheur s'est éteint."]
+	},
+	"route_11_gambler_roger_after": {
+		"speaker": "Joueur Roger", "pages": ["Je retente ma chance demain."]
+	},
+	"route_11_engineer_bruno_before": {
+		"speaker": "Ingénieur Bruno", "pages": ["Je teste mes Pokémon électriques."]
+	},
+	"route_11_engineer_bruno_defeated": {
+		"speaker": "Ingénieur Bruno", "pages": ["Court-circuit !"]
+	},
+	"route_11_engineer_bruno_after": {
+		"speaker": "Ingénieur Bruno", "pages": ["Il faut revoir mes réglages."]
+	},
+	"route_11_engineer_victor_before": {
+		"speaker": "Ingénieur Victor", "pages": ["Trois Magnéti valent mieux qu'un !"]
+	},
+	"route_11_engineer_victor_defeated": {
+		"speaker": "Ingénieur Victor", "pages": ["Ils ont fusionné… mais pas assez."]
+	},
+	"route_11_engineer_victor_after": {
+		"speaker": "Ingénieur Victor", "pages": ["Mon Magnéton a besoin de réglages."]
+	},
+	"route_11_item_1": {
+		"cutscene": "route_11_item_1"
+	},
+	"route_11_item_2": {
+		"cutscene": "route_11_item_2"
+	},
+	"route_11_hidden_1": {
+		"cutscene": "route_11_hidden_1"
+	}
+}

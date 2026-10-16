@@ -1,0 +1,71 @@
+{
+	"route_11_item_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_route_11_item_1"
+				],
+				"steps": [
+					{
+						"despawn": "route_11_item_1"
+					},
+					{
+						"give": "super_potion",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_route_11_item_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"route_11_item_2": {
+		"variants": [
+			{
+				"unless": [
+					"got_route_11_item_2"
+				],
+				"steps": [
+					{
+						"despawn": "route_11_item_2"
+					},
+					{
+						"give": "awakening",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_route_11_item_2"
+						]
+					}
+				]
+			}
+		]
+	},
+	"route_11_hidden_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_route_11_hidden_1"
+				],
+				"steps": [
+					{
+						"give": "poke_ball",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_route_11_hidden_1"
+						]
+					}
+				]
+			}
+		]
+	}
+}

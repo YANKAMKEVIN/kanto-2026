@@ -102,6 +102,10 @@ func test_caves_json_entry_and_rope() -> void:
 		assert_eq(exit.map, &"route_10")
 		assert_eq(exit.facing, Vector2i.DOWN)
 		assert_eq(exit.spawn, &"from_dark_cave_n_w")
+		# T15 (fusion du J17) : grotte obscure, couverte par le voile du J17 (`test_dark_cave_flash`).
+		assert_true(caves.is_dark(map_id), "%s : obscure" % map_id)
+	for map_id: StringName in caves.get_maps(&"mt_moon"):
+		assert_false(caves.is_dark(map_id), "%s : jamais de voile" % map_id)
 
 
 func test_light_profile_and_battle_decor() -> void:

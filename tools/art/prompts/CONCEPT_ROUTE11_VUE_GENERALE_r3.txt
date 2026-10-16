@@ -1,0 +1,68 @@
+CONCEPT ART — VUE GÉNÉRALE DE LA ROUTE 11, LA ROUTE CÔTIÈRE À L'EST DE CARMIN-SUR-MER (Kanto 2026), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. La route va de l'OUEST (bord gauche, où elle arrive de la ville portuaire de Carmin-sur-Mer) vers l'EST (bord droit). La MER ferme tout le sud ; les prairies occupent le nord.
+Légende du plan :
+- vert très foncé = forêt et bosquets denses infranchissables (y compris les marges de l'image) ; la bande vert très foncé tout en bas, SOUS la mer, est hors de la carte : prolonge simplement la MER jusqu'au bord bas de l'image ; la marge vert très foncé du haut est de la forêt dense ;
+- vert vif à gauche, puis vert moyen de plus en plus gris-olive vers l'est = herbe rase praticable (prairies du nord, plus sèches et plus exposées au vent vers l'est) ; points roses = petites fleurs ;
+- beige = chemin de terre battue (le chemin principal) ;
+- jaune-vert olive vif = HAUTES HERBES (touffues, plus hautes, où vivent les Pokémon sauvages), trois zones en blocs nets : une au sud du chemin à gauche du centre, deux dans la prairie du nord ;
+- gris-brun en haut à gauche (masse qui sort par le bord haut de l'image) = un grand TALUS ROCHEUX, roche en couches, infranchissable ; arc noir à sa base = la BOUCHE DE LA CAVE TAUPIQUEUR, une ouverture naturelle dans la roche, au bout d'un court chemin de terre qui monte du chemin principal ; bande gris clair à gauche de ce court chemin = sol rocheux praticable au pied du talus ;
+- gris clair semé de cailloux blancs = AFFLEUREMENTS ROCHEUX (rochers infranchissables) : deux petits groupes à gauche qui serrent le chemin en un GOULET de deux cases, et un grand groupe à droite, coupé en deux par le chemin, qui forme le GOULET DE L'EST ;
+- petits disques vert sombre = buissons bas ;
+- bande gris-beige clair horizontale au-dessus de la mer = la DIGUE : une promenade praticable en grosses dalles de pierre claire (ou en planches), le long de la mer ; bande brune striée juste au nord = une rangée continue de CLÔTURES basses en bois qui borde la digue ;
+- bande grise semée de galets sous la digue = le RIVAGE ROCHEUX (rochers et galets, infranchissable) ; petit avancée grise au milieu de ce rivage = une minuscule pointe de roche qui avance dans l'eau ;
+- bleu = la MER ;
+- petits carrés ocre = panneaux en bois SANS TEXTE (un tout à gauche, un près de la bouche de la Cave) ; points rouge et blanc = Poké Balls posées au sol (une dans une petite niche au fond du bosquet central, une sur la petite pointe de roche du rivage).
+Respecte ce plan À LA LETTRE : les TROIS PARCOURS parallèles au milieu de la route, qui se séparent après le carrefour de la Cave et se rejoignent à l'est :
+  · NORD : la grande prairie, traversée par deux zones de hautes herbes ;
+  · CENTRE : le chemin de terre principal, qui descend à angle droit, suit un large tronçon horizontal (4 cases de large) au sud du grand bosquet central, remonte à angle droit, puis file en LIGNE DROITE vers l'est ;
+  · SUD : la DIGUE au bord de la mer, bordée de clôtures, rejointe par deux colonnes d'herbe à ses deux bouts ;
+et à l'est le GOULET DE L'EST, où le chemin passe entre les deux moitiés du grand affleurement rocheux, puis une petite rive d'herbe derrière. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+RÈGLE ABSOLUE DES CHEMINS : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; chemins, sentiers, digue et bords des zones suivent une grille : uniquement des segments horizontaux et verticaux à angles droits, AUCUN segment en diagonale ni courbe, aucun escalier.
+RELIEF : le sol praticable est lisible et presque plat ; les SEULS reliefs sont le talus rocheux de la Cave, les affleurements rocheux, le rivage rocheux et le petit rebord entre la digue et la mer. Pas de falaise le long de la côte : la digue est au niveau de la prairie.
+
+IMAGE 2 : la vue générale de Carmin-sur-Mer, la ville portuaire juste à l'ouest de cette route. Respecte EXACTEMENT son style de rendu : même pinceau, mêmes arbres en masses arrondies, mêmes prairies fleuries, même chemin de terre, même MER bleu profond scintillante, même saturation, MÊME LUMIÈRE, mêmes personnages. Ne reprends PAS sa composition : aucune ville, aucun bâtiment, aucun quai, aucun bateau.
+
+Format : PAYSAGE 1536 × 1024, vue plongeante sur toute la route, comme le plan.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats. Le feuillage est peint en grandes masses douces.
+- Perspective : vue de dessus de trois quarts, projection oblique frontale, sans point de fuite. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud).
+- Aucun trait noir : contours fins et doux, plus sombres et plus saturés que la couleur locale. Ombres colorées bleu-vert ou violet froid, jamais grises.
+
+AMBIANCE — « la route du large » : une route côtière LUMINEUSE et ventée, où l'on sent l'air de la mer sur toute la longueur.
+- À gauche : la sortie de Carmin, prairie fleurie vert vif, chaude, accueillante ; au-dessus, le talus rocheux ocre-gris d'où s'ouvre la bouche de la Cave, sombre mais JAMAIS menaçante, qu'on voit dès l'entrée.
+- Au milieu : grandes prairies ouvertes au nord, herbe qui pâlit et se dessèche vers l'est, bosquets ronds ; au sud, la longue digue claire et ses clôtures, la mer scintillante juste en dessous.
+- À droite : les grands rochers clairs du goulet de l'est et, au milieu du passage, RONFLEX endormi qui bouche toute la route ; on le voit de loin, au bout de la longue ligne droite.
+- Lumière dorée de fin d'après-midi, la même que Carmin ; reflets de soleil sur la mer ; ciel invisible mais une grande clarté venue du large.
+
+VIE (personnages PETITS, aucun ne ressemble au héros à casquette rouge et veste bleue ; chacun à sa place de Dresseur, tourné vers le chemin) :
+- quatre GAMINS (garçons d'une dizaine d'années, casquette de couleur, short, t-shirt) : le 1er dans la petite alcôve d'herbe AU NORD du goulet de gauche, entre les deux rochers, tourné vers le bas ; le 2e dans la petite clairière à droite de la bouche de la Cave, au nord du chemin, tourné vers la gauche ; le 3e dans la prairie du nord, juste à GAUCHE de la première zone de hautes herbes du nord, tourné vers le bas ; le 4e dans la prairie du nord, juste à DROITE de cette même zone, au-dessus du grand bosquet central, tourné vers le haut ;
+- deux JOUEURS (hommes adultes en costume de joueur trois-pièces coloré, gilet, petit chapeau rond, allure de parieurs élégants) sur la DIGUE : l'un à gauche du milieu de la digue, contre les clôtures, tourné vers la droite ; l'autre plus à droite, au bord de l'eau, tourné vers la gauche ;
+- deux INGÉNIEURS (adultes en casque de chantier jaune et salopette de travail, ceinture à outils) : l'un sur le LARGE tronçon horizontal du chemin principal, au sud du grand bosquet central, tourné vers le bas ; l'autre au bord nord de la LONGUE LIGNE DROITE de l'est, avant les rochers, tourné vers le bas.
+Pokémon (aucun autre) :
+- RONFLEX : un ÉNORME Pokémon rond et massif, corps bleu-noir, grand ventre et visage CRÈME, petites oreilles pointues, yeux fermés, ENDORMI sur le dos ou assis affaissé, qui occupe toute la largeur du chemin dans le goulet de l'est, entre les deux moitiés du grand affleurement rocheux ; environ deux fois la taille d'un adulte en largeur ; paisible et un peu comique ;
+- un PIAFABEC (petit oiseau brun au bec court et pointu, crête rouge) posé dans la prairie du nord, près du bosquet en haut à gauche du milieu ;
+- un SOPORIFIK (Pokémon jaune et brun, bipède, ventre brun, long museau en trompe, yeux mi-clos) debout dans le coin nord-est de la prairie, au-dessus du grand affleurement de l'est ;
+- un ABO (serpent Pokémon violet, anneau jaune autour du cou, queue en crécelle) dans l'herbe rase à droite de la zone de hautes herbes du sud.
+Aucun Pikachu, aucun animal (aucune faune non-Pokémon, aucune mouette, aucun bateau).
+
+INTERDITS : texte, lettres, chiffres, étiquettes, panneaux lisibles, logo, signature, filigrane, cadre, interface ; tout bâtiment ; maison, cabane, phare, port, quai, bateau, pont, plage de sable ; falaise côtière ; escaliers, terrasses ; route goudronnée, véhicule ; arbres orange ou automnaux ; neige ; brouillard, flou de profondeur, vignettage ; pixel art.
+
+L'image doit raconter, sans texte : en sortant de Carmin, une route côtière lumineuse longe la mer ; près du départ, une grotte s'ouvre dans un talus ; trois chemins pleins de Dresseurs filent vers l'est, où un énorme Ronflex endormi barre la route.
+
+CORRECTIONS (2e essai ; le 1er essai était bon sur le style, la lumière, la mer, la digue, le talus de la Cave et RONFLEX dans le goulet de l'est : garde-les à l'identique autant que possible) :
+1. FEUILLAGE : arbres et buissons peints en grandes masses DOUCES et lisses, comme l'image 2 ; jamais en petits points nets ni en grain de pixels.
+2. À DROITE du large tronçon horizontal du chemin (au sud de la ligne droite de l'est, au-dessus du bout est de la digue), le plan montre un BOSQUET DENSE vert très foncé : peins-y des arbres serrés, PAS une clairière d'herbe. Seule une étroite colonne d'herbe, collée à sa droite, relie la ligne droite de l'est au bout de la digue.
+3. L'ABO (serpent violet) est dans l'herbe rase juste à DROITE de la zone de hautes herbes du SUD (à gauche du chemin qui descend), pas à l'est.
+4. Le 4e GAMIN est dans la prairie du nord juste à DROITE de la première zone de hautes herbes, AU-DESSUS du grand bosquet central (près de la Poké Ball de la niche), tourné vers le haut ; entre les deux zones de hautes herbes du nord, en haut, il n'y a personne.
+5. Le SOPORIFIK (jaune et brun, long museau en trompe) se tient juste au-dessus du coin haut-gauche du grand affleurement rocheux de l'est, pas dans le coin de l'image.
+6. GOULET DE L'OUEST bien lisible : juste à droite de l'entrée, le chemin se RESSERRE à deux cases entre deux groupes de rochers clairs (un au nord, un au sud) ; le 1er gamin est dans une petite alcôve d'herbe entre les rochers du NORD, au bord du chemin, tourné vers le bas.
+7. Ajoute le petit panneau en bois sans texte tout à GAUCHE, au bord nord du chemin, près du bord de l'image.
+
+CORRECTIONS (3e essai ; le 2e essai est le bon : composition, bosquets, digue, Ronflex, Abo, Soporifik, panneaux, ingénieurs et joueurs sont justes ; garde-les À L'IDENTIQUE, ne change que ces deux points) :
+1. GOULET DE L'OUEST : à gauche, sur le premier quart de l'image, le chemin principal est LARGE (trois cases) ; puis, juste avant le court chemin qui monte vers la Cave, il passe entre DEUX groupes de grands rochers clairs, l'un collé à son bord NORD, l'autre collé à son bord SUD, qui le RESSERRENT à deux cases de large sur une courte longueur. Ce resserrement doit être évident. Le gamin à la casquette bleue est debout dans un petit creux d'herbe ENTRE les rochers du NORD, au ras du chemin, tourné vers le bas.
+2. Il n'y a que DEUX gamins près de la Cave (celui du goulet, et UN seul dans la clairière à droite de la bouche, tourné vers la gauche). Le troisième gamin (casquette verte) va dans la prairie du nord, juste à GAUCHE de la première zone de hautes herbes, près du Piafabec, tourné vers le bas.

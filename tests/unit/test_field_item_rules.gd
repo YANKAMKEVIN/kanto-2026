@@ -146,6 +146,20 @@ func test_escape_target_from_every_floor() -> void:
 	assert_null(FieldItemRules.escape_target(&"mt_moon_1f", null))
 
 
+func test_escape_target_uses_the_player_row_in_a_two_mouth_cave() -> void:
+	# Jalon 17 (T6, jalon-17.md §2.3) : la bouche de la moitié où se tient le joueur.
+	var caves := CaveLibrary.new()
+	assert_true(caves.add_from_dict({"caves": {"tunnel": {"maps": ["tunnel"], "escapes": [
+		{"rows": [0, 39], "map": "nord", "spawn": "s", "facing": "down"},
+		{"rows": [40, 79], "map": "sud", "spawn": "s", "facing": "down"},
+	]}}}))
+	assert_eq(FieldItemRules.escape_target(&"tunnel", caves, Vector2i(4, 39)).map, &"nord")
+	assert_eq(FieldItemRules.escape_target(&"tunnel", caves, Vector2i(4, 40)).map, &"sud")
+	assert_null(FieldItemRules.escape_target(&"tunnel", caves), "sans case : aucune")
+	assert_eq(FieldItemRules.escape_target(&"mt_moon_1f", _caves, Vector2i(4, 40)).map,
+		&"route_3", "Mont Sélénite : la case ne change rien")
+
+
 # --- Sac -----------------------------------------------------------------------------------
 
 func test_bag_shows_use_only_for_items_with_a_field_use() -> void:

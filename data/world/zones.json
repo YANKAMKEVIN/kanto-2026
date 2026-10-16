@@ -31,7 +31,7 @@
 			"description": "Un chemin de terre qui s'éloigne de Jadielle vers l'ouest, au pied d'une falaise basse. Là-haut, on devine déjà le Plateau Indigo."
 		},
 		"route_2": {
-			"name": "Route 2", "kind": "route", "maps": ["route_2", "route_2_north"],
+			"name": "Route 2", "kind": "route", "maps": ["route_2", "route_2_north", "route_2_east", "route_2_east_gate"],
 			"subtitle": "Jadielle — Forêt de Jade",
 			"description": "Un chemin bordé de prairies qui s'enfonce peu à peu sous les arbres."
 		},
@@ -153,6 +153,16 @@
 			"name": "Route 6", "kind": "route", "maps": ["route_6", "route_6_underground_gate"],
 			"subtitle": "Safrania — Carmin-sur-Mer",
 			"description": "Une route ouverte où l'air sent déjà le sel. Au bout, les grues et les mâts du port de Carmin."
+		},
+		"digletts_cave": {
+			"name": "Cave Taupiqueur", "kind": "place", "maps": ["digletts_cave"],
+			"subtitle": "Route 11 — Route 2",
+			"description": "Un long tunnel creusé par des Taupiqueur."
+		},
+		"route_11": {
+			"name": "Route 11", "kind": "route", "maps": ["route_11"],
+			"subtitle": "Carmin-sur-Mer — Route 12",
+			"description": "Une route côtière entre les prairies et la mer, à l'est de Carmin."
 		},
 		"route_9": {
 			"name": "Route 9", "kind": "route", "maps": ["route_9"],

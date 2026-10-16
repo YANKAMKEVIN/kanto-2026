@@ -1,0 +1,14 @@
+{
+	"digletts_cave_item_1": {
+		"variants": [
+			{
+				"unless": ["got_digletts_cave_item_1"],
+				"steps": [
+					{ "despawn": "digletts_cave_item_1" },
+					{ "give": "escape_rope", "count": 1, "found": true },
+					{ "set": ["got_digletts_cave_item_1"] }
+				]
+			}
+		]
+	}
+}

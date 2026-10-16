@@ -122,6 +122,11 @@ var wall_side: String = WALL_SIDE
 var wall_lip: String = WALL_LIP
 var rubble_mark: String = RUBBLE_MARK
 var rubble_is_logic: bool = true
+## Modules de paroi (faces, bord latéral, lèvre) : ceux de la série 14 par défaut ; la Cave
+## Taupiqueur (série 19, J17 T15) pose les parois de grès.
+var wall_faces: Array[String] = WALL_FACES.duplicate()
+var wall_side: String = WALL_SIDE
+var wall_lip: String = WALL_LIP
 
 ## Halos posés ([method add_glow]) : { "type": StringName, "center": Vector2 } (voile, [method
 ## add_shade]).

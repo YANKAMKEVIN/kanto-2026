@@ -74,6 +74,24 @@
 			"player_feet": [716, 972],
 			"horizon": 440
 		},
+		"route_11_coast": {
+			"zone": "route_11",
+			"variant": "coast",
+			"back": "res://assets/battle/decors/route_11_coast_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 540],
+			"player_feet": [716, 972],
+			"horizon": 304
+		},
+		"digletts_cave_rock": {
+			"zone": "digletts_cave",
+			"variant": "rock",
+			"back": "res://assets/battle/decors/digletts_cave_rock_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 540],
+			"player_feet": [716, 972],
+			"horizon": 400
+		},
 		"route_9_roche": {
 			"zone": "route_9",
 			"variant": "roche",
@@ -124,6 +142,12 @@
 		],
 		"route_5": [
 			{ "decor": "route_5_6_prairie" }
+		],
+		"route_11": [
+			{ "decor": "route_11_coast" }
+		],
+		"digletts_cave": [
+			{ "decor": "digletts_cave_rock" }
 		],
 		"route_9": [
 			{ "decor": "route_9_roche" }

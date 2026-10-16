@@ -1472,6 +1472,33 @@
    "contact": null
   },
   {
+   "id": "relief_bouche_talus_01",
+   "source": "WORLD_RELIEF_BOUCHE_TALUS_01_NE_r1.png",
+   "sortie": "assets/world/relief/relief_bouche_talus_01.png",
+   "axe": "w",
+   "cases": 4,
+   "ombre": false,
+   "contact": 0.0
+  },
+  {
+   "id": "relief_bouche_paroi_01",
+   "source": "WORLD_RELIEF_BOUCHE_PAROI_01_NE_r1.png",
+   "sortie": "assets/world/relief/relief_bouche_paroi_01.png",
+   "axe": "w",
+   "cases": 4,
+   "ombre": false,
+   "contact": 0.0
+  },
+  {
+   "id": "prop_barriere_ouverte_01",
+   "source": "WORLD_PROP_BARRIERE_OUVERTE_01_NE_r1.png",
+   "sortie": "assets/world/props/prop_barriere_ouverte_01.png",
+   "axe": "h",
+   "cases": 2.4,
+   "ombre": false,
+   "contact": 0.3
+  },
+  {
    "id": "bldg_tour_pokemon_01",
    "source": "WORLD_BLDG_TOUR_POKEMON_01_NE_r1.png",
    "sortie": "assets/world/buildings/bldg_tour_pokemon_01.png",
@@ -1795,6 +1822,33 @@
    "taille": 384,
    "contraste": 1.0,
    "couleur": 1.0,
+   "raccord": 24
+  },
+  {
+   "id": "ground_digue_01",
+   "source": "WORLD_GROUND_DIGUE_01_NE_r1.png",
+   "sortie": "assets/world/ground/ground_digue_01.png",
+   "taille": 384,
+   "contraste": 0.9,
+   "couleur": 1.0,
+   "raccord": 24
+  },
+  {
+   "id": "ground_sable_grotte_01",
+   "source": "WORLD_GROUND_SABLE_GROTTE_01_NE_r1.png",
+   "sortie": "assets/world/ground/ground_sable_grotte_01.png",
+   "taille": 384,
+   "contraste": 0.7,
+   "couleur": 1.0,
+   "raccord": 24
+  },
+  {
+   "id": "ground_masse_sable_01",
+   "source": "WORLD_GROUND_MASSE_SABLE_01_NE_r1.png",
+   "sortie": "assets/world/ground/ground_masse_sable_01.png",
+   "taille": 384,
+   "contraste": 0.6,
+   "couleur": 0.9,
    "raccord": 24
   },
   {
@@ -2188,6 +2242,18 @@
    "hauteur": 128
   },
   {
+   "id": "parieur",
+   "source": "PNJ_PARIEUR_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/parieur_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "ingenieur",
+   "source": "PNJ_INGENIEUR_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/ingenieur_sheet.png",
+   "hauteur": 128
+  },
+  {
    "id": "pokemaniac",
    "source": "PNJ_POKEMANIAC_NE_r1.png",
    "sortie": "assets/sprites/characters/painted/pokemaniac_sheet.png",
@@ -2374,6 +2440,12 @@
    "sortie": "assets/sprites/pokemon/painted/miaouss_sheet.png",
    "hauteur": 64,
    "note": "J15 T10 ; r1 refusee par Codex avec ancres, r2 = prompt seul ; hauteur 64 (decision de Kevin 2026-10-16 : 56 = Rattata trop petit en marche sur S21)"
+  },
+  {
+   "id": "soporifik",
+   "source": "POKE_SOPORIFIK_NE_r3.png",
+   "sortie": "assets/sprites/pokemon/painted/soporifik_sheet.png",
+   "hauteur": 76
   }
  ],
  "heros_images": [
@@ -2655,6 +2727,18 @@
    "source": "PRESIDENT_FAN_CLUB_ATTENTE_r1.png",
    "sortie": "assets/sprites/characters/painted/president_fan_club_idle_sheet.png",
    "marche": "president_fan_club"
+  },
+  {
+   "id": "parieur_idle",
+   "source": "PARIEUR_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/parieur_idle_sheet.png",
+   "marche": "parieur"
+  },
+  {
+   "id": "ingenieur_idle",
+   "source": "INGENIEUR_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/ingenieur_idle_sheet.png",
+   "marche": "ingenieur"
   }
  ],
  "images_objets": [
@@ -2720,6 +2804,18 @@
    "source": "POKE_RACAILLOU_FIXE_NE_r1.png",
    "sortie": "assets/sprites/pokemon/painted/racaillou_sheet.png",
    "hauteur": 56
+  },
+  {
+   "id": "taupiqueur",
+   "source": "POKE_TAUPIQUEUR_FIXE_NE_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/taupiqueur_sheet.png",
+   "hauteur": 44
+  },
+  {
+   "id": "ronflex",
+   "source": "POKE_RONFLEX_FIXE_NE_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/ronflex_sheet.png",
+   "hauteur": 168
   }
  ],
  "planches_objets": [
@@ -3291,6 +3387,79 @@
      912
     ]
    ]
+  },
+  {
+   "source": "WORLD_RELIEF_PAROI_SABLE_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/relief/",
+   "colonnes": 3,
+   "lignes": 2,
+   "ids": [
+    "relief_paroi_sable_01",
+    "relief_paroi_sable_02",
+    "relief_paroi_sable_03",
+    "relief_paroi_sable_04",
+    "relief_paroi_sable_05",
+    "relief_paroi_sable_06"
+   ],
+   "cases": [
+    3,
+    3,
+    2,
+    2,
+    1,
+    3
+   ],
+   "contact": 0.0
+  },
+  {
+   "source": "WORLD_RELIEF_BOUCHES_CAVE_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/relief/",
+   "colonnes": 2,
+   "lignes": 1,
+   "ids": [
+    "relief_bouche_cave_sud_01",
+    "relief_bouche_cave_nord_01"
+   ],
+   "cases": [
+    4,
+    4
+   ],
+   "contact": 0.0
+  },
+  {
+   "source": "WORLD_RELIEF_DIGUE_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/relief/",
+   "colonnes": 2,
+   "lignes": 1,
+   "ids": [
+    "relief_digue_bord_01",
+    "relief_digue_bord_02"
+   ],
+   "cases": [
+    2,
+    2
+   ],
+   "contact": 0.0
+  },
+  {
+   "source": "INT_J17_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/interiors/",
+   "colonnes": 2,
+   "lignes": 2,
+   "ids": [
+    "int_etagere_lampes_01",
+    "int_carte_murale_01",
+    "int_table_lecture_01",
+    "int_caisse_lampes_01"
+   ],
+   "cases": [
+    2,
+    2,
+    3,
+    1
+   ],
+   "contact": 0.2,
+   "nettoyer": true
   },
   {
    "source": "WORLD_RELIEF_PAROI_GROTTE_SOMBRE_PLANCHE_NE_r1.png",

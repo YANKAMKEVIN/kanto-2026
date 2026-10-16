@@ -27,8 +27,9 @@ func test_has_map() -> void:
 
 ## Cartes de QA encore livrées. Clôture du jalon 9 (T23) : la carte de QA des systèmes
 ## est retirée ; jalon 12 (T28) : `qa_moves_j12` ; jalon 13 (T22) : `qa_switch_j13` ; jalon 14
-## (T24) : `qa_charge_j14` ; jalon 15 (T23) : `qa_daycare`.
-const QA_MAPS_SHIPPED: Array[String] = []
+## (T24) : `qa_charge_j14` ; jalon 15 (T23) : `qa_daycare`. Jalon 17 (T10) : grotte obscure de QA
+## du voile et de Flash et sa pièce d'entrée, à retirer au T28.
+const QA_MAPS_SHIPPED: Array[String] = ["qa_flash.tscn", "qa_flash_entry.tscn"]
 
 
 func test_only_planned_qa_maps_are_shipped() -> void:
@@ -109,21 +110,48 @@ func test_cave_escape_targets_exist_with_their_spawn() -> void:
 	assert_true(caves.load_file(), "caves.json lisible")
 	var missing: Array[StringName] = []
 	for cave: StringName in caves.get_caves():
-		var exit := caves.escape_target(caves.get_maps(cave)[0])
-		assert_not_null(exit, "%s : sortie" % cave)
-		if exit == null:
-			continue
-		if not MapCatalog.has_map(exit.map):
-			missing.append(exit.map)
-			continue
-		assert_false(_scene_interior(MapCatalog.scene_path(exit.map)),
-			"%s : la Corde ramène dehors" % exit.map)
-		var map := (load(MapCatalog.scene_path(exit.map)) as PackedScene).instantiate()
-		assert_not_null(map.get_node_or_null(NodePath("Spawns/%s" % exit.spawn)),
-			"%s : point d'apparition %s" % [exit.map, exit.spawn])
-		map.free()
+		var exits := caves.get_exits(cave)
+		assert_false(exits.is_empty(), "%s : sortie" % cave)
+		for exit: CaveExit in exits:
+			if not MapCatalog.has_map(exit.map):
+				missing.append(exit.map)
+				continue
+			assert_false(_scene_interior(MapCatalog.scene_path(exit.map)),
+				"%s : la Corde ramène dehors" % exit.map)
+			var map := (load(MapCatalog.scene_path(exit.map)) as PackedScene).instantiate()
+			assert_not_null(map.get_node_or_null(NodePath("Spawns/%s" % exit.spawn)),
+				"%s : point d'apparition %s" % [exit.map, exit.spawn])
+			map.free()
 	if not missing.is_empty():
 		pending("sortie de grotte pas encore construite (T8) : %s" % ", ".join(missing))
+
+
+## Jalon 17 (T6, jalon-17.md §2.3) : une grotte à plusieurs bouches (« escapes ») couvre chaque
+## rangée de chacune de ses cartes, sans trou (les chevauchements sont refusés au chargement).
+func test_cave_mouth_ranges_cover_every_row() -> void:
+	var caves := CaveLibrary.new()
+	assert_true(caves.load_file(), "caves.json lisible")
+	var missing: Array[StringName] = []
+	var checked := 0
+	for cave: StringName in caves.get_caves():
+		if caves.get_exits(cave).size() < 2:
+			continue
+		checked += 1
+		for map_id: StringName in caves.get_maps(cave):
+			if not MapCatalog.has_map(map_id):
+				missing.append(map_id)
+				continue
+			var map := (load(MapCatalog.scene_path(map_id)) as PackedScene).instantiate() \
+				as GameMap
+			var uncovered: Array[int] = []
+			for row: int in map.size.y:
+				if caves.escape_target(map_id, Vector2i(0, row)) == null:
+					uncovered.append(row)
+			assert_eq(uncovered, [] as Array[int], "%s : rangées sans bouche" % map_id)
+			map.free()
+	# Jalon 17 : la Cave Taupiqueur (T15) est intégrée, sa carte existe.
+	assert_eq(missing, [] as Array[StringName], "cartes des grottes à deux bouches")
+	assert_gt(checked, 0, "la Cave Taupiqueur a deux bouches")
 
 
 func test_j13_qa_map_is_recognised_and_removed() -> void:

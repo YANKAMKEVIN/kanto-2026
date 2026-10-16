@@ -970,6 +970,77 @@ Q = qa-mobile, K = Kevin.
   J17 s'il existe) ; noms et signatures du §2–§4 corrigés. **CA** : liste des écarts et décisions
   techniques ; aucune décision de game design changée.
 
+#### T15 — répétition sur jalon-17 (2026-10-16)
+
+Branche jetable `j18-essai-sur-j17` = `jalon-18` (4db38f17) + fusion de `origin/jalon-17`
+(27e96f21). But : que la vraie T15 soit courte. Le J16 n'y est pas (rien de fusionnable sur
+`origin/ccr-fa255d49-wvvacc`).
+
+**Conflits (23 fichiers) et résolution** — règle « garder les deux côtés, le J17 d'abord » :
+
+| Fichier | Résolution |
+|---|---|
+| `zones.json`, `lighting.json`, `interiors.json`, `companions.json`, `kanto_placeholder_areas.json` | entrées du J17 puis du J18 ; `route_5` en double dans les aires de la carte gardé une fois |
+| `caves.json` | `digletts_cave` (« escapes »), `qa_flash` puis `dark_cave` **avec `"dark": true`** |
+| `data/battle/decors.json`, `tools/art/combat_decors/decors.json` | les 4 décors (`route_11_coast`, `digletts_cave_rock`, `route_9_roche`, `dark_cave_galerie`) et leurs lieux |
+| `assets/world/catalogue.json` | fusion à 3 voies par clé (fichier généré, format identique) |
+| `tools/art/manifeste.json` | fusion à 3 voies par élément de liste, blocs recopiés tels quels (format mixte gardé) |
+| `painted_prop_rules.gd`, `build_character_frames.gd`, `build_painted_interiors.gd`, `luminance_grotte.py` | ajouts en fin, J17 puis J18 |
+| `test_cave_library` | `[mt_moon, digletts_cave, qa_flash, dark_cave]` |
+| `test_lighting_library` | `… cave_sand, lavender, tower_cold` |
+| `test_zone_library` | 33 zones |
+| `test_encounter_library` | 20 tables, identifiants triés |
+| `test_painted_props` | listes des séries 19 et 21 |
+| `test_map_links` | cartes J17 + J18 ; « à venir » = **10** (7 du J17 + Azuria 3) |
+| `test_cutscene_data` | objets J17 + J18 (liste triée), `… + J18_IDS` |
+| `test_dialogue_data` | `UNUSED_YET` du J18 + `J17_TOKENS` / `DRAFT_VARIANTS` ; `IDS_J17 + IDS_J18` ; objets lancés **57** (41 + 8 J17 + 8 J18) ; dossiers 20 et 21 tous deux lus pour le « mot pour mot » |
+| `etat-projet.md` | en-tête « Mis à jour » réuni |
+
+**Hors conflit, aligné** : `dark_cave_too_dark` (T-3) était défini **deux fois** (J17
+`dark_caves.json`, J18 `dark_cave.json`, même texte, le J18 avec un retour à la ligne) → gardé
+celui du J17, retiré du J18 (et de `UNUSED_YET` / `IDS_J18` : il est dans `PLAYED_BY_BOOT`).
+
+**Écarts de noms entre le §3 et le code du J17** (le code du J17 fait foi) :
+
+| Plan J18 | Code J17 |
+|---|---|
+| `Entry { NONE, OFFER, AUTO, WARN }` | `{ NONE, AUTO, WARN }` (Q-1 : « tout J17 », automatique) |
+| `entry_action(from, to, caves, flags, available)`, `is_cave_entry`, `lit_flag`, `flags_to_clear` | `entry_action(from, to, caves, available)`, `is_entry(from, to)` (toute arrivée, étage compris), `is_lit(from, to, caves, available)` ; **aucun drapeau `dark_cave_lit`** ni règle d'extinction (§3.4 et la ligne `dark_cave_lit` du §3.6 tombent) |
+| `FlashDirector.setup(runner, darkness, caves, field_moves, data)`, `use_here`, `pokemon_name`, action `use_flash` | `setup(state, darkness, caves, field_moves, hud, runner, library, player, …)`, rappels `check_flash` / `can_start`, signaux `cue_started`, `flash_used` ; pas d'action de dialogue |
+| `game/pokemon/field_moves.gd`, `data/pokemon/field_moves.json`, `can_use` / `user_for` | `game/world/field/field_moves.gd`, `data/world/field_moves.json`, `check(...) -> FieldMoves.Result`, `cue_text` (T-2 = « cue » de `flash`) |
+| `dark_cave_flash_offer` (T-1), `dark_cave_flash_used` (T-2) | sans objet (pas de proposition ; T-2 = bandeau du HUD) |
+| `DarknessController`, `DarknessVeil`, `VeilMath`, `VeilParams`, `darkness.json` | mêmes noms ; `DarknessProfile` (et non `DarknessConfig`) ; `HaloFloorLight` en plus |
+
+**Vérifié** : `test_dark_cave_maps` (Grotte obscure, Mont Sélénite jamais) et
+`test_dark_cave_flash` (vrai Boot) : sans Flash → voile sombre + T-3 une fois ; CS05 + Pikachu
+→ AUTO, « Pikachu utilise Flash ! », halo ouvert ; échelle 1F → B1F → rallumée ; Corde Sortie
+depuis le B1F → `route_10` sur `from_dark_cave_n_w`, tourné ↓, voile retiré ; Mont Sélénite avec
+CS05 : ni voile, ni Flash, ni avertissement.
+
+**Luminance sous le voile** (`tools/capture_dark_cave_voile.sh` + `luminance_grotte.py --halo`,
+étendu aux deux étages ; réglages communs du J17 **inchangés**) :
+
+| Vue | héros | sol hors halo (sombre) | sol hors halo (Flash) |
+|---|---|---|---|
+| couloir 1F (27, 10) | **2,96** | **0,063** | **0,087** |
+| galerie 1F (30, 15) | 3,87 | **0,049** | **0,060** |
+| flaque B1F (22, 28) | 3,58 | **0,098** | **0,096** |
+| passage B1F (37, 34) | 3,07 | **0,090** | 0,100 |
+
+Seuils : héros ≥ 3,0, hors halo ≥ 0,10 (`qa_flash` : 0,106–0,145). Le sol de la série 21 est
+plus sombre : 7 vues sur 8 en échec. Propositions [D], sans toucher à `darkness.json` commun :
+(a) éclaircir le sol de la série 21 (`ground_grotte_sombre_01` : gamma / contraste du manifeste)
+et les profils `cave_1f` / `cave_b1f` de la Grotte Sombre seule (profils propres
+`dark_cave_1f` / `_b1f` dans `lighting.json`) ; (b) à défaut, une surcharge d'opacité par grotte
+(`caves.json` → `"veil": { "outside": … }`, lue par `DarknessProfile`), ≈ 0,30 sans Flash. Le héros
+à 2,96 (couloir, sol clair sous la lueur `floor_lift`) passe avec (a). À trancher à la T20.
+
+**À refaire à la vraie fusion** : rejouer cette fusion sur `main` (J16 + J17) ; J16 : arbre
+d'Azuria (53, 23), `cut_cerulean_east_tree`, régénération d'Azuria (variante J18, warp est →
+`route_9`), « à venir » 10 → 7 dans `test_map_links`, section CS / `field_moves.json` (`cut`) ;
+retrait de `qa_flash` (T28 du J17) → `test_cave_library` et `luminance_grotte.py` (`PLAN_QA`) ;
+§1.3, §3 et §3.6 du plan à réécrire selon le tableau ci-dessus ; réglage de luminance (a) ou (b).
+
 #### T16 — A : données — après T15 (et Q-5)
 - §4.6–4.10, §4.13, §4.14 (descriptions), §3.1 (dialogues) : Dresseurs, rencontres, Boutique,
   dialogues (T-x **mot pour mot**), objectifs, zones, décors, compagnon ; `hm05` si absent (§1.4).

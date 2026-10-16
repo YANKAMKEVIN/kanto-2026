@@ -1,0 +1,74 @@
+{
+	"route_2_east_cave_sign": {
+		"pages": ["CAVE TAUPIQUEUR\nVers la Route 11 et Carmin-sur-Mer"]
+	},
+	"route_2_east_assistant": {
+		"speaker": "Assistant",
+		"variants": [
+			{
+				"if": ["got_hm05"],
+				"pages": [
+					"Avec Flash, plus besoin d'avancer à tâtons.",
+					"Continue de remplir ton Pokédex !"
+				]
+			},
+			{
+				"if_caught_at_least": 10,
+				"pages": [
+					"Ton Pokédex compte {caught} espèces !",
+					"Le Professeur Chen sera ravi.",
+					"Voici la CS05 : Flash."
+				],
+				"cutscene": "route_2_east_give_hm05"
+			},
+			{
+				"unless": ["hm05_assistant_met"],
+				"unless_caught_at_least": 10,
+				"set": ["hm05_assistant_met"],
+				"pages": [
+					"Je suis un assistant du Professeur Chen.",
+					"Il m'a confié quelque chose pour toi.",
+					"Mais il faut d'abord avoir capturé 10 espèces.",
+					"Ton Pokédex en compte {caught}. Reviens me voir !"
+				]
+			},
+			{
+				"unless_caught_at_least": 2,
+				"pages": [
+					"Ton Pokédex compte 1 espèce capturée.",
+					"Encore {caught_missing}, et c'est à toi."
+				]
+			},
+			{
+				"pages": [
+					"Ton Pokédex compte {caught} espèces capturées.",
+					"Encore {caught_missing}, et c'est à toi."
+				]
+			}
+		]
+	},
+	"route_2_east_assistant_hm05_system": {
+		"narration": true,
+		"pages": ["{player} reçoit la CS05 — Flash !"]
+	},
+	"route_2_east_assistant_hm05_use": {
+		"speaker": "Assistant",
+		"pages": [
+			"Flash éclaire les grottes les plus sombres.",
+			"Il suffit d'avoir dans ton équipe un Pokémon capable de l'utiliser."
+		]
+	},
+	"route_2_east_visitor": {
+		"speaker": "Visiteur",
+		"pages": [
+			"Certaines grottes de Kanto sont plongées dans le noir.",
+			"Sans lumière, on s'y perd en trois pas."
+		]
+	},
+	"route_2_east_item_1": {
+		"cutscene": "route_2_east_item_1"
+	},
+	"route_2_east_item_2": {
+		"cutscene": "route_2_east_item_2"
+	}
+}

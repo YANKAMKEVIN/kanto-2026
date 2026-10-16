@@ -86,3 +86,22 @@ func test_without_blocking_cells_the_gate_never_touches_the_grid() -> void:
 	var grid := GridWorld.new(Vector2i(2, 2))
 	gate.apply_to_grid(grid)
 	assert_false(grid.is_occupied(Vector2i.ZERO))
+
+
+## Jalon 17 T5 (Ronflex, barrière de FUTUR B, arbustes) : sans drapeaux (null = nouvelle
+## partie), un décor « unless » est affiché et ferme toutes ses cases, quel que soit leur nombre.
+func test_unless_gate_blocks_all_its_cells_without_flags() -> void:
+	var gate := _gate([], [&"snorlax_awake"])
+	gate.blocking_cells = [
+		Vector2i(1, 1), Vector2i(2, 1), Vector2i(1, 2), Vector2i(2, 2),
+	] as Array[Vector2i]
+	var grid := GridWorld.new(Vector2i(4, 4))
+	gate.apply(null)
+	gate.apply_to_grid(grid)
+	assert_true(gate.visible)
+	for cell: Vector2i in gate.blocking_cells:
+		assert_eq(grid.get_occupant(cell), gate, "fermée : %s" % cell)
+	gate.apply(_flags([&"snorlax_awake"]))
+	gate.apply_to_grid(grid)
+	for cell: Vector2i in gate.blocking_cells:
+		assert_false(grid.is_occupied(cell), "libre : %s" % cell)

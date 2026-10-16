@@ -84,6 +84,18 @@
 			"contact": { "color": "#140c06", "alpha": 0.6 },
 			"wind": 0.0
 		},
+		"cave_sand": {
+			"grade": {
+				"shadows": [1.02, 0.97, 0.88],
+				"midtones": [1.06, 1.01, 0.92],
+				"highlights": [1.05, 1.0, 0.9],
+				"strength": 1.0
+			},
+			"sun_direction": [-0.7, -0.7],
+			"rim": { "color": "#ffdca0", "strength": 0.12, "width": 3.0 },
+			"contact": { "color": "#2a170a", "alpha": 0.5 },
+			"wind": 0.0
+		},
 		"lavender": {
 			"grade": {
 				"shadows": [1.02, 0.99, 1.07],
@@ -147,6 +159,7 @@
 		"cerulean_burgled_house": "interior_warm",
 		"route_24": "golden_hour",
 		"route_25": "golden_hour",
+		"route_11": "golden_hour",
 		"bill_house": "interior_warm",
 		"underground_path": "underground",
 		"route_6": "golden_hour",
@@ -162,6 +175,9 @@
 		"route_5_daycare": "interior_warm",
 		"route_5_gate": "interior_warm",
 		"route_5_underground_gate": "interior_warm",
+		"digletts_cave": "cave_sand",
+		"route_2_east": "forest",
+		"route_2_east_gate": "interior_warm",
 		"route_9": "golden_hour",
 		"route_10": "golden_hour",
 		"route_10_center": "interior_warm",

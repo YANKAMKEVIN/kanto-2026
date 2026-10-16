@@ -1,0 +1,38 @@
+{
+	"route_2_east_give_hm05": {
+		"variants": [
+			{
+				"steps": [
+					{ "give": "hm05", "count": 1, "unless": ["got_hm05"] },
+					{ "dialogue": "route_2_east_assistant_hm05_system", "unless": ["got_hm05"] },
+					{ "dialogue": "route_2_east_assistant_hm05_use", "unless": ["got_hm05"] },
+					{ "set": ["got_hm05"] }
+				]
+			}
+		]
+	},
+	"route_2_east_item_1": {
+		"variants": [
+			{
+				"unless": ["got_route_2_east_item_1"],
+				"steps": [
+					{ "despawn": "route_2_east_item_1" },
+					{ "give": "moon_stone", "count": 1, "found": true },
+					{ "set": ["got_route_2_east_item_1"] }
+				]
+			}
+		]
+	},
+	"route_2_east_item_2": {
+		"variants": [
+			{
+				"unless": ["got_route_2_east_item_2"],
+				"steps": [
+					{ "despawn": "route_2_east_item_2" },
+					{ "give": "rare_candy", "count": 1, "found": true },
+					{ "set": ["got_route_2_east_item_2"] }
+				]
+			}
+		]
+	}
+}

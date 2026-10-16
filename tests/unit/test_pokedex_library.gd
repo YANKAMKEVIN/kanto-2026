@@ -19,6 +19,8 @@ const ENCOUNTERABLE: Array[StringName] = [
 	&"abra", &"kadabra", &"machop",
 	# Jalon 15 (annexe A.5 de jalon-15.md, validée le 2026-10-14) : Miaouss.
 	&"meowth",
+	# Jalon 17 (annexe A.2 de jalon-17.md, validée le 2026-10-16) : Taupiqueur, Soporifik.
+	&"diglett", &"drowzee",
 ]
 ## Notes validées par Kevin qui parlent de l'évolution (exception à « jamais de divulgation ») :
 ## celle de Kadabra (dossier 17 §15, n° 64) cite son origine, Abra, déjà vue pour l'avoir.
@@ -94,10 +96,10 @@ func test_real_texts_are_validated_and_never_spoil() -> void:
 	_lib.load_file()
 	for id: StringName in _lib.get_species_ids():
 		var info := _lib.get_species(id)
-		assert_false(info.draft, "%s : description validée (2026-10-06)" % id)
+		assert_false(info.draft, "%s : description validée par Kevin" % id)
 		var texts: Array[String] = [info.description]
 		for note: PokedexNoteData in info.notes:
-			assert_false(note.draft, "%s : note validée (2026-10-06)" % note.id)
+			assert_false(note.draft, "%s : note validée par Kevin" % note.id)
 			if not EVOLUTION_NOTES.has(note.id):
 				texts.append(note.text)
 		for text: String in texts:

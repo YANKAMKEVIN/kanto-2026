@@ -1,0 +1,186 @@
+{
+	"youngster_arthur": {
+		"cell": [
+			11,
+			9
+		],
+		"facing": "down",
+		"sprite": "youngster",
+		"dialogue": "route_11_youngster_arthur_after",
+		"trainer": {
+			"id": "route_11_youngster_arthur",
+			"sight": 4,
+			"before": "route_11_youngster_arthur_before",
+			"defeated": "route_11_youngster_arthur_defeated"
+		}
+	},
+	"youngster_lucas": {
+		"cell": [
+			21,
+			10
+		],
+		"facing": "left",
+		"sprite": "youngster",
+		"dialogue": "route_11_youngster_lucas_after",
+		"trainer": {
+			"id": "route_11_youngster_lucas",
+			"sight": 5,
+			"before": "route_11_youngster_lucas_before",
+			"defeated": "route_11_youngster_lucas_defeated"
+		}
+	},
+	"youngster_louis": {
+		"cell": [
+			31,
+			7
+		],
+		"facing": "down",
+		"sprite": "youngster",
+		"dialogue": "route_11_youngster_louis_after",
+		"trainer": {
+			"id": "route_11_youngster_louis",
+			"sight": 3,
+			"before": "route_11_youngster_louis_before",
+			"defeated": "route_11_youngster_louis_defeated"
+		}
+	},
+	"youngster_raphael": {
+		"cell": [
+			43,
+			10
+		],
+		"facing": "up",
+		"sprite": "youngster",
+		"dialogue": "route_11_youngster_raphael_after",
+		"trainer": {
+			"id": "route_11_youngster_raphael",
+			"sight": 3,
+			"before": "route_11_youngster_raphael_before",
+			"defeated": "route_11_youngster_raphael_defeated"
+		}
+	},
+	"gambler_marcel": {
+		"cell": [
+			38,
+			22
+		],
+		"facing": "right",
+		"sprite": "gambler",
+		"dialogue": "route_11_gambler_marcel_after",
+		"trainer": {
+			"id": "route_11_gambler_marcel",
+			"sight": 3,
+			"before": "route_11_gambler_marcel_before",
+			"defeated": "route_11_gambler_marcel_defeated"
+		}
+	},
+	"gambler_roger": {
+		"cell": [
+			52,
+			23
+		],
+		"facing": "left",
+		"sprite": "gambler",
+		"dialogue": "route_11_gambler_roger_after",
+		"trainer": {
+			"id": "route_11_gambler_roger",
+			"sight": 3,
+			"before": "route_11_gambler_roger_before",
+			"defeated": "route_11_gambler_roger_defeated"
+		}
+	},
+	"engineer_bruno": {
+		"cell": [
+			39,
+			16
+		],
+		"facing": "down",
+		"sprite": "engineer",
+		"dialogue": "route_11_engineer_bruno_after",
+		"trainer": {
+			"id": "route_11_engineer_bruno",
+			"sight": 3,
+			"before": "route_11_engineer_bruno_before",
+			"defeated": "route_11_engineer_bruno_defeated"
+		}
+	},
+	"engineer_victor": {
+		"cell": [
+			54,
+			12
+		],
+		"facing": "down",
+		"sprite": "engineer",
+		"dialogue": "route_11_engineer_victor_after",
+		"trainer": {
+			"id": "route_11_engineer_victor",
+			"sight": 3,
+			"before": "route_11_engineer_victor_before",
+			"defeated": "route_11_engineer_victor_defeated"
+		}
+	},
+	"route_11_item_1": {
+		"cell": [
+			40,
+			13
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "route_11_item_1",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_route_11_item_1"
+		]
+	},
+	"route_11_item_2": {
+		"cell": [
+			47,
+			25
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "route_11_item_2",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_route_11_item_2"
+		]
+	},
+	"piafabec_1": {
+		"cell": [
+			28,
+			6
+		],
+		"facing": "left",
+		"sprite": "pokemon/spearow",
+		"shy": {
+			"action": "fly",
+			"radius": 2
+		}
+	},
+	"soporifik_1": {
+		"cell": [
+			60,
+			9
+		],
+		"facing": "down",
+		"sprite": "pokemon/drowzee",
+		"shy": {
+			"action": "notice",
+			"radius": 2
+		}
+	},
+	"abo_1": {
+		"cell": [
+			28,
+			19
+		],
+		"facing": "right",
+		"sprite": "pokemon/ekans",
+		"shy": {
+			"action": "flee",
+			"radius": 2
+		}
+	}
+}

@@ -1,0 +1,134 @@
+# Cave Taupiqueur (digletts_cave) — grille fonctionnelle (jalon 17, dossier 20 §3.3, §5, §7 ; préparée
+# le 2026-10-14 pour la vue générale peinte). Source UNIQUE de la géométrie : plan en aplats
+# (tools/art/plan_aplats_j17.py), vue générale peinte, puis outil de construction et tests du J17
+# (17A). Contrôle : tools/art/plan_check_j17.py.
+#
+# 34 × 80 cases ; nord en haut ; x = colonne 0..33, y = rangée 0..79. Tunnel PRINCIPALEMENT LINÉAIRE du
+# sud (Route 11) au nord (Route 2 est), 96 pas bouche à bouche : il se décale en deux bras (ouest en
+# y 54..57, puis est en y 36..39, puis ouest en y 18..21) sans jamais se diviser.
+# Bouche SUD : (15..16, 79), PUSH ↓ → route_11 (bouche (15..16, 7)), arrivée from_route_11 (15..16, 78)
+# tournée ↑. Bouche NORD : (16..17, 0), PUSH ↑ → route_2_east (bouche (6..7, 3)), arrivée
+# from_route_2_east (16..17, 1) tournée ↓. Bouches naturelles, aucun bâtiment, aucun PNJ, aucun Dresseur.
+#
+# Séquence, du sud au nord (couloirs calmes entre les sols de gravats, rencontres au sommet) :
+#   salle d'entrée (y 68..78, calme) → couloir A (y 58..67) avec G1 évitable par les colonnes x 13 et 18
+#   → bras ouest → couloir B (x 6..10, y 40..53) avec G2 pleine largeur (7 rangées : la seule zone
+#   OBLIGATOIRE) et le renfoncement R1 (Corde Sortie) sur son flanc ouest → bras est (y 36..39) →
+#   couloir C (x 20..24, y 22..35) avec G3 évitable par x 23..24 et le renfoncement R2 (vide) sur son
+#   flanc est → bras ouest (y 18..21) → couloir D (x 14..19, y 6..17) avec G4 évitable par x 14 et 19
+#   → salle nord (y 1..5, calme).
+#
+# Légende (grotte, celle du Mont Sélénite) :
+#   # paroi rocheuse (bloquée)          . sol de grotte calme (aucune rencontre)
+#   g gravats (praticables, terrain de rencontre : Taupiqueur 95 %, Triopikeur 5 %, §5)
+#   o rocher isolé (bloqué)             E bouche (praticable, terminale, bord de carte)
+# Roche claire et sableuse, lumière naturelle lisible (profil cave_1f du J12 ou dérivé) : le plan
+# ne dit pas la lumière, la vue peinte la dira. Les murs sont droits sur le plan ; la vue peinte
+# les arrondit sans changer les cases praticables.
+#
+# DÉFAUTS (règle 4, à relire) : 96 pas ; sol calme 515 cases, gravats 80 cases dont 7 obligatoires
+# (≈ 0,7 rencontre en moyenne par traversée, §5) ; 3 Taupiqueur d'ambiance sur le bord des zones.
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 34 caractères), puis POSITIONS.
+
+PRATICABLES .gE
+
+GRILLE 34 80
+00 ################EE################
+01 #############........#############
+02 #############........#############
+03 ############....o..o.#############
+04 #############........#############
+05 ##############.......#############
+06 ##############......##############
+07 ##############......##############
+08 ##############......##############
+09 ##############......##############
+10 ##############.gggg..#############
+11 ##############.gggg.##############
+12 ##############.gggg.##############
+13 ##############.gggg.##############
+14 ##############.......#############
+15 #############.......##############
+16 ##############......##############
+17 ##############......##############
+18 ##############...........#########
+19 ##############...........#########
+20 ##############...........#########
+21 ###############..........#########
+22 ####################.....#########
+23 ####################.....#########
+24 ####################..o..#########
+25 ####################.........#####
+26 ####################.........#####
+27 ####################.........#####
+28 ####################ggg..#########
+29 ####################ggg..#########
+30 ####################ggg...########
+31 ####################.....#########
+32 ####################.....#########
+33 ####################.....#########
+34 ####################......########
+35 #######.############.....#########
+36 #####....................#########
+37 ######...................#########
+38 ######...................#########
+39 ######...................#########
+40 #####......##.#####.#.############
+41 ######...o.#######################
+42 ######.....#######################
+43 ##.........#######################
+44 ##.........#######################
+45 ##.........#######################
+46 ######ggggg#######################
+47 ######ggggg#######################
+48 ######ggggg#######################
+49 ######ggggg#######################
+50 ######ggggg#######################
+51 ######ggggg#######################
+52 ######ggggg#######################
+53 ######.....#######################
+54 ######............################
+55 #####.............################
+56 ######......o.....################
+57 ######............################
+58 #############.....################
+59 #############.....################
+60 #############......###############
+61 #############.gggg.###############
+62 #############.gggg.###############
+63 #############.gggg.###############
+64 #############.gggg.###############
+65 #############.gggg.###############
+66 #############....o.###############
+67 #############.......##############
+68 ############.......###############
+69 ############........##############
+70 ############........##############
+71 ############........##############
+72 ############..o......#############
+73 ############........##############
+74 ############........##############
+75 ###########.........##############
+76 ############......o.##############
+77 ############........##############
+78 ############........##############
+79 ###############EE#################
+FIN
+
+POSITIONS
+warp_sud            warp           15..16,79    libre   # PUSH ↓ → route_11, from_cave
+from_route_11       spawn          15..16,78    libre   # arrivée de la Route 11, tournée ↑
+warp_nord           warp           16..17,0     libre   # PUSH ↑ → route_2_east, from_cave
+from_route_2_east   spawn          16..17,1     libre   # arrivée de la Route 2 est, tournée ↓
+cave_item_1         objet_visible  2,44         bloque  role=O1 item=escape_rope
+renfoncement_r1     repere         2..5,43..45  libre   role=R1  # renfoncement ouest (Corde Sortie)
+renfoncement_r2     repere         25..28,25..27 libre  role=R2  # renfoncement est (vide)
+gravats_g1          gravats        14,61        libre   role=G1
+gravats_g2          gravats        6,49         libre   role=G2
+gravats_g3          gravats        20,28        libre   role=G3
+gravats_g4          gravats        15,10        libre   role=G4
+taupiqueur_1        pokemon        17,62        bloque  shy=hide
+taupiqueur_2        pokemon        22,29        bloque  shy=hide
+taupiqueur_3        pokemon        18,13        bloque  shy=hide
+FIN
