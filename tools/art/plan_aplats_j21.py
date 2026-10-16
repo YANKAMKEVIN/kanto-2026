@@ -346,6 +346,12 @@ def dessiner_route_12(sortie: Path) -> Path:
 		for x, y in p.cells:
 			cx, cy = centre(x, y)
 			d.rectangle([cx - 4, cy - 4, cx + 4, cy + 4], fill=PANNEAU, outline=PANNEAU_BORD)
+	# 5. Ronflex endormi 2 × 2 au croisement (25..26, 93..94) (décision M-3) : masse bleu-vert sombre,
+	#    ventre crème, qui ferme le tronc nord, le tronc sud et la chaussée de l'ouest.
+	rx0, ry0 = coin(25, 93)
+	d.ellipse([rx0 + 1, ry0 + 1, rx0 + 2 * case - 2, ry0 + 2 * case - 2], fill=(40, 70, 90),
+		outline=(20, 40, 55), width=2)
+	d.ellipse([rx0 + case * 0.45, ry0 + case * 0.8, rx0 + case * 1.55, ry0 + case * 1.8], fill=(235, 220, 180))
 	sortie.parent.mkdir(parents=True, exist_ok=True)
 	img.save(sortie)
 	return sortie
