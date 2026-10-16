@@ -379,6 +379,7 @@ Rôles : **A** architecte-godot · **C** constructeur-monde · **U** ui-mobile �
   N25) et de `tentacool` (→ `tentacruel` N30) dans `data/pokemon/species/kanto_j21.json`, puis
   supprimer les reprises correspondantes. Le J21 ne peut pas le faire lui-même : ses tests refusent
   une évolution vers une espèce absente.
+- **J22** (session du J22, 2026-10-16, `docs/dossier-25-j22` à `b75e75a9`) : Magicarpe passe dans `kanto_j22.json`, à l'identique de celui du J24 ; **retirer `magikarp` de `kanto_j24.json`** à la fusion du J22. Ne plus changer ses valeurs sans prévenir le J22. Raccord sud de Parmanie réservé (rangée 53, colonnes 24..32 et 34..35, `warp_sud` `coming_soon=route_19`).
 - **Tous** : supprimer chaque fichier `*_reprises.json` dès que sa branche d'origine est fusionnée ;
   régénérer `tm_compatibility.json` ; résoudre `data/pokedex/kanto.json` (fiches ajoutées à la fin).
 
