@@ -15,6 +15,12 @@
 >   `engine/items/item_effects.asm`, `data/wild/maps/SafariZone*.asm`, `data/trainers/parties.asm`,
 >   `engine/menus/start_sub_menus.asm`). RFVF : `pret/pokefirered` à `037335f4`.
 >
+> **Mise à jour du 2026-10-16 (après coup)** : le J22 a été recadré par Kevin (« Les deux chemins
+> vers Parmanie », passe `j22-v2-alignement.md`, M-1 à M-24, branche `docs/dossier-25-j22`) et le
+> partage de Surf et Force avec le J24 a été tranché (P-2 B, passe `j24-v2-alignement.md`, branche
+> `docs/dossier-27-j24`, d'après la session du J24). Le §1.1, le §6.3, le §9, le §14 et le §16 en
+> tiennent compte. Les arbitrages du J23 portent la lettre **N** (M = J22, P = J24).
+>
 > **Origine des règles** : **RB** = Rouge/Bleu ; **G+** = génération ultérieure (RFVF surtout) ;
 > **K26** = adaptation Kanto 2026 ; **[D]** = valeur par défaut proposée (règle 4 de CLAUDE.md) ;
 > **[Q]** = question pour Kevin (§16).
@@ -23,24 +29,26 @@
 
 ## 1. Contrat d'entrée et dépendances
 
-### 1.1 Le point bloquant : quel est le J22 ?
+### 1.1 Le J22 livre Parmanie (recadrage du 2026-10-16)
 
-La V2 suppose que le J22 livre **Parmanie, ses bâtiments et deux accès depuis les Routes 12 à 18**.
-Le dépôt dit autre chose :
+Le prompt du dossier 25 (2026-10-15) mettait Safrania au J22. Kevin l'a **recadré le 2026-10-16** :
+le J22 devient « **Les deux chemins vers Parmanie** » (Routes 12 à 18, Parmanie, pêche, Vélo) et
+Safrania est reportée. Sa passe d'alignement (M-1 à M-24) est **à trancher** ; elle prévoit, pour le
+J23 :
 
-| Source | Ce qu'elle dit du J22 |
-|---|---|
-| Dossier 24 (J21), table de périmètre | « Route 12 sud, Routes 13 à 15, Parmanie (J22) » |
-| Prompt du dossier 25 (2026-10-15, choix de Kevin) | **J22 = Safrania et la Sylphe SARL** (Morgane, Dojo, Giovanni n° 2), « plutôt que les Routes 12–15 » ; il note que la mention du dossier 24 est à corriger |
-| Dépôt, toutes branches | **Aucun** dossier ni code de Parmanie, des Routes 12 sud à 18, de la Piste Cyclable ou du Vélo. `data/world/zones.json` déclare `fuchsia_city` « Parmanie » avec `maps: []`. Seule la grille `route_12.txt` (Route 12 **nord**, J21) existe. |
+| Point du J22 | Proposition de la passe J22 | Effet sur le J23 |
+|---|---|---|
+| Parmanie (60 × 54, échelle × 1,5) | ville + 4 intérieurs ouverts, **3 portes réservées au J23** | le J23 ouvre la **porte du Parc**, l'**Arène de Koga** (façade posée par le J22) et la **maison du Gardien** (M-19 B) |
+| Sorties de Parmanie | ouest Route 18, est Route 15, **sud Route 19 (mer)** réservée | rien à faire au J23 (la mer est au J24, P-3) |
+| Pêche (M-8 à M-11) | trois cannes, terrain `water_rod`, meilleure canne d'office | le Parc peut avoir ses **étangs pêchables** (§6.3, **N-6**) |
+| Enclos de Parmanie (M-20) | « vitrines » des Pokémon du Safari | décor du J22 ; aucun lien de code avec le Parc |
+| Maison de Vol, Route 16 (M-18 C) | **porte réservée « au J23 »** avec la CS02 | **hors du périmètre verrouillé du J23** → **N-24** |
+| Ronflex et Route 12 sud (M-3) | à trancher avec le J21 | un des deux chemins doit être praticable avant le J23 |
 
-Aujourd'hui, **personne ne construit Parmanie ni les routes qui y mènent**. Le J23 ne peut pas
-démarrer sans eux : l'entrée du Parc, la maison du Gardien et l'Arène sont dans Parmanie. → **S-1**.
-
-Quelle que soit la réponse, le présent dossier suppose qu'**avant le code du J23** existent :
-Parmanie (extérieur, Centre, Boutique, et les emplacements de la porte du Safari, de la maison du
-Gardien et de l'Arène), au moins **un** accès praticable sans Vélo (Routes 12 sud → 13 → 14 → 15),
-et la façon dont la Route 12 sud est fermée avant la Poké Flûte (dossier 24 §10.3, non tranché).
+Le présent dossier suppose donc qu'**avant le code du J23** existent : Parmanie (extérieur, Centre,
+Boutique, façades et portes réservées), au moins un chemin praticable vers elle, et la pêche si
+**N-6** la retient. L'ordre des badges devient celui de RB : Koga est le **cinquième** badge (après
+Erika), Morgane vient plus tard.
 
 ### 1.2 État réel des jalons précédents (2026-10-16)
 
@@ -68,17 +76,17 @@ mode Safari) peut commencer avant.
 | Dépendance | Constat | Conséquence pour le J23 |
 |---|---|---|
 | Rencontres sauvages | `game/pokemon/encounters/` (directeur, tables `data/encounters/*.json`, `BattleRequest.wild`). Points d'accroche : `BattleRules` (`wild`, `can_flee`, `allow_balls`…), `BattleAction.Kind` | Le mode Safari est un **nouveau jeu de règles de combat** et un nouveau menu ; le déclenchement des rencontres est réutilisé tel quel |
-| Capture | Formule **G3/G4** (`capture_calc.gd`, 4 secousses), pas la formule RB. Bonus de statut ×1,5 / ×2,5 | La Safari Ball se branche sur cette formule (§5.4, **S-5**) |
+| Capture | Formule **G3/G4** (`capture_calc.gd`, 4 secousses), pas la formule RB. Bonus de statut ×1,5 / ×2,5 | La Safari Ball se branche sur cette formule (§5.4, **N-5**) |
 | Stockage | `PokemonStorage` : liste **unique, sans limite** ; pas de boîtes | **Le cas « BOÎTE pleine » de RB n'existe pas** : toute capture réussit à ranger (§12) |
-| Pêche | **absente** (aucune canne, aucun terrain d'eau pour les rencontres) | Pas de pêche dans le Safari au J23 (**S-6**) |
+| Pêche | **absente** du code ; **conçue au J22** (M-8 à M-11 : cannes, terrain `water_rod`) | Étangs du Parc pêchables si le J22 la livre (**N-6**) |
 | Repousse, compteur de pas | absents ; `_quiet_steps` n'est pas sauvegardé | Le compteur Safari est neuf et doit être sauvegardé (§11) |
-| CS (modèle hybride) | `field_moves.gd` : états `NO_HM`, `NO_BADGE`, `NO_POKEMON`, `READY` ; règles dans `data/world/field_moves.json` ; apprentissage par `tm_teach.gd` ; compatibilités `hms` 01 à 05 déjà dans `tm_compatibility.json` | Surf et Force = deux entrées de données **plus** deux mécaniques de monde absentes (§9) |
-| Eau | `GridWorld.is_water`, `can_enter` refuse l'eau ; légende `W` des grilles | **Aucun état « sur l'eau »** : c'est le plus gros chantier du J23 (§9.2) |
-| Rochers | **aucun** objet poussable | Force est une mécanique neuve (§9.3) |
+| CS (modèle hybride) | `field_moves.gd` : états `NO_HM`, `NO_BADGE`, `NO_POKEMON`, `READY` ; règles dans `data/world/field_moves.json` ; apprentissage par `tm_teach.gd` ; compatibilités `hms` 01 à 05 déjà dans `tm_compatibility.json` | Le J23 livre objets, capacités, apprentissage et entrées `surf` / `strength` ; les mécaniques de monde sont au J24 (§9) |
+| Eau | `GridWorld.is_water`, `can_enter` refuse l'eau ; légende `W` des grilles | Aucun état « sur l'eau » : **construit par le J24** (P-2 B) ; le J23 n'en a pas besoin |
+| Rochers | **aucun** objet poussable | **construits par le J24** (P-2 B) ; au J23, le rocher du Gardien est un obstacle fixe (§9.2) |
 | Badges | `data/badges.json` : `rainbow` et `soul` déclarés ; drapeaux `badge_<id>` ; aucun effet codé sauf Coupe → `badge_cascade` | Badge Âme : drapeau et scène seulement. **Aucun effet caché** (dossier 12) : pas de bonus de Vitesse RB |
 | Statuts | `StatusRules.KNOWN` : poison, paralysie, sommeil, brûlure, gel | **Toxik (poison grave) absent** ; il est obligatoire puisque la CT06 est la récompense (§10.4) |
 | Obstacles conditionnels | `FlagGate.blocking_cells` (J17) | Réutilisé pour fermer les bords « À venir » sur l'eau |
-| Sauvegarde | v7 ; `upgrade()` par version ; drapeaux `StoryFlags` ; autosave à l'arrivée sur une carte, en fin de combat, de scène, à la capture ; écriture immédiate à la mise en pause de l'appli | Le compteur Safari demande un champ neuf → **v8** (ou suivante) (§11, **S-20**) |
+| Sauvegarde | v7 ; `upgrade()` par version ; drapeaux `StoryFlags` ; autosave à l'arrivée sur une carte, en fin de combat, de scène, à la capture ; écriture immédiate à la mise en pause de l'appli | Le compteur Safari demande un champ neuf → **v8** (ou suivante) (§11, **N-20**) |
 | Argent | revenus répétables : Jackpot (J15) et vente à moitié prix (Pépite comprise) ; Dresseurs non re-combattables | §12.3 |
 
 ---
@@ -114,7 +122,7 @@ mode Safari) peut commencer avant.
 ### 2.2 Adaptation K26
 
 - **Géométrie RB 1:1 en nombre de cases** [D], **pas** l'échelle × 1,5 des routes : le budget de
-  500 pas n'a de sens que si les distances restent celles de RB. → **S-3**.
+  500 pas n'a de sens que si les distances restent celles de RB. → **N-3**.
 - Les liaisons deviennent des **raccords continus** quand deux zones se touchent (passage en bord de
   carte avec fondu, mécanisme existant) ; les quatre zones restent quatre cartes. [K26]
 - **Contrôle automatique** (`plan_check`) sur les grilles :
@@ -141,11 +149,11 @@ aux jalons précédents ; la grille fait foi.
 | **Porte du Safari** | nord de Parmanie | 8 × 6 ; deux employés au comptoir (accueil et paiement ; explication des zones) ; passage nord vers le Centre ; la zone de comptoir déclenche l'accueil à l'entrée et la question « Partir maintenant ? » à la sortie | RB |
 | **Maisons de repos** (× 4) | une par zone | 8 × 8 ; un ou deux PNJ à conseils ; **un seul intérieur peint**, réutilisé quatre fois [D] ; le compteur continue d'y tourner | RB |
 | **Maison Secrète** | zone Ouest, nord-ouest | 8 × 8 ; le **Pêcheur expert** remet la CS03 | RB |
-| **Maison du Gardien** | Parmanie | le Gardien (CS04) ; **un rocher** devant un Super Bonbon (premier usage de Force, §9.3) | RB |
+| **Maison du Gardien** | Parmanie (porte réservée par le J22, M-19) | le Gardien (CS04) ; **un rocher** devant un Super Bonbon : obstacle fixe au J23, poussable quand le J24 livre Force (§9.2) | RB |
 | **Arène de Koga** | Parmanie | 10 × 18 ; murs invisibles ; 6 Dresseurs ; Koga au centre-bas ; Guide et deux statues près de l'entrée (§10) | RB |
 
-La maison du Gardien et la porte du Safari ne servent qu'au J23 : si Parmanie est construite ailleurs
-(**S-1**), ce jalon ne pose que leurs **façades et portes** ; leurs intérieurs restent au J23 [D].
+Le J22 pose les façades et les portes réservées ; le J23 construit les intérieurs (Porte du Safari,
+maison du Gardien, Arène) et ouvre les portes.
 
 ---
 
@@ -163,7 +171,7 @@ La maison du Gardien et la porte du Safari ne servent qu'au J23 : si Parmanie es
 | Sortie volontaire | en revenant dans la Porte : « Partir maintenant ? » OUI → fin de visite (Balls perdues) ; NON → le joueur remonte d'un pas | RB |
 | Corde Sortie | autorisée ; termine la visite (Balls perdues) et ramène au lieu habituel de la Corde | RB |
 | Vol, Téléport hors combat | **refusés** dans le Parc (si ces usages existent au moment du J23) | RB |
-| Affichage | voir **S-7** : une petite pastille « pas · Balls » visible seulement dans le Parc [D] | K26 (RB : dans le menu Start) |
+| Affichage | voir **N-7** : une petite pastille « pas · Balls » visible seulement dans le Parc [D] | K26 (RB : dans le menu Start) |
 
 Les Safari Balls **ne sont pas des objets du Sac** : ce sont deux compteurs de visite (pas, Balls).
 Rien n'entre dans le Sac, rien n'en sort. [RB]
@@ -216,7 +224,7 @@ toujours.
 En RB, la Safari Ball utilise **le calcul de l'Ultra Ball**. Le projet calcule les captures avec la
 formule G3/G4 : la Safari Ball y prend **le multiplicateur de l'Ultra Ball (× 2)** [D], appliqué au taux
 de l'espèce **modifié par l'appât ou le caillou** (§5.2). Les statuts ne jouent pas (le joueur ne peut
-pas en infliger). → **S-5** (alternative : × 1,5 comme RFVF).
+pas en infliger). → **N-5** (alternative : × 1,5 comme RFVF).
 
 ### 5.5 Textes de combat
 
@@ -230,7 +238,7 @@ Voir §8, textes 20 à 29.
 
 Précédent J12 / J15 (« les deux versions sont réunies ») : **Insécateur et Scarabrute sont tous les
 deux présents** ; les lignées Nidoran ♂ et ♀ se partagent les emplacements que Rouge et Bleu leur
-donnent séparément [D, **S-4**].
+donnent séparément [D, **N-4**].
 
 ### 6.2 Tables RB (herbe ; taux RB 30/256 par pas, ≈ 11,7 %)
 
@@ -259,16 +267,22 @@ de la tension du Parc. [RB]
 
 ### 6.3 Pêche et eau
 
-- RB : Canne, Super Canne et Méga Canne dans le Parc (Minidraco, Psykokwak, Ramoloss, Krabby à la
-  Méga Canne) ; aucune rencontre en surfant.
-- **Le projet n'a pas la pêche.** Proposition : **pas de pêche au J23** ; les étangs restent décor ;
-  **Minidraco n'est donc pas obtenable au J23** (il l'était aussi au Casino, retiré au J20). → **S-6**.
+- RB : on pêche dans les étangs du Parc ; **la rencontre pêchée est aussi une rencontre Safari**
+  (Balls, appât, caillou). Canne : Magicarpe 5 ; Super Canne : Poissirène ou Ptitard 10 ; Méga Canne
+  (table du Parc) : **Minidraco**, Krabby, Psykokwak, Ramoloss 15, une touche sur deux. Aucune
+  rencontre en surfant.
+- Le J22 conçoit la pêche (M-8 à M-11). Proposition [**N-6**] : si le J22 la livre, les **berges des
+  étangs du Parc sont pêchables** (cases marquées), avec les tables RB ; la rencontre suit les règles
+  Safari ; un lancer de canne **ne coûte pas de pas**. Minidraco devient le rare caché du Parc.
+- Sinon (pêche absente ou reportée), les étangs restent décor et Minidraco attend la pêche.
+- **Pas d'eau surfable dans le Parc au J23** (P-3 B).
 
 ### 6.4 Espèces à créer (données, Pokédex, art)
 
 | Espèce | Rôle au J23 | État dans le dépôt |
 |---|---|---|
 | Leveinard, Insécateur, Scarabrute, Tauros, Mimitoss, Doduo | Parc | **absentes partout** |
+| Minidraco, Psykokwak, Ramoloss | Parc, Méga Canne (si **N-6**) | absentes (Krabby, Magicarpe, Poissirène, Ptitard : prévus au J22) |
 | Aéromite | Parc (et évolution de Mimitoss 31) | absente |
 | Dodrio | évolution de Doduo (31) | absente |
 | Rhinoféros | évolution de Rhinocorne (42), atteignable au J23 | absente |
@@ -297,10 +311,10 @@ seulement pour les compagnons (règle existante).
 | Ouest (caché) | Rappel | Rappel | |
 | Porte (caché) | Pépite inaccessible | **retirée** | bizarrerie RB |
 | Maison Secrète | CS03 Surf | CS03 Surf, une fois | §9 |
-| Maison du Gardien | CS04 Force (contre les Dents d'Or) ; Super Bonbon derrière un rocher | idem | §9.3 |
+| Maison du Gardien | CS04 Force (contre les Dents d'Or) ; Super Bonbon derrière un rocher | CS04 ; Super Bonbon **posé**, atteignable quand le J24 rend les rochers poussables | §9.2 |
 | Arène | Badge Âme, CT06 Toxik | idem | §10 |
 
-Arbitrage global des remplacements : **S-19**. Tous les objets uniques ramassés **restent acquis**
+Arbitrage global des remplacements : **N-19**. Tous les objets uniques ramassés **restent acquis**
 d'une visite à l'autre (drapeau de ramassage existant) [RB].
 
 ---
@@ -365,17 +379,10 @@ d'une visite à l'autre (drapeau de ramassage existant) [RB].
 44. Après, en lui reparlant : « Le ninja se fond dans l'ombre. » / « Va, et ne sous-estime pas le poison. »
 45. Mur invisible, au contact (première fois seulement) : aucun texte [D] — retour haptique et léger frémissement seulement (§10.1).
 
-**Surf et Force dans le monde** (modèle des ARB-00 à 04 de Coupe)
-46. Eau, sans CS03 : « L'eau est calme et profonde. »
-47. Eau, sans Badge Âme : « Sans le Badge Âme, {pokemon} n'ose pas aller sur l'eau. »
-48. Eau, aucun compatible : « Aucun Pokémon de l'équipe » / « ne peut nager. »
-49. Eau, prêt : « {pokemon} peut nager ici. » / « Utiliser Surf ? » → **SURFER** / **RESTER**
-50. Montée : « {pokemon} utilise Surf ! »
-51. Rocher, sans CS04 : « Un gros rocher. » / « Il faudrait beaucoup de force pour le pousser. »
-52. Rocher, sans Badge Prisme : « Sans le Badge Prisme, {pokemon} ne peut pas pousser ce rocher. »
-53. Rocher, aucun compatible : « Aucun Pokémon de l'équipe » / « ne peut pousser ce rocher. »
-54. Rocher, prêt : « {pokemon} peut déplacer ce rocher. » / « Utiliser Force ? » → **POUSSER** / **LAISSER**
-55. Activation : « {pokemon} utilise Force ! » / « Les rochers peuvent être poussés. »
+**Rocher du Gardien** (le reste des textes de Surf et de Force dans le monde appartient au J24)
+46. Rocher, au J23 : « Un gros rocher. » / « Il faudrait beaucoup de force pour le pousser. »
+47. à 55. *Retirés* (Surf et Force dans le monde : J24, P-2 B). Numéros laissés vides pour ne pas
+    décaler la suite.
 
 **Sac**
 56. CS03 : « CS03 — SURF » / « Permet de nager sur l'eau. » / « Enseigne aussi une attaque. »
@@ -389,72 +396,38 @@ si le jalon précédent n'en pose pas) ; « rapporter ses dents au Gardien. » (
 
 ---
 
-## 9. CS03 Surf et CS04 Force : monde et combat
+## 9. CS03 Surf et CS04 Force : objets, combat, données
 
-### 9.1 Règles communes (modèle hybride de Coupe, J16)
+> **Partage avec le J24 (P-2 B, tranché le 2026-10-16)** : le J23 livre les **objets, les capacités,
+> l'apprentissage hybride et les entrées de données** ; le J24 construit le **mode Surf dans le monde**
+> (monture, verbe SURFER, eau surfable par carte, rencontres sur l'eau, transitions) et les **rochers
+> de Force** (poussée, trous, courants), là où ils servent pour la première fois. Le critère de fin
+> « obtenir Surf et Force » reste vrai.
 
-- La CS est un objet de catégorie CS, **jamais consommée**, remise **une fois** (`got_hm03`,
-  `got_hm04`). [K26, J16]
-- Usage dans le monde : possession de la CS + badge + au moins un Pokémon **compatible** dans
-  l'équipe (compatible = connaît l'attaque ou peut l'apprendre ; un Pokémon K.O. peut s'en servir ;
-  le compagnon est préféré). **Aucun emplacement de combat** n'est pris. [K26, J16]
-- En combat : la CS s'enseigne comme une CT réutilisable, prend un emplacement normal, s'oublie
-  normalement. [K26, J16]
-- Conditions de badge **RB** (confirmées dans `start_sub_menus.asm`) : **Surf = Badge Âme**,
-  **Force = Badge Prisme** (`badge_soul`, `badge_rainbow`). [RB]
-- Capacités de combat (à créer) : **Surf** — Eau, 95, 100 %, 15 PP ; **Force** — Normal, 80,
+### 9.1 Ce que livre le J23
+
+- **Objets** : `hm03` « CS03 — Surf » (Maison Secrète) et `hm04` « CS04 — Force » (Gardien), catégorie
+  CS, **jamais consommées**, remises **une fois** (`got_hm03`, `got_hm04`). [K26, J16]
+- **Capacités de combat** (à créer) : **Surf** — Eau, 95, 100 %, 15 PP ; **Force** — Normal, 80,
   100 %, 15 PP. [RB]
-- Compatibilités : déjà générées (`tm_compatibility.json`, `hms` 03 et 04) ; à régénérer après la
-  fusion des jalons 16 à 22 et l'ajout des espèces du §6.4.
+- **Apprentissage hybride** : la CS s'enseigne comme une CT réutilisable (`tm_teach.gd`), prend un
+  emplacement normal, s'oublie normalement. [K26, J16]
+- **Entrées `data/world/field_moves.json`** : `"surf": { "hm": "hm03", "badge": "badge_soul" }` et
+  `"strength": { "hm": "hm04", "badge": "badge_rainbow" }` (conditions **RB**, confirmées dans
+  `start_sub_menus.asm`). Elles ne sont lues par aucun déclencheur de monde avant le J24.
+- **Compatibilités** : `tm_compatibility.json` (`hms` 03 et 04) **régénéré** après la fusion des
+  jalons 16 à 22 et l'ajout des espèces du §6.4.
+- **Textes du Sac** (56, 57) et du Pêcheur expert / Gardien (18, 19, 33, 34).
 
-### 9.2 Surf dans le monde (mécanique nouvelle)
+### 9.2 Ce qui n'est pas au J23
 
-- **Monter** : face à une case d'eau **navigable** (§9.2 bis), interaction → texte 49 → SURFER : le
-  joueur passe sur l'eau, porté par une **monture peinte** (**S-11**).
-- **Se déplacer** : grille habituelle ; l'eau est praticable, la terre l'est aussi (on descend). Pas
-  de course distincte [D] : vitesse = vitesse de course à pied. Rebords, rochers et PNJ restent
-  bloquants.
-- **Descendre** : avancer vers une case de terre praticable ; la monture disparaît.
-- **Compagnon** : rentre dans sa Ball pendant le Surf, ressort à la descente (règle des intérieurs du
-  J11) [D, **S-12**].
-- **Rencontres sur l'eau** : aucune au J23 (aucune table d'eau ; RB : taux 0 dans le Parc). Les
-  tables d'eau (Tentacool…) appartiennent aux jalons de la mer. [RB / D]
-- **Sauvegarde** : l'état « sur l'eau » **se déduit de la case** au chargement (une case d'eau = sur
-  l'eau) : aucun champ nouveau [D]. Si l'équipe n'a plus de nageur (cas impossible à provoquer sans
-  PC, mais testé), le joueur reste sur l'eau jusqu'à la terre la plus proche : jamais bloqué.
-
-### 9.2 bis Quelle eau devient navigable au J23 ?
-
-Toutes les cartes existantes ont de l'eau (`W`) : Carmin (mer), Azuria, Routes 24–25, Route 6,
-Bourg Palette (mer vers la Route 21 et Cramois'Île en RB)… Ouvrir toute l'eau d'un coup ferait
-**sortir le joueur des cartes construites** (et sauter des séquences). Proposition [D, **S-10**] :
-
-- l'eau est navigable **zone par zone**, déclarée dans les données de chaque carte ;
-- le J23 n'ouvre que l'eau de **ses** cartes (étangs du Parc, plan d'eau et littoral de Parmanie),
-  avec les bords de mer fermés « À venir » (mécanisme existant) vers les Routes 19–20 ;
-- l'eau des cartes plus anciennes reste bloquée jusqu'au jalon qui l'ouvre (mer de Carmin, Bourg
-  Palette → Route 21, Azuria → Caverne Azurée : post-game).
-
-Conséquence assumée : au J23, Surf a **peu d'usages** (pas de récompense cachée sur l'eau sans
-mécanique, mais un ou deux objets visibles sur un îlot des étangs du Parc ou de Parmanie [D]). La
-« liberté » de la décision 7 vaut pour les zones rendues accessibles **par les badges et les jalons
-construits**.
-
-### 9.3 Force dans le monde (mécanique nouvelle)
-
-- **Rocher** : objet de la grille, bloquant, une case. [RB]
-- **Activer** : au premier contact, texte 54 → POUSSER : Force est **active jusqu'à la sortie de la
-  carte** ; ensuite, marcher contre un rocher le pousse d'une case si la case d'arrivée est libre
-  (pas d'eau, de rocher, de PNJ, de porte, de raccord ni de déclencheur). [RB]
-- **Remise à zéro** : les rochers reviennent à leur place quand on quitte la carte. [RB] Aucune
-  sauvegarde de position, aucune possibilité de se bloquer (le joueur peut toujours sortir et
-  revenir).
-- **Mise en scène** : poussière et léger tremblement ; le Pokémon qui aide n'est **pas** dessiné
-  (vision : « un Pokémon adapté aide » → reporté à la phase DA) [D].
-- **Usage au J23** : le rocher de la maison du Gardien (Super Bonbon), seul usage RB à ce stade ;
-  carte de QA provisoire `qa_force` retirée à la clôture (modèle de `qa_flash`). [RB / D]
-
----
+- Aucune eau surfable au J23, ni dans le Parc ni à Parmanie (la côte sud de Parmanie s'ouvre au J24,
+  P-3 B).
+- **Rocher du Gardien** : posé au J23 comme **obstacle fixe** devant le Super Bonbon, avec le texte 46 ;
+  le J24 le rend poussable (son premier rocher de « monde construit »). Le Super Bonbon reste
+  inaccessible jusque-là [D, **N-13**].
+- Après le Badge Âme, aucun texte ne promet la mer (le Guide dit seulement ce que permet le badge,
+  texte 37).
 
 ## 10. Arène de Koga, Dresseurs et Champion
 
@@ -463,7 +436,7 @@ construits**.
 - **Géométrie RB 1:1** : 10 × 18 cases ; entrée en bas ; **Koga au centre-bas** (4, 10), pas au fond ;
   murs invisibles sur presque toute la moitié haute ; Guide et deux statues près de l'entrée. [RB]
 - **Les murs bloquent** comme des murs ; ils ne disparaissent pas après la victoire. [RB]
-- **Indices lisibles sur téléphone** [D, **S-15**], du plus discret au plus net :
+- **Indices lisibles sur téléphone** [D, **N-15**], du plus discret au plus net :
   1. **au sol** : le parquet change très légèrement de sens ou de jointure sous chaque mur (visible
      si on le cherche, invisible au premier coup d'œil) ;
   2. **au contact** : retour haptique court, petit son mat, et le mur **frémit** 0,4 s (reflet
@@ -514,7 +487,7 @@ aussi prévu à la Sylphe du J22).
 
 - **Toxik** : Poison, statut, précision 85 %, 10 PP. [RB]
 - **Poison grave** : dégâts N/16 des PV max, N = 1, 2, 3… à chaque fin de tour. [RB]
-- **Particularités RB** proposées [D, **S-14**] : le compteur repart à zéro et le poison grave
+- **Particularités RB** proposées [D, **N-14**] : le compteur repart à zéro et le poison grave
   redevient **poison simple** quand le Pokémon est **changé** ou **à la fin du combat**. L'interaction
   RB avec Vampigraine **n'est pas** reprise.
 - Hors combat : comme le poison simple (aucun effet, règle du J11).
@@ -543,8 +516,8 @@ safari = { active: bool, steps_left: int, balls_left: int }
 ```
 
 - Il change le schéma : **v8** (ou la version suivant celle des J16–J22 si l'une l'a déjà changée),
-  migration : `active = false`. → **S-20**.
-- Position du joueur, état « sur l'eau » et rochers : **aucun champ** (§9.2, §9.3).
+  migration : `active = false`. → **N-20**.
+- Position du joueur : aucun champ nouveau ; l'état « sur l'eau » et les rochers relèvent du J24.
 
 ---
 
@@ -561,7 +534,7 @@ safari = { active: bool, steps_left: int, balls_left: int }
 | Dernière Ball qui capture | capture enregistrée, puis fin de visite au retour sur la carte [RB] |
 | Corde Sortie | fin de visite, Balls perdues [RB] |
 | Application tuée en marchant | reprise à la dernière sauvegarde (arrivée sur la carte, fin de combat, capture, mise en pause) ; les pas faits depuis peuvent être rendus : **accepté** [D] |
-| Application tuée en pleine rencontre | reprise avant la rencontre, Balls de cette rencontre rendues, capture perdue : **accepté**, comme pour toute rencontre sauvage du jeu [D, **S-9**] |
+| Application tuée en pleine rencontre | reprise avant la rencontre, Balls de cette rencontre rendues, capture perdue : **accepté**, comme pour toute rencontre sauvage du jeu [D, **N-9**] |
 | Visite active au chargement mais joueur hors du Parc (sauvegarde incohérente) | visite close (`active = false`), sans remboursement |
 | Joueur dans le Parc mais `active = false` (ancienne sauvegarde, bug) | renvoyé à la Porte avec un message neutre, sans débit |
 | Défaite | impossible dans le Parc (aucun combat) |
@@ -571,12 +544,10 @@ safari = { active: bool, steps_left: int, balls_left: int }
 
 | Cas | Comportement |
 |---|---|
-| CS03 reçue sans Badge Âme | texte 47 ; aucune autre conséquence |
-| CS04 reçue sans Badge Prisme (J20 non fini) | texte 52 ; le Super Bonbon reste accessible plus tard |
+| CS03 reçue sans Badge Âme | aucune conséquence au J23 (le J24 gère l'eau) |
+| CS04 reçue sans Badge Prisme | aucune conséquence au J23 ; Force s'enseigne quand même en combat |
 | Dents d'Or ramassées, visite terminée | elles restent dans le Sac [RB] |
 | Joueur qui parle au Gardien avant les Dents d'Or | texte 30, OUI/NON sans effet [RB] |
-| Sauvegarde sur l'eau | reprise sur l'eau (case d'eau = sur l'eau) |
-| Rocher poussé puis sortie de la carte | rocher remis à sa place [RB] |
 | CT06 non remise (interruption) | rattrapage au dialogue suivant (texte 43) |
 | Koga perdu | retour au dernier Centre, sans perte (règle du projet) ; Koga reste affrontable |
 
@@ -589,7 +560,7 @@ safari = { active: bool, steps_left: int, balls_left: int }
 - Une visite suffit pour Surf **et** Force (contrôle des 300 pas, §2.2).
 - Proposition : **aucune règle propre au Safari** (conforme à la V2) ; un test de données vérifie
   qu'entre la dernière Arène et la Porte, le joueur a au moins N objets vendables ou Dresseurs non
-  battus valant ≥ 500 ₽ [D, **S-17**].
+  battus valant ≥ 500 ₽ [D, **N-17**].
 
 ### 12.4 Migration
 
@@ -605,13 +576,12 @@ safari = { active: bool, steps_left: int, balls_left: int }
   (avec les jointures de sol qui trahissent les murs).
 - Intérieurs : maison de repos (**un seul**, réutilisé × 4), Maison Secrète, maison du Gardien (si
   Parmanie ne la fournit pas).
-- Accessoires : rocher de Force, statue de Kangourex, panneaux du Parc, haies, îlots.
+- Accessoires : rocher (même image que celui du J24), statue de Kangourex, panneaux du Parc, haies, îlots.
 
 **Personnages**
 - Koga (monde + carte de Champion) ; Gardien ; Pêcheur expert ; employés de la Porte (réutiliser un
   modèle d'employé existant [D]) ; Jongleur, Dompteur ; trois visiteurs des maisons de repos
   (réutilisés).
-- **Monture de Surf** : une planche peinte (4 directions, flottement) [D, **S-11**].
 - **Dos du joueur en combat** avec un geste de lancer (Ball, appât, caillou : un seul geste, trois
   petits objets dessinés) — vérifier ce qui existe pour le début des combats de Dresseurs.
 
@@ -622,7 +592,7 @@ safari = { active: bool, steps_left: int, balls_left: int }
 
 **Fonds de combat CB.3** (`data/battle/decors.json`)
 - **Parc Safari** : un décor par zone [D] (prairie et étang ; plaine sèche ; colline ; marais), ou
-  un décor commun avec variantes de lumière (**S-18**).
+  un décor commun avec variantes de lumière (**N-18**).
 - **Arène de Koga** : salle sombre, lanternes.
 - Aucun décor « eau » au J23 (pas de rencontre en surfant).
 
@@ -630,19 +600,20 @@ safari = { active: bool, steps_left: int, balls_left: int }
 
 ## 14. Découpage 23.0 à 23F
 
-Le découpage de la V2 est repris ; deux ajustements [D, **S-21**] :
+Le découpage de la V2 est repris ; deux ajustements [D, **N-21**] :
 - **23A** contient le nouveau champ de sauvegarde : il est validé **seul** sur ce point (règle
   « système risqué ») ;
-- Surf et Force restent ensemble en **23D** (deux systèmes, pas trois).
+- **23D** n'a plus de moteur de monde (P-2 B) : objets, capacités, données. Il est assez petit pour
+  être **fusionné avec 23C** dans une même validation.
 
 | Lot | Contenu | Prérequis | S24 |
 |---|---|---|---|
-| **23.0** | Présent dossier validé ; fusion J16–J22 dans `main` ; grilles `safari_*.txt` et Arène ; vues générales ; données isolées (espèces, attaques Surf, Force, Toxik, Bomb'Œuf, Reflet) ; logique pure du mode Safari (`SafariRules` : compteurs, appât, caillou, fuite, Ball) testée hors scène | S-1 tranché | non |
+| **23.0** | Présent dossier validé ; fusion J16–J22 dans `main` ; grilles `safari_*.txt` et Arène ; vues générales ; données isolées (espèces, attaques Surf, Force, Toxik, Bomb'Œuf, Reflet) ; logique pure du mode Safari (`SafariRules` : compteurs, appât, caillou, fuite, Ball) testée hors scène | passes J22 et J23 tranchées | non |
 | **23A** | Porte, péage, quatre zones, raccords, maisons de repos, objets, compteur de pas et de Balls, pastille, fin de visite, sauvegarde v8 | 23.0, Parmanie | oui (sauvegarde : tuer l'appli à chaque étape) |
 | **23B** | Rencontres Safari : tables, écran et menu Safari, appât, caillou, fuite, capture, Pokédex, fin par les Balls | 23A | oui |
-| **23C** | Maison Secrète et CS03 ; Dents d'Or ; Gardien et CS04 ; réconciliations | 23A | regroupé avec 23D |
-| **23D** | Surf (monture, montée, descente, eau navigable, compagnon) et Force (rochers, maison du Gardien, `qa_force`) ; capacités en combat ; compatibilités | 23C, Badge Prisme (J20) | oui |
-| **23E** | Arène : murs invisibles et indices, 6 Dresseurs, Koga, Toxik, Badge Âme, CT06 ; Surf débloqué après la victoire | 23D | oui |
+| **23C** | Maison Secrète et CS03 ; Dents d'Or ; Gardien et CS04 ; rocher fixe ; réconciliations | 23A | regroupé avec 23D |
+| **23D** | Capacités Surf et Force en combat ; apprentissage hybride ; entrées `field_moves.json` ; compatibilités régénérées (le mode Surf et les rochers : J24) | 23C | oui, avec 23C |
+| **23E** | Arène : murs invisibles et indices, 6 Dresseurs, Koga, Toxik, Badge Âme, CT06 | 23D | oui |
 | **23F** | Simulation et équilibrage (Koga, Dresseurs), non-régression, sauvegarde / rechargement à chaque transition, retrait des cartes de QA, QA de bout en bout | tout | oui (clôture) |
 
 ---
@@ -657,9 +628,9 @@ Le découpage de la V2 est repris ; deux ajustements [D, **S-21**] :
 - Compteur : pivot, collision, dialogue et menu ne comptent pas ; porte et raccord comptent ; fin au
   pas qui suit le zéro ; fin par les Balls ; Corde Sortie.
 - Tables : poids et niveaux RB, partage des versions, Insécateur et Scarabrute présents.
-- Field moves : états `NO_HM` / `NO_BADGE` / `NO_POKEMON` / `READY` pour `surf` et `strength`.
-- Surf : montée, descente, eau non navigable refusée, bords « À venir », état déduit au chargement.
-- Force : poussée autorisée / refusée (eau, rocher, PNJ, porte), remise à zéro à la sortie.
+- Field moves : états `NO_HM` / `NO_BADGE` / `NO_POKEMON` / `READY` calculés pour `surf` et
+  `strength` (sans déclencheur de monde) ; apprentissage et oubli de Surf et Force en combat.
+- Pêche dans le Parc (si N-6) : rencontre pêchée = rencontre Safari ; le lancer ne coûte pas de pas.
 - Toxik : N/16 croissant, remise à zéro au changement et en fin de combat, précision 85 %.
 - Sauvegarde : migration v7 → v8 ; aller-retour du champ `safari` ; réconciliations CS03, CS04,
   Dents d'Or ; aucune duplication après interruption à chaque point d'écriture.
@@ -671,45 +642,45 @@ Le découpage de la V2 est repris ; deux ajustements [D, **S-21**] :
   sortie volontaire ; **tuer l'appli** dans chaque zone et dans une maison, puis reprendre.
 - 23B : lisibilité du menu Safari ; 10 rencontres avec appâts et cailloux ; capture avec équipe
   pleine ; dernière Ball.
-- 23C–23D : remise des CS, Gardien ; surfer sur un étang, descendre, compagnon ; pousser le rocher,
-  sortir, revenir.
+- 23C–23D : remise des CS, Gardien, rocher fixe ; apprendre Surf et Force à un Pokémon, s'en servir
+  en combat, les oublier.
 - 23E : traverser l'Arène **sans indication extérieure** (le testeur ne connaît pas la carte) :
-  temps et nombre de chocs notés ; combat de Koga ; Badge Âme puis Surf.
+  temps et nombre de chocs notés ; combat de Koga ; Badge Âme et CT06.
 - Captures d'écran relues ; fps dans le Parc (quatre grandes cartes peintes).
 
 ---
 
 ## 16. Questions ouvertes (à trancher par numéro)
 
-> Réponse attendue sous la forme « S-1 : A, S-2 ok, … ». **Reco** = ma recommandation.
+> Réponse attendue sous la forme « N-1 ok, N-6 : B, … ». **Reco** = ma recommandation. Les numéros
+> laissés vides correspondent à des questions résolues depuis la première version.
 
 | # | Question | Reco |
 |---|---|---|
-| **S-1** | **Quel jalon construit Parmanie et les Routes 12 sud à 15 ?** Le dépôt range Safrania au J22 (ton choix du 2026-10-15) ; Parmanie n'a pas de jalon. (A) un **jalon intermédiaire** « Routes 12 sud à 15 et Parmanie » avant le J23 (Piste Cyclable 16–18 plus tard) ; (B) le J22 devient Parmanie et Safrania passe après ; (C) le J23 absorbe Parmanie (lot 23.P) | **A** si Safrania reste au J22 ; sinon B. C alourdit trop le J23 |
-| **S-2** | Ordre Koga / Morgane et niveaux : si Safrania est faite avant, le joueur arrive vers N40. Niveaux RB (Koga 37–43) comme référence, ajustés par simulation | ok |
-| **S-3** | Cartes du Parc à l'échelle **RB 1:1** (et non × 1,5) pour que 500 pas gardent leur sens | 1:1 |
-| **S-4** | Versions réunies : Insécateur **et** Scarabrute ; Nidoran ♂ et ♀ à parts égales (précédent J12 / J15) | ok |
-| **S-5** | Safari Ball = multiplicateur de l'**Ultra Ball (× 2)** dans la formule du projet (RB : « comme l'Ultra Ball ») ; alternative × 1,5 (RFVF). Appât, caillou et fuite exactement RB, particularités comprises | × 2 |
-| **S-6** | Pas de pêche au J23 (le système n'existe pas) ; Minidraco reporté au jalon de la pêche | ok |
-| **S-7** | Pastille discrète « pas · Balls » visible seulement dans le Parc, sans alerte (RB : chiffres dans le menu Start) | pastille, sans alerte |
-| **S-8** | Fin de visite au **pas qui suit** le zéro (RB), pour pouvoir encore parler ou ramasser | ok |
-| **S-9** | Application tuée en pleine rencontre Safari : reprise avant la rencontre, Balls rendues (comme toute rencontre) | accepté |
-| **S-10** | Eau navigable **zone par zone** ; le J23 n'ouvre que l'eau de ses cartes ; l'eau ancienne reste bloquée jusqu'à son jalon | ok |
-| **S-11** | Monture de Surf : **une monture peinte générique** (comme RB et RFVF) plutôt qu'une par espèce | générique |
-| **S-12** | Compagnon rangé dans sa Ball pendant le Surf | ok |
-| **S-13** | Force RB : activation par carte, remise à zéro des rochers à la sortie ; seul usage au J23 : maison du Gardien | ok |
-| **S-14** | Toxik RB : remise à zéro au changement et en fin de combat (devient poison simple) ; sans l'interaction avec Vampigraine | ok |
-| **S-15** | Murs de l'Arène : jointures de sol très légères + frémissement et retour haptique au contact ; rien de permanent ; les murs restent après la victoire | ok |
-| **S-16** | Arène : 6 Dresseurs et positions RB, Koga au centre-bas, Guide à l'entrée | ok |
-| **S-17** | Argent : **aucune règle Safari** ; Pépite dans la zone Centre ; test de données « ≥ 500 ₽ atteignables » | ok |
-| **S-18** | Fonds de combat du Parc : un par zone (4) ou un commun avec variantes de lumière | un commun + 4 lumières (coût) |
-| **S-19** | Objets RB absents du jeu : Potion Max → Hyper Potion, Rappel Max → Rappel, Carbone → Super Bonbon, Protéine → Rappel ; **CT37 Bomb'Œuf** et **CT32 Reflet** créées (capacités simples) | ok |
-| **S-20** | Visite Safari sauvegardée (champ `safari`, **v8**) plutôt que perdue au rechargement | ok |
-| **S-21** | Découpage de la V2 conservé ; 23A validé seul pour la sauvegarde ; Surf + Force en 23D | ok |
-| **S-22** | Évolutions atteignables au J23 dans les données : Dodrio, Aéromite, Rhinoféros, Noadkoko, Smogogo, Grotadmorv | ok |
-| **S-23** | Le dossier 24 (J21) range encore « Route 12 sud, 13–15, Parmanie » au J22 : corriger après S-1, avec la session du J21 | ok |
-
----
+| **N-1** | ~~Quel jalon construit Parmanie ?~~ **Résolu** : le J22 (recadrage du 2026-10-16). Reste à trancher côté J22 : M-19 (maison du Gardien réservée au J23) | M-19 B |
+| **N-2** | Koga devient le **5e badge** (ordre RB). Niveaux RB (Koga 37–43, Dresseurs 31–38) comme référence, ajustés par simulation (≤ 80 % au premier essai, grand combat 35–60 %) | ok |
+| **N-3** | Cartes du Parc à l'échelle **RB 1:1** (et non × 1,5 comme Parmanie) pour que 500 pas gardent leur sens ; contrôle « une visite suffit » ≤ 300 pas | 1:1 |
+| **N-4** | Versions réunies : Insécateur **et** Scarabrute ; Nidoran ♂ et ♀ à parts égales (précédent J12 / J15) | ok |
+| **N-5** | Safari Ball = multiplicateur de l'**Ultra Ball (× 2)** dans la formule du projet (RB : « comme l'Ultra Ball ») ; alternative × 1,5 (RFVF). Appât, caillou et fuite exactement RB, particularités comprises | × 2 |
+| **N-6** | Pêche dans le Parc : **A** étangs pêchables avec les tables RB (Minidraco à la Méga Canne), rencontre Safari, le lancer ne coûte pas de pas — si le J22 livre la pêche · **B** pas de pêche au J23 | **A** |
+| **N-7** | Pastille discrète « pas · Balls » visible seulement dans le Parc, sans alerte (RB : chiffres dans le menu Start) | pastille, sans alerte |
+| **N-8** | Fin de visite au **pas qui suit** le zéro (RB), pour pouvoir encore parler ou ramasser | ok |
+| **N-9** | Application tuée en pleine rencontre Safari : reprise avant la rencontre, Balls rendues (comme toute rencontre) | accepté |
+| N-10 | ~~Eau navigable au J23~~ **Résolu** : aucune (P-3 B) | — |
+| N-11 | ~~Monture de Surf~~ **Résolu** : J24 | — |
+| N-12 | ~~Compagnon pendant le Surf~~ **Résolu** : J24 | — |
+| **N-13** | Rocher du Gardien : obstacle fixe au J23, Super Bonbon atteignable seulement après le J24 (pas de rocher « provisoire » sans Force) | ok |
+| **N-14** | Toxik RB : remise à zéro au changement et en fin de combat (devient poison simple) ; sans l'interaction avec Vampigraine | ok |
+| **N-15** | Murs de l'Arène : jointures de sol très légères + frémissement et retour haptique au contact ; rien de permanent ; les murs restent après la victoire | ok |
+| **N-16** | Arène : 6 Dresseurs et positions RB, Koga au centre-bas, Guide à l'entrée | ok |
+| **N-17** | Argent : **aucune règle Safari** ; Pépite dans la zone Centre ; test de données « ≥ 500 ₽ atteignables » | ok |
+| **N-18** | Fonds de combat du Parc : un par zone (4) ou un commun avec variantes de lumière | un commun + 4 lumières (coût) |
+| **N-19** | Objets RB absents du jeu : Potion Max → Hyper Potion, Rappel Max → Rappel, Carbone → Super Bonbon, Protéine → Rappel ; **CT37 Bomb'Œuf** et **CT32 Reflet** créées (capacités simples). À aligner avec M-16 du J22 (vitamines) | ok |
+| **N-20** | Visite Safari sauvegardée (champ `safari`, **v8** ou suivante) plutôt que perdue au rechargement | ok |
+| **N-21** | Découpage de la V2 conservé ; 23A validé seul pour la sauvegarde ; 23C et 23D validés ensemble (23D sans moteur de monde) | ok |
+| **N-22** | Évolutions atteignables au J23 dans les données : Dodrio, Aéromite, Rhinoféros, Noadkoko, Smogogo, Grotadmorv | ok |
+| **N-23** | Le dossier 24 (J21) range encore « Route 12 sud, 13–15, Parmanie » au J22 : désormais juste ; seule la mention de Safrania est à corriger côté J22 | ok |
+| **N-24** | **CS02 Vol** : la passe du J22 (M-18 C) réserve la maison de Vol « au J23 ». Ce n'est pas dans le périmètre verrouillé du J23 (Safari, CS03, CS04, Koga). **A** Vol reste hors du J23 ; la porte reste réservée pour un jalon des CS / du voyage rapide · **B** le J23 l'ajoute (objet, combat, système de Vol) | **A** : le Vol est un système à part entière (voyage rapide, carte), il alourdirait le J23 |
 
 ## Annexe — Ce que la V2 change par rapport à RB (récapitulatif)
 
@@ -719,9 +690,9 @@ Le découpage de la V2 est repris ; deux ajustements [D, **S-21**] :
 | Safari Balls | compteur de visite | idem |
 | Pas | 502 (2 scriptés) | 500 joueur |
 | BOÎTE pleine | lancer refusé | n'existe pas (stockage illimité) |
-| Pêche dans le Parc | 3 cannes, Minidraco | reportée |
+| Pêche dans le Parc | 3 cannes, Minidraco | avec la pêche du J22 (N-6) |
 | Badge Âme | Surf + bonus de Vitesse | Surf seulement (aucun effet caché) |
 | Flash | Badge Roche | sans badge (J17, déjà décidé) |
-| Objets absents du jeu | Potion Max, Carbone, Protéine, Rappel Max | remplacés (S-19) |
+| Objets absents du jeu | Potion Max, Carbone, Protéine, Rappel Max | remplacés (N-19) |
 | Murs invisibles | totalement invisibles | indices très légers (décision 6) |
-| Monture de Surf | sprite générique | monture peinte générique (S-11) |
+| Surf et Force dans le monde | dès la CS et le badge | objets et combat au J23, monde au J24 (P-2 B) |
