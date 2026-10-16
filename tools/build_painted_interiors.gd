@@ -1134,6 +1134,11 @@ func _build(room: Dictionary) -> Node2D:
 		point.set(&"dialogue_id", entry[3])
 		point.set(&"kind", entry[4])
 		point.set(&"facing", entry[5])
+		if entry.size() == 7:
+			# Jalon 16 (T12) : objet caché, cible tant que ces drapeaux sont bas (`got_<id>`).
+			var hidden_unless: Array[StringName] = []
+			hidden_unless.assign(entry[6])
+			point.set(&"unless_flags", hidden_unless)
 		if entry.size() > 7:
 			# Jalon 16 : objet à fouiller d'un puzzle d'interrupteurs ([puzzle, emplacement]).
 			point.set(&"puzzle", entry[6])
@@ -1591,6 +1596,9 @@ func _ss_anne_restaurant() -> Dictionary:
 	room["spawns"] = {"entrance": Vector2i(15, 6)}
 	room["warps"] = [_door("Door", Vector2i(16, 6), Vector2i.RIGHT, &"ss_anne_main_deck",
 		&"from_restaurant", Vector2i.RIGHT)]
+	# Objet caché : le comptoir de la cuisine, examiné depuis (11, 3) tourné vers le haut (T12).
+	room["interactables"] = [["HiddenPotion", Vector2i(11, 2), Vector2i.ONE,
+		&"ss_anne_hidden_3", EXAMINE, Vector2i.UP, [&"got_ss_anne_hidden_3"]]]
 	return room
 
 
@@ -1608,6 +1616,9 @@ func _ss_anne_lower_deck() -> Dictionary:
 		_door("DoorCabinB", Vector2i(10, 1), Vector2i.UP, &"ss_anne_cabin_b", &"entrance",
 			Vector2i.UP),
 	]
+	# Objet caché : la caisse (5, 6), examinée depuis (5, 5) tournée vers le bas (T12).
+	room["interactables"] = [["HiddenAntidote", Vector2i(5, 6), Vector2i.ONE,
+		&"ss_anne_hidden_2", EXAMINE, Vector2i.DOWN, [&"got_ss_anne_hidden_2"]]]
 	return room
 
 
@@ -1634,6 +1645,10 @@ func _ss_anne_cabin(letter: StringName, target: StringName, spawn: StringName) -
 		"ss_anne_cabine_%s.txt" % letter, ".X", Vector2i(12, 9), &"cabin")
 	room["spawns"] = {"entrance": Vector2i(5, 6)}
 	room["warps"] = _pewter_exits([Vector2i(5, 7), Vector2i(6, 7)], spawn, target)
+	if letter == &"b":
+		# Objet caché : l'armoire (10, 6), examinée depuis (9, 6) tournée vers la droite (T12).
+		room["interactables"] = [["HiddenAwakening", Vector2i(10, 6), Vector2i.ONE,
+			&"ss_anne_hidden_1", EXAMINE, Vector2i.RIGHT, [&"got_ss_anne_hidden_1"]]]
 	return room
 
 
