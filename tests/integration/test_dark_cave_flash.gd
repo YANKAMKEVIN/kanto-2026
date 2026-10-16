@@ -217,3 +217,41 @@ func test_mt_moon_has_no_veil_even_with_flash() -> void:
 	assert_false(_boot.get_darkness().is_dark(), "Mont Sélénite : jamais de voile")
 	assert_eq(_boot.get_flash_director().get_cue_count(), 0, "ni Flash")
 	assert_eq(_warnings(), 0, "ni avertissement")
+
+
+## Corde Sortie depuis la moitié sud du 1F (arrivée de l'échelle B) : devant l'entrée nord,
+## côté Route 10, tourné vers le sud (dossier 21 §5.6, I-11).
+func test_escape_rope_from_the_south_half_leads_to_the_north_entrance() -> void:
+	await _start("dark_cave_1f", "arrivee_b", "left", true)
+	assert_eq(_boot.get_map().map_id, &"dark_cave_1f")
+	assert_gt(_boot.get_player().get_cell().y, 31, "moitié sud")
+	var ropes := GameState.bag.count_of(ROPE)
+	assert_true(_boot.get_menu_director().open(), "le menu s'ouvre")
+	_boot.get_menu_director().request_item_use(ROPE)
+	await wait_process_frames(2)
+	await _close_dialogue()
+	await wait_until(func() -> bool: return _boot.get_map().map_id == &"route_10" \
+		and _boot.is_stable(), TIMEOUT)
+	assert_eq(_boot.get_player().get_cell(),
+		_boot.get_map().get_spawn_cell(&"from_dark_cave_n_w"), "devant l'entrée nord")
+	assert_eq(_boot.get_player().get_facing(), Vector2i.DOWN)
+	assert_eq(GameState.bag.count_of(ROPE), ropes - 1)
+	assert_false(_boot.get_darkness().is_dark(), "voile retiré")
+
+
+## G-1 Roger voit le joueur dans le premier couloir et engage le combat (sans Flash, sous le
+## voile : les personnages sont sous le voile, la bulle « ! » au-dessus).
+func test_roger_spots_the_player_under_the_veil() -> void:
+	await _start("dark_cave_1f", "from_route_10_n_w", "down", false)
+	await _close_dialogue()
+	var darkness := _boot.get_darkness()
+	assert_true(darkness.is_dark())
+	_boot.get_map().spawn_player_at(_boot.get_player(), Vector2i(27, 7), Vector2i.DOWN)
+	await wait_process_frames(3)
+	_dialogues.clear()
+	assert_true(_boot.get_player().script_step(Vector2i.DOWN), "pas dans sa vue")
+	await wait_until(func() -> bool: return &"dark_cave_roger_before" in _dialogues, TIMEOUT)
+	assert_true(&"dark_cave_roger_before" in _dialogues, "Roger engage (T-51)")
+	var roger := _boot.get_map().get_npc(&"g1_roger")
+	assert_not_null(roger)
+	assert_lt(roger.z_index, WorldLighting.Z_VEIL, "Roger sous le voile")
