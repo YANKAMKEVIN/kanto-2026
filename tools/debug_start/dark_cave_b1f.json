@@ -21,7 +21,9 @@
   "poison_unlocked",
   "pewter_arrived",
   "badge_boulder",
-  "got_hm05"
+  "got_hm05",
+  "route_9_entered",
+  "route_10_reached"
  ],
  "party": [
   {

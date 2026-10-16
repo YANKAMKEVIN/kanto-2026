@@ -20,7 +20,9 @@
   "pokedex_activated",
   "poison_unlocked",
   "pewter_arrived",
-  "badge_boulder"
+  "badge_boulder",
+  "route_9_entered",
+  "route_10_reached"
  ],
  "party": [
   {
