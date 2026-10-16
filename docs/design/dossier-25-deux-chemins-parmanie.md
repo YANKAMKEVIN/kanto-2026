@@ -138,8 +138,16 @@ dense, objets rares » (dossiers 01 et 07).
   depuis Carmin, la Route 11 bute sur lui. La Route 12 sud n'est accessible par aucun côté.
 - **Après** `snorlax_route_12_done` : boucle Carmin ↔ Route 11 ↔ Route 12 ↔ Lavanville, et accès sud.
 - Réveil, combat et issues : **inchangés** (dossier 24 §9, L-11, L-12).
-- La grille de la Route 12 (J21) et le Ronflex de la Route 11 (J17) sont modifiés **par la session
-  du J21** ; le J22 construit seulement la suite au sud du croisement.
+- **Fait par la session du J21** (confirmé par Kevin, `origin/jalon-21` `925ec9f3`, 2026-10-16) :
+  grille `tools/plans/route_12.txt` (39 × 102) ; tronc nord x 25..26 ; **Ronflex `ronflex_12`** 2 × 2
+  en (25..26, 93..94), `unless snorlax_route_12_done` ; bras ouest rangées 93..94, raccord
+  (0, 93..94) ↔ Route 11 (75, 14..15) ; tronc sud x 25..26 de la rangée 95 au bord ; **bord sud
+  `warp_sud` (25..26, 101)** `coming_soon=route_12_sud`, arrivée `from_route_12_sud` (25..26, 100) ;
+  cases `face_ronflex` nord, ouest et sud ; panneau du ponton en (24, 95). Contrôle
+  `tools/art/plan_check_j21.py`. Retrait du Ronflex de la Route 11 (J17) : T9 de `jalon-21.md`. Vue
+  peinte `reference/route-12-vue-generale-v1.png` refaite.
+- **Raccord du J22** : la Route 12 sud commence au bord `warp_sud` (25..26, 101) ; son arrivée nord
+  est sur 2 cases de large, alignée sur x 25..26.
 
 ## 6. La Bicyclette [V décision 4, M-4 à M-7]
 
