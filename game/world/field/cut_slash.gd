@@ -1,33 +1,44 @@
 class_name CutSlash
 extends Node2D
-## Effet de Coupe **provisoire** (jalon 16) : un trait de lame blanc qui balaie l'obstacle en
-## diagonale puis s'efface. Dessiné en code en attendant l'art `FX_COUPE` (série 18), qui le
-## remplacera au T10. Deux nœuds au plus (celui-ci), aucune texture.
+## Effet de Coupe (jalon 16, série 18 `FX_COUPE`, T10) : 4 images peintes (demi-trait, arc
+## complet, second trait en X avec les feuilles, dissipation), centrées sur l'obstacle. Les trois
+## premières défilent pendant le tracé ([constant DRAW_PART] de la durée), la quatrième
+## s'efface pendant le reste. Un seul `Sprite2D` (deux nœuds avec celui-ci). « Réduire les
+## animations » ne joue pas cet effet (`FieldMoveStage.stages` : fondu seul).
 
-## Longueur et épaisseur du trait (px de référence), couleurs : valeurs par défaut (règle 4).
-const LENGTH: float = 150.0
-const WIDTH: float = 10.0
-const CORE := Color(1.0, 1.0, 1.0, 0.95)
-const GLOW := Color(0.85, 0.95, 1.0, 0.35)
-## Part de la durée passée à tracer (le reste : effacement).
+const FRAMES: Array[String] = [
+	"res://assets/world/fx/fx_coupe_01.png",
+	"res://assets/world/fx/fx_coupe_02.png",
+	"res://assets/world/fx/fx_coupe_03.png",
+	"res://assets/world/fx/fx_coupe_04.png",
+]
+## Part de la durée passée à tracer (images 1 à 3 ; le reste : l'image 4 s'efface).
 const DRAW_PART: float = 0.55
 
 var _progress: float = 0.0
 var _alpha: float = 1.0
+var _textures: Array[Texture2D] = []
+var _sprite: Sprite2D
 
 
 func _init() -> void:
 	name = "CutSlash"
 	z_index = 50
+	for path: String in FRAMES:
+		_textures.append(load(path) as Texture2D)
+	_sprite = Sprite2D.new()
+	_sprite.name = "Frame"
+	_sprite.visible = false
+	add_child(_sprite)
 
 
-## Coroutine : trace le trait en [param seconds] s (tracé puis effacement).
+## Coroutine : joue l'effet en [param seconds] s (tracé puis effacement).
 func play(seconds: float) -> void:
 	_progress = 0.0
 	_alpha = 1.0
+	_refresh()
 	var tween := create_tween()
-	tween.tween_method(_set_progress, 0.0, 1.0, seconds * DRAW_PART) \
-		.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUAD)
+	tween.tween_method(_set_progress, 0.0, 1.0, seconds * DRAW_PART)
 	tween.tween_method(_set_alpha, 1.0, 0.0, seconds * (1.0 - DRAW_PART))
 	await tween.finished
 
@@ -37,23 +48,28 @@ func get_progress() -> float:
 	return _progress
 
 
+## Image affichée (0 à 3), -1 avant le début ; pour les tests et les captures.
+func get_frame() -> int:
+	if not _sprite.visible:
+		return -1
+	return _textures.find(_sprite.texture)
+
+
 func _set_progress(value: float) -> void:
 	_progress = value
-	queue_redraw()
+	_refresh()
 
 
 func _set_alpha(value: float) -> void:
 	_alpha = value
-	queue_redraw()
+	_refresh()
 
 
-func _draw() -> void:
+func _refresh() -> void:
 	if _progress <= 0.0 or _alpha <= 0.0:
+		_sprite.visible = false
 		return
-	var start := Vector2(-LENGTH, -LENGTH) * 0.5
-	var finish := start.lerp(-start, _progress)
-	var glow := Color(GLOW, GLOW.a * _alpha)
-	var core := Color(CORE, CORE.a * _alpha)
-	draw_line(start, finish, glow, WIDTH * 2.6, true)
-	draw_line(start, finish, core, WIDTH, true)
-	draw_circle(finish, WIDTH * 0.9, core)
+	var frame := 3 if _progress >= 1.0 else mini(2, floori(_progress * 3.0))
+	_sprite.texture = _textures[frame]
+	_sprite.modulate.a = _alpha
+	_sprite.visible = true

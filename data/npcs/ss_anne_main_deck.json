@@ -5,7 +5,7 @@
 			6
 		],
 		"facing": "down",
-		"sprite": "traveler",
+		"sprite": "gentleman",
 		"dialogue": "ss_anne_armand_after",
 		"trainer": {
 			"id": "ss_anne_gentleman_armand",
@@ -44,7 +44,7 @@
 			8
 		],
 		"facing": "down",
-		"sprite": "lass_young",
+		"sprite": "hostess",
 		"dialogue": "ss_anne_hostess"
 	},
 	"passager_1": {

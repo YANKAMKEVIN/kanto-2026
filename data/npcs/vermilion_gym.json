@@ -1,6 +1,6 @@
 {
 	"vermilion_gym_barrier_1": {
-		"cell": [7, 5], "facing": "down", "sprite": "object/electric_barrier",
+		"cell": [7, 5], "facing": "down", "sprite": "object/electric_barrier_side",
 		"turn_to_player": false, "unless": ["vermilion_gym_puzzle_solved"]
 	},
 	"vermilion_gym_barrier_2": {
@@ -8,14 +8,14 @@
 		"turn_to_player": false, "unless": ["vermilion_gym_puzzle_solved"]
 	},
 	"vermilion_gym_barrier_3": {
-		"cell": [9, 5], "facing": "down", "sprite": "object/electric_barrier",
+		"cell": [9, 5], "facing": "down", "sprite": "object/electric_barrier_side",
 		"turn_to_player": false, "unless": ["vermilion_gym_puzzle_solved"]
 	},
 	"surge": {
-		"cell": [8, 3], "facing": "down", "sprite": "guard", "dialogue": "vermilion_gym_surge"
+		"cell": [8, 3], "facing": "down", "sprite": "surge", "dialogue": "vermilion_gym_surge"
 	},
 	"gentleman_louis": {
-		"cell": [3, 8], "facing": "right", "sprite": "traveler",
+		"cell": [3, 8], "facing": "right", "sprite": "gentleman",
 		"dialogue": "vermilion_gym_louis_defeated",
 		"trainer": {
 			"id": "vermilion_gym_gentleman_louis", "sight": 3, "before": "vermilion_gym_louis_before",
@@ -23,7 +23,7 @@
 		}
 	},
 	"rocker_axel": {
-		"cell": [13, 10], "facing": "left", "sprite": "youngster",
+		"cell": [13, 10], "facing": "left", "sprite": "rocker",
 		"dialogue": "vermilion_gym_axel_defeated",
 		"trainer": {
 			"id": "vermilion_gym_rocker_axel", "sight": 3, "before": "vermilion_gym_axel_before",

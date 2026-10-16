@@ -5,7 +5,7 @@
 			3
 		],
 		"facing": "down",
-		"sprite": "traveler",
+		"sprite": "gentleman",
 		"dialogue": "ss_anne_victor_after",
 		"trainer": {
 			"id": "ss_anne_gentleman_victor",

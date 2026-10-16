@@ -7,7 +7,7 @@ extends Node
 ##
 ## 1. le Pokémon apparaît à côté du joueur avec l'éclat de Ball ; si c'est le compagnon resté
 ##    dehors ([method CompanionController.on_cutscene_started]), il y marche ;
-## 2. effet de coupe ([CutSlash], provisoire jusqu'au T10) et vibration légère ;
+## 2. effet de coupe ([CutSlash], 4 images peintes de la série 18) et vibration légère ;
 ## 3. l'obstacle disparaît en fondu (le directeur retire ensuite un PNJ ; un décor part avec le
 ##    drapeau de l'étape « set » suivante) ;
 ## 4. le Pokémon rentre dans sa Ball, sauf le compagnon, qui reste dehors.

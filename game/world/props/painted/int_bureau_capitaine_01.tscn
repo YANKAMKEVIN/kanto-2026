@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_yetb8"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_hcowu"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/int_bureau_capitaine_01.png" id="3_lkkkg"]
+
+[node name="IntBureauCapitaine01" type="Node2D" unique_id=1284784185]
+script = ExtResource("1_yetb8")
+footprint = Array[Vector2i]([Vector2i(-1, 0), Vector2i(0, 0), Vector2i(1, 0)])
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=854975044]
+unique_name_in_owner = true
+material = ExtResource("2_hcowu")
+texture = ExtResource("3_lkkkg")
+centered = false
+offset = Vector2(-144, -185)

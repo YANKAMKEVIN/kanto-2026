@@ -35,7 +35,7 @@
 			4
 		],
 		"facing": "up",
-		"sprite": "lass_young",
+		"sprite": "passenger_f",
 		"dialogue": "ss_anne_deck_passenger"
 	},
 	"ss_anne_item_06": {
