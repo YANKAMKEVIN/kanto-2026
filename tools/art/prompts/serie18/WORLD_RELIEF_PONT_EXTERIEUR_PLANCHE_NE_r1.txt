@@ -1,5 +1,5 @@
 WORLD_RELIEF_PONT_EXTERIEUR_PLANCHE — NOUVELLE image : une planche d'éléments de jeu, pas une scène.
-Images jointes : REF_PE_BASTINGAGE_N, REF_PE_BASTINGAGE_S, REF_PE_ANGLE_EST, REF_PE_CHAISES, REF_PE_BOUEE = forme, matériaux et couleurs, extraits des vues d'ensemble validées du S.S. Anne et de l'Arène de Carmin (petites, lumière d'ambiance : n'en copie ni le rendu ni la lumière) ; WORLD_BLDG_SS_ANNE_MILIEU_NE_r1 et WORLD_GROUND_PLANCHES_QUAI_01_NE_r1 et WORLD_PROP_CAISSES_01_NE_r1 = ancres de style (rendu peint, contour coloré, finesse, angle de vue, lumière neutre) : respecte-les exactement.
+Images jointes : REF_PE_BASTINGAGE_N, REF_PE_BASTINGAGE_S, REF_PE_CHAISES, REF_PE_BOUEE = forme, matériaux et couleurs, extraits des vues d'ensemble validées du S.S. Anne et de l'Arène de Carmin (petites, lumière d'ambiance : n'en copie ni le rendu ni la lumière) ; WORLD_BLDG_SS_ANNE_MILIEU_NE_r1 = ancres de style (rendu peint, contour coloré, finesse, angle de vue, lumière neutre) : respecte-les exactement.
 
 ADN VISUEL KANTO 2026 — v1 (à respecter strictement)
 - Rendu : illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.

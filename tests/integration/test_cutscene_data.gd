@@ -126,6 +126,8 @@ const VARIANT_FLAGS: Dictionary = {
 	&"route_5_arrival": [PEWTER_FLAGS], &"route_5_item_1": [PEWTER_FLAGS],
 	# Jalon 16 (T11) : la barrière de l'Arène de Carmin (une variante, puzzle pas encore résolu).
 	&"vermilion_gym_barrier_open": [PEWTER_FLAGS],
+	# Jalon 16 (T14) : Major Bob (première rencontre et reprise), rattrapage de la CT24.
+	&"vermilion_gym_surge": [PEWTER_FLAGS], &"vermilion_gym_surge_tm_late": [PEWTER_FLAGS],
 	&"route_5_hidden_1": [PEWTER_FLAGS], &"route_5_gate_rule": [PEWTER_FLAGS],
 	&"pewter_arrival": [PEWTER_FLAGS],
 	# Jalon 13 (T17) : arrivée à Azuria, Poké Ball de la Route 4, Potion de la Route 24.
@@ -208,6 +210,8 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"route_5_item_1": &"route_5", &"route_5_hidden_1": &"route_5",
 	# Jalon 16 (T11) : barrière de l'Arène de Carmin, jouée par Boot quand le puzzle est résolu.
 	&"vermilion_gym_barrier_open": &"vermilion_gym",
+	# Jalon 16 (T14) : Major Bob, par son dialogue (scène de l'Arène et rattrapage de la CT24).
+	&"vermilion_gym_surge": &"vermilion_gym", &"vermilion_gym_surge_tm_late": &"vermilion_gym",
 	# Jalon 16 (T15) : COUPER (« confirm_cutscene » de l'examen de l'arbuste).
 	&"cut_tree_vermilion_gym": &"vermilion_city",
 	# Jalon 11 (T14) : remise tardive de la CT34 (dialogue de Pierre).
@@ -299,7 +303,7 @@ func test_library_loads_without_error() -> void:
 		&"route_25_item_2", &"route_25_item_3",
 		&"route_6_gate_rule_e", &"route_6_gate_rule_s", &"route_6_gate_rule_w",
 		&"route_6_hidden_1", &"route_6_item_1", &"vermilion_arrival",
-		&"vermilion_gym_barrier_open",
+		&"vermilion_gym_barrier_open", &"vermilion_gym_surge", &"vermilion_gym_surge_tm_late",
 		# Jalon 16 (T15) : départ du S.S. Anne, Coupe de l'arbuste de l'Arène.
 		&"ss_anne_departure", &"cut_tree_vermilion_gym",
 		&"route_2_item_1", &"route_2_item_2", &"route_2_item_3", &"route_2_item_4",
@@ -382,11 +386,12 @@ func test_every_trainer_and_item_step_exists() -> void:
 ## Jalon 10 (T9) : chaque Dresseur présenté par une carte en a une, chaque badge remis existe, et
 ## l'étape « badge » d'une scène suit le combat qui lève déjà son drapeau (« win »).
 func test_every_champion_card_and_badge_step_exists() -> void:
-	assert_eq(_cutscenes.get_card_trainer_ids(), [&"cerulean_gym_misty", &"pewter_gym_brock"] as Array[StringName])
+	assert_eq(_cutscenes.get_card_trainer_ids(), [&"cerulean_gym_misty", &"pewter_gym_brock",
+		&"vermilion_gym_surge"] as Array[StringName])
 	for id: StringName in _cutscenes.get_card_trainer_ids():
 		var trainer := _trainers.get_trainer(id)
 		assert_true(trainer != null and trainer.has_card(), "« %s » a une carte" % id)
-	assert_eq(_cutscenes.get_badge_ids(), [&"boulder", &"cascade"] as Array[StringName])
+	assert_eq(_cutscenes.get_badge_ids(), [&"boulder", &"cascade", &"thunder"] as Array[StringName])
 	for id: StringName in _cutscenes.get_badge_ids():
 		assert_true(_badges.has_badge(id), "badge « %s » connu" % id)
 	for id: StringName in _real_ids():
