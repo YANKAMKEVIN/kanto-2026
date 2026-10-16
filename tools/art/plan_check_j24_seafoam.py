@@ -41,9 +41,8 @@ Critères (code 1 si l'un échoue) :
   g. objets cachés, Artikodin et panneaux atteignables ; aucune case praticable orpheline.
 
 Usage : python3 -I tools/art/plan_check_j24_seafoam.py   (code 1 si un critère échoue)
-Options : --rochers-designes   les rochers du B3F retirés sont ceux de chaque trou bouché, au lieu des
-                               derniers de la liste (voir REGLE_B3F ; la reprise d'une sauvegarde est alors
-                               sans piège) ;
+Options : --rochers-derniers   diagnostic : B3F à l'ancienne règle « derniers de la liste » (la reprise
+                               d'une sauvegarde sur le trou (3,16) bouché y est piégée) ;
           --plans <dossier>    lit les cinq grilles ailleurs (essais de mutation).
 """
 from __future__ import annotations
@@ -74,9 +73,10 @@ EAU_CARS = set("ws^v<>")
 Noeud = tuple[str, int]
 
 
-# Rochers libres du B3F quand k trous sont bouchés : « derniers de la liste » (dossier §7.3, par
-# défaut) ou « désignés » (le rocher de chaque trou bouché est retiré ; option --rochers-designes).
-REGLE_B3F = "derniers"
+# Rochers libres du B3F quand des trous sont bouchés : « derniers de la liste » (dossier §7.3 ancien,
+# diagnostic seulement, option --rochers-derniers) ou « désignés » (défaut, décision du 2026-10-16 : le
+# rocher `trou=n` de chaque trou n bouché est retiré, quel que soit le rocher poussé).
+REGLE_B3F = "designes"
 
 
 def nom_drapeau(f: str, n: int) -> str:
@@ -980,7 +980,7 @@ def verifier_anti_blocage(r: Rapport, etages: dict[str, Etage], donjon: Donjon,
 		if fautes_reprise:
 			r.attention(f"{nom} : reprise d'une sauvegarde faite sur une case enfermée par les rochers revenus à leur place "
 				f"(rochers de départ, trous bouchés, composantes piégées) {fautes_reprise[:2]} : prévoir le garde-fou de reprise "
-				f"(§5.7) ou l'option --rochers-designes")
+				f"(§5.7) (ancienne règle « derniers » : option --rochers-derniers)")
 		else:
 			r.critere(True, f"{nom} : reprise d'une sauvegarde faite n'importe où dans l'étage (rochers revenus à leur place) : "
 				"aucune impasse non plus, depuis chaque case debout (aucun joueur piégé)")
@@ -1330,9 +1330,9 @@ def main() -> int:
 	global REGLE_B3F, PLANS
 	if "--plans" in sys.argv:
 		PLANS = Path(sys.argv[sys.argv.index("--plans") + 1])
-	if "--rochers-designes" in sys.argv:
-		REGLE_B3F = "designes"
-		print("Option : rochers du B3F retirés par trou (au lieu des derniers de la liste, dossier §7.3)")
+	if "--rochers-derniers" in sys.argv:
+		REGLE_B3F = "derniers"
+		print("Diagnostic : rochers du B3F retirés « derniers de la liste » (ancienne règle)")
 	r = Rapport()
 	etages = charger()
 	donjon = Donjon(etages)

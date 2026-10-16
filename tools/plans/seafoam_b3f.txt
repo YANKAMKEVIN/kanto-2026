@@ -60,10 +60,10 @@ chute_rocher_b3f_1   chute_rocher   18,6         libre   depuis=seafoam_b2f:1 so
 chute_rocher_b3f_2   chute_rocher   19,6         libre   depuis=seafoam_b2f:2 sol=eau
 chute_joueur_b3f_1   chute_joueur   18,7         libre   depuis=seafoam_b2f:1 surf=oui  # atterrissage du joueur : case de courant sous le point de chute
 chute_joueur_b3f_2   chute_joueur   19,7         libre   depuis=seafoam_b2f:2 surf=oui
-rocher_b3f_1         rocher         5,14         bloque  ordre=1
-rocher_b3f_2         rocher         3,15         bloque  ordre=2 trou=1  # « trou= » : variante --rochers-designes (rocher retiré avec son trou)
+rocher_b3f_1         rocher         5,14         bloque  ordre=1  # sans trou : rocher d écart, il reste
+rocher_b3f_2         rocher         3,15         bloque  ordre=2 trou=1  # rocher désigné du trou 1 : retiré quand le trou est rempli
 rocher_b3f_3         rocher         8,14         bloque  ordre=3 trou=2
-rocher_b3f_4         rocher         9,14         bloque  ordre=4
+rocher_b3f_4         rocher         9,14         bloque  ordre=4  # sans trou : rocher d écart, il reste
 courant_1            courant        15,8;18,7;19,7  libre  id=1 actif=sauf_b2f_trous_1_et_2 fin=passage:W1  # sources : l'escalier (15, 7) et le chenal ; le flux suit les flèches
 objet_b3f_cache      objet_cache    10,16        libre   role=C2 item=max_ether  # Max Élixir (RB : en (9, 16), sous le caillou x) ; (10, 16) est hors de portée des rochers
 panneau_rochers_b3f  panneau        4,12         bloque  texte=T-11  # près de l'échelle d'arrivée (5, 12)
