@@ -785,6 +785,16 @@ Ce travail peut avancer, sur une branche partie de l'intégration J16–J22 :
 
 La CS03 et la CS04 sont remplacées dans les tests par des données d'essai.
 
+**Règle d'ancienneté de Kevin (2026-10-16)** : le J24 ne modifie pas un système sur lequel une
+session plus ancienne (J15 à J23) travaille déjà. Les points concernés :
+- l'état « monté » (Vélo, J22) : `PlayerMount` s'appuie dessus, sans le réécrire ;
+- `FieldMoves` et les CS (J16, J17, J23) ;
+- l'étape `wild_battle` (J21) ;
+- la glissade `SpinSlide` (J20) ;
+- Parmanie (J22, J23).
+
+Si l'un d'eux doit changer, le J24 attend, puis demande à Kevin.
+
 ## 18. Valeurs par défaut (règle 4)
 
 | Sujet | Valeur |
