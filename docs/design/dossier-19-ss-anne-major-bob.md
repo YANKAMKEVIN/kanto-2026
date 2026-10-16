@@ -167,9 +167,16 @@ Sources : `docs/tech/jalon-16-equilibrage.md` (R-1 à R-4, chiffres « Après d�
 au §9), rapports des T7, T11 et T14. **Remplacent** les valeurs du §5, du §9 et du §17 citées :
 
 - **Rival n° 4** (§5, niveaux recalés ; espèces, ordre, capacités, `switch` et 35 ₽ × dernier
-  niveau inchangés) : contre Salamèche et Carapuce **Roucoups 17, Rattatac 15, Kadabra 16,
-  starter évolué 18** (R-1) ; contre Bulbizarre **Roucoups 16, Rattatac 14, Kadabra 15,
-  Reptincel 16** (option intermédiaire (h)).
+  niveau inchangés) — **recalé le 2026-10-16 à ~40 % de victoire au premier essai** (décision de
+  Kevin : « 95 % c'est trop » ; joueur prudent, ligne droite, `jalon-16-equilibrage.md` §10) :
+  contre Salamèche **Roucoups 19, Rattatac 16, Kadabra 19, Carabaffe 20** (700 ₽) ; contre
+  Carapuce **Roucoups 17, Rattatac 15, Kadabra 20, Herbizarre 20** (700 ₽) ; contre Bulbizarre
+  **Roucoups 13, Rattatac 12, Kadabra 13, Reptincel 15** (525 ₽). *Remplace* 17 / 15 / 16 / 18
+  (R-1) et 16 / 14 / 15 / 16 (option (h)) du même jour.
+- **Règle générale de Kevin (2026-10-16)** : aucun combat au-delà de **80 %** de victoire au
+  premier essai par défaut (joueur prudent, ligne droite) ; il faut de la réflexion et parfois de
+  l'entraînement. Les taux élevés dus à un **avantage de type choisi par le joueur** (Pokémon de
+  type Sol ou Bulbizarre contre Major Bob) sont acceptés.
 - **Major Bob** (§9, R-3) : mêmes niveaux (Voltorbe 21, Pikachu 18, Raichu 24) ; **Raichu sans
   Tonnerre** : Éclair, Cage-Éclair, Vive-Attaque. Tonnerre reste la récompense (CT24).
 - **Indice dans le jeu** : le guide de l'Arène ajoute, avant le Badge Foudre, deux bulles après le

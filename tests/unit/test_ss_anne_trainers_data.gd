@@ -95,9 +95,10 @@ func test_rival_by_starter() -> void:
 		assert_eq(team.size(), 4, String(starter))
 		assert_eq([team[0].species, team[1].species, team[2].species, team[3].species],
 			[&"pidgeotto", &"raticate", &"kadabra", last[starter]], "G-7")
-		# Décision de Kevin du 2026-10-16 : R-1 contre Salamèche et Carapuce, option (h) contre
-		# Bulbizarre (jalon-16-equilibrage.md §6, §9).
-		var levels: Array = [16, 14, 15, 16] if starter == &"bulbasaur" else [17, 15, 16, 18]
+		# Recalage à ~40 % au premier essai en ligne droite (décision de Kevin du 2026-10-16,
+		# « 95 % c'est trop » ; jalon-16-equilibrage.md §10).
+		var levels: Array = {&"bulbasaur": [13, 12, 13, 15], &"charmander": [19, 16, 19, 20],
+			&"squirtle": [17, 15, 20, 20]}[starter]
 		assert_eq([team[0].level, team[1].level, team[2].level, team[3].level], levels,
 			String(starter))
 		assert_eq(team[2].moves, [&"confusion", &"psybeam"] as Array[StringName], "R-12")
