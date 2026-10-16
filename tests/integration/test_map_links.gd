@@ -40,6 +40,8 @@ const MAP_IDS: Array[StringName] = [
 	# Jalon 18 (T12) : Route 9, Route 10 et son Centre (Azuria, Grotte Sombre et Lavanville :
 	# « à venir » tant que leurs cartes J18 ne sont pas là).
 	&"route_9", &"route_10", &"route_10_center",
+	# Jalon 18 (T13) : la Grotte Sombre (sorties en repli « à venir » tant que la Route 10 manque).
+	&"dark_cave_1f", &"dark_cave_b1f",
 ]
 ## Cartes construites par une autre tâche en parallèle (jalon 7 : la Route 22, T22 ; jalon 10 :
 ## Argenta, T11, pendant les intérieurs du T13) : un warp qui y mène est vérifié seulement si la

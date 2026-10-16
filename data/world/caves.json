@@ -4,6 +4,10 @@
 		"mt_moon": {
 			"maps": ["mt_moon_1f", "mt_moon_b1f", "mt_moon_b2f"],
 			"escape": { "map": "route_3", "spawn": "from_mt_moon_w", "facing": "down" }
+		},
+		"dark_cave": {
+			"maps": ["dark_cave_1f", "dark_cave_b1f"],
+			"escape": { "map": "route_10", "spawn": "from_dark_cave_n_w", "facing": "down" }
 		}
 	}
 }

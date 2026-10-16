@@ -26,7 +26,7 @@ func test_real_data_mt_moon() -> void:
 	var caves := CaveLibrary.new()
 	assert_true(caves.load_file(), "data/world/caves.json valide")
 	assert_eq(caves.get_errors().size(), 0)
-	assert_eq(caves.get_caves(), [&"mt_moon"] as Array[StringName])
+	assert_eq(caves.get_caves(), [&"mt_moon", &"dark_cave"] as Array[StringName])
 	assert_eq(caves.get_maps(&"mt_moon"),
 		[&"mt_moon_1f", &"mt_moon_b1f", &"mt_moon_b2f"] as Array[StringName])
 	for map_id: StringName in [&"mt_moon_1f", &"mt_moon_b1f", &"mt_moon_b2f"]:

@@ -141,6 +141,8 @@
 		"route_5_underground_gate": "interior_warm",
 		"route_9": "golden_hour",
 		"route_10": "golden_hour",
-		"route_10_center": "interior_warm"
+		"route_10_center": "interior_warm",
+		"dark_cave_1f": "cave_1f",
+		"dark_cave_b1f": "cave_b1f"
 	}
 }
