@@ -3,7 +3,8 @@
 > Consolidé par Claude le 2026-10-16 à partir de la V2 de ChatGPT (`passes/j22-v2-chatgpt.md`) et de
 > la passe d'alignement (`passes/j22-v2-alignement.md`). **Les 7 décisions de la V2 et les
 > arbitrages M-1 à M-24 sont validés par Kevin** (« Je suis toutes tes recommandations M-1 à M-24 »,
-> 2026-10-16). Les **textes du §16 sont à valider** en un seul lot.
+> 2026-10-16). Les **textes du §16 sont validés par Kevin** (2026-10-16). Plan technique :
+> `docs/tech/jalon-22.md`.
 >
 > Faits Rouge/Bleu : désassemblage `pret/pokered` (`af51989`), version **Rouge** pour les rencontres
 > (convention à confirmer en 22.0, M-23). Marqueurs : **[V]** validé par Kevin, **[D]** valeur par
@@ -507,7 +508,7 @@ globales et défaut), `data/items/items_j22.json`, `data/pokemon/species/kanto_j
 DA : 2D HD peinte, vue de dessus orthogonale, quatre directions ; ni pixel art, ni isométrie, ni
 minicarte.
 
-## 16. Lot de textes — À VALIDER
+## 16. Lot de textes — VALIDÉ (Kevin, 2026-10-16)
 
 > Rédigés par Claude le 2026-10-16. Ton : sobre, chaleureux. Bulles de 2 lignes d'environ 40
 > caractères ; « / » sépare les bulles. `{player}`, `{pokemon}`, `{n}` sont des jetons. Le joueur est
