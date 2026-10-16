@@ -8,6 +8,8 @@ extends GutTest
 const TOOL := "res://tools/simulate_mt_moon.gd"
 const PATH := "res://tools/sim/ss_anne_scenario.json"
 const THRESHOLDS := "res://tools/sim/ss_anne_thresholds.json"
+const RIVAL_40 := "res://tools/sim/ss_anne_rival_40.json"
+const ORDINARY := "res://tools/sim/ss_anne_ordinary.json"
 const EXIT_OK := 0
 
 
@@ -37,6 +39,16 @@ func test_thresholds_scenario_is_valid() -> void:
 	assert_eq(run[0], EXIT_OK, out.right(2000))
 	assert_true(out.contains("Major Bob (c) : Raichu N24 sans Tonnerre"), out.right(2000))
 	assert_true(out.contains("Rival n° 4 sans changement"), out.right(2000))
+
+
+func test_rival_40_and_ordinary_scenarios_are_valid() -> void:
+	# Recalage du rival n° 4 à ~40 % et règle des 80 % (jalon-16-equilibrage.md §10).
+	var run := _run(["--scenario", RIVAL_40, "--valider"])
+	assert_eq(run[0], EXIT_OK, String(run[1]).right(2000))
+	assert_true(String(run[1]).contains("Rival n° 4 17/15/20/20"), String(run[1]).right(2000))
+	run = _run(["--scenario", ORDINARY, "--valider"])
+	assert_eq(run[0], EXIT_OK, String(run[1]).right(2000))
+	assert_true(String(run[1]).contains("[plus4_smart]"), String(run[1]).right(2000))
 
 
 func test_short_run_reaches_major_bob() -> void:

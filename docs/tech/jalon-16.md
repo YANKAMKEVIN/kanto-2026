@@ -379,8 +379,9 @@ Le modèle exact est celui de `route_24_rival` :
 **Données** : `rival_ss_anne` en fin de `rival.json` :
 - IA `smart`, `can_lose false`, `"moment": "win"`, `prize_per_level 35`, `start_message true` ;
 - `team_by_starter` : Roucoups 19, Rattatac 16, Kadabra 18 (**Choc Mental, Rafale Psy**, R-12),
-  starter évolué 20 avec l'avantage de type — **recalé le 2026-10-16 (T21)** : 17 / 15 / 16 / 18
-  contre Salamèche et Carapuce, 16 / 14 / 15 / 16 contre Bulbizarre ;
+  starter évolué 20 avec l'avantage de type — recalé le 2026-10-16 (T21) puis **à ~40 % le même
+  jour** (`jalon-16-equilibrage.md` §10) : 19 / 16 / 19 / 20 contre Salamèche, 17 / 15 / 20 / 20
+  contre Carapuce, 13 / 12 / 13 / 15 contre Bulbizarre ;
 - capacités choisies à la main pour tous (dossier §5, sans mécanique interdite).
 
 R-7 : le drapeau de victoire suit le modèle du J13 (`rival_<lieu>_won`) et non `beaten_`.
@@ -784,9 +785,10 @@ textes et tests seulement ; aucune scène `.tscn` touchée, aucun builder relanc
    ligne vraie est celle du J15 (« explorer Carmin-sur-Mer. ») jusqu'à l'objectif du J17.
 5. **Pokémon qui coupent sans planche** : trait de lame seul, gardé (Reportés, phase DA).
 6. **Marin PARTIR / PAS ENCORE**, recul d'une case : déjà fait, inchangé.
-7. **Rival n° 4 contre Bulbizarre** : Roucoups 16, Rattatac 14, Kadabra 15, Reptincel 16.
+7. **Rival n° 4 contre Bulbizarre** : Roucoups 16, Rattatac 14, Kadabra 15, Reptincel 16
+   — *remplacé, voir « Recalage à ~40 % » ci-dessous*.
 8. **Rival n° 4 contre Salamèche et Carapuce** (R-1) : Roucoups 17, Rattatac 15, Kadabra 16,
-   starter évolué 18 (récompense 35 ₽ × 18 = 630 ₽ ; 560 ₽ contre Bulbizarre).
+   starter évolué 18 (récompense 35 ₽ × 18 = 630 ₽ ; 560 ₽ contre Bulbizarre) — *remplacé*.
 9. **Major Bob** (R-3) : niveaux gardés, Raichu **Éclair, Cage-Éclair, Vive-Attaque** (les trois
    capacités du réglage (c) mesuré au T18 ; aucune 4e capacité n'y figurait, aucune n'est
    ajoutée). **Indice du guide** (variante `unless badge_thunder`, n° 31 inchangé puis deux bulles,
@@ -804,6 +806,19 @@ Tests : `test_zone_library` (description, `interior_title`), `test_no_draft_in_d
 sans combat, indice avant / après le badge, capacités de Raichu), `test_ss_anne_trainers_data`,
 `test_ss_anne_rival_captain` (niveaux, récompense), `test_objective_library` (enchaînement du J16
 jusqu'au Badge Foudre).
+
+#### Recalage du rival n° 4 à ~40 % (2026-10-16, branche `j16-rival-40`)
+
+Décision de Kevin : « 95 % c'est trop » ; cible 35–45 % au premier essai, joueur prudent, ligne
+droite, chaque starter ; règle générale : **aucun combat au-delà de 80 %** par défaut (avantage de
+type choisi par le joueur accepté). Niveaux seuls (`data/trainers/rival.json`) : contre
+Salamèche **19 / 16 / 19 / 20** (700 ₽), contre Carapuce **17 / 15 / 20 / 20** (700 ₽), contre
+Bulbizarre **13 / 12 / 13 / 15** (525 ₽). Ligne droite, prudent : 42–45 % (Salamèche), 38,5 %
+(Carapuce), 38 % (Bulbizarre) ; avec les Dresseurs facultatifs 71–76 % (Bulbizarre ≈ 100 %).
+Major Bob inchangé. Dresseurs ordinaires du navire et de l'Arène : > 80 % partout, non réglable par
+les niveaux ; propositions P-1 / P-2 non appliquées (`jalon-16-equilibrage.md` §10.4).
+Tests : `test_ss_anne_trainers_data`, `test_ss_anne_rival_captain` (niveaux, 700 ₽),
+`test_simulate_ss_anne` (nouveaux scénarios valides).
 
 #### T20 — fin et clôture — après la fusion du J15
 

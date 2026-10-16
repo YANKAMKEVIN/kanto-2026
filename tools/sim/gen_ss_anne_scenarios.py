@@ -129,7 +129,9 @@ def path_scenario():
 		{"label": "Centre de Carmin (avant le navire)", "center": True},
 	]
 	for i, tid in enumerate(SS_ANNE_IDS):
-		steps.append({"label": "S.S. Anne : " + names[tid], "trainer": tid, "optional": "tous"})
+		# Groupe « navire » (recalage du J16) : les 10 Dresseurs du navire, aussi après la directe.
+		steps.append({"label": "S.S. Anne : " + names[tid], "trainer": tid,
+			"optional": "navire"})
 		if i == 4:
 			steps.append({"label": "Centre de Carmin (retour au quai, mi-navire)",
 				"center": True, "optional": "retour"})
@@ -151,17 +153,21 @@ def path_scenario():
 	items = {"potion": 3, "super_potion": 2, "antidote": 1, "paralyze_heal": 1}
 	variants = []
 	rows = []
-	for path, groups in [("directe", []), ("tous les Dresseurs", ["tous", "retour"])]:
+	for path, groups in [("directe", []), ("tous les Dresseurs", ["tous", "navire", "retour"])]:
 		for soin, sg in [("soin avant Major Bob", ["soin_arene"]), ("sans soin", [])]:
 			for player in ["attentif", "expert", "naif"]:
 				rows.append((path, groups, soin, sg, player))
 	for player in ["attentif", "expert"]:
-		rows.append(("tous, sans retour au quai", ["tous"], "soin avant Major Bob",
+		rows.append(("tous, sans retour au quai", ["tous", "navire"], "soin avant Major Bob",
 			["soin_arene"], player))
 	# L'équipe garde son ordre (le Pokémon de type Sol, en dernier, attend Raichu).
 	rows.append(("directe, ordre gardé", [], "soin avant Major Bob", ["soin_arene"], "attentif"))
-	rows.append(("tous les Dresseurs, ordre gardé", ["tous", "retour"], "soin avant Major Bob",
-		["soin_arene"], "attentif"))
+	rows.append(("tous les Dresseurs, ordre gardé", ["tous", "navire", "retour"],
+		"soin avant Major Bob", ["soin_arene"], "attentif"))
+	# Ligne droite jusqu'à Carmin, puis les 10 Dresseurs du navire (retours au quai).
+	for player in ["attentif", "expert"]:
+		rows.append(("directe + navire", ["navire", "retour"], "soin avant Major Bob",
+			["soin_arene"], player))
 	for path, groups, soin, sg, player in rows:
 		v = {"name": "%s, %s, %s" % (path, soin, "naïf" if player == "naif" else player),
 			"player": player, "center": True, "retries": 5, "optional": groups + sg}
@@ -179,8 +185,9 @@ def path_scenario():
 			"(Racaillou, ou Nidoking par la Pierre Lune). Parcours : Route 25 (D1, D2, H3), "
 			"Rocket, Route 6 (Chloé), Centre de Carmin, rival n° 4, Centre, Arène (Louis, Axel, "
 			"Marc), [Centre], Major Bob. Groupe « tous » : D3–D6 et 30 cases de la Route 25, "
-			"20 cases de la Route 5, les 5 autres Dresseurs et 30 cases de la Route 6, les 10 "
-			"Dresseurs du navire (aucun soin à bord) ; « retour » : retour au Centre du quai après 5 Dresseurs du navire et avant le rival. « soin_arene » : Centre entre les "
+			"20 cases de la Route 5, les 5 autres Dresseurs et 30 cases de la Route 6 ; « navire » : "
+			"les 10 Dresseurs du navire (aucun soin à bord ; avec « tous », ou seul : « directe + "
+			"navire ») ; « retour » : retour au Centre du quai après 5 Dresseurs du navire et avant le rival. « soin_arene » : Centre entre les "
 			"Dresseurs de l'Arène et Major Bob. Objets (attentif, expert) : 3 Potions, 2 Super "
 			"Potions, 1 Antidote, 1 Anti-Para. Généré par tools/sim/gen_ss_anne_scenarios.py.",
 		"seeds": 1000,
@@ -377,6 +384,128 @@ def thresholds_scenario():
 	}
 
 
+# --- Recalage du rival n° 4 à ~40 % (J16, décision de Kevin du 2026-10-16 : « 95 % c'est trop » ;
+# règle : aucun combat au-delà de 80 % au premier essai par défaut). Parcours du T18 coupé au
+# rival ; chaque jeu de niveaux candidat est une étape « optional » à part (clé = groupe).
+# Niveaux : Roucoups, Rattatac, Kadabra, starter évolué (capacités de data/).
+RIVAL_40_CANDIDATES = {
+	"sc": [(19, 16, 18, 20), (20, 17, 19, 21), (21, 18, 20, 22), (22, 19, 21, 23),
+		(21, 18, 20, 21), (20, 18, 20, 22)],
+	"ch": [(20, 17, 18, 21), (19, 17, 19, 21), (20, 16, 19, 21), (19, 16, 19, 21),
+		(20, 17, 19, 20), (19, 16, 18, 21)],
+	"sq": [(21, 17, 20, 21), (20, 17, 19, 22), (21, 17, 19, 21), (20, 18, 19, 21),
+		(21, 18, 19, 21), (20, 17, 20, 21)],
+	"ci": [(20, 17, 18, 20), (19, 17, 18, 21), (19, 16, 19, 20), (20, 16, 18, 21)],
+	"sr": [(22, 18, 19, 22), (21, 18, 19, 22), (22, 18, 19, 21), (21, 19, 19, 22),
+		(19, 16, 20, 20), (20, 16, 20, 20), (19, 17, 20, 21)],
+	"st": [(21, 18, 19, 23), (20, 17, 19, 23), (20, 17, 19, 24), (18, 15, 20, 19),
+		(19, 16, 20, 19), (19, 16, 19, 20), (20, 17, 20, 20)],
+	"su": [(18, 15, 20, 20), (18, 15, 20, 21), (17, 15, 20, 20), (17, 14, 20, 20)],
+	"bu": [(14, 12, 13, 15), (15, 13, 14, 15), (15, 13, 14, 16), (16, 14, 15, 16),
+		(14, 12, 14, 15), (15, 12, 13, 15), (14, 13, 13, 15)],
+	"bv": [(13, 12, 13, 15), (14, 12, 13, 14), (13, 13, 14, 15), (12, 14, 15, 16),
+		(13, 14, 15, 16), (14, 12, 12, 15), (13, 12, 12, 15), (14, 14, 15, 14)],
+	"bw": [(14, 11, 13, 15), (13, 12, 13, 16), (13, 11, 13, 15), (14, 11, 12, 16)],
+}
+## Équipes de PATH_TEAMS gardées (sans les variantes « Sol »).
+RIVAL_40_TEAMS = [0, 2, 4, 6, 8, 9, 10]
+
+
+def rival_40_scenario():
+	base = path_scenario()
+	rival = trainers("data/trainers/rival.json", ["rival_ss_anne"])["rival_ss_anne"]
+	steps = []
+	for st in base["steps"]:
+		if st.get("trainer") == "rival_ss_anne":
+			break
+		steps.append(st)
+	trainers_out = {k: v for k, v in base["trainers"].items()
+		if k != "rival_ss_anne" and not k.startswith("vermilion_gym")}
+	keys = []
+	for group, candidates in RIVAL_40_CANDIDATES.items():
+		for levels in candidates:
+			key = "rival_%s_%s" % (group, "_".join(str(l) for l in levels))
+			r = copy.deepcopy(rival)
+			for st, team in r["team_by_starter"].items():
+				r["team_by_starter"][st] = with_levels(team, list(levels))
+			trainers_out[key] = r
+			steps.append({"label": "Rival n° 4 %s" % "/".join(str(l) for l in levels),
+				"trainer": key, "optional": key})
+			keys.append(key)
+	items = {"potion": 3, "super_potion": 2, "antidote": 1, "paralyze_heal": 1}
+	variants = []
+	for key in keys:
+		for path, groups in [("directe", []),
+				("tous les Dresseurs", ["tous", "navire", "retour"])]:
+			for player in ["attentif", "expert", "naif"]:
+				if player == "naif" and path != "directe":
+					continue
+				v = {"name": "%s, %s : %s" % (path, "naïf" if player == "naif" else player, key),
+					"player": player, "center": True, "retries": 5, "optional": groups + [key]}
+				if player != "naif":
+					v["items"] = dict(items)
+				variants.append(v)
+	return {
+		"version": 1,
+		"title": "Recalage du rival n° 4 à ~40 % (jalon 16)",
+		"description": "Parcours du T18 (ss_anne_scenario.json) coupé au rival n° 4 ; une étape "
+			"par jeu de niveaux candidat (Roucoups / Rattatac / Kadabra / starter évolué ; "
+			"espèces, capacités et changement de Pokémon de data/). Information pour Kevin : "
+			"aucune donnée de jeu n'est changée. Généré par tools/sim/gen_ss_anne_scenarios.py.",
+		"seeds": 1000,
+		"heal_at_start": True,
+		"teams": [base["teams"][i] for i in RIVAL_40_TEAMS],
+		"tables": base["tables"],
+		"trainers": trainers_out,
+		"steps": steps,
+		"variants": variants,
+	}
+
+
+# --- Règle de Kevin (2026-10-16) : aucun combat au-delà de 80 % au premier essai par défaut.
+# Dresseurs ordinaires du navire et de l'Arène, un combat par partie (équipe soignée, sac de
+# Carmin), équipes de la ligne droite : données, + 2 / + 4 niveaux, IA smart (propositions).
+ORDINARY_SETTINGS = [("donnees", 0, None), ("plus2", 2, None), ("plus4", 4, None),
+	("smart", 0, "smart"), ("plus2_smart", 2, "smart"), ("plus4_smart", 4, "smart")]
+
+
+def ordinary_scenario():
+	base = path_scenario()
+	settings = {}
+	steps = []
+	for tid in SS_ANNE_IDS + GYM_IDS:
+		src = base["trainers"][tid]
+		for key, delta, ai in ORDINARY_SETTINGS:
+			t = copy.deepcopy(src)
+			for m in t["team"]:
+				m["level"] += delta
+			if ai:
+				t["ai"] = ai
+			sid = "%s__%s" % (tid, key)
+			settings[sid] = t
+			steps.append({"label": "%s [%s]" % (src["name"], key), "trainer": sid,
+				"optional": sid})
+	variants = [{"name": "attentif, sac de Carmin : " + sid, "player": "attentif",
+		"center": True, "optional": [sid],
+		"items": {"potion": 3, "super_potion": 2, "paralyze_heal": 1}} for sid in settings]
+	return {
+		"version": 1,
+		"title": "Dresseurs ordinaires du navire et de l'Arène, combat seul (jalon 16)",
+		"description": "Règle de Kevin du 2026-10-16 (≤ 80 % au premier essai) : un combat par "
+			"partie, équipe soignée, joueur attentif avec le sac de Carmin ; équipes de la ligne "
+			"droite (fin du J13). Réglages : données, + 2 / + 4 niveaux, IA smart. Information "
+			"pour Kevin : aucune donnée de jeu n'est changée. Généré par "
+			"tools/sim/gen_ss_anne_scenarios.py.",
+		"seeds": 1000,
+		"heal_at_start": True,
+		"teams": [base["teams"][i] for i in RIVAL_40_TEAMS],
+		"tables": {},
+		"trainers": settings,
+		"steps": steps,
+		"variants": variants,
+	}
+
+
 def write(rel, data):
 	path = os.path.join(ROOT, rel)
 	with open(path, "w", encoding="utf-8") as f:
@@ -388,3 +517,5 @@ def write(rel, data):
 if __name__ == "__main__":
 	write("tools/sim/ss_anne_scenario.json", path_scenario())
 	write("tools/sim/ss_anne_thresholds.json", thresholds_scenario())
+	write("tools/sim/ss_anne_rival_40.json", rival_40_scenario())
+	write("tools/sim/ss_anne_ordinary.json", ordinary_scenario())

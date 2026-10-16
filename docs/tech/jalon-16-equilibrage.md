@@ -279,3 +279,147 @@ Ces chiffres retrouvent ceux des réglages (b), (h) et (c) du T18 (écart ≤ 1 
   détour, l'option (i) (14 / 12 / 13 / 15) donnait 31 · 82 % (N20 · 22) au T18.
 - Carapuce sans Sol contre Major Bob (constat 3) : l'indice du guide est la seule aide ; texte à
   valider par Kevin (`jalon-16.md` T21).
+
+## 10. Recalage à ~40 % (2026-10-16)
+
+Branche `j16-rival-40` (depuis `jalon-16` à `2a8c16f7`), architecte. **Décision de Kevin** : « 95 %
+c'est trop » ; cible du rival n° 4 = **35–45 % de victoire au premier essai** pour un joueur
+**prudent** (attentif, sac de Carmin) **en ligne droite** (sans Dresseurs facultatifs), pour chacun
+des trois starters. Seuls les **niveaux** changent (espèces, ordre, capacités — Kadabra Choc
+Mental et Rafale Psy, sans Entrave —, `switch` et 35 ₽ × dernier niveau gardés). Major Bob ne
+change pas (Raichu sans Tonnerre gardé).
+
+**Règle générale de Kevin (2026-10-16)** : **aucun combat au-delà de 80 %** de victoire au premier
+essai par défaut (joueur prudent, ligne droite) : il faut de la réflexion et parfois de
+l'entraînement. **Exception acceptée** : les taux élevés (jusqu'à 100 %) dus à un **avantage de type
+choisi par le joueur** (Pokémon de type Sol, ou Bulbizarre, contre Major Bob).
+
+### 10.1 Méthode
+
+- `tools/sim/ss_anne_rival_40.json` (généré par `gen_ss_anne_scenarios.py`) : le parcours du §1
+  **coupé au rival**, une étape par jeu de niveaux candidat (≈ 45 jeux essayés en 5 tours), mêmes
+  équipes (sans les variantes « Sol »), graines 0 à 999, reprises au Centre (5 au plus).
+- Après choix : parcours complet `ss_anne_scenario.json --donnees` ; nouveau groupe **« navire »**
+  (les 10 Dresseurs du navire, séparés de « tous ») et variante **« directe + navire »** (ligne
+  droite jusqu'à Carmin, puis tout le navire avec les retours au quai).
+- `tools/sim/ss_anne_ordinary.json` : chaque Dresseur ordinaire du navire et de l'Arène **seul**
+  (équipe soignée, sac de Carmin), données, + 2 / + 4 niveaux, IA `smart` (pour la règle des 80 %).
+- **Lecture** : « 1er essai » = victoire au premier essai parmi les parties qui arrivent au combat
+  sans défaite avant (le chiffre des tableaux du §9) ; pour un combat **après** le rival, ce
+  sous-ensemble est biaisé vers les parties fortes : la colonne « tentatives » le complète.
+
+### 10.2 Niveaux retenus (appliqués dans `data/trainers/rival.json`)
+
+| Starter du joueur | Roucoups | Rattatac | Kadabra | Starter évolué | Récompense | Avant (T21) |
+|---|---|---|---|---|---|---|
+| Salamèche | 19 | 16 | 19 | Carabaffe 20 | 700 ₽ | 17 / 15 / 16 / 18 (630 ₽) |
+| Carapuce | 17 | 15 | **20** | Herbizarre 20 | 700 ₽ | 17 / 15 / 16 / 18 (630 ₽) |
+| Bulbizarre | 13 | 12 | 13 | Reptincel 15 | 525 ₽ | 16 / 14 / 15 / 16 (560 ₽) |
+
+Pourquoi ces jeux (ligne droite, attentif, 1er essai ; sur 1 000 graines, ± 1,6 point) :
+
+- **Salamèche** (meneur N22,0 ; « Kevin » N21,8) : 19 / 16 / 18 / 20 (les données du T18) 63 · 63 % ;
+  **19 / 16 / 19 / 20 → 42 · 45 %** ; 20 / 17 / 19 / 21 → 35 · 26 % ; 20 / 17 / 18 / 21 → 58 · 43 %.
+  Le jeu retenu est le seul à tenir les deux équipes dans 35–45 %.
+- **Carapuce** (meneur N21,0) : le taux tient à **Kadabra** (Choc Mental et Rafale Psy sur Roucool
+  et Papilusion) : Kadabra N19 → 46–57 % quel que soit le reste (19 à 22 / 16 à 19 / 19 / 20 à
+  24) ; Kadabra N20 → 26–39 % (52 % avec Rattatac 14). **17 / 15 / 20 / 20 → 38,5 %** (18 / 15 / 20 / 20 : 35 % ;
+  17 / 14 / 20 / 20 : 52 %). Kadabra égale le starter évolué (20) : seul écart à l'habitude
+  « le starter est le plus haut » ; pour la garder, 20 / 17 / 19 / 24 donne 46 % (starter + 4).
+- **Bulbizarre** (meneur N20,0) : 16 / 14 / 15 / 16 (T21) 0,3 % ; 15 / 13 / 14 / 15 7,5 % ;
+  14 / 12 / 13 / 15 32 % ; **13 / 12 / 13 / 15 → 38 %** ; 14 / 12 / 13 / 14 → 45 %.
+  **Compromis** : 4 à 6 niveaux sous les deux autres versions (comme l'asymétrie déjà acceptée du
+  rival n° 3 et l'option (i) du §6). La cible n'est pas atteignable avec des niveaux proches :
+  Herbizarre arrive 1 à 2 niveaux plus bas (N20 contre 21–22) et ses **trois faiblesses**
+  (Tornade, Rafale Psy, Flammèche) font tout passer de 0 à 40 % en 3 niveaux. Aucune capacité ne
+  peut alléger : Roucoups n'a que Tornade, Vive-Attaque, Jet de Sable jusqu'au N21 ; Reptincel
+  sans Flammèche n'aurait plus de sens. Reptincel 15 (sous son niveau d'évolution, 16) est déjà le
+  cas de Roucoups, Rattatac et Kadabra (sous 18, 20 et 16) dans les trois versions : jeu de
+  niveaux, pas de cohérence d'élevage. Variante plus haute : 14 / 12 / 13 / 14 (45 %).
+
+### 10.3 Rival n° 4 avec les données retenues (parcours, sac de Carmin ; tentatives = moyenne jusqu'à la victoire, battu en 6 essais)
+
+| Équipe | **Ligne droite, prudent** | Expert | Naïf | Avec les Dresseurs facultatifs (prudent · expert) |
+|---|---|---|---|---|
+| Reptincel 21 (+ Férosinge, Roucool, Mystherbe) | **42 %** (2,6 ; 87 %) | 60 % | 0,3 % (43 % en 6) | 76 · 93 % (N26,3) |
+| « Kevin » Reptincel 21 | **45 %** (2,5 ; 92 %) | 65 % | 1,8 % (68 % en 6) | 76 · 92 % (N25,7) |
+| Carabaffe 21 | **38,5 %** (2,8 ; 85 %) | 76 % | 4,8 % (74 % en 6) | 71 · 98 % (N25,6) |
+| Herbizarre 20 | **38 %** (2,5 ; 98 %) | 70 % | 37 % (100 % en 6) | ≈ 100 % (1,00 tentative ; N24,4) |
+| bas Reptincel 20 | 24 % (3,5 ; 71 %) | 33 % | 0 % | 65 · 90 % |
+| bas Carabaffe 20 | **1,7 %** (4,1 ; 6 %) | 7 % | 0 % | 40 · 66 % |
+| bas Herbizarre 18 | **0,1 %** (5,0 ; 30 %) | 1,4 % | 0,6 % | — (usées avant) |
+| Sol (Racaillou ; Nidoking ; Carabaffe + Racaillou ; Herbizarre + Racaillou) | 51 ; 61 ; 63 ; 77 % | | | 73 ; 99,6 ; 62 ; 98 % |
+| Ligne droite + tout le navire (retours au quai) | Reptincel 38 %, « Kevin » 49 %, Carabaffe 32 %, Herbizarre ≈ 90 % | | | |
+
+- **Dans la cible** pour les trois équipes moyennes (38–45 %) ; l'expert gagne 60–76 % ; le naïf
+  n'y arrive presque jamais en un essai (sauf contre Bulbizarre, 37 %) mais le bat souvent en
+  6 essais.
+- **Avec les Dresseurs facultatifs** : 71–76 % pour Salamèche et Carapuce (≤ 80 %) ; **Bulbizarre
+  ≈ 100 %** (+ 4,4 niveaux contre des niveaux bas : l'entraînement paie beaucoup).
+- **Équipes « bas »** : le rival devient un mur pour Carapuce (1,7 %, 6 % en 6 essais) et Bulbizarre
+  (0,1 %) en ligne droite : il faut s'entraîner (avec les Dresseurs facultatifs : 40 % pour la
+  Carabaffe « bas »). Aucun jeu de niveaux essayé ne donne plus de 9 % à la Carabaffe « bas » sans
+  dépasser 50 % pour la moyenne (Kadabra N19 ou N20).
+
+### 10.4 Règle des 80 % : autres combats du J16 (ligne droite, prudent)
+
+**Major Bob** (inchangé ; soin avant lui ; 1er essai, tentatives) :
+
+| Équipe | Ligne droite | + tout le navire | Tous les Dresseurs |
+|---|---|---|---|
+| Reptincel 21 | 72 % (1,2) | **93 %** | **98 %** |
+| « Kevin » | 64 % (1,4) | **90 %** | **98 %** |
+| bas Reptincel 20 | 56 % (1,3) | **88 %** | **98 %** |
+| Carabaffe 21 | 0,7 % (3,7 % en 6 essais) | 0 % | 12 % |
+| Herbizarre 20 (Plante résiste à l'Électrik) | 17 % (2,3) | 92 % | 96 % |
+| Sol, ordre gardé (toutes) | 100 % | 100 % | 100 % |
+
+- En **ligne droite**, Major Bob reste ≤ 80 % pour toutes les équipes sans avantage de type.
+- Au-delà de 80 % **sans avantage de type** : seulement Salamèche **avec les Dresseurs facultatifs**
+  (88–98 %), donc hors de la règle par défaut ; proposition si Kevin veut l'y soumettre : sans
+  objet en ligne droite, rien à changer. Sol et Bulbizarre (92–100 %) : avantage de type, accepté.
+
+**Dresseurs ordinaires** (navire : 0 inévitable, donc facultatifs ; Arène : Louis, Axel, Marc
+inévitables) : **au-delà de 80 % partout**, et ce n'est pas réglable par les niveaux (équipes
+moyennes ; les « bas » descendent plus bas) :
+
+| Dresseur | Combat seul (données) | + 4 niveaux et IA smart | En séquence (ligne droite + navire, sans soin à bord) |
+|---|---|---|---|
+| Armand (Rattata 17, Rattatac 19) | 100 % | 64–85 % (Herbizarre 39 %) | 88–100 % |
+| Erwan, Rémi (Machop 18 / 19) | 100 % | 100 % | 82–100 % |
+| Loïc, Yann (deux Pokémon Eau 18) | 100 % | 85–100 % (Yann contre « Kevin » : 28 %) | 83–100 % |
+| Émile (Pikachu 18) | 100 % | 94–100 % | 64–100 % (Herbizarre 64 %) |
+| Léna, Oscar, Victor (un Pokémon 18–19) | 100 % | 73–100 % | 98–100 % |
+| Paul (Rattatac 19, dernier) | 100 % | 73–94 % | 63–100 % (Carabaffe 68 %, Herbizarre 63 %) |
+| Arène : Louis (Pikachu 20), Axel (Voltorbe 20) | 100 % | 91–100 % | 100 % (ligne droite, après le rival) |
+| Arène : Marc (Pikachu 19, Voltorbe 19) | 100 % | 78–100 % | 77–100 % (ligne droite ; Carabaffe 77 %) |
+
+Un ou deux Pokémon contre une équipe de 3–4 avec des Potions : même à + 4 niveaux et avec l'IA
+`smart`, le joueur gagne presque toujours. **Proposition (non appliquée)**, à trancher par Kevin :
+
+- **P-1 (recommandée)** : appliquer la règle des 80 % aux **combats à enjeu** (rival, champion,
+  chef Rocket) et aux **séquences sans soin** (le navire entier, l'Arène avant son champion), pas à
+  chaque Dresseur ordinaire. Mesuré : la séquence « navire puis rival » donne 32–49 % au rival
+  (Salamèche, Carapuce) ; l'Arène sans Centre entre Marc et Bob donne 0–2 % à Bob en ligne droite (sans Pokémon de
+  type Sol).
+  Rien à changer.
+- **P-2** (si chaque Dresseur doit passer sous 80 %) : leur donner **2 à 3 Pokémon** au niveau du
+  joueur (N20–22) avec l'IA `smart` ; c'est un changement d'équipes (dossier 19 §9, §17), à
+  re-mesurer, et le navire devient beaucoup plus usant (aucun soin à bord).
+
+### 10.5 Reproduire
+
+```bash
+python3 tools/sim/gen_ss_anne_scenarios.py            # régénère les quatre scénarios
+godot --headless --path . -s res://tools/simulate_mt_moon.gd -- \
+  --scenario res://tools/sim/ss_anne_rival_40.json --seeds 1000 --equipe "Carabaffe 21" \
+  --variante "directe, attentif : rival_su_17_15_20_20"
+godot --headless --path . -s res://tools/simulate_mt_moon.gd -- \
+  --scenario res://tools/sim/ss_anne_scenario.json --donnees --seeds 1000 --equipe "Reptincel" \
+  --variante "directe + navire"
+godot --headless --path . -s res://tools/simulate_mt_moon.gd -- \
+  --scenario res://tools/sim/ss_anne_ordinary.json --seeds 1000 --equipe "Herbizarre"
+```
+
+Rapports bruts (non versionnés) : `build/sim/j16_r40/`. Sur le Mac chargé : ≈ 5 min par lot de
+6 candidats et par équipe (rival seul), ≈ 25 min par groupe d'équipes pour le parcours complet.

@@ -1,7 +1,7 @@
 {
 	"version": 1,
 	"title": "Équilibrage du S.S. Anne, du rival n° 4 et de Major Bob (jalon 16 T18)",
-	"description": "Jalon 16 T18 (dossier 19 §5, §9 ; plan jalon-16 T18). Information pour Kevin : aucune donnée de jeu n'est changée. Départ = équipes de fin du J13 du scénario du J14 T21 (Ondine battue), plus des variantes avec un Pokémon de type Sol (Racaillou, ou Nidoking par la Pierre Lune). Parcours : Route 25 (D1, D2, H3), Rocket, Route 6 (Chloé), Centre de Carmin, rival n° 4, Centre, Arène (Louis, Axel, Marc), [Centre], Major Bob. Groupe « tous » : D3–D6 et 30 cases de la Route 25, 20 cases de la Route 5, les 5 autres Dresseurs et 30 cases de la Route 6, les 10 Dresseurs du navire (aucun soin à bord) ; « retour » : retour au Centre du quai après 5 Dresseurs du navire et avant le rival. « soin_arene » : Centre entre les Dresseurs de l'Arène et Major Bob. Objets (attentif, expert) : 3 Potions, 2 Super Potions, 1 Antidote, 1 Anti-Para. Généré par tools/sim/gen_ss_anne_scenarios.py.",
+	"description": "Jalon 16 T18 (dossier 19 §5, §9 ; plan jalon-16 T18). Information pour Kevin : aucune donnée de jeu n'est changée. Départ = équipes de fin du J13 du scénario du J14 T21 (Ondine battue), plus des variantes avec un Pokémon de type Sol (Racaillou, ou Nidoking par la Pierre Lune). Parcours : Route 25 (D1, D2, H3), Rocket, Route 6 (Chloé), Centre de Carmin, rival n° 4, Centre, Arène (Louis, Axel, Marc), [Centre], Major Bob. Groupe « tous » : D3–D6 et 30 cases de la Route 25, 20 cases de la Route 5, les 5 autres Dresseurs et 30 cases de la Route 6 ; « navire » : les 10 Dresseurs du navire (aucun soin à bord ; avec « tous », ou seul : « directe + navire ») ; « retour » : retour au Centre du quai après 5 Dresseurs du navire et avant le rival. « soin_arene » : Centre entre les Dresseurs de l'Arène et Major Bob. Objets (attentif, expert) : 3 Potions, 2 Super Potions, 1 Antidote, 1 Anti-Para. Généré par tools/sim/gen_ss_anne_scenarios.py.",
 	"seeds": 1000,
 	"heal_at_start": true,
 	"teams": [
@@ -911,7 +911,7 @@
 				"bulbasaur": [
 					{
 						"species": "pidgeotto",
-						"level": 16,
+						"level": 13,
 						"moves": [
 							"gust",
 							"quick_attack",
@@ -920,7 +920,7 @@
 					},
 					{
 						"species": "raticate",
-						"level": 14,
+						"level": 12,
 						"moves": [
 							"quick_attack",
 							"bite",
@@ -929,7 +929,7 @@
 					},
 					{
 						"species": "kadabra",
-						"level": 15,
+						"level": 13,
 						"moves": [
 							"confusion",
 							"psybeam"
@@ -937,7 +937,7 @@
 					},
 					{
 						"species": "charmeleon",
-						"level": 16,
+						"level": 15,
 						"moves": [
 							"ember",
 							"scratch",
@@ -948,7 +948,7 @@
 				"charmander": [
 					{
 						"species": "pidgeotto",
-						"level": 17,
+						"level": 19,
 						"moves": [
 							"gust",
 							"quick_attack",
@@ -957,7 +957,7 @@
 					},
 					{
 						"species": "raticate",
-						"level": 15,
+						"level": 16,
 						"moves": [
 							"quick_attack",
 							"bite",
@@ -966,7 +966,7 @@
 					},
 					{
 						"species": "kadabra",
-						"level": 16,
+						"level": 19,
 						"moves": [
 							"confusion",
 							"psybeam"
@@ -974,7 +974,7 @@
 					},
 					{
 						"species": "wartortle",
-						"level": 18,
+						"level": 20,
 						"moves": [
 							"water_gun",
 							"tackle",
@@ -1003,7 +1003,7 @@
 					},
 					{
 						"species": "kadabra",
-						"level": 16,
+						"level": 20,
 						"moves": [
 							"confusion",
 							"psybeam"
@@ -1011,7 +1011,7 @@
 					},
 					{
 						"species": "ivysaur",
-						"level": 18,
+						"level": 20,
 						"moves": [
 							"vine_whip",
 							"tackle",
@@ -1226,27 +1226,27 @@
 		{
 			"label": "S.S. Anne : Gentleman Armand",
 			"trainer": "ss_anne_gentleman_armand",
-			"optional": "tous"
+			"optional": "navire"
 		},
 		{
 			"label": "S.S. Anne : Marin Erwan",
 			"trainer": "ss_anne_sailor_erwan",
-			"optional": "tous"
+			"optional": "navire"
 		},
 		{
 			"label": "S.S. Anne : Marin Loïc",
 			"trainer": "ss_anne_sailor_loic",
-			"optional": "tous"
+			"optional": "navire"
 		},
 		{
 			"label": "S.S. Anne : Gentleman Émile",
 			"trainer": "ss_anne_gentleman_emile",
-			"optional": "tous"
+			"optional": "navire"
 		},
 		{
 			"label": "S.S. Anne : Marin Yann",
 			"trainer": "ss_anne_sailor_yann",
-			"optional": "tous"
+			"optional": "navire"
 		},
 		{
 			"label": "Centre de Carmin (retour au quai, mi-navire)",
@@ -1256,27 +1256,27 @@
 		{
 			"label": "S.S. Anne : Marin Rémi",
 			"trainer": "ss_anne_sailor_remi",
-			"optional": "tous"
+			"optional": "navire"
 		},
 		{
 			"label": "S.S. Anne : Fillette Léna",
 			"trainer": "ss_anne_lass_lena",
-			"optional": "tous"
+			"optional": "navire"
 		},
 		{
 			"label": "S.S. Anne : Scout Oscar",
 			"trainer": "ss_anne_scout_basile",
-			"optional": "tous"
+			"optional": "navire"
 		},
 		{
 			"label": "S.S. Anne : Gentleman Victor",
 			"trainer": "ss_anne_gentleman_victor",
-			"optional": "tous"
+			"optional": "navire"
 		},
 		{
 			"label": "S.S. Anne : Marin Paul",
 			"trainer": "ss_anne_sailor_paul",
-			"optional": "tous"
+			"optional": "navire"
 		},
 		{
 			"label": "Centre de Carmin (retour au quai avant le rival)",
@@ -1393,6 +1393,7 @@
 			"retries": 5,
 			"optional": [
 				"tous",
+				"navire",
 				"retour",
 				"soin_arene"
 			],
@@ -1410,6 +1411,7 @@
 			"retries": 5,
 			"optional": [
 				"tous",
+				"navire",
 				"retour",
 				"soin_arene"
 			],
@@ -1427,6 +1429,7 @@
 			"retries": 5,
 			"optional": [
 				"tous",
+				"navire",
 				"retour",
 				"soin_arene"
 			]
@@ -1438,6 +1441,7 @@
 			"retries": 5,
 			"optional": [
 				"tous",
+				"navire",
 				"retour"
 			],
 			"items": {
@@ -1454,6 +1458,7 @@
 			"retries": 5,
 			"optional": [
 				"tous",
+				"navire",
 				"retour"
 			],
 			"items": {
@@ -1470,6 +1475,7 @@
 			"retries": 5,
 			"optional": [
 				"tous",
+				"navire",
 				"retour"
 			]
 		},
@@ -1480,6 +1486,7 @@
 			"retries": 5,
 			"optional": [
 				"tous",
+				"navire",
 				"soin_arene"
 			],
 			"items": {
@@ -1496,6 +1503,7 @@
 			"retries": 5,
 			"optional": [
 				"tous",
+				"navire",
 				"soin_arene"
 			],
 			"items": {
@@ -1528,10 +1536,45 @@
 			"retries": 5,
 			"optional": [
 				"tous",
+				"navire",
 				"retour",
 				"soin_arene"
 			],
 			"keep_order": true,
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"antidote": 1,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "directe + navire, soin avant Major Bob, attentif",
+			"player": "attentif",
+			"center": true,
+			"retries": 5,
+			"optional": [
+				"navire",
+				"retour",
+				"soin_arene"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"antidote": 1,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "directe + navire, soin avant Major Bob, expert",
+			"player": "expert",
+			"center": true,
+			"retries": 5,
+			"optional": [
+				"navire",
+				"retour",
+				"soin_arene"
+			],
 			"items": {
 				"potion": 3,
 				"super_potion": 2,

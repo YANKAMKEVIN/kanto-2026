@@ -947,7 +947,7 @@
 				"bulbasaur": [
 					{
 						"species": "pidgeotto",
-						"level": 16,
+						"level": 13,
 						"moves": [
 							"gust",
 							"quick_attack",
@@ -956,7 +956,7 @@
 					},
 					{
 						"species": "raticate",
-						"level": 14,
+						"level": 12,
 						"moves": [
 							"quick_attack",
 							"bite",
@@ -965,7 +965,7 @@
 					},
 					{
 						"species": "kadabra",
-						"level": 15,
+						"level": 13,
 						"moves": [
 							"confusion",
 							"psybeam"
@@ -973,7 +973,7 @@
 					},
 					{
 						"species": "charmeleon",
-						"level": 16,
+						"level": 15,
 						"moves": [
 							"ember",
 							"scratch",
@@ -984,7 +984,7 @@
 				"charmander": [
 					{
 						"species": "pidgeotto",
-						"level": 17,
+						"level": 19,
 						"moves": [
 							"gust",
 							"quick_attack",
@@ -993,7 +993,7 @@
 					},
 					{
 						"species": "raticate",
-						"level": 15,
+						"level": 16,
 						"moves": [
 							"quick_attack",
 							"bite",
@@ -1002,7 +1002,7 @@
 					},
 					{
 						"species": "kadabra",
-						"level": 16,
+						"level": 19,
 						"moves": [
 							"confusion",
 							"psybeam"
@@ -1010,7 +1010,7 @@
 					},
 					{
 						"species": "wartortle",
-						"level": 18,
+						"level": 20,
 						"moves": [
 							"water_gun",
 							"tackle",
@@ -1039,7 +1039,7 @@
 					},
 					{
 						"species": "kadabra",
-						"level": 16,
+						"level": 20,
 						"moves": [
 							"confusion",
 							"psybeam"
@@ -1047,7 +1047,7 @@
 					},
 					{
 						"species": "ivysaur",
-						"level": 18,
+						"level": 20,
 						"moves": [
 							"vine_whip",
 							"tackle",
@@ -1477,7 +1477,7 @@
 				"bulbasaur": [
 					{
 						"species": "pidgeotto",
-						"level": 16,
+						"level": 13,
 						"moves": [
 							"gust",
 							"quick_attack",
@@ -1486,7 +1486,7 @@
 					},
 					{
 						"species": "raticate",
-						"level": 14,
+						"level": 12,
 						"moves": [
 							"quick_attack",
 							"bite",
@@ -1503,7 +1503,7 @@
 					},
 					{
 						"species": "charmeleon",
-						"level": 16,
+						"level": 15,
 						"moves": [
 							"ember",
 							"scratch",
@@ -1514,7 +1514,7 @@
 				"charmander": [
 					{
 						"species": "pidgeotto",
-						"level": 17,
+						"level": 19,
 						"moves": [
 							"gust",
 							"quick_attack",
@@ -1523,7 +1523,7 @@
 					},
 					{
 						"species": "raticate",
-						"level": 15,
+						"level": 16,
 						"moves": [
 							"quick_attack",
 							"bite",
@@ -1540,7 +1540,7 @@
 					},
 					{
 						"species": "wartortle",
-						"level": 18,
+						"level": 20,
 						"moves": [
 							"water_gun",
 							"tackle",
@@ -1577,7 +1577,7 @@
 					},
 					{
 						"species": "ivysaur",
-						"level": 18,
+						"level": 20,
 						"moves": [
 							"vine_whip",
 							"tackle",
@@ -1600,7 +1600,7 @@
 				"bulbasaur": [
 					{
 						"species": "pidgeotto",
-						"level": 16,
+						"level": 13,
 						"moves": [
 							"gust",
 							"quick_attack",
@@ -1609,7 +1609,7 @@
 					},
 					{
 						"species": "raticate",
-						"level": 14,
+						"level": 12,
 						"moves": [
 							"quick_attack",
 							"bite",
@@ -1618,7 +1618,7 @@
 					},
 					{
 						"species": "kadabra",
-						"level": 15,
+						"level": 13,
 						"moves": [
 							"confusion",
 							"teleport"
@@ -1626,7 +1626,7 @@
 					},
 					{
 						"species": "charmeleon",
-						"level": 16,
+						"level": 15,
 						"moves": [
 							"ember",
 							"scratch",
@@ -1637,7 +1637,7 @@
 				"charmander": [
 					{
 						"species": "pidgeotto",
-						"level": 17,
+						"level": 19,
 						"moves": [
 							"gust",
 							"quick_attack",
@@ -1646,7 +1646,7 @@
 					},
 					{
 						"species": "raticate",
-						"level": 15,
+						"level": 16,
 						"moves": [
 							"quick_attack",
 							"bite",
@@ -1655,7 +1655,7 @@
 					},
 					{
 						"species": "kadabra",
-						"level": 16,
+						"level": 19,
 						"moves": [
 							"confusion",
 							"teleport"
@@ -1663,7 +1663,7 @@
 					},
 					{
 						"species": "wartortle",
-						"level": 18,
+						"level": 20,
 						"moves": [
 							"water_gun",
 							"tackle",
@@ -1692,7 +1692,7 @@
 					},
 					{
 						"species": "kadabra",
-						"level": 16,
+						"level": 20,
 						"moves": [
 							"confusion",
 							"teleport"
@@ -1700,7 +1700,7 @@
 					},
 					{
 						"species": "ivysaur",
-						"level": 18,
+						"level": 20,
 						"moves": [
 							"vine_whip",
 							"tackle",
@@ -1760,7 +1760,7 @@
 				"charmander": [
 					{
 						"species": "pidgeotto",
-						"level": 17,
+						"level": 19,
 						"moves": [
 							"gust",
 							"quick_attack",
@@ -1769,7 +1769,7 @@
 					},
 					{
 						"species": "raticate",
-						"level": 15,
+						"level": 16,
 						"moves": [
 							"quick_attack",
 							"bite",
@@ -1778,7 +1778,7 @@
 					},
 					{
 						"species": "kadabra",
-						"level": 16,
+						"level": 19,
 						"moves": [
 							"confusion",
 							"psybeam"
@@ -1786,7 +1786,7 @@
 					},
 					{
 						"species": "wartortle",
-						"level": 18,
+						"level": 20,
 						"moves": [
 							"water_gun",
 							"tackle",
@@ -1815,7 +1815,7 @@
 					},
 					{
 						"species": "kadabra",
-						"level": 16,
+						"level": 20,
 						"moves": [
 							"confusion",
 							"psybeam"
@@ -1823,7 +1823,7 @@
 					},
 					{
 						"species": "ivysaur",
-						"level": 18,
+						"level": 20,
 						"moves": [
 							"vine_whip",
 							"tackle",
@@ -1883,7 +1883,7 @@
 				"charmander": [
 					{
 						"species": "pidgeotto",
-						"level": 17,
+						"level": 19,
 						"moves": [
 							"gust",
 							"quick_attack",
@@ -1892,7 +1892,7 @@
 					},
 					{
 						"species": "raticate",
-						"level": 15,
+						"level": 16,
 						"moves": [
 							"quick_attack",
 							"bite",
@@ -1901,7 +1901,7 @@
 					},
 					{
 						"species": "kadabra",
-						"level": 16,
+						"level": 19,
 						"moves": [
 							"confusion",
 							"psybeam"
@@ -1909,7 +1909,7 @@
 					},
 					{
 						"species": "wartortle",
-						"level": 18,
+						"level": 20,
 						"moves": [
 							"water_gun",
 							"tackle",
@@ -1938,7 +1938,7 @@
 					},
 					{
 						"species": "kadabra",
-						"level": 16,
+						"level": 20,
 						"moves": [
 							"confusion",
 							"psybeam"
@@ -1946,7 +1946,7 @@
 					},
 					{
 						"species": "ivysaur",
-						"level": 18,
+						"level": 20,
 						"moves": [
 							"vine_whip",
 							"tackle",
@@ -1969,7 +1969,7 @@
 				"bulbasaur": [
 					{
 						"species": "pidgeotto",
-						"level": 16,
+						"level": 13,
 						"moves": [
 							"gust",
 							"quick_attack",
@@ -1978,7 +1978,7 @@
 					},
 					{
 						"species": "raticate",
-						"level": 14,
+						"level": 12,
 						"moves": [
 							"quick_attack",
 							"bite",
@@ -1987,7 +1987,7 @@
 					},
 					{
 						"species": "kadabra",
-						"level": 15,
+						"level": 13,
 						"moves": [
 							"confusion",
 							"psybeam"
@@ -2006,7 +2006,7 @@
 				"charmander": [
 					{
 						"species": "pidgeotto",
-						"level": 17,
+						"level": 19,
 						"moves": [
 							"gust",
 							"quick_attack",
@@ -2015,7 +2015,7 @@
 					},
 					{
 						"species": "raticate",
-						"level": 15,
+						"level": 16,
 						"moves": [
 							"quick_attack",
 							"bite",
@@ -2024,7 +2024,7 @@
 					},
 					{
 						"species": "kadabra",
-						"level": 16,
+						"level": 19,
 						"moves": [
 							"confusion",
 							"psybeam"
@@ -2061,7 +2061,7 @@
 					},
 					{
 						"species": "kadabra",
-						"level": 16,
+						"level": 20,
 						"moves": [
 							"confusion",
 							"psybeam"
@@ -2092,7 +2092,7 @@
 				"bulbasaur": [
 					{
 						"species": "pidgeotto",
-						"level": 16,
+						"level": 13,
 						"moves": [
 							"gust",
 							"quick_attack",
@@ -2101,7 +2101,7 @@
 					},
 					{
 						"species": "raticate",
-						"level": 14,
+						"level": 12,
 						"moves": [
 							"quick_attack",
 							"bite",
@@ -2110,7 +2110,7 @@
 					},
 					{
 						"species": "kadabra",
-						"level": 15,
+						"level": 13,
 						"moves": [
 							"confusion",
 							"psybeam"
@@ -2118,7 +2118,7 @@
 					},
 					{
 						"species": "charmeleon",
-						"level": 16,
+						"level": 15,
 						"moves": [
 							"ember",
 							"scratch",
@@ -2129,7 +2129,7 @@
 				"charmander": [
 					{
 						"species": "pidgeotto",
-						"level": 17,
+						"level": 19,
 						"moves": [
 							"gust",
 							"quick_attack",
@@ -2138,7 +2138,7 @@
 					},
 					{
 						"species": "raticate",
-						"level": 15,
+						"level": 16,
 						"moves": [
 							"quick_attack",
 							"bite",
@@ -2147,7 +2147,7 @@
 					},
 					{
 						"species": "kadabra",
-						"level": 16,
+						"level": 19,
 						"moves": [
 							"confusion",
 							"psybeam"
@@ -2155,7 +2155,7 @@
 					},
 					{
 						"species": "wartortle",
-						"level": 18,
+						"level": 20,
 						"moves": [
 							"water_gun",
 							"tackle",
@@ -2184,7 +2184,7 @@
 					},
 					{
 						"species": "kadabra",
-						"level": 16,
+						"level": 20,
 						"moves": [
 							"confusion",
 							"psybeam"
@@ -2192,7 +2192,7 @@
 					},
 					{
 						"species": "ivysaur",
-						"level": 18,
+						"level": 20,
 						"moves": [
 							"vine_whip",
 							"tackle",
