@@ -1119,3 +1119,9 @@ Référence `docs/design/reference/ouverture-storyboard-v1.webp`. Escalier = tra
 
 ## Décisions de Kevin (2026-09-25)
 Les six propositions de l'architecte sont acceptées : porte du labo au sud avec parvis et portillon vers les jardins, carte 48×34, sous-titre « Kanto » (la phrase d'ouverture est réservée à la première sortie de la maison), course au bouton tenu, marche 0,22 s/case et course 0,12 s/case (à ajuster après l'essai sur S24), sortie Route 1 = bord de carte. Détails dans [`jalon-01.md`](jalon-01.md) §6.
+
+## J16 — 16F : non-régression sur la vraie partie (S21, 2026-10-16, branche `j16-qa-16f`)
+
+APK final du J16 (`jalon-16` à `a01da28e`, 167 Mo) installé par-dessus (`adb install -r`) sur le S21. Partie v6 de Kevin (Jadielle, 4 Pokémon, 2 100 ₽) : journal `[qa] sauvegarde v6 → v7`, reprise à l'endroit exact (Jadielle, case 42,22), équipe, argent, flags, Pokédex, découvertes identiques ; seuls `version` (7), `daycare` (`{}`) et `play_time` changent. Parcours : Boutique (achat ouvert, 2 100 ₽), Centre (soin), Menu Dresseur (Équipe, Sac, Pokédex, Carte : 4 zones découvertes, aucune zone J15/J16), combat sauvage Route 22 (Nidoran, victoire +23 XP), sauvegarde automatique puis arrêt forcé et relance : reprise exacte. Journal filtré sur le pid : 0 `SCRIPT ERROR` / `FATAL`. FPS moyens 59,7 (216 mesures, creux de 7 à 17 aux chargements de carte), `tex` 66 → 121 Mo selon les cartes. Partie v6 d'origine restaurée (sha1 identiques, `rw-------`, appli arrêtée).
+
+Reportés : mémoire de textures au-dessus du budget de 64 Mo (jusqu'à 121 Mo, Jadielle 90, Route 22 108) ; dos de Salamèche en combat encore une silhouette orange pixel (dos peints : chantier de Kevin) ; sur la carte, colonne « Services » de Jadielle rendue très étroite (texte vertical « Cent… »).
