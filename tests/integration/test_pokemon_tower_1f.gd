@@ -131,5 +131,6 @@ func test_candles_without_life_and_budget() -> void:
 	assert_eq(glows.size() >= 0, true)
 	assert_eq(_map.get_node(^"Interactables").get_child_count(), 0, "aucun examen")
 	assert_eq(_map.get_node(^"Triggers").get_child_count(), 0)
-	assert_eq(_map.get_npcs().size(), 0, "aucun PNJ")
+	# T16 : gardien, trois visiteurs, Exorciste (data/npcs/pokemon_tower_1f.json) ; tombes : T24.
+	assert_eq(_map.get_npcs().size(), 5, "cinq PNJ")
 	assert_lte(GridPaths.count_nodes(_map), 3000)

@@ -177,6 +177,13 @@ const VARIANT_FLAGS: Dictionary = {
 	&"route_6_item_1": [PEWTER_FLAGS], &"route_6_hidden_1": [PEWTER_FLAGS],
 	&"route_6_gate_rule_w": [PEWTER_FLAGS], &"route_6_gate_rule_e": [PEWTER_FLAGS],
 	&"route_6_gate_rule_s": [PEWTER_FLAGS], &"vermilion_arrival": [PEWTER_FLAGS],
+	# Jalon 18 (T16) : objets et déclencheurs silencieux des objectifs (une variante chacun).
+	&"route_9_entered": [PEWTER_FLAGS], &"route_9_item_1": [PEWTER_FLAGS],
+	&"route_9_item_2": [PEWTER_FLAGS], &"route_9_item_3": [PEWTER_FLAGS],
+	&"route_10_reached": [PEWTER_FLAGS], &"dark_cave_crossed": [PEWTER_FLAGS],
+	&"route_10_item_1": [PEWTER_FLAGS], &"dark_cave_1f_item_1": [PEWTER_FLAGS],
+	&"dark_cave_1f_item_2": [PEWTER_FLAGS], &"dark_cave_b1f_item_1": [PEWTER_FLAGS],
+	&"dark_cave_b1f_hidden_1": [PEWTER_FLAGS], &"lavender_reached": [PEWTER_FLAGS],
 }
 ## Scènes jouées par le code (pas de déclencheur) → carte où elles sont jouées.
 ## Jalon 7 (T18) : la scène du colis est lancée par la variante « cutscene » du dialogue de Chen.
@@ -221,11 +228,31 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"mt_moon_fossil_dome": &"mt_moon_b2f", &"mt_moon_fossil_helix": &"mt_moon_b2f",
 	# Jalon 14 (T17) : les trois objets de Léo (dialogue de l'écran, du module, de la console).
 	&"bill_screen": &"bill_house", &"bill_module": &"bill_house", &"bill_machine": &"bill_house",
+	# Jalon 18 (T16) : objets visibles (PNJ « objet ») et Super Potion cachée (point d'examen des
+	# racines, posé au T20).
+	&"route_9_item_1": &"route_9", &"route_9_item_2": &"route_9", &"route_9_item_3": &"route_9",
+	&"route_10_item_1": &"route_10", &"dark_cave_1f_item_1": &"dark_cave_1f",
+	&"dark_cave_1f_item_2": &"dark_cave_1f", &"dark_cave_b1f_item_1": &"dark_cave_b1f",
+	&"dark_cave_b1f_hidden_1": &"dark_cave_b1f",
 }
 ## Scènes à déclencheur dont la carte n'est pas encore construite → leur carte (simulées sur les
 ## PNJ de son fichier). Vidée au T19 du jalon 9 (la forêt existe), puis au T11 du jalon 10 (les
 ## deux scènes d'Argenta ont leurs déclencheurs sur la carte).
 const AWAITING_MAP: Dictionary[StringName, StringName] = {}
+## Jalon 18 (T16) : scènes de ses fichiers (objets, objectifs).
+const J18_IDS: Array[StringName] = [
+	&"dark_cave_1f_item_1", &"dark_cave_1f_item_2", &"dark_cave_b1f_hidden_1",
+	&"dark_cave_b1f_item_1", &"dark_cave_crossed", &"lavender_reached", &"route_10_item_1",
+	&"route_10_reached", &"route_9_entered", &"route_9_item_1", &"route_9_item_2",
+	&"route_9_item_3",
+]
+## Jalon 18 (T16) : scènes en données dont le déclencheur est posé par la vie de la carte (T18
+## Route 9 / 10, T24 Lavanville ; jalon-18.md §4.13) → leur carte. À retirer en posant le
+## déclencheur (la carte rejoint alors [constant MAPS]).
+const AWAITING_TRIGGER: Dictionary[StringName, StringName] = {
+	&"route_9_entered": &"route_9", &"route_10_reached": &"route_10",
+	&"dark_cave_crossed": &"route_10", &"lavender_reached": &"lavender_town",
+}
 
 var _cutscenes: CutsceneLibrary
 var _dialogues: DialogueLibrary
@@ -295,7 +322,7 @@ func test_library_loads_without_error() -> void:
 		&"route_5_item_1", &"starter_chosen", &"underground_hidden_1",
 		&"viridian_arrival", &"viridian_forest_item_1", &"viridian_forest_item_2",
 		&"viridian_forest_item_3", &"viridian_forest_item_4", &"viridian_forest_item_5",
-		&"viridian_forest_item_6"]))
+		&"viridian_forest_item_6"] + J18_IDS))
 
 
 func _sorted(values: Array) -> Array[StringName]:
@@ -328,6 +355,9 @@ func test_every_trigger_targets_a_scene_and_every_scene_is_triggered() -> void:
 			assert_false(_triggered_on.has(id), "« %s » jouée par le code seulement" % id)
 			continue
 		if AWAITING_MAP.has(id) and not MapCatalog.has_map(AWAITING_MAP[id]):
+			continue
+		if AWAITING_TRIGGER.has(id):
+			assert_false(_triggered_on.has(id), "« %s » : retirer de AWAITING_TRIGGER" % id)
 			continue
 		assert_true(_triggered_on.has(id), "scène « %s » visée par un déclencheur" % id)
 	assert_eq(_triggered_on.get(&"route1_grass"), [&"pallet_town"])
@@ -399,21 +429,24 @@ func test_only_world_items_are_found_items() -> void:
 			for step: CutsceneStep in variant.steps:
 				if step.kind == CutsceneStep.Kind.GIVE and step.found:
 					found.append("%s:%s" % [id, step.item_id])
-	assert_eq(found, ["mt_moon_1f_hidden_1:awakening", "mt_moon_1f_item_1:escape_rope",
+	assert_eq(found, ["dark_cave_1f_item_1:escape_rope", "dark_cave_1f_item_2:antidote",
+		"dark_cave_b1f_hidden_1:super_potion", "dark_cave_b1f_item_1:super_potion",
+		"mt_moon_1f_hidden_1:awakening", "mt_moon_1f_item_1:escape_rope",
 		"mt_moon_b1f_item_1:moon_stone", "mt_moon_b1f_item_2:potion",
-		"mt_moon_b2f_hidden_1:moon_stone", "mt_moon_b2f_item_1:tm01", "route_1_potion:potion",
-		"route_24_antidote:antidote", "route_24_item_1:potion", "route_25_hidden_1:potion",
-		"route_25_item_1:tm19", "route_25_item_2:potion", "route_25_item_3:poke_ball",
-		"route_2_item_1:poke_ball", "route_2_item_2:potion",
-		"route_2_item_3:poke_ball", "route_2_item_4:potion", "route_2_north_item_1:potion",
-		"route_3_hidden_1:awakening", "route_3_item_1:poke_ball", "route_3_item_2:potion",
-		"route_3_item_3:paralyze_heal", "route_4_item_1:poke_ball",
-		"route_5_hidden_1:antidote", "route_5_item_1:super_potion",
+		"mt_moon_b2f_hidden_1:moon_stone", "mt_moon_b2f_item_1:tm01",
+		"route_10_item_1:super_potion", "route_1_potion:potion", "route_24_antidote:antidote",
+		"route_24_item_1:potion", "route_25_hidden_1:potion", "route_25_item_1:tm19",
+		"route_25_item_2:potion", "route_25_item_3:poke_ball", "route_2_item_1:poke_ball",
+		"route_2_item_2:potion", "route_2_item_3:poke_ball", "route_2_item_4:potion",
+		"route_2_north_item_1:potion", "route_3_hidden_1:awakening",
+		"route_3_item_1:poke_ball", "route_3_item_2:potion", "route_3_item_3:paralyze_heal",
+		"route_4_item_1:poke_ball", "route_5_hidden_1:antidote", "route_5_item_1:super_potion",
 		"route_6_hidden_1:super_potion", "route_6_item_1:poke_ball",
-		"underground_hidden_1:full_restore",
-		"viridian_forest_item_1:antidote", "viridian_forest_item_2:poke_ball",
-		"viridian_forest_item_3:potion", "viridian_forest_item_4:antidote",
-		"viridian_forest_item_5:poke_ball", "viridian_forest_item_6:potion"]
+		"route_9_item_1:super_potion", "route_9_item_2:antidote", "route_9_item_3:poke_ball",
+		"underground_hidden_1:full_restore", "viridian_forest_item_1:antidote",
+		"viridian_forest_item_2:poke_ball", "viridian_forest_item_3:potion",
+		"viridian_forest_item_4:antidote", "viridian_forest_item_5:poke_ball",
+		"viridian_forest_item_6:potion"]
 		as Array[String])
 
 

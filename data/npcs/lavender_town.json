@@ -1,0 +1,18 @@
+{
+	"l1_fillette": {
+		"cell": [22, 18], "facing": "down", "sprite": "lass_young", "dialogue": "lavender_girl",
+		"route": {
+			"cells": [[22, 16], [22, 17], [22, 18], [22, 19], [22, 20], [22, 19], [22, 18], [22, 17]],
+			"pause": 0.8, "start": 2
+		}
+	},
+	"l2_jeune_homme": {
+		"cell": [31, 12], "facing": "up", "sprite": "youngster", "dialogue": "lavender_young_man"
+	},
+	"l3_passant": {
+		"cell": [13, 11], "facing": "right", "sprite": "traveler", "dialogue": "lavender_passerby"
+	},
+	"l4_femme_bouquet": {
+		"cell": [36, 12], "facing": "left", "sprite": "lass", "dialogue": "lavender_bouquet_woman"
+	}
+}

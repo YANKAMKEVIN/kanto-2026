@@ -132,10 +132,13 @@ func test_east_edge_leads_to_route_10_same_rows() -> void:
 	assert_true(_map.has_spawn(&"from_route_10"), "spawn du plan")
 
 
-func test_no_life_yet() -> void:
+## T16 : PNJ, Dresseurs et objets en données ; panneau et déclencheurs posés au T18.
+func test_life_is_the_t16_data_only() -> void:
 	assert_eq(_map.get_node(^"Triggers").get_child_count(), 0)
 	assert_eq(_map.get_node(^"Interactables").get_child_count(), 0)
-	assert_eq(_map.get_entities().find_children("*", "Npc", true, false).size(), 0)
+	var ids := _npc_ids_and_data(_map.get_entities(), &"route_9")
+	assert_eq(ids[0], ids[1], "PNJ de data/npcs/route_9.json")
+	assert_eq((ids[1] as Array).size(), 12, "7 Dresseurs, 3 objets, 2 Pokémon d'ambiance")
 
 
 func test_west_reaches_east_and_every_row_of_each() -> void:
@@ -245,3 +248,16 @@ func test_node_budget() -> void:
 	var count := GridPaths.count_nodes(_map)
 	gut.p("route_9 : %d nœuds" % count)
 	assert_lte(count, NODE_BUDGET, "≤ 3 000 nœuds")
+
+
+## Identifiants des PNJ de [param root] (scène chargée) et ceux des données (T16, nouvelle partie).
+func _npc_ids_and_data(root: Node, map_id: StringName) -> Array:
+	var on_map: Array[String] = []
+	for node: Node in root.find_children("*", "Npc", true, false):
+		on_map.append(String((node as Npc).get_id()))
+	var data: Array[String] = []
+	for spec: NpcSpec in NpcRoster.load_for_map(map_id).get_present(null):
+		data.append(String(spec.id))
+	on_map.sort()
+	data.sort()
+	return [on_map, data]

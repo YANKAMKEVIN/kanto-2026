@@ -1,0 +1,26 @@
+{
+	"dark_cave_1f_rubble": {
+		"maps": ["dark_cave_1f"],
+		"terrain": "rubble",
+		"rate": 25,
+		"ramp": { "from_step": 15, "max_steps": 20 },
+		"slots": [
+			{ "species": "zubat", "levels": [15, 18], "weight": 45 },
+			{ "species": "geodude", "levels": [16, 17], "weight": 25 },
+			{ "species": "machop", "levels": [15, 17], "weight": 20 },
+			{ "species": "onix", "levels": [13, 15], "weight": 10 }
+		]
+	},
+	"dark_cave_b1f_rubble": {
+		"maps": ["dark_cave_b1f"],
+		"terrain": "rubble",
+		"rate": 25,
+		"ramp": { "from_step": 15, "max_steps": 20 },
+		"slots": [
+			{ "species": "zubat", "levels": [16, 18], "weight": 35 },
+			{ "species": "geodude", "levels": [16, 18], "weight": 30 },
+			{ "species": "machop", "levels": [15, 17], "weight": 20 },
+			{ "species": "onix", "levels": [13, 17], "weight": 15 }
+		]
+	}
+}

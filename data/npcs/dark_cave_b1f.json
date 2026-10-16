@@ -1,0 +1,23 @@
+{
+	"g3_elsa": {
+		"cell": [13, 35], "facing": "right", "sprite": "lass",
+		"dialogue": "dark_cave_elsa_after",
+		"trainer": {
+			"id": "dark_cave_elsa", "sight": 5,
+			"before": "dark_cave_elsa_before", "defeated": "dark_cave_elsa_defeated"
+		}
+	},
+	"g4_marcel": {
+		"cell": [38, 34], "facing": "left", "sprite": "hiker",
+		"dialogue": "dark_cave_marcel_after",
+		"trainer": {
+			"id": "dark_cave_marcel", "sight": 4,
+			"before": "dark_cave_marcel_before", "defeated": "dark_cave_marcel_defeated"
+		}
+	},
+	"dark_cave_b1f_item_1": {
+		"cell": [21, 18], "facing": "down", "sprite": "object/poke_ball_ground",
+		"dialogue": "dark_cave_b1f_item_1", "verb": "take", "turn_to_player": false,
+		"unless": ["got_dark_cave_b1f_item_1"]
+	}
+}

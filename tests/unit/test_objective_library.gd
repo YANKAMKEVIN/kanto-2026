@@ -16,7 +16,10 @@ func test_real_data_loads_without_error() -> void:
 	assert_eq(library.get_errors().size(), 0)
 	# Jalon 15 (T15, jalon-15.md §2.7.9) : « explorer Carmin-sur-Mer. » puis « rejoindre
 	# Carmin-sur-Mer, au sud. » en tête (ordre du voyage), devant le S.S. Anne du J14.
-	assert_eq(library.get_ids(), [&"explore_vermilion", &"go_vermilion", &"ss_anne", &"help_bill",
+	# Jalon 18 (T16, jalon-18.md §4.13) : ses cinq objectifs en tête, le plus avancé d'abord
+	# (test_j18_data).
+	assert_eq(library.get_ids(), [&"tower_later", &"visit_tower", &"reach_lavender",
+		&"cross_dark_cave", &"cross_route_9", &"explore_vermilion", &"go_vermilion", &"ss_anne", &"help_bill",
 		&"go_cerulean_cape",
 		&"explore_cerulean", &"cross_nugget_bridge",
 		&"get_cascade_badge", &"go_cerulean", &"cross_mt_moon", &"go_route_3",

@@ -1,0 +1,6 @@
+{
+	"_note": "Jalon 18 (jalon-18.md §4.11, dossier 21 §6.5, T-17 validé le 2026-10-14) : légende de première arrivée à Lavanville, au format « liste » prévu pour FirstExitCaption. Fichier EN ATTENTE : aucun code ne le lit encore. Le T17 (après la clôture du J17) étend FirstExitCaption à la forme { \"arrivals\": [ … ] } dans data/opening/first_exit.json et y verse cette entrée (Bourg Palette d'OUV.3 inchangé), puis supprime ce fichier. Titre affiché : « LAVANVILLE / La ville où reposent les souvenirs ».",
+	"arrivals": [
+		{ "map": "lavender_town", "from": "route_10", "subtitle": "La ville où reposent les souvenirs" }
+	]
+}

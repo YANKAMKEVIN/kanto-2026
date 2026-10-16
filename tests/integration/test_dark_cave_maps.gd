@@ -134,23 +134,35 @@ func test_node_budget() -> void:
 		assert_lte(nodes, NODE_BUDGET, String(map_id))
 
 
-func test_cave_is_lifeless() -> void:
+## T16 : Dresseurs et objets en données ; examens, panneau et objet caché posés au T20.
+func test_cave_life_is_the_t16_data_only() -> void:
+	var expected := {&"dark_cave_1f": 5, &"dark_cave_b1f": 3}
 	for map_id: StringName in _maps:
 		var map: GameMap = _maps[map_id]
 		assert_eq(map.get_node(^"Interactables").get_child_count(), 0, "%s : rien à examiner" % map_id)
 		assert_eq(map.get_node(^"Triggers").get_child_count(), 0, "%s : aucun déclencheur" % map_id)
 		var npcs: Array[Node] = []
 		_find_all(map, npcs, func(n: Node) -> bool: return n is Npc)
-		assert_eq(npcs.size(), 0, "%s : aucun PNJ" % map_id)
+		var on_map: Array[String] = []
+		for npc: Node in npcs:
+			on_map.append(String((npc as Npc).get_id()))
+		var data: Array[String] = []
+		for spec: NpcSpec in NpcRoster.load_for_map(map_id).get_present(null):
+			data.append(String(spec.id))
+		on_map.sort()
+		data.sort()
+		assert_eq(on_map, data, "%s : PNJ de data/npcs/" % map_id)
+		assert_eq(data.size(), expected.get(map_id, 0), "%s : Dresseurs et objets" % map_id)
 
 
-func test_no_encounter_table_for_rubble() -> void:
+## T16 : gravats seulement (I-10), une table par étage (test_j18_data).
+func test_rubble_tables_only() -> void:
 	var data := PokemonData.new()
 	data.load_dir()
 	var library := EncounterLibrary.new(data)
 	assert_true(library.load_dir())
 	for map_id: StringName in FLOORS:
-		assert_null(library.get_table(map_id, &"rubble"), "%s : aucune table (T16)" % map_id)
+		assert_not_null(library.get_table(map_id, &"rubble"), "%s : table des gravats" % map_id)
 		assert_null(library.get_table(map_id), "%s : aucune table d'herbe" % map_id)
 
 

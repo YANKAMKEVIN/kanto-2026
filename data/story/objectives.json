@@ -1,5 +1,34 @@
 [
 	{
+		"id": "tower_later",
+		"text": "revenir plus tard à la Tour Pokémon.",
+		"if": ["tower_medium_talked"]
+	},
+	{
+		"id": "visit_tower",
+		"text": "visiter la Tour Pokémon.",
+		"if": ["lavender_reached"],
+		"unless": ["tower_medium_talked"]
+	},
+	{
+		"id": "reach_lavender",
+		"text": "rejoindre Lavanville, au sud.",
+		"if": ["dark_cave_crossed"],
+		"unless": ["lavender_reached"]
+	},
+	{
+		"id": "cross_dark_cave",
+		"text": "traverser la Grotte Sombre.",
+		"if": ["route_10_reached"],
+		"unless": ["dark_cave_crossed"]
+	},
+	{
+		"id": "cross_route_9",
+		"text": "traverser la Route 9 vers l'est.",
+		"if": ["route_9_entered"],
+		"unless": ["route_10_reached"]
+	},
+	{
 		"id": "explore_vermilion",
 		"text": "explorer Carmin-sur-Mer.",
 		"if": ["vermilion_reached"]

@@ -92,12 +92,20 @@ func test_scene_grid_is_the_functional_grid() -> void:
 func test_without_life() -> void:
 	assert_eq(_map.get_node(^"Interactables").get_child_count(), 0, "aucun examen")
 	assert_eq(_map.get_node(^"Triggers").get_child_count(), 0, "aucun déclencheur")
-	assert_eq(_map.get_npcs().size(), 0, "aucun PNJ")
+	# T16 : les quatre habitants (data/npcs/lavender_town.json) sur leurs cases réservées.
+	var ids: Array[String] = []
+	for npc: Npc in _map.get_npcs():
+		ids.append(String(npc.get_id()))
+	ids.sort()
+	var reserved: Array[String] = []
 	for id: String in _plan.positions:
 		if _plan.positions[id]["kind"] == "pnj":
+			reserved.append(id)
 			for cell: Vector2i in _plan.cells_at(id):
-				assert_false(_grid.is_solid(cell) or _grid.is_occupied(cell),
-					"%s : case réservée libre" % id)
+				assert_false(_grid.is_solid(cell), "%s : case réservée praticable" % id)
+				assert_true(_grid.is_occupied(cell), "%s : son PNJ y est" % id)
+	reserved.sort()
+	assert_eq(ids, reserved, "PNJ = cases « pnj » de la grille")
 	# Emplacement du panneau du Scope du J19 (42, 11) : rien n'y est posé.
 	var scope := _plan.cell_of("panneau_scope_j19")
 	assert_eq(scope, Vector2i(42, 11))

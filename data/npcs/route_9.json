@@ -1,0 +1,80 @@
+{
+	"lou": {
+		"cell": [10, 19], "facing": "down", "sprite": "lass",
+		"dialogue": "route_9_lass_lou_after",
+		"trainer": {
+			"id": "route_9_lass_lou", "sight": 5,
+			"before": "route_9_lass_lou_before", "defeated": "route_9_lass_lou_defeated"
+		}
+	},
+	"adam": {
+		"cell": [36, 8], "facing": "down", "sprite": "camper",
+		"dialogue": "route_9_camper_adam_after",
+		"trainer": {
+			"id": "route_9_camper_adam", "sight": 3,
+			"before": "route_9_camper_adam_before", "defeated": "route_9_camper_adam_defeated"
+		}
+	},
+	"jules": {
+		"cell": [35, 12], "facing": "down", "sprite": "camper",
+		"dialogue": "route_9_camper_jules_after",
+		"trainer": {
+			"id": "route_9_camper_jules", "sight": 3,
+			"before": "route_9_camper_jules_before", "defeated": "route_9_camper_jules_defeated"
+		}
+	},
+	"zoe": {
+		"cell": [57, 19], "facing": "right", "sprite": "lass",
+		"dialogue": "route_9_lass_zoe_after",
+		"trainer": {
+			"id": "route_9_lass_zoe", "sight": 3,
+			"before": "route_9_lass_zoe_before", "defeated": "route_9_lass_zoe_defeated"
+		}
+	},
+	"bernard": {
+		"cell": [54, 31], "facing": "up", "sprite": "hiker",
+		"dialogue": "route_9_hiker_bernard_after",
+		"trainer": {
+			"id": "route_9_hiker_bernard", "sight": 5,
+			"before": "route_9_hiker_bernard_before", "defeated": "route_9_hiker_bernard_defeated"
+		}
+	},
+	"gilles": {
+		"cell": [75, 18], "facing": "left", "sprite": "hiker",
+		"dialogue": "route_9_hiker_gilles_after",
+		"trainer": {
+			"id": "route_9_hiker_gilles", "sight": 4,
+			"before": "route_9_hiker_gilles_before", "defeated": "route_9_hiker_gilles_defeated"
+		}
+	},
+	"noa": {
+		"cell": [38, 22], "facing": "left", "sprite": "scout",
+		"dialogue": "route_9_scout_noa_after",
+		"trainer": {
+			"id": "route_9_scout_noa", "sight": 4,
+			"before": "route_9_scout_noa_before", "defeated": "route_9_scout_noa_defeated"
+		}
+	},
+	"route_9_item_1": {
+		"cell": [32, 9], "facing": "down", "sprite": "object/poke_ball_ground",
+		"dialogue": "route_9_item_1", "verb": "take", "turn_to_player": false,
+		"unless": ["got_route_9_item_1"]
+	},
+	"route_9_item_2": {
+		"cell": [29, 25], "facing": "down", "sprite": "object/poke_ball_ground",
+		"dialogue": "route_9_item_2", "verb": "take", "turn_to_player": false,
+		"unless": ["got_route_9_item_2"]
+	},
+	"route_9_item_3": {
+		"cell": [65, 20], "facing": "down", "sprite": "object/poke_ball_ground",
+		"dialogue": "route_9_item_3", "verb": "take", "turn_to_player": false,
+		"unless": ["got_route_9_item_3"]
+	},
+	"piafabec_1": {
+		"cell": [52, 25], "facing": "left", "sprite": "pokemon/spearow", "lift": 48,
+		"shy": { "action": "fly", "radius": 2 }
+	},
+	"racaillou_1": {
+		"cell": [63, 11], "facing": "down", "sprite": "pokemon/geodude"
+	}
+}

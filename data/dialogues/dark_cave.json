@@ -1,0 +1,93 @@
+{
+	"dark_cave_too_dark": {
+		"narration": true,
+		"pages": ["Il fait très sombre ici…\nMieux vaut avancer prudemment."]
+	},
+	"dark_cave_1f_sign": {
+		"pages": ["Prudence. Les galeries sont sombres,\nmais elles mènent toutes quelque part."]
+	},
+	"dark_cave_column": {
+		"narration": true,
+		"pages": ["Une colonne de roche immense.\nElle soutient toute la galerie."]
+	},
+	"dark_cave_roots": {
+		"narration": true,
+		"pages": ["Des racines traversent le plafond.", "Les arbres de la surface boivent\njusqu'ici."]
+	},
+	"dark_cave_crack": {
+		"narration": true,
+		"pages": ["Un mince filet de jour passe\npar la fente."]
+	},
+	"dark_cave_roger_before": {
+		"speaker": "Montagnard Roger",
+		"pages": ["Je connais cette grotte par cœur.\nToi, tu vas apprendre !"]
+	},
+	"dark_cave_roger_defeated": {
+		"speaker": "Montagnard Roger",
+		"pages": ["Bon, tu as appris vite."]
+	},
+	"dark_cave_roger_after": {
+		"speaker": "Montagnard Roger",
+		"pages": ["Avance doucement. Les Onix\ndorment dans les murs."]
+	},
+	"dark_cave_simon_before": {
+		"speaker": "Pokémaniac Simon",
+		"pages": ["Dans le noir, mes Pokémon sont\nencore plus rares !"]
+	},
+	"dark_cave_simon_defeated": {
+		"speaker": "Pokémaniac Simon",
+		"pages": ["… Rares, mais battus."]
+	},
+	"dark_cave_simon_after": {
+		"speaker": "Pokémaniac Simon",
+		"pages": ["Tu as entendu ? Non ? Moi non plus."]
+	},
+	"dark_cave_elsa_before": {
+		"speaker": "Jeune Dresseuse Elsa",
+		"pages": ["Ah ! Tu m'as fait peur !\nBats-toi, ça me rassurera."]
+	},
+	"dark_cave_elsa_defeated": {
+		"speaker": "Jeune Dresseuse Elsa",
+		"pages": ["Ça ne m'a pas rassurée du tout."]
+	},
+	"dark_cave_elsa_after": {
+		"speaker": "Jeune Dresseuse Elsa",
+		"pages": ["La flaque est glacée.\nNe marche pas dedans."]
+	},
+	"dark_cave_marcel_before": {
+		"speaker": "Montagnard Marcel",
+		"pages": ["C'est étroit, ici. On ne passe\npas sans combattre."]
+	},
+	"dark_cave_marcel_defeated": {
+		"speaker": "Montagnard Marcel",
+		"pages": ["Passe, alors."]
+	},
+	"dark_cave_marcel_after": {
+		"speaker": "Montagnard Marcel",
+		"pages": ["La sortie n'est plus très loin.\nTu sentiras l'air frais."]
+	},
+	"dark_cave_yanis_before": {
+		"speaker": "Pokémaniac Yanis",
+		"pages": ["Encore un peu de noir avant\nla lumière. Et un combat !"]
+	},
+	"dark_cave_yanis_defeated": {
+		"speaker": "Pokémaniac Yanis",
+		"pages": ["La lumière est pour toi."]
+	},
+	"dark_cave_yanis_after": {
+		"speaker": "Pokémaniac Yanis",
+		"pages": ["Après la grotte, va à Lavanville.\nParle doucement là-bas."]
+	},
+	"dark_cave_1f_item_1": {
+		"cutscene": "dark_cave_1f_item_1"
+	},
+	"dark_cave_1f_item_2": {
+		"cutscene": "dark_cave_1f_item_2"
+	},
+	"dark_cave_b1f_item_1": {
+		"cutscene": "dark_cave_b1f_item_1"
+	},
+	"dark_cave_b1f_hidden_1": {
+		"cutscene": "dark_cave_b1f_hidden_1"
+	}
+}

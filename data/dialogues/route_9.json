@@ -1,0 +1,98 @@
+{
+	"route_9_sign": {
+		"pages": ["ROUTE 9\nAzuria — Route 10"]
+	},
+	"route_9_lass_lou_before": {
+		"speaker": "Jeune Dresseuse Lou",
+		"pages": ["Tu viens d'Azuria ? La route est\nlongue. Je vais t'échauffer !"]
+	},
+	"route_9_lass_lou_defeated": {
+		"speaker": "Jeune Dresseuse Lou",
+		"pages": ["Bon. Tu es échauffé."]
+	},
+	"route_9_lass_lou_after": {
+		"speaker": "Jeune Dresseuse Lou",
+		"pages": ["La Route 9 grimpe un peu.\nGarde des Potions."]
+	},
+	"route_9_camper_adam_before": {
+		"speaker": "Campeur Adam",
+		"pages": ["D'en haut, je vois tout le monde\narriver. Toi aussi !"]
+	},
+	"route_9_camper_adam_defeated": {
+		"speaker": "Campeur Adam",
+		"pages": ["Je n'avais pas vu venir ça."]
+	},
+	"route_9_camper_adam_after": {
+		"speaker": "Campeur Adam",
+		"pages": ["Par temps clair, on voit le toit\nde la centrale,", "de l'autre côté de l'eau."]
+	},
+	"route_9_camper_jules_before": {
+		"speaker": "Campeur Jules",
+		"pages": ["Mes Pokémon connaissent ces herbes\npar cœur !"]
+	},
+	"route_9_camper_jules_defeated": {
+		"speaker": "Campeur Jules",
+		"pages": ["Ils les connaissent… mais toi,\ntu les traverses."]
+	},
+	"route_9_camper_jules_after": {
+		"speaker": "Campeur Jules",
+		"pages": ["Les Abo et les Sabelette se\ndisputent ce coin."]
+	},
+	"route_9_lass_zoe_before": {
+		"speaker": "Jeune Dresseuse Zoé",
+		"pages": ["Mon Miaouss a repéré quelque chose\nde brillant sur toi."]
+	},
+	"route_9_lass_zoe_defeated": {
+		"speaker": "Jeune Dresseuse Zoé",
+		"pages": ["Il voulait juste ta Poké Ball…"]
+	},
+	"route_9_lass_zoe_after": {
+		"speaker": "Jeune Dresseuse Zoé",
+		"pages": ["Il ramasse tout ce qui brille.\nJe ne sais plus où ranger."]
+	},
+	"route_9_hiker_bernard_before": {
+		"speaker": "Montagnard Bernard",
+		"pages": ["Tu vas vers la grotte ?", "Alors montre-moi si tu tiens\nface à la roche !"]
+	},
+	"route_9_hiker_bernard_defeated": {
+		"speaker": "Montagnard Bernard",
+		"pages": ["Solide, ton équipe."]
+	},
+	"route_9_hiker_bernard_after": {
+		"speaker": "Montagnard Bernard",
+		"pages": ["Là-bas, les Pokémon sont de pierre.", "Prévois des attaques Eau\nou Plante."]
+	},
+	"route_9_hiker_gilles_before": {
+		"speaker": "Montagnard Gilles",
+		"pages": ["J'ai porté mes Racaillou jusqu'ici.\nIls ne sont pas légers !"]
+	},
+	"route_9_hiker_gilles_defeated": {
+		"speaker": "Montagnard Gilles",
+		"pages": ["Ouf. Je vais m'asseoir."]
+	},
+	"route_9_hiker_gilles_after": {
+		"speaker": "Montagnard Gilles",
+		"pages": ["Le Centre est juste avant la grotte.\nRepose-toi là-bas."]
+	},
+	"route_9_scout_noa_before": {
+		"speaker": "Scout Noa",
+		"pages": ["Mes Dardargnan ont des dards\ntout neufs !"]
+	},
+	"route_9_scout_noa_defeated": {
+		"speaker": "Scout Noa",
+		"pages": ["Ils piqueront mieux\nla prochaine fois."]
+	},
+	"route_9_scout_noa_after": {
+		"speaker": "Scout Noa",
+		"pages": ["J'ai élevé mes Aspicot ici.\nMaintenant, ils me protègent."]
+	},
+	"route_9_item_1": {
+		"cutscene": "route_9_item_1"
+	},
+	"route_9_item_2": {
+		"cutscene": "route_9_item_2"
+	},
+	"route_9_item_3": {
+		"cutscene": "route_9_item_3"
+	}
+}

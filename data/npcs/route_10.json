@@ -1,0 +1,27 @@
+{
+	"hector": {
+		"cell": [15, 51], "facing": "left", "sprite": "pokemaniac",
+		"dialogue": "route_10_maniac_hector_after",
+		"trainer": {
+			"id": "route_10_maniac_hector", "sight": 4,
+			"before": "route_10_maniac_hector_before", "defeated": "route_10_maniac_hector_defeated"
+		}
+	},
+	"paul": {
+		"cell": [15, 61], "facing": "right", "sprite": "hiker",
+		"dialogue": "route_10_hiker_paul_after",
+		"trainer": {
+			"id": "route_10_hiker_paul", "sight": 5,
+			"before": "route_10_hiker_paul_before", "defeated": "route_10_hiker_paul_defeated"
+		}
+	},
+	"randonneur": {
+		"cell": [19, 9], "facing": "left", "sprite": "mountaineer",
+		"dialogue": "route_10_hiker"
+	},
+	"route_10_item_1": {
+		"cell": [3, 66], "facing": "down", "sprite": "object/poke_ball_ground",
+		"dialogue": "route_10_item_1", "verb": "take", "turn_to_player": false,
+		"unless": ["got_route_10_item_1"]
+	}
+}
