@@ -373,6 +373,15 @@ Rôles : **A** architecte-godot · **C** constructeur-monde · **U** ui-mobile �
 
 #### T21 — A : clôture (suite complète, nettoyage des départs de QA, passation au J25)
 
+#### Après la fusion des jalons plus anciens (à faire par le J24)
+
+- **J21** (accord de la session du J21, 2026-10-16) : compléter l'évolution de `poliwag` (→ `poliwhirl`
+  N25) et de `tentacool` (→ `tentacruel` N30) dans `data/pokemon/species/kanto_j21.json`, puis
+  supprimer les reprises correspondantes. Le J21 ne peut pas le faire lui-même : ses tests refusent
+  une évolution vers une espèce absente.
+- **Tous** : supprimer chaque fichier `*_reprises.json` dès que sa branche d'origine est fusionnée ;
+  régénérer `tm_compatibility.json` ; résoudre `data/pokedex/kanto.json` (fiches ajoutées à la fin).
+
 ## 4. Critères d'acceptation
 
 1. `tools/test.sh` passe ; import sans erreur ; captures relues.
