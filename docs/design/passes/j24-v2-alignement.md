@@ -15,6 +15,9 @@
 > (§8) : M est pris par le J22, N est laissé au J23, O est sauté (trop proche de 0). Réponds par
 > numéro ; j'écris ensuite le dossier 27.
 
+> **Décision de Kevin (2026-10-16)** : « okay pour tes reco » — **P-1 à P-22 retenus tels que
+> recommandés**. Dossier : `docs/design/dossier-27-iles-ecume.md`.
+
 ## 0. État réel du dépôt
 
 | Point | Constat |
