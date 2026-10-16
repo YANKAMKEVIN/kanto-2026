@@ -1,12 +1,12 @@
 {
 	"route_10_maniac_hector": {
 		"name": "Pokémaniac Hector", "ai": "random",
-		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 1000,
-		"team": [{ "species": "nidorino", "level": 20 }, { "species": "jigglypuff", "level": 20 }]
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 1300,
+		"team": [{ "species": "nidorino", "level": 26 }, { "species": "jigglypuff", "level": 26 }]
 	},
 	"route_10_hiker_paul": {
 		"name": "Montagnard Paul", "ai": "random",
-		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 735,
-		"team": [{ "species": "geodude", "level": 21 }, { "species": "onix", "level": 21 }]
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 665,
+		"team": [{ "species": "geodude", "level": 19 }, { "species": "onix", "level": 19 }]
 	}
 }

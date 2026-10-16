@@ -147,16 +147,16 @@ func test_trainers_follow_the_grids_and_the_texts() -> void:
 				assert_eq(dialogue.speaker, trainer.name, "%s : locuteur" % line)
 
 
-## Tableau du dossier 21 §5.5 : équipes et récompenses.
+## Tableau du dossier 21 §5.5 : équipes et récompenses (niveaux recalés au T22).
 func test_teams_and_prizes() -> void:
 	var expected := {
-		&"dark_cave_roger": [665, [[&"geodude", 19], [&"machop", 19], [&"geodude", 19],
-			[&"geodude", 19]]],
-		&"dark_cave_simon": [1150, [[&"jigglypuff", 23], [&"koffing", 23]]],
-		&"dark_cave_elsa": [380, [[&"pidgey", 19], [&"rattata", 19], [&"rattata", 19],
-			[&"bellsprout", 19]]],
-		&"dark_cave_marcel": [700, [[&"onix", 20], [&"onix", 20], [&"geodude", 20]]],
-		&"dark_cave_yanis": [1050, [[&"charmander", 21], [&"nidorino", 21]]],
+		&"dark_cave_roger": [700, [[&"geodude", 20], [&"machop", 21], [&"geodude", 20],
+			[&"geodude", 20]]],
+		&"dark_cave_simon": [1300, [[&"jigglypuff", 26], [&"koffing", 26]]],
+		&"dark_cave_elsa": [440, [[&"pidgey", 22], [&"rattata", 22], [&"rattata", 22],
+			[&"bellsprout", 22]]],
+		&"dark_cave_marcel": [595, [[&"onix", 17], [&"onix", 17], [&"geodude", 17]]],
+		&"dark_cave_yanis": [1300, [[&"charmander", 21], [&"nidorino", 26]]],
 	}
 	for id: StringName in expected:
 		var trainer := _trainers.get_trainer(id)

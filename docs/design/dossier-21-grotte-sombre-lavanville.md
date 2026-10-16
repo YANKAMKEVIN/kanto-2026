@@ -152,11 +152,13 @@ Montagnard 35, Scout 12). IA `random`. Capacités apprises au niveau ; **aucune 
 |---|---|---|---|---|---|
 | R9-1 | Jeune Dresseuse Lou | goulet de sortie d'Azuria | **non** | Mystherbe, Chétiflor, Mystherbe, Chétiflor Nv. 18 | 360 |
 | R9-2 | Campeur Adam | haut des falaises | oui | Férosinge* Nv. 20, Salamèche Nv. 21 | 420 |
-| R9-3 | Campeur Jules | herbes du milieu | oui | Rattata, Abo, Sabelette Nv. 19 (Taupiqueur retiré*) | 380 |
-| R9-4 | Jeune Dresseuse Zoé | bord du sentier | oui | Miaouss Nv. 23 | 460 |
-| R9-5 | Montagnard Benoît | passage entre deux rochers | **non** | Machoc Nv. 20, Onix Nv. 20 | 700 |
-| R9-6 | Montagnard Gilles | terrasse est | oui | Racaillou, Machoc, Racaillou Nv. 20 | 700 |
+| R9-3 | Campeur Jules | herbes du milieu | oui | Rattata, Abo, Sabelette Nv. ~~19~~ **26** (Taupiqueur retiré*) | ~~380~~ **520** |
+| R9-4 | Jeune Dresseuse Zoé | bord du sentier | oui | Miaouss Nv. ~~23~~ **26** | ~~460~~ **520** |
+| R9-5 | Montagnard Benoît | passage entre deux rochers | **non** | Machoc Nv. ~~20~~ **25**, Onix Nv. ~~20~~ **23** | ~~700~~ **805** |
+| R9-6 | Montagnard Gilles | terrasse est | oui | Racaillou, Machoc, Racaillou Nv. ~~20~~ **16** | ~~700~~ **560** |
 | R9-7 | Scout Noa | détour des herbes | oui | Dardargnan Nv. 19 ×2 | 228 |
+
+**Niveaux recalés au T22 (2026-10-16) [D]** : règle de Kevin du 2026-10-16 (victoire au premier essai 60–80 % par combat, exception : avantage de type choisi par le joueur) ; mesures, exceptions et points ouverts : `docs/tech/jalon-18.md` § « T22 ». Récompense = base × niveau du dernier Pokémon.
 
 RB en compte 9 : deux Scouts / Jeunes Dresseurs redondants sont retirés (Venonat et Caninos
 n'existent pas encore). R9-5 annonce la grotte : « des Pokémon de roche ».
@@ -198,8 +200,10 @@ dans la carte pour la continuité de la vue générale peinte et des raccords fu
 
 | | Dresseur | Où | Équipe | ₽ |
 |---|---|---|---|---|
-| R10-1 | Pokémaniac Hector | près de l'entrée sud de la grotte | Nidorino Nv. 20, Rondoudou* Nv. 20 (Osselait, Ramoloss) | 1 000 |
-| R10-2 | Montagnard Paul | au bord de la falaise, côté rivière | Racaillou Nv. 21, Onix Nv. 21 | 735 |
+| R10-1 | Pokémaniac Hector | près de l'entrée sud de la grotte | Nidorino Nv. ~~20~~ **26**, Rondoudou* Nv. ~~20~~ **26** (Osselait, Ramoloss) | ~~1 000~~ **1 300** |
+| R10-2 | Montagnard Paul | au bord de la falaise, côté rivière | Racaillou Nv. ~~21~~ **19**, Onix Nv. ~~21~~ **19** | ~~735~~ **665** |
+
+**Niveaux recalés au T22 (2026-10-16) [D]** : règle de Kevin du 2026-10-16 (victoire au premier essai 60–80 % par combat, exception : avantage de type choisi par le joueur) ; mesures, exceptions et points ouverts : `docs/tech/jalon-18.md` § « T22 ». Récompense = base × niveau du dernier Pokémon.
 
 ### 4.4 Rencontres (RB) [poids D]
 
@@ -304,11 +308,13 @@ RB en a 15 (adaptation volontaire : « moins nombreux que sur la Route 9 », V2)
 
 | | Dresseur | Où | Évitable | Équipe | ₽ |
 |---|---|---|---|---|---|
-| G-1 | Montagnard Roger | 1F nord, premier couloir | **non** | Racaillou, Machoc, Racaillou, Racaillou Nv. 19 | 665 |
-| G-2 | Pokémaniac Simon | 1F nord, branche ouest | oui | Rondoudou* Nv. 23, Smogo* Nv. 23 (Osselait, Ramoloss) | 1 150 |
-| G-3 | Jeune Dresseuse Elsa | B1F, près de la flaque | oui | Roucool, Rattata, Rattata, Chétiflor Nv. 19 | 380 |
-| G-4 | Montagnard Marcel | B1F, passage étroit | **non** | Onix, Onix, Racaillou Nv. 20 | 700 |
-| G-5 | Pokémaniac Yanis | 1F sud, avant la sortie | oui | Salamèche Nv. 21, Nidorino* Nv. 21 (Osselait) | 1 050 |
+| G-1 | Montagnard Roger | 1F nord, premier couloir | **non** | Racaillou, Machoc, Racaillou, Racaillou Nv. ~~19~~ **20** (Machoc **21**) | ~~665~~ **700** |
+| G-2 | Pokémaniac Simon | 1F nord, branche ouest | oui | Rondoudou* Nv. ~~23~~ **26**, Smogo* Nv. ~~23~~ **26** (Osselait, Ramoloss) | ~~1 150~~ **1 300** |
+| G-3 | Jeune Dresseuse Elsa | B1F, près de la flaque | oui | Roucool, Rattata, Rattata, Chétiflor Nv. ~~19~~ **22** | ~~380~~ **440** |
+| G-4 | Montagnard Marcel | B1F, passage étroit | **non** | Onix, Onix, Racaillou Nv. ~~20~~ **17** | ~~700~~ **595** |
+| G-5 | Pokémaniac Yanis | 1F sud, avant la sortie | oui | Salamèche Nv. 21, Nidorino* Nv. ~~21~~ **26** (Osselait) | ~~1 050~~ **1 300** |
+
+**Niveaux recalés au T22 (2026-10-16) [D]** : règle de Kevin du 2026-10-16 (victoire au premier essai 60–80 % par combat, exception : avantage de type choisi par le joueur) ; mesures, exceptions et points ouverts : `docs/tech/jalon-18.md` § « T22 ». Récompense = base × niveau du dernier Pokémon.
 
 **Pas d'Osselait** [V I-14] : réservé à l'émotion du J19. Le Pokémaniac est une **nouvelle classe**
 (planche à créer, la même servira plus loin).

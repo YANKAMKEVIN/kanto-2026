@@ -15,32 +15,32 @@ const TRAINERS := {
 		[&"oddish", 18], [&"bellsprout", 18]], 360, 20, "route_9", &"lou", &"lass"],
 	&"route_9_camper_adam": ["T-43", "Campeur Adam", [[&"mankey", 20], [&"charmander", 21]],
 		420, 20, "route_9", &"adam", &"camper"],
-	&"route_9_camper_jules": ["T-44", "Campeur Jules", [[&"rattata", 19], [&"ekans", 19],
-		[&"sandshrew", 19]], 380, 20, "route_9", &"jules", &"camper"],
-	&"route_9_lass_zoe": ["T-45", "Jeune Dresseuse Zoé", [[&"meowth", 23]], 460, 20, "route_9",
+	&"route_9_camper_jules": ["T-44", "Campeur Jules", [[&"rattata", 26], [&"ekans", 26],
+		[&"sandshrew", 26]], 520, 20, "route_9", &"jules", &"camper"],
+	&"route_9_lass_zoe": ["T-45", "Jeune Dresseuse Zoé", [[&"meowth", 26]], 520, 20, "route_9",
 		&"zoe", &"lass"],
-	&"route_9_hiker_benoit": ["T-46", "Montagnard Benoît", [[&"machop", 20], [&"onix", 20]],
-		700, 35, "route_9", &"benoit", &"hiker"],
-	&"route_9_hiker_gilles": ["T-47", "Montagnard Gilles", [[&"geodude", 20], [&"machop", 20],
-		[&"geodude", 20]], 700, 35, "route_9", &"gilles", &"hiker"],
+	&"route_9_hiker_benoit": ["T-46", "Montagnard Benoît", [[&"machop", 25], [&"onix", 23]],
+		805, 35, "route_9", &"benoit", &"hiker"],
+	&"route_9_hiker_gilles": ["T-47", "Montagnard Gilles", [[&"geodude", 16], [&"machop", 16],
+		[&"geodude", 16]], 560, 35, "route_9", &"gilles", &"hiker"],
 	&"route_9_scout_noa": ["T-48", "Scout Noa", [[&"beedrill", 19], [&"beedrill", 19]], 228, 12,
 		"route_9", &"noa", &"scout"],
-	&"route_10_maniac_hector": ["T-49", "Pokémaniac Hector", [[&"nidorino", 20],
-		[&"jigglypuff", 20]], 1000, 50, "route_10", &"hector", &"pokemaniac"],
-	&"route_10_hiker_paul": ["T-50", "Montagnard Paul", [[&"geodude", 21], [&"onix", 21]], 735,
+	&"route_10_maniac_hector": ["T-49", "Pokémaniac Hector", [[&"nidorino", 26],
+		[&"jigglypuff", 26]], 1300, 50, "route_10", &"hector", &"pokemaniac"],
+	&"route_10_hiker_paul": ["T-50", "Montagnard Paul", [[&"geodude", 19], [&"onix", 19]], 665,
 		35, "route_10", &"paul", &"hiker"],
-	&"dark_cave_roger": ["T-51", "Montagnard Roger", [[&"geodude", 19], [&"machop", 19],
-		[&"geodude", 19], [&"geodude", 19]], 665, 35, "dark_cave_1f", &"g1_roger", &"hiker"],
-	&"dark_cave_simon": ["T-52", "Pokémaniac Simon", [[&"jigglypuff", 23], [&"koffing", 23]],
-		1150, 50, "dark_cave_1f", &"g2_simon", &"pokemaniac"],
-	&"dark_cave_elsa": ["T-53", "Jeune Dresseuse Elsa", [[&"pidgey", 19], [&"rattata", 19],
-		[&"rattata", 19], [&"bellsprout", 19]], 380, 20, "dark_cave_b1f", &"g3_elsa", &"lass"],
-	&"dark_cave_marcel": ["T-54", "Montagnard Marcel", [[&"onix", 20], [&"onix", 20],
-		[&"geodude", 20]], 700, 35, "dark_cave_b1f", &"g4_marcel", &"hiker"],
-	&"dark_cave_yanis": ["T-55", "Pokémaniac Yanis", [[&"charmander", 21], [&"nidorino", 21]],
-		1050, 50, "dark_cave_1f", &"g5_yanis", &"pokemaniac"],
+	&"dark_cave_roger": ["T-51", "Montagnard Roger", [[&"geodude", 20], [&"machop", 21],
+		[&"geodude", 20], [&"geodude", 20]], 700, 35, "dark_cave_1f", &"g1_roger", &"hiker"],
+	&"dark_cave_simon": ["T-52", "Pokémaniac Simon", [[&"jigglypuff", 26], [&"koffing", 26]],
+		1300, 50, "dark_cave_1f", &"g2_simon", &"pokemaniac"],
+	&"dark_cave_elsa": ["T-53", "Jeune Dresseuse Elsa", [[&"pidgey", 22], [&"rattata", 22],
+		[&"rattata", 22], [&"bellsprout", 22]], 440, 20, "dark_cave_b1f", &"g3_elsa", &"lass"],
+	&"dark_cave_marcel": ["T-54", "Montagnard Marcel", [[&"onix", 17], [&"onix", 17],
+		[&"geodude", 17]], 595, 35, "dark_cave_b1f", &"g4_marcel", &"hiker"],
+	&"dark_cave_yanis": ["T-55", "Pokémaniac Yanis", [[&"charmander", 21], [&"nidorino", 26]],
+		1300, 50, "dark_cave_1f", &"g5_yanis", &"pokemaniac"],
 }
-## Effets en attente sans conséquence contre un Dresseur : Cyclone (Roucool d'Elsa, Nv. 19)
+## Effets en attente sans conséquence contre un Dresseur : Cyclone (Roucool d'Elsa, Nv. 22)
 ## échoue face à un Dresseur dans Rouge/Bleu, comme dans le moteur (« Sans effet »).
 const TOLERATED_PENDING: Array[String] = ["force_switch"]
 ## Carte → grille validée (§13.1).
@@ -183,7 +183,7 @@ func test_trainers_stand_on_their_reserved_cells() -> void:
 
 
 func test_simulation_scenario_uses_the_same_trainers() -> void:
-	# tools/sim/j18_scenario.json (T10) porte les mêmes valeurs : les données n'ont pas dérivé.
+	# tools/sim/j18_scenario.json (T10, recalé au T22) porte les mêmes valeurs : les données n'ont pas dérivé.
 	var scenario: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(
 		"res://tools/sim/j18_scenario.json"))
 	var trainers: Dictionary = scenario["trainers"]

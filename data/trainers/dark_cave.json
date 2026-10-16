@@ -1,36 +1,36 @@
 {
 	"dark_cave_roger": {
 		"name": "Montagnard Roger", "ai": "random",
-		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 665,
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 700,
 		"team": [
-			{ "species": "geodude", "level": 19 }, { "species": "machop", "level": 19 },
-			{ "species": "geodude", "level": 19 }, { "species": "geodude", "level": 19 }
+			{ "species": "geodude", "level": 20 }, { "species": "machop", "level": 21 },
+			{ "species": "geodude", "level": 20 }, { "species": "geodude", "level": 20 }
 		]
 	},
 	"dark_cave_simon": {
 		"name": "Pokémaniac Simon", "ai": "random",
-		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 1150,
-		"team": [{ "species": "jigglypuff", "level": 23 }, { "species": "koffing", "level": 23 }]
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 1300,
+		"team": [{ "species": "jigglypuff", "level": 26 }, { "species": "koffing", "level": 26 }]
 	},
 	"dark_cave_elsa": {
 		"name": "Jeune Dresseuse Elsa", "ai": "random",
-		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 380,
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 440,
 		"team": [
-			{ "species": "pidgey", "level": 19 }, { "species": "rattata", "level": 19 },
-			{ "species": "rattata", "level": 19 }, { "species": "bellsprout", "level": 19 }
+			{ "species": "pidgey", "level": 22 }, { "species": "rattata", "level": 22 },
+			{ "species": "rattata", "level": 22 }, { "species": "bellsprout", "level": 22 }
 		]
 	},
 	"dark_cave_marcel": {
 		"name": "Montagnard Marcel", "ai": "random",
-		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 700,
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 595,
 		"team": [
-			{ "species": "onix", "level": 20 }, { "species": "onix", "level": 20 },
-			{ "species": "geodude", "level": 20 }
+			{ "species": "onix", "level": 17 }, { "species": "onix", "level": 17 },
+			{ "species": "geodude", "level": 17 }
 		]
 	},
 	"dark_cave_yanis": {
 		"name": "Pokémaniac Yanis", "ai": "random",
-		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 1050,
-		"team": [{ "species": "charmander", "level": 21 }, { "species": "nidorino", "level": 21 }]
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 1300,
+		"team": [{ "species": "charmander", "level": 21 }, { "species": "nidorino", "level": 26 }]
 	}
 }

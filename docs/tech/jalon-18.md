@@ -829,7 +829,8 @@ Nosferalto) non éligibles (§10.1). Test : `test_dark_cave_maps` liste les goul
 
 ### 4.16 Départs de débogage (`tools/debug_start/`, README complété)
 
-Équipe de référence [D, recalée au T22] : starter évolué N24, Roucoups N21, Papilusion N20,
+Équipe de référence [D, recalée au T22 : sortie du J16 mesurée, starter évolué N24, seconds
+N17–19 ; départs de débogage non modifiés] : starter évolué N24, Roucoups N21, Papilusion N20,
 Machoc ou Sabelette N19 (compatible Coupe), + un compatible Flash (Pikachu N20 ou Mélofée N20, vérifié
 contre les compatibilités générées), Badges Roche, Cascade (et Foudre selon le départ),
 `hm01` + `cut_cerulean_east_tree` quand le J16 existe.
@@ -1090,6 +1091,86 @@ retrait de `qa_flash` (T28 du J17) → `test_cave_library` et `luminance_grotte.
   (I-12) ; cible du J12 (joueur attentif sans défaite ≥ 85 %, aucun combat > 40 % de défaites) ;
   ajustements limités aux valeurs [D] du dossier (niveaux ±1–2, récompenses suivent). **CA** :
   chiffres dans le plan ; aucune valeur [V] changée sans Kevin.
+
+**Fait (2026-10-16, branche `j18-t22-equilibrage`)** — règle de Kevin du 2026-10-16, prioritaire
+sur la cible du J12 : **victoire au premier essai de 60 à 80 % par combat** (60 = plancher, 80 =
+plafond) pour un joueur prudent qui va droit au but avec son Sac et le Centre de la Route 10 ;
+exception : un taux élevé qui vient d'un **avantage de type choisi par le joueur** reste tel quel ;
+jamais adoucir au-delà de 80 % sans Kevin.
+
+*Mesure.* `tools/sim/j18_scenario.json` refait (`--donnees --seeds 500`, ≈ 4 min en 11 processus ;
+rapports bruts non versionnés `build/sim/j18_t22/`). Joueur attentif, Sac [D] 3 Potions,
+2 Super Potions, 2 Antidotes, départ soigné à Azuria, Centre de la Route 10. Chaque variante a des
+reprises (réveil au dernier Centre) : le **premier essai** d'un Dresseur est son premier combat dans
+la partie, même après une défaite ailleurs (plus de biais du survivant). Chemin direct pour Lou,
+Benoît, Roger, Marcel ; chaque évitable est mesuré seul (« détour <nom> » = chemin direct + lui, à
+sa place, sans soin de plus). Outil : `simulate_mt_moon.gd` soumet désormais la capacité imposée
+(tour 2 de Tunnel, Patience) — avant, l'équipe « type Kevin » finissait ses combats « non
+terminés » (8 % de « victoires » contre Marcel) ; ligne « premier essai » par Dresseur (reprises).
+
+*Équipes.* **Sortie du J16** (référence de la règle : on va droit au but, le J17 est facultatif) =
+équipes de référence du J17 (Carmin avant le S.S. Anne) + le gain d'un chapitre, mesuré en jouant
+la Route 11 et la Cave (le J16 n'a pas encore de données) : seul le meneur progresse (+2,4) →
+Reptincel 24 + Roucoups 19, Férosinge 19, Mystherbe 18 (R) ; **type Kevin** Reptincel 24 (Tunnel),
+Roucoups 19, Nidorino 18, Rattata 17 (K) ; Herbizarre 23, Roucoups 18, Papilusion 18 (H) ;
+Carabaffe 24, Roucoups 19, Papilusion 17 (C). **Sortie du J17** (J16 puis J17) : meneur 25–27,
+mêmes seconds. Les équipes du T10 (seconds à 21–22) surestimaient les seconds de 2–3 niveaux ;
+leurs « bas » restent en information.
+
+*Cibles et exceptions [D].* Montagnards (Benoît, Gilles, Roger, Marcel, Paul) : équipe K seule
+(R a Férosinge et Mystherbe, H une Plante, C de l'Eau : avantage de type choisi). Lou (Plante /
+Poison) et Noa (Insecte / Poison) : exception pour toutes les équipes (Roucoups, Feu, Psy
+contre eux dans chaque équipe de référence) → inchangés. Autres : moyenne de R, K, H, C.
+
+| Dresseur | Avant → après (niveaux, ₽) | Cible | Avant | Après | R · K · H · C après |
+|---|---|---|---|---|---|
+| Lou (inévitable) | 18 ×4, 360 — inchangé | exception | 100 | 100 | 100 · 100 · 100 · 100 |
+| Adam | 20 / 21, 420 — inchangé | moyenne | 100 | 100 | 100 · 100 · 100 · 100 |
+| Jules | 19 ×3 → **26** ×3, 380 → 520 | moyenne | 100 | **79** | 92 · 84 · 67 · 72 |
+| Noa | 19 ×2, 228 — inchangé | exception | 100 | 100 | 100 · 100 · 100 · 100 |
+| Benoît (inévitable) | 20 / 20 → **25 / 23**, 700 → 805 | K | 99 | **81** | 100 · 81 · 97 · 95 |
+| Zoé | 23 → **26**, 460 → 520 | moyenne | 99 | **90** | 98 · 62 · 99 · 100 |
+| Gilles | 20 ×3 → **16** ×3, 700 → 560 | K | 67 | **40** | 100 · 40 · 99 · 100 |
+| Roger (inévitable) | 19 ×4 → **20 / 21 / 20 / 20**, 665 → 700 | K | 98 | **79** | 100 · 79 · 100 · 100 |
+| Simon | 23 / 23 → **26 / 26**, 1 150 → 1 300 | moyenne | 98 | **85** | 64 · 76 · 100 · 100 |
+| Elsa | 19 ×4 → **22** ×4, 380 → 440 | moyenne | 97 | **80** | 62 · 67 · 92 · 98 |
+| Marcel (inévitable) | 20 ×3 → **17** ×3, 700 → 595 | K | 73 | **62** | 90 · 62 · 100 · 100 |
+| Yanis | 21 / 21 → **21 / 26**, 1 050 → 1 300 | moyenne | 94 | **79** | 53 · 73 · 91 · 100 |
+| Hector | 20 / 20 → **26 / 26**, 1 000 → 1 300 | moyenne | 97 | **82** | 60 · 74 · 94 · 98 |
+| Paul | 21 / 21 → **19 / 19**, 735 → 665 | K | 55 | **65** | 80 · 65 · 100 · 100 |
+
+(% de victoire au premier essai, équipes de sortie du J16 ; « Avant » = données du T16 mesurées
+de la même façon ; écart-type ≈ 2 points.) Sortie du J17 : Benoît 95, Roger 96, Marcel 92, Gilles
+80 pour K ; Simon 78–100, Yanis 63–100, Jules 77–98 (le J17 fait = un chapitre d'entraînement).
+
+*Traversée* (Lavanville sans aucune défaite, chemin direct, attentif) — avant → après : R 86 → 88,
+**K 69 → 36**, H 99 → 97, C 100 → 95 ; sortie du J17 : K 96 → 85 ; expert : K 59 → 35 ; naïf :
+R 57 → 44, les autres 0–9 → ≤ 1 % ; « bas » Reptincel 22 : 1 % (inchangé). Tous les Dresseurs sans
+défaite : 0 % partout pour la sortie du J16 (avant 1–22 %) ; avec reprises, toutes les parties
+arrivent. Niveaux à Lavanville (chemin direct, sans défaite) inchangés : meneur 24–26, seconds 17–19.
+
+*Constats.*
+- Un combat isolé, équipe soignée, reste à ≥ 94 % même 4 à 8 niveaux plus haut (Gilles soigné
+  après le Centre : 94–99 % au Nv. 24 ; Hector soigné : ≥ 92 % au Nv. 28) : la difficulté vient de
+  l'**usure en chaîne** (pas de Centre entre Lou et Benoît, ni entre Roger et Marcel). Durcir un
+  Dresseur fait baisser les suivants : Roger plus fort → Marcel adouci (20 → 17) pour rester ≥ 60 ;
+  Benoît plus fort → Gilles à 40 % pour K **même au Nv. 16** (son niveau pèse ≈ 4 points par niveau).
+- Racaillou Nv. ≥ 21 apprend Destruction : aléatoire (l'IA `random` se sacrifie), courbe non
+  monotone ; tous les Racaillou restent ≤ Nv. 20 ; seul le Machoc de Roger passe au Nv. 21.
+- Plafond de niveau [D] : **Nv. 26** (référence du J16 + 2 ; Major Bob : Raichu 24) ; Salamèche
+  ≤ 21, Onix et Dardargnan ≤ 24 (Frénésie au-delà, capacité en attente).
+- Écart entre équipes : H et C restent ≥ 90 % sur Zoé, Simon, Hector, Yanis (sans avantage de
+  type net) pendant que R descend à 53–64 % ; viser 80 pour H / C mettrait R et K sous 40.
+
+*Hors règle, à arbitrer par Kevin* (§ « Questions » de `etat-projet.md`) : Adam 100 % (deux
+Pokémon, Salamèche plafonné au Nv. 21 ; Férosinge 28 : encore 89–95 %) ; Zoé 90 % (un seul
+Miaouss, au plafond 26) ; Simon 85 % (plafond 26) ; Gilles 40 % pour K (sous le plancher, usure de
+Benoît) ; Yanis 53 % et Hector 60 % pour R ; Lou et Noa laissés à 100 % au titre de l'exception
+de type ; traversée de K à 36 %. Leviers possibles, non appliqués : dépasser le plafond (Nv. 28–30),
+changer un Pokémon (Salamèche → Reptincel pour Adam, second Pokémon pour Zoé), ou un soin de plus
+(Centre d'Azuria après Lou, retour au Centre après Roger) dans la définition du « joueur prudent ».
+Tests : `test_trainers_j18`, `test_route_9_trainers`, `test_dark_cave_trainers`, `test_route_10_life` aux nouvelles
+valeurs ; `test_simulate_mt_moon` inchangé.
 
 #### T23 — Q : **session 18B** → K — après T21, T22 et la validation de 18A
 - Luminosité moyenne, **sans puis avec Flash** : repères reconnus, gravats vus avant d'y marcher,

@@ -14,28 +14,28 @@
 	},
 	"route_9_camper_jules": {
 		"name": "Campeur Jules", "ai": "random",
-		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 380,
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 520,
 		"team": [
-			{ "species": "rattata", "level": 19 }, { "species": "ekans", "level": 19 },
-			{ "species": "sandshrew", "level": 19 }
+			{ "species": "rattata", "level": 26 }, { "species": "ekans", "level": 26 },
+			{ "species": "sandshrew", "level": 26 }
 		]
 	},
 	"route_9_lass_zoe": {
 		"name": "Jeune Dresseuse Zoé", "ai": "random",
-		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 460,
-		"team": [{ "species": "meowth", "level": 23 }]
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 520,
+		"team": [{ "species": "meowth", "level": 26 }]
 	},
 	"route_9_hiker_benoit": {
 		"name": "Montagnard Benoît", "ai": "random",
-		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 700,
-		"team": [{ "species": "machop", "level": 20 }, { "species": "onix", "level": 20 }]
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 805,
+		"team": [{ "species": "machop", "level": 25 }, { "species": "onix", "level": 23 }]
 	},
 	"route_9_hiker_gilles": {
 		"name": "Montagnard Gilles", "ai": "random",
-		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 700,
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 560,
 		"team": [
-			{ "species": "geodude", "level": 20 }, { "species": "machop", "level": 20 },
-			{ "species": "geodude", "level": 20 }
+			{ "species": "geodude", "level": 16 }, { "species": "machop", "level": 16 },
+			{ "species": "geodude", "level": 16 }
 		]
 	},
 	"route_9_scout_noa": {
