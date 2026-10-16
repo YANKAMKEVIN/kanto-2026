@@ -77,7 +77,7 @@ POSITIONS
 echelle_a            echelle        44,2         libre   paire=A sens=monte vers=dark_cave_1f  # à l'aplomb de l'échelle A du 1F nord
 arrivee_a            spawn          44,3         libre   paire=A  # arrivée du 1F nord, tourné ↓
 echelle_b            echelle        44,34        libre   paire=B sens=monte vers=dark_cave_1f  # à l'aplomb de l'arrivée du 1F sud
-arrivee_b            spawn          43,34        libre   paire=B  # retour du 1F sud, tourné →
+arrivee_b            spawn          43,34        libre   paire=B  # retour du 1F sud, tourné ← (face au couloir libre ; arrivée à l'opposé de l'échelle, comme au 1F)
 g3_elsa              dresseur       13,35        bloque  role=G-3 facing=right sight=5 inevitable=non trainer=dark_cave_elsa  # Jeune Dresseuse, coin sud-ouest de la salle de la flaque ; vue (14..18, 35)
 g4_marcel            dresseur       38,34        bloque  role=G-4 facing=left sight=4 inevitable=oui trainer=dark_cave_marcel  # Montagnard, dans le passage étroit ; vue (37..34, 34)
 dark_cave_b1f_item_1 objet_visible  21,18        bloque  role=O2 item=super_potion  # au pied de la colonne (face sud)

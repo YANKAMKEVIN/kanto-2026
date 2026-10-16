@@ -48,8 +48,10 @@ PLANS = {
 	"mt_moon_1f": "tools/plans/mont_selenite_1f.txt",
 	"mt_moon_b1f": "tools/plans/mont_selenite_b1f.txt",
 	"mt_moon_b2f": "tools/plans/mont_selenite_b2f.txt",
+	"dark_cave_1f": "tools/plans/grotte_sombre_1f.txt",
+	"dark_cave_b1f": "tools/plans/grotte_sombre_b1f.txt",
 }
-SOL = set(".gjUVE")
+SOL = set(".gjUVEe")
 PAROI = set("#*")
 SEUIL_SOL = 0.22
 SEUIL_RAPPORT = 2.0

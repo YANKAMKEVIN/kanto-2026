@@ -37,6 +37,8 @@ const MAP_IDS: Array[StringName] = [
 	&"vermilion_house_2",
 	# Jalon 15 (T13, T21) : la Route 5 (raccord réel avec Azuria) et ses trois intérieurs.
 	&"route_5", &"route_5_daycare", &"route_5_gate", &"route_5_underground_gate",
+	# Jalon 18 (T13) : la Grotte Sombre (sorties en repli « à venir » tant que la Route 10 manque).
+	&"dark_cave_1f", &"dark_cave_b1f",
 ]
 ## Cartes construites par une autre tâche en parallèle (jalon 7 : la Route 22, T22 ; jalon 10 :
 ## Argenta, T11, pendant les intérieurs du T13) : un warp qui y mène est vérifié seulement si la
@@ -132,8 +134,12 @@ func test_every_coming_soon_warp_returns_to_a_walkable_spawn_of_its_own_map() ->
 	# nord du poste vers Safrania (2 cases, jamais atteinte). Jalon 15 (T14) : Route 11
 	# (trois cases), Arène de Carmin (deux), S.S. Anne (deux), Safrania (porte nord de la
 	# Route 6, une).
-	assert_eq(found, 10, "« SAFRANIA » (2), « Route 11 » (3), Arène de Carmin (2), "
-		+ "S.S. Anne (2), Safrania (1)")
+	# Jalon 18 (T13) : entrée nord et sortie sud de la Grotte Sombre (4 cases) vers la Route 10,
+	# « à venir » tant que la Route 10 n'est pas construite (T12).
+	var dark_cave_soon := 0 if MapCatalog.has_map(&"route_10") else 4
+	assert_eq(found, 10 + dark_cave_soon, "« SAFRANIA » (2), « Route 11 » (3), Arène de "
+		+ "Carmin (2), S.S. Anne (2), Safrania (1), Grotte Sombre vers la Route 10 (%d)"
+		% dark_cave_soon)
 
 
 ## Warp de [param map] qui ramène à [param origin] depuis [param arrival] : sur la case
