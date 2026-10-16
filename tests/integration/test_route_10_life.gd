@@ -183,8 +183,8 @@ func test_hector_and_paul_are_placed_with_their_teams() -> void:
 	var trainers := TrainerLibrary.new(_boot.get_pokemon_data())
 	assert_true(trainers.load_dir(), "\n".join(trainers.get_errors()))
 	var expected := {
-		&"hector": [&"route_10_maniac_hector", 4, 1000, [&"nidorino", &"jigglypuff"], 20],
-		&"paul": [&"route_10_hiker_paul", 5, 735, [&"geodude", &"onix"], 21],
+		&"hector": [&"route_10_maniac_hector", 4, 1300, [&"nidorino", &"jigglypuff"], 26],
+		&"paul": [&"route_10_hiker_paul", 5, 665, [&"geodude", &"onix"], 19],
 	}
 	for id: StringName in expected:
 		var npc := map.get_npc(id)

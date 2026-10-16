@@ -1169,7 +1169,7 @@ Benoît) ; Yanis 53 % et Hector 60 % pour R ; Lou et Noa laissés à 100 % au ti
 de type ; traversée de K à 36 %. Leviers possibles, non appliqués : dépasser le plafond (Nv. 28–30),
 changer un Pokémon (Salamèche → Reptincel pour Adam, second Pokémon pour Zoé), ou un soin de plus
 (Centre d'Azuria après Lou, retour au Centre après Roger) dans la définition du « joueur prudent ».
-Tests : `test_trainers_j18`, `test_route_9_trainers`, `test_dark_cave_trainers` aux nouvelles
+Tests : `test_trainers_j18`, `test_route_9_trainers`, `test_dark_cave_trainers`, `test_route_10_life` aux nouvelles
 valeurs ; `test_simulate_mt_moon` inchangé.
 
 #### T23 — Q : **session 18B** → K — après T21, T22 et la validation de 18A
