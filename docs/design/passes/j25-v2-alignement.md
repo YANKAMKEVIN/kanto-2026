@@ -1,5 +1,7 @@
 # J25 — Le secret du Manoir Pokémon : passe d'alignement de la V2 (ChatGPT)
 
+> **Arbitrages X-1 à X-24 validés par Kevin le 2026-10-16 (recommandations suivies) → dossier 28.**
+>
 > Claude, 2026-10-16. **Conception et audit seulement : aucune ligne de code.** V2 reproduite dans
 > `j25-v2-chatgpt.md`. Relue contre `vision.md`, la roadmap, les dossiers 04, 06, 12, 15 et 17, les
 > passes des J22 à J24 et le code réel d'`origin/main` (`440f9b17`, J15 fusionné) et des branches
