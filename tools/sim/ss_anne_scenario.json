@@ -985,7 +985,7 @@
 				"squirtle": [
 					{
 						"species": "pidgeotto",
-						"level": 17,
+						"level": 20,
 						"moves": [
 							"gust",
 							"quick_attack",
@@ -994,7 +994,7 @@
 					},
 					{
 						"species": "raticate",
-						"level": 15,
+						"level": 17,
 						"moves": [
 							"quick_attack",
 							"bite",
@@ -1003,7 +1003,7 @@
 					},
 					{
 						"species": "kadabra",
-						"level": 20,
+						"level": 19,
 						"moves": [
 							"confusion",
 							"psybeam"
@@ -1011,7 +1011,7 @@
 					},
 					{
 						"species": "ivysaur",
-						"level": 20,
+						"level": 24,
 						"moves": [
 							"vine_whip",
 							"tackle",

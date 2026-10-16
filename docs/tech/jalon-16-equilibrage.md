@@ -313,7 +313,7 @@ choisi par le joueur** (Pokémon de type Sol, ou Bulbizarre, contre Major Bob).
 | Starter du joueur | Roucoups | Rattatac | Kadabra | Starter évolué | Récompense | Avant (T21) |
 |---|---|---|---|---|---|---|
 | Salamèche | 19 | 16 | 19 | Carabaffe 20 | 700 ₽ | 17 / 15 / 16 / 18 (630 ₽) |
-| Carapuce | 17 | 15 | **20** | Herbizarre 20 | 700 ₽ | 17 / 15 / 16 / 18 (630 ₽) |
+| Carapuce | **20** | **17** | **19** | **Herbizarre 24** | **840 ₽** | 17 / 15 / 20 / 20 (700 ₽, §10 initial) ; 17 / 15 / 16 / 18 (630 ₽, T21) — **§10.6** |
 | Bulbizarre | 13 | 12 | 13 | Reptincel 15 | 525 ₽ | 16 / 14 / 15 / 16 (560 ₽) |
 
 Pourquoi ces jeux (ligne droite, attentif, 1er essai ; sur 1 000 graines, ± 1,6 point) :
@@ -395,7 +395,7 @@ moyennes ; les « bas » descendent plus bas) :
 | Arène : Marc (Pikachu 19, Voltorbe 19) | 100 % | 78–100 % | 77–100 % (ligne droite ; Carabaffe 77 %) |
 
 Un ou deux Pokémon contre une équipe de 3–4 avec des Potions : même à + 4 niveaux et avec l'IA
-`smart`, le joueur gagne presque toujours. **Proposition (non appliquée)**, à trancher par Kevin :
+`smart`, le joueur gagne presque toujours. **Propositions** (**P-1 retenue par Kevin le 2026-10-16**, §10.6) :
 
 - **P-1 (recommandée)** : appliquer la règle des 80 % aux **combats à enjeu** (rival, champion,
   chef Rocket) et aux **séquences sans soin** (le navire entier, l'Arène avant son champion), pas à
@@ -423,3 +423,52 @@ godot --headless --path . -s res://tools/simulate_mt_moon.gd -- \
 
 Rapports bruts (non versionnés) : `build/sim/j16_r40/`. Sur le Mac chargé : ≈ 5 min par lot de
 6 candidats et par équipe (rival seul), ≈ 25 min par groupe d'équipes pour le parcours complet.
+
+### 10.6 Décisions de Kevin (2026-10-16, après le §10)
+
+Branche `j16-rival-final` (depuis `jalon-16` à `f3ee6009`), architecte.
+
+1. **Règle des 80 % = P-1** (§10.4) : la règle « aucun combat au-delà de 80 % de victoire au
+   premier essai par défaut » (joueur prudent, ligne droite ; avantage de type choisi par le joueur
+   accepté) s'applique aux **combats à enjeu** (rival, Champion, chef Rocket) et aux
+   **enchaînements sans soin** (le navire entier, l'Arène avant son Champion), **pas à chaque
+   Dresseur ordinaire**. Les équipes des Dresseurs ordinaires ne changent pas (P-2 écartée).
+2. **Bulbizarre** : gardé à **13 / 12 / 13 / Reptincel 15** (38 %, 525 ₽). Rien ne change.
+3. **Carapuce** : rival à **Roucoups 20, Rattatac 17, Kadabra 19, Herbizarre 24** au lieu de
+   17 / 15 / 20 / 20, pour que le **starter évolué reste le plus fort** (Kadabra n'égale plus
+   Herbizarre). Récompense : 35 ₽ × 24 = **840 ₽**. Capacités inchangées (dossier 19 §5) et
+   toutes connues de l'espèce à ces niveaux : Roucoups 20 Tornade, Vive-Attaque (N12), Jet de
+   Sable (Cyclone au N21, pas encore) ; Herbizarre 24 Fouet Lianes (N13), Charge, Rugissement
+   (il pourrait aussi connaître Poudre Toxik, N22 : non ajoutée, le dossier fixe ses trois
+   capacités et le taux est mesuré sans) ; Rattatac Morsure et Kadabra Rafale Psy restent les
+   choix déjà validés du dossier (R-12), indépendants du niveau. Test : le starter évolué est
+   strictement le plus haut des quatre, pour les trois versions (`test_ss_anne_trainers_data`).
+
+**Confirmation par simulation** (1 000 graines, sac de Carmin, reprises au Centre ; « 1er essai »
+comme au §10.1 ; entre parenthèses : tentatives moyennes, battu en 6 essais) :
+
+| Équipe (joueur Carapuce) | **Ligne droite, prudent** | Expert | Naïf | Avec les Dresseurs facultatifs (prudent · expert) | Ligne droite + navire (prudent · expert) |
+|---|---|---|---|---|---|
+| Carabaffe 21 | **45,7 %** (2,6 ; 77 %) | 77 % | 0,3 % (30 % en 6) | 61 · 92 % (N25,6) | 15 · 43 % |
+| bas Carabaffe 20 | 0,7 % (3,1 ; 1,2 %) | 1,8 % | 0 % | 40 · 34 % (peu y arrivent) | — |
+| Sol : Carabaffe 21 + Racaillou 16 | 77 % (1,5 ; 98 %) | 91 % | 0,2 % | 75 · 83 % | 51 · 81 % |
+
+Avant (17 / 15 / 20 / 20) : Carabaffe 38,5 % (expert 76 %, naïf 4,8 %, facultatifs 71 · 98 %,
+ligne droite + navire 32 %), bas 1,7 %, Sol 63 %. Le jeu retenu donne **45,7 %** en ligne droite
+(46 % au §10.2, même jeu : identique) : dans la cible 35–45 % à la marge haute (± 1,6 point). Le
+parcours complet avec les données (`ss_anne_scenario.json --donnees`) donne les mêmes chiffres que
+le scénario de recalage (`rival_st_20_17_19_24`). **Règle P-1 respectée** pour le rival : ≤ 80 %
+pour le joueur prudent sans avantage de type, en ligne droite comme dans l'enchaînement
+« navire puis rival » (15 %) ; Sol 77 % (avantage de type, accepté). Major Bob : inchangé (0 % en
+ligne droite pour Carabaffe sans Pokémon de type Sol, comme au §10.4 ; 72 % avec Racaillou).
+
+Reproduire :
+
+```bash
+python3 tools/sim/gen_ss_anne_scenarios.py
+godot --headless --path . -s res://tools/simulate_mt_moon.gd -- \
+  --scenario res://tools/sim/ss_anne_rival_40.json --seeds 1000 --equipe "Carabaffe" \
+  --variante "rival_st_20_17_19_24"
+godot --headless --path . -s res://tools/simulate_mt_moon.gd -- \
+  --scenario res://tools/sim/ss_anne_scenario.json --donnees --seeds 1000 --equipe "Carabaffe"
+```

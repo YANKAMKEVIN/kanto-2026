@@ -5,7 +5,7 @@ extends GutTest
 ## (fondus raccourcis), le combat instantané et une sauvegarde en mémoire :
 ## - équipe selon le starter (Roucoups, Rattatac, Kadabra Choc Mental + Rafale Psy, starter
 ##   évolué avec l'avantage ; recalage à ~40 % du 2026-10-16 : 19 / 16 / 19 / 20 contre
-##   Salamèche, 17 / 15 / 20 / 20 contre Carapuce, 13 / 12 / 13 / 15 contre Bulbizarre),
+##   Salamèche, 20 / 17 / 19 / 24 contre Carapuce, 13 / 12 / 13 / 15 contre Bulbizarre),
 ##   IA `smart` avec `switch`, 35 ₽ × niveau, Grand moment
 ##   à la victoire ;
 ## - vue sur les 3 cases de la colonne 7, inévitable ; défaite → réveil au dernier Centre sans
@@ -286,7 +286,7 @@ func test_the_team_follows_the_starter_with_kadabra_and_the_reference_levels() -
 		var all := team.get_all()
 		var species: Array = all.map(func(p: Pokemon) -> Array: return [p.species_id, p.level])
 		var levels: Array = {&"bulbasaur": [13, 12, 13, 15], &"charmander": [19, 16, 19, 20],
-			&"squirtle": [17, 15, 20, 20]}[starter]
+			&"squirtle": [20, 17, 19, 24]}[starter]
 		assert_eq(species, [[&"pidgeotto", levels[0]], [&"raticate", levels[1]],
 			[&"kadabra", levels[2]], [expected[starter][0], levels[3]]],
 			"ordre du dossier §5, niveaux de la décision de Kevin du 2026-10-16")
