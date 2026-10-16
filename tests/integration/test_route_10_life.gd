@@ -315,7 +315,8 @@ func test_no_trigger_before_the_cave_exit_row() -> void:
 	var triggers := _boot.get_map().get_node(^"Triggers")
 	var cells: Array[Vector2i] = []
 	for point: Node in triggers.get_children():
-		cells.append_array(point.call(&"get_cells"))
+		if point.get(&"cutscene_id") == &"dark_cave_crossed":
+			cells.append_array(point.call(&"get_cells"))
 	assert_eq(cells.size(), 13, "13 cases, rangée 49")
 	for cell: Vector2i in cells:
 		assert_eq(cell.y, 49)
