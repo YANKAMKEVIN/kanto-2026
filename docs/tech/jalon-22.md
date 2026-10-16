@@ -389,7 +389,7 @@ static func in_front(grid: GridWorld, cell: Vector2i, facing: Vector2i, cycling_
 | `route_16_gate` | `build_painted_interiors.gd` (bloc J22) | `route_16_gate.txt` (14 × 10) | Route 16 est (J21) ↔ Route 16 ouest | Garde de la Piste, couloir haut |
 | `route_17` | `build_route_17.gd` | `route_17.txt` (30 × 150) | N ↔ Route 16 ouest ; S ↔ Route 18 | `cycling_road`, pente, 3 paliers, 5 cachés |
 | `route_18` | `build_route_18.gd` | `route_18.txt` (75 × 27) | N ↔ Route 17 ; E ↔ Parmanie ; poste au milieu | Ouest = Piste ; poste `route_18_gate` |
-| `fuchsia_city` | `build_fuchsia_city.gd` | `parmanie.txt` (60 × 54) | O ↔ Route 18 ; E ↔ Route 15 | 5 intérieurs, 3 portes `coming_soon`, enclos, étang pêchable |
+| `fuchsia_city` | `build_fuchsia_city.gd` | `parmanie.txt` (60 × 54) | O ↔ Route 18 ; E ↔ Route 15 ; **S : bord `warp_sud` réservé à la Route 19 (J24)**, rangée y = 53, colonnes **24..32** (terrasse de sable) et **34..35** (couloir) praticables, `coming_soon=route_19` ; colonne Parmanie = colonne Route 19 + 15 | 5 intérieurs, 3 portes `coming_soon`, enclos, étang pêchable |
 
 - **Route 16 du J21** : T19 retire le `coming_soon` de la porte (15..16, 20) et rend l'arbre
   (38..39, 19..20) coupable (`InteractPoint` `cut_tree`, `unless [cut_route_16_tree]`, `FlagGate`
@@ -411,6 +411,11 @@ static func in_front(grid: GridWorld, cell: Vector2i, facing: Vector2i, cycling_
 - **Espèces** `species/kanto_j22.json` : Magicarpe, Krabby, Poissoroy, Aéromite, Doduo, Dodrio,
   Canarticho, Tadmorv, Grotadmorv, Smogogo, Électrode, Machopeur ; données RB (statistiques, types,
   learnset jusqu'au N40, évolutions du dossier §12.1), entrées de Pokédex réécrites (§16.7.3).
+- **Magicarpe** : reprise **à l'identique** de l'entrée créée par le J24 (`jalon-24`,
+  `data/pokemon/species/kanto_j24.json`, `magikarp` : dex 129, Eau, PV 20 / Att 10 / Déf 55 /
+  Spé A 15 / Spé D 20 / Vit 80, croissance lente, exp. 40, capture 255, Trempette N1, Charge N15,
+  Léviator N20). Le J22, plus ancien, la porte dans `kanto_j22.json` ; le J24 retire sa copie à la
+  fusion (accord du 2026-10-16).
 - **Capacités** `moves/j22.json` : celles des learnsets qui manquent **et** dont l'effet existe
   (Trempette = aucun effet). Les autres sont remplacées (dossier §12.3) ; liste dans le rapport
   de T4 pour Kevin.
@@ -532,7 +537,7 @@ Kevin.
   `tools/art/plan_check_j22.py`.
 - **Contrôle** : raccords alignés (Route 12 (25..26, 101) → Route 12 sud) ; Parmanie atteignable
   par chaque chemin ; **un** inévitable au plus par route et un chemin qui évite les autres ;
-  pente seulement sur la Route 17, paliers ≥ 3 ; aucune case pêchable sur la Piste ; portes J23
+  pente seulement sur la Route 17, paliers ≥ 3 ; Parmanie : rangée 53, colonnes 24..32 et 34..35 praticables (raccord Route 19 du J24) ; aucune case pêchable sur la Piste ; portes J23
   `coming_soon`.
 - **CA** : Kevin valide les grilles.
 

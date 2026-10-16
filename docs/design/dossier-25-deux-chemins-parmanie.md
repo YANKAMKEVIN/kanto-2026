@@ -125,7 +125,7 @@ Aucun drapeau du J22 n'est lu par un poste de Safrania.
 | Route 16 ouest | prolonge la grille du J21 (60 × 27 au total) | E poste 16 (voie basse et voie haute) · S Route 17 (voie basse) |
 | Route 17 | 30 × 150 | N Route 16 ouest · S Route 18 ouest |
 | Route 18 | 75 × 27 | N Route 17 · E Parmanie ; poste au milieu |
-| Parmanie | 60 × 54 | O Route 18 · E Route 15 · S mer (bord fermé) · N entrée du Parc Safari (J23) |
+| Parmanie | 60 × 54 | O Route 18 · E Route 15 · S Route 19 (bord « À venir », colonnes 24..32 et 34..35 de la rangée 53 réservées au J24) · N entrée du Parc Safari (J23) |
 
 Les grilles `tools/plans/*.txt` du lot 22.0 **feront foi**. Règles du monde : angles droits, « nature
 dense, objets rares » (dossiers 01 et 07).
