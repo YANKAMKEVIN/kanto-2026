@@ -124,7 +124,7 @@ const TRAINERS := {
 	&"celadon_gym_cooltrainer_camelia": ["Topdresseuse Camélia", &"smart",
 		[[&"weepinbell", 24], [&"gloom", 24], [&"ivysaur", 24]], 840, 35],
 	&"celadon_gym_erika": ["Erika", &"smart",
-		[[&"victreebel", 29], [&"tangela", 24], [&"vileplume", 29]], 2871, 99],
+		[[&"tangela", 24], [&"victreebel", 27], [&"vileplume", 29]], 2871, 99],
 	&"celadon_game_corner_rocket": ["Sbire Rocket", &"random",
 		[[&"raticate", 20], [&"zubat", 20]], 600, 30],
 	&"rocket_hideout_b1f_1": ["Sbire Rocket", &"random",
@@ -147,7 +147,7 @@ const TRAINERS := {
 	&"rocket_hideout_b4f_guard_2": ["Sbire Rocket", &"random",
 		[[&"ekans", 23], [&"sandshrew", 23], [&"arbok", 23]], 690, 30],
 	&"giovanni_hideout": ["Giovanni", &"smart",
-		[[&"onix", 25], [&"rhyhorn", 24], [&"kangaskhan", 29]], 2871, 99],
+		[[&"onix", 23], [&"rhyhorn", 22], [&"kangaskhan", 25]], 2475, 99],
 }
 ## Numéro de l'annexe A → [genre de donnée, identifiant, quel texte « … » de la ligne (−1 =
 ## le dernier)]. Brouillon tant que Kevin n'a pas validé l'annexe (Q-1).

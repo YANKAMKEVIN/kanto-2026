@@ -47,12 +47,12 @@
 		"card": { "name": "ERIKA", "title": "Championne d'Arène de Céladopole" },
 		"team": [
 			{
-				"species": "victreebel", "level": 29,
-				"moves": ["razor_leaf", "wrap", "poison_powder", "sleep_powder"]
-			},
-			{
 				"species": "tangela", "level": 24,
 				"moves": ["constrict", "bind"]
+			},
+			{
+				"species": "victreebel", "level": 27,
+				"moves": ["razor_leaf", "wrap", "poison_powder", "sleep_powder"]
 			},
 			{
 				"species": "vileplume", "level": 29,

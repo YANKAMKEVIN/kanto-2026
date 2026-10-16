@@ -1303,7 +1303,7 @@ capture renommée `20i_<n>.png` / `20ii_<n>.png` ou ligne du journal citée.
   nouveaux), zones, Grands moments, descriptions d'objets et de capacités, Pokédex.
   *Recommandation : relecture en une passe, comme aux J13–J15 ; bloque les données, pas le code.*
 
-- **Q-2 — Le vendeur de CT du 2e étage.** La règle H-7 (« capacité existante ») ne laisse passer
+- **Q-2 — Le vendeur de CT du 2e étage.** **Décidé par Kevin le 2026-10-16 : A (CT01 seule).** La règle H-7 (« capacité existante ») ne laisse passer
   que la **CT01 Ultimapoing**, déjà ramassable au Mont Sélénite. Empal'Korne, Protection, Sacrifice
   et Damoclès existent dans les données mais **ne font rien** en combat.
   - **A** — le vendeur vend la CT01 seule (achetable si elle n'est pas dans le Sac) ;
@@ -1314,7 +1314,7 @@ capture renommée `20i_<n>.png` / `20ii_<n>.png` ou ligne du journal citée.
   *Recommandation : **A**.* Elle respecte H-7, et le vendeur sert déjà à qui a manqué la CT01. C
   serait une passe de systèmes (H-7 la renvoyait à plus tard).
 
-- **Q-3 — Niveaux et capacités d'Erika et de Giovanni** : décidés par toi au vu de la simulation
+- **Q-3 — Niveaux et capacités d'Erika et de Giovanni** — **décidé le 2026-10-16 : E-1 et G-1** (`jalon-20-equilibrage.md` §5). : décidés par toi au vu de la simulation
   (T8), comme pour Pierre. *Pas une question aujourd'hui : une décision attendue au T8.*
 
 **Notes (pas des questions)** : le dossier §15.1 compte 12 espèces mais en liste 13 (le plan suit

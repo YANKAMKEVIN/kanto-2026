@@ -124,7 +124,15 @@ Autres équipes (attentif 0 · 3 · 5) :
 - **G-3 : (f) Kangourex 27** : N28 : 11 · 41 · 74 ; N30 : 49 · 90 · 94 (2 673 ₽) — plus proche de
   RB, demande un N30.
 
-## 5. Questions pour Kevin
+## 5. Décisions de Kevin (2026-10-16)
+
+- **Erika : E-1** (Saquedeneu 24 en tête, Empiflor 27, Rafflesia 29 ; 2 871 ₽).
+- **Giovanni : G-1** (Onix 23, Rhinocorne 22, Kangourex 25 ; 2 475 ₽). Capacités inchangées
+  (choisies à la main, règle du J12).
+- Appliquées dans `data/trainers/celadon_gym.json` et `rocket_hideout.json`. Q-3c (niveau
+  d'arrivée réel) reste à confirmer par la mesure du J19 ; on resimule si elle s'écarte de N26–28.
+
+## 5 bis. Questions posées à Kevin (historique)
 
 - **Q-3a — Erika** : E-1 (ordre inversé, Empiflor 27), E-2 (RB) ou E-3 (27 / 24 / 27) ?
 - **Q-3b — Giovanni** : G-1 (23 / 22 / 25), G-2 (Kangourex 25) ou G-3 (Kangourex 27) ?

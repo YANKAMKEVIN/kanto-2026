@@ -352,8 +352,9 @@ scintillements excessifs.
 
 ### 11.3 Erika [V, H-11 par analogie]
 
-- Équipe RB : **Empiflor 29, Saquedeneu 24, Rafflesia 29**. **Niveaux et capacités fixés par
-  simulation** (méthode de Pierre, T16 du J10), avec RB comme référence. Méga-Sangsue sur Rafflesia
+- Équipe RB : **Empiflor 29, Saquedeneu 24, Rafflesia 29**. **Retenu par Kevin le 2026-10-16 (E-1)** :
+  **Saquedeneu 24 en tête, Empiflor 27, Rafflesia 29**. Niveaux et capacités fixés par
+  simulation (méthode de Pierre, T16 du J10), avec RB comme référence. Méga-Sangsue sur Rafflesia
   (RB).
 - IA `smart`, avec le changement de Pokémon du J13. Récompense en argent RB [D].
 - Caractère (dossier 06) : **altérations et contrôle**. Calme, polie, un peu rêveuse, ferme au
@@ -437,7 +438,8 @@ Sélection H-9 : on retire 2 des 5 sbires du B1F (RB 11 et 12). Espèces absente
 - **Calme, autoritaire, sûr de lui** ; jamais caricatural. Il n'évoque **ni** l'Arène de Jadielle,
   **ni** Mewtwo ; il parle d'affaires, de la Tour (« ce qu'on y cherche »), du joueur comme d'un
   contretemps.
-- Équipe RB : **Onix 25, Rhinocorne 24, Kangourex 29**. Niveaux et capacités fixés par simulation.
+- Équipe RB : **Onix 25, Rhinocorne 24, Kangourex 29**. **Retenu par Kevin le 2026-10-16 (G-1)** :
+  **Onix 23, Rhinocorne 22, Kangourex 25** (simulation : Kangourex N29 bloquait les trois starters).
   IA `smart` avec changement de Pokémon. Récompense en argent RB [D].
 - **Défaite du joueur** : retour au Centre de Céladopole ; Rocket battus gardés ; Clé gardée ; on
   peut redescendre directement par l'ascenseur.

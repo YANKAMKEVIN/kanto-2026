@@ -88,20 +88,20 @@
 	},
 	"giovanni_hideout": {
 		"name": "Giovanni", "ai": "smart",
-		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 2871,
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 2475,
 		"start_message": false, "end_message": true, "bag": true, "switch": true,
 		"card": { "name": "GIOVANNI", "title": "Chef de la Team Rocket" },
 		"team": [
 			{
-				"species": "onix", "level": 25,
+				"species": "onix", "level": 23,
 				"moves": ["tackle", "screech", "bind", "rock_throw"]
 			},
 			{
-				"species": "rhyhorn", "level": 24,
+				"species": "rhyhorn", "level": 22,
 				"moves": ["horn_attack"]
 			},
 			{
-				"species": "kangaskhan", "level": 29,
+				"species": "kangaskhan", "level": 25,
 				"moves": ["comet_punch", "bite"]
 			}
 		]
