@@ -6,7 +6,7 @@ extends GutTest
 const SHIP: Array[StringName] = [
 	&"ss_anne_gentleman_armand", &"ss_anne_sailor_erwan", &"ss_anne_sailor_loic",
 	&"ss_anne_gentleman_emile", &"ss_anne_sailor_yann", &"ss_anne_sailor_remi",
-	&"ss_anne_lass_lena", &"ss_anne_scout_basile", &"ss_anne_gentleman_victor",
+	&"ss_anne_lass_lena", &"ss_anne_scout_lino", &"ss_anne_gentleman_victor",
 	&"ss_anne_sailor_paul",
 ]
 const GYM: Array[StringName] = [

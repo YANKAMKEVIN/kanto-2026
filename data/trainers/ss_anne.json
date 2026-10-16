@@ -43,8 +43,8 @@
 		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 180,
 		"team": [{ "species": "oddish", "level": 18, "moves": ["absorb", "poison_powder"] }]
 	},
-	"ss_anne_scout_basile": {
-		"name": "Scout Basile", "ai": "random",
+	"ss_anne_scout_lino": {
+		"name": "Scout Lino", "ai": "random",
 		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 360,
 		"team": [{ "species": "beedrill", "level": 18, "moves": ["poison_sting", "fury_attack"] }]
 	},

@@ -34,7 +34,7 @@
 | R-7 | Drapeaux `ss_trainer_NN_defeated`, `ss_item_NN_taken` | conventions du moteur : `beaten_<id du Dresseur>` (posé par `TrainerEncounter`), `got_<id de l'objet>` | suivre les conventions ; ids des Dresseurs `ss_anne_<nom>` et `vermilion_gym_<nom>` |
 | R-8 | `vermilion_gym_leader_defeated` + `badge_thunder` | `badge_thunder` existe (`data/badges.json`) et suffit (modèle du J13 : `misty_met`, `badge_cascade`, `tm11_received`) | `surge_met`, `badge_thunder`, `tm24_received` ; pas de drapeau « leader_defeated » |
 | R-9 | Objectifs avec majuscule (« Monter à bord… ») | convention : minuscule et point (« obtenir le Badge Cascade. ») | « monter à bord du S.S. Anne. », etc. ; **« Explorer Kanto librement. » retiré** : l'objectif après le Badge Foudre appartient au J17 (`dossier-20`) |
-| R-10 | Noms Scout Noé, Marin Hugo, Marin Malo | Scout Noé (forêt), Gamin Hugo, Gamin Malo **existent** | **Scout Basile**, **Marin Erwan**, **Marin Loïc** (règle du Scout Théo, dossier 10) |
+| R-10 | Noms Scout Noé, Marin Hugo, Marin Malo | Scout Noé (forêt), Gamin Hugo, Gamin Malo **existent** | **Scout Lino** (Basile, pris par la Route 6 du J15, renommé le 2026-10-16, défaut à confirmer par Kevin), **Marin Erwan**, **Marin Loïc** (règle du Scout Théo, dossier 10) |
 | R-11 | Accords « gentil », « jeune ami », « jeune Dresseur » | héros masculin (dossier 13, option A) | conservés |
 | R-12 | Kadabra : Choc Mental seul | Télékinèse n'existe pas ; Téléport et Entrave exclus | **Choc Mental, Rafale Psy** (choisies à la main, comme Pierre ; la confusion fonctionne depuis le J11) ; recalable par simulation |
 | R-13 | Carte `vermilion_dock` séparée | Carmin appartient au J15 (non livré) | le quai est **où le J15 le pose** (carte de ville ou carte à part) ; le J16 s'y raccorde. Ajout au contrat d'entrée : le navire et son warp sont des objets que le J16 peut retirer par drapeau |
@@ -65,7 +65,7 @@
 
 Recommandations de Claude du 2026-10-15, retenues en entier. `{rival}` = prénom du rival,
 `{pokemon}` = nom du Pokémon qui coupe. Les 39 répliques des Dresseurs du §4 sont validées telles
-quelles, avec les noms de R-10 (Scout Basile, Marin Erwan, Marin Loïc).
+quelles, avec les noms de R-10 (Scout Lino, ex-Basile, Marin Erwan, Marin Loïc).
 
 **Navire et passerelle**
 1. Titre de zone : « S.S. ANNE » / « Le grand paquebot de Kanto »

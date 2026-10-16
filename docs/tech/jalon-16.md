@@ -213,7 +213,7 @@ une scène. La barrière `B` est praticable et **bloquée par 3 PNJ objets** tan
 
 ### 1.4 Kit d'assets (série suivante libre au moment du T1, défaut : 18)
 
-- **A — réutilisés** : `lass` (Fillette Léna), `scout` (Basile), `swimmer`, `traveler` et
+- **A — réutilisés** : `lass` (Fillette Léna), `scout` (Lino, ex-Basile), `swimmer`, `traveler` et
   `naturalist` (passagers), `clerk` (hôtesse), `gym_guide`, `rival`, objets `poke_ball_ground`.
 - **B — variations** : marin = `swimmer` habillé (tenue de matelot) ; serveur = `clerk` en veste.
 - **C — nouveaux** :
