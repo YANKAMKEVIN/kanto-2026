@@ -2087,6 +2087,13 @@
    "source": "PNJ_PRESIDENT_FAN_CLUB_NE_r1.png",
    "sortie": "assets/sprites/characters/painted/president_fan_club_sheet.png",
    "hauteur": 128
+  },
+  {
+   "id": "fuji",
+   "source": "PNJ_FUJI_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/fuji_sheet.png",
+   "hauteur": 122,
+   "note": "série 23 (J21 T7) ; M. Fuji, même taille que le vieil homme"
   }
  ],
  "pokemon": [
@@ -2263,6 +2270,13 @@
    "sortie": "assets/sprites/pokemon/painted/miaouss_sheet.png",
    "hauteur": 64,
    "note": "J15 T10 ; r1 refusee par Codex avec ancres, r2 = prompt seul ; hauteur 64 (decision de Kevin 2026-10-16 : 56 = Rattata trop petit en marche sur S21)"
+  },
+  {
+   "id": "osselait",
+   "source": "POKE_OSSELAIT_NE_r2.png",
+   "sortie": "assets/sprites/pokemon/painted/osselait_sheet.png",
+   "hauteur": 56,
+   "note": "série 23 (J21 T7) ; r1 refusée 4 fois par le filtre de Codex, r2 = prompt sans le mot « crâne » ; Maison des Pokémon, comportement static"
   }
  ],
  "heros_images": [
@@ -2544,6 +2558,20 @@
    "source": "PRESIDENT_FAN_CLUB_ATTENTE_r1.png",
    "sortie": "assets/sprites/characters/painted/president_fan_club_idle_sheet.png",
    "marche": "president_fan_club"
+  },
+  {
+   "id": "fuji_priere",
+   "source": "PNJ_FUJI_PRIERE_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/fuji_priere_sheet.png",
+   "marche": "fuji",
+   "rapport_hauteur": 0.9,
+   "ordre_colonnes": [
+    "dos",
+    "dos_souffle",
+    "gauche",
+    "face"
+   ],
+   "note": "série 23 : 4 poses à genoux (dos, dos au souffle, profil gauche, face yeux fermés) ; animation pray = colonnes 0 et 1"
   }
  ],
  "images_objets": [
@@ -2577,6 +2605,62 @@
    ],
    "sortie": "assets/sprites/objects/painted/fossil_helix.png",
    "hauteur": 55
+  },
+  {
+   "id": "poke_flute_note_1",
+   "source": "FX_NOTES_PLANCHE_NE_r1.png",
+   "recadrage": [
+    0,
+    0,
+    390,
+    1024
+   ],
+   "sortie": "assets/sprites/effects/poke_flute_note_1.png",
+   "hauteur": 120
+  },
+  {
+   "id": "poke_flute_note_2",
+   "source": "FX_NOTES_PLANCHE_NE_r1.png",
+   "recadrage": [
+    390,
+    0,
+    810,
+    1024
+   ],
+   "sortie": "assets/sprites/effects/poke_flute_note_2.png",
+   "hauteur": 120
+  },
+  {
+   "id": "poke_flute_note_3",
+   "source": "FX_NOTES_PLANCHE_NE_r1.png",
+   "recadrage": [
+    810,
+    0,
+    1150,
+    1024
+   ],
+   "sortie": "assets/sprites/effects/poke_flute_note_3.png",
+   "hauteur": 120
+  },
+  {
+   "id": "poke_flute_note_4",
+   "source": "FX_NOTES_PLANCHE_NE_r1.png",
+   "recadrage": [
+    1150,
+    0,
+    1536,
+    1024
+   ],
+   "sortie": "assets/sprites/effects/poke_flute_note_4.png",
+   "hauteur": 120
+  },
+  {
+   "id": "spirit_halo",
+   "source": "FX_HALO_SPIRIT_NE_r2.png",
+   "sortie": "assets/sprites/effects/spirit_halo.png",
+   "hauteur": 192,
+   "sans_silhouette": true,
+   "note": "halo procédural (--halo), pâle, 0 % au bord"
   }
  ],
  "pokemon_fixes": [

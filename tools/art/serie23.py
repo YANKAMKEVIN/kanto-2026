@@ -31,9 +31,15 @@ Usage :
                                             (défaut build/art/J21_KIT_v1.png)
   tools/art/serie23.py --halo [sortie.png]  halo pâle PROCÉDURAL (FX_HALO_SPIRIT_NE_r2 : repli du r1 peint)
   tools/art/serie23.py --svg [sortie.svg]   icône vectorielle de la Poké Flûte
+  Intégration (T7, après la validation de Kevin du 2026-10-16) :
+  tools/art/serie23.py --manifeste          ajoute les entrées en fin de manifeste.json
+  tools/art/preparer_serie.py serie23       prépare les planches et images (idempotent)
+  tools/art/serie23.py --dos                dos de Ronflex -> battle_proto/dos_ia_143.png
+  tools/art/serie23.py --icone              poke_flute.svg -> assets/ui/icons/items/
 """
 from __future__ import annotations
 
+import json
 import os
 import shutil
 import sys
@@ -45,7 +51,7 @@ ICI = Path(__file__).resolve().parent
 sys.path.insert(0, str(ICI))
 import serie10  # noqa: E402
 from serie06 import ADN, LUMIERE_NE, RACINE  # noqa: E402
-from serie10 import _Planche, _echelle  # noqa: E402
+from serie10 import _Planche, _echelle, _fin_de_liste  # noqa: E402
 from serie10_menu import RENDU  # noqa: E402
 from serie12 import MODELE_MARCHE  # noqa: E402
 
@@ -520,6 +526,92 @@ def halo(sortie: Path, taille: int = 512) -> Path:
 	return sortie
 
 
+# --- Intégration (T7) -----------------------------------------------------------------------
+
+_D = "assets/sprites/characters/painted/"
+_P = "assets/sprites/pokemon/painted/"
+_FX = "assets/sprites/effects/"
+DOS_SORTIE = "assets/sprites/pokemon/battle_proto/dos_ia_143.png"
+ICONE_SORTIE = "assets/ui/icons/items/poke_flute.svg"
+## Notes : coupes verticales de la planche 1536 × 1024 (une note par bande, entre deux halos).
+NOTES_BANDES = [(0, 390), (390, 810), (810, 1150), (1150, 1536)]
+
+
+def manifeste_donnees() -> dict:
+	"""Entrées du manifeste (T7), en fin de chaque section. Réglages = défauts (règle 4) :
+	Fuji 122 px (comme le vieil homme), Osselait 56 px (Rattata), prière à l'échelle 0,9 de
+	la marche (têtes à peu près de même taille que debout), notes 120 px (1,25 case), halo 192 px (2 cases)."""
+	notes = [{"id": f"poke_flute_note_{i + 1}", "source": "FX_NOTES_PLANCHE_NE_r1.png",
+		"recadrage": [gauche, 0, droite, 1024], "sortie": f"{_FX}poke_flute_note_{i + 1}.png",
+		"hauteur": 120} for i, (gauche, droite) in enumerate(NOTES_BANDES)]
+	return {
+		"personnages": [{"id": "fuji", "source": "PNJ_FUJI_NE_r1.png",
+			"sortie": f"{_D}fuji_sheet.png", "hauteur": 122,
+			"note": "série 23 (J21 T7) ; M. Fuji, même taille que le vieil homme"}],
+		"pokemon": [{"id": "osselait", "source": "POKE_OSSELAIT_NE_r2.png",
+			"sortie": f"{_P}osselait_sheet.png", "hauteur": 56,
+			"note": "série 23 (J21 T7) ; r1 refusée 4 fois par le filtre de Codex, r2 = prompt "
+				"sans le mot « crâne » ; Maison des Pokémon, comportement static"}],
+		"attentes": [{"id": "fuji_priere", "source": "PNJ_FUJI_PRIERE_NE_r1.png",
+			"sortie": f"{_D}fuji_priere_sheet.png", "marche": "fuji", "rapport_hauteur": 0.9,
+			"ordre_colonnes": ["dos", "dos_souffle", "gauche", "face"],
+			"note": "série 23 : 4 poses à genoux (dos, dos au souffle, profil gauche, face yeux "
+				"fermés) ; animation pray = colonnes 0 et 1"}],
+		"images_objets": notes + [{"id": "spirit_halo", "source": "FX_HALO_SPIRIT_NE_r2.png",
+			"sortie": f"{_FX}spirit_halo.png", "hauteur": 192, "sans_silhouette": True,
+			"note": "halo procédural (--halo), pâle, 0 % au bord"}],
+	}
+
+
+def _cle(entree: dict) -> str:
+	return entree.get("id") or entree["source"]
+
+
+def manifeste() -> None:
+	"""Ajoute les entrées absentes en fin de section, par insertion de texte (comme les séries
+	10 à 17)."""
+	chemin = ICI / "manifeste.json"
+	texte = chemin.read_text()
+	m = json.loads(texte)
+	ajouts = 0
+	for section, entrees in manifeste_donnees().items():
+		presents = {_cle(e) for e in m.get(section, [])}
+		nouvelles = [e for e in entrees if _cle(e) not in presents]
+		if not nouvelles:
+			continue
+		blocs = ",\n".join("  " + json.dumps(e, ensure_ascii=False, indent=1).replace("\n", "\n  ")
+			for e in nouvelles)
+		fin = _fin_de_liste(texte, section)
+		avant = texte[:fin].rstrip()
+		separateur = "," if not avant.endswith("[") else ""
+		texte = f"{avant}{separateur}\n{blocs}\n {texte[fin:]}"
+		ajouts += len(nouvelles)
+	json.loads(texte)
+	chemin.write_text(texte)
+	print(f"manifeste : {ajouts} entrée(s) de la série 23 ajoutée(s)")
+
+
+def dos(source: Path, sortie: Path) -> Path:
+	"""Dos de combat provisoire (comme `dos_ia_*`) : 1024 × 1024 RGBA, sujet de 898 px de haut
+	(≈ 88 %, comme les dos de la série), centré, bas du sujet à la rangée 961 (63 px du bord)."""
+	image = Image.open(source).convert("RGBA")
+	image = image.crop(image.getchannel("A").point(lambda a: 255 if a > 32 else 0).getbbox())
+	echelle = 898 / image.height
+	image = image.resize((round(image.width * echelle), 898), Image.LANCZOS)
+	toile = Image.new("RGBA", (1024, 1024), (0, 0, 0, 0))
+	toile.alpha_composite(image, ((1024 - image.width) // 2, 961 - 898))
+	sortie.parent.mkdir(parents=True, exist_ok=True)
+	toile.save(sortie, optimize=True)
+	return sortie
+
+
+def icone() -> Path:
+	sortie = RACINE / ICONE_SORTIE
+	sortie.parent.mkdir(parents=True, exist_ok=True)
+	shutil.copyfile(ART / "poke_flute.svg", sortie)
+	return sortie
+
+
 if __name__ == "__main__":
 	arguments = sys.argv[1:]
 	if "--prompts" in arguments:
@@ -531,6 +623,12 @@ if __name__ == "__main__":
 	elif "--contact" in arguments:
 		autres = [a for a in arguments if a != "--contact"]
 		print(contact(Path(autres[0]) if autres else RACINE / "build" / "art" / "J21_KIT_v1.png"))
+	elif "--manifeste" in arguments:
+		manifeste()
+	elif "--dos" in arguments:
+		print(dos(ART / "DOS_RONFLEX_r2.png", RACINE / DOS_SORTIE))
+	elif "--icone" in arguments:
+		print(icone())
 	elif "--halo" in arguments:
 		autres = [a for a in arguments if a != "--halo"]
 		print(halo(Path(autres[0]) if autres else ART / "FX_HALO_SPIRIT_NE_r2.png"))
