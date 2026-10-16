@@ -979,7 +979,8 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			or dossier_17.contains(text.replace("\n", " — "))
 			# J17 (T8) : dossier 20 §16 (bulle entre « | », « / » ou « · ») et annexe A.
 			or _in_dossier_20(dossier_20, row[1])
-			or annex_a_17.contains("« %s »" % text),
+			or annex_a_17.contains("« %s »" % text)
+			# J18 (T16) : dossier 21 §15 et plan (annexe A).
 			or dossier_21.contains(text.replace("\n", " "))
 			or dossier_21.contains("« %s »" % text.replace("\n", " / ")),
 			"%s : « %s » dans un dossier de conception" % [row[0], text])
