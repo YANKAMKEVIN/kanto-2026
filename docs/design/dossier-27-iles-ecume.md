@@ -185,6 +185,10 @@ compagnon ressort. Pas de bouton.
   - la case est une eau surfable et les conditions du §5.1 sont réunies → reprise en Surf ;
   - sinon → **garde-fou** : le joueur est replacé sur la **dernière case de terre** de la carte
     (mémorisée dans la position), à défaut au point d'arrivée de la carte.
+- **Garde-fou générique (Îles Écume)** : si la case sauvegardée est dans une zone d'où aucune
+  sortie de l'étage n'est atteignable (état reconstruit au chargement), le joueur est replacé sur
+  l'arrivée de l'étage. Les grilles v1 n'ont aucune zone de ce genre (contrôle exhaustif) : c'est une
+  ceinture de sécurité.
 - **Pas de sauvegarde pendant une glissade de courant** (`is_stable`).
 - Si le format de position n'accepte pas de champ facultatif, la sauvegarde passe en **v8**
   (vérifié en 24A ; migration triviale).
@@ -271,8 +275,12 @@ Il est **calculé à l'entrée** depuis les 8 drapeaux, sans autre donnée :
 - les rochers libres de l'étage sont **à leur position d'origine**, dans cet ordre :
   - 1F : 2 rochers, moins les trous remplis du 1F ;
   - B1F et B2F : les rochers tombés d'au-dessus, moins les trous remplis de l'étage ;
-  - B3F : 4 rochers, moins les trous remplis du B3F. Les rochers retirés sont les derniers de la
-    liste d'origine : la solution reste possible avec ceux qui restent.
+  - B3F : 4 rochers, moins les trous remplis du B3F.
+  - **Règle du « rocher désigné »** [D] (grilles v1, 2026-10-16) : chaque rocher libre porte le
+    numéro d'un trou de son étage (`trou=n` dans la grille). Quand le trou n est rempli, c'est son
+    rocher désigné qui est retiré, quel que soit le rocher réellement poussé. La règle « les derniers
+    de la liste » a été écartée : au 1F, elle rendait la solution impossible ; au B3F, elle pouvait
+    enfermer un joueur qui recharge sur un trou bouché. Le contrôle le prouve.
 - Les courants sont actifs ou coupés.
 
 **Récupération locale** : changer d'étage, ou recharger la partie, remet les rochers libres à leur
@@ -800,7 +808,8 @@ Si l'un d'eux doit changer, le J24 attend, puis demande à Kevin.
 
 | Sujet | Valeur |
 |---|---|
-| Échelle | Routes et ville ×1,5 ; Îles Écume 1:1 |
+| Échelle | Routes et ville ×1,5 (Cramois'Île : 34 × 27, pour les gabarits du Centre et de la Boutique) ; Îles Écume 1:1, 30 × 18 sans marge, coordonnées RB |
+| Rochers retirés | rocher désigné par trou (§7.3) |
 | Vitesse en Surf | ≈ 1,15 × la marche, pas de course |
 | Poussée | direction tenue 0,25 s |
 | Glissade de courant | ≈ 2 × la marche |
