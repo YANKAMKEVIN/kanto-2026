@@ -131,8 +131,8 @@ compagnon**, Reptincel N22, Roucoups N19 ; 5 Poké Balls, 3 Potions, 2 Cordes So
 | `flash_qa_no_pokemon.json` | CS05 au Sac, **aucun compatible** (Reptincel compagnon, Roucoups) : même avertissement, halo sombre |
 | `flash_qa_ko.json` | CS05 au Sac, **seul compatible K.O.** (Pikachu, 2e), sans compagnon : Flash quand même (K.O. accepté) ; Pikachu sort de sa Ball derrière le joueur pendant la mise en scène |
 | `flash_qa_dark.json` | Dans `qa_flash`, à l'entrée (spawn `from_qa_flash_entry_w` (4, 14), tourné vers le nord) : **joueur au bord de la carte** (coin sud-ouest, caméra bornée) ; voile sombre ; le trou suit le joueur, pas l'écran |
-| `flash_qa_noveil.json` | Même place, clé `"veil": "off"` (T25) : **voile retiré** sur `qa_flash` (grotte obscure), pour mesurer les fps avec et sans voile sur la même carte (`dark` / `lit` / `noveil`) |
-| `flash_qa_lit.json` | Même place, clé `"veil": "lit"` : **halo de Flash ouvert** (≈ 7 cases) dès l'arrivée |
+| `flash_qa_noveil.json` | Même place, clé `"veil": "off"` (T25) : **voile retiré** sur `qa_flash` (grotte obscure), CS05 au Sac (pas d'avertissement), pour mesurer les fps avec et sans voile sur la même carte (`dark` / `lit` / `noveil`) |
+| `flash_qa_lit.json` | Même place, clé `"veil": "lit"` : **halo de Flash ouvert** (≈ 7 cases) dès l'arrivée, CS05 au Sac (pas d'avertissement) |
 
 La carte de QA `qa_charge_j14` (J14, T10), ses données, son outil de construction et de capture,
 son test et les départs `charge_qa` et `teleport_qa` ont été **retirés au T24** (Tunnel, Téléport
