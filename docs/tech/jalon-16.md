@@ -571,6 +571,18 @@ définitif.
 
 #### T10 — constructeur-monde (Mac) : intégration de l'art — après T2
 
+**Fait le 2026-10-16** (branche `j16-t10-integration` depuis `jalon-16` à `49ee3dc6`), planche
+validée par Kevin le 2026-10-16 (tapis = coque `_r2`, superstructure gardée) :
+`serie18.py --manifeste` (26 entrées), `preparer_serie.py serie18` (idempotent, catalogue
+additif), `serie18.py --malade` (capitaine malade), `--objets-arene` (barrière). `preparer.py` :
+`boite` et `retouches` des coques (sorties des cabines élargies à 2 cases, escalier du pont
+inférieur ramené à 2 cases, portes recentrées), `taille_cases` (superstructure), `luminosite`
+(pont de teck), section `effets` (Coupe en cellules fixes). Habillage des 10 cartes dans
+`build_painted_interiors.gd` (`shell` + `furniture`/`props` ; pont extérieur : `PaintedGround`
+teck + mer, bastingages, superstructure), grilles et passages inchangés ; `CutSlash` joue
+`fx_coupe_01..04` ; PNJ aux modèles définitifs ; provisoires retirés. Détail : `etat-projet.md`
+« J16 T10 ».
+
 #### T11 — constructeur-monde : les 9 cartes du navire — **maintenant**, après T10 (provisoire avant)
 
 §2.10, warps des grilles, éclairage intérieur, sortie en `coming_soon`.

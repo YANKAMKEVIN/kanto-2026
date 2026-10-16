@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_mlh2h"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_3u7m3"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/int_barriere_active_01.png" id="3_yk1eu"]
+
+[node name="IntBarriereActive01" type="Node2D" unique_id=354378746]
+script = ExtResource("1_mlh2h")
+footprint = Array[Vector2i]([])
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1136726175]
+unique_name_in_owner = true
+material = ExtResource("2_3u7m3")
+texture = ExtResource("3_yk1eu")
+centered = false
+offset = Vector2(-168, -238)

@@ -132,6 +132,23 @@ const LOOKS: Dictionary = {
 	"marin": [CHARACTERS_DIR, "sailor", ""],
 	"docker": [CHARACTERS_DIR, "docker", ""],
 	"president_fan_club": [CHARACTERS_DIR, "fan_club_chairman", ""],
+	# J16 T10 (série 18, S.S. Anne et Arène de Carmin) : 128 px, avec leur planche d'attente.
+	# `capitaine_malade` : la marche du capitaine et sa planche d'attente à 5 colonnes
+	# (`serie18.py --malade` : de face soulagé, profils du capitaine, de dos penché en deux
+	# images, [constant IDLE_EXTRA]).
+	"capitaine": [CHARACTERS_DIR, "captain", ""],
+	"capitaine_malade": [CHARACTERS_DIR, "captain_sick", ""],
+	"major_bob": [CHARACTERS_DIR, "surge", ""],
+	"gentleman": [CHARACTERS_DIR, "gentleman", ""],
+	"rockeur": [CHARACTERS_DIR, "rocker", ""],
+	"hotesse": [CHARACTERS_DIR, "hostess", ""],
+	"passagere": [CHARACTERS_DIR, "passenger_f", ""],
+}
+## Attentes en plusieurs images (planche d'attente plus large que 4 colonnes) : planche →
+## direction → [colonnes, images par seconde]. Le capitaine malade respire, penché sur son lavabo
+## (dossier 19 §6 : « penché, animation courte ») : deux images de dos, 1,2 image/s (défaut).
+const IDLE_EXTRA: Dictionary = {
+	"capitaine_malade": {"up": [[3, 4], 1.2]},
 }
 ## Pokémon fixes (genre « Pokémon fixe », jalon 9 §2.8.5) : feuille 6 × 1 du catalogue
 ## (« personnages ») → identifiant de données. Ils ne marchent jamais.
@@ -155,6 +172,11 @@ const FIXED_OBJECTS: Dictionary = {
 	# J12 (série 14) : les deux fossiles posés sur la dalle du Mont Sélénite.
 	"fossil_dome": "fossil_dome",
 	"fossil_helix": "fossil_helix",
+	# J16 T10 (série 18) : barrière de l'Arène de Carmin (segment du milieu = toute la barrière,
+	# segments des bords = image vide, `serie18.py --objets-arene`) ; remplace le provisoire du
+	# T11 sous le même identifiant.
+	"electric_barrier": "electric_barrier",
+	"electric_barrier_side": "electric_barrier_side",
 }
 ## Planches lues seulement comme planche de course d'une autre.
 const RUN_ONLY: Array[String] = ["heros_run", "enfant_run", "rattata_run", "chen_run"]
@@ -201,7 +223,7 @@ func _init() -> void:
 		var run: Dictionary = sheets.get(run_id, {}) if not run_id.is_empty() else {}
 		var idle: Dictionary = sheets.get(sheet_id + IDLE_SUFFIX, {})
 		_build(sheets[sheet_id], run, idle, String(look[0]) + String(look[1]) + "_frames.tres",
-			IDLE_FROM_WALK.get(sheet_id, {}))
+			IDLE_FROM_WALK.get(sheet_id, {}), IDLE_EXTRA.get(sheet_id, {}))
 	var fixed := 0
 	for sheet_id: String in FIXED_POKEMON:
 		if not sheets.has(sheet_id):
@@ -226,7 +248,7 @@ func _init() -> void:
 
 
 func _build(walk_sheet: Dictionary, run_sheet: Dictionary, idle_sheet: Dictionary,
-		path: String, idle_from_walk: Dictionary = {}) -> void:
+		path: String, idle_from_walk: Dictionary = {}, idle_extra: Dictionary = {}) -> void:
 	var frames := SpriteFrames.new()
 	frames.remove_animation(&"default")
 	var walk_texture := load(walk_sheet["fichier"]) as Texture2D
@@ -251,7 +273,12 @@ func _build(walk_sheet: Dictionary, run_sheet: Dictionary, idle_sheet: Dictionar
 		frames.add_animation(idle)
 		frames.set_animation_loop(idle, true)
 		frames.set_animation_speed(idle, 1.0)
-		if idle_texture != null:
+		if idle_texture != null and idle_extra.has(dir):
+			var extra: Array = idle_extra[dir]
+			frames.set_animation_speed(idle, float(extra[1]))
+			for column: int in extra[0]:
+				frames.add_frame(idle, _atlas(idle_texture, idle_cell, column, 0))
+		elif idle_texture != null:
 			frames.add_frame(idle, _atlas(idle_texture, idle_cell, IDLE_COLUMNS[dir], 0))
 		else:
 			frames.add_frame(idle, _atlas(walk_texture, walk_cell, idle_from_walk.get(dir, 0),

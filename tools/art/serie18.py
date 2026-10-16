@@ -272,7 +272,9 @@ _BASE_COQUE = ("Vue de dessus en projection oblique frontale : le MUR DU FOND oc
 ## Couloir du capitaine (18 × 7) : bande de 1 530 × 595 px centrée (1 case = 85 px), recadrée à la
 ## préparation (`boite`) ; les autres pièces remplissent tout le cadre.
 CADRE_COULOIR = (3, 214, 85, 85)
-BOITE_COULOIR = [3, 214, 1533, 809]
+## T10 : la bande réellement peinte dans `_r1` (1 536 × 520 px, rangées 250..770 ; le reste est
+## noir) ; étirée de 1,125 en largeur et 1,29 en hauteur vers les 18 × 7 cases.
+BOITE_COULOIR = [0, 250, 1536, 770]
 
 ## Coques : (identifiant, grille, cadre, ancres, matériaux et décor, escaliers, vague).
 COQUES = [
@@ -1014,9 +1016,14 @@ def _revision(base: str) -> str:
 
 
 def _planche_objets(base: str, dossier: str, colonnes: int, lignes: int, ids: list[str],
-		cases: list[float], contact: float | None, boites: list[list[int]] | None = None) -> dict:
+		cases: list[float], contact: float | None, boites: list[list[int]] | None = None,
+		nettoyer: bool = True) -> dict:
+	"""Planche d'objets ; `nettoyer` (T10, défaut) : halo lumineux du fond retiré (comme la
+	série 17), constaté sur les quatre planches de la série au T2."""
 	entree = {"source": _revision(base), "dossier": f"{_W}{dossier}/", "colonnes": colonnes,
 		"lignes": lignes, "ids": ids, "cases": cases, "contact": contact}
+	if nettoyer:
+		entree["nettoyer"] = True
 	if boites:
 		entree["boites"] = boites
 	return entree
@@ -1033,6 +1040,35 @@ PONT_EXT_IDS = ["relief_bastingage_01", "relief_bastingage_02", "relief_bastinga
 	"relief_bastingage_est_01", "relief_bastingage_angle_ne_01", "relief_bastingage_angle_se_01",
 	"prop_chaises_longues_01", "prop_bouee_01"]
 FX_IDS = ["fx_coupe_01", "fx_coupe_02", "fx_coupe_03", "fx_coupe_04"]
+## Boîtes de la planche du pont extérieur (pixels de `_r1`, relevées au T10 sur les taches après
+## `nettoyer`) : bastingages N ×2, S, E ; angles NE, SE ; paire de chaises longues ; bouée.
+BOITES_PONT_EXT = [[40, 200, 484, 392], [500, 190, 940, 392], [956, 140, 1380, 436],
+	[1424, 104, 1492, 440], [88, 540, 236, 790], [344, 516, 488, 888], [628, 516, 1092, 908],
+	[1204, 580, 1472, 856]]
+## Retouches des coques à la préparation (T10, défauts notés au T2), en pixels du jeu de la coque
+## à sa taille (`preparer.retoucher_coque`), relevées sur les révisions retenues :
+## - cabines A/B/C et cabine du capitaine : sortie peinte d'environ 1,4 case, élargie aux 2 cases
+##   de la grille (montants déplacés, seuil prolongé) ;
+## - pont inférieur : escalier (≈ 2,4 cases) ramené aux 2 cases `S` (2..3, 2), porte de la cabine B
+##   recentrée sur (10, 1) ;
+## - couloir : porte du capitaine recentrée sur (15, 1).
+RETOUCHES_COQUES = {
+	"INT_SS_ANNE_CABINE_COQUE": [
+		{"zone": [466, 690, 513, 864], "dx": -33, "remplir": [560, 590]},
+		{"zone": [637, 690, 683, 864], "dx": 35, "remplir": [560, 590]},
+	],
+	"INT_SS_ANNE_CABINE_CAPITAINE_COQUE": [
+		{"zone": [570, 790, 616, 960], "dx": -40, "remplir": [650, 700]},
+		{"zone": [732, 790, 774, 960], "dx": 36, "remplir": [650, 700]},
+	],
+	"INT_SS_ANNE_PONT_INFERIEUR_COQUE": [
+		{"zone": [190, 0, 432, 292], "largeur": 202, "remplir": [440, 470]},
+		{"zone": [950, 30, 1166, 262], "dx": -54, "remplir": [1180, 1220]},
+	],
+	"INT_SS_ANNE_COULOIR_COQUE": [
+		{"zone": [1322, 30, 1512, 290], "dx": 72, "remplir": [1150, 1222]},
+	],
+}
 ## Coques préparées : (id, fiche, grille).
 PIECES = [
 	("int_ss_anne_pont_principal_coque", "INT_SS_ANNE_PONT_PRINCIPAL_COQUE", "ss_anne_pont_principal"),
@@ -1068,13 +1104,18 @@ def manifeste_donnees() -> dict:
 			"sortie": f"{_W}interiors/{ident}.png", "cases": _taille_grille(grille)}
 		if fiche == "INT_SS_ANNE_COULOIR_COQUE":
 			entree["boite"] = BOITE_COULOIR
+		if fiche in RETOUCHES_COQUES:
+			entree["retouches"] = RETOUCHES_COQUES[fiche]
 		pieces.append(entree)
 	return {
 		"objets": [
+			# Bloc 4 fois plus haut que large : à 1,3 case de large il ne ferait que 5 cases de
+			# haut ; `taille_cases` l'étire (× 1,34 en hauteur, comme les coques ≤ 1,35) pour que
+			# la porte peinte tombe sur la case `D` (0, 6) (T10).
 			{"id": "bldg_ss_anne_superstructure_01",
 				"source": _revision("WORLD_BLDG_SS_ANNE_SUPERSTRUCTURE_OUEST_NE"),
 				"sortie": f"{_W}buildings/bldg_ss_anne_superstructure_01.png", "axe": "w", "cases": 1.3,
-				"ombre": False, "contact": None},
+				"taille_cases": [1.3, 6.8], "ombre": False, "contact": None},
 		],
 		"planches_objets": [
 			_planche_objets("INT_SS_ANNE_PLANCHE_A_NE", "interiors", 3, 2, SS_ANNE_A_IDS,
@@ -1082,15 +1123,28 @@ def manifeste_donnees() -> dict:
 			_planche_objets("INT_SS_ANNE_PLANCHE_B_NE", "interiors", 3, 2, SS_ANNE_B_IDS,
 				[2, 3, 1, 2, 2, 3], 0.2),
 			_planche_objets("INT_ARENE_CARMIN_PLANCHE_NE", "interiors", 3, 2, ARENE_IDS,
-				[0.75, 1, 1, 3, 3], 0.15),
+				[0.75, 1, 1, 3.5, 3.5], 0.15),
+			# Une seule échelle (216 px de la planche = 1 case, mesurée sur les bastingages nord
+			# de 2 cases) ; les deux chaises longues forment une seule paire (2 cases) : boîtes.
 			_planche_objets("WORLD_RELIEF_PONT_EXTERIEUR_PLANCHE_NE", "relief", 4, 2, PONT_EXT_IDS,
-				[2, 2, 2, 0.35, 0.35, 0.35, 2, 1], 0.0),
-			# Effet : découpe par cellules fixes (les feuilles détachées ne doivent pas faire des
-			# taches séparées).
-			_planche_objets("FX_COUPE_PLANCHE_NE", "fx", 4, 1, FX_IDS, [2, 2, 2, 2], None,
-				boites=[[i * 384, 0, (i + 1) * 384, 512] for i in range(4)]),
+				[2, 2, 2, 0.27, 0.62, 0.63, 2, 1], None, boites=BOITES_PONT_EXT),
+		],
+		# Effet : cellules fixes (les feuilles détachées ne font pas de taches séparées), une
+		# seule échelle pour les 4 images et la même cellule (le trait ne saute pas d'une image à
+		# l'autre) : `preparer.effets`.
+		"effets": [
+			{"source": _revision("FX_COUPE_PLANCHE_NE"), "dossier": f"{_W}fx/", "ids": FX_IDS,
+				"boites": [[i * 384, 60, (i + 1) * 384, 560] for i in range(4)], "echelle": 0.6,
+				"nettoyer": True},
 		],
 		"pieces": pieces,
+		# Pont de teck du pont extérieur : les planches du quai (série 17) éclaircies et un peu
+		# désaturées (fiche §B : variation sans nouvelle image).
+		"sols": [
+			{"id": "ground_pont_teck_01", "source": "WORLD_GROUND_PLANCHES_QUAI_01_NE_r1.png",
+				"sortie": f"{_W}ground/ground_pont_teck_01.png", "taille": 384, "contraste": 1.0,
+				"couleur": 0.9, "luminosite": 1.15, "raccord": 24},
+		],
 		"personnages": [
 			{"id": nom, "source": _revision(f"PNJ_{ident}_NE"), "sortie": f"{_C}{nom}_sheet.png",
 				"hauteur": 128} for nom, ident, _ in _PERSOS
@@ -1098,10 +1152,77 @@ def manifeste_donnees() -> dict:
 		"attentes": [
 			*[{"id": f"{nom}_idle", "source": _revision(f"{ident}_ATTENTE"),
 				"sortie": f"{_C}{nom}_idle_sheet.png", "marche": nom} for nom, ident, _ in _PERSOS],
-			{"id": "capitaine_malade", "source": _revision("CAPITAINE_MALADE"),
-				"sortie": f"{_C}capitaine_malade_sheet.png", "marche": "capitaine"},
 		],
 	}
+	# Le capitaine malade (3 poses, pas 4) n'est pas une planche d'attente : `--malade`.
+
+
+## Planche du capitaine malade (T10) : 3 poses (dos penché, dos penché en inspirant, face
+## soulagée) → planche d'attente de 5 colonnes `capitaine_malade_idle` (bas = soulagé, gauche et
+## droite = l'attente du capitaine, haut = penché, 5e = penché en inspirant : `idle_up` en deux
+## images, la respiration du dossier 19 §6) ; marche = celle du capitaine. Même échelle que
+## l'attente du capitaine (la pose de face prend la hauteur de son attente de face).
+MALADE_BOITES = [[0, 200, 480, 840], [480, 200, 880, 840], [880, 200, 1250, 840]]
+
+
+def capitaine_malade() -> None:
+	import preparer
+	source = preparer.nettoyer_halos(Image.open(ART / _revision("CAPITAINE_MALADE")).convert("RGBA"))
+	poses = [preparer._silhouette(source.crop(tuple(b))) for b in MALADE_BOITES]
+	catalogue_chemin = RACINE / "assets/world/catalogue.json"
+	catalogue = json.loads(catalogue_chemin.read_text())
+	attente = catalogue["personnages"]["capitaine_idle"]
+	largeur_c, hauteur_c = attente["cellule"]
+	feuille_attente = Image.open(RACINE / attente["fichier"][6:]).convert("RGBA")
+	face = feuille_attente.crop((0, 0, largeur_c, hauteur_c))
+	hauteur_face = face.getbbox()[3] - face.getbbox()[1]
+	echelle = hauteur_face / poses[2].height
+	reduites = [p.resize((round(p.width * echelle), round(p.height * echelle)), Image.LANCZOS)
+		for p in poses]
+	largeur = max(largeur_c, max(r.width for r in reduites) + 4)
+	largeur += largeur % 2
+	colonnes = [reduites[2], feuille_attente.crop((largeur_c, 0, 2 * largeur_c, hauteur_c)),
+		feuille_attente.crop((2 * largeur_c, 0, 3 * largeur_c, hauteur_c)), reduites[0], reduites[1]]
+	feuille = Image.new("RGBA", (largeur * len(colonnes), hauteur_c), (0, 0, 0, 0))
+	for i, image in enumerate(colonnes):
+		if image.height == hauteur_c and image.width == largeur_c:  # cellule d'attente telle quelle
+			feuille.alpha_composite(image, (i * largeur + (largeur - largeur_c) // 2, 0))
+		else:
+			feuille.alpha_composite(image, (i * largeur + (largeur - image.width) // 2,
+				hauteur_c - image.height))
+	sortie = f"{_C}capitaine_malade_idle_sheet.png"
+	feuille.save(RACINE / sortie, optimize=True)
+	ancienne = RACINE / f"{_C}capitaine_malade_sheet.png"
+	if ancienne.exists():
+		ancienne.unlink()
+	personnages = catalogue["personnages"]
+	personnages.pop("capitaine_malade", None)
+	personnages["capitaine_malade"] = dict(personnages["capitaine"])
+	personnages["capitaine_malade_idle"] = {"fichier": "res://" + sortie,
+		"cellule": [largeur, hauteur_c], "hauteur": 128, "colonnes": len(colonnes), "lignes": 1,
+		"ordre_colonnes": ["bas", "gauche", "droite", "haut", "haut_inspire"]}
+	catalogue_chemin.write_text(json.dumps(catalogue, ensure_ascii=False, indent=1) + "\n")
+	print(f"capitaine_malade_idle : cellule {largeur} × {hauteur_c}, échelle {echelle:.4f}")
+
+
+## Objets fixes de l'Arène (T10, sous l'identifiant du T11 `electric_barrier`) : la barrière
+## active entière (3,5 cases : pylônes à cheval sur les machines voisines) portée par le segment
+## du milieu (8, 5) ; les segments 7 et 9 portent une image vide (`electric_barrier_side`), ils
+## ne servent qu'à bloquer leur case. Écrits dans `assets/sprites/objects/painted/`, entrées
+## « images » du catalogue (lues par `build_character_frames.gd`, FIXED_OBJECTS).
+def objets_arene() -> None:
+	catalogue_chemin = RACINE / "assets/world/catalogue.json"
+	catalogue = json.loads(catalogue_chemin.read_text())
+	dossier = "assets/sprites/objects/painted/"
+	active = Image.open(RACINE / "assets/world/interiors/int_barriere_active_01.png").convert("RGBA")
+	active.save(RACINE / f"{dossier}electric_barrier.png", optimize=True)
+	Image.new("RGBA", (4, 4), (0, 0, 0, 0)).save(RACINE / f"{dossier}electric_barrier_side.png")
+	catalogue["images"]["electric_barrier"] = {"fichier": f"res://{dossier}electric_barrier.png",
+		"taille": list(active.size)}
+	catalogue["images"]["electric_barrier_side"] = {
+		"fichier": f"res://{dossier}electric_barrier_side.png", "taille": [4, 4]}
+	catalogue_chemin.write_text(json.dumps(catalogue, ensure_ascii=False, indent=1) + "\n")
+	print(f"electric_barrier : {active.width} × {active.height}")
 
 
 def _cle(entree: dict) -> str:
@@ -1361,5 +1482,9 @@ if __name__ == "__main__":
 			RACINE / "build" / "captures" / "jalon16_assets" / "serie18_contact.png"))
 	elif "--manifeste" in arguments:
 		manifeste()
+	elif "--malade" in arguments:
+		capitaine_malade()
+	elif "--objets-arene" in arguments:
+		objets_arene()
 	else:
 		generer(set(arguments))

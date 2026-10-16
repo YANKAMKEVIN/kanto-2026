@@ -111,7 +111,7 @@ Coques : `tools/build_painted_interiors.gd` (pièces en dictionnaires) ; la coqu
 
 **Effet de Coupe** (T7 / T10) : 4 images à ≈ 2 cases, centrées sur l'arbuste (49..50, 10), jouées en ≤ 2 s avec le Pokémon visible ; « Réduire les animations » : fondu 0,3 s (plan §6), sans effet. **Préparation** : découpe par **cellules fixes** (`boites` du manifeste), pas par taches (les feuilles détachées).
 
-**Couloir** : image générée en bande (1 530 × 595 dans 1 536 × 1 024) ; le manifeste porte `"boite": [3, 214, 1533, 809]` : **deux lignes à ajouter au T10** dans `preparer.py` (`pieces` : `if e.get("boite"): image = image.crop(tuple(e["boite"]))` avant l'étirement).
+**Couloir** : image générée en bande (1 530 × 595 dans 1 536 × 1 024) ; le manifeste porte `"boite"` (T10 : `[0, 250, 1536, 770]`, la bande réellement peinte, l'ancienne boîte gardait du noir), lue par `preparer.pieces` avant l'étirement.
 
 ## Fiches
 
@@ -212,3 +212,4 @@ python3 tools/art/serie18.py --contact     # build/captures/jalon16_assets/serie
 ## Journal de la série 18
 
 - **T1 (2026-10-16, branche `j16-t1-kit`)** : liste du kit (**30 images** nouvelles + 3 conditionnels), fiches, 33 prompts versionnés (géométrie des coques tirée des grilles), commandes, planche de contrôle `build/art/J16_KIT_v1.png` relue (réutilisés de la série 17 lus sur `main`, variations, coques à l'échelle avec leur plan, pont extérieur, mobilier, Arène, personnages, effet, Sac, combat, conditionnels, abandonnés). Numéro 18 provisoire (revérifié au push). Grilles non modifiées. Aucune image générée.
+- **T10 (2026-10-16, branche `j16-t10-integration`)** : planche validée par Kevin (tapis du pont principal = coque `_r2`, superstructure gardée). Préparées : 7 coques (retouches : sorties des cabines et de la cabine du capitaine élargies à 2 cases, escalier du pont inférieur ramené à 2 cases, portes de la cabine B et du capitaine recentrées, bande du couloir recadrée), 12 meubles, 5 éléments de l'Arène (barrières à 3,5 cases), 8 éléments du pont extérieur (paire de chaises longues découpée par boîte), superstructure étirée à 1,3 × 6,8 cases, pont de teck (`ground_pont_teck_01`, planches du quai × 1,15), 4 images de Coupe (cellules fixes, une échelle), 6 personnages + attentes, capitaine malade (planche d'attente à 5 colonnes), icônes Anti-Para et Réveil, 3 décors de combat (chaîne CB.3, 6 tuiles repeintes par Codex). Halos retirés par `nettoyer` sur toutes les planches.
