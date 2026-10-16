@@ -1,7 +1,7 @@
 # Labo de Cramois'Île, salle des fossiles (cinnabar_lab_fossil_room) — grille fonctionnelle v1
 # (jalon 24 T2, dossier 27 §10.4-§10.5 : résurrection de Kabuto et d'Amonita). Enveloppe 15 × 10 des
-# maisons. RB : 8 × 8 cellules, 2 scientifiques ; le 2e (RB (7,6)) n'est pas repris (le dossier §10.4
-# n'en place qu'un : question Q-2).
+# maisons. RB : 8 × 8 cellules, 2 scientifiques : la résurrection (RB (5,2)) et le scientifique d'Otaria
+# (RB (7,6), échange Ponyta contre Otaria, sans échange ici : T-54, décision de Kevin).
 #
 # Légende :
 #   K mur (bloqué)   . sol (praticable)   X sortie vers le hall (praticable : paillasson, PUSH ↓)
@@ -29,4 +29,5 @@ POSITIONS
 sortie                     warp           6..8,8            libre   # PUSH ↓ → cinnabar_labo_hall, from_fossiles
 entree                     spawn          7,8               libre   # spawn « entrance », tourné ↑
 scientifique_fossiles      pnj            4,4               bloque  role=P1 facing=up move=stay rb=5,2 texte=T-60,T-61,T-62,T-63  # résurrection (§10.5) ; RB : marche de gauche à droite, rendu immobile devant la machine
+scientifique_otaria        pnj            11,7              bloque  role=P2 facing=up move=stay rb=7,6 texte=T-54  # RB : 2e scientifique de la salle d'essais (échange Ponyta contre Otaria) ; aucun échange (P-19)
 FIN
