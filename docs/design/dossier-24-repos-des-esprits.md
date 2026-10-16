@@ -3,7 +3,7 @@
 > Consolidé par Claude le 2026-10-15 à partir de la V2 de ChatGPT (`passes/j21-v2-chatgpt.md`) et de
 > la passe d'alignement (`passes/j21-v2-alignement.md`). **Les 7 décisions de la V2 et les
 > arbitrages L-1 à L-16 sont validés par Kevin** (« Toutes tes recommandations sont ok »,
-> 2026-10-15). Les **textes du §15 sont à valider** en un seul lot.
+> 2026-10-15). **Textes du §15, grilles du §19 et lot d'art validés par Kevin le 2026-10-16** (« je valide »).
 >
 > Faits Rouge/Bleu : désassemblage `pret/pokered` (`af51989`). Marqueurs : **[V]** validé par Kevin,
 > **[D]** valeur par défaut (règle 4 de `CLAUDE.md`), **RB** Rouge/Bleu, **K26** invention de Kanto
@@ -398,7 +398,7 @@ le 6F.
   Route 16 : fond de route existant [D] ; Route 12 : ponton [D, ou fond de route existant].
 - **Interface** : icône de la Poké Flûte ; notes de musique (effet simple).
 
-## 15. Lot de textes — À VALIDER
+## 15. Lot de textes — VALIDÉ par Kevin le 2026-10-16
 
 > Rédigés par Claude le 2026-10-15. Ton : sobre. Bulles de 2 lignes d'environ 40 caractères ; « / »
 > sépare les bulles. `{player}`, `{pokemon}` sont des jetons. Le joueur est tutoyé, comme partout.
@@ -541,7 +541,7 @@ Grilles, vues, données et art avancent dès maintenant.
 - Fonds de combat des Routes 12 et 16 : fonds de route existants.
 - Amnésie : Défense Spéciale +2.
 
-## 19. Grilles v1 (lot 21.0) — À VALIDER par Kevin
+## 19. Grilles v1 (lot 21.0) — VALIDÉES par Kevin le 2026-10-16 (avec la révision M-3)
 
 > **M-3 (2026-10-16)** : la grille `route_12.txt` est révisée pour poser Ronflex au croisement
 > (passage de 2 cases ; tronc en x 25..26 de la rangée 92 au bord sud ; Ronflex (25..26, 93..94) ;
@@ -559,7 +559,7 @@ Grilles, vues, données et art avancent dès maintenant.
 | `route_12.txt` | 39 × 102 | Route 12 nord à l'échelle × 1,5 ; raccord nord (21..23, 0) ↔ Lavanville (21..23, 35) ; raccord ouest (0, 93..94) ↔ Route 11 (75, 14..15) ; poste 9 × 9 traversant (portes nord et sud de 3 cases) ; 4 Pêcheurs (vue 6), le n° 1 inévitable ; bord sud « À venir » ; Lavanville → croisement : 145 pas. |
 | `route_16.txt` | 44 × 28 | Raccord (43, 21..23) ↔ Céladopole (0, 21..23) ; Ronflex 2 × 2 en (24..25, 22..23) ferme tout le goulet ; `face_ronflex` (26, 22..23) ; porte du poste (15..16, 20) « À venir » ; voie haute et arbre en décor. |
 
-**Valeurs par défaut retenues [D]** (en attendant l'avis de Kevin) :
+**Valeurs par défaut retenues [D]** (validées par Kevin le 2026-10-16) :
 - **Ronflex : le `FlagGate` s'ouvre sur `*_done`** (dossier §9.4).
 - **Ronflex de la Route 12** (M-3) : au croisement, en (25..26, 93..94) ; on lui parle depuis le nord (25..26, 92), l'ouest (24, 93..94)
   ou le sud (25..26, 95) (repères `face_ronflex`) ; panneau du ponton en (24, 95).
@@ -576,7 +576,21 @@ Grilles, vues, données et art avancent dès maintenant.
 
 **Question pour Kevin** : la Route 12 nord fait 39 × 102 cases à l'échelle × 1,5 (un peu plus que
 Céladopole), surtout de l'eau et du ponton. Garder, ou réduire à × 1,25 pour alléger la peinture ?
-Défaut : **garder × 1,5**.
+Défaut : **garder × 1,5**. → **Validé** (2026-10-16) : × 1,5.
+
+## 20. Lot d'art 21.0 (série 23) — VALIDÉ par Kevin le 2026-10-16
+
+- Planche `build/art/J21_KIT_v1.png` (fiche `fiches-assets/serie-23-repos-des-esprits.md`) : M. Fuji
+  (marche + prière agenouillée), Osselait (monde, ≈ 56 px), dos de Ronflex **provisoire IA** (gardé
+  tel quel [D] ; à remplacer par le pipeline 3D le jour où le modèle est disponible), notes de
+  musique, halo `SpiritLight`.
+- **Icône de la Poké Flûte : version SVG** [D] (`poke_flute.svg`, style de `potion.svg`, interface
+  non peinte, skill `ui-theme-2026`) ; la version peinte reste en réserve.
+- Vues générales validées : `reference/tour-pokemon-7f-vue-generale-v1.png`,
+  `route-12-vue-generale-v1.png` (r3, Ronflex au croisement), `route-16-vue-generale-v1.png` (r2),
+  et leurs plans. Elles donnent la DA ; **les grilles font foi**.
+- Questions du plan tranchées par les défauts : Q-2 × 1,5 ; Q-3 entrées de Pokédex de Ptitard et
+  Tentacool de l'annexe A ; Q-4 poids **RB** au 7F ; Q-5 **sprite d'Osselait** posé chez Fuji.
 
 ## Décisions verrouillées
 

@@ -1183,7 +1183,7 @@ Maintenant  : T1 ─→ T3 ∥ T4 ∥ T5 (rédaction) ; T2 (K) ; T6 ─→ T7 ; 
 
 ---
 
-## 8. Questions pour Kevin
+## 8. Questions pour Kevin — **toutes tranchées le 2026-10-16** (« je valide » : textes §15 et annexe A validés ; Q-2 × 1,5 ; Q-3 textes de l'annexe A ; Q-4 RB ; Q-5 oui)
 
 Vraies décisions de game design seulement ; le reste a une valeur par défaut (§7).
 
@@ -1201,7 +1201,7 @@ Vraies décisions de game design seulement ; le reste a une valeur par défaut (
 
 ---
 
-## Annexe A — Textes complémentaires (brouillons, à valider)
+## Annexe A — Textes complémentaires — VALIDÉS par Kevin le 2026-10-16
 
 > Rédigés par Claude le 2026-10-15, d'après RB (`text/Route12.asm`), ton des Pêcheurs existants.
 > Bulles de 2 lignes ; « / » sépare deux bulles.
