@@ -3,7 +3,7 @@ name: Godot tests
 on:
   pull_request:
   push:
-    branches: [main, refactor/boot-coordination]
+    branches: [main]
 
 permissions:
   contents: read
@@ -14,13 +14,20 @@ concurrency:
 
 jobs:
   tests:
+    name: GUT (${{ matrix.shard }})
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: ['0', '1', '2', '3', '4', '5', '6', '7', baseline]
     env:
       GODOT_VERSION: 4.7.2
       GODOT_SILENCE_ROOT_WARNING: 1
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.shard == 'baseline' && 'f0d3c4fbb3aeb9492d192e581f92ff0a3aef7738' || github.sha }}
       - name: Install Godot
         shell: bash
         run: |
@@ -45,12 +52,34 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          tools/test.sh 2>&1 | tee tests.log
+          tools/check_test_timing.sh tests
+          python3 - <<'PYTEST' 2>&1 | tee tests.log
+          import pathlib, re, subprocess, sys
+          shard = "${{ matrix.shard }}"
+          if shard == "baseline":
+              paths = ["tests/integration/test_center_heal.gd",
+                       "tests/integration/test_route_6_trainers.gd"]
+          else:
+              paths = sorted(str(p) for p in pathlib.Path("tests").rglob("test_*.gd"))
+              paths = paths[int(shard)::8]
+          if not paths:
+              sys.exit("Empty test shard")
+          print(f"Shard {shard}: {len(paths)} scripts", flush=True)
+          command = ["godot", "--headless", "--path", ".", "-s", "addons/gut/gut_cmdln.gd",
+                     "-gconfig=", "-gtest=" + ",".join("res://" + p for p in paths),
+                     "-gexit", "-glog=1"]
+          result = subprocess.run(command, stdout=subprocess.PIPE,
+                                  stderr=subprocess.STDOUT, text=True)
+          print(result.stdout)
+          bad = re.search(r"Parse Error|Ignoring script|Failed to load script|SCRIPT ERROR",
+                          result.stdout)
+          sys.exit(result.returncode or (1 if bad else 0))
+          PYTEST
       - name: Keep diagnostic logs
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: godot-logs
+          name: godot-logs-${{ matrix.shard }}
           path: |
             import.log
             tests.log
