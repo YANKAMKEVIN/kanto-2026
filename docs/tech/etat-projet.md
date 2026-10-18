@@ -1,5 +1,19 @@
 # État du projet — note de passage
 
+## Suite de consolidation — 2026-10-18
+
+Même branche `refactor/boot-coordination`. Les deux anciens runs ont dépassé le timeout
+CI de 30 min : toute la suite est désormais répartie en huit lots, sans exclusion.
+Les échecs Centre / Route 6 sont reproduits sur la base `f0d3c4fb` : garde de temps réel
+insuffisante pour le rituel simulé du Centre ; test de Chloé perturbé par Gabin.
+Corrections limitées aux conditions des tests, assertions métier conservées.
+
+Sauvegardes critiques : l'étape `save` attend désormais un retour OK du gestionnaire de Boot.
+En cas d'écriture ou de renommage impossible, contrôles et scène restent bloqués au point
+critique, toast d'échec et nouvelle tentative (5 s). Aucun spectacle de départ avant réussite.
+Deux tests ajoutés : deux pannes successives puis réussite, fermeture pendant une panne.
+Validation complète en cours via la CI ; validation téléphone toujours requise.
+
 ## Consolidation de Boot — branche `refactor/boot-coordination` (2026-10-18)
 
 Extractions : `SaveCoordinator` (demandes, gardes, délai de nouvelle tentative),

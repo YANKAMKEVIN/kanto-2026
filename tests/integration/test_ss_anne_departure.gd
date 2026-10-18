@@ -613,3 +613,59 @@ func test_departure_data_order_and_texts() -> void:
 	var sailor := dialogues.get_dialogue(&"vermilion_sailor")
 	assert_eq(sailor.variants[0].if_flags, [DEPARTED] as Array[StringName])
 	assert_eq(sailor.variants[0].pages[0].text, DEP_03, "DEP-03")
+
+
+
+## Le point critique n'est franchi ni après une panne d'écriture ni après un renommage manqué.
+func test_departure_waits_for_a_successful_disk_commit() -> void:
+	await _start("ss_anne_exit")
+	var director := _boot.get_cutscene_director()
+	director.save_retry_delay = 0.0
+	director.reduce_motion = true
+	var failures: Array[Error] = []
+	var checkpoint := -1
+	var steps := _boot.get_cutscene_library().get_cutscene(&"ss_anne_departure").variants[0].steps
+	for i: int in steps.size():
+		if steps[i].kind == CutsceneStep.Kind.SAVE:
+			checkpoint = i
+	director.step_started.connect(func(index: int) -> void:
+		if index == checkpoint:
+			_fs.fail_writes = true)
+	director.save_failed.connect(func(_reason: String, error: Error) -> void:
+		failures.append(error)
+		assert_true(director.is_running(), "la scène garde les contrôles")
+		assert_eq(director.get_step_index(), checkpoint, "aucun spectacle avant l'écriture")
+		assert_eq(_disk_state(_disk()), "navire", "ancien fichier intact")
+		_fs.fail_writes = false
+		# La deuxième tentative échoue au remplacement, la troisième réussit.
+		_fs.fail_renames = failures.size() == 1)
+	_answers = [true]
+	await _walk(Vector2i.DOWN, EXIT_W)
+	await _play_out()
+	assert_eq(failures.size(), 2)
+	assert_eq(_disk_state(_disk()), "quai")
+	_assert_dock_after_departure("après nouvelle tentative")
+	assert_push_error_count(0)
+
+
+func test_restarting_during_a_failed_checkpoint_keeps_the_previous_save() -> void:
+	await _start("ss_anne_exit")
+	var director := _boot.get_cutscene_director()
+	director.save_retry_delay = 0.0
+	var library := CutsceneLibrary.new()
+	assert_true(library.add_from_dict({"checkpoint_test": {"steps": [
+		{"save": "test critique"}, {"set": ["checkpoint_test_finished"]},
+	]}}, "test"))
+	_fs.fail_writes = true
+	# La variante de test passe par le même verrou que les scènes de contenu.
+	assert_true(director.play_variant(&"checkpoint_test",
+		library.get_cutscene(&"checkpoint_test").variants[0]))
+	await wait_process_frames(2)
+	assert_true(director.is_running())
+	assert_false(_flag(&"checkpoint_test_finished"), "l'étape suivante n'a pas été jouée")
+	var disk := _disk()
+	await _relaunch(disk)
+	assert_eq(_disk_state(_disk()), "navire")
+	assert_false(_flag(DEPARTED))
+	assert_false(_flag(&"checkpoint_test_finished"))
+	assert_push_error_count(0)

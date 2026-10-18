@@ -18,8 +18,7 @@ Branche : `refactor/boot-coordination`, base `f0d3c4fb` (J16 terminé).
   plan, hors ouverture, borné à 0,5 s par image.
 
 Aucun nouvel autoload. Pas de changement de contenu, de règles de combat, d'interface
-ou de format de sauvegarde. Le contrôle du résultat des sauvegardes critiques par les
-cinématiques et la rotation des fichiers corrompus restent des travaux distincts.
+ou de format de sauvegarde. La rotation des fichiers corrompus reste un travail distinct.
 
 ## Validation
 
@@ -32,3 +31,15 @@ cinématiques et la rotation des fichiers corrompus restent des travaux distinct
 - Workflow `Godot tests` : import strict puis `tools/test.sh`, logs conservés.
 - Avant fusion : vérifier les résultats du workflow et effectuer la validation téléphone
   (reprise v7, menu/réglages, arrière-plan, combat, départ du navire).
+
+## Points de sauvegarde critiques
+
+`CutsceneDirector.save_handler` renvoie Error. Une étape `save` attend OK avant de passer
+à la suivante. En cas d'erreur, `save_failed` alimente un toast dans Boot, puis la même
+étape réessaie après 5 s. Les effets précédents ne sont pas rejoués. Les écritures passent
+toujours par SaveCoordinator et sa garde de permission. Sans gestionnaire : erreur et
+arrêt de la scène. Un arrêt de l'application pendant une panne conserve le précédent fichier.
+
+La CI répartit tous les scripts `test_*.gd` en huit lots déterministes. Un lot diagnostic
+sur la base f0d3c4fb documente les deux échecs préexistants ; il ne remplace aucun test de
+la branche et n'est pas bloquant. Tous les lots de la branche restent bloquants.

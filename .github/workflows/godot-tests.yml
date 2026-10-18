@@ -17,6 +17,7 @@ jobs:
     name: GUT (${{ matrix.shard }})
     runs-on: ubuntu-24.04
     timeout-minutes: 25
+    continue-on-error: ${{ matrix.shard == 'baseline' }}
     strategy:
       fail-fast: false
       matrix:

@@ -309,7 +309,8 @@ func _ready() -> void:
 	_cutscenes_node.set_hud(_hud)
 	_cutscenes_node.item_given.connect(_on_item_given)
 	# Jalon 16 : écriture immédiate demandée par une scène (départ du S.S. Anne).
-	_cutscenes_node.save_requested.connect(_on_cutscene_save_requested)
+	_cutscenes_node.save_handler = _on_cutscene_save_requested
+	_cutscenes_node.save_failed.connect(_on_checkpoint_save_failed)
 	_cutscenes_node.item_found.connect(_on_item_found)
 	_battle_director.battle_started.connect(_on_battle_state_changed.unbind(1))
 	# Le titre de zone ne reste pas affiché pendant un combat (jalon 5C T11) : une rencontre
@@ -1501,11 +1502,15 @@ func _on_woke_up_after_defeat() -> void:
 ## le départ du S.S. Anne) : même chemin que le réveil après une défaite. Le joueur est déjà à sa
 ## place (quai) et les drapeaux sont levés ; la scène continue ensuite (spectacle). Pendant une
 ## transition : autosave demandé (écrit à la première image stable).
-func _on_cutscene_save_requested(reason: String) -> void:
-	if _can_write() and not SceneRouter.is_transitioning():
-		_write_save(reason)
-	else:
-		request_autosave(reason)
+func _on_cutscene_save_requested(reason: String) -> Error:
+	if SceneRouter.is_transitioning():
+		return ERR_UNAVAILABLE
+	return _write_save(reason)
+
+
+## La scène garde son verrou ; aucune réussite affichée avant l'écriture sur disque.
+func _on_checkpoint_save_failed(_reason: String, _error: Error) -> void:
+	_hud.show_toast("Sauvegarde impossible", "Nouvelle tentative en cours…")
 
 
 ## Pokémon sauvage capturé et rangé (équipe ou stockage, jalon 5D) : autosave demandé, écrit à
