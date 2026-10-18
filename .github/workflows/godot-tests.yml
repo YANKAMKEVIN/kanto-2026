@@ -17,18 +17,15 @@ jobs:
     name: GUT (${{ matrix.shard }})
     runs-on: ubuntu-24.04
     timeout-minutes: 25
-    continue-on-error: ${{ matrix.shard == 'baseline' }}
     strategy:
       fail-fast: false
       matrix:
-        shard: ['0', '1', '2', '3', '4', '5', '6', '7', baseline]
+        shard: ['0', '1', '2', '3', '4', '5', '6', '7']
     env:
       GODOT_VERSION: 4.7.2
       GODOT_SILENCE_ROOT_WARNING: 1
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: ${{ matrix.shard == 'baseline' && 'f0d3c4fbb3aeb9492d192e581f92ff0a3aef7738' || github.sha }}
       - name: Install Godot
         shell: bash
         run: |
@@ -57,12 +54,8 @@ jobs:
           python3 - <<'PYTEST' 2>&1 | tee tests.log
           import pathlib, re, subprocess, sys
           shard = "${{ matrix.shard }}"
-          if shard == "baseline":
-              paths = ["tests/integration/test_center_heal.gd",
-                       "tests/integration/test_route_6_trainers.gd"]
-          else:
-              paths = sorted(str(p) for p in pathlib.Path("tests").rglob("test_*.gd"))
-              paths = paths[int(shard)::8]
+          paths = sorted(str(p) for p in pathlib.Path("tests").rglob("test_*.gd"))
+          paths = paths[int(shard)::8]
           if not paths:
               sys.exit("Empty test shard")
           print(f"Shard {shard}: {len(paths)} scripts", flush=True)

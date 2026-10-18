@@ -1,5 +1,18 @@
 # État du projet — note de passage
 
+## Validation CI et inventaire des capacités — 2026-10-18
+
+Run 39128565563 : 5 100 tests réussis sur 5 101 ; sept lots entièrement verts.
+Le seul échec restant est un test de halo qui lit une image GPU absente avec le serveur
+headless. Son contrôle CPU vérifie maintenant le même dégradé radial ; le contrôle de
+l'image reste présent quand un vrai rendu est disponible. Relance de validation requise.
+Le lot de comparaison sur la base a confirmé les échecs Centre / Route 6 ; il est retiré
+du workflow après diagnostic. Les huit lots de la branche restent tous bloquants.
+
+Audit reproductible : `python3 tools/audit_pending_moves.py` (ou `--json`).
+64 espèces, 105 capacités, 15 capacités avec effets en attente. Rapport :
+`docs/tech/audit-pending-moves.md`. Les règles de combat ne sont pas modifiées par cet audit.
+
 ## Suite de consolidation — 2026-10-18
 
 Même branche `refactor/boot-coordination`. Les deux anciens runs ont dépassé le timeout

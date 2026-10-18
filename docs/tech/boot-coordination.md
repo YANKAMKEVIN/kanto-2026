@@ -40,6 +40,17 @@ ou de format de sauvegarde. La rotation des fichiers corrompus reste un travail 
 toujours par SaveCoordinator et sa garde de permission. Sans gestionnaire : erreur et
 arrêt de la scène. Un arrêt de l'application pendant une panne conserve le précédent fichier.
 
-La CI répartit tous les scripts `test_*.gd` en huit lots déterministes. Un lot diagnostic
-sur la base f0d3c4fb documente les deux échecs préexistants ; il ne remplace aucun test de
-la branche et n'est pas bloquant. Tous les lots de la branche restent bloquants.
+La CI répartit tous les scripts `test_*.gd` en huit lots déterministes. Le diagnostic sur la base f0d3c4fb
+a reproduit les deux échecs préexistants ; ce lot temporaire est retiré après comparaison.
+Tous les lots de la branche restent bloquants.
+
+## Contrôles portables
+
+Le test de soin conserve sa mesure d'animation en temps simulé, avec une garde réelle
+plus large pour les runners lents. Le test du dialogue de Chloé isole les autres
+Dresseurs afin que le défi légitime de Gabin ne remplace pas la réplique testée.
+Le test de halo utilise le dégradé radial côté CPU en headless, et l'image effective
+lorsqu'un serveur de rendu existe ; aucune assertion de shader ou de contraste supprimée.
+
+Inventaire sans modification des combats : `tools/audit_pending_moves.py`, rapport
+`docs/tech/audit-pending-moves.md` (15 capacités avec effets en attente).
