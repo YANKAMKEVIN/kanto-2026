@@ -54,3 +54,10 @@ lorsqu'un serveur de rendu existe ; aucune assertion de shader ou de contraste s
 
 Inventaire sans modification des combats : `tools/audit_pending_moves.py`, rapport
 `docs/tech/audit-pending-moves.md` (15 capacités avec effets en attente).
+
+## Simulation explicite des outils
+
+Un départ de débogage dont autosave=false, ou un Boot d'outil sans SaveSystem injecté,
+simule le point critique sans écriture. Ce chemin n'est jamais activé pour une vraie
+partie dont le fichier est refusé. Deux tests vérifient la simulation sans écriture et
+le refus intact d'une sauvegarde future.

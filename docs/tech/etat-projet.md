@@ -1,5 +1,12 @@
 # État du projet — note de passage
 
+## Contrats de débogage conservés — 2026-10-18
+
+Les points critiques sont explicitement simulés dans un départ de débogage sans
+écriture et dans un Boot d'outil sans SaveSystem injecté. Aucun fichier n'est touché.
+Une vraie partie refusée (version future) n'active jamais cette simulation : point
+critique refusé, fichier conservé. Deux tests d'intégration ajoutés pour cette distinction.
+
 ## Validation CI et inventaire des capacités — 2026-10-18
 
 Run 39128565563 : 5 100 tests réussis sur 5 101 ; sept lots entièrement verts.

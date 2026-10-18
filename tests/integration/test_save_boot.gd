@@ -978,3 +978,36 @@ func test_a_pending_retry_does_not_write_while_a_dialogue_is_running() -> void:
 	await wait_process_frames(2)
 	assert_gt(_writes(), writes, "demande conservée jusqu'à l'état stable")
 	assert_push_error_count(0)
+
+
+func test_critical_checkpoint_in_a_debug_start_is_simulated_without_writing() -> void:
+	var original := JSON.stringify({"version": SaveSystem.VERSION + 1, "map": "route_1"})
+	_fs.files[SAVE_PATH] = original
+	_boot = BOOT_SCENE.instantiate() as Boot
+	_boot.save_system = _save
+	_boot.force_debug_start = true
+	_boot.debug_start_path = "res://tests/fixtures/debug_start/valid.json"
+	add_child_autofree(_boot)
+	assert_false(_boot.is_autosave_enabled())
+	var library := CutsceneLibrary.new()
+	assert_true(library.add_from_dict({"debug_checkpoint": {"steps": [
+		{"save": "simulation"}, {"set": ["debug_checkpoint_finished"]},
+	]}}, "test"))
+	assert_true(_boot.get_cutscene_director().play_variant(&"debug_checkpoint",
+		library.get_cutscene(&"debug_checkpoint").variants[0]))
+	await wait_process_frames(2)
+	assert_true(GameState.flags.has_flag(&"debug_checkpoint_finished"))
+	assert_eq(_fs.files[SAVE_PATH], original, "aucune modification du vrai fichier")
+	assert_eq(_writes(), 0)
+	assert_push_error_count(0)
+
+
+func test_a_future_save_is_never_treated_as_a_simulated_checkpoint() -> void:
+	var original := JSON.stringify({"version": SaveSystem.VERSION + 1, "map": "route_1"})
+	_fs.files[SAVE_PATH] = original
+	await _start_boot()
+	assert_false(_boot.is_autosave_enabled())
+	assert_eq(_boot._on_cutscene_save_requested("vraie partie refusée"), ERR_UNAVAILABLE)
+	assert_eq(_fs.files[SAVE_PATH], original)
+	assert_eq(_writes(), 0)
+	assert_push_error_count(0)

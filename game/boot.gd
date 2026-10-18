@@ -146,6 +146,9 @@ var _autosave_enabled: bool = false
 var _resumed: bool = false
 ## Le départ de débogage appliqué demande l'autosave ([member DebugStart.autosave]).
 var _debug_start_autosave: bool = false
+## Départ de débogage sans écriture, ou Boot d'un outil sans SaveSystem injecté.
+## Les points critiques y sont simulés ; jamais activé pour une vraie partie refusée.
+var _simulate_checkpoints: bool = false
 ## Voile de l'apprentissage d'une CT depuis le Sac (jalon 11), créé au premier besoin.
 var _tm_overlay: TmLearnOverlay
 ## Pension (J15, jalon-15.md §2.5) : directeur (pas, conversation) ; le gardien (`open_daycare`)
@@ -877,6 +880,7 @@ func _finish_start() -> void:
 ## débogage (inchangé), Boot hors scène courante (tests, outils : inchangé), sinon l'ouverture.
 func _start_game_state() -> bool:
 	if _apply_debug_start():
+		_simulate_checkpoints = not _debug_start_autosave
 		if _debug_start_autosave:
 			_open_save_system()
 			_autosave_enabled = save_system != null
@@ -888,6 +892,7 @@ func _start_game_state() -> bool:
 		_start_opening()
 		return false
 	else:
+		_simulate_checkpoints = save_system == null
 		_open_save_system()
 		if save_system != null and _load_save() and _resume():
 			return true
@@ -1500,9 +1505,13 @@ func _on_woke_up_after_defeat() -> void:
 
 ## Écriture immédiate demandée par l'étape « save » d'une scène (jalon 16, `jalon-16.md` §2.4 :
 ## le départ du S.S. Anne) : même chemin que le réveil après une défaite. Le joueur est déjà à sa
-## place (quai) et les drapeaux sont levés ; la scène continue ensuite (spectacle). Pendant une
-## transition : autosave demandé (écrit à la première image stable).
+## place (quai) et les drapeaux sont levés ; la scène attend OK avant le spectacle.
+## Pendant une transition : refus temporaire, la même étape réessaiera.
 func _on_cutscene_save_requested(reason: String) -> Error:
+	if _simulate_checkpoints:
+		if OS.is_debug_build():
+			print("[qa] point de sauvegarde simulé, aucune écriture : %s" % reason)
+		return OK
 	if SceneRouter.is_transitioning():
 		return ERR_UNAVAILABLE
 	return _write_save(reason)
