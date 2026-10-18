@@ -943,3 +943,38 @@ func test_a_capture_saves_the_new_pokemon_once_the_game_is_stable() -> void:
 		types.append((moment as Dictionary).get("type", ""))
 	assert_eq(types, ["first_capture"] as Array[String], "grand moment « première capture »")
 	assert_push_error_count(0)
+
+
+
+## Refactor de coordination : la panne ne consomme pas la demande d'autosave.
+func test_failed_autosave_is_retried_with_the_current_state_after_the_delay() -> void:
+	await _start_boot()
+	var writes := _writes()
+	_fs.fail_writes = true
+	_boot.request_autosave("panne simulée")
+	_boot._process(0.0)
+	assert_eq(_writes(), writes, "ancienne sauvegarde intacte")
+	_fs.fail_writes = false
+	GameState.add_money(123)
+	_boot._process(SaveCoordinator.RETRY_DELAY - 1.0)
+	assert_eq(_writes(), writes, "pas de nouvelle tentative avant le délai")
+	_boot._process(1.0)
+	assert_eq(_writes(), writes + 1)
+	assert_eq(int(_saved().get("money", 0)), GameState.money, "état actuel, pas un ancien cliché")
+	assert_push_error_count(0)
+
+
+func test_a_pending_retry_does_not_write_while_a_dialogue_is_running() -> void:
+	await _start_boot()
+	var writes := _writes()
+	_fs.fail_writes = true
+	_boot.request_autosave("panne simulée")
+	_boot._process(0.0)
+	_fs.fail_writes = false
+	assert_true(_boot.get_dialogue_runner().play(&"mom_wakeup", null, _boot.get_map()))
+	_boot._process(SaveCoordinator.RETRY_DELAY)
+	assert_eq(_writes(), writes, "pas d'écriture au milieu du dialogue")
+	await _finish_dialogue()
+	await wait_process_frames(2)
+	assert_gt(_writes(), writes, "demande conservée jusqu'à l'état stable")
+	assert_push_error_count(0)
