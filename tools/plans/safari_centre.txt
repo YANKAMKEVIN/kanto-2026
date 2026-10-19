@@ -1,0 +1,75 @@
+# Parc Safari — zone Centre (safari_zone_center) — grille fonctionnelle (jalon 23, dossier 26 §2 ; préparée le
+# 2026-10-19). GÉOMÉTRIE ROUGE/BLEU CASE POUR CASE (N-3 : échelle RB 1:1, pour que 500 pas gardent
+# leur sens). Source : pret/pokered af519899, maps/SafariZoneCenter.blk, tileset Forest (gfx/blocksets/forest.bst ;
+# collision = tuile en bas à gauche de chaque case, liste Forest_Coll ; herbe = tuile $20 ; eau = $14 et
+# la rive $48), objets, panneaux et warps de data/maps/objects/SafariZoneCenter.asm. Vérifiée par
+# tools/art/plan_check_safari.py (qui relie les quatre zones, la Porte et les maisons).
+#
+# Composition RB : la PORTE au sud (14..15, 25) ; quatre prairies d'herbes hautes autour d'un
+# grand ÉTANG central (x 8..21, y 8..13) dont l'ÎLOT (12..17, 10..11) n'est PAS accessible à pied
+# (cases « n ») ; une rangée de clôture à piquets sous l'étang (y 14..15) ; la MAISON DE REPOS au
+# sud-est (16..19, 18..19, porte (17, 19)). Raccords : ouest (0, 10..11) → Ouest, nord (14..15, 0)
+# → Nord, est (29, 10..11) → Est.
+# Écart avec RB (N-17, pour que la Pépite rapporte dès la première visite) : la Pépite de RB est sur
+# l'îlot (14, 10), inaccessible sans Surf ; elle est DÉPLACÉE sur la berge sud (14, 16) [D].
+#
+# Les raccords RB sont des warps en bord de carte ; K26 en fait des RACCORDS CONTINUS (bord de carte,
+# fondu existant) entre les mêmes cases. Chaque pas compte, raccords compris (dossier 26 §4).
+# Aucune eau n'est surfable au J23 (P-3 B) ; aucune case pêchable n'est encore marquée (N-6 : elles le
+# seront quand le J22 aura fixé la légende de la pêche, M-8).
+#
+# Légende (commune aux quatre zones) :
+#   T arbres, haies, clôtures (bloqué)     . sol (praticable, aucune rencontre)
+#   h herbes hautes (praticable, rencontres Safari)      W eau (bloquée au J23)
+#   B maison (bloquée)    D porte d'une maison (praticable, fondu)    P panneau (bloqué, lu de face)
+#   e raccord vers une autre zone ou la Porte (praticable, bord de carte)
+#   n sol ou herbe HORS D'ATTEINTE à pied (bloqué : îlots, bords de carte de RB)
+# Objets, panneaux, raccords et maisons sont aussi dans POSITIONS. 1 case = 1 tuile de 16 px de RB ;
+# x = colonne, y = rangée, nord en haut ; coordonnées identiques au désassemblage.
+
+PRATICABLES .hDe
+
+GRILLE 30 26
+00 nTTTTTTTTTTTTTeeTTTTTTTTTTTTTn
+01 nT........TT................Tn
+02 T....hh....T.....hh..hh......T
+03 T...hhhh...T....hhhhhhhh.....T
+04 T..hhhhhh..T...hhhhhhhhhh....T
+05 T.hhhhhhhh.T..hhhhhhhhhhhh...T
+06 T.hhhhhh...T..hhhhhhhhhhhh...T
+07 T..hhhh....T...hhhh..hhhh....T
+08 T...hh.hWWWWWWWWWWWWWW......TT
+09 T...h.hhWWWWWWWWWWWWWWTTTTTTTT
+10 e.....hhWWWWnnnnnnWWWW.......e
+11 e.....hhWWWWnnnnnnWWWW.......e
+12 T.....hhWWWWWWWWWWWWWWhhh....T
+13 T......hWWWWWWWWWWWWWWhhhh...T
+14 T.........TnnTnnTnnT..hhhhh..T
+15 T.....TTTTTTTTTTTTTT...hhhhh.T
+16 TTTTTT................hhhhh..T
+17 TT....................hhhhhh.T
+18 T....hhhhhh.....BBBB...hhhhh.T
+19 T...hhhhhhhh....BDBB..hhhhh..T
+20 T...hhhhhhhh......P....hhh...T
+21 T....hhhhhh...........hhh....T
+22 T.....hhhhhhhhP......hhh.....T
+23 T......hhhhhh.......hhh......T
+24 nTT....T.....T..T.....T....TTn
+25 nTTTTTTTTTTTTTeeTTTTTTTTTTTTTn
+FIN
+
+POSITIONS
+porte_maison_repos     porte          17,19        libre   vers=safari_maison_repos # maison de repos (RB warp)
+arrivee_maison_repos   spawn          17,20        libre   facing=down           # sortie de la maison de repos
+raccord_porte          raccord        14..15,25    libre   vers=safari_porte:5..6,1 # RB warps (14,25), (15,25)
+arrivee_porte          spawn          14..15,24    libre   facing=up             # arrivée par ce raccord
+raccord_ouest          raccord        0,10..11     libre   vers=safari_ouest:29,22..23 # RB warps (0,10), (0,11)
+arrivee_ouest          spawn          1,10..11     libre   facing=right          # arrivée par ce raccord
+raccord_nord           raccord        14..15,0     libre   vers=safari_nord:20..21,35 # RB warps (14,0), (15,0)
+arrivee_nord           spawn          14..15,1     libre   facing=down           # arrivée par ce raccord
+raccord_est            raccord        29,10..11    libre   vers=safari_est:0,22..23 # RB warps (29,10), (29,11)
+arrivee_est            spawn          28,10..11    libre   facing=left           # arrivée par ce raccord
+panneau_maison_repos   panneau        18,20        bloque
+panneau_conseils       panneau        14,22        bloque
+pepite                 objet_visible  14,16        bloque  item=nugget           # Pépite, déplacée de l'îlot (14, 10) RB, inaccessible sans Surf [D]
+FIN
