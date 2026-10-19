@@ -81,6 +81,13 @@ textes, série d'art 27), logique pure de 24A et 24C, art de la série 27 intég
 §2.1 à §2.6 bis (Surf, poussée, persistance des trous, Warp `FALL`). La passe peut les reprendre,
 les modifier ou les remplacer : elle est propriétaire de ces systèmes.
 
+Décisions de Kevin du 2026-10-19 (`main`, `710a3fe9`) : le K.O. en un coup (`ohko`) passe aussi
+dans la passe systèmes 2, avec Empal'Korne et Abîme, ainsi que les interrupteurs et barrières de
+Force. La Guillotine reste donc dans le J24 avec `pending_effects: ["ohko"]`, comme aujourd'hui
+(`data/pokemon/moves/j24.json`). À la reprise, fusionner `main` dans `jalon-24` (outillage
+`tools/test.sh --changed` / `-f`, CI GitHub par lots sur les branches `jalon-*`) et suivre la CI
+avec `gh run watch` au lieu de lancer la suite complète sur le Mac.
+
 En attente de la passe systèmes 2 : T7, T8, T10, T15 à T17 ; T11 à T14 et T18 à T21 attendent
 en plus la fusion des J19 à J23.
 
