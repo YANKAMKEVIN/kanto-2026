@@ -40,6 +40,9 @@ extends Node
 ## par type et détails, dans l'état de la partie de [method set_badges] ; rien d'affiché).
 ## Jalon 14 (jalon-14.md §2.7) : étape « flash » (éclairs plein écran de la HUD, attendus ;
 ## [signal flash_started] pour le son).
+## Jalon 19 (jalon-19.md §2.4, T13) : étape « wild_battle » (combat sauvage scripté, SPECTRE
+## selon [GhostRule] et le Sac branché par [method set_inventory] ; défaite : réveil, fin de la
+## scène).
 
 signal cutscene_started(cutscene_id: StringName)
 ## Début d'une étape (tests, outils de capture).
@@ -75,6 +78,8 @@ const LEAN_HOLD: float = 0.3
 const DESPAWN_FADE: float = 0.2
 ## Étape « animate » avec « Réduire les animations » : fondu sur place (s), jalon 16.
 const ANIMATE_REDUCED_FADE: float = 0.5
+## Table d'origine d'une rencontre lancée par une étape « wild_battle » (traçabilité).
+const WILD_BATTLE_TABLE: StringName = &"cutscene"
 const _ROUTER_SCRIPT := preload("res://game/autoload/scene_router.gd")
 ## Étapes qui agissent sur leur acteur : elles attendent d'abord la fin de sa marche en
 ## arrière-plan.
@@ -388,6 +393,8 @@ func _play_step(source_step: CutsceneStep) -> bool:
 			return await _save_checkpoint(step.text)
 		CutsceneStep.Kind.ANIMATE:
 			await _animate(step)
+		CutsceneStep.Kind.WILD_BATTLE:
+			return await _wild_battle(step)
 		_:
 			_step_error("étape « %s » inconnue" % CutsceneStep.kind_name(step.kind))
 	return true
@@ -573,6 +580,41 @@ func _battle(step: CutsceneStep) -> void:
 	if _flags != null:
 		for flag: StringName in step.outcome_flags(outcome):
 			_flags.set_flag(flag)
+
+
+## Étape « wild_battle » (jalon 19, jalon-19.md §2.4) : combat sauvage contre
+## [member CutsceneStep.species] au niveau [member CutsceneStep.level], depuis la case devant le
+## joueur, verrou « cutscene » gardé. SPECTRE décidé ici, avec le Sac du moment
+## ([method GhostRule.is_ghost_for]). Le Pokédex n'est pas touché ici (garde de Boot sur les
+## événements masqués). Issue → drapeaux « win » / « lose » s'ils sont écrits. Défaite : réveil au
+## point de repos ([method DefeatRecovery.recover]) puis faux (la scène s'arrête). Sans runner,
+## ou issue NONE (combat refusé) : push_error, étape sautée. Faux : la scène s'arrête.
+func _wild_battle(step: CutsceneStep) -> bool:
+	if _battle_runner == null:
+		_step_error("pas de directeur de combat pour « %s »" % step.species)
+		return true
+	var encounter := WildEncounter.new(step.species, step.level, WILD_BATTLE_TABLE)
+	encounter.ghost = GhostRule.is_ghost_for(step.ghost_mode, step.ghost_unless_item, _bag)
+	var origin := _wild_origin()
+	var outcome: int = await _battle_runner.run_wild(encounter, _map, origin)
+	if outcome == Battle.Outcome.NONE:
+		_step_error("combat sauvage « %s » refusé" % step.species)
+		return true
+	if _flags != null:
+		for flag: StringName in step.outcome_flags(outcome):
+			_flags.set_flag(flag)
+	if outcome != Battle.Outcome.LOSS:
+		return true
+	await _wake_up()
+	return false
+
+
+## Case d'où part l'intro d'un combat sauvage scripté : celle devant le joueur (sa case s'il
+## n'y a pas de joueur).
+func _wild_origin() -> Vector2i:
+	if not is_instance_valid(_player):
+		return Vector2i.ZERO
+	return _player.get_cell() + _player.get_facing()
 
 
 ## Étape « give » (jalon 4B) : ajoute [member CutsceneStep.count] objets au Sac et émet

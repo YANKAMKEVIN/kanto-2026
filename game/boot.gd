@@ -264,6 +264,9 @@ func _ready() -> void:
 	_interactions.set_story_flags(GameState.flags)
 	_interactions.challenge_requested.connect(_trainer_watcher.challenge)
 	_pokemon.load_dir()
+	# Combats sauvages scriptés (jalon 19) : leurs espèces sont vérifiées une fois les données
+	# Pokémon chargées (une scène qui nomme une espèce inconnue est écartée).
+	_cutscenes.check_species(_pokemon)
 	if _offer.load_file():
 		_offer.check_species(_pokemon)
 	_starter_choice.setup(_offer, _pokemon, GameState, _player, _sheet, _hud, _cutscenes_node,

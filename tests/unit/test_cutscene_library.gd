@@ -733,3 +733,89 @@ func test_next_must_name_another_known_scene() -> void:
 func test_real_cutscenes_have_valid_next_references() -> void:
 	var library := CutsceneLibrary.new()
 	assert_true(library.load_dir(), "\n".join(library.get_errors()))
+
+
+# --- Jalon 19 (T13) : étape « wild_battle » ----------------------------------------------
+
+func test_wild_battle_step_reads_species_level_ghost_and_flags() -> void:
+	var step := _one_step({"wild_battle": "marowak", "level": 30, "ghost": "always",
+		"ghost_unless_item": "silph_scope", "win": ["won"], "lose": ["lost"]})
+	assert_not_null(step, str(_library.get_errors()))
+	if step == null:
+		return
+	assert_eq(step.kind, CutsceneStep.Kind.WILD_BATTLE)
+	assert_eq(step.species, &"marowak")
+	assert_eq(step.level, 30)
+	assert_eq(step.ghost_mode, GhostRule.ALWAYS)
+	assert_eq(step.ghost_unless_item, &"silph_scope")
+	assert_eq(step.win_flags, [&"won"] as Array[StringName])
+	assert_eq(step.lose_flags, [&"lost"] as Array[StringName])
+	assert_eq(_library.get_wild_species(), [&"marowak"] as Array[StringName])
+	assert_has(_library.get_set_flags(), &"won")
+	assert_has(_library.get_set_flags(), &"lost")
+	var copy := step.copy()
+	assert_eq([copy.species, copy.level, copy.ghost_mode, copy.ghost_unless_item],
+		[step.species, step.level, step.ghost_mode, step.ghost_unless_item], "copie complète")
+
+
+func test_wild_battle_minimal_step_has_no_ghost_rule_and_no_flags() -> void:
+	var step := _one_step({"wild_battle": "cubone", "level": 1})
+	assert_not_null(step, str(_library.get_errors()))
+	if step == null:
+		return
+	assert_eq(step.ghost_mode, &"")
+	assert_eq(step.ghost_unless_item, &"")
+	assert_true(step.win_flags.is_empty())
+	assert_true(step.lose_flags.is_empty())
+	assert_eq(step.level, 1)
+
+
+func test_wild_battle_kind_is_last_in_the_enum() -> void:
+	assert_eq(CutsceneStep.Kind.WILD_BATTLE, CutsceneStep.Kind.size() - 1, "en fin d'enum")
+	assert_eq(CutsceneStep.Kind.WILD_BATTLE, CutsceneStep.Kind.ANIMATE + 1)
+	assert_eq(CutsceneStep.TYPE_KEYS[CutsceneStep.Kind.WILD_BATTLE], "wild_battle")
+
+
+func test_invalid_wild_battle_steps_are_refused() -> void:
+	var bad: Array[Dictionary] = [
+		{"wild_battle": "", "level": 30},
+		{"wild_battle": 12, "level": 30},
+		{"wild_battle": "marowak"},
+		{"wild_battle": "marowak", "level": 0},
+		{"wild_battle": "marowak", "level": 101},
+		{"wild_battle": "marowak", "level": 30.5},
+		{"wild_battle": "marowak", "level": "30"},
+		{"wild_battle": "marowak", "level": 30, "ghost": "sometimes"},
+		{"wild_battle": "marowak", "level": 30, "ghost": ""},
+		{"wild_battle": "marowak", "level": 30, "ghost": true},
+		{"wild_battle": "marowak", "level": 30, "ghost_unless_item": ""},
+		{"wild_battle": "marowak", "level": 30, "win": []},
+		{"wild_battle": "marowak", "level": 30, "lose": "lost"},
+		{"wild_battle": "marowak", "level": 30, "trainer": "x"},
+	]
+	for i: int in bad.size():
+		assert_null(_one_step(bad[i], "bad_%d" % i), str(bad[i]))
+	assert_eq(_library.size(), 0, "toutes refusées")
+	assert_push_error_count(bad.size())
+
+
+func test_check_species_discards_scenes_with_unknown_species() -> void:
+	var data := PokemonData.new()
+	assert_true(data.load_dir(), "données Pokémon")
+	assert_true(_library.add_from_dict({
+		"known": {"steps": [{"wild_battle": "marowak", "level": 30}]},
+		"unknown": {"steps": [{"wait": 0}, {"wild_battle": "missingno", "level": 30}]},
+	}, "test"))
+	assert_false(_library.check_species(data))
+	assert_push_error_count(1)
+	assert_true(_library.has_cutscene(&"known"))
+	assert_false(_library.has_cutscene(&"unknown"), "scène écartée")
+	assert_string_contains("\n".join(_library.get_errors()), "« missingno »")
+
+
+func test_real_cutscenes_name_known_species() -> void:
+	var library := CutsceneLibrary.new()
+	assert_true(library.load_dir(), "\n".join(library.get_errors()))
+	var data := PokemonData.new()
+	assert_true(data.load_dir())
+	assert_true(library.check_species(data), "\n".join(library.get_errors()))
