@@ -1371,3 +1371,155 @@ Vraies décisions de game design seulement ; tout le reste a une valeur par déf
   - **B** : dans la maison 1 ou 2 du J18.
   - **C** : un nouveau bâtiment à Lavanville. Il faudrait modifier la grille validée et la vue
     générale, et créer de l'art.
+
+---
+
+## 9. Clôture et passation (T24, 2026-10-19)
+
+**État** : 19.0 (données, logique pure, cinq cartes, art série 20 et 24), 19A (T10 à T15) et 19B
+(T16 à T23) faits sur `jalon-19-integ`. **19A et 19B validés par Kevin le 2026-10-19** sur la base
+des QA S24 (T15 : `build/qa/jalon19_t15/rapport.md` de la copie `j19-qa19a`, 11 lignes OK ; T23 :
+`build/qa/jalon19_t23/rapport.md` de la copie `j19-qa19b`, aucun bloquant). CI GitHub verte sur
+9fc88208. **Fusion dans `main` accordée par Kevin** ; elle est faite par la session principale
+(ce T24 ne fusionne pas).
+
+### 9.1 Retiré, rangé ou complété au T24
+
+- **Aucune carte de QA à retirer** : aucun fichier `qa_*` dans `game/`, `data/`, `assets/` ; les
+  spawns `devant_spectre` (6F) et `devant_rival` (2F) sont des spawns de départ, gardés (§7,
+  `test_spawns_match_the_plan_and_qa_spawns`).
+- **Retiré du suivi git** : `build/qa/jalon19_t23/` (rapport et planche de la QA 19B, ajoutés de
+  force dans `build/`, qui est ignoré ; ils restent dans la copie `j19-qa19b`).
+- **Départs de débogage gardés** (sept, testés par `test_tower_debug_starts`) : `tower_ghost_qa`,
+  `tower_exorcist_weak`, `tower_6f_block`, `tower_rival`, `tower_rival_weak`, `tower_5f_zone`, et
+  `pokemon_tower_1f` du J18. Le départ `tower_qa` du §2.14 **n'a pas été créé** : la QA 19B est
+  partie de `pokemon_tower_1f` (même usage).
+- **Gardés** : outils `tools/capture_*_t1x.gd`, `measure_tower_t19.gd`, `gen_mist_texture.gd`,
+  `tools/sim/*` (règle des jalons précédents) ; `battle_proto/dos_ia_092.png` (exclu de l'export).
+- **Complété (écart trouvé à la clôture)** : le drapeau `tower_ghost_met` et les objectifs
+  `climb_tower` / `see_the_ghosts` du dossier 22 §13 et §15.7 (textes validés le 2026-10-15)
+  n'étaient pas posés. La scène `tower_6f_ghost` pose `tower_ghost_met` à sa fin ; les deux
+  objectifs passent devant ceux du J18. Données seulement ; tests : `test_tower_6f_ghost`,
+  `test_pokemon_tower_life`, `test_objective_library`, `test_j18_data`, `test_save_j19`
+  (20 drapeaux), `test_j19_flags_contract`. **Non vu sur téléphone.**
+- `project.godot` : scène principale `res://game/boot.tscn` ; filtre d'export inchangé
+  (`tests/*`, `tools/*`, `docs/*`, `addons/gut/*`, `build/*`, `proto/*`,
+  `assets/sprites/pokemon/battle_proto/*` exclus).
+
+### 9.2 Critères du §4
+
+Légende : **tenu** (preuve), **tests** (tenu par les tests Mac, pas vu sur téléphone),
+**non tenu**, **reporté**.
+
+**19.0**
+- Données (7 espèces, capacités, 10 Dresseurs, 3 tables `floor` avec `ghost_unless_item`) :
+  **tests** (`test_trainers_j19`, `test_tower_encounters`, `test_tower_moves`,
+  `test_moves_j19_effects`).
+- Logique pure du mode spectre : **tests** (`test_ghost_rule`, `test_battle_ghost`).
+- Cinq cartes conformes aux grilles : **tests** (`test_pokemon_tower_maps` : grille, escaliers,
+  cases calmes, déclencheurs à direction, budgets).
+- Planche d'art validée, alignement T10 fait : **tenu** (2026-10-15 ; T10 du 2026-10-19).
+
+**19A**
+- SPECTRE sur toute case praticable du 3F au 6F, jamais au 2F : **tenu** (QA 19A n° 1, 19B 3F/5F)
+  et **tests** (`test_floor_terrain_excludes_stairs_triggers_and_calm_cells`,
+  `test_second_floor_never_has_an_encounter`).
+- Masque (nom, image, « Nv. ?? ») : **tenu** (QA 19A n° 1) ; **aucun cri** : **tests** seulement
+  (pas d'audio capté).
+- « Trop peur » (sommeil et gel exceptés), le SPECTRE ne fait que parler : **tenu** (QA 19A n° 2, 5).
+- Sac et changement : **tenu** pour le changement ; soin en combat : **tests**
+  (`test_balls_are_refused_heals_and_switches_are_allowed` ; équipe pleine en QA).
+- Ball refusée et non consommée, fuite toujours réussie : **tenu** (QA 19A n° 3, 6).
+- Aucune XP : **tests** (`test_no_exp_and_no_coins`). Rien au Pokédex : **tenu** (QA 19A n° 7).
+- Avec `silph_scope` : combat normal : **tests** (`test_the_scope_is_read_again_at_each_encounter`,
+  `test_save_j19`, `test_with_the_item_the_battle_is_normal_and_the_species_is_seen`).
+- 9 Exorcistes : **tenu** pour le 3F et la défaite contre E3 (QA 19A n° 8, 9) ; E8 / E9
+  inévitables et Exorcistes calmes : **tests** (`test_tower_channelers`, `test_rival_tower`,
+  `test_tower_purified_zone`).
+- SPECTRE du 6F, recul en (10, 15), réarmé : **tenu** (QA 19A n° 10 et 19B).
+- Session téléphone : **tenu** (validation de Kevin).
+
+**19B**
+- Gardienne et `tower_stairs_open`, escaliers 1F ↔ 6F : **tenu** (QA 19B, log de la scène) et
+  **tests** (`test_pokemon_tower_1f_j19`, `test_stairs_pair_up_both_ways`) ; gardienne en (18, 3)
+  après relance : **tests** seulement.
+- Rival n° 5 : défaite → Centre sans `won` : **tenu** (QA 19B) ; **victoire après reprise et Grand
+  moment unique : tests seulement** (`test_defeat_does_not_set_won_then_retry_and_victory_with_a_single_moment`,
+  `test_he_leaves_after_the_silence_and_the_player_is_free`) ; trois variantes sans Rattatac :
+  **tests** (`test_the_team_follows_the_starter_with_five_pokemon_and_no_raticate`).
+- Zone purifiée : **tenu** (QA 19B, scène et texte) ; soin à chaque passage, sans rencontre ni vue,
+  pas un point de repos : **tests** (`test_tower_purified_zone`).
+- Objets et objet caché du 5F : **tests** (`test_tower_items`) ; non vus sur téléphone.
+- Corde Sortie : **tenu** depuis le 6F (QA 19B) ; 1F refusée, 2F → porte : **tests**.
+- Profil `tower`, halos, brume coupée par « Réduire les animations », fond `tour_pokemon` : **tenu**
+  pour la lisibilité (QA 19B) ; brume et réglage : **tests** (`test_mist_layer`,
+  `test_combat_decor_is_declared_for_each_floor`).
+- Lavanville (enfant, homme, fille, gentleman, panneau) : **tenu** (QA 19B, dialogue du gentleman
+  non lu) et **tests** (`test_lavender_j19`). « Rocket » absent : **tests**.
+- Niveaux du rival : la fourchette 22–26 n'est **plus un critère** (T21, décision de Kevin) ;
+  équipes exactes : **tests** (`test_trainers_j19`).
+- Sauvegarde v7 inchangée, aucun drapeau du J21 posé : **tenu** (reprise v4 → v7 de la vraie partie
+  en QA 19A et 19B) et **tests** (`test_save_j19`, `test_j19_flags_contract`).
+- ≥ 58 fps de moyenne : **tenu** (59,9 au 6F, 60 partout en 19B) ; **creux ≥ 50 : non tenu** aux
+  transitions de carte et à l'entrée en combat (7 à 49), comme aux J17 et J18.
+- Objectifs `climb_tower` / `see_the_ghosts` : **tests** (complétés au T24, §9.1).
+- Validation de Kevin : **tenu** (2026-10-19) ; fusion : session principale.
+
+**Critère de clôture (dossier §14)** : explorer du 1F au 6F, rencontrer des SPECTRES, buter contre
+le blocage : **tenu** (QA) ; battre le rival : **tests** (défaite seule vue sur téléphone) ; ni 7F,
+ni Fuji, ni Poké Flûte : **tenu** (`test_seventh_floor_stairs_reachable_only_through_ghost_cell`,
+`test_j19_flags_contract`).
+
+### 9.3 Passation au J20
+
+- **Scope Sylphe** : identifiant `silph_scope` fixé ; l'objet **n'existe pas** dans
+  `data/items/` (le J20 le crée et le donne). Les trois tables de la Tour
+  (`data/encounters/pokemon_tower.json`) portent `ghost_unless_item: "silph_scope"` : dès qu'il est
+  dans le Sac, les rencontres sauvages sont normales, sans migration (règle relue à chaque rencontre,
+  `test_save_j19`). Panneau du Scope à Lavanville en (42, 11), lu depuis (41, 11).
+- **Ossatueur et le SPECTRE du 6F** : l'étape `wild_battle` de `tower_6f_ghost` est en
+  `ghost: always` (Ossatueur N30) : **elle reste un SPECTRE même avec le Scope** ; rien à adapter au
+  J20. Le J21 (dossier 24) ajoute la variante de révélation (`ghost_unless_item`) et pose
+  `ghost_marowak_calmed`. Osselait (N20–24 dans les tables) et Ossatueur n'ont **pas d'entrée de
+  Pokédex** : Osselait devient capturable au J20 (entrée, art de face et de dos à créer).
+- **Objectif** `see_the_ghosts` (« trouver un moyen de voir les spectres. », si `tower_ghost_met`) :
+  le J20 le remplace quand le Scope est obtenu (dossier 22 §15.7).
+- **Drapeaux réservés** : au **J21**, `ghost_marowak_calmed` (seule lecture permise : le `unless`
+  de `tower_6f_ghost`), `fuji_rescued`, `got_poke_flute`, `beaten_tower_rocket_*` ; au **J20**,
+  ceux du dossier 23 §17 relevés le 2026-10-19 (`J20_FLAGS` et préfixes de Dresseurs de
+  `test_j19_flags_contract`). Le J19 n'en pose ni n'en lit aucun.
+- **Contrat de T22** : `test_j19_flags_contract` parcourt les 21 JSON et 7 cartes du J19 et
+  n'accepte que les 20 drapeaux du §2.13 (dont `tower_ghost_met`) et ceux d'avant ; une donnée du
+  J20 qui touche ces fichiers doit l'étendre, pas l'affaiblir. `test_save_j19` garde la v7 et le
+  scénario « sauvegarde au 6F, puis Scope ajouté au Sac ».
+- **7F** : non construit ; l'escalier (9, 16) du 6F est en `coming_soon` et ne s'atteint que par la
+  case du SPECTRE ; table du 7F notée au dossier §5.
+- **Rival n° 5** : `prize_per_level` 35 ; équipes par starter (`team_by_starter`, trois clés de
+  starter de base).
+- **Reportés à la phase DA** : épaississement de la brume, particules, son (K-18).
+
+### 9.4 Résultats
+
+- `godot --headless --path . --import` : aucune erreur.
+- Tests ciblés du T24 (règle de Kevin : pas de suite complète sur le Mac) : 8 scripts, 78 / 78
+  verts ; suite complète : CI GitHub sur `jalon-19-integ` (voir `etat-projet.md`).
+- `origin/main` (8abde8f8, documents seulement : Safrania H-5) fusionné au T24.
+
+### 9.5 Points ouverts pour Kevin
+
+1. **Non vus sur téléphone** (couverts par les tests Mac) : victoire contre le rival après une
+   reprise et Grand moment unique ; Exorcistes calmes (2F, 5F) ; objets et cache (4, 11) du 5F ;
+   relance du 6F (réarmement) ; gardienne en (18, 3) après relance ; aucun cri du SPECTRE ;
+   objectifs `climb_tower` / `see_the_ghosts` (§9.1).
+2. **Départs de débogage** : le starter est **déduit du premier Pokémon de l'équipe**
+   (`DebugStart.apply`). Un départ qui met un starter évolué en tête (Dracaufeu, Tortank) n'a pas
+   d'équipe de rival n° 5 (« n'a pas d'équipe contre charizard », QA 19B bug 1). Sans effet en
+   vraie partie (le starter est celui du laboratoire) ; garder la forme de base en tête des départs.
+3. **Réplique « revenez plus tard » du J18 retirée** : T-34 / T-35 ne sont plus joués et
+   `tower_medium_talked` n'est plus posé ; l'objectif `tower_later` ne s'affiche que pour une
+   sauvegarde du J18 où il était déjà posé, jusqu'à l'ouverture de l'escalier.
+4. **Reportés (rendu, phase DA)** : dalle purifiée blanche saturée (relief perdu) ; boîte de
+   dialogue qui couvre le joueur en bas du 6F ; creux de fps aux transitions et à l'entrée en
+   combat (7 à 49) ; textures entre 84 et 108 Mo (repère de 64 Mo).
+5. Texte de fuite « Tu prends la fuite ! » (texte existant du moteur) au lieu de « Vous prenez… » cité
+   par le plan : à harmoniser plus tard si Kevin le souhaite.
