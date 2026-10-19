@@ -340,6 +340,7 @@ Aucun n'est un grand combat ; ils sont relus par combat (premier essai, attentif
 
 ### 8.5 Questions pour Kevin
 
+- **Réponses de Kevin (2026-10-19, « tout reco »)** : **Q-T21-5** accepté (équipe type Kevin à 86–94 %, cas à part : stratégie Tunnel) ; **Q-T21-6** accepté (Carapuce 26,5 % en ligne droite, 74 % depuis le J17) ; **Q-T21-7** accepté (E3, E8, E9 à 100 %, règle P-1 du J16, aucune équipe agrandie) ; Sabelette contre Bulbizarre gardé.
 - **Q-T21-5 — Équipe type Kevin au-dessus de 80 %** (86 % / 94 % contre le rival, Reptincel
   avec Tunnel) : accepter (l'équipe ordinaire est à 42–54,5 %, la règle vise le joueur attentif
   « ligne droite »), ou durcir encore contre Salamèche (s02 : Kevin 59 / 84,5 %, ordinaire
