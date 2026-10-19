@@ -58,6 +58,8 @@ const MAPS: Array[StringName] = [
 	# Jalon 16 (T15) : `ss_anne_main_deck` (passerelle, départ) est déjà dans la liste (T12).
 	# Jalon 18 (T18, T24) : déclencheurs silencieux des objectifs (Route 9, Route 10, Lavanville).
 	&"route_9", &"route_10", &"lavender_town",
+	# Jalon 19 (T14) : le déclencheur du SPECTRE du 6F.
+	&"pokemon_tower_6f",
 ]
 ## Jalon 7 (T18) : partie qui revient au labo avec le colis (rival parti après le combat).
 const PARCEL_FLAGS: Array[StringName] = [
@@ -220,6 +222,7 @@ const VARIANT_FLAGS: Dictionary = {
 	&"route_9_entered": [PEWTER_FLAGS], &"route_9_item_1": [PEWTER_FLAGS],
 	&"route_9_item_2": [PEWTER_FLAGS], &"route_9_item_3": [PEWTER_FLAGS],
 	&"route_10_reached": [PEWTER_FLAGS], &"dark_cave_crossed": [PEWTER_FLAGS],
+	&"tower_6f_ghost": [PEWTER_FLAGS],
 	&"route_10_item_1": [PEWTER_FLAGS], &"dark_cave_1f_item_1": [PEWTER_FLAGS],
 	&"dark_cave_1f_item_2": [PEWTER_FLAGS], &"dark_cave_b1f_item_1": [PEWTER_FLAGS],
 	&"dark_cave_b1f_hidden_1": [PEWTER_FLAGS], &"lavender_reached": [PEWTER_FLAGS],
@@ -407,7 +410,7 @@ func test_library_loads_without_error() -> void:
 		# Jalon 17 (T23) : Coupe des deux arbustes.
 		&"cut_tree_route_2_east_bush", &"cut_tree_route_2_futur_a",
 		# Jalon 18 (T15) : l'arbre de la sortie est d'Azuria.
-		&"cut_tree_cerulean_east"] + J18_IDS))
+		&"cut_tree_cerulean_east", &"tower_6f_ghost"] + J18_IDS))
 
 
 func _sorted(values: Array) -> Array[StringName]:

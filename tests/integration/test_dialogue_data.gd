@@ -102,6 +102,8 @@ const DOSSIER_15 := "res://docs/design/dossier-15-route-3-mont-selenite.md"
 const DOSSIER_11 := "res://docs/design/dossier-11-route-2.md"
 ## Jalon 17 (T8) : lot de textes validé du dossier 20 §16 (« / » entre deux bulles, « ** » le
 ## titre d'un panneau ; jetons {n}, {reste}) et annexe A de son plan (accord à 1 espèce, Q-2).
+## Jalon 19 (T14) : lot de textes du dossier 22 §15 (Exorcistes §15.4, SPECTRE §15.3, §15.7).
+const DOSSIER_22 := "res://docs/design/dossier-22-tour-pokemon.md"
 const DOSSIER_20 := "res://docs/design/dossier-20-chemins-retrouves.md"
 const JALON_17 := "res://docs/tech/jalon-17.md"
 const _DOSSIER_TOKENS: Dictionary[String, String] = {"{first_wild_species}": "{espèce}",
@@ -155,6 +157,7 @@ const MAPS: Array[StringName] = [
 	&"route_9", &"route_10", &"route_10_center", &"dark_cave_1f", &"dark_cave_b1f",
 	&"lavender_town", &"lavender_center", &"lavender_mart", &"pokemon_house",
 	&"lavender_house_1", &"lavender_house_2", &"pokemon_tower_1f",
+	&"pokemon_tower_3f", &"pokemon_tower_4f", &"pokemon_tower_5f", &"pokemon_tower_6f",
 ]
 ## Lot de textes validé par Kevin le 2026-10-06 (anciens brouillons : panneau, observations,
 ## soin de Maman, terminal du Stockage, portes de Jadielle…) : source des textes hors dossiers.
@@ -424,6 +427,38 @@ const PLAYED_J16_T15: Array[StringName] = [
 const DOSSIER_19 := "res://docs/design/dossier-19-ss-anne-major-bob.md"
 ## Jalon 18 (T16) : Route 9, Route 10, Grotte Sombre, Lavanville, Tour (dossier 21 §15, annexe A
 ## du plan ; mot pour mot : test_j18_data, test_trainers_j18).
+const IDS_J19: Array[StringName] = [
+	&"tower_channeler_1_after",
+	&"tower_channeler_1_before",
+	&"tower_channeler_1_defeated",
+	&"tower_channeler_2_after",
+	&"tower_channeler_2_before",
+	&"tower_channeler_2_defeated",
+	&"tower_channeler_3_after",
+	&"tower_channeler_3_before",
+	&"tower_channeler_3_defeated",
+	&"tower_channeler_4_after",
+	&"tower_channeler_4_before",
+	&"tower_channeler_4_defeated",
+	&"tower_channeler_5_after",
+	&"tower_channeler_5_before",
+	&"tower_channeler_5_defeated",
+	&"tower_channeler_6_after",
+	&"tower_channeler_6_before",
+	&"tower_channeler_6_defeated",
+	&"tower_channeler_7_after",
+	&"tower_channeler_7_before",
+	&"tower_channeler_7_defeated",
+	&"tower_channeler_8_after",
+	&"tower_channeler_8_before",
+	&"tower_channeler_8_defeated",
+	&"tower_channeler_9_after",
+	&"tower_channeler_9_before",
+	&"tower_channeler_9_defeated",
+	&"tower_6f_ghost_after",
+	&"tower_6f_ghost_warning",
+]
+
 const IDS_J18: Array[StringName] = [
 	&"dark_cave_1f_item_1", &"dark_cave_1f_item_2", &"dark_cave_1f_sign",
 	&"dark_cave_b1f_hidden_1", &"dark_cave_b1f_item_1", &"dark_cave_column", &"dark_cave_crack",
@@ -504,7 +539,7 @@ const SET_J14_BILL_CUTSCENES: Array[StringName] = [
 ## Jalon 16 (T12, T15) : `got_hm01` (lu par le marin de la passerelle et le départ du navire) est
 ## levé par la scène du capitaine (T13). Jalon 18 (T16) : `tower_stairs_open` (présence de
 ## l'Exorciste de la Tour) est levé au J19 (dossier 22 K-3).
-const FUTURE_FLAGS: Array[StringName] = [&"tower_stairs_open"]
+const FUTURE_FLAGS: Array[StringName] = [&"tower_stairs_open", &"ghost_marowak_calmed"]
 var _library: DialogueLibrary
 var _cutscenes: CutsceneLibrary
 var _offer: StarterOffer
@@ -636,7 +671,7 @@ func test_library_loads_without_error() -> void:
 	var found := _without_qa(library.get_ids())
 	found.sort()
 	var expected := IDS + IDS_J14_BILL + IDS_J14_ROCKET + IDS_J15_ROUTE_5 + IDS_J16_GYM \
-		+ IDS_J16_SHIP + IDS_J16_RIVAL_CAPTAIN + IDS_J16_T15 + IDS_J17 + IDS_J18
+		+ IDS_J16_SHIP + IDS_J16_RIVAL_CAPTAIN + IDS_J16_T15 + IDS_J17 + IDS_J18 + IDS_J19
 	expected.sort()
 	assert_eq(found, expected)
 
@@ -667,6 +702,8 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		&"clerk_parcel", &"clerk_parcel_hello",
 		# Jalon 13 (T19) : Ondine au pont.
 		&"misty_bridge_invite",
+		# Jalon 19 (T14) : le SPECTRE du 6F.
+		&"tower_6f_ghost_after", &"tower_6f_ghost_warning",
 		# Jalon 12 (T25) : scène du chercheur et choix du fossile.
 		&"mt_moon_researcher_before", &"mt_moon_researcher_chosen",
 		&"mt_moon_researcher_defeated", &"mt_moon_researcher_rematch",
@@ -1039,6 +1076,7 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 	var dossier_15 := FileAccess.get_file_as_string(DOSSIER_15)
 	var dossier_21 := FileAccess.get_file_as_string(DOSSIER_21) \
 		+ FileAccess.get_file_as_string(PLAN_J18)
+	var dossier_22 := FileAccess.get_file_as_string(DOSSIER_22).replace("\n  ", " ")
 	var dossier_20 := FileAccess.get_file_as_string(DOSSIER_20).replace("**", "")
 	var annex_a_17 := AnnexATexts.annex_a(FileAccess.get_file_as_string(JALON_17))
 	var dossier_17 := FileAccess.get_file_as_string(DOSSIER_17) \
@@ -1097,7 +1135,9 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			or dossier_19.contains("« %s »" % text.replace("\n", " "))
 			# J18 (T16) : dossier 21 §15 et plan (annexe A).
 			or dossier_21.contains(text.replace("\n", " "))
-			or dossier_21.contains("« %s »" % text.replace("\n", " / ")),
+			or dossier_21.contains("« %s »" % text.replace("\n", " / "))
+			# J19 (T14) : dossier 22 §15 (une réplique peut tenir sur deux pages).
+			or _in_dossier_18(dossier_22, text),
 			"%s : « %s » dans un dossier de conception" % [row[0], text])
 
 
