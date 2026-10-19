@@ -2,8 +2,15 @@
 
 > **PLAN — aucun code n'est écrit par ce document.** Source de vérité :
 > `docs/design/strategie-acceleration.md`, levier 1 (périmètre validé par Kevin le 2026-10-19, deux
-> vagues ; **ne pas le rouvrir**). Les questions de game design du §8 attendent Kevin ; tout le
-> reste a une valeur par défaut [D] (règle 4).
+> vagues ; **ne pas le rouvrir**). **Questions Q-0 à Q-9 du §8 tranchées par Kevin le 2026-10-19 :
+> toutes les recommandations retenues** (« okay pour tes reco »). Le reste a une valeur par défaut
+> [D] (règle 4).
+>
+> Conséquences : départ **après le J20 complet** (Q-0) ; **pêche** dans la passe (S2C-bis, T16b) ;
+> K.O. en un coup **moderne** ; Vol avec le **Badge Foudre**, lancé depuis l'**écran Carte** ;
+> **Téléport et Tunnel hors combat** (T25b) ; **rencontre légendaire fixe** générique et **lot
+> d'effets des grands combats** (S2G, T30, T31) ; reprise **juste avant** un combat ou une scène
+> interrompus ; maison de Vol posée **par le J22**.
 
 > Objectif : **après cette passe, un jalon de contenu (J21 à J31) ne contient plus que des données
 > et des cartes.** Le joueur peut rouler à Vélo (et dévaler la Piste), surfer, pousser des rochers
@@ -149,11 +156,12 @@ sauvegarde est validée **seule**.
 | **S2.0** | Reprise du code pur (J21, J22, J24), légende commune des grilles, cartes de QA, `field_moves.json` | aucun visible | tests + import ; **aucune session téléphone** |
 | **S2A** | Sauvegarde à la mise en arrière-plan | 1 (risqué) | **téléphone, seule** |
 | **S2B** | État monté + Vélo + Piste et pente ; objet clé utilisable + Poké Flûte | 2 | téléphone |
-| **S2C** | Surf (montée, descente, bords, reprise, `water`, Nageurs) + courants [+ pêche si Q-1 = oui] | 2 (3 avec la pêche : alors pêche en S2C-bis) | téléphone |
+| **S2C** | Surf (montée, descente, bords, reprise, `water`, Nageurs) + courants | 2 | téléphone |
+| **S2C-bis** (Q-1 retenue) | Pêche (3 cannes, `water_rod`) | 1 | téléphone (court) |
 | **S2D** | Force : rochers, trous et `FALL`, interrupteurs et barrières | 1 (avec ses deux variantes) | téléphone |
-| **S2E** | Vol + K.O. en un coup [+ Téléport et Tunnel hors combat si Q-5 = oui] | 2 | téléphone |
+| **S2E** | Vol (+ Téléport et Tunnel hors combat, même mécanique d'arrivée, Q-5) + K.O. en un coup | 2 | téléphone |
 | **S2F** | Téléporteurs + portes à carte | 2 | téléphone |
-| **S2G** *(si Q-6 / Q-7 = oui)* | Rencontre légendaire fixe ; lot d'effets de combat | 2 | téléphone (départs de combat) |
+| **S2G** (Q-6, Q-7 retenues) | Rencontre légendaire fixe ; lot d'effets des grands combats (Soin, Protection, Mur Lumière, Ultralaser, deux tours, Vague Psy, Buée Noire) | 2 | téléphone (départs de combat) |
 | **S2Z** | Non-régression sur la vraie partie de Kevin, suite complète, clôture, fusion | — | téléphone + fusion |
 
 Ordre : **S2.0** d'abord ; **S2A** en parallèle de S2.0 (fichiers disjoints). Puis **S2B → S2C →
@@ -714,7 +722,9 @@ Après la fusion de la passe, chaque jalon ne pose que des données et des carte
 
 ## 8. Questions pour Kevin
 
-Vraies décisions de game design (ou d'ordre de travail, Q-0). Chaque question a une recommandation.
+Vraies décisions de game design (ou d'ordre de travail, Q-0). **Décision de Kevin (2026-10-19) :
+la recommandation de chaque ligne est retenue.** Les passages « si Q-n = oui » du plan sont donc
+tous actifs (pêche, Téléport et Tunnel, S2G).
 
 | # | Question | Options | Recommandation |
 |---|---|---|---|
