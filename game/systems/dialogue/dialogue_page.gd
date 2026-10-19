@@ -15,10 +15,15 @@ extends RefCounted
 ## { "text": "…", "turn": { "oak": "up", "player": "oak" } }
 ## [/codeblock]
 
+## Voix reconnues (clé « voice »).
+const VOICES: Array[StringName] = [&"spirit"]
+
 ## Texte affiché (retours à la ligne automatiques ; « \n » force une ligne).
 var text: String = ""
 ## Locuteur de cette page ; vide = celui du dialogue (scènes à plusieurs voix, jalon 3B).
 var speaker: String = ""
+## Voix de la page : vide = voix normale ; « spirit » = voix d'esprit (Exorciste possédé).
+var voice: StringName = &""
 ## Silence avant que le texte commence à s'écrire (secondes).
 var pause: float = 0.0
 ## Le PNJ à qui l'on parle se tourne vers le joueur au début de cette page.
