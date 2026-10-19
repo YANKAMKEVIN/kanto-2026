@@ -143,6 +143,9 @@ et l'IA qui creuse sont couverts par les tests de combat ; Abra se rencontre sur
 | `route_10_south.json` | J18 (T24) : Badges Roche et Cascade, `route_9_entered`, `route_10_reached`, Charmeleon N24, Pikachu N20, Papilusion N20, Roucoups N19, à la **sortie sud de la Grotte Sombre** (spawn `from_dark_cave_s_w`, tourné vers le sud) : Hector et Paul facultatifs, Super Potion, objectif « Rejoindre Lavanville, au sud. » dès le premier pas ; Lavanville jamais découverte : la légende s'affiche à l'arrivée par le sud de la Route 10 |
 | `lavender.json` | J18 (T24) : même partie + `dark_cave_crossed`, arrivée à Lavanville par le nord (spawn `from_route_10`, tourné vers le sud) ; **aucune légende** (départ de débogage) ; `lavender_reached` posé au premier pas vers le sud |
 | `pokemon_tower_1f.json` | J18 (T24) : même partie + `lavender_reached`, dans la Tour Pokémon à l'entrée (spawn `entrance`, tourné vers le nord) : gardien, visiteurs, tombes, Exorciste devant l'escalier (T-34 puis T-35, objectif « Revenir plus tard à la Tour Pokémon. ») |
+| `dark_cave_1f.json` | J18 (T20) : Pikachu N20, Reptincel N22, Roucarnage N19, **sans CS05** (Flash indisponible), 5 Potions, 2 Super Potions, 2 Antidotes, 2 Cordes Sortie, à l'entrée nord de la Grotte Sombre (spawn `from_route_10_n_w`, tourné vers le sud) : voile sombre et « Il fait très sombre ici… » une fois |
+| `dark_cave_1f_flash.json` | J18 (T20) : comme `dark_cave_1f` avec la **CS05** au Sac et Pikachu (compatible) : Flash automatique à l'entrée, « Pikachu utilise Flash ! » |
+| `dark_cave_b1f.json` | J18 (T20) : comme `dark_cave_1f_flash`, à l'arrivée de l'échelle A du B1F (spawn `arrivee_a`) : colonne, flaque, passage étroit (Marcel), racines (Super Potion cachée). L'arrivée de l'échelle B (`arrivee_b`, côté Marcel) n'a pas de départ : copier le fichier et changer `spawn` (QA du 2026-10-19) |
 
 La carte de QA `qa_switch_j13` (J13, T14), ses données, son outil de construction et de capture,
 son test et le départ `switch_qa` ont été **retirés au T22** (les Dresseurs qui changent de
@@ -198,7 +201,3 @@ Pokédex existe **sans** que le drapeau d'histoire `pokedex_activated` soit pos�
 sauvegardé. Même garde que le départ de débogage (build debug, Boot scène principale, fichier
 présent). Se combine avec `--debug-start` ou avec la vraie partie ; sans l'option, le fichier est
 retiré. Sur le Mac : `echo '{ "pokedex": true }' > "$HOME/Library/Application Support/Godot/app_userdata/Kanto 2026/debug_unlocks.json"`.
-
-| `dark_cave_1f.json` | J18 (T20) : Pikachu N20, Reptincel N22, Roucarnage N19, **sans CS05** (Flash indisponible), 5 Potions, 2 Super Potions, 2 Antidotes, 2 Cordes Sortie, à l'entrée nord de la Grotte Sombre (spawn `from_route_10_n_w`, tourné vers le sud) : voile sombre et « Il fait très sombre ici… » une fois |
-| `dark_cave_1f_flash.json` | J18 (T20) : comme `dark_cave_1f` avec la **CS05** au Sac et Pikachu (compatible) : Flash automatique à l'entrée, « Pikachu utilise Flash ! » |
-| `dark_cave_b1f.json` | J18 (T20) : comme `dark_cave_1f_flash`, à l'arrivée de l'échelle A du B1F (spawn `arrivee_a`) : colonne, flaque, passage étroit (Marcel), racines (Super Potion cachée) |
