@@ -149,7 +149,8 @@ mode Safari) peut commencer avant.
 Grilles v1 (2026-10-19, géométrie RB case pour case) : `tools/plans/safari_centre.txt`, `safari_est.txt`,
 `safari_nord.txt`, `safari_ouest.txt`, `safari_porte.txt`, `safari_maison_repos.txt`,
 `safari_maison_secrete.txt`, `parmanie_maison_gardien.txt`, `parmanie_arene.txt` ; contrôle
-`tools/art/plan_check_safari.py`. **À valider par Kevin** ; la grille fait foi. Plan technique :
+`tools/art/plan_check_safari.py`. **Validées par Kevin le 2026-10-19** (planche
+`reference/safari-koga-plans-v1.png`) ; la grille fait foi. Plan technique :
 `docs/tech/jalon-23.md`.
 
 ---

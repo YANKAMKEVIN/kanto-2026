@@ -30,7 +30,7 @@
 `safari_est.txt`, `safari_nord.txt`, `safari_ouest.txt` (géométrie RB 1:1, N-3), `safari_porte.txt`,
 `safari_maison_repos.txt`, `safari_maison_secrete.txt`, `parmanie_maison_gardien.txt`,
 `parmanie_arene.txt` ; contrôle `python3 tools/art/plan_check_safari.py` (0 échec). **Les grilles
-font foi pour la géométrie ; Kevin les valide en T8.**
+font foi pour la géométrie ; validées par Kevin le 2026-10-19.**
 
 Plan écrit sur `docs/dossier-26-j23` (base `origin/main` à `440f9b17`). **Code lu** :
 - `origin/main` à `440f9b17` (J15 terminé, sauvegarde v7) : code de référence ;
