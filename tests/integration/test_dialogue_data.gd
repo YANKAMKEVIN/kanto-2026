@@ -48,6 +48,9 @@ const GATE_GUARDS: Array[StringName] = [&"forest_gate_north_guard", &"forest_gat
 ## Jalon 17 (T8) : Route 11 et Route 2 est, en attente de leurs cartes ; la réplique de la barrière
 ## vue de l'est (T-8), en attente du T21. Toutes posées à l'intégration (T17, T19, T21) : liste vide.
 const UNUSED_YET: Array[StringName] = [
+	# J21 T9a (décision M-3) : Ronflex a quitté la Route 11 ; T-6 / T-7 attendent le Ronflex de la
+	# Route 12 (J21 T19-T21), qui les reprend.
+	&"route_11_snorlax",
 ]
 ## Jalon 17 (T8) : pages à jeton (texte → jetons attendus) : l'assistant et la CS05 reçue.
 const J17_TOKENS: Dictionary[String, Array] = {

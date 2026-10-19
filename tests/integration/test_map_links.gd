@@ -143,8 +143,9 @@ func test_every_coming_soon_warp_returns_to_a_walkable_spawn_of_its_own_map() ->
 	# nord du poste vers Safrania (2 cases, jamais atteinte). Jalon 15 (T14) : Route 11
 	# (trois cases), Safrania (porte nord de la Route 6, une). Jalon 16 (T15) : l'Arène de
 	# Carmin et l'embarquement du S.S. Anne sont branchés. Jalon 17 (T17) : le bord est de Carmin
-	# mène à la vraie Route 11.
-	assert_eq(found, 3, "« SAFRANIA » (2), Safrania (1)")
+	# mène à la vraie Route 11. Jalon 21 (T9a, décision M-3) : bord est de la Route 11, « Route 12 »
+	# (deux cases) jusqu'au T21.
+	assert_eq(found, 5, "« SAFRANIA » (2), Safrania (1), Route 12 (2)")
 
 
 ## Warp de [param map] qui ramène à [param origin] depuis [param arrival] : sur la case
