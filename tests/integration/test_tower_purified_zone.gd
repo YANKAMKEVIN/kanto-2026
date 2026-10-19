@@ -148,7 +148,7 @@ func test_the_texts_are_the_dossier_texts() -> void:
 	assert_true(section.contains("« Une lumière douce vous enveloppe. Cette zone est purifiée et "
 		+ "protégée. »"))
 	assert_true(section.contains("« Votre équipe est entièrement soignée. »"))
-	assert_true(dossier.replace("\n", " ").contains("« " + CALM_LINE + " »"))
+	assert_true(dossier.replace("\n  ", " ").replace("\n", " ").contains("« " + CALM_LINE + " »"))
 	var library := _boot.get_dialogue_library()
 	var heal := library.get_dialogue(&"tower_purified_zone_heal")
 	var done := library.get_dialogue(&"tower_purified_zone_done")
