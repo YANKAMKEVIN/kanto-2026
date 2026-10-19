@@ -1002,12 +1002,15 @@ func test_critical_checkpoint_in_a_debug_start_is_simulated_without_writing() ->
 	assert_push_error_count(0)
 
 
-func test_a_future_save_is_never_treated_as_a_simulated_checkpoint() -> void:
+## Sauvegarde plus récente : écriture refusée pour toute la session. Le point critique d'une scène
+## est accepté sans rien écrire (la scène continue, sinon elle resterait bloquée pour toujours) ;
+## la sauvegarde plus récente reste intacte.
+func test_a_future_save_is_never_written_and_never_blocks_a_checkpoint() -> void:
 	var original := JSON.stringify({"version": SaveSystem.VERSION + 1, "map": "route_1"})
 	_fs.files[SAVE_PATH] = original
 	await _start_boot()
 	assert_false(_boot.is_autosave_enabled())
-	assert_eq(_boot._on_cutscene_save_requested("vraie partie refusée"), ERR_UNAVAILABLE)
+	assert_eq(_boot._on_cutscene_save_requested("vraie partie refusée"), OK, "scène non bloquée")
 	assert_eq(_fs.files[SAVE_PATH], original)
 	assert_eq(_writes(), 0)
 	assert_push_error_count(0)

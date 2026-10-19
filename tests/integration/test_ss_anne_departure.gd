@@ -648,6 +648,31 @@ func test_departure_waits_for_a_successful_disk_commit() -> void:
 	assert_push_error_count(0)
 
 
+## Refus passager (transition en cours, ERR_BUSY) : la même étape réessaie à l'image suivante,
+## sans message d'échec ni attente de 5 s, puis la scène continue.
+func test_a_busy_checkpoint_retries_next_frame_without_reporting_a_failure() -> void:
+	await _start("ss_anne_exit")
+	var director := _boot.get_cutscene_director()
+	var library := CutsceneLibrary.new()
+	assert_true(library.add_from_dict({"checkpoint_busy": {"steps": [
+		{"save": "test critique"}, {"set": ["checkpoint_busy_finished"]},
+	]}}, "test"))
+	var calls: Array[int] = [0]
+	director.save_handler = func(_reason: String) -> Error:
+		calls[0] += 1
+		return ERR_BUSY if calls[0] < 3 else OK
+	var failures: Array[Error] = []
+	director.save_failed.connect(func(_reason: String, error: Error) -> void:
+		failures.append(error))
+	assert_true(director.play_variant(&"checkpoint_busy",
+		library.get_cutscene(&"checkpoint_busy").variants[0]))
+	await wait_until(func() -> bool: return _flag(&"checkpoint_busy_finished"), 2.0)
+	assert_true(_flag(&"checkpoint_busy_finished"), "la scène a continué")
+	assert_eq(calls[0], 3, "deux refus passagers, puis la réussite")
+	assert_eq(failures.size(), 0, "aucun « Sauvegarde impossible » pour un refus passager")
+	assert_push_error_count(0)
+
+
 func test_restarting_during_a_failed_checkpoint_keeps_the_previous_save() -> void:
 	await _start("ss_anne_exit")
 	var director := _boot.get_cutscene_director()

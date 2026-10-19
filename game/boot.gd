@@ -1506,14 +1506,18 @@ func _on_woke_up_after_defeat() -> void:
 ## Écriture immédiate demandée par l'étape « save » d'une scène (jalon 16, `jalon-16.md` §2.4 :
 ## le départ du S.S. Anne) : même chemin que le réveil après une défaite. Le joueur est déjà à sa
 ## place (quai) et les drapeaux sont levés ; la scène attend OK avant le spectacle.
-## Pendant une transition : refus temporaire, la même étape réessaiera.
+## Écriture refusée pour toute la session (sauvegarde plus récente protégée, ouverture) : rien
+## n'est écrit et la scène continue, comme une simulation (sinon elle resterait bloquée pour
+## toujours). Pendant une transition : ERR_BUSY, la même étape réessaie à l'image suivante, sans
+## message d'échec. Seule une vraie panne d'écriture bloque la scène jusqu'à la réussite.
 func _on_cutscene_save_requested(reason: String) -> Error:
-	if _simulate_checkpoints:
+	if _simulate_checkpoints or not _can_write():
 		if OS.is_debug_build():
-			print("[qa] point de sauvegarde simulé, aucune écriture : %s" % reason)
+			print("[qa] point de sauvegarde sans écriture (%s) : %s"
+				% ["simulé" if _simulate_checkpoints else "écriture refusée pour la session", reason])
 		return OK
 	if SceneRouter.is_transitioning():
-		return ERR_UNAVAILABLE
+		return ERR_BUSY
 	return _write_save(reason)
 
 

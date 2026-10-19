@@ -10,7 +10,9 @@ Branche : `refactor/boot-coordination`, base `f0d3c4fb` (J16 terminé).
   callbacks : permission, stabilité et écriture. Il ne connaît ni autoload ni disque.
   Les écritures immédiates des scènes gardent leur exception de stabilité, mais jamais
   une exception de permission. En cas d'échec : demande conservée, délai de 5 s simulées,
-  puis nouvelle tentative sur l'état courant, sans boucler à chaque image.
+  puis nouvelle tentative sur l'état courant, sans boucler à chaque image. **Changement de
+  comportement** : c'est vrai aussi d'une écriture d'arrière-plan ou de fermeture qui échoue
+  (avant la PR, elle était abandonnée ; elle est désormais réessayée).
 - `SettingsApplier` reçoit les composants au câblage ; les écrans optionnels créés plus tard
   (évolution, ouverture, décor du titre) sont relus à chaque application. Aucune lecture
   des réglages ni dépendance à Boot.
@@ -35,7 +37,9 @@ ou de format de sauvegarde. La rotation des fichiers corrompus reste un travail 
 ## Points de sauvegarde critiques
 
 `CutsceneDirector.save_handler` renvoie Error. Une étape `save` attend OK avant de passer
-à la suivante. En cas d'erreur, `save_failed` alimente un toast dans Boot, puis la même
+à la suivante. `ERR_BUSY` (transition en cours) est un refus passager : la même étape
+réessaie à l'image suivante, sans `save_failed` ni toast. Toute autre erreur (vraie panne
+d'écriture ou de renommage) émet `save_failed`, qui alimente un toast dans Boot, puis la même
 étape réessaie après 5 s. Les effets précédents ne sont pas rejoués. Les écritures passent
 toujours par SaveCoordinator et sa garde de permission. Sans gestionnaire : erreur et
 arrêt de la scène. Un arrêt de l'application pendant une panne conserve le précédent fichier.
@@ -58,6 +62,9 @@ Inventaire sans modification des combats : `tools/audit_pending_moves.py`, rappo
 ## Simulation explicite des outils
 
 Un départ de débogage dont autosave=false, ou un Boot d'outil sans SaveSystem injecté,
-simule le point critique sans écriture. Ce chemin n'est jamais activé pour une vraie
-partie dont le fichier est refusé. Deux tests vérifient la simulation sans écriture et
-le refus intact d'une sauvegarde future.
+simule le point critique sans écriture. Quand l'écriture est refusée pour toute la session
+(sauvegarde plus récente protégée), le point critique est aussi accepté **sans écrire** :
+la sauvegarde refusée reste intacte, et la scène continue au lieu de rester bloquée pour
+toujours (relecture du 2026-10-19, décision de Kevin). Seule une vraie panne d'écriture bloque
+la scène jusqu'à la réussite. Tests : simulation sans écriture, sauvegarde future jamais écrite
+et jamais bloquante, refus passager sans message d'échec.

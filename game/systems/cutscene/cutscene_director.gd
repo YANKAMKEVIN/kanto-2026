@@ -140,7 +140,8 @@ var reduce_motion: bool = false
 ## valide : pas de mise en scène (un PNJ cible part en fondu, un décor avec son drapeau).
 var field_move_handler: Callable
 ## Écriture synchrone injectée par Boot : func(reason: String) -> Error.
-## Un point critique ne peut jamais avancer sans un retour OK.
+## Un point critique ne peut jamais avancer sans un retour OK ; ERR_BUSY = refus passager,
+## réessayé à l'image suivante sans [signal save_failed].
 var save_handler: Callable
 ## Délai de nouvelle tentative, indépendant des préférences d'animation ; 0 = image suivante.
 var save_retry_delay: float = SaveCoordinator.RETRY_DELAY
@@ -405,6 +406,11 @@ func _save_checkpoint(reason: String) -> bool:
 		var error: Error = save_handler.call(reason)
 		if error == OK:
 			return true
+		if error == ERR_BUSY:
+			# Refus passager (transition en cours) : nouvelle tentative à l'image suivante, sans
+			# signaler d'échec au joueur.
+			await get_tree().process_frame
+			continue
 		save_failed.emit(reason, error)
 		if session != _session:
 			return false
