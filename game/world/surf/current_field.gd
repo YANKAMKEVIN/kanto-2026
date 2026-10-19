@@ -3,7 +3,9 @@ extends RefCounted
 ## Courants d'eau (jalon 24, T9 ; dossier 27 §7.4, `jalon-24.md` §2.6) : classe pure et statique.
 ##
 ## Un courant est une suite de cases d'eau portant une direction ([method GridWorld.set_current],
-## posée par la carte **seulement si le courant est actif** : [method SeafoamState.Floor.apply_to]).
+## posée par la carte **seulement si le courant est actif** ; aux Îles Écume, le J24 la pose selon
+## ses drapeaux). Générique : n'importe quelle eau (passe systèmes 2, §0.2 ; d'abord dans
+## `game/world/seafoam/`).
 ## Quand le joueur entre sur une case de courant, [method ride] calcule d'avance tout le trajet :
 ## les cases traversées et la direction de chaque pas, jusqu'à
 ## - une case d'eau calme (le joueur s'y arrête, toujours en Surf) ;

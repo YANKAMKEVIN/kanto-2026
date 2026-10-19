@@ -5,8 +5,9 @@ extends RefCounted
 ## (le joueur, T10) déplace l'occupant ([method GridWorld.move_occupant]) ou retire le rocher et
 ## pose le drapeau du trou.
 ##
-## Un rocher est un **occupant** de la grille. Il glisse d'une case (MOVED), tombe dans un trou
-## ouvert (FELL) ou ne bouge pas (REFUSED : le rocher tremble, sans texte). Refus (§6.3) :
+## Un rocher est un **occupant** de la grille. Il glisse d'une case (MOVED), s'arrête sur un
+## interrupteur (ON_SWITCH, passe systèmes 2 §2.7.4), tombe dans un trou ouvert (FELL) ou ne bouge
+## pas (REFUSED : le rocher tremble, sans texte). Refus (§6.3) :
 ## - mur, arête, case hors carte (WALL) ; rebord (LEDGE) ;
 ## - eau, y compris un courant (WATER) ;
 ## - escalier, échelle, entrée, sol haut : tout **changement de niveau de sol** (LEVEL :
@@ -22,6 +23,7 @@ enum Outcome {
 	MOVED, ## Le rocher avance d'une case ([member Push.target]), le joueur le suit.
 	FELL, ## Le rocher tombe dans le trou n° [member Push.hole] ([member Push.target]).
 	REFUSED, ## Le rocher ne bouge pas ([member Push.refusal]).
+	ON_SWITCH, ## Comme MOVED, sur l'interrupteur [member Push.switch_id] (§2.7.4).
 }
 
 enum Refusal { NONE, BAD_DIRECTION, PUSHER, WALL, LEDGE, WATER, LEVEL, NO_PUSH, OCCUPIED }
@@ -36,6 +38,8 @@ class Push:
 	var target: Vector2i = Vector2i.ZERO
 	## Numéro du trou pour FELL (0 sinon).
 	var hole: int = 0
+	## Interrupteur pour ON_SWITCH (vide sinon).
+	var switch_id: StringName = &""
 
 	func _init(p_outcome: Outcome = Outcome.REFUSED, p_target: Vector2i = Vector2i.ZERO,
 			p_refusal: Refusal = Refusal.NONE, p_hole: int = 0) -> void:
@@ -51,8 +55,10 @@ class Push:
 ## Le rocher de [param boulder_cell] poussé vers [param direction].
 ## [param open_holes] : trou ouvert (case → numéro) ; un trou bouché n'y figure pas (sol).
 ## [param no_push] : cases interdites aux rochers (cases d'objets cachés…).
+## [param switches] : interrupteurs (case → identifiant) ; un interrupteur déjà enfoncé y figure
+## aussi (l'appelant ne repose pas un drapeau déjà posé).
 static func push(grid: GridWorld, boulder_cell: Vector2i, direction: Vector2i,
-		open_holes: Dictionary = {}, no_push: Dictionary = {}) -> Push:
+		open_holes: Dictionary = {}, no_push: Dictionary = {}, switches: Dictionary = {}) -> Push:
 	var target := boulder_cell + direction
 	if grid == null or not Grid.is_cardinal(direction):
 		return Push.new(Outcome.REFUSED, target, Refusal.BAD_DIRECTION)
@@ -74,4 +80,8 @@ static func push(grid: GridWorld, boulder_cell: Vector2i, direction: Vector2i,
 		return Push.new(Outcome.REFUSED, target, Refusal.OCCUPIED)
 	if open_holes.has(target):
 		return Push.new(Outcome.FELL, target, Refusal.NONE, int(open_holes[target]))
+	if switches.has(target):
+		var on_switch := Push.new(Outcome.ON_SWITCH, target)
+		on_switch.switch_id = StringName(switches[target])
+		return on_switch
 	return Push.new(Outcome.MOVED, target)

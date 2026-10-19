@@ -37,6 +37,7 @@ from collections import deque
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
+from plan_check import verifier_legende  # noqa: E402
 from plan_grille import Plan, lire  # noqa: E402
 
 RACINE = Path(__file__).resolve().parents[2]
@@ -554,6 +555,21 @@ depart  depart  1,1  libre
 FIN
 """
 
+_PIEGE_LEGENDE = """PRATICABLES .BSE
+GRILLE 6 3
+00 ######
+01 #.BS.#
+02 ####E#
+FIN
+POSITIONS
+depart        depart        1,1  libre
+rocher_1      rocher        2,1  bloque  ordre=1 trou=9
+interrupteur  interrupteur  3,1  libre
+FIN
+"""
+# Légende commune (plan_check.py --legende) : le rocher vise un trou absent, l'interrupteur n'a
+# pas de drapeau.
+
 
 def autotest() -> bool:
 	ok = True
@@ -569,6 +585,12 @@ def autotest() -> bool:
 			refuse = any(attendu in e for e in r.echecs)
 			print(f"autotest {nom} : {'refusé comme attendu' if refuse else 'NON REFUSÉ'}")
 			ok = ok and refuse
+		chemin = Path(dossier) / "piege_legende.txt"
+		chemin.write_text(_PIEGE_LEGENDE, encoding="utf-8")
+		erreurs = verifier_legende(chemin)
+		refuse = any("trou 9" in e for e in erreurs) and any("drapeau" in e for e in erreurs)
+		print(f"autotest piege_legende : {'refusé comme attendu' if refuse else 'NON REFUSÉ'}")
+		ok = ok and refuse
 	return ok
 
 
@@ -584,6 +606,10 @@ def main() -> int:
 		verifier_teleporteurs([PLANS / "qa_teleport.txt", PLANS / "qa_teleport_2.txt"]),
 	]
 	ok = all([r.imprimer() for r in rapports])
+	legende = [e for f in sorted(PLANS.glob("qa_*.txt")) for e in verifier_legende(f)]
+	for e in legende:
+		print(f"  [ÉCHEC] légende commune : {e}")
+	ok = ok and not legende
 	print("TOUT EST CONFORME" if ok else "NON CONFORME")
 	return 0 if ok else 1
 

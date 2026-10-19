@@ -161,7 +161,7 @@ sauvegarde est validée **seule**.
 | **S2D** | Force : rochers, trous et `FALL`, interrupteurs et barrières | 1 (avec ses deux variantes) | téléphone |
 | **S2E** | Vol (+ Téléport et Tunnel hors combat, même mécanique d'arrivée, Q-5) + K.O. en un coup | 2 | téléphone |
 | **S2F** | Téléporteurs + portes à carte | 2 | téléphone |
-| **S2G** (Q-6, Q-7 retenues) | Rencontre légendaire fixe ; lot d'effets des grands combats (Soin, Protection, Mur Lumière, Ultralaser, deux tours, Vague Psy, Buée Noire) | 2 | téléphone (départs de combat) |
+| **S2G** (Q-6, Q-7 retenues) | Rencontre légendaire fixe ; lot d'effets des grands combats (Soin, Protection, Mur Lumière, deux tours, Vague Psy, Buée Noire ; Ultralaser fait au J19, T2) | 2 | téléphone (départs de combat) |
 | **S2Z** | Non-régression sur la vraie partie de Kevin, suite complète, clôture, fusion | — | téléphone + fusion |
 
 Ordre : **S2.0** d'abord ; **S2A** en parallèle de S2.0 (fichiers disjoints). Puis **S2B → S2C →
@@ -209,6 +209,15 @@ courant** (J24) ou **dalle** (J20) selon la légende de la grille — pas de mé
 (contrôle). Nouveau [D] : `/` **pente** (Piste), `T` téléporteur, `K` porte à carte, `S`
 interrupteur — vérifiés au T3b contre les légendes des 55 grilles existantes (une grille peut
 redéfinir un caractère dans sa ligne `PRATICABLES` ; le contrôle refuse un double sens).
+
+**Écart retenu au T3b [D] (2026-10-20)** : `T`, `K` et `S` ont déjà d'autres sens dans une
+quarantaine des 68 grilles (tables, comptoirs, panneaux…) ; on ne réserve donc **aucun caractère**.
+Les caractères restent propres à chaque grille (légende en tête), et la légende commune porte sur
+les **types de positions** ci-dessus : `python3 tools/art/plan_check.py --legende` contrôle, sur
+toutes les grilles, les attributs obligatoires (`barriere` accepte aussi `unless=`, forme du J16),
+les références (rocher → trou, chute → trou de la carte du dessus, trou → chute du joueur dessous,
+téléporteur → repère de la carte visée) et l'absence de courants et de dalles dans une même grille.
+68 grilles de `main` et les 5 grilles des Îles Écume du J24 : conformes.
 
 ---
 
@@ -539,11 +548,24 @@ Rôles : **A** architecte-godot · **C** constructeur-monde · **U** ui-mobile �
 
 #### T1 — A : branche d'intégration `systemes-2` depuis `main` (J20 compris) ; workflow CI : ajouter `systemes-*` au déclencheur
 
+**Partiel (2026-10-20)** : `main` à `ad2a296f` (J19 clos) fusionné dans `systemes-2` ; le J20 sera
+fusionné à son tour. CI : **ne pas** ajouter `systemes-*` (Kevin a retiré `jalon-*` du déclencheur,
+quota GitHub épuisé, `bf45055b`) ; la suite locale `tools/test.sh` fait foi.
+
 #### T2 — A : audit d'alignement sur `main` du moment
 
 - Revérifier chaque ligne du §0.2 sur le code fusionné (J19, J20) ; noter les écarts ici.
 - Vérifier que les gardes à Badge ou à objet (J20, J22, J29) passent par les variantes existantes
   (§0.4) ; sinon, le signaler.
+
+**Partiel (2026-10-20, `main` à `ad2a296f`, J19 compris ; à refaire pour le J20)** :
+- `GhostRule` est en `main` (J19) : le contrat du Scope (§2.15) attend seulement l'objet
+  `silph_scope` du J20.
+- **Ultralaser (recharge) est fait** par le J19 (`Battle._start_recharge`, `_recharge_turn`) : il
+  sort du lot S2G. Marqueurs `pending_effects` restants en `main` : `ohko` (Empal'Korne, S2E),
+  `heal_half`, `reflect`, `light_screen`, `haze`, `two_turn` + `charge_def_up` (Lance-Soleil,
+  Coud'Krâne) pour S2G ; `rampage`, `rage`, `mirror`, `metronome` hors lot (Q-7). `mist` n'est pas
+  encore en données.
 
 #### T3 — A : reprise du code pur, à l'identique puis adapté
 
@@ -554,7 +576,31 @@ Rôles : **A** architecte-godot · **C** constructeur-monde · **U** ui-mobile �
   dans `surf/`).
 - Tests : tous repris verts ; `GridWorld` existant inchangé.
 
+**Fait (2026-10-20, avant la fusion du J20 : décision de Kevin « avance sur tout ce qui ne
+nécessite pas J20 »)** :
+- commit 1 : copie exacte (J24 `9a69332a`, J22 `e8c92d4c`, J21 `bf708403`), pêche comprise
+  (`data/fishing/water_rod.json` ; `data/world/fishable.json` reste au J22, ses cartes) ; seul
+  écart : `test_current_field.gd` sans ses tests sur les grilles des Îles Écume (restent au J24) ;
+- commit 2 : `Mount` (`game/player/mount.gd`), `MapTraits` et `MountRules`
+  (`game/world/mount/`) ; `SurfRules.resume` prend la monture sauvegardée (`Mount.Kind`, le Vélo
+  est gardé sur la terre) et rend `Resume.mount` ; l'énum `SurfRules.Mount` du J24 devient
+  `SurfRules.MountCheck` (le nom `Mount` est la classe de la monture) ; `BoulderRules.push` reçoit
+  les interrupteurs et rend `ON_SWITCH` (+ `switch_id`) ; `CurrentField` déplacé dans
+  `game/world/surf/`. `BikeRules` reste tel quel (façade ; un test vérifie que `MountRules` donne
+  les mêmes réponses).
+- `MountRules.on_map_entered` ne prend pas l'état du Surf (`FieldMoves`) prévu au §2.2 [D] : on ne
+  se tient pas sur l'eau, l'arrivée sur une eau surfable met donc toujours en Surf ; les garde-fous
+  restent dans `SurfRules.resume`.
+- **À reprendre par le J24 à sa fusion de `main`** : `SurfRules.Mount` → `MountCheck`,
+  `resume(…, surfing: bool, …)` → `resume(…, Mount.Kind, …)`, `Resume.surfing` →
+  `Resume.is_surfing()`, chemin de `CurrentField`.
+
 #### T3b — A : `field_moves.json` (surf, strength, fly) ; légende des grilles (§1.3) dans `plan_check.py`
+
+**Fait (2026-10-20)** : `surf` (`hm03`, `badge_soul`), `strength` (`hm04`, `badge_rainbow`), `fly`
+(`hm02`, `badge_thunder`, Q-3) ; test `test_field_moves_systemes2.gd` (NO_HM tant que la CS n'est
+pas en données). Légende : `plan_check.py --legende` (écart du §1.3 : types de positions, pas de
+caractères réservés) ; quatrième piège dans `plan_check_systemes2.py --autotest`.
 
 #### T3c — C : grilles et cartes de QA (§2.14), sans vie
 
