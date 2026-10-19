@@ -459,6 +459,10 @@ const IDS_J19: Array[StringName] = [
 	&"tower_6f_ghost_warning",
 	# T16 : la gardienne du rez-de-chaussée (§15.1.1 à 4).
 	&"tower_guardian_worried",
+	# T18 : Exorciste calme du 5F (§15.4), zone purifiée (§15.5), objets de la Tour (scènes).
+	&"tower_exorcist_calm", &"tower_purified_zone_heal", &"tower_purified_zone_done",
+	&"tower_3f_objet_1", &"tower_4f_objet_1", &"tower_4f_objet_2", &"tower_5f_objet_1",
+	&"tower_5f_cache_1", &"tower_6f_objet_1",
 ]
 
 const IDS_J18: Array[StringName] = [
@@ -709,6 +713,8 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		&"tower_6f_ghost_after", &"tower_6f_ghost_warning",
 		# Jalon 19 (T16) : la gardienne du rez-de-chaussée.
 		&"tower_guardian_worried",
+		# Jalon 19 (T18) : la zone purifiée du 5F.
+		&"tower_purified_zone_heal", &"tower_purified_zone_done",
 		# Jalon 12 (T25) : scène du chercheur et choix du fossile.
 		&"mt_moon_researcher_before", &"mt_moon_researcher_chosen",
 		&"mt_moon_researcher_defeated", &"mt_moon_researcher_rematch",
@@ -885,7 +891,10 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		&"cut_cerulean_east_tree"]
 		+ SET_J14_BILL_CUTSCENES + SET_J14_ROCKET_CUTSCENES + SET_J18_CUTSCENES
 		# Jalon 19 (T16) : la gardienne de la Tour s'écarte.
-		+ [&"tower_stairs_open"]))
+		+ [&"tower_stairs_open"]
+		# Jalon 19 (T18) : objets de la Tour (cinq visibles, un caché).
+		+ [&"got_tower_3f_objet_1", &"got_tower_4f_objet_1", &"got_tower_4f_objet_2",
+		&"got_tower_5f_objet_1", &"got_tower_5f_cache_1", &"got_tower_6f_objet_1"]))
 	assert_eq(_used_on.get(&"oak_lab_reunion"), [&"oak_lab"], "joué au labo, après le fondu")
 	assert_eq(_used_on.get(&"oak_starter_offer"), [&"oak_lab"], "joué au labo")
 
@@ -1060,7 +1069,9 @@ func test_mom_heal_variant() -> void:
 	# Seule cette variante soigne (le réveil après défaite soigne par la défaite, pas par le texte).
 	for id: StringName in _real_ids():
 		for variant: DialogueVariant in _library.get_dialogue(id).variants:
-			assert_eq(variant.action == &"heal", variant == heal, "%s : « heal »" % id)
+			# J19 (T18) : la zone purifiée du 5F soigne à la fin de sa première page (§2.8).
+			var zone_heal := id == &"tower_purified_zone_heal"
+			assert_eq(variant.action == &"heal", variant == heal or zone_heal, "%s : « heal »" % id)
 
 
 func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
@@ -1352,12 +1363,12 @@ func test_oak_parcel_lines() -> void:
 	# de la Route 11 ; (T20) Pierre Lune et Super Bonbon ; (T21) Super Potion de FUTUR A ;
 	# (intégration) Corde Sortie de la Cave.
 	# Jalon 18 (T16) : sept objets au sol (Route 9, Route 10, grotte) et la Super Potion cachée.
-	assert_eq(launched, 72, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
+	assert_eq(launched, 78, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
 		+ "sa CT34, Ondine (pont, Arène et rattrapage), écran, module, console, objets de la "
 		+ "Route 25, le Rocket d'Azuria (2) et le barrage sud ; J15 : objets de la Route 5 ; "
 		+ "J16 : Major Bob (2), neuf objets du S.S. Anne, le capitaine, le marin (2) ; "
 		+ "J17 : la CS05, Route 11 (3), deux objets du couloir, la Super Potion de la clairière "
-		+ "et la Corde Sortie de la Cave ; J18 : huit objets ; J19 : la gardienne de la Tour")
+		+ "et la Corde Sortie de la Cave ; J18 : huit objets ; J19 : la gardienne de la Tour et six objets de la Tour (T18)")
 	# Le jeton n'apparaît que dans la réplique de l'espèce, « {pokemon} » dans les phrases du
 	# compagnon (J11), et ceux de la Pension dans ses répliques (J15).
 	for row: Array in _pages():

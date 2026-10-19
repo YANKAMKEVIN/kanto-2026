@@ -28,5 +28,19 @@
 			"before": "tower_channeler_9_before",
 			"defeated": "tower_channeler_9_defeated"
 		}
+	},
+	"tower_6f_objet_1": {
+		"cell": [
+			14,
+			14
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "tower_6f_objet_1",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_tower_6f_objet_1"
+		]
 	}
 }

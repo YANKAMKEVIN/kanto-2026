@@ -43,5 +43,28 @@
 			"before": "tower_channeler_7_before",
 			"defeated": "tower_channeler_7_defeated"
 		}
+	},
+	"tower_5f_objet_1": {
+		"cell": [
+			6,
+			14
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "tower_5f_objet_1",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_tower_5f_objet_1"
+		]
+	},
+	"exorciste_calme": {
+		"cell": [
+			12,
+			8
+		],
+		"facing": "left",
+		"sprite": "channeler",
+		"dialogue": "tower_exorcist_calm"
 	}
 }

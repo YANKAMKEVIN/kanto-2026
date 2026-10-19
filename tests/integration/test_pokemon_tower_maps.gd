@@ -89,10 +89,19 @@ func test_scene_grid_matches_the_plan() -> void:
 		var plan: PlanGrid = _plans[map_id]
 		var grid := (_maps[map_id] as GameMap).get_grid()
 		var wrong: Array[Vector2i] = []
+		# T18 : la case d'un objet caché (`cache`) est praticable dans la grille mais bloquée
+		# par son repère (« offrande fanée », empreinte d'une case) : solide attendu.
+		var clues: Array[Vector2i] = []
+		for id: String in plan.positions:
+			if plan.positions[id]["kind"] == "cache":
+				clues.append(plan.cell_of(id))
 		for y: int in plan.height:
 			for x: int in plan.width:
 				var cell := Vector2i(x, y)
-				if grid.is_solid(cell) == WALKABLE.contains(plan.at(cell)):
+				if clues.has(cell):
+					if not grid.is_solid(cell):
+						wrong.append(cell)
+				elif grid.is_solid(cell) == WALKABLE.contains(plan.at(cell)):
 					wrong.append(cell)
 		assert_eq(wrong, [] as Array[Vector2i], "%s : cases différentes du plan" % map_id)
 

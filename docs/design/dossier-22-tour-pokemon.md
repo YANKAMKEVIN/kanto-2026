@@ -513,7 +513,7 @@ Rien de nouveau au J19.
 spectres. Un Scope… Avec ça, on saurait enfin ce qui hante cette tour. »
 
 **Exorciste qui ne combat pas, 5F** : « Cette dalle a été bénie. Les esprits ne la franchissent
-pas. Reposez-vous. »
+  pas. Reposez-vous. »
 
 ### 15.5 Zone purifiée
 

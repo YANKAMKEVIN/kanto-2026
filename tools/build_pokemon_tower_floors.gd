@@ -77,6 +77,8 @@ const WALL_VALUE_JITTER: float = 0.04
 ## Repères provisoires : la stèle du souterrain ; la tombe en est une version basse et sombre.
 const STELE_PROP: String = "prop_stele_01"
 const TOMB_SCALE: float = 0.62
+const OFFERING_SCALE: float = 0.4
+const OFFERING_TINT := Color(0.78, 0.74, 0.6)
 const TOMB_TINT := Color(0.8, 0.78, 0.86)
 ## Escaliers : images du souterrain (192 px) ramenées à la largeur d'une case.
 const STAIRS_UP: String = "prop_escalier_souterrain_monte_01"
@@ -169,6 +171,7 @@ func _build(key: String) -> int:
 	var walls := _place_walls()
 	_place_landmarks()
 	_place_zone()
+	_place_hidden_item()
 	_place_stairs()
 	_place_spawns_and_warps()
 	_place_triggers()
@@ -423,6 +426,28 @@ func _place_zone() -> void:
 		origin + Vector2(0.0, extent.y)])
 	_kit.call(&"attach", _kit.get(&"decals"), slab)
 	_kit.call(&"add_glow", &"purified", origin + extent / 2.0, "PurifiedGlow")
+
+
+## Objet caché (T18, 5F, §2.9) : l'« offrande fanée » en (4, 11) (position `cache` de la grille,
+## qui fait foi sur le dossier §4.2). La case est praticable dans la grille : le repère (stèle
+## réduite et pâle, empreinte d'une case) la rend solide ; le point d'examen part du voisin
+## praticable (4, 10), `unless_flags = [got_<id>]` (modèle `_add_hidden_item` du J13).
+func _place_hidden_item() -> void:
+	var positions: Dictionary = _plan().get(&"positions")
+	for id: String in positions:
+		if positions[id]["kind"] != "cache":
+			continue
+		var clue: Vector2i = _plan().call(&"cell_of", id)
+		var offering: Node2D = _kit.call(&"add_prop_at", _kit.get(&"entities"), STELE_PROP, clue,
+			"Offering_%s" % id)
+		offering.scale = Vector2.ONE * OFFERING_SCALE
+		offering.modulate = OFFERING_TINT
+		offering.set(&"footprint", [Vector2i.ZERO] as Array[Vector2i])
+		_kit.call(&"add_interactable", "Hidden_%s" % id, clue, Vector2i.ONE, Vector2i.ZERO,
+			StringName(id))
+		var point: Node = _kit.get(&"root").get_node(^"Interactables").get_child(-1)
+		var unless: Array[StringName] = [StringName("got_" + id)]
+		point.set(&"unless_flags", unless)
 
 
 ## Escalier d'une case : image du souterrain ramenée à la largeur d'une case, au sol.
