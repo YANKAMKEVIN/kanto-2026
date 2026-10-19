@@ -6,10 +6,10 @@
 		"ramp": { "from_step": 15, "max_steps": 20 },
 		"slots": [
 			{ "species": "oddish", "levels": [24, 24], "weight": 51 },
-			{ "species": "venomoth", "levels": [26, 26], "weight": 76 },
+			{ "species": "venonat", "levels": [26, 26], "weight": 76 },
 			{ "species": "pidgey", "levels": [23, 23], "weight": 39 },
 			{ "species": "oddish", "levels": [22, 22], "weight": 25 },
-			{ "species": "venomoth", "levels": [28, 28], "weight": 25 },
+			{ "species": "venonat", "levels": [28, 28], "weight": 25 },
 			{ "species": "oddish", "levels": [26, 26], "weight": 13 },
 			{ "species": "gloom", "levels": [30, 30], "weight": 13 },
 			{ "species": "pidgeotto", "levels": [28, 28], "weight": 11 },

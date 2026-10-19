@@ -7,9 +7,9 @@
 		"slots": [
 			{ "species": "oddish", "levels": [24, 24], "weight": 51 },
 			{ "species": "pidgey", "levels": [26, 26], "weight": 51 },
-			{ "species": "venomoth", "levels": [24, 24], "weight": 64 },
+			{ "species": "venonat", "levels": [24, 24], "weight": 64 },
 			{ "species": "oddish", "levels": [22, 22], "weight": 25 },
-			{ "species": "venomoth", "levels": [26, 26], "weight": 25 },
+			{ "species": "venonat", "levels": [26, 26], "weight": 25 },
 			{ "species": "oddish", "levels": [26, 26], "weight": 13 },
 			{ "species": "gloom", "levels": [30, 30], "weight": 13 },
 			{ "species": "pidgeotto", "levels": [28, 28], "weight": 11 },

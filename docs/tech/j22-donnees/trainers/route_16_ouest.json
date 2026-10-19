@@ -1,12 +1,12 @@
 {
 	"route_16_biker_1": {
-		"name": "Motard", "ai": "random",
+		"name": "Motard Rudy", "ai": "random",
 		"can_lose": false, "heal_after": false, "gives_exp": true,
 		"prize_money": 0, "prize_per_level": 20,
 		"team": [{ "species": "grimer", "level": 29 }, { "species": "koffing", "level": 29 }]
 	},
 	"route_16_cueball_1": {
-		"name": "Loubard", "ai": "random",
+		"name": "Loubard Brutus", "ai": "random",
 		"can_lose": false, "heal_after": false, "gives_exp": true,
 		"prize_money": 0, "prize_per_level": 25,
 		"team": [
@@ -15,19 +15,19 @@
 		]
 	},
 	"route_16_cueball_2": {
-		"name": "Loubard", "ai": "random",
+		"name": "Loubard Marco", "ai": "random",
 		"can_lose": false, "heal_after": false, "gives_exp": true,
 		"prize_money": 0, "prize_per_level": 25,
 		"team": [{ "species": "mankey", "level": 29 }, { "species": "machop", "level": 29 }]
 	},
 	"route_16_biker_2": {
-		"name": "Motard", "ai": "random",
+		"name": "Motard Jimmy", "ai": "random",
 		"can_lose": false, "heal_after": false, "gives_exp": true,
 		"prize_money": 0, "prize_per_level": 20,
 		"team": [{ "species": "weezing", "level": 33 }]
 	},
 	"route_16_cueball_3": {
-		"name": "Loubard", "ai": "random",
+		"name": "Loubard Bastien", "ai": "random",
 		"can_lose": false, "heal_after": false, "gives_exp": true,
 		"prize_money": 0, "prize_per_level": 25,
 		"team": [{ "species": "machop", "level": 33 }]

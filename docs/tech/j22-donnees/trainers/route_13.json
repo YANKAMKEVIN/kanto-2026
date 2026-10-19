@@ -1,18 +1,18 @@
 {
 	"route_13_bird_1": {
-		"name": "Ornithologue", "ai": "random",
+		"name": "Ornithologue Félix", "ai": "random",
 		"can_lose": false, "heal_after": false, "gives_exp": true,
 		"prize_money": 0, "prize_per_level": 25,
 		"team": [{ "species": "pidgey", "level": 29 }, { "species": "pidgeotto", "level": 29 }]
 	},
 	"route_13_lass_1": {
-		"name": "Jeune Dresseuse", "ai": "random",
+		"name": "Jeune Dresseuse Julie", "ai": "random",
 		"can_lose": false, "heal_after": false, "gives_exp": true,
 		"prize_money": 0, "prize_per_level": 20,
 		"team": [{ "species": "poliwag", "level": 30 }, { "species": "poliwag", "level": 30 }]
 	},
 	"route_13_lass_2": {
-		"name": "Jeune Dresseuse", "ai": "random",
+		"name": "Jeune Dresseuse Camille", "ai": "random",
 		"can_lose": false, "heal_after": false, "gives_exp": true,
 		"prize_money": 0, "prize_per_level": 20,
 		"team": [
@@ -21,7 +21,7 @@
 		]
 	},
 	"route_13_lass_3": {
-		"name": "Jeune Dresseuse", "ai": "random",
+		"name": "Jeune Dresseuse Océane", "ai": "random",
 		"can_lose": false, "heal_after": false, "gives_exp": true,
 		"prize_money": 0, "prize_per_level": 20,
 		"team": [
@@ -30,13 +30,13 @@
 		]
 	},
 	"route_13_beauty": {
-		"name": "Beauté", "ai": "random",
+		"name": "Beauté Margaux", "ai": "random",
 		"can_lose": false, "heal_after": false, "gives_exp": true,
 		"prize_money": 0, "prize_per_level": 70,
 		"team": [{ "species": "clefairy", "level": 29 }, { "species": "meowth", "level": 29 }]
 	},
 	"route_13_biker": {
-		"name": "Motard", "ai": "random",
+		"name": "Motard Steve", "ai": "random",
 		"can_lose": false, "heal_after": false, "gives_exp": true,
 		"prize_money": 0, "prize_per_level": 20,
 		"team": [
@@ -45,7 +45,7 @@
 		]
 	},
 	"route_13_bird_2": {
-		"name": "Ornithologue", "ai": "random",
+		"name": "Ornithologue Simon", "ai": "random",
 		"can_lose": false, "heal_after": false, "gives_exp": true,
 		"prize_money": 0, "prize_per_level": 25,
 		"team": [

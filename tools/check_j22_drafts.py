@@ -9,6 +9,7 @@ dossier 25 (§8.8, §9, §16.4) ; vérifie :
   - les répliques avant / défaite / après **mot pour mot** (§16.4 ; « / » = retour à la ligne) ;
   - le placement : portée = ceil(RB × 1,5), (I) du dossier, au plus un inévitable par route ;
   - les rencontres : format `slots`, poids RB (somme 256), espèces de §8.8 (+ écarts listés) ;
+  - un prénom par Dresseur (« Classe Prénom »), unique, absent de `data/trainers/` ;
   - les espèces utilisées absentes de `data/pokemon/species/` sur la branche (avertissement).
 
 Usage : python3 -I tools/check_j22_drafts.py   (code retour 1 si une erreur, 0 sinon)
@@ -43,13 +44,14 @@ EXTRA_NAMES = {
 	"Magicarpe": "magikarp", "Électrode": "electrode", "Ptitard": "poliwag",
 	"Tadmorv": "grimer", "Grotadmorv": "muk", "Canarticho": "farfetchd", "Doduo": "doduo",
 	"Dodrio": "dodrio", "Saquedeneu": "tangela", "Smogogo": "weezing", "Machopeur": "machoke",
-	"Aéromite": "venomoth",
+	"Aéromite": "venonat",
 }
 
 # Corrections de traduction du dossier, appliquées après les noms des données (signalées à
 # Kevin) : « Boustiflor » du §8.8 et de route_15_lass_1 désigne le GLOOM de RB version Rouge
 # (Ortide) ; Boustiflor = Weepinbell, version Bleue.
-NAME_FIXES = {"Boustiflor": "gloom"}
+NAME_FIXES = {"Boustiflor": "gloom", "Aéromite": "venonat"}
+# « Aéromite » du §8.8 désigne Mimitoss (venonat, n° 48), comme dans RB (correction du 2026-10-19).
 
 # Ligne du §16.4 → Dresseurs. « Motard (16-1, 16-2) » cite aussi le 16-2, qui a sa propre
 # ligne « inévitable » : la ligne la plus précise l'emporte (écart signalé à Kevin).
@@ -182,6 +184,11 @@ def main():
 
 	# --- Brouillons des Dresseurs.
 	found = {}
+	speakers = {}
+	taken = set()
+	for path in glob.glob(os.path.join(ROOT, "data", "trainers", "*.json")):
+		for tr in (load(path) or {}).values():
+			taken.add(str(tr.get("name", "")).split(" ")[-1])
 	for fname in ROUTES:
 		data = load(os.path.join(DRAFTS, "trainers", fname + ".json"))
 		if data is None:
@@ -198,8 +205,13 @@ def main():
 				err("%s : doit être dans %s.json" % (tid, exp["file"]))
 			if set(tr) != TRAINER_KEYS:
 				err("%s : clés %s" % (tid, sorted(set(tr) ^ TRAINER_KEYS)))
-			if tr.get("name") != exp["class"]:
-				err("%s : nom « %s », classe attendue « %s »" % (tid, tr.get("name"), exp["class"]))
+			first = str(tr.get("name", ""))[len(exp["class"]) + 1:]
+			if not str(tr.get("name", "")).startswith(exp["class"] + " ") or " " in first or not first:
+				err("%s : nom « %s », attendu « %s Prénom »" % (tid, tr.get("name"), exp["class"]))
+			elif first in taken:
+				err("%s : prénom « %s » déjà pris" % (tid, first))
+			taken.add(first)
+			speakers[tid] = tr.get("name")
 			cid = class_by_name.get(exp["class"])
 			if cid is None:
 				err("%s : classe « %s » absente de classes.json" % (tid, exp["class"]))
@@ -253,7 +265,7 @@ def main():
 				continue
 			if d["pages"][0].replace("\n", " / ") != text:
 				err("%s : « %s » ≠ dossier « %s »" % (key, d["pages"][0], text))
-			if expected.get(tid) and d["speaker"] != expected[tid]["class"]:
+			if d["speaker"] != speakers.get(tid):
 				err("%s : speaker « %s »" % (key, d["speaker"]))
 	extra = set(dialogues) - {"%s_%s" % (t, s) for t in owner for s in ("before", "defeated", "after")}
 	if extra:

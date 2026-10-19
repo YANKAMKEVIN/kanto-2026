@@ -1,86 +1,86 @@
 {
 	"route_14_bird_1_before": {
-		"speaker": "Ornithologue",
+		"speaker": "Ornithologue Firmin",
 		"pages": ["Mon Canarticho ne quitte jamais\nson poireau. Ni le combat !"]
 	},
 	"route_14_bird_1_defeated": {
-		"speaker": "Ornithologue",
+		"speaker": "Ornithologue Firmin",
 		"pages": ["Il a perdu son poireau…"]
 	},
 	"route_14_bird_1_after": {
-		"speaker": "Ornithologue",
+		"speaker": "Ornithologue Firmin",
 		"pages": ["Il en trouvera un autre."]
 	},
 	"route_14_bird_2_before": {
-		"speaker": "Ornithologue",
+		"speaker": "Ornithologue Hector",
 		"pages": ["Le ciel est à nous !"]
 	},
 	"route_14_bird_2_defeated": {
-		"speaker": "Ornithologue",
+		"speaker": "Ornithologue Hector",
 		"pages": ["Atterrissage forcé !"]
 	},
 	"route_14_bird_2_after": {
-		"speaker": "Ornithologue",
+		"speaker": "Ornithologue Hector",
 		"pages": ["On reprendra de l'altitude."]
 	},
 	"route_14_bird_3_before": {
-		"speaker": "Ornithologue",
+		"speaker": "Ornithologue Anatole",
 		"pages": ["Le ciel est à nous !"]
 	},
 	"route_14_bird_3_defeated": {
-		"speaker": "Ornithologue",
+		"speaker": "Ornithologue Anatole",
 		"pages": ["Atterrissage forcé !"]
 	},
 	"route_14_bird_3_after": {
-		"speaker": "Ornithologue",
+		"speaker": "Ornithologue Anatole",
 		"pages": ["On reprendra de l'altitude."]
 	},
 	"route_14_bird_4_before": {
-		"speaker": "Ornithologue",
+		"speaker": "Ornithologue Lucien",
 		"pages": ["Le ciel est à nous !"]
 	},
 	"route_14_bird_4_defeated": {
-		"speaker": "Ornithologue",
+		"speaker": "Ornithologue Lucien",
 		"pages": ["Atterrissage forcé !"]
 	},
 	"route_14_bird_4_after": {
-		"speaker": "Ornithologue",
+		"speaker": "Ornithologue Lucien",
 		"pages": ["On reprendra de l'altitude."]
 	},
 	"route_14_biker_1_before": {
-		"speaker": "Motard",
+		"speaker": "Motard Johnny",
 		"pages": ["Tu sens cette odeur ?\nC'est mon équipe !"]
 	},
 	"route_14_biker_1_defeated": {
-		"speaker": "Motard",
+		"speaker": "Motard Johnny",
 		"pages": ["Pfff… Ça sent la défaite."]
 	},
 	"route_14_biker_1_after": {
-		"speaker": "Motard",
+		"speaker": "Motard Johnny",
 		"pages": ["La prochaine fois, on t'enfume."]
 	},
 	"route_14_biker_2_before": {
-		"speaker": "Motard",
+		"speaker": "Motard Ricky",
 		"pages": ["Tu sens cette odeur ?\nC'est mon équipe !"]
 	},
 	"route_14_biker_2_defeated": {
-		"speaker": "Motard",
+		"speaker": "Motard Ricky",
 		"pages": ["Pfff… Ça sent la défaite."]
 	},
 	"route_14_biker_2_after": {
-		"speaker": "Motard",
+		"speaker": "Motard Ricky",
 		"pages": ["La prochaine fois, on t'enfume."]
 	},
 	"route_14_biker_3_before": {
-		"speaker": "Motard",
+		"speaker": "Motard Tony",
 		"pages": ["Tu sens cette odeur ?\nC'est mon équipe !"]
 	},
 	"route_14_biker_3_defeated": {
-		"speaker": "Motard",
+		"speaker": "Motard Tony",
 		"pages": ["Pfff… Ça sent la défaite."]
 	},
 	"route_14_biker_3_after": {
-		"speaker": "Motard",
+		"speaker": "Motard Tony",
 		"pages": ["La prochaine fois, on t'enfume."]
 	}
 }
