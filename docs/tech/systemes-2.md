@@ -620,6 +620,14 @@ donnaient plus de 500 000 états. Les cartes `.tscn` (sans vie) attendent le J20
 
 #### T4 — A : `SaveCheckpoint`, révisions, `FOCUS_OUT` (§2.12) — après T1, en parallèle de T3
 
+**Partie pure faite (2026-10-20)** : `game/systems/save/save_checkpoint.gd` : `capture`,
+`note_written` (l'instantané écrit devient le point de reprise, pas plus récent que le disque),
+`decide` (stable → état courant ; instable → point de reprise s'il est plus récent ; rien à moins de
+2 s de la dernière écriture), délai de garde de `FOCUS_OUT` (1 s, un seul déclenchement).
+`test_save_checkpoint.gd`. **Reste après le J20** : branchement dans `Boot` (capture aux passages
+stable → instable, `note_written` dans l'écrivain, `FOCUS_OUT` / `FOCUS_IN` via `SessionLifecycle`),
+tests `Boot` + `MemoryFs`, mesure de la capture sur S24, session S2A (validée seule).
+
 #### T5 — Q : **session S2A** → K (interruptions réelles, §6)
 
 ### 3.3 S2B — État monté, Vélo, Flûte
