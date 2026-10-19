@@ -37,10 +37,13 @@ static func check(item: ItemData, map_id: StringName, caves: CaveLibrary) -> Che
 ## Où la Corde Sortie ramène depuis [param map_id] : la sortie de sa grotte (devant l'entrée
 ## extérieure, tournée vers le sud pour le Mont Sélénite) ; null hors grotte. Depuis n'importe quel
 ## étage, après l'événement compris : toujours la même entrée (dossier 15 §11, jamais le sas).
-static func escape_target(map_id: StringName, caves: CaveLibrary) -> CaveExit:
+## Grotte à deux bouches (jalon 17, Cave Taupiqueur) : la bouche de la moitié où se tient le
+## joueur ([param cell], sa case ; [method CaveLibrary.escape_target]).
+static func escape_target(map_id: StringName, caves: CaveLibrary,
+		cell: Vector2i = CaveLibrary.NO_CELL) -> CaveExit:
 	if caves == null:
 		return null
-	return caves.escape_target(map_id)
+	return caves.escape_target(map_id, cell)
 
 
 ## Vrai si [param item] s'utilise sans choisir de Pokémon (la Corde Sortie) : UTILISER agit

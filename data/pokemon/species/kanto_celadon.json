@@ -1,14 +1,4 @@
 {
-	"growlithe": {
-		"dex": 58, "name": "Caninos", "types": ["fire"],
-		"base_stats": { "hp": 55, "atk": 70, "def": 45, "spa": 70, "spd": 50, "spe": 60 },
-		"male_ratio": 0.75, "growth_rate": "slow", "base_exp": 70, "catch_rate": 190,
-		"learnset": [
-			[1, "bite"], [1, "roar"], [18, "ember"], [23, "leer"], [30, "take_down"], [39, "agility"],
-			[50, "flamethrower"]
-		],
-		"evolutions": [{ "into": "arcanine", "method": "item", "item": "fire_stone" }]
-	},
 	"arcanine": {
 		"dex": 59, "name": "Arcanin", "types": ["fire"],
 		"base_stats": { "hp": 90, "atk": 110, "def": 80, "spa": 100, "spd": 80, "spe": 95 },
@@ -16,16 +6,6 @@
 		"learnset": [
 			[1, "roar"], [1, "ember"], [1, "leer"], [1, "take_down"]
 		]
-	},
-	"vulpix": {
-		"dex": 37, "name": "Goupix", "types": ["fire"],
-		"base_stats": { "hp": 38, "atk": 41, "def": 40, "spa": 50, "spd": 65, "spe": 65 },
-		"male_ratio": 0.25, "growth_rate": "medium_fast", "base_exp": 60, "catch_rate": 190,
-		"learnset": [
-			[1, "ember"], [1, "tail_whip"], [16, "quick_attack"], [21, "roar"], [28, "confuse_ray"],
-			[35, "flamethrower"], [42, "fire_spin"]
-		],
-		"evolutions": [{ "into": "ninetales", "method": "item", "item": "fire_stone" }]
 	},
 	"ninetales": {
 		"dex": 38, "name": "Feunard", "types": ["fire"],

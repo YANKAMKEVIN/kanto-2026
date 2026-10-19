@@ -381,13 +381,14 @@ func test_switch_is_validated() -> void:
 	assert_string_contains(_errors(), "« switch » vaut true ou false")
 
 
-## Seuls Ondine et le rival n° 3 changent de Pokémon (T19) ; ni Pierre ni les autres.
-func test_only_misty_and_the_third_rival_switch() -> void:
+## Seuls Ondine et le rival n° 3 changent de Pokémon (T19) ; ni Pierre ni les autres. Jalon 16
+## (décision de Kevin du 2026-10-15) : le rival n° 4 et Major Bob aussi.
+func test_only_misty_surge_and_the_rivals_switch() -> void:
 	var library := TrainerLibrary.new(_data)
 	assert_true(library.load_dir())
 	# Jalon 20 (T7, dossier 23 §11.3, §13.5) : Erika et Giovanni.
 	var switching: Array[StringName] = [&"cerulean_gym_misty", &"rival_cerulean",
-		&"celadon_gym_erika", &"giovanni_hideout"]
+		&"rival_ss_anne", &"vermilion_gym_surge", &"celadon_gym_erika", &"giovanni_hideout"]
 	for id: StringName in library.get_ids():
 		if not String(id).begins_with("qa_"):
 			assert_eq(library.get_trainer(id).can_switch, switching.has(id), String(id))
@@ -422,4 +423,5 @@ func test_real_rivals_moment_rule() -> void:
 	var library := TrainerLibrary.new(_data)
 	assert_true(library.load_dir())
 	for id: StringName in library.get_ids():
-		assert_eq(library.get_trainer(id).moment_on_win, id == &"rival_cerulean", String(id))
+		assert_eq(library.get_trainer(id).moment_on_win,
+			[&"rival_cerulean", &"rival_ss_anne"].has(id), String(id))

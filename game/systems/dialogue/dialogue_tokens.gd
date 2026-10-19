@@ -33,8 +33,18 @@ const POKEMON: StringName = &"pokemon"
 ## porte). Valeurs fournies par le [DaycareDirector] pendant sa conversation seulement.
 const LEVELS: StringName = &"levels"
 const PRICE: StringName = &"price"
+## Pokédex (jalon 17, jalon-17.md §2.5 ; dossier 20 §16 T-1 à T-3, notés `{n}` et `{reste}`) :
+## espèces capturées, et ce qu'il manque pour [constant CAUGHT_GOAL] (pas de valeur une fois
+## l'objectif atteint : la page « Encore {caught_missing}… » est alors omise). Fournis par Boot
+## ([method caught_values]).
+const CAUGHT: StringName = &"caught"
+const CAUGHT_MISSING: StringName = &"caught_missing"
+## Objectif de l'assistant de Chen (dossier 20 §8, H-9 : CS05 à 10 espèces), le seul seuil du
+## jeu ; un autre seuil passerait par la donnée.
+const CAUGHT_GOAL: int = 10
 ## Jetons permis dans les données.
-const KNOWN: Array[StringName] = [FIRST_WILD_SPECIES, PLAYER, RIVAL, POKEMON, LEVELS, PRICE]
+const KNOWN: Array[StringName] = [FIRST_WILD_SPECIES, PLAYER, RIVAL, POKEMON, LEVELS, PRICE,
+	CAUGHT, CAUGHT_MISSING]
 ## Jetons « de contexte » : toujours fournis par le directeur qui joue les dialogues où ils
 ## figurent (la Pension). Ce sont les seuls permis dans la question d'un choix (T-7, T-8 : « Ce
 ## sera {price} ₽. »), qui ne doit jamais être omise ([DialogueLibrary]).
@@ -135,6 +145,15 @@ static func values_for(first_wild_species: StringName, data: PokemonData,
 	var species := data.get_species(first_wild_species)
 	if species != null and not species.name.is_empty():
 		values[FIRST_WILD_SPECIES] = species.name
+	return values
+
+
+## Valeurs de [constant CAUGHT] et [constant CAUGHT_MISSING] pour [param caught] espèces
+## capturées : [constant CAUGHT_MISSING] seulement sous [constant CAUGHT_GOAL].
+static func caught_values(caught: int) -> Dictionary[StringName, String]:
+	var values: Dictionary[StringName, String] = {CAUGHT: str(maxi(caught, 0))}
+	if caught < CAUGHT_GOAL:
+		values[CAUGHT_MISSING] = str(CAUGHT_GOAL - maxi(caught, 0))
 	return values
 
 

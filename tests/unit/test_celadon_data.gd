@@ -1,6 +1,8 @@
 extends GutTest
-## Données du jalon 20 (T7 ; docs/tech/jalon-20.md §2.10) : 13 espèces (dossier 23 §15.1),
-## évolutions par pierre, 9 capacités (Méga-Sangsue et capacités d'apprentissage), objets
+## Données du jalon 20 (T7 ; docs/tech/jalon-20.md §2.10) : 13 espèces (dossier 23 §15.1), dont
+## Caninos et Goupix, ceux du J17 (`kanto_j17.json`, ancienneté : le J20 leur ajoute seulement la
+## Pierre Feu), évolutions par pierre, 9 capacités (Méga-Sangsue et capacités d'apprentissage ;
+## Bélier et Hurlement sont ceux du J17, `moves/j17.json`), objets
 ## (Super Ball, pierres, boissons, CT13, CT21, Clé Ascenseur, Scope Sylphe), objets et boutiques
 ## qui attendent le moteur du T11 (`data/j20_pending/`), boutiques du grand magasin, rencontres
 ## des Routes 7 et 8, Dresseurs (Route 8, Arène, Casino, repaire, Erika, Giovanni) avec les
@@ -16,6 +18,8 @@ extends GutTest
 const PLAN := "res://docs/tech/jalon-20.md"
 const PENDING_ITEMS := "res://data/j20_pending/items_t11.json"
 const PENDING_SHOPS := "res://data/j20_pending/shops_t11.json"
+## Espèces créées par le J17 (plus ancien, ses données gagnent) : le J20 n'en garde pas de copie.
+const FROM_J17: Array[StringName] = [&"growlithe", &"vulpix"]
 
 ## [dex, nom, types, PV, Att, Déf, Att. Spé., Déf. Spé., Vit., base_exp, capture, mâles,
 ## croissance] : valeurs actuelles de PokeAPI (convention des espèces existantes).
@@ -163,7 +167,8 @@ const ANNEX_TEXTS := {
 	185: ["pending_item", &"x_speed", -1], 186: ["pending_item", &"x_special", -1],
 	187: ["pending_item", &"x_accuracy", -1], 188: ["pending_item", &"dire_hit", -1],
 	189: ["item", &"lift_key", -1],
-	191: ["dex", &"growlithe", -1], 192: ["dex", &"arcanine", -1], 193: ["dex", &"vulpix", -1],
+	# 191 (Caninos) et 193 (Goupix) : fiches du J17 gardées (fusion de main, 2026-10-19).
+	192: ["dex", &"arcanine", -1],
 	194: ["dex", &"ninetales", -1], 195: ["dex", &"eevee", -1], 196: ["dex", &"vaporeon", -1],
 	197: ["dex", &"jolteon", -1], 198: ["dex", &"flareon", -1],
 	199: ["dex", &"victreebel", -1], 200: ["dex", &"tangela", -1],
@@ -205,7 +210,8 @@ func test_species_values_are_the_current_ones() -> void:
 		assert_not_null(species, String(id))
 		if species == null:
 			continue
-		assert_eq(species.source, "res://data/pokemon/species/kanto_celadon.json")
+		var file := "kanto_j17" if FROM_J17.has(id) else "kanto_celadon"
+		assert_eq(species.source, "res://data/pokemon/species/%s.json" % file, String(id))
 		assert_eq([species.dex, species.name], [v[0], v[1]], String(id))
 		var types: Array[StringName] = []
 		types.assign(v[2])

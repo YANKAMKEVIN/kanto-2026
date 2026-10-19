@@ -36,13 +36,15 @@ func _ready() -> void:
 	visible = false
 
 
-## Affiche [param caption] (mis en MAJUSCULES) : fondu, tenue, fondu. Déjà visible, le texte
+## Affiche [param caption] (mis en MAJUSCULES, sauf si [param uppercase] est faux : phrase
+## de mise en scène portant un nom propre, « Pikachu utilise Flash ! ») : fondu, tenue, fondu. Déjà visible, le texte
 ## change et la tenue repart de zéro, sans nouveau fondu d'apparition sec. [param hold] : tenue
 ## de cet affichage (s) ; négative = [member hold_duration] (« BADGE ROCHE » : 2 s, jalon 10).
 ## [param centered] : posée au centre vertical de l'écran au lieu du haut (« BADGE ROCHE » :
 ## en Arène la caméra est fixe et le Champion se tient en haut de la salle).
-func show_caption(caption: String, hold: float = -1.0, centered: bool = false) -> void:
-	text = caption.to_upper()
+func show_caption(caption: String, hold: float = -1.0, centered: bool = false,
+		uppercase: bool = true) -> void:
+	text = caption.to_upper() if uppercase else caption
 	_place(centered)
 	if _tween != null:
 		_tween.kill()

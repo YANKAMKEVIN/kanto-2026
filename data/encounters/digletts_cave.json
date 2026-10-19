@@ -1,0 +1,12 @@
+{
+	"digletts_cave_rubble": {
+		"maps": ["digletts_cave"],
+		"terrain": "rubble",
+		"rate": 25,
+		"ramp": { "from_step": 15, "max_steps": 20 },
+		"slots": [
+			{ "species": "diglett", "levels": [15, 22], "weight": 95 },
+			{ "species": "dugtrio", "levels": [24, 26], "weight": 5 }
+		]
+	}
+}

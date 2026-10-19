@@ -35,7 +35,7 @@ func test_real_file_loads_without_error() -> void:
 	assert_true(_library.load_file(), str(_library.get_errors()))
 	# Jalon 12 (T9) : les trois profils de grotte du Mont Sélénite.
 	assert_eq(_library.get_ids(), [&"golden_hour", &"interior_warm", &"forest", &"cave_1f",
-		&"cave_b1f", &"cave_b2f", &"underground"] as Array[StringName])
+		&"cave_b1f", &"cave_b2f", &"underground", &"cave_sand"] as Array[StringName])
 	assert_eq(LightingLibrary.DATA_PATH, "res://data/world/lighting.json")
 
 

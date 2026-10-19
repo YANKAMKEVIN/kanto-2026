@@ -1,0 +1,637 @@
+{
+	"version": 1,
+	"title": "Équilibrage de la Route 11 et de la Cave Taupiqueur (jalon 17 T8)",
+	"description": "Jalon 17 T8 (dossier 20 §4, §5, §6 ; plan jalon-17 §2.12.3, §2.12.4). Joueur arrivé à Carmin AVANT le S.S. Anne (meneur Nv. 18–22 : fin du J14 de jalon-14.md §9.2, plus les Routes 5 et 6), soigné au Centre de Carmin. Parcours de la grille (tools/plans/route_11.txt, digletts_cave.txt) : D2 Arthur seul inévitable vers la Cave ; groupe « route_11 » : les sept autres Dresseurs, H2 (6 cases obligatoires du parcours nord) et 30 cases de H1 / H3, joués en deux allers depuis le Centre de Carmin (groupe « mi » : Centre entre le parcours nord et l'est ; la route est une impasse à 20–80 pas du Centre) ou avec un soin après chaque Dresseur (groupe « soin » : difficulté de chaque combat seul), puis retour au Centre avant la Cave ; Cave : G2 = 7 cases obligatoires, groupe « gravats » : 20 cases de G1, G3, G4. Cible (défaut du J12, jalon-12.md §8) : joueur attentif au bout sans défaite ≥ 85 %, aucun combat > 40 % de défaites ; plafond : références de Major Bob (dossier 19 : Voltorbe 21, Pikachu 18, Raichu 24). Dresseurs et tables recopiés de data/ (--donnees les relit). Recalage du T8 (tools/sim/route_11_recalage.json) : Ingénieur Victor Nv. 18 → 16 (Magnéti et Magnéton en Électrik / Acier : Herbizarre 21 attentif ne le battait qu'à 61 % au premier essai) ; les autres gardent les niveaux Rouge/Bleu.",
+	"seeds": 500,
+	"heal_at_start": true,
+	"teams": [
+		{
+			"name": "Reptincel 22, Férosinge 19, Roucoups 19, Mystherbe 18",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 22
+				},
+				{
+					"species": "mankey",
+					"level": 19
+				},
+				{
+					"species": "pidgeotto",
+					"level": 19
+				},
+				{
+					"species": "oddish",
+					"level": 18
+				}
+			]
+		},
+		{
+			"name": "Kevin (estimé) : Reptincel 22, Roucoups 19, Nidorino 18, Rattata 17",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 22
+				},
+				{
+					"species": "pidgeotto",
+					"level": 19
+				},
+				{
+					"species": "nidorino",
+					"level": 18
+				},
+				{
+					"species": "rattata",
+					"level": 17
+				}
+			]
+		},
+		{
+			"name": "Herbizarre 21, Roucoups 18, Papilusion 17",
+			"starter": "bulbasaur",
+			"members": [
+				{
+					"species": "ivysaur",
+					"level": 21
+				},
+				{
+					"species": "pidgeotto",
+					"level": 18
+				},
+				{
+					"species": "butterfree",
+					"level": 17,
+					"moves": [
+						"confusion",
+						"tackle",
+						"poison_powder",
+						"stun_spore"
+					]
+				}
+			]
+		},
+		{
+			"name": "Carabaffe 22, Roucoups 19, Papilusion 17",
+			"starter": "squirtle",
+			"members": [
+				{
+					"species": "wartortle",
+					"level": 22
+				},
+				{
+					"species": "pidgeotto",
+					"level": 19
+				},
+				{
+					"species": "butterfree",
+					"level": 17,
+					"moves": [
+						"confusion",
+						"tackle",
+						"poison_powder",
+						"stun_spore"
+					]
+				}
+			]
+		},
+		{
+			"name": "bas : Herbizarre 18, Roucool 15, Papilusion 13",
+			"starter": "bulbasaur",
+			"members": [
+				{
+					"species": "ivysaur",
+					"level": 18
+				},
+				{
+					"species": "pidgey",
+					"level": 15
+				},
+				{
+					"species": "butterfree",
+					"level": 13,
+					"moves": [
+						"tackle",
+						"string_shot",
+						"harden",
+						"confusion"
+					]
+				}
+			]
+		},
+		{
+			"name": "bas : Carabaffe 19, Roucool 16, Papilusion 14",
+			"starter": "squirtle",
+			"members": [
+				{
+					"species": "wartortle",
+					"level": 19
+				},
+				{
+					"species": "pidgey",
+					"level": 16
+				},
+				{
+					"species": "butterfree",
+					"level": 14,
+					"moves": [
+						"tackle",
+						"string_shot",
+						"harden",
+						"confusion"
+					]
+				}
+			]
+		},
+		{
+			"name": "bas : Reptincel 19, Férosinge 16, Roucool 16, Mystherbe 15",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 19
+				},
+				{
+					"species": "mankey",
+					"level": 16
+				},
+				{
+					"species": "pidgey",
+					"level": 16
+				},
+				{
+					"species": "oddish",
+					"level": 15
+				}
+			]
+		}
+	],
+	"tables": {
+		"route_11_grass": {
+			"maps": [
+				"route_11"
+			],
+			"terrain": "grass",
+			"rate": 25,
+			"ramp": {
+				"from_step": 15,
+				"max_steps": 20
+			},
+			"slots": [
+				{
+					"species": "ekans",
+					"levels": [
+						12,
+						15
+					],
+					"weight": 20
+				},
+				{
+					"species": "sandshrew",
+					"levels": [
+						12,
+						15
+					],
+					"weight": 20
+				},
+				{
+					"species": "spearow",
+					"levels": [
+						13,
+						17
+					],
+					"weight": 35
+				},
+				{
+					"species": "drowzee",
+					"levels": [
+						9,
+						15
+					],
+					"weight": 25
+				}
+			]
+		},
+		"digletts_cave_rubble": {
+			"maps": [
+				"digletts_cave"
+			],
+			"terrain": "rubble",
+			"rate": 25,
+			"ramp": {
+				"from_step": 15,
+				"max_steps": 20
+			},
+			"slots": [
+				{
+					"species": "diglett",
+					"levels": [
+						15,
+						22
+					],
+					"weight": 95
+				},
+				{
+					"species": "dugtrio",
+					"levels": [
+						24,
+						26
+					],
+					"weight": 5
+				}
+			]
+		}
+	},
+	"trainers": {
+		"route_11_youngster_lucas": {
+			"name": "Gamin Lucas",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 15,
+			"team": [
+				{
+					"species": "ekans",
+					"level": 21
+				}
+			]
+		},
+		"route_11_youngster_arthur": {
+			"name": "Gamin Arthur",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 15,
+			"team": [
+				{
+					"species": "sandshrew",
+					"level": 19
+				},
+				{
+					"species": "zubat",
+					"level": 19
+				}
+			]
+		},
+		"route_11_youngster_louis": {
+			"name": "Gamin Louis",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 15,
+			"team": [
+				{
+					"species": "rattata",
+					"level": 17
+				},
+				{
+					"species": "rattata",
+					"level": 17
+				},
+				{
+					"species": "raticate",
+					"level": 17
+				}
+			]
+		},
+		"route_11_youngster_raphael": {
+			"name": "Gamin Raphaël",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 15,
+			"team": [
+				{
+					"species": "nidoran_m",
+					"level": 18
+				},
+				{
+					"species": "nidorino",
+					"level": 18
+				}
+			]
+		},
+		"route_11_gambler_marcel": {
+			"name": "Joueur Marcel",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 70,
+			"team": [
+				{
+					"species": "voltorb",
+					"level": 18
+				},
+				{
+					"species": "magnemite",
+					"level": 18
+				}
+			]
+		},
+		"route_11_gambler_roger": {
+			"name": "Joueur Roger",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 70,
+			"team": [
+				{
+					"species": "growlithe",
+					"level": 18,
+					"moves": [
+						"bite",
+						"leer",
+						"ember"
+					]
+				},
+				{
+					"species": "vulpix",
+					"level": 18
+				}
+			]
+		},
+		"route_11_engineer_bruno": {
+			"name": "Ingénieur Bruno",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 50,
+			"team": [
+				{
+					"species": "magnemite",
+					"level": 21
+				}
+			]
+		},
+		"route_11_engineer_victor": {
+			"name": "Ingénieur Victor",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 50,
+			"team": [
+				{
+					"species": "magnemite",
+					"level": 16
+				},
+				{
+					"species": "magnemite",
+					"level": 16
+				},
+				{
+					"species": "magneton",
+					"level": 16
+				}
+			]
+		}
+	},
+	"steps": [
+		{
+			"label": "Centre de Carmin (départ)",
+			"center": true
+		},
+		{
+			"label": "D2 Gamin Arthur (inévitable)",
+			"trainer": "route_11_youngster_arthur"
+		},
+		{
+			"label": "Centre (soin après D2)",
+			"center": true,
+			"optional": "soin"
+		},
+		{
+			"label": "D1 Gamin Lucas",
+			"trainer": "route_11_youngster_lucas",
+			"optional": "route_11"
+		},
+		{
+			"label": "Centre (soin après D1)",
+			"center": true,
+			"optional": "soin"
+		},
+		{
+			"label": "D3 Gamin Louis",
+			"trainer": "route_11_youngster_louis",
+			"optional": "route_11"
+		},
+		{
+			"label": "Centre (soin après D3)",
+			"center": true,
+			"optional": "soin"
+		},
+		{
+			"label": "Route 11 : H2 (6 cases du parcours nord)",
+			"wild": "route_11_grass",
+			"cells": 6,
+			"optional": "route_11"
+		},
+		{
+			"label": "D4 Gamin Raphaël",
+			"trainer": "route_11_youngster_raphael",
+			"optional": "route_11"
+		},
+		{
+			"label": "Centre (soin après D4)",
+			"center": true,
+			"optional": "soin"
+		},
+		{
+			"label": "Centre de Carmin (mi-parcours)",
+			"center": true,
+			"optional": "mi"
+		},
+		{
+			"label": "D8 Ingénieur Victor",
+			"trainer": "route_11_engineer_victor",
+			"optional": "route_11"
+		},
+		{
+			"label": "Centre (soin après D8)",
+			"center": true,
+			"optional": "soin"
+		},
+		{
+			"label": "D7 Ingénieur Bruno",
+			"trainer": "route_11_engineer_bruno",
+			"optional": "route_11"
+		},
+		{
+			"label": "Centre (soin après D7)",
+			"center": true,
+			"optional": "soin"
+		},
+		{
+			"label": "D6 Joueur Roger",
+			"trainer": "route_11_gambler_roger",
+			"optional": "route_11"
+		},
+		{
+			"label": "Centre (soin après D6)",
+			"center": true,
+			"optional": "soin"
+		},
+		{
+			"label": "D5 Joueur Marcel",
+			"trainer": "route_11_gambler_marcel",
+			"optional": "route_11"
+		},
+		{
+			"label": "Centre (soin après D5)",
+			"center": true,
+			"optional": "soin"
+		},
+		{
+			"label": "Route 11 : H1, H3 (30 cases)",
+			"wild": "route_11_grass",
+			"cells": 30,
+			"optional": "route_11"
+		},
+		{
+			"label": "Centre de Carmin (avant la Cave)",
+			"center": true,
+			"optional": "route_11"
+		},
+		{
+			"label": "Cave : G2 (7 cases obligatoires)",
+			"wild": "digletts_cave_rubble",
+			"cells": 7
+		},
+		{
+			"label": "Cave : G1, G3, G4 (20 cases)",
+			"wild": "digletts_cave_rubble",
+			"cells": 20,
+			"optional": "gravats"
+		}
+	],
+	"variants": [
+		{
+			"name": "Cave directe, attentif, Centre, 3 Potions, 1 Antidote",
+			"player": "attentif",
+			"center": true,
+			"retries": 5,
+			"items": {
+				"potion": 3,
+				"antidote": 1
+			},
+			"optional": []
+		},
+		{
+			"name": "Route 11 en deux allers, puis Cave, attentif, Centre, 3 Potions, 1 Antidote",
+			"player": "attentif",
+			"center": true,
+			"retries": 5,
+			"items": {
+				"potion": 3,
+				"antidote": 1
+			},
+			"optional": [
+				"route_11",
+				"mi",
+				"gravats"
+			]
+		},
+		{
+			"name": "Route 11, soin après chaque Dresseur, puis Cave, attentif, Centre, 3 Potions, 1 Antidote",
+			"player": "attentif",
+			"center": true,
+			"retries": 5,
+			"items": {
+				"potion": 3,
+				"antidote": 1
+			},
+			"optional": [
+				"route_11",
+				"soin",
+				"gravats"
+			]
+		},
+		{
+			"name": "Cave directe, expert, Centre, 3 Potions, 1 Antidote",
+			"player": "expert",
+			"center": true,
+			"retries": 5,
+			"items": {
+				"potion": 3,
+				"antidote": 1
+			},
+			"optional": []
+		},
+		{
+			"name": "Route 11 en deux allers, puis Cave, expert, Centre, 3 Potions, 1 Antidote",
+			"player": "expert",
+			"center": true,
+			"retries": 5,
+			"items": {
+				"potion": 3,
+				"antidote": 1
+			},
+			"optional": [
+				"route_11",
+				"mi",
+				"gravats"
+			]
+		},
+		{
+			"name": "Route 11, soin après chaque Dresseur, puis Cave, expert, Centre, 3 Potions, 1 Antidote",
+			"player": "expert",
+			"center": true,
+			"retries": 5,
+			"items": {
+				"potion": 3,
+				"antidote": 1
+			},
+			"optional": [
+				"route_11",
+				"soin",
+				"gravats"
+			]
+		},
+		{
+			"name": "Cave directe, naïf, Centre",
+			"player": "naif",
+			"center": true,
+			"retries": 5,
+			"optional": []
+		},
+		{
+			"name": "Route 11 en deux allers, puis Cave, naïf, Centre",
+			"player": "naif",
+			"center": true,
+			"retries": 5,
+			"optional": [
+				"route_11",
+				"mi",
+				"gravats"
+			]
+		},
+		{
+			"name": "Route 11, soin après chaque Dresseur, puis Cave, naïf, Centre",
+			"player": "naif",
+			"center": true,
+			"retries": 5,
+			"optional": [
+				"route_11",
+				"soin",
+				"gravats"
+			]
+		}
+	]
+}

@@ -40,15 +40,5 @@
 		"accuracy": 0, "pp": 30,
 		"pending_effects": ["mist"],
 		"description": "Un voile blanc qui protège des baisses de statistiques. Sans effet dans le moteur actuel."
-	},
-	"take_down": {
-		"name": "Bélier", "type": "normal", "category": "physical", "power": 90, "accuracy": 85, "pp": 20,
-		"pending_effects": ["recoil_damage"],
-		"description": "Le lanceur charge la cible de tout son poids et se blesse aussi. Sans effet dans le moteur actuel."
-	},
-	"roar": {
-		"name": "Hurlement", "type": "normal", "category": "status", "accuracy": 100, "pp": 20,
-		"pending_effects": ["force_switch"],
-		"description": "Un cri terrifiant fait fuir la cible. Sans effet dans le moteur actuel."
 	}
 }

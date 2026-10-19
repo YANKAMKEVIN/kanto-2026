@@ -1,0 +1,5 @@
+{
+	"_doc": "Capacités de terrain (jalon 16, dossier 19 §7, jalon-16.md §2.2) : capacité → CS qui la débloque (identifiant d'objet) et drapeau de badge exigé (\"\" = aucun). Lu par FieldMoves. Coupe : CS01 et Badge Cascade (G-3 retranché par Kevin le 2026-10-14). Jalon 17 (dossier 20 H-6, jalon-17.md §2.8) : Flash, CS05, sans badge ; « cue » (T24, facultatif) : texte de la mise en scène (T-17, jeton {pokemon}). Les autres CS arrivent avec leurs jalons.",
+	"cut": { "hm": "hm01", "badge": "badge_cascade" },
+	"flash": { "hm": "hm05", "badge": "", "cue": "{pokemon} utilise Flash !" }
+}

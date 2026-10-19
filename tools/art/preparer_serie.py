@@ -39,9 +39,12 @@ def main() -> None:
 	p.catalogue = json.loads(chemin.read_text())
 	p.objets()
 	p.planches_objets()
+	p.effets()
+	p.pieces()
 	p.sols()
 	p.personnages()
 	p.attentes()
+	p.pokemon_fixes()
 	p.ecrire_catalogue()
 	preparer.reglages_import(partiel)
 

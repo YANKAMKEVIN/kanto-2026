@@ -1,0 +1,158 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/pokemon/painted/ronflex_sheet.png" id="1_kkehn"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_meeng"]
+atlas = ExtResource("1_kkehn")
+region = Rect2(0, 0, 178, 182)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jhnbd"]
+atlas = ExtResource("1_kkehn")
+region = Rect2(356, 0, 178, 182)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jmslx"]
+atlas = ExtResource("1_kkehn")
+region = Rect2(712, 0, 178, 182)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_khjqq"]
+atlas = ExtResource("1_kkehn")
+region = Rect2(0, 0, 178, 182)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1jn42"]
+atlas = ExtResource("1_kkehn")
+region = Rect2(0, 0, 178, 182)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bqal1"]
+atlas = ExtResource("1_kkehn")
+region = Rect2(178, 0, 178, 182)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uyk2t"]
+atlas = ExtResource("1_kkehn")
+region = Rect2(0, 0, 178, 182)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g3y22"]
+atlas = ExtResource("1_kkehn")
+region = Rect2(356, 0, 178, 182)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tu3qw"]
+atlas = ExtResource("1_kkehn")
+region = Rect2(534, 0, 178, 182)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fd5nq"]
+atlas = ExtResource("1_kkehn")
+region = Rect2(356, 0, 178, 182)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qti1e"]
+atlas = ExtResource("1_kkehn")
+region = Rect2(712, 0, 178, 182)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q2t2u"]
+atlas = ExtResource("1_kkehn")
+region = Rect2(890, 0, 178, 182)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mtp02"]
+atlas = ExtResource("1_kkehn")
+region = Rect2(712, 0, 178, 182)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_76qnp"]
+atlas = ExtResource("1_kkehn")
+region = Rect2(0, 0, 178, 182)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_14njo"]
+atlas = ExtResource("1_kkehn")
+region = Rect2(178, 0, 178, 182)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8ho8n"]
+atlas = ExtResource("1_kkehn")
+region = Rect2(0, 0, 178, 182)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_meeng")
+}],
+"loop": 1,
+"name": &"idle_down",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jhnbd")
+}],
+"loop": 1,
+"name": &"idle_left",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jmslx")
+}],
+"loop": 1,
+"name": &"idle_right",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_khjqq")
+}],
+"loop": 1,
+"name": &"idle_up",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 0.15,
+"texture": SubResource("AtlasTexture_1jn42")
+}, {
+"duration": 0.6,
+"texture": SubResource("AtlasTexture_bqal1")
+}, {
+"duration": 0.15,
+"texture": SubResource("AtlasTexture_uyk2t")
+}],
+"loop": 0,
+"name": &"react_down",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 0.15,
+"texture": SubResource("AtlasTexture_g3y22")
+}, {
+"duration": 0.6,
+"texture": SubResource("AtlasTexture_tu3qw")
+}, {
+"duration": 0.15,
+"texture": SubResource("AtlasTexture_fd5nq")
+}],
+"loop": 0,
+"name": &"react_left",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 0.15,
+"texture": SubResource("AtlasTexture_qti1e")
+}, {
+"duration": 0.6,
+"texture": SubResource("AtlasTexture_q2t2u")
+}, {
+"duration": 0.15,
+"texture": SubResource("AtlasTexture_mtp02")
+}],
+"loop": 0,
+"name": &"react_right",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 0.15,
+"texture": SubResource("AtlasTexture_76qnp")
+}, {
+"duration": 0.6,
+"texture": SubResource("AtlasTexture_14njo")
+}, {
+"duration": 0.15,
+"texture": SubResource("AtlasTexture_8ho8n")
+}],
+"loop": 0,
+"name": &"react_up",
+"speed": 1.0
+}]

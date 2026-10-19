@@ -1,0 +1,234 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/map.gd" id="1_sp201"]
+[ext_resource type="Shader" path="res://game/world/lighting/shaders/ground_blend.gdshader" id="2_bwy10"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/ground_pont_teck_01.png" id="3_ce44h"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/ground_chemin_01.png" id="4_830pl"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/ground_paves_01.png" id="5_i22qb"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/ground_sable_01.png" id="6_85r4j"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/ground_eau_01.png" id="7_xpl81"]
+[ext_resource type="Script" path="res://game/world/ground/painted_ground.gd" id="8_j6o44"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/relief_bastingage_01.tscn" id="9_unhip"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/relief_bastingage_sud_01.tscn" id="10_g8sin"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/relief_bastingage_02.tscn" id="11_8m47l"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/relief_bastingage_est_01.tscn" id="12_x4tnt"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/relief_bastingage_angle_ne_01.tscn" id="13_r6y1a"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/relief_bastingage_angle_se_01.tscn" id="14_tm1bd"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/bldg_ss_anne_superstructure_01.tscn" id="15_2ttvq"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/prop_chaises_longues_01.tscn" id="16_h416k"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/prop_bouee_01.tscn" id="17_r6ckf"]
+[ext_resource type="Script" path="res://game/world/warp_point.gd" id="18_3new0"]
+
+[sub_resource type="Image" id="Image_fde83"]
+data = {
+"data": PackedByteArray(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+"format": "RGB8",
+"height": 11,
+"mipmaps": false,
+"width": 26
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_fuyt4"]
+image = SubResource("Image_fde83")
+
+[sub_resource type="Image" id="Image_6oybt"]
+data = {
+"data": PackedByteArray(0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255),
+"format": "RedGreen",
+"height": 11,
+"mipmaps": false,
+"width": 26
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_yl5a2"]
+image = SubResource("Image_6oybt")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_chi5d"]
+shader = ExtResource("2_bwy10")
+shader_parameter/grass_texture = ExtResource("3_ce44h")
+shader_parameter/paving_texture = ExtResource("5_i22qb")
+shader_parameter/path_texture = ExtResource("4_830pl")
+shader_parameter/ground_mask = SubResource("ImageTexture_fuyt4")
+shader_parameter/tile_size = 96.0
+shader_parameter/texture_size = null
+shader_parameter/paving_scale = null
+shader_parameter/path_scale = null
+shader_parameter/earth_color = null
+shader_parameter/has_shore = true
+shader_parameter/shore_mask = SubResource("ImageTexture_yl5a2")
+shader_parameter/sand_texture = ExtResource("6_85r4j")
+shader_parameter/water_texture = ExtResource("7_xpl81")
+shader_parameter/foam_color = null
+shader_parameter/water_texture_size = null
+shader_parameter/foam_strength = 0.3
+shader_parameter/square_shore = true
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_st055"]
+blend_mode = 3
+
+[node name="SsAnneOuterDeck" type="Node2D" unique_id=663054522]
+script = ExtResource("1_sp201")
+map_id = &"ss_anne_outer_deck"
+display_name = "S.S. Anne"
+region = "Le grand paquebot de Kanto"
+size = Vector2i(26, 11)
+blocked_cells = Array[Vector2i]([Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vector2i(4, 0), Vector2i(5, 0), Vector2i(6, 0), Vector2i(7, 0), Vector2i(8, 0), Vector2i(9, 0), Vector2i(10, 0), Vector2i(11, 0), Vector2i(12, 0), Vector2i(13, 0), Vector2i(14, 0), Vector2i(15, 0), Vector2i(16, 0), Vector2i(17, 0), Vector2i(18, 0), Vector2i(19, 0), Vector2i(20, 0), Vector2i(21, 0), Vector2i(22, 0), Vector2i(23, 0), Vector2i(24, 0), Vector2i(25, 0), Vector2i(0, 1), Vector2i(1, 1), Vector2i(2, 1), Vector2i(3, 1), Vector2i(4, 1), Vector2i(5, 1), Vector2i(6, 1), Vector2i(7, 1), Vector2i(8, 1), Vector2i(9, 1), Vector2i(10, 1), Vector2i(11, 1), Vector2i(12, 1), Vector2i(13, 1), Vector2i(14, 1), Vector2i(15, 1), Vector2i(16, 1), Vector2i(17, 1), Vector2i(18, 1), Vector2i(19, 1), Vector2i(20, 1), Vector2i(21, 1), Vector2i(22, 1), Vector2i(23, 1), Vector2i(24, 1), Vector2i(25, 1), Vector2i(0, 2), Vector2i(1, 2), Vector2i(2, 2), Vector2i(3, 2), Vector2i(4, 2), Vector2i(5, 2), Vector2i(6, 2), Vector2i(7, 2), Vector2i(8, 2), Vector2i(9, 2), Vector2i(10, 2), Vector2i(11, 2), Vector2i(12, 2), Vector2i(13, 2), Vector2i(14, 2), Vector2i(15, 2), Vector2i(16, 2), Vector2i(17, 2), Vector2i(18, 2), Vector2i(19, 2), Vector2i(20, 2), Vector2i(21, 2), Vector2i(22, 2), Vector2i(23, 2), Vector2i(24, 2), Vector2i(25, 2), Vector2i(0, 3), Vector2i(25, 3), Vector2i(0, 4), Vector2i(25, 4), Vector2i(0, 5), Vector2i(25, 5), Vector2i(25, 6), Vector2i(0, 7), Vector2i(25, 7), Vector2i(0, 8), Vector2i(25, 8), Vector2i(0, 9), Vector2i(1, 9), Vector2i(2, 9), Vector2i(3, 9), Vector2i(4, 9), Vector2i(5, 9), Vector2i(6, 9), Vector2i(7, 9), Vector2i(8, 9), Vector2i(9, 9), Vector2i(10, 9), Vector2i(11, 9), Vector2i(12, 9), Vector2i(13, 9), Vector2i(14, 9), Vector2i(15, 9), Vector2i(16, 9), Vector2i(17, 9), Vector2i(18, 9), Vector2i(19, 9), Vector2i(20, 9), Vector2i(21, 9), Vector2i(22, 9), Vector2i(23, 9), Vector2i(24, 9), Vector2i(25, 9), Vector2i(0, 10), Vector2i(1, 10), Vector2i(2, 10), Vector2i(3, 10), Vector2i(4, 10), Vector2i(5, 10), Vector2i(6, 10), Vector2i(7, 10), Vector2i(8, 10), Vector2i(9, 10), Vector2i(10, 10), Vector2i(11, 10), Vector2i(12, 10), Vector2i(13, 10), Vector2i(14, 10), Vector2i(15, 10), Vector2i(16, 10), Vector2i(17, 10), Vector2i(18, 10), Vector2i(19, 10), Vector2i(20, 10), Vector2i(21, 10), Vector2i(22, 10), Vector2i(23, 10), Vector2i(24, 10), Vector2i(25, 10)])
+light_profile = &"golden_hour"
+
+[node name="PaintedGround" type="Node2D" parent="." unique_id=1467510539]
+z_index = -3
+material = SubResource("ShaderMaterial_chi5d")
+script = ExtResource("8_j6o44")
+size = Vector2i(26, 11)
+mask = SubResource("ImageTexture_fuyt4")
+shore_mask = SubResource("ImageTexture_yl5a2")
+base_texture = ExtResource("3_ce44h")
+foam_strength = 0.3
+square_shore = true
+
+[node name="GroundDecals" type="Node2D" parent="." unique_id=1205860934]
+z_index = -1
+
+[node name="SeaTint00" type="Polygon2D" parent="GroundDecals" unique_id=1746970836]
+material = SubResource("CanvasItemMaterial_st055")
+color = Color(0.58, 0.68, 0.9, 1)
+polygon = PackedVector2Array(0, 0, 2496, 0, 2496, 192, 0, 192)
+
+[node name="SeaTint01" type="Polygon2D" parent="GroundDecals" unique_id=547520752]
+material = SubResource("CanvasItemMaterial_st055")
+color = Color(0.58, 0.68, 0.9, 1)
+polygon = PackedVector2Array(0, 960, 2496, 960, 2496, 1056, 0, 1056)
+
+[node name="RailN00" parent="GroundDecals" unique_id=1803270923 instance=ExtResource("9_unhip")]
+position = Vector2(96, 288)
+
+[node name="RailS00" parent="GroundDecals" unique_id=51227845 instance=ExtResource("10_g8sin")]
+position = Vector2(96, 997)
+
+[node name="RailN01" parent="GroundDecals" unique_id=857189390 instance=ExtResource("9_unhip")]
+position = Vector2(288, 288)
+
+[node name="RailS01" parent="GroundDecals" unique_id=1573615790 instance=ExtResource("10_g8sin")]
+position = Vector2(288, 997)
+
+[node name="RailN02" parent="GroundDecals" unique_id=2134904770 instance=ExtResource("11_8m47l")]
+position = Vector2(480, 288)
+
+[node name="RailS02" parent="GroundDecals" unique_id=1366378503 instance=ExtResource("10_g8sin")]
+position = Vector2(480, 997)
+
+[node name="RailN03" parent="GroundDecals" unique_id=906685315 instance=ExtResource("9_unhip")]
+position = Vector2(672, 288)
+
+[node name="RailS03" parent="GroundDecals" unique_id=109148019 instance=ExtResource("10_g8sin")]
+position = Vector2(672, 997)
+
+[node name="RailN04" parent="GroundDecals" unique_id=238800523 instance=ExtResource("9_unhip")]
+position = Vector2(864, 288)
+
+[node name="RailS04" parent="GroundDecals" unique_id=1623190517 instance=ExtResource("10_g8sin")]
+position = Vector2(864, 997)
+
+[node name="RailN05" parent="GroundDecals" unique_id=707093127 instance=ExtResource("9_unhip")]
+position = Vector2(1056, 288)
+
+[node name="RailS05" parent="GroundDecals" unique_id=512082411 instance=ExtResource("10_g8sin")]
+position = Vector2(1056, 997)
+
+[node name="RailN06" parent="GroundDecals" unique_id=1896394489 instance=ExtResource("11_8m47l")]
+position = Vector2(1248, 288)
+
+[node name="RailS06" parent="GroundDecals" unique_id=1814459503 instance=ExtResource("10_g8sin")]
+position = Vector2(1248, 997)
+
+[node name="RailN07" parent="GroundDecals" unique_id=1923270174 instance=ExtResource("9_unhip")]
+position = Vector2(1440, 288)
+
+[node name="RailS07" parent="GroundDecals" unique_id=1874124396 instance=ExtResource("10_g8sin")]
+position = Vector2(1440, 997)
+
+[node name="RailN08" parent="GroundDecals" unique_id=1027628468 instance=ExtResource("9_unhip")]
+position = Vector2(1632, 288)
+
+[node name="RailS08" parent="GroundDecals" unique_id=155875039 instance=ExtResource("10_g8sin")]
+position = Vector2(1632, 997)
+
+[node name="RailN09" parent="GroundDecals" unique_id=1450083538 instance=ExtResource("9_unhip")]
+position = Vector2(1824, 288)
+
+[node name="RailS09" parent="GroundDecals" unique_id=1967981264 instance=ExtResource("10_g8sin")]
+position = Vector2(1824, 997)
+
+[node name="RailN10" parent="GroundDecals" unique_id=27233560 instance=ExtResource("11_8m47l")]
+position = Vector2(2016, 288)
+
+[node name="RailS10" parent="GroundDecals" unique_id=1609756337 instance=ExtResource("10_g8sin")]
+position = Vector2(2016, 997)
+
+[node name="RailN11" parent="GroundDecals" unique_id=1222930985 instance=ExtResource("9_unhip")]
+position = Vector2(2208, 288)
+
+[node name="RailS11" parent="GroundDecals" unique_id=1438838164 instance=ExtResource("10_g8sin")]
+position = Vector2(2208, 997)
+
+[node name="RailN12" parent="GroundDecals" unique_id=1847387889 instance=ExtResource("9_unhip")]
+position = Vector2(2400, 288)
+
+[node name="RailS12" parent="GroundDecals" unique_id=1156915769 instance=ExtResource("10_g8sin")]
+position = Vector2(2400, 997)
+
+[node name="RailE0" parent="GroundDecals" unique_id=1638209359 instance=ExtResource("12_x4tnt")]
+position = Vector2(2483, 437)
+
+[node name="RailE1" parent="GroundDecals" unique_id=1795638440 instance=ExtResource("12_x4tnt")]
+position = Vector2(2483, 581)
+
+[node name="RailE2" parent="GroundDecals" unique_id=1001331498 instance=ExtResource("12_x4tnt")]
+position = Vector2(2483, 725)
+
+[node name="RailE3" parent="GroundDecals" unique_id=228543839 instance=ExtResource("12_x4tnt")]
+position = Vector2(2483, 869)
+
+[node name="RailCornerNE" parent="GroundDecals" unique_id=2067522660 instance=ExtResource("13_r6y1a")]
+position = Vector2(2467, 288)
+
+[node name="RailCornerSE" parent="GroundDecals" unique_id=403789620 instance=ExtResource("14_tm1bd")]
+position = Vector2(2467, 997)
+
+[node name="Entities" type="Node2D" parent="." unique_id=764171492]
+unique_name_in_owner = true
+y_sort_enabled = true
+
+[node name="Superstructure" parent="Entities" unique_id=1114364842 instance=ExtResource("15_2ttvq")]
+position = Vector2(62, 806)
+
+[node name="LoungersN" parent="Entities" unique_id=1379180088 instance=ExtResource("16_h416k")]
+position = Vector2(576, 480)
+
+[node name="LoungersS" parent="Entities" unique_id=1899157942 instance=ExtResource("16_h416k")]
+position = Vector2(576, 768)
+
+[node name="LifebuoyN" parent="Entities" unique_id=1974843615 instance=ExtResource("17_r6ckf")]
+position = Vector2(1392, 384)
+
+[node name="LifebuoyS" parent="Entities" unique_id=1615208568 instance=ExtResource("17_r6ckf")]
+position = Vector2(2160, 864)
+
+[node name="Warps" type="Node2D" parent="." unique_id=899855642]
+
+[node name="Door" type="Marker2D" parent="Warps" unique_id=1225142137]
+position = Vector2(48, 672)
+script = ExtResource("18_3new0")
+direction = Vector2i(-1, 0)
+target_map = &"ss_anne_main_deck"
+target_spawn = &"from_outer_deck"
+arrival_facing = Vector2i(-1, 0)
+
+[node name="Interactables" type="Node2D" parent="." unique_id=240199975]
+
+[node name="Spawns" type="Node2D" parent="." unique_id=622462482]
+
+[node name="entrance" type="Marker2D" parent="Spawns" unique_id=524966257]
+position = Vector2(144, 672)
+
+[node name="Triggers" type="Node2D" parent="." unique_id=848010145]

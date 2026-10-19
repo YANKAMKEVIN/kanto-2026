@@ -23,9 +23,14 @@ extends SceneTree
 ##   bâtiments, **S.S. Anne en trois objets** sous une [FlagGate] (`unless ss_anne_departed`,
 ##   contrat du J16) avec la passerelle, bittes, cordage, caisses, grue, bancs, arbres, buissons.
 ## - Passages : nord (30..32, 0) PUSH ↑ → `route_6` / `from_vermilion_w|c|e` (arrivées ici
-##   `from_route_6_w|c|e`) ; est (63, 11..13) PUSH → « Route 11 — À venir » (retour sur la case,
-##   tourné ←) ; portes des sept bâtiments ; Arène et embarquement : « À venir », inatteignables
-##   (arbre, marin et cordage).
+##   `from_route_6_w|c|e`) ; est (63, 11..13) PUSH → `route_11` / `from_vermilion_n|c|s` (T17 du
+##   J17 ; retour sur la case, tourné ←) ; portes des sept bâtiments, dont l'Arène
+##   (`vermilion_gym` / `entrance`, derrière le jeune arbre) ; embarquement `BoardingW|E` →
+##   `ss_anne_main_deck` / `from_ss_anne_w|e` (jalon 16 T15, derrière le marin et le cordage).
+## - Jalon 16 T15 (`jalon-16.md` §0.3) : examen du jeune arbre = dialogue `cut_tree` (Coupe) ;
+##   **garde-fou** après le départ du navire : [FlagGate] sans image `Entities/GangwayGuard`
+##   (`if ss_anne_departed`) qui occupe la passerelle et l'accès (31..32, 27..28), sur l'eau une
+##   fois le navire et la passerelle cachés.
 
 const Kit := preload("res://tools/vermilion_map_kit.gd")
 const PLAN_PATH: String = "res://tools/plans/vermilion_city.txt"
@@ -50,6 +55,14 @@ const EAST_SUFFIXES: Array[String] = ["n", "c", "s"]
 ## Drapeaux du contrat du J16 (dossier 18 §17, plan §2.9 ; noms à confirmer avec le J16).
 const SHIP_FLAG: StringName = &"ss_anne_departed"
 const BUSH_FLAG: StringName = &"cut_vermilion_gym_bush"
+## Dialogue de l'examen du jeune arbre (jalon 16 T15 : les quatre états de Coupe, `cut_tree.json`).
+const BUSH_DIALOGUE: StringName = &"cut_tree"
+## Garde-fou après le départ (jalon 16 T15) : passerelle et accès, sur l'eau une fois le navire
+## parti ([FlagGate] sans image, `if ss_anne_departed`).
+const GANGWAY_GUARD_CELLS: Array[Vector2i] = [
+	Vector2i(31, 27), Vector2i(32, 27), Vector2i(31, 28), Vector2i(32, 28),
+]
+const SHIP_MAP: StringName = &"ss_anne_main_deck"
 
 ## Bâtiments : [objet, position des portes dans la grille, nœud, intérieur, spawn d'ici (devant
 ## la porte), libellé « à venir » (vide = intérieur construit)].
@@ -59,8 +72,7 @@ const BUILDINGS: Array = [
 	["bldg_fan_club_01", "porte_fan_club", "FanClub", &"vermilion_fan_club", "from_fan_club", ""],
 	["bldg_centre_01", "porte_centre", "PokemonCenter", &"vermilion_center", "from_center", ""],
 	["bldg_boutique_01", "porte_boutique", "PokeMart", &"vermilion_mart", "from_mart", ""],
-	["bldg_arene_carmin_01", "porte_arene", "Gym", &"", "from_gym",
-		"Arène de Carmin-sur-Mer"],
+	["bldg_arene_carmin_01", "porte_arene", "Gym", &"vermilion_gym", "from_gym", ""],
 	["bldg_maison_pecheur_01", "porte_pecheur", "FisherHouse", &"vermilion_fisher_house",
 		"from_fisher_house", ""],
 	["bldg_maison_argenta_01", "porte_maison_2", "House2", &"vermilion_house_2",
@@ -107,9 +119,11 @@ const SHADE_BLUE: float = 1.02
 const MEADOW_ATTEMPTS: int = 700
 const MEADOW_FLOWER_CHANCE: float = 0.35
 const FLOWERS: Array[int] = [1, 3, 5]
-## Départs de débogage : place, quai devant le marin, devant l'Arène.
+## Départs de débogage : place, quai devant le marin (aussi l'arrivée après le départ du navire,
+## jalon 16 T15), devant l'Arène, sous le jeune arbre (Coupe, jalon 16 T15).
 const DEBUG_SPAWNS: Array = [
 	["square", Vector2i(31, 18)], ["dock", Vector2i(31, 24)], ["gym_front", Vector2i(48, 11)],
+	["gym_tree", Vector2i(49, 11)],
 ]
 
 var _kit: Object
@@ -212,10 +226,12 @@ func _add_passages() -> void:
 		_kit.call(&"add_spawn", "from_route_6_" + SUFFIXES[i], north[i])
 	var east: Array = _plan().call(&"cells_at", "warp_est")
 	for i: int in east.size():
-		var spawn := "from_route_11_" + EAST_SUFFIXES[i]
+		# Jalon 17 (T17) : le bord est mène à la vraie Route 11, rangée pour rangée (0, 11..13),
+		# tourné vers l'est ; retour sur `from_route_11_n|c|s`, tourné vers l'ouest.
 		_kit.call(&"add_warp", "Route11" + EAST_SUFFIXES[i].to_upper(), east[i], Kit.PUSH,
-			Vector2i.RIGHT, &"route_11", StringName(spawn), Vector2i.LEFT, "Route 11")
-		_kit.call(&"add_spawn", spawn, east[i])
+			Vector2i.RIGHT, &"route_11", StringName("from_vermilion_" + EAST_SUFFIXES[i]),
+			Vector2i.RIGHT)
+		_kit.call(&"add_spawn", "from_route_11_" + EAST_SUFFIXES[i], east[i])
 	for entry: Array in BUILDINGS:
 		var doors: Array = _plan().call(&"cells_at", entry[1])
 		var front: Vector2i = (doors[-1] as Vector2i) + Vector2i.DOWN
@@ -230,15 +246,17 @@ func _add_passages() -> void:
 			else:
 				_kit.call(&"add_warp", node, door, Kit.STEP_ON, Vector2i.UP, &"",
 					StringName(entry[4]), Vector2i.DOWN, entry[5])
-	# Embarquement (futur J16) : inatteignable tant que le marin et le cordage gardent la
-	# passerelle ; retour sur la passerelle, tourné ↑.
+	# Embarquement (jalon 16 T15) : vers le pont principal (arrivées `from_ss_anne_w|e` à bord,
+	# tourné ↑) ; retour du navire sur la passerelle (`from_ss_anne_w|e` ici). Inatteignable tant
+	# que le marin et le cordage gardent la passerelle (T12 : contrôle du Passe Bateau), et après
+	# le départ (garde-fou).
 	var boarding: Array = _plan().call(&"cells_at", "embarquement")
 	for i: int in boarding.size():
 		var cell: Vector2i = boarding[i]
 		var spawn: String = "from_ss_anne_" + SUFFIXES[i * 2]
 		_kit.call(&"add_spawn", spawn, cell + Vector2i.UP)
 		_kit.call(&"add_warp", "Boarding" + SUFFIXES[i * 2].to_upper(), cell, Kit.STEP_ON,
-			Vector2i.DOWN, &"", StringName(spawn), Vector2i.UP, "S.S. Anne")
+			Vector2i.DOWN, SHIP_MAP, StringName(spawn), Vector2i.UP)
 	for entry: Array in DEBUG_SPAWNS:
 		_kit.call(&"add_spawn", entry[0], entry[1])
 
@@ -250,7 +268,7 @@ func _add_life() -> void:
 			entry[2])
 	var tree := _box("examen_arbre")
 	_kit.call(&"add_interactable", "GymTreeExamine", tree[0], tree[1], Vector2i.UP,
-		&"vermilion_gym_tree")
+		BUSH_DIALOGUE)
 	var point: Node = _kit.get(&"root").get_node(^"Interactables").get_child(-1)
 	var unless: Array[StringName] = [BUSH_FLAG]
 	point.set(&"unless_flags", unless)
@@ -315,6 +333,17 @@ func _place_ship(entities: Node2D, decals: Node2D) -> void:
 		_kit.call(&"clear_footprint", slice)
 	var gangway := _gate(decals, "Gangway", GANGWAY_FOOT * tile)
 	_kit.call(&"add_prop", gangway, "prop_passerelle_01", Vector2.ZERO, "Passerelle")
+	# Garde-fou (jalon 16 T15) : sans image, n'existe sur la grille qu'après le départ.
+	var guard := Node2D.new()
+	guard.set_script(load("res://game/world/flag_gate.gd"))
+	guard.name = "GangwayGuard"
+	guard.position = (Vector2(GANGWAY_GUARD_CELLS[0]) + Vector2(0.5, 1.0)) * tile
+	var if_flags: Array[StringName] = [SHIP_FLAG]
+	guard.set(&"if_flags", if_flags)
+	var blocking: Array[Vector2i] = []
+	blocking.assign(GANGWAY_GUARD_CELLS)
+	guard.set(&"blocking_cells", blocking)
+	_kit.call(&"attach", entities, guard)
 
 
 func _gate(parent: Node2D, node_name: String, foot: Vector2) -> Node2D:

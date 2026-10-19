@@ -106,6 +106,11 @@ var mass_texture_path: String = MASS_TEXTURE
 var border_color: Color = BORDER_COLOR
 var rubble_mark: String = RUBBLE_MARK
 var rubble_is_logic: bool = true
+## Modules de paroi (faces, bord latéral, lèvre) : ceux de la série 14 par défaut ; la Cave
+## Taupiqueur (série 19, J17 T15) pose les parois de grès.
+var wall_faces: Array[String] = WALL_FACES.duplicate()
+var wall_side: String = WALL_SIDE
+var wall_lip: String = WALL_LIP
 
 ## Halos posés ([method add_glow]) : { "type": StringName, "center": Vector2 } (voile, [method
 ## add_shade]).
@@ -659,7 +664,7 @@ func place_walls(seed_value: int) -> Vector3i:
 				var tall := true
 				for x: int in range(piece.x, piece.x + piece.y):
 					tall = tall and _takes_module(Vector2i(x, y - 1))
-				var id: String = WALL_FACES[wall_rng.randi_range(0, WALL_FACES.size() - 1)]
+				var id: String = wall_faces[wall_rng.randi_range(0, wall_faces.size() - 1)]
 				var foot := Vector2((piece.x + piece.y / 2.0) * TILE, (y + 1) * TILE)
 				var prop := _wall_module(entities, id, foot, piece.y * TILE,
 					-1 if tall else THIN_FACE_HEIGHT, false, "Face%03d" % faces, wall_rng)
@@ -667,9 +672,9 @@ func place_walls(seed_value: int) -> Vector3i:
 				faces += 1
 		for run: Vector2i in _row_runs(y, is_lip_cell):
 			for piece: Vector2i in _pieces(run):
-				var model_height := _texture_of(WALL_LIP).get_height()
+				var model_height := _texture_of(wall_lip).get_height()
 				var foot := Vector2((piece.x + piece.y / 2.0) * TILE, y * TILE + model_height)
-				var prop := _wall_module(decals, WALL_LIP, foot, piece.y * TILE, -1, false,
+				var prop := _wall_module(decals, wall_lip, foot, piece.y * TILE, -1, false,
 					"Lip%03d" % lips, wall_rng)
 				prop.flip_h = wall_rng.randf() < 0.5
 				lips += 1
@@ -699,7 +704,7 @@ func place_walls(seed_value: int) -> Vector3i:
 func _side_slice(cell: Vector2i, part: int, node_name: String,
 		wall_rng: RandomNumberGenerator) -> Sprite2D:
 	var foot := Vector2((cell.x + 0.5) * TILE, (cell.y + 1) * TILE)
-	var sprite := add_sprite(entities, WALL_SIDE, foot, node_name)
+	var sprite := add_sprite(entities, wall_side, foot, node_name)
 	var image_size := sprite.texture.get_size()
 	var y0 := 0.0
 	if part == SIDE_MIDDLE:

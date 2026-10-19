@@ -44,6 +44,34 @@ ceux de l'**annexe A** (à valider). « [D] » = valeur par défaut (règle 4, �
 
 ## 0. État des lieux et écarts
 
+### 0.0 Fusion de `main` à `aebbd857` dans `jalon-20` (2026-10-19)
+
+`main` contient désormais le **J15, le J16 et le J17 terminés**, le découpage du Boot (PR #1 :
+`SaveCoordinator`, `SettingsApplier`, `SessionLifecycle`) et une CI GitHub. Le J18 et le J19 ne
+sont **pas** fusionnés : le T9 reste à faire après eux. Les §0.1 à §0.3 ci-dessous datent de
+`440f9b17` et restent à relire au T9.
+
+- **Apporté par J16 / J17 et utile au J20** : CS01 Coupe hors combat (`FieldMoves`,
+  `data/world/field_moves.json`, deux arbustes au J17), CS05 Flash et voile d'obscurité
+  (`FlashDirector`, `FlashRules`, `"dark": true` dans `caves.json`), compatibilités CS
+  (`hms`, `hm_species` dans `tm_compatibility.json`), Major Bob (carte de Champion), sauvegarde
+  **toujours v7**.
+- **Doublons retirés (ancienneté : le J17 gagne)** : Caninos et Goupix sortent de
+  `kanto_celadon.json` (ceux de `kanto_j17.json`, identiques, restent ; le J20 leur ajoute
+  seulement la Pierre Feu, comme prévu au §2.10.1) ; Bélier et Hurlement sortent de
+  `moves/celadon.json` (ceux de `moves/j17.json`, identiques) ; fiches de Pokédex de Caninos et
+  Goupix : **textes du J17 gardés** (les n° 191 et 193 de l'annexe A ne sont plus utilisés) ;
+  sprites provisoires identiques des deux côtés. Aucun objet, Dresseur, boutique ni table de
+  rencontres en double. `tm_compatibility.json` régénéré (`tools/gen_tm_compatibility.py`) :
+  83 espèces, CT34 79 / 83, entrées de `main` inchangées.
+- **Logique J20 non branchée** (`spin/`, `elevator/`, `gift/`) : APIs appelées inchangées
+  (`GameState.flags/party/storage/rng`, `record_caught`, `stamp_meeting`, `Party.add`,
+  `PokemonStorage.add`, `PokemonFactory.create`, `Pokemon.Origin`), aucune adaptation.
+- **Reste au T9** : fusion du J18 et du J19 (Caninos du J19, effets de Bélier et Hurlement codés
+  au J19, Spectres et Scope Sylphe), relecture des §0.1–0.3 sur le code du moment, branchement
+  dans le Boot découpé (blocs « J20 » dans `boot.gd` ou ses nouveaux coordinateurs), `data/j20_pending/`
+  au T11.
+
 ### 0.1 Ce qui existe pour chaque besoin du dossier (`main` à `440f9b17`)
 
 | Besoin (dossier 23) | Existant sur `main` (vrais noms) | Apporté par J16–J19 (non fusionné) | Manque |

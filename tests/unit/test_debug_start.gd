@@ -734,3 +734,32 @@ func test_companion_must_be_a_party_place() -> void:
 	assert_true(none.add_from_dict({"party": [{"species": "pikachu", "level": 5}]}, _data,
 		_items, "t"))
 	assert_eq(none.companion, -1, "absent : aucun compagnon")
+
+
+# --- Jalon 17 (T9) : voile forcé ---------------------------------------------------------------
+
+func test_veil_forces_the_darkness_on_the_start_map() -> void:
+	var party := [{"species": "pikachu", "level": 5}]
+	var none := DebugStart.new()
+	assert_true(none.add_from_dict({"party": party}, _data, _items, "t"))
+	assert_eq(none.veil, &"", "absent : aucun voile forcé")
+	for value: String in ["dark", "lit", "off"]:
+		var start := DebugStart.new()
+		assert_true(start.add_from_dict({"map": "mt_moon_1f", "spawn": "arrivee_a",
+			"party": party, "veil": value},
+			_data, _items, "t"), value)
+		assert_eq(start.veil, StringName(value))
+	assert_eq(DebugStart.VEIL_DARK, &"dark")
+	assert_eq(DebugStart.VEIL_LIT, &"lit")
+	assert_eq(DebugStart.VEIL_OFF, &"off")
+
+
+func test_veil_is_validated() -> void:
+	var party := [{"species": "pikachu", "level": 5}]
+	var at := {"map": "mt_moon_1f", "spawn": "arrivee_a", "party": party}
+	for dict: Dictionary in [at.merged({"veil": "noir"}), at.merged({"veil": true}),
+			{"party": party, "veil": "dark"}]:
+		var start := DebugStart.new()
+		assert_false(start.add_from_dict(dict, _data, _items, "t"), str(dict))
+		assert_string_contains("\n".join(start.get_errors()), "veil")
+	assert_push_error_count(3, "une erreur par cas")

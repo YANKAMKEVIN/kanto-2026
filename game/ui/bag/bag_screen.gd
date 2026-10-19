@@ -51,7 +51,8 @@ const CATEGORY_TITLES: Dictionary[StringName, String] = {
 	&"ball": "Capture",
 	&"battle": "Combat",
 	&"field": "Aventure",
-	&"tm": "CT",
+	# Jalon 17 (annexe A.3, validée le 2026-10-16) : les CS rejoignent l'onglet.
+	&"tm": "CT et CS",
 	&"key": "Objets clés",
 }
 const CATEGORY_CAPTIONS: Dictionary[StringName, String] = {

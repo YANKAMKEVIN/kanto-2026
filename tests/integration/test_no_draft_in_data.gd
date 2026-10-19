@@ -7,7 +7,12 @@ extends GutTest
 const DATA_DIR := "res://data"
 ## Brouillons en attente de validation, nommés un par un (chemin relevé par [method _collect_drafts]).
 ## Une fois validés, retirer leur « draft » et les sortir d'ici (le test vérifie qu'ils sont
-## encore en brouillon). Vide depuis la validation de l'annexe A du jalon 15 (2026-10-14).
+## encore en brouillon). Vide depuis la validation de l'annexe A du jalon 17 (Q-2, 2026-10-16) :
+## fiches de Pokédex, accord de T-2 à une espèce, sous-titres (en attente de leurs cartes dans
+## `tools/pending_data/j17/zones.json`, sans « draft »).
+## Jalon 16 (T11) : description de la zone du S.S. Anne sur la Carte, validée le 2026-10-16.
+## Jalon 16 (décisions du 2026-10-16) : indice du guide de l'Arène de Carmin (type Sol contre
+## Major Bob), validé par Kevin le 2026-10-16.
 const PENDING_DRAFTS: Array[String] = []
 
 
