@@ -154,5 +154,163 @@
 				]
 			}
 		]
+	},
+	"tower_purified_zone": {
+		"variants": [
+			{
+				"steps": [
+					{
+						"flash": 1
+					},
+					{
+						"dialogue": "tower_purified_zone_heal"
+					},
+					{
+						"dialogue": "tower_purified_zone_done"
+					}
+				]
+			}
+		]
+	},
+	"tower_3f_objet_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_tower_3f_objet_1"
+				],
+				"steps": [
+					{
+						"despawn": "tower_3f_objet_1"
+					},
+					{
+						"give": "escape_rope",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_tower_3f_objet_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"tower_4f_objet_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_tower_4f_objet_1"
+				],
+				"steps": [
+					{
+						"despawn": "tower_4f_objet_1"
+					},
+					{
+						"give": "awakening",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_tower_4f_objet_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"tower_4f_objet_2": {
+		"variants": [
+			{
+				"unless": [
+					"got_tower_4f_objet_2"
+				],
+				"steps": [
+					{
+						"despawn": "tower_4f_objet_2"
+					},
+					{
+						"give": "super_potion",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_tower_4f_objet_2"
+						]
+					}
+				]
+			}
+		]
+	},
+	"tower_5f_objet_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_tower_5f_objet_1"
+				],
+				"steps": [
+					{
+						"despawn": "tower_5f_objet_1"
+					},
+					{
+						"give": "nugget",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_tower_5f_objet_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"tower_6f_objet_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_tower_6f_objet_1"
+				],
+				"steps": [
+					{
+						"despawn": "tower_6f_objet_1"
+					},
+					{
+						"give": "super_potion",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_tower_6f_objet_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"tower_5f_cache_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_tower_5f_cache_1"
+				],
+				"steps": [
+					{
+						"give": "super_potion",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_tower_5f_cache_1"
+						]
+					}
+				]
+			}
+		]
 	}
 }

@@ -64,6 +64,8 @@ const MAPS: Array[StringName] = [
 	&"pokemon_tower_1f",
 	# Jalon 19 (T17) : les deux cases du rival n° 5.
 	&"pokemon_tower_2f",
+	# Jalon 19 (T18) : zone purifiée du 5F et objets des 3F à 6F (PNJ « objet » de leurs fichiers).
+	&"pokemon_tower_3f", &"pokemon_tower_4f", &"pokemon_tower_5f",
 ]
 ## Jalon 7 (T18) : partie qui revient au labo avec le colis (rival parti après le combat).
 const PARCEL_FLAGS: Array[StringName] = [
@@ -228,6 +230,11 @@ const VARIANT_FLAGS: Dictionary = {
 	&"route_10_reached": [PEWTER_FLAGS], &"dark_cave_crossed": [PEWTER_FLAGS],
 	&"tower_6f_ghost": [PEWTER_FLAGS], &"tower_guardian": [PEWTER_FLAGS],
 	&"tower_rival": [PEWTER_FLAGS],
+	# Jalon 19 (T18) : zone purifiée et objets de la Tour.
+	&"tower_purified_zone": [PEWTER_FLAGS], &"tower_3f_objet_1": [PEWTER_FLAGS],
+	&"tower_4f_objet_1": [PEWTER_FLAGS], &"tower_4f_objet_2": [PEWTER_FLAGS],
+	&"tower_5f_objet_1": [PEWTER_FLAGS], &"tower_5f_cache_1": [PEWTER_FLAGS],
+	&"tower_6f_objet_1": [PEWTER_FLAGS],
 	&"route_10_item_1": [PEWTER_FLAGS], &"dark_cave_1f_item_1": [PEWTER_FLAGS],
 	&"dark_cave_1f_item_2": [PEWTER_FLAGS], &"dark_cave_b1f_item_1": [PEWTER_FLAGS],
 	&"dark_cave_b1f_hidden_1": [PEWTER_FLAGS], &"lavender_reached": [PEWTER_FLAGS],
@@ -313,6 +320,10 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"route_10_item_1": &"route_10", &"dark_cave_1f_item_1": &"dark_cave_1f",
 	&"dark_cave_1f_item_2": &"dark_cave_1f", &"dark_cave_b1f_item_1": &"dark_cave_b1f",
 	&"dark_cave_b1f_hidden_1": &"dark_cave_b1f",
+	# Jalon 19 (T18) : objets de la Tour (PNJ « objet » ; l'objet caché : point d'examen du 5F).
+	&"tower_3f_objet_1": &"pokemon_tower_3f", &"tower_4f_objet_1": &"pokemon_tower_4f",
+	&"tower_4f_objet_2": &"pokemon_tower_4f", &"tower_5f_objet_1": &"pokemon_tower_5f",
+	&"tower_5f_cache_1": &"pokemon_tower_5f", &"tower_6f_objet_1": &"pokemon_tower_6f",
 }
 ## Scènes à déclencheur dont la carte n'est pas encore construite → leur carte (simulées sur les
 ## PNJ de son fichier). Vidée au T19 du jalon 9 (la forêt existe), puis au T11 du jalon 10 (les
@@ -416,7 +427,10 @@ func test_library_loads_without_error() -> void:
 		&"cut_tree_route_2_east_bush", &"cut_tree_route_2_futur_a",
 		# Jalon 18 (T15) : l'arbre de la sortie est d'Azuria.
 		&"cut_tree_cerulean_east", &"tower_6f_ghost", &"tower_guardian",
-		&"tower_rival"] + J18_IDS))
+		&"tower_rival",
+		# Jalon 19 (T18) : zone purifiée, objets de la Tour (cinq visibles, un caché).
+		&"tower_purified_zone", &"tower_3f_objet_1", &"tower_4f_objet_1", &"tower_4f_objet_2",
+		&"tower_5f_objet_1", &"tower_5f_cache_1", &"tower_6f_objet_1"] + J18_IDS))
 
 
 func _sorted(values: Array) -> Array[StringName]:
@@ -545,6 +559,9 @@ func test_only_world_items_are_found_items() -> void:
 		"ss_anne_item_01:potion", "ss_anne_item_02:potion", "ss_anne_item_03:super_potion",
 		"ss_anne_item_04:super_potion", "ss_anne_item_05:super_potion",
 		"ss_anne_item_06:paralyze_heal",
+		"tower_3f_objet_1:escape_rope", "tower_4f_objet_1:awakening",
+		"tower_4f_objet_2:super_potion", "tower_5f_cache_1:super_potion",
+		"tower_5f_objet_1:nugget", "tower_6f_objet_1:super_potion",
 		"underground_hidden_1:full_restore",
 		"viridian_forest_item_1:antidote", "viridian_forest_item_2:poke_ball",
 		"viridian_forest_item_3:potion", "viridian_forest_item_4:antidote",

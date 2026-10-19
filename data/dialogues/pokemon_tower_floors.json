@@ -265,5 +265,42 @@
 		"pages": [
 			"On dit que Sylphe SARL a inventé un appareil qui révèle les spectres. Un Scope… Avec ça, on saurait enfin ce qui hante cette tour."
 		]
+	},
+	"tower_exorcist_calm": {
+		"speaker": "Exorciste",
+		"pages": [
+			"Cette dalle a été bénie. Les esprits ne la franchissent pas. Reposez-vous."
+		]
+	},
+	"tower_purified_zone_heal": {
+		"narration": true,
+		"action": "heal",
+		"pages": [
+			"Une lumière douce vous enveloppe. Cette zone est purifiée et protégée."
+		]
+	},
+	"tower_purified_zone_done": {
+		"narration": true,
+		"pages": [
+			"Votre équipe est entièrement soignée."
+		]
+	},
+	"tower_3f_objet_1": {
+		"cutscene": "tower_3f_objet_1"
+	},
+	"tower_4f_objet_1": {
+		"cutscene": "tower_4f_objet_1"
+	},
+	"tower_4f_objet_2": {
+		"cutscene": "tower_4f_objet_2"
+	},
+	"tower_5f_objet_1": {
+		"cutscene": "tower_5f_objet_1"
+	},
+	"tower_6f_objet_1": {
+		"cutscene": "tower_6f_objet_1"
+	},
+	"tower_5f_cache_1": {
+		"cutscene": "tower_5f_cache_1"
 	}
 }
