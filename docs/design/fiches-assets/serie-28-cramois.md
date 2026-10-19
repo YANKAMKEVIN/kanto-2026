@@ -1,5 +1,7 @@
 # Série 28 (numéro PROVISOIRE) — Cramois'Île : Manoir Pokémon, Arène d'Auguste, réserve du Musée (jalon 25, lot 25.0, T10 à T12)
 
+> **VALIDÉE par Kevin le 2026-10-19** (planche `build/art/SERIE28_CONTROLE_v1.png`), méthode des cartes par kit modulaire comprise. **Provisoires, à refaire plus tard** [D] : dos de Ptéra et de Magmar (peu fidèles, refus de Codex), porte arrière de la façade est du Musée (montre une entrée principale) ; Intello repris du J20 (série 22, à valider avec elle).
+
 > Branche `j25-kit-art` (depuis `jalon-25`). Outil : `tools/art/serie28.py` ; prompts : `tools/art/prompts/serie28/` (décors de combat : `.../serie28/decors/`). Aucune intégration Godot : rien dans `assets/`, aucun manifeste lancé. **État : génération COMPLÈTE (2026-10-19, après la limite d'usage de Codex)**. Planche : `build/art/SERIE28_CONTROLE_v1.png`.
 
 ## Numéro de série
