@@ -74,7 +74,7 @@ ceux de l'**annexe A** (à valider). « [D] » = valeur par défaut (règle 4, �
   boutique `lavender_mart` ont des noms distincts). `tools/art/plan_aplats.py` garde les deux
   côtés ; `celadopole-plan-v1.png` se régénère au pixel près, `plan_check.py` conforme.
 - **Prénoms des Dresseurs de la Route 8 renommés (le J18 les avait pris ; valeur par défaut,
-  règle 4, à confirmer par Kevin)** : Intello Hector → **Intello Anatole**
+  règle 4, validés par Kevin le 2026-10-19)** : Intello Hector → **Intello Anatole**
   (`route_8_nerd_anatole`), Intello Simon → **Intello Firmin** (`route_8_nerd_firmin`),
   Fillette Lou → **Fillette Margot** (`route_8_lass_margot`), Joueur Gilles → **Joueur Fernand**
   (`route_8_gambler_fernand`). Seuls les noms changent : équipes, récompenses et répliques de
