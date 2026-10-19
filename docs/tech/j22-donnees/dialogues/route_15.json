@@ -1,0 +1,86 @@
+{
+	"route_15_lass_1_before": {
+		"speaker": "Jeune Dresseuse Rose",
+		"pages": ["Mes plantes ont poussé\ntout l'été pour ce combat !"]
+	},
+	"route_15_lass_1_defeated": {
+		"speaker": "Jeune Dresseuse Rose",
+		"pages": ["Elles ont fané…"]
+	},
+	"route_15_lass_1_after": {
+		"speaker": "Jeune Dresseuse Rose",
+		"pages": ["Je vais les arroser."]
+	},
+	"route_15_lass_2_before": {
+		"speaker": "Jeune Dresseuse Lou",
+		"pages": ["Mon Mélofée est le plus mignon.\nEt le plus fort !"]
+	},
+	"route_15_lass_2_defeated": {
+		"speaker": "Jeune Dresseuse Lou",
+		"pages": ["Le plus mignon, en tout cas."]
+	},
+	"route_15_lass_2_after": {
+		"speaker": "Jeune Dresseuse Lou",
+		"pages": ["Il dort déjà…"]
+	},
+	"route_15_lass_3_before": {
+		"speaker": "Jeune Dresseuse Capucine",
+		"pages": ["Mes plantes ont poussé\ntout l'été pour ce combat !"]
+	},
+	"route_15_lass_3_defeated": {
+		"speaker": "Jeune Dresseuse Capucine",
+		"pages": ["Elles ont fané…"]
+	},
+	"route_15_lass_3_after": {
+		"speaker": "Jeune Dresseuse Capucine",
+		"pages": ["Je vais les arroser."]
+	},
+	"route_15_beauty_1_before": {
+		"speaker": "Beauté Victoire",
+		"pages": ["J'ai gardé mes premiers Pokémon.\nIls ont grandi avec moi."]
+	},
+	"route_15_beauty_1_defeated": {
+		"speaker": "Beauté Victoire",
+		"pages": ["Ils ont fait de leur mieux."]
+	},
+	"route_15_beauty_1_after": {
+		"speaker": "Beauté Victoire",
+		"pages": ["Je ne les échangerai jamais."]
+	},
+	"route_15_beauty_2_before": {
+		"speaker": "Beauté Hélène",
+		"pages": ["Grodoudou chante si bien…\nTu veux l'entendre ?"]
+	},
+	"route_15_beauty_2_defeated": {
+		"speaker": "Beauté Hélène",
+		"pages": ["Fin du concert !"]
+	},
+	"route_15_beauty_2_after": {
+		"speaker": "Beauté Hélène",
+		"pages": ["Il chantera encore ce soir."]
+	},
+	"route_15_bird_before": {
+		"speaker": "Ornithologue Gustave",
+		"pages": ["Trois têtes valent mieux qu'une !"]
+	},
+	"route_15_bird_defeated": {
+		"speaker": "Ornithologue Gustave",
+		"pages": ["Elles n'étaient pas d'accord…"]
+	},
+	"route_15_bird_after": {
+		"speaker": "Ornithologue Gustave",
+		"pages": ["Les Doduo courent plus qu'ils ne volent."]
+	},
+	"route_15_biker_before": {
+		"speaker": "Motard Mike",
+		"pages": ["On roule, on fume, on gagne !"]
+	},
+	"route_15_biker_defeated": {
+		"speaker": "Motard Mike",
+		"pages": ["On roule, on fume, on perd…"]
+	},
+	"route_15_biker_after": {
+		"speaker": "Motard Mike",
+		"pages": ["Bon. On roule."]
+	}
+}
