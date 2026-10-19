@@ -27,8 +27,22 @@ Comme le J11 pour les statuts et les CT : coder **en une passe** tous les systè
 et d'exploration qui restent, avant d'étendre le contenu.
 
 Périmètre validé par Kevin le 2026-10-19 : Vélo et Piste Cyclable, Surf, Force (rochers, trous), Vol,
-Scope Sylphe, Poké Flûte, états « monté » du joueur, et tout système encore prévu dans un jalon
-de contenu.
+Scope Sylphe, Poké Flûte, états « monté » du joueur, **téléporteurs** et **portes à carte**
+(Carte Magnétique ; ajoutés par Kevin le 2026-10-19 pour le J26, Sylphe SARL), et tout système
+encore prévu dans un jalon de contenu.
+
+Ajoutés par Kevin le 2026-10-19 (deuxième vague) :
+
+- **K.O. en un coup** (effet `ohko`, aujourd'hui en `pending_effects`) : Empal'Korne, Guillotine
+  (J24) et Abîme (CT27, J28), codé une seule fois ;
+- **interrupteurs et barrières** actionnés par les rochers de Force (Route Victoire, J29), à côté de
+  `BoulderRules` ;
+- **sauvegarde à la mise en arrière-plan Android** (appel, notification, verrouillage) : système de
+  sauvegarde, donc **validé seul** (règle 1 de `CLAUDE.md`), utile à tout le jeu (J30 à J36).
+
+**Entrée dans Safrania** (décision de Kevin, 2026-10-19) : faite au **J20**, qui a déjà les boissons
+et les postes de garde (`route_7_gate`, `route_8_gate`) : donner une boisson au garde ouvre la porte,
+comme dans Rouge/Bleu. Le J26 la consomme sans la coder.
 
 Point de départ déjà écrit (message du J24, 2026-10-19) : `jalon-24` (@ `ed306985`) contient une
 logique pure et testée de **Surf et de Force**, sans dépendance à une carte : `GridWorld` (eau
@@ -62,6 +76,11 @@ reste en conception.
 - **Verrou** : 2 suites complètes au maximum en même temps sur le Mac (`KANTO_TEST_SLOTS`), places
   dans `/tmp/kanto2026-test-slots/`, libérées automatiquement si leur processus meurt. Les
   lancements ciblés ne prennent pas de place.
+- **CI sur les branches de jalon** (décision de Kevin, 2026-10-19) : `.github/workflows/godot-tests.yml`
+  se déclenche aussi sur les `push` des branches `jalon-*` (8 lots parallèles sur GitHub). Avant une
+  fusion, une session peut pousser sa branche et lire le résultat de la CI (`gh run list`,
+  `gh run watch`) au lieu de lancer la suite complète sur le Mac. Une branche ne profite du
+  déclencheur qu'après avoir récupéré le workflow de `main`.
 - **Tests lents** : la suite complète affiche à la fin ses 10 scripts les plus lents. Reste à faire :
   alléger les plus lents, sans perdre de couverture.
 
