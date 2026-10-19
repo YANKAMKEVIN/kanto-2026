@@ -20,8 +20,8 @@
 >   RB, Safari Ball (multiplicateur × 2) ;
 > - le **poison grave** (Toxik) ;
 > - les **murs invisibles** et leurs indices (sol, contact) ;
-> - deux CS **sans** mécanique de monde (Surf et Force en combat et en données ; le monde est au
->   J24, P-2 B).
+> - deux CS **sans** mécanique de monde (Surf et Force en combat et en données ; le monde passe à
+>   la **passe systèmes 2**, stratégie d'accélération du 2026-10-19, au lieu du J24 de P-2 B).
 >
 > Le reste (zones, maisons, Gardien, Dresseurs, Koga, objets) est du contenu posé sur des systèmes
 > existants.
@@ -46,6 +46,14 @@ réaligne ce plan sur le code du moment.**
 Références : `CLAUDE.md` (règles 1 à 10), skills `godot-conventions`, `world-tiles`,
 `ui-theme-2026` ; modèles de forme `jalon-21.md`, `jalon-16.md` (`FieldMoves`), `jalon-15.md`
 (Pension : péage et sauvegarde v7).
+
+> **Stratégie d'accélération (Kevin, 2026-10-19, `docs/design/strategie-acceleration.md`).** Le J23
+> ne termine que sa partie indépendante (T2 à T6, faits) et n'ouvre **aucune nouvelle tâche de code**
+> qui dépend d'un autre jalon. Le déplacement par Surf et Force (eau, rochers, trous) est codé dans
+> la **passe systèmes 2**, pas au J23 ni au J24. Art en entre-deux : avant le code, seulement les
+> grilles (faites) et **une vue générale peinte** ; le kit, les personnages et les vues des
+> intérieurs sont produits plus tard par lots. Le code ne bloque jamais sur l'art. Le J23 rentre en
+> code (T9 et suite) quand la passe systèmes 2 et les J19 à J22 sont dans `main`.
 
 ---
 
@@ -135,9 +143,9 @@ rencontre Safari** ; 23C+23D **aucun** système (contenu et données) ; 23E **le
 | T4 logique pure de la rencontre | **maintenant** | Fichiers nouveaux |
 | T5 logique pure du poison grave | **maintenant** | Fichier nouveau ; branchement après T9 |
 | T6 données valides sur `main` | **maintenant** | Espèces, attaques, objets en fichiers nouveaux |
-| T7 kit et lot d'art | **maintenant** | Série à réserver au push (§2.17) |
-| T8 vues peintes | **maintenant** | Grilles validées par Kevin d'abord |
-| T9 alignement | **après la fusion J16 → J22 dans `main`** | Moteur, cartes, Parmanie |
+| T7 kit et lot d'art | **par lots, plus tard** (stratégie 2026-10-19) | Placeholders en attendant ; série à réserver au push (§2.17) |
+| T8 vues peintes | **une vue générale** avant le code ; le reste par lots | Grilles validées par Kevin (2026-10-19) |
+| T9 alignement | **après la fusion J16 → J22 et de la passe systèmes 2 dans `main`** | Moteur, cartes, Parmanie |
 | T10 à T24 | **après T9** | |
 
 ### 1.3 Branches et fichiers chauds
@@ -291,7 +299,9 @@ func flees(speed: int, rng) -> bool   # b = speed*2 ; repas → /4 ; colère →
 - `items/items_j23.json` : `hm03`, `hm04` (catégorie CS du J16, `teaches`).
 - `data/world/field_moves.json` (ajout en fin) : `"surf": { "hm": "hm03", "badge": "badge_soul" }`,
   `"strength": { "hm": "hm04", "badge": "badge_rainbow" }`. **Aucun déclencheur de monde** ne les lit
-  au J23 ; un test vérifie les quatre états de `FieldMoves` pour chacune.
+  au J23 ; un test vérifie les quatre états de `FieldMoves` pour chacune. Si la passe systèmes 2 a
+  déjà posé ces entrées (elle code le déplacement par Surf et Force), le T16 les reprend telles
+  quelles au lieu de les ajouter.
 - Compatibilités : `tm_compatibility.json` **régénéré** (pas fusionné) avec les espèces du J23.
 
 ### 2.11 Rocher fixe du Gardien (T15)
