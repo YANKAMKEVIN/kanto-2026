@@ -57,10 +57,14 @@ reste en conception.
 - **Une seule QA S24 par jalon** pour le contenu simple (routes, Dresseurs, villes). Les
   sous-jalons et les QA séparées restent pour les systèmes risqués (sauvegarde, nouveaux
   systèmes), selon la règle 1 de `CLAUDE.md`.
-- **Art : décision ouverte, à trancher par Kevin.** Option proposée : coder avec le kit existant
-  ou des placeholders, et produire les vues peintes **par lots** (plusieurs jalons d'un coup),
-  dans l'esprit de la règle 3 (visuels provisoires jusqu'à la phase DA). Tant que Kevin n'a pas
-  tranché, on garde le fonctionnement actuel.
+- **Art : décision de Kevin (2026-10-19), entre-deux.**
+  - **Avant le code**, on garde seulement ce qui sert au code : la **grille** (elle fait foi pour
+    la géométrie) et **une vue générale peinte** comme repère d'ambiance.
+  - **Tout le reste est reporté et produit par lots** de plusieurs jalons : décors finaux,
+    personnages, dos et faces de Pokémon, planches. Le jalon est codé et validé sur S24 avec le
+    kit existant ou des placeholders (règle 3).
+  - **Le code ne bloque jamais sur l'art.** Une tâche d'intégration par lot branche l'art produit
+    et le vérifie sur S24.
 
 ### 5. Validations groupées
 
