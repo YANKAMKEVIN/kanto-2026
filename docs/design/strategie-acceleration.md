@@ -132,3 +132,4 @@ Un jalon de contenu devient alors surtout un fichier de données à remplir.
 | Date | Jalons clos depuis le 2026-10-19 | Rythme | Remarque |
 |---|---|---|---|
 | 2026-10-19 | 0 | ≈ 1,2 / jour (base) | stratégie adoptée |
+| 2026-10-19 | 1 (J19) | même jour | J19 clos (T24), fusion dans `main` accordée par Kevin (faite par la session principale) |
