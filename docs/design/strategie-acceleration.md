@@ -26,7 +26,7 @@
 Comme le J11 pour les statuts et les CT : coder **en une passe** tous les systèmes de déplacement
 et d'exploration qui restent, avant d'étendre le contenu.
 
-Périmètre à confirmer par Kevin : Vélo et Piste Cyclable, Surf, Force (rochers, trous), Vol,
+Périmètre validé par Kevin le 2026-10-19 : Vélo et Piste Cyclable, Surf, Force (rochers, trous), Vol,
 Scope Sylphe, Poké Flûte, états « monté » du joueur, et tout système encore prévu dans un jalon
 de contenu.
 
