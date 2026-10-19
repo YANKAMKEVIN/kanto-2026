@@ -19,6 +19,8 @@ var max_hp: int = 1
 var show_hp_numbers: bool = false
 ## Statut durable du Pokémon (&"" = aucun) : la carte pose l'étiquette « PSN » ([StatusView]).
 var status: StringName = StatusRules.NONE
+## Niveau masqué (SPECTRE, jalon 19) : la carte écrit « Nv. ?? » et [member level] est ignoré.
+var level_hidden: bool = false
 
 
 func _init(
@@ -33,7 +35,7 @@ func _init(
 	show_hp_numbers = numbers
 
 
-## Vue affichable : un nom, un niveau ≥ 1, 0 ≤ PV ≤ PV max, PV max ≥ 1.
+## Vue affichable : un nom, un niveau ≥ 1 (ou masqué), 0 ≤ PV ≤ PV max, PV max ≥ 1.
 func is_valid() -> bool:
-	return not display_name.is_empty() and level >= 1 and max_hp >= 1 \
+	return not display_name.is_empty() and (level >= 1 or level_hidden) and max_hp >= 1 \
 		and hp >= 0 and hp <= max_hp

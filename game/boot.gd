@@ -1515,6 +1515,9 @@ func _on_starter_chosen(player_species: StringName, _rival_species: StringName) 
 ## (le rival au labo, décision Q-D). Les sauvages sont enregistrés par l'[EncounterDirector]
 ## au début de la rencontre (une seule observation par rencontre).
 func _on_battle_event(event: BattleEvent) -> void:
+	# SPECTRE (jalon 19, K-9) : un événement masqué n'enregistre rien (ni le 6F scénarisé).
+	if GhostDisguise.is_masked(event):
+		return
 	if event.kind == BattleEvent.Kind.SENT_OUT and event.side == BattleEvent.SideId.FOE \
 			and not _encounters.is_running():
 		GameState.record_seen(event.species_id, _current_map_id())

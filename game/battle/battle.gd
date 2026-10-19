@@ -132,6 +132,17 @@ extends RefCounted
 ##   sans MOVE_USED ni PP ni tirage, avant tout contrôle de statut [D]. **Décision de Kevin** (RB :
 ##   pas de repos après un K.O.) : repos même si le coup met la cible K.O., face au remplaçant.
 ##   Pas de repos après un raté ou sans effet. Perdu au changement, au K.O., à la fin du combat.
+##
+## Mode SPECTRE (jalon 19, `jalon-19.md` §2.3, dossier 22 §6.2 ; [member BattleRules.ghost]) :
+## chaque branche est gardée par les règles, hors mode spectre rien ne change (ni tirage ni
+## ordre). Tout événement du camp adverse est masqué ([GhostDisguise]). L'adversaire ne fait
+## que parler (action SPEAK imposée : ni IA ni tirage → GHOST_SPOKE). Le joueur agit d'abord ;
+## une capacité choisie donne GHOST_SCARED (ni PP, ni tirage, ni décompte de la confusion),
+## sauf sommeil ou gel ([method GhostRule.fear_applies]) qui gardent leur contrôle
+## ([method StatusRules.check_act] : STATUS_PREVENTED, ou STATUS_ENDED puis la peur). La fuite
+## réussit toujours ([member BattleRules.flee_always], sans tirage) ; une Ball n'est jamais
+## légale ([method refuses_balls]) ; soins et changement le sont. La fin de tour ne change
+## pas (poison, brûlure du joueur).
 
 ## REPLACING (jalon 7) : le Pokémon du joueur est K.O., il doit en choisir un autre
 ## ([method replace]) ; ajouté en fin d'enum.
@@ -231,6 +242,7 @@ func start() -> Array[BattleEvent]:
 		return events
 	var started := BattleEvent.new(BattleEvent.Kind.BATTLE_STARTED, BattleEvent.SideId.FOE)
 	started.trainer_name = _foe.trainer_name
+	_disguise(started)
 	events.append(started)
 	_send_out(_foe, events)
 	_send_out(_player, events)
@@ -271,7 +283,7 @@ func is_legal(action: BattleAction) -> bool:
 	if action.kind == BattleAction.Kind.SWITCH:
 		return check_switch(action.target) == SwitchCheck.OK
 	if action.kind == BattleAction.Kind.ITEM:
-		if not can_use_balls():
+		if not can_use_balls() or refuses_balls():
 			return false
 		var item := _rules.items.get_item(action.item_id)
 		return item != null and item.category == ItemData.Category.BALL
@@ -327,6 +339,13 @@ func can_flee() -> bool:
 func can_use_balls() -> bool:
 	return _state == State.CHOOSING and _rules != null and _rules.allow_balls \
 		and _rules.items != null
+
+
+## Vrai si les Balls sont refusées dans ce combat (combat SPECTRE, jalon 19) : le Sac s'ouvre
+## ([method can_use_balls]), mais aucune Ball n'est légale ; le directeur l'annonce sans rien
+## retirer du Sac ni jouer de tour.
+func refuses_balls() -> bool:
+	return _rules != null and _rules.ghost
 
 
 ## Vrai si le joueur peut donner un soin maintenant (règles, objets connus). Ni le Sac ni la
@@ -397,6 +416,11 @@ func submit(action: BattleAction) -> Array[BattleEvent]:
 ## tirages : FleeCalc (roll(256), seulement si la fuite n'est pas assurée), puis, en cas
 ## d'échec, l'IA adverse et l'exécution de son action.
 func _attempt_flee(events: Array[BattleEvent]) -> void:
+	# Combat SPECTRE (jalon 19) : la fuite réussit toujours, sans tirage.
+	if _rules != null and _rules.flee_always:
+		events.append(_event(BattleEvent.Kind.FLED, _player))
+		_finish(Outcome.FLED, events)
+		return
 	var player_speed: int = _player.active.pokemon.stats.get(&"spe", 0)
 	var foe_speed: int = _foe.active.pokemon.stats.get(&"spe", 0)
 	if FleeCalc.can_flee(player_speed, foe_speed, _flee_attempts, _rng):
@@ -495,6 +519,9 @@ func _foe_turn_alone(events: Array[BattleEvent]) -> void:
 ## de son IA. Un changement que le moteur refuse (combat sauvage, place invalide) est remplacé
 ## par une capacité (l'IA ne change plus).
 func _foe_action() -> BattleAction:
+	# Combat SPECTRE (jalon 19) : il ne fait que parler, ni IA ni tirage.
+	if _rules != null and _rules.ghost:
+		return BattleAction.speak()
 	if _foe.active != null and _foe.active.is_action_locked():
 		return BattleAction.move(_foe.active.locked_slot())
 	var action := _foe.ai.choose(_foe, _player, _rng, _data)
@@ -596,6 +623,9 @@ func _status_damage(side: BattleSide, events: Array[BattleEvent]) -> void:
 
 
 func _player_goes_second(player_action: BattleAction, foe_action: BattleAction) -> bool:
+	# Combat SPECTRE (jalon 19) : le joueur d'abord (SPEAK n'a pas de capacité), sans tirage.
+	if foe_action.kind == BattleAction.Kind.SPEAK:
+		return false
 	var player_priority := _priority(_player, player_action)
 	var foe_priority := _priority(_foe, foe_action)
 	if player_priority != foe_priority:
@@ -626,6 +656,13 @@ func _move_id(side: BattleSide, action: BattleAction) -> StringName:
 
 
 func _execute(side: BattleSide, action: BattleAction, events: Array[BattleEvent]) -> void:
+	if action.kind == BattleAction.Kind.SPEAK:
+		_acted.append(side.active)
+		events.append(_event(BattleEvent.Kind.GHOST_SPOKE, side))
+		return
+	if side == _player and _rules != null and _rules.ghost:
+		_ghost_scare(side, events)
+		return
 	var user := side.active
 	var target_side := _foe if side == _player else _player
 	var target := target_side.active
@@ -1168,6 +1205,7 @@ func _pokemon_event(kind: BattleEvent.Kind, side_id: BattleEvent.SideId,
 	event.hp = pokemon.hp
 	event.max_hp = pokemon.max_hp()
 	event.status = pokemon.status
+	_disguise(event)
 	return event
 
 
@@ -1526,3 +1564,34 @@ func _recharge_turn(side: BattleSide, events: Array[BattleEvent]) -> bool:
 	user.recharge_slot = -1
 	events.append(_event(BattleEvent.Kind.RECHARGING, side))
 	return true
+
+
+# --- Jalon 19 : mode SPECTRE (`jalon-19.md` §2.3, dossier 22 §6.2) -------------------------
+
+## Masque [param event] s'il concerne le camp adverse d'un combat SPECTRE ([GhostDisguise]) ;
+## rien hors mode spectre.
+func _disguise(event: BattleEvent) -> void:
+	if _rules != null and _rules.ghost:
+		GhostDisguise.mask(event)
+
+
+## Tour du Pokémon du joueur qui a choisi une capacité en combat SPECTRE : endormi ou gelé, il
+## passe d'abord son contrôle ([method StatusRules.check_act] : STATUS_PREVENTED et rien
+## d'autre, ou STATUS_ENDED puis la peur) ; sinon (paralysie, confusion, aucun statut) la peur
+## seule, sans tirage, sans PP, sans décompte de la confusion [D] : GHOST_SCARED.
+func _ghost_scare(side: BattleSide, events: Array[BattleEvent]) -> void:
+	var pokemon := side.active.pokemon
+	_acted.append(side.active)
+	var status := pokemon.status
+	if not GhostRule.fear_applies(status):
+		var act := StatusRules.check_act(pokemon, _rng)
+		if act == StatusRules.Act.WOKE_UP or act == StatusRules.Act.THAWED:
+			var ended := _event(BattleEvent.Kind.STATUS_ENDED, side)
+			ended.status = status
+			events.append(ended)
+		elif StatusRules.prevents_action(act):
+			var prevented := _event(BattleEvent.Kind.STATUS_PREVENTED, side)
+			prevented.status = status
+			events.append(prevented)
+			return
+	events.append(_event(BattleEvent.Kind.GHOST_SCARED, side))

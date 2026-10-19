@@ -5,9 +5,11 @@ extends RefCounted
 ## MOVE au jalon 4 ; RUN (fuite) au jalon 5B (combat sauvage) ; ITEM (lancer une Ball) au
 ## jalon 5D, et donner un soin à un Pokémon de l'équipe au jalon 6 ([member target] ≥ 0) ;
 ## SWITCH (changer de Pokémon, ÉQUIPE) au jalon 7 ([member target] : le Pokémon envoyé).
+## SPEAK (jalon 19) : le SPECTRE parle, rien d'autre ; imposée par le moteur au camp adverse
+## d'un combat SPECTRE (ni IA ni tirage), jamais légale pour le joueur.
 ## Chaque sorte s'ajoute en fin d'enum pour ne rien décaler.
 
-enum Kind { MOVE, RUN, ITEM, SWITCH }
+enum Kind { MOVE, RUN, ITEM, SWITCH, SPEAK }
 
 ## [member move_index] de Lutte (quand plus aucune capacité n'a de PP).
 const STRUGGLE: int = -1
@@ -65,6 +67,13 @@ static func switch_to(party_index: int) -> BattleAction:
 	var action := BattleAction.new()
 	action.kind = Kind.SWITCH
 	action.target = party_index
+	return action
+
+
+## Action « le SPECTRE parle » (combat SPECTRE, jalon 19) : imposée par le moteur.
+static func speak() -> BattleAction:
+	var action := BattleAction.new()
+	action.kind = Kind.SPEAK
 	return action
 
 
