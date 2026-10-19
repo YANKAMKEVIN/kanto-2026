@@ -84,7 +84,8 @@ func before_all() -> void:
 ## Drapeaux du J19 (§2.13).
 func _j19_flags() -> Array[String]:
 	var flags: Array[String] = [
-		"tower_stairs_open", "rival_tower_won", "rival_tower_lost_once", "rival_tower_retried",
+		"tower_stairs_open", "tower_ghost_met",
+		"rival_tower_won", "rival_tower_lost_once", "rival_tower_retried",
 		"got_tower_3f_objet_1", "got_tower_4f_objet_1", "got_tower_4f_objet_2",
 		"got_tower_5f_objet_1", "got_tower_5f_cache_1", "got_tower_6f_objet_1",
 	]

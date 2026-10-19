@@ -297,6 +297,7 @@ func test_talking_to_the_guardian_before_the_flag_plays_the_j19_scene() -> void:
 	assert_eq(_pages[0], "Ah… C'est vous.\nPardonnez-moi, je priais.")
 	assert_true(GameState.flags.has_flag(&"tower_stairs_open"))
 	assert_false(GameState.flags.has_flag(&"tower_medium_talked"), "T-34 n'est plus joué")
+	assert_eq(library.current(GameState.flags), "monter dans la Tour Pokémon.", "§15.7 (T24)")
 
 
 func test_the_guardian_steps_aside_to_18_3_when_the_stairs_flag_is_raised() -> void:

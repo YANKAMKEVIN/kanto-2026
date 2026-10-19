@@ -29,6 +29,11 @@
 					},
 					{
 						"dialogue": "tower_6f_ghost_after"
+					},
+					{
+						"set": [
+							"tower_ghost_met"
+						]
 					}
 				]
 			}

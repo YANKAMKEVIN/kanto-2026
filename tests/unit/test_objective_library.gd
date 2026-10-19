@@ -18,7 +18,8 @@ func test_real_data_loads_without_error() -> void:
 	# Carmin-sur-Mer, au sud. » en tête (ordre du voyage), devant le S.S. Anne du J14.
 	# Jalon 18 (T16, jalon-18.md §4.13) : ses cinq objectifs en tête, le plus avancé d'abord
 	# (test_j18_data) ; derrière eux, ceux du jalon 16 (T13, T14 : Arène de Carmin, R-9).
-	assert_eq(library.get_ids(), [&"tower_later", &"visit_tower", &"reach_lavender",
+	# Jalon 19 (clôture T24, dossier 22 §15.7) : ses deux objectifs devant ceux du J18.
+	assert_eq(library.get_ids(), [&"see_the_ghosts", &"climb_tower", &"tower_later", &"visit_tower", &"reach_lavender",
 		&"cross_dark_cave", &"cross_route_9", &"face_surge", &"open_surge_barrier",
 		&"go_vermilion_gym", &"hm01_cascade_badge", &"help_captain",
 		&"explore_vermilion", &"go_vermilion", &"ss_anne", &"help_bill",

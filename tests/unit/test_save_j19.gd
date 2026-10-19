@@ -41,7 +41,7 @@ var _shown_lines: Array[String] = []
 
 static func _j19_flags() -> Array[StringName]:
 	var flags: Array[StringName] = [
-		&"tower_stairs_open",
+		&"tower_stairs_open", &"tower_ghost_met",
 		&"rival_tower_won", &"rival_tower_lost_once", &"rival_tower_retried",
 		&"got_tower_3f_objet_1", &"got_tower_4f_objet_1", &"got_tower_4f_objet_2",
 		&"got_tower_5f_objet_1", &"got_tower_5f_cache_1", &"got_tower_6f_objet_1",
@@ -104,7 +104,7 @@ func test_the_jalon_19_adds_no_save_version() -> void:
 
 
 func test_every_flag_of_the_jalon_survives_a_save() -> void:
-	assert_eq(J19_FLAGS.size(), 19, "1 + 3 + 9 + 6 drapeaux (§2.13)")
+	assert_eq(J19_FLAGS.size(), 20, "2 + 3 + 9 + 6 drapeaux (§2.13)")
 	var state := _state()
 	for flag: StringName in J19_FLAGS:
 		state.flags.set_flag(flag)
