@@ -1,4 +1,36 @@
 {
+	"celadon_dept_2f": {
+		"stock": [
+			{ "item": "great_ball" },
+			{ "item": "super_potion" },
+			{ "item": "revive" },
+			{ "item": "antidote" },
+			{ "item": "burn_heal" },
+			{ "item": "ice_heal" },
+			{ "item": "awakening" },
+			{ "item": "paralyze_heal" }
+		]
+	},
+	"celadon_dept_2f_tm": {
+		"stock": [
+			{ "item": "tm01" }
+		]
+	},
+	"celadon_dept_4f": {
+		"stock": [
+			{ "item": "poke_doll" }
+		]
+	},
+	"celadon_dept_5f": {
+		"stock": [
+			{ "item": "x_attack" },
+			{ "item": "x_defend" },
+			{ "item": "x_speed" },
+			{ "item": "x_special" },
+			{ "item": "x_accuracy" },
+			{ "item": "dire_hit" }
+		]
+	},
 	"celadon_dept_4f_stones": {
 		"stock": [
 			{ "item": "fire_stone" },

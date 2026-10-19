@@ -497,3 +497,18 @@ func test_page_voice_spirit_is_read_and_unknown_voice_is_refused() -> void:
 		{"text": "Boo", "voice": "demon"}]}}, "test"))
 	assert_string_contains("\n".join(other.get_errors()), "voice")
 	assert_push_error("voice")
+
+
+## Jalon 20 (§2.9.1) : « shop » choisit la boutique d'un vendeur, seulement avec open_shop.
+func test_shop_key_needs_the_open_shop_action() -> void:
+	assert_true(_library.add_from_dict({"seller": {"pages": ["Bienvenue !"],
+		"action": "open_shop", "shop": "celadon_dept_5f"}}, "test"))
+	assert_eq(_library.get_dialogue(&"seller").variants[0].shop, &"celadon_dept_5f")
+	assert_false(_library.add_from_dict({"a": {"pages": ["x"], "shop": "celadon_dept_4f"}},
+		"test"), "sans action")
+	assert_false(_library.add_from_dict({"b": {"pages": ["x"], "action": "center_heal",
+		"shop": "celadon_dept_4f"}}, "test"), "autre action")
+	assert_false(_library.add_from_dict({"c": {"pages": ["x"], "action": "open_shop",
+		"shop": ""}}, "test"), "identifiant vide")
+	assert_push_error_count(3)
+	assert_eq(_library.size(), 1)

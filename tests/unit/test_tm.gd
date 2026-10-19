@@ -112,7 +112,6 @@ func test_tm_entries_are_validated() -> void:
 		"no_number": [{"teaches": "tackle"}, "« tm »"],
 		"bad_number": [{"tm": 51, "teaches": "tackle"}, "« tm »"],
 		"no_move": [{"tm": 2}, "« teaches »"],
-		"priced": [{"tm": 3, "teaches": "tackle", "price": 3000}, "n'a pas de prix"],
 	}
 	for id: String in cases:
 		var entry: Dictionary = base.duplicate()
@@ -129,4 +128,10 @@ func test_tm_entries_are_validated() -> void:
 	var twin: Dictionary = good.duplicate()
 	assert_false(lib.add_from_dict({"twin": twin}, "t"), "numéro unique")
 	assert_false(lib.check_moves(_data), "capacité inconnue")
-	assert_push_error_count(7)
+	# Jalon 20 (§2.9.2) : une CT peut avoir un prix (achetable une fois), jamais revendue.
+	var priced: Dictionary = base.duplicate()
+	priced.merge({"tm": 3, "teaches": "tackle", "price": 3000})
+	assert_true(lib.add_from_dict({"priced": priced}, "t"))
+	assert_eq(lib.get_item(&"priced").price, 3000)
+	assert_false(lib.get_item(&"priced").is_sellable())
+	assert_push_error_count(6)

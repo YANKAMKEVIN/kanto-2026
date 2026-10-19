@@ -368,8 +368,9 @@ func _advance() -> void:
 
 
 ## Action [param action] : `heal` → [signal heal_requested] ; sinon [member action_handler],
-## attendu.
-func _run_action(action: StringName) -> void:
+## attendu. [param shop] (jalon 20, clé « shop » de `open_shop`) : passé en second argument
+## quand il est renseigné.
+func _run_action(action: StringName, shop: StringName = &"") -> void:
 	if action == &"heal":
 		heal_requested.emit()
 		return
@@ -377,7 +378,10 @@ func _run_action(action: StringName) -> void:
 		push_error("DialogueRunner : action « %s » sans gestionnaire (%s)" % [
 			action, _dialogue.id if _dialogue != null else &""])
 		return
-	await action_handler.call(action)
+	if shop.is_empty():
+		await action_handler.call(action)
+	else:
+		await action_handler.call(action, shop)
 
 
 ## Étape 6 : fermeture, drapeaux, PNJ, joueur, puis signal.
@@ -387,6 +391,7 @@ func _finish() -> void:
 		await _box.close()
 	var dialogue := _dialogue
 	var action := _variant.action
+	var shop := _variant.shop
 	var cutscene := _variant.cutscene
 	if _confirmed and _variant.choice != null and not _variant.choice.confirm_cutscene.is_empty():
 		cutscene = _variant.choice.confirm_cutscene
@@ -394,7 +399,7 @@ func _finish() -> void:
 		for flag: StringName in _variant.set_flags:
 			_flags.set_flag(flag)
 	if not action.is_empty() and action != &"heal":
-		await _run_action(action)
+		await _run_action(action, shop)
 	if is_instance_valid(_npc):
 		_npc.end_interaction()
 	if is_instance_valid(_player):

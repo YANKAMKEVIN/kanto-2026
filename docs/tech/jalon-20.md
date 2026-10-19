@@ -1134,7 +1134,9 @@ commit ; textes **mot pour mot** (§20 et annexe A validée).
   `build_character_frames.gd` (fin), icônes du Sac, fonds de combat (`decors.json`). **CA** : second
   passage sans changement ; `test_painted_props`, `test_battle_stage` verts.
 
-#### T11 — architecte : objets nouveaux et boutiques — (B) → **20.0b**
+#### T11 — architecte : objets nouveaux et boutiques — (B) → **20.0b** — **FAIT le 2026-10-20**
+- Fait : §2.9.1 à §2.9.4 (détail et écarts : `etat-projet.md`, entrée « J20 T11 ») ; §2.9.6
+  (`if_items`) reporté au T25, qui en a besoin le premier.
 - §2.9.1 à §2.9.4 : clé `shop`, CT achetable une fois, `battle_use` (Poupée Poké, objets X),
   `revive` (Rappel) dans `ItemUse` et le combat, `BattleAction.use_item`, `ITEM_ESCAPE`, `REVIVED` ;
   messages (annexe A) dans `data/battle/messages.json`.

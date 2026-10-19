@@ -25,6 +25,8 @@ const OWNED_FORMAT: String = "DANS LE SAC : %d"
 const TEXT_THANKS: String = "Merci !"
 const TEXT_NO_MONEY: String = "Tu n'as pas assez d'argent."
 const TEXT_NOT_SELLABLE: String = "Je ne peux pas te reprendre ça."
+## CT déjà dans le Sac (jalon 20, annexe A, n° 160), à la place du prix.
+const TEXT_ALREADY_OWNED: String = "Déjà dans le Sac"
 ## VENDRE sans rien de vendable.
 const TEXT_NOTHING_TO_SELL: String = "Tu n'as rien à vendre."
 ## Confirmation de la vente d'un favori : « Vendre Potion ? », « Vendre 3 Potions ? ».
@@ -107,8 +109,11 @@ static func _buy_entry(item: ItemData, bag: Bag, money: int) -> ShopEntryView:
 	var entry := _entry(item, bag)
 	entry.unit_price = item.price
 	entry.price_text = MenuFormat.money(item.price)
-	entry.max_quantity = ShopRules.max_buy(item, money)
-	if entry.max_quantity == 0:
+	entry.max_quantity = ShopRules.max_buy(item, money, bag)
+	if item.is_permanent() and bag.has(item.id):
+		entry.price_text = TEXT_ALREADY_OWNED
+		entry.reason = TEXT_ALREADY_OWNED
+	elif entry.max_quantity == 0:
 		entry.reason = TEXT_NO_MONEY
 	return entry
 

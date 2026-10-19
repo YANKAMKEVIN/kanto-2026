@@ -4,6 +4,51 @@
 		"category": "ball", "catch_bonus": 1.5, "price": 600,
 		"description": "Une Ball plus efficace que la Poké Ball."
 	},
+	"revive": {
+		"name": "Rappel", "plural": "Rappels", "feminine": false,
+		"category": "heal", "revive": 0.5, "price": 1500,
+		"description": "Ranime un Pokémon K.O. et lui rend la moitié de ses PV."
+	},
+	"poke_doll": {
+		"name": "Poupée Poké", "plural": "Poupées Poké", "feminine": true,
+		"category": "battle", "battle_use": { "kind": "escape" }, "price": 1000,
+		"description": "Distrait un Pokémon sauvage pour fuir à coup sûr."
+	},
+	"x_attack": {
+		"name": "Attaque +", "plural": "Attaque +", "feminine": true,
+		"category": "battle", "battle_use": { "kind": "stat_stage", "stat": "atk", "stages": 1 },
+		"price": 500,
+		"description": "Augmente l'Attaque d'un Pokémon pendant un combat."
+	},
+	"x_defend": {
+		"name": "Défense +", "plural": "Défense +", "feminine": true,
+		"category": "battle", "battle_use": { "kind": "stat_stage", "stat": "def", "stages": 1 },
+		"price": 550,
+		"description": "Augmente la Défense d'un Pokémon pendant un combat."
+	},
+	"x_speed": {
+		"name": "Vitesse +", "plural": "Vitesse +", "feminine": true,
+		"category": "battle", "battle_use": { "kind": "stat_stage", "stat": "spe", "stages": 1 },
+		"price": 350,
+		"description": "Augmente la Vitesse d'un Pokémon pendant un combat."
+	},
+	"x_special": {
+		"name": "Spécial +", "plural": "Spécial +", "feminine": false,
+		"category": "battle", "battle_use": { "kind": "stat_stage", "stat": "spa", "stages": 1 },
+		"price": 350,
+		"description": "Augmente l'Attaque Spéciale d'un Pokémon pendant un combat."
+	},
+	"x_accuracy": {
+		"name": "Précision +", "plural": "Précision +", "feminine": true,
+		"category": "battle", "battle_use": { "kind": "stat_stage", "stat": "acc", "stages": 1 },
+		"price": 950,
+		"description": "Augmente la précision d'un Pokémon pendant un combat."
+	},
+	"dire_hit": {
+		"name": "Muscle +", "plural": "Muscle +", "feminine": false,
+		"category": "battle", "battle_use": { "kind": "crit_up" }, "price": 650,
+		"description": "Augmente les chances de coup critique pendant un combat."
+	},
 	"fire_stone": {
 		"name": "Pierre Feu", "plural": "Pierres Feu", "feminine": true,
 		"category": "field", "field_use": "evolution_stone", "price": 2100,

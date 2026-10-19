@@ -246,7 +246,8 @@ func test_items() -> void:
 			"Fossile d'un Pokémon ancien à la carapace en dôme."],
 		&"helix_fossil": ["Fossile Nautile", "Fossiles Nautile", false, ItemData.Category.KEY, 0,
 			"Fossile d'un Pokémon ancien à la coquille en spirale."],
-		&"tm01": ["CT01 — Ultimapoing", "CT01 — Ultimapoing", true, ItemData.Category.TM, 0,
+		# Jalon 20 (T11) : prix RB, achetable une fois au grand magasin de Céladopole.
+		&"tm01": ["CT01 — Ultimapoing", "CT01 — Ultimapoing", true, ItemData.Category.TM, 3000,
 			"Un coup de poing d'une force incroyable."],
 	}
 	for id: StringName in expected:

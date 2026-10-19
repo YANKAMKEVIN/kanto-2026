@@ -49,7 +49,7 @@ const ACTIONS: Array[StringName] = [
 const _DIALOGUE_KEYS: Array[String] = ["speaker", "narration", "draft", "variants"]
 const _VARIANT_KEYS: Array[String] = [
 	"pages", "if", "unless", "set", "auto", "heal", "draft", "action", "choice", "cutscene",
-	"one_in", "if_caught_at_least", "unless_caught_at_least", "field",
+	"one_in", "if_caught_at_least", "unless_caught_at_least", "field", "shop",
 ]
 const _CHOICE_KEYS: Array[String] = [
 	"confirm", "cancel", "confirm_action", "confirm_pages", "cancel_pages", "confirm_cutscene",
@@ -236,7 +236,20 @@ func _parse_variant(value: Variant, where: String) -> DialogueVariant:
 	ok = _read_caught(entry, variant, where) and ok
 	if entry.has("field"):
 		ok = _read_field(entry, variant, where) and ok
+	if entry.has("shop"):
+		ok = _read_shop(entry, variant, where) and ok
 	return variant if ok else null
+
+
+## « shop » (jalon 20) : identifiant de boutique non vide, seulement avec « action »: « open_shop ».
+func _read_shop(entry: Dictionary, variant: DialogueVariant, where: String) -> bool:
+	var value: Variant = entry["shop"]
+	if not value is String or (value as String).is_empty():
+		return _fail("%s : « shop » doit être un identifiant de boutique" % where)
+	if variant.action != &"open_shop":
+		return _fail("%s : « shop » seulement avec « action »: « open_shop »" % where)
+	variant.shop = StringName(value)
+	return true
 
 
 ## « if_caught_at_least » / « unless_caught_at_least » (jalon 17) : entiers ≥ 1 ; ensemble, le

@@ -3,8 +3,8 @@ extends GutTest
 ## Caninos et Goupix, ceux du J17 (`kanto_j17.json`, ancienneté : le J20 leur ajoute seulement la
 ## Pierre Feu), évolutions par pierre, 9 capacités (Méga-Sangsue et capacités d'apprentissage ;
 ## Bélier et Hurlement sont ceux du J17, `moves/j17.json`), objets
-## (Super Ball, pierres, boissons, CT13, CT21, Clé Ascenseur, Scope Sylphe), objets et boutiques
-## qui attendent le moteur du T11 (`data/j20_pending/`), boutiques du grand magasin, rencontres
+## (Super Ball, pierres, boissons, CT13, CT21, Clé Ascenseur, Scope Sylphe), objets du moteur du
+## T11 (Rappel, Poupée Poké, objets X, prix de la CT01), boutiques du grand magasin, rencontres
 ## des Routes 7 et 8, Dresseurs (Route 8, Arène, Casino, repaire, Erika, Giovanni) avec les
 ## remplacements d'espèces du plan, entrées du Pokédex. Fichier séparé des tests partagés que
 ## d'autres jalons modifient en parallèle (modèle : test_vermilion_data.gd).
@@ -16,8 +16,6 @@ extends GutTest
 ## Kevin aura corrigé un numéro, ce test montre la donnée à remplacer.
 
 const PLAN := "res://docs/tech/jalon-20.md"
-const PENDING_ITEMS := "res://data/j20_pending/items_t11.json"
-const PENDING_SHOPS := "res://data/j20_pending/shops_t11.json"
 ## Espèces créées par le J17 (plus ancien, ses données gagnent) : le J20 n'en garde pas de copie.
 const FROM_J17: Array[StringName] = [&"growlithe", &"vulpix"]
 
@@ -158,14 +156,14 @@ const TRAINERS := {
 const ANNEX_TEXTS := {
 	126: ["trainer_card", &"celadon_gym_erika", -1],
 	154: ["trainer_card", &"giovanni_hideout", -1],
-	173: ["item", &"great_ball", -1], 174: ["pending_item", &"revive", -1],
-	175: ["pending_item", &"poke_doll", -1], 176: ["item", &"fire_stone", -1],
+	173: ["item", &"great_ball", -1], 174: ["item", &"revive", -1],
+	175: ["item", &"poke_doll", -1], 176: ["item", &"fire_stone", -1],
 	177: ["item", &"water_stone", -1], 178: ["item", &"thunder_stone", -1],
 	179: ["item", &"leaf_stone", -1], 180: ["item", &"fresh_water", -1],
 	181: ["item", &"soda_pop", -1], 182: ["item", &"lemonade", -1],
-	183: ["pending_item", &"x_attack", -1], 184: ["pending_item", &"x_defend", -1],
-	185: ["pending_item", &"x_speed", -1], 186: ["pending_item", &"x_special", -1],
-	187: ["pending_item", &"x_accuracy", -1], 188: ["pending_item", &"dire_hit", -1],
+	183: ["item", &"x_attack", -1], 184: ["item", &"x_defend", -1],
+	185: ["item", &"x_speed", -1], 186: ["item", &"x_special", -1],
+	187: ["item", &"x_accuracy", -1], 188: ["item", &"dire_hit", -1],
 	189: ["item", &"lift_key", -1],
 	# 191 (Caninos) et 193 (Goupix) : fiches du J17 gardées (fusion de main, 2026-10-19).
 	192: ["dex", &"arcanine", -1],
@@ -185,8 +183,6 @@ var _data: PokemonData
 var _items: ItemLibrary
 var _trainers: TrainerLibrary
 var _plan: String
-var _pending_items: Dictionary
-var _pending_shops: Dictionary
 
 
 func before_all() -> void:
@@ -197,8 +193,6 @@ func before_all() -> void:
 	_trainers = TrainerLibrary.new(_data)
 	_trainers.load_dir()
 	_plan = FileAccess.get_file_as_string(PLAN)
-	_pending_items = JSON.parse_string(FileAccess.get_file_as_string(PENDING_ITEMS))
-	_pending_shops = JSON.parse_string(FileAccess.get_file_as_string(PENDING_SHOPS))
 
 
 # --- Espèces ----------------------------------------------------------------------------
@@ -341,39 +335,30 @@ func test_new_items() -> void:
 	assert_false(scope.draft)
 
 
-func test_pending_items_wait_for_the_engine() -> void:
-	# Objets du T11 : jamais chargés par ItemLibrary avant que le moteur lise leurs clés.
-	var pending: Dictionary = _pending_items["items"]
-	var expected := {&"revive": ["heal", 1500], &"poke_doll": ["battle", 1000],
-		&"x_attack": ["battle", 500], &"x_defend": ["battle", 550], &"x_speed": ["battle", 350],
-		&"x_special": ["battle", 350], &"x_accuracy": ["battle", 950], &"dire_hit": ["battle", 650]}
-	assert_eq(pending.size(), expected.size())
+func test_engine_items_of_t11() -> void:
+	# Objets du T11 (§2.9.3, §2.9.4), chargés depuis que le moteur lit leurs clés.
+	var expected := {&"revive": [ItemData.Category.HEAL, 1500],
+		&"poke_doll": [ItemData.Category.BATTLE, 1000],
+		&"x_attack": [ItemData.Category.BATTLE, 500], &"x_defend": [ItemData.Category.BATTLE, 550],
+		&"x_speed": [ItemData.Category.BATTLE, 350], &"x_special": [ItemData.Category.BATTLE, 350],
+		&"x_accuracy": [ItemData.Category.BATTLE, 950],
+		&"dire_hit": [ItemData.Category.BATTLE, 650]}
 	for id: StringName in expected:
-		var entry: Dictionary = pending[String(id)]
-		assert_false(_items.has_item(id), "%s : pas encore chargé" % id)
-		assert_eq([entry["category"], int(entry["price"])], expected[id], String(id))
-		assert_true(entry.has("revive") or entry.has("battle_use"), String(id))
-	assert_almost_eq(float(pending["revive"]["revive"]), 0.5, 0.0001)
-	assert_eq(pending["poke_doll"]["battle_use"], {"kind": "escape"})
-	assert_eq(pending["dire_hit"]["battle_use"], {"kind": "crit_up"})
-	for row: Array in [["x_attack", "atk"], ["x_defend", "def"], ["x_speed", "spe"],
-			["x_special", "spa"], ["x_accuracy", "acc"]]:
-		var use: Dictionary = pending[row[0]]["battle_use"]
-		assert_eq([use["kind"], use["stat"], int(use["stages"])], ["stat_stage", row[1], 1])
-		assert_true(MoveEffect.STAGE_STATS.has(StringName(row[1])))
-	# Sans leurs clés nouvelles, ces entrées passent déjà la validation actuelle.
-	var probe := ItemLibrary.new()
-	for id: String in pending:
-		var entry: Dictionary = (pending[id] as Dictionary).duplicate()
-		entry.erase("battle_use")
-		if entry.has("revive"):
-			entry.erase("revive")
-			entry["heal_amount"] = 1
-		assert_true(probe.add_from_dict({id: entry}, "probe"), id)
-	# CT01 : prix RB ajouté au T11 (une CT n'a pas de prix aujourd'hui).
-	assert_eq((_pending_items["tm_prices"] as Dictionary).keys(), ["tm01"])
-	assert_eq(int(_pending_items["tm_prices"]["tm01"]), 3000)
-	assert_eq(_items.get_item(&"tm01").price, 0)
+		var item := _items.get_item(id)
+		assert_not_null(item, String(id))
+		if item != null:
+			assert_eq([item.category, item.price], expected[id], String(id))
+	assert_almost_eq(_items.get_item(&"revive").revive, 0.5, 0.0001)
+	assert_eq(_items.get_item(&"poke_doll").battle_use, ItemData.BATTLE_USE_ESCAPE)
+	assert_eq(_items.get_item(&"dire_hit").battle_use, ItemData.BATTLE_USE_CRIT_UP)
+	for row: Array in [[&"x_attack", &"atk"], [&"x_defend", &"def"], [&"x_speed", &"spe"],
+			[&"x_special", &"spa"], [&"x_accuracy", &"acc"]]:
+		var item := _items.get_item(row[0])
+		assert_eq([item.battle_use, item.battle_stat, item.battle_stages],
+			[ItemData.BATTLE_USE_STAT_STAGE, row[1], 1], String(row[0]))
+	# CT01 : prix RB (achetable une fois au 2e, jamais revendue).
+	assert_eq(_items.get_item(&"tm01").price, 3000)
+	assert_false(_items.get_item(&"tm01").is_sellable())
 
 
 # --- Boutiques ----------------------------------------------------------------------------
@@ -396,23 +381,23 @@ func test_department_store_shops() -> void:
 			var ids: Array[StringName] = []
 			ids.assign(loaded[id])
 			assert_eq(shop.item_ids(), ids, String(id))
-	# Boutiques du T11 (objets en attente) : chaque objet est connu, ici ou en attente.
-	var pending: Dictionary = _pending_shops["shops"]
-	assert_eq(pending.keys(), ["celadon_dept_2f", "celadon_dept_2f_tm", "celadon_dept_4f",
-		"celadon_dept_5f"])
-	for id: String in pending:
-		assert_false(shops.has_shop(StringName(id)), "%s : pas encore chargée" % id)
-		for entry: Dictionary in pending[id]["stock"]:
-			var item := String(entry["item"])
-			assert_true(_items.has_item(StringName(item))
-				or (_pending_items["items"] as Dictionary).has(item), item)
-	# Q-2, option A (recommandée, en attente de Kevin) : la CT01 seule.
-	assert_eq(pending["celadon_dept_2f_tm"]["stock"], [{"item": "tm01"}])
-	assert_eq((pending["celadon_dept_2f"]["stock"] as Array).map(
-		func(e: Dictionary) -> String: return e["item"]),
-		["great_ball", "super_potion", "revive", "antidote", "burn_heal", "ice_heal",
-		"awakening", "paralyze_heal"])
-	assert_eq((pending["celadon_dept_5f"]["stock"] as Array).size(), 6, "objets X, sans vitamine")
+	# Boutiques du T11 : 2e (deux vendeurs), 4e, 5e.
+	var engine := {
+		&"celadon_dept_2f": [&"great_ball", &"super_potion", &"revive", &"antidote",
+			&"burn_heal", &"ice_heal", &"awakening", &"paralyze_heal"],
+		# Q-2, option A (Kevin, 2026-10-16) : la CT01 seule.
+		&"celadon_dept_2f_tm": [&"tm01"],
+		&"celadon_dept_4f": [&"poke_doll"],
+		&"celadon_dept_5f": [&"x_attack", &"x_defend", &"x_speed", &"x_special", &"x_accuracy",
+			&"dire_hit"],
+	}
+	for id: StringName in engine:
+		var shop := shops.get_shop(id)
+		assert_not_null(shop, String(id))
+		if shop != null:
+			var ids: Array[StringName] = []
+			ids.assign(engine[id])
+			assert_eq(shop.item_ids(), ids, String(id))
 
 
 # --- Rencontres ---------------------------------------------------------------------------
@@ -551,8 +536,6 @@ func test_annex_a_texts_are_copied_word_for_word() -> void:
 		match row[0]:
 			"item":
 				actual = _items.get_item(id).description
-			"pending_item":
-				actual = (_pending_items["items"][String(id)] as Dictionary)["description"]
 			"dex":
 				actual = dex.get_species(id).description
 			"move":
