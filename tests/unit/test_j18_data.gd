@@ -52,7 +52,8 @@ const TEXTS := {
 }
 ## Textes dits en deux temps (première fois, puis ensuite) : [dialogue, variante].
 const TWO_STEP := {
-	"T-25": [&"pokemon_house_kid", 0], "T-26": [&"pokemon_house_kid", 1],
+	# J19 (T20) : T-25 est remplacé par §15.6.1 (`test_lavender_j19`) ; T-26 garde sa place.
+	"T-26": [&"pokemon_house_kid", 1],
 }
 ## J19 (T16) : T-34 et T-35 (Exorciste) sont remplacés par la scène `tower_guardian` et le
 ## texte §15.1.5 du dossier 22 (`test_pokemon_tower_1f_j19`, `test_tower_texts`).
