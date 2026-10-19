@@ -36,7 +36,7 @@ import sys
 from pathlib import Path
 
 import numpy as np
-from PIL import Image, ImageDraw, ImageFilter, ImageFont
+from PIL import Image, ImageChops, ImageDraw, ImageFilter, ImageFont
 
 ICI = Path(__file__).resolve().parent
 RACINE = ICI.parents[1]
@@ -655,8 +655,776 @@ def generer(idents: list[str]) -> None:
 
 
 # --------------------------------------------------------------------------------------------
+# Préparation des essais retenus -> $ART/serie28/ (rien dans assets/)
+# --------------------------------------------------------------------------------------------
+def essai(fiche: str) -> str:
+	"""Nom (sans .png) de l'essai retenu pour une fiche (`retenus.json`, sinon `_NE_r1`)."""
+	return RETENUS.get(fiche, f"{fiche}_NE_r1")
+
+
+def retenir(paires: list[str]) -> None:
+	SORTIE.mkdir(parents=True, exist_ok=True)
+	for p in paires:
+		cle, valeur = p.split("=", 1)
+		RETENUS[cle] = valeur
+	(SORTIE / "retenus.json").write_text(json.dumps(RETENUS, ensure_ascii=False, indent=1) + "\n")
+	print(json.dumps(RETENUS, ensure_ascii=False, indent=1))
+
+
+## Planches : fiche -> (sous-dossier, [(id préparé, axe, cases)], nettoyer). Ordre de lecture :
+## ligne 1 de gauche à droite, puis ligne 2. `axe` : « w » (largeur) ou « h » (hauteur) ramenée à
+## `cases` × 96 px. Un id `None` = cellule vide.
+PLANCHE_SPECS: dict[str, tuple[str, list, bool]] = {
+	"WORLD_RELIEF_MUR_MANOIR_PLANCHE": ("relief", [
+		("relief_mur_manoir_01", "w", 2.0), ("relief_mur_manoir_02", "w", 2.0),
+		("relief_mur_manoir_03", "w", 2.0), ("relief_mur_manoir_04", "w", 2.0),
+		("relief_mur_manoir_cap_01", "w", 2.0), ("relief_mur_manoir_side_01", "h", 3.0)], True),
+	"WORLD_RELIEF_MUR_MANOIR_B1_PLANCHE": ("relief", [
+		("relief_mur_manoir_b1_01", "w", 2.0), ("relief_mur_manoir_b1_02", "w", 2.0),
+		("relief_mur_manoir_b1_03", "w", 2.0), ("relief_mur_manoir_b1_04", "w", 2.0),
+		("relief_mur_manoir_b1_cap_01", "w", 2.0), ("relief_mur_manoir_b1_side_01", "h", 3.0)], True),
+	"WORLD_RELIEF_MUR_ARENE_PLANCHE": ("relief", [
+		("relief_mur_arene_01", "w", 2.0), ("relief_mur_arene_02", "w", 2.0),
+		("relief_mur_arene_03", "w", 2.0), ("relief_mur_arene_04", "w", 2.0),
+		("relief_mur_arene_cap_01", "w", 2.0), ("relief_mur_arene_side_01", "h", 3.0)], True),
+	"INT_MANOIR_PLANCHE_A": ("objets", [
+		("int_statue_manoir_01", "h", 1.6), ("int_grille_manoir_fermee_01", "w", 2.0),
+		("int_grille_manoir_ouverte_01", "w", 2.0), ("int_trou_plancher_01", "w", 1.2),
+		("int_pupitre_carnet_01", "w", 1.0), ("int_seuil_manoir_01", "w", 2.0)], True),
+	"INT_MANOIR_PLANCHE_B": ("objets", [
+		("int_escalier_manoir_monte_01", "w", 1.0), ("int_escalier_manoir_descend_01", "w", 1.0),
+		("int_tonneau_brule_01", "w", 0.9), ("int_groupe_tonneaux_01", "w", 2.0),
+		("int_table_labo_01", "w", 1.0), ("int_caisse_archives_01", "w", 1.0)], True),
+	"WORLD_DECALS_GRAVATS_MANOIR_PLANCHE": ("decals", [
+		("decal_gravats_manoir_01", "w", 1.5), ("decal_gravats_manoir_02", "w", 1.2),
+		("decal_gravats_manoir_03", "w", 1.0), ("decal_gravats_manoir_04", "w", 1.8),
+		("decal_gravats_manoir_05", "w", 1.0), ("decal_gravats_manoir_06", "w", 1.4)], True),
+	"INT_ARENE_PLANCHE": ("objets", [
+		("int_machine_quiz_01", "w", 0.95), ("int_herse_fermee_01", "w", 2.0),
+		("int_herse_ouverte_01", "w", 2.0), ("int_statue_arene_01", "h", 1.8),
+		(None, "w", 0), (None, "w", 0)], True),
+	"INT_MUSEE_RESERVE_PLANCHE": ("objets", [
+		("int_vitrine_ambre_pleine_01", "w", 0.95), ("int_vitrine_ambre_vide_01", "w", 0.95),
+		("int_caisses_fouilles_01", "w", 2.0), (None, "w", 0), (None, "w", 0), (None, "w", 0)], True),
+}
+
+
+def _bbox_alpha(im: Image.Image, seuil: int = 100) -> Image.Image:
+	boite = im.getchannel("A").point(lambda a: 255 if a > seuil else 0).getbbox()
+	return im.crop(boite) if boite else im
+
+
+def _a_taille(im: Image.Image, axe: str, cases: float) -> Image.Image:
+	k = cases * CASE / (im.height if axe == "h" else im.width)
+	return im.resize((max(1, round(im.width * k)), max(1, round(im.height * k))), Image.LANCZOS)
+
+
+## Étalonnage à la préparation (luminosité, saturation) : le parquet brut de Codex est clair et
+## saturé ; le Manoir est un lieu noirci par la suie (valeurs par défaut, règle 4).
+GRADES = {"ground_parquet_manoir_01": (0.80, 0.88)}
+
+
+def preparer_textures() -> None:
+	import preparer as pr
+	dossier = SORTIE / "sols"
+	dossier.mkdir(parents=True, exist_ok=True)
+	for fiche, pid, _ref, _ in TEXTURES:
+		chemin = ART / f"{essai(fiche)}.png"
+		if not chemin.exists():
+			print("absent :", chemin.name)
+			continue
+		im = Image.open(chemin).convert("RGB")
+		c = min(im.size)
+		im = im.crop(((im.width - c) // 2, (im.height - c) // 2, (im.width + c) // 2,
+			(im.height + c) // 2)).resize((1024, 1024), Image.LANCZOS)
+		im = pr.raccorder(im, 96).resize((384, 384), Image.LANCZOS)
+		gain, sat = GRADES.get(pid, (1.0, 1.0))
+		if (gain, sat) != (1.0, 1.0):
+			from PIL import ImageEnhance
+			im = ImageEnhance.Color(im).enhance(sat)
+			im = ImageEnhance.Brightness(im).enhance(gain)
+		im.save(dossier / f"{pid}.png")
+		print(dossier / f"{pid}.png", im.size)
+
+
+def _decouper_planche(im: Image.Image, n: int) -> list[Image.Image] | None:
+	"""Éléments d'une planche par composantes connexes (un élément peut dépasser sa cellule de
+	512 px : la grille de 3 × 2 n'est qu'un guide). Ordre de lecture : ligne 1 puis ligne 2, de gauche
+	à droite. `None` si le nombre d'éléments trouvés n'est pas `n`."""
+	import preparer as pr
+	taches = pr._taches(im, 4, 0.01)
+	if len(taches) != n:
+		return None
+	milieu = im.height / 2
+	taches.sort(key=lambda t: ((t[0][1] + t[0][3]) / 2 > milieu, (t[0][0] + t[0][2]) / 2))
+	pieces = []
+	for boite, masque in taches:
+		piece = im.crop(boite)
+		alpha = ImageChops.multiply(piece.getchannel("A"), masque.crop(boite))
+		piece.putalpha(alpha)
+		pieces.append(piece)
+	return pieces
+
+
+def preparer_planches() -> None:
+	import preparer as pr
+	for fiche, (sous, specs, nettoyer) in PLANCHE_SPECS.items():
+		chemin = ART / f"{essai(fiche)}.png"
+		if not chemin.exists():
+			print("absent :", chemin.name)
+			continue
+		im = Image.open(chemin).convert("RGBA")
+		if nettoyer:
+			im = pr.nettoyer_halos(im)
+		pleines = [s for s in specs if s[0] is not None]
+		pieces = _decouper_planche(im, len(pleines))
+		if pieces is None:
+			print(f"ATTENTION {fiche} : découpe par composantes impossible, cellules fixes")
+			cw, ch = im.width / 3, im.height / 2
+			pieces = []
+			for i, (pid, _a, _c) in enumerate(specs):
+				if pid is not None:
+					col, lig = i % 3, i // 3
+					pieces.append(im.crop((round(col * cw), round(lig * ch), round((col + 1) * cw),
+						round((lig + 1) * ch))))
+		dossier = SORTIE / sous
+		dossier.mkdir(parents=True, exist_ok=True)
+		for (pid, axe, cases), brut in zip(pleines, pieces):
+			piece = _a_taille(_bbox_alpha(brut), axe, cases)
+			piece.save(dossier / f"{pid}.png")
+			print(dossier / f"{pid}.png", piece.size)
+
+
+def preparer_objets() -> None:
+	for fiche, _refs, _d, _f, cases in OBJETS:
+		chemin = ART / f"{essai(fiche)}.png"
+		if not chemin.exists():
+			print("absent :", chemin.name)
+			continue
+		piece = _a_taille(_bbox_alpha(Image.open(chemin).convert("RGBA")), "w", cases)
+		dossier = SORTIE / "objets"
+		dossier.mkdir(parents=True, exist_ok=True)
+		piece.save(dossier / "bldg_musee_porte_arriere_01.png")
+		print(dossier / "bldg_musee_porte_arriere_01.png", piece.size)
+
+
+def preparer_personnages() -> None:
+	for fiche, _r, _a, pid, _look, *_ in PERSONNAGES:
+		dossier = SORTIE / "personnages"
+		dossier.mkdir(parents=True, exist_ok=True)
+		marche = ART / f"{essai(fiche)}.png"
+		if marche.exists():
+			subprocess.run([sys.executable, str(ICI / "decouper_perso.py"), str(marche),
+				str(dossier / f"{pid}_sheet.png"), "--hauteur", "128"], check=True, cwd=RACINE)
+		attente = ART / f"{essai(fiche.removeprefix('PNJ_') + '_ATTENTE').replace('_NE_r1', '_r1')}.png"
+		if attente.exists() and marche.exists():
+			subprocess.run([sys.executable, str(ICI / "decouper_attente.py"), str(attente),
+				str(dossier / f"{pid}_sheet.png"), str(dossier / f"{pid}_idle_sheet.png")], check=True,
+				cwd=RACINE)
+
+
+def _recadrer(im: Image.Image, seuil: int = 8) -> Image.Image:
+	boite = im.getchannel("A").point(lambda a: 255 if a > seuil else 0).getbbox()
+	return im.crop(boite) if boite else im
+
+
+def _poser(sujet: Image.Image, cote: int, utile: int, bas: int) -> Image.Image:
+	"""Sujet réduit dans un carré `utile` et posé centré, bas à `bas` px du bas d'un carré `cote`."""
+	k = min(utile / sujet.width, utile / sujet.height)
+	s = sujet.resize((round(sujet.width * k), round(sujet.height * k)), Image.LANCZOS)
+	out = Image.new("RGBA", (cote, cote), (0, 0, 0, 0))
+	out.alpha_composite(s, ((cote - s.width) // 2, cote - bas - s.height))
+	return out
+
+
+def preparer_dos() -> None:
+	dossier = SORTIE / "dos"
+	dossier.mkdir(parents=True, exist_ok=True)
+	for fiche, num, *_ in DOS:
+		chemin = ART / f"{RETENUS.get(fiche, fiche + '_r1')}.png"
+		if not chemin.exists():
+			print("absent :", chemin.name)
+			continue
+		dos = _recadrer(Image.open(chemin).convert("RGBA"))
+		_poser(dos, 1024, 870, 120).save(dossier / f"dos_ia_{num}.png")
+		print(dossier / f"dos_ia_{num}.png")
+
+
+TAILLE_DECOR = (2340, 1080)
+
+
+def _portions(largeur: int, hauteur: int) -> list[list[int]]:
+	w = round(hauteur * 1000 / 852)
+	return [[0, 0, w, hauteur], [largeur - w, 0, largeur, hauteur]]
+
+
+def tuiles(essai_nom: str) -> None:
+	comp = Image.open(ART / f"{essai_nom}.png").convert("RGB")
+	for cote, p in zip(("TL", "TR"), _portions(*comp.size)):
+		comp.crop(p).save(ART / f"{essai_nom}_crop{cote}.png")
+		print(cote, p)
+
+
+def decor(did: str, essai_nom: str) -> None:
+	import preparer_decor  # noqa: E402
+	preparer_decor.ART = str(ART)
+	comp = Image.open(ART / f"{essai_nom}.png")
+	tl, tr = _portions(*comp.size)
+	entree = {"composition": f"{essai_nom}.png", "tuiles": [
+		{"image": f"{essai_nom}_TL.png", "portion": tl}, {"image": f"{essai_nom}_TR.png", "portion": tr}],
+		"taille": list(TAILLE_DECOR), "qualite": 90}
+	fond, _ = preparer_decor.master(entree, TAILLE_DECOR)
+	dossier = SORTIE / "decors"
+	dossier.mkdir(parents=True, exist_ok=True)
+	fond.save(dossier / f"{did}_back.png")
+	fond.save(dossier / f"{did}_back.webp", "WEBP", quality=90, method=6)
+	print(json.dumps(entree, ensure_ascii=False))
+	print(dossier / f"{did}_back.webp", "%.0f Ko" % (os.path.getsize(dossier / f"{did}_back.webp") / 1024))
+
+
+def preparer() -> None:
+	preparer_textures()
+	preparer_planches()
+	preparer_objets()
+	preparer_personnages()
+	preparer_dos()
+
+
+# --------------------------------------------------------------------------------------------
+# Cartes recomposées (kit + grille, état ARRÊT) : « carte peinte » de contrôle, 1 case = 96 px
+# --------------------------------------------------------------------------------------------
+KITS = {
+	"manoir": {"sol": "ground_parquet_manoir_01", "masse": "ground_masse_manoir_01",
+		"faces": ["relief_mur_manoir_01", "relief_mur_manoir_02", "relief_mur_manoir_03",
+			"relief_mur_manoir_04"], "poids": [5, 3, 1.2, 0.8], "cap": "relief_mur_manoir_cap_01",
+		"side": "relief_mur_manoir_side_01"},
+	"b1": {"sol": "ground_carrelage_b1_01", "masse": "ground_masse_manoir_b1_01",
+		"faces": ["relief_mur_manoir_b1_01", "relief_mur_manoir_b1_02", "relief_mur_manoir_b1_03",
+			"relief_mur_manoir_b1_04"], "poids": [4, 2, 1, 2], "cap": "relief_mur_manoir_b1_cap_01",
+		"side": "relief_mur_manoir_b1_side_01"},
+	"arene": {"sol": "ground_dalles_arene_01", "masse": "ground_masse_arene_01",
+		"faces": ["relief_mur_arene_01", "relief_mur_arene_02", "relief_mur_arene_03",
+			"relief_mur_arene_04"], "poids": [4, 3, 1.5, 2], "cap": "relief_mur_arene_cap_01",
+		"side": "relief_mur_arene_side_01"},
+}
+CARTES = {"manoir_1f": "manoir", "manoir_2f": "manoir", "manoir_3f": "manoir", "manoir_b1f": "b1",
+	"cramois_arene": "arene"}
+SIDE_W = 34
+## Flancs de murs : pièce du kit (SIDE), non posée sur les cartes recomposées (la vue validée, en
+## projection oblique frontale, n'en montre pas : dessus sombre, face sud, liseré clair).
+AVEC_FLANCS = False
+
+
+_cache: dict[str, Image.Image | None] = {}
+
+
+def piece(pid: str) -> Image.Image | None:
+	"""Pièce préparée (sols / relief / objets / decals) ou, à défaut, `None`."""
+	if pid not in _cache:
+		_cache[pid] = None
+		for sous in ("sols", "relief", "objets", "decals", "personnages"):
+			chemin = SORTIE / sous / f"{pid}.png"
+			if chemin.exists():
+				_cache[pid] = Image.open(chemin).convert("RGBA")
+				break
+	return _cache[pid]
+
+
+def _tuile(canvas: Image.Image, texture: Image.Image, cases: set[tuple[int, int]]) -> None:
+	"""Pose `texture` (384 px = 4 × 4 cases, mosaïque alignée sur la carte) sur les `cases`."""
+	t = texture.convert("RGBA")
+	for (x, y) in cases:
+		sx, sy = (x % 4) * CASE, (y % 4) * CASE
+		canvas.paste(t.crop((sx, sy, sx + CASE, sy + CASE)), (x * CASE, y * CASE))
+
+
+def _runs(cases: set[tuple[int, int]], ligne: int) -> list[tuple[int, int]]:
+	xs = sorted(x for (x, y) in cases if y == ligne)
+	runs: list[tuple[int, int]] = []
+	for x in xs:
+		if runs and x == runs[-1][1] + 1:
+			runs[-1] = (runs[-1][0], x)
+		else:
+			runs.append((x, x))
+	return runs
+
+
+def _composantes(cases: set[tuple[int, int]]) -> list[list[tuple[int, int]]]:
+	vus: set[tuple[int, int]] = set()
+	sortie = []
+	for c in sorted(cases, key=lambda p: (p[1], p[0])):
+		if c in vus:
+			continue
+		pile, comp = [c], []
+		vus.add(c)
+		while pile:
+			x, y = pile.pop()
+			comp.append((x, y))
+			for n in ((x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)):
+				if n in cases and n not in vus:
+					vus.add(n)
+					pile.append(n)
+		sortie.append(comp)
+	return sortie
+
+
+def _box(comp: list[tuple[int, int]]) -> tuple[int, int, int, int]:
+	xs, ys = [c[0] for c in comp], [c[1] for c in comp]
+	return min(xs), min(ys), max(xs), max(ys)
+
+
+def _poser_pieds(canvas: Image.Image, pc: Image.Image | None, pied: tuple[float, float],
+		flip: bool = False) -> None:
+	"""Pose `pc` (origine = milieu du bas) avec les pieds en `pied`, alpha composé."""
+	if pc is None:
+		return
+	if flip:
+		pc = pc.transpose(Image.FLIP_LEFT_RIGHT)
+	canvas.alpha_composite(pc, (round(pied[0] - pc.width / 2), round(pied[1] - pc.height)))
+
+
+def _perso(pid: str) -> Image.Image | None:
+	"""Pose d'attente de face (colonne 0 de la planche d'attente) d'un PNJ ; sinon, du jeu."""
+	for chemin in (SORTIE / "personnages" / f"{pid}_idle_sheet.png",
+			J20_ART.parent / "assets/sprites/characters/painted" / f"{pid}_idle_sheet.png",
+			RACINE / "assets/sprites/characters/painted" / f"{pid}_idle_sheet.png"):
+		if chemin.exists():
+			im = Image.open(chemin).convert("RGBA")
+			return _bbox_alpha(im.crop((0, 0, im.width // 4, im.height)))
+	return None
+
+
+def _classe_perso(position, defaut: str) -> str:
+	note = (position.note + position.ident).lower()
+	if "intello" in note:
+		return "intello"
+	if "pillard" in note:
+		return "pillard"
+	if "scientifique" in note or "scientist" in note:
+		return "chercheur"
+	return defaut
+
+
+def composer(nom: str, avec_perso: bool = True) -> Image.Image:
+	"""Recompose la carte `nom` (`tools/plans/<nom>.txt`) à 1 case = 96 px, interrupteur sur
+	ARRÊT : jeu A fermé, jeu B ouvert, herses fermées."""
+	import plan_aplats_j25 as pj
+	from plan_grille import lire
+	plan = lire(PLANS / f"{nom}.txt")
+	kit = KITS[CARTES[nom]]
+	W, H = plan.width, plan.height
+	rng = random.Random(2800 + len(nom))
+	murs = set(plan.cells_of("#"))
+	meubles: set[tuple[int, int]] = set()
+	if nom.startswith("manoir"):
+		meubles, _vide = pj._meubles_et_vide(plan)
+	murs -= meubles
+	for c in plan.cells_of("E") + plan.cells_of("T") + plan.cells_of("P"):
+		murs.discard(c)
+
+	def mur(c: tuple[int, int]) -> bool:
+		return c in murs or not (0 <= c[0] < W and 0 <= c[1] < H)
+
+	sols = {(x, y) for x in range(W) for y in range(H)} - murs
+	canvas = Image.new("RGBA", (W * CASE, H * CASE), (14, 12, 16, 255))
+	sol_t, masse_t = piece(kit["sol"]), piece(kit["masse"])
+	if sol_t is not None:
+		_tuile(canvas, sol_t, sols)
+	else:
+		ImageDraw.Draw(canvas).rectangle((0, 0, canvas.width, canvas.height), fill=(120, 96, 70, 255))
+	if masse_t is not None:
+		_tuile(canvas, masse_t, murs)
+	else:
+		d = ImageDraw.Draw(canvas)
+		for (x, y) in murs:
+			d.rectangle((x * CASE, y * CASE, (x + 1) * CASE, (y + 1) * CASE), fill=(40, 30, 28, 255))
+	# Le vide hors du bâtiment (aucune case de sol à moins de 2 cases) est assombri.
+	voile = Image.new("RGBA", (CASE, CASE), (12, 10, 14, 255))
+	for (x, y) in sorted(murs):
+		proche = min((max(abs(x - sx), abs(y - sy)) for (sx, sy) in sols
+			if abs(x - sx) <= 3 and abs(y - sy) <= 3), default=9)
+		if proche >= 2:
+			alpha = 0.45 if proche == 2 else 0.78
+			sombre = voile.copy()
+			sombre.putalpha(round(255 * alpha))
+			canvas.alpha_composite(sombre, (x * CASE, y * CASE))
+	# Décalcomanies de débris (graine fixe) au pied des murs, sur le sol libre.
+	decals = [piece(f"decal_gravats_manoir_0{i}") for i in range(1, 7)]
+	occupees = set(meubles)
+	for car in "TPOUVEab":
+		occupees |= set(plan.cells_of(car))
+	for pos in plan.positions.values():
+		occupees |= set(pos.cells)
+	if nom.startswith("manoir") and any(decals):
+		for (x, y) in sorted(sols):
+			if (x, y) in occupees or (x, y + 1) in occupees or (x + 1, y) in occupees:
+				continue
+			if mur((x, y - 1)) and rng.random() < 0.22:
+				dc = rng.choice([d for d in decals if d is not None])
+				canvas.alpha_composite(dc, (round((x + 0.5) * CASE - dc.width / 2),
+					round(y * CASE + 6)))
+	faces = {c for c in murs if not mur((c[0], c[1] + 1))}
+	caps = {c for c in murs if c not in faces and not mur((c[0], c[1] - 1))}
+	cap_p = piece(kit["cap"])
+	for y in range(H):
+		for a, b in _runs(caps, y):
+			x = a
+			while x <= b and cap_p is not None:
+				w = min(2, b - x + 1)
+				seg = cap_p.crop((0, 0, w * CASE, cap_p.height))
+				canvas.alpha_composite(seg, (x * CASE, y * CASE))
+				x += w
+	side_p = piece(kit["side"])
+	if side_p is not None and AVEC_FLANCS:
+		for (x, y) in sorted(murs):
+			if (x, y) in faces:
+				continue
+			for dx, gauche in ((1, False), (-1, True)):
+				if not mur((x + dx, y)):
+					seg = side_p.crop((0, (side_p.height - CASE) // 2, side_p.width,
+						(side_p.height - CASE) // 2 + CASE))
+					px = x * CASE if gauche else (x + 1) * CASE - seg.width
+					canvas.alpha_composite(seg, (px, y * CASE))
+	fcs = [piece(i) for i in kit["faces"]]
+	for y in range(H):
+		for a, b in _runs(faces, y):
+			x = a
+			while x <= b:
+				w = min(2, b - x + 1)
+				f = rng.choices([p for p in fcs if p is not None] or [None],
+					[kit["poids"][i] for i, p in enumerate(fcs) if p is not None] or [1])[0]
+				if f is None:
+					break
+				seg = f if rng.random() < 0.5 else f.transpose(Image.FLIP_LEFT_RIGHT)
+				seg = seg.crop((0, 0, w * CASE, seg.height))
+				canvas.alpha_composite(seg, (x * CASE, (y + 1) * CASE - seg.height))
+				x += w
+	# Objets : triés par les pieds.
+	objets: list[tuple[float, Image.Image | None, tuple[float, float], bool]] = []
+
+	def pose(pid: str, pied: tuple[float, float], flip: bool = False) -> None:
+		objets.append((pied[1], piece(pid), pied, flip))
+
+	for (x, y) in plan.cells_of("T"):
+		pose("int_statue_manoir_01", ((x + 0.5) * CASE, (y + 1) * CASE))
+	for (x, y) in plan.cells_of("P"):
+		pose("int_pupitre_carnet_01", ((x + 0.5) * CASE, (y + 1) * CASE))
+	for (x, y) in plan.cells_of("O"):
+		sol_o = piece("int_trou_plancher_01")
+		if sol_o is not None:
+			canvas.alpha_composite(sol_o, (round((x + 0.5) * CASE - sol_o.width / 2),
+				round((y + 0.5) * CASE - sol_o.height / 2)))
+	for (x, y) in plan.cells_of("U"):
+		pose("int_escalier_manoir_monte_01", ((x + 0.5) * CASE, (y + 1) * CASE))
+	for (x, y) in plan.cells_of("V"):
+		pc = piece("int_escalier_manoir_descend_01")
+		if pc is not None:
+			canvas.alpha_composite(pc, (round((x + 0.5) * CASE - pc.width / 2),
+				round((y + 1) * CASE - pc.height)))
+	for car, pid in (("a", "int_grille_manoir_fermee_01"), ("b", "int_grille_manoir_ouverte_01")):
+		for comp in _composantes(set(plan.cells_of(car))):
+			x0, y0, x1, y1 = _box(comp)
+			pose(pid, ((x0 + x1 + 1) / 2 * CASE, (y1 + 1) * CASE))
+	for comp in _composantes(set(plan.cells_of("p"))):          # herses fermées de l'Arène
+		x0, y0, x1, y1 = _box(comp)
+		pose("int_herse_fermee_01", ((x0 + x1 + 1) / 2 * CASE, (y1 + 1) * CASE))
+	for (x, y) in plan.cells_of("Q"):
+		pose("int_machine_quiz_01", ((x + 0.5) * CASE, (y + 1) * CASE))
+	for comp in _composantes(set(plan.cells_of("E"))):
+		x0, y0, x1, y1 = _box(comp)
+		if nom.startswith("manoir"):
+			for sx in range(x0, x1 + 1, 2):
+				pc = piece("int_seuil_manoir_01")
+				if pc is not None:
+					cx = (sx + (1 if sx + 1 <= x1 else 0.5)) * CASE
+					canvas.alpha_composite(pc, (round(cx - pc.width / 2), (y1 + 1) * CASE - pc.height))
+	furn = piece("int_tonneau_brule_01"), piece("int_groupe_tonneaux_01"), piece("int_table_labo_01")
+	for comp in _composantes(meubles):
+		x0, y0, x1, y1 = _box(comp)
+		w, h = x1 - x0 + 1, y1 - y0 + 1
+		if nom.endswith("b1f"):
+			if w == 2 and h == 2 and len(comp) == 4:
+				for dx in (0, 1):
+					pose("int_table_labo_01", ((x0 + dx + 0.5) * CASE, (y1 + 1) * CASE))
+			else:
+				for (x, y) in comp:
+					pose("int_caisse_archives_01", ((x + 0.5) * CASE, (y + 1) * CASE))
+		elif w == 2 and h == 2 and len(comp) == 4:
+			pose("int_groupe_tonneaux_01", ((x0 + 1) * CASE, (y1 + 1) * CASE))
+		else:
+			for (x, y) in comp:
+				pose("int_tonneau_brule_01", ((x + 0.5) * CASE, (y + 1) * CASE))
+	del furn
+	for p in plan.positions.values():
+		if p.kind == "statue_arene" or p.ident == "statue_arene":
+			x, y = p.cells[0]
+			pose("int_statue_arene_01", ((x + 0.5) * CASE, (y + 1) * CASE))
+		elif p.kind == "objet_visible" or p.kind == "objet_cache":
+			continue
+	if avec_perso:
+		defauts = {"dresseur": "chercheur", "champion": "auguste", "pnj": "guide_arene"}
+		for p in plan.positions.values():
+			if p.kind in defauts:
+				x, y = p.cells[0]
+				pid = _classe_perso(p, defauts[p.kind])
+				if p.ident == "guide":
+					pid = "guide_arene"
+				objets.append(((y + 1) * CASE, _perso(pid), ((x + 0.5) * CASE, (y + 1) * CASE - 4), False))
+		depart = plan.positions.get("depuis_ile")
+		if depart is not None:
+			x, y = depart.cells[0]
+			objets.append(((y + 1) * CASE, _perso("heros"), ((x + 0.5) * CASE, (y + 1) * CASE - 4), False))
+	for _, pc, pied, flip in sorted(objets, key=lambda o: o[0]):
+		_poser_pieds(canvas, pc, pied, flip)
+	return canvas
+
+
+def cartes() -> None:
+	dossier = SORTIE / "cartes"
+	dossier.mkdir(parents=True, exist_ok=True)
+	for nom in CARTES:
+		im = composer(nom)
+		im.convert("RGB").save(dossier / f"{nom}_arret.png")
+		apercu = im.convert("RGB").resize((im.width // 3, im.height // 3), Image.LANCZOS)
+		apercu.save(dossier / f"{nom}_arret_apercu.png")
+		print(dossier / f"{nom}_arret.png", im.size)
+
+
+# --------------------------------------------------------------------------------------------
 # main
 # --------------------------------------------------------------------------------------------
+# --------------------------------------------------------------------------------------------
+# Planche de contrôle à l'échelle du jeu (1 case = 96 px, héros 128 px, combat = BattleLayout)
+# --------------------------------------------------------------------------------------------
+PLAYER_FEET = (-0.42, 0.90)
+FOE_FEET = (0.36, 0.50)
+PRESENCE = {True: 0.31, False: 0.27}
+MAX_BOX = {True: (0.80, 0.40), False: (0.50, 0.38)}
+
+
+def _echelle(box: tuple[int, int], hauteur_m: float, joueur: bool, vue_h: float) -> float:
+	ratio = min(max(math.pow(max(hauteur_m, 0.05) / 0.6, 0.4), 0.73), 1.73)
+	limite = (MAX_BOX[joueur][0] * vue_h, MAX_BOX[joueur][1] * vue_h)
+	plus_grand = min(limite[0] / box[0], limite[1] / box[1])
+	return min(PRESENCE[joueur] * ratio * vue_h / math.sqrt(box[0] * box[1]), plus_grand)
+
+
+def _placer(fond: Image.Image, image: Image.Image, hauteur_m: float, joueur: bool) -> None:
+	im = _recadrer(image.convert("RGBA"), 16)
+	w, h = fond.size
+	ancre = PLAYER_FEET if joueur else FOE_FEET
+	pieds = (w / 2 + ancre[0] * h, ancre[1] * h)
+	k = _echelle(im.size, hauteur_m, joueur, h)
+	s = im.resize((max(1, round(im.width * k)), max(1, round(im.height * k))), Image.LANCZOS)
+	ombre = Image.new("RGBA", fond.size, (0, 0, 0, 0))
+	d = ImageDraw.Draw(ombre)
+	rx, ry = s.width * 0.36, s.width * 0.07
+	d.ellipse((pieds[0] - rx, pieds[1] - ry, pieds[0] + rx, pieds[1] + ry), fill=(20, 10, 40, 110))
+	fond.alpha_composite(ombre.filter(ImageFilter.GaussianBlur(8)))
+	fond.alpha_composite(s, (round(pieds[0] - s.width / 2), round(pieds[1] - s.height)))
+
+
+def _police(taille: int) -> ImageFont.ImageFont:
+	for c in ("/System/Library/Fonts/Supplemental/Arial Bold.ttf", "/Library/Fonts/Arial.ttf"):
+		if Path(c).exists():
+			return ImageFont.truetype(c, taille)
+	return ImageFont.load_default()
+
+
+def _grille(largeur: int, hauteur: int, fond=(128, 122, 132, 255)) -> Image.Image:
+	im = Image.new("RGBA", (largeur, hauteur), fond)
+	d = ImageDraw.Draw(im)
+	for x in range(0, largeur, CASE):
+		d.line((x, 0, x, hauteur), fill=(108, 102, 114, 255))
+	for y in range(0, hauteur, CASE):
+		d.line((0, y, largeur, y), fill=(108, 102, 114, 255))
+	return im
+
+
+KIT_RANGS = [
+	("Relief du Manoir (faces 2 cases, couronnement, flanc)", ["relief_mur_manoir_01",
+		"relief_mur_manoir_02", "relief_mur_manoir_03", "relief_mur_manoir_04",
+		"relief_mur_manoir_cap_01", "relief_mur_manoir_side_01"]),
+	("Relief du sous-sol", ["relief_mur_manoir_b1_01", "relief_mur_manoir_b1_02",
+		"relief_mur_manoir_b1_03", "relief_mur_manoir_b1_04", "relief_mur_manoir_b1_cap_01",
+		"relief_mur_manoir_b1_side_01"]),
+	("Relief de l'Arène", ["relief_mur_arene_01", "relief_mur_arene_02", "relief_mur_arene_03",
+		"relief_mur_arene_04", "relief_mur_arene_cap_01", "relief_mur_arene_side_01"]),
+	("Objets du Manoir (A)", ["int_statue_manoir_01", "int_grille_manoir_fermee_01",
+		"int_grille_manoir_ouverte_01", "int_trou_plancher_01", "int_pupitre_carnet_01",
+		"int_seuil_manoir_01"]),
+	("Objets du Manoir (B)", ["int_escalier_manoir_monte_01", "int_escalier_manoir_descend_01",
+		"int_tonneau_brule_01", "int_groupe_tonneaux_01", "int_table_labo_01",
+		"int_caisse_archives_01"]),
+	("Arène, réserve du Musée, débris", ["int_machine_quiz_01", "int_herse_fermee_01",
+		"int_herse_ouverte_01", "int_statue_arene_01", "int_vitrine_ambre_pleine_01",
+		"int_vitrine_ambre_vide_01", "int_caisses_fouilles_01", "decal_gravats_manoir_01",
+		"decal_gravats_manoir_04"]),
+]
+
+
+def _kit_planche() -> Image.Image:
+	"""Pièces du kit à 1 case = 96 px, posées par les pieds, puis sols et personnages à 128 px."""
+	largeur = 96 * 25
+	haut = 40 + len(KIT_RANGS) * (96 * 3 + 40) + 96 * 8
+	pl = _grille(largeur, haut, (118, 112, 124, 255))
+	d = ImageDraw.Draw(pl)
+	f = _police(24)
+	y = 10
+	for titre, ids in KIT_RANGS:
+		d.text((12, y), titre, fill="white", font=f)
+		y += 34
+		x = 24
+		sol = y + 96 * 3 - 12
+		for pid in ids:
+			pc = piece(pid)
+			if pc is None:
+				d.rectangle((x, sol - 60, x + 80, sol), outline=(255, 90, 90, 255))
+				d.text((x + 4, sol - 40), "absent", fill=(255, 90, 90, 255), font=_police(16))
+				x += 100
+				continue
+			pl.alpha_composite(pc, (x, sol - pc.height))
+			x += pc.width + 40
+		y += 96 * 3 + 6
+	d.text((12, y), "Sols et masses (384 px = 4 × 4 cases), puis personnages à 128 px", fill="white", font=f)
+	y += 34
+	x = 12
+	for pid in ("ground_parquet_manoir_01", "ground_masse_manoir_01", "ground_carrelage_b1_01",
+			"ground_masse_manoir_b1_01", "ground_dalles_arene_01", "ground_masse_arene_01"):
+		pc = piece(pid)
+		if pc is not None:
+			pl.alpha_composite(pc, (x, y))
+		x += 400
+	y += 396
+	x = 40
+	for pid in ("heros", "pillard", "intello", "chercheur", "auguste", "guide_arene"):
+		pc = _perso(pid)
+		if pc is not None:
+			pl.alpha_composite(pc, (x, y + 150 - pc.height))
+			d.text((x, y + 156), pid, fill="white", font=_police(18))
+		x += 200
+	return pl.crop((0, 0, largeur, y + 190))
+
+
+def _vue(carte: str, boite: tuple[int, int, int, int]) -> Image.Image:
+	"""Extrait 1:1 d'une carte recomposée, boîte en CASES (x0, y0, x1, y1)."""
+	im = composer(carte)
+	x0, y0, x1, y1 = boite
+	return im.crop((x0 * CASE, y0 * CASE, x1 * CASE, y1 * CASE))
+
+
+def _reserve() -> Image.Image:
+	"""Réserve du Musée : coque existante `int_musee_coque` + meubles de la grille."""
+	from plan_grille import lire
+	plan = lire(PLANS / "argenta_musee_reserve.txt")
+	coque = Image.open(RACINE / "assets/world/interiors/int_musee_coque.png").convert("RGBA")
+	objets = []
+
+	def pose(pc, x, y, dx=0.5):
+		if pc is not None:
+			objets.append(((y + 1) * CASE, pc, ((x + dx) * CASE, (y + 1) * CASE)))
+	comptoir = Image.open(RACINE / "assets/world/interiors/int_long_comptoir_01.png").convert("RGBA")
+	pose(comptoir, 3, 5, 2.5)
+	pose(piece("int_caisses_fouilles_01"), 1, 3, 1.0)
+	pose(piece("int_caisses_fouilles_01"), 1, 7, 1.0)
+	pose(piece("int_vitrine_ambre_pleine_01"), 11, 3)
+	for p in plan.positions.values():
+		if p.kind == "pnj":
+			x, y = p.cells[0]
+			objets.append(((y + 1) * CASE, _perso("chercheur"), ((x + 0.5) * CASE, (y + 1) * CASE - 4)))
+	x, y = plan.positions["entree"].cells[0]
+	objets.append(((y + 1) * CASE, _perso("heros"), ((x + 0.5) * CASE, (y + 1) * CASE - 4)))
+	for _, pc, pied in sorted(objets, key=lambda o: o[0]):
+		_poser_pieds(coque, pc, pied)
+	return coque
+
+
+def _facade() -> Image.Image:
+	"""Façade du Musée d'Argenta avec la porte arrière accolée à l'est et l'arbuste à Couper."""
+	bat = Image.open(RACINE / "assets/world/buildings/bldg_musee_argenta_01.png").convert("RGBA")
+	porte = piece("bldg_musee_porte_arriere_01")
+	arbuste = Image.open(RACINE / "assets/sprites/objects/painted/prop_jeune_arbre_arene_01.png"
+		).convert("RGBA")
+	pl = _grille(bat.width + 96 * 6, bat.height + 96, (96, 124, 84, 255))
+	sol = bat.height + 48
+	pl.alpha_composite(bat, (0, sol - bat.height))
+	decalage = bat.width
+	if porte is not None:
+		pl.alpha_composite(porte, (bat.width, sol - porte.height))
+		pl.alpha_composite(arbuste, (bat.width + (porte.width - arbuste.width) // 2,
+			sol - arbuste.height + 20))
+		decalage = bat.width + porte.width + 96
+	hero = _perso("heros")
+	if hero is not None:
+		pl.alpha_composite(hero, (decalage, sol - hero.height))
+	return pl
+
+
+SCENES = [("manoir_salle", "077", "078", 1.0, 1.7), ("manoir_salle", "126", "142", 1.3, 1.8),
+	("arene_cramois", "078", "126", 1.7, 1.3), ("arene_cramois", "142", "077", 1.8, 1.0)]
+
+
+def controle(sortie: Path) -> None:
+	f = _police(30)
+	kit = _kit_planche()
+	vues = [
+		("Manoir 1F (ARRÊT : jeu A fermé, jeu B ouvert) : hall ouest et porte principale",
+			_vue("manoir_1f", (0, 17, 15, 28))),
+		("Manoir 2F : statue, journal, Pillard, grille", _vue("manoir_2f", (0, 10, 15, 24))),
+		("Manoir 3F : trous du plancher, statue", _vue("manoir_3f", (8, 0, 23, 15))),
+		("Manoir B1F : salle de la Clé, tables de laboratoire", _vue("manoir_b1f", (0, 9, 15, 24))),
+		("Arène : herses fermées, machines, Dresseurs, Auguste", _vue("cramois_arene", (0, 0, 15, 12))),
+	]
+	reserve, facade = _reserve(), _facade()
+	largeur = max(kit.width, 2 * 1170 + 60)
+	pl = Image.new("RGBA", (largeur, 60 + kit.height + sum(v[1].height + 70 for v in vues)
+		+ reserve.height + facade.height + 400 + 4 * 600), (24, 22, 30, 255))
+	d = ImageDraw.Draw(pl)
+	y = 10
+	d.text((12, y), "Série 28 (provisoire) : kit de pièces à l'échelle du jeu, 1 case = 96 px", fill="white", font=f)
+	y += 44
+	pl.alpha_composite(kit, (0, y))
+	y += kit.height + 20
+	for titre, im in vues:
+		d.text((12, y), titre, fill="white", font=f)
+		y += 44
+		pl.alpha_composite(im, (0, y))
+		y += im.height + 20
+	d.text((12, y), "Réserve du Musée d'Argenta (coque existante int_musee_coque + meubles)", fill="white", font=f)
+	y += 44
+	pl.alpha_composite(reserve, (0, y))
+	y += reserve.height + 20
+	d.text((12, y), "Façade est du Musée : porte arrière, arbuste à Couper, héros", fill="white", font=f)
+	y += 44
+	pl.alpha_composite(facade, (0, y))
+	y += facade.height + 20
+	d.text((12, y), "Combat : dos de Ponyta, Galopa, Magmar, Ptéra sur manoir_salle et arene_cramois "
+		"(face adverse officielle, règles de BattleLayout)", fill="white", font=f)
+	y += 44
+	colonne = 0
+	for did, foe, back, h_foe, h_back in SCENES:
+		chemin = SORTIE / "decors" / f"{did}_back.png"
+		if not chemin.exists():
+			continue
+		fond = Image.open(chemin).convert("RGBA").resize((1170, 540), Image.LANCZOS)
+		dos = SORTIE / "dos" / f"dos_ia_{back}.png"
+		if not dos.exists():
+			dos = PROTO / f"dos_ia_{back}.png"
+		_placer(fond, Image.open(OFFICIEL / f"{foe}.png"), h_foe, False)
+		if dos.exists():
+			_placer(fond, Image.open(dos), h_back, True)
+		pl.alpha_composite(fond, (colonne * 1190, y))
+		colonne += 1
+		if colonne == 2:
+			colonne, y = 0, y + 560
+	if colonne:
+		y += 560
+	final = pl.crop((0, 0, largeur, y + 20)).convert("RGB")
+	sortie.parent.mkdir(parents=True, exist_ok=True)
+	final.save(sortie)
+	print(sortie, final.size)
+
+
 def main() -> None:
 	args = sys.argv[1:]
 	ART.mkdir(parents=True, exist_ok=True)
@@ -670,9 +1438,20 @@ def main() -> None:
 		commandes(int(args[1]) if len(args) > 1 else None)
 	elif args[0] == "--generer":
 		generer(args[1:])
+	elif args[0] == "--retenir":
+		retenir(args[1:])
+	elif args[0] == "--tuiles":
+		tuiles(args[1])
+	elif args[0] == "--decor":
+		decor(args[1], args[2])
+	elif args[0] == "--preparer":
+		preparer()
+	elif args[0] == "--cartes":
+		cartes()
+	elif args[0] == "--controle":
+		controle(Path(args[1]) if len(args) > 1 else ART / "SERIE28_CONTROLE_v1.png")
 	else:
-		import serie28_suite  # noqa: F401  (préparation, cartes, contrôle : ajoutés après la génération)
-		serie28_suite.main(args)
+		sys.exit(__doc__)
 
 
 if __name__ == "__main__":
