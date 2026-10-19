@@ -40,9 +40,11 @@ Ajoutés par Kevin le 2026-10-19 (deuxième vague) :
 - **sauvegarde à la mise en arrière-plan Android** (appel, notification, verrouillage) : système de
   sauvegarde, donc **validé seul** (règle 1 de `CLAUDE.md`), utile à tout le jeu (J30 à J36).
 
-**Entrée dans Safrania** (décision de Kevin, 2026-10-19) : faite au **J20**, qui a déjà les boissons
-et les postes de garde (`route_7_gate`, `route_8_gate`) : donner une boisson au garde ouvre la porte,
-comme dans Rouge/Bleu. Le J26 la consomme sans la coder.
+**Entrée dans Safrania** (décision de Kevin, 2026-10-19, confirmée directement à la session J20) :
+faite au **J20**, tâche **T25** (données seulement, après T11 et T15), qui **remplace l'arbitrage
+H-5** : une boisson donnée au garde ouvre les quatre postes, comme dans Rouge/Bleu. Option Q-4 A :
+tant que la carte de Safrania n'existe pas, le garde ne demande rien ; le J26 n'aura qu'à déclarer sa
+carte. Textes 215 à 219 validés (plan J20, `jalon-20` @ `04834a71`).
 
 Point de départ déjà écrit (message du J24, 2026-10-19) : `jalon-24` (@ `ed306985`) contient une
 logique pure et testée de **Surf et de Force**, sans dépendance à une carte : `GridWorld` (eau
@@ -76,11 +78,11 @@ reste en conception.
 - **Verrou** : 2 suites complètes au maximum en même temps sur le Mac (`KANTO_TEST_SLOTS`), places
   dans `/tmp/kanto2026-test-slots/`, libérées automatiquement si leur processus meurt. Les
   lancements ciblés ne prennent pas de place.
-- **CI sur les branches de jalon** (décision de Kevin, 2026-10-19) : `.github/workflows/godot-tests.yml`
-  se déclenche aussi sur les `push` des branches `jalon-*` (8 lots parallèles sur GitHub). Avant une
-  fusion, une session peut pousser sa branche et lire le résultat de la CI (`gh run list`,
-  `gh run watch`) au lieu de lancer la suite complète sur le Mac. Une branche ne profite du
-  déclencheur qu'après avoir récupéré le workflow de `main`.
+- **CI GitHub** (`.github/workflows/godot-tests.yml`, 8 lots parallèles) : seulement sur `main` et
+  les pull requests, et **jamais pour un commit qui ne touche que la documentation** (`docs/**`,
+  `*.md`). Le déclenchement sur les branches `jalon-*`, essayé le 2026-10-19, a été **retiré** le
+  soir même (Kevin) : le dépôt est privé et le quota de minutes gratuites a été épuisé en quelques
+  heures. Avant une fusion, la suite complète tourne donc sur le Mac (`tools/test.sh`, avec le verrou).
 - **Tests lents** : la suite complète affiche à la fin ses 10 scripts les plus lents. Reste à faire :
   alléger les plus lents, sans perdre de couverture.
 
@@ -130,3 +132,4 @@ Un jalon de contenu devient alors surtout un fichier de données à remplir.
 | Date | Jalons clos depuis le 2026-10-19 | Rythme | Remarque |
 |---|---|---|---|
 | 2026-10-19 | 0 | ≈ 1,2 / jour (base) | stratégie adoptée |
+| 2026-10-19 | 1 (J19) | même jour | J19 clos (T24), fusion dans `main` accordée par Kevin (faite par la session principale) |

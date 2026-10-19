@@ -61,12 +61,24 @@ extends RefCounted
 ## [/code]. COINS (Jackpot) : chaque utilisation réussie **du camp du joueur** éparpille
 ## [member per_level] × niveau du lanceur pièces ([PayDayPurse]), ramassées à la fin d'un combat
 ## gagné ou d'une capture ([BattleConclusion]) ; le Jackpot de l'adversaire ne rapporte rien.
+## Jalon 19 (Dévorêve, Hurlement, Bélier, Ultralaser ; règles de Rouge/Bleu, sauf deux décisions
+## de Kevin du 2026-10-16 « comme la 2e génération », voir [Battle]) :
+## [codeblock]
+## { "kind": "requires_sleep" }   { "kind": "force_switch" }
+## { "kind": "recoil_damage", "fraction": 0.25 }   { "kind": "recharge" }
+## [/codeblock]
+## REQUIRES_SLEEP : la capacité rate (MOVE_MISSED) si la cible ne dort pas (Dévorêve, avec un
+## DRAIN). FORCE_SWITCH : Hurlement, fin d'un combat sauvage ou changement forcé du Dresseur.
+## RECOIL_DAMAGE : le lanceur perd [member fraction] des dégâts infligés (au moins 1), même si
+## la cible tombe (Bélier ; distinct de RECOIL, part des PV max). RECHARGE : après un coup qui
+## touche, le lanceur se repose au tour suivant (Ultralaser).
 
 enum Kind {
 	STAT_STAGE, RECOIL, SEED, STATUS, CONFUSION, HITS, FLINCH, CRIT_UP, FIXED_DAMAGE, BIDE,
 	DRAIN, TRAP, DISABLE, REST, SELF_KO,
 	CHARGE, TELEPORT,
 	COINS,
+	REQUIRES_SLEEP, FORCE_SWITCH, RECOIL_DAMAGE, RECHARGE,
 }
 enum Target { SELF, FOE }
 
@@ -80,6 +92,8 @@ const KIND_NAMES: Dictionary[String, Kind] = {
 	"self_ko": Kind.SELF_KO,
 	"charge": Kind.CHARGE, "teleport": Kind.TELEPORT,
 	"coins": Kind.COINS,
+	"requires_sleep": Kind.REQUIRES_SLEEP, "force_switch": Kind.FORCE_SWITCH,
+	"recoil_damage": Kind.RECOIL_DAMAGE, "recharge": Kind.RECHARGE,
 }
 ## Modes de FIXED_DAMAGE.
 const FIXED_MODES: Array[StringName] = [&"half_hp", &"level", &"value"]
@@ -102,6 +116,7 @@ var target: Target = Target.FOE
 var chance: int = 100
 ## RECOIL : fraction des PV max du lanceur perdue après l'attaque (Lutte : 0,25).
 ## SEED : fraction des PV max de la cible drainée à chaque fin de tour (Vampigraine : ⅛).
+## RECOIL_DAMAGE : part des dégâts infligés perdue par le lanceur (Bélier : ¼, jalon 19).
 ## DRAIN : part des dégâts infligés rendue au lanceur (½) ; TRAP : part des PV max perdue par la
 ## cible à chaque fin de tour (⅛).
 var fraction: float = 0.0

@@ -1,0 +1,35 @@
+{
+	"pokemon_tower_low": {
+		"maps": ["pokemon_tower_3f"],
+		"terrain": "floor",
+		"rate": 10,
+		"ghost_unless_item": "silph_scope",
+		"slots": [
+			{ "species": "gastly", "levels": [18, 24], "weight": 229 },
+			{ "species": "haunter", "levels": [25, 25], "weight": 3 },
+			{ "species": "cubone", "levels": [20, 22], "weight": 24 }
+		]
+	},
+	"pokemon_tower_mid": {
+		"maps": ["pokemon_tower_4f", "pokemon_tower_5f"],
+		"terrain": "floor",
+		"rate": 10,
+		"ghost_unless_item": "silph_scope",
+		"slots": [
+			{ "species": "gastly", "levels": [18, 24], "weight": 219 },
+			{ "species": "haunter", "levels": [25, 25], "weight": 13 },
+			{ "species": "cubone", "levels": [20, 22], "weight": 24 }
+		]
+	},
+	"pokemon_tower_high": {
+		"maps": ["pokemon_tower_6f"],
+		"terrain": "floor",
+		"rate": 15,
+		"ghost_unless_item": "silph_scope",
+		"slots": [
+			{ "species": "gastly", "levels": [19, 24], "weight": 216 },
+			{ "species": "haunter", "levels": [26, 28], "weight": 16 },
+			{ "species": "cubone", "levels": [22, 24], "weight": 24 }
+		]
+	}
+}

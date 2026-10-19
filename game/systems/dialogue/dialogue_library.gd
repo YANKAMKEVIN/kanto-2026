@@ -15,7 +15,8 @@ extends RefCounted
 ## },
 ## "breakfast_table": { "narration": true, "pages": ["Ton petit-déjeuner est encore chaud."] }
 ## [/codeblock]
-## Clés de page : text, speaker, pause, face_player, react, turn ({ acteur: cible }, 3B).
+## Clés de page : text, speaker, pause, face_player, react, turn ({ acteur: cible }, 3B),
+## voice ("spirit" : voix d'esprit, J19).
 ## Sans « variants », les clés d'une variante (pages, if, unless, set, auto) peuvent être
 ## écrites directement dans le dialogue. Toute clé inconnue est une erreur (faute de frappe).
 ## Fin d'une variante (jalon 7 §3.3) : **une seule** de « choice » ([DialogueChoice] : confirm,
@@ -55,7 +56,7 @@ const _CHOICE_KEYS: Array[String] = [
 	"confirm_set", "cancel_set",
 ]
 const _PAGE_KEYS: Array[String] = [
-	"text", "speaker", "pause", "face_player", "react", "turn",
+	"text", "speaker", "pause", "face_player", "react", "turn", "voice",
 ]
 
 var _dialogues: Dictionary[StringName, Dialogue] = {}
@@ -401,6 +402,11 @@ func _parse_page(value: Variant, where: String) -> DialoguePage:
 		ok = _read_string(entry["speaker"], where + " speaker") and ok
 		page.speaker = str(entry["speaker"])
 		ok = _check_tokens(page.speaker, where + " speaker") and ok
+	if entry.has("voice"):
+		if entry["voice"] is String and DialoguePage.VOICES.has(StringName(entry["voice"])):
+			page.voice = StringName(entry["voice"])
+		else:
+			ok = _fail("%s : « voice » inconnue (attendu : %s)" % [where, DialoguePage.VOICES])
 	if entry.has("pause"):
 		var pause: Variant = entry["pause"]
 		if not (pause is float or pause is int) or float(pause) < 0.0:

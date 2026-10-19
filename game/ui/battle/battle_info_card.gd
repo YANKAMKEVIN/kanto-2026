@@ -80,7 +80,8 @@ func set_view(view: BattleCardView) -> void:
 	_gender_icon.modulate = GENDER_COLORS.get(_gender, UiTokens.TEXT)
 	_gender_icon.visible = _gender_icon.texture != null
 	_level = view.level
-	_level_value.text = str(view.level)
+	_level_value.text = GhostDisguise.HIDDEN_LEVEL_TEXT if view.level_hidden \
+		else str(view.level)
 	set_status(view.status)
 	set_show_hp_numbers(view.show_hp_numbers)
 	set_hp(view.hp, view.max_hp)
@@ -200,9 +201,9 @@ func get_gender_icon() -> TextureRect:
 	return _gender_icon
 
 
-## « Nv. 5 ».
+## « Nv. 5 » (« Nv. ?? » pour un niveau masqué, jalon 19).
 func get_level_text() -> String:
-	return "%s %d" % [LEVEL_TAG, _level]
+	return "%s %s" % [LEVEL_TAG, _level_value.text]
 
 
 ## « 19 / 19 » (même caché).

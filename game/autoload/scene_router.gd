@@ -247,10 +247,14 @@ func get_cached_paths() -> PackedStringArray:
 	return paths
 
 
-## Règle les [FlagGate] de [param map] (déjà dans l'arbre) avec [member arrival_flags].
+## Règle les [FlagGate] de [param map] (déjà dans l'arbre) avec [member arrival_flags], et place
+## les PNJ selon ces drapeaux **avant** le joueur ([method GameMap.refresh_npcs], qui règle aussi
+## les [FlagGate]) : un PNJ « moved » (jalon 14) ne doit pas occuper, avec sa place sans drapeau,
+## la case d'arrivée du joueur (jalon 19 T16 : la gardienne de la Tour, case d'accès (17, 3) au
+## retour du 2F). Boot le refait à [signal map_changed] (sans effet : déjà à jour).
 func _apply_arrival_flags(map: GameMap) -> void:
 	if arrival_flags.is_valid():
-		map.apply_flag_gates(arrival_flags.call() as StoryFlags)
+		map.refresh_npcs(arrival_flags.call() as StoryFlags)
 
 
 ## Fin commune de [method start] et [method start_at] : ancienne carte libérée, joueur

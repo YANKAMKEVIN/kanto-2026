@@ -17,6 +17,13 @@ extends Node
 ## ([signal rubble_sound_requested]), puis le héros se retourne. Le sol calme d'une grotte
 ## n'a aucune rencontre. Un seul compteur de pas calmes pour les deux terrains. Le compagnon
 ## ne déclenche rien : seul le pas du joueur est écouté.
+## Jalon 19 (`jalon-19.md` §2.2, dossier 22 §5 et §6) : terrain « floor » (sol de la Tour) sur
+## toute case praticable d'une carte qui a une table « floor », sauf les cases calmes
+## ([member GameMap.calm_cells]), les warps et les déclencheurs ; aucune introduction (le fondu
+## du combat suffit). Combat SPECTRE : [method GhostRule.is_ghost] relu à [b]chaque[/b]
+## rencontre avec le Sac du moment ([member EncounterTable.ghost_unless_item]) ; alors ni
+## « vu », ni première espèce sauvage, ni cri, et [signal encounter_started] porte la
+## pseudo-espèce masquée.
 
 ## Une rencontre commence (joueur bloqué, transition lancée).
 signal encounter_started(species_id: StringName, level: int)
@@ -38,6 +45,8 @@ const REASON: StringName = &"encounter"
 const _GRASS_TERRAIN: StringName = &"grass"
 ## Gravats des grottes (jalon 12, T20).
 const _RUBBLE_TERRAIN: StringName = &"rubble"
+## Sol de la Tour Pokémon (jalon 19).
+const _FLOOR_TERRAIN: StringName = &"floor"
 
 ## Faux : aucun tirage (outils de capture, tests d'autres systèmes).
 var enabled: bool = true
@@ -96,7 +105,9 @@ func get_quiet_steps() -> int:
 
 
 ## Terrain de rencontre de [param cell] sur la carte courante (jalon 12, T20) : &"grass" (hautes
-## herbes), &"rubble" (gravats), &"" (aucun : sol calme, chemin, hors carte, sans carte).
+## herbes), &"rubble" (gravats), &"floor" (sol de la Tour, jalon 19 : carte avec une table
+## « floor », case praticable hors cases calmes, warps et déclencheurs), &"" (aucun : sol calme,
+## chemin, hors carte, sans carte).
 func terrain_at(cell: Vector2i) -> StringName:
 	var grid := _map.get_grid() if _map != null else null
 	if grid == null:
@@ -105,6 +116,8 @@ func terrain_at(cell: Vector2i) -> StringName:
 		return _GRASS_TERRAIN
 	if grid.is_rubble(cell):
 		return _RUBBLE_TERRAIN
+	if _is_floor(grid, cell):
+		return _FLOOR_TERRAIN
 	return &""
 
 
@@ -116,7 +129,15 @@ func start_encounter(encounter: WildEncounter) -> bool:
 	if _battles != null and _battles.is_running():
 		return false
 	var cell := _player.get_cell() if is_instance_valid(_player) else Vector2i.ZERO
-	_run(encounter, _origin_cell(cell), terrain_at(cell))
+	var terrain := terrain_at(cell)
+	# Même calcul qu'un tirage (jalon 19) : la table d'origine, sinon celle de la case. Un
+	# SPECTRE déjà demandé par l'appelant le reste.
+	var table := _library.get_table_by_id(encounter.table_id) \
+		if _library != null and not encounter.table_id.is_empty() else null
+	if table == null and _library != null:
+		table = _library.get_table(_map.map_id, terrain)
+	encounter.ghost = encounter.ghost or _is_ghost(table)
+	_run(encounter, _origin_cell(cell), terrain)
 	return true
 
 
@@ -132,6 +153,8 @@ func _on_player_moved(cell: Vector2i) -> void:
 	if encounter == null:
 		_quiet_steps += 1
 		return
+	# Combat SPECTRE (jalon 19) : relu à chaque rencontre, avec le Sac du moment.
+	encounter.ghost = _is_ghost(table)
 	# Verrou synchrone, dans le `moved` : le pas suivant ne part pas (comme les déclencheurs
 	# du 3B). Le reste de la séquence est une coroutine lancée sans l'attendre.
 	_run(encounter, _origin_cell(cell), terrain)
@@ -184,17 +207,22 @@ func _run(encounter: WildEncounter, origin: Vector2i,
 	_quiet_steps = 0
 	if is_instance_valid(_player):
 		_player.set_input_enabled(false, REASON)
-	if _state != null and _state.pokedex != null:
+	# SPECTRE (jalon 19, K-9) : rien n'est enregistré, rien n'est nommé, aucun cri.
+	var ghost := encounter.ghost
+	if _state != null and _state.pokedex != null and not ghost:
 		# Pokédex daté (jalon 5 §16.3) : espèce vue sur cette carte, une observation de plus.
 		_state.record_seen(encounter.species, _map.map_id)
-	if _state != null:
+	if _state != null and not ghost:
 		# Première espèce sauvage rencontrée en combat (jalon 7 §3.1) : celle que Chen cite.
 		_state.record_wild_encounter(encounter.species, _map.map_id)
-	encounter_started.emit(encounter.species, encounter.level)
-	if terrain == _RUBBLE_TERRAIN:
-		await _play_rubble_beat(origin, encounter.species)
+	if ghost:
+		encounter_started.emit(GhostDisguise.SPECIES, GhostDisguise.HIDDEN_LEVEL)
 	else:
-		await _play_grass_beat(origin, encounter.species)
+		encounter_started.emit(encounter.species, encounter.level)
+	if terrain == _RUBBLE_TERRAIN:
+		await _play_rubble_beat(origin, encounter.species, ghost)
+	elif terrain != _FLOOR_TERRAIN:
+		await _play_grass_beat(origin, encounter.species, ghost)
 	# Les objets connus du combat : sans eux, aucune Ball n'est légale (jalon 5D).
 	var items := _battles.get_item_library() if _battles != null else null
 	var request := BattleRequest.wild(encounter, _data, _state.rng as GameRng, origin, items)
@@ -233,7 +261,7 @@ func _on_recovery_woke_up(_map_id: StringName) -> void:
 
 
 ## Le joueur se tourne vers l'herbe qui bouge, elle s'agite, le cri s'accroche (sans son).
-func _play_grass_beat(origin: Vector2i, species: StringName) -> void:
+func _play_grass_beat(origin: Vector2i, species: StringName, ghost: bool = false) -> void:
 	if is_instance_valid(_player):
 		var toward := origin - _player.get_cell()
 		var facing := Vector2i(signi(toward.x), 0) if toward.x != 0 \
@@ -243,21 +271,50 @@ func _play_grass_beat(origin: Vector2i, species: StringName) -> void:
 	var speed := _battles.speed_scale if _battles != null else 1.0
 	if _map != null and is_inside_tree():
 		var rustle := GrassRustle.spawn(_map, Grid.cell_to_world(origin))
-		cry_requested.emit(species)
+		if not ghost:
+			cry_requested.emit(species)
 		await rustle.rustle(speed)
-	else:
+	elif not ghost:
 		cry_requested.emit(species)
 
 
 ## Gravats (jalon 12, T20 ; dossier 15 §6, ≤ 2 s) : petit éboulis sous les pieds (cailloux qui
 ## roulent, poussière), point d'accroche du son, puis le héros se retourne (demi-tour) ; le combat
 ## suit. Pas d'herbe agitée.
-func _play_rubble_beat(origin: Vector2i, species: StringName) -> void:
+func _play_rubble_beat(origin: Vector2i, species: StringName, ghost: bool = false) -> void:
 	var speed := _battles.speed_scale if _battles != null else 1.0
 	rubble_sound_requested.emit()
-	cry_requested.emit(species)
+	if not ghost:
+		cry_requested.emit(species)
 	if _map != null and is_inside_tree():
 		var burst := RubbleBurst.spawn(_map, Grid.cell_to_world(origin))
 		await burst.burst(speed)
 	if is_instance_valid(_player):
 		_player.face(-_player.get_facing())
+
+
+# --- Jalon 19 : sol de la Tour et SPECTRE -------------------------------------------------
+
+## Case de sol « floor » de la carte courante : une table « floor » existe pour la carte, la case
+## est dans la carte et praticable, ni calme ([member GameMap.calm_cells]), ni sur un warp, ni
+## sur un déclencheur (un pas sur un escalier, la case du rival ou celle du SPECTRE ne tire
+## jamais de rencontre, quel que soit l'ordre des écouteurs de `moved`).
+func _is_floor(grid: GridWorld, cell: Vector2i) -> bool:
+	if _library == null or not _library.has_table(_map.map_id, _FLOOR_TERRAIN):
+		return false
+	if not grid.is_in_bounds(cell) or grid.is_solid(cell) or grid.is_water(cell):
+		return false
+	if _map.calm_cells.has(cell):
+		return false
+	if not _map.get_warps().get_at(cell).is_empty():
+		return false
+	return _map.get_triggers().get_at(cell).is_empty()
+
+
+## Combat SPECTRE pour une rencontre de [param table] : [method GhostRule.is_ghost] avec le Sac
+## du moment (aucun cache). Faux sans table.
+func _is_ghost(table: EncounterTable) -> bool:
+	if table == null:
+		return false
+	var bag: Bag = _state.bag as Bag if _state != null else null
+	return GhostRule.is_ghost(table.ghost_unless_item, bag)

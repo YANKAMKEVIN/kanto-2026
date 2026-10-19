@@ -26,8 +26,9 @@ func before_all() -> void:
 
 func test_coins_effect_is_read_from_the_data() -> void:
 	assert_eq(MoveEffect.KIND_NAMES["coins"], MoveEffect.Kind.COINS)
-	assert_eq(MoveEffect.Kind.COINS, MoveEffect.Kind.size() - 1, "en fin d'enum")
-	assert_eq(BattleEvent.Kind.COINS_SCATTERED, BattleEvent.Kind.size() - 1, "en fin d'enum")
+	# Ajoutés en fin d'enum au J15 : leurs valeurs ne bougent plus (le J19 ajoute après).
+	assert_eq(MoveEffect.Kind.COINS, 17, "en fin d'enum au J15")
+	assert_eq(BattleEvent.Kind.COINS_SCATTERED, 60, "en fin d'enum au J15")
 	var effect := _data.get_move(&"pay_day").effect_of(MoveEffect.Kind.COINS)
 	assert_not_null(effect)
 	if effect != null:

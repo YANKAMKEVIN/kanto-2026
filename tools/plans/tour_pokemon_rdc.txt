@@ -47,12 +47,13 @@ FIN
 POSITIONS
 sortie              warp           9..10,16     libre   # PUSH ↓ → lavender_town, retour_tour
 entree              spawn          9,16         libre   # spawn « entrance », tourné ↑
-escalier            warp           17,2         libre   # STEP_ON ↑ → pokemon_tower_2f (J19) ; inatteignable tant que la Médium occupe (17, 3)
+escalier            warp           17,2         libre   # STEP_ON ↑ → pokemon_tower_2f / arrivee_T12 (armé au J19, T16) ; inatteignable tant que la gardienne occupe (17, 3)
 gardien             pnj            3,12         bloque  role=V1 facing=down  # T-30 ; parlé depuis (3, 14) à travers le comptoir (2..5, 13)
 visiteuse           pnj            2,7          bloque  role=V2 facing=right  # T-31 ; allée ouest, devant la tombe (3, 7)
 visiteur            pnj            17,5         bloque  role=V3 facing=left  # T-32 ; allée est, devant la tombe (16, 5)
 jeune_fille         pnj            13,10        bloque  role=V4 facing=up  # T-33 ; sous la 3e rangée, devant la tombe (13, 9)
-exorciste_gardienne pnj            17,3         bloque  role=M facing=up unless=tower_stairs_open  # Exorciste qui ne combat pas (dossier 22 K-2) ; T-34 puis T-35 ; occupe la seule case d'accès à l'escalier ; le J19 la déplace (K-3)
+exorciste_gardienne pnj            17,3         bloque  role=M facing=up moved=18,3:left:tower_stairs_open  # Exorciste qui ne combat pas (dossier 22 K-2) ; occupe la seule case d'accès à l'escalier ; au J19 (T16) la scène `tower_guardian` la range en (18, 3) (§15.1.1 à 4), puis elle dit §15.1.5 (K-3)
+entree_declencheur  declencheur    9..10,15     libre   role=G1  # J19 (T16) : premier pas depuis l'entrée, direction ↑ → scène tower_guardian (une fois : tant que tower_stairs_open n'est pas posé)
 tombe_1             examen         4,5          bloque  # T-36 « Ici repose Plumo… », lu depuis (4, 4) ↓
 tombe_2             examen         7,7          bloque  # T-37 « Pour Caillou… », lu depuis (7, 6) ↓
 tombe_3             examen         12,5         bloque  # T-38 « Tu nous as appris la patience. Merci, Mousse. », lu depuis (12, 4) ↓

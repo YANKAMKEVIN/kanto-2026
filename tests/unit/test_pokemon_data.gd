@@ -82,14 +82,18 @@ func test_real_data_loads_without_error() -> void:
 		&"meowth", &"persian",
 		&"mankey", &"primeape", &"growlithe", &"abra", &"kadabra", &"machop",
 		&"bellsprout", &"weepinbell",
-		&"geodude", &"graveler", &"golem", &"magnemite", &"magneton", &"shellder", &"onix",
-		&"drowzee", &"hypno", &"voltorb", &"koffing",
-		&"horsea", &"goldeen", &"staryu", &"starmie"] as Array[StringName])
-	assert_eq(_data.get_move_ids().size(), 112,
+		&"geodude", &"graveler", &"golem", &"magnemite", &"magneton", &"shellder",
+		# Jalon 19 (T3) : Fantominus, Spectrum, Noeunoeuf, Osselait, Ossatueur, Léviator
+		# (kanto_tower.json ; Caninos vient du J17).
+		&"gastly", &"haunter", &"onix",
+		&"drowzee", &"hypno", &"voltorb", &"exeggcute", &"cubone", &"marowak", &"koffing",
+		&"horsea", &"goldeen", &"staryu", &"starmie", &"gyarados"] as Array[StringName])
+	assert_eq(_data.get_move_ids().size(), 120,
 		"47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10) + Patience (J11) "
 		+ "+ 21 du Mont Sélénite (jalon 12) + 8 du jalon 13 (les 5 du J12 qu'il reprenait : "
 		+ "entrées du J12) + 6 du Cap d'Azuria (jalon 14) + Jackpot (J15) "
-		+ "+ Coupe et Tonnerre (jalon 16) + 7 du jalon 17")
+		+ "+ Coupe et Tonnerre (jalon 16) + 7 du jalon 17 + 8 de la Tour Pokémon (J19 ; "
+		+ "Hypnose, Hurlement et Bélier viennent du J17)")
 	assert_true(_data.has_move(&"struggle"))
 
 
@@ -159,6 +163,9 @@ func test_real_evolution_chains() -> void:
 		# Jalon 17 (§2.12.1) : Rouge/Bleu ; Caninos et Goupix (Pierre Feu absente) n'en déclarent
 		# pas.
 		&"diglett": [&"dugtrio", 26], &"drowzee": [&"hypno", 26], &"magnemite": [&"magneton", 30],
+		# Tour Pokémon (jalon 19, §2.12) : Rouge/Bleu. Spectrum (échange, Ectoplasma absent) et
+		# Noeunoeuf (Pierre Plante absente) n'en déclarent pas.
+		&"gastly": [&"haunter", 25], &"cubone": [&"marowak", 28],
 	}
 	for id: StringName in _data.get_species_ids():
 		var rules := _data.get_species(id).evolutions
@@ -230,12 +237,19 @@ func test_real_move_values() -> void:
 		[MoveEffect.Kind.STATUS, &"burn", 10])
 
 
+## Capacités du J19 nécessaires aux learnsets complets (plan jalon-19 §0.4 n° 1) dont la
+## description, hors du lot §15.7 du dossier 22, attend la relecture de Kevin : « draft ».
+## Retirer l'identifiant d'ici quand le texte est validé.
+const DRAFT_DESCRIPTIONS: Array[StringName] = []
+
+
 func test_every_real_move_has_a_validated_description() -> void:
 	_data.load_dir()
 	for id: StringName in _data.get_move_ids():
 		var move := _data.get_move(id)
 		assert_false(move.description.is_empty(), String(id))
-		assert_false(move.draft, "%s : description validé par Kevin le 2026-10-06" % id)
+		assert_eq(move.draft, DRAFT_DESCRIPTIONS.has(id),
+			"%s : description validée par Kevin (sauf brouillons listés)" % id)
 
 
 # --- Fixture valide ---------------------------------------------------------------------
@@ -425,6 +439,9 @@ func test_real_catch_rates_are_the_official_ones() -> void:
 		# Jalon 17 (T7).
 		&"diglett": 255, &"dugtrio": 50, &"drowzee": 190, &"hypno": 75, &"magnemite": 190,
 		&"magneton": 60, &"growlithe": 190, &"vulpix": 190,
+		# Jalon 19 (T3, Tour Pokémon ; Caninos vient du J17).
+		&"gastly": 190, &"haunter": 90, &"exeggcute": 90, &"cubone": 190,
+		&"marowak": 75, &"gyarados": 45,
 	}
 	assert_eq(_data.get_species_ids().size(), expected.size(), "toutes les espèces")
 	for id: StringName in _data.get_species_ids():
@@ -765,12 +782,13 @@ func test_moves_without_effect_say_so() -> void:
 	# Lot de textes du jalon 9 (verrouillé le 2026-10-07) : toute capacité de statut dont
 	# l'effet n'est pas joué porte « Sans effet dans le moteur actuel. », Poudre Dodo comprise.
 	# Jalon 11 : la mention part avec l'effet (Cage-Éclair, Para-Spore, Poudre Dodo au T4).
+	# Jalon 19 : Cyclone (changement forcé, décision de Kevin du 2026-10-16).
 	_data.load_dir()
-	for id: StringName in [&"whirlwind", &"mirror_move", &"horn_drill"]:
+	for id: StringName in [&"mirror_move", &"horn_drill"]:
 		assert_true(_data.get_move(id).description.ends_with(
 			" Sans effet dans le moteur actuel."), String(id))
 	for id: StringName in [&"thunder_wave", &"stun_spore", &"sleep_powder", &"supersonic",
-			&"focus_energy", &"super_fang", &"seismic_toss"]:
+			&"focus_energy", &"super_fang", &"seismic_toss", &"whirlwind"]:
 		assert_false(_data.get_move(id).description.contains("Sans effet"), String(id))
 	assert_eq(_data.get_move(&"sleep_powder").description,
 		"Une poudre soporifique qui endort la cible.")
@@ -860,8 +878,7 @@ func test_j14_moves() -> void:
 		&"teleport": ["Téléport", &"psychic", MoveData.Category.STATUS, 0, 0, 20, []],
 		&"dig": ["Tunnel", &"ground", MoveData.Category.PHYSICAL, 100, 100, 10, []],
 		&"low_kick": ["Balayage", &"fighting", MoveData.Category.PHYSICAL, 50, 90, 20, []],
-		&"submission": ["Sacrifice", &"fighting", MoveData.Category.PHYSICAL, 80, 80, 25,
-			["recoil_damage"]],
+		&"submission": ["Sacrifice", &"fighting", MoveData.Category.PHYSICAL, 80, 80, 25, []],
 		&"psychic": ["Psyko", &"psychic", MoveData.Category.SPECIAL, 90, 100, 10, []],
 		&"reflect": ["Protection", &"psychic", MoveData.Category.STATUS, 0, 0, 20, ["reflect"]],
 	}

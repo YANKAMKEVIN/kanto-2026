@@ -69,12 +69,15 @@ const BUILDINGS: Array = [
 const INTERIOR_SPAWN: StringName = &"entrance"
 ## La maison 2 (`N`) est la maison 1 en miroir (fiche, variation n° 4).
 const MIRRORED: Array[String] = ["House2"]
-## Panneaux : [position de la grille, nom du nœud, dialogue (T-18 à T-20), orientation du
-## joueur qui lit].
+## Panneaux : [position de la grille, nom du nœud, dialogue (T-18 à T-20, §15.6.5 du dossier 22),
+## orientation du joueur qui lit, (objet, si ce n'est pas le panneau commun)].
 const SIGNS: Array = [
 	["panneau_ville", "SignCity", &"lavender_town_sign", Vector2i.RIGHT],
 	["panneau_tour", "SignTower", &"lavender_tower_sign", Vector2i.UP],
 	["panneau_fuji", "SignPokemonHouse", &"lavender_pokemon_house_sign", Vector2i.UP],
+	# J19 (T20) : panneau du Scope Sylphe (dossier 22 §15.6.5), objet propre, lu depuis (41, 11) →.
+	["panneau_scope_j19", "SignScope", &"lavender_scope_sign", Vector2i.RIGHT,
+		"prop_panneau_scope_01"],
 ]
 ## Arrivée à Lavanville (T24) : scène silencieuse `lavender_reached` (objectif « Visiter la
 ## Tour Pokémon. »), tout pas vers le bas sur la 2e rangée (position `legende_arrivee`).
@@ -229,7 +232,7 @@ func _add_passages() -> void:
 
 
 ## Examen des trois panneaux et déclencheur de l'arrivée (les PNJ viennent de `NPCS_PATH`).
-## Le panneau du Scope Sylphe (42, 11) est réservé au J19 : rien n'y est posé.
+## Le panneau du Scope Sylphe (42, 11) est posé par le J19 (T20), comme les trois autres.
 func _add_life() -> void:
 	for entry: Array in SIGNS:
 		_kit.call(&"add_interactable", String(entry[1]) + "Point", _cell(entry[0]), Vector2i.ONE,
@@ -270,7 +273,8 @@ func _place_props(entities: Node2D) -> void:
 			"Bench%d" % index)
 		index += 1
 	for entry: Array in SIGNS:
-		_kit.call(&"add_prop_at", entities, "prop_panneau_01", _cell(entry[0]), entry[1])
+		var prop_id: String = entry[4] if entry.size() > 4 else "prop_panneau_01"
+		_kit.call(&"add_prop_at", entities, prop_id, _cell(entry[0]), entry[1])
 	# Haies `x` : buis taillés, deux modèles jamais identiques côte à côte, valeur variée.
 	var chosen: Dictionary = {}
 	index = 0

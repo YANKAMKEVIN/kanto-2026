@@ -1,9 +1,16 @@
 name: Godot tests
 
 on:
+  # Pas de CI pour un commit qui ne touche que la documentation (minutes GitHub limitées, dépôt privé).
   pull_request:
+    paths-ignore:
+      - 'docs/**'
+      - '**/*.md'
   push:
-    branches: [main, 'jalon-*']
+    branches: [main]
+    paths-ignore:
+      - 'docs/**'
+      - '**/*.md'
 
 permissions:
   contents: read

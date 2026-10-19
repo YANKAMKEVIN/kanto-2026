@@ -483,3 +483,17 @@ func test_invalid_choice_flags_are_rejected() -> void:
 			"test"), str(bad[i]))
 	assert_push_error_count(bad.size())
 	assert_eq(_library.size(), 0)
+
+
+func test_page_voice_spirit_is_read_and_unknown_voice_is_refused() -> void:
+	assert_true(_library.add_from_dict({"e1": {"pages": [
+		{"text": "Laisse… nous…", "voice": "spirit"}, "Normal."]}}, "test"),
+		str(_library.get_errors()))
+	var pages := _library.get_dialogue(&"e1").variants[0].pages
+	assert_eq(pages[0].voice, &"spirit")
+	assert_eq(pages[1].voice, &"", "voix normale par défaut")
+	var other := DialogueLibrary.new()
+	assert_false(other.add_from_dict({"e2": {"pages": [
+		{"text": "Boo", "voice": "demon"}]}}, "test"))
+	assert_string_contains("\n".join(other.get_errors()), "voice")
+	assert_push_error("voice")

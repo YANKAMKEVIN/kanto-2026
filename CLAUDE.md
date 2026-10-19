@@ -30,6 +30,7 @@ Kevin est le **directeur du jeu** : il conçoit (souvent avec ChatGPT), Claude i
 - `docs/design/dossier-20-chemins-retrouves.md` — **jalon 17** (Route 11 et Ronflex, Cave Taupiqueur, Route 2 est et assistant de Chen, CS05 Flash automatique, voile d'obscurité partagé avec le J18, Coupe sur deux arbustes) ; arbitrages H-1 à H-17, grilles, vues générales et textes **verrouillés** par Kevin le 2026-10-14 ; passe `passes/j17-v2-alignement.md`. **J17 terminé le 2026-10-19** (17.0 → 17D validés, fusionné dans `main`) ; plan et clôture (passation au J18) : `docs/tech/jalon-17.md` §9.
 - `docs/design/dossier-21-grotte-sombre-lavanville.md` — **jalon 18** (Route 9, Route 10, Grotte Sombre 2 niveaux avec voile d'obscurité, Lavanville, Tour Pokémon au rez-de-chaussée) ; arbitrages I-1 à I-26 et textes §15 validés (2026-10-14) ; Flash alignée sur le dossier 20 du J17 (2026-10-15) ; grilles, vues générales (`reference/route-9-*`, `route-10-*`, `grotte-sombre-*`, `lavanville-*`, la grille `tools/plans/` fait foi) et art nouveau validés ; plan `docs/tech/jalon-18.md`. Voile et Flash codés par le J17. **J18 terminé le 2026-10-19** (18.0 → 18C faits, QA 18A–18C sur S24 sans bloquant, fusion accordée par Kevin) ; plan et clôture (passation au J19) : `docs/tech/jalon-18.md` §9.
 - `docs/design/dossier-*.md` — conception détaillée par zone (`dossier-02-prologue.md` : textes définitifs du prologue, découpage 3A / 3B / 4).
+- `docs/design/dossier-22-tour-pokemon.md` — **jalon 19** (Tour Pokémon : exploration 1F–6F, mode spectre sans Scope, rival n° 5, 9 Exorcistes, zone purifiée) ; K-1 à K-20, textes §15 et grilles v1 **validés par Kevin** (2026-10-14) ; vue générale validée `reference/tour-pokemon-vue-generale-v1.png` + plan (la grille `tools/plans/pokemon_tower_*.txt` fait foi). Plan `docs/tech/jalon-19.md`. **J19 terminé le 2026-10-19** (19.0 → 19B faits, 19A et 19B validés par Kevin sur la base des QA S24, fusion accordée par Kevin) ; plan et clôture (passation au J20) : `docs/tech/jalon-19.md` §9.
 - `docs/design/cahier-art-monde-v0.1.md` — cahier des charges de l'art du monde et prototype de faisabilité de Jadielle (cible = références J7, pas de nivellement par le bas).
 - `docs/tech/etat-projet.md` — **où en est le projet, prochaine étape, questions ouvertes.** À lire en début de session.
 - `docs/tech/jalon-*.md` — plans techniques des jalons (tâches et critères d'acceptation).
@@ -95,3 +96,13 @@ godot --headless --path . --import   # réimport / détection d'erreurs de scrip
 **Agents en parallèle** : chacun travaille dans sa propre copie (worktree) ; **jamais de `pkill` / `killall` sur Godot ou GUT** (d'autres agents font tourner leurs tests sur le même Mac) : arrêter seulement ses propres processus, par PID.
 
 **Fable, ponctuellement et sur demande** (≈ 2,5 × le coût d'Opus, jamais par défaut) : seulement quand une erreur coûterait cher — conception de la **sauvegarde** (5C.5), **compagnon Pokémon** (J11), bug sur lequel Opus a déjà échoué. Haiku n'est pas utilisé pour le code, les données ni la QA (au mieux, des recherches dans le code).
+
+## Gestion des sessions (décision de Kevin, 2026-10-20)
+
+Pour limiter la consommation de tokens, chaque session relisant tout son historique à chaque réponse :
+
+- **Une session neuve par sous-jalon.** Elle repart de ce fichier, de `docs/tech/etat-projet.md` et du plan du jalon (`docs/tech/jalon-XX.md`), dans le worktree du jalon. Prompt de reprise type : « Reprise du JXX. Lis CLAUDE.md, docs/tech/etat-projet.md, docs/tech/jalon-XX.md. Travaille dans le worktree … (branche …, @commit). Prochaine tâche : … Décisions de Kevin : … »
+- **Avant de rendre la main en fin de sous-jalon** : `etat-projet.md` à jour, tout commité et poussé, puis proposer à Kevin le prompt de reprise de la session suivante.
+- **Au plus 2 à 3 jalons actifs** à la fois (`docs/design/strategie-acceleration.md`, levier 2). Une session en pause est **fermée**, puis reprise par une session neuve quand elle a de nouveau du travail.
+- **Sous-agents** : Sonnet pour les données, cartes, textes et vérifications mécaniques ; Opus pour l'architecture et les bugs difficiles (voir « Agents » ci-dessus).
+- La ligne d'état affiche la taille du contexte : en jaune ou en rouge, finir la tâche en cours puis repartir sur une session neuve.

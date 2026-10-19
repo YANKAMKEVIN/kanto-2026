@@ -1,0 +1,85 @@
+{
+	"tower_channeler_1": {
+		"name": "Exorciste Hortense", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true,
+		"prize_money": 0, "prize_per_level": 30,
+		"team": [{ "species": "gastly", "level": 23 }]
+	},
+	"tower_channeler_2": {
+		"name": "Exorciste Odile", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true,
+		"prize_money": 0, "prize_per_level": 30,
+		"team": [{ "species": "gastly", "level": 22 }]
+	},
+	"tower_channeler_3": {
+		"name": "Exorciste Solange", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true,
+		"prize_money": 0, "prize_per_level": 30,
+		"team": [{ "species": "gastly", "level": 23 }, { "species": "gastly", "level": 23 }]
+	},
+	"tower_channeler_4": {
+		"name": "Exorciste Mireille", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true,
+		"prize_money": 0, "prize_per_level": 30,
+		"team": [{ "species": "gastly", "level": 24 }]
+	},
+	"tower_channeler_5": {
+		"name": "Exorciste Bérénice", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true,
+		"prize_money": 0, "prize_per_level": 30,
+		"team": [{ "species": "haunter", "level": 23 }]
+	},
+	"tower_channeler_6": {
+		"name": "Exorciste Marthe", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true,
+		"prize_money": 0, "prize_per_level": 30,
+		"team": [{ "species": "gastly", "level": 24 }]
+	},
+	"tower_channeler_7": {
+		"name": "Exorciste Ysée", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true,
+		"prize_money": 0, "prize_per_level": 30,
+		"team": [{ "species": "haunter", "level": 22 }]
+	},
+	"tower_channeler_8": {
+		"name": "Exorciste Paulette", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true,
+		"prize_money": 0, "prize_per_level": 30,
+		"team": [{ "species": "gastly", "level": 24 }]
+	},
+	"tower_channeler_9": {
+		"name": "Exorciste Clémence", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true,
+		"prize_money": 0, "prize_per_level": 30,
+		"team": [{ "species": "gastly", "level": 24 }]
+	},
+	"rival_tower": {
+		"name": "{rival}", "ai": "smart",
+		"can_lose": false, "heal_after": false, "gives_exp": true,
+		"prize_money": 0, "prize_per_level": 35,
+		"end_message": false, "start_message": true, "bag": true, "moment": "win", "switch": true,
+		"team_by_starter": {
+			"bulbasaur": [
+				{ "species": "pidgeotto", "level": 20, "moves": ["sand_attack", "quick_attack"] },
+				{ "species": "exeggcute", "level": 20 },
+				{ "species": "sandshrew", "level": 20 },
+				{ "species": "kadabra", "level": 17, "moves": ["confusion", "psybeam"] },
+				{ "species": "charmeleon", "level": 21, "moves": ["scratch", "growl", "ember", "leer"] }
+			],
+			"charmander": [
+				{ "species": "pidgeotto", "level": 22, "moves": ["gust", "sand_attack", "quick_attack"] },
+				{ "species": "growlithe", "level": 22, "moves": ["bite", "ember", "leer"] },
+				{ "species": "exeggcute", "level": 22 },
+				{ "species": "kadabra", "level": 20, "moves": ["confusion", "psybeam"] },
+				{ "species": "wartortle", "level": 25 }
+			],
+			"squirtle": [
+				{ "species": "pidgeotto", "level": 21, "moves": ["gust", "sand_attack", "quick_attack"] },
+				{ "species": "gyarados", "level": 25, "moves": ["bite", "dragon_rage", "leer"] },
+				{ "species": "growlithe", "level": 21, "moves": ["bite", "ember", "leer"] },
+				{ "species": "kadabra", "level": 18, "moves": ["confusion", "psybeam"] },
+				{ "species": "ivysaur", "level": 26 }
+			]
+		}
+	}
+}
