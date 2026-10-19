@@ -268,6 +268,19 @@ PLANCHES = [
 		"5 VERRE BRISÉ : éclats de verre pâle et de cadre cassé ;\n"
 		"6 TAPIS BRÛLÉ : un morceau de tapis bordeaux déchiré aux bords noircis.\n"
 		"À plat, sans relief marqué, sans ombre portée.", []),
+	("INT_MANOIR_PLANCHE_C", ["REF_M_SALLE", "REF_M_PUPITRE"],
+		_PLANCHE_FORMAT.format(px=160) + "\nSUJET : TROIS meubles du Manoir Pokémon (manoir de chercheurs "
+		"brûlé), même main et mêmes matières (bois noirci, fer, tissu roussi) que les tonneaux et les "
+		"tables de la référence. Les cellules 4 à 6 restent VIDES.\n"
+		"1 (ligne 1, à gauche) FAUTEUIL_RENVERSE : un FAUTEUIL de salon capitonné (tissu bordeaux roussi, "
+		"pieds de bois) RENVERSÉ sur le côté, vu de dessus en trois quarts, un coin brûlé ; ≈ 1 case de "
+		"large (≈ 150 px) × 0,9 case de haut.\n"
+		"2 (ligne 1, au milieu) PETITE_TABLE : une PETITE TABLE basse de bois brun à quatre pieds, un "
+		"plateau fendu, une tasse brisée et quelques feuilles roussies dessus ; ≈ 1 case de large "
+		"(≈ 150 px) × 1 case de haut.\n"
+		"3 (ligne 1, à droite) ARMOIRE_BASSE : une ARMOIRE BASSE (commode) de bois noirci, deux portes "
+		"dont une pend de travers, dessus carbonisé par endroits ; ≈ 1 case de large (≈ 150 px) × "
+		"1,1 case de haut.", []),
 	("INT_ARENE_PLANCHE", ["REF_A_SALLE", "REF_A_STATUE"],
 		_PLANCHE_FORMAT.format(px=160) + "\nSUJET : QUATRE objets de l'ARÈNE de Cramois'Île (salle de quiz du "
 		"Champion de type Feu : roche volcanique sombre, fer, braise). Les cellules 5 et 6 restent VIDES.\n"
@@ -593,6 +606,8 @@ def jointes() -> dict[str, list[str]]:
 		j[f"{ident}_r2"] = [str(OFFICIEL / f"{num}.png"), str(PROTO / f"{anc}.png")]
 		j[f"{ident}_r3"] = []
 	for did, ident, *_ in DECORS:
+		for cote in ("TL", "TR"):
+			j[f"{ident}_r1_{cote}"] = [f"{ident}_r1_crop{cote}"]
 		vue = "REF_M_SALLE" if did == "manoir_salle" else "REF_A_SALLE"
 		j[f"{ident}_r1"] = [str(REFERENCE / "combat-v1.webp"),
 			str(REFERENCE / "combat-decors-planche-v1.webp"), vue]
@@ -608,6 +623,7 @@ VAGUES = {
 		"WORLD_RELIEF_MUR_MANOIR_B1_PLANCHE_NE_r1"],
 	4: ["WORLD_GROUND_DALLES_ARENE_01_NE_r1", "WORLD_GROUND_MASSE_ARENE_01_NE_r1",
 		"WORLD_RELIEF_MUR_ARENE_PLANCHE_NE_r1", "INT_ARENE_PLANCHE_NE_r1"],
+	10: ["INT_MANOIR_PLANCHE_C_NE_r1"],
 	5: ["INT_MUSEE_RESERVE_PLANCHE_NE_r1", "WORLD_BLDG_MUSEE_PORTE_ARRIERE_NE_r1"],
 	6: ["PNJ_PILLARD_NE_r1", "PNJ_AUGUSTE_NE_r1"],
 	7: ["PILLARD_ATTENTE_r1", "AUGUSTE_ATTENTE_r1"],
@@ -617,6 +633,8 @@ VAGUES = {
 
 
 def _fichier_prompt(ident: str) -> Path:
+	if ident.startswith("COMBAT_DECOR") and ident.endswith(("_TL", "_TR")):
+		return PROMPTS_DECOR / (ident.split("_r1")[0].replace("COMBAT_DECOR_", "COMBAT_DECOR_") + "_TUILE_r1.txt")
 	if ident.startswith("COMBAT_DECOR"):
 		return PROMPTS_DECOR / f"{ident}.txt"
 	return PROMPTS / f"{ident}.txt"
@@ -699,6 +717,9 @@ PLANCHE_SPECS: dict[str, tuple[str, list, bool]] = {
 		("decal_gravats_manoir_01", "w", 1.5), ("decal_gravats_manoir_02", "w", 1.2),
 		("decal_gravats_manoir_03", "w", 1.0), ("decal_gravats_manoir_04", "w", 1.8),
 		("decal_gravats_manoir_05", "w", 1.0), ("decal_gravats_manoir_06", "w", 1.4)], True),
+	"INT_MANOIR_PLANCHE_C": ("objets", [
+		("int_fauteuil_renverse_01", "w", 1.0), ("int_petite_table_01", "w", 0.95),
+		("int_armoire_basse_01", "w", 1.0), (None, "w", 0), (None, "w", 0), (None, "w", 0)], True),
 	"INT_ARENE_PLANCHE": ("objets", [
 		("int_machine_quiz_01", "w", 0.95), ("int_herse_fermee_01", "w", 2.0),
 		("int_herse_ouverte_01", "w", 2.0), ("int_statue_arene_01", "h", 1.8),
@@ -823,6 +844,19 @@ def preparer_personnages() -> None:
 				cwd=RACINE)
 
 
+def preparer_intello_j20() -> None:
+	"""Intello du J20 (série 22, non validé) : préparé ici pour le contrôle seulement."""
+	marche, attente = J20_ART / "PNJ_INTELLO_NE_r1.png", J20_ART / "INTELLO_ATTENTE_r1.png"
+	dossier = SORTIE / "personnages"
+	dossier.mkdir(parents=True, exist_ok=True)
+	if marche.exists() and attente.exists():
+		subprocess.run([sys.executable, str(ICI / "decouper_perso.py"), str(marche),
+			str(dossier / "intello_sheet.png"), "--hauteur", "128"], check=True, cwd=RACINE)
+		subprocess.run([sys.executable, str(ICI / "decouper_attente.py"), str(attente),
+			str(dossier / "intello_sheet.png"), str(dossier / "intello_idle_sheet.png")], check=True,
+			cwd=RACINE)
+
+
 def _recadrer(im: Image.Image, seuil: int = 8) -> Image.Image:
 	boite = im.getchannel("A").point(lambda a: 255 if a > seuil else 0).getbbox()
 	return im.crop(boite) if boite else im
@@ -887,6 +921,7 @@ def preparer() -> None:
 	preparer_planches()
 	preparer_objets()
 	preparer_personnages()
+	preparer_intello_j20()
 	preparer_dos()
 
 
@@ -1138,23 +1173,35 @@ def composer(nom: str, avec_perso: bool = True) -> Image.Image:
 				if pc is not None:
 					cx = (sx + (1 if sx + 1 <= x1 else 0.5)) * CASE
 					canvas.alpha_composite(pc, (round(cx - pc.width / 2), (y1 + 1) * CASE - pc.height))
-	furn = piece("int_tonneau_brule_01"), piece("int_groupe_tonneaux_01"), piece("int_table_labo_01")
-	for comp in _composantes(meubles):
+	b1 = nom.endswith("b1f")
+	choix_1x1 = (["int_caisse_archives_01", "int_armoire_basse_01", "int_petite_table_01"] if b1 else
+		["int_tonneau_brule_01", "int_caisse_archives_01", "int_petite_table_01",
+		"int_fauteuil_renverse_01", "int_armoire_basse_01"])
+	choisis: dict[tuple[int, int], str] = {}
+
+	def meuble(x: int, y: int) -> str:
+		"""Meuble d'une case : fonction de la case (déterministe), différent de ceux déjà posés à
+		gauche, au-dessus, à droite et en dessous ; repli sur le suivant de la liste."""
+		voisins = {choisis.get(v) for v in ((x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1))}
+		i = (x * 7 + y * 13 + len(nom)) % len(choix_1x1)
+		for k in range(len(choix_1x1)):
+			c = choix_1x1[(i + k) % len(choix_1x1)]
+			if c not in voisins or k == len(choix_1x1) - 1:
+				choisis[(x, y)] = c
+				return c
+		return choix_1x1[0]
+
+	for comp in sorted(_composantes(meubles), key=lambda c: (min(p[1] for p in c), min(p[0] for p in c))):
 		x0, y0, x1, y1 = _box(comp)
 		w, h = x1 - x0 + 1, y1 - y0 + 1
-		if nom.endswith("b1f"):
-			if w == 2 and h == 2 and len(comp) == 4:
-				for dx in (0, 1):
-					pose("int_table_labo_01", ((x0 + dx + 0.5) * CASE, (y1 + 1) * CASE))
-			else:
-				for (x, y) in comp:
-					pose("int_caisse_archives_01", ((x + 0.5) * CASE, (y + 1) * CASE))
-		elif w == 2 and h == 2 and len(comp) == 4:
+		if b1 and w == 2 and h == 2 and len(comp) == 4:
+			for dx in (0, 1):
+				pose("int_table_labo_01", ((x0 + dx + 0.5) * CASE, (y1 + 1) * CASE))
+		elif (not b1) and w == 2 and h == 2 and len(comp) == 4:
 			pose("int_groupe_tonneaux_01", ((x0 + 1) * CASE, (y1 + 1) * CASE))
 		else:
-			for (x, y) in comp:
-				pose("int_tonneau_brule_01", ((x + 0.5) * CASE, (y + 1) * CASE))
-	del furn
+			for (x, y) in sorted(comp, key=lambda c: (c[1], c[0])):
+				pose(meuble(x, y), ((x + 0.5) * CASE, (y + 1) * CASE))
 	for p in plan.positions.values():
 		if p.kind == "statue_arene" or p.ident == "statue_arene":
 			x, y = p.cells[0]

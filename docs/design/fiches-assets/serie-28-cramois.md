@@ -1,6 +1,6 @@
 # Série 28 (numéro PROVISOIRE) — Cramois'Île : Manoir Pokémon, Arène d'Auguste, réserve du Musée (jalon 25, lot 25.0, T10 à T12)
 
-> Branche `j25-kit-art` (depuis `jalon-25`). Outil : `tools/art/serie28.py` ; prompts : `tools/art/prompts/serie28/` (décors de combat : `.../serie28/decors/`). Aucune intégration Godot : rien dans `assets/`, aucun manifeste lancé. **État : génération PARTIELLE** (voir « Bloqué »).
+> Branche `j25-kit-art` (depuis `jalon-25`). Outil : `tools/art/serie28.py` ; prompts : `tools/art/prompts/serie28/` (décors de combat : `.../serie28/decors/`). Aucune intégration Godot : rien dans `assets/`, aucun manifeste lancé. **État : génération COMPLÈTE (2026-10-19, après la limite d'usage de Codex)**. Planche : `build/art/SERIE28_CONTROLE_v1.png`.
 
 ## Numéro de série
 
@@ -22,19 +22,24 @@ Essai du 2026-10-19 (Codex, plan en aplats joint) : Manoir 1F en une image = 1 2
 | Héros, Poké Ball au sol, arbuste à Couper, bâtiment du Musée | existants (contrôle) |
 | Arcanin, Feunard | dos du J20 (hors lot) |
 
-## Liste du kit
+## Liste du kit (tout retenu r1 sauf mention ; préparé dans `build/art/serie28/`)
 
-| Lot | Asset | État |
-|---|---|---|
-| Sols (384 px = 4 × 4 cases) | `ground_parquet_manoir_01` (étalonné 0,80 / 0,88), `ground_masse_manoir_01`, `ground_carrelage_b1_01`, `ground_masse_manoir_b1_01`, `ground_dalles_arene_01` | **retenus r1** (relus) |
-| | `ground_masse_arene_01` | **à générer** |
-| Relief (faces 2 × ≈ 1,1 case ×4, couronnement, flanc) | Manoir ; sous-sol | **retenus r1** |
-| | Arène (`WORLD_RELIEF_MUR_ARENE_PLANCHE`) | **à générer** |
-| Objets du Manoir | planche A : statue (chat de pierre), grille 2 × 2 fermée / ouverte, trou, pupitre à carnet, seuil de porte brûlée ; planche B : escalier montant, trémie descendante, tonneau, groupe 2 × 2, table de labo 1 × 2, caisse d'archives ; planche de 6 débris (planches, papiers, gravats, suie, verre, tapis) | **retenus r1** |
-| Objets de l'Arène | machine de quiz, herse 2 × 2 fermée / ouverte, statue de l'Arène | **à générer** |
-| Musée | vitrine d'ambre pleine / vide, caisses de fouilles ; porte arrière (façade est) | **à générer** |
-| PNJ | Pillard, Auguste (marche + attente) | **à générer** |
-| Combat | dos Ponyta 077, Galopa 078, Magmar 126, Ptéra 142 (provisoires IA) ; décors `manoir_salle`, `arene_cramois` | **à générer** |
+| Lot | Asset |
+|---|---|
+| Sols (384 px = 4 × 4 cases) | `ground_parquet_manoir_01` (étalonné 0,80 / 0,88), `ground_masse_manoir_01`, `ground_carrelage_b1_01`, `ground_masse_manoir_b1_01`, `ground_dalles_arene_01`, `ground_masse_arene_01` |
+| Relief (4 faces 192 × ≈ 108, couronnement, flanc) | Manoir, sous-sol, Arène (faces d'Arène 192 × ≈ 88) |
+| Objets du Manoir | statue (chat de pierre), grille 2 × 2 fermée / ouverte, trou, pupitre à carnet, seuil, escalier montant, trémie, tonneau, groupe 2 × 2, table de labo 1 × 2, caisse d'archives, **fauteuil renversé, petite table, armoire basse (planche C, ajoutée le 2026-10-19 sur demande de Kevin : mobilier varié)**, 6 débris (suie floue) |
+| Arène | machine de quiz, herse 2 × 2 fermée / ouverte, statue de l'Arène (colosse à cornes) |
+| Musée | vitrine d'ambre pleine / vide, caisses de fouilles, porte arrière (192 × 189 px, à accoler à la façade est) |
+| PNJ (marche + attente) | `pillard`, `auguste` |
+| Décors CB.3 | `manoir_salle` (rai doré de la fenêtre brisée, cheminée), `arene_cramois` (herse relevée, deux braseros), 2340 × 1080 WebP (682 et 584 Ko), tuiles TL / TR recalées |
+| Dos provisoires IA | Ponyta (r2), Galopa (r1), Magmar (r1), Ptéra (r3) |
+
+Mobilier recomposé : un `#` isolé reçoit un meuble choisi par une fonction déterministe de la case (tonneau, caisse, petite table, fauteuil, armoire ; B1F sans tonneau), jamais le même que celui d'un voisin ; 2 × 2 = groupe de tonneaux (B1F : deux tables de labo).
+
+## Essais, refus
+
+Aucun refus pour les planches, sols, PNJ, décors. **Refus de modération en sortie** : Ponyta r1 (retenu : r2 sans nom, avec artwork), Ptéra r1 et r2 (retenu : r3 sans image, un ptérosaure plus réaliste que l'artwork, teinte grise). Magmar r1 : forme proche d'un Magmar dérivé (piques dorsales, bras massifs), à juger. Galopa r1 fidèle. Limite d'usage de Codex le 12 h 15, reprise à 15 h 58 : aucun asset perdu.
 
 Conventions de pose pour le T14 / T20 : face = 192 × ≈ 108 px, bas aligné sur le bas de la case `#` dont le sud est libre ; couronnement 192 × 25 en haut de la case dont le nord est libre ; flancs non utilisés (la vue validée n'en montre pas) ; objets : origine au milieu du bas ; mobilier lourd : `#` isolés (1 × 1 tonneau, 2 × 2 = groupe de tonneaux, B1F : deux tables de labo) ; trous peints sur la case `O` ; lumière dorée, brume et ombres : à Godot.
 
@@ -42,9 +47,9 @@ Conventions de pose pour le T14 / T20 : face = 192 × ≈ 108 px, bas aligné su
 
 La chaîne validée (rendu 3D X/Y repeint sur Colab) est **inutilisable ici** : les modèles de Ponyta, Galopa, Magmar et Ptéra ne sont pas dans `~/dev/kanto-2026-modeles/` (téléchargement The Models Resource et notebook Colab = actions de Kevin, comme `dos_t13.py`). Repli décidé : **dos provisoire IA par Codex** (comme Fantominus au J19), 1 024 × 1 024, prompts r1 (nom + artwork + dos d'ancrage), r2 (sans nom), r3 (sans image) prêts.
 
-## Bloqué
+## Reste à faire
 
-Codex a atteint sa **limite d'usage** pendant la vague 4 (« try again at 3:56 PM », message du 2026-10-19 vers 12 h 15, pas un refus). Vagues faites : 1 à 3 (Manoir) et le sol de l'Arène. Reste : `python3 tools/art/serie28.py --generer 4 5 6 7 8 9` (trois à la fois), puis `--tuiles` / `--decor` pour les deux décors, `--retenir`, `--preparer`, `--cartes`, `--controle` (planche `build/art/SERIE28_CONTROLE_v1.png`). Aucun refus de modération constaté (aucune espèce encore tentée).
+Intégration (manifeste, `build_painted_props`, builders `build_pokemon_mansion.gd` / `build_cinnabar_gym.gd`, `decors.json`) : plan du J25 T13 à T20. Dos : remplaçables par la chaîne Colab (mêmes noms `dos_ia_NNN`) si Kevin télécharge les modèles X/Y. Intello du J20 à valider côté J20.
 
 ## Hypothèses
 
