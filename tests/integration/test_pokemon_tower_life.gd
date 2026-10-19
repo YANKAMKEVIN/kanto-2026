@@ -3,10 +3,10 @@ extends GutTest
 ## §12, §14, §15.4) avec la vraie scène Boot et une sauvegarde en mémoire :
 ## - 36 tombes examinables : 5 nommées (T-36 à T-40), 31 « Une tombe bien entretenue. » (T-41) ;
 ## - gardien (T-30, à travers le comptoir) et trois visiteurs (T-31 à T-33) ;
-## - Exorciste (gardienne) : T-34 une fois (objectif « Revenir plus tard… »), puis T-35 ; elle
-##   occupe la seule case d'accès à l'escalier, qui reste inatteignable ; absente quand
-##   `tower_stairs_open` (J19) est levé ;
-## - rien du J19 : aucun spectre, combat ni scène.
+## - Exorciste (gardienne) : elle occupe la seule case d'accès à l'escalier, qui reste
+##   inatteignable ; quand `tower_stairs_open` est levé (J19, T16) elle se range en (18, 3) ;
+##   T-34 et T-35 sont remplacés par la scène `tower_guardian` (`test_pokemon_tower_1f_j19`) ;
+## - du J19 : seulement l'escalier armé et le premier pas (aucun spectre ni combat ici).
 
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 const MemoryFs := preload("res://tests/helpers/memory_file_system.gd")
@@ -285,42 +285,43 @@ func test_the_guardian_blocks_the_only_access_to_the_stairs() -> void:
 	assert_eq(_scenes.size(), 0)
 
 
-func test_the_guardian_says_t34_once_then_t35_and_the_objective_follows() -> void:
+func test_talking_to_the_guardian_before_the_flag_plays_the_j19_scene() -> void:
+	# J19 (T16) : plus de T-34 / T-35 ; avant `tower_stairs_open`, lui parler joue la scène
+	# (partie chargée déjà dans la salle). L'objectif du J18 reste « visiter la Tour Pokémon ».
 	var library := ObjectiveLibrary.new()
 	assert_true(library.load_file(), "\n".join(library.get_errors()))
 	await _begin([&"dark_cave_crossed", &"lavender_reached"])
 	assert_eq(library.current(GameState.flags), "visiter la Tour Pokémon.")
 	await _read_from(Vector2i(17, 4), Vector2i.UP)
-	assert_eq(_pages, ["Chut… Les étages sont réservés\nau recueillement.",
-		"Revenez plus tard, s'il vous plaît."] as Array[String], "T-34")
-	assert_eq(_speakers[0], "Exorciste")
-	assert_true(GameState.flags.has_flag(&"tower_medium_talked"))
-	assert_eq(library.current_id(GameState.flags), &"tower_later")
-	assert_eq(library.current(GameState.flags), "revenir plus tard à la Tour Pokémon.")
-	await _read_from(Vector2i(17, 4), Vector2i.UP)
-	assert_eq(_pages, ["…"] as Array[String], "T-35")
-	assert_eq(_boot.get_map().get_npc(&"exorciste_gardienne").get_spec().sprite, "channeler")
+	assert_eq(_scenes, [&"tower_guardian"] as Array[StringName], "la scène de la gardienne")
+	assert_eq(_pages[0], "Ah… C'est vous.\nPardonnez-moi, je priais.")
+	assert_true(GameState.flags.has_flag(&"tower_stairs_open"))
+	assert_false(GameState.flags.has_flag(&"tower_medium_talked"), "T-34 n'est plus joué")
 
 
-func test_the_guardian_steps_aside_when_the_stairs_flag_is_raised_by_j19() -> void:
+func test_the_guardian_steps_aside_to_18_3_when_the_stairs_flag_is_raised() -> void:
 	await _begin()
 	var map := _boot.get_map()
 	assert_false(map.get_grid().find_reachable(Vector2i(9, 16), _player).has(STAIRS))
 	GameState.flags.set_flag(&"tower_stairs_open")
 	map.refresh_npcs(GameState.flags)
 	await wait_process_frames(3)
+	var guardian := map.get_npc(&"exorciste_gardienne")
+	assert_not_null(guardian, "elle reste dans la salle (J19 : `moved`, plus `unless`)")
+	assert_eq(guardian.get_cell(), Vector2i(18, 3))
+	assert_eq(guardian.get_facing(), Vector2i.LEFT)
 	assert_false(map.get_grid().is_occupied(ACCESS), "elle n'occupe plus la case")
 	assert_true(map.get_grid().find_reachable(Vector2i(9, 16), _player).has(STAIRS),
 		"la voie est libre sans elle")
 
 
-func test_nothing_of_j19_is_there() -> void:
+func test_only_the_t16_pieces_of_j19_are_there() -> void:
 	await _begin()
 	var map := _boot.get_map()
 	assert_eq(map.get_npcs().size(), 5, "gardien, trois visiteurs, Exorciste")
-	assert_eq(map.get_node(^"Triggers").get_child_count(), 0, "aucun déclencheur")
+	assert_eq(map.get_node(^"Triggers").get_child_count(), 2, "premier pas (9..10, 15), T16")
 	assert_eq(map.get_interactions().get_all().size(), 36 + 4, "36 tombes + comptoir (4 cases)")
 	var stairs := map.get_warps().find_on_step(STAIRS, Vector2i.UP)
 	assert_not_null(stairs)
 	if stairs != null:
-		assert_true(stairs.is_coming_soon(), "pokemon_tower_2f n'existe pas au J18")
+		assert_false(stairs.is_coming_soon(), "armé vers le 2F (T16)")

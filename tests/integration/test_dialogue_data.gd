@@ -457,6 +457,8 @@ const IDS_J19: Array[StringName] = [
 	&"tower_channeler_9_defeated",
 	&"tower_6f_ghost_after",
 	&"tower_6f_ghost_warning",
+	# T16 : la gardienne du rez-de-chaussée (§15.1.1 à 4).
+	&"tower_guardian_worried",
 ]
 
 const IDS_J18: Array[StringName] = [
@@ -493,7 +495,8 @@ const IDS_J18: Array[StringName] = [
 ]
 ## Jalon 18 (T16) : drapeaux levés par ses dialogues (Exorciste, enfant de la Maison des Pokémon)
 ## et ses scènes (objets, déclencheurs silencieux des objectifs).
-const SET_J18_DIALOGUES: Array[StringName] = [&"pokemon_house_kid_talked", &"tower_medium_talked"]
+## J19 (T16) : l'Exorciste ne pose plus `tower_medium_talked` (T-34 remplacé par la scène).
+const SET_J18_DIALOGUES: Array[StringName] = [&"pokemon_house_kid_talked"]
 const SET_J18_CUTSCENES: Array[StringName] = [
 	&"dark_cave_crossed", &"got_dark_cave_1f_item_1", &"got_dark_cave_1f_item_2",
 	&"got_dark_cave_b1f_hidden_1", &"got_dark_cave_b1f_item_1", &"got_route_10_item_1",
@@ -538,8 +541,8 @@ const SET_J14_BILL_CUTSCENES: Array[StringName] = [
 ## T20b : levé (scène du combat), plus aucun drapeau futur.
 ## Jalon 16 (T12, T15) : `got_hm01` (lu par le marin de la passerelle et le départ du navire) est
 ## levé par la scène du capitaine (T13). Jalon 18 (T16) : `tower_stairs_open` (présence de
-## l'Exorciste de la Tour) est levé au J19 (dossier 22 K-3).
-const FUTURE_FLAGS: Array[StringName] = [&"tower_stairs_open", &"ghost_marowak_calmed"]
+## l'Exorciste de la Tour) est levé au J19 (T16 : scène `tower_guardian`, dossier 22 K-3).
+const FUTURE_FLAGS: Array[StringName] = [&"ghost_marowak_calmed"]
 var _library: DialogueLibrary
 var _cutscenes: CutsceneLibrary
 var _offer: StarterOffer
@@ -704,6 +707,8 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		&"misty_bridge_invite",
 		# Jalon 19 (T14) : le SPECTRE du 6F.
 		&"tower_6f_ghost_after", &"tower_6f_ghost_warning",
+		# Jalon 19 (T16) : la gardienne du rez-de-chaussée.
+		&"tower_guardian_worried",
 		# Jalon 12 (T25) : scène du chercheur et choix du fossile.
 		&"mt_moon_researcher_before", &"mt_moon_researcher_chosen",
 		&"mt_moon_researcher_defeated", &"mt_moon_researcher_rematch",
@@ -878,7 +883,9 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		&"cut_route_2_east_bush", &"cut_route_2_futur_a",
 		# Jalon 18 (T15) : l'arbre de la sortie est d'Azuria.
 		&"cut_cerulean_east_tree"]
-		+ SET_J14_BILL_CUTSCENES + SET_J14_ROCKET_CUTSCENES + SET_J18_CUTSCENES))
+		+ SET_J14_BILL_CUTSCENES + SET_J14_ROCKET_CUTSCENES + SET_J18_CUTSCENES
+		# Jalon 19 (T16) : la gardienne de la Tour s'écarte.
+		+ [&"tower_stairs_open"]))
 	assert_eq(_used_on.get(&"oak_lab_reunion"), [&"oak_lab"], "joué au labo, après le fondu")
 	assert_eq(_used_on.get(&"oak_starter_offer"), [&"oak_lab"], "joué au labo")
 
@@ -1345,12 +1352,12 @@ func test_oak_parcel_lines() -> void:
 	# de la Route 11 ; (T20) Pierre Lune et Super Bonbon ; (T21) Super Potion de FUTUR A ;
 	# (intégration) Corde Sortie de la Cave.
 	# Jalon 18 (T16) : sept objets au sol (Route 9, Route 10, grotte) et la Super Potion cachée.
-	assert_eq(launched, 71, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
+	assert_eq(launched, 72, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
 		+ "sa CT34, Ondine (pont, Arène et rattrapage), écran, module, console, objets de la "
 		+ "Route 25, le Rocket d'Azuria (2) et le barrage sud ; J15 : objets de la Route 5 ; "
 		+ "J16 : Major Bob (2), neuf objets du S.S. Anne, le capitaine, le marin (2) ; "
 		+ "J17 : la CS05, Route 11 (3), deux objets du couloir, la Super Potion de la clairière "
-		+ "et la Corde Sortie de la Cave ; J18 : huit objets")
+		+ "et la Corde Sortie de la Cave ; J18 : huit objets ; J19 : la gardienne de la Tour")
 	# Le jeton n'apparaît que dans la réplique de l'espèce, « {pokemon} » dans les phrases du
 	# compagnon (J11), et ceux de la Pension dans ses répliques (J15).
 	for row: Array in _pages():

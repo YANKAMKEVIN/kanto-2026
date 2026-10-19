@@ -75,7 +75,10 @@ func test_q4_nothing_before_the_rival_battle_then_reach_viridian() -> void:
 ## (T28) `route_4_reached` par celle du déclencheur du sas (data/cutscenes/route_4.json), posé
 ## aussi sur la vraie Route 4 du J13 (mêmes cases).
 ## Jalon 16 (T14) : `cut_vermilion_gym_bush` sera levé par la scène de Coupe de l'arbuste (T15).
-const _PENDING_FLAGS: Array[StringName] = [&"viridian_arrived", &"cut_vermilion_gym_bush"]
+## Jalon 19 (T16) : `tower_medium_talked` (objectif « revenir plus tard à la Tour », J18) n'est plus
+## levé depuis que la gardienne joue la scène `tower_guardian` (Q-1 : objectifs du J19).
+const _PENDING_FLAGS: Array[StringName] = [&"viridian_arrived", &"cut_vermilion_gym_bush",
+	&"tower_medium_talked"]
 
 
 ## Jalon 10 (dossier 12 §16, jalon-10.md §2.10) : « continuer vers le nord. » jusqu'à Argenta,

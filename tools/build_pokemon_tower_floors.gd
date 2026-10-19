@@ -17,8 +17,9 @@ extends SceneTree
 ##   escaliers ramenés à une case ; dalle claire de la zone purifiée (5F) ; voile de pénombre dont
 ##   l'`ambient` baisse d'étage en étage (0,96 au 2F, 0,88 au 6F).
 ## - Passages : escaliers `STEP_ON` sans direction vers le point d'apparition de même paire de
-##   l'étage voisin (orientation de la grille). **Replis « à venir »** : 2F → 1F (paire T12, le
-##   rez-de-chaussée est au J18, T16 le branche) et 6F → 7F (paire T67, inatteignable au J19).
+##   l'étage voisin (orientation de la grille). 2F → 1F (paire T12) : le rez-de-chaussée du J18
+##   (spawn `from_pokemon_tower_2f`, T16). **Repli « à venir »** : 6F → 7F (paire T67,
+##   inatteignable au J19).
 ## - Points d'apparition de la grille, plus ceux de QA : `devant_rival` (16, 7) au 2F et
 ##   `devant_spectre` (10, 14) au 6F.
 ## - Déclencheurs (`EventTriggerPoint`, scènes posées par T14 à T18, sans effet tant qu'elles
@@ -100,7 +101,11 @@ const STELE_LIGHT_HEIGHT: float = 80.0
 
 ## Replis « à venir » (étages hors J19).
 const COMING_SOON: String = "Tour Pokémon"
-const SOON_PAIRS: Array[String] = ["T12", "T67"]
+const SOON_PAIRS: Array[String] = ["T67"]
+## Rez-de-chaussée (J18, construit par `build_pokemon_tower.gd`, T16 du J19) : paire T12 → spawn
+## `from_pokemon_tower_2f` (case d'accès (17, 3)), tourné vers le bas.
+const GROUND_FLOOR_MAP: StringName = &"pokemon_tower_1f"
+const GROUND_FLOOR_SPAWN: StringName = &"from_pokemon_tower_2f"
 ## Scènes (T14 à T18) : rôle du déclencheur → identifiant de scène.
 const TRIGGER_SCENES: Dictionary = {
 	"R1": &"tower_rival",
@@ -475,9 +480,13 @@ func _place_spawns_and_warps() -> void:
 		var pair: String = _plan().call(&"attr", id, "paire")
 		var node_name := "Stairs%sWarp" % pair
 		var target := StringName(_plan().call(&"attr", id, "vers"))
+		if target == GROUND_FLOOR_MAP:
+			_kit.call(&"add_warp", node_name, cell, Kit.STEP_ON, Vector2i.ZERO, target,
+				GROUND_FLOOR_SPAWN, Vector2i.DOWN)
+			continue
 		var other := _plan_of(target)
 		if SOON_PAIRS.has(pair) or other == null:
-			# Repli : étage absent (1F du J18, 7F hors J19) ; retour sur l'arrivée d'ici.
+			# Repli : étage absent (7F hors J19) ; retour sur l'arrivée d'ici.
 			var back := _local_arrival()
 			_kit.call(&"add_warp", node_name, cell, Kit.STEP_ON, Vector2i.ZERO, &"",
 				StringName(back), _facing_of(_plan(), back), COMING_SOON)

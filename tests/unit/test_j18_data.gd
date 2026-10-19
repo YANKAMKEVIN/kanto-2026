@@ -53,8 +53,9 @@ const TEXTS := {
 ## Textes dits en deux temps (première fois, puis ensuite) : [dialogue, variante].
 const TWO_STEP := {
 	"T-25": [&"pokemon_house_kid", 0], "T-26": [&"pokemon_house_kid", 1],
-	"T-34": [&"pokemon_tower_exorcist", 0], "T-35": [&"pokemon_tower_exorcist", 1],
 }
+## J19 (T16) : T-34 et T-35 (Exorciste) sont remplacés par la scène `tower_guardian` et le
+## texte §15.1.5 du dossier 22 (`test_pokemon_tower_1f_j19`, `test_tower_texts`).
 ## Le couple de la maison 2 dit le même texte (T-28), chacun avec son nom.
 const COUPLE: Array[StringName] = [&"lavender_house_2_wife", &"lavender_house_2_husband"]
 ## PNJ (hors Dresseurs) : carte → identifiant de la grille → [apparence, dialogue, verbe].
@@ -198,14 +199,12 @@ func test_texts_said_in_two_steps() -> void:
 			continue
 		var variant: DialogueVariant = dialogue.variants[TWO_STEP[tag][1]]
 		assert_eq(_text_of(variant, "speech"), " ".join(_quotes(_dossier, tag)), tag)
-	# Première fois : le drapeau est levé ; ensuite : la seconde réplique.
+	# J19 (T16) : l'Exorciste ne pose plus `tower_medium_talked` (variantes du dossier 22 §15.1).
 	var exorcist := _dialogues.get_dialogue(&"pokemon_tower_exorcist")
-	assert_eq(exorcist.variants[0].unless_flags, [&"tower_medium_talked"] as Array[StringName])
-	assert_eq(exorcist.variants[0].set_flags, [&"tower_medium_talked"] as Array[StringName])
-	var flags := StoryFlags.new()
-	assert_eq(exorcist.pick(flags), exorcist.variants[0])
-	flags.set_flag(&"tower_medium_talked")
-	assert_eq(exorcist.pick(flags), exorcist.variants[1])
+	assert_eq(exorcist.variants.size(), 2)
+	assert_eq(exorcist.variants[0].if_flags, [&"tower_stairs_open"] as Array[StringName])
+	assert_eq(exorcist.variants[1].unless_flags, [&"tower_stairs_open"] as Array[StringName])
+	assert_eq(exorcist.variants[1].cutscene, &"tower_guardian")
 
 
 func test_the_couple_says_the_same_text() -> void:
@@ -313,7 +312,9 @@ func test_objective_flags_are_raised_by_cutscenes_and_dialogues() -> void:
 		assert_eq(steps.size(), 1, "%s : en silence" % flag)
 		assert_eq(steps[0].kind, CutsceneStep.Kind.SET_FLAGS)
 		assert_eq(steps[0].flags, [flag] as Array[StringName])
-	assert_true(_dialogues.get_set_flags().has(&"tower_medium_talked"))
+	# T16 : plus aucun dialogue de la Tour ne pose `tower_medium_talked` (objectif du J18 inchangé
+	# dans les données ; la scène du J19 pose `tower_stairs_open`).
+	assert_false(_dialogues.get_set_flags().has(&"tower_medium_talked"))
 
 
 # --- PNJ, objets -------------------------------------------------------------------------
@@ -340,16 +341,21 @@ func test_npcs_stand_on_their_reserved_cells() -> void:
 				assert_true(_dialogues.has_dialogue(spec.dialogue), String(spec.dialogue))
 
 
-func test_exorcist_stays_until_the_j19_flag() -> void:
+func test_exorcist_steps_aside_with_the_j19_flag() -> void:
 	var roster := NpcRoster.load_for_map(&"pokemon_tower_1f")
 	var spec := roster.get_spec(&"exorciste_gardienne")
-	assert_eq(spec.unless_flags, [&"tower_stairs_open"] as Array[StringName])
+	assert_true(spec.unless_flags.is_empty(), "J19 (T16) : plus de `unless`, elle ne disparaît pas")
 	assert_eq(spec.cell, Vector2i(17, 3), "seule case d'accès à l'escalier (17, 2)")
+	assert_eq(spec.moved_if_flags, [&"tower_stairs_open"] as Array[StringName])
+	assert_eq(spec.moved_cell, Vector2i(18, 3))
+	assert_eq(spec.moved_facing, Vector2i.LEFT)
 	var flags := StoryFlags.new()
 	flags.set_flag(&"tower_medium_talked")
-	assert_true(spec.is_present(flags), "toujours là après lui avoir parlé")
+	assert_true(spec.is_present(flags))
+	assert_eq(spec.placed_for(flags).cell, Vector2i(17, 3), "toujours en (17, 3) sans le drapeau")
 	flags.set_flag(&"tower_stairs_open")
-	assert_false(spec.is_present(flags), "le J19 l'écarte")
+	assert_true(spec.is_present(flags), "elle reste dans la salle")
+	assert_eq(spec.placed_for(flags).cell, Vector2i(18, 3), "(18, 3) avec le drapeau")
 
 
 func test_items_are_given_once() -> void:

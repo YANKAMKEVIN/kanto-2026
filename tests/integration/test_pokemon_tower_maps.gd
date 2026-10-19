@@ -147,9 +147,16 @@ func test_stairs_pair_up_both_ways() -> void:
 			assert_true(Grid.is_cardinal(home - plan.cell_of(id)), "%s : retour à côté" % id)
 
 
+## T16 : le 2F rejoint le rez-de-chaussée (spawn `from_pokemon_tower_2f`) ; seul le 6F → 7F reste
+## un repli (hors J19).
 func test_stairs_to_floors_outside_j19_are_coming_soon() -> void:
-	for entry: Array in [[&"pokemon_tower_2f", Vector2i(18, 9), &"arrivee_T12"],
-			[&"pokemon_tower_6f", Vector2i(9, 16), &"arrivee_T56"]]:
+	var down := _warp_at(_maps.get(&"pokemon_tower_2f"), Vector2i(18, 9))
+	assert_not_null(down, "2F → 1F")
+	if down != null:
+		assert_false(down.is_coming_soon(), "le 1F existe (T16)")
+		assert_eq(down.target_map, &"pokemon_tower_1f")
+		assert_eq(down.target_spawn, &"from_pokemon_tower_2f")
+	for entry: Array in [[&"pokemon_tower_6f", Vector2i(9, 16), &"arrivee_T56"]]:
 		var map: GameMap = _maps.get(entry[0])
 		if map == null:
 			fail_test("%s absente" % entry[0])
