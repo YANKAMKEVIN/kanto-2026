@@ -89,6 +89,12 @@ extends RefCounted
 ## - [constant Kind.ANIMATE] : déplace le nœud [member target] de la carte de [member offset]
 ##   cases en [member seconds] s, puis le masque si [member fade] ; « Réduire les animations » :
 ##   fondu sur place ; la scène attend la fin.
+## Jalon 19 (`jalon-19.md` §2.4, T13), le SPECTRE du 6F :
+## - [constant Kind.WILD_BATTLE] : combat **sauvage** scripté contre [member species] au niveau
+##   [member level] (hors des herbes, depuis la case devant le joueur) ; combat SPECTRE selon
+##   [method GhostRule.is_ghost_for] ([member ghost_mode], [member ghost_unless_item], Sac du
+##   moment) ; [member win_flags] / [member lose_flags] facultatifs ; défaite : réveil au point
+##   de repos et **fin de la scène** (comme « wake_up »).
 
 ## Nouvelles valeurs en fin d'enum (ordre de [constant TYPE_KEYS]).
 enum Kind {
@@ -96,6 +102,7 @@ enum Kind {
 	CAPTION, TAKE, SCARE, WAKE_UP, REACT, EMOTE, CHAMPION_CARD, BADGE, MOMENT,
 	FLASH,
 	FIELD_MOVE, SAVE, ANIMATE,
+	WILD_BATTLE,
 }
 
 ## Clé de type de chaque étape dans les fichiers, dans l'ordre de [enum Kind].
@@ -105,6 +112,7 @@ const TYPE_KEYS: Array[String] = [
 	"champion_card", "badge", "moment",
 	"flash",
 	"field_move", "save", "animate",
+	"wild_battle",
 ]
 ## Bulles d'une étape « emote » (clé « kind ») : le « ! » du Dresseur qui repère le joueur.
 const EMOTE_KINDS: Array[StringName] = [&"exclamation"]
@@ -160,6 +168,12 @@ var field_move: StringName = &""
 ## Étape « animate » (jalon 16) : déplacement en cases, et masquage à la fin.
 var offset: Vector2i = Vector2i.ZERO
 var fade: bool = false
+## Étape « wild_battle » (jalon 19) : espèce et niveau du Pokémon sauvage, règle du SPECTRE
+## (clé « ghost » : [constant GhostRule.ALWAYS] ou vide ; clé « ghost_unless_item »).
+var species: StringName = &""
+var level: int = 1
+var ghost_mode: StringName = &""
+var ghost_unless_item: StringName = &""
 ## Conditions de l'étape (toutes levées / aucune levée), vides = toujours jouée.
 var if_flags: Array[StringName] = []
 var unless_flags: Array[StringName] = []
@@ -249,6 +263,10 @@ func copy() -> CutsceneStep:
 	other.field_move = field_move
 	other.offset = offset
 	other.fade = fade
+	other.species = species
+	other.level = level
+	other.ghost_mode = ghost_mode
+	other.ghost_unless_item = ghost_unless_item
 	other.badge_id = badge_id
 	other.moment_type = moment_type
 	other.moment_details = moment_details.duplicate()

@@ -96,6 +96,12 @@ extends RefCounted
 ## connue, autre que la scène elle-même ([method check_next_references]).
 ## Jalon 14 (jalon-14.md §2.7) :
 ## - flash : nombre entier d'éclairs ≥ 1 (`{ "flash": 1 }`).
+## Jalon 19 (jalon-19.md §2.4, T13) :
+## - wild_battle : identifiant d'espèce, avec « level » obligatoire (entier 1..100),
+##   « ghost » facultatif ([constant GhostRule.ALWAYS]), « ghost_unless_item » facultatif
+##   (identifiant d'objet) et « win » / « lose » facultatifs (comme « battle »). L'espèce est
+##   vérifiée contre les données Pokémon par [method check_species] (appelée par Boot une fois
+##   les espèces chargées) : une scène qui nomme une espèce inconnue est écartée.
 ## Acteur = « player », identifiant d'un PNJ de la carte courante, ou **alias** « $nom »
 ## (forme $[a-z_]+, [method CutsceneStep.is_alias]) : PNJ choisi par le code qui lance la
 ## scène (CutsceneDirector.play(id, alias)), résolu au début de chaque étape. Les alias
@@ -118,6 +124,7 @@ const _EXTRA_KEYS: Array[Array] = [
 	[], ["count"], [], [], [], ["kind"], [], [], ["details"],
 	[],
 	["on"], [], ["offset", "duration", "fade"],
+	["level", "ghost", "ghost_unless_item", "win", "lose"],
 ]
 ## Conditions permises sur toute étape sauf spawn.
 const _CONDITION_KEYS: Array[String] = ["if", "unless"]
@@ -153,6 +160,20 @@ func check_next_references() -> bool:
 			ok = _fail("%s « %s » : « next » vaut « %s », scène inconnue ou elle-même"
 				% [cutscene.source, id, cutscene.next])
 			_cutscenes.erase(id)
+	return ok
+
+
+## Vérifie que chaque étape « wild_battle » nomme une espèce connue de [param data]. Une scène
+## qui en nomme une inconnue est écartée (erreur signalée). Faux si une erreur a été signalée.
+func check_species(data: PokemonData) -> bool:
+	var ok := true
+	for id: StringName in get_ids():
+		for species: StringName in _wild_species_of(_cutscenes[id]):
+			if data == null or not data.has_species(species):
+				ok = _fail("%s « %s » : « wild_battle » nomme l'espèce inconnue « %s »"
+					% [_cutscenes[id].source, id, species])
+				_cutscenes.erase(id)
+				break
 	return ok
 
 
@@ -242,7 +263,8 @@ func get_set_flags() -> Array[StringName]:
 		var raised: Array[StringName] = []
 		if step.kind == CutsceneStep.Kind.SET_FLAGS:
 			raised = step.flags
-		elif step.kind == CutsceneStep.Kind.BATTLE:
+		elif step.kind == CutsceneStep.Kind.BATTLE \
+				or step.kind == CutsceneStep.Kind.WILD_BATTLE:
 			raised = step.win_flags + step.lose_flags
 		for flag: StringName in raised:
 			found[flag] = true
@@ -255,6 +277,15 @@ func get_trainer_ids() -> Array[StringName]:
 	for step: CutsceneStep in _all_steps():
 		if step.kind == CutsceneStep.Kind.BATTLE:
 			found[step.trainer_id] = true
+	return _sorted_keys(found)
+
+
+## Espèces combattues par au moins une étape « wild_battle » (triées).
+func get_wild_species() -> Array[StringName]:
+	var found: Dictionary[StringName, bool] = {}
+	for cutscene: Cutscene in _cutscenes.values():
+		for species: StringName in _wild_species_of(cutscene):
+			found[species] = true
 	return _sorted_keys(found)
 
 
@@ -309,6 +340,16 @@ func _all_steps() -> Array[CutsceneStep]:
 		for variant: CutsceneVariant in cutscene.variants:
 			steps.append_array(variant.steps)
 	return steps
+
+
+## Espèces des étapes « wild_battle » de [param cutscene] (avec doublons).
+static func _wild_species_of(cutscene: Cutscene) -> Array[StringName]:
+	var found: Array[StringName] = []
+	for variant: CutsceneVariant in cutscene.variants:
+		for step: CutsceneStep in variant.steps:
+			if step.kind == CutsceneStep.Kind.WILD_BATTLE:
+				found.append(step.species)
+	return found
 
 
 func _parse_cutscene(value: Variant, where: String) -> Cutscene:
@@ -504,7 +545,31 @@ func _parse_step(value: Variant, where: String) -> CutsceneStep:
 				step.text = main
 		CutsceneStep.Kind.ANIMATE:
 			ok = _parse_animate(entry, main, step, where) and ok
+		CutsceneStep.Kind.WILD_BATTLE:
+			ok = _parse_wild_battle(entry, step, where) and ok
 	return step if ok else null
+
+
+## wild_battle (jalon 19) : espèce, niveau 1..100, règle du SPECTRE, drapeaux de l'issue.
+func _parse_wild_battle(entry: Dictionary, step: CutsceneStep, where: String) -> bool:
+	var ok := _read_id(entry["wild_battle"], where + " wild_battle", func(v: StringName) -> void:
+		step.species = v)
+	var level: Variant = entry.get("level")
+	if not JsonFields.is_int(level) or int(level) < 1 or int(level) > ExpCurve.MAX_LEVEL:
+		ok = _fail("%s : « level » doit être un entier de 1 à %d" % [where, ExpCurve.MAX_LEVEL])
+	else:
+		step.level = int(level)
+	if entry.has("ghost"):
+		var mode: Variant = entry["ghost"]
+		if not mode is String or (mode as String).is_empty() \
+				or not GhostRule.is_known_mode(StringName(mode)):
+			ok = _fail("%s : « ghost » vaut « %s »" % [where, GhostRule.ALWAYS])
+		else:
+			step.ghost_mode = StringName(mode)
+	if entry.has("ghost_unless_item"):
+		ok = _read_id(entry["ghost_unless_item"], where + " ghost_unless_item",
+			func(v: StringName) -> void: step.ghost_unless_item = v) and ok
+	return _read_outcome_flags(entry, step, where) and ok
 
 
 ## Étape « animate » (jalon 16) : nœud de la carte, « offset » [dx, dy] en cases (entiers),
@@ -557,6 +622,12 @@ func _parse_battle(entry: Dictionary, step: CutsceneStep, where: String) -> bool
 			ok = _fail("%s : les Pokémon du combat sont des PNJ (pas « player »)" % where)
 	if not step.player_pokemon.is_empty() and step.player_pokemon == step.foe_pokemon:
 		ok = _fail("%s : « player_pokemon » et « foe_pokemon » sont le même PNJ" % where)
+	return _read_outcome_flags(entry, step, where) and ok
+
+
+## « win » / « lose » facultatifs d'une étape de combat : listes non vides de drapeaux.
+func _read_outcome_flags(entry: Dictionary, step: CutsceneStep, where: String) -> bool:
+	var ok := true
 	for key: String in ["win", "lose"]:
 		if not entry.has(key):
 			continue
