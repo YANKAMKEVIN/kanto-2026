@@ -85,11 +85,12 @@ func test_real_data_loads_without_error() -> void:
 		&"geodude", &"graveler", &"golem", &"magnemite", &"magneton", &"shellder", &"onix",
 		&"drowzee", &"hypno", &"voltorb", &"koffing",
 		&"horsea", &"goldeen", &"staryu", &"starmie"] as Array[StringName])
-	assert_eq(_data.get_move_ids().size(), 112,
+	assert_eq(_data.get_move_ids().size(), 116,
 		"47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10) + Patience (J11) "
 		+ "+ 21 du Mont Sélénite (jalon 12) + 8 du jalon 13 (les 5 du J12 qu'il reprenait : "
 		+ "entrées du J12) + 6 du Cap d'Azuria (jalon 14) + Jackpot (J15) "
-		+ "+ Coupe et Tonnerre (jalon 16) + 7 du jalon 17")
+		+ "+ Coupe et Tonnerre (jalon 16) + 7 du jalon 17 + Surf, Force, Bomb'Œuf et Reflet "
+		+ "(jalon 23)")
 	assert_true(_data.has_move(&"struggle"))
 
 

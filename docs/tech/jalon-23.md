@@ -536,3 +536,66 @@ Gardien, Arène).
 - Haut-parleur : bulle sans locuteur ; libellé « PSN+ ».
 - Départs de débogage du §2.16.
 - Joueur dans le Parc sans visite au chargement → renvoyé à la Porte.
+
+---
+
+## Annexe A — Textes complémentaires (T2, à valider par Kevin en une passe)
+
+> Complète le §8 du dossier 26 (textes 1 à 59, validés). Bulles de 2 lignes d'environ 40
+> caractères ; « / » sépare deux bulles. Inspirés des textes RB (`pret/pokered` `text/SafariZone*.asm`,
+> `WardensHouse.asm`, `FuchsiaGym.asm`), jamais traduits mot à mot. Réponse attendue :
+> « A-7 : … » ou « annexe A ok ».
+
+### A.1 Panneaux du Parc (grilles v1)
+
+| N° | Panneau (grille) | Texte |
+|---|---|---|
+| A-1 | Centre, maison de repos (18, 20) ; idem Est (26, 10), Nord (36, 4), Ouest (12, 12) | « MAISON DE REPOS » |
+| A-2 | Centre, conseils (14, 22) | texte 13 du dossier (« PARC SAFARI — ZONE CENTRE » / « Respectez les Pokémon… ») |
+| A-3 | Est, conseils (6, 4) | « CONSEIL DE DRESSEUR » / « Le compteur ne baisse que quand tu marches ! » |
+| A-4 | Est, zone (5, 23) | « PARC SAFARI — ZONE EST » / « Ouest : ZONE CENTRE » |
+| A-5 | Nord, conseils 1 (4, 25) | « CONSEIL DE DRESSEUR » / « La Maison Secrète est encore plus loin ! » |
+| A-6 | Nord, zone (13, 31) | « PARC SAFARI — ZONE NORD » / « Sud : ZONES OUEST et CENTRE » |
+| A-7 | Nord, conseils 2 (19, 33) | « CONSEIL DE DRESSEUR » / « Les Pokémon se cachent dans les herbes. » / « Zigzague pour les débusquer ! » |
+| A-8 | Nord, conseils 3 (26, 28) | « GRANDE EXPLORATION ! » / « Qui trouvera la Maison Secrète ? » |
+| A-9 | Ouest, dents du Gardien (17, 3) | texte 14 du dossier (« Avis : le Gardien a perdu ses dents en or. » / « Merci de les lui rapporter ! ») |
+| A-10 | Ouest, conseils (26, 4) | « CONSEIL DE DRESSEUR » / « Une CS en prix pour qui trouve » / « la Maison Secrète ! » |
+| A-11 | Ouest, zone (24, 22) | « PARC SAFARI — ZONE OUEST » / « Est : ZONE CENTRE » |
+| A-12 | Le titre de zone affiché à l'arrivée | « PARC SAFARI — ZONE CENTRE », « — ZONE EST », « — ZONE NORD », « — ZONE OUEST » ; Porte : « PARC SAFARI » ; Maison Secrète : « MAISON SECRÈTE » |
+
+### A.2 Maison du Gardien
+
+| N° | Élément | Texte |
+|---|---|---|
+| A-13 | Vitrine, moitié gauche (5, 2) | « Des photos de Pokémon et des fossiles. » |
+| A-14 | Vitrine, moitié droite (6, 2) | « De vieux souvenirs du Parc Safari. » |
+
+### A.3 Arène de Koga : six Dresseurs (avant / défaite / après)
+
+| N° | Dresseur (grille) | Avant | Défaite | Après |
+|---|---|---|---|---|
+| A-15 | Jongleur Hugo (10, 14) | « Mes balles volent, mon Hypnomade veille ! » | « Raté… j'ai tout fait tomber. » | « Koga voit tout. Même ce qu'on ne voit pas. » |
+| A-16 | Jongleur Max (9, 9) | « Un, deux, trois… à toi de jongler ! » | « Trop de balles en l'air ! » | « Les murs ? Quels murs ? Moi, je ne vois rien. » |
+| A-17 | Jongleur Sacha (3, 13) | « Tu cherches ton chemin ? Cherche-moi plutôt ! » | « Bien joué. » | « Avance à petits pas. Écoute le parquet. » |
+| A-18 | Dompteur Bruno (5, 6) | « Mes Pokémon obéissent au fouet… et au sifflet ! » | « Ils n'ont rien écouté ! » | « Koga ne dompte pas : il commande. » |
+| A-19 | Dompteur Edgar (10, 3) | « Arbok ! Montre-lui tes crocs ! » | « Couché, Arbok… » | « Le poison, c'est de la patience. » |
+| A-20 | Jongleur Léon (4, 8) | « Hop ! Tu ne me verras pas venir ! » | « Tu m'as vu venir… » | « Le maître est juste derrière, au centre. » |
+
+Prénoms [D], à vérifier contre les Dresseurs déjà nommés (aucun doublon dans une même carte ; un
+doublon ailleurs est accepté s'il n'y a pas de confusion).
+
+### A.4 Descriptions (Sac, combat)
+
+| N° | Élément | Texte |
+|---|---|---|
+| A-21 | Surf (capacité) | « Une énorme vague déferle sur la cible. Permettra aussi de nager sur l'eau. » |
+| A-22 | Force (capacité) | « Le lanceur frappe la cible de toute sa puissance. Permettra aussi de pousser les rochers. » |
+| A-23 | Bomb'Œuf (capacité et CT37) | « Le lanceur projette violemment un gros œuf sur la cible. » |
+| A-24 | Reflet (capacité et CT32) | « Le lanceur se démultiplie par des mouvements rapides. Augmente son esquive. » |
+| A-25 | Toxik (capacité) | « Un poison qui s'aggrave à chaque tour. » |
+| A-26 | Pastille du Parc | icône de pas + nombre, icône de Ball + nombre ; aucun texte (lecteur d'écran : « {n} pas, {m} Safari Balls ») |
+| A-27 | Statut de combat | « PSN+ » (poison grave), à côté de « PSN » |
+
+« Permettra » (A-21, A-22) : au J23, Surf et Force ne servent qu'en combat (P-2 B) ; la description
+n'annonce pas un usage immédiat. Les textes 56 à 59 du dossier (Sac : CS03, CS04, Dents d'Or,
+CT06) restent ceux validés.
