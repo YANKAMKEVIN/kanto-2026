@@ -173,9 +173,10 @@ func test_in_a_release_build_the_gate_is_inert() -> void:
 	assert_eq(_boot.get_map().map_id, MAP)
 
 
-## Jalon 18 (T12) : le bord ouest de la Route 9 mène à « AZURIA — À venir » (le raccord réel attend
-## la variante J18 d'Azuria, après la Coupe du J16), retour sur la case de sortie, tourné vers l'est.
-func test_route_9_west_edge_shows_azuria_then_returns_facing_east() -> void:
+## Jalon 18 (T12) : le bord ouest de la Route 9 menait à « AZURIA — À venir » ; depuis le T15
+## (variante J18 d'Azuria, arbre coupé du J16), il mène à Azuria, sans écran « à venir », sur la
+## même rangée (55, 23), tourné vers l'ouest.
+func test_route_9_west_edge_leads_to_azuria_without_coming_soon() -> void:
 	_boot = BOOT_SCENE.instantiate() as Boot
 	_boot.save_system = _save
 	_boot.start_map = &"route_9"
@@ -184,18 +185,14 @@ func test_route_9_west_edge_shows_azuria_then_returns_facing_east() -> void:
 	add_child_autofree(_boot)
 	_player = _boot.get_player()
 	var screen := _boot.get_coming_soon_screen()
-	screen.hold_duration = HOLD
-	screen.fade_duration = 0.05
 	await wait_process_frames(3)
 	assert_eq(_player.get_cell(), Vector2i(0, 23))
 	Input.action_press(&"move_left")
-	await wait_until(func() -> bool: return screen.is_showing(), TIMEOUT)
+	await wait_until(func() -> bool: return SceneRouter.is_transitioning(), TIMEOUT)
 	Input.action_release(&"move_left")
-	assert_eq(screen.get_label().text, "AZURIA — À venir")
-	await wait_until(func() -> bool: return not screen.is_showing(), TIMEOUT)
-	await wait_until(func() -> bool: return not SceneRouter.is_transitioning(), TIMEOUT)
-	assert_eq(_boot.get_map().map_id, &"route_9")
-	assert_eq(_player.get_cell(), Vector2i(0, 23), "sur la case de sortie")
-	assert_eq(_player.get_facing(), Vector2i.RIGHT, "tourné vers l'est")
-	assert_true(_player.is_input_enabled())
-	assert_false(GameState.discovered_maps.has(&"cerulean_city_j18"))
+	assert_false(screen.is_showing(), "pas d'écran « à venir »")
+	await wait_until(func() -> bool: return not SceneRouter.is_transitioning() \
+		and _boot.get_map().map_id == &"cerulean_city", TIMEOUT)
+	assert_eq(_boot.get_map().map_id, &"cerulean_city")
+	assert_eq(_player.get_cell(), Vector2i(55, 23), "arrivée sur la même rangée")
+	assert_eq(_player.get_facing(), Vector2i.LEFT, "tourné vers l'ouest")
