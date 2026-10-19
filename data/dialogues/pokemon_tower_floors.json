@@ -1,0 +1,236 @@
+{
+	"tower_channeler_1_before": {
+		"speaker": "Exorciste Hortense",
+		"pages": [
+			{
+				"text": "Laisse… nous…",
+				"voice": "spirit"
+			}
+		]
+	},
+	"tower_channeler_1_defeated": {
+		"speaker": "Exorciste Hortense",
+		"pages": [
+			{
+				"text": "Les esprits… se taisent…",
+				"voice": "spirit"
+			}
+		]
+	},
+	"tower_channeler_1_after": {
+		"speaker": "Exorciste Hortense",
+		"pages": [
+			"Qu'est-ce que… J'étais possédée ?",
+			"Les esprits sont trop nombreux,\ncette fois."
+		]
+	},
+	"tower_channeler_2_before": {
+		"speaker": "Exorciste Odile",
+		"pages": [
+			{
+				"text": "Tu… n'as… rien… à faire… ici…",
+				"voice": "spirit"
+			}
+		]
+	},
+	"tower_channeler_2_defeated": {
+		"speaker": "Exorciste Odile",
+		"pages": [
+			{
+				"text": "Les esprits… se taisent…",
+				"voice": "spirit"
+			}
+		]
+	},
+	"tower_channeler_2_after": {
+		"speaker": "Exorciste Odile",
+		"pages": [
+			"Merci… Je me sens plus légère."
+		]
+	},
+	"tower_channeler_3_before": {
+		"speaker": "Exorciste Solange",
+		"pages": [
+			{
+				"text": "Plus… haut… personne… ne… monte…",
+				"voice": "spirit"
+			}
+		]
+	},
+	"tower_channeler_3_defeated": {
+		"speaker": "Exorciste Solange",
+		"pages": [
+			{
+				"text": "Les esprits… se taisent…",
+				"voice": "spirit"
+			}
+		]
+	},
+	"tower_channeler_3_after": {
+		"speaker": "Exorciste Solange",
+		"pages": [
+			"Ces spectres qu'on ne voit pas…",
+			"Seul un Scope Sylphe permettrait\nde voir leur vrai visage."
+		]
+	},
+	"tower_channeler_4_before": {
+		"speaker": "Exorciste Mireille",
+		"pages": [
+			{
+				"text": "Froid… si… froid…",
+				"voice": "spirit"
+			}
+		]
+	},
+	"tower_channeler_4_defeated": {
+		"speaker": "Exorciste Mireille",
+		"pages": [
+			{
+				"text": "Les esprits… se taisent…",
+				"voice": "spirit"
+			}
+		]
+	},
+	"tower_channeler_4_after": {
+		"speaker": "Exorciste Mireille",
+		"pages": [
+			"Merci… Je me sens plus légère."
+		]
+	},
+	"tower_channeler_5_before": {
+		"speaker": "Exorciste Bérénice",
+		"pages": [
+			{
+				"text": "Rends… les… nous…",
+				"voice": "spirit"
+			}
+		]
+	},
+	"tower_channeler_5_defeated": {
+		"speaker": "Exorciste Bérénice",
+		"pages": [
+			{
+				"text": "Les esprits… se taisent…",
+				"voice": "spirit"
+			}
+		]
+	},
+	"tower_channeler_5_after": {
+		"speaker": "Exorciste Bérénice",
+		"pages": [
+			"Je n'avais jamais vu les esprits\naussi troublés.",
+			"Quelqu'un les a blessés."
+		]
+	},
+	"tower_channeler_6_before": {
+		"speaker": "Exorciste Marthe",
+		"pages": [
+			{
+				"text": "Qui… es… tu… ?",
+				"voice": "spirit"
+			}
+		]
+	},
+	"tower_channeler_6_defeated": {
+		"speaker": "Exorciste Marthe",
+		"pages": [
+			{
+				"text": "Les esprits… se taisent…",
+				"voice": "spirit"
+			}
+		]
+	},
+	"tower_channeler_6_after": {
+		"speaker": "Exorciste Marthe",
+		"pages": [
+			"Merci… Je me sens plus légère."
+		]
+	},
+	"tower_channeler_7_before": {
+		"speaker": "Exorciste Ysée",
+		"pages": [
+			{
+				"text": "Silence… silence…",
+				"voice": "spirit"
+			}
+		]
+	},
+	"tower_channeler_7_defeated": {
+		"speaker": "Exorciste Ysée",
+		"pages": [
+			{
+				"text": "Les esprits… se taisent…",
+				"voice": "spirit"
+			}
+		]
+	},
+	"tower_channeler_7_after": {
+		"speaker": "Exorciste Ysée",
+		"pages": [
+			"Merci… Je me sens plus légère."
+		]
+	},
+	"tower_channeler_8_before": {
+		"speaker": "Exorciste Paulette",
+		"pages": [
+			{
+				"text": "Ne… monte… pas…",
+				"voice": "spirit"
+			}
+		]
+	},
+	"tower_channeler_8_defeated": {
+		"speaker": "Exorciste Paulette",
+		"pages": [
+			{
+				"text": "Les esprits… se taisent…",
+				"voice": "spirit"
+			}
+		]
+	},
+	"tower_channeler_8_after": {
+		"speaker": "Exorciste Paulette",
+		"pages": [
+			"Merci… Je me sens plus légère."
+		]
+	},
+	"tower_channeler_9_before": {
+		"speaker": "Exorciste Clémence",
+		"pages": [
+			{
+				"text": "Elle… attend… son… petit…",
+				"voice": "spirit"
+			}
+		]
+	},
+	"tower_channeler_9_defeated": {
+		"speaker": "Exorciste Clémence",
+		"pages": [
+			{
+				"text": "Les esprits… se taisent…",
+				"voice": "spirit"
+			}
+		]
+	},
+	"tower_channeler_9_after": {
+		"speaker": "Exorciste Clémence",
+		"pages": [
+			"Là-haut… il y a une présence plus\nforte que les autres.",
+			"Une mère, je crois."
+		]
+	},
+	"tower_6f_ghost_warning": {
+		"pages": [
+			{
+				"text": "…Va-t'en… Intrus…",
+				"voice": "spirit"
+			}
+		]
+	},
+	"tower_6f_ghost_after": {
+		"narration": true,
+		"pages": [
+			"Quelque chose refuse qu'on passe."
+		]
+	}
+}

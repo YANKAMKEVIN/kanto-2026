@@ -1,0 +1,37 @@
+{
+	"tower_6f_ghost": {
+		"variants": [
+			{
+				"unless": [
+					"ghost_marowak_calmed"
+				],
+				"steps": [
+					{
+						"react": "player"
+					},
+					{
+						"wait": 0.6
+					},
+					{
+						"dialogue": "tower_6f_ghost_warning"
+					},
+					{
+						"wild_battle": "marowak",
+						"level": 30,
+						"ghost": "always"
+					},
+					{
+						"move": "player",
+						"path": [
+							"up"
+						],
+						"keep_facing": true
+					},
+					{
+						"dialogue": "tower_6f_ghost_after"
+					}
+				]
+			}
+		]
+	}
+}

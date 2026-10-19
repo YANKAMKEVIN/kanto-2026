@@ -1,0 +1,32 @@
+{
+	"tower_channeler_8": {
+		"cell": [
+			16,
+			5
+		],
+		"facing": "left",
+		"sprite": "channeler",
+		"dialogue": "tower_channeler_8_after",
+		"trainer": {
+			"id": "tower_channeler_8",
+			"sight": 3,
+			"before": "tower_channeler_8_before",
+			"defeated": "tower_channeler_8_defeated"
+		}
+	},
+	"tower_channeler_9": {
+		"cell": [
+			6,
+			6
+		],
+		"facing": "down",
+		"sprite": "channeler",
+		"dialogue": "tower_channeler_9_after",
+		"trainer": {
+			"id": "tower_channeler_9",
+			"sight": 3,
+			"before": "tower_channeler_9_before",
+			"defeated": "tower_channeler_9_defeated"
+		}
+	}
+}
