@@ -78,11 +78,11 @@ reste en conception.
 - **Verrou** : 2 suites complètes au maximum en même temps sur le Mac (`KANTO_TEST_SLOTS`), places
   dans `/tmp/kanto2026-test-slots/`, libérées automatiquement si leur processus meurt. Les
   lancements ciblés ne prennent pas de place.
-- **CI sur les branches de jalon** (décision de Kevin, 2026-10-19) : `.github/workflows/godot-tests.yml`
-  se déclenche aussi sur les `push` des branches `jalon-*` (8 lots parallèles sur GitHub). Avant une
-  fusion, une session peut pousser sa branche et lire le résultat de la CI (`gh run list`,
-  `gh run watch`) au lieu de lancer la suite complète sur le Mac. Une branche ne profite du
-  déclencheur qu'après avoir récupéré le workflow de `main`.
+- **CI GitHub** (`.github/workflows/godot-tests.yml`, 8 lots parallèles) : seulement sur `main` et
+  les pull requests, et **jamais pour un commit qui ne touche que la documentation** (`docs/**`,
+  `*.md`). Le déclenchement sur les branches `jalon-*`, essayé le 2026-10-19, a été **retiré** le
+  soir même (Kevin) : le dépôt est privé et le quota de minutes gratuites a été épuisé en quelques
+  heures. Avant une fusion, la suite complète tourne donc sur le Mac (`tools/test.sh`, avec le verrou).
 - **Tests lents** : la suite complète affiche à la fin ses 10 scripts les plus lents. Reste à faire :
   alléger les plus lents, sans perdre de couverture.
 
