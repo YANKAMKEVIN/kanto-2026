@@ -1,0 +1,47 @@
+{
+	"tower_channeler_5": {
+		"cell": [
+			14,
+			3
+		],
+		"facing": "left",
+		"sprite": "channeler",
+		"dialogue": "tower_channeler_5_after",
+		"trainer": {
+			"id": "tower_channeler_5",
+			"sight": 3,
+			"before": "tower_channeler_5_before",
+			"defeated": "tower_channeler_5_defeated"
+		}
+	},
+	"tower_channeler_6": {
+		"cell": [
+			6,
+			10
+		],
+		"facing": "right",
+		"sprite": "channeler",
+		"dialogue": "tower_channeler_6_after",
+		"trainer": {
+			"id": "tower_channeler_6",
+			"sight": 2,
+			"before": "tower_channeler_6_before",
+			"defeated": "tower_channeler_6_defeated"
+		}
+	},
+	"tower_channeler_7": {
+		"cell": [
+			9,
+			16
+		],
+		"facing": "right",
+		"sprite": "channeler",
+		"dialogue": "tower_channeler_7_after",
+		"trainer": {
+			"id": "tower_channeler_7",
+			"sight": 3,
+			"before": "tower_channeler_7_before",
+			"defeated": "tower_channeler_7_defeated"
+		}
+	}
+}

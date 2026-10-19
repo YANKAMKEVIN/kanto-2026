@@ -201,3 +201,13 @@ Pokédex existe **sans** que le drapeau d'histoire `pokedex_activated` soit pos�
 sauvegardé. Même garde que le départ de débogage (build debug, Boot scène principale, fichier
 présent). Se combine avec `--debug-start` ou avec la vraie partie ; sans l'option, le fichier est
 retiré. Sur le Mac : `echo '{ "pokedex": true }' > "$HOME/Library/Application Support/Godot/app_userdata/Kanto 2026/debug_unlocks.json"`.
+
+## Jalon 19 (T14) : départs de la Tour Pokémon (QA 19A)
+
+Même partie que `pokemon_tower_1f` (Lavanville atteinte, `tower_stairs_open`), Centre de Lavanville **enregistré** (clé `rest_point`, J19 T14 : une défaite réveille là).
+
+| Fichier | Partie |
+|---|---|
+| `tower_ghost_qa.json` | 3F, à l'arrivée de l'escalier (spawn `arrivee_T23`, tourné vers l'est). Équipe : Reptincel N24, Pikachu N20, **Rondoudou N15** (le plus lent), **Papilusion N20 endormi** (5 tours), Roucoups N19 ; 10 Poké Balls, Potions, Super Potions. Clé `wild` : table `floor` forcée (taux 255, Fantominus N20, `ghost_unless_item: silph_scope`) → un SPECTRE dès les premiers pas ; les 2 Exorcistes du 3F sont là (QA 19A n° 1 à 8) |
+| `tower_exorcist_weak.json` | **4F**, à l'arrivée de l'escalier (spawn `arrivee_T34`, tourné vers l'ouest) : Salamèche **N6** seul (Rugissement), 2 Poké Balls. Deux pas vers l'ouest, Solange (E3, inévitable, (15, 7)) voit le joueur : perdre → réveil au Centre de Lavanville, Solange toujours à battre (QA 19A n° 9) |
+| `tower_6f_block.json` | 6F, case `devant_spectre` (10, 14), tourné vers le sud : deux pas, le déclencheur (10, 16) joue §15.3.7 → combat SPECTRE → fuite → recul en (10, 15) → §15.3.8. **Rival n° 5 non battu** (`rival_tower_won` absent) : les drapeaux sont indépendants (dossier 22 §16 n° 10) |
