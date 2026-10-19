@@ -391,6 +391,11 @@ static func in_front(grid: GridWorld, cell: Vector2i, facing: Vector2i, cycling_
 | `route_18` | `build_route_18.gd` | `route_18.txt` (75 × 27) | N ↔ Route 17 ; E ↔ Parmanie ; poste au milieu | Ouest = Piste ; poste `route_18_gate` |
 | `fuchsia_city` | `build_fuchsia_city.gd` | `parmanie.txt` (60 × 54) | O ↔ Route 18 ; E ↔ Route 15 ; **S : bord `warp_sud` réservé à la Route 19 (J24)**, rangée y = 53, colonnes **24..32** (terrasse de sable) et **34..35** (couloir) praticables, `coming_soon=route_19` ; colonne Parmanie = colonne Route 19 + 15 | 5 intérieurs, 3 portes `coming_soon`, enclos, étang pêchable |
 
+- **Accord du J21 (2026-10-19, option B)** : `route_16.txt` reste celle du J21 ; **T19** applique, dans le
+  bloc « J22 » de `build_route_16.gd` et de la grille, les cases notées en tête de `route_16_gate.txt`
+  (voie haute (18..25, 11..12), porte haute (19..20, 13), lien de l'arbre (38..39, 17..18), porte basse
+  (15..16, 20) → `entrance_bas_est`, arrivée (15..16, 21)), vérifiées par la session du J21. **Aucun
+  contournement de Ronflex** : couloirs du poste séparés et falaise entre la voie haute et la Piste (RB).
 - **Route 16 du J21** : T19 retire le `coming_soon` de la porte (15..16, 20) et rend l'arbre
   (38..39, 19..20) coupable (`InteractPoint` `cut_tree`, `unless [cut_route_16_tree]`, `FlagGate`
   sur ses cases), en bloc « J22 » dans `build_route_16.gd`.
