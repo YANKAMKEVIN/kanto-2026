@@ -64,6 +64,17 @@ j25-v2-alignement.md`, `j25-annexe-rb-cramois.md` (relevé RB), grilles `tools/p
 
 ---
 
+## 0.3 État du lot 25.0 (2026-10-19)
+
+| Tâche | État |
+|---|---|
+| T1 | fait (`jalon-25` = `origin/main` `aebbd85` + conception) |
+| T2, T4, T5 (logique pure) | faits : `mansion_switch.gd`, `gym_quiz.gd`, `in_game_trade.gd`, `tests/unit/test_j25_logic.gd` ; l'étape de scène et `Origin.TRADE` viennent à l'intégration |
+| T6, T7, T8, T9 (données) | prêtes dans `docs/tech/jalon-25-donnees/` (hors de `data/`, voir son `LISEZMOI.md`) ; quiz et échanges dans `data/` |
+| T9 (simulation) | première passe : `jalon-25-equilibrage.md`, questions E-1 à E-3 |
+| T10–T12 (art) | série 28 provisoire, Manoir fait, reste à relancer (limite d'usage de Codex) ; cartes recomposées par kit (écart validé à demander) |
+| Suite complète | 5 336 / 5 336 |
+
 ## 1. Découpage
 
 ### 1.1 Sous-jalons et validations (X-24, X-30)
