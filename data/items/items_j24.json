@@ -13,7 +13,7 @@
 		"name": "Total Soin", "plural": "Total Soins", "feminine": false,
 		"category": "heal", "cures": ["poison", "paralysis", "sleep", "burn", "freeze"],
 		"price": 600,
-		"description": "Soigne tous les problèmes de statut d'un Pokémon.", "draft": true
+		"description": "Soigne tous les problèmes de statut d'un Pokémon."
 	},
 	"tm35": {
 		"name": "CT35 — Métronome", "plural": "CT35 — Métronome", "feminine": true,

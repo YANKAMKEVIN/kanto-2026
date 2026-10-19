@@ -26,14 +26,8 @@ const EVOLUTION_NOTES: Array[StringName] = [&"kadabra_bond"]
 ## Descriptions validées par Kevin qui parlent d'évolution (exception à « jamais de
 ## divulgation ») : Léviator (dossier 22 §15.7, validé le 2026-10-15).
 const EVOLUTION_DESCRIPTIONS: Array[StringName] = [&"gyarados"]
-## Jalon 24 (T4) : fiches en brouillon, à faire relire par Kevin (dossier 27 §14.1 ; même liste
-## que `test_no_draft_in_data.gd`). Une fois validées, retirer leur « draft » et les sortir
-## d'ici.
-const PENDING_DRAFT_DESCRIPTIONS: Array[StringName] = [
-	&"psyduck", &"golduck", &"poliwhirl", &"poliwrath", &"tentacruel", &"slowpoke", &"slowbro",
-	&"seel", &"dewgong", &"cloyster", &"krabby", &"kingler", &"seadra", &"seaking", &"magikarp",
-	&"omanyte", &"omastar", &"kabuto", &"kabutops", &"articuno",
-]
+## Fiches en brouillon à faire relire par Kevin (vide : celles du J24 validées le 2026-10-19).
+const PENDING_DRAFT_DESCRIPTIONS: Array[StringName] = []
 
 var _data: PokemonData
 var _lib: PokedexLibrary

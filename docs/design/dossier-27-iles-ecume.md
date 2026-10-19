@@ -834,4 +834,5 @@ contrôle `plan_check_*.py` :
 
 - Les 7 décisions de la V2 et les arbitrages P-1 à P-22 (2026-10-16).
 - Textes du §15 validés (2026-10-16).
-- **À valider** : les grilles et les vues du lot 24.0.
+- Grilles v1 (`tools/plans/`) et série d'art 27 (planche, vues générales, Artikodin en r1) validées
+  par Kevin le 2026-10-19 ; fiches de Pokédex, descriptions de capacités et d'objets du J24 aussi.

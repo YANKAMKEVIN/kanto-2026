@@ -1,6 +1,6 @@
 # Série 27 — Les Îles Écume et Artikodin, lot d'art 24.0 (jalon 24)
 
-> **À VALIDER par Kevin** (planche `build/art/J24_KIT_v1.png` et vues générales dans
+> **VALIDÉE par Kevin le 2026-10-19**, avec **Artikodin en r1** (planche `build/art/J24_KIT_v1.png` et vues générales dans
 > `docs/design/reference/`). Rédigée le 2026-10-19 (branche `j24-art`, depuis `jalon-24`).
 > Conception : `docs/design/dossier-27-iles-ecume.md` §5.4, §6.4, §7.1, §8.1, §9, §10.1, §14.4 ;
 > plan `docs/tech/jalon-24.md` §2.12 (T5). Aucun code de jeu, **rien dans `assets/`, aucun
@@ -139,7 +139,7 @@ séries précédentes.
 | Topdresseur | r1 | **r1** | veste vert sapin à bandes blanches, gants, baskets ; distinct du héros. |
 | Topdresseuse | r1 | **r1** | queue de cheval auburn, veste prune, bottes blanches. |
 | Planche Force | r1 | **r1** | rocher clair fendu nettement distinct des rochers décor ; rocher dans l'eau avec anneau d'écume ; trou à rebord givré ; trou bouché lisible. |
-| Artikodin (monde) | r1 ; r2 (**refusé 4 fois** : filtre de sécurité, avec et sans pièce jointe) ; r3 (sans aucun nom d'espèce, r1 jointe comme anatomie) | **r3** | r1 : très fidèle mais rendu « artwork officiel », de trois quarts gauche (gardée dans `build/art/`). r3 : de face, symétrique, plus simple ; crête un peu en couronne, un cristal résiduel sur la poitrine à l'image 4, souffle peint sur le poitrail à l'image 3. Choix r1 / r3 à Kevin. |
+| Artikodin (monde) | r1 ; r2 (**refusé 4 fois** : filtre de sécurité, avec et sans pièce jointe) ; r3 (sans aucun nom d'espèce, r1 jointe comme anatomie) | **r1** (Kevin) | r1 : très fidèle mais rendu « artwork officiel », de trois quarts gauche (gardée dans `build/art/`). r3 : de face, symétrique, plus simple ; crête un peu en couronne, un cristal résiduel sur la poitrine à l'image 4, souffle peint sur le poitrail à l'image 3. **Kevin retient la r1** (2026-10-19 ; `RETENUES` dans `serie27.py`). |
 | Courant | r1 | **r1** | traînées d'écume en chevrons vers le bas, même saturation que `ground_eau_01`. |
 | Eau de grotte | r1 | **r1** | bleu profond, calme. |
 | Sol de glace | r1 | **r1** | dalles de pierre bleutée et glace mate ; plus clair que `ground_grotte_01`. |

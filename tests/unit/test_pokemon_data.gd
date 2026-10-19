@@ -3,12 +3,8 @@ extends GutTest
 ## références croisées (jalon 4 §2.1, §3.2 et décisions de Kevin du §8).
 
 const FIXTURES := "res://tests/fixtures/pokemon/"
-## Descriptions en brouillon du J24 (T4, `data/pokemon/moves/j24.json`), à faire relire par Kevin :
-## une fois validées, retirer leur « draft » et les sortir d'ici (même liste que
-## `test_no_draft_in_data.gd`).
-const PENDING_DRAFT_MOVES: Array[StringName] = [
-	&"vise_grip", &"guillotine", &"crabhammer", &"spike_cannon", &"blizzard", &"splash",
-]
+## Descriptions en brouillon à faire relire par Kevin (vide : celles du J24 validées le 2026-10-19).
+const PENDING_DRAFT_MOVES: Array[StringName] = []
 
 ## Valeurs de Rouge/Bleu (PokeAPI, groupe de versions red-blue), statistiques et rendement
 ## d'XP modernes comme les espèces déjà présentes : [dex, nom, types, PV, Att, Déf, Att. Spé.,

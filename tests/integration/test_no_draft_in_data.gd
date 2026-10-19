@@ -8,24 +8,7 @@ const DATA_DIR := "res://data"
 ## Brouillons en attente de validation, nommés un par un (chemin relevé par [method _collect_drafts]).
 ## Une fois validés, retirer leur « draft » et les sortir d'ici (le test vérifie qu'ils sont
 ## encore en brouillon). Vide depuis la validation de l'annexe A du jalon 15 (2026-10-14).
-const PENDING_DRAFTS: Array[String] = [
-	# Jalon 24 (T4) : capacités et objets nouveaux, fiches de Pokédex (hors du lot §15 du
-	# dossier 27).
-	"pokemon/moves/j24.json/vise_grip", "pokemon/moves/j24.json/guillotine",
-	"pokemon/moves/j24.json/crabhammer", "pokemon/moves/j24.json/spike_cannon",
-	"pokemon/moves/j24.json/blizzard", "pokemon/moves/j24.json/splash",
-	"items/items_j24.json/full_heal",
-	"pokedex/kanto.json/species/psyduck", "pokedex/kanto.json/species/golduck",
-	"pokedex/kanto.json/species/poliwhirl", "pokedex/kanto.json/species/poliwrath",
-	"pokedex/kanto.json/species/tentacruel", "pokedex/kanto.json/species/slowpoke",
-	"pokedex/kanto.json/species/slowbro", "pokedex/kanto.json/species/seel",
-	"pokedex/kanto.json/species/dewgong", "pokedex/kanto.json/species/cloyster",
-	"pokedex/kanto.json/species/krabby", "pokedex/kanto.json/species/kingler",
-	"pokedex/kanto.json/species/seadra", "pokedex/kanto.json/species/seaking",
-	"pokedex/kanto.json/species/magikarp", "pokedex/kanto.json/species/omanyte",
-	"pokedex/kanto.json/species/omastar", "pokedex/kanto.json/species/kabuto",
-	"pokedex/kanto.json/species/kabutops", "pokedex/kanto.json/species/articuno",
-]
+const PENDING_DRAFTS: Array[String] = []
 
 
 func test_data_has_json_files() -> void:

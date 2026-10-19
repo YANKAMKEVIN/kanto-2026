@@ -853,7 +853,14 @@ def _sur_eau(image: Image.Image, marge: int = 10) -> Image.Image:
 	return fond
 
 
+## Révisions retenues par Kevin quand ce n'est pas la dernière (validation du 2026-10-19).
+RETENUES: dict[str, int] = {"POKE_ARTIKODIN_MONDE_NE": 1}
+
+
 def _derniere(base: str) -> Path | None:
+	if base in RETENUES:
+		retenue = ART / f"{base}_r{RETENUES[base]}.png"
+		return retenue if retenue.exists() else None
 	for rev in (5, 4, 3, 2, 1):
 		candidat = ART / f"{base}_r{rev}.png"
 		if candidat.exists():
