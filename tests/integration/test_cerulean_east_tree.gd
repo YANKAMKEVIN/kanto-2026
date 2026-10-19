@@ -193,3 +193,16 @@ func test_cut_opens_route_9_and_the_tree_stays_cut_on_the_way_back() -> void:
 	assert_false(_gate().visible, "l'arbre reste coupé")
 	assert_false(_boot.get_map().get_grid().is_occupied(TREE))
 	assert_push_error_count(0)
+
+
+## Résident H7 (51, 22), à côté de l'arbre : « On ne passe pas par là… » tant que l'arbre est debout,
+## nouvelle réplique une fois l'arbre coupé (décision de Kevin, 2026-10-19).
+func test_resident_h7_changes_his_line_once_the_tree_is_cut() -> void:
+	var library := DialogueLibrary.new()
+	assert_true(library.load_dir())
+	var resident := library.get_dialogue(&"cerulean_h7_resident")
+	var flags := StoryFlags.new()
+	assert_eq(resident.pick(flags).pages[0].text, TEXT_17)
+	flags.set_flag(&"cut_cerulean_east_tree")
+	assert_eq(resident.pick(flags).pages[0].text,
+		"L'arbre est tombé ! La Route 9 file vers l'est, jusqu'aux montagnes.")

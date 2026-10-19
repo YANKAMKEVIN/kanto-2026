@@ -74,7 +74,15 @@
 	},
 	"cerulean_h7_resident": {
 		"speaker": "Habitant",
-		"pages": ["On ne passe pas par là pour l'instant."]
+		"variants": [
+			{
+				"if": ["cut_cerulean_east_tree"],
+				"pages": ["L'arbre est tombé ! La Route 9 file vers l'est, jusqu'aux montagnes."]
+			},
+			{
+				"pages": ["On ne passe pas par là pour l'instant."]
+			}
+		]
 	},
 	"cerulean_closed_exit": {
 		"narration": true,
