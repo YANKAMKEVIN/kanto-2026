@@ -1,0 +1,41 @@
+CONCEPT ART — VUE GÉNÉRALE DE LA ROUTE 2 EST, UN COULOIR BOISÉ CACHÉ (Kanto 2026), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. C'est un COULOIR ÉTROIT, vertical, au milieu d'une forêt dense : il part d'une paroi rocheuse en HAUT (la sortie d'une grotte) et descend vers le BAS, où un sentier sort par le bord GAUCHE de l'image.
+Légende du plan :
+- vert très foncé = forêt dense infranchissable, qui remplit toute l'image autour du couloir (les deux côtés et tout le bas) ;
+- gris-brun en haut, sur toute la largeur = une haute PAROI ROCHEUSE (roche en couches, infranchissable) ; arc noir au milieu de sa base = la BOUCHE NORD DE LA CAVE TAUPIQUEUR, une ouverture naturelle dans la roche ; rectangle gris clair juste devant = un petit parvis de sol rocheux praticable ;
+- à gauche de ce parvis, bloc gris-brun et petit rectangle sable = l'ARRIÈRE D'UN ÉBOULIS : un amas de gros rochers tombés qui ferme un sentier (on voit un bout de sentier derrière, mais on ne peut pas passer) ;
+- beige = chemin de terre battue, large de deux cases, qui descend tout droit du parvis jusqu'en bas, puis tourne à ANGLE DROIT vers la GAUCHE et sort par le bord gauche de l'image ;
+- vert moyen = herbe rase praticable (petites clairières et bas-côtés le long du chemin) ; points roses = petites fleurs ;
+- rectangle à toit gris-bleu et murs bruns, à droite du chemin dans le tiers haut = le POSTE : un petit bâtiment en bois et toit d'ardoise, une seule pièce, porte au milieu de sa façade SUD (petit rectangle brun foncé), relié au chemin par un court bout de chemin de terre devant sa porte ; il est À CÔTÉ du chemin (le chemin ne le traverse pas) ;
+- deux petits disques vert sombre EN TRAVERS du chemin, au milieu de l'image, là où la forêt se resserre = un ARBUSTE FIN et touffu qui bouche entièrement le chemin (on pourra le couper plus tard) ;
+- autres petits disques vert sombre = buissons bas ;
+- carrés vert très foncé isolés dans les clairières = bosquets ;
+- petit carré ocre = un panneau en bois SANS TEXTE, sur le parvis à droite de la bouche ; points rouge et blanc = deux Poké Balls posées dans l'herbe de la grande clairière du sud (une en haut à droite, une en bas à gauche).
+Respecte ce plan À LA LETTRE : la paroi et sa bouche en haut, le parvis, l'éboulis à gauche, le poste à droite du chemin, la partie haute avec ses petites clairières, le GOULET où la forêt se referme sur le chemin et où l'arbuste le bouche, la grande clairière du sud des deux côtés du chemin, le resserrement final et le sentier qui part vers la gauche en bas. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+RÈGLE ABSOLUE DES CHEMINS : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; le chemin suit donc une grille : uniquement des segments horizontaux et verticaux à angles droits, AUCUN segment en diagonale ni courbe, aucun escalier.
+RELIEF : le terrain est PLAT partout ; le SEUL relief est la paroi rocheuse du haut (et l'éboulis à son pied). Aucun talus, aucune falaise, aucun rebord.
+
+IMAGE 2 : la vue générale de la Route 2 sud, la route voisine juste à l'ouest de ce couloir. Respecte EXACTEMENT son style de rendu : même pinceau, MÊME FORÊT (arbres serrés en masses arrondies et lisses, vert sapin et vert-bleu, quelques conifères), même chemin de terre, mêmes clairières fleuries, même saturation, MÊME LUMIÈRE, mêmes personnages ; le POSTE est de la même famille que le poste à toit d'ardoise en haut de cette image (mêmes matériaux : murs de bois et pierre claire, toit d'ardoise gris-bleu), en plus petit et plus simple, sans passage traversant. Ne reprends PAS sa composition : aucune haute herbe, aucune barrière, aucune clôture, aucune grande pierre.
+
+Format : PORTRAIT 1024 × 1536 (le couloir est vertical, comme le plan), vue plongeante sur tout le couloir.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats. Le feuillage est peint en grandes masses douces, JAMAIS en petits points nets ou en pixels.
+- Perspective : vue de dessus de trois quarts, projection oblique frontale, sans point de fuite. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud).
+- Aucun trait noir : contours fins et doux, plus sombres et plus saturés que la couleur locale. Ombres colorées bleu-vert ou violet froid, jamais grises.
+
+AMBIANCE — « le chemin retrouvé » : un couloir secret, tranquille, que personne n'emprunte plus ; on débouche de la grotte dans une forêt fraîche et silencieuse.
+- En haut : la grande paroi de roche sableuse ocre-beige (la même roche claire que la grotte), la bouche de la Cave, sombre mais accueillante ; l'éboulis à gauche ; le petit poste discret à droite, un peu isolé, entretenu.
+- Au milieu : la forêt se referme ; l'arbuste fin, bien visible, coupe le chemin.
+- En bas : une clairière lumineuse et fleurie, au calme, puis le chemin replonge dans les arbres et part vers la gauche.
+- Lumière de fin d'après-midi, la même que l'image 2, filtrée par la canopée : flaques de soleil sur le chemin et dans les clairières, ombres de feuillage peintes au sol.
+
+VIE (très discrète) : AUCUN personnage, aucun Dresseur. Pokémon : au plus UN ROUCOOL (petit oiseau Pokémon brun et crème, petit bec) posé dans l'herbe de la clairière du sud. Aucun autre Pokémon, aucun Pikachu, aucun animal (aucune faune non-Pokémon).
+
+INTERDITS : texte, lettres, chiffres, étiquettes, panneaux lisibles, logo, signature, filigrane, cadre, interface ; tout autre bâtiment que le petit poste ; maison, ville, pont ; hautes herbes ; barrière, clôture ; eau, rivière, étang ; escaliers, terrasses ; route goudronnée, véhicule ; arbres orange ou automnaux ; neige ; brouillard, flou de profondeur, vignettage ; pixel art.
+
+L'image doit raconter, sans texte : en sortant d'une grotte, un petit chemin oublié descend dans la forêt, passe devant un poste isolé, se heurte à un arbuste, puis s'ouvre sur une clairière avant de rejoindre une autre route à l'ouest.

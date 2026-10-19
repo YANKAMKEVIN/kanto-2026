@@ -40,6 +40,12 @@ var coming_soon_enabled: bool = OS.is_debug_build()
 ## il est fini ([ComingSoonScreen.present], branchée par Boot). Vide : aucun écran n'est montré
 ## (tests, outils) et le retour est immédiat. Remise à vide par [method setup].
 var coming_soon_presenter: Callable = Callable()
+## func() -> StoryFlags : drapeaux de la partie, lus à l'arrivée sur une carte pour régler ses
+## [FlagGate] **avant** de placer le joueur ([method GameMap.apply_flag_gates], jalon 17 T5) :
+## une case libérée par un drapeau (arbuste coupé, Ronflex réveillé) l'est déjà quand la reprise
+## d'une sauvegarde cherche où poser le joueur. Branchée par Boot ; vide : rien n'est réglé ici
+## (Boot le refait de toute façon à [signal map_changed]). Remise à vide par [method setup].
+var arrival_flags: Callable = Callable()
 ## Cartes intérieures ([method MapCatalog.load_interiors]) : une carte **extérieure** ne
 ## précharge pas ses voisines intérieures et ne les garde pas en cache (jalon 10 : les sept
 ## intérieurs d'Argenta pesaient 32 Mo de textures) ; elles se lisent au disque sous le rideau.
@@ -95,6 +101,7 @@ func setup(world: Node2D, player: Player, fade: ScreenFade = null) -> void:
 	_current_map = null
 	_busy = false
 	coming_soon_presenter = Callable()
+	arrival_flags = Callable()
 	if _player != null:
 		_player.moved.connect(_on_player_moved)
 		_player.bumped.connect(_on_player_bumped)
@@ -113,6 +120,7 @@ func start(map_id: StringName, spawn: StringName, facing: Vector2i) -> GameMap:
 		return null
 	var old: GameMap = _current_map if is_instance_valid(_current_map) else null
 	_world.add_child(map)
+	_apply_arrival_flags(map)
 	map.spawn_player(_player, spawn, facing)
 	_finish_start(map, old)
 	return map
@@ -130,6 +138,7 @@ func start_at(map_id: StringName, cell: Vector2i, facing: Vector2i) -> GameMap:
 		return null
 	var old: GameMap = _current_map if is_instance_valid(_current_map) else null
 	_world.add_child(map)
+	_apply_arrival_flags(map)
 	var target := map.find_standing_cell(cell, _player)
 	if target == Vector2i(-1, -1):
 		push_warning("SceneRouter : reprise impossible, aucune case libre sur %s" % map_id)
@@ -238,6 +247,12 @@ func get_cached_paths() -> PackedStringArray:
 	return paths
 
 
+## Règle les [FlagGate] de [param map] (déjà dans l'arbre) avec [member arrival_flags].
+func _apply_arrival_flags(map: GameMap) -> void:
+	if arrival_flags.is_valid():
+		map.apply_flag_gates(arrival_flags.call() as StoryFlags)
+
+
 ## Fin commune de [method start] et [method start_at] : ancienne carte libérée, joueur
 ## libre, rideau levé, signaux, préchargement des voisines.
 func _finish_start(map: GameMap, old: GameMap) -> void:
@@ -269,6 +284,7 @@ func _swap_map(map_id: StringName, spawn: StringName, facing: Vector2i) -> bool:
 	var arrival_facing := facing if facing != Vector2i.ZERO else _player.get_facing()
 	var old: GameMap = _current_map if is_instance_valid(_current_map) else null
 	_world.add_child(map)
+	_apply_arrival_flags(map)
 	# Retire le joueur de l'ancienne carte (et libère sa case) avant de libérer celle-ci.
 	map.spawn_player(_player, spawn, arrival_facing)
 	if old != null:
@@ -278,6 +294,8 @@ func _swap_map(map_id: StringName, spawn: StringName, facing: Vector2i) -> bool:
 	if OS.is_debug_build():
 		print("SceneRouter : %s en %.1f ms" % [map_id, last_change_ms])
 	return true
+
+
 
 
 func _instantiate(map_id: StringName) -> GameMap:

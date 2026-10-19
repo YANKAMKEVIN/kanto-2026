@@ -1470,6 +1470,46 @@
    "cases": 4,
    "ombre": false,
    "contact": null
+  },
+  {
+   "id": "relief_bouche_talus_01",
+   "source": "WORLD_RELIEF_BOUCHE_TALUS_01_NE_r1.png",
+   "sortie": "assets/world/relief/relief_bouche_talus_01.png",
+   "axe": "w",
+   "cases": 4,
+   "ombre": false,
+   "contact": 0.0
+  },
+  {
+   "id": "relief_bouche_paroi_01",
+   "source": "WORLD_RELIEF_BOUCHE_PAROI_01_NE_r1.png",
+   "sortie": "assets/world/relief/relief_bouche_paroi_01.png",
+   "axe": "w",
+   "cases": 4,
+   "ombre": false,
+   "contact": 0.0
+  },
+  {
+   "id": "prop_barriere_ouverte_01",
+   "source": "WORLD_PROP_BARRIERE_OUVERTE_01_NE_r1.png",
+   "sortie": "assets/world/props/prop_barriere_ouverte_01.png",
+   "axe": "h",
+   "cases": 2.4,
+   "ombre": false,
+   "contact": 0.3
+  },
+  {
+   "id": "bldg_ss_anne_superstructure_01",
+   "source": "WORLD_BLDG_SS_ANNE_SUPERSTRUCTURE_OUEST_NE_r1.png",
+   "sortie": "assets/world/buildings/bldg_ss_anne_superstructure_01.png",
+   "axe": "w",
+   "cases": 1.3,
+   "taille_cases": [
+    1.3,
+    6.8
+   ],
+   "ombre": false,
+   "contact": null
   }
  ],
  "hautes_herbes": {
@@ -1490,7 +1530,11 @@
     "teinte": -0.0706,
     "gamma_valeur": 0.72,
     "saturation": 1.03,
-    "lumieres": [0.6, 1.0, 0.4]
+    "lumieres": [
+     0.6,
+     1.0,
+     0.4
+    ]
    }
   }
  ],
@@ -1601,6 +1645,174 @@
    "cases": [
     16,
     11
+   ]
+  },
+  {
+   "id": "int_ss_anne_pont_principal_coque",
+   "source": "INT_SS_ANNE_PONT_PRINCIPAL_COQUE_NE_r2.png",
+   "sortie": "assets/world/interiors/int_ss_anne_pont_principal_coque.png",
+   "cases": [
+    26,
+    13
+   ]
+  },
+  {
+   "id": "int_ss_anne_couloir_coque",
+   "source": "INT_SS_ANNE_COULOIR_COQUE_NE_r1.png",
+   "sortie": "assets/world/interiors/int_ss_anne_couloir_coque.png",
+   "cases": [
+    18,
+    7
+   ],
+   "boite": [
+    0,
+    250,
+    1536,
+    770
+   ],
+   "retouches": [
+    {
+     "zone": [
+      1322,
+      30,
+      1512,
+      290
+     ],
+     "dx": 72,
+     "remplir": [
+      1150,
+      1222
+     ]
+    }
+   ]
+  },
+  {
+   "id": "int_ss_anne_cabine_capitaine_coque",
+   "source": "INT_SS_ANNE_CABINE_CAPITAINE_COQUE_NE_r1.png",
+   "sortie": "assets/world/interiors/int_ss_anne_cabine_capitaine_coque.png",
+   "cases": [
+    14,
+    10
+   ],
+   "retouches": [
+    {
+     "zone": [
+      570,
+      790,
+      616,
+      960
+     ],
+     "dx": -40,
+     "remplir": [
+      650,
+      700
+     ]
+    },
+    {
+     "zone": [
+      732,
+      790,
+      774,
+      960
+     ],
+     "dx": 36,
+     "remplir": [
+      650,
+      700
+     ]
+    }
+   ]
+  },
+  {
+   "id": "int_ss_anne_restaurant_coque",
+   "source": "INT_SS_ANNE_RESTAURANT_COQUE_NE_r2.png",
+   "sortie": "assets/world/interiors/int_ss_anne_restaurant_coque.png",
+   "cases": [
+    18,
+    11
+   ]
+  },
+  {
+   "id": "int_ss_anne_pont_inferieur_coque",
+   "source": "INT_SS_ANNE_PONT_INFERIEUR_COQUE_NE_r1.png",
+   "sortie": "assets/world/interiors/int_ss_anne_pont_inferieur_coque.png",
+   "cases": [
+    22,
+    11
+   ],
+   "retouches": [
+    {
+     "zone": [
+      190,
+      0,
+      432,
+      292
+     ],
+     "largeur": 202,
+     "remplir": [
+      440,
+      470
+     ]
+    },
+    {
+     "zone": [
+      950,
+      30,
+      1166,
+      262
+     ],
+     "dx": -54,
+     "remplir": [
+      1180,
+      1220
+     ]
+    }
+   ]
+  },
+  {
+   "id": "int_ss_anne_cabine_coque",
+   "source": "INT_SS_ANNE_CABINE_COQUE_NE_r1.png",
+   "sortie": "assets/world/interiors/int_ss_anne_cabine_coque.png",
+   "cases": [
+    12,
+    9
+   ],
+   "retouches": [
+    {
+     "zone": [
+      466,
+      690,
+      513,
+      864
+     ],
+     "dx": -33,
+     "remplir": [
+      560,
+      590
+     ]
+    },
+    {
+     "zone": [
+      637,
+      690,
+      683,
+      864
+     ],
+     "dx": 35,
+     "remplir": [
+      560,
+      590
+     ]
+    }
+   ]
+  },
+  {
+   "id": "int_arene_carmin_coque",
+   "source": "INT_ARENE_CARMIN_COQUE_NE_r1.png",
+   "sortie": "assets/world/interiors/int_arene_carmin_coque.png",
+   "cases": [
+    17,
+    15
    ]
   }
  ],
@@ -1733,6 +1945,43 @@
    "contraste": 1.0,
    "couleur": 1.0,
    "raccord": 24
+  },
+  {
+   "id": "ground_digue_01",
+   "source": "WORLD_GROUND_DIGUE_01_NE_r1.png",
+   "sortie": "assets/world/ground/ground_digue_01.png",
+   "taille": 384,
+   "contraste": 0.9,
+   "couleur": 1.0,
+   "raccord": 24
+  },
+  {
+   "id": "ground_sable_grotte_01",
+   "source": "WORLD_GROUND_SABLE_GROTTE_01_NE_r1.png",
+   "sortie": "assets/world/ground/ground_sable_grotte_01.png",
+   "taille": 384,
+   "contraste": 0.7,
+   "couleur": 1.0,
+   "raccord": 24
+  },
+  {
+   "id": "ground_masse_sable_01",
+   "source": "WORLD_GROUND_MASSE_SABLE_01_NE_r1.png",
+   "sortie": "assets/world/ground/ground_masse_sable_01.png",
+   "taille": 384,
+   "contraste": 0.6,
+   "couleur": 0.9,
+   "raccord": 24
+  },
+  {
+   "id": "ground_pont_teck_01",
+   "source": "WORLD_GROUND_PLANCHES_QUAI_01_NE_r1.png",
+   "sortie": "assets/world/ground/ground_pont_teck_01.png",
+   "taille": 384,
+   "contraste": 1.0,
+   "couleur": 0.9,
+   "luminosite": 1.15,
+   "raccord": 24
   }
  ],
  "bordures": {
@@ -1778,15 +2027,35 @@
   {
    "source": "WORLD_TREE_FORET_PLANCHE_A_NE_r1.png",
    "dossier": "assets/world/props/",
-   "ids": ["tree_foret_01", "tree_foret_02", "tree_foret_03", "tree_foret_04"],
-   "hauteurs_px": [288, 288, 298, 288],
+   "ids": [
+    "tree_foret_01",
+    "tree_foret_02",
+    "tree_foret_03",
+    "tree_foret_04"
+   ],
+   "hauteurs_px": [
+    288,
+    288,
+    298,
+    288
+   ],
    "contact": 0.05
   },
   {
    "source": "WORLD_TREE_FORET_PLANCHE_B_NE_r1.png",
    "dossier": "assets/world/props/",
-   "ids": ["tree_foret_05", "tree_foret_06", "tree_foret_07", "tree_foret_08"],
-   "hauteurs_px": [317, 269, 278, 288],
+   "ids": [
+    "tree_foret_05",
+    "tree_foret_06",
+    "tree_foret_07",
+    "tree_foret_08"
+   ],
+   "hauteurs_px": [
+    317,
+    269,
+    278,
+    288
+   ],
    "contact": 0.05
   },
   {
@@ -1840,10 +2109,110 @@
     "source": "HEROS_COURSE_PROFIL_r1.png",
     "rebond": 3,
     "jambe_lointaine": [
-     [[[0, 500], [240, 500], [256, 550], [256, 730], [0, 730]]],
-     [[[700, 440], [975, 440], [975, 660], [766, 660], [766, 518], [717, 503], [700, 503]]],
-     [[[1255, 500], [1560, 500], [1560, 730], [1288, 730], [1288, 550]]],
-     [[[1640, 498], [1736, 503], [1802, 512], [1802, 660], [1640, 660]]]
+     [
+      [
+       [
+        0,
+        500
+       ],
+       [
+        240,
+        500
+       ],
+       [
+        256,
+        550
+       ],
+       [
+        256,
+        730
+       ],
+       [
+        0,
+        730
+       ]
+      ]
+     ],
+     [
+      [
+       [
+        700,
+        440
+       ],
+       [
+        975,
+        440
+       ],
+       [
+        975,
+        660
+       ],
+       [
+        766,
+        660
+       ],
+       [
+        766,
+        518
+       ],
+       [
+        717,
+        503
+       ],
+       [
+        700,
+        503
+       ]
+      ]
+     ],
+     [
+      [
+       [
+        1255,
+        500
+       ],
+       [
+        1560,
+        500
+       ],
+       [
+        1560,
+        730
+       ],
+       [
+        1288,
+        730
+       ],
+       [
+        1288,
+        550
+       ]
+      ]
+     ],
+     [
+      [
+       [
+        1640,
+        498
+       ],
+       [
+        1736,
+        503
+       ],
+       [
+        1802,
+        512
+       ],
+       [
+        1802,
+        660
+       ],
+       [
+        1640,
+        660
+       ]
+      ]
+     ]
     ]
    }
   },
@@ -1911,9 +2280,67 @@
     "source": "PNJ_ENFANT_COURSE_PROFIL_r1_v2.png",
     "rebond": 3,
     "jambe_lointaine": [
-     [[[25, 630], [130, 625], [165, 660], [160, 690], [105, 748], [25, 748]]],
+     [
+      [
+       [
+        25,
+        630
+       ],
+       [
+        130,
+        625
+       ],
+       [
+        165,
+        660
+       ],
+       [
+        160,
+        690
+       ],
+       [
+        105,
+        748
+       ],
+       [
+        25,
+        748
+       ]
+      ]
+     ],
      [],
-     [[[1000, 650], [1060, 625], [1085, 680], [1150, 690], [1150, 772], [1020, 772], [1000, 700]]],
+     [
+      [
+       [
+        1000,
+        650
+       ],
+       [
+        1060,
+        625
+       ],
+       [
+        1085,
+        680
+       ],
+       [
+        1150,
+        690
+       ],
+       [
+        1150,
+        772
+       ],
+       [
+        1020,
+        772
+       ],
+       [
+        1000,
+        700
+       ]
+      ]
+     ],
      []
     ]
    }
@@ -2086,6 +2513,54 @@
    "id": "president_fan_club",
    "source": "PNJ_PRESIDENT_FAN_CLUB_NE_r1.png",
    "sortie": "assets/sprites/characters/painted/president_fan_club_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "parieur",
+   "source": "PNJ_PARIEUR_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/parieur_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "ingenieur",
+   "source": "PNJ_INGENIEUR_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/ingenieur_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "capitaine",
+   "source": "PNJ_CAPITAINE_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/capitaine_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "major_bob",
+   "source": "PNJ_MAJOR_BOB_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/major_bob_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "gentleman",
+   "source": "PNJ_GENTLEMAN_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/gentleman_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "rockeur",
+   "source": "PNJ_ROCKEUR_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/rockeur_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "hotesse",
+   "source": "PNJ_HOTESSE_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/hotesse_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "passagere",
+   "source": "PNJ_PASSAGERE_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/passagere_sheet.png",
    "hauteur": 128
   },
   {
@@ -2270,6 +2745,12 @@
    "sortie": "assets/sprites/pokemon/painted/miaouss_sheet.png",
    "hauteur": 64,
    "note": "J15 T10 ; r1 refusee par Codex avec ancres, r2 = prompt seul ; hauteur 64 (decision de Kevin 2026-10-16 : 56 = Rattata trop petit en marche sur S21)"
+  },
+  {
+   "id": "soporifik",
+   "source": "POKE_SOPORIFIK_NE_r3.png",
+   "sortie": "assets/sprites/pokemon/painted/soporifik_sheet.png",
+   "hauteur": 76
   },
   {
    "id": "osselait",
@@ -2560,6 +3041,54 @@
    "marche": "president_fan_club"
   },
   {
+   "id": "parieur_idle",
+   "source": "PARIEUR_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/parieur_idle_sheet.png",
+   "marche": "parieur"
+  },
+  {
+   "id": "ingenieur_idle",
+   "source": "INGENIEUR_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/ingenieur_idle_sheet.png",
+   "marche": "ingenieur"
+  },
+  {
+   "id": "capitaine_idle",
+   "source": "CAPITAINE_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/capitaine_idle_sheet.png",
+   "marche": "capitaine"
+  },
+  {
+   "id": "major_bob_idle",
+   "source": "MAJOR_BOB_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/major_bob_idle_sheet.png",
+   "marche": "major_bob"
+  },
+  {
+   "id": "gentleman_idle",
+   "source": "GENTLEMAN_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/gentleman_idle_sheet.png",
+   "marche": "gentleman"
+  },
+  {
+   "id": "rockeur_idle",
+   "source": "ROCKEUR_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/rockeur_idle_sheet.png",
+   "marche": "rockeur"
+  },
+  {
+   "id": "hotesse_idle",
+   "source": "HOTESSE_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/hotesse_idle_sheet.png",
+   "marche": "hotesse"
+  },
+  {
+   "id": "passagere_idle",
+   "source": "PASSAGERE_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/passagere_idle_sheet.png",
+   "marche": "passagere"
+  },
+  {
    "id": "fuji_priere",
    "source": "PNJ_FUJI_PRIERE_NE_r1.png",
    "sortie": "assets/sprites/characters/painted/fuji_priere_sheet.png",
@@ -2693,6 +3222,18 @@
    "source": "POKE_RACAILLOU_FIXE_NE_r1.png",
    "sortie": "assets/sprites/pokemon/painted/racaillou_sheet.png",
    "hauteur": 56
+  },
+  {
+   "id": "taupiqueur",
+   "source": "POKE_TAUPIQUEUR_FIXE_NE_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/taupiqueur_sheet.png",
+   "hauteur": 44
+  },
+  {
+   "id": "ronflex",
+   "source": "POKE_RONFLEX_FIXE_NE_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/ronflex_sheet.png",
+   "hauteur": 168
   }
  ],
  "planches_objets": [
@@ -3264,6 +3805,267 @@
      912
     ]
    ]
+  },
+  {
+   "source": "WORLD_RELIEF_PAROI_SABLE_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/relief/",
+   "colonnes": 3,
+   "lignes": 2,
+   "ids": [
+    "relief_paroi_sable_01",
+    "relief_paroi_sable_02",
+    "relief_paroi_sable_03",
+    "relief_paroi_sable_04",
+    "relief_paroi_sable_05",
+    "relief_paroi_sable_06"
+   ],
+   "cases": [
+    3,
+    3,
+    2,
+    2,
+    1,
+    3
+   ],
+   "contact": 0.0
+  },
+  {
+   "source": "WORLD_RELIEF_BOUCHES_CAVE_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/relief/",
+   "colonnes": 2,
+   "lignes": 1,
+   "ids": [
+    "relief_bouche_cave_sud_01",
+    "relief_bouche_cave_nord_01"
+   ],
+   "cases": [
+    4,
+    4
+   ],
+   "contact": 0.0
+  },
+  {
+   "source": "WORLD_RELIEF_DIGUE_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/relief/",
+   "colonnes": 2,
+   "lignes": 1,
+   "ids": [
+    "relief_digue_bord_01",
+    "relief_digue_bord_02"
+   ],
+   "cases": [
+    2,
+    2
+   ],
+   "contact": 0.0
+  },
+  {
+   "source": "INT_J17_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/interiors/",
+   "colonnes": 2,
+   "lignes": 2,
+   "ids": [
+    "int_etagere_lampes_01",
+    "int_carte_murale_01",
+    "int_table_lecture_01",
+    "int_caisse_lampes_01"
+   ],
+   "cases": [
+    2,
+    2,
+    3,
+    1
+   ],
+   "contact": 0.2,
+   "nettoyer": true
+  },
+  {
+   "source": "INT_SS_ANNE_PLANCHE_A_NE_r1.png",
+   "dossier": "assets/world/interiors/",
+   "colonnes": 3,
+   "lignes": 2,
+   "ids": [
+    "int_banquette_ss_anne_01",
+    "int_comptoir_accueil_ss_anne_01",
+    "int_table_restaurant_01",
+    "int_comptoir_cuisine_01",
+    "int_lit_cabine_01",
+    "int_armoire_cabine_01"
+   ],
+   "cases": [
+    2,
+    4,
+    2,
+    4,
+    2,
+    1
+   ],
+   "contact": 0.2,
+   "nettoyer": true
+  },
+  {
+   "source": "INT_SS_ANNE_PLANCHE_B_NE_r1.png",
+   "dossier": "assets/world/interiors/",
+   "colonnes": 3,
+   "lignes": 2,
+   "ids": [
+    "int_table_hublot_01",
+    "int_bureau_capitaine_01",
+    "int_lavabo_cabine_01",
+    "int_table_cartes_01",
+    "int_caisses_cale_01",
+    "int_caisses_cale_02"
+   ],
+   "cases": [
+    2,
+    3,
+    1,
+    2,
+    2,
+    3
+   ],
+   "contact": 0.2,
+   "nettoyer": true
+  },
+  {
+   "source": "INT_ARENE_CARMIN_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/interiors/",
+   "colonnes": 3,
+   "lignes": 2,
+   "ids": [
+    "int_poubelle_arene_01",
+    "int_armoire_electrique_01",
+    "int_armoire_electrique_02",
+    "int_barriere_active_01",
+    "int_barriere_coupee_01"
+   ],
+   "cases": [
+    0.75,
+    1,
+    1,
+    3.5,
+    3.5
+   ],
+   "contact": 0.15,
+   "nettoyer": true
+  },
+  {
+   "source": "WORLD_RELIEF_PONT_EXTERIEUR_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/relief/",
+   "colonnes": 4,
+   "lignes": 2,
+   "ids": [
+    "relief_bastingage_01",
+    "relief_bastingage_02",
+    "relief_bastingage_sud_01",
+    "relief_bastingage_est_01",
+    "relief_bastingage_angle_ne_01",
+    "relief_bastingage_angle_se_01",
+    "prop_chaises_longues_01",
+    "prop_bouee_01"
+   ],
+   "cases": [
+    2,
+    2,
+    2,
+    0.27,
+    0.62,
+    0.63,
+    2,
+    1
+   ],
+   "contact": null,
+   "nettoyer": true,
+   "boites": [
+    [
+     40,
+     200,
+     484,
+     392
+    ],
+    [
+     500,
+     190,
+     940,
+     392
+    ],
+    [
+     956,
+     140,
+     1380,
+     436
+    ],
+    [
+     1424,
+     104,
+     1492,
+     440
+    ],
+    [
+     88,
+     540,
+     236,
+     790
+    ],
+    [
+     344,
+     516,
+     488,
+     888
+    ],
+    [
+     628,
+     516,
+     1092,
+     908
+    ],
+    [
+     1204,
+     580,
+     1472,
+     856
+    ]
+   ]
+  }
+ ],
+ "effets": [
+  {
+   "source": "FX_COUPE_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/fx/",
+   "ids": [
+    "fx_coupe_01",
+    "fx_coupe_02",
+    "fx_coupe_03",
+    "fx_coupe_04"
+   ],
+   "boites": [
+    [
+     0,
+     60,
+     384,
+     560
+    ],
+    [
+     384,
+     60,
+     768,
+     560
+    ],
+    [
+     768,
+     60,
+     1152,
+     560
+    ],
+    [
+     1152,
+     60,
+     1536,
+     560
+    ]
+   ],
+   "echelle": 0.6,
+   "nettoyer": true
   }
  ]
 }

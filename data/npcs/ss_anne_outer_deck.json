@@ -1,0 +1,55 @@
+{
+	"yann": {
+		"cell": [
+			10,
+			3
+		],
+		"facing": "down",
+		"sprite": "sailor",
+		"dialogue": "ss_anne_yann_after",
+		"trainer": {
+			"id": "ss_anne_sailor_yann",
+			"sight": 3,
+			"before": "ss_anne_yann_before",
+			"defeated": "ss_anne_yann_defeated"
+		}
+	},
+	"remi": {
+		"cell": [
+			19,
+			7
+		],
+		"facing": "left",
+		"sprite": "sailor",
+		"dialogue": "ss_anne_remi_after",
+		"trainer": {
+			"id": "ss_anne_sailor_remi",
+			"sight": 4,
+			"before": "ss_anne_remi_before",
+			"defeated": "ss_anne_remi_defeated"
+		}
+	},
+	"passagere": {
+		"cell": [
+			16,
+			4
+		],
+		"facing": "up",
+		"sprite": "passenger_f",
+		"dialogue": "ss_anne_deck_passenger"
+	},
+	"ss_anne_item_06": {
+		"cell": [
+			23,
+			5
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "ss_anne_item_06",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_ss_anne_item_06"
+		]
+	}
+}

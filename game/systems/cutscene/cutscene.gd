@@ -24,6 +24,18 @@ func pick(flags: StoryFlags) -> CutsceneVariant:
 	return null
 
 
+## Capacité de terrain (« cut ») par laquelle commence la variante jouée pour [param flags]
+## (jalon 16 : le compagnon qui coupe reste dehors) ; &"" si elle commence autrement.
+func leading_field_move(flags: StoryFlags) -> StringName:
+	var variant := pick(flags)
+	if variant == null:
+		return &""
+	for step: CutsceneStep in variant.steps:
+		if step.applies(flags):
+			return step.field_move if step.kind == CutsceneStep.Kind.FIELD_MOVE else &""
+	return &""
+
+
 ## Vrai si une variante s'applique à [param flags].
 func matches(flags: StoryFlags) -> bool:
 	return pick(flags) != null

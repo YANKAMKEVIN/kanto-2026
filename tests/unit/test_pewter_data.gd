@@ -279,7 +279,8 @@ func test_zones_of_route_2_north_and_pewter() -> void:
 	# Q-3 (Kevin, 2026-10-08) : la Route 2 nord est la 2e carte de la zone Route 2, dont les
 	# textes ne changent pas (lot validé : « Route 2 sur la Carte : rien ne change »).
 	var route_2 := zones.get_zone(&"route_2")
-	assert_eq(route_2.maps, [&"route_2", &"route_2_north"] as Array[StringName])
+	assert_eq(route_2.maps, [&"route_2", &"route_2_north", &"route_2_east",
+		&"route_2_east_gate"] as Array[StringName], "J17 T19 : le couloir est et son poste")
 	assert_eq(route_2.subtitle, "Jadielle — Forêt de Jade")
 	assert_eq(zones.zone_of(&"route_2_north"), &"route_2")
 	var pewter := zones.get_zone(&"pewter_city")

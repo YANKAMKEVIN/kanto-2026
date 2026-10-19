@@ -1,0 +1,53 @@
+# Route 2 sud — retouches du jalon 17 (dossier 20 §3.1, §3.5, H-3, H-4 ; préparées le 2026-10-14).
+# NE MODIFIE PAS tools/plans/route_2.txt : ce fichier ne contient que les RANGÉES MODIFIÉES de la
+# grille (même format « NN » + espace + 42 caractères) et les POSITIONS ajoutées ou retirées. À
+# l'intégration du J17 (17B), on les reporte dans route_2.txt (une seule source de géométrie), puis
+# on refait le plan en aplats et la retouche du fond peint. Contrôle : tools/art/plan_check_j17.py,
+# qui applique ces rangées sur route_2.txt en mémoire et vérifie les deux dégagements.
+#
+# 1. FUTUR A — clairière ouest. Le sentier peint « a » (0..3, 19) devient praticable (« . ») et
+#    s'ouvre sur une petite clairière taillée dans la forêt : colonnes 0..3, rangées 16..22 (4 × 7).
+#    Les colonnes 4..6 de ces rangées restent forêt (le fond est la lisière de la route) ; en
+#    (4, 19) l'arbre dense « A » devient l'ARBUSTE COUPABLE (cut_route_2_futur_a) : il reste « A »
+#    (bloqué) dans la grille ; avec le drapeau, le contrôle et le jeu le traitent comme libre. Un
+#    seul objet (Super Potion, visible) au fond de la clairière, en (1, 17), hors de la ligne de
+#    l'arbuste ; trouée dans la canopée peinte au-dessus (retouche du fond).
+#    La case (3, 16) RESTE forêt : la rangée 15 est la prairie du palier de la Route 2 (x 3..12) et
+#    la clairière s'y ouvrirait par le nord (plan_check_j17 l'a détecté) ; elle ne doit se
+#    rejoindre que par l'arbuste.
+#    HYPOTHÈSE : « colonnes 0..6 » du dossier = l'emprise de la retouche peinte (clairière 0..3 +
+#    arbuste 4 + éperon de route 5..6) ; la zone praticable ne fait que 4 colonnes.
+# 2. FUTUR B — sentier « b » (35..41, 43..44) devient praticable (chemin de terre « = »), jusqu'au
+#    bord est (41, 43..44) raccordé à route_2_east (0, 43..44). La barrière « B » (34, 43..44) RESTE
+#    dans la grille (bloquée) : le joueur arrivé de l'est l'examine depuis (35, 43..44) (T-8), elle
+#    s'ouvre (route_2_east_gate_open) et devient « = » pour toujours ; depuis l'ouest, (33, 43..44),
+#    elle garde T9 du dossier 11 tant qu'elle est fermée. Le panneau (33, 42) change de texte
+#    après l'ouverture (T-9).
+#
+# Format : section GRILLE_RETOUCHEE (rangées modifiées seulement), puis POSITIONS_RETOUCHEES
+# (lignes ajoutées, même grammaire que route_2.txt) et SUPPRIME (identifiants retirés).
+
+GRILLE_RETOUCHEE 42 60
+16 ...TTTT==TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+17 ....TTT==TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+18 ....TTT==TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+19 ....A====TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+20 ....TTT==TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+21 ....TTT==TTTTTTTTTT.............TTTTTTTTTT
+22 ....TTT==TTTTTTTTTT.............xxxxxTTTTT
+43 TTTTTTTTT==......TT===============B=======
+44 TTTTTTTTT==......TT===============B=======
+FIN
+
+POSITIONS_RETOUCHEES
+arbuste_futur_a     arbuste        4,19         bloque  flag=cut_route_2_futur_a  # remplace examen_arbre_dense ; avant la CS01 : T7 du dossier 11 ; avec Coupe : textes génériques du J16
+route_2_item_5      objet_visible  1,17         bloque  role=O5 item=super_potion  # clairière FUTUR A, bout du sentier
+warp_est            warp           41,43..44    libre   # PUSH → → route_2_east, from_route_2 (le sentier « b » est praticable)
+from_route_2_east   spawn          41,43..44    libre   # arrivée du couloir est, tournée ←
+examen_barriere_est examen         34,43..44    libre   # T-8 depuis (35, 43..44) tourné ← ; ouvre la barrière (route_2_east_gate_open)
+barriere_porte      repere         34,43..44    bloque  flag=route_2_east_gate_open  # « B » : libre quand le drapeau est posé (définitif)
+FIN
+
+SUPPRIME
+examen_arbre_dense   # (4, 19) devient arbuste_futur_a
+FIN

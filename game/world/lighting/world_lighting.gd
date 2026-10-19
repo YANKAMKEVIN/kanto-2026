@@ -31,6 +31,11 @@ const SHADOW_TEXTURE_SCALE: float = 2.0
 const Z_GROUND: int = -3
 const Z_SHADOWS: int = -2
 const Z_GROUND_DECALS: int = -1
+## Voile d'obscurité des grottes obscures ([DarknessVeil], J17 T9 / J18 §2.2) : z **absolu**
+## au-dessus de tout le monde (`Entities` 0, `LightGlow` 5, `Overhead` 10) ; seuls passent
+## au-dessus les signes d'interface du monde ([constant Z_ABOVE_VEIL] : bulles « ! », « ♪ »).
+const Z_VEIL: int = 20
+const Z_ABOVE_VEIL: int = 21
 ## Noms des « global uniform » (déclarés dans project.godot, [shader_globals]).
 const SUN_DIR: StringName = &"world_sun_dir"
 const RIM_COLOR: StringName = &"world_rim_color"

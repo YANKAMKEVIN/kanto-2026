@@ -6,6 +6,8 @@ extends GutTest
 ## venir », sept portes), Arène et embarquement inatteignables, **contrat du J16** (navire absent
 ## si `ss_anne_departed`, arbuste retiré par `cut_vermilion_gym_bush` : ses cases se libèrent et
 ## la porte de l'Arène devient atteignable), habitants aux cases de la grille, budget de nœuds.
+## Jalon 16 T15 : Arène et embarquement branchés (`vermilion_gym`, `ss_anne_main_deck`), examen
+## de l'arbre = `cut_tree`, garde-fou de la passerelle et réplique du marin après le départ.
 
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 const GridPaths := preload("res://tests/helpers/grid_paths.gd")
@@ -142,17 +144,16 @@ func test_north_edge_leads_to_route_6() -> void:
 		assert_eq(_map.get_spawn_cell(StringName("from_route_6_" + suffixes[i])), cell)
 
 
-func test_east_edge_is_route_11_coming_soon() -> void:
+func test_east_edge_leads_to_route_11_row_by_row() -> void:
 	var suffixes := ["n", "c", "s"]
 	for i: int in 3:
 		var cell := Vector2i(63, 11 + i)
 		var warp := _map.get_warps().find_on_push(cell, Vector2i.RIGHT)
 		assert_not_null(warp, "raccord est %s" % cell)
 		if warp != null:
-			assert_true(warp.is_coming_soon(), "Route 11 — À venir")
-			assert_eq(warp.coming_soon, "Route 11")
-			assert_eq([warp.target_spawn, warp.facing],
-				[StringName("from_route_11_" + suffixes[i]), Vector2i.LEFT])
+			assert_false(warp.is_coming_soon(), "plus de « Route 11 — À venir »")
+			assert_eq([warp.target_map, warp.target_spawn, warp.facing],
+				[&"route_11", StringName("from_vermilion_" + suffixes[i]), Vector2i.RIGHT])
 		assert_eq(_map.get_spawn_cell(StringName("from_route_11_" + suffixes[i])), cell)
 	assert_true(_reach(_terrain(_grid)).has(Vector2i(63, 12)), "sortie est atteignable")
 
@@ -176,19 +177,21 @@ func test_doors_lead_into_the_interiors_and_back() -> void:
 		room.free()
 
 
-func test_gym_and_boarding_are_coming_soon_and_unreachable() -> void:
+func test_gym_and_boarding_lead_inside_and_are_unreachable() -> void:
 	var dist := _reach(_terrain(_grid))
 	for door: Vector2i in [Vector2i(49, 9), Vector2i(50, 9)]:
 		var warp := _map.get_warps().find_on_step(door, Vector2i.UP)
 		assert_not_null(warp)
 		if warp != null:
-			assert_eq(warp.coming_soon, "Arène de Carmin-sur-Mer")
+			assert_eq([warp.target_map, warp.target_spawn, warp.coming_soon],
+				[&"vermilion_gym", &"entrance", ""], "Arène branchée (J16 T15)")
 		assert_false(dist.has(door), "porte de l'Arène derrière l'arbre")
 	for cell: Vector2i in _plan.cells_at("embarquement"):
 		var warp := _map.get_warps().find_on_step(cell, Vector2i.DOWN)
 		assert_not_null(warp)
 		if warp != null:
-			assert_eq(warp.coming_soon, "S.S. Anne")
+			assert_eq(warp.target_map, &"ss_anne_main_deck", "embarquement branché (J16 T15)")
+			assert_false(warp.is_coming_soon())
 		assert_false(dist.has(cell), "embarquement derrière le marin")
 		assert_false(dist.has(cell + Vector2i.UP), "passerelle gardée")
 	assert_eq(_map.get_warps().size(), 3 + 3 + 11 + 2, "nord, est, onze portes, embarquement")
@@ -208,7 +211,7 @@ func test_bush_blocks_the_gym_until_cut() -> void:
 		var examine := map.get_interactions().find(cell, Vector2i.UP)
 		assert_not_null(examine, "EXAMINER l'arbre (T-29)")
 		if examine != null:
-			assert_eq(examine.dialogue_id, &"vermilion_gym_tree")
+			assert_eq(examine.dialogue_id, &"cut_tree", "Coupe (J16 T15)")
 			assert_eq(examine.unless_flags, [BUSH_FLAG] as Array[StringName])
 	var cut := _map_with([BUSH_FLAG])
 	assert_false((cut.get_node(^"Entities/GymTree") as FlagGate).visible, "arbre coupé")
@@ -238,6 +241,29 @@ func test_ship_is_a_separate_object_gone_when_departed() -> void:
 		assert_true(departed.get_grid().is_water(cell), "la mer reste en %s" % cell)
 
 
+## Jalon 16 T15 : garde-fou sans image sur la passerelle et l'accès (31..32, 27..28), seulement
+## après le départ ; jamais d'autre case occupée.
+func test_gangway_guard_after_departure() -> void:
+	var cells: Array[Vector2i] = [Vector2i(31, 27), Vector2i(32, 27), Vector2i(31, 28),
+		Vector2i(32, 28)]
+	var docked := _map_with([])
+	var guard := docked.get_node(^"Entities/GangwayGuard") as FlagGate
+	assert_not_null(guard, "garde-fou")
+	assert_eq(guard.get_child_count(), 0, "sans image")
+	assert_eq(guard.if_flags, [SHIP_FLAG] as Array[StringName])
+	assert_eq(guard.blocking_cells, cells)
+	for cell: Vector2i in cells:
+		assert_false(docked.get_grid().is_occupied(cell), "navire à quai : %s libre" % cell)
+	var departed := _map_with([SHIP_FLAG])
+	for cell: Vector2i in cells:
+		assert_true(departed.get_grid().is_occupied(cell), "après le départ : %s gardée" % cell)
+	var dist := _reach(_terrain(departed.get_grid()))
+	for cell: Vector2i in cells:
+		assert_false(dist.has(cell), "%s inatteignable après le départ" % cell)
+	assert_true(dist.has(departed.get_spawn_cell(&"dock")), "le quai reste praticable")
+	assert_eq(departed.get_spawn_cell(&"dock"), Vector2i(31, 24))
+
+
 func test_sailor_identical_with_or_without_the_ticket() -> void:
 	for flags: Array[StringName] in [[] as Array[StringName], [&"got_ss_ticket"] as
 			Array[StringName]]:
@@ -247,10 +273,19 @@ func test_sailor_identical_with_or_without_the_ticket() -> void:
 		if sailor != null:
 			assert_eq(sailor.get_cell(), _plan.cell_of("marin"))
 			assert_eq(sailor.get_spec().dialogue, &"vermilion_sailor")
+	# Jalon 16 T15 : après le départ, le marin est en (31, 26) avec DEP-03.
+	var departed := _map_with([&"got_ss_ticket", SHIP_FLAG])
+	var back := departed.get_npc(&"sailor")
+	assert_not_null(back, "marin après le départ")
+	if back != null:
+		assert_eq(back.get_cell(), Vector2i(31, 26))
 	var library := DialogueLibrary.new()
 	library.load_dir()
 	var sailor_line := library.get_dialogue(&"vermilion_sailor")
-	assert_eq(sailor_line.variants.size(), 1, "T-26 sans condition au J15")
+	assert_eq(sailor_line.variants.size(), 4, "DEP-03, TXT-01 (2 fois), puis TXT-02 sans condition")
+	assert_eq(sailor_line.variants[0].if_flags, [SHIP_FLAG] as Array[StringName])
+	assert_eq(sailor_line.variants[0].pages[0].text, "Le S.S. Anne a pris le large.")
+	assert_true(sailor_line.variants[3].if_flags.is_empty())
 
 
 # --- Habitants et décor --------------------------------------------------------------------
