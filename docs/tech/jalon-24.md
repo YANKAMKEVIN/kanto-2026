@@ -406,6 +406,13 @@ RB et par les contrôles des grilles.
   supprimer les reprises correspondantes. Le J21 ne peut pas le faire lui-même : ses tests refusent
   une évolution vers une espèce absente.
 - **J22** (session du J22, 2026-10-16, `docs/dossier-25-j22` à `b75e75a9`) : Magicarpe passe dans `kanto_j22.json`, à l'identique de celui du J24 ; **retirer `magikarp` de `kanto_j24.json`** à la fusion du J22. Ne plus changer ses valeurs sans prévenir le J22. Raccord sud de Parmanie réservé (rangée 53, colonnes 24..32 et 34..35, `warp_sud` `coming_soon=route_19`).
+- **J22, données communes** (`origin/jalon-22` à `ad669645`) :
+  - `ultra_ball`, `hyper_potion`, Krabby, Poissoroy et Magicarpe sont portés par le J22 ; à sa fusion,
+    retirer les copies du J24 ;
+  - les descriptions de la Hyper Ball et de la Hyper Potion sont alignées, dès le 2026-10-19, sur les
+    textes validés du dossier 25 §16.7 ;
+  - à rétablir ensuite dans le J24 : la Guillotine de Krabby (N25), les évolutions Krabby → Krabboss et
+    Magicarpe → Léviator (absentes sur `jalon-22` faute des espèces cibles).
 - **J25** (dossier 28 §0, X-25 à X-30, validés par Kevin le 2026-10-19), après la fusion du J24 :
   - le J25 remplace l'entrée effondrée du Manoir (T-43) par une porte ;
   - il ajoute les échanges sur les 3 PNJ du Labo ; ses répliques remplacent T-52 à T-54 ;

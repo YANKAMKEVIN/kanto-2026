@@ -14,7 +14,6 @@ const PENDING_DRAFTS: Array[String] = [
 	"pokemon/moves/j24.json/vise_grip", "pokemon/moves/j24.json/guillotine",
 	"pokemon/moves/j24.json/crabhammer", "pokemon/moves/j24.json/spike_cannon",
 	"pokemon/moves/j24.json/blizzard", "pokemon/moves/j24.json/splash",
-	"items/items_j24.json/ultra_ball", "items/items_j24.json/hyper_potion",
 	"items/items_j24.json/full_heal",
 	"pokedex/kanto.json/species/psyduck", "pokedex/kanto.json/species/golduck",
 	"pokedex/kanto.json/species/poliwhirl", "pokedex/kanto.json/species/poliwrath",
