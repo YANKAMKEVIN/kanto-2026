@@ -2,6 +2,9 @@
 
 > **PLAN — à valider par Kevin** (questions au §7.2). Aucun code n'est écrit par ce document.
 
+> **Clôture (T26, 2026-10-19)** : 18.0 → 18C faits ; QA 18A–18C sur S24 sans bloquant ; fusion
+> dans `main` accordée par Kevin. Bilan, critères et passation au J19 : §9.
+
 > Objectif jouable sur le téléphone : **une traversée**. Depuis l'est d'Azuria (arbre coupé, J16),
 > la **Route 9** rocheuse (7 Dresseurs, 2 inévitables), la **Route 10 nord** et son Centre, la
 > **Grotte Sombre** sur deux niveaux, traversée **à la lumière d'un halo** (petit sans Flash, large
@@ -1239,7 +1242,7 @@ valeurs ; `test_simulate_mt_moon` inchangé.
   grotte Flash allumée ; retours en arrière ; rien du J19 déclenché. **CA** : rapport ; validation ;
   fusion dans `main` (`project.godot` et filtre d'export vérifiés) ; prévenir la session du J19.
 
-#### T26 — A : clôture et passation au J19
+#### T26 — A : clôture et passation au J19 — **fait** (2026-10-19, §9)
 - Critères du §5.5 un par un ; passation : gardienne (`tower_stairs_open`, `channeler`), escalier
   `coming_soon`, emplacement du panneau du Scope (case de pelouse du parvis au choix du J19), maison
   d'Osselait absente, Route 8 « À venir », Machopeur / Électrode absents (§0.2 n° 15), dos
@@ -1393,6 +1396,158 @@ le J17 posant la CS05 (I-4) ; la roadmap de cette branche nomme mal le J17 (§0.
 | Objectifs | minuscule initiale ; « au Centre » = arrivée sur la Route 10 |
 | Halos de la grotte | test 1 à 16 par étage |
 | Équilibrage | cible du J12 ; équipes de sortie du J16 et du J17 |
+
+---
+
+## 9. Clôture et passation (T26, 2026-10-19)
+
+**État** : 18.0 (art, kit série 21, voile codé et mesuré par le J17, Q-3), 18A, 18B et 18C faits sur
+`jalon-18-integ` ; T15 (alignement sur `main` à aebbd857 : J16, PR n° 1, J17), T21 (interface de la
+grotte, rien à corriger), T22 (équilibrage **accepté tel quel** par Kevin) ; **QA 18A–18C sur S24**
+(T19, T23, T25 réunies, départs de débogage + reprise de la vraie partie) **sans bloquant** (rapport
+`build/qa/j18/rapport.md` de la copie principale) ; jeune arbre d'Azuria et réplique du résident H7
+validés par Kevin. **Fusion dans `main` accordée par Kevin** ; elle est faite par la session
+principale (ce T26 ne fusionne pas).
+
+### 9.1 Retiré ou rangé au T26
+
+- **Aucune carte de QA à retirer** : le prototype du voile (18.0) a utilisé la clé de débogage `veil`
+  du J17 sur `mt_moon_1f` (§8 « Prototype »), jamais une carte `qa_*` ; la répétition de la T15
+  (`j18-essai-sur-j17`) est une branche jetable, jamais fusionnée ; aucun fichier `qa_*` dans
+  `game/`, `data/`, `assets/` ; les `*_contact.png` de la série 21 sont chargés par convention de nom
+  (comme les 312 de `main`), pas des restes.
+- **Départs de débogage gardés** (neuf, tous utiles à la QA des jalons suivants, testés par
+  `test_j18_debug_starts`) : `cerulean_east_cut`, `route_9`, `route_10_center`, `dark_cave_1f`,
+  `dark_cave_1f_flash`, `dark_cave_b1f`, `route_10_south`, `lavender`, `pokemon_tower_1f`. Ceux du
+  §4.16 qui n'ont pas été créés (`veil_proto_mt_moon`, `dark_cave_1f_no_compat`, `dark_cave_b1f_lit`,
+  `dark_cave_weak`, `dark_cave_rope_qa`) sont couverts par les tests (Q-1 « tout J17 » : plus de
+  drapeau `dark_cave_lit` ; aide `tests/helpers/dark_cave.gd` du J17 pour « sans compatible »).
+- README des départs : les trois lignes `dark_cave_*` remises dans le tableau (elles étaient après
+  la fin) ; l'absence de départ à l'échelle B du B1F est signalée.
+- `project.godot` : scène principale `res://game/boot.tscn` ; filtre d'export inchangé
+  (`tests/*`, `tools/*`, `docs/*`, `addons/gut/*`, `build/*`, `proto/*`, `battle_proto/*` exclus).
+
+### 9.2 Critères du §5.5
+
+Légende : **tenu** (preuve), **tests** (tenu par les tests Mac, pas vu sur téléphone),
+**non tenu**, **reporté**.
+
+**18.0**
+- Planches, décors CB.3, kit série 21 validés par Kevin : **tenu** (2026-10-15 « art ok » ;
+  2026-10-16 « kit ok, continue »).
+- Voile mesuré sur Mac : **tenu** sur les vraies cartes (T15 : héros 4,44–5,26, sol hors halo
+  0,118–0,154 sans Flash, 0,148–0,173 avec ; seuils 3,0 et 0,10).
+- Sur téléphone (écart ≤ 2 fps, moyenne ≥ 58, creux ≥ 50) : **tenu** — J17 T25 (S21, 60 fps avec et
+  sans voile) ; QA du J18 (S24) : 60 fps sans Flash et avec, B1F 59–60 ; creux de 7–9 **au seul
+  chargement de carte** (comme au J17), pas dus au voile.
+- Valeurs de `darkness.json` arrêtées : **tenu** (réglées au J17 T25, validées avec le 17C ; aucun
+  réglage propre au J18). Mont Sélénite inchangé : **tests** (`test_boot_mt_moon_has_no_veil`,
+  `test_mt_moon_has_no_veil_even_with_flash`).
+
+**18A**
+- Raccord Azuria ↔ Route 9 sur trois rangées et arbre définitif : **tenu** (QA : COUPER, aller-retour,
+  arbre resté coupé ; `test_cerulean_east_tree`, `test_route_9` ; jeune arbre validé par Kevin).
+- Lou inévitable : **tenu** (QA). Benoît inévitable, autres évitables : **tests**
+  (`test_route_9`, `test_route_9_trainers`) ; Benoît non joué sur téléphone.
+- Rencontres §3.2, 3 objets, Pokémon d'ambiance, rivière et centrale sans texte : **tests**
+  (`test_j18_data`, `test_route_9_life`, `test_encounter_library`).
+- Centre (soin) : **tenu** (QA) ; toast « Point de repos » et défaite → Centre : **tests**
+  (`test_route_10_north_life` : `test_center_nurse_heals_and_registers_route_10`,
+  `test_a_defeat_wakes_at_this_center`), non vus sur téléphone.
+- Objectifs : **tests** (`test_objective_library`, `test_route_10_north_life`).
+- Traversée ≈ 6 min : **non mesurée** (QA par départs) ; budgets de nœuds : **tests** (`test_node_budget`
+  de chaque carte) ; fps 60 sur la Route 9 (QA).
+
+**18B**
+- Relief lisible hors du halo, jamais de noir total : **tenu** (QA S24 + mesures Mac).
+- Halo ≈ 2,5 cases sans Flash, ≈ 7 avec : **tenu** (QA « ≈ 2-3 cases », Flash ouvert ; réglages du J17).
+- Gravats seuls porteurs de rencontres, vus avant d'y marcher : **tests** (`test_rubble_tables_only`,
+  `test_rubble_tiles_exactly_on_g_cells`).
+- Dresseurs voilés, bulle « ! » au-dessus, sortie de l'ombre : **tests**
+  (`test_roger_spots_the_player_under_the_veil`, `test_bubbles_above_the_veil`) ; Roger vu en QA.
+- Roger et Marcel inévitables : **tenu** pour la rencontre (QA : Roger, Marcel et T-54) et **tests**
+  (`test_roger_and_marcel_see_every_way_through`) ; fin du combat de Marcel et son écart : **tests**
+  seulement (`test_marcel_leaves_the_narrow_passage_free`).
+- Flash automatique à chaque arrivée, étages compris (Q-1) : **tenu** (QA, « Pikachu utilise
+  Flash ! ») ; T-3 sans Flash : **tenu** une fois (QA), « une fois par arrivée » : **tests**.
+- Éteinte à la sortie (pied, Corde, défaite) : Corde **tenu** (QA → Route 10 devant l'entrée) ;
+  pied et défaite : **tests** (`test_darkness_boot`, `test_escape_rope…`).
+- Corde depuis partout → entrée nord : **tests** (`test_escape_rope_from_the_south_half…`).
+- Reprise dans la grotte : **tests** (`test_flash_director` du J17 : rallumée à la reprise).
+- « Réduire les animations » : **tests** (`test_reduce_motion_opens_at_once_and_stops_the_breath`).
+- Compagnon (passage étroit, échelles) : règle générique du J11 ; **non vérifié** sur la Grotte
+  Sombre (ni test dédié, ni téléphone).
+- Collisions identiques avec et sans Flash : **tests** (`test_grid_identical_with_and_without_the_veil`).
+- Budgets : **tests** (nœuds, halos 1 à 16, aucune `Light2D`) ; fps tenus (QA).
+
+**18C**
+- Légende « LAVANVILLE / La ville où reposent les souvenirs » une seule fois : **tests**
+  (`test_the_legend_shows_on_the_first_arrival_from_route_10_and_never_again`, pas à la reprise ni
+  par départ) ; **non vue sur téléphone** (les départs n'en montrent pas).
+- Habitants, Maison des Pokémon (Fuji absent), Boutique (8 objets), Centre : **tests**
+  (`test_lavender_life`) ; intérieurs **non ouverts sur téléphone** ; place et panneaux vus en QA.
+- Tour (tombes, visiteurs, gardien, Exorciste deux fois, escalier fermé, objectif) : **tenu** (QA) et
+  **tests** (`test_pokemon_tower_life`, `test_pokemon_tower_1f`).
+- Routes 8 et 12 « À venir » : **tests** (`test_lavender_town` ; `coming_soon` sur les six warps).
+- QA de bout en bout avec et sans Flash : **partiel** — départs enchaînés (comme au J13), pas une
+  vraie partie Azuria → Tour ; grotte jouée avec et sans Flash.
+- Aucun drapeau ni contenu du J19 : **tests** (`test_nothing_of_j19_is_there`,
+  `test_the_scope_sign_spot_is_empty_for_j19` ; `tower_stairs_open` lu seulement).
+- Sauvegarde à la version de `main` : **tenu** (v7, aucun changement de `SaveSystem` ; reprise de la
+  vraie partie v4 → v7 en QA, restaurée à l'identique).
+- `tools/test.sh` vert : **tenu** (§9.4).
+
+### 9.3 Passation au J19
+
+- **Gardienne de l'escalier** : PNJ `exorciste_gardienne` (dialogue `pokemon_tower_exorcist`), apparence `channeler` (planche
+  mutualisée « Exorciste »), case (17, 3), présence `unless: [tower_stairs_open]`
+  (`data/npcs/pokemon_tower_1f.json`). Le J19 **pose** `tower_stairs_open` (K-3) ; elle s'efface
+  alors (`test_the_guardian_steps_aside_when_the_stairs_flag_is_raised_by_j19`). T-34 puis T-35,
+  `tower_medium_talked`, objectif « revenir plus tard à la Tour Pokémon. » : à remplacer ou clore
+  par le J19.
+- **Escalier** : warp (17, 2) de `pokemon_tower_1f` avec `coming_soon = "Tour Pokémon"` ; le J19
+  le remplace par le warp vers `pokemon_tower_2f` (et met à jour `test_pokemon_tower_1f`,
+  `test_map_links`).
+- **Panneau du Scope Sylphe** : rien de posé ; la grille `tools/plans/lavanville.txt` réserve
+  `panneau_scope_j19` en **(42, 11)** (pelouse du parvis de la Tour), case libre et testée vide
+  (`test_the_scope_sign_spot_is_empty_for_j19`) ; le J19 peut la garder ou choisir une autre case du
+  parvis.
+- **Maison d'Osselait** : absente (dossier 21 §6.2) ; Lavanville a deux maisons
+  (`lavender_house_1/2`) et la Maison des Pokémon (`pokemon_house`, Fuji absent) : le J19 place la
+  sienne.
+- **Routes 8 et 12** : bords ouest et sud de Lavanville en `coming_soon` (« Route 8 », « Route 12 »),
+  trois warps chacun.
+- **Machopeur et Électrode absents** (§0.2 n° 15, Q-2) : Machoc et Voltorbe sont sauvages au J18
+  sans évolution (règle : une évolution vers une espèce absente n'existe pas) ; à créer (données,
+  Pokédex, artwork) **au plus tard au J20**.
+- **Dos de combat provisoires** : les espèces du J18 (Machoc, Racaillou, Onix, Voltorbe, Sabelette,
+  Abo, Nosferapti, Piafabec, Rattata) ont un dos en pixel art provisoire (`placeholder/`) ; les dos
+  3D de `battle_proto/` restent non branchés (passe Colab reportée, J17 §9.4 n° 3).
+- **Héritage du J17 toujours ouvert** : `pending_effects` de Bélier et Hurlement **codés au J19**.
+- **Flash et voile** : contrat du J17 inchangé (une grotte obscure = `"dark": true` dans
+  `caves.json`) ; `dark_cave` est la première grotte obscure livrée.
+
+### 9.4 Résultats
+
+- `godot --headless --path . --import` : aucune erreur.
+- `tools/test.sh` : **5 510 / 5 510** verts (484 scripts), après le T26.
+- `origin/main` inchangé depuis aebbd857 (déjà contenu dans `jalon-18-integ`).
+
+### 9.5 Points ouverts pour Kevin
+
+1. **Non testés sur téléphone** (couverts par les tests Mac) : Benoît, défaite → Centre, toast du
+   point de repos, légende « LAVANVILLE » à l'arrivée réelle, intérieurs de Lavanville (Centre,
+   Boutique, maisons, Maison des Pokémon), fin du combat de Marcel et son écart, compagnon dans le
+   passage étroit, traversée chronométrée. À jouer dans la prochaine vraie partie, ou à une session
+   du J19.
+2. **Départ `dark_cave_b1f`** : arrive seulement à l'échelle A ; Marcel s'atteint à pied (la QA a
+   fait une copie locale sur `arrivee_b`). Ajouter un départ `dark_cave_b1f_b` si besoin.
+3. **Reportés (rendu, phase DA)** : bandeau « {pokemon} utilise Flash ! » (`WorldCaption`, J17) peu
+   contrasté sur le sol éclairci ; voile sans Flash qui paraît léger ; sol de la grotte plus gris que
+   le brun de la vue peinte ; silhouette de la Tour presque cachée sur la Route 10 ; forêt de
+   Lavanville très verte (profil `lavender`) ; pas de brume ; horizons des fonds CB.3 à recaler.
+4. **Héritage du J17 toujours ouvert** : textures au-dessus du repère de 64 Mo (64–96 Mo mesurés en
+   QA du J18), dos de combat pixelisés.
 
 ---
 
