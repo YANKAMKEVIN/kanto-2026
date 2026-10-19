@@ -424,6 +424,22 @@
 		"hypno": {
 			"height": 1.6, "weight": 75.6,
 			"description": "Il balance un pendule sans le quitter des yeux. Ceux qui en suivent le mouvement s'endorment sans s'en rendre compte."
+		},
+		"chansey": {
+			"height": 1.1, "weight": 34.6,
+			"description": "Doux et attentionné, il porte un œuf dans sa poche. On dit qu'il porte bonheur à ceux qui le croisent, mais il fuit dès qu'on l'approche."
+		},
+		"scyther": {
+			"height": 1.5, "weight": 56.0,
+			"description": "Ses bras tranchants fauchent les hautes herbes d'un seul geste. Il bondit si vite qu'on ne voit qu'un éclair vert."
+		},
+		"pinsir": {
+			"height": 1.5, "weight": 55.0,
+			"description": "Ses deux grandes cornes serrent leur proie sans la lâcher. Par temps froid, il se cache au creux des arbres."
+		},
+		"tauros": {
+			"height": 1.4, "weight": 88.4,
+			"description": "Impétueux, il fonce tête baissée sur tout ce qui bouge. Il se fouette les flancs de ses trois queues pour se donner du courage."
 		}
 	}
 }
