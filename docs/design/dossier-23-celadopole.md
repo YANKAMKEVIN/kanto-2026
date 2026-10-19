@@ -244,6 +244,11 @@ Safrania. **Il ne parle pas de soif.** Sa réplique (§20.2) dit que la ville es
 moment ». Le jalon de Safrania décidera de l'ouverture (boissons RB ou Thé RFVF). Aucun drapeau
 n'est posé.
 
+> **Modifié le 2026-10-19 (décision de Kevin, après le verrouillage)** : l'entrée dans Safrania se
+> fait au J20, comme dans Rouge/Bleu. Une boisson donnée au garde d'un poste ouvre les quatre
+> postes (drapeau `saffron_gates_open`). Remplace H-5 (C). Confirmé par Kevin le 2026-10-19 (Q-4 : A,
+> textes 215–219 validés). Détail : `docs/tech/jalon-20.md` §2.16, Q-4, annexe A.14.
+
 ## 7. Céladopole [V, H-3, H-4]
 
 ### 7.1 Structure (logique, pas grille) [D sauf la taille]

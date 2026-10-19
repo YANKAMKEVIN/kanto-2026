@@ -289,8 +289,9 @@ comme au J15 ; leurs `POSITIONS` sont des défauts « ajustables au plan ».
   comme une porte (fondu).
 - **Objets cachés** (règle du J12 §1.3) : point d'examen **sur la case-indice** (bloquée) ; drapeau
   `got_<identifiant>`.
-- **Accès sans issue** : la porte de Safrania des deux postes n'a **aucun warp** (grille) ; la
-  sortie ouest de Céladopole n'a aucun warp (examen T-21).
+- **Accès sans issue** : la sortie ouest de Céladopole n'a aucun warp (examen T-21). La porte de
+  Safrania des deux postes **s'ouvre par une boisson** (décision de Kevin du 2026-10-19, §2.16) ;
+  son warp vise `saffron_city`, carte du J26.
 
 ### 1.4 Kit d'assets (T2) : série « prochain numéro libre »
 
@@ -1014,6 +1015,53 @@ Roucoups N24, Papilusion N22, un Pokémon apte à Couper, CS01, Badges Roche, Ca
 - fps : moyenne ≥ 58, creux ≥ 50 (ville, repaire pendant une glisse, Casino avec néons).
 - Dalles et ascenseur : aucune allocation par pas ; `SpinTileDirector` en veille hors repaire.
 
+### 2.16 Postes de Safrania : une boisson ouvre la ville (T25 ; décision de Kevin, 2026-10-19)
+
+Décision relayée par la session de coordination (`docs/design/strategie-acceleration.md`, levier 1 ;
+`passes/j26-v2-chatgpt.md`) : **l'entrée dans Safrania se fait au J20**, comme dans Rouge/Bleu. Elle
+**remplace H-5 (C)** du dossier 23 §6 (« le garde ne parle pas de soif, aucun drapeau »). Le J26
+consomme la règle sans la coder.
+
+**Règle (RB)** : le garde a soif. Le joueur lui donne **une** boisson (Eau Fraîche, Soda Cool ou
+Limonade, achetées au toit du grand magasin) → drapeau **`saffron_gates_open`** → **les quatre
+postes** s'ouvrent (Route 7 et Route 8 du J20, Route 5 et Route 6 du J15). Aucun objet nouveau, aucun
+Thé (RFVF non retenu).
+
+**Données seulement**, avec les mécanismes déjà écrits (§2.9.6 : `if_items`, `confirm_cutscene`,
+`take`) :
+- dialogue `saffron_gate_guard` (les deux postes du J20) : `if [saffron_gates_open]` → merci (215) ;
+  `if_items` une boisson → soif (216) + choix « Lui donner une boisson ? » (217) →
+  `confirm_cutscene: saffron_gate_drink` ; refus (218) ; sinon → soif (216).
+- boisson donnée [D] : la **première présente** dans l'ordre Eau Fraîche → Soda Cool → Limonade (la
+  moins chère d'abord, et l'Eau reste la seule utile à la fillette du toit si le joueur en a deux).
+  Trois variantes `if_items` dans l'ordre suffisent ; pas de menu de choix.
+- scène `saffron_gate_drink` : `take: <boisson>` → `set [saffron_gates_open]` dans **un seul bloc
+  synchrone** (aucune sauvegarde entre les deux) → 219 → le garde fait **un pas de côté** (vers la
+  case libre (4, 3) de `poste_safrania.txt`) et garde cette place (`if [saffron_gates_open]` dans le
+  placement du PNJ).
+- porte S (5, 2)–(6, 2) : devient un **warp** `STEP_ON ↑` vers `saffron_city` / `from_gate_r7` ou
+  `from_gate_r8`, actif seulement `if [saffron_gates_open]`. La grille change d'un seul caractère de
+  légende (S « porte fermée, bloquée » → « porte, praticable si ouverte ») : **aucune géométrie
+  modifiée**, `plan_check_routes_j20.py` suit.
+- J15 (Route 5, Route 6, données dans `main`, J15 terminé) : `unless [saffron_gates_open]` ajouté
+  aux règles qui repoussent le joueur (`route_5_gate_*`, `route_6_gate_rule_*`) et à la réplique
+  « fermée » ; mêmes warps vers `saffron_city`. Données seulement.
+
+**Tant que la carte `saffron_city` n'existe pas (avant le J26)** [Q-4 : A, décidé par Kevin] : la mécanique entière est
+codée et testée, mais le garde **ne demande rien** : sa réplique reste « fermée » (texte 12) et la
+porte reste bloquée. La bascule est **une donnée** : `saffron_city` reçoit ses `maps` dans
+`data/world/zones.json` (aujourd'hui `[]`), et `ZoneLibrary` dit si la zone est jouable. Le J26
+remplit la zone, et les postes s'ouvrent sans une ligne de code. Ainsi aucune partie du J20 ne
+donne une boisson pour une porte qui ne mène nulle part, et aucune réplique ne promet Safrania
+(règle de l'annexe A).
+
+**Sauvegarde** : v7 inchangée (`saffron_gates_open` dans `flags`, boisson retirée du `bag`).
+
+**Tests** (`test_saffron_gates`, sur une carte de test où `saffron_city` est déclarée jouable) :
+sans boisson ; avec chacune des trois ; avec deux boissons (l'Eau part en premier) ; refus ;
+drapeau posé → les quatre postes laissent passer, le garde du J20 s'est écarté ; zone non jouable →
+texte 12, porte bloquée, aucune variante « soif » ; partie v7 du J15 chargée sans changement.
+
 ---
 
 ## 3. Tâches
@@ -1178,10 +1226,14 @@ commit ; textes **mot pour mot** (§20 et annexe A validée).
 #### T23 — qa-mobile : **session 20-II** + QA finale → Kevin
 - Protocole §6.2 ; **QA finale** : vraie partie de Kevin, de Lavanville au Scope (lot V 20F).
 
+#### T25 — constructeur-monde : postes de Safrania et boisson — (B), après T11 et T15
+- §2.16 : dialogue, scène, warps conditionnels des deux postes du J20, `unless` des règles du J15 ;
+  `test_saffron_gates`. Textes 215 à 219 (annexe A.14, validés). Vérifié dans la session 20-I.
+
 #### T24 — architecte : clôture
 - Retrait des cartes de QA (`qa_elevator_j20`, `qa_spin_j20`) et de leurs départs ; `etat-projet.md`,
-  roadmap ; passation : J21 (Tour, 6F, `unless` de `back_to_tower`, Ossatueur), jalon de Safrania
-  (postes, boissons ou Thé, Porygon), Route 16 (obstacle ouest), Jadielle (moteur des dalles) ;
+  roadmap ; passation : J21 (Tour, 6F, `unless` de `back_to_tower`, Ossatueur), J26 (Safrania :
+  carte `saffron_city` et ses quatre entrées, à brancher sur les warps du §2.16 ; Porygon), Route 16 (obstacle ouest), Jadielle (moteur des dalles) ;
   fusion dans `main` (copie d'intégration ; `project.godot` et filtre d'export vérifiés).
 
 ---
@@ -1223,7 +1275,8 @@ verts, import propre, budgets tenus.
 | Giovanni battu, application coupée avant le Scope | `test_giovanni_flow` | Poké Ball du Scope au sol |
 | Corde Sortie dans le repaire | `test_rocket_hideout` | devant le Casino, tourné ↓ |
 | Joueur à la Tour avec le Scope (build J20) | `test_tower_scope_j20` | rencontres identifiées ; 6F SPECTRE |
-| Retour au poste de Safrania | `test_route_8`, `test_route_7` | même réplique, porte sans warp |
+| Retour au poste de Safrania | `test_saffron_gates` | sans boisson : réplique « soif », porte fermée ; boisson donnée : les 4 postes ouverts, une seule boisson retirée |
+| Boisson donnée, application coupée pendant la scène | `test_saffron_gates` | drapeau et retrait de la boisson dans le même bloc synchrone (§2.16) |
 | Pierre sur une espèce sans art définitif | `test_stone_use` + capture | évolution jouée, art provisoire |
 | Compagnon | `test_companion_j20` | §2.12 |
 | Défaite dans le repaire | `test_giovanni_flow` | réveil au dernier Centre ; Rocket battus gardés ; interrupteur gardé |
@@ -1367,6 +1420,15 @@ capture renommée `20i_<n>.png` / `20ii_<n>.png` ou ligne du journal citée.
 
 - **Q-3 — Niveaux et capacités d'Erika et de Giovanni** — **décidé le 2026-10-16 : E-1 et G-1** (`jalon-20-equilibrage.md` §5). : décidés par toi au vu de la simulation
   (T8), comme pour Pierre. *Pas une question aujourd'hui : une décision attendue au T8.*
+
+- **Q-4 — Postes de Safrania avant le J26** (§2.16, décision du 2026-10-19). **Décidé par Kevin le 2026-10-19 : A.** La carte de Safrania
+  n'arrive qu'au J26. Entre-temps :
+  - **A** — la mécanique est codée et testée, mais le garde ne demande rien tant que la zone
+    `saffron_city` n'est pas jouable (une donnée que le J26 remplit) ;
+  - **B** — le garde prend la boisson dès le J20 ; la porte s'ouvre sur un écran « à suivre » ;
+  - **C** — le garde prend la boisson dès le J20, s'écarte, mais la porte reste close jusqu'au J26.
+  *Recommandation : **A**.* Aucune boisson donnée pour rien, aucune promesse, et le J26 n'a qu'à
+  déclarer sa carte. 
 
 **Notes (pas des questions)** : le dossier §15.1 compte 12 espèces mais en liste 13 (le plan suit
 la liste) ; la capture n'ayant pas d'écran de surnom, le don d'Évoli n'en propose pas non plus.
@@ -1633,3 +1695,15 @@ la liste) ; la capture n'ayant pas d'écran de surnom, le don d'Évoli n'en prop
 213. Hurlement (si le J17 ne l'a pas créée) : « Un cri qui fait fuir la cible. Sans effet dans le
      moteur actuel. »
 214. CT13 — Laser Glace : description de la capacité `ice_beam` existante (aucun texte nouveau).
+
+### A.14 Postes de Safrania (ajout du 2026-10-19, **VALIDÉ par Kevin le 2026-10-19**, §2.16)
+
+> Répliques des gardes des Routes 7 et 8 quand la zone de Safrania est jouable (J26). Avant, le
+> texte 12 (validé) ne change pas. Les gardes du J15 (Routes 5 et 6) reprennent 216 à 219.
+
+215. Garde, après la boisson : « Merci encore pour la boisson. » / « Allez-y, Safrania vous attend. »
+216. Garde, soif : « Je monte la garde depuis ce matin, sous ce soleil… » / « J'ai une de ces soifs. »
+217. Choix : « Lui donner une boisson ? » (Oui / Non)
+218. Refus : « Tant pis… Je tiendrai bien encore un peu. »
+219. Boisson donnée : « [Joueur] donne un(e) [boisson] au garde. » / « Ah, ça fait du bien ! » /
+     « Pour la peine, je vous laisse passer. Bonne visite de Safrania ! »
