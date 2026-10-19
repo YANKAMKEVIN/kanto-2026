@@ -37,7 +37,9 @@ surtout de ce choix : à **refaire** avec des équipes réalistes après la fusi
 - Auguste : la cible 35–60 % est atteinte « au milieu » (Dracaufeu 76–81 %, Florizarre 14–15 %)
   mais l'écart entre équipes est trop grand pour trancher sans les équipes réelles du J24.
 
-## 4. Questions pour Kevin (X-21 : jamais d'ajustement silencieux)
+## 4. Décisions de Kevin (2026-10-19) : E-1 à E-3 selon les recommandations
+
+E-1 : Dresseurs de l'Arène **+4 niveaux** (appliqué au scénario et au dossier 28 §8.3) ; E-2 : Auguste aux niveaux RB, simulation à refaire avec les équipes réelles après la fusion du J24 ; E-3 : contrecoup de Bélier corrigé à l'intégration.
 
 | N° | Question | Recommandation |
 |---|---|---|

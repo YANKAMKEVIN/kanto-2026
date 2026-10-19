@@ -1,7 +1,7 @@
 {
 	"version": 1,
 	"title": "Équilibrage de l'Arène de Cramois'Île et d'Auguste (jalon 25, 25.0 T9)",
-	"description": "Jalon 25 T9 (dossier 28 §8.3, §8.4, X-18, X-21 ; plan jalon-25 §2.8). Équipes ESTIMÉES à l'arrivée à Cramois'Île après le J24 (aucune partie réelle à ce stade) : starter final N46, Roucarnage, Nidoking, Raichu (N38–42) ; une arrivée basse. Auguste : niveaux et capacités RB, Hurlement remplacé par Groz'Yeux (X-18), Déflagration créée (J25), Bélier sans contrecoup tant que recoil_damage est « pending » (données du J17). Cible (mémoire difficulte-combats) : Auguste 35–60 % de victoire au premier essai pour un joueur attentif ; Dresseurs ≤ 80 %. Arcanin et Feunard viennent du J20 : à lancer sur une copie qui fusionne jalon-20 (sinon le simulateur les saute).",
+	"description": "Jalon 25 T9 (dossier 28 §8.3, §8.4, X-18, X-21 ; plan jalon-25 §2.8). Équipes ESTIMÉES à l'arrivée à Cramois'Île après le J24 (aucune partie réelle à ce stade) : starter final N46, Roucarnage, Nidoking, Raichu (N38–42) ; une arrivée basse. Auguste : niveaux et capacités RB, Hurlement remplacé par Groz'Yeux (X-18), Déflagration créée (J25), Bélier sans contrecoup tant que recoil_damage est « pending » (données du J17). Cible (mémoire difficulte-combats) : Auguste 35–60 % de victoire au premier essai pour un joueur attentif ; Dresseurs ≤ 80 %. Arcanin et Feunard viennent du J20 : à lancer sur une copie qui fusionne jalon-20 (sinon le simulateur les saute). Décision de Kevin (2026-10-19, E-1) : Dresseurs de l'Arène à +4 niveaux (N38–45) ; Auguste aux niveaux RB (E-2) jusqu'à la simulation avec les équipes réelles après la fusion du J24.",
 	"seeds": 500,
 	"heal_at_start": true,
 	"teams": [
@@ -106,15 +106,15 @@
 			"team": [
 				{
 					"species": "vulpix",
-					"level": 36
+					"level": 40
 				},
 				{
 					"species": "vulpix",
-					"level": 36
+					"level": 40
 				},
 				{
 					"species": "ninetales",
-					"level": 36
+					"level": 40
 				}
 			],
 			"prize_per_level": 25
@@ -129,15 +129,15 @@
 			"team": [
 				{
 					"species": "growlithe",
-					"level": 36
+					"level": 40
 				},
 				{
 					"species": "vulpix",
-					"level": 36
+					"level": 40
 				},
 				{
 					"species": "ninetales",
-					"level": 36
+					"level": 40
 				}
 			],
 			"prize_per_level": 90
@@ -152,19 +152,19 @@
 			"team": [
 				{
 					"species": "ponyta",
-					"level": 34
+					"level": 38
 				},
 				{
 					"species": "charmander",
-					"level": 34
+					"level": 38
 				},
 				{
 					"species": "vulpix",
-					"level": 34
+					"level": 38
 				},
 				{
 					"species": "growlithe",
-					"level": 34
+					"level": 38
 				}
 			],
 			"prize_per_level": 25
@@ -179,7 +179,7 @@
 			"team": [
 				{
 					"species": "ponyta",
-					"level": 41
+					"level": 45
 				}
 			],
 			"prize_per_level": 90
@@ -194,7 +194,7 @@
 			"team": [
 				{
 					"species": "rapidash",
-					"level": 41
+					"level": 45
 				}
 			],
 			"prize_per_level": 25
@@ -209,11 +209,11 @@
 			"team": [
 				{
 					"species": "vulpix",
-					"level": 37
+					"level": 41
 				},
 				{
 					"species": "growlithe",
-					"level": 37
+					"level": 41
 				}
 			],
 			"prize_per_level": 90
@@ -228,11 +228,11 @@
 			"team": [
 				{
 					"species": "growlithe",
-					"level": 37
+					"level": 41
 				},
 				{
 					"species": "vulpix",
-					"level": 37
+					"level": 41
 				}
 			],
 			"prize_per_level": 25

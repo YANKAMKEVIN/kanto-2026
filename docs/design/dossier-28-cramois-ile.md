@@ -405,6 +405,8 @@ chaud, deux images.
 
 ### 8.3 Dresseurs de l'Arène
 
+> **E-1 (Kevin, 2026-10-19)** : niveaux RB ci-dessous **+4** (N38–45) ; simulation `docs/tech/jalon-25-equilibrage.md`.
+
 | Id [D] | Classe | Équipe RB | Lié à | Récompense |
 |---|---|---|---|---|
 | `cinnabar_gym_1` | Intello | Goupix 36, Goupix 36, Feunard 36 | aucune (facultatif) | 900 ₽ |
