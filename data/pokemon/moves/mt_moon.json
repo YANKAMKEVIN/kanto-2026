@@ -108,7 +108,8 @@
 	},
 	"double_edge": {
 		"name": "Damoclès", "type": "normal", "category": "physical",
-		"power": 120, "accuracy": 100, "pp": 15, "pending_effects": ["recoil_damage"],
-		"description": "Une charge téméraire qui blesse aussi le lanceur. Sans effet dans le moteur actuel."
+		"power": 120, "accuracy": 100, "pp": 15,
+		"effects": [{ "kind": "recoil_damage", "fraction": 0.3333333333333333 }],
+		"description": "Une charge téméraire qui blesse aussi le lanceur."
 	}
 }

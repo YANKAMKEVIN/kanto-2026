@@ -516,3 +516,19 @@ func test_cards_follow_large_text_and_contrast() -> void:
 	var normal := confirm.get_theme_stylebox(&"normal") as StyleBoxFlat
 	assert_gte(normal.bg_color.a, 0.99, "carte d'action opaque")
 	UiPrefs.reset()
+
+
+func test_spirit_voice_styles_the_page_then_is_removed_on_the_next_page() -> void:
+	_box.open()
+	_box.show_page("Exorciste", "Laisse… nous…", false, UiTokens.VOICE_SPIRIT)
+	assert_true(_box.is_spirit())
+	assert_false(_box.is_narration())
+	assert_eq(_text().get_theme_color(&"font_color"), UiTokens.DIALOG_SPIRIT)
+	var font := _text().get_theme_font(&"font") as FontVariation
+	assert_not_null(font, "police italique")
+	if font != null:
+		assert_ne(font.variation_transform, Transform2D.IDENTITY, "pente de l'italique")
+	_box.show_page("Exorciste", "Merci… Je me sens plus légère.", false)
+	assert_false(_box.is_spirit(), "style retiré à la page suivante")
+	assert_eq(_text().theme_type_variation, &"DialogText")
+	assert_ne(_text().get_theme_color(&"font_color"), UiTokens.DIALOG_SPIRIT)

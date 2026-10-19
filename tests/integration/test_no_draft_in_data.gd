@@ -13,6 +13,9 @@ const DATA_DIR := "res://data"
 ## Jalon 16 (T11) : description de la zone du S.S. Anne sur la Carte, validée le 2026-10-16.
 ## Jalon 16 (décisions du 2026-10-16) : indice du guide de l'Arène de Carmin (type Sol contre
 ## Major Bob), validé par Kevin le 2026-10-16.
+## Jalon 19 (T3) : descriptions des capacités ajoutées pour les learnsets complets, hors du lot
+## §15.7 du dossier 22 : validées par Kevin le 2026-10-15. Jalon 19 (effets de capacités) :
+## messages d'Ultralaser et de Hurlement validés par Kevin le 2026-10-16.
 const PENDING_DRAFTS: Array[String] = []
 
 

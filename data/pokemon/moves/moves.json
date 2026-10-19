@@ -153,8 +153,8 @@
 	},
 	"whirlwind": {
 		"name": "Cyclone", "type": "normal", "category": "status",
-		"accuracy": 100, "pp": 20, "pending_effects": ["force_switch"],
-		"description": "Un coup de vent renvoie la cible. Sans effet dans le moteur actuel."
+		"accuracy": 100, "pp": 20, "priority": -6, "effects": [{ "kind": "force_switch" }],
+		"description": "Un coup de vent renvoie la cible."
 	},
 	"wing_attack": {
 		"name": "Cru-Ailes", "type": "flying", "category": "physical",

@@ -264,6 +264,9 @@ func _ready() -> void:
 	_interactions.set_story_flags(GameState.flags)
 	_interactions.challenge_requested.connect(_trainer_watcher.challenge)
 	_pokemon.load_dir()
+	# Combats sauvages scriptés (jalon 19) : leurs espèces sont vérifiées une fois les données
+	# Pokémon chargées (une scène qui nomme une espèce inconnue est écartée).
+	_cutscenes.check_species(_pokemon)
 	if _offer.load_file():
 		_offer.check_species(_pokemon)
 	_starter_choice.setup(_offer, _pokemon, GameState, _player, _sheet, _hud, _cutscenes_node,
@@ -1515,6 +1518,9 @@ func _on_starter_chosen(player_species: StringName, _rival_species: StringName) 
 ## (le rival au labo, décision Q-D). Les sauvages sont enregistrés par l'[EncounterDirector]
 ## au début de la rencontre (une seule observation par rencontre).
 func _on_battle_event(event: BattleEvent) -> void:
+	# SPECTRE (jalon 19, K-9) : un événement masqué n'enregistre rien (ni le 6F scénarisé).
+	if GhostDisguise.is_masked(event):
+		return
 	if event.kind == BattleEvent.Kind.SENT_OUT and event.side == BattleEvent.SideId.FOE \
 			and not _encounters.is_running():
 		GameState.record_seen(event.species_id, _current_map_id())

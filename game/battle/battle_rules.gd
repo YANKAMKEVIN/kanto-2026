@@ -25,6 +25,12 @@ var allow_heal_items: bool = false
 ## Null = aucune Ball n'est utilisable, même si [member allow_balls]. Le Sac n'est pas ici :
 ## le moteur ne compte ni ne retire aucun objet (le directeur s'en charge).
 var items: ItemLibrary = null
+## Combat SPECTRE (jalon 19, dossier 22 §6, `jalon-19.md` §2.3) : le sauvage est masqué
+## ([GhostDisguise]), il ne fait que parler, les capacités du joueur sont remplacées par la peur
+## et les Balls sont refusées. Faux : aucune règle du mode spectre ne joue.
+var ghost: bool = false
+## La fuite réussit toujours, sans tirage ([FleeCalc] n'est pas consulté) ; combat SPECTRE.
+var flee_always: bool = false
 
 
 ## Règles d'un combat sauvage : fuite permise, XP ×1, Balls et soins permis (bonus et soins
@@ -38,6 +44,17 @@ static func for_wild(item_library: ItemLibrary = null) -> BattleRules:
 	rules.allow_balls = true
 	rules.allow_heal_items = true
 	rules.items = item_library
+	return rules
+
+
+## Règles d'un combat SPECTRE (jalon 19, dossier 22 §6.2) : sauvage, fuite toujours réussie,
+## aucune XP ; le Sac s'ouvre (soins permis, une Ball choisie est refusée par le directeur avant
+## d'être retirée du Sac : [method Battle.refuses_balls]).
+static func for_ghost(item_library: ItemLibrary = null) -> BattleRules:
+	var rules := for_wild(item_library)
+	rules.ghost = true
+	rules.flee_always = true
+	rules.gives_exp = false
 	return rules
 
 

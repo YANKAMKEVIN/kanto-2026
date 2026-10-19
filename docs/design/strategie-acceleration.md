@@ -27,8 +27,24 @@ Comme le J11 pour les statuts et les CT : coder **en une passe** tous les systè
 et d'exploration qui restent, avant d'étendre le contenu.
 
 Périmètre validé par Kevin le 2026-10-19 : Vélo et Piste Cyclable, Surf, Force (rochers, trous), Vol,
-Scope Sylphe, Poké Flûte, états « monté » du joueur, et tout système encore prévu dans un jalon
-de contenu.
+Scope Sylphe, Poké Flûte, états « monté » du joueur, **téléporteurs** et **portes à carte**
+(Carte Magnétique ; ajoutés par Kevin le 2026-10-19 pour le J26, Sylphe SARL), et tout système
+encore prévu dans un jalon de contenu.
+
+Ajoutés par Kevin le 2026-10-19 (deuxième vague) :
+
+- **K.O. en un coup** (effet `ohko`, aujourd'hui en `pending_effects`) : Empal'Korne, Guillotine
+  (J24) et Abîme (CT27, J28), codé une seule fois ;
+- **interrupteurs et barrières** actionnés par les rochers de Force (Route Victoire, J29), à côté de
+  `BoulderRules` ;
+- **sauvegarde à la mise en arrière-plan Android** (appel, notification, verrouillage) : système de
+  sauvegarde, donc **validé seul** (règle 1 de `CLAUDE.md`), utile à tout le jeu (J30 à J36).
+
+**Entrée dans Safrania** (décision de Kevin, 2026-10-19, confirmée directement à la session J20) :
+faite au **J20**, tâche **T25** (données seulement, après T11 et T15), qui **remplace l'arbitrage
+H-5** : une boisson donnée au garde ouvre les quatre postes, comme dans Rouge/Bleu. Option Q-4 A :
+tant que la carte de Safrania n'existe pas, le garde ne demande rien ; le J26 n'aura qu'à déclarer sa
+carte. Textes 215 à 219 validés (plan J20, `jalon-20` @ `04834a71`).
 
 Point de départ déjà écrit (message du J24, 2026-10-19) : `jalon-24` (@ `ed306985`) contient une
 logique pure et testée de **Surf et de Force**, sans dépendance à une carte : `GridWorld` (eau
@@ -62,6 +78,11 @@ reste en conception.
 - **Verrou** : 2 suites complètes au maximum en même temps sur le Mac (`KANTO_TEST_SLOTS`), places
   dans `/tmp/kanto2026-test-slots/`, libérées automatiquement si leur processus meurt. Les
   lancements ciblés ne prennent pas de place.
+- **CI GitHub** (`.github/workflows/godot-tests.yml`, 8 lots parallèles) : seulement sur `main` et
+  les pull requests, et **jamais pour un commit qui ne touche que la documentation** (`docs/**`,
+  `*.md`). Le déclenchement sur les branches `jalon-*`, essayé le 2026-10-19, a été **retiré** le
+  soir même (Kevin) : le dépôt est privé et le quota de minutes gratuites a été épuisé en quelques
+  heures. Avant une fusion, la suite complète tourne donc sur le Mac (`tools/test.sh`, avec le verrou).
 - **Tests lents** : la suite complète affiche à la fin ses 10 scripts les plus lents. Reste à faire :
   alléger les plus lents, sans perdre de couverture.
 
@@ -111,3 +132,4 @@ Un jalon de contenu devient alors surtout un fichier de données à remplir.
 | Date | Jalons clos depuis le 2026-10-19 | Rythme | Remarque |
 |---|---|---|---|
 | 2026-10-19 | 0 | ≈ 1,2 / jour (base) | stratégie adoptée |
+| 2026-10-19 | 1 (J19) | même jour | J19 clos (T24), fusion dans `main` accordée par Kevin (faite par la session principale) |

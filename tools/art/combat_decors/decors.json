@@ -136,5 +136,14 @@
 		],
 		"taille": [2340, 1080],
 		"qualite": 90
+	},
+	"tour_pokemon": {
+		"composition": "COMBAT_DECOR_TOUR_POKEMON_r1.png",
+		"tuiles": [
+			{ "image": "COMBAT_DECOR_TOUR_POKEMON_r1_TL.png", "portion": [0, 0, 999, 851] },
+			{ "image": "COMBAT_DECOR_TOUR_POKEMON_r1_TR.png", "portion": [849, 0, 1848, 851] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
 	}
 }

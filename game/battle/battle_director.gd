@@ -51,6 +51,12 @@ extends Node
 ## et la grille. K.O. du Pokémon du joueur avec d'autres valides
 ## ([method Battle.needs_replacement]) : le même panneau, sans « ‹ », fait choisir le suivant
 ## ([method Battle.replace]).
+##
+## Combat SPECTRE (jalon 19, `jalon-19.md` §2.3, dossier 22 §6.2) : le sauvage reçoit le surnom
+## « ghost_name » (« SPECTRE ») pour la durée du combat, donc tous les textes et la carte le
+## nomment ainsi ; le moteur masque le reste ([GhostDisguise]). Une Ball choisie dans le Sac est
+## refusée par « ghost_ball_refused » [b]avant[/b] d'être retirée du Sac, sans tour joué
+## ([method Battle.refuses_balls]) ; le choix reprend.
 
 ## Le combat commence (verrou posé, monde figé).
 signal battle_started(trainer_id: StringName)
@@ -201,6 +207,9 @@ func run_request(request: BattleRequest, map: GameMap) -> int:
 		return Battle.Outcome.NONE
 	var wild := request.is_wild()
 	var trainer := request.trainer
+	if request.rules != null and request.rules.ghost and _texts != null:
+		# SPECTRE : le seul nom que le combat connaîtra (textes, carte).
+		foe.nickname = _texts.get_template(&"ghost_name")
 	_running = true
 	_summary = ExpSummary.new()
 	_wild_foe = foe if wild else null
@@ -299,6 +308,18 @@ func run_request(request: BattleRequest, map: GameMap) -> int:
 	return outcome
 
 
+## Coroutine : combat sauvage contre [param encounter] sur [param map], lancé hors des
+## herbes (étape de scène « combat sauvage », jalon 19) ; [param origin] : la case d'où part
+## l'intro. Combat SPECTRE si [member WildEncounter.ghost]. Renvoie une [enum Battle.Outcome]
+## (NONE si refusé). Le Pokédex, la défaite et le réveil restent à l'appelant.
+func run_wild(encounter: WildEncounter, map: GameMap, origin: Vector2i) -> int:
+	if encounter == null or _state == null:
+		push_error("BattleDirector.run_wild : rencontre ou état absent")
+		return Battle.Outcome.NONE
+	var request := BattleRequest.wild(encounter, _data, _state.rng as GameRng, origin, _items)
+	return await run_request(request, map)
+
+
 func is_running() -> bool:
 	return _running
 
@@ -384,6 +405,13 @@ func _choose_action(actions: Dictionary[StringName, bool], can_flee: bool) -> Ba
 				and (_battle.can_use_balls() or _battle.can_use_heal_items()):
 			var chosen := await _choose_item()
 			if chosen == null:
+				continue
+			if chosen.kind == BattleAction.Kind.ITEM and not chosen.is_heal() \
+					and _battle.refuses_balls():
+				# SPECTRE (K-8) : refusée avant le lancer, rien n'est retiré, aucun tour joué.
+				await _hud.show_message(_texts.get_template(&"ghost_ball_refused")
+					if _texts != null else "")
+				_show_own_card()
 				continue
 			return chosen
 		if action == ActionGrid.TEAM and actions.get(ActionGrid.TEAM, false):

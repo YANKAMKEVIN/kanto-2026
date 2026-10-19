@@ -55,6 +55,8 @@ extends RefCounted
 ## membre de l'équipe plus « pending_exp » (entier ≥ 0, XP en attente, bornée au plafond du
 ## niveau 100 ; absent : 0), par exemple { "species": "rattata", "level": 10,
 ## "pending_exp": 500 } ; « capturé » au Pokédex ; niveau au dépôt = son niveau.
+## Jalon 19 (T14) : « rest_point » : carte d'un Centre enregistré comme point de repos (une défaite
+## réveille là, pas à la maison), ex. "lavender_center".
 ## Jalon 11 (T20d, QA du compagnon) : « companion » : place dans l'équipe (0 = premier) du
 ## Pokémon choisi comme compagnon ; une espèce sans planche est effacée au premier rafraîchissement
 ## (comme en jeu, A-11).
@@ -81,7 +83,7 @@ const VEIL_LIT: StringName = &"lit"
 const VEIL_OFF: StringName = &"off"
 
 const _KEYS: Array[String] = ["map", "spawn", "facing", "seed", "flags", "party", "bag",
-	"favorites", "money", "storage", "autosave", "wild", "daycare", "companion", "veil"]
+	"favorites", "money", "storage", "autosave", "wild", "daycare", "companion", "veil", "rest_point"]
 const _MEMBER_KEYS: Array[String] = ["species", "level", "moves", "exp_to_next", "hp",
 	"favorite", "status", "status_turns"]
 
@@ -113,6 +115,9 @@ var companion: int = -1
 var wild_terrain: StringName = &"grass"
 ## Voile forcé sur [member map] ([constant VEIL_DARK], [constant VEIL_LIT], [constant VEIL_OFF] ; &"" = aucun).
 var veil: StringName = &""
+## Point de repos enregistré au départ (carte d'un Centre de `data/world/rest_points.json` ;
+## &"" = aucun : la maison). Jalon 19 (T14) : réveil au Centre après une défaite dans la Tour.
+var rest_point: StringName = &""
 var _errors: PackedStringArray = PackedStringArray()
 
 
@@ -266,8 +271,19 @@ func add_from_dict(dict: Dictionary, data: PokemonData, items: ItemLibrary,
 			ok = _fail("%s : « veil » est « dark », « lit » ou « off », avec « map »" % source)
 		else:
 			new_veil = StringName(raw_veil)
+	var new_rest_point: StringName = &""
+	if dict.has("rest_point"):
+		var rest_points := RestPointLibrary.new()
+		rest_points.load_file()
+		var raw_rest: Variant = dict["rest_point"]
+		if not raw_rest is String or not rest_points.has_point(StringName(raw_rest)) \
+				or not rest_points.get_point(StringName(raw_rest)).registers:
+			ok = _fail("%s : « rest_point » est la carte d'un Centre (rest_points.json)" % source)
+		else:
+			new_rest_point = StringName(raw_rest)
 	if not ok:
 		return false
+	rest_point = new_rest_point
 	map = new_map
 	spawn = new_spawn
 	facing = new_facing
@@ -318,6 +334,11 @@ func apply(state: Object, data: PokemonData) -> void:
 		state.ensure_unique_uids()
 	if companion >= 0:
 		state.set_companion(state.party.get_at(companion))
+	if not rest_point.is_empty():
+		var rest_points := RestPointLibrary.new()
+		rest_points.load_file()
+		state.heal_map = rest_point
+		state.heal_spawn = rest_points.get_point(rest_point).spawn
 
 
 ## Un Pokémon d'après un membre validé (capacités, XP, PV).

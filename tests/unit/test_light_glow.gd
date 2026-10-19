@@ -27,13 +27,13 @@ func test_real_data_has_the_five_types_within_bounds() -> void:
 	assert_true(library.load_file(), "data/world/light_glows.json valide")
 	assert_eq(library.get_errors().size(), 0)
 	assert_eq(library.get_ids(), [&"lamp", &"shaft", &"shard", &"projector", &"beam", &"hint",
-		&"sconce", &"candle"] as Array[StringName],
-		"« hint » du jalon 14, « sconce » du J15, « candle » du J18 en fin")
+		&"sconce", &"candle", &"purified"] as Array[StringName],
+		"« hint » du jalon 14, « sconce » du J15, « candle » du J18, « purified » du J19 en fin")
 	# Passe « lumière rare » : le puits de jour a sa colonne de lumière douce.
 	assert_eq(library.get_type(&"beam").shape, LightGlowLibrary.SHAPE_COLUMN)
 	assert_gt(library.get_type(&"beam").height, 1.0)
 	for id: StringName in [&"lamp", &"shaft", &"shard", &"projector", &"hint", &"sconce",
-			&"candle"]:
+			&"candle", &"purified"]:
 		assert_eq(library.get_type(id).shape, LightGlowLibrary.SHAPE_RADIAL, String(id))
 	for id: StringName in library.get_ids():
 		var type := library.get_type(id)
@@ -151,6 +151,24 @@ func test_same_type_shares_texture_and_material() -> void:
 	assert_same(a.texture, c.texture, "une seule texture de dégradé")
 	assert_same(c.material, d.material, "un seul matériau pour les halos fixes")
 	assert_true(a.material is ShaderMaterial)
+
+
+func test_candle_beats_slowly_and_purified_is_steady() -> void:
+	var library := LightGlowLibrary.new()
+	library.load_file()
+	var candle := library.get_type(&"candle")
+	assert_almost_eq(candle.flicker, 0.06, 0.001, "battement lent (plan du J18)")
+	assert_lt(candle.flicker, library.get_type(&"lamp").flicker, "plus calme qu'une lampe")
+	assert_lt(candle.alpha, library.get_type(&"lamp").alpha, "plus pâle qu'une lampe")
+	var purified := library.get_type(&"purified")
+	assert_eq(purified.flicker, 0.0, "zone purifiée : fixe")
+	assert_eq(purified.blend, LightGlowLibrary.BLEND_ADD)
+	assert_gt(purified.color.b, purified.color.r, "blanc doux, légèrement froid")
+	var halo := _glow(&"purified")
+	assert_true(halo.is_lit())
+	assert_false(halo.material is ShaderMaterial, "matériau fixe partagé, sans shader")
+	assert_eq(LightGlow.flicker_amplitude(&"purified"), 0.0)
+	assert_true(_glow(&"candle").material is ShaderMaterial, "la bougie bat")
 
 
 func test_lamp_flickers_unless_animations_are_reduced() -> void:

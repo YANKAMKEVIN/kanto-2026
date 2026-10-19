@@ -1,0 +1,567 @@
+{
+	"version": 1,
+	"title": "Équilibrage de la Tour Pokémon : rival n° 5 et Exorcistes (jalon 19 T4, simulé au T21)",
+	"description": "Jalon 19 T4 (dossier 22 §7.3, §8 ; plan jalon-19 §2.5, §2.6, T21). Information pour Kevin : aucune donnée de jeu n'est changée. Équipes de départ = sortie supposée du J18 (équipe de référence de jalon-18.md §4.16 : starter évolué N24, Roucoups N21, Papilusion N20, Sabelette N19, Pikachu N20) et sortie directe « bas » (starter N22, Roucoups N19, Papilusion N18), soignées ; T21 les remplace par les vraies sorties des J16 à J18. Rival n° 5 en team_by_starter, une équipe par starter : niveaux du T21 préliminaire (22, Kadabra 18 ; docs/tech/jalon-19-equilibrage.md), provisoires jusqu'à la relance après T10. Exorcistes inévitables : E3, E8, E9 ; facultatifs (groupe « facultatifs ») : E1, E2, E4 à E7. Aucune étape « wild » : les SPECTRES ne donnent ni XP ni objet. Zone purifiée du 5F modélisée en « center » (soin illimité ; une défaite au 6F reprend après elle, comme en jeu où les Dresseurs battus le restent). Groupe « retour_centre » : retour au Centre de Lavanville après le rival. Dresseurs recopiés de data/trainers/pokemon_tower.json (--donnees les relit).",
+	"seeds": 200,
+	"heal_at_start": true,
+	"teams": [
+		{
+			"name": "Reptincel 24, Roucoups 21, Papilusion 20, Sabelette 19, Pikachu 20",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 24
+				},
+				{
+					"species": "pidgeotto",
+					"level": 21,
+					"moves": [
+						"gust",
+						"sand_attack",
+						"quick_attack"
+					]
+				},
+				{
+					"species": "butterfree",
+					"level": 20
+				},
+				{
+					"species": "sandshrew",
+					"level": 19
+				},
+				{
+					"species": "pikachu",
+					"level": 20
+				}
+			]
+		},
+		{
+			"name": "Herbizarre 24, Roucoups 21, Papilusion 20, Sabelette 19, Pikachu 20",
+			"starter": "bulbasaur",
+			"members": [
+				{
+					"species": "ivysaur",
+					"level": 24
+				},
+				{
+					"species": "pidgeotto",
+					"level": 21,
+					"moves": [
+						"gust",
+						"sand_attack",
+						"quick_attack"
+					]
+				},
+				{
+					"species": "butterfree",
+					"level": 20
+				},
+				{
+					"species": "sandshrew",
+					"level": 19
+				},
+				{
+					"species": "pikachu",
+					"level": 20
+				}
+			]
+		},
+		{
+			"name": "Carabaffe 24, Roucoups 21, Papilusion 20, Sabelette 19, Pikachu 20",
+			"starter": "squirtle",
+			"members": [
+				{
+					"species": "wartortle",
+					"level": 24
+				},
+				{
+					"species": "pidgeotto",
+					"level": 21,
+					"moves": [
+						"gust",
+						"sand_attack",
+						"quick_attack"
+					]
+				},
+				{
+					"species": "butterfree",
+					"level": 20
+				},
+				{
+					"species": "sandshrew",
+					"level": 19
+				},
+				{
+					"species": "pikachu",
+					"level": 20
+				}
+			]
+		},
+		{
+			"name": "bas : Reptincel 22, Roucoups 19, Papilusion 18",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 22
+				},
+				{
+					"species": "pidgeotto",
+					"level": 19,
+					"moves": [
+						"gust",
+						"sand_attack",
+						"quick_attack"
+					]
+				},
+				{
+					"species": "butterfree",
+					"level": 18
+				}
+			]
+		},
+		{
+			"name": "bas : Herbizarre 22, Roucoups 19, Papilusion 18",
+			"starter": "bulbasaur",
+			"members": [
+				{
+					"species": "ivysaur",
+					"level": 22
+				},
+				{
+					"species": "pidgeotto",
+					"level": 19,
+					"moves": [
+						"gust",
+						"sand_attack",
+						"quick_attack"
+					]
+				},
+				{
+					"species": "butterfree",
+					"level": 18
+				}
+			]
+		},
+		{
+			"name": "bas : Carabaffe 22, Roucoups 19, Papilusion 18",
+			"starter": "squirtle",
+			"members": [
+				{
+					"species": "wartortle",
+					"level": 22
+				},
+				{
+					"species": "pidgeotto",
+					"level": 19,
+					"moves": [
+						"gust",
+						"sand_attack",
+						"quick_attack"
+					]
+				},
+				{
+					"species": "butterfree",
+					"level": 18
+				}
+			]
+		}
+	],
+	"tables": {},
+	"trainers": {
+		"rival_tower": {
+			"name": "{rival}",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 35,
+			"end_message": false,
+			"start_message": true,
+			"bag": true,
+			"moment": "win",
+			"switch": true,
+			"team_by_starter": {
+				"bulbasaur": [
+					{
+						"species": "pidgeotto",
+						"level": 22,
+						"moves": [
+							"gust",
+							"sand_attack",
+							"quick_attack"
+						]
+					},
+					{
+						"species": "exeggcute",
+						"level": 22
+					},
+					{
+						"species": "gyarados",
+						"level": 22,
+						"moves": [
+							"bite",
+							"dragon_rage",
+							"leer"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 18
+					},
+					{
+						"species": "charmeleon",
+						"level": 22,
+						"moves": [
+							"scratch",
+							"growl",
+							"ember",
+							"leer"
+						]
+					}
+				],
+				"charmander": [
+					{
+						"species": "pidgeotto",
+						"level": 22,
+						"moves": [
+							"gust",
+							"sand_attack",
+							"quick_attack"
+						]
+					},
+					{
+						"species": "growlithe",
+						"level": 22,
+						"moves": [
+							"bite",
+							"ember",
+							"leer"
+						]
+					},
+					{
+						"species": "exeggcute",
+						"level": 22
+					},
+					{
+						"species": "kadabra",
+						"level": 18
+					},
+					{
+						"species": "wartortle",
+						"level": 22
+					}
+				],
+				"squirtle": [
+					{
+						"species": "pidgeotto",
+						"level": 22,
+						"moves": [
+							"gust",
+							"sand_attack",
+							"quick_attack"
+						]
+					},
+					{
+						"species": "gyarados",
+						"level": 22,
+						"moves": [
+							"bite",
+							"dragon_rage",
+							"leer"
+						]
+					},
+					{
+						"species": "growlithe",
+						"level": 22,
+						"moves": [
+							"bite",
+							"ember",
+							"leer"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 18
+					},
+					{
+						"species": "ivysaur",
+						"level": 22
+					}
+				]
+			}
+		},
+		"tower_channeler_1": {
+			"name": "Exorciste Hortense",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 30,
+			"team": [
+				{
+					"species": "gastly",
+					"level": 23
+				}
+			]
+		},
+		"tower_channeler_2": {
+			"name": "Exorciste Odile",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 30,
+			"team": [
+				{
+					"species": "gastly",
+					"level": 22
+				}
+			]
+		},
+		"tower_channeler_3": {
+			"name": "Exorciste Solange",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 30,
+			"team": [
+				{
+					"species": "gastly",
+					"level": 23
+				},
+				{
+					"species": "gastly",
+					"level": 23
+				}
+			]
+		},
+		"tower_channeler_4": {
+			"name": "Exorciste Mireille",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 30,
+			"team": [
+				{
+					"species": "gastly",
+					"level": 24
+				}
+			]
+		},
+		"tower_channeler_5": {
+			"name": "Exorciste Bérénice",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 30,
+			"team": [
+				{
+					"species": "haunter",
+					"level": 23
+				}
+			]
+		},
+		"tower_channeler_6": {
+			"name": "Exorciste Marthe",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 30,
+			"team": [
+				{
+					"species": "gastly",
+					"level": 24
+				}
+			]
+		},
+		"tower_channeler_7": {
+			"name": "Exorciste Ysée",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 30,
+			"team": [
+				{
+					"species": "haunter",
+					"level": 22
+				}
+			]
+		},
+		"tower_channeler_8": {
+			"name": "Exorciste Paulette",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 30,
+			"team": [
+				{
+					"species": "gastly",
+					"level": 24
+				}
+			]
+		},
+		"tower_channeler_9": {
+			"name": "Exorciste Clémence",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 30,
+			"team": [
+				{
+					"species": "gastly",
+					"level": 24
+				}
+			]
+		}
+	},
+	"steps": [
+		{
+			"label": "Centre de Lavanville (départ)",
+			"center": true
+		},
+		{
+			"label": "Rival n° 5 (2F, inévitable)",
+			"trainer": "rival_tower"
+		},
+		{
+			"label": "Centre de Lavanville (après le rival)",
+			"center": true,
+			"optional": "retour_centre"
+		},
+		{
+			"label": "E1 Exorciste Hortense (3F)",
+			"trainer": "tower_channeler_1",
+			"optional": "facultatifs"
+		},
+		{
+			"label": "E2 Exorciste Odile (3F)",
+			"trainer": "tower_channeler_2",
+			"optional": "facultatifs"
+		},
+		{
+			"label": "E3 Exorciste Solange (4F, inévitable)",
+			"trainer": "tower_channeler_3"
+		},
+		{
+			"label": "E4 Exorciste Mireille (4F)",
+			"trainer": "tower_channeler_4",
+			"optional": "facultatifs"
+		},
+		{
+			"label": "E5 Exorciste Bérénice (5F)",
+			"trainer": "tower_channeler_5",
+			"optional": "facultatifs"
+		},
+		{
+			"label": "E6 Exorciste Marthe (5F)",
+			"trainer": "tower_channeler_6",
+			"optional": "facultatifs"
+		},
+		{
+			"label": "E7 Exorciste Ysée (5F)",
+			"trainer": "tower_channeler_7",
+			"optional": "facultatifs"
+		},
+		{
+			"label": "Zone purifiée (5F, soin complet)",
+			"center": true
+		},
+		{
+			"label": "E8 Exorciste Paulette (6F, inévitable)",
+			"trainer": "tower_channeler_8"
+		},
+		{
+			"label": "E9 Exorciste Clémence (6F, inévitable)",
+			"trainer": "tower_channeler_9"
+		}
+	],
+	"variants": [
+		{
+			"name": "directe, attentif, 5 Super Potions, 3 Antidotes, 2 Réveils",
+			"player": "attentif",
+			"center": true,
+			"retries": 5,
+			"items": {
+				"super_potion": 5,
+				"antidote": 3,
+				"awakening": 2
+			},
+			"optional": []
+		},
+		{
+			"name": "tous les Exorcistes, attentif, 5 Super Potions, 3 Antidotes, 2 Réveils",
+			"player": "attentif",
+			"center": true,
+			"retries": 5,
+			"items": {
+				"super_potion": 5,
+				"antidote": 3,
+				"awakening": 2
+			},
+			"optional": [
+				"facultatifs"
+			]
+		},
+		{
+			"name": "directe, attentif, Centre après le rival, 5 Super Potions, 3 Antidotes, 2 Réveils",
+			"player": "attentif",
+			"center": true,
+			"retries": 5,
+			"items": {
+				"super_potion": 5,
+				"antidote": 3,
+				"awakening": 2
+			},
+			"optional": [
+				"retour_centre"
+			]
+		},
+		{
+			"name": "directe, expert, 5 Super Potions, 3 Antidotes, 2 Réveils",
+			"player": "expert",
+			"center": true,
+			"retries": 5,
+			"items": {
+				"super_potion": 5,
+				"antidote": 3,
+				"awakening": 2
+			},
+			"optional": []
+		},
+		{
+			"name": "directe, naïf",
+			"player": "naif",
+			"center": true,
+			"retries": 5,
+			"optional": []
+		},
+		{
+			"name": "tous les Exorcistes, naïf",
+			"player": "naif",
+			"center": true,
+			"retries": 5,
+			"optional": [
+				"facultatifs"
+			]
+		}
+	]
+}

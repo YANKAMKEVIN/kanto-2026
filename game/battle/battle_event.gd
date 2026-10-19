@@ -127,6 +127,19 @@ extends RefCounted
 ## - COINS_SCATTERED : Jackpot réussi du joueur (camp PLAYER, le lanceur), juste après ses
 ##   dégâts ; [member amount] = pièces éparpillées par ce Jackpot (niveau × « per_level »). Le
 ##   Jackpot de l'adversaire n'en émet aucun (il ne rapporte rien au joueur).
+## Jalon 19 (Hurlement, Ultralaser) :
+## - RECHARGING : le lanceur d'un Ultralaser qui a touché se repose (« … doit se reposer ! ») ;
+##   ni MOVE_USED ni PP, son tour est perdu ;
+## - SCARED_AWAY : Hurlement en combat sauvage, la cible [member move_id] s'enfuit ; suit
+##   BATTLE_ENDED (FOE_FLED si c'est le sauvage, FLED si c'est le Pokémon du joueur) ;
+## - FORCED_OUT : Hurlement contre un Dresseur (ou d'un Dresseur), la cible quitte le terrain ;
+##   suit le SENT_OUT du remplaçant tiré au hasard dans son camp.
+## Jalon 19 (mode SPECTRE, dossier 22 §6.2, [GhostDisguise]) :
+## - GHOST_SCARED : le Pokémon du joueur a trop peur pour bouger (capacité remplacée : ni PP, ni
+##   tirage) ;
+## - GHOST_SPOKE : le SPECTRE (camp adverse) ne fait que parler ;
+## - tout événement du camp adverse d'un combat SPECTRE porte [member disguised] : espèce
+##   [constant GhostDisguise.SPECIES], niveau 0, sans genre (garde du Pokédex et du cri).
 ## Tous les autres événements sur un Pokémon portent dans [member status] son statut au moment
 ## de l'événement (SENT_OUT : la carte de PV l'affiche dès l'entrée ; FAINTED : toujours vide,
 ## le K.O. efface le statut).
@@ -147,6 +160,8 @@ enum Kind {
 	CHARGE_STARTED, CHARGE_RELEASED, CHARGE_BROKEN, DODGED, BALL_BLOCKED,
 	TELEPORTED, NOTHING_HAPPENED,
 	COINS_SCATTERED,
+	RECHARGING, SCARED_AWAY, FORCED_OUT,
+	GHOST_SCARED, GHOST_SPOKE,
 }
 enum SideId { PLAYER, FOE }
 
@@ -193,6 +208,9 @@ var item_name: String = ""
 var shake: int = 0
 ## Statut durable concerné ([constant StatusRules.NONE] = aucun) : voir l'en-tête.
 var status: StringName = StatusRules.NONE
+## Masqué par [method GhostDisguise.mask] (combat SPECTRE, jalon 19) : rien ne doit révéler
+## l'espèce réelle (Pokédex, cri, image, nom, niveau).
+var disguised: bool = false
 
 
 func _init(event_kind: Kind = Kind.BATTLE_STARTED, event_side: SideId = SideId.PLAYER) -> void:
@@ -212,4 +230,5 @@ func to_dict() -> Dictionary:
 		"exp_points_to": exp_points_to, "exp_points_need": exp_points_need,
 		"stat_gains": stat_gains, "healed": healed, "healed_hp": healed_hp,
 		"item": item_id, "item_name": item_name, "shake": shake, "status": status,
+		"disguised": disguised,
 	}

@@ -87,3 +87,27 @@ func test_empty_table_yields_nothing() -> void:
 	var table := EncounterTable.new()
 	assert_null(table.pick(ScriptedRng.new([])))
 	assert_null(table.roll(ScriptedRng.new([])))
+
+
+# --- Jalon 19 (T5) --------------------------------------------------------------------------
+
+func test_floor_is_a_known_terrain() -> void:
+	assert_true(EncounterTable.TERRAINS.has(&"floor"))
+	assert_true(EncounterTable.TERRAINS.has(&"grass"), "les terrains d'avant restent")
+	assert_true(EncounterTable.TERRAINS.has(&"rubble"))
+
+
+func test_ghost_item_is_empty_by_default() -> void:
+	assert_eq(EncounterTable.new().ghost_unless_item, &"")
+
+
+func test_roll_never_decides_the_ghost() -> void:
+	# La table porte la clé ; le tirage ne décide rien : GhostRule, avec le Sac du moment.
+	var table := _table()
+	table.terrain = &"floor"
+	table.ghost_unless_item = &"silph_scope"
+	var result := table.roll(ScriptedRng.new([10, 5, 2]))
+	assert_not_null(result)
+	assert_false(result.ghost, "faux par défaut")
+	assert_false(table.pick(GameRng.new(7)).ghost)
+	assert_true(GhostRule.is_ghost(table.ghost_unless_item, Bag.new()), "décidé à part")

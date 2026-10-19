@@ -7,6 +7,7 @@ Kevin est le **directeur du jeu** : il conçoit (souvent avec ChatGPT), Claude i
 ## À lire avant de travailler
 
 - `docs/design/vision.md` — constitution, DA, contrôles, plan en 13 phases. **Source de vérité du design.**
+- `docs/design/strategie-acceleration.md` — **ordre et rythme des jalons depuis le 2026-10-19** (passe systèmes 2, 2 à 3 jalons en code au maximum, tests ciblés, validations groupées). À lire avant d'ouvrir ou de fusionner un jalon.
 - `docs/design/roadmap.md` — **vue macro** du projet (phases J0→Ligue et post-game, ordre des jalons). Où va le jeu à long terme.
 - `docs/design/ui-reference.md` + `docs/design/reference/da-2026-planche-v1.webp` — référence **UI** validée.
 - `docs/design/ui-ux-bible-v0.1.md` — philosophie UI/UX (« le monde est la star ») ; ses contradictions avec la planche sont listées en fin de fichier.
@@ -30,6 +31,7 @@ Kevin est le **directeur du jeu** : il conçoit (souvent avec ChatGPT), Claude i
 - `docs/design/dossier-21-grotte-sombre-lavanville.md` — **jalon 18** (Route 9, Route 10, Grotte Sombre 2 niveaux avec voile d'obscurité, Lavanville, Tour Pokémon au rez-de-chaussée) ; arbitrages I-1 à I-26 et textes §15 validés (2026-10-14) ; Flash alignée sur le dossier 20 du J17 (2026-10-15) ; grilles, vues générales (`reference/route-9-*`, `route-10-*`, `grotte-sombre-*`, `lavanville-*`, la grille `tools/plans/` fait foi) et art nouveau validés ; plan `docs/tech/jalon-18.md`. Voile et Flash codés par le J17. **J18 terminé le 2026-10-19** (18.0 → 18C faits, QA 18A–18C sur S24 sans bloquant, fusion accordée par Kevin) ; plan et clôture (passation au J19) : `docs/tech/jalon-18.md` §9.
 - `docs/design/dossier-23-celadopole.md` — **jalon 20** (Route 8, souterrain, Route 7, Céladopole, grand magasin, Évoli, Arène d'Erika, Badge Prisme, CT21, Casino narratif sans jeu d'argent, repaire Rocket avec dalles et ascenseur, Giovanni, Scope Sylphe) ; **verrouillé** par Kevin le 2026-10-14 (H-1 à H-14, textes §20, valeurs §21) ; passe `passes/j20-v2-alignement.md`. Dépend des J16–J19 (contrat d'entrée §16) ; code après la clôture du J19.
 - `docs/design/dossier-*.md` — conception détaillée par zone (`dossier-02-prologue.md` : textes définitifs du prologue, découpage 3A / 3B / 4).
+- `docs/design/dossier-22-tour-pokemon.md` — **jalon 19** (Tour Pokémon : exploration 1F–6F, mode spectre sans Scope, rival n° 5, 9 Exorcistes, zone purifiée) ; K-1 à K-20, textes §15 et grilles v1 **validés par Kevin** (2026-10-14) ; vue générale validée `reference/tour-pokemon-vue-generale-v1.png` + plan (la grille `tools/plans/pokemon_tower_*.txt` fait foi). Plan `docs/tech/jalon-19.md`. **J19 terminé le 2026-10-19** (19.0 → 19B faits, 19A et 19B validés par Kevin sur la base des QA S24, fusion accordée par Kevin) ; plan et clôture (passation au J20) : `docs/tech/jalon-19.md` §9.
 - `docs/design/cahier-art-monde-v0.1.md` — cahier des charges de l'art du monde et prototype de faisabilité de Jadielle (cible = références J7, pas de nivellement par le bas).
 - `docs/tech/etat-projet.md` — **où en est le projet, prochaine étape, questions ouvertes.** À lire en début de session.
 - `docs/tech/jalon-*.md` — plans techniques des jalons (tâches et critères d'acceptation).
@@ -37,7 +39,7 @@ Kevin est le **directeur du jeu** : il conçoit (souvent avec ChatGPT), Claude i
 ## Règles de travail
 
 1. **Validation S24 par sous-jalon** (5B, 5C…) : les tâches liées s'enchaînent, puis une seule session S24 + validation de Kevin à la fin du sous-jalon. Exception : un système risqué (sauvegarde, tout ce qui peut perdre des données) est validé seul. Jamais trois systèmes à la fois.
-2. Une tâche n'est finie que si : `tools/test.sh` passe, le projet s'importe sans erreur, et (si c'est visible) une capture a été relue (headless ou Mac) ; la capture S24 vient à la validation du sous-jalon.
+2. Une tâche n'est finie que si : les tests ciblés passent (`tools/test.sh --changed`), la **suite complète** (`tools/test.sh`) étant obligatoire avant chaque fusion, le projet s'importe sans erreur, et (si c'est visible) une capture a été relue (headless ou Mac) ; la capture S24 vient à la validation du sous-jalon.
 3. **Sur S24, on valide le fonctionnel** (ça marche, c'est lisible, c'est bien placé), pas le rendu final : les visuels sont provisoires jusqu'à la phase DA. Une remarque de rendu se note dans `docs/tech/etat-projet.md` (« Reportés »), sans la corriger tout de suite.
 4. **Petites questions → valeur par défaut** : durées, positions, tailles, couleurs… reçoivent une valeur par défaut, notée dans le commit et dans `etat-projet.md`, et le travail continue. Seules les vraies décisions de game design bloquent et vont à Kevin.
 5. **`docs/tech/etat-projet.md` est mis à jour dans le même commit que chaque tâche terminée** : chaque session repart de ce fichier.
@@ -75,7 +77,9 @@ docs/design/   conception (ignoré par Godot)
 ## Commandes
 
 ```bash
-tools/test.sh                  # tests GUT headless (refuse d'abord toute mesure de temps réel : tools/check_test_timing.sh)
+tools/test.sh                  # suite complète, avant une fusion (verrou : 2 suites complètes max sur le Mac ; affiche les 10 scripts les plus lents)
+tools/test.sh --changed [base] # pendant une tâche : seulement les tests liés aux fichiers modifiés depuis base (défaut origin/main)
+tools/test.sh -f surf,safari   # pendant une tâche : les fichiers de test dont le nom contient un des motifs
 tools/build_android.sh         # APK debug → build/kanto2026-debug.apk
 tools/deploy_s24.sh            # build + install + lancement + capture build/screenshot.png + logs (USB ou Wi-Fi)
 tools/s24_serial.sh            # série adb du S24 (USB ou débogage sans fil)

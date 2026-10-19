@@ -164,6 +164,9 @@ static func status_has_effect(move: MoveData, own: Battler, foe: Battler) -> boo
 					return true
 			MoveEffect.Kind.FIXED_DAMAGE:
 				return true
+			MoveEffect.Kind.FORCE_SWITCH:
+				# Hurlement (jalon 19) : la réserve de la cible n'est pas connue ici [D].
+				return true
 			MoveEffect.Kind.DISABLE:
 				if foe.last_move_slot >= 0 and not foe.has_disabled_move() \
 						and not foe.is_biding():
@@ -212,9 +215,14 @@ func _uses_of(pokemon: Pokemon) -> Dictionary:
 
 
 ## Jalon 12 : faux si l'attaque [param move] serait un mauvais choix malgré ses dégâts — piège
-## sur une cible déjà piégée, Destruction / Explosion au-dessus d'¼ des PV de [param own].
+## sur une cible déjà piégée, Destruction / Explosion au-dessus d'¼ des PV de [param own] ;
+## Dévorêve sur une cible qui ne dort pas (jalon 19).
 static func damaging_is_sensible(move: MoveData, own: Battler, foe: Battler) -> bool:
 	if move.effect_of(MoveEffect.Kind.TRAP) != null and foe.is_trapped():
+		return false
+	# Jalon 19 : Dévorêve rate sur une cible qui ne dort pas.
+	if move.effect_of(MoveEffect.Kind.REQUIRES_SLEEP) != null \
+			and foe.pokemon.status != StatusRules.SLEEP:
 		return false
 	if move.effect_of(MoveEffect.Kind.SELF_KO) != null:
 		var max_hp := own.pokemon.max_hp()

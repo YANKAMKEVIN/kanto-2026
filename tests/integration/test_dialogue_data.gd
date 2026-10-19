@@ -102,6 +102,8 @@ const DOSSIER_15 := "res://docs/design/dossier-15-route-3-mont-selenite.md"
 const DOSSIER_11 := "res://docs/design/dossier-11-route-2.md"
 ## Jalon 17 (T8) : lot de textes validé du dossier 20 §16 (« / » entre deux bulles, « ** » le
 ## titre d'un panneau ; jetons {n}, {reste}) et annexe A de son plan (accord à 1 espèce, Q-2).
+## Jalon 19 (T14) : lot de textes du dossier 22 §15 (Exorcistes §15.4, SPECTRE §15.3, §15.7).
+const DOSSIER_22 := "res://docs/design/dossier-22-tour-pokemon.md"
 const DOSSIER_20 := "res://docs/design/dossier-20-chemins-retrouves.md"
 const JALON_17 := "res://docs/tech/jalon-17.md"
 const _DOSSIER_TOKENS: Dictionary[String, String] = {"{first_wild_species}": "{espèce}",
@@ -155,6 +157,9 @@ const MAPS: Array[StringName] = [
 	&"route_9", &"route_10", &"route_10_center", &"dark_cave_1f", &"dark_cave_b1f",
 	&"lavender_town", &"lavender_center", &"lavender_mart", &"pokemon_house",
 	&"lavender_house_1", &"lavender_house_2", &"pokemon_tower_1f",
+	&"pokemon_tower_3f", &"pokemon_tower_4f", &"pokemon_tower_5f", &"pokemon_tower_6f",
+	# Jalon 19 (T17) : le rival n° 5 et l'Exorciste calme du 2F.
+	&"pokemon_tower_2f",
 ]
 ## Lot de textes validé par Kevin le 2026-10-06 (anciens brouillons : panneau, observations,
 ## soin de Maman, terminal du Stockage, portes de Jadielle…) : source des textes hors dossiers.
@@ -424,6 +429,50 @@ const PLAYED_J16_T15: Array[StringName] = [
 const DOSSIER_19 := "res://docs/design/dossier-19-ss-anne-major-bob.md"
 ## Jalon 18 (T16) : Route 9, Route 10, Grotte Sombre, Lavanville, Tour (dossier 21 §15, annexe A
 ## du plan ; mot pour mot : test_j18_data, test_trainers_j18).
+const IDS_J19: Array[StringName] = [
+	&"tower_channeler_1_after",
+	&"tower_channeler_1_before",
+	&"tower_channeler_1_defeated",
+	&"tower_channeler_2_after",
+	&"tower_channeler_2_before",
+	&"tower_channeler_2_defeated",
+	&"tower_channeler_3_after",
+	&"tower_channeler_3_before",
+	&"tower_channeler_3_defeated",
+	&"tower_channeler_4_after",
+	&"tower_channeler_4_before",
+	&"tower_channeler_4_defeated",
+	&"tower_channeler_5_after",
+	&"tower_channeler_5_before",
+	&"tower_channeler_5_defeated",
+	&"tower_channeler_6_after",
+	&"tower_channeler_6_before",
+	&"tower_channeler_6_defeated",
+	&"tower_channeler_7_after",
+	&"tower_channeler_7_before",
+	&"tower_channeler_7_defeated",
+	&"tower_channeler_8_after",
+	&"tower_channeler_8_before",
+	&"tower_channeler_8_defeated",
+	&"tower_channeler_9_after",
+	&"tower_channeler_9_before",
+	&"tower_channeler_9_defeated",
+	&"tower_6f_ghost_after",
+	&"tower_6f_ghost_warning",
+	# T16 : la gardienne du rez-de-chaussée (§15.1.1 à 4).
+	&"tower_guardian_worried",
+	# T20 : Lavanville au J19 (§15.6.2 à 15.6.5).
+	&"pokemon_house_man", &"pokemon_house_girl", &"lavender_center_gentleman",
+	&"lavender_scope_sign",
+	# T17 : le rival n° 5 (§15.2) et l'Exorciste calme du 2F (§15.4).
+	&"rival_tower_intro", &"rival_tower_lost", &"rival_tower_resume", &"rival_tower_won",
+	&"tower_2f_calm",
+	# T18 : Exorciste calme du 5F (§15.4), zone purifiée (§15.5), objets de la Tour (scènes).
+	&"tower_exorcist_calm", &"tower_purified_zone_heal", &"tower_purified_zone_done",
+	&"tower_3f_objet_1", &"tower_4f_objet_1", &"tower_4f_objet_2", &"tower_5f_objet_1",
+	&"tower_5f_cache_1", &"tower_6f_objet_1",
+]
+
 const IDS_J18: Array[StringName] = [
 	&"dark_cave_1f_item_1", &"dark_cave_1f_item_2", &"dark_cave_1f_sign",
 	&"dark_cave_b1f_hidden_1", &"dark_cave_b1f_item_1", &"dark_cave_column", &"dark_cave_crack",
@@ -458,7 +507,8 @@ const IDS_J18: Array[StringName] = [
 ]
 ## Jalon 18 (T16) : drapeaux levés par ses dialogues (Exorciste, enfant de la Maison des Pokémon)
 ## et ses scènes (objets, déclencheurs silencieux des objectifs).
-const SET_J18_DIALOGUES: Array[StringName] = [&"pokemon_house_kid_talked", &"tower_medium_talked"]
+## J19 (T16) : l'Exorciste ne pose plus `tower_medium_talked` (T-34 remplacé par la scène).
+const SET_J18_DIALOGUES: Array[StringName] = [&"pokemon_house_kid_talked"]
 const SET_J18_CUTSCENES: Array[StringName] = [
 	&"dark_cave_crossed", &"got_dark_cave_1f_item_1", &"got_dark_cave_1f_item_2",
 	&"got_dark_cave_b1f_hidden_1", &"got_dark_cave_b1f_item_1", &"got_route_10_item_1",
@@ -503,8 +553,8 @@ const SET_J14_BILL_CUTSCENES: Array[StringName] = [
 ## T20b : levé (scène du combat), plus aucun drapeau futur.
 ## Jalon 16 (T12, T15) : `got_hm01` (lu par le marin de la passerelle et le départ du navire) est
 ## levé par la scène du capitaine (T13). Jalon 18 (T16) : `tower_stairs_open` (présence de
-## l'Exorciste de la Tour) est levé au J19 (dossier 22 K-3).
-const FUTURE_FLAGS: Array[StringName] = [&"tower_stairs_open"]
+## l'Exorciste de la Tour) est levé au J19 (T16 : scène `tower_guardian`, dossier 22 K-3).
+const FUTURE_FLAGS: Array[StringName] = [&"ghost_marowak_calmed"]
 var _library: DialogueLibrary
 var _cutscenes: CutsceneLibrary
 var _offer: StarterOffer
@@ -636,7 +686,7 @@ func test_library_loads_without_error() -> void:
 	var found := _without_qa(library.get_ids())
 	found.sort()
 	var expected := IDS + IDS_J14_BILL + IDS_J14_ROCKET + IDS_J15_ROUTE_5 + IDS_J16_GYM \
-		+ IDS_J16_SHIP + IDS_J16_RIVAL_CAPTAIN + IDS_J16_T15 + IDS_J17 + IDS_J18
+		+ IDS_J16_SHIP + IDS_J16_RIVAL_CAPTAIN + IDS_J16_T15 + IDS_J17 + IDS_J18 + IDS_J19
 	expected.sort()
 	assert_eq(found, expected)
 
@@ -667,6 +717,14 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		&"clerk_parcel", &"clerk_parcel_hello",
 		# Jalon 13 (T19) : Ondine au pont.
 		&"misty_bridge_invite",
+		# Jalon 19 (T14) : le SPECTRE du 6F.
+		&"tower_6f_ghost_after", &"tower_6f_ghost_warning",
+		# Jalon 19 (T16) : la gardienne du rez-de-chaussée.
+		&"tower_guardian_worried",
+		# Jalon 19 (T17) : le rival n° 5 (joué par sa scène).
+		&"rival_tower_intro", &"rival_tower_lost", &"rival_tower_resume", &"rival_tower_won",
+		# Jalon 19 (T18) : la zone purifiée du 5F.
+		&"tower_purified_zone_heal", &"tower_purified_zone_done",
 		# Jalon 12 (T25) : scène du chercheur et choix du fossile.
 		&"mt_moon_researcher_before", &"mt_moon_researcher_chosen",
 		&"mt_moon_researcher_defeated", &"mt_moon_researcher_rematch",
@@ -817,6 +875,9 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		&"pokedex_activated", &"rival_battle_done", &"rival_cerulean_lost_once",
 		&"rival_cerulean_retried", &"rival_cerulean_won", &"rival_challenged", &"rival_lab_lost",
 		&"rival_lab_won", &"rival_left_lab", &"rival_route22_lost", &"rival_route22_won",
+		&"rival_tower_lost_once", &"rival_tower_retried", &"rival_tower_won",
+		# Jalon 19 (T24) : première rencontre du SPECTRE du 6F (dossier 22 §13).
+		&"tower_ghost_met",
 		&"route_3_entered", &"route_3_guard_cleared", &"route_4_reached", &"route_5_entered",
 		&"starter_chosen",
 		&"starter_offered", &"tm11_received", &"tm34_received", &"viridian_arrived",
@@ -841,7 +902,12 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		&"cut_route_2_east_bush", &"cut_route_2_futur_a",
 		# Jalon 18 (T15) : l'arbre de la sortie est d'Azuria.
 		&"cut_cerulean_east_tree"]
-		+ SET_J14_BILL_CUTSCENES + SET_J14_ROCKET_CUTSCENES + SET_J18_CUTSCENES))
+		+ SET_J14_BILL_CUTSCENES + SET_J14_ROCKET_CUTSCENES + SET_J18_CUTSCENES
+		# Jalon 19 (T16) : la gardienne de la Tour s'écarte.
+		+ [&"tower_stairs_open"]
+		# Jalon 19 (T18) : objets de la Tour (cinq visibles, un caché).
+		+ [&"got_tower_3f_objet_1", &"got_tower_4f_objet_1", &"got_tower_4f_objet_2",
+		&"got_tower_5f_objet_1", &"got_tower_5f_cache_1", &"got_tower_6f_objet_1"]))
 	assert_eq(_used_on.get(&"oak_lab_reunion"), [&"oak_lab"], "joué au labo, après le fondu")
 	assert_eq(_used_on.get(&"oak_starter_offer"), [&"oak_lab"], "joué au labo")
 
@@ -1016,7 +1082,9 @@ func test_mom_heal_variant() -> void:
 	# Seule cette variante soigne (le réveil après défaite soigne par la défaite, pas par le texte).
 	for id: StringName in _real_ids():
 		for variant: DialogueVariant in _library.get_dialogue(id).variants:
-			assert_eq(variant.action == &"heal", variant == heal, "%s : « heal »" % id)
+			# J19 (T18) : la zone purifiée du 5F soigne à la fin de sa première page (§2.8).
+			var zone_heal := id == &"tower_purified_zone_heal"
+			assert_eq(variant.action == &"heal", variant == heal or zone_heal, "%s : « heal »" % id)
 
 
 func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
@@ -1039,6 +1107,8 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 	var dossier_15 := FileAccess.get_file_as_string(DOSSIER_15)
 	var dossier_21 := FileAccess.get_file_as_string(DOSSIER_21) \
 		+ FileAccess.get_file_as_string(PLAN_J18)
+	var dossier_22 := FileAccess.get_file_as_string(DOSSIER_22).replace("\n   ", " ") \
+		.replace("\n  ", " ")
 	var dossier_20 := FileAccess.get_file_as_string(DOSSIER_20).replace("**", "")
 	var annex_a_17 := AnnexATexts.annex_a(FileAccess.get_file_as_string(JALON_17))
 	var dossier_17 := FileAccess.get_file_as_string(DOSSIER_17) \
@@ -1097,7 +1167,12 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			or dossier_19.contains("« %s »" % text.replace("\n", " "))
 			# J18 (T16) : dossier 21 §15 et plan (annexe A).
 			or dossier_21.contains(text.replace("\n", " "))
-			or dossier_21.contains("« %s »" % text.replace("\n", " / ")),
+			or dossier_21.contains("« %s »" % text.replace("\n", " / "))
+			# J19 (T14) : dossier 22 §15 (une réplique peut tenir sur deux pages).
+			or _in_dossier_18(dossier_22, text)
+			or _in_dossier_18(dossier_22, text.replace("{joueur}", "{player}"))
+			# J19 (T17) : citation du §15 repliée sur deux lignes du dossier.
+			or _in_dossier_18(_flat_lines(dossier_22), text),
 			"%s : « %s » dans un dossier de conception" % [row[0], text])
 
 
@@ -1121,6 +1196,12 @@ func _each_line_quoted(dossier: String, text: String) -> bool:
 		if not dossier.contains("« %s »" % line):
 			return false
 	return true
+
+
+## Dossier dont les lignes d'un même paragraphe sont rejointes.
+func _flat_lines(dossier: String) -> String:
+	return RegEx.create_from_string("(?<!\\n)\\n[ ]*(?=\\S)").sub(dossier, " ", true) \
+			.replace("  ", " ")
 
 
 ## Jalon 15 : vrai si [param text] (retours à la ligne de la bulle remplacés par des espaces) est
@@ -1305,12 +1386,12 @@ func test_oak_parcel_lines() -> void:
 	# de la Route 11 ; (T20) Pierre Lune et Super Bonbon ; (T21) Super Potion de FUTUR A ;
 	# (intégration) Corde Sortie de la Cave.
 	# Jalon 18 (T16) : sept objets au sol (Route 9, Route 10, grotte) et la Super Potion cachée.
-	assert_eq(launched, 71, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
+	assert_eq(launched, 78, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
 		+ "sa CT34, Ondine (pont, Arène et rattrapage), écran, module, console, objets de la "
 		+ "Route 25, le Rocket d'Azuria (2) et le barrage sud ; J15 : objets de la Route 5 ; "
 		+ "J16 : Major Bob (2), neuf objets du S.S. Anne, le capitaine, le marin (2) ; "
 		+ "J17 : la CS05, Route 11 (3), deux objets du couloir, la Super Potion de la clairière "
-		+ "et la Corde Sortie de la Cave ; J18 : huit objets")
+		+ "et la Corde Sortie de la Cave ; J18 : huit objets ; J19 : la gardienne de la Tour et six objets de la Tour (T18)")
 	# Le jeton n'apparaît que dans la réplique de l'espèce, « {pokemon} » dans les phrases du
 	# compagnon (J11), et ceux de la Pension dans ses répliques (J15).
 	for row: Array in _pages():
@@ -1330,7 +1411,8 @@ func test_oak_parcel_lines() -> void:
 			expected = [DialogueTokens.FIRST_WILD_SPECIES]
 		elif PLAYED_BY_COMPANION.has(row[0]):
 			expected = [DialogueTokens.POKEMON]
-		elif row[0] == &"nugget_rocket_given":
+		elif row[0] == &"nugget_rocket_given" \
+				or (row[0] == &"rival_tower_intro" and row[1].contains("{player}")):
 			expected = [DialogueTokens.PLAYER]
 		elif J17_TOKENS.has(row[1]):
 			# Jalon 17 (T8) : compte d'espèces de l'assistant (T-1 à T-3), joueur de T-3.

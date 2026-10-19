@@ -96,12 +96,14 @@ func test_new_moves() -> void:
 	assert_eq([gas.accuracy, gas.pp, gas.effects[0].status], [55, 40, &"poison"])
 	var meditate := _data.get_move(&"meditate")
 	assert_eq([meditate.effects[0].stat, meditate.effects[0].stages], [&"atk", 1])
-	# Sans effet dans le moteur actuel (règle du J12) : la mention est dans la description.
+	# Effets codés au jalon 19 (`test_moves_j19_effects.gd`) : plus de `pending_effects` ni de
+	# mention « Sans effet dans le moteur actuel. » (accord du J17, alignement T10 du J19).
 	for id: StringName in [&"roar", &"take_down"]:
 		var move := _data.get_move(id)
-		assert_eq(move.effects.size(), 0, String(id))
-		assert_false(move.pending_effects.is_empty(), String(id))
-		assert_true(move.description.ends_with("Sans effet dans le moteur actuel."), String(id))
+		assert_eq(move.effects.size(), 1, String(id))
+		assert_true(move.pending_effects.is_empty(), String(id))
+		assert_false(move.description.contains("Sans effet"), String(id))
+		assert_eq(move.source, "res://data/pokemon/moves/j17.json", String(id))
 
 
 ## CS05 : objet de la catégorie CT, numéro de CS 5, jamais consommée ni vendue ; T-15.

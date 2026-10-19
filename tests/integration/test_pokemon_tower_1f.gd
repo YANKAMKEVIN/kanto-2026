@@ -116,9 +116,13 @@ func test_exit_and_stairs_warps() -> void:
 	var stairs := _map.get_warps().find_on_step(STAIRS, Vector2i.UP)
 	assert_not_null(stairs, "escalier")
 	if stairs != null:
-		assert_true(stairs.is_coming_soon(), "pokemon_tower_2f n'existe pas au J18")
-		assert_eq(stairs.coming_soon, "Tour Pokémon")
-		assert_eq(_map.get_spawn_cell(stairs.target_spawn), ACCESS)
+		# J19 (T16) : armé vers le 2F (au J18, repli « à venir »).
+		assert_false(stairs.is_coming_soon(), "pokemon_tower_2f existe (T16)")
+		assert_eq([stairs.target_map, stairs.target_spawn],
+			[&"pokemon_tower_2f", &"arrivee_T12"])
+		assert_eq(stairs.facing, Vector2i.LEFT)
+	# Retour du 2F : `from_pokemon_tower_2f` sur la case d'accès (17, 3).
+	assert_eq(_map.get_spawn_cell(&"from_pokemon_tower_2f"), ACCESS)
 	assert_eq(_map.get_warps().size(), 3)
 
 
@@ -130,9 +134,10 @@ func test_candles_life_and_budget() -> void:
 			candles += 1
 	assert_eq(candles, 6, "six halos candle")
 	assert_eq(glows.size() >= 0, true)
-	# T24 : un point d'examen par tombe (36) et un pour le comptoir ; aucun déclencheur.
+	# T24 : un point d'examen par tombe (36) et un pour le comptoir ; J19 (T16) : deux
+	# déclencheurs, le premier pas depuis l'entrée (9..10, 15).
 	assert_eq(_map.get_node(^"Interactables").get_child_count(), 36 + 1)
-	assert_eq(_map.get_node(^"Triggers").get_child_count(), 0)
+	assert_eq(_map.get_node(^"Triggers").get_child_count(), 2)
 	# T16 : gardien, trois visiteurs, Exorciste (data/npcs/pokemon_tower_1f.json).
 	assert_eq(_map.get_npcs().size(), 5, "cinq PNJ")
 	assert_lte(GridPaths.count_nodes(_map), 3000)
