@@ -14,6 +14,34 @@
 
 ---
 
+## 0. Réalignement sur le J24 (2026-10-19) — X-25 à X-30 À VALIDER
+
+Le dossier 27 du J24 (`origin/docs/dossier-27-j24`, plus ancien, validé par Kevin le 2026-10-16) et
+ses grilles (`origin/j24-t2-mer`) construisent **déjà** une partie de ce que ce dossier décrivait.
+Règle d'ancienneté : le J25 **réutilise** ce travail tel quel et ne le modifie qu'avec l'accord de
+Kevin. Ce qui suit **prévaut** sur les §6, §6.2–§6.4, §5 (porte), §11 et les textes 26–37, 55–66
+et 75 tant que Kevin n'a pas répondu.
+
+| Le J24 construit | Identifiants J24 | Conséquence pour le J25 |
+|---|---|---|
+| Ville de Cramois'Île (`cinnabar_island.txt`, 34 × 27 env.) ; porte du Labo, Centre, Boutique | `porte_labo`, `from_labo`… | Le J25 s'y raccorde (porte du Manoir, porte de l'Arène). |
+| **Manoir : entrée effondrée**, gravats, EXAMINER « L'entrée s'est effondrée. Personne ne peut entrer. » (T-43), **aucun warp** | `examen_manoir` (9..10, 5) | **X-25** |
+| **Porte de l'Arène** fermée sans `secret_key`, T-42, recul d'une case | `porte_arene`, `recul_arene` | Le J25 garde T-42 (son texte 75 est retiré) et ajoute seulement l'ouverture (textes 76–77, `cinnabar_gym_unlocked`). |
+| **Laboratoire complet** : hall, salle de réunion, R. et D., salle des fossiles ; grilles `cinnabar_labo_hall`, `_reunion`, `_rd`, `_fossiles` | T-50 à T-58 | Les grilles `cramois_labo*.txt` du J25 sont **retirées** ; textes 26–37 du J25 retirés (ceux du J24 restent). |
+| Les 3 PNJ des échanges **sans échange** (T-52 Papy : « Mon Électrode s'appelle Doris », T-53, T-54) | — | **X-26** |
+| **Résurrection des fossiles** (`FossilLab` : `IDLE → REVIVING → READY`, `fossil_reviving_<espèce>`, prêt au chargement de `cinnabar_island`, don par `PokemonGift`), Kabuto et Amonita | T-60 à T-63 | **X-27** |
+| **CT35 Métronome** et l'effet Métronome | `got_tm35` | X-13 devient sans objet : la CT35 est donnée au J24. |
+| Mail du PC sur les oiseaux légendaires (T-58, réécrit : Îles Écume) | — | **X-28** |
+
+| N° | Question | Options | Recommandation |
+|---|---|---|---|
+| **X-25** | Ouvrir le Manoir que le J24 ferme | **A** : l'entrée effondrée était un **état provisoire** du développement : à la fusion du J25, la carte de Cramois'Île reçoit la vraie porte (warp vers `pokemon_mansion_1f`) et T-43 disparaît ; le joueur trouve le Manoir ouvert dès son arrivée · **B** : les gravats restent dans le jeu final et disparaissent après un événement (à inventer) | **A** : RB n'a aucun verrou sur le Manoir, et « sans promesse » (P-20) visait seulement à ne rien annoncer avant le J25. La réplique T-45 (« Plus personne n'y va ») reste juste. |
+| **X-26** | Échanges sur les 3 PNJ du J24 | **A** : le J25 ajoute les échanges à ces PNJ ; ses textes 38–54 **remplacent** T-52 à T-54 ; surnoms VF RB (Kourjus, Bigoudi, Bibi) · **B** : garder les surnoms anglais du J24 (« Doris ») | **A**. Prénoms des PNJ [D] : ceux du J24 s'il en donne, sinon Hector, Lina, Marc. |
+| **X-27** | Fossiles | — | Le §6.3 du J25 est **abandonné** au profit du `FossilLab` du J24. Le J25 ajoute seulement le **Vieil Ambre → Ptéra** (une ligne de données dans la liste des fossiles, l'espèce Ptéra, la réserve d'Argenta), et Kabutops / Amonistar si le J24 ne les crée pas. Textes : variantes « Vieil Ambre » / « Ptéra » des T-60 à T-62 du J24 (les textes 55–66 du J25 sont retirés). La note du J24 « Pas de Vieil Ambre dans le projet » est dépassée par X-3. |
+| **X-28** | Mail du PC | **A** : garder T-58 du J24 · **B** : textes 34–36 du J25 (« caverne près d'Azuria ») | **A** : texte plus ancien et validé ; la graine de la caverne pourra revenir ailleurs. |
+| **X-29** | Porte de l'Arène | — | T-42 du J24 gardé ; le J25 ajoute l'ouverture (76–77). |
+| **X-30** | Livraison | — | Le J25 code après la fusion du J24 (son Labo, son `FossilLab`, sa ville). 25B devient **« échanges + Vieil Ambre »** (encore validé seul : un échange retire un Pokémon). |
+
 ## 1. Décisions verrouillées
 
 ### 1.1 V2 (7 décisions, non rouvertes)

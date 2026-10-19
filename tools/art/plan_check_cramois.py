@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-"""Vérifie les grilles de l'Arène, du Laboratoire de Cramois'Île et de la réserve du Musée
-d'Argenta (jalon 25, dossier 28 §6 à §8). Le Manoir a son propre contrôle (`plan_check_manoir.py`).
+"""Vérifie les grilles de l'Arène de Cramois'Île et de la réserve du Musée d'Argenta (jalon 25,
+dossier 28 §7 et §8). Le Manoir a son propre contrôle (`plan_check_manoir.py`). Le Laboratoire
+appartient au J24 (`cinnabar_labo_*.txt`, règle d'ancienneté) : il n'est pas contrôlé ici.
 
 **Arène** (`cramois_arene.txt`) : herses `p` fermées sans leur drapeau ; on ouvre les herses une à
 une dans l'ordre 1 → 6 et l'on vérifie à chaque étape :
@@ -11,8 +12,7 @@ une dans l'ordre 1 → 6 et l'on vérifie à chaque étape :
   4. aucune herse ne se contourne (fermer la herse N coupe tout ce qui est derrière) ;
   5. chaque machine se lit depuis la case du dessous.
 
-**Laboratoire** (4 grilles) et **réserve du Musée** : toutes les positions atteignables depuis
-l'entrée (une case voisine), portes du hall reliées aux salles.
+**Réserve du Musée** : toutes les positions atteignables depuis l'entrée (une case voisine).
 
 Usage : python3 tools/art/plan_check_cramois.py   (code 1 si un critère échoue)
 """
@@ -107,22 +107,11 @@ def verifier_interieur(fichier: str, entree: str = "entree") -> None:
 		print(f"ok     {fichier} : {len(plan.positions)} positions atteignables")
 
 
-def verifier_labo() -> None:
-	hall = lire(PLANS / "cramois_labo.txt")
-	for p in hall.of_kind("warp"):
-		vers = p.attrs.get("vers", "")
-		if vers.startswith("cinnabar_lab_"):
-			salle = lire(PLANS / f"cramois_labo_{vers.removeprefix('cinnabar_lab_')}.txt")
-			if salle.positions["sortie"].attrs.get("vers") != "cinnabar_lab":
-				echec(f"{vers} : la sortie ne ramène pas au hall")
-			if hall.at(*p.cells[0]) != "D":
-				echec(f"hall : {p.ident} n'est pas sur une porte D")
-	for f in ("cramois_labo.txt", "cramois_labo_reunion.txt", "cramois_labo_recherche.txt",
-			"cramois_labo_test.txt", "argenta_musee_reserve.txt"):
-		verifier_interieur(f)
+def verifier_reserve() -> None:
+	verifier_interieur("argenta_musee_reserve.txt")
 
 
 if __name__ == "__main__":
 	verifier_arene()
-	verifier_labo()
+	verifier_reserve()
 	sys.exit(0 if ok else 1)
