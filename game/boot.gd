@@ -72,6 +72,9 @@ const RARE_CANDY: StringName = &"rare_candy"
 var debug_start_path: String = DebugStart.USER_PATH
 ## Tests seulement : appliquer le départ de débogage même sous GUT (jamais en jeu).
 var force_debug_start: bool = false
+## Tests seulement : grottes lues dans un autre fichier (J17 T28 : la Cave Taupiqueur rendue
+## obscure pour éprouver le voile et Flash dans le vrai Boot ; jamais en jeu).
+var caves_path: String = CaveLibrary.DATA_PATH
 ## Sauvegarde de la partie (jalon 5C.5). Les tests en injectent une (système de fichiers en
 ## mémoire) avant add_child. Null : Boot ouvre la vraie (`user://save.json`) **seulement s'il
 ## est la scène principale lancée par le moteur** ; sous GUT et dans les outils de capture
@@ -1788,7 +1791,7 @@ func _on_save_requested() -> void:
 ## Grottes (`data/world/caves.json`) et UTILISER d'un objet AVENTURE sans cible (la Corde
 ## Sortie) : le Sac la refuse hors grotte, sinon Boot la joue ([method _on_field_item_requested]).
 func _setup_caves() -> void:
-	if not _caves.load_file():
+	if not _caves.load_file(caves_path):
 		for error: String in _caves.get_errors():
 			push_error("Boot : %s" % error)
 	_menu.set_caves(_caves, _current_map_id)

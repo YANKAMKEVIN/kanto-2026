@@ -33,10 +33,11 @@ Forêt de Jade, `heros_foret`).
 Code de sortie 1 si un seuil n'est pas tenu.
 
 Option `--halo` (J17 T25, voile d'obscurité) : mesure les captures de `tools/capture_flash.sh`
-(carte de QA `qa_flash`, nom `<sans_voile|dark|lit>_<lieu>.png` + `_vide`) : contraste du héros
-≥ 3,0 dans le halo (héros contre le sol qu'il recouvre) et **sol hors du halo ≥ 0,10** (cases
-praticables entièrement à l'écran, plus loin du joueur que la fin du fondu : 4 cases sans Flash,
-9 avec ; non mesuré sans voile ni si aucune case n'est assez loin).
+(voile posé sur une grotte de `PLANS` ; la carte de QA `qa_flash` est retirée au J17 T28 ; nom
+`<sans_voile|dark|lit>_<lieu>.png` + `_vide`) : contraste du héros ≥ 3,0 dans le halo (héros
+contre le sol qu'il recouvre) et **sol hors du halo ≥ 0,10** (cases praticables entièrement à
+l'écran, plus loin du joueur que la fin du fondu : 4 cases sans Flash, 9 avec ;
+non mesuré sans voile ni si aucune case n'est assez loin).
 """
 from __future__ import annotations
 
@@ -67,7 +68,6 @@ SEUIL_ECART = 1.25
 # centre / pourtour est donné pour information, il n'y a pas de pénombre à mesurer.
 SANS_VOILE = {"digletts_cave"}
 SEUIL_HORS_HALO = 0.10
-PLAN_QA = "tools/plans/qa_flash.txt"
 FONDU = {"dark": 4.0, "lit": 9.0}  # fin du fondu du halo (cases), data/world/darkness.json
 REPERES = set("LjUVE*")
 RAYON_JOUEUR = 2.5
@@ -236,12 +236,12 @@ def contraste_heros(image, vide, joueur, tuile, ox, oy) -> float | None:
 
 
 def mesurer_halo(png: Path, fiche: dict) -> dict | None:
-	if fiche["map"] != "qa_flash" or not fiche.get("player"):
+	if fiche["map"] not in PLANS or not fiche.get("player"):
 		return None
 	vide = png.with_name(png.stem + "_vide.png")
 	if not vide.exists():
 		return None
-	plan = plan_grille.lire(RACINE / PLAN_QA)
+	plan = plan_grille.lire(RACINE / PLANS[fiche["map"]])
 	image = Image.open(png).convert("RGB")
 	tuile = int(fiche["tile"])
 	cx, cy = fiche["center"]
@@ -302,7 +302,7 @@ def main() -> int:
 	parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
 	parser.add_argument("dossier", type=Path)
 	parser.add_argument("--json", type=Path)
-	parser.add_argument("--halo", action="store_true", help="captures du voile (qa_flash)")
+	parser.add_argument("--halo", action="store_true", help="captures du voile (tools/capture_flash.sh)")
 	args = parser.parse_args()
 	if args.halo:
 		return main_halo(args)

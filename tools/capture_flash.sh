@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Captures de la carte de QA `qa_flash` (jalon 17 T25) à 2340 × 1080 : sans voile, voile sombre,
-# Flash ouvert, au milieu et au bord de la carte, avec leurs vues jumelles sans héros (« _vide »,
+# Captures du voile d'obscurité (jalon 17 T25) à 2340 × 1080 : sans voile, voile sombre, Flash
+# ouvert, au milieu et au bord de la carte, avec leurs vues jumelles sans héros (« _vide »,
 # même caméra, même trou) pour le contraste du héros :
 #
 #   tools/capture_flash.sh              # toute la série
@@ -8,6 +8,8 @@
 #   python3 tools/art/luminance_grotte.py --halo build/captures/flash
 #
 # Sortie : build/captures/flash/<nom>.png + <nom>.json (fiche de la caméra).
+# J17 T28 : la carte de QA `qa_flash` est retirée ; le voile est posé (`--voile`) sur la Cave
+# Taupiqueur, éclairée en jeu. Au J18, viser ses vraies grottes obscures (MAP ci-dessous).
 set -euo pipefail
 cd "$(dirname "$0")/.."
 OUT=build/captures/flash
@@ -18,22 +20,28 @@ trap cleanup EXIT
 printf '[display]\nwindow/size/window_width_override=2340\nwindow/size/window_height_override=1080\n' \
 	> override.cfg
 
-# nom | arguments de tools/capture_mt_moon.gd (milieu = (15, 7), bord = coin sud-ouest (3, 13))
+MAP="${MAP:-digletts_cave}"
+# nom | arguments de tools/capture_mt_moon.gd (milieu = bras est (15, 37), bord = salle nord
+# (16, 1), bord ouest = couloir B (3, 44))
 SHOTS=(
-	"sans_voile_milieu|--map=qa_flash --cell=15,7 --facing=down"
-	"sans_voile_milieu_vide|--map=qa_flash --cell=15,7 --facing=down --invisible"
-	"dark_milieu|--map=qa_flash --cell=15,7 --facing=down --voile=dark"
-	"dark_milieu_vide|--map=qa_flash --cell=15,7 --facing=down --voile=dark --invisible"
-	"lit_milieu|--map=qa_flash --cell=15,7 --facing=down --voile=lit"
-	"lit_milieu_vide|--map=qa_flash --cell=15,7 --facing=down --voile=lit --invisible"
-	"dark_bord|--map=qa_flash --cell=3,13 --facing=down --voile=dark"
-	"dark_bord_vide|--map=qa_flash --cell=3,13 --facing=down --voile=dark --invisible"
-	"lit_bord|--map=qa_flash --cell=3,13 --facing=down --voile=lit"
-	"lit_bord_vide|--map=qa_flash --cell=3,13 --facing=down --voile=lit --invisible"
-	"dark_bord_est|--map=qa_flash --cell=28,5 --facing=down --voile=dark"
-	"dark_bord_est_vide|--map=qa_flash --cell=28,5 --facing=down --voile=dark --invisible"
-	"lit_bord_est|--map=qa_flash --cell=28,5 --facing=down --voile=lit"
-	"lit_bord_est_vide|--map=qa_flash --cell=28,5 --facing=down --voile=lit --invisible"
+	"sans_voile_milieu|--map=$MAP --cell=15,37 --facing=down"
+	"sans_voile_milieu_vide|--map=$MAP --cell=15,37 --facing=down --invisible"
+	"dark_milieu|--map=$MAP --cell=15,37 --facing=down --voile=dark"
+	"dark_milieu_vide|--map=$MAP --cell=15,37 --facing=down --voile=dark --invisible"
+	"lit_milieu|--map=$MAP --cell=15,37 --facing=down --voile=lit"
+	"lit_milieu_vide|--map=$MAP --cell=15,37 --facing=down --voile=lit --invisible"
+	"sans_voile_bord|--map=$MAP --cell=16,1 --facing=down"
+	"sans_voile_bord_vide|--map=$MAP --cell=16,1 --facing=down --invisible"
+	"dark_bord|--map=$MAP --cell=16,1 --facing=down --voile=dark"
+	"dark_bord_vide|--map=$MAP --cell=16,1 --facing=down --voile=dark --invisible"
+	"lit_bord|--map=$MAP --cell=16,1 --facing=down --voile=lit"
+	"lit_bord_vide|--map=$MAP --cell=16,1 --facing=down --voile=lit --invisible"
+	"sans_voile_bord_ouest|--map=$MAP --cell=3,44 --facing=down"
+	"sans_voile_bord_ouest_vide|--map=$MAP --cell=3,44 --facing=down --invisible"
+	"dark_bord_ouest|--map=$MAP --cell=3,44 --facing=down --voile=dark"
+	"dark_bord_ouest_vide|--map=$MAP --cell=3,44 --facing=down --voile=dark --invisible"
+	"lit_bord_ouest|--map=$MAP --cell=3,44 --facing=down --voile=lit"
+	"lit_bord_ouest_vide|--map=$MAP --cell=3,44 --facing=down --voile=lit --invisible"
 )
 
 FILTER="${1:-.}"

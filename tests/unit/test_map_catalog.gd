@@ -25,21 +25,18 @@ func test_has_map() -> void:
 	assert_false(MapCatalog.has_map(&"does_not_exist"))
 
 
-## Cartes de QA encore livrées. Clôture du jalon 9 (T23) : la carte de QA des systèmes
-## est retirée ; jalon 12 (T28) : `qa_moves_j12` ; jalon 13 (T22) : `qa_switch_j13` ; jalon 14
+## Aucune carte de QA livrée. Clôture du jalon 9 (T23) : la carte de QA des systèmes est
+## retirée ; jalon 12 (T28) : `qa_moves_j12` ; jalon 13 (T22) : `qa_switch_j13` ; jalon 14
 ## (T24) : `qa_charge_j14` ; jalon 15 (T23) : `qa_daycare` ; jalon 16 (T20) : `qa_dock_j16`,
-## `qa_ship_j16`, `qa_gym_j16`. Jalon 17 (T10) : grotte obscure de QA du voile et de Flash et sa
-## pièce d'entrée, à retirer au T28.
-const QA_MAPS_SHIPPED: Array[String] = ["qa_flash.tscn", "qa_flash_entry.tscn"]
-
-
-func test_only_planned_qa_maps_are_shipped() -> void:
+## `qa_ship_j16`, `qa_gym_j16` ; jalon 17 (T28) : `qa_flash`, `qa_flash_entry` (les tests du
+## voile et de Flash tournent sur la Cave Taupiqueur rendue obscure en mémoire).
+func test_no_qa_map_is_shipped() -> void:
 	for map_id: StringName in [&"qa_forest_systems", &"qa_moves_j12", &"qa_switch_j13",
-			&"qa_charge_j14", &"qa_daycare", &"qa_dock_j16", &"qa_ship_j16", &"qa_gym_j16"]:
+			&"qa_charge_j14", &"qa_daycare", &"qa_dock_j16", &"qa_ship_j16", &"qa_gym_j16",
+			&"qa_flash", &"qa_flash_entry"]:
 		assert_false(MapCatalog.has_map(map_id), "%s retirée" % map_id)
 	for file: String in DirAccess.get_files_at(MapCatalog.MAPS_DIR):
-		if file.begins_with("qa_"):
-			assert_true(QA_MAPS_SHIPPED.has(file), "%s : carte de QA non prévue" % file)
+		assert_false(file.begins_with("qa_"), "%s : carte de QA livrée" % file)
 
 
 func test_qa_maps_are_recognised_by_their_prefix() -> void:
