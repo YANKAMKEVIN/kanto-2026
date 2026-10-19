@@ -1343,7 +1343,7 @@ def _facade() -> Image.Image:
 	"""Façade du Musée d'Argenta avec la porte arrière accolée à l'est et l'arbuste à Couper."""
 	bat = Image.open(RACINE / "assets/world/buildings/bldg_musee_argenta_01.png").convert("RGBA")
 	porte = piece("bldg_musee_porte_arriere_01")
-	arbuste = Image.open(RACINE / "assets/sprites/objects/painted/prop_jeune_arbre_arene_01.png"
+	arbuste = Image.open(RACINE / "assets/world/props/prop_jeune_arbre_arene_01.png"
 		).convert("RGBA")
 	pl = _grille(bat.width + 96 * 6, bat.height + 96, (96, 124, 84, 255))
 	sol = bat.height + 48
