@@ -232,5 +232,39 @@
 		"pages": [
 			"Quelque chose refuse qu'on passe."
 		]
+	},
+	"rival_tower_intro": {
+		"speaker": "{rival}",
+		"pages": [
+			"…",
+			"{player}. …Tu es venu pour quoi ?",
+			"Peu importe."
+		]
+	},
+	"rival_tower_won": {
+		"speaker": "{rival}",
+		"pages": [
+			"…Il y a des choses, plus haut.\nDes Pokémon que personne\nn'arrive à voir.",
+			"Laisse tomber."
+		]
+	},
+	"rival_tower_resume": {
+		"speaker": "{rival}",
+		"pages": [
+			"Encore toi. …Vas-y."
+		]
+	},
+	"rival_tower_lost": {
+		"speaker": "{rival}",
+		"pages": [
+			"…Rentre. Ce n'est pas un endroit pour toi."
+		]
+	},
+	"tower_2f_calm": {
+		"speaker": "Exorciste",
+		"pages": [
+			"On dit que Sylphe SARL a inventé un appareil qui révèle les spectres.",
+			"Un Scope… Avec ça, on saurait enfin ce qui hante cette tour."
+		]
 	}
 }
