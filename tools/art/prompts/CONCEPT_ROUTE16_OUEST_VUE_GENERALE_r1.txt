@@ -1,0 +1,34 @@
+CONCEPT ART — VUE GÉNÉRALE DE LA ROUTE 16 OUEST, LE DÉPART DE LA PISTE CYCLABLE (Kanto 2026), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. Le grand bâtiment à droite est un POSTE DE GARDE de route ; la route part vers l'ouest à partir de lui, sur DEUX NIVEAUX.
+Légende du plan :
+- vert foncé à cercles = FORÊT DENSE infranchissable (y compris les marges), arbres serrés ;
+- EN HAUT, la VOIE HAUTE, à pied : vert clair = PRÉ d'herbe rase ; grand rectangle vert rayé = HAUTES HERBES touffues (où vivent les Pokémon sauvages) ; un petit bosquet carré d'arbres dans le pré à droite ; petit carré ocre = panneau de bois SANS TEXTE ;
+- en haut à gauche, toit brun-rouge sur façade claire, une porte brune = la MAISON DE VOL, une maison isolée et calme au bord du pré ;
+- bande brun-gris sur toute la largeur au milieu = une FALAISE de roche claire : la voie haute est en HAUT de la falaise, la Piste en CONTREBAS ; on voit la paroi rocheuse de face (côté sud), sans escalier ni rampe ; quatre petits carrés vert clair au pied de la falaise = de petites ALCÔVES d'herbe creusées dans la roche, au bord de la Piste ;
+- à droite, toit bleu ardoise sur façade claire, DEUX portes (une au milieu de la façade NORD vers la voie haute, une au milieu de la façade SUD vers la Piste) = LE POSTE DE GARDE, bâtiment officiel symétrique ;
+- EN BAS, gris = la VOIE BASSE, c'est la PISTE CYCLABLE : un parvis devant la porte sud du poste, puis deux voies parallèles séparées par des BARRIÈRES BASSES (rectangles blancs) percées de deux passages ; à gauche, la Piste tourne vers le SUD et sort par le bas de l'image, large de trois cases ; petits carrés vert clair dans la forêt du bas = alcôves d'herbe au bord de la Piste ; un petit carré ocre en bas à droite = panneau SANS TEXTE.
+Respecte ce plan À LA LETTRE. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+RÈGLE ABSOLUE DES CHEMINS : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; chemins, pistes, barrières, rives et bords des zones suivent une grille : uniquement des segments horizontaux et verticaux à ANGLES DROITS, AUCUNE courbe, aucun segment en diagonale.
+RELIEF : deux niveaux nets : la voie haute (pré, herbes, maison) DOMINE la Piste ; entre les deux, la falaise de roche claire, verticale et droite, de toute la largeur, sans escalier.
+
+La PISTE CYCLABLE est une chaussée lisse et claire en BÉTON GRIS CLAIR légèrement bleuté, aux bords nets soulignés d'une fine bordure de pierre claire, avec de discrets joints de dilatation transversaux ; ce n'est PAS une route goudronnée noire, il n'y a ni marquage peint, ni ligne blanche, ni flèche, ni voiture. Les BARRIÈRES BASSES de la Piste sont des glissières basses (à hauteur de genou) en poteaux de bois clair et lisses de métal blanc, continues, droites.
+
+IMAGE 2 : la vue générale de Carmin-sur-Mer, une ville du même jeu. Respecte EXACTEMENT son style de rendu : même pinceau, mêmes arbres en masses arrondies, même herbe, même saturation, même échelle des bâtiments. Ne reprends PAS sa composition (ni mer, ni port, ni paquebot) ni sa lumière dorée : ici la lumière est NEUTRE.
+
+Format : PAYSAGE 1536 × 1024, vue plongeante sur toute la route, comme le plan.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats. Le feuillage est peint en grandes masses douces.
+- Perspective : vue de dessus, axes de l'image alignés sur la grille, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud).
+- Aucun trait noir : contours fins et doux, plus sombres et plus saturés que la couleur locale. Ombres colorées bleu-vert ou violet froid, jamais grises.
+- LUMIÈRE NEUTRE : lumière de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche ; aucune teinte dorée ou orangée, aucun liseré chaud, aucun rai de soleil, aucune ombre portée longue.
+
+AMBIANCE — « deux chemins » : en haut, une campagne tranquille et herbeuse, une maison solitaire ; en bas, la Piste, lisse et nette, qui file vers l'ouest puis plonge vers le sud, avec un petit air de départ de course.
+
+PERSONNE : aucun personnage, aucun Pokémon, aucun animal, aucun vélo, aucun véhicule.
+
+INTERDITS : texte, lettres, chiffres, étiquettes, panneaux lisibles, logo, emblème, signature, filigrane, cadre, interface ; arbres orange ou automnaux ; neige ; brouillard, flou de profondeur, vignettage ; pixel art, 3D ; tout bâtiment autre que la maison et le poste ; escalier, rampe, pont entre les deux niveaux ; voiture, route goudronnée noire, marquage routier ; mer, rivière, étang.
