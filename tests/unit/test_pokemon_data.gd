@@ -84,13 +84,16 @@ func test_real_data_loads_without_error() -> void:
 		&"bellsprout", &"weepinbell",
 		&"geodude", &"graveler", &"golem", &"magnemite", &"magneton", &"shellder", &"onix",
 		&"drowzee", &"hypno", &"voltorb", &"koffing",
-		&"horsea", &"goldeen", &"staryu", &"starmie"] as Array[StringName])
-	assert_eq(_data.get_move_ids().size(), 116,
+		# Jalon 23 (T6) : Leveinard, puis Insécateur, Scarabrute, Tauros (kanto_j23.json).
+		&"chansey",
+		&"horsea", &"goldeen", &"staryu", &"starmie",
+		&"scyther", &"pinsir", &"tauros"] as Array[StringName])
+	assert_eq(_data.get_move_ids().size(), 120,
 		"47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10) + Patience (J11) "
 		+ "+ 21 du Mont Sélénite (jalon 12) + 8 du jalon 13 (les 5 du J12 qu'il reprenait : "
 		+ "entrées du J12) + 6 du Cap d'Azuria (jalon 14) + Jackpot (J15) "
 		+ "+ Coupe et Tonnerre (jalon 16) + 7 du jalon 17 + Surf, Force, Bomb'Œuf et Reflet "
-		+ "(jalon 23)")
+		+ "(jalon 23) + Force Poigne, Guillotine, Danse-Lames, Écrasement (jalon 23, T6)")
 	assert_true(_data.has_move(&"struggle"))
 
 
@@ -426,6 +429,8 @@ func test_real_catch_rates_are_the_official_ones() -> void:
 		# Jalon 17 (T7).
 		&"diglett": 255, &"dugtrio": 50, &"drowzee": 190, &"hypno": 75, &"magnemite": 190,
 		&"magneton": 60, &"growlithe": 190, &"vulpix": 190,
+		# Jalon 23 (T6) : Parc Safari.
+		&"chansey": 30, &"scyther": 45, &"pinsir": 45, &"tauros": 45,
 	}
 	assert_eq(_data.get_species_ids().size(), expected.size(), "toutes les espèces")
 	for id: StringName in _data.get_species_ids():

@@ -329,9 +329,12 @@ func flees(speed: int, rng) -> bool   # b = speed*2 ; repas → /4 ; colère →
 
 ### 2.14 Espèces, Pokédex, art des Pokémon (T6)
 
-- `species/kanto_j23.json` : Leveinard, Insécateur, Scarabrute, Tauros, Mimitoss, Aéromite, Doduo,
-  Dodrio, Rhinoféros, Noadkoko, Smogogo, Tadmorv, Grotadmorv (+ Minidraco, Psykokwak, Ramoloss si
-  N-6 A) ; `pokedex/kanto.json` en fin ; évolutions N-22.
+- `species/kanto_j23.json` (T6, 2026-10-19) : **Leveinard, Insécateur, Scarabrute, Tauros**.
+  Mimitoss, Aéromite, Doduo, Dodrio, Tadmorv, Grotadmorv et Smogogo sont **créés par le J22**
+  (`kanto_j22.json`, session plus ancienne : il prime) ; au T9, poser Smogo → Smogogo (niv. 35)
+  si le J22 ne l'a pas fait. Restent pour après T9 : Rhinoféros, Noadkoko (leurs formes de base
+  sont aux J19 / J20), et Minidraco, Psykokwak, Ramoloss si N-6 A. `pokedex/kanto.json` en fin ;
+  évolutions N-22.
 - Dos de combat : pipeline X/Y repeint (règle « Pokémon art source ») ; face adverse : artwork.
 
 ### 2.15 Sauvegarde : **v8** (T3, T11)
@@ -599,3 +602,21 @@ doublon ailleurs est accepté s'il n'y a pas de confusion).
 « Permettra » (A-21, A-22) : au J23, Surf et Force ne servent qu'en combat (P-2 B) ; la description
 n'annonce pas un usage immédiat. Les textes 56 à 59 du dossier (Sac : CS03, CS04, Dents d'Or,
 CT06) restent ceux validés.
+
+### A.5 Espèces et capacités du T6 (ajout du 2026-10-19 **après** la validation de A-1 à A-27 : A-28 à A-33 **à valider**)
+
+Écrits dans les données sans « draft » (le test `test_no_draft_in_data` et
+`test_pokedex_library` le refusent), comme A-21 à A-25.
+
+| N° | Élément | Texte |
+|---|---|---|
+| A-28 | Leveinard (Pokédex) | « Doux et attentionné, il porte un œuf dans sa poche. On dit qu'il porte bonheur à ceux qui le croisent, mais il fuit dès qu'on l'approche. » |
+| A-29 | Insécateur (Pokédex) | « Ses bras tranchants fauchent les hautes herbes d'un seul geste. Il bondit si vite qu'on ne voit qu'un éclair vert. » |
+| A-30 | Scarabrute (Pokédex) | « Ses deux grandes cornes serrent leur proie sans la lâcher. Par temps froid, il se cache au creux des arbres. » |
+| A-31 | Tauros (Pokédex) | « Impétueux, il fonce tête baissée sur tout ce qui bouge. Il se fouette les flancs de ses trois queues pour se donner du courage. » |
+| A-32 | Force Poigne (capacité) | « Le lanceur saisit la cible entre ses pinces et la serre très fort. » |
+| A-33 | Guillotine (capacité) | « Une pince géante qui met K.O. d'un coup. Sans effet dans le moteur actuel. » (repris du J24) |
+
+Danse-Lames et Écrasement reprennent mot pour mot les textes du J22 (et du J20 pour Écrasement).
+Notes de Pokédex des quatre espèces : avec la table du Parc (T13), une par forme de base
+rencontrable (règle Q-6).

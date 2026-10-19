@@ -294,14 +294,15 @@ de la tension du Parc. [RB]
 
 | Espèce | Rôle au J23 | État dans le dépôt |
 |---|---|---|
-| Leveinard, Insécateur, Scarabrute, Tauros, Mimitoss, Doduo | Parc | **absentes partout** |
+| Leveinard, Insécateur, Scarabrute, Tauros | Parc | créées au J23 (T6, `kanto_j23.json`) |
+| Mimitoss, Doduo | Parc | **créées par le J22** (`kanto_j22.json`) |
 | Minidraco, Psykokwak, Ramoloss | Parc, Méga Canne (si **N-6**) | absentes (Krabby, Magicarpe, Poissirène, Ptitard : prévus au J22) |
-| Aéromite | Parc (et évolution de Mimitoss 31) | absente |
+| Aéromite | Parc (et évolution de Mimitoss 31) | J22 |
 | Dodrio | évolution de Doduo (31) | absente |
 | Rhinoféros | évolution de Rhinocorne (42), atteignable au J23 | absente |
 | Noadkoko | évolution de Noeunoeuf (Pierre Plante) | absente (Noeunoeuf : J19) |
-| Smogogo | Koga (et évolution de Smogo 35, **déjà possible** pour un Smogo du joueur) | absente |
-| Tadmorv, Grotadmorv | Koga (Grotadmorv), lignée complète pour le Pokédex | absentes (à revérifier après fusion du J20, dont le Repaire cite Tadmorv) |
+| Smogogo | Koga (et évolution de Smogo 35, **déjà possible** pour un Smogo du joueur) | J22 (évolution de Smogo à poser au T9) |
+| Tadmorv, Grotadmorv | Koga (Grotadmorv), lignée complète pour le Pokédex | J22 |
 | Rhinocorne, Kangourex | Parc | J20 seulement |
 | Noeunoeuf | Parc | J19 seulement |
 | Soporifik, Hypnomade | Jongleurs de l'Arène | J17 seulement |
@@ -489,7 +490,7 @@ aussi prévu à la Sylphe du J22).
 - **Aucun remplacement nécessaire** si Toxik est créé (il doit l'être pour la CT06) et si la fusion
   du J17 apporte Gaz Toxik. Repli si Gaz Toxik manquait encore : **Purédpois** (même rôle, existant)
   [D].
-- **Espèces à créer** : Grotadmorv, Smogogo (§6.4).
+- **Espèces** : Grotadmorv et Smogogo viennent du J22 (§6.4).
 - **IA** : `smart` (Destruction seulement sous 1/4 des PV : règle existante). Lilliput + Brouillard
   donnent le rythme « anticipation » du dossier 06 ; la simulation dira si Lilliput cumulé dépasse
   la bande « grand combat » 35–60 % ; si oui, on baisse les niveaux, jamais les attaques sans
