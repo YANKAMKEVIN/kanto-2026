@@ -39,8 +39,8 @@ fossiles) et sur les textes 26–37, 55–66 et 75, **retirés** (marqués au §
 | N° | Question | Options | Recommandation |
 |---|---|---|---|
 | **X-25** | Ouvrir le Manoir que le J24 ferme | **A** : l'entrée effondrée était un **état provisoire** du développement : à la fusion du J25, la carte de Cramois'Île reçoit la vraie porte (warp vers `pokemon_mansion_1f`) et T-43 disparaît ; le joueur trouve le Manoir ouvert dès son arrivée · **B** : les gravats restent dans le jeu final et disparaissent après un événement (à inventer) | **A** : RB n'a aucun verrou sur le Manoir, et « sans promesse » (P-20) visait seulement à ne rien annoncer avant le J25. La réplique T-45 (« Plus personne n'y va ») reste juste. |
-| **X-26** | Échanges sur les 3 PNJ du J24 | **A** : le J25 ajoute les échanges à ces PNJ ; ses textes 38–54 **remplacent** T-52 à T-54 ; surnoms VF RB (Kourjus, Bigoudi, Bibi) · **B** : garder les surnoms anglais du J24 (« Doris ») | **A**. Prénoms des PNJ [D] : ceux du J24 s'il en donne, sinon Hector, Lina, Marc. |
-| **X-27** | Fossiles | — | Le §6.3 du J25 est **abandonné** au profit du `FossilLab` du J24. Le J25 ajoute seulement le **Vieil Ambre → Ptéra** (une ligne de données dans la liste des fossiles, l'espèce Ptéra, la réserve d'Argenta), et Kabutops / Amonistar si le J24 ne les crée pas. Textes : variantes « Vieil Ambre » / « Ptéra » des T-60 à T-62 du J24 (les textes 55–66 du J25 sont retirés). La note du J24 « Pas de Vieil Ambre dans le projet » est dépassée par X-3. |
+| **X-26** | Échanges sur les 3 PNJ du J24 | **A** : le J25 ajoute les échanges à ces PNJ ; ses textes 38–54 **remplacent** T-52 à T-54 ; surnoms VF RB (Kourjus, Bigoudi, Bibi) · **B** : garder les surnoms anglais du J24 (« Doris ») | **A**. Le J24 ne donne pas de prénom (identifiants `papy`, `canon`, `scientifique_otaria`) : Hector, Lina, Marc [D]. |
+| **X-27** | Fossiles | — | Le §6.3 du J25 est **abandonné** au profit du `FossilLab` du J24. Le J25 ajoute seulement le **Vieil Ambre → Ptéra** (une ligne de données dans la liste des fossiles, l'espèce Ptéra, la réserve d'Argenta), Kabutops et Amonistar viennent du J24 (`kanto_j24.json`). Textes : variantes « Vieil Ambre » / « Ptéra » des T-60 à T-62 du J24 (les textes 55–66 du J25 sont retirés). La note du J24 « Pas de Vieil Ambre dans le projet » est dépassée par X-3. |
 | **X-28** | Mail du PC | **A** : garder T-58 du J24 · **B** : textes 34–36 du J25 (« caverne près d'Azuria ») | **A** : texte plus ancien et validé ; la graine de la caverne pourra revenir ailleurs. |
 | **X-29** | Porte de l'Arène | — | T-42 du J24 gardé ; le J25 ajoute l'ouverture (76–77). |
 | **X-30** | Livraison | — | Le J25 code après la fusion du J24 (son Labo, son `FossilLab`, sa ville). 25B devient **« échanges + Vieil Ambre »** (encore validé seul : un échange retire un Pokémon). |
@@ -174,6 +174,8 @@ peintes, contrôle relancé.
 - Les trous sont **peints** (plancher effondré aux bords nets), visibles de loin ; on ne tombe
   jamais par surprise sur une case qui ne le montre pas.
 - Arrivées : 1F (16,14) pour les deux trous ouest, 2F (18,14) pour le trou est.
+- **Confirmé (2026-10-19)** : le J24 code un `Warp` `FALL` générique (plan J24 §2.6 bis) ; le J25 le
+  réutilise tel quel.
 - Système commun avec le J24 (rochers des Îles Écume). **Règle d'ancienneté** (Kevin, 2026-10-16) :
   le J24 est plus ancien ; s'il conçoit ou code des trous, le J25 **réutilise** son système et ne le
   modifie pas (une amélioration se demande à Kevin). Le J25 ne code le sien que si le J24 n'en a pas.

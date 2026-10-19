@@ -84,7 +84,7 @@ j25-v2-alignement.md`, `j25-annexe-rb-cramois.md` (relevé RB), grilles `tools/p
 | T0 Plan (ce document) | architecte | fait | — | docs |
 | T1 Branche `jalon-25` + réalignement | architecte | **(A)** | — | depuis `origin/main` |
 | T2 Interrupteur global : `MansionSwitch` (pur) + étape `toggle_flag` | architecte | **(A)**, après T1 | — | `game/world/puzzle/mansion_switch.gd` nouveau, `cutscene_step.gd` (une entrée) |
-| T3 Chute : `Warp.Trigger.FALL` + présentation | architecte | **(A)** logique ; présentation **après** lecture du J24 | J24 (si trou du joueur) | `warp.gd` (bloc) **ou** réutilisation |
+| T3 Chute : **réutiliser** le `Warp` `FALL` du J24 (plan J24 §2.6 bis, T15) | architecte | **(B)** | J24 fusionné | aucun fichier du J24 modifié ; données des 3 trous du 3F |
 | T4 Quiz : `GymQuiz` (pur) + étape `quiz` | architecte | **(A)** | — | `game/systems/gym/gym_quiz.gd` nouveau |
 | T5 Échange fixe : `InGameTrade` (pur), `Origin.TRADE`, lecture tolérante | architecte | **(A)** | — | `game/systems/trade/in_game_trade.gd` nouveau, `pokemon.gd` (énum) |
 | T6 Capacités : `fire_blast`, `take_down` recoil, `stomp` ; audit des nouvelles espèces | architecte | **(A)** | J20 pour `stomp` (sinon copie identique) | `data/pokemon/moves/j25.json` nouveau |
@@ -98,7 +98,7 @@ j25-v2-alignement.md`, `j25-annexe-rb-cramois.md` (relevé RB), grilles `tools/p
 | T14 Cartes du Manoir (4) depuis les grilles | constructeur-monde | **(A)**, après T2, T3, T13 | — | `tools/build_pokemon_mansion.gd` nouveau |
 | T15 Porte du Manoir sur Cramois'Île (X-25) | constructeur-monde | **(B)** | **J24** fusionné | grille et outil du J24 : **un bloc**, accord de Kevin (X-25) |
 | T16 Session 25A | qa-mobile | **(B)** | T14, T15 | — |
-| T17 Échanges sur les PNJ du Labo (X-26) | constructeur-monde | **(B)** | J24 fusionné, T5 | dialogues des 3 PNJ |
+| T17 Échanges sur les PNJ du Labo (X-26 ; identifiants J24 `papy`, `canon`, `scientifique_otaria`) | constructeur-monde | **(B)** | J24 fusionné, T5 | dialogues des 3 PNJ |
 | T18 Vieil Ambre : Argenta (arbuste, porte arrière, réserve), ligne `old_amber` du `FossilLab` | constructeur-monde | **(B)** | J24 (`FossilLab`) fusionné ; J20 (`PokemonGift`) | `argenta.txt` (variante J25), `build_argenta_reserve.gd` |
 | T19 Session 25B | qa-mobile | **(B)** | T17, T18 | — |
 | T20 Arène : carte, herses, machines, Dresseurs | constructeur-monde | **(A)**, après T4, T13 | — | `tools/build_cinnabar_gym.gd` |
@@ -131,13 +131,11 @@ Cartes de QA [D] : `qa_manoir` (départ au 1F avec Clé ou sans, interrupteur au
 
 ### 2.2 Chute (T3)
 
-- `Warp` de déclenchement **`FALL`** : la case du trou est praticable ; y entrer lance la chute vers
-  le spawn `arrivee` de la carte `vers`.
-- Présentation [D] : enfoncement 0,2 s, fondu 0,3 s, arrivée avec rebond et poussière ; compagnon
-  dans sa Ball pendant la chute.
-- **Avant de coder** : lire l'état du J24. S'il livre une chute du joueur, le J25 la réutilise telle
-  quelle (règle d'ancienneté) ; sinon il la code ici et la propose au J24.
-- Autosave : à l'arrivée sur la carte d'en bas (comme un escalier).
+- **Confirmé par la session du J24 (2026-10-19)** : le J24 code un `Warp` générique de type
+  **`FALL`** (petit saut, fondu, arrivée sur `target_spawn`, trou bouchable par drapeau
+  `unless_flags`), sans règle propre aux Îles Écume (`jalon-24.md` §2.6 bis, T15, lot 24C). Le J25
+  le **réutilise tel quel** pour les trois trous du 3F ; il ne le modifie pas (règle d'ancienneté).
+- Le compagnon et l'autosave suivent la règle du `FALL` du J24.
 
 ### 2.3 Quiz de l'Arène (T4, T20)
 
@@ -174,9 +172,9 @@ Cartes de QA [D] : `qa_manoir` (départ au 1F avec Clé ou sans, interrupteur au
 
 ### 2.6 Vieil Ambre (T18)
 
-- `old_amber` (objet clé). Le `FossilLab` du J24 reçoit **une ligne de données**
-  (`old_amber` → `aerodactyl`, drapeau `fossil_reviving_aerodactyl`), rien d'autre ; accord de
-  Kevin (X-27).
+- `old_amber` (objet clé). La liste des fossiles du J24 est **en données** (`data/world/fossils.json` :
+  fossile → espèce, drapeau ; `FossilLab` ne connaît aucune espèce). Le J25 y ajoute **une ligne**
+  (`old_amber` → `aerodactyl`, `fossil_reviving_aerodactyl`), rien d'autre ; accord de Kevin (X-27).
 - Argenta : variante J25 de `argenta.txt` (modèle des variantes `J14`) : arbuste à Couper devant
   une porte arrière sur la façade est du Musée ; grille `argenta_musee_reserve.txt` ; scientifique
   qui donne l'ambre (`pewter_museum_got_old_amber`).
@@ -193,7 +191,7 @@ Cartes de QA [D] : `qa_manoir` (départ au 1F avec Clé ou sans, interrupteur au
 
 | Type | Contenu |
 |---|---|
-| Espèces nouvelles | Ponyta, Galopa, Tadmorv, Grotadmorv, Smogogo, Magmar, Électrode, Otaria, Lamantine, Ptéra, Kabutops et Amonistar (si le J24 ne les crée pas) ; Arcanin, Feunard (si J20 non fusionné : mêmes données) |
+| Espèces nouvelles | Ponyta, Galopa, Tadmorv, Grotadmorv, Smogogo, Magmar, Électrode, Otaria, Lamantine, Ptéra (Kabuto, Kabutops, Amonita, Amonistar : **J24**, `kanto_j24.json`, à reprendre) ; Arcanin, Feunard (si J20 non fusionné : mêmes données) |
 | Capacités | `fire_blast` (110, 85 %, 5 PP, brûlure 10 %), `take_down` (90, 85 %, `RECOIL ¼`), `stomp`, `blizzard` et `solar_beam` si les CT14 / CT22 sont gardées |
 | Objets | `secret_key`, `old_amber`, `tm38`, `tm14`, `tm22`, `max_potion`, `max_revive` |
 | Dresseurs | 6 du Manoir, 7 de l'Arène, Auguste (dossier 28 §4.6, §8.3, §8.4) |
