@@ -1,0 +1,49 @@
+# Poste de la Route 15 (`route_15_gate`, 1F, et `route_15_gate_2f`, 2F) — grille fonctionnelle (jalon 22,
+# lot 22.0, T6 ; dossier 25 §8.4, M-17 ; RB : Route15Gate1F 8 × 10, Route15Gate2F 8 × 8).
+#
+# DEUX ÉTAGES CÔTE À CÔTE dans une seule grille de 25 × 10 : 1F x 0..11, 2F x 13..24 (2F local = x - 13) ;
+# la colonne 12 (« V ») est un séparateur hors carte. Chaque étage est une pièce de 12 × 10 (murs du fond
+# rangées 0..2, sol rangées 3..7, mur du bas rangées 8..9).
+#
+# 1F : poste TRAVERSANT, portes LATÉRALES (0, 5..6) à l'ouest et (11, 5..6) à l'est (PUSH ← / →) ; garde
+#      derrière son comptoir (aucune règle : il salue) ; escalier montant (10, 3) ; bibliothèque (1..2, 3).
+# 2F : jumelles devant les fenêtres (2, 3) et (7, 3), assistant du Prof. Chen SANS cadeau (M-17), table,
+#      escalier descendant (10, 3) (2F local).
+#
+# Légende : K mur (bloqué)   . sol   X sortie (praticable, terminale)   U escalier (praticable, terminal)
+#   N comptoir ou table (bloqués)   B bibliothèque (bloquée)   J jumelles (bloquées, examinées)
+#   x plante (bloquée)   V séparateur des deux étages (hors carte, bloqué)
+#
+# DÉFAUTS : enveloppe 12 × 10 (le modèle `_gate_room` 10 × 8 n'a pas de portes latérales) ; garde sans
+# règle ; deux jumelles (RB : deux).
+
+PRATICABLES .XU
+
+GRILLE 25 10
+00 KKKKKKKKKKKKVKKKKKKKKKKKK
+01 KKKKKKKKKKKKVKKKKKKKKKKKK
+02 KKKKKKKKKKKKVKKKKKKKKKKKK
+03 KBB.......UKVK.J....J..UK
+04 K....NNN...KVK..........K
+05 X..........XVK..........K
+06 X..........XVK.NN.......K
+07 Kx........xKVKx........xK
+08 KKKKKKKKKKKKVKKKKKKKKKKKK
+09 KKKKKKKKKKKKVKKKKKKKKKKKK
+FIN
+
+# POSITIONS — identifiant  type  cases  bloque|libre  [cle=valeur ...]  # commentaire
+POSITIONS
+sortie_ouest           warp           0,5..6         libre   to=route_15 spawn=from_poste_ouest  # PUSH ← → Route 15, porte ouest (41, 11..12)
+entrance_ouest         spawn          1,5..6         libre   facing=right  # arrivée par la porte ouest, tournée →
+sortie_est             warp           11,5..6        libre   to=route_15 spawn=from_poste_est  # PUSH → → Route 15, porte est (48, 11..12)
+entrance_est           spawn          10,5..6        libre   facing=left  # arrivée par la porte est, tournée ←
+escalier_monte         warp           10,3           libre   to=route_15_gate_2f spawn=from_1f  # STEP_ON ↑ → 2F (23, 4)
+from_2f                spawn          10,4           libre   facing=down  # retour du 2F, tourné ↓
+garde                  pnj            6,3            bloque  role=P1 facing=down  # garde derrière son comptoir (5..7, 4) ; ne vérifie rien (texte §16.5)
+escalier_descend       warp           23,3           libre   to=route_15_gate spawn=from_2f  # 2F : STEP_ON ↑ → 1F (10, 4)
+from_1f                spawn          23,4           libre   facing=down  # 2F : arrivée du 1F, tourné ↓
+assistant              pnj            17,5           bloque  role=P2 facing=down  # 2F : assistant du Prof. Chen, SANS cadeau (M-17, T-40)
+jumelles_ouest         panneau        15,3           bloque  role=T-41  # 2F : jumelles (vers Parmanie) ; examinées depuis (15, 4) ↑
+jumelles_est           panneau        20,3           bloque  role=T-41  # 2F : jumelles (vers la Route 14) ; examinées depuis (20, 4) ↑
+FIN
