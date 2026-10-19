@@ -172,5 +172,9 @@ J19 Tour Pokémon, étages 2F–6F, rival n° 5 (dossier 22)   ← ICI
 J20+ Suite de Kanto → Ligue → post-game
 ```
 
+**Depuis le 2026-10-19**, l'ordre et le rythme des jalons suivent
+[`strategie-acceleration.md`](strategie-acceleration.md) : passe « systèmes 2 » avant le reste du
+contenu, 2 à 3 jalons en code au maximum, une seule intégration à la fois.
+
 J11 à J15 sont conçus et développés **en parallèle**, une session par jalon (2026-10-11) ;
 l'intégration d'un jalon attend seulement les systèmes qu'elle utilise.
