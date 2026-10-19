@@ -876,6 +876,8 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		&"rival_cerulean_retried", &"rival_cerulean_won", &"rival_challenged", &"rival_lab_lost",
 		&"rival_lab_won", &"rival_left_lab", &"rival_route22_lost", &"rival_route22_won",
 		&"rival_tower_lost_once", &"rival_tower_retried", &"rival_tower_won",
+		# Jalon 19 (T24) : première rencontre du SPECTRE du 6F (dossier 22 §13).
+		&"tower_ghost_met",
 		&"route_3_entered", &"route_3_guard_cleared", &"route_4_reached", &"route_5_entered",
 		&"starter_chosen",
 		&"starter_offered", &"tm11_received", &"tm34_received", &"viridian_arrived",
