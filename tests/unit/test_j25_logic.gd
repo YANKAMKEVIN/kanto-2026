@@ -82,6 +82,7 @@ func test_quiz_wrong_answer_after_trainer_beaten() -> void:
 func test_quiz_rejects_bad_file() -> void:
 	var quiz := GymQuiz.new()
 	assert_false(quiz.load_file("res://tests/fixtures/trades/absent.json"))
+	assert_push_error("fichier introuvable")
 	assert_eq(quiz.get_errors().size(), 1)
 
 
@@ -155,6 +156,7 @@ func test_trade_unknown_received_species_changes_nothing() -> void:
 	var party := _party([&"rattata"])
 	var before := party.get_at(0)
 	var r := trade.execute(&"test_trade_unknown", 0, party, null, _flags, _data, _rng)
+	assert_push_error("espèce inconnue")
 	assert_eq(r["status"], InGameTrade.Status.INVALID)
 	assert_eq(party.get_at(0), before)
 	assert_false(_flags.has_flag(&"test_trade_unknown_done"))
