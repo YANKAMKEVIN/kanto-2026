@@ -19,6 +19,20 @@
 > Le reste (7 routes, 3 postes, 2 maisons, Parmanie, 40 Dresseurs, 13 espèces) est du contenu
 > posé sur des systèmes existants. **Format de sauvegarde inchangé : v7** (§2.13).
 
+> **Stratégie d'accélération (Kevin, 2026-10-19, `docs/design/strategie-acceleration.md` sur `main`
+> `384f53b1`) : elle prévaut sur le découpage ci-dessous.**
+> - **Le Vélo et la Piste Cyclable sortent du J22** : ils passent dans la passe « systèmes 2 ».
+>   T14 à T20 et T23 (22B) ne sont pas codés ici. La logique pure déjà écrite (`BikeRules`,
+>   `CyclingSlope`, T2) et le §2.1–2.2 sont remis à cette passe comme point de départ.
+> - **La pêche** est un système prévu dans un jalon de contenu : d'après la stratégie (« tout système
+>   encore prévu dans un jalon de contenu »), elle rejoint aussi la passe systèmes 2 (`FishingRules`,
+>   `FishingSpot`, T3). **À confirmer par Kevin.**
+> - Le J22 **ne termine que sa partie indépendante** (22.0, fait hors T10) et **n'ouvre aucune tâche
+>   de code** qui dépend d'un autre jalon. T10 et la suite attendent la fin de la passe systèmes 2 ;
+>   le J22 devient alors un jalon de contenu (cartes et données).
+> - Art : grille et vue générale avant le code (déjà faites et validées) ; le reste par lots ; le code
+>   ne bloque jamais sur l'art.
+
 **Pré-requis.** Dossier 25 validé. Grilles du J22 **à produire** (T6) et à faire valider par Kevin.
 Grille de la Route 12 du J21 (`origin/jalon-21` à `925ec9f3`, M-3 appliqué) : le J22 part du bord
 `warp_sud` (25..26, 101).
