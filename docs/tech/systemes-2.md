@@ -688,6 +688,16 @@ eux). Cible : Route Victoire (J29), Manoir (J25).
 
 #### T23 — A : `FlyRules`, `fly_points.json`, `MapTraits.no_fly` — après T3
 
+**Fait (2026-10-20)** : `game/world/fly/fly_rules.gd` (pur) : `can_fly` (occupé, conditions de
+la CS, intérieur, `no_fly`), chargement de `data/world/fly_points.json` (11 villes dans l'ordre de
+RB), `destinations` ; `MapTraits.no_fly` fait au T3. Une destination est ouverte quand **sa carte**
+est découverte (pas « une carte de la zone ») [D] : on n'atteint pas un Centre sans passer par la
+ville. Points d'arrivée : `from_center` (Lavanville : `retour_centre` ; Bourg Palette :
+`player_house_door`), vérifiés sur les six villes construites ; les cinq autres portent l'identifiant
+de carte prévu par leur jalon et `from_center` [D], à confirmer par ce jalon (§7). La capacité
+**Vol en combat** (données, T25) attend la fusion du J20 : un test compte toutes les capacités et
+chaque jalon le modifie (conflit assuré sinon).
+
 #### T24 — U : lancement du Vol (Q-4), liste des villes — après T23
 
 #### T25 — C : mise en scène de l'envol, arrivée ; Vol en combat (données) — après T24
