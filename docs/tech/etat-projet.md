@@ -9,6 +9,10 @@ Mis à jour : 2026-10-19 (**J18 T15 : `main` (J16, PR n° 1, J17 terminé) fusio
 - **Luminance sous le voile** (réglages du J17) : héros 4,44–5,26, hors halo 0,118–0,154 sans Flash et 0,148–0,173 avec : tout passe, aucun réglage propre au J18.
 - **Suite** : `tools/test.sh` **5 509 / 5 509** verts, import propre.
 
+## Jalon 18 — T21 : relecture d'interface de la Grotte Sombre (2026-10-19, branche `j18-t21-ui` depuis `jalon-18-integ`, Mac seul, non poussée)
+- **T21** : titre de zone, avertissement T-3, bulle « ! » (avec et sans Flash), HUD, joystick, bouton EXAMINER, menu Dresseur, entrée de combat, objet caché, échelles relus en 2340 × 1080 (outil `tools/capture_dark_cave_ui.gd`, rapport et planche : `build/captures/j18_t21/`). **Rien à corriger dans l'interface propre au J18.**
+- **Seul point faible** (brique J17, non modifiée) : le bandeau « {pokemon} utilise Flash ! » est blanc sur un sol que Flash éclaircit presque en blanc ; à renforcer côté J17 (ombre, pastille) ; sortie de combat non capturée (victoire non pilotable par clics émulés).
+
 ## Jalon 18 — T22 : équilibrage des 14 Dresseurs (2026-10-16, branche `j18-t22-equilibrage` depuis `j18-essai-sur-j17` à 90e41208)
 
 - **Règle de Kevin (2026-10-16)** appliquée : victoire au premier essai 60–80 % par combat (joueur prudent, Sac, Centre de la Route 10), exception « avantage de type choisi ». Détail, table avant / après et constats : `jalon-18.md` § T22.
