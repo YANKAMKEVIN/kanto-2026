@@ -539,7 +539,7 @@ Gardien, Arène).
 
 ---
 
-## Annexe A — Textes complémentaires (T2, à valider par Kevin en une passe)
+## Annexe A — Textes complémentaires (T2, **validés par Kevin le 2026-10-19** : « annexe A ok »)
 
 > Complète le §8 du dossier 26 (textes 1 à 59, validés). Bulles de 2 lignes d'environ 40
 > caractères ; « / » sépare deux bulles. Inspirés des textes RB (`pret/pokered` `text/SafariZone*.asm`,
