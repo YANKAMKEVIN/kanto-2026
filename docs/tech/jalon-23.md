@@ -613,7 +613,7 @@ doublon ailleurs est accepté s'il n'y a pas de confusion).
 n'annonce pas un usage immédiat. Les textes 56 à 59 du dossier (Sac : CS03, CS04, Dents d'Or,
 CT06) restent ceux validés.
 
-### A.5 Espèces et capacités du T6 (ajout du 2026-10-19 **après** la validation de A-1 à A-27 : A-28 à A-33 **à valider**)
+### A.5 Espèces et capacités du T6 (ajout du 2026-10-19 après la validation de A-1 à A-27 ; A-28 à A-33 **validés par Kevin le 2026-10-19**)
 
 Écrits dans les données sans « draft » (le test `test_no_draft_in_data` et
 `test_pokedex_library` le refusent), comme A-21 à A-25.
@@ -625,7 +625,7 @@ CT06) restent ceux validés.
 | A-30 | Scarabrute (Pokédex) | « Ses deux grandes cornes serrent leur proie sans la lâcher. Par temps froid, il se cache au creux des arbres. » |
 | A-31 | Tauros (Pokédex) | « Impétueux, il fonce tête baissée sur tout ce qui bouge. Il se fouette les flancs de ses trois queues pour se donner du courage. » |
 | A-32 | Force Poigne (capacité) | « Le lanceur saisit la cible entre ses pinces et la serre très fort. » |
-| A-33 | Guillotine (capacité) | « Une pince géante qui met K.O. d'un coup. Sans effet dans le moteur actuel. » (repris du J24) |
+| A-33 | Guillotine (capacité) | « Une pince géante qui met K.O. d'un coup. » — **texte final validé**. Tant que l'effet `ohko` reste en `pending_effects`, la donnée garde la mention « Sans effet dans le moteur actuel. » (règle du dossier 14, comme Empal'Korne) ; la passe systèmes 2, qui code le K.O. en un coup, la retire pour les deux capacités. |
 
 Danse-Lames et Écrasement reprennent mot pour mot les textes du J22 (et du J20 pour Écrasement).
 Notes de Pokédex des quatre espèces : avec la table du Parc (T13), une par forme de base
