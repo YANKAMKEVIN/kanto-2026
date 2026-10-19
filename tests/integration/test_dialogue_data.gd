@@ -459,6 +459,9 @@ const IDS_J19: Array[StringName] = [
 	&"tower_6f_ghost_warning",
 	# T16 : la gardienne du rez-de-chaussée (§15.1.1 à 4).
 	&"tower_guardian_worried",
+	# T20 : Lavanville au J19 (§15.6.2 à 15.6.5).
+	&"pokemon_house_man", &"pokemon_house_girl", &"lavender_center_gentleman",
+	&"lavender_scope_sign",
 ]
 
 const IDS_J18: Array[StringName] = [
@@ -1083,7 +1086,8 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 	var dossier_15 := FileAccess.get_file_as_string(DOSSIER_15)
 	var dossier_21 := FileAccess.get_file_as_string(DOSSIER_21) \
 		+ FileAccess.get_file_as_string(PLAN_J18)
-	var dossier_22 := FileAccess.get_file_as_string(DOSSIER_22).replace("\n  ", " ")
+	var dossier_22 := FileAccess.get_file_as_string(DOSSIER_22).replace("\n   ", " ") \
+		.replace("\n  ", " ")
 	var dossier_20 := FileAccess.get_file_as_string(DOSSIER_20).replace("**", "")
 	var annex_a_17 := AnnexATexts.annex_a(FileAccess.get_file_as_string(JALON_17))
 	var dossier_17 := FileAccess.get_file_as_string(DOSSIER_17) \

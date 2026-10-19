@@ -111,7 +111,7 @@ retour_tour          spawn          34..35,11    libre
 panneau_ville        panneau        24,4         bloque  # T-18 « LAVANVILLE / Une ville noble et paisible. », lu depuis (23, 4) →
 panneau_tour         panneau        33,11        bloque  # T-19 « TOUR POKÉMON / Ici reposent les Pokémon aimés. », lu depuis (33, 12) ↑
 panneau_fuji         panneau        17,10        bloque  # T-20 « MAISON DES POKÉMON / … », lu depuis (17, 11) ↑
-panneau_scope_j19    repere         42,11        libre   # RÉSERVÉ au J19 (dossier 22 K-16) : panneau du Scope Sylphe, posé et bloquant au J19, lu depuis (41, 11) → ; rien au J18
+panneau_scope_j19    panneau        42,11        bloque  # J19 (T20, dossier 22 §15.6.5, K-16) : panneau du Scope Sylphe, bloquant, lu depuis (41, 11) →
 l1_fillette          pnj            22,18        bloque  role=L1 facing=down  # T-21, fillette qui court (RB) : va et vient sur l'avenue (reste 2 cases libres)
 l2_jeune_homme       pnj            31,12        bloque  role=L2 facing=up  # T-22, regarde la Tour depuis le parvis (reste 2 rangées libres)
 l3_passant           pnj            13,11        bloque  role=L3 facing=right  # T-23, passant, rue 1

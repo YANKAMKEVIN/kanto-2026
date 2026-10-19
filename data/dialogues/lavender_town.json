@@ -8,6 +8,12 @@
 	"lavender_pokemon_house_sign": {
 		"pages": ["MAISON DES POKÉMON\nCeux qui n'ont plus personne trouvent ici un foyer."]
 	},
+	"lavender_scope_sign": {
+		"pages": [
+			"SCOPE SYLPHE — Voir ce que l'œil\nne voit pas.",
+			"Une innovation Sylphe SARL."
+		]
+	},
 	"lavender_girl": {
 		"speaker": "Fillette",
 		"pages": ["Ici, tout le monde parle doucement.\nMême les Pokémon !"]
