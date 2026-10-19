@@ -291,10 +291,10 @@ Aucune espèce sans données, capacités et dos de combat ne peut sortir d'une t
 
 | Lieu | Taux [D] | Créneaux (niveaux RB) |
 |---|---|---|
-| Route 12 sud | RB | Mystherbe 22–26, Roucool 23–27, Aéromite 24–26, Boustiflor 28–30 |
-| Route 13 | RB | Mystherbe 22–26, Roucool 25–27, Aéromite 24–26, Boustiflor 28–30 (créneau de Métamorph → Roucool) |
-| Route 14 | RB | Mystherbe 22–26, Roucool 26, Aéromite 24–26, Boustiflor 30, Chétiflor 24 (Métamorph → Aéromite) |
-| Route 15 | RB | Mystherbe 22–26, Roucool 23, Aéromite 26–28, Boustiflor 30, Chétiflor 24 (Métamorph ×2 → Roucool, Aéromite) |
+| Route 12 sud | RB | Mystherbe 22–26, Roucool 23–27, Mimitoss 24–26, Ortide 28–30 |
+| Route 13 | RB | Mystherbe 22–26, Roucool 25–27, Mimitoss 24–26, Ortide 28–30 (créneau de Métamorph → Roucool) |
+| Route 14 | RB | Mystherbe 22–26, Roucool 26–28, Mimitoss 24–26, Ortide 30 (Métamorph → Mimitoss) |
+| Route 15 | RB | Mystherbe 22–26, Roucool 23–30, Mimitoss 26–28, Ortide 30 (Métamorph → Mimitoss) |
 | Route 16 ouest | RB | Piafabec 20–22, Rattata 18–22, Doduo 18–22, Rattatac 23–25 |
 | Route 17 | RB | Piafabec 20–22, Rattatac 25–29, Doduo 24–28, Rapasdepic 25–27 |
 | Route 18 | RB | Piafabec 20–22, Rattatac 25–29, Doduo 24–28, Rapasdepic 25–29 |
@@ -343,7 +343,7 @@ route). Les répliques sont au §16.4.
 
 | Id | Classe | Équipe |
 |---|---|---|
-| `route_15_lass_1` | Jeune Dresseuse | Boustiflor 28, Mystherbe 28, Mystherbe 28 |
+| `route_15_lass_1` | Jeune Dresseuse | Ortide 28, Mystherbe 28, Mystherbe 28 |
 | `route_15_lass_2` | Jeune Dresseuse | Mélofée 33 |
 | `route_15_lass_3` | Jeune Dresseuse | Chétiflor 29, Mystherbe 29, Saquedeneu 29 |
 | `route_15_beauty_1` | Beauté | Bulbizarre 29, Herbizarre 29 |
@@ -441,17 +441,22 @@ s'interrompt).
 
 ## 12. Espèces et capacités
 
-### 12.1 Espèces à créer (12)
+> **Correction du 2026-10-19** (relevée par T5) : les Routes 12 à 15 ont **Mimitoss** (048) dans RB, pas
+> Aéromite (049, son évolution) ; « Boustiflor » désignait **Ortide** (044). Noms corrigés au §8.8,
+> au §9.4 et ici ; Mimitoss est ajouté, Aéromite gardé pour l'évolution (13 espèces). Chétiflor
+> (069) n'est pas sur les Routes 14 et 15 dans la version Rouge.
+
+### 12.1 Espèces à créer (13)
 
 | Pour | Espèces |
 |---|---|
-| Pêche et herbes | Magicarpe (129), Krabby (098), Poissoroy (119), Aéromite (049), Doduo (084) |
+| Pêche et herbes | Magicarpe (129), Krabby (098), Poissoroy (119), **Mimitoss (048)** et son évolution Aéromite (049), Doduo (084) |
 | Dresseurs | Dodrio (085), Canarticho (083), Tadmorv (088), Grotadmorv (089), Smogogo (110), Électrode (101), Machopeur (067) |
 
 Évolutions entre elles et vers l'existant : Magicarpe → Léviator (20, J19), Doduo → Dodrio (31),
 Tadmorv → Grotadmorv (38), Smogo → Smogogo (35), Voltorbe → Électrode (30), Machoc → Machopeur (28),
 Krabby → Krabboss (28, **hors J22** : évolution coupée tant que Krabboss n'existe pas [D]), Poissirène
-→ Poissoroy (33), Aéromite : déjà évolution de Mimitoss (absent, sans effet).
+→ Poissoroy (33), Mimitoss → Aéromite (31).
 
 ### 12.2 Espèces venues d'autres jalons (fusion)
 

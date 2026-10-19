@@ -16,7 +16,7 @@
 > - la **pêche** (cases pêchables, trois cannes, terrain de rencontre `water_rod`) ;
 > - un garde qui **lit un objet du Sac** (poste de la Piste).
 >
-> Le reste (7 routes, 3 postes, 2 maisons, Parmanie, 40 Dresseurs, 12 espèces) est du contenu
+> Le reste (7 routes, 3 postes, 2 maisons, Parmanie, 40 Dresseurs, 13 espèces) est du contenu
 > posé sur des systèmes existants. **Format de sauvegarde inchangé : v7** (§2.13).
 
 **Pré-requis.** Dossier 25 validé. Grilles du J22 **à produire** (T6) et à faire valider par Kevin.
@@ -137,7 +137,7 @@ tournantes, compagnon rentré) ; `jalon-16.md` (`field_move`, Coupe) ; `jalon-12
 
 | Sous-jalon | Contenu | Validation |
 |---|---|---|
-| **22.0** | Grilles et contrôle ; vues peintes ; données en fichiers nouveaux (12 espèces, capacités, objets, 40 Dresseurs, rencontres, tables d'eau) ; logique pure (`BikeRules`, `CyclingSlope`, `FishingRules`, `FishingSpot`) ; art (planches vélo et pêche, 4 classes, 12 dos, 4 fonds CB.3, enclos, bouton HUD) ; alignement après le J21 (T10) | Kevin valide grilles, vues et art. **Aucune session téléphone.** |
+| **22.0** | Grilles et contrôle ; vues peintes ; données en fichiers nouveaux (13 espèces, capacités, objets, 40 Dresseurs, rencontres, tables d'eau) ; logique pure (`BikeRules`, `CyclingSlope`, `FishingRules`, `FishingSpot`) ; art (planches vélo et pêche, 4 classes, 12 dos, 4 fonds CB.3, enclos, bouton HUD) ; alignement après le J21 (T10) | Kevin valide grilles, vues et art. **Aucune session téléphone.** |
 | **22A** « le chemin des pêcheurs » | Pêche (interaction, tirage, scène) ; Canne (Carmin), Méga Canne (Route 12 sud) ; cases pêchables des cartes livrées ; Route 12 sud, Routes 13, 14, 15 et poste | **Téléphone** (S24 ou S21) |
 | **22B** « la Piste » | Mode vélo et bouton HUD ; Bon de Commande, Bicyclette ; poste 16, Route 16 ouest (voies basse et haute, arbre), Route 17 et sa pente, Route 18 et son poste | **Téléphone** |
 | **22C** « Parmanie » | Ville, Centre, Boutique, maison de la Super Canne, Salle de réunion, maison du grand-père, enclos, portes réservées ; raccords des deux chemins ; QA de bout en bout ; équilibrage ; clôture | **Téléphone** + fusion |
@@ -408,7 +408,7 @@ static func in_front(grid: GridWorld, cell: Vector2i, facing: Vector2i, cycling_
 - **40 Dresseurs** : ids et équipes du dossier §9 ; `ai: random` ; portée = RB × 1,5 ; répliques
   §16.4 mot pour mot. Les inévitables (I) sont placés par la grille (le contrôle T6 vérifie qu'il
   n'y en a qu'un par route et qu'un chemin évite tous les autres).
-- **Espèces** `species/kanto_j22.json` : Magicarpe, Krabby, Poissoroy, Aéromite, Doduo, Dodrio,
+- **Espèces** `species/kanto_j22.json` (13, correction du 2026-10-19) : Magicarpe, Krabby, Poissoroy, Mimitoss, Aéromite, Doduo, Dodrio,
   Canarticho, Tadmorv, Grotadmorv, Smogogo, Électrode, Machopeur ; données RB (statistiques, types,
   learnset jusqu'au N40, évolutions du dossier §12.1), entrées de Pokédex réécrites (§16.7.3).
 - **Magicarpe** : reprise **à l'identique** de l'entrée créée par le J24 (`jalon-24`,
@@ -518,7 +518,7 @@ Kevin.
   seulement (pas en diagonale, pas derrière une entité, pas sur la Piste) ; aucune canne → rien.
 
 #### T4 — A : données valides sur `jalon-21` — **maintenant**
-- `items_j22.json` (sans `key_use`), `species/kanto_j22.json` (12 espèces), `moves/j22.json`,
+- `items_j22.json` (sans `key_use`), `species/kanto_j22.json` (13 espèces), `moves/j22.json`,
   `encounters/water_rod.json` (§2.6 ; Ptitard et Tentacool : si absents de `jalon-21`, rédigés
   et validés après T10), Pokédex.
 - **CA** : toutes les données se chargent ; liste des capacités remplacées envoyée à Kevin.
@@ -544,7 +544,7 @@ Kevin.
 #### T7 — A puis C (Mac, Codex) : art, série 25 — **maintenant**
 - Fiche, kit, génération, planche de contact → K, intégration (§2.15). Dos de combat et fonds
   CB.3 sur leurs chaînes existantes.
-- **CA** : Kevin valide la planche de contact ; `test_battle_art` vert pour les 12 espèces.
+- **CA** : Kevin valide la planche de contact ; `test_battle_art` vert pour les 13 espèces.
 
 #### T8 — C : planches PNJ — **maintenant**
 - Motard, Ornithologue, Loubard ; frères pêcheurs ; président du club ; `build_character_frames.gd`
@@ -689,7 +689,7 @@ deux chemins, avec les prérequis de chacun, puis explore librement.
 
 ## 4. Critères d'acceptation par sous-jalon
 
-**22.0** : grilles et vues validées ; logique pure testée ; données valides (12 espèces, objets,
+**22.0** : grilles et vues validées ; logique pure testée ; données valides (13 espèces, objets,
 tables d'eau ; Dresseurs et rencontres après T10) ; art validé ; alignement T10 fait ; tests
 verts, import propre.
 
@@ -735,7 +735,7 @@ Kevin, puis fusion.
 | **La pente rend la Piste frustrante au doigt** | rejet en 22B | paliers ; dérive seulement sans appui ; paramètres en données ; session 22B dédiée |
 | **Vitesse du vélo et caméra** | saccades, fps | mesure en T14 et T23 ; durée en donnée |
 | **Cases pêchables de six cartes d'autres jalons** | conflits | `fishable.json` à part, aucune grille modifiée |
-| **Taille du contenu** (8 cartes, 40 Dresseurs, 12 espèces) | délai | contenu parallélisable par carte (T12, T19 à T21, T24) ; art lancé dès 22.0 |
+| **Taille du contenu** (8 cartes, 40 Dresseurs, 13 espèces) | délai | contenu parallélisable par carte (T12, T19 à T21, T24) ; art lancé dès 22.0 |
 | **`key_use` du J21 livré autrement** | §2.8 à réécrire | T10 réaligne |
 | Échec intermittent de `tools/test.sh` sous charge | faux rouge | relancer le fichier seul avant de conclure |
 
