@@ -444,7 +444,7 @@ raccord Azuria (est) ↔ Route 9 (ouest). Le texte 17 « On ne passe pas par là
 reste tant que l'arbre est debout. L'indice du trou dans la clôture (l. 112) est gardé.
 **Arbre coupé (décisions de Kevin, 2026-10-19)** : le jeune arbre du J16 remplace le grand arbre
 [V] ; le résident H7 (51, 22) change de réplique une fois l'arbre coupé (`cut_cerulean_east_tree`)
-[V, texte à valider] : « L'arbre est tombé ! La Route 9 file vers l'est, jusqu'aux montagnes. »
+[V, texte validé le 2026-10-19] : « L'arbre est tombé ! La Route 9 file vers l'est, jusqu'aux montagnes. »
 
 ## 10. Espèces, capacités, objets, assets
 
