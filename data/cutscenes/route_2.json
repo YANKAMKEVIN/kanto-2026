@@ -46,5 +46,17 @@
 				]
 			}
 		]
+	},
+	"route_2_item_5": {
+		"variants": [
+			{
+				"unless": ["got_route_2_item_5"],
+				"steps": [
+					{ "despawn": "route_2_item_5" },
+					{ "give": "super_potion", "count": 1, "found": true },
+					{ "set": ["got_route_2_item_5"] }
+				]
+			}
+		]
 	}
 }

@@ -23,12 +23,15 @@ var variants: Array[DialogueVariant] = []
 ## Variante à tirage ([member DialogueVariant.one_in], jalon 14) : ses drapeaux d'abord, puis
 ## un tirage de [param rng] (1 sur N) ; perdu, on passe à la suivante. Sans [param rng], une
 ## telle variante est sautée sans tirage (tests déterministes, simple consultation).
+## [param caught] : espèces capturées au Pokédex, pour les variantes « if_caught_at_least » /
+## « unless_caught_at_least » (jalon 17) ; 0 par défaut.
 ## Variante de capacité de terrain ([member DialogueVariant.field], jalon 16) : elle ne
 ## s'applique que si [param field] (`func(move: StringName) -> FieldMoves.Result`) rend cet état ;
 ## sans [param field], elle est sautée.
-func pick(flags: StoryFlags, rng: GameRng = null, field: Callable = Callable()) -> DialogueVariant:
+func pick(flags: StoryFlags, rng: GameRng = null, caught: int = 0,
+		field: Callable = Callable()) -> DialogueVariant:
 	for variant: DialogueVariant in variants:
-		if not variant.matches(flags):
+		if not variant.matches(flags, caught):
 			continue
 		if not variant.field.is_empty() and not _field_matches(variant.field, field):
 			continue

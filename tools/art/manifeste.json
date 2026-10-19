@@ -1472,6 +1472,33 @@
    "contact": null
   },
   {
+   "id": "relief_bouche_talus_01",
+   "source": "WORLD_RELIEF_BOUCHE_TALUS_01_NE_r1.png",
+   "sortie": "assets/world/relief/relief_bouche_talus_01.png",
+   "axe": "w",
+   "cases": 4,
+   "ombre": false,
+   "contact": 0.0
+  },
+  {
+   "id": "relief_bouche_paroi_01",
+   "source": "WORLD_RELIEF_BOUCHE_PAROI_01_NE_r1.png",
+   "sortie": "assets/world/relief/relief_bouche_paroi_01.png",
+   "axe": "w",
+   "cases": 4,
+   "ombre": false,
+   "contact": 0.0
+  },
+  {
+   "id": "prop_barriere_ouverte_01",
+   "source": "WORLD_PROP_BARRIERE_OUVERTE_01_NE_r1.png",
+   "sortie": "assets/world/props/prop_barriere_ouverte_01.png",
+   "axe": "h",
+   "cases": 2.4,
+   "ombre": false,
+   "contact": 0.3
+  },
+  {
    "id": "bldg_ss_anne_superstructure_01",
    "source": "WORLD_BLDG_SS_ANNE_SUPERSTRUCTURE_OUEST_NE_r1.png",
    "sortie": "assets/world/buildings/bldg_ss_anne_superstructure_01.png",
@@ -1503,7 +1530,11 @@
     "teinte": -0.0706,
     "gamma_valeur": 0.72,
     "saturation": 1.03,
-    "lumieres": [0.6, 1.0, 0.4]
+    "lumieres": [
+     0.6,
+     1.0,
+     0.4
+    ]
    }
   }
  ],
@@ -1916,6 +1947,33 @@
    "raccord": 24
   },
   {
+   "id": "ground_digue_01",
+   "source": "WORLD_GROUND_DIGUE_01_NE_r1.png",
+   "sortie": "assets/world/ground/ground_digue_01.png",
+   "taille": 384,
+   "contraste": 0.9,
+   "couleur": 1.0,
+   "raccord": 24
+  },
+  {
+   "id": "ground_sable_grotte_01",
+   "source": "WORLD_GROUND_SABLE_GROTTE_01_NE_r1.png",
+   "sortie": "assets/world/ground/ground_sable_grotte_01.png",
+   "taille": 384,
+   "contraste": 0.7,
+   "couleur": 1.0,
+   "raccord": 24
+  },
+  {
+   "id": "ground_masse_sable_01",
+   "source": "WORLD_GROUND_MASSE_SABLE_01_NE_r1.png",
+   "sortie": "assets/world/ground/ground_masse_sable_01.png",
+   "taille": 384,
+   "contraste": 0.6,
+   "couleur": 0.9,
+   "raccord": 24
+  },
+  {
    "id": "ground_pont_teck_01",
    "source": "WORLD_GROUND_PLANCHES_QUAI_01_NE_r1.png",
    "sortie": "assets/world/ground/ground_pont_teck_01.png",
@@ -1969,15 +2027,35 @@
   {
    "source": "WORLD_TREE_FORET_PLANCHE_A_NE_r1.png",
    "dossier": "assets/world/props/",
-   "ids": ["tree_foret_01", "tree_foret_02", "tree_foret_03", "tree_foret_04"],
-   "hauteurs_px": [288, 288, 298, 288],
+   "ids": [
+    "tree_foret_01",
+    "tree_foret_02",
+    "tree_foret_03",
+    "tree_foret_04"
+   ],
+   "hauteurs_px": [
+    288,
+    288,
+    298,
+    288
+   ],
    "contact": 0.05
   },
   {
    "source": "WORLD_TREE_FORET_PLANCHE_B_NE_r1.png",
    "dossier": "assets/world/props/",
-   "ids": ["tree_foret_05", "tree_foret_06", "tree_foret_07", "tree_foret_08"],
-   "hauteurs_px": [317, 269, 278, 288],
+   "ids": [
+    "tree_foret_05",
+    "tree_foret_06",
+    "tree_foret_07",
+    "tree_foret_08"
+   ],
+   "hauteurs_px": [
+    317,
+    269,
+    278,
+    288
+   ],
    "contact": 0.05
   },
   {
@@ -2031,10 +2109,110 @@
     "source": "HEROS_COURSE_PROFIL_r1.png",
     "rebond": 3,
     "jambe_lointaine": [
-     [[[0, 500], [240, 500], [256, 550], [256, 730], [0, 730]]],
-     [[[700, 440], [975, 440], [975, 660], [766, 660], [766, 518], [717, 503], [700, 503]]],
-     [[[1255, 500], [1560, 500], [1560, 730], [1288, 730], [1288, 550]]],
-     [[[1640, 498], [1736, 503], [1802, 512], [1802, 660], [1640, 660]]]
+     [
+      [
+       [
+        0,
+        500
+       ],
+       [
+        240,
+        500
+       ],
+       [
+        256,
+        550
+       ],
+       [
+        256,
+        730
+       ],
+       [
+        0,
+        730
+       ]
+      ]
+     ],
+     [
+      [
+       [
+        700,
+        440
+       ],
+       [
+        975,
+        440
+       ],
+       [
+        975,
+        660
+       ],
+       [
+        766,
+        660
+       ],
+       [
+        766,
+        518
+       ],
+       [
+        717,
+        503
+       ],
+       [
+        700,
+        503
+       ]
+      ]
+     ],
+     [
+      [
+       [
+        1255,
+        500
+       ],
+       [
+        1560,
+        500
+       ],
+       [
+        1560,
+        730
+       ],
+       [
+        1288,
+        730
+       ],
+       [
+        1288,
+        550
+       ]
+      ]
+     ],
+     [
+      [
+       [
+        1640,
+        498
+       ],
+       [
+        1736,
+        503
+       ],
+       [
+        1802,
+        512
+       ],
+       [
+        1802,
+        660
+       ],
+       [
+        1640,
+        660
+       ]
+      ]
+     ]
     ]
    }
   },
@@ -2102,9 +2280,67 @@
     "source": "PNJ_ENFANT_COURSE_PROFIL_r1_v2.png",
     "rebond": 3,
     "jambe_lointaine": [
-     [[[25, 630], [130, 625], [165, 660], [160, 690], [105, 748], [25, 748]]],
+     [
+      [
+       [
+        25,
+        630
+       ],
+       [
+        130,
+        625
+       ],
+       [
+        165,
+        660
+       ],
+       [
+        160,
+        690
+       ],
+       [
+        105,
+        748
+       ],
+       [
+        25,
+        748
+       ]
+      ]
+     ],
      [],
-     [[[1000, 650], [1060, 625], [1085, 680], [1150, 690], [1150, 772], [1020, 772], [1000, 700]]],
+     [
+      [
+       [
+        1000,
+        650
+       ],
+       [
+        1060,
+        625
+       ],
+       [
+        1085,
+        680
+       ],
+       [
+        1150,
+        690
+       ],
+       [
+        1150,
+        772
+       ],
+       [
+        1020,
+        772
+       ],
+       [
+        1000,
+        700
+       ]
+      ]
+     ],
      []
     ]
    }
@@ -2277,6 +2513,18 @@
    "id": "president_fan_club",
    "source": "PNJ_PRESIDENT_FAN_CLUB_NE_r1.png",
    "sortie": "assets/sprites/characters/painted/president_fan_club_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "parieur",
+   "source": "PNJ_PARIEUR_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/parieur_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "ingenieur",
+   "source": "PNJ_INGENIEUR_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/ingenieur_sheet.png",
    "hauteur": 128
   },
   {
@@ -2490,6 +2738,12 @@
    "sortie": "assets/sprites/pokemon/painted/miaouss_sheet.png",
    "hauteur": 64,
    "note": "J15 T10 ; r1 refusee par Codex avec ancres, r2 = prompt seul ; hauteur 64 (decision de Kevin 2026-10-16 : 56 = Rattata trop petit en marche sur S21)"
+  },
+  {
+   "id": "soporifik",
+   "source": "POKE_SOPORIFIK_NE_r3.png",
+   "sortie": "assets/sprites/pokemon/painted/soporifik_sheet.png",
+   "hauteur": 76
   }
  ],
  "heros_images": [
@@ -2773,6 +3027,18 @@
    "marche": "president_fan_club"
   },
   {
+   "id": "parieur_idle",
+   "source": "PARIEUR_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/parieur_idle_sheet.png",
+   "marche": "parieur"
+  },
+  {
+   "id": "ingenieur_idle",
+   "source": "INGENIEUR_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/ingenieur_idle_sheet.png",
+   "marche": "ingenieur"
+  },
+  {
    "id": "capitaine_idle",
    "source": "CAPITAINE_ATTENTE_r1.png",
    "sortie": "assets/sprites/characters/painted/capitaine_idle_sheet.png",
@@ -2872,6 +3138,18 @@
    "source": "POKE_RACAILLOU_FIXE_NE_r1.png",
    "sortie": "assets/sprites/pokemon/painted/racaillou_sheet.png",
    "hauteur": 56
+  },
+  {
+   "id": "taupiqueur",
+   "source": "POKE_TAUPIQUEUR_FIXE_NE_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/taupiqueur_sheet.png",
+   "hauteur": 44
+  },
+  {
+   "id": "ronflex",
+   "source": "POKE_RONFLEX_FIXE_NE_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/ronflex_sheet.png",
+   "hauteur": 168
   }
  ],
  "planches_objets": [
@@ -3443,6 +3721,79 @@
      912
     ]
    ]
+  },
+  {
+   "source": "WORLD_RELIEF_PAROI_SABLE_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/relief/",
+   "colonnes": 3,
+   "lignes": 2,
+   "ids": [
+    "relief_paroi_sable_01",
+    "relief_paroi_sable_02",
+    "relief_paroi_sable_03",
+    "relief_paroi_sable_04",
+    "relief_paroi_sable_05",
+    "relief_paroi_sable_06"
+   ],
+   "cases": [
+    3,
+    3,
+    2,
+    2,
+    1,
+    3
+   ],
+   "contact": 0.0
+  },
+  {
+   "source": "WORLD_RELIEF_BOUCHES_CAVE_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/relief/",
+   "colonnes": 2,
+   "lignes": 1,
+   "ids": [
+    "relief_bouche_cave_sud_01",
+    "relief_bouche_cave_nord_01"
+   ],
+   "cases": [
+    4,
+    4
+   ],
+   "contact": 0.0
+  },
+  {
+   "source": "WORLD_RELIEF_DIGUE_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/relief/",
+   "colonnes": 2,
+   "lignes": 1,
+   "ids": [
+    "relief_digue_bord_01",
+    "relief_digue_bord_02"
+   ],
+   "cases": [
+    2,
+    2
+   ],
+   "contact": 0.0
+  },
+  {
+   "source": "INT_J17_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/interiors/",
+   "colonnes": 2,
+   "lignes": 2,
+   "ids": [
+    "int_etagere_lampes_01",
+    "int_carte_murale_01",
+    "int_table_lecture_01",
+    "int_caisse_lampes_01"
+   ],
+   "cases": [
+    2,
+    2,
+    3,
+    1
+   ],
+   "contact": 0.2,
+   "nettoyer": true
   },
   {
    "source": "INT_SS_ANNE_PLANCHE_A_NE_r1.png",

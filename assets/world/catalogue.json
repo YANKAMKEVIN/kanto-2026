@@ -6009,6 +6009,329 @@
     ]
    }
   },
+  "relief_bouche_talus_01": {
+   "fichier": "res://assets/world/relief/relief_bouche_talus_01.png",
+   "taille": [
+    384,
+    198
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_bouche_talus_01_contact.png",
+    "decalage": [
+     -200,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     200,
+     11
+    ]
+   }
+  },
+  "relief_bouche_paroi_01": {
+   "fichier": "res://assets/world/relief/relief_bouche_paroi_01.png",
+   "taille": [
+    384,
+    200
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_bouche_paroi_01_contact.png",
+    "decalage": [
+     -200,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     200,
+     11
+    ]
+   }
+  },
+  "prop_barriere_ouverte_01": {
+   "fichier": "res://assets/world/props/prop_barriere_ouverte_01.png",
+   "taille": [
+    45,
+    230
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_barriere_ouverte_01_contact.png",
+    "decalage": [
+     -30,
+     -51
+    ],
+    "echelle": 2,
+    "taille": [
+     31,
+     45
+    ]
+   }
+  },
+  "relief_paroi_sable_01": {
+   "fichier": "res://assets/world/relief/relief_paroi_sable_01.png",
+   "taille": [
+    288,
+    182
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_paroi_sable_01_contact.png",
+    "decalage": [
+     -152,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     152,
+     11
+    ]
+   }
+  },
+  "relief_paroi_sable_02": {
+   "fichier": "res://assets/world/relief/relief_paroi_sable_02.png",
+   "taille": [
+    288,
+    191
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_paroi_sable_02_contact.png",
+    "decalage": [
+     -152,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     152,
+     11
+    ]
+   }
+  },
+  "relief_paroi_sable_03": {
+   "fichier": "res://assets/world/relief/relief_paroi_sable_03.png",
+   "taille": [
+    192,
+    210
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_paroi_sable_03_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "relief_paroi_sable_04": {
+   "fichier": "res://assets/world/relief/relief_paroi_sable_04.png",
+   "taille": [
+    192,
+    168
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_paroi_sable_04_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "relief_paroi_sable_05": {
+   "fichier": "res://assets/world/relief/relief_paroi_sable_05.png",
+   "taille": [
+    96,
+    278
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_paroi_sable_05_contact.png",
+    "decalage": [
+     -56,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     11
+    ]
+   }
+  },
+  "relief_paroi_sable_06": {
+   "fichier": "res://assets/world/relief/relief_paroi_sable_06.png",
+   "taille": [
+    288,
+    68
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_paroi_sable_06_contact.png",
+    "decalage": [
+     -152,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     152,
+     11
+    ]
+   }
+  },
+  "relief_bouche_cave_sud_01": {
+   "fichier": "res://assets/world/relief/relief_bouche_cave_sud_01.png",
+   "taille": [
+    384,
+    163
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_bouche_cave_sud_01_contact.png",
+    "decalage": [
+     -200,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     200,
+     11
+    ]
+   }
+  },
+  "relief_bouche_cave_nord_01": {
+   "fichier": "res://assets/world/relief/relief_bouche_cave_nord_01.png",
+   "taille": [
+    384,
+    239
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_bouche_cave_nord_01_contact.png",
+    "decalage": [
+     -200,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     200,
+     11
+    ]
+   }
+  },
+  "relief_digue_bord_01": {
+   "fichier": "res://assets/world/relief/relief_digue_bord_01.png",
+   "taille": [
+    192,
+    87
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_digue_bord_01_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "relief_digue_bord_02": {
+   "fichier": "res://assets/world/relief/relief_digue_bord_02.png",
+   "taille": [
+    192,
+    87
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_digue_bord_02_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "int_etagere_lampes_01": {
+   "fichier": "res://assets/world/interiors/int_etagere_lampes_01.png",
+   "taille": [
+    192,
+    147
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_etagere_lampes_01_contact.png",
+    "decalage": [
+     -104,
+     -11
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     25
+    ]
+   }
+  },
+  "int_carte_murale_01": {
+   "fichier": "res://assets/world/interiors/int_carte_murale_01.png",
+   "taille": [
+    192,
+    129
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_carte_murale_01_contact.png",
+    "decalage": [
+     -104,
+     -8
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     23
+    ]
+   }
+  },
+  "int_table_lecture_01": {
+   "fichier": "res://assets/world/interiors/int_table_lecture_01.png",
+   "taille": [
+    288,
+    142
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_table_lecture_01_contact.png",
+    "decalage": [
+     -152,
+     -10
+    ],
+    "echelle": 2,
+    "taille": [
+     152,
+     24
+    ]
+   }
+  },
+  "int_caisse_lampes_01": {
+   "fichier": "res://assets/world/interiors/int_caisse_lampes_01.png",
+   "taille": [
+    96,
+    88
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_caisse_lampes_01_contact.png",
+    "decalage": [
+     -56,
+     0
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     19
+    ]
+   }
+  },
   "bldg_ss_anne_superstructure_01": {
    "fichier": "res://assets/world/buildings/bldg_ss_anne_superstructure_01.png",
    "taille": [
@@ -8197,6 +8520,122 @@
     "haut"
    ]
   },
+  "parieur": {
+   "fichier": "res://assets/sprites/characters/painted/parieur_sheet.png",
+   "cellule": [
+    75,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "ingenieur": {
+   "fichier": "res://assets/sprites/characters/painted/ingenieur_sheet.png",
+   "cellule": [
+    76,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "soporifik": {
+   "fichier": "res://assets/sprites/pokemon/painted/soporifik_sheet.png",
+   "cellule": [
+    72,
+    78
+   ],
+   "hauteur": 76,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "parieur_idle": {
+   "fichier": "res://assets/sprites/characters/painted/parieur_idle_sheet.png",
+   "cellule": [
+    77,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "ingenieur_idle": {
+   "fichier": "res://assets/sprites/characters/painted/ingenieur_idle_sheet.png",
+   "cellule": [
+    76,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "taupiqueur": {
+   "fichier": "res://assets/sprites/pokemon/painted/taupiqueur_sheet.png",
+   "cellule": [
+    60,
+    46
+   ],
+   "hauteur": 44,
+   "colonnes": 6,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "bas_reaction",
+    "gauche",
+    "gauche_reaction",
+    "droite",
+    "droite_reaction"
+   ]
+  },
+  "ronflex": {
+   "fichier": "res://assets/sprites/pokemon/painted/ronflex_sheet.png",
+   "cellule": [
+    178,
+    182
+   ],
+   "hauteur": 168,
+   "colonnes": 6,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "bas_reaction",
+    "gauche",
+    "gauche_reaction",
+    "droite",
+    "droite_reaction"
+   ]
+  },
   "capitaine": {
    "fichier": "res://assets/sprites/characters/painted/capitaine_sheet.png",
    "cellule": [
@@ -8909,6 +9348,27 @@
   },
   "ground_planches_quai_ns_01": {
    "fichier": "res://assets/world/ground/ground_planches_quai_ns_01.png",
+   "taille": [
+    384,
+    384
+   ]
+  },
+  "ground_digue_01": {
+   "fichier": "res://assets/world/ground/ground_digue_01.png",
+   "taille": [
+    384,
+    384
+   ]
+  },
+  "ground_sable_grotte_01": {
+   "fichier": "res://assets/world/ground/ground_sable_grotte_01.png",
+   "taille": [
+    384,
+    384
+   ]
+  },
+  "ground_masse_sable_01": {
+   "fichier": "res://assets/world/ground/ground_masse_sable_01.png",
    "taille": [
     384,
     384

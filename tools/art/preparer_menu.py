@@ -50,6 +50,8 @@ PLANCHES_OBJETS_SUIVANTES = [
 	("UI_OBJETS_J14_PLANCHE_r1.png", ["ss_ticket", "rare_candy"]),
 	# Série 17 (J15 T11) : Super Potion et Guérison (`serie17.ICONES_IDS`).
 	("UI_OBJETS_J15_PLANCHE_r1.png", ["super_potion", "full_restore"]),
+	# Série 19 (J17 T14) : CS05 (`serie19.ICONES_IDS`), première colonne de la planche.
+	("UI_OBJETS_J17_PLANCHE_r1.png", ["hm05"]),
 	# Série 18 (J16 T10) : Anti-Para et Réveil (`serie18.ICONES_IDS`).
 	("UI_OBJETS_J16_PLANCHE_r1.png", ["paralyze_heal", "awakening"]),
 ]

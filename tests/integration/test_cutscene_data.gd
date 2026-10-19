@@ -189,6 +189,17 @@ const VARIANT_FLAGS: Dictionary = {
 	&"route_6_item_1": [PEWTER_FLAGS], &"route_6_hidden_1": [PEWTER_FLAGS],
 	&"route_6_gate_rule_w": [PEWTER_FLAGS], &"route_6_gate_rule_e": [PEWTER_FLAGS],
 	&"route_6_gate_rule_s": [PEWTER_FLAGS], &"vermilion_arrival": [PEWTER_FLAGS],
+	# Jalon 17 (T8) : remise de la CS05 par l'assistant (10 espèces capturées).
+	&"route_2_east_give_hm05": [PEWTER_FLAGS],
+	# Jalon 17 (T17) : les deux objets au sol et l'objet caché de la Route 11.
+	&"route_11_item_1": [PEWTER_FLAGS], &"route_11_item_2": [PEWTER_FLAGS],
+	&"route_11_hidden_1": [PEWTER_FLAGS],
+	# Jalon 17 (T20) : Pierre Lune et Super Bonbon du couloir de la Route 2 est.
+	&"route_2_east_item_1": [PEWTER_FLAGS], &"route_2_east_item_2": [PEWTER_FLAGS],
+	# Jalon 17 (T21) : Super Potion de la clairière de FUTUR A.
+	&"route_2_item_5": [PEWTER_FLAGS],
+	# Jalon 17 (intégration) : Corde Sortie du renfoncement R1 de la Cave Taupiqueur.
+	&"digletts_cave_item_1": [PEWTER_FLAGS],
 	# Jalon 16 (T12) : six objets au sol et trois cachés du S.S. Anne.
 	&"ss_anne_item_01": [PEWTER_FLAGS], &"ss_anne_item_02": [PEWTER_FLAGS],
 	&"ss_anne_item_03": [PEWTER_FLAGS], &"ss_anne_item_04": [PEWTER_FLAGS],
@@ -199,6 +210,8 @@ const VARIANT_FLAGS: Dictionary = {
 	&"ss_anne_departure": [PEWTER_FLAGS + [&"got_hm01"], PEWTER_FLAGS],
 	&"cut_tree_vermilion_gym": [PEWTER_FLAGS],
 	&"ss_anne_boarding": [PEWTER_FLAGS],
+	# Jalon 17 (T23) : Coupe des arbustes du couloir de la Route 2 est et de FUTUR A.
+	&"cut_tree_route_2_east_bush": [PEWTER_FLAGS], &"cut_tree_route_2_futur_a": [PEWTER_FLAGS],
 }
 ## Scènes jouées par le code (pas de déclencheur) → carte où elles sont jouées.
 ## Jalon 7 (T18) : la scène du colis est lancée par la variante « cutscene » du dialogue de Chen.
@@ -235,6 +248,8 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"ss_anne_captain": &"ss_anne_captain_room",
 	# Jalon 16 (T15) : COUPER (« confirm_cutscene » de l'examen de l'arbuste).
 	&"cut_tree_vermilion_gym": &"vermilion_city",
+	# Jalon 17 (T23) : COUPER sur les arbustes du couloir de la Route 2 est et de FUTUR A.
+	&"cut_tree_route_2_east_bush": &"route_2_east", &"cut_tree_route_2_futur_a": &"route_2",
 	# Jalon 16 : embarquement, par le dialogue du marin (TXT-01).
 	&"ss_anne_boarding": &"vermilion_city",
 	# Jalon 11 (T14) : remise tardive de la CT34 (dialogue de Pierre).
@@ -259,6 +274,18 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"mt_moon_fossil_dome": &"mt_moon_b2f", &"mt_moon_fossil_helix": &"mt_moon_b2f",
 	# Jalon 14 (T17) : les trois objets de Léo (dialogue de l'écran, du module, de la console).
 	&"bill_screen": &"bill_house", &"bill_module": &"bill_house", &"bill_machine": &"bill_house",
+	# Jalon 17 (T8) : remise de la CS05 (variante « cutscene » du dialogue de l'assistant), dans
+	# le poste de la Route 2 est (carte du T19 ; la scène n'a aucun acteur).
+	&"route_2_east_give_hm05": &"route_2_east_gate",
+	# Jalon 17 (T17) : objets de la Route 11 (PNJ « objet » et point d'examen du caillou).
+	&"route_11_item_1": &"route_11", &"route_11_item_2": &"route_11",
+	&"route_11_hidden_1": &"route_11",
+	# Jalon 17 (T20) : objets visibles du couloir (PNJ « objet » de son fichier).
+	&"route_2_east_item_1": &"route_2_east", &"route_2_east_item_2": &"route_2_east",
+	# Jalon 17 (T21) : Super Potion de la clairière de FUTUR A (PNJ « objet » de la Route 2).
+	&"route_2_item_5": &"route_2",
+	# Jalon 17 (intégration) : Corde Sortie de la Cave (PNJ « objet » de son fichier).
+	&"digletts_cave_item_1": &"digletts_cave",
 }
 ## Scènes à déclencheur dont la carte n'est pas encore construite → leur carte (simulées sur les
 ## PNJ de son fichier). Vidée au T19 du jalon 9 (la forêt existe), puis au T11 du jalon 10 (les
@@ -339,7 +366,14 @@ func test_library_loads_without_error() -> void:
 		&"viridian_forest_item_3", &"viridian_forest_item_4", &"viridian_forest_item_5",
 		&"viridian_forest_item_6", &"ss_anne_hidden_1", &"ss_anne_hidden_2", &"ss_anne_hidden_3",
 		&"ss_anne_item_01", &"ss_anne_item_02", &"ss_anne_item_03", &"ss_anne_item_04",
-		&"ss_anne_item_05", &"ss_anne_item_06"]))
+		&"ss_anne_item_05", &"ss_anne_item_06",
+		# Jalon 17 (T8) : remise de la CS05 ; (T17) objets de la Route 11 ; (T20, T21) objets du
+		# couloir et Super Potion de FUTUR A.
+		&"route_2_east_give_hm05", &"route_11_item_1", &"route_11_item_2",
+		&"route_11_hidden_1", &"route_2_east_item_1", &"route_2_east_item_2",
+		&"route_2_item_5", &"digletts_cave_item_1",
+		# Jalon 17 (T23) : Coupe des deux arbustes.
+		&"cut_tree_route_2_east_bush", &"cut_tree_route_2_futur_a"]))
 
 
 func _sorted(values: Array) -> Array[StringName]:
@@ -444,13 +478,18 @@ func test_only_world_items_are_found_items() -> void:
 			for step: CutsceneStep in variant.steps:
 				if step.kind == CutsceneStep.Kind.GIVE and step.found:
 					found.append("%s:%s" % [id, step.item_id])
-	assert_eq(found, ["mt_moon_1f_hidden_1:awakening", "mt_moon_1f_item_1:escape_rope",
+	assert_eq(found, ["digletts_cave_item_1:escape_rope", "mt_moon_1f_hidden_1:awakening",
+		"mt_moon_1f_item_1:escape_rope",
 		"mt_moon_b1f_item_1:moon_stone", "mt_moon_b1f_item_2:potion",
-		"mt_moon_b2f_hidden_1:moon_stone", "mt_moon_b2f_item_1:tm01", "route_1_potion:potion",
+		"mt_moon_b2f_hidden_1:moon_stone", "mt_moon_b2f_item_1:tm01",
+		"route_11_hidden_1:poke_ball", "route_11_item_1:super_potion",
+		"route_11_item_2:awakening", "route_1_potion:potion",
 		"route_24_antidote:antidote", "route_24_item_1:potion", "route_25_hidden_1:potion",
 		"route_25_item_1:tm19", "route_25_item_2:potion", "route_25_item_3:poke_ball",
+		"route_2_east_item_1:moon_stone", "route_2_east_item_2:rare_candy",
 		"route_2_item_1:poke_ball", "route_2_item_2:potion",
-		"route_2_item_3:poke_ball", "route_2_item_4:potion", "route_2_north_item_1:potion",
+		"route_2_item_3:poke_ball", "route_2_item_4:potion", "route_2_item_5:super_potion",
+		"route_2_north_item_1:potion",
 		"route_3_hidden_1:awakening", "route_3_item_1:poke_ball", "route_3_item_2:potion",
 		"route_3_item_3:paralyze_heal", "route_4_item_1:poke_ball",
 		"route_5_hidden_1:antidote", "route_5_item_1:super_potion",
@@ -876,7 +915,7 @@ func _simulate(label: String, variant: CutsceneVariant, start_map: StringName,
 				# Jalon 16 (T15) : une scène de capacité de terrain (COUPER) n'est lancée que
 				# dans l'état « prêt » : ses répliques suivent cette variante.
 				if picked == null and dialogue != null:
-					picked = dialogue.pick(flags, null, func(_move: StringName) -> Variant:
+					picked = dialogue.pick(flags, null, 0, func(_move: StringName) -> Variant:
 						return FieldMoves.Result.new(FieldMoves.State.READY, 0))
 				assert_not_null(picked, "%s : « %s » a une variante" % [where,
 					step.dialogue_id])

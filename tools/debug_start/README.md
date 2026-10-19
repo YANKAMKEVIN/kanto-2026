@@ -98,6 +98,7 @@ rm "$HOME/Library/Application Support/Godot/app_userdata/Kanto 2026/debug_start.
 | `bill_house.json` | J14 (T14) : même partie, dans la maison de Léo sur le paillasson (spawn `from_route_25`, tourné vers le nord). Léo-Mélofée y attend (T17) : partie complète de la scène, depuis l'accueil |
 | `route_6.json` | J15 (T14) : même partie que `route_25.json` (Charmander N22, Papilusion N20, Roucool N18), à la sortie du bâtiment du souterrain de la Route 6 (spawn `from_underground`, tourné vers le sud) : Chloé juste devant |
 | `vermilion.json` | J15 (T14) : même partie, à l'entrée nord de Carmin-sur-Mer (spawn `from_route_6_c`, tourné vers le sud) |
+| `route_11.json` | J17 (T17) : même partie que `vermilion.json`, à l'arrivée de Carmin sur la Route 11 (spawn `from_vermilion_c`, tourné vers l'est) : Arthur dans le goulet |
 | `route_5_daycare.json` | J15 (T15/T20, session 15A) : **vraie Pension** (`route_5_daycare`, spawn `counter` devant le comptoir, tourné vers le gardien), Pension vide, **Miaouss N17 compagnon** (Jackpot), Salamèche N22, Roucool N18 **K.O.** (déposable), 3 000 ₽ : déposer Miaouss → T-6, plus de compagnon dehors |
 | `route_5_daycare_last.json` | J15 (15A) : même Pension, Miaouss N17 **seul en forme** (Salamèche et Roucool K.O.) : sa carte est refusée (T-5) dans le sélecteur, un K.O. se dépose |
 | `route_5_daycare_ready.json` | J15 (15A) : même Pension, **Salamèche N14 gardé** (1 PV, empoisonné, 4 capacités) + 950 XP → N16 : T-8 « 300 ₽ », Groz'Yeux au N15 → écran d'oubli (refus possible), **évolution en Reptincel proposée et annulable**, rendu soigné ; équipe Papilusion N20, Roucool N18, Miaouss N17 compagnon ; 5 000 ₽. En sortant : les pas comptent (marche et course) |
@@ -112,9 +113,30 @@ rm "$HOME/Library/Application Support/Godot/app_userdata/Kanto 2026/debug_start.
 | `cerulean_rocket_weak.json` | J14 (T20b) : Rocket déjà repéré (`cerulean_rocket_spotted`), Salamèche **N5** seul, dans l'impasse (spawn `impasse_start` (16, 3)) : un pas à l'est = combat à perdre (réveil au Centre, retour : n° 32) |
 | `cerulean_after.json` | J14 (T20b) : Rocket battu et CT28 reçue, devant la maison cambriolée (spawn `from_burgled_house`, tourné vers le nord) : la porte s'ouvre sur la victime ; le policier du sud est encore là (n° 41 en passant par la bande (31..33, 37)) |
 
+## Jalon 17 — voile d'obscurité et Flash
+
+Clé **`veil`** (J17 T9, `"dark"`, `"lit"` ou `"off"` (T25 : voile retiré), avec `map`) : voile d'obscurité **forcé sur la carte
+de départ** pour la session (`"lit"` : halo de Flash ouvert), même hors d'une grotte obscure ;
+jamais sauvegardé. Ex. sur le Mont Sélénite (qui n'a pas de voile en jeu) : ajouter
+`"veil": "dark"` à `mt_moon_1f.json`.
+
+La carte de QA `qa_flash` (grotte obscure) et sa pièce `qa_flash_entry`, leur outil, leurs grilles,
+leur test et les départs `flash_qa*` ont été **retirés au T28** : le voile et Flash sont éprouvés
+dans le vrai Boot sur la Cave Taupiqueur rendue obscure **en mémoire** par les tests
+(`tests/helpers/dark_cave.gd`, `test_darkness_boot`, `test_flash_director`) ; captures :
+`tools/capture_flash.sh` (voile posé sur la Cave). Au J18, les vraies grottes `"dark"` prennent
+le relais (et la clé `veil` reste disponible).
+
 La carte de QA `qa_charge_j14` (J14, T10), ses données, son outil de construction et de capture,
 son test et les départs `charge_qa` et `teleport_qa` ont été **retirés au T24** (Tunnel, Téléport
 et l'IA qui creuse sont couverts par les tests de combat ; Abra se rencontre sur la Route 25).
+
+| `route_2_east.json` | J17 (T19) : **9 espèces capturées** (équipe de 6 : Salamèche N22, Roucool, Rattata, Piafabec, Nidoran♀, Férosinge ; stockage : Nidoran♂, Chenipan, Aspicot), Badge Roche, à la **bouche nord de la Cave** côté Route 2 est (spawn `from_cave_w`, tourné vers le sud). Poste à 12 pas ; l'assistant donne T-1 puis T-2 (9 espèces : pas de CS05) ; le goulet est fermé par l'arbuste (sans CS01 : « Un arbuste barre le passage. / Il faudrait savoir le couper. ») |
+| `route_2_east_10.json` | J17 (T19) : comme `route_2_east` avec **10 espèces** (un Nosferapti au stockage) : l'assistant remet la CS05 (T-3) une seule fois, T-4 ensuite |
+| `route_2_east_south.json` | J17 (T19, T20) : **derrière l'arbuste** du couloir (spawn `debug_south`, (6, 23)), 10 espèces : Pierre Lune (12, 26) et Super Bonbon (3, 33) ramassables, sentier ouest jusqu'à la barrière de FUTUR B (vue de l'est : T-8, elle s'ouvre). Raccourci : sans CS01 ni Badge Cascade, l'arbuste reste en place (retour au nord impossible ; dans le jeu, on y arrive en le coupant : `route_2_east_cut`) |
+| `route_2_futur_a.json` | J17 (T21) : **dans la clairière de FUTUR A** de la Route 2 sud (spawn `debug_futur_a`, (2, 19), tourné vers l'ouest) : Super Potion en (1, 17) ; l'arbuste (4, 19) la ferme (raccourci sans CS01 ; dans le jeu, on y entre en le coupant : `route_2_futur_a_cut`) |
+| `route_2_east_cut.json` | J17 (T23) : comme `route_2_east_south` (10 espèces), plus **CS01 et Badge Cascade** (drapeaux jusqu'à Azuria), **devant l'arbuste** du couloir, au nord (spawn `debug_bush`, (6, 20), tourné vers le sud) : « Salamèche peut couper cet arbuste. / Utiliser Coupe ? » → COUPER : « Salamèche utilise Coupe ! », l'arbuste disparaît **pour toujours** (`cut_route_2_east_bush`), le sud du couloir s'ouvre |
+| `route_2_futur_a_cut.json` | J17 (T23) : même partie, Route 2 sud **devant l'arbuste de FUTUR A**, à l'est (spawn `debug_futur_a_bush`, (5, 19), tourné vers l'ouest) : COUPER → `cut_route_2_futur_a`, la clairière et sa Super Potion s'ouvrent. Sans CS01 : texte T7 du dossier 11 (« Les branches sont trop épaisses… ») ; avec CS01 sans Badge Cascade : texte du J16 |
 
 La carte de QA `qa_switch_j13` (J13, T14), ses données, son outil de construction et de capture,
 son test et le départ `switch_qa` ont été **retirés au T22** (les Dresseurs qui changent de

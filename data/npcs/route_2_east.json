@@ -1,0 +1,12 @@
+{
+	"route_2_east_item_1": {
+		"cell": [12, 26], "facing": "down", "sprite": "object/poke_ball_ground",
+		"dialogue": "route_2_east_item_1", "verb": "take", "turn_to_player": false,
+		"unless": ["got_route_2_east_item_1"]
+	},
+	"route_2_east_item_2": {
+		"cell": [3, 33], "facing": "down", "sprite": "object/poke_ball_ground",
+		"dialogue": "route_2_east_item_2", "verb": "take", "turn_to_player": false,
+		"unless": ["got_route_2_east_item_2"]
+	}
+}

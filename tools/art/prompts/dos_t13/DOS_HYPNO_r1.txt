@@ -1,0 +1,14 @@
+POKÉMON DE DOS POUR UN ÉCRAN DE COMBAT (Kanto 2026, projet personnel). Le Pokémon est HYPNO (n° 097), de la première génération.
+
+IMAGE 1 : l'artwork officiel de face de ce Pokémon : anatomie, couleurs, proportions et style de rendu (pas la pose : on le veut de dos).
+IMAGE 2 : un autre Pokémon de dos déjà produit pour ce jeu : reprends son ANGLE de vue (trois quarts dos, regard vers le haut à droite), son cadrage et sa famille de rendu ; ne reprends ni sa forme ni ses couleurs.
+
+SUJET : un Pokémon bipède de type psy à tête de tapir, animal à pelage ras entièrement jaune vif (une seule teinte, pas de robe ni de manteau), torse ventru et large, bras musclés pliés (poings fermés, coudes écartés), jambes courtes fléchies, pieds à trois orteils ; une GRANDE COLLERETTE DE POILS BLANCS ébouriffés autour du cou (vue de derrière, elle encadre la nuque) ; deux grandes oreilles pointues dressées, au creux brun clair, et un long nez recourbé dont on ne voit que la courbe du profil au-delà de la collerette. Posture de combat, un peu voûtée.
+
+VUE : de DOS, de trois quarts, légèrement par-dessus l'épaule gauche ; le Pokémon regarde vers le HAUT À DROITE de l'image (son adversaire est loin devant lui). AUCUN œil, aucune bouche, aucun visage dessiné sur le dos ou la nuque : le visage est tourné vers l'avant, hors de vue (au plus, la pointe du museau en profil).
+
+STYLE : celui des artworks officiels de face (même trait fin et doux, même ombrage en aplats nuancés, même palette) : le dos et l'adversaire en face doivent paraître venir du même jeu. Pas de pixel art, pas de 3D, pas de rendu photo.
+LUMIÈRE : neutre (milieu de journée, diffuse, légèrement du haut à gauche) ; le jeu ajoute l'ambiance.
+CADRAGE : image CARRÉE 1024 × 1024, le Pokémon ENTIER, centré, qui occupe environ 85 % de la hauteur ; rien n'est coupé par les bords. Une seule image fixe.
+FOND : PNG avec une vraie transparence (canal alpha), aucun damier dessiné, aucun fond coloré, aucun sol, aucune ombre portée.
+INTERDITS : texte, lettres, chiffres, signature, cadre, sol, décor, ombre portée, autre créature, personnage.

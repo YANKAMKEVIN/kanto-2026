@@ -37,5 +37,10 @@
 		"cell": [10, 35], "facing": "down", "sprite": "object/poke_ball_ground",
 		"dialogue": "route_2_ball_2", "verb": "take", "turn_to_player": false,
 		"unless": ["got_route_2_item_2"]
+	},
+	"route_2_item_5": {
+		"cell": [1, 17], "facing": "down", "sprite": "object/poke_ball_ground",
+		"dialogue": "route_2_item_5", "verb": "take", "turn_to_player": false,
+		"unless": ["got_route_2_item_5"]
 	}
 }

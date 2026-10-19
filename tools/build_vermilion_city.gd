@@ -23,10 +23,10 @@ extends SceneTree
 ##   bâtiments, **S.S. Anne en trois objets** sous une [FlagGate] (`unless ss_anne_departed`,
 ##   contrat du J16) avec la passerelle, bittes, cordage, caisses, grue, bancs, arbres, buissons.
 ## - Passages : nord (30..32, 0) PUSH ↑ → `route_6` / `from_vermilion_w|c|e` (arrivées ici
-##   `from_route_6_w|c|e`) ; est (63, 11..13) PUSH → « Route 11 — À venir » (retour sur la case,
-##   tourné ←) ; portes des sept bâtiments, dont l'Arène (`vermilion_gym` / `entrance`, derrière
-##   le jeune arbre) ; embarquement `BoardingW|E` → `ss_anne_main_deck` / `from_ss_anne_w|e`
-##   (jalon 16 T15, derrière le marin et le cordage).
+##   `from_route_6_w|c|e`) ; est (63, 11..13) PUSH → `route_11` / `from_vermilion_n|c|s` (T17 du
+##   J17 ; retour sur la case, tourné ←) ; portes des sept bâtiments, dont l'Arène
+##   (`vermilion_gym` / `entrance`, derrière le jeune arbre) ; embarquement `BoardingW|E` →
+##   `ss_anne_main_deck` / `from_ss_anne_w|e` (jalon 16 T15, derrière le marin et le cordage).
 ## - Jalon 16 T15 (`jalon-16.md` §0.3) : examen du jeune arbre = dialogue `cut_tree` (Coupe) ;
 ##   **garde-fou** après le départ du navire : [FlagGate] sans image `Entities/GangwayGuard`
 ##   (`if ss_anne_departed`) qui occupe la passerelle et l'accès (31..32, 27..28), sur l'eau une
@@ -226,10 +226,12 @@ func _add_passages() -> void:
 		_kit.call(&"add_spawn", "from_route_6_" + SUFFIXES[i], north[i])
 	var east: Array = _plan().call(&"cells_at", "warp_est")
 	for i: int in east.size():
-		var spawn := "from_route_11_" + EAST_SUFFIXES[i]
+		# Jalon 17 (T17) : le bord est mène à la vraie Route 11, rangée pour rangée (0, 11..13),
+		# tourné vers l'est ; retour sur `from_route_11_n|c|s`, tourné vers l'ouest.
 		_kit.call(&"add_warp", "Route11" + EAST_SUFFIXES[i].to_upper(), east[i], Kit.PUSH,
-			Vector2i.RIGHT, &"route_11", StringName(spawn), Vector2i.LEFT, "Route 11")
-		_kit.call(&"add_spawn", spawn, east[i])
+			Vector2i.RIGHT, &"route_11", StringName("from_vermilion_" + EAST_SUFFIXES[i]),
+			Vector2i.RIGHT)
+		_kit.call(&"add_spawn", "from_route_11_" + EAST_SUFFIXES[i], east[i])
 	for entry: Array in BUILDINGS:
 		var doors: Array = _plan().call(&"cells_at", entry[1])
 		var front: Vector2i = (doors[-1] as Vector2i) + Vector2i.DOWN

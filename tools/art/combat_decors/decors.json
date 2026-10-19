@@ -74,11 +74,29 @@
 		"taille": [2340, 1080],
 		"qualite": 90
 	},
+	"route_11_coast": {
+		"composition": "COMBAT_DECOR_ROUTE11_COTE_r1.png",
+		"tuiles": [
+			{ "image": "COMBAT_DECOR_ROUTE11_COTE_r1_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "COMBAT_DECOR_ROUTE11_COTE_r1_TR.png", "portion": [846, 0, 1846, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
 	"ss_anne_salon": {
 		"composition": "COMBAT_DECOR_SS_ANNE_SALON_r1.png",
 		"tuiles": [
 			{ "image": "COMBAT_DECOR_SS_ANNE_SALON_r1_TL.png", "portion": [0, 0, 1000, 852] },
 			{ "image": "COMBAT_DECOR_SS_ANNE_SALON_r1_TR.png", "portion": [846, 0, 1846, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"digletts_cave_rock": {
+		"composition": "COMBAT_DECOR_CAVE_TAUPIQUEUR_r1.png",
+		"tuiles": [
+			{ "image": "COMBAT_DECOR_CAVE_TAUPIQUEUR_r1_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "COMBAT_DECOR_CAVE_TAUPIQUEUR_r1_TR.png", "portion": [846, 0, 1846, 852] }
 		],
 		"taille": [2340, 1080],
 		"qualite": 90

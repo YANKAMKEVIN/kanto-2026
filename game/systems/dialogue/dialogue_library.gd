@@ -27,6 +27,9 @@ extends RefCounted
 ## jamais avec un « choice » (sa dernière page est la question).
 ## Tirage (jalon 14, jalon-14.md §2.8) : « one_in »: N (entier ≥ 2) sur une variante, qui ne
 ## s'applique alors qu'une fois sur N ([method Dialogue.pick]) ; jamais avec « auto ».
+## Pokédex (jalon 17, jalon-17.md §2.5) : « if_caught_at_least »: N (au moins N espèces
+## capturées) et « unless_caught_at_least »: N (moins de N), entiers ≥ 1 ; les deux ensemble
+## seulement si le premier est plus petit (sinon la variante ne s'appliquerait jamais).
 ## Jetons de texte (jalon 7 §3.6, T18) : `{nom}` dans le texte d'une page **et dans
 ## « speaker »** (`{rival}`, OUV.2), seulement ceux de [constant DialogueTokens.KNOWN] ; toute
 ## autre accolade est une erreur. La question d'un
@@ -45,7 +48,7 @@ const ACTIONS: Array[StringName] = [
 const _DIALOGUE_KEYS: Array[String] = ["speaker", "narration", "draft", "variants"]
 const _VARIANT_KEYS: Array[String] = [
 	"pages", "if", "unless", "set", "auto", "heal", "draft", "action", "choice", "cutscene",
-	"one_in", "field",
+	"one_in", "if_caught_at_least", "unless_caught_at_least", "field",
 ]
 const _CHOICE_KEYS: Array[String] = [
 	"confirm", "cancel", "confirm_action", "confirm_pages", "cancel_pages", "confirm_cutscene",
@@ -229,9 +232,33 @@ func _parse_variant(value: Variant, where: String) -> DialogueVariant:
 		variant.draft = entry["draft"] is bool and entry["draft"]
 	if entry.has("one_in"):
 		ok = _read_one_in(entry, variant, where) and ok
+	ok = _read_caught(entry, variant, where) and ok
 	if entry.has("field"):
 		ok = _read_field(entry, variant, where) and ok
 	return variant if ok else null
+
+
+## « if_caught_at_least » / « unless_caught_at_least » (jalon 17) : entiers ≥ 1 ; ensemble, le
+## premier strictement plus petit que le second.
+func _read_caught(entry: Dictionary, variant: DialogueVariant, where: String) -> bool:
+	var ok := true
+	for key: String in ["if_caught_at_least", "unless_caught_at_least"]:
+		if not entry.has(key):
+			continue
+		var value: Variant = entry[key]
+		if not (value is float or value is int) or float(value) != floorf(float(value)) \
+				or int(value) < 1:
+			ok = _fail("%s : « %s » doit être un entier ≥ 1" % [where, key])
+			continue
+		if key == "if_caught_at_least":
+			variant.caught_at_least = int(value)
+		else:
+			variant.caught_below = int(value)
+	if ok and variant.caught_at_least > 0 and variant.caught_below > 0 \
+			and variant.caught_at_least >= variant.caught_below:
+		ok = _fail("%s : « if_caught_at_least » doit être < « unless_caught_at_least »"
+			% where)
+	return ok
 
 
 ## « field » (jalon 16) : « capacité:état », état de [constant FieldMoves.STATE_NAMES] ; refusé

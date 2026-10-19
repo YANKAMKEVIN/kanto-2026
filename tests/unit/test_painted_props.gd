@@ -54,6 +54,13 @@ const TRAVERSABLE: Array[StringName] = [&"relief_escalier_01", &"ground_hautes_h
 	&"int_escalier_descendant_01", &"bldg_ss_anne_proue_01", &"bldg_ss_anne_milieu_01",
 	&"bldg_ss_anne_poupe_01", &"prop_vue_port_01", &"prop_cordage_01", &"prop_applique_01",
 	&"int_tableau_port_01",
+	# Série 19 (J17) : bouches de la Cave et parois de grès (cases déjà solides ou warps de la
+	# carte), bords de digue (eau), barrière ouverte (passage libre), carte murale du poste.
+	&"relief_bouche_cave_sud_01", &"relief_bouche_cave_nord_01",
+	&"relief_paroi_sable_01", &"relief_paroi_sable_02", &"relief_paroi_sable_03",
+	&"relief_paroi_sable_04", &"relief_paroi_sable_05", &"relief_paroi_sable_06",
+	&"relief_digue_bord_01", &"relief_digue_bord_02", &"prop_barriere_ouverte_01",
+	&"int_carte_murale_01",
 	# Série 18 (J16) : bastingages, superstructure du pont extérieur, barrière de l'Arène.
 	&"relief_bastingage_01", &"relief_bastingage_02", &"relief_bastingage_sud_01",
 	&"relief_bastingage_est_01", &"relief_bastingage_angle_ne_01",
@@ -91,6 +98,8 @@ const GROUND_LAYER: Array[StringName] = [
 	&"relief_mur_souterrain_04", &"relief_mur_souterrain_05", &"relief_mur_souterrain_06",
 	&"prop_escalier_souterrain_monte_01", &"prop_escalier_souterrain_descend_01",
 	&"int_escalier_descendant_01",
+	# Série 19 (J17) : bords de la digue à plat.
+	&"relief_digue_bord_01", &"relief_digue_bord_02",
 	# Série 18 (J16) : bastingages du pont extérieur.
 	&"relief_bastingage_01", &"relief_bastingage_02", &"relief_bastingage_sud_01",
 	&"relief_bastingage_est_01", &"relief_bastingage_angle_ne_01",

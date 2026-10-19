@@ -1,0 +1,10 @@
+{
+	"assistant": {
+		"cell": [8, 5], "facing": "down", "sprite": "researcher",
+		"dialogue": "route_2_east_assistant"
+	},
+	"visiteur": {
+		"cell": [11, 7], "facing": "left", "sprite": "naturalist",
+		"dialogue": "route_2_east_visitor"
+	}
+}

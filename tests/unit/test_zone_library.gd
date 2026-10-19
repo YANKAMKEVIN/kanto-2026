@@ -46,9 +46,9 @@ func _root_property(map_id: StringName, property: StringName) -> Variant:
 func test_real_data_loads_without_error() -> void:
 	assert_true(_zones.load_file(), "\n".join(_zones.get_errors()))
 	assert_eq(_zones.get_errors().size(), 0)
-	assert_eq(_zones.size(), 29, "Route 24 (jalon 13), Route 25 et Cap d'Azuria (jalon 14), "
+	assert_eq(_zones.size(), 31, "Route 24 (jalon 13), Route 25 et Cap d'Azuria (jalon 14), "
 		+ "passage souterrain (jalon 15 T18), Route 6 (jalon 15 T14), Route 5 (jalon 15 T13), "
-		+ "S.S. Anne (jalon 16 T11)")
+		+ "S.S. Anne (jalon 16 T11), Cave Taupiqueur (jalon 17 T15), Route 11 (jalon 17 T16)")
 
 
 func test_every_map_belongs_to_exactly_one_zone() -> void:
@@ -143,7 +143,9 @@ func test_built_zones_have_their_map_texts() -> void:
 	# Jalon 8 (dossier 11, T1 et T14) : sous-titre = le panneau sud, comme la Route 1.
 	var route_2 := _zones.get_zone(&"route_2")
 	# Jalon 10 (Q-3) : la Route 2 nord est la 2e carte de la zone, textes inchangés.
-	assert_eq(route_2.maps, [&"route_2", &"route_2_north"] as Array[StringName])
+	# Jalon 17 (T19) : le couloir est et son poste (une seule Route 2 dans la Carte).
+	assert_eq(route_2.maps, [&"route_2", &"route_2_north", &"route_2_east",
+		&"route_2_east_gate"] as Array[StringName])
 	assert_eq(route_2.subtitle, "Jadielle — Forêt de Jade")
 	assert_eq(route_2.description,
 		"Un chemin bordé de prairies qui s'enfonce peu à peu sous les arbres.")

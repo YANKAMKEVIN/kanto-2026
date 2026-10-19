@@ -495,6 +495,38 @@ const RULES: Dictionary[StringName, Dictionary] = {
 	&"int_fauteuil_president_01": {"width": 1, "depth": 1},
 	&"int_vitrine_rubans_01": {"width": 2, "depth": 2},
 	&"int_tableau_port_01": {"traversable": true, "align": ALIGN_CENTRE},
+	# --- Série 19 : Route 11, Cave Taupiqueur, Route 2 est et son poste (J17 T14, fiche
+	# `serie-19-chemins.md`). Bouches vues de dehors (talus, paroi) : module 4 × 3, les deux cases
+	# de l'ouverture au bas restent libres (la carte y pose les warps), comme l'entrée de la
+	# grotte de la série 14.
+	&"relief_bouche_talus_01": {"width": 4, "depth": 3,
+		"open": [Vector2i(-1, 0), Vector2i(0, 0)]},
+	&"relief_bouche_paroi_01": {"width": 4, "depth": 3,
+		"open": [Vector2i(-1, 0), Vector2i(0, 0)]},
+	# Bouches vues de l'intérieur de la Cave (rangées 79 et 0, 4 cases de large) : posées sur des
+	# cases déjà solides ou des warps de la carte, sans emprise propre.
+	&"relief_bouche_cave_sud_01": {"traversable": true, "align": ALIGN_EDGE},
+	&"relief_bouche_cave_nord_01": {"traversable": true, "align": ALIGN_EDGE},
+	# Parois de grès de la Cave (mêmes rôles que les parois de la grotte : faces 3, 3, angles 2, 2,
+	# bord 1, lèvre 3) : posées sur des cases `#` déjà solides, triées au pied.
+	&"relief_paroi_sable_01": {"traversable": true, "align": ALIGN_CENTRE},
+	&"relief_paroi_sable_02": {"traversable": true, "align": ALIGN_CENTRE},
+	&"relief_paroi_sable_03": {"traversable": true, "align": ALIGN_EDGE},
+	&"relief_paroi_sable_04": {"traversable": true, "align": ALIGN_EDGE},
+	&"relief_paroi_sable_05": {"traversable": true, "align": ALIGN_CENTRE},
+	&"relief_paroi_sable_06": {"traversable": true, "align": ALIGN_CENTRE},
+	# Bord sud de la digue (rangée 24, 2 cases de large) : relief à plat sur des cases d'eau.
+	&"relief_digue_bord_01": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_digue_bord_02": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	# Barrière ouverte (FUTUR B) : le passage de 2 cases est libre entre les poteaux, pied au
+	# poteau sud ; aucune emprise (l'état fermé est la `ClosedGate` de la carte).
+	&"prop_barriere_ouverte_01": {"traversable": true, "align": ALIGN_CENTRE},
+	# Poste de recherche (pièce du poste) : étagère 2 × 1, table de lecture 3 × 1, caisse 1 × 1 ;
+	# la carte murale est accrochée à un mur déjà bloqué.
+	&"int_etagere_lampes_01": {"width": 2, "depth": 1},
+	&"int_carte_murale_01": {"traversable": true, "align": ALIGN_EDGE},
+	&"int_table_lecture_01": {"width": 3, "depth": 1},
+	&"int_caisse_lampes_01": {"width": 1, "depth": 1},
 	# --- Série 18 : S.S. Anne et Arène de Carmin (J16 T10, fiche `serie-18-ss-anne.md`). Les
 	# meubles sont posés par `build_painted_interiors.gd` en rectangles de la grille (« furniture »,
 	# emprise écrite dans l'instance) ; ces règles donnent la même emprise.

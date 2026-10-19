@@ -72,6 +72,9 @@ const RARE_CANDY: StringName = &"rare_candy"
 var debug_start_path: String = DebugStart.USER_PATH
 ## Tests seulement : appliquer le départ de débogage même sous GUT (jamais en jeu).
 var force_debug_start: bool = false
+## Tests seulement : grottes lues dans un autre fichier (J17 T28 : la Cave Taupiqueur rendue
+## obscure pour éprouver le voile et Flash dans le vrai Boot ; jamais en jeu).
+var caves_path: String = CaveLibrary.DATA_PATH
 ## Sauvegarde de la partie (jalon 5C.5). Les tests en injectent une (système de fichiers en
 ## mémoire) avant add_child. Null : Boot ouvre la vraie (`user://save.json`) **seulement s'il
 ## est la scène principale lancée par le moteur** ; sous GUT et dans les outils de capture
@@ -173,7 +176,7 @@ var _opening: OpeningDirector = null
 var _title_backdrop: TitleBackdrop = null
 ## Grottes de Kanto (jalon 12, T20 : Corde Sortie, `data/world/caves.json`).
 var _caves := CaveLibrary.new()
-## Capacités de terrain (jalon 16, Coupe) : data/world/field_moves.json.
+## Capacités de terrain (jalon 16 Coupe, jalon 17 Flash) : data/world/field_moves.json.
 var _field_moves := FieldMoves.new()
 ## Puzzles d'interrupteurs (jalon 16, Arène de Carmin) : data/world/switch_puzzles.json.
 var _switch_puzzles := SwitchPuzzleLibrary.new()
@@ -185,6 +188,16 @@ var _active_puzzles: Dictionary[StringName, SwitchPuzzle] = {}
 var _stone_item: StringName = &""
 ## Place du Pokémon qui reçoit un Super Bonbon pendant son déroulé (jalon 14, T18b) ; −1 sinon.
 var _candy_index: int = -1
+## Voile d'obscurité des grottes obscures (J17 T9, brique commune avec le J18 :
+## `docs/tech/jalon-18.md` §2) : posé à chaque changement de carte (écran noir).
+var _darkness: DarknessController
+## Départ de débogage « veil » (J18 §2.12) : voile forcé sur cette carte pour la session
+## (&"dark" ou &"lit"), jamais sauvegardé ; &"" sinon.
+var _veil_debug_map: StringName = &""
+var _veil_debug: StringName = &""
+## Flash automatique à l'arrivée sur une carte obscure (J17 T24, Q-1 « tout J17 » ; contrat commun
+## avec le J18, `jalon-18.md` §3.3).
+var _flash: FlashDirector
 
 @onready var _world: Node2D = %World
 @onready var _hud: ExplorationHud = %ExplorationHud
@@ -216,11 +229,18 @@ func _ready() -> void:
 	add_child(_lighting)
 	_wire_settings_applier()
 	_light_profiles.load_file()
+	_darkness = DarknessController.new()
+	_darkness.process_mode = Node.PROCESS_MODE_PAUSABLE
+	add_child(_darkness)
+	_flash = FlashDirector.new()
+	_flash.process_mode = Node.PROCESS_MODE_PAUSABLE
+	add_child(_flash)
 	_load_settings()
 	# Compteur de fps de QA (journal « [perf] »), seulement en build debug, Boot scène principale.
 	if PerfCounter.is_allowed(OS.is_debug_build(), get_tree().current_scene == self):
 		add_child(PerfCounter.new())
 	_player = PLAYER_SCENE.instantiate() as Player
+	_darkness.setup(_world, _player)
 	_library.load_dir()
 	_cutscenes.load_dir()
 	_runner.setup(_library, GameState.flags, _dialogue_box, _player)
@@ -255,7 +275,9 @@ func _ready() -> void:
 	_trainers.load_dir()
 	_texts.load_file()
 	_items.load_dir()
-	_field_moves.load_file()
+	if not _field_moves.load_file():
+		for error: String in _field_moves.get_errors():
+			push_error("Boot : %s" % error)
 	_switch_puzzles.load_file()
 	_items.check_moves(_pokemon)
 	_battle_director.setup(_pokemon, _trainers, _texts, _battle_stage, _battle_hud, _player,
@@ -304,6 +326,8 @@ func _ready() -> void:
 	_runner.token_values = _dialogue_token_values
 	# Variantes « une fois sur N » (jalon 14) : l'aléatoire de la partie courante.
 	_runner.rng_source = func() -> GameRng: return GameState.rng
+	# J17 (§2.5) : variantes selon les espèces capturées (assistant de Chen, CS05).
+	_runner.caught_count = func() -> int: return GameState.pokedex.caught_count()
 	# Capacités de terrain (jalon 16) : état de Coupe pour les variantes « field » de l'arbuste.
 	_runner.field_source = field_state
 	# OUV.2 : prénoms du joueur et du rival (`{player}`, `{rival}`) aussi dans le nom du dresseur.
@@ -384,6 +408,7 @@ func _ready() -> void:
 	_menu.menu_closed.connect(_on_menu_closed)
 	_setup_companion()
 	_setup_caves()
+	_setup_flash()
 	_setup_evolution_items()
 	# L'écran (jalon-06.md §6.6) : ouverture et vue dans la même frame, sans await (un fondu
 	# coupé laisse une coroutine non reprise).
@@ -467,8 +492,9 @@ func _ready() -> void:
 	SceneRouter.setup(_world, _player, _fade)
 	# Destinations « à venir » (dossier-07 §12, build de développement) : l'écran provisoire.
 	SceneRouter.coming_soon_presenter = _coming_soon.present
-	# Décors qui suivent les drapeaux à jour avant de poser le joueur (arbuste coupé, J16 T14).
-	SceneRouter.before_spawn = func(map: GameMap) -> void: map.apply_flag_gates(GameState.flags)
+	# Décors qui suivent les drapeaux à jour avant de poser le joueur (arbuste coupé J16 T14,
+	# Ronflex J17 T5) : un seul branchement pour les deux jalons.
+	SceneRouter.arrival_flags = func() -> StoryFlags: return GameState.flags
 	# Branchés avant start() : la première carte passe aussi par le contrôleur.
 	SceneRouter.transition_started.connect(_on_transition_started)
 	# Via Boot (ordre garanti) : présence des PNJ, puis le contrôleur, puis le directeur.
@@ -771,7 +797,8 @@ func is_stable() -> bool:
 		and is_instance_valid(SceneRouter.get_current_map()) \
 		and not SceneRouter.is_transitioning() and not _runner.is_running() \
 		and not _cutscenes_node.is_running() and not _starter_choice.is_sheet_open() \
-		and not _battle_director.is_running() and not _encounters.is_running()
+		and not _battle_director.is_running() and not _encounters.is_running() \
+		and not _flash.is_running()
 
 
 ## Garde d'ouverture du Menu Dresseur : partie stable (ce qui exclut dialogue, scène, rencontre,
@@ -1148,6 +1175,8 @@ func _apply_debug_start() -> bool:
 		return false
 	start.apply(GameState, _pokemon)
 	_debug_start_autosave = start.autosave
+	_veil_debug = start.veil
+	_veil_debug_map = start.map if not start.veil.is_empty() else &""
 	if not start.wild.is_empty():
 		_encounter_library.override_table(start.map, start.wild_terrain, start.wild,
 			debug_start_path)
@@ -1212,7 +1241,9 @@ func _on_coming_soon_finished(_map: GameMap) -> void:
 ## (jalon 3B §2.6), puis la carte passe aux contrôleurs.
 func _on_map_changed(map: GameMap) -> void:
 	_observed.clear()
+	_flash.on_map_changed(map)
 	_apply_lighting(map)
+	_apply_darkness(map)
 	map.refresh_npcs(GameState.flags)
 	_interactions.set_map(map)
 	_cutscenes_node.set_map(map)
@@ -1279,12 +1310,30 @@ func _apply_lighting(map: GameMap) -> void:
 	_lighting.apply(profile, map)
 
 
+## Voile d'obscurité (J17 T9) : grotte obscure (`caves.json`, « dark ») ou voile forcé par le
+## départ de débogage (« veil » : « lit » ouvre le halo). **Flash** (T24) : à une arrivée, le
+## voile est posé sombre et [FlashDirector] l'ouvre après sa mise en scène ; le halo n'est ouvert
+## dès l'écran noir que hors arrivée ([method FlashRules.is_lit]).
+func _apply_darkness(map: GameMap) -> void:
+	var forced := not _veil_debug.is_empty() and map.map_id == _veil_debug_map
+	var removed := forced and _veil_debug == DebugStart.VEIL_OFF
+	var dark := not removed and (forced or _caves.is_dark(map.map_id))
+	var lit := (forced and _veil_debug == DebugStart.VEIL_LIT) \
+		or FlashRules.is_lit(_arrival_from, map.map_id, _caves, _flash.is_available())
+	_darkness.set_map(map, dark, lit)
+
+
+func get_darkness() -> DarknessController:
+	return _darkness
+
+
 ## Arrivée sur une carte (écran visible) : zone découverte, autosave demandé, titre de zone.
 ## Toute première sortie de la maison (OUV.3) : la légende remplace la région, déduite des
 ## cartes découvertes **avant** de marquer celle-ci.
 func _on_map_entered(map: GameMap) -> void:
 	var region := _first_exit.subtitle_for(map.map_id, _arrival_from, GameState.discovered_maps,
 		map.region)
+	var from := _arrival_from
 	_arrival_from = &""
 	_active_puzzles.clear()
 	GameState.discover_map(map.map_id)
@@ -1294,6 +1343,8 @@ func _on_map_entered(map: GameMap) -> void:
 	if _announcer.should_announce(map.display_name, indoors):
 		_hud.show_zone_title(map.display_name, region)
 		zone_announced.emit(map.display_name, region)
+	# J17 T24 : Flash (ou l'avertissement) une fois par arrivée, après l'autosave d'arrivée.
+	_flash.on_map_entered(map, from)
 
 
 func _on_target_changed(kind: int) -> void:
@@ -1407,6 +1458,8 @@ func _dialogue_token_values() -> Dictionary[StringName, String]:
 	# {pokemon} (le Pokémon gardé ou rendu) passe alors avant celui du compagnon (J11).
 	if _daycare != null:
 		values.merge(_daycare.token_values(), true)
+	# J17 (§2.5) : {caught}, {caught_missing} (assistant de Chen).
+	values.merge(DialogueTokens.caught_values(GameState.pokedex.caught_count()))
 	return values
 
 
@@ -1653,7 +1706,8 @@ func _refresh_controls() -> void:
 		and not _starter_choice.is_sheet_open() and not _battle_director.is_running()
 		and not _encounters.is_running() and not _player.is_blocked_by(EVOLUTION_ITEM)
 		and not _player.is_blocked_by(RARE_CANDY)
-		and not (_daycare != null and _daycare.is_running()))
+		and not (_daycare != null and _daycare.is_running())
+		and not _player.is_blocked_by(FlashDirector.LOCK_REASON))
 
 
 ## Racine de composition : les dépendances sont explicites et câblées une seule fois.
@@ -1703,6 +1757,10 @@ func _on_settings_changed(settings: GameSettings) -> void:
 func _apply_settings(s: GameSettings) -> void:
 	_settings = s
 	_profile = _settings_applier.apply(s, device, _evolution_screen, _opening, _title_backdrop)
+	# Voile d'obscurité (J17 T9) : battement coupé, ouverture du halo instantanée ; Flash (T24) :
+	# saut et sortie de Ball adoucis.
+	_darkness.set_reduce_motion(s.reduce_motion)
+	_flash.reduce_motion = s.reduce_motion
 
 
 ## « Sauvegarder maintenant » : écrit la sauvegarde et affiche le résultat dans l'écran.
@@ -1719,7 +1777,7 @@ func _on_save_requested() -> void:
 ## Grottes (`data/world/caves.json`) et UTILISER d'un objet AVENTURE sans cible (la Corde
 ## Sortie) : le Sac la refuse hors grotte, sinon Boot la joue ([method _on_field_item_requested]).
 func _setup_caves() -> void:
-	if not _caves.load_file():
+	if not _caves.load_file(caves_path):
 		for error: String in _caves.get_errors():
 			push_error("Boot : %s" % error)
 	_menu.set_caves(_caves, _current_map_id)
@@ -1730,6 +1788,25 @@ func get_caves() -> CaveLibrary:
 	return _caves
 
 
+# --- Jalon 17 (T24) : Flash automatique ------------------------------------------------------
+
+## [FlashDirector] : état de Flash lu dans la partie (CS05 au Sac, compatible, compagnon d'abord),
+## action d'arrivée seulement sur une partie stable, hors écran titre.
+func _setup_flash() -> void:
+	_flash.setup(GameState, _darkness, _caves, _field_moves, _hud, _runner, _library, _player,
+		_companion, _companions)
+	_flash.check_flash = func() -> FieldMoves.Result:
+		return _field_moves.check(FlashDirector.MOVE, GameState.party, GameState.bag,
+			GameState.flags, _items, _pokemon, GameState.get_companion())
+	_flash.can_start = func() -> bool: return is_stable() and not _is_opening_active()
+	_flash.cue_started.connect(_refresh_controls)
+	_flash.flash_used.connect(_refresh_controls.unbind(1))
+
+
+func get_flash_director() -> FlashDirector:
+	return _flash
+
+
 ## Corde Sortie acceptée par le Sac (jalon 12, dossier 15 §11, `jalon-12.md` §2.6) : menu fermé,
 ## « Tu utilises la Corde Sortie. », puis la Corde est retirée **dans la même image** que le
 ## départ du fondu vers l'entrée de la grotte (comme une porte) — aucune image stable entre les
@@ -1737,7 +1814,8 @@ func get_caves() -> CaveLibrary:
 ## pendant le fondu laisse la sauvegarde d'avant, Corde comprise. Ni soin ni point de repos.
 func _on_field_item_requested(item_id: StringName) -> void:
 	var item := _items.get_item(item_id)
-	var exit := FieldItemRules.escape_target(_current_map_id(), _caves)
+	# J17 (§2.3) : la case du joueur choisit la bouche d'une grotte à deux bouches.
+	var exit := FieldItemRules.escape_target(_current_map_id(), _caves, _player.get_cell())
 	if item == null or exit == null or not GameState.bag.has(item_id):
 		return
 	_menu.close()

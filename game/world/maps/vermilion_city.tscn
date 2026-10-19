@@ -6122,27 +6122,27 @@ position = Vector2(6096, 1152)
 script = ExtResource("75_u1ul4")
 trigger = 1
 direction = Vector2i(1, 0)
-target_spawn = &"from_route_11_n"
-arrival_facing = Vector2i(-1, 0)
-coming_soon = "Route 11"
+target_map = &"route_11"
+target_spawn = &"from_vermilion_n"
+arrival_facing = Vector2i(1, 0)
 
 [node name="Route11C" type="Marker2D" parent="Warps" unique_id=1090793766]
 position = Vector2(6096, 1248)
 script = ExtResource("75_u1ul4")
 trigger = 1
 direction = Vector2i(1, 0)
-target_spawn = &"from_route_11_c"
-arrival_facing = Vector2i(-1, 0)
-coming_soon = "Route 11"
+target_map = &"route_11"
+target_spawn = &"from_vermilion_c"
+arrival_facing = Vector2i(1, 0)
 
 [node name="Route11S" type="Marker2D" parent="Warps" unique_id=1151406232]
 position = Vector2(6096, 1344)
 script = ExtResource("75_u1ul4")
 trigger = 1
 direction = Vector2i(1, 0)
-target_spawn = &"from_route_11_s"
-arrival_facing = Vector2i(-1, 0)
-coming_soon = "Route 11"
+target_map = &"route_11"
+target_spawn = &"from_vermilion_s"
+arrival_facing = Vector2i(1, 0)
 
 [node name="DoorHouse1" type="Marker2D" parent="Warps" unique_id=1459453457]
 position = Vector2(720, 960)

@@ -73,19 +73,23 @@ func test_real_data_loads_without_error() -> void:
 		&"pidgey", &"pidgeotto", &"pidgeot", &"rattata", &"raticate", &"spearow", &"fearow",
 		&"ekans", &"arbok", &"pikachu", &"raichu", &"sandshrew", &"sandslash", &"nidoran_f",
 		&"nidorina", &"nidoqueen", &"nidoran_m", &"nidorino", &"nidoking", &"clefairy",
-		&"clefable", &"jigglypuff", &"wigglytuff", &"zubat", &"golbat", &"oddish", &"gloom",
-		&"paras", &"parasect",
+		&"clefable", &"vulpix", &"jigglypuff", &"wigglytuff", &"zubat", &"golbat", &"oddish",
+		&"gloom", &"paras", &"parasect",
+		# Jalon 17 (T7) : Taupiqueur, Triopikeur ; plus loin Goupix, Caninos, Magnéti, Magnéton,
+		# Soporifik, Hypno (kanto_j17.json).
+		&"diglett", &"dugtrio",
 		# Jalon 15 (T12) : Miaouss et Persan (kanto_vermilion.json).
 		&"meowth", &"persian",
-		&"mankey", &"primeape", &"abra", &"kadabra", &"machop",
+		&"mankey", &"primeape", &"growlithe", &"abra", &"kadabra", &"machop",
 		&"bellsprout", &"weepinbell",
-		&"geodude", &"graveler", &"golem", &"shellder", &"onix", &"voltorb", &"koffing",
+		&"geodude", &"graveler", &"golem", &"magnemite", &"magneton", &"shellder", &"onix",
+		&"drowzee", &"hypno", &"voltorb", &"koffing",
 		&"horsea", &"goldeen", &"staryu", &"starmie"] as Array[StringName])
-	assert_eq(_data.get_move_ids().size(), 105,
+	assert_eq(_data.get_move_ids().size(), 112,
 		"47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10) + Patience (J11) "
 		+ "+ 21 du Mont Sélénite (jalon 12) + 8 du jalon 13 (les 5 du J12 qu'il reprenait : "
 		+ "entrées du J12) + 6 du Cap d'Azuria (jalon 14) + Jackpot (J15) "
-		+ "+ Coupe et Tonnerre (jalon 16)")
+		+ "+ Coupe et Tonnerre (jalon 16) + 7 du jalon 17")
 	assert_true(_data.has_move(&"struggle"))
 
 
@@ -152,6 +156,9 @@ func test_real_evolution_chains() -> void:
 		&"abra": [&"kadabra", 16],
 		# Carmin-sur-Mer (jalon 15, §2.7.1) : Rouge/Bleu.
 		&"meowth": [&"persian", 28],
+		# Jalon 17 (§2.12.1) : Rouge/Bleu ; Caninos et Goupix (Pierre Feu absente) n'en déclarent
+		# pas.
+		&"diglett": [&"dugtrio", 26], &"drowzee": [&"hypno", 26], &"magnemite": [&"magneton", 30],
 	}
 	for id: StringName in _data.get_species_ids():
 		var rules := _data.get_species(id).evolutions
@@ -415,6 +422,9 @@ func test_real_catch_rates_are_the_official_ones() -> void:
 		&"abra": 200, &"kadabra": 100, &"machop": 180,
 		# Jalon 15 (T12).
 		&"meowth": 255, &"persian": 90,
+		# Jalon 17 (T7).
+		&"diglett": 255, &"dugtrio": 50, &"drowzee": 190, &"hypno": 75, &"magnemite": 190,
+		&"magneton": 60, &"growlithe": 190, &"vulpix": 190,
 	}
 	assert_eq(_data.get_species_ids().size(), expected.size(), "toutes les espèces")
 	for id: StringName in _data.get_species_ids():

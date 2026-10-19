@@ -34,9 +34,9 @@ func test_variant_follows_the_field_state() -> void:
 	}
 	for state: FieldMoves.State in expected:
 		var source := func(_move: StringName) -> FieldMoves.Result: return _result(state)
-		var variant := tree.pick(StoryFlags.new(), null, source)
+		var variant := tree.pick(StoryFlags.new(), null, 0, source)
 		assert_eq(variant.pages[0].text, expected[state], FieldMoves.STATE_NAMES[state])
-	var ready := tree.pick(StoryFlags.new(), null,
+	var ready := tree.pick(StoryFlags.new(), null, 0,
 		func(_m: StringName) -> FieldMoves.Result: return _result(FieldMoves.State.READY))
 	assert_not_null(ready.choice, "COUPER / LAISSER")
 
