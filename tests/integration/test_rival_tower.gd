@@ -29,13 +29,13 @@ const MAP_SIZE := Vector2i(20, 18)
 const STAIRS_UP := Vector2i(4, 9)
 var INTRO: Array[String] = []
 const WON_LINES: Array[String] = [
-	"…Il y a des choses, plus haut.\nDes Pokémon que personne\nn'arrive à voir.", "Laisse tomber.",
+	"…Il y a des choses, plus haut. Des Pokémon que personne n'arrive à voir.", "Laisse tomber.",
 ]
 const RESUME: Array[String] = ["Encore toi. …Vas-y."]
 const LOST_LINES: Array[String] = ["…Rentre. Ce n'est pas un endroit pour toi."]
 const CALM_LINES: Array[String] = [
-	"On dit que Sylphe SARL a inventé un appareil qui révèle les spectres.",
-	"Un Scope… Avec ça, on saurait enfin ce qui hante cette tour.",
+	"On dit que Sylphe SARL a inventé un appareil qui révèle les spectres. Un Scope… Avec ça, "
+	+ "on saurait enfin ce qui hante cette tour.",
 ]
 const RIVAL_ID := &"tower_rival"
 const TRAINER_ID := &"rival_tower"

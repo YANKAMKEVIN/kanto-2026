@@ -244,7 +244,7 @@
 	"rival_tower_won": {
 		"speaker": "{rival}",
 		"pages": [
-			"…Il y a des choses, plus haut.\nDes Pokémon que personne\nn'arrive à voir.",
+			"…Il y a des choses, plus haut. Des Pokémon que personne n'arrive à voir.",
 			"Laisse tomber."
 		]
 	},
@@ -263,8 +263,7 @@
 	"tower_2f_calm": {
 		"speaker": "Exorciste",
 		"pages": [
-			"On dit que Sylphe SARL a inventé un appareil qui révèle les spectres.",
-			"Un Scope… Avec ça, on saurait enfin ce qui hante cette tour."
+			"On dit que Sylphe SARL a inventé un appareil qui révèle les spectres. Un Scope… Avec ça, on saurait enfin ce qui hante cette tour."
 		]
 	}
 }

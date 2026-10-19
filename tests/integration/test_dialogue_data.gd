@@ -158,6 +158,8 @@ const MAPS: Array[StringName] = [
 	&"lavender_town", &"lavender_center", &"lavender_mart", &"pokemon_house",
 	&"lavender_house_1", &"lavender_house_2", &"pokemon_tower_1f",
 	&"pokemon_tower_3f", &"pokemon_tower_4f", &"pokemon_tower_5f", &"pokemon_tower_6f",
+	# Jalon 19 (T17) : le rival n° 5 et l'Exorciste calme du 2F.
+	&"pokemon_tower_2f",
 ]
 ## Lot de textes validé par Kevin le 2026-10-06 (anciens brouillons : panneau, observations,
 ## soin de Maman, terminal du Stockage, portes de Jadielle…) : source des textes hors dossiers.
@@ -459,6 +461,9 @@ const IDS_J19: Array[StringName] = [
 	&"tower_6f_ghost_warning",
 	# T16 : la gardienne du rez-de-chaussée (§15.1.1 à 4).
 	&"tower_guardian_worried",
+	# T17 : le rival n° 5 (§15.2) et l'Exorciste calme du 2F (§15.4).
+	&"rival_tower_intro", &"rival_tower_lost", &"rival_tower_resume", &"rival_tower_won",
+	&"tower_2f_calm",
 ]
 
 const IDS_J18: Array[StringName] = [
@@ -709,6 +714,8 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		&"tower_6f_ghost_after", &"tower_6f_ghost_warning",
 		# Jalon 19 (T16) : la gardienne du rez-de-chaussée.
 		&"tower_guardian_worried",
+		# Jalon 19 (T17) : le rival n° 5 (joué par sa scène).
+		&"rival_tower_intro", &"rival_tower_lost", &"rival_tower_resume", &"rival_tower_won",
 		# Jalon 12 (T25) : scène du chercheur et choix du fossile.
 		&"mt_moon_researcher_before", &"mt_moon_researcher_chosen",
 		&"mt_moon_researcher_defeated", &"mt_moon_researcher_rematch",
@@ -859,6 +866,7 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		&"pokedex_activated", &"rival_battle_done", &"rival_cerulean_lost_once",
 		&"rival_cerulean_retried", &"rival_cerulean_won", &"rival_challenged", &"rival_lab_lost",
 		&"rival_lab_won", &"rival_left_lab", &"rival_route22_lost", &"rival_route22_won",
+		&"rival_tower_lost_once", &"rival_tower_retried", &"rival_tower_won",
 		&"route_3_entered", &"route_3_guard_cleared", &"route_4_reached", &"route_5_entered",
 		&"starter_chosen",
 		&"starter_offered", &"tm11_received", &"tm34_received", &"viridian_arrived",
@@ -1144,7 +1152,10 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			or dossier_21.contains(text.replace("\n", " "))
 			or dossier_21.contains("« %s »" % text.replace("\n", " / "))
 			# J19 (T14) : dossier 22 §15 (une réplique peut tenir sur deux pages).
-			or _in_dossier_18(dossier_22, text),
+			or _in_dossier_18(dossier_22, text)
+			or _in_dossier_18(dossier_22, text.replace("{joueur}", "{player}"))
+			# J19 (T17) : citation du §15 repliée sur deux lignes du dossier.
+			or _in_dossier_18(_flat_lines(dossier_22), text),
 			"%s : « %s » dans un dossier de conception" % [row[0], text])
 
 
@@ -1168,6 +1179,12 @@ func _each_line_quoted(dossier: String, text: String) -> bool:
 		if not dossier.contains("« %s »" % line):
 			return false
 	return true
+
+
+## Dossier dont les lignes d'un même paragraphe sont rejointes.
+func _flat_lines(dossier: String) -> String:
+	return RegEx.create_from_string("(?<!\\n)\\n[ ]*(?=\\S)").sub(dossier, " ", true) \
+			.replace("  ", " ")
 
 
 ## Jalon 15 : vrai si [param text] (retours à la ligne de la bulle remplacés par des espaces) est
@@ -1377,7 +1394,8 @@ func test_oak_parcel_lines() -> void:
 			expected = [DialogueTokens.FIRST_WILD_SPECIES]
 		elif PLAYED_BY_COMPANION.has(row[0]):
 			expected = [DialogueTokens.POKEMON]
-		elif row[0] == &"nugget_rocket_given":
+		elif row[0] == &"nugget_rocket_given" \
+				or (row[0] == &"rival_tower_intro" and row[1].contains("{player}")):
 			expected = [DialogueTokens.PLAYER]
 		elif J17_TOKENS.has(row[1]):
 			# Jalon 17 (T8) : compte d'espèces de l'assistant (T-1 à T-3), joueur de T-3.
