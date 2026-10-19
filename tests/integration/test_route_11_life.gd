@@ -1,8 +1,9 @@
 extends GutTest
 ## La vie de la Route 11 (jalon 17 T17, jalon-17.md §2.4 ; dossier 20 §3.2, §5, §7, §16) avec la
 ## vraie scène Boot et une sauvegarde en mémoire :
-## - Ronflex : examen T-6 puis T-7 depuis les deux cases du goulet, quatre cases occupées, route
-##   fermée (aucun pas vers l'est), disparu seulement avec `snorlax_route_11_awake` (jamais posé) ;
+## - bord est (J21 T9a, décision M-3 de Kevin du 2026-10-16) : Ronflex a quitté la Route 11 pour
+##   le croisement de la Route 12 ; le goulet est libre, aucun examen, et le bord est montre
+##   « ROUTE 12 — À venir » puis rend le joueur juste à l'ouest, tourné ← (plus d'impasse muette) ;
 ## - objets O1 (Super Potion), O2 (Réveil) : PRENDRE, une seule fois, retirés au rechargement ;
 ##   O3 (Poké Ball) cachée sous le caillou : bouton face à l'indice seulement, une seule fois,
 ##   plus de cible après la trouvaille et au rechargement ;
@@ -20,7 +21,8 @@ const MAP_ID := "route_11"
 const FADE := 0.05
 const TIMEOUT := 12.0
 const DIRECTIONS: Array[Vector2i] = [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]
-const SNORLAX := [Vector2i(66, 14), Vector2i(67, 14), Vector2i(66, 15), Vector2i(67, 15)]
+## Goulet de l'est : les cases de l'ancien Ronflex du J17 (retiré par M-3).
+const NARROWS := [Vector2i(66, 14), Vector2i(67, 14), Vector2i(66, 15), Vector2i(67, 15)]
 const FRONT := [Vector2i(65, 14), Vector2i(65, 15)]
 
 var _plan: PlanGrid
@@ -154,59 +156,32 @@ func test_tall_grass_of_the_scene_matches_the_three_zones() -> void:
 		assert_true(map.get_grid().is_tall_grass(_plan.cell_of(id)), id)
 
 
-# --- Ronflex ---------------------------------------------------------------------------------
+# --- Bord est (M-3) ----------------------------------------------------------------------------
 
-func test_snorlax_occupies_four_cells_and_closes_the_road() -> void:
+func test_east_narrows_are_free_and_silent() -> void:
 	await _start(Vector2i(65, 14), Vector2i.RIGHT, true)
 	var map := _boot.get_map()
-	for cell: Vector2i in SNORLAX:
-		assert_true(map.get_grid().is_occupied(cell), "Ronflex occupe %s" % cell)
-	assert_false(map.get_grid().is_occupied(FRONT[1]), "la case devant Ronflex reste libre")
+	for cell: Vector2i in NARROWS:
+		assert_false(map.get_grid().is_occupied(cell), "goulet libre en %s (M-3)" % cell)
+	assert_null(_boot.get_interaction_controller().get_target(), "plus de Ronflex à examiner")
 	var reached := map.get_grid().find_reachable(Vector2i(0, 12), _player)
-	for cell: Vector2i in [Vector2i(75, 14), Vector2i(75, 15), Vector2i(68, 14), Vector2i(70, 12)]:
-		assert_false(reached.has(cell), "%s inatteignable" % cell)
+	for cell: Vector2i in [Vector2i(75, 14), Vector2i(75, 15), Vector2i(70, 12)]:
+		assert_true(reached.has(cell), "%s atteignable" % cell)
+	assert_push_error_count(0)
+
+
+func test_east_edge_shows_route_12_coming_soon_then_returns() -> void:
+	await _start(Vector2i(75, 15), Vector2i.RIGHT, true)
+	watch_signals(SceneRouter)
 	Input.action_press(&"move_right")
-	await wait_process_frames(30)
+	await wait_for_signal(SceneRouter.coming_soon_shown, TIMEOUT)
 	Input.action_release(&"move_right")
-	assert_eq(_player.get_cell(), Vector2i(65, 14), "aucun pas vers l'est : Ronflex bloque")
+	assert_signal_emitted_with_parameters(SceneRouter, "coming_soon_shown", ["Route 12"])
+	await wait_for_signal(SceneRouter.coming_soon_finished, TIMEOUT)
+	assert_eq(_boot.get_map().map_id, &"route_11", "aucune carte chargée")
+	assert_eq(_player.get_cell(), Vector2i(74, 15), "retour juste à l'ouest du bord")
+	assert_eq(_player.get_facing(), Vector2i.LEFT, "tourné vers la route")
 	assert_push_error_count(0)
-
-
-func test_snorlax_examine_t6_then_t7_from_both_cells() -> void:
-	await _start(Vector2i(65, 14), Vector2i.RIGHT, true)
-	var target := _boot.get_interaction_controller().get_target()
-	assert_not_null(target, "Ronflex est une cible depuis (65, 14)")
-	await _press_interact()
-	await wait_until(func() -> bool: return _runner.is_running(), TIMEOUT)
-	await _finish_scene()
-	assert_eq(_pages, ["Un énorme Pokémon dort au milieu du chemin.",
-		"Il ne bouge pas d'un pouce."] as Array[String], "T-6")
-	assert_true(GameState.flags.has_flag(&"snorlax_route_11_seen"))
-	_pages.clear()
-	_boot.get_map().spawn_player_at(_player, Vector2i(65, 15), Vector2i.RIGHT)
-	await wait_process_frames(3)
-	assert_not_null(_boot.get_interaction_controller().get_target(), "cible depuis (65, 15)")
-	await _press_interact()
-	await wait_until(func() -> bool: return _runner.is_running(), TIMEOUT)
-	await _finish_scene()
-	assert_eq(_pages, ["Il ronfle paisiblement.", "Rien ne semble pouvoir le réveiller."] \
-		as Array[String], "T-7")
-	assert_false(GameState.flags.has_flag(&"snorlax_route_11_awake"), "jamais posé au J17")
-	assert_eq(_toasts.size(), 0, "aucun toast : pas de Pokédex")
-	assert_false(GameState.pokedex.is_seen(&"snorlax"), "aucune entrée de Pokédex")
-	assert_push_error_count(0)
-
-
-func test_snorlax_leaves_the_road_when_the_flag_is_raised() -> void:
-	await _start(Vector2i(65, 14), Vector2i.RIGHT, true)
-	GameState.flags.set_flag(&"snorlax_route_11_awake")
-	await wait_process_frames(3)
-	var map := _boot.get_map()
-	for cell: Vector2i in SNORLAX:
-		assert_false(map.get_grid().is_occupied(cell), "%s libérée" % cell)
-	assert_null(_boot.get_interaction_controller().get_target(), "plus de cible")
-	var reached := map.get_grid().find_reachable(Vector2i(0, 12), _player)
-	assert_true(reached.has(Vector2i(75, 14)), "le bord est devient atteignable")
 
 
 # --- Objets visibles -------------------------------------------------------------------------
@@ -327,9 +302,14 @@ func test_every_dialogue_of_the_file_is_used() -> void:
 	add_child_autofree(map)
 	for interaction: Interaction in map.get_interactions().get_all():
 		used[interaction.dialogue_id] = true
+	# M-3 (J21 T9a) : `route_11_snorlax` (T-6, T-7) reste dans le fichier, réservé au Ronflex de
+	# la Route 12 (J21 T19-T21) ; plus aucun point de la Route 11 ne le lit.
+	assert_true(raw.has("route_11_snorlax"), "T-6 / T-7 gardés pour la Route 12")
+	assert_false(used.has(&"route_11_snorlax"), "Ronflex retiré de la Route 11")
+	used[&"route_11_snorlax"] = true
 	for key: String in raw:
 		assert_true(used.has(StringName(key)), "%s : utilisé" % key)
 	for id: StringName in used:
 		if not String(id).is_empty():
 			assert_true(raw.has(String(id)), "%s : défini" % id)
-	assert_eq(raw.size(), 3 + 8 * 3 + 3, "3 panneaux et Ronflex, 8 × 3 répliques, 3 objets")
+	assert_eq(raw.size(), 3 + 8 * 3 + 3, "2 panneaux, Ronflex (réservé, M-3), 8 × 3 répliques, 3 objets")

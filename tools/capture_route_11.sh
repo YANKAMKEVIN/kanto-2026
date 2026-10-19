@@ -20,8 +20,10 @@ SHOTS=(
 	"r11_prairie_nord|40|$M --cell=34,11 --facing=right"
 	"r11_chemin_central|40|$M --cell=31,18 --facing=down"
 	"r11_digue|40|$M --cell=40,22 --facing=right"
-	"r11_ronflex_loin|40|$M --cell=55,14 --facing=right"
-	"r11_ronflex|40|$M --cell=64,14 --facing=right"
+	# J21 T9a (M-3) : Ronflex retiré ; goulet libre et bord est « ROUTE 12 — À venir ».
+	"r11_goulet_est_loin|40|$M --cell=55,14 --facing=right"
+	"r11_goulet_est|40|$M --cell=64,14 --facing=right"
+	"r11_bord_est|40|$M --cell=72,14 --facing=right"
 	"r11_ensemble|20|$M --aim=38,18 --zoom=0.26 --noplayer"
 )
 for shot in "${SHOTS[@]}"; do

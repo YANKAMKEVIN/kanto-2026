@@ -4,10 +4,13 @@ extends GutTest
 ## `tools/plans/route_11.txt` case par case (solide, eau, hautes herbes), raccords (Carmin,
 ## bouche de la Cave), puis les critères de `tools/art/plan_check_j17.py` refaits sur la vraie
 ## grille (positions `bloque` en plus, bouche terminale) : D2 inévitable ; D1 et D3 à D8
-## évitables, un à un et ensemble ; trois parcours suffisants chacun ; Ronflex seul passage ; bord
-## est inatteignable ; H2 (6 cases obligatoires sur le parcours nord) ; objets atteignables ; cases
-## réservées libres de décor ; budget de nœuds. La vie (Ronflex, PNJ, objets) : `test_route_11_life`,
+## évitables, un à un et ensemble ; trois parcours suffisants chacun ; goulet de l'est seul passage
+## vers le bord est ; H2 (6 cases obligatoires sur le parcours nord) ; objets atteignables ; cases
+## réservées libres de décor ; budget de nœuds. La vie (PNJ, objets) : `test_route_11_life`,
 ## `test_route_11_trainers`.
+## J21 T9a (décision M-3 de Kevin, 2026-10-16, dossier 24 §10.3) : Ronflex quitte la Route 11 pour
+## le croisement de la Route 12. Ses cases redeviennent du chemin et le bord est (75, 14..15) est
+## un passage « ROUTE 12 — À venir » (`coming_soon`) jusqu'au J21 T21 (warp réel vers route_12).
 
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 const GridPaths := preload("res://tests/helpers/grid_paths.gd")
@@ -18,7 +21,8 @@ const WEST := [Vector2i(0, 11), Vector2i(0, 12), Vector2i(0, 13)]
 const MOUTH := [Vector2i(15, 7), Vector2i(16, 7)]
 const FRONT := [Vector2i(65, 14), Vector2i(65, 15)]
 const EAST_EDGE := [Vector2i(75, 14), Vector2i(75, 15)]
-const SNORLAX := [Vector2i(66, 14), Vector2i(67, 14), Vector2i(66, 15), Vector2i(67, 15)]
+## Goulet de l'est (cases de l'ancien Ronflex du J17, retiré par M-3).
+const NARROWS := [Vector2i(66, 14), Vector2i(67, 14), Vector2i(66, 15), Vector2i(67, 15)]
 const NODE_BUDGET := 3000
 const INF := 1 << 30
 const SHORE_PREFIX := "relief_rivage_"
@@ -32,8 +36,7 @@ const ROUTES: Array[String] = ["nord", "centre", "sud"]
 var _map: GameMap
 var _grid: GridWorld
 var _plan: PlanGrid
-## Relief seul, plus les positions `bloque` de la grille (Dresseurs, Pokémon, objets, panneaux,
-## Ronflex).
+## Relief seul, plus les positions `bloque` de la grille (Dresseurs, Pokémon, objets, panneaux).
 var _terrain: GridWorld
 var _stops: Dictionary = {}
 
@@ -217,13 +220,25 @@ func test_cave_mouth_warps_into_the_cave() -> void:
 				[&"digletts_cave", StringName("from_route_11_" + suffixes[i]), Vector2i.UP])
 		assert_eq(_map.get_spawn_cell(StringName("from_cave_" + suffixes[i])),
 			cell + Vector2i.DOWN)
-	assert_eq(_map.get_warps().size(), 5, "trois raccords ouest et deux bouches")
+	assert_eq(_map.get_warps().size(), 7, "trois raccords ouest, deux bouches, deux cases à l'est")
 
 
-func test_east_edge_has_no_warp() -> void:
-	for cell: Vector2i in EAST_EDGE:
-		assert_null(_map.get_warps().find_on_push(cell, Vector2i.RIGHT), "aucun warp en %s" % cell)
-		assert_eq(_map.get_warps().get_at(cell).size(), 0)
+## M-3 (J21 T9a) : le bord est n'est plus une impasse muette. Tant que la Route 12 n'existe pas, il
+## montre « ROUTE 12 — À venir » et rend le joueur sur la case juste à l'ouest, tourné ←.
+func test_east_edge_is_route_12_coming_soon() -> void:
+	var suffixes := ["n", "s"]
+	for i: int in EAST_EDGE.size():
+		var cell: Vector2i = EAST_EDGE[i]
+		assert_false(_grid.is_solid(cell), "%s praticable" % cell)
+		var warp := _map.get_warps().find_on_push(cell, Vector2i.RIGHT)
+		assert_not_null(warp, "bord est PUSH → en %s" % cell)
+		if warp != null:
+			assert_true(warp.is_coming_soon(), "Route 12 à venir")
+			assert_eq(warp.coming_soon, "Route 12")
+			assert_eq(warp.target_spawn, StringName("from_route_12_" + suffixes[i]))
+			assert_eq(warp.get_arrival_facing(Vector2i.RIGHT), Vector2i.LEFT)
+		assert_eq(_map.get_spawn_cell(StringName("from_route_12_" + suffixes[i])),
+			cell + Vector2i.LEFT)
 
 
 # --- Critères (plan_check_j17.py) ---------------------------------------------------------
@@ -231,36 +246,39 @@ func test_east_edge_has_no_warp() -> void:
 func test_main_path_lengths() -> void:
 	var dist := _reach(_terrain)
 	var cave := _nearest(dist, MOUTH)
-	var snorlax := _nearest(dist, FRONT)
-	gut.p("route_11 : Carmin → Cave %d pas, → devant Ronflex %d pas" % [cave, snorlax])
+	var narrows := _nearest(dist, FRONT)
+	var east := _nearest(dist, EAST_EDGE)
+	gut.p("route_11 : Carmin → Cave %d pas, → goulet de l'est %d pas, → bord est %d pas"
+		% [cave, narrows, east])
 	assert_eq(cave, 20, "entrée → bouche de la Cave")
-	assert_eq(snorlax, 71, "entrée → devant Ronflex")
+	assert_eq(narrows, 71, "entrée → devant le goulet de l'est")
+	assert_eq(east, 81, "entrée → bord est (M-3 : plus de Ronflex)")
 	var back := GridPaths.distances(_terrain, [Vector2i(15, 8), Vector2i(16, 8)])
 	assert_between(_nearest(back, WEST), 1, 25, "retour Cave → Carmin")
 
 
-func test_snorlax_is_the_only_way_east() -> void:
+## M-3 : plus de Ronflex ; le goulet de 2 cases reste le seul passage vers l'est.
+func test_east_narrows_are_the_only_way_east() -> void:
 	var dist := _reach(_terrain)
-	for cell: Vector2i in SNORLAX:
-		assert_true(_terrain.is_solid(cell), "Ronflex bloque %s" % cell)
-	assert_eq(_nearest(dist, EAST_EDGE), INF, "bord est inatteignable avec Ronflex")
-	for x: int in range(68, SIZE.x):
-		for y: int in SIZE.y:
-			if not _terrain.is_solid(Vector2i(x, y)) and not _terrain.is_water(Vector2i(x, y)):
-				assert_false(dist.has(Vector2i(x, y)), "secteur est %s fermé" % Vector2i(x, y))
-	# Sans Ronflex, le passage existe : il est donc bien le seul.
-	var freed := GridPaths.relief(_terrain, SIZE)
-	for cell: Vector2i in SNORLAX:
-		freed.set_solid(cell, false)
-	assert_lt(_nearest(_reach(freed), EAST_EDGE), INF, "sans Ronflex, le bord est est atteint")
-	# Goulet : sur les colonnes de Ronflex, seules les rangées 14 et 15 sont libres.
+	for cell: Vector2i in NARROWS:
+		assert_false(_terrain.is_solid(cell), "goulet libre en %s (Ronflex retiré)" % cell)
+		assert_eq(_plan.at(cell), "=", "chemin en %s" % cell)
+	assert_lt(_nearest(dist, EAST_EDGE), INF, "bord est atteint")
+	assert_eq(_nearest(_reach(_without(NARROWS)), EAST_EDGE), INF,
+		"sans le goulet, le bord est est coupé : il est le seul passage")
 	for x: int in [66, 67]:
 		for y: int in range(6, 24):
-			var free := not freed.is_solid(Vector2i(x, y))
+			var free := not _terrain.is_solid(Vector2i(x, y))
 			assert_eq(free, y == 14 or y == 15, "goulet (%d, %d)" % [x, y])
 
 
-func test_snorlax_is_seen_from_afar() -> void:
+func test_no_snorlax_left_on_route_11() -> void:
+	assert_false(_plan.positions.has("ronflex"), "position ronflex retirée de la grille")
+	assert_null(_map.get_entities().get_node_or_null(^"Snorlax"), "plus de FlagGate Ronflex")
+	assert_null(_map.find_child("SnorlaxPoint", true, false), "plus de point d'examen")
+
+
+func test_east_narrows_are_seen_from_afar() -> void:
 	for x: int in range(46, 66):
 		assert_eq(_plan.at(Vector2i(x, 14)), "=", "ligne droite (%d, 14)" % x)
 		assert_false(_grid.is_solid(Vector2i(x, 14)))
@@ -270,7 +288,7 @@ func test_d2_cannot_be_avoided() -> void:
 	var sight := _sight("D2")
 	assert_eq(sight.size(), 4, "D2 : vue dégagée")
 	assert_eq(_nearest(_reach(_without(sight)), MOUTH), INF, "D2 inévitable vers la Cave")
-	assert_eq(_nearest(_reach(_without(sight)), FRONT), INF, "D2 inévitable vers Ronflex")
+	assert_eq(_nearest(_reach(_without(sight)), FRONT), INF, "D2 inévitable vers l'est")
 	# Première case vue à au moins 3 cases de l'entrée (le joueur voit Arthur arriver).
 	var seen: Dictionary = {}
 	for cell: Vector2i in sight:
@@ -386,8 +404,8 @@ func test_reserved_cells_stay_free_of_decor() -> void:
 		if kinds.has(_plan.positions[id]["kind"]):
 			for cell: Vector2i in _plan.cells_at(id):
 				reserved[cell] = true
-	assert_eq(reserved.size(), 8 + 3 + 2 + 1 + 4,
-		"8 Dresseurs, 3 Pokémon, 2 objets, 1 caché, Ronflex (4 cases)")
+	assert_eq(reserved.size(), 8 + 3 + 2 + 1,
+		"8 Dresseurs, 3 Pokémon, 2 objets, 1 caché (Ronflex retiré : M-3)")
 	for prop: WorldProp in _props():
 		for cell: Vector2i in prop.get_solid_cells():
 			# La pierre-indice se pose sur la case cachée elle-même.

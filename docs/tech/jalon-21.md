@@ -142,6 +142,52 @@ forme `jalon-19.md` et `jalon-17.md`, `jalon-16.md` (étapes `animate`, `field_m
 
 ---
 
+### 0.5 T9a, 2026-10-19 : `origin/main` (J16, J17, Boot découpé) fusionné ; J18, J19, J20 pas encore
+
+Première moitié de T9 (demande de Kevin du 2026-10-19). `origin/main` à `f0d3c4fb` (J16 et J17
+terminés, `SaveCoordinator`, `SettingsApplier`, `SessionLifecycle`) fusionné dans `jalon-21`.
+Aucune branche des J18, J19, J20 ni `j21-t5-donnees` n'est fusionnée.
+
+- **Code du J21 et Boot découpé** : rien à recaler (T3 et T4 sont des fichiers nouveaux :
+  `flute_target.gd`, `poke_flute_rules.gd`, données `items_j21.json`, `moves/j21.json`).
+- **Points d'accroche du §0.3 relus sur le code fusionné** : inchangés sauf `item_data.gd`
+  (`contexts()` l. 99, `is_permanent()` l. 144) ; `cutscene_step.gd` (`enum Kind` l. 94, sans
+  `WILD_BATTLE` : il viendra du J19 ; `outcome_flags` l. 207) ; `cutscene_director.gd`
+  (`_play_step` l. 326, `_battle` l. 560, `_give` l. 581, `_change_map` l. 742) ;
+  `battle_director.gd` `_finish_capture` l. 749 ; `dialogue_library.gd` `_VARIANT_KEYS` l. 49,
+  `_CHOICE_KEYS` l. 53 ; `boot.gd` (1 951 lignes) : `is_stable` l. 795,
+  `_on_cutscene_finished` l. 1479 (clé `next`, « entre deux scènes » : `_can_write` /
+  `_write_save` passent par `SaveCoordinator`, l. 1195-1206), `_on_battle_event` l. 1517 (« vu »
+  seulement si **aucune rencontre sauvage n'est en cours** : `not _encounters.is_running()` ; à
+  vérifier au T10 pour le combat sauvage scripté d'Ossatueur et des Ronflex),
+  `_on_flag_changed` l. 1671, `_on_field_item_requested` l. 1815 ; `field_item_rules.gd`
+  `is_targetless` l. 51 (et non 48). `menu_director.gd`,
+  `battle.gd`, `battle_action.gd`, `field_item_rules.gd` (`check`), `status_rules.gd`, `pokemon.gd`,
+  `battle_text.gd`, `cutscene_variant.gd`, `cutscene.gd`, `dialogue_choice.gd`, `emote_bubble.gd`,
+  `companion.gd`, `save_system.gd` (`VERSION = 7`) : mêmes lignes qu'au §0.3.
+- **Écart 1 du §0.2 corrigé** : les drapeaux du Ronflex du J17 étaient `snorlax_route_11_seen` /
+  `snorlax_route_11_awake` (pas `snorlax_route_12_awake`). Sans objet après M-3.
+- **M-3 côté Route 11 fait** : position `ronflex` retirée de `tools/plans/route_11.txt` (ses cases
+  étaient déjà du chemin `=`) ; `tools/build_route_11.gd` sans `SNORLAX_FLAG`, `FlagGate`
+  « Snorlax », sprite endormi, respiration ni `SnorlaxPoint` ; carte reconstruite. Le bord est
+  (75, 14..15) est un warp PUSH → `coming_soon` « Route 12 » (écran « ROUTE 12 — À venir », build
+  de développement), retour `from_route_12_n|s` (74, 14..15) tourné ← ; la grille note
+  `raccord_est warp … coming_soon=route_12` et `from_route_12 spawn 74,14..15`. **T21** remplace
+  le `coming_soon` par `route_12` / `from_route_11` et garde ces spawns (noms suffixés `_n|_s`,
+  comme `from_vermilion_n|c|s`, plutôt que `from_route_12` seul du §2.10 [D]). Dialogue
+  `route_11_snorlax` (T-6, T-7) gardé dans `data/dialogues/route_11.json`, non lu. Contrôles :
+  `plan_check_j17.py` adapté (si `ronflex` est absent : goulet libre, seul passage vers le bord
+  est, warp « à venir » et retour) et `plan_check_j21.py` (« aucun Ronflex (déjà retiré) ») :
+  conformes. Tests du J17 adaptés (`test_route_11`, `test_route_11_life`,
+  `test_route_11_trainers`) ; captures `tools/capture_route_11.sh` `r11_goulet_est*`,
+  `r11_bord_est`. Aucun départ de débogage ne visait Ronflex.
+- **Reste pour T9b (après la clôture du J20)** : fusion de `main` (J18 à J20) puis de
+  `j21-t5-donnees` ; lignes du §0.2 qui dépendent des J18-J20 (`wild_battle`, `refuses_balls`,
+  `MistLayer`, `build_pokemon_tower.gd`, `if_items`, `back_to_tower`, Lavanville
+  `coming_soon=route_12`) ; doublons `hypnosis`, `roar`, `take_down`, `growlithe` ; équipe des
+  départs (§2.15) ; constantes de `test_poke_flute_rules.gd` encore nommées `snorlax_route_11_*`
+  (données de test de la logique pure, à renommer `route_12` avec T19).
+
 ## 1. Découpage
 
 ### 1.1 Sous-jalons et validations (dossier §17, L-16)
