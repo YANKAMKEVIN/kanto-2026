@@ -742,6 +742,12 @@ capacités régénéré (11 en attente).
 
 #### T30 — A : `StaticEncounter` (politique d'Artikodin du J24 §2.7 : capture ou K.O. → consommé ; fuite ou défaite → rien ; sauvegarde forcée avant le premier texte)
 
+**Partie pure faite (2026-10-20)** : `game/world/static_encounter/static_encounter.gd` (présence,
+drapeaux par issue : capture → `done` + `caught`, K.O. → `done`, le reste → rien ; sauvegarde
+forcée si l'issue pose des drapeaux) ; `test_static_encounter.gd`. **Reste après le J20** (il
+ajoute `GIFT_POKEMON` à `CutsceneStep`) : drapeaux de capture sur l'étape `wild_battle` (aujourd'hui
+`win_flags` / `lose_flags` seulement), acteur de carte caché, intro `legendary`, sauvegarde forcée.
+
 #### T31 — A : lot d'effets de combat retenu par Kevin (un effet = une règle pure + des tests + ses textes)
 
 #### T31b — Q : **session S2G** → K (départs de combat)
