@@ -55,9 +55,10 @@ signal item_found(item_id: StringName, count: int)
 ## Une étape « flash » commence ([param count] éclairs, jalon 14) : point d'accroche du son de
 ## la machine (aucun son au J14).
 signal flash_started(count: int)
-## Étape « save » (jalon 16) : la partie doit être écrite **tout de suite** ([param reason]) ;
-## Boot écrit par le chemin du réveil ([method Boot._on_woke_up_after_defeat]).
+## Une étape demande un point de sauvegarde critique (notification, pas un accusé de réussite).
 signal save_requested(reason: String)
+## Le point de sauvegarde a échoué : scène et contrôles restent bloqués jusqu'à la réussite.
+signal save_failed(reason: String, error: Error)
 ## Fin d'une étape « wait » (interne).
 signal _wait_elapsed
 ## Fin d'une étape « move » (interne).
@@ -138,6 +139,12 @@ var reduce_motion: bool = false
 ## `func(move: StringName, target: Node2D) -> void` posée par Boot (le Pokémon qui coupe) ; non
 ## valide : pas de mise en scène (un PNJ cible part en fondu, un décor avec son drapeau).
 var field_move_handler: Callable
+## Écriture synchrone injectée par Boot : func(reason: String) -> Error.
+## Un point critique ne peut jamais avancer sans un retour OK ; ERR_BUSY = refus passager,
+## réessayé à l'image suivante sans [signal save_failed].
+var save_handler: Callable
+## Délai de nouvelle tentative, indépendant des préférences d'animation ; 0 = image suivante.
+var save_retry_delay: float = SaveCoordinator.RETRY_DELAY
 
 
 func _ready() -> void:
@@ -378,12 +385,40 @@ func _play_step(source_step: CutsceneStep) -> bool:
 		CutsceneStep.Kind.FIELD_MOVE:
 			await _field_move(step)
 		CutsceneStep.Kind.SAVE:
-			save_requested.emit(step.text)
+			return await _save_checkpoint(step.text)
 		CutsceneStep.Kind.ANIMATE:
 			await _animate(step)
 		_:
 			_step_error("étape « %s » inconnue" % CutsceneStep.kind_name(step.kind))
 	return true
+
+
+## N'autorise l'étape suivante qu'après l'écriture effective de l'état courant.
+## La même étape reste active en cas de panne ; elle ne rejoue ni les objets ni les drapeaux.
+## setup() invalide la coroutine, comme pour les autres étapes asynchrones.
+func _save_checkpoint(reason: String) -> bool:
+	var session := _session
+	save_requested.emit(reason)
+	if not save_handler.is_valid():
+		_step_error("aucun gestionnaire de sauvegarde critique")
+		return false
+	while session == _session and is_inside_tree():
+		var error: Error = save_handler.call(reason)
+		if error == OK:
+			return true
+		if error == ERR_BUSY:
+			# Refus passager (transition en cours) : nouvelle tentative à l'image suivante, sans
+			# signaler d'échec au joueur.
+			await get_tree().process_frame
+			continue
+		save_failed.emit(reason, error)
+		if session != _session:
+			return false
+		if save_retry_delay > 0.0:
+			await _wait(save_retry_delay)
+		else:
+			await get_tree().process_frame
+	return false
 
 
 ## Copie de [param step] dont les alias (acteur, cible, suiveur, voisin, Pokémon d'un
@@ -1095,3 +1130,4 @@ static func has_moment(moments: Array[Dictionary], type: StringName,
 		if same:
 			return true
 	return false
+

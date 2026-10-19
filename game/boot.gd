@@ -46,7 +46,7 @@ const PLAYER_SCENE: PackedScene = preload("res://game/player/player.tscn")
 const EVOLUTION_SCREEN: PackedScene = preload("res://game/ui/evolution/evolution_screen.tscn")
 ## Temps de jeu : une image ne compte jamais plus que ceci (le retour de l'arrière-plan peut
 ## livrer un très grand delta, qui n'est pas du temps de jeu).
-const MAX_PLAY_TIME_STEP: float = 0.5
+const MAX_PLAY_TIME_STEP: float = SessionLifecycle.MAX_PLAY_TIME_STEP
 ## Décor de l'introduction de Chen (OUV.2, dossier 13 §9.0) : le labo, cadré en son centre
 ## (16 × 11 cases ; défaut, règle 4).
 const INTRO_BACKDROP_MAP: StringName = &"oak_lab"
@@ -149,6 +149,9 @@ var _autosave_enabled: bool = false
 var _resumed: bool = false
 ## Le départ de débogage appliqué demande l'autosave ([member DebugStart.autosave]).
 var _debug_start_autosave: bool = false
+## Départ de débogage sans écriture, ou Boot d'un outil sans SaveSystem injecté.
+## Les points critiques y sont simulés ; jamais activé pour une vraie partie refusée.
+var _simulate_checkpoints: bool = false
 ## Voile de l'apprentissage d'une CT depuis le Sac (jalon 11), créé au premier besoin.
 var _tm_overlay: TmLearnOverlay
 ## Pension (J15, jalon-15.md §2.5) : directeur (pas, conversation) ; le gardien (`open_daycare`)
@@ -163,11 +166,10 @@ var _companion := CompanionController.new()
 var _field_presenter := FieldMovePresenter.new()
 ## Écran de la Pension (J15 T5) : choix du dépôt, bandeau et hôte des capacités du retrait.
 var _daycare_overlay: DaycareOverlay
-## Autosave demandé, en attente d'un état stable, et sa raison (journal).
-var _save_pending: bool = false
-var _save_reason: String = ""
-## Faux quand l'application est en arrière-plan ou a perdu le focus (temps de jeu arrêté).
-var _in_foreground: bool = true
+## Coordination locale : aucun nouvel autoload, dépendances câblées dans _ready.
+var _save_coordinator := SaveCoordinator.new()
+var _lifecycle := SessionLifecycle.new()
+var _settings_applier := SettingsApplier.new()
 ## Ouverture (OUV.1) : null hors scène principale ou avec un départ de débogage.
 var _opening: OpeningDirector = null
 ## Bourg Palette en mode décor derrière le titre (libéré en quittant le titre).
@@ -220,10 +222,12 @@ var _flash: FlashDirector
 
 
 func _ready() -> void:
+	_save_coordinator.setup(_can_write, is_stable, _persist_snapshot)
 	GameState.new_game()
 	_lighting = WorldLighting.new()
 	_lighting.process_mode = Node.PROCESS_MODE_PAUSABLE
 	add_child(_lighting)
+	_wire_settings_applier()
 	_light_profiles.load_file()
 	_darkness = DarknessController.new()
 	_darkness.process_mode = Node.PROCESS_MODE_PAUSABLE
@@ -332,7 +336,8 @@ func _ready() -> void:
 	_cutscenes_node.set_hud(_hud)
 	_cutscenes_node.item_given.connect(_on_item_given)
 	# Jalon 16 : écriture immédiate demandée par une scène (départ du S.S. Anne).
-	_cutscenes_node.save_requested.connect(_on_cutscene_save_requested)
+	_cutscenes_node.save_handler = _on_cutscene_save_requested
+	_cutscenes_node.save_failed.connect(_on_checkpoint_save_failed)
 	_cutscenes_node.item_found.connect(_on_item_found)
 	_battle_director.battle_started.connect(_on_battle_state_changed.unbind(1))
 	# Le titre de zone ne reste pas affiché pendant un combat (jalon 5C T11) : une rencontre
@@ -503,29 +508,19 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
-	if _in_foreground and not _is_opening_active():
-		GameState.add_play_time(minf(delta, MAX_PLAY_TIME_STEP))
-	if _save_pending and _can_write() and is_stable():
-		_write_save(_save_reason)
+	GameState.add_play_time(_lifecycle.play_time_step(delta, _is_opening_active()))
+	_save_coordinator.process(delta)
 	if not _dex_toasts.is_empty():
 		_show_next_dex_toast()
 
 
-## Passage en arrière-plan (Android) ou fermeture de la fenêtre (Mac) : sauvegarde immédiate
-## si la partie est stable (jalon 5C.5 §16.1) ; sinon la dernière sauvegarde stable reste.
+## Boot transmet les notifications ; le cycle de vie décide du temps de jeu et le
+## coordinateur garde les mêmes conditions d'écriture stable qu'en exploration.
 func _notification(what: int) -> void:
-	match what:
-		NOTIFICATION_APPLICATION_PAUSED, NOTIFICATION_WM_CLOSE_REQUEST:
-			if what == NOTIFICATION_APPLICATION_PAUSED:
-				_in_foreground = false
-			if _can_write() and is_stable():
-				_write_save("arrière-plan")
-		NOTIFICATION_WM_GO_BACK_REQUEST:
-			_on_go_back()
-		NOTIFICATION_APPLICATION_RESUMED, NOTIFICATION_APPLICATION_FOCUS_IN:
-			_in_foreground = true
-		NOTIFICATION_APPLICATION_FOCUS_OUT:
-			_in_foreground = false
+	if _lifecycle.handle_notification(what):
+		_save_coordinator.flush_if_stable("arrière-plan")
+	if what == NOTIFICATION_WM_GO_BACK_REQUEST:
+		_on_go_back()
 
 
 ## Action `menu` (Échap, M) : ouvre le menu en exploration, le ferme s'il est ouvert (après avoir
@@ -889,10 +884,7 @@ func _apply_debug_unlocks() -> void:
 ## stable ([method is_stable]). Sans effet si l'autosave est coupé pour la session. Point
 ## d'appel de la capture (T15).
 func request_autosave(reason: String) -> void:
-	if not _can_write():
-		return
-	_save_pending = true
-	_save_reason = reason
+	_save_coordinator.request(reason)
 
 
 ## Démarrage (jalon 5C.5) : départ de débogage s'il est appliqué (ni lecture ni écriture de
@@ -915,6 +907,7 @@ func _finish_start() -> void:
 ## débogage (inchangé), Boot hors scène courante (tests, outils : inchangé), sinon l'ouverture.
 func _start_game_state() -> bool:
 	if _apply_debug_start():
+		_simulate_checkpoints = not _debug_start_autosave
 		if _debug_start_autosave:
 			_open_save_system()
 			_autosave_enabled = save_system != null
@@ -926,6 +919,7 @@ func _start_game_state() -> bool:
 		_start_opening()
 		return false
 	else:
+		_simulate_checkpoints = save_system == null
 		_open_save_system()
 		if save_system != null and _load_save() and _resume():
 			return true
@@ -1205,9 +1199,12 @@ func _can_write() -> bool:
 
 ## Écrit la sauvegarde : position du joueur poussée dans GameState, puis écriture atomique.
 func _write_save(reason: String) -> Error:
-	_save_pending = false
-	if not _can_write():
-		return ERR_UNAVAILABLE
+	return _save_coordinator.write_now(reason)
+
+
+## Adaptateur du coordinateur : relit la position et l'état au moment de l'écriture.
+## La permission a été vérifiée par SaveCoordinator, pour chaque chemin d'appel.
+func _persist_snapshot(reason: String) -> Error:
 	var map := SceneRouter.get_current_map()
 	if not is_instance_valid(map) or not is_instance_valid(_player):
 		return ERR_UNAVAILABLE
@@ -1561,13 +1558,25 @@ func _on_woke_up_after_defeat() -> void:
 
 ## Écriture immédiate demandée par l'étape « save » d'une scène (jalon 16, `jalon-16.md` §2.4 :
 ## le départ du S.S. Anne) : même chemin que le réveil après une défaite. Le joueur est déjà à sa
-## place (quai) et les drapeaux sont levés ; la scène continue ensuite (spectacle). Pendant une
-## transition : autosave demandé (écrit à la première image stable).
-func _on_cutscene_save_requested(reason: String) -> void:
-	if _can_write() and not SceneRouter.is_transitioning():
-		_write_save(reason)
-	else:
-		request_autosave(reason)
+## place (quai) et les drapeaux sont levés ; la scène attend OK avant le spectacle.
+## Écriture refusée pour toute la session (sauvegarde plus récente protégée, ouverture) : rien
+## n'est écrit et la scène continue, comme une simulation (sinon elle resterait bloquée pour
+## toujours). Pendant une transition : ERR_BUSY, la même étape réessaie à l'image suivante, sans
+## message d'échec. Seule une vraie panne d'écriture bloque la scène jusqu'à la réussite.
+func _on_cutscene_save_requested(reason: String) -> Error:
+	if _simulate_checkpoints or not _can_write():
+		if OS.is_debug_build():
+			print("[qa] point de sauvegarde sans écriture (%s) : %s"
+				% ["simulé" if _simulate_checkpoints else "écriture refusée pour la session", reason])
+		return OK
+	if SceneRouter.is_transitioning():
+		return ERR_BUSY
+	return _write_save(reason)
+
+
+## La scène garde son verrou ; aucune réussite affichée avant l'écriture sur disque.
+func _on_checkpoint_save_failed(_reason: String, _error: Error) -> void:
+	_hud.show_toast("Sauvegarde impossible", "Nouvelle tentative en cours…")
 
 
 ## Pokémon sauvage capturé et rangé (équipe ou stockage, jalon 5D) : autosave demandé, écrit à
@@ -1701,6 +1710,21 @@ func _refresh_controls() -> void:
 		and not _player.is_blocked_by(FlashDirector.LOCK_REASON))
 
 
+## Racine de composition : les dépendances sont explicites et câblées une seule fois.
+func _wire_settings_applier() -> void:
+	_settings_applier.runner = _runner
+	_settings_applier.battle_director = _battle_director
+	_settings_applier.battle_hud = _battle_hud
+	_settings_applier.battle_stage = _battle_stage
+	_settings_applier.services = _services
+	_settings_applier.companion = _companion
+	_settings_applier.field_presenter = _field_presenter
+	_settings_applier.hud = _hud
+	_settings_applier.cutscenes = _cutscenes_node
+	_settings_applier.menu_screen = _menu_screen
+	_settings_applier.lighting = _lighting
+
+
 ## Lit les réglages (fichier de l'appareil, indépendant de la sauvegarde et du départ de
 ## débogage) et les applique, avant le premier dialogue (jalon-06.md §6.12).
 func _load_settings() -> void:
@@ -1732,49 +1756,11 @@ func _on_settings_changed(settings: GameSettings) -> void:
 ## par leurs méthodes dédiées (derrière `has_method` tant que le HUD du T28 n'est pas là).
 func _apply_settings(s: GameSettings) -> void:
 	_settings = s
-	_runner.chars_per_second = s.chars_per_second()
-	_battle_director.speed_scale = s.battle_speed_scale()
-	_battle_director.confirm_forget = s.confirm_actions
-	_battle_hud.message_hold_scale = 1.0
-	_battle_stage.reduce_flashes = s.reduce_flashes
-	_battle_stage.reduce_motion = s.reduce_motion
-	if _evolution_screen != null:
-		_evolution_screen.reduce_flashes = s.reduce_flashes
-	_services.reduce_motion = s.reduce_motion
-	_companion.set_reduce_motion(s.reduce_motion)
-	_field_presenter.reduce_motion = s.reduce_motion
-	# Halos des grottes (jalon 12, T7 / T20) et lueur « hint » chez Léo (jalon 14) : vacillement
-	# coupé.
-	LightGlow.set_reduce_motion(s.reduce_motion)
+	_profile = _settings_applier.apply(s, device, _evolution_screen, _opening, _title_backdrop)
 	# Voile d'obscurité (J17 T9) : battement coupé, ouverture du halo instantanée ; Flash (T24) :
 	# saut et sortie de Ball adoucis.
 	_darkness.set_reduce_motion(s.reduce_motion)
 	_flash.reduce_motion = s.reduce_motion
-	# Carte du Champion (jalon 10, T5) : sans glissé, un fondu court.
-	_hud.get_champion_card().reduce_motion = s.reduce_motion
-	_cutscenes_node.reduce_motion = s.reduce_motion
-	# Étape « flash » (jalon 14) : adoucie par l'un ou l'autre réglage.
-	_hud.set_flash_reduced(s.reduce_motion or s.reduce_flashes)
-	_menu_screen.speed_scale = s.menu_speed_scale()
-	Haptics.enabled = s.haptics
-	UiPrefs.apply(s)
-	if _hud.has_method(&"set_left_handed"):
-		_hud.call(&"set_left_handed", s.left_handed)
-	if _hud.has_method(&"set_joystick_style"):
-		_hud.call(&"set_joystick_style", s.joystick_scale, s.joystick_opacity)
-	if _hud.has_method(&"set_button_scale"):
-		_hud.call(&"set_button_scale", s.button_scale)
-	_profile = GraphicsProfile.resolve(s.graphics, device)
-	Engine.max_fps = _profile.max_fps
-	if _menu_screen.has_method(&"set_backdrop_blur"):
-		_menu_screen.call(&"set_backdrop_blur", _profile.menu_blur)
-	_battle_stage.backdrop_blur = not _profile.reduced_effects
-	_lighting.set_reduced_effects(_profile.reduced_effects)
-	# Écran titre (OUV.1) : main du joueur, flou des Paramètres, dérive du décor.
-	if _opening != null:
-		_opening.apply_settings(s, _profile.menu_blur)
-	if _title_backdrop != null:
-		_title_backdrop.set_reduce_motion(s.reduce_motion)
 
 
 ## « Sauvegarder maintenant » : écrit la sauvegarde et affiche le résultat dans l'écran.
@@ -1962,3 +1948,4 @@ func _end_rare_candy() -> void:
 ## Vrai pendant le déroulé d'un Super Bonbon (tests, QA).
 func is_rare_candy_running() -> bool:
 	return _candy_index >= 0
+
