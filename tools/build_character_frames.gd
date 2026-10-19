@@ -148,6 +148,10 @@ const LOOKS: Dictionary = {
 	"rockeur": [CHARACTERS_DIR, "rocker", ""],
 	"hotesse": [CHARACTERS_DIR, "hostess", ""],
 	"passagere": [CHARACTERS_DIR, "passenger_f", ""],
+	# J18 T3 (planches validées le 2026-10-15) : Pokémaniac et Médium (planche `exorciste`, look
+	# `channeler`, mutualisé avec le J19), 128 px, sans planche d'attente → [constant IDLE_FROM_WALK].
+	"pokemaniac": [CHARACTERS_DIR, "pokemaniac", ""],
+	"exorciste": [CHARACTERS_DIR, "channeler", ""],
 }
 ## Attentes en plusieurs images (planche d'attente plus large que 4 colonnes) : planche →
 ## direction → [colonnes, images par seconde]. Le capitaine malade respire, penché sur son lavabo
@@ -205,6 +209,9 @@ const IDLE_FROM_WALK := {
 	"papilusion": {"down": 0, "left": 0, "right": 0, "up": 0},
 	"pikachu": {"down": 0, "left": 1, "right": 3, "up": 0},
 	"reptincel": {"down": 3, "left": 2, "right": 2, "up": 2},
+	# J18 T3, à l'œil : les pieds les plus rapprochés de chaque ligne de marche.
+	"pokemaniac": {"down": 0, "left": 0, "right": 0, "up": 0},
+	"exorciste": {"down": 0, "left": 0, "right": 2, "up": 0},
 }
 
 var _errors: int = 0

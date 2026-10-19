@@ -1,0 +1,122 @@
+# Grotte Sombre 1F, « les deux galeries » — grille fonctionnelle (jalon 18, dossier 21 §5, §13.1).
+# Source UNIQUE de la géométrie : plan en aplats (tools/art/plan_aplats_grotte_sombre.py) et
+# contrôle (tools/art/plan_check_grotte_sombre.py, qui relie les deux étages par les échelles).
+# Un changement de composition se fait ICI d'abord.
+#
+# 56 × 49 cases (2744 ; enveloppe du dossier ≈ 56 × 44) ; nord en haut ; x = colonne, y = rangée.
+# DEUX MOITIÉS NON RELIÉES (séparées par les rangées 21 à 31 de roche) :
+#  - NORD : entrée (27..28, 0) depuis la Route 10 (la Corde Sortie ramène devant, tourné vers le
+#    sud) → hall du panneau du randonneur → premier couloir (Roger, inévitable, posté dans une
+#    niche) → galerie : branche OUEST (Simon, facultatif) et branche EST (Corde Sortie) →
+#    montée nord-est → salle de l'échelle A (crête à contourner par l'ouest) → échelle A ↓ vers B1F.
+#  - SUD : arrivée de l'échelle B (44, 34), à l'est (venue de B1F) → couloir ouest (gravats) →
+#    descente → couloir bas → sortie (8..9, 43) vers la Route 10 (secteur sud) ; embranchements :
+#    Yanis (facultatif, à l'est du couloir bas) et Antidote (salle au sud-ouest).
+# Les échelles sont à l'aplomb de celles du B1F (mêmes coordonnées).
+#
+# Légende (grotte, commune aux deux étages ; celle du Mont Sélénite, plus quelques repères) :
+#   # paroi rocheuse (bloquée)              . sol de grotte calme (aucune rencontre)
+#   g gravats (praticables, terrain de rencontre)    j sol éclairé : lumière du dehors (1F) ou
+#     filet de jour (B1F), sol calme
+#   o rocher isolé (bloqué)                 K colonne rocheuse (repère, bloquée)
+#   V échelle qui descend (1F)   U échelle qui monte (B1F) : posées dans la paroi, une case au
+#     bord du sol ; la paire est donnée par paire= de la position « echelle », l'arrivée par le
+#     « spawn » de même paire sur l'autre étage
+#   E entrée nord (Route 10)   e sortie sud (Route 10, secteur sud) : praticables, bord de carte
+#   w flaque (eau peu profonde, bloquante)  f paroi fendue d'où tombe le filet de jour (bloquée)
+#   r racines qui percent le plafond (bloquées)
+# Personnages, objets, échelles, halos (« halo » : LightGlow fixe), zones de gravats (G1..) et
+# repères nommés sont dans POSITIONS (attributs role=, facing=, sight=, paire=…), pas dans la
+# grille. Les « branche » déclarent le bout de chaque embranchement (contrôlé : ≤ 15 pas, finit
+# sur un objet, un Dresseur facultatif ou une vue).
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + L caractères), puis POSITIONS.
+#   identifiant  type  cases  bloque|libre  [cle=valeur ...]  # commentaire
+
+PRATICABLES .gjUVEe
+
+GRILLE 56 49
+00 ###########################EE###########################
+01 ######################...jjjjjj...######################
+02 ######################...jjjjjj...##########V###########
+03 ######################............##............########
+04 ######################............##............########
+05 ######################.o..........##....################
+06 ###########################..#######.........ggg########
+07 ###########################..#######.........gog########
+08 ########################.....#######.........ggg########
+09 ########################.....###########..##############
+10 ###########################..###########..##############
+11 ###########################..###########..##############
+12 #############gggggg########..###########..##############
+13 #############gggggg########..###########..##############
+14 #############gggggg.gg...........ggg......##############
+15 #############.......gg...........ggg......##############
+16 #############gggggg.gg...........ggg......##############
+17 #############gggggg##########..#########################
+18 #############gggggg##########..#########################
+19 #############################...........################
+20 #############################......gggg.################
+21 ########################################################
+22 ########################################################
+23 ########################################################
+24 ########################################################
+25 ########################################################
+26 ########################################################
+27 ########################################################
+28 ########################################################
+29 ########################################################
+30 ########################################################
+31 ########################################################
+32 ######################################......############
+33 ######################################.o....############
+34 ######################........gg............V###########
+35 ######################........gg............############
+36 ######################..##############......############
+37 ######################..##############......############
+38 ######################..################################
+39 ######################..######gggggg####################
+40 ######################..######gggggg####################
+41 ########............................####################
+42 ########..............##............####################
+43 ########..##..################gggggg####################
+44 ########..#........#####################################
+45 ########..#ggg.....#####################################
+46 ########..#ggg.....#####################################
+47 ########..#ggg.....#####################################
+48 ########ee##############################################
+FIN
+
+POSITIONS
+entree               warp           27..28,0     libre   vers=route_10  # STEP_ON ↑ → route_10, from_dark_cave_n
+from_route_10_n      spawn          27..28,1     libre   # arrivée depuis la Route 10 (et Corde Sortie), tourné ↓
+sortie_sud           warp           8..9,48     libre   vers=route_10  # STEP_ON ↓ → route_10 (secteur sud), from_dark_cave_s
+from_route_10_s      spawn          8..9,47     libre   # arrivée depuis la Route 10 sud, tourné ↑
+echelle_a            echelle        44,2         libre   paire=A sens=descend vers=dark_cave_b1f  # au fond de la montée nord-est
+arrivee_a            spawn          44,3         libre   paire=A  # retour depuis B1F, tourné ↓
+echelle_b            echelle        44,34        libre   paire=B sens=descend vers=dark_cave_b1f  # moitié sud : on y arrive en remontant de B1F
+arrivee_b            spawn          43,34        libre   paire=B
+panneau_randonneur   panneau        26,2         bloque  # « Prudence. » (panneau du randonneur, repère 6)
+g1_roger             dresseur       24,8         bloque  role=G-1 facing=right sight=4 inevitable=oui trainer=dark_cave_roger  # Montagnard, niche ouest du premier couloir ; vue (25..28, 8) : couloir pris en travers
+g2_simon             dresseur       13,15        bloque  role=G-2 facing=right sight=5 inevitable=non trainer=dark_cave_simon  # Pokémaniac, fond de la branche ouest ; vue (14..18, 15)
+g5_yanis             dresseur       35,41        bloque  role=G-5 facing=left sight=5 inevitable=non trainer=dark_cave_yanis  # Pokémaniac, salle au bout de la branche est du couloir bas ; vue (34..30, 41)
+dark_cave_1f_item_1  objet_visible  39,20        bloque  role=O1 item=escape_rope  # Corde Sortie au sol, fond de la branche est
+dark_cave_1f_item_2  objet_visible  17,46        bloque  role=O3 item=antidote  # Antidote, salle de l'embranchement sud-ouest
+halo_lampe_1         halo           23,4         bloque  role=lampe type=lamp  # lampe de randonneur au pied du panneau (hall)
+halo_lampe_3         halo           17,44        bloque  role=lampe type=lamp  # lampe de randonneur dans la salle de l'Antidote
+branche_ouest        branche        13,15        libre   contenu=dresseur of=g2_simon  # galerie ouest jusqu'à Simon
+branche_est          branche        39,20        libre   contenu=objet of=dark_cave_1f_item_1  # couloir sud-est jusqu'à la Corde Sortie
+branche_antidote     branche        17,46        libre   contenu=objet of=dark_cave_1f_item_2  # moitié sud
+branche_yanis        branche        35,41        libre   contenu=dresseur of=g5_yanis  # moitié sud
+gravats_1f_g1        gravats        34,15        libre   role=G1  # galerie nord, avant la montée : obligatoire (3 de long, 9 cases), vue en ligne droite sur 4 cases
+gravats_1f_g2        gravats        20,15        libre   role=G2  # galerie ouest : évitable (hors de la branche, on n'y va pas)
+gravats_1f_g3        gravats        14,13        libre   role=G3  # salle de Simon : évitable
+gravats_1f_g4        gravats        36,20        libre   role=G4  # salle de la Corde Sortie : évitable
+gravats_1f_g5        gravats        46,6         libre   role=G5  # salle de l'échelle A : évitable par la gauche
+gravats_1f_g6        gravats        30,34        libre   role=G6  # couloir est de la moitié sud : obligatoire (2 de long, 4 cases)
+gravats_1f_g7        gravats        31,39        libre   role=G7  # salle de Yanis : évitable
+gravats_1f_g8        gravats        12,46        libre   role=G8  # salle de l'Antidote : évitable
+gravats_1f_g9        gravats        14,17        libre   role=G9  # salle de Simon, partie sud : évitable
+gravats_1f_g10       gravats        31,43        libre   role=G10  # salle de Yanis, rangée sud : évitable
+repere_lumiere       repere         25..30,1..2  libre   role=entree  # lumière du dehors à l'entrée nord
+FIN

@@ -118,6 +118,24 @@
 			"foe_feet": [1559, 540],
 			"player_feet": [716, 972],
 			"horizon": 380
+		},
+		"route_9_roche": {
+			"zone": "route_9",
+			"variant": "roche",
+			"back": "res://assets/battle/decors/route_9_roche_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 540],
+			"player_feet": [716, 972],
+			"horizon": 400
+		},
+		"dark_cave_galerie": {
+			"zone": "dark_cave",
+			"variant": "galerie",
+			"back": "res://assets/battle/decors/dark_cave_galerie_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 540],
+			"player_feet": [716, 972],
+			"horizon": 440
 		}
 	},
 	"places": {
@@ -187,6 +205,18 @@
 		],
 		"vermilion_gym": [
 			{ "decor": "vermilion_gym_salle" }
+		],
+		"route_9": [
+			{ "decor": "route_9_roche" }
+		],
+		"route_10": [
+			{ "decor": "route_9_roche" }
+		],
+		"dark_cave_1f": [
+			{ "decor": "dark_cave_galerie" }
+		],
+		"dark_cave_b1f": [
+			{ "decor": "dark_cave_galerie" }
 		]
 	}
 }

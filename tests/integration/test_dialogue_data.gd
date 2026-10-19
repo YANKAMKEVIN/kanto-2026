@@ -45,9 +45,12 @@ const GATE_GUARDS: Array[StringName] = [&"forest_gate_north_guard", &"forest_gat
 ## T11 : la Route 2 nord et Argenta (extérieur) sont dans [constant MAPS] : liste vide.
 ## Jalon 14 (T23) : D5 et D6 posés, leurs répliques (n° 50, 51) sortent de la liste.
 ## Jalon 15 (T14) : les Dresseurs de la Route 6 sont posés avec la carte : liste vide.
-## Jalon 17 (T8) : Route 11 et Route 2 est, en attente de leurs cartes ; la réplique de la barrière
-## vue de l'est (T-8), en attente du T21. Toutes posées à l'intégration (T17, T19, T21) : liste vide.
+## Jalon 18 (T16) : textes en données, points d'examen et déclencheurs posés par la vie des cartes
+## (T18 Route 9 / 10, T20 grotte ; T24 : Lavanville et Tour posés, retirés de la liste) ; « Il fait très sombre ici… » (T-3) est
+## celui du J17 (`dark_caves.json`, joué par FlashDirector : [constant PLAYED_BY_BOOT]).
 const UNUSED_YET: Array[StringName] = [
+	&"dark_cave_1f_sign", &"dark_cave_column", &"dark_cave_roots", &"dark_cave_crack",
+	&"dark_cave_b1f_hidden_1",
 ]
 ## Jalon 17 (T8) : pages à jeton (texte → jetons attendus) : l'assistant et la CS05 reçue.
 const J17_TOKENS: Dictionary[String, Array] = {
@@ -82,6 +85,10 @@ const DOSSIER_17 := "res://docs/design/dossier-17-cap-azuria.md"
 const PLAN_J14 := "res://docs/tech/jalon-14.md"
 ## Jalon 15 : textes validés du §15 (« … » par page ; jetons écrits tels quels).
 const DOSSIER_18 := "res://docs/design/dossier-18-carmin-sur-mer.md"
+## Jalon 18 (T16) : lot validé du dossier 21 §15 et annexe A du plan (une bulle = un morceau d'une
+## citation ; retour à la ligne = espace, ou « / » d'un panneau à titre).
+const DOSSIER_21 := "res://docs/design/dossier-21-grotte-sombre-lavanville.md"
+const PLAN_J18 := "res://docs/tech/jalon-18.md"
 ## Jalon 15 : annexe A de son plan, validée le 2026-10-14 (panneaux A.3, personnages A.4 ; une
 ## page peut ne porter qu'un morceau de la citation, comme pour le dossier 18).
 const JALON_15 := "res://docs/tech/jalon-15.md"
@@ -144,6 +151,10 @@ const MAPS: Array[StringName] = [
 	# Jalon 16 (T13) : le couloir du rival n° 4 et la cabine du capitaine.
 	&"ss_anne_captain_corridor", &"ss_anne_captain_room",
 	# Jalon 16 (T15) : `ss_anne_main_deck` (passerelle, départ) est déjà dans la liste (T12).
+	# Jalon 18 (T16) : PNJ, Dresseurs et objets en données sur les cartes du T12 au T14.
+	&"route_9", &"route_10", &"route_10_center", &"dark_cave_1f", &"dark_cave_b1f",
+	&"lavender_town", &"lavender_center", &"lavender_mart", &"pokemon_house",
+	&"lavender_house_1", &"lavender_house_2", &"pokemon_tower_1f",
 ]
 ## Lot de textes validé par Kevin le 2026-10-06 (anciens brouillons : panneau, observations,
 ## soin de Maman, terminal du Stockage, portes de Jadielle…) : source des textes hors dossiers.
@@ -411,6 +422,49 @@ const PLAYED_J16_T15: Array[StringName] = [
 ]
 ## Jalon 16 : textes validés du dossier 19 (§0.5, « … » par ligne).
 const DOSSIER_19 := "res://docs/design/dossier-19-ss-anne-major-bob.md"
+## Jalon 18 (T16) : Route 9, Route 10, Grotte Sombre, Lavanville, Tour (dossier 21 §15, annexe A
+## du plan ; mot pour mot : test_j18_data, test_trainers_j18).
+const IDS_J18: Array[StringName] = [
+	&"dark_cave_1f_item_1", &"dark_cave_1f_item_2", &"dark_cave_1f_sign",
+	&"dark_cave_b1f_hidden_1", &"dark_cave_b1f_item_1", &"dark_cave_column", &"dark_cave_crack",
+	&"dark_cave_elsa_after", &"dark_cave_elsa_before", &"dark_cave_elsa_defeated",
+	&"dark_cave_marcel_after", &"dark_cave_marcel_before", &"dark_cave_marcel_defeated",
+	&"dark_cave_roger_after", &"dark_cave_roger_before", &"dark_cave_roger_defeated",
+	&"dark_cave_roots", &"dark_cave_simon_after", &"dark_cave_simon_before",
+	&"dark_cave_simon_defeated", &"dark_cave_yanis_after",
+	&"dark_cave_yanis_before", &"dark_cave_yanis_defeated",
+	&"lavender_bouquet_woman", &"lavender_girl", &"lavender_house_1_old_lady",
+	&"lavender_house_2_husband", &"lavender_house_2_wife", &"lavender_passerby",
+	&"lavender_pokemon_house_sign", &"lavender_tower_sign", &"lavender_town_sign",
+	&"lavender_young_man", &"pokemon_house_kid",
+	&"pokemon_tower_exorcist", &"pokemon_tower_girl", &"pokemon_tower_grave",
+	&"pokemon_tower_grave_1", &"pokemon_tower_grave_2", &"pokemon_tower_grave_3",
+	&"pokemon_tower_grave_4", &"pokemon_tower_grave_5", &"pokemon_tower_keeper",
+	&"pokemon_tower_visitor_f", &"pokemon_tower_visitor_m",
+	&"route_10_cave_sign", &"route_10_center_sign", &"route_10_hiker", &"route_10_hiker_paul_after",
+	&"route_10_hiker_paul_before", &"route_10_hiker_paul_defeated", &"route_10_item_1",
+	&"route_10_maniac_hector_after", &"route_10_maniac_hector_before",
+	&"route_10_maniac_hector_defeated",
+	&"route_9_camper_adam_after", &"route_9_camper_adam_before", &"route_9_camper_adam_defeated",
+	&"route_9_camper_jules_after", &"route_9_camper_jules_before",
+	&"route_9_camper_jules_defeated", &"route_9_hiker_benoit_after",
+	&"route_9_hiker_benoit_before", &"route_9_hiker_benoit_defeated",
+	&"route_9_hiker_gilles_after", &"route_9_hiker_gilles_before",
+	&"route_9_hiker_gilles_defeated", &"route_9_item_1", &"route_9_item_2", &"route_9_item_3",
+	&"route_9_lass_lou_after", &"route_9_lass_lou_before", &"route_9_lass_lou_defeated",
+	&"route_9_lass_zoe_after", &"route_9_lass_zoe_before", &"route_9_lass_zoe_defeated",
+	&"route_9_scout_noa_after", &"route_9_scout_noa_before", &"route_9_scout_noa_defeated",
+	&"route_9_sign",
+]
+## Jalon 18 (T16) : drapeaux levés par ses dialogues (Exorciste, enfant de la Maison des Pokémon)
+## et ses scènes (objets, déclencheurs silencieux des objectifs).
+const SET_J18_DIALOGUES: Array[StringName] = [&"pokemon_house_kid_talked", &"tower_medium_talked"]
+const SET_J18_CUTSCENES: Array[StringName] = [
+	&"dark_cave_crossed", &"got_dark_cave_1f_item_1", &"got_dark_cave_1f_item_2",
+	&"got_dark_cave_b1f_hidden_1", &"got_dark_cave_b1f_item_1", &"got_route_10_item_1",
+	&"got_route_9_item_1", &"got_route_9_item_2", &"got_route_9_item_3", &"lavender_reached",
+	&"route_10_reached", &"route_9_entered",
+]
 ## Jalon 15 (T13) : la réplique du garde du poste nord, jouée aussi par la scène du recul.
 const PLAYED_J15_ROUTE_5: Array[StringName] = [&"route_5_guard"]
 ## Dialogues joués par les scènes du Rocket et du barrage.
@@ -448,8 +502,9 @@ const SET_J14_BILL_CUTSCENES: Array[StringName] = [
 ## d'Azuria (T20b).
 ## T20b : levé (scène du combat), plus aucun drapeau futur.
 ## Jalon 16 (T12, T15) : `got_hm01` (lu par le marin de la passerelle et le départ du navire) est
-## levé par la scène du capitaine (T13) : plus aucun drapeau futur.
-const FUTURE_FLAGS: Array[StringName] = []
+## levé par la scène du capitaine (T13). Jalon 18 (T16) : `tower_stairs_open` (présence de
+## l'Exorciste de la Tour) est levé au J19 (dossier 22 K-3).
+const FUTURE_FLAGS: Array[StringName] = [&"tower_stairs_open"]
 var _library: DialogueLibrary
 var _cutscenes: CutsceneLibrary
 var _offer: StarterOffer
@@ -581,7 +636,7 @@ func test_library_loads_without_error() -> void:
 	var found := _without_qa(library.get_ids())
 	found.sort()
 	var expected := IDS + IDS_J14_BILL + IDS_J14_ROCKET + IDS_J15_ROUTE_5 + IDS_J16_GYM \
-		+ IDS_J16_SHIP + IDS_J16_RIVAL_CAPTAIN + IDS_J16_T15 + IDS_J17
+		+ IDS_J16_SHIP + IDS_J16_RIVAL_CAPTAIN + IDS_J16_T15 + IDS_J17 + IDS_J18
 	expected.sort()
 	assert_eq(found, expected)
 
@@ -742,7 +797,8 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 			&"ss_anne_departure_chosen", &"ss_anne_exit_told"]
 			+ SET_J14_BILL_DIALOGUES + SET_J14_ROCKET_DIALOGUES
 			# Jalon 17 (T8) : Ronflex vu, assistant rencontré, barrière de FUTUR B ouverte.
-			+ [&"hm05_assistant_met", &"route_2_east_gate_open", &"snorlax_route_11_seen"]))
+			+ [&"hm05_assistant_met", &"route_2_east_gate_open", &"snorlax_route_11_seen"]
+			+ SET_J18_DIALOGUES))
 	assert_eq(cutscenes.get_set_flags(), _sorted([&"badge_boulder", &"badge_cascade",
 		&"beaten_mt_moon_researcher", &"beaten_nugget_rocket", &"brock_met", &"cerulean_reached", &"got_mt_moon_1f_hidden_1",
 		&"got_mt_moon_1f_item_1", &"got_mt_moon_b1f_item_1", &"got_mt_moon_b1f_item_2",
@@ -782,8 +838,10 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		&"got_route_11_item_2", &"got_route_2_east_item_1", &"got_route_2_east_item_2",
 		&"got_route_2_item_5", &"got_digletts_cave_item_1",
 		# Jalon 17 (T23) : les deux arbustes coupés (couloir de la Route 2 est, FUTUR A).
-		&"cut_route_2_east_bush", &"cut_route_2_futur_a"]
-		+ SET_J14_BILL_CUTSCENES + SET_J14_ROCKET_CUTSCENES))
+		&"cut_route_2_east_bush", &"cut_route_2_futur_a",
+		# Jalon 18 (T15) : l'arbre de la sortie est d'Azuria.
+		&"cut_cerulean_east_tree"]
+		+ SET_J14_BILL_CUTSCENES + SET_J14_ROCKET_CUTSCENES + SET_J18_CUTSCENES))
 	assert_eq(_used_on.get(&"oak_lab_reunion"), [&"oak_lab"], "joué au labo, après le fondu")
 	assert_eq(_used_on.get(&"oak_starter_offer"), [&"oak_lab"], "joué au labo")
 
@@ -979,6 +1037,8 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 	var dossier_16 := FileAccess.get_file_as_string(DOSSIER_16).replace("\n    ", " ") \
 		.replace("\n   ", " ")
 	var dossier_15 := FileAccess.get_file_as_string(DOSSIER_15)
+	var dossier_21 := FileAccess.get_file_as_string(DOSSIER_21) \
+		+ FileAccess.get_file_as_string(PLAN_J18)
 	var dossier_20 := FileAccess.get_file_as_string(DOSSIER_20).replace("**", "")
 	var annex_a_17 := AnnexATexts.annex_a(FileAccess.get_file_as_string(JALON_17))
 	var dossier_17 := FileAccess.get_file_as_string(DOSSIER_17) \
@@ -1034,7 +1094,10 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			# J16 (T11) : lot de textes du dossier 19 (§0.5), une citation par ligne.
 			or _each_line_quoted(dossier_19, text)
 			# J16 (T15) : une réplique du lot coupée en deux lignes dans sa bulle.
-			or dossier_19.contains("« %s »" % text.replace("\n", " ")),
+			or dossier_19.contains("« %s »" % text.replace("\n", " "))
+			# J18 (T16) : dossier 21 §15 et plan (annexe A).
+			or dossier_21.contains(text.replace("\n", " "))
+			or dossier_21.contains("« %s »" % text.replace("\n", " / ")),
 			"%s : « %s » dans un dossier de conception" % [row[0], text])
 
 
@@ -1241,12 +1304,13 @@ func test_oak_parcel_lines() -> void:
 	# Jalon 17 (T8) : la remise de la CS05 par l'assistant ; (T17) deux objets au sol et un caché
 	# de la Route 11 ; (T20) Pierre Lune et Super Bonbon ; (T21) Super Potion de FUTUR A ;
 	# (intégration) Corde Sortie de la Cave.
-	assert_eq(launched, 63, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
+	# Jalon 18 (T16) : sept objets au sol (Route 9, Route 10, grotte) et la Super Potion cachée.
+	assert_eq(launched, 71, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
 		+ "sa CT34, Ondine (pont, Arène et rattrapage), écran, module, console, objets de la "
 		+ "Route 25, le Rocket d'Azuria (2) et le barrage sud ; J15 : objets de la Route 5 ; "
 		+ "J16 : Major Bob (2), neuf objets du S.S. Anne, le capitaine, le marin (2) ; "
 		+ "J17 : la CS05, Route 11 (3), deux objets du couloir, la Super Potion de la clairière "
-		+ "et la Corde Sortie de la Cave")
+		+ "et la Corde Sortie de la Cave ; J18 : huit objets")
 	# Le jeton n'apparaît que dans la réplique de l'espèce, « {pokemon} » dans les phrases du
 	# compagnon (J11), et ceux de la Pension dans ses répliques (J15).
 	for row: Array in _pages():

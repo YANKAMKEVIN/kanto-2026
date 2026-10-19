@@ -1,0 +1,49 @@
+{
+	"dark_cave_1f_item_1": {
+		"variants": [
+			{
+				"unless": ["got_dark_cave_1f_item_1"],
+				"steps": [
+					{ "despawn": "dark_cave_1f_item_1" },
+					{ "give": "escape_rope", "count": 1, "found": true },
+					{ "set": ["got_dark_cave_1f_item_1"] }
+				]
+			}
+		]
+	},
+	"dark_cave_1f_item_2": {
+		"variants": [
+			{
+				"unless": ["got_dark_cave_1f_item_2"],
+				"steps": [
+					{ "despawn": "dark_cave_1f_item_2" },
+					{ "give": "antidote", "count": 1, "found": true },
+					{ "set": ["got_dark_cave_1f_item_2"] }
+				]
+			}
+		]
+	},
+	"dark_cave_b1f_item_1": {
+		"variants": [
+			{
+				"unless": ["got_dark_cave_b1f_item_1"],
+				"steps": [
+					{ "despawn": "dark_cave_b1f_item_1" },
+					{ "give": "super_potion", "count": 1, "found": true },
+					{ "set": ["got_dark_cave_b1f_item_1"] }
+				]
+			}
+		]
+	},
+	"dark_cave_b1f_hidden_1": {
+		"variants": [
+			{
+				"unless": ["got_dark_cave_b1f_hidden_1"],
+				"steps": [
+					{ "give": "super_potion", "count": 1, "found": true },
+					{ "set": ["got_dark_cave_b1f_hidden_1"] }
+				]
+			}
+		]
+	}
+}

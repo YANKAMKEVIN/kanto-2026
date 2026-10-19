@@ -33,6 +33,9 @@ entre cartes, rebord unique, eau et ponts, Centre premier bâtiment, rival, Ondi
 **Azuria après J14** (variante `J14` de `azuria.txt`, jalon 14 T20a) : `plan_check_azuria_j14.py`,
 lancé à part (jardin, impasse, poursuite, vue du Rocket, aucune case coincée, sortie sud).
 
+**Azuria après J18** (variante `J18` de `azuria.txt`, cumulative sur J14, dossier 21 §9) :
+`plan_check_azuria_j18.py`, lancé à part (arbre à couper, raccord est sur la Route 9).
+
 **Route 25** (`route_25.txt`, jalon 14) : `verifier_route_25`, dans `plan_check_route_25.py`
 (raccord ouest, maison de Léo, D1 et D2 inévitables, H3 obligatoire, rebord de la terrasse,
 largeur du chemin, durée de traversée).
@@ -658,6 +661,14 @@ def _azuria(nom: str):
 	return verifier
 
 
+def _j18(nom: str):
+	"""Grilles du jalon 18 (dossier 21) : profils dans `plan_check_<nom>.py` (import tardif)."""
+	def verifier(chemin: Path) -> bool:
+		import importlib
+		return getattr(importlib.import_module(f"plan_check_{nom}"), f"verifier_{nom}")(chemin)
+	return verifier
+
+
 def verifier_route_25(chemin: Path) -> bool:
 	"""Route 25 et Cap d'Azuria (jalon 14) : profil dans `plan_check_route_25.py`."""
 	from plan_check_route_25 import verifier_route_25 as verifier
@@ -666,7 +677,7 @@ def verifier_route_25(chemin: Path) -> bool:
 
 VERIFICATEURS = {"route_2": verifier_route_2, "viridian_forest": verifier_foret,
 	"route_3": verifier_route_3, "route_25": verifier_route_25, "route_6": verifier_route_6,
-	"vermilion_city": verifier_vermilion_city,
+	"vermilion_city": verifier_vermilion_city, "route_9": _j18("route_9"), "route_10": _j18("route_10"),
 	**{n: _azuria(n) for n in ("route_4", "azuria", "route_24", "azuria_arene", "azuria_velos",
 		"azuria_maison")}}
 

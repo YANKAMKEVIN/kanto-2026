@@ -1,0 +1,42 @@
+{
+	"route_10_cave_sign": {
+		"pages": ["GROTTE SOMBRE\nRoute 10 — Lavanville"]
+	},
+	"route_10_center_sign": {
+		"pages": ["CENTRE POKÉMON\nRoute 10"]
+	},
+	"route_10_hiker": {
+		"speaker": "Randonneur",
+		"pages": [
+			"Là-dedans, on n'y voit pas à trois pas.",
+			"Moi, je garde la paroi à main droite…\nou à main gauche, je ne sais plus."
+		]
+	},
+	"route_10_maniac_hector_before": {
+		"speaker": "Pokémaniac Hector",
+		"pages": ["Je collectionne les Pokémon rares.\nTu en as ? Montre-moi !"]
+	},
+	"route_10_maniac_hector_defeated": {
+		"speaker": "Pokémaniac Hector",
+		"pages": ["Pas rare, ta défaite…\npardon, ma défaite."]
+	},
+	"route_10_maniac_hector_after": {
+		"speaker": "Pokémaniac Hector",
+		"pages": ["Un jour, j'aurai un Pokémon\nque personne n'a jamais vu."]
+	},
+	"route_10_hiker_paul_before": {
+		"speaker": "Montagnard Paul",
+		"pages": ["La sortie de la grotte, c'est\nmon coin. On se bat ?"]
+	},
+	"route_10_hiker_paul_defeated": {
+		"speaker": "Montagnard Paul",
+		"pages": ["D'accord, d'accord !"]
+	},
+	"route_10_hiker_paul_after": {
+		"speaker": "Montagnard Paul",
+		"pages": ["Tu vois la tour, là-bas ?\nLavanville est juste en dessous."]
+	},
+	"route_10_item_1": {
+		"cutscene": "route_10_item_1"
+	}
+}

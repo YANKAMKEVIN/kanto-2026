@@ -30,6 +30,12 @@ const CACHES: Array = [
 	[&"route_6", "res://tools/debug_start/route_6.json", &"from_underground",
 		"route_6_hidden_1", Vector2i(10, 32), &"super_potion",
 		["Super Potion ×1", "Ajoutée au Sac"]],
+	# Jalon 18 (T20) : la Super Potion entre les racines de l'antichambre de l'échelle B de la
+	# Grotte Sombre (B1F) ; la paroi (40, 32) et le plafond bloquent : on la fouille de l'est
+	# (42, 32) ou du sud (41, 33). [carte, départ, spawn, id, indice, objet, toast, pages, côtés]
+	[&"dark_cave_b1f", "res://tools/debug_start/dark_cave_b1f.json", &"arrivee_a",
+		"dark_cave_b1f_hidden_1", Vector2i(41, 32), &"super_potion",
+		["Super Potion ×1", "Ajoutée au Sac"], ["toast"], [Vector2i.RIGHT, Vector2i.DOWN]],
 ]
 const SIDES: Array[Vector2i] = [Vector2i.LEFT, Vector2i.RIGHT, Vector2i.DOWN]
 
@@ -82,6 +88,15 @@ func _start(cache: Array, cell: Vector2i, facing: Vector2i, fresh: bool) -> void
 			_toasts.append(PackedStringArray([title, detail])))
 	_runner.page_started.connect(func(_index: int) -> void: _events.append("page"))
 	await wait_process_frames(3)
+	# Grotte obscure : l'avertissement d'entrée (T-3) s'ouvre ; on le ferme avant de fouiller.
+	var box := _boot.get_dialogue_box()
+	for i: int in 20:
+		if not _runner.is_running():
+			break
+		if box.is_open():
+			box.advance_requested.emit()
+		await wait_process_frames(2)
+	_events.clear()
 	_boot.get_map().spawn_player_at(_player, cell, facing)
 	await wait_process_frames(3)
 
@@ -118,7 +133,7 @@ func _check_cache(cache: Array) -> void:
 	var grid := _boot.get_map().get_grid()
 	assert_true(grid.is_solid(clue), "l'indice est bloqué")
 	assert_null(_target(), "de dos : rien")
-	for side: Vector2i in SIDES:
+	for side: Vector2i in (cache[8] if cache.size() > 8 else SIDES):
 		var from := clue + side
 		assert_false(grid.is_solid(from), "%s praticable" % from)
 		_boot.get_map().spawn_player_at(_player, from, Vector2i.UP if side.y == 0 else
@@ -152,7 +167,8 @@ func _check_cache(cache: Array) -> void:
 	var bag_after := GameState.bag.count_of(cache[5])
 	_boot.queue_free()
 	await wait_process_frames(3)
-	await _start(cache, clue + SIDES[0], -SIDES[0], false)
+	var first: Vector2i = cache[8][0] if cache.size() > 8 else SIDES[0]
+	await _start(cache, clue + first, -first, false)
 	assert_true(GameState.flags.has_flag(flag), "drapeau relu")
 	assert_null(_target(), "rechargé : plus de cible")
 	assert_eq(GameState.bag.count_of(cache[5]), bag_after)
@@ -178,3 +194,7 @@ func test_route_5_antidote_behind_the_trunk() -> void:
 
 func test_route_6_super_potion_behind_the_rushes() -> void:
 	await _check_cache(CACHES[4])
+
+
+func test_dark_cave_b1f_super_potion_between_the_roots() -> void:
+	await _check_cache(CACHES[5])

@@ -56,6 +56,8 @@ const MAPS: Array[StringName] = [
 	# Jalon 16 (T13) : la vue du rival n° 4 dans le couloir du capitaine.
 	&"ss_anne_captain_corridor",
 	# Jalon 16 (T15) : `ss_anne_main_deck` (passerelle, départ) est déjà dans la liste (T12).
+	# Jalon 18 (T18, T24) : déclencheurs silencieux des objectifs (Route 9, Route 10, Lavanville).
+	&"route_9", &"route_10", &"lavender_town",
 ]
 ## Jalon 7 (T18) : partie qui revient au labo avec le colis (rival parti après le combat).
 const PARCEL_FLAGS: Array[StringName] = [
@@ -212,6 +214,15 @@ const VARIANT_FLAGS: Dictionary = {
 	&"ss_anne_boarding": [PEWTER_FLAGS],
 	# Jalon 17 (T23) : Coupe des arbustes du couloir de la Route 2 est et de FUTUR A.
 	&"cut_tree_route_2_east_bush": [PEWTER_FLAGS], &"cut_tree_route_2_futur_a": [PEWTER_FLAGS],
+	# Jalon 18 (T15) : Coupe de l'arbre de la sortie est d'Azuria.
+	&"cut_tree_cerulean_east": [PEWTER_FLAGS],
+	# Jalon 18 (T16) : objets et déclencheurs silencieux des objectifs (une variante chacun).
+	&"route_9_entered": [PEWTER_FLAGS], &"route_9_item_1": [PEWTER_FLAGS],
+	&"route_9_item_2": [PEWTER_FLAGS], &"route_9_item_3": [PEWTER_FLAGS],
+	&"route_10_reached": [PEWTER_FLAGS], &"dark_cave_crossed": [PEWTER_FLAGS],
+	&"route_10_item_1": [PEWTER_FLAGS], &"dark_cave_1f_item_1": [PEWTER_FLAGS],
+	&"dark_cave_1f_item_2": [PEWTER_FLAGS], &"dark_cave_b1f_item_1": [PEWTER_FLAGS],
+	&"dark_cave_b1f_hidden_1": [PEWTER_FLAGS], &"lavender_reached": [PEWTER_FLAGS],
 }
 ## Scènes jouées par le code (pas de déclencheur) → carte où elles sont jouées.
 ## Jalon 7 (T18) : la scène du colis est lancée par la variante « cutscene » du dialogue de Chen.
@@ -250,6 +261,8 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"cut_tree_vermilion_gym": &"vermilion_city",
 	# Jalon 17 (T23) : COUPER sur les arbustes du couloir de la Route 2 est et de FUTUR A.
 	&"cut_tree_route_2_east_bush": &"route_2_east", &"cut_tree_route_2_futur_a": &"route_2",
+	# Jalon 18 (T15) : COUPER sur l'arbre de la sortie est d'Azuria.
+	&"cut_tree_cerulean_east": &"cerulean_city",
 	# Jalon 16 : embarquement, par le dialogue du marin (TXT-01).
 	&"ss_anne_boarding": &"vermilion_city",
 	# Jalon 11 (T14) : remise tardive de la CT34 (dialogue de Pierre).
@@ -286,11 +299,30 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"route_2_item_5": &"route_2",
 	# Jalon 17 (intégration) : Corde Sortie de la Cave (PNJ « objet » de son fichier).
 	&"digletts_cave_item_1": &"digletts_cave",
+	# Jalon 18 (T16) : objets visibles (PNJ « objet ») et Super Potion cachée (point d'examen des
+	# racines, posé au T20).
+	&"route_9_item_1": &"route_9", &"route_9_item_2": &"route_9", &"route_9_item_3": &"route_9",
+	&"route_10_item_1": &"route_10", &"dark_cave_1f_item_1": &"dark_cave_1f",
+	&"dark_cave_1f_item_2": &"dark_cave_1f", &"dark_cave_b1f_item_1": &"dark_cave_b1f",
+	&"dark_cave_b1f_hidden_1": &"dark_cave_b1f",
 }
 ## Scènes à déclencheur dont la carte n'est pas encore construite → leur carte (simulées sur les
 ## PNJ de son fichier). Vidée au T19 du jalon 9 (la forêt existe), puis au T11 du jalon 10 (les
 ## deux scènes d'Argenta ont leurs déclencheurs sur la carte).
 const AWAITING_MAP: Dictionary[StringName, StringName] = {}
+## Jalon 18 (T16) : scènes de ses fichiers (objets, objectifs).
+const J18_IDS: Array[StringName] = [
+	&"dark_cave_1f_item_1", &"dark_cave_1f_item_2", &"dark_cave_b1f_hidden_1",
+	&"dark_cave_b1f_item_1", &"dark_cave_crossed", &"lavender_reached", &"route_10_item_1",
+	&"route_10_reached", &"route_9_entered", &"route_9_item_1", &"route_9_item_2",
+	&"route_9_item_3",
+]
+## Jalon 18 (T16) : scènes en données dont le déclencheur est posé par la vie de la carte (T18
+## Route 9 / 10, T24 Lavanville ; jalon-18.md §4.13) → leur carte. À retirer en posant le
+## déclencheur (la carte rejoint alors [constant MAPS]).
+## T18 : `route_9_entered` et `route_10_reached` sont posés (Route 9, Route 10 nord).
+const AWAITING_TRIGGER: Dictionary[StringName, StringName] = {
+}
 
 var _cutscenes: CutsceneLibrary
 var _dialogues: DialogueLibrary
@@ -373,7 +405,9 @@ func test_library_loads_without_error() -> void:
 		&"route_11_hidden_1", &"route_2_east_item_1", &"route_2_east_item_2",
 		&"route_2_item_5", &"digletts_cave_item_1",
 		# Jalon 17 (T23) : Coupe des deux arbustes.
-		&"cut_tree_route_2_east_bush", &"cut_tree_route_2_futur_a"]))
+		&"cut_tree_route_2_east_bush", &"cut_tree_route_2_futur_a",
+		# Jalon 18 (T15) : l'arbre de la sortie est d'Azuria.
+		&"cut_tree_cerulean_east"] + J18_IDS))
 
 
 func _sorted(values: Array) -> Array[StringName]:
@@ -406,6 +440,9 @@ func test_every_trigger_targets_a_scene_and_every_scene_is_triggered() -> void:
 			assert_false(_triggered_on.has(id), "« %s » jouée par le code seulement" % id)
 			continue
 		if AWAITING_MAP.has(id) and not MapCatalog.has_map(AWAITING_MAP[id]):
+			continue
+		if AWAITING_TRIGGER.has(id):
+			assert_false(_triggered_on.has(id), "« %s » : retirer de AWAITING_TRIGGER" % id)
 			continue
 		assert_true(_triggered_on.has(id), "scène « %s » visée par un déclencheur" % id)
 	assert_eq(_triggered_on.get(&"route1_grass"), [&"pallet_town"])
@@ -478,22 +515,23 @@ func test_only_world_items_are_found_items() -> void:
 			for step: CutsceneStep in variant.steps:
 				if step.kind == CutsceneStep.Kind.GIVE and step.found:
 					found.append("%s:%s" % [id, step.item_id])
-	assert_eq(found, ["digletts_cave_item_1:escape_rope", "mt_moon_1f_hidden_1:awakening",
-		"mt_moon_1f_item_1:escape_rope",
-		"mt_moon_b1f_item_1:moon_stone", "mt_moon_b1f_item_2:potion",
-		"mt_moon_b2f_hidden_1:moon_stone", "mt_moon_b2f_item_1:tm01",
-		"route_11_hidden_1:poke_ball", "route_11_item_1:super_potion",
-		"route_11_item_2:awakening", "route_1_potion:potion",
+	assert_eq(found, ["dark_cave_1f_item_1:escape_rope", "dark_cave_1f_item_2:antidote",
+		"dark_cave_b1f_hidden_1:super_potion", "dark_cave_b1f_item_1:super_potion",
+		"digletts_cave_item_1:escape_rope", "mt_moon_1f_hidden_1:awakening",
+		"mt_moon_1f_item_1:escape_rope", "mt_moon_b1f_item_1:moon_stone",
+		"mt_moon_b1f_item_2:potion", "mt_moon_b2f_hidden_1:moon_stone", "mt_moon_b2f_item_1:tm01",
+		"route_10_item_1:super_potion", "route_11_hidden_1:poke_ball",
+		"route_11_item_1:super_potion", "route_11_item_2:awakening", "route_1_potion:potion",
 		"route_24_antidote:antidote", "route_24_item_1:potion", "route_25_hidden_1:potion",
 		"route_25_item_1:tm19", "route_25_item_2:potion", "route_25_item_3:poke_ball",
 		"route_2_east_item_1:moon_stone", "route_2_east_item_2:rare_candy",
-		"route_2_item_1:poke_ball", "route_2_item_2:potion",
-		"route_2_item_3:poke_ball", "route_2_item_4:potion", "route_2_item_5:super_potion",
-		"route_2_north_item_1:potion",
+		"route_2_item_1:poke_ball", "route_2_item_2:potion", "route_2_item_3:poke_ball",
+		"route_2_item_4:potion", "route_2_item_5:super_potion", "route_2_north_item_1:potion",
 		"route_3_hidden_1:awakening", "route_3_item_1:poke_ball", "route_3_item_2:potion",
 		"route_3_item_3:paralyze_heal", "route_4_item_1:poke_ball",
 		"route_5_hidden_1:antidote", "route_5_item_1:super_potion",
 		"route_6_hidden_1:super_potion", "route_6_item_1:poke_ball",
+		"route_9_item_1:super_potion", "route_9_item_2:antidote", "route_9_item_3:poke_ball",
 		"ss_anne_hidden_1:awakening", "ss_anne_hidden_2:antidote", "ss_anne_hidden_3:potion",
 		"ss_anne_item_01:potion", "ss_anne_item_02:potion", "ss_anne_item_03:super_potion",
 		"ss_anne_item_04:super_potion", "ss_anne_item_05:super_potion",

@@ -1510,6 +1510,69 @@
    ],
    "ombre": false,
    "contact": null
+  },
+  {
+   "id": "bldg_tour_pokemon_01",
+   "source": "WORLD_BLDG_TOUR_POKEMON_01_NE_r1.png",
+   "sortie": "assets/world/buildings/bldg_tour_pokemon_01.png",
+   "axe": "w",
+   "cases": 12,
+   "ombre": true,
+   "contact": 0.12
+  },
+  {
+   "id": "bldg_maison_pokemon_01",
+   "source": "WORLD_BLDG_MAISON_POKEMON_01_NE_r1.png",
+   "sortie": "assets/world/buildings/bldg_maison_pokemon_01.png",
+   "axe": "w",
+   "cases": 8,
+   "ombre": true,
+   "contact": 0.12
+  },
+  {
+   "id": "bldg_maison_lavanville_01",
+   "source": "WORLD_BLDG_MAISON_LAVANVILLE_01_NE_r1.png",
+   "sortie": "assets/world/buildings/bldg_maison_lavanville_01.png",
+   "axe": "w",
+   "cases": 7,
+   "ombre": true,
+   "contact": 0.12
+  },
+  {
+   "id": "bldg_centrale_lointaine_01",
+   "source": "WORLD_BLDG_CENTRALE_LOINTAINE_01_NE_r1.png",
+   "sortie": "assets/world/buildings/bldg_centrale_lointaine_01.png",
+   "axe": "w",
+   "cases": 5,
+   "ombre": false,
+   "contact": null
+  },
+  {
+   "id": "prop_tour_lointaine_01",
+   "source": "WORLD_PROP_TOUR_LOINTAINE_01_NE_r1.png",
+   "sortie": "assets/world/props/prop_tour_lointaine_01.png",
+   "axe": "w",
+   "cases": 5,
+   "ombre": false,
+   "contact": null
+  },
+  {
+   "id": "prop_grande_colonne_01",
+   "source": "WORLD_PROP_GRANDE_COLONNE_01_NE_r1.png",
+   "sortie": "assets/world/props/prop_grande_colonne_01.png",
+   "axe": "w",
+   "cases": 5,
+   "ombre": false,
+   "contact": 0.15
+  },
+  {
+   "id": "prop_flaque_grotte_01",
+   "source": "WORLD_PROP_FLAQUE_GROTTE_01_NE_r1.png",
+   "sortie": "assets/world/props/prop_flaque_grotte_01.png",
+   "axe": "w",
+   "cases": 8,
+   "ombre": false,
+   "contact": null
   }
  ],
  "hautes_herbes": {
@@ -1981,6 +2044,42 @@
    "contraste": 1.0,
    "couleur": 0.9,
    "luminosite": 1.15,
+   "raccord": 24
+  },
+  {
+   "id": "ground_grotte_sombre_01",
+   "source": "WORLD_GROUND_GROTTE_SOMBRE_01_NE_r1.png",
+   "sortie": "assets/world/ground/ground_grotte_sombre_01.png",
+   "taille": 384,
+   "contraste": 0.6,
+   "couleur": 1.0,
+   "raccord": 24
+  },
+  {
+   "id": "ground_masse_grotte_sombre_01",
+   "source": "WORLD_GROUND_MASSE_GROTTE_SOMBRE_01_NE_r1.png",
+   "sortie": "assets/world/ground/ground_masse_grotte_sombre_01.png",
+   "taille": 384,
+   "contraste": 0.6,
+   "couleur": 0.9,
+   "raccord": 24
+  },
+  {
+   "id": "ground_paves_lavanville_01",
+   "source": "WORLD_GROUND_PAVES_LAVANVILLE_01_NE_r2.png",
+   "sortie": "assets/world/ground/ground_paves_lavanville_01.png",
+   "taille": 384,
+   "contraste": 0.7,
+   "couleur": 1.0,
+   "raccord": 24
+  },
+  {
+   "id": "ground_dalles_tour_01",
+   "source": "WORLD_GROUND_DALLES_TOUR_01_NE_r1.png",
+   "sortie": "assets/world/ground/ground_dalles_tour_01.png",
+   "taille": 384,
+   "contraste": 0.8,
+   "couleur": 1.0,
    "raccord": 24
   }
  ],
@@ -2561,6 +2660,18 @@
    "id": "passagere",
    "source": "PNJ_PASSAGERE_NE_r1.png",
    "sortie": "assets/sprites/characters/painted/passagere_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "pokemaniac",
+   "source": "PNJ_POKEMANIAC_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/pokemaniac_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "exorciste",
+   "source": "PNJ_EXORCISTE_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/exorciste_sheet.png",
    "hauteur": 128
   }
  ],
@@ -3942,6 +4053,119 @@
      856
     ]
    ]
+  },
+  {
+   "source": "WORLD_RELIEF_PAROI_GROTTE_SOMBRE_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/relief/",
+   "colonnes": 3,
+   "lignes": 2,
+   "ids": [
+    "relief_paroi_grotte_sombre_01",
+    "relief_paroi_grotte_sombre_02",
+    "relief_paroi_grotte_sombre_03",
+    "relief_paroi_grotte_sombre_04",
+    "relief_paroi_grotte_sombre_05",
+    "relief_paroi_grotte_sombre_06"
+   ],
+   "cases": [
+    3,
+    3,
+    2,
+    2,
+    1,
+    3
+   ],
+   "contact": 0.0
+  },
+  {
+   "source": "WORLD_PROP_GROTTE_SOMBRE_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/props/",
+   "colonnes": 3,
+   "lignes": 2,
+   "ids": [
+    "relief_paroi_fendue_01",
+    "prop_racines_plafond_01",
+    "prop_racines_plafond_02",
+    "prop_rocher_grotte_sombre_01",
+    "prop_rocher_grotte_sombre_02"
+   ],
+   "cases": [
+    3,
+    1,
+    2,
+    1,
+    1
+   ],
+   "contact": 0.15
+  },
+  {
+   "source": "WORLD_PROP_LAVANVILLE_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/props/",
+   "colonnes": 3,
+   "lignes": 2,
+   "ids": [
+    "prop_buis_taille_01",
+    "prop_buis_taille_02",
+    "prop_haie_taillee_01",
+    "prop_fleurs_pales_01",
+    "prop_fleurs_pales_02",
+    "prop_if_taille_01"
+   ],
+   "cases": [
+    1,
+    1,
+    2,
+    1,
+    2,
+    1
+   ],
+   "contact": 0.2
+  },
+  {
+   "source": "WORLD_RELIEF_MUR_TOUR_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/relief/",
+   "colonnes": 3,
+   "lignes": 2,
+   "ids": [
+    "relief_mur_tour_01",
+    "relief_mur_tour_02",
+    "relief_mur_tour_03",
+    "relief_mur_tour_04",
+    "relief_mur_tour_05",
+    "relief_escalier_tour_01"
+   ],
+   "cases": [
+    2,
+    2,
+    2,
+    0.35,
+    0.35,
+    1
+   ],
+   "contact": 0.0
+  },
+  {
+   "source": "INT_TOUR_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/interiors/",
+   "colonnes": 3,
+   "lignes": 2,
+   "ids": [
+    "int_tombe_tour_01",
+    "int_tombe_tour_02",
+    "int_tombe_tour_03",
+    "int_bougeoir_tour_01",
+    "int_comptoir_tour_01",
+    "int_banc_tour_01"
+   ],
+   "cases": [
+    1,
+    1,
+    1,
+    1,
+    4,
+    1
+   ],
+   "contact": 0.2
   }
  ],
  "effets": [

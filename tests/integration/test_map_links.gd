@@ -44,7 +44,17 @@ const MAP_IDS: Array[StringName] = [
 	&"ss_anne_main_deck", &"ss_anne_captain_corridor", &"ss_anne_captain_room",
 	&"ss_anne_restaurant", &"ss_anne_lower_deck", &"ss_anne_outer_deck", &"ss_anne_cabin_a",
 	&"ss_anne_cabin_b", &"ss_anne_cabin_c", &"vermilion_gym",
+	# Jalon 18 (T12) : Route 9, Route 10 et son Centre (Azuria, Grotte Sombre et Lavanville :
+	# « à venir » tant que leurs cartes J18 ne sont pas là).
+	&"route_9", &"route_10", &"route_10_center",
+	# Jalon 18 (T13) : la Grotte Sombre (sorties en repli « à venir » tant que la Route 10 manque).
+	&"dark_cave_1f", &"dark_cave_b1f",
+	# Jalon 18 (T14) : Lavanville, ses intérieurs et le rez-de-chaussée de la Tour.
+	&"lavender_town", &"lavender_center", &"lavender_mart", &"pokemon_house",
+	&"lavender_house_1", &"lavender_house_2", &"pokemon_tower_1f",
 ]
+## Cartes dont les passages « à venir » sont comptés dans leur propre test (jalon 18).
+const OWN_COMING_SOON_COUNT: Array[StringName] = [&"lavender_town", &"pokemon_tower_1f"]
 ## Retours pas encore branchés : [carte d'origine, carte cible]. Jalon 16 (T15) : vide (Carmin
 ## mène au pont principal du S.S. Anne et à l'Arène ; les retours sont vérifiés).
 const PENDING_RETURNS: Array = []
@@ -131,7 +141,7 @@ func test_every_coming_soon_warp_returns_to_a_walkable_spawn_of_its_own_map() ->
 	for map_id: StringName in _maps:
 		var map: GameMap = _maps[map_id]
 		for warp: Warp in map.get_warps().get_all():
-			if not warp.is_coming_soon():
+			if not warp.is_coming_soon() or OWN_COMING_SOON_COUNT.has(map_id):
 				continue
 			found += 1
 			var label := "%s %s « %s »" % [map_id, warp.cell, warp.coming_soon]
@@ -143,7 +153,9 @@ func test_every_coming_soon_warp_returns_to_a_walkable_spawn_of_its_own_map() ->
 	# nord du poste vers Safrania (2 cases, jamais atteinte). Jalon 15 (T14) : Route 11
 	# (trois cases), Safrania (porte nord de la Route 6, une). Jalon 16 (T15) : l'Arène de
 	# Carmin et l'embarquement du S.S. Anne sont branchés. Jalon 17 (T17) : le bord est de Carmin
-	# mène à la vraie Route 11.
+	# mène à la vraie Route 11. Jalon 18 (T15) : Azuria et la Route 9 sont reliées (arbre coupé du
+	# J16) ; la Grotte Sombre et Lavanville sont reliées à la Route 10, et les passages de
+	# Lavanville et de la Tour sont comptés dans leurs propres tests.
 	assert_eq(found, 3, "« SAFRANIA » (2), Safrania (1)")
 
 

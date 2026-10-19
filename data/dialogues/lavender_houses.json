@@ -1,0 +1,29 @@
+{
+	"pokemon_house_kid": {
+		"speaker": "Enfant",
+		"variants": [
+			{
+				"unless": ["pokemon_house_kid_talked"], "set": ["pokemon_house_kid_talked"],
+				"pages": [
+					"Papy Fuji ? Il passe ses journées\nà la Tour.",
+					"Il dit que quelqu'un doit veiller\nsur eux."
+				]
+			},
+			{
+				"pages": ["Ces Pokémon n'avaient plus de Dresseur.\nMaintenant, ils nous ont nous."]
+			}
+		]
+	},
+	"lavender_house_1_old_lady": {
+		"speaker": "Vieille dame",
+		"pages": ["Mon Roucool chantait tous les matins\nà la fenêtre.", "Je laisse toujours la fenêtre\nouverte."]
+	},
+	"lavender_house_2_wife": {
+		"speaker": "Habitante",
+		"pages": ["On monte des fleurs à la Tour\nchaque semaine.", "Ça nous fait du bien, à nous aussi."]
+	},
+	"lavender_house_2_husband": {
+		"speaker": "Habitant",
+		"pages": ["On monte des fleurs à la Tour\nchaque semaine.", "Ça nous fait du bien, à nous aussi."]
+	}
+}

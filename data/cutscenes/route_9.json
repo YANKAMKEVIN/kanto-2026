@@ -1,0 +1,48 @@
+{
+	"route_9_entered": {
+		"variants": [
+			{
+				"unless": ["route_9_entered"],
+				"steps": [
+					{ "set": ["route_9_entered"] }
+				]
+			}
+		]
+	},
+	"route_9_item_1": {
+		"variants": [
+			{
+				"unless": ["got_route_9_item_1"],
+				"steps": [
+					{ "despawn": "route_9_item_1" },
+					{ "give": "super_potion", "count": 1, "found": true },
+					{ "set": ["got_route_9_item_1"] }
+				]
+			}
+		]
+	},
+	"route_9_item_2": {
+		"variants": [
+			{
+				"unless": ["got_route_9_item_2"],
+				"steps": [
+					{ "despawn": "route_9_item_2" },
+					{ "give": "antidote", "count": 1, "found": true },
+					{ "set": ["got_route_9_item_2"] }
+				]
+			}
+		]
+	},
+	"route_9_item_3": {
+		"variants": [
+			{
+				"unless": ["got_route_9_item_3"],
+				"steps": [
+					{ "despawn": "route_9_item_3" },
+					{ "give": "poke_ball", "count": 2, "found": true },
+					{ "set": ["got_route_9_item_3"] }
+				]
+			}
+		]
+	}
+}
