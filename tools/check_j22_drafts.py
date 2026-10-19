@@ -44,7 +44,7 @@ EXTRA_NAMES = {
 	"Magicarpe": "magikarp", "Électrode": "electrode", "Ptitard": "poliwag",
 	"Tadmorv": "grimer", "Grotadmorv": "muk", "Canarticho": "farfetchd", "Doduo": "doduo",
 	"Dodrio": "dodrio", "Saquedeneu": "tangela", "Smogogo": "weezing", "Machopeur": "machoke",
-	"Aéromite": "venonat",
+	"Aéromite": "venonat", "Mimitoss": "venonat",
 }
 
 # Corrections de traduction du dossier, appliquées après les noms des données (signalées à

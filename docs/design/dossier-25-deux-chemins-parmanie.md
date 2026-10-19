@@ -293,8 +293,8 @@ Aucune espèce sans données, capacités et dos de combat ne peut sortir d'une t
 |---|---|---|
 | Route 12 sud | RB | Mystherbe 22–26, Roucool 23–27, Mimitoss 24–26, Ortide 28–30 |
 | Route 13 | RB | Mystherbe 22–26, Roucool 25–27, Mimitoss 24–26, Ortide 28–30 (créneau de Métamorph → Roucool) |
-| Route 14 | RB | Mystherbe 22–26, Roucool 26–28, Mimitoss 24–26, Ortide 30 (Métamorph → Mimitoss) |
-| Route 15 | RB | Mystherbe 22–26, Roucool 23–30, Mimitoss 26–28, Ortide 30 (Métamorph → Mimitoss) |
+| Route 14 | RB | Mystherbe 22–26, Roucool 26, Roucoups 28–30, Mimitoss 24–26, Ortide 30 (Métamorph → Mimitoss) |
+| Route 15 | RB | Mystherbe 22–26, Roucool 23, Roucoups 28–30, Mimitoss 26–28, Ortide 30 (Métamorph → Mimitoss) |
 | Route 16 ouest | RB | Piafabec 20–22, Rattata 18–22, Doduo 18–22, Rattatac 23–25 |
 | Route 17 | RB | Piafabec 20–22, Rattatac 25–29, Doduo 24–28, Rapasdepic 25–27 |
 | Route 18 | RB | Piafabec 20–22, Rattatac 25–29, Doduo 24–28, Rapasdepic 25–29 |
