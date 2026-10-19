@@ -101,6 +101,15 @@ func _setup_boot() -> void:
 		for i in 10:
 			await process_frame
 		Input.action_press(StringName("move_" + String(_args["hold"])))
+	if _args.has("mash"):
+		# Ferme les dialogues d'entrée (avertissement de la grotte) : « interagir » répété.
+		for k in int(_args["mash"]):
+			for i in 20:
+				await process_frame
+			Input.action_press(&"interact")
+			for i in 2:
+				await process_frame
+			Input.action_release(&"interact")
 	if _args.has("interact"):
 		for i in 10:
 			await process_frame

@@ -1,0 +1,22 @@
+WORLD_RELIEF_TERRASSE_PLANCHE — NOUVELLE image : une planche d'éléments de jeu, pas une scène.
+Images jointes : REF_R9_TERRASSE, REF_R9_TERRASSE_EST, REF_R9_FALAISE = forme, matériaux et couleurs, extraits des vues d'ensemble validées (minuscules, en lumière d'ambiance : n'en copie ni le rendu, ni la lumière, ni la pénombre) ; relief_paroi_01, relief_paroi_04, relief_falaise_01, relief_rebord_01 = ancres de style (rendu peint, contour coloré, finesse, angle de vue, lumière neutre) : respecte-les exactement.
+
+ADN VISUEL KANTO 2026 — v1 (à respecter strictement)
+- Rendu : illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus de trois quarts, en projection oblique frontale, sans aucun point de fuite. Les verticales restent strictement verticales et les horizontales strictement horizontales. On voit le dessus des objets et leur face avant (côté sud), jamais leurs côtés. Pas de vue isométrique, pas de rotation. Le sol est vu à plat, comme sur un plan.
+- Proportions : légèrement stylisées, trapues et rassurantes. Échelle commune : 1 case de jeu = 1 mètre environ ; un adulte mesure 1,33 case ; une porte simple mesure 1 case de large et 1,5 case de haut.
+- Contours : aucun trait noir. Contour fin et doux, d'une teinte plus sombre et plus saturée que la couleur locale, qui s'efface presque du côté éclairé.
+- Volumes : trois valeurs nettes par matériau (lumière, ombre propre, reflet ambiant), transitions douces, petits accents de lumière sur les arêtes.
+- Matériaux : reconnaissables (bois, pierre, tuile, feuillage, verre) à leur forme et à quelques touches de texture, jamais à une texture photographique.
+- Couleurs : chaudes, lumineuses et saturées sans être fluo. Verts allant du vert-jaune ensoleillé au vert sapin. Ombres colorées tirant vers le bleu-vert ou le violet froid, jamais grises ni noires. Couleurs franches pour les toits.
+- Texture : pinceau net et propre, légère granularité picturale ; pas de bruit, pas de flou, pas de netteté artificielle.
+- Lumière : une seule source, le soleil, en haut à gauche de l'image (la fiche précise la variante).
+- Ombres : aucune ombre portée au sol (le jeu l'ajoute lui-même). Les ombres propres et internes (sous le feuillage, sous un avant-toit) sont peintes.
+- Isolement : un seul objet, entier, centré, sur fond transparent ; rien autour : ni sol, ni herbe, ni décor, ni personnage.
+- Interdits partout : texte, lettres, chiffres, logo (sauf l'emblème demandé), signature, filigrane, cadre, personnage, Pokémon, ombre portée, sol sous l'objet, flou de profondeur, vignettage.
+
+LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche ; volumes conservés par un ombrage doux ; aucune teinte dorée ou orangée, aucun liseré chaud ; ombres propres neutres, légèrement bleutées.
+
+EXCEPTION à la règle « Isolement » : plusieurs éléments séparés sur une même planche, chacun entier dans sa cellule, sans cadre ni séparation.
+PLANCHE de 6 modules de TERRASSE ROCHEUSE de la Route 9 (les rebords bas qui séparent deux niveaux de sentier), dans une image 1536 × 1024 : grille invisible de 3 colonnes × 2 lignes (cellules de 512 × 512), un élément par cellule, centré, la base de chacun sur une même ligne horizontale à 40 px du bas de sa cellule, à une échelle COMMUNE : 1 case = 150 px. Roche beige en colonnes avec des touffes de mousse vert vif sur les replats, exactement la roche des modules joints relief_paroi_01 et relief_falaise_01, mais en rebords d'UNE case de haut : 1 FACE A (3 cases × 1), 2 FACE B (3 × 1, une fissure), 3 ANGLE SAILLANT (1 × 1), 4 ANGLE RENTRANT (1 × 1), 5 BORD LATÉRAL (0,4 × 3, bande verticale), 6 RAMPE (2 × 1,5 : la terre du sentier qui monte en pente douce le long d'un rebord, sans marches). Fond transparent, aucun sol herbeux dessiné, aucune ombre portée.
+Interdits de la série : texte, lettres, chiffres, logo, inscription sur les tombes, AUCUN emblème rond de type balle (ni cercle partagé en deux, ni médaillon à bande centrale) sauf sur le Centre et la Boutique existants, animaux réels ou faune non-Pokémon (oiseaux, chauves-souris, insectes, araignées), Pikachu et tout Pokémon non demandé, personnage qui ressemble au héros (casquette rouge, t-shirt blanc, sac à dos jaune), squelette, crâne, fantôme, toile d'araignée, élément effrayant ou macabre, croix religieuse.

@@ -1,6 +1,6 @@
 {
-	"route_8_nerd_hector": {
-		"name": "Intello Hector", "ai": "random",
+	"route_8_nerd_anatole": {
+		"name": "Intello Anatole", "ai": "random",
 		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 500,
 		"team": [
 			{ "species": "voltorb", "level": 20 },
@@ -18,8 +18,8 @@
 			{ "species": "goldeen", "level": 22 }
 		]
 	},
-	"route_8_nerd_simon": {
-		"name": "Intello Simon", "ai": "random",
+	"route_8_nerd_firmin": {
+		"name": "Intello Firmin", "ai": "random",
 		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 550,
 		"team": [
 			{ "species": "koffing", "level": 22 },
@@ -35,8 +35,8 @@
 			{ "species": "nidorina", "level": 23 }
 		]
 	},
-	"route_8_lass_lou": {
-		"name": "Fillette Lou", "ai": "random",
+	"route_8_lass_margot": {
+		"name": "Fillette Margot", "ai": "random",
 		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 360,
 		"team": [
 			{ "species": "meowth", "level": 24 },
@@ -44,8 +44,8 @@
 			{ "species": "meowth", "level": 24 }
 		]
 	},
-	"route_8_gambler_gilles": {
-		"name": "Joueur Gilles", "ai": "random",
+	"route_8_gambler_fernand": {
+		"name": "Joueur Fernand", "ai": "random",
 		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 1680,
 		"team": [
 			{

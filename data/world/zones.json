@@ -112,7 +112,19 @@
 			],
 			"description": "Une ville tournée vers le large, où les grands navires font escale. La lumière dorée y danse sur l'eau des quais."
 		},
-		"lavender_town": { "name": "Lavanville", "kind": "town", "maps": [] },
+		"lavender_town": {
+			"name": "Lavanville", "kind": "town",
+			"maps": [
+				"lavender_town", "lavender_center", "lavender_mart", "pokemon_house",
+				"lavender_house_1", "lavender_house_2", "pokemon_tower_1f"
+			],
+			"subtitle": "Route 10 — Route 8 — Route 12",
+			"services": [
+				{ "id": "pokemon_center", "found_on": "lavender_center" },
+				{ "id": "poke_mart", "found_on": "lavender_mart" }
+			],
+			"description": "Une petite ville silencieuse au pied de la Tour Pokémon. On y vient de loin pour se souvenir."
+		},
 		"route_8": { "name": "Route 8", "kind": "route", "maps": [] },
 		"saffron_city": { "name": "Safrania", "kind": "town", "maps": [] },
 		"route_7": { "name": "Route 7", "kind": "route", "maps": [] },
@@ -162,6 +174,24 @@
 			"subtitle": "Le grand paquebot de Kanto",
 			"interior_title": true,
 			"description": "Un paquebot de croisière amarré au port de Carmin. Salons, cabines et ponts promenade : on s'y croirait déjà au large."
+		},
+		"route_9": {
+			"name": "Route 9", "kind": "route", "maps": ["route_9"],
+			"subtitle": "Azuria — Route 10",
+			"description": "Une route de roche et de terrasses à l'est d'Azuria. Le sentier grimpe, tourne, redescend : il faut garder le pas sûr."
+		},
+		"route_10": {
+			"name": "Route 10", "kind": "route", "maps": ["route_10", "route_10_center"],
+			"subtitle": "Route 9 — Lavanville",
+			"services": [
+				{ "id": "pokemon_center", "found_on": "route_10_center" }
+			],
+			"description": "Une route coupée en deux par la falaise et la rivière. On ne passe d'un côté à l'autre que par la Grotte Sombre."
+		},
+		"dark_cave": {
+			"name": "Grotte Sombre", "kind": "place", "maps": ["dark_cave_1f", "dark_cave_b1f"],
+			"subtitle": "Route 10",
+			"description": "Un tunnel sans lumière sous la montagne. On y avance de repère en repère, une colonne, une fente, une flaque."
 		}
 	}
 }

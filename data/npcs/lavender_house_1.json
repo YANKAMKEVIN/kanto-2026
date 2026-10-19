@@ -1,0 +1,5 @@
+{
+	"habitante": {
+		"cell": [12, 6], "facing": "left", "sprite": "old_man", "dialogue": "lavender_house_1_old_lady"
+	}
+}

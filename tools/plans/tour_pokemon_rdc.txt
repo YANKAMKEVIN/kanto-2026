@@ -1,0 +1,67 @@
+# Tour Pokémon, rez-de-chaussée (pokemon_tower_1f) — grille fonctionnelle v1 (jalon 18, dossier 21
+# §7, §13.1, §14, §15.4 ; préparée le 2026-10-14). 20 × 18 (RB : 20 × 18). Convention des intérieurs
+# (voir argenta_musee.txt) : mur du fond sur 3 rangées (0..2), colonnes 0 et 19, avant-dernière
+# rangée bloquée sauf la sortie (2 cases, paillasson), dernière rangée. Sol praticable : x 1..18,
+# y 3..15. Contrôle : tools/art/plan_check_lavanville.py.
+#
+# Composition : entrée au SUD (9..10, 16) ; allée centrale de 2 cases dans l'axe ; trois rangées
+# de tombes basses (y 5, 7, 9 ; x 3..8 et 11..16) séparées par des allées, tout à angles droits ;
+# COMPTOIR du gardien au sud-ouest (2..5, 13), gardien derrière (3, 12) ; bancs au sud-est ;
+# ESCALIER au nord-est d'UNE case de large (17, 2), dans le mur du fond, accessible par la seule
+# case (17, 3) : la MÉDIUM l'occupe (en prière), impossible de la contourner (I-21). Rien du J19 :
+# l'escalier mène à pokemon_tower_2f, qui n'existe pas au J18 (le warp n'est pas armé tant que le
+# drapeau de la Médium n'est pas levé). Lumière froide ; bougies = halos fixes `lamp` (POSITIONS).
+# 36 tombes : 5 examinables avec leur texte propre (T-36 à T-40), les 31 autres « Une tombe bien
+# entretenue. » (T-41), toutes lues depuis une case libre adjacente.
+#
+# Légende :
+#   K mur (bloqué)   . sol (praticable)   X sortie vers Lavanville (praticable : paillasson, PUSH ↓)
+#   g tombe basse (bloquée)   W comptoir du gardien (bloqué)   n banc (bloqué)
+#   b chandelier à bougies (bloqué, halo `lamp`)   S escalier vers le 2F (praticable, STEP_ON ↑)
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 20 caractères), puis POSITIONS.
+
+PRATICABLES .XS
+
+GRILLE 20 18
+00 KKKKKKKKKKKKKKKKKKKK
+01 KKKKKKKKKKKKKKKKKKKK
+02 KKKKKKKKKKKKKKKKKSKK
+03 K.b.....b..b...b...K
+04 K..................K
+05 K..gggggg..gggggg..K
+06 K..................K
+07 K..gggggg..gggggg..K
+08 K..................K
+09 K..gggggg..gggggg..K
+10 K..................K
+11 K..................K
+12 K..................K
+13 K.WWWW......nnn.nn.K
+14 K..................K
+15 Kb................bK
+16 KKKKKKKKKXXKKKKKKKKK
+17 KKKKKKKKKKKKKKKKKKKK
+FIN
+
+POSITIONS
+sortie              warp           9..10,16     libre   # PUSH ↓ → lavender_town, retour_tour
+entree              spawn          9,16         libre   # spawn « entrance », tourné ↑
+escalier            warp           17,2         libre   # STEP_ON ↑ → pokemon_tower_2f (J19) ; inatteignable tant que la Médium occupe (17, 3)
+gardien             pnj            3,12         bloque  role=V1 facing=down  # T-30 ; parlé depuis (3, 14) à travers le comptoir (2..5, 13)
+visiteuse           pnj            2,7          bloque  role=V2 facing=right  # T-31 ; allée ouest, devant la tombe (3, 7)
+visiteur            pnj            17,5         bloque  role=V3 facing=left  # T-32 ; allée est, devant la tombe (16, 5)
+jeune_fille         pnj            13,10        bloque  role=V4 facing=up  # T-33 ; sous la 3e rangée, devant la tombe (13, 9)
+exorciste_gardienne pnj            17,3         bloque  role=M facing=up unless=tower_stairs_open  # Exorciste qui ne combat pas (dossier 22 K-2) ; T-34 puis T-35 ; occupe la seule case d'accès à l'escalier ; le J19 la déplace (K-3)
+tombe_1             examen         4,5          bloque  # T-36 « Ici repose Plumo… », lu depuis (4, 4) ↓
+tombe_2             examen         7,7          bloque  # T-37 « Pour Caillou… », lu depuis (7, 6) ↓
+tombe_3             examen         12,5         bloque  # T-38 « Tu nous as appris la patience. Merci, Mousse. », lu depuis (12, 4) ↓
+tombe_4             examen         15,7         bloque  # T-39 « À notre Rondoudou… », lu depuis (15, 6) ↓
+tombe_5             examen         5,9          bloque  # T-40 « Repose en paix, vieil ami… », lu depuis (5, 10) ↑
+bougie_1            lamp           2,3          libre   # halo fixe `lamp` sur le chandelier (case bloquée)
+bougie_2            lamp           8,3          libre
+bougie_3            lamp           11,3         libre
+bougie_4            lamp           15,3         libre
+bougie_5            lamp           1,15         libre
+bougie_6            lamp           18,15        libre
+FIN

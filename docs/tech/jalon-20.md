@@ -44,11 +44,12 @@ ceux de l'**annexe A** (à valider). « [D] » = valeur par défaut (règle 4, �
 
 ## 0. État des lieux et écarts
 
-### 0.0 Fusion de `main` à `aebbd857` dans `jalon-20` (2026-10-19)
+### 0.0 Fusions de `main` (`aebbd857`, puis `d397b2df`) dans `jalon-20` (2026-10-19)
 
 `main` contient désormais le **J15, le J16 et le J17 terminés**, le découpage du Boot (PR #1 :
-`SaveCoordinator`, `SettingsApplier`, `SessionLifecycle`) et une CI GitHub. Le J18 et le J19 ne
-sont **pas** fusionnés : le T9 reste à faire après eux. Les §0.1 à §0.3 ci-dessous datent de
+`SaveCoordinator`, `SettingsApplier`, `SessionLifecycle`) et une CI GitHub ; puis le **J18**
+(`d397b2df`, fusionné le même jour, voir plus bas). Le J19 n'est **pas** fusionné : le T9 reste
+à faire après lui. Les §0.1 à §0.3 ci-dessous datent de
 `440f9b17` et restent à relire au T9.
 
 - **Apporté par J16 / J17 et utile au J20** : CS01 Coupe hors combat (`FieldMoves`,
@@ -67,9 +68,31 @@ sont **pas** fusionnés : le T9 reste à faire après eux. Les §0.1 à §0.3 ci
 - **Logique J20 non branchée** (`spin/`, `elevator/`, `gift/`) : APIs appelées inchangées
   (`GameState.flags/party/storage/rng`, `record_caught`, `stamp_meeting`, `Party.add`,
   `PokemonStorage.add`, `PokemonFactory.create`, `Pokemon.Origin`), aucune adaptation.
-- **Reste au T9** : fusion du J18 et du J19 (Caninos du J19, effets de Bélier et Hurlement codés
-  au J19, Spectres et Scope Sylphe), relecture des §0.1–0.3 sur le code du moment, branchement
-  dans le Boot découpé (blocs « J20 » dans `boot.gd` ou ses nouveaux coordinateurs), `data/j20_pending/`
+- **Seconde fusion, `main` à `d397b2df` (J18 terminé, même jour)** : Route 9, Route 10 et son
+  Centre, Grotte Sombre, Lavanville, Tour RDC. Aucun identifiant en double avec le J20 (le J18
+  n'ajoute ni espèce, ni capacité, ni objet, ni fiche de Pokédex ; ses Dresseurs, tables et
+  boutique `lavender_mart` ont des noms distincts). `tools/art/plan_aplats.py` garde les deux
+  côtés ; `celadopole-plan-v1.png` se régénère au pixel près, `plan_check.py` conforme.
+- **Prénoms des Dresseurs de la Route 8 renommés (le J18 les avait pris ; valeur par défaut,
+  règle 4, à confirmer par Kevin)** : Intello Hector → **Intello Anatole**
+  (`route_8_nerd_anatole`), Intello Simon → **Intello Firmin** (`route_8_nerd_firmin`),
+  Fillette Lou → **Fillette Margot** (`route_8_lass_margot`), Joueur Gilles → **Joueur Fernand**
+  (`route_8_gambler_fernand`). Seuls les noms changent : équipes, récompenses et répliques de
+  l'annexe A (n° 101, 103, 107, 108) restent celles validées.
+- **Raccord Lavanville ↔ Route 8, relu sur la carte réelle du J18** (fichiers du J18 non
+  modifiés) : carte `lavender_town` ; warps `Route8N|C|S` en (0, 10..12), `PUSH ←`,
+  `target_map` vide, `coming_soon = "Route 8"`, `target_spawn = from_route_8_n|c|s` (provisoire) ;
+  arrivées `from_route_8_n|c|s` en (1, 10..12), tournées →. Le §2.1 tient : la Route 8
+  (79, 10..12) cible `lavender_town` / `from_route_8_n|c|s`. **Au T15**, dans
+  `tools/build_lavender_town.gd` (boucle « Ouest », ≈ l. 194–201) : retirer le `coming_soon`,
+  cibler `route_8` / `from_lavender_n|c|s`, régénérer la carte. `lavender_town` existe déjà :
+  le repli « bord est en `coming_soon = "Lavanville"` » du §0.3 devient inutile. À vérifier au
+  T15 : `route_8.txt` pose `from_lavender` **sur** la colonne du warp (79), alors que le J18
+  place ses arrivées une case à l'intérieur (1) ; aligner (78) si le kit l'exige. Dans
+  `route_8.txt`, `spawn=from_route_8` devient `from_route_8_n|c|s` (une par rangée).
+- **Reste au T9** : fusion du J19 (Caninos du J19, effets de Bélier et Hurlement codés au J19,
+  Spectres et Scope Sylphe), relecture des §0.1–0.3 sur le code du moment, branchement dans le
+  Boot découpé (blocs « J20 » dans `boot.gd` ou ses nouveaux coordinateurs), `data/j20_pending/`
   au T11.
 
 ### 0.1 Ce qui existe pour chaque besoin du dossier (`main` à `440f9b17`)
@@ -848,12 +871,12 @@ l'attribut `trainer=` des grilles (géométrie inchangée).
 
 | Grille | Identifiant | Nom | Équipe (remplacements en gras) | Prix |
 |---|---|---|---|---|
-| D1 | `route_8_nerd_hector` | Intello Hector | Voltorbe, Smogo, Voltorbe 20, Magnéti 20 (**Voltorbe** sans J17) | 500 |
+| D1 | `route_8_nerd_anatole` | Intello Anatole | Voltorbe, Smogo, Voltorbe 20, Magnéti 20 (**Voltorbe** sans J17) | 500 |
 | D2 | `route_8_gambler_rene` | Joueur René | **Hypotrempe, Hypotrempe, Poissirène** 22 (Ptitard, Têtarte absents) | 1 540 |
-| D3 | `route_8_nerd_simon` | Intello Simon | **Smogo, Arbok, Smogo** 22 (Tadmorv, Grotadmorv absents) | 550 |
+| D3 | `route_8_nerd_firmin` | Intello Firmin | **Smogo, Arbok, Smogo** 22 (Tadmorv, Grotadmorv absents) | 550 |
 | D4 | `route_8_lass_iris` | Fillette Iris | Nidoran♀, Nidorina 23 | 345 |
-| D5 | `route_8_lass_lou` | Fillette Lou | Miaouss ×3 24 | 360 |
-| D6 | `route_8_gambler_gilles` | Joueur Gilles | Caninos, Goupix 24 | 1 680 |
+| D5 | `route_8_lass_margot` | Fillette Margot | Miaouss ×3 24 | 360 |
+| D6 | `route_8_gambler_fernand` | Joueur Fernand | Caninos, Goupix 24 | 1 680 |
 | D7 | `route_8_lass_nina` | Fillette Nina | Mélofée ×2 22 | 330 |
 | E1 | `celadon_gym_lass_lila` | Fillette Lila | Chétiflor, Boustiflor 23 | 345 |
 | E2 | `celadon_gym_lass_capucine` | Fillette Capucine | Mystherbe, Ortide 23 | 345 |
@@ -903,7 +926,7 @@ attente (règle J12) ; Rafflesia d'Erika : Méga-Sangsue (RB). Répliques : §20
   remplacer ; n° 126, 154 : titres des cartes d'Erika et de Giovanni). Osselait (n° 204) : avec
   l'espèce, au T9. Dialogues (§20 et annexe A) : au T17 / T21, avec les PNJ.
 - **Capacités sans effet retirées des équipes imposées** (règle J12) : Hurlement (Caninos, Goupix
-  de Gilles), Frénésie (Onix, Kangourex de Giovanni) ; Danse Fleur → Méga-Sangsue (Rafflesia).
+  de Fernand), Frénésie (Onix, Kangourex de Giovanni) ; Danse Fleur → Méga-Sangsue (Rafflesia).
 - **Tests partagés recalés** (comptes et listes : espèces, capacités, objets, boutiques, tables,
   cartes de Champion, changement de Pokémon de l'IA, CT11, CT34, évolutions d'Ortide, Boustiflor,
   Stari ; la lignée d'Évoli de `test_evolution_reveal` vient désormais des données).
@@ -1445,16 +1468,16 @@ la liste) ; la capture n'ayant pas d'écran de surnom, le don d'Évoli n'en prop
 
 ### A.6 Route 8, Dresseurs
 
-101. Intello Hector (D1), après : « La probabilité de te revoir est faible. » / « Mais pas nulle. »
+101. Intello Anatole (D1), après : « La probabilité de te revoir est faible. » / « Mais pas nulle. »
 102. Joueur René (D2), après : « Au Casino, on ne gagne jamais contre la maison. » / « Contre toi
      non plus, apparemment. »
-103. Intello Simon (D3), avant : « Mes Pokémon sont le résultat de longues expériences. »
+103. Intello Firmin (D3), avant : « Mes Pokémon sont le résultat de longues expériences. »
 104. D3, battu : « L'expérience a échoué. »
 105. D3, après : « Je note tout dans mon carnet. Même mes défaites. »
 106. Fillette Iris (D4), après : « On va s'entraîner encore. » / « Toutes les deux. »
-107. Fillette Lou (D5), après : « Mes Miaouss ont trouvé une pièce dans l'herbe. » / « C'est
+107. Fillette Margot (D5), après : « Mes Miaouss ont trouvé une pièce dans l'herbe. » / « C'est
      toujours ça. »
-108. Joueur Gilles (D6), avant : « Tu as l'air d'avoir de la chance. » / « Voyons si elle tient. »
+108. Joueur Fernand (D6), avant : « Tu as l'air d'avoir de la chance. » / « Voyons si elle tient. »
 109. D6, battu : « La chance a tourné. »
 110. Fillette Nina (D7), avant : « Mes Mélofée dansent mieux qu'elles ne se battent. » / « Mais
      elles se battent quand même ! »

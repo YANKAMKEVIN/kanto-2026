@@ -16,9 +16,10 @@ func test_real_data_loads_without_error() -> void:
 	assert_eq(library.get_errors().size(), 0)
 	# Jalon 15 (T15, jalon-15.md §2.7.9) : « explorer Carmin-sur-Mer. » puis « rejoindre
 	# Carmin-sur-Mer, au sud. » en tête (ordre du voyage), devant le S.S. Anne du J14.
-	# Jalon 16 (T13, jalon-16.md §2.9) : après le rival n° 4 et la CS01, en tête ; (T14) l'Arène
-	# de Carmin devant (dossier 19 §0.5, objectifs R-9).
-	assert_eq(library.get_ids(), [&"face_surge", &"open_surge_barrier",
+	# Jalon 18 (T16, jalon-18.md §4.13) : ses cinq objectifs en tête, le plus avancé d'abord
+	# (test_j18_data) ; derrière eux, ceux du jalon 16 (T13, T14 : Arène de Carmin, R-9).
+	assert_eq(library.get_ids(), [&"tower_later", &"visit_tower", &"reach_lavender",
+		&"cross_dark_cave", &"cross_route_9", &"face_surge", &"open_surge_barrier",
 		&"go_vermilion_gym", &"hm01_cascade_badge", &"help_captain",
 		&"explore_vermilion", &"go_vermilion", &"ss_anne", &"help_bill",
 		&"go_cerulean_cape",

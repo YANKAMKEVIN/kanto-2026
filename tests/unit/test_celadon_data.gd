@@ -103,17 +103,17 @@ const MOVES := {
 }
 ## Dresseurs (plan §2.10.6) : [nom, IA, équipe [espèce, niveau]…, récompense, base RB].
 const TRAINERS := {
-	&"route_8_nerd_hector": ["Intello Hector", &"random",
+	&"route_8_nerd_anatole": ["Intello Anatole", &"random",
 		[[&"voltorb", 20], [&"koffing", 20], [&"voltorb", 20], [&"voltorb", 20]], 500, 25],
 	&"route_8_gambler_rene": ["Joueur René", &"random",
 		[[&"horsea", 22], [&"horsea", 22], [&"goldeen", 22]], 1540, 70],
-	&"route_8_nerd_simon": ["Intello Simon", &"random",
+	&"route_8_nerd_firmin": ["Intello Firmin", &"random",
 		[[&"koffing", 22], [&"arbok", 22], [&"koffing", 22]], 550, 25],
 	&"route_8_lass_iris": ["Fillette Iris", &"random",
 		[[&"nidoran_f", 23], [&"nidorina", 23]], 345, 15],
-	&"route_8_lass_lou": ["Fillette Lou", &"random",
+	&"route_8_lass_margot": ["Fillette Margot", &"random",
 		[[&"meowth", 24], [&"meowth", 24], [&"meowth", 24]], 360, 15],
-	&"route_8_gambler_gilles": ["Joueur Gilles", &"random",
+	&"route_8_gambler_fernand": ["Joueur Fernand", &"random",
 		[[&"growlithe", 24], [&"vulpix", 24]], 1680, 70],
 	&"route_8_lass_nina": ["Fillette Nina", &"random",
 		[[&"clefairy", 22], [&"clefairy", 22]], 330, 15],

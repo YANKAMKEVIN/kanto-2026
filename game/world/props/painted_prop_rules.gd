@@ -566,6 +566,56 @@ const RULES: Dictionary[StringName, Dictionary] = {
 	&"bldg_ss_anne_superstructure_01": {"traversable": true, "align": ALIGN_CENTRE},
 	&"prop_chaises_longues_01": {"width": 2, "depth": 1},
 	&"prop_bouee_01": {"width": 1, "depth": 1},
+	# --- Série 21 : Routes 9 et 10, Grotte Sombre, Lavanville, Tour Pokémon (J18 T6, fiche
+	# `serie-21-j18.md`). ---
+	# Tour Pokémon 12 × 11 (porte double aux 6e et 7e colonnes), Maison des Pokémon 8 (porte aux
+	# 4e et 5e colonnes), maison d'habitants 7 (porte à la 4e colonne, comme la maison d'Argenta,
+	# J18 T14) : emprise = largeur de l'image.
+	&"bldg_tour_pokemon_01": {"shadow": true, "width": 12, "depth": 11, "fade": true,
+		"open": [Vector2i(-1, 0), Vector2i(0, 0)]},
+	&"bldg_maison_pokemon_01": {"shadow": true, "width": 8, "depth": 5, "fade": true,
+		"open": [Vector2i(-1, 0), Vector2i(0, 0)]},
+	&"bldg_maison_lavanville_01": {"shadow": true, "width": 7, "depth": 5, "fade": true,
+		"open": [Vector2i(0, 0)]},
+	# Lointains (centrale de la Route 10, silhouette de la Tour) : la carte bloque ses cases.
+	&"bldg_centrale_lointaine_01": {"traversable": true, "align": ALIGN_CENTRE},
+	&"prop_tour_lointaine_01": {"traversable": true, "align": ALIGN_CENTRE},
+	&"prop_grande_colonne_01": {"width": 5, "depth": 6},
+	&"prop_flaque_grotte_01": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	# Parois de la Grotte Sombre : mêmes rôles et ancrages que `relief_paroi_grotte_01..06`.
+	&"relief_paroi_grotte_sombre_01": {"traversable": true, "align": ALIGN_CENTRE},
+	&"relief_paroi_grotte_sombre_02": {"traversable": true, "align": ALIGN_CENTRE},
+	&"relief_paroi_grotte_sombre_03": {"traversable": true, "align": ALIGN_EDGE},
+	&"relief_paroi_grotte_sombre_04": {"traversable": true, "align": ALIGN_EDGE},
+	&"relief_paroi_grotte_sombre_05": {"traversable": true, "align": ALIGN_CENTRE},
+	&"relief_paroi_grotte_sombre_06": {"traversable": true, "align": ALIGN_CENTRE},
+	&"relief_paroi_fendue_01": {"traversable": true, "align": ALIGN_CENTRE},
+	&"prop_racines_plafond_01": {"width": 1, "depth": 2},
+	&"prop_racines_plafond_02": {"width": 2, "depth": 2},
+	&"prop_rocher_grotte_sombre_01": {"width": 1, "depth": 1},
+	&"prop_rocher_grotte_sombre_02": {"width": 1, "depth": 1},
+	# Lavanville : buis, haie (2 cases), fleurs pâles, if du parvis.
+	&"prop_buis_taille_01": {"width": 1, "depth": 1},
+	&"prop_buis_taille_02": {"width": 1, "depth": 1},
+	&"prop_haie_taillee_01": {"width": 2, "depth": 1},
+	&"prop_fleurs_pales_01": {"width": 1, "depth": 1},
+	&"prop_fleurs_pales_02": {"width": 2, "depth": 1},
+	&"prop_if_taille_01": {"width": 1, "depth": 1},
+	# Tour (intérieur, mutualisé avec le J19) : murs sur le modèle de `relief_mur_souterrain_*`,
+	# escalier montant dans le mur (warp `STEP_ON`), tombes, bougeoir, comptoir 4 × 1, banc.
+	&"relief_mur_tour_01": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_mur_tour_02": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_mur_tour_03": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_mur_tour_04": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_CENTRE},
+	&"relief_mur_tour_05": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_CENTRE},
+	&"relief_escalier_tour_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_CENTRE},
+	&"int_tombe_tour_01": {"width": 1, "depth": 1},
+	&"int_tombe_tour_02": {"width": 1, "depth": 1},
+	&"int_tombe_tour_03": {"width": 1, "depth": 1},
+	&"int_bougeoir_tour_01": {"width": 1, "depth": 1},
+	&"int_comptoir_tour_01": {"width": 4, "depth": 1},
+	&"int_banc_tour_01": {"width": 1, "depth": 1},
 }
 
 

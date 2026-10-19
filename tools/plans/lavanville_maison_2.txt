@@ -1,0 +1,34 @@
+# Maison 2 de Lavanville (lavender_house_2) — grille fonctionnelle (jalon 18 T14, défauts de la
+# règle 4 ; dossier 21 §6.2 : un couple qui prépare des fleurs pour la Tour, T-28). Même enveloppe,
+# mobilier de la maison d'Azuria. **Sans PNJ au T14** : les cases du couple sont réservées (T18).
+#
+# Légende :
+#   K mur (bloqué)          . sol (praticable)
+#   X sortie vers Lavanville (praticable : paillasson, PUSH ↓)
+#   S canapé (1..3, 3)   A aquarium (5..7, 3)   F réfrigérateur (9, 3)   C plan de travail
+#   (10..11, 3)   H cuisinière (12, 3)   d lampe (13, 3)   T table à manger (9..11, 5..6)
+#   x plante (1, 7), (13, 7)   h couple (4, 5) et (5, 6)
+#
+# Format : section GRILLE (« NN » + espace + 15 caractères par rangée), puis POSITIONS.
+
+PRATICABLES .Xh
+
+GRILLE 15 10
+00 KKKKKKKKKKKKKKK
+01 KKKKKKKKKKKKKKK
+02 KKKKKKKKKKKKKKK
+03 KSSS.AAA.FCCHdK
+04 K.............K
+05 K...h....TTT..K
+06 K....h...TTT..K
+07 Kx...........xK
+08 KKKKKKXXXKKKKKK
+09 KKKKKKKKKKKKKKK
+FIN
+
+POSITIONS
+sortie              warp           6..8,8       libre   # PUSH ↓ → lavender_town, retour_maison_2
+entree              spawn          7,8          libre   # spawn « entrance », tourné ↑
+habitant_1          pnj            4,5          bloque  facing=right  # T-28 (réservé)
+habitant_2          pnj            5,6          bloque  facing=left  # T-28 (réservé)
+FIN

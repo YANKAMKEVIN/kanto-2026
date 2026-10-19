@@ -37,6 +37,8 @@
 		"mt_moon_b1f": "cave",
 		"mt_moon_b2f": "cave",
 		"digletts_cave": "cave",
-		"route_2_east": "forest"
+		"route_2_east": "forest",
+		"dark_cave_1f": "cave",
+		"dark_cave_b1f": "cave"
 	}
 }

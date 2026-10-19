@@ -1,0 +1,27 @@
+{
+	"lavender_town_sign": {
+		"pages": ["LAVANVILLE\nUne ville noble et paisible."]
+	},
+	"lavender_tower_sign": {
+		"pages": ["TOUR POKÉMON\nIci reposent les Pokémon aimés."]
+	},
+	"lavender_pokemon_house_sign": {
+		"pages": ["MAISON DES POKÉMON\nCeux qui n'ont plus personne trouvent ici un foyer."]
+	},
+	"lavender_girl": {
+		"speaker": "Fillette",
+		"pages": ["Ici, tout le monde parle doucement.\nMême les Pokémon !"]
+	},
+	"lavender_young_man": {
+		"speaker": "Jeune homme",
+		"pages": ["Mon premier Pokémon est là-haut.", "Je viens lui dire bonjour chaque\nfois que je passe."]
+	},
+	"lavender_passerby": {
+		"speaker": "Passant",
+		"pages": ["Lavanville, c'est petit. Mais les gens\nviennent de loin pour la Tour."]
+	},
+	"lavender_bouquet_woman": {
+		"speaker": "Habitante",
+		"pages": ["Des fleurs blanches, comme d'habitude.\nIl les aimait bien."]
+	}
+}
