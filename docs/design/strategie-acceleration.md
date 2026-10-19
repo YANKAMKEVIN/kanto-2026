@@ -31,6 +31,9 @@ Scope Sylphe, Poké Flûte, états « monté » du joueur, **téléporteurs** et
 (Carte Magnétique ; ajoutés par Kevin le 2026-10-19 pour le J26, Sylphe SARL), et tout système
 encore prévu dans un jalon de contenu.
 
+Proposé, à confirmer par Kevin : l'effet de combat **K.O. en un coup** (`ohko`, en attente dans le
+moteur), commun à Empal'Korne, Guillotine (J24) et Abîme (CT27, J28).
+
 Point de départ déjà écrit (message du J24, 2026-10-19) : `jalon-24` (@ `ed306985`) contient une
 logique pure et testée de **Surf et de Force**, sans dépendance à une carte : `GridWorld` (eau
 surfable, courants, niveaux de sol, `can_enter_as`, `find_reachable`), `SurfRules`, `BoulderRules`,
