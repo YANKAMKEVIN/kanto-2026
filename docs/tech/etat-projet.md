@@ -8,6 +8,7 @@ Mis à jour : 2026-10-19 (**J18 T15 : `main` (J16, PR n° 1, J17 terminé) fusio
 - **Azuria ↔ Route 9** branché (I-2) : arbre à couper (53, 23), `cut_cerulean_east_tree`, Azuria en variante `J18`, Route 9 régénérée ; départ `cerulean_east_cut`, test `test_cerulean_east_tree`. Valeur par défaut : deux pans de clôture courts à la place de la grande clôture verticale (elle aurait traversé le passage). L'habitant H7 (51, 22) dit toujours « On ne passe pas par là pour l'instant. » après la coupe (question à Kevin).
 - **Luminance sous le voile** (réglages du J17) : héros 4,44–5,26, hors halo 0,118–0,154 sans Flash et 0,148–0,173 avec : tout passe, aucun réglage propre au J18.
 - **Suite** : `tools/test.sh` **5 509 / 5 509** verts, import propre.
+- **QA 18A–18C (S24, 2026-10-19, départs de débogage)** : arbre d'Azuria coupé et Route 9 aller-retour OK, Lou inévitable, Centre de la Route 10 (soin), voile et avertissement T-3, Flash auto (Pikachu), échelles, Roger, Marcel (T-54), Super Potion cachée, Corde Sortie, Tour RDC et Exorciste, reprise de la vraie partie v4 → v7 : OK, 60 fps (creux 7-9 au chargement), 33 → 39 °C, aucun SCRIPT ERROR. Non testés : Benoît, défaite → Centre, titre « LAVANVILLE » à l'arrivée réelle, intérieurs de Lavanville hors Tour, fin du combat de Marcel. Reste de QA : `debug_start.json` vers `qa_flash` supprimé du téléphone. Rapport : `build/qa/j18/rapport.md`.
 
 ## Jalon 18 — T22 : équilibrage des 14 Dresseurs (2026-10-16, branche `j18-t22-equilibrage` depuis `j18-essai-sur-j17` à 90e41208)
 
