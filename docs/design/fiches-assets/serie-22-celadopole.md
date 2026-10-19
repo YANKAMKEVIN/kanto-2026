@@ -118,8 +118,8 @@ transparence (dos, PNJ).
 | Dos de Rafflesia | r1 **refusé**, r2 | **r2** | presque de face sans visage (pétales, pieds) : lisible, peu « de dos » |
 | Dos d'Empiflor | r1, r2 **refusés**, r3 (sans image) | **r3** | urne, liane, feuilles ; vert-jaune plus pâle que l'artwork, bord de la bouche visible |
 | Dos d'Osselait | r2 (direct, sans nom) | **r2** | crâne blanc, os en main ; bon |
-| Dos de Pyroli | r2, r3, r1 **refusés** (16/10) | — | **bloqué** : repli = Kevin colle `DOS_PYROLI_r3.txt` dans l'app ChatGPT |
-| Dos de Voltali | r2, r3, r1 **refusés** (16/10) | — | **bloqué** : même repli (`DOS_VOLTALI_r3.txt`) |
+| Dos de Pyroli | r2, r3, r1 **refusés** (16/10) | — | **placeholder** (stratégie d'accélération, 2026-10-19) : dos pixel provisoire ou repli artwork ; prochain lot d'art (`DOS_PYROLI_r3.txt`) |
+| Dos de Voltali | r2, r3, r1 **refusés** (16/10) | — | **placeholder** (idem) ; prochain lot d'art (`DOS_VOLTALI_r3.txt`) |
 | Dos d'Aquali | r2 **refusé**, r3 (sans image) | **r3** | collerette, oreilles-nageoires, queue de sirène ; fidèle |
 | Dos d'Arcanin | r2 | **r2** | crinière et touffes crème, rayures noires ; bon |
 | Dos de Feunard | r2 **refusé**, r3 (sans image) | **r3** | neuf queues crème à pointes orange ; corps plus hirsute que l'artwork |
@@ -161,7 +161,10 @@ l'image jointe (Empiflor). Ordre conseillé pour la suite : **r2 directement**, 
 
 1. **Dos de Voltali et de Pyroli** : refusés par Codex dans les trois variantes (avec nom, sans nom,
    sans image). Repli (mémoire « Codex refuse ») : Kevin colle `tools/art/prompts/serie22/DOS_VOLTALI_r3.txt`
-   et `DOS_PYROLI_r3.txt` dans l'app ChatGPT ; sinon dos pixel provisoire (T7) en attendant.
+   et `DOS_PYROLI_r3.txt` dans l'app ChatGPT. **Ne bloque plus le code** (stratégie d'accélération,
+   `docs/design/strategie-acceleration.md`, levier 4, 2026-10-19) : J20 est codé et validé avec un dos
+   pixel provisoire (T7) ou, à défaut, le repli de `BattleArt.image()` (artwork officiel) ; les deux dos
+   passent au **prochain lot d'art**, branché par la tâche d'intégration du lot.
 2. **Compagnon d'Évoli** (si budget) : r1 refusé ; prochain essai sans images jointes, puis repli ChatGPT.
 3. Reste du kit §1.4 (décors du monde, intérieurs, icônes) : série 22 bis, **en attente**.
 
