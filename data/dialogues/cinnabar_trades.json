@@ -1,0 +1,116 @@
+{
+	"cinnabar_trade_hector_offer": {
+		"speaker": "Papi Hector",
+		"pages": [
+			"Bonjour ! Tu veux échanger ton Raichu\ncontre mon Électrode ?"
+		]
+	},
+	"cinnabar_trade_hector_refuse": {
+		"speaker": "Papi Hector",
+		"pages": [
+			"Bon, si tu ne veux pas…"
+		]
+	},
+	"cinnabar_trade_hector_wrong": {
+		"speaker": "Papi Hector",
+		"pages": [
+			"Hmm ? Ce n'est pas un Raichu.\nPense à moi si tu en as un."
+		]
+	},
+	"cinnabar_trade_hector_thanks": {
+		"speaker": "Papi Hector",
+		"pages": [
+			"Merci !"
+		]
+	},
+	"cinnabar_trade_hector_after": {
+		"speaker": "Papi Hector",
+		"pages": [
+			"Ton Raichu se porte à merveille !"
+		]
+	},
+	"cinnabar_trade_lina_offer": {
+		"speaker": "Lina",
+		"pages": [
+			"Salut ! Tu as un Mimitoss ?\nTu l'échangerais contre un Saquedeneu ?"
+		]
+	},
+	"cinnabar_trade_lina_refuse": {
+		"speaker": "Lina",
+		"pages": [
+			"Dommage."
+		]
+	},
+	"cinnabar_trade_lina_wrong": {
+		"speaker": "Lina",
+		"pages": [
+			"Ce n'est pas un Mimitoss…\nSi tu en trouves un, reviens me voir !"
+		]
+	},
+	"cinnabar_trade_lina_thanks": {
+		"speaker": "Lina",
+		"pages": [
+			"Merci beaucoup !"
+		]
+	},
+	"cinnabar_trade_lina_after": {
+		"speaker": "Lina",
+		"pages": [
+			"Comment va mon ancien Saquedeneu ?"
+		]
+	},
+	"cinnabar_trade_marc_offer": {
+		"speaker": "Scientifique Marc",
+		"pages": [
+			"Je cherche un Ponyta !\nJe te l'échange contre un Otaria ?"
+		]
+	},
+	"cinnabar_trade_marc_refuse": {
+		"speaker": "Scientifique Marc",
+		"pages": [
+			"Oh… tant pis."
+		]
+	},
+	"cinnabar_trade_marc_wrong": {
+		"speaker": "Scientifique Marc",
+		"pages": [
+			"Quoi ? Ce n'est pas un Ponyta !\nReviens quand tu en auras un !"
+		]
+	},
+	"cinnabar_trade_marc_thanks": {
+		"speaker": "Scientifique Marc",
+		"pages": [
+			"Super, merci !"
+		]
+	},
+	"cinnabar_trade_marc_after": {
+		"speaker": "Scientifique Marc",
+		"pages": [
+			"Mon ancien Otaria est génial, hein ?"
+		]
+	},
+	"cinnabar_trade_cable": {
+		"narration": true,
+		"pages": [
+			"Branchez le câble comme ça !"
+		]
+	},
+	"cinnabar_trade_hector_done": {
+		"narration": true,
+		"pages": [
+			"{player} a échangé Raichu contre Kourjus !"
+		]
+	},
+	"cinnabar_trade_lina_done": {
+		"narration": true,
+		"pages": [
+			"{player} a échangé Mimitoss contre Bigoudi !"
+		]
+	},
+	"cinnabar_trade_marc_done": {
+		"narration": true,
+		"pages": [
+			"{player} a échangé Ponyta contre Bibi !"
+		]
+	}
+}
