@@ -1,0 +1,53 @@
+# Carte de QA « monture » — passe systèmes 2 (docs/tech/systemes-2.md §2.2–§2.4, §2.14 ; T3c). Retirée
+# à la clôture (S2Z). Aucune carte réelle : kit existant et placeholders.
+#
+# Ce qu'on y teste : monter / descendre du Vélo (bouton du HUD et Sac), vitesse, saut du rebord
+# (2..8, 14) à Vélo, refus en intérieur (maison, porte D (5, 10) → qa_mount_interieur : on y entre à
+# pied), compagnon rentré puis ressorti ; PISTE CYCLABLE (20..27, 1..18), entrées « = » (19, 8) et
+# (19, 16) : montée d'office avec la Bicyclette, descente refusée ; PENTE « / » (rangées 3..7 et
+# 9..13) : dérive vers le bas sans appui, paliers aux rangées 8 et 14..18 ; Dresseur dans l'alcôve
+# (28, 11), vue vers l'ouest sur la pente : la dérive s'arrête quand il voit le joueur. POKÉ FLÛTE :
+# un dormeur 2 × 1 (10..11, 4) ferme le nord (1..18, 1..3) ; réveillé, il libère le passage.
+# Contrôle : tools/art/plan_check_systemes2.py.
+#
+# Légende :
+#   # arbres, murs (bloqués)   . herbe rase, chemin   / pente de la Piste (dérive vers le sud)
+#   = entrée de la Piste        v rebord (sauté vers le sud)   H maison (bloquée)
+#   D porte de la maison (STEP_ON ↑)                    E entrée (warp PUSH ↓)
+
+PRATICABLES .=/vDE
+
+GRILLE 30 20
+00 ##############################
+01 #..................#........##
+02 #..................#........##
+03 #..................#////////##
+04 ##########..########////////##
+05 #..................#////////##
+06 #..................#////////##
+07 #..................#////////##
+08 #..HHHHH...........=........##
+09 #..HHHHH...........#////////##
+10 #..HHDHH...........#////////##
+11 #..................#////////.#
+12 #..................#////////##
+13 #..................#////////##
+14 #.vvvvvvv..........#........##
+15 #..................#........##
+16 #..................=........##
+17 #..................#........##
+18 #..................#........##
+19 #########EE###################
+FIN
+
+POSITIONS
+depart             depart           9,18         libre
+sortie_o           warp             9,19         libre   vers=qa_sea:depart  # PUSH ↓
+sortie_e           warp             10,19        libre   vers=qa_sea:depart
+porte_maison       warp             5,10         libre   vers=qa_mount_interieur:entree interieur=oui
+from_interieur     spawn            5,11         libre
+piste              piste            20..27,1..18 libre   # GameMap.cycling_road (tronçon de QA)
+dresseur_pente     dresseur         28,11        bloque  facing=left sight=8
+dormeur            dormeur          10..11,4     bloque  drapeau=qa_mount_sleeper_woken scene=qa_mount_sleeper
+derriere           derriere_dormeur 5,2          libre
+FIN

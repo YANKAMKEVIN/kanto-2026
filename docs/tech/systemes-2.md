@@ -560,6 +560,16 @@ Rôles : **A** architecte-godot · **C** constructeur-monde · **U** ui-mobile �
 
 - Peut commencer **avant** le J20 (grilles et contrôle seulement, aucun fichier de jeu).
 
+**Fait (2026-10-19, grilles seulement)** : `tools/plans/qa_mount.txt` (+ `qa_mount_interieur`),
+`qa_sea.txt`, `qa_sea_2.txt`, `qa_strength.txt`, `qa_strength_b1.txt`, `qa_teleport.txt`,
+`qa_teleport_2.txt`. Contrôle générique `tools/art/plan_check_systemes2.py` (≈ 7 s) : **TOUT EST
+CONFORME** ; `--autotest` vérifie qu'il refuse trois pièges (rocher qui mure la sortie, téléporteur
+vers un point inexistant, courant en boucle). Il pose aussi la base de T21 (anti-blocage, une carte
+à la fois ; les cinq étages des Îles Écume gardent le contrôle du J24) et de T27 (graphe des
+téléporteurs, plusieurs cartes, portes à carte). Écart au §2.14 [D] : chaque rocher de `qa_strength`
+est **confiné dans un couloir** (comme les puzzles de RB) ; quatre rochers libres dans un hall
+donnaient plus de 500 000 états. Les cartes `.tscn` (sans vie) attendent le J20 (fichiers de jeu).
+
 ### 3.2 S2A — Sauvegarde en arrière-plan (validée seule)
 
 #### T4 — A : `SaveCheckpoint`, révisions, `FOCUS_OUT` (§2.12) — après T1, en parallèle de T3
