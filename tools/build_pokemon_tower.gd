@@ -1,71 +1,59 @@
 extends SceneTree
-## Construit les cartes 2F à 6F de la Tour Pokémon (jalon 19 T9, docs/tech/jalon-19.md §2.1,
-## §2.2, §2.8 ; dossier 22 §4 à §9) d'après les grilles `tools/plans/pokemon_tower_<n>f.txt`
-## (elles font foi), sur la boîte à outils `tools/cave_map_kit.gd` (réglages « carte sans
-## grotte » ouverts par le souterrain du J15 : praticables `.ZUV`, sols réglables, canal R sans
-## gravats logiques) :
+## Construit game/world/maps/pokemon_tower_1f.tscn (rez-de-chaussée de la Tour Pokémon, 20 × 18
+## cases) d'après la grille `tools/plans/tour_pokemon_rdc.txt` (elle fait foi ; jalon 18 T14,
+## docs/tech/jalon-18.md §4.1, §4.2, §4.12 ; dossier 21 §7, §13.1 ; fiche `serie-21-j18.md`
+## § « Tour Pokémon »), **en modules** (dalles, murs, mobilier de la série 21) sur la boîte à
+## outils `tools/cave_map_kit.gd` comme le souterrain du J15 : un seul kit pour la Tour, que le
+## J19 reprend pour ses étages. Racine **bâtiment** (`interior = true`, sans Corde Sortie).
 ##
-##   godot --headless --path . -s res://tools/build_pokemon_tower.gd [-- --etage=2f|…|6f|tous]
+##   godot --headless --path . -s res://tools/build_pokemon_tower.gd
 ##   godot --headless --path . --import
-##   (première fois, ou si un masque change : relancer l'outil après l'import ; code 2 = masque
-##   ou voile écrit, importer puis relancer)
+##   (première fois, ou si le masque change : relancer l'outil après l'import ; code 2 = masque
+##   écrit, importer puis relancer)
 ##
-## - `Ground` (invisible) = source logique : `.` `Z` `U` `V` sol (praticable, aucune herbe, aucun
-##   gravat), tout le reste solide (`#` mur, `T` tombe, `S` stèle).
-## - Image (**art provisoire**, tant que la série 21 des cartes de la Tour n'existe pas) : sol
-##   en dalles et murs maçonnés du souterrain (J15) ; tombes (stèle réduite, sombre) et stèles ;
-##   escaliers ramenés à une case ; dalle claire de la zone purifiée (5F) ; voile de pénombre dont
-##   l'`ambient` baisse d'étage en étage (0,96 au 2F, 0,88 au 6F).
-## - Passages : escaliers `STEP_ON` sans direction vers le point d'apparition de même paire de
-##   l'étage voisin (orientation de la grille). **Replis « à venir »** : 2F → 1F (paire T12, le
-##   rez-de-chaussée est au J18, T16 le branche) et 6F → 7F (paire T67, inatteignable au J19).
-## - Points d'apparition de la grille, plus ceux de QA : `devant_rival` (16, 7) au 2F et
-##   `devant_spectre` (10, 14) au 6F.
-## - Déclencheurs (`EventTriggerPoint`, scènes posées par T14 à T18, sans effet tant qu'elles
-##   n'existent pas) : rival (2F, sans direction), zone purifiée (5F, une par case `Z` et par
-##   direction qui vient du dehors, §2.8), SPECTRE (6F, sans direction).
-## - `calm_cells` (5F seulement) : cases `Z` et leurs 8 voisines praticables (§2.2).
-## - Lumière (T19) : profil `tower`, halos `candle` (stèles) et `purified` (zone du 5F), brume
-##   (`MistLayer`) ; pas posés ici : PNJ, Dresseurs, objets, `caves.json` et `zones.json` (T16).
-##   Racine **extérieure** (`interior = false`).
+## **Sans vie** (T14) : les cases des PNJ (la Médium / Exorciste en (17, 3) occupe la seule case
+## d'accès à l'escalier), les cases de lecture des tombes et les examens sont **réservés** :
+## aucun PNJ, aucun point d'examen, aucune donnée de dialogue. L'escalier (17, 2) mène à
+## `pokemon_tower_2f` (carte du J19, inexistante ici) : `coming_soon = "Tour Pokémon"` (inerte en
+## release, de toute façon inatteignable tant que la gardienne tient (17, 3)).
+##
+## - `Ground` (invisible) : `.` sol, `X` paillasson, `S` escalier praticables ; tout le reste
+##   (murs `K`, tombes `g`, comptoir `W`, bancs `n`, chandeliers `b`) solide.
+## - Image : dalles gris perle, mur du fond (faces sur la rangée 2, bords latéraux, couronnement
+##   de la rangée 16), escalier pris dans le mur, 36 tombes (trois variantes à la graine), six
+##   chandeliers et leurs halos `candle`, comptoir, bancs d'une case.
 
 const Kit := preload("res://tools/cave_map_kit.gd")
-const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 
-const MAPS_DIR: String = "res://game/world/maps/"
+const MAP_ID: StringName = &"pokemon_tower_1f"
+const OUT_PATH: String = "res://game/world/maps/pokemon_tower_1f.tscn"
+const PLAN_PATH: String = "res://tools/plans/tour_pokemon_rdc.txt"
+const MASK_PATH: String = "res://assets/world/maps/pokemon_tower_1f_ground.png"
 const SIZE := Vector2i(20, 18)
-const DISPLAY_NAME: String = "Tour Pokémon"
+const SEED: int = 3001
+const DECOR_SEED: int = 3002
+const WALL_SEED: int = 3009
+const TOMB_SEED: int = 3011
 const TILE: int = 96
-const WALKABLE: String = ".ZUV"
-const WALL_MARK: String = "#"
-const TOMB_MARK: String = "T"
-const STELE_MARK: String = "S"
-const ZONE_MARK: String = "Z"
-## Profil de lumière de la Tour (T19).
-const PROFILE: StringName = &"tower"
+const WALKABLE: String = ".XS"
+const WALL_MARK: String = "K"
+## Le mur (K) et l'escalier (S) comptent comme paroi pour dessiner les modules : l'escalier est
+## pris dans le mur, aucune face ne le recouvre.
+const WALL_LIKE: String = "KS"
+const PROFILE: StringName = &"tower_cold"
+const DISPLAY_NAME: String = "Tour Pokémon"
 
-## Étage → [identifiant, nœud racine, graine logique, graine du décor, graine des murs, ambient].
-const FLOORS: Dictionary = {
-	"2f": [&"pokemon_tower_2f", "PokemonTower2F", 1901, 1902, 1903, 0.96],
-	"3f": [&"pokemon_tower_3f", "PokemonTower3F", 1911, 1912, 1913, 0.94],
-	"4f": [&"pokemon_tower_4f", "PokemonTower4F", 1921, 1922, 1923, 0.92],
-	"5f": [&"pokemon_tower_5f", "PokemonTower5F", 1931, 1932, 1933, 0.90],
-	"6f": [&"pokemon_tower_6f", "PokemonTower6F", 1941, 1942, 1943, 0.88],
-}
-## Opacité de la brume par étage (≤ `MistLayer.ALPHA_MAX`) : 2F le plus clair, 6F le plus brumeux.
-const MIST_ALPHA: Dictionary = {"2f": 0.08, "3f": 0.10, "4f": 0.12, "5f": 0.14, "6f": 0.18}
-const PLAN_PATH: String = "res://tools/plans/pokemon_tower_%s.txt"
+const GROUND_FLOOR: String = "res://assets/world/ground/ground_dalles_tour_01.png"
+const GROUND_MASS: String = "res://assets/world/ground/ground_masse_roche_01.png"
+## Caractère sans cellule : aucun gravat dans la Tour (le canal R du sol n'est pas utilisé).
+const NO_RUBBLE_MARK: String = "~"
+const BORDER_COLOR := Color(0.26, 0.25, 0.32)
 
-## Sols provisoires (souterrain, J15).
-const GROUND_DALLES: String = "res://assets/world/ground/ground_dalles_souterrain_01.png"
-const GROUND_TRACES: String = "res://assets/world/ground/ground_traces_souterrain_01.png"
-const GROUND_ROCK: String = "res://assets/world/ground/ground_masse_roche_01.png"
-const BORDER_COLOR := Color(0.42, 0.40, 0.46)
-
-## Murs maçonnés provisoires (souterrain) : faces (2 cases de large), couronnement, côté.
-const WALL_FACES: Array[String] = ["relief_mur_souterrain_01", "relief_mur_souterrain_02"]
-const WALL_CAP: String = "relief_mur_souterrain_03"
-const WALL_SIDE: String = "relief_mur_souterrain_04"
+## Murs de la Tour (même rôles que `relief_mur_souterrain_*`) : faces 2 cases de large, couronnement
+## (sol au nord), bord latéral 34 px.
+const WALL_FACES: Array[String] = ["relief_mur_tour_01", "relief_mur_tour_02"]
+const WALL_CAP: String = "relief_mur_tour_03"
+const WALL_SIDE: String = "relief_mur_tour_04"
 const WALL_SPAN: int = 2
 const SIDE_WIDTH: int = 34
 const SIDE_TOP: int = 0
@@ -73,120 +61,81 @@ const SIDE_MIDDLE: int = 1
 const SIDE_BOTTOM: int = 2
 const WALL_VALUE_JITTER: float = 0.04
 
-## Repères provisoires : la stèle du souterrain ; la tombe en est une version basse et sombre.
-const STELE_PROP: String = "prop_stele_01"
-const TOMB_SCALE: float = 0.62
-const TOMB_TINT := Color(0.8, 0.78, 0.86)
-## Escaliers : images du souterrain (192 px) ramenées à la largeur d'une case.
-const STAIRS_UP: String = "prop_escalier_souterrain_monte_01"
-const STAIRS_DOWN: String = "prop_escalier_souterrain_descend_01"
-const STAIRS_SCALE: float = 0.5
-## Dalle bénie de la zone purifiée (5F) : aplat clair posé au sol (provisoire).
-const ZONE_COLOR := Color(0.9, 0.92, 1.0, 0.55)
-
-## Voile de pénombre (réglages de `tools/cave_shade.gd`) ; `ambient` vient de [constant FLOORS].
-const SHADE_BASE := {"edge_min": 0.72, "edge_radius": 0.8, "room_min": 0.9, "room_radius": 3.0,
-	"tint": Color(0.92, 0.9, 1.0)}
-const SHADE_LIGHTS: Dictionary = {
-	&"candle": {"radius": 2.6, "strength": 0.9, "offset": Vector2(0.0, -40.0), "add": 0.14,
-		"color": Color(1.0, 0.8, 0.55)},
-	&"purified": {"radius": 3.2, "strength": 1.0, "offset": Vector2.ZERO, "add": 0.16,
-		"color": Color(0.9, 0.93, 1.0)},
-	&"stairs": {"radius": 2.8, "strength": 0.85, "offset": Vector2.ZERO, "add": 0.05,
-		"color": Color(0.92, 0.92, 1.0)},
-}
-const SHADE_WALL_FOLLOW: float = 0.7
-const STELE_LIGHT_HEIGHT: float = 80.0
-
-## Replis « à venir » (étages hors J19).
-const COMING_SOON: String = "Tour Pokémon"
-const SOON_PAIRS: Array[String] = ["T12", "T67"]
-## Scènes (T14 à T18) : rôle du déclencheur → identifiant de scène.
-const TRIGGER_SCENES: Dictionary = {
-	"R1": &"tower_rival",
-	"S1": &"tower_6f_ghost",
-}
-const ZONE_SCENE: StringName = &"tower_purified_zone"
-const STEPS: Array[Vector2i] = [Vector2i.RIGHT, Vector2i.LEFT, Vector2i.UP, Vector2i.DOWN]
-## Points d'apparition de QA [D] : étage → [nom, case].
-const QA_SPAWNS: Dictionary = {
-	"2f": ["devant_rival", Vector2i(16, 7)],
-	"6f": ["devant_spectre", Vector2i(10, 14)],
-}
+const STAIRS: String = "relief_escalier_tour_01"
+const STAIRS_SPAWN: StringName = &"from_pokemon_tower_2f"
+const STAIRS_LABEL: String = "Tour Pokémon"
+const TOMBS: Array[String] = ["int_tombe_tour_01", "int_tombe_tour_02", "int_tombe_tour_03"]
+## Tombes nommées (T-36 à T-40) : variantes B ou C (bouquet, offrande), plus fréquentes qu'ailleurs.
+const NAMED_TOMBS: Array[String] = ["tombe_1", "tombe_2", "tombe_3", "tombe_4", "tombe_5"]
+## Examen des tombes (T24) : dialogue de chaque tombe nommée (T-36 à T-40), puis T-41 pour les
+## 31 autres. Le gardien se parle à travers le comptoir : point d'examen sur les quatre cases.
+const NAMED_GRAVE_DIALOGUES: Array[StringName] = [
+	&"pokemon_tower_grave_1", &"pokemon_tower_grave_2", &"pokemon_tower_grave_3",
+	&"pokemon_tower_grave_4", &"pokemon_tower_grave_5",
+]
+const OTHER_GRAVE_DIALOGUE: StringName = &"pokemon_tower_grave"
+const KEEPER_DIALOGUE: StringName = &"pokemon_tower_keeper"
+const CANDLE: String = "int_bougeoir_tour_01"
+const CANDLE_GLOW: StringName = &"candle"
+## Hauteur du halo au-dessus du pied du chandelier (flamme au sommet de l'image de 147 px).
+const CANDLE_LIGHT_HEIGHT: float = 120.0
+const COUNTER: String = "int_comptoir_tour_01"
+const BENCH: String = "int_banc_tour_01"
+## Sortie : deux cases PUSH ↓ vers Lavanville, devant la porte de la Tour (`retour_tour`).
+const EXIT_MAP: StringName = &"lavender_town"
+const EXIT_SPAWN: StringName = &"retour_tour"
 
 var _kit: Object
-var _key: String = ""
 var _wall_rng := RandomNumberGenerator.new()
+var _tomb_rng := RandomNumberGenerator.new()
 
 
 func _init() -> void:
-	var which := "tous"
-	for arg: String in OS.get_cmdline_user_args():
-		if arg.begins_with("--etage="):
-			which = arg.trim_prefix("--etage=")
-	var keys: Array = FLOORS.keys() if which == "tous" else [which]
-	var code := 0
-	for key: String in keys:
-		if not FLOORS.has(key):
-			push_error("build_pokemon_tower : étage inconnu « %s »" % key)
-			quit(1)
-			return
-		code = maxi(code, _build(key))
-	quit(code)
-
-
-## 0 : enregistré ; 2 : masque ou voile écrit, importer puis relancer ; 1 : erreur.
-func _build(key: String) -> int:
-	_key = key
-	var spec: Array = FLOORS[key]
-	var map_id: StringName = spec[0]
-	_kit = Kit.new(PLAN_PATH % key, SIZE, spec[2], spec[3], WALKABLE)
-	_kit.set(&"floor_texture_path", GROUND_DALLES)
-	_kit.set(&"rubble_texture_path", GROUND_TRACES)
-	_kit.set(&"mass_texture_path", GROUND_ROCK)
+	_kit = Kit.new(PLAN_PATH, SIZE, SEED, DECOR_SEED, WALKABLE)
+	_kit.set(&"floor_texture_path", GROUND_FLOOR)
+	_kit.set(&"rubble_texture_path", GROUND_FLOOR)
+	_kit.set(&"mass_texture_path", GROUND_MASS)
 	_kit.set(&"border_color", BORDER_COLOR)
+	_kit.set(&"rubble_mark", NO_RUBBLE_MARK)
 	_kit.set(&"rubble_is_logic", false)
-	_wall_rng.seed = spec[4]
+	_kit.set(&"wall_marks", WALL_LIKE)
+	_wall_rng.seed = WALL_SEED
+	_tomb_rng.seed = TOMB_SEED
+	quit(_build())
+
+
+## 0 : enregistré ; 2 : masque écrit, importer puis relancer ; 1 : erreur.
+func _build() -> int:
 	if not _errors().is_empty():
-		push_error("build_pokemon_tower %s : %s" % [key, "\n".join(_errors())])
+		push_error("build_pokemon_tower : %s" % "\n".join(_errors()))
 		return 1
-	_kit.call(&"make_root", spec[1], map_id, DISPLAY_NAME, PROFILE)
-	_set_calm_cells()
-	var mask := "res://assets/world/maps/%s_ground.png" % map_id
-	if not _kit.call(&"add_ground", mask):
+	var root: Node2D = _kit.call(&"make_root", "PokemonTower1F", MAP_ID, DISPLAY_NAME, PROFILE)
+	# Bâtiment (plan §4.1) : le compagnon y est caché, comme dans les autres intérieurs.
+	root.set(&"interior", true)
+	if not _kit.call(&"add_ground", MASK_PATH):
 		if not _errors().is_empty():
-			push_error("build_pokemon_tower %s :\n%s" % [key, "\n".join(_errors())])
+			push_error("build_pokemon_tower :\n%s" % "\n".join(_errors()))
 			_kit.call(&"discard")
 			return 1
-		print("build_pokemon_tower %s : masque écrit ; importer (--import) puis relancer" % key)
+		print("build_pokemon_tower : masque écrit ; importer (--import) puis relancer")
 		_kit.call(&"discard")
 		return 2
 	var walls := _place_walls()
-	_place_landmarks()
-	_place_zone()
 	_place_stairs()
-	_place_spawns_and_warps()
-	_place_triggers()
-	var shade := "res://assets/world/maps/%s_shade.png" % map_id
-	var params: Dictionary = SHADE_BASE.duplicate()
-	params["ambient"] = spec[5]
-	if _errors().is_empty() and not _kit.call(&"add_shade", shade, params, SHADE_LIGHTS,
-			SHADE_WALL_FOLLOW):
-		if _errors().is_empty():
-			print("build_pokemon_tower %s : voile écrit ; importer (--import) puis relancer" % key)
-			_kit.call(&"discard")
-			return 2
-	_place_mist(key)
+	var tombs := _place_tombs()
+	_place_furniture()
+	_place_passages()
+	_add_life()
 	if not _errors().is_empty():
-		push_error("build_pokemon_tower %s :\n%s" % [key, "\n".join(_errors())])
+		push_error("build_pokemon_tower :\n%s" % "\n".join(_errors()))
 		_kit.call(&"discard")
 		return 1
 	var counts := Vector3i((_kit.get(&"entities") as Node).get_child_count(),
 		(_kit.get(&"decals") as Node).get_child_count(), _kit.call(&"glow_count"))
-	var result: Vector2i = _kit.call(&"save", MAPS_DIR + String(map_id) + ".tscn")
-	print("%s : %s (%d entités, %d au sol, murs %d faces / %d côtés / %d couronnes, %d halos, "
-		% [map_id, error_string(result.x), counts.x, counts.y, walls.x, walls.y, walls.z,
-		counts.z] + "%d nœuds)" % result.y)
+	var result: Vector2i = _kit.call(&"save", OUT_PATH)
+	print("pokemon_tower_1f : %s (%d entités, %d au sol, murs %d faces / %d côtés / %d couronnes, "
+		% [error_string(result.x), counts.x, counts.y, walls.x, walls.y, walls.z]
+		+ "%d tombes, %d halos, %d nœuds)" % [tombs, counts.z, result.y])
 	return 0 if result.x == OK else 1
 
 
@@ -198,40 +147,6 @@ func _plan() -> Object:
 	return _kit.get(&"plan")
 
 
-func _fail(message: String) -> void:
-	var errors := _errors()
-	errors.append(message)
-	_kit.set(&"errors", errors)
-
-
-## Brume lente (T19) : un `MistLayer` à la taille de la carte, posé après le voile (sous
-## `Entities`), sans `Light2D` ni particule.
-func _place_mist(key: String) -> void:
-	var mist := Sprite2D.new()
-	mist.set_script(load("res://game/world/lighting/mist_layer.gd"))
-	mist.name = "Mist"
-	mist.set(&"area", SIZE * TILE)
-	mist.set(&"alpha", MIST_ALPHA[key])
-	_kit.call(&"attach", _kit.get(&"root"), mist)
-
-
-# --- Cases calmes (§2.2) -------------------------------------------------------------------
-
-
-## 5F seulement : cases `Z` et leurs 8 voisines praticables (aucune rencontre, §2.2).
-func _set_calm_cells() -> void:
-	var calm: Array[Vector2i] = []
-	for cell: Vector2i in _plan().call(&"cells_of", ZONE_MARK):
-		for dy: int in range(-1, 2):
-			for dx: int in range(-1, 2):
-				var near := cell + Vector2i(dx, dy)
-				if _kit.call(&"is_walkable", near) and not calm.has(near):
-					calm.append(near)
-	calm.sort_custom(func(a: Vector2i, b: Vector2i) -> bool:
-		return a.y < b.y or (a.y == b.y and a.x < b.x))
-	(_kit.get(&"root") as Node).set(&"calm_cells", calm)
-
-
 # --- Murs ---------------------------------------------------------------------------------
 
 
@@ -239,24 +154,28 @@ func _in_bounds(cell: Vector2i) -> bool:
 	return cell.x >= 0 and cell.y >= 0 and cell.x < SIZE.x and cell.y < SIZE.y
 
 
-## Paroi : maçonnerie `#` ; une case de repère (tombe, stèle) compte comme ouverte. Hors de la
-## carte = paroi.
+## Paroi : mur `K` ou escalier `S` (pris dans le mur) ; un repère (chandelier) compte comme
+## ouvert (il s'y voit, le mur se dessine autour). Hors de la carte = paroi.
 func _is_wall(cell: Vector2i) -> bool:
-	return not _in_bounds(cell) or _plan().call(&"at", cell) == WALL_MARK
+	return not _in_bounds(cell) or WALL_LIKE.contains(_plan().call(&"at", cell))
 
 
 func _is_masonry(cell: Vector2i) -> bool:
 	return _in_bounds(cell) and _plan().call(&"at", cell) == WALL_MARK
 
 
+## Face : mur dont la voisine sud est ouverte.
 func _is_face(cell: Vector2i) -> bool:
 	return _is_masonry(cell) and not _is_wall(cell + Vector2i.DOWN)
 
 
+## Couronne : mur (pas une face) dont la voisine nord est ouverte.
 func _is_cap(cell: Vector2i) -> bool:
 	return _is_masonry(cell) and not _is_face(cell) and not _is_wall(cell + Vector2i.UP)
 
 
+## Côté : mur (pas une face) dont une voisine est ou ouest est ouverte (flancs de la porte
+## comme les murs latéraux).
 func _is_side(cell: Vector2i) -> bool:
 	return _is_masonry(cell) and not _is_face(cell) \
 		and (not _is_wall(cell + Vector2i.LEFT) or not _is_wall(cell + Vector2i.RIGHT))
@@ -296,6 +215,8 @@ func _place_walls() -> Vector3i:
 	return Vector3i(faces, sides, caps)
 
 
+## Module de mur au pied [param foot], [param width] pixels du milieu de l'image (toute l'image
+## si elle n'est pas plus large).
 func _module(parent: Node, id: String, foot: Vector2, width: int, node_name: String) -> Sprite2D:
 	var sprite: Sprite2D = _kit.call(&"add_sprite", parent, id, foot, node_name)
 	var size := sprite.texture.get_size()
@@ -309,6 +230,7 @@ func _module(parent: Node, id: String, foot: Vector2, width: int, node_name: Str
 	return sprite
 
 
+## Tranche d'une case du bord latéral, collée au bord du sol (à l'est ou à l'ouest de la case).
 func _side_strip(parent: Node, cell: Vector2i, part: int, node_name: String) -> void:
 	var floor_east := not _is_wall(cell + Vector2i.RIGHT)
 	var centre_x := (cell.x + 1) * TILE - SIDE_WIDTH / 2.0 if floor_east \
@@ -336,6 +258,7 @@ func _texture_height(id: String) -> float:
 	return height
 
 
+## Étendues [début, fin] (colonnes incluses) de la rangée [param y] où [param test] est vrai.
 func _row_runs(y: int, test: Callable) -> Array[Vector2i]:
 	var runs: Array[Vector2i] = []
 	var start := -1
@@ -349,6 +272,7 @@ func _row_runs(y: int, test: Callable) -> Array[Vector2i]:
 	return runs
 
 
+## Étendues [début, fin] (rangées incluses) de la colonne [param x] où [param test] est vrai.
 func _column_runs(x: int, test: Callable) -> Array[Vector2i]:
 	var runs: Array[Vector2i] = []
 	var start := -1
@@ -362,6 +286,8 @@ func _column_runs(x: int, test: Callable) -> Array[Vector2i]:
 	return runs
 
 
+## Découpe d'une étendue en modules de [constant WALL_SPAN] cases : (début, largeur). Le dernier
+## recouvre le précédent pour finir au bout ; une case seule = un module découpé.
 func _pieces(run: Vector2i) -> Array[Vector2i]:
 	var pieces: Array[Vector2i] = []
 	var length := run.y - run.x + 1
@@ -377,174 +303,94 @@ func _pieces(run: Vector2i) -> Array[Vector2i]:
 	return pieces
 
 
-# --- Repères, zone purifiée, escaliers ----------------------------------------------------
+# --- Escalier, tombes, mobilier ------------------------------------------------------------
 
 
-## Stèles `S` (props pleins, un halo `candle` chacun, qui éclaire aussi le voile) et tombes `T` (stèle réduite et sombre). Les cases sont solides dans la grille.
-func _place_landmarks() -> void:
-	var entities: Node2D = _kit.get(&"entities")
-	var rules: GDScript = _kit.get(&"rules")
-	var index := 0
-	for cell: Vector2i in _plan().call(&"cells_of", STELE_MARK):
-		_kit.call(&"add_prop_at", entities, STELE_PROP, cell, "Stele%02d" % index)
-		_kit.call(&"add_glow", &"candle", _kit.call(&"cell_center", cell)
-			+ Vector2(0.0, STELE_LIGHT_HEIGHT - TILE / 2.0), "CandleGlow%02d" % index)
-		index += 1
-	index = 0
-	for cell: Vector2i in _plan().call(&"cells_of", TOMB_MARK):
-		var sprite: Sprite2D = _kit.call(&"add_sprite", entities, STELE_PROP,
-			rules.call(&"foot_position", StringName(STELE_PROP), cell), "Tomb%02d" % index)
-		# Réduite autour du pied : position inchangée, image plus basse.
-		sprite.scale = Vector2.ONE * TOMB_SCALE
-		sprite.modulate = TOMB_TINT
-		sprite.flip_h = _wall_rng.randf() < 0.5
-		index += 1
-
-
-## Dalle claire des cases `Z` (5F) : un aplat au sol, halo « purified » (fixe).
-func _place_zone() -> void:
-	var cells: Array[Vector2i] = _plan().call(&"cells_of", ZONE_MARK)
-	if cells.is_empty():
-		return
-	var rect := Rect2i(cells[0], Vector2i.ONE)
-	for cell: Vector2i in cells:
-		rect = rect.expand(cell).expand(cell + Vector2i.ONE)
-	var slab := Polygon2D.new()
-	slab.name = "PurifiedSlab"
-	slab.color = ZONE_COLOR
-	var origin := Vector2(rect.position * TILE)
-	var extent := Vector2(rect.size * TILE)
-	slab.polygon = PackedVector2Array([origin, origin + Vector2(extent.x, 0.0), origin + extent,
-		origin + Vector2(0.0, extent.y)])
-	_kit.call(&"attach", _kit.get(&"decals"), slab)
-	_kit.call(&"add_glow", &"purified", origin + extent / 2.0, "PurifiedGlow")
-
-
-## Escalier d'une case : image du souterrain ramenée à la largeur d'une case, au sol.
+## Escalier montant pris dans le mur (couche du sol, case praticable `S`).
 func _place_stairs() -> void:
-	var decals: Node2D = _kit.get(&"decals")
-	var positions: Dictionary = _plan().get(&"positions")
-	for id: String in positions:
-		if positions[id]["kind"] != "escalier":
-			continue
-		var cell: Vector2i = _plan().call(&"cell_of", id)
-		var up: bool = _plan().call(&"attr", id, "sens") == "monte"
-		var stairs: Node2D = _kit.call(&"add_prop", decals, STAIRS_UP if up else STAIRS_DOWN,
-			_kit.call(&"world", cell), "Stairs%s" % String(_plan().call(&"attr", id, "paire")))
-		stairs.set(&"footprint", [] as Array[Vector2i])
-		stairs.scale = Vector2.ONE * STAIRS_SCALE
-		_kit.call(&"add_shade_source", &"stairs", _kit.call(&"cell_center", cell))
+	for cell: Vector2i in _plan().call(&"cells_of", "S"):
+		_kit.call(&"add_floor_prop", STAIRS, cell, "Stairs")
 
 
-# --- Points d'apparition et passages -------------------------------------------------------
-
-
-func _facing_of(grid: Object, id: String) -> Vector2i:
-	match String(grid.call(&"attr", id, "facing")):
-		"left":
-			return Vector2i.LEFT
-		"right":
-			return Vector2i.RIGHT
-		"up":
-			return Vector2i.UP
-		_:
-			return Vector2i.DOWN
-
-
-## Plan de l'étage dont la carte est [param map_id] (null si ce n'est pas un de nos étages).
-func _plan_of(map_id: StringName) -> Object:
-	for key: String in FLOORS:
-		if FLOORS[key][0] == map_id:
-			var other: Object = PlanGrid.new()
-			if other.call(&"load_file", PLAN_PATH % key):
-				return other
-	return null
-
-
-func _place_spawns_and_warps() -> void:
-	var positions: Dictionary = _plan().get(&"positions")
-	for id: String in positions:
-		if positions[id]["kind"] == "spawn":
-			_kit.call(&"add_spawn", id, _plan().call(&"cell_of", id))
-	if QA_SPAWNS.has(_key):
-		_kit.call(&"add_spawn", QA_SPAWNS[_key][0], QA_SPAWNS[_key][1])
-	for id: String in positions:
-		if positions[id]["kind"] != "escalier":
-			continue
-		var cell: Vector2i = _plan().call(&"cell_of", id)
-		var pair: String = _plan().call(&"attr", id, "paire")
-		var node_name := "Stairs%sWarp" % pair
-		var target := StringName(_plan().call(&"attr", id, "vers"))
-		var other := _plan_of(target)
-		if SOON_PAIRS.has(pair) or other == null:
-			# Repli : étage absent (1F du J18, 7F hors J19) ; retour sur l'arrivée d'ici.
-			var back := _local_arrival()
-			_kit.call(&"add_warp", node_name, cell, Kit.STEP_ON, Vector2i.ZERO, &"",
-				StringName(back), _facing_of(_plan(), back), COMING_SOON)
-			print("%s : escalier %s → « %s — À venir » (repli)" % [FLOORS[_key][0], id,
-				COMING_SOON])
-			continue
-		var spawn_id := _spawn_of_pair(other, pair)
-		if spawn_id.is_empty():
-			_fail("escalier %s : aucun point d'apparition de paire %s dans %s" % [id, pair,
-				target])
-			continue
-		_kit.call(&"add_warp", node_name, cell, Kit.STEP_ON, Vector2i.ZERO, target,
-			StringName(spawn_id), _facing_of(other, spawn_id))
-
-
-func _spawn_of_pair(grid: Object, pair: String) -> String:
-	var positions: Dictionary = grid.get(&"positions")
-	for id: String in positions:
-		if positions[id]["kind"] == "spawn" and grid.call(&"attr", id, "paire") == pair:
-			return id
-	return ""
-
-
-## Un point d'apparition d'ici (le premier de la grille) pour le retour d'un repli.
-func _local_arrival() -> String:
-	var positions: Dictionary = _plan().get(&"positions")
-	for id: String in positions:
-		if positions[id]["kind"] == "spawn":
-			return id
-	return ""
-
-
-# --- Déclencheurs ----------------------------------------------------------------------------
-
-
-func _place_triggers() -> void:
-	var positions: Dictionary = _plan().get(&"positions")
-	for id: String in positions:
-		if positions[id]["kind"] != "declencheur":
-			continue
-		var role: String = _plan().call(&"attr", id, "role")
-		if not TRIGGER_SCENES.has(role):
-			_fail("déclencheur %s : rôle « %s » inconnu" % [id, role])
-			continue
-		var index := 0
+## Tombes `g` : trois variantes à la graine (nue, bouquet, offrande) ; les tombes nommées sont
+## toujours le bouquet ou l'offrande. Renvoie leur nombre.
+func _place_tombs() -> int:
+	var entities: Node2D = _kit.get(&"entities")
+	var named: Dictionary = {}
+	for id: String in NAMED_TOMBS:
 		for cell: Vector2i in _plan().call(&"cells_at", id):
-			_kit.call(&"add_trigger", "%s_%d" % [id, index], cell, Vector2i.ONE, Vector2i.ZERO,
-				TRIGGER_SCENES[role])
-			index += 1
-	# Zone purifiée (§2.8) : une case `Z` déclenche seulement quand un pas **y entre** de
-	# l'extérieur ; un déclencheur par case et par direction dont la case précédente est une
-	# case praticable hors de la zone.
-	for cell: Vector2i in _plan().call(&"cells_of", ZONE_MARK):
-		for step: Vector2i in STEPS:
-			var before := cell - step
-			if not _kit.call(&"is_walkable", before) or _plan().call(&"at", before) == ZONE_MARK:
-				continue
-			_kit.call(&"add_trigger", "Zone_%d_%d_%s" % [cell.x, cell.y, _step_name(step)], cell,
-				Vector2i.ONE, step, ZONE_SCENE)
+			named[cell] = true
+	var index := 0
+	for cell: Vector2i in _plan().call(&"cells_of", "g"):
+		var roll := _tomb_rng.randf()
+		var variant := 0 if roll < 0.5 else (1 if roll < 0.75 else 2)
+		if named.has(cell) and variant == 0:
+			variant = 1 + _tomb_rng.randi_range(0, 1)
+		_kit.call(&"add_prop_at", entities, TOMBS[variant], cell, "Tomb%02d" % index)
+		index += 1
+	return index
 
 
-func _step_name(step: Vector2i) -> String:
-	match step:
-		Vector2i.RIGHT:
-			return "right"
-		Vector2i.LEFT:
-			return "left"
-		Vector2i.UP:
-			return "up"
-	return "down"
+## Chandeliers (halo `candle` sur chaque flamme), comptoir du gardien, bancs d'une case.
+func _place_furniture() -> void:
+	var entities: Node2D = _kit.get(&"entities")
+	var index := 0
+	for cell: Vector2i in _plan().call(&"cells_of", "b"):
+		_kit.call(&"add_prop_at", entities, CANDLE, cell, "Candlestick%d" % index)
+		var foot: Vector2 = _kit.call(&"world", cell)
+		_kit.call(&"add_glow", CANDLE_GLOW, foot - Vector2(0.0, CANDLE_LIGHT_HEIGHT),
+			"GlowCandle%d" % index)
+		index += 1
+	var counters: Array[Vector2i] = _plan().call(&"cells_of", "W")
+	if counters.size() != 4:
+		_fail("comptoir : %d cases au lieu de 4" % counters.size())
+	else:
+		# 4 cases en ligne : le module de 4 est ancré sur la 3e case (pied sur le bord).
+		_kit.call(&"add_prop_at", entities, COUNTER, counters[2], "Counter")
+	index = 0
+	for cell: Vector2i in _plan().call(&"cells_of", "n"):
+		_kit.call(&"add_prop_at", entities, BENCH, cell, "Bench%d" % index)
+		index += 1
+
+
+## Points d'examen (T24) : 36 tombes lues de tous côtés (les 5 nommées ont leur texte), comptoir
+## du gardien lu depuis le sud (le gardien est derrière). Les PNJ viennent des données.
+func _add_life() -> void:
+	var named: Dictionary = {}
+	for i: int in NAMED_TOMBS.size():
+		for cell: Vector2i in _plan().call(&"cells_at", NAMED_TOMBS[i]):
+			named[cell] = NAMED_GRAVE_DIALOGUES[i]
+	var index := 0
+	for cell: Vector2i in _plan().call(&"cells_of", "g"):
+		_kit.call(&"add_interactable", "GraveExamine%02d" % index, cell, Vector2i.ONE,
+			Vector2i.ZERO, named.get(cell, OTHER_GRAVE_DIALOGUE))
+		index += 1
+	var counters: Array[Vector2i] = _plan().call(&"cells_of", "W")
+	if counters.size() != 4:
+		return
+	_kit.call(&"add_interactable", "CounterExamine", counters[0], Vector2i(4, 1), Vector2i.UP,
+		KEEPER_DIALOGUE)
+
+
+func _fail(message: String) -> void:
+	var errors := _errors()
+	errors.append(message)
+	_kit.set(&"errors", errors)
+
+
+# --- Passages ---------------------------------------------------------------------------------
+
+
+func _place_passages() -> void:
+	var exit_cells: Array[Vector2i] = _plan().call(&"cells_at", "sortie")
+	for i: int in exit_cells.size():
+		_kit.call(&"add_warp", "Exit%d" % i, exit_cells[i], Kit.PUSH, Vector2i.DOWN, EXIT_MAP,
+			EXIT_SPAWN, Vector2i.DOWN)
+	_kit.call(&"add_spawn", "entrance", _plan().call(&"cell_of", "entree"))
+	# Escalier : `pokemon_tower_2f` n'existe pas au J18 (carte du J19) → « Tour Pokémon — À venir » ;
+	# retour sur la case d'accès (17, 3), tourné vers le bas. Le J19 remplace ce passage.
+	var stairs: Vector2i = _plan().call(&"cell_of", "escalier")
+	var access := stairs + Vector2i.DOWN
+	_kit.call(&"add_spawn", String(STAIRS_SPAWN), access)
+	_kit.call(&"add_warp", "Stairs2F", stairs, Kit.STEP_ON, Vector2i.UP, &"", STAIRS_SPAWN,
+		Vector2i.DOWN, STAIRS_LABEL)

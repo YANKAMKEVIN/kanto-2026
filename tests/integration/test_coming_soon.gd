@@ -3,6 +3,8 @@ extends GutTest
 ## SceneRouter (fondus raccourcis) et un [SaveSystem] en mémoire. Jalon 14 (T20b) : le raccord
 ## sud d'Azuria (PUSH ↓, (31..33, 40)) menait à « ROUTE 5 — À venir » (build de développement,
 ## libellé en majuscules), puis ramenait le joueur sur la case de sortie, tourné vers le nord.
+## Jalon 17 (T17) : le bord est de Carmin mène à la vraie Route 11 ; le test remet ses trois cases
+## « à venir » dans la carte chargée (`tests/helpers/coming_soon_gate.gd`).
 ## Jalon 15 (T21) : la vraie Route 5 l'a remplacé ; depuis le T14, c'est le bord est de
 ## Carmin-sur-Mer (PUSH →, (63, 11..13)) qui mène à « ROUTE 11 — À venir », retour sur la case
 ## de sortie, tourné vers l'ouest. (Jalons 12 et 13 : bord est de la Route 24, « ROUTE 25 »,
@@ -14,6 +16,7 @@ extends GutTest
 
 const MemoryFs := preload("res://tests/helpers/memory_file_system.gd")
 const FixedClock := preload("res://tests/helpers/fixed_clock.gd")
+const ComingSoonGate := preload("res://tests/helpers/coming_soon_gate.gd")
 const BOOT_SCENE := preload("res://game/boot.tscn")
 const SAVE_PATH := "user://test_coming_soon_save.json"
 const FADE := 0.05
@@ -64,6 +67,7 @@ func _start_at_the_gate() -> void:
 	_boot.get_coming_soon_screen().hold_duration = HOLD
 	_boot.get_coming_soon_screen().fade_duration = 0.05
 	await wait_process_frames(3)
+	ComingSoonGate.apply(_boot.get_map())
 
 
 func _writes() -> int:
@@ -167,3 +171,28 @@ func test_in_a_release_build_the_gate_is_inert() -> void:
 	assert_eq(_player.get_cell(), GATE, "au bord de la carte, rien ne se passe")
 	assert_true(_player.is_input_enabled())
 	assert_eq(_boot.get_map().map_id, MAP)
+
+
+## Jalon 18 (T12) : le bord ouest de la Route 9 menait à « AZURIA — À venir » ; depuis le T15
+## (variante J18 d'Azuria, arbre coupé du J16), il mène à Azuria, sans écran « à venir », sur la
+## même rangée (55, 23), tourné vers l'ouest.
+func test_route_9_west_edge_leads_to_azuria_without_coming_soon() -> void:
+	_boot = BOOT_SCENE.instantiate() as Boot
+	_boot.save_system = _save
+	_boot.start_map = &"route_9"
+	_boot.start_spawn = &"from_cerulean"
+	_boot.start_facing = Vector2i.LEFT
+	add_child_autofree(_boot)
+	_player = _boot.get_player()
+	var screen := _boot.get_coming_soon_screen()
+	await wait_process_frames(3)
+	assert_eq(_player.get_cell(), Vector2i(0, 23))
+	Input.action_press(&"move_left")
+	await wait_until(func() -> bool: return SceneRouter.is_transitioning(), TIMEOUT)
+	Input.action_release(&"move_left")
+	assert_false(screen.is_showing(), "pas d'écran « à venir »")
+	await wait_until(func() -> bool: return not SceneRouter.is_transitioning() \
+		and _boot.get_map().map_id == &"cerulean_city", TIMEOUT)
+	assert_eq(_boot.get_map().map_id, &"cerulean_city")
+	assert_eq(_player.get_cell(), Vector2i(55, 23), "arrivée sur la même rangée")
+	assert_eq(_player.get_facing(), Vector2i.LEFT, "tourné vers l'ouest")

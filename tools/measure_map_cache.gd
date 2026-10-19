@@ -14,6 +14,7 @@ extends SceneTree
 ##   (… -- --route=mt_moon : la descente du Mont Sélénite, jalon 12)
 ##   (… -- --route=vermilion : Route 6 → Carmin-sur-Mer → Centre, jalon 15)
 ##   (… -- --route=route_5 : Azuria, la Route 5 et ses trois intérieurs, jalon 15)
+##   (… -- --route=ss_anne : les pièces du S.S. Anne et l'Arène de Carmin, jalon 16)
 ##   (… -- --from=pewter_city : départ direct sur cette étape, processus neuf : le compteur
 ##   `tex=` est alors juste, aucune libération avant la mesure)
 ##
@@ -73,6 +74,20 @@ const ROUTE_5_STEPS: Array[Array] = [
 	[&"route_5", &"from_gate"],
 	[&"route_5_underground_gate", &"from_route_5"],
 ]
+## Jalon 16 (T11, §2.13) : à bord du S.S. Anne (`-- --route=ss_anne`) : pont principal (six
+## pièces voisines et Carmin), cabine A, pont extérieur, pont inférieur, cabine B, couloir, cabine
+## du capitaine ; puis l'Arène de Carmin : mémoire « carte + voisines ».
+const SS_ANNE_STEPS: Array[Array] = [
+	[&"ss_anne_main_deck", &"from_ss_anne_w"],
+	[&"ss_anne_cabin_a", &"entrance"],
+	[&"ss_anne_main_deck", &"from_cabin_a"],
+	[&"ss_anne_outer_deck", &"entrance"],
+	[&"ss_anne_lower_deck", &"entrance"],
+	[&"ss_anne_cabin_b", &"entrance"],
+	[&"ss_anne_captain_corridor", &"entrance"],
+	[&"ss_anne_captain_room", &"entrance"],
+	[&"vermilion_gym", &"entrance"],
+]
 ## Images attendues après chaque étape (textures envoyées, préchargements finis).
 const SETTLE_FRAMES: int = 20
 
@@ -106,6 +121,8 @@ func _run() -> void:
 		steps = VERMILION_STEPS
 	if OS.get_cmdline_user_args().has("--route=route_5"):
 		steps = ROUTE_5_STEPS
+	if OS.get_cmdline_user_args().has("--route=ss_anne"):
+		steps = SS_ANNE_STEPS
 	var first := 0
 	for arg: String in OS.get_cmdline_user_args():
 		if arg.begins_with("--from="):

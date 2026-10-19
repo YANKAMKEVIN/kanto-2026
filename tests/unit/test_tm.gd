@@ -49,9 +49,10 @@ func test_compatibilities_of_rouge_bleu() -> void:
 	for id: StringName in _data.get_species_ids():
 		if _data.can_learn_tm(id, 34):
 			count += 1
-	# Jalon 15 (T12) : Miaouss et Persan, compatibles (Rouge/Bleu) ; jalon 19 (T3) : les 7.
-	assert_eq(count, 67, "67 espèces sur 71 (dossier 14 §6.1 ; + 12 du jalon 12, + 9 du jalon"
-		+ " 13, + 3 du jalon 14, + 2 du jalon 15, + 7 du jalon 19)")
+	# Jalon 15 (T12) : Miaouss et Persan, compatibles (Rouge/Bleu) ; jalon 17 (T7) : les huit ;
+	# jalon 19 (T3) : les six de la Tour (Caninos vient du J17).
+	assert_eq(count, 74, "74 espèces sur 78 (dossier 14 §6.1 ; + 12 du jalon 12, + 9 du jalon"
+		+ " 13, + 3 du jalon 14, + 2 du jalon 15, + 8 du jalon 17, + 6 du jalon 19)")
 
 
 ## Jalon 14 (T5, jalon-14.md §2.4) : CT19 Frappe Atlas (Route 25) et CT28 Tunnel (Rocket).

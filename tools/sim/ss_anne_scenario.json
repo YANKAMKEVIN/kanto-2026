@@ -1,0 +1,1586 @@
+{
+	"version": 1,
+	"title": "Équilibrage du S.S. Anne, du rival n° 4 et de Major Bob (jalon 16 T18)",
+	"description": "Jalon 16 T18 (dossier 19 §5, §9 ; plan jalon-16 T18). Information pour Kevin : aucune donnée de jeu n'est changée. Départ = équipes de fin du J13 du scénario du J14 T21 (Ondine battue), plus des variantes avec un Pokémon de type Sol (Racaillou, ou Nidoking par la Pierre Lune). Parcours : Route 25 (D1, D2, H3), Rocket, Route 6 (Chloé), Centre de Carmin, rival n° 4, Centre, Arène (Louis, Axel, Marc), [Centre], Major Bob. Groupe « tous » : D3–D6 et 30 cases de la Route 25, 20 cases de la Route 5, les 5 autres Dresseurs et 30 cases de la Route 6 ; « navire » : les 10 Dresseurs du navire (aucun soin à bord ; avec « tous », ou seul : « directe + navire ») ; « retour » : retour au Centre du quai après 5 Dresseurs du navire et avant le rival. « soin_arene » : Centre entre les Dresseurs de l'Arène et Major Bob. Objets (attentif, expert) : 3 Potions, 2 Super Potions, 1 Antidote, 1 Anti-Para. Généré par tools/sim/gen_ss_anne_scenarios.py.",
+	"seeds": 1000,
+	"heal_at_start": true,
+	"teams": [
+		{
+			"name": "Reptincel 21, Férosinge 18, Roucool 17, Mystherbe 17",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 21
+				},
+				{
+					"species": "mankey",
+					"level": 18
+				},
+				{
+					"species": "pidgey",
+					"level": 17
+				},
+				{
+					"species": "oddish",
+					"level": 17
+				}
+			]
+		},
+		{
+			"name": "Sol : Reptincel 21, Férosinge 18, Roucool 17, Mystherbe 17, Racaillou 16",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 21
+				},
+				{
+					"species": "mankey",
+					"level": 18
+				},
+				{
+					"species": "pidgey",
+					"level": 17
+				},
+				{
+					"species": "oddish",
+					"level": 17
+				},
+				{
+					"species": "geodude",
+					"level": 16
+				}
+			]
+		},
+		{
+			"name": "Kevin : Reptincel 21, Roucool 18, Nidorino 16, Rattata 16",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 21
+				},
+				{
+					"species": "pidgey",
+					"level": 18
+				},
+				{
+					"species": "nidorino",
+					"level": 16
+				},
+				{
+					"species": "rattata",
+					"level": 16
+				}
+			]
+		},
+		{
+			"name": "Sol, Kevin : Reptincel 21, Roucool 18, Nidoking 16, Rattata 16",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 21
+				},
+				{
+					"species": "pidgey",
+					"level": 18
+				},
+				{
+					"species": "nidoking",
+					"level": 16
+				},
+				{
+					"species": "rattata",
+					"level": 16
+				}
+			]
+		},
+		{
+			"name": "Herbizarre 20, Roucool 17, Papilusion 15",
+			"starter": "bulbasaur",
+			"members": [
+				{
+					"species": "ivysaur",
+					"level": 20
+				},
+				{
+					"species": "pidgey",
+					"level": 17
+				},
+				{
+					"species": "butterfree",
+					"level": 15,
+					"moves": [
+						"tackle",
+						"string_shot",
+						"harden",
+						"confusion"
+					]
+				}
+			]
+		},
+		{
+			"name": "Sol : Herbizarre 20, Roucool 17, Papilusion 15, Racaillou 16",
+			"starter": "bulbasaur",
+			"members": [
+				{
+					"species": "ivysaur",
+					"level": 20
+				},
+				{
+					"species": "pidgey",
+					"level": 17
+				},
+				{
+					"species": "butterfree",
+					"level": 15,
+					"moves": [
+						"tackle",
+						"string_shot",
+						"harden",
+						"confusion"
+					]
+				},
+				{
+					"species": "geodude",
+					"level": 16
+				}
+			]
+		},
+		{
+			"name": "Carabaffe 21, Roucool 18, Papilusion 16",
+			"starter": "squirtle",
+			"members": [
+				{
+					"species": "wartortle",
+					"level": 21
+				},
+				{
+					"species": "pidgey",
+					"level": 18
+				},
+				{
+					"species": "butterfree",
+					"level": 16,
+					"moves": [
+						"tackle",
+						"string_shot",
+						"harden",
+						"confusion"
+					]
+				}
+			]
+		},
+		{
+			"name": "Sol : Carabaffe 21, Roucool 18, Papilusion 16, Racaillou 16",
+			"starter": "squirtle",
+			"members": [
+				{
+					"species": "wartortle",
+					"level": 21
+				},
+				{
+					"species": "pidgey",
+					"level": 18
+				},
+				{
+					"species": "butterfree",
+					"level": 16,
+					"moves": [
+						"tackle",
+						"string_shot",
+						"harden",
+						"confusion"
+					]
+				},
+				{
+					"species": "geodude",
+					"level": 16
+				}
+			]
+		},
+		{
+			"name": "bas : Herbizarre 18, Roucool 14, Papilusion 12",
+			"starter": "bulbasaur",
+			"members": [
+				{
+					"species": "ivysaur",
+					"level": 18
+				},
+				{
+					"species": "pidgey",
+					"level": 14
+				},
+				{
+					"species": "butterfree",
+					"level": 12,
+					"moves": [
+						"tackle",
+						"string_shot",
+						"harden",
+						"confusion"
+					]
+				}
+			]
+		},
+		{
+			"name": "bas : Carabaffe 20, Roucool 15, Papilusion 13",
+			"starter": "squirtle",
+			"members": [
+				{
+					"species": "wartortle",
+					"level": 20
+				},
+				{
+					"species": "pidgey",
+					"level": 15
+				},
+				{
+					"species": "butterfree",
+					"level": 13,
+					"moves": [
+						"tackle",
+						"string_shot",
+						"harden",
+						"confusion"
+					]
+				}
+			]
+		},
+		{
+			"name": "bas : Reptincel 20, Férosinge 17, Roucool 16, Mystherbe 16",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 20
+				},
+				{
+					"species": "mankey",
+					"level": 17
+				},
+				{
+					"species": "pidgey",
+					"level": 16
+				},
+				{
+					"species": "oddish",
+					"level": 16
+				}
+			]
+		}
+	],
+	"tables": {
+		"route_25_grass": {
+			"maps": [
+				"route_25"
+			],
+			"terrain": "grass",
+			"rate": 15,
+			"ramp": {
+				"from_step": 15,
+				"max_steps": 20
+			},
+			"slots": [
+				{
+					"species": "pidgey",
+					"levels": [
+						13,
+						13
+					],
+					"weight": 20
+				},
+				{
+					"species": "oddish",
+					"levels": [
+						12,
+						14
+					],
+					"weight": 18
+				},
+				{
+					"species": "bellsprout",
+					"levels": [
+						12,
+						14
+					],
+					"weight": 17
+				},
+				{
+					"species": "caterpie",
+					"levels": [
+						8,
+						8
+					],
+					"weight": 10
+				},
+				{
+					"species": "weedle",
+					"levels": [
+						8,
+						8
+					],
+					"weight": 10
+				},
+				{
+					"species": "metapod",
+					"levels": [
+						7,
+						7
+					],
+					"weight": 5
+				},
+				{
+					"species": "kakuna",
+					"levels": [
+						9,
+						9
+					],
+					"weight": 5
+				},
+				{
+					"species": "abra",
+					"levels": [
+						10,
+						12
+					],
+					"weight": 15
+				}
+			]
+		},
+		"route_5_grass": {
+			"maps": [
+				"route_5"
+			],
+			"terrain": "grass",
+			"rate": 25,
+			"ramp": {
+				"from_step": 15,
+				"max_steps": 20
+			},
+			"slots": [
+				{
+					"species": "pidgey",
+					"levels": [
+						13,
+						16
+					],
+					"weight": 30
+				},
+				{
+					"species": "oddish",
+					"levels": [
+						13,
+						16
+					],
+					"weight": 15
+				},
+				{
+					"species": "bellsprout",
+					"levels": [
+						13,
+						16
+					],
+					"weight": 15
+				},
+				{
+					"species": "mankey",
+					"levels": [
+						10,
+						16
+					],
+					"weight": 20
+				},
+				{
+					"species": "meowth",
+					"levels": [
+						10,
+						16
+					],
+					"weight": 20
+				}
+			]
+		},
+		"route_6_grass": {
+			"maps": [
+				"route_6"
+			],
+			"terrain": "grass",
+			"rate": 25,
+			"ramp": {
+				"from_step": 15,
+				"max_steps": 20
+			},
+			"slots": [
+				{
+					"species": "pidgey",
+					"levels": [
+						13,
+						16
+					],
+					"weight": 30
+				},
+				{
+					"species": "oddish",
+					"levels": [
+						13,
+						16
+					],
+					"weight": 15
+				},
+				{
+					"species": "bellsprout",
+					"levels": [
+						13,
+						16
+					],
+					"weight": 15
+				},
+				{
+					"species": "mankey",
+					"levels": [
+						10,
+						16
+					],
+					"weight": 20
+				},
+				{
+					"species": "meowth",
+					"levels": [
+						10,
+						16
+					],
+					"weight": 20
+				}
+			]
+		}
+	},
+	"trainers": {
+		"route_25_youngster_jules": {
+			"name": "Gamin Jules",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 225,
+			"team": [
+				{
+					"species": "rattata",
+					"level": 15
+				},
+				{
+					"species": "spearow",
+					"level": 15
+				}
+			]
+		},
+		"route_25_hiker_gaston": {
+			"name": "Montagnard Gaston",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 525,
+			"team": [
+				{
+					"species": "machop",
+					"level": 15
+				},
+				{
+					"species": "geodude",
+					"level": 15
+				}
+			]
+		},
+		"route_25_lass_zoe": {
+			"name": "Fillette Zoé",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 225,
+			"team": [
+				{
+					"species": "nidoran_m",
+					"level": 15
+				},
+				{
+					"species": "nidoran_f",
+					"level": 15
+				}
+			]
+		},
+		"route_25_hiker_bernard": {
+			"name": "Montagnard Bernard",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 595,
+			"team": [
+				{
+					"species": "onix",
+					"level": 17
+				}
+			]
+		},
+		"route_25_jr_trainer_adam": {
+			"name": "Jeune Dresseur Adam",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 280,
+			"team": [
+				{
+					"species": "rattata",
+					"level": 14
+				},
+				{
+					"species": "ekans",
+					"level": 14
+				}
+			]
+		},
+		"route_25_youngster_yanis": {
+			"name": "Gamin Yanis",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 210,
+			"team": [
+				{
+					"species": "ekans",
+					"level": 14
+				},
+				{
+					"species": "sandshrew",
+					"level": 14
+				}
+			]
+		},
+		"cerulean_rocket": {
+			"name": "Sbire Rocket",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 510,
+			"team": [
+				{
+					"species": "machop",
+					"level": 17
+				},
+				{
+					"species": "zubat",
+					"level": 17
+				}
+			]
+		},
+		"route_6_lass_chloe": {
+			"name": "Jeune Dresseuse Chloé",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 320,
+			"team": [
+				{
+					"species": "pidgey",
+					"level": 16
+				},
+				{
+					"species": "pidgey",
+					"level": 16
+				},
+				{
+					"species": "pidgey",
+					"level": 16
+				}
+			]
+		},
+		"route_6_camper_gabin": {
+			"name": "Campeur Gabin",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 320,
+			"team": [
+				{
+					"species": "spearow",
+					"level": 16
+				},
+				{
+					"species": "raticate",
+					"level": 16
+				}
+			]
+		},
+		"route_6_scout_axel": {
+			"name": "Scout Axel",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 192,
+			"team": [
+				{
+					"species": "weedle",
+					"level": 16
+				},
+				{
+					"species": "caterpie",
+					"level": 16
+				},
+				{
+					"species": "weedle",
+					"level": 16
+				}
+			]
+		},
+		"route_6_camper_mathis": {
+			"name": "Campeur Mathis",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 400,
+			"team": [
+				{
+					"species": "squirtle",
+					"level": 20
+				}
+			]
+		},
+		"route_6_lass_manon": {
+			"name": "Jeune Dresseuse Manon",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 320,
+			"team": [
+				{
+					"species": "rattata",
+					"level": 16
+				},
+				{
+					"species": "pikachu",
+					"level": 16
+				}
+			]
+		},
+		"route_6_scout_basile": {
+			"name": "Scout Basile",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 240,
+			"team": [
+				{
+					"species": "butterfree",
+					"level": 20,
+					"moves": [
+						"confusion",
+						"poison_powder",
+						"stun_spore",
+						"sleep_powder"
+					]
+				}
+			]
+		},
+		"ss_anne_gentleman_armand": {
+			"name": "Gentleman Armand",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 760,
+			"team": [
+				{
+					"species": "rattata",
+					"level": 17,
+					"moves": [
+						"tackle",
+						"quick_attack"
+					]
+				},
+				{
+					"species": "raticate",
+					"level": 19,
+					"moves": [
+						"quick_attack",
+						"bite"
+					]
+				}
+			]
+		},
+		"ss_anne_sailor_erwan": {
+			"name": "Marin Erwan",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 360,
+			"team": [
+				{
+					"species": "machop",
+					"level": 18,
+					"moves": [
+						"low_kick",
+						"karate_chop"
+					]
+				}
+			]
+		},
+		"ss_anne_sailor_loic": {
+			"name": "Marin Loïc",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 360,
+			"team": [
+				{
+					"species": "shellder",
+					"level": 18,
+					"moves": [
+						"tackle",
+						"withdraw"
+					]
+				},
+				{
+					"species": "goldeen",
+					"level": 18,
+					"moves": [
+						"peck",
+						"tail_whip"
+					]
+				}
+			]
+		},
+		"ss_anne_gentleman_emile": {
+			"name": "Gentleman Émile",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 720,
+			"team": [
+				{
+					"species": "pikachu",
+					"level": 18,
+					"moves": [
+						"thunder_shock",
+						"quick_attack"
+					]
+				}
+			]
+		},
+		"ss_anne_sailor_yann": {
+			"name": "Marin Yann",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 360,
+			"team": [
+				{
+					"species": "horsea",
+					"level": 18,
+					"moves": [
+						"bubble",
+						"leer"
+					]
+				},
+				{
+					"species": "shellder",
+					"level": 18,
+					"moves": [
+						"tackle",
+						"withdraw"
+					]
+				}
+			]
+		},
+		"ss_anne_sailor_remi": {
+			"name": "Marin Rémi",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 380,
+			"team": [
+				{
+					"species": "machop",
+					"level": 19,
+					"moves": [
+						"low_kick",
+						"karate_chop"
+					]
+				}
+			]
+		},
+		"ss_anne_lass_lena": {
+			"name": "Fillette Léna",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 180,
+			"team": [
+				{
+					"species": "oddish",
+					"level": 18,
+					"moves": [
+						"absorb",
+						"poison_powder"
+					]
+				}
+			]
+		},
+		"ss_anne_scout_basile": {
+			"name": "Scout Oscar",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 360,
+			"team": [
+				{
+					"species": "beedrill",
+					"level": 18,
+					"moves": [
+						"poison_sting",
+						"fury_attack"
+					]
+				}
+			]
+		},
+		"ss_anne_gentleman_victor": {
+			"name": "Gentleman Victor",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 760,
+			"team": [
+				{
+					"species": "staryu",
+					"level": 19,
+					"moves": [
+						"water_gun",
+						"harden"
+					]
+				}
+			]
+		},
+		"ss_anne_sailor_paul": {
+			"name": "Marin Paul",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 380,
+			"team": [
+				{
+					"species": "raticate",
+					"level": 19,
+					"moves": [
+						"quick_attack",
+						"bite"
+					]
+				}
+			]
+		},
+		"rival_ss_anne": {
+			"name": "{rival}",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 35,
+			"switch": true,
+			"team_by_starter": {
+				"bulbasaur": [
+					{
+						"species": "pidgeotto",
+						"level": 13,
+						"moves": [
+							"gust",
+							"quick_attack",
+							"sand_attack"
+						]
+					},
+					{
+						"species": "raticate",
+						"level": 12,
+						"moves": [
+							"quick_attack",
+							"bite",
+							"tail_whip"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 13,
+						"moves": [
+							"confusion",
+							"psybeam"
+						]
+					},
+					{
+						"species": "charmeleon",
+						"level": 15,
+						"moves": [
+							"ember",
+							"scratch",
+							"growl"
+						]
+					}
+				],
+				"charmander": [
+					{
+						"species": "pidgeotto",
+						"level": 19,
+						"moves": [
+							"gust",
+							"quick_attack",
+							"sand_attack"
+						]
+					},
+					{
+						"species": "raticate",
+						"level": 16,
+						"moves": [
+							"quick_attack",
+							"bite",
+							"tail_whip"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 19,
+						"moves": [
+							"confusion",
+							"psybeam"
+						]
+					},
+					{
+						"species": "wartortle",
+						"level": 20,
+						"moves": [
+							"water_gun",
+							"tackle",
+							"tail_whip"
+						]
+					}
+				],
+				"squirtle": [
+					{
+						"species": "pidgeotto",
+						"level": 20,
+						"moves": [
+							"gust",
+							"quick_attack",
+							"sand_attack"
+						]
+					},
+					{
+						"species": "raticate",
+						"level": 17,
+						"moves": [
+							"quick_attack",
+							"bite",
+							"tail_whip"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 19,
+						"moves": [
+							"confusion",
+							"psybeam"
+						]
+					},
+					{
+						"species": "ivysaur",
+						"level": 24,
+						"moves": [
+							"vine_whip",
+							"tackle",
+							"growl"
+						]
+					}
+				]
+			}
+		},
+		"vermilion_gym_gentleman_louis": {
+			"name": "Gentleman Louis",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 800,
+			"team": [
+				{
+					"species": "pikachu",
+					"level": 20,
+					"moves": [
+						"thunder_shock",
+						"thunder_wave"
+					]
+				}
+			]
+		},
+		"vermilion_gym_rocker_axel": {
+			"name": "Rockeur Axel",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 400,
+			"team": [
+				{
+					"species": "voltorb",
+					"level": 20,
+					"moves": [
+						"tackle",
+						"sonic_boom"
+					]
+				}
+			]
+		},
+		"vermilion_gym_sailor_marc": {
+			"name": "Marin Marc",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 380,
+			"team": [
+				{
+					"species": "pikachu",
+					"level": 19,
+					"moves": [
+						"thunder_shock",
+						"quick_attack"
+					]
+				},
+				{
+					"species": "voltorb",
+					"level": 19,
+					"moves": [
+						"tackle",
+						"screech"
+					]
+				}
+			]
+		},
+		"vermilion_gym_surge": {
+			"name": "Major Bob",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 2400,
+			"switch": true,
+			"team": [
+				{
+					"species": "voltorb",
+					"level": 21,
+					"moves": [
+						"tackle",
+						"screech",
+						"sonic_boom"
+					]
+				},
+				{
+					"species": "pikachu",
+					"level": 18,
+					"moves": [
+						"thunder_shock",
+						"thunder_wave",
+						"quick_attack"
+					]
+				},
+				{
+					"species": "raichu",
+					"level": 24,
+					"moves": [
+						"thunder_shock",
+						"thunder_wave",
+						"quick_attack"
+					]
+				}
+			]
+		}
+	},
+	"steps": [
+		{
+			"label": "Centre d'Azuria (départ)",
+			"center": true
+		},
+		{
+			"label": "J14 D1 Gamin Jules (inévitable)",
+			"trainer": "route_25_youngster_jules"
+		},
+		{
+			"label": "J14 D2 Montagnard Gaston (inévitable)",
+			"trainer": "route_25_hiker_gaston"
+		},
+		{
+			"label": "J14 Route 25 : H3 (4 cases obligatoires)",
+			"wild": "route_25_grass",
+			"cells": 4
+		},
+		{
+			"label": "J14 Fillette Zoé",
+			"trainer": "route_25_lass_zoe",
+			"optional": "tous"
+		},
+		{
+			"label": "J14 Montagnard Bernard",
+			"trainer": "route_25_hiker_bernard",
+			"optional": "tous"
+		},
+		{
+			"label": "J14 Jeune Dresseur Adam",
+			"trainer": "route_25_jr_trainer_adam",
+			"optional": "tous"
+		},
+		{
+			"label": "J14 Gamin Yanis",
+			"trainer": "route_25_youngster_yanis",
+			"optional": "tous"
+		},
+		{
+			"label": "J14 Route 25 : H1, H2, H4 (30 cases)",
+			"wild": "route_25_grass",
+			"cells": 30,
+			"optional": "tous"
+		},
+		{
+			"label": "Centre d'Azuria (retour de chez Léo)",
+			"center": true
+		},
+		{
+			"label": "J14 Sbire Rocket (Azuria)",
+			"trainer": "cerulean_rocket"
+		},
+		{
+			"label": "Centre d'Azuria (après le Rocket)",
+			"center": true
+		},
+		{
+			"label": "J15 Route 5 : herbes H1, H2 (20 cases)",
+			"wild": "route_5_grass",
+			"cells": 20,
+			"optional": "tous"
+		},
+		{
+			"label": "J15 Route 6 : Chloé (inévitable)",
+			"trainer": "route_6_lass_chloe"
+		},
+		{
+			"label": "J15 Route 6 : Campeur Gabin",
+			"trainer": "route_6_camper_gabin",
+			"optional": "tous"
+		},
+		{
+			"label": "J15 Route 6 : Scout Axel",
+			"trainer": "route_6_scout_axel",
+			"optional": "tous"
+		},
+		{
+			"label": "J15 Route 6 : Campeur Mathis",
+			"trainer": "route_6_camper_mathis",
+			"optional": "tous"
+		},
+		{
+			"label": "J15 Route 6 : Jeune Dresseuse Manon",
+			"trainer": "route_6_lass_manon",
+			"optional": "tous"
+		},
+		{
+			"label": "J15 Route 6 : Scout Basile",
+			"trainer": "route_6_scout_basile",
+			"optional": "tous"
+		},
+		{
+			"label": "J15 Route 6 : herbes H1–H4 (30 cases)",
+			"wild": "route_6_grass",
+			"cells": 30,
+			"optional": "tous"
+		},
+		{
+			"label": "Centre de Carmin (avant le navire)",
+			"center": true
+		},
+		{
+			"label": "S.S. Anne : Gentleman Armand",
+			"trainer": "ss_anne_gentleman_armand",
+			"optional": "navire"
+		},
+		{
+			"label": "S.S. Anne : Marin Erwan",
+			"trainer": "ss_anne_sailor_erwan",
+			"optional": "navire"
+		},
+		{
+			"label": "S.S. Anne : Marin Loïc",
+			"trainer": "ss_anne_sailor_loic",
+			"optional": "navire"
+		},
+		{
+			"label": "S.S. Anne : Gentleman Émile",
+			"trainer": "ss_anne_gentleman_emile",
+			"optional": "navire"
+		},
+		{
+			"label": "S.S. Anne : Marin Yann",
+			"trainer": "ss_anne_sailor_yann",
+			"optional": "navire"
+		},
+		{
+			"label": "Centre de Carmin (retour au quai, mi-navire)",
+			"center": true,
+			"optional": "retour"
+		},
+		{
+			"label": "S.S. Anne : Marin Rémi",
+			"trainer": "ss_anne_sailor_remi",
+			"optional": "navire"
+		},
+		{
+			"label": "S.S. Anne : Fillette Léna",
+			"trainer": "ss_anne_lass_lena",
+			"optional": "navire"
+		},
+		{
+			"label": "S.S. Anne : Scout Oscar",
+			"trainer": "ss_anne_scout_basile",
+			"optional": "navire"
+		},
+		{
+			"label": "S.S. Anne : Gentleman Victor",
+			"trainer": "ss_anne_gentleman_victor",
+			"optional": "navire"
+		},
+		{
+			"label": "S.S. Anne : Marin Paul",
+			"trainer": "ss_anne_sailor_paul",
+			"optional": "navire"
+		},
+		{
+			"label": "Centre de Carmin (retour au quai avant le rival)",
+			"center": true,
+			"optional": "retour"
+		},
+		{
+			"label": "Rival n° 4 (couloir du capitaine)",
+			"trainer": "rival_ss_anne"
+		},
+		{
+			"label": "Centre de Carmin (avant l'Arène)",
+			"center": true
+		},
+		{
+			"label": "Arène de Carmin : Gentleman Louis",
+			"trainer": "vermilion_gym_gentleman_louis"
+		},
+		{
+			"label": "Arène de Carmin : Rockeur Axel",
+			"trainer": "vermilion_gym_rocker_axel"
+		},
+		{
+			"label": "Arène de Carmin : Marin Marc",
+			"trainer": "vermilion_gym_sailor_marc"
+		},
+		{
+			"label": "Centre de Carmin (entre les Dresseurs et Major Bob)",
+			"center": true,
+			"optional": "soin_arene"
+		},
+		{
+			"label": "Major Bob (Arène de Carmin)",
+			"trainer": "vermilion_gym_surge"
+		}
+	],
+	"variants": [
+		{
+			"name": "directe, soin avant Major Bob, attentif",
+			"player": "attentif",
+			"center": true,
+			"retries": 5,
+			"optional": [
+				"soin_arene"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"antidote": 1,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "directe, soin avant Major Bob, expert",
+			"player": "expert",
+			"center": true,
+			"retries": 5,
+			"optional": [
+				"soin_arene"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"antidote": 1,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "directe, soin avant Major Bob, naïf",
+			"player": "naif",
+			"center": true,
+			"retries": 5,
+			"optional": [
+				"soin_arene"
+			]
+		},
+		{
+			"name": "directe, sans soin, attentif",
+			"player": "attentif",
+			"center": true,
+			"retries": 5,
+			"optional": [],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"antidote": 1,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "directe, sans soin, expert",
+			"player": "expert",
+			"center": true,
+			"retries": 5,
+			"optional": [],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"antidote": 1,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "directe, sans soin, naïf",
+			"player": "naif",
+			"center": true,
+			"retries": 5,
+			"optional": []
+		},
+		{
+			"name": "tous les Dresseurs, soin avant Major Bob, attentif",
+			"player": "attentif",
+			"center": true,
+			"retries": 5,
+			"optional": [
+				"tous",
+				"navire",
+				"retour",
+				"soin_arene"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"antidote": 1,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "tous les Dresseurs, soin avant Major Bob, expert",
+			"player": "expert",
+			"center": true,
+			"retries": 5,
+			"optional": [
+				"tous",
+				"navire",
+				"retour",
+				"soin_arene"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"antidote": 1,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "tous les Dresseurs, soin avant Major Bob, naïf",
+			"player": "naif",
+			"center": true,
+			"retries": 5,
+			"optional": [
+				"tous",
+				"navire",
+				"retour",
+				"soin_arene"
+			]
+		},
+		{
+			"name": "tous les Dresseurs, sans soin, attentif",
+			"player": "attentif",
+			"center": true,
+			"retries": 5,
+			"optional": [
+				"tous",
+				"navire",
+				"retour"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"antidote": 1,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "tous les Dresseurs, sans soin, expert",
+			"player": "expert",
+			"center": true,
+			"retries": 5,
+			"optional": [
+				"tous",
+				"navire",
+				"retour"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"antidote": 1,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "tous les Dresseurs, sans soin, naïf",
+			"player": "naif",
+			"center": true,
+			"retries": 5,
+			"optional": [
+				"tous",
+				"navire",
+				"retour"
+			]
+		},
+		{
+			"name": "tous, sans retour au quai, soin avant Major Bob, attentif",
+			"player": "attentif",
+			"center": true,
+			"retries": 5,
+			"optional": [
+				"tous",
+				"navire",
+				"soin_arene"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"antidote": 1,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "tous, sans retour au quai, soin avant Major Bob, expert",
+			"player": "expert",
+			"center": true,
+			"retries": 5,
+			"optional": [
+				"tous",
+				"navire",
+				"soin_arene"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"antidote": 1,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "directe, ordre gardé, soin avant Major Bob, attentif",
+			"player": "attentif",
+			"center": true,
+			"retries": 5,
+			"optional": [
+				"soin_arene"
+			],
+			"keep_order": true,
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"antidote": 1,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "tous les Dresseurs, ordre gardé, soin avant Major Bob, attentif",
+			"player": "attentif",
+			"center": true,
+			"retries": 5,
+			"optional": [
+				"tous",
+				"navire",
+				"retour",
+				"soin_arene"
+			],
+			"keep_order": true,
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"antidote": 1,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "directe + navire, soin avant Major Bob, attentif",
+			"player": "attentif",
+			"center": true,
+			"retries": 5,
+			"optional": [
+				"navire",
+				"retour",
+				"soin_arene"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"antidote": 1,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "directe + navire, soin avant Major Bob, expert",
+			"player": "expert",
+			"center": true,
+			"retries": 5,
+			"optional": [
+				"navire",
+				"retour",
+				"soin_arene"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"antidote": 1,
+				"paralyze_heal": 1
+			}
+		}
+	]
+}

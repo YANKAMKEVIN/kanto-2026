@@ -1,0 +1,11 @@
+{
+	"rondoudou": {
+		"cell": [4, 5], "facing": "down", "sprite": "pokemon/jigglypuff"
+	},
+	"enfant": {
+		"cell": [7, 6], "facing": "left", "sprite": "kid", "dialogue": "pokemon_house_kid"
+	},
+	"nidoran_f": {
+		"cell": [4, 7], "facing": "up", "sprite": "pokemon/nidoran_f"
+	}
+}

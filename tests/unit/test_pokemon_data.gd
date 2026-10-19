@@ -73,24 +73,27 @@ func test_real_data_loads_without_error() -> void:
 		&"pidgey", &"pidgeotto", &"pidgeot", &"rattata", &"raticate", &"spearow", &"fearow",
 		&"ekans", &"arbok", &"pikachu", &"raichu", &"sandshrew", &"sandslash", &"nidoran_f",
 		&"nidorina", &"nidoqueen", &"nidoran_m", &"nidorino", &"nidoking", &"clefairy",
-		&"clefable", &"jigglypuff", &"wigglytuff", &"zubat", &"golbat", &"oddish", &"gloom",
-		&"paras", &"parasect",
+		&"clefable", &"vulpix", &"jigglypuff", &"wigglytuff", &"zubat", &"golbat", &"oddish",
+		&"gloom", &"paras", &"parasect",
+		# Jalon 17 (T7) : Taupiqueur, Triopikeur ; plus loin Goupix, Caninos, Magnéti, Magnéton,
+		# Soporifik, Hypno (kanto_j17.json).
+		&"diglett", &"dugtrio",
 		# Jalon 15 (T12) : Miaouss et Persan (kanto_vermilion.json).
 		&"meowth", &"persian",
-		&"mankey", &"primeape",
-		# Jalon 19 (T3) : Caninos, Fantominus, Spectrum, Noeunoeuf, Osselait, Ossatueur, Léviator
-		# (kanto_tower.json).
-		&"growlithe",
-		&"abra", &"kadabra", &"machop",
+		&"mankey", &"primeape", &"growlithe", &"abra", &"kadabra", &"machop",
 		&"bellsprout", &"weepinbell",
-		&"geodude", &"graveler", &"golem", &"shellder", &"gastly", &"haunter", &"onix",
-		&"voltorb", &"exeggcute", &"cubone", &"marowak", &"koffing",
+		&"geodude", &"graveler", &"golem", &"magnemite", &"magneton", &"shellder",
+		# Jalon 19 (T3) : Fantominus, Spectrum, Noeunoeuf, Osselait, Ossatueur, Léviator
+		# (kanto_tower.json ; Caninos vient du J17).
+		&"gastly", &"haunter", &"onix",
+		&"drowzee", &"hypno", &"voltorb", &"exeggcute", &"cubone", &"marowak", &"koffing",
 		&"horsea", &"goldeen", &"staryu", &"starmie", &"gyarados"] as Array[StringName])
-	assert_eq(_data.get_move_ids().size(), 114,
+	assert_eq(_data.get_move_ids().size(), 120,
 		"47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10) + Patience (J11) "
 		+ "+ 21 du Mont Sélénite (jalon 12) + 8 du jalon 13 (les 5 du J12 qu'il reprenait : "
-		+ "entrées du J12) + 6 du Cap d'Azuria (jalon 14) + Jackpot (J15) + 11 de la Tour "
-		+ "Pokémon (J19)")
+		+ "entrées du J12) + 6 du Cap d'Azuria (jalon 14) + Jackpot (J15) "
+		+ "+ Coupe et Tonnerre (jalon 16) + 7 du jalon 17 + 8 de la Tour Pokémon (J19 ; "
+		+ "Hypnose, Hurlement et Bélier viennent du J17)")
 	assert_true(_data.has_move(&"struggle"))
 
 
@@ -157,8 +160,11 @@ func test_real_evolution_chains() -> void:
 		&"abra": [&"kadabra", 16],
 		# Carmin-sur-Mer (jalon 15, §2.7.1) : Rouge/Bleu.
 		&"meowth": [&"persian", 28],
-		# Tour Pokémon (jalon 19, §2.12) : Rouge/Bleu. Spectrum (échange, Ectoplasma absent),
-		# Caninos et Noeunoeuf (pierres absentes) n'en déclarent pas.
+		# Jalon 17 (§2.12.1) : Rouge/Bleu ; Caninos et Goupix (Pierre Feu absente) n'en déclarent
+		# pas.
+		&"diglett": [&"dugtrio", 26], &"drowzee": [&"hypno", 26], &"magnemite": [&"magneton", 30],
+		# Tour Pokémon (jalon 19, §2.12) : Rouge/Bleu. Spectrum (échange, Ectoplasma absent) et
+		# Noeunoeuf (Pierre Plante absente) n'en déclarent pas.
 		&"gastly": [&"haunter", 25], &"cubone": [&"marowak", 28],
 	}
 	for id: StringName in _data.get_species_ids():
@@ -430,8 +436,11 @@ func test_real_catch_rates_are_the_official_ones() -> void:
 		&"abra": 200, &"kadabra": 100, &"machop": 180,
 		# Jalon 15 (T12).
 		&"meowth": 255, &"persian": 90,
-		# Jalon 19 (T3, Tour Pokémon).
-		&"growlithe": 190, &"gastly": 190, &"haunter": 90, &"exeggcute": 90, &"cubone": 190,
+		# Jalon 17 (T7).
+		&"diglett": 255, &"dugtrio": 50, &"drowzee": 190, &"hypno": 75, &"magnemite": 190,
+		&"magneton": 60, &"growlithe": 190, &"vulpix": 190,
+		# Jalon 19 (T3, Tour Pokémon ; Caninos vient du J17).
+		&"gastly": 190, &"haunter": 90, &"exeggcute": 90, &"cubone": 190,
 		&"marowak": 75, &"gyarados": 45,
 	}
 	assert_eq(_data.get_species_ids().size(), expected.size(), "toutes les espèces")

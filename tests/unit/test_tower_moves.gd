@@ -29,10 +29,12 @@ const VALUES := {
 ## Effets que le moteur ne joue pas encore : la capacité le dit (convention des jalons 12 à 15).
 ## Vide depuis le jalon 19 (Dévorêve, Hurlement, Bélier, Ultralaser : `test_moves_j19_effects.gd`).
 const PENDING := {}
-## Capacités que le J17 définit aussi (`j17.json`, ses entrées feront foi à T10).
-const FROM_J17_AT_T10 := [&"take_down", &"roar"]
-## Descriptions du lot §15.7 (validé par Kevin le 2026-10-15), par nom affiché.
-const VALIDATED := [&"lick", &"night_shade", &"hypnosis", &"bone_club", &"dragon_rage"]
+## Capacités que le J17 définit aussi : depuis T10, ses entrées de `j17.json` font foi (règle
+## d'ancienneté ; le J19 y a seulement porté les effets de Bélier et de Hurlement).
+const FROM_J17_AT_T10 := [&"take_down", &"roar", &"hypnosis"]
+## Descriptions du lot §15.7 (validé par Kevin le 2026-10-15), par nom affiché. Hypnose garde
+## le texte du J17 (T10) : celui du §15.7 n'est plus joué.
+const VALIDATED := [&"lick", &"night_shade", &"bone_club", &"dragon_rage"]
 
 var _data: PokemonData
 var _rng: Kit.ScriptedRng
@@ -59,8 +61,8 @@ func test_values_are_the_current_ones() -> void:
 			continue
 		assert_eq([move.name, move.type, move.category, move.power, move.accuracy, move.pp],
 			VALUES[id], String(id))
-		# Bélier et Hurlement passeront à `j17.json` à T10 (le J17 est plus ancien) : seule la
-		# valeur compte pour eux, pas le fichier.
+		# Bélier, Hurlement et Hypnose sont dans `j17.json` depuis T10 (le J17 est plus
+		# ancien) : seule la valeur compte pour eux, pas le fichier.
 		if not FROM_J17_AT_T10.has(id):
 			assert_eq(move.source, "res://data/pokemon/moves/tower.json", String(id))
 		var pending: Array = PENDING.get(id, [])

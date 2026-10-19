@@ -1,0 +1,32 @@
+{
+	"ss_anne_captain": {
+		"speaker": "Capitaine",
+		"variants": [
+			{ "unless": ["got_hm01"], "cutscene": "ss_anne_captain" },
+			{ "pages": ["Merci encore !", "Profite bien de la traversée."] }
+		]
+	},
+	"ss_anne_captain_sick": {
+		"speaker": "Capitaine",
+		"pages": ["Ooh… ce roulis…", "Le capitaine qui a le mal de mer… C'est le comble."]
+	},
+	"ss_anne_captain_rub": {
+		"narration": true,
+		"pages": ["Tu lui frottes doucement le dos."]
+	},
+	"ss_anne_captain_relieved": {
+		"speaker": "Capitaine",
+		"pages": ["Ah… merci. Ça va beaucoup mieux."]
+	},
+	"ss_anne_captain_gift": {
+		"speaker": "Capitaine",
+		"pages": ["Tiens, prends ça. C'est la CS01, Coupe."]
+	},
+	"ss_anne_captain_gift_use": {
+		"speaker": "Capitaine",
+		"pages": [
+			"Avec elle, un Pokémon de ton équipe peut tailler les petits arbres. Il faut le Badge Cascade, par contre.",
+			"Tu peux aussi la lui apprendre, comme une CT."
+		]
+	}
+}

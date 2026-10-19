@@ -33,6 +33,9 @@ entre cartes, rebord unique, eau et ponts, Centre premier bâtiment, rival, Ondi
 **Azuria après J14** (variante `J14` de `azuria.txt`, jalon 14 T20a) : `plan_check_azuria_j14.py`,
 lancé à part (jardin, impasse, poursuite, vue du Rocket, aucune case coincée, sortie sud).
 
+**Azuria après J18** (variante `J18` de `azuria.txt`, cumulative sur J14, dossier 21 §9) :
+`plan_check_azuria_j18.py`, lancé à part (arbre à couper, raccord est sur la Route 9).
+
 **Route 25** (`route_25.txt`, jalon 14) : `verifier_route_25`, dans `plan_check_route_25.py`
 (raccord ouest, maison de Léo, D1 et D2 inévitables, H3 obligatoire, rebord de la terrasse,
 largeur du chemin, durée de traversée).
@@ -238,10 +241,24 @@ def verifier_route_2(chemin: Path) -> bool:
 	for p in plan.positions.values():
 		for c in p.cells:
 			car = plan.at(*c)
-			if p.kind in ("objet_cache", "spawn", "repere") and car not in ".=":
+			# Jalon 17 : un repère à `flag=` (barrière de FUTUR B) repose sur sa case « B ».
+			if p.kind in ("objet_cache", "spawn", "repere") and car not in ".=" \
+					and "flag" not in p.attrs:
 				critere(False, f"{p.ident} sur « {car} » en {c} (herbe rase ou chemin attendus)")
 			if p.kind in ("pnj", "pokemon", "objet_visible") and car not in ".=":
 				critere(False, f"{p.ident} sur « {car} » en {c} (case praticable attendue)")
+	# Jalon 17 : les cases libérées par un drapeau (arbuste de FUTUR A, barrière de FUTUR B) sont
+	# des obstacles dans l'état initial ; un objet derrière l'une d'elles s'atteint une fois levée.
+	liberees = {c for p in plan.positions.values() if "flag" in p.attrs for c in p.cells}
+
+	class Ouvert(Monde):
+		def libre(self, c: Case) -> bool:
+			if c in liberees:
+				return 0 <= c[0] < self.plan.width and 0 <= c[1] < self.plan.height
+			return super().libre(c)
+
+	ouvert = Ouvert(plan)
+	dist_ouvert = ouvert.distances(entree)
 	cibles = [p for p in plan.positions.values() if p.kind in ("objet_visible", "objet_cache")]
 	for p in cibles:
 		c = p.cells[0]
@@ -249,7 +266,14 @@ def verifier_route_2(chemin: Path) -> bool:
 			((c[0] + dx, c[1] + dy) for dx, dy in DIRECTIONS
 			if monde.libre((c[0] + dx, c[1] + dy)) and (c[0] + dx, c[1] + dy) in dist), None)
 		if acces is None or acces not in dist:
-			critere(False, f"{p.ident} {c} inaccessible")
+			derriere = next(((c[0] + dx, c[1] + dy) for dx, dy in DIRECTIONS
+				if ouvert.libre((c[0] + dx, c[1] + dy))
+				and (c[0] + dx, c[1] + dy) in dist_ouvert), None)
+			if derriere is None:
+				critere(False, f"{p.ident} {c} inaccessible")
+			else:
+				critere(True, f"{p.ident} {c} derrière une case libérée par un drapeau : "
+					f"atteint en {dist_ouvert[derriere]} pas une fois levée")
 	if ok:
 		print("  positions : cohérentes")
 	return ok
@@ -637,6 +661,14 @@ def _azuria(nom: str):
 	return verifier
 
 
+def _j18(nom: str):
+	"""Grilles du jalon 18 (dossier 21) : profils dans `plan_check_<nom>.py` (import tardif)."""
+	def verifier(chemin: Path) -> bool:
+		import importlib
+		return getattr(importlib.import_module(f"plan_check_{nom}"), f"verifier_{nom}")(chemin)
+	return verifier
+
+
 def verifier_route_25(chemin: Path) -> bool:
 	"""Route 25 et Cap d'Azuria (jalon 14) : profil dans `plan_check_route_25.py`."""
 	from plan_check_route_25 import verifier_route_25 as verifier
@@ -645,7 +677,7 @@ def verifier_route_25(chemin: Path) -> bool:
 
 VERIFICATEURS = {"route_2": verifier_route_2, "viridian_forest": verifier_foret,
 	"route_3": verifier_route_3, "route_25": verifier_route_25, "route_6": verifier_route_6,
-	"vermilion_city": verifier_vermilion_city,
+	"vermilion_city": verifier_vermilion_city, "route_9": _j18("route_9"), "route_10": _j18("route_10"),
 	**{n: _azuria(n) for n in ("route_4", "azuria", "route_24", "azuria_arene", "azuria_velos",
 		"azuria_maison")}}
 

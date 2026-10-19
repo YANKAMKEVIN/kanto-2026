@@ -1,0 +1,120 @@
+# Lavanville (lavender_town) — grille fonctionnelle v1 (jalon 18, dossier 21 §6, §13.1, §14,
+# §15.3 ; préparée le 2026-10-14 pour la vue générale peinte). Source UNIQUE de la géométrie :
+# plan en aplats (tools/art/plan_apercu_j18.py), vue générale peinte, puis outil de construction
+# et tests du J18 (18C). Un changement de composition se fait ICI d'abord. Contrôle :
+# tools/art/plan_check_lavanville.py.
+#
+# 44 × 36 cases (dossier 21 I-19) ; nord en haut ; x = colonne 0..43, y = rangée 0..35.
+#
+# RACCORD NORD (route_10 secteur sud) : 3 CASES, (21..23, 0) ↔ bord SUD de la Route 10 :
+#   (21..23, 75) (mêmes colonnes ; route_10.txt et dossier 21 §13.1 font foi : « raccord aligné en
+#   colonnes 21..23 »). Les warps sont par cellule et par spawn ; l'avenue de Lavanville, le
+#   sentier du secteur sud et la sortie de la grotte sont ainsi dans l'axe. Spawns : « from_route_10 »
+#   ici (21..23, 0) tourné ↓ ; « from_lavender » sur route_10 (21..23, 75) tourné ↑.
+#   (Commentaire corrigé au jalon 18 T14, plan §0.2 n° 9 : il citait (15..17, 75) ; les positions
+#   de la grille étaient justes.) L'avenue (x 21..23) est à 3 cases de large sur
+#   toute la hauteur : la Tour domine l'angle nord-est, la silhouette se voit dès l'arrivée.
+# OUEST : (0, 10..12) bord FERMÉ « ROUTE 8 — À venir » (coming_soon, développement) ;
+# SUD : (21..23, 35) bord FERMÉ « ROUTE 12 — À venir ». Aucun PNJ ni texte n'annonce autre chose
+#   (I-18) ; en release les bords sont simplement bloqués.
+#
+# Composition (§6) :
+#   - AVENUE x 21..23, du bord nord au bord sud (pavée, 3 de large) ; RUE 1 y 10..12 (de l'ouest à
+#     l'avenue), PARVIS de la Tour y 11..13 (x 24..42), RUE 2 y 22..24 (x 3..42). Tout à angles droits.
+#   - LA TOUR (U) : 12 × 11, nord-est (x 29..40, y 0..10), la plus haute emprise de la carte ; porte
+#     de 2 cases au SUD (34..35, 10) sur le parvis ; flancs : haies et massif de fleurs pâles.
+#   - Rangée nord-ouest : Maison 1 (m, x 3..9, y 4..9, porte (6, 9)) et Maison des Pokémon (F,
+#     8 × 7, x 11..18, y 3..9, portes (14..15, 9)), sur la rue 1.
+#   - Rangée centrale : Centre (C, x 5..12, y 15..21, portes (8..9, 21)), JARDIN de haies et
+#     de fleurs avec un banc (x 14..19, y 15..21), Boutique (O, x 27..34, portes (30..31, 21)),
+#     Maison 2 (N, x 36..42, y 16..21, porte (39, 21)), sur la rue 2.
+#   - Sud : deux petits squares de pelouse (haies, fleurs, banc, 3 arbres au total) de part et d'autre
+#     de l'avenue ; l'avenue se ferme sur le bord « ROUTE 12 — À venir ».
+#   Nature « dense, objets rares » (dossier 01) : ceinture de forêt, haies taillées, fleurs pâles ;
+#   4 arbres repères (G) seulement.
+# Emprises de bâtiments (comme Azuria) : toute l'image, bloquée ; Centre et Boutique 8 × 7
+# réutilisés (porte = 4e et 5e colonnes du bas) ; Maison des Pokémon 8 × 7 (neuve, mêmes portes) ;
+# maisons 7 × 6 (porte = 4e colonne) ; Tour 12 × 11 (porte = 6e et 7e colonnes).
+#
+# Légende :
+#   T forêt et bordure d'arbres (bloquée)   . pelouse   p pavé (praticable)   x haie (bloquée)
+#   y massif de fleurs pâles (bloqué)   n banc (bloqué)   G arbre repère (bloqué)
+#   C Centre Pokémon  O Boutique  F Maison des Pokémon (M. Fuji)  m Maison 1  N Maison 2
+#   U Tour Pokémon  (emprises bloquées)
+#   D porte d'un bâtiment (praticable, STEP_ON ↑)
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 44 caractères), puis POSITIONS.
+
+PRATICABLES .pD
+
+GRILLE 44 36
+00 TTTTTTTTTTTTTTTTTTTTTpppxxxTTUUUUUUUUUUUUxTT
+01 TTTTTTTTTTTTTTTTTTTTTpppxxxTTUUUUUUUUUUUUxTT
+02 TTTTTTTTTTTTTTTTTTTTTpppxxxTTUUUUUUUUUUUUxTT
+03 TTTxxxxxxxxFFFFFFFFxxppp.xxTTUUUUUUUUUUUUxTT
+04 TTTmmmmmmmxFFFFFFFFxxppp.yxTTUUUUUUUUUUUUxTT
+05 TTTmmmmmmmxFFFFFFFFxxppp.yxTTUUUUUUUUUUUUxTT
+06 TTTmmmmmmmxFFFFFFFFxxpppxyxTTUUUUUUUUUUUUxTT
+07 TTTmmmmmmmxFFFFFFFFxxpppxyxTTUUUUUUUUUUUUxTT
+08 TTTmmmmmmmxFFFFFFFFxxpppxyxTTUUUUUUUUUUUUxTT
+09 TTTmmmDmmmxFFFDDFFFxxpppxyxTTUUUUUUUUUUUUxTT
+10 ppppppppppppppppppppppppxxxxxUUUUUDDUUUUUxTT
+11 pppppppppppppppppppppppppppppppppppppppppppT
+12 pppppppppppppppppppppppppppppppppppppppppppT
+13 TTTxxxxxxxxxxxxxxxxxxpppppppppppppppppnnpppT
+14 TTTyyyyyyyyyyyyyyyyyxpppxxxxxxxxxxxxxxxxxxxx
+15 TTT..CCCCCCCCxyyyyyyxpppyyyOOOOOOOOxyyyyyyyT
+16 TTT..CCCCCCCCx......xpppxxxOOOOOOOOxNNNNNNNT
+17 TTT..CCCCCCCCx.G....xpppxxxOOOOOOOOxNNNNNNNT
+18 TTT..CCCCCCCCx..nn..xpppxxxOOOOOOOOxNNNNNNNT
+19 TTT..CCCCCCCCx.......pppxxxOOOOOOOOxNNNNNNNT
+20 TTT..CCCCCCCCx.y..y..pppxxxOOOOOOOOxNNNNNNNT
+21 TTT..CCCDDCCCx.......pppxxxOOODDOOOxNNNDNNNT
+22 TTTppppppppppppppppppppppppppppppppppppppppT
+23 TTTppppppppppppppppppppppppppppppppppppppppT
+24 TTTppppppppppppppppppppppppppppppppppppppppT
+25 TTTxxxxxxx...xxxxxxx.pppxxxxxxxxx...xxxxxxxT
+26 TTT.................xpppx..................T
+27 TTT..yy........nn...xpppx..yyy.............T
+28 TTT...yyy.....G.....xpppx...........yyy....T
+29 TTT.....xxxxxxx.....xpppx.....xxxxxxx...G..T
+30 TTT...nn............xpppx.....nn...........T
+31 TTT.............yy..xpppx.G...........nn...T
+32 TTT.G......yyy......xpppx..yyyyyyyyyyyyyyy.T
+33 TTT.................xpppx..yyyyyyyyyyyyyy..T
+34 TTTxxxxxxxxxxxxxxxxx.pppxxxxxxxxxxxxxxxxxxxT
+35 TTTTTTTTTTTTTTTTTTTTTpppTTTTTTTTTTTTTTTTTTTT
+FIN
+
+# POSITIONS (défauts du 2026-10-14, ajustables au plan du J18) — une ligne par élément :
+#   identifiant  type  cases  bloque|libre  [cle=valeur ...]  # commentaire
+POSITIONS
+warp_nord            warp           21..23,0     libre   # PUSH ↑ → route_10, from_lavender (Route 10 sud (21..23, 75))
+from_route_10        spawn          21..23,0     libre   # arrivée de la Route 10, tournée ↓
+warp_ouest           warp           0,10..12     libre   coming_soon=route_8  # « ROUTE 8 — À venir » (développement) ; en release, bord bloqué
+warp_sud             warp           21..23,35    libre   coming_soon=route_12  # « ROUTE 12 — À venir » (développement) ; en release, bord bloqué
+from_route_8         spawn          1,10..12     libre   # retour futur (Route 8), tournée → ; non utilisé au J18
+from_route_12        spawn          21..23,34    libre   # retour futur (Route 12), tournée ↑ ; non utilisé au J18
+legende_arrivee      declencheur    21..23,1     libre   # légende « LAVANVILLE / La ville où reposent les souvenirs » (T-17), une fois, tout pas vers le bas sur la 2e rangée
+porte_centre         warp           8..9,21      libre   # STEP_ON ↑ → lavender_center
+porte_boutique       warp           30..31,21    libre   # STEP_ON ↑ → lavender_mart
+porte_fuji           warp           14..15,9     libre   # STEP_ON ↑ → pokemon_house (Maison des Pokémon, ouverte)
+porte_maison_1       warp           6,9          libre   # STEP_ON ↑ → lavender_house_1
+porte_maison_2       warp           39,21        libre   # STEP_ON ↑ → lavender_house_2
+porte_tour           warp           34..35,10    libre   # STEP_ON ↑ → pokemon_tower_1f, from_lavender
+retour_centre        spawn          8..9,22      libre   # tournée ↓ (sortie du Centre)
+retour_boutique      spawn          30..31,22    libre
+retour_fuji          spawn          14..15,10    libre
+retour_maison_1      spawn          6,10         libre
+retour_maison_2      spawn          39,22        libre
+retour_tour          spawn          34..35,11    libre
+panneau_ville        panneau        24,4         bloque  # T-18 « LAVANVILLE / Une ville noble et paisible. », lu depuis (23, 4) →
+panneau_tour         panneau        33,11        bloque  # T-19 « TOUR POKÉMON / Ici reposent les Pokémon aimés. », lu depuis (33, 12) ↑
+panneau_fuji         panneau        17,10        bloque  # T-20 « MAISON DES POKÉMON / … », lu depuis (17, 11) ↑
+panneau_scope_j19    repere         42,11        libre   # RÉSERVÉ au J19 (dossier 22 K-16) : panneau du Scope Sylphe, posé et bloquant au J19, lu depuis (41, 11) → ; rien au J18
+l1_fillette          pnj            22,18        bloque  role=L1 facing=down  # T-21, fillette qui court (RB) : va et vient sur l'avenue (reste 2 cases libres)
+l2_jeune_homme       pnj            31,12        bloque  role=L2 facing=up  # T-22, regarde la Tour depuis le parvis (reste 2 rangées libres)
+l3_passant           pnj            13,11        bloque  role=L3 facing=right  # T-23, passant, rue 1
+l4_femme_bouquet     pnj            36,12        bloque  role=L4 facing=left  # T-24, femme au bouquet de fleurs blanches, parvis, en route vers la porte (34..35, 10)
+tour_silhouette      repere         29..40,0..10 libre   role=vue  # repère : la Tour, vue de la Route 10 sud (I-16)
+FIN

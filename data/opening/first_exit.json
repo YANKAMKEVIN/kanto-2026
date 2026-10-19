@@ -1,6 +1,13 @@
 {
-	"_note": "Légende de la toute première sortie (dossier 13 A12 et §8 point 8, validé par Kevin le 2026-10-10 ; OUV.3). En arrivant sur « map » depuis « from » par une porte, alors que « map » n'a encore jamais été découverte dans la partie (discovered_maps), le titre de zone affiche « subtitle » au lieu de la région (« Kanto »). Aucune donnée de sauvegarde : une partie qui a déjà découvert la carte ne la verra jamais ; jamais au démarrage ni en reprise. Voir FirstExitCaption.",
-	"map": "pallet_town",
-	"from": "player_house_1f",
-	"subtitle": "Le commencement de toute aventure"
+	"_note": "Légende de la toute première sortie (dossier 13 A12 et §8 point 8, validé par Kevin le 2026-10-10 ; OUV.3), puis de la toute première arrivée à Lavanville (dossier 21 §6.5, T-17, validé le 2026-10-14 ; jalon 18 T24). En arrivant sur « map » depuis « from » par une porte ou un raccord, alors que « map » n'a encore jamais été découverte dans la partie (discovered_maps), le titre de zone affiche « subtitle » au lieu de la région. Aucune donnée de sauvegarde : une partie qui a déjà découvert la carte ne la verra jamais ; jamais au démarrage, en reprise ni à un départ de débogage. Voir FirstExitCaption.",
+	"arrivals": [
+		{
+			"map": "pallet_town", "from": "player_house_1f",
+			"subtitle": "Le commencement de toute aventure"
+		},
+		{
+			"map": "lavender_town", "from": "route_10",
+			"subtitle": "La ville où reposent les souvenirs"
+		}
+	]
 }

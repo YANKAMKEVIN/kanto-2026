@@ -29,7 +29,16 @@ contraste WCAG moyen, pixel par pixel, entre le héros et le sol qu'il recouvre 
 Forêt de Jade, `heros_foret`).
 
     python3 tools/art/luminance_grotte.py build/captures/mt_moon [--json resultat.json]
+    python3 tools/art/luminance_grotte.py --halo build/captures/flash [--json resultat.json]
 Code de sortie 1 si un seuil n'est pas tenu.
+
+Option `--halo` (J17 T25, voile d'obscurité) : mesure les captures de `tools/capture_flash.sh`
+(voile posé sur une grotte de `PLANS` ; la carte de QA `qa_flash` est retirée au J17 T28 ;
+J18 : Grotte Sombre, `tools/capture_dark_cave_voile.sh` ; nom
+`<sans_voile|dark|lit>_<lieu>.png` + `_vide`) : contraste du héros ≥ 3,0 dans le halo (héros
+contre le sol qu'il recouvre) et **sol hors du halo ≥ 0,10** (cases praticables entièrement à
+l'écran, plus loin du joueur que la fin du fondu : 4 cases sans Flash, 9 avec ;
+non mesuré sans voile ni si aucune case n'est assez loin).
 """
 from __future__ import annotations
 
@@ -48,13 +57,21 @@ PLANS = {
 	"mt_moon_1f": "tools/plans/mont_selenite_1f.txt",
 	"mt_moon_b1f": "tools/plans/mont_selenite_b1f.txt",
 	"mt_moon_b2f": "tools/plans/mont_selenite_b2f.txt",
+	"digletts_cave": "tools/plans/digletts_cave.txt",
+	"dark_cave_1f": "tools/plans/grotte_sombre_1f.txt",
+	"dark_cave_b1f": "tools/plans/grotte_sombre_b1f.txt",
 }
-SOL = set(".gjUVE")
+SOL = set(".gjUVEe")
 PAROI = set("#*")
 SEUIL_SOL = 0.22
 SEUIL_RAPPORT = 2.0
 SEUIL_HEROS = 3.0
 SEUIL_ECART = 1.25
+# Cartes sans voile de pénombre (Cave Taupiqueur, J17 T15 : lumière naturelle, aucun voile) : l'écart
+# centre / pourtour est donné pour information, il n'y a pas de pénombre à mesurer.
+SANS_VOILE = {"digletts_cave"}
+SEUIL_HORS_HALO = 0.10
+FONDU = {"dark": 4.0, "lit": 9.0}  # fin du fondu du halo (cases), data/world/darkness.json
 REPERES = set("LjUVE*")
 RAYON_JOUEUR = 2.5
 RAYON_REPERE = 2.0
@@ -183,7 +200,8 @@ def mesurer(png: Path, fiche: dict) -> dict | None:
 	plancher = min(proches) if proches else resultat["sol"]
 	resultat["rapport_proche"] = round(plancher / max(resultat["paroi"], 1e-6), 2)
 	resultat["ok"] = plancher >= SEUIL_SOL and resultat["rapport_proche"] >= SEUIL_RAPPORT \
-		and (resultat["ecart"] is None or resultat["ecart"] >= SEUIL_ECART)
+		and (fiche["map"] in SANS_VOILE or resultat["ecart"] is None
+			or resultat["ecart"] >= SEUIL_ECART)
 	vide = png.with_name(png.stem + "_vide.png")
 	if joueur and vide.exists():
 		resultat["contraste_heros"] = contraste_heros(image, Image.open(vide).convert("RGB"),
@@ -220,11 +238,77 @@ def contraste_heros(image, vide, joueur, tuile, ox, oy) -> float | None:
 	return round(sum(rapports) / len(rapports), 2)
 
 
+def mesurer_halo(png: Path, fiche: dict) -> dict | None:
+	if fiche["map"] not in PLANS or not fiche.get("player"):
+		return None
+	vide = png.with_name(png.stem + "_vide.png")
+	if not vide.exists():
+		return None
+	plan = plan_grille.lire(RACINE / PLANS[fiche["map"]])
+	image = Image.open(png).convert("RGB")
+	tuile = int(fiche["tile"])
+	cx, cy = fiche["center"]
+	ox, oy = cx - image.width / 2.0, cy - image.height / 2.0
+	joueur = tuple(fiche["player"])
+	etat = png.stem.split("_")[0]
+	resultat = {"vue": png.stem, "etat": etat, "hors_halo": None, "cases_hors_halo": 0,
+		"contraste_heros": contraste_heros(image, Image.open(vide).convert("RGB"), joueur,
+			tuile, ox, oy)}
+	if etat in FONDU:
+		valeurs = []
+		for y in range(plan.height):
+			for x in range(plan.width):
+				if plan.rows[y][x] not in SOL:
+					continue
+				x0, y0 = round(x * tuile - ox), round(y * tuile - oy)
+				if x0 < 0 or y0 < 0 or x0 + tuile > image.width or y0 + tuile > image.height:
+					continue
+				if ((x - joueur[0]) ** 2 + (y - joueur[1]) ** 2) ** 0.5 <= FONDU[etat] + 1.0:
+					continue
+				if plan.rows[y][x] == "g":
+					continue
+				valeurs.append(moyenne_case(image, (x0, y0, x0 + tuile, y0 + tuile)))
+		if valeurs:
+			resultat["hors_halo"] = round(sum(valeurs) / len(valeurs), 4)
+			resultat["cases_hors_halo"] = len(valeurs)
+	ok = resultat["contraste_heros"] is not None and resultat["contraste_heros"] >= SEUIL_HEROS
+	if resultat["hors_halo"] is not None:
+		ok = ok and resultat["hors_halo"] >= SEUIL_HORS_HALO
+	# Sans voile : vue de référence (aucun halo), donnée pour information.
+	resultat["ok"] = ok or etat not in FONDU
+	return resultat
+
+
+def main_halo(args) -> int:
+	resultats = []
+	for fiche_path in sorted(args.dossier.glob("*.json")):
+		png = fiche_path.with_suffix(".png")
+		if not png.exists() or fiche_path.stem.endswith("_vide"):
+			continue
+		mesure = mesurer_halo(png, json.loads(fiche_path.read_text()))
+		if mesure:
+			resultats.append(mesure)
+	print(f"{'vue':20} {'héros':>6} {'hors halo':>9} {'cases':>5}")
+	for r in resultats:
+		h = r["contraste_heros"]
+		o = r["hors_halo"]
+		print(f"{r['vue']:20} {h if h is not None else '—':>6} "
+			f"{f'{o:9.3f}' if o is not None else '        —'} {r['cases_hors_halo']:5d} "
+			f"{'OK' if r['ok'] else 'ÉCHEC'}")
+	print(f"seuils : héros ≥ {SEUIL_HEROS} (dans le halo), sol hors du halo ≥ {SEUIL_HORS_HALO}")
+	if args.json:
+		args.json.write_text(json.dumps(resultats, indent="\t", ensure_ascii=False))
+	return 1 if not resultats or any(not r["ok"] for r in resultats) else 0
+
+
 def main() -> int:
 	parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
 	parser.add_argument("dossier", type=Path)
 	parser.add_argument("--json", type=Path)
+	parser.add_argument("--halo", action="store_true", help="captures du voile (tools/capture_flash.sh)")
 	args = parser.parse_args()
+	if args.halo:
+		return main_halo(args)
 	resultats = []
 	for fiche_path in sorted(args.dossier.glob("*.json")):
 		png = fiche_path.with_suffix(".png")

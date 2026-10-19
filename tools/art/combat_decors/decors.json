@@ -74,6 +74,69 @@
 		"taille": [2340, 1080],
 		"qualite": 90
 	},
+	"route_11_coast": {
+		"composition": "COMBAT_DECOR_ROUTE11_COTE_r1.png",
+		"tuiles": [
+			{ "image": "COMBAT_DECOR_ROUTE11_COTE_r1_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "COMBAT_DECOR_ROUTE11_COTE_r1_TR.png", "portion": [846, 0, 1846, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"ss_anne_salon": {
+		"composition": "COMBAT_DECOR_SS_ANNE_SALON_r1.png",
+		"tuiles": [
+			{ "image": "COMBAT_DECOR_SS_ANNE_SALON_r1_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "COMBAT_DECOR_SS_ANNE_SALON_r1_TR.png", "portion": [846, 0, 1846, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"route_9_roche": {
+		"composition": "COMBAT_DECOR_ROUTE9_r1.png",
+		"tuiles": [
+			{ "image": "COMBAT_DECOR_ROUTE9_r1_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "COMBAT_DECOR_ROUTE9_r1_TR.png", "portion": [846, 0, 1846, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"digletts_cave_rock": {
+		"composition": "COMBAT_DECOR_CAVE_TAUPIQUEUR_r1.png",
+		"tuiles": [
+			{ "image": "COMBAT_DECOR_CAVE_TAUPIQUEUR_r1_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "COMBAT_DECOR_CAVE_TAUPIQUEUR_r1_TR.png", "portion": [846, 0, 1846, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"ss_anne_pont": {
+		"composition": "COMBAT_DECOR_SS_ANNE_PONT_r1.png",
+		"tuiles": [
+			{ "image": "COMBAT_DECOR_SS_ANNE_PONT_r1_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "COMBAT_DECOR_SS_ANNE_PONT_r1_TR.png", "portion": [846, 0, 1846, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"vermilion_gym_salle": {
+		"composition": "COMBAT_DECOR_GYM_CARMIN_r1.png",
+		"tuiles": [
+			{ "image": "COMBAT_DECOR_GYM_CARMIN_r1_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "COMBAT_DECOR_GYM_CARMIN_r1_TR.png", "portion": [847, 0, 1847, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"dark_cave_galerie": {
+		"composition": "COMBAT_DECOR_GROTTE_SOMBRE_r2.png",
+		"tuiles": [
+			{ "image": "COMBAT_DECOR_GROTTE_SOMBRE_r2_TL.png", "portion": [0, 0, 1000, 860] },
+			{ "image": "COMBAT_DECOR_GROTTE_SOMBRE_r2_TR.png", "portion": [828, 0, 1828, 860] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
 	"tour_pokemon": {
 		"composition": "COMBAT_DECOR_TOUR_POKEMON_r1.png",
 		"tuiles": [

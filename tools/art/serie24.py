@@ -183,7 +183,7 @@ def preparer_tout() -> None:
 
 # --- Planche de contrôle : 5F recomposé à l'échelle du jeu -----------------------------------
 ## Les assets du J18 sont pris dans J18_ASSETS s'ils existent (après son T6), sinon l'art
-## provisoire actuel du dépôt (celui de build_pokemon_tower.gd) tient leur place.
+## provisoire actuel du dépôt (celui de build_pokemon_tower_floors.gd) tient leur place.
 J18_ASSETS = Path(os.environ.get("J18_ASSETS",
 	"/Users/kevinyankam/dev/kanto-2026/.claude/worktrees/j18-t1-kit/assets/world"))
 ROLES = {
@@ -234,7 +234,7 @@ def _bornee(im: Image.Image, largeur: float) -> Image.Image:
 
 
 def recomposer(etage: str) -> tuple[Image.Image, list[str]]:
-	"""Étage recomposé selon les règles de build_pokemon_tower.gd (faces au sud des `#` ouverts,
+	"""Étage recomposé selon les règles de build_pokemon_tower_floors.gd (faces au sud des `#` ouverts,
 	couronnements au nord, côtés, tombes, stèles, escaliers, dalle purifiée), héros 128 px."""
 	g, pos = _plan(etage)
 	h, w = len(g), len(g[0])

@@ -10,6 +10,9 @@ Les entrées sont incluses dans le notebook (base64) ; à la fin, kanto_dos_ia_v
 télécharge (images 1024 découpées + planche). Relancer la dernière cellule reprend sans refaire
 les images déjà produites.
 Usage : tools/art/ia/creer_notebook_colab_v2.py dossier_passes dossier_artworks sortie.ipynb
+        [--nums 050,051,096] [--sans-ipa 050,051] [--zip kanto_dos_t13.zip]
+--nums : seulement ces Pokémon ; --sans-ipa : pas d'artwork de face pour ceux-là (le dos diffère
+de la face : visage peint sur le dos) ; --zip : nom de l'archive téléchargée à la fin.
 """
 import base64
 import glob
@@ -23,7 +26,9 @@ from PIL import Image, ImageFilter
 TAILLE = 512
 NOMS = {"001": "bulbasaur", "004": "charmander", "007": "squirtle", "012": "butterfree",
 	"016": "pidgey", "025": "pikachu", "041": "zubat", "072": "tentacool", "081": "magnemite",
-	"093": "haunter", "095": "onix", "109": "koffing", "129": "magikarp"}
+	"093": "haunter", "095": "onix", "109": "koffing", "129": "magikarp",
+	"050": "diglett", "051": "dugtrio", "096": "drowzee"}
+SANS_IPA = [(0.0, 7), (0.0, 21), (0.0, 33), (0.0, 47)]  # (poids de l'artwork, graine)
 
 
 def b64(im):
@@ -32,7 +37,7 @@ def b64(im):
 	return base64.b64encode(tampon.getvalue()).decode()
 
 
-def entrees(dossier, artworks, num):
+def entrees(dossier, artworks, num, sans_ipa=False):
 	c = Image.open(f"{dossier}/dos3d_{num}.png").convert("RGBA").resize((TAILLE, TAILLE),
 		Image.LANCZOS)
 	blanc = Image.new("RGBA", c.size, (255, 255, 255, 255))
@@ -45,9 +50,12 @@ def entrees(dossier, artworks, num):
 	art = Image.open(f"{artworks}/{num}.png").convert("RGBA")
 	fond = Image.new("RGBA", art.size, (255, 255, 255, 255))
 	fond.alpha_composite(art)
-	return {"nom": NOMS.get(num, "pokemon"), "depart": b64(depart), "profondeur": b64(prof),
+	e = {"nom": NOMS.get(num, "pokemon"), "depart": b64(depart), "profondeur": b64(prof),
 		"traits": b64(traits), "alpha": b64(c.getchannel("A")),
 		"artwork": b64(fond.convert("RGB").resize((384, 384), Image.LANCZOS))}
+	if sans_ipa:
+		e["variantes"] = SANS_IPA
+	return e
 
 
 def cellule(type_, source):
@@ -61,9 +69,9 @@ INSTRUCTIONS = """# Kanto 2026 — dos des Pokémon repeints, v2
 
 1. **Exécution → Modifier le type d'exécution** : **GPU T4**, Enregistrer.
 2. **Exécution → Tout exécuter** (accepter l'avertissement).
-3. Environ **25 à 35 minutes** (13 Pokémon × 4 variantes, chacune repeinte puis agrandie).
+3. Environ **{minutes} minutes** ({n} Pokémon × 4 variantes, chacune repeinte puis agrandie).
    Garder l'onglet ouvert.
-4. À la fin, **kanto_dos_ia_v2.zip** se télécharge : le laisser dans **Téléchargements**.
+4. À la fin, **{zip}** se télécharge : le laisser dans **Téléchargements**.
 
 Si la session s'interrompt : **Exécution → Tout exécuter** à nouveau ; les images déjà
 produites sont gardées tant que la session n'a pas été réinitialisée.
@@ -142,7 +150,8 @@ for num, e in ENTREES.items():
     alpha_hd = alpha.resize((1024, 1024), Image.LANCZOS).filter(ImageFilter.MinFilter(5)) \\
         .filter(ImageFilter.GaussianBlur(1.0))
     ligne = [depart.convert("RGBA")]
-    for ipa, graine in VARIANTES:
+    variantes = [tuple(v) for v in e.get("variantes", VARIANTES)]
+    for ipa, graine in variantes:
         sortie = f"sorties/{num}_ipa{int(ipa*100)}_g{graine}.png"
         if not os.path.exists(sortie):
             base = peindre(depart, [prof, traits], artwork, e["nom"], FORCE, ipa, graine, 512)
@@ -159,36 +168,51 @@ for num, e in ENTREES.items():
 T = 220
 planche = Image.new("RGB", (T * 5, T * len(lignes) + 30), (235, 240, 232))
 d = ImageDraw.Draw(planche)
-for i, titre in enumerate(["rendu 3D"] + [f"artwork {int(a*100)} % · g{g}" for a, g in VARIANTES]):
+for i, titre in enumerate(["rendu 3D", "variante 1", "variante 2", "variante 3", "variante 4"]):
     d.text((i * T + 6, 8), titre, fill=(0, 0, 0))
 for r, (num, ligne) in enumerate(lignes):
     for i, im in enumerate(ligne):
         fond = Image.new("RGBA", im.size, (235, 240, 232, 255)); fond.alpha_composite(im.convert("RGBA"))
         planche.paste(fond.convert("RGB").resize((T, T)), (i * T, 30 + r * T))
-    d.text((4, 30 + r * T + 4), num, fill=(0, 0, 0))
+    d.text((4, 30 + r * T + 4), num + (" (sans artwork)" if ENTREES[num].get("variantes") else ""),
+        fill=(0, 0, 0))
 planche.save("sorties/planche.png")
 display(planche)
-with zipfile.ZipFile("kanto_dos_ia_v2.zip", "w") as z:
+with zipfile.ZipFile("@ZIP@", "w") as z:
     for f in os.listdir("sorties"):
         z.write(os.path.join("sorties", f), f)
 from google.colab import files
-files.download("kanto_dos_ia_v2.zip")"""
+files.download("@ZIP@")"""
 
 
 def main():
-	dossier, artworks, sortie = sys.argv[1:4]
+	args = sys.argv[1:]
+	def option(nom, defaut=""):
+		if nom in args:
+			i = args.index(nom)
+			valeur = args[i + 1]
+			del args[i:i + 2]
+			return valeur
+		return defaut
+	filtre = [n for n in option("--nums").split(",") if n]
+	sans_ipa = [n for n in option("--sans-ipa").split(",") if n]
+	archive = option("--zip", "kanto_dos_ia_v2.zip")
+	dossier, artworks, sortie = args[:3]
 	nums = sorted(os.path.basename(f)[6:9] for f in glob.glob(f"{dossier}/dos3d_???.png"))
-	donnees = {n: entrees(dossier, artworks, n) for n in nums}
+	if filtre:
+		nums = [n for n in nums if n in filtre]
+	donnees = {n: entrees(dossier, artworks, n, n in sans_ipa) for n in nums}
 	nb = {"nbformat": 4, "nbformat_minor": 5, "metadata": {"accelerator": "GPU",
 		"colab": {"gpuType": "T4", "provenance": []},
 		"kernelspec": {"name": "python3", "display_name": "Python 3"}},
 		"cells": [
-			cellule("markdown", INSTRUCTIONS),
+			cellule("markdown", INSTRUCTIONS.format(n=len(nums), zip=archive,
+				minutes=max(5, round(len(nums) * 2.5)))),
 			cellule("code", INSTALLER),
 			cellule("code", CHARGER),
 			cellule("code", "# Passes des dos 3D et artworks officiels, inclus.\n"
 				"ENTREES = " + json.dumps(donnees)),
-			cellule("code", GENERER),
+			cellule("code", GENERER.replace("@ZIP@", archive)),
 		]}
 	json.dump(nb, open(sortie, "w", encoding="utf-8"), ensure_ascii=False)
 	print(sortie, len(donnees), "Pokémon :", " ".join(nums))

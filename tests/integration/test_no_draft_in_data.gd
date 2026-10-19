@@ -7,9 +7,15 @@ extends GutTest
 const DATA_DIR := "res://data"
 ## Brouillons en attente de validation, nommés un par un (chemin relevé par [method _collect_drafts]).
 ## Une fois validés, retirer leur « draft » et les sortir d'ici (le test vérifie qu'ils sont
-## encore en brouillon). Jalon 19 (T3) : descriptions des capacités ajoutées pour les learnsets
-## complets, hors du lot §15.7 du dossier 22 : validées par Kevin le 2026-10-15. Jalon 19
-## (effets de capacités) : messages d'Ultralaser et de Hurlement validés par Kevin le 2026-10-16.
+## encore en brouillon). Vide depuis la validation de l'annexe A du jalon 17 (Q-2, 2026-10-16) :
+## fiches de Pokédex, accord de T-2 à une espèce, sous-titres (en attente de leurs cartes dans
+## `tools/pending_data/j17/zones.json`, sans « draft »).
+## Jalon 16 (T11) : description de la zone du S.S. Anne sur la Carte, validée le 2026-10-16.
+## Jalon 16 (décisions du 2026-10-16) : indice du guide de l'Arène de Carmin (type Sol contre
+## Major Bob), validé par Kevin le 2026-10-16.
+## Jalon 19 (T3) : descriptions des capacités ajoutées pour les learnsets complets, hors du lot
+## §15.7 du dossier 22 : validées par Kevin le 2026-10-15. Jalon 19 (effets de capacités) :
+## messages d'Ultralaser et de Hurlement validés par Kevin le 2026-10-16.
 const PENDING_DRAFTS: Array[String] = []
 
 

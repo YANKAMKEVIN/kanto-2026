@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_5g5on"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_jlspm"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_digue_bord_01.png" id="3_7m026"]
+
+[node name="ReliefDigueBord01" type="Node2D" unique_id=540182246]
+script = ExtResource("1_5g5on")
+footprint = Array[Vector2i]([])
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1982164110]
+unique_name_in_owner = true
+material = ExtResource("2_jlspm")
+texture = ExtResource("3_7m026")
+centered = false
+offset = Vector2(-96, -87)

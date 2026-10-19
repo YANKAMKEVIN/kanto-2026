@@ -19,6 +19,13 @@ func before_each() -> void:
 	_zones = ZoneLibrary.new()
 
 
+## Zones construites dont la description de la Carte attend la validation de Kevin. Vide depuis le
+## 2026-10-16 : description du S.S. Anne validée par Kevin (jalon 16, annexe A du plan, T3).
+const AWAITING_TEXTS: Array[StringName] = []
+const SS_ANNE_DESCRIPTION := "Un paquebot de croisière amarré au port de Carmin. Salons, " \
+	+ "cabines et ponts promenade : on s'y croirait déjà au large."
+
+
 ## Identifiants des cartes existantes (une scène par carte, MapCatalog).
 func _map_ids() -> Array[StringName]:
 	var ids: Array[StringName] = []
@@ -44,8 +51,10 @@ func _root_property(map_id: StringName, property: StringName) -> Variant:
 func test_real_data_loads_without_error() -> void:
 	assert_true(_zones.load_file(), "\n".join(_zones.get_errors()))
 	assert_eq(_zones.get_errors().size(), 0)
-	assert_eq(_zones.size(), 28, "Route 24 (jalon 13), Route 25 et Cap d'Azuria (jalon 14), "
-		+ "passage souterrain (jalon 15 T18), Route 6 (jalon 15 T14), Route 5 (jalon 15 T13)")
+	assert_eq(_zones.size(), 34, "Route 24 (jalon 13), Route 25 et Cap d'Azuria (jalon 14), "
+		+ "passage souterrain (jalon 15 T18), Route 6 (jalon 15 T14), Route 5 (jalon 15 T13), "
+		+ "S.S. Anne (jalon 16 T11), Cave Taupiqueur (jalon 17 T15), Route 11 (jalon 17 T16), "
+		+ "Routes 9 et 10 (jalon 18 T12), Grotte Sombre (jalon 18 T13)")
 
 
 func test_every_map_belongs_to_exactly_one_zone() -> void:
@@ -77,6 +86,11 @@ func test_interiors_belong_to_their_town() -> void:
 func test_zone_names_match_the_map_titles() -> void:
 	_zones.load_file()
 	for map_id: StringName in _map_ids():
+		if map_id == &"pokemon_tower_1f":
+			# Jalon 18 T14 : le rez-de-chaussée de la Tour garde son titre (plan §4.1), dans la
+			# zone de Lavanville (aucune zone propre : la Carte n'a pas de rectangle pour elle).
+			assert_eq(_root_property(map_id, &"display_name"), "Tour Pokémon")
+			continue
 		if AWAITING_ZONE.has(map_id) and _zones.zone_of(map_id) == &"":
 			continue
 		assert_eq(_root_property(map_id, &"display_name"), _zones.zone_name_of(map_id),
@@ -131,9 +145,12 @@ func test_built_zones_have_their_map_texts() -> void:
 		var zone := _zones.get_zone(id)
 		if not zone.maps.is_empty():
 			assert_false(zone.description.is_empty(), "%s : description" % id)
-			assert_false(zone.draft, "%s : textes validé par Kevin le 2026-10-06" % id)
+			assert_eq(zone.draft, AWAITING_TEXTS.has(id), "%s : textes validé par Kevin" % id)
 		assert_false(zone.description.contains("???"), id)
 		assert_false(zone.subtitle.contains("???"), id)
+	assert_eq(_zones.get_zone(&"ss_anne").description, SS_ANNE_DESCRIPTION,
+		"description du S.S. Anne validée par Kevin le 2026-10-16")
+	assert_false(_zones.get_zone(&"ss_anne").draft)
 	assert_eq(_zones.get_zone(&"route_1").subtitle, "Bourg Palette — Jadielle")
 	assert_eq(_zones.get_zone(&"route_1").subtitle, _root_property(&"route_1", &"region"),
 		"même connexion que le titre de zone en jeu")
@@ -141,7 +158,9 @@ func test_built_zones_have_their_map_texts() -> void:
 	# Jalon 8 (dossier 11, T1 et T14) : sous-titre = le panneau sud, comme la Route 1.
 	var route_2 := _zones.get_zone(&"route_2")
 	# Jalon 10 (Q-3) : la Route 2 nord est la 2e carte de la zone, textes inchangés.
-	assert_eq(route_2.maps, [&"route_2", &"route_2_north"] as Array[StringName])
+	# Jalon 17 (T19) : le couloir est et son poste (une seule Route 2 dans la Carte).
+	assert_eq(route_2.maps, [&"route_2", &"route_2_north", &"route_2_east",
+		&"route_2_east_gate"] as Array[StringName])
 	assert_eq(route_2.subtitle, "Jadielle — Forêt de Jade")
 	assert_eq(route_2.description,
 		"Un chemin bordé de prairies qui s'enfonce peu à peu sous les arbres.")
@@ -181,7 +200,7 @@ func test_service_catalog_and_the_services_of_viridian() -> void:
 	# Jalon 13 T7 : Azuria. Jalon 15 T14 : Carmin-sur-Mer (test_vermilion_city).
 	for id: StringName in _zones.get_ids():
 		if not id in [&"viridian_city", &"pewter_city", &"mt_moon", &"cerulean_city",
-				&"vermilion_city", &"route_5"]:
+				&"vermilion_city", &"route_5", &"route_10", &"lavender_town"]:
 			assert_true(_zones.get_zone(id).services.is_empty(), "%s : aucun service" % id)
 	var mt_moon := _zones.get_zone(&"mt_moon").services
 	assert_eq(mt_moon.size(), 1, "Mont Sélénite : le Centre seul (sans Boutique)")
@@ -250,6 +269,25 @@ func test_invalid_map_texts_and_services_are_rejected() -> void:
 	assert_string_contains(errors, "clé inconnue « at »")
 	assert_string_contains(errors, "clé inconnue « title »")
 	assert_push_error_count(11)
+
+
+## Jalon 16 (décision de Kevin du 2026-10-16) : « interior_title » fait annoncer la zone dans ses
+## intérieurs (S.S. Anne) ; false par défaut ; un booléen seulement.
+func test_interior_title_is_read() -> void:
+	assert_true(_zones.add_from_dict({"zones": {
+		"ship": {"name": "Navire", "kind": "place", "maps": ["deck"], "interior_title": true},
+		"town": {"name": "Ville", "kind": "town", "maps": ["center"]},
+	}}, "t"), "\n".join(_zones.get_errors()))
+	assert_true(_zones.get_zone(&"ship").interior_title)
+	assert_true(_zones.interior_title_of(&"deck"))
+	assert_false(_zones.interior_title_of(&"center"), "par défaut : pas de titre à l'intérieur")
+	assert_false(_zones.interior_title_of(&"nowhere"), "carte hors zone")
+	assert_false(_zones.add_from_dict({"zones": {
+		"bad": {"name": "X", "kind": "town", "interior_title": "oui"}}}, "t"))
+	assert_false(_zones.has_zone(&"bad"))
+	assert_string_contains("\n".join(_zones.get_errors()),
+		"« interior_title » vaut true ou false")
+	assert_push_error_count(1)
 
 
 func test_maps_default_to_empty() -> void:

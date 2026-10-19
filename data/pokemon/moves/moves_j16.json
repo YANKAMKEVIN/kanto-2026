@@ -1,0 +1,13 @@
+{
+	"cut": {
+		"name": "Coupe", "type": "normal", "category": "physical",
+		"power": 50, "accuracy": 95, "pp": 30,
+		"description": "Le lanceur tranche la cible d'un coup sec. Permet aussi de couper les petits arbres."
+	},
+	"thunderbolt": {
+		"name": "Tonnerre", "type": "electric", "category": "special",
+		"power": 90, "accuracy": 100, "pp": 15,
+		"effects": [{ "kind": "status", "status": "paralysis", "chance": 10 }],
+		"description": "Une puissante décharge électrique frappe la cible. Peut la paralyser."
+	}
+}

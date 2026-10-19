@@ -1,0 +1,54 @@
+CONCEPT ART — VUE GÉNÉRALE DE LA ROUTE 9, ENTRE AZURIA ET LA GROTTE SOMBRE (Kanto 2026), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. La route va de l'OUEST (bord gauche, où elle arrive d'Azuria) vers l'EST (à droite, où elle continue vers la Route 10). Le sentier SERPENTE à angles droits, une terrasse après l'autre.
+Légende du plan :
+- vert très foncé semé de taches rondes plus sombres = forêt et bosquets denses infranchissables (y compris les marges de l'image : tout le bas et le coin haut gauche) ;
+- vert moyen = herbe rase praticable ; petits points roses et blancs = fleurs, très peu nombreuses ;
+- beige = SENTIER de terre battue ;
+- jaune-vert olive = HAUTES HERBES (touffues, plus hautes, où vivent les Pokémon sauvages), quatre zones en blocs nets : une petite en bas à gauche, une au milieu du couloir du bas de la terrasse, une grande dans la vallée creuse au centre, une sur le sentier de droite ;
+- gris clair semé de cailloux blancs = SOL ROCHEUX praticable (les terrasses) : une longue terrasse haute au centre, une petite poche en haut à droite au-dessus du sentier, une poche au milieu à droite ;
+- gris-brun avec traits horizontaux, de plus en plus sombre loin des passages = la MASSE ET LES FALAISES : une grande masse qui occupe tout le haut à droite et le haut du centre, avec un bord qui s'avance vers l'ouest jusqu'au tiers de l'image ; les bandes plus fines, brun sombre, sous un bord clair = de petites FALAISES BASSES (une ou deux cases de haut) qui séparent les terrasses les unes des autres : une sous la terrasse haute, une à sa droite ;
+- disques gris clair = ROCHERS ET BLOCS isolés ; alignés en rangée, ils forment : un petit muret entre les deux couloirs de la terrasse haute (avec une seule ouverture au milieu), une paire de rangées de blocs qui bordent un goulet étroit en bas au centre-droit, une rangée de blocs le long de la vallée, quelques blocs sur les poches de droite ;
+- petite bande brun clair à droite (sous la poche rocheuse du haut) = un REBORD : petite marche de terre d'une case, qu'on saute vers le sud ;
+- petit carré ocre à gauche, près du sentier = un panneau en bois SANS TEXTE ; points rouge et blanc = Poké Balls posées au sol (objets à ramasser).
+Respecte ce plan À LA LETTRE : la route qui entre par la gauche dans un petit goulet puis une clairière ; la RAMPE qui monte vers le nord ; les DEUX COULOIRS de la terrasse haute (un couloir de roche claire au nord, un couloir de terre avec ses hautes herbes au sud, séparés par la rangée de blocs et qui se rejoignent à l'est) ; la DESCENTE vers le sud puis le passage étroit entre deux rangées de blocs ; la MONTÉE de droite, large de quatre cases ; le sentier de l'est qui sort à droite ; la vallée creuse d'herbes au centre, sous la falaise basse de la terrasse ; la poche rocheuse à droite avec ses deux Poké Balls. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+RÈGLE ABSOLUE DES CHEMINS : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; sentiers, terrasses, falaises basses et bords des zones suivent une grille : uniquement des segments horizontaux et verticaux à angles droits, AUCUN segment en diagonale ni courbe, aucun escalier, aucune pente douce. Les falaises sont BASSES et droites (une face verticale rocheuse au bord net), jamais des montagnes en pente.
+RELIEF : le sol praticable est lisible et plat ; le relief vient seulement des falaises basses (les terrasses sont étagées : la terrasse haute domine la vallée du centre), de la masse rocheuse au nord et des rebords.
+
+IMAGE 2 : la vue générale de la Route 3, une route du même jeu, rocheuse elle aussi. Respecte EXACTEMENT son style de rendu : même pinceau, mêmes arbres en masses arrondies, mêmes hautes herbes jaune-vert, même sentier de terre, même sol rocheux semé de cailloux clairs, même saturation, MÊME LUMIÈRE, même roche en strates gris-beige chaud, mêmes personnages. Ne reprends PAS sa composition : ni Centre Pokémon, ni grotte, ni bâtiment.
+
+Format : PAYSAGE 1536 × 1024, vue plongeante sur toute la route, comme le plan.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats. Le feuillage est peint en grandes masses douces.
+- Perspective : vue de dessus de trois quarts, projection oblique frontale, sans point de fuite. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud) ; les falaises basses montrent leur face rocheuse au sud.
+- Aucun trait noir : contours fins et doux, plus sombres et plus saturés que la couleur locale. Ombres colorées bleu-vert ou violet froid, jamais grises.
+
+AMBIANCE — « la route rocheuse » : après la douceur d'Azuria, la route monte par TERRASSES, plus sèche, plus minérale, plus ouverte au ciel. Même lumière de fin d'après-midi que l'image 2, chaude et douce.
+- À gauche (sortie d'Azuria) : clairière d'herbe verte et fraîche, quelques fleurs, arbres serrés autour, dans la continuité de la Route 3 et d'Azuria.
+- Au centre : la grande TERRASSE HAUTE de roche claire et de blocs, dominant la vallée d'herbes en contrebas ; bosquets serrés dans les angles. Herbe plus sèche, jaunie.
+- À droite : le sentier remonte le long des falaises ; la masse rocheuse du nord (gris-beige chaud, strates, quelques touffes vertes) domine toute la partie haute de l'image ; très légère fraîcheur grise-bleutée dans la roche tout à l'est.
+- Nature DENSE, objets RARES : forêt serrée tout autour des passages, quelques touffes d'herbe et de petites fleurs accrochées aux falaises, aucun décor inutile.
+- Tout en haut à droite, la roche est suffisamment massive pour suggérer une chaîne qui continue au-delà du cadre.
+- Au bord gauche, juste à côté du sentier, une grosse SOUCHE fraîche d'arbre coupé et quelques rondins empilés sur l'herbe (l'arbre qui barrait la route d'Azuria a été coupé) : le sentier reste dégagé ; ne dessine PAS d'arbre sur le sentier.
+
+VIE (très discrète, personnages petits, aucun ne ressemble au héros à casquette rouge et veste bleue). Positions approximatives en pourcentage de la largeur / de la hauteur depuis le coin haut gauche :
+- une JEUNE DRESSEUSE (robe simple, ruban) dans l'alcôve au nord de la clairière de gauche (≈ 14 % / 52 %), tournée vers le sentier ;
+- un CAMPEUR (chapeau de feutre, sac de camping) sur la terrasse haute, dans le couloir du haut (≈ 46 % / 32 %), un deuxième CAMPEUR (casquette, short) dans l'ouverture du muret de blocs (≈ 44 % / 40 %) ;
+- un SCOUT (chapeau de paille, filet à insectes) dans la vallée d'herbes (≈ 48 % / 58 %) ;
+- une autre JEUNE DRESSEUSE (jupe courte, sac) dans la petite niche à gauche de la montée (≈ 72 % / 53 %) ;
+- un MONTAGNARD (barbe, gros sac, bâton de marche) dans le goulet de blocs en bas au centre-droit (≈ 68 % / 75 %), un second MONTAGNARD sur la poche rocheuse de droite (≈ 94 % / 51 %).
+Pokémon : un PIAFABEC (petit oiseau brun au bec court et pointu, crête rouge) posé sur un bloc du goulet du bas (≈ 65 % / 64 %) ; un RACAILLOU (rocher gris rond à deux bras musclés, sans jambes) endormi contre la falaise, juste au-dessus du sentier de droite (≈ 79 % / 38 %). Aucun autre Pokémon, aucun Pikachu, aucun animal (aucune faune non-Pokémon).
+
+INTERDITS : texte, lettres, chiffres, étiquettes, panneaux lisibles, logo, signature, filigrane, cadre, interface ; tout bâtiment ; maison, cabane, clôture continue, pont ; eau, rivière, lac, cascade ; escaliers, pentes douces, falaises en diagonale ou en courbe ; route goudronnée, véhicule ; arbres orange ou automnaux ; neige ; brouillard, flou de profondeur, vignettage ; pixel art.
+
+L'image doit raconter, sans texte : en quittant Azuria par l'est, on suit un sentier qui serpente à angles droits, monte par terrasses rocheuses à travers les falaises basses, les herbes et les bosquets serrés, avec une longue terrasse haute au centre, jusqu'à la sortie de droite où la route continue.
+
+CORRECTIONS (2e essai ; le 1er essai était excellent sur la composition, la lumière, les terrasses et les personnages : garde-les à l'identique autant que possible) :
+1. Tout le BAS de l'image, sous le sentier de la descente et du passage de blocs, est une FORÊT DENSE et continue : AUCUNE clairière, AUCUNE Poké Ball, AUCUN objet dans la forêt du bas (le plan n'y montre qu'une toute petite alcôve d'herbe sous le goulet de blocs).
+2. Le grand bosquet entre la montée de droite et la descente (entre ≈ 63 % et ≈ 72 % de la largeur, de ≈ 35 % à ≈ 62 % de la hauteur) est une forêt serrée, sans clairière ni rocher isolé au milieu des arbres.
+3. Le PIAFABEC est posé sur un des blocs de la rangée du goulet, au bas de la descente (≈ 65 % / 64 %), pas dans le bosquet.
+4. Le RACAILLOU endormi contre la falaise de droite doit se lire sans ambiguïté : un rocher gris rond avec un visage endormi et deux petits bras musclés.

@@ -39,6 +39,12 @@ Codex ; les plans seuls ne montrent ni personnage, ni case cachée, ni indice).
 « Y » ; --annote ajoute les bandes de déclenchement et les conditions (if / unless) des positions.
 tools/plans/route_25.txt → build/art/PLAN_ROUTE25_v1.png (J14, `dessiner_route_25`) : PAYSAGE,
 mer, rivage, falaise, plage, maison de Léo ; --annote comme la Route 3.
+tools/plans/route_9.txt, route_10.txt, lavanville.txt (J18, dossier 21) → build/art/PLAN_ROUTE9_v1.png
+(paysage), PLAN_ROUTE10_v1.png (portrait), PLAN_LAVANVILLE_v1.png (paysage) ; `--grotte-sombre
+[sortie.png]` : les deux étages empilés → PLAN_GROTTE_SOMBRE_v1.png (portrait) ; avec `--halo` : la
+salle de la colonne du B1F en double → PLAN_GROTTE_HALO_v1.png (paysage). Sans personnage, sans
+case cachée, sans indice (le plan du halo porte un anneau blanc = position du héros). Légende
+stable décrite dans les prompts CONCEPT_*_J18.
 Reproductible : même grille → même image (fleurs tirées avec une graine fixe).
 """
 from __future__ import annotations
@@ -1740,6 +1746,464 @@ def dessiner_route_25(grille: Path, sortie: Path) -> Path:
 
 
 # Grille → (fonction, sortie par défaut).
+# --- Jalon 18 (dossier 21) : Route 9, Route 10, Lavanville, Grotte Sombre -----------------------
+# Légende stable des plans (décrite couleur par couleur dans les prompts CONCEPT_*_J18) : même
+# base que la Route 3 pour forêt / herbe / chemin / hautes herbes / rebord / sol rocheux.
+K_PAROI = (146, 130, 112)          # falaise et masse rocheuse (Route 9, 10) : gris-brun chaud
+K_PAROI_PROF = (84, 76, 70)        # la masse s'assombrit loin des passages
+K_FACE = (104, 90, 76)             # face verticale d'une falaise basse (bande sud de la case)
+K_STRATE = (112, 100, 88)
+K_SOL = (172, 166, 156)            # sol rocheux praticable (terrasses)
+K_CAILLOU = (232, 228, 218)
+K_EAU = (82, 150, 192)
+K_EAU_REFLET = (160, 206, 228)
+K_CENTRALE = (118, 122, 136)
+K_CENTRALE_TOIT = (84, 88, 104)
+K_CHEMINEE = (60, 62, 74)
+K_TOUR_MUR = (176, 168, 186)
+K_TOUR_TOIT = (86, 76, 106)
+K_ENTREE = (26, 24, 32)
+# Lavanville : gris violacé, beige, vert désaturé.
+L_PAVE = (190, 182, 192)
+L_PAVE_BORD = (166, 158, 170)
+L_HERBE = (128, 150, 112)
+L_FORET = (52, 82, 70)
+L_FORET_BORD = (32, 58, 50)
+L_HAIE = (62, 98, 70)
+L_FLEUR = (236, 232, 244)
+L_BAT = {                                           # (mur, toit)
+	"C": BATIMENTS["C"], "O": BATIMENTS["O"],
+	"m": ((222, 212, 194), (112, 100, 108)),        # Maison 1 : toit gris-brun
+	"N": ((214, 208, 198), (98, 108, 128)),         # Maison 2 : toit ardoise bleutée
+	"F": ((230, 218, 204), (156, 112, 122)),        # Maison des Pokémon : toit rose sourd
+	"U": (K_TOUR_MUR, K_TOUR_TOIT),                 # Tour Pokémon
+}
+# Grotte Sombre : roche brune / ocre sombre et humide (distincte de l'ardoise du Mont Sélénite).
+S_FOND = (22, 18, 16)
+S_ETAGES = {
+	# étage : (paroi, sol calme, gravats)
+	"1F": ((60, 48, 40), (150, 132, 108), (142, 106, 70)),
+	"B1F": ((52, 42, 36), (130, 114, 94), (130, 96, 64)),
+}
+S_JOUR = (238, 230, 178)
+S_LUEUR = (236, 188, 108)
+S_GRAVIER = (92, 70, 50)
+S_ROCHER = (74, 62, 54)
+S_COLONNE = (112, 100, 90)
+S_RACINE = (126, 88, 52)
+S_FLAQUE = (46, 78, 116)
+S_FLAQUE_REFLET = (90, 126, 160)
+S_ECHELLE = (176, 124, 66)
+S_ECHELLE_BORD = (92, 60, 30)
+S_TROU = (12, 10, 10)
+S_LAMPE = (255, 206, 90)
+S_ETAGES_ORDRE = ("dark_cave_1f", "dark_cave_b1f")
+S_NOMS = {"dark_cave_1f": "1F", "dark_cave_b1f": "B1F"}
+S_BANDE = 2
+TAILLE_J18 = {"route_9": 19, "route_10": 18, "lavanville": 26}
+
+
+def _voisins4(x: int, y: int):
+	return ((x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1))
+
+
+def _profondeur_paroi(plan: Plan, car: str = "K") -> dict[tuple[int, int], int]:
+	paroi = set(plan.cells_of(car))
+	prof: dict[tuple[int, int], int] = {}
+	front = [c for c in paroi if any(
+		0 <= n[0] < plan.width and 0 <= n[1] < plan.height and plan.at(*n) != car
+		for n in _voisins4(*c))]
+	for c in front:
+		prof[c] = 1
+	while front:
+		suivant = []
+		for c in front:
+			for n in _voisins4(*c):
+				if n in paroi and n not in prof:
+					prof[n] = prof[c] + 1
+					suivant.append(n)
+		front = suivant
+	return prof
+
+
+def _ball(d: ImageDraw.ImageDraw, cx: float, cy: float, r: float = 5) -> None:
+	d.pieslice([cx - r, cy - r, cx + r, cy + r], 180, 360, fill=BALL_ROUGE)
+	d.pieslice([cx - r, cy - r, cx + r, cy + r], 0, 180, fill=BLANC)
+	d.ellipse([cx - r, cy - r, cx + r, cy + r], outline=BALL_BORD, width=1)
+
+
+def _panneaux_et_objets(d: ImageDraw.ImageDraw, plan: Plan, centre, r: float = 5) -> None:
+	for p in plan.of_kind("panneau"):
+		for x, y in p.cells:
+			cx, cy = centre(x, y)
+			d.rectangle([cx - r, cy - r, cx + r, cy + r], fill=PANNEAU, outline=PANNEAU_BORD)
+	for p in plan.of_kind("objet_visible"):
+		for x, y in p.cells:
+			_ball(d, *centre(x, y), r)
+
+
+def _geometrie_j18(plan: Plan, stem: str, taille: tuple[int, int]) -> tuple[int, int, int]:
+	case = min(TAILLE_J18[stem], taille[0] // plan.width, taille[1] // plan.height)
+	oy = 24 if stem == "route_10" else (taille[1] - plan.height * case) // 2   # Route 10 : marge sud pour la Tour
+	return case, (taille[0] - plan.width * case) // 2, oy
+
+
+def dessiner_route_9_10(grille: Path, sortie: Path) -> Path:
+	"""Plan en aplats de la Route 9 (paysage 1536 × 1024) ou de la Route 10 (portrait 1024 × 1536).
+	Personnages, Pokémon, herbes-repères, cases cachées et coupes d'itinéraire NON dessinés."""
+	plan = lire(grille)
+	stem = Path(grille).stem
+	taille = TAILLE_PAYSAGE if stem == "route_9" else TAILLE
+	case, ox, oy = _geometrie_j18(plan, stem, taille)
+	img = Image.new("RGB", taille, FORET)
+	d = ImageDraw.Draw(img)
+	alea = random.Random(GRAINE + 18 + plan.width)
+	prof = _profondeur_paroi(plan)
+
+	def coin(x: int, y: int) -> tuple[int, int]:
+		return ox + x * case, oy + y * case
+
+	def centre(x: int, y: int) -> tuple[float, float]:
+		return ox + (x + 0.5) * case, oy + (y + 0.5) * case
+
+	def bord(x: int, y: int) -> str:
+		return plan.at(min(max(x, 0), plan.width - 1), min(max(y, 0), plan.height - 1))
+
+	def fond_voisin(x: int, y: int) -> tuple:
+		compte: dict[str, int] = {}
+		for n in _voisins4(x, y):
+			c = bord(*n)
+			if c not in "RK":
+				compte[c] = compte.get(c, 0) + 1
+		return _fond_k(max(compte, key=compte.get) if compte else "T", x, y)
+
+	def _fond_k(car: str, x: int, y: int):
+		hors = not (0 <= x < plan.width and 0 <= y < plan.height)
+		if car == "K":
+			p = prof.get((min(max(x, 0), plan.width - 1), min(max(y, 0), plan.height - 1)), 6)
+			return _melange(K_PAROI, K_PAROI_PROF, 1.0 if (hors and p > 3) else min(1.0, (p - 1) / 7))
+		return {".": HERBE, "=": CHEMIN, "h": HAUTES_HERBES, "v": REBORD, "o": K_SOL, "T": FORET,
+			"w": K_EAU, "E": FORET if hors else K_CENTRALE, "C": BATIMENTS["C"][0],
+			"D": PORTE, "Q": K_PAROI, "R": FORET}.get(car, HERBE)
+
+	gx0, gy0 = -(ox // case) - 1, -(oy // case) - 1
+	gx1 = plan.width + (taille[0] - ox) // case + 1
+	gy1 = plan.height + (taille[1] - oy) // case + 1
+	sud_hors = set()
+	for y in range(gy0, gy1):
+		for x in range(gx0, gx1):
+			car = bord(x, y)
+			hors = not (0 <= x < plan.width and 0 <= y < plan.height)
+			if hors and car not in "TK=wh.v":
+				car = "T"
+			if hors and car in "h.v":
+				car = "T"
+			if car == "R":
+				fond = fond_voisin(x, y)
+			else:
+				fond = _fond_k(car, x, y)
+			x0, y0 = coin(x, y)
+			d.rectangle([x0, y0, x0 + case - 1, y0 + case - 1], fill=fond)
+			if car == "K":
+				# face verticale d'une falaise basse : bande sombre au bas de la case si le sud est ouvert
+				s = bord(x, y + 1) if 0 <= y + 1 < plan.height else "K"
+				if s not in "KT" and not hors:
+					if prof.get((x, y), 9) <= 2:       # falaise basse : toute la case est une face
+						d.rectangle([x0, y0 + case // 4, x0 + case - 1, y0 + case - 1], fill=K_FACE)
+					else:
+						d.rectangle([x0, y0 + case * 2 // 3, x0 + case - 1, y0 + case - 1], fill=K_FACE)
+				elif (x + 2 * y) % 5 == 0:
+					d.line([x0 + 2, y0 + case // 2, x0 + case - 3, y0 + case // 2], fill=K_STRATE, width=2)
+			elif car == "w" and alea.random() < 0.12:
+				cx, cy = x0 + case / 2, y0 + case / 2
+				d.line([cx - case * 0.3, cy, cx + case * 0.3, cy], fill=K_EAU_REFLET, width=1)
+			elif car == "o":
+				for _ in range(2):
+					_disque(d, x0 + alea.uniform(3, case - 4), y0 + alea.uniform(3, case - 4),
+						alea.uniform(1.2, 2.2), K_CAILLOU)
+			elif car == "T" and (x * 7 + y * 3) % 5 == 0:
+				_disque(d, x0 + case / 2, y0 + case / 2, case * 0.45, _melange(FORET, (0, 0, 0), 0.12))
+			elif car == "." and not hors and alea.random() < 0.10:
+				_disque(d, x0 + alea.uniform(3, case - 4), y0 + alea.uniform(3, case - 4), 2, FLEUR)
+	# Rebords : bande sombre en bas de la case (la marche vers le sud).
+	for x, y in plan.cells_of("v"):
+		x0, y0 = coin(x, y)
+		d.rectangle([x0, y0, x0 + case - 1, y0 + case // 2], fill=_melange(REBORD, PAROI, 0.3))
+		d.rectangle([x0, y0 + case // 2, x0 + case - 1, y0 + case - 1], fill=REBORD)
+	# Rochers.
+	for x, y in plan.cells_of("R"):
+		cx, cy = centre(x, y)
+		_disque(d, cx + alea.uniform(-1, 1), cy + alea.uniform(-1, 1), case * 0.46, PIERRE, PIERRE_BORD)
+	# Centre Pokémon (Route 10) : toit rouge sur les 3/5 hauts, porte.
+	cases_c = plan.cells_of("C") + plan.cells_of("D")
+	if cases_c:
+		xs, ys = [x for x, _ in cases_c], [y for _, y in cases_c]
+		x0, y0 = coin(min(xs), min(ys))
+		x1, y1 = coin(max(xs) + 1, max(ys) + 1)
+		d.rectangle([x0, y0, x1 - 1, y0 + (y1 - y0) * 3 // 5], fill=BATIMENTS["C"][1])
+		for x, y in plan.cells_of("D"):
+			px0, py0 = coin(x, y)
+			d.rectangle([px0, py0 + case // 4, px0 + case - 1, py0 + case - 1], fill=PORTE)
+	# Entrée de la Grotte Sombre : ouverture sombre en arche dans la paroi.
+	for grotte in _composantes_cases(plan.cells_of("Q")):
+		xs, ys = [x for x, _ in grotte], [y for _, y in grotte]
+		x0, y0 = coin(min(xs), min(ys))
+		x1, y1 = coin(max(xs) + 1, max(ys) + 1)
+		d.pieslice([x0 - 2, y0 - case * 0.8, x1 + 1, y1 + case * 0.8], 180, 360, fill=K_ENTREE,
+			outline=_melange(K_PAROI, (0, 0, 0), 0.5), width=2)
+		d.rectangle([x0 - 2, y0 + case * 0.4, x1 + 1, y1 - 1], fill=K_ENTREE)
+	# Centrale électrique lointaine : toit et cheminée, aucune porte.
+	cen = plan.cells_of("E")
+	if cen:
+		xs, ys = [x for x, _ in cen], [y for _, y in cen]
+		x0, y0 = coin(min(xs), min(ys))
+		x1, y1 = coin(max(xs) + 1, max(ys) + 1)
+		d.rectangle([x0, y0, x1 - 1, y1 - 1], fill=K_CENTRALE, outline=_melange(K_CENTRALE, (0, 0, 0), 0.4))
+		d.rectangle([x0, y0, x1 - 1, y0 + (y1 - y0) * 3 // 5], fill=K_CENTRALE_TOIT)
+		cx0 = x1 - 2 * case
+		d.rectangle([cx0, y0 - 3 * case, cx0 + case - 1, y0 + case], fill=K_CHEMINEE)
+	# La Tour Pokémon, silhouette lointaine au bas de l'image (repère « tour_lointaine »).
+	tl = plan.positions.get("tour_lointaine")
+	if tl:
+		xs = [x for x, _ in tl.cells]
+		x0, _ = coin(min(xs), 0)
+		x1, _ = coin(max(xs) + 1, 0)
+		y0 = oy + (min(y for _, y in tl.cells)) * case
+		d.rectangle([x0, y0 + case, x1 - 1, taille[1]], fill=K_TOUR_MUR)
+		d.rectangle([x0 - case // 2, y0, x1 - 1 + case // 2, y0 + case * 2 - 1], fill=K_TOUR_TOIT)
+		d.rectangle([x0 + case, y0 - case, x1 - 1 - case, y0 - 1], fill=K_TOUR_TOIT)
+	_panneaux_et_objets(d, plan, centre)
+	sortie.parent.mkdir(parents=True, exist_ok=True)
+	img.save(sortie)
+	return sortie
+
+
+def dessiner_lavanville(grille: Path, sortie: Path) -> Path:
+	"""Plan en aplats de Lavanville + Tour (paysage 1536 × 1024). Personnages NON dessinés."""
+	plan = lire(grille)
+	case, ox, oy = _geometrie_j18(plan, "lavanville", TAILLE_PAYSAGE)
+	img = Image.new("RGB", TAILLE_PAYSAGE, L_FORET)
+	d = ImageDraw.Draw(img)
+	alea = random.Random(GRAINE + 18 + 44)
+
+	def coin(x: int, y: int) -> tuple[int, int]:
+		return ox + x * case, oy + y * case
+
+	def centre(x: int, y: int) -> tuple[float, float]:
+		return ox + (x + 0.5) * case, oy + (y + 0.5) * case
+
+	def bord(x: int, y: int) -> str:
+		return plan.at(min(max(x, 0), plan.width - 1), min(max(y, 0), plan.height - 1))
+
+	fonds = {"T": L_FORET, ".": L_HERBE, "p": L_PAVE, "x": L_HERBE, "y": L_HERBE, "n": L_HERBE,
+		"G": L_HERBE, "D": PORTE}
+	gx0, gy0 = -(ox // case) - 1, -(oy // case) - 1
+	gx1 = plan.width + (TAILLE_PAYSAGE[0] - ox) // case + 1
+	gy1 = plan.height + (TAILLE_PAYSAGE[1] - oy) // case + 1
+	for y in range(gy0, gy1):
+		for x in range(gx0, gx1):
+			car = bord(x, y)
+			hors = not (0 <= x < plan.width and 0 <= y < plan.height)
+			if hors and car not in "Tp":
+				car = "T"
+			x0, y0 = coin(x, y)
+			if car in L_BAT:
+				fond = L_BAT[car][0]
+			else:
+				fond = fonds.get(car, L_HERBE)
+			d.rectangle([x0, y0, x0 + case - 1, y0 + case - 1], fill=fond)
+			if car == "p":
+				d.rectangle([x0, y0, x0 + case - 1, y0 + case - 1], outline=L_PAVE_BORD)
+			elif car == "T" and (x * 7 + y * 3) % 5 == 0:
+				_disque(d, x0 + case / 2, y0 + case / 2, case * 0.45, _melange(L_FORET, (0, 0, 0), 0.15))
+			elif car == "." and alea.random() < 0.05 and not hors:
+				_disque(d, x0 + alea.uniform(3, case - 4), y0 + alea.uniform(3, case - 4), 2, L_FLEUR)
+	for x, y in plan.cells_of("x"):
+		cx, cy = centre(x, y)
+		_disque(d, cx, cy, case * 0.44, L_HAIE, L_FORET_BORD)
+	for x, y in plan.cells_of("y"):
+		x0, y0 = coin(x, y)
+		for _ in range(5):
+			_disque(d, x0 + alea.uniform(4, case - 5), y0 + alea.uniform(4, case - 5), 2.5, L_FLEUR)
+	for x, y in plan.cells_of("n"):
+		cx, cy = centre(x, y)
+		d.rectangle([cx - case * 0.45, cy - case * 0.18, cx + case * 0.45, cy + case * 0.18], fill=BANC)
+	for x, y in plan.cells_of("G"):
+		cx, cy = centre(x, y)
+		_disque(d, cx, cy - case * 0.3, case * 0.8, ARBRE, ARBRE_BORD)
+	# Bâtiments : toit sur les 3/5 hauts de l'emprise (la Tour : le tiers haut seulement).
+	for car in "COFmNU":
+		cases = plan.cells_of(car)
+		for groupe in _composantes_cases(cases):
+			xs, ys = [x for x, _ in groupe], [y for _, y in groupe]
+			x0, y0 = coin(min(xs), min(ys))
+			x1, y1 = coin(max(xs) + 1, max(ys) + 1)
+			toit = (y1 - y0) // 3 if car == "U" else (y1 - y0) * 3 // 5
+			d.rectangle([x0, y0, x1 - 1, y0 + toit], fill=L_BAT[car][1])
+			d.rectangle([x0, y0, x1 - 1, y1 - 1], outline=_melange(L_BAT[car][1], (0, 0, 0), 0.35))
+	for x, y in plan.cells_of("D"):
+		if any(0 <= x + dx < plan.width and 0 <= y + dy < plan.height
+				and plan.at(x + dx, y + dy) in "COFmNU" for dx, dy in ((0, -1), (-1, 0), (1, 0))):
+			x0, y0 = coin(x, y)
+			d.rectangle([x0 + case // 5, y0 + case // 4, x0 + case - case // 5 - 1, y0 + case - 1],
+				fill=PORTE)
+	_panneaux_et_objets(d, plan, centre)
+	sortie.parent.mkdir(parents=True, exist_ok=True)
+	img.save(sortie)
+	return sortie
+
+
+def _peindre_grotte_j18(d: ImageDraw.ImageDraw, plan: Plan, etage: str, ox: int, oy: int,
+		case: int, x_min: int = 0, x_max: int | None = None) -> None:
+	"""Aplats d'un étage de la Grotte Sombre à (ox, oy), 1 case = case px. Personnages et
+	objets cachés NON dessinés ; lampes, filet de jour et jour d'entrée éclairent le sol."""
+	paroi, sol, gravats = S_ETAGES[etage]
+	alea = random.Random(GRAINE + 18 + len(etage) * 11)
+	k = case / CASE
+	lampes = [p.cells[0] for p in plan.of_kind("halo") if p.attrs.get("type") == "lamp"]
+	jours = plan.cells_of("j")
+
+	def coin(x: int, y: int) -> tuple[int, int]:
+		return ox + (x - x_min) * case, oy + y * case
+
+	def centre(x: int, y: int) -> tuple[float, float]:
+		return ox + (x - x_min + 0.5) * case, oy + (y + 0.5) * case
+
+	x_max = plan.width if x_max is None else x_max
+	sol_de = {".": sol, "g": gravats, "j": S_JOUR, "E": S_JOUR, "e": S_JOUR, "U": sol, "V": sol}
+	for y, row in enumerate(plan.rows):
+		for x in range(x_min, x_max):
+			c = row[x]
+			x0, y0 = coin(x, y)
+			if c in sol_de:
+				fond = sol_de[c]
+				if c not in "jEe":
+					t = _lueur((x, y), lampes, 5.0)
+					if t > 0:
+						fond = _melange(fond, S_LUEUR, 0.6 * t)
+					t = _lueur((x, y), jours, 5.0)
+					if t > 0:
+						fond = _melange(fond, S_JOUR, 0.4 * t)
+			elif c == "w":
+				fond = S_FLAQUE
+			elif c == "K":
+				fond = sol
+			else:
+				fond = paroi
+			d.rectangle([x0, y0, x0 + case - 1, y0 + case - 1], fill=fond)
+			if c == "g":
+				for _ in range(3):
+					_disque(d, x0 + alea.uniform(2, case - 3), y0 + alea.uniform(2, case - 3),
+						alea.uniform(1.2, 2.4) * k * 1.4, S_GRAVIER)
+			elif c == "#" and (x + 2 * y) % 7 == 0:
+				d.line([x0 + 2, y0 + case // 2, x0 + case - 3, y0 + case // 2],
+					fill=_melange(paroi, (0, 0, 0), 0.35), width=1)
+	for y, row in enumerate(plan.rows):
+		for x in range(x_min, x_max):
+			c = row[x]
+			cx, cy = centre(x, y)
+			x0, y0 = coin(x, y)
+			r = case / 2
+			if c == "o":
+				_disque(d, cx, cy, r * 0.8, S_ROCHER, _melange(S_ROCHER, (0, 0, 0), 0.5))
+			elif c == "w":
+				d.line([x0 + case * 0.2, cy, x0 + case * 0.7, cy], fill=S_FLAQUE_REFLET, width=1)
+			elif c == "r":
+				for dx in (0.25, 0.5, 0.75):
+					d.line([x0 + case * dx, y0, x0 + case * dx, y0 + case * (0.5 + 0.4 * alea.random())],
+						fill=S_RACINE, width=max(2, round(2 * k)))
+			elif c == "f":
+				d.rectangle([x0 + case * 0.35, y0, x0 + case * 0.65, y0 + case - 1], fill=S_JOUR)
+			elif c in "UV":
+				_disque(d, cx, cy, r * 0.95, S_TROU if c == "V" else _melange(sol, S_JOUR, 0.5))
+				for dx in (-0.45, 0.45):
+					d.line([cx + dx * r, y0 + 1, cx + dx * r, y0 + case - 2], fill=S_ECHELLE,
+						width=max(2, round(2 * k)))
+				for i in (0.25, 0.5, 0.75):
+					d.line([cx - 0.45 * r, y0 + case * i, cx + 0.45 * r, y0 + case * i],
+						fill=S_ECHELLE, width=max(1, round(2 * k)))
+	for p in plan.of_kind("halo"):
+		if p.attrs.get("type") == "lamp":
+			cx, cy = centre(*p.cells[0])
+			_disque(d, cx, cy, case * 0.28, S_LAMPE, S_ECHELLE_BORD)
+	for groupe in _composantes(plan, "K"):
+		xs, ys = [x for x, _ in groupe], [y for _, y in groupe]
+		x0, y0 = coin(min(xs), min(ys))
+		x1, y1 = coin(max(xs) + 1, max(ys) + 1)
+		d.rounded_rectangle([x0 - 1, y0 - 1, x1, y1], radius=case * 0.45, fill=S_COLONNE,
+			outline=_melange(S_ROCHER, (0, 0, 0), 0.5), width=max(1, round(2 * k)))
+	for p in plan.of_kind("objet_visible"):
+		_ball(d, *centre(*p.cells[0]), max(4, round(case * 0.3)))
+	for p in plan.of_kind("panneau"):
+		cx, cy = centre(*p.cells[0])
+		r = case * 0.3
+		d.rectangle([cx - r, cy - r, cx + r, cy + r], fill=PANNEAU, outline=PANNEAU_BORD)
+
+
+def dessiner_grotte_sombre(sortie: Path, halo: bool = False) -> Path:
+	"""Les deux étages (1F en haut, B1F en bas) empilés, 1024 × 1536 ; avec halo=True : la salle de
+	la colonne du B1F en double (sans Flash / avec Flash), paysage 1536 × 1024."""
+	plans = {n: lire(RACINE / "tools" / "plans" / f"{n.replace('dark_cave', 'grotte_sombre')}.txt")
+		for n in S_ETAGES_ORDRE}
+	if halo:
+		plan = plans["dark_cave_b1f"]
+		x_min, x_max, y_min, y_max = 12, 31, 4, 26
+		case = 40
+		img = Image.new("RGB", TAILLE_PAYSAGE, S_ETAGES["B1F"][0])
+		d = ImageDraw.Draw(img)
+		hauteur = (y_max - y_min) * case
+		for moitie in (0, 1):
+			ox = moitie * 768 + (768 - (x_max - x_min) * case) // 2
+			oy = (TAILLE_PAYSAGE[1] - hauteur) // 2
+			_peindre_grotte_j18(d, _rogner(plan, y_min, y_max), "B1F", ox, oy, case, x_min, x_max)
+			# anneau blanc = position du héros (jamais un personnage dans le plan)
+			hx, hy = 22, 20
+			cx, cy = ox + (hx - x_min + 0.5) * case, oy + (hy - y_min + 0.5) * case
+			d.ellipse([cx - 9, cy - 9, cx + 9, cy + 9], outline=(255, 255, 255), width=3)
+		d.line([768, 0, 768, 1023], fill=(8, 8, 8), width=4)
+		sortie.parent.mkdir(parents=True, exist_ok=True)
+		img.save(sortie)
+		return sortie
+	largeur = max(p.width for p in plans.values())
+	hauteur = sum(p.height for p in plans.values()) + S_BANDE * (len(plans) - 1)
+	case = min(16, TAILLE[0] // largeur, (TAILLE[1] - 2 * 40) // hauteur)
+	img = Image.new("RGB", TAILLE, S_FOND)
+	d = ImageDraw.Draw(img)
+	oy = (TAILLE[1] - hauteur * case) // 2
+	for nom in S_ETAGES_ORDRE:
+		plan = plans[nom]
+		ox = (TAILLE[0] - plan.width * case) // 2
+		_peindre_grotte_j18(d, plan, S_NOMS[nom], ox, oy, case)
+		for x, y in plan.cells_of("E"):          # la lumière du dehors déborde au-dessus de l'entrée
+			d.rectangle([ox + x * case, oy - 2 * case, ox + (x + 1) * case - 1, oy - 1],
+				fill=_melange(S_JOUR, S_FOND, 0.15))
+		for x, y in plan.cells_of("e"):          # sortie sud : elle déborde dans la bande
+			d.rectangle([ox + x * case, oy + (y + 1) * case, ox + (x + 1) * case - 1,
+				oy + (y + 2) * case - 1], fill=_melange(S_JOUR, S_FOND, 0.4))
+		oy += (plan.height + S_BANDE) * case
+	sortie.parent.mkdir(parents=True, exist_ok=True)
+	img.save(sortie)
+	return sortie
+
+
+def _rogner(plan: Plan, y0: int, y1: int) -> Plan:
+	"""Plan inchangé (les coordonnées restent celles de la carte) : aucune découpe, la fonction de
+	peinture ne dessine que les colonnes demandées ; les rangées hors fenêtre sont ignorées par
+	le décalage de y fourni à la peinture."""
+	return _Fenetre(plan, y0, y1)
+
+
+class _Fenetre(Plan):
+	"""Vue d'un plan restreinte aux rangées [y0, y1[ (y décalé : la rangée y0 devient 0)."""
+
+	def __init__(self, base: Plan, y0: int, y1: int) -> None:
+		super().__init__(base.width, y1 - y0, base.rows[y0:y1], {}, base.praticables)
+		for ident, p in base.positions.items():
+			cases = [(x, y - y0) for x, y in p.cells if 0 <= y - y0 < y1 - y0]
+			if cases:
+				self.positions[ident] = Position(p.ident, p.kind, cases, p.bloque, p.note, p.attrs)
+
+
 # --- Tour Pokémon, étages 2F à 6F (jalon 19, dossier 22) --------------------------------------
 # Légende de tools/plans/pokemon_tower_*.txt. Pierre taillée gris violacé, lumière douce et froide
 # (dossier 22 §11) ; les étages s'assombrissent en montant (le 6F est le plus sombre) ; halo chaud
@@ -1955,6 +2419,9 @@ PLANS = {
 	"route_24": (dessiner_j13, "build/art/PLAN_ROUTE24_v1.png"),
 	"azuria_arene": (dessiner_j13, "build/art/PLAN_AZURIA_ARENE_v1.png"),
 	"route_25": (dessiner_route_25, "build/art/PLAN_ROUTE25_v1.png"),
+	"route_9": (dessiner_route_9_10, "build/art/PLAN_ROUTE9_v1.png"),
+	"route_10": (dessiner_route_9_10, "build/art/PLAN_ROUTE10_v1.png"),
+	"lavanville": (dessiner_lavanville, "build/art/PLAN_LAVANVILLE_v1.png"),
 }
 
 
@@ -1969,6 +2436,11 @@ def main() -> int:
 		sortie = Path(args[0]) if args else RACINE / "build/art/PLAN_MONT_SELENITE_v1.png"
 		for chemin in dessiner_mont_selenite(sortie, "--annote" in sys.argv):
 			print(chemin)
+		return 0
+	if "--grotte-sombre" in sys.argv:
+		halo = "--halo" in sys.argv
+		defaut = "build/art/PLAN_GROTTE_HALO_v1.png" if halo else "build/art/PLAN_GROTTE_SOMBRE_v1.png"
+		print(dessiner_grotte_sombre(Path(args[0]) if args else RACINE / defaut, halo))
 		return 0
 	if "--empiler" in sys.argv:
 		nord, sud, dx, sortie = args[0], args[1], int(args[2]), Path(args[3])

@@ -1,0 +1,48 @@
+CONCEPT ART — VUE GÉNÉRALE DE LAVANVILLE ET DE LA TOUR POKÉMON (Kanto 2026), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre : une petite ville silencieuse, entourée d'une ceinture d'arbres, que traverse une large avenue du nord au sud.
+Légende du plan :
+- vert bleuté très sombre semé de taches rondes plus sombres = forêt et ceinture d'arbres denses infranchissables (toute la marge de l'image) ;
+- vert sauge grisé = PELOUSE ; points blancs légèrement violets = FLEURS PÂLES (massifs : une bande de fleurs le long de chaque jardin, quelques massifs dans les squares du sud) ;
+- gris-lilas à fin quadrillage = PAVÉS (rues et avenue) : une AVENUE large de trois cases qui traverse tout le plan du haut au bas de l'image, au centre ; une rue qui part de l'avenue vers la gauche et sort par le bord gauche (en haut à gauche) ; une rue plus longue au milieu, de la gauche à la droite, qui coupe l'avenue ; le PARVIS de la Tour, une rue large qui part de l'avenue vers la droite sous la Tour, avec un banc ;
+- disques vert sombre alignés = HAIES taillées (bordent les jardins, les squares et la Tour, et forment les clôtures) ;
+- petites barres brunes = BANCS ; disques vert vif plus gros = ARBRES isolés (quelques-uns dans les jardins et les squares) ;
+- grand bloc gris-lilas pâle à toit violet foncé, en haut à droite = la TOUR POKÉMON (la plus grande emprise du plan, bien plus haute que tout) ; la porte brune, large de deux cases, est au milieu de sa façade du bas, sur le parvis ;
+- bloc rouge sur blanc à porte brune, au milieu à gauche = le CENTRE POKÉMON ; bloc bleu sur blanc, au milieu à droite = la BOUTIQUE ; bloc à toit rose sourd, en haut à gauche de l'avenue = la MAISON DES POKÉMON (un foyer pour Pokémon sans Dresseur) ; deux maisons plus petites : une à toit gris-brun tout en haut à gauche, une à toit ardoise bleutée à droite de la Boutique ;
+- deux grands SQUARES de pelouse en bas, de part et d'autre de l'avenue (haies basses, bancs, arbres, parterres de fleurs pâles) ;
+- petits carrés ocre = panneaux en bois SANS TEXTE ; portes brunes.
+Respecte ce plan À LA LETTRE : le tracé en croix des rues, la place de chaque bâtiment, des jardins, des haies, des squares et de la Tour. Les rues continuent jusqu'au bord de l'image à gauche (rue du haut), en haut (l'avenue vers le nord) et en bas (l'avenue vers le sud) : elles sortent simplement du cadre. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+RÈGLE ABSOLUE DES RUES : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; rues, jardins, haies, bâtiments suivent une grille : uniquement des segments horizontaux et verticaux à angles droits, AUCUNE rue en diagonale ni en courbe. Tous les bâtiments sont des rectangles alignés sur la grille.
+
+IMAGE 2 : la vue générale d'Azuria, une ville du même jeu. Respecte EXACTEMENT son style de rendu : même pinceau, même saturation de base, mêmes arbres en masses arrondies, mêmes haies rondes taillées, mêmes pavés beiges, mêmes bâtiments (le CENTRE POKÉMON et la BOUTIQUE sont exactement les mêmes bâtiments : toit rouge ou bleu, emblème Poké Ball blanc, grandes portes vitrées), mêmes personnages. Ne reprends PAS sa composition : ni canal, ni pont, ni musée, ni eau.
+
+Format : PAYSAGE 1536 × 1024, vue plongeante sur toute la ville, comme le plan.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats. Le feuillage est peint en grandes masses douces.
+- Perspective : vue de dessus de trois quarts, projection oblique frontale, sans point de fuite. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud). Les bâtiments montrent leur toit et leur façade sud.
+- Aucun trait noir : contours fins et doux, plus sombres et plus saturés que la couleur locale. Ombres colorées bleu-gris ou lilas froid, jamais grises neutres ni noires.
+
+AMBIANCE — « la ville où reposent les souvenirs » : MÉLANCOLIQUE, RESPECTUEUSE, SILENCIEUSE, JAMAIS horrifique.
+- PALETTE : gris violacé, beige, vert désaturé, avec les mêmes bâtiments du jeu (Centre rouge, Boutique bleue) un peu adoucis par la lumière. La saturation est plus basse que sur Azuria : tout est tendre, légèrement fané, comme un matin pâle après la pluie.
+- LUMIÈRE : matin clair et doux, froid, venant de la gauche ; ombres longues, bleu-lilas ; quelques touches chaudes seulement (une fenêtre allumée, la lueur d'une porte). Pas de soleil doré franc.
+- BRUME BASSE : une brume très légère, claire, blanc-bleuté, qui s'accroche à ras du sol entre les maisons, au pied des haies et sur les pelouses du bas ; elle laisse tout lisible ; JAMAIS violette, jamais épaisse, jamais en volutes ni en visages.
+- LES PAVÉS sont gris-lilas, un peu mouillés, avec de fins reflets.
+- LES JARDINS : haies taillées bien nettes, fleurs blanches et mauves très pâles, quelques bancs ; tout est entretenu, soigné : une ville qui prend soin de ses souvenirs.
+- LA TOUR POKÉMON, en haut à droite : le bâtiment le plus HAUT et le plus imposant de la ville, une tour de pierre gris-lilas pâle à toit étagé violet sombre, flancs à contreforts, fenêtres hautes et étroites, une grande porte à deux battants de bois sombre sur le parvis, des bacs de fleurs blanches de chaque côté, des haies et un massif de fleurs pâles sur ses flancs. DIGNE, noble, silencieuse, solennelle ; elle n'est PAS effrayante ; aucune lumière surnaturelle, aucun nuage noir au-dessus.
+- Les maisons : petites, simples, toits gris-brun, ardoise bleutée et rose sourd, fenêtres claires, rideaux, fleurs à la fenêtre ; la Maison des Pokémon a une petite enseigne muette et un petit jardin.
+- Nature DENSE autour de la ville (ceinture d'arbres serrés), objets RARES dans les rues : très peu d'éléments, rien d'inutile.
+
+VIE (très discrète, personnages petits, aucun ne ressemble au héros à casquette rouge et veste bleue ; ils marchent doucement, ils ne courent pas sauf l'enfant). Positions approximatives en pourcentage de la largeur / de la hauteur depuis le coin haut gauche :
+- une FILLETTE (robe claire, nattes) qui court sur l'avenue (≈ 51 % / 51 %) ;
+- un JEUNE HOMME (veste sombre, mains dans les poches) qui lève la tête vers la Tour, sur le parvis (≈ 66 % / 36 %) ;
+- un PASSANT adulte (manteau beige) dans la rue du haut (≈ 36 % / 33 %) ;
+- une FEMME (robe longue grise, châle) qui tient un petit bouquet de fleurs blanches, sur le parvis, en route vers la porte de la Tour (≈ 74 % / 36 %).
+Pokémon : un seul, un RONDOUDOU (petite boule rose ronde, grands yeux bleus, une boucle de poils sur le front) assis tranquillement sur le pavé devant la porte de la Maison des Pokémon (≈ 41 % / 31 %). Aucun autre Pokémon, aucun Pikachu, aucun animal (aucune faune non-Pokémon : ni corbeau, ni chat).
+
+INTERDITS : texte, lettres, chiffres, étiquettes, panneaux lisibles, logo (seul l'emblème Poké Ball sans texte du Centre et de la Boutique est permis), signature, filigrane, cadre, interface ; FANTÔMES, spectres, silhouettes dans la brume, visages dans les nuages ou les fenêtres, lueurs surnaturelles, brume violette ou verte, brume épaisse, nuages noirs, corbeaux, arbres morts, toiles d'araignée, pierres tombales ou croix visibles dehors, ambiance d'horreur ; eau, canal, pont ; escaliers ; rues courbes ou en diagonale ; véhicule ; arbres orange ou automnaux ; neige ; flou de profondeur, vignettage ; pixel art.
+
+L'image doit raconter, sans texte : une toute petite ville paisible, aux rues pavées bien droites, où l'on parle doucement ; au nord-est, une haute tour de pierre veille sur elle ; la brume du matin et les fleurs pâles disent la tristesse tendre de ceux qui viennent se souvenir.

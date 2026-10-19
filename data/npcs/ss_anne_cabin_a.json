@@ -1,0 +1,31 @@
+{
+	"lena": {
+		"cell": [
+			5,
+			3
+		],
+		"facing": "down",
+		"sprite": "lass",
+		"dialogue": "ss_anne_lena_after",
+		"trainer": {
+			"id": "ss_anne_lass_lena",
+			"sight": 2,
+			"before": "ss_anne_lena_before",
+			"defeated": "ss_anne_lena_defeated"
+		}
+	},
+	"ss_anne_item_02": {
+		"cell": [
+			2,
+			5
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "ss_anne_item_02",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_ss_anne_item_02"
+		]
+	}
+}

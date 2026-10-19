@@ -6,7 +6,7 @@ extends Sprite2D
 ## lectures d'un bruit qui se répète. **Aucune `Light2D`, aucune particule, aucun `_process`** :
 ## le mouvement vient de `TIME` dans le shader. Alpha plafonné à [constant ALPHA_MAX].
 ## « Réduire les animations » : [method set_reduce_motion] la cache (modèle de
-## `LightGlow.set_reduce_motion`) ; le branchement dans `boot.gd` vient avec T16.
+## `LightGlow.set_reduce_motion`), branchée dans `SettingsApplier` (T10).
 
 const SHADER: Shader = preload("res://game/world/lighting/shaders/mist_scroll.gdshader")
 const TEXTURE_PATH: String = "res://assets/world/mist_noise_01.png"

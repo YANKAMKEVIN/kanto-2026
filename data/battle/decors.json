@@ -74,6 +74,69 @@
 			"player_feet": [716, 972],
 			"horizon": 440
 		},
+		"route_11_coast": {
+			"zone": "route_11",
+			"variant": "coast",
+			"back": "res://assets/battle/decors/route_11_coast_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 540],
+			"player_feet": [716, 972],
+			"horizon": 304
+		},
+		"digletts_cave_rock": {
+			"zone": "digletts_cave",
+			"variant": "rock",
+			"back": "res://assets/battle/decors/digletts_cave_rock_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 540],
+			"player_feet": [716, 972],
+			"horizon": 400
+		},
+		"ss_anne_salon": {
+			"zone": "ss_anne",
+			"variant": "salon",
+			"back": "res://assets/battle/decors/ss_anne_salon_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 540],
+			"player_feet": [716, 972],
+			"horizon": 293
+		},
+		"ss_anne_pont": {
+			"zone": "ss_anne",
+			"variant": "pont",
+			"back": "res://assets/battle/decors/ss_anne_pont_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 540],
+			"player_feet": [716, 972],
+			"horizon": 520
+		},
+		"vermilion_gym_salle": {
+			"zone": "vermilion_gym",
+			"variant": "salle",
+			"back": "res://assets/battle/decors/vermilion_gym_salle_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 540],
+			"player_feet": [716, 972],
+			"horizon": 380
+		},
+		"route_9_roche": {
+			"zone": "route_9",
+			"variant": "roche",
+			"back": "res://assets/battle/decors/route_9_roche_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 540],
+			"player_feet": [716, 972],
+			"horizon": 400
+		},
+		"dark_cave_galerie": {
+			"zone": "dark_cave",
+			"variant": "galerie",
+			"back": "res://assets/battle/decors/dark_cave_galerie_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 540],
+			"player_feet": [716, 972],
+			"horizon": 440
+		},
 		"tour_pokemon": {
 			"zone": "pokemon_tower",
 			"variant": "salle",
@@ -115,6 +178,54 @@
 		],
 		"route_5": [
 			{ "decor": "route_5_6_prairie" }
+		],
+		"route_11": [
+			{ "decor": "route_11_coast" }
+		],
+		"digletts_cave": [
+			{ "decor": "digletts_cave_rock" }
+		],
+		"ss_anne_main_deck": [
+			{ "decor": "ss_anne_salon" }
+		],
+		"ss_anne_captain_corridor": [
+			{ "decor": "ss_anne_salon" }
+		],
+		"ss_anne_captain_room": [
+			{ "decor": "ss_anne_salon" }
+		],
+		"ss_anne_restaurant": [
+			{ "decor": "ss_anne_salon" }
+		],
+		"ss_anne_lower_deck": [
+			{ "decor": "ss_anne_salon" }
+		],
+		"ss_anne_cabin_a": [
+			{ "decor": "ss_anne_salon" }
+		],
+		"ss_anne_cabin_b": [
+			{ "decor": "ss_anne_salon" }
+		],
+		"ss_anne_cabin_c": [
+			{ "decor": "ss_anne_salon" }
+		],
+		"ss_anne_outer_deck": [
+			{ "decor": "ss_anne_pont" }
+		],
+		"vermilion_gym": [
+			{ "decor": "vermilion_gym_salle" }
+		],
+		"route_9": [
+			{ "decor": "route_9_roche" }
+		],
+		"route_10": [
+			{ "decor": "route_9_roche" }
+		],
+		"dark_cave_1f": [
+			{ "decor": "dark_cave_galerie" }
+		],
+		"dark_cave_b1f": [
+			{ "decor": "dark_cave_galerie" }
 		],
 		"pokemon_tower_2f": [
 			{ "decor": "tour_pokemon" }

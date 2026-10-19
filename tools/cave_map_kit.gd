@@ -33,6 +33,11 @@ const STEP_ON: int = 0
 const Z_DECALS: int = -1
 ## Cases praticables des grilles de grotte (ligne `PRATICABLES` des plans du Mont Sélénite).
 const WALKABLE: String = ".gjUVE"
+## Cases praticables des grilles de la **Grotte Sombre** (J18 T11) : celles du Mont Sélénite plus
+## `e`, la sortie sud vers la Route 10 (bord de carte, praticable comme `E`). `WALKABLE` ne change
+## pas : les grilles du Mont Sélénite déclarent toujours `.gjUVE` ; la Grotte Sombre passe
+## [constant DARK_CAVE_WALKABLE] au constructeur.
+const DARK_CAVE_WALKABLE: String = ".gjUVEe"
 const RUBBLE_MARK: String = "g"
 const MASS_MARK: String = "#"
 ## Cases de **paroi** (T9) : la masse `#` et les éclats `*` incrustés dans la roche (texture de
@@ -76,6 +81,9 @@ const PLANS: Dictionary[StringName, String] = {
 	&"mt_moon_b1f": "res://tools/plans/mont_selenite_b1f.txt",
 	&"mt_moon_b2f": "res://tools/plans/mont_selenite_b2f.txt",
 	&"route_4": "res://tools/plans/route_4_sas.txt",
+	# Grotte Sombre (J18 T11) : échelles A et B (`ladder_links`).
+	&"dark_cave_1f": "res://tools/plans/grotte_sombre_1f.txt",
+	&"dark_cave_b1f": "res://tools/plans/grotte_sombre_b1f.txt",
 }
 
 var plan: Object
@@ -104,6 +112,15 @@ var floor_texture_path: String = FLOOR_TEXTURE
 var rubble_texture_path: String = RUBBLE_TEXTURE
 var mass_texture_path: String = MASS_TEXTURE
 var border_color: Color = BORDER_COLOR
+## Parois (J18 T11, la Tour a ses murs `K` et ses modules `relief_mur_tour_*`, la Grotte Sombre ses
+## modules propres) : caractères de masse, caractère qui reçoit un module, identifiants des modules
+## (faces, bord latéral, lèvre). Défauts = ceux du Mont Sélénite : cartes existantes inchangées.
+## (Même ajout au J17 T15 pour les parois de grès de la Cave Taupiqueur : déclaré une fois.)
+var wall_marks: String = WALL_MARKS
+var mass_mark: String = MASS_MARK
+var wall_faces: Array[String] = WALL_FACES.duplicate()
+var wall_side: String = WALL_SIDE
+var wall_lip: String = WALL_LIP
 var rubble_mark: String = RUBBLE_MARK
 var rubble_is_logic: bool = true
 
@@ -252,7 +269,7 @@ func _paint_logic(layer: TileMapLayer) -> void:
 			layer.set_cell(cell, tiles.SOURCE_ID, tiles.atlas_coords(kind, variant))
 			if mark == rubble_mark:
 				rubble_cells[cell] = true
-			elif WALL_MARKS.contains(mark) or is_embedded(cell):
+			elif wall_marks.contains(mark) or is_embedded(cell):
 				mass_cells[cell] = true
 			elif walkable_marks.contains(mark):
 				floor_cells[cell] = true
@@ -599,7 +616,7 @@ func is_wall(cell: Vector2i) -> bool:
 
 ## Masse rocheuse (`#`, éclats `*`) : la seule paroi qui reçoit des modules.
 func is_mass(cell: Vector2i) -> bool:
-	return not _in_bounds(cell) or WALL_MARKS.contains(plan.call(&"at", cell))
+	return not _in_bounds(cell) or wall_marks.contains(plan.call(&"at", cell))
 
 
 ## Repère bloqué (lampe, indice, caisse…) **pris dans la paroi** : masse au nord et au sud, ou à
@@ -609,7 +626,7 @@ func is_embedded(cell: Vector2i) -> bool:
 	if not _in_bounds(cell):
 		return false
 	var mark: String = plan.call(&"at", cell)
-	if walkable_marks.contains(mark) or WALL_MARKS.contains(mark):
+	if walkable_marks.contains(mark) or wall_marks.contains(mark):
 		return false
 	return (is_mass(cell + Vector2i.UP) and is_mass(cell + Vector2i.DOWN)) \
 		or (is_mass(cell + Vector2i.LEFT) and is_mass(cell + Vector2i.RIGHT))
@@ -638,7 +655,7 @@ func is_lip_cell(cell: Vector2i) -> bool:
 ## Seules les cases `#` reçoivent un module : les éclats `*` et les repères pris dans la paroi
 ## laissent une niche (masse peinte) où leur objet se voit.
 func _takes_module(cell: Vector2i) -> bool:
-	return _in_bounds(cell) and plan.call(&"at", cell) == MASS_MARK
+	return _in_bounds(cell) and plan.call(&"at", cell) == mass_mark
 
 
 ## Parois en modules d'après la grille (fiche de la série 14) : une **face** sur chaque case de
@@ -659,7 +676,7 @@ func place_walls(seed_value: int) -> Vector3i:
 				var tall := true
 				for x: int in range(piece.x, piece.x + piece.y):
 					tall = tall and _takes_module(Vector2i(x, y - 1))
-				var id: String = WALL_FACES[wall_rng.randi_range(0, WALL_FACES.size() - 1)]
+				var id: String = wall_faces[wall_rng.randi_range(0, wall_faces.size() - 1)]
 				var foot := Vector2((piece.x + piece.y / 2.0) * TILE, (y + 1) * TILE)
 				var prop := _wall_module(entities, id, foot, piece.y * TILE,
 					-1 if tall else THIN_FACE_HEIGHT, false, "Face%03d" % faces, wall_rng)
@@ -667,9 +684,9 @@ func place_walls(seed_value: int) -> Vector3i:
 				faces += 1
 		for run: Vector2i in _row_runs(y, is_lip_cell):
 			for piece: Vector2i in _pieces(run):
-				var model_height := _texture_of(WALL_LIP).get_height()
+				var model_height := _texture_of(wall_lip).get_height()
 				var foot := Vector2((piece.x + piece.y / 2.0) * TILE, y * TILE + model_height)
-				var prop := _wall_module(decals, WALL_LIP, foot, piece.y * TILE, -1, false,
+				var prop := _wall_module(decals, wall_lip, foot, piece.y * TILE, -1, false,
 					"Lip%03d" % lips, wall_rng)
 				prop.flip_h = wall_rng.randf() < 0.5
 				lips += 1
@@ -699,7 +716,7 @@ func place_walls(seed_value: int) -> Vector3i:
 func _side_slice(cell: Vector2i, part: int, node_name: String,
 		wall_rng: RandomNumberGenerator) -> Sprite2D:
 	var foot := Vector2((cell.x + 0.5) * TILE, (cell.y + 1) * TILE)
-	var sprite := add_sprite(entities, WALL_SIDE, foot, node_name)
+	var sprite := add_sprite(entities, wall_side, foot, node_name)
 	var image_size := sprite.texture.get_size()
 	var y0 := 0.0
 	if part == SIDE_MIDDLE:

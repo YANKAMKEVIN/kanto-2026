@@ -1,0 +1,43 @@
+{
+	"flash": {
+		"name": "Flash", "type": "normal", "category": "status",
+		"accuracy": 70, "pp": 20,
+		"effects": [{ "kind": "stat_stage", "stat": "acc", "stages": -1, "target": "foe" }],
+		"description": "Une lumière aveuglante qui baisse la précision de l'ennemi."
+	},
+	"hypnosis": {
+		"name": "Hypnose", "type": "psychic", "category": "status",
+		"accuracy": 60, "pp": 20,
+		"effects": [{ "kind": "status", "status": "sleep" }],
+		"description": "Le lanceur hypnotise la cible et la plonge dans un profond sommeil."
+	},
+	"headbutt": {
+		"name": "Coup d'Boule", "type": "normal", "category": "physical",
+		"power": 70, "accuracy": 100, "pp": 15,
+		"effects": [{ "kind": "flinch", "chance": 30 }],
+		"description": "Le lanceur fonce tête la première. Peut apeurer la cible."
+	},
+	"poison_gas": {
+		"name": "Gaz Toxik", "type": "poison", "category": "status",
+		"accuracy": 55, "pp": 40,
+		"effects": [{ "kind": "status", "status": "poison" }],
+		"description": "Un nuage de gaz toxique enveloppe la cible et l'empoisonne."
+	},
+	"meditate": {
+		"name": "Yoga", "type": "psychic", "category": "status",
+		"accuracy": 0, "pp": 40,
+		"effects": [{ "kind": "stat_stage", "stat": "atk", "stages": 1, "target": "self" }],
+		"description": "Le lanceur médite pour éveiller sa force. Augmente son Attaque."
+	},
+	"roar": {
+		"name": "Hurlement", "type": "normal", "category": "status",
+		"accuracy": 0, "pp": 20, "priority": -6, "effects": [{ "kind": "force_switch" }],
+		"description": "Un cri terrifiant fait fuir la cible."
+	},
+	"take_down": {
+		"name": "Bélier", "type": "normal", "category": "physical",
+		"power": 90, "accuracy": 85, "pp": 20,
+		"effects": [{ "kind": "recoil_damage", "fraction": 0.25 }],
+		"description": "Le lanceur charge la cible de tout son poids et se blesse aussi."
+	}
+}
