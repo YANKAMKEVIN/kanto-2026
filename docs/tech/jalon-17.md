@@ -243,6 +243,9 @@ ses appels et garde ses tests ; si le J17 arrive d'abord, ce plan devient le con
 | T27 Session 17D (traversées, sauvegarde) | qa-mobile | après tout | — | — |
 | T28 Clôture | architecte | fin | — | — |
 
+**Suivi (clôture, 2026-10-19)** : T0 à T28 **faits** ; 17.0, 17A, 17B, 17C validés par Kevin ; 17D
+(T27) passée sur S21 sans bug ; état détaillé et passation : §9.
+
 **Parallélisme maintenant** : T1 → (T2 → T3 → T7) ∥ T4 ∥ T5 ∥ T6 ∥ T9 → T10 ; T11 → T12 ∥ T13 →
 T14 ; puis T8 (après T4 et T7) ; cartes T15, T16, T19, T21 dès T14 et leurs fondations. Les (B)
 partent dès que leur jalon est dans `main` (puis `main` fusionné dans `jalon-17`).
@@ -855,7 +858,7 @@ Sac, position dans la Cave et sur le sentier `b` ; aucune clé nouvelle à la ra
 
 ### 2.17 Carte de QA et départs de débogage
 
-- **`qa_flash`** (T10, **provisoire, retirée au T28**) : petite grotte (≈ 20 × 14) construite avec
+- **`qa_flash`** (T10, provisoire, **retirée au T28** : §9.1) : petite grotte (≈ 20 × 14) construite avec
   `cave_map_kit.gd` et `cave_shade.gd`, entrée depuis une pièce éclairée `qa_flash_entry` ; entrée
   `qa_flash` dans `caves.json` avec `"dark": true` (retirée au T28) ; quelques gravats sans
   rencontre, un PNJ immobile pour juger « sous le voile », un `LightGlow` (comportement actuel noté,
@@ -1032,7 +1035,7 @@ et annexe A validée).
 - Traversées complètes, sauvegarde / rechargement à chaque transition, non-régression sur la vraie
   partie de Kevin ; arbustes si le J16 est arrivé ; §4 « 17D ».
 
-#### T28 — architecte : clôture
+#### T28 — architecte : clôture — **fait** (2026-10-19, §9)
 - Retirer `qa_flash` (carte, pièce d'entrée, entrée de `caves.json`, départs `flash_qa*`) **avant** la fusion dans `main` (rappel du J18).
 - Retrait de `qa_flash`, `qa_flash_entry`, de leur entrée `caves.json` et des départs `flash_qa*` ;
   `etat-projet.md`, roadmap (et la ligne J17 des branches de conception, §0.2 n° 2) ; **passation
@@ -1084,7 +1087,7 @@ verts, import propre, budgets tenus.
 |---|---|---|
 | Seuil des 10 espèces atteint par une évolution | `test_assistant_hm05_flow` | `record_evolved` compte ; remise à la visite suivante |
 | Seuil atteint, puis Pokémon relâchés / déposés | idem | compte inchangé, remise |
-| CS05 reçue sans Pokémon compatible | `test_field_moves`, `test_flash_director` (`flash_qa_no_pokemon`) | rien ne se passe ; aucune carte obscure dans le jeu |
+| CS05 reçue sans Pokémon compatible | `test_field_moves`, `test_flash_director` (équipe sans compatible, T28) | rien ne se passe ; aucune carte obscure dans le jeu |
 | Application tuée pendant la remise de la CS05 | `test_assistant_hm05_flow` (sauvegarde relue pendant la scène) | état d'avant (ni CS05 ni drapeau) ; la scène se rejoue |
 | … pendant l'ouverture de la barrière | `test_route_2` | barrière fermée ou ouverte, jamais à moitié (drapeau seul) |
 | … juste après avoir coupé un arbuste | T23 (J16) | règle du J16 |
@@ -1162,6 +1165,94 @@ verts, import propre, budgets tenus.
   bloque le retrait du `draft` des données, pas le code.*
 
 **À fournir par Kevin** (pas une question) : sa vraie partie (sauvegarde) pour T27.
+
+---
+
+## 9. Clôture et passation (T28, 2026-10-19)
+
+**État** : 17.0, 17A, 17B et 17C **validés par Kevin** (17C sur les sessions S24) ; T23 (Coupe sur
+les deux arbustes) faite après la fusion du J16 ; **17D (T27)** passée sur le S21 sans aucun bug
+(vraie partie v6 → v7 sans perte, puis restaurée à l'identique ; Coupe, barrière, Carmin, Route 11,
+Cave ; rapport `build/qa/j17_t27/rapport.md` de la copie `j17-t27`). Reste : fusion de `jalon-17`
+dans `main` par la session principale (copie d'intégration ; ce T28 ne fusionne ni ne pousse).
+
+### 9.1 Retiré au T28 (carte de QA du T10)
+
+- Cartes `qa_flash` (grotte obscure) et `qa_flash_entry` (pièce éclairée), leurs images
+  `assets/world/maps/qa_flash*`, `data/npcs/qa_flash.json`, l'entrée `qa_flash` de `caves.json`,
+  les outils `tools/build_qa_flash.gd` et `capture_qa_flash.gd`, les grilles
+  `tools/plans/qa_flash*.txt`, les sept départs `flash_qa*` et leurs lignes du README des départs,
+  `test_qa_flash.gd`.
+- **La brique reste complète et testée** sans rien livrer : `tests/helpers/dark_cave.gd` écrit sous
+  `user://` une copie de `caves.json` où la **Cave Taupiqueur est `dark`**, et les départs des
+  anciennes équipes (Flash, sans CS05, sans compatible, seul compatible K.O.) ; `Boot.caves_path`
+  (tests seulement, défaut `CaveLibrary.DATA_PATH`) la lit. Tests dans le vrai Boot :
+  `test_darkness_boot` (nouveau : voile posé en entrant, trou centré sur le joueur au bord nord,
+  caméra bornée, retiré en sortant) et `test_flash_director` (repris : une fois par arrivée,
+  rallumée à chaque retour et à la reprise, avertissement, K.O. accepté, durée au pas près).
+  Inchangés : `test_darkness_veil` (lampes qui percent, bulle « ! », suivi en course, ouverture,
+  grille identique ; sur `mt_moon_1f` avec voile forcé), `test_veil_math`, `test_darkness_profile`,
+  `test_flash_rules`, `test_debug_start` (clé `veil`). `test_cave_library` : aucune grotte obscure
+  livrée au J17 ; `test_map_catalog` : aucune carte `qa_*` livrée.
+- Captures et contraste : `tools/capture_flash.sh` pose le voile (`--voile`) sur la Cave
+  (`MAP=<id>` pour une autre grotte) ; `luminance_grotte.py --halo` lit la grille de la carte
+  capturée (`PLANS`).
+- `project.godot` : scène principale `res://game/boot.tscn` ; filtre d'export inchangé (`tests/*`,
+  `tools/*`, `docs/*`, `addons/gut/*`, `build/*`, `proto/*`, `battle_proto/*` exclus) : l'aide de
+  test n'est pas dans l'APK ; plus aucun fichier `qa_*` dans `game/`, `data/`, `assets/`.
+
+### 9.2 Critères tenus (§4)
+
+- **17.0 → 17C** : validés par Kevin (sessions téléphone) ; contraste du héros 3,12–4,68 dans le
+  halo, sol hors halo 0,106–0,145 (T25) ; 60 fps avec et sans voile (S21), sessions S24 de Kevin.
+- **17D** : traversées, Coupe (couloir, FUTUR A), barrière FUTUR B, arbre de l'Arène, rechargements
+  sur la vraie partie sans régression ; fps 60 (creux 55–60) sur la Route 11 et dans la Cave, creux
+  de 7 au seul chargement de la Cave ; `qa_flash` retirée ; `tools/test.sh` **5 299 / 5 299**
+  (463 scripts) après le retrait, import sans erreur.
+- **Non vérifié en 17D** (couvert par les tests, pas sur téléphone) : barrière vue de l'ouest,
+  défaite sur la Route 11, traversée complète à pied, navire.
+- **Budget hors cible** : textures ≈ 106 Mo sur la Route 11 (repère 64 Mo), 81 Mo dans la Cave
+  (§9.4).
+
+### 9.3 Passation au J18
+
+- **Voile et Flash livrés, contrat commun** (§2.10, §2.11, T24) : un seul `FlashDirector` (enfant de
+  Boot), `FlashRules` (`entry_action`, `is_lit`, `is_entry`), `DarknessController` / `VeilMath` /
+  `DarknessProfile`. Une grotte devient obscure par **`"dark": true` dans `caves.json`** : aucun
+  code. Aucune grotte obscure n'est livrée au J17 (la Cave et le Mont Sélénite sont éclairés).
+- **`data/world/darkness.json`** (réglé au T25, à rejuger avec l'art des grottes du J18) :
+  `dark.outside` **0,38**, `floor_lift` **0,25** (`HaloFloorLight` sous les personnages) ; halo 2,5 /
+  4 cases sans Flash, 7 / 9 avec ; ouverture 0,6 s.
+- **Lampes qui percent le voile** (`LightGlow`, ≤ `VeilMath.MAX_SOURCES`) et **bulle « ! »
+  au-dessus du voile** : livrées (`test_darkness_veil`).
+- **Flash automatique** (Q-1 « tout J17 ») : à chaque arrivée dans une grotte obscure (étage
+  compris) et à la reprise d'une partie dedans, sans drapeau « allumée » ; Flash reste une capacité
+  de combat (précision 70 %). **Sans Flash** (pas de CS05 ou aucun compatible) : avertissement T-3
+  du J18 (« Il fait très sombre ici… Mieux vaut avancer prudemment. », `dark_cave_too_dark`), une
+  fois par arrivée. Le J18 aligne son §5.3 et son §8 (pas d'OFFER, ni `lit_flag`, ni
+  `flags_to_clear`).
+- **Corde Sortie à plusieurs bouches** : `escapes` dans `caves.json` (plages de rangées), exclusif
+  de `escape` ; `CaveLibrary.escape_target(map_id, cell)`.
+- **Condition `if_caught_at_least` / `unless_caught_at_least`** (dialogues) et jetons `{caught}`,
+  `{caught_missing}` (§2.5) : réutilisables.
+- **`pending_effects`** : Bélier (`take_down`, `recoil_damage`) et Hurlement (`roar`,
+  `force_switch`) sont des données sans effet en combat ; **le J19 les code** (Caninos de Dresseur
+  garde Groz'Yeux d'ici là).
+- Roadmap de la branche `docs/dossier-j18` : elle met encore Major Bob au J17 (§0.2 n° 2) ; à
+  corriger à la fusion des branches de conception (J16 = Major Bob, J17 = ce jalon).
+- **Contrat du J16** (§1.2) : sans objet, le J16 est arrivé d'abord ; Coupe du J16 réutilisée telle
+  quelle (T23).
+
+### 9.4 Points ouverts pour Kevin
+
+1. **Bouche de la Cave coupée par le haut de l'écran** à l'arrivée sur la Route 11 (cadrage de la
+   caméra près du bord : décision de rendu ou de géométrie).
+2. **Mémoire des textures** ≈ 106 Mo sur la Route 11 pour un repère de 64 Mo (81 Mo dans la Cave ;
+   fps tenus) : à traiter à la phase DA (compression, atlas) ou à revoir comme repère.
+3. **Dos de combat pixelisés en jeu** : les 16 dos 3D de `battle_proto/` ne sont pas branchés ; la
+   passe Colab est reportée (décision de Kevin, T13).
+4. **Arbuste de FUTUR A peu lisible** (rendu, Reportés).
+5. **Bouton Course qui masque parfois un PNJ** (placement de l'interface).
 
 ---
 
