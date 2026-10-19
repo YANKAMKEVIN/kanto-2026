@@ -35,12 +35,22 @@ Usage :
                                             (défaut build/art/J24_KIT_v1.png)
   tools/art/serie27.py --vues               copie les vues retenues et leurs plans dans
                                             docs/design/reference/ (VUES_RETENUES)
+  Intégration (J24 T5, après la validation de Kevin du 2026-10-19, Artikodin en r1) :
+  tools/art/serie27.py --manifeste          ajoute les entrées en fin de manifeste.json
+  tools/art/preparer_serie.py serie27       prépare planches, accessoires, sols, coques (idempotent)
+  tools/art/serie27.py --dos                dos 144 / 140 / 138 -> battle_proto/dos_ia_NNN.png
+  tools/art/serie27.py --combat             fonds sea_open et seafoam_ice : decors.json (outil et
+                                            données) puis preparer_decor.py (idempotent)
+  tools/art/serie27.py --controle [sortie]  planche de contrôle À L'ÉCHELLE DU JEU depuis les
+                                            RESSOURCES du jeu (défaut build/art/J24_INTEG_v1.png)
 Groupes : surf, nageurs, top, force, artikodin, sols, combat, tuiles, dos, labo, vues.
 """
 from __future__ import annotations
 
+import json
 import os
 import shutil
+import subprocess
 import sys
 from pathlib import Path
 
@@ -50,7 +60,7 @@ ICI = Path(__file__).resolve().parent
 sys.path.insert(0, str(ICI))
 import serie10  # noqa: E402
 from serie06 import ADN, LUMIERE_NE, RACINE, TEXTURE_FIN  # noqa: E402
-from serie10 import _Planche, _echelle  # noqa: E402
+from serie10 import _Planche, _echelle, _fin_de_liste  # noqa: E402
 from serie12 import MODELE_MARCHE  # noqa: E402
 
 ART = Path(os.environ.get("ART", RACINE / "build" / "art"))
@@ -1000,6 +1010,282 @@ def vues() -> None:
 		print(cible.relative_to(RACINE))
 
 
+# --- Intégration (manifeste, dos, fonds de combat, planche de contrôle) -----------------------------
+
+_D = "assets/sprites/characters/painted/"
+_P = "assets/sprites/pokemon/painted/"
+_SOLS = "assets/world/ground/"
+_INT = "assets/world/interiors/"
+DOS_SORTIE = "assets/sprites/pokemon/battle_proto/dos_ia_{numero}.png"
+DECORS_OUTIL = ICI / "combat_decors" / "decors.json"
+DECORS_DONNEES = RACINE / "data" / "battle" / "decors.json"
+
+
+def manifeste_donnees() -> dict:
+	"""Entrées du manifeste, en fin de chaque section. Réglages = défauts (règle 4), les [D] sont
+	repris dans le compte rendu du jalon :
+	- Topdresseurs : 128 px (le héros) ; planches nettoyées du halo alpha (`nettoyer`) ;
+	- échelle de la marche du héros = 0,4 (cellule source 256 × 384, héros ≈ 320 px -> 128 px) ;
+	- Nageur : 0,4 × la pose la plus haute (222 px) = 89 px ; Nageuse : même hauteur de pose de face
+	  que le Nageur (216 -> 228 px source : × 0,956), soit 88 px, pour égaliser sa tête (chignon) ;
+	- héros en Surf : 0,4 × 336 = 134 px ; monture seule : profil de 104 px de long (≈ 1,1 case),
+	  soit 76 px de haut ;
+	- Artikodin : 163 px (≈ 1,7 case), 4 images, souffle = image 3 ;
+	- accessoires de Force : rocher 1 case de large (356 px source -> 96), trou et trou bouché :
+	  anneau de pierre de 96 px (une case), rocher dans l'eau à l'échelle du rocher ;
+	- sols : 384 px, raccord 24 px (comme les autres sols) ;
+	- coques du Labo : hall 27 × 12 recadré sur la pièce (plan à bandes noires), salles 15 × 10."""
+	def perso(ident: str, source: str, hauteur: int, note: str) -> dict:
+		return {"id": ident, "source": source, "sortie": f"{_D}{ident}_sheet.png",
+			"hauteur": hauteur, "nettoyer": True, "note": note}
+
+	def accessoire(ident: str, dossier: str, boite: list[int], echelle: float) -> dict:
+		return {"source": "WORLD_PROP_FORCE_PLANCHE_NE_r1.png", "dossier": dossier, "ids": [ident],
+			"boites": [boite], "echelle": round(echelle, 4), "nettoyer": True}
+
+	def sol(ident: str, source: str, contraste: float) -> dict:
+		return {"id": ident, "source": source, "sortie": f"{_SOLS}{ident}.png", "taille": 384,
+			"contraste": contraste, "couleur": 1.0, "raccord": 24}
+
+	def coque(ident: str, salle: str, cases: list[int], boite: list[int] | None = None) -> dict:
+		e = {"id": ident, "source": f"INT_LABO_CRAMOIS_{salle}_COQUE_NE_r1.png",
+			"sortie": f"{_INT}{ident}.png", "cases": cases}
+		if boite:
+			e["boite"] = boite
+		return e
+
+	return {
+		"personnages": [
+			perso("topdresseur", "PNJ_TOPDRESSEUR_NE_r1.png", 128,
+				"série 27 (J24) ; Route 19 : Hugo, Malo ; look cooltrainer_m"),
+			perso("topdresseuse", "PNJ_TOPDRESSEUSE_NE_r1.png", 128,
+				"série 27 (J24) ; Centre de Cramois'Île T-46 ; look cooltrainer_f"),
+			perso("nageur_eau", "PNJ_NAGEUR_EAU_NE_r1.png", 89,
+				"série 27 : le Nageur du J13 dans l'eau, échelle de la marche (0,4) ; swimmer_water"),
+			perso("nageuse_eau", "PNJ_NAGEUSE_EAU_NE_r1.png", 88,
+				"série 27 : la Nageuse dans l'eau, tête égalisée sur celle du Nageur (× 0,956) ; "
+				"swimmer_f_water"),
+			perso("heros_surf", "HEROS_SURF_NE_r1.png", 134,
+				"série 27 : le héros assis sur la monture, échelle de la marche (0,4) ; player_surf ; "
+				"découpé par détection du sujet (casquette de la ligne 4)"),
+			perso("surf_monture", "SURF_MONTURE_NE_r1.png", 76,
+				"série 27 : monture de Surf seule (apparition, saut), profil ≈ 104 px ; surf_mount"),
+		],
+		"pokemon_boucles": [
+			{"id": "artikodin", "source": "POKE_ARTIKODIN_MONDE_NE_r1.png",
+				"sortie": f"{_P}artikodin_sheet.png", "hauteur": 163, "colonnes": 4, "seuil_alpha": 24,
+				"ordre_colonnes": ["repos", "inspire", "souffle", "repos_2"],
+				"note": "série 27 : Artikodin r1 (Kevin, 2026-10-19), une direction, 4 images en boucle"},
+		],
+		"effets": [
+			accessoire("prop_rocher_force_01", "assets/world/props/", [28, 332, 384, 664], 0.27),
+			accessoire("prop_rocher_force_eau_01", "assets/world/props/", [404, 404, 788, 668], 0.27),
+			accessoire("decal_trou_force_01", "assets/world/ground/decals/", [804, 344, 1128, 668],
+				96 / 324),
+			accessoire("decal_trou_force_bouche_01", "assets/world/ground/decals/",
+				[1168, 336, 1512, 676], 96 / 344),
+		],
+		"sols": [
+			sol("ground_courant_01", "WORLD_GROUND_COURANT_01_NE_r1.png", 1.0),
+			sol("ground_eau_grotte_01", "WORLD_GROUND_EAU_GROTTE_01_NE_r1.png", 1.0),
+			sol("ground_glace_01", "WORLD_GROUND_GLACE_01_NE_r1.png", 0.8),
+		],
+		"pieces": [
+			coque("int_labo_cramois_hall_coque", "HALL", [27, 12], [10, 116, 1530, 890]),
+			coque("int_labo_cramois_rd_coque", "RD", [15, 10]),
+			coque("int_labo_cramois_fossiles_coque", "FOSSILES", [15, 10]),
+			coque("int_labo_cramois_reunion_coque", "REUNION", [15, 10]),
+		],
+	}
+
+
+def _cle(entree: dict) -> str:
+	return entree.get("id") or (entree.get("ids") or [entree["source"]])[0]
+
+
+def manifeste() -> None:
+	"""Ajoute les entrées absentes en fin de section (insertion de texte, comme les séries 10 à 23) ;
+	une section absente (`pokemon_boucles`) est créée en fin de fichier."""
+	chemin = ICI / "manifeste.json"
+	texte = chemin.read_text()
+	m = json.loads(texte)
+	ajouts = 0
+	for section, entrees in manifeste_donnees().items():
+		presents = {_cle(e) for e in m.get(section, [])}
+		nouvelles = [e for e in entrees if _cle(e) not in presents]
+		if not nouvelles:
+			continue
+		blocs = ",\n".join("  " + json.dumps(e, ensure_ascii=False, indent=1).replace("\n", "\n  ")
+			for e in nouvelles)
+		if section not in m:
+			fin = texte.rstrip().rindex("}")
+			avant = texte[:fin].rstrip()
+			texte = f'{avant},\n "{section}": [\n{blocs}\n ]\n}}\n'
+		else:
+			fin = _fin_de_liste(texte, section)
+			avant = texte[:fin].rstrip()
+			separateur = "," if not avant.endswith("[") else ""
+			texte = f"{avant}{separateur}\n{blocs}\n {texte[fin:]}"
+		ajouts += len(nouvelles)
+	json.loads(texte)
+	chemin.write_text(texte)
+	print(f"manifeste : {ajouts} entrée(s) de la série 27 ajoutée(s)")
+
+
+def dos(source: Path, sortie: Path) -> Path:
+	"""Dos de combat provisoire (comme `dos_ia_*`, serie23.dos) : 1024 × 1024 RGBA, halo alpha coupé,
+	sujet de 898 px de haut (≈ 88 %), centré, bas du sujet à la rangée 961."""
+	import preparer
+	image = preparer.nettoyer_halos(Image.open(source).convert("RGBA"))
+	image = image.crop(image.getchannel("A").point(lambda a: 255 if a > 32 else 0).getbbox())
+	echelle = 898 / image.height
+	image = image.resize((round(image.width * echelle), 898), Image.LANCZOS)
+	toile = Image.new("RGBA", (1024, 1024), (0, 0, 0, 0))
+	toile.alpha_composite(image, ((1024 - image.width) // 2, 961 - 898))
+	sortie.parent.mkdir(parents=True, exist_ok=True)
+	toile.save(sortie, optimize=True)
+	return sortie
+
+
+def dos_tous() -> None:
+	for espece, (numero, *_) in DOS.items():
+		source = _derniere(f"DOS_{espece}")
+		print(dos(source, RACINE / DOS_SORTIE.format(numero=numero)))
+
+
+## Fonds de combat : identifiant (convention de decors.json : zone_variante) -> composition, portions
+## des tuiles, ligne d'horizon du master 2340 × 1080 (mer : horizon à 265/862 de l'image ; grotte :
+## bord du sol de glace à 305/852) ; pieds de l'adversaire et du joueur = ancres communes.
+DECORS = {
+	"sea_open": {"zone": "sea", "variant": "open", "composition": "COMBAT_DECOR_MER_OUVERTE_r1",
+		"portions": ([0, 0, 989, 862], [836, 0, 1825, 862]), "horizon": 332},
+	"seafoam_ice": {"zone": "seafoam", "variant": "ice", "composition": "COMBAT_DECOR_GROTTE_GLACEE_r1",
+		"portions": ([0, 0, 1000, 852], [846, 0, 1846, 852]), "horizon": 387},
+}
+
+
+def combat() -> None:
+	"""Écrit les entrées des deux fonds dans `combat_decors/decors.json` (outil) et dans
+	`data/battle/decors.json` (données) SANS les associer à une carte (« places » intact), puis
+	lance `preparer_decor.py` (assets/battle/decors/<id>_back.webp)."""
+	outil = DECORS_OUTIL.read_text()
+	donnees = DECORS_DONNEES.read_text()
+	for ident, d in DECORS.items():
+		if f'"{ident}":' not in outil:
+			tl, tr = (f'{d["composition"]}_{c}.png' for c in ("TL", "TR"))
+			bloc = (f',\n\t"{ident}": {{\n\t\t"composition": "{d["composition"]}.png",\n\t\t"tuiles": [\n'
+				f'\t\t\t{{ "image": "{tl}", "portion": {json.dumps(d["portions"][0])} }},\n'
+				f'\t\t\t{{ "image": "{tr}", "portion": {json.dumps(d["portions"][1])} }}\n\t\t],\n'
+				f'\t\t"taille": [2340, 1080],\n\t\t"qualite": 90\n\t}}')
+			fin = outil.rstrip().rindex("}")
+			outil = outil[:fin].rstrip() + bloc + "\n}\n"
+		if f'"{ident}":' not in donnees:
+			bloc = (f',\n\t\t"{ident}": {{\n\t\t\t"zone": "{d["zone"]}",\n\t\t\t"variant": "{d["variant"]}",\n'
+				f'\t\t\t"back": "res://assets/battle/decors/{ident}_back.webp",\n'
+				f'\t\t\t"size": [2340, 1080],\n\t\t\t"foe_feet": [1559, 540],\n'
+				f'\t\t\t"player_feet": [716, 972],\n\t\t\t"horizon": {d["horizon"]}\n\t\t}}')
+			fin = donnees.index('\n\t},\n\t"places"')
+			donnees = donnees[:fin] + bloc + donnees[fin:]
+	json.loads(outil)
+	json.loads(donnees)
+	DECORS_OUTIL.write_text(outil)
+	DECORS_DONNEES.write_text(donnees)
+	for ident in DECORS:
+		subprocess.run([sys.executable, str(ICI / "combat_decors" / "preparer_decor.py"), ident], check=True)
+
+
+# --- Planche de contrôle depuis les ressources du jeu ---------------------------------------------
+
+def _catalogue() -> dict:
+	return json.loads((RACINE / "assets" / "world" / "catalogue.json").read_text())
+
+
+def _ressource(chemin: str) -> Image.Image:
+	return Image.open(RACINE / chemin.removeprefix("res://")).convert("RGBA")
+
+
+def _cellules_jeu(feuille: dict) -> list[list[Image.Image]]:
+	"""Cellules (rangée -> colonnes) d'une planche du catalogue, alpha conservé, SANS recadrage."""
+	image = _ressource(feuille["fichier"])
+	largeur, hauteur = feuille["cellule"]
+	return [[image.crop((c * largeur, r * hauteur, (c + 1) * largeur, (r + 1) * hauteur))
+		for c in range(feuille["colonnes"])] for r in range(feuille["lignes"])]
+
+
+def controle(sortie: Path) -> Path:
+	"""Les ressources INTÉGRÉES, telles que le jeu les lit (catalogue, planches du monde, dos, fonds,
+	coques), à l'échelle du jeu : 1 case = 96 px, héros de 128 px en repère, Surf et Nageurs posés sur
+	l'eau du jeu. Fonds et coques réduits."""
+	catalogue = _catalogue()
+	perso = catalogue["personnages"]
+	p = _Planche(3000, "Série 27 intégrée (jalon 24) : ressources du jeu À L'ÉCHELLE, 1 case = 96 px ; héros 128 px")
+	sections: dict[str, list[tuple[Image.Image, str]]] = {}
+
+	def montrer(section: str, image: Image.Image, texte: str) -> None:
+		sections.setdefault(section, []).append((image, texte))
+
+	def quatre_directions(ident: str) -> Image.Image:
+		cellules = _cellules_jeu(perso[ident])
+		return _juxtaposer([_boite_visible(cellules[r][0]) for r in range(4)])
+
+	def cycle_bas(ident: str) -> Image.Image:
+		return _juxtaposer([_boite_visible(c) for c in _cellules_jeu(perso[ident])[0]])
+
+	heros = _boite_visible(_cellules_jeu(perso["heros"])[0][0])
+	montrer("PERSONNAGES DE LA MARCHE (128 px)", heros, "héros 128 px\n(repère)")
+	for ident, texte in (("topdresseur", "cooltrainer_m"), ("topdresseuse", "cooltrainer_f")):
+		c = perso[ident]
+		montrer("PERSONNAGES DE LA MARCHE (128 px)", quatre_directions(ident),
+			f"{ident} ({texte})\ncellule {c['cellule'][0]} × {c['cellule'][1]} : bas, gauche, droite, haut")
+		montrer("PERSONNAGES DE LA MARCHE (128 px)", cycle_bas(ident), f"{ident}\nmarche de face : 4 images")
+	for ident, texte in (("heros_surf", "player_surf"), ("surf_monture", "surf_mount"),
+			("nageur_eau", "swimmer_water"), ("nageuse_eau", "swimmer_f_water")):
+		c = perso[ident]
+		montrer("SURF ET NAGEURS (sur l'eau du jeu)", _sur_eau(quatre_directions(ident)),
+			f"{ident} ({texte})\ncellule {c['cellule'][0]} × {c['cellule'][1]} : bas, gauche, droite, haut")
+		montrer("SURF ET NAGEURS (sur l'eau du jeu)", _sur_eau(cycle_bas(ident)),
+			f"{ident}\nface : 4 images")
+	montrer("SURF ET NAGEURS (sur l'eau du jeu)", heros, "héros 128 px\n(repère)")
+	for ident, texte in (("prop_rocher_force_01", "rocher de Force"),
+			("prop_rocher_force_eau_01", "rocher dans l'eau"), ("decal_trou_force_01", "trou"),
+			("decal_trou_force_bouche_01", "trou bouché")):
+		image = _ressource(catalogue["images"][ident]["fichier"])
+		montrer("FORCE ET ARTIKODIN", _sur_eau(image) if "eau" in ident else image,
+			f"{ident}\n{texte} {image.width} × {image.height}")
+	montrer("FORCE ET ARTIKODIN", heros, "héros 128 px\n(repère)")
+	arti = perso["artikodin"]
+	montrer("FORCE ET ARTIKODIN", _juxtaposer([_boite_visible(c) for c in _cellules_jeu(arti)[0]]),
+		f"artikodin (pokemon/articuno)\ncellule {arti['cellule'][0]} × {arti['cellule'][1]} : repos, inspire, souffle, repos")
+	for ident, texte in (("ground_courant_01", "courant (vers le bas)"),
+			("ground_eau_grotte_01", "eau de grotte"), ("ground_glace_01", "sol de glace")):
+		sol = _ressource(catalogue["images"][ident]["fichier"])
+		grand = Image.new("RGBA", (sol.width * 2, sol.height))
+		grand.alpha_composite(sol, (0, 0))
+		grand.alpha_composite(sol, (sol.width, 0))
+		montrer("SOLS (384 px = 4 cases, répétés 2 fois)", grand, f"{ident}\n{texte} {sol.width} × {sol.height}")
+	for ident in DECORS:
+		fond = _ressource(f"assets/battle/decors/{ident}_back.webp")
+		montrer("COMBAT (fonds et dos réduits)", _echelle(fond, 900 / fond.width),
+			f"{ident}_back.webp\n{fond.width} × {fond.height} (réduit)")
+	for numero, nom in (("144", "Artikodin"), ("140", "Kabuto"), ("138", "Amonita")):
+		dos_image = _ressource(DOS_SORTIE.format(numero=numero))
+		v = _boite_visible(dos_image)
+		montrer("COMBAT (fonds et dos réduits)", _echelle(v, 300 / v.height),
+			f"dos_ia_{numero}.png ({nom})\n{dos_image.width} × {dos_image.height}, sujet réduit")
+	for ident in ("int_labo_cramois_hall_coque", "int_labo_cramois_rd_coque",
+			"int_labo_cramois_fossiles_coque", "int_labo_cramois_reunion_coque"):
+		coque = _ressource(catalogue["images"][ident]["fichier"])
+		montrer("LABO DE CRAMOIS'ÎLE (coques réduites : 1 case = 24 px)", _echelle(coque, 0.25),
+			f"{ident}\n{coque.width} × {coque.height} = {coque.width // 96} × {coque.height // 96} cases")
+	for titre, elements in sections.items():
+		fond = (30, 34, 48) if titre.startswith(("COMBAT", "LABO")) else (60, 80, 110)
+		p.section(titre, elements, fond)
+	sortie.parent.mkdir(parents=True, exist_ok=True)
+	p.rendre().convert("RGB").save(sortie, optimize=True)
+	print(f"{sum(len(e) for e in sections.values())} éléments")
+	return sortie
+
+
 if __name__ == "__main__":
 	arguments = sys.argv[1:]
 	if "--prompts" in arguments:
@@ -1015,5 +1301,14 @@ if __name__ == "__main__":
 		print(contact(Path(autres[0]) if autres else RACINE / "build" / "art" / "J24_KIT_v1.png"))
 	elif "--vues" in arguments:
 		vues()
+	elif "--manifeste" in arguments:
+		manifeste()
+	elif "--dos" in arguments:
+		dos_tous()
+	elif "--combat" in arguments:
+		combat()
+	elif "--controle" in arguments:
+		autres = [a for a in arguments if a != "--controle"]
+		print(controle(Path(autres[0]) if autres else RACINE / "build" / "art" / "J24_INTEG_v1.png"))
 	else:
 		generer(set(arguments))
