@@ -6,7 +6,9 @@ extends RefCounted
 ## **extérieures**, et seulement quand on arrive dans une zone différente de la dernière
 ## annoncée. Conséquences : rien dans les intérieurs ; en commençant dans la chambre,
 ## « BOURG PALETTE » s'affiche à la première sortie, puis plus à chaque porte franchie ;
-## il reviendra en rentrant de la Route 1.
+## il reviendra en rentrant de la Route 1. Exception (jalon 16) : une zone marquée
+## « interior_title » ([member ZoneData.interior_title], S.S. Anne) s'annonce aussi dans ses
+## intérieurs — Boot passe alors [code]interior = false[/code].
 
 var _last: String = ""
 

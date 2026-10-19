@@ -1,0 +1,49 @@
+{
+	"emile": {
+		"cell": [
+			6,
+			5
+		],
+		"facing": "right",
+		"sprite": "gentleman",
+		"dialogue": "ss_anne_emile_after",
+		"trainer": {
+			"id": "ss_anne_gentleman_emile",
+			"sight": 3,
+			"before": "ss_anne_emile_before",
+			"defeated": "ss_anne_emile_defeated"
+		}
+	},
+	"serveur": {
+		"cell": [
+			12,
+			5
+		],
+		"facing": "left",
+		"sprite": "clerk",
+		"dialogue": "ss_anne_waiter"
+	},
+	"convive": {
+		"cell": [
+			4,
+			4
+		],
+		"facing": "up",
+		"sprite": "passenger_f",
+		"dialogue": "ss_anne_diner"
+	},
+	"ss_anne_item_05": {
+		"cell": [
+			14,
+			8
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "ss_anne_item_05",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_ss_anne_item_05"
+		]
+	}
+}

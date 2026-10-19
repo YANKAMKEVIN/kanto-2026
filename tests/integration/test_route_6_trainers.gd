@@ -173,6 +173,11 @@ func test_chloe_spots_fights_pays_with_pay_day_then_says_her_after_line() -> voi
 	assert_eq(coins % (2 * LEVEL), 0, "2 × niveau par utilisation")
 	assert_true(coins >= 3 * 2 * LEVEL, "au moins une utilisation par Roucool")
 	# Battue : elle ne défie plus, et dit sa réplique « après ».
+	# On isole Chloé : Gabin peut légitimement défier le joueur juste après elle.
+	# Les six répliques des Dresseurs sont vérifiées séparément dans le test suivant.
+	for key: StringName in TRAINERS:
+		if key != &"lass_chloe":
+			GameState.flags.set_flag(StringName("beaten_" + String(TRAINERS[key][0])))
 	_spotted.clear()
 	_pages.clear()
 	_boot.get_map().spawn_player_at(_player, CHLOE_FILE + Vector2i.LEFT, Vector2i.RIGHT)
@@ -201,3 +206,4 @@ func test_the_six_beaten_trainers_say_their_after_lines() -> void:
 		assert_eq(_pages, _line(StringName(String(info[0]) + "_after")), "%s : « après »" % key)
 	assert_eq(_battles, [] as Array[StringName], "aucun combat")
 	assert_push_error_count(0)
+

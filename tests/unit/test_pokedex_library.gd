@@ -19,6 +19,8 @@ const ENCOUNTERABLE: Array[StringName] = [
 	&"abra", &"kadabra", &"machop",
 	# Jalon 15 (annexe A.5 de jalon-15.md, validée le 2026-10-14) : Miaouss.
 	&"meowth",
+	# Jalon 17 (annexe A.2 de jalon-17.md, validée le 2026-10-16) : Taupiqueur, Soporifik.
+	&"diglett", &"drowzee",
 ]
 ## Notes validées par Kevin qui parlent de l'évolution (exception à « jamais de divulgation ») :
 ## celle de Kadabra (dossier 17 §15, n° 64) cite son origine, Abra, déjà vue pour l'avoir.
@@ -28,6 +30,10 @@ const EVOLUTION_NOTES: Array[StringName] = [&"kadabra_bond"]
 const EVOLUTION_DESCRIPTIONS: Array[StringName] = [&"gyarados"]
 ## Fiches en brouillon à faire relire par Kevin (vide : celles du J24 validées le 2026-10-19).
 const PENDING_DRAFT_DESCRIPTIONS: Array[StringName] = []
+## Fiches autorisées à nommer une espèce que le joueur connaît forcément avant : Magnéton (« Trois
+## Magnéti liés… », texte validé par Kevin le 2026-10-16 ; Magnéti se voit avant, chez l'Ingénieur
+## Victor de la Route 11).
+const NAMED_SPECIES_OK: Dictionary[StringName, Array] = {&"magneton": [&"magnemite"]}
 
 var _data: PokemonData
 var _lib: PokedexLibrary
@@ -111,12 +117,12 @@ func test_real_texts_are_validated_and_never_spoil() -> void:
 		if PENDING_DRAFT_DESCRIPTIONS.has(id):
 			assert_true(info.draft, "%s : brouillon du J24, à retirer de la liste" % id)
 		else:
-			assert_false(info.draft, "%s : description validée (2026-10-06)" % id)
+			assert_false(info.draft, "%s : description validée par Kevin" % id)
 		var texts: Array[String] = []
 		if not EVOLUTION_DESCRIPTIONS.has(id):
 			texts.append(info.description)
 		for note: PokedexNoteData in info.notes:
-			assert_false(note.draft, "%s : note validée (2026-10-06)" % note.id)
+			assert_false(note.draft, "%s : note validée par Kevin" % note.id)
 			if not EVOLUTION_NOTES.has(note.id):
 				texts.append(note.text)
 		for text: String in texts:
@@ -124,6 +130,8 @@ func test_real_texts_are_validated_and_never_spoil() -> void:
 			for word: String in ["évolu", "niveau", "pokédex"]:
 				assert_false(lower.contains(word), "« %s » dans « %s »" % [word, text])
 			for other: StringName in _data.get_species_ids():
+				if (NAMED_SPECIES_OK.get(id, []) as Array).has(other):
+					continue
 				assert_false(other != id and text.contains(_data.get_species(other).name),
 					"%s ne nomme pas une autre espèce" % id)
 

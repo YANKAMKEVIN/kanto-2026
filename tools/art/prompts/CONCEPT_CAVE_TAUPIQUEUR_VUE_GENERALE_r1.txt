@@ -1,0 +1,37 @@
+CONCEPT ART — VUE GÉNÉRALE DE LA CAVE TAUPIQUEUR, UN LONG TUNNEL NATUREL (Kanto 2026), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. C'est UN SEUL tunnel, long et sinueux à angles droits, creusé dans la roche, qui traverse l'image du BAS (bouche sud, vers une route côtière) jusqu'en HAUT (bouche nord, vers un couloir boisé). Il ne se divise jamais : il se décale trois fois sur le côté (vers la gauche, puis vers la droite, puis vers la gauche) par de courtes galeries horizontales.
+Légende du plan :
+- gris-brun foncé = ROCHE PLEINE infranchissable (toute la masse autour du tunnel) ; dégradés gris-brun plus clairs le long du tunnel = les PAROIS rocheuses qui bordent les galeries ;
+- beige-gris clair = SOL DU TUNNEL praticable (terre et sable tassés, calme, aucun Pokémon sauvage) ;
+- brun moucheté de points = zones de GRAVATS (sol retourné, monticules de terre, cailloux, petits trous : là vivent les Pokémon sauvages ; elles ont des bords nets) ; il y en a quatre, de bas en haut : une dans le couloir du bas, une longue qui remplit toute la largeur du couloir de gauche, une petite dans le couloir de droite, une dans le couloir du haut ;
+- petits carrés gris dans le sol = ROCHERS isolés (repères) ; minuscule disque blanc = un simple caillou clair ;
+- petits rectangles noirs tout en haut et tout en bas, avec un liseré vert = les deux BOUCHES du tunnel : des ouvertures naturelles dans la roche, par lesquelles entrent la lumière du jour et un peu de verdure du dehors ;
+- point rouge et blanc à gauche = une Poké Ball posée au sol au fond d'un petit RENFONCEMENT, sur le flanc gauche du couloir de gauche ; un autre renfoncement, vide, s'ouvre sur le flanc droit du couloir de droite.
+Respecte ce plan À LA LETTRE : la salle d'entrée en bas, le couloir du bas avec ses gravats, la galerie qui part à gauche, le long couloir de gauche entièrement barré de gravats avec son renfoncement à la Poké Ball, la longue galerie horizontale qui repart vers la droite, le couloir de droite avec ses gravats et son renfoncement vide, la galerie qui revient vers la gauche, le couloir du haut avec ses gravats, la petite salle du haut et sa bouche. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+RÈGLE ABSOLUE DES PASSAGES : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; galeries et salles ont donc des bords qui suivent une grille : segments horizontaux et verticaux à angles droits, AUCUNE galerie en diagonale ni en courbe. Les parois peuvent être irrégulières et rocheuses EN SURFACE, mais le sol praticable garde des bords droits et lisibles.
+RELIEF : le sol est PLAT d'un bout à l'autre ; aucune marche, aucune échelle, aucun escalier, aucun changement de niveau.
+
+IMAGE 2 : la vue générale du Mont Sélénite, une autre grotte du même jeu. Respecte EXACTEMENT son style de rendu : même pinceau, même finesse de détail, même traitement des parois (roche en couches, arêtes adoucies, face rocheuse visible au nord des galeries), même sol, mêmes zones de gravats aux bords nets. MAIS la Cave Taupiqueur est NETTEMENT PLUS CLAIRE ET PLUS CHAUDE : ne reprends ni sa palette ardoise, ni son obscurité, ni sa composition (un seul niveau ici, aucune échelle, aucune lampe, aucune caisse, aucune mare, aucun éclat de Pierre Lune).
+
+Format : PORTRAIT 1024 × 1536 (le tunnel est vertical, comme le plan), vue plongeante sur tout le tunnel.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus de trois quarts, projection oblique frontale, sans point de fuite. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud) ; les parois nord des galeries montrent leur face rocheuse.
+- Aucun trait noir : contours fins et doux. Ombres colorées brun-violet chaud, jamais grises ni noires.
+
+AMBIANCE — « le terrier » : un long tunnel naturel creusé par des Pokémon fouisseurs, pas un donjon. Calme, sec, chaud, presque rassurant.
+- Palette : roche SABLEUSE OCRE-BEIGE, grès doré, terre brun clair ; sol de sable tassé beige pâle, nettement plus clair que les parois ; ombres brun-violet chaud. Aucune teinte ardoise ou bleu froid dominante.
+- LUMIÈRE NATURELLE LISIBLE : la grotte n'est JAMAIS obscure. Une lumière douce et chaude, diffuse, comme si le jour filtrait par la roche fine et par de petites fissures du plafond (quelques minces rais de lumière tombent sur le sol) ; les deux bouches, en haut et en bas, sont baignées de la lumière du dehors. On lit chaque galerie, chaque gravat, chaque rocher sans effort.
+- Les parois sont creusées, arrondies par endroits, avec de fines racines qui pendent et quelques traces de griffes et de terriers ; les GRAVATS sont des zones bien délimitées de sol retourné : monticules de terre fraîche, cailloux, petits trous ronds de terriers.
+
+VIE : AUCUN personnage, aucun humain.
+Pokémon : trois TAUPIQUEUR (petit Pokémon brun dont on ne voit que la TÊTE RONDE, au gros NEZ ROSE, aux petits yeux noirs, qui sort d'un trou dans le sol, avec un petit monticule de terre autour) : un au bord droit des gravats du couloir du bas, un au bord droit des petits gravats du couloir de droite, un au bord droit des gravats du couloir du haut. Aucun autre Pokémon, aucun Pikachu, aucun animal (aucune faune non-Pokémon, aucune chauve-souris).
+
+INTERDITS : texte, lettres, chiffres, étiquettes, panneaux, logo, signature, filigrane, cadre, interface ; bâtiment, maison, cabane, poutres de mine, rails, wagonnet, lampe, caisse, échelle ; ciel visible (seulement un peu de lumière et de verdure aux deux bouches) ; arbres, herbe verte dans la grotte ; lave, cristaux, champignons lumineux, décor féerique ; eau, mare, rivière ; galeries courbes ou en diagonale ; brouillard, flou de profondeur, vignettage noir ; ambiance sombre ou d'horreur ; pixel art.
+
+L'image doit raconter, sans texte : un long tunnel clair et sableux, creusé par des Taupiqueur qui passent la tête hors du sol, relie une route au bord de la mer à un couloir de forêt.

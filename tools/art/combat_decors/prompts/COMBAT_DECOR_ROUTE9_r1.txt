@@ -1,0 +1,30 @@
+DÉCOR DE COMBAT — ROUTE 9, TERRASSES ROCHEUSES (Kanto 2026). Image de PRODUCTION : le fond peint d'un écran de combat Pokémon sur smartphone en paysage. AUCUN Pokémon, AUCUN personnage, AUCUNE interface, AUCUN texte.
+
+Trois images sont jointes.
+IMAGE 1 : un écran de combat de référence. Reprends sa VUE (caméra à hauteur d'yeux, légèrement plongeante, horizon dans le tiers haut, grand sol dégagé au centre), sa profondeur et sa qualité de peinture. Ne reprends PAS : les Pokémon, les cartes, les boutons, la rivière, le pont, le coucher de soleil orange.
+IMAGE 2 : une planche d'intention de décors de combat. Prends les cases « Route 22 — plaine sauvage » et « Route 2 nord — sortie de forêt » comme guides de la facture et du mélange herbe / roche. Ne reprends PAS leurs ciels de coucher de soleil.
+IMAGE 3 : la vue générale de la Route 9 vue de dessus, le vrai lieu du jeu : sentier de terre sable doré qui serpente, forêt de feuillus très denses et vert vif, parcelles de hautes herbes jaune-vert, bordures de gros galets gris, et en haut un grand versant de roche en TERRASSES : hautes colonnes de roche brun-beige à arêtes nettes, étagées, avec de petites touffes vertes sur les replats. Tu vois ce lieu à hauteur d'yeux, au pied de ces terrasses.
+
+FORMAT : paysage très large, rapport 2,17 : 1 (comme 2340 × 1080), la plus grande résolution possible, OPAQUE, cadrage plein, sans bord.
+
+LIEU : une route de montagne rocheuse en PLEIN JOUR. Une large banquette de terre battue SABLE DORÉ et de gravier clair, bordée de rangées de gros galets gris arrondis, avec quelques touffes d'herbe vert vif et de petites fleurs sauvages rares. Aucun bâtiment, aucune barrière, aucun panneau.
+
+COMPOSITION (positions en fractions de la largeur et de la hauteur de l'image, depuis le coin haut gauche) — à respecter précisément :
+- Horizon : la base des reliefs lointains vers 30 à 34 % de la hauteur. Au-dessus : un grand versant de roche en TERRASSES (colonnes brun-beige à arêtes nettes, étagées sur deux ou trois niveaux, touffes vertes sur les replats), à droite et au centre ; à gauche, une lisière de feuillus vert vif denses ; un ciel bleu clair avec quelques petits nuages blancs.
+- De 40 % de la hauteur jusqu'en bas : un GRAND SOL DÉGAGÉ et PLAT, terre battue gris-beige avec cailloux fins et herbe sèche rase, où deux créatures pourront se faire face. Le sentier arrive du bas et s'éloigne vers le lointain au centre.
+- Point A (x 67 %, y 50 %) : terre battue nue et plate, bien lisible, une créature y posera les pieds. Rien de haut dans un rayon de 12 % de la largeur autour ; derrière lui seulement de l'herbe sèche rase puis, plus loin, des rochers.
+- Point B (x 31 %, y 97 %) : sol plat de terre et de gravier fin, une grande créature vue de dos y sera au premier plan. Rien de haut autour.
+- Plan moyen (35 à 48 % de la hauteur) : à droite, des blocs et colonnes de roche brun-beige au pied des terrasses, quelques touffes de hautes herbes jaune-vert ; à gauche, un bosquet de feuillus vert vif, un ou deux rochers et une rangée de galets.
+- ZONE CALME en HAUT À GAUCHE (de 0 à 50 % de la largeur, de 0 à 45 % de la hauteur) : peu de détails et peu de contraste, valeurs simples (ciel doux et masse simple de feuillus ou de colline).
+- ZONE CALME en BAS À DROITE (de 50 à 100 % de la largeur, de 55 à 100 % de la hauteur) : sol simple, presque sans objet, valeurs moyennes, sans contraste fort.
+- Les deux coins du bas restent du SOL nu : pas de buisson ni de gros rocher en gros plan (un éventuel premier plan sera ajouté sur un calque séparé).
+- Les 9 % de gauche et de droite de l'image ne contiennent rien d'important (ils seront rognés sur certains écrans).
+
+SOL : terre battue sable doré variée (zones plus claires et plus foncées, gravier fin, petits galets, plaques de roche plate, quelques brins d'herbe vert vif qui rapetissent avec la distance), jamais une surface uniforme.
+
+PERSPECTIVE : à hauteur d'yeux, un peu plongeante ; le sol recule nettement vers l'horizon. Netteté partout (aucun flou de profondeur, pas de vignettage).
+
+RENDU (ADN visuel Kanto 2026) : illustration 2D peinte numériquement, RPG Pokémon moderne « HD-2D peint », formes simples, lisibles et arrondies, grandes masses douces (jamais en petits points ni en pixels), aucun trait noir (contours fins et doux plus sombres que la couleur), couleurs riches sans être fluo.
+LUMIÈRE : PLEIN JOUR, milieu de matinée, soleil haut venant du haut à gauche, ombres courtes, douces et légèrement bleutées, couleurs franches et riches (roche chaude, feuillage vif), ciel bleu clair ; ni coucher de soleil, ni teinte orange, ni soleil visible, ni contre-jour.
+
+INTERDITS : Pokémon, animal, oiseau, personnage, silhouette, texte, lettres, chiffres, panneau lisible, logo, signature, filigrane, cadre, interface, bâtiment, entrée de grotte, cristaux, eau, rivière, pont, lac, route goudronnée, véhicule, pixel art, flou, vignettage.

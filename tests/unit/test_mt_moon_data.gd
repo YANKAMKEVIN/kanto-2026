@@ -85,8 +85,8 @@ func before_all() -> void:
 
 func test_species_values() -> void:
 	assert_eq(_data.get_errors().size(), 0, "\n".join(_data.get_errors()))
-	assert_eq(_data.get_species_ids().size(), 88,
-		"38 + 12 + 9 (jalon 13) + 3 (jalon 14) + 2 (jalon 15) + 24 (jalon 24, T4)")
+	assert_eq(_data.get_species_ids().size(), 96,
+		"38 + 12 + 9 (jalon 13) + 3 (jalon 14) + 2 (jalon 15) + 8 (jalon 17) + 24 (jalon 24, T4)")
 	for id: StringName in SPECIES:
 		var v: Array = SPECIES[id]
 		var species := _data.get_species(id)

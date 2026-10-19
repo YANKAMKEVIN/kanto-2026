@@ -37,12 +37,33 @@ const MAP_IDS: Array[StringName] = [
 	&"vermilion_house_2",
 	# Jalon 15 (T13, T21) : la Route 5 (raccord réel avec Azuria) et ses trois intérieurs.
 	&"route_5", &"route_5_daycare", &"route_5_gate", &"route_5_underground_gate",
+	# Jalon 17 (T15, T16, T19) : la Cave Taupiqueur, la Route 11 (raccord réel avec Carmin au
+	# T17), le couloir de la Route 2 est et le poste de l'assistant.
+	&"digletts_cave", &"route_11", &"route_2_east", &"route_2_east_gate",
+	# Jalon 16 (T11) : les 9 pièces du S.S. Anne et l'Arène de Carmin.
+	&"ss_anne_main_deck", &"ss_anne_captain_corridor", &"ss_anne_captain_room",
+	&"ss_anne_restaurant", &"ss_anne_lower_deck", &"ss_anne_outer_deck", &"ss_anne_cabin_a",
+	&"ss_anne_cabin_b", &"ss_anne_cabin_c", &"vermilion_gym",
+	# Jalon 18 (T12) : Route 9, Route 10 et son Centre (Azuria, Grotte Sombre et Lavanville :
+	# « à venir » tant que leurs cartes J18 ne sont pas là).
+	&"route_9", &"route_10", &"route_10_center",
+	# Jalon 18 (T13) : la Grotte Sombre (sorties en repli « à venir » tant que la Route 10 manque).
+	&"dark_cave_1f", &"dark_cave_b1f",
+	# Jalon 18 (T14) : Lavanville, ses intérieurs et le rez-de-chaussée de la Tour.
+	&"lavender_town", &"lavender_center", &"lavender_mart", &"pokemon_house",
+	&"lavender_house_1", &"lavender_house_2", &"pokemon_tower_1f",
 ]
+## Cartes dont les passages « à venir » sont comptés dans leur propre test (jalon 18).
+const OWN_COMING_SOON_COUNT: Array[StringName] = [&"lavender_town", &"pokemon_tower_1f"]
+## Retours pas encore branchés : [carte d'origine, carte cible]. Jalon 16 (T15) : vide (Carmin
+## mène au pont principal du S.S. Anne et à l'Arène ; les retours sont vérifiés).
+const PENDING_RETURNS: Array = []
 ## Cartes construites par une autre tâche en parallèle (jalon 7 : la Route 22, T22 ; jalon 10 :
 ## Argenta, T11, pendant les intérieurs du T13) : un warp qui y mène est vérifié seulement si la
 ## carte existe déjà (sinon le test le signale).
 ## Jalon 12 : Route 3, sas (T8) et étages du Mont Sélénite (T9) sont tous construits.
 ## Jalon 15 : les bâtiments d'entrée du souterrain (T13, T14) sont intégrés.
+## Jalon 17 : la Cave Taupiqueur (T15), la Route 11 (T16) et la Route 2 est (T19) sont intégrées.
 const PARALLEL_MAPS: Array[StringName] = [&"route_22"]
 const DIRECTIONS: Array[Vector2i] = [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]
 
@@ -120,7 +141,7 @@ func test_every_coming_soon_warp_returns_to_a_walkable_spawn_of_its_own_map() ->
 	for map_id: StringName in _maps:
 		var map: GameMap = _maps[map_id]
 		for warp: Warp in map.get_warps().get_all():
-			if not warp.is_coming_soon():
+			if not warp.is_coming_soon() or OWN_COMING_SOON_COUNT.has(map_id):
 				continue
 			found += 1
 			var label := "%s %s « %s »" % [map_id, warp.cell, warp.coming_soon]
@@ -130,25 +151,38 @@ func test_every_coming_soon_warp_returns_to_a_walkable_spawn_of_its_own_map() ->
 			assert_ne(warp.facing, Vector2i.ZERO, "%s : orientation au retour" % label)
 	# Jalon 15 (T13, T21) : le sud d'Azuria mène à la vraie Route 5 ; reste l'ouverture
 	# nord du poste vers Safrania (2 cases, jamais atteinte). Jalon 15 (T14) : Route 11
-	# (trois cases), Arène de Carmin (deux), S.S. Anne (deux), Safrania (porte nord de la
-	# Route 6, une).
-	assert_eq(found, 10, "« SAFRANIA » (2), « Route 11 » (3), Arène de Carmin (2), "
-		+ "S.S. Anne (2), Safrania (1)")
+	# (trois cases), Safrania (porte nord de la Route 6, une). Jalon 16 (T15) : l'Arène de
+	# Carmin et l'embarquement du S.S. Anne sont branchés. Jalon 17 (T17) : le bord est de Carmin
+	# mène à la vraie Route 11. Jalon 18 (T15) : Azuria et la Route 9 sont reliées (arbre coupé du
+	# J16) ; la Grotte Sombre et Lavanville sont reliées à la Route 10, et les passages de
+	# Lavanville et de la Tour sont comptés dans leurs propres tests.
+	assert_eq(found, 3, "« SAFRANIA » (2), Safrania (1)")
 
 
 ## Warp de [param map] qui ramène à [param origin] depuis [param arrival] : sur la case
-## même, ou dans une case voisine atteinte en un pas vers elle (STEP_ON).
+## même, dans une case voisine atteinte en un pas vers elle (STEP_ON), ou au bout d'un pas vers
+## une case de bord qu'on pousse dans la même direction (PUSH : bouches de la Cave Taupiqueur,
+## J17, arrivée une case en retrait de la bouche).
 func _return_warp(map: GameMap, arrival: Vector2i, origin: StringName) -> Warp:
 	for warp: Warp in map.get_warps().get_at(arrival):
 		if warp.target_map == origin:
 			return warp
 	for direction: Vector2i in DIRECTIONS:
 		var next := arrival + direction
+		var reachable := map.get_grid().get_step_target(arrival, direction) == next
 		var warp := map.get_warps().find_on_step(next, direction)
 		if warp != null and warp.target_map == origin \
-				and (map.get_grid().get_step_target(arrival, direction) == next
-					or _blocked_only_by_a_character(map, next)):
+				and (reachable or _blocked_only_by_a_character(map, next)):
 			return warp
+		warp = map.get_warps().find_on_push(next, direction)
+		if warp != null and warp.target_map == origin and reachable:
+			return warp
+		# Jalon 16 (T11) : sortie PUSH à un pas (les pièces du S.S. Anne : arrivée de la grille
+		# une case au-dessus de la sortie, dans l'encadrement du mur).
+		var push := map.get_warps().find_on_push(next, direction)
+		if push != null and push.target_map == origin \
+				and map.get_grid().get_step_target(arrival, direction) == next:
+			return push
 	return null
 
 
@@ -163,6 +197,8 @@ func test_every_warp_is_reversible_on_the_spot() -> void:
 		for warp: Warp in (_maps[map_id] as GameMap).get_warps().get_all():
 			var target := _maps.get(warp.target_map) as GameMap
 			if target == null or warp.is_coming_soon():
+				continue
+			if PENDING_RETURNS.has([map_id, warp.target_map]):
 				continue
 			var arrival := target.get_spawn_cell(warp.target_spawn)
 			var back := _return_warp(target, arrival, map_id)
@@ -245,5 +281,7 @@ func test_no_trigger_on_a_step_on_warp() -> void:
 					"%s : déclencheur « %s » sur un warp STEP_ON en %s" % [map_id,
 					trigger.cutscene_id, trigger.cell])
 				shared += 1
-	assert_eq(shared, 1, "seul partage : le tapis de sortie du labo (warp PUSH)")
+	# Jalon 16 (T15) : la passerelle du pont principal du S.S. Anne (2 cases PUSH, départ).
+	assert_eq(shared, 3, "partages : le tapis de sortie du labo, la passerelle du S.S. Anne "
+		+ "(warps PUSH)")
 	assert_push_error_count(0)

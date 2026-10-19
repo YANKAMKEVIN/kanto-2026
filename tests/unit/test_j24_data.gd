@@ -59,7 +59,6 @@ const SPECIES_REPRISES := {
 	&"gyarados": "jalon-19",
 }
 const MOVE_REPRISES := {
-	&"hypnosis": "jalon-17", &"headbutt": "jalon-17", &"take_down": "jalon-17",
 	&"dragon_rage": "jalon-19", &"hyper_beam": "jalon-19", &"constrict": "jalon-20",
 	&"stomp": "jalon-20", &"mist": "jalon-20", &"amnesia": "jalon-21",
 	&"barrier": "j21-t5-donnees",

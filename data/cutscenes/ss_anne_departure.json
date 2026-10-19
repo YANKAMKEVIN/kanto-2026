@@ -1,0 +1,44 @@
+{
+	"ss_anne_departure": {
+		"variants": [
+			{
+				"if": ["got_hm01"],
+				"unless": ["ss_anne_departed"],
+				"steps": [
+					{ "dialogue": "ss_anne_departure_confirm" },
+					{ "move": "player", "path": ["up"], "unless": ["ss_anne_departure_chosen"] },
+					{
+						"change_map": "vermilion_city", "at": "dock", "facing": "down",
+						"if": ["ss_anne_departure_chosen"]
+					},
+					{ "set": ["ss_anne_departed"], "if": ["ss_anne_departure_chosen"] },
+					{
+						"move": "sailor", "path": ["right"],
+						"if": ["ss_anne_departure_chosen", "ss_anne_gangway_open"]
+					},
+					{
+						"face": "sailor", "to": "down",
+						"if": ["ss_anne_departure_chosen", "ss_anne_gangway_open"]
+					},
+					{ "save": "départ du S.S. Anne", "if": ["ss_anne_departure_chosen"] },
+					{
+						"animate": "Entities/SsAnne", "offset": [0, 0], "duration": 0.1,
+						"if": ["ss_anne_departure_chosen"]
+					},
+					{ "wait": 0.3, "if": ["ss_anne_departure_chosen"] },
+					{ "caption": "Le S.S. Anne quitte Carmin.", "if": ["ss_anne_departure_chosen"] },
+					{
+						"animate": "Entities/SsAnne", "offset": [-32, 2], "duration": 5.0,
+						"fade": true, "if": ["ss_anne_departure_chosen"]
+					}
+				]
+			},
+			{
+				"unless": ["got_hm01", "ss_anne_exit_told"],
+				"steps": [
+					{ "dialogue": "ss_anne_gangway_sailor" }
+				]
+			}
+		]
+	}
+}

@@ -1,0 +1,56 @@
+{
+	"map": "route_10",
+	"spawn": "from_dark_cave_s_w",
+	"facing": "down",
+	"flags": [
+		"mom_greeted",
+		"rival_met",
+		"oak_met",
+		"oak_lab_reunion",
+		"starter_offered",
+		"starter_chosen",
+		"taken_charmander",
+		"taken_squirtle",
+		"rival_lab_won",
+		"rival_challenged",
+		"rival_battle_done",
+		"rival_left_lab",
+		"viridian_arrived",
+		"got_oak_parcel",
+		"pokedex_activated",
+		"poison_unlocked",
+		"pewter_arrived",
+		"beaten_pewter_gym_liam",
+		"brock_met",
+		"badge_boulder",
+		"cerulean_reached",
+		"badge_cascade",
+		"route_9_entered",
+		"route_10_reached"
+	],
+	"party": [
+		{
+			"species": "charmeleon",
+			"level": 24
+		},
+		{
+			"species": "pikachu",
+			"level": 20
+		},
+		{
+			"species": "butterfree",
+			"level": 20
+		},
+		{
+			"species": "pidgeotto",
+			"level": 19
+		}
+	],
+	"bag": {
+		"poke_ball": 10,
+		"potion": 5,
+		"antidote": 2,
+		"escape_rope": 2
+	},
+	"money": 6000
+}

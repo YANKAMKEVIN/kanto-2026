@@ -480,6 +480,46 @@
 		"articuno": {
 			"height": 1.7, "weight": 55.4,
 			"description": "Un oiseau légendaire qui vit dans les montagnes glacées. Il apparaît, dit-on, à ceux qui se sont perdus dans la neige."
+		},
+		"vulpix": {
+			"height": 0.6, "weight": 9.9,
+			"description": "À sa naissance, il n'a qu'une seule queue, toute blanche. Elle se divise et se colore à mesure qu'il grandit."
+		},
+		"diglett": {
+			"height": 0.2, "weight": 0.8,
+			"description": "Il vit sous terre et ne montre que sa tête. Là où il a creusé, la terre devient légère et fertile.",
+			"notes": [
+				{ "id": "diglett_cave", "unlock": { "seen": 1 },
+				  "text": "Dans la Cave, on entend parfois un grattement juste sous ses pieds, puis plus rien." }
+			]
+		},
+		"dugtrio": {
+			"height": 0.7, "weight": 33.3,
+			"description": "Trois têtes qui creusent ensemble, si vite qu'on ne les aperçoit qu'un instant. Le sol tremble encore longtemps après son passage."
+		},
+		"growlithe": {
+			"height": 0.7, "weight": 19.0,
+			"description": "Fidèle et courageux, il aboie pour défendre les siens. Son flair ne perd jamais une piste."
+		},
+		"magnemite": {
+			"height": 0.3, "weight": 6.0,
+			"description": "Il flotte en grésillant, attiré par tout ce qui porte du courant. On le trouve souvent collé aux machines."
+		},
+		"magneton": {
+			"height": 1.0, "weight": 60.0,
+			"description": "Trois Magnéti liés par un même champ magnétique. Près de lui, les aiguilles des boussoles s'affolent."
+		},
+		"drowzee": {
+			"height": 1.0, "weight": 32.4,
+			"description": "On raconte qu'il se nourrit des rêves des dormeurs. Quand il remue le nez, mieux vaut ne pas fermer les yeux.",
+			"notes": [
+				{ "id": "drowzee_route_11", "unlock": { "seen": 1 },
+				  "text": "Sur la Route 11, il somnole dans l'herbe tiède, l'air de compter les passants." }
+			]
+		},
+		"hypno": {
+			"height": 1.6, "weight": 75.6,
+			"description": "Il balance un pendule sans le quitter des yeux. Ceux qui en suivent le mouvement s'endorment sans s'en rendre compte."
 		}
 	}
 }

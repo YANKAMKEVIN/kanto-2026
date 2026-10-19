@@ -115,3 +115,10 @@ route, au rythme des jalons ; intégration au vrai combat avec le cadrage valid�
   stable, règles reproductibles, temps raisonnable ; 3) prototype d'animation procédurale très
   léger (Salamèche, Roucool, Bulbizarre ; aucune nouvelle image) pour répondre à « une image
   fixe v2 animée par Godot paraît-elle vivante en combat ? » ; industrialisation au J11.
+
+## 9. Lot J17 T13 : Taupiqueur (050), Triopikeur (051), Soporifik (096), Hypno (097)
+
+- **Outil** : `tools/art/dos_t13.py` (travail hors dépôt : `~/dev/kanto-2026-modeles/dos_t13/`). Les trois premiers suivent la méthode §7 (rendu Blender puis Colab) avec **IP-Adapter coupé** (`--sans-ipa` : visage de face, groin ou tête enfoncée qui ne doivent pas être peints sur le dos) ; les 4 variantes diffèrent par la graine seule (`050_ipa0_g7.png`, `_g21`, `_g33`, `_g47`).
+- **Hypno : pas de modèle** (§1 de `provenance-modeles-3d.md`). Voie de Fantominus (série 20) : dos provisoire peint par Codex, 1024 × 1024 RGBA, sujet ≈ 85 % de la hauteur, bas à 120 px (`dos_ia_097.png`). Prompts `tools/art/prompts/dos_t13/DOS_HYPNO_r{1,2,3}.txt`. **r1 et r2 (artwork officiel joint) refusés par la modération** ; r3 (sans image) accepté après avoir retiré « robe » (Hypno n'est pas vêtu) et « sans vêtement » (refusé). Défaut connu : pelage plus hirsute que l'artwork officiel ; provisoire, à remplacer si un modèle apparaît.
+- **Provenance** : noter l'auteur et l'URL de chaque modèle installé dans `provenance-modeles-3d.md` §1 et le champ `source` du JSON.
+

@@ -12,6 +12,7 @@ extends SceneTree
 ## Chétiflor, Boustiflor).
 ## Jalon 14 (jalon-14.md §2.13) : les trois espèces du Cap d'Azuria (Abra, Kadabra, Machoc).
 ## Jalon 15 (jalon-15.md §2.7.1) : Miaouss et Persan (Rattatac vient du jalon 12).
+## Jalon 17 (jalon-17.md §2.12.1) : les huit espèces de la Route 11 et de la Cave Taupiqueur.
 ## Pixel art 64 × 64 natif, affiché en NEAREST par le BattleStage (×4 de dos, ×3 de face) :
 ##   assets/sprites/pokemon/placeholder/<espèce>_front.png   (vue de face : l'adversaire)
 ##   assets/sprites/pokemon/placeholder/<espèce>_back.png    (vue de dos : le Pokémon du joueur)
@@ -48,6 +49,8 @@ const SPECIES: Array[String] = [
 	"abra", "kadabra", "machop",
 	# Jalon 15 (jalon-15.md §2.7.1) : Miaouss et Persan (Rattatac existe depuis le J12).
 	"meowth", "persian",
+	# Jalon 17 (jalon-17.md §2.12.1) : Route 11, Cave Taupiqueur, Dresseurs (dos Colab au T13).
+	"diglett", "dugtrio", "drowzee", "hypno", "magnemite", "magneton", "growlithe", "vulpix",
 ]
 const OUTLINE := Color("#1c1c28")
 const EYE := Color("#1c1c28")
@@ -1492,6 +1495,142 @@ func _draw_machop(img: Image, back: bool) -> void:
 	_line(img, Vector2(24, 36), Vector2(30, 44), skin.darkened(0.3), 1)
 	_line(img, Vector2(40, 36), Vector2(34, 44), skin.darkened(0.3), 1)
 
+
+# --- Jalon 17 (jalon-17.md §2.12.1) ------------------------------------------------
+
+## Taupiqueur : tête brune qui sort d'un monticule de terre, gros nez rose.
+func _draw_diglett(img: Image, back: bool) -> void:
+	_draw_mole(img, back, [Vector2(32, 34)], 11.0)
+
+
+## Triopikeur : trois têtes de Taupiqueur, la plus haute au milieu.
+func _draw_dugtrio(img: Image, back: bool) -> void:
+	_draw_mole(img, back, [Vector2(18, 40), Vector2(46, 40), Vector2(32, 30)], 9.0)
+
+
+func _draw_mole(img: Image, back: bool, heads: Array[Vector2], radius: float) -> void:
+	var fur := Color("#9a6a40")
+	var dirt := Color("#7a5a38")
+	for head: Vector2 in heads:
+		_r(img, int(head.x - radius), int(head.y), int(radius * 2.0), 60 - int(head.y), fur)
+		_e(img, head.x, head.y, radius, radius * 1.1, fur, true)
+	_e(img, 32, 58, 28, 6, dirt, true)
+	_e(img, 20, 55, 7, 4, dirt.lightened(0.1), true)
+	_e(img, 44, 56, 6, 3, dirt.lightened(0.1), true)
+	if back:
+		return
+	for head: Vector2 in heads:
+		_r(img, int(head.x - radius * 0.45), int(head.y - 2), 2, 4, EYE)
+		_r(img, int(head.x + radius * 0.45) - 1, int(head.y - 2), 2, 4, EYE)
+		_e(img, head.x, head.y + radius * 0.45, radius * 0.45, radius * 0.3, Color("#e07890"),
+			true)
+
+
+## Soporifik : corps jaune au ventre brun, long nez tombant, yeux mi-clos.
+func _draw_drowzee(img: Image, back: bool) -> void:
+	_draw_dream_eater(img, back, false)
+
+
+## Hypno : même silhouette, plus grand, collerette blanche et pendule au bout d'un fil.
+func _draw_hypno(img: Image, back: bool) -> void:
+	_draw_dream_eater(img, back, true)
+
+
+func _draw_dream_eater(img: Image, back: bool, evolved: bool) -> void:
+	var skin := Color("#e8c040")
+	var belly := Color("#7a5030")
+	var head_y := 16 if evolved else 20
+	_r(img, 22, 54, 8, 8, skin.darkened(0.15))
+	_r(img, 34, 54, 8, 8, skin.darkened(0.15))
+	_e(img, 32, 42, 15, 15, skin, true)
+	if not back:
+		_r(img, 18, 46, 28, 10, belly)
+	_e(img, 15, 40, 4, 9, skin, true)
+	_e(img, 49, 40, 4, 9, skin, true)
+	if evolved:
+		_e(img, 32, head_y + 11, 14, 4, WHITE.darkened(0.05), true)
+		if not back:
+			_line(img, Vector2(52, 38), Vector2(56, 52), Color("#b0b0b8"))
+			_e(img, 56, 54, 3, 3, Color("#c8c8d4"), true)
+	_e(img, 32, head_y, 12, 11, skin, true)
+	_e(img, 22, head_y - 9, 3, 4, skin, true)
+	_e(img, 42, head_y - 9, 3, 4, skin, true)
+	if back:
+		return
+	_line(img, Vector2(23, head_y - 1), Vector2(28, head_y - 1), EYE, 2)
+	_line(img, Vector2(36, head_y - 1), Vector2(41, head_y - 1), EYE, 2)
+	_e(img, 32, head_y + 6, 4, 6, skin.darkened(0.08), true)
+
+
+## Magnéti : boule d'acier à un œil, deux aimants en U, vis sur le dessus.
+func _draw_magnemite(img: Image, back: bool) -> void:
+	_draw_magnet(img, back, Vector2(32, 38), 12.0)
+
+
+## Magnéton : trois Magnéti liés en triangle.
+func _draw_magneton(img: Image, back: bool) -> void:
+	for c: Vector2 in [Vector2(19, 44), Vector2(45, 44), Vector2(32, 22)]:
+		_draw_magnet(img, back, c, 9.0)
+
+
+func _draw_magnet(img: Image, back: bool, c: Vector2, r: float) -> void:
+	var steel := Color("#a8b0bc")
+	var red := Color("#d84838")
+	var blue := Color("#3868c8")
+	for side: float in [-1.0, 1.0]:
+		var x := c.x + side * (r + 3.0)
+		_r(img, int(x - 2), int(c.y - 4), 5, 8, steel.darkened(0.1))
+		_r(img, int(x - 2), int(c.y - 6), 5, 3, red)
+		_r(img, int(x - 2), int(c.y + 4), 5, 3, blue)
+	_r(img, int(c.x - 1), int(c.y - r - 4), 3, 5, steel.darkened(0.2))
+	_e(img, c.x, c.y, r, r, steel, true)
+	if back:
+		return
+	_e(img, c.x, c.y, r * 0.45, r * 0.45, WHITE)
+	_e(img, c.x, c.y, r * 0.2, r * 0.2, EYE)
+
+
+## Caninos : chiot orange rayé de noir, crinière et queue crème.
+func _draw_growlithe(img: Image, back: bool) -> void:
+	var fur := Color("#e88a38")
+	var cream := Color("#f0e0b0")
+	_e(img, 52, 34, 6, 9, cream, true)
+	_e(img, 32, 46, 17, 12, fur, true)
+	for x: int in [24, 32, 40]:
+		_line(img, Vector2(x, 38), Vector2(x - 2, 46), OUTLINE, 2)
+	_r(img, 18, 54, 8, 8, fur.darkened(0.15))
+	_r(img, 38, 54, 8, 8, fur.darkened(0.15))
+	_e(img, 26, 24, 13, 12, fur, true)
+	_e(img, 26, 14, 10, 5, cream, true)
+	_e(img, 16, 16, 4, 7, fur.darkened(0.1), true)
+	_e(img, 36, 16, 4, 7, fur.darkened(0.1), true)
+	if back:
+		return
+	_e(img, 26, 31, 6, 4, cream, true)
+	_r(img, 24, 29, 4, 2, OUTLINE)
+	_eye(img, 18, 21, Color("#5a3a20"))
+	_eye(img, 29, 21, Color("#5a3a20"))
+
+
+## Goupix : renardeau brun-roux, toupet bouclé, six queues recourbées.
+func _draw_vulpix(img: Image, back: bool) -> void:
+	var fur := Color("#c8603a")
+	var tail := Color("#e07848")
+	for i: int in 6:
+		var a := deg_to_rad(-70.0 + 24.0 * i)
+		_line(img, Vector2(42, 46), Vector2(42, 46) + Vector2(cos(a), sin(a)) * 16.0, tail, 3)
+	_e(img, 30, 46, 14, 11, fur, true)
+	_r(img, 20, 54, 6, 8, fur.darkened(0.15))
+	_r(img, 34, 54, 6, 8, fur.darkened(0.15))
+	_e(img, 26, 26, 12, 11, fur, true)
+	_e(img, 17, 14, 4, 7, fur.darkened(0.1), true)
+	_e(img, 35, 14, 4, 7, fur.darkened(0.1), true)
+	_e(img, 26, 15, 6, 4, tail.lightened(0.15), true)
+	if back:
+		return
+	_eye(img, 18, 23, Color("#5a2a1a"))
+	_eye(img, 29, 23, Color("#5a2a1a"))
+	_r(img, 25, 32, 3, 2, OUTLINE)
 
 # --- Ombre ------------------------------------------------------------------------
 

@@ -773,3 +773,33 @@ func test_flags_are_raised_before_dialogue_finished() -> void:
 	await _runner.choose(true)
 	await _finish()
 	assert_eq(seen, [true] as Array[bool], "levé avant la fin : les étapes suivantes le lisent")
+
+
+# --- Jalon 17 (T4) : variantes selon les espèces capturées ---------------------------------
+
+func _add_caught_dialogue() -> void:
+	assert_true(_library.add_from_dict({"assistant": {"variants": [
+		{"if_caught_at_least": 10, "pages": ["Ton Pokédex compte {caught} espèces !"]},
+		{"pages": ["Ton Pokédex compte {caught} espèces capturées.",
+			"Encore {caught_missing}, et c'est à toi."]},
+	]}}, "test"))
+
+
+func test_caught_count_picks_the_variant_and_fills_the_tokens() -> void:
+	_add_caught_dialogue()
+	var caught := [9]
+	_runner.caught_count = func() -> int: return caught[0]
+	_runner.token_values = func() -> Dictionary[StringName, String]:
+		return DialogueTokens.caught_values(caught[0])
+	assert_eq(await _play_all(&"assistant"), ["Ton Pokédex compte 9 espèces capturées.",
+		"Encore 1, et c'est à toi."] as Array[String])
+	caught[0] = 10
+	assert_eq(await _play_all(&"assistant"), ["Ton Pokédex compte 10 espèces !"]
+		as Array[String], "compte relu à chaque dialogue")
+
+
+func test_without_caught_count_source_the_count_is_zero() -> void:
+	_add_caught_dialogue()
+	_runner.token_values = func() -> Dictionary[StringName, String]:
+		return DialogueTokens.caught_values(0)
+	assert_eq((await _play_all(&"assistant"))[0], "Ton Pokédex compte 0 espèces capturées.")

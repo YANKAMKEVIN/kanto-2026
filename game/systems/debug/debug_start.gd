@@ -61,6 +61,9 @@ extends RefCounted
 ## Jalon 12 (T20, gravats) : « wild » accepte une clé « terrain » facultative
 ## ([constant EncounterTable.TERRAINS], « grass » par défaut) : `"terrain": "rubble"` force la
 ## table des gravats de la carte (grotte) au lieu de celle des herbes.
+## Jalon 17 (T9, voile d'obscurité ; clé « veil » du J18 §2.12) : « veil » = « dark » ou « lit » :
+## voile d'obscurité **forcé sur la carte de départ** pour la session (« lit » : halo de Flash
+## ouvert), même hors d'une grotte obscure ; exige « map » ; jamais sauvegardé.
 
 const USER_PATH: String = "user://debug_start.json"
 const FACINGS: Dictionary[String, Vector2i] = {
@@ -70,9 +73,15 @@ const MAX_PARTY: int = 6
 const MAX_STORAGE: int = 60
 ## = GameState.MONEY_MAX (lu sans l'autoload : classe pure).
 const MAX_MONEY: int = 999_999
+## Valeurs de « veil » (jalon 17 T9).
+const VEIL_DARK: StringName = &"dark"
+const VEIL_LIT: StringName = &"lit"
+## T25 : voile **retiré** sur la carte de départ, même en grotte obscure (mesure des fps avec et
+## sans voile sur la même carte).
+const VEIL_OFF: StringName = &"off"
 
 const _KEYS: Array[String] = ["map", "spawn", "facing", "seed", "flags", "party", "bag",
-	"favorites", "money", "storage", "autosave", "wild", "daycare", "companion"]
+	"favorites", "money", "storage", "autosave", "wild", "daycare", "companion", "veil"]
 const _MEMBER_KEYS: Array[String] = ["species", "level", "moves", "exp_to_next", "hp",
 	"favorite", "status", "status_turns"]
 
@@ -102,6 +111,8 @@ var daycare: Dictionary = {}
 var companion: int = -1
 ## Terrain de la table forcée [member wild] (jalon 12, T20 : clé « terrain » de « wild »).
 var wild_terrain: StringName = &"grass"
+## Voile forcé sur [member map] ([constant VEIL_DARK], [constant VEIL_LIT], [constant VEIL_OFF] ; &"" = aucun).
+var veil: StringName = &""
 var _errors: PackedStringArray = PackedStringArray()
 
 
@@ -247,6 +258,14 @@ func add_from_dict(dict: Dictionary, data: PokemonData, items: ItemLibrary,
 				maxi(new_party.size() - 1, 0)])
 		else:
 			new_companion = int(dict["companion"])
+	var new_veil: StringName = &""
+	if dict.has("veil"):
+		var raw_veil: Variant = dict["veil"]
+		if not raw_veil is String or not [VEIL_DARK, VEIL_LIT, VEIL_OFF].has(StringName(raw_veil)) \
+				or new_map.is_empty():
+			ok = _fail("%s : « veil » est « dark », « lit » ou « off », avec « map »" % source)
+		else:
+			new_veil = StringName(raw_veil)
 	if not ok:
 		return false
 	map = new_map
@@ -264,6 +283,7 @@ func add_from_dict(dict: Dictionary, data: PokemonData, items: ItemLibrary,
 	daycare = new_daycare
 	wild_terrain = new_wild_terrain
 	companion = new_companion
+	veil = new_veil
 	return true
 
 

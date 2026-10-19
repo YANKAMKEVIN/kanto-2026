@@ -75,27 +75,32 @@ func test_real_data_loads_without_error() -> void:
 		&"pidgey", &"pidgeotto", &"pidgeot", &"rattata", &"raticate", &"spearow", &"fearow",
 		&"ekans", &"arbok", &"pikachu", &"raichu", &"sandshrew", &"sandslash", &"nidoran_f",
 		&"nidorina", &"nidoqueen", &"nidoran_m", &"nidorino", &"nidoking", &"clefairy",
-		&"clefable", &"jigglypuff", &"wigglytuff", &"zubat", &"golbat", &"oddish", &"gloom",
-		&"paras", &"parasect",
+		&"clefable", &"vulpix", &"jigglypuff", &"wigglytuff", &"zubat", &"golbat", &"oddish",
+		&"gloom", &"paras", &"parasect",
+		# Jalon 17 (T7) : Taupiqueur, Triopikeur ; plus loin Goupix, Caninos, Magnéti, Magnéton,
+		# Soporifik, Hypno (kanto_j17.json).
+		&"diglett", &"dugtrio",
 		# Jalon 15 (T12) : Miaouss et Persan (kanto_vermilion.json).
 		&"meowth", &"persian",
 		# Jalon 24 (T4) : kanto_j24.json, et les reprises à l'identique des J19 à J21
 		# (kanto_j24_reprises.json : Ptitard, Tentacool, Saquedeneu, Léviator).
 		&"psyduck", &"golduck",
-		&"mankey", &"primeape",
+		&"mankey", &"primeape", &"growlithe",
 		&"poliwag", &"poliwhirl", &"poliwrath",
 		&"abra", &"kadabra", &"machop",
 		&"bellsprout", &"weepinbell", &"tentacool", &"tentacruel",
-		&"geodude", &"graveler", &"golem", &"slowpoke", &"slowbro", &"seel", &"dewgong",
-		&"shellder", &"cloyster", &"onix", &"krabby", &"kingler", &"voltorb", &"koffing",
+		&"geodude", &"graveler", &"golem", &"slowpoke", &"slowbro", &"magnemite", &"magneton",
+		&"seel", &"dewgong", &"shellder", &"cloyster", &"onix", &"drowzee", &"hypno", &"krabby",
+		&"kingler", &"voltorb", &"koffing",
 		&"tangela", &"horsea", &"seadra", &"goldeen", &"seaking", &"staryu", &"starmie",
 		&"magikarp", &"gyarados", &"omanyte", &"omastar", &"kabuto", &"kabutops",
 		&"articuno"] as Array[StringName])
-	assert_eq(_data.get_move_ids().size(), 119,
+	assert_eq(_data.get_move_ids().size(), 125,
 		"47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10) + Patience (J11) "
 		+ "+ 21 du Mont Sélénite (jalon 12) + 8 du jalon 13 (les 5 du J12 qu'il reprenait : "
 		+ "entrées du J12) + 6 du Cap d'Azuria (jalon 14) + Jackpot (J15) "
-		+ "+ 6 du J24 (j24.json) + 10 reprises des J17 à J21 (j24_reprises.json)")
+		+ "+ Coupe et Tonnerre (jalon 16) + 7 du jalon 17 + 6 du J24 (j24.json) "
+		+ "+ 7 reprises des J19 à J21 (j24_reprises.json)")
 	assert_true(_data.has_move(&"struggle"))
 
 
@@ -162,6 +167,9 @@ func test_real_evolution_chains() -> void:
 		&"abra": [&"kadabra", 16],
 		# Carmin-sur-Mer (jalon 15, §2.7.1) : Rouge/Bleu.
 		&"meowth": [&"persian", 28],
+		# Jalon 17 (§2.12.1) : Rouge/Bleu ; Caninos et Goupix (Pierre Feu absente) n'en déclarent
+		# pas.
+		&"diglett": [&"dugtrio", 26], &"drowzee": [&"hypno", 26], &"magnemite": [&"magneton", 30],
 		# Jalon 24 (T4, dossier 27 §14.1) : Rouge/Bleu. Ptitard et Tentacool sont les reprises à
 		# l'identique du J21, sans évolution : Têtarte (N25) et Tentacruel (N30) s'ajoutent sur la
 		# branche du J21 (kanto_j21.json) à la fusion.
@@ -437,6 +445,9 @@ func test_real_catch_rates_are_the_official_ones() -> void:
 		&"abra": 200, &"kadabra": 100, &"machop": 180,
 		# Jalon 15 (T12).
 		&"meowth": 255, &"persian": 90,
+		# Jalon 17 (T7).
+		&"diglett": 255, &"dugtrio": 50, &"drowzee": 190, &"hypno": 75, &"magnemite": 190,
+		&"magneton": 60, &"growlithe": 190, &"vulpix": 190,
 		# Jalon 24 (T4) ; Ptitard, Tentacool (J21), Saquedeneu (J20), Léviator (J19) repris.
 		&"psyduck": 190, &"golduck": 75, &"poliwag": 255, &"poliwhirl": 120, &"poliwrath": 45,
 		&"tentacool": 190, &"tentacruel": 60, &"slowpoke": 190, &"slowbro": 75, &"seel": 190,

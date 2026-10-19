@@ -1,0 +1,40 @@
+CONCEPT ART — L'ARÈNE DE CARMIN-SUR-MER, salle de Major Bob (Kanto 2026), image de référence de direction artistique (agencement et rendu cible de cet intérieur).
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. Une salle d'environ 13 cases de large sur 11 de profondeur (une case ≈ la largeur d'un personnage).
+Légende du plan (gauche = ouest, haut = nord) :
+- gris-bleu très sombre = MURS et masse du bâtiment autour de la salle (y compris les marges de l'image) : rien ne s'y dessine ;
+- bande gris moyen en haut = la FACE du MUR DU FOND (nord), vue de face : un grand PANNEAU ÉLECTRIQUE au centre, des câbles épais, des tubes lumineux froids ;
+- gris quadrillé = le SOL TECHNIQUE : dalles métalliques, bandes de signalisation jaunes et noires discrètes le long des allées ;
+- grand rectangle gris clair au fond, au centre = l'ESTRADE du Champion : un plancher métallique plus clair, AU MÊME NIVEAU que le sol (pas de marche), avec des câbles qui courent vers le panneau ;
+- rangée de carrés gris foncé sur toute la largeur = une rangée de MACHINES électriques (transformateurs, armoires grises à voyants), interrompue au centre par :
+- les trois cases bleu clair = la BARRIÈRE ÉLECTRIQUE : deux bornes métalliques aux extrémités et, entre elles, un rideau d'arcs électriques bleus crépitants sur 3 cases ;
+- quinze petits carrés gris dans la moitié sud = QUINZE objets à fouiller IDENTIQUES : des POUBELLES métalliques à couvercle, toutes de même taille, même couleur, même forme, en grille régulière de 5 colonnes × 3 rangées, exactement aux places du plan (deux cases de sol libre entre deux colonnes, une rangée de sol libre entre deux rangées). AUCUNE ne doit se distinguer des autres ;
+- rectangle clair au milieu du bord bas = l'ENTRÉE de l'Arène (seuil de 3 cases ; au-delà, rien que le bord de l'image).
+Respecte ce plan À LA LETTRE : forme de la salle, place de l'estrade, de la rangée de machines, de la barrière, des quinze poubelles et de l'entrée. Le sol entre elles est LIBRE : allées nettes. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+RÈGLE ABSOLUE : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; murs, machines et allées suivent une grille : angles droits, AUCUNE courbe ni diagonale ; le sol est entièrement plat.
+
+IMAGE 2 : le LABORATOIRE DU PROFESSEUR CHEN, un autre intérieur du même jeu. Respecte EXACTEMENT son style de rendu : même pinceau, même perspective, même épaisseur des murs, même façon de peindre les objets et le sol. Ne reprends RIEN de sa composition, de ses meubles ni de ses occupants : ni personnage, ni Pokémon, ni Poké Ball, ni tapis, ni plante.
+
+Format : PAYSAGE 1536 × 1024, vue plongeante sur toute la salle, comme le plan.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus, axes de l'image alignés sur la grille, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE, comme l'image 2. Les verticales restent verticales. On voit le mur du fond (nord) de face, le sol en entier, le dessus des murs latéraux et du mur sud.
+- Aucun trait noir : contours fins et doux. Ombres colorées bleu-violet, jamais grises ni noires.
+
+AMBIANCE — tension et discipline : salle technique, militaire et électrique, éclairage froid de tubes, lueur bleue de la barrière qui se reflète sur le sol, contraste avec l'Arène d'Ondine (eau, lumière douce). Lisible sur un écran de téléphone : les quinze poubelles se détachent nettement du sol.
+
+PERSONNE : aucun personnage, aucun Pokémon, aucun animal ; la salle est vide.
+
+INTERDITS : texte, lettres, chiffres, logo, éclair dessiné, signature, filigrane, cadre, interface ; personnages ; Pokémon ; une poubelle différente des autres (couvercle ouvert, couleur, lueur, étincelle) ; étincelles ou flèches désignant un objet ; objets non prévus par le plan au milieu de la salle ; pixel art, 3D, photo.
+
+L'image doit raconter, sans texte : une salle électrique sévère où le Champion attend derrière une barrière crépitante, et quinze poubelles alignées qui cachent un secret.
+
+CORRECTIONS (2e essai ; le 1er essai était excellent sur le rendu, les quinze poubelles identiques, leur grille 5 × 3, la barrière bleue, les bandes jaunes et noires et l'entrée : garde-les à l'identique autant que possible) :
+1. ENTRE le mur du fond et la rangée de machines, il y a une vraie ZONE DE SOL de TROIS cases de profondeur : c'est là que se tient le Champion. Au centre de cette zone, l'ESTRADE : un plancher métallique plus clair, au même niveau, sur environ sept cases de large ; à gauche et à droite, du sol technique libre. La rangée de machines et la barrière ne touchent PAS le mur du fond : elles traversent la salle plus bas, juste au-dessus des poubelles (une rangée de sol libre entre les machines et la première rangée de poubelles).
+2. Le mur du fond porte un panneau électrique sombre à jauges et voyants, des câbles et des tubes : PAS de grand écran blanc ni de surface vide lumineuse.
+3. La salle est un RECTANGLE SIMPLE : aucun décrochement, aucune encoche dans les coins ni dans les murs ; elle est presque carrée (13 cases de large, 11 de profondeur).
+4. Éclairage FROID : tubes blanc-bleuté au plafond, sol gris-bleu, la lueur bleue de la barrière domine ; pas de lumière orangée ni chaude.

@@ -38,7 +38,9 @@ func play(kind: StringName) -> void:
 	_icon.texture = ICONS[kind]
 	_icon.centered = false
 	_icon.offset = -Npc.EMOTE_TIP_IN_ICON
-	_icon.z_index = 10
+	# Au-dessus du voile d'obscurité et des cimes (J17 T9 / J18 §2.2) : un signe d'interface.
+	_icon.z_as_relative = false
+	_icon.z_index = WorldLighting.Z_ABOVE_VEIL
 	_icon.position = tip + Vector2(0.0, UiTokens.EMOTE_RISE)
 	_icon.scale = Vector2.ZERO
 	_icon.modulate.a = 0.0

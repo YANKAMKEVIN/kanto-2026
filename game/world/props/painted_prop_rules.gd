@@ -495,6 +495,127 @@ const RULES: Dictionary[StringName, Dictionary] = {
 	&"int_fauteuil_president_01": {"width": 1, "depth": 1},
 	&"int_vitrine_rubans_01": {"width": 2, "depth": 2},
 	&"int_tableau_port_01": {"traversable": true, "align": ALIGN_CENTRE},
+	# --- Série 19 : Route 11, Cave Taupiqueur, Route 2 est et son poste (J17 T14, fiche
+	# `serie-19-chemins.md`). Bouches vues de dehors (talus, paroi) : module 4 × 3, les deux cases
+	# de l'ouverture au bas restent libres (la carte y pose les warps), comme l'entrée de la
+	# grotte de la série 14.
+	&"relief_bouche_talus_01": {"width": 4, "depth": 3,
+		"open": [Vector2i(-1, 0), Vector2i(0, 0)]},
+	&"relief_bouche_paroi_01": {"width": 4, "depth": 3,
+		"open": [Vector2i(-1, 0), Vector2i(0, 0)]},
+	# Bouches vues de l'intérieur de la Cave (rangées 79 et 0, 4 cases de large) : posées sur des
+	# cases déjà solides ou des warps de la carte, sans emprise propre.
+	&"relief_bouche_cave_sud_01": {"traversable": true, "align": ALIGN_EDGE},
+	&"relief_bouche_cave_nord_01": {"traversable": true, "align": ALIGN_EDGE},
+	# Parois de grès de la Cave (mêmes rôles que les parois de la grotte : faces 3, 3, angles 2, 2,
+	# bord 1, lèvre 3) : posées sur des cases `#` déjà solides, triées au pied.
+	&"relief_paroi_sable_01": {"traversable": true, "align": ALIGN_CENTRE},
+	&"relief_paroi_sable_02": {"traversable": true, "align": ALIGN_CENTRE},
+	&"relief_paroi_sable_03": {"traversable": true, "align": ALIGN_EDGE},
+	&"relief_paroi_sable_04": {"traversable": true, "align": ALIGN_EDGE},
+	&"relief_paroi_sable_05": {"traversable": true, "align": ALIGN_CENTRE},
+	&"relief_paroi_sable_06": {"traversable": true, "align": ALIGN_CENTRE},
+	# Bord sud de la digue (rangée 24, 2 cases de large) : relief à plat sur des cases d'eau.
+	&"relief_digue_bord_01": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_digue_bord_02": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	# Barrière ouverte (FUTUR B) : le passage de 2 cases est libre entre les poteaux, pied au
+	# poteau sud ; aucune emprise (l'état fermé est la `ClosedGate` de la carte).
+	&"prop_barriere_ouverte_01": {"traversable": true, "align": ALIGN_CENTRE},
+	# Poste de recherche (pièce du poste) : étagère 2 × 1, table de lecture 3 × 1, caisse 1 × 1 ;
+	# la carte murale est accrochée à un mur déjà bloqué.
+	&"int_etagere_lampes_01": {"width": 2, "depth": 1},
+	&"int_carte_murale_01": {"traversable": true, "align": ALIGN_EDGE},
+	&"int_table_lecture_01": {"width": 3, "depth": 1},
+	&"int_caisse_lampes_01": {"width": 1, "depth": 1},
+	# --- Série 18 : S.S. Anne et Arène de Carmin (J16 T10, fiche `serie-18-ss-anne.md`). Les
+	# meubles sont posés par `build_painted_interiors.gd` en rectangles de la grille (« furniture »,
+	# emprise écrite dans l'instance) ; ces règles donnent la même emprise.
+	&"int_banquette_ss_anne_01": {"width": 2, "depth": 1},
+	&"int_comptoir_accueil_ss_anne_01": {"width": 4, "depth": 1},
+	&"int_table_restaurant_01": {"width": 2, "depth": 1},
+	&"int_comptoir_cuisine_01": {"width": 4, "depth": 1},
+	&"int_lit_cabine_01": {"width": 2, "depth": 2},
+	&"int_armoire_cabine_01": {"width": 1, "depth": 1},
+	&"int_table_hublot_01": {"width": 2, "depth": 1},
+	&"int_bureau_capitaine_01": {"width": 3, "depth": 1},
+	&"int_lavabo_cabine_01": {"width": 1, "depth": 1},
+	&"int_table_cartes_01": {"width": 2, "depth": 1},
+	&"int_caisses_cale_01": {"width": 2, "depth": 2},
+	&"int_caisses_cale_02": {"width": 3, "depth": 2},
+	&"int_poubelle_arene_01": {"width": 1, "depth": 1},
+	&"int_armoire_electrique_01": {"width": 1, "depth": 1},
+	&"int_armoire_electrique_02": {"width": 1, "depth": 1},
+	# Barrière : cases `B` praticables une fois ouverte (les PNJ objets `electric_barrier` les
+	# bloquent avant) ; pylônes éteints toujours là, barrière active = objet fixe du segment du
+	# milieu. `int_barriere_active_01` sert d'image à cet objet (aucune carte ne la pose).
+	&"int_barriere_active_01": {"traversable": true, "align": ALIGN_CENTRE},
+	&"int_barriere_coupee_01": {"traversable": true, "align": ALIGN_CENTRE},
+	# Pont extérieur : bastingages dans la couche du sol (cases `r` bloquées par la grille), la
+	# superstructure ouest dans `Entities` (cases `K` bloquées) ; chaises longues et bouées
+	# bloquent leurs cases.
+	&"relief_bastingage_01": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_bastingage_02": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_bastingage_sud_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_EDGE},
+	&"relief_bastingage_est_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_CENTRE},
+	&"relief_bastingage_angle_ne_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_CENTRE},
+	&"relief_bastingage_angle_se_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_CENTRE},
+	&"bldg_ss_anne_superstructure_01": {"traversable": true, "align": ALIGN_CENTRE},
+	&"prop_chaises_longues_01": {"width": 2, "depth": 1},
+	&"prop_bouee_01": {"width": 1, "depth": 1},
+	# --- Série 21 : Routes 9 et 10, Grotte Sombre, Lavanville, Tour Pokémon (J18 T6, fiche
+	# `serie-21-j18.md`). ---
+	# Tour Pokémon 12 × 11 (porte double aux 6e et 7e colonnes), Maison des Pokémon 8 (porte aux
+	# 4e et 5e colonnes), maison d'habitants 7 (porte à la 4e colonne, comme la maison d'Argenta,
+	# J18 T14) : emprise = largeur de l'image.
+	&"bldg_tour_pokemon_01": {"shadow": true, "width": 12, "depth": 11, "fade": true,
+		"open": [Vector2i(-1, 0), Vector2i(0, 0)]},
+	&"bldg_maison_pokemon_01": {"shadow": true, "width": 8, "depth": 5, "fade": true,
+		"open": [Vector2i(-1, 0), Vector2i(0, 0)]},
+	&"bldg_maison_lavanville_01": {"shadow": true, "width": 7, "depth": 5, "fade": true,
+		"open": [Vector2i(0, 0)]},
+	# Lointains (centrale de la Route 10, silhouette de la Tour) : la carte bloque ses cases.
+	&"bldg_centrale_lointaine_01": {"traversable": true, "align": ALIGN_CENTRE},
+	&"prop_tour_lointaine_01": {"traversable": true, "align": ALIGN_CENTRE},
+	&"prop_grande_colonne_01": {"width": 5, "depth": 6},
+	&"prop_flaque_grotte_01": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	# Parois de la Grotte Sombre : mêmes rôles et ancrages que `relief_paroi_grotte_01..06`.
+	&"relief_paroi_grotte_sombre_01": {"traversable": true, "align": ALIGN_CENTRE},
+	&"relief_paroi_grotte_sombre_02": {"traversable": true, "align": ALIGN_CENTRE},
+	&"relief_paroi_grotte_sombre_03": {"traversable": true, "align": ALIGN_EDGE},
+	&"relief_paroi_grotte_sombre_04": {"traversable": true, "align": ALIGN_EDGE},
+	&"relief_paroi_grotte_sombre_05": {"traversable": true, "align": ALIGN_CENTRE},
+	&"relief_paroi_grotte_sombre_06": {"traversable": true, "align": ALIGN_CENTRE},
+	&"relief_paroi_fendue_01": {"traversable": true, "align": ALIGN_CENTRE},
+	&"prop_racines_plafond_01": {"width": 1, "depth": 2},
+	&"prop_racines_plafond_02": {"width": 2, "depth": 2},
+	&"prop_rocher_grotte_sombre_01": {"width": 1, "depth": 1},
+	&"prop_rocher_grotte_sombre_02": {"width": 1, "depth": 1},
+	# Lavanville : buis, haie (2 cases), fleurs pâles, if du parvis.
+	&"prop_buis_taille_01": {"width": 1, "depth": 1},
+	&"prop_buis_taille_02": {"width": 1, "depth": 1},
+	&"prop_haie_taillee_01": {"width": 2, "depth": 1},
+	&"prop_fleurs_pales_01": {"width": 1, "depth": 1},
+	&"prop_fleurs_pales_02": {"width": 2, "depth": 1},
+	&"prop_if_taille_01": {"width": 1, "depth": 1},
+	# Tour (intérieur, mutualisé avec le J19) : murs sur le modèle de `relief_mur_souterrain_*`,
+	# escalier montant dans le mur (warp `STEP_ON`), tombes, bougeoir, comptoir 4 × 1, banc.
+	&"relief_mur_tour_01": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_mur_tour_02": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_mur_tour_03": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_mur_tour_04": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_CENTRE},
+	&"relief_mur_tour_05": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_CENTRE},
+	&"relief_escalier_tour_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_CENTRE},
+	&"int_tombe_tour_01": {"width": 1, "depth": 1},
+	&"int_tombe_tour_02": {"width": 1, "depth": 1},
+	&"int_tombe_tour_03": {"width": 1, "depth": 1},
+	&"int_bougeoir_tour_01": {"width": 1, "depth": 1},
+	&"int_comptoir_tour_01": {"width": 4, "depth": 1},
+	&"int_banc_tour_01": {"width": 1, "depth": 1},
 }
 
 

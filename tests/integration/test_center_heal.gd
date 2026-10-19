@@ -156,7 +156,9 @@ func _talk_to_the_nurse() -> void:
 	Input.action_release(&"interact")
 	await wait_until(func() -> bool: return _runner.is_running(), TIMEOUT)
 	var box := _boot.get_dialogue_box()
-	var deadline := Time.get_ticks_msec() + int(TIMEOUT * 1000)
+	# 180 pas d'animation simulés peuvent prendre plus de 12 s sur un runner lent.
+	# La durée vérifiée reste 3 s simulées ; ceci n'est qu'une garde anti-blocage.
+	var deadline := Time.get_ticks_msec() + 60_000
 	while _runner.is_running() and Time.get_ticks_msec() < deadline:
 		if box.is_open() and not _runner.is_awaiting_choice():
 			box.advance_requested.emit()
@@ -247,7 +249,9 @@ func test_the_heal_machine_lights_one_slot_per_pokemon() -> void:
 	await wait_process_frames(2)
 	Input.action_release(&"interact")
 	var box := _boot.get_dialogue_box()
-	var deadline := Time.get_ticks_msec() + int(TIMEOUT * 1000)
+	# 180 pas d'animation simulés peuvent prendre plus de 12 s sur un runner lent.
+	# La durée vérifiée reste 3 s simulées ; ceci n'est qu'une garde anti-blocage.
+	var deadline := Time.get_ticks_msec() + 60_000
 	while not machine.is_playing() and Time.get_ticks_msec() < deadline:
 		if box.is_open() and not _runner.is_awaiting_choice():
 			box.advance_requested.emit()
@@ -276,7 +280,9 @@ func test_android_back_during_the_choice_means_not_now() -> void:
 	Input.action_press(&"interact")
 	await wait_process_frames(2)
 	Input.action_release(&"interact")
-	var deadline := Time.get_ticks_msec() + int(TIMEOUT * 1000)
+	# 180 pas d'animation simulés peuvent prendre plus de 12 s sur un runner lent.
+	# La durée vérifiée reste 3 s simulées ; ceci n'est qu'une garde anti-blocage.
+	var deadline := Time.get_ticks_msec() + 60_000
 	while not box.is_choice_showing() and Time.get_ticks_msec() < deadline:
 		if box.is_open():
 			box.advance_requested.emit()
@@ -321,7 +327,9 @@ func test_a_defeat_after_a_center_heal_wakes_at_the_center() -> void:
 	var enc := _boot.get_encounter_director()
 	assert_true(enc.start_encounter(WildEncounter.new(&"rattata", 10, &"route_1_grass")))
 	var battle_hud := _boot.get_battle_hud()
-	var deadline := Time.get_ticks_msec() + int(TIMEOUT * 1000)
+	# 180 pas d'animation simulés peuvent prendre plus de 12 s sur un runner lent.
+	# La durée vérifiée reste 3 s simulées ; ceci n'est qu'une garde anti-blocage.
+	var deadline := Time.get_ticks_msec() + 60_000
 	while enc.is_running() and Time.get_ticks_msec() < deadline:
 		var battle := _boot.get_battle_director().get_battle()
 		if battle != null and battle.get_state() == Battle.State.CHOOSING:
@@ -372,3 +380,4 @@ func _defeat_seed(data: PokemonData) -> int:
 		if battle.get_outcome() == Battle.Outcome.LOSS:
 			return seed
 	return -1
+

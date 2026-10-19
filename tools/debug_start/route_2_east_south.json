@@ -1,0 +1,77 @@
+{
+ "map": "route_2_east",
+ "spawn": "debug_south",
+ "facing": "down",
+ "flags": [
+  "mom_greeted",
+  "rival_met",
+  "oak_met",
+  "oak_lab_reunion",
+  "starter_offered",
+  "starter_chosen",
+  "taken_charmander",
+  "taken_squirtle",
+  "rival_lab_won",
+  "rival_challenged",
+  "rival_battle_done",
+  "rival_left_lab",
+  "viridian_arrived",
+  "got_oak_parcel",
+  "pokedex_activated",
+  "poison_unlocked",
+  "beaten_forest_scout_theo",
+  "pewter_arrived",
+  "beaten_pewter_gym_liam",
+  "brock_met",
+  "badge_boulder"
+ ],
+ "party": [
+  {
+   "species": "charmander",
+   "level": 22
+  },
+  {
+   "species": "pidgey",
+   "level": 18
+  },
+  {
+   "species": "rattata",
+   "level": 16
+  },
+  {
+   "species": "spearow",
+   "level": 17
+  },
+  {
+   "species": "nidoran_f",
+   "level": 15
+  },
+  {
+   "species": "mankey",
+   "level": 16
+  }
+ ],
+ "storage": [
+  {
+   "species": "nidoran_m",
+   "level": 12
+  },
+  {
+   "species": "caterpie",
+   "level": 10
+  },
+  {
+   "species": "weedle",
+   "level": 10
+  },
+  {
+   "species": "zubat",
+   "level": 9
+  }
+ ],
+ "bag": {
+  "poke_ball": 10,
+  "potion": 5
+ },
+ "money": 6000
+}

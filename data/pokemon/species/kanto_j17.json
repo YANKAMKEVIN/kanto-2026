@@ -1,0 +1,79 @@
+{
+	"diglett": {
+		"dex": 50, "name": "Taupiqueur", "types": ["ground"],
+		"base_stats": { "hp": 10, "atk": 55, "def": 25, "spa": 35, "spd": 45, "spe": 95 },
+		"male_ratio": 0.5, "growth_rate": "medium_fast", "base_exp": 53, "catch_rate": 255,
+		"learnset": [
+			[1, "scratch"], [15, "growl"], [19, "dig"], [24, "sand_attack"], [31, "slash"],
+			[40, "earthquake"]
+		],
+		"evolutions": [{ "into": "dugtrio", "method": "level", "level": 26 }]
+	},
+	"dugtrio": {
+		"dex": 51, "name": "Triopikeur", "types": ["ground"],
+		"base_stats": { "hp": 35, "atk": 100, "def": 50, "spa": 50, "spd": 70, "spe": 120 },
+		"male_ratio": 0.5, "growth_rate": "medium_fast", "base_exp": 149, "catch_rate": 50,
+		"learnset": [
+			[1, "scratch"], [1, "growl"], [1, "dig"], [15, "growl"], [19, "dig"],
+			[24, "sand_attack"], [35, "slash"], [47, "earthquake"]
+		]
+	},
+	"growlithe": {
+		"dex": 58, "name": "Caninos", "types": ["fire"],
+		"base_stats": { "hp": 55, "atk": 70, "def": 45, "spa": 70, "spd": 50, "spe": 60 },
+		"male_ratio": 0.75, "growth_rate": "slow", "base_exp": 70, "catch_rate": 190,
+		"learnset": [
+			[1, "bite"], [1, "roar"], [18, "ember"], [23, "leer"], [30, "take_down"],
+			[39, "agility"], [50, "flamethrower"]
+		]
+	},
+	"vulpix": {
+		"dex": 37, "name": "Goupix", "types": ["fire"],
+		"base_stats": { "hp": 38, "atk": 41, "def": 40, "spa": 50, "spd": 65, "spe": 65 },
+		"male_ratio": 0.25, "growth_rate": "medium_fast", "base_exp": 60, "catch_rate": 190,
+		"learnset": [
+			[1, "ember"], [1, "tail_whip"], [16, "quick_attack"], [21, "roar"],
+			[28, "confuse_ray"], [35, "flamethrower"], [42, "fire_spin"]
+		]
+	},
+	"magnemite": {
+		"dex": 81, "name": "Magnéti", "types": ["electric", "steel"],
+		"base_stats": { "hp": 25, "atk": 35, "def": 70, "spa": 95, "spd": 55, "spe": 45 },
+		"male_ratio": -1, "growth_rate": "medium_fast", "base_exp": 65, "catch_rate": 190,
+		"learnset": [
+			[1, "tackle"], [21, "sonic_boom"], [25, "thunder_shock"], [29, "supersonic"],
+			[35, "thunder_wave"], [41, "swift"], [47, "screech"]
+		],
+		"evolutions": [{ "into": "magneton", "method": "level", "level": 30 }]
+	},
+	"magneton": {
+		"dex": 82, "name": "Magnéton", "types": ["electric", "steel"],
+		"base_stats": { "hp": 50, "atk": 60, "def": 95, "spa": 120, "spd": 70, "spe": 70 },
+		"male_ratio": -1, "growth_rate": "medium_fast", "base_exp": 163, "catch_rate": 60,
+		"learnset": [
+			[1, "tackle"], [1, "sonic_boom"], [1, "thunder_shock"], [21, "sonic_boom"],
+			[25, "thunder_shock"], [29, "supersonic"], [38, "thunder_wave"], [46, "swift"],
+			[54, "screech"]
+		]
+	},
+	"drowzee": {
+		"dex": 96, "name": "Soporifik", "types": ["psychic"],
+		"base_stats": { "hp": 60, "atk": 48, "def": 45, "spa": 43, "spd": 90, "spe": 42 },
+		"male_ratio": 0.5, "growth_rate": "medium_fast", "base_exp": 66, "catch_rate": 190,
+		"learnset": [
+			[1, "pound"], [1, "hypnosis"], [12, "disable"], [17, "confusion"], [24, "headbutt"],
+			[29, "poison_gas"], [32, "psychic"], [37, "meditate"]
+		],
+		"evolutions": [{ "into": "hypno", "method": "level", "level": 26 }]
+	},
+	"hypno": {
+		"dex": 97, "name": "Hypno", "types": ["psychic"],
+		"base_stats": { "hp": 85, "atk": 73, "def": 70, "spa": 73, "spd": 115, "spe": 67 },
+		"male_ratio": 0.5, "growth_rate": "medium_fast", "base_exp": 169, "catch_rate": 75,
+		"learnset": [
+			[1, "pound"], [1, "hypnosis"], [1, "disable"], [1, "confusion"], [12, "disable"],
+			[17, "confusion"], [24, "headbutt"], [33, "poison_gas"], [37, "psychic"],
+			[43, "meditate"]
+		]
+	}
+}

@@ -1,0 +1,34 @@
+{
+	"route_10_reached": {
+		"variants": [
+			{
+				"unless": ["route_10_reached"],
+				"steps": [
+					{ "set": ["route_10_reached"] }
+				]
+			}
+		]
+	},
+	"dark_cave_crossed": {
+		"variants": [
+			{
+				"unless": ["dark_cave_crossed"],
+				"steps": [
+					{ "set": ["dark_cave_crossed"] }
+				]
+			}
+		]
+	},
+	"route_10_item_1": {
+		"variants": [
+			{
+				"unless": ["got_route_10_item_1"],
+				"steps": [
+					{ "despawn": "route_10_item_1" },
+					{ "give": "super_potion", "count": 1, "found": true },
+					{ "set": ["got_route_10_item_1"] }
+				]
+			}
+		]
+	}
+}

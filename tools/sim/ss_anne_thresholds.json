@@ -1,0 +1,3630 @@
+{
+	"version": 1,
+	"title": "Seuils du rival n° 4 et de Major Bob (jalon 16 T18)",
+	"description": "Jalon 16 T18 : un combat par partie (équipe soignée ; attentif et expert avec 3 Potions, naïf sans objet), sans reprise : taux de victoire au premier essai p (tentatives ≈ 1/p). Échelle de niveaux par starter (meneur N20 à N26) contre le rival n° 4 et Major Bob tels que dans data/ et contre des réglages de comparaison. Équipes « Sol » : Racaillou ou Nidoking ; « Tunnel » : Reptincel avec la CT28 ; « Plante » : Carabaffe avec un Mystherbe. Variantes « ordre gardé » : l'équipe part dans son ordre (Sol en dernier). Information pour Kevin : aucune donnée de jeu n'est changée. Généré par tools/sim/gen_ss_anne_scenarios.py.",
+	"seeds": 1000,
+	"heal_at_start": true,
+	"teams": [
+		{
+			"name": "Reptincel 20, Férosinge 17, Roucoups 16, Mystherbe 16",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 20
+				},
+				{
+					"species": "mankey",
+					"level": 17
+				},
+				{
+					"species": "pidgeotto",
+					"level": 16
+				},
+				{
+					"species": "oddish",
+					"level": 16
+				}
+			]
+		},
+		{
+			"name": "Kevin : Reptincel 20, Roucoups 17, Nidorino 15, Rattata 15",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 20
+				},
+				{
+					"species": "pidgeotto",
+					"level": 17
+				},
+				{
+					"species": "nidorino",
+					"level": 15
+				},
+				{
+					"species": "rattata",
+					"level": 15
+				}
+			]
+		},
+		{
+			"name": "Herbizarre 20, Roucoups 17, Papilusion 15",
+			"starter": "bulbasaur",
+			"members": [
+				{
+					"species": "ivysaur",
+					"level": 20
+				},
+				{
+					"species": "pidgeotto",
+					"level": 17
+				},
+				{
+					"species": "butterfree",
+					"level": 15,
+					"moves": [
+						"tackle",
+						"string_shot",
+						"harden",
+						"confusion"
+					]
+				}
+			]
+		},
+		{
+			"name": "Carabaffe 20, Roucoups 17, Papilusion 15",
+			"starter": "squirtle",
+			"members": [
+				{
+					"species": "wartortle",
+					"level": 20
+				},
+				{
+					"species": "pidgeotto",
+					"level": 17
+				},
+				{
+					"species": "butterfree",
+					"level": 15,
+					"moves": [
+						"tackle",
+						"string_shot",
+						"harden",
+						"confusion"
+					]
+				}
+			]
+		},
+		{
+			"name": "Reptincel 22, Férosinge 19, Roucoups 18, Mystherbe 18",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 22
+				},
+				{
+					"species": "mankey",
+					"level": 19
+				},
+				{
+					"species": "pidgeotto",
+					"level": 18
+				},
+				{
+					"species": "oddish",
+					"level": 18
+				}
+			]
+		},
+		{
+			"name": "Kevin : Reptincel 22, Roucoups 19, Nidorino 17, Rattata 17",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 22
+				},
+				{
+					"species": "pidgeotto",
+					"level": 19
+				},
+				{
+					"species": "nidorino",
+					"level": 17
+				},
+				{
+					"species": "rattata",
+					"level": 17
+				}
+			]
+		},
+		{
+			"name": "Herbizarre 22, Roucoups 19, Papilusion 17",
+			"starter": "bulbasaur",
+			"members": [
+				{
+					"species": "ivysaur",
+					"level": 22
+				},
+				{
+					"species": "pidgeotto",
+					"level": 19
+				},
+				{
+					"species": "butterfree",
+					"level": 17,
+					"moves": [
+						"tackle",
+						"string_shot",
+						"harden",
+						"confusion"
+					]
+				}
+			]
+		},
+		{
+			"name": "Carabaffe 22, Roucoups 19, Papilusion 17",
+			"starter": "squirtle",
+			"members": [
+				{
+					"species": "wartortle",
+					"level": 22
+				},
+				{
+					"species": "pidgeotto",
+					"level": 19
+				},
+				{
+					"species": "butterfree",
+					"level": 17,
+					"moves": [
+						"tackle",
+						"string_shot",
+						"harden",
+						"confusion"
+					]
+				}
+			]
+		},
+		{
+			"name": "Reptincel 24, Férosinge 21, Roucoups 20, Mystherbe 20",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 24
+				},
+				{
+					"species": "mankey",
+					"level": 21
+				},
+				{
+					"species": "pidgeotto",
+					"level": 20
+				},
+				{
+					"species": "oddish",
+					"level": 20
+				}
+			]
+		},
+		{
+			"name": "Kevin : Reptincel 24, Roucoups 21, Nidorino 19, Rattata 19",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 24
+				},
+				{
+					"species": "pidgeotto",
+					"level": 21
+				},
+				{
+					"species": "nidorino",
+					"level": 19
+				},
+				{
+					"species": "rattata",
+					"level": 19
+				}
+			]
+		},
+		{
+			"name": "Herbizarre 24, Roucoups 21, Papilusion 19",
+			"starter": "bulbasaur",
+			"members": [
+				{
+					"species": "ivysaur",
+					"level": 24
+				},
+				{
+					"species": "pidgeotto",
+					"level": 21
+				},
+				{
+					"species": "butterfree",
+					"level": 19,
+					"moves": [
+						"tackle",
+						"string_shot",
+						"harden",
+						"confusion"
+					]
+				}
+			]
+		},
+		{
+			"name": "Carabaffe 24, Roucoups 21, Papilusion 19",
+			"starter": "squirtle",
+			"members": [
+				{
+					"species": "wartortle",
+					"level": 24
+				},
+				{
+					"species": "pidgeotto",
+					"level": 21
+				},
+				{
+					"species": "butterfree",
+					"level": 19,
+					"moves": [
+						"tackle",
+						"string_shot",
+						"harden",
+						"confusion"
+					]
+				}
+			]
+		},
+		{
+			"name": "Reptincel 26, Férosinge 23, Roucoups 22, Mystherbe 22",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 26
+				},
+				{
+					"species": "mankey",
+					"level": 23
+				},
+				{
+					"species": "pidgeotto",
+					"level": 22
+				},
+				{
+					"species": "oddish",
+					"level": 22
+				}
+			]
+		},
+		{
+			"name": "Kevin : Reptincel 26, Roucoups 23, Nidorino 21, Rattata 21",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 26
+				},
+				{
+					"species": "pidgeotto",
+					"level": 23
+				},
+				{
+					"species": "nidorino",
+					"level": 21
+				},
+				{
+					"species": "rattata",
+					"level": 21
+				}
+			]
+		},
+		{
+			"name": "Herbizarre 26, Roucoups 23, Papilusion 21",
+			"starter": "bulbasaur",
+			"members": [
+				{
+					"species": "ivysaur",
+					"level": 26
+				},
+				{
+					"species": "pidgeotto",
+					"level": 23
+				},
+				{
+					"species": "butterfree",
+					"level": 21,
+					"moves": [
+						"tackle",
+						"string_shot",
+						"harden",
+						"confusion"
+					]
+				}
+			]
+		},
+		{
+			"name": "Carabaffe 26, Roucoups 23, Papilusion 21",
+			"starter": "squirtle",
+			"members": [
+				{
+					"species": "wartortle",
+					"level": 26
+				},
+				{
+					"species": "pidgeotto",
+					"level": 23
+				},
+				{
+					"species": "butterfree",
+					"level": 21,
+					"moves": [
+						"tackle",
+						"string_shot",
+						"harden",
+						"confusion"
+					]
+				}
+			]
+		},
+		{
+			"name": "Sol : Reptincel 20, Férosinge 17, Roucoups 16, Racaillou 16",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 20
+				},
+				{
+					"species": "mankey",
+					"level": 17
+				},
+				{
+					"species": "pidgeotto",
+					"level": 16
+				},
+				{
+					"species": "geodude",
+					"level": 16
+				}
+			]
+		},
+		{
+			"name": "Sol, Kevin : Reptincel 20, Roucoups 17, Nidoking 15, Rattata 15",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 20
+				},
+				{
+					"species": "pidgeotto",
+					"level": 17
+				},
+				{
+					"species": "nidoking",
+					"level": 15
+				},
+				{
+					"species": "rattata",
+					"level": 15
+				}
+			]
+		},
+		{
+			"name": "Sol : Carabaffe 20, Roucoups 17, Papilusion 15, Racaillou 16",
+			"starter": "squirtle",
+			"members": [
+				{
+					"species": "wartortle",
+					"level": 20
+				},
+				{
+					"species": "pidgeotto",
+					"level": 17
+				},
+				{
+					"species": "butterfree",
+					"level": 15,
+					"moves": [
+						"tackle",
+						"string_shot",
+						"harden",
+						"confusion"
+					]
+				},
+				{
+					"species": "geodude",
+					"level": 16
+				}
+			]
+		},
+		{
+			"name": "Tunnel : Reptincel 20 (CT28), Férosinge 17, Roucoups 16, Mystherbe 16",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 20,
+					"moves": [
+						"ember",
+						"scratch",
+						"leer",
+						"dig"
+					]
+				},
+				{
+					"species": "mankey",
+					"level": 17
+				},
+				{
+					"species": "pidgeotto",
+					"level": 16
+				},
+				{
+					"species": "oddish",
+					"level": 16
+				}
+			]
+		},
+		{
+			"name": "Sol : Herbizarre 20, Roucoups 17, Papilusion 15, Racaillou 16",
+			"starter": "bulbasaur",
+			"members": [
+				{
+					"species": "ivysaur",
+					"level": 20
+				},
+				{
+					"species": "pidgeotto",
+					"level": 17
+				},
+				{
+					"species": "butterfree",
+					"level": 15,
+					"moves": [
+						"tackle",
+						"string_shot",
+						"harden",
+						"confusion"
+					]
+				},
+				{
+					"species": "geodude",
+					"level": 16
+				}
+			]
+		},
+		{
+			"name": "Tunnel : Carabaffe 20 (CT28), Roucoups 17, Papilusion 15",
+			"starter": "squirtle",
+			"members": [
+				{
+					"species": "wartortle",
+					"level": 20,
+					"moves": [
+						"water_gun",
+						"bubble",
+						"tail_whip",
+						"dig"
+					]
+				},
+				{
+					"species": "pidgeotto",
+					"level": 17
+				},
+				{
+					"species": "butterfree",
+					"level": 15,
+					"moves": [
+						"tackle",
+						"string_shot",
+						"harden",
+						"confusion"
+					]
+				}
+			]
+		},
+		{
+			"name": "Plante : Carabaffe 20, Roucoups 17, Papilusion 15, Mystherbe 16",
+			"starter": "squirtle",
+			"members": [
+				{
+					"species": "wartortle",
+					"level": 20
+				},
+				{
+					"species": "pidgeotto",
+					"level": 17
+				},
+				{
+					"species": "butterfree",
+					"level": 15,
+					"moves": [
+						"tackle",
+						"string_shot",
+						"harden",
+						"confusion"
+					]
+				},
+				{
+					"species": "oddish",
+					"level": 16
+				}
+			]
+		},
+		{
+			"name": "Sol : Reptincel 22, Férosinge 19, Roucoups 18, Racaillou 18",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 22
+				},
+				{
+					"species": "mankey",
+					"level": 19
+				},
+				{
+					"species": "pidgeotto",
+					"level": 18
+				},
+				{
+					"species": "geodude",
+					"level": 18
+				}
+			]
+		},
+		{
+			"name": "Sol, Kevin : Reptincel 22, Roucoups 19, Nidoking 17, Rattata 17",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 22
+				},
+				{
+					"species": "pidgeotto",
+					"level": 19
+				},
+				{
+					"species": "nidoking",
+					"level": 17
+				},
+				{
+					"species": "rattata",
+					"level": 17
+				}
+			]
+		},
+		{
+			"name": "Sol : Carabaffe 22, Roucoups 19, Papilusion 17, Racaillou 18",
+			"starter": "squirtle",
+			"members": [
+				{
+					"species": "wartortle",
+					"level": 22
+				},
+				{
+					"species": "pidgeotto",
+					"level": 19
+				},
+				{
+					"species": "butterfree",
+					"level": 17,
+					"moves": [
+						"tackle",
+						"string_shot",
+						"harden",
+						"confusion"
+					]
+				},
+				{
+					"species": "geodude",
+					"level": 18
+				}
+			]
+		},
+		{
+			"name": "Tunnel : Reptincel 22 (CT28), Férosinge 19, Roucoups 18, Mystherbe 18",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 22,
+					"moves": [
+						"ember",
+						"scratch",
+						"leer",
+						"dig"
+					]
+				},
+				{
+					"species": "mankey",
+					"level": 19
+				},
+				{
+					"species": "pidgeotto",
+					"level": 18
+				},
+				{
+					"species": "oddish",
+					"level": 18
+				}
+			]
+		},
+		{
+			"name": "Sol : Herbizarre 22, Roucoups 19, Papilusion 17, Racaillou 18",
+			"starter": "bulbasaur",
+			"members": [
+				{
+					"species": "ivysaur",
+					"level": 22
+				},
+				{
+					"species": "pidgeotto",
+					"level": 19
+				},
+				{
+					"species": "butterfree",
+					"level": 17,
+					"moves": [
+						"tackle",
+						"string_shot",
+						"harden",
+						"confusion"
+					]
+				},
+				{
+					"species": "geodude",
+					"level": 18
+				}
+			]
+		},
+		{
+			"name": "Tunnel : Carabaffe 22 (CT28), Roucoups 19, Papilusion 17",
+			"starter": "squirtle",
+			"members": [
+				{
+					"species": "wartortle",
+					"level": 22,
+					"moves": [
+						"water_gun",
+						"bubble",
+						"tail_whip",
+						"dig"
+					]
+				},
+				{
+					"species": "pidgeotto",
+					"level": 19
+				},
+				{
+					"species": "butterfree",
+					"level": 17,
+					"moves": [
+						"tackle",
+						"string_shot",
+						"harden",
+						"confusion"
+					]
+				}
+			]
+		},
+		{
+			"name": "Plante : Carabaffe 22, Roucoups 19, Papilusion 17, Mystherbe 18",
+			"starter": "squirtle",
+			"members": [
+				{
+					"species": "wartortle",
+					"level": 22
+				},
+				{
+					"species": "pidgeotto",
+					"level": 19
+				},
+				{
+					"species": "butterfree",
+					"level": 17,
+					"moves": [
+						"tackle",
+						"string_shot",
+						"harden",
+						"confusion"
+					]
+				},
+				{
+					"species": "oddish",
+					"level": 18
+				}
+			]
+		},
+		{
+			"name": "Sol : Reptincel 24, Férosinge 21, Roucoups 20, Racaillou 20",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 24
+				},
+				{
+					"species": "mankey",
+					"level": 21
+				},
+				{
+					"species": "pidgeotto",
+					"level": 20
+				},
+				{
+					"species": "geodude",
+					"level": 20
+				}
+			]
+		},
+		{
+			"name": "Sol, Kevin : Reptincel 24, Roucoups 21, Nidoking 19, Rattata 19",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 24
+				},
+				{
+					"species": "pidgeotto",
+					"level": 21
+				},
+				{
+					"species": "nidoking",
+					"level": 19
+				},
+				{
+					"species": "rattata",
+					"level": 19
+				}
+			]
+		},
+		{
+			"name": "Sol : Carabaffe 24, Roucoups 21, Papilusion 19, Racaillou 20",
+			"starter": "squirtle",
+			"members": [
+				{
+					"species": "wartortle",
+					"level": 24
+				},
+				{
+					"species": "pidgeotto",
+					"level": 21
+				},
+				{
+					"species": "butterfree",
+					"level": 19,
+					"moves": [
+						"tackle",
+						"string_shot",
+						"harden",
+						"confusion"
+					]
+				},
+				{
+					"species": "geodude",
+					"level": 20
+				}
+			]
+		},
+		{
+			"name": "Tunnel : Reptincel 24 (CT28), Férosinge 21, Roucoups 20, Mystherbe 20",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 24,
+					"moves": [
+						"ember",
+						"scratch",
+						"leer",
+						"dig"
+					]
+				},
+				{
+					"species": "mankey",
+					"level": 21
+				},
+				{
+					"species": "pidgeotto",
+					"level": 20
+				},
+				{
+					"species": "oddish",
+					"level": 20
+				}
+			]
+		},
+		{
+			"name": "Sol : Herbizarre 24, Roucoups 21, Papilusion 19, Racaillou 20",
+			"starter": "bulbasaur",
+			"members": [
+				{
+					"species": "ivysaur",
+					"level": 24
+				},
+				{
+					"species": "pidgeotto",
+					"level": 21
+				},
+				{
+					"species": "butterfree",
+					"level": 19,
+					"moves": [
+						"tackle",
+						"string_shot",
+						"harden",
+						"confusion"
+					]
+				},
+				{
+					"species": "geodude",
+					"level": 20
+				}
+			]
+		},
+		{
+			"name": "Tunnel : Carabaffe 24 (CT28), Roucoups 21, Papilusion 19",
+			"starter": "squirtle",
+			"members": [
+				{
+					"species": "wartortle",
+					"level": 24,
+					"moves": [
+						"water_gun",
+						"bubble",
+						"tail_whip",
+						"dig"
+					]
+				},
+				{
+					"species": "pidgeotto",
+					"level": 21
+				},
+				{
+					"species": "butterfree",
+					"level": 19,
+					"moves": [
+						"tackle",
+						"string_shot",
+						"harden",
+						"confusion"
+					]
+				}
+			]
+		},
+		{
+			"name": "Plante : Carabaffe 24, Roucoups 21, Papilusion 19, Mystherbe 20",
+			"starter": "squirtle",
+			"members": [
+				{
+					"species": "wartortle",
+					"level": 24
+				},
+				{
+					"species": "pidgeotto",
+					"level": 21
+				},
+				{
+					"species": "butterfree",
+					"level": 19,
+					"moves": [
+						"tackle",
+						"string_shot",
+						"harden",
+						"confusion"
+					]
+				},
+				{
+					"species": "oddish",
+					"level": 20
+				}
+			]
+		}
+	],
+	"tables": {},
+	"trainers": {
+		"rival_ss_anne": {
+			"name": "{rival}",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 35,
+			"switch": true,
+			"team_by_starter": {
+				"bulbasaur": [
+					{
+						"species": "pidgeotto",
+						"level": 13,
+						"moves": [
+							"gust",
+							"quick_attack",
+							"sand_attack"
+						]
+					},
+					{
+						"species": "raticate",
+						"level": 12,
+						"moves": [
+							"quick_attack",
+							"bite",
+							"tail_whip"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 13,
+						"moves": [
+							"confusion",
+							"psybeam"
+						]
+					},
+					{
+						"species": "charmeleon",
+						"level": 15,
+						"moves": [
+							"ember",
+							"scratch",
+							"growl"
+						]
+					}
+				],
+				"charmander": [
+					{
+						"species": "pidgeotto",
+						"level": 19,
+						"moves": [
+							"gust",
+							"quick_attack",
+							"sand_attack"
+						]
+					},
+					{
+						"species": "raticate",
+						"level": 16,
+						"moves": [
+							"quick_attack",
+							"bite",
+							"tail_whip"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 19,
+						"moves": [
+							"confusion",
+							"psybeam"
+						]
+					},
+					{
+						"species": "wartortle",
+						"level": 20,
+						"moves": [
+							"water_gun",
+							"tackle",
+							"tail_whip"
+						]
+					}
+				],
+				"squirtle": [
+					{
+						"species": "pidgeotto",
+						"level": 20,
+						"moves": [
+							"gust",
+							"quick_attack",
+							"sand_attack"
+						]
+					},
+					{
+						"species": "raticate",
+						"level": 17,
+						"moves": [
+							"quick_attack",
+							"bite",
+							"tail_whip"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 19,
+						"moves": [
+							"confusion",
+							"psybeam"
+						]
+					},
+					{
+						"species": "ivysaur",
+						"level": 24,
+						"moves": [
+							"vine_whip",
+							"tackle",
+							"growl"
+						]
+					}
+				]
+			}
+		},
+		"vermilion_gym_surge": {
+			"name": "Major Bob",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 2400,
+			"switch": true,
+			"team": [
+				{
+					"species": "voltorb",
+					"level": 21,
+					"moves": [
+						"tackle",
+						"screech",
+						"sonic_boom"
+					]
+				},
+				{
+					"species": "pikachu",
+					"level": 18,
+					"moves": [
+						"thunder_shock",
+						"thunder_wave",
+						"quick_attack"
+					]
+				},
+				{
+					"species": "raichu",
+					"level": 24,
+					"moves": [
+						"thunder_shock",
+						"thunder_wave",
+						"quick_attack"
+					]
+				}
+			]
+		},
+		"rival_a_18_15_17_19": {
+			"name": "{rival}",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 35,
+			"switch": true,
+			"team_by_starter": {
+				"bulbasaur": [
+					{
+						"species": "pidgeotto",
+						"level": 18,
+						"moves": [
+							"gust",
+							"quick_attack",
+							"sand_attack"
+						]
+					},
+					{
+						"species": "raticate",
+						"level": 15,
+						"moves": [
+							"quick_attack",
+							"bite",
+							"tail_whip"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 17,
+						"moves": [
+							"confusion",
+							"psybeam"
+						]
+					},
+					{
+						"species": "charmeleon",
+						"level": 19,
+						"moves": [
+							"ember",
+							"scratch",
+							"growl"
+						]
+					}
+				],
+				"charmander": [
+					{
+						"species": "pidgeotto",
+						"level": 18,
+						"moves": [
+							"gust",
+							"quick_attack",
+							"sand_attack"
+						]
+					},
+					{
+						"species": "raticate",
+						"level": 15,
+						"moves": [
+							"quick_attack",
+							"bite",
+							"tail_whip"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 17,
+						"moves": [
+							"confusion",
+							"psybeam"
+						]
+					},
+					{
+						"species": "wartortle",
+						"level": 19,
+						"moves": [
+							"water_gun",
+							"tackle",
+							"tail_whip"
+						]
+					}
+				],
+				"squirtle": [
+					{
+						"species": "pidgeotto",
+						"level": 18,
+						"moves": [
+							"gust",
+							"quick_attack",
+							"sand_attack"
+						]
+					},
+					{
+						"species": "raticate",
+						"level": 15,
+						"moves": [
+							"quick_attack",
+							"bite",
+							"tail_whip"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 17,
+						"moves": [
+							"confusion",
+							"psybeam"
+						]
+					},
+					{
+						"species": "ivysaur",
+						"level": 19,
+						"moves": [
+							"vine_whip",
+							"tackle",
+							"growl"
+						]
+					}
+				]
+			}
+		},
+		"rival_b_17_15_16_18": {
+			"name": "{rival}",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 35,
+			"switch": true,
+			"team_by_starter": {
+				"bulbasaur": [
+					{
+						"species": "pidgeotto",
+						"level": 17,
+						"moves": [
+							"gust",
+							"quick_attack",
+							"sand_attack"
+						]
+					},
+					{
+						"species": "raticate",
+						"level": 15,
+						"moves": [
+							"quick_attack",
+							"bite",
+							"tail_whip"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 16,
+						"moves": [
+							"confusion",
+							"psybeam"
+						]
+					},
+					{
+						"species": "charmeleon",
+						"level": 18,
+						"moves": [
+							"ember",
+							"scratch",
+							"growl"
+						]
+					}
+				],
+				"charmander": [
+					{
+						"species": "pidgeotto",
+						"level": 17,
+						"moves": [
+							"gust",
+							"quick_attack",
+							"sand_attack"
+						]
+					},
+					{
+						"species": "raticate",
+						"level": 15,
+						"moves": [
+							"quick_attack",
+							"bite",
+							"tail_whip"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 16,
+						"moves": [
+							"confusion",
+							"psybeam"
+						]
+					},
+					{
+						"species": "wartortle",
+						"level": 18,
+						"moves": [
+							"water_gun",
+							"tackle",
+							"tail_whip"
+						]
+					}
+				],
+				"squirtle": [
+					{
+						"species": "pidgeotto",
+						"level": 17,
+						"moves": [
+							"gust",
+							"quick_attack",
+							"sand_attack"
+						]
+					},
+					{
+						"species": "raticate",
+						"level": 15,
+						"moves": [
+							"quick_attack",
+							"bite",
+							"tail_whip"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 16,
+						"moves": [
+							"confusion",
+							"psybeam"
+						]
+					},
+					{
+						"species": "ivysaur",
+						"level": 18,
+						"moves": [
+							"vine_whip",
+							"tackle",
+							"growl"
+						]
+					}
+				]
+			}
+		},
+		"rival_f_16_14_15_17": {
+			"name": "{rival}",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 35,
+			"switch": true,
+			"team_by_starter": {
+				"bulbasaur": [
+					{
+						"species": "pidgeotto",
+						"level": 16,
+						"moves": [
+							"gust",
+							"quick_attack",
+							"sand_attack"
+						]
+					},
+					{
+						"species": "raticate",
+						"level": 14,
+						"moves": [
+							"quick_attack",
+							"bite",
+							"tail_whip"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 15,
+						"moves": [
+							"confusion",
+							"psybeam"
+						]
+					},
+					{
+						"species": "charmeleon",
+						"level": 17,
+						"moves": [
+							"ember",
+							"scratch",
+							"growl"
+						]
+					}
+				],
+				"charmander": [
+					{
+						"species": "pidgeotto",
+						"level": 16,
+						"moves": [
+							"gust",
+							"quick_attack",
+							"sand_attack"
+						]
+					},
+					{
+						"species": "raticate",
+						"level": 14,
+						"moves": [
+							"quick_attack",
+							"bite",
+							"tail_whip"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 15,
+						"moves": [
+							"confusion",
+							"psybeam"
+						]
+					},
+					{
+						"species": "wartortle",
+						"level": 17,
+						"moves": [
+							"water_gun",
+							"tackle",
+							"tail_whip"
+						]
+					}
+				],
+				"squirtle": [
+					{
+						"species": "pidgeotto",
+						"level": 16,
+						"moves": [
+							"gust",
+							"quick_attack",
+							"sand_attack"
+						]
+					},
+					{
+						"species": "raticate",
+						"level": 14,
+						"moves": [
+							"quick_attack",
+							"bite",
+							"tail_whip"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 15,
+						"moves": [
+							"confusion",
+							"psybeam"
+						]
+					},
+					{
+						"species": "ivysaur",
+						"level": 17,
+						"moves": [
+							"vine_whip",
+							"tackle",
+							"growl"
+						]
+					}
+				]
+			}
+		},
+		"rival_c_kadabra_16": {
+			"name": "{rival}",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 35,
+			"switch": true,
+			"team_by_starter": {
+				"bulbasaur": [
+					{
+						"species": "pidgeotto",
+						"level": 13,
+						"moves": [
+							"gust",
+							"quick_attack",
+							"sand_attack"
+						]
+					},
+					{
+						"species": "raticate",
+						"level": 12,
+						"moves": [
+							"quick_attack",
+							"bite",
+							"tail_whip"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 16,
+						"moves": [
+							"confusion",
+							"psybeam"
+						]
+					},
+					{
+						"species": "charmeleon",
+						"level": 15,
+						"moves": [
+							"ember",
+							"scratch",
+							"growl"
+						]
+					}
+				],
+				"charmander": [
+					{
+						"species": "pidgeotto",
+						"level": 19,
+						"moves": [
+							"gust",
+							"quick_attack",
+							"sand_attack"
+						]
+					},
+					{
+						"species": "raticate",
+						"level": 16,
+						"moves": [
+							"quick_attack",
+							"bite",
+							"tail_whip"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 16,
+						"moves": [
+							"confusion",
+							"psybeam"
+						]
+					},
+					{
+						"species": "wartortle",
+						"level": 20,
+						"moves": [
+							"water_gun",
+							"tackle",
+							"tail_whip"
+						]
+					}
+				],
+				"squirtle": [
+					{
+						"species": "pidgeotto",
+						"level": 20,
+						"moves": [
+							"gust",
+							"quick_attack",
+							"sand_attack"
+						]
+					},
+					{
+						"species": "raticate",
+						"level": 17,
+						"moves": [
+							"quick_attack",
+							"bite",
+							"tail_whip"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 16,
+						"moves": [
+							"confusion",
+							"psybeam"
+						]
+					},
+					{
+						"species": "ivysaur",
+						"level": 24,
+						"moves": [
+							"vine_whip",
+							"tackle",
+							"growl"
+						]
+					}
+				]
+			}
+		},
+		"rival_d_sans_rafale": {
+			"name": "{rival}",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 35,
+			"switch": true,
+			"team_by_starter": {
+				"bulbasaur": [
+					{
+						"species": "pidgeotto",
+						"level": 13,
+						"moves": [
+							"gust",
+							"quick_attack",
+							"sand_attack"
+						]
+					},
+					{
+						"species": "raticate",
+						"level": 12,
+						"moves": [
+							"quick_attack",
+							"bite",
+							"tail_whip"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 13,
+						"moves": [
+							"confusion",
+							"teleport"
+						]
+					},
+					{
+						"species": "charmeleon",
+						"level": 15,
+						"moves": [
+							"ember",
+							"scratch",
+							"growl"
+						]
+					}
+				],
+				"charmander": [
+					{
+						"species": "pidgeotto",
+						"level": 19,
+						"moves": [
+							"gust",
+							"quick_attack",
+							"sand_attack"
+						]
+					},
+					{
+						"species": "raticate",
+						"level": 16,
+						"moves": [
+							"quick_attack",
+							"bite",
+							"tail_whip"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 19,
+						"moves": [
+							"confusion",
+							"teleport"
+						]
+					},
+					{
+						"species": "wartortle",
+						"level": 20,
+						"moves": [
+							"water_gun",
+							"tackle",
+							"tail_whip"
+						]
+					}
+				],
+				"squirtle": [
+					{
+						"species": "pidgeotto",
+						"level": 20,
+						"moves": [
+							"gust",
+							"quick_attack",
+							"sand_attack"
+						]
+					},
+					{
+						"species": "raticate",
+						"level": 17,
+						"moves": [
+							"quick_attack",
+							"bite",
+							"tail_whip"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 19,
+						"moves": [
+							"confusion",
+							"teleport"
+						]
+					},
+					{
+						"species": "ivysaur",
+						"level": 24,
+						"moves": [
+							"vine_whip",
+							"tackle",
+							"growl"
+						]
+					}
+				]
+			}
+		},
+		"rival_h_bulbi_16_14_15_16": {
+			"name": "{rival}",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 35,
+			"switch": true,
+			"team_by_starter": {
+				"bulbasaur": [
+					{
+						"species": "pidgeotto",
+						"level": 16,
+						"moves": [
+							"gust",
+							"quick_attack",
+							"sand_attack"
+						]
+					},
+					{
+						"species": "raticate",
+						"level": 14,
+						"moves": [
+							"quick_attack",
+							"bite",
+							"tail_whip"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 15,
+						"moves": [
+							"confusion",
+							"psybeam"
+						]
+					},
+					{
+						"species": "charmeleon",
+						"level": 16,
+						"moves": [
+							"ember",
+							"scratch",
+							"growl"
+						]
+					}
+				],
+				"charmander": [
+					{
+						"species": "pidgeotto",
+						"level": 19,
+						"moves": [
+							"gust",
+							"quick_attack",
+							"sand_attack"
+						]
+					},
+					{
+						"species": "raticate",
+						"level": 16,
+						"moves": [
+							"quick_attack",
+							"bite",
+							"tail_whip"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 19,
+						"moves": [
+							"confusion",
+							"psybeam"
+						]
+					},
+					{
+						"species": "wartortle",
+						"level": 20,
+						"moves": [
+							"water_gun",
+							"tackle",
+							"tail_whip"
+						]
+					}
+				],
+				"squirtle": [
+					{
+						"species": "pidgeotto",
+						"level": 20,
+						"moves": [
+							"gust",
+							"quick_attack",
+							"sand_attack"
+						]
+					},
+					{
+						"species": "raticate",
+						"level": 17,
+						"moves": [
+							"quick_attack",
+							"bite",
+							"tail_whip"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 19,
+						"moves": [
+							"confusion",
+							"psybeam"
+						]
+					},
+					{
+						"species": "ivysaur",
+						"level": 24,
+						"moves": [
+							"vine_whip",
+							"tackle",
+							"growl"
+						]
+					}
+				]
+			}
+		},
+		"rival_i_bulbi_14_12_13_15": {
+			"name": "{rival}",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 35,
+			"switch": true,
+			"team_by_starter": {
+				"bulbasaur": [
+					{
+						"species": "pidgeotto",
+						"level": 14,
+						"moves": [
+							"gust",
+							"quick_attack",
+							"sand_attack"
+						]
+					},
+					{
+						"species": "raticate",
+						"level": 12,
+						"moves": [
+							"quick_attack",
+							"bite",
+							"tail_whip"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 13,
+						"moves": [
+							"confusion",
+							"psybeam"
+						]
+					},
+					{
+						"species": "charmeleon",
+						"level": 15,
+						"moves": [
+							"ember",
+							"scratch",
+							"growl"
+						]
+					}
+				],
+				"charmander": [
+					{
+						"species": "pidgeotto",
+						"level": 19,
+						"moves": [
+							"gust",
+							"quick_attack",
+							"sand_attack"
+						]
+					},
+					{
+						"species": "raticate",
+						"level": 16,
+						"moves": [
+							"quick_attack",
+							"bite",
+							"tail_whip"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 19,
+						"moves": [
+							"confusion",
+							"psybeam"
+						]
+					},
+					{
+						"species": "wartortle",
+						"level": 20,
+						"moves": [
+							"water_gun",
+							"tackle",
+							"tail_whip"
+						]
+					}
+				],
+				"squirtle": [
+					{
+						"species": "pidgeotto",
+						"level": 20,
+						"moves": [
+							"gust",
+							"quick_attack",
+							"sand_attack"
+						]
+					},
+					{
+						"species": "raticate",
+						"level": 17,
+						"moves": [
+							"quick_attack",
+							"bite",
+							"tail_whip"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 19,
+						"moves": [
+							"confusion",
+							"psybeam"
+						]
+					},
+					{
+						"species": "ivysaur",
+						"level": 24,
+						"moves": [
+							"vine_whip",
+							"tackle",
+							"growl"
+						]
+					}
+				]
+			}
+		},
+		"rival_e_starter_18": {
+			"name": "{rival}",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 35,
+			"switch": true,
+			"team_by_starter": {
+				"bulbasaur": [
+					{
+						"species": "pidgeotto",
+						"level": 13,
+						"moves": [
+							"gust",
+							"quick_attack",
+							"sand_attack"
+						]
+					},
+					{
+						"species": "raticate",
+						"level": 12,
+						"moves": [
+							"quick_attack",
+							"bite",
+							"tail_whip"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 13,
+						"moves": [
+							"confusion",
+							"psybeam"
+						]
+					},
+					{
+						"species": "charmeleon",
+						"level": 18,
+						"moves": [
+							"ember",
+							"scratch",
+							"growl"
+						]
+					}
+				],
+				"charmander": [
+					{
+						"species": "pidgeotto",
+						"level": 19,
+						"moves": [
+							"gust",
+							"quick_attack",
+							"sand_attack"
+						]
+					},
+					{
+						"species": "raticate",
+						"level": 16,
+						"moves": [
+							"quick_attack",
+							"bite",
+							"tail_whip"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 19,
+						"moves": [
+							"confusion",
+							"psybeam"
+						]
+					},
+					{
+						"species": "wartortle",
+						"level": 18,
+						"moves": [
+							"water_gun",
+							"tackle",
+							"tail_whip"
+						]
+					}
+				],
+				"squirtle": [
+					{
+						"species": "pidgeotto",
+						"level": 20,
+						"moves": [
+							"gust",
+							"quick_attack",
+							"sand_attack"
+						]
+					},
+					{
+						"species": "raticate",
+						"level": 17,
+						"moves": [
+							"quick_attack",
+							"bite",
+							"tail_whip"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 19,
+						"moves": [
+							"confusion",
+							"psybeam"
+						]
+					},
+					{
+						"species": "ivysaur",
+						"level": 18,
+						"moves": [
+							"vine_whip",
+							"tackle",
+							"growl"
+						]
+					}
+				]
+			}
+		},
+		"rival_sans_switch": {
+			"name": "{rival}",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 35,
+			"switch": false,
+			"team_by_starter": {
+				"bulbasaur": [
+					{
+						"species": "pidgeotto",
+						"level": 13,
+						"moves": [
+							"gust",
+							"quick_attack",
+							"sand_attack"
+						]
+					},
+					{
+						"species": "raticate",
+						"level": 12,
+						"moves": [
+							"quick_attack",
+							"bite",
+							"tail_whip"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 13,
+						"moves": [
+							"confusion",
+							"psybeam"
+						]
+					},
+					{
+						"species": "charmeleon",
+						"level": 15,
+						"moves": [
+							"ember",
+							"scratch",
+							"growl"
+						]
+					}
+				],
+				"charmander": [
+					{
+						"species": "pidgeotto",
+						"level": 19,
+						"moves": [
+							"gust",
+							"quick_attack",
+							"sand_attack"
+						]
+					},
+					{
+						"species": "raticate",
+						"level": 16,
+						"moves": [
+							"quick_attack",
+							"bite",
+							"tail_whip"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 19,
+						"moves": [
+							"confusion",
+							"psybeam"
+						]
+					},
+					{
+						"species": "wartortle",
+						"level": 20,
+						"moves": [
+							"water_gun",
+							"tackle",
+							"tail_whip"
+						]
+					}
+				],
+				"squirtle": [
+					{
+						"species": "pidgeotto",
+						"level": 20,
+						"moves": [
+							"gust",
+							"quick_attack",
+							"sand_attack"
+						]
+					},
+					{
+						"species": "raticate",
+						"level": 17,
+						"moves": [
+							"quick_attack",
+							"bite",
+							"tail_whip"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 19,
+						"moves": [
+							"confusion",
+							"psybeam"
+						]
+					},
+					{
+						"species": "ivysaur",
+						"level": 24,
+						"moves": [
+							"vine_whip",
+							"tackle",
+							"growl"
+						]
+					}
+				]
+			}
+		},
+		"surge_sans_switch": {
+			"name": "Major Bob",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 2400,
+			"switch": false,
+			"team": [
+				{
+					"species": "voltorb",
+					"level": 21,
+					"moves": [
+						"tackle",
+						"screech",
+						"sonic_boom"
+					]
+				},
+				{
+					"species": "pikachu",
+					"level": 18,
+					"moves": [
+						"thunder_shock",
+						"thunder_wave",
+						"quick_attack"
+					]
+				},
+				{
+					"species": "raichu",
+					"level": 24,
+					"moves": [
+						"thunder_shock",
+						"thunder_wave",
+						"quick_attack"
+					]
+				}
+			]
+		},
+		"surge_a_raichu_22": {
+			"name": "Major Bob",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 2400,
+			"switch": true,
+			"team": [
+				{
+					"species": "voltorb",
+					"level": 21,
+					"moves": [
+						"tackle",
+						"screech",
+						"sonic_boom"
+					]
+				},
+				{
+					"species": "pikachu",
+					"level": 18,
+					"moves": [
+						"thunder_shock",
+						"thunder_wave",
+						"quick_attack"
+					]
+				},
+				{
+					"species": "raichu",
+					"level": 22,
+					"moves": [
+						"thunder_shock",
+						"thunder_wave",
+						"quick_attack"
+					]
+				}
+			]
+		},
+		"surge_b_raichu_21": {
+			"name": "Major Bob",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 2400,
+			"switch": true,
+			"team": [
+				{
+					"species": "voltorb",
+					"level": 20,
+					"moves": [
+						"tackle",
+						"screech",
+						"sonic_boom"
+					]
+				},
+				{
+					"species": "pikachu",
+					"level": 18,
+					"moves": [
+						"thunder_shock",
+						"thunder_wave",
+						"quick_attack"
+					]
+				},
+				{
+					"species": "raichu",
+					"level": 21,
+					"moves": [
+						"thunder_shock",
+						"thunder_wave",
+						"quick_attack"
+					]
+				}
+			]
+		},
+		"surge_c_sans_tonnerre": {
+			"name": "Major Bob",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 2400,
+			"switch": true,
+			"team": [
+				{
+					"species": "voltorb",
+					"level": 21,
+					"moves": [
+						"tackle",
+						"screech",
+						"sonic_boom"
+					]
+				},
+				{
+					"species": "pikachu",
+					"level": 18,
+					"moves": [
+						"thunder_shock",
+						"thunder_wave",
+						"quick_attack"
+					]
+				},
+				{
+					"species": "raichu",
+					"level": 24,
+					"moves": [
+						"thunder_shock",
+						"thunder_wave",
+						"quick_attack"
+					]
+				}
+			]
+		},
+		"surge_d_vive_attaque": {
+			"name": "Major Bob",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 2400,
+			"switch": true,
+			"team": [
+				{
+					"species": "voltorb",
+					"level": 21,
+					"moves": [
+						"tackle",
+						"screech",
+						"sonic_boom"
+					]
+				},
+				{
+					"species": "pikachu",
+					"level": 18,
+					"moves": [
+						"thunder_shock",
+						"thunder_wave",
+						"quick_attack"
+					]
+				},
+				{
+					"species": "raichu",
+					"level": 24,
+					"moves": [
+						"thunder_shock",
+						"thunder_wave",
+						"thunderbolt",
+						"quick_attack"
+					]
+				}
+			]
+		},
+		"surge_f_19_18_20": {
+			"name": "Major Bob",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 2400,
+			"switch": true,
+			"team": [
+				{
+					"species": "voltorb",
+					"level": 19,
+					"moves": [
+						"tackle",
+						"screech",
+						"sonic_boom"
+					]
+				},
+				{
+					"species": "pikachu",
+					"level": 18,
+					"moves": [
+						"thunder_shock",
+						"thunder_wave",
+						"quick_attack"
+					]
+				},
+				{
+					"species": "raichu",
+					"level": 20,
+					"moves": [
+						"thunder_shock",
+						"thunder_wave",
+						"quick_attack"
+					]
+				}
+			]
+		},
+		"surge_g_21_sans_tonnerre": {
+			"name": "Major Bob",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 2400,
+			"switch": true,
+			"team": [
+				{
+					"species": "voltorb",
+					"level": 20,
+					"moves": [
+						"tackle",
+						"screech",
+						"sonic_boom"
+					]
+				},
+				{
+					"species": "pikachu",
+					"level": 18,
+					"moves": [
+						"thunder_shock",
+						"thunder_wave",
+						"quick_attack"
+					]
+				},
+				{
+					"species": "raichu",
+					"level": 21,
+					"moves": [
+						"thunder_shock",
+						"thunder_wave",
+						"quick_attack"
+					]
+				}
+			]
+		},
+		"surge_e_raichu_26": {
+			"name": "Major Bob",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 2400,
+			"switch": true,
+			"team": [
+				{
+					"species": "voltorb",
+					"level": 21,
+					"moves": [
+						"tackle",
+						"screech",
+						"sonic_boom"
+					]
+				},
+				{
+					"species": "pikachu",
+					"level": 18,
+					"moves": [
+						"thunder_shock",
+						"thunder_wave",
+						"quick_attack"
+					]
+				},
+				{
+					"species": "raichu",
+					"level": 26,
+					"moves": [
+						"thunder_shock",
+						"thunder_wave",
+						"quick_attack"
+					]
+				}
+			]
+		}
+	},
+	"steps": [
+		{
+			"label": "Rival n° 4 (données : smart, switch)",
+			"trainer": "rival_ss_anne",
+			"optional": "rival_ss_anne"
+		},
+		{
+			"label": "Major Bob (données : smart, switch)",
+			"trainer": "vermilion_gym_surge",
+			"optional": "vermilion_gym_surge"
+		},
+		{
+			"label": "Rival n° 4 (a) : 18 / 15 / 17 / 19 (− 1 partout)",
+			"trainer": "rival_a_18_15_17_19",
+			"optional": "rival_a_18_15_17_19"
+		},
+		{
+			"label": "Rival n° 4 (b) : 17 / 15 / 16 / 18",
+			"trainer": "rival_b_17_15_16_18",
+			"optional": "rival_b_17_15_16_18"
+		},
+		{
+			"label": "Rival n° 4 (f) : 16 / 14 / 15 / 17 (− 3 partout)",
+			"trainer": "rival_f_16_14_15_17",
+			"optional": "rival_f_16_14_15_17"
+		},
+		{
+			"label": "Rival n° 4 (c) : Kadabra N16, le reste inchangé",
+			"trainer": "rival_c_kadabra_16",
+			"optional": "rival_c_kadabra_16"
+		},
+		{
+			"label": "Rival n° 4 (d) : Kadabra sans Rafale Psy (Choc Mental, Téléport)",
+			"trainer": "rival_d_sans_rafale",
+			"optional": "rival_d_sans_rafale"
+		},
+		{
+			"label": "Rival n° 4 (h), contre Bulbizarre seul : Roucoups 16, Rattatac 14, Kadabra 15, Reptincel 16",
+			"trainer": "rival_h_bulbi_16_14_15_16",
+			"optional": "rival_h_bulbi_16_14_15_16"
+		},
+		{
+			"label": "Rival n° 4 (i), contre Bulbizarre seul : Roucoups 14, Rattatac 12, Kadabra 13, Reptincel 15",
+			"trainer": "rival_i_bulbi_14_12_13_15",
+			"optional": "rival_i_bulbi_14_12_13_15"
+		},
+		{
+			"label": "Rival n° 4 (e) : starter évolué N18",
+			"trainer": "rival_e_starter_18",
+			"optional": "rival_e_starter_18"
+		},
+		{
+			"label": "Rival n° 4 sans changement",
+			"trainer": "rival_sans_switch",
+			"optional": "rival_sans_switch"
+		},
+		{
+			"label": "Major Bob sans changement",
+			"trainer": "surge_sans_switch",
+			"optional": "surge_sans_switch"
+		},
+		{
+			"label": "Major Bob (a) : Raichu N22",
+			"trainer": "surge_a_raichu_22",
+			"optional": "surge_a_raichu_22"
+		},
+		{
+			"label": "Major Bob (b) : Voltorbe 20, Pikachu 18, Raichu 21",
+			"trainer": "surge_b_raichu_21",
+			"optional": "surge_b_raichu_21"
+		},
+		{
+			"label": "Major Bob (c) : Raichu N24 sans Tonnerre (Éclair, Cage-Éclair, Vive-Attaque)",
+			"trainer": "surge_c_sans_tonnerre",
+			"optional": "surge_c_sans_tonnerre"
+		},
+		{
+			"label": "Major Bob (d) : Raichu N24 avec Vive-Attaque (Éclair, Cage-Éclair, Tonnerre, Vive-Attaque)",
+			"trainer": "surge_d_vive_attaque",
+			"optional": "surge_d_vive_attaque"
+		},
+		{
+			"label": "Major Bob (f) : Voltorbe 19, Pikachu 18, Raichu 20",
+			"trainer": "surge_f_19_18_20",
+			"optional": "surge_f_19_18_20"
+		},
+		{
+			"label": "Major Bob (g) : Voltorbe 20, Pikachu 18, Raichu 21 sans Tonnerre (Éclair, Cage-Éclair, Vive-Attaque)",
+			"trainer": "surge_g_21_sans_tonnerre",
+			"optional": "surge_g_21_sans_tonnerre"
+		},
+		{
+			"label": "Major Bob (e) : Raichu N26",
+			"trainer": "surge_e_raichu_26",
+			"optional": "surge_e_raichu_26"
+		}
+	],
+	"variants": [
+		{
+			"name": "attentif, 3 Potions : rival_ss_anne",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"rival_ss_anne"
+			],
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "expert, 3 Potions : rival_ss_anne",
+			"player": "expert",
+			"center": true,
+			"optional": [
+				"rival_ss_anne"
+			],
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "naïf, sans objet : rival_ss_anne",
+			"player": "naif",
+			"center": true,
+			"optional": [
+				"rival_ss_anne"
+			]
+		},
+		{
+			"name": "attentif, sac de Carmin : rival_ss_anne",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"rival_ss_anne"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "expert, sac de Carmin : rival_ss_anne",
+			"player": "expert",
+			"center": true,
+			"optional": [
+				"rival_ss_anne"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, 3 Potions : vermilion_gym_surge",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"vermilion_gym_surge"
+			],
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "expert, 3 Potions : vermilion_gym_surge",
+			"player": "expert",
+			"center": true,
+			"optional": [
+				"vermilion_gym_surge"
+			],
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "naïf, sans objet : vermilion_gym_surge",
+			"player": "naif",
+			"center": true,
+			"optional": [
+				"vermilion_gym_surge"
+			]
+		},
+		{
+			"name": "attentif, sac de Carmin : vermilion_gym_surge",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"vermilion_gym_surge"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "expert, sac de Carmin : vermilion_gym_surge",
+			"player": "expert",
+			"center": true,
+			"optional": [
+				"vermilion_gym_surge"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, 3 Potions, ordre gardé : vermilion_gym_surge",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"vermilion_gym_surge"
+			],
+			"keep_order": true,
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "expert, 3 Potions, ordre gardé : vermilion_gym_surge",
+			"player": "expert",
+			"center": true,
+			"optional": [
+				"vermilion_gym_surge"
+			],
+			"keep_order": true,
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "attentif, 3 Potions : rival_a_18_15_17_19",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"rival_a_18_15_17_19"
+			],
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "expert, 3 Potions : rival_a_18_15_17_19",
+			"player": "expert",
+			"center": true,
+			"optional": [
+				"rival_a_18_15_17_19"
+			],
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "naïf, sans objet : rival_a_18_15_17_19",
+			"player": "naif",
+			"center": true,
+			"optional": [
+				"rival_a_18_15_17_19"
+			]
+		},
+		{
+			"name": "attentif, 3 Potions : rival_b_17_15_16_18",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"rival_b_17_15_16_18"
+			],
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "expert, 3 Potions : rival_b_17_15_16_18",
+			"player": "expert",
+			"center": true,
+			"optional": [
+				"rival_b_17_15_16_18"
+			],
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "naïf, sans objet : rival_b_17_15_16_18",
+			"player": "naif",
+			"center": true,
+			"optional": [
+				"rival_b_17_15_16_18"
+			]
+		},
+		{
+			"name": "attentif, sac de Carmin : rival_b_17_15_16_18",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"rival_b_17_15_16_18"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "expert, sac de Carmin : rival_b_17_15_16_18",
+			"player": "expert",
+			"center": true,
+			"optional": [
+				"rival_b_17_15_16_18"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, 3 Potions : rival_f_16_14_15_17",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"rival_f_16_14_15_17"
+			],
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "expert, 3 Potions : rival_f_16_14_15_17",
+			"player": "expert",
+			"center": true,
+			"optional": [
+				"rival_f_16_14_15_17"
+			],
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "naïf, sans objet : rival_f_16_14_15_17",
+			"player": "naif",
+			"center": true,
+			"optional": [
+				"rival_f_16_14_15_17"
+			]
+		},
+		{
+			"name": "attentif, sac de Carmin : rival_f_16_14_15_17",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"rival_f_16_14_15_17"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "expert, sac de Carmin : rival_f_16_14_15_17",
+			"player": "expert",
+			"center": true,
+			"optional": [
+				"rival_f_16_14_15_17"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, 3 Potions : rival_c_kadabra_16",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"rival_c_kadabra_16"
+			],
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "expert, 3 Potions : rival_c_kadabra_16",
+			"player": "expert",
+			"center": true,
+			"optional": [
+				"rival_c_kadabra_16"
+			],
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "naïf, sans objet : rival_c_kadabra_16",
+			"player": "naif",
+			"center": true,
+			"optional": [
+				"rival_c_kadabra_16"
+			]
+		},
+		{
+			"name": "attentif, 3 Potions : rival_d_sans_rafale",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"rival_d_sans_rafale"
+			],
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "expert, 3 Potions : rival_d_sans_rafale",
+			"player": "expert",
+			"center": true,
+			"optional": [
+				"rival_d_sans_rafale"
+			],
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "naïf, sans objet : rival_d_sans_rafale",
+			"player": "naif",
+			"center": true,
+			"optional": [
+				"rival_d_sans_rafale"
+			]
+		},
+		{
+			"name": "attentif, 3 Potions : rival_h_bulbi_16_14_15_16",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"rival_h_bulbi_16_14_15_16"
+			],
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "expert, 3 Potions : rival_h_bulbi_16_14_15_16",
+			"player": "expert",
+			"center": true,
+			"optional": [
+				"rival_h_bulbi_16_14_15_16"
+			],
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "naïf, sans objet : rival_h_bulbi_16_14_15_16",
+			"player": "naif",
+			"center": true,
+			"optional": [
+				"rival_h_bulbi_16_14_15_16"
+			]
+		},
+		{
+			"name": "attentif, sac de Carmin : rival_h_bulbi_16_14_15_16",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"rival_h_bulbi_16_14_15_16"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "expert, sac de Carmin : rival_h_bulbi_16_14_15_16",
+			"player": "expert",
+			"center": true,
+			"optional": [
+				"rival_h_bulbi_16_14_15_16"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, 3 Potions : rival_i_bulbi_14_12_13_15",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"rival_i_bulbi_14_12_13_15"
+			],
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "expert, 3 Potions : rival_i_bulbi_14_12_13_15",
+			"player": "expert",
+			"center": true,
+			"optional": [
+				"rival_i_bulbi_14_12_13_15"
+			],
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "naïf, sans objet : rival_i_bulbi_14_12_13_15",
+			"player": "naif",
+			"center": true,
+			"optional": [
+				"rival_i_bulbi_14_12_13_15"
+			]
+		},
+		{
+			"name": "attentif, sac de Carmin : rival_i_bulbi_14_12_13_15",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"rival_i_bulbi_14_12_13_15"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "expert, sac de Carmin : rival_i_bulbi_14_12_13_15",
+			"player": "expert",
+			"center": true,
+			"optional": [
+				"rival_i_bulbi_14_12_13_15"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, 3 Potions : rival_e_starter_18",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"rival_e_starter_18"
+			],
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "expert, 3 Potions : rival_e_starter_18",
+			"player": "expert",
+			"center": true,
+			"optional": [
+				"rival_e_starter_18"
+			],
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "naïf, sans objet : rival_e_starter_18",
+			"player": "naif",
+			"center": true,
+			"optional": [
+				"rival_e_starter_18"
+			]
+		},
+		{
+			"name": "attentif, 3 Potions : rival_sans_switch",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"rival_sans_switch"
+			],
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "expert, 3 Potions : rival_sans_switch",
+			"player": "expert",
+			"center": true,
+			"optional": [
+				"rival_sans_switch"
+			],
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "naïf, sans objet : rival_sans_switch",
+			"player": "naif",
+			"center": true,
+			"optional": [
+				"rival_sans_switch"
+			]
+		},
+		{
+			"name": "attentif, 3 Potions : surge_sans_switch",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"surge_sans_switch"
+			],
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "expert, 3 Potions : surge_sans_switch",
+			"player": "expert",
+			"center": true,
+			"optional": [
+				"surge_sans_switch"
+			],
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "naïf, sans objet : surge_sans_switch",
+			"player": "naif",
+			"center": true,
+			"optional": [
+				"surge_sans_switch"
+			]
+		},
+		{
+			"name": "attentif, 3 Potions, ordre gardé : surge_sans_switch",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"surge_sans_switch"
+			],
+			"keep_order": true,
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "expert, 3 Potions, ordre gardé : surge_sans_switch",
+			"player": "expert",
+			"center": true,
+			"optional": [
+				"surge_sans_switch"
+			],
+			"keep_order": true,
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "attentif, 3 Potions : surge_a_raichu_22",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"surge_a_raichu_22"
+			],
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "expert, 3 Potions : surge_a_raichu_22",
+			"player": "expert",
+			"center": true,
+			"optional": [
+				"surge_a_raichu_22"
+			],
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "naïf, sans objet : surge_a_raichu_22",
+			"player": "naif",
+			"center": true,
+			"optional": [
+				"surge_a_raichu_22"
+			]
+		},
+		{
+			"name": "attentif, 3 Potions, ordre gardé : surge_a_raichu_22",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"surge_a_raichu_22"
+			],
+			"keep_order": true,
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "expert, 3 Potions, ordre gardé : surge_a_raichu_22",
+			"player": "expert",
+			"center": true,
+			"optional": [
+				"surge_a_raichu_22"
+			],
+			"keep_order": true,
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "attentif, 3 Potions : surge_b_raichu_21",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"surge_b_raichu_21"
+			],
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "expert, 3 Potions : surge_b_raichu_21",
+			"player": "expert",
+			"center": true,
+			"optional": [
+				"surge_b_raichu_21"
+			],
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "naïf, sans objet : surge_b_raichu_21",
+			"player": "naif",
+			"center": true,
+			"optional": [
+				"surge_b_raichu_21"
+			]
+		},
+		{
+			"name": "attentif, sac de Carmin : surge_b_raichu_21",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"surge_b_raichu_21"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "expert, sac de Carmin : surge_b_raichu_21",
+			"player": "expert",
+			"center": true,
+			"optional": [
+				"surge_b_raichu_21"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, 3 Potions, ordre gardé : surge_b_raichu_21",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"surge_b_raichu_21"
+			],
+			"keep_order": true,
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "expert, 3 Potions, ordre gardé : surge_b_raichu_21",
+			"player": "expert",
+			"center": true,
+			"optional": [
+				"surge_b_raichu_21"
+			],
+			"keep_order": true,
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "attentif, 3 Potions : surge_c_sans_tonnerre",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"surge_c_sans_tonnerre"
+			],
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "expert, 3 Potions : surge_c_sans_tonnerre",
+			"player": "expert",
+			"center": true,
+			"optional": [
+				"surge_c_sans_tonnerre"
+			],
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "naïf, sans objet : surge_c_sans_tonnerre",
+			"player": "naif",
+			"center": true,
+			"optional": [
+				"surge_c_sans_tonnerre"
+			]
+		},
+		{
+			"name": "attentif, sac de Carmin : surge_c_sans_tonnerre",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"surge_c_sans_tonnerre"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "expert, sac de Carmin : surge_c_sans_tonnerre",
+			"player": "expert",
+			"center": true,
+			"optional": [
+				"surge_c_sans_tonnerre"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, 3 Potions, ordre gardé : surge_c_sans_tonnerre",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"surge_c_sans_tonnerre"
+			],
+			"keep_order": true,
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "expert, 3 Potions, ordre gardé : surge_c_sans_tonnerre",
+			"player": "expert",
+			"center": true,
+			"optional": [
+				"surge_c_sans_tonnerre"
+			],
+			"keep_order": true,
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "attentif, 3 Potions : surge_d_vive_attaque",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"surge_d_vive_attaque"
+			],
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "expert, 3 Potions : surge_d_vive_attaque",
+			"player": "expert",
+			"center": true,
+			"optional": [
+				"surge_d_vive_attaque"
+			],
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "naïf, sans objet : surge_d_vive_attaque",
+			"player": "naif",
+			"center": true,
+			"optional": [
+				"surge_d_vive_attaque"
+			]
+		},
+		{
+			"name": "attentif, 3 Potions, ordre gardé : surge_d_vive_attaque",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"surge_d_vive_attaque"
+			],
+			"keep_order": true,
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "expert, 3 Potions, ordre gardé : surge_d_vive_attaque",
+			"player": "expert",
+			"center": true,
+			"optional": [
+				"surge_d_vive_attaque"
+			],
+			"keep_order": true,
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "attentif, 3 Potions : surge_f_19_18_20",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"surge_f_19_18_20"
+			],
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "expert, 3 Potions : surge_f_19_18_20",
+			"player": "expert",
+			"center": true,
+			"optional": [
+				"surge_f_19_18_20"
+			],
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "naïf, sans objet : surge_f_19_18_20",
+			"player": "naif",
+			"center": true,
+			"optional": [
+				"surge_f_19_18_20"
+			]
+		},
+		{
+			"name": "attentif, 3 Potions, ordre gardé : surge_f_19_18_20",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"surge_f_19_18_20"
+			],
+			"keep_order": true,
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "expert, 3 Potions, ordre gardé : surge_f_19_18_20",
+			"player": "expert",
+			"center": true,
+			"optional": [
+				"surge_f_19_18_20"
+			],
+			"keep_order": true,
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "attentif, 3 Potions : surge_g_21_sans_tonnerre",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"surge_g_21_sans_tonnerre"
+			],
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "expert, 3 Potions : surge_g_21_sans_tonnerre",
+			"player": "expert",
+			"center": true,
+			"optional": [
+				"surge_g_21_sans_tonnerre"
+			],
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "naïf, sans objet : surge_g_21_sans_tonnerre",
+			"player": "naif",
+			"center": true,
+			"optional": [
+				"surge_g_21_sans_tonnerre"
+			]
+		},
+		{
+			"name": "attentif, sac de Carmin : surge_g_21_sans_tonnerre",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"surge_g_21_sans_tonnerre"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "expert, sac de Carmin : surge_g_21_sans_tonnerre",
+			"player": "expert",
+			"center": true,
+			"optional": [
+				"surge_g_21_sans_tonnerre"
+			],
+			"items": {
+				"potion": 3,
+				"super_potion": 2,
+				"paralyze_heal": 1
+			}
+		},
+		{
+			"name": "attentif, 3 Potions, ordre gardé : surge_g_21_sans_tonnerre",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"surge_g_21_sans_tonnerre"
+			],
+			"keep_order": true,
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "expert, 3 Potions, ordre gardé : surge_g_21_sans_tonnerre",
+			"player": "expert",
+			"center": true,
+			"optional": [
+				"surge_g_21_sans_tonnerre"
+			],
+			"keep_order": true,
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "attentif, 3 Potions : surge_e_raichu_26",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"surge_e_raichu_26"
+			],
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "expert, 3 Potions : surge_e_raichu_26",
+			"player": "expert",
+			"center": true,
+			"optional": [
+				"surge_e_raichu_26"
+			],
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "naïf, sans objet : surge_e_raichu_26",
+			"player": "naif",
+			"center": true,
+			"optional": [
+				"surge_e_raichu_26"
+			]
+		},
+		{
+			"name": "attentif, 3 Potions, ordre gardé : surge_e_raichu_26",
+			"player": "attentif",
+			"center": true,
+			"optional": [
+				"surge_e_raichu_26"
+			],
+			"keep_order": true,
+			"items": {
+				"potion": 3
+			}
+		},
+		{
+			"name": "expert, 3 Potions, ordre gardé : surge_e_raichu_26",
+			"player": "expert",
+			"center": true,
+			"optional": [
+				"surge_e_raichu_26"
+			],
+			"keep_order": true,
+			"items": {
+				"potion": 3
+			}
+		}
+	]
+}

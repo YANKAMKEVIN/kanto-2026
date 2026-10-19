@@ -33,6 +33,23 @@
 		"route_6_underground_gate",
 		"route_5_daycare",
 		"route_5_gate",
-		"route_5_underground_gate"
+		"route_5_underground_gate",
+		"route_2_east_gate",
+		"ss_anne_main_deck",
+		"ss_anne_captain_corridor",
+		"ss_anne_captain_room",
+		"ss_anne_restaurant",
+		"ss_anne_lower_deck",
+		"ss_anne_cabin_a",
+		"ss_anne_cabin_b",
+		"ss_anne_cabin_c",
+		"vermilion_gym",
+		"route_10_center",
+		"lavender_center",
+		"lavender_mart",
+		"pokemon_house",
+		"lavender_house_1",
+		"lavender_house_2",
+		"pokemon_tower_1f"
 	]
 }

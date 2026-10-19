@@ -1,0 +1,26 @@
+{
+	"rival_ss_anne_intro": {
+		"speaker": "{rival}",
+		"pages": [
+			"Tiens. Toi aussi, tu as un billet.",
+			"Le capitaine ? Il a le mal de mer. Il ne quitte plus sa cabine.",
+			"Moi, j'ai déjà fait le tour du navire. Voyons si tu as avancé, toi aussi."
+		]
+	},
+	"rival_ss_anne_lost": {
+		"speaker": "{rival}",
+		"pages": ["Tu vois ? Toujours une longueur d'avance.", "Va te soigner à Carmin. Je ne bouge pas."]
+	},
+	"rival_ss_anne_resume": {
+		"speaker": "{rival}",
+		"pages": ["Déjà de retour ?", "Bien. Cette fois, ne me déçois pas."]
+	},
+	"rival_ss_anne_won": {
+		"speaker": "{rival}",
+		"pages": [
+			"…D'accord. Cette fois, je l'admets.",
+			"Tu avances vite. Trop vite.",
+			"Va voir ton capitaine. Moi, j'ai mieux à faire."
+		]
+	}
+}

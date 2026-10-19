@@ -32,6 +32,8 @@ extends "res://tools/pewter_map_kit.gd"
 const WATER_MARK: String = "w"
 const BRIDGE_MARK: String = "B"
 const QUAY_MARK: String = "q"
+## Ouverture d'une grotte dans la paroi (Route 10, J18 T11) : praticable, `STEP_ON` ↑.
+const CAVE_MOUTH_MARK: String = "Q"
 ## Eau claire des canaux et de la rivière (série 15, T2 : reflets peints dans la texture).
 const CANAL_WATER_TEXTURE: String = "res://assets/world/ground/ground_eau_canal_01.png"
 ## Écume des canaux : aucune (les quais sont des murs, pas des plages).
@@ -120,6 +122,11 @@ func _kind_of(mark: String) -> int:
 			return tiles.Kind.BOARDWALK
 		QUAY_MARK:
 			return tiles.Kind.COBBLE
+		CAVE_MOUTH_MARK:
+			# Bouche de grotte de la Route 10 (J18 T11) : sentier de terre comme dans la boîte
+			# d'Argenta (aucune grille des cartes d'eau existantes n'en a).
+			if is_walkable_mark(mark):
+				return tiles.Kind.DIRT
 	if is_walkable_mark(mark) and not WALKABLE.contains(mark):
 		return tiles.Kind.GRASS
 	return super(mark)

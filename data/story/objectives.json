@@ -1,5 +1,64 @@
 [
 	{
+		"id": "tower_later",
+		"text": "revenir plus tard à la Tour Pokémon.",
+		"if": ["tower_medium_talked"]
+	},
+	{
+		"id": "visit_tower",
+		"text": "visiter la Tour Pokémon.",
+		"if": ["lavender_reached"],
+		"unless": ["tower_medium_talked"]
+	},
+	{
+		"id": "reach_lavender",
+		"text": "rejoindre Lavanville, au sud.",
+		"if": ["dark_cave_crossed"],
+		"unless": ["lavender_reached"]
+	},
+	{
+		"id": "cross_dark_cave",
+		"text": "traverser la Grotte Sombre.",
+		"if": ["route_10_reached"],
+		"unless": ["dark_cave_crossed"]
+	},
+	{
+		"id": "cross_route_9",
+		"text": "traverser la Route 9 vers l'est.",
+		"if": ["route_9_entered"],
+		"unless": ["route_10_reached"]
+	},
+	{
+		"id": "face_surge",
+		"text": "affronter Major Bob.",
+		"if": ["vermilion_gym_puzzle_solved"],
+		"unless": ["badge_thunder"]
+	},
+	{
+		"id": "open_surge_barrier",
+		"text": "ouvrir le passage vers Major Bob.",
+		"if": ["cut_vermilion_gym_bush"],
+		"unless": ["badge_thunder"]
+	},
+	{
+		"id": "go_vermilion_gym",
+		"text": "rejoindre l'Arène de Carmin.",
+		"if": ["got_hm01", "badge_cascade"],
+		"unless": ["badge_thunder"]
+	},
+	{
+		"id": "hm01_cascade_badge",
+		"text": "obtenir le Badge Cascade.",
+		"if": ["got_hm01"],
+		"unless": ["badge_cascade"]
+	},
+	{
+		"id": "help_captain",
+		"text": "aider le capitaine.",
+		"if": ["rival_ss_anne_won"],
+		"unless": ["got_hm01"]
+	},
+	{
 		"id": "explore_vermilion",
 		"text": "explorer Carmin-sur-Mer.",
 		"if": ["vermilion_reached"]

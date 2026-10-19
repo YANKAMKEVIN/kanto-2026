@@ -1,0 +1,14 @@
+{
+	"route_11_grass": {
+		"maps": ["route_11"],
+		"terrain": "grass",
+		"rate": 25,
+		"ramp": { "from_step": 15, "max_steps": 20 },
+		"slots": [
+			{ "species": "ekans", "levels": [12, 15], "weight": 20 },
+			{ "species": "sandshrew", "levels": [12, 15], "weight": 20 },
+			{ "species": "spearow", "levels": [13, 17], "weight": 35 },
+			{ "species": "drowzee", "levels": [9, 15], "weight": 25 }
+		]
+	}
+}
