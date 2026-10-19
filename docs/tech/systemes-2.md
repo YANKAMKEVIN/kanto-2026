@@ -658,6 +658,13 @@ donnaient plus de 500 000 états. Les cartes `.tscn` (sans vie) attendent le J20
 
 #### T17 — A : `BoulderField`, `ON_SWITCH` — après T3
 
+**Fait (2026-10-20)** : `game/world/boulders/boulder_field.gd` (pur) : origines, trous et
+interrupteurs par drapeaux, cases interdites, `from_positions` (positions d'une grille),
+`boulders_at_load` (le rocher désigné d'un trou bouché ne revient pas), `push` (trous ouverts,
+interdits, interrupteurs), `flag_to_set` (drapeau à poser + sauvegarde forcée ; rien si déjà
+posé). `ON_SWITCH` fait au T3. Tests `test_boulder_field.gd` : les quatre puzzles de `qa_strength`
+joués poussée par poussée, rechargement compris.
+
 #### T18 — C : `Boulder`, poussée dans `Player`, activation `field_move` — après T16c, T17
 
 #### T19 — A : `Warp.FALL`, `SceneRouter` — après T18
@@ -665,6 +672,15 @@ donnaient plus de 500 000 états. Les cartes `.tscn` (sans vie) attendent le J20
 #### T20 — C : interrupteurs, barrières, `qa_strength*` vivantes — après T18
 
 #### T21 — A : `plan_check_boulders.py` générique (anti-blocage), tests sur les grilles du J24 — après T17
+
+**Fait (2026-10-20), dans `plan_check_systemes2.py` (`verifier_force`) plutôt qu'un fichier de plus
+[D]** : toutes les entrées à pied de la carte (`depart`, `spawn`, `chute_joueur`), avec chaque jeu
+de drapeaux atteint lors d'une visite précédente (rochers remis à l'origine, désignés tombés
+retirés) ; positions seulement, plus de caractères imposés ; `barriere` accepte `unless=`.
+Cinquième piège à l'autotest (blocage visible seulement depuis une seconde entrée). **Limite** :
+ni Surf, ni niveaux de sol, ni rochers tombés d'en haut : les cinq étages des Îles Écume restent
+sous `plan_check_j24_seafoam.py` (essayé : ils ne passent pas ce contrôle, qui n'est pas fait pour
+eux). Cible : Route Victoire (J29), Manoir (J25).
 
 #### T22 — Q : **session S2D** → K
 

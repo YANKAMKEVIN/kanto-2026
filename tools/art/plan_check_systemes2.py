@@ -94,27 +94,31 @@ class Rapport:
 
 def verifier_force(chemin: Path, rapport: Rapport | None = None) -> Rapport:
 	"""Anti-blocage et résolubilité d'une carte à rochers (une seule carte : changer de carte remet
-	les rochers à leur origine, seuls les drapeaux restent)."""
+	les rochers à leur origine, seuls les drapeaux restent). Générique (T21) : toutes les entrées de
+	la carte à pied (`depart`, `spawn`, `chute_joueur`, sauf `surf=oui`), avec tous les jeux de
+	drapeaux atteints lors d'une visite précédente ; un rocher désigné d'un trou bouché (`trou=`)
+	ne revient pas. Sans Surf ni niveaux de sol : les Îles Écume gardent le contrôle du J24."""
 	plan = lire(chemin)
 	r = rapport or Rapport(f"Force : {chemin.name}")
 	rochers0 = frozenset(plan.cells_of("B") + _cases(plan, "rocher"))
 	trous = {c: p.attrs.get("drapeau", p.ident) for p in plan.of_kind("trou") for c in p.cells}
 	inters = {c: p.attrs.get("drapeau", p.ident) for p in plan.of_kind("interrupteur")
 		for c in p.cells}
-	barrieres: dict[Case, str] = {c: p.attrs.get("ouverte_si", "") for p in plan.of_kind("barriere")
+	barrieres: dict[Case, str] = {c: p.attrs.get("ouverte_si", p.attrs.get("unless", ""))
+		for p in plan.of_kind("barriere") for c in p.cells}
+	trou_n = {p.attrs.get("n"): p.attrs.get("drapeau", p.ident) for p in plan.of_kind("trou")}
+	designes = {c: trou_n.get(p.attrs.get("trou", ""), "") for p in plan.of_kind("rocher")
 		for c in p.cells}
 	interdits = set(_cases(plan, "interdit_rocher"))
 	sorties = {c for k in SORTIES for c in _cases(plan, k)}
 	buts = set(_cases(plan, "but"))
 	fixes = _bloquees(plan, ("rocher", "barriere", "trou"))
-	r.ok(all(plan.at(*c) == "O" for c in trous), "chaque trou est sur un « O »")
-	r.ok(all(plan.at(*c) == "S" for c in inters), "chaque interrupteur est sur un « S »")
-	r.ok(all(plan.at(*c) == "|" for c in barrieres), "chaque barrière est sur des « | »")
 	r.ok(all(d in inters.values() for d in barrieres.values()),
 		"chaque barrière s'ouvre par le drapeau d'un interrupteur")
 	r.ok(bool(sorties), "au moins une sortie (warp, échelle, passage)")
-	depart = _cases(plan, "depart")
-	if not r.ok(len(depart) == 1, "une seule position « depart »"):
+	entrees = [c for k in ("depart", "spawn", "chute_joueur") for p in plan.of_kind(k)
+		if p.attrs.get("surf") != "oui" for c in p.cells]
+	if not r.ok(bool(entrees), "au moins une entrée à pied (depart, spawn, chute_joueur)"):
 		return r
 
 	def sol(c: Case) -> bool:
@@ -158,9 +162,14 @@ def verifier_force(chemin: Path, rapport: Rapport | None = None) -> Rapport:
 			return autres | {cible}, drapeaux | {inters[cible]}, "ON_SWITCH"
 		return autres | {cible}, drapeaux, "MOVED"
 
-	debut = (depart[0], rochers0, frozenset())
+	def entrer(drapeaux: frozenset[str]) -> list[tuple]:
+		"""Arrivée sur la carte avec ces drapeaux : rochers à l'origine, sauf les désignés tombés."""
+		rochers = frozenset(c for c in rochers0 if not designes.get(c) or designes[c] not in drapeaux)
+		return [(e, rochers, drapeaux) for e in entrees]
+
 	vus = set()
-	file = deque([debut])
+	file = deque(entrer(frozenset()))
+	jeux_entres = {frozenset()}
 	bloques: list[tuple] = []
 	drapeaux_vus: set[str] = set()
 	but_atteint = False
@@ -173,6 +182,9 @@ def verifier_force(chemin: Path, rapport: Rapport | None = None) -> Rapport:
 			continue
 		vus.add(cle)
 		drapeaux_vus |= drapeaux
+		if drapeaux not in jeux_entres:
+			jeux_entres.add(drapeaux)
+			file.extend(entrer(drapeaux))
 		but_atteint = but_atteint or bool(region & buts)
 		if not sortie:
 			bloques.append((joueur, sorted(rochers), sorted(drapeaux)))
@@ -189,7 +201,7 @@ def verifier_force(chemin: Path, rapport: Rapport | None = None) -> Rapport:
 					file.append((rocher, res[0], res[1]))
 	r.ok(len(vus) < MAX_ETATS, f"exploration complète (< {MAX_ETATS} états)")
 	r.note(f"{len(vus)} états atteignables, {len(rochers0)} rochers, {len(trous)} trous, "
-		f"{len(inters)} interrupteurs")
+		f"{len(inters)} interrupteurs, {len(entrees)} entrée(s), {len(jeux_entres)} jeu(x) de drapeaux")
 	r.ok(not bloques, f"anti-blocage : {len(bloques)} état(s) sans sortie, ex. {bloques[:1]}")
 	for drapeau in sorted(set(trous.values()) | set(inters.values())):
 		r.ok(drapeau in drapeaux_vus, f"« {drapeau} » peut être posé")
@@ -555,6 +567,24 @@ depart  depart  1,1  libre
 FIN
 """
 
+_PIEGE_ENTREE = """PRATICABLES .BE
+GRILLE 7 5
+00 #######
+01 #.#...#
+02 #.#.B.#
+03 #.#...#
+04 #E##E##
+FIN
+POSITIONS
+depart     depart  1,1  libre
+sortie_o   warp    1,4  libre
+sortie_e   warp    4,4  libre
+arrivee_e  spawn   4,1  libre
+FIN
+"""
+# Depuis « depart », tout va bien ; depuis l'arrivée de l'est, le rocher (4, 2) poussé deux fois
+# vers le sud mure la sortie (4, 4) : seul un contrôle de toutes les entrées le voit.
+
 _PIEGE_LEGENDE = """PRATICABLES .BSE
 GRILLE 6 3
 00 ######
@@ -576,6 +606,7 @@ def autotest() -> bool:
 	with tempfile.TemporaryDirectory() as dossier:
 		for nom, texte, fonction, attendu in [
 			("piege_force", _PIEGE_FORCE, verifier_force, "anti-blocage"),
+			("piege_entree", _PIEGE_ENTREE, verifier_force, "anti-blocage"),
 			("qa_x", _PIEGE_TELEPORT, lambda p: verifier_teleporteurs([p]), "n'existe pas"),
 			("piege_courant", _PIEGE_COURANT, verifier_mer, "BOUCLE"),
 		]:
