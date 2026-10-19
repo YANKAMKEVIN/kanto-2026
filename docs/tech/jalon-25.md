@@ -13,9 +13,8 @@
 > capacités **Déflagration** et **contrecoup de Bélier**. Tout le reste est du contenu.
 
 **Pré-requis.** Dossier 28 : arbitrages X-1 à X-24 et textes (§16) **validés par Kevin**
-(2026-10-16), grilles v1 validées (2026-10-19). **Hypothèse de ce plan** : réponses de Kevin à
-X-25 à X-30 **selon les recommandations** (dossier 28 §0) ; une autre réponse change surtout T15,
-T17 et T18. Organisation : **une session par jalon** ; le J25 est la session **la plus récente**
+(2026-10-16), grilles v1 et vues générales validées (2026-10-19), réalignement sur le J24
+(X-25 à X-30, dossier 28 §0) validé selon les recommandations (2026-10-19). Organisation : **une session par jalon** ; le J25 est la session **la plus récente**
 (règle d'ancienneté) : il ne modifie rien de ce qu'un jalon plus ancien est en train de modifier.
 
 Plan écrit sur `docs/dossier-28-j25`. **Code lu** : `origin/main` à **`aebbd85`** (J15, J16, J17
@@ -210,8 +209,8 @@ Cartes de QA [D] : `qa_manoir` (départ au 1F avec Clé ou sans, interrupteur au
 | PNJ | Pillard, Intello, guide de l'Arène, Auguste + carte de Champion (Scientifique : existant) |
 | Combat | 14 dos (§2.8) ; décors `manoir_salle`, `arene_cramois` |
 
-Vues générales candidates (2026-10-19) : `build/art/CONCEPT_MANOIR_VUE_GENERALE_r2.png`,
-`CONCEPT_CRAMOIS_ARENE_r1.png` (à valider par Kevin, puis copiées dans `docs/design/reference/`).
+Vues générales validées (2026-10-19) : `docs/design/reference/manoir-vue-generale-v1.png` et
+`cramois-arene-vue-generale-v1.png` (+ leurs plans) : DA et composition ; la grille fait foi.
 Numéro de série d'art : réservé au moment du push, après vérification de toutes les branches
 distantes (règle d'ancienneté).
 
@@ -235,5 +234,4 @@ distantes (règle d'ancienneté).
 
 | N° | Question | Où |
 |---|---|---|
-| X-25 à X-30 | Réalignement sur le J24 | dossier 28 §0 |
 | — | Chute du joueur au J24 ? (lecture au T3) | §2.2 |

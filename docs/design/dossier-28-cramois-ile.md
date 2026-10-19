@@ -2,8 +2,11 @@
 
 > **Statut : arbitrages VALIDÉS par Kevin le 2026-10-16** (X-1 à X-24 selon les recommandations de
 > `docs/design/passes/j25-v2-alignement.md`). **Textes du §16 (n° 1 à 110) VALIDÉS par Kevin le
-> 2026-10-16.** Grilles et vues
-> peintes à venir. **Aucune ligne de code** avant le plan `docs/tech/jalon-25.md`.
+> 2026-10-16.** Grilles v1 validées (2026-10-19) ; vues générales validées (2026-10-19) :
+> `reference/manoir-vue-generale-v1.png` (+ `manoir-plan-v1.png`) et `reference/cramois-arene-vue-
+> generale-v1.png` (+ `cramois-arene-plan-v1.png`) ; la grille fait foi. Réalignement sur le J24
+> (X-25 à X-30, §0) validé le 2026-10-19. Plan technique : `docs/tech/jalon-25.md`. **Dossier
+> verrouillé.**
 >
 > Sources : V2 de Kevin (`passes/j25-v2-chatgpt.md`), passe d'alignement (même dossier), relevé
 > Rouge/Bleu `passes/j25-annexe-rb-cramois.md` (`pret/pokered`, Poképédia). Code audité :
@@ -14,13 +17,13 @@
 
 ---
 
-## 0. Réalignement sur le J24 (2026-10-19) — X-25 à X-30 À VALIDER
+## 0. Réalignement sur le J24 (2026-10-19) — X-25 à X-30 VALIDÉS par Kevin le 2026-10-19 (recommandations)
 
 Le dossier 27 du J24 (`origin/docs/dossier-27-j24`, plus ancien, validé par Kevin le 2026-10-16) et
 ses grilles (`origin/j24-t2-mer`) construisent **déjà** une partie de ce que ce dossier décrivait.
 Règle d'ancienneté : le J25 **réutilise** ce travail tel quel et ne le modifie qu'avec l'accord de
-Kevin. Ce qui suit **prévaut** sur les §6, §6.2–§6.4, §5 (porte), §11 et les textes 26–37, 55–66
-et 75 tant que Kevin n'a pas répondu.
+Kevin. Ce qui suit **prévaut** sur les §6.1, §6.3, §6.4, §5 (texte de la porte), §11 (drapeaux des
+fossiles) et sur les textes 26–37, 55–66 et 75, **retirés** (marqués au §16).
 
 | Le J24 construit | Identifiants J24 | Conséquence pour le J25 |
 |---|---|---|
@@ -263,7 +266,11 @@ flashback. Mew et Mewtwo ne deviennent ni « vus » ni « capturés ».
 
 ---
 
-## 6. Le Laboratoire (`cinnabar_lab`, `_reunion`, `_recherche`, `_test`)
+## 6. Le Laboratoire
+
+> **Remplacé en partie par le §0 (X-26 à X-28)** : le Labo, ses grilles (`cinnabar_labo_*`), ses PNJ,
+> la CT35 et la résurrection sont au J24. Restent au J25 : les échanges (§6.2) sur les 3 PNJ du
+> J24 et le Vieil Ambre (X-27). Les §6.1, §6.3 et §6.4 ne sont gardés que pour l'historique.
 
 ### 6.1 Plan
 
@@ -597,20 +604,23 @@ sauvegarde sont faits **dans chaque lot**.
 
 ### Laboratoire
 
-26. *(panneau Réunion)* « LABORATOIRE POKÉMON » / « Salle de réunion »
-27. *(panneau R. et D.)* « LABORATOIRE POKÉMON » / « Recherche et Développement »
-28. *(panneau Test)* « LABORATOIRE POKÉMON » / « Salle de test »
-29. *(chercheur du hall)* « Ici, nous étudions les Pokémon. » / « On nous apporte souvent des raretés. »
-30. *(photo)* « Une photo du fondateur du » / « Laboratoire : le Dr Fuji. »
-31. *(Intello, Réunion)* « J'ai trouvé un fossile très étrange » / « au Mont Sélénite ! » · « Je crois que c'est un Pokémon » / « très ancien ! »
-32. *(scientifique R. et D.)* « Je mets au point une CT spéciale. » / « Elle n'est pas encore prête. »
-33. *(scientifique d'Évoli)* « Évoli peut évoluer de trois façons » / « différentes. »
-34. *(PC, page 1)* « Un mail est ouvert à l'écran. » / « Sujet : les oiseaux légendaires. »
-35. *(PC, page 2)* « Artikodin, Électhor, Sulfura. » / « Leurs repaires restent inconnus. »
-36. *(PC, page 3)* « Prochaine étape : explorer la caverne » / « près d'Azuria. — Équipe de recherche »
-37. *(tuyau, R. et D.)* « Un tuyau couleur d'ambre. »
+26. ~~retiré (X-26 à X-29, J24)~~ *(panneau Réunion)* « LABORATOIRE POKÉMON » / « Salle de réunion »
+27. ~~retiré (X-26 à X-29, J24)~~ *(panneau R. et D.)* « LABORATOIRE POKÉMON » / « Recherche et Développement »
+28. ~~retiré (X-26 à X-29, J24)~~ *(panneau Test)* « LABORATOIRE POKÉMON » / « Salle de test »
+29. ~~retiré (X-26 à X-29, J24)~~ *(chercheur du hall)* « Ici, nous étudions les Pokémon. » / « On nous apporte souvent des raretés. »
+30. ~~retiré (X-26 à X-29, J24)~~ *(photo)* « Une photo du fondateur du » / « Laboratoire : le Dr Fuji. »
+31. ~~retiré (X-26 à X-29, J24)~~ *(Intello, Réunion)* « J'ai trouvé un fossile très étrange » / « au Mont Sélénite ! » · « Je crois que c'est un Pokémon » / « très ancien ! »
+32. ~~retiré (X-26 à X-29, J24)~~ *(scientifique R. et D.)* « Je mets au point une CT spéciale. » / « Elle n'est pas encore prête. »
+33. ~~retiré (X-26 à X-29, J24)~~ *(scientifique d'Évoli)* « Évoli peut évoluer de trois façons » / « différentes. »
+34. ~~retiré (X-26 à X-29, J24)~~ *(PC, page 1)* « Un mail est ouvert à l'écran. » / « Sujet : les oiseaux légendaires. »
+35. ~~retiré (X-26 à X-29, J24)~~ *(PC, page 2)* « Artikodin, Électhor, Sulfura. » / « Leurs repaires restent inconnus. »
+36. ~~retiré (X-26 à X-29, J24)~~ *(PC, page 3)* « Prochaine étape : explorer la caverne » / « près d'Azuria. — Équipe de recherche »
+37. ~~retiré (X-26 à X-29, J24)~~ *(tuyau, R. et D.)* « Un tuyau couleur d'ambre. »
 
 ### Échanges
+
+> X-26 : ces textes **remplacent** T-52 à T-54 du J24 quand les échanges arrivent ; prénoms des PNJ :
+> ceux du J24 s'il en donne, sinon Hector, Lina, Marc.
 
 > X = espèce demandée, Y = espèce donnée, Z = surnom.
 
@@ -634,18 +644,21 @@ sauvegarde sont faits **dans chaque lot**.
 
 ### Fossiles
 
-55. *(Dr Kazuo, accueil)* « Bonjour ! J'étudie les fossiles de » / « Pokémon rares. Tu en as un ? »
-56. *(sans fossile)* « Non ? Dommage ! »
-57. *(confirmation)* « Oh ! C'est un Fossile Dôme ! Il vient » / « de Kabuto, un Pokémon disparu ! » · « Ma machine peut le ramener à la vie ! » / « Je te le prends ? » *(OUI/NON ; nom et espèce selon le fossile)*
-58. *(NON)* « Reviens quand tu veux ! »
-59. *(OUI)* « {joueur} confie le Fossile Dôme. »
-60. *(OUI, suite)* « Il me faut un peu de temps ! » / « Va donc faire un tour dehors ! »
-61. *(avant d'être sorti)* « Pas encore ! Va faire un tour dehors ! »
-62. *(deuxième fossile)* « Je m'occupe déjà d'un fossile ! » / « Un seul à la fois ! »
-63. *(prêt)* « Te voilà ! Ton fossile a repris vie ! » / « C'est bien un Kabuto, comme prévu ! »
-64. *(légende de remise)* « {joueur} reçoit Kabuto ! »
-65. *(après, s'il reste un fossile)* « Tu as un autre fossile ? Montre ! »
-66. *(après, plus de fossile)* « Prends bien soin de lui. » / « Il vient de très loin. »
+> X-27 : retirés ; le J25 n'ajoute que les variantes « Vieil Ambre » / « Ptéra » des T-60 à T-62
+> du J24.
+
+55. ~~retiré (X-26 à X-29, J24)~~ *(Dr Kazuo, accueil)* « Bonjour ! J'étudie les fossiles de » / « Pokémon rares. Tu en as un ? »
+56. ~~retiré (X-26 à X-29, J24)~~ *(sans fossile)* « Non ? Dommage ! »
+57. ~~retiré (X-26 à X-29, J24)~~ *(confirmation)* « Oh ! C'est un Fossile Dôme ! Il vient » / « de Kabuto, un Pokémon disparu ! » · « Ma machine peut le ramener à la vie ! » / « Je te le prends ? » *(OUI/NON ; nom et espèce selon le fossile)*
+58. ~~retiré (X-26 à X-29, J24)~~ *(NON)* « Reviens quand tu veux ! »
+59. ~~retiré (X-26 à X-29, J24)~~ *(OUI)* « {joueur} confie le Fossile Dôme. »
+60. ~~retiré (X-26 à X-29, J24)~~ *(OUI, suite)* « Il me faut un peu de temps ! » / « Va donc faire un tour dehors ! »
+61. ~~retiré (X-26 à X-29, J24)~~ *(avant d'être sorti)* « Pas encore ! Va faire un tour dehors ! »
+62. ~~retiré (X-26 à X-29, J24)~~ *(deuxième fossile)* « Je m'occupe déjà d'un fossile ! » / « Un seul à la fois ! »
+63. ~~retiré (X-26 à X-29, J24)~~ *(prêt)* « Te voilà ! Ton fossile a repris vie ! » / « C'est bien un Kabuto, comme prévu ! »
+64. ~~retiré (X-26 à X-29, J24)~~ *(légende de remise)* « {joueur} reçoit Kabuto ! »
+65. ~~retiré (X-26 à X-29, J24)~~ *(après, s'il reste un fossile)* « Tu as un autre fossile ? Montre ! »
+66. ~~retiré (X-26 à X-29, J24)~~ *(après, plus de fossile)* « Prends bien soin de lui. » / « Il vient de très loin. »
 
 ### Vieil Ambre (Argenta)
 
@@ -660,7 +673,7 @@ sauvegarde sont faits **dans chaque lot**.
 ### Clé Secrète et porte
 
 74. *(description)* « Une clé ancienne trouvée au Manoir. » / « Elle ouvre une porte de Cramois'Île. »
-75. *(porte, sans Clé)* « La porte est verrouillée… »
+75. ~~retiré (X-26 à X-29, J24)~~ *(porte, sans Clé)* « La porte est verrouillée… »
 76. *(porte, avec Clé, 1ʳᵉ fois)* « La Clé Secrète tourne dans la serrure. »
 77. *(suite)* « La porte de l'Arène est ouverte ! »
 
