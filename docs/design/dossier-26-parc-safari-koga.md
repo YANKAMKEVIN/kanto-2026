@@ -121,6 +121,10 @@ mode Safari) peut commencer avant.
   Surf. Aucun lieu du Parc n'exige Surf ni Force. [RB]
 - Quatre **maisons de repos** (une par zone), sans PC utilisable. [RB]
 - Des étangs existent ; aucune rencontre sur l'eau en RB (taux 0). [RB]
+- **Le Centre est coupé en deux** (grilles v1, RB) : la clôture sous l'étang et les haies séparent
+  sa moitié sud (Porte, maison de repos, sortie Est) de sa moitié nord (sorties Ouest et Nord).
+  Depuis la Porte, on part **vers l'Est** ; le chemin le plus court vers la Maison Secrète est
+  Centre sud → Est → Nord → Ouest. [RB]
 
 ### 2.2 Adaptation K26
 
@@ -129,19 +133,24 @@ mode Safari) peut commencer avant.
 - Les liaisons deviennent des **raccords continus** quand deux zones se touchent (passage en bord de
   carte avec fondu, mécanisme existant) ; les quatre zones restent quatre cartes. [K26]
 - **Contrôle automatique** (`plan_check`) sur les grilles :
-  - chemin le plus court Porte → Maison Secrète → Dents d'Or → Porte **≤ 300 pas** [D] (une visite
-    suffit pour les deux récompenses, avec 40 % de marge) ;
+  - chemin le plus court Porte → Maison Secrète → Dents d'Or **≤ 300 pas** [D] (une visite suffit
+    pour les deux récompenses ; la fin de visite ramène à la Porte, le retour à pied n'entre pas
+    dans le critère). **Mesuré sur les grilles v1 (2026-10-19) : 233 pas** ; avec le retour à pied,
+    416 sur 500 (`tools/art/plan_check_safari.py`) ;
   - toute case d'herbe est atteignable ; aucun cul-de-sac sans sortie ;
   - la Maison Secrète et les Dents d'Or sont atteignables sans Surf ni Force.
-- Chaque zone a une identité lisible sur téléphone [D] : **Centre** = prairie et étang central,
-  statue de Kangourex (RB) ; **Est** = plaine sèche, Doduo et Tauros ; **Nord** = collines et cours
+- Chaque zone a une identité lisible sur téléphone [D] : **Centre** = prairie et étang central à
+  îlot ; **Est** = plaine sèche, Doduo et Tauros ; **Nord** = collines et cours
   d'eau, la plus grande ; **Ouest** = bosquets et marais, labyrinthe de haies menant à la Maison
   Secrète.
 - Des **panneaux** RB (conseils, noms de zones) ; un panneau de la zone Ouest invite à chercher les
   dents du Gardien (RB, « Find the Warden's teeth »).
 
-Les grilles (`tools/plans/safari_*.txt`) et les vues générales peintes se font après validation, comme
-aux jalons précédents ; la grille fait foi.
+Grilles v1 (2026-10-19, géométrie RB case pour case) : `tools/plans/safari_centre.txt`, `safari_est.txt`,
+`safari_nord.txt`, `safari_ouest.txt`, `safari_porte.txt`, `safari_maison_repos.txt`,
+`safari_maison_secrete.txt`, `parmanie_maison_gardien.txt`, `parmanie_arene.txt` ; contrôle
+`tools/art/plan_check_safari.py`. **À valider par Kevin** ; la grille fait foi. Plan technique :
+`docs/tech/jalon-23.md`.
 
 ---
 
@@ -307,7 +316,7 @@ seulement pour les compagnons (règle existante).
 
 | Lieu | Objet RB | K26 | Règle |
 |---|---|---|---|
-| Centre | Pépite | Pépite | existe |
+| Centre | Pépite (14, 10), sur l'îlot de l'étang (inaccessible sans Surf) | Pépite **déplacée sur la berge sud (14, 16)** [D, grilles v1] | existe ; tient N-17 |
 | Est | Guérison, Potion Max, Carbone, CT37 Bomb'Œuf | Guérison ; **Potion Max → Hyper Potion** [D] ; **Carbone → Super Bonbon** ou rien [D] ; **CT37 → à créer** (Bomb'Œuf, capacité simple) [D] | « aucun objet pour une mécanique qui n'existe pas » : Potion Max, Carbone, Protéine, Rappel Max, Bomb'Œuf, Reflet sont **absents** du dépôt |
 | Nord | Protéine, CT40 Coud'Krâne | **Protéine → Rappel** [D] ; CT40 Coud'Krâne (la capacité existe) | |
 | Ouest | Potion Max, CT32 Reflet, Rappel Max, **Dents d'Or** | Hyper Potion ; **CT32 → à créer** (Reflet) [D] ; **Rappel Max → Rappel** [D] ; **Dents d'Or** (objet clé) | |
@@ -562,7 +571,8 @@ safari = { active: bool, steps_left: int, balls_left: int }
 - RB n'a pas de garde-fou ; le blocage réel y est presque impossible (vente d'objets, Dresseurs non
   battus des Routes 12 à 15, Jackpot).
 - Au projet : **vente à moitié prix** (Pépite comprise), **Jackpot** (J15), Dresseurs des routes du
-  jalon de Parmanie, et une **Pépite** dans la zone Centre (rentable dès la première visite).
+  jalon de Parmanie, et une **Pépite** dans la zone Centre, déplacée de l'îlot RB vers la berge sud
+  pour être rentable dès la première visite (grilles v1).
 - Une visite suffit pour Surf **et** Force (contrôle des 300 pas, §2.2).
 - Proposition : **aucune règle propre au Safari** (conforme à la V2) ; un test de données vérifie
   qu'entre la dernière Arène et la Porte, le joueur a au moins N objets vendables ou Dresseurs non
