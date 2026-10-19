@@ -40,11 +40,11 @@ Ajoutés par Kevin le 2026-10-19 (deuxième vague) :
 - **sauvegarde à la mise en arrière-plan Android** (appel, notification, verrouillage) : système de
   sauvegarde, donc **validé seul** (règle 1 de `CLAUDE.md`), utile à tout le jeu (J30 à J36).
 
-**Entrée dans Safrania** : l'arbitrage **H-5** du J20 est maintenu (dossier 23 §6 : « au J20, ni Thé,
-ni gardes assoiffés » ; la règle d'accès se décide avec le jalon de Safrania). Une proposition de la
-session de coordination de la faire au J20 a été **retirée** le 2026-10-19 (Kevin) : le J20 est sur
-le chemin critique et la règle ne sert à rien avant que la carte de Safrania existe. Elle est donc à
-trancher au **J26**.
+**Entrée dans Safrania** (décision de Kevin, 2026-10-19, confirmée directement à la session J20) :
+faite au **J20**, tâche **T25** (données seulement, après T11 et T15), qui **remplace l'arbitrage
+H-5** : une boisson donnée au garde ouvre les quatre postes, comme dans Rouge/Bleu. Option Q-4 A :
+tant que la carte de Safrania n'existe pas, le garde ne demande rien ; le J26 n'aura qu'à déclarer sa
+carte. Textes 215 à 219 validés (plan J20, `jalon-20` @ `04834a71`).
 
 Point de départ déjà écrit (message du J24, 2026-10-19) : `jalon-24` (@ `ed306985`) contient une
 logique pure et testée de **Surf et de Force**, sans dépendance à une carte : `GridWorld` (eau
