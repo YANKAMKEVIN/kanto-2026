@@ -1,0 +1,95 @@
+# Route 13 (`route_13`) — grille fonctionnelle (jalon 22, lot 22.0, T6 ; dossier 25 §4, §8.2, §9.2, §11).
+#
+# 90 × 27 cases (RB 60 × 18, × 1,5) ; nord en haut ; x = 0..89, y = 0..26.
+#
+# RACCORDS : EST (89, 15..17) ↔ Route 12 sud (0, 61..63) ; OUEST (0, 8..10) ↔ Route 14 (29, 8..10)
+# (RB : Route 13 ↔ Route 14 sans décalage).
+#
+# Composition, d'est en ouest :
+#   ① x 57..89 — LE PRÉ EST : étang au nord (berge pêchable), clôture blanche à trois passages, chemin de
+#      3 cases (rangées 15..17), herbes au sud ; Ornithologue sur le chemin, Motard et Beauté dans le pré.
+#   ② x 46..56 — LE GOULET : seul passage (rochers au nord, forêt au sud) ; la Jeune Dresseuse (I) le
+#      garde depuis une alcôve.
+#   ③ x 0..45 — LE LABYRINTHE OUVERT DE CLÔTURES : deux lignes de clôtures nord-sud percées de plusieurs
+#      passages (aucun cul-de-sac obligatoire), trois carrés d'herbes, chemin de 3 cases puis sortie ouest
+#      (rangées 8..10).
+#
+# LÉGENDE COMMUNE DU J22 (chaque grille la reprend ; caractères NOUVEAUX marqués ★) :
+#   T arbres, forêt serrée (bloqués)     . herbe rase (praticable)     = chemin de terre (praticable)
+#   h hautes herbes (praticable, rencontres)   q ponton, planches (praticable)   y sable (praticable)
+#   w eau (bloquée, NON pêchable)        ★ f eau PÊCHABLE (bloquée ; on pêche depuis une case praticable
+#     voisine, face à elle ; jamais au contact d'une case de Piste)   ~ mer de décor (bloquée)
+#   R rochers, rive rocheuse, falaise (bloqués)   c clôture basse (bloquée)   x buissons (bloqués)
+#   n banc (bloqué)   P poste (bâtiment, bloqué)   m maison (bloquée)   D porte (praticable, terminale)
+#   ★ k tronçon de PISTE CYCLABLE, plat (praticable ; à vélo seulement, on ne peut pas descendre)
+#   ★ s PISTE en PENTE (praticable ; sans appui, dérive d'une case vers le sud ; Route 17 seulement)
+#   b barrière basse de la Piste (bloquée ; arrête la vue des Dresseurs)
+# Une case de Piste est une case « k » ou « s » ; un PALIER est une bande de rangées de la Route 17 sans
+# « s » entre deux tronçons de pente. Les Dresseurs de la Piste sont EN RETRAIT : sur une case « . »
+# (alcôve) hors des voies, tournés vers elles.
+#
+# POSITIONS : types warp, spawn, dresseur, objet_visible, cache, panneau, pnj, pokemon, herbes, repere,
+# decor. Dresseurs : trainer= (id du dossier §9), facing=, sight= (portée RB × 1,5, arrondie au-dessus :
+# 1 → 2, 2 → 3, 3 → 5, 4 → 6), rbsight=, inevitable=oui|non. Objets : item=, drapeau= (dossier §11).
+# Warps : to= (carte) spawn= (point d'arrivée) ; coming_soon= pour une porte ou un bord « À venir » ;
+# lie= relie les deux portes d'un poste traversant. Le contrôle : tools/art/plan_check_j22.py
+# (python3 -I tools/art/plan_check_j22.py) ; le rendu : tools/art/plan_aplats_j22.py.
+#
+# DÉFAUTS : étang au nord sur la moitié est (rochers au goulet pour que le goulet reste le seul passage) ;
+# objets cachés aux deux coins ; deux panneaux.
+
+PRATICABLES .=hD
+
+GRILLE 90 27
+00 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+01 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwTTT
+02 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwTTT
+03 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwTTT
+04 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTffffffwwwwwwwwwwwffffffffffffffffffffffffffffffTTT
+05 TTTTTT..............c.........c..hhhhhh.......RRRRRRRRRRR..............................TTT
+06 TTTTTT..............c.........c..hhhhhh.......RRRRRRRRRRR..............................TTT
+07 TTTTTT..............c............hhhhhh.xx....TTTTTTTTTTT...xx.........................TTT
+08 =============.......c............hhhhhh.xx....TTTTTTTTTTT...xx.........................TTT
+09 =============.......c.........c..hhhhhh.......TTTTTTTTTTT..............................TTT
+10 =============.......c.........c...............TTTTTTTTTTT.ccccc..ccccccc..ccccccc..ccc.TTT
+11 TTT.......===.......c.........c...............TTTTT.TTTTT..............................TTT
+12 TTT.......===============================================.........c.........c..........TTT
+13 TTT.......===============================================.........c.........c..........TTT
+14 TTT.......===============================================.........c.........c..........TTT
+15 TTT.hhhhhh..........c.........c...............TTTTTTTTTTT=================================
+16 TTT.hhhhhh............hhhhhhh.c...............TTTTTTTTTTT=================================
+17 TTT.hhhhhh............hhhhhhh.c........TTTTTT.TTTTTTTTTTT=================================
+18 TTT.hhhhhh....TTTT..c.hhhhhhh..........TTTTTT.TTTTTTTTTTT..............................TTT
+19 TTT.hhhhhh....TTTT..c.hhhhhhh..........TTTTTT.TTTTTTTTTTT...hhhhhhhhhhhhhhhhh.......TTTTTT
+20 TTT.hhhhhh....TTTT..c.hhhhhhh.c........TTTTTT.TTTTTTTTTTT...hhhhhhhhhhhhhhhhh.......TTTTTT
+21 TTT...........TTTT..c.hhhhhhh.c........TTTTTT.TTTTTTTTTTT...hhhhhhhhhhhhhhhhh.......TTTTTT
+22 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+23 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+24 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+25 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+26 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+FIN
+
+# POSITIONS — identifiant  type  cases  bloque|libre  [cle=valeur ...]  # commentaire
+POSITIONS
+warp_est               warp           89,15..17      libre   to=route_12_south spawn=from_route_13  # PUSH → → Route 12 sud (0, 61..63)
+from_route_12_sud      spawn          89,15..17      libre   facing=left  # arrivée de la Route 12 sud, tournée ←
+warp_ouest             warp           0,8..10        libre   to=route_14 spawn=from_route_13  # PUSH ← → Route 14 (29, 8..10)
+from_route_14          spawn          0,8..10        libre   facing=right  # arrivée de la Route 14, tournée →
+route_13_bird_2        dresseur       70,16          bloque  role=D1 trainer=route_13_bird_2 facing=left sight=6 rbsight=4 inevitable=non rb=7,13  # Ornithologue, Roucool / Roucoups / Piafabec / Rapasdepic 26 ; sur le chemin, vue (64..69, 16) : rangées 15 ou 17
+route_13_biker         dresseur       78,12          bloque  role=D2 trainer=route_13_biker facing=left sight=3 rbsight=2 inevitable=non rb=10,7  # Motard, Smogo 28 ×3 ; pré est, vue (77..77, 12) jusqu'à la clôture
+route_13_beauty        dresseur       68,7           bloque  role=D3 trainer=route_13_beauty facing=down sight=3 rbsight=2 inevitable=non rb=32,6  # Beauté, Mélofée 29 + Miaouss 29 ; berge est, vue (68, 8..9) jusqu'à la clôture
+route_13_lass_3        dresseur       51,11          bloque  role=D4 trainer=route_13_lass_3 facing=down sight=6 rbsight=4 inevitable=oui rb=50,5  # Jeune Dresseuse, Poissirène / Ptitard / Hypotrempe 28 (I) ; alcôve du goulet, vue (51, 12..14) : tout le goulet
+route_13_lass_1        dresseur       36,16          bloque  role=D5 trainer=route_13_lass_1 facing=up sight=3 rbsight=2 inevitable=non rb=27,9  # Jeune Dresseuse, Ptitard 30 ×2 ; vue (36, 13..15) : rangée 12 libre
+route_13_lass_2        dresseur       25,9           bloque  role=D6 trainer=route_13_lass_2 facing=right sight=3 rbsight=2 inevitable=non rb=23,10  # Jeune Dresseuse, Roucool / Miaouss / Roucool / Roucoups 27 ; pré nord-ouest, vue (26..28, 9)
+route_13_bird_1        dresseur       16,10          bloque  role=D7 trainer=route_13_bird_1 facing=down sight=3 rbsight=2 inevitable=non rb=49,10  # Ornithologue, Roucool 29 + Roucoups 29 ; vue (16, 11..13) : rangée 14 libre
+route_13_hidden_1      cache          6,6            libre   role=O1 item=rare_candy drapeau=got_route_13_hidden_1  # Super Bonbon caché (PP Plus de RB, M-16), coin nord-ouest du pré
+route_13_hidden_2      cache          83,20          libre   role=O2 item=hyper_potion drapeau=got_route_13_hidden_2  # Hyper Potion cachée (Calcium de RB, M-16), coin sud-est, derrière les arbres
+panneau_route_13       panneau        85,14          bloque  role=T-route  # « ROUTE 13 » ; lu depuis (85, 15) ↑
+panneau_conseil        panneau        13,7           bloque  role=T-conseil  # conseil du Dresseur (RB : deux panneaux) ; lu depuis (13, 8) ↑
+herbes_h1              herbes         60..76,19..21  libre   role=H1
+herbes_h2              herbes         22..28,16..21  libre   role=H2
+herbes_h3              herbes         4..9,15..20    libre   role=H3
+herbes_h4              herbes         33..38,5..9    libre   role=H4
+berge_peche            repere         40..86,1..6    libre   role=peche  # berge nord : eau pêchable (f) le long des deux berges
+FIN
