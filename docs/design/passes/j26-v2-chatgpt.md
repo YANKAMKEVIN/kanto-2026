@@ -97,9 +97,10 @@ Premier repérage dans les branches poussées, à confirmer par l'audit :
   Lokhlass, cartes de Safrania et de la Sylphe. Les téléporteurs et les portes à carte sont des
   **systèmes réutilisables** : **versés dans la passe systèmes 2** par Kevin (2026-10-19). Le J26
   les consomme sans les coder ; le lot J26B se réduit au placement (données et cartes).
-- **Entrée dans Safrania : tranché par Kevin le 2026-10-19, au J20** (boisson donnée au garde d'un
-  poste, comme dans Rouge/Bleu). Le J26 la consomme sans la coder. Question d'origine : comment le
-  joueur entre dans Safrania. Dans Rouge/Bleu, il donne
+- **Entrée dans Safrania : à trancher au J26.** L'arbitrage H-5 du J20 (dossier 23 §6) renvoie la règle
+  d'accès au jalon de Safrania ; Kevin l'a maintenu le 2026-10-19. Rouge/Bleu : une boisson donnée au
+  garde d'un poste. Le J20 a déjà les boissons et les postes (`route_7_gate`, `route_8_gate`) ; une
+  proposition de règle et de textes (215–219) a été rédigée par la session J20, non commitée. Dans Rouge/Bleu, il donne
   une boisson au garde d'un poste ; le J20 prépare les boissons et les postes, mais le dossier J26
   ne dit pas qui les ouvre (J20, J26 ou autre).
 - **Art** (entre-deux, levier 4) : grilles et une vue générale de la Sylphe avant le code ; le reste
