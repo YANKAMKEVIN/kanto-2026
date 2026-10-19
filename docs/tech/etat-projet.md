@@ -7,7 +7,7 @@ Mis à jour : 2026-10-19 (**J18 T15 : `main` (J16, PR n° 1, J17 terminé) fusio
 - **T17** : rien à coder, le moteur de Flash du J17 sert tel quel ; `test_dark_cave_flash` repart de `dark_cave_1f_flash.json` (`flash_qa.json` retiré au J17 T28).
 - **Azuria ↔ Route 9** branché (I-2) : arbre à couper (53, 23), `cut_cerulean_east_tree`, Azuria en variante `J18`, Route 9 régénérée ; départ `cerulean_east_cut`, test `test_cerulean_east_tree`. Valeur par défaut : deux pans de clôture courts à la place de la grande clôture verticale (elle aurait traversé le passage). L'habitant H7 (51, 22) dit toujours « On ne passe pas par là pour l'instant. » après la coupe (question à Kevin).
 - **Luminance sous le voile** (réglages du J17) : héros 4,44–5,26, hors halo 0,118–0,154 sans Flash et 0,148–0,173 avec : tout passe, aucun réglage propre au J18.
-- **Suite** : voir le commit de clôture du T15 (nombre de tests).
+- **Suite** : `tools/test.sh` **5 509 / 5 509** verts, import propre.
 
 ## Jalon 18 — T22 : équilibrage des 14 Dresseurs (2026-10-16, branche `j18-t22-equilibrage` depuis `j18-essai-sur-j17` à 90e41208)
 
