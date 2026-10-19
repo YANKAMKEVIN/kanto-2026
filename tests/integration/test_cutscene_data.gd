@@ -62,6 +62,8 @@ const MAPS: Array[StringName] = [
 	&"pokemon_tower_6f",
 	# Jalon 19 (T16) : le premier pas du rez-de-chaussée de la Tour.
 	&"pokemon_tower_1f",
+	# Jalon 19 (T17) : les deux cases du rival n° 5.
+	&"pokemon_tower_2f",
 ]
 ## Jalon 7 (T18) : partie qui revient au labo avec le colis (rival parti après le combat).
 const PARCEL_FLAGS: Array[StringName] = [
@@ -225,6 +227,7 @@ const VARIANT_FLAGS: Dictionary = {
 	&"route_9_item_2": [PEWTER_FLAGS], &"route_9_item_3": [PEWTER_FLAGS],
 	&"route_10_reached": [PEWTER_FLAGS], &"dark_cave_crossed": [PEWTER_FLAGS],
 	&"tower_6f_ghost": [PEWTER_FLAGS], &"tower_guardian": [PEWTER_FLAGS],
+	&"tower_rival": [PEWTER_FLAGS],
 	&"route_10_item_1": [PEWTER_FLAGS], &"dark_cave_1f_item_1": [PEWTER_FLAGS],
 	&"dark_cave_1f_item_2": [PEWTER_FLAGS], &"dark_cave_b1f_item_1": [PEWTER_FLAGS],
 	&"dark_cave_b1f_hidden_1": [PEWTER_FLAGS], &"lavender_reached": [PEWTER_FLAGS],
@@ -412,7 +415,8 @@ func test_library_loads_without_error() -> void:
 		# Jalon 17 (T23) : Coupe des deux arbustes.
 		&"cut_tree_route_2_east_bush", &"cut_tree_route_2_futur_a",
 		# Jalon 18 (T15) : l'arbre de la sortie est d'Azuria.
-		&"cut_tree_cerulean_east", &"tower_6f_ghost", &"tower_guardian"] + J18_IDS))
+		&"cut_tree_cerulean_east", &"tower_6f_ghost", &"tower_guardian",
+		&"tower_rival"] + J18_IDS))
 
 
 func _sorted(values: Array) -> Array[StringName]:

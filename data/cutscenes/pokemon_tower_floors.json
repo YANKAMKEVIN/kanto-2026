@@ -66,5 +66,93 @@
 				]
 			}
 		]
+	},
+	"tower_rival": {
+		"variants": [
+			{
+				"unless": [
+					"rival_tower_won"
+				],
+				"steps": [
+					{
+						"face": "tower_rival",
+						"to": "player"
+					},
+					{
+						"face": "player",
+						"to": "tower_rival"
+					},
+					{
+						"dialogue": "rival_tower_intro",
+						"unless": [
+							"rival_tower_lost_once"
+						]
+					},
+					{
+						"dialogue": "rival_tower_resume",
+						"if": [
+							"rival_tower_lost_once"
+						]
+					},
+					{
+						"set": [
+							"rival_tower_retried"
+						],
+						"if": [
+							"rival_tower_lost_once"
+						]
+					},
+					{
+						"battle": "rival_tower",
+						"win": [
+							"rival_tower_won"
+						],
+						"lose": [
+							"rival_tower_lost_once"
+						]
+					},
+					{
+						"wait": 2.0,
+						"if": [
+							"rival_tower_won"
+						]
+					},
+					{
+						"dialogue": "rival_tower_won",
+						"if": [
+							"rival_tower_won"
+						]
+					},
+					{
+						"move": "tower_rival",
+						"to": [
+							17,
+							9
+						],
+						"if": [
+							"rival_tower_won"
+						]
+					},
+					{
+						"despawn": "tower_rival",
+						"if": [
+							"rival_tower_won"
+						]
+					},
+					{
+						"dialogue": "rival_tower_lost",
+						"unless": [
+							"rival_tower_won"
+						]
+					},
+					{
+						"wake_up": true,
+						"unless": [
+							"rival_tower_won"
+						]
+					}
+				]
+			}
+		]
 	}
 }
