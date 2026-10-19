@@ -217,7 +217,7 @@ Règle des trois systèmes :
   - `game/pokemon/encounters/encounter_director.gd`, `game/battle/battle_request.gd` ;
   - `game/systems/cutscene/cutscene_director.gd`, `cutscene_step.gd` ;
   - `game/boot.gd`, `game/systems/debug/debug_start.gd` ;
-  - les fichiers du J18 : `tools/build_painted_interiors.gd` (pièce `pokemon_tower_1f`),
+  - les fichiers du J18 : `tools/build_pokemon_tower.gd` (rez-de-chaussée `pokemon_tower_1f`, T10),
     `tools/build_lavender_town.gd` (plan), `data/npcs/pokemon_tower_1f.json`,
     `data/dialogues/pokemon_tower.json`, `data/npcs/lavender_center.json`,
     `data/npcs/pokemon_house.json`.
@@ -231,7 +231,7 @@ Règle des trois systèmes :
 
 ### 2.1 Cartes 2F à 6F : générateur, raccords, catégorie (T9, T16)
 
-**Outil** : `tools/build_pokemon_tower.gd -- --etage=2f|3f|4f|5f|6f|tous` (`extends SceneTree`,
+**Outil** : `tools/build_pokemon_tower_floors.gd -- --etage=2f|3f|4f|5f|6f|tous` (`extends SceneTree`,
 modèle `build_mt_moon.gd`), sur `tools/cave_map_kit.gd`. On utilise les réglages « carte sans
 grotte » déjà ouverts par le souterrain du J15 :
 - `walkable_marks` = `.ZUV` ;
@@ -507,7 +507,7 @@ wake_up                                      unless rival_tower_won
   - variante `unless tower_stairs_open` → `cutscene: tower_guardian`. Lui parler joue la scène, si
     le joueur a chargé une partie déjà dans la salle.
 - **Déclencheur** (9..10, 15), direction ↑ : c'est le premier pas depuis l'entrée. Il est ajouté à
-  la pièce `pokemon_tower_1f` de `build_painted_interiors.gd`.
+  `tools/build_pokemon_tower.gd` (outil du rez-de-chaussée du J18, en modules ; T10).
 - **Scène `tower_guardian`**, variante `unless: [tower_stairs_open]` :
   - `face` → `player` ;
   - `dialogue tower_guardian_worried` (§15.1.1–4) ;
@@ -841,7 +841,7 @@ Kevin.
 - **CA** : un second passage ne change rien ; `test_painted_props` vert.
 
 #### T9 — C : générateur des cartes 2F à 6F — **peut commencer maintenant** (art provisoire accepté)
-- `tools/build_pokemon_tower.gd` (§2.1) ; `game/world/maps/pokemon_tower_2f.tscn` … `6f.tscn` ;
+- `tools/build_pokemon_tower_floors.gd` (§2.1) ; `game/world/maps/pokemon_tower_2f.tscn` … `6f.tscn` ;
   `GameMap.calm_cells` (`game/world/map.gd`, **un seul `@export` ajouté** ; c'est le seul
   fichier existant touché, et aucun plan des J16 à J18 ne le modifie).
 - Rien d'autre :
@@ -870,6 +870,58 @@ Kevin.
   côté du second fusionné.
 - Régénérer les cartes (T9) sur l'art final.
 - **CA** : tests verts ; liste des écarts écrite dans ce plan (§0) ; T11 peut partir.
+
+**T10 fait (2026-10-19, branche `jalon-19-integ` depuis `jalon-19` à 30c23152 ; `main` à
+d397b2df : J16, PR n° 1, J17, J18).**
+- **Doublons retirés du J19** (ancienneté : J17 et J18 font foi) : Caninos (`kanto_tower.json`,
+  fiche de Pokédex, sprite provisoire et `_draw_growlithe`), Hypnose, Hurlement, Bélier
+  (`moves/tower.json`) ; halo `candle` du J19 (valeurs du J18 gardées : #ffd9a0, rayon 2,4).
+  Restent au J19 : 6 espèces, 8 capacités, `purified`, profil `tower`.
+- **Effets codés par le J19 portés sur les entrées du J17** (`j17.json`) : Hurlement
+  `force_switch`, priorité −6, **précision 0** (pas de tirage, choix « génération 2 » du J19 ; le
+  J17 avait 100) ; Bélier `recoil_damage` ¼. `pending_effects` et « Sans effet… » retirés ;
+  `tools/audit_pending_moves.py` : 12 capacités en attente (plus Hurlement ni Bélier),
+  `docs/tech/audit-pending-moves.md` régénéré. **Hypnose garde le texte du J17** : celui du
+  §15.7 du dossier 22 n'est plus joué (`test_tower_moves` : sortie de `VALIDATED`).
+- **Outils** : `tools/build_pokemon_tower.gd` est celui du **rez-de-chaussée du J18** (en
+  modules) ; le générateur des étages devient **`tools/build_pokemon_tower_floors.gd`** (plan mis
+  à jour). Relancé après la fusion : cartes 2F–6F **identiques** (seuls les `unique_id` changent,
+  non committés).
+- **« Réduire les animations »** : `MistLayer.set_reduce_motion` branché dans `SettingsApplier`
+  (après `LightGlow`) ; vérifié par `test_companion_cave` (vraie Boot).
+- `tm_compatibility.json` régénéré (CS du J16 pour les espèces de la Tour) ; comptes recalés :
+  78 espèces, 120 capacités, 23 tables, 74 compatibles CT34.
+- **Écarts du §0.2 sur le code réel** (à reprendre par T16, T20, T22) :
+  1. Rez-de-chaussée : escalier `Stairs2F` (17, 2) en `coming_soon`, `target_spawn =
+     from_pokemon_tower_2f` ; le spawn **`from_pokemon_tower_2f` existe déjà en (17, 3)** (pas de
+     `arrivee_T12` à créer au 1F : T16 l'utilise pour `escalier_bas` du 2F, et met
+     `target_map = pokemon_tower_2f` / `target_spawn = arrivee_T12` sur `Stairs2F`).
+  2. **Gardienne** : le J18 la fait **disparaître** (`unless: [tower_stairs_open]`, test
+     `test_the_guardian_steps_aside_when_the_stairs_flag_is_raised_by_j19`) ; le plan (§2.7) la
+     range en (18, 3) par le mécanisme `moved`. T16 remplace le `unless` et recale ce test du J18.
+  3. **Zone** : le J18 range le 1F dans la zone `lavender_town` (titre « Tour Pokémon », aucune
+     zone propre). Défaut pour T16 : les 2F–6F aussi, puis vider `AWAITING_ZONE`.
+  4. `test_nothing_of_j19_is_there` et `test_the_scope_sign_spot_is_empty_for_j19` (J18) sont à
+     recaler par T16 et T20 ; panneau en (42, 11), case libre.
+  5. Planche `channeler` : sur `main` (sprite des PNJ et des Exorcistes). Rival n° 4 :
+     `prize_per_level` 35 = n° 5.
+  6. Profils : `tower_cold` (1F, J18) et `tower` (2F–6F, J19) coexistent ; harmonie à juger en 19B.
+- **§0.3, lignes sur `main` à d397b2df** : `encounter_director` `terrain_at` l. 100,
+  `_on_player_moved` l. 125, `_run` l. 181, `record_seen` l. 189, `record_wild_encounter` l. 192 ;
+  `battle.gd` `is_legal` l. 259, `_attempt_flee` l. 399, `_foe_action` l. 497, `_execute` l. 628,
+  `_can_act` l. 698, `_pokemon_event` l. 1159, `_ball_blocked` l. 1408 ; `battle_director`
+  `_spend_item` l. 470 (appel l. 259) ; `battle_text._fill` l. 484 ; `battle_art.image` l. 61
+  (appel `battle_stage.gd:1218`) ; `BattleRules.for_wild` l. 32 ; `cutscene_director._battle`
+  l. 560 ; « vu » d'un combat de Dresseur : `boot.gd:1517-1520` (`_on_battle_event`). Rien
+  d'autre n'a bougé dans les points d'accroche.
+- **Drapeaux du J20 (dossier 23 §17, `origin/jalon-20`) pour T22** : `route_8_reached`,
+  `celadon_reached`, `tm21_received`, `eevee_received`, `rooftop_tm13`, `game_corner_switch`,
+  `rocket_dropped_lift_key`, `giovanni_hideout_won` ; aucun n'est posé par les données du J19.
+- **Simulation du rival n° 5 sur les sorties réelles du J18** : `jalon-19-equilibrage.md` §7
+  (rien de changé dans `data/` ; T21 attend Q-T21-1 à 4).
+- **Pas fait** : cartes 2F–6F sur l'art final (modules de la série 21 du J18 + série 24 du J19,
+  bruts hors dépôt dans `.claude/worktrees/j19-t-art-etages/build/art/serie24/`) : c'est un
+  chantier d'art à part (avant les captures de 19B), pas une régénération.
 
 ### 3.2 Sous-jalon 19A (mode spectre et Exorcistes)
 
@@ -1001,11 +1053,11 @@ Protocole des J15 : APK debug, `tools/deploy_s24.sh --debug-start <départ>`, du
 
 #### T16 — C : rez-de-chaussée, gardienne, cartes branchées, Corde Sortie — après T15
 - Fichiers :
-  - `tools/build_painted_interiors.gd`, pièce `pokemon_tower_1f` (bloc J19) : escalier armé,
+  - `tools/build_pokemon_tower.gd` (outil du J18 pour `pokemon_tower_1f`, bloc J19) : escalier armé,
     spawn `arrivee_T12`, déclencheur (9..10, 15) ↑ ;
   - `data/npcs/pokemon_tower_1f.json`, `data/dialogues/pokemon_tower.json` (bloc J19) ;
   - `data/cutscenes/pokemon_tower_floors.json` (`tower_guardian`) ;
-  - `tools/build_pokemon_tower.gd` (2F vers le 1F réel) ;
+  - `tools/build_pokemon_tower_floors.gd` (2F vers le 1F réel) ;
   - `data/world/caves.json` (en fin) ; `zones.json`.
 - **Tests** (`tests/integration/test_pokemon_tower_1f_j19.gd`) :
   - premier pas → scène (§15.1.1–4) → la gardienne en (18, 3) → `tower_stairs_open` ;
@@ -1039,7 +1091,7 @@ Protocole des J15 : APK debug, `tools/deploy_s24.sh --debug-start <départ>`, du
 #### T18 — C : zone purifiée, Exorciste calme du 5F, objets — après T16
 - Fichiers : `data/npcs/pokemon_tower_5f.json` (Exorciste calme) et les objets des 3F à 6F,
   `data/dialogues/pokemon_tower_floors.json` (§15.5, §15.4 5F), `data/cutscenes/
-  pokemon_tower_floors.json` (`tower_purified_zone`, scènes d'objets), `tools/build_pokemon_tower.gd`
+  pokemon_tower_floors.json` (`tower_purified_zone`, scènes d'objets), `tools/build_pokemon_tower_floors.gd`
   (objet caché, halo `purified`), départ `tower_5f_zone`.
 - **Tests** (`tests/integration/test_tower_purified_zone.gd`) :
   - entrer par chacune des 5 entrées praticables du §2.8 → éclair, soin complet (PV, PP, statuts), §15.5 ;
@@ -1059,7 +1111,7 @@ Protocole des J15 : APK debug, `tools/deploy_s24.sh --debug-start <départ>`, du
 - Fichiers :
   - `data/world/lighting.json`, `light_glows.json` (en fin : `candle` si absent, `purified`) ;
   - `game/world/lighting/mist_layer.gd`, `shaders/mist_scroll.gdshader` ;
-  - `tools/build_pokemon_tower.gd` (voile `ambient` par étage, brume, halos) ;
+  - `tools/build_pokemon_tower_floors.gd` (voile `ambient` par étage, brume, halos) ;
   - `boot.gd` : « Réduire les animations » vers `MistLayer` (bloc court, sur le modèle de
     `LightGlow.set_reduce_motion`).
 - **Tests** :

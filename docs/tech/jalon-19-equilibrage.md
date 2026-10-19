@@ -1,6 +1,7 @@
 # Jalon 19 — équilibrage du rival n° 5 par simulation (T21)
 
-> **PRÉLIMINAIRE, À RELANCER APRÈS T10.** Les équipes réelles des J16 à J18 n'existent pas encore
+> **PRÉLIMINAIRE.** Sorties réelles du J18 mesurées au T10 (§7) ; T21 attend Q-T21-1 à 4. Texte
+> d'origine (§1 à §6) : les équipes réelles des J16 à J18 n'existent pas encore
 > (jalons en cours) : les équipes du joueur sont **supposées** (§2). Les niveaux retenus (§4) sont
 > posés dans `data/trainers/pokemon_tower.json` (`rival_tower`) comme **provisoires** ; la version
 > définitive se refait après T10 sur les vraies sorties (plan `jalon-19.md` T21, §6).
@@ -162,3 +163,39 @@ godot --headless --path . -s res://tools/simulate_mt_moon.gd -- \
 `tower_thresholds.json` par les vraies sorties des J16 à J18 (`--save` sur une sauvegarde de
 fin de J18 si elle existe), relancer les deux, recaler `rival_tower` et `RIVAL` dans
 `test_trainers_j19.gd`, et retirer la mention « préliminaire ».
+
+## 7. Mesure du T10 sur les sorties réelles du J18 (2026-10-19, aucune donnée changée)
+
+Après la fusion de `main` (J16, J17, J18) : équipes d'arrivée à Lavanville **mesurées** par
+`tools/sim/j18_scenario.json --donnees` (chemin direct, attentif, 100 graines ; niveaux moyens
+arrondis), depuis la sortie du J16 (J17 sauté) et depuis la sortie du J17. Parcours de la Tour
+inchangé (`tools/sim/tower_scenario_j18_exits.json`, 200 graines, rival en données : r01).
+Les vraies sorties ont **3 ou 4 Pokémon**, starter N24–28, seconds N17–19 (sans Pikachu) : plus
+proches de l'équipe « bas » du §2 que de la « référence ».
+
+| Sortie du J18 (arrivée à Lavanville) | Rival, 1ᵉʳ essai : attentif · expert | Tour directe, attentif | Avec les facultatifs |
+|---|---|---|---|
+| depuis J16 — Reptincel 25, Roucoups 19, Férosinge 19, Mystherbe 19 | 96,5 · 98 | 94,5 | 75 |
+| depuis J16 — type Kevin, Reptincel 26 (Tunnel), Roucoups 19, Nidorino 18, Rattata 17 | 100 · 100 | 100 | 98,5 |
+| depuis J16 — Herbizarre 24, Roucoups 18, Papilusion 19 | **0 · 0** | 0 | 0 |
+| depuis J16 — Carabaffe 25, Roucoups 19, Papilusion 18 | 87,5 · 93 | 84 | 79 |
+| depuis J17 — Reptincel 27, Roucoups 19, Férosinge 19, Mystherbe 19 | 98,5 · 99 | 96 | 82,5 |
+| depuis J17 — type Kevin, Reptincel 28 | 100 · 100 | 99,5 | 98,5 |
+| depuis J17 — Herbizarre 26, Roucoups 18, Papilusion 19 | **1,5 · 2** | 1,5 | 1 |
+| depuis J17 — Carabaffe 28, Roucoups 19, Papilusion 18 | 99 · 99,5 | 98 | 96,5 |
+
+Lecture :
+- Salamèche et Carapuce : le rival n° 5 est **au-dessus de 80 %** partout (87,5 à 100 %).
+- Bulbizarre : **mur** (0 à 2 %), comme au préliminaire (Q-T21-1).
+- E7 (Ysée, Spectrum N22, facultative) est la seule Exorciste qui coûte (84 % au premier essai
+  pour Reptincel 25).
+- **Conflit de règles à trancher (Q-T21-4)** : les seuils du plan (≥ 70 % attentif au premier
+  essai, ≥ 90 % « bas » en trois essais) datent d'avant la règle de Kevin sur la difficulté
+  (victoire au premier essai ≤ 80 % par défaut, 35–60 % pour un grand combat, jamais adoucir
+  au-delà de 80 % sans son accord ; appliquée au J16 pour le rival n° 4, recalé à ≈ 40 %, et
+  au J18 pour ses Dresseurs). Sous cette règle, le rival n° 5 devrait **monter** contre Salamèche et Carapuce
+  (probablement au-dessus de la fourchette 22–26 ou avec Kadabra « règle du J16 ») et
+  **descendre** contre Bulbizarre. T21 attend cette réponse ; rien n'est changé dans `data/`.
+
+Reproduire : `godot --headless --path . -s res://tools/simulate_mt_moon.gd -- --scenario
+res://tools/sim/tower_scenario_j18_exits.json --donnees --seeds 200` (≈ 10 min).
