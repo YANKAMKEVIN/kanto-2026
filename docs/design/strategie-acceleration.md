@@ -27,8 +27,9 @@ Comme le J11 pour les statuts et les CT : coder **en une passe** tous les systè
 et d'exploration qui restent, avant d'étendre le contenu.
 
 Périmètre validé par Kevin le 2026-10-19 : Vélo et Piste Cyclable, Surf, Force (rochers, trous), Vol,
-Scope Sylphe, Poké Flûte, états « monté » du joueur, et tout système encore prévu dans un jalon
-de contenu.
+Scope Sylphe, Poké Flûte, états « monté » du joueur, **téléporteurs** et **portes à carte**
+(Carte Magnétique ; ajoutés par Kevin le 2026-10-19 pour le J26, Sylphe SARL), et tout système
+encore prévu dans un jalon de contenu.
 
 Point de départ déjà écrit (message du J24, 2026-10-19) : `jalon-24` (@ `ed306985`) contient une
 logique pure et testée de **Surf et de Force**, sans dépendance à une carte : `GridWorld` (eau

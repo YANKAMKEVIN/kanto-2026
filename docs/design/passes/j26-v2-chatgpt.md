@@ -95,7 +95,8 @@ Premier repérage dans les branches poussées, à confirmer par l'audit :
   La Sylphe peut réutiliser l'ascenseur (11 étages) et le don (Lokhlass, Master Ball).
 - **Pas encore trouvé dans le dépôt** : téléporteurs, portes à carte (Carte Magnétique), Master Ball,
   Lokhlass, cartes de Safrania et de la Sylphe. Les téléporteurs et les portes à carte sont des
-  **systèmes réutilisables** : à verser dans la passe systèmes 2 (levier 1) plutôt que dans le J26.
+  **systèmes réutilisables** : **versés dans la passe systèmes 2** par Kevin (2026-10-19). Le J26
+  les consomme sans les coder ; le lot J26B se réduit au placement (données et cartes).
 - **Question ouverte pour Kevin** : comment le joueur entre dans Safrania. Dans Rouge/Bleu, il donne
   une boisson au garde d'un poste ; le J20 prépare les boissons et les postes, mais le dossier J26
   ne dit pas qui les ouvre (J20, J26 ou autre).
