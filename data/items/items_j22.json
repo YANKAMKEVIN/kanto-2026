@@ -1,0 +1,37 @@
+{
+	"bike_voucher": {
+		"name": "Bon de Commande", "plural": "Bons de Commande", "feminine": false,
+		"category": "key",
+		"description": "Un bon à échanger contre une Bicyclette à la boutique d'Azuria."
+	},
+	"bicycle": {
+		"name": "Bicyclette", "plural": "Bicyclettes", "feminine": true,
+		"category": "key",
+		"description": "Une bicyclette pliante. Elle va deux fois plus vite que la marche."
+	},
+	"old_rod": {
+		"name": "Canne", "plural": "Cannes", "feminine": true,
+		"category": "key",
+		"description": "Une vieille canne à pêche. Avec elle, on pêche près des berges."
+	},
+	"good_rod": {
+		"name": "Super Canne", "plural": "Super Cannes", "feminine": true,
+		"category": "key",
+		"description": "Une bonne canne à pêche. Les Pokémon y mordent plus volontiers."
+	},
+	"super_rod": {
+		"name": "Méga Canne", "plural": "Méga Cannes", "feminine": true,
+		"category": "key",
+		"description": "La meilleure canne à pêche. Elle attire des Pokémon rares."
+	},
+	"hyper_potion": {
+		"name": "Hyper Potion", "plural": "Hyper Potions", "feminine": true,
+		"category": "heal", "heal_amount": 200, "price": 1500,
+		"description": "Un spray de soin. Il restaure 200 PV d'un Pokémon."
+	},
+	"hyper_ball": {
+		"name": "Hyper Ball", "plural": "Hyper Balls", "feminine": true,
+		"category": "ball", "catch_bonus": 2.0, "price": 1200,
+		"description": "Une Ball très performante. Elle capture mieux qu'une Super Ball."
+	}
+}
