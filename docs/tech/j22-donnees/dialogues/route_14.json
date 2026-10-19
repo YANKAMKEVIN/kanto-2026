@@ -1,0 +1,86 @@
+{
+	"route_14_bird_1_before": {
+		"speaker": "Ornithologue",
+		"pages": ["Mon Canarticho ne quitte jamais\nson poireau. Ni le combat !"]
+	},
+	"route_14_bird_1_defeated": {
+		"speaker": "Ornithologue",
+		"pages": ["Il a perdu son poireau…"]
+	},
+	"route_14_bird_1_after": {
+		"speaker": "Ornithologue",
+		"pages": ["Il en trouvera un autre."]
+	},
+	"route_14_bird_2_before": {
+		"speaker": "Ornithologue",
+		"pages": ["Le ciel est à nous !"]
+	},
+	"route_14_bird_2_defeated": {
+		"speaker": "Ornithologue",
+		"pages": ["Atterrissage forcé !"]
+	},
+	"route_14_bird_2_after": {
+		"speaker": "Ornithologue",
+		"pages": ["On reprendra de l'altitude."]
+	},
+	"route_14_bird_3_before": {
+		"speaker": "Ornithologue",
+		"pages": ["Le ciel est à nous !"]
+	},
+	"route_14_bird_3_defeated": {
+		"speaker": "Ornithologue",
+		"pages": ["Atterrissage forcé !"]
+	},
+	"route_14_bird_3_after": {
+		"speaker": "Ornithologue",
+		"pages": ["On reprendra de l'altitude."]
+	},
+	"route_14_bird_4_before": {
+		"speaker": "Ornithologue",
+		"pages": ["Le ciel est à nous !"]
+	},
+	"route_14_bird_4_defeated": {
+		"speaker": "Ornithologue",
+		"pages": ["Atterrissage forcé !"]
+	},
+	"route_14_bird_4_after": {
+		"speaker": "Ornithologue",
+		"pages": ["On reprendra de l'altitude."]
+	},
+	"route_14_biker_1_before": {
+		"speaker": "Motard",
+		"pages": ["Tu sens cette odeur ?\nC'est mon équipe !"]
+	},
+	"route_14_biker_1_defeated": {
+		"speaker": "Motard",
+		"pages": ["Pfff… Ça sent la défaite."]
+	},
+	"route_14_biker_1_after": {
+		"speaker": "Motard",
+		"pages": ["La prochaine fois, on t'enfume."]
+	},
+	"route_14_biker_2_before": {
+		"speaker": "Motard",
+		"pages": ["Tu sens cette odeur ?\nC'est mon équipe !"]
+	},
+	"route_14_biker_2_defeated": {
+		"speaker": "Motard",
+		"pages": ["Pfff… Ça sent la défaite."]
+	},
+	"route_14_biker_2_after": {
+		"speaker": "Motard",
+		"pages": ["La prochaine fois, on t'enfume."]
+	},
+	"route_14_biker_3_before": {
+		"speaker": "Motard",
+		"pages": ["Tu sens cette odeur ?\nC'est mon équipe !"]
+	},
+	"route_14_biker_3_defeated": {
+		"speaker": "Motard",
+		"pages": ["Pfff… Ça sent la défaite."]
+	},
+	"route_14_biker_3_after": {
+		"speaker": "Motard",
+		"pages": ["La prochaine fois, on t'enfume."]
+	}
+}

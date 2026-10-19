@@ -1,0 +1,38 @@
+{
+	"route_12_fisher_5_before": {
+		"speaker": "Pêcheur",
+		"pages": ["Chut ! Tu vas faire fuir les poissons !"]
+	},
+	"route_12_fisher_5_defeated": {
+		"speaker": "Pêcheur",
+		"pages": ["Ils mordent, mais pas assez fort…"]
+	},
+	"route_12_fisher_5_after": {
+		"speaker": "Pêcheur",
+		"pages": ["Rien de tel qu'une journée au bord de l'eau."]
+	},
+	"route_12_youngster_before": {
+		"speaker": "Jeune Dresseur",
+		"pages": ["Mon Nidorino est presque prêt.\nJe vais te le prouver !"]
+	},
+	"route_12_youngster_defeated": {
+		"speaker": "Jeune Dresseur",
+		"pages": ["Presque prêt… pas tout à fait."]
+	},
+	"route_12_youngster_after": {
+		"speaker": "Jeune Dresseur",
+		"pages": ["Un jour, il évoluera encore. Tu verras !"]
+	},
+	"route_12_rocker_before": {
+		"speaker": "Rockeur",
+		"pages": ["Ma musique fait des étincelles.\nEt mes Pokémon aussi !"]
+	},
+	"route_12_rocker_defeated": {
+		"speaker": "Rockeur",
+		"pages": ["Court-circuit !"]
+	},
+	"route_12_rocker_after": {
+		"speaker": "Rockeur",
+		"pages": ["Je retourne répéter."]
+	}
+}

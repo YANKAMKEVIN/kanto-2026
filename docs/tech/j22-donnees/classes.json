@@ -1,0 +1,11 @@
+{
+	"_note": "Le jeu n'a pas de registre de classes : la classe = préfixe de « name » (et « speaker ») + « prize_per_level » de chaque Dresseur. Ce fichier sert de référence (argent RB / 100).",
+	"fisherman": {"name": "Pêcheur", "prize_per_level": 35, "rb_class": "FISHER", "new": true},
+	"biker": {"name": "Motard", "prize_per_level": 20, "rb_class": "BIKER", "new": true},
+	"bird_keeper": {"name": "Ornithologue", "prize_per_level": 25, "rb_class": "BIRD_KEEPER", "new": true},
+	"cue_ball": {"name": "Loubard", "prize_per_level": 25, "rb_class": "CUE_BALL", "new": true},
+	"jr_trainer_m": {"name": "Jeune Dresseur", "prize_per_level": 20, "rb_class": "JR_TRAINER_M", "new": false},
+	"jr_trainer_f": {"name": "Jeune Dresseuse", "prize_per_level": 20, "rb_class": "JR_TRAINER_F", "new": false},
+	"rocker": {"name": "Rockeur", "prize_per_level": 25, "rb_class": "ROCKER", "new": false},
+	"beauty": {"name": "Beauté", "prize_per_level": 70, "rb_class": "BEAUTY", "new": false}
+}

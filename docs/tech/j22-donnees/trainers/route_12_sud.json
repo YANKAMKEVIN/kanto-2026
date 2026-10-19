@@ -1,0 +1,20 @@
+{
+	"route_12_fisher_5": {
+		"name": "Pêcheur", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true,
+		"prize_money": 0, "prize_per_level": 35,
+		"team": [{ "species": "magikarp", "level": 24 }, { "species": "magikarp", "level": 24 }]
+	},
+	"route_12_youngster": {
+		"name": "Jeune Dresseur", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true,
+		"prize_money": 0, "prize_per_level": 20,
+		"team": [{ "species": "nidoran_m", "level": 29 }, { "species": "nidorino", "level": 29 }]
+	},
+	"route_12_rocker": {
+		"name": "Rockeur", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true,
+		"prize_money": 0, "prize_per_level": 25,
+		"team": [{ "species": "voltorb", "level": 29 }, { "species": "electrode", "level": 29 }]
+	}
+}

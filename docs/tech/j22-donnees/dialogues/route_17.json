@@ -1,0 +1,98 @@
+{
+	"route_17_cueball_1_before": {
+		"speaker": "Loubard",
+		"pages": ["Tu cherches la bagarre ?\nTu l'as trouvée !"]
+	},
+	"route_17_cueball_1_defeated": {
+		"speaker": "Loubard",
+		"pages": ["Aïe… Ça cogne !"]
+	},
+	"route_17_cueball_1_after": {
+		"speaker": "Loubard",
+		"pages": ["Toi, t'as de la poigne."]
+	},
+	"route_17_cueball_2_before": {
+		"speaker": "Loubard",
+		"pages": ["Tu cherches la bagarre ?\nTu l'as trouvée !"]
+	},
+	"route_17_cueball_2_defeated": {
+		"speaker": "Loubard",
+		"pages": ["Aïe… Ça cogne !"]
+	},
+	"route_17_cueball_2_after": {
+		"speaker": "Loubard",
+		"pages": ["Toi, t'as de la poigne."]
+	},
+	"route_17_biker_1_before": {
+		"speaker": "Motard",
+		"pages": ["T'as vu cette descente ?\nOn la dévale tous les jours !"]
+	},
+	"route_17_biker_1_defeated": {
+		"speaker": "Motard",
+		"pages": ["Sortie de route !"]
+	},
+	"route_17_biker_1_after": {
+		"speaker": "Motard",
+		"pages": ["Fais gaffe dans les virages."]
+	},
+	"route_17_biker_2_before": {
+		"speaker": "Motard",
+		"pages": ["T'as vu cette descente ?\nOn la dévale tous les jours !"]
+	},
+	"route_17_biker_2_defeated": {
+		"speaker": "Motard",
+		"pages": ["Sortie de route !"]
+	},
+	"route_17_biker_2_after": {
+		"speaker": "Motard",
+		"pages": ["Fais gaffe dans les virages."]
+	},
+	"route_17_biker_3_before": {
+		"speaker": "Motard",
+		"pages": ["T'as vu cette descente ?\nOn la dévale tous les jours !"]
+	},
+	"route_17_biker_3_defeated": {
+		"speaker": "Motard",
+		"pages": ["Sortie de route !"]
+	},
+	"route_17_biker_3_after": {
+		"speaker": "Motard",
+		"pages": ["Fais gaffe dans les virages."]
+	},
+	"route_17_cueball_3_before": {
+		"speaker": "Loubard",
+		"pages": ["Tu cherches la bagarre ?\nTu l'as trouvée !"]
+	},
+	"route_17_cueball_3_defeated": {
+		"speaker": "Loubard",
+		"pages": ["Aïe… Ça cogne !"]
+	},
+	"route_17_cueball_3_after": {
+		"speaker": "Loubard",
+		"pages": ["Toi, t'as de la poigne."]
+	},
+	"route_17_biker_4_before": {
+		"speaker": "Motard",
+		"pages": ["T'as vu cette descente ?\nOn la dévale tous les jours !"]
+	},
+	"route_17_biker_4_defeated": {
+		"speaker": "Motard",
+		"pages": ["Sortie de route !"]
+	},
+	"route_17_biker_4_after": {
+		"speaker": "Motard",
+		"pages": ["Fais gaffe dans les virages."]
+	},
+	"route_17_cueball_4_before": {
+		"speaker": "Loubard",
+		"pages": ["Tu cherches la bagarre ?\nTu l'as trouvée !"]
+	},
+	"route_17_cueball_4_defeated": {
+		"speaker": "Loubard",
+		"pages": ["Aïe… Ça cogne !"]
+	},
+	"route_17_cueball_4_after": {
+		"speaker": "Loubard",
+		"pages": ["Toi, t'as de la poigne."]
+	}
+}

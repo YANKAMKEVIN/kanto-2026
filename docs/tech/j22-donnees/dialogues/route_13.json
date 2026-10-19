@@ -1,0 +1,86 @@
+{
+	"route_13_bird_1_before": {
+		"speaker": "Ornithologue",
+		"pages": ["Mes oiseaux connaissent le vent\nmieux que personne !"]
+	},
+	"route_13_bird_1_defeated": {
+		"speaker": "Ornithologue",
+		"pages": ["Ils ont perdu le cap…"]
+	},
+	"route_13_bird_1_after": {
+		"speaker": "Ornithologue",
+		"pages": ["Les oiseaux reviennent toujours."]
+	},
+	"route_13_lass_1_before": {
+		"speaker": "Jeune Dresseuse",
+		"pages": ["Mes Ptitard adorent nager.\nEt se battre !"]
+	},
+	"route_13_lass_1_defeated": {
+		"speaker": "Jeune Dresseuse",
+		"pages": ["Ils sont tout mouillés…"]
+	},
+	"route_13_lass_1_after": {
+		"speaker": "Jeune Dresseuse",
+		"pages": ["Je vais les sécher au soleil."]
+	},
+	"route_13_lass_2_before": {
+		"speaker": "Jeune Dresseuse",
+		"pages": ["Tu tournes en rond dans ces clôtures ?\nMoi aussi ! Combattons !"]
+	},
+	"route_13_lass_2_defeated": {
+		"speaker": "Jeune Dresseuse",
+		"pages": ["Je suis encore plus perdue…"]
+	},
+	"route_13_lass_2_after": {
+		"speaker": "Jeune Dresseuse",
+		"pages": ["La sortie ? Par là, je crois…"]
+	},
+	"route_13_lass_3_before": {
+		"speaker": "Jeune Dresseuse",
+		"pages": ["Tous mes Pokémon viennent de l'eau.\nTu sauras t'y prendre ?"]
+	},
+	"route_13_lass_3_defeated": {
+		"speaker": "Jeune Dresseuse",
+		"pages": ["Tu t'y prends très bien."]
+	},
+	"route_13_lass_3_after": {
+		"speaker": "Jeune Dresseuse",
+		"pages": ["Je retourne au bord de l'eau."]
+	},
+	"route_13_beauty_before": {
+		"speaker": "Beauté",
+		"pages": ["Un combat ? Volontiers.\nMais sans abîmer mes Pokémon !"]
+	},
+	"route_13_beauty_defeated": {
+		"speaker": "Beauté",
+		"pages": ["Oh ! Quelle force !"]
+	},
+	"route_13_beauty_after": {
+		"speaker": "Beauté",
+		"pages": ["Il faudra que je m'entraîne aussi."]
+	},
+	"route_13_biker_before": {
+		"speaker": "Motard",
+		"pages": ["Hé, toi ! T'as rien à faire\nsur notre route !"]
+	},
+	"route_13_biker_defeated": {
+		"speaker": "Motard",
+		"pages": ["Ouais, bon… T'es pas mauvais."]
+	},
+	"route_13_biker_after": {
+		"speaker": "Motard",
+		"pages": ["Va voir sur la Piste si on y est."]
+	},
+	"route_13_bird_2_before": {
+		"speaker": "Ornithologue",
+		"pages": ["Quatre oiseaux, quatre vents !"]
+	},
+	"route_13_bird_2_defeated": {
+		"speaker": "Ornithologue",
+		"pages": ["Tous au tapis…"]
+	},
+	"route_13_bird_2_after": {
+		"speaker": "Ornithologue",
+		"pages": ["Je vais devoir les reposer."]
+	}
+}

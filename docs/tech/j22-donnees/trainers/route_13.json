@@ -1,0 +1,56 @@
+{
+	"route_13_bird_1": {
+		"name": "Ornithologue", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true,
+		"prize_money": 0, "prize_per_level": 25,
+		"team": [{ "species": "pidgey", "level": 29 }, { "species": "pidgeotto", "level": 29 }]
+	},
+	"route_13_lass_1": {
+		"name": "Jeune Dresseuse", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true,
+		"prize_money": 0, "prize_per_level": 20,
+		"team": [{ "species": "poliwag", "level": 30 }, { "species": "poliwag", "level": 30 }]
+	},
+	"route_13_lass_2": {
+		"name": "Jeune Dresseuse", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true,
+		"prize_money": 0, "prize_per_level": 20,
+		"team": [
+			{ "species": "pidgey", "level": 27 }, { "species": "meowth", "level": 27 },
+			{ "species": "pidgey", "level": 27 }, { "species": "pidgeotto", "level": 27 }
+		]
+	},
+	"route_13_lass_3": {
+		"name": "Jeune Dresseuse", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true,
+		"prize_money": 0, "prize_per_level": 20,
+		"team": [
+			{ "species": "goldeen", "level": 28 }, { "species": "poliwag", "level": 28 },
+			{ "species": "horsea", "level": 28 }
+		]
+	},
+	"route_13_beauty": {
+		"name": "Beauté", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true,
+		"prize_money": 0, "prize_per_level": 70,
+		"team": [{ "species": "clefairy", "level": 29 }, { "species": "meowth", "level": 29 }]
+	},
+	"route_13_biker": {
+		"name": "Motard", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true,
+		"prize_money": 0, "prize_per_level": 20,
+		"team": [
+			{ "species": "koffing", "level": 28 }, { "species": "koffing", "level": 28 },
+			{ "species": "koffing", "level": 28 }
+		]
+	},
+	"route_13_bird_2": {
+		"name": "Ornithologue", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true,
+		"prize_money": 0, "prize_per_level": 25,
+		"team": [
+			{ "species": "pidgey", "level": 26 }, { "species": "pidgeotto", "level": 26 },
+			{ "species": "spearow", "level": 26 }, { "species": "fearow", "level": 26 }
+		]
+	}
+}
