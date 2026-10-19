@@ -107,6 +107,20 @@ Une branche par tâche, fusionnée dans `jalon-24` ; worktree d'intégration dé
   `CurrentField` (§2.6), ignorées par `can_enter`.
 - **Cases « Surf forcé »** : liste par carte (données de la carte), pas un drapeau de case.
 
+**Fait (2026-10-19, `e41bd779`)** : la logique pure est codée. Elle s'écarte du plan sur quatre points.
+- **Niveaux de sol dans `GridWorld`** : `Level { ANY, LOW, HIGH, STAIRS }`, nécessaires pour les collisions
+  par paires de RB et pour le refus « changement de niveau » des rochers.
+- **`SurfRules.can_mount`** prend la case et la direction, et rend `Mount` (avec `NOT_WATER`, `BLOCKED`,
+  `FORBIDDEN`).
+- **`resume`** reçoit `has_exit` (garde-fou générique) et rend la raison du choix.
+- **`seafoam.json`** contient aussi les atterrissages du joueur.
+
+Les résultats sont identiques à `plan_check_j24_seafoam.py` : 256 combinaisons, 42 explorations,
+solution rejouée. Suite complète : 5 602 / 5 602.
+
+**Drapeau « déjà reçu » des fossiles** [D] : `fossil_revived_<espèce>`, une résurrection par espèce
+comme dans RB. Il est passé à `PokemonGift.give` (J20) lors de l'intégration.
+
 ### 2.2 `SurfRules` (pure, T6)
 
 ```gdscript
