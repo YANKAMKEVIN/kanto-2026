@@ -95,6 +95,8 @@ sécurité, `build/art/refus_serie25.log`) :
 
 Planche de contact : `docs/design/reference/serie-25-contact-v1.png` (`--contact`).
 
+**Kangourex refait (2026-10-19, branche `j22-t7b-kangourex`)** : Kevin a validé la planche v1 sauf Kangourex (tête casquée grise). Prompt **r2** : ancres = artwork officiel `assets/sprites/pokemon/official/115.png` (design) + Ramoloss r3 et Rattata (rendu), tête brune sans casque, poche crème avec le petit. Codex : limite d'usage à 15 h 20 et 15 h 56 (pas des refus), puis 3 refus avec ancres (`moderation_blocked`), **obtenu sans pièce jointe** (1er essai). r2 retenu ; r3 (sans nom de licence) écrit mais non lancé. Planche `docs/design/reference/serie-25-contact-v2.png` (même mise en page, seul le Kangourex change ; v1 conservée).
+
 ## À faire valider par Kevin
 
 1. Héros à vélo : cadre rouge [D] ; les poses de profil du pédalage débordent un peu de leur
@@ -103,7 +105,7 @@ Planche de contact : `docs/design/reference/serie-25-contact-v1.png` (`--contact
    préparation ?).
 3. Frères pêcheurs : cadet de Parmanie (bob olive, carreaux rouges, épuisette), aîné de la Route 12
    (ciré jaune, bonnet rouge, barbe blanche).
-4. Kangourex : design approximatif (tête casquée grise) ; Ramoloss : rendu « artwork » (r3 sans ancre).
+4. Kangourex : r2 (planche v2) à revoir, tête brune sans casque, oreilles un peu pointues ; Ramoloss : rendu « artwork » (r3 sans ancre).
 5. Icônes : la Bicyclette a un porte-bagages (le prompt n'en voulait pas) ; le Bon porte un vélo rouge
    et un tampon bleu.
 6. Dos de combat : provisoires pixel art (la chaîne Colab n'a pas tourné).

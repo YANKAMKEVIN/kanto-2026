@@ -265,6 +265,53 @@ CORRECTIONS = {("POKE_RAMOLOSS_FIXE", 2): (
 	"assis tranquillement, la queue étendue derrière lui, l'air rêveur",
 	"il penche doucement la tête sur le côté, les yeux mi-clos, l'air ensommeillé (même silhouette)")}
 
+## Kangourex refait après la relecture de Kevin (2026-10-19) : r1 approximatif (tête casquée grise).
+## Ancres : l'artwork officiel (design) puis Ramoloss r3, Pokémon du monde validé de la même main (rendu).
+OFFICIEL_KANGOUREX = "assets/sprites/pokemon/official/115.png"
+RAMOLOSS_VALIDE = "POKE_RAMOLOSS_FIXE_NE_r3.png"
+KANGOUREX_JOINTES = (f"{Path(OFFICIEL_KANGOUREX).name} = le DESIGN à respecter (silhouette, couleurs, "
+	f"poche, petit) mais PAS son rendu ni sa pose ; {RAMOLOSS_VALIDE[:-4]} (un Pokémon du monde validé) et "
+	f"{RATTATA[:-4]} = le RENDU à reproduire exactement (même main peinte, même finesse, même contour fin "
+	"coloré)")
+_KANGOUREX_TETE = ("TÊTE de la mère BRUNE comme le corps, SANS casque : aucune calotte grise ni noire qui "
+	"couvre le crâne ou descend vers les yeux (tout au plus une fine bande brun plus sombre sur le sommet du "
+	"crâne, loin derrière les yeux) ; museau allongé et arrondi brun, petits yeux sérieux, deux OREILLES "
+	"ARRONDIES dressées, brunes à l'intérieur crème")
+KANGOUREX_REVISIONS = {
+	2: (f"Kangourex, de Pokémon Rouge/Bleu, EXACTEMENT le design de l'image officielle jointe "
+		f"{Path(OFFICIEL_KANGOUREX).name}, peint dans la main des ancres : grande MÈRE bipède massive de type "
+		"kangourou, corps BRUN-BEIGE (brun chaud un peu grisé), grand VENTRE ovale CRÈME qui forme une POCHE "
+		f"ventrale ; {_KANGOUREX_TETE} ; quelques plaques brun foncé sur les épaules, le haut des bras et le "
+		"dos, bras forts aux griffes crème, grosses pattes, longue queue épaisse brune posée au sol. Dans la "
+		"POCHE, son PETIT : un bébé tout rond, gris-mauve pâle, au visage doux, dont on voit la tête et le "
+		"haut du corps. La mère est grande : plus haute que le héros (environ 1,6 case quand un adulte en "
+		"fait 1,33).",
+		"debout, calme, les bras le long du corps, le petit tranquille dans la poche",
+		"le PETIT sort la tête et les petits bras de la poche, curieux, et la mère baisse un peu la tête vers "
+		"lui (même silhouette de la mère, différence douce)"),
+	# r3 : r2 refusé ; sans nom de licence ni « Pokémon » (méthode de Ramoloss r3).
+	3: ("une grande MÈRE kangourou de dessin animé, massive et calme, bipède : corps BRUN-BEIGE (brun chaud "
+		"un peu grisé), grand VENTRE ovale CRÈME qui forme une POCHE ventrale ; TÊTE BRUNE comme le corps, "
+		"sans casque ni calotte, museau allongé et arrondi, petits yeux sérieux, deux OREILLES ARRONDIES "
+		"dressées ; quelques plaques brun foncé sur les épaules et le dos, bras forts aux griffes crème, "
+		"grosses pattes, longue queue épaisse posée au sol. Dans la POCHE, son PETIT : un bébé tout rond, "
+		"gris-mauve pâle, au visage doux, dont on voit la tête. Plus haute que le héros (environ 1,6 case "
+		"quand un adulte en fait 1,33).",
+		"debout, calme, les bras le long du corps, le petit tranquille dans la poche",
+		"le PETIT sort la tête et les petits bras de la poche, curieux, et la mère baisse un peu la tête vers "
+		"lui (même silhouette de la mère, différence douce)"),
+}
+
+
+def _prompt_kangourex(rev: int) -> str:
+	description, repos, reaction = KANGOUREX_REVISIONS[rev]
+	texte = _prompt_pokemon_fixe("POKE_KANGOUREX_FIXE", None, description, repos, reaction, 150, 260, False)
+	premiere = texte.split("\n", 2)
+	assert premiere[1].startswith("Images jointes")
+	premiere[1] = f"Images jointes : {KANGOUREX_JOINTES}."
+	return "\n".join(premiere)
+
+
 # --- Icônes du Sac (chaîne `preparer_menu.py`, colonnes de 384 px) --------------------------------
 
 _COLONNES = ("dans une image 1536 × 1024 divisée en quatre colonnes invisibles de 384 px : une icône "
@@ -353,6 +400,10 @@ def _images() -> list[dict]:
 		nom = f"{ident}_NE_r{rev}"
 		ajouter(nom, PROMPTS / f"{nom}.txt", _prompt_pokemon_fixe(ident, None, description, repos, reaction,
 			hauteur, haut_planche, False), [HEROS, RATTATA, ancre], 3, f"{ident}_r{rev}")
+	for rev in KANGOUREX_REVISIONS:
+		nom = f"POKE_KANGOUREX_FIXE_NE_r{rev}"
+		ajouter(nom, PROMPTS / f"{nom}.txt", _prompt_kangourex(rev), [OFFICIEL_KANGOUREX, RAMOLOSS_VALIDE, RATTATA], 3,
+			f"POKE_KANGOUREX_FIXE_r{rev}")
 	for ident, description, ancres_, _ in UI_PLANCHES:
 		ajouter(f"{ident}_r1", PROMPTS / f"{ident}_r1.txt", _prompt_ui(ident, description), ancres_, 1, ident)
 	return images
