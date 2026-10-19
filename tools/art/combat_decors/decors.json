@@ -136,5 +136,23 @@
 		],
 		"taille": [2340, 1080],
 		"qualite": 90
+	},
+	"sea_open": {
+		"composition": "COMBAT_DECOR_MER_OUVERTE_r1.png",
+		"tuiles": [
+			{ "image": "COMBAT_DECOR_MER_OUVERTE_r1_TL.png", "portion": [0, 0, 989, 862] },
+			{ "image": "COMBAT_DECOR_MER_OUVERTE_r1_TR.png", "portion": [836, 0, 1825, 862] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"seafoam_ice": {
+		"composition": "COMBAT_DECOR_GROTTE_GLACEE_r1.png",
+		"tuiles": [
+			{ "image": "COMBAT_DECOR_GROTTE_GLACEE_r1_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "COMBAT_DECOR_GROTTE_GLACEE_r1_TR.png", "portion": [846, 0, 1846, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
 	}
 }
