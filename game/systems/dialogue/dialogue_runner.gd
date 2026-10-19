@@ -286,7 +286,7 @@ func _field_pokemon_name(variant: DialogueVariant) -> String:
 func _begin_page() -> void:
 	var page := _session.get_page()
 	if _box != null:
-		_box.show_page(_session.get_speaker(), page.text, _dialogue.narration)
+		_box.show_page(_session.get_speaker(), page.text, _dialogue.narration, page.voice)
 	for actor_id: StringName in page.turn:
 		_apply_turn(actor_id, page.turn[actor_id])
 	if page.face_player and is_instance_valid(_npc) and _player != null:
