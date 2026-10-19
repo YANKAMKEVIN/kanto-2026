@@ -30,6 +30,13 @@ Périmètre validé par Kevin le 2026-10-19 : Vélo et Piste Cyclable, Surf, For
 Scope Sylphe, Poké Flûte, états « monté » du joueur, et tout système encore prévu dans un jalon
 de contenu.
 
+Point de départ déjà écrit (message du J24, 2026-10-19) : `jalon-24` (@ `ed306985`) contient une
+logique pure et testée de **Surf et de Force**, sans dépendance à une carte : `GridWorld` (eau
+surfable, courants, niveaux de sol, `can_enter_as`, `find_reachable`), `SurfRules`, `BoulderRules`,
+`SeafoamState`, `CurrentField`, `FossilLab`. Conception dans `docs/tech/jalon-24.md` §2.1 à §2.6 bis
+(Warp FALL compris), résumé au §0.4. La passe systèmes 2 en est propriétaire : elle peut la
+reprendre, la modifier ou la remplacer.
+
 Ensuite, un jalon de contenu (route, ville, arène) n'est **que des données et des cartes** : il
 ne dépend plus des autres jalons, et la règle d'ancienneté ne bloque presque plus rien.
 
@@ -44,13 +51,19 @@ ne dépend plus des autres jalons, et la règle d'ancienneté ne bloque presque 
 Un jalon n'entre en code que si les systèmes qu'il utilise sont **déjà dans `main`**. Sinon, il
 reste en conception.
 
-### 3. Des tests plus rapides
+### 3. Des tests plus rapides — outillé le 2026-10-19
 
-- Pendant une tâche : ne lancer que les tests concernés (à outiller : sélection de fichiers dans
-  `tools/test.sh`, par exemple via `-gselect` de GUT). **Suite complète seulement avant une fusion.**
-- **Verrou** : au maximum 2 suites complètes en même temps sur le Mac (à outiller dans `tools/test.sh`).
-  Deux suites rapides valent mieux que huit qui se freinent.
-- Repérer les 20 tests les plus lents et les alléger, sans perdre de couverture.
+- **Pendant une tâche** : `tools/test.sh --changed [base]` lance seulement les tests liés aux
+  fichiers modifiés (tests modifiés, tests qui citent le fichier ou sa `class_name`). Si un fichier
+  commun change (helpers, fixtures, autoload, addons, `project.godot`), il bascule sur la suite
+  complète. `tools/test.sh -f motif1,motif2` cible des fichiers de test par leur nom.
+- **Avant une fusion** : `tools/test.sh` (suite complète), toujours obligatoire. Le ciblage ne voit
+  pas les dépendances indirectes.
+- **Verrou** : 2 suites complètes au maximum en même temps sur le Mac (`KANTO_TEST_SLOTS`), places
+  dans `/tmp/kanto2026-test-slots/`, libérées automatiquement si leur processus meurt. Les
+  lancements ciblés ne prennent pas de place.
+- **Tests lents** : la suite complète affiche à la fin ses 10 scripts les plus lents. Reste à faire :
+  alléger les plus lents, sans perdre de couverture.
 
 ### 4. Moins d'étapes pour les jalons de contenu
 

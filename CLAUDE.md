@@ -37,7 +37,7 @@ Kevin est le **directeur du jeu** : il conçoit (souvent avec ChatGPT), Claude i
 ## Règles de travail
 
 1. **Validation S24 par sous-jalon** (5B, 5C…) : les tâches liées s'enchaînent, puis une seule session S24 + validation de Kevin à la fin du sous-jalon. Exception : un système risqué (sauvegarde, tout ce qui peut perdre des données) est validé seul. Jamais trois systèmes à la fois.
-2. Une tâche n'est finie que si : `tools/test.sh` passe, le projet s'importe sans erreur, et (si c'est visible) une capture a été relue (headless ou Mac) ; la capture S24 vient à la validation du sous-jalon.
+2. Une tâche n'est finie que si : les tests ciblés passent (`tools/test.sh --changed`), la **suite complète** (`tools/test.sh`) étant obligatoire avant chaque fusion, le projet s'importe sans erreur, et (si c'est visible) une capture a été relue (headless ou Mac) ; la capture S24 vient à la validation du sous-jalon.
 3. **Sur S24, on valide le fonctionnel** (ça marche, c'est lisible, c'est bien placé), pas le rendu final : les visuels sont provisoires jusqu'à la phase DA. Une remarque de rendu se note dans `docs/tech/etat-projet.md` (« Reportés »), sans la corriger tout de suite.
 4. **Petites questions → valeur par défaut** : durées, positions, tailles, couleurs… reçoivent une valeur par défaut, notée dans le commit et dans `etat-projet.md`, et le travail continue. Seules les vraies décisions de game design bloquent et vont à Kevin.
 5. **`docs/tech/etat-projet.md` est mis à jour dans le même commit que chaque tâche terminée** : chaque session repart de ce fichier.
@@ -75,7 +75,9 @@ docs/design/   conception (ignoré par Godot)
 ## Commandes
 
 ```bash
-tools/test.sh                  # tests GUT headless (refuse d'abord toute mesure de temps réel : tools/check_test_timing.sh)
+tools/test.sh                  # suite complète, avant une fusion (verrou : 2 suites complètes max sur le Mac ; affiche les 10 scripts les plus lents)
+tools/test.sh --changed [base] # pendant une tâche : seulement les tests liés aux fichiers modifiés depuis base (défaut origin/main)
+tools/test.sh -f surf,safari   # pendant une tâche : les fichiers de test dont le nom contient un des motifs
 tools/build_android.sh         # APK debug → build/kanto2026-debug.apk
 tools/deploy_s24.sh            # build + install + lancement + capture build/screenshot.png + logs (USB ou Wi-Fi)
 tools/s24_serial.sh            # série adb du S24 (USB ou débogage sans fil)
