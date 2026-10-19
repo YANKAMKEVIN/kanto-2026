@@ -152,10 +152,26 @@ func test_north_edge_leads_to_route_10_or_coming_soon() -> void:
 	assert_eq(_map.get_spawn_cell(&"from_route_10"), Vector2i(22, 0))
 
 
-func test_west_and_south_edges_are_coming_soon_and_reachable() -> void:
+## Jalon 20 (T15) : le bord ouest mène à la Route 8, rangée par rangée.
+func test_west_edge_leads_to_route_8_row_by_row() -> void:
 	var dist := _reach()
-	for entry: Array in [[Vector2i(0, 10), Vector2i.LEFT, "Route 8", "from_route_8_"],
-			[Vector2i(21, 35), Vector2i.DOWN, "Route 12", "from_route_12_"]]:
+	var suffixes := ["n", "c", "s"]
+	for i: int in 3:
+		var cell := Vector2i(0, 10 + i)
+		var warp := _map.get_warps().find_on_push(cell, Vector2i.LEFT)
+		assert_not_null(warp, "raccord %s" % cell)
+		if warp != null:
+			assert_false(warp.is_coming_soon())
+			assert_eq([warp.target_map, warp.target_spawn],
+				[&"route_8", StringName("from_lavender_" + suffixes[i])])
+		assert_true(dist.has(cell), "bord %s atteignable" % cell)
+		assert_eq(_map.get_spawn_cell(StringName("from_route_8_" + suffixes[i])),
+			Vector2i(1, 10 + i))
+
+
+func test_south_edge_is_coming_soon_and_reachable() -> void:
+	var dist := _reach()
+	for entry: Array in [[Vector2i(21, 35), Vector2i.DOWN, "Route 12", "from_route_12_"]]:
 		for i: int in 3:
 			var cell: Vector2i = entry[0] + (Vector2i(0, i) if entry[1] == Vector2i.LEFT
 				else Vector2i(i, 0))

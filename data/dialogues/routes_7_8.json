@@ -1,0 +1,22 @@
+{
+	"route_8_sign": {
+		"pages": [
+			"ROUTE 8\nLavanville → ← Safrania"
+		]
+	},
+	"route_8_underground_sign": {
+		"pages": [
+			"PASSAGE SOUTERRAIN\nRoute 7 — Céladopole"
+		]
+	},
+	"route_7_sign": {
+		"pages": [
+			"ROUTE 7\nCéladopole ← → Safrania"
+		]
+	},
+	"route_7_underground_sign": {
+		"pages": [
+			"PASSAGE SOUTERRAIN\nRoute 7 — Céladopole"
+		]
+	}
+}

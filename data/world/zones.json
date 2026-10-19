@@ -126,9 +126,24 @@
 			],
 			"description": "Une petite ville silencieuse au pied de la Tour Pokémon. On y vient de loin pour se souvenir."
 		},
-		"route_8": { "name": "Route 8", "kind": "route", "maps": [] },
+		"route_8": {
+			"name": "Route 8", "kind": "route",
+			"maps": ["route_8", "route_8_gate", "route_8_underground_gate"],
+			"subtitle": "Lavanville — Safrania",
+			"description": "Une route de Dresseurs entre deux chemins. À l'ouest, le poste de Safrania et l'entrée du souterrain."
+		},
+		"underground_path_7_8": {
+			"name": "Passage souterrain", "kind": "place", "maps": ["underground_path_7_8"],
+			"subtitle": "Route 7 — Route 8",
+			"description": "Un long couloir carrelé sous Safrania. Des néons froids, et presque personne."
+		},
 		"saffron_city": { "name": "Safrania", "kind": "town", "maps": [] },
-		"route_7": { "name": "Route 7", "kind": "route", "maps": [] },
+		"route_7": {
+			"name": "Route 7", "kind": "route",
+			"maps": ["route_7", "route_7_gate", "route_7_underground_gate"],
+			"subtitle": "Céladopole — Safrania",
+			"description": "Une courte route en pente douce. Les toits de Céladopole apparaissent entre les arbres."
+		},
 		"celadon_city": { "name": "Céladopole", "kind": "town", "maps": [] },
 		"fuchsia_city": { "name": "Parmanie", "kind": "town", "maps": [] },
 		"route_21": { "name": "Route 21", "kind": "sea_route", "maps": [] },

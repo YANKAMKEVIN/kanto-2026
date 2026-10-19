@@ -273,7 +273,8 @@ func test_coming_soon_labels_are_t29() -> void:
 				labels.append(label)
 	map.free()
 	labels.sort()
-	assert_eq(labels, ["ROUTE 12 — À venir", "ROUTE 8 — À venir"] as Array[String])
+	# Jalon 20 (T15) : le bord ouest mène à la vraie Route 8 ; reste la Route 12.
+	assert_eq(labels, ["ROUTE 12 — À venir"] as Array[String])
 
 
 func test_objectives_are_t56_in_lower_case_and_in_order() -> void:

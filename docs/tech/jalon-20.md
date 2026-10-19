@@ -1162,7 +1162,9 @@ commit ; textes **mot pour mot** (§20 et annexe A validée).
 - `ElevatorPanel` (§2.3.4) ; ligne « déjà dans le Sac » ; liste d'équipe du combat qui accepte un K.O.
   pour le Rappel. **CA** : captures 2340 × 1080 relues ; aucune couleur en dur.
 
-#### T15 — constructeur-monde : Route 8, souterrain, Route 7, postes, raccord Lavanville — (B)
+#### T15 — constructeur-monde : Route 8, souterrain, Route 7, postes, raccord Lavanville — (B) — **FAIT le 2026-10-20**
+- Fait (détail et valeurs par défaut : `etat-projet.md`, entrée « J20 T15 ») ; objets cachés,
+  PNJ et Dresseurs laissés au T17.
 - §2.1, §2.2 ; `build_route_8.gd`, `build_route_7.gd`, `build_underground_path_7_8.gd`, `_gate_room`
   ×4 ; raccord Lavanville (§2.1, retrait du `coming_soon` dans `build_lavender_town.gd`) ; cases des
   PNJ et objets réservées.

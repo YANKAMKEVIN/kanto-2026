@@ -160,6 +160,9 @@ const MAPS: Array[StringName] = [
 	&"pokemon_tower_3f", &"pokemon_tower_4f", &"pokemon_tower_5f", &"pokemon_tower_6f",
 	# Jalon 19 (T17) : le rival n° 5 et l'Exorciste calme du 2F.
 	&"pokemon_tower_2f",
+	# Jalon 20 (T15) : Routes 7 et 8, postes, bâtiments d'entrée, souterrain (panneaux).
+	&"route_8", &"route_7", &"route_7_gate", &"route_8_gate", &"route_7_underground_gate",
+	&"route_8_underground_gate", &"underground_path_7_8",
 ]
 ## Lot de textes validé par Kevin le 2026-10-06 (anciens brouillons : panneau, observations,
 ## soin de Maman, terminal du Stockage, portes de Jadielle…) : source des textes hors dossiers.
@@ -429,6 +432,12 @@ const PLAYED_J16_T15: Array[StringName] = [
 const DOSSIER_19 := "res://docs/design/dossier-19-ss-anne-major-bob.md"
 ## Jalon 18 (T16) : Route 9, Route 10, Grotte Sombre, Lavanville, Tour (dossier 21 §15, annexe A
 ## du plan ; mot pour mot : test_j18_data, test_trainers_j18).
+## Jalon 20 (T15) : panneaux des Routes 7 et 8 (dossier 23 §20, textes 1, 2, 11).
+const IDS_J20: Array[StringName] = [
+	&"route_7_sign", &"route_7_underground_sign", &"route_8_sign", &"route_8_underground_sign",
+]
+## Jalon 20 : lot de textes validé du dossier 23 (§20, une citation par ligne).
+const DOSSIER_23 := "res://docs/design/dossier-23-celadopole.md"
 const IDS_J19: Array[StringName] = [
 	&"tower_channeler_1_after",
 	&"tower_channeler_1_before",
@@ -686,7 +695,7 @@ func test_library_loads_without_error() -> void:
 	var found := _without_qa(library.get_ids())
 	found.sort()
 	var expected := IDS + IDS_J14_BILL + IDS_J14_ROCKET + IDS_J15_ROUTE_5 + IDS_J16_GYM \
-		+ IDS_J16_SHIP + IDS_J16_RIVAL_CAPTAIN + IDS_J16_T15 + IDS_J17 + IDS_J18 + IDS_J19
+		+ IDS_J16_SHIP + IDS_J16_RIVAL_CAPTAIN + IDS_J16_T15 + IDS_J17 + IDS_J18 + IDS_J19 + IDS_J20
 	expected.sort()
 	assert_eq(found, expected)
 
@@ -1107,6 +1116,7 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 	var dossier_15 := FileAccess.get_file_as_string(DOSSIER_15)
 	var dossier_21 := FileAccess.get_file_as_string(DOSSIER_21) \
 		+ FileAccess.get_file_as_string(PLAN_J18)
+	var dossier_23 := FileAccess.get_file_as_string(DOSSIER_23)
 	var dossier_22 := FileAccess.get_file_as_string(DOSSIER_22).replace("\n   ", " ") \
 		.replace("\n  ", " ")
 	var dossier_20 := FileAccess.get_file_as_string(DOSSIER_20).replace("**", "")
@@ -1172,7 +1182,9 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			or _in_dossier_18(dossier_22, text)
 			or _in_dossier_18(dossier_22, text.replace("{joueur}", "{player}"))
 			# J19 (T17) : citation du §15 repliée sur deux lignes du dossier.
-			or _in_dossier_18(_flat_lines(dossier_22), text),
+			or _in_dossier_18(_flat_lines(dossier_22), text)
+			# J20 (T15) : dossier 23 §20, un panneau sur deux lignes, une citation par ligne.
+			or _each_line_quoted(dossier_23, text),
 			"%s : « %s » dans un dossier de conception" % [row[0], text])
 
 

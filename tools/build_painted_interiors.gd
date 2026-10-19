@@ -123,6 +123,9 @@ const SEA_TINT := Color(0.58, 0.68, 0.9)
 ## Jalon 18 (T14) : les cinq intérieurs peints de Lavanville.
 const LAVANVILLE := [&"lavender_center", &"lavender_mart", &"pokemon_house",
 	&"lavender_house_1", &"lavender_house_2"]
+## Jalon 20 (T15) : postes de Safrania et bâtiments d'entrée du souterrain des Routes 7 et 8.
+const ROUTES_7_8 := [&"route_7_gate", &"route_8_gate", &"route_7_underground_gate",
+	&"route_8_underground_gate"]
 const PLANS_DIR := "res://tools/plans/"
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 const LOGIC_DIR := "res://tests/fixtures/maps/"
@@ -152,6 +155,7 @@ func _init() -> void:
 	rooms.append(_pokemon_center(&"route_10_center", "Route10Center", "Route 10",
 		[&"route_10", &"from_center"]))
 	rooms.append_array(_lavender_rooms())
+	rooms.append_array(_routes_7_8_rooms())
 	for room: Dictionary in rooms:
 		if not wanted.is_empty() and not wanted.has(room["id"]):
 			continue
@@ -199,6 +203,8 @@ func _wanted_rooms() -> Array:
 			wanted.append_array(SS_ANNE + [&"vermilion_gym"])
 		elif arg == "--lavanville":
 			wanted.append_array(LAVANVILLE)
+		elif arg == "--routes78":
+			wanted.append_array(ROUTES_7_8)
 		elif arg.begins_with("--rooms="):
 			for id: String in arg.trim_prefix("--rooms=").split(","):
 				wanted.append(StringName(id))
@@ -1997,4 +2003,93 @@ func _lavender_house_2() -> Dictionary:
 	var azuria := _cerulean_house()
 	room["furniture"] = azuria["furniture"]
 	room["rugs"] = azuria["rugs"]
+	return room
+
+
+# --- Jalon 20 (T15) : Routes 7 et 8 ------------------------------------------------------------
+
+## Postes de Safrania et bâtiments d'entrée du souterrain des Routes 7 et 8 (`jalon-20.md` §2.1,
+## §2.2 ; grilles `poste_safrania.txt` et `souterrain_entree.txt`, une enveloppe pour les deux
+## routes). La coque du poste du J15 (10 × 8, `_gate_room`) est gardée **telle quelle** (§2.2) :
+## les grilles (12 × 10) s'y lisent décalées d'une case (porte côté route (4..5, 7), porte du
+## nord ou escalier (4..5, 1..2)). Habitant (texte 10) et garde (texte 12) : PNJ des données (T17,
+## T25).
+func _routes_7_8_rooms() -> Array[Dictionary]:
+	var rooms: Array[Dictionary] = []
+	for route: int in [7, 8]:
+		rooms.append(_saffron_gate(route))
+	for route: int in [7, 8]:
+		rooms.append(_celadon_underground_gate(route))
+	return rooms
+
+
+## Coque commune (celle de `_gate_room`, J15) : sortie STEP_ON ↓ vers la Route [param route] /
+## [param exit_spawn] ; arrivée `entrance` (4, 6), tournée ↑.
+func _route_7_8_room(id: StringName, node: String, route: int, exit_spawn: StringName) \
+		-> Dictionary:
+	var route_map := StringName("route_%d" % route)
+	return {
+		"id": id, "node": node, "size": Vector2i(10, 8),
+		"shell": "res://assets/world/interiors/int_poste_foret_coque.png",
+		"title": "Route %d" % route, "light": &"interior_warm",
+		"floor": Rect2i(1, 2, 8, 5),
+		"doors": [Vector2i(4, 7), Vector2i(5, 7), Vector2i(4, 1), Vector2i(5, 1)],
+		"props": [
+			[&"int_meuble_bas_01", Vector2i(2, 2), 3.0, "LowCabinet"],
+			[&"int_porte_manteau_01", Vector2i(8, 2), 3.0, "CoatRack"],
+			[&"int_plante", Vector2i(1, 6), 7.0, "PlantWest"],
+			[&"int_plante", Vector2i(8, 6), 7.0, "PlantEast"],
+		],
+		"spawns": {"entrance": Vector2i(4, 6)},
+		"warps": [
+			["ToRouteW", Vector2i(4, 7), STEP_ON, Vector2i.DOWN, route_map, exit_spawn,
+				Vector2i.DOWN],
+			["ToRouteE", Vector2i(5, 7), STEP_ON, Vector2i.DOWN, route_map, exit_spawn,
+				Vector2i.DOWN],
+		],
+	}
+
+
+## Poste de Safrania (grille `poste_safrania.txt`) : la porte de Safrania (4..5, 1), fermée tant que
+## la ville n'existe pas (« Safrania — À venir », jamais atteinte : le garde en (4, 2) et la
+## barrière (plante) en (5, 2) la ferment ; T25 la rend conditionnelle).
+func _saffron_gate(route: int) -> Dictionary:
+	var room := _route_7_8_room(StringName("route_%d_gate" % route), "Route%dGate" % route, route,
+		&"from_gate")
+	(room["props"] as Array).append([&"int_plante", Vector2i(5, 2), 2.95, "Barrier"])
+	(room["spawns"] as Dictionary)["north_door"] = Vector2i(4, 3)
+	(room["warps"] as Array).append_array([
+		["ToSaffronW", Vector2i(4, 1), STEP_ON, Vector2i.UP, &"", &"north_door", Vector2i.DOWN,
+			"Safrania"],
+		["ToSaffronE", Vector2i(5, 1), STEP_ON, Vector2i.UP, &"", &"north_door", Vector2i.DOWN,
+			"Safrania"],
+	])
+	return room
+
+
+## Bâtiment d'entrée du souterrain (grille `souterrain_entree.txt`) : escalier descendant sur
+## (4..5, 2), STEP_ON sans direction vers `underground_path_7_8` / `from_route_<n>_n|s` (« à
+## venir » tant que la carte n'existe pas) ; retour du souterrain `from_underground` (4, 3), tourné
+## ↓ ; panneau (texte 2) au mur du fond (7, 1), EXAMINER depuis (7, 2) tourné ↑.
+func _celadon_underground_gate(route: int) -> Dictionary:
+	var room := _route_7_8_room(StringName("route_%d_underground_gate" % route),
+		"Route%dUndergroundGate" % route, route, &"from_underground")
+	room["doors"] = [Vector2i(4, 7), Vector2i(5, 7)]
+	(room["props"] as Array).append([&"int_escalier_descendant_01", Vector2i(5, 2), 3.0,
+		"Stairs"])
+	(room["spawns"] as Dictionary)["from_underground"] = Vector2i(4, 3)
+	var built := ResourceLoader.exists(MAPS_DIR + "underground_path_7_8.tscn")
+	var index := 0
+	for suffix: String in ["n", "s"]:
+		var cell := Vector2i(4 + index, 2)
+		if built:
+			(room["warps"] as Array).append(["ToUnderground" + suffix.to_upper(), cell, STEP_ON,
+				Vector2i.ZERO, &"underground_path_7_8",
+				StringName("from_route_%d_%s" % [route, suffix]), Vector2i.DOWN])
+		else:
+			(room["warps"] as Array).append(["ToUnderground" + suffix.to_upper(), cell, STEP_ON,
+				Vector2i.ZERO, &"", &"from_underground", Vector2i.DOWN, "Passage souterrain"])
+		index += 1
+	room["interactables"] = [["UndergroundSign", Vector2i(7, 1), Vector2i.ONE,
+		StringName("route_%d_underground_sign" % route), EXAMINE, Vector2i.UP]]
 	return room

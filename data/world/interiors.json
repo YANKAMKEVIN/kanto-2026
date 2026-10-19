@@ -50,6 +50,10 @@
 		"pokemon_house",
 		"lavender_house_1",
 		"lavender_house_2",
-		"pokemon_tower_1f"
+		"pokemon_tower_1f",
+		"route_7_gate",
+		"route_8_gate",
+		"route_7_underground_gate",
+		"route_8_underground_gate"
 	]
 }
