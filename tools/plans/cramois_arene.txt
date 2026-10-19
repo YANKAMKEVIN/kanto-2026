@@ -1,0 +1,64 @@
+# Arène de Cramois'Île (cinnabar_gym) — grille fonctionnelle v1 (jalon 25, dossier 28 §8). Tirée des
+# blocs RB (annexe j25-annexe-rb-cramois.md §3.5), 1 case = 1 pas (X-4). Contrôle : tools/art/plan_check_cramois.py.
+#
+# 20 × 18 cases ; nord en haut. Six salles en serpentin depuis l'entrée (sud-est) jusqu'à Auguste (nord-ouest) :
+# Q1 → P1 → couloir nord → Q2 → P2 → Q3 → P3 → Q4 → P4 → Q5 → P5 → Q6 → P6 → Auguste. Les Dresseurs ne voient pas
+# le joueur (RB) : on les affronte en leur parlant ou après une mauvaise réponse.
+#
+# Légende :
+#   # roche volcanique, mur (bloqué)   . sol de l'Arène (praticable, aucune rencontre)
+#   p herse de quiz (2 × 2 ; fermée sans son drapeau cinnabar_gym_gate_N)
+#   Q machine de quiz (bloquée ; Action face à elle, depuis la case du dessous)
+#   E seuil de sortie
+# Personnages, machines, herses : section POSITIONS.
+
+PRATICABLES .pE
+
+GRILLE 20 18
+00 ####################
+01 #.#######.Q#........
+02 #.....###.....#.....
+03 #.....###.....#.....
+04 #.....###.....#.....
+05 #.....###.....#.....
+06 ####pp######pp####pp
+07 #Q..pp###Q..pp#Q..pp
+08 #.....###.....#.....
+09 #.....###.....#.....
+10 #.....###.....#.....
+11 #.....###.....####..
+12 ####pp######pp#..#..
+13 #Q..pp###Q..pp#.....
+14 #.....###.....#.....
+15 #.....###.....#.....
+16 #.....pp......##....
+17 #.....pp......#.EE..
+FIN
+
+POSITIONS
+entree               warp       16..17,17    libre   vers=cinnabar_island  # PUSH ↓ → Cramois'Île, devant la porte de l'Arène
+depuis_ile           spawn      16,16        libre  # arrivée, tourné ↑
+auguste              champion   3,3          bloque  facing=down  # Auguste (textes 99–105)
+guide                pnj        16,13        bloque  facing=down  # guide de l'Arène (textes 79, 106)
+statue_arene         examen     17,13        bloque  # statue de l'Arène (vainqueurs)
+panneau              panneau    15,16        bloque  # texte 78 (à déplacer dehors si la ville du J24 a son panneau)
+herse_1              herse      18..19,6..7  libre   drapeau=cinnabar_gym_gate_1  # fermée tant que le drapeau manque
+herse_2              herse      12..13,6..7  libre   drapeau=cinnabar_gym_gate_2  # fermée tant que le drapeau manque
+herse_3              herse      12..13,12..13 libre   drapeau=cinnabar_gym_gate_3  # fermée tant que le drapeau manque
+herse_4              herse      6..7,16..17  libre   drapeau=cinnabar_gym_gate_4  # fermée tant que le drapeau manque
+herse_5              herse      4..5,12..13  libre   drapeau=cinnabar_gym_gate_5  # fermée tant que le drapeau manque
+herse_6              herse      4..5,6..7    libre   drapeau=cinnabar_gym_gate_6  # fermée tant que le drapeau manque
+machine_1            quiz       15,7         bloque  facing=up herse=1 dresseur=cinnabar_gym_2 reponse=oui  # question 81 ; Action depuis (15, 8)
+machine_2            quiz       10,1         bloque  facing=up herse=2 dresseur=cinnabar_gym_3 reponse=non  # question 82 ; Action depuis (10, 2)
+machine_3            quiz       9,7          bloque  facing=up herse=3 dresseur=cinnabar_gym_4 reponse=non  # question 83 ; Action depuis (9, 8)
+machine_4            quiz       9,13         bloque  facing=up herse=4 dresseur=cinnabar_gym_5 reponse=non  # question 84 ; Action depuis (9, 14)
+machine_5            quiz       1,13         bloque  facing=up herse=5 dresseur=cinnabar_gym_6 reponse=oui  # question 85 ; Action depuis (1, 14)
+machine_6            quiz       1,7          bloque  facing=up herse=6 dresseur=cinnabar_gym_7 reponse=non  # question 86 ; Action depuis (1, 8)
+cinnabar_gym_1       dresseur   17,2         bloque  facing=down sight=0  # Intello : Goupix 36, Goupix 36, Feunard 36 ; aucune machine (facultatif)
+cinnabar_gym_2       dresseur   17,8         bloque  facing=down sight=0  # Pillard : Caninos 36, Goupix 36, Feunard 36
+cinnabar_gym_3       dresseur   11,4         bloque  facing=down sight=0  # Intello : Ponyta 34, Salamèche 34, Goupix 34, Caninos 34
+cinnabar_gym_4       dresseur   11,8         bloque  facing=down sight=0  # Pillard : Ponyta 41
+cinnabar_gym_5       dresseur   11,14        bloque  facing=down sight=0  # Intello : Galopa 41
+cinnabar_gym_6       dresseur   3,14         bloque  facing=down sight=0  # Pillard : Goupix 37, Caninos 37
+cinnabar_gym_7       dresseur   3,8          bloque  facing=down sight=0  # Intello : Caninos 37, Goupix 37
+FIN
