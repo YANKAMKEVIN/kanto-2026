@@ -1047,6 +1047,45 @@ d'Azuria (53, 23), `cut_cerulean_east_tree`, régénération d'Azuria (variante 
 retrait de `qa_flash` (T28 du J17) → `test_cave_library` et `luminance_grotte.py` (`PLAN_QA`) ;
 §1.3, §3 et §3.6 du plan à réécrire selon le tableau ci-dessus ; réglage de luminance (a) ou (b).
 
+#### T15 — FAIT (2026-10-19, branche `jalon-18-integ` depuis `j18-essai-sur-j17` à 5e966549)
+
+Fusion de `origin/main` (aebbd857 : J16, PR n° 1 « Boot découpé », J17 terminé). Règle
+d'ancienneté : le J16 et le J17 font foi (brique voile / Flash, découpage de Boot, `darkness.json`).
+
+**Conflits (25 fichiers)**, « les deux côtés, le plus ancien d'abord » : `zones.json` (34 zones),
+`lighting.json`, `interiors.json`, `decors.json` (jeu et outil), aires de la carte,
+`painted_prop_rules.gd`, `build_character_frames.gd`, `build_painted_interiors.gd`, README des
+départs ; `objectives.json` : les cinq objectifs du J18 **en tête**, puis ceux du J16 ; `caves.json` :
+`qa_flash` retirée (J17 T28), `dark_cave` gardée (`dark`, `escape` → `route_10` /
+`from_dark_cave_n_w`) ; `catalogue.json` et `manifeste.json` : fusion à trois voies par clé, format de
+`main` (aucun conflit réel) ; `luminance_grotte.py` : `PLANS` de `main` (la Grotte Sombre y est) ;
+`etat-projet.md` : version dédoublonnée de `main` + sections du J18, une seule ligne « Mis à jour » ;
+tests : objectifs, zones, grottes, objets peints, cartes (« à venir » = 3), scènes, dialogues (objets
+lancés 71, `FUTURE_FLAGS` = `tower_stairs_open`). Aucune déclaration en double après la fusion
+automatique (vérifié sur les 93 scripts touchés), aucune clé JSON en double. Boot : le J18 n'y
+touchait pas (aucun conflit avec `SaveCoordinator` / `SettingsApplier` / `SessionLifecycle`).
+
+**Raccord Azuria ↔ Route 9 (I-2, §4.4)** : Azuria construite sur la variante `J18` de la grille ;
+arbre à couper (53, 23) = [FlagGate] `unless cut_cerulean_east_tree` (objet
+`prop_jeune_arbre_arene_01`, comme les arbustes du J16 / J17), la grande clôture verticale remplacée
+par deux pans courts (53, 22) et (53, 24) ; warps (55, 22..24) → `route_9` /
+`from_cerulean_n|from_cerulean|from_cerulean_s`, spawns `from_route_9_n|from_route_9|from_route_9_s`
+(rangée pour rangée, comme la Route 10) ; Route 9 régénérée (bord ouest réel). Examen
+`cerulean_closed_exit` à variantes « field » : texte 17 sans CS01, textes du J16 sinon ; scène
+`cut_tree_cerulean_east`. Départ `cerulean_east_cut`, test `test_cerulean_east_tree`.
+
+**Luminance sous le voile** (réglages définitifs du J17, `darkness.json` inchangé ; aucun réglage
+propre au J18 nécessaire) :
+
+| Vue | héros | hors halo (sombre) | hors halo (Flash) |
+|---|---|---|---|
+| couloir 1F (27, 10) | 4,44 | 0,124 | 0,160 |
+| galerie 1F (30, 15) | 5,26 | 0,118 | 0,148 |
+| flaque B1F (22, 28) | 4,55 | 0,154 | 0,173 |
+| passage B1F (37, 34) | 4,69 | 0,144 | 0,166 |
+
+Les propositions (a) / (b) de la répétition tombent.
+
 #### T16 — A : données — après T15 (et Q-5)
 - §4.6–4.10, §4.13, §4.14 (descriptions), §3.1 (dialogues) : Dresseurs, rencontres, Boutique,
   dialogues (T-x **mot pour mot**), objectifs, zones, décors, compagnon ; `hm05` si absent (§1.4).
@@ -1061,6 +1100,16 @@ retrait de `qa_flash` (T28 du J17) → `test_cave_library` et `luminance_grotte.
 - Tests : `test_flash_rules`, `test_field_moves`, `test_first_exit_caption`, `test_dialogue_library`
   (action), `test_save_j18`. **CA** : tests verts ; Bourg Palette (OUV.3) inchangé ; Mont Sélénite
   sans voile ni proposition.
+
+**État au T15 (2026-10-19)** : le moteur est **celui du J17** (`FlashRules`, `FlashDirector`,
+`FieldMoves` dans `data/world/field_moves.json` avec `flash` / `cue`, section CS de
+`tm_compatibility.json`, AUTO / WARN, T-3 joué par Boot) ; le J18 n'en avait **aucun doublon** dans
+`game/` (la répétition avait déjà retiré `dark_cave_too_dark`). `FirstExitCaption` en liste : fait au
+T24. Grottes branchées : `dark_cave` (`dark: true`, Corde Sortie → `route_10` /
+`from_dark_cave_n_w`) ; `test_dark_cave_flash` (vrai Boot) repart de `dark_cave_1f_flash.json`.
+Tombent avec Q-1 « tout J17 » : action `use_flash`, `dark_cave_lit` et ses règles d'extinction
+(§3.4), `test_save_j18` (aucun état nouveau, §3.6). **Reste** : rien de code ; §1.3 et §3 sont à lire
+avec le tableau « Écarts de noms » de la répétition du T15.
 
 #### T18 — C : la vie de la Route 9, de la Route 10 nord et du Centre (18A) — après T12, T16
 - PNJ, Dresseurs, Pokémon d'ambiance, objets, panneaux, rencontres, déclencheurs, objectifs ;
