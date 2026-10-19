@@ -6,7 +6,9 @@
 > 2026-10-16). Les **textes du §16 sont validés par Kevin** (2026-10-16). Plan technique :
 > `docs/tech/jalon-22.md`. **Grilles v1 (`tools/plans/`, planche `reference/plans-j22/j22-plans-v1.png`), 40 prénoms
 > des Dresseurs (`docs/tech/j22-donnees/`) et planche d'art série 25 validés par Kevin le 2026-10-19**, avec les valeurs
-> par défaut (la grille fait foi pour la géométrie ; Kangourex à refaire).
+> par défaut (la grille fait foi pour la géométrie). **Vues peintes validées le 2026-10-19** :
+> `reference/j22-vues-est-v1.png`, `j22-vues-ouest-v1.png` (DA et composition ; écarts notés dans
+> `fiches-assets/serie-25-vues-est.md` et `-ouest.md`) ; Kangourex refait (`serie-25-contact-v2.png`).
 >
 > Faits Rouge/Bleu : désassemblage `pret/pokered` (`af51989`), version **Rouge** pour les rencontres
 > (convention à confirmer en 22.0, M-23). Marqueurs : **[V]** validé par Kevin, **[D]** valeur par
