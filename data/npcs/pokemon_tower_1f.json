@@ -13,6 +13,7 @@
 	},
 	"exorciste_gardienne": {
 		"cell": [17, 3], "facing": "up", "sprite": "channeler",
-		"dialogue": "pokemon_tower_exorcist", "unless": ["tower_stairs_open"]
+		"dialogue": "pokemon_tower_exorcist",
+		"moved": { "if": ["tower_stairs_open"], "cell": [18, 3], "facing": "left" }
 	}
 }

@@ -33,5 +33,38 @@
 				]
 			}
 		]
+	},
+	"tower_guardian": {
+		"variants": [
+			{
+				"unless": [
+					"tower_stairs_open"
+				],
+				"steps": [
+					{
+						"face": "exorciste_gardienne",
+						"to": "player"
+					},
+					{
+						"dialogue": "tower_guardian_worried"
+					},
+					{
+						"move": "exorciste_gardienne",
+						"path": [
+							"right"
+						]
+					},
+					{
+						"face": "exorciste_gardienne",
+						"to": "left"
+					},
+					{
+						"set": [
+							"tower_stairs_open"
+						]
+					}
+				]
+			}
+		]
 	}
 }
