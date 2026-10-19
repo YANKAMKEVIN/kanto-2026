@@ -64,6 +64,26 @@ train de modifier** ; il s'appuie sur la version de cette session, ou il demande
 **Après la fusion du J23** (et donc des J16 à J22) : tout ce qui touche une carte réelle, la scène
 du monde ou le combat.
 
+### 0.4 Stratégie d'accélération (Kevin, 2026-10-19) — J24 en pause
+
+`docs/design/strategie-acceleration.md` (sur `main`) tranche la question de l'état « monté » :
+**le Surf, la Force (rochers, trous), le Vélo et les états « monté » passent dans la passe
+systèmes 2**. Le J24 ne code plus T7 ni rien qui touche une carte réelle, la scène du monde ou le
+combat ; il reprend comme jalon de contenu (données et cartes) quand ces systèmes seront dans `main`.
+
+Fait et poussé sur `jalon-24` (partie indépendante, terminée) : lot 24.0 validé (grilles, données,
+textes, série d'art 27), logique pure de 24A et 24C, art de la série 27 intégré ; suite complète
+5 612 / 5 612.
+
+**Proposé comme base à la passe systèmes 2** (pur, testé, sans dépendance à une carte) :
+`GridWorld` (eau surfable, courants, niveaux de sol, `can_enter_as`, `find_reachable`),
+`SurfRules`, `BoulderRules`, `SeafoamState`, `CurrentField`, `FossilLab`, et la conception des
+§2.1 à §2.6 bis (Surf, poussée, persistance des trous, Warp `FALL`). La passe peut les reprendre,
+les modifier ou les remplacer : elle est propriétaire de ces systèmes.
+
+En attente de la passe systèmes 2 : T7, T8, T10, T15 à T17 ; T11 à T14 et T18 à T21 attendent
+en plus la fusion des J19 à J23.
+
 ## 1. Découpage
 
 ### 1.1 Sous-jalons et validations (dossier §17)
@@ -358,7 +378,7 @@ RB et par les contrôles des grilles.
 - Tests : `test_surf_rules.gd` (montée, descente, blocage, reprise, garde-fou) ;
   `test_grid_world_surf.gd` (rien ne change à pied).
 
-#### T7 — C + U : mode Surf du joueur, verbe SURFER, transitions, sauvegarde — après la fusion du J23 (et le Vélo du J22)
+#### T7 — C + U : mode Surf du joueur, verbe SURFER, transitions, sauvegarde — **en attente de la passe systèmes 2** (§0.4)
 
 - Tests :
   - intégration : montée et descente sur une carte d'essai ;
