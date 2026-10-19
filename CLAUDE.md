@@ -96,3 +96,13 @@ godot --headless --path . --import   # réimport / détection d'erreurs de scrip
 **Agents en parallèle** : chacun travaille dans sa propre copie (worktree) ; **jamais de `pkill` / `killall` sur Godot ou GUT** (d'autres agents font tourner leurs tests sur le même Mac) : arrêter seulement ses propres processus, par PID.
 
 **Fable, ponctuellement et sur demande** (≈ 2,5 × le coût d'Opus, jamais par défaut) : seulement quand une erreur coûterait cher — conception de la **sauvegarde** (5C.5), **compagnon Pokémon** (J11), bug sur lequel Opus a déjà échoué. Haiku n'est pas utilisé pour le code, les données ni la QA (au mieux, des recherches dans le code).
+
+## Gestion des sessions (décision de Kevin, 2026-10-20)
+
+Pour limiter la consommation de tokens, chaque session relisant tout son historique à chaque réponse :
+
+- **Une session neuve par sous-jalon.** Elle repart de ce fichier, de `docs/tech/etat-projet.md` et du plan du jalon (`docs/tech/jalon-XX.md`), dans le worktree du jalon. Prompt de reprise type : « Reprise du JXX. Lis CLAUDE.md, docs/tech/etat-projet.md, docs/tech/jalon-XX.md. Travaille dans le worktree … (branche …, @commit). Prochaine tâche : … Décisions de Kevin : … »
+- **Avant de rendre la main en fin de sous-jalon** : `etat-projet.md` à jour, tout commité et poussé, puis proposer à Kevin le prompt de reprise de la session suivante.
+- **Au plus 2 à 3 jalons actifs** à la fois (`docs/design/strategie-acceleration.md`, levier 2). Une session en pause est **fermée**, puis reprise par une session neuve quand elle a de nouveau du travail.
+- **Sous-agents** : Sonnet pour les données, cartes, textes et vérifications mécaniques ; Opus pour l'architecture et les bugs difficiles (voir « Agents » ci-dessus).
+- La ligne d'état affiche la taille du contexte : en jaune ou en rouge, finir la tâche en cours puis repartir sur une session neuve.
