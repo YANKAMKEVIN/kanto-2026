@@ -1,0 +1,38 @@
+{
+	"ss_anne_rival": {
+		"variants": [
+			{
+				"unless": ["rival_ss_anne_won"],
+				"steps": [
+					{ "emote": "rival_ss_anne", "kind": "exclamation" },
+					{ "move": "player", "to": [7, 3] },
+					{
+						"move": "rival_ss_anne",
+						"to": { "near": "player", "offsets": [[1, 0]] }
+					},
+					{ "face": "rival_ss_anne", "to": "player" },
+					{ "face": "player", "to": "rival_ss_anne" },
+					{
+						"dialogue": "rival_ss_anne_intro",
+						"unless": ["rival_ss_anne_lost_once"]
+					},
+					{
+						"dialogue": "rival_ss_anne_resume",
+						"if": ["rival_ss_anne_lost_once"]
+					},
+					{
+						"battle": "rival_ss_anne",
+						"win": ["rival_ss_anne_won"],
+						"lose": ["rival_ss_anne_lost_once"]
+					},
+					{ "wait": 0.6, "if": ["rival_ss_anne_won"] },
+					{ "dialogue": "rival_ss_anne_won", "if": ["rival_ss_anne_won"] },
+					{ "move": "rival_ss_anne", "to": [2, 4], "if": ["rival_ss_anne_won"] },
+					{ "despawn": "rival_ss_anne", "if": ["rival_ss_anne_won"] },
+					{ "dialogue": "rival_ss_anne_lost", "unless": ["rival_ss_anne_won"] },
+					{ "wake_up": true, "unless": ["rival_ss_anne_won"] }
+				]
+			}
+		]
+	}
+}

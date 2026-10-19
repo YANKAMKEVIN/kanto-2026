@@ -1,14 +1,17 @@
 extends GutTest
 ## Mise en scène automatique de Flash dans le vrai Boot (jalon 17 T24 ; dossier 20 H-7, Q-1
-## « tout J17 » ; `jalon-17.md` §2.11, contrat du J18 §3.3), sur la carte de QA `qa_flash`
-## (PROVISOIRE, retirée au T28 avec ce test et les départs `flash_qa*`) : une fois par arrivée,
-## rallumée à chaque retour et à la reprise dans la grotte (aucun drapeau), avertissement sans
-## CS05 ou sans compatible, K.O. accepté, durée au pas près.
+## « tout J17 » ; `jalon-17.md` §2.11, contrat du J18 §3.3), sur la Cave Taupiqueur rendue
+## obscure en mémoire (`tests/helpers/dark_cave.gd` ; la carte de QA `qa_flash` est retirée au
+## T28), entrée depuis la Route 2 est : une fois par arrivée, rallumée à chaque retour et à la
+## reprise dans la grotte (aucun drapeau), avertissement sans CS05 ou sans compatible, K.O.
+## accepté, durée au pas près.
 
 const MemoryFs := preload("res://tests/helpers/memory_file_system.gd")
 const FixedClock := preload("res://tests/helpers/fixed_clock.gd")
 const TweenClock := preload("res://tests/helpers/tween_clock.gd")
-const DIR := "res://tools/debug_start/"
+const DarkCave := preload("res://tests/helpers/dark_cave.gd")
+const CAVE := DarkCave.CAVE
+const OUTSIDE := DarkCave.OUTSIDE
 const FADE := 0.05
 const TIMEOUT := 12.0
 
@@ -34,13 +37,15 @@ func after_each() -> void:
 	SceneRouter.fade_out_duration = _fades[0]
 	SceneRouter.fade_in_duration = _fades[1]
 	GameState.clock = DeviceClock.new()
+	DarkCave.cleanup()
 
 
-func _start(start_name: String, path: String = "") -> void:
+func _start(team: DarkCave.Team, inside: bool = false) -> void:
 	_boot = (load("res://game/boot.tscn") as PackedScene).instantiate() as Boot
 	_boot.save_system = SaveSystem.new(MemoryFs.new(), "user://test_flash_director_save.json")
+	_boot.caves_path = DarkCave.write_caves()
 	_boot.force_debug_start = true
-	_boot.debug_start_path = path if not path.is_empty() else DIR + start_name + ".json"
+	_boot.debug_start_path = DarkCave.write_start(DarkCave.start(team, inside))
 	add_child_autofree(_boot)
 	await wait_process_frames(2)
 	await _settle()
@@ -82,12 +87,12 @@ func _caption_text() -> String:
 # --- Avec Flash --------------------------------------------------------------------------------
 
 func test_flash_plays_once_per_entry_and_relights_on_return() -> void:
-	await _start("flash_qa")
+	await _start(DarkCave.Team.FLASH)
 	var flash := _boot.get_flash_director()
 	var darkness := _boot.get_darkness()
-	assert_eq(_boot.get_map().map_id, &"qa_flash_entry")
+	assert_eq(_boot.get_map().map_id, OUTSIDE)
 	assert_true(flash.is_available(), "CS05 au Sac, Pikachu compatible")
-	assert_eq(flash.get_cue_count(), 0, "pièce éclairée : rien")
+	assert_eq(flash.get_cue_count(), 0, "dehors : rien")
 	# Pendant la mise en scène (relevé dans le signal) : joueur bloqué, voile sombre.
 	var seen := {}
 	flash.cue_started.connect(func() -> void:
@@ -99,7 +104,7 @@ func test_flash_plays_once_per_entry_and_relights_on_return() -> void:
 	flash.flash_used.connect(func(_map_id: StringName) -> void:
 		banners.append(_caption_text()))
 	assert_true(_boot.get_player().script_step(Vector2i.UP))
-	await wait_until(func() -> bool: return _boot.get_map().map_id == &"qa_flash" \
+	await wait_until(func() -> bool: return _boot.get_map().map_id == CAVE \
 		and flash.get_cue_count() == 1 and not flash.is_running() and _boot.is_stable(), TIMEOUT)
 	assert_eq(seen, {"locked": true, "stable": false, "dark": true, "controls": false})
 	assert_eq(flash.get_cue_count(), 1, "une fois par arrivée")
@@ -107,12 +112,17 @@ func test_flash_plays_once_per_entry_and_relights_on_return() -> void:
 	assert_eq(banners, ["Pikachu utilise Flash !"] as Array[String], "T-17, le compagnon")
 	assert_false(_boot.get_player().is_blocked_by(FlashDirector.LOCK_REASON))
 	assert_null(flash.get_cameo(), "Pokémon montré rentré à la fin")
-	assert_false(GameState.flags.has_flag(&"qa_flash_lit"), "aucun drapeau « allumée »")
-	# Sortie, puis retour : Flash se rallume, une seconde fois seulement.
-	await _walk_to(Vector2i.DOWN, &"qa_flash_entry")
+	assert_false(GameState.flags.has_flag(StringName(String(CAVE) + "_lit")),
+		"aucun drapeau « allumée »")
+	# Sortie par la bouche nord, puis retour : Flash se rallume, une seconde fois seulement.
+	await DarkCave.leave_north(self, _boot, TIMEOUT)
+	await wait_until(func() -> bool: return _boot.get_map().map_id == OUTSIDE \
+		and not SceneRouter.is_transitioning(), TIMEOUT)
+	await wait_process_frames(2)
+	await _settle()
 	assert_false(darkness.is_dark())
 	assert_eq(flash.get_cue_count(), 1)
-	await _walk_to(Vector2i.UP, &"qa_flash")
+	await _walk_to(Vector2i.UP, CAVE)
 	await wait_until(func() -> bool: return not flash.is_running() and _boot.is_stable(),
 		TIMEOUT)
 	assert_eq(flash.get_cue_count(), 2, "rallumée à chaque arrivée")
@@ -123,10 +133,14 @@ func test_flash_plays_once_per_entry_and_relights_on_return() -> void:
 ## au plus par enchaînement ; une image de moins tolérée (l'horloge simulée naît sur le signal
 ## `cue_started`, parfois une image après le premier tween : vu une fois en suite complète, 83 / 84).
 func test_cue_duration_in_simulated_time() -> void:
-	await _start("flash_qa")
+	await _start(DarkCave.Team.FLASH)
 	var flash := _boot.get_flash_director()
-	flash.cue_started.connect(func() -> void: _clock = TweenClock.new(get_tree()),
-		CONNECT_ONE_SHOT)
+	# Le tween de la mise en scène naît juste après le signal : il est saisi (figé) en différé,
+	# avant le traitement des tweens de l'image, pour ne pas avancer en temps réel pendant
+	# l'attente ci-dessous (T28 : sur la Cave, plus lourde, il perdait jusqu'à 5 images).
+	flash.cue_started.connect(func() -> void:
+		_clock = TweenClock.new(get_tree())
+		_clock.step.call_deferred(0.0), CONNECT_ONE_SHOT)
 	assert_true(_boot.get_player().script_step(Vector2i.UP))
 	await wait_until(func() -> bool: return _clock != null, TIMEOUT)
 	var steps := _clock.run_until(func() -> bool: return not flash.is_running(), 5.0)
@@ -137,28 +151,20 @@ func test_cue_duration_in_simulated_time() -> void:
 	assert_true(_boot.get_darkness().is_lit())
 
 
-## Reprise dans la grotte (départ posé dans `qa_flash`) : Flash se rallume comme à une arrivée.
+## Reprise dans la grotte (départ posé dans la Cave) : Flash se rallume comme à une arrivée.
 func test_starting_inside_the_cave_relights() -> void:
-	var start: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(DIR + "flash_qa.json"))
-	start["map"] = "qa_flash"
-	start["spawn"] = "from_qa_flash_entry_w"
-	var path := "user://test_flash_director_inside.json"
-	var file := FileAccess.open(path, FileAccess.WRITE)
-	file.store_string(JSON.stringify(start))
-	file.close()
-	await _start("", path)
-	DirAccess.remove_absolute(path)
+	await _start(DarkCave.Team.FLASH, true)
 	var flash := _boot.get_flash_director()
 	await wait_until(func() -> bool: return flash.get_cue_count() == 1 \
 		and not flash.is_running(), TIMEOUT)
-	assert_eq(_boot.get_map().map_id, &"qa_flash")
+	assert_eq(_boot.get_map().map_id, CAVE)
 	assert_true(_boot.get_darkness().is_lit())
 
 
 ## Seul compatible K.O. (sans compagnon) : Flash quand même, Pikachu sort de sa Ball à côté du
-## joueur (derrière, sinon sur un côté : l'entrée est au bord de la carte) le temps de la scène.
+## joueur (derrière, sinon sur un côté : la bouche est au bord de la carte) le temps de la scène.
 func test_fainted_user_still_lights_and_shows_up() -> void:
-	await _start("flash_qa_ko")
+	await _start(DarkCave.Team.FAINTED)
 	var flash := _boot.get_flash_director()
 	var cameo := {}
 	flash.cue_started.connect(func() -> void:
@@ -170,7 +176,7 @@ func test_fainted_user_still_lights_and_shows_up() -> void:
 	var banners: Array[String] = []
 	flash.flash_used.connect(func(_map_id: StringName) -> void:
 		banners.append(_caption_text()))
-	await _walk_to(Vector2i.UP, &"qa_flash")
+	await _walk_to(Vector2i.UP, CAVE)
 	await wait_until(func() -> bool: return flash.get_cue_count() == 1 \
 		and not flash.is_running(), TIMEOUT)
 	assert_eq(cameo.get("species"), &"pikachu")
@@ -183,12 +189,12 @@ func test_fainted_user_still_lights_and_shows_up() -> void:
 # --- Sans Flash --------------------------------------------------------------------------------
 
 func test_without_hm05_a_warning_once_per_entry() -> void:
-	await _start("flash_qa_no_hm")
+	await _start(DarkCave.Team.NO_HM)
 	await _check_warning()
 
 
 func test_without_compatible_pokemon_a_warning() -> void:
-	await _start("flash_qa_no_pokemon")
+	await _start(DarkCave.Team.NO_POKEMON)
 	await _check_warning()
 
 
@@ -196,7 +202,7 @@ func _check_warning() -> void:
 	var flash := _boot.get_flash_director()
 	var runner := _boot.get_dialogue_runner()
 	assert_false(flash.is_available())
-	await _walk_to(Vector2i.UP, &"qa_flash")
+	await _walk_to(Vector2i.UP, CAVE)
 	assert_true(runner.is_running(), "avertissement")
 	assert_eq(runner.get_dialogue_id(), FlashDirector.WARN_DIALOGUE)
 	assert_eq(runner.get_session().get_page().text,

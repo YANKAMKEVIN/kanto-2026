@@ -1,5 +1,5 @@
 {
-	"_doc": "Grottes (catégorie « grotte », docs/tech/jalon-12.md §2.3, lue par CaveLibrary) : ni bâtiment ni extérieur à ciel ouvert. Leurs cartes gardent « interior = false » (compagnon visible) et ne sont pas dans interiors.json. « escape » : où la Corde Sortie ramène (dossier 15 §11 : devant l'entrée côté Route 3, tourné vers le sud, même depuis B2F). « dark » (J17 T9) : grotte obscure, couverte par le voile d'obscurité (data/world/darkness.json). « dark_cave » (J18) : Grotte Sombre, obscure. « qa_flash » : grotte de QA PROVISOIRE du J17 (T10), retirée à la clôture (T28).",
+	"_doc": "Grottes (catégorie « grotte », docs/tech/jalon-12.md §2.3, lue par CaveLibrary) : ni bâtiment ni extérieur à ciel ouvert. Leurs cartes gardent « interior = false » (compagnon visible) et ne sont pas dans interiors.json. « escape » : où la Corde Sortie ramène (dossier 15 §11 : devant l'entrée côté Route 3, tourné vers le sud, même depuis B2F). « dark » (J17 T9) : grotte obscure, couverte par le voile d'obscurité (data/world/darkness.json). « dark_cave » (J18) : Grotte Sombre, obscure.",
 	"caves": {
 		"mt_moon": {
 			"maps": ["mt_moon_1f", "mt_moon_b1f", "mt_moon_b2f"],
@@ -11,11 +11,6 @@
 				{ "rows": [0, 39], "map": "route_2_east", "spawn": "from_cave_w", "facing": "down" },
 				{ "rows": [40, 79], "map": "route_11", "spawn": "from_cave_w", "facing": "down" }
 			]
-		},
-		"qa_flash": {
-			"maps": ["qa_flash"],
-			"escape": { "map": "qa_flash_entry", "spawn": "from_qa_flash_w", "facing": "down" },
-			"dark": true
 		},
 		"dark_cave": {
 			"maps": ["dark_cave_1f", "dark_cave_b1f"],

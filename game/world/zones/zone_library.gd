@@ -26,6 +26,8 @@ extends RefCounted
 ## « kind » : une valeur de [constant ZoneData.KINDS]. « maps » (facultatif, liste vide par
 ## défaut) : chaque carte n'appartient qu'à une zone. « subtitle » et « description »
 ## (facultatifs, textes non vides) : panneau de la Carte ; « draft » : textes provisoires.
+## « interior_title » (facultatif, false par défaut) : le titre de zone s'affiche aussi à
+## l'arrivée dans les cartes intérieures de la zone (S.S. Anne : dès le pont principal, J16).
 ## « services » (facultatif) : chaque service vient du catalogue « services » (lu avant les
 ## zones du même objet) et se découvre sur une carte de la zone (« found_on »).
 ## Toute clé inconnue est une erreur ; une zone invalide est écartée, l'erreur signalée
@@ -36,7 +38,7 @@ const DEFAULT_PATH: String = "res://data/world/zones.json"
 
 const _ROOT_KEYS: Array[String] = ["services", "zones"]
 const _ZONE_KEYS: Array[String] = ["name", "kind", "maps", "subtitle", "description", "draft",
-	"services"]
+	"services", "interior_title"]
 const _SERVICE_KEYS: Array[String] = ["name"]
 const _ZONE_SERVICE_KEYS: Array[String] = ["id", "found_on"]
 
@@ -102,6 +104,13 @@ func zone_of(map_id: StringName) -> StringName:
 func zone_name_of(map_id: StringName) -> String:
 	var zone := get_zone(zone_of(map_id))
 	return zone.name if zone != null else ""
+
+
+## Vrai si la carte [param map_id], même intérieure, annonce le titre de sa zone à l'arrivée
+## ([member ZoneData.interior_title]).
+func interior_title_of(map_id: StringName) -> bool:
+	var zone := get_zone(zone_of(map_id))
+	return zone != null and zone.interior_title
 
 
 ## Zone [param id], ou null.
@@ -192,6 +201,9 @@ func _parse_zone(value: Variant, where: String) -> ZoneData:
 	if entry.has("draft") and not entry["draft"] is bool:
 		ok = _fail("%s : « draft » vaut true ou false" % where)
 	zone.draft = entry.get("draft") is bool and bool(entry["draft"])
+	if entry.has("interior_title") and not entry["interior_title"] is bool:
+		ok = _fail("%s : « interior_title » vaut true ou false" % where)
+	zone.interior_title = entry.get("interior_title") is bool and bool(entry["interior_title"])
 	if entry.has("services") and not _parse_zone_services(entry["services"], zone, where):
 		ok = false
 	return zone if ok else null

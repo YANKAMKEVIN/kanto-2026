@@ -33,6 +33,9 @@ signal challenge_requested(npc: Npc)
 ## Appui face au compagnon (jalon 11) : sa réaction de curiosité est jouée par son contrôleur
 ## (bulle, phrase), aucun dialogue ici.
 signal companion_talked
+## Appui sur un objet à fouiller d'un puzzle d'interrupteurs (jalon 16, `jalon-16.md` §2.6) :
+## Boot fouille le puzzle et joue le dialogue du résultat ; aucun dialogue ici.
+signal puzzle_searched(puzzle_id: StringName, slot: int)
 
 const NO_TARGET: int = -1
 ## Délai entre l'arrivée sur la carte et l'ouverture de la boîte d'un dialogue automatique.
@@ -151,6 +154,10 @@ func _interact(target: Interaction) -> void:
 		# Le compagnon : son contrôleur joue la curiosité. L'appui tenu ne relance rien.
 		_wait_release = true
 		companion_talked.emit()
+		return
+	if target.is_puzzle_slot():
+		_wait_release = true
+		puzzle_searched.emit(target.puzzle, target.puzzle_slot)
 		return
 	var npc := target.source as Npc
 	if target.kind == Interaction.Kind.MEET:

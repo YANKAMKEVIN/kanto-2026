@@ -165,9 +165,9 @@ J12 Route 3 + Mont Sélénite (dossier 15)   ✅
 J13 Route 4 + Azuria + Ondine + rival n° 3 + Pont Pépite (dossier 16)   ✅
 J14 Route 25 + Cap d'Azuria + Léo + Rocket d'Azuria (dossier 17)   ✅
 J15 Route 5 + Pension + souterrain + Route 6 + Carmin-sur-Mer (dossier 18)   ✅
-J16 S.S. Anne + rival n° 4 + Coupe + Major Bob + Badge Foudre (dossier 19, branche `ccr-fa255d49-wvvacc`)   ← ICI
-J17 Route 11 + Cave Taupiqueur + Route 2 est + CS05 Flash (dossier 20)
-J18 Route 9 + Route 10 + Grotte Sombre + Lavanville, Tour au rez-de-chaussée (dossier 21)
+J16 S.S. Anne + rival n° 4 + Coupe + Major Bob + Badge Foudre (dossier 19)   ✅
+J17 Route 11 + Cave Taupiqueur + Route 2 est + CS05 Flash (dossier 20)   ✅
+J18 Route 9 + Route 10 + Grotte Sombre + Lavanville, Tour au rez-de-chaussée (dossier 21)   ← ICI
 J19 Tour Pokémon, étages 2F–6F, rival n° 5 (dossier 22)
 J20+ Suite de Kanto → Ligue → post-game
 ```

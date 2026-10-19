@@ -1,6 +1,10 @@
 {
 	"sailor": {
-		"cell": [31, 26], "facing": "down", "sprite": "sailor", "dialogue": "vermilion_sailor"
+		"cell": [31, 26], "facing": "down", "sprite": "sailor", "dialogue": "vermilion_sailor",
+		"moved": {
+			"if": ["ss_anne_gangway_open"], "unless": ["ss_anne_departed"],
+			"cell": [30, 26], "facing": "down"
+		}
 	},
 	"docker_1": {
 		"cell": [25, 25], "facing": "left", "sprite": "docker", "dialogue": "vermilion_docker_1"

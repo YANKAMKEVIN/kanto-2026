@@ -103,7 +103,7 @@
 			"name": "Carmin-sur-Mer", "kind": "town",
 			"maps": [
 				"vermilion_city", "vermilion_center", "vermilion_mart", "vermilion_fan_club",
-				"vermilion_fisher_house", "vermilion_house_1", "vermilion_house_2"
+				"vermilion_fisher_house", "vermilion_house_1", "vermilion_house_2", "vermilion_gym"
 			],
 			"services": [
 				{ "id": "pokemon_center", "found_on": "vermilion_center" },
@@ -163,6 +163,17 @@
 			"name": "Route 11", "kind": "route", "maps": ["route_11"],
 			"subtitle": "Carmin-sur-Mer — Route 12",
 			"description": "Une route côtière entre les prairies et la mer, à l'est de Carmin."
+		},
+		"ss_anne": {
+			"name": "S.S. Anne", "kind": "place",
+			"maps": [
+				"ss_anne_main_deck", "ss_anne_captain_corridor", "ss_anne_captain_room",
+				"ss_anne_restaurant", "ss_anne_lower_deck", "ss_anne_outer_deck", "ss_anne_cabin_a",
+				"ss_anne_cabin_b", "ss_anne_cabin_c"
+			],
+			"subtitle": "Le grand paquebot de Kanto",
+			"interior_title": true,
+			"description": "Un paquebot de croisière amarré au port de Carmin. Salons, cabines et ponts promenade : on s'y croirait déjà au large."
 		},
 		"route_9": {
 			"name": "Route 9", "kind": "route", "maps": ["route_9"],

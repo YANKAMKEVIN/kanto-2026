@@ -11,7 +11,7 @@
 #   T forêt (bloquée)               . herbe rase                  = chemin de terre
 #   h hautes herbes                 v rebord (sauté vers le sud ; ne se monte pas)
 #   P emprise du poste (bloquée)    D porte du poste (STEP_ON ↑ → « Forêt de Jade — À venir »)
-#   A arbuste coupable, FUTUR A (bloqué ; J17 : arbre dense jusqu'à la Coupe)
+#   A arbuste coupable, FUTUR A (bloqué ; J17 T23 : libre une fois coupé, cut_route_2_futur_a)
 #   B barrière, FUTUR B (bloquée jusqu'à l'ouverture depuis l'est, J17) ; « a » et « b » (sentiers
 #     peints fermés) ont disparu au J17 : clairière de FUTUR A et sentier de FUTUR B praticables
 #   R grande pierre claire (bloquée) S souche (bloquée)

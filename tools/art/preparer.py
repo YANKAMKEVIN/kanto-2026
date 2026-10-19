@@ -312,6 +312,34 @@ def adoucir(image: Image.Image, facteur: float, flou: float) -> Image.Image:
     return Image.fromarray(np.clip(np.rint(sortie), 0, 255).astype(np.uint8), "RGBA")
 
 
+def retoucher_coque(image: Image.Image, retouche: dict) -> Image.Image:
+    """Retouche d'une coque déjà à sa taille de jeu (série 18 : sorties trop étroites, escalier
+    trop large, porte décalée), en pixels du jeu. `zone` [x0, y0, x1, y1] ; `dx` : la zone glisse
+    de `dx` px à l'horizontale ; ou `largeur` : elle est ramenée à cette largeur, calée à gauche.
+    La bande libérée est remplie par les colonnes `remplir` [sx0, sx1] de la même hauteur,
+    répétées (sol, mur uni)."""
+    x0, y0, x1, y1 = retouche["zone"]
+    sx0, sx1 = retouche["remplir"]
+    zone = image.crop((x0, y0, x1, y1))
+    if "dx" in retouche:
+        dx = retouche["dx"]
+        libre = (x1 + dx, x1) if dx < 0 else (x0, x0 + dx)
+        cible = x0 + dx
+    else:
+        zone = zone.resize((retouche["largeur"], y1 - y0), Image.LANCZOS)
+        libre = (x0 + retouche["largeur"], x1)
+        cible = x0
+    motif = image.crop((sx0, y0, sx1, y1))
+    sortie = image.copy()
+    x = libre[0]
+    while x < libre[1]:
+        largeur = min(motif.width, libre[1] - x)
+        sortie.paste(motif.crop((0, 0, largeur, motif.height)), (x, y0))
+        x += largeur
+    sortie.paste(zone, (cible, y0))
+    return sortie
+
+
 def _ecrire(image: Image.Image, chemin: Path) -> None:
     chemin.parent.mkdir(parents=True, exist_ok=True)
     image.save(chemin, optimize=True)
@@ -335,7 +363,14 @@ class Preparateur:
             image = _recadrer(Image.open(self.source / e["source"]).convert("RGBA"), e)
             if e.get("nettoyer"):
                 image = nettoyer_halos(image)
-            image = _mettre_a_taille(_silhouette(image), e["axe"], e["cases"], self.case)
+            if "taille_cases" in e:
+                # Taille imposée en cases (largeur, hauteur) : étirement non uniforme, borné par
+                # le manifeste (superstructure du pont extérieur, série 18).
+                largeur, hauteur = e["taille_cases"]
+                image = _silhouette(image).resize(
+                    (round(largeur * self.case), round(hauteur * self.case)), Image.LANCZOS)
+            else:
+                image = _mettre_a_taille(_silhouette(image), e["axe"], e["cases"], self.case)
             if "alpha" in e or "flou_bord" in e:
                 image = adoucir(image, e.get("alpha", 1.0), e.get("flou_bord", 0))
             self._objet(e["id"], e["sortie"], image, e["ombre"], e["contact"])
@@ -414,6 +449,26 @@ class Preparateur:
                 self._objet(ident, planche["dossier"] + ident + ".png", element, False,
                             planche["contact"])
 
+    def effets(self) -> None:
+        """Effets image par image (série 18 : Coupe) : chaque image = une **cellule fixe** de la
+        planche (`boites`, sans recadrage sur la silhouette : les feuilles détachées restent, et
+        le trait ne saute pas d'une image à l'autre), toutes à la même `echelle`. Écrit
+        `<dossier>/<id>.png` et une entrée « images » du catalogue par image."""
+        for e in self.m.get("effets", []):
+            image = Image.open(self.source / e["source"]).convert("RGBA")
+            if e.get("nettoyer"):
+                image = nettoyer_halos(image)
+            for ident, boite in zip(e["ids"], e["boites"]):
+                cellule = image.crop(tuple(boite))
+                taille = (_pair(round(cellule.width * e["echelle"])),
+                          _pair(round(cellule.height * e["echelle"])))
+                cellule = cellule.resize(taille, Image.LANCZOS)
+                sortie = e["dossier"] + ident + ".png"
+                _ecrire(cellule, self._sortie(sortie))
+                self.catalogue["images"][ident] = {"fichier": self._res(sortie),
+                                                   "taille": list(cellule.size)}
+                print(f"{ident} : {cellule.width} × {cellule.height}")
+
     def hautes_herbes(self) -> None:
         e = self.m["hautes_herbes"]
         image = _silhouette(Image.open(self.source / e["source"]).convert("RGBA"))
@@ -439,8 +494,12 @@ class Preparateur:
     def pieces(self) -> None:
         for e in self.m["pieces"]:
             taille = (e["cases"][0] * self.case, e["cases"][1] * self.case)
-            image = Image.open(self.source / e["source"]).convert("RGB").resize(taille,
-                                                                                Image.LANCZOS)
+            image = Image.open(self.source / e["source"]).convert("RGB")
+            if e.get("boite"):  # bande dans un cadre (couloir du S.S. Anne, série 18)
+                image = image.crop(tuple(e["boite"]))
+            image = image.resize(taille, Image.LANCZOS)
+            for retouche in e.get("retouches", []):
+                image = retoucher_coque(image, retouche)
             _ecrire(image, self._sortie(e["sortie"]))
             self.catalogue["images"][e["id"]] = {"fichier": self._res(e["sortie"]),
                                                  "taille": list(image.size)}
@@ -463,6 +522,9 @@ class Preparateur:
             if e["couleur"] != 1.0:
                 # Terre trop orangée à la génération : ramenée vers l'ocre clair.
                 image = ImageEnhance.Color(image).enhance(e["couleur"])
+            if e.get("luminosite", 1.0) != 1.0:
+                # Planches du quai éclaircies en pont de teck (série 18).
+                image = ImageEnhance.Brightness(image).enhance(e["luminosite"])
             if e.get("raccord"):
                 image = raccorder(image, e["raccord"])
             if e.get("rotation"):  # quarts de tour (platelage des pontons nord-sud, série 17)
@@ -656,6 +718,7 @@ def main() -> None:
     p.objets()
     p.planches_arbres()
     p.planches_objets()
+    p.effets()
     p.hautes_herbes()
     p.pieces()
     p.decor()

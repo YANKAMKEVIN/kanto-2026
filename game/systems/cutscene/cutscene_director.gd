@@ -55,6 +55,10 @@ signal item_found(item_id: StringName, count: int)
 ## Une étape « flash » commence ([param count] éclairs, jalon 14) : point d'accroche du son de
 ## la machine (aucun son au J14).
 signal flash_started(count: int)
+## Une étape demande un point de sauvegarde critique (notification, pas un accusé de réussite).
+signal save_requested(reason: String)
+## Le point de sauvegarde a échoué : scène et contrôles restent bloqués jusqu'à la réussite.
+signal save_failed(reason: String, error: Error)
 ## Fin d'une étape « wait » (interne).
 signal _wait_elapsed
 ## Fin d'une étape « move » (interne).
@@ -69,6 +73,8 @@ const MOVE_BLOCK_TIMEOUT: float = 2.0
 const LEAN_HOLD: float = 0.3
 ## Étape « despawn » : fondu du PNJ avant son retrait (s) ; sa case est libérée dès le début.
 const DESPAWN_FADE: float = 0.2
+## Étape « animate » avec « Réduire les animations » : fondu sur place (s), jalon 16.
+const ANIMATE_REDUCED_FADE: float = 0.5
 const _ROUTER_SCRIPT := preload("res://game/autoload/scene_router.gd")
 ## Étapes qui agissent sur leur acteur : elles attendent d'abord la fin de sa marche en
 ## arrière-plan.
@@ -127,6 +133,18 @@ var _trainers: TrainerLibrary
 ## [member _state] : l'autoload GameState en jeu, une instance de game_state.gd en test.
 var _badges: BadgeLibrary
 var _state: Node
+## « Réduire les animations » (jalon 16, étape « animate ») : posé par Boot.
+var reduce_motion: bool = false
+## Mise en scène d'une capacité de terrain (jalon 16, étape « field_move ») : coroutine
+## `func(move: StringName, target: Node2D) -> void` posée par Boot (le Pokémon qui coupe) ; non
+## valide : pas de mise en scène (un PNJ cible part en fondu, un décor avec son drapeau).
+var field_move_handler: Callable
+## Écriture synchrone injectée par Boot : func(reason: String) -> Error.
+## Un point critique ne peut jamais avancer sans un retour OK ; ERR_BUSY = refus passager,
+## réessayé à l'image suivante sans [signal save_failed].
+var save_handler: Callable
+## Délai de nouvelle tentative, indépendant des préférences d'animation ; 0 = image suivante.
+var save_retry_delay: float = SaveCoordinator.RETRY_DELAY
 
 
 func _ready() -> void:
@@ -364,9 +382,43 @@ func _play_step(source_step: CutsceneStep) -> bool:
 			_moment(step)
 		CutsceneStep.Kind.FLASH:
 			await _flash(step)
+		CutsceneStep.Kind.FIELD_MOVE:
+			await _field_move(step)
+		CutsceneStep.Kind.SAVE:
+			return await _save_checkpoint(step.text)
+		CutsceneStep.Kind.ANIMATE:
+			await _animate(step)
 		_:
 			_step_error("étape « %s » inconnue" % CutsceneStep.kind_name(step.kind))
 	return true
+
+
+## N'autorise l'étape suivante qu'après l'écriture effective de l'état courant.
+## La même étape reste active en cas de panne ; elle ne rejoue ni les objets ni les drapeaux.
+## setup() invalide la coroutine, comme pour les autres étapes asynchrones.
+func _save_checkpoint(reason: String) -> bool:
+	var session := _session
+	save_requested.emit(reason)
+	if not save_handler.is_valid():
+		_step_error("aucun gestionnaire de sauvegarde critique")
+		return false
+	while session == _session and is_inside_tree():
+		var error: Error = save_handler.call(reason)
+		if error == OK:
+			return true
+		if error == ERR_BUSY:
+			# Refus passager (transition en cours) : nouvelle tentative à l'image suivante, sans
+			# signaler d'échec au joueur.
+			await get_tree().process_frame
+			continue
+		save_failed.emit(reason, error)
+		if session != _session:
+			return false
+		if save_retry_delay > 0.0:
+			await _wait(save_retry_delay)
+		else:
+			await get_tree().process_frame
+	return false
 
 
 ## Copie de [param step] dont les alias (acteur, cible, suiveur, voisin, Pokémon d'un
@@ -605,6 +657,51 @@ func _flash(step: CutsceneStep) -> void:
 		return
 	flash_started.emit(step.count)
 	await _hud.flash(step.count)
+
+
+## Étape « field_move » (jalon 16, `jalon-16.md` §2.3) : la mise en scène de Boot
+## ([member field_move_handler]) sur la cible [member CutsceneStep.actor], puis son retrait :
+## - un **PNJ** objet : retiré comme par « despawn » ;
+## - un **nœud de la carte** (l'arbuste de l'Arène du J15 : `FlagGate` qui bloque ses cases) :
+##   rien de plus ici ; l'étape « set » suivante lève le drapeau qui le retire.
+## Cible introuvable : push_error, étape sautée.
+func _field_move(step: CutsceneStep) -> void:
+	var npc := _find_actor(step.actor) as Npc
+	var node: Node2D = npc
+	if node == null and is_instance_valid(_map):
+		node = _map.get_node_or_null(NodePath(String(step.actor))) as Node2D
+	if node == null:
+		_step_error("cible « %s » introuvable (field_move)" % step.actor)
+		return
+	if field_move_handler.is_valid():
+		await field_move_handler.call(step.field_move, node)
+	if npc != null:
+		await _despawn(step)
+
+
+## Étape « animate » (jalon 16, `jalon-16.md` §2.5) : le nœud [member CutsceneStep.target] de la
+## carte glisse de [member CutsceneStep.offset] cases en [member CutsceneStep.seconds] s puis se
+## masque s'il le faut ; « Réduire les animations » : fondu sur place. Nœud introuvable :
+## push_error, étape sautée. Le nœud est **réaffiché** au début : une [FlagGate] (le navire,
+## `unless: [ss_anne_departed]`) que l'étape « set » précédente vient de masquer joue son départ.
+func _animate(step: CutsceneStep) -> void:
+	var node := _map.get_node_or_null(NodePath(String(step.target))) as Node2D \
+		if is_instance_valid(_map) else null
+	if node == null:
+		_step_error("nœud « %s » introuvable sur la carte (animate)" % step.target)
+		return
+	node.visible = true
+	var tween := node.create_tween()
+	if reduce_motion:
+		tween.tween_property(node, ^"modulate:a", 0.0, ANIMATE_REDUCED_FADE)
+	else:
+		tween.tween_property(node, ^"position",
+			node.position + Vector2(step.offset * Grid.TILE_SIZE), step.seconds)
+		if step.fade:
+			tween.tween_property(node, ^"modulate:a", 0.0, DESPAWN_FADE)
+	await tween.finished
+	if step.fade or reduce_motion:
+		node.visible = false
 
 
 ## Étape « take » (jalon 7, le colis remis à Chen) : retire [member CutsceneStep.count] objets
@@ -1033,3 +1130,4 @@ static func has_moment(moments: Array[Dictionary], type: StringName,
 		if same:
 			return true
 	return false
+

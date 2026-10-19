@@ -340,13 +340,13 @@ func test_signs_and_futur_points_are_examined_from_the_right_side() -> void:
 	dialogues.load_dir()
 	for spec: Array in EXAMINE:
 		assert_true(dialogues.has_dialogue(spec[3]), String(spec[3]))
-	var tree := _map.get_entities().get_node_or_null(^"DenseTreeGate/DenseTreeFuturA") as WorldProp
-	assert_not_null(tree, "FUTUR A : arbre dense")
-	if tree != null:
-		assert_eq(_prop_id(tree), "tree_foret_08")
-		var gate := tree.get_parent() as FlagGate
+	var bush := _map.get_entities().get_node_or_null(^"FuturABush/Bush") as WorldProp
+	assert_not_null(bush, "FUTUR A : arbuste (T23)")
+	if bush != null:
+		assert_eq(_prop_id(bush), "prop_jeune_arbre_arene_01", "l'arbuste coupable du J16")
+		var gate := bush.get_parent() as FlagGate
 		assert_eq(Grid.world_to_cell(gate.position - Vector2(0, 1)), Vector2i(4, 19))
-		assert_lt(tree.scale.x, 1.0, "réduit")
+		assert_lt(bush.scale.x, 1.0, "réduit à une case")
 
 
 func test_hidden_items_on_short_grass() -> void:
@@ -483,7 +483,7 @@ func test_futur_a_clearing_is_cut_off_without_the_bush_flag() -> void:
 	for cell: Vector2i in inside:
 		assert_false(reach.has(cell), "%s inatteignable sans le drapeau" % cell)
 	assert_true(closed.get_grid().is_occupied(Vector2i(4, 19)), "arbuste en (4, 19)")
-	var gate := closed.get_node(^"Entities/DenseTreeGate") as FlagGate
+	var gate := closed.get_node(^"Entities/FuturABush") as FlagGate
 	assert_eq(gate.unless_flags, [BUSH_FLAG] as Array[StringName])
 	assert_eq(gate.blocking_cells, [Vector2i(4, 19)] as Array[Vector2i])
 	var open := _fresh([BUSH_FLAG])
@@ -492,20 +492,37 @@ func test_futur_a_clearing_is_cut_off_without_the_bush_flag() -> void:
 		if cell != Vector2i(1, 17):  # la Super Potion occupe sa case
 			assert_true(after.has(cell), "%s atteignable avec le drapeau" % cell)
 	assert_false(open.get_grid().is_occupied(Vector2i(4, 19)))
-	assert_false(open.get_node(^"Entities/DenseTreeGate").visible, "arbuste retiré")
+	assert_false(open.get_node(^"Entities/FuturABush").visible, "arbuste retiré")
 	assert_not_null(open.get_npc(&"route_2_item_5"), "Super Potion au fond de la clairière")
 
 
+## T23 : sans la CS01, le texte T7 du dossier 11 ; dès la CS01, les textes du J16 (ARB-01 à
+## ARB-03, COUPER → `cut_tree_route_2_futur_a`). Le point disparaît avec l'arbuste.
 func test_futur_a_keeps_its_t7_text_without_the_cut() -> void:
 	var closed := _fresh([])
 	var found := _find(closed, Vector2i(5, 19), Vector2i.LEFT)
 	assert_not_null(found, "point d'examen de l'arbuste conservé (T7 du dossier 11)")
 	if found != null:
 		assert_eq(found.dialogue_id, &"route_2_dense_tree")
+		assert_false(found.is_available(_flags([BUSH_FLAG])), "retiré une fois coupé")
 	var dialogues := DialogueLibrary.new()
 	dialogues.load_dir()
-	assert_eq(dialogues.get_dialogue(&"route_2_dense_tree").variants[0].pages[0].text,
-		"Les branches sont trop épaisses. Impossible de passer par ici.")
+	var tree := dialogues.get_dialogue(&"route_2_dense_tree")
+	var texts := {
+		FieldMoves.State.NO_HM: "Les branches sont trop épaisses. Impossible de passer par ici.",
+		FieldMoves.State.NO_BADGE: "Sans le Badge Cascade, {pokemon}\nn'ose pas couper cet arbuste.",
+		FieldMoves.State.NO_POKEMON: "Aucun Pokémon de l'équipe\nne peut couper cet arbuste.",
+		FieldMoves.State.READY: "{pokemon} peut couper cet arbuste.",
+	}
+	for state: FieldMoves.State in texts:
+		var source := func(_move: StringName) -> FieldMoves.Result:
+			return FieldMoves.Result.new(state, 0)
+		var variant := tree.pick(StoryFlags.new(), null, 0, source)
+		assert_eq(variant.pages[0].text, texts[state], FieldMoves.STATE_NAMES[state])
+	var ready := tree.pick(StoryFlags.new(), null, 0,
+		func(_m: StringName) -> FieldMoves.Result:
+			return FieldMoves.Result.new(FieldMoves.State.READY, 0))
+	assert_eq(ready.choice.confirm_cutscene, &"cut_tree_route_2_futur_a")
 
 
 func test_the_gate_is_closed_from_the_west_with_the_existing_text() -> void:
@@ -583,7 +600,7 @@ func test_forest_canopy_never_covers_a_walkable_cell() -> void:
 	var trees: Array[Node2D] = []
 	for child: Node in _map.get_entities().get_children():
 		if child is WorldProp and _prop_id(child).begins_with("tree_foret_") \
-				and child.name != "DenseTreeFuturA":
+				and child.name != "Bush":
 			trees.append(child as Node2D)
 	assert_gt(trees.size(), 400, "forêt serrée")
 	for tree: Node2D in trees:

@@ -1,9 +1,9 @@
 extends GutTest
 ## Les trois cartes du J17 raccordées (intégration de `jalon-17`, dossier 20 §7, §13), avec la vraie
 ## scène Boot, les vraies cartes et les vraies entrées (`move_*`, `interact`) :
-## - traversée complète Carmin → Route 11 → Cave Taupiqueur → Route 2 est → (arbuste coupé : drapeau
-##   posé, la Coupe est celle du J16) → Route 2 par la barrière de FUTUR B, ouverte depuis l'est →
-##   Jadielle, puis le retour complet par la Cave jusqu'à Carmin ;
+## - traversée complète Carmin → Route 11 → Cave Taupiqueur → Route 2 est → (arbuste **coupé en
+##   jeu**, T23 : CS01, Badge Cascade, Salamèche ; COUPER) → Route 2 par la barrière de FUTUR B,
+##   ouverte depuis l'est → Jadielle, puis le retour complet par la Cave jusqu'à Carmin ;
 ## - Corde Sortie au sol dans le renfoncement R1 de la Cave (2, 44) : ramassée une seule fois,
 ##   absente après rechargement.
 ## Les rencontres sauvages sont coupées et les Dresseurs de la Route 11 battus (drapeaux) : le test
@@ -29,6 +29,9 @@ const ROPE_NPC := &"digletts_cave_item_1"
 const ROPE_FLAG := &"got_digletts_cave_item_1"
 const ROPE_CELL := Vector2i(2, 44)
 const T8: Array[String] = ["La barrière s'ouvre de ce côté.", "Le sentier rejoint la Route 2."]
+const NORTH_OF_BUSH := Vector2i(6, 20)
+const CUT: Array[String] = ["Salamèche peut couper cet arbuste.", "Utiliser Coupe ?",
+	"Salamèche utilise Coupe !"]
 
 var _boot: Boot
 var _player: Player
@@ -204,7 +207,8 @@ func _through(target: StringName, spawn: StringName = &"") -> void:
 	_visited.append(target)
 
 
-## Interagit avec la case devant le joueur ; renvoie les pages lues.
+## Interagit avec la case devant le joueur ; renvoie les pages lues. Aux cartes de choix
+## (COUPER / LAISSER), confirme.
 func _interact(facing: Vector2i) -> Array[String]:
 	_player.face(facing)
 	var box := _boot.get_dialogue_box()
@@ -215,11 +219,14 @@ func _interact(facing: Vector2i) -> Array[String]:
 	var deadline := Time.get_ticks_msec() + 20000
 	while (_boot.get_dialogue_runner().is_running() or box.is_open() \
 			or _boot.get_cutscene_director().is_running()) and Time.get_ticks_msec() < deadline:
-		if box.is_open():
+		if box.is_choice_showing():
+			box.get_choice_cards().get_confirm_button().pressed.emit()
+		elif box.is_open():
 			var text := box.get_text()
 			if pages.is_empty() or pages.back() != text:
 				pages.append(text)
-			box.advance_requested.emit()
+			if not _boot.get_dialogue_runner().is_awaiting_choice():
+				box.advance_requested.emit()
 		await wait_process_frames(1)
 	await wait_process_frames(3)
 	return pages
@@ -234,13 +241,17 @@ func _beaten_flags() -> Array[StringName]:
 
 func test_full_crossing_from_vermilion_to_viridian_and_back_through_the_cave() -> void:
 	var flags := _beaten_flags()
-	flags.append(BUSH_FLAG)
+	flags.append(&"badge_cascade")
 	await _start(&"vermilion_city", &"from_route_11_c", Vector2i.RIGHT, flags)
+	GameState.bag.add(&"hm01")
 	# Aller : Carmin → Route 11 → Cave (bouche sud) → Route 2 est (bouche nord).
 	await _through(&"route_11", &"from_vermilion_c")
 	await _through(&"digletts_cave", &"from_route_11_w")
 	await _through(&"route_2_east", &"from_cave_w")
-	# Couloir : l'arbuste est coupé (drapeau), on rejoint la Route 2 par le bord ouest.
+	# Couloir : Salamèche coupe l'arbuste (T23, mécanisme du J16), puis le bord ouest.
+	await _go(NORTH_OF_BUSH)
+	assert_eq(await _interact(Vector2i.DOWN), CUT, "ARB-03, COUPER, ARB-04")
+	assert_true(GameState.flags.has_flag(BUSH_FLAG), "arbuste coupé en jeu")
 	await _through(&"route_2", &"from_route_2_east_n")
 	# Barrière de FUTUR B ouverte depuis l'est (T-8), puis Route 2 sud jusqu'à Jadielle.
 	await _go(Vector2i(35, 43))

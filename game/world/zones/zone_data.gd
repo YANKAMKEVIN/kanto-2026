@@ -28,6 +28,9 @@ var subtitle: String = ""
 var description: String = ""
 ## Sous-titre et description provisoires, à relire par Kevin.
 var draft: bool = false
+## Le titre de zone s'affiche aussi dans les intérieurs de la zone (S.S. Anne, jalon 16) ; sinon
+## seulement sur ses cartes extérieures ([ZoneAnnouncer]).
+var interior_title: bool = false
 ## Services de la zone (Centre, Boutique, Arène), découverts un à un ; aucun au J6.
 var services: Array[ZoneService] = []
 ## Fichier d'origine (messages d'erreur).

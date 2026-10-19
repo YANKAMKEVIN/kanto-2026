@@ -15,8 +15,9 @@ const SAVE_PATH := "user://test_vermilion_life_save.json"
 const FADE := 0.05
 const TIMEOUT := 15.0
 const DIRECTIONS: Array[Vector2i] = [Vector2i.DOWN, Vector2i.UP, Vector2i.LEFT, Vector2i.RIGHT]
-const T26: Array[String] = ["Le S.S. Anne est à quai pour quelques jours.",
-	"L'équipage prépare la croisière. L'embarquement n'a pas encore commencé."]
+## T-26 (provisoire du J15) remplacé au J16 par le contrôle du Passe Bateau : TXT-02 / TXT-01.
+const TXT_02: Array[String] = ["Il te faut un Passe Bateau pour monter sur ce navire."]
+const TXT_01: Array[String] = ["Ton Passe Bateau, s'il te plaît.", "Parfait, bienvenue à bord !"]
 const T27 := "Ce paquebot fait le tour du monde. Les Dresseurs à bord viennent de partout."
 const T28 := "On charge depuis l'aube. Des caisses, des malles… et des Pokémon de toutes les régions."
 const T29 := "Un jeune arbre pousse devant l'entrée. Impossible de passer."
@@ -135,11 +136,12 @@ func test_arrival_raises_the_flag_and_the_explore_objective() -> void:
 	assert_push_error_count(0)
 
 
-func test_sailor_says_t26_with_and_without_the_ticket_and_boarding_stays_closed() -> void:
+func test_sailor_checks_the_ticket_and_the_gangway_is_guarded() -> void:
 	for start: String in ["vermilion", "vermilion_ss_ticket"]:
 		await _start(&"vermilion_city", &"from_route_6_c", start)
 		assert_eq(GameState.flags.has_flag(&"got_ss_ticket"), start != "vermilion", start)
-		assert_eq(await _talk_to(&"sailor"), T26, "%s : T-26" % start)
+		assert_eq(await _talk_to(&"sailor"), TXT_02 if start == "vermilion" else TXT_01,
+			"%s : TXT-02 sans le Passe Bateau, TXT-01 avec" % start)
 		assert_eq(await _talk_to(&"docker_1"), [T27] as Array[String], "%s : T-27" % start)
 		assert_eq(await _talk_to(&"docker_2"), [T28] as Array[String], "%s : T-28" % start)
 		# Le marin tient la passerelle : la case derrière lui n'est jamais libre.

@@ -1,0 +1,79 @@
+name: Godot tests
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: godot-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  tests:
+    name: GUT (${{ matrix.shard }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: ['0', '1', '2', '3', '4', '5', '6', '7']
+    env:
+      GODOT_VERSION: 4.7.2
+      GODOT_SILENCE_ROOT_WARNING: 1
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Godot
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 \
+            "https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip" \
+            --output "$RUNNER_TEMP/godot.zip"
+          echo "cadd3204e728a35d3f13adb7fd0d7902636b79f6b95c40c265eb73b6c35329e4  $RUNNER_TEMP/godot.zip" | sha256sum --check
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          mv "$RUNNER_TEMP/godot/Godot_v${GODOT_VERSION}-stable_linux.x86_64" "$RUNNER_TEMP/godot/godot"
+          chmod +x "$RUNNER_TEMP/godot/godot"
+          echo "$RUNNER_TEMP/godot" >> "$GITHUB_PATH"
+      - name: Import project
+        shell: bash
+        run: |
+          set -euo pipefail
+          godot --headless --path . --import 2>&1 | tee import.log
+          if rg '(^ERROR:|SCRIPT ERROR:|Parse Error:|Failed to load script)' import.log; then
+            exit 1
+          fi
+      - name: Run GUT tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          tools/check_test_timing.sh tests
+          python3 - <<'PYTEST' 2>&1 | tee tests.log
+          import pathlib, re, subprocess, sys
+          shard = "${{ matrix.shard }}"
+          paths = sorted(str(p) for p in pathlib.Path("tests").rglob("test_*.gd"))
+          paths = paths[int(shard)::8]
+          if not paths:
+              sys.exit("Empty test shard")
+          print(f"Shard {shard}: {len(paths)} scripts", flush=True)
+          command = ["godot", "--headless", "--path", ".", "-s", "addons/gut/gut_cmdln.gd",
+                     "-gconfig=", "-gtest=" + ",".join("res://" + p for p in paths),
+                     "-gexit", "-glog=1"]
+          result = subprocess.run(command, stdout=subprocess.PIPE,
+                                  stderr=subprocess.STDOUT, text=True)
+          print(result.stdout)
+          bad = re.search(r"Parse Error|Ignoring script|Failed to load script|SCRIPT ERROR",
+                          result.stdout)
+          sys.exit(result.returncode or (1 if bad else 0))
+          PYTEST
+      - name: Keep diagnostic logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: godot-logs-${{ matrix.shard }}
+          path: |
+            import.log
+            tests.log

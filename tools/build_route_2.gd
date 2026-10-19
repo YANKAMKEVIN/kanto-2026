@@ -34,9 +34,14 @@ extends SceneTree
 ##   Super Potion `route_2_item_5`) fermée par l'arbuste (4, 19) ; sentier « b » praticable jusqu'au
 ##   raccord est (41, 43..44) PUSH → → `route_2_east` ; barrière de FUTUR B en `FlagGate` fermée
 ##   (`unless route_2_east_gate_open`, `blocking_cells` (34, 43..44)) + `FlagGate` ouverte (`if`) ;
-##   l'arbuste (4, 19) est un `FlagGate` `unless cut_route_2_futur_a` (arbre dense provisoire, son
-##   point d'examen T7 reste jusqu'à la Coupe du J16). Les cases `A` et `B` sont **praticables dans
-##   `Ground`** (occupées par leur `FlagGate`, jalon-17.md §2.4) bien que bloquées dans la grille.
+##   l'arbuste (4, 19) est un `FlagGate` `unless cut_route_2_futur_a`. Les cases `A` et `B` sont
+##   **praticables dans `Ground`** (occupées par leur `FlagGate`, jalon-17.md §2.4) bien que
+##   bloquées dans la grille.
+## - **Jalon 17 T23 (jalon-17.md §2.13, dossier 20 §3.5)** : l'arbuste de FUTUR A est l'arbuste
+##   coupable du J16 (l'objet du jeune arbre de l'Arène de Carmin, réduit à une case) ; son examen
+##   `route_2_dense_tree` garde le texte T7 du dossier 11 **sans la CS01**, puis prend les textes
+##   du J16 (ARB-01 à ARB-03) ; COUPER lance `cut_tree_route_2_futur_a`. Point retiré avec
+##   l'arbuste (`unless cut_route_2_futur_a`).
 
 const PLAN_PATH: String = "res://tools/plans/route_2.txt"
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
@@ -138,11 +143,13 @@ const FIXED_PROPS: Array = [
 ]
 ## Petites pierres traversables (pied en cases) : clairière C3.
 const STONES: Array[Vector2] = [Vector2(5.4, 8.75)]
-## FUTUR A : arbre dense (`tree_foret_08` réduit et assombri) au pied de la case `A`.
-const DENSE_TREE_ID: String = "tree_foret_08"
-const DENSE_TREE_CELL := Vector2i(4, 19)
-const DENSE_TREE_SCALE: float = 0.55
-const DENSE_TREE_VALUE: float = 0.7
+## FUTUR A (T23) : l'arbuste coupable du J16 (jeune arbre de l'Arène de Carmin, deux cases de
+## large) réduit pour tenir dans la case `A`, centré sur elle, un peu assombri par la forêt.
+const FUTUR_A_BUSH_ID: String = "prop_jeune_arbre_arene_01"
+const FUTUR_A_CELL := Vector2i(4, 19)
+const FUTUR_A_SCALE: float = 0.6
+const FUTUR_A_VALUE: float = 0.85
+const FUTUR_A_NODE: String = "FuturABush"
 
 ## Jalon 17 : FUTUR B, barrière à deux états (`FlagGate`) : fermée (`unless`) avec ses deux cases
 ## occupées, ouverte (`if`) sans occupation ; cases `B` de la grille.
@@ -150,9 +157,11 @@ const GATE_FLAG: StringName = &"route_2_east_gate_open"
 const GATE_CLOSED_ID: String = "prop_cloture_piquets_v_01"
 const GATE_OPEN_ID: String = "prop_barriere_ouverte_01"
 const GATE_ANCHOR := Vector2i(34, 44)
-## FUTUR A : drapeau de l'arbuste (J16) et départ de débogage dans la clairière.
+## FUTUR A : drapeau de l'arbuste (J16) et départs de débogage dans la clairière et devant
+## l'arbuste, à l'est (T23 : Coupe).
 const BUSH_FLAG: StringName = &"cut_route_2_futur_a"
-const DEBUG_SPAWNS: Array = [["debug_futur_a", Vector2i(2, 19)]]
+const DEBUG_SPAWNS: Array = [["debug_futur_a", Vector2i(2, 19)],
+	["debug_futur_a_bush", Vector2i(5, 19)]]
 ## Raccord est (jalon-17 §1.3) : [nœud, case, spawn de route_2_east, spawn d'ici].
 const EAST_EXITS: Array = [
 	["EastN", Vector2i(41, 43), &"from_route_2_n", "from_route_2_east_n"],
@@ -509,10 +518,14 @@ func _add_interactables(root: Node) -> void:
 		point.set(&"size", entry[2])
 		point.set(&"facing", entry[3])
 		point.set(&"dialogue_id", entry[4])
-		# Jalon 17 : la barrière ne se lit plus (ni de l'ouest, ni de l'est) une fois ouverte.
+		# Jalon 17 : la barrière ne se lit plus (ni de l'ouest, ni de l'est) une fois ouverte ;
+		# l'arbuste de FUTUR A, une fois coupé (T23).
 		if String(entry[0]).begins_with("ClosedGate"):
 			var unless: Array[StringName] = [GATE_FLAG]
 			point.set(&"unless_flags", unless)
+		elif entry[0] == "DenseTree":
+			var cut: Array[StringName] = [BUSH_FLAG]
+			point.set(&"unless_flags", cut)
 		_attach(root, root.get_node(^"Interactables"), point)
 
 
@@ -709,19 +722,19 @@ func _place_bushes(root: Node, entities: Node2D) -> void:
 		bush.modulate = Color(value, value, value) * _row_tint(float(cell.y) + 1.0)
 
 
-## FUTUR A : l'arbre dense qui ferme le sentier de l'ouest (case `A`, praticable dans `Ground`).
+## FUTUR A : l'arbuste qui ferme le sentier de l'ouest (case `A`, praticable dans `Ground`).
 ## Jalon 17 : une [FlagGate] `unless cut_route_2_futur_a` à `blocking_cells` (contrat du J16,
-## comme le jeune arbre de l'Arène de Carmin) ; l'arbre (provisoire : celui du J16 le remplacera)
-## est son décor, sans emprise propre.
+## comme le jeune arbre de l'Arène de Carmin) ; l'arbuste du J16 (T23) est son décor, sans
+## emprise propre.
 func _place_dense_tree(root: Node, entities: Node2D) -> void:
-	var gate := _flag_gate(root, entities, "DenseTreeGate", [], [BUSH_FLAG], [DENSE_TREE_CELL],
-		_rules.call(&"foot_position", StringName(DENSE_TREE_ID), DENSE_TREE_CELL))
-	var tree := _add_prop(root, gate, DENSE_TREE_ID, Vector2.ZERO, "DenseTreeFuturA")
-	tree.set(&"footprint", [] as Array[Vector2i])
-	tree.scale = Vector2(DENSE_TREE_SCALE, DENSE_TREE_SCALE)
-	var tint := _row_tint(float(DENSE_TREE_CELL.y) + 1.0)
-	tree.modulate = Color(tint.r * DENSE_TREE_VALUE, tint.g * DENSE_TREE_VALUE,
-		tint.b * DENSE_TREE_VALUE)
+	var foot := Vector2((float(FUTUR_A_CELL.x) + 0.5) * TILE, float(FUTUR_A_CELL.y + 1) * TILE)
+	var gate := _flag_gate(root, entities, FUTUR_A_NODE, [], [BUSH_FLAG], [FUTUR_A_CELL], foot)
+	var bush := _add_prop(root, gate, FUTUR_A_BUSH_ID, Vector2.ZERO, "Bush")
+	bush.set(&"footprint", [] as Array[Vector2i])
+	bush.scale = Vector2(FUTUR_A_SCALE, FUTUR_A_SCALE)
+	var tint := _row_tint(float(FUTUR_A_CELL.y) + 1.0)
+	bush.modulate = Color(tint.r * FUTUR_A_VALUE, tint.g * FUTUR_A_VALUE,
+		tint.b * FUTUR_A_VALUE)
 
 
 ## FUTUR B : la barrière à deux états. Fermée : [FlagGate] `unless route_2_east_gate_open`, ses

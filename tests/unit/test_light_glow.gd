@@ -277,9 +277,30 @@ func test_hint_glow_mixes_instead_of_adding_and_covers_the_object() -> void:
 	assert_not_null(material, "la lueur d'aide vacille : matériau à shader")
 	assert_true(material.shader.code.contains("blend_mix"), "pas additif (invisible sur le bois)")
 	assert_false(material.shader.code.contains("blend_add"))
-	var image := glow.texture.get_image()
-	var mid := image.get_pixel(LightGlow.TEXTURE_SIZE / 2 + LightGlow.TEXTURE_SIZE / 5,
-		LightGlow.TEXTURE_SIZE / 2).a
+	var mid: float
+	if DisplayServer.get_name() == "headless":
+		# Le serveur de rendu factice ne fournit pas d'image GPU. On vérifie les
+		# paramètres du même dégradé puis sa valeur au même point, côté CPU.
+		var texture := glow.texture as GradientTexture2D
+		assert_not_null(texture)
+		if texture == null:
+			return
+		assert_eq(texture.fill, GradientTexture2D.FILL_RADIAL)
+		assert_eq(texture.fill_from, Vector2(0.5, 0.5))
+		assert_eq(texture.fill_to, Vector2(1.0, 0.5))
+		assert_eq(texture.width, LightGlow.TEXTURE_SIZE)
+		assert_eq(texture.height, LightGlow.TEXTURE_SIZE)
+		var pixel := Vector2(LightGlow.TEXTURE_SIZE / 2 + LightGlow.TEXTURE_SIZE / 5,
+			LightGlow.TEXTURE_SIZE / 2)
+		var distance := (pixel / float(LightGlow.TEXTURE_SIZE)).distance_to(texture.fill_from)
+		mid = texture.gradient.sample(distance / texture.fill_from.distance_to(texture.fill_to)).a
+	else:
+		var image := glow.texture.get_image()
+		assert_not_null(image, "image du halo disponible avec le vrai rendu")
+		if image == null:
+			return
+		mid = image.get_pixel(LightGlow.TEXTURE_SIZE / 2 + LightGlow.TEXTURE_SIZE / 5,
+			LightGlow.TEXTURE_SIZE / 2).a
 	assert_gt(mid, 0.6, "cœur plein : la teinte couvre l'objet, pas seulement son centre")
 	LightGlow.set_reduce_motion(true)
 	assert_eq(material.get_shader_parameter(&"amplitude"), 0.0, "animations réduites : fixe")
@@ -296,3 +317,4 @@ func test_mix_alpha_has_its_own_ceiling() -> void:
 	bad["blend"] = "multiply"
 	assert_false(LightGlowLibrary.new().add_from_dict({"types": {"b": bad}}))
 	assert_push_error_count(2)
+

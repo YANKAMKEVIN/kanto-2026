@@ -69,6 +69,13 @@ func place_after_arrival(player_cell: Vector2i, facing: Vector2i, is_free: Calla
 	return _cell
 
 
+## Pose le compagnon sur [param cell] (jalon 16, Coupe : il s'est placé à côté du joueur pour
+## couper et y reste) ; le dernier pas est oublié, le prochain mouvement est une marche.
+func place_at(cell: Vector2i) -> void:
+	_last_kind = WALK
+	_cell = cell
+
+
 ## Le joueur commence un pas de [param from] à [param _to] ([param kind] : WALK, RUN ou JUMP).
 ## Rend le mouvement du compagnon (toujours un, vers [param from]).
 func on_player_step(from: Vector2i, _to: Vector2i, kind: StringName) -> Step:

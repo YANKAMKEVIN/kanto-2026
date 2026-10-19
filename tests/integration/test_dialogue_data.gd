@@ -60,8 +60,6 @@ const J17_TOKENS: Dictionary[String, Array] = {
 	"Encore {caught_missing}, et c'est à toi.": [&"caught_missing"],
 	"{player} reçoit la CS05 — Flash !": [&"player"],
 }
-## Variantes en brouillon : aucune (jalon 17 : accord de T-2 à 1 espèce validé, Q-2, 2026-10-16).
-const DRAFT_VARIANTS: Dictionary[StringName, Array] = {}
 ## Textes pas encore validés, exemptés du contrôle « mot pour mot » (jalon 14 T16 : ceux du
 ## coquillage de la Route 25, validés depuis : dossier 17 §15 n° 71 ; le n° 72 est retiré le 2026-10-14).
 const UNVALIDATED: Array[StringName] = []
@@ -145,6 +143,14 @@ const MAPS: Array[StringName] = [
 	&"digletts_cave",
 	# Jalon 17 (T19) : le couloir de la Route 2 est et le poste de l'assistant.
 	&"route_2_east", &"route_2_east_gate",
+	# Jalon 16 (T11) : l'Arène de Carmin (puzzle et barrière ; Major Bob et les siens au T14).
+	&"vermilion_gym",
+	# Jalon 16 (T12) : la vie du navire (les 7 cartes à fouler ; couloir et cabine du capitaine = T13).
+	&"ss_anne_main_deck", &"ss_anne_lower_deck", &"ss_anne_restaurant", &"ss_anne_outer_deck",
+	&"ss_anne_cabin_a", &"ss_anne_cabin_b", &"ss_anne_cabin_c",
+	# Jalon 16 (T13) : le couloir du rival n° 4 et la cabine du capitaine.
+	&"ss_anne_captain_corridor", &"ss_anne_captain_room",
+	# Jalon 16 (T15) : `ss_anne_main_deck` (passerelle, départ) est déjà dans la liste (T12).
 	# Jalon 18 (T16) : PNJ, Dresseurs et objets en données sur les cartes du T12 au T14.
 	&"route_9", &"route_10", &"route_10_center", &"dark_cave_1f", &"dark_cave_b1f",
 	&"lavender_town", &"lavender_center", &"lavender_mart", &"pokemon_house",
@@ -307,7 +313,7 @@ const IDS: Array[StringName] = [
 	# Jalon 15 (T14) : Route 6 et Carmin-sur-Mer (dossier 18 §15, annexe A du plan).
 	&"route_6_sign", &"route_6_gate_sign", &"route_6_underground_gate_sign", &"route_6_guard",
 	&"route_6_fisher", &"route_6_walker", &"route_6_item_1", &"route_6_hidden_1",
-	&"vermilion_city_sign", &"vermilion_gym_sign", &"vermilion_dock_sign", &"vermilion_gym_tree",
+	&"vermilion_city_sign", &"vermilion_gym_sign", &"vermilion_dock_sign",
 	&"vermilion_sailor", &"vermilion_docker_1", &"vermilion_docker_2", &"vermilion_old_man",
 	&"vermilion_resident", &"vermilion_kid", &"vermilion_fan_club_chairman",
 	&"vermilion_fan_club_member", &"vermilion_fan_club_member_2", &"vermilion_fisher",
@@ -334,6 +340,8 @@ const IDS_J17: Array[StringName] = [
 	&"route_2_east_cave_sign", &"route_2_east_assistant", &"route_2_east_assistant_hm05_system",
 	&"route_2_east_assistant_hm05_use", &"route_2_east_visitor", &"route_2_gate_east",
 	&"route_2_east_item_1", &"route_2_east_item_2", &"route_2_item_5", &"digletts_cave_item_1",
+	# T23 : examen de l'arbuste du couloir (Coupe du J16).
+	&"route_2_east_bush",
 ]
 ## Jalon 14 (T17, dossier 17 §15 n° 1 à 27) : dialogues de la maison de Léo, ajoutés aux autres.
 const IDS_J14_BILL: Array[StringName] = [
@@ -354,6 +362,66 @@ const IDS_J15_ROUTE_5: Array[StringName] = [
 	&"route_5_item_1", &"route_5_sign", &"route_5_traveler", &"route_5_underground_sign",
 	&"route_5_walker",
 ]
+## Jalon 16 (T11) : le puzzle de l'Arène de Carmin (dossier 19 §0.5 n° 32 à 35).
+const IDS_J16_GYM: Array[StringName] = [
+	&"vermilion_gym_switch_first", &"vermilion_gym_switch_reset", &"vermilion_gym_switch_solved",
+	&"vermilion_gym_trash",
+	# Jalon 16 (T14) : guide, Louis, Axel, Marc, Major Bob (dossier 19 §0.5 n° 31, 36 à 44, §4).
+	&"vermilion_gym_guide", &"vermilion_gym_louis_before", &"vermilion_gym_louis_defeated",
+	&"vermilion_gym_louis_rematch", &"vermilion_gym_axel_before", &"vermilion_gym_axel_defeated",
+	&"vermilion_gym_axel_rematch", &"vermilion_gym_marc_before", &"vermilion_gym_marc_defeated",
+	&"vermilion_gym_marc_rematch", &"vermilion_gym_surge", &"vermilion_gym_surge_intro",
+	&"vermilion_gym_surge_lost", &"vermilion_gym_surge_resume", &"vermilion_gym_surge_won",
+	&"vermilion_gym_surge_badge", &"vermilion_gym_surge_tm", &"vermilion_gym_surge_tm_use",
+	&"vermilion_gym_surge_tm_late",
+]
+## Jalon 16 (T12) : la vie du navire (dossier 19 §0.5 n° 10 à 15, §4 ; objets du plan).
+const IDS_J16_SHIP: Array[StringName] = [
+	&"ss_anne_armand_after", &"ss_anne_armand_before", &"ss_anne_armand_defeated",
+	&"ss_anne_basile_after", &"ss_anne_basile_before", &"ss_anne_basile_defeated",
+	&"ss_anne_deck_passenger", &"ss_anne_deckhand", &"ss_anne_diner", &"ss_anne_emile_after",
+	&"ss_anne_emile_before", &"ss_anne_emile_defeated", &"ss_anne_erwan_after",
+	&"ss_anne_erwan_before", &"ss_anne_erwan_defeated", &"ss_anne_gangway_sailor",
+	&"ss_anne_hidden_1", &"ss_anne_hidden_2", &"ss_anne_hidden_3", &"ss_anne_hostess",
+	&"ss_anne_item_01", &"ss_anne_item_02", &"ss_anne_item_03", &"ss_anne_item_04",
+	&"ss_anne_item_05", &"ss_anne_item_06", &"ss_anne_lena_after", &"ss_anne_lena_before",
+	&"ss_anne_lena_defeated", &"ss_anne_loic_after", &"ss_anne_loic_before",
+	&"ss_anne_loic_defeated", &"ss_anne_passenger", &"ss_anne_paul_after", &"ss_anne_paul_before",
+	&"ss_anne_paul_defeated", &"ss_anne_remi_after", &"ss_anne_remi_before",
+	&"ss_anne_remi_defeated", &"ss_anne_victor_after", &"ss_anne_victor_before",
+	&"ss_anne_victor_defeated", &"ss_anne_waiter", &"ss_anne_yann_after", &"ss_anne_yann_before",
+	&"ss_anne_yann_defeated",
+]
+## Jalon 16 (T11) : GYM-03, dit par la scène de la barrière ouverte ; (T14) les répliques de
+## Major Bob dites par ses scènes.
+const PLAYED_J16_GYM: Array[StringName] = [&"vermilion_gym_switch_solved",
+	&"vermilion_gym_surge_badge", &"vermilion_gym_surge_intro", &"vermilion_gym_surge_lost",
+	&"vermilion_gym_surge_resume", &"vermilion_gym_surge_tm", &"vermilion_gym_surge_tm_late",
+	&"vermilion_gym_surge_tm_use", &"vermilion_gym_surge_won"]
+## Jalon 16 (T13) : le rival n° 4 et le capitaine (dossier 19 §0.5 n° 16 à 24).
+const IDS_J16_RIVAL_CAPTAIN: Array[StringName] = [
+	&"rival_ss_anne_intro", &"rival_ss_anne_lost", &"rival_ss_anne_resume", &"rival_ss_anne_won",
+	&"ss_anne_captain", &"ss_anne_captain_gift", &"ss_anne_captain_gift_use",
+	&"ss_anne_captain_relieved", &"ss_anne_captain_rub", &"ss_anne_captain_sick",
+]
+## Jalon 16 (T13) : tous joués par les scènes du rival et du capitaine, sauf CAP-04 (son PNJ).
+const PLAYED_J16_RIVAL_CAPTAIN: Array[StringName] = [
+	&"rival_ss_anne_intro", &"rival_ss_anne_lost", &"rival_ss_anne_resume", &"rival_ss_anne_won",
+	&"ss_anne_captain_gift", &"ss_anne_captain_gift_use", &"ss_anne_captain_relieved",
+	&"ss_anne_captain_rub", &"ss_anne_captain_sick",
+]
+## Jalon 16 (T15) : Coupe sur l'arbuste de l'Arène (examen `cut_tree` remplace
+## `vermilion_gym_tree` du J15) et départ du S.S. Anne (dossier 19 §0.5 n° 3 à 7, 25 à 29).
+const IDS_J16_T15: Array[StringName] = [
+	&"cut_tree", &"cut_tree_used", &"ss_anne_departure_confirm",
+]
+## Jalon 16 (T15) : joués par les scènes du départ et de la coupe ; le marin de la passerelle
+## (TXT-03, seule source du texte) l'est aussi par la sortie, avant la CS01.
+const PLAYED_J16_T15: Array[StringName] = [
+	&"cut_tree_used", &"ss_anne_departure_confirm", &"ss_anne_gangway_sailor",
+]
+## Jalon 16 : textes validés du dossier 19 (§0.5, « … » par ligne).
+const DOSSIER_19 := "res://docs/design/dossier-19-ss-anne-major-bob.md"
 ## Jalon 18 (T16) : Route 9, Route 10, Grotte Sombre, Lavanville, Tour (dossier 21 §15, annexe A
 ## du plan ; mot pour mot : test_j18_data, test_trainers_j18).
 const IDS_J18: Array[StringName] = [
@@ -433,8 +501,9 @@ const SET_J14_BILL_CUTSCENES: Array[StringName] = [
 ## Jalon 14 (T17) : `cerulean_rocket_beaten` (lu par Léo) est levé par la scène du Rocket
 ## d'Azuria (T20b).
 ## T20b : levé (scène du combat), plus aucun drapeau futur.
-## Jalon 18 (T16) : `tower_stairs_open` (présence de l'Exorciste de la Tour) est levé au J19
-## (dossier 22 K-3).
+## Jalon 16 (T12, T15) : `got_hm01` (lu par le marin de la passerelle et le départ du navire) est
+## levé par la scène du capitaine (T13). Jalon 18 (T16) : `tower_stairs_open` (présence de
+## l'Exorciste de la Tour) est levé au J19 (dossier 22 K-3).
 const FUTURE_FLAGS: Array[StringName] = [&"tower_stairs_open"]
 var _library: DialogueLibrary
 var _cutscenes: CutsceneLibrary
@@ -465,6 +534,8 @@ func before_all() -> void:
 	# Jalon 15 (T4) : répliques de la Pension, jouées par le DaycareDirector (code).
 	for daycare_line: StringName in DaycareLines.PLAYED_BY_DIRECTOR:
 		_use(daycare_line, &"route_5_daycare")
+	var puzzles := SwitchPuzzleLibrary.new()
+	puzzles.load_file()
 	for map_id: StringName in MAPS:
 		_npc_ids[map_id] = []
 		for spec: NpcSpec in NpcRoster.load_for_map(map_id).get_all():
@@ -483,6 +554,13 @@ func before_all() -> void:
 		var map := (load(MapCatalog.scene_path(map_id)) as PackedScene).instantiate()
 		for point: Node in map.get_node(^"Interactables").get_children():
 			_use((point as InteractPoint).dialogue_id, map_id)
+			# Jalon 16 (T11) : objet à fouiller d'un puzzle : Boot joue les textes du puzzle et
+			# sa scène de réussite sur la carte de l'objet.
+			var puzzle := puzzles.get_spec((point as InteractPoint).puzzle)
+			if puzzle != null:
+				for line: StringName in [puzzle.nothing, puzzle.first, puzzle.reset]:
+					_use(line, map_id)
+				_use_cutscene(puzzle.solved_cutscene, map_id)
 		for point: Node in map.get_node(^"Triggers").get_children():
 			_use_cutscene((point as EventTriggerPoint).cutscene_id, map_id)
 		map.free()
@@ -557,7 +635,8 @@ func test_library_loads_without_error() -> void:
 	# Les identifiants sont comparés triés (la liste IDS est groupée par jalon).
 	var found := _without_qa(library.get_ids())
 	found.sort()
-	var expected := IDS + IDS_J14_BILL + IDS_J14_ROCKET + IDS_J15_ROUTE_5 + IDS_J17 + IDS_J18
+	var expected := IDS + IDS_J14_BILL + IDS_J14_ROCKET + IDS_J15_ROUTE_5 + IDS_J16_GYM \
+		+ IDS_J16_SHIP + IDS_J16_RIVAL_CAPTAIN + IDS_J16_T15 + IDS_J17 + IDS_J18
 	expected.sort()
 	assert_eq(found, expected)
 
@@ -579,7 +658,7 @@ func test_every_dialogue_is_used() -> void:
 
 func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 	assert_eq(_cutscenes.get_errors().size(), 0, str(_cutscenes.get_errors()))
-	var played := _cutscenes.get_dialogue_ids()
+	var played := _without_qa(_cutscenes.get_dialogue_ids())
 	assert_eq(played, _sorted([
 		# Jalon 13 (T19) : Ondine à l'Arène.
 		&"cerulean_gym_misty_badge", &"cerulean_gym_misty_intro", &"cerulean_gym_misty_lost",
@@ -621,7 +700,8 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		&"route_2_item_4_found",
 		&"viridian_forest_item_3_found", &"viridian_forest_item_4_found",
 		&"viridian_forest_item_6_found"] + PLAYED_J14_BILL + PLAYED_J14_ROCKET
-		+ PLAYED_J15_ROUTE_5
+		+ PLAYED_J15_ROUTE_5 + PLAYED_J16_GYM + PLAYED_J16_RIVAL_CAPTAIN
+		+ PLAYED_J16_T15
 		# Jalon 17 (T8) : remise de la CS05 par l'assistant (scène lancée par son dialogue).
 		+ [&"route_2_east_assistant_hm05_system", &"route_2_east_assistant_hm05_use"]))
 	for id: StringName in played:
@@ -682,9 +762,17 @@ func test_oak_looks_at_the_grass_on_his_second_line_and_thinks_before_the_last()
 
 
 func test_every_condition_flag_is_set_somewhere() -> void:
-	var set_flags := _library.get_set_flags() + _cutscenes.get_set_flags() \
+	# Sans les données d'une éventuelle carte de QA (`qa_*.json` ; celles du jalon 16 sont
+	# retirées au T20).
+	var dialogues := DialogueLibrary.new()
+	var cutscenes := CutsceneLibrary.new()
+	for pair: Array in [[dialogues, "res://data/dialogues/"], [cutscenes, "res://data/cutscenes/"]]:
+		for file: String in DirAccess.get_files_at(pair[1]):
+			if file.get_extension() == "json" and not MapCatalog.is_qa_map(StringName(file)):
+				assert_true(pair[0].load_file((pair[1] as String).path_join(file)), file)
+	var set_flags := dialogues.get_set_flags() + cutscenes.get_set_flags() \
 		+ StarterChoice.get_set_flags(_offer)
-	var read_flags := _library.get_condition_flags() + _cutscenes.get_condition_flags()
+	var read_flags := dialogues.get_condition_flags() + cutscenes.get_condition_flags()
 	for map_id: StringName in MAPS:
 		for spec: NpcSpec in NpcRoster.load_for_map(map_id).get_all():
 			read_flags.append_array(spec.if_flags + spec.unless_flags)
@@ -698,16 +786,20 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 	for flag: StringName in FUTURE_FLAGS:
 		assert_false(set_flags.has(flag), "« %s » : levé par un jalon futur" % flag)
 	assert_true(read_flags.has(&"starter_chosen"), "starter_chosen lu (pensée des herbes)")
-	assert_eq(_library.get_set_flags(),
+	assert_eq(dialogues.get_set_flags(),
 		_sorted([&"blacked_out_before", &"cerulean_neighbor_talked", &"forest_hiker_talked", &"forest_naturalist_talked",
 			&"mom_greeted", &"nugget_rocket_yes", &"pewter_researcher_talked", &"poison_unlocked", &"rival_met",
 			&"route_5_gate_warned",
 			&"route_2_hiker_talked", &"route_2_youngster_talked", &"storage_terminal_seen",
-			&"viridian_old_man_talked"] + SET_J14_BILL_DIALOGUES + SET_J14_ROCKET_DIALOGUES
+			&"viridian_old_man_talked",
+			# Jalon 16 (T15) : PARTIR (confirmation du départ du S.S. Anne) ; TXT-03 entendu
+			# (marin de la passerelle, aussi joué par la sortie).
+			&"ss_anne_departure_chosen", &"ss_anne_exit_told"]
+			+ SET_J14_BILL_DIALOGUES + SET_J14_ROCKET_DIALOGUES
 			# Jalon 17 (T8) : Ronflex vu, assistant rencontré, barrière de FUTUR B ouverte.
 			+ [&"hm05_assistant_met", &"route_2_east_gate_open", &"snorlax_route_11_seen"]
 			+ SET_J18_DIALOGUES))
-	assert_eq(_cutscenes.get_set_flags(), _sorted([&"badge_boulder", &"badge_cascade",
+	assert_eq(cutscenes.get_set_flags(), _sorted([&"badge_boulder", &"badge_cascade",
 		&"beaten_mt_moon_researcher", &"beaten_nugget_rocket", &"brock_met", &"cerulean_reached", &"got_mt_moon_1f_hidden_1",
 		&"got_mt_moon_1f_item_1", &"got_mt_moon_b1f_item_1", &"got_mt_moon_b1f_item_2",
 		&"got_mt_moon_b2f_hidden_1", &"got_mt_moon_b2f_item_1", &"got_nugget", &"got_oak_parcel",
@@ -730,11 +822,23 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		&"starter_offered", &"tm11_received", &"tm34_received", &"viridian_arrived",
 		# Jalon 15 (T14) : Route 6 (Poké Ball, Super Potion cachée), arrivée à Carmin.
 		&"got_route_6_hidden_1", &"got_route_6_item_1", &"vermilion_reached",
+		# Jalon 16 (T11) : la barrière de l'Arène de Carmin ; (T14) Major Bob.
+		&"vermilion_gym_puzzle_solved", &"badge_thunder", &"surge_met", &"tm24_received",
+		# Jalon 16 (T12) : les neuf objets du S.S. Anne (six au sol, trois cachés).
+		&"got_ss_anne_item_01", &"got_ss_anne_item_02", &"got_ss_anne_item_03",
+		&"got_ss_anne_item_04", &"got_ss_anne_item_05", &"got_ss_anne_item_06",
+		&"got_ss_anne_hidden_1", &"got_ss_anne_hidden_2", &"got_ss_anne_hidden_3",
+		# Jalon 16 (T13) : le rival n° 4 et la CS01 du capitaine.
+		&"ss_anne_gangway_open", &"got_hm01", &"rival_ss_anne_lost_once", &"rival_ss_anne_won",
+		# Jalon 16 (T15) : départ du S.S. Anne, arbuste coupé.
+		&"ss_anne_departed", &"cut_vermilion_gym_bush",
 		# Jalon 17 (T8) : remise de la CS05 par l'assistant ; (T17) objets de la Route 11 ;
 		# (T20, T21) objets du couloir et Super Potion de FUTUR A.
 		&"got_hm05", &"got_route_11_hidden_1", &"got_route_11_item_1",
 		&"got_route_11_item_2", &"got_route_2_east_item_1", &"got_route_2_east_item_2",
-		&"got_route_2_item_5", &"got_digletts_cave_item_1"]
+		&"got_route_2_item_5", &"got_digletts_cave_item_1",
+		# Jalon 17 (T23) : les deux arbustes coupés (couloir de la Route 2 est, FUTUR A).
+		&"cut_route_2_east_bush", &"cut_route_2_futur_a"]
 		+ SET_J14_BILL_CUTSCENES + SET_J14_ROCKET_CUTSCENES + SET_J18_CUTSCENES))
 	assert_eq(_used_on.get(&"oak_lab_reunion"), [&"oak_lab"], "joué au labo, après le fondu")
 	assert_eq(_used_on.get(&"oak_starter_offer"), [&"oak_lab"], "joué au labo")
@@ -884,14 +988,20 @@ func test_mom_first_variant_is_automatic_and_only_hers() -> void:
 				_library.get_dialogue(id).variants[0], "%s : auto" % id)
 
 
-## Lot de textes validé par Kevin le 2026-10-06 : plus aucun dialogue ni variante provisoire.
+## Lot de textes validé par Kevin le 2026-10-06 : plus aucun dialogue ni variante provisoire,
+## sauf ceux qui attendent sa relecture, nommés ici (« id:variante »).
+## Jalon 16 (décisions du 2026-10-16) : indice du guide de l'Arène de Carmin (type Sol), validé le
+## 2026-10-16 ; jalon 17 : accord de T-2 à 1 espèce validé (Q-2, 2026-10-16) : liste vide.
+const PENDING_DRAFT_VARIANTS: Array[String] = []
+
+
 func test_no_dialogue_nor_variant_is_draft() -> void:
 	for id: StringName in _real_ids():
 		var dialogue := _library.get_dialogue(id)
 		assert_false(dialogue.draft, String(id))
 		for i: int in dialogue.variants.size():
-			var pending: bool = (DRAFT_VARIANTS.get(id, []) as Array).has(i)
-			assert_eq(dialogue.variants[i].draft, pending, "%s:%d" % [id, i])
+			var key := "%s:%d" % [id, i]
+			assert_eq(dialogue.variants[i].draft, PENDING_DRAFT_VARIANTS.has(key), key)
 
 
 ## Le soin de Maman (Q22, jalon 5C) : elle soigne l'équipe, seulement après le starter.
@@ -920,6 +1030,7 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 	var lot_j10 := FileAccess.get_file_as_string(LOT_J10)
 	var dossier_14 := FileAccess.get_file_as_string(DOSSIER_14)
 	var dossier_18 := FileAccess.get_file_as_string(DOSSIER_18)
+	var dossier_19 := FileAccess.get_file_as_string(DOSSIER_19)
 	var annex_a_15 := AnnexATexts.annex_a(FileAccess.get_file_as_string(JALON_15))
 	var dossier_16 := FileAccess.get_file_as_string(DOSSIER_16).replace("\n    ", " ") \
 		.replace("\n   ", " ")
@@ -938,7 +1049,9 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 		+ dossier_15.replace("{fossil}", "Fossile Dôme") \
 		+ dossier_15.replace("{fossil}", "Fossile Nautile")
 	for row: Array in _pages():
-		if GATE_GUARDS.has(row[0]) or UNVALIDATED.has(row[0]):
+		# Une variante en brouillon (PENDING_DRAFT_VARIANTS) attend la relecture de Kevin : son
+		# texte n'est encore dans aucun dossier.
+		if GATE_GUARDS.has(row[0]) or UNVALIDATED.has(row[0]) or (row[3] as DialogueVariant).draft:
 			continue
 		var text: String = row[1]
 		for token: String in _DOSSIER_TOKENS:
@@ -976,6 +1089,10 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			# J17 (T8) : dossier 20 §16 (bulle entre « | », « / » ou « · ») et annexe A.
 			or _in_dossier_20(dossier_20, row[1])
 			or annex_a_17.contains("« %s »" % text)
+			# J16 (T11) : lot de textes du dossier 19 (§0.5), une citation par ligne.
+			or _each_line_quoted(dossier_19, text)
+			# J16 (T15) : une réplique du lot coupée en deux lignes dans sa bulle.
+			or dossier_19.contains("« %s »" % text.replace("\n", " "))
 			# J18 (T16) : dossier 21 §15 et plan (annexe A).
 			or dossier_21.contains(text.replace("\n", " "))
 			or dossier_21.contains("« %s »" % text.replace("\n", " / ")),
@@ -1070,8 +1187,10 @@ func test_speakers_and_narration() -> void:
 		&"mt_moon_fossil_dome": ["", true], &"mt_moon_fossil_helix": ["", true],
 		# Jalon 15 (T14) : panneaux sans locuteur, l'arbre de l'Arène en narration.
 		&"route_6_sign": ["", false], &"vermilion_city_sign": ["", false],
-		&"vermilion_gym_tree": ["", true], &"route_6_guard": ["Garde", false],
+		&"cut_tree": ["", true], &"route_6_guard": ["Garde", false],
 		&"vermilion_sailor": ["Marin", false],
+		# Jalon 17 (T23) : l'arbuste du couloir en narration, comme celui de l'Arène.
+		&"route_2_east_bush": ["", true],
 	}
 	for id: StringName in expected:
 		var dialogue := _library.get_dialogue(id)
@@ -1176,13 +1295,18 @@ func test_oak_parcel_lines() -> void:
 	# la Route 25 (T16). Jalon 15 (T19) : la Guérison cachée du souterrain.
 	# Jalon 15 (T14) : la Poké Ball et la Super Potion cachée de la Route 6.
 	# Jalon 15 (T13) : la Super Potion et l'Antidote caché de la Route 5.
+	# Jalon 16 (T14) : Major Bob (Arène et rattrapage de la CT24) ; (T12) neuf objets du S.S. Anne ;
+	# (T13) le capitaine (CS01).
+	# Jalon 16 : le marin de la passerelle après la CS01 (la confirmation du départ) ; son
+	# embarquement avec le Passe Bateau (TXT-01).
 	# Jalon 17 (T8) : la remise de la CS05 par l'assistant ; (T17) deux objets au sol et un caché
 	# de la Route 11 ; (T20) Pierre Lune et Super Bonbon ; (T21) Super Potion de FUTUR A ;
 	# (intégration) Corde Sortie de la Cave.
 	# Jalon 18 (T16) : sept objets au sol (Route 9, Route 10, grotte) et la Super Potion cachée.
-	assert_eq(launched, 57, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
+	assert_eq(launched, 71, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
 		+ "sa CT34, Ondine (pont, Arène et rattrapage), écran, module, console, objets de la "
 		+ "Route 25, le Rocket d'Azuria (2) et le barrage sud ; J15 : objets de la Route 5 ; "
+		+ "J16 : Major Bob (2), neuf objets du S.S. Anne, le capitaine, le marin (2) ; "
 		+ "J17 : la CS05, Route 11 (3), deux objets du couloir, la Super Potion de la clairière "
 		+ "et la Corde Sortie de la Cave ; J18 : huit objets")
 	# Le jeton n'apparaît que dans la réplique de l'espèce, « {pokemon} » dans les phrases du
@@ -1209,6 +1333,9 @@ func test_oak_parcel_lines() -> void:
 		elif J17_TOKENS.has(row[1]):
 			# Jalon 17 (T8) : compte d'espèces de l'assistant (T-1 à T-3), joueur de T-3.
 			expected.assign(J17_TOKENS[row[1]])
+		elif not (row[3] as DialogueVariant).field.is_empty() and row[1].contains("{pokemon}"):
+			# Jalon 16 (T15) : variante de capacité de terrain, Pokémon qui coupe.
+			expected = [DialogueTokens.POKEMON]
 		assert_eq(tokens, expected, "%s : jeton" % row[0])
 
 
