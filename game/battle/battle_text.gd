@@ -55,6 +55,7 @@ extends RefCounted
 ## TELEPORTED → « teleported » ; NOTHING_HAPPENED → « nothing_happened ». Super Bonbon (T18b,
 ## n° 62) : « rare_candy_level » ({level} : le niveau atteint), sans événement du moteur (le voile
 ## du Sac le demande à [method line_for]).
+## Passe systèmes 2 : OHKO → « ohko » (K.O. en un coup).
 ## Jalon 19 : RECHARGING → « recharging » (Ultralaser) ; SCARED_AWAY → « scared_away »
 ## (Hurlement, combat sauvage) ; FORCED_OUT → « forced_out » (Hurlement contre un Dresseur, puis
 ## « sent_out_player » ou « sent_out_foe » du remplaçant).
@@ -149,6 +150,7 @@ const TEMPLATE_IDS: Array[StringName] = [
 	&"recharging", &"scared_away", &"forced_out",
 	&"ghost_name", &"ghost_appeared", &"ghost_unidentified", &"ghost_scared", &"ghost_spoke",
 	&"ghost_ball_refused",
+	&"ohko",
 ]
 ## Entre deux gains de statistiques du bilan (« PV +2 · Attaque +1 »).
 const SUMMARY_SEPARATOR: String = " · "
@@ -403,6 +405,8 @@ func lines(event: BattleEvent, data: PokemonData, trainer: TrainerData = null) \
 			result.append(_fill(&"ghost_scared", event, data))
 		BattleEvent.Kind.GHOST_SPOKE:
 			result.append(_fill(&"ghost_spoke", event, data))
+		BattleEvent.Kind.OHKO:
+			result.append(_fill(&"ohko", event, data))
 		BattleEvent.Kind.STATUS_INFLICTED, BattleEvent.Kind.STATUS_UNCHANGED, \
 				BattleEvent.Kind.STATUS_DAMAGED, BattleEvent.Kind.STATUS_CURED, \
 				BattleEvent.Kind.STATUS_PREVENTED, BattleEvent.Kind.STATUS_ENDED:

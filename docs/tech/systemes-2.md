@@ -680,6 +680,18 @@ donnaient plus de 500 000 états. Les cartes `.tscn` (sans vie) attendent le J20
 
 #### T29 — A : effet `ohko`, IA, messages, données, audit des capacités — après T1
 
+**Fait (2026-10-20)** : `MoveEffect.Kind.OHKO` (`{ "kind": "ohko" }`), `OhkoRules` (pur : niveau,
+précision = précision de la capacité + écart de niveaux, au plus 100) ; `Battle._ohko_lands`
+(type sans effet → NO_EFFECT, niveau inférieur → FAILED [D], tirage raté → MOVE_MISSED, sans tirage
+dans les deux premiers cas), `_ohko` (dégâts = PV restants, puis événement `OHKO`) ; une cible sous
+terre l'évite (`ChargeRules.targets_foe`) ; message « ohko » (« C'est un K.O. en un coup ! », à
+valider en lot) ; IA : note nulle si niveau inférieur ou type sans effet, sinon précision réelle.
+Données : `horn_drill` porte l'effet (marqueur et « Sans effet… » retirés). `fissure` **pas
+ajoutée** [D] : le J28 la crée (un doublon d'identifiant casserait le chargement à sa fusion) ;
+**`guillotine` (J23, J24) : remplacer `pending_effects: ["ohko"]` par
+`effects: [{ "kind": "ohko" }]` à leur fusion de `main`.** Tests `test_ohko.gd` ; audit des
+capacités régénéré (11 en attente).
+
 #### T29b — Q : **session S2E** → K
 
 ### 3.7 S2F — Téléporteurs et portes à carte (parallèle de S2B–S2D)

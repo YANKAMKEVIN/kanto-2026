@@ -1,6 +1,6 @@
 # Audit des capacités incomplètes
 
-78 espèces, 120 capacités, 12 capacités avec effets en attente.
+78 espèces, 120 capacités, 11 capacités avec effets en attente.
 
 Les niveaux ci-dessous sont des apprentissages déclarés dans les données ;
 ils ne prouvent pas qu'une espèce est déjà rencontrable dans l'aventure.
@@ -8,7 +8,6 @@ ils ne prouvent pas qu'une espèce est déjà rencontrable dans l'aventure.
 | Capacité | Effets ignorés | Apprentissages déclarés |
 |---|---|---|
 | Buée Noire (`haze`) | haze | Nosferalto N43, Smogo N45, Nosferapti N36 |
-| Empal'Korne (`horn_drill`) | ohko | Poissirène N45, Nidoran♂ N36, Nidorino N41 |
 | Mur Lumière (`light_screen`) | light_screen | Mélofée N48, Stari N42, Voltorbe N29 |
 | Métronome (`metronome`) | metronome | Mélodelfe N1, Mélofée N31 |
 | Mimique (`mirror_move`) | mirror | Rapasdepic N25, Roucarnage N54, Roucoups N49, Roucool N44, Piafabec N22 |

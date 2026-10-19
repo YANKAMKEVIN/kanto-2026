@@ -67,6 +67,7 @@ const _EFFECT_KEYS: Dictionary[MoveEffect.Kind, Array] = {
 	MoveEffect.Kind.FORCE_SWITCH: ["kind"],
 	MoveEffect.Kind.RECOIL_DAMAGE: ["kind", "fraction"],
 	MoveEffect.Kind.RECHARGE: ["kind"],
+	MoveEffect.Kind.OHKO: ["kind"],
 }
 ## Clés d'effet facultatives (toutes les autres de [constant _EFFECT_KEYS] sont obligatoires).
 ## « amount » : obligatoire pour FIXED_DAMAGE « value » seulement ([method _parse_effect]) ;
@@ -607,7 +608,7 @@ func _parse_effect(value: Variant, where: String) -> MoveEffect:
 		return effect if _read_effect_j12(entry, effect, where) and ok else null
 	# Jalon 19 : seule RECOIL_DAMAGE a une valeur (« fraction », lue comme celle du drain).
 	if effect.kind in [MoveEffect.Kind.REQUIRES_SLEEP, MoveEffect.Kind.FORCE_SWITCH,
-			MoveEffect.Kind.RECOIL_DAMAGE, MoveEffect.Kind.RECHARGE]:
+			MoveEffect.Kind.RECOIL_DAMAGE, MoveEffect.Kind.RECHARGE, MoveEffect.Kind.OHKO]:
 		return effect if _read_effect_j12(entry, effect, where) and ok else null
 	if effect.kind == MoveEffect.Kind.COINS:
 		if entry.has("per_level"):

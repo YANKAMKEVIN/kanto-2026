@@ -671,7 +671,7 @@ func test_route_22_moves_values() -> void:
 		&"fury_attack": [], &"fury_swipes": [],
 		&"double_kick": [], &"poison_sting": [],
 		&"thrash": ["rampage"], &"body_slam": [],
-		&"seismic_toss": [], &"horn_drill": ["ohko"],
+		&"seismic_toss": [], &"horn_drill": [],
 	}
 	for id: StringName in pending:
 		assert_eq(_data.get_move(id).pending_effects, PackedStringArray(pending[id]),
@@ -783,12 +783,13 @@ func test_moves_without_effect_say_so() -> void:
 	# l'effet n'est pas joué porte « Sans effet dans le moteur actuel. », Poudre Dodo comprise.
 	# Jalon 11 : la mention part avec l'effet (Cage-Éclair, Para-Spore, Poudre Dodo au T4).
 	# Jalon 19 : Cyclone (changement forcé, décision de Kevin du 2026-10-16).
+	# Passe systèmes 2 : Empal'Korne (K.O. en un coup, test_ohko.gd).
 	_data.load_dir()
-	for id: StringName in [&"mirror_move", &"horn_drill"]:
+	for id: StringName in [&"mirror_move"]:
 		assert_true(_data.get_move(id).description.ends_with(
 			" Sans effet dans le moteur actuel."), String(id))
 	for id: StringName in [&"thunder_wave", &"stun_spore", &"sleep_powder", &"supersonic",
-			&"focus_energy", &"super_fang", &"seismic_toss", &"whirlwind"]:
+			&"focus_energy", &"super_fang", &"seismic_toss", &"whirlwind", &"horn_drill"]:
 		assert_false(_data.get_move(id).description.contains("Sans effet"), String(id))
 	assert_eq(_data.get_move(&"sleep_powder").description,
 		"Une poudre soporifique qui endort la cible.")

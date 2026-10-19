@@ -140,6 +140,9 @@ extends RefCounted
 ## - GHOST_SPOKE : le SPECTRE (camp adverse) ne fait que parler ;
 ## - tout événement du camp adverse d'un combat SPECTRE porte [member disguised] : espèce
 ##   [constant GhostDisguise.SPECIES], niveau 0, sans genre (garde du Pokédex et du cri).
+## Passe systèmes 2 (`systemes-2.md` §2.11) :
+## - OHKO : une capacité K.O. en un coup a touché (camp de la cible), juste après son DAMAGE (les
+##   PV restants de la cible) ; « C'est un K.O. en un coup ! ».
 ## Tous les autres événements sur un Pokémon portent dans [member status] son statut au moment
 ## de l'événement (SENT_OUT : la carte de PV l'affiche dès l'entrée ; FAINTED : toujours vide,
 ## le K.O. efface le statut).
@@ -162,6 +165,7 @@ enum Kind {
 	COINS_SCATTERED,
 	RECHARGING, SCARED_AWAY, FORCED_OUT,
 	GHOST_SCARED, GHOST_SPOKE,
+	OHKO,
 }
 enum SideId { PLAYER, FOE }
 

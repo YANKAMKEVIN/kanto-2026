@@ -209,6 +209,7 @@
 		"nothing_happened": { "text": "Mais rien ne se passe !" },
 		"rare_candy_level": { "text": "{pokemon} monte au niveau {level} !" },
 		"recharging": { "text": "{pokemon} doit se reposer !" },
+		"ohko": { "text": "C'est un K.O. en un coup !" },
 		"scared_away": { "text": "{pokemon} prend peur et s'enfuit !" },
 		"forced_out": { "text": "{pokemon} est chassé du combat !",
 			"text_f": "{pokemon} est chassée du combat !" },

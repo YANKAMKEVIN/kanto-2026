@@ -72,6 +72,9 @@ extends RefCounted
 ## RECOIL_DAMAGE : le lanceur perd [member fraction] des dégâts infligés (au moins 1), même si
 ## la cible tombe (Bélier ; distinct de RECOIL, part des PV max). RECHARGE : après un coup qui
 ## touche, le lanceur se repose au tour suivant (Ultralaser).
+## Passe systèmes 2 (`systemes-2.md` §2.11, Q-2 : règle moderne) : [code]{ "kind": "ohko" }[/code].
+## OHKO : K.O. en un coup (Empal'Korne, Guillotine, Abîme) ; capacité de statut, la précision et
+## les refus sont ceux de [OhkoRules] (pas ceux de [method DamageCalc.accuracy_check]).
 
 enum Kind {
 	STAT_STAGE, RECOIL, SEED, STATUS, CONFUSION, HITS, FLINCH, CRIT_UP, FIXED_DAMAGE, BIDE,
@@ -79,6 +82,7 @@ enum Kind {
 	CHARGE, TELEPORT,
 	COINS,
 	REQUIRES_SLEEP, FORCE_SWITCH, RECOIL_DAMAGE, RECHARGE,
+	OHKO,
 }
 enum Target { SELF, FOE }
 
@@ -94,6 +98,7 @@ const KIND_NAMES: Dictionary[String, Kind] = {
 	"coins": Kind.COINS,
 	"requires_sleep": Kind.REQUIRES_SLEEP, "force_switch": Kind.FORCE_SWITCH,
 	"recoil_damage": Kind.RECOIL_DAMAGE, "recharge": Kind.RECHARGE,
+	"ohko": Kind.OHKO,
 }
 ## Modes de FIXED_DAMAGE.
 const FIXED_MODES: Array[StringName] = [&"half_hp", &"level", &"value"]

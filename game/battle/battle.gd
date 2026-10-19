@@ -712,6 +712,9 @@ func _execute(side: BattleSide, action: BattleAction, events: Array[BattleEvent]
 		if not _strike(side, target_side, move, events):
 			_self_ko(move, side, target_side, events)
 			return
+	elif move.effect_of(MoveEffect.Kind.OHKO) != null:
+		if not _ohko_lands(side, target_side, move, events):
+			return
 	elif not DamageCalc.accuracy_check(user, target, move, _rng):
 		_append_missed(side, move_id, events)
 		_self_ko(move, side, target_side, events)
@@ -876,6 +879,41 @@ func _hit_count(effect: MoveEffect) -> int:
 	return 4 if draw == 7 else 5
 
 
+## K.O. en un coup (passe systèmes 2, [OhkoRules]) : la capacité touche-t-elle ? Sinon l'annonce :
+## type sans effet (NO_EFFECT), niveau inférieur (FAILED), tirage raté (MOVE_MISSED).
+func _ohko_lands(side: BattleSide, target_side: BattleSide, move: MoveData,
+		events: Array[BattleEvent]) -> bool:
+	var target := target_side.active
+	if not move.typeless and _data.get_type_chart().multiplier(move.type, target.types) == 0.0:
+		var immune := _event(BattleEvent.Kind.NO_EFFECT, target_side)
+		immune.move_id = move.id
+		events.append(immune)
+		return false
+	var user_level := side.active.pokemon.level
+	var target_level := target.pokemon.level
+	if not OhkoRules.level_allows(user_level, target_level):
+		_append_failed(side, move.id, events)
+		return false
+	if _rng.roll(100) > OhkoRules.accuracy(move.accuracy, user_level, target_level):
+		_append_missed(side, move.id, events)
+		return false
+	return true
+
+
+## K.O. en un coup qui a touché : dégâts = PV restants de la cible, puis OHKO.
+func _ohko(move: MoveData, target_side: BattleSide, events: Array[BattleEvent]) -> void:
+	var target := target_side.active
+	if target.pokemon.is_fainted():
+		return
+	var damage := _event(BattleEvent.Kind.DAMAGE, target_side)
+	damage.move_id = move.id
+	damage.amount = target.pokemon.take_damage(target.pokemon.hp)
+	damage.hp = target.pokemon.hp
+	events.append(damage)
+	_record_hit(target_side, damage.amount)
+	events.append(_event(BattleEvent.Kind.OHKO, target_side))
+
+
 ## Une capacité Feu qui touche un Pokémon gelé le dégèle (STATUS_ENDED ; jalon 11).
 func _thaw_by_fire(move: MoveData, target_side: BattleSide, events: Array[BattleEvent]) -> void:
 	var target := target_side.active.pokemon
@@ -995,6 +1033,8 @@ func _apply_effect(effect: MoveEffect, move: MoveData, side: BattleSide,
 			_recoil_from_damage(effect, side, events)
 		MoveEffect.Kind.RECHARGE:
 			_start_recharge(side)
+		MoveEffect.Kind.OHKO:
+			_ohko(move, target_side, events)
 
 
 ## Effet [code]confusion[/code] (jalon 11) sur le Pokémon de [param target_side] : comme un

@@ -246,8 +246,8 @@
 	},
 	"horn_drill": {
 		"name": "Empal'Korne", "type": "normal", "category": "status",
-		"accuracy": 30, "pp": 5, "pending_effects": ["ohko"],
-		"description": "Une corne en vrille qui met K.O. d'un coup. Sans effet dans le moteur actuel."
+		"accuracy": 30, "pp": 5, "effects": [{ "kind": "ohko" }],
+		"description": "Une corne en vrille qui met K.O. d'un coup."
 	},
 	"body_slam": {
 		"name": "Plaquage", "type": "normal", "category": "physical",

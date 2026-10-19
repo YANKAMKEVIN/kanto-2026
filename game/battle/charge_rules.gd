@@ -23,7 +23,7 @@ static func targets_foe(move: MoveData) -> bool:
 		match effect.kind:
 			MoveEffect.Kind.STATUS, MoveEffect.Kind.CONFUSION, MoveEffect.Kind.SEED, \
 					MoveEffect.Kind.FLINCH, MoveEffect.Kind.FIXED_DAMAGE, \
-					MoveEffect.Kind.FORCE_SWITCH:
+					MoveEffect.Kind.FORCE_SWITCH, MoveEffect.Kind.OHKO:
 				return true
 			MoveEffect.Kind.STAT_STAGE:
 				if effect.target == MoveEffect.Target.FOE:
