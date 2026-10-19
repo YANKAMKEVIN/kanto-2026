@@ -43,12 +43,13 @@ const WALKABLE: String = ".=hvo"
 
 ## Raccord ouest : [nœud, case, spawn d'ici (la rangée), orientation au retour « à venir »].
 ## Plan : spawn `from_cerulean` ; les deux autres rangées gardent la leur (`_n`, `_s`) pour que le
-## joueur ressorte sur la même rangée. Cible réelle (variante J18 d'Azuria, après le J16) :
-## `cerulean_city` / `from_route_9` (spawn du plan).
+## joueur ressorte sur la même rangée. Cible réelle (variante J18 d'Azuria, après le J16 ; T15) :
+## `cerulean_city` / `from_route_9_n|from_route_9|from_route_9_s`, rangée par rangée (comme la
+## Route 10).
 const WEST_EXITS: Array = [
-	["CeruleanN", Vector2i(0, 22), "from_cerulean_n", &"from_route_9"],
+	["CeruleanN", Vector2i(0, 22), "from_cerulean_n", &"from_route_9_n"],
 	["CeruleanC", Vector2i(0, 23), "from_cerulean", &"from_route_9"],
-	["CeruleanS", Vector2i(0, 24), "from_cerulean_s", &"from_route_9"],
+	["CeruleanS", Vector2i(0, 24), "from_cerulean_s", &"from_route_9_s"],
 ]
 const WEST_LABEL: String = "Azuria"
 ## Raccord est : [nœud, case, spawn d'ici, spawn d'arrivée de la Route 10].

@@ -78,7 +78,30 @@
 	},
 	"cerulean_closed_exit": {
 		"narration": true,
-		"pages": ["On ne passe pas par là pour l'instant."]
+		"variants": [
+			{
+				"field": "cut:no_hm",
+				"pages": ["On ne passe pas par là pour l'instant."]
+			},
+			{
+				"field": "cut:no_badge",
+				"pages": ["Sans le Badge Cascade, {pokemon}\nn'ose pas couper cet arbuste."]
+			},
+			{
+				"field": "cut:no_pokemon",
+				"pages": ["Aucun Pokémon de l'équipe\nne peut couper cet arbuste."]
+			},
+			{
+				"field": "cut:ready",
+				"pages": ["{pokemon} peut couper cet arbuste.", "Utiliser Coupe ?"],
+				"choice": {
+					"confirm": "COUPER",
+					"cancel": "LAISSER",
+					"confirm_cutscene": "cut_tree_cerulean_east",
+					"cancel_pages": []
+				}
+			}
+		]
 	},
 	"cerulean_burgled_door": {
 		"narration": true,

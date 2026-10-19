@@ -214,6 +214,8 @@ const VARIANT_FLAGS: Dictionary = {
 	&"ss_anne_boarding": [PEWTER_FLAGS],
 	# Jalon 17 (T23) : Coupe des arbustes du couloir de la Route 2 est et de FUTUR A.
 	&"cut_tree_route_2_east_bush": [PEWTER_FLAGS], &"cut_tree_route_2_futur_a": [PEWTER_FLAGS],
+	# Jalon 18 (T15) : Coupe de l'arbre de la sortie est d'Azuria.
+	&"cut_tree_cerulean_east": [PEWTER_FLAGS],
 	# Jalon 18 (T16) : objets et déclencheurs silencieux des objectifs (une variante chacun).
 	&"route_9_entered": [PEWTER_FLAGS], &"route_9_item_1": [PEWTER_FLAGS],
 	&"route_9_item_2": [PEWTER_FLAGS], &"route_9_item_3": [PEWTER_FLAGS],
@@ -259,6 +261,8 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"cut_tree_vermilion_gym": &"vermilion_city",
 	# Jalon 17 (T23) : COUPER sur les arbustes du couloir de la Route 2 est et de FUTUR A.
 	&"cut_tree_route_2_east_bush": &"route_2_east", &"cut_tree_route_2_futur_a": &"route_2",
+	# Jalon 18 (T15) : COUPER sur l'arbre de la sortie est d'Azuria.
+	&"cut_tree_cerulean_east": &"cerulean_city",
 	# Jalon 16 : embarquement, par le dialogue du marin (TXT-01).
 	&"ss_anne_boarding": &"vermilion_city",
 	# Jalon 11 (T14) : remise tardive de la CT34 (dialogue de Pierre).
@@ -401,7 +405,9 @@ func test_library_loads_without_error() -> void:
 		&"route_11_hidden_1", &"route_2_east_item_1", &"route_2_east_item_2",
 		&"route_2_item_5", &"digletts_cave_item_1",
 		# Jalon 17 (T23) : Coupe des deux arbustes.
-		&"cut_tree_route_2_east_bush", &"cut_tree_route_2_futur_a"] + J18_IDS))
+		&"cut_tree_route_2_east_bush", &"cut_tree_route_2_futur_a",
+		# Jalon 18 (T15) : l'arbre de la sortie est d'Azuria.
+		&"cut_tree_cerulean_east"] + J18_IDS))
 
 
 func _sorted(values: Array) -> Array[StringName]:

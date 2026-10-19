@@ -342,7 +342,8 @@ func test_a_step_in_h1_starts_a_wild_battle() -> void:
 
 # --- Raccords ---------------------------------------------------------------------------------
 
-func test_west_edge_is_coming_soon_and_east_edge_leads_to_route_10() -> void:
+## T15 : le bord ouest mène à Azuria (arbre coupé du J16, variante J18).
+func test_west_edge_leads_to_azuria_and_east_edge_to_route_10() -> void:
 	var map := (load("res://game/world/maps/route_9.tscn") as PackedScene).instantiate() \
 		as GameMap
 	add_child_autofree(map)
@@ -350,8 +351,8 @@ func test_west_edge_is_coming_soon_and_east_edge_leads_to_route_10() -> void:
 		var west := map.get_warps().find_on_push(Vector2i(0, row), Vector2i.LEFT)
 		assert_not_null(west, "bord ouest (0, %d)" % row)
 		if west != null:
-			assert_eq(west.target_map, &"", "Azuria : pas de carte (Coupe du J16)")
-			assert_eq(west.coming_soon, "Azuria")
+			assert_eq(west.target_map, &"cerulean_city", "Azuria (variante J18)")
+			assert_false(west.is_coming_soon())
 		var east := map.get_warps().find_on_push(Vector2i(79, 12 + row - 22), Vector2i.RIGHT)
 		assert_not_null(east, "bord est")
 		if east != null:

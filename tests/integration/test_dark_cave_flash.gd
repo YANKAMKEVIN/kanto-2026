@@ -4,11 +4,12 @@ extends GutTest
 ## sombre ici… » (T-3) une fois par entrée ; avec la CS05 et un compatible, Flash automatique
 ## (« {pokemon} utilise Flash ! », T-2), halo ouvert ; changement d'étage → rallumée ; Corde
 ## Sortie → Route 10 devant l'entrée nord, voile retiré ; Mont Sélénite toujours sans voile.
-## Départs écrits à la volée d'après `tools/debug_start/flash_qa.json` (CS05, Pikachu compagnon).
+## Départs écrits à la volée d'après `tools/debug_start/dark_cave_1f_flash.json` (CS05, Pikachu
+## compagnon ; T15 : `flash_qa.json` a été retiré avec la carte de QA du J17, T28).
 
 const MemoryFs := preload("res://tests/helpers/memory_file_system.gd")
 const FixedClock := preload("res://tests/helpers/fixed_clock.gd")
-const BASE_START := "res://tools/debug_start/flash_qa.json"
+const BASE_START := "res://tools/debug_start/dark_cave_1f_flash.json"
 const START_PATH := "user://test_dark_cave_flash_start.json"
 const FADE := 0.05
 const TIMEOUT := 12.0

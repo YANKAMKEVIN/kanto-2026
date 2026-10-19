@@ -36,14 +36,23 @@ extends SceneTree
 ##   ici : `from_route_4_n|c|s`), trois PUSH ↑ au nord (31..33, 0) → `route_24` /
 ##   `from_cerulean_w|c|e` (arrivée ici : `from_route_24_w|c|e`), portes STEP_ON ↑
 ##   des cinq bâtiments ouverts. Est et sud : fermés **sans warp**.
+##
+## **Jalon 18 (T15, dossier 21 §9, I-2)** : la grille lue est la variante `J18` (cumulative sur
+## J14) : la barrière est devient l'**arbre à couper** du J16 en (53, 23), entre deux pans de
+## clôture, et le sentier mène aux trois warps PUSH → (55, 22..24) vers `route_9` /
+## `from_cerulean_n|from_cerulean|from_cerulean_s` (arrivée ici : `from_route_9_n|from_route_9|
+## from_route_9_s`, comme la Route 10). L'arbre est une [FlagGate] `unless cut_cerulean_east_tree`
+## (contrat des arbustes du J16 / J17 : objet peint sans emprise, `blocking_cells` sur sa case) ;
+## son examen `cerulean_closed_exit` donne le texte 17 sans la CS01, sinon les textes de Coupe
+## du J16, et lance `cut_tree_cerulean_east` (`data/cutscenes/cut_tree.json`).
 
 const Kit := preload("res://tools/cerulean_map_kit.gd")
 const PLAN_PATH: String = "res://tools/plans/azuria.txt"
 const OUT_PATH: String = "res://game/world/maps/cerulean_city.tscn"
 const MASK_PATH: String = "res://assets/world/maps/cerulean_city_ground.png"
 const NPCS_PATH: String = "res://data/npcs/cerulean_city.json"
-## Variante de la grille (jalon 14 T20b) : Azuria après le J14.
-const PLAN_VARIANT: String = "J14"
+## Variante de la grille (jalon 14 T20b, jalon 18 T15) : Azuria après le J14 et la Coupe du J16.
+const PLAN_VARIANT: String = "J18"
 const SIZE := Vector2i(56, 41)
 const SEED: int = 2131
 const DECOR_SEED: int = 2132
@@ -54,7 +63,9 @@ const MAP_ID: StringName = &"cerulean_city"
 const DISPLAY_NAME: String = "Azuria"
 ## Sous-titre du titre de zone (dossier 16 §21 n° 5).
 const REGION: String = "La ville aux eaux claires"
-const WALKABLE_MARKS: String = ".=pqBDJY"
+## `k` : la case de l'arbre à couper (J18), praticable une fois l'arbre coupé (sa [FlagGate]
+## l'occupe tant qu'il est debout).
+const WALKABLE_MARKS: String = ".=pqBDJYk"
 
 ## Tabliers par pont (clé = case du coin nord-ouest du pont) : central 3 de large, Arène 2 de
 ## large (`ns`), pont ouest `ew`.
@@ -97,6 +108,8 @@ const IMPASSE_TREE := Vector2i(22, 3)
 ## Spawns de débogage : devant la clôture arrachée du jardin, et dans l'impasse juste avant la bande.
 const DEBUG_GARDEN := Vector2i(5, 2)
 const DEBUG_IMPASSE := Vector2i(16, 3)
+## Jalon 18 : devant l'arbre à couper de la sortie est (départ `cerulean_east_cut`).
+const DEBUG_EAST_TREE := Vector2i(52, 23)
 const IMPASSE_TREE_ID: String = "tree_foret_03"
 ## Îlot de la Grotte Azurée : ancre du pied (bord bas, entre les colonnes 52 et 53).
 const ISLET_ANCHOR := Vector2i(53, 6)
@@ -118,8 +131,21 @@ const SIGNS: Array = [
 const EXAMS: Array = [
 	["cloture_arrachee", "TornFence", &"cerulean_torn_fence", Vector2i.RIGHT],
 	["trou_cloture", "FenceHole", &"cerulean_fence_hole", Vector2i.RIGHT],
-	["barriere_est", "EastBarrier", &"cerulean_closed_exit", Vector2i.RIGHT],
 ]
+## Jalon 18 (T15) : l'arbre à couper de la sortie est (dossier 21 §9) : drapeau, objet peint (le
+## jeune arbre des arbustes du J16), nœud (cible de la scène de Coupe), examen.
+const EAST_TREE_FLAG: StringName = &"cut_cerulean_east_tree"
+const EAST_TREE_ID: String = "prop_jeune_arbre_arene_01"
+const EAST_TREE_NODE: String = "EastTree"
+const EAST_TREE_DIALOGUE: StringName = &"cerulean_closed_exit"
+## Raccord est (jalon 18) : [nœud, spawn d'arrivée sur la Route 9, spawn d'ici], rangée par
+## rangée (22, 23, 24) : la Route 9 a `from_cerulean_n|from_cerulean|from_cerulean_s`.
+const EAST_EXITS: Array = [
+	["Route9N", &"from_cerulean_n", "from_route_9_n"],
+	["Route9C", &"from_cerulean", "from_route_9"],
+	["Route9S", &"from_cerulean_s", "from_route_9_s"],
+]
+const EAST_MAP: StringName = &"route_9"
 ## Déclencheurs de scène du J14 : [position de la grille, nœud, direction du pas, scène].
 const SCENE_TRIGGERS: Array = [
 	["poursuite", "RocketChase", Vector2i.RIGHT, &"cerulean_rocket_chase"],
@@ -225,7 +251,7 @@ func _prepare_cells() -> void:
 		water[cell] = true
 	var path: Dictionary = _kit.get(&"path_cells")
 	# Jardin clos et trou (J14 : praticables, toujours de la terre), sentiers peints.
-	for cell: Vector2i in _plan().call(&"cells_of", "jJYa"):
+	for cell: Vector2i in _plan().call(&"cells_of", "jJYak"):
 		path[cell] = true
 	var paved: Dictionary = _kit.get(&"paved_cells")
 	for cell: Vector2i in _plan().call(&"cells_of", "G"):
@@ -255,6 +281,12 @@ func _add_passages() -> void:
 			Vector2i.DOWN, SOUTH_MAP, StringName("from_cerulean_" + SOUTH_SUFFIXES[i]),
 			Vector2i.DOWN)
 		_kit.call(&"add_spawn", "from_route_5_" + SOUTH_SUFFIXES[i], south[i])
+	var east: Array[Vector2i] = _plan().call(&"cells_at", "warp_est")
+	for i: int in east.size():
+		var entry: Array = EAST_EXITS[i]
+		_kit.call(&"add_warp", entry[0], east[i], Kit.PUSH, Vector2i.RIGHT, EAST_MAP, entry[1],
+			Vector2i.RIGHT)
+		_kit.call(&"add_spawn", entry[2], east[i])
 	for entry: Array in BUILDINGS:
 		var doors: Array = _plan().call(&"cells_at", entry[3])
 		var front: Vector2i = (doors[-1] as Vector2i) + Vector2i.DOWN
@@ -283,6 +315,7 @@ func _add_burgled_door() -> void:
 	# Départs de débogage (tools/debug_start/) : rue du jardin, bout de l'impasse (avant la bande).
 	_kit.call(&"add_spawn", "garden_start", DEBUG_GARDEN)
 	_kit.call(&"add_spawn", "impasse_start", DEBUG_IMPASSE)
+	_kit.call(&"add_spawn", "east_tree_start", DEBUG_EAST_TREE)
 
 
 ## Vie d'Azuria (T17) : panneaux, examens, déclencheurs d'arrivée.
@@ -293,6 +326,7 @@ func _add_life() -> void:
 	for entry: Array in EXAMS:
 		var box := _box(entry[0])
 		_kit.call(&"add_interactable", entry[1], box[0], box[1], entry[3], entry[2])
+	_add_east_tree_examine()
 	for entry: Array in ARRIVALS:
 		var box := _box(entry[0])
 		_kit.call(&"add_trigger", entry[1], box[0], box[1], entry[2], &"cerulean_arrival")
@@ -352,8 +386,44 @@ func _place_buildings(entities: Node2D) -> void:
 		_kit.call(&"add_prop_at", entities, "prop_cloture_courte_01", cell,
 			"FenceShort%d_%d" % [cell.x, cell.y])
 	_kit.call(&"add_prop_at", entities, "prop_cloture_v_01", Vector2i(14, 9), "FenceGardenE")
-	_kit.call(&"add_prop_at", entities, "prop_cloture_v_01", Vector2i(53, 24), "FenceEast")
-	_kit.call(&"add_prop_at", entities, "tree_c_01", Vector2i(53, 23), "TreeEast")
+	# J18 : la grande clôture verticale (4 cases de haut) traverserait le passage de l'arbre ;
+	# deux pans courts sur les cases `c` (53, 22) et (53, 24), l'arbre à couper entre eux.
+	for cell: Vector2i in [Vector2i(53, 22), Vector2i(53, 24)]:
+		_kit.call(&"add_prop_at", entities, "prop_cloture_courte_01", cell,
+			"FenceEast%d" % cell.y)
+	_place_east_tree(entities)
+
+
+## Arbre à couper de la sortie est (jalon 18) : une [FlagGate] `unless cut_cerulean_east_tree`
+## dont le décor est l'objet peint (sans emprise) et dont `blocking_cells` ferment sa case
+## (contrat du J16, comme les arbustes de Carmin et de la Route 2).
+func _place_east_tree(entities: Node2D) -> void:
+	var cells: Array = _plan().call(&"cells_of", "k")
+	var rules: GDScript = _kit.get(&"rules")
+	var gate := Node2D.new()
+	gate.set_script(load("res://game/world/flag_gate.gd"))
+	gate.name = EAST_TREE_NODE
+	gate.position = (rules.call(&"foot_position", StringName(EAST_TREE_ID), cells[-1]) as Vector2) \
+		.round()
+	var unless: Array[StringName] = [EAST_TREE_FLAG]
+	gate.set(&"unless_flags", unless)
+	var blocking: Array[Vector2i] = []
+	blocking.assign(cells)
+	gate.set(&"blocking_cells", blocking)
+	_kit.call(&"attach", entities, gate)
+	var tree: Node2D = _kit.call(&"add_prop", gate, EAST_TREE_ID, Vector2.ZERO, "Tree")
+	_kit.call(&"clear_footprint", tree)
+
+
+## Examen de l'arbre (jalon 18) : sa case, de tous côtés, retiré avec lui
+## (`unless cut_cerulean_east_tree`).
+func _add_east_tree_examine() -> void:
+	var cells: Array = _plan().call(&"cells_of", "k")
+	_kit.call(&"add_interactable", "EastTreeExamine", cells[0], Vector2i.ONE, Vector2i.ZERO,
+		EAST_TREE_DIALOGUE)
+	var point: Node = _kit.get(&"root").get_node(^"Interactables").get_child(-1)
+	var unless: Array[StringName] = [EAST_TREE_FLAG]
+	point.set(&"unless_flags", unless)
 
 
 ## Décor suivant les drapeaux : un [FlagGate] au pied de l'objet, l'objet en enfant (visuel

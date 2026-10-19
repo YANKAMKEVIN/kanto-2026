@@ -158,10 +158,11 @@ func test_mt_moon_is_not_dark() -> void:
 		assert_false(caves.is_dark(map_id), "%s : pas de voile" % map_id)
 	assert_false(caves.is_dark(&"route_3"), "hors grotte")
 	assert_false(caves.is_dark(&""))
-	# J17 T28 : aucune grotte obscure livrée (la Cave Taupiqueur est éclairée, dossier 20) ; le
-	# J18 marquera les siennes.
+	# J17 T28 : la Cave Taupiqueur est éclairée (dossier 20) ; J18 : seule la Grotte Sombre est
+	# obscure.
 	for map_id: StringName in caves.get_all_maps():
-		assert_false(caves.is_dark(map_id), "%s : pas de voile au J17" % map_id)
+		assert_eq(caves.is_dark(map_id), caves.cave_of(map_id) == &"dark_cave",
+			"%s : voile seulement dans la Grotte Sombre" % map_id)
 
 
 func test_dark_key() -> void:

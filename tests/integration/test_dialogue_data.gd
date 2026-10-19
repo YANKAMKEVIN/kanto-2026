@@ -838,7 +838,9 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		&"got_route_11_item_2", &"got_route_2_east_item_1", &"got_route_2_east_item_2",
 		&"got_route_2_item_5", &"got_digletts_cave_item_1",
 		# Jalon 17 (T23) : les deux arbustes coupés (couloir de la Route 2 est, FUTUR A).
-		&"cut_route_2_east_bush", &"cut_route_2_futur_a"]
+		&"cut_route_2_east_bush", &"cut_route_2_futur_a",
+		# Jalon 18 (T15) : l'arbre de la sortie est d'Azuria.
+		&"cut_cerulean_east_tree"]
 		+ SET_J14_BILL_CUTSCENES + SET_J14_ROCKET_CUTSCENES + SET_J18_CUTSCENES))
 	assert_eq(_used_on.get(&"oak_lab_reunion"), [&"oak_lab"], "joué au labo, après le fondu")
 	assert_eq(_used_on.get(&"oak_starter_offer"), [&"oak_lab"], "joué au labo")

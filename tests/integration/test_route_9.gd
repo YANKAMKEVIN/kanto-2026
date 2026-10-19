@@ -105,19 +105,19 @@ func test_scene_grid_is_the_functional_grid() -> void:
 	assert_eq(_plan.walkable, ".=hvo")
 
 
-func test_west_edge_is_coming_soon_azuria_until_the_j18_variant() -> void:
+## T15 : la variante J18 d'Azuria (arbre coupé du J16) existe : le bord ouest y mène, rangée par
+## rangée (`from_route_9_n|from_route_9|from_route_9_s`, arrivée tournée ←).
+func test_west_edge_leads_to_azuria_same_rows() -> void:
 	var rows := ["_n", "", "_s"]
 	for i: int in WEST.size():
 		var cell: Vector2i = WEST[i]
 		var warp := _map.get_warps().find_on_push(cell, Vector2i.LEFT)
 		assert_not_null(warp, "raccord ouest %s" % cell)
 		if warp != null:
-			assert_true(warp.is_coming_soon(), "tant qu'Azuria n'a pas de variante J18")
-			assert_eq(warp.coming_soon, "Azuria")
-			assert_eq(warp.facing, Vector2i.RIGHT, "retour tourné vers l'est")
-			assert_true(_map.has_spawn(warp.target_spawn))
-			assert_eq(_map.get_spawn_cell(warp.target_spawn), cell, "retour sur la case de sortie")
-		assert_true(_map.has_spawn(StringName("from_cerulean" + rows[i])))
+			assert_false(warp.is_coming_soon(), "plus de « AZURIA — À venir »")
+			assert_eq([warp.target_map, warp.target_spawn, warp.facing],
+				[&"cerulean_city", StringName("from_route_9" + rows[i]), Vector2i.LEFT])
+		assert_eq(_map.get_spawn_cell(StringName("from_cerulean" + rows[i])), cell)
 
 
 func test_east_edge_leads_to_route_10_same_rows() -> void:
