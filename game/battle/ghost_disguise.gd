@@ -21,14 +21,16 @@ const HIDDEN_LEVEL_TEXT: String = "??"
 
 
 ## Masque [param event] s'il concerne le camp adverse : pseudo-espèce, niveau masqué, sans
-## genre ; [param display_name] (le nom « SPECTRE » des messages, s'il est donné) remplace le
-## nom affiché. Faux (rien ne change) pour un événement du camp du joueur.
+## genre, marqué [member BattleEvent.disguised] ; [param display_name] (le nom « SPECTRE »
+## des messages, s'il est donné) remplace le nom affiché. Faux (rien ne change) pour un
+## événement du camp du joueur.
 static func mask(event: BattleEvent, display_name: String = "") -> bool:
 	if event == null or event.side != BattleEvent.SideId.FOE:
 		return false
 	event.species_id = SPECIES
 	event.level = HIDDEN_LEVEL
 	event.gender = Pokemon.Gender.NONE
+	event.disguised = true
 	if not display_name.is_empty():
 		event.pokemon_name = display_name
 	return true
@@ -37,4 +39,4 @@ static func mask(event: BattleEvent, display_name: String = "") -> bool:
 ## Vrai si [param event] a été masqué par [method mask] : il ne doit rien enregistrer au
 ## Pokédex, ni jouer de cri.
 static func is_masked(event: BattleEvent) -> bool:
-	return event != null and event.species_id == SPECIES
+	return event != null and (event.disguised or event.species_id == SPECIES)

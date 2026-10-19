@@ -58,6 +58,11 @@ extends RefCounted
 ## Jalon 19 : RECHARGING → « recharging » (Ultralaser) ; SCARED_AWAY → « scared_away »
 ## (Hurlement, combat sauvage) ; FORCED_OUT → « forced_out » (Hurlement contre un Dresseur, puis
 ## « sent_out_player » ou « sent_out_foe » du remplaçant).
+## Jalon 19, mode SPECTRE (dossier 22 §15.3 et §15.7, validés) : SENT_OUT adverse masqué
+## ([member BattleEvent.disguised]) → « ghost_appeared » puis « ghost_unidentified » (au lieu de
+## « wild_appeared ») ; GHOST_SCARED → « ghost_scared » ; GHOST_SPOKE → « ghost_spoke ». Sans
+## événement ([method get_template]) : « ghost_name » (nom affiché du SPECTRE, posé par le
+## directeur) et « ghost_ball_refused » (Ball refusée avant le lancer). La fuite garde « fled ».
 ## Changement de Pokémon (jalon 7) : WITHDRAWN → « withdrawn » (« Reviens, Salamèche ! ») ; le
 ## Pokémon envoyé reprend « sent_out_player ». Côté adverse (jalon 13, IA qui change, §21 n° 60) :
 ## « withdrawn_foe » (« {trainer} rappelle {pokemon} ! »), puis « sent_out_foe ». Le panneau ÉQUIPE lit, sans événement
@@ -142,6 +147,8 @@ const TEMPLATE_IDS: Array[StringName] = [
 	&"nothing_happened", &"rare_candy_level",
 	&"coins_scattered", &"coins_collected",
 	&"recharging", &"scared_away", &"forced_out",
+	&"ghost_name", &"ghost_appeared", &"ghost_unidentified", &"ghost_scared", &"ghost_spoke",
+	&"ghost_ball_refused",
 ]
 ## Entre deux gains de statistiques du bilan (« PV +2 · Attaque +1 »).
 const SUMMARY_SEPARATOR: String = " · "
@@ -285,6 +292,9 @@ func lines(event: BattleEvent, data: PokemonData, trainer: TrainerData = null) \
 		BattleEvent.Kind.SENT_OUT:
 			if not foe:
 				result.append(_fill(&"sent_out_player", event, data))
+			elif event.disguised:
+				result.append(_fill(&"ghost_appeared", event, data))
+				result.append(_fill(&"ghost_unidentified", event, data))
 			elif not event.trainer_name.is_empty():
 				result.append(_fill(&"sent_out_foe", event, data))
 			else:
@@ -389,6 +399,10 @@ func lines(event: BattleEvent, data: PokemonData, trainer: TrainerData = null) \
 			result.append(_fill(&"scared_away", event, data))
 		BattleEvent.Kind.FORCED_OUT:
 			result.append(_fill(&"forced_out", event, data))
+		BattleEvent.Kind.GHOST_SCARED:
+			result.append(_fill(&"ghost_scared", event, data))
+		BattleEvent.Kind.GHOST_SPOKE:
+			result.append(_fill(&"ghost_spoke", event, data))
 		BattleEvent.Kind.STATUS_INFLICTED, BattleEvent.Kind.STATUS_UNCHANGED, \
 				BattleEvent.Kind.STATUS_DAMAGED, BattleEvent.Kind.STATUS_CURED, \
 				BattleEvent.Kind.STATUS_PREVENTED, BattleEvent.Kind.STATUS_ENDED:
