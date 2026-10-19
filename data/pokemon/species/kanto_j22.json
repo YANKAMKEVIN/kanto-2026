@@ -22,7 +22,8 @@
 		"male_ratio": 0.5, "growth_rate": "medium_fast", "base_exp": 158, "catch_rate": 60,
 		"learnset": [
 			[1, "peck"], [1, "tail_whip"], [1, "supersonic"], [19, "supersonic"],
-			[24, "horn_attack"], [30, "fury_attack"], [39, "waterfall"]
+			[24, "horn_attack"], [30, "fury_attack"], [39, "waterfall"], [48, "horn_drill"],
+			[54, "agility"]
 		]
 	},
 	"venonat": {

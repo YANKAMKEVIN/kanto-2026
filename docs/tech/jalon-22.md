@@ -346,7 +346,7 @@ static func in_front(grid: GridWorld, cell: Vector2i, facing: Vector2i, cycling_
 | `good_rod` | key | `fishing_rod` | §16.2.6 |
 | `super_rod` | key | `fishing_rod` | §16.2.7 |
 | `hyper_potion` | medicine | — | §16.7.1 (soin 200) |
-| `hyper_ball` | ball | — | §16.7.2 (bonus 2.0) |
+| `ultra_ball` | ball | — | §16.7.2 (bonus 2) |
 
 - `KEY_USES` gagne `&"bicycle"`, `&"fishing_rod"` (en fin). `key_use` borne les contextes à
   **exploration seulement** pour ces deux usages [D] (la Flûte du J21 reste exploration + combats) :

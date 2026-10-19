@@ -29,9 +29,9 @@
 		"category": "heal", "heal_amount": 200, "price": 1500,
 		"description": "Un spray de soin. Il restaure 200 PV d'un Pokémon."
 	},
-	"hyper_ball": {
+	"ultra_ball": {
 		"name": "Hyper Ball", "plural": "Hyper Balls", "feminine": true,
-		"category": "ball", "catch_bonus": 2.0, "price": 1200,
+		"category": "ball", "catch_bonus": 2, "price": 1200,
 		"description": "Une Ball très performante. Elle capture mieux qu'une Super Ball."
 	}
 }
