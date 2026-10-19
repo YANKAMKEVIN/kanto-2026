@@ -1,0 +1,389 @@
+{
+	"version": 1,
+	"title": "Équilibrage de l'Arène de Cramois'Île et d'Auguste (jalon 25, 25.0 T9)",
+	"description": "Jalon 25 T9 (dossier 28 §8.3, §8.4, X-18, X-21 ; plan jalon-25 §2.8). Équipes ESTIMÉES à l'arrivée à Cramois'Île après le J24 (aucune partie réelle à ce stade) : starter final N46, Roucarnage, Nidoking, Raichu (N38–42) ; une arrivée basse. Auguste : niveaux et capacités RB, Hurlement remplacé par Groz'Yeux (X-18), Déflagration créée (J25), Bélier sans contrecoup tant que recoil_damage est « pending » (données du J17). Cible (mémoire difficulte-combats) : Auguste 35–60 % de victoire au premier essai pour un joueur attentif ; Dresseurs ≤ 80 %. Arcanin et Feunard viennent du J20 : à lancer sur une copie qui fusionne jalon-20 (sinon le simulateur les saute).",
+	"seeds": 500,
+	"heal_at_start": true,
+	"teams": [
+		{
+			"name": "Florizarre 46, Roucarnage 42, Nidoking 42, Raichu 40",
+			"starter": "bulbasaur",
+			"members": [
+				{
+					"species": "venusaur",
+					"level": 46
+				},
+				{
+					"species": "pidgeot",
+					"level": 42
+				},
+				{
+					"species": "nidoking",
+					"level": 42
+				},
+				{
+					"species": "raichu",
+					"level": 40
+				}
+			]
+		},
+		{
+			"name": "Tortank 46, Roucarnage 42, Nidoking 42, Raichu 40",
+			"starter": "squirtle",
+			"members": [
+				{
+					"species": "blastoise",
+					"level": 46
+				},
+				{
+					"species": "pidgeot",
+					"level": 42
+				},
+				{
+					"species": "nidoking",
+					"level": 42
+				},
+				{
+					"species": "raichu",
+					"level": 40
+				}
+			]
+		},
+		{
+			"name": "Dracaufeu 46, Roucarnage 42, Nidoking 42, Raichu 40",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charizard",
+					"level": 46
+				},
+				{
+					"species": "pidgeot",
+					"level": 42
+				},
+				{
+					"species": "nidoking",
+					"level": 42
+				},
+				{
+					"species": "raichu",
+					"level": 40
+				}
+			]
+		},
+		{
+			"name": "Dracaufeu 43, Roucarnage 40, Nidoking 39, Raichu 38 (arrivée basse)",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charizard",
+					"level": 43
+				},
+				{
+					"species": "pidgeot",
+					"level": 40
+				},
+				{
+					"species": "nidoking",
+					"level": 39
+				},
+				{
+					"species": "raichu",
+					"level": 38
+				}
+			]
+		}
+	],
+	"tables": {},
+	"trainers": {
+		"cinnabar_gym_1": {
+			"name": "Intello (Arène, D1)",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"team": [
+				{
+					"species": "vulpix",
+					"level": 36
+				},
+				{
+					"species": "vulpix",
+					"level": 36
+				},
+				{
+					"species": "ninetales",
+					"level": 36
+				}
+			],
+			"prize_per_level": 25
+		},
+		"cinnabar_gym_2": {
+			"name": "Pillard (Arène, D2)",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"team": [
+				{
+					"species": "growlithe",
+					"level": 36
+				},
+				{
+					"species": "vulpix",
+					"level": 36
+				},
+				{
+					"species": "ninetales",
+					"level": 36
+				}
+			],
+			"prize_per_level": 90
+		},
+		"cinnabar_gym_3": {
+			"name": "Intello (Arène, D3)",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"team": [
+				{
+					"species": "ponyta",
+					"level": 34
+				},
+				{
+					"species": "charmander",
+					"level": 34
+				},
+				{
+					"species": "vulpix",
+					"level": 34
+				},
+				{
+					"species": "growlithe",
+					"level": 34
+				}
+			],
+			"prize_per_level": 25
+		},
+		"cinnabar_gym_4": {
+			"name": "Pillard (Arène, D4)",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"team": [
+				{
+					"species": "ponyta",
+					"level": 41
+				}
+			],
+			"prize_per_level": 90
+		},
+		"cinnabar_gym_5": {
+			"name": "Intello (Arène, D5)",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"team": [
+				{
+					"species": "rapidash",
+					"level": 41
+				}
+			],
+			"prize_per_level": 25
+		},
+		"cinnabar_gym_6": {
+			"name": "Pillard (Arène, D6)",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"team": [
+				{
+					"species": "vulpix",
+					"level": 37
+				},
+				{
+					"species": "growlithe",
+					"level": 37
+				}
+			],
+			"prize_per_level": 90
+		},
+		"cinnabar_gym_7": {
+			"name": "Intello (Arène, D7)",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"team": [
+				{
+					"species": "growlithe",
+					"level": 37
+				},
+				{
+					"species": "vulpix",
+					"level": 37
+				}
+			],
+			"prize_per_level": 25
+		},
+		"cinnabar_blaine": {
+			"name": "Auguste",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 4653,
+			"team": [
+				{
+					"species": "growlithe",
+					"level": 42,
+					"moves": [
+						"ember",
+						"leer",
+						"take_down",
+						"agility"
+					]
+				},
+				{
+					"species": "ponyta",
+					"level": 40,
+					"moves": [
+						"tail_whip",
+						"stomp",
+						"growl",
+						"fire_spin"
+					]
+				},
+				{
+					"species": "rapidash",
+					"level": 42,
+					"moves": [
+						"tail_whip",
+						"stomp",
+						"growl",
+						"fire_spin"
+					]
+				},
+				{
+					"species": "arcanine",
+					"level": 47,
+					"moves": [
+						"leer",
+						"ember",
+						"fire_blast",
+						"take_down"
+					]
+				}
+			]
+		}
+	},
+	"steps": [
+		{
+			"label": "Centre de Cramois'Île (départ)",
+			"center": true
+		},
+		{
+			"label": "D2 (quiz raté ou combat choisi)",
+			"trainer": "cinnabar_gym_2",
+			"optional": "combats"
+		},
+		{
+			"label": "D3 (quiz raté ou combat choisi)",
+			"trainer": "cinnabar_gym_3",
+			"optional": "combats"
+		},
+		{
+			"label": "D4 (quiz raté ou combat choisi)",
+			"trainer": "cinnabar_gym_4",
+			"optional": "combats"
+		},
+		{
+			"label": "D5 (quiz raté ou combat choisi)",
+			"trainer": "cinnabar_gym_5",
+			"optional": "combats"
+		},
+		{
+			"label": "D6 (quiz raté ou combat choisi)",
+			"trainer": "cinnabar_gym_6",
+			"optional": "combats"
+		},
+		{
+			"label": "D7 (quiz raté ou combat choisi)",
+			"trainer": "cinnabar_gym_7",
+			"optional": "combats"
+		},
+		{
+			"label": "D1 (facultatif, sans machine)",
+			"trainer": "cinnabar_gym_1",
+			"optional": "d1"
+		},
+		{
+			"label": "Centre avant Auguste",
+			"center": true,
+			"optional": "soin"
+		},
+		{
+			"label": "Auguste",
+			"trainer": "cinnabar_blaine"
+		}
+	],
+	"variants": [
+		{
+			"name": "Quiz parfait : Auguste seul, attentif",
+			"player": "attentif",
+			"center": true,
+			"retries": 0,
+			"items": {
+				"super_potion": 5,
+				"burn_heal": 2
+			},
+			"optional": []
+		},
+		{
+			"name": "Six combats puis Auguste sans soin, attentif",
+			"player": "attentif",
+			"center": true,
+			"retries": 0,
+			"items": {
+				"super_potion": 5,
+				"burn_heal": 2
+			},
+			"optional": [
+				"combats"
+			]
+		},
+		{
+			"name": "Six combats, soin, puis Auguste, attentif",
+			"player": "attentif",
+			"center": true,
+			"retries": 0,
+			"items": {
+				"super_potion": 5,
+				"burn_heal": 2
+			},
+			"optional": [
+				"combats",
+				"soin"
+			]
+		},
+		{
+			"name": "Quiz parfait : Auguste seul, naïf",
+			"player": "naif",
+			"center": true,
+			"retries": 0,
+			"items": {},
+			"optional": []
+		}
+	]
+}

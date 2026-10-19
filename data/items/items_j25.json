@@ -1,0 +1,34 @@
+{
+	"secret_key": {
+		"name": "Clé Secrète",
+		"plural": "Clés Secrètes",
+		"feminine": true,
+		"category": "key",
+		"description": "Une clé ancienne trouvée au Manoir. Elle ouvre une porte de Cramois'Île."
+	},
+	"old_amber": {
+		"name": "Vieil Ambre",
+		"plural": "Vieux Ambres",
+		"feminine": false,
+		"category": "key",
+		"description": "Un morceau d'ambre ancien. Il contiendrait l'ADN d'un Pokémon."
+	},
+	"tm38": {
+		"name": "CT38 — Déflagration",
+		"plural": "CT38 — Déflagration",
+		"feminine": true,
+		"category": "tm",
+		"tm": 38,
+		"teaches": "fire_blast",
+		"description": "Apprend Déflagration à un Pokémon."
+	},
+	"max_potion": {
+		"name": "Potion Max",
+		"plural": "Potions Max",
+		"feminine": true,
+		"category": "heal",
+		"heal_amount": 999,
+		"price": 2500,
+		"description": "Restaure tous les PV d'un Pokémon."
+	}
+}

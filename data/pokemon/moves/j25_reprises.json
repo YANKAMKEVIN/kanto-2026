@@ -1,0 +1,13 @@
+{
+	"stomp": {
+		"name": "Écrasement", "type": "normal", "category": "physical",
+		"power": 65, "accuracy": 100, "pp": 20,
+		"effects": [{ "kind": "flinch", "chance": 30 }],
+		"description": "Écrase la cible d'un pied lourd. Peut l'apeurer."
+	},
+	"hyper_beam": {
+		"name": "Ultralaser", "type": "normal", "category": "special",
+		"power": 150, "accuracy": 90, "pp": 5, "pending_effects": ["recharge"],
+		"description": "Un rayon dévastateur. Le lanceur doit ensuite se reposer un tour. Sans effet dans le moteur actuel."
+	}
+}
