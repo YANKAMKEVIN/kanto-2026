@@ -99,8 +99,9 @@ Le J24 suppose fusionnés dans la branche d'intégration :
 | Métronome | capacité `metronome`, `pending_effects: ["metronome"]` | J12 | **Effet absent** : à coder au J24 (§13.3) |
 | Capture → Stockage si équipe pleine | `BattleDirector._finish_capture`, `PokemonStorage` | J7 | `main` |
 
-**Pas de Vieil Ambre** dans le projet : le Labo ne ressuscite que Kabuto et Amonita. Ptéra viendra
-si un jalon donne l'Ambre.
+**Pas de Vieil Ambre au J24** : le Labo ne ressuscite que Kabuto et Amonita. Le J25 ajoute le Vieil
+Ambre (Musée d'Argenta) et Ptéra dans la liste des fossiles (`data/world/fossils.json`, dossier 28,
+X-27).
 
 ## 4. Topologie
 

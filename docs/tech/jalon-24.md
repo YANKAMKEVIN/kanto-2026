@@ -191,6 +191,15 @@ Les cas de `resume` :
   - aucune entrée n'est prise pendant la glissade ; `can_save()` est faux ;
   - le courant 1 se termine par le warp B3F → B4F.
 
+### 2.6 bis Chute du joueur : `Warp` de type `FALL` (T15)
+
+- Nouveau déclencheur générique de `Warp` : `FALL`. Quand le joueur marche sur la case, il
+  fait un petit saut, un fondu court, et arrive sur `target_spawn` de l'étage inférieur, en Surf
+  forcé si la case d'arrivée le demande.
+- Le trou peut être **bouché** par un drapeau (`unless_flags`, comme `FlagGate`).
+- Il est **conçu pour être réutilisé tel quel** par le J25 (trous du 3F du Manoir, dossier 28) : aucune
+  règle propre aux Îles Écume dans le `Warp`.
+
 ### 2.7 Artikodin (T18)
 
 - Acteur `StaticEncounter`, posé sur la carte et caché si `articuno_done`.
@@ -209,6 +218,9 @@ Les cas de `resume` :
   - `READY` quand `SceneRouter` charge la carte `cinnabar_island` ;
   - le Pokémon est donné par `PokemonGift` (N30), puis les drapeaux sont effacés dans la même
     sauvegarde.
+- **Liste des fossiles en données** : `data/world/fossils.json` (`fossile → espèce, drapeau`).
+  `FossilLab` ne connaît aucune espèce. Le J25 y ajoutera `old_amber → aerodactyl` (X-27, dossier 28)
+  sans toucher au code.
 - **CT35** : remise unique (`got_tm35`), « Sac plein » géré (règle existante).
 - **Effet `metronome`** : tirage uniforme parmi les capacités dont l'effet est implémenté, sauf
   Métronome, Lutte et celles qui ont `pending_effects`. La capacité est exécutée comme si le
@@ -394,6 +406,12 @@ RB et par les contrôles des grilles.
   supprimer les reprises correspondantes. Le J21 ne peut pas le faire lui-même : ses tests refusent
   une évolution vers une espèce absente.
 - **J22** (session du J22, 2026-10-16, `docs/dossier-25-j22` à `b75e75a9`) : Magicarpe passe dans `kanto_j22.json`, à l'identique de celui du J24 ; **retirer `magikarp` de `kanto_j24.json`** à la fusion du J22. Ne plus changer ses valeurs sans prévenir le J22. Raccord sud de Parmanie réservé (rangée 53, colonnes 24..32 et 34..35, `warp_sud` `coming_soon=route_19`).
+- **J25** (dossier 28 §0, X-25 à X-30, validés par Kevin le 2026-10-19), après la fusion du J24 :
+  - le J25 remplace l'entrée effondrée du Manoir (T-43) par une porte ;
+  - il ajoute les échanges sur les 3 PNJ du Labo ; ses répliques remplacent T-52 à T-54 ;
+  - il ajoute le Vieil Ambre à `fossils.json`.
+
+  Le J24 garde ses états actuels. Kabutops et Amonistar existent déjà au J24 (`kanto_j24.json`).
 - **Tous** : supprimer chaque fichier `*_reprises.json` dès que sa branche d'origine est fusionnée ;
   régénérer `tm_compatibility.json` ; résoudre `data/pokedex/kanto.json` (fiches ajoutées à la fin).
 
