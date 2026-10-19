@@ -85,3 +85,34 @@ func test_debug_start_wild_terrain() -> void:
 	assert_string_contains("\n".join(bad.get_errors()), "terrain inconnu")
 	assert_true(bad.wild.is_empty())
 	assert_push_error_count(1, "le terrain inconnu")
+
+
+## Jalon 19 (T5) : une table forcée peut porter « ghost_unless_item » et le terrain « floor »
+## (départs de débogage de la Tour : `tower_ghost_qa`). Carte d'avant le J19 : la bibliothèque
+## ne vérifie pas les cartes.
+func test_debug_start_wild_floor_with_ghost_item() -> void:
+	var dict := {
+		"map": "mt_moon_1f", "spawn": "from_route_3_w",
+		"party": [{"species": "pikachu", "level": 12}],
+		"wild": {"terrain": "floor", "rate": 200, "ghost_unless_item": "silph_scope",
+			"slots": [{"species": "zubat", "levels": [20, 20], "weight": 1}]},
+	}
+	var start := DebugStart.new()
+	assert_true(start.add_from_dict(dict, _data, _items, "t"), "\n".join(start.get_errors()))
+	assert_eq(start.wild_terrain, &"floor")
+	assert_eq(start.wild.get("ghost_unless_item"), "silph_scope", "gardée dans la table")
+	var library := EncounterLibrary.new(_data)
+	assert_true(library.load_dir())
+	assert_true(library.override_table(start.map, start.wild_terrain, start.wild, "t"))
+	var forced := library.get_table(&"mt_moon_1f", &"floor")
+	assert_eq(forced.id, &"debug_mt_moon_1f_floor")
+	assert_eq(forced.ghost_unless_item, &"silph_scope")
+	assert_not_null(library.get_table(&"mt_moon_1f", &"rubble"), "les gravats restent")
+	# Identifiant vide : refusé, rien n'est gardé.
+	var bad := DebugStart.new()
+	var bad_dict: Dictionary = dict.duplicate(true)
+	bad_dict["wild"]["ghost_unless_item"] = ""
+	assert_false(bad.add_from_dict(bad_dict, _data, _items, "t"))
+	assert_string_contains("\n".join(bad.get_errors()), "ghost_unless_item")
+	assert_true(bad.wild.is_empty())
+	assert_push_error_count(1, "l'identifiant vide")

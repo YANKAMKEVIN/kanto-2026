@@ -1,0 +1,50 @@
+CONCEPT ART — VUE GÉNÉRALE DE LA TOUR DU SOUVENIR, CINQ ÉTAGES (2F à 6F) (Kanto 2026), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. Il montre CINQ ÉTAGES d'une même tour funéraire, un mémorial intérieur bâti en pierre taillée où l'on honore les créatures disparues. Les étages sont posés comme cinq cartes séparées, dans l'ordre de lecture : en haut à gauche l'ÉTAGE 2 (le plus bas), en haut à droite l'ÉTAGE 3, au milieu à gauche l'ÉTAGE 4, au milieu à droite l'ÉTAGE 5, en bas au centre l'ÉTAGE 6 (le plus haut). Chaque étage est un bloc carré de maçonnerie dans lequel sont aménagés salles et couloirs ; les bandes presque noires entre les blocs et sur les côtés de l'étage 6 sont du VIDE NEUTRE qui SÉPARE les étages (ce ne sont pas des passages ; garde-les sombres, simples et sans détail).
+Légende du plan :
+- gris violacé foncé = MURS ÉPAIS de pierre taillée, infranchissables (le dessus des murs est vu d'en haut) ;
+- gris violacé clair quadrillé = SOL DE DALLES de pierre, praticable, chaque carré du quadrillage étant une dalle ;
+- petites pierres tombales grises à sommet arrondi = TOMBES BASSES alignées, avec quelques fleurs au pied (rangées de 2 ou de 4) ;
+- petits blocs violets portant un point orangé, entourés d'un halo beige sur le sol = STÈLES À BOUGIE : une stèle de pierre basse, une bougie allumée posée devant, et la petite flaque de lumière chaude qu'elle jette sur les dalles ;
+- au centre de l'étage 5, carré de 2 × 2 dalles presque blanches entouré d'un halo blanc = la ZONE PURIFIÉE : quatre dalles claires et lisses qui baignent dans une lumière blanche apaisante ;
+- petits rectangles à quatre marches CLAIRES = ESCALIERS QUI MONTENT ; petits rectangles à quatre marches SOMBRES = ESCALIERS QUI DESCENDENT ; tous sont des volées de marches de pierre encastrées contre un mur latéral (à gauche ou à droite, au milieu de la hauteur de chaque étage) ; à l'étage 6, l'escalier qui monte est en BAS de la carte, au bout d'un court couloir ;
+- à l'étage 6, voile violet sur les dalles juste au-dessus et à droite de l'escalier du bas = la BRUME ÉPAISSE où se tient la silhouette spectrale ;
+- points rouge et blanc = petites sphères d'objet posées au sol.
+Respecte ce plan À LA LETTRE : forme de chaque salle et de chaque couloir, place des murs intérieurs, des escaliers, des tombes, des stèles, de la zone purifiée et des objets. Le plan ne donne que la composition : son style en aplats et son quadrillage ne doivent pas apparaître tels quels.
+
+RÈGLE ABSOLUE DES PASSAGES : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; salles et couloirs ont donc des bords qui suivent une grille : segments horizontaux et verticaux à angles droits, AUCUN couloir en diagonale ni en courbe. Les murs sont de la maçonnerie régulière de pierre taillée, à arêtes droites.
+RELIEF : le sol de chaque étage est PLAT ; on change d'étage seulement par les escaliers.
+
+IMAGE 2 : la vue générale d'une grotte du même jeu, à trois niveaux. Respecte EXACTEMENT son style de rendu : même pinceau, même saturation, même finesse de détail, même lisibilité des sols clairs entourés de parois sombres, même taille et même traitement des personnages, même façon de séparer les niveaux par des bandes sombres. Ne reprends RIEN de sa composition ni de sa matière : ici ce n'est PAS une grotte, c'est un INTÉRIEUR BÂTI en pierre taillée (murs appareillés, dalles, arêtes droites), sans roche brute, sans gravats, sans caisses, sans lampes de chantier.
+
+Format : PORTRAIT 1024 × 1536, vue plongeante sur les cinq étages, disposés comme le plan.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus de trois quarts, projection oblique frontale, sans point de fuite. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud) ; les murs nord de chaque salle montrent leur face de pierre appareillée.
+- Aucun trait noir : contours fins et doux. Ombres colorées bleu-violet froid, jamais grises ni noires.
+
+AMBIANCE — « le recueillement » : un lieu de mémoire, calme, solennel, émouvant. Le mystère passe avant la peur. Silence, pierre, bougies. JAMAIS d'horreur, jamais menaçant, jamais macabre.
+- Palette : PIERRE GRIS VIOLACÉ, lumière douce et FROIDE ; seules touches chaudes : les petites flammes des bougies et leur halo doré sur les dalles. Pas de filtre uniforme.
+- LISIBILITÉ AVANT TOUT : le sol de dalles est nettement plus clair que les murs ; on distingue chaque salle et chaque couloir sans effort.
+- Décor de mémoire : tombes basses de pierre claire, petites stèles, bouquets de fleurs fraîches et fanées au pied des tombes, petites offrandes (bols, rubans, bougies éteintes), quelques pétales sur les dalles. Rien de grand, rien d'encombrant : les couloirs restent dégagés.
+- Une BRUME LÉGÈRE, translucide et lente, glisse au ras du sol ; elle S'ÉPAISSIT en montant :
+  · étage 2 : le plus calme et le plus clair, à peine un voile de brume ;
+  · étages 3 et 4 : la brume s'installe, nappes pâles au ras des dalles, la lumière se refroidit ;
+  · étage 5 : brume comparable, mais la ZONE PURIFIÉE du centre rayonne d'une lumière blanche douce et apaisante qui éclaire les dalles autour d'elle, comme un refuge ;
+  · étage 6 : le plus sombre et le plus brumeux (toujours lisible) ; brume violette plus dense vers le bas de la carte.
+
+VIE (très discrète, personnages petits à l'échelle de l'image 2 ; aucun ne ressemble au héros à casquette rouge et veste bleue ; AUCUN personnage en uniforme noir) :
+- étage 2 : le RIVAL, un jeune homme aux cheveux bruns en bataille, veste violette sobre, pantalon sombre, vu de dos ou de profil, debout dans le couloir horizontal du haut, à droite, au bord du passage qui mène vers l'escalier de gauche ; une EXORCISTE (voir plus bas), debout et calme, à gauche, juste au-dessus de l'escalier de gauche ;
+- étage 3 : une Exorciste en prière dans l'alcôve du haut, à droite de l'objet au sol ; une autre en prière dans la salle centrale, à gauche des tombes ;
+- étage 4 : une Exorciste en prière à droite, au-dessus de l'étroit couloir vertical qui mène à l'escalier de droite ; une autre à gauche, près de l'escalier de gauche, tournée vers la droite ;
+- étage 5 : une Exorciste calme debout juste à droite de la zone purifiée ; une Exorciste en prière dans l'alcôve du haut, à droite ; une à gauche de la salle centrale ; une dans l'alcôve du bas ;
+- étage 6 : une Exorciste en prière en haut à droite ; une autre en haut à gauche, au-dessus du couloir vertical étroit de gauche ; et, en bas de la carte, sur les dalles noyées de brume juste devant l'escalier qui monte, une SILHOUETTE SPECTRALE : une forme de brume violette translucide, haute comme un enfant, indistincte et immobile, SANS YEUX lisibles, SANS VISAGE, SANS contour noir, sans membres nets, sans forme de créature ou d'animal reconnaissable ; elle n'effraie pas : elle intrigue.
+- EXORCISTES : femmes d'âge mûr en longue robe claire (blanc cassé ou gris très pâle), VOILE clair sur les cheveux, CHAPELET de grosses perles à la main ; la plupart agenouillées ou debout, mains jointes, tête inclinée ; silhouettes douces et dignes, jamais inquiétantes.
+- Aucune créature, aucun animal, aucun fantôme mignon, aucun monstre visible : la seule présence surnaturelle est la silhouette de brume de l'étage 6.
+
+INTERDITS : texte, lettres, chiffres, étiquettes, panneaux lisibles, symboles, logo, signature, filigrane, cadre, interface ; sang, crânes, ossements, squelettes, zombies, cadavres, cercueils ouverts, tombes ouvertes ou brisées, toiles d'araignée, chaînes, yeux luisants, visages dans la brume, mains qui sortent du sol, ambiance d'horreur ou de jumpscare ; ciel, fenêtre sur l'extérieur, arbres, herbe, plantes vertes, végétation extérieure ; roche brute de grotte ; couloirs courbes ou en diagonale ; brouillard opaque qui cache le sol, flou de profondeur, vignettage noir ; pixel art, 3D.
+
+L'image doit raconter, sans texte : une tour de recueillement qu'on gravit étage après étage, où la brume s'épaissit à mesure qu'on monte, avec un refuge de lumière blanche à l'étage 5, jusqu'à une présence silencieuse qui garde l'escalier tout en haut.

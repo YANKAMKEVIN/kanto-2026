@@ -101,11 +101,16 @@ func open() -> void:
 
 ## Affiche une page : [param speaker] au-dessus du texte (caché s'il est vide), [param text]
 ## sans aucun caractère visible (set_visible_characters l'écrit), [param narration] en
-## italique (Examiner, Observer). Cache « › ».
-func show_page(speaker: String, text: String, narration: bool) -> void:
+## italique (Examiner, Observer), [param voice] « spirit » en italique adouci (voix d'esprit,
+## remplace le style de la page ; retiré à la page suivante). Cache « › ».
+func show_page(speaker: String, text: String, narration: bool,
+		voice: StringName = &"") -> void:
 	_speaker.text = speaker
 	_speaker.visible = not speaker.is_empty()
-	_text.theme_type_variation = &"DialogNarration" if narration else &"DialogText"
+	if voice == UiTokens.VOICE_SPIRIT:
+		_text.theme_type_variation = &"DialogSpirit"
+	else:
+		_text.theme_type_variation = &"DialogNarration" if narration else &"DialogText"
 	_text.text = text
 	_text.visible_characters = 0
 	# Taille du texte et contraste (UiPrefs) : le thème du texte change selon la page.
@@ -219,6 +224,10 @@ func get_text() -> String:
 
 func is_narration() -> bool:
 	return _text.theme_type_variation == &"DialogNarration"
+
+
+func is_spirit() -> bool:
+	return _text.theme_type_variation == &"DialogSpirit"
 
 
 func get_panel() -> PanelContainer:

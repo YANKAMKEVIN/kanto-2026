@@ -207,7 +207,19 @@
 		"teleported": { "text": "{pokemon} s'est téléporté !",
 			"text_f": "{pokemon} s'est téléportée !" },
 		"nothing_happened": { "text": "Mais rien ne se passe !" },
-		"rare_candy_level": { "text": "{pokemon} monte au niveau {level} !" }
+		"rare_candy_level": { "text": "{pokemon} monte au niveau {level} !" },
+		"recharging": { "text": "{pokemon} doit se reposer !" },
+		"scared_away": { "text": "{pokemon} prend peur et s'enfuit !" },
+		"forced_out": { "text": "{pokemon} est chassé du combat !",
+			"text_f": "{pokemon} est chassée du combat !" },
+		"ghost_name": { "text": "SPECTRE" },
+		"ghost_appeared": { "text": "Un SPECTRE apparaît !" },
+		"ghost_unidentified": { "text": "Impossible d'identifier le SPECTRE…" },
+		"ghost_scared": { "text": "{pokemon} a trop peur pour bouger !" },
+		"ghost_spoke": { "text": "SPECTRE : Va-t'en… Va-t'en…" },
+		"ghost_ball_refused": {
+			"text": "Pas question de lancer une Ball sur… ça. Elle passerait au travers."
+		}
 	},
 	"stats": {
 		"atk": "L'Attaque", "def": "La Défense", "spa": "L'Attaque Spéciale",

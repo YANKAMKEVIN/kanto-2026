@@ -39,7 +39,9 @@ static func wild(encounter: WildEncounter, data: PokemonData, rng: GameRng,
 	var party := Party.new()
 	party.add(PokemonFactory.create(data, encounter.species, encounter.level, rng))
 	request.foe_party = party
-	request.rules = BattleRules.for_wild(items)
+	# Combat SPECTRE (jalon 19) : décidé au tirage ([member WildEncounter.ghost]).
+	request.rules = BattleRules.for_ghost(items) if encounter.ghost \
+		else BattleRules.for_wild(items)
 	request.origin_cell = cell
 	return request
 

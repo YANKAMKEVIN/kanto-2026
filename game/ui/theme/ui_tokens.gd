@@ -1826,3 +1826,9 @@ const FLASH_REDUCED_ALPHA := 0.35
 const FLASH_REDUCED_DURATION := 0.6
 ## Vibration légère au début de chaque éclair (si les vibrations sont permises).
 const HAPTIC_FLASH_MS := 25
+
+## Voix d'esprit (J19 T12, dossier 22 §11) : réplique d'un Exorciste possédé, italique, teinte
+## adoucie et froide (le texte reste lisible sur DIALOG_PANEL_BG).
+const DIALOG_SPIRIT := Color("#B7B4DA")
+## Valeurs de la clé de page « voice ».
+const VOICE_SPIRIT := &"spirit"

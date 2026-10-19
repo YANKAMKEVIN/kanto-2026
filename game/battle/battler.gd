@@ -50,6 +50,10 @@ var disabled_turns: int = 0
 ## charge (sous terre). Perdu au changement, au K.O. et à la fin du combat (jamais sauvegardé).
 var charge_slot: int = -1
 var invulnerable: bool = false
+## Ultralaser (jalon 19) : emplacement de la capacité qui impose le repos au tour suivant (−1 =
+## aucun repos). Action imposée comme une charge ; perdu au changement, au K.O. et à la fin du
+## combat (un nouveau Battler à chaque envoi ; jamais sauvegardé).
+var recharge_slot: int = -1
 var _stages: Dictionary[StringName, int] = {}
 
 @warning_ignore_start("integer_division")
@@ -115,16 +119,18 @@ func clear_charge() -> void:
 	invulnerable = false
 
 
-## Vrai si l'action du Pokémon est imposée (Patience ou charge, jalon 14) :
-## [method locked_slot] donne la capacité à lancer.
+## Vrai si l'action du Pokémon est imposée (Patience, charge du jalon 14, repos d'Ultralaser du
+## jalon 19) : [method locked_slot] donne la capacité à soumettre.
 func is_action_locked() -> bool:
-	return is_biding() or is_charging()
+	return is_biding() or is_charging() or is_recharging()
 
 
 ## Emplacement de la capacité imposée ([method is_action_locked]), ou −1.
 func locked_slot() -> int:
 	if is_biding():
 		return bide_slot
+	if is_recharging():
+		return recharge_slot
 	return charge_slot
 
 
@@ -194,3 +200,8 @@ func has_disabled_move() -> bool:
 func clear_disable() -> void:
 	disabled_slot = -1
 	disabled_turns = 0
+
+
+## Vrai si le Pokémon doit se reposer ce tour-ci (Ultralaser, jalon 19).
+func is_recharging() -> bool:
+	return recharge_slot >= 0

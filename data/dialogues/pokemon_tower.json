@@ -23,15 +23,22 @@
 		"speaker": "Exorciste",
 		"variants": [
 			{
-				"unless": ["tower_medium_talked"], "set": ["tower_medium_talked"],
-				"pages": [
-					"Chut… Les étages sont réservés\nau recueillement.",
-					"Revenez plus tard, s'il vous plaît."
-				]
+				"if": ["tower_stairs_open"],
+				"pages": ["Je prie pour ceux qui reposent ici…\net pour ceux qui sont montés."]
 			},
 			{
-				"pages": ["…"]
+				"unless": ["tower_stairs_open"],
+				"cutscene": "tower_guardian"
 			}
+		]
+	},
+	"tower_guardian_worried": {
+		"speaker": "Exorciste",
+		"pages": [
+			"Ah… C'est vous.\nPardonnez-moi, je priais.",
+			"Les esprits sont agités, ces derniers\njours. Même ici, on ne trouve plus le calme.",
+			"M. Fuji est monté il y a plusieurs\njours. Il n'est jamais redescendu.",
+			"Si vous montez…\nrestez près de vos Pokémon."
 		]
 	},
 	"pokemon_tower_grave_1": {

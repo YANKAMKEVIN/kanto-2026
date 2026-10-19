@@ -142,6 +142,18 @@
 			},
 			"sun_direction": [-0.7, -0.7],
 			"contact": { "color": "#1c1830", "alpha": 0.6 }
+		},
+		"tower": {
+			"grade": {
+				"shadows": [0.86, 0.82, 0.94],
+				"midtones": [0.95, 0.93, 1.0],
+				"highlights": [0.97, 0.96, 1.0],
+				"strength": 1.0
+			},
+			"sun_direction": [-0.7, -0.7],
+			"rim": { "color": "#c4b8e8", "strength": 0.08, "width": 3.0 },
+			"contact": { "color": "#0e0a18", "alpha": 0.55 },
+			"wind": 0.0
 		}
 	},
 	"maps": {
@@ -223,6 +235,11 @@
 		"pokemon_house": "interior_warm",
 		"lavender_house_1": "interior_warm",
 		"lavender_house_2": "interior_warm",
-		"pokemon_tower_1f": "tower_cold"
+		"pokemon_tower_1f": "tower_cold",
+		"pokemon_tower_2f": "tower",
+		"pokemon_tower_3f": "tower",
+		"pokemon_tower_4f": "tower",
+		"pokemon_tower_5f": "tower",
+		"pokemon_tower_6f": "tower"
 	}
 }

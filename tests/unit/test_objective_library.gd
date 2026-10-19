@@ -18,7 +18,8 @@ func test_real_data_loads_without_error() -> void:
 	# Carmin-sur-Mer, au sud. » en tête (ordre du voyage), devant le S.S. Anne du J14.
 	# Jalon 18 (T16, jalon-18.md §4.13) : ses cinq objectifs en tête, le plus avancé d'abord
 	# (test_j18_data) ; derrière eux, ceux du jalon 16 (T13, T14 : Arène de Carmin, R-9).
-	assert_eq(library.get_ids(), [&"tower_later", &"visit_tower", &"reach_lavender",
+	# Jalon 19 (clôture T24, dossier 22 §15.7) : ses deux objectifs devant ceux du J18.
+	assert_eq(library.get_ids(), [&"see_the_ghosts", &"climb_tower", &"tower_later", &"visit_tower", &"reach_lavender",
 		&"cross_dark_cave", &"cross_route_9", &"face_surge", &"open_surge_barrier",
 		&"go_vermilion_gym", &"hm01_cascade_badge", &"help_captain",
 		&"explore_vermilion", &"go_vermilion", &"ss_anne", &"help_bill",
@@ -75,7 +76,10 @@ func test_q4_nothing_before_the_rival_battle_then_reach_viridian() -> void:
 ## (T28) `route_4_reached` par celle du déclencheur du sas (data/cutscenes/route_4.json), posé
 ## aussi sur la vraie Route 4 du J13 (mêmes cases).
 ## Jalon 16 (T14) : `cut_vermilion_gym_bush` sera levé par la scène de Coupe de l'arbuste (T15).
-const _PENDING_FLAGS: Array[StringName] = [&"viridian_arrived", &"cut_vermilion_gym_bush"]
+## Jalon 19 (T16) : `tower_medium_talked` (objectif « revenir plus tard à la Tour », J18) n'est plus
+## levé depuis que la gardienne joue la scène `tower_guardian` (Q-1 : objectifs du J19).
+const _PENDING_FLAGS: Array[StringName] = [&"viridian_arrived", &"cut_vermilion_gym_bush",
+	&"tower_medium_talked"]
 
 
 ## Jalon 10 (dossier 12 §16, jalon-10.md §2.10) : « continuer vers le nord. » jusqu'à Argenta,

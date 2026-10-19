@@ -14,8 +14,9 @@ extends SceneTree
 ## **Sans vie** (T14) : les cases des PNJ (la Médium / Exorciste en (17, 3) occupe la seule case
 ## d'accès à l'escalier), les cases de lecture des tombes et les examens sont **réservés** :
 ## aucun PNJ, aucun point d'examen, aucune donnée de dialogue. L'escalier (17, 2) mène à
-## `pokemon_tower_2f` (carte du J19, inexistante ici) : `coming_soon = "Tour Pokémon"` (inerte en
-## release, de toute façon inatteignable tant que la gardienne tient (17, 3)).
+## `pokemon_tower_2f` : au J18 un repli `coming_soon` ; **le J19 (T16) l'arme** (carte réelle,
+## arrivée `arrivee_T12`) et pose le déclencheur du premier pas (9..10, 15) ↑, scène
+## `tower_guardian` (la gardienne s'écarte en (18, 3), `tower_stairs_open`).
 ##
 ## - `Ground` (invisible) : `.` sol, `X` paillasson, `S` escalier praticables ; tout le reste
 ##   (murs `K`, tombes `g`, comptoir `W`, bancs `n`, chandeliers `b`) solide.
@@ -63,7 +64,12 @@ const WALL_VALUE_JITTER: float = 0.04
 
 const STAIRS: String = "relief_escalier_tour_01"
 const STAIRS_SPAWN: StringName = &"from_pokemon_tower_2f"
-const STAIRS_LABEL: String = "Tour Pokémon"
+## J19 (T16) : étage 2F, point d'arrivée de la paire T12 (2F → 1F : `from_pokemon_tower_2f`).
+const STAIRS_TARGET_MAP: StringName = &"pokemon_tower_2f"
+const STAIRS_TARGET_SPAWN: StringName = &"arrivee_T12"
+## J19 (T16) : premier pas depuis l'entrée (9..10, 15), direction ↑ → scène de la gardienne.
+const GUARDIAN_TRIGGER: StringName = &"entree_declencheur"
+const GUARDIAN_SCENE: StringName = &"tower_guardian"
 const TOMBS: Array[String] = ["int_tombe_tour_01", "int_tombe_tour_02", "int_tombe_tour_03"]
 ## Tombes nommées (T-36 à T-40) : variantes B ou C (bouquet, offrande), plus fréquentes qu'ailleurs.
 const NAMED_TOMBS: Array[String] = ["tombe_1", "tombe_2", "tombe_3", "tombe_4", "tombe_5"]
@@ -387,10 +393,15 @@ func _place_passages() -> void:
 		_kit.call(&"add_warp", "Exit%d" % i, exit_cells[i], Kit.PUSH, Vector2i.DOWN, EXIT_MAP,
 			EXIT_SPAWN, Vector2i.DOWN)
 	_kit.call(&"add_spawn", "entrance", _plan().call(&"cell_of", "entree"))
-	# Escalier : `pokemon_tower_2f` n'existe pas au J18 (carte du J19) → « Tour Pokémon — À venir » ;
-	# retour sur la case d'accès (17, 3), tourné vers le bas. Le J19 remplace ce passage.
+	# Escalier (J19, T16) : armé vers `pokemon_tower_2f` / `arrivee_T12` (le J18 y posait un repli
+	# « à venir »). Retour du 2F sur la case d'accès (17, 3), tourné vers le bas.
 	var stairs: Vector2i = _plan().call(&"cell_of", "escalier")
 	var access := stairs + Vector2i.DOWN
 	_kit.call(&"add_spawn", String(STAIRS_SPAWN), access)
-	_kit.call(&"add_warp", "Stairs2F", stairs, Kit.STEP_ON, Vector2i.UP, &"", STAIRS_SPAWN,
-		Vector2i.DOWN, STAIRS_LABEL)
+	_kit.call(&"add_warp", "Stairs2F", stairs, Kit.STEP_ON, Vector2i.UP, STAIRS_TARGET_MAP,
+		STAIRS_TARGET_SPAWN, Vector2i.LEFT)
+	var index := 0
+	for cell: Vector2i in _plan().call(&"cells_at", String(GUARDIAN_TRIGGER)):
+		_kit.call(&"add_trigger", "Guardian%d" % index, cell, Vector2i.ONE, Vector2i.UP,
+			GUARDIAN_SCENE)
+		index += 1

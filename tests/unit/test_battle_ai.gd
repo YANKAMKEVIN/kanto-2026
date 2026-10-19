@@ -185,8 +185,9 @@ func test_status_move_useless_at_the_bound() -> void:
 	var seeder := _smart_side(&"bulbasaur", [&"leech_seed"], [&"grass"])
 	foe.active.seed_fraction = 0.125
 	assert_eq(_score(&"leech_seed", seeder, foe), 0.0, "déjà une graine")
-	assert_eq(_score(&"whirlwind", seeder, foe), 0.0,
-		"effet que le moteur ne gère pas encore (Hurlement : reporté)")
+	assert_eq(_score(&"whirlwind", seeder, foe), _score(&"roar", seeder, foe),
+		"Cyclone noté comme Hurlement (jalon 19)")
+	assert_gt(_score(&"whirlwind", seeder, foe), 0.0, "changement forcé : statut utile")
 	foe.active.pokemon.status = StatusRules.SLEEP
 	assert_eq(_score(&"sleep_powder", seeder, foe), 0.0, "cible déjà endormie (J11)")
 

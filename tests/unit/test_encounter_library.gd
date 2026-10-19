@@ -120,10 +120,12 @@ func test_load_dir_keeps_valid_and_reports_broken() -> void:
 func test_real_tables_load_without_error() -> void:
 	var lib := _lib()
 	assert_true(lib.load_dir(), "\n".join(lib.get_errors()))
-	# Jalon 17 (T8) : Route 11, Cave Taupiqueur ; jalon 18 (T16) : Route 9, Route 10, Grotte Sombre.
+	# Jalon 17 (T8) : Route 11, Cave Taupiqueur ; jalon 18 (T16) : Route 9, Route 10, Grotte Sombre ;
+	# jalon 19 (T5) : Tour Pokémon.
 	assert_eq(lib.get_ids(), [&"dark_cave_1f_rubble", &"dark_cave_b1f_rubble",
 		&"digletts_cave_rubble", &"mt_moon_1f_rubble",
-		&"mt_moon_b1f_rubble", &"mt_moon_b2f_rubble", &"route_10_grass", &"route_11_grass",
+		&"mt_moon_b1f_rubble", &"mt_moon_b2f_rubble", &"pokemon_tower_high", &"pokemon_tower_low",
+		&"pokemon_tower_mid", &"route_10_grass", &"route_11_grass",
 		&"route_1_grass", &"route_22_grass", &"route_24_grass",
 		&"route_25_grass", &"route_2_grass", &"route_2_north_grass", &"route_3_grass",
 		&"route_4_grass", &"route_5_grass", &"route_6_grass", &"route_9_grass",
@@ -199,7 +201,9 @@ func test_every_wild_species_has_battle_sprites() -> void:
 	# jalon-07.md Q-2 : sprites de combat provisoires (tools/gen_placeholder_battlers.gd).
 	var lib := _lib()
 	lib.load_dir()
-	assert_eq(lib.size(), 20, "une table par couple ci-dessous")
+	# + 3 tables de la Tour Pokémon (J19) : hors de la boucle, car leurs rencontres sont des
+	# SPECTRES sans le Scope (dossier 22 §6) ; Osselait n'a pas de sprite avant le J20.
+	assert_eq(lib.size(), 23, "une table par couple ci-dessous, plus les 3 de la Tour")
 	for pair: Array in [[&"route_1", &"grass"], [&"route_2", &"grass"],
 			[&"route_22", &"grass"], [&"viridian_forest", &"grass"], [&"route_2_north", &"grass"],
 			[&"route_3", &"grass"], [&"mt_moon_1f", &"rubble"], [&"mt_moon_b1f", &"rubble"],
@@ -249,3 +253,73 @@ func test_viridian_forest_table_follows_the_dossier() -> void:
 	for slot: EncounterSlot in table.slots:
 		assert_true(expected.has(slot.species), "%s : hors du bestiaire" % slot.species)
 		assert_false(slot.species in [&"pidgey", &"rattata"], "arbitrage 6")
+
+
+# --- Jalon 19 (T5) : terrain « floor » et clé « ghost_unless_item » ----------------------------
+
+func _floor_dict() -> Dictionary:
+	return {
+		"tower_floor": {
+			"maps": ["tower_3f"], "terrain": "floor", "rate": 10,
+			"ghost_unless_item": "silph_scope",
+			"slots": [
+				{ "species": "pidgey", "levels": [18, 24], "weight": 229 },
+				{ "species": "rattata", "levels": [25, 25], "weight": 3 },
+			],
+		},
+	}
+
+
+func test_floor_table_with_ghost_item_loads() -> void:
+	var lib := _lib()
+	assert_true(lib.add_from_dict(_floor_dict(), "test"), "\n".join(lib.get_errors()))
+	assert_true(lib.has_table(&"tower_3f", &"floor"))
+	assert_false(lib.has_table(&"tower_3f", &"grass"), "aucune table d'herbes")
+	var table := lib.get_table(&"tower_3f", &"floor")
+	assert_eq(table.terrain, &"floor")
+	assert_eq(table.ghost_unless_item, &"silph_scope")
+	assert_false(table.has_ramp())
+
+
+func test_unknown_item_is_accepted() -> void:
+	# « silph_scope » n'existe qu'au J20 : l'identifiant n'est pas vérifié contre ItemLibrary.
+	var dict := _floor_dict()
+	dict["tower_floor"]["ghost_unless_item"] = "objet_qui_n_existe_pas"
+	var lib := _lib()
+	assert_true(lib.add_from_dict(dict, "test"), "\n".join(lib.get_errors()))
+	assert_eq(lib.get_table(&"tower_3f", &"floor").ghost_unless_item, &"objet_qui_n_existe_pas")
+
+
+func test_empty_ghost_item_is_rejected() -> void:
+	var dict := _floor_dict()
+	dict["tower_floor"]["ghost_unless_item"] = ""
+	var lib := _lib()
+	assert_false(lib.add_from_dict(dict, "test"))
+	assert_false(lib.has_table(&"tower_3f", &"floor"))
+	assert_string_contains(lib.get_errors()[0], "ghost_unless_item")
+	assert_push_error("ghost_unless_item")
+
+
+func test_non_text_ghost_item_is_rejected() -> void:
+	var dict := _floor_dict()
+	dict["tower_floor"]["ghost_unless_item"] = true
+	var lib := _lib()
+	assert_false(lib.add_from_dict(dict, "test"))
+	assert_push_error("ghost_unless_item")
+
+
+func test_table_without_ghost_item_never_masks() -> void:
+	var lib := _lib()
+	assert_true(lib.add_from_dict(_valid_dict(), "test"))
+	assert_eq(lib.get_table(&"route_1").ghost_unless_item, &"", "vide : jamais de SPECTRE")
+
+
+func test_real_tables_carry_no_ghost_item_outside_the_tower() -> void:
+	var lib := _lib()
+	lib.load_dir()
+	for id: StringName in lib.get_ids():
+		var table := lib.get_table_by_id(id)
+		if String(id).begins_with("pokemon_tower_"):
+			continue
+		assert_true(table.ghost_unless_item.is_empty(), String(id))
+		assert_ne(table.terrain, &"floor", String(id))

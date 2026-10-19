@@ -55,6 +55,8 @@ extends RefCounted
 ## CHARGE_RELEASED : SURFACE (sans phrase) ; CHARGE_BROKEN : SURFACE puis le message ; TELEPORTED :
 ## VANISH puis le message ; DODGED, BALL_BLOCKED, NOTHING_HAPPENED : le message seulement (pas de
 ## THROW : la Ball n'est pas lancée).
+## Jalon 19 : SCARED_AWAY comme TELEPORTED (VANISH puis le message) ; FORCED_OUT comme WITHDRAWN
+## (le message, puis WITHDRAW) ; RECHARGING : le message seulement.
 ## Les phrases viennent de [BattleText] : rien n'est écrit ici.
 
 
@@ -143,10 +145,10 @@ static func beats(event: BattleEvent, texts: BattleText, data: PokemonData,
 		BattleEvent.Kind.CHARGE_BROKEN:
 			result.append(BattleBeat.new(BattleBeat.Kind.SURFACE, event))
 			result.append_array(messages)
-		BattleEvent.Kind.TELEPORTED:
+		BattleEvent.Kind.TELEPORTED, BattleEvent.Kind.SCARED_AWAY:
 			result.append(BattleBeat.new(BattleBeat.Kind.VANISH, event))
 			result.append_array(messages)
-		BattleEvent.Kind.WITHDRAWN:
+		BattleEvent.Kind.WITHDRAWN, BattleEvent.Kind.FORCED_OUT:
 			result.append_array(messages)
 			result.append(BattleBeat.new(BattleBeat.Kind.WITHDRAW, event))
 		BattleEvent.Kind.DRAINED_HP:

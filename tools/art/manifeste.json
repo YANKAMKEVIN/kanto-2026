@@ -1573,6 +1573,15 @@
    "cases": 8,
    "ombre": false,
    "contact": null
+  },
+  {
+   "id": "prop_panneau_scope_01",
+   "source": "WORLD_PROP_PANNEAU_SCOPE_01_NE_r1.png",
+   "sortie": "assets/world/props/prop_panneau_scope_01.png",
+   "axe": "h",
+   "cases": 2,
+   "ombre": true,
+   "contact": 0.1
   }
  ],
  "hautes_herbes": {
