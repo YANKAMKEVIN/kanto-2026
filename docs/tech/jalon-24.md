@@ -255,9 +255,11 @@ de puzzle (dossier §4 : puzzles à 1:1).
 
 ### 2.12 Art (lot 24.0)
 
-Le numéro de série est réservé **au moment du push**, après vérification de toutes les branches
-distantes : les séries 20 à 25 sont prises ou visées au 2026-10-16 ; on vise la **26**, ou la
-première libre.
+**Série 27** (vérifiée le 2026-10-19 sur toutes les branches distantes) :
+- les séries 17 à 24 sont prises (24 : J19 ; 23 : J21 ; 22 : J20 ; 21 : J18) ;
+- **25 et 26 sont laissées au J22 et au J23**, plus anciens (règle d'ancienneté).
+
+On revérifie au push.
 
 ## 3. Tâches
 
@@ -294,6 +296,18 @@ Rôles : **A** architecte-godot · **C** constructeur-monde · **U** ui-mobile �
 - **Résultat** consigné ici.
 - **Si la traversée échoue** : on applique le recours de P-6 (chenal au sud de l'île) et on prévient
   K.
+
+**Résultat (2026-10-19, décision de Kevin : pas d'émulateur)** : la vérification passe par le code de
+RB et par les contrôles des grilles.
+- **Rive surfable (hypothèse H-1) : confirmée.**
+  - `CollisionCheckOnWater` (`home/overworld.asm`, l. 1888–1933) laisse le joueur en Surf sur la tuile
+    de rive `$32` (« keep surfing »), puis le fait descendre sur la case de terre praticable suivante.
+  - `IsNextTileShoreOrWater` (`engine/items/item_effects.asm`, l. 2829) autorise aussi à monter face
+    à `$32`.
+  - La mer est de la Route 20 atteint donc bien l'île.
+- **Trajet du courant, traversée sans Force, solution du B3F** : prouvés par
+  `plan_check_j24_seafoam.py` sur les grilles v1. La traversée ouest ↔ est réussit en Surf seul,
+  dans les deux sens.
 
 #### T4 — A : données — **maintenant**
 
