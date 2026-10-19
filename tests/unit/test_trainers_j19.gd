@@ -1,7 +1,8 @@
 extends GutTest
 ## Dresseurs de la Tour Pokémon (jalon 19 T4 ; `jalon-19.md` §2.5, §2.6, dossier 22 §7.3, §8) :
-## les neuf Exorcistes et le rival n° 5 (`data/trainers/pokemon_tower.json`). Niveaux du rival
-## **provisoires** : T21 préliminaire (`docs/tech/jalon-19-equilibrage.md`), relancé après T10.
+## les neuf Exorcistes et le rival n° 5 (`data/trainers/pokemon_tower.json`). Équipes du rival
+## recalées par T21 (`docs/tech/jalon-19-equilibrage.md` §8) : règle de difficulté de Kevin
+## (Q-T21-4), mesurée sur les sorties réelles du J18.
 
 const SOURCE := "res://data/trainers/pokemon_tower.json"
 const STARTERS: Array[StringName] = [&"bulbasaur", &"charmander", &"squirtle"]
@@ -18,21 +19,22 @@ const CHANNELERS := {
 	&"tower_channeler_8": ["Exorciste Paulette", [[&"gastly", 24]], true],
 	&"tower_channeler_9": ["Exorciste Clémence", [[&"gastly", 24]], true],
 }
-## Rival n° 5 (dossier 22 §7.3) : starter du joueur → [espèce, niveau]… Niveaux du T21
-## préliminaire (provisoires, à relancer après T10).
+## Rival n° 5 (dossier 22 §7.3, T21) : starter du joueur → [espèce, niveau]… Contre Bulbizarre,
+## Sabelette remplace Léviator (Q-T21-1) et les niveaux descendent sous la fourchette 22–26 du
+## plan [D] ; contre Carapuce, Roucoups et Caninos N21 [D].
 const RIVAL := {
-	&"bulbasaur": [[&"pidgeotto", 22], [&"exeggcute", 22], [&"gyarados", 22], [&"kadabra", 18],
-		[&"charmeleon", 22]],
+	&"bulbasaur": [[&"pidgeotto", 20], [&"exeggcute", 20], [&"sandshrew", 20], [&"kadabra", 17],
+		[&"charmeleon", 21]],
 	&"charmander": [[&"pidgeotto", 22], [&"growlithe", 22], [&"exeggcute", 22],
-		[&"kadabra", 18], [&"wartortle", 22]],
-	&"squirtle": [[&"pidgeotto", 22], [&"gyarados", 22], [&"growlithe", 22], [&"kadabra", 18],
-		[&"ivysaur", 22]],
+		[&"kadabra", 20], [&"wartortle", 25]],
+	&"squirtle": [[&"pidgeotto", 21], [&"gyarados", 25], [&"growlithe", 21], [&"kadabra", 18],
+		[&"ivysaur", 26]],
 }
-## Fourchette du rival n° 5 (plan T21, K-6) : 22 à 26, starter évolué plafonné à 26 ; Kadabra
-## hors fourchette, gardé ≤ 22 [D].
-const RIVAL_MIN_LEVEL := 22
-const RIVAL_MAX_LEVEL := 26
+## Garde-fous de plausibilité (T21, Kevin 2026-10-19) : le starter évolué du rival reste son
+## Pokémon le plus haut, au plus ≈ 30 ; Kadabra ≤ 22 [D].
+const RIVAL_STARTER_MAX := 30
 const RIVAL_KADABRA_MAX := 22
+const RIVAL_STARTERS: Array[StringName] = [&"ivysaur", &"charmeleon", &"wartortle"]
 
 var _data: PokemonData
 var _trainers: TrainerLibrary
@@ -120,18 +122,22 @@ func test_rival_follows_the_player_starter() -> void:
 		assert_eq(team, RIVAL[starter], String(starter))
 
 
-func test_rival_levels_stay_in_the_plan_range() -> void:
+func test_rival_starter_is_the_highest_and_plausible() -> void:
 	var rival := _trainers.get_trainer(&"rival_tower")
 	assert_not_null(rival)
 	if rival == null:
 		return
 	for starter: StringName in STARTERS:
-		for slot: TrainerSlot in rival.team_for(starter):
-			var where := "%s %s N%d" % [starter, slot.species, slot.level]
-			if slot.species == &"kadabra":
-				assert_lte(slot.level, RIVAL_KADABRA_MAX, where)
+		var slots: Array = rival.team_for(starter)
+		var last: TrainerSlot = slots.back()
+		assert_true(RIVAL_STARTERS.has(last.species), "%s : starter évolué en dernier" % starter)
+		assert_lte(last.level, RIVAL_STARTER_MAX, String(starter))
+		for slot: TrainerSlot in slots:
+			if slot == last:
 				continue
-			assert_between(slot.level, RIVAL_MIN_LEVEL, RIVAL_MAX_LEVEL, where)
+			assert_lt(slot.level, last.level, "%s %s N%d" % [starter, slot.species, slot.level])
+			if slot.species == &"kadabra":
+				assert_lte(slot.level, RIVAL_KADABRA_MAX, String(starter))
 
 
 func test_rival_rules_copy_the_third_rival() -> void:
@@ -149,16 +155,20 @@ func test_rival_rules_copy_the_third_rival() -> void:
 
 func test_rival_hand_picked_moves() -> void:
 	# Plan §2.6 : Léviator sans Hydrocanon ; Hurlement de Caninos remplacé par Groz'Yeux ;
-	# Tourbillon de Roucoups et Frénésie de Reptincel (effets en attente) écartés.
-	var expected := {
+	# Tourbillon de Roucoups et Frénésie de Reptincel écartés. Kadabra : règle du J16 (Q-T21-3).
+	# Contre Bulbizarre (Q-T21-1) : Roucoups sans Tornade.
+	var common := {
 		&"gyarados": [&"bite", &"dragon_rage", &"leer"],
 		&"growlithe": [&"bite", &"ember", &"leer"],
 		&"pidgeotto": [&"gust", &"sand_attack", &"quick_attack"],
-		# Kadabra N18 (T21) : capacités naturelles, Choc Mental réappris au N16 passe en dernier.
-		&"kadabra": [&"teleport", &"disable", &"confusion"],
+		&"kadabra": [&"confusion", &"psybeam"],
 		&"exeggcute": [&"barrage", &"hypnosis"],
+		&"charmeleon": [&"scratch", &"growl", &"ember", &"leer"],
 	}
 	for starter: StringName in STARTERS:
+		var expected := common.duplicate()
+		if starter == &"bulbasaur":
+			expected[&"pidgeotto"] = [&"sand_attack", &"quick_attack"]
 		var team := _trainers.build_team(&"rival_tower", starter, GameRng.new(1))
 		for pokemon: Pokemon in team.get_all():
 			if not expected.has(pokemon.species_id):

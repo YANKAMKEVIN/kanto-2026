@@ -60,25 +60,25 @@
 		"end_message": false, "start_message": true, "bag": true, "moment": "win", "switch": true,
 		"team_by_starter": {
 			"bulbasaur": [
-				{ "species": "pidgeotto", "level": 22, "moves": ["gust", "sand_attack", "quick_attack"] },
-				{ "species": "exeggcute", "level": 22 },
-				{ "species": "gyarados", "level": 22, "moves": ["bite", "dragon_rage", "leer"] },
-				{ "species": "kadabra", "level": 18 },
-				{ "species": "charmeleon", "level": 22, "moves": ["scratch", "growl", "ember", "leer"] }
+				{ "species": "pidgeotto", "level": 20, "moves": ["sand_attack", "quick_attack"] },
+				{ "species": "exeggcute", "level": 20 },
+				{ "species": "sandshrew", "level": 20 },
+				{ "species": "kadabra", "level": 17, "moves": ["confusion", "psybeam"] },
+				{ "species": "charmeleon", "level": 21, "moves": ["scratch", "growl", "ember", "leer"] }
 			],
 			"charmander": [
 				{ "species": "pidgeotto", "level": 22, "moves": ["gust", "sand_attack", "quick_attack"] },
 				{ "species": "growlithe", "level": 22, "moves": ["bite", "ember", "leer"] },
 				{ "species": "exeggcute", "level": 22 },
-				{ "species": "kadabra", "level": 18 },
-				{ "species": "wartortle", "level": 22 }
+				{ "species": "kadabra", "level": 20, "moves": ["confusion", "psybeam"] },
+				{ "species": "wartortle", "level": 25 }
 			],
 			"squirtle": [
-				{ "species": "pidgeotto", "level": 22, "moves": ["gust", "sand_attack", "quick_attack"] },
-				{ "species": "gyarados", "level": 22, "moves": ["bite", "dragon_rage", "leer"] },
-				{ "species": "growlithe", "level": 22, "moves": ["bite", "ember", "leer"] },
-				{ "species": "kadabra", "level": 18 },
-				{ "species": "ivysaur", "level": 22 }
+				{ "species": "pidgeotto", "level": 21, "moves": ["gust", "sand_attack", "quick_attack"] },
+				{ "species": "gyarados", "level": 25, "moves": ["bite", "dragon_rage", "leer"] },
+				{ "species": "growlithe", "level": 21, "moves": ["bite", "ember", "leer"] },
+				{ "species": "kadabra", "level": 18, "moves": ["confusion", "psybeam"] },
+				{ "species": "ivysaur", "level": 26 }
 			]
 		}
 	}
