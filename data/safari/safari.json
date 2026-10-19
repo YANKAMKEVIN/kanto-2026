@@ -1,0 +1,12 @@
+{
+	"fee": 500,
+	"balls": 30,
+	"steps": 500,
+	"ball_bonus": 2.0,
+	"maps": [
+		"safari_zone_center", "safari_zone_east", "safari_zone_north", "safari_zone_west",
+		"safari_zone_rest_house", "safari_zone_secret_house"
+	],
+	"end_map": "safari_zone_gate",
+	"end_spawn": "end_of_visit"
+}

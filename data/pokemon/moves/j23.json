@@ -1,0 +1,23 @@
+{
+	"surf": {
+		"name": "Surf", "type": "water", "category": "special",
+		"power": 95, "accuracy": 100, "pp": 15,
+		"description": "Une énorme vague déferle sur la cible. Permettra aussi de nager sur l'eau."
+	},
+	"strength": {
+		"name": "Force", "type": "normal", "category": "physical",
+		"power": 80, "accuracy": 100, "pp": 15,
+		"description": "Le lanceur frappe la cible de toute sa puissance. Permettra aussi de pousser les rochers."
+	},
+	"egg_bomb": {
+		"name": "Bomb'Œuf", "type": "normal", "category": "physical",
+		"power": 100, "accuracy": 75, "pp": 10,
+		"description": "Le lanceur projette violemment un gros œuf sur la cible."
+	},
+	"double_team": {
+		"name": "Reflet", "type": "normal", "category": "status",
+		"accuracy": 0, "pp": 15,
+		"effects": [{ "kind": "stat_stage", "stat": "eva", "stages": 1, "target": "self" }],
+		"description": "Le lanceur se démultiplie par des mouvements rapides. Augmente son esquive."
+	}
+}
