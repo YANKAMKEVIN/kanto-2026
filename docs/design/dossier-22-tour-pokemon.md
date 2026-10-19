@@ -257,6 +257,15 @@ Ce que dit la règle :
 - **Récompense** : `prize_per_level` du rival, dans la continuité des n° 3 et 4. Repère RB :
   1 625 ₽.
 
+**Équipes finales (T21, 2026-10-19, règle de difficulté de Kevin, `docs/tech/jalon-19-equilibrage.md`
+§8)** — la fourchette 22–26 n'est plus la cible :
+
+| Starter du joueur | Équipe du rival (T21) |
+|---|---|
+| Bulbizarre | Roucoups 20 (sans Tornade), Noeunoeuf 20, **Sabelette 20** (au lieu de Léviator), Kadabra 17, **Reptincel 21** |
+| Salamèche | Roucoups 22, Caninos 22, Noeunoeuf 22, Kadabra 20, **Carabaffe 25** |
+| Carapuce | Roucoups 21, Léviator 25, Caninos 21, Kadabra 18, **Herbizarre 26** |
+
 ## 8. Les Exorcistes [V K-2, K-14]
 
 - **Avant le combat** : ils sont **possédés**. Leur ligne est une voix d'esprit (§15.4).

@@ -1152,6 +1152,17 @@ Protocole des J15 : APK debug, `tools/deploy_s24.sh --debug-start <départ>`, du
 - **CA** : `test_trainers_j19` vérifie la fourchette 22–26 (aucun Pokémon du rival hors de la
   fourchette, sauf Kadabra, gardé ≤ 22 [D]) ; résultats envoyés à Kevin avant T23.
 
+**T21 fait (2026-10-19, branche `j19-t21-equilibrage` depuis `jalon-19-integ` à 54d1722e).**
+Décisions de Kevin (« tout reco ») : **règle de difficulté de Kevin** au lieu des seuils
+ci-dessus (grand combat, 40–60 % au premier essai pour l'attentif, jamais > 80 %), sur les vraies
+sorties du J18, sans joueur « bas » fictif ; Kadabra règle du J16 ; équipe adaptée contre
+Bulbizarre. Équipes retenues et mesures : `jalon-19-equilibrage.md` §8 (Salamèche 22/22/22,
+Kadabra 20, Carabaffe 25 ; Carapuce 21/Léviator 25/21, Kadabra 18, Herbizarre 26 ; Bulbizarre
+Roucoups sans Tornade 20, Noeunoeuf 20, **Sabelette 20** au lieu de Léviator, Kadabra 17,
+Reptincel 21). La fourchette 22–26 n'est plus un critère : `test_trainers_j19` vérifie les
+équipes exactes, le starter évolué le plus haut (≤ 30) et Kadabra ≤ 22. Exorcistes inchangés.
+Questions Q-T21-5 à 7 (§8.5).
+
 #### T22 — A : gardes de sauvegarde et de contrat — après T17, T18
 - Fichiers : `tests/unit/test_save_j19.gd` (§2.13), `tests/unit/test_j19_flags_contract.gd`.
 - **Tests** :

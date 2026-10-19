@@ -1,10 +1,8 @@
 # Jalon 19 — équilibrage du rival n° 5 par simulation (T21)
 
-> **PRÉLIMINAIRE.** Sorties réelles du J18 mesurées au T10 (§7) ; T21 attend Q-T21-1 à 4. Texte
-> d'origine (§1 à §6) : les équipes réelles des J16 à J18 n'existent pas encore
-> (jalons en cours) : les équipes du joueur sont **supposées** (§2). Les niveaux retenus (§4) sont
-> posés dans `data/trainers/pokemon_tower.json` (`rival_tower`) comme **provisoires** ; la version
-> définitive se refait après T10 sur les vraies sorties (plan `jalon-19.md` T21, §6).
+> **Définitif (T21, 2026-10-19) : §8.** Règle de difficulté de Kevin (Q-T21-4, §5), mesurée sur
+> les sorties réelles du J18 (§7). Les §1 à §4 sont la simulation préliminaire du 2026-10-16
+> (équipes du joueur supposées, seuils du plan abandonnés) ; ils restent comme historique.
 
 Branche `j19-t21-simulation` (depuis `jalon-19` à `41265377`), 2026-10-16, architecte.
 Plan : `jalon-19.md` §2.6, T21, §7 (seuils [D]). Modèle : `jalon-13-equilibrage.md`.
@@ -105,7 +103,7 @@ rival ; les facultatifs coûtent 10 à 35 points d'arrivée « sans défaite » 
 après la zone purifiée). Joueur naïf : rival 0 à 11,5 % au premier essai (Salamèche réf. : 3,7
 essais).
 
-## 4. Niveaux proposés (provisoires, posés dans `data/`)
+## 4. Niveaux proposés au préliminaire (remplacés par le §8)
 
 **r01 pour les trois starters** : tous les Pokémon du rival **N22**, **Kadabra N18** (capacités
 inchangées, celles de `data/` : Kadabra naturel, Léviator Morsure / Draco-Rage / Groz'Yeux,
@@ -148,6 +146,24 @@ Le test `test_trainers_j19` vérifie la fourchette du plan : aucun Pokémon du r
   alléger l'équipe du rival), ou le seuil « bas » se mesure-t-il sur une sortie du J18 à quatre
   ou cinq Pokémon (à confirmer par les vraies équipes après T10) ?
 - **Q-T21-3 — Kadabra** : règle du J16 (Choc Mental, Rafale Psy) ou capacités naturelles ?
+
+**Réponses de Kevin (2026-10-19, « tout reco »)** :
+- **Q-T21-4** : on applique **la règle de difficulté de Kevin**, pas les seuils du plan (≥ 70 %
+  attentif, ≥ 90 % « bas » en trois essais : abandonnés). Le rival n° 5 est un **grand
+  combat** : victoire au premier essai du joueur attentif d'environ **40 à 60 % pour chacun des
+  trois starters**, mesurée sur les vraies sorties du J18 (§7) ; **jamais au-dessus de 80 %**.
+  Donc le **durcir** contre Salamèche et Carapuce, l'**adoucir** contre Bulbizarre. Pour le
+  durcissement, les niveaux peuvent sortir de la fourchette 22–26 (K-6) si c'est nécessaire,
+  en restant plausibles (starter évolué du rival au plus ≈ 30) ; toute sortie est notée [D].
+- **Q-T21-1** : contre Bulbizarre, **on adapte l'équipe du rival** (capacités et, si besoin, une
+  espèce), puis on remesure. Pas de mur.
+- **Q-T21-2** : pas de joueur « bas » fictif à trois Pokémon ; on mesure sur les **vraies sorties
+  du J18**, à 3 ou 4 Pokémon (§7).
+- **Q-T21-3** : Kadabra suit **la règle du J16** (Choc Mental, Rafale Psy).
+- Le **texte d'Hypnose** du J17 est gardé (règle d'ancienneté) ; la **précision 0 de Hurlement**
+  (ne rate jamais, aucun tirage) est acceptée.
+- Exorcistes : relus avec la même règle ; seuls ceux au-dessus de 80 % sont à ajuster, sauf
+  les facultatifs volontairement faciles (notés). Résultat : §8.
 
 ## 6. Reproduire
 
@@ -199,3 +215,151 @@ Lecture :
 
 Reproduire : `godot --headless --path . -s res://tools/simulate_mt_moon.gd -- --scenario
 res://tools/sim/tower_scenario_j18_exits.json --donnees --seeds 200` (≈ 10 min).
+
+## 8. T21 : recalage sur la règle de Kevin (2026-10-19, branche `j19-t21-equilibrage`)
+
+Décisions : §5 (« Réponses de Kevin »). Cible : **grand combat**, victoire au premier essai du
+joueur attentif ≈ **40–60 %** pour chaque starter, **jamais > 80 %**, sur les sorties réelles du
+J18 (§7). Kadabra : Choc Mental, Rafale Psy (règle du J16) dans les trois variantes.
+
+**Outil** : `tools/sim/gen_tower_t21.py` écrit `tools/sim/tower_t21.json` (le rival seul,
+équipe soignée, 5 Super Potions, 3 Antidotes, 2 Réveils, premier essai ; un réglage = un groupe ;
+« retenu » = `data/`, vérifié par `test_simulate_tower`). 200 graines par ligne (écart-type
+≤ 3,5 points). Parcours complet : `tower_scenario_j18_exits.json --donnees`.
+
+### 8.1 Rival seul, premier essai, joueur attentif (sorties du J18)
+
+Niveaux « Roucoups / 2ᵉ / 3ᵉ, Kadabra, starter » ; « J16 » / « J17 » = sortie du J18 depuis la
+sortie du J16 (J17 sauté) ou du J17 ; « K » = équipe type Kevin (Reptincel avec Tunnel).
+
+**Contre Salamèche** (Roucoups, Caninos, Noeunoeuf, Kadabra, Carabaffe) :
+
+| Réglage | J16 Reptincel 25 | J17 Reptincel 27 | K J16 (26) | K J17 (28) |
+|---|---|---|---|---|
+| s00 : T10 (22/22/22, Kadabra 18 naturel, 22) | 96,5 | 98,5 | 100 | 100 |
+| s01 : idem, Kadabra du J16 | 94 | 95,5 | 100 | 98,5 |
+| s10 : 23/23/23, K20, Carabaffe 24 | 68 | 77,5 | 92 | 97 |
+| **s22 : 22/22/22, K20, Carabaffe 25 (retenu)** | **42** | **54,5** | **86** | **94** |
+| s20 : 23/23/23, K20, Carabaffe 25 | 35 | 49 | 88,5 | 95,5 |
+| s12 : 23/23/23, K21, Carabaffe 25 | 23 | 48 | 78 | 92 |
+| s02 : 24/24/24, K22, Carabaffe 26 | 8 | 25 | 59 | 84,5 |
+
+**Contre Carapuce** (Roucoups, Léviator, Caninos, Kadabra, Herbizarre) :
+
+| Réglage | J16 Carabaffe 25 | J17 Carabaffe 28 |
+|---|---|---|
+| c00 : T10 (22/22/22, Kadabra 18 naturel, 22) | 87,5 | 99 |
+| c01 : idem, Kadabra du J16 | 85 | 98 |
+| c24 : 23/24/23, K22, Herbizarre 26 | 45,5 | 86,5 |
+| c02 : 24/24/24, K22, Herbizarre 26 | 37,5 | 87,5 |
+| c32 : 22/25/22, K20, Herbizarre 26 | 20,5 | 66 |
+| c50 : 22/25/22, K18, Herbizarre 26 | 23 | 68,5 |
+| **c51 : 21/25/21, K18, Herbizarre 26 (retenu)** | **26,5** | **74** |
+| c52 : 20/25/20, K18, Herbizarre 26 | 29 | 73,5 |
+| c31 : 22/24/22, K20, Herbizarre 30 (Tranch'Herbe) | 12 | 45,5 |
+
+**Contre Bulbizarre** (Roucoups, Noeunoeuf, Léviator ou remplaçant, Kadabra, Reptincel) :
+
+| Réglage | J16 Herbizarre 24 | J17 Herbizarre 26 |
+|---|---|---|
+| b00 : T10 (22/22/22, Kadabra 18 naturel, 22) | 0 | 1,5 |
+| b01 : idem, Kadabra du J16 | 0 | 0,5 |
+| b03 : b01, Léviator Charge + Groz'Yeux | 0 | 0 |
+| b06 : b01, Sabelette au lieu de Léviator | 1 | 11,5 |
+| b11 : 18/18/18, K16, Reptincel 20, Léviator Charge + Groz'Yeux | 6 | 50,5 |
+| b13 : b11, Roucoups sans Tornade | 19,5 | 58 |
+| b12 : 18/18/18, K16, Reptincel 20, Sabelette | 24,5 | 81 |
+| b23 : 20/20/20, K17, Reptincel 22, Roucoups sans Tornade, Sabelette | 37 | 65 |
+| **b14 : 20/20/20, K17, Reptincel 21, Roucoups sans Tornade, Sabelette (retenu)** | **41,5** | **68** |
+
+Ce qui pèse :
+- **Léviator** reste le mur de Bulbizarre même avec Charge (Attaque 125, plus rapide qu'Herbizarre)
+  et même 4 niveaux plus bas (b11) : remplacé par **Sabelette** (Sol, Fouet Lianes super
+  efficace), seule espèce essayée qui ouvre le combat (Nidorino : b05/b07, pire). **Tornade** de
+  Roucoups est l'autre mur (l'attentif garde Herbizarre en tête) : retirée contre Bulbizarre.
+- Contre Carapuce, le **niveau de Léviator** fait tout : 24 → 25 fait perdre ≈ 20 points à la
+  sortie J17 ; le niveau d'Herbizarre (26 → 27) ne change presque rien, Tranch'Herbe (N30) écrase
+  la sortie J16. L'écart entre les deux sorties (Carabaffe 25 / 28) est de ≈ 45 points dans tous
+  les réglages : **aucun réglage ne met les deux dans 40–60** sans que la sortie J17 dépasse 80 %.
+  Retenu : la sortie J17 sous 80 %, la moyenne des deux à 50 %.
+- Contre Salamèche, Kadabra du J16 seul ne change presque rien (s01) ; ce sont Carabaffe 25 et
+  Kadabra 20 qui font le recalage (s22).
+
+### 8.2 Équipes retenues (`data/trainers/pokemon_tower.json`, `rival_tower`)
+
+| Starter du joueur | Équipe du rival | ₽ (35 × dernier) | Attentif J16 · J17 (moy.) | En 3 essais (J16) |
+|---|---|---|---|---|
+| Salamèche | Roucoups 22, Caninos 22, Noeunoeuf 22, Kadabra 20, **Carabaffe 25** | 875 | **42 · 54,5** (48) | 80 % |
+| Carapuce | Roucoups 21 [D], **Léviator 25**, Caninos 21 [D], Kadabra 18, **Herbizarre 26** | 910 | **26,5 · 74** (50) | 60 % |
+| Bulbizarre | Roucoups 20 (Jet de Sable, Vive-Attaque), Noeunoeuf 20, **Sabelette 20**, Kadabra 17, **Reptincel 21** — tout [D] | 735 | **41,5 · 68** (55) | 80 % |
+
+- Capacités : Kadabra Choc Mental, Rafale Psy (les trois) ; Léviator Morsure, Draco-Rage,
+  Groz'Yeux ; Caninos Morsure, Flammèche, Groz'Yeux ; Roucoups Tornade, Jet de Sable,
+  Vive-Attaque (sans Tornade contre Bulbizarre) ; Reptincel Griffe, Rugissement, Flammèche,
+  Groz'Yeux ; Noeunoeuf, Sabelette, Carabaffe, Herbizarre : naturelles au niveau.
+- **Sorties de la fourchette 22–26 (K-6) [D]** : vers le **bas** seulement (Bulbizarre 17–21,
+  Roucoups et Caninos N21 contre Carapuce). Rien au-dessus de 26 ; starter évolué toujours le plus
+  haut (≤ 30 vérifié par `test_trainers_j19`).
+- **Équipe type Kevin** (Reptincel avec Tunnel) : 86 % (J16) et 94 % (J17), **au-dessus de
+  80 %** ; la ramener sous 80 % fait tomber l'équipe ordinaire à 8–25 % (s02). Écart à faire
+  trancher (question en fin de section).
+- Joueur expert : Salamèche 45,5 · 64, Carapuce 32,5 · 77,5, Bulbizarre 12,5 · 54,5 (cause
+  non tracée : ses changements de Pokémon lui coûtent ici, l'attentif reste la référence).
+
+### 8.3 Parcours complet (`tower_scenario_j18_exits.json --donnees`, attentif, premier essai)
+
+| Sortie du J18 | Rival | Tour directe sans défaite | Avec les facultatifs | E3 juste après le rival (sans Centre) |
+|---|---|---|---|---|
+| J16 Reptincel 25 | 42 | 35,5 | 21 | 84,5 |
+| J16 type Kevin | 86 | 72 | 62,5 | 83,7 |
+| J16 Herbizarre 24 | 41,5 | 32,5 | 24 | 78,3 |
+| J16 Carabaffe 25 | 26,5 | 25 | 21 | 94,3 |
+| J17 Reptincel 27 | 54,5 | 45 | 27 | 82,6 |
+| J17 type Kevin | 94 | 90 | 88 | 95,7 |
+| J17 Herbizarre 26 | 68 | 56,5 | 43,5 | 83,1 |
+| J17 Carabaffe 28 | 74 | 71,5 | 67,5 | 96,6 |
+
+(Le simulateur enchaîne sans retour au Centre après le rival : le joueur arrive au 3F avec 13 à
+43 % de PV ; en jeu, le Centre de Lavanville est à deux pas.)
+
+### 8.4 Exorcistes
+
+Aucun n'est un grand combat ; ils sont relus par combat (premier essai, attentif) :
+- **Après un passage au Centre** (`tower_scenario_j18_exits.json` sans le rival) : **100 %**
+  pour les neuf, toutes sorties (Carabaffe 28 avec les facultatifs : E7 99,5 %).
+- **Sans Centre après le rival** (§8.3) : E3 78–97 %, E1 84–99 %, E7 (Spectrum 22,
+  facultative) 76–100 % ; E8 et E9 : 100 % (juste après la zone purifiée, soin complet).
+- **Sonde de niveaux** (Centre, 200 graines, toutes sorties) : E3 à 2 × Fantominus 27 ou 30,
+  E8 / E9 à Fantominus 28 ou 32, ou Spectrum 28 : **100 % partout**. Un seul Fantominus
+  (Ténèbres = niveau) contre trois ou quatre Pokémon soignés ne se règle pas par les niveaux
+  (même constat qu'au J16 pour les Dresseurs ordinaires du navire).
+- **Rien n'est changé** : E8 et E9 (inévitables) et E3 dépassent 80 %, mais aucun niveau
+  plausible ne les fait descendre ; règle P-1 du J16 (la règle des 80 % porte sur les combats à
+  enjeu et les enchaînements sans soin, pas sur chaque Dresseur ordinaire). Les facultatifs
+  (E1, E2, E4 à E7) sont laissés faciles. Question pour Kevin ci-dessous.
+
+### 8.5 Questions pour Kevin
+
+- **Q-T21-5 — Équipe type Kevin au-dessus de 80 %** (86 % / 94 % contre le rival, Reptincel
+  avec Tunnel) : accepter (l'équipe ordinaire est à 42–54,5 %, la règle vise le joueur attentif
+  « ligne droite »), ou durcir encore contre Salamèche (s02 : Kevin 59 / 84,5 %, ordinaire
+  8 / 25 %) ?
+- **Q-T21-6 — Carapuce** : la sortie J16 (ligne droite, Carabaffe 25) est à **26,5 %** (60 % en
+  trois essais), la sortie J17 à 74 %. Garder (moyenne 50 %, aucune sortie > 80 %), ou viser
+  40 % pour la ligne droite (c24 : 45,5 %, mais 86,5 % pour la sortie J17) ?
+- **Q-T21-7 — Exorcistes inévitables à 100 %** (E3, E8, E9) : accepter (P-1), ou changer leur
+  équipe (deux ou trois Pokémon, décision de design) ?
+- **Sabelette** dans l'équipe du rival contre Bulbizarre (remplace Léviator, Q-T21-1) : choix par
+  défaut, à valider en 19B.
+
+Reproduire :
+
+```bash
+python3 tools/sim/gen_tower_t21.py          # réécrit tools/sim/tower_t21.json depuis data/
+godot --headless --path . -s res://tools/simulate_mt_moon.gd -- \
+  --scenario res://tools/sim/tower_t21.json --equipe Herbizarre --variante "b14,"   # ≈ 1 min
+godot --headless --path . -s res://tools/simulate_mt_moon.gd -- \
+  --scenario res://tools/sim/tower_t21.json --variante retenu                      # ≈ 3 min
+godot --headless --path . -s res://tools/simulate_mt_moon.gd -- \
+  --scenario res://tools/sim/tower_scenario_j18_exits.json --donnees --seeds 200   # ≈ 10 min
+```
