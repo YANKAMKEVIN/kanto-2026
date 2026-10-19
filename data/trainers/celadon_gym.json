@@ -23,8 +23,8 @@
 			{ "species": "bellsprout", "level": 24 }
 		]
 	},
-	"celadon_gym_jr_trainer_hortense": {
-		"name": "Jeune Dresseuse Hortense", "ai": "random",
+	"celadon_gym_jr_trainer_apolline": {
+		"name": "Jeune Dresseuse Apolline", "ai": "random",
 		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 480,
 		"team": [
 			{ "species": "bulbasaur", "level": 24 },

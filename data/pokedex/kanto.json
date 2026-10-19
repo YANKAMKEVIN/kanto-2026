@@ -484,6 +484,10 @@
 		"gyarados": {
 			"height": 6.5, "weight": 235.0,
 			"description": "Sa colère soulève les vagues. Peu de Dresseurs gardent son respect après l'avoir fait évoluer."
+		},
+		"cubone": {
+			"height": 0.4, "weight": 6.5,
+			"description": "Il porte le crâne de sa mère comme un casque. Les nuits de lune, on l'entend pleurer doucement."
 		}
 	}
 }

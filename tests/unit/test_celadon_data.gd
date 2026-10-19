@@ -97,9 +97,9 @@ const MOVES := {
 	&"dizzy_punch": ["Uppercut", &"normal", MoveData.Category.PHYSICAL, 70, 100, 10, []],
 	&"acid_armor": ["Acidarmure", &"poison", MoveData.Category.STATUS, 0, 0, 20, []],
 	&"mist": ["Brume", &"ice", MoveData.Category.STATUS, 0, 0, 30, ["mist"]],
-	&"take_down": ["Bélier", &"normal", MoveData.Category.PHYSICAL, 90, 85, 20,
-		["recoil_damage"]],
-	&"roar": ["Hurlement", &"normal", MoveData.Category.STATUS, 0, 100, 20, ["force_switch"]],
+	# Bélier et Hurlement : ceux du J17, joués par le moteur depuis le J19 (effets de capacités).
+	&"take_down": ["Bélier", &"normal", MoveData.Category.PHYSICAL, 90, 85, 20, []],
+	&"roar": ["Hurlement", &"normal", MoveData.Category.STATUS, 0, 0, 20, []],
 }
 ## Dresseurs (plan §2.10.6) : [nom, IA, équipe [espèce, niveau]…, récompense, base RB].
 const TRAINERS := {
@@ -123,7 +123,7 @@ const TRAINERS := {
 		[[&"oddish", 23], [&"gloom", 23]], 345, 15],
 	&"celadon_gym_beauty_violette": ["Beauté Violette", &"random",
 		[[&"bellsprout", 24], [&"bellsprout", 24]], 1680, 70],
-	&"celadon_gym_jr_trainer_hortense": ["Jeune Dresseuse Hortense", &"random",
+	&"celadon_gym_jr_trainer_apolline": ["Jeune Dresseuse Apolline", &"random",
 		[[&"bulbasaur", 24], [&"ivysaur", 24]], 480, 20],
 	&"celadon_gym_cooltrainer_camelia": ["Topdresseuse Camélia", &"smart",
 		[[&"weepinbell", 24], [&"gloom", 24], [&"ivysaur", 24]], 840, 35],
@@ -174,6 +174,7 @@ const ANNEX_TEXTS := {
 	199: ["dex", &"victreebel", -1], 200: ["dex", &"tangela", -1],
 	201: ["dex", &"vileplume", -1], 202: ["dex", &"rhyhorn", -1],
 	203: ["dex", &"kangaskhan", -1],
+	204: ["dex", &"cubone", -1],
 	205: ["move", &"mega_drain", -1], 206: ["move", &"constrict", -1],
 	207: ["move", &"comet_punch", -1], 208: ["move", &"stomp", -1],
 	209: ["move", &"dizzy_punch", -1], 210: ["move", &"acid_armor", -1],
@@ -521,7 +522,9 @@ func test_pokedex_entries() -> void:
 		&"ninetales": [1.1, 19.9], &"eevee": [0.3, 6.5], &"vaporeon": [1.0, 29.0],
 		&"jolteon": [0.8, 24.5], &"flareon": [0.9, 25.0], &"victreebel": [1.7, 15.5],
 		&"tangela": [1.0, 35.0], &"vileplume": [1.2, 18.6], &"rhyhorn": [1.0, 115.0],
-		&"kangaskhan": [2.2, 80.0]}
+		&"kangaskhan": [2.2, 80.0],
+		# Osselait : espèce du J19, fiche du J20 (passation J19 §9.3, annexe A n° 204).
+		&"cubone": [0.4, 6.5]}
 	for id: StringName in sizes:
 		var info := dex.get_species(id)
 		assert_not_null(info, String(id))

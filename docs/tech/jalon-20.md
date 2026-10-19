@@ -882,7 +882,7 @@ l'attribut `trainer=` des grilles (géométrie inchangée).
 | E1 | `celadon_gym_lass_lila` | Fillette Lila | Chétiflor, Boustiflor 23 | 345 |
 | E2 | `celadon_gym_lass_capucine` | Fillette Capucine | Mystherbe, Ortide 23 | 345 |
 | E3 | `celadon_gym_beauty_violette` | Beauté Violette | Chétiflor ×2 24 | 1 680 |
-| E4 | `celadon_gym_jr_trainer_hortense` | Jeune Dresseuse Hortense | Bulbizarre, Herbizarre 24 | 480 |
+| E4 | `celadon_gym_jr_trainer_apolline` | Jeune Dresseuse Apolline | Bulbizarre, Herbizarre 24 | 480 |
 | E5 | `celadon_gym_cooltrainer_camelia` | Topdresseuse Camélia | Boustiflor, Ortide, Herbizarre 24 (`smart`) | 840 |
 | Erika | `celadon_gym_erika` | Erika | Empiflor 29, Saquedeneu 24, Rafflesia 29 + Méga-Sangsue (**niveaux et capacités : T8**) | 99 × niveau final (RB 2 871) |
 | Casino | `celadon_game_corner_rocket` | Sbire Rocket | Rattatac, Nosferapti 20 | 600 |
@@ -1556,7 +1556,7 @@ la liste) ; la capture n'ayant pas d'écran de surnom, le don d'Évoli n'en prop
 118. Beauté Violette (E3), avant : « L'élégance, c'est aussi savoir se défendre. »
 119. E3, battue : « Perdre avec élégance, c'est déjà ça. »
 120. E3, après : « Je viens ici pour le calme. » / « Et pour Erika, bien sûr. »
-121. Jeune Dresseuse Hortense (E4), avant : « Mes Pokémon poussent aussi vite que les plantes de la
+121. Jeune Dresseuse Apolline (E4), avant : « Mes Pokémon poussent aussi vite que les plantes de la
      serre ! »
 122. E4, battue : « Il leur faut encore un peu de soleil. »
 123. E4, après : « Le bassin, au fond, c'est l'endroit préféré d'Erika. »
