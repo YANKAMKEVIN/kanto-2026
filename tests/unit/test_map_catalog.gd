@@ -40,7 +40,11 @@ func test_no_qa_map_is_shipped() -> void:
 			&"qa_flash", &"qa_flash_entry", &"qa_gift_j20", &"qa_elevator_j20",
 			&"qa_elevator_j20_1f", &"qa_elevator_j20_2f", &"qa_spin_j20"]:
 		assert_false(MapCatalog.has_map(map_id), "%s retirée" % map_id)
+	# Passe systèmes 2 : ses cartes de QA existent jusqu'à la clôture (S2Z), qui vide cette liste.
+	var passe_maps: Array[String] = ["qa_teleport.tscn", "qa_teleport_2.tscn"]
 	for file: String in DirAccess.get_files_at(MapCatalog.MAPS_DIR):
+		if file.ends_with(".tscn") and passe_maps.has(file):
+			continue
 		assert_false(file.begins_with("qa_"), "%s : carte de QA livrée" % file)
 
 
