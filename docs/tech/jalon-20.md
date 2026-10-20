@@ -1307,7 +1307,9 @@ commit ; textes **mot pour mot** (§20 et annexe A validée).
   Corde Sortie → `from_casino_w` ; nœuds), `test_game_corner` (escalier inatteignable sans
   l'interrupteur).
 
-#### T21 — constructeur-monde : vie du 20-II — (B), après T19 et T20
+#### T21 — constructeur-monde : vie du 20-II — (B), après T19 et T20 — **FAIT le 2026-10-20**
+- Fait (branche `j20-t21-repaire` depuis `jalon-20` à `9d00b3fb` ; détail, valeurs par défaut et
+  points à valider : `etat-projet.md`, entrée « J20 T21 »).
 - Casino (Rocket, affiche, interrupteur, mur), repaire (10 Dresseurs, objets et caches, Clé, porte,
   Giovanni, Scope), contrôle de la Tour, départs.
 - Tests `test_game_corner_switch`, `test_hideout_key` (Clé seulement après avoir reparlé ; unique ;

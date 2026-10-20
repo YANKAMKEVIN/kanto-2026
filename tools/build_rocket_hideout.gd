@@ -3,8 +3,8 @@ extends SceneTree
 ## cabine `rocket_hideout_elevator` (jalon 20 T20, docs/tech/jalon-20.md §2.1, §2.4, §2.7.1 ;
 ## dossier 23 §13), d'après les grilles `tools/plans/repaire_b1f..b4f.txt` et
 ## `repaire_ascenseur.txt` (géométrie de Rouge/Bleu case pour case, marges vides conservées).
-## **Géométrie seulement** : Dresseurs, objets, Clé, Giovanni, Scope et leurs scènes sont au T21 ;
-## leurs cases (`bloque`) sont libres dans la grille.
+## Dresseurs, objets, Clé, Giovanni et Scope : `data/npcs/rocket_hideout_b*.json` (T21) ; leurs
+## cases (`bloque`) sont libres dans la grille. L'outil pose seulement les points d'examen (T21).
 ##
 ##   godot --headless --path . -s res://tools/build_rocket_hideout.gd [-- --only=rocket_hideout_b2f]
 ##   godot --headless --path . --import
@@ -21,6 +21,9 @@ extends SceneTree
 ## - **Porte du bureau** (B4F, (24..25, 11)) : praticable dans la grille de la scène, occupée par
 ##   le [FlagGate] `OfficeDoor` (`unless rocket_hideout_b4f_door_open`, comme l'arbuste du J16) ;
 ##   le T21 pose les gardes et le drapeau.
+## - **Objets cachés** (T21) : un point EXAMINER par cache ([constant HIDDEN], orientation exigée
+##   = celle de la grille, `depuis=… face=…`), retiré quand `got_<id>` est levé ; porte du bureau
+##   fermée examinable depuis le sud (`rocket_hideout_b4f_office_door`, texte 153).
 ## - **Cabine** : un point d'examen `elevator_panel` (action `open_elevator`, T13) en (1, 1).
 ## - Lumière `hideout` ; cartes de « grotte » (`caves.json`, `interior = false`).
 ## - **Art provisoire** : `tools/art/placeholders_repaire.py` (enveloppes `ph_rocket_hideout_*`).
@@ -39,6 +42,14 @@ const ELEVATOR_SPAWN: StringName = &"from_elevator"
 const OFFICE_DOOR_FLAG: StringName = &"rocket_hideout_b4f_door_open"
 const OFFICE_DOOR_CELLS: Array[Vector2i] = [Vector2i(24, 11), Vector2i(25, 11)]
 const PANEL_DIALOGUE: StringName = &"elevator_panel"
+const OFFICE_DOOR_DIALOGUE: StringName = &"rocket_hideout_b4f_office_door"
+## Objets cachés (T21) : carte → [[identifiant (dialogue, scène, `got_<id>`), case, orientation
+## exigée du joueur]] (grilles : `pp_plus_cache`, `pepite_cachee`, `super_potion_cachee`).
+const HIDDEN: Dictionary[StringName, Array] = {
+	&"rocket_hideout_b1f": [["rocket_hideout_b1f_hidden_1", Vector2i(21, 15), Vector2i.RIGHT]],
+	&"rocket_hideout_b3f": [["rocket_hideout_b3f_hidden_1", Vector2i(27, 17), Vector2i.DOWN]],
+	&"rocket_hideout_b4f": [["rocket_hideout_b4f_hidden_1", Vector2i(25, 1), Vector2i.UP]],
+}
 const ARROWS: Dictionary[String, Vector2i] = {
 	"<": Vector2i.LEFT, ">": Vector2i.RIGHT, "^": Vector2i.UP, "v": Vector2i.DOWN,
 }
@@ -140,6 +151,12 @@ func _build(map_id: StringName) -> void:
 	var door := plan.cells_of("B").size() > 0
 	if door:
 		_add_office_door(entities)
+		_add_point("OfficeDoorExamine", OFFICE_DOOR_CELLS[0], Vector2i(2, 1), Vector2i.UP,
+			OFFICE_DOOR_DIALOGUE, [OFFICE_DOOR_FLAG])
+	for entry: Array in HIDDEN.get(map_id, []):
+		var hidden_id := StringName(entry[0])
+		_add_point("Hidden_%s" % hidden_id, entry[1], Vector2i.ONE, entry[2], hidden_id,
+			[StringName("got_%s" % hidden_id)])
 	var blocked: Array[Vector2i] = []
 	for y: int in size.y:
 		for x: int in size.x:
@@ -265,6 +282,22 @@ func _add_office_door(entities: Node2D) -> void:
 	panel.centered = false
 	panel.z_index = -2
 	_attach(gate, panel)
+
+
+## Point d'examen (T21) : [param unless] = drapeaux qui le retirent (`got_<id>`, porte ouverte).
+func _add_point(node_name: String, cell: Vector2i, size: Vector2i, facing: Vector2i,
+		dialogue: StringName, unless: Array) -> void:
+	var point := Marker2D.new()
+	point.set_script(load("res://game/world/interactions/interact_point.gd"))
+	point.name = node_name
+	point.position = _world(cell)
+	point.set(&"dialogue_id", dialogue)
+	point.set(&"size", size)
+	point.set(&"facing", facing)
+	var flags: Array[StringName] = []
+	flags.assign(unless)
+	point.set(&"unless_flags", flags)
+	_attach(_root.get_node(^"Interactables"), point)
 
 
 func _add_warp(node_name: String, cell: Vector2i, target: StringName, spawn: StringName,

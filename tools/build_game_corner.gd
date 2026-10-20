@@ -1,9 +1,8 @@
 extends SceneTree
 ## Construit game/world/maps/celadon_game_corner.tscn (le Casino de Céladopole, 20 × 18 cases)
 ## d'après la grille fonctionnelle `tools/plans/casino.txt` (jalon 20 T20, docs/tech/jalon-20.md
-## §2.1, §2.2, §2.6 ; dossier 23 §12). **Géométrie seulement** : le Rocket de l'affiche, les
-## cinq PNJ, l'affiche et la scène de l'interrupteur viennent au T21 ; leurs cases (`bloque`)
-## sont libres dans la grille.
+## §2.1, §2.2, §2.6 ; dossier 23 §12). Le Rocket de l'affiche et les cinq PNJ sont dans
+## `data/npcs/celadon_game_corner.json` (T21) ; leurs cases (`bloque`) sont libres dans la grille.
 ##
 ##   godot --headless --path . -s res://tools/build_game_corner.gd
 ##   godot --headless --path . --import
@@ -18,6 +17,8 @@ extends SceneTree
 ##   posé sur les machines, lu de tout côté.
 ## - Passages : sortie (15..16, 17) PUSH ↓ → `celadon_city` / `from_casino_w|e` ; arrivées
 ##   `entrance` (15, 16) et `from_hideout` (17, 5).
+## - **Affiche** (T21) : point d'examen `game_corner_poster` sur (9, 4), lu depuis (9, 5) tourné
+##   vers le nord (case libérée par le départ du Rocket de l'affiche) ; scène `game_corner_switch`.
 ## - Halos `neon` (magenta et or) au-dessus des quatre rangées de machines.
 ## - **Art provisoire** : `tools/art/placeholders_repaire.py`.
 
@@ -37,6 +38,8 @@ const STEP_ON: int = 0
 const STAIRS := Vector2i(17, 4)
 const SWITCH_FLAG: StringName = &"game_corner_switch"
 const MACHINE_DIALOGUE: StringName = &"game_corner_machine"
+const POSTER_DIALOGUE: StringName = &"game_corner_poster"
+const POSTER := Vector2i(9, 4)
 const EXIT_CELLS: Array[Vector2i] = [Vector2i(15, 17), Vector2i(16, 17)]
 const EXIT_SPAWNS: Array[StringName] = [&"from_casino_w", &"from_casino_e"]
 const ENTRANCE := Vector2i(15, 16)
@@ -86,6 +89,7 @@ func _init() -> void:
 	_place_sliding_wall(entities)
 	_add_passages()
 	_add_machine_points()
+	_add_poster_point()
 	_add_neon()
 	var blocked: Array[Vector2i] = []
 	for y: int in SIZE.y:
@@ -174,6 +178,17 @@ func _add_machine_points() -> void:
 		point.set(&"dialogue_id", MACHINE_DIALOGUE)
 		point.set(&"size", Vector2i(2, rows))
 		_attach(parent, point)
+
+
+## Affiche (T21, §2.6) : examinée depuis (9, 5), tournée vers le nord.
+func _add_poster_point() -> void:
+	var point := Marker2D.new()
+	point.set_script(load("res://game/world/interactions/interact_point.gd"))
+	point.name = "Poster"
+	point.position = _world(POSTER)
+	point.set(&"dialogue_id", POSTER_DIALOGUE)
+	point.set(&"facing", Vector2i.UP)
+	_attach(_root.get_node(^"Interactables"), point)
 
 
 ## Halos néon au-dessus des quatre blocs de machines (magenta et or).

@@ -231,3 +231,19 @@ Même partie que `pokemon_tower_1f` (Lavanville atteinte, `tower_stairs_open`), 
 | `celadon_gym_outside.json` | devant l'arbuste de l'enclos de l'Arène (spawn `gym_front`, tourné vers l'ouest) : COUPER ouvre l'enclos |
 | `celadon_gym.json` | à l'entrée de l'Arène, arbustes coupés : cinq Dresseuses, Erika |
 | `erika_weak.json` | idem, Salamèche **N5** seul, les cinq Dresseuses déjà battues : perdre contre Erika → réveil au Centre de Céladopole, Dresseuses gardées |
+
+## Jalon 20 (T21) : départs de la vie du 20-II (Casino, repaire Rocket, Giovanni, Tour avec le Scope)
+
+Même partie que `celadon.json` (équipe de référence « arrivée J19 », CS01, Badges Roche, Cascade, Foudre) avec `celadon_reached` ; Centre de Céladopole enregistré (défaite → réveil là). Chaque départ pose les étapes déjà franchies (Rocket de l'affiche battu, interrupteur, sbires des étages au-dessus battus).
+
+| Fichier | Partie |
+|---|---|
+| `game_corner.json` | entrée du Casino (spawn `entrance`, tourné ↑) : Rocket de l'affiche (9, 5) à battre, cinq PNJ, machines, puis l'affiche et l'interrupteur (OUI / NON) |
+| `rocket_hideout_b1f.json` | B1F, au pied de l'escalier du Casino (spawn `from_casino`) : trois sbires, Corde Sortie, Super Potion, Rappel caché (21, 15) lu depuis (20, 15) tourné → |
+| `rocket_hideout_b2f.json` | B2F, arrivée nord (spawn `from_b1f_north`), sbires du B1F battus : **dalles tournantes** (labyrinthe ouest), sbire de la salle centrale, quatre objets |
+| `rocket_hideout_b3f.json` | B3F (spawn `from_b2f`), B1F et B2F battus : dalles, deux sbires, Super Potion, Super Bonbon, Pépite cachée (27, 17) lue depuis (27, 16) tourné ↓ |
+| `rocket_hideout_key.json` | B4F ouest (spawn `from_b3f`), **sbire de la Clé déjà battu** : lui reparler → la Clé tombe en (10, 2) |
+| `rocket_hideout_lift.json` | B1F devant l'ascenseur (spawn `from_elevator`, tourné ↓), **Clé au Sac** : un pas vers le bas → cabine, panneau B1F / B2F / B4F |
+| `giovanni.json` | B4F est, sortie de l'ascenseur (spawn `from_elevator`, tourné ↑), Clé au Sac, **gardes battus, porte ouverte** : Giovanni (25, 3), à aborder par le côté |
+| `giovanni_weak.json` | idem, Salamèche **N5** seul : perdre → réveil au Centre de Céladopole, Clé et sbires battus gardés ; nouvel essai : n° 156 |
+| `tower_scope.json` | Tour 3F (spawn `arrivee_T23`), **Scope Sylphe au Sac**, Giovanni battu : rencontres identifiées, le 6F reste un SPECTRE |

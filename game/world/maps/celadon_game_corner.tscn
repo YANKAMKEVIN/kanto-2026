@@ -8,7 +8,7 @@
 [ext_resource type="Script" path="res://game/world/interactions/interact_point.gd" id="6_e2m25"]
 [ext_resource type="Script" path="res://game/world/lighting/light_glow.gd" id="7_gksn6"]
 
-[node name="CeladonGameCorner" type="Node2D" unique_id=960917979]
+[node name="CeladonGameCorner" type="Node2D" unique_id=923936224]
 script = ExtResource("1_d462r")
 map_id = &"celadon_game_corner"
 display_name = "Céladopole"
@@ -17,29 +17,29 @@ blocked_cells = Array[Vector2i]([Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0),
 interior = true
 light_profile = &"interior_warm"
 
-[node name="Shell" type="Sprite2D" parent="." unique_id=56785805]
+[node name="Shell" type="Sprite2D" parent="." unique_id=33386727]
 z_index = -3
 texture = ExtResource("2_ux5x8")
 centered = false
 
-[node name="Entities" type="Node2D" parent="." unique_id=565081202]
+[node name="Entities" type="Node2D" parent="." unique_id=1678679164]
 unique_name_in_owner = true
 y_sort_enabled = true
 
-[node name="SlidingWall" type="Node2D" parent="Entities" unique_id=1486511424]
+[node name="SlidingWall" type="Node2D" parent="Entities" unique_id=1329077879]
 position = Vector2(1632, 384)
 script = ExtResource("3_3ah7a")
 unless_flags = Array[StringName]([&"game_corner_switch"])
 blocking_cells = Array[Vector2i]([Vector2i(17, 4)])
 
-[node name="Panel" type="Sprite2D" parent="Entities/SlidingWall" unique_id=1782936951]
+[node name="Panel" type="Sprite2D" parent="Entities/SlidingWall" unique_id=743917077]
 z_index = -2
 texture = ExtResource("4_c2bvv")
 centered = false
 
-[node name="Warps" type="Node2D" parent="." unique_id=520096153]
+[node name="Warps" type="Node2D" parent="." unique_id=1990713315]
 
-[node name="Exit0" type="Marker2D" parent="Warps" unique_id=826765982]
+[node name="Exit0" type="Marker2D" parent="Warps" unique_id=202184521]
 position = Vector2(1488, 1728)
 script = ExtResource("5_tg1gh")
 trigger = 1
@@ -48,7 +48,7 @@ target_map = &"celadon_city"
 target_spawn = &"from_casino_w"
 arrival_facing = Vector2i(0, 1)
 
-[node name="Exit1" type="Marker2D" parent="Warps" unique_id=1506431644]
+[node name="Exit1" type="Marker2D" parent="Warps" unique_id=702024874]
 position = Vector2(1584, 1728)
 script = ExtResource("5_tg1gh")
 trigger = 1
@@ -57,73 +57,79 @@ target_map = &"celadon_city"
 target_spawn = &"from_casino_e"
 arrival_facing = Vector2i(0, 1)
 
-[node name="StairsHideoutWarp" type="Marker2D" parent="Warps" unique_id=175686872]
+[node name="StairsHideoutWarp" type="Marker2D" parent="Warps" unique_id=285464711]
 position = Vector2(1680, 480)
 script = ExtResource("5_tg1gh")
 target_map = &"rocket_hideout_b1f"
 target_spawn = &"from_casino"
 arrival_facing = Vector2i(0, 1)
 
-[node name="Interactables" type="Node2D" parent="." unique_id=1015220413]
+[node name="Interactables" type="Node2D" parent="." unique_id=1834950924]
 
-[node name="Machines0" type="Marker2D" parent="Interactables" unique_id=1111788788]
+[node name="Machines0" type="Marker2D" parent="Interactables" unique_id=304486651]
 position = Vector2(48, 1536)
 script = ExtResource("6_e2m25")
 dialogue_id = &"game_corner_machine"
 size = Vector2i(2, 7)
 
-[node name="Machines6" type="Marker2D" parent="Interactables" unique_id=598070497]
+[node name="Machines6" type="Marker2D" parent="Interactables" unique_id=458393176]
 position = Vector2(624, 1536)
 script = ExtResource("6_e2m25")
 dialogue_id = &"game_corner_machine"
 size = Vector2i(2, 7)
 
-[node name="Machines12" type="Marker2D" parent="Interactables" unique_id=1832220093]
+[node name="Machines12" type="Marker2D" parent="Interactables" unique_id=251581087]
 position = Vector2(1200, 1536)
 script = ExtResource("6_e2m25")
 dialogue_id = &"game_corner_machine"
 size = Vector2i(2, 7)
 
-[node name="Machines18" type="Marker2D" parent="Interactables" unique_id=226393410]
+[node name="Machines18" type="Marker2D" parent="Interactables" unique_id=1339388150]
 position = Vector2(1776, 1536)
 script = ExtResource("6_e2m25")
 dialogue_id = &"game_corner_machine"
 size = Vector2i(2, 7)
 
-[node name="Spawns" type="Node2D" parent="." unique_id=548796104]
+[node name="Poster" type="Marker2D" parent="Interactables" unique_id=1355502313]
+position = Vector2(912, 480)
+script = ExtResource("6_e2m25")
+dialogue_id = &"game_corner_poster"
+facing = Vector2i(0, -1)
 
-[node name="entrance" type="Marker2D" parent="Spawns" unique_id=1504210478]
+[node name="Spawns" type="Node2D" parent="." unique_id=1187382416]
+
+[node name="entrance" type="Marker2D" parent="Spawns" unique_id=673973929]
 position = Vector2(1488, 1632)
 
-[node name="from_hideout" type="Marker2D" parent="Spawns" unique_id=992590944]
+[node name="from_hideout" type="Marker2D" parent="Spawns" unique_id=125468045]
 position = Vector2(1680, 576)
 
-[node name="Triggers" type="Node2D" parent="." unique_id=860669975]
+[node name="Triggers" type="Node2D" parent="." unique_id=1207367224]
 
-[node name="Glows" type="Node2D" parent="." unique_id=974227312]
+[node name="Glows" type="Node2D" parent="." unique_id=220672521]
 
-[node name="Neon0" type="Sprite2D" parent="Glows" unique_id=1626947078]
+[node name="Neon0" type="Sprite2D" parent="Glows" unique_id=2047854652]
 z_index = 5
 z_as_relative = false
 position = Vector2(96, 960)
 script = ExtResource("7_gksn6")
 glow_type = &"neon"
 
-[node name="Neon1" type="Sprite2D" parent="Glows" unique_id=283625951]
+[node name="Neon1" type="Sprite2D" parent="Glows" unique_id=1314675129]
 z_index = 5
 z_as_relative = false
 position = Vector2(672, 960)
 script = ExtResource("7_gksn6")
 glow_type = &"neon"
 
-[node name="Neon2" type="Sprite2D" parent="Glows" unique_id=217603513]
+[node name="Neon2" type="Sprite2D" parent="Glows" unique_id=168842418]
 z_index = 5
 z_as_relative = false
 position = Vector2(1248, 960)
 script = ExtResource("7_gksn6")
 glow_type = &"neon"
 
-[node name="Neon3" type="Sprite2D" parent="Glows" unique_id=2010351419]
+[node name="Neon3" type="Sprite2D" parent="Glows" unique_id=1617543746]
 z_index = 5
 z_as_relative = false
 position = Vector2(1824, 960)

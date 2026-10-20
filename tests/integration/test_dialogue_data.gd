@@ -178,6 +178,8 @@ const MAPS: Array[StringName] = [
 	&"celadon_dept_5f", &"celadon_dept_roof", &"celadon_mansion_gf", &"celadon_mansion_1f",
 	&"celadon_mansion_2f", &"celadon_mansion_roof", &"celadon_mansion_roof_house",
 	&"celadon_restaurant", &"celadon_chief_house", &"celadon_hotel",
+	# Jalon 20 (T21) : la vie du 20-II (Casino déjà listé ; repaire Rocket B1F à B4F).
+	&"rocket_hideout_b1f", &"rocket_hideout_b2f", &"rocket_hideout_b3f", &"rocket_hideout_b4f",
 ]
 ## Lot de textes validé par Kevin le 2026-10-06 (anciens brouillons : panneau, observations,
 ## soin de Maman, terminal du Stockage, portes de Jadielle…) : source des textes hors dossiers.
@@ -503,6 +505,37 @@ const IDS_J20_T17: Array[StringName] = [
 	&"route_8_nerd_firmin_defeated", &"souterrain_hidden_1", &"souterrain_hidden_2",
 	&"underground_7_8_resident",
 ]
+## Jalon 20 (T21) : la vie du 20-II (dossier 23 §20.6, §20.7 et annexe A.5, A.8 du plan, textes
+## 39 à 55, 95 à 100, 130 à 156) ; un identifiant par dialogue des données.
+const IDS_J20_T21: Array[StringName] = [
+	&"game_corner_client_1", &"game_corner_client_2", &"game_corner_client_3",
+	&"game_corner_client_4", &"game_corner_clerk", &"game_corner_poster",
+	&"game_corner_rocket_before", &"game_corner_rocket_defeated", &"game_corner_switch",
+	&"giovanni_hideout", &"giovanni_hideout_intro", &"giovanni_hideout_lost",
+	&"giovanni_hideout_resume", &"giovanni_hideout_won",
+	&"rocket_hideout_b1f_1_after", &"rocket_hideout_b1f_1_before",
+	&"rocket_hideout_b1f_1_defeated", &"rocket_hideout_b1f_2_after",
+	&"rocket_hideout_b1f_2_before", &"rocket_hideout_b1f_2_defeated",
+	&"rocket_hideout_b1f_3_after", &"rocket_hideout_b1f_3_before",
+	&"rocket_hideout_b1f_3_defeated", &"rocket_hideout_b1f_hidden_1",
+	&"rocket_hideout_b1f_item_1", &"rocket_hideout_b1f_item_2",
+	&"rocket_hideout_b2f_1_after", &"rocket_hideout_b2f_1_before",
+	&"rocket_hideout_b2f_1_defeated", &"rocket_hideout_b2f_item_1", &"rocket_hideout_b2f_item_2",
+	&"rocket_hideout_b2f_item_3", &"rocket_hideout_b2f_item_4",
+	&"rocket_hideout_b3f_1_after", &"rocket_hideout_b3f_1_before",
+	&"rocket_hideout_b3f_1_defeated", &"rocket_hideout_b3f_2_after",
+	&"rocket_hideout_b3f_2_before", &"rocket_hideout_b3f_2_defeated",
+	&"rocket_hideout_b3f_hidden_1", &"rocket_hideout_b3f_item_1", &"rocket_hideout_b3f_item_2",
+	&"rocket_hideout_b4f_guard_1_after", &"rocket_hideout_b4f_guard_1_before",
+	&"rocket_hideout_b4f_guard_1_defeated", &"rocket_hideout_b4f_guard_2_after",
+	&"rocket_hideout_b4f_guard_2_before", &"rocket_hideout_b4f_guard_2_defeated",
+	&"rocket_hideout_b4f_hidden_1", &"rocket_hideout_b4f_item_1", &"rocket_hideout_b4f_item_2",
+	&"rocket_hideout_b4f_item_3", &"rocket_hideout_b4f_key_after",
+	&"rocket_hideout_b4f_key_before", &"rocket_hideout_b4f_key_defeated",
+	&"rocket_hideout_b4f_key_dropped", &"rocket_hideout_b4f_lift_key",
+	&"rocket_hideout_b4f_lift_key_got", &"rocket_hideout_b4f_office_door",
+	&"rocket_hideout_b4f_silph_scope", &"rocket_hideout_b4f_silph_scope_got",
+]
 ## Jalon 20 : lot de textes validé du dossier 23 (§20, une citation par ligne).
 const DOSSIER_23 := "res://docs/design/dossier-23-celadopole.md"
 ## Jalon 20 (T25) : annexe A.14 du plan (postes de Safrania, textes 215 à 219).
@@ -770,7 +803,7 @@ func test_library_loads_without_error() -> void:
 	found.sort()
 	var expected := IDS + IDS_J14_BILL + IDS_J14_ROCKET + IDS_J15_ROUTE_5 + IDS_J16_GYM \
 		+ IDS_J16_SHIP + IDS_J16_RIVAL_CAPTAIN + IDS_J16_T15 + IDS_J17 + IDS_J18 + IDS_J19 + IDS_J20 \
-		+ IDS_J20_T17
+		+ IDS_J20_T17 + IDS_J20_T21
 	expected.sort()
 	assert_eq(found, expected)
 
@@ -811,6 +844,10 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		&"celadon_gym_erika_badge", &"celadon_gym_erika_intro", &"celadon_gym_erika_lost",
 		&"celadon_gym_erika_resume", &"celadon_gym_erika_tm", &"celadon_gym_erika_tm_late",
 		&"celadon_gym_erika_tm_use", &"celadon_gym_erika_won", &"celadon_roof_girl_thanks",
+		# Jalon 20 (T21) : interrupteur du Casino, Clé Ascenseur, Giovanni et Scope Sylphe.
+		&"game_corner_switch", &"giovanni_hideout_intro", &"giovanni_hideout_lost",
+		&"giovanni_hideout_resume", &"giovanni_hideout_won", &"rocket_hideout_b4f_key_dropped",
+		&"rocket_hideout_b4f_lift_key_got", &"rocket_hideout_b4f_silph_scope_got",
 		# Jalon 19 (T16) : la gardienne du rez-de-chaussée.
 		&"tower_guardian_worried",
 		# Jalon 19 (T17) : le rival n° 5 (joué par sa scène).
@@ -948,7 +985,9 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 			+ SET_J14_BILL_DIALOGUES + SET_J14_ROCKET_DIALOGUES
 			# Jalon 17 (T8) : Ronflex vu, assistant rencontré, barrière de FUTUR B ouverte.
 			+ [&"hm05_assistant_met", &"route_2_east_gate_open", &"snorlax_route_11_seen"]
-			+ SET_J18_DIALOGUES))
+			+ SET_J18_DIALOGUES
+			# Jalon 20 (T21) : porte du bureau ouverte par le second garde battu (§2.7.3).
+			+ [&"rocket_hideout_b4f_door_open"]))
 	assert_eq(cutscenes.get_set_flags(), _sorted([&"badge_boulder", &"badge_cascade",
 		&"beaten_mt_moon_researcher", &"beaten_nugget_rocket", &"brock_met", &"cerulean_reached", &"got_mt_moon_1f_hidden_1",
 		&"got_mt_moon_1f_item_1", &"got_mt_moon_b1f_item_1", &"got_mt_moon_b1f_item_2",
@@ -1010,7 +1049,17 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		+ [&"tower_stairs_open"]
 		# Jalon 19 (T18) : objets de la Tour (cinq visibles, un caché).
 		+ [&"got_tower_3f_objet_1", &"got_tower_4f_objet_1", &"got_tower_4f_objet_2",
-		&"got_tower_5f_objet_1", &"got_tower_5f_cache_1", &"got_tower_6f_objet_1"]))
+		&"got_tower_5f_objet_1", &"got_tower_5f_cache_1", &"got_tower_6f_objet_1"]
+		# Jalon 20 (T21) : interrupteur du Casino, Clé, Giovanni, Scope, objets du repaire.
+		+ [&"game_corner_switch", &"rocket_dropped_lift_key", &"got_rocket_hideout_b4f_lift_key",
+		&"giovanni_met", &"giovanni_hideout_won", &"got_rocket_hideout_b4f_silph_scope",
+		&"got_rocket_hideout_b1f_item_1", &"got_rocket_hideout_b1f_item_2",
+		&"got_rocket_hideout_b1f_hidden_1", &"got_rocket_hideout_b2f_item_1",
+		&"got_rocket_hideout_b2f_item_2", &"got_rocket_hideout_b2f_item_3",
+		&"got_rocket_hideout_b2f_item_4", &"got_rocket_hideout_b3f_item_1",
+		&"got_rocket_hideout_b3f_item_2", &"got_rocket_hideout_b3f_hidden_1",
+		&"got_rocket_hideout_b4f_item_1", &"got_rocket_hideout_b4f_item_2",
+		&"got_rocket_hideout_b4f_item_3", &"got_rocket_hideout_b4f_hidden_1"]))
 	assert_eq(_used_on.get(&"oak_lab_reunion"), [&"oak_lab"], "joué au labo, après le fondu")
 	assert_eq(_used_on.get(&"oak_starter_offer"), [&"oak_lab"], "joué au labo")
 
@@ -1500,13 +1549,17 @@ func test_oak_parcel_lines() -> void:
 	# de la Route 11 ; (T20) Pierre Lune et Super Bonbon ; (T21) Super Potion de FUTUR A ;
 	# (intégration) Corde Sortie de la Cave.
 	# Jalon 18 (T16) : sept objets au sol (Route 9, Route 10, grotte) et la Super Potion cachée.
-	assert_eq(launched, 85, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
+	# Jalon 20 (T21) : onze objets au sol et trois caches du repaire, la Clé (chute et prise),
+	# Giovanni et le Scope Sylphe.
+	assert_eq(launched, 103, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
 		+ "sa CT34, Ondine (pont, Arène et rattrapage), écran, module, console, objets de la "
 		+ "Route 25, le Rocket d'Azuria (2) et le barrage sud ; J15 : objets de la Route 5 ; "
 		+ "J16 : Major Bob (2), neuf objets du S.S. Anne, le capitaine, le marin (2) ; "
 		+ "J17 : la CS05, Route 11 (3), deux objets du couloir, la Super Potion de la clairière "
 		+ "et la Corde Sortie de la Cave ; J18 : huit objets ; J19 : la gardienne de la Tour et six objets de la Tour (T18) ; "
-		+ "J20 (T17) : Super Potion de la Route 8, quatre caches (Route 8, souterrain ×2, ville), Erika (2)")
+		+ "J20 (T17) : Super Potion de la Route 8, quatre caches (Route 8, souterrain ×2, "
+		+ "ville), Erika (2) ; "
+		+ "J20 (T21) : repaire (11 objets, 3 caches, Clé ×2, Giovanni, Scope)")
 	# Le jeton n'apparaît que dans la réplique de l'espèce, « {pokemon} » dans les phrases du
 	# compagnon (J11), et ceux de la Pension dans ses répliques (J15).
 	for row: Array in _pages():
@@ -1530,6 +1583,8 @@ func test_oak_parcel_lines() -> void:
 				or (row[0] == &"rival_tower_intro" and row[1].contains("{player}")) \
 				or (String(row[0]).begins_with("saffron_gate_drink_") and row[1].contains("{player}")) \
 				or row[0] == &"celadon_eevee_received" \
+				or (row[0] in [&"rocket_hideout_b4f_lift_key_got",
+					&"rocket_hideout_b4f_silph_scope_got"] and row[1].contains("{player}")) \
 				or (String(row[0]).begins_with("celadon_gym_erika_") and row[1].contains("{player}")):
 			expected = [DialogueTokens.PLAYER]
 		elif J17_TOKENS.has(row[1]):

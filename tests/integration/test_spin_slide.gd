@@ -1,7 +1,7 @@
 extends GutTest
 ## Dalles tournantes dans le moteur (jalon 20 T19, `docs/tech/jalon-20.md` §2.4.4, §2.13 ; dossier
-## 23 §13.3, §19). Vraie scène Boot sur la carte de QA `qa_spin_j20` (retirée au T24 ; les tests
-## sur `rocket_hideout_b2f` viendront avec ses cartes, T20) : départ (2, 6) tourné ↑, dalle →
+## 23 §13.3, §19). Vraie scène Boot sur la carte de QA `qa_spin_j20` (retirée au T24 ; la vraie
+## carte `rocket_hideout_b2f` a son test depuis le T21) : départ (2, 6) tourné ↑, dalle →
 ## (2, 5), dalle ↑ (5, 5), arrêt (5, 2), trajet « E3,N3 » ; Dresseur `guetteur` (8, 4) qui voit
 ## (5, 4), au milieu de la glisse ; Dresseur `gardien` (8, 2) qui voit la case d'arrêt.
 ## - glisse au pas près (`FrameSim`), en courant, pivot à chaque dalle ;
@@ -259,6 +259,46 @@ func test_a_refused_step_stops_the_slide_in_place() -> void:
 	assert_eq(_player.get_cell(), Vector2i(5, 5))
 	assert_false(_spin.is_running())
 	assert_true(_player.is_input_enabled(), "joueur libre")
+
+
+## Jalon 20 (T21) : la vraie carte `rocket_hideout_b2f` (grille RB) : de (3, 15), un pas vers
+## l'est pose sur la dalle → (4, 15) ; trajet « E4,N4 » de la grille, arrêt (8, 11) ; les dalles
+## de la carte sont toutes valides (aucun `push_error` de `SpinTileField.check()` à l'entrée).
+func test_a_real_slide_on_the_b2f_of_the_hideout() -> void:
+	await _boot_on(&"rocket_hideout_b2f", &"from_b1f_north")
+	GameState.new_game(7)
+	GameState.player_name = "Kevin"
+	_boot.get_map().refresh_npcs(GameState.flags)
+	await wait_until(func() -> bool: return _boot.is_stable(), TIMEOUT)
+	assert_eq(_spin.get_field(), _boot.get_map().get_node(^"SpinTiles"), "SpinTiles du B2F")
+	assert_eq((_spin.get_field() as SpinTileField).arrows.size(), 43, "43 dalles (RB)")
+	_boot.get_map().spawn_player_at(_player, Vector2i(3, 15), Vector2i.RIGHT)
+	await wait_until(func() -> bool: return _boot.is_stable(), TIMEOUT)
+	_moves.clear()
+	_move_frames.clear()
+	_facings.clear()
+	_events.clear()
+	_sim = FrameSim.new(get_tree(), [_player])
+	Input.action_press(&"move_right")
+	await _sim.frame()
+	Input.action_release(&"move_right")
+	await _sim.run_until(func() -> bool: return _spin.is_running() or not _player.is_moving(),
+		TIMEOUT)
+	assert_true(_spin.is_running(), "la dalle (4, 15) lance la glisse")
+	await _run_slide()
+	var path: Array[Vector2i] = [Vector2i(4, 15), Vector2i(5, 15), Vector2i(6, 15),
+		Vector2i(7, 15), Vector2i(8, 15), Vector2i(8, 14), Vector2i(8, 13), Vector2i(8, 12),
+		Vector2i(8, 11)]
+	assert_eq(_moves, path, "trajet « E4,N4 » de la grille")
+	assert_eq(_facings, [Vector2i.RIGHT, Vector2i.RIGHT, Vector2i.RIGHT, Vector2i.RIGHT,
+		Vector2i.UP, Vector2i.UP, Vector2i.UP, Vector2i.UP] as Array[Vector2i],
+		"le joueur pivote à la dalle (8, 15)")
+	assert_eq(_events, ["started:%s" % Vector2i(4, 15), "finished:%s" % Vector2i(8, 11)]
+		as Array[String])
+	assert_eq(_player.get_cell(), Vector2i(8, 11))
+	assert_true(_player.is_input_enabled(), "joueur libre à l'arrêt")
+	assert_eq(_boot.get_map().map_id, &"rocket_hideout_b2f")
+	assert_push_error_count(0)
 
 
 func test_the_director_sleeps_outside_the_hideout() -> void:

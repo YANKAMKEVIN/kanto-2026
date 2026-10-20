@@ -25,7 +25,8 @@
 	{
 		"id": "see_the_ghosts",
 		"text": "trouver un moyen de voir les spectres.",
-		"if": ["tower_ghost_met"]
+		"if": ["tower_ghost_met"],
+		"unless": ["got_rocket_hideout_b4f_silph_scope"]
 	},
 	{
 		"id": "climb_tower",
