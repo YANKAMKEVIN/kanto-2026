@@ -1266,7 +1266,7 @@ commit ; textes **mot pour mot** (§20 et annexe A validée).
   (badge, CT21, défaite → réveil, Dresseuses gardées, nouvel essai), `test_hidden_items` (+ 3
   caches), `test_objective_library`, `test_zone_library`, `test_moment_library`.
 
-#### T18 — qa-mobile : **session 20-I** → Kevin
+#### T18 — qa-mobile : **session 20-I** → Kevin — **FAIT, 20-I validé par Kevin le 2026-10-20** (S24)
 - Protocole §6.2. **CA** : rapport `build/qa/jalon20_20i/`, validation de Kevin.
 
 #### T19 — architecte : dalles tournantes — (B), après T4 et T9 — **FAIT le 2026-10-20**
