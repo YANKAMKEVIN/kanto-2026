@@ -1,0 +1,39 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_7ffuf"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_xyds2"]
+[ext_resource type="Texture2D" path="res://assets/world/buildings/bldg_grand_magasin_01.png" id="3_8tuir"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/cast_shadow.tres" id="4_o4k5n"]
+[ext_resource type="Texture2D" path="res://assets/world/buildings/bldg_grand_magasin_01_shadow.png" id="5_14bv0"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/contact_shadow.tres" id="6_snrhy"]
+[ext_resource type="Texture2D" path="res://assets/world/buildings/bldg_grand_magasin_01_contact.png" id="7_11gbq"]
+
+[node name="BldgGrandMagasin01" type="Node2D" unique_id=1370170128]
+script = ExtResource("1_7ffuf")
+footprint = Array[Vector2i]([Vector2i(-7, -8), Vector2i(-6, -8), Vector2i(-5, -8), Vector2i(-4, -8), Vector2i(-3, -8), Vector2i(-2, -8), Vector2i(-1, -8), Vector2i(0, -8), Vector2i(1, -8), Vector2i(2, -8), Vector2i(3, -8), Vector2i(4, -8), Vector2i(5, -8), Vector2i(6, -8), Vector2i(-7, -7), Vector2i(-6, -7), Vector2i(-5, -7), Vector2i(-4, -7), Vector2i(-3, -7), Vector2i(-2, -7), Vector2i(-1, -7), Vector2i(0, -7), Vector2i(1, -7), Vector2i(2, -7), Vector2i(3, -7), Vector2i(4, -7), Vector2i(5, -7), Vector2i(6, -7), Vector2i(-7, -6), Vector2i(-6, -6), Vector2i(-5, -6), Vector2i(-4, -6), Vector2i(-3, -6), Vector2i(-2, -6), Vector2i(-1, -6), Vector2i(0, -6), Vector2i(1, -6), Vector2i(2, -6), Vector2i(3, -6), Vector2i(4, -6), Vector2i(5, -6), Vector2i(6, -6), Vector2i(-7, -5), Vector2i(-6, -5), Vector2i(-5, -5), Vector2i(-4, -5), Vector2i(-3, -5), Vector2i(-2, -5), Vector2i(-1, -5), Vector2i(0, -5), Vector2i(1, -5), Vector2i(2, -5), Vector2i(3, -5), Vector2i(4, -5), Vector2i(5, -5), Vector2i(6, -5), Vector2i(-7, -4), Vector2i(-6, -4), Vector2i(-5, -4), Vector2i(-4, -4), Vector2i(-3, -4), Vector2i(-2, -4), Vector2i(-1, -4), Vector2i(0, -4), Vector2i(1, -4), Vector2i(2, -4), Vector2i(3, -4), Vector2i(4, -4), Vector2i(5, -4), Vector2i(6, -4), Vector2i(-7, -3), Vector2i(-6, -3), Vector2i(-5, -3), Vector2i(-4, -3), Vector2i(-3, -3), Vector2i(-2, -3), Vector2i(-1, -3), Vector2i(0, -3), Vector2i(1, -3), Vector2i(2, -3), Vector2i(3, -3), Vector2i(4, -3), Vector2i(5, -3), Vector2i(6, -3), Vector2i(-7, -2), Vector2i(-6, -2), Vector2i(-5, -2), Vector2i(-4, -2), Vector2i(-3, -2), Vector2i(-2, -2), Vector2i(-1, -2), Vector2i(0, -2), Vector2i(1, -2), Vector2i(2, -2), Vector2i(3, -2), Vector2i(4, -2), Vector2i(5, -2), Vector2i(6, -2), Vector2i(-7, -1), Vector2i(-6, -1), Vector2i(-5, -1), Vector2i(-4, -1), Vector2i(-3, -1), Vector2i(-2, -1), Vector2i(-1, -1), Vector2i(0, -1), Vector2i(1, -1), Vector2i(2, -1), Vector2i(3, -1), Vector2i(4, -1), Vector2i(5, -1), Vector2i(6, -1), Vector2i(-7, 0), Vector2i(-6, 0), Vector2i(-5, 0), Vector2i(-4, 0), Vector2i(-3, 0), Vector2i(-2, 0), Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vector2i(4, 0), Vector2i(5, 0), Vector2i(6, 0)])
+fade_when_covering = true
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1041556274]
+unique_name_in_owner = true
+material = ExtResource("2_xyds2")
+texture = ExtResource("3_8tuir")
+centered = false
+offset = Vector2(-672, -888)
+
+[node name="CastShadow" type="Sprite2D" parent="." unique_id=1957537817 groups=["cast_shadows"]]
+z_index = -2
+z_as_relative = false
+material = ExtResource("4_o4k5n")
+scale = Vector2(2, 2)
+texture = ExtResource("5_14bv0")
+centered = false
+offset = Vector2(-348.5, -2)
+
+[node name="ContactShadow" type="Sprite2D" parent="." unique_id=1099387194 groups=["contact_shadows"]]
+z_index = -2
+z_as_relative = false
+material = ExtResource("6_snrhy")
+scale = Vector2(2, 2)
+texture = ExtResource("7_11gbq")
+centered = false
+offset = Vector2(-340, -44.5)

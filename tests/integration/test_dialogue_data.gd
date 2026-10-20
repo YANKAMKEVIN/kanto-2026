@@ -62,7 +62,8 @@ const J17_TOKENS: Dictionary[String, Array] = {
 }
 ## Textes pas encore validés, exemptés du contrôle « mot pour mot » (jalon 14 T16 : ceux du
 ## coquillage de la Route 25, validés depuis : dossier 17 §15 n° 71 ; le n° 72 est retiré le 2026-10-14).
-const UNVALIDATED: Array[StringName] = []
+## Jalon 20 (T16) : panneau de la cabine d'ascenseur, texte neutre en attendant le moteur (T13).
+const UNVALIDATED: Array[StringName] = [&"celadon_dept_elevator_panel"]
 ## Jalon 11 (T20c) : phrases jouées par le contrôleur du compagnon (ni PNJ, ni point, ni scène).
 const PLAYED_BY_COMPANION: Array[StringName] = [
 	&"companion_cave", &"companion_city", &"companion_forest", &"companion_happy",
@@ -158,6 +159,9 @@ const MAPS: Array[StringName] = [
 	&"lavender_town", &"lavender_center", &"lavender_mart", &"pokemon_house",
 	&"lavender_house_1", &"lavender_house_2", &"pokemon_tower_1f",
 	&"pokemon_tower_3f", &"pokemon_tower_4f", &"pokemon_tower_5f", &"pokemon_tower_6f",
+	# Jalon 20 (T16) : Céladopole (panneaux, examens, arbustes ; la vie vient au T17).
+	&"celadon_city", &"celadon_dept_gf", &"celadon_dept_elevator", &"celadon_mansion_3f",
+	&"celadon_gym",
 	# Jalon 19 (T17) : le rival n° 5 et l'Exorciste calme du 2F.
 	&"pokemon_tower_2f",
 	# Jalon 20 (T15) : Routes 7 et 8, postes, bâtiments d'entrée, souterrain (panneaux).
@@ -438,6 +442,10 @@ const IDS_J20: Array[StringName] = [
 	# T25 : garde des postes de Safrania et boisson donnée (annexe A.14 du plan, texte 12).
 	&"saffron_gate_guard", &"saffron_gate_drink_water", &"saffron_gate_drink_soda",
 	&"saffron_gate_drink_lemonade",
+	# T16 : Céladopole (panneaux, examens, arbustes de Coupe, tableau et panneau d'ascenseur).
+	&"celadon_city_sign", &"celadon_gym_sign", &"celadon_west_block", &"celadon_dept_board",
+	&"celadon_dept_elevator_panel", &"celadon_mansion_office_door", &"celadon_gym_bush",
+	&"celadon_gym_inner_bush",
 ]
 ## Jalon 20 : lot de textes validé du dossier 23 (§20, une citation par ligne).
 const DOSSIER_23 := "res://docs/design/dossier-23-celadopole.md"
@@ -919,7 +927,9 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		# Jalon 17 (T23) : les deux arbustes coupés (couloir de la Route 2 est, FUTUR A).
 		&"cut_route_2_east_bush", &"cut_route_2_futur_a",
 		# Jalon 18 (T15) : l'arbre de la sortie est d'Azuria.
-		&"cut_cerulean_east_tree"]
+		&"cut_cerulean_east_tree",
+		# Jalon 20 (T16) : les deux arbustes de l'Arène d'Erika.
+		&"cut_celadon_gym_bush", &"cut_celadon_gym_inner_bush"]
 		+ SET_J14_BILL_CUTSCENES + SET_J14_ROCKET_CUTSCENES + SET_J18_CUTSCENES
 		# Jalon 19 (T16) : la gardienne de la Tour s'écarte.
 		+ [&"tower_stairs_open"]

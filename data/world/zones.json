@@ -144,7 +144,16 @@
 			"subtitle": "Céladopole — Safrania",
 			"description": "Une courte route en pente douce. Les toits de Céladopole apparaissent entre les arbres."
 		},
-		"celadon_city": { "name": "Céladopole", "kind": "town", "maps": [] },
+		"celadon_city": {
+			"name": "Céladopole", "kind": "town",
+			"maps": ["celadon_city", "celadon_center", "celadon_dept_gf", "celadon_dept_2f", "celadon_dept_3f", "celadon_dept_4f", "celadon_dept_5f", "celadon_dept_roof", "celadon_dept_elevator", "celadon_mansion_gf", "celadon_mansion_1f", "celadon_mansion_2f", "celadon_mansion_3f", "celadon_mansion_roof", "celadon_mansion_roof_house", "celadon_restaurant", "celadon_chief_house", "celadon_hotel", "celadon_gym"],
+			"services": [
+				{ "id": "pokemon_center", "found_on": "celadon_center" },
+				{ "id": "poke_mart", "found_on": "celadon_dept_2f" },
+				{ "id": "gym", "found_on": "celadon_gym" }
+			],
+			"description": "Une ville prospère, verte et commerçante. Sous les néons du Casino, l'ambiance n'est plus la même."
+		},
 		"fuchsia_city": { "name": "Parmanie", "kind": "town", "maps": [] },
 		"route_21": { "name": "Route 21", "kind": "sea_route", "maps": [] },
 		"cinnabar_island": { "name": "Cramois'Île", "kind": "town", "maps": [] },
