@@ -1502,7 +1502,9 @@ ni Fuji, ni Poké Flûte : **tenu** (`test_seventh_floor_stairs_reachable_only_t
 
 - `godot --headless --path . --import` : aucune erreur.
 - Tests ciblés du T24 (règle de Kevin : pas de suite complète sur le Mac) : 8 scripts, 78 / 78
-  verts ; suite complète : CI GitHub sur `jalon-19-integ` (voir `etat-projet.md`).
+  verts ; CI sur f32c9475 : un échec (`test_dialogue_data`, liste des drapeaux posés sans
+  `tower_ghost_met`), corrigé en effd2705. **Suite complète : 5 732 / 5 732** (505 scripts) sur le
+  Mac et **CI verte** sur effd2705.
 - `origin/main` (8abde8f8, documents seulement : Safrania H-5) fusionné au T24.
 
 ### 9.5 Points ouverts pour Kevin

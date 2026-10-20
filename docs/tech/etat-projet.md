@@ -169,6 +169,7 @@ Mis à jour : 2026-10-20 (**J20 terminé** : T24 clôture (cartes de QA retirée
 - **Critères §4** (détail §9.2) : tenus ou couverts par les tests ; creux de fps ≥ 50 **non tenu** aux transitions (7 à 49, comme J17 / J18) ; fourchette 22–26 du rival abandonnée (T21).
 - **Passation au J20** (§9.3) : `silph_scope` à créer (tables en `ghost_unless_item`) ; SPECTRE du 6F en `ghost: always` (Ossatueur N30, révélé au J21) ; Osselait sans entrée de Pokédex ; `see_the_ghosts` à remplacer avec le Scope ; drapeaux J20 / J21 réservés ; contrat de T22 (`test_j19_flags_contract`, `test_save_j19`) à étendre, pas à affaiblir.
 - **Points ouverts pour Kevin** : non vus sur téléphone (victoire après reprise contre le rival, Exorcistes calmes, objets et cache du 5F, relance du 6F, nouveaux objectifs) ; les départs déduisent le starter du premier Pokémon (un starter évolué en tête n'a pas d'équipe de rival) ; réplique « revenez plus tard » du J18 retirée ; Reportés de rendu : dalle purifiée trop claire, boîte de dialogue qui couvre le joueur en bas du 6F, creux de fps aux transitions, textures 84–108 Mo.
+- **Suite** : import propre ; `tools/test.sh` **5 732 / 5 732** (505 scripts) ; CI verte sur effd2705.
 - **Prochaine étape** : fusion de `jalon-19-integ` dans `main` (session principale), puis J20.
 
 ## Jalon 19 — Tour Pokémon : lancement côté conception (2026-10-14, branche `docs/dossier-j19` depuis `main` à `4f0ee90`)
