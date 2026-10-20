@@ -1253,7 +1253,7 @@ commit ; textes **mot pour mot** (§20 et annexe A validée).
   ignorées, menu et retour refusés, **aucune autosave** pendant la glisse, compagnon rétracté puis
   revenu, Dresseur qui voit la case d'arrêt.
 
-#### T20 — constructeur-monde : Casino, repaire, cabine — (B), en parallèle de T17
+#### T20 — constructeur-monde : Casino, repaire, cabine — (B), en parallèle de T17 — **FAIT le 2026-10-20**
 - §2.1, §2.6, §2.7.1 ; `build_game_corner.gd`, `build_rocket_hideout.gd` (sol, murs, caisses,
   dalles peintes, `SpinTiles`, portes d'ascenseur), profil `hideout`, `caves.json`.
 - Tests `test_rocket_hideout` (grilles = scènes ; `SpinTiles` = grille ; **chaque dalle mène à une

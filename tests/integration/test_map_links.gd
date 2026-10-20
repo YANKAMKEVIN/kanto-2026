@@ -59,6 +59,9 @@ const MAP_IDS: Array[StringName] = [
 	&"celadon_mansion_2f", &"celadon_mansion_3f", &"celadon_mansion_roof",
 	&"celadon_mansion_roof_house", &"celadon_restaurant", &"celadon_chief_house",
 	&"celadon_hotel", &"celadon_gym", &"route_7",
+	# Jalon 20 (T20) : le Casino, le repaire Rocket (B1F à B4F) et sa cabine d'ascenseur.
+	&"celadon_game_corner", &"rocket_hideout_b1f", &"rocket_hideout_b2f", &"rocket_hideout_b3f",
+	&"rocket_hideout_b4f", &"rocket_hideout_elevator",
 ]
 ## Cartes dont les passages « à venir » sont comptés dans leur propre test (jalon 18).
 const OWN_COMING_SOON_COUNT: Array[StringName] = [&"lavender_town", &"pokemon_tower_1f"]
@@ -69,6 +72,9 @@ const PENDING_RETURNS: Array = [
 	# (T13) la réoriente vers l'étage courant.
 	[&"celadon_dept_2f", &"celadon_dept_elevator"], [&"celadon_dept_3f", &"celadon_dept_elevator"],
 	[&"celadon_dept_4f", &"celadon_dept_elevator"], [&"celadon_dept_5f", &"celadon_dept_elevator"],
+	# Jalon 20 (T20) : la sortie de la cabine du repaire mène au B1F (réorientée par le moteur).
+	[&"rocket_hideout_b2f", &"rocket_hideout_elevator"],
+	[&"rocket_hideout_b4f", &"rocket_hideout_elevator"],
 ]
 ## Cartes construites par une autre tâche en parallèle (jalon 7 : la Route 22, T22 ; jalon 10 :
 ## Argenta, T11, pendant les intérieurs du T13) : un warp qui y mène est vérifié seulement si la
@@ -168,8 +174,8 @@ func test_every_coming_soon_warp_returns_to_a_walkable_spawn_of_its_own_map() ->
 	# mène à la vraie Route 11. Jalon 18 (T15) : Azuria et la Route 9 sont reliées (arbre coupé du
 	# J16) ; la Grotte Sombre et Lavanville sont reliées à la Route 10, et les passages de
 	# Lavanville et de la Tour sont comptés dans leurs propres tests.
-	# Jalon 20 (T16) : le Casino de Céladopole (2 cases) reste « à venir » jusqu'au T20.
-	assert_eq(found, 5, "« SAFRANIA » (2), Safrania (1), Casino (2)")
+	# Jalon 20 (T16) : le Casino de Céladopole (2 cases) restait « à venir » jusqu'au T20 (construit).
+	assert_eq(found, 3, "« SAFRANIA » (2), Safrania (1)")
 
 
 ## Warp de [param map] qui ramène à [param origin] depuis [param arrival] : sur la case
