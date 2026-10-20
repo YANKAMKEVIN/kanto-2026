@@ -1804,6 +1804,8 @@ func _apply_settings(s: GameSettings) -> void:
 	# saut et sortie de Ball adoucis.
 	_darkness.set_reduce_motion(s.reduce_motion)
 	_flash.reduce_motion = s.reduce_motion
+	if _elevator_panel != null:
+		_elevator_panel.reduce_motion = s.reduce_motion
 	_elevator.reduce_motion = s.reduce_motion  # J20 (T13) : pas de secousse
 
 
@@ -2006,6 +2008,8 @@ func _setup_elevators() -> void:
 	_elevator.spawn_cell_source = _spawn_cell
 	_elevator_panel = ElevatorPanel.new()
 	_elevator_panel.name = "ElevatorPanel"
+	if _settings != null:
+		_elevator_panel.reduce_motion = _settings.reduce_motion
 	_elevator_panel.process_mode = Node.PROCESS_MODE_PAUSABLE
 	add_child(_elevator_panel)
 	_elevator.set_panel(_elevator_panel)

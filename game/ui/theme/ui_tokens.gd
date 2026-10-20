@@ -1832,3 +1832,22 @@ const HAPTIC_FLASH_MS := 25
 const DIALOG_SPIRIT := Color("#B7B4DA")
 ## Valeurs de la clé de page « voice ».
 const VOICE_SPIRIT := &"spirit"
+
+# --- Panneau d'étages de l'ascenseur (J20 T14, jalon-20.md §2.3.4) -------------------------------
+## Voile derrière le panneau : le monde reste deviné, comme les cartes de choix.
+const ELEVATOR_SCRIM := CHOICE_SCRIM
+## Carte d'étage : large pour le pouce, 128 px de haut (cible tactile).
+const ELEVATOR_CARD_SIZE := Vector2(400, TOUCH_MIN)
+const ELEVATOR_CARD_GAP := 16
+## Au-delà de ce nombre d'étages, les cartes passent sur deux colonnes (6 étages du magasin).
+const ELEVATOR_SINGLE_COLUMN_MAX := 4
+const ELEVATOR_COLUMNS := 2
+const ELEVATOR_PAD := 32
+const ELEVATOR_TITLE_FONT := FONT_TITLE
+const ELEVATOR_CARD_FONT := FONT_BUTTON
+## Étage courant : fond atténué (carte inerte), libellé en TEXT_DISABLED.
+const ELEVATOR_HERE_BG := Color(1, 1, 1, 0.06)
+## Pastille d'accent à gauche du libellé de l'étage courant (repère « vous êtes ici »).
+const ELEVATOR_HERE_DOT := 16
+const ELEVATOR_SLIDE := PANEL_SLIDE
+const ELEVATOR_FADE := ANIM_PANEL
