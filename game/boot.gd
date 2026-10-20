@@ -2175,6 +2175,9 @@ func _write_checkpoint(reason: String) -> void:
 
 
 func _on_focus_change(change: SessionLifecycle.Focus) -> void:
+	if change != SessionLifecycle.Focus.NONE and OS.is_debug_build():
+		print("[save] focus %s à %.2f s" % [SessionLifecycle.Focus.keys()[change],
+			background_clock.call()])
 	match change:
 		SessionLifecycle.Focus.LOST:
 			_checkpoint.focus_out(background_clock.call())

@@ -689,6 +689,25 @@ tests `Boot` + `MemoryFs`, mesure de la capture sur S24, session S2A (validée s
 
 #### T5 — Q : **session S2A** → K (interruptions réelles, §6)
 
+**QA agent sur S21 (`RFCR40827ZZ`, 2026-10-21, APK debug de `s2a-sauvegarde`, départ `s2_save`,
+vraie sauvegarde de Kevin copiée puis restaurée à l'identique) : 5 scénarios sur 5 OK.**
+
+| # | Interruption | Écrit | Relance |
+|---|---|---|---|
+| 1 | dialogue de Hugo, bouton marche | point de reprise, Route 3 (19, 26), 4 300 ₽, Hugo non battu | après déverrouillage : dialogue intact ; puis arrêt forcé en plein dialogue → reprise en (19, 26), Hugo à rejouer |
+| 2 | combat contre Hugo, Accueil puis arrêt forcé | point de reprise d'avant le combat (PV pleins, Hugo non battu) | reprise en (19, 26), juste avant |
+| 3 | rideau de notifications 0,5 s puis 3 s | rien | — (voir ci-dessous) |
+| 4 | appel simulé (composeur Samsung en plein écran, `am start -a DIAL`) pendant le dialogue, puis arrêt forcé | point de reprise d'avant Hugo | reprise en (19, 26) |
+| 5 | Route 3 → Argenta, arrêt forcé à l'arrivée | autosave d'arrivée, Argenta (51, 26) | reprise à Argenta (51, 26) |
+
+- **Durée de la capture sur S21 : 0,9 à 1,4 ms** (budget 5 ms) ; Mac : 0,08 à 0,3 ms.
+- **Constat : Godot 4.7 sous Android n'envoie `FOCUS_OUT` qu'avec la mise en pause.** Le rideau prend
+  bien le focus de la fenêtre (`mCurrentFocus=NotificationShade`) mais le jeu ne reçoit rien ; le
+  délai de garde de 1 s ne sert donc qu'au Mac et aux plateformes qui l'envoient seul. Sans
+  conséquence : un appel qui prend l'écran, l'Accueil ou le bouton marche passent par `PAUSED`, qui
+  écrit. Un bandeau d'appel ignoré n'écrit rien (rien n'est perdu tant que le jeu tourne).
+- Journal debug ajouté pendant la QA : « [save] focus LOST / REGAINED à N s ».
+
 ### 3.3 S2B — État monté, Vélo, Flûte
 
 #### T6 — A : `Mount`, `MountRules`, `MapTraits`, `GameState.player_mount`, `last_land_cell` — après T3
