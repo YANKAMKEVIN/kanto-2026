@@ -1324,7 +1324,7 @@ commit ; textes **mot pour mot** (§20 et annexe A validée).
   dans les intérieurs ; se rétracte pendant une glisse et un trajet d'ascenseur ; Évoli s'il est
   éligible).
 
-#### T23 — qa-mobile : **session 20-II** + QA finale → Kevin
+#### T23 — qa-mobile : **session 20-II** + QA finale → Kevin — **FAIT, 20-II validé par Kevin le 2026-10-20** (S24 ; détail : `etat-projet.md`, entrée « J20 T23 »)
 - Protocole §6.2 ; **QA finale** : vraie partie de Kevin, de Lavanville au Scope (lot V 20F).
 
 #### T25 — constructeur-monde : postes de Safrania et boisson — (B), après T11 et T15 — **FAIT le 2026-10-20**
