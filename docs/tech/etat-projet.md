@@ -15,6 +15,7 @@ Mis à jour : 2026-10-20 (**J20 T10 : art de la série 22 intégré** — six pe
 - **Cartes de QA** `qa_elevator_j20` (cabine) et `qa_elevator_j20_1f` / `_2f` (`tools/build_qa_j20.gd`), ascenseurs de test dans `tests/fixtures/elevators/` (`Boot.elevators_path`) : **à retirer au T24**.
 - Tests : `test_elevator_flow` (vraie Boot : 1er → panneau → 2e → sortie au 2e, retour avalé pendant le trajet ; FERMER et retour = rien ; sauvegarde dans la cabine → arrivée du 2e, menu, reprise ; clé absente → T-50, puis panneau avec la Clé), `test_elevator_director`, `test_service_director` ; recalés : `test_dialogue_library`, `test_dialogue_data`, `test_map_catalog`. Sur le vrai magasin : avec T16.
 - **Reporté** : aucune capture (l'écran est provisoire ; captures 2340 × 1080 du panneau au T14).
+- **Correctif** (après fusion) : `test_tower_6f_ghost` échouait par intermittence — rencontre sauvage aléatoire du 6F (sol, taux 15, aléatoire du départ non fixé) sur le pas (10, 14) → (10, 15), avant le déclencheur ; reproduit à coup sûr avec la graine 28. Rencontres sauvages coupées dans ce test (la scène scriptée passe par le BattleDirector). Défaut du J19, sans lien avec T12 / T13.
 - Suite complète (T12 + T13) : **5 893 / 5 895** (521 scripts ; 1 en attente prévue : cartes d'ascenseur ; 1 échec corrigé ensuite : `ElevatorPanel` doit être PAUSABLE comme les autres enfants de Boot, `test_boot` relancé vert) ; import sans erreur.
 
 ## J20 T12 — don de Pokémon dans le moteur (2026-10-20, branche `j20-t12-t13`, non fusionnée)
