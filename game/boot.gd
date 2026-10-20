@@ -230,6 +230,7 @@ var _spin: SpinTileDirector
 
 func _ready() -> void:
 	_save_coordinator.setup(_can_write, is_stable, _persist_snapshot)
+	_setup_save_checkpoint()
 	GameState.new_game()
 	_lighting = WorldLighting.new()
 	_lighting.process_mode = Node.PROCESS_MODE_PAUSABLE
@@ -534,16 +535,18 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	GameState.add_play_time(_lifecycle.play_time_step(delta, _is_opening_active()))
+	_watch_save_checkpoint(delta)
 	_save_coordinator.process(delta)
 	if not _dex_toasts.is_empty():
 		_show_next_dex_toast()
 
 
-## Boot transmet les notifications ; le cycle de vie décide du temps de jeu et le
-## coordinateur garde les mêmes conditions d'écriture stable qu'en exploration.
+## Boot transmet les notifications ; le cycle de vie décide du temps de jeu, le point de reprise
+## de ce qui s'écrit à la mise en arrière-plan (passe systèmes 2, S2A).
 func _notification(what: int) -> void:
 	if _lifecycle.handle_notification(what):
-		_save_coordinator.flush_if_stable("arrière-plan")
+		_save_in_background("arrière-plan")
+	_on_focus_change(SessionLifecycle.focus_change(what))
 	if what == NOTIFICATION_WM_GO_BACK_REQUEST:
 		_on_go_back()
 
@@ -1238,7 +1241,10 @@ func _persist_snapshot(reason: String) -> Error:
 	if not is_instance_valid(map) or not is_instance_valid(_player):
 		return ERR_UNAVAILABLE
 	_push_stable_location(map.map_id)
-	var error := save_system.write(GameState.to_dict())
+	var snapshot := GameState.to_dict()
+	var error := save_system.write(snapshot)
+	if error == OK:
+		_checkpoint.note_written(snapshot, background_clock.call(), _background_write)
 	if OS.is_debug_build():
 		print("Sauvegarde automatique (%s) : %s %s, %s" % [reason, map.map_id,
 			_player.get_cell(), error_string(error)])
@@ -2074,3 +2080,103 @@ func _on_spin_slide_started() -> void:
 func _on_spin_slide_finished() -> void:
 	_companion.on_cutscene_finished()
 	_refresh_controls()
+
+
+# --- Passe systèmes 2, S2A : sauvegarde à la mise en arrière-plan (`systemes-2.md` §2.12) ------
+
+## Point de reprise : instantané capturé au passage stable → instable (dialogue, scène,
+## rencontre, combat, transition), remplacé par chaque écriture réussie.
+var _checkpoint := SaveCheckpoint.new()
+## Horloge du point de reprise, en secondes (délai de garde, écart entre écritures) ; les tests
+## la remplacent avant l'entrée dans l'arbre.
+var background_clock: Callable
+var _was_stable: bool = false
+## Position de la dernière image stable ({ map, cell, facing }) : celle du point de reprise (la
+## première image instable peut avoir posé le joueur sur une dalle tournante).
+var _stable_location: Dictionary = {}
+## Vrai pendant une écriture déclenchée par l'arrière-plan ([method SaveCheckpoint.note_written]).
+var _background_write: bool = false
+## Nouvelle tentative d'écriture du point de reprise après un échec (s restantes, −1 sinon).
+var _checkpoint_retry: float = -1.0
+## Plus longue capture de la session (µs), pour la mesure sur téléphone (budget < 5 ms).
+var _checkpoint_max_usec: int = 0
+
+
+func _setup_save_checkpoint() -> void:
+	if not background_clock.is_valid():
+		background_clock = func() -> float: return Time.get_ticks_msec() / 1000.0
+
+
+func get_save_checkpoint() -> SaveCheckpoint:
+	return _checkpoint
+
+
+## Une fois par image, avant le coordinateur : capture au passage stable → instable, délai de
+## garde d'un `FOCUS_OUT`, nouvelle tentative après un échec.
+func _watch_save_checkpoint(delta: float) -> void:
+	var stable := is_stable()
+	if stable:
+		_stable_location = {"map": _current_map_id(), "cell": _player.get_cell(),
+			"facing": _player.get_facing()}
+	elif _was_stable and _can_write():
+		_capture_checkpoint()
+	_was_stable = stable
+	if _checkpoint.focus_due(background_clock.call()):
+		_save_in_background("arrière-plan (focus perdu)")
+	if _checkpoint_retry >= 0.0:
+		_checkpoint_retry = maxf(0.0, _checkpoint_retry - maxf(delta, 0.0))
+		if _checkpoint_retry == 0.0:
+			_checkpoint_retry = -1.0
+			# Redevenue stable, la partie s'écrit par les autosaves ordinaires.
+			if not stable:
+				_save_in_background("nouvelle tentative")
+
+
+## Instantané de l'état courant, à la position de la dernière image stable.
+func _capture_checkpoint() -> void:
+	if _stable_location.is_empty():
+		return
+	var start := Time.get_ticks_usec()
+	var at := _elevator.stable_location(_stable_location["map"], _stable_location["cell"],
+		_stable_location["facing"])
+	GameState.set_player_location(at["map"], at["cell"], at["facing"])
+	_checkpoint.capture(GameState.to_dict())
+	var spent := Time.get_ticks_usec() - start
+	_checkpoint_max_usec = maxi(_checkpoint_max_usec, spent)
+	if OS.is_debug_build():
+		print("[save] point de reprise : %d µs (max %d µs)" % [spent, _checkpoint_max_usec])
+
+
+## Mise en arrière-plan (`PAUSED`, `WM_CLOSE_REQUEST`, `FOCUS_OUT` échu) : état courant si la
+## partie est stable, sinon le point de reprise s'il est plus récent que le disque.
+func _save_in_background(reason: String) -> void:
+	if not _can_write():
+		return
+	match _checkpoint.decide(is_stable(), background_clock.call()):
+		SaveCheckpoint.Decision.WRITE_CURRENT:
+			_background_write = true
+			_save_coordinator.flush_if_stable(reason)
+			_background_write = false
+		SaveCheckpoint.Decision.WRITE_CHECKPOINT:
+			_write_checkpoint(reason)
+
+
+func _write_checkpoint(reason: String) -> void:
+	var snapshot := _checkpoint.get_snapshot()
+	var error := save_system.write(snapshot)
+	if error == OK:
+		_checkpoint.note_written(snapshot, background_clock.call(), true)
+		_checkpoint_retry = -1.0
+	else:
+		_checkpoint_retry = SaveCoordinator.RETRY_DELAY
+	if OS.is_debug_build():
+		print("Sauvegarde du point de reprise (%s) : %s %s, %s" % [reason,
+			snapshot.get("map", ""), snapshot.get("cell", ""), error_string(error)])
+
+
+func _on_focus_change(change: SessionLifecycle.Focus) -> void:
+	match change:
+		SessionLifecycle.Focus.LOST:
+			_checkpoint.focus_out(background_clock.call())
+		SessionLifecycle.Focus.REGAINED:
+			_checkpoint.focus_in()

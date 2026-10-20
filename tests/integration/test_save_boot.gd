@@ -677,12 +677,15 @@ func test_no_save_during_a_scene_then_saved_at_its_end_with_the_found_potion() -
 	await wait_process_frames(3)
 	assert_true(cutscenes.is_running())
 	_boot.notification(Node.NOTIFICATION_APPLICATION_PAUSED)
-	assert_eq(_writes(), writes, "rien pendant la scène, même en arrière-plan")
+	# Passe systèmes 2 (S2A) : en arrière-plan, le point de reprise d'avant la scène est écrit.
+	assert_eq(_writes(), writes + 1, "point de reprise écrit en arrière-plan")
+	assert_false((_saved().get("flags", []) as Array).has("got_potion_route_1"),
+		"jamais l'état du milieu de la scène")
 	_boot.notification(Node.NOTIFICATION_APPLICATION_RESUMED)
 	await _finish_dialogue()
 	await wait_until(func() -> bool: return not cutscenes.is_running(), TIMEOUT)
 	await wait_process_frames(2)
-	assert_eq(_writes(), writes + 1, "sauvegardé à la fin de la scène")
+	assert_eq(_writes(), writes + 2, "sauvegardé à la fin de la scène")
 	assert_eq(GameState.found_items.size(), 1, "un objet trouvé")
 	if GameState.found_items.size() == 1:
 		assert_eq(GameState.found_items[0], {"item": "potion", "map": "route_1", "date": DATE},
@@ -739,7 +742,9 @@ func test_no_save_during_a_wild_battle_then_saved_on_waking_at_mom_after_a_defea
 		_boot.request_autosave("test")
 		_boot.notification(Node.NOTIFICATION_APPLICATION_PAUSED)
 		if _boot.get_map().map_id != &"player_house_1f":
-			assert_eq(_writes(), writes, "rien pendant la rencontre ni le combat")
+			# Passe systèmes 2 (S2A) : une seule écriture, le point de reprise d'avant la rencontre.
+			assert_lte(_writes(), writes + 1, "rien d'autre pendant la rencontre ni le combat")
+			assert_eq(_saved().get("map"), "route_1")
 		if battle_director.is_running():
 			var battle := battle_director.get_battle()
 			if battle != null and battle.get_state() == Battle.State.CHOOSING:
@@ -754,7 +759,7 @@ func test_no_save_during_a_wild_battle_then_saved_on_waking_at_mom_after_a_defea
 	assert_eq(_boot.get_map().map_id, &"player_house_1f", "réveil chez Maman")
 	# La défaite est un fait accompli : sauvegardé au réveil, avant le mot de Maman (QA S3).
 	await wait_process_frames(2)
-	assert_eq(_writes(), writes + 1, "sauvegardé au réveil, avant le mot de Maman")
+	assert_eq(_writes(), writes + 2, "sauvegardé au réveil, avant le mot de Maman")
 	var heal := _boot.get_map().get_spawn_cell(&"heal")
 	var woke := _saved()
 	assert_eq(woke.get("map"), "player_house_1f")
@@ -763,7 +768,7 @@ func test_no_save_during_a_wild_battle_then_saved_on_waking_at_mom_after_a_defea
 	assert_eq(int(lead.get("hp", 0)), GameState.party.get_lead().max_hp(), "équipe soignée")
 	await _finish_dialogue()
 	await wait_process_frames(2)
-	assert_eq(_writes(), writes + 2, "puis sauvegardé à la fin du mot de Maman")
+	assert_eq(_writes(), writes + 3, "puis sauvegardé à la fin du mot de Maman")
 	var saved := _saved()
 	assert_eq(saved.get("map"), "player_house_1f")
 	assert_eq(JsonFields.get_vector2i(saved, "cell"), heal, "au point de soin")

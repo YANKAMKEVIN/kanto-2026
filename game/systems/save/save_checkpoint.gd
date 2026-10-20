@@ -11,8 +11,9 @@ extends RefCounted
 ## - Révisions monotones : **on n'écrit jamais un point de reprise plus ancien que le disque**
 ##   (une scène qui a fait une écriture immédiate, un don par exemple, l'a dépassé).
 ## - Mise en arrière-plan ([method decide]) : partie stable → écrire l'état courant ; instable →
-##   écrire le point de reprise s'il est plus récent que le disque ; jamais deux écritures en
-##   moins de [constant MIN_INTERVAL] s.
+##   écrire le point de reprise s'il est plus récent que le disque ; jamais deux écritures
+##   d'arrière-plan en moins de [constant MIN_INTERVAL] s (une autosave ordinaire ne bloque pas
+##   l'écriture d'arrière-plan qui la suit).
 ## - `FOCUS_OUT` (bandeau d'appel, rideau de notifications) : ne compte comme une mise en
 ##   arrière-plan qu'après [constant FOCUS_GRACE] s sans `FOCUS_IN` ([method focus_out],
 ##   [method focus_in], [method focus_due]).
@@ -28,14 +29,15 @@ enum Decision {
 
 ## Délai de garde d'un `FOCUS_OUT` avant d'écrire [D].
 const FOCUS_GRACE: float = 1.0
-## Écart minimal entre deux écritures déclenchées par l'arrière-plan [D].
+## Écart minimal entre deux écritures déclenchées par l'arrière-plan (un `FOCUS_OUT` échu suivi
+## d'un `PAUSED`, deux rideaux de suite) [D].
 const MIN_INTERVAL: float = 2.0
 
 var _counter: int = 0
 var _snapshot: Dictionary = {}
 var _snapshot_revision: int = -1
 var _disk_revision: int = 0
-var _last_write_time: float = -INF
+var _last_background_write: float = -INF
 var _focus_out_time: float = -1.0
 
 
@@ -48,12 +50,14 @@ func capture(snapshot: Dictionary) -> void:
 
 ## Une écriture sur le disque a réussi à [param now] avec [param snapshot] : le disque est à
 ## jour, et ce qui a été écrit devient le point de reprise (pas plus récent que le disque).
-func note_written(snapshot: Dictionary, now: float) -> void:
+## [param background] : écriture déclenchée par la mise en arrière-plan ([method decide]).
+func note_written(snapshot: Dictionary, now: float, background: bool = false) -> void:
 	_counter += 1
 	_disk_revision = _counter
 	_snapshot = snapshot.duplicate(true)
 	_snapshot_revision = _counter
-	_last_write_time = now
+	if background:
+		_last_background_write = now
 
 
 ## Vrai si le point de reprise est plus récent que le disque (il vaut la peine d'être écrit).
@@ -69,7 +73,7 @@ func get_snapshot() -> Dictionary:
 ## Mise en arrière-plan à [param now] (`PAUSED`, `WM_CLOSE_REQUEST`, ou `FOCUS_OUT` échu) ;
 ## [param stable] : `Boot.is_stable()`.
 func decide(stable: bool, now: float) -> Decision:
-	if now - _last_write_time < MIN_INTERVAL:
+	if now - _last_background_write < MIN_INTERVAL:
 		return Decision.NOTHING
 	if stable:
 		return Decision.WRITE_CURRENT

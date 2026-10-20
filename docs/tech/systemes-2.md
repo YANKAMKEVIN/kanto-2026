@@ -653,9 +653,39 @@ donnaient plus de 500 000 états. Les cartes `.tscn` (sans vie) attendent le J20
 `note_written` (l'instantané écrit devient le point de reprise, pas plus récent que le disque),
 `decide` (stable → état courant ; instable → point de reprise s'il est plus récent ; rien à moins de
 2 s de la dernière écriture), délai de garde de `FOCUS_OUT` (1 s, un seul déclenchement).
-`test_save_checkpoint.gd`. **Reste après le J20** : branchement dans `Boot` (capture aux passages
+`test_save_checkpoint.gd`. **Branchement fait (2026-10-20, branche `s2a-sauvegarde`)**, voir ci-dessous ; avant : : branchement dans `Boot` (capture aux passages
 stable → instable, `note_written` dans l'écrivain, `FOCUS_OUT` / `FOCUS_IN` via `SessionLifecycle`),
 tests `Boot` + `MemoryFs`, mesure de la capture sur S24, session S2A (validée seule).
+
+**Branchement dans `Boot` (2026-10-20)** — bloc « Passe systèmes 2, S2A » en fin de `boot.gd`
+(`_setup_save_checkpoint`) et trois points d'appel d'une ligne (`_process`, `_notification`,
+`_persist_snapshot`) :
+- **capture** : `Boot._process` compare `is_stable()` à l'image précédente ; au passage stable →
+  instable (et si l'écriture est permise), `GameState.to_dict()` est capturé avec la **position
+  de la dernière image stable** (retenue à chaque image stable, passée par
+  `ElevatorDirector.stable_location` : jamais sur une dalle tournante ni dans une glisse). Écart
+  [D] : le reste de l'état est celui de la **première image** de l'instabilité (ce qu'a changé
+  l'image qui a ouvert le dialogue, par exemple le « vu » d'une rencontre, y est) ; aucun fichier
+  d'un autre système touché (pas de signal de départ ajouté aux directeurs) ;
+- **`note_written`** dans `_persist_snapshot` (toute écriture réussie : autosave, écriture
+  immédiate, Menu, arrière-plan) et après l'écriture du point de reprise ;
+- **`FOCUS_OUT` / `FOCUS_IN`** : `SessionLifecycle.focus_change` (`RESUMED` vaut `FOCUS_IN`) ; le
+  délai de garde est relu à chaque image ;
+- **écart [D] à la partie pure** : l'écart de 2 s ne porte que sur les écritures **d'arrière-plan**
+  (`note_written(…, background)`) ; une autosave ordinaire juste avant n'empêche pas l'écriture à
+  la mise en arrière-plan (sinon les 2 s de jeu qui suivent une autosave seraient perdues, et
+  `PAUSED` juste après l'arrivée sur une carte n'écrirait rien) ;
+- **échec** de l'écriture du point de reprise : nouvelle tentative après 5 s
+  (`SaveCoordinator.RETRY_DELAY`) tant que la partie est instable ; redevenue stable, les
+  autosaves ordinaires prennent le relais ;
+- **mesure** : journal debug « [save] point de reprise : N µs (max M µs) » à chaque capture ;
+- horloge injectable `Boot.background_clock` (tests) ; départ `s2_save` (Route 3, autosave actif) ;
+- tests : `tests/integration/test_save_background.gd` (dialogue, scène + relance, écriture
+  immédiate, combat sauvage, `FOCUS_OUT` court / long, 2 s, échec puis nouvelle tentative, départ
+  `s2_save`) ; `test_save_boot.gd` (scène, défaite) et `test_spin_slide.gd` (arrêt en pleine
+  glisse) adaptés : l'arrière-plan écrit désormais le point de reprise d'avant, jamais l'état du
+  milieu ;
+- mesure sur Mac (headless) : 80 à 320 µs par capture.
 
 #### T5 — Q : **session S2A** → K (interruptions réelles, §6)
 

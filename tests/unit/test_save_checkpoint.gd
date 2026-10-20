@@ -1,7 +1,7 @@
 extends GutTest
 ## SaveCheckpoint (passe systèmes 2, `systemes-2.md` §2.12) : point de reprise, révisions,
-## décision à la mise en arrière-plan, délai de garde de `FOCUS_OUT`. Le branchement dans
-## `Boot` (avec `MemoryFs`) viendra après la fusion du J20.
+## décision à la mise en arrière-plan, délai de garde de `FOCUS_OUT`. Branchement dans `Boot` :
+## `tests/integration/test_save_background.gd`.
 
 const D := SaveCheckpoint.Decision
 
@@ -48,8 +48,8 @@ func test_checkpoint_is_a_frozen_copy() -> void:
 	assert_eq(_cp.get_snapshot(), {"party": [1, 2]})
 
 
-func test_never_two_writes_within_two_seconds() -> void:
-	_cp.note_written({"map": "a"}, 50.0)
+func test_never_two_background_writes_within_two_seconds() -> void:
+	_cp.note_written({"map": "a"}, 50.0, true)
 	_cp.capture({"map": "b"})
 	assert_eq(_cp.decide(false, 51.9), D.NOTHING)
 	assert_eq(_cp.decide(true, 51.9), D.NOTHING)
@@ -76,3 +76,10 @@ func test_focus_out_is_due_once_after_the_grace_delay() -> void:
 	assert_false(_cp.focus_due(10.9), "un second FOCUS_OUT ne repousse pas le délai")
 	assert_true(_cp.focus_due(11.0))
 	assert_false(_cp.focus_due(12.0), "une seule fois")
+
+
+func test_an_ordinary_autosave_does_not_delay_the_background_write() -> void:
+	_cp.note_written({"map": "a"}, 50.0)
+	assert_eq(_cp.decide(true, 50.1), D.WRITE_CURRENT)
+	_cp.capture({"map": "b"})
+	assert_eq(_cp.decide(false, 50.1), D.WRITE_CHECKPOINT)
