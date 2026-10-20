@@ -66,6 +66,10 @@ const J17_TOKENS: Dictionary[String, Array] = {
 ## coquillage de la Route 25, validés depuis : dossier 17 §15 n° 71 ; le n° 72 est retiré le 2026-10-14).
 ## Jalon 20 (T17) : le panneau neutre de la cabine du T16 est remplacé par `elevator_panel` (T13).
 const UNVALIDATED: Array[StringName] = []
+## Passe systèmes 2 (T25b) : Téléport et Tunnel hors combat, joués par [FieldTravelDirector] ;
+## textes provisoires du lot `systemes-2.md` §8.1 (pas encore dans un dossier).
+const S2_FIELD_TRAVEL: Array[StringName] = [&"dig_used", &"teleport_used", &"fly_takeoff",
+	&"fly_landing", &"key_door_locked"]
 ## Jalon 11 (T20c) : phrases jouées par le contrôleur du compagnon (ni PNJ, ni point, ni scène).
 const PLAYED_BY_COMPANION: Array[StringName] = [
 	&"companion_cave", &"companion_city", &"companion_forest", &"companion_happy",
@@ -803,7 +807,7 @@ func test_library_loads_without_error() -> void:
 	found.sort()
 	var expected := IDS + IDS_J14_BILL + IDS_J14_ROCKET + IDS_J15_ROUTE_5 + IDS_J16_GYM \
 		+ IDS_J16_SHIP + IDS_J16_RIVAL_CAPTAIN + IDS_J16_T15 + IDS_J17 + IDS_J18 + IDS_J19 + IDS_J20 \
-		+ IDS_J20_T17 + IDS_J20_T21
+		+ IDS_J20_T17 + IDS_J20_T21 + S2_FIELD_TRAVEL
 	expected.sort()
 	assert_eq(found, expected)
 
@@ -817,7 +821,8 @@ func test_every_used_dialogue_exists() -> void:
 func test_every_dialogue_is_used() -> void:
 	var played := _cutscenes.get_dialogue_ids()
 	for id: StringName in _real_ids():
-		if UNUSED_YET.has(id) or PLAYED_BY_COMPANION.has(id) or PLAYED_BY_BOOT.has(id):
+		if UNUSED_YET.has(id) or PLAYED_BY_COMPANION.has(id) or PLAYED_BY_BOOT.has(id) \
+				or S2_FIELD_TRAVEL.has(id):
 			continue
 		assert_true(_used_on.has(id) or played.has(id),
 			"dialogue « %s » utilisé par un PNJ, un point ou une scène" % id)
@@ -1281,7 +1286,8 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 	for row: Array in _pages():
 		# Une variante en brouillon (PENDING_DRAFT_VARIANTS) attend la relecture de Kevin : son
 		# texte n'est encore dans aucun dossier.
-		if GATE_GUARDS.has(row[0]) or UNVALIDATED.has(row[0]) or (row[3] as DialogueVariant).draft:
+		if GATE_GUARDS.has(row[0]) or UNVALIDATED.has(row[0]) or S2_FIELD_TRAVEL.has(row[0]) \
+				or (row[3] as DialogueVariant).draft:
 			continue
 		var text: String = row[1]
 		for token: String in _DOSSIER_TOKENS:

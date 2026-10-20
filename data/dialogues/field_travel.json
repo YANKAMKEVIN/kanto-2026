@@ -1,0 +1,14 @@
+{
+	"teleport_used": {
+		"narration": true,
+		"variants": [
+			{ "field": "teleport:ready", "pages": ["{pokemon} utilise Téléport !"] }
+		]
+	},
+	"dig_used": {
+		"narration": true,
+		"variants": [
+			{ "field": "dig:ready", "pages": ["{pokemon} creuse un tunnel !"] }
+		]
+	}
+}

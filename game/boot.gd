@@ -343,6 +343,7 @@ func _ready() -> void:
 	_setup_elevators()
 	_setup_teleporters()
 	_setup_fly()
+	_setup_field_travel()
 	_cutscenes_node.set_inventory(GameState.bag, _items)
 	# Remise du colis (jalon-07.md §3.6.2, T19) : jeton {first_wild_species} des répliques de
 	# Chen, scène lancée par une variante de dialogue (« colis en main »), légende POKÉDEX ACTIVÉ.
@@ -2134,3 +2135,32 @@ func _setup_fly() -> void:
 
 func get_fly_director() -> FlyDirector:
 	return _fly
+
+
+# --- Passe systèmes 2 (S2E, T25b) : Téléport et Tunnel hors combat ----------------------------
+
+var _field_travel: FieldTravelDirector
+
+
+## Téléport (au point du réveil, sans soin) et Tunnel (sortie de grotte, comme la Corde Sortie) :
+## UTILISER sous la fiche de la capacité dans l'Équipe, menu fermé puis [FieldTravelDirector].
+func _setup_field_travel() -> void:
+	_field_travel = FieldTravelDirector.new()
+	_field_travel.name = "FieldTravelDirector"
+	_field_travel.process_mode = Node.PROCESS_MODE_PAUSABLE
+	add_child(_field_travel)
+	_field_travel.setup(field_state, _recovery.wakeup_point, _caves, SceneRouter.get_current_map,
+		_player, _runner, SceneRouter, _companion)
+	_menu.set_field_travel_check(_field_travel.check)
+	_menu.field_travel_requested.connect(func(move: StringName) -> void:
+		_menu.close()
+		_field_travel.travel(move))
+	if _menu_screen.has_signal(&"team_field_move_requested"):
+		_menu_screen.team_field_move_requested.connect(_menu.request_field_travel)
+		_menu.team_notice_shown.connect(_menu_screen.show_team_notice)
+	_field_travel.travel_started.connect(_refresh_controls.unbind(1))
+	_field_travel.travel_finished.connect(_refresh_controls.unbind(1))
+
+
+func get_field_travel_director() -> FieldTravelDirector:
+	return _field_travel

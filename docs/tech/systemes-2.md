@@ -749,6 +749,26 @@ ne sont pas des exceptions ; à trancher plus tard. Mise en scène de l'envol ho
 
 #### T25b — A *(si Q-5 = oui)* : Téléport et Tunnel hors combat — après T25
 
+**Fait (2026-10-21)** : `FieldTravelRules` (pur, `game/world/fly/field_travel_rules.gd` :
+`check_teleport`, `check_dig`) et `FieldTravelDirector` (mise en scène du `FlyDirector` : compagnon
+rentré, texte, joueur effacé 0,6 s, `change_map`, aucun texte d'arrivée). **Téléport** : au point
+du réveil d'après une défaite (`DefeatRecovery.wakeup_point` : dans le Centre, devant le comptoir,
+tourné vers le haut [D] ; RB pose le joueur devant le Centre), **sans soin** ; permis en extérieur
+et **en grotte**, refusé en intérieur [D] (RB le refuse aussi en grotte, comme le Vol : à
+trancher si besoin) et sur une carte `MapTraits.no_teleport` (champ réservé, Parc Safari du J23).
+**Tunnel** : destination de la Corde Sortie (`FieldItemRules.escape_target`, case du joueur),
+aucun objet consommé ; refusé hors grotte. `field_moves.json` : `teleport` et `dig` avec
+`"hm": ""` = **sans CS ni badge, le Pokémon doit connaître la capacité** (`FieldMoves.needs_hm`) ;
+Coupe, Flash, Surf, Force et Vol inchangés. Le Pokémon nommé ({pokemon}) suit la règle de
+`FieldMoves` (compagnon s'il la connaît, sinon le premier de l'équipe) [D]. **Lancement [D]** :
+toucher Téléport / Tunnel dans l'onglet Capacités de l'Équipe ouvre sa fiche détaillée habituelle,
+avec **UTILISER** dessous (aucune quatrième action sous la fiche du Pokémon ; ce deuxième toucher
+explicite tient lieu de confirmation OUI / NON) ; `MenuDirector.request_field_travel` revérifie ;
+refus → « Impossible de l'utiliser ici. » (texte validé de la Corde Sortie) dans le bandeau de
+l'en-tête de l'Équipe. Textes nouveaux : `data/dialogues/field_travel.json` (§8.1). Départ
+`s2_field_travel`. Tests : `test_field_travel_rules.gd`, `test_field_travel_integration.gd`
+(directeur, vues, menu, écran, Boot).
+
 #### T29 — A : effet `ohko`, IA, messages, données, audit des capacités — après T1
 
 **Fait (2026-10-20)** : `MoveEffect.Kind.OHKO` (`{ "kind": "ohko" }`), `OhkoRules` (pur : niveau,
@@ -942,6 +962,12 @@ Textes provisoires déjà en jeu (`data/battle/messages.json`), à valider ou co
 | `charge_solar_beam_start` / `_broken` | {pokemon} absorbe la lumière ! / {pokemon} perd la lumière absorbée. |
 | `charge_skull_bash_start` / `_broken` | {pokemon} baisse la tête ! / {pokemon} relève la tête. |
 | `charge_fly_start` / `_broken` (Vol, T25) | {pokemon} s'envole très haut ! / {pokemon} redescend. |
+| `teleport_used` (T25b, `data/dialogues/field_travel.json`) | {pokemon} utilise Téléport ! |
+| `dig_used` (T25b) | {pokemon} creuse un tunnel ! |
+| `fly_takeoff` / `fly_landing` (Vol hors combat, T25, `data/dialogues/fly.json`) | {pokemon} s'envole très haut ! / {pokemon} redescend. |
+| `key_door_locked` (T28, `data/dialogues/key_doors.json`) | Il faut une carte. |
+| `card_key` (objet, T28) | Carte Magnétique — « Une carte électronique qui ouvre les portes verrouillées. » |
+| `qa_teleport_*` (cartes de QA, retirés en S2Z) | — |
 
 À venir avec leur code (après le J20) : refus du Vélo et du Surf (textes du dossier 25 et 27,
 déjà validés), « Il faut une carte. » (porte à carte), Vol (« {pokemon} s'envole très haut ! »,

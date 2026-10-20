@@ -15,6 +15,8 @@ var cycling_road: bool = false
 var no_bike: bool = false
 ## Vol interdit depuis cette carte (§2.8).
 var no_fly: bool = false
+## Téléport interdit depuis cette carte (T25b ; réservé : le Parc Safari du J23 le posera).
+var no_teleport: bool = false
 ## Cases où l'on arrive en Surf même par un warp à pied (§2.5, « Surf forcé »).
 var forced_surf_cells: Dictionary[Vector2i, bool] = {}
 
