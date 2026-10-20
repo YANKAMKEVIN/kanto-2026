@@ -129,7 +129,7 @@ func test_level_and_moves_of_the_level() -> void:
 func test_meeting_is_stamped() -> void:
 	_fill_party(1)
 	var pokemon := _give().pokemon
-	assert_eq(pokemon.origin, PokemonGift.ORIGIN)
+	assert_eq(pokemon.origin, Pokemon.Origin.GIFT, "origine « gift » (T12)")
 	assert_eq(pokemon.met_map, MAP)
 	assert_eq(pokemon.met_level, LEVEL)
 	assert_eq(pokemon.met_date, DATE)

@@ -102,6 +102,10 @@ extends RefCounted
 ##   (identifiant d'objet) et « win » / « lose » facultatifs (comme « battle »). L'espèce est
 ##   vérifiée contre les données Pokémon par [method check_species] (appelée par Boot une fois
 ##   les espèces chargées) : une scène qui nomme une espèce inconnue est écartée.
+## Jalon 20 (`jalon-20.md` §2.5.2, T12) :
+## - gift_pokemon : identifiant d'espèce donné au joueur, avec « level » (entier 1..100),
+##   « flag » (drapeau du don) et « say » (dialogue « reçoit ») obligatoires, « say_stored »
+##   facultatif (dialogue joué si l'équipe est pleine). Espèce vérifiée comme pour wild_battle.
 ## Acteur = « player », identifiant d'un PNJ de la carte courante, ou **alias** « $nom »
 ## (forme $[a-z_]+, [method CutsceneStep.is_alias]) : PNJ choisi par le code qui lance la
 ## scène (CutsceneDirector.play(id, alias)), résolu au début de chaque étape. Les alias
@@ -125,6 +129,7 @@ const _EXTRA_KEYS: Array[Array] = [
 	[],
 	["on"], [], ["offset", "duration", "fade"],
 	["level", "ghost", "ghost_unless_item", "win", "lose"],
+	["level", "flag", "say", "say_stored"],
 ]
 ## Conditions permises sur toute étape sauf spawn.
 const _CONDITION_KEYS: Array[String] = ["if", "unless"]
@@ -168,10 +173,10 @@ func check_next_references() -> bool:
 func check_species(data: PokemonData) -> bool:
 	var ok := true
 	for id: StringName in get_ids():
-		for species: StringName in _wild_species_of(_cutscenes[id]):
+		for species: StringName in _wild_species_of(_cutscenes[id], true):
 			if data == null or not data.has_species(species):
-				ok = _fail("%s « %s » : « wild_battle » nomme l'espèce inconnue « %s »"
-					% [_cutscenes[id].source, id, species])
+				ok = _fail("%s « %s » : « wild_battle » ou « gift_pokemon » nomme l'espèce "
+					% [_cutscenes[id].source, id] + "inconnue « %s »" % species)
 				_cutscenes.erase(id)
 				break
 	return ok
@@ -266,6 +271,8 @@ func get_set_flags() -> Array[StringName]:
 		elif step.kind == CutsceneStep.Kind.BATTLE \
 				or step.kind == CutsceneStep.Kind.WILD_BATTLE:
 			raised = step.win_flags + step.lose_flags
+		elif step.kind == CutsceneStep.Kind.GIFT_POKEMON: # J20
+			raised = [step.gift_flag]
 		for flag: StringName in raised:
 			found[flag] = true
 	return _sorted_keys(found)
@@ -331,6 +338,10 @@ func get_dialogue_ids() -> Array[StringName]:
 	for step: CutsceneStep in _all_steps():
 		if step.kind == CutsceneStep.Kind.DIALOGUE:
 			found[step.dialogue_id] = true
+		elif step.kind == CutsceneStep.Kind.GIFT_POKEMON: # J20 : « say », « say_stored »
+			found[step.dialogue_id] = true
+			if not step.dialogue_stored.is_empty():
+				found[step.dialogue_stored] = true
 	return _sorted_keys(found)
 
 
@@ -342,12 +353,14 @@ func _all_steps() -> Array[CutsceneStep]:
 	return steps
 
 
-## Espèces des étapes « wild_battle » de [param cutscene] (avec doublons).
-static func _wild_species_of(cutscene: Cutscene) -> Array[StringName]:
+## Espèces des étapes « wild_battle » de [param cutscene] (avec doublons) ; avec
+## [param with_gifts], aussi celles des étapes « gift_pokemon » (J20).
+static func _wild_species_of(cutscene: Cutscene, with_gifts: bool = false) -> Array[StringName]:
 	var found: Array[StringName] = []
 	for variant: CutsceneVariant in cutscene.variants:
 		for step: CutsceneStep in variant.steps:
-			if step.kind == CutsceneStep.Kind.WILD_BATTLE:
+			if step.kind == CutsceneStep.Kind.WILD_BATTLE \
+					or (with_gifts and step.kind == CutsceneStep.Kind.GIFT_POKEMON):
 				found.append(step.species)
 	return found
 
@@ -547,7 +560,28 @@ func _parse_step(value: Variant, where: String) -> CutsceneStep:
 			ok = _parse_animate(entry, main, step, where) and ok
 		CutsceneStep.Kind.WILD_BATTLE:
 			ok = _parse_wild_battle(entry, step, where) and ok
+		CutsceneStep.Kind.GIFT_POKEMON:
+			ok = _parse_gift_pokemon(entry, step, where) and ok
 	return step if ok else null
+
+
+## gift_pokemon (jalon 20, §2.5.2) : espèce, niveau 1..100, drapeau, dialogue(s).
+func _parse_gift_pokemon(entry: Dictionary, step: CutsceneStep, where: String) -> bool:
+	var ok := _read_id(entry["gift_pokemon"], where + " gift_pokemon",
+		func(v: StringName) -> void: step.species = v)
+	var level: Variant = entry.get("level")
+	if not JsonFields.is_int(level) or int(level) < 1 or int(level) > ExpCurve.MAX_LEVEL:
+		ok = _fail("%s : « level » doit être un entier de 1 à %d" % [where, ExpCurve.MAX_LEVEL])
+	else:
+		step.level = int(level)
+	ok = _read_id(entry.get("flag"), where + " flag", func(v: StringName) -> void:
+		step.gift_flag = v) and ok
+	ok = _read_id(entry.get("say"), where + " say", func(v: StringName) -> void:
+		step.dialogue_id = v) and ok
+	if entry.has("say_stored"):
+		ok = _read_id(entry["say_stored"], where + " say_stored", func(v: StringName) -> void:
+			step.dialogue_stored = v) and ok
+	return ok
 
 
 ## wild_battle (jalon 19) : espèce, niveau 1..100, règle du SPECTRE, drapeaux de l'issue.

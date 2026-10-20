@@ -42,8 +42,10 @@ const DATA_DIR: String = "res://data/dialogues/"
 ## Actions de fin de variante ou de choix (jalon-07.md §3.3, §6.2) : soin de Maman, soin du
 ## Centre (rituel, point de repos), Boutique, Stockage.
 ## Pension (J15, jalon-15.md §2.5.2) : `open_daycare`, le gardien (variante sans page).
+## J20 (T13) : `open_elevator`, le panneau d'une cabine d'ascenseur (variante sans page).
 const ACTIONS: Array[StringName] = [
 	&"heal", &"center_heal", &"open_shop", &"open_storage", &"open_daycare",
+	&"open_elevator",
 ]
 
 const _DIALOGUE_KEYS: Array[String] = ["speaker", "narration", "draft", "variants"]

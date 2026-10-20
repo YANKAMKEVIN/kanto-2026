@@ -23,9 +23,8 @@ enum Status {
 	INVALID, ## Appel mal formé : état ou données absents, drapeau vide, niveau < 1.
 }
 
-## Origine posée sur le Pokémon donné. Provisoire : `Pokemon.Origin.GIFT` n'existe pas encore
-## (ajouté en fin d'enum au T12, fichier partagé) ; le T12 remplace cette valeur.
-const ORIGIN: Pokemon.Origin = Pokemon.Origin.CAPTURE
+## Origine posée sur le Pokémon donné (« gift » dans la sauvegarde, « Reçu à » sur la fiche).
+const ORIGIN: Pokemon.Origin = Pokemon.Origin.GIFT
 
 
 ## Donne un [param species] de niveau [param level] reçu sur [param map], une seule fois par

@@ -43,6 +43,9 @@ extends Node
 ## Jalon 19 (jalon-19.md §2.4, T13) : étape « wild_battle » (combat sauvage scripté, SPECTRE
 ## selon [GhostRule] et le Sac branché par [method set_inventory] ; défaite : réveil, fin de la
 ## scène).
+## Jalon 20 (`jalon-20.md` §2.5.2, T12) : étape « gift_pokemon » ([method PokemonGift.give] sur
+## l'état de [method set_badges] et les espèces de [method set_pokemon_data], d'un seul bloc ;
+## dialogue « reçoit », puis « au Stockage » si l'équipe est pleine ; [signal pokemon_gifted]).
 
 signal cutscene_started(cutscene_id: StringName)
 ## Début d'une étape (tests, outils de capture).
@@ -60,6 +63,10 @@ signal item_found(item_id: StringName, count: int)
 signal flash_started(count: int)
 ## Une étape demande un point de sauvegarde critique (notification, pas un accusé de réussite).
 signal save_requested(reason: String)
+## J20 : un Pokémon vient d'être donné (étape « gift_pokemon »), [param stored] s'il est allé au
+## Stockage. Émis juste après le don (drapeau déjà levé), avant ses dialogues : Boot demande
+## l'autosave et rafraîchit le compagnon.
+signal pokemon_gifted(pokemon: Pokemon, stored: bool)
 ## Le point de sauvegarde a échoué : scène et contrôles restent bloqués jusqu'à la réussite.
 signal save_failed(reason: String, error: Error)
 ## Fin d'une étape « wait » (interne).
@@ -138,6 +145,8 @@ var _trainers: TrainerLibrary
 ## [member _state] : l'autoload GameState en jeu, une instance de game_state.gd en test.
 var _badges: BadgeLibrary
 var _state: Node
+## Espèces (jalon 20, étape « gift_pokemon ») : branchées par Boot après setup.
+var _pokemon_data: PokemonData
 ## « Réduire les animations » (jalon 16, étape « animate ») : posé par Boot.
 var reduce_motion: bool = false
 ## Mise en scène d'une capacité de terrain (jalon 16, étape « field_move ») : coroutine
@@ -245,6 +254,12 @@ func set_trainers(trainers: TrainerLibrary) -> void:
 func set_badges(badges: BadgeLibrary, state: Node) -> void:
 	_badges = badges
 	_state = state
+
+
+## Branche les espèces (jalon 20) : l'étape « gift_pokemon » crée le Pokémon donné. Sans elles,
+## ou sans l'état de [method set_badges] : push_error, étape sautée (rien n'est donné).
+func set_pokemon_data(data: PokemonData) -> void:
+	_pokemon_data = data
 
 
 ## Joue [param cutscene_id]. Faux (et rien ne se passe) si une scène tourne, si
@@ -395,6 +410,8 @@ func _play_step(source_step: CutsceneStep) -> bool:
 			await _animate(step)
 		CutsceneStep.Kind.WILD_BATTLE:
 			return await _wild_battle(step)
+		CutsceneStep.Kind.GIFT_POKEMON:
+			await _gift_pokemon(step)
 		_:
 			_step_error("étape « %s » inconnue" % CutsceneStep.kind_name(step.kind))
 	return true
@@ -607,6 +624,27 @@ func _wild_battle(step: CutsceneStep) -> bool:
 		return true
 	await _wake_up()
 	return false
+
+
+## Étape « gift_pokemon » (jalon 20) : le don d'un seul bloc ([method PokemonGift.give] : équipe
+## ou Stockage, Pokédex, rencontre, drapeau), puis [signal pokemon_gifted] et les dialogues.
+## Déjà reçu : rien. Sans état ni espèces, ou espèce inconnue : push_error, rien n'est donné.
+func _gift_pokemon(step: CutsceneStep) -> void:
+	if _state == null or _pokemon_data == null:
+		_step_error("pas d'état de partie pour donner « %s »" % step.species)
+		return
+	var map_id: StringName = _map.map_id if is_instance_valid(_map) else &""
+	var result := PokemonGift.give(_state, _pokemon_data, step.species, step.level, map_id,
+		step.gift_flag)
+	if result.status == PokemonGift.Status.ALREADY_RECEIVED:
+		return
+	if not result.is_given():
+		_step_error("don de « %s » refusé (statut %d)" % [step.species, result.status])
+		return
+	pokemon_gifted.emit(result.pokemon, result.is_stored())
+	await _play_dialogue(step.dialogue_id)
+	if result.is_stored() and not step.dialogue_stored.is_empty():
+		await _play_dialogue(step.dialogue_stored)
 
 
 ## Case d'où part l'intro d'un combat sauvage scripté : celle devant le joueur (sa case s'il

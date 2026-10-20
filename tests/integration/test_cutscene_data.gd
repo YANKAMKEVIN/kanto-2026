@@ -241,6 +241,8 @@ const VARIANT_FLAGS: Dictionary = {
 	# Jalon 20 (T25) : boisson donnée au garde d'un poste de Safrania (une fois).
 	&"saffron_gate_drink_water": [PEWTER_FLAGS], &"saffron_gate_drink_soda": [PEWTER_FLAGS],
 	&"saffron_gate_drink_lemonade": [PEWTER_FLAGS],
+	# Jalon 20 (T12) : don d'Évoli (une fois).
+	&"celadon_eevee_gift": [PEWTER_FLAGS],
 }
 ## Scènes jouées par le code (pas de déclencheur) → carte où elles sont jouées.
 ## Jalon 7 (T18) : la scène du colis est lancée par la variante « cutscene » du dialogue de Chen.
@@ -249,6 +251,9 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	# Jalon 20 (T25) : choix OUI du garde d'un poste de Safrania (« confirm_cutscene »).
 	&"saffron_gate_drink_water": &"route_8_gate", &"saffron_gate_drink_soda": &"route_8_gate",
 	&"saffron_gate_drink_lemonade": &"route_8_gate",
+	# Jalon 20 (T12) : choix OUI de la Poké Ball d'Évoli ; carte de QA `qa_gift_j20` jusqu'au
+	# T17 (`celadon_mansion_roof_house`, même PNJ `eevee_ball`).
+	&"celadon_eevee_gift": &"qa_gift_j20",
 	&"starter_chosen": &"oak_lab", &"oak_parcel": &"oak_lab",
 	&"route_2_item_1": &"route_2", &"route_2_item_2": &"route_2",
 	# Jalon 9 (T18) : objets visibles de la Forêt de Jade (PNJ « objet » de son fichier).
@@ -437,7 +442,9 @@ func test_library_loads_without_error() -> void:
 		# Jalon 19 (T18) : zone purifiée, objets de la Tour (cinq visibles, un caché).
 		&"tower_purified_zone", &"tower_3f_objet_1", &"tower_4f_objet_1", &"tower_4f_objet_2",
 		&"tower_5f_objet_1", &"tower_5f_cache_1", &"tower_6f_objet_1",
-		&"saffron_gate_drink_water", &"saffron_gate_drink_soda", &"saffron_gate_drink_lemonade"]
+		&"saffron_gate_drink_water", &"saffron_gate_drink_soda", &"saffron_gate_drink_lemonade",
+		# Jalon 20 (T12) : don d'Évoli.
+		&"celadon_eevee_gift"]
 		+ J18_IDS))
 
 
@@ -940,6 +947,15 @@ func _simulate(label: String, variant: CutsceneVariant, start_map: StringName,
 			CutsceneStep.Kind.GIVE:
 				assert_true(_items.has_item(step.item_id), "%s : objet « %s »" % [where,
 					step.item_id])
+			CutsceneStep.Kind.GIFT_POKEMON:
+				# Jalon 20 (T12) : espèce connue, dialogues existants, drapeau levé.
+				assert_true(_pokemon.has_species(step.species), "%s : espèce « %s »" % [where,
+					step.species])
+				for said: StringName in [step.dialogue_id, step.dialogue_stored]:
+					if not said.is_empty():
+						assert_true(_dialogues.has_dialogue(said), "%s : dialogue « %s »" % [
+							where, said])
+				flags.set_flag(step.gift_flag)
 			CutsceneStep.Kind.CHAMPION_CARD:
 				var trainer := _trainers.get_trainer(step.trainer_id)
 				assert_true(trainer != null and trainer.has_card(), "%s : carte de « %s »" % [
