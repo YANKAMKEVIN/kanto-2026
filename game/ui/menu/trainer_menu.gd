@@ -33,6 +33,8 @@ signal team_member_moved(from: int, to: int)
 signal team_favorite_toggled(index: int)
 ## FAIRE SORTIR / RAPPELER touché sur le Pokémon [param index] (jalon 11).
 signal team_companion_toggled(index: int)
+## Passe systèmes 2 (T25b) : UTILISER sous la fiche d'une capacité de voyage (Téléport, Tunnel).
+signal team_field_move_requested(index: int, move: StringName)
 ## Relais de l'écran Sac (6B) : onglet ouvert, favori basculé (appui long), tri choisi, UTILISER,
 ## cible choisie, UTILISER À NOUVEAU.
 signal bag_category_opened(category: StringName)
@@ -277,6 +279,7 @@ func show_team(view: TeamView, selected: int) -> void:
 		_team.member_moved.connect(team_member_moved.emit)
 		_team.favorite_toggled.connect(team_favorite_toggled.emit)
 		_team.companion_toggled.connect(team_companion_toggled.emit)
+		_team.field_move_requested.connect(team_field_move_requested.emit)
 		_team.use_item_requested.connect(_on_team_use_item)
 		_host.add_child(_team)
 		_team.hide_now()
@@ -558,6 +561,12 @@ func get_pokedex() -> PokedexScreen:
 ## L'écran Équipe (null avant la première visite).
 func get_team() -> TeamScreen:
 	return _team
+
+
+## Passe systèmes 2 (T25b) : refus d'une capacité de voyage, dans le bandeau de l'Équipe.
+func show_team_notice(text: String) -> void:
+	if _team != null:
+		_team.show_notice(text)
 
 
 ## L'écran Carte (null avant la première visite).
