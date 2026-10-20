@@ -8,7 +8,11 @@ extends SceneTree
 ##     `elevator_panel`) en (2, 0), arrivée `entrance` (2, 1), sortie (2, 2) vers le bas, qui vise
 ##     le premier étage (réorientée par `ElevatorDirector`) ;
 ##   - `qa_elevator_j20_1f`, `qa_elevator_j20_2f` (7 × 5, T13) : porte de l'ascenseur (3, 0) vers
-##     la cabine, arrivée `from_elevator` (3, 1) tournée ↓.
+##     la cabine, arrivée `from_elevator` (3, 1) tournée ↓ ;
+##   - `qa_spin_j20` (10 × 8, T19) : dalles tournantes (nœud `SpinTiles`, interface du §2.4.2) ;
+##     départ `start` (2, 6) tourné ↑ ; dalle → (2, 5), dalle ↑ (5, 5), arrêt (5, 2) : trajet
+##     « E3,N3 » ; deux Dresseurs de QA (`data/npcs/qa_spin_j20.json`) : l'un voit (5, 4), au
+##     milieu de la glisse, l'autre la case d'arrêt.
 ## Les ascenseurs de QA ne sont pas dans `data/world/elevators.json` : les tests les lisent dans
 ## `tests/fixtures/elevators/` (`Boot.elevators_path`).
 ##
@@ -32,6 +36,7 @@ func _init() -> void:
 	_build_elevator_car()
 	for floor_id: String in ["1f", "2f"]:
 		_build_elevator_floor(floor_id)
+	_build_spin_room()
 	print("build_qa_j20 : %s" % ("OK" if _errors == 0 else "%d erreur(s)" % _errors))
 	quit(0 if _errors == 0 else 1)
 
@@ -75,6 +80,28 @@ func _build_elevator_floor(floor_id: String) -> void:
 	_warp(root, "ToElevator", Vector2i(3, 0), 0, Vector2i.UP, &"qa_elevator_j20", &"entrance",
 		Vector2i.UP)
 	_save(root, "res://game/world/maps/%s.tscn" % map_id)
+
+
+# --- Dalles tournantes (T19) ---------------------------------------------------------------
+
+func _build_spin_room() -> void:
+	var size := Vector2i(10, 8)
+	var kinds := _grid(size, "FOREST")
+	_fill(kinds, size, Rect2i(1, 1, 8, 6), "BOARDWALK")
+	var root := _new_map("QaSpinJ20", &"qa_spin_j20", "QA : dalles tournantes (J20)", size,
+		kinds)
+	_spawns(root, {"start": Vector2i(2, 6)})
+	var field := Node2D.new()
+	field.set_script(load("res://game/world/spin/spin_tile_field.gd"))
+	field.name = "SpinTiles"
+	var arrows: Dictionary[Vector2i, Vector2i] = {
+		Vector2i(2, 5): Vector2i.RIGHT, Vector2i(5, 5): Vector2i.UP,
+	}
+	var stops: Array[Vector2i] = [Vector2i(5, 2)]
+	field.set(&"arrows", arrows)
+	field.set(&"stops", stops)
+	_attach(root, root, field)
+	_save(root, "res://game/world/maps/qa_spin_j20.tscn")
 
 
 # --- Outils ---------------------------------------------------------------------------------
