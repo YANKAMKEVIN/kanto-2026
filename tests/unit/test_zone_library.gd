@@ -363,5 +363,5 @@ func test_j20_zones_texts_maps_and_services() -> void:
 		found[service.id] = service.found_on
 	assert_eq(found, {&"pokemon_center": &"celadon_center", &"poke_mart": &"celadon_dept_gf",
 		&"gym": &"celadon_gym"}, "services de Céladopole")
-	# Les cartes du repaire rejoignent la zone avec leur construction (T20).
-	assert_eq(_zones.get_zone(&"celadon_city").maps.size(), 19)
+	# 19 cartes de la ville (T16, T17) + Casino et 5 cartes du repaire (T20).
+	assert_eq(_zones.get_zone(&"celadon_city").maps.size(), 25)
