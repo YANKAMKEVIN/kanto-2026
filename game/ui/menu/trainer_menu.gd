@@ -48,6 +48,8 @@ signal pokedex_species_opened(species: StringName)
 ## Relais de l'écran Carte (6D) : zone découverte touchée. Le lien Pokémon observé → Pokédex
 ## passe par [signal route_requested].
 signal map_zone_touched(zone: StringName)
+## Passe systèmes 2 (§2.8, T24) : « S'ENVOLER » touché sur la Carte.
+signal map_fly_requested(zone: StringName)
 ## Relais de l'écran Paramètres (6F) : un réglage change (valeur du réglage, jamais un rang) ;
 ## « Sauvegarder maintenant » touché.
 signal setting_changed(key: StringName, value: Variant)
@@ -344,6 +346,7 @@ func show_map(view: MapView) -> void:
 		_map.back_requested.connect(back_requested.emit)
 		_map.route_requested.connect(route_requested.emit)
 		_map.zone_touched.connect(map_zone_touched.emit)
+		_map.fly_requested.connect(map_fly_requested.emit)
 		_host.add_child(_map)
 		_map.hide_now()
 	_map.show_map(view)

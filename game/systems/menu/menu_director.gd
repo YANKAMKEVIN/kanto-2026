@@ -52,6 +52,8 @@ signal pokedex_sheet_shown(view: PokedexSheetView)
 signal map_shown(view: MapView)
 ## Le panneau d'une zone découverte est à afficher (toucher, ou zone choisie à l'arrivée).
 signal map_zone_shown(view: ZonePanelView)
+## Passe systèmes 2 (§2.8, T24) : Vol accepté vers [param zone] ; Boot ferme le menu et envole.
+signal fly_requested(zone: StringName)
 ## L'écran Dresseur est à afficher : vue construite à l'entrée (et au retour d'un autre
 ## écran), le temps de jeu n'est pas rafraîchi en direct (jalon-06.md §6.11).
 signal trainer_shown(view: TrainerView)
@@ -134,6 +136,8 @@ var _storage_selection: StorageSelection = StorageSelection.new()
 ## Grottes de Kanto et carte courante (jalon 12, T20 : Corde Sortie) ; null / vide = aucune.
 var _caves: CaveLibrary
 var _current_map: Callable = Callable()
+## Passe systèmes 2 (T24) : func(zone: StringName) -> bool, Vol permis vers cette zone.
+var _fly_check: Callable = Callable()
 
 
 func _init() -> void:
@@ -579,7 +583,20 @@ func open_zone(zone: StringName) -> void:
 	var view := MapJournal.panel(zone, _state, _data, _zones, _items,
 		_unlocks.pokedex_visible())
 	if view != null:
+		view.fly_available = _fly_check.is_valid() and _fly_check.call(zone)
 		map_zone_shown.emit(view)
+
+
+## Passe systèmes 2 (T24) : [param check] = func(zone) -> bool (bouton « S'ENVOLER »).
+func set_fly_check(check: Callable) -> void:
+	_fly_check = check
+
+
+## « S'ENVOLER » touché : revérifié, puis [signal fly_requested] (Boot ferme le menu). Refusé
+## (la partie a changé depuis l'affichage du panneau) : rien.
+func request_fly(zone: StringName) -> void:
+	if _fly_check.is_valid() and _fly_check.call(zone):
+		fly_requested.emit(zone)
 
 
 ## [param with_sheet] : la fiche proposée par la grille (celle demandée par la route, sinon la

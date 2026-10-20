@@ -342,6 +342,7 @@ func _ready() -> void:
 	_services.daycare_requested.connect(_on_daycare_requested)
 	_setup_elevators()
 	_setup_teleporters()
+	_setup_fly()
 	_cutscenes_node.set_inventory(GameState.bag, _items)
 	# Remise du colis (jalon-07.md §3.6.2, T19) : jeton {first_wild_species} des répliques de
 	# Chen, scène lancée par une variante de dialogue (« colis en main »), légende POKÉDEX ACTIVÉ.
@@ -2102,3 +2103,34 @@ func _setup_teleporters() -> void:
 
 func get_key_door_director() -> KeyDoorDirector:
 	return _key_doors
+
+
+# --- Passe systèmes 2 (S2E) : Vol -------------------------------------------------------------
+
+var _fly: FlyDirector
+
+
+## Vol (`systemes-2.md` §2.8, T24–T25) : destinations de `fly_points.json`, bouton « S'ENVOLER »
+## de la Carte (Q-4), menu fermé puis [FlyDirector].
+func _setup_fly() -> void:
+	var rules := FlyRules.new()
+	rules.load_file()
+	_fly = FlyDirector.new()
+	_fly.name = "FlyDirector"
+	_fly.process_mode = Node.PROCESS_MODE_PAUSABLE
+	add_child(_fly)
+	_fly.setup(rules, func() -> Dictionary: return GameState.discovered_maps,
+		func(move: StringName) -> Variant: return _runner.field_source.call(move), _caves, SceneRouter.get_current_map, _player, _runner, SceneRouter,
+		_companion)
+	_menu.set_fly_check(_fly.can_fly_to)
+	_menu.fly_requested.connect(func(zone: StringName) -> void:
+		_menu.close()
+		_fly.fly(zone))
+	if _menu_screen.has_signal(&"map_fly_requested"):
+		_menu_screen.map_fly_requested.connect(_menu.request_fly)
+	_fly.flight_started.connect(_refresh_controls.unbind(1))
+	_fly.flight_finished.connect(_refresh_controls.unbind(1))
+
+
+func get_fly_director() -> FlyDirector:
+	return _fly

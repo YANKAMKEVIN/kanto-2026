@@ -16,6 +16,7 @@ enum Check {
 	NO_POKEMON, ## Aucun Pokémon de l'équipe ne peut voler.
 	INDOORS, ## Intérieur.
 	NO_FLY, ## Carte où le Vol est interdit (Parc Safari, Ligue, grottes [D, RB]).
+	CLOSED, ## Destination inconnue ou pas encore découverte (T24).
 }
 
 const DATA_PATH: String = "res://data/world/fly_points.json"
@@ -56,6 +57,25 @@ static func can_fly(field_state: FieldMoves.State, map: MapTraits, busy: bool = 
 	if map.no_fly:
 		return Check.NO_FLY
 	return Check.OK
+
+
+## Peut-on s'envoler d'ici vers la zone [param zone] ? [method can_fly], puis destination ouverte
+## ([param discovered] : `GameState.discovered_maps`) (T24 : bouton « S'ENVOLER » de la Carte).
+func can_fly_to(zone: StringName, field_state: FieldMoves.State, map: MapTraits,
+		discovered: Dictionary, busy: bool = false) -> Check:
+	var check := can_fly(field_state, map, busy)
+	if check != Check.OK:
+		return check
+	var point := get_point(zone)
+	return Check.OK if point != null and discovered.has(point.map) else Check.CLOSED
+
+
+## Traits de Vol d'une carte (T24) : intérieur, et Vol interdit dans une grotte [D, RB]
+## (`caves.json`). Le Parc Safari (J23) et la Ligue (J30) poseront leur propre interdiction.
+static func traits_of(interior: bool, cave: bool) -> MapTraits:
+	var traits := MapTraits.new(interior)
+	traits.no_fly = cave
+	return traits
 
 
 ## Charge [param path]. Faux s'il est illisible ou contient une erreur.
