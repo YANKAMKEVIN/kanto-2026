@@ -29,7 +29,7 @@
 	},
 	"reflect": {
 		"name": "Protection", "type": "psychic", "category": "status",
-		"accuracy": 0, "pp": 20, "pending_effects": ["reflect"],
-		"description": "Un mur de lumière qui réduit les dégâts physiques reçus. Sans effet dans le moteur actuel."
+		"accuracy": 0, "pp": 20, "effects": [{ "kind": "screen", "screen": "reflect" }],
+		"description": "Un mur de lumière qui réduit les dégâts physiques reçus."
 	}
 }

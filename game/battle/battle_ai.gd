@@ -169,6 +169,18 @@ static func status_has_effect(move: MoveData, own: Battler, foe: Battler) -> boo
 					return true
 			MoveEffect.Kind.FIXED_DAMAGE:
 				return true
+			MoveEffect.Kind.HEAL:
+				# Passe systèmes 2 : Soin seulement s'il manque des PV.
+				if own.pokemon.hp < own.pokemon.max_hp():
+					return true
+			MoveEffect.Kind.SCREEN:
+				# Le camp n'est pas connu ici : un mur déjà levé échoue, l'usage reste borné par
+				# STATUS_MAX_USES [D].
+				return true
+			MoveEffect.Kind.HAZE:
+				for stat: StringName in MoveEffect.STAGE_STATS:
+					if own.get_stage(stat) < 0 or foe.get_stage(stat) > 0:
+						return true
 			MoveEffect.Kind.OHKO:
 				# Passe systèmes 2 : jamais si elle échoue d'avance (niveau inférieur) [D].
 				return OhkoRules.level_allows(own.pokemon.level, foe.pokemon.level)

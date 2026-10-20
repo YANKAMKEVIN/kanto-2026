@@ -23,8 +23,9 @@ const TABLE := {
 	&"sonic_boom": [MoveEffect.Kind.FIXED_DAMAGE, 0.0, 0, 0, &"", &"value", 20],
 }
 ## Capacités du J12 (21) : genre attendu, ou rien (dégâts seuls) ; les 3 reportées gardent leur
-## mention et leur effet en attente (Damoclès : contrecoup joué depuis le jalon 19).
-const POSTPONED := [&"metronome", &"haze", &"light_screen"]
+## mention et leur effet en attente (Damoclès : contrecoup joué depuis le jalon 19 ; Buée Noire
+## et Mur Lumière joués depuis la passe systèmes 2).
+const POSTPONED := [&"metronome"]
 
 var _data: PokemonData
 var _texts: BattleText

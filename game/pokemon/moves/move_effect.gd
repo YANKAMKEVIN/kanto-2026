@@ -75,6 +75,19 @@ extends RefCounted
 ## Passe systèmes 2 (`systemes-2.md` §2.11, Q-2 : règle moderne) : [code]{ "kind": "ohko" }[/code].
 ## OHKO : K.O. en un coup (Empal'Korne, Guillotine, Abîme) ; capacité de statut, la précision et
 ## les refus sont ceux de [OhkoRules] (pas ceux de [method DamageCalc.accuracy_check]).
+## Passe systèmes 2, lot S2G (Q-7, règles modernes [D]) :
+## [codeblock]
+## { "kind": "heal", "fraction": 0.5 }   { "kind": "screen", "screen": "reflect" }   { "kind": "haze" }
+## { "kind": "charge", "texts": "skull_bash", "stat_up": "def" }
+## { "kind": "fixed_damage", "mode": "psywave" }
+## [/codeblock]
+## HEAL : le lanceur récupère [member fraction] de ses PV max (au moins 1) ; échoue à PV pleins
+## (Soin). SCREEN : [member screen] (« reflect » : dégâts physiques, « light_screen » : spéciaux)
+## protège le camp du lanceur [constant SCREEN_TURNS] tours : dégâts reçus ÷ 2, sauf coup
+## critique ; échoue s'il est déjà levé. HAZE : tous les niveaux de statistiques des deux
+## Pokémon en jeu reviennent à 0 (Buée Noire). CHARGE [member stat_up] : +1 niveau de cette
+## statistique au tour de charge (Coud'Krâne). FIXED_DAMAGE « psywave » : niveau × (50 à 150) %
+## (Vague Psy), au moins 1.
 
 enum Kind {
 	STAT_STAGE, RECOIL, SEED, STATUS, CONFUSION, HITS, FLINCH, CRIT_UP, FIXED_DAMAGE, BIDE,
@@ -83,6 +96,7 @@ enum Kind {
 	COINS,
 	REQUIRES_SLEEP, FORCE_SWITCH, RECOIL_DAMAGE, RECHARGE,
 	OHKO,
+	HEAL, SCREEN, HAZE,
 }
 enum Target { SELF, FOE }
 
@@ -99,9 +113,14 @@ const KIND_NAMES: Dictionary[String, Kind] = {
 	"requires_sleep": Kind.REQUIRES_SLEEP, "force_switch": Kind.FORCE_SWITCH,
 	"recoil_damage": Kind.RECOIL_DAMAGE, "recharge": Kind.RECHARGE,
 	"ohko": Kind.OHKO,
+	"heal": Kind.HEAL, "screen": Kind.SCREEN, "haze": Kind.HAZE,
 }
 ## Modes de FIXED_DAMAGE.
-const FIXED_MODES: Array[StringName] = [&"half_hp", &"level", &"value"]
+const FIXED_MODES: Array[StringName] = [&"half_hp", &"level", &"value", &"psywave"]
+## SCREEN : murs connus (l'identifiant est aussi celui de la capacité).
+const SCREENS: Array[StringName] = [&"reflect", &"light_screen"]
+## SCREEN : durée en tours, tour du lancer compris [D, règle moderne].
+const SCREEN_TURNS: int = 5
 const TARGET_NAMES: Dictionary[String, Target] = {"self": Target.SELF, "foe": Target.FOE}
 ## Statistiques qui ont un niveau en combat (−6..+6) ; « acc » précision, « eva » esquive.
 const STAGE_STATS: Array[StringName] = [&"atk", &"def", &"spa", &"spd", &"spe", &"acc", &"eva"]
@@ -145,5 +164,9 @@ var amount: int = 0
 var texts: StringName = &""
 ## CHARGE : le lanceur est invulnérable pendant la charge (Tunnel ; pas Lance-Soleil).
 var invulnerable: bool = false
+## CHARGE : statistique montée d'un niveau au tour de charge (Coud'Krâne : « def » ; vide sinon).
+var stat_up: StringName = &""
+## SCREEN : mur levé (une de [constant SCREENS]).
+var screen: StringName = &""
 ## COINS : pièces par niveau du lanceur (Rouge/Bleu : 2, [constant PayDayPurse.RB_PER_LEVEL]).
 var per_level: int = 0

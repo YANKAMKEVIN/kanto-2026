@@ -98,13 +98,13 @@
 	},
 	"haze": {
 		"name": "Buée Noire", "type": "ice", "category": "status",
-		"accuracy": 0, "pp": 30, "pending_effects": ["haze"],
-		"description": "Annule les changements de statistiques de tous les Pokémon. Sans effet dans le moteur actuel."
+		"accuracy": 0, "pp": 30, "effects": [{ "kind": "haze" }],
+		"description": "Annule les changements de statistiques de tous les Pokémon."
 	},
 	"light_screen": {
 		"name": "Mur Lumière", "type": "psychic", "category": "status",
-		"accuracy": 0, "pp": 30, "pending_effects": ["light_screen"],
-		"description": "Un mur de lumière qui réduit les dégâts spéciaux reçus. Sans effet dans le moteur actuel."
+		"accuracy": 0, "pp": 30, "effects": [{ "kind": "screen", "screen": "light_screen" }],
+		"description": "Un mur de lumière qui réduit les dégâts spéciaux reçus."
 	},
 	"double_edge": {
 		"name": "Damoclès", "type": "normal", "category": "physical",

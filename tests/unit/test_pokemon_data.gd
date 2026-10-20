@@ -881,7 +881,7 @@ func test_j14_moves() -> void:
 		&"low_kick": ["Balayage", &"fighting", MoveData.Category.PHYSICAL, 50, 90, 20, []],
 		&"submission": ["Sacrifice", &"fighting", MoveData.Category.PHYSICAL, 80, 80, 25, []],
 		&"psychic": ["Psyko", &"psychic", MoveData.Category.SPECIAL, 90, 100, 10, []],
-		&"reflect": ["Protection", &"psychic", MoveData.Category.STATUS, 0, 0, 20, ["reflect"]],
+		&"reflect": ["Protection", &"psychic", MoveData.Category.STATUS, 0, 0, 20, []],
 	}
 	for id: StringName in rows:
 		var row: Array = rows[id]

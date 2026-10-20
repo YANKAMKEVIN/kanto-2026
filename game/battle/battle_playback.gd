@@ -151,7 +151,7 @@ static func beats(event: BattleEvent, texts: BattleText, data: PokemonData,
 		BattleEvent.Kind.WITHDRAWN, BattleEvent.Kind.FORCED_OUT:
 			result.append_array(messages)
 			result.append(BattleBeat.new(BattleBeat.Kind.WITHDRAW, event))
-		BattleEvent.Kind.DRAINED_HP:
+		BattleEvent.Kind.DRAINED_HP, BattleEvent.Kind.HEALED:
 			result.append(BattleBeat.new(BattleBeat.Kind.HP, event))
 			result.append_array(messages)
 		BattleEvent.Kind.RESTED:

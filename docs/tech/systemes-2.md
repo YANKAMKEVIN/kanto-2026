@@ -750,6 +750,24 @@ ajoute `GIFT_POKEMON` à `CutsceneStep`) : drapeaux de capture sur l'étape `wil
 
 #### T31 — A : lot d'effets de combat retenu par Kevin (un effet = une règle pure + des tests + ses textes)
 
+**Fait (2026-10-20), règles modernes [D]** (le moteur suit déjà la table des types et les critiques
+modernes) :
+- **Soin** (`recover`) : `heal` (½ des PV max, au moins 1) ; échoue à PV pleins ;
+- **Protection / Mur Lumière** : `screen` sur le camp du lanceur, **5 tours** (tour du lancer
+  compris), dégâts physiques / spéciaux reçus ÷ 2 **sauf coup critique** ; reste quand le Pokémon
+  change ; déjà levé → échec (RB : Défense doublée jusqu'au changement, écarté) ;
+- **Buée Noire** : tous les niveaux des deux Pokémon à 0 (RB : soignait aussi les statuts,
+  écarté) ;
+- **Lance-Soleil / Coud'Krâne** : effet `charge` existant (non invulnérable) ; Coud'Krâne
+  `stat_up: def` (+1 Défense au tour de charge, comme le dit sa description validée) ;
+- **Vague Psy** : `fixed_damage` mode `psywave` (niveau × 50 à 150 %, au moins 1) ; la capacité
+  n'est pas en données (CT46, J27 la crée **avec** cet effet) ;
+- IA : Soin s'il manque des PV, Buée Noire s'il y a une baisse chez soi ou une hausse en face ;
+  mur toujours jugé utile, borné par `STATUS_MAX_USES` [D].
+Données : marqueurs et mentions « Sans effet » retirés (textes validés inchangés sinon) ; tests
+`test_battle_lot_s2g.gd` ; anciens tests « en attente » mis à jour. Reste en attente : Mania /
+Danse Fleur, Frénésie, Mimique, Métronome (J24).
+
 #### T31b — Q : **session S2G** → K (départs de combat)
 
 ### 3.9 S2Z — Clôture
@@ -856,6 +874,24 @@ Centre (Bourg Palette : devant la maison), villes ouvertes = cartes découvertes
 IA qui évite un `ohko` voué à l'échec ; `FOCUS_OUT` écrit après 1 s ; pas deux écritures en moins de
 2 s ; budget d'instantané < 5 ms ; Vélo permis en grotte (dossier 25) ; bouton Vélo au-dessus du
 bouton Course ; touche B.
+
+### 8.1 Lot de textes à valider (passe systèmes 2, 2026-10-20)
+
+Textes provisoires déjà en jeu (`data/battle/messages.json`), à valider ou corriger d'un bloc :
+
+| Modèle | Texte |
+|---|---|
+| `ohko` | C'est un K.O. en un coup ! |
+| `heal` | {pokemon} récupère des PV ! |
+| `screen_started_player` / `_foe` | {move} protège votre équipe ! / {move} protège l'équipe adverse ! |
+| `screen_ended_player` / `_foe` | L'effet de {move} prend fin pour votre équipe. / … pour l'équipe adverse. |
+| `haze` | Toutes les statistiques reviennent à la normale ! |
+| `charge_solar_beam_start` / `_broken` | {pokemon} absorbe la lumière ! / {pokemon} perd la lumière absorbée. |
+| `charge_skull_bash_start` / `_broken` | {pokemon} baisse la tête ! / {pokemon} relève la tête. |
+
+À venir avec leur code (après le J20) : refus du Vélo et du Surf (textes du dossier 25 et 27,
+déjà validés), « Il faut une carte. » (porte à carte), Vol (« {pokemon} s'envole très haut ! »,
+« {pokemon} redescend. »).
 
 ## 9. Estimation (ordre de grandeur, non mesuré)
 

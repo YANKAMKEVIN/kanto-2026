@@ -575,6 +575,7 @@ func _end_turn(events: Array[BattleEvent]) -> void:
 		if _state == State.OVER:
 			return
 		_disable_countdown(side, events)
+		_screen_countdown(side, events)
 	if _foe.active.pokemon.is_fainted():
 		_send_out(_foe, events)
 	if _player.active.pokemon.is_fainted():
@@ -845,9 +846,13 @@ func _strike(side: BattleSide, target_side: BattleSide, move: MoveData,
 				return false
 			if hits_effect != null:
 				hits = _hit_count(hits_effect)
+		var amount := result.amount
+		# Protection, Mur Lumière (passe systèmes 2) : dégâts ÷ 2, sauf coup critique.
+		if not result.critical and target_side.is_screened_from(move):
+			amount = maxi(amount / 2, 1)
 		var damage := _event(BattleEvent.Kind.DAMAGE, target_side)
 		damage.move_id = move.id
-		damage.amount = target.pokemon.take_damage(result.amount)
+		damage.amount = target.pokemon.take_damage(amount)
 		damage.hp = target.pokemon.hp
 		damage.effectiveness = result.effectiveness
 		damage.critical = result.critical
@@ -898,6 +903,45 @@ func _ohko_lands(side: BattleSide, target_side: BattleSide, move: MoveData,
 		_append_missed(side, move.id, events)
 		return false
 	return true
+
+
+## Soin (passe systèmes 2) : le lanceur récupère [member MoveEffect.fraction] de ses PV max (au
+## moins 1) ; à PV pleins, la capacité échoue.
+func _heal(effect: MoveEffect, move: MoveData, side: BattleSide,
+		events: Array[BattleEvent]) -> void:
+	var user := side.active.pokemon
+	if user.hp >= user.max_hp():
+		_append_failed(side, move.id, events)
+		return
+	var before := user.hp
+	user.hp = mini(user.hp + maxi(floori(user.max_hp() * effect.fraction), 1), user.max_hp())
+	var healed := _event(BattleEvent.Kind.HEALED, side)
+	healed.amount = user.hp - before
+	events.append(healed)
+
+
+## Protection, Mur Lumière (passe systèmes 2) : le mur protège le camp du lanceur
+## [constant MoveEffect.SCREEN_TURNS] tours ; déjà levé → la capacité échoue.
+func _raise_screen(effect: MoveEffect, move: MoveData, side: BattleSide,
+		events: Array[BattleEvent]) -> void:
+	if side.screen_turns(effect.screen) > 0:
+		_append_failed(side, move.id, events)
+		return
+	side.screens[effect.screen] = MoveEffect.SCREEN_TURNS
+	var started := _event(BattleEvent.Kind.SCREEN_STARTED, side)
+	started.move_id = effect.screen
+	events.append(started)
+
+
+## Fin de tour : chaque mur du camp perd un tour ; à 0, SCREEN_ENDED.
+func _screen_countdown(side: BattleSide, events: Array[BattleEvent]) -> void:
+	for screen: StringName in side.screens.keys():
+		side.screens[screen] -= 1
+		if side.screens[screen] <= 0:
+			side.screens.erase(screen)
+			var ended := _event(BattleEvent.Kind.SCREEN_ENDED, side)
+			ended.move_id = screen
+			events.append(ended)
 
 
 ## K.O. en un coup qui a touché : dégâts = PV restants de la cible, puis OHKO.
@@ -997,6 +1041,8 @@ func _apply_effect(effect: MoveEffect, move: MoveData, side: BattleSide,
 				else maxi(floori(target.pokemon.hp / 2.0), 1)
 			if effect.mode == &"value":
 				amount = effect.amount
+			elif effect.mode == &"psywave":
+				amount = maxi(side.active.pokemon.level * _rng.range_int(50, 150) / 100, 1)
 			var damage := _event(BattleEvent.Kind.DAMAGE, target_side)
 			damage.move_id = move_id
 			damage.amount = target.pokemon.take_damage(amount)
@@ -1035,6 +1081,14 @@ func _apply_effect(effect: MoveEffect, move: MoveData, side: BattleSide,
 			_start_recharge(side)
 		MoveEffect.Kind.OHKO:
 			_ohko(move, target_side, events)
+		MoveEffect.Kind.HEAL:
+			_heal(effect, move, side, events)
+		MoveEffect.Kind.SCREEN:
+			_raise_screen(effect, move, side, events)
+		MoveEffect.Kind.HAZE:
+			_player.active.reset_stages()
+			_foe.active.reset_stages()
+			events.append(_event(BattleEvent.Kind.STATS_RESET, side))
 
 
 ## Effet [code]confusion[/code] (jalon 11) sur le Pokémon de [param target_side] : comme un
@@ -1440,6 +1494,15 @@ func _start_charge(side: BattleSide, action: BattleAction, move: MoveData,
 	var started := _event(BattleEvent.Kind.CHARGE_STARTED, side)
 	started.move_id = move.id
 	events.append(started)
+	if effect.stat_up != &"":
+		# Coud'Krâne (passe systèmes 2) : +1 niveau au tour de charge.
+		var applied := side.active.change_stage(effect.stat_up, 1)
+		var changed := _event(BattleEvent.Kind.STAT_CHANGED if applied != 0
+			else BattleEvent.Kind.STAT_UNCHANGED, side)
+		changed.stat = effect.stat_up
+		changed.stages = applied if applied != 0 else 1
+		changed.stage = side.active.get_stage(effect.stat_up)
+		events.append(changed)
 	return true
 
 

@@ -143,6 +143,10 @@ extends RefCounted
 ## Passe systèmes 2 (`systemes-2.md` §2.11) :
 ## - OHKO : une capacité K.O. en un coup a touché (camp de la cible), juste après son DAMAGE (les
 ##   PV restants de la cible) ; « C'est un K.O. en un coup ! ».
+## - HEALED : Soin, le lanceur récupère [member amount] PV ([member hp] : après) ;
+## - SCREEN_STARTED / SCREEN_ENDED : le mur [member move_id] (« reflect », « light_screen ») est
+##   levé sur le camp [member side] / y prend fin (fin de tour) ;
+## - STATS_RESET : Buée Noire, tous les niveaux de statistiques reviennent à 0 (camp du lanceur).
 ## Tous les autres événements sur un Pokémon portent dans [member status] son statut au moment
 ## de l'événement (SENT_OUT : la carte de PV l'affiche dès l'entrée ; FAINTED : toujours vide,
 ## le K.O. efface le statut).
@@ -166,6 +170,7 @@ enum Kind {
 	RECHARGING, SCARED_AWAY, FORCED_OUT,
 	GHOST_SCARED, GHOST_SPOKE,
 	OHKO,
+	HEALED, SCREEN_STARTED, SCREEN_ENDED, STATS_RESET,
 }
 enum SideId { PLAYER, FOE }
 

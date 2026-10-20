@@ -31,8 +31,8 @@ const MOVE_TEXTS := {
 	&"bubble_beam": ["Bulles d'O", "Projette des bulles avec force. Peut baisser la Vitesse."],
 	&"absorb": ["Vol-Vie",
 		"Aspire l'énergie de la cible. Le lanceur récupère la moitié des dégâts infligés."],
-	&"recover": ["Soin",
-		"Le lanceur récupère la moitié de ses PV. Sans effet dans le moteur actuel."],
+	# Passe systèmes 2 : Soin joué, la mention « Sans effet » est retirée.
+	&"recover": ["Soin", "Le lanceur récupère la moitié de ses PV."],
 	&"clamp": ["Claquoir", "La cible est prise entre deux coquilles pendant quelques tours."],
 	&"aurora_beam": ["Onde Boréale",
 		"Un rayon aux couleurs de l'aurore frappe la cible. Peut baisser son Attaque."],
@@ -180,8 +180,8 @@ func test_effects_existing_or_pending() -> void:
 		assert_eq(_data.get_move(id).pending_effects.size(), 0, String(id))
 	assert_eq(_data.get_move(&"absorb").pending_effects.size(), 0)
 	# Effets encore absents du moteur : en attente.
-	var pending := {&"recover": ["heal_half"], &"petal_dance": ["rampage"],
-		&"light_screen": ["light_screen"]}
+	# Soin et Mur Lumière : joués depuis la passe systèmes 2.
+	var pending := {&"petal_dance": ["rampage"]}
 	for id: StringName in pending:
 		assert_eq(_data.get_move(id).pending_effects, PackedStringArray(pending[id]),
 			String(id))

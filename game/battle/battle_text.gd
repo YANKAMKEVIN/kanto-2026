@@ -55,7 +55,9 @@ extends RefCounted
 ## TELEPORTED → « teleported » ; NOTHING_HAPPENED → « nothing_happened ». Super Bonbon (T18b,
 ## n° 62) : « rare_candy_level » ({level} : le niveau atteint), sans événement du moteur (le voile
 ## du Sac le demande à [method line_for]).
-## Passe systèmes 2 : OHKO → « ohko » (K.O. en un coup).
+## Passe systèmes 2 : OHKO → « ohko » (K.O. en un coup) ; HEALED → « heal » ; SCREEN_STARTED /
+## SCREEN_ENDED → « screen_started_<camp> » / « screen_ended_<camp> » ({move} : le mur) ;
+## STATS_RESET → « haze ».
 ## Jalon 19 : RECHARGING → « recharging » (Ultralaser) ; SCARED_AWAY → « scared_away »
 ## (Hurlement, combat sauvage) ; FORCED_OUT → « forced_out » (Hurlement contre un Dresseur, puis
 ## « sent_out_player » ou « sent_out_foe » du remplaçant).
@@ -151,6 +153,10 @@ const TEMPLATE_IDS: Array[StringName] = [
 	&"ghost_name", &"ghost_appeared", &"ghost_unidentified", &"ghost_scared", &"ghost_spoke",
 	&"ghost_ball_refused",
 	&"ohko",
+	&"heal", &"screen_started_player", &"screen_started_foe", &"screen_ended_player",
+	&"screen_ended_foe", &"haze",
+	&"charge_solar_beam_start", &"charge_solar_beam_broken",
+	&"charge_skull_bash_start", &"charge_skull_bash_broken",
 ]
 ## Entre deux gains de statistiques du bilan (« PV +2 · Attaque +1 »).
 const SUMMARY_SEPARATOR: String = " · "
@@ -407,6 +413,14 @@ func lines(event: BattleEvent, data: PokemonData, trainer: TrainerData = null) \
 			result.append(_fill(&"ghost_spoke", event, data))
 		BattleEvent.Kind.OHKO:
 			result.append(_fill(&"ohko", event, data))
+		BattleEvent.Kind.HEALED:
+			result.append(_fill(&"heal", event, data))
+		BattleEvent.Kind.SCREEN_STARTED, BattleEvent.Kind.SCREEN_ENDED:
+			var started := event.kind == BattleEvent.Kind.SCREEN_STARTED
+			result.append(_fill(StringName("screen_%s_%s" % ["started" if started else "ended",
+				"foe" if event.side == BattleEvent.SideId.FOE else "player"]), event, data))
+		BattleEvent.Kind.STATS_RESET:
+			result.append(_fill(&"haze", event, data))
 		BattleEvent.Kind.STATUS_INFLICTED, BattleEvent.Kind.STATUS_UNCHANGED, \
 				BattleEvent.Kind.STATUS_DAMAGED, BattleEvent.Kind.STATUS_CURED, \
 				BattleEvent.Kind.STATUS_PREVENTED, BattleEvent.Kind.STATUS_ENDED:
