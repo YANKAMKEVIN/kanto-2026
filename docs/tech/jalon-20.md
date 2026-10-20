@@ -1317,7 +1317,7 @@ commit ; textes **mot pour mot** (§20 et annexe A validée).
   `test_celadon_order` (Erika puis repaire, repaire puis Erika : mêmes résultats),
   `test_j20_no_j21_flags`, `test_tower_scope_j20` (si J19), `test_save_j20` (complet).
 
-#### T22 — constructeur-monde : compagnon — (B)
+#### T22 — constructeur-monde : compagnon — (B) — **FAIT le 2026-10-20** (détail : `etat-projet.md`, entrée « J20 T22 »)
 - §2.12 ; `test_companion_j20` (suit sur les routes, le souterrain, la ville et le repaire ; rentre
   dans les intérieurs ; se rétracte pendant une glisse et un trajet d'ascenseur ; Évoli s'il est
   éligible).
