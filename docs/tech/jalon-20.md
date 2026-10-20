@@ -1129,7 +1129,7 @@ commit ; textes **mot pour mot** (§20 et annexe A validée).
   remplacements d'espèces (§2.10.6) confirmés ; `plan_check.py` relancé (38 plans).
 - **CA** : `tools/test.sh` vert, import propre ; ce plan corrigé dans le même commit.
 
-#### T10 — constructeur-monde (Mac) : intégration de l'art — (B), après T3 et T9
+#### T10 — constructeur-monde (Mac) : intégration de l'art — (B), après T3 et T9 — **FAIT le 2026-10-20** (série 22 : personnages, dos, décors ; icônes et reste du kit : série 22 bis, détail `etat-projet.md`)
 - Manifeste (fin), `preparer.py`, `build_painted_props.gd -- --nouveaux`,
   `build_character_frames.gd` (fin), icônes du Sac, fonds de combat (`decors.json`). **CA** : second
   passage sans changement ; `test_painted_props`, `test_battle_stage` verts.

@@ -2682,6 +2682,42 @@
    "source": "PNJ_EXORCISTE_NE_r1.png",
    "sortie": "assets/sprites/characters/painted/exorciste_sheet.png",
    "hauteur": 128
+  },
+  {
+   "id": "erika",
+   "source": "PNJ_ERIKA_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/erika_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "giovanni",
+   "source": "PNJ_GIOVANNI_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/giovanni_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "rocket_civil",
+   "source": "PNJ_ROCKET_CIVIL_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/rocket_civil_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "intello",
+   "source": "PNJ_INTELLO_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/intello_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "beaute",
+   "source": "PNJ_BEAUTE_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/beaute_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "topdresseuse",
+   "source": "PNJ_TOPDRESSEUSE_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/topdresseuse_sheet.png",
+   "hauteur": 128
   }
  ],
  "pokemon": [
@@ -3193,6 +3229,42 @@
    "source": "PASSAGERE_ATTENTE_r1.png",
    "sortie": "assets/sprites/characters/painted/passagere_idle_sheet.png",
    "marche": "passagere"
+  },
+  {
+   "id": "erika_idle",
+   "source": "ERIKA_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/erika_idle_sheet.png",
+   "marche": "erika"
+  },
+  {
+   "id": "giovanni_idle",
+   "source": "GIOVANNI_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/giovanni_idle_sheet.png",
+   "marche": "giovanni"
+  },
+  {
+   "id": "rocket_civil_idle",
+   "source": "ROCKET_CIVIL_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/rocket_civil_idle_sheet.png",
+   "marche": "rocket_civil"
+  },
+  {
+   "id": "intello_idle",
+   "source": "INTELLO_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/intello_idle_sheet.png",
+   "marche": "intello"
+  },
+  {
+   "id": "beaute_idle",
+   "source": "BEAUTE_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/beaute_idle_sheet.png",
+   "marche": "beaute"
+  },
+  {
+   "id": "topdresseuse_idle",
+   "source": "TOPDRESSEUSE_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/topdresseuse_idle_sheet.png",
+   "marche": "topdresseuse"
   }
  ],
  "images_objets": [
