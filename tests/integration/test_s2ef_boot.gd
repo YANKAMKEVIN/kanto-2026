@@ -129,7 +129,7 @@ func test_key_door_refuses_without_the_card_then_opens_for_good() -> void:
 func test_fly_start_is_valid() -> void:
 	var start := DebugStart.new()
 	var data := PokemonData.new()
-	assert_true(data.load_all())
+	assert_true(data.load_dir())
 	var items := ItemLibrary.new()
 	assert_true(items.load_dir())
 	assert_true(start.load_file(START_FLY, data, items), "\n".join(start.get_errors()))

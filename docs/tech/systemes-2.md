@@ -737,7 +737,22 @@ chaque jalon le modifie (conflit assuré sinon).
 
 #### T24 — U : lancement du Vol (Q-4), liste des villes — après T23
 
+**Fait (2026-10-21)** : bouton « S'ENVOLER » (`AccentButton`) au bas du panneau d'une zone de la
+Carte quand `ZonePanelView.fly_available` (Q-4 lève le « aucun bouton de déplacement » du J6) ;
+`ZonePanel` → `MapScreen` → `TrainerMenu.map_fly_requested` → `MenuDirector.request_fly`
+(revérifié) → `fly_requested` → Boot ferme le menu. `FlyRules.can_fly_to` (conditions, lieu, ville
+découverte ; `Check.CLOSED` nouveau) et `FlyRules.traits_of` : **Vol interdit en grotte d'après
+`caves.json` [D]** (aucun champ dans `map.gd` : S2B y pose `mount_traits()`, le J23 et le J30
+poseront `no_fly`). Départ `s2_fly` (Céladopole, 7 villes, CS02, Roucoups qui connaît Vol) ;
+clé `discovered` ajoutée aux départs de débogage.
+
 #### T25 — C : mise en scène de l'envol, arrivée ; Vol en combat (données) — après T24
+
+**Mise en scène faite (2026-10-21)** : `FlyDirector` (bloc `_setup_fly` de Boot) : compagnon
+rentré, « {pokemon} s'envole très haut ! » (`fly_takeoff`, variante `field: fly:ready`), joueur
+effacé en 0,6 s [D], `SceneRouter.change_map` vers le point de `fly_points.json` tourné vers le bas
+[D], « {pokemon} redescend. » (`fly_landing`), compagnon ressorti ; autosave d'arrivée habituel.
+Tests `test_fly_integration.gd`, `test_s2ef_boot.gd` (vraie scène Boot).
 
 **Vol en combat fait (2026-10-21)** : `fly` en données seulement (`data/pokemon/moves/moves_s2.json` :
 Vol, vol, physique, 90 / 95 / PP 15, effet `charge` avec `invulnerable`, comme Tunnel) ; textes
@@ -808,6 +823,18 @@ pièges refusés (spawn inexistant, paire orpheline, non réciproque, salle sans
 « T » sans téléporteur) et une grille correcte acceptée.
 
 #### T28 — C : `KeyDoor`, `qa_teleport` vivante, Carte Magnétique (`card_key`, données) — après T26
+
+**Fait (2026-10-21)** : `KeyDoor` (sous-classe de `FlagGate` : `door_id`, `key_item`, drapeau
+`door_<carte>_<id>_open`, `decide`) ; verbe **OUVRIR** (`Interaction.Kind.OPEN`, fin d'énum,
+icône de clé provisoire) : le contrôleur d'interactions émet `door_requested(cell)` au lieu de jouer
+un dialogue ; `KeyDoorDirector` (bloc `_setup_teleporters` de Boot, qui relaie aussi `relocated` au
+compagnon) : avec la clé, battant effacé en 0,3 s [D], drapeau levé (cases libérées, OUVRIR retiré),
+autosave demandé, carte gardée ; sans, « Il faut une carte. » (`key_door_locked`). Objet `card_key`
+(`items_s2.json`). Cartes `qa_teleport` et `qa_teleport_2` (`tools/build_qa_teleport.gd`, enveloppes
+`tools/art/placeholders_qa_teleport.py`, déclarées dans `interiors.json`, exception dans
+`test_map_catalog` à retirer en S2Z) ; sorties vers `celadon_city:from_center_w` [D] (`qa_mount` est
+sur la branche S2B) ; départ `s2_teleport`. Tests `test_key_door.gd`, `test_qa_teleport_map.gd`,
+`test_s2ef_boot.gd`.
 
 #### T28b — Q : **session S2F** → K
 
