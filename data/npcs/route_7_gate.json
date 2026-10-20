@@ -1,0 +1,22 @@
+{
+	"saffron_guard": {
+		"cell": [
+			4,
+			2
+		],
+		"facing": "down",
+		"sprite": "guard",
+		"dialogue": "saffron_gate_guard",
+		"keep_facing": true,
+		"moved": {
+			"if": [
+				"saffron_gates_open"
+			],
+			"cell": [
+				3,
+				2
+			],
+			"facing": "right"
+		}
+	}
+}

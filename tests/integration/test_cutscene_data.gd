@@ -238,11 +238,17 @@ const VARIANT_FLAGS: Dictionary = {
 	&"route_10_item_1": [PEWTER_FLAGS], &"dark_cave_1f_item_1": [PEWTER_FLAGS],
 	&"dark_cave_1f_item_2": [PEWTER_FLAGS], &"dark_cave_b1f_item_1": [PEWTER_FLAGS],
 	&"dark_cave_b1f_hidden_1": [PEWTER_FLAGS], &"lavender_reached": [PEWTER_FLAGS],
+	# Jalon 20 (T25) : boisson donnée au garde d'un poste de Safrania (une fois).
+	&"saffron_gate_drink_water": [PEWTER_FLAGS], &"saffron_gate_drink_soda": [PEWTER_FLAGS],
+	&"saffron_gate_drink_lemonade": [PEWTER_FLAGS],
 }
 ## Scènes jouées par le code (pas de déclencheur) → carte où elles sont jouées.
 ## Jalon 7 (T18) : la scène du colis est lancée par la variante « cutscene » du dialogue de Chen.
 ## Jalon 8 : les objets visibles de la Route 2, par le dialogue de leur PNJ « objet ».
 const CODE_PLAYED: Dictionary[StringName, StringName] = {
+	# Jalon 20 (T25) : choix OUI du garde d'un poste de Safrania (« confirm_cutscene »).
+	&"saffron_gate_drink_water": &"route_8_gate", &"saffron_gate_drink_soda": &"route_8_gate",
+	&"saffron_gate_drink_lemonade": &"route_8_gate",
 	&"starter_chosen": &"oak_lab", &"oak_parcel": &"oak_lab",
 	&"route_2_item_1": &"route_2", &"route_2_item_2": &"route_2",
 	# Jalon 9 (T18) : objets visibles de la Forêt de Jade (PNJ « objet » de son fichier).
@@ -430,7 +436,9 @@ func test_library_loads_without_error() -> void:
 		&"tower_rival",
 		# Jalon 19 (T18) : zone purifiée, objets de la Tour (cinq visibles, un caché).
 		&"tower_purified_zone", &"tower_3f_objet_1", &"tower_4f_objet_1", &"tower_4f_objet_2",
-		&"tower_5f_objet_1", &"tower_5f_cache_1", &"tower_6f_objet_1"] + J18_IDS))
+		&"tower_5f_objet_1", &"tower_5f_cache_1", &"tower_6f_objet_1",
+		&"saffron_gate_drink_water", &"saffron_gate_drink_soda", &"saffron_gate_drink_lemonade"]
+		+ J18_IDS))
 
 
 func _sorted(values: Array) -> Array[StringName]:

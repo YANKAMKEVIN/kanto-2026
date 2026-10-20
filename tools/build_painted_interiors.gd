@@ -2050,20 +2050,27 @@ func _route_7_8_room(id: StringName, node: String, route: int, exit_spawn: Strin
 	}
 
 
-## Poste de Safrania (grille `poste_safrania.txt`) : la porte de Safrania (4..5, 1), fermée tant que
-## la ville n'existe pas (« Safrania — À venir », jamais atteinte : le garde en (4, 2) et la
-## barrière (plante) en (5, 2) la ferment ; T25 la rend conditionnelle).
+## Poste de Safrania (grille `poste_safrania.txt`) : la porte de Safrania (4..5, 1), fermée par le
+## garde (`saffron_guard`, `data/npcs/route_<n>_gate.json`) en (4, 2) et la barrière (plante) en
+## (5, 2) ; le garde s'écarte en (3, 2) quand les postes s'ouvrent (T25, `saffron_gates_open`).
 func _saffron_gate(route: int) -> Dictionary:
 	var room := _route_7_8_room(StringName("route_%d_gate" % route), "Route%dGate" % route, route,
 		&"from_gate")
+	# Le garde s'écarte vers (3, 2) une fois la boisson donnée (T25, §2.16) : pas d'armoire basse.
+	room["props"] = (room["props"] as Array).filter(func(prop: Array) -> bool:
+		return prop[3] != "LowCabinet")
 	(room["props"] as Array).append([&"int_plante", Vector2i(5, 2), 2.95, "Barrier"])
 	(room["spawns"] as Dictionary)["north_door"] = Vector2i(4, 3)
-	(room["warps"] as Array).append_array([
-		["ToSaffronW", Vector2i(4, 1), STEP_ON, Vector2i.UP, &"", &"north_door", Vector2i.DOWN,
-			"Safrania"],
-		["ToSaffronE", Vector2i(5, 1), STEP_ON, Vector2i.UP, &"", &"north_door", Vector2i.DOWN,
-			"Safrania"],
-	])
+	# Porte de Safrania : la ville (J26) / `from_gate_r<n>` dès que sa carte existe ; avant,
+	# « Safrania — À venir » (jamais atteinte : le garde la ferme tant que les postes sont clos).
+	var city := ResourceLoader.exists(MAPS_DIR + "saffron_city.tscn")
+	for entry: Array in [["ToSaffronW", Vector2i(4, 1)], ["ToSaffronE", Vector2i(5, 1)]]:
+		if city:
+			(room["warps"] as Array).append([entry[0], entry[1], STEP_ON, Vector2i.UP,
+				&"saffron_city", StringName("from_gate_r%d" % route), Vector2i.UP])
+		else:
+			(room["warps"] as Array).append([entry[0], entry[1], STEP_ON, Vector2i.UP, &"",
+				&"north_door", Vector2i.DOWN, "Safrania"])
 	return room
 
 

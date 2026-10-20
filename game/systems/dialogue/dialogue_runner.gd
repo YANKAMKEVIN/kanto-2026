@@ -74,6 +74,11 @@ var caught_count: Callable
 ## sautées. Posé par [Boot] ([FieldMoves]). Le Pokémon nommé remplace `{pokemon}` dans la variante
 ## choisie.
 var field_source: Callable
+## Jalon 20 (§2.9.6, §2.16) : `func(item_id) -> bool` (le Sac contient l'objet) et
+## `func(zone_id) -> bool` ([method ZoneLibrary.is_playable]) pour « if_items », « unless_items »
+## et « if_zone ». Posés par [Boot] ; non valides : ces variantes sont sautées.
+var item_source: Callable
+var zone_source: Callable
 
 var _library: DialogueLibrary
 var _flags: StoryFlags
@@ -149,7 +154,8 @@ func play(dialogue_id: StringName, npc: Npc = null, map: GameMap = null,
 	if dialogue == null:
 		push_error("DialogueRunner : dialogue inconnu « %s »" % dialogue_id)
 		return false
-	var variant := dialogue.pick(_flags, _rng(), _caught(), field_source)
+	var variant := dialogue.pick(_flags, _rng(), _caught(), field_source, item_source,
+		zone_source)
 	if variant == null:
 		push_error("DialogueRunner : aucune variante de « %s » ne s'applique" % dialogue_id)
 		return false
@@ -186,7 +192,7 @@ func has_auto_variant(dialogue_id: StringName) -> bool:
 	var dialogue := _library.get_dialogue(dialogue_id) if _library != null else null
 	if dialogue == null:
 		return false
-	var variant := dialogue.pick(_flags, null, _caught())
+	var variant := dialogue.pick(_flags, null, _caught(), Callable(), item_source, zone_source)
 	return variant != null and variant.auto
 
 

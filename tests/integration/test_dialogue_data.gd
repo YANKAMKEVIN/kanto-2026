@@ -435,9 +435,14 @@ const DOSSIER_19 := "res://docs/design/dossier-19-ss-anne-major-bob.md"
 ## Jalon 20 (T15) : panneaux des Routes 7 et 8 (dossier 23 §20, textes 1, 2, 11).
 const IDS_J20: Array[StringName] = [
 	&"route_7_sign", &"route_7_underground_sign", &"route_8_sign", &"route_8_underground_sign",
+	# T25 : garde des postes de Safrania et boisson donnée (annexe A.14 du plan, texte 12).
+	&"saffron_gate_guard", &"saffron_gate_drink_water", &"saffron_gate_drink_soda",
+	&"saffron_gate_drink_lemonade",
 ]
 ## Jalon 20 : lot de textes validé du dossier 23 (§20, une citation par ligne).
 const DOSSIER_23 := "res://docs/design/dossier-23-celadopole.md"
+## Jalon 20 (T25) : annexe A.14 du plan (postes de Safrania, textes 215 à 219).
+const PLAN_J20 := "res://docs/tech/jalon-20.md"
 const IDS_J19: Array[StringName] = [
 	&"tower_channeler_1_after",
 	&"tower_channeler_1_before",
@@ -728,6 +733,8 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		&"misty_bridge_invite",
 		# Jalon 19 (T14) : le SPECTRE du 6F.
 		&"tower_6f_ghost_after", &"tower_6f_ghost_warning",
+		# Jalon 20 (T25) : la boisson donnée au garde d'un poste de Safrania.
+		&"saffron_gate_drink_lemonade", &"saffron_gate_drink_soda", &"saffron_gate_drink_water",
 		# Jalon 19 (T16) : la gardienne du rez-de-chaussée.
 		&"tower_guardian_worried",
 		# Jalon 19 (T17) : le rival n° 5 (joué par sa scène).
@@ -887,6 +894,8 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		&"rival_tower_lost_once", &"rival_tower_retried", &"rival_tower_won",
 		# Jalon 19 (T24) : première rencontre du SPECTRE du 6F (dossier 22 §13).
 		&"tower_ghost_met",
+		# Jalon 20 (T25) : boisson donnée, les quatre postes de Safrania s'ouvrent.
+		&"saffron_gates_open",
 		&"route_3_entered", &"route_3_guard_cleared", &"route_4_reached", &"route_5_entered",
 		&"starter_chosen",
 		&"starter_offered", &"tm11_received", &"tm34_received", &"viridian_arrived",
@@ -1116,7 +1125,11 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 	var dossier_15 := FileAccess.get_file_as_string(DOSSIER_15)
 	var dossier_21 := FileAccess.get_file_as_string(DOSSIER_21) \
 		+ FileAccess.get_file_as_string(PLAN_J18)
-	var dossier_23 := FileAccess.get_file_as_string(DOSSIER_23)
+	var dossier_23 := FileAccess.get_file_as_string(DOSSIER_23).replace("\n    ", " ")
+	# T25 (n° 219) : « [Joueur] donne un(e) [boisson] au garde. », écrit pour chaque boisson.
+	var plan_j20 := FileAccess.get_file_as_string(PLAN_J20).replace("\n     ", " ")
+	for drink: String in ["une Eau Fraîche", "un Soda Cool", "une Limonade"]:
+		plan_j20 += plan_j20.replace("[Joueur] donne un(e) [boisson]", "{joueur} donne " + drink)
 	var dossier_22 := FileAccess.get_file_as_string(DOSSIER_22).replace("\n   ", " ") \
 		.replace("\n  ", " ")
 	var dossier_20 := FileAccess.get_file_as_string(DOSSIER_20).replace("**", "")
@@ -1184,7 +1197,8 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			# J19 (T17) : citation du §15 repliée sur deux lignes du dossier.
 			or _in_dossier_18(_flat_lines(dossier_22), text)
 			# J20 (T15) : dossier 23 §20, un panneau sur deux lignes, une citation par ligne.
-			or _each_line_quoted(dossier_23, text),
+			or _each_line_quoted(dossier_23, text)
+			or _in_dossier_18(dossier_23, text) or _in_dossier_18(plan_j20, text),
 			"%s : « %s » dans un dossier de conception" % [row[0], text])
 
 
@@ -1424,7 +1438,8 @@ func test_oak_parcel_lines() -> void:
 		elif PLAYED_BY_COMPANION.has(row[0]):
 			expected = [DialogueTokens.POKEMON]
 		elif row[0] == &"nugget_rocket_given" \
-				or (row[0] == &"rival_tower_intro" and row[1].contains("{player}")):
+				or (row[0] == &"rival_tower_intro" and row[1].contains("{player}")) \
+				or (String(row[0]).begins_with("saffron_gate_drink_") and row[1].contains("{player}")):
 			expected = [DialogueTokens.PLAYER]
 		elif J17_TOKENS.has(row[1]):
 			# Jalon 17 (T8) : compte d'espèces de l'assistant (T-1 à T-3), joueur de T-3.

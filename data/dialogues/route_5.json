@@ -28,6 +28,10 @@
 		"speaker": "Garde",
 		"variants": [
 			{
+				"if": ["saffron_gates_open"],
+				"pages": ["Merci encore pour la boisson.", "Allez-y, Safrania vous attend."]
+			},
+			{
 				"unless": ["route_5_gate_warned"],
 				"set": ["route_5_gate_warned"],
 				"pages": [

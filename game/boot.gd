@@ -333,6 +333,10 @@ func _ready() -> void:
 	_runner.caught_count = func() -> int: return GameState.pokedex.caught_count()
 	# Capacités de terrain (jalon 16) : état de Coupe pour les variantes « field » de l'arbuste.
 	_runner.field_source = field_state
+	# Jalon 20 (§2.9.6, §2.16) : variantes selon le Sac et selon les zones jouables (postes de
+	# Safrania).
+	_runner.item_source = func(id: StringName) -> bool: return (GameState.bag as Bag).has(id)
+	_runner.zone_source = _zones.is_playable
 	# OUV.2 : prénoms du joueur et du rival (`{player}`, `{rival}`) aussi dans le nom du dresseur.
 	_texts.token_values = _dialogue_token_values
 	_runner.cutscene_requested.connect(_on_cutscene_requested)

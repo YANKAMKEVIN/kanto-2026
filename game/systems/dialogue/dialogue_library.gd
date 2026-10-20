@@ -49,7 +49,7 @@ const ACTIONS: Array[StringName] = [
 const _DIALOGUE_KEYS: Array[String] = ["speaker", "narration", "draft", "variants"]
 const _VARIANT_KEYS: Array[String] = [
 	"pages", "if", "unless", "set", "auto", "heal", "draft", "action", "choice", "cutscene",
-	"one_in", "if_caught_at_least", "unless_caught_at_least", "field", "shop",
+	"one_in", "if_caught_at_least", "unless_caught_at_least", "field", "shop", "if_items", "unless_items", "if_zone",
 ]
 const _CHOICE_KEYS: Array[String] = [
 	"confirm", "cancel", "confirm_action", "confirm_pages", "cancel_pages", "confirm_cutscene",
@@ -238,7 +238,30 @@ func _parse_variant(value: Variant, where: String) -> DialogueVariant:
 		ok = _read_field(entry, variant, where) and ok
 	if entry.has("shop"):
 		ok = _read_shop(entry, variant, where) and ok
+	ok = _read_items(entry, "if_items", variant.if_items, where) and ok
+	ok = _read_items(entry, "unless_items", variant.unless_items, where) and ok
+	if entry.has("if_zone"):
+		if not entry["if_zone"] is String or (entry["if_zone"] as String).is_empty():
+			ok = _fail("%s : « if_zone » doit être un identifiant de zone" % where)
+		else:
+			variant.if_zone = StringName(entry["if_zone"])
 	return variant if ok else null
+
+
+## « if_items » / « unless_items » (jalon 20) : liste non vide d'identifiants d'objets, sans
+## doublon (l'existence des objets est vérifiée par les tests de données).
+func _read_items(entry: Dictionary, key: String, out: Array[StringName], where: String) -> bool:
+	if not entry.has(key):
+		return true
+	var value: Variant = entry[key]
+	if not value is Array or (value as Array).is_empty():
+		return _fail("%s : « %s » doit être une liste non vide d'objets" % [where, key])
+	for id: Variant in value:
+		if not id is String or (id as String).is_empty() or out.has(StringName(id)):
+			out.clear()
+			return _fail("%s : « %s » doit être une liste d'objets sans doublon" % [where, key])
+		out.append(StringName(id))
+	return true
 
 
 ## « shop » (jalon 20) : identifiant de boutique non vide, seulement avec « action »: « open_shop ».

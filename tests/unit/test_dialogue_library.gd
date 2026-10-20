@@ -512,3 +512,35 @@ func test_shop_key_needs_the_open_shop_action() -> void:
 		"shop": ""}}, "test"), "identifiant vide")
 	assert_push_error_count(3)
 	assert_eq(_library.size(), 1)
+
+
+## Jalon 20 (§2.9.6, §2.16) : variantes selon le Sac (« if_items » / « unless_items ») et selon
+## une zone jouable (« if_zone ») ; sans source, ces variantes ne s'appliquent pas.
+func test_item_and_zone_conditions() -> void:
+	assert_true(_library.add_from_dict({"guard": {"variants": [
+		{"if_zone": "saffron_city", "if_items": ["fresh_water", "soda_pop"], "pages": ["deux"]},
+		{"if_zone": "saffron_city", "unless_items": ["lemonade"], "pages": ["sans limonade"]},
+		{"pages": ["fermé"]},
+	]}}, "test"))
+	var guard := _library.get_dialogue(&"guard")
+	assert_eq(guard.variants[0].if_items, [&"fresh_water", &"soda_pop"] as Array[StringName])
+	assert_eq(guard.variants[1].unless_items, [&"lemonade"] as Array[StringName])
+	assert_eq(guard.variants[0].if_zone, &"saffron_city")
+	var bag: Array[StringName] = [&"fresh_water", &"soda_pop"]
+	var has := func(id: StringName) -> bool: return bag.has(id)
+	var open := func(_zone: StringName) -> bool: return true
+	var closed := func(_zone: StringName) -> bool: return false
+	var flags := StoryFlags.new()
+	assert_eq(guard.pick(flags, null, 0, Callable(), has, open).pages[0].text, "deux")
+	bag.erase(&"soda_pop")
+	assert_eq(guard.pick(flags, null, 0, Callable(), has, open).pages[0].text, "sans limonade")
+	bag.append(&"lemonade")
+	assert_eq(guard.pick(flags, null, 0, Callable(), has, open).pages[0].text, "fermé")
+	assert_eq(guard.pick(flags, null, 0, Callable(), has, closed).pages[0].text, "fermé")
+	assert_eq(guard.pick(flags).pages[0].text, "fermé", "sans source : rien d'autre")
+	for bad: Dictionary in [{"if_items": []}, {"if_items": "fresh_water"},
+			{"unless_items": ["a", "a"]}, {"if_zone": ""}]:
+		var entry := {"pages": ["x"]}
+		entry.merge(bad)
+		assert_false(_library.add_from_dict({"bad": entry}, "test"), str(bad))
+	assert_push_error_count(4)
