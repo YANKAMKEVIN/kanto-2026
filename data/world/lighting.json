@@ -120,6 +120,18 @@
 			"contact": { "color": "#2a170a", "alpha": 0.5 },
 			"wind": 0.0
 		},
+		"greenhouse": {
+			"grade": {
+				"shadows": [0.94, 1.0, 0.94],
+				"midtones": [0.98, 1.03, 0.96],
+				"highlights": [1.0, 1.03, 0.94],
+				"strength": 1.0
+			},
+			"sun_direction": [-0.7, -0.7],
+			"rim": { "color": "#e6f5c8", "strength": 0.12, "width": 3.0 },
+			"contact": { "color": "#10241a", "alpha": 0.5 },
+			"wind": 0.0
+		},
 		"lavender": {
 			"grade": {
 				"shadows": [1.02, 0.99, 1.07],
@@ -247,6 +259,25 @@
 		"underground_path_7_8": "underground",
 		"route_7": "golden_hour",
 		"route_7_gate": "interior_warm",
-		"route_7_underground_gate": "interior_warm"
+		"route_7_underground_gate": "interior_warm",
+		"celadon_city": "golden_hour",
+		"celadon_center": "interior_warm",
+		"celadon_dept_gf": "interior_warm",
+		"celadon_dept_2f": "interior_warm",
+		"celadon_dept_3f": "interior_warm",
+		"celadon_dept_4f": "interior_warm",
+		"celadon_dept_5f": "interior_warm",
+		"celadon_dept_roof": "golden_hour",
+		"celadon_dept_elevator": "interior_warm",
+		"celadon_mansion_gf": "interior_warm",
+		"celadon_mansion_1f": "interior_warm",
+		"celadon_mansion_2f": "interior_warm",
+		"celadon_mansion_3f": "interior_warm",
+		"celadon_mansion_roof": "golden_hour",
+		"celadon_mansion_roof_house": "interior_warm",
+		"celadon_restaurant": "interior_warm",
+		"celadon_chief_house": "interior_warm",
+		"celadon_hotel": "interior_warm",
+		"celadon_gym": "greenhouse"
 	}
 }

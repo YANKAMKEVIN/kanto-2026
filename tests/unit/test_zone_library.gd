@@ -197,7 +197,7 @@ func test_service_catalog_and_the_services_of_viridian() -> void:
 	# Jalon 13 T7 : Azuria. Jalon 15 T14 : Carmin-sur-Mer (test_vermilion_city).
 	for id: StringName in _zones.get_ids():
 		if not id in [&"viridian_city", &"pewter_city", &"mt_moon", &"cerulean_city",
-				&"vermilion_city", &"route_5", &"route_10", &"lavender_town"]:
+				&"vermilion_city", &"route_5", &"route_10", &"lavender_town", &"celadon_city"]:
 			assert_true(_zones.get_zone(id).services.is_empty(), "%s : aucun service" % id)
 	var mt_moon := _zones.get_zone(&"mt_moon").services
 	assert_eq(mt_moon.size(), 1, "Mont Sélénite : le Centre seul (sans Boutique)")

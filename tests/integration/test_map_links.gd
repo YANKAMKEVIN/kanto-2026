@@ -52,12 +52,24 @@ const MAP_IDS: Array[StringName] = [
 	# Jalon 18 (T14) : Lavanville, ses intérieurs et le rez-de-chaussée de la Tour.
 	&"lavender_town", &"lavender_center", &"lavender_mart", &"pokemon_house",
 	&"lavender_house_1", &"lavender_house_2", &"pokemon_tower_1f",
+	# Jalon 20 (T16) : Céladopole, son grand magasin, sa Résidence, ses petits intérieurs, l'Arène.
+	&"celadon_city", &"celadon_center", &"celadon_dept_gf", &"celadon_dept_2f",
+	&"celadon_dept_3f", &"celadon_dept_4f", &"celadon_dept_5f", &"celadon_dept_roof",
+	&"celadon_dept_elevator", &"celadon_mansion_gf", &"celadon_mansion_1f",
+	&"celadon_mansion_2f", &"celadon_mansion_3f", &"celadon_mansion_roof",
+	&"celadon_mansion_roof_house", &"celadon_restaurant", &"celadon_chief_house",
+	&"celadon_hotel", &"celadon_gym", &"route_7",
 ]
 ## Cartes dont les passages « à venir » sont comptés dans leur propre test (jalon 18).
 const OWN_COMING_SOON_COUNT: Array[StringName] = [&"lavender_town", &"pokemon_tower_1f"]
 ## Retours pas encore branchés : [carte d'origine, carte cible]. Jalon 16 (T15) : vide (Carmin
 ## mène au pont principal du S.S. Anne et à l'Arène ; les retours sont vérifiés).
-const PENDING_RETURNS: Array = []
+const PENDING_RETURNS: Array = [
+	# Jalon 20 (T16) : la sortie de la cabine du grand magasin mène au RdC ; l'`ElevatorDirector`
+	# (T13) la réoriente vers l'étage courant.
+	[&"celadon_dept_2f", &"celadon_dept_elevator"], [&"celadon_dept_3f", &"celadon_dept_elevator"],
+	[&"celadon_dept_4f", &"celadon_dept_elevator"], [&"celadon_dept_5f", &"celadon_dept_elevator"],
+]
 ## Cartes construites par une autre tâche en parallèle (jalon 7 : la Route 22, T22 ; jalon 10 :
 ## Argenta, T11, pendant les intérieurs du T13) : un warp qui y mène est vérifié seulement si la
 ## carte existe déjà (sinon le test le signale).
@@ -156,7 +168,8 @@ func test_every_coming_soon_warp_returns_to_a_walkable_spawn_of_its_own_map() ->
 	# mène à la vraie Route 11. Jalon 18 (T15) : Azuria et la Route 9 sont reliées (arbre coupé du
 	# J16) ; la Grotte Sombre et Lavanville sont reliées à la Route 10, et les passages de
 	# Lavanville et de la Tour sont comptés dans leurs propres tests.
-	assert_eq(found, 3, "« SAFRANIA » (2), Safrania (1)")
+	# Jalon 20 (T16) : le Casino de Céladopole (2 cases) reste « à venir » jusqu'au T20.
+	assert_eq(found, 5, "« SAFRANIA » (2), Safrania (1), Casino (2)")
 
 
 ## Warp de [param map] qui ramène à [param origin] depuis [param arrival] : sur la case

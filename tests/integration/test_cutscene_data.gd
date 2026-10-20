@@ -66,6 +66,8 @@ const MAPS: Array[StringName] = [
 	&"pokemon_tower_2f",
 	# Jalon 19 (T18) : zone purifiée du 5F et objets des 3F à 6F (PNJ « objet » de leurs fichiers).
 	&"pokemon_tower_3f", &"pokemon_tower_4f", &"pokemon_tower_5f",
+	# Jalon 20 (T16) : COUPER sur les arbustes de l'Arène d'Erika (examens posés dans les scènes).
+	&"celadon_city", &"celadon_gym",
 ]
 ## Jalon 7 (T18) : partie qui revient au labo avec le colis (rival parti après le combat).
 const PARCEL_FLAGS: Array[StringName] = [
@@ -224,6 +226,8 @@ const VARIANT_FLAGS: Dictionary = {
 	&"cut_tree_route_2_east_bush": [PEWTER_FLAGS], &"cut_tree_route_2_futur_a": [PEWTER_FLAGS],
 	# Jalon 18 (T15) : Coupe de l'arbre de la sortie est d'Azuria.
 	&"cut_tree_cerulean_east": [PEWTER_FLAGS],
+	# Jalon 20 (T16) : Coupe des deux arbustes de l'Arène d'Erika.
+	&"cut_tree_celadon_gym_bush": [PEWTER_FLAGS], &"cut_tree_celadon_gym_inner_bush": [PEWTER_FLAGS],
 	# Jalon 18 (T16) : objets et déclencheurs silencieux des objectifs (une variante chacun).
 	&"route_9_entered": [PEWTER_FLAGS], &"route_9_item_1": [PEWTER_FLAGS],
 	&"route_9_item_2": [PEWTER_FLAGS], &"route_9_item_3": [PEWTER_FLAGS],
@@ -289,6 +293,8 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"cut_tree_route_2_east_bush": &"route_2_east", &"cut_tree_route_2_futur_a": &"route_2",
 	# Jalon 18 (T15) : COUPER sur l'arbre de la sortie est d'Azuria.
 	&"cut_tree_cerulean_east": &"cerulean_city",
+	# Jalon 20 (T16) : COUPER sur les arbustes de l'Arène d'Erika.
+	&"cut_tree_celadon_gym_bush": &"celadon_city", &"cut_tree_celadon_gym_inner_bush": &"celadon_gym",
 	# Jalon 16 : embarquement, par le dialogue du marin (TXT-01).
 	&"ss_anne_boarding": &"vermilion_city",
 	# Jalon 11 (T14) : remise tardive de la CT34 (dialogue de Pierre).
@@ -437,7 +443,8 @@ func test_library_loads_without_error() -> void:
 		# Jalon 17 (T23) : Coupe des deux arbustes.
 		&"cut_tree_route_2_east_bush", &"cut_tree_route_2_futur_a",
 		# Jalon 18 (T15) : l'arbre de la sortie est d'Azuria.
-		&"cut_tree_cerulean_east", &"tower_6f_ghost", &"tower_guardian",
+		&"cut_tree_cerulean_east", &"cut_tree_celadon_gym_bush",
+		&"cut_tree_celadon_gym_inner_bush", &"tower_6f_ghost", &"tower_guardian",
 		&"tower_rival",
 		# Jalon 19 (T18) : zone purifiée, objets de la Tour (cinq visibles, un caché).
 		&"tower_purified_zone", &"tower_3f_objet_1", &"tower_4f_objet_1", &"tower_4f_objet_2",

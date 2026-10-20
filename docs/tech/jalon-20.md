@@ -1222,7 +1222,9 @@ commit ; textes **mot pour mot** (§20 et annexe A validée).
   du bord ouest de Lavanville → reprise sur la case, le bord mène à la Route 8, retour sur la même
   rangée). **CA** : tests verts, captures relues contre les vues, budget.
 
-#### T16 — constructeur-monde : Céladopole et intérieurs, Arène — (B)
+#### T16 — constructeur-monde : Céladopole et intérieurs, Arène — (B) — **FAIT le 2026-10-20**
+- Fait (détail et valeurs par défaut : `etat-projet.md`, entrée « J20 T16 ») : géométrie seulement ;
+  PNJ, Dresseuses, Erika, Évoli, vendeurs et scènes au T17 ; trajet d'ascenseur au T13 (test en attente).
 - §2.1, §2.2, `build_celadon_city.gd`, intérieurs (`--celadon`), `build_celadon_gym.gd` ; profil
   `greenhouse` ; `interiors.json`, `rest_points.json`, `zones.json`.
 - Tests `test_celadon_city` (Arène fermée sans Coupe, ville entière ouverte sans Coupe ; 14 PNJ hors
