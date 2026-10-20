@@ -16,7 +16,9 @@ extends RefCounted
 ## Verbe du bouton contextuel : Parler / Examiner / Observer / Rencontrer / Prendre
 ## ([constant Kind.TAKE] : objet visible au sol, jalon 8 §2.3, porté par un PNJ). Nouvelles
 ## valeurs en fin d'enum (les scripts d'outil écrivent les valeurs dans les cartes).
-enum Kind { TALK, EXAMINE, OBSERVE, MEET, TAKE }
+## [constant Kind.OPEN] (« Ouvrir », passe systèmes 2 §2.10) : porte à carte ([KeyDoor]) ; ne joue
+## pas de dialogue, le contrôleur d'interactions signale la porte et [KeyDoorDirector] répond.
+enum Kind { TALK, EXAMINE, OBSERVE, MEET, TAKE, OPEN }
 
 var kind: Kind = Kind.EXAMINE
 var cell: Vector2i = Vector2i.ZERO
@@ -79,6 +81,8 @@ static func kind_name(value: Kind) -> StringName:
 			return &"meet"
 		Kind.TAKE:
 			return &"take"
+		Kind.OPEN:
+			return &"open"
 	return &"examine"
 
 
@@ -95,6 +99,8 @@ static func kind_from_name(value: String) -> int:
 			return Kind.MEET
 		"take":
 			return Kind.TAKE
+		"open":
+			return Kind.OPEN
 	return -1
 
 

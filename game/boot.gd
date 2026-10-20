@@ -341,6 +341,7 @@ func _ready() -> void:
 	_daycare.finished.connect(_on_daycare_finished)
 	_services.daycare_requested.connect(_on_daycare_requested)
 	_setup_elevators()
+	_setup_teleporters()
 	_cutscenes_node.set_inventory(GameState.bag, _items)
 	# Remise du colis (jalon-07.md §3.6.2, T19) : jeton {first_wild_species} des répliques de
 	# Chen, scène lancée par une variante de dialogue (« colis en main »), légende POKÉDEX ACTIVÉ.
@@ -2074,3 +2075,30 @@ func _on_spin_slide_started() -> void:
 func _on_spin_slide_finished() -> void:
 	_companion.on_cutscene_finished()
 	_refresh_controls()
+
+
+# --- Passe systèmes 2 (S2F) : téléporteurs et portes à carte -----------------------------------
+
+## Téléporteurs (`systemes-2.md` §2.9) : à la fin d'un replacement sur la même carte, le compagnon
+## ressort comme après l'écran « à venir ». Portes à carte (§2.10) : [KeyDoorDirector] répond à
+## l'appui OUVRIR. Un seul bloc, déconnecté à la sortie par le directeur lui-même.
+var _key_doors: KeyDoorDirector
+
+
+func _setup_teleporters() -> void:
+	_key_doors = KeyDoorDirector.new()
+	_key_doors.name = "KeyDoorDirector"
+	_key_doors.process_mode = Node.PROCESS_MODE_PAUSABLE
+	add_child(_key_doors)
+	_key_doors.setup(GameState.flags, GameState.bag, _player, _runner,
+		SceneRouter.get_current_map, request_autosave)
+	_interactions.door_requested.connect(_key_doors.on_door_requested)
+	var on_relocated := func(_map: GameMap) -> void: _on_coming_soon_finished(_map)
+	SceneRouter.relocated.connect(on_relocated)
+	_key_doors.tree_exiting.connect(func() -> void:
+		if SceneRouter.relocated.is_connected(on_relocated):
+			SceneRouter.relocated.disconnect(on_relocated))
+
+
+func get_key_door_director() -> KeyDoorDirector:
+	return _key_doors

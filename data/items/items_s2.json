@@ -1,0 +1,7 @@
+{
+	"card_key": {
+		"name": "Carte Magnétique", "plural": "Cartes Magnétiques", "feminine": true,
+		"category": "key",
+		"description": "Une carte électronique qui ouvre les portes verrouillées."
+	}
+}
