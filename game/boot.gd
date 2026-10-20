@@ -205,6 +205,8 @@ var _elevators := ElevatorLibrary.new()
 var _elevator: ElevatorDirector
 var _elevator_panel: ElevatorPanel
 var _pending_elevator: bool = false
+## J20 (T19, `jalon-20.md` §2.4.4) : dalles tournantes du repaire (glisse, verrou, reprise).
+var _spin: SpinTileDirector
 
 @onready var _world: Node2D = %World
 @onready var _hud: ExplorationHud = %ExplorationHud
@@ -256,6 +258,7 @@ func _ready() -> void:
 	_library.load_dir()
 	_cutscenes.load_dir()
 	_runner.setup(_library, GameState.flags, _dialogue_box, _player)
+	_setup_spin_tiles()
 	# Centre Pokémon (jalon 7, 7A.2, jalon-07.md §6.2) : actions de dialogue (soins), choix à deux
 	# cartes dans la boîte de dialogue (T7), réveil au point de repos.
 	_rest_points.load_file()
@@ -822,7 +825,8 @@ func is_stable() -> bool:
 		and not SceneRouter.is_transitioning() and not _runner.is_running() \
 		and not _cutscenes_node.is_running() and not _starter_choice.is_sheet_open() \
 		and not _battle_director.is_running() and not _encounters.is_running() \
-		and not _flash.is_running() and not _elevator.is_running()
+		and not _flash.is_running() and not _elevator.is_running() \
+		and not _spin.is_running()
 
 
 ## Garde d'ouverture du Menu Dresseur : partie stable (ce qui exclut dialogue, scène, rencontre,
@@ -1283,6 +1287,8 @@ func _on_map_changed(map: GameMap) -> void:
 	_recovery.set_map(map)
 	# J20 (T13) : cabine d'ascenseur (étage courant d'après la carte quittée, sortie réorientée).
 	_elevator.set_map(map, _arrival_from)
+	# J20 (T19) : dalles tournantes ; joueur posé sur une dalle → case stable (avant le compagnon).
+	_spin.set_map(map)
 	_companion.on_map_changed(map)
 	_field_presenter.set_map(map)
 	# Décor de combat de la carte chargé en tâche de fond (correctif QA S24 du CB.3).
@@ -1750,7 +1756,7 @@ func _refresh_controls() -> void:
 		and not _player.is_blocked_by(RARE_CANDY)
 		and not (_daycare != null and _daycare.is_running())
 		and not _player.is_blocked_by(FlashDirector.LOCK_REASON)
-		and not _elevator.is_running())
+		and not _elevator.is_running() and not _spin.is_running())
 
 
 ## Racine de composition : les dépendances sont explicites et câblées une seule fois.
@@ -2043,3 +2049,30 @@ func _on_elevator_ride_finished() -> void:
 func _push_stable_location(map_id: StringName) -> void:
 	var at := _elevator.stable_location(map_id, _player.get_cell(), _player.get_facing())
 	GameState.set_player_location(at["map"], at["cell"], at["facing"])
+
+
+## J20 (T19, `jalon-20.md` §2.4.4) : directeur des dalles tournantes, branché sur le pas du joueur
+## **avant** tout autre écouteur (directeur de scènes, Dresseurs, rencontres, routeur) : le pas
+## qui pose le joueur sur une dalle bloque le joueur avant qu'ils ne le voient.
+func _setup_spin_tiles() -> void:
+	_spin = SpinTileDirector.new()
+	_spin.name = "SpinTileDirector"
+	_spin.process_mode = Node.PROCESS_MODE_PAUSABLE
+	add_child(_spin)
+	_spin.setup(_player, _trainer_watcher)
+	_spin.slide_started.connect(_on_spin_slide_started.unbind(1))
+	_spin.slide_finished.connect(_on_spin_slide_finished.unbind(1))
+
+
+func get_spin_director() -> SpinTileDirector:
+	return _spin
+
+
+func _on_spin_slide_started() -> void:
+	_companion.on_cutscene_started()
+	_refresh_controls()
+
+
+func _on_spin_slide_finished() -> void:
+	_companion.on_cutscene_finished()
+	_refresh_controls()

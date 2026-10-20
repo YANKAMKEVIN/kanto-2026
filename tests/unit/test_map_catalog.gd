@@ -30,10 +30,10 @@ func test_has_map() -> void:
 ## (T24) : `qa_charge_j14` ; jalon 15 (T23) : `qa_daycare` ; jalon 16 (T20) : `qa_dock_j16`,
 ## `qa_ship_j16`, `qa_gym_j16` ; jalon 17 (T28) : `qa_flash`, `qa_flash_entry` (les tests du
 ## voile et de Flash tournent sur la Cave Taupiqueur rendue obscure en mémoire).
-## Jalon 20 (T12, T13) : cartes de QA du don et de l'ascenseur (tests seulement), **retirées au
-## T24** (`tools/build_qa_j20.gd`).
+## Jalon 20 (T12, T13, T19) : cartes de QA du don, de l'ascenseur et des dalles tournantes (tests
+## seulement), **retirées au T24** (`tools/build_qa_j20.gd`).
 const J20_QA_MAPS: Array[String] = ["qa_gift_j20.tscn", "qa_elevator_j20.tscn",
-	"qa_elevator_j20_1f.tscn", "qa_elevator_j20_2f.tscn"]
+	"qa_elevator_j20_1f.tscn", "qa_elevator_j20_2f.tscn", "qa_spin_j20.tscn"]
 
 
 func test_no_qa_map_is_shipped() -> void:

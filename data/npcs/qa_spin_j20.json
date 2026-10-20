@@ -1,0 +1,16 @@
+{
+	"guetteur": {
+		"cell": [8, 4], "facing": "left", "sprite": "rocket_grunt_m",
+		"dialogue": "mt_moon_rocket_1_defeated", "unless": ["beaten_mt_moon_rocket_1"],
+		"trainer": {"id": "mt_moon_rocket_1", "sight": 3, "before": "mt_moon_rocket_1_before",
+			"defeated": "mt_moon_rocket_1_defeated", "rematch": "mt_moon_rocket_1_rematch",
+			"leave": []}
+	},
+	"gardien": {
+		"cell": [8, 2], "facing": "left", "sprite": "rocket_grunt_m",
+		"dialogue": "mt_moon_rocket_3_defeated", "unless": ["beaten_mt_moon_rocket_3"],
+		"trainer": {"id": "mt_moon_rocket_3", "sight": 3, "before": "mt_moon_rocket_3_before",
+			"defeated": "mt_moon_rocket_3_defeated", "rematch": "mt_moon_rocket_3_rematch",
+			"leave": []}
+	}
+}

@@ -477,6 +477,28 @@ L'outil `build_rocket_hideout.gd` lit les caractères `< > ^ v` et `o` de la gri
 Array[Vector2i]`. Les flèches et les disques sont **peints** (décalcomanies du kit), pas des nœuds
 par case. Les cases de flèche et d'arrêt sont du sol praticable dans `Ground`.
 
+**Interface fixée au T19 pour T20 / T21** (modèle : `_build_spin_room()` de
+`tools/build_qa_j20.gd`, carte `qa_spin_j20`) :
+- nœud `Node2D` nommé **`SpinTiles`**, **enfant direct de la racine** de la carte, script
+  `res://game/world/spin/spin_tile_field.gd` (le directeur le cherche par ce nom, puis par le
+  groupe) ; `arrows` = case → vecteur unitaire (`Vector2i.RIGHT` pour `>`, etc. :
+  `SpinTileRules.direction_of_char`), `stops` = cases `o`. Dans l'outil, construire des variables
+  **typées** (`var arrows: Dictionary[Vector2i, Vector2i]`, `var stops: Array[Vector2i]`) puis
+  `field.set(&"arrows", arrows)` : la scène les écrit typés.
+- « Praticable » pour la glisse = dans la carte, ni `solid` ni `water` (grille de la carte ; les
+  occupants ne comptent pas). En build debug, chaque entrée sur la carte lance
+  `SpinTileField.check()` et fait un `push_error` par dalle fautive : un test qui charge la carte
+  échoue si les données sont fausses. Test T20 conseillé : `field.check(walkable).is_empty()` avec
+  la même règle.
+- **Rien sur une dalle ni sur un trajet** : ni PNJ (Dresseurs compris : un pas refusé arrête la
+  glisse sur place, `push_error`), ni objet au sol, ni `WarpPoint`, `EventTriggerPoint` ou point
+  d'apparition (un joueur posé sur une dalle est reposé sur sa case d'arrêt). Une case d'arrêt peut
+  porter un point d'apparition, pas une dalle.
+- Les pas de la glisse ne sont vus par personne (ni passage, ni déclencheur, ni rencontre, ni
+  compteur de la Pension) ; à l'arrêt, seuls les **Dresseurs** regardent la case d'arrêt
+  (`TrainerWatcher.check_at`). Un Dresseur placé pour voir une case d'arrêt (T21) réagit comme
+  après un pas normal ; un Dresseur dont la ligne coupe le **milieu** d'un trajet ne réagit pas.
+
 #### 2.4.3 Logique pure (`game/world/spin/spin_tile_rules.gd`, T4)
 
 | Élément | Rôle |
@@ -1246,7 +1268,30 @@ commit ; textes **mot pour mot** (§20 et annexe A validée).
 #### T18 — qa-mobile : **session 20-I** → Kevin
 - Protocole §6.2. **CA** : rapport `build/qa/jalon20_20i/`, validation de Kevin.
 
-#### T19 — architecte : dalles tournantes — (B), après T4 et T9
+#### T19 — architecte : dalles tournantes — (B), après T4 et T9 — **FAIT le 2026-10-20**
+- Fait (branche `j20-t19-dalles` depuis `jalon-20` à `fb1d6fbe`) : `SpinTileDirector`
+  (`game/world/spin/spin_tile_director.gd`, enfant PAUSABLE de Boot, bloc J20
+  `_setup_spin_tiles()`), branché sur `Player.moved` **avant** tous les autres écouteurs (appelé
+  juste après `_runner.setup`) : le pas libre qui pose le joueur sur une dalle le bloque (raison
+  `spin`) dans le `moved` même, donc aucun autre écouteur ne le traite. Chaque pas de course est
+  lancé dans le `moved` du précédent (aucune image d'arrêt) ; la fin est **différée d'un appel**
+  (`call_deferred`) pour que le dernier pas reste « bloqué » pour les autres écouteurs, puis verrou
+  levé, `slide_finished(cell)`, `TrainerWatcher.check_at(cell)` (nouveau, public : le corps de
+  l'ancien `_on_player_moved`). `is_stable()` et `_refresh_controls()` tiennent compte de
+  `is_running()` ; compagnon rentré (`on_cutscene_started`) puis revenu ; `set_map` dans
+  `_on_map_changed` (avant le compagnon) : sans `SpinTiles`, veille ; joueur posé sur une dalle →
+  reposé sur `safe_cell` (reprise). Interface des cartes : §2.4.2.
+- **Valeurs par défaut [D]** : contrôles cachés pendant la glisse (comme l'ascenseur : le
+  joystick est relâché, il faut reposer le doigt à l'arrêt) ; aucune rencontre, aucun passage ni
+  déclencheur sur la case d'arrêt (seuls les Dresseurs la regardent) ; `check()` des dalles à
+  chaque entrée sur la carte en build debug seulement ; pas refusé = glisse arrêtée sur la case
+  atteinte, joueur libre.
+- Tests : `test_spin_slide` (vraie Boot, carte de QA `qa_spin_j20`, 9 tests : glisse au pas près,
+  pivots, entrées / menu / retour refusés, aucune autosave ni à l'arrière-plan, compagnon,
+  Dresseur de la case d'arrêt et pas celui du milieu, coupure en pleine glisse, sauvegarde sur une
+  dalle, pas refusé, veille hors repaire) ; recalé : `test_map_catalog` (liste blanche). Carte
+  `qa_spin_j20` (10 × 8) et `data/npcs/qa_spin_j20.json` (deux Dresseurs du Mont Sélénite
+  réutilisés) **à retirer au T24**. Sur `rocket_hideout_b2f` : à faire avec T20 / T21.
 - §2.4.4 : `SpinTileDirector`, verrou `spin`, `TrainerWatcher.check_at`, reprise `safe_cell` ;
   tests d'intégration `test_spin_slide` (vraie Boot sur `rocket_hideout_b2f` dès T20 ; avant, carte
   de QA `qa_spin_j20` de 10 × 8, retirée au T24) : glisse au pas près (`FrameSim`), entrées
