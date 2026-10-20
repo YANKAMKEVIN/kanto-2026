@@ -29,6 +29,8 @@ const STARTS := {
 		[&"erika_met", &"badge_rainbow"], [&"cut_celadon_gym_bush", &"cut_celadon_gym_inner_bush"]],
 	"erika_weak": [&"celadon_gym", &"entrance", Vector2i.UP,
 		[&"erika_met", &"badge_rainbow"], [&"cut_celadon_gym_bush", &"cut_celadon_gym_inner_bush"]],
+	"erika_win": [&"celadon_gym", &"entrance", Vector2i.UP,
+		[&"erika_met", &"badge_rainbow"], [&"cut_celadon_gym_bush", &"cut_celadon_gym_inner_bush"]],
 }
 
 var _data: PokemonData
@@ -69,6 +71,9 @@ func test_reference_team_badges_and_the_cut_kit() -> void:
 			assert_eq(start.party.size(), 1, "un Salamèche N5 seul, pour perdre")
 			assert_eq(int(start.party[0]["level"]), 5)
 			continue
+		if name == "erika_win":
+			assert_gte(int(start.party[0]["level"]), 36, "équipe forte, pour gagner (QA)")
+			continue
 		var levels: Array[int] = []
 		for member: Dictionary in start.party:
 			levels.append(int(member["level"]))
@@ -85,7 +90,7 @@ func test_reference_team_badges_and_the_cut_kit() -> void:
 
 func test_town_starts_register_the_celadon_center_and_the_dept_start_carries_the_drinks() -> void:
 	for name: String in ["celadon_dept", "celadon_dept_tm01", "celadon_eevee_full",
-			"celadon_gym_outside", "celadon_gym", "erika_weak"]:
+			"celadon_gym_outside", "celadon_gym", "erika_weak", "erika_win"]:
 		var start := DebugStart.new()
 		assert_true(start.load_file(TOOL_STARTS + name + ".json", _data, _items), name)
 		assert_eq(start.rest_point, &"celadon_center", name)

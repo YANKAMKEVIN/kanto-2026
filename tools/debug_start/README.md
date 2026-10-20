@@ -231,3 +231,4 @@ Même partie que `pokemon_tower_1f` (Lavanville atteinte, `tower_stairs_open`), 
 | `celadon_gym_outside.json` | devant l'arbuste de l'enclos de l'Arène (spawn `gym_front`, tourné vers l'ouest) : COUPER ouvre l'enclos |
 | `celadon_gym.json` | à l'entrée de l'Arène, arbustes coupés : cinq Dresseuses, Erika |
 | `erika_weak.json` | idem, Salamèche **N5** seul, les cinq Dresseuses déjà battues : perdre contre Erika → réveil au Centre de Céladopole, Dresseuses gardées |
+| `erika_win.json` | idem, Reptincel **N40** et Roucoups **N36**, les cinq Dresseuses déjà battues : battre Erika → Badge Prisme, CT21 (QA 20-I, valeur par défaut) |
