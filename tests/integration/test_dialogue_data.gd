@@ -54,9 +54,7 @@ const UNUSED_YET: Array[StringName] = [
 	# Jalon 20 (T12) : don d'Évoli ; la Poké Ball est posée au T17 (maison du toit de la
 	# Résidence), jouée d'ici là sur la carte de QA `qa_gift_j20` (test_eevee_gift).
 	&"celadon_eevee_ball", &"celadon_eevee_received", &"celadon_eevee_stored",
-	# Jalon 20 (T13) : panneau des cabines d'ascenseur, posé avec elles (T16 grand magasin, T20
-	# repaire) ; d'ici là sur la carte de QA `qa_elevator_j20` (test_elevator_flow).
-	&"elevator_panel",
+	# Jalon 20 (T13) : panneau des cabines d'ascenseur ; posé au T20 (cabine du repaire).
 ]
 ## Jalon 17 (T8) : pages à jeton (texte → jetons attendus) : l'assistant et la CS05 reçue.
 const J17_TOKENS: Dictionary[String, Array] = {
@@ -170,6 +168,8 @@ const MAPS: Array[StringName] = [
 	# Jalon 20 (T16) : Céladopole (panneaux, examens, arbustes ; la vie vient au T17).
 	&"celadon_city", &"celadon_dept_gf", &"celadon_dept_elevator", &"celadon_mansion_3f",
 	&"celadon_gym",
+	# Jalon 20 (T20) : Casino (machines) et cabine du repaire (panneau d'étages).
+	&"celadon_game_corner", &"rocket_hideout_elevator",
 	# Jalon 19 (T17) : le rival n° 5 et l'Exorciste calme du 2F.
 	&"pokemon_tower_2f",
 	# Jalon 20 (T15) : Routes 7 et 8, postes, bâtiments d'entrée, souterrain (panneaux).
@@ -458,6 +458,8 @@ const IDS_J20: Array[StringName] = [
 	&"celadon_city_sign", &"celadon_gym_sign", &"celadon_west_block", &"celadon_dept_board",
 	&"celadon_dept_elevator_panel", &"celadon_mansion_office_door", &"celadon_gym_bush",
 	&"celadon_gym_inner_bush",
+	# T20 : machines du Casino (texte 39).
+	&"game_corner_machine",
 ]
 ## Jalon 20 : lot de textes validé du dossier 23 (§20, une citation par ligne).
 const DOSSIER_23 := "res://docs/design/dossier-23-celadopole.md"

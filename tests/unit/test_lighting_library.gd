@@ -37,7 +37,7 @@ func test_real_file_loads_without_error() -> void:
 	# de la Grotte Sombre ; J20 (T16) : la serre d'Erika (`greenhouse`).
 	assert_eq(_library.get_ids(), [&"golden_hour", &"interior_warm", &"forest", &"cave_1f",
 		&"cave_b1f", &"cave_b2f", &"underground", &"dark_cave_1f", &"dark_cave_b1f", &"cave_sand",
-		&"greenhouse", &"lavender", &"tower_cold", &"tower"] as Array[StringName])
+		&"greenhouse", &"hideout", &"lavender", &"tower_cold", &"tower"] as Array[StringName])
 	assert_eq(LightingLibrary.DATA_PATH, "res://data/world/lighting.json")
 
 
