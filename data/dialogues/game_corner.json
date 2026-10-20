@@ -2,5 +2,56 @@
 	"game_corner_machine": {
 		"narration": true,
 		"pages": ["Les machines sont éteintes. Une affichette dit : “Fermé pour inventaire.”"]
+	},
+	"game_corner_rocket_before": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Cette affiche ne te regarde pas.", "Va jouer ailleurs."]
+	},
+	"game_corner_rocket_defeated": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Hé… Ne touche pas à l'affiche !"]
+	},
+	"game_corner_poster": {
+		"narration": true,
+		"variants": [
+			{
+				"if": ["game_corner_switch"],
+				"pages": ["Derrière l'affiche, l'interrupteur.", "Le passage est ouvert."]
+			},
+			{
+				"pages": ["Il y a un interrupteur derrière l'affiche.", "Appuyer ?"],
+				"choice": {
+					"confirm": "OUI", "cancel": "NON", "confirm_cutscene": "game_corner_switch",
+					"cancel_pages": []
+				}
+			}
+		]
+	},
+	"game_corner_switch": {
+		"narration": true,
+		"pages": ["Un bruit sourd… Un passage s'est ouvert."]
+	},
+	"game_corner_clerk": {
+		"speaker": "Employé",
+		"pages": ["Désolé, toutes les machines\nsont arrêtées.", "Fermé pour inventaire."]
+	},
+	"game_corner_client_1": {
+		"speaker": "Client",
+		"pages": ["Je venais tous les jours.",
+			"Maintenant, je ne sais plus quoi\nfaire de mes après-midi."]
+	},
+	"game_corner_client_2": {
+		"speaker": "Cliente",
+		"pages": ["Ces machines ne m'ont jamais\nfait gagner.",
+			"Au moins, éteintes, elles\nne me coûtent rien."]
+	},
+	"game_corner_client_3": {
+		"speaker": "Client",
+		"pages": ["Le type devant l'affiche\nne bouge pas d'un pouce.", "Bizarre, non ?"]
+	},
+	"game_corner_client_4": {
+		"speaker": "Client",
+		"pages": ["Le patron vient rarement en salle.",
+			"Il a des bureaux ailleurs, paraît-il."]
 	}
 }

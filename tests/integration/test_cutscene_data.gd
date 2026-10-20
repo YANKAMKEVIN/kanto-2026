@@ -256,6 +256,25 @@ const VARIANT_FLAGS: Dictionary = {
 	&"celadon_hidden_1": [PEWTER_FLAGS],
 	&"celadon_gym_erika": [PEWTER_FLAGS], &"celadon_gym_erika_tm_late": [PEWTER_FLAGS],
 	&"celadon_roof_trade": [PEWTER_FLAGS],
+	# Jalon 20 (T21) : interrupteur (une fois), chute et prise de la Clé, Giovanni, Scope, objets.
+	&"game_corner_switch": [PEWTER_FLAGS], &"rocket_hideout_key_drop": [PEWTER_FLAGS],
+	&"rocket_hideout_b4f_lift_key": [PEWTER_FLAGS + [&"rocket_dropped_lift_key"]],
+	&"giovanni_hideout": [PEWTER_FLAGS],
+	&"rocket_hideout_b4f_silph_scope": [PEWTER_FLAGS + [&"giovanni_hideout_won"]],
+	&"rocket_hideout_b1f_item_1": [PEWTER_FLAGS],
+	&"rocket_hideout_b1f_item_2": [PEWTER_FLAGS],
+	&"rocket_hideout_b1f_hidden_1": [PEWTER_FLAGS],
+	&"rocket_hideout_b2f_item_1": [PEWTER_FLAGS],
+	&"rocket_hideout_b2f_item_2": [PEWTER_FLAGS],
+	&"rocket_hideout_b2f_item_3": [PEWTER_FLAGS],
+	&"rocket_hideout_b2f_item_4": [PEWTER_FLAGS],
+	&"rocket_hideout_b3f_item_1": [PEWTER_FLAGS],
+	&"rocket_hideout_b3f_item_2": [PEWTER_FLAGS],
+	&"rocket_hideout_b3f_hidden_1": [PEWTER_FLAGS],
+	&"rocket_hideout_b4f_item_1": [PEWTER_FLAGS],
+	&"rocket_hideout_b4f_item_2": [PEWTER_FLAGS],
+	&"rocket_hideout_b4f_item_3": [PEWTER_FLAGS],
+	&"rocket_hideout_b4f_hidden_1": [PEWTER_FLAGS],
 }
 ## Scènes jouées par le code (pas de déclencheur) → carte où elles sont jouées.
 ## Jalon 7 (T18) : la scène du colis est lancée par la variante « cutscene » du dialogue de Chen.
@@ -272,6 +291,25 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"souterrain_hidden_1": &"underground_path_7_8", &"souterrain_hidden_2": &"underground_path_7_8",
 	&"celadon_hidden_1": &"celadon_city", &"celadon_gym_erika": &"celadon_gym",
 	&"celadon_gym_erika_tm_late": &"celadon_gym", &"celadon_roof_trade": &"celadon_dept_roof",
+	# Jalon 20 (T21) : choix OUI de l'affiche, dialogues du sbire à la Clé, de Giovanni et des
+	# Poké Balls, objets et caches du repaire.
+	&"game_corner_switch": &"celadon_game_corner", &"rocket_hideout_key_drop": &"rocket_hideout_b4f",
+	&"rocket_hideout_b4f_lift_key": &"rocket_hideout_b4f", &"giovanni_hideout": &"rocket_hideout_b4f",
+	&"rocket_hideout_b4f_silph_scope": &"rocket_hideout_b4f",
+	&"rocket_hideout_b1f_item_1": &"rocket_hideout_b1f",
+	&"rocket_hideout_b1f_item_2": &"rocket_hideout_b1f",
+	&"rocket_hideout_b1f_hidden_1": &"rocket_hideout_b1f",
+	&"rocket_hideout_b2f_item_1": &"rocket_hideout_b2f",
+	&"rocket_hideout_b2f_item_2": &"rocket_hideout_b2f",
+	&"rocket_hideout_b2f_item_3": &"rocket_hideout_b2f",
+	&"rocket_hideout_b2f_item_4": &"rocket_hideout_b2f",
+	&"rocket_hideout_b3f_item_1": &"rocket_hideout_b3f",
+	&"rocket_hideout_b3f_item_2": &"rocket_hideout_b3f",
+	&"rocket_hideout_b3f_hidden_1": &"rocket_hideout_b3f",
+	&"rocket_hideout_b4f_item_1": &"rocket_hideout_b4f",
+	&"rocket_hideout_b4f_item_2": &"rocket_hideout_b4f",
+	&"rocket_hideout_b4f_item_3": &"rocket_hideout_b4f",
+	&"rocket_hideout_b4f_hidden_1": &"rocket_hideout_b4f",
 	&"starter_chosen": &"oak_lab", &"oak_parcel": &"oak_lab",
 	&"route_2_item_1": &"route_2", &"route_2_item_2": &"route_2",
 	# Jalon 9 (T18) : objets visibles de la Forêt de Jade (PNJ « objet » de son fichier).
@@ -360,6 +398,16 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 ## PNJ de son fichier). Vidée au T19 du jalon 9 (la forêt existe), puis au T11 du jalon 10 (les
 ## deux scènes d'Argenta ont leurs déclencheurs sur la carte).
 const AWAITING_MAP: Dictionary[StringName, StringName] = {}
+## Jalon 20 (T21) : interrupteur du Casino, Clé, Giovanni, Scope, objets et caches du repaire.
+const J20_T21_IDS: Array[StringName] = [
+	&"game_corner_switch", &"rocket_hideout_key_drop", &"rocket_hideout_b4f_lift_key",
+	&"giovanni_hideout", &"rocket_hideout_b4f_silph_scope",
+	&"rocket_hideout_b1f_item_1", &"rocket_hideout_b1f_item_2", &"rocket_hideout_b1f_hidden_1",
+	&"rocket_hideout_b2f_item_1", &"rocket_hideout_b2f_item_2", &"rocket_hideout_b2f_item_3",
+	&"rocket_hideout_b2f_item_4", &"rocket_hideout_b3f_item_1", &"rocket_hideout_b3f_item_2",
+	&"rocket_hideout_b3f_hidden_1", &"rocket_hideout_b4f_item_1", &"rocket_hideout_b4f_item_2",
+	&"rocket_hideout_b4f_item_3", &"rocket_hideout_b4f_hidden_1",
+]
 ## Jalon 18 (T16) : scènes de ses fichiers (objets, objectifs).
 const J18_IDS: Array[StringName] = [
 	&"dark_cave_1f_item_1", &"dark_cave_1f_item_2", &"dark_cave_b1f_hidden_1",
@@ -470,7 +518,7 @@ func test_library_loads_without_error() -> void:
 		&"route_8_reached", &"celadon_reached", &"route_8_item_1", &"route_8_hidden_1",
 		&"souterrain_hidden_1", &"souterrain_hidden_2", &"celadon_hidden_1",
 		&"celadon_gym_erika", &"celadon_gym_erika_tm_late", &"celadon_roof_trade"]
-		+ J18_IDS))
+		+ J18_IDS + J20_T21_IDS))
 
 
 func _sorted(values: Array) -> Array[StringName]:
@@ -547,7 +595,7 @@ func test_every_trainer_and_item_step_exists() -> void:
 ## l'étape « badge » d'une scène suit le combat qui lève déjà son drapeau (« win »).
 func test_every_champion_card_and_badge_step_exists() -> void:
 	assert_eq(_cutscenes.get_card_trainer_ids(), [&"celadon_gym_erika", &"cerulean_gym_misty",
-		&"pewter_gym_brock", &"vermilion_gym_surge"] as Array[StringName])
+		&"giovanni_hideout", &"pewter_gym_brock", &"vermilion_gym_surge"] as Array[StringName])
 	for id: StringName in _cutscenes.get_card_trainer_ids():
 		var trainer := _trainers.get_trainer(id)
 		assert_true(trainer != null and trainer.has_card(), "« %s » a une carte" % id)
@@ -584,6 +632,14 @@ func test_only_world_items_are_found_items() -> void:
 		"digletts_cave_item_1:escape_rope", "mt_moon_1f_hidden_1:awakening",
 		"mt_moon_1f_item_1:escape_rope", "mt_moon_b1f_item_1:moon_stone",
 		"mt_moon_b1f_item_2:potion", "mt_moon_b2f_hidden_1:moon_stone", "mt_moon_b2f_item_1:tm01",
+		"rocket_hideout_b1f_hidden_1:revive", "rocket_hideout_b1f_item_1:escape_rope",
+		"rocket_hideout_b1f_item_2:super_potion", "rocket_hideout_b2f_item_1:moon_stone",
+		"rocket_hideout_b2f_item_2:nugget", "rocket_hideout_b2f_item_3:super_potion",
+		"rocket_hideout_b2f_item_4:super_potion", "rocket_hideout_b3f_hidden_1:nugget",
+		"rocket_hideout_b3f_item_1:super_potion", "rocket_hideout_b3f_item_2:rare_candy",
+		"rocket_hideout_b4f_hidden_1:super_potion", "rocket_hideout_b4f_item_1:super_potion",
+		"rocket_hideout_b4f_item_2:revive", "rocket_hideout_b4f_item_3:super_potion",
+		"rocket_hideout_b4f_lift_key:lift_key", "rocket_hideout_b4f_silph_scope:silph_scope",
 		"route_10_item_1:super_potion", "route_11_hidden_1:poke_ball",
 		"route_11_item_1:super_potion", "route_11_item_2:awakening", "route_1_potion:potion",
 		"route_24_antidote:antidote", "route_24_item_1:potion", "route_25_hidden_1:potion",

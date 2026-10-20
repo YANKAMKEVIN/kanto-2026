@@ -1,0 +1,16 @@
+{
+	"game_corner_switch": {
+		"variants": [
+			{
+				"unless": ["game_corner_switch"],
+				"steps": [
+					{ "wait": 0.3 },
+					{ "animate": "Entities/SlidingWall/Panel", "offset": [1, 0], "duration": 0.6,
+						"fade": true },
+					{ "set": ["game_corner_switch"] },
+					{ "dialogue": "game_corner_switch" }
+				]
+			}
+		]
+	}
+}

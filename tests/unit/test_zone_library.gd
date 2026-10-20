@@ -363,5 +363,9 @@ func test_j20_zones_texts_maps_and_services() -> void:
 		found[service.id] = service.found_on
 	assert_eq(found, {&"pokemon_center": &"celadon_center", &"poke_mart": &"celadon_dept_gf",
 		&"gym": &"celadon_gym"}, "services de Céladopole")
-	# 19 cartes de la ville (T16, T17) + Casino et 5 cartes du repaire (T20).
+	# Les cartes du repaire rejoignent la zone avec leur construction (T20) : ville, 18 intérieurs,
+	# Casino, B1F à B4F et cabine (recalé au T21 : les deux branches fusionnées comptaient à part).
 	assert_eq(_zones.get_zone(&"celadon_city").maps.size(), 25)
+	for map_id: StringName in [&"celadon_game_corner", &"rocket_hideout_b1f", &"rocket_hideout_b4f",
+			&"rocket_hideout_elevator"]:
+		assert_has(_zones.get_zone(&"celadon_city").maps, map_id)
