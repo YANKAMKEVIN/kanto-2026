@@ -1,0 +1,28 @@
+{
+	"celadon_roof_trade": {
+		"variants": [
+			{
+				"unless": [
+					"rooftop_tm13"
+				],
+				"steps": [
+					{
+						"take": "fresh_water"
+					},
+					{
+						"dialogue": "celadon_roof_girl_thanks"
+					},
+					{
+						"give": "tm13",
+						"count": 1
+					},
+					{
+						"set": [
+							"rooftop_tm13"
+						]
+					}
+				]
+			}
+		]
+	}
+}

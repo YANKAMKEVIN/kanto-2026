@@ -1,0 +1,20 @@
+{
+	"chief": {
+		"cell": [
+			6,
+			5
+		],
+		"facing": "right",
+		"sprite": "gentleman",
+		"dialogue": "celadon_chief_man"
+	},
+	"wife": {
+		"cell": [
+			12,
+			7
+		],
+		"facing": "left",
+		"sprite": "passenger_f",
+		"dialogue": "celadon_chief_woman"
+	}
+}

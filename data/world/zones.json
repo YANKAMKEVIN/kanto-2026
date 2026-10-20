@@ -149,7 +149,7 @@
 			"maps": ["celadon_city", "celadon_center", "celadon_dept_gf", "celadon_dept_2f", "celadon_dept_3f", "celadon_dept_4f", "celadon_dept_5f", "celadon_dept_roof", "celadon_dept_elevator", "celadon_mansion_gf", "celadon_mansion_1f", "celadon_mansion_2f", "celadon_mansion_3f", "celadon_mansion_roof", "celadon_mansion_roof_house", "celadon_restaurant", "celadon_chief_house", "celadon_hotel", "celadon_gym", "celadon_game_corner", "rocket_hideout_b1f", "rocket_hideout_b2f", "rocket_hideout_b3f", "rocket_hideout_b4f", "rocket_hideout_elevator"],
 			"services": [
 				{ "id": "pokemon_center", "found_on": "celadon_center" },
-				{ "id": "poke_mart", "found_on": "celadon_dept_2f" },
+				{ "id": "poke_mart", "found_on": "celadon_dept_gf" },
 				{ "id": "gym", "found_on": "celadon_gym" }
 			],
 			"description": "Une ville prospère, verte et commerçante. Sous les néons du Casino, l'ambiance n'est plus la même."

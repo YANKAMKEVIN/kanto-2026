@@ -20,7 +20,8 @@ extends SceneTree
 ##   (retour `from_underground` (11, 5), tourné ↓). Une carte cible absente → « à venir ».
 ## - Vie (T17) : Dresseurs, objets et Pokémon d'ambiance de la grille ont leurs cases **réservées**
 ##   (la forêt s'en écarte) ; PNJ dans `data/npcs/route_8.json`. Ici : les deux panneaux (EXAMINER,
-##   textes 1 et 2) et la pierre-indice de l'objet caché (Rappel ; son point EXAMINER au T17).
+##   textes 1 et 2), la pierre-indice de l'objet caché (Rappel) et son point EXAMINER, le
+##   déclencheur d'arrivée `route_8_reached`.
 
 const Kit := preload("res://tools/pewter_map_kit.gd")
 const PLAN_PATH: String = "res://tools/plans/route_8.txt"
@@ -51,6 +52,8 @@ const SIGNS: Array = [
 ]
 ## Objet caché : [position de la grille, nœud, indice].
 const HIDDEN: Array = [["route_8_hidden_1", "HiddenRevive", "prop_indice_caillou_01"]]
+## Arrivée (T17) : scène silencieuse qui lève `route_8_reached`.
+const ARRIVAL_CUTSCENE: StringName = &"route_8_reached"
 ## Arbres repères (cases `G`), à tour de rôle ; échelles légèrement variées.
 const TREE_IDS: Array[String] = ["tree_a_01", "tree_b_01", "tree_c_01", "tree_e_01"]
 const BUSH_IDS: Array[String] = [
@@ -180,12 +183,24 @@ func _add_passages() -> void:
 		_kit.call(&"add_spawn", entry[0], entry[1])
 
 
-## Panneaux (EXAMINER depuis la case du sud, tourné ↑). L'objet caché (point EXAMINER, dialogue,
-## scène) vient avec la vie de la carte (T17) ; ici, sa case-indice bloquée et son décor.
+## Panneaux (EXAMINER depuis la case du sud, tourné ↑), objet caché (point EXAMINER de la
+## case-indice, de tous côtés ; il disparaît quand `got_<id>` est levé) et déclencheur de
+## l'arrivée (T17) : tout pas vers l'ouest sur la 2e colonne du raccord est lève
+## `route_8_reached` (scène silencieuse, objectif « rejoindre Céladopole »).
 func _add_life() -> void:
 	for entry: Array in SIGNS:
 		_kit.call(&"add_interactable", entry[1] + "Read", _cell(entry[0]), Vector2i.ONE,
 			Vector2i.UP, entry[2])
+	for entry: Array in HIDDEN:
+		_kit.call(&"add_interactable", entry[1], _cell(entry[0]), Vector2i.ONE, Vector2i.ZERO,
+			StringName(entry[0]))
+		var point: Node = _kit.get(&"root").get_node(^"Interactables").get_child(-1)
+		var unless: Array[StringName] = [StringName("got_" + String(entry[0]))]
+		point.set(&"unless_flags", unless)
+	var east: Array = _plan().call(&"cells_at", "raccord_est")
+	var column: Vector2i = (east[east.size() - 1] as Vector2i) + Vector2i.LEFT
+	_kit.call(&"add_trigger", "Arrival", column, Vector2i(1, east.size()), Vector2i.LEFT,
+		ARRIVAL_CUTSCENE)
 
 
 ## Poste de Safrania et bâtiment d'entrée du souterrain (emprises `P` de 7 × 4, porte à la 4e

@@ -1,0 +1,39 @@
+{
+	"celadon_hidden_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_celadon_hidden_1"
+				],
+				"steps": [
+					{
+						"give": "revive",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_celadon_hidden_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"celadon_reached": {
+		"variants": [
+			{
+				"unless": [
+					"celadon_reached"
+				],
+				"steps": [
+					{
+						"set": [
+							"celadon_reached"
+						]
+					}
+				]
+			}
+		]
+	}
+}

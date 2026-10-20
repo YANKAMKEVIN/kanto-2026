@@ -2133,6 +2133,22 @@ const DEPT_FLOORS: Array = [
 	["3f", "celadopole_magasin_3e.txt"], ["4f", "celadopole_magasin_4e.txt"],
 	["5f", "celadopole_magasin_5e.txt"],
 ]
+## Comptoirs parlants (T17) : on parle au vendeur par-dessus le comptoir, depuis la case devant lui
+## (tourné ↑). [nœud, case de gauche du comptoir, largeur, dialogue du vendeur] par étage.
+const DEPT_COUNTERS: Dictionary = {
+	"gf": [["HostessCounter", Vector2i(7, 5), 6, &"celadon_dept_hostess"]],
+	"2f": [["ClerkCounterA", Vector2i(6, 5), 3, &"celadon_dept_2f_clerk"],
+		["ClerkCounterB", Vector2i(11, 5), 3, &"celadon_dept_2f_clerk_tm"]],
+	"4f": [["ClerkCounterA", Vector2i(6, 5), 3, &"celadon_dept_4f_clerk"],
+		["ClerkCounterB", Vector2i(11, 5), 3, &"celadon_dept_4f_clerk_stones"]],
+	"5f": [["ClerkCounter", Vector2i(9, 5), 3, &"celadon_dept_5f_clerk"]],
+}
+## Distributeurs du toit (T17) : [nœud, case, dialogue] (EXAMINER depuis la case du sud, ↑).
+const ROOF_DISPENSERS: Array = [
+	["DispenserWater", Vector2i(10, 2), &"celadon_dept_roof_water"],
+	["DispenserSoda", Vector2i(12, 2), &"celadon_dept_roof_soda"],
+	["DispenserLemonade", Vector2i(14, 2), &"celadon_dept_roof_lemonade"],
+]
 ## Étages de la Résidence : [identifiant, grille].
 const MANSION_FLOORS: Array = [
 	["gf", "celadopole_residence_rdc.txt"], ["1f", "celadopole_residence_1er.txt"],
@@ -2239,23 +2255,31 @@ func _celadon_dept_floor(index: int) -> Dictionary:
 		# Tableau des étages (texte 22), lu depuis la case devant lui, tourné ↑.
 		room["interactables"] = [["FloorBoard", Vector2i(9, 2), Vector2i(2, 1),
 			&"celadon_dept_board", EXAMINE, Vector2i.UP]]
+	for counter: Array in DEPT_COUNTERS.get(floor_id, []):
+		(room["interactables"] as Array).append([counter[0], counter[1],
+			Vector2i(counter[2], 1), counter[3], TALK, Vector2i.UP])
 	return room
 
 
 ## Toit-terrasse du grand magasin (carte intérieure à ciel ouvert, sans compagnon) : on y monte par
-## l'escalier du 5e (jamais par l'ascenseur) ; les distributeurs et la fillette sont au T17.
+## l'escalier du 5e (jamais par l'ascenseur) ; trois distributeurs (EXAMINER, T17) ; la fillette
+## est un PNJ des données.
 func _celadon_dept_roof() -> Dictionary:
 	var room := _celadon_room(&"celadon_dept_roof", "CeladonDeptRoof",
 		"celadopole_magasin_toit.txt", ".XSZV", &"golden_hour")
 	(room["spawns"] as Dictionary)["from_down"] = Vector2i(2, 3)
 	(room["warps"] as Array).append_array(_celadon_stairs("StairsDown", 2, &"celadon_dept_5f",
 		&"from_up"))
+	for dispenser: Array in ROOF_DISPENSERS:
+		(room["interactables"] as Array).append([dispenser[0], dispenser[1], Vector2i.ONE,
+			dispenser[2], EXAMINE, Vector2i.UP])
 	return room
 
 
 ## Cabine de l'ascenseur (6 × 6) : la sortie ramène au premier étage (RdC) ; le moteur
 ## (`ElevatorDirector`, T13) la réoriente vers l'étage courant. Panneau d'étages examiné depuis
-## (2..3, 2), tourné ↑ : dialogue `celadon_dept_elevator_panel` (neutre jusqu'au T13).
+## (2..3, 2), tourné ↑ : dialogue `elevator_panel` (T13 : `open_elevator`, un seul pour toutes les
+## cabines).
 func _celadon_dept_elevator() -> Dictionary:
 	var room := _celadon_room(&"celadon_dept_elevator", "CeladonDeptElevator",
 		"celadopole_magasin_ascenseur.txt", ".X")
@@ -2265,7 +2289,7 @@ func _celadon_dept_elevator() -> Dictionary:
 		warps.append(["Exit%d" % index, Vector2i(2 + index, 4), PUSH, Vector2i.DOWN,
 			&"celadon_dept_gf", &"from_elevator", Vector2i.DOWN])
 	room["interactables"] = [["ElevatorPanel", Vector2i(2, 1), Vector2i(2, 1),
-		&"celadon_dept_elevator_panel", EXAMINE, Vector2i.UP]]
+		&"elevator_panel", EXAMINE, Vector2i.UP]]
 	return room
 
 
@@ -2314,7 +2338,7 @@ func _celadon_mansion_roof() -> Dictionary:
 	return room
 
 
-## Maison du toit (10 × 8) : la Poké Ball d'Évoli (4, 3) est posée au T17 (don).
+## Maison du toit (10 × 8) : la Poké Ball d'Évoli (4, 3) est le PNJ `eevee_ball` des données (T17).
 func _celadon_mansion_roof_house() -> Dictionary:
 	var room := _celadon_room(&"celadon_mansion_roof_house", "CeladonMansionRoofHouse",
 		"celadopole_residence_maison_toit.txt", ".X")
@@ -2331,6 +2355,13 @@ func _celadon_mansion_roof_house() -> Dictionary:
 func _celadon_small_room(id: StringName, node: String, plan: String, base: String) -> Dictionary:
 	var room := _celadon_room(id, node, plan, ".X")
 	(room["spawns"] as Dictionary)["entrance"] = Vector2i(7, 8)
+	# Comptoirs parlants (T17) : réception de l'hôtel (5..9, 4), serveur du restaurant (2..5, 4).
+	if base == "hotel":
+		(room["interactables"] as Array).append(["ReceptionCounter", Vector2i(5, 4),
+			Vector2i(5, 1), &"celadon_hotel_reception", TALK, Vector2i.UP])
+	elif base == "restaurant":
+		(room["interactables"] as Array).append(["WaiterCounter", Vector2i(2, 4),
+			Vector2i(4, 1), &"celadon_restaurant_waiter", TALK, Vector2i.UP])
 	var cells: Array = [Vector2i(6, 8), Vector2i(7, 8), Vector2i(8, 8)]
 	if base == "chief":
 		for index: int in cells.size():

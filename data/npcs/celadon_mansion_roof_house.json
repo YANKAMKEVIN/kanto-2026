@@ -1,0 +1,16 @@
+{
+	"eevee_ball": {
+		"cell": [
+			4,
+			3
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "celadon_eevee_ball",
+		"verb": "examine",
+		"turn_to_player": false,
+		"unless": [
+			"eevee_received"
+		]
+	}
+}

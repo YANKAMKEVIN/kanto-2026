@@ -90,8 +90,12 @@ const SIGNS: Array = [
 	["panneau_arene", "SignGym", &"celadon_gym_sign", Vector2i.LEFT],
 ]
 const EXAMS: Array = [["obstacle_ouest", "WestBlock", &"celadon_west_block", Vector2i.LEFT]]
-## Objet caché : case bloquée décorée (le point EXAMINER et la scène viennent au T17).
+## Objet caché : case bloquée décorée (poubelle) ; point EXAMINER de tous côtés (T17) qui
+## disparaît quand `got_<id>` est levé.
 const HIDDEN: Array = [["celadon_hidden_1", "HiddenClue", "int_poubelle_arene_01"]]
+## Arrivée (T17) : pas vers l'ouest sur la 2e colonne du raccord est (68, 21..23), scène
+## silencieuse qui lève `celadon_reached` (le titre de zone vient du ZoneAnnouncer).
+const ARRIVAL_CUTSCENE: StringName = &"celadon_reached"
 ## Départs de débogage (T17 les relie à `tools/debug_start/`).
 const DEBUG_SPAWNS: Array = [["gym_front", Vector2i(20, 37)], ["west_end", Vector2i(5, 22)]]
 
@@ -265,6 +269,15 @@ func _add_life() -> void:
 	var point: Node = _kit.get(&"root").get_node(^"Interactables").get_child(-1)
 	var unless: Array[StringName] = [BUSH_FLAG]
 	point.set(&"unless_flags", unless)
+	for entry: Array in HIDDEN:
+		_kit.call(&"add_interactable", "Hidden1", _cell(entry[0]), Vector2i.ONE, Vector2i.ZERO,
+			StringName(entry[0]))
+		var hidden: Node = _kit.get(&"root").get_node(^"Interactables").get_child(-1)
+		var hidden_unless: Array[StringName] = [StringName("got_" + String(entry[0]))]
+		hidden.set(&"unless_flags", hidden_unless)
+	var east: Array = _plan().call(&"cells_at", "arrivee_est")
+	_kit.call(&"add_trigger", "Arrival", east[east.size() - 1], Vector2i(1, east.size()),
+		Vector2i.LEFT, ARRIVAL_CUTSCENE)
 
 
 ## Bâtiments, façade de l'ancien Coin à lots, fontaine. Renvoie les cases couvertes (aucun arbre

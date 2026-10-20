@@ -1,8 +1,8 @@
 extends GutTest
 ## Don d'Évoli dans le moteur (jalon 20 T12, `docs/tech/jalon-20.md` §2.5.2 ; dossier 23 §10, §19).
-## Vraie scène Boot sur la carte de QA `qa_gift_j20` (retirée au T24) : la Poké Ball
-## `eevee_ball` (données de QA) joue les vrais dialogue et scène (`celadon_eevee_ball`,
-## `celadon_eevee_gift`).
+## Vraie scène Boot sur la **vraie** maison du toit de la Résidence (`celadon_mansion_roof_house`,
+## T17 ; la carte de QA `qa_gift_j20` est retirée au T24) : la Poké Ball `eevee_ball` joue les
+## vrais dialogue et scène (`celadon_eevee_ball`, `celadon_eevee_gift`).
 ## - équipe de 5 → Évoli rejoint l'équipe (T-29), origine « gift », Pokédex vu et capturé ;
 ## - équipe de 6 → Évoli au Stockage, T-29 puis T-30 ;
 ## - NON → rien ne change ;
@@ -13,7 +13,9 @@ const MemoryFs := preload("res://tests/helpers/memory_file_system.gd")
 const FixedClock := preload("res://tests/helpers/fixed_clock.gd")
 const BOOT_SCENE := preload("res://game/boot.tscn")
 const SAVE_PATH := "user://test_eevee_gift_save.json"
-const MAP := &"qa_gift_j20"
+const MAP := &"celadon_mansion_roof_house"
+## Devant la Poké Ball (4, 3), tourné vers le haut.
+const IN_FRONT := Vector2i(4, 4)
 const BALL := &"eevee_ball"
 const FLAG := &"eevee_received"
 const FADE := 0.05
@@ -133,13 +135,15 @@ func _start(party_size: int) -> void:
 		GameState.party.add(PokemonFactory.create(_boot.get_pokemon_data(), &"rattata", 10,
 			GameState.rng))
 	await wait_until(func() -> bool: return _boot.is_stable(), TIMEOUT)
+	_boot.get_map().spawn_player_at(_boot.get_player(), IN_FRONT, Vector2i.UP)
+	await wait_process_frames(3)
 
 
 func _boot_on(fs: MemoryFs) -> void:
 	_boot = BOOT_SCENE.instantiate() as Boot
 	_boot.save_system = SaveSystem.new(fs, SAVE_PATH)
 	_boot.start_map = MAP
-	_boot.start_spawn = &"start"
+	_boot.start_spawn = &"entrance"
 	_boot.start_facing = Vector2i.UP
 	add_child_autofree(_boot)
 	var runner := _boot.get_dialogue_runner()

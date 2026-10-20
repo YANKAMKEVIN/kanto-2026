@@ -95,9 +95,12 @@ func test_real_maps_and_spawns_exist_once_built() -> void:
 			assert_not_null(map.get_node_or_null(NodePath("Spawns/%s" % entry["spawn"])),
 				"%s : point d'apparition %s" % [map_id, entry["spawn"]])
 			map.free()
+	# Le grand magasin est construit (T16) : toutes ses cartes sont là. Seul le repaire (T20) attend.
+	for id: StringName in [&"celadon_dept_elevator", &"celadon_dept_gf", &"celadon_dept_2f",
+			&"celadon_dept_3f", &"celadon_dept_4f", &"celadon_dept_5f"]:
+		assert_false(missing.has(id), "%s : carte du grand magasin construite" % id)
 	if not missing.is_empty():
-		pending("cartes d'ascenseur pas encore construites (T16, T20) : %s"
-			% ", ".join(missing))
+		pending("cartes d'ascenseur pas encore construites (T20) : %s" % ", ".join(missing))
 
 
 func test_real_key_is_a_key_item_once_defined() -> void:

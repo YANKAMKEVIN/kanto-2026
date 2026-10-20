@@ -68,6 +68,8 @@ const MAPS: Array[StringName] = [
 	&"pokemon_tower_3f", &"pokemon_tower_4f", &"pokemon_tower_5f",
 	# Jalon 20 (T16) : COUPER sur les arbustes de l'Arène d'Erika (examens posés dans les scènes).
 	&"celadon_city", &"celadon_gym",
+	# Jalon 20 (T17) : arrivées silencieuses (Route 8 est, Céladopole est).
+	&"route_8",
 ]
 ## Jalon 7 (T18) : partie qui revient au labo avec le colis (rival parti après le combat).
 const PARCEL_FLAGS: Array[StringName] = [
@@ -247,6 +249,13 @@ const VARIANT_FLAGS: Dictionary = {
 	&"saffron_gate_drink_lemonade": [PEWTER_FLAGS],
 	# Jalon 20 (T12) : don d'Évoli (une fois).
 	&"celadon_eevee_gift": [PEWTER_FLAGS],
+	# Jalon 20 (T17) : arrivées, objet et caches, Erika (scène et rattrapage de la CT21), fillette.
+	&"route_8_reached": [PEWTER_FLAGS], &"celadon_reached": [PEWTER_FLAGS],
+	&"route_8_item_1": [PEWTER_FLAGS], &"route_8_hidden_1": [PEWTER_FLAGS],
+	&"souterrain_hidden_1": [PEWTER_FLAGS], &"souterrain_hidden_2": [PEWTER_FLAGS],
+	&"celadon_hidden_1": [PEWTER_FLAGS],
+	&"celadon_gym_erika": [PEWTER_FLAGS], &"celadon_gym_erika_tm_late": [PEWTER_FLAGS],
+	&"celadon_roof_trade": [PEWTER_FLAGS],
 }
 ## Scènes jouées par le code (pas de déclencheur) → carte où elles sont jouées.
 ## Jalon 7 (T18) : la scène du colis est lancée par la variante « cutscene » du dialogue de Chen.
@@ -255,9 +264,14 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	# Jalon 20 (T25) : choix OUI du garde d'un poste de Safrania (« confirm_cutscene »).
 	&"saffron_gate_drink_water": &"route_8_gate", &"saffron_gate_drink_soda": &"route_8_gate",
 	&"saffron_gate_drink_lemonade": &"route_8_gate",
-	# Jalon 20 (T12) : choix OUI de la Poké Ball d'Évoli ; carte de QA `qa_gift_j20` jusqu'au
-	# T17 (`celadon_mansion_roof_house`, même PNJ `eevee_ball`).
-	&"celadon_eevee_gift": &"qa_gift_j20",
+	# Jalon 20 (T12) : choix OUI de la Poké Ball d'Évoli (PNJ `eevee_ball` de la maison du toit).
+	&"celadon_eevee_gift": &"celadon_mansion_roof_house",
+	# Jalon 20 (T17) : objets et caches (PNJ « objet » et points d'examen), Erika (son dialogue),
+	# échange de la fillette (« confirm_cutscene »).
+	&"route_8_item_1": &"route_8", &"route_8_hidden_1": &"route_8",
+	&"souterrain_hidden_1": &"underground_path_7_8", &"souterrain_hidden_2": &"underground_path_7_8",
+	&"celadon_hidden_1": &"celadon_city", &"celadon_gym_erika": &"celadon_gym",
+	&"celadon_gym_erika_tm_late": &"celadon_gym", &"celadon_roof_trade": &"celadon_dept_roof",
 	&"starter_chosen": &"oak_lab", &"oak_parcel": &"oak_lab",
 	&"route_2_item_1": &"route_2", &"route_2_item_2": &"route_2",
 	# Jalon 9 (T18) : objets visibles de la Forêt de Jade (PNJ « objet » de son fichier).
@@ -451,7 +465,11 @@ func test_library_loads_without_error() -> void:
 		&"tower_5f_objet_1", &"tower_5f_cache_1", &"tower_6f_objet_1",
 		&"saffron_gate_drink_water", &"saffron_gate_drink_soda", &"saffron_gate_drink_lemonade",
 		# Jalon 20 (T12) : don d'Évoli.
-		&"celadon_eevee_gift"]
+		&"celadon_eevee_gift",
+		# Jalon 20 (T17) : arrivées, objet et caches, Erika, échange de la fillette.
+		&"route_8_reached", &"celadon_reached", &"route_8_item_1", &"route_8_hidden_1",
+		&"souterrain_hidden_1", &"souterrain_hidden_2", &"celadon_hidden_1",
+		&"celadon_gym_erika", &"celadon_gym_erika_tm_late", &"celadon_roof_trade"]
 		+ J18_IDS))
 
 
@@ -528,12 +546,13 @@ func test_every_trainer_and_item_step_exists() -> void:
 ## Jalon 10 (T9) : chaque Dresseur présenté par une carte en a une, chaque badge remis existe, et
 ## l'étape « badge » d'une scène suit le combat qui lève déjà son drapeau (« win »).
 func test_every_champion_card_and_badge_step_exists() -> void:
-	assert_eq(_cutscenes.get_card_trainer_ids(), [&"cerulean_gym_misty", &"pewter_gym_brock",
-		&"vermilion_gym_surge"] as Array[StringName])
+	assert_eq(_cutscenes.get_card_trainer_ids(), [&"celadon_gym_erika", &"cerulean_gym_misty",
+		&"pewter_gym_brock", &"vermilion_gym_surge"] as Array[StringName])
 	for id: StringName in _cutscenes.get_card_trainer_ids():
 		var trainer := _trainers.get_trainer(id)
 		assert_true(trainer != null and trainer.has_card(), "« %s » a une carte" % id)
-	assert_eq(_cutscenes.get_badge_ids(), [&"boulder", &"cascade", &"thunder"] as Array[StringName])
+	assert_eq(_cutscenes.get_badge_ids(), [&"boulder", &"cascade", &"rainbow", &"thunder"]
+		as Array[StringName])
 	for id: StringName in _cutscenes.get_badge_ids():
 		assert_true(_badges.has_badge(id), "badge « %s » connu" % id)
 	for id: StringName in _real_ids():
@@ -560,7 +579,7 @@ func test_only_world_items_are_found_items() -> void:
 			for step: CutsceneStep in variant.steps:
 				if step.kind == CutsceneStep.Kind.GIVE and step.found:
 					found.append("%s:%s" % [id, step.item_id])
-	assert_eq(found, ["dark_cave_1f_item_1:escape_rope", "dark_cave_1f_item_2:antidote",
+	assert_eq(found, ["celadon_hidden_1:revive", "dark_cave_1f_item_1:escape_rope", "dark_cave_1f_item_2:antidote",
 		"dark_cave_b1f_hidden_1:super_potion", "dark_cave_b1f_item_1:super_potion",
 		"digletts_cave_item_1:escape_rope", "mt_moon_1f_hidden_1:awakening",
 		"mt_moon_1f_item_1:escape_rope", "mt_moon_b1f_item_1:moon_stone",
@@ -576,7 +595,9 @@ func test_only_world_items_are_found_items() -> void:
 		"route_3_item_3:paralyze_heal", "route_4_item_1:poke_ball",
 		"route_5_hidden_1:antidote", "route_5_item_1:super_potion",
 		"route_6_hidden_1:super_potion", "route_6_item_1:poke_ball",
+		"route_8_hidden_1:revive", "route_8_item_1:super_potion",
 		"route_9_item_1:super_potion", "route_9_item_2:antidote", "route_9_item_3:poke_ball",
+		"souterrain_hidden_1:nugget", "souterrain_hidden_2:super_potion",
 		"ss_anne_hidden_1:awakening", "ss_anne_hidden_2:antidote", "ss_anne_hidden_3:potion",
 		"ss_anne_item_01:potion", "ss_anne_item_02:potion", "ss_anne_item_03:super_potion",
 		"ss_anne_item_04:super_potion", "ss_anne_item_05:super_potion",

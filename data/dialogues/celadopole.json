@@ -12,10 +12,6 @@
 	"celadon_dept_board": {
 		"pages": ["RdC Accueil · 2e Soins et CT · 3e Jeux · 4e Cadeaux et pierres · 5e Salon · Toit"]
 	},
-	"celadon_dept_elevator_panel": {
-		"narration": true,
-		"pages": ["RdC · 2e · 3e · 4e · 5e"]
-	},
 	"celadon_mansion_office_door": {
 		"narration": true,
 		"pages": ["BUREAU PRIVÉ", "C'est fermé."]
