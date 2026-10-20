@@ -12,6 +12,7 @@ func _valid() -> Dictionary:
 			"badge": {"title": "{badge}", "detail": "À {city} contre {leader} ({zone})."},
 			"fossil": {"title": "Rocket", "detail": "{fossil} obtenu."},
 			"bill_restored": {"title": "Léo est humain", "detail": ""},
+			"giovanni": {"title": "Le repaire", "detail": "Giovanni est parti."},
 		},
 		"outcomes": {"win": {"text": "Gagné."}},
 		"zone_arrivals": {"route_1": {"title": "Départ", "detail": "Vers la {zone}."}},
@@ -207,3 +208,19 @@ func test_real_data_j14_bill_restored_moment() -> void:
 	assert_eq(text.title, "Léo a retrouvé forme humaine")
 	assert_eq(text.detail, "", "détail vide")
 	assert_false(text.draft)
+
+
+## Jalon 20 (T17, annexe A.10 n° 171 et 172) : le type `giovanni` (en fin) et l'arrivée à Céladopole.
+func test_real_data_j20_giovanni_moment_and_celadon_arrival() -> void:
+	var library := MomentLibrary.new()
+	assert_true(library.load_file(), "\n".join(library.get_errors()))
+	assert_eq(MomentLibrary.TYPES.back(), MomentLibrary.GIOVANNI, "ajout en fin")
+	var giovanni := library.get_text(MomentLibrary.GIOVANNI)
+	assert_not_null(giovanni)
+	assert_eq(giovanni.title, "Le repaire sous le Casino")
+	assert_eq(giovanni.detail, "Giovanni est parti. Le Scope Sylphe est à toi.")
+	assert_false(giovanni.draft)
+	var arrival := library.get_zone_text(&"celadon_city")
+	assert_not_null(arrival, "arrivée propre à Céladopole")
+	assert_eq(arrival.title, "Arrivée à Céladopole")
+	assert_eq(arrival.detail, "La ville des fleurs et du commerce.")

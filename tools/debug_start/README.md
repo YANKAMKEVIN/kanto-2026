@@ -213,3 +213,21 @@ Même partie que `pokemon_tower_1f` (Lavanville atteinte, `tower_stairs_open`), 
 | `tower_6f_block.json` | 6F, case `devant_spectre` (10, 14), tourné vers le sud : deux pas, le déclencheur (10, 16) joue §15.3.7 → combat SPECTRE → fuite → recul en (10, 15) → §15.3.8. **Rival n° 5 non battu** (`rival_tower_won` absent) : les drapeaux sont indépendants (dossier 22 §16 n° 10) |
 | `tower_rival.json` | 2F, arrivée de l'escalier (spawn `arrivee_T12`, tourné vers l'ouest) : Salamèche N24, Pikachu, Rondoudou, Roucoups ; trois pas (haut, ouest, haut) jusqu'à (14, 6) lancent la scène du rival n° 5 |
 | `tower_rival_weak.json` | idem, Salamèche **N5** seul : défaite → réveil au Centre de Lavanville |
+
+## Jalon 20 (T17) : départs de la vie du 20-I (Routes 7 et 8, souterrain, Céladopole, Arène d'Erika)
+
+Équipe de référence « arrivée J19 » : Reptincel N28, Roucoups N24, Papilusion N22, Sabelette N22 (apte à Couper avec la CS01), 10 Poké Balls, Potions, CS01 ; Badges Roche, Cascade, Foudre ; Lavanville atteinte ; 6 000 ₽. Centre de Lavanville enregistré (Céladopole : `celadon_center` pour les départs en ville). Les drapeaux d'arrivée `route_8_reached` / `celadon_reached` sont posés dès que le départ est plus loin que l'entrée.
+
+| Fichier | Partie |
+|---|---|
+| `route_8.json` | bord est de la Route 8 (spawn `from_lavender_c`, tourné vers l'ouest) : Fillettes Nina et Joueur Fernand, puis le duo Iris / Margot (combats successifs), D3 et la Super Potion sur le chemin haut |
+| `route_8_west.json` | place de l'ouest (spawn `west_square`, tourné vers l'est) : Joueur René (inévitable), poste de Safrania, couloir de l'entrée du souterrain |
+| `underground_7_8.json` | entrée ouest du souterrain (spawn `from_route_7_n`, tourné vers l'est) : Pépite (niche) et Super Potion (coude) cachées |
+| `route_7.json` | Route 7, sortie du bâtiment d'entrée du souterrain (spawn `from_underground`) |
+| `celadon.json` | entrée est de Céladopole (spawn `from_route_7_c`, tourné vers l'ouest) : le Rappel caché de la ruelle (46, 27), les 14 PNJ |
+| `celadon_dept.json` | RdC du grand magasin, 5 000 ₽, **Eau Fraîche** et **Soda Cool** : vendeurs, ascenseur, toit (distributeurs, fillette) |
+| `celadon_dept_tm01.json` | 2e étage, **CT01 déjà au Sac** : la boutique des CT affiche « Déjà dans le Sac » |
+| `celadon_eevee_full.json` | maison du toit de la Résidence, **équipe de 6** : Évoli part au Stockage (message n° 30) |
+| `celadon_gym_outside.json` | devant l'arbuste de l'enclos de l'Arène (spawn `gym_front`, tourné vers l'ouest) : COUPER ouvre l'enclos |
+| `celadon_gym.json` | à l'entrée de l'Arène, arbustes coupés : cinq Dresseuses, Erika |
+| `erika_weak.json` | idem, Salamèche **N5** seul, les cinq Dresseuses déjà battues : perdre contre Erika → réveil au Centre de Céladopole, Dresseuses gardées |

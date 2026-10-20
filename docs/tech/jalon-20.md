@@ -1232,7 +1232,8 @@ commit ; textes **mot pour mot** (§20 et annexe A validée).
   `test_celadon_dept` (escaliers, ascenseur RdC–5e, toit par l'escalier seulement),
   `test_celadon_mansion`, `test_celadon_gym` (E5 inévitable, Erika atteignable par le tour).
 
-#### T17 — constructeur-monde : vie du 20-I — (B), après T7 et T11–T16
+#### T17 — constructeur-monde : vie du 20-I — (B), après T7 et T11–T16 — **FAIT le 2026-10-20**
+- Fait (branche `j20-t17-vie`, détail et valeurs par défaut : `etat-projet.md`, entrée « J20 T17 »). Casino, repaire et dalles : T19 à T21.
 - PNJ et répliques (§20, annexe A), Dresseurs Route 8 et Arène, gardes, habitants, vendeurs,
   distributeurs, fillette (§2.9.6), vieille dame, Évoli (§2.5.3), Erika (§2.8), arbustes, objets
   visibles et cachés (Route 8 : Super Potion, Rappel caché ; souterrain : Pépite, Super Potion ;

@@ -215,10 +215,21 @@ func test_signs_and_the_hidden_revive_clue() -> void:
 		"ROUTE 8\nLavanville → ← Safrania", "texte 1")
 	assert_eq(dialogues.get_dialogue(&"route_8_underground_sign").variants[0].pages[0].text,
 		"PASSAGE SOUTERRAIN\nRoute 7 — Céladopole", "texte 2")
-	# Objet caché : la pierre-indice (case bloquée) ; son point EXAMINER vient avec la vie (T17).
+	# Objet caché : la pierre-indice (case bloquée) et, depuis le T17, son point EXAMINER (de tous
+	# côtés, effacé par `got_route_8_hidden_1`) ; l'arrivée est un déclencheur silencieux.
 	var clue := _plan.cell_of("route_8_hidden_1")
 	assert_true(_grid.is_solid(clue), "indice bloqué")
 	assert_not_null(_map.get_node_or_null(^"Entities/HiddenReviveClue"), "pierre-indice")
+	assert_true(found.has(&"route_8_hidden_1"), "point EXAMINER de l'objet caché")
+	if found.has(&"route_8_hidden_1"):
+		var hidden: InteractPoint = found[&"route_8_hidden_1"]
+		assert_eq([hidden.get_cell(), hidden.facing], [clue, Vector2i.ZERO])
+		assert_eq(hidden.unless_flags, [&"got_route_8_hidden_1"] as Array[StringName])
+	var arrival := _map.get_triggers()
+	for y: int in [10, 11, 12]:
+		assert_eq(arrival.find_on_step(Vector2i(78, y), Vector2i.LEFT) != null, true,
+			"déclencheur d'arrivée en (78, %d)" % y)
+		assert_null(arrival.find_on_step(Vector2i(78, y), Vector2i.RIGHT), "dans ce sens seulement")
 
 
 func test_trainer_and_item_cells_are_free_of_forest() -> void:

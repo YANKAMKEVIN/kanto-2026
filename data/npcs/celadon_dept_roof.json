@@ -1,0 +1,11 @@
+{
+	"girl": {
+		"cell": [
+			17,
+			5
+		],
+		"facing": "left",
+		"sprite": "lass_young",
+		"dialogue": "celadon_roof_girl"
+	}
+}

@@ -51,12 +51,8 @@ const GATE_GUARDS: Array[StringName] = [&"forest_gate_north_guard", &"forest_gat
 const UNUSED_YET: Array[StringName] = [
 	&"dark_cave_1f_sign", &"dark_cave_column", &"dark_cave_roots", &"dark_cave_crack",
 	&"dark_cave_b1f_hidden_1",
-	# Jalon 20 (T12) : don d'Évoli ; la Poké Ball est posée au T17 (maison du toit de la
-	# Résidence), jouée d'ici là sur la carte de QA `qa_gift_j20` (test_eevee_gift).
-	&"celadon_eevee_ball", &"celadon_eevee_received", &"celadon_eevee_stored",
-	# Jalon 20 (T13) : panneau des cabines d'ascenseur, posé avec elles (T16 grand magasin, T20
-	# repaire) ; d'ici là sur la carte de QA `qa_elevator_j20` (test_elevator_flow).
-	&"elevator_panel",
+	# Jalon 20 (T17) : la Poké Ball d'Évoli (maison du toit) et le panneau d'ascenseur (cabine du
+	# grand magasin) sont posés : plus rien du J20 n'attend ici.
 ]
 ## Jalon 17 (T8) : pages à jeton (texte → jetons attendus) : l'assistant et la CS05 reçue.
 const J17_TOKENS: Dictionary[String, Array] = {
@@ -68,8 +64,8 @@ const J17_TOKENS: Dictionary[String, Array] = {
 }
 ## Textes pas encore validés, exemptés du contrôle « mot pour mot » (jalon 14 T16 : ceux du
 ## coquillage de la Route 25, validés depuis : dossier 17 §15 n° 71 ; le n° 72 est retiré le 2026-10-14).
-## Jalon 20 (T16) : panneau de la cabine d'ascenseur, texte neutre en attendant le moteur (T13).
-const UNVALIDATED: Array[StringName] = [&"celadon_dept_elevator_panel"]
+## Jalon 20 (T17) : le panneau neutre de la cabine du T16 est remplacé par `elevator_panel` (T13).
+const UNVALIDATED: Array[StringName] = []
 ## Jalon 11 (T20c) : phrases jouées par le contrôleur du compagnon (ni PNJ, ni point, ni scène).
 const PLAYED_BY_COMPANION: Array[StringName] = [
 	&"companion_cave", &"companion_city", &"companion_forest", &"companion_happy",
@@ -175,6 +171,11 @@ const MAPS: Array[StringName] = [
 	# Jalon 20 (T15) : Routes 7 et 8, postes, bâtiments d'entrée, souterrain (panneaux).
 	&"route_8", &"route_7", &"route_7_gate", &"route_8_gate", &"route_7_underground_gate",
 	&"route_8_underground_gate", &"underground_path_7_8",
+	# Jalon 20 (T17) : la vie de Céladopole (Centre, grand magasin, Résidence, maisons, Arène).
+	&"celadon_center", &"celadon_dept_2f", &"celadon_dept_3f", &"celadon_dept_4f",
+	&"celadon_dept_5f", &"celadon_dept_roof", &"celadon_mansion_gf", &"celadon_mansion_1f",
+	&"celadon_mansion_2f", &"celadon_mansion_roof", &"celadon_mansion_roof_house",
+	&"celadon_restaurant", &"celadon_chief_house", &"celadon_hotel",
 ]
 ## Lot de textes validé par Kevin le 2026-10-06 (anciens brouillons : panneau, observations,
 ## soin de Maman, terminal du Stockage, portes de Jadielle…) : source des textes hors dossiers.
@@ -456,8 +457,47 @@ const IDS_J20: Array[StringName] = [
 	&"elevator_panel", &"elevator_locked",
 	# T16 : Céladopole (panneaux, examens, arbustes de Coupe, tableau et panneau d'ascenseur).
 	&"celadon_city_sign", &"celadon_gym_sign", &"celadon_west_block", &"celadon_dept_board",
-	&"celadon_dept_elevator_panel", &"celadon_mansion_office_door", &"celadon_gym_bush",
+	&"celadon_mansion_office_door", &"celadon_gym_bush",
 	&"celadon_gym_inner_bush",
+]
+## Jalon 20 (T17) : la vie du 20-I (dossier 23 §20 et annexe A du plan, textes 3 à 10, 15 à 26,
+## 32 à 38, 44, 61 à 129) ; un identifiant par dialogue des données.
+const IDS_J20_T17: Array[StringName] = [
+	&"celadon_casino_client", &"celadon_chief_man", &"celadon_chief_woman", &"celadon_clerk",
+	&"celadon_cook", &"celadon_dept_2f_clerk", &"celadon_dept_2f_clerk_tm",
+	&"celadon_dept_2f_customer_1", &"celadon_dept_2f_customer_2", &"celadon_dept_3f_gift_man",
+	&"celadon_dept_3f_player_1", &"celadon_dept_3f_player_2", &"celadon_dept_4f_clerk",
+	&"celadon_dept_4f_clerk_stones", &"celadon_dept_4f_customer", &"celadon_dept_5f_clerk",
+	&"celadon_dept_5f_lounge_1", &"celadon_dept_5f_lounge_2", &"celadon_dept_gf_customer_1",
+	&"celadon_dept_gf_customer_2", &"celadon_dept_hostess", &"celadon_dept_roof_lemonade",
+	&"celadon_dept_roof_soda", &"celadon_dept_roof_water", &"celadon_fisherman",
+	&"celadon_gardener_f", &"celadon_gardener_m", &"celadon_gym_beauty_violette_after",
+	&"celadon_gym_beauty_violette_before", &"celadon_gym_beauty_violette_defeated",
+	&"celadon_gym_cooltrainer_camelia_after", &"celadon_gym_cooltrainer_camelia_before",
+	&"celadon_gym_cooltrainer_camelia_defeated", &"celadon_gym_erika", &"celadon_gym_erika_badge",
+	&"celadon_gym_erika_intro", &"celadon_gym_erika_lost", &"celadon_gym_erika_resume",
+	&"celadon_gym_erika_tm", &"celadon_gym_erika_tm_late", &"celadon_gym_erika_tm_use",
+	&"celadon_gym_erika_won", &"celadon_gym_jr_trainer_apolline_after",
+	&"celadon_gym_jr_trainer_apolline_before", &"celadon_gym_jr_trainer_apolline_defeated",
+	&"celadon_gym_lass_capucine_after", &"celadon_gym_lass_capucine_before",
+	&"celadon_gym_lass_capucine_defeated", &"celadon_gym_lass_lila_after",
+	&"celadon_gym_lass_lila_before", &"celadon_gym_lass_lila_defeated", &"celadon_hidden_1",
+	&"celadon_hotel_guest_1", &"celadon_hotel_guest_2", &"celadon_hotel_reception",
+	&"celadon_kid", &"celadon_mansion_1f_man", &"celadon_mansion_1f_woman",
+	&"celadon_mansion_2f_man", &"celadon_mansion_2f_woman", &"celadon_mansion_old_lady",
+	&"celadon_old_man", &"celadon_restaurant_diner", &"celadon_restaurant_gambler",
+	&"celadon_restaurant_waiter", &"celadon_rocket_1", &"celadon_rocket_2", &"celadon_roof_girl",
+	&"celadon_roof_girl_thanks", &"celadon_shopper", &"celadon_stroller", &"celadon_tourist",
+	&"celadon_youth", &"route_8_gambler_fernand_after", &"route_8_gambler_fernand_before",
+	&"route_8_gambler_fernand_defeated", &"route_8_gambler_rene_after",
+	&"route_8_gambler_rene_before", &"route_8_gambler_rene_defeated", &"route_8_hidden_1",
+	&"route_8_item_1", &"route_8_lass_iris_after", &"route_8_lass_iris_before",
+	&"route_8_lass_iris_defeated", &"route_8_lass_margot_after", &"route_8_lass_margot_before",
+	&"route_8_lass_margot_defeated", &"route_8_lass_nina_after", &"route_8_lass_nina_before",
+	&"route_8_lass_nina_defeated", &"route_8_nerd_anatole_after", &"route_8_nerd_anatole_before",
+	&"route_8_nerd_anatole_defeated", &"route_8_nerd_firmin_after", &"route_8_nerd_firmin_before",
+	&"route_8_nerd_firmin_defeated", &"souterrain_hidden_1", &"souterrain_hidden_2",
+	&"underground_7_8_resident",
 ]
 ## Jalon 20 : lot de textes validé du dossier 23 (§20, une citation par ligne).
 const DOSSIER_23 := "res://docs/design/dossier-23-celadopole.md"
@@ -725,7 +765,8 @@ func test_library_loads_without_error() -> void:
 	var found := _without_qa(library.get_ids())
 	found.sort()
 	var expected := IDS + IDS_J14_BILL + IDS_J14_ROCKET + IDS_J15_ROUTE_5 + IDS_J16_GYM \
-		+ IDS_J16_SHIP + IDS_J16_RIVAL_CAPTAIN + IDS_J16_T15 + IDS_J17 + IDS_J18 + IDS_J19 + IDS_J20
+		+ IDS_J16_SHIP + IDS_J16_RIVAL_CAPTAIN + IDS_J16_T15 + IDS_J17 + IDS_J18 + IDS_J19 + IDS_J20 \
+		+ IDS_J20_T17
 	expected.sort()
 	assert_eq(found, expected)
 
@@ -762,6 +803,10 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		&"saffron_gate_drink_lemonade", &"saffron_gate_drink_soda", &"saffron_gate_drink_water",
 		# Jalon 20 (T12) : le don d'Évoli.
 		&"celadon_eevee_received", &"celadon_eevee_stored",
+		# Jalon 20 (T17) : Erika (scène de l'Arène et rattrapage de la CT21) et la fillette du toit.
+		&"celadon_gym_erika_badge", &"celadon_gym_erika_intro", &"celadon_gym_erika_lost",
+		&"celadon_gym_erika_resume", &"celadon_gym_erika_tm", &"celadon_gym_erika_tm_late",
+		&"celadon_gym_erika_tm_use", &"celadon_gym_erika_won", &"celadon_roof_girl_thanks",
 		# Jalon 19 (T16) : la gardienne du rez-de-chaussée.
 		&"tower_guardian_worried",
 		# Jalon 19 (T17) : le rival n° 5 (joué par sa scène).
@@ -950,7 +995,12 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		# Jalon 18 (T15) : l'arbre de la sortie est d'Azuria.
 		&"cut_cerulean_east_tree",
 		# Jalon 20 (T16) : les deux arbustes de l'Arène d'Erika.
-		&"cut_celadon_gym_bush", &"cut_celadon_gym_inner_bush"]
+		&"cut_celadon_gym_bush", &"cut_celadon_gym_inner_bush",
+		# Jalon 20 (T17) : arrivées (Route 8, Céladopole), objet et caches, Erika (badge, CT21),
+		# CT13 de la fillette du toit.
+		&"route_8_reached", &"celadon_reached", &"got_route_8_item_1", &"got_route_8_hidden_1",
+		&"got_celadon_hidden_1", &"got_souterrain_hidden_1", &"got_souterrain_hidden_2",
+		&"erika_met", &"badge_rainbow", &"tm21_received", &"rooftop_tm13"]
 		+ SET_J14_BILL_CUTSCENES + SET_J14_ROCKET_CUTSCENES + SET_J18_CUTSCENES
 		# Jalon 19 (T16) : la gardienne de la Tour s'écarte.
 		+ [&"tower_stairs_open"]
@@ -1158,7 +1208,8 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 		+ FileAccess.get_file_as_string(PLAN_J18)
 	var dossier_23 := FileAccess.get_file_as_string(DOSSIER_23).replace("\n    ", " ")
 	# T25 (n° 219) : « [Joueur] donne un(e) [boisson] au garde. », écrit pour chaque boisson.
-	var plan_j20 := FileAccess.get_file_as_string(PLAN_J20).replace("\n     ", " ")
+	var plan_j20 := FileAccess.get_file_as_string(PLAN_J20).replace("\n     ", " ") \
+		.replace("\n    ", " ")
 	for drink: String in ["une Eau Fraîche", "un Soda Cool", "une Limonade"]:
 		plan_j20 += plan_j20.replace("[Joueur] donne un(e) [boisson]", "{joueur} donne " + drink)
 	var dossier_22 := FileAccess.get_file_as_string(DOSSIER_22).replace("\n   ", " ") \
@@ -1445,12 +1496,13 @@ func test_oak_parcel_lines() -> void:
 	# de la Route 11 ; (T20) Pierre Lune et Super Bonbon ; (T21) Super Potion de FUTUR A ;
 	# (intégration) Corde Sortie de la Cave.
 	# Jalon 18 (T16) : sept objets au sol (Route 9, Route 10, grotte) et la Super Potion cachée.
-	assert_eq(launched, 78, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
+	assert_eq(launched, 85, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
 		+ "sa CT34, Ondine (pont, Arène et rattrapage), écran, module, console, objets de la "
 		+ "Route 25, le Rocket d'Azuria (2) et le barrage sud ; J15 : objets de la Route 5 ; "
 		+ "J16 : Major Bob (2), neuf objets du S.S. Anne, le capitaine, le marin (2) ; "
 		+ "J17 : la CS05, Route 11 (3), deux objets du couloir, la Super Potion de la clairière "
-		+ "et la Corde Sortie de la Cave ; J18 : huit objets ; J19 : la gardienne de la Tour et six objets de la Tour (T18)")
+		+ "et la Corde Sortie de la Cave ; J18 : huit objets ; J19 : la gardienne de la Tour et six objets de la Tour (T18) ; "
+		+ "J20 (T17) : Super Potion de la Route 8, quatre caches (Route 8, souterrain ×2, ville), Erika (2)")
 	# Le jeton n'apparaît que dans la réplique de l'espèce, « {pokemon} » dans les phrases du
 	# compagnon (J11), et ceux de la Pension dans ses répliques (J15).
 	for row: Array in _pages():
@@ -1473,7 +1525,8 @@ func test_oak_parcel_lines() -> void:
 		elif row[0] == &"nugget_rocket_given" \
 				or (row[0] == &"rival_tower_intro" and row[1].contains("{player}")) \
 				or (String(row[0]).begins_with("saffron_gate_drink_") and row[1].contains("{player}")) \
-				or row[0] == &"celadon_eevee_received":
+				or row[0] == &"celadon_eevee_received" \
+				or (String(row[0]).begins_with("celadon_gym_erika_") and row[1].contains("{player}")):
 			expected = [DialogueTokens.PLAYER]
 		elif J17_TOKENS.has(row[1]):
 			# Jalon 17 (T8) : compte d'espèces de l'assistant (T-1 à T-3), joueur de T-3.

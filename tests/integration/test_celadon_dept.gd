@@ -6,9 +6,12 @@ extends GutTest
 ## se répondent d'un étage à l'autre, porte de l'ascenseur à l'est (16..17, 2) sur chacun des cinq
 ## étages, sortie du RdC vers la ville (`from_dept_w|e`), **toit atteint par l'escalier du 5e
 ## seulement** (jamais par l'ascenseur), cabine (panneau d'étages, sortie vers le RdC).
-## **En attente du T13** : le trajet d'ascenseur (RdC → 5e → sortie au 5e) dépend du moteur
-## (`ElevatorDirector`, §2.3.3) : voir `test_elevator_ride_waits_for_the_engine`.
+## Le trajet d'ascenseur (RdC → 5e → sortie au 5e) est joué sur la vraie Boot (T17, raccord du T13) :
+## voir `test_real_elevator_ride_from_the_ground_floor_to_the_fifth_and_out`.
 
+const MemoryFs := preload("res://tests/helpers/memory_file_system.gd")
+const FixedClock := preload("res://tests/helpers/fixed_clock.gd")
+const BOOT_SCENE := preload("res://game/boot.tscn")
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 const GridPaths := preload("res://tests/helpers/grid_paths.gd")
 const FLOORS: Array = [
@@ -204,6 +207,7 @@ func test_every_floor_has_the_lift_door_and_the_cabin_leads_back_to_the_ground_f
 	if panel != null:
 		assert_eq([panel.get_cell(), panel.size, panel.facing],
 			[Vector2i(2, 1), Vector2i(2, 1), Vector2i.UP], "lu depuis (2..3, 2) ↑")
+		assert_eq(panel.dialogue_id, &"elevator_panel", "panneau standard des cabines (T13)")
 	# La cabine est fermée : seulement sa sortie.
 	assert_eq(cabin.get_warps().size(), 2)
 
@@ -230,7 +234,8 @@ func test_ground_floor_exit_board_and_clients() -> void:
 			assert_ne(warp.target_map, &"celadon_city", "%s : pas de sortie directe" % id)
 	var board: InteractPoint = null
 	for child: Node in ground.get_node(^"Interactables").get_children():
-		board = child as InteractPoint
+		if (child as InteractPoint).dialogue_id == &"celadon_dept_board":
+			board = child as InteractPoint
 	assert_not_null(board, "tableau des étages")
 	if board != null:
 		assert_eq([board.get_cell(), board.size, board.facing],
@@ -266,10 +271,83 @@ func test_npc_cells_are_free_and_reachable_without_cutting_the_floor() -> void:
 			assert_true(reach.has(cell), "%s %s : jamais coupée par un habitant" % [id, cell])
 
 
-## Le trajet RdC → 5e → sortie au 5e dépend du moteur d'ascenseur (T13).
-func test_elevator_ride_waits_for_the_engine() -> void:
-	if not ClassDB.class_exists(&"ElevatorDirector") \
-			and not FileAccess.file_exists("res://game/world/elevator/elevator_director.gd"):
-		pending("trajet d'ascenseur RdC → 5e → sortie au 5e : en attente du T13 (ElevatorDirector)")
-		return
-	pending("à brancher sur test_elevator_flow du T13")
+## Le vrai trajet (T17, raccord du T13) : vraie Boot, vraies données d'ascenseur, vraies cartes. Du
+## RdC (devant la porte, tourné ↑) à la cabine, panneau `elevator_panel` (action `open_elevator`),
+## 5e étage, trajet, sortie à pied au 5e. Le toit n'est pas proposé.
+func test_real_elevator_ride_from_the_ground_floor_to_the_fifth_and_out() -> void:
+	var fs := MemoryFs.new()
+	var saved_router := [SceneRouter.fade_out_duration, SceneRouter.fade_in_duration]
+	SceneRouter.fade_out_duration = 0.05
+	SceneRouter.fade_in_duration = 0.05
+	GameState.clock = FixedClock.new("2026-10-20T15:00:00")
+	var boot := BOOT_SCENE.instantiate() as Boot
+	boot.save_system = SaveSystem.new(fs, "user://test_celadon_dept_save.json")
+	boot.start_map = &"celadon_dept_gf"
+	boot.start_spawn = &"from_elevator"
+	boot.start_facing = Vector2i.UP
+	add_child_autofree(boot)
+	var player := boot.get_player()
+	var runner := boot.get_dialogue_runner()
+	runner.chars_per_second = 0.0
+	await wait_process_frames(3)
+	GameState.new_game(7)
+	GameState.player_name = "Kevin"
+	await wait_until(func() -> bool: return boot.is_stable(), 15.0)
+	var director := boot.get_elevator_director()
+	assert_eq(boot.get_map().map_id, &"celadon_dept_gf")
+	assert_eq(player.get_cell(), Vector2i(16, 3), "devant la porte de l'ascenseur")
+	await _step(boot, player, Vector2i.UP)
+	assert_eq(boot.get_map().map_id, CABIN, "dans la cabine")
+	assert_eq(director.get_current_floor(), &"gf", "on vient du RdC")
+	await _step(boot, player, Vector2i.UP)
+	await _step(boot, player, Vector2i.UP)
+	assert_eq(player.get_cell(), Vector2i(2, 2), "sous le panneau")
+	player.face(Vector2i.UP)
+	Input.action_press(&"interact")
+	await wait_process_frames(2)
+	Input.action_release(&"interact")
+	var box := boot.get_dialogue_box()
+	var deadline := Time.get_ticks_msec() + 15000
+	await wait_process_frames(2)
+	while runner.is_running() and Time.get_ticks_msec() < deadline:
+		if box.is_open():
+			box.advance_requested.emit()
+		await wait_process_frames(1)
+	await wait_process_frames(2)
+	assert_true(director.is_panel_open(), "panneau ouvert par `elevator_panel`")
+	var view := director.panel_view()
+	assert_eq(view.floors.map(func(f: Dictionary) -> String: return f["label"]),
+		["RdC", "2e", "3e", "4e", "5e"], "du RdC au 5e, sans le toit")
+	assert_eq(view.current_floor(), &"gf")
+	director.get_panel().floor_chosen.emit(&"5f")
+	assert_true(director.is_riding(), "trajet en cours")
+	await wait_until(func() -> bool: return boot.is_stable(), 15.0)
+	assert_eq(director.get_current_floor(), &"5f")
+	assert_eq(boot.get_map().map_id, CABIN, "toujours dans la cabine : on sort à pied")
+	await _step(boot, player, Vector2i.DOWN)
+	await _step(boot, player, Vector2i.DOWN)
+	await _step(boot, player, Vector2i.DOWN)
+	assert_eq(boot.get_map().map_id, &"celadon_dept_5f", "sortie au 5e")
+	assert_eq(player.get_cell(), Vector2i(16, 3), "devant la porte de l'ascenseur du 5e")
+	SceneRouter.fade_out_duration = saved_router[0]
+	SceneRouter.fade_in_duration = saved_router[1]
+	GameState.clock = DeviceClock.new()
+	for action: StringName in [&"interact", &"move_up", &"move_down"]:
+		Input.action_release(action)
+
+
+## Un pas (ou un passage) vers [param direction], puis la partie stable.
+func _step(boot: Boot, player: Player, direction: Vector2i) -> void:
+	var action := &"move_up" if direction == Vector2i.UP else &"move_down"
+	var from_map := boot.get_map().map_id
+	var from_cell := player.get_cell()
+	Input.action_press(action)
+	await wait_until(func() -> bool:
+		return player.is_moving() or player.get_cell() != from_cell \
+			or SceneRouter.is_transitioning(), 15.0)
+	Input.action_release(action)
+	await wait_process_frames(2)
+	await wait_until(func() -> bool:
+		return boot.is_stable() and not player.is_moving(), 15.0)
+	if boot.get_map().map_id == from_map and SceneRouter.is_transitioning():
+		await wait_until(func() -> bool: return boot.is_stable(), 15.0)

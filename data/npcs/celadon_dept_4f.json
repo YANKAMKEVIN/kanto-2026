@@ -1,0 +1,27 @@
+{
+	"clerk_a": {
+		"cell": [
+			7,
+			4
+		],
+		"facing": "down",
+		"sprite": "clerk"
+	},
+	"clerk_b": {
+		"cell": [
+			12,
+			4
+		],
+		"facing": "down",
+		"sprite": "clerk"
+	},
+	"customer": {
+		"cell": [
+			16,
+			8
+		],
+		"facing": "left",
+		"sprite": "lass_young",
+		"dialogue": "celadon_dept_4f_customer"
+	}
+}

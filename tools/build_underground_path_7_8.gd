@@ -19,7 +19,7 @@ extends SceneTree
 ##   `from_underground` ; arrivées `from_route_7_n|s` (3, 5..6) tournées →, `from_route_8_n|s`
 ##   (44, 7..8) tournées ←.
 ## - Objets cachés : cases-indices (15, 2) et (34, 1) bloquées, carrelage fissuré ; points
-##   EXAMINER, dialogues et scènes avec la vie (T17).
+##   EXAMINER (T17) `souterrain_hidden_1|2`, dialogues et scènes dans `data/`.
 
 const Kit := preload("res://tools/cave_map_kit.gd")
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
@@ -344,8 +344,14 @@ func _place_landmarks() -> void:
 	for cell: Vector2i in _plan().call(&"cells_of", "n"):
 		_kit.call(&"add_prop_at", entities, "prop_stele_01", cell, "Pillar")
 	for i: int in HIDDEN.size():
-		_kit.call(&"add_prop_at", entities, "prop_pierre_descellee_01",
-			_plan().call(&"cell_of", HIDDEN[i]), "CrackedTile%d" % i)
+		var cell: Vector2i = _plan().call(&"cell_of", HIDDEN[i])
+		_kit.call(&"add_prop_at", entities, "prop_pierre_descellee_01", cell, "CrackedTile%d" % i)
+		# Point EXAMINER (T17) : de tous côtés, il disparaît quand `got_<id>` est levé.
+		_kit.call(&"add_interactable", "Hidden%d" % (i + 1), cell, Vector2i.ONE, Vector2i.ZERO,
+			StringName(HIDDEN[i]))
+		var point: Node = _kit.get(&"root").get_node(^"Interactables").get_child(-1)
+		var unless: Array[StringName] = [StringName("got_" + HIDDEN[i])]
+		point.set(&"unless_flags", unless)
 
 
 ## Appliques sur [constant SCONCE_CELLS] : le sol est du côté est, ouest ou sud de la case ;

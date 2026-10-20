@@ -1,11 +1,12 @@
 [gd_scene format=3]
 
-[ext_resource type="Script" path="res://game/world/map.gd" id="1_o3vnm"]
-[ext_resource type="Texture2D" path="res://assets/world/interiors/placeholder/ph_celadon_dept_2f.png" id="2_57psr"]
-[ext_resource type="Script" path="res://game/world/warp_point.gd" id="3_g3ub8"]
+[ext_resource type="Script" path="res://game/world/map.gd" id="1_57psr"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/placeholder/ph_celadon_dept_2f.png" id="2_g3ub8"]
+[ext_resource type="Script" path="res://game/world/warp_point.gd" id="3_0x0ct"]
+[ext_resource type="Script" path="res://game/world/interactions/interact_point.gd" id="4_ljb85"]
 
-[node name="CeladonDept2F" type="Node2D" unique_id=1187906559]
-script = ExtResource("1_o3vnm")
+[node name="CeladonDept2F" type="Node2D" unique_id=1898183016]
+script = ExtResource("1_57psr")
 map_id = &"celadon_dept_2f"
 display_name = "Céladopole"
 size = Vector2i(20, 13)
@@ -13,72 +14,88 @@ blocked_cells = Array[Vector2i]([Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0),
 interior = true
 light_profile = &"interior_warm"
 
-[node name="Shell" type="Sprite2D" parent="." unique_id=914953053]
+[node name="Shell" type="Sprite2D" parent="." unique_id=581256356]
 z_index = -3
-texture = ExtResource("2_57psr")
+texture = ExtResource("2_g3ub8")
 centered = false
 
-[node name="Entities" type="Node2D" parent="." unique_id=939992157]
+[node name="Entities" type="Node2D" parent="." unique_id=1954472185]
 unique_name_in_owner = true
 y_sort_enabled = true
 
-[node name="Warps" type="Node2D" parent="." unique_id=1740005262]
+[node name="Warps" type="Node2D" parent="." unique_id=1287104137]
 
-[node name="StairsDown0" type="Marker2D" parent="Warps" unique_id=2111696416]
+[node name="StairsDown0" type="Marker2D" parent="Warps" unique_id=443151949]
 position = Vector2(432, 288)
-script = ExtResource("3_g3ub8")
+script = ExtResource("3_0x0ct")
 target_map = &"celadon_dept_gf"
 target_spawn = &"from_up"
 arrival_facing = Vector2i(0, 1)
 
-[node name="StairsDown1" type="Marker2D" parent="Warps" unique_id=317462169]
+[node name="StairsDown1" type="Marker2D" parent="Warps" unique_id=2055135766]
 position = Vector2(528, 288)
-script = ExtResource("3_g3ub8")
+script = ExtResource("3_0x0ct")
 target_map = &"celadon_dept_gf"
 target_spawn = &"from_up"
 arrival_facing = Vector2i(0, 1)
 
-[node name="StairsUp0" type="Marker2D" parent="Warps" unique_id=164126734]
+[node name="StairsUp0" type="Marker2D" parent="Warps" unique_id=1275069079]
 position = Vector2(240, 288)
-script = ExtResource("3_g3ub8")
+script = ExtResource("3_0x0ct")
 target_map = &"celadon_dept_3f"
 target_spawn = &"from_down"
 arrival_facing = Vector2i(0, 1)
 
-[node name="StairsUp1" type="Marker2D" parent="Warps" unique_id=746982739]
+[node name="StairsUp1" type="Marker2D" parent="Warps" unique_id=994883681]
 position = Vector2(336, 288)
-script = ExtResource("3_g3ub8")
+script = ExtResource("3_0x0ct")
 target_map = &"celadon_dept_3f"
 target_spawn = &"from_down"
 arrival_facing = Vector2i(0, 1)
 
-[node name="Elevator0" type="Marker2D" parent="Warps" unique_id=1470903123]
+[node name="Elevator0" type="Marker2D" parent="Warps" unique_id=324481073]
 position = Vector2(1584, 288)
-script = ExtResource("3_g3ub8")
+script = ExtResource("3_0x0ct")
 direction = Vector2i(0, -1)
 target_map = &"celadon_dept_elevator"
 target_spawn = &"entrance"
 arrival_facing = Vector2i(0, -1)
 
-[node name="Elevator1" type="Marker2D" parent="Warps" unique_id=123843767]
+[node name="Elevator1" type="Marker2D" parent="Warps" unique_id=467062959]
 position = Vector2(1680, 288)
-script = ExtResource("3_g3ub8")
+script = ExtResource("3_0x0ct")
 direction = Vector2i(0, -1)
 target_map = &"celadon_dept_elevator"
 target_spawn = &"entrance"
 arrival_facing = Vector2i(0, -1)
 
-[node name="Interactables" type="Node2D" parent="." unique_id=1067004801]
+[node name="Interactables" type="Node2D" parent="." unique_id=805154214]
 
-[node name="Spawns" type="Node2D" parent="." unique_id=974848396]
+[node name="ClerkCounterA" type="Marker2D" parent="Interactables" unique_id=958615562]
+position = Vector2(624, 576)
+script = ExtResource("4_ljb85")
+dialogue_id = &"celadon_dept_2f_clerk"
+kind = 0
+size = Vector2i(3, 1)
+facing = Vector2i(0, -1)
 
-[node name="from_up" type="Marker2D" parent="Spawns" unique_id=831117346]
+[node name="ClerkCounterB" type="Marker2D" parent="Interactables" unique_id=1538612316]
+position = Vector2(1104, 576)
+script = ExtResource("4_ljb85")
+dialogue_id = &"celadon_dept_2f_clerk_tm"
+kind = 0
+size = Vector2i(3, 1)
+facing = Vector2i(0, -1)
+
+[node name="Spawns" type="Node2D" parent="." unique_id=549946528]
+
+[node name="from_up" type="Marker2D" parent="Spawns" unique_id=1966286245]
 position = Vector2(240, 384)
 
-[node name="from_elevator" type="Marker2D" parent="Spawns" unique_id=2138442702]
+[node name="from_elevator" type="Marker2D" parent="Spawns" unique_id=944742791]
 position = Vector2(1584, 384)
 
-[node name="from_down" type="Marker2D" parent="Spawns" unique_id=1037921140]
+[node name="from_down" type="Marker2D" parent="Spawns" unique_id=172767640]
 position = Vector2(432, 384)
 
-[node name="Triggers" type="Node2D" parent="." unique_id=1558637874]
+[node name="Triggers" type="Node2D" parent="." unique_id=1803074556]

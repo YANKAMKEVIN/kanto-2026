@@ -1,0 +1,86 @@
+{
+	"lila": {
+		"cell": [
+			11,
+			8
+		],
+		"facing": "left",
+		"sprite": "lass",
+		"dialogue": "celadon_gym_lass_lila_after",
+		"trainer": {
+			"id": "celadon_gym_lass_lila",
+			"sight": 3,
+			"before": "celadon_gym_lass_lila_before",
+			"defeated": "celadon_gym_lass_lila_defeated"
+		}
+	},
+	"capucine": {
+		"cell": [
+			4,
+			8
+		],
+		"facing": "right",
+		"sprite": "lass",
+		"dialogue": "celadon_gym_lass_capucine_after",
+		"trainer": {
+			"id": "celadon_gym_lass_capucine",
+			"sight": 3,
+			"before": "celadon_gym_lass_capucine_before",
+			"defeated": "celadon_gym_lass_capucine_defeated"
+		}
+	},
+	"violette": {
+		"cell": [
+			4,
+			12
+		],
+		"facing": "right",
+		"sprite": "beauty",
+		"dialogue": "celadon_gym_beauty_violette_after",
+		"trainer": {
+			"id": "celadon_gym_beauty_violette",
+			"sight": 3,
+			"before": "celadon_gym_beauty_violette_before",
+			"defeated": "celadon_gym_beauty_violette_defeated"
+		}
+	},
+	"apolline": {
+		"cell": [
+			13,
+			6
+		],
+		"facing": "left",
+		"sprite": "lass_young",
+		"dialogue": "celadon_gym_jr_trainer_apolline_after",
+		"trainer": {
+			"id": "celadon_gym_jr_trainer_apolline",
+			"sight": 4,
+			"before": "celadon_gym_jr_trainer_apolline_before",
+			"defeated": "celadon_gym_jr_trainer_apolline_defeated"
+		}
+	},
+	"camelia": {
+		"cell": [
+			8,
+			6
+		],
+		"facing": "up",
+		"sprite": "cooltrainer_f",
+		"dialogue": "celadon_gym_cooltrainer_camelia_after",
+		"trainer": {
+			"id": "celadon_gym_cooltrainer_camelia",
+			"sight": 2,
+			"before": "celadon_gym_cooltrainer_camelia_before",
+			"defeated": "celadon_gym_cooltrainer_camelia_defeated"
+		}
+	},
+	"erika": {
+		"cell": [
+			8,
+			2
+		],
+		"facing": "down",
+		"sprite": "erika",
+		"dialogue": "celadon_gym_erika"
+	}
+}

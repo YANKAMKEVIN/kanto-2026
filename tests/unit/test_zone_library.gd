@@ -328,3 +328,40 @@ func test_duplicate_zone_across_files_and_root_keys() -> void:
 func test_missing_file() -> void:
 	assert_false(_zones.load_file("res://tests/fixtures/absent_zones.json"))
 	assert_push_error("fichier introuvable")
+
+
+## Jalon 20 (T17, jalon-20.md §2.11 ; annexe A.10, textes 167 à 170) : la Route 8, le souterrain, la
+## Route 7 et Céladopole — sous-titres et descriptions validés, cartes existantes, services de la
+## ville découverts sur leur carte (le grand magasin dès son rez-de-chaussée, l'Arène, le Centre).
+func test_j20_zones_texts_maps_and_services() -> void:
+	_zones.load_file()
+	var expected := {
+		&"route_8": ["Lavanville — Safrania", "Une route de Dresseurs entre deux chemins. À l'ouest, "
+			+ "le poste de Safrania et l'entrée du souterrain.", &"route"],
+		&"underground_path_7_8": ["Route 7 — Route 8", "Un long couloir carrelé sous Safrania. "
+			+ "Des néons froids, et presque personne.", &"place"],
+		&"route_7": ["Céladopole — Safrania", "Une courte route en pente douce. Les toits de "
+			+ "Céladopole apparaissent entre les arbres.", &"route"],
+		&"celadon_city": ["", "Une ville prospère, verte et commerçante. Sous les néons du Casino, "
+			+ "l'ambiance n'est plus la même.", &"town"],
+	}
+	for id: StringName in expected:
+		var zone := _zones.get_zone(id)
+		assert_not_null(zone, String(id))
+		if zone == null:
+			continue
+		assert_eq(zone.subtitle, expected[id][0], "%s : sous-titre" % id)
+		assert_eq(zone.description, expected[id][1], "%s : description" % id)
+		assert_false(zone.draft, "%s : validé" % id)
+		for map_id: StringName in zone.maps:
+			assert_true(MapCatalog.has_map(map_id), "%s : la carte %s existe" % [id, map_id])
+	assert_eq(_zones.get_zone(&"route_8").subtitle, _root_property(&"route_8", &"region"),
+		"même connexion que le titre de zone en jeu")
+	assert_eq(_zones.get_zone(&"route_7").subtitle, _root_property(&"route_7", &"region"))
+	var found: Dictionary = {}
+	for service: ZoneService in _zones.get_zone(&"celadon_city").services:
+		found[service.id] = service.found_on
+	assert_eq(found, {&"pokemon_center": &"celadon_center", &"poke_mart": &"celadon_dept_gf",
+		&"gym": &"celadon_gym"}, "services de Céladopole")
+	# Les cartes du repaire rejoignent la zone avec leur construction (T20).
+	assert_eq(_zones.get_zone(&"celadon_city").maps.size(), 19)

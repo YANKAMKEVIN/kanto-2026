@@ -1,0 +1,20 @@
+{
+	"resident_1": {
+		"cell": [
+			10,
+			6
+		],
+		"facing": "left",
+		"sprite": "traveler",
+		"dialogue": "celadon_mansion_2f_man"
+	},
+	"resident_2": {
+		"cell": [
+			5,
+			7
+		],
+		"facing": "right",
+		"sprite": "passenger_f",
+		"dialogue": "celadon_mansion_2f_woman"
+	}
+}
