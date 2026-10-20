@@ -22,6 +22,10 @@ signal coming_soon_shown(label: String)
 ## Ferme la transition ouverte par [signal transition_started] (aucun [signal map_entered] ne
 ## suit : ceux qui se cachent au début d'une transition réapparaissent ici, comme le compagnon).
 signal coming_soon_finished(map: GameMap)
+## Passe systèmes 2 (§2.9) : joueur replacé sur la **même** carte par un téléporteur
+## ([method relocate]), rideau levé, joueur libre. Ferme la transition ouverte par
+## [signal transition_started] ; ni [signal map_changed] ni [signal map_entered] ne suivent.
+signal relocated(map: GameMap)
 
 ## Images pendant lesquelles un préchargement devenu inutile est encore retenu ([member _retired]).
 const RETIRE_FRAMES: int = 2
@@ -33,6 +37,8 @@ var map_factory: Callable = Callable()
 ## Durées du fondu (secondes) ; les tests les raccourcissent.
 var fade_out_duration: float = UiTokens.ANIM_FADE_OUT
 var fade_in_duration: float = UiTokens.ANIM_FADE_IN
+## Passe systèmes 2 (§2.9) : fondu d'un téléporteur, à l'aller comme au retour (secondes) [D].
+var teleport_fade_duration: float = 0.25
 ## Destinations « à venir » ([member Warp.coming_soon]) actives : build de développement
 ## seulement (dossier-07 §12). En release, ces passages sont inertes (le bord reste bloqué).
 var coming_soon_enabled: bool = OS.is_debug_build()
@@ -156,6 +162,42 @@ func start_at(map_id: StringName, cell: Vector2i, facing: Vector2i) -> GameMap:
 ## branché). [param facing] ZERO = garder l'orientation du joueur. Ignoré si une
 ## transition est déjà en cours. En cas d'échec, le joueur reste sur la carte courante.
 func change_map(map_id: StringName, spawn: StringName, facing: Vector2i = Vector2i.ZERO) -> void:
+	await _change_map(map_id, spawn, facing, fade_out_duration, fade_in_duration)
+
+
+## Téléporteur (passe systèmes 2, §2.9) : replace le joueur sur [param spawn] de la carte
+## **courante**, sans la recharger (coroutine, fondu court [member teleport_fade_duration]).
+## [param facing] ZERO = garder l'orientation. Transition comme un changement de carte
+## ([signal transition_started], entrées bloquées, rien n'est sauvegardé pendant), fermée par
+## [signal relocated]. Ignoré pendant une transition ; spawn inconnu : erreur, joueur laissé
+## où il est.
+func relocate(spawn: StringName, facing: Vector2i = Vector2i.ZERO) -> void:
+	if _busy or _player == null or not is_instance_valid(_current_map):
+		return
+	var session := _session
+	_busy = true
+	_player.set_input_enabled(false)
+	transition_started.emit(_current_map.map_id)
+	if _fade != null:
+		await _fade.fade_out(teleport_fade_duration)
+		if session != _session:
+			return
+	if _current_map.has_spawn(spawn):
+		_current_map.spawn_player(_player, spawn,
+			facing if facing != Vector2i.ZERO else _player.get_facing())
+	else:
+		push_error("SceneRouter : spawn inconnu « %s » sur %s" % [spawn, _current_map.map_id])
+	if _fade != null:
+		await _fade.fade_in(teleport_fade_duration)
+		if session != _session:
+			return
+	_player.set_input_enabled(true)
+	_busy = false
+	relocated.emit(_current_map)
+
+
+func _change_map(map_id: StringName, spawn: StringName, facing: Vector2i, out_seconds: float,
+		in_seconds: float) -> void:
 	if _busy or _player == null:
 		return
 	var session := _session
@@ -165,14 +207,14 @@ func change_map(map_id: StringName, spawn: StringName, facing: Vector2i = Vector
 	_player.set_input_enabled(false)
 	transition_started.emit(map_id)
 	if _fade != null:
-		await _fade.fade_out(fade_out_duration)
+		await _fade.fade_out(out_seconds)
 		if session != _session:
 			return
 	var arrived := _swap_map(map_id, spawn, facing)
 	if arrived:
 		map_changed.emit(_current_map)
 	if _fade != null:
-		await _fade.fade_in(fade_in_duration)
+		await _fade.fade_in(in_seconds)
 		if session != _session:
 			return
 	_player.set_input_enabled(true)
@@ -421,9 +463,13 @@ func _on_player_bumped(direction: Vector2i) -> void:
 func _follow(warp: Warp) -> void:
 	if warp == null:
 		return
+	var arrival_facing := warp.get_arrival_facing(_player.get_facing())
 	if warp.is_coming_soon():
-		show_coming_soon(warp.coming_soon, warp.target_spawn,
-			warp.get_arrival_facing(_player.get_facing()))
+		show_coming_soon(warp.coming_soon, warp.target_spawn, arrival_facing)
+	elif warp.is_teleport() and warp.target_map == _current_map.map_id:
+		relocate(warp.target_spawn, arrival_facing)
+	elif warp.is_teleport():
+		_change_map(warp.target_map, warp.target_spawn, arrival_facing,
+			teleport_fade_duration, teleport_fade_duration)
 	else:
-		change_map(warp.target_map, warp.target_spawn,
-			warp.get_arrival_facing(_player.get_facing()))
+		change_map(warp.target_map, warp.target_spawn, arrival_facing)

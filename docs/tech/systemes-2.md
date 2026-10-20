@@ -761,6 +761,13 @@ capacités régénéré (11 en attente).
 
 #### T26 — A : `Warp.style`, `SceneRouter.relocate` — après T1
 
+**Fait (2026-10-21)** : `Warp.Style { DOOR, TELEPORT }` (fin d'énum, défaut DOOR), `Warp.is_teleport`,
+`WarpPoint.style` ; `SceneRouter.relocate(spawn, facing)` (même carte, sans rechargement :
+`transition_started` puis signal nouveau `relocated`, ni `map_changed` ni `map_entered`, donc ni
+titre de zone ni autosave d'arrivée) ; un téléporteur vers une autre carte passe par `change_map`
+avec le fondu court `teleport_fade_duration` = 0,25 s [D] ; aucun verrou d'arrivée (règle du
+`STEP_ON`). Tests `test_teleporter.gd` (10) ; `test_scene_router.gd` inchangé et vert.
+
 #### T27 — A : `plan_check_teleports.py` (graphe, paires) — après T3b
 
 #### T28 — C : `KeyDoor`, `qa_teleport` vivante, Carte Magnétique (`card_key`, données) — après T26
