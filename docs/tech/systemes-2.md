@@ -770,6 +770,15 @@ avec le fondu court `teleport_fade_duration` = 0,25 s [D] ; aucun verrou d'arriv
 
 #### T27 — A : `plan_check_teleports.py` (graphe, paires) — après T3b
 
+**Fait (2026-10-21)** : `tools/art/plan_check_teleports.py` (générique, une ou plusieurs grilles ;
+sans argument : les deux `qa_teleport*`). Il réutilise `verifier_teleporteurs` de
+`plan_check_systemes2.py` (importé, inchangé : spawns, « T », états, but, carte, retour) et ajoute :
+paires (`paire=`, facultatif ; exactement deux téléporteurs réciproques, « sur ou à côté »),
+téléporteur sur sa propre case refusé, **graphe des salles** imprimé (salle → salles atteignables,
+par téléporteur ou par porte, sans ou avec la carte) et salle isolée refusée. `--autotest` : six
+pièges refusés (spawn inexistant, paire orpheline, non réciproque, salle sans retour, but sans carte,
+« T » sans téléporteur) et une grille correcte acceptée.
+
 #### T28 — C : `KeyDoor`, `qa_teleport` vivante, Carte Magnétique (`card_key`, données) — après T26
 
 #### T28b — Q : **session S2F** → K
