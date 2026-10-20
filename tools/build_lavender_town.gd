@@ -22,7 +22,8 @@ extends SceneTree
 ##   (buis), fleurs pâles, ifs du parvis, bancs, arbres repères, trois panneaux.
 ## - Passages : portes STEP_ON ↑ des six bâtiments (spawns `retour_*`), nord (21..23, 0) PUSH ↑
 ##   vers la Route 10 (`route_10` / `from_lavender_w|c|e`, ou « Route 10 — À venir » tant que la
-##   carte n'existe pas), ouest (0, 10..12) « Route 8 — À venir » et sud (21..23, 35) « Route 12 —
+##   carte n'existe pas), ouest (0, 10..12) PUSH ← vers la Route 8 (`route_8` / `from_lavender_n|c|s`,
+##   jalon 20 T15 ; « Route 8 — À venir » sans sa carte) et sud (21..23, 35) « Route 12 —
 ##   À venir » (`coming_soon`, développement : en release les bords sont bloqués).
 
 const Kit := preload("res://tools/cerulean_map_kit.gd")
@@ -194,14 +195,21 @@ func _add_passages() -> void:
 				Vector2i.UP, &"", StringName("from_route_10_" + suffix), Vector2i.DOWN,
 				"Route 10")
 	_kit.call(&"add_spawn", "from_route_10", north[1])
-	# Ouest : « ROUTE 8 — À venir » ; retour une case à l'intérieur, tourné vers l'est.
+	# Ouest : la Route 8 (jalon 20 T15) / `from_lavender_n|c|s`, rangée par rangée ; « ROUTE 8 —
+	# À venir » tant que sa carte n'existe pas (retour une case à l'intérieur, tourné vers l'est).
 	var west: Array[Vector2i] = _plan().call(&"cells_at", "warp_ouest")
 	var west_back: Array[Vector2i] = _plan().call(&"cells_at", "from_route_8")
+	var west_built := ResourceLoader.exists("res://game/world/maps/route_8.tscn")
 	for i: int in west.size():
 		var name := "from_route_8_" + SUFFIXES_V[i]
 		_kit.call(&"add_spawn", name, west_back[i])
-		_kit.call(&"add_warp", "Route8" + SUFFIXES_V[i].to_upper(), west[i], Kit.PUSH,
-			Vector2i.LEFT, &"", StringName(name), Vector2i.RIGHT, "Route 8")
+		if west_built:
+			_kit.call(&"add_warp", "Route8" + SUFFIXES_V[i].to_upper(), west[i], Kit.PUSH,
+				Vector2i.LEFT, &"route_8", StringName("from_lavender_" + SUFFIXES_V[i]),
+				Vector2i.LEFT)
+		else:
+			_kit.call(&"add_warp", "Route8" + SUFFIXES_V[i].to_upper(), west[i], Kit.PUSH,
+				Vector2i.LEFT, &"", StringName(name), Vector2i.RIGHT, "Route 8")
 	# Sud : « ROUTE 12 — À venir » ; retour une case au nord, tourné vers le haut.
 	var south: Array[Vector2i] = _plan().call(&"cells_at", "warp_sud")
 	var south_back: Array[Vector2i] = _plan().call(&"cells_at", "from_route_12")

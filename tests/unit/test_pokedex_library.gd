@@ -29,9 +29,10 @@ const EVOLUTION_NOTES: Array[StringName] = [&"kadabra_bond"]
 ## Magnéti liés… », texte validé par Kevin le 2026-10-16 ; Magnéti se voit avant, chez l'Ingénieur
 ## Victor de la Route 11).
 const NAMED_SPECIES_OK: Dictionary[StringName, Array] = {&"magneton": [&"magnemite"]}
-## Espèces des données sans fiche : jamais vues au J19 (SPECTRE), fiches au J20 et au J21
+## Espèces des données sans fiche : jamais vues au J19 (SPECTRE) ; Osselait a la sienne depuis le
+## J20 (annexe A n° 204), Ossatueur l'aura au J21
 ## (dossier 22 §12.1).
-const NO_ENTRY_YET: Array[StringName] = [&"cubone", &"marowak"]
+const NO_ENTRY_YET: Array[StringName] = [&"marowak"]
 ## Descriptions validées par Kevin qui parlent d'évolution (exception à « jamais de
 ## divulgation ») : Léviator (dossier 22 §15.7, validé le 2026-10-15).
 const EVOLUTION_DESCRIPTIONS: Array[StringName] = [&"gyarados"]
@@ -75,7 +76,7 @@ func test_every_species_of_the_data_has_an_entry_and_the_reverse() -> void:
 	_lib.check_references(_data)
 	for id: StringName in _data.get_species_ids():
 		if NO_ENTRY_YET.has(id):
-			assert_false(_lib.has_species(id), "%s : pas de fiche avant le J20" % id)
+			assert_false(_lib.has_species(id), "%s : pas encore de fiche" % id)
 			continue
 		assert_true(_lib.has_species(id), "%s a sa fiche de Pokédex" % id)
 		var info := _lib.get_species(id)

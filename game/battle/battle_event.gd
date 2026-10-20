@@ -147,6 +147,14 @@ extends RefCounted
 ## - SCREEN_STARTED / SCREEN_ENDED : le mur [member move_id] (« reflect », « light_screen ») est
 ##   levé sur le camp [member side] / y prend fin (fin de tour) ;
 ## - STATS_RESET : Buée Noire, tous les niveaux de statistiques reviennent à 0 (camp du lanceur).
+## Jalon 20 (objets du grand magasin de Céladopole, `jalon-20.md` §2.9.3 et §2.9.4) :
+## - BATTLE_ITEM_USED : objet de combat du joueur ([member item_id], [member item_name]) sur son
+##   Pokémon actif : « {player} utilise {item} ! » ; suivent STAT_CHANGED / STAT_UNCHANGED (objet
+##   X) ou FOCUSED / FAILED (Muscle +) ;
+## - ITEM_ESCAPE : Poupée Poké en combat sauvage (camp PLAYER) : la fuite est garantie ; suit
+##   BATTLE_ENDED (FLED) ;
+## - REVIVED : juste après l'ITEM_USED d'un Rappel, le Pokémon [member party_index] de l'équipe
+##   du joueur n'est plus K.O. ([member hp] : ses PV rendus).
 ## Tous les autres événements sur un Pokémon portent dans [member status] son statut au moment
 ## de l'événement (SENT_OUT : la carte de PV l'affiche dès l'entrée ; FAINTED : toujours vide,
 ## le K.O. efface le statut).
@@ -171,6 +179,7 @@ enum Kind {
 	GHOST_SCARED, GHOST_SPOKE,
 	OHKO,
 	HEALED, SCREEN_STARTED, SCREEN_ENDED, STATS_RESET,
+	ITEM_ESCAPE, REVIVED, BATTLE_ITEM_USED,
 }
 enum SideId { PLAYER, FOE }
 

@@ -66,6 +66,10 @@ const MAPS: Array[StringName] = [
 	&"pokemon_tower_2f",
 	# Jalon 19 (T18) : zone purifiée du 5F et objets des 3F à 6F (PNJ « objet » de leurs fichiers).
 	&"pokemon_tower_3f", &"pokemon_tower_4f", &"pokemon_tower_5f",
+	# Jalon 20 (T16) : COUPER sur les arbustes de l'Arène d'Erika (examens posés dans les scènes).
+	&"celadon_city", &"celadon_gym",
+	# Jalon 20 (T17) : arrivées silencieuses (Route 8 est, Céladopole est).
+	&"route_8",
 ]
 ## Jalon 7 (T18) : partie qui revient au labo avec le colis (rival parti après le combat).
 const PARCEL_FLAGS: Array[StringName] = [
@@ -224,6 +228,8 @@ const VARIANT_FLAGS: Dictionary = {
 	&"cut_tree_route_2_east_bush": [PEWTER_FLAGS], &"cut_tree_route_2_futur_a": [PEWTER_FLAGS],
 	# Jalon 18 (T15) : Coupe de l'arbre de la sortie est d'Azuria.
 	&"cut_tree_cerulean_east": [PEWTER_FLAGS],
+	# Jalon 20 (T16) : Coupe des deux arbustes de l'Arène d'Erika.
+	&"cut_tree_celadon_gym_bush": [PEWTER_FLAGS], &"cut_tree_celadon_gym_inner_bush": [PEWTER_FLAGS],
 	# Jalon 18 (T16) : objets et déclencheurs silencieux des objectifs (une variante chacun).
 	&"route_9_entered": [PEWTER_FLAGS], &"route_9_item_1": [PEWTER_FLAGS],
 	&"route_9_item_2": [PEWTER_FLAGS], &"route_9_item_3": [PEWTER_FLAGS],
@@ -238,11 +244,72 @@ const VARIANT_FLAGS: Dictionary = {
 	&"route_10_item_1": [PEWTER_FLAGS], &"dark_cave_1f_item_1": [PEWTER_FLAGS],
 	&"dark_cave_1f_item_2": [PEWTER_FLAGS], &"dark_cave_b1f_item_1": [PEWTER_FLAGS],
 	&"dark_cave_b1f_hidden_1": [PEWTER_FLAGS], &"lavender_reached": [PEWTER_FLAGS],
+	# Jalon 20 (T25) : boisson donnée au garde d'un poste de Safrania (une fois).
+	&"saffron_gate_drink_water": [PEWTER_FLAGS], &"saffron_gate_drink_soda": [PEWTER_FLAGS],
+	&"saffron_gate_drink_lemonade": [PEWTER_FLAGS],
+	# Jalon 20 (T12) : don d'Évoli (une fois).
+	&"celadon_eevee_gift": [PEWTER_FLAGS],
+	# Jalon 20 (T17) : arrivées, objet et caches, Erika (scène et rattrapage de la CT21), fillette.
+	&"route_8_reached": [PEWTER_FLAGS], &"celadon_reached": [PEWTER_FLAGS],
+	&"route_8_item_1": [PEWTER_FLAGS], &"route_8_hidden_1": [PEWTER_FLAGS],
+	&"souterrain_hidden_1": [PEWTER_FLAGS], &"souterrain_hidden_2": [PEWTER_FLAGS],
+	&"celadon_hidden_1": [PEWTER_FLAGS],
+	&"celadon_gym_erika": [PEWTER_FLAGS], &"celadon_gym_erika_tm_late": [PEWTER_FLAGS],
+	&"celadon_roof_trade": [PEWTER_FLAGS],
+	# Jalon 20 (T21) : interrupteur (une fois), chute et prise de la Clé, Giovanni, Scope, objets.
+	&"game_corner_switch": [PEWTER_FLAGS], &"rocket_hideout_key_drop": [PEWTER_FLAGS],
+	&"rocket_hideout_b4f_lift_key": [PEWTER_FLAGS + [&"rocket_dropped_lift_key"]],
+	&"giovanni_hideout": [PEWTER_FLAGS],
+	&"rocket_hideout_b4f_silph_scope": [PEWTER_FLAGS + [&"giovanni_hideout_won"]],
+	&"rocket_hideout_b1f_item_1": [PEWTER_FLAGS],
+	&"rocket_hideout_b1f_item_2": [PEWTER_FLAGS],
+	&"rocket_hideout_b1f_hidden_1": [PEWTER_FLAGS],
+	&"rocket_hideout_b2f_item_1": [PEWTER_FLAGS],
+	&"rocket_hideout_b2f_item_2": [PEWTER_FLAGS],
+	&"rocket_hideout_b2f_item_3": [PEWTER_FLAGS],
+	&"rocket_hideout_b2f_item_4": [PEWTER_FLAGS],
+	&"rocket_hideout_b3f_item_1": [PEWTER_FLAGS],
+	&"rocket_hideout_b3f_item_2": [PEWTER_FLAGS],
+	&"rocket_hideout_b3f_hidden_1": [PEWTER_FLAGS],
+	&"rocket_hideout_b4f_item_1": [PEWTER_FLAGS],
+	&"rocket_hideout_b4f_item_2": [PEWTER_FLAGS],
+	&"rocket_hideout_b4f_item_3": [PEWTER_FLAGS],
+	&"rocket_hideout_b4f_hidden_1": [PEWTER_FLAGS],
 }
 ## Scènes jouées par le code (pas de déclencheur) → carte où elles sont jouées.
 ## Jalon 7 (T18) : la scène du colis est lancée par la variante « cutscene » du dialogue de Chen.
 ## Jalon 8 : les objets visibles de la Route 2, par le dialogue de leur PNJ « objet ».
 const CODE_PLAYED: Dictionary[StringName, StringName] = {
+	# Jalon 20 (T25) : choix OUI du garde d'un poste de Safrania (« confirm_cutscene »).
+	&"saffron_gate_drink_water": &"route_8_gate", &"saffron_gate_drink_soda": &"route_8_gate",
+	&"saffron_gate_drink_lemonade": &"route_8_gate",
+	# Jalon 20 (T12) : choix OUI de la Poké Ball d'Évoli (PNJ `eevee_ball` de la maison du toit).
+	&"celadon_eevee_gift": &"celadon_mansion_roof_house",
+	# Jalon 20 (T17) : objets et caches (PNJ « objet » et points d'examen), Erika (son dialogue),
+	# échange de la fillette (« confirm_cutscene »).
+	&"route_8_item_1": &"route_8", &"route_8_hidden_1": &"route_8",
+	&"souterrain_hidden_1": &"underground_path_7_8", &"souterrain_hidden_2": &"underground_path_7_8",
+	&"celadon_hidden_1": &"celadon_city", &"celadon_gym_erika": &"celadon_gym",
+	&"celadon_gym_erika_tm_late": &"celadon_gym", &"celadon_roof_trade": &"celadon_dept_roof",
+	# Jalon 20 (T21) : choix OUI de l'affiche, dialogues du sbire à la Clé, de Giovanni et des
+	# Poké Balls, objets et caches du repaire.
+	&"game_corner_switch": &"celadon_game_corner", &"rocket_hideout_key_drop": &"rocket_hideout_b4f",
+	&"rocket_hideout_b4f_lift_key": &"rocket_hideout_b4f", &"giovanni_hideout": &"rocket_hideout_b4f",
+	&"rocket_hideout_b4f_silph_scope": &"rocket_hideout_b4f",
+	&"rocket_hideout_b1f_item_1": &"rocket_hideout_b1f",
+	&"rocket_hideout_b1f_item_2": &"rocket_hideout_b1f",
+	&"rocket_hideout_b1f_hidden_1": &"rocket_hideout_b1f",
+	&"rocket_hideout_b2f_item_1": &"rocket_hideout_b2f",
+	&"rocket_hideout_b2f_item_2": &"rocket_hideout_b2f",
+	&"rocket_hideout_b2f_item_3": &"rocket_hideout_b2f",
+	&"rocket_hideout_b2f_item_4": &"rocket_hideout_b2f",
+	&"rocket_hideout_b3f_item_1": &"rocket_hideout_b3f",
+	&"rocket_hideout_b3f_item_2": &"rocket_hideout_b3f",
+	&"rocket_hideout_b3f_hidden_1": &"rocket_hideout_b3f",
+	&"rocket_hideout_b4f_item_1": &"rocket_hideout_b4f",
+	&"rocket_hideout_b4f_item_2": &"rocket_hideout_b4f",
+	&"rocket_hideout_b4f_item_3": &"rocket_hideout_b4f",
+	&"rocket_hideout_b4f_hidden_1": &"rocket_hideout_b4f",
 	&"starter_chosen": &"oak_lab", &"oak_parcel": &"oak_lab",
 	&"route_2_item_1": &"route_2", &"route_2_item_2": &"route_2",
 	# Jalon 9 (T18) : objets visibles de la Forêt de Jade (PNJ « objet » de son fichier).
@@ -278,6 +345,8 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"cut_tree_route_2_east_bush": &"route_2_east", &"cut_tree_route_2_futur_a": &"route_2",
 	# Jalon 18 (T15) : COUPER sur l'arbre de la sortie est d'Azuria.
 	&"cut_tree_cerulean_east": &"cerulean_city",
+	# Jalon 20 (T16) : COUPER sur les arbustes de l'Arène d'Erika.
+	&"cut_tree_celadon_gym_bush": &"celadon_city", &"cut_tree_celadon_gym_inner_bush": &"celadon_gym",
 	# Jalon 16 : embarquement, par le dialogue du marin (TXT-01).
 	&"ss_anne_boarding": &"vermilion_city",
 	# Jalon 11 (T14) : remise tardive de la CT34 (dialogue de Pierre).
@@ -329,6 +398,16 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 ## PNJ de son fichier). Vidée au T19 du jalon 9 (la forêt existe), puis au T11 du jalon 10 (les
 ## deux scènes d'Argenta ont leurs déclencheurs sur la carte).
 const AWAITING_MAP: Dictionary[StringName, StringName] = {}
+## Jalon 20 (T21) : interrupteur du Casino, Clé, Giovanni, Scope, objets et caches du repaire.
+const J20_T21_IDS: Array[StringName] = [
+	&"game_corner_switch", &"rocket_hideout_key_drop", &"rocket_hideout_b4f_lift_key",
+	&"giovanni_hideout", &"rocket_hideout_b4f_silph_scope",
+	&"rocket_hideout_b1f_item_1", &"rocket_hideout_b1f_item_2", &"rocket_hideout_b1f_hidden_1",
+	&"rocket_hideout_b2f_item_1", &"rocket_hideout_b2f_item_2", &"rocket_hideout_b2f_item_3",
+	&"rocket_hideout_b2f_item_4", &"rocket_hideout_b3f_item_1", &"rocket_hideout_b3f_item_2",
+	&"rocket_hideout_b3f_hidden_1", &"rocket_hideout_b4f_item_1", &"rocket_hideout_b4f_item_2",
+	&"rocket_hideout_b4f_item_3", &"rocket_hideout_b4f_hidden_1",
+]
 ## Jalon 18 (T16) : scènes de ses fichiers (objets, objectifs).
 const J18_IDS: Array[StringName] = [
 	&"dark_cave_1f_item_1", &"dark_cave_1f_item_2", &"dark_cave_b1f_hidden_1",
@@ -426,11 +505,20 @@ func test_library_loads_without_error() -> void:
 		# Jalon 17 (T23) : Coupe des deux arbustes.
 		&"cut_tree_route_2_east_bush", &"cut_tree_route_2_futur_a",
 		# Jalon 18 (T15) : l'arbre de la sortie est d'Azuria.
-		&"cut_tree_cerulean_east", &"tower_6f_ghost", &"tower_guardian",
+		&"cut_tree_cerulean_east", &"cut_tree_celadon_gym_bush",
+		&"cut_tree_celadon_gym_inner_bush", &"tower_6f_ghost", &"tower_guardian",
 		&"tower_rival",
 		# Jalon 19 (T18) : zone purifiée, objets de la Tour (cinq visibles, un caché).
 		&"tower_purified_zone", &"tower_3f_objet_1", &"tower_4f_objet_1", &"tower_4f_objet_2",
-		&"tower_5f_objet_1", &"tower_5f_cache_1", &"tower_6f_objet_1"] + J18_IDS))
+		&"tower_5f_objet_1", &"tower_5f_cache_1", &"tower_6f_objet_1",
+		&"saffron_gate_drink_water", &"saffron_gate_drink_soda", &"saffron_gate_drink_lemonade",
+		# Jalon 20 (T12) : don d'Évoli.
+		&"celadon_eevee_gift",
+		# Jalon 20 (T17) : arrivées, objet et caches, Erika, échange de la fillette.
+		&"route_8_reached", &"celadon_reached", &"route_8_item_1", &"route_8_hidden_1",
+		&"souterrain_hidden_1", &"souterrain_hidden_2", &"celadon_hidden_1",
+		&"celadon_gym_erika", &"celadon_gym_erika_tm_late", &"celadon_roof_trade"]
+		+ J18_IDS + J20_T21_IDS))
 
 
 func _sorted(values: Array) -> Array[StringName]:
@@ -506,12 +594,13 @@ func test_every_trainer_and_item_step_exists() -> void:
 ## Jalon 10 (T9) : chaque Dresseur présenté par une carte en a une, chaque badge remis existe, et
 ## l'étape « badge » d'une scène suit le combat qui lève déjà son drapeau (« win »).
 func test_every_champion_card_and_badge_step_exists() -> void:
-	assert_eq(_cutscenes.get_card_trainer_ids(), [&"cerulean_gym_misty", &"pewter_gym_brock",
-		&"vermilion_gym_surge"] as Array[StringName])
+	assert_eq(_cutscenes.get_card_trainer_ids(), [&"celadon_gym_erika", &"cerulean_gym_misty",
+		&"giovanni_hideout", &"pewter_gym_brock", &"vermilion_gym_surge"] as Array[StringName])
 	for id: StringName in _cutscenes.get_card_trainer_ids():
 		var trainer := _trainers.get_trainer(id)
 		assert_true(trainer != null and trainer.has_card(), "« %s » a une carte" % id)
-	assert_eq(_cutscenes.get_badge_ids(), [&"boulder", &"cascade", &"thunder"] as Array[StringName])
+	assert_eq(_cutscenes.get_badge_ids(), [&"boulder", &"cascade", &"rainbow", &"thunder"]
+		as Array[StringName])
 	for id: StringName in _cutscenes.get_badge_ids():
 		assert_true(_badges.has_badge(id), "badge « %s » connu" % id)
 	for id: StringName in _real_ids():
@@ -538,11 +627,19 @@ func test_only_world_items_are_found_items() -> void:
 			for step: CutsceneStep in variant.steps:
 				if step.kind == CutsceneStep.Kind.GIVE and step.found:
 					found.append("%s:%s" % [id, step.item_id])
-	assert_eq(found, ["dark_cave_1f_item_1:escape_rope", "dark_cave_1f_item_2:antidote",
+	assert_eq(found, ["celadon_hidden_1:revive", "dark_cave_1f_item_1:escape_rope", "dark_cave_1f_item_2:antidote",
 		"dark_cave_b1f_hidden_1:super_potion", "dark_cave_b1f_item_1:super_potion",
 		"digletts_cave_item_1:escape_rope", "mt_moon_1f_hidden_1:awakening",
 		"mt_moon_1f_item_1:escape_rope", "mt_moon_b1f_item_1:moon_stone",
 		"mt_moon_b1f_item_2:potion", "mt_moon_b2f_hidden_1:moon_stone", "mt_moon_b2f_item_1:tm01",
+		"rocket_hideout_b1f_hidden_1:revive", "rocket_hideout_b1f_item_1:escape_rope",
+		"rocket_hideout_b1f_item_2:super_potion", "rocket_hideout_b2f_item_1:moon_stone",
+		"rocket_hideout_b2f_item_2:nugget", "rocket_hideout_b2f_item_3:super_potion",
+		"rocket_hideout_b2f_item_4:super_potion", "rocket_hideout_b3f_hidden_1:nugget",
+		"rocket_hideout_b3f_item_1:super_potion", "rocket_hideout_b3f_item_2:rare_candy",
+		"rocket_hideout_b4f_hidden_1:super_potion", "rocket_hideout_b4f_item_1:super_potion",
+		"rocket_hideout_b4f_item_2:revive", "rocket_hideout_b4f_item_3:super_potion",
+		"rocket_hideout_b4f_lift_key:lift_key", "rocket_hideout_b4f_silph_scope:silph_scope",
 		"route_10_item_1:super_potion", "route_11_hidden_1:poke_ball",
 		"route_11_item_1:super_potion", "route_11_item_2:awakening", "route_1_potion:potion",
 		"route_24_antidote:antidote", "route_24_item_1:potion", "route_25_hidden_1:potion",
@@ -554,7 +651,9 @@ func test_only_world_items_are_found_items() -> void:
 		"route_3_item_3:paralyze_heal", "route_4_item_1:poke_ball",
 		"route_5_hidden_1:antidote", "route_5_item_1:super_potion",
 		"route_6_hidden_1:super_potion", "route_6_item_1:poke_ball",
+		"route_8_hidden_1:revive", "route_8_item_1:super_potion",
 		"route_9_item_1:super_potion", "route_9_item_2:antidote", "route_9_item_3:poke_ball",
+		"souterrain_hidden_1:nugget", "souterrain_hidden_2:super_potion",
 		"ss_anne_hidden_1:awakening", "ss_anne_hidden_2:antidote", "ss_anne_hidden_3:potion",
 		"ss_anne_item_01:potion", "ss_anne_item_02:potion", "ss_anne_item_03:super_potion",
 		"ss_anne_item_04:super_potion", "ss_anne_item_05:super_potion",
@@ -932,6 +1031,15 @@ func _simulate(label: String, variant: CutsceneVariant, start_map: StringName,
 			CutsceneStep.Kind.GIVE:
 				assert_true(_items.has_item(step.item_id), "%s : objet « %s »" % [where,
 					step.item_id])
+			CutsceneStep.Kind.GIFT_POKEMON:
+				# Jalon 20 (T12) : espèce connue, dialogues existants, drapeau levé.
+				assert_true(_pokemon.has_species(step.species), "%s : espèce « %s »" % [where,
+					step.species])
+				for said: StringName in [step.dialogue_id, step.dialogue_stored]:
+					if not said.is_empty():
+						assert_true(_dialogues.has_dialogue(said), "%s : dialogue « %s »" % [
+							where, said])
+				flags.set_flag(step.gift_flag)
 			CutsceneStep.Kind.CHAMPION_CARD:
 				var trainer := _trainers.get_trainer(step.trainer_id)
 				assert_true(trainer != null and trainer.has_card(), "%s : carte de « %s »" % [

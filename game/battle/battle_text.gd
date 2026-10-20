@@ -157,13 +157,16 @@ const TEMPLATE_IDS: Array[StringName] = [
 	&"screen_ended_foe", &"haze",
 	&"charge_solar_beam_start", &"charge_solar_beam_broken",
 	&"charge_skull_bash_start", &"charge_skull_bash_broken",
+	&"battle_item_used", &"item_escape", &"item_escape_2", &"revived",
 ]
 ## Entre deux gains de statistiques du bilan (« PV +2 · Attaque +1 »).
 const SUMMARY_SEPARATOR: String = " · "
 const PLACEHOLDERS: Array[String] = [
 	"pokemon", "de_pokemon", "move", "trainer", "stat", "level", "exp", "old_move", "item",
-	"amount", "money", "species",
+	"amount", "money", "species", "player",
 ]
+## Prénom du joueur ({player}, jalon 20) quand [member token_values] n'en donne aucun.
+const PLAYER_FALLBACK: String = "Le Dresseur"
 
 const _TEMPLATE_KEYS: Array[String] = ["text", "text_f", "draft"]
 ## Début du modèle de chaque événement de statut (suivi de « _<statut> »).
@@ -355,6 +358,13 @@ func lines(event: BattleEvent, data: PokemonData, trainer: TrainerData = null) \
 			result.append(_fill(&"item_used", event, data))
 			if event.amount > 0:
 				result.append(_fill(&"hp_restored", event, data))
+		BattleEvent.Kind.BATTLE_ITEM_USED:
+			result.append(_fill(&"battle_item_used", event, data))
+		BattleEvent.Kind.ITEM_ESCAPE:
+			result.append(_fill(&"item_escape", event, data))
+			result.append(_fill(&"item_escape_2", event, data))
+		BattleEvent.Kind.REVIVED:
+			result.append(_fill(&"revived", event, data))
 		BattleEvent.Kind.FAILED:
 			result.append(_fill(&"move_failed", event, data))
 		BattleEvent.Kind.CONFUSED:
@@ -530,7 +540,19 @@ func _fill(id: StringName, event: BattleEvent, data: PokemonData,
 		"old_move": forgotten.name if forgotten != null else String(old_move),
 		"item": event.item_name,
 		"amount": event.amount,
+		"player": player_name(),
 	})
+
+
+## Prénom du joueur ({player}) : la valeur « player » de [member token_values], sinon
+## [constant PLAYER_FALLBACK].
+func player_name() -> String:
+	if token_values.is_valid():
+		var given: Variant = token_values.call()
+		if given is Dictionary and not str((given as Dictionary).get(DialogueTokens.PLAYER,
+				"")).is_empty():
+			return str((given as Dictionary)[DialogueTokens.PLAYER])
+	return PLAYER_FALLBACK
 
 
 ## « charge_<texts>_start » ou « _broken » pour un événement de charge (jalon 14), ou &"" si la

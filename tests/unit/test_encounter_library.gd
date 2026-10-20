@@ -128,8 +128,8 @@ func test_real_tables_load_without_error() -> void:
 		&"pokemon_tower_mid", &"route_10_grass", &"route_11_grass",
 		&"route_1_grass", &"route_22_grass", &"route_24_grass",
 		&"route_25_grass", &"route_2_grass", &"route_2_north_grass", &"route_3_grass",
-		&"route_4_grass", &"route_5_grass", &"route_6_grass", &"route_9_grass",
-		&"viridian_forest_grass"]
+		&"route_4_grass", &"route_5_grass", &"route_6_grass", &"route_7_grass",
+		&"route_8_grass", &"route_9_grass", &"viridian_forest_grass"]
 		as Array[StringName])
 
 
@@ -203,7 +203,7 @@ func test_every_wild_species_has_battle_sprites() -> void:
 	lib.load_dir()
 	# + 3 tables de la Tour Pokémon (J19) : hors de la boucle, car leurs rencontres sont des
 	# SPECTRES sans le Scope (dossier 22 §6) ; Osselait n'a pas de sprite avant le J20.
-	assert_eq(lib.size(), 23, "une table par couple ci-dessous, plus les 3 de la Tour")
+	assert_eq(lib.size(), 25, "une table par couple ci-dessous, plus les 3 de la Tour")
 	for pair: Array in [[&"route_1", &"grass"], [&"route_2", &"grass"],
 			[&"route_22", &"grass"], [&"viridian_forest", &"grass"], [&"route_2_north", &"grass"],
 			[&"route_3", &"grass"], [&"mt_moon_1f", &"rubble"], [&"mt_moon_b1f", &"rubble"],
@@ -213,7 +213,9 @@ func test_every_wild_species_has_battle_sprites() -> void:
 			[&"route_11", &"grass"], [&"digletts_cave", &"rubble"],
 			# Jalon 18 (T16) : Route 9, Route 10, Grotte Sombre.
 			[&"route_9", &"grass"], [&"route_10", &"grass"], [&"dark_cave_1f", &"rubble"],
-			[&"dark_cave_b1f", &"rubble"]]:
+			[&"dark_cave_b1f", &"rubble"],
+			# Jalon 20 (T7) : Routes 8 et 7.
+			[&"route_8", &"grass"], [&"route_7", &"grass"]]:
 		for slot: EncounterSlot in lib.get_table(pair[0], pair[1]).slots:
 			for view: String in ["front", "back"]:
 				var path := "res://assets/sprites/pokemon/placeholder/%s_%s.png" % [

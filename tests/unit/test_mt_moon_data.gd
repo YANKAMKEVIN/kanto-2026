@@ -85,8 +85,9 @@ func before_all() -> void:
 
 func test_species_values() -> void:
 	assert_eq(_data.get_errors().size(), 0, "\n".join(_data.get_errors()))
-	assert_eq(_data.get_species_ids().size(), 78,
-		"38 + 12 + 9 (jalon 13) + 3 (jalon 14) + 2 (jalon 15) + 8 (jalon 17) + 6 (jalon 19)")
+	assert_eq(_data.get_species_ids().size(), 89,
+		"38 + 12 + 9 (jalon 13) + 3 (jalon 14) + 2 (jalon 15) + 8 (jalon 17) + 6 (jalon 19) "
+		+ "+ 11 (jalon 20 : Caninos et Goupix sont ceux du J17)")
 	for id: StringName in SPECIES:
 		var v: Array = SPECIES[id]
 		var species := _data.get_species(id)
@@ -248,7 +249,8 @@ func test_items() -> void:
 			"Fossile d'un Pokémon ancien à la carapace en dôme."],
 		&"helix_fossil": ["Fossile Nautile", "Fossiles Nautile", false, ItemData.Category.KEY, 0,
 			"Fossile d'un Pokémon ancien à la coquille en spirale."],
-		&"tm01": ["CT01 — Ultimapoing", "CT01 — Ultimapoing", true, ItemData.Category.TM, 0,
+		# Jalon 20 (T11) : prix RB, achetable une fois au grand magasin de Céladopole.
+		&"tm01": ["CT01 — Ultimapoing", "CT01 — Ultimapoing", true, ItemData.Category.TM, 3000,
 			"Un coup de poing d'une force incroyable."],
 	}
 	for id: StringName in expected:

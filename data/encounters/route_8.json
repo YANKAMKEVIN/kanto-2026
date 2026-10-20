@@ -1,0 +1,17 @@
+{
+	"route_8_grass": {
+		"maps": ["route_8"],
+		"terrain": "grass",
+		"rate": 25,
+		"ramp": { "from_step": 15, "max_steps": 20 },
+		"slots": [
+			{ "species": "pidgey", "levels": [18, 20], "weight": 30 },
+			{ "species": "mankey", "levels": [18, 20], "weight": 15 },
+			{ "species": "meowth", "levels": [18, 20], "weight": 15 },
+			{ "species": "ekans", "levels": [17, 19], "weight": 10 },
+			{ "species": "sandshrew", "levels": [17, 19], "weight": 10 },
+			{ "species": "growlithe", "levels": [15, 18], "weight": 10 },
+			{ "species": "vulpix", "levels": [15, 18], "weight": 10 }
+		]
+	}
+}

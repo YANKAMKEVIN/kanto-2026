@@ -67,33 +67,36 @@ func test_real_data_loads_without_error() -> void:
 	assert_true(_data.load_dir())
 	assert_eq(_data.get_errors().size(), 0, _errors())
 	assert_eq(_data.get_type_chart().get_type_ids().size(), 18)
+	# Ordre du Pokédex ; jalon 20 (T7) : les 11 espèces de kanto_celadon.json.
 	assert_eq(_data.get_species_ids(), [&"bulbasaur", &"ivysaur", &"venusaur", &"charmander",
 		&"charmeleon", &"charizard", &"squirtle", &"wartortle", &"blastoise",
 		&"caterpie", &"metapod", &"butterfree", &"weedle", &"kakuna", &"beedrill",
 		&"pidgey", &"pidgeotto", &"pidgeot", &"rattata", &"raticate", &"spearow", &"fearow",
 		&"ekans", &"arbok", &"pikachu", &"raichu", &"sandshrew", &"sandslash", &"nidoran_f",
 		&"nidorina", &"nidoqueen", &"nidoran_m", &"nidorino", &"nidoking", &"clefairy",
-		&"clefable", &"vulpix", &"jigglypuff", &"wigglytuff", &"zubat", &"golbat", &"oddish",
-		&"gloom", &"paras", &"parasect",
+		&"clefable", &"vulpix", &"ninetales", &"jigglypuff", &"wigglytuff", &"zubat", &"golbat",
+		&"oddish", &"gloom", &"vileplume", &"paras", &"parasect",
 		# Jalon 17 (T7) : Taupiqueur, Triopikeur ; plus loin Goupix, Caninos, Magnéti, Magnéton,
 		# Soporifik, Hypno (kanto_j17.json).
 		&"diglett", &"dugtrio",
 		# Jalon 15 (T12) : Miaouss et Persan (kanto_vermilion.json).
 		&"meowth", &"persian",
-		&"mankey", &"primeape", &"growlithe", &"abra", &"kadabra", &"machop",
-		&"bellsprout", &"weepinbell",
+		&"mankey", &"primeape", &"growlithe", &"arcanine", &"abra", &"kadabra", &"machop",
+		&"bellsprout", &"weepinbell", &"victreebel",
 		&"geodude", &"graveler", &"golem", &"magnemite", &"magneton", &"shellder",
 		# Jalon 19 (T3) : Fantominus, Spectrum, Noeunoeuf, Osselait, Ossatueur, Léviator
 		# (kanto_tower.json ; Caninos vient du J17).
 		&"gastly", &"haunter", &"onix",
 		&"drowzee", &"hypno", &"voltorb", &"exeggcute", &"cubone", &"marowak", &"koffing",
-		&"horsea", &"goldeen", &"staryu", &"starmie", &"gyarados"] as Array[StringName])
-	assert_eq(_data.get_move_ids().size(), 120,
+		&"rhyhorn", &"tangela", &"kangaskhan",
+		&"horsea", &"goldeen", &"staryu", &"starmie", &"gyarados",
+		&"eevee", &"vaporeon", &"jolteon", &"flareon"] as Array[StringName])
+	assert_eq(_data.get_move_ids().size(), 127,
 		"47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10) + Patience (J11) "
 		+ "+ 21 du Mont Sélénite (jalon 12) + 8 du jalon 13 (les 5 du J12 qu'il reprenait : "
 		+ "entrées du J12) + 6 du Cap d'Azuria (jalon 14) + Jackpot (J15) "
 		+ "+ Coupe et Tonnerre (jalon 16) + 7 du jalon 17 + 8 de la Tour Pokémon (J19 ; "
-		+ "Hypnose, Hurlement et Bélier viennent du J17)")
+		+ "Hypnose, Hurlement et Bélier viennent du J17) + 7 du jalon 20")
 	assert_true(_data.has_move(&"struggle"))
 
 
@@ -160,15 +163,27 @@ func test_real_evolution_chains() -> void:
 		&"abra": [&"kadabra", 16],
 		# Carmin-sur-Mer (jalon 15, §2.7.1) : Rouge/Bleu.
 		&"meowth": [&"persian", 28],
-		# Jalon 17 (§2.12.1) : Rouge/Bleu ; Caninos et Goupix (Pierre Feu absente) n'en déclarent
-		# pas.
+		# Jalon 17 (§2.12.1) : Rouge/Bleu.
 		&"diglett": [&"dugtrio", 26], &"drowzee": [&"hypno", 26], &"magnemite": [&"magneton", 30],
+		# Céladopole (jalon 20, T7, §2.10.1) : pierres du grand magasin (Ortide, Boustiflor et
+		# Stari du J13 compris ; Caninos et Goupix du J17, qui reçoivent leur Pierre Feu) ; Évoli,
+		# à trois branches, à part ci-dessous.
+		&"gloom": [&"vileplume", &"leaf_stone"], &"weepinbell": [&"victreebel", &"leaf_stone"],
+		&"staryu": [&"starmie", &"water_stone"], &"growlithe": [&"arcanine", &"fire_stone"],
+		&"vulpix": [&"ninetales", &"fire_stone"],
 		# Tour Pokémon (jalon 19, §2.12) : Rouge/Bleu. Spectrum (échange, Ectoplasma absent) et
 		# Noeunoeuf (Pierre Plante absente) n'en déclarent pas.
 		&"gastly": [&"haunter", 25], &"cubone": [&"marowak", 28],
 	}
+	var eevee := _data.get_species(&"eevee").evolutions
+	assert_eq(eevee.map(func(r: EvolutionRule) -> Array: return [r.into, r.method, r.item]), [
+		[&"vaporeon", EvolutionRule.Method.ITEM, &"water_stone"],
+		[&"jolteon", EvolutionRule.Method.ITEM, &"thunder_stone"],
+		[&"flareon", EvolutionRule.Method.ITEM, &"fire_stone"]])
 	for id: StringName in _data.get_species_ids():
 		var rules := _data.get_species(id).evolutions
+		if id == &"eevee":
+			continue
 		if not expected.has(id):
 			assert_eq(rules.size(), 0, "%s : forme finale" % id)
 			continue
@@ -439,6 +454,10 @@ func test_real_catch_rates_are_the_official_ones() -> void:
 		# Jalon 17 (T7).
 		&"diglett": 255, &"dugtrio": 50, &"drowzee": 190, &"hypno": 75, &"magnemite": 190,
 		&"magneton": 60, &"growlithe": 190, &"vulpix": 190,
+		# Jalon 20 (T7).
+		&"arcanine": 75, &"ninetales": 75, &"eevee": 45,
+		&"vaporeon": 45, &"jolteon": 45, &"flareon": 45, &"victreebel": 45, &"tangela": 45,
+		&"vileplume": 45, &"rhyhorn": 120, &"kangaskhan": 45,
 		# Jalon 19 (T3, Tour Pokémon ; Caninos vient du J17).
 		&"gastly": 190, &"haunter": 90, &"exeggcute": 90, &"cubone": 190,
 		&"marowak": 75, &"gyarados": 45,

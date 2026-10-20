@@ -1,0 +1,39 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_u46w3"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_343pg"]
+[ext_resource type="Texture2D" path="res://assets/world/buildings/bldg_escalier_service_01.png" id="3_xvoil"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/cast_shadow.tres" id="4_454fd"]
+[ext_resource type="Texture2D" path="res://assets/world/buildings/bldg_escalier_service_01_shadow.png" id="5_njytk"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/contact_shadow.tres" id="6_tlif3"]
+[ext_resource type="Texture2D" path="res://assets/world/buildings/bldg_escalier_service_01_contact.png" id="7_kli0s"]
+
+[node name="BldgEscalierService01" type="Node2D" unique_id=1137620427]
+script = ExtResource("1_u46w3")
+footprint = Array[Vector2i]([Vector2i(-2, -3), Vector2i(-1, -3), Vector2i(0, -3), Vector2i(1, -3), Vector2i(-2, -2), Vector2i(-1, -2), Vector2i(0, -2), Vector2i(1, -2), Vector2i(-2, -1), Vector2i(-1, -1), Vector2i(0, -1), Vector2i(1, -1), Vector2i(-2, 0), Vector2i(1, 0)])
+fade_when_covering = true
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=726779770]
+unique_name_in_owner = true
+material = ExtResource("2_343pg")
+texture = ExtResource("3_xvoil")
+centered = false
+offset = Vector2(-192, -408)
+
+[node name="CastShadow" type="Sprite2D" parent="." unique_id=1554825446 groups=["cast_shadows"]]
+z_index = -2
+z_as_relative = false
+material = ExtResource("4_454fd")
+scale = Vector2(2, 2)
+texture = ExtResource("5_njytk")
+centered = false
+offset = Vector2(-108.5, -2)
+
+[node name="ContactShadow" type="Sprite2D" parent="." unique_id=1502634993 groups=["contact_shadows"]]
+z_index = -2
+z_as_relative = false
+material = ExtResource("6_tlif3")
+scale = Vector2(2, 2)
+texture = ExtResource("7_kli0s")
+centered = false
+offset = Vector2(-100, -15.5)

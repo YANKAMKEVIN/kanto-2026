@@ -23,6 +23,13 @@
 				"pokemon_tower_6f"
 			],
 			"escape": { "map": "lavender_town", "spawn": "retour_tour", "facing": "down" }
+		},
+		"rocket_hideout": {
+			"maps": [
+				"rocket_hideout_b1f", "rocket_hideout_b2f", "rocket_hideout_b3f",
+				"rocket_hideout_b4f", "rocket_hideout_elevator"
+			],
+			"escape": { "map": "celadon_city", "spawn": "from_casino_w", "facing": "down" }
 		}
 	}
 }

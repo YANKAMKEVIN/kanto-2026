@@ -1,0 +1,69 @@
+{
+	"route_8_nerd_anatole": {
+		"name": "Intello Anatole", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 500,
+		"team": [
+			{ "species": "voltorb", "level": 20 },
+			{ "species": "koffing", "level": 20 },
+			{ "species": "voltorb", "level": 20 },
+			{ "species": "voltorb", "level": 20 }
+		]
+	},
+	"route_8_gambler_rene": {
+		"name": "Joueur René", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 1540,
+		"team": [
+			{ "species": "horsea", "level": 22 },
+			{ "species": "horsea", "level": 22 },
+			{ "species": "goldeen", "level": 22 }
+		]
+	},
+	"route_8_nerd_firmin": {
+		"name": "Intello Firmin", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 550,
+		"team": [
+			{ "species": "koffing", "level": 22 },
+			{ "species": "arbok", "level": 22 },
+			{ "species": "koffing", "level": 22 }
+		]
+	},
+	"route_8_lass_iris": {
+		"name": "Fillette Iris", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 345,
+		"team": [
+			{ "species": "nidoran_f", "level": 23 },
+			{ "species": "nidorina", "level": 23 }
+		]
+	},
+	"route_8_lass_margot": {
+		"name": "Fillette Margot", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 360,
+		"team": [
+			{ "species": "meowth", "level": 24 },
+			{ "species": "meowth", "level": 24 },
+			{ "species": "meowth", "level": 24 }
+		]
+	},
+	"route_8_gambler_fernand": {
+		"name": "Joueur Fernand", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 1680,
+		"team": [
+			{
+				"species": "growlithe", "level": 24,
+				"moves": ["bite", "ember", "leer"]
+			},
+			{
+				"species": "vulpix", "level": 24,
+				"moves": ["ember", "tail_whip", "quick_attack"]
+			}
+		]
+	},
+	"route_8_lass_nina": {
+		"name": "Fillette Nina", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 330,
+		"team": [
+			{ "species": "clefairy", "level": 22 },
+			{ "species": "clefairy", "level": 22 }
+		]
+	}
+}

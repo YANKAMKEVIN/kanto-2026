@@ -5,7 +5,7 @@ extends GutTest
 ## - EXAMINER → toast standard seul (« Réveil ×1 » / « Ajouté au Sac »), aucune bulle, Sac + 1,
 ##   journal des objets trouvés, drapeau `got_<id>` ;
 ## - ensuite plus de cible, même après un rechargement de la partie.
-## Caches : Route 3 (T18), Route 24 nord (T22, Antidote), souterrain (J15 T19, Guérison), Route 5 (J15 T13, Antidote du tronc), Route 6 (J15 T14/T15, Super Potion des joncs). Le 1F et le B2F s'ajoutent au T21 / T25 ([constant CACHES]).
+## Caches : Route 3 (T18), Route 24 nord (T22, Antidote), souterrain (J15 T19, Guérison), Route 5 (J15 T13, Antidote du tronc), Route 6 (J15 T14/T15, Super Potion des joncs), J20 T17 : Rappel de la Route 8, Pépite et Super Potion du souterrain 7-8, Rappel de Céladopole ([constant CACHES]).
 
 const MemoryFs := preload("res://tests/helpers/memory_file_system.gd")
 const FixedClock := preload("res://tests/helpers/fixed_clock.gd")
@@ -36,6 +36,22 @@ const CACHES: Array = [
 	[&"dark_cave_b1f", "res://tools/debug_start/dark_cave_b1f.json", &"arrivee_a",
 		"dark_cave_b1f_hidden_1", Vector2i(41, 32), &"super_potion",
 		["Super Potion ×1", "Ajoutée au Sac"], ["toast"], [Vector2i.RIGHT, Vector2i.DOWN]],
+	# Jalon 20 (T17) : le Rappel de la Route 8 (pierre d'une autre teinte sous la terrasse, la
+	# corniche au sud : on la fouille de l'ouest, de l'est ou du nord), la Pépite de la niche et la
+	# Super Potion du coude du souterrain (carrelage fissuré, murs au nord), le Rappel de la ruelle
+	# sombre de Céladopole (poubelle ; mur à l'ouest, bac au nord). Toast seul, comme la Route 3.
+	[&"route_8", "res://tools/debug_start/route_8.json", &"from_lavender_c", "route_8_hidden_1",
+		Vector2i(43, 9), &"revive", ["Rappel ×1", "Ajouté au Sac"], ["toast"],
+		[Vector2i.LEFT, Vector2i.RIGHT, Vector2i.UP]],
+	[&"underground_path_7_8", "res://tools/debug_start/underground_7_8.json",
+		&"from_route_7_n", "souterrain_hidden_1", Vector2i(15, 2), &"nugget",
+		["Pépite ×1", "Ajoutée au Sac"], ["toast"], [Vector2i.DOWN]],
+	[&"underground_path_7_8", "res://tools/debug_start/underground_7_8.json",
+		&"from_route_7_n", "souterrain_hidden_2", Vector2i(34, 1), &"super_potion",
+		["Super Potion ×1", "Ajoutée au Sac"], ["toast"], [Vector2i.LEFT, Vector2i.DOWN]],
+	[&"celadon_city", "res://tools/debug_start/celadon.json", &"from_route_7_c",
+		"celadon_hidden_1", Vector2i(46, 27), &"revive", ["Rappel ×1", "Ajouté au Sac"],
+		["toast"], [Vector2i.RIGHT, Vector2i.DOWN]],
 ]
 const SIDES: Array[Vector2i] = [Vector2i.LEFT, Vector2i.RIGHT, Vector2i.DOWN]
 
@@ -198,3 +214,19 @@ func test_route_6_super_potion_behind_the_rushes() -> void:
 
 func test_dark_cave_b1f_super_potion_between_the_roots() -> void:
 	await _check_cache(CACHES[5])
+
+
+func test_route_8_revive_behind_the_pebble() -> void:
+	await _check_cache(CACHES[6])
+
+
+func test_underground_7_8_nugget_in_the_cracked_tile_of_the_niche() -> void:
+	await _check_cache(CACHES[7])
+
+
+func test_underground_7_8_super_potion_at_the_end_of_the_bend() -> void:
+	await _check_cache(CACHES[8])
+
+
+func test_celadon_revive_in_the_dark_alley_bin() -> void:
+	await _check_cache(CACHES[9])

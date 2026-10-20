@@ -49,10 +49,11 @@ func _root_property(map_id: StringName, property: StringName) -> Variant:
 func test_real_data_loads_without_error() -> void:
 	assert_true(_zones.load_file(), "\n".join(_zones.get_errors()))
 	assert_eq(_zones.get_errors().size(), 0)
-	assert_eq(_zones.size(), 34, "Route 24 (jalon 13), Route 25 et Cap d'Azuria (jalon 14), "
+	assert_eq(_zones.size(), 35, "Route 24 (jalon 13), Route 25 et Cap d'Azuria (jalon 14), "
 		+ "passage souterrain (jalon 15 T18), Route 6 (jalon 15 T14), Route 5 (jalon 15 T13), "
 		+ "S.S. Anne (jalon 16 T11), Cave Taupiqueur (jalon 17 T15), Route 11 (jalon 17 T16), "
-		+ "Routes 9 et 10 (jalon 18 T12), Grotte Sombre (jalon 18 T13)")
+		+ "Routes 9 et 10 (jalon 18 T12), Grotte Sombre (jalon 18 T13), souterrain des Routes 7 "
+		+ "et 8 (jalon 20 T15)")
 
 
 func test_every_map_belongs_to_exactly_one_zone() -> void:
@@ -196,7 +197,7 @@ func test_service_catalog_and_the_services_of_viridian() -> void:
 	# Jalon 13 T7 : Azuria. Jalon 15 T14 : Carmin-sur-Mer (test_vermilion_city).
 	for id: StringName in _zones.get_ids():
 		if not id in [&"viridian_city", &"pewter_city", &"mt_moon", &"cerulean_city",
-				&"vermilion_city", &"route_5", &"route_10", &"lavender_town"]:
+				&"vermilion_city", &"route_5", &"route_10", &"lavender_town", &"celadon_city"]:
 			assert_true(_zones.get_zone(id).services.is_empty(), "%s : aucun service" % id)
 	var mt_moon := _zones.get_zone(&"mt_moon").services
 	assert_eq(mt_moon.size(), 1, "Mont Sélénite : le Centre seul (sans Boutique)")
@@ -327,3 +328,44 @@ func test_duplicate_zone_across_files_and_root_keys() -> void:
 func test_missing_file() -> void:
 	assert_false(_zones.load_file("res://tests/fixtures/absent_zones.json"))
 	assert_push_error("fichier introuvable")
+
+
+## Jalon 20 (T17, jalon-20.md §2.11 ; annexe A.10, textes 167 à 170) : la Route 8, le souterrain, la
+## Route 7 et Céladopole — sous-titres et descriptions validés, cartes existantes, services de la
+## ville découverts sur leur carte (le grand magasin dès son rez-de-chaussée, l'Arène, le Centre).
+func test_j20_zones_texts_maps_and_services() -> void:
+	_zones.load_file()
+	var expected := {
+		&"route_8": ["Lavanville — Safrania", "Une route de Dresseurs entre deux chemins. À l'ouest, "
+			+ "le poste de Safrania et l'entrée du souterrain.", &"route"],
+		&"underground_path_7_8": ["Route 7 — Route 8", "Un long couloir carrelé sous Safrania. "
+			+ "Des néons froids, et presque personne.", &"place"],
+		&"route_7": ["Céladopole — Safrania", "Une courte route en pente douce. Les toits de "
+			+ "Céladopole apparaissent entre les arbres.", &"route"],
+		&"celadon_city": ["", "Une ville prospère, verte et commerçante. Sous les néons du Casino, "
+			+ "l'ambiance n'est plus la même.", &"town"],
+	}
+	for id: StringName in expected:
+		var zone := _zones.get_zone(id)
+		assert_not_null(zone, String(id))
+		if zone == null:
+			continue
+		assert_eq(zone.subtitle, expected[id][0], "%s : sous-titre" % id)
+		assert_eq(zone.description, expected[id][1], "%s : description" % id)
+		assert_false(zone.draft, "%s : validé" % id)
+		for map_id: StringName in zone.maps:
+			assert_true(MapCatalog.has_map(map_id), "%s : la carte %s existe" % [id, map_id])
+	assert_eq(_zones.get_zone(&"route_8").subtitle, _root_property(&"route_8", &"region"),
+		"même connexion que le titre de zone en jeu")
+	assert_eq(_zones.get_zone(&"route_7").subtitle, _root_property(&"route_7", &"region"))
+	var found: Dictionary = {}
+	for service: ZoneService in _zones.get_zone(&"celadon_city").services:
+		found[service.id] = service.found_on
+	assert_eq(found, {&"pokemon_center": &"celadon_center", &"poke_mart": &"celadon_dept_gf",
+		&"gym": &"celadon_gym"}, "services de Céladopole")
+	# Les cartes du repaire rejoignent la zone avec leur construction (T20) : ville, 18 intérieurs,
+	# Casino, B1F à B4F et cabine (recalé au T21 : les deux branches fusionnées comptaient à part).
+	assert_eq(_zones.get_zone(&"celadon_city").maps.size(), 25)
+	for map_id: StringName in [&"celadon_game_corner", &"rocket_hideout_b1f", &"rocket_hideout_b4f",
+			&"rocket_hideout_elevator"]:
+		assert_has(_zones.get_zone(&"celadon_city").maps, map_id)

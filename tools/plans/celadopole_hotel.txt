@@ -1,0 +1,30 @@
+# Hôtel de Céladopole (celadon_hotel) — grille fonctionnelle (jalon 20, dossier 23 ; préparée le 2026-10-14).
+# Hall d'hôtel : comptoir de réception, salon, 3 PNJ.
+# Enveloppe réutilisée 15 × 10 (même coque que les maisons d'Azuria et d'Argenta).
+#
+# Légende :
+#   K mur (bloqué)   . sol (praticable)   X sortie (praticable : paillasson, PUSH ↓)
+#   B comptoir (bloqué)   t table   c canapé   p plante   e étagère
+
+PRATICABLES .X
+
+GRILLE 15 10
+00 KKKKKKKKKKKKKKK
+01 KKKKKKKKKKKKKKK
+02 KKKKKKKKKKKKKKK
+03 K.ee.......cccK
+04 K....BBBBB....K
+05 K.............K
+06 K.cc..........K
+07 Kp...........pK
+08 KKKKKKXXXKKKKKK
+09 KKKKKKKKKKKKKKK
+FIN
+
+POSITIONS
+sortie               warp           6..8,8        libre   to=celadon_city spawn=from_hotel  # PUSH ↓ → celadon_city, from_hotel
+entree               spawn          7,8           libre    # spawn « entrance », tourné ↑
+receptionniste       pnj            7,3           bloque  role=P1 facing=down  # réceptionniste derrière le comptoir (5..9, 4) ; on lui parle depuis (7, 5) ↑
+client_1             pnj            11,6          bloque  role=P2 facing=left  # client
+client_2             pnj            5,6           bloque  role=P3 facing=up  # client
+FIN

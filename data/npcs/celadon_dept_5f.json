@@ -1,0 +1,28 @@
+{
+	"clerk": {
+		"cell": [
+			10,
+			4
+		],
+		"facing": "down",
+		"sprite": "clerk"
+	},
+	"lounge_1": {
+		"cell": [
+			5,
+			9
+		],
+		"facing": "right",
+		"sprite": "old_man",
+		"dialogue": "celadon_dept_5f_lounge_1"
+	},
+	"lounge_2": {
+		"cell": [
+			15,
+			9
+		],
+		"facing": "left",
+		"sprite": "passenger_f",
+		"dialogue": "celadon_dept_5f_lounge_2"
+	}
+}

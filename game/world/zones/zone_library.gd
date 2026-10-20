@@ -113,6 +113,13 @@ func interior_title_of(map_id: StringName) -> bool:
 	return zone != null and zone.interior_title
 
 
+## Vrai si la zone [param id] est **jouable** (jalon 20, `jalon-20.md` §2.16) : elle a des cartes
+## et la première existe ([MapCatalog]). Safrania ne l'est pas avant le J26 (`maps: []`).
+func is_playable(id: StringName) -> bool:
+	var zone := get_zone(id)
+	return zone != null and not zone.maps.is_empty() and MapCatalog.has_map(zone.maps[0])
+
+
 ## Zone [param id], ou null.
 func get_zone(id: StringName) -> ZoneData:
 	return _zones.get(id)

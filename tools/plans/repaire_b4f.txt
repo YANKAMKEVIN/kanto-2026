@@ -1,0 +1,93 @@
+# Repaire Rocket B4F — grille fonctionnelle (jalon 20, dossier 23 §13.2, §13.4, §13.5 ; 2026-10-14).
+# GÉOMÉTRIE ROUGE/BLEU CASE POUR CASE. Source : pret/pokered, maps/RocketHideoutB4F.blk
+# (15 × 12 blocks = 30 × 24 cases), tileset Facility, data/maps/objects/RocketHideoutB4F.asm,
+# scripts/RocketHideoutB4F.asm (porte du bureau : bloc « porte » $2d fermé, « sol » $0e ouvert).
+# Vérifiée par tools/art/plan_check.py (profil repaire_b4f).
+#
+# 30 × 24 cases. DEUX MOITIÉS DISJOINTES À PIED (RB) :
+#   - OUEST (arrivée par l'escalier du B3F, (19, 10)) : bande centrale x 17..20, salles de l'ouest
+#     (x 9..15), sbire à la Clé en (11, 2) ; CT02 Coupe-Vent, PV Plus, Clé ;
+#   - EST (arrivée par l'ASCENSEUR seulement, (24..25, 15)) : couloir sud (y 17..22), salle des gardes
+#     (y 12..14), bureau de Giovanni (x 22..28, y 1..10). Les murs x = 19..21 coupent tout lien.
+# Le contrôle prouve qu'aucun chemin à pied ne relie les deux moitiés, même sans aucun Dresseur.
+#
+# RACCORDS :
+#   B4F (19,10) U ↔ B3F (19,18) D       arrivée B4F (19,11)        [RB : warp 1]
+#   Ascenseur : portes B4F (24..25, 15) ; arrivée à la sortie de la cabine (25, 14) [RB : warps 2 et 3]
+#
+# Dresseurs (1 + 2 + Giovanni) : sbire à la Clé RB n° 18 (Smogo, Nosferapti 21, puis la Clé en
+# (10, 2), « à côté de lui » ; RB posait la Poké Ball au même endroit, masquée jusqu'à la défaite) ;
+# gardes RB n° 16 et 17 (Sabelette, Abo, Sablaireau 23 · Abo, Sabelette, Arbok 23) de part et d'autre
+# de la porte du bureau, portée de vue 0 (on leur parle) ; Giovanni RB n° 1 (25, 3), qu'on aborde
+# depuis (24, 3) ou (26, 3) (le bureau (24..27, 4..5) lui sert d'écran côté sud).
+# Porte « B » (24..25, 11) : fermée tant que les deux gardes ne sont pas battus, puis sol.
+# Objets : PV Plus (→ Rappel), CT02 Coupe-Vent (→ Super Potion), Fer (→ Super Potion) ; Scope Sylphe
+# en (25, 2) qui apparaît APRÈS Giovanni ; objet caché Super Potion (RB hidden_item B4F (25, 1)).
+#
+# Légende (commune aux quatre étages) :
+#   # mur, vide ou décor mural (bloqué)           . sol de béton (praticable, aucune rencontre)
+#   X caisse / bloc du labyrinthe (bloqué)        P conduite (bloquée)
+#   M console, bureau ou machine (bloqué)         < > ^ v dalle tournante (voir « Dalles »)
+#   o case d'arrêt, disque clair (praticable)     U escalier qui monte    D escalier qui descend
+#   L porte de l'ascenseur (praticable, fondu comme une porte)
+#   B porte du bureau de Giovanni (B4F ; bloquée jusqu'à la défaite des deux gardes)
+# Personnages, objets, raccords, dalles (trajets RB) et repères sont dans POSITIONS, pas dans la
+# grille. Cases : 1 case = 1 tuile de 16 px de Rouge/Bleu (une « block » RB = 2 × 2 cases) ;
+# x = colonne, y = rangée, nord en haut. Les marges vides de RB sont CONSERVÉES : les coordonnées
+# sont celles du désassemblage, ce qui permet de recopier les tables RB telles quelles.
+#
+# Dalles (§13.3 du dossier 23, règle vérifiée contre RB) : posé sur une flèche, le joueur glisse
+# dans sa direction, case par case, en ligne droite ; chaque flèche rencontrée sur le trajet change
+# la direction de glisse ; la glisse s'arrête sur la première case d'arrêt « o ». Le contrôle
+# (tools/art/plan_check_repaire.py) simule cette règle sur la grille ET la compare aux trajets RB
+# recopiés en POSITIONS (kind=dalle : dir= premier pas, trajet= suite <direction><nombre> avec N S
+# E O, arret= case d'arrêt). Source RB : scripts/RocketHideoutB{2,3}F.asm (tables lues de la fin
+# vers le début) ; aucune différence entre le modèle et les listes RB.
+
+PRATICABLES .<>^voUDL
+
+GRILLE 30 24
+00 ##############################
+01 #########MMMMMMM#....#MMMMMM.#
+02 #########M......#....#.......#
+03 #########M...........#.......#
+04 #########.MMMM.......#..MMMM.#
+05 #########.MMMM..#....#..MMMM.#
+06 #########.......#....#P......#
+07 #################....#P......#
+08 #########.....PP#....#P.....M#
+09 #########.....PP#....#P.....M#
+10 #########.MM...P#..U.#.......#
+11 #########.MM...P#....###BB####
+12 #########.MM..###....#.......#
+13 #########.MM.......###.......#
+14 #########..........#.........#
+15 #########..........#...#LL####
+16 ####################...#######
+17 #########MMMMMMMMM.....#######
+18 #########M.............#######
+19 #########M.............#######
+20 #########...MMMMPPP....#######
+21 #########...MMMMPPP....#######
+22 #########..............#######
+23 ##############################
+FIN
+
+POSITIONS
+vers_b3f               escalier       19,10        libre   paire=b3_b4 sens=monte vers=rocket_hideout_b3f:19,18  # RB warp 1
+arrivee_b3f            spawn          19,11        libre   paire=b3_b4 facing=down  # arrivée depuis le B3F (moitié OUEST)
+ascenseur_b4f          ascenseur      24..25,15    libre   etage=B4F vers=rocket_hideout_elevator  # portes de l’ascenseur (RB warps 2 et 3) : moitié EST
+arrivee_ascenseur      spawn          25,14        libre   paire=ascenseur etage=B4F facing=up  # sortie de la cabine (moitié EST)
+sbire_cle              dresseur       11,2         bloque  role=R7 facing=down sight=1 trainer=rocket_hideout_b4f_key drop=lift_key  # RB n° 18 : Smogo, Nosferapti 21 ; la Clé tombe en (10, 2) quand on lui reparle
+garde_ouest            dresseur       23,12        bloque  role=R8 facing=down sight=0 trainer=rocket_hideout_b4f_guard_1  # RB n° 16 : Sabelette, Abo, Sablaireau 23 ; à gauche de la porte
+garde_est              dresseur       26,12        bloque  role=R9 facing=down sight=0 trainer=rocket_hideout_b4f_guard_2  # RB n° 17 : Abo, Sabelette, Arbok 23 ; à droite de la porte
+giovanni               dresseur       25,3         bloque  role=G facing=down sight=0 trainer=giovanni_hideout after=vanishes  # RB n° 1 : Onix 25, Rhinocorne 24, Kangourex 29 ; disparaît après sa défaite
+porte_bureau           porte          24..25,11    bloque  cond=rocket_hideout_b4f_guards_beaten  # bloc porte RB $2d ; devient du sol à la défaite des deux gardes
+cle_ascenseur          objet_visible  10,2         bloque  item=lift_key apparait=rocket_dropped_lift_key  # Clé Ascenseur, posée à côté du sbire (RB : Poké Ball masquée)
+ct02                   objet_visible  9,4          bloque  item=tm_razor_wind fallback=super_potion  # CT02 Coupe-Vent (RB) : salle nord-ouest
+pv_plus                objet_visible  10,12        bloque  item=hp_up fallback=revive sur=decor  # sur le bureau de la salle ouest ; se lit depuis (9, 12)
+fer                    objet_visible  12,20        bloque  item=iron fallback=super_potion sur=decor  # sur le bureau du couloir SUD (moitié EST)
+scope_sylphe           objet_visible  25,2         bloque  item=silph_scope apparait=giovanni_hideout_won  # Scope Sylphe : visible après la disparition de Giovanni
+super_potion_cachee    objet_cache    25,1         bloque  item=super_potion depuis=25,2 face=N apres=silph_scope_pris  # RB hidden_item B4F (25, 1) : lisible seulement depuis la case du Scope
+bureau_giovanni        repere         22..28,1..10 libre   role=bureau  # salle de Giovanni (accès par la porte B)
+FIN

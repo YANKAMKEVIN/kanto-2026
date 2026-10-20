@@ -74,6 +74,11 @@ var caught_count: Callable
 ## sautées. Posé par [Boot] ([FieldMoves]). Le Pokémon nommé remplace `{pokemon}` dans la variante
 ## choisie.
 var field_source: Callable
+## Jalon 20 (§2.9.6, §2.16) : `func(item_id) -> bool` (le Sac contient l'objet) et
+## `func(zone_id) -> bool` ([method ZoneLibrary.is_playable]) pour « if_items », « unless_items »
+## et « if_zone ». Posés par [Boot] ; non valides : ces variantes sont sautées.
+var item_source: Callable
+var zone_source: Callable
 
 var _library: DialogueLibrary
 var _flags: StoryFlags
@@ -149,7 +154,8 @@ func play(dialogue_id: StringName, npc: Npc = null, map: GameMap = null,
 	if dialogue == null:
 		push_error("DialogueRunner : dialogue inconnu « %s »" % dialogue_id)
 		return false
-	var variant := dialogue.pick(_flags, _rng(), _caught(), field_source)
+	var variant := dialogue.pick(_flags, _rng(), _caught(), field_source, item_source,
+		zone_source)
 	if variant == null:
 		push_error("DialogueRunner : aucune variante de « %s » ne s'applique" % dialogue_id)
 		return false
@@ -186,7 +192,7 @@ func has_auto_variant(dialogue_id: StringName) -> bool:
 	var dialogue := _library.get_dialogue(dialogue_id) if _library != null else null
 	if dialogue == null:
 		return false
-	var variant := dialogue.pick(_flags, null, _caught())
+	var variant := dialogue.pick(_flags, null, _caught(), Callable(), item_source, zone_source)
 	return variant != null and variant.auto
 
 
@@ -368,8 +374,9 @@ func _advance() -> void:
 
 
 ## Action [param action] : `heal` → [signal heal_requested] ; sinon [member action_handler],
-## attendu.
-func _run_action(action: StringName) -> void:
+## attendu. [param shop] (jalon 20, clé « shop » de `open_shop`) : passé en second argument
+## quand il est renseigné.
+func _run_action(action: StringName, shop: StringName = &"") -> void:
 	if action == &"heal":
 		heal_requested.emit()
 		return
@@ -377,7 +384,10 @@ func _run_action(action: StringName) -> void:
 		push_error("DialogueRunner : action « %s » sans gestionnaire (%s)" % [
 			action, _dialogue.id if _dialogue != null else &""])
 		return
-	await action_handler.call(action)
+	if shop.is_empty():
+		await action_handler.call(action)
+	else:
+		await action_handler.call(action, shop)
 
 
 ## Étape 6 : fermeture, drapeaux, PNJ, joueur, puis signal.
@@ -387,6 +397,7 @@ func _finish() -> void:
 		await _box.close()
 	var dialogue := _dialogue
 	var action := _variant.action
+	var shop := _variant.shop
 	var cutscene := _variant.cutscene
 	if _confirmed and _variant.choice != null and not _variant.choice.confirm_cutscene.is_empty():
 		cutscene = _variant.choice.confirm_cutscene
@@ -394,7 +405,7 @@ func _finish() -> void:
 		for flag: StringName in _variant.set_flags:
 			_flags.set_flag(flag)
 	if not action.is_empty() and action != &"heal":
-		await _run_action(action)
+		await _run_action(action, shop)
 	if is_instance_valid(_npc):
 		_npc.end_interaction()
 	if is_instance_valid(_player):

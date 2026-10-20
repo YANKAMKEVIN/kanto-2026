@@ -68,6 +68,12 @@ extends RefCounted
 ## capacités : ITEM_USED (PV rendus, bornés), puis l'adversaire joue son tour. Aucun tirage
 ## propre. Le moteur ne touche pas au Sac (le directeur retire l'objet une fois).
 ##
+## Objets du jalon 20 (`jalon-20.md` §2.9.3, §2.9.4) : [code]BattleAction.use_item(id)[/code]
+## (objet X, Muscle +, Poupée Poké) est légale si les objets sont permis
+## ([member BattleRules.allow_heal_items]) et que l'objet sert dans ce combat (la Poupée : sauvage
+## seulement) ; [method _use_battle_item]. Le Rappel est un soin donné à un Pokémon K.O. de
+## l'équipe (jamais l'actif, qui n'est pas K.O. au moment de choisir) : ITEM_USED puis REVIVED.
+##
 ## Changement de Pokémon (jalon 7, jalon-07.md §15.23) : [code]BattleAction.switch_to(index)
 ## [/code] est légale (sauvage comme dresseur) si [method check_switch] l'accepte : ni le
 ## Pokémon actif, ni un K.O. Jouée avant les capacités (priorité du changement, comme
@@ -283,6 +289,9 @@ func is_legal(action: BattleAction) -> bool:
 	if action.kind == BattleAction.Kind.SWITCH:
 		return check_switch(action.target) == SwitchCheck.OK
 	if action.kind == BattleAction.Kind.ITEM:
+		var battle_item := _battle_item(action)
+		if battle_item != null:
+			return can_use_heal_items() and battle_item.usable_in(item_context())
 		if not can_use_balls() or refuses_balls():
 			return false
 		var item := _rules.items.get_item(action.item_id)
@@ -386,7 +395,11 @@ func submit(action: BattleAction) -> Array[BattleEvent]:
 		_switch(action.target, events)
 		return events
 	if action.kind == BattleAction.Kind.ITEM:
-		_throw_ball(action.item_id, events)
+		var battle_item := _battle_item(action)
+		if battle_item != null:
+			_use_battle_item(battle_item, events)
+		else:
+			_throw_ball(action.item_id, events)
 		return events
 	var foe_action := _foe_action()
 	if foe_action.kind == BattleAction.Kind.SWITCH:
@@ -467,13 +480,20 @@ func _throw_ball(item_id: StringName, events: Array[BattleEvent]) -> void:
 func _use_heal(action: BattleAction, events: Array[BattleEvent]) -> void:
 	var item := _rules.items.get_item(action.item_id)
 	var pokemon := _player.party.get_at(action.target)
+	var fainted := pokemon.is_fainted()
 	var amount := ItemUse.restore(item, pokemon)
 	var cured := ItemUse.cure(item, pokemon)
 	var used := _pokemon_event(BattleEvent.Kind.ITEM_USED, BattleEvent.SideId.PLAYER, pokemon)
 	used.item_id = action.item_id
 	used.item_name = item.name
-	used.amount = amount
+	# Rappel (jalon 20) : la phrase est « … reprend connaissance ! » (REVIVED), pas « récupère ».
+	used.amount = 0 if fainted else amount
 	events.append(used)
+	if fainted:
+		var revived := _pokemon_event(BattleEvent.Kind.REVIVED, BattleEvent.SideId.PLAYER,
+			pokemon)
+		revived.amount = amount
+		events.append(revived)
 	if cured != StatusRules.NONE:
 		var cured_event := _pokemon_event(BattleEvent.Kind.STATUS_CURED,
 			BattleEvent.SideId.PLAYER, pokemon)
@@ -487,6 +507,49 @@ func _use_heal(action: BattleAction, events: Array[BattleEvent]) -> void:
 func _switch(party_index: int, events: Array[BattleEvent]) -> void:
 	events.append(_event(BattleEvent.Kind.WITHDRAWN, _player))
 	_send_out(_player, events, _player.party.get_at(party_index))
+	_foe_turn_alone(events)
+
+
+## Objet de combat de [param action] (jalon 20 : [method ItemData.has_battle_use]), ou null (une
+## Ball, un soin, un objet inconnu).
+func _battle_item(action: BattleAction) -> ItemData:
+	if action.is_heal() or _rules == null or _rules.items == null:
+		return null
+	var item := _rules.items.get_item(action.item_id)
+	return item if item != null and item.has_battle_use() else null
+
+
+## Objet de combat [param item] sur le Pokémon actif du joueur (jalon 20, joué avant les
+## capacités, aucun tirage propre) : Poupée Poké → ITEM_ESCAPE puis BATTLE_ENDED (FLED), sans
+## tour adverse ; objet X → BATTLE_ITEM_USED, STAT_CHANGED (ou STAT_UNCHANGED au plafond) ;
+## Muscle + → BATTLE_ITEM_USED, FOCUSED (ou FAILED, déjà concentré) ; puis l'adversaire joue.
+func _use_battle_item(item: ItemData, events: Array[BattleEvent]) -> void:
+	if item.battle_use == ItemData.BATTLE_USE_ESCAPE:
+		var escape := _event(BattleEvent.Kind.ITEM_ESCAPE, _player)
+		escape.item_id = item.id
+		escape.item_name = item.name
+		events.append(escape)
+		_finish(Outcome.FLED, events)
+		return
+	var used := _event(BattleEvent.Kind.BATTLE_ITEM_USED, _player)
+	used.item_id = item.id
+	used.item_name = item.name
+	events.append(used)
+	var active := _player.active
+	if item.battle_use == ItemData.BATTLE_USE_STAT_STAGE:
+		var applied := active.change_stage(item.battle_stat, item.battle_stages)
+		var changed := _event(BattleEvent.Kind.STAT_CHANGED if applied != 0
+			else BattleEvent.Kind.STAT_UNCHANGED, _player)
+		changed.stat = item.battle_stat
+		changed.stages = applied if applied != 0 else item.battle_stages
+		changed.stage = active.get_stage(item.battle_stat)
+		events.append(changed)
+	elif item.battle_use == ItemData.BATTLE_USE_CRIT_UP:
+		if active.focused:
+			_append_failed(_player, &"", events)
+		else:
+			active.focused = true
+			events.append(_event(BattleEvent.Kind.FOCUSED, _player))
 	_foe_turn_alone(events)
 
 

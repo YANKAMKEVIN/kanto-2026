@@ -30,6 +30,10 @@ itinéraires, rebords, herbes obligatoires, objet caché « cache », durée de 
 `azuria_velos.txt`, `azuria_maison.txt` → `plan_check_azuria.py` (recouvrement exact du sas, raccords
 entre cartes, rebord unique, eau et ponts, Centre premier bâtiment, rival, Ondine, pont Pépite).
 
+**Jalon 20** (dossier 23 §12–§13) : `casino.txt`, `repaire_b1f.txt` … `repaire_b4f.txt`,
+`repaire_ascenseur.txt` → `plan_check_repaire.py` (dalles tournantes, raccords, atteignabilité en six
+états, deux moitiés disjointes du B4F ; les contrôles globaux sont lancés par `repaire_ascenseur`).
+
 **Azuria après J14** (variante `J14` de `azuria.txt`, jalon 14 T20a) : `plan_check_azuria_j14.py`,
 lancé à part (jardin, impasse, poursuite, vue du Rocket, aucune case coincée, sortie sud).
 
@@ -699,7 +703,7 @@ LEGENDE_TYPES: dict[str, tuple[str, ...]] = {
 	"trou": ("n", "drapeau"),
 	"chute_rocher": ("depuis",),
 	"chute_joueur": ("depuis",),
-	"interrupteur": ("drapeau",),
+	"interrupteur": ("drapeau|flag",),  # « flag= » : affiche du Casino (J20)
 	"barriere": ("ouverte_si|unless",),
 	"teleporteur": ("vers",),
 	"porte_carte": ("cle",),
@@ -785,6 +789,32 @@ def main_legende(args: list[str]) -> int:
 	print(f"Légende commune : {len(chemins)} grille(s), "
 		+ ("conforme." if not erreurs else f"{len(erreurs)} erreur(s)."))
 	return 0 if not erreurs else 1
+
+
+def _repaire(nom: str):
+	"""Grilles du jalon 20 : profils dans `plan_check_repaire.py` (import tardif, comme la Route 3)."""
+	def verifier(chemin: Path) -> bool:
+		import plan_check_repaire
+		return plan_check_repaire.VERIFICATEURS[nom](chemin)
+	return verifier
+
+
+VERIFICATEURS.update({n: _repaire(n) for n in ("casino", "repaire_b1f", "repaire_b2f",
+	"repaire_b3f", "repaire_b4f", "repaire_ascenseur")})
+
+
+def _profil(module: str, nom: str):
+	"""Grilles du jalon 20 (ville et routes) : import tardif, comme le repaire."""
+	def verifier(chemin: Path) -> bool:
+		mod = __import__(module)
+		return mod.VERIFICATEURS[nom](chemin)
+	return verifier
+
+
+VERIFICATEURS.update({n: _profil("plan_check_routes_j20", n) for n in ("route_8", "route_7",
+	"souterrain_7_8", "souterrain_entree", "poste_safrania")})
+VERIFICATEURS.update({p.stem: _profil("plan_check_celadopole", p.stem)
+	for p in sorted((RACINE / "tools/plans").glob("celadopole*.txt"))})
 
 
 def main() -> int:

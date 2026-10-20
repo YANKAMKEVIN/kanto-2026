@@ -551,6 +551,8 @@ Rôles : **A** architecte-godot · **C** constructeur-monde · **U** ui-mobile �
 **Partiel (2026-10-20)** : `main` à `ad2a296f` (J19 clos) fusionné dans `systemes-2` ; le J20 sera
 fusionné à son tour. CI : **ne pas** ajouter `systemes-*` (Kevin a retiré `jalon-*` du déclencheur,
 quota GitHub épuisé, `bf45055b`) ; la suite locale `tools/test.sh` fait foi.
+**Fait (2026-10-20)** : `main` à `537c40f0` (J20 terminé) fusionné dans `systemes-2` ; conflits
+(ajouts des deux côtés) dans `battle_event.gd`, `battle_text.gd`, `plan_check.py`, `etat-projet.md`.
 
 #### T2 — A : audit d'alignement sur `main` du moment
 
@@ -566,6 +568,33 @@ quota GitHub épuisé, `bf45055b`) ; la suite locale `tools/test.sh` fait foi.
   `heal_half`, `reflect`, `light_screen`, `haze`, `two_turn` + `charge_def_up` (Lance-Soleil,
   Coud'Krâne) pour S2G ; `rampage`, `rage`, `mirror`, `metronome` hors lot (Q-7). `mist` n'est pas
   encore en données.
+
+**Refait (2026-10-20, `main` à `537c40f0`, J20 terminé, fusionné dans `systemes-2`)** :
+- **Fichiers chauds** (§1.2) : le J20 n'a touché que `game/boot.gd` (+123 lignes : directeurs des
+  dalles, de l'ascenseur, du don, sources des variantes). `player.gd`, `grid_mover.gd`,
+  `scene_router.gd`, `game_state.gd`, `warp*.gd`, `exploration_hud.gd` et `game/systems/save/`
+  sont inchangés : les branchements prévus restent valables. Sauvegarde toujours en **v7** (§2.13).
+- **Dalles** (§2.6, T15) : `SpinTileDirector` (`game/world/spin/`) joue un `SpinSlide` (`cells`,
+  `facings`, `end`, `steps_done`) ; il bloque le joueur (`LOCK_REASON`, `Boot.is_stable` faux) et
+  rentre le compagnon via `slide_started`. `CurrentField.Ride` a `cells` et `warp` mais pas
+  `facings` : T15 = généraliser ce directeur (direction déduite de la case suivante, fin sur un
+  warp), pas en écrire un second.
+- **Ascenseur, don** : `ElevatorDirector`, `PokemonGift` en `main` ; hors passe, comme prévu.
+- **Scope Sylphe** (§2.15) : le contrat est **déjà couvert** par les tests du J19 et du J20
+  (`test_ghost_encounter` : sans Scope → SPECTRE ; `test_tower_scope_j20` : tables de la Tour
+  `ghost_unless_item: silph_scope`, rencontre identifiée avec le Scope, 6F `ghost: always` même
+  avec). `test_scope_contract.gd` n'est **pas** écrit (doublon).
+- **Gardes à objet** (§0.4) : le J20 a ajouté au moteur les variantes `if_items` / `unless_items`
+  (Sac) et `if_zone` (T25, boisson des postes de Safrania) : les gardes du J22 (Bicyclette) et du
+  J29 (Badges) n'ont besoin que de données. Aucun système à ajouter.
+- **Effets en attente** en `main` après le J20 : `rampage` (×2), `rage`, `mirror`, `metronome`,
+  et **`mist`, désormais en données** (Brume, `moves/celadon.json`, J20) ; tous hors lot (Q-7).
+  Plus aucun `ohko`, `heal_half`, `reflect`, `light_screen`, `haze`, `two_turn` en attente.
+- **Grilles** : la légende commune refusait l'affiche du Casino (`interrupteur` avec `flag=`, J20) ;
+  `plan_check.py` accepte `drapeau=` ou `flag=` pour ce type. `--legende` : 97 grilles conformes.
+- **Vol** : le point d'arrivée de Céladopole (`fly_points.json`, T23) visait `from_center` ; la carte
+  du J20 a une porte double : **`from_center_w`** [D]. Suite complète après fusion : 6 235 / 6 236,
+  le seul échec étant celui-ci, corrigé (`test_fly_rules` vert).
 
 #### T3 — A : reprise du code pur, à l'identique puis adapté
 

@@ -7,7 +7,7 @@
 		{ "zone": "cerulean_city", "map": "cerulean_city", "spawn": "from_center" },
 		{ "zone": "lavender_town", "map": "lavender_town", "spawn": "retour_centre" },
 		{ "zone": "vermilion_city", "map": "vermilion_city", "spawn": "from_center" },
-		{ "zone": "celadon_city", "map": "celadon_city", "spawn": "from_center" },
+		{ "zone": "celadon_city", "map": "celadon_city", "spawn": "from_center_w" },
 		{ "zone": "fuchsia_city", "map": "fuchsia_city", "spawn": "from_center" },
 		{ "zone": "cinnabar_island", "map": "cinnabar_island", "spawn": "from_center" },
 		{ "zone": "indigo_plateau", "map": "indigo_plateau", "spawn": "from_center" },

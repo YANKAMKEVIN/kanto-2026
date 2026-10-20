@@ -213,3 +213,45 @@ Même partie que `pokemon_tower_1f` (Lavanville atteinte, `tower_stairs_open`), 
 | `tower_6f_block.json` | 6F, case `devant_spectre` (10, 14), tourné vers le sud : deux pas, le déclencheur (10, 16) joue §15.3.7 → combat SPECTRE → fuite → recul en (10, 15) → §15.3.8. **Rival n° 5 non battu** (`rival_tower_won` absent) : les drapeaux sont indépendants (dossier 22 §16 n° 10) |
 | `tower_rival.json` | 2F, arrivée de l'escalier (spawn `arrivee_T12`, tourné vers l'ouest) : Salamèche N24, Pikachu, Rondoudou, Roucoups ; trois pas (haut, ouest, haut) jusqu'à (14, 6) lancent la scène du rival n° 5 |
 | `tower_rival_weak.json` | idem, Salamèche **N5** seul : défaite → réveil au Centre de Lavanville |
+
+## Jalon 20 (T17) : départs de la vie du 20-I (Routes 7 et 8, souterrain, Céladopole, Arène d'Erika)
+
+Équipe de référence « arrivée J19 » : Reptincel N28, Roucoups N24, Papilusion N22, Sabelette N22 (apte à Couper avec la CS01), 10 Poké Balls, Potions, CS01 ; Badges Roche, Cascade, Foudre ; Lavanville atteinte ; 6 000 ₽. Centre de Lavanville enregistré (Céladopole : `celadon_center` pour les départs en ville). Les drapeaux d'arrivée `route_8_reached` / `celadon_reached` sont posés dès que le départ est plus loin que l'entrée.
+
+| Fichier | Partie |
+|---|---|
+| `route_8.json` | bord est de la Route 8 (spawn `from_lavender_c`, tourné vers l'ouest) : Fillettes Nina et Joueur Fernand, puis le duo Iris / Margot (combats successifs), D3 et la Super Potion sur le chemin haut |
+| `route_8_west.json` | place de l'ouest (spawn `west_square`, tourné vers l'est) : Joueur René (inévitable), poste de Safrania, couloir de l'entrée du souterrain |
+| `underground_7_8.json` | entrée ouest du souterrain (spawn `from_route_7_n`, tourné vers l'est) : Pépite (niche) et Super Potion (coude) cachées |
+| `route_7.json` | Route 7, sortie du bâtiment d'entrée du souterrain (spawn `from_underground`) |
+| `celadon.json` | entrée est de Céladopole (spawn `from_route_7_c`, tourné vers l'ouest) : le Rappel caché de la ruelle (46, 27), les 14 PNJ |
+| `celadon_dept.json` | RdC du grand magasin, 5 000 ₽, **Eau Fraîche** et **Soda Cool** : vendeurs, ascenseur, toit (distributeurs, fillette) |
+| `celadon_dept_tm01.json` | 2e étage, **CT01 déjà au Sac** : la boutique des CT affiche « Déjà dans le Sac » |
+| `celadon_eevee_full.json` | maison du toit de la Résidence, **équipe de 6** : Évoli part au Stockage (message n° 30) |
+| `celadon_gym_outside.json` | devant l'arbuste de l'enclos de l'Arène (spawn `gym_front`, tourné vers l'ouest) : COUPER ouvre l'enclos |
+| `celadon_gym.json` | à l'entrée de l'Arène, arbustes coupés : cinq Dresseuses, Erika |
+| `erika_weak.json` | idem, Salamèche **N5** seul, les cinq Dresseuses déjà battues : perdre contre Erika → réveil au Centre de Céladopole, Dresseuses gardées |
+| `erika_win.json` | idem, Reptincel **N40** et Roucoups **N36**, les cinq Dresseuses déjà battues : battre Erika → Badge Prisme, CT21 (QA 20-I, valeur par défaut) |
+
+## Jalon 20 (T21) : départs de la vie du 20-II (Casino, repaire Rocket, Giovanni, Tour avec le Scope)
+
+Même partie que `celadon.json` (équipe de référence « arrivée J19 », CS01, Badges Roche, Cascade, Foudre) avec `celadon_reached` ; Centre de Céladopole enregistré (défaite → réveil là). Chaque départ pose les étapes déjà franchies (Rocket de l'affiche battu, interrupteur, sbires des étages au-dessus battus).
+
+| Fichier | Partie |
+|---|---|
+| `game_corner.json` | entrée du Casino (spawn `entrance`, tourné ↑) : Rocket de l'affiche (9, 5) à battre, cinq PNJ, machines, puis l'affiche et l'interrupteur (OUI / NON) |
+| `rocket_hideout_b1f.json` | B1F, au pied de l'escalier du Casino (spawn `from_casino`) : trois sbires, Corde Sortie, Super Potion, Rappel caché (21, 15) lu depuis (20, 15) tourné → |
+| `rocket_hideout_b2f.json` | B2F, arrivée nord (spawn `from_b1f_north`), sbires du B1F battus : **dalles tournantes** (labyrinthe ouest), sbire de la salle centrale, quatre objets |
+| `rocket_hideout_b3f.json` | B3F (spawn `from_b2f`), B1F et B2F battus : dalles, deux sbires, Super Potion, Super Bonbon, Pépite cachée (27, 17) lue depuis (27, 16) tourné ↓ |
+| `rocket_hideout_key.json` | B4F ouest (spawn `from_b3f`), **sbire de la Clé déjà battu** : lui reparler → la Clé tombe en (10, 2) |
+| `rocket_hideout_lift.json` | B1F devant l'ascenseur (spawn `from_elevator`, tourné ↓), **Clé au Sac** : un pas vers le bas → cabine, panneau B1F / B2F / B4F |
+| `giovanni.json` | B4F est, sortie de l'ascenseur (spawn `from_elevator`, tourné ↑), Clé au Sac, **gardes battus, porte ouverte** : Giovanni (25, 3), à aborder par le côté |
+| `giovanni_weak.json` | idem, Salamèche **N5** seul : perdre → réveil au Centre de Céladopole, Clé et sbires battus gardés ; nouvel essai : n° 156 |
+| `tower_scope.json` | Tour 3F (spawn `arrivee_T23`), **Scope Sylphe au Sac**, Giovanni battu : rencontres identifiées, le 6F reste un SPECTRE |
+
+Les cartes de QA du J20 (`qa_gift_j20`, `qa_elevator_j20`, `qa_elevator_j20_1f` / `_2f`,
+`qa_spin_j20`), leur outil `tools/build_qa_j20.gd`, leurs PNJ et les ascenseurs de test
+(`tests/fixtures/elevators/`) ont été **retirés au T24** ; elles n'avaient aucun départ. Le don
+d'Évoli, l'ascenseur et les dalles tournantes sont éprouvés sur les vraies cartes (maison du toit
+de la Résidence, grand magasin et repaire Rocket : `test_eevee_gift`, `test_elevator_flow`,
+`test_spin_slide`).

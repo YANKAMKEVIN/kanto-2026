@@ -273,7 +273,8 @@ func test_coming_soon_labels_are_t29() -> void:
 				labels.append(label)
 	map.free()
 	labels.sort()
-	assert_eq(labels, ["ROUTE 12 — À venir", "ROUTE 8 — À venir"] as Array[String])
+	# Jalon 20 (T15) : le bord ouest mène à la vraie Route 8 ; reste la Route 12.
+	assert_eq(labels, ["ROUTE 12 — À venir"] as Array[String])
 
 
 func test_objectives_are_t56_in_lower_case_and_in_order() -> void:
@@ -282,9 +283,11 @@ func test_objectives_are_t56_in_lower_case_and_in_order() -> void:
 	var quotes := _quotes(_dossier, "T-56")
 	assert_eq(quotes.size(), 5)
 	var ids := library.get_ids()
-	# Les objectifs du J19 (clôture T24) passent devant : ceux du J18 suivent, groupés.
+	# Les objectifs du J20 (T17), puis ceux du J19 (clôture T24) passent devant : ceux du J18
+	# suivent, groupés.
 	var first := ids.find(OBJECTIVES[0][0])
-	assert_eq(ids.slice(0, first), [&"see_the_ghosts", &"climb_tower"] as Array[StringName])
+	assert_eq(ids.slice(0, first), [&"back_to_tower", &"search_game_corner", &"explore_celadon",
+		&"go_celadon", &"see_the_ghosts", &"climb_tower"] as Array[StringName])
 	for i: int in OBJECTIVES.size():
 		assert_eq(ids[first + i], OBJECTIVES[i][0], "objectifs du J18 groupés (§4.13)")
 	# T-56 dans l'ordre du voyage ; OBJECTIVES dans l'ordre inverse (le plus avancé d'abord).

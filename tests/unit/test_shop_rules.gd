@@ -238,3 +238,32 @@ func test_the_antidote_is_sold_only_once_poison_is_unlocked() -> void:
 	assert_eq(_state.bag.count_of(&"antidote"), 2)
 	assert_eq(ShopRules.sell(_state, antidote, 1), ShopRules.Status.OK, "repris 50 ₽")
 	assert_eq(_state.money, money - 150)
+
+
+# --- CT achetable une fois (jalon 20, §2.9.2) -------------------------------------------
+
+func test_a_tm_is_bought_once_and_never_sold() -> void:
+	var shop := _shops.get_shop(&"celadon_dept_2f_tm")
+	var tm := _items.get_item(&"tm01")
+	assert_eq(ShopRules.max_buy(tm, int(_state.money), _state.bag), 1)
+	assert_eq(ShopRules.buy(_state, shop, tm, 2), ShopRules.Status.BAD_QUANTITY, "une à la fois")
+	assert_eq(_state.money, 3000)
+	assert_eq(ShopRules.buy(_state, shop, tm, 1), ShopRules.Status.OK)
+	assert_eq([_state.money, _state.bag.count_of(&"tm01")], [0, 1])
+	_state.add_money(5000)
+	var before := _snapshot()
+	assert_eq(ShopRules.max_buy(tm, int(_state.money), _state.bag), 0, "déjà dans le Sac")
+	assert_eq(ShopRules.buy(_state, shop, tm, 1), ShopRules.Status.ALREADY_OWNED)
+	assert_eq(_snapshot(), before, "un refus ne change rien")
+	assert_eq(ShopRules.max_sell(tm, _state.bag), 0)
+	assert_eq(ShopRules.sell(_state, tm, 1), ShopRules.Status.NOT_SELLABLE)
+
+
+func test_department_store_items_are_bought_in_numbers() -> void:
+	var fifth := _shops.get_shop(&"celadon_dept_5f")
+	var x_attack := _items.get_item(&"x_attack")
+	assert_eq(ShopRules.max_buy(x_attack, 3000, _state.bag), 6, "3 000 / 500")
+	assert_eq(ShopRules.buy(_state, fifth, x_attack, 2), ShopRules.Status.OK)
+	assert_eq(_state.bag.count_of(&"x_attack"), 2)
+	var doll := _items.get_item(&"poke_doll")
+	assert_eq(ShopRules.buy(_state, fifth, doll, 1), ShopRules.Status.NOT_SOLD_HERE, "au 4e")
