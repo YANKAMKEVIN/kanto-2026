@@ -32,7 +32,8 @@ func test_has_map() -> void:
 ## voile et de Flash tournent sur la Cave Taupiqueur rendue obscure en mémoire).
 ## Jalon 20 (T12, T13) : cartes de QA du don et de l'ascenseur (tests seulement), **retirées au
 ## T24** (`tools/build_qa_j20.gd`).
-const J20_QA_MAPS: Array[String] = ["qa_gift_j20.tscn"]
+const J20_QA_MAPS: Array[String] = ["qa_gift_j20.tscn", "qa_elevator_j20.tscn",
+	"qa_elevator_j20_1f.tscn", "qa_elevator_j20_2f.tscn"]
 
 
 func test_no_qa_map_is_shipped() -> void:

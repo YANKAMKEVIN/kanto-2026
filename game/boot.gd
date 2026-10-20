@@ -198,6 +198,13 @@ var _veil_debug: StringName = &""
 ## Flash automatique à l'arrivée sur une carte obscure (J17 T24, Q-1 « tout J17 » ; contrat commun
 ## avec le J18, `jalon-18.md` §3.3).
 var _flash: FlashDirector
+## J20 (T13, `jalon-20.md` §2.3) : ascenseurs (cabine, panneau, trajet, position sauvée). Tests
+## seulement : ascenseurs lus dans un autre fichier.
+var elevators_path: String = ElevatorLibrary.DATA_PATH
+var _elevators := ElevatorLibrary.new()
+var _elevator: ElevatorDirector
+var _elevator_panel: ElevatorPanel
+var _pending_elevator: bool = false
 
 @onready var _world: Node2D = %World
 @onready var _hud: ExplorationHud = %ExplorationHud
@@ -235,6 +242,11 @@ func _ready() -> void:
 	_flash = FlashDirector.new()
 	_flash.process_mode = Node.PROCESS_MODE_PAUSABLE
 	add_child(_flash)
+	# J20 (T13) : directeur de l'ascenseur, créé avant les réglages (« Réduire les animations »).
+	_elevator = ElevatorDirector.new()
+	_elevator.name = "ElevatorDirector"
+	_elevator.process_mode = Node.PROCESS_MODE_PAUSABLE
+	add_child(_elevator)
 	_load_settings()
 	# Compteur de fps de QA (journal « [perf] »), seulement en build debug, Boot scène principale.
 	if PerfCounter.is_allowed(OS.is_debug_build(), get_tree().current_scene == self):
@@ -327,6 +339,7 @@ func _ready() -> void:
 	_daycare.deposited.connect(_on_daycare_deposited.unbind(1))
 	_daycare.finished.connect(_on_daycare_finished)
 	_services.daycare_requested.connect(_on_daycare_requested)
+	_setup_elevators()
 	_cutscenes_node.set_inventory(GameState.bag, _items)
 	# Remise du colis (jalon-07.md §3.6.2, T19) : jeton {first_wild_species} des répliques de
 	# Chen, scène lancée par une variante de dialogue (« colis en main »), légende POKÉDEX ACTIVÉ.
@@ -809,7 +822,7 @@ func is_stable() -> bool:
 		and not SceneRouter.is_transitioning() and not _runner.is_running() \
 		and not _cutscenes_node.is_running() and not _starter_choice.is_sheet_open() \
 		and not _battle_director.is_running() and not _encounters.is_running() \
-		and not _flash.is_running()
+		and not _flash.is_running() and not _elevator.is_running()
 
 
 ## Garde d'ouverture du Menu Dresseur : partie stable (ce qui exclut dialogue, scène, rencontre,
@@ -840,6 +853,9 @@ func _on_go_back() -> void:
 	# Pension (J15) : écran du dépôt = ANNULER ; le reste de la conversation avale le geste.
 	if _daycare.handle_back():
 		return
+	# J20 (T13) : panneau d'étages = FERMER ; pendant un trajet, avalé.
+	if _elevator.handle_back():
+		return
 	if _menu.is_open() and _screen_back():
 		return
 	if _menu.handle_back():
@@ -857,7 +873,7 @@ func _on_menu_opened() -> void:
 	# pour que la Carte et le Dresseur sachent où est le joueur dès une partie neuve.
 	var here := SceneRouter.get_current_map()
 	if is_instance_valid(here) and is_instance_valid(_player):
-		GameState.set_player_location(here.map_id, _player.get_cell(), _player.get_facing())
+		_push_stable_location(here.map_id)
 	_hud.hide_zone_title()
 	# Le fondu du titre est un Tween du HUD, gelé par la pause : masqué net (la fin du fondu,
 	# reprise à la fermeture, ne change plus rien).
@@ -1219,7 +1235,7 @@ func _persist_snapshot(reason: String) -> Error:
 	var map := SceneRouter.get_current_map()
 	if not is_instance_valid(map) or not is_instance_valid(_player):
 		return ERR_UNAVAILABLE
-	GameState.set_player_location(map.map_id, _player.get_cell(), _player.get_facing())
+	_push_stable_location(map.map_id)
 	var error := save_system.write(GameState.to_dict())
 	if OS.is_debug_build():
 		print("Sauvegarde automatique (%s) : %s %s, %s" % [reason, map.map_id,
@@ -1265,6 +1281,8 @@ func _on_map_changed(map: GameMap) -> void:
 	_services.set_map(map)
 	_daycare.set_map(map)
 	_recovery.set_map(map)
+	# J20 (T13) : cabine d'ascenseur (étage courant d'après la carte quittée, sortie réorientée).
+	_elevator.set_map(map, _arrival_from)
 	_companion.on_map_changed(map)
 	_field_presenter.set_map(map)
 	# Décor de combat de la carte chargé en tâche de fond (correctif QA S24 du CB.3).
@@ -1386,6 +1404,9 @@ func _on_dialogue_finished(_dialogue_id: StringName) -> void:
 	elif _pending_daycare:
 		_pending_daycare = false
 		_daycare.run()
+	elif _pending_elevator:
+		_pending_elevator = false
+		_elevator.open_panel()
 
 
 ## « open_shop » (le marchand, jalon-07.md §6.10) : la Boutique s'ouvre en écran seul dès la fin
@@ -1728,7 +1749,8 @@ func _refresh_controls() -> void:
 		and not _encounters.is_running() and not _player.is_blocked_by(EVOLUTION_ITEM)
 		and not _player.is_blocked_by(RARE_CANDY)
 		and not (_daycare != null and _daycare.is_running())
-		and not _player.is_blocked_by(FlashDirector.LOCK_REASON))
+		and not _player.is_blocked_by(FlashDirector.LOCK_REASON)
+		and not _elevator.is_running())
 
 
 ## Racine de composition : les dépendances sont explicites et câblées une seule fois.
@@ -1782,6 +1804,7 @@ func _apply_settings(s: GameSettings) -> void:
 	# saut et sortie de Ball adoucis.
 	_darkness.set_reduce_motion(s.reduce_motion)
 	_flash.reduce_motion = s.reduce_motion
+	_elevator.reduce_motion = s.reduce_motion  # J20 (T13) : pas de secousse
 
 
 ## « Sauvegarder maintenant » : écrit la sauvegarde et affiche le résultat dans l'écran.
@@ -1970,3 +1993,49 @@ func _end_rare_candy() -> void:
 func is_rare_candy_running() -> bool:
 	return _candy_index >= 0
 
+
+# --- Jalon 20 (T13) : ascenseur ----------------------------------------------------------------
+
+## Ascenseurs (`data/world/elevators.json`), directeur, écran du panneau (provisoire jusqu'au
+## T14) ; le dialogue du panneau (`open_elevator`) l'ouvre à sa fin, comme la Boutique.
+func _setup_elevators() -> void:
+	if not _elevators.load_file(elevators_path):
+		for error: String in _elevators.get_errors():
+			push_error("Boot : %s" % error)
+	_elevator.setup(_elevators, GameState, _player, _runner, _fade)
+	_elevator.spawn_cell_source = _spawn_cell
+	_elevator_panel = ElevatorPanel.new()
+	_elevator_panel.name = "ElevatorPanel"
+	_elevator_panel.process_mode = Node.PROCESS_MODE_PAUSABLE
+	add_child(_elevator_panel)
+	_elevator.set_panel(_elevator_panel)
+	_elevator.ride_started.connect(_on_elevator_ride_started.unbind(1))
+	_elevator.ride_finished.connect(_on_elevator_ride_finished.unbind(1))
+	_elevator.panel_opened.connect(_refresh_controls.unbind(1))
+	_elevator.panel_closed.connect(_refresh_controls)
+	_services.elevator_requested.connect(_on_elevator_requested)
+
+
+func get_elevator_director() -> ElevatorDirector:
+	return _elevator
+
+
+## « open_elevator » (le panneau de la cabine) : il s'ouvre à la fin du dialogue.
+func _on_elevator_requested() -> void:
+	_pending_elevator = true
+
+
+func _on_elevator_ride_started() -> void:
+	_companion.on_cutscene_started()
+	_refresh_controls()
+
+
+func _on_elevator_ride_finished() -> void:
+	_companion.on_cutscene_finished()
+	_refresh_controls()
+
+
+## Position du joueur poussée dans GameState, jamais la cabine d'un ascenseur (§2.3.5).
+func _push_stable_location(map_id: StringName) -> void:
+	var at := _elevator.stable_location(map_id, _player.get_cell(), _player.get_facing())
+	GameState.set_player_location(at["map"], at["cell"], at["facing"])

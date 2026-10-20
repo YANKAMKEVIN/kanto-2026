@@ -1165,7 +1165,39 @@ commit ; textes **mot pour mot** (§20 et annexe A validée).
   Boot : équipe de 5 → équipe ; de 6 → Stockage + T-30 ; Poké Ball absente après ; **rechargement :
   pas de second Évoli** ; Pokédex) ; `test_save_j20` (origine).
 
-#### T13 — architecte : ascenseur — (B), après T5 et T9
+#### T13 — architecte : ascenseur — (B), après T5 et T9 — **FAIT le 2026-10-20**
+- Fait (branche `j20-t12-t13`) : `ElevatorDirector` (`game/world/elevator/elevator_director.gd`,
+  enfant de Boot, bloc J20), action `open_elevator` (`DialogueLibrary.ACTIONS`,
+  `ServiceDirector.elevator_requested`, ouverture à la fin du dialogue comme la Boutique), sortie
+  réorientée à chaque entrée dans la cabine et après chaque trajet, position sauvée
+  (`stable_location` dans `_persist_snapshot` et à l'ouverture du menu), retour Android
+  (FERMER ; avalé pendant le trajet), `is_stable()` faux panneau ouvert et pendant le trajet.
+- **Écarts [D]** : un seul dialogue de panneau pour toutes les cabines, `elevator_panel`
+  (variante sans page, `action: open_elevator`), et un seul refus, `elevator_locked` (T-50), au
+  lieu de `<car>_panel` / `rocket_hideout_elevator_locked` : le directeur connaît l'ascenseur
+  par la carte. Les cabines (T16, T20) posent un `InteractPoint` EXAMINER `elevator_panel`.
+  Sont réorientés les warps de la cabine qui mènent à un **étage** de l'ascenseur. Trajet :
+  secousse 0,25 s ±6 px (verticale, coupée par « Réduire les animations ») + vibration
+  `HAPTIC_TAP_MS`, puis fondu 0,2 s au noir et 0,2 s retour. Orientation sauvée = celle de la
+  sortie de la cabine (ZERO : celle du joueur).
+- **Interface pour T14** (`ElevatorPanel`, `game/ui/elevator/elevator_panel.gd`, **écran
+  provisoire** à remplacer en gardant l'interface) : `open(view: ElevatorPanelView)`, `close()`,
+  `is_open() -> bool`, signaux `floor_chosen(floor_id: StringName)` et `closed` (FERMER). Vue pure
+  `ElevatorPanelView` (`game/world/elevator/elevator_panel_view.gd`) : `title` (« Quel étage ? »,
+  n° 158), `close_label` (« FERMER », n° 159), `floors` = `[{id, label, current}]` dans l'ordre
+  des données, `current_floor()`, `choosable_ids()`. L'écran ne décide rien : l'étage courant est
+  à griser (le directeur refuse de toute façon `SAME_FLOOR`) ; le retour Android ne passe pas par
+  l'écran (Boot → `ElevatorDirector.handle_back()` → `close()`). Boot crée l'écran dans
+  `_setup_elevators()` (`ElevatorPanel.new()`) : si T14 en fait une scène `.tscn`, n'y changer que
+  l'instanciation.
+- Tests : `test_elevator_flow` (vraie Boot, cartes de QA), `test_elevator_director` (vue,
+  position sauvée), `test_service_director` ; recalés : `test_dialogue_library` (ACTIONS),
+  `test_dialogue_data` (`elevator_panel` en attente des cabines, `elevator_locked` joué par le
+  code), `test_map_catalog`. **Tests sur le vrai magasin avec T16** (RdC → 5e, toit absent).
+- Carte de QA (`tools/build_qa_j20.gd`) : cabine `qa_elevator_j20` (5 × 3, panneau en (2, 0),
+  arrivée `entrance` (2, 1), sortie (2, 2) ↓) et étages `qa_elevator_j20_1f` / `_2f` (porte
+  (3, 0), arrivée `from_elevator` (3, 1)) ; ascenseurs de test dans `tests/fixtures/elevators/`
+  (`Boot.elevators_path`, tests seulement) ; **retirés au T24**.
 - §2.3.3, §2.3.5 : `ElevatorDirector`, action `open_elevator`, réorientation de la sortie, position
   sauvée, retour Android. Tests : intégration `test_elevator_flow` sur une **carte de QA**
   `qa_elevator_j20` (cabine + deux étages, tuiles provisoires, retirée au T24) puis sur le vrai

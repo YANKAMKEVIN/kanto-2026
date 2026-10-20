@@ -3,7 +3,14 @@ extends SceneTree
 ## (`OverworldTiles`), sans lumière :
 ##   - `qa_gift_j20` (8 × 6) : une pièce, la Poké Ball d'Évoli (`data/npcs/qa_gift_j20.json`,
 ##     dialogue et scène réels `celadon_eevee_ball` / `celadon_eevee_gift`) en (3, 1) ; départ
-##     `start` (3, 2), tourné ↑.
+##     `start` (3, 2), tourné ↑ ;
+##   - `qa_elevator_j20` (5 × 3, T13) : cabine d'ascenseur ; panneau (EXAMINER, dialogue réel
+##     `elevator_panel`) en (2, 0), arrivée `entrance` (2, 1), sortie (2, 2) vers le bas, qui vise
+##     le premier étage (réorientée par `ElevatorDirector`) ;
+##   - `qa_elevator_j20_1f`, `qa_elevator_j20_2f` (7 × 5, T13) : porte de l'ascenseur (3, 0) vers
+##     la cabine, arrivée `from_elevator` (3, 1) tournée ↓.
+## Les ascenseurs de QA ne sont pas dans `data/world/elevators.json` : les tests les lisent dans
+## `tests/fixtures/elevators/` (`Boot.elevators_path`).
 ##
 ##   godot --headless --path . -s res://tools/build_qa_j20.gd
 ##   godot --headless --path . --import
@@ -22,6 +29,9 @@ func _init() -> void:
 	_tiles = load("res://game/world/overworld_tiles.gd")
 	_rng.seed = 2020
 	_build_gift_room()
+	_build_elevator_car()
+	for floor_id: String in ["1f", "2f"]:
+		_build_elevator_floor(floor_id)
 	print("build_qa_j20 : %s" % ("OK" if _errors == 0 else "%d erreur(s)" % _errors))
 	quit(0 if _errors == 0 else 1)
 
@@ -35,6 +45,36 @@ func _build_gift_room() -> void:
 	var root := _new_map("QaGiftJ20", &"qa_gift_j20", "QA : don d'Évoli (J20)", size, kinds)
 	_spawns(root, {"start": Vector2i(3, 2)})
 	_save(root, "res://game/world/maps/qa_gift_j20.tscn")
+
+
+# --- Ascenseur (T13) -------------------------------------------------------------------------
+
+func _build_elevator_car() -> void:
+	var size := Vector2i(5, 3)
+	var kinds := _grid(size, "FOREST")
+	_fill(kinds, size, Rect2i(1, 1, 3, 1), "COBBLE")
+	_fill(kinds, size, Rect2i(2, 2, 1, 1), "COBBLE")
+	var root := _new_map("QaElevatorJ20", &"qa_elevator_j20", "QA : cabine d'ascenseur (J20)",
+		size, kinds)
+	_spawns(root, {"entrance": Vector2i(2, 1)})
+	_interact(root, "Panel", Vector2i(2, 0), &"elevator_panel", Vector2i.UP)
+	_warp(root, "Exit", Vector2i(2, 2), 0, Vector2i.DOWN, &"qa_elevator_j20_1f",
+		&"from_elevator", Vector2i.DOWN)
+	_save(root, "res://game/world/maps/qa_elevator_j20.tscn")
+
+
+func _build_elevator_floor(floor_id: String) -> void:
+	var size := Vector2i(7, 5)
+	var kinds := _grid(size, "FOREST")
+	_fill(kinds, size, Rect2i(1, 1, 5, 3), "BOARDWALK")
+	_fill(kinds, size, Rect2i(3, 0, 1, 1), "COBBLE")
+	var map_id := StringName("qa_elevator_j20_%s" % floor_id)
+	var root := _new_map("QaElevatorJ20%s" % floor_id.to_upper(), map_id,
+		"QA : étage %s (J20)" % floor_id, size, kinds)
+	_spawns(root, {"from_elevator": Vector2i(3, 1)})
+	_warp(root, "ToElevator", Vector2i(3, 0), 0, Vector2i.UP, &"qa_elevator_j20", &"entrance",
+		Vector2i.UP)
+	_save(root, "res://game/world/maps/%s.tscn" % map_id)
 
 
 # --- Outils ---------------------------------------------------------------------------------

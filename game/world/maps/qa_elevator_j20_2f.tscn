@@ -1,0 +1,49 @@
+[gd_scene format=4]
+
+[ext_resource type="Script" path="res://game/world/map.gd" id="1_s81u6"]
+[ext_resource type="TileSet" path="res://assets/tiles/overworld.tres" id="2_rup3p"]
+[ext_resource type="Script" path="res://game/world/warp_point.gd" id="3_bcqm0"]
+
+[node name="QaElevatorJ202F" type="Node2D" unique_id=1143097102]
+script = ExtResource("1_s81u6")
+map_id = &"qa_elevator_j20_2f"
+display_name = "QA : étage 2f (J20)"
+region = "QA"
+size = Vector2i(7, 5)
+
+[node name="Ground" type="TileMapLayer" parent="." unique_id=417156011]
+tile_map_data = PackedByteArray("AAAAAAAAAAACAAYAAAABAAAAAAAAAAYAAAACAAAAAAABAAYAAAADAAAAAAACAAMAAAAEAAAAAAACAAYAAAAFAAAAAAAAAAYAAAAGAAAAAAABAAYAAAAAAAEAAAAAAAYAAAABAAEAAAAAAAUAAAACAAEAAAABAAUAAAADAAEAAAABAAUAAAAEAAEAAAAAAAUAAAAFAAEAAAAAAAUAAAAGAAEAAAACAAYAAAAAAAIAAAABAAYAAAABAAIAAAABAAUAAAACAAIAAAABAAUAAAADAAIAAAABAAUAAAAEAAIAAAAAAAUAAAAFAAIAAAABAAUAAAAGAAIAAAACAAYAAAAAAAMAAAACAAYAAAABAAMAAAAAAAUAAAACAAMAAAAAAAUAAAADAAMAAAAAAAUAAAAEAAMAAAABAAUAAAAFAAMAAAAAAAUAAAAGAAMAAAABAAYAAAAAAAQAAAABAAYAAAABAAQAAAACAAYAAAACAAQAAAAAAAYAAAADAAQAAAAAAAYAAAAEAAQAAAACAAYAAAAFAAQAAAABAAYAAAAGAAQAAAAAAAYAAAA=")
+tile_set = ExtResource("2_rup3p")
+
+[node name="Detail" type="TileMapLayer" parent="." unique_id=1769818585]
+tile_set = ExtResource("2_rup3p")
+
+[node name="Obstacles" type="TileMapLayer" parent="." unique_id=983716320]
+tile_set = ExtResource("2_rup3p")
+
+[node name="Entities" type="Node2D" parent="." unique_id=478293988]
+unique_name_in_owner = true
+y_sort_enabled = true
+
+[node name="Overhead" type="TileMapLayer" parent="." unique_id=550052869]
+z_index = 10
+tile_set = ExtResource("2_rup3p")
+
+[node name="Warps" type="Node2D" parent="." unique_id=2069318158]
+
+[node name="ToElevator" type="Marker2D" parent="Warps" unique_id=11353025]
+position = Vector2(336, 96)
+script = ExtResource("3_bcqm0")
+direction = Vector2i(0, -1)
+target_map = &"qa_elevator_j20"
+target_spawn = &"entrance"
+arrival_facing = Vector2i(0, -1)
+
+[node name="Interactables" type="Node2D" parent="." unique_id=1699627538]
+
+[node name="Spawns" type="Node2D" parent="." unique_id=1257415287]
+
+[node name="from_elevator" type="Marker2D" parent="Spawns" unique_id=1383183426]
+position = Vector2(336, 192)
+
+[node name="Triggers" type="Node2D" parent="." unique_id=1634017261]

@@ -1,0 +1,56 @@
+[gd_scene format=4]
+
+[ext_resource type="Script" path="res://game/world/map.gd" id="1_p6lx7"]
+[ext_resource type="TileSet" path="res://assets/tiles/overworld.tres" id="2_p2dk2"]
+[ext_resource type="Script" path="res://game/world/warp_point.gd" id="3_pfu8y"]
+[ext_resource type="Script" path="res://game/world/interactions/interact_point.gd" id="4_6rejg"]
+
+[node name="QaElevatorJ20" type="Node2D" unique_id=1749572464]
+script = ExtResource("1_p6lx7")
+map_id = &"qa_elevator_j20"
+display_name = "QA : cabine d'ascenseur (J20)"
+region = "QA"
+size = Vector2i(5, 3)
+
+[node name="Ground" type="TileMapLayer" parent="." unique_id=1996932460]
+tile_map_data = PackedByteArray("AAAAAAAAAAACAAYAAAABAAAAAAABAAYAAAACAAAAAAABAAYAAAADAAAAAAABAAYAAAAEAAAAAAACAAYAAAAAAAEAAAACAAYAAAABAAEAAAAAAAMAAAACAAEAAAACAAMAAAADAAEAAAACAAMAAAAEAAEAAAAAAAYAAAAAAAIAAAACAAYAAAABAAIAAAACAAYAAAACAAIAAAAAAAMAAAADAAIAAAAAAAYAAAAEAAIAAAABAAYAAAA=")
+tile_set = ExtResource("2_p2dk2")
+
+[node name="Detail" type="TileMapLayer" parent="." unique_id=1636853483]
+tile_set = ExtResource("2_p2dk2")
+
+[node name="Obstacles" type="TileMapLayer" parent="." unique_id=483121473]
+tile_set = ExtResource("2_p2dk2")
+
+[node name="Entities" type="Node2D" parent="." unique_id=773737402]
+unique_name_in_owner = true
+y_sort_enabled = true
+
+[node name="Overhead" type="TileMapLayer" parent="." unique_id=165982429]
+z_index = 10
+tile_set = ExtResource("2_p2dk2")
+
+[node name="Warps" type="Node2D" parent="." unique_id=1066295975]
+
+[node name="Exit" type="Marker2D" parent="Warps" unique_id=502883108]
+position = Vector2(240, 288)
+script = ExtResource("3_pfu8y")
+direction = Vector2i(0, 1)
+target_map = &"qa_elevator_j20_1f"
+target_spawn = &"from_elevator"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Interactables" type="Node2D" parent="." unique_id=2044955956]
+
+[node name="Panel" type="Marker2D" parent="Interactables" unique_id=1154035653]
+position = Vector2(240, 96)
+script = ExtResource("4_6rejg")
+dialogue_id = &"elevator_panel"
+facing = Vector2i(0, -1)
+
+[node name="Spawns" type="Node2D" parent="." unique_id=2080891377]
+
+[node name="entrance" type="Marker2D" parent="Spawns" unique_id=255852840]
+position = Vector2(240, 192)
+
+[node name="Triggers" type="Node2D" parent="." unique_id=1621973345]

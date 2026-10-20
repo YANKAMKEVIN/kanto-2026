@@ -1,0 +1,12 @@
+{
+	"_doc": "Ascenseur de QA du jalon 20 (T13), sans clé, comme le grand magasin : cabine qa_elevator_j20, deux étages. Retiré au T24 avec les cartes qa_elevator_j20*.",
+	"elevators": {
+		"qa_open": {
+			"car": "qa_elevator_j20", "key": "",
+			"floors": [
+				{ "id": "1f", "label": "1er", "map": "qa_elevator_j20_1f", "spawn": "from_elevator" },
+				{ "id": "2f", "label": "2e", "map": "qa_elevator_j20_2f", "spawn": "from_elevator" }
+			]
+		}
+	}
+}

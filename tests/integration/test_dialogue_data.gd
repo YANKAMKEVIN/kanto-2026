@@ -54,6 +54,9 @@ const UNUSED_YET: Array[StringName] = [
 	# Jalon 20 (T12) : don d'Évoli ; la Poké Ball est posée au T17 (maison du toit de la
 	# Résidence), jouée d'ici là sur la carte de QA `qa_gift_j20` (test_eevee_gift).
 	&"celadon_eevee_ball", &"celadon_eevee_received", &"celadon_eevee_stored",
+	# Jalon 20 (T13) : panneau des cabines d'ascenseur, posé avec elles (T16 grand magasin, T20
+	# repaire) ; d'ici là sur la carte de QA `qa_elevator_j20` (test_elevator_flow).
+	&"elevator_panel",
 ]
 ## Jalon 17 (T8) : pages à jeton (texte → jetons attendus) : l'assistant et la CS05 reçue.
 const J17_TOKENS: Dictionary[String, Array] = {
@@ -75,7 +78,9 @@ const PLAYED_BY_COMPANION: Array[StringName] = [
 ## Jalon 12 (T20) : phrases jouées par Boot (ni PNJ, ni point, ni scène) : la Corde Sortie
 ## ([constant Boot.ESCAPE_ROPE_DIALOGUE], dossier 15 §20 n° 33).
 ## Jalon 17 (T24) : avertissement sans Flash, joué par FlashDirector (dossier 21 T-3).
-const PLAYED_BY_BOOT: Array[StringName] = [&"escape_rope_used", &"dark_cave_too_dark"]
+## Jalon 20 (T13) : refus du panneau sans la Clé (T-50), joué par ElevatorDirector.
+const PLAYED_BY_BOOT: Array[StringName] = [&"escape_rope_used", &"dark_cave_too_dark",
+	&"elevator_locked"]
 ## Jalon 10 : textes verrouillés du dossier 12 (même forme que le dossier 10) et lot de textes du
 ## J10 (panneaux, noms affichés), où un retour à la ligne est écrit « \n ».
 const DOSSIER_12 := "res://docs/design/dossier-12-argenta.md"
@@ -443,6 +448,8 @@ const IDS_J20: Array[StringName] = [
 	&"saffron_gate_drink_lemonade",
 	# T12 : don d'Évoli (dossier 23 §20, textes 28 à 30).
 	&"celadon_eevee_ball", &"celadon_eevee_received", &"celadon_eevee_stored",
+	# T13 : panneau d'ascenseur (sans page) et refus sans la Clé (texte 50).
+	&"elevator_panel", &"elevator_locked",
 ]
 ## Jalon 20 : lot de textes validé du dossier 23 (§20, une citation par ligne).
 const DOSSIER_23 := "res://docs/design/dossier-23-celadopole.md"
