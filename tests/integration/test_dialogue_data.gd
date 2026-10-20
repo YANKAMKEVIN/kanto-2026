@@ -51,6 +51,9 @@ const GATE_GUARDS: Array[StringName] = [&"forest_gate_north_guard", &"forest_gat
 const UNUSED_YET: Array[StringName] = [
 	&"dark_cave_1f_sign", &"dark_cave_column", &"dark_cave_roots", &"dark_cave_crack",
 	&"dark_cave_b1f_hidden_1",
+	# Jalon 20 (T12) : don d'Évoli ; la Poké Ball est posée au T17 (maison du toit de la
+	# Résidence), jouée d'ici là sur la carte de QA `qa_gift_j20` (test_eevee_gift).
+	&"celadon_eevee_ball", &"celadon_eevee_received", &"celadon_eevee_stored",
 ]
 ## Jalon 17 (T8) : pages à jeton (texte → jetons attendus) : l'assistant et la CS05 reçue.
 const J17_TOKENS: Dictionary[String, Array] = {
@@ -438,6 +441,8 @@ const IDS_J20: Array[StringName] = [
 	# T25 : garde des postes de Safrania et boisson donnée (annexe A.14 du plan, texte 12).
 	&"saffron_gate_guard", &"saffron_gate_drink_water", &"saffron_gate_drink_soda",
 	&"saffron_gate_drink_lemonade",
+	# T12 : don d'Évoli (dossier 23 §20, textes 28 à 30).
+	&"celadon_eevee_ball", &"celadon_eevee_received", &"celadon_eevee_stored",
 ]
 ## Jalon 20 : lot de textes validé du dossier 23 (§20, une citation par ligne).
 const DOSSIER_23 := "res://docs/design/dossier-23-celadopole.md"
@@ -658,6 +663,11 @@ func _use_cutscene(cutscene_id: StringName, trigger_map: StringName) -> void:
 				spawned = []
 			if step.kind == CutsceneStep.Kind.SPAWN:
 				spawned.append(step.spec.id)
+			if step.kind == CutsceneStep.Kind.GIFT_POKEMON:
+				# Jalon 20 (T12) : « reçoit » et « au Stockage » du don.
+				for said: StringName in [step.dialogue_id, step.dialogue_stored]:
+					if not said.is_empty():
+						_use(said, map_id)
 			if step.kind == CutsceneStep.Kind.DIALOGUE:
 				_use(step.dialogue_id, map_id)
 				if not _spawned_for.has(step.dialogue_id):
@@ -735,6 +745,8 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		&"tower_6f_ghost_after", &"tower_6f_ghost_warning",
 		# Jalon 20 (T25) : la boisson donnée au garde d'un poste de Safrania.
 		&"saffron_gate_drink_lemonade", &"saffron_gate_drink_soda", &"saffron_gate_drink_water",
+		# Jalon 20 (T12) : le don d'Évoli.
+		&"celadon_eevee_received", &"celadon_eevee_stored",
 		# Jalon 19 (T16) : la gardienne du rez-de-chaussée.
 		&"tower_guardian_worried",
 		# Jalon 19 (T17) : le rival n° 5 (joué par sa scène).
@@ -896,6 +908,8 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		&"tower_ghost_met",
 		# Jalon 20 (T25) : boisson donnée, les quatre postes de Safrania s'ouvrent.
 		&"saffron_gates_open",
+		# Jalon 20 (T12) : Évoli reçu (étape « gift_pokemon »).
+		&"eevee_received",
 		&"route_3_entered", &"route_3_guard_cleared", &"route_4_reached", &"route_5_entered",
 		&"starter_chosen",
 		&"starter_offered", &"tm11_received", &"tm34_received", &"viridian_arrived",
@@ -1198,7 +1212,9 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			or _in_dossier_18(_flat_lines(dossier_22), text)
 			# J20 (T15) : dossier 23 §20, un panneau sur deux lignes, une citation par ligne.
 			or _each_line_quoted(dossier_23, text)
-			or _in_dossier_18(dossier_23, text) or _in_dossier_18(plan_j20, text),
+			or _in_dossier_18(dossier_23, text) or _in_dossier_18(plan_j20, text)
+			# J20 (T12) : « {player} » écrit tel quel dans le dossier 23 (texte 29).
+			or _each_line_quoted(dossier_23, text.replace("{joueur}", "{player}")),
 			"%s : « %s » dans un dossier de conception" % [row[0], text])
 
 
@@ -1439,7 +1455,8 @@ func test_oak_parcel_lines() -> void:
 			expected = [DialogueTokens.POKEMON]
 		elif row[0] == &"nugget_rocket_given" \
 				or (row[0] == &"rival_tower_intro" and row[1].contains("{player}")) \
-				or (String(row[0]).begins_with("saffron_gate_drink_") and row[1].contains("{player}")):
+				or (String(row[0]).begins_with("saffron_gate_drink_") and row[1].contains("{player}")) \
+				or row[0] == &"celadon_eevee_received":
 			expected = [DialogueTokens.PLAYER]
 		elif J17_TOKENS.has(row[1]):
 			# Jalon 17 (T8) : compte d'espèces de l'assistant (T-1 à T-3), joueur de T-3.

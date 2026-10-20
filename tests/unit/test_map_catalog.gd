@@ -30,12 +30,19 @@ func test_has_map() -> void:
 ## (T24) : `qa_charge_j14` ; jalon 15 (T23) : `qa_daycare` ; jalon 16 (T20) : `qa_dock_j16`,
 ## `qa_ship_j16`, `qa_gym_j16` ; jalon 17 (T28) : `qa_flash`, `qa_flash_entry` (les tests du
 ## voile et de Flash tournent sur la Cave Taupiqueur rendue obscure en mémoire).
+## Jalon 20 (T12, T13) : cartes de QA du don et de l'ascenseur (tests seulement), **retirées au
+## T24** (`tools/build_qa_j20.gd`).
+const J20_QA_MAPS: Array[String] = ["qa_gift_j20.tscn"]
+
+
 func test_no_qa_map_is_shipped() -> void:
 	for map_id: StringName in [&"qa_forest_systems", &"qa_moves_j12", &"qa_switch_j13",
 			&"qa_charge_j14", &"qa_daycare", &"qa_dock_j16", &"qa_ship_j16", &"qa_gym_j16",
 			&"qa_flash", &"qa_flash_entry"]:
 		assert_false(MapCatalog.has_map(map_id), "%s retirée" % map_id)
 	for file: String in DirAccess.get_files_at(MapCatalog.MAPS_DIR):
+		if J20_QA_MAPS.has(file):
+			continue
 		assert_false(file.begins_with("qa_"), "%s : carte de QA livrée" % file)
 
 

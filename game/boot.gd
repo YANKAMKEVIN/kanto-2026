@@ -293,6 +293,10 @@ func _ready() -> void:
 	_cutscenes_node.set_trainers(_trainers)
 	_badges.load_file()
 	_cutscenes_node.set_badges(_badges, GameState)
+	# J20 (§2.5.2, T12) : don de Pokémon (étape « gift_pokemon », Évoli) ; le Pokédex suit par
+	# GameState.pokedex.recorded (toasts existants).
+	_cutscenes_node.set_pokemon_data(_pokemon)
+	_cutscenes_node.pokemon_gifted.connect(_on_pokemon_gifted)
 	_evolutions = EvolutionDirector.new()
 	_evolutions.name = "EvolutionDirector"
 	_evolutions.process_mode = Node.PROCESS_MODE_PAUSABLE
@@ -1594,6 +1598,13 @@ func _on_checkpoint_save_failed(_reason: String, _error: Error) -> void:
 func _on_pokemon_caught() -> void:
 	_companion.note_joy()
 	request_autosave("capture")
+
+
+## J20 (§2.5.2, T12) : Pokémon donné (équipe ou Stockage, drapeau levé d'un seul bloc) :
+## compagnon à jour, autosave demandé (écrit à la fin de la scène, partie stable).
+func _on_pokemon_gifted(_pokemon: Pokemon, _stored: bool) -> void:
+	_companion.refresh()
+	request_autosave("don")
 
 
 ## Objet trouvé dans le monde (étape « give » marquée « found », la Potion de la Route 1) :

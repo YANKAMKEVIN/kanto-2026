@@ -95,6 +95,11 @@ extends RefCounted
 ##   [method GhostRule.is_ghost_for] ([member ghost_mode], [member ghost_unless_item], Sac du
 ##   moment) ; [member win_flags] / [member lose_flags] facultatifs ; défaite : réveil au point
 ##   de repos et **fin de la scène** (comme « wake_up »).
+## Jalon 20 (`jalon-20.md` §2.5.2, T12), le don d'Évoli :
+## - [constant Kind.GIFT_POKEMON] : [member species] au niveau [member level] donné au joueur
+##   ([method PokemonGift.give], une seule fois par drapeau [member gift_flag]) ; s'il est donné,
+##   le dialogue [member dialogue_id] (« reçoit ») puis, s'il est allé au Stockage,
+##   [member dialogue_stored] (facultatif). Déjà reçu : rien, l'étape passe.
 
 ## Nouvelles valeurs en fin d'enum (ordre de [constant TYPE_KEYS]).
 enum Kind {
@@ -103,6 +108,7 @@ enum Kind {
 	FLASH,
 	FIELD_MOVE, SAVE, ANIMATE,
 	WILD_BATTLE,
+	GIFT_POKEMON,
 }
 
 ## Clé de type de chaque étape dans les fichiers, dans l'ordre de [enum Kind].
@@ -113,6 +119,7 @@ const TYPE_KEYS: Array[String] = [
 	"flash",
 	"field_move", "save", "animate",
 	"wild_battle",
+	"gift_pokemon",
 ]
 ## Bulles d'une étape « emote » (clé « kind ») : le « ! » du Dresseur qui repère le joueur.
 const EMOTE_KINDS: Array[StringName] = [&"exclamation"]
@@ -174,6 +181,11 @@ var species: StringName = &""
 var level: int = 1
 var ghost_mode: StringName = &""
 var ghost_unless_item: StringName = &""
+## Étape « gift_pokemon » (jalon 20) : drapeau du don (clé « flag ») et dialogue joué si le
+## Pokémon part au Stockage (clé « say_stored », &"" = aucun) ; [member species],
+## [member level] et [member dialogue_id] (clé « say ») servent aussi.
+var gift_flag: StringName = &""
+var dialogue_stored: StringName = &""
 ## Conditions de l'étape (toutes levées / aucune levée), vides = toujours jouée.
 var if_flags: Array[StringName] = []
 var unless_flags: Array[StringName] = []
@@ -267,6 +279,8 @@ func copy() -> CutsceneStep:
 	other.level = level
 	other.ghost_mode = ghost_mode
 	other.ghost_unless_item = ghost_unless_item
+	other.gift_flag = gift_flag
+	other.dialogue_stored = dialogue_stored
 	other.badge_id = badge_id
 	other.moment_type = moment_type
 	other.moment_details = moment_details.duplicate()

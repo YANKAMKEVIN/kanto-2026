@@ -1145,7 +1145,21 @@ commit ; textes **mot pour mot** (§20 et annexe A validée).
 - **CA** : tests verts ; **combats de test** (départs `celadon_dept` + un combat sauvage et un de
   Dresseur) : captures Mac de la Poupée, d'un objet X, du Rappel en combat et hors combat.
 
-#### T12 — architecte : don de Pokémon — (B), après T6 et T9
+#### T12 — architecte : don de Pokémon — (B), après T6 et T9 — **FAIT le 2026-10-20**
+- Fait (branche `j20-t12-t13`) : `Pokemon.Origin.GIFT` (« gift », « Reçu à ») ; étape
+  `gift_pokemon` (clés `level`, `flag`, `say` obligatoires, `say_stored` facultative ; espèce
+  vérifiée par `check_species`) ; `CutsceneDirector.set_pokemon_data`, signal
+  `pokemon_gifted(pokemon, stored)` émis après le don, avant les dialogues ; Boot : compagnon
+  rafraîchi, `request_autosave("don")` (toasts du Pokédex par `pokedex.recorded`, inchangés).
+- **Données d'Évoli posées dès T12** (§2.5.3) : dialogues `celadon_eevee_ball` (T-28 + OUI/NON),
+  `celadon_eevee_received` (T-29), `celadon_eevee_stored` (T-30) dans
+  `data/dialogues/celadon_eevee.json` ; scène `celadon_eevee_gift` (`unless: [eevee_received]`,
+  don puis `despawn: eevee_ball` si reçu) dans `data/cutscenes/celadon_eevee.json`. **Au T17** :
+  poser seulement le PNJ `eevee_ball` dans `data/npcs/celadon_mansion_roof_house.json`, retirer
+  les trois dialogues de `UNUSED_YET` (`test_dialogue_data`) et passer `celadon_eevee_gift` de
+  `qa_gift_j20` à `celadon_mansion_roof_house` dans `CODE_PLAYED` (`test_cutscene_data`).
+- Carte de QA `qa_gift_j20` (`tools/build_qa_j20.gd`, `data/npcs/qa_gift_j20.json`, tuiles
+  provisoires, Poké Ball au sol `object/poke_ball_ground` [D]) : **retirée au T24**.
 - §2.5.2 : `Origin.GIFT`, étape `gift_pokemon`, signal `pokemon_gifted`, Boot (autosave, compagnon,
   Pokédex) ; tests `test_cutscene_library` (étape et clés), intégration `test_eevee_gift` (vraie
   Boot : équipe de 5 → équipe ; de 6 → Stockage + T-30 ; Poké Ball absente après ; **rechargement :
