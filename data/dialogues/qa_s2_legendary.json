@@ -1,0 +1,17 @@
+{
+	"qa_s2_legendary": {
+		"cutscene": "qa_s2_legendary"
+	},
+	"qa_s2_legendary_cry": {
+		"pages": ["[QA S2G] Mélofée pousse un cri perçant !"]
+	},
+	"qa_s2_legendary_after_ko": {
+		"pages": ["[QA S2G] K.O. : la rencontre est consommée (sauvegarde forcée faite)."]
+	},
+	"qa_s2_legendary_after_catch": {
+		"pages": ["[QA S2G] Capture : la rencontre est consommée (sauvegarde forcée faite)."]
+	},
+	"qa_s2_legendary_still_there": {
+		"pages": ["[QA S2G] Fuite : rien n'a changé, Mélofée est toujours là."]
+	}
+}

@@ -255,3 +255,13 @@ Les cartes de QA du J20 (`qa_gift_j20`, `qa_elevator_j20`, `qa_elevator_j20_1f` 
 d'Évoli, l'ascenseur et les dalles tournantes sont éprouvés sur les vraies cartes (maison du toit
 de la Résidence, grand magasin et repaire Rocket : `test_eevee_gift`, `test_elevator_flow`,
 `test_spin_slide`).
+
+## Passe systèmes 2 — S2G (T30, rencontre légendaire fixe)
+
+| Fichier | Partie |
+|---|---|
+| `s2_legendary.json` | Route 1 (spawn `from_pallet_w`, tourné vers le nord), **Reptincel N36** et Roucool N10, 20 Super Balls, 10 Poké Balls, 5 Potions, drapeau de QA `qa_s2_legendary` : un **Mélofée N25 de QA** est juste devant le joueur (23, 41). OBSERVER → cri, combat à l'entrée « legendary » (1,5 × plus lente). **K.O.** ou **capture** → journal « [qa] point de sauvegarde sans écriture (écriture refusée pour la session) : rencontre fixe : qa_s2_legendary » **avant** le texte de QA qui suit, puis Mélofée quitte la carte (et n'y revient pas) ; **fuite** → rien, il reste. Relancer l'appli pour rejouer une autre issue |
+| `s2_legendary_weak.json` | Même départ, **Salamèche N5 seul** : **défaite** → réveil chez Maman, aucun drapeau, pas de sauvegarde forcée ; Mélofée est toujours sur la Route 1 |
+
+Le PNJ de QA (`data/npcs/route_1.json`), la scène et les textes `qa_s2_legendary` sont retirés à
+la clôture de la passe (S2Z, T33).

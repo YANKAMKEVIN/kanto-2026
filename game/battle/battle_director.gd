@@ -240,7 +240,8 @@ func run_request(request: BattleRequest, map: GameMap) -> int:
 		_stage.set_place(map.map_id, request.origin_cell if wild else _player.get_cell())
 		if wild:
 			var origin_world := Grid.cell_to_world(request.origin_cell)
-			await _stage.play_wild_intro(camera, foe_species, origin_world)
+			await _stage.play_wild_intro(camera, foe_species, origin_world,
+				BattleStage.LEGENDARY_INTRO_SLOWDOWN if request.legendary_intro else 1.0)
 			await _stage.play_partner_enter(player_species)
 		else:
 			var player_npc := _npc(map, request.world_actors.get(&"player", &""))
