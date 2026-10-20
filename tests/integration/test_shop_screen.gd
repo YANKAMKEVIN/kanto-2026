@@ -333,3 +333,16 @@ func test_bag_and_trainer_show_money() -> void:
 	trainer.money_text = ""
 	menu.show_trainer(trainer)
 	assert_false("Argent" in " ".join(menu.get_trainer().get_texts()), "absent sans texte")
+
+
+func test_owned_permanent_item_hides_quantity_and_total() -> void:
+	var shops := ShopLibrary.new()
+	shops.load_dir()
+	_state.bag.add(&"tm01")
+	var view := ShopViews.build(_state, shops.get_shop(&"celadon_dept_2f_tm"), _items,
+		ShopViews.MODE_BUY)
+	var menu := await _menu_in(2340, view)
+	var screen := menu.get_shop()
+	assert_eq(screen.get_detail_price(), "Déjà dans le Sac")
+	assert_false(screen.get_stepper().visible, "pas de sélecteur de quantité")
+	assert_eq(screen.get_note_text(), "", "la ligne de prix suffit, pas de doublon")

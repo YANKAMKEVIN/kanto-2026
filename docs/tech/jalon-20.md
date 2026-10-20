@@ -1204,7 +1204,8 @@ commit ; textes **mot pour mot** (§20 et annexe A validée).
   magasin (T16) : RdC → 5e → sortie au 5e ; toit absent ; FERMER = rien ; sauvegarde dans la cabine
   → étage ; repaire sans Clé → T-50.
 
-#### T14 — ui-mobile : panneau d'étages et boutique — (B), après T11 et T13
+#### T14 — ui-mobile : panneau d'étages et boutique — (B), après T11 et T13 — **FAIT le 2026-10-20**
+- Fait (détail et valeurs par défaut : `etat-projet.md`, entrée « J20 T14 »).
 - `ElevatorPanel` (§2.3.4) ; ligne « déjà dans le Sac » ; liste d'équipe du combat qui accepte un K.O.
   pour le Rappel. **CA** : captures 2340 × 1080 relues ; aucune couleur en dur.
 
