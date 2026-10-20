@@ -1,0 +1,1547 @@
+{
+	"version": 1,
+	"title": "Erika et Giovanni : taux de victoire (jalon 20 T8)",
+	"description": "Jalon 20 T8 (docs/tech/jalon-20-equilibrage.md) : un combat par partie (équipe soignée), sans reprise : taux de victoire au premier essai. Équipes « arrivée J19 » (starter évolué N26 ou N28, Roucoups N−3, Papilusion N−5 avec Choc Mental gardé ; ou Férosinge N−2 ; Carabaffe avec la CT11), Roucoups sans Cyclone (sans effet). Erika et Giovanni tels que dans data/ (niveaux RB) et réglages de comparaison. Information pour Kevin : aucune donnée de jeu n'est changée.",
+	"seeds": 1000,
+	"heal_at_start": true,
+	"teams": [
+		{
+			"name": "Reptincel 26, Roucoups 23, Papilusion 21",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 26
+				},
+				{
+					"species": "pidgeotto",
+					"level": 23,
+					"moves": [
+						"gust",
+						"sand_attack",
+						"quick_attack"
+					]
+				},
+				{
+					"species": "butterfree",
+					"level": 21,
+					"moves": [
+						"confusion",
+						"poison_powder",
+						"sleep_powder",
+						"supersonic"
+					]
+				}
+			]
+		},
+		{
+			"name": "Herbizarre 26, Roucoups 23, Papilusion 21",
+			"starter": "bulbasaur",
+			"members": [
+				{
+					"species": "ivysaur",
+					"level": 26
+				},
+				{
+					"species": "pidgeotto",
+					"level": 23,
+					"moves": [
+						"gust",
+						"sand_attack",
+						"quick_attack"
+					]
+				},
+				{
+					"species": "butterfree",
+					"level": 21,
+					"moves": [
+						"confusion",
+						"poison_powder",
+						"sleep_powder",
+						"supersonic"
+					]
+				}
+			]
+		},
+		{
+			"name": "Carabaffe 26, Roucoups 23, Papilusion 21",
+			"starter": "squirtle",
+			"members": [
+				{
+					"species": "wartortle",
+					"level": 26
+				},
+				{
+					"species": "pidgeotto",
+					"level": 23,
+					"moves": [
+						"gust",
+						"sand_attack",
+						"quick_attack"
+					]
+				},
+				{
+					"species": "butterfree",
+					"level": 21,
+					"moves": [
+						"confusion",
+						"poison_powder",
+						"sleep_powder",
+						"supersonic"
+					]
+				}
+			]
+		},
+		{
+			"name": "Reptincel 28, Roucoups 25, Papilusion 23",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 28
+				},
+				{
+					"species": "pidgeotto",
+					"level": 25,
+					"moves": [
+						"gust",
+						"sand_attack",
+						"quick_attack"
+					]
+				},
+				{
+					"species": "butterfree",
+					"level": 23,
+					"moves": [
+						"confusion",
+						"poison_powder",
+						"sleep_powder",
+						"supersonic"
+					]
+				}
+			]
+		},
+		{
+			"name": "Herbizarre 28, Roucoups 25, Papilusion 23",
+			"starter": "bulbasaur",
+			"members": [
+				{
+					"species": "ivysaur",
+					"level": 28
+				},
+				{
+					"species": "pidgeotto",
+					"level": 25,
+					"moves": [
+						"gust",
+						"sand_attack",
+						"quick_attack"
+					]
+				},
+				{
+					"species": "butterfree",
+					"level": 23,
+					"moves": [
+						"confusion",
+						"poison_powder",
+						"sleep_powder",
+						"supersonic"
+					]
+				}
+			]
+		},
+		{
+			"name": "Carabaffe 28, Roucoups 25, Papilusion 23",
+			"starter": "squirtle",
+			"members": [
+				{
+					"species": "wartortle",
+					"level": 28
+				},
+				{
+					"species": "pidgeotto",
+					"level": 25,
+					"moves": [
+						"gust",
+						"sand_attack",
+						"quick_attack"
+					]
+				},
+				{
+					"species": "butterfree",
+					"level": 23,
+					"moves": [
+						"confusion",
+						"poison_powder",
+						"sleep_powder",
+						"supersonic"
+					]
+				}
+			]
+		},
+		{
+			"name": "Reptincel 30, Roucoups 27, Papilusion 25",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 30
+				},
+				{
+					"species": "pidgeotto",
+					"level": 27,
+					"moves": [
+						"gust",
+						"sand_attack",
+						"quick_attack"
+					]
+				},
+				{
+					"species": "butterfree",
+					"level": 25,
+					"moves": [
+						"confusion",
+						"poison_powder",
+						"sleep_powder",
+						"supersonic"
+					]
+				}
+			]
+		},
+		{
+			"name": "Herbizarre 30, Roucoups 27, Papilusion 25",
+			"starter": "bulbasaur",
+			"members": [
+				{
+					"species": "ivysaur",
+					"level": 30
+				},
+				{
+					"species": "pidgeotto",
+					"level": 27,
+					"moves": [
+						"gust",
+						"sand_attack",
+						"quick_attack"
+					]
+				},
+				{
+					"species": "butterfree",
+					"level": 25,
+					"moves": [
+						"confusion",
+						"poison_powder",
+						"sleep_powder",
+						"supersonic"
+					]
+				}
+			]
+		},
+		{
+			"name": "Carabaffe 30, Roucoups 27, Papilusion 25",
+			"starter": "squirtle",
+			"members": [
+				{
+					"species": "wartortle",
+					"level": 30
+				},
+				{
+					"species": "pidgeotto",
+					"level": 27,
+					"moves": [
+						"gust",
+						"sand_attack",
+						"quick_attack"
+					]
+				},
+				{
+					"species": "butterfree",
+					"level": 25,
+					"moves": [
+						"confusion",
+						"poison_powder",
+						"sleep_powder",
+						"supersonic"
+					]
+				}
+			]
+		},
+		{
+			"name": "Reptincel 26, Férosinge 24, Roucoups 23",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 26
+				},
+				{
+					"species": "mankey",
+					"level": 24
+				},
+				{
+					"species": "pidgeotto",
+					"level": 23,
+					"moves": [
+						"gust",
+						"sand_attack",
+						"quick_attack"
+					]
+				}
+			]
+		},
+		{
+			"name": "Carabaffe 26, Férosinge 24, Roucoups 23",
+			"starter": "squirtle",
+			"members": [
+				{
+					"species": "wartortle",
+					"level": 26
+				},
+				{
+					"species": "mankey",
+					"level": 24
+				},
+				{
+					"species": "pidgeotto",
+					"level": 23,
+					"moves": [
+						"gust",
+						"sand_attack",
+						"quick_attack"
+					]
+				}
+			]
+		},
+		{
+			"name": "Carabaffe 26 + Bulles d'O (CT11), Roucoups 23, Papilusion 21",
+			"starter": "squirtle",
+			"members": [
+				{
+					"species": "wartortle",
+					"level": 26,
+					"moves": [
+						"tail_whip",
+						"bubble_beam",
+						"water_gun",
+						"bite"
+					]
+				},
+				{
+					"species": "pidgeotto",
+					"level": 23,
+					"moves": [
+						"gust",
+						"sand_attack",
+						"quick_attack"
+					]
+				},
+				{
+					"species": "butterfree",
+					"level": 21,
+					"moves": [
+						"confusion",
+						"poison_powder",
+						"sleep_powder",
+						"supersonic"
+					]
+				}
+			]
+		},
+		{
+			"name": "Reptincel 26 + Tunnel (CT28), Roucoups 23, Papilusion 21",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 26,
+					"moves": [
+						"growl",
+						"ember",
+						"leer",
+						"dig"
+					]
+				},
+				{
+					"species": "pidgeotto",
+					"level": 23,
+					"moves": [
+						"gust",
+						"sand_attack",
+						"quick_attack"
+					]
+				},
+				{
+					"species": "butterfree",
+					"level": 21,
+					"moves": [
+						"confusion",
+						"poison_powder",
+						"sleep_powder",
+						"supersonic"
+					]
+				}
+			]
+		},
+		{
+			"name": "Reptincel 28 + Tunnel (CT28), Roucoups 25, Papilusion 23",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 28,
+					"moves": [
+						"growl",
+						"ember",
+						"leer",
+						"dig"
+					]
+				},
+				{
+					"species": "pidgeotto",
+					"level": 25,
+					"moves": [
+						"gust",
+						"sand_attack",
+						"quick_attack"
+					]
+				},
+				{
+					"species": "butterfree",
+					"level": 23,
+					"moves": [
+						"confusion",
+						"poison_powder",
+						"sleep_powder",
+						"supersonic"
+					]
+				}
+			]
+		}
+	],
+	"tables": {},
+	"trainers": {
+		"erika_donnees": {
+			"name": "Erika",
+			"ai": "smart",
+			"switch": true,
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 2871,
+			"team": [
+				{
+					"species": "victreebel",
+					"level": 29,
+					"moves": [
+						"razor_leaf",
+						"wrap",
+						"poison_powder",
+						"sleep_powder"
+					]
+				},
+				{
+					"species": "tangela",
+					"level": 24,
+					"moves": [
+						"constrict",
+						"bind"
+					]
+				},
+				{
+					"species": "vileplume",
+					"level": 29,
+					"moves": [
+						"mega_drain",
+						"poison_powder",
+						"stun_spore",
+						"sleep_powder"
+					]
+				}
+			]
+		},
+		"erika_a_27_24_27": {
+			"name": "Erika",
+			"ai": "smart",
+			"switch": true,
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 2673,
+			"team": [
+				{
+					"species": "victreebel",
+					"level": 27,
+					"moves": [
+						"razor_leaf",
+						"wrap",
+						"poison_powder",
+						"sleep_powder"
+					]
+				},
+				{
+					"species": "tangela",
+					"level": 24,
+					"moves": [
+						"constrict",
+						"bind"
+					]
+				},
+				{
+					"species": "vileplume",
+					"level": 27,
+					"moves": [
+						"mega_drain",
+						"poison_powder",
+						"stun_spore",
+						"sleep_powder"
+					]
+				}
+			]
+		},
+		"erika_b_sans_sommeil": {
+			"name": "Erika",
+			"ai": "smart",
+			"switch": true,
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 2871,
+			"team": [
+				{
+					"species": "victreebel",
+					"level": 29,
+					"moves": [
+						"razor_leaf",
+						"wrap",
+						"poison_powder",
+						"acid"
+					]
+				},
+				{
+					"species": "tangela",
+					"level": 24,
+					"moves": [
+						"constrict",
+						"bind"
+					]
+				},
+				{
+					"species": "vileplume",
+					"level": 29,
+					"moves": [
+						"mega_drain",
+						"poison_powder",
+						"stun_spore",
+						"acid"
+					]
+				}
+			]
+		},
+		"erika_c_random": {
+			"name": "Erika",
+			"ai": "random",
+			"switch": true,
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 2871,
+			"team": [
+				{
+					"species": "victreebel",
+					"level": 29,
+					"moves": [
+						"razor_leaf",
+						"wrap",
+						"poison_powder",
+						"sleep_powder"
+					]
+				},
+				{
+					"species": "tangela",
+					"level": 24,
+					"moves": [
+						"constrict",
+						"bind"
+					]
+				},
+				{
+					"species": "vileplume",
+					"level": 29,
+					"moves": [
+						"mega_drain",
+						"poison_powder",
+						"stun_spore",
+						"sleep_powder"
+					]
+				}
+			]
+		},
+		"erika_d_ordre": {
+			"name": "Erika",
+			"ai": "smart",
+			"switch": true,
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 2871,
+			"team": [
+				{
+					"species": "tangela",
+					"level": 24,
+					"moves": [
+						"constrict",
+						"bind"
+					]
+				},
+				{
+					"species": "victreebel",
+					"level": 27,
+					"moves": [
+						"razor_leaf",
+						"wrap",
+						"poison_powder",
+						"sleep_powder"
+					]
+				},
+				{
+					"species": "vileplume",
+					"level": 29,
+					"moves": [
+						"mega_drain",
+						"poison_powder",
+						"stun_spore",
+						"sleep_powder"
+					]
+				}
+			]
+		},
+		"giovanni_donnees": {
+			"name": "Giovanni",
+			"ai": "smart",
+			"switch": true,
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 2871,
+			"team": [
+				{
+					"species": "onix",
+					"level": 25,
+					"moves": [
+						"tackle",
+						"screech",
+						"bind",
+						"rock_throw"
+					]
+				},
+				{
+					"species": "rhyhorn",
+					"level": 24,
+					"moves": [
+						"horn_attack"
+					]
+				},
+				{
+					"species": "kangaskhan",
+					"level": 29,
+					"moves": [
+						"comet_punch",
+						"bite"
+					]
+				}
+			]
+		},
+		"giovanni_a_kangourex_25": {
+			"name": "Giovanni",
+			"ai": "smart",
+			"switch": true,
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 2475,
+			"team": [
+				{
+					"species": "onix",
+					"level": 25,
+					"moves": [
+						"tackle",
+						"screech",
+						"bind",
+						"rock_throw"
+					]
+				},
+				{
+					"species": "rhyhorn",
+					"level": 24,
+					"moves": [
+						"horn_attack"
+					]
+				},
+				{
+					"species": "kangaskhan",
+					"level": 25,
+					"moves": [
+						"comet_punch",
+						"bite"
+					]
+				}
+			]
+		},
+		"giovanni_b_sans_morsure": {
+			"name": "Giovanni",
+			"ai": "smart",
+			"switch": true,
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 2871,
+			"team": [
+				{
+					"species": "onix",
+					"level": 25,
+					"moves": [
+						"tackle",
+						"screech",
+						"bind",
+						"rock_throw"
+					]
+				},
+				{
+					"species": "rhyhorn",
+					"level": 24,
+					"moves": [
+						"horn_attack"
+					]
+				},
+				{
+					"species": "kangaskhan",
+					"level": 29,
+					"moves": [
+						"comet_punch",
+						"tail_whip"
+					]
+				}
+			]
+		},
+		"giovanni_d_23_22_25": {
+			"name": "Giovanni",
+			"ai": "smart",
+			"switch": true,
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 2475,
+			"team": [
+				{
+					"species": "onix",
+					"level": 23,
+					"moves": [
+						"tackle",
+						"screech",
+						"bind",
+						"rock_throw"
+					]
+				},
+				{
+					"species": "rhyhorn",
+					"level": 22,
+					"moves": [
+						"horn_attack"
+					]
+				},
+				{
+					"species": "kangaskhan",
+					"level": 25,
+					"moves": [
+						"comet_punch",
+						"bite"
+					]
+				}
+			]
+		},
+		"giovanni_e_27_sans_morsure": {
+			"name": "Giovanni",
+			"ai": "smart",
+			"switch": true,
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 2673,
+			"team": [
+				{
+					"species": "onix",
+					"level": 25,
+					"moves": [
+						"tackle",
+						"screech",
+						"bind",
+						"rock_throw"
+					]
+				},
+				{
+					"species": "rhyhorn",
+					"level": 24,
+					"moves": [
+						"horn_attack"
+					]
+				},
+				{
+					"species": "kangaskhan",
+					"level": 27,
+					"moves": [
+						"comet_punch",
+						"tail_whip"
+					]
+				}
+			]
+		},
+		"giovanni_f_kangourex_27": {
+			"name": "Giovanni",
+			"ai": "smart",
+			"switch": true,
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 2673,
+			"team": [
+				{
+					"species": "onix",
+					"level": 25,
+					"moves": [
+						"tackle",
+						"screech",
+						"bind",
+						"rock_throw"
+					]
+				},
+				{
+					"species": "rhyhorn",
+					"level": 24,
+					"moves": [
+						"horn_attack"
+					]
+				},
+				{
+					"species": "kangaskhan",
+					"level": 27,
+					"moves": [
+						"comet_punch",
+						"bite"
+					]
+				}
+			]
+		},
+		"giovanni_c_random": {
+			"name": "Giovanni",
+			"ai": "random",
+			"switch": true,
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 2871,
+			"team": [
+				{
+					"species": "onix",
+					"level": 25,
+					"moves": [
+						"tackle",
+						"screech",
+						"bind",
+						"rock_throw"
+					]
+				},
+				{
+					"species": "rhyhorn",
+					"level": 24,
+					"moves": [
+						"horn_attack"
+					]
+				},
+				{
+					"species": "kangaskhan",
+					"level": 29,
+					"moves": [
+						"comet_punch",
+						"bite"
+					]
+				}
+			]
+		}
+	},
+	"steps": [
+		{
+			"label": "Erika (données : Empiflor 29, Saquedeneu 24, Rafflesia 29)",
+			"trainer": "erika_donnees",
+			"optional": "erika_donnees"
+		},
+		{
+			"label": "Erika (a) : Empiflor 27, Saquedeneu 24, Rafflesia 27",
+			"trainer": "erika_a_27_24_27",
+			"optional": "erika_a_27_24_27"
+		},
+		{
+			"label": "Erika (b) : 29 / 24 / 29, Poudre Dodo remplacée (Empiflor : Acide ; Rafflesia : Acide)",
+			"trainer": "erika_b_sans_sommeil",
+			"optional": "erika_b_sans_sommeil"
+		},
+		{
+			"label": "Erika (c) : 29 / 24 / 29, IA random (qui change)",
+			"trainer": "erika_c_random",
+			"optional": "erika_c_random"
+		},
+		{
+			"label": "Erika (d) : Saquedeneu 24, Empiflor 27, Rafflesia 29",
+			"trainer": "erika_d_ordre",
+			"optional": "erika_d_ordre"
+		},
+		{
+			"label": "Giovanni (données : Onix 25, Rhinocorne 24, Kangourex 29)",
+			"trainer": "giovanni_donnees",
+			"optional": "giovanni_donnees"
+		},
+		{
+			"label": "Giovanni (a) : Onix 25, Rhinocorne 24, Kangourex 25",
+			"trainer": "giovanni_a_kangourex_25",
+			"optional": "giovanni_a_kangourex_25"
+		},
+		{
+			"label": "Giovanni (b) : 25 / 24 / 29, Kangourex sans Morsure (Poing Comète, Mimi-Queue)",
+			"trainer": "giovanni_b_sans_morsure",
+			"optional": "giovanni_b_sans_morsure"
+		},
+		{
+			"label": "Giovanni (d) : Onix 23, Rhinocorne 22, Kangourex 25",
+			"trainer": "giovanni_d_23_22_25",
+			"optional": "giovanni_d_23_22_25"
+		},
+		{
+			"label": "Giovanni (e) : 25 / 24 / Kangourex 27 sans Morsure (Poing Comète, Mimi-Queue)",
+			"trainer": "giovanni_e_27_sans_morsure",
+			"optional": "giovanni_e_27_sans_morsure"
+		},
+		{
+			"label": "Giovanni (f) : Onix 25, Rhinocorne 24, Kangourex 27",
+			"trainer": "giovanni_f_kangourex_27",
+			"optional": "giovanni_f_kangourex_27"
+		},
+		{
+			"label": "Giovanni (c) : 25 / 24 / 29, IA random (qui change)",
+			"trainer": "giovanni_c_random",
+			"optional": "giovanni_c_random"
+		}
+	],
+	"variants": [
+		{
+			"name": "attentif, 0 Super Potion : erika_donnees",
+			"player": "attentif",
+			"center": true,
+			"items": {},
+			"optional": [
+				"erika_donnees"
+			]
+		},
+		{
+			"name": "attentif, 3 Super Potions : erika_donnees",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"super_potion": 3
+			},
+			"optional": [
+				"erika_donnees"
+			]
+		},
+		{
+			"name": "attentif, 5 Super Potions : erika_donnees",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"super_potion": 5
+			},
+			"optional": [
+				"erika_donnees"
+			]
+		},
+		{
+			"name": "expert, 3 Super Potions : erika_donnees",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"super_potion": 3
+			},
+			"optional": [
+				"erika_donnees"
+			]
+		},
+		{
+			"name": "naif, sans objet : erika_donnees",
+			"player": "naif",
+			"center": true,
+			"items": {},
+			"optional": [
+				"erika_donnees"
+			]
+		},
+		{
+			"name": "attentif, 0 Super Potion : erika_a_27_24_27",
+			"player": "attentif",
+			"center": true,
+			"items": {},
+			"optional": [
+				"erika_a_27_24_27"
+			]
+		},
+		{
+			"name": "attentif, 3 Super Potions : erika_a_27_24_27",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"super_potion": 3
+			},
+			"optional": [
+				"erika_a_27_24_27"
+			]
+		},
+		{
+			"name": "attentif, 5 Super Potions : erika_a_27_24_27",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"super_potion": 5
+			},
+			"optional": [
+				"erika_a_27_24_27"
+			]
+		},
+		{
+			"name": "expert, 3 Super Potions : erika_a_27_24_27",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"super_potion": 3
+			},
+			"optional": [
+				"erika_a_27_24_27"
+			]
+		},
+		{
+			"name": "naif, sans objet : erika_a_27_24_27",
+			"player": "naif",
+			"center": true,
+			"items": {},
+			"optional": [
+				"erika_a_27_24_27"
+			]
+		},
+		{
+			"name": "attentif, 0 Super Potion : erika_b_sans_sommeil",
+			"player": "attentif",
+			"center": true,
+			"items": {},
+			"optional": [
+				"erika_b_sans_sommeil"
+			]
+		},
+		{
+			"name": "attentif, 3 Super Potions : erika_b_sans_sommeil",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"super_potion": 3
+			},
+			"optional": [
+				"erika_b_sans_sommeil"
+			]
+		},
+		{
+			"name": "attentif, 5 Super Potions : erika_b_sans_sommeil",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"super_potion": 5
+			},
+			"optional": [
+				"erika_b_sans_sommeil"
+			]
+		},
+		{
+			"name": "expert, 3 Super Potions : erika_b_sans_sommeil",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"super_potion": 3
+			},
+			"optional": [
+				"erika_b_sans_sommeil"
+			]
+		},
+		{
+			"name": "naif, sans objet : erika_b_sans_sommeil",
+			"player": "naif",
+			"center": true,
+			"items": {},
+			"optional": [
+				"erika_b_sans_sommeil"
+			]
+		},
+		{
+			"name": "attentif, 0 Super Potion : erika_c_random",
+			"player": "attentif",
+			"center": true,
+			"items": {},
+			"optional": [
+				"erika_c_random"
+			]
+		},
+		{
+			"name": "attentif, 3 Super Potions : erika_c_random",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"super_potion": 3
+			},
+			"optional": [
+				"erika_c_random"
+			]
+		},
+		{
+			"name": "attentif, 5 Super Potions : erika_c_random",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"super_potion": 5
+			},
+			"optional": [
+				"erika_c_random"
+			]
+		},
+		{
+			"name": "expert, 3 Super Potions : erika_c_random",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"super_potion": 3
+			},
+			"optional": [
+				"erika_c_random"
+			]
+		},
+		{
+			"name": "naif, sans objet : erika_c_random",
+			"player": "naif",
+			"center": true,
+			"items": {},
+			"optional": [
+				"erika_c_random"
+			]
+		},
+		{
+			"name": "attentif, 0 Super Potion : erika_d_ordre",
+			"player": "attentif",
+			"center": true,
+			"items": {},
+			"optional": [
+				"erika_d_ordre"
+			]
+		},
+		{
+			"name": "attentif, 3 Super Potions : erika_d_ordre",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"super_potion": 3
+			},
+			"optional": [
+				"erika_d_ordre"
+			]
+		},
+		{
+			"name": "attentif, 5 Super Potions : erika_d_ordre",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"super_potion": 5
+			},
+			"optional": [
+				"erika_d_ordre"
+			]
+		},
+		{
+			"name": "expert, 3 Super Potions : erika_d_ordre",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"super_potion": 3
+			},
+			"optional": [
+				"erika_d_ordre"
+			]
+		},
+		{
+			"name": "naif, sans objet : erika_d_ordre",
+			"player": "naif",
+			"center": true,
+			"items": {},
+			"optional": [
+				"erika_d_ordre"
+			]
+		},
+		{
+			"name": "attentif, 0 Super Potion : giovanni_donnees",
+			"player": "attentif",
+			"center": true,
+			"items": {},
+			"optional": [
+				"giovanni_donnees"
+			]
+		},
+		{
+			"name": "attentif, 3 Super Potions : giovanni_donnees",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"super_potion": 3
+			},
+			"optional": [
+				"giovanni_donnees"
+			]
+		},
+		{
+			"name": "attentif, 5 Super Potions : giovanni_donnees",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"super_potion": 5
+			},
+			"optional": [
+				"giovanni_donnees"
+			]
+		},
+		{
+			"name": "expert, 3 Super Potions : giovanni_donnees",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"super_potion": 3
+			},
+			"optional": [
+				"giovanni_donnees"
+			]
+		},
+		{
+			"name": "naif, sans objet : giovanni_donnees",
+			"player": "naif",
+			"center": true,
+			"items": {},
+			"optional": [
+				"giovanni_donnees"
+			]
+		},
+		{
+			"name": "attentif, 0 Super Potion : giovanni_a_kangourex_25",
+			"player": "attentif",
+			"center": true,
+			"items": {},
+			"optional": [
+				"giovanni_a_kangourex_25"
+			]
+		},
+		{
+			"name": "attentif, 3 Super Potions : giovanni_a_kangourex_25",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"super_potion": 3
+			},
+			"optional": [
+				"giovanni_a_kangourex_25"
+			]
+		},
+		{
+			"name": "attentif, 5 Super Potions : giovanni_a_kangourex_25",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"super_potion": 5
+			},
+			"optional": [
+				"giovanni_a_kangourex_25"
+			]
+		},
+		{
+			"name": "expert, 3 Super Potions : giovanni_a_kangourex_25",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"super_potion": 3
+			},
+			"optional": [
+				"giovanni_a_kangourex_25"
+			]
+		},
+		{
+			"name": "naif, sans objet : giovanni_a_kangourex_25",
+			"player": "naif",
+			"center": true,
+			"items": {},
+			"optional": [
+				"giovanni_a_kangourex_25"
+			]
+		},
+		{
+			"name": "attentif, 0 Super Potion : giovanni_b_sans_morsure",
+			"player": "attentif",
+			"center": true,
+			"items": {},
+			"optional": [
+				"giovanni_b_sans_morsure"
+			]
+		},
+		{
+			"name": "attentif, 3 Super Potions : giovanni_b_sans_morsure",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"super_potion": 3
+			},
+			"optional": [
+				"giovanni_b_sans_morsure"
+			]
+		},
+		{
+			"name": "attentif, 5 Super Potions : giovanni_b_sans_morsure",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"super_potion": 5
+			},
+			"optional": [
+				"giovanni_b_sans_morsure"
+			]
+		},
+		{
+			"name": "expert, 3 Super Potions : giovanni_b_sans_morsure",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"super_potion": 3
+			},
+			"optional": [
+				"giovanni_b_sans_morsure"
+			]
+		},
+		{
+			"name": "naif, sans objet : giovanni_b_sans_morsure",
+			"player": "naif",
+			"center": true,
+			"items": {},
+			"optional": [
+				"giovanni_b_sans_morsure"
+			]
+		},
+		{
+			"name": "attentif, 0 Super Potion : giovanni_d_23_22_25",
+			"player": "attentif",
+			"center": true,
+			"items": {},
+			"optional": [
+				"giovanni_d_23_22_25"
+			]
+		},
+		{
+			"name": "attentif, 3 Super Potions : giovanni_d_23_22_25",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"super_potion": 3
+			},
+			"optional": [
+				"giovanni_d_23_22_25"
+			]
+		},
+		{
+			"name": "attentif, 5 Super Potions : giovanni_d_23_22_25",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"super_potion": 5
+			},
+			"optional": [
+				"giovanni_d_23_22_25"
+			]
+		},
+		{
+			"name": "expert, 3 Super Potions : giovanni_d_23_22_25",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"super_potion": 3
+			},
+			"optional": [
+				"giovanni_d_23_22_25"
+			]
+		},
+		{
+			"name": "naif, sans objet : giovanni_d_23_22_25",
+			"player": "naif",
+			"center": true,
+			"items": {},
+			"optional": [
+				"giovanni_d_23_22_25"
+			]
+		},
+		{
+			"name": "attentif, 0 Super Potion : giovanni_e_27_sans_morsure",
+			"player": "attentif",
+			"center": true,
+			"items": {},
+			"optional": [
+				"giovanni_e_27_sans_morsure"
+			]
+		},
+		{
+			"name": "attentif, 3 Super Potions : giovanni_e_27_sans_morsure",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"super_potion": 3
+			},
+			"optional": [
+				"giovanni_e_27_sans_morsure"
+			]
+		},
+		{
+			"name": "attentif, 5 Super Potions : giovanni_e_27_sans_morsure",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"super_potion": 5
+			},
+			"optional": [
+				"giovanni_e_27_sans_morsure"
+			]
+		},
+		{
+			"name": "expert, 3 Super Potions : giovanni_e_27_sans_morsure",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"super_potion": 3
+			},
+			"optional": [
+				"giovanni_e_27_sans_morsure"
+			]
+		},
+		{
+			"name": "naif, sans objet : giovanni_e_27_sans_morsure",
+			"player": "naif",
+			"center": true,
+			"items": {},
+			"optional": [
+				"giovanni_e_27_sans_morsure"
+			]
+		},
+		{
+			"name": "attentif, 0 Super Potion : giovanni_f_kangourex_27",
+			"player": "attentif",
+			"center": true,
+			"items": {},
+			"optional": [
+				"giovanni_f_kangourex_27"
+			]
+		},
+		{
+			"name": "attentif, 3 Super Potions : giovanni_f_kangourex_27",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"super_potion": 3
+			},
+			"optional": [
+				"giovanni_f_kangourex_27"
+			]
+		},
+		{
+			"name": "attentif, 5 Super Potions : giovanni_f_kangourex_27",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"super_potion": 5
+			},
+			"optional": [
+				"giovanni_f_kangourex_27"
+			]
+		},
+		{
+			"name": "expert, 3 Super Potions : giovanni_f_kangourex_27",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"super_potion": 3
+			},
+			"optional": [
+				"giovanni_f_kangourex_27"
+			]
+		},
+		{
+			"name": "naif, sans objet : giovanni_f_kangourex_27",
+			"player": "naif",
+			"center": true,
+			"items": {},
+			"optional": [
+				"giovanni_f_kangourex_27"
+			]
+		},
+		{
+			"name": "attentif, 0 Super Potion : giovanni_c_random",
+			"player": "attentif",
+			"center": true,
+			"items": {},
+			"optional": [
+				"giovanni_c_random"
+			]
+		},
+		{
+			"name": "attentif, 3 Super Potions : giovanni_c_random",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"super_potion": 3
+			},
+			"optional": [
+				"giovanni_c_random"
+			]
+		},
+		{
+			"name": "attentif, 5 Super Potions : giovanni_c_random",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"super_potion": 5
+			},
+			"optional": [
+				"giovanni_c_random"
+			]
+		},
+		{
+			"name": "expert, 3 Super Potions : giovanni_c_random",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"super_potion": 3
+			},
+			"optional": [
+				"giovanni_c_random"
+			]
+		},
+		{
+			"name": "naif, sans objet : giovanni_c_random",
+			"player": "naif",
+			"center": true,
+			"items": {},
+			"optional": [
+				"giovanni_c_random"
+			]
+		}
+	]
+}

@@ -1,0 +1,63 @@
+{
+	"route_8_item_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_route_8_item_1"
+				],
+				"steps": [
+					{
+						"despawn": "route_8_item_1"
+					},
+					{
+						"give": "super_potion",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_route_8_item_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"route_8_hidden_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_route_8_hidden_1"
+				],
+				"steps": [
+					{
+						"give": "revive",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_route_8_hidden_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"route_8_reached": {
+		"variants": [
+			{
+				"unless": [
+					"route_8_reached"
+				],
+				"steps": [
+					{
+						"set": [
+							"route_8_reached"
+						]
+					}
+				]
+			}
+		]
+	}
+}

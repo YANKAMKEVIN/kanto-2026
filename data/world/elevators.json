@@ -1,0 +1,23 @@
+{
+	"_doc": "Ascenseurs (jalon 20, dossier 23 §9, §13.4 ; docs/tech/jalon-20.md §2.3, lu par ElevatorLibrary). « car » : carte de la cabine. « key » : objet exigé (\"\" = aucun). « floors » : étages proposés au panneau, dans l'ordre affiché ; « map » / « spawn » : où mène la sortie de la cabine. Le toit du grand magasin n'est pas desservi (escalier du 5e) ; le repaire ne propose que B1F, B2F et B4F.",
+	"elevators": {
+		"celadon_dept": {
+			"car": "celadon_dept_elevator", "key": "",
+			"floors": [
+				{ "id": "gf", "label": "RdC", "map": "celadon_dept_gf", "spawn": "from_elevator" },
+				{ "id": "2f", "label": "2e", "map": "celadon_dept_2f", "spawn": "from_elevator" },
+				{ "id": "3f", "label": "3e", "map": "celadon_dept_3f", "spawn": "from_elevator" },
+				{ "id": "4f", "label": "4e", "map": "celadon_dept_4f", "spawn": "from_elevator" },
+				{ "id": "5f", "label": "5e", "map": "celadon_dept_5f", "spawn": "from_elevator" }
+			]
+		},
+		"rocket_hideout": {
+			"car": "rocket_hideout_elevator", "key": "lift_key",
+			"floors": [
+				{ "id": "b1f", "label": "B1F", "map": "rocket_hideout_b1f", "spawn": "from_elevator" },
+				{ "id": "b2f", "label": "B2F", "map": "rocket_hideout_b2f", "spawn": "from_elevator" },
+				{ "id": "b4f", "label": "B4F", "map": "rocket_hideout_b4f", "spawn": "from_elevator" }
+			]
+		}
+	}
+}

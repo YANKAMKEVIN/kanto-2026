@@ -1,0 +1,11 @@
+{
+	"resident": {
+		"cell": [
+			7,
+			4
+		],
+		"facing": "left",
+		"sprite": "old_man",
+		"dialogue": "underground_7_8_resident"
+	}
+}

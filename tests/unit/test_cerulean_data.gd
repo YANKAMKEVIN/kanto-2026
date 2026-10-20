@@ -111,9 +111,16 @@ func test_evolutions_by_level_only() -> void:
 		assert_eq(rules.size(), 1, String(pair[0]))
 		assert_eq([rules[0].into, rules[0].method, rules[0].level],
 			[pair[1], EvolutionRule.Method.LEVEL, 21], String(pair[0]))
-	for id: StringName in [&"gloom", &"weepinbell", &"staryu", &"starmie", &"horsea",
-			&"shellder", &"goldeen"]:
+	for id: StringName in [&"starmie", &"horsea", &"shellder", &"goldeen"]:
 		assert_eq(_data.get_species(id).evolutions.size(), 0, String(id))
+	# Jalon 20 (T7) : les pierres existent ; Ortide, Boustiflor et Stari évoluent par pierre
+	# seulement (jalon-20.md §2.10.1).
+	for pair: Array in [[&"gloom", &"vileplume", &"leaf_stone"],
+			[&"weepinbell", &"victreebel", &"leaf_stone"], [&"staryu", &"starmie", &"water_stone"]]:
+		var rules := _data.get_species(pair[0]).evolutions
+		assert_eq(rules.size(), 1, String(pair[0]))
+		assert_eq([rules[0].into, rules[0].method, rules[0].item],
+			[pair[1], EvolutionRule.Method.ITEM, pair[2]], String(pair[0]))
 
 
 # --- Capacités -----------------------------------------------------------------------------
@@ -232,8 +239,10 @@ func test_tm11_and_its_compatibilities() -> void:
 	assert_eq(compatible, [&"squirtle", &"wartortle", &"blastoise", &"rattata", &"raticate",
 		&"nidorina", &"nidoqueen", &"nidorino", &"nidoking", &"clefairy", &"clefable",
 		&"jigglypuff", &"wigglytuff", &"meowth", &"persian", &"shellder", &"cubone",
-		&"marowak", &"horsea", &"goldeen", &"staryu", &"starmie", &"gyarados"]
-		as Array[StringName])
+		&"marowak",
+		# Jalon 20 (T7) : Kangourex et Aquali.
+		&"kangaskhan", &"horsea", &"goldeen", &"staryu", &"starmie", &"gyarados", &"vaporeon",
+		] as Array[StringName])
 	var squirtle := PokemonFactory.create(_data, &"squirtle", 20, GameRng.new(3))
 	assert_eq(TmTeach.check(squirtle, tm, _data), TmTeach.Check.COMPATIBLE)
 	var oddish := PokemonFactory.create(_data, &"oddish", 12, GameRng.new(3))

@@ -12,8 +12,9 @@ extends RefCounted
 ## rôle dans les règles.
 
 enum Gender { NONE, MALE, FEMALE }
-## Manière dont le Pokémon est arrivé dans l'équipe (jalon 5 §16.3).
-enum Origin { UNKNOWN, STARTER, CAPTURE }
+## Manière dont le Pokémon est arrivé dans l'équipe (jalon 5 §16.3). J20 (`jalon-20.md` §2.5) :
+## GIFT, Pokémon donné (Évoli), en fin d'enum.
+enum Origin { UNKNOWN, STARTER, CAPTURE, GIFT }
 ## Résultat de [method learn_move].
 enum LearnResult {
 	LEARNED, ## Appris dans un emplacement libre.
@@ -29,6 +30,7 @@ const GENDER_NAMES: Dictionary[String, Gender] = {
 const MAX_STATUS_TURNS: int = 7
 const ORIGIN_NAMES: Dictionary[String, Origin] = {
 	"unknown": Origin.UNKNOWN, "starter": Origin.STARTER, "capture": Origin.CAPTURE,
+	"gift": Origin.GIFT, # J20
 }
 
 var species_id: StringName = &""

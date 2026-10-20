@@ -1,0 +1,14 @@
+POKÉMON DE DOS POUR UN ÉCRAN DE COMBAT (Kanto 2026, projet personnel). Le Pokémon est Rafflesia (Vileplume, n° 045), de la première génération.
+
+IMAGE 1 : l'artwork officiel de face de ce Pokémon : anatomie, couleurs, proportions et style de rendu (pas la pose : on le veut de dos).
+IMAGE 2 : un autre Pokémon de dos déjà produit pour ce jeu : reprends son ANGLE de vue (trois quarts dos, regard vers le haut à droite), son cadrage et sa famille de rendu ; ne reprends ni sa forme ni ses couleurs.
+
+SUJET : plante trapue sur deux petits pieds : corps bleu foncé rond, surmonté d'une ÉNORME FLEUR à cinq grands PÉTALES ROUGES tachetés de grosses taches blanc rosé, au cœur violet sombre ; de dos on voit le dessous des pétales rouges qui débordent tout autour de la tête et le dos bleu foncé.
+
+VUE : de DOS, de trois quarts, légèrement par-dessus l'épaule gauche ; la créature regarde vers le HAUT À DROITE de l'image (son adversaire est loin devant elle). On voit surtout son dos, sa nuque, l'arrière de la tête et la queue ; le visage est tourné vers l'avant, hors de vue (au plus, le bord d'une joue ou d'un œil de profil).
+
+STYLE : celui des artworks officiels de face (même trait fin et doux, même ombrage en aplats nuancés, même palette) : le dos et l'adversaire en face doivent paraître venir du même jeu. Pas de pixel art, pas de 3D, pas de rendu photo.
+LUMIÈRE : neutre (milieu de journée, diffuse, légèrement du haut à gauche) ; le jeu ajoute l'ambiance.
+CADRAGE : image CARRÉE 1024 × 1024, la créature ENTIÈRE (queues, oreilles et pattes comprises), centrée, qui occupe environ 80 % de la hauteur ; rien n'est coupé par les bords. Une seule image fixe, une seule créature.
+FOND : PNG avec une vraie transparence (canal alpha), aucun damier dessiné, aucun fond coloré, aucun sol, aucune ombre portée.
+INTERDITS : texte, lettres, chiffres, signature, cadre, sol, décor, ombre portée, autre créature, personnage.

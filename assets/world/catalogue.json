@@ -7432,6 +7432,323 @@
      20
     ]
    }
+  },
+  "bldg_grand_magasin_01": {
+   "fichier": "res://assets/world/buildings/bldg_grand_magasin_01.png",
+   "taille": [
+    1344,
+    888
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_grand_magasin_01_shadow.png",
+    "decalage": [
+     -697,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     779,
+     86
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_grand_magasin_01_contact.png",
+    "decalage": [
+     -680,
+     -89
+    ],
+    "echelle": 2,
+    "taille": [
+     680,
+     64
+    ]
+   }
+  },
+  "bldg_residence_01": {
+   "fichier": "res://assets/world/buildings/bldg_residence_01.png",
+   "taille": [
+    1152,
+    792
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_residence_01_shadow.png",
+    "decalage": [
+     -601,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     674,
+     77
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_residence_01_contact.png",
+    "decalage": [
+     -584,
+     -77
+    ],
+    "echelle": 2,
+    "taille": [
+     584,
+     58
+    ]
+   }
+  },
+  "bldg_escalier_service_01": {
+   "fichier": "res://assets/world/buildings/bldg_escalier_service_01.png",
+   "taille": [
+    384,
+    408
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_escalier_service_01_shadow.png",
+    "decalage": [
+     -217,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     255,
+     42
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_escalier_service_01_contact.png",
+    "decalage": [
+     -200,
+     -31
+    ],
+    "echelle": 2,
+    "taille": [
+     200,
+     35
+    ]
+   }
+  },
+  "bldg_casino_01": {
+   "fichier": "res://assets/world/buildings/bldg_casino_01.png",
+   "taille": [
+    1152,
+    696
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_casino_01_shadow.png",
+    "decalage": [
+     -601,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     665,
+     68
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_casino_01_contact.png",
+    "decalage": [
+     -584,
+     -66
+    ],
+    "echelle": 2,
+    "taille": [
+     584,
+     52
+    ]
+   }
+  },
+  "bldg_coin_lots_01": {
+   "fichier": "res://assets/world/buildings/bldg_coin_lots_01.png",
+   "taille": [
+    768,
+    696
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_coin_lots_01_shadow.png",
+    "decalage": [
+     -409,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     473,
+     68
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_coin_lots_01_contact.png",
+    "decalage": [
+     -392,
+     -66
+    ],
+    "echelle": 2,
+    "taille": [
+     392,
+     52
+    ]
+   }
+  },
+  "bldg_arene_celadopole_01": {
+   "fichier": "res://assets/world/buildings/bldg_arene_celadopole_01.png",
+   "taille": [
+    1152,
+    696
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_arene_celadopole_01_shadow.png",
+    "decalage": [
+     -601,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     665,
+     68
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_arene_celadopole_01_contact.png",
+    "decalage": [
+     -584,
+     -66
+    ],
+    "echelle": 2,
+    "taille": [
+     584,
+     52
+    ]
+   }
+  },
+  "bldg_restaurant_01": {
+   "fichier": "res://assets/world/buildings/bldg_restaurant_01.png",
+   "taille": [
+    768,
+    696
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_restaurant_01_shadow.png",
+    "decalage": [
+     -409,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     473,
+     68
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_restaurant_01_contact.png",
+    "decalage": [
+     -392,
+     -66
+    ],
+    "echelle": 2,
+    "taille": [
+     392,
+     52
+    ]
+   }
+  },
+  "bldg_hotel_01": {
+   "fichier": "res://assets/world/buildings/bldg_hotel_01.png",
+   "taille": [
+    960,
+    696
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_hotel_01_shadow.png",
+    "decalage": [
+     -505,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     569,
+     68
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_hotel_01_contact.png",
+    "decalage": [
+     -488,
+     -66
+    ],
+    "echelle": 2,
+    "taille": [
+     488,
+     52
+    ]
+   }
+  },
+  "bldg_maison_chef_01": {
+   "fichier": "res://assets/world/buildings/bldg_maison_chef_01.png",
+   "taille": [
+    672,
+    600
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_maison_chef_01_shadow.png",
+    "decalage": [
+     -361,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     417,
+     60
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_maison_chef_01_contact.png",
+    "decalage": [
+     -344,
+     -54
+    ],
+    "echelle": 2,
+    "taille": [
+     344,
+     46
+    ]
+   }
+  },
+  "bldg_maison_toit_01": {
+   "fichier": "res://assets/world/buildings/bldg_maison_toit_01.png",
+   "taille": [
+    480,
+    408
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_maison_toit_01_shadow.png",
+    "decalage": [
+     -265,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     303,
+     42
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_maison_toit_01_contact.png",
+    "decalage": [
+     -248,
+     -31
+    ],
+    "echelle": 2,
+    "taille": [
+     248,
+     35
+    ]
+   }
+  },
+  "prop_fontaine_01": {
+   "fichier": "res://assets/world/props/prop_fontaine_01.png",
+   "taille": [
+    192,
+    186
+   ]
   }
  },
  "personnages": {
@@ -9602,6 +9919,198 @@
    "colonnes": 4,
    "lignes": 4,
    "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "erika": {
+   "fichier": "res://assets/sprites/characters/painted/erika_sheet.png",
+   "cellule": [
+    72,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "giovanni": {
+   "fichier": "res://assets/sprites/characters/painted/giovanni_sheet.png",
+   "cellule": [
+    77,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "rocket_civil": {
+   "fichier": "res://assets/sprites/characters/painted/rocket_civil_sheet.png",
+   "cellule": [
+    79,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "intello": {
+   "fichier": "res://assets/sprites/characters/painted/intello_sheet.png",
+   "cellule": [
+    73,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "beaute": {
+   "fichier": "res://assets/sprites/characters/painted/beaute_sheet.png",
+   "cellule": [
+    85,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "topdresseuse": {
+   "fichier": "res://assets/sprites/characters/painted/topdresseuse_sheet.png",
+   "cellule": [
+    85,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "erika_idle": {
+   "fichier": "res://assets/sprites/characters/painted/erika_idle_sheet.png",
+   "cellule": [
+    72,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "giovanni_idle": {
+   "fichier": "res://assets/sprites/characters/painted/giovanni_idle_sheet.png",
+   "cellule": [
+    79,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "rocket_civil_idle": {
+   "fichier": "res://assets/sprites/characters/painted/rocket_civil_idle_sheet.png",
+   "cellule": [
+    81,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "intello_idle": {
+   "fichier": "res://assets/sprites/characters/painted/intello_idle_sheet.png",
+   "cellule": [
+    75,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "beaute_idle": {
+   "fichier": "res://assets/sprites/characters/painted/beaute_idle_sheet.png",
+   "cellule": [
+    87,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "topdresseuse_idle": {
+   "fichier": "res://assets/sprites/characters/painted/topdresseuse_idle_sheet.png",
+   "cellule": [
+    87,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
     "bas",
     "gauche",
     "droite",

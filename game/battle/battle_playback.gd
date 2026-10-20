@@ -57,6 +57,8 @@ extends RefCounted
 ## THROW : la Ball n'est pas lancée).
 ## Jalon 19 : SCARED_AWAY comme TELEPORTED (VANISH puis le message) ; FORCED_OUT comme WITHDRAWN
 ## (le message, puis WITHDRAW) ; RECHARGING : le message seulement.
+## Jalon 20 : BATTLE_ITEM_USED → le message, puis HEAL (la carte du joueur revient après le Sac ;
+## la barre ne bouge pas) ; ITEM_ESCAPE, REVIVED : les messages seulement.
 ## Les phrases viennent de [BattleText] : rien n'est écrit ici.
 
 
@@ -114,6 +116,9 @@ static func beats(event: BattleEvent, texts: BattleText, data: PokemonData,
 			result.append_array(messages.slice(0, 1))
 			result.append(BattleBeat.new(BattleBeat.Kind.HEAL, event))
 			result.append_array(messages.slice(1))
+		BattleEvent.Kind.BATTLE_ITEM_USED:
+			result.append_array(messages)
+			result.append(BattleBeat.new(BattleBeat.Kind.HEAL, event))
 		BattleEvent.Kind.STATUS_INFLICTED:
 			result.append_array(messages)
 			result.append(BattleBeat.new(BattleBeat.Kind.STATUS_TAG, event))

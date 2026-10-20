@@ -140,6 +140,14 @@ extends RefCounted
 ## - GHOST_SPOKE : le SPECTRE (camp adverse) ne fait que parler ;
 ## - tout événement du camp adverse d'un combat SPECTRE porte [member disguised] : espèce
 ##   [constant GhostDisguise.SPECIES], niveau 0, sans genre (garde du Pokédex et du cri).
+## Jalon 20 (objets du grand magasin de Céladopole, `jalon-20.md` §2.9.3 et §2.9.4) :
+## - BATTLE_ITEM_USED : objet de combat du joueur ([member item_id], [member item_name]) sur son
+##   Pokémon actif : « {player} utilise {item} ! » ; suivent STAT_CHANGED / STAT_UNCHANGED (objet
+##   X) ou FOCUSED / FAILED (Muscle +) ;
+## - ITEM_ESCAPE : Poupée Poké en combat sauvage (camp PLAYER) : la fuite est garantie ; suit
+##   BATTLE_ENDED (FLED) ;
+## - REVIVED : juste après l'ITEM_USED d'un Rappel, le Pokémon [member party_index] de l'équipe
+##   du joueur n'est plus K.O. ([member hp] : ses PV rendus).
 ## Tous les autres événements sur un Pokémon portent dans [member status] son statut au moment
 ## de l'événement (SENT_OUT : la carte de PV l'affiche dès l'entrée ; FAINTED : toujours vide,
 ## le K.O. efface le statut).
@@ -162,6 +170,7 @@ enum Kind {
 	COINS_SCATTERED,
 	RECHARGING, SCARED_AWAY, FORCED_OUT,
 	GHOST_SCARED, GHOST_SPOKE,
+	ITEM_ESCAPE, REVIVED, BATTLE_ITEM_USED,
 }
 enum SideId { PLAYER, FOE }
 

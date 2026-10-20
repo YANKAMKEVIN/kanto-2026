@@ -20,8 +20,14 @@ extends RefCounted
 ## se donne pas à un Pokémon : Ball, objet clé…, objet ou Pokémon absent), WRONG_CONTEXT (pas
 ## ici : un objet de combat hors combat), NOT_IN_BAG (plus d'exemplaire), FAINTED, puis
 ## FULL_HP (soin de PV, PV pleins) ou NO_EFFECT (soin de statut seul, le Pokémon n'a pas ce
-## statut ; jalon 9, ajouté en fin d'enum).
-enum Check { OK, NOT_IN_BAG, WRONG_CONTEXT, FULL_HP, FAINTED, NOT_USABLE, NO_EFFECT }
+## statut ; jalon 9, ajouté en fin d'enum) ; NOT_FAINTED (jalon 20 : un Rappel sur un Pokémon
+## debout, ajouté en fin d'enum).
+##
+## Jalon 20 (`jalon-20.md` §2.9.4) : le Rappel ([method ItemData.is_revive]) ne se donne
+## **qu'à un Pokémon K.O.** ; il rend [code]max(1, floor(PV max × fraction))[/code] PV (le K.O.
+## tombe avec eux : un Pokémon K.O. n'a pas de statut).
+enum Check { OK, NOT_IN_BAG, WRONG_CONTEXT, FULL_HP, FAINTED, NOT_USABLE, NO_EFFECT,
+	NOT_FAINTED }
 
 ## Contexte du Sac ouvert depuis la fiche Équipe : l'exploration, pour les règles.
 const CONTEXT_TEAM: StringName = &"team"
@@ -61,6 +67,7 @@ static func apply(bag: Bag, item: ItemData, pokemon: Pokemon,
 		result.gender = pokemon.gender
 	if result.check == Check.OK:
 		bag.remove(item.id)
+		result.revived = pokemon.is_fainted()
 		restore(item, pokemon)
 		result.status_cured = cure(item, pokemon)
 		result.hp_after = pokemon.hp
@@ -70,10 +77,16 @@ static func apply(bag: Bag, item: ItemData, pokemon: Pokemon,
 
 ## Applique l'effet de [param item] sur [param pokemon], sans vérifier ni toucher au Sac (le
 ## moteur, après [method check_target]) : PV + [member ItemData.heal_amount], bornés au
-## maximum. Renvoie les PV rendus.
+## maximum ; un Rappel sur un Pokémon K.O. : la fraction de ses PV max, au moins 1. Renvoie les PV
+## rendus.
 static func restore(item: ItemData, pokemon: Pokemon) -> int:
 	if item == null or pokemon == null or not item.targets_pokemon():
 		return 0
+	if item.is_revive():
+		if not pokemon.is_fainted():
+			return 0
+		pokemon.hp = mini(maxi(1, floori(pokemon.max_hp() * item.revive)), pokemon.max_hp())
+		return pokemon.hp
 	var before := pokemon.hp
 	pokemon.hp = mini(pokemon.hp + item.heal_amount, pokemon.max_hp())
 	return pokemon.hp - before
@@ -105,6 +118,8 @@ static func _check_item(item: ItemData, context: StringName) -> Check:
 static func _check_pokemon(item: ItemData, pokemon: Pokemon) -> Check:
 	if pokemon == null:
 		return Check.NOT_USABLE
+	if item.is_revive():
+		return Check.OK if pokemon.is_fainted() else Check.NOT_FAINTED
 	if pokemon.is_fainted():
 		return Check.FAINTED
 	if item.heal_amount > 0 and pokemon.hp < pokemon.max_hp():

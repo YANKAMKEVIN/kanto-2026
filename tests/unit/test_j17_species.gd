@@ -52,8 +52,9 @@ func test_species_values() -> void:
 	assert_eq(_data.get_species(&"growlithe").growth_rate, ExpCurve.Rate.SLOW)
 
 
-## Évolutions par niveau de Rouge/Bleu ; Caninos et Goupix n'évoluent pas encore (Pierre Feu
-## absente au J17).
+## Évolutions par niveau de Rouge/Bleu. Caninos et Goupix n'évoluaient pas au J17 (Pierre Feu
+## absente) ; le J20 (T7, `jalon-20.md` §2.10.1) leur ajoute la Pierre Feu : vérifiée dans
+## test_celadon_data.gd.
 func test_evolutions() -> void:
 	var expected := {&"diglett": [&"dugtrio", 26], &"drowzee": [&"hypno", 26],
 		&"magnemite": [&"magneton", 30]}
@@ -61,7 +62,7 @@ func test_evolutions() -> void:
 		var rules := _data.get_species(id).evolutions
 		assert_eq(rules.size(), 1, String(id))
 		assert_eq([rules[0].into, rules[0].level], expected[id], String(id))
-	for id: StringName in [&"growlithe", &"vulpix", &"dugtrio", &"hypno", &"magneton"]:
+	for id: StringName in [&"dugtrio", &"hypno", &"magneton"]:
 		assert_eq(_data.get_species(id).evolutions.size(), 0, String(id))
 
 

@@ -387,8 +387,10 @@ func test_switch_is_validated() -> void:
 func test_only_misty_surge_and_the_rivals_switch() -> void:
 	var library := TrainerLibrary.new(_data)
 	assert_true(library.load_dir())
+	# Jalon 20 (T7, dossier 23 §11.3, §13.5) : Erika et Giovanni.
 	var switching: Array[StringName] = [&"cerulean_gym_misty", &"rival_cerulean",
-		&"rival_ss_anne", &"vermilion_gym_surge", &"rival_tower"]
+		&"rival_ss_anne", &"vermilion_gym_surge", &"rival_tower", &"celadon_gym_erika",
+		&"giovanni_hideout"]
 	for id: StringName in library.get_ids():
 		if not String(id).begins_with("qa_"):
 			assert_eq(library.get_trainer(id).can_switch, switching.has(id), String(id))

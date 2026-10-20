@@ -1,0 +1,37 @@
+# Bâtiment d'entrée du souterrain (Route 7 et Route 8) — grille fonctionnelle (jalon 20, dossier 23
+# §2, §4, §20.1 ; préparée le 2026-10-14). UNE enveloppe pour les deux routes : deux cartes
+# (underground_entrance_r7, underground_entrance_r8) construites sur cette grille, qui ne diffèrent
+# que par leurs cibles de warp (voir les attributs vers_r7 / vers_r8). Contrôle :
+# tools/art/plan_check_routes_j20.py (profil souterrain_entree).
+#
+# 12 × 10 cases (même coque que les petits intérieurs) ; nord en haut. Un escalier (descente vers
+# le souterrain), un panneau, un habitant (texte 10). Aucun Dresseur, aucun objet.
+#
+# Légende : K mur (bloqué)   . sol   X sortie vers la route (praticable, PUSH ↓)   E escalier
+# (praticable, STEP_ON ↑)   n lampe (bloquée)   x plante (bloquée)
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 12 caractères), puis POSITIONS.
+
+PRATICABLES .XE
+
+GRILLE 12 10
+00 KKKKKKKKKKKK
+01 KKKKKKKKKKKK
+02 KKKKKEEKKKKK
+03 Kn........nK
+04 K..........K
+05 K..........K
+06 K..........K
+07 Kx........xK
+08 KKKKKXXKKKKK
+09 KKKKKKKKKKKK
+FIN
+
+POSITIONS
+sortie              warp           5..6,8       libre   vers_r7=route_7 spawn_r7=from_souterrain vers_r8=route_8 spawn_r8=from_souterrain  # PUSH ↓ → la route d'origine (bâtiment de la Route 7 : route_7 ; de la Route 8 : route_8)
+entree              spawn          5..6,8       libre   # spawn « entrance » depuis la route, tourné ↑
+escalier            escalier       5..6,2       libre   vers_r7=underground_path_7_8 spawn_r7=from_entree_r7 vers_r8=underground_path_7_8 spawn_r8=from_entree_r8  # STEP_ON ↑ : descend dans le souterrain (bout ouest pour la Route 7, bout est pour la Route 8)
+from_underground    spawn          5..6,3       libre   # retour du souterrain, tourné ↓
+panneau_souterrain  panneau        3,3          bloque  # texte 2 « PASSAGE SOUTERRAIN » / « Route 7 — Céladopole », lu depuis (3, 4) ↑
+habitant            pnj            8,5          bloque  role=H facing=left  # texte 10 : « Le souterrain passe sous Safrania. Plus court, et plus calme. »
+FIN

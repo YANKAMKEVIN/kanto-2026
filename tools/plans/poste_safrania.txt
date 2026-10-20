@@ -1,0 +1,38 @@
+# Poste de garde de Safrania (Route 7 et Route 8) — grille fonctionnelle (jalon 20, dossier 23 §6,
+# §20.2 ; préparée le 2026-10-14). UNE enveloppe pour les deux routes : deux cartes (safrania_gate_r7,
+# safrania_gate_r8) sur cette grille, qui ne diffèrent que par la cible de la porte côté route.
+# Contrôle : tools/art/plan_check_routes_j20.py (profil poste_safrania).
+#
+# 12 × 10 cases ; nord en haut. Porte côté route au sud (X) ; au nord, la porte de Safrania (S) est
+# FERMÉE : un garde se tient devant (texte 12 : « Désolé, Safrania est fermée pour le moment. » /
+# « Je n'en sais pas plus que vous. »). Il ne parle pas de soif. Aucun drapeau, aucun warp au nord
+# (dossier §6) ; le jalon de Safrania décidera de l'ouverture (la porte S deviendra un warp).
+# Un barrière basse B à côté du garde ferme les deux cases de la porte : (5, 3) garde, (6, 3) barrière.
+#
+# Légende : K mur (bloqué)   . sol   X porte côté route (praticable, PUSH ↓)   S porte de Safrania,
+# fermée (bloquée)   B barrière / bureau du garde (bloqué)   n lampe (bloquée)   T table (bloquée)
+# x plante (bloquée)
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 12 caractères), puis POSITIONS.
+
+PRATICABLES .X
+
+GRILLE 12 10
+00 KKKKKKKKKKKK
+01 KKKKKKKKKKKK
+02 KKKKKSSKKKKK
+03 Kn....B...nK
+04 K..........K
+05 K.......TT.K
+06 K..........K
+07 Kx........xK
+08 KKKKKXXKKKKK
+09 KKKKKKKKKKKK
+FIN
+
+POSITIONS
+sortie              warp           5..6,8       libre   vers_r7=route_7 spawn_r7=from_poste vers_r8=route_8 spawn_r8=from_poste  # PUSH ↓ → la route d'origine (poste de la Route 7 : route_7 ; de la Route 8 : route_8)
+entree              spawn          5..6,8       libre   # spawn « entrance » depuis la route, tourné ↑
+porte_safrania      porte_fermee   5..6,2       bloque  # porte de Safrania, fermée (aucun warp au J20)
+garde               pnj            5,3          bloque  role=P facing=down  # texte 12 : « Désolé, Safrania est fermée pour le moment. » / « Je n'en sais pas plus que vous. »
+FIN

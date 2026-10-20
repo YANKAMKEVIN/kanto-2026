@@ -406,7 +406,9 @@ func _choose_action(actions: Dictionary[StringName, bool], can_flee: bool) -> Ba
 			var chosen := await _choose_item()
 			if chosen == null:
 				continue
+			var chosen_item := _items.get_item(chosen.item_id) if _items != null else null
 			if chosen.kind == BattleAction.Kind.ITEM and not chosen.is_heal() \
+					and chosen_item != null and chosen_item.category == ItemData.Category.BALL \
 					and _battle.refuses_balls():
 				# SPECTRE (K-8) : refusée avant le lancer, rien n'est retiré, aucun tour joué.
 				await _hud.show_message(_texts.get_template(&"ghost_ball_refused")
@@ -454,6 +456,8 @@ func _choose_item() -> BattleAction:
 			return null
 		var id := StringName(answer[1])
 		var item := _items.get_item(id) if _items != null else null
+		if item != null and item.has_battle_use():
+			return BattleAction.use_item(id)
 		if item == null or not item.targets_pokemon():
 			return BattleAction.ball(id)
 		var index := await _choose_target(item)

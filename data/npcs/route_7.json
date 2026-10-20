@@ -1,0 +1,14 @@
+{
+	"roucool_1": {
+		"cell": [
+			12,
+			7
+		],
+		"facing": "right",
+		"sprite": "pokemon/pidgey",
+		"shy": {
+			"action": "fly",
+			"radius": 2
+		}
+	}
+}
