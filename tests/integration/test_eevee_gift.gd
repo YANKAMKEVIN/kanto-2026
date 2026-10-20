@@ -1,7 +1,7 @@
 extends GutTest
 ## Don d'Évoli dans le moteur (jalon 20 T12, `docs/tech/jalon-20.md` §2.5.2 ; dossier 23 §10, §19).
 ## Vraie scène Boot sur la **vraie** maison du toit de la Résidence (`celadon_mansion_roof_house`,
-## T17 ; la carte de QA `qa_gift_j20` est retirée au T24) : la Poké Ball `eevee_ball` joue les
+## T17 ; la carte de QA du don a été retirée au T24) : la Poké Ball `eevee_ball` joue les
 ## vrais dialogue et scène (`celadon_eevee_ball`, `celadon_eevee_gift`).
 ## - équipe de 5 → Évoli rejoint l'équipe (T-29), origine « gift », Pokédex vu et capturé ;
 ## - équipe de 6 → Évoli au Stockage, T-29 puis T-30 ;
@@ -113,11 +113,11 @@ func test_after_reload_there_is_no_second_eevee() -> void:
 	var director := _boot.get_cutscene_director()
 	assert_false(director.play(&"celadon_eevee_gift"), "scène désarmée par le drapeau")
 	# Même étape jouée malgré tout (autre scène) : déjà reçu, rien ne se passe, aucun texte.
-	assert_true(_boot.get_cutscene_library().add_from_dict({"qa_gift_again": {"steps": [
+	assert_true(_boot.get_cutscene_library().add_from_dict({"eevee_gift_again": {"steps": [
 		{"gift_pokemon": "eevee", "level": 25, "flag": String(FLAG),
 			"say": "celadon_eevee_received"}]}}, "test"))
 	_pages.clear()
-	assert_true(director.play(&"qa_gift_again"))
+	assert_true(director.play(&"eevee_gift_again"))
 	await wait_until(func() -> bool: return _boot.is_stable(), TIMEOUT)
 	assert_eq(_pages, [] as Array[String], "aucun texte")
 	assert_eq(_count_eevee(), 1, "pas de second Évoli")

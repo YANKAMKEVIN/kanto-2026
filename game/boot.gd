@@ -198,9 +198,7 @@ var _veil_debug: StringName = &""
 ## Flash automatique à l'arrivée sur une carte obscure (J17 T24, Q-1 « tout J17 » ; contrat commun
 ## avec le J18, `jalon-18.md` §3.3).
 var _flash: FlashDirector
-## J20 (T13, `jalon-20.md` §2.3) : ascenseurs (cabine, panneau, trajet, position sauvée). Tests
-## seulement : ascenseurs lus dans un autre fichier.
-var elevators_path: String = ElevatorLibrary.DATA_PATH
+## J20 (T13, `jalon-20.md` §2.3) : ascenseurs (cabine, panneau, trajet, position sauvée).
 var _elevators := ElevatorLibrary.new()
 var _elevator: ElevatorDirector
 var _elevator_panel: ElevatorPanel
@@ -2007,7 +2005,7 @@ func is_rare_candy_running() -> bool:
 ## Ascenseurs (`data/world/elevators.json`), directeur, écran du panneau (provisoire jusqu'au
 ## T14) ; le dialogue du panneau (`open_elevator`) l'ouvre à sa fin, comme la Boutique.
 func _setup_elevators() -> void:
-	if not _elevators.load_file(elevators_path):
+	if not _elevators.load_file():
 		for error: String in _elevators.get_errors():
 			push_error("Boot : %s" % error)
 	_elevator.setup(_elevators, GameState, _player, _runner, _fade)

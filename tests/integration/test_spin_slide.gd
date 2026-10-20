@@ -1,9 +1,11 @@
 extends GutTest
 ## Dalles tournantes dans le moteur (jalon 20 T19, `docs/tech/jalon-20.md` §2.4.4, §2.13 ; dossier
-## 23 §13.3, §19). Vraie scène Boot sur la carte de QA `qa_spin_j20` (retirée au T24 ; la vraie
-## carte `rocket_hideout_b2f` a son test depuis le T21) : départ (2, 6) tourné ↑, dalle →
-## (2, 5), dalle ↑ (5, 5), arrêt (5, 2), trajet « E3,N3 » ; Dresseur `guetteur` (8, 4) qui voit
-## (5, 4), au milieu de la glisse ; Dresseur `gardien` (8, 2) qui voit la case d'arrêt.
+## 23 §13.3, §19). Vraie scène Boot sur la vraie carte `rocket_hideout_b2f` (grille RB ; T24 : la
+## carte de QA `qa_spin_j20` est retirée) : départ (3, 15) tourné →, dalle → (4, 15), trajet
+## « E4,N4 » de la grille (pivot à la dalle ↑ (8, 15)), arrêt (8, 11). Aucun sbire du repaire ne
+## voit une case d'arrêt (B2F : (20, 12) ↓ ; B3F : (10, 22) →, (26, 12) ↑) : le test du Dresseur
+## pose deux Dresseurs (ceux du Mont Sélénite réutilisés), `guetteur` en (6, 14) ↓ qui voit
+## (6, 15), au milieu de la glisse, et `gardien` en (9, 11) ← qui voit la case d'arrêt.
 ## - glisse au pas près (`FrameSim`), en courant, pivot à chaque dalle ;
 ## - entrées ignorées, menu et retour Android refusés pendant la glisse ;
 ## - aucune autosave (ni demandée, ni à l'arrière-plan) pendant la glisse ;
@@ -11,22 +13,40 @@ extends GutTest
 ## - le Dresseur qui voit la case d'arrêt réagit, pas celui qui voit le milieu du trajet ;
 ## - application coupée en pleine glisse : reprise sur la dernière case stable ; sauvegarde posée
 ##   sur une dalle : reprise sur la case d'arrêt ;
-## - pas refusé : glisse arrêtée sur place ; hors repaire : directeur en veille.
+## - pas refusé : glisse arrêtée sur place ; hors repaire : directeur en veille ;
+## - dalles du B2F et du B3F toutes valides (`SpinTileField.check()` muet à l'entrée).
 
 const MemoryFs := preload("res://tests/helpers/memory_file_system.gd")
 const FixedClock := preload("res://tests/helpers/fixed_clock.gd")
 const FrameSim := preload("res://tests/helpers/frame_sim.gd")
 const BOOT_SCENE := preload("res://game/boot.tscn")
 const SAVE_PATH := "user://test_spin_slide_save.json"
-const MAP := &"qa_spin_j20"
-const START := Vector2i(2, 6)
-const ARROW := Vector2i(2, 5)
-const STOP := Vector2i(5, 2)
-const PATH: Array[Vector2i] = [Vector2i(3, 5), Vector2i(4, 5), Vector2i(5, 5), Vector2i(5, 4),
-	Vector2i(5, 3), Vector2i(5, 2)]
-const FACINGS: Array[Vector2i] = [Vector2i.RIGHT, Vector2i.RIGHT, Vector2i.RIGHT, Vector2i.UP,
-	Vector2i.UP, Vector2i.UP]
-const BEATEN: Array[StringName] = [&"beaten_mt_moon_rocket_1", &"beaten_mt_moon_rocket_3"]
+const MAP := &"rocket_hideout_b2f"
+const SPAWN := &"from_b1f_north"
+const START := Vector2i(3, 15)
+const ARROW := Vector2i(4, 15)
+const STOP := Vector2i(8, 11)
+## Pivot : la dalle ↑ (8, 15).
+const PIVOT := Vector2i(8, 15)
+const PATH: Array[Vector2i] = [Vector2i(5, 15), Vector2i(6, 15), Vector2i(7, 15), PIVOT,
+	Vector2i(8, 14), Vector2i(8, 13), Vector2i(8, 12), STOP]
+const FACINGS: Array[Vector2i] = [Vector2i.RIGHT, Vector2i.RIGHT, Vector2i.RIGHT, Vector2i.RIGHT,
+	Vector2i.UP, Vector2i.UP, Vector2i.UP, Vector2i.UP]
+## Dresseurs posés par le test du Dresseur (entrées de `data/npcs/*.json`).
+const LOOKOUT := {
+	"cell": [6, 14], "facing": "down", "sprite": "rocket_grunt_m",
+	"dialogue": "mt_moon_rocket_1_defeated", "unless": ["beaten_mt_moon_rocket_1"],
+	"trainer": {"id": "mt_moon_rocket_1", "sight": 3, "before": "mt_moon_rocket_1_before",
+		"defeated": "mt_moon_rocket_1_defeated", "rematch": "mt_moon_rocket_1_rematch",
+		"leave": []},
+}
+const GUARD := {
+	"cell": [9, 11], "facing": "left", "sprite": "rocket_grunt_m",
+	"dialogue": "mt_moon_rocket_3_defeated", "unless": ["beaten_mt_moon_rocket_3"],
+	"trainer": {"id": "mt_moon_rocket_3", "sight": 3, "before": "mt_moon_rocket_3_before",
+		"defeated": "mt_moon_rocket_3_defeated", "rematch": "mt_moon_rocket_3_rematch",
+		"leave": []},
+}
 const FADE := 0.05
 const TIMEOUT := 12.0
 
@@ -72,7 +92,6 @@ func after_each() -> void:
 
 func test_the_slide_plays_step_by_step_at_running_speed() -> void:
 	await _start()
-	_remove_trainers()
 	assert_eq(_spin.get_field(), _boot.get_map().get_node(^"SpinTiles"), "SpinTiles trouvé")
 	await _walk_onto_the_arrow()
 	assert_true(_spin.is_running(), "la glisse part dans le pas qui pose sur la dalle")
@@ -102,7 +121,6 @@ func test_the_slide_plays_step_by_step_at_running_speed() -> void:
 
 func test_inputs_menu_and_back_are_refused_during_the_slide() -> void:
 	await _start()
-	_remove_trainers()
 	await _walk_onto_the_arrow()
 	assert_true(_spin.is_running())
 	Input.action_press(&"move_down")
@@ -124,7 +142,6 @@ func test_inputs_menu_and_back_are_refused_during_the_slide() -> void:
 
 func test_no_autosave_is_written_during_the_slide() -> void:
 	await _start()
-	_remove_trainers()
 	await wait_until(func() -> bool: return not _boot._save_coordinator.has_pending(), TIMEOUT)
 	await _walk_onto_the_arrow()
 	var writes := _writes()
@@ -142,13 +159,12 @@ func test_no_autosave_is_written_during_the_slide() -> void:
 
 func test_the_companion_retracts_then_returns() -> void:
 	await _start()
-	_remove_trainers()
 	var companion := _boot.get_companion_controller()
 	var lead := PokemonFactory.create(_boot.get_pokemon_data(), &"charmander", 15, GameRng.new(7))
 	GameState.party.add(lead)
 	GameState.set_companion(lead)
-	# Tourné ←, la case derrière le joueur (3, 6) est libre (sous lui, c'est le mur).
-	_player.face(Vector2i.LEFT)
+	# Tourné →, la case derrière le joueur (2, 15) est libre (sous lui, c'est une caisse).
+	_player.face(Vector2i.RIGHT)
 	companion.refresh()
 	await wait_until(func() -> bool: return companion.is_shown(), TIMEOUT)
 	assert_true(companion.is_shown(), "compagnon dehors avant la glisse")
@@ -175,6 +191,8 @@ func test_the_companion_retracts_then_returns() -> void:
 
 func test_the_trainer_who_sees_the_stop_reacts() -> void:
 	await _start()
+	_add_npc(&"guetteur", LOOKOUT)
+	_add_npc(&"gardien", GUARD)
 	var lead := PokemonFactory.create(_boot.get_pokemon_data(), &"charmander", 15, GameRng.new(7))
 	GameState.party.add(lead)
 	var spotted: Array[StringName] = []
@@ -203,7 +221,6 @@ func test_the_trainer_who_sees_the_stop_reacts() -> void:
 
 func test_an_app_killed_mid_slide_resumes_on_the_last_stable_save() -> void:
 	await _start()
-	_remove_trainers()
 	assert_eq(_boot._write_save("test"), OK)
 	assert_eq(_saved_cell(), START)
 	await _walk_onto_the_arrow()
@@ -226,7 +243,6 @@ func test_an_app_killed_mid_slide_resumes_on_the_last_stable_save() -> void:
 
 func test_a_save_on_an_arrow_resumes_on_its_stop() -> void:
 	await _start()
-	_remove_trainers()
 	# Partie posée sur une dalle (sauvegarde ancienne ou abîmée : le verrou l'empêche en jeu).
 	GameState.set_player_location(MAP, ARROW, Vector2i.RIGHT)
 	assert_eq(_boot.save_system.write(GameState.to_dict()), OK)
@@ -246,63 +262,36 @@ func test_a_save_on_an_arrow_resumes_on_its_stop() -> void:
 
 func test_a_refused_step_stops_the_slide_in_place() -> void:
 	await _start()
-	_remove_trainers()
 	var spec := NpcSpec.new()
-	spec.id = &"qa_blocker"
-	spec.cell = Vector2i(5, 4)
+	spec.id = &"test_blocker"
+	spec.cell = Vector2i(8, 13)
 	spec.facing = Vector2i.DOWN
 	_boot.get_map().add_npc(spec)
 	await _walk_onto_the_arrow()
 	await _run_slide()
 	assert_push_error("pas refusé")
-	assert_eq(_events.back(), "finished:%s" % Vector2i(5, 5), "arrêtée sur la dernière case")
-	assert_eq(_player.get_cell(), Vector2i(5, 5))
+	assert_eq(_events.back(), "finished:%s" % Vector2i(8, 14), "arrêtée sur la dernière case")
+	assert_eq(_player.get_cell(), Vector2i(8, 14))
 	assert_false(_spin.is_running())
 	assert_true(_player.is_input_enabled(), "joueur libre")
 
 
-## Jalon 20 (T21) : la vraie carte `rocket_hideout_b2f` (grille RB) : de (3, 15), un pas vers
-## l'est pose sur la dalle → (4, 15) ; trajet « E4,N4 » de la grille, arrêt (8, 11) ; les dalles
-## de la carte sont toutes valides (aucun `push_error` de `SpinTileField.check()` à l'entrée).
-func test_a_real_slide_on_the_b2f_of_the_hideout() -> void:
-	await _boot_on(&"rocket_hideout_b2f", &"from_b1f_north")
-	GameState.new_game(7)
-	GameState.player_name = "Kevin"
-	_boot.get_map().refresh_npcs(GameState.flags)
+## Les dalles des deux étages du repaire sont toutes valides : aucun `push_error` de
+## `SpinTileField.check()` à l'entrée (43 dalles au B2F, 16 au B3F, comme RB).
+func test_every_arrow_of_the_hideout_is_valid() -> void:
+	await _start()
+	assert_eq((_spin.get_field() as SpinTileField).arrows.size(), 43, "43 dalles au B2F (RB)")
+	await SceneRouter.change_map(&"rocket_hideout_b3f", &"from_b2f", Vector2i.DOWN)
+	await wait_process_frames(3)
 	await wait_until(func() -> bool: return _boot.is_stable(), TIMEOUT)
-	assert_eq(_spin.get_field(), _boot.get_map().get_node(^"SpinTiles"), "SpinTiles du B2F")
-	assert_eq((_spin.get_field() as SpinTileField).arrows.size(), 43, "43 dalles (RB)")
-	_boot.get_map().spawn_player_at(_player, Vector2i(3, 15), Vector2i.RIGHT)
-	await wait_until(func() -> bool: return _boot.is_stable(), TIMEOUT)
-	_moves.clear()
-	_move_frames.clear()
-	_facings.clear()
-	_events.clear()
-	_sim = FrameSim.new(get_tree(), [_player])
-	Input.action_press(&"move_right")
-	await _sim.frame()
-	Input.action_release(&"move_right")
-	await _sim.run_until(func() -> bool: return _spin.is_running() or not _player.is_moving(),
-		TIMEOUT)
-	assert_true(_spin.is_running(), "la dalle (4, 15) lance la glisse")
-	await _run_slide()
-	var path: Array[Vector2i] = [Vector2i(4, 15), Vector2i(5, 15), Vector2i(6, 15),
-		Vector2i(7, 15), Vector2i(8, 15), Vector2i(8, 14), Vector2i(8, 13), Vector2i(8, 12),
-		Vector2i(8, 11)]
-	assert_eq(_moves, path, "trajet « E4,N4 » de la grille")
-	assert_eq(_facings, [Vector2i.RIGHT, Vector2i.RIGHT, Vector2i.RIGHT, Vector2i.RIGHT,
-		Vector2i.UP, Vector2i.UP, Vector2i.UP, Vector2i.UP] as Array[Vector2i],
-		"le joueur pivote à la dalle (8, 15)")
-	assert_eq(_events, ["started:%s" % Vector2i(4, 15), "finished:%s" % Vector2i(8, 11)]
-		as Array[String])
-	assert_eq(_player.get_cell(), Vector2i(8, 11))
-	assert_true(_player.is_input_enabled(), "joueur libre à l'arrêt")
-	assert_eq(_boot.get_map().map_id, &"rocket_hideout_b2f")
+	assert_eq(_boot.get_map().map_id, &"rocket_hideout_b3f")
+	assert_eq(_spin.get_field(), _boot.get_map().get_node(^"SpinTiles"), "SpinTiles du B3F")
+	assert_eq((_spin.get_field() as SpinTileField).arrows.size(), 16, "16 dalles au B3F (RB)")
 	assert_push_error_count(0)
 
 
 func test_the_director_sleeps_outside_the_hideout() -> void:
-	await _boot_on(&"qa_gift_j20", &"start")
+	await _boot_on(&"celadon_mansion_roof_house", &"entrance")
 	assert_null(_spin.get_field(), "aucun SpinTiles")
 	assert_false(_spin.is_processing(), "aucun traitement par image")
 	assert_false(_spin.is_running())
@@ -312,12 +301,20 @@ func test_the_director_sleeps_outside_the_hideout() -> void:
 
 # --- Outils ------------------------------------------------------------------------------------
 
+## Boot neuve sur le B2F, joueur posé au départ (3, 15), tourné →.
 func _start() -> void:
-	await _boot_on(MAP, &"start")
+	await _boot_on(MAP, SPAWN)
 	GameState.new_game(7)
 	GameState.player_name = "Kevin"
 	_boot.get_map().refresh_npcs(GameState.flags)
 	await wait_until(func() -> bool: return _boot.is_stable(), TIMEOUT)
+	_boot.get_map().spawn_player_at(_player, START, Vector2i.RIGHT)
+	await wait_process_frames(2)
+	await wait_until(func() -> bool: return _boot.is_stable(), TIMEOUT)
+	_moves.clear()
+	_move_frames.clear()
+	_facings.clear()
+	_events.clear()
 
 
 func _boot_on(map: StringName, spawn: StringName = &"") -> void:
@@ -345,24 +342,26 @@ func _boot_on(map: StringName, spawn: StringName = &"") -> void:
 	await wait_until(func() -> bool: return _boot.is_stable(), TIMEOUT)
 
 
-## Dresseurs de QA battus et retirés (leurs PNJ sont conditionnés par « battu »).
-func _remove_trainers() -> void:
-	for flag: StringName in BEATEN:
-		GameState.flags.set_flag(flag)
-	_boot.get_map().refresh_npcs(GameState.flags)
+## Dresseur posé par le test (pour la durée de la carte), décrit comme dans `data/npcs/`.
+func _add_npc(id: StringName, entry: Dictionary) -> void:
+	var errors := PackedStringArray()
+	var spec := NpcRoster.parse_entry(entry, errors)
+	assert_eq(errors, PackedStringArray(), "entrée valide")
+	spec.id = id
+	assert_not_null(_boot.get_map().add_npc(spec), "%s posé" % id)
 
 
-## Un pas **libre** (entrée tenue) de (2, 6) vers la dalle (2, 5), en images simulées ; rend la
-## main dès que la glisse est partie (ou après le pas).
+## Un pas **libre** (entrée tenue) de (3, 15) vers la dalle (4, 15), en images simulées ; rend
+## la main dès que la glisse est partie (ou après le pas).
 func _walk_onto_the_arrow() -> void:
 	assert_eq(_player.get_cell(), START, "au départ")
-	_player.face(Vector2i.UP)
+	_player.face(Vector2i.RIGHT)
 	_moves.clear()
 	_move_frames.clear()
 	_sim = FrameSim.new(get_tree(), [_player])
-	Input.action_press(&"move_up")
+	Input.action_press(&"move_right")
 	await _sim.frame()
-	Input.action_release(&"move_up")
+	Input.action_release(&"move_right")
 	assert_true(_player.is_moving(), "le pas libre est parti")
 	await _sim.run_until(func() -> bool: return _spin.is_running() or not _player.is_moving(),
 		TIMEOUT)

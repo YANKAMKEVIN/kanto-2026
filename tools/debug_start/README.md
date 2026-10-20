@@ -248,3 +248,10 @@ Même partie que `celadon.json` (équipe de référence « arrivée J19 », CS01
 | `giovanni.json` | B4F est, sortie de l'ascenseur (spawn `from_elevator`, tourné ↑), Clé au Sac, **gardes battus, porte ouverte** : Giovanni (25, 3), à aborder par le côté |
 | `giovanni_weak.json` | idem, Salamèche **N5** seul : perdre → réveil au Centre de Céladopole, Clé et sbires battus gardés ; nouvel essai : n° 156 |
 | `tower_scope.json` | Tour 3F (spawn `arrivee_T23`), **Scope Sylphe au Sac**, Giovanni battu : rencontres identifiées, le 6F reste un SPECTRE |
+
+Les cartes de QA du J20 (`qa_gift_j20`, `qa_elevator_j20`, `qa_elevator_j20_1f` / `_2f`,
+`qa_spin_j20`), leur outil `tools/build_qa_j20.gd`, leurs PNJ et les ascenseurs de test
+(`tests/fixtures/elevators/`) ont été **retirés au T24** ; elles n'avaient aucun départ. Le don
+d'Évoli, l'ascenseur et les dalles tournantes sont éprouvés sur les vraies cartes (maison du toit
+de la Résidence, grand magasin et repaire Rocket : `test_eevee_gift`, `test_elevator_flow`,
+`test_spin_slide`).
