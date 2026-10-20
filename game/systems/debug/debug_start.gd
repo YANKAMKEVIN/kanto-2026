@@ -57,6 +57,8 @@ extends RefCounted
 ## "pending_exp": 500 } ; « capturé » au Pokédex ; niveau au dépôt = son niveau.
 ## Jalon 19 (T14) : « rest_point » : carte d'un Centre enregistré comme point de repos (une défaite
 ## réveille là, pas à la maison), ex. "lavender_center".
+## Passe systèmes 2 (S2E, départ `s2_fly`) : « discovered » : cartes déjà découvertes (villes
+## ouvertes au Vol), ex. ["pallet_town", "pewter_city"] ; identifiants non vides.
 ## Jalon 11 (T20d, QA du compagnon) : « companion » : place dans l'équipe (0 = premier) du
 ## Pokémon choisi comme compagnon ; une espèce sans planche est effacée au premier rafraîchissement
 ## (comme en jeu, A-11).
@@ -83,7 +85,8 @@ const VEIL_LIT: StringName = &"lit"
 const VEIL_OFF: StringName = &"off"
 
 const _KEYS: Array[String] = ["map", "spawn", "facing", "seed", "flags", "party", "bag",
-	"favorites", "money", "storage", "autosave", "wild", "daycare", "companion", "veil", "rest_point"]
+	"favorites", "money", "storage", "autosave", "wild", "daycare", "companion", "veil", "rest_point",
+	"discovered"]
 const _MEMBER_KEYS: Array[String] = ["species", "level", "moves", "exp_to_next", "hp",
 	"favorite", "status", "status_turns"]
 
@@ -118,6 +121,8 @@ var veil: StringName = &""
 ## Point de repos enregistré au départ (carte d'un Centre de `data/world/rest_points.json` ;
 ## &"" = aucun : la maison). Jalon 19 (T14) : réveil au Centre après une défaite dans la Tour.
 var rest_point: StringName = &""
+## Cartes découvertes au départ (passe systèmes 2, « discovered »).
+var discovered: Array[StringName] = []
 var _errors: PackedStringArray = PackedStringArray()
 
 
@@ -281,9 +286,19 @@ func add_from_dict(dict: Dictionary, data: PokemonData, items: ItemLibrary,
 			ok = _fail("%s : « rest_point » est la carte d'un Centre (rest_points.json)" % source)
 		else:
 			new_rest_point = StringName(raw_rest)
+	var new_discovered: Array[StringName] = []
+	if dict.has("discovered"):
+		var raw_discovered: Variant = dict["discovered"]
+		if not raw_discovered is Array or (raw_discovered as Array).any(
+				func(id: Variant) -> bool: return not id is String or (id as String).is_empty()):
+			ok = _fail("%s : « discovered » est une liste d'identifiants de cartes" % source)
+		else:
+			for id: String in raw_discovered:
+				new_discovered.append(StringName(id))
 	if not ok:
 		return false
 	rest_point = new_rest_point
+	discovered = new_discovered
 	map = new_map
 	spawn = new_spawn
 	facing = new_facing
@@ -339,6 +354,8 @@ func apply(state: Object, data: PokemonData) -> void:
 		rest_points.load_file()
 		state.heal_map = rest_point
 		state.heal_spawn = rest_points.get_point(rest_point).spawn
+	for map_id: StringName in discovered:
+		state.discover_map(map_id)
 
 
 ## Un Pokémon d'après un membre validé (capacités, XP, PV).

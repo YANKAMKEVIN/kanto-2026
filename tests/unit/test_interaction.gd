@@ -78,14 +78,15 @@ func test_kind_names_round_trip() -> void:
 	assert_eq(Interaction.kind_from_name("jump"), -1)
 
 
-func test_kind_values_are_stable_and_take_is_last() -> void:
+func test_kind_values_are_stable_and_open_is_last() -> void:
 	# Les scripts d'outil écrivent les valeurs de l'enum dans les cartes (EXAMINE = 1) :
-	# une valeur nouvelle s'ajoute en fin d'enum (TAKE, jalon 8 §2.3).
+	# une valeur nouvelle s'ajoute en fin d'enum (TAKE, jalon 8 §2.3 ; OPEN, passe systèmes 2).
 	assert_eq(Interaction.Kind.TALK, 0)
 	assert_eq(Interaction.Kind.EXAMINE, 1)
 	assert_eq(Interaction.Kind.OBSERVE, 2)
 	assert_eq(Interaction.Kind.MEET, 3)
-	assert_eq(Interaction.Kind.TAKE, Interaction.Kind.size() - 1)
+	assert_eq(Interaction.Kind.TAKE, 4)
+	assert_eq(Interaction.Kind.OPEN, Interaction.Kind.size() - 1)
 
 
 func test_take_needs_a_dialogue_and_has_a_button_verb() -> void:
