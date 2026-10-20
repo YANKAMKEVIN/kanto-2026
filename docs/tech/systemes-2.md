@@ -739,6 +739,14 @@ chaque jalon le modifie (conflit assuré sinon).
 
 #### T25 — C : mise en scène de l'envol, arrivée ; Vol en combat (données) — après T24
 
+**Vol en combat fait (2026-10-21)** : `fly` en données seulement (`data/pokemon/moves/moves_s2.json` :
+Vol, vol, physique, 90 / 95 / PP 15, effet `charge` avec `invulnerable`, comme Tunnel) ; textes
+`charge_fly_start` / `charge_fly_broken` (provisoires, §8.1) ; CS02 `hm02` (`items_s2.json`, enseigne
+`fly`). Compatibilités déjà générées (`hm_species` : Roucool, Roucoups, Roucarnage, Piafabec,
+Rapasdepic). Le moteur ne distingue pas « sous terre » et « en l'air » (`ChargeRules.dodges` : toute
+capacité visant la cible est évitée) : Séisme/Abîme contre Tunnel et Fatal-Foudre/Tornade contre Vol
+ne sont pas des exceptions ; à trancher plus tard. Mise en scène de l'envol hors combat : reste à faire.
+
 #### T25b — A *(si Q-5 = oui)* : Téléport et Tunnel hors combat — après T25
 
 #### T29 — A : effet `ohko`, IA, messages, données, audit des capacités — après T1
@@ -933,6 +941,7 @@ Textes provisoires déjà en jeu (`data/battle/messages.json`), à valider ou co
 | `haze` | Toutes les statistiques reviennent à la normale ! |
 | `charge_solar_beam_start` / `_broken` | {pokemon} absorbe la lumière ! / {pokemon} perd la lumière absorbée. |
 | `charge_skull_bash_start` / `_broken` | {pokemon} baisse la tête ! / {pokemon} relève la tête. |
+| `charge_fly_start` / `_broken` (Vol, T25) | {pokemon} s'envole très haut ! / {pokemon} redescend. |
 
 À venir avec leur code (après le J20) : refus du Vélo et du Surf (textes du dossier 25 et 27,
 déjà validés), « Il faut une carte. » (porte à carte), Vol (« {pokemon} s'envole très haut ! »,

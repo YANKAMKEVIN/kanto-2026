@@ -206,6 +206,8 @@
 		"coins_collected": { "text": "Tu ramasses {money}." },
 		"charge_dig_start": { "text": "{pokemon} creuse un trou !" },
 		"charge_dig_broken": { "text": "{pokemon} remonte à la surface." },
+		"charge_fly_start": { "text": "{pokemon} s'envole très haut !" },
+		"charge_fly_broken": { "text": "{pokemon} redescend." },
 		"dodged": { "text": "{pokemon} évite l'attaque !" },
 		"ball_blocked": { "text": "Impossible de viser !" },
 		"teleported": { "text": "{pokemon} s'est téléporté !",

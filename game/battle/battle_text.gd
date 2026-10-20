@@ -146,7 +146,7 @@ const TEMPLATE_IDS: Array[StringName] = [
 	&"trap_clamp_started", &"trap_clamp_damaged", &"trap_ended",
 	&"move_disabled", &"disable_ended", &"rested", &"switch_reason_trapped",
 	&"move_disabled_label",
-	&"charge_dig_start", &"charge_dig_broken", &"dodged", &"ball_blocked", &"teleported",
+	&"charge_dig_start", &"charge_dig_broken", &"charge_fly_start", &"charge_fly_broken", &"dodged", &"ball_blocked", &"teleported",
 	&"nothing_happened", &"rare_candy_level",
 	&"coins_scattered", &"coins_collected",
 	&"recharging", &"scared_away", &"forced_out",
