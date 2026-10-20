@@ -51,6 +51,9 @@ const _SEA_DIR_SHIFT: int = 2
 const _SEA_DIR_MASK: int = 0b1100
 const _SEA_LEVEL_SHIFT: int = 4
 const _SEA_LEVEL_MASK: int = 0b110000
+## Pente de la Piste Cyclable (passe systèmes 2, `systemes-2.md` §2.3) : bit 6 du second octet.
+## Informative comme les hautes herbes : seul [Player] la lit (dérive en Vélo, [CyclingSlope]).
+const _SEA_SLOPE: int = 64
 const _CURRENT_DIRECTIONS: Array[Vector2i] = [
 	Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT,
 ]
@@ -193,6 +196,21 @@ func get_level(cell: Vector2i) -> Level:
 	if not is_in_bounds(cell):
 		return Level.ANY
 	return ((_sea[_index(cell)] & _SEA_LEVEL_MASK) >> _SEA_LEVEL_SHIFT) as Level
+
+
+## Marque une case de pente de la Piste Cyclable (ou la retire) : n'entre dans aucune règle
+## d'accès. Renvoie false si hors carte.
+func set_slope(cell: Vector2i, slope: bool = true) -> bool:
+	if not is_in_bounds(cell):
+		return false
+	var i := _index(cell)
+	_sea[i] = (_sea[i] | _SEA_SLOPE) if slope else (_sea[i] & ~_SEA_SLOPE)
+	return true
+
+
+## Vrai si la case est une pente de la Piste Cyclable.
+func is_slope(cell: Vector2i) -> bool:
+	return is_in_bounds(cell) and (_sea[_index(cell)] & _SEA_SLOPE) != 0
 
 
 ## Marque une case en hautes herbes (ou la libère). Renvoie false si hors carte. N'influe

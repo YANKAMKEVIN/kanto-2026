@@ -155,6 +155,12 @@ extends RefCounted
 ##   BATTLE_ENDED (FLED) ;
 ## - REVIVED : juste après l'ITEM_USED d'un Rappel, le Pokémon [member party_index] de l'équipe
 ##   du joueur n'est plus K.O. ([member hp] : ses PV rendus).
+## Passe systèmes 2 (`systemes-2.md` §2.4, Poké Flûte) :
+## - FLUTE_PLAYED : le joueur joue de la Flûte (camp PLAYER) : « {player} joue de la Poké
+##   Flûte. » ;
+## - FLUTE_WOKE : muet, un par Pokémon réveillé (son camp, sa place) ; [member on_field] : il
+##   est en jeu (sa carte perd l'étiquette DOR) ;
+## - ALL_WOKE : « Tous les Pokémon endormis se réveillent ! », puis l'adversaire joue.
 ## Tous les autres événements sur un Pokémon portent dans [member status] son statut au moment
 ## de l'événement (SENT_OUT : la carte de PV l'affiche dès l'entrée ; FAINTED : toujours vide,
 ## le K.O. efface le statut).
@@ -180,6 +186,7 @@ enum Kind {
 	OHKO,
 	HEALED, SCREEN_STARTED, SCREEN_ENDED, STATS_RESET,
 	ITEM_ESCAPE, REVIVED, BATTLE_ITEM_USED,
+	FLUTE_PLAYED, FLUTE_WOKE, ALL_WOKE,
 }
 enum SideId { PLAYER, FOE }
 
@@ -229,6 +236,8 @@ var status: StringName = StatusRules.NONE
 ## Masqué par [method GhostDisguise.mask] (combat SPECTRE, jalon 19) : rien ne doit révéler
 ## l'espèce réelle (Pokédex, cri, image, nom, niveau).
 var disguised: bool = false
+## FLUTE_WOKE (passe systèmes 2) : le Pokémon réveillé est en jeu (sinon sur le banc).
+var on_field: bool = false
 
 
 func _init(event_kind: Kind = Kind.BATTLE_STARTED, event_side: SideId = SideId.PLAYER) -> void:

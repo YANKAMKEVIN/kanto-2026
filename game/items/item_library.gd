@@ -34,13 +34,15 @@ extends RefCounted
 ## facultatif pour un objet COMBAT et refusé ailleurs ; « revive » (fraction des PV, 0 < f ≤ 1,
 ## [member ItemData.revive]), réservé aux soins (un Rappel est un soin à lui seul) ; une CT
 ## (pas une CS) peut avoir un prix (achetable une fois, jamais revendue).
+## Passe systèmes 2 (`systemes-2.md` §2.4) : « key_use » ([member ItemData.key_use]), facultatif
+## pour un objet clé et refusé ailleurs.
 
 const DATA_DIR: String = "res://data/items/"
 
 const _KEYS: Array[String] = [
 	"name", "plural", "feminine", "category", "catch_bonus", "heal_amount", "cures",
 	"description", "draft", "price", "tm", "teaches", "field_use", "obtained",
-	"hm", "battle_use", "revive",
+	"hm", "battle_use", "revive", "key_use",
 ]
 const _BATTLE_USE_KEYS: Array[String] = ["kind", "stat", "stages"]
 ## Numéros des CT de Rouge/Bleu (dossier 14 §6.1).
@@ -246,6 +248,8 @@ func _parse_item(value: Variant, where: String) -> ItemData:
 				ok = _fail("%s : « %s » est réservé aux CT" % [where, key])
 	if entry.has("field_use"):
 		ok = _read_field_use(entry["field_use"], item, where) and ok
+	if entry.has("key_use"):
+		ok = _read_key_use(entry["key_use"], item, where) and ok
 	if entry.has("obtained"):
 		if entry["obtained"] is bool:
 			item.obtained = entry["obtained"]
@@ -352,6 +356,17 @@ func _read_field_use(value: Variant, item: ItemData, where: String) -> bool:
 		return _fail("%s : « field_use » vaut %s" % [where,
 			", ".join(PackedStringArray(ItemData.FIELD_USES))])
 	item.field_use = StringName(value)
+	return true
+
+
+## Passe systèmes 2 : « key_use » ([constant ItemData.KEY_USES]), réservé aux objets clés.
+func _read_key_use(value: Variant, item: ItemData, where: String) -> bool:
+	if item.category != ItemData.Category.KEY:
+		return _fail("%s : « key_use » est réservé aux objets clés (key)" % where)
+	if not value is String or not ItemData.KEY_USES.has(StringName(value)):
+		return _fail("%s : « key_use » vaut %s" % [where,
+			", ".join(PackedStringArray(ItemData.KEY_USES))])
+	item.key_use = StringName(value)
 	return true
 
 

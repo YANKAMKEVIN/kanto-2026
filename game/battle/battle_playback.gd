@@ -59,6 +59,8 @@ extends RefCounted
 ## (le message, puis WITHDRAW) ; RECHARGING : le message seulement.
 ## Jalon 20 : BATTLE_ITEM_USED → le message, puis HEAL (la carte du joueur revient après le Sac ;
 ## la barre ne bouge pas) ; ITEM_ESCAPE, REVIVED : les messages seulement.
+## Passe systèmes 2 : FLUTE_WOKE (muet) → STATUS_TAG si le Pokémon réveillé est en jeu ;
+## FLUTE_PLAYED, ALL_WOKE : les messages seulement.
 ## Les phrases viennent de [BattleText] : rien n'est écrit ici.
 
 
@@ -128,6 +130,9 @@ static func beats(event: BattleEvent, texts: BattleText, data: PokemonData,
 		BattleEvent.Kind.STATUS_CURED, BattleEvent.Kind.STATUS_ENDED:
 			result.append(BattleBeat.new(BattleBeat.Kind.STATUS_TAG, event))
 			result.append_array(messages)
+		BattleEvent.Kind.FLUTE_WOKE:
+			if event.on_field:
+				result.append(BattleBeat.new(BattleBeat.Kind.STATUS_TAG, event))
 		BattleEvent.Kind.BIDE_UNLEASHED:
 			# Patience, tour 3 : « … riposte ! », puis l'élan d'une attaque physique.
 			result.append_array(messages)
