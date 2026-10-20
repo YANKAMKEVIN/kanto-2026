@@ -3,5 +3,10 @@
 		"name": "Carte Magnétique", "plural": "Cartes Magnétiques", "feminine": true,
 		"category": "key",
 		"description": "Une carte électronique qui ouvre les portes verrouillées."
+	},
+	"hm02": {
+		"name": "CS02 — Vol", "plural": "CS02 — Vol", "feminine": true,
+		"category": "tm", "hm": 2, "teaches": "fly",
+		"description": "Permet de s'envoler vers une ville déjà visitée. S'apprend aussi comme une CT."
 	}
 }

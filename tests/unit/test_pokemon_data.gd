@@ -91,13 +91,27 @@ func test_real_data_loads_without_error() -> void:
 		&"rhyhorn", &"tangela", &"kangaskhan",
 		&"horsea", &"goldeen", &"staryu", &"starmie", &"gyarados",
 		&"eevee", &"vaporeon", &"jolteon", &"flareon"] as Array[StringName])
-	assert_eq(_data.get_move_ids().size(), 127,
+	assert_eq(_data.get_move_ids().size(), 128,
 		"47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10) + Patience (J11) "
 		+ "+ 21 du Mont Sélénite (jalon 12) + 8 du jalon 13 (les 5 du J12 qu'il reprenait : "
 		+ "entrées du J12) + 6 du Cap d'Azuria (jalon 14) + Jackpot (J15) "
 		+ "+ Coupe et Tonnerre (jalon 16) + 7 du jalon 17 + 8 de la Tour Pokémon (J19 ; "
-		+ "Hypnose, Hurlement et Bélier viennent du J17) + 7 du jalon 20")
+		+ "Hypnose, Hurlement et Bélier viennent du J17) + 7 du jalon 20 + Vol (passe systèmes 2, T25)")
 	assert_true(_data.has_move(&"struggle"))
+
+
+func test_fly_move_data() -> void:
+	_data.load_dir()
+	var fly := _data.get_move(&"fly")
+	assert_not_null(fly)
+	if fly == null:
+		return
+	assert_eq([fly.name, fly.type, fly.category, fly.power, fly.accuracy, fly.pp],
+		["Vol", &"flying", MoveData.Category.PHYSICAL, 90, 95, 15])
+	assert_eq([fly.effects.size(), fly.effects[0].kind, fly.effects[0].texts,
+		fly.effects[0].invulnerable], [1, MoveEffect.Kind.CHARGE, &"fly", true],
+		"Vol : effet « charge » comme Tunnel (T25)")
+	assert_eq(fly.pending_effects.size(), 0)
 
 
 func test_real_species_values() -> void:
