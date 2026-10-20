@@ -68,6 +68,11 @@ func _start(companion: int = -1) -> void:
 	_runner.page_started.connect(func(_index: int) -> void:
 		_pages.append(_boot.get_dialogue_box().get_text()))
 	_player.moved.connect(func(cell: Vector2i) -> void: _visited.append(cell))
+	# Le 6F a des rencontres sauvages (sol, taux 15) et l'aléatoire du départ n'est pas fixé : un
+	# SPECTRE sauvage sur le pas (10, 14) → (10, 15) bloquait la marche avant le déclencheur
+	# (échec intermittent, ~6 % par pas). Le test porte sur la scène scriptée, dont le combat
+	# passe par le BattleDirector, pas par l'EncounterDirector.
+	_boot.get_encounter_director().enabled = false
 	if companion >= 0:
 		GameState.set_companion(GameState.party.get_at(companion))
 		_boot.get_companion_controller().refresh()
