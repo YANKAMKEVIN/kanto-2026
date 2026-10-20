@@ -1,0 +1,13 @@
+{
+	"qa_mount_sleeper": {
+		"variants": [
+			{
+				"unless": ["qa_mount_sleeper_woken"],
+				"steps": [
+					{ "dialogue": "qa_mount_sleeper_wakes" },
+					{ "set": ["qa_mount_sleeper_woken"] }
+				]
+			}
+		]
+	}
+}
