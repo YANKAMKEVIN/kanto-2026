@@ -15,6 +15,9 @@ var table_id: StringName = &""
 ## jamais par la table seule. Faux par défaut. L'espèce réelle reste dans [member species] :
 ## elle n'est jamais montrée (masque [GhostDisguise]).
 var ghost: bool = false
+## Entrée en scène « légendaire » (passe systèmes 2, T30 : clé « intro » de l'étape de scène
+## « wild_battle ») : plus lente ([constant BattleStage.LEGENDARY_INTRO_SLOWDOWN]). Faux par défaut.
+var legendary_intro: bool = false
 
 
 func _init(encounter_species: StringName = &"", encounter_level: int = 1,

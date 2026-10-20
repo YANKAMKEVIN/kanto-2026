@@ -102,6 +102,12 @@ extends RefCounted
 ##   (identifiant d'objet) et « win » / « lose » facultatifs (comme « battle »). L'espèce est
 ##   vérifiée contre les données Pokémon par [method check_species] (appelée par Boot une fois
 ##   les espèces chargées) : une scène qui nomme une espèce inconnue est écartée.
+##   Passe systèmes 2 (T30) : « catch » facultatif (liste non vide : drapeaux d'une capture) ;
+##   « static » facultatif (rencontre fixe, [StaticEncounter]) : { "done": drapeau posé par une
+##   capture ou un K.O., "caught": drapeau posé en plus par une capture } (deux drapeaux
+##   distincts, obligatoires) ; « actor » facultatif, avec « static » seulement : le Pokémon de la
+##   carte (PNJ ou alias, jamais « player ») retiré quand la rencontre est consommée ; « intro »
+##   facultatif : [constant CutsceneStep.INTRO_LEGENDARY].
 ## Jalon 20 (`jalon-20.md` §2.5.2, T12) :
 ## - gift_pokemon : identifiant d'espèce donné au joueur, avec « level » (entier 1..100),
 ##   « flag » (drapeau du don) et « say » (dialogue « reçoit ») obligatoires, « say_stored »
@@ -128,7 +134,7 @@ const _EXTRA_KEYS: Array[Array] = [
 	[], ["count"], [], [], [], ["kind"], [], [], ["details"],
 	[],
 	["on"], [], ["offset", "duration", "fade"],
-	["level", "ghost", "ghost_unless_item", "win", "lose"],
+	["level", "ghost", "ghost_unless_item", "win", "lose", "catch", "static", "actor", "intro"],
 	["level", "flag", "say", "say_stored"],
 ]
 ## Conditions permises sur toute étape sauf spawn.
@@ -268,9 +274,12 @@ func get_set_flags() -> Array[StringName]:
 		var raised: Array[StringName] = []
 		if step.kind == CutsceneStep.Kind.SET_FLAGS:
 			raised = step.flags
-		elif step.kind == CutsceneStep.Kind.BATTLE \
-				or step.kind == CutsceneStep.Kind.WILD_BATTLE:
+		elif step.kind == CutsceneStep.Kind.BATTLE:
 			raised = step.win_flags + step.lose_flags
+		elif step.kind == CutsceneStep.Kind.WILD_BATTLE: # T30 : capture et rencontre fixe aussi
+			raised = step.win_flags + step.lose_flags + step.catch_flags
+			if step.static_encounter != null:
+				raised += step.static_encounter.flags_for(Battle.Outcome.CAUGHT)
 		elif step.kind == CutsceneStep.Kind.GIFT_POKEMON: # J20
 			raised = [step.gift_flag]
 		for flag: StringName in raised:
@@ -603,7 +612,46 @@ func _parse_wild_battle(entry: Dictionary, step: CutsceneStep, where: String) ->
 	if entry.has("ghost_unless_item"):
 		ok = _read_id(entry["ghost_unless_item"], where + " ghost_unless_item",
 			func(v: StringName) -> void: step.ghost_unless_item = v) and ok
+	ok = _parse_static_encounter(entry, step, where) and ok
 	return _read_outcome_flags(entry, step, where) and ok
+
+
+## Clés de la passe systèmes 2 (T30) d'une étape « wild_battle » : « catch », « intro »,
+## « actor », « static » (la [StaticEncounter] est créée avec l'espèce et le niveau déjà lus).
+func _parse_static_encounter(entry: Dictionary, step: CutsceneStep, where: String) -> bool:
+	var ok := true
+	if entry.has("catch"):
+		if not entry["catch"] is Array or (entry["catch"] as Array).is_empty():
+			ok = _fail("%s : « catch » doit être une liste non vide de drapeaux" % where)
+		else:
+			ok = _read_flags(entry, "catch", step.catch_flags, where) and ok
+	if entry.has("intro"):
+		var mode: Variant = entry["intro"]
+		if not mode is String or not CutsceneStep.INTROS.has(StringName(mode)):
+			ok = _fail("%s : « intro » vaut %s" % [where, CutsceneStep.INTROS])
+		else:
+			step.intro = StringName(mode)
+	if entry.has("actor"):
+		if not entry.has("static"):
+			ok = _fail("%s : « actor » exige « static »" % where)
+		ok = _read_npc_actor(entry["actor"], where + " actor", step) and ok
+	if not entry.has("static"):
+		return ok
+	var fixed: Variant = entry["static"]
+	if not fixed is Dictionary:
+		return _fail("%s : « static » vaut { \"done\": …, \"caught\": … }" % where)
+	var keys_ok := _check_keys(fixed, ["done", "caught"], where + " static")
+	var names: Dictionary[String, StringName] = {}
+	for key: String in ["done", "caught"]:
+		keys_ok = _read_id((fixed as Dictionary).get(key), "%s static.%s" % [where, key],
+			func(v: StringName) -> void: names[key] = v) and keys_ok
+	if keys_ok and names["done"] == names["caught"]:
+		keys_ok = _fail("%s : « done » et « caught » sont le même drapeau" % where)
+	if keys_ok:
+		var id := step.actor if not step.actor.is_empty() else step.species
+		step.static_encounter = StaticEncounter.new(id, step.species, step.level,
+			names["done"], names["caught"])
+	return keys_ok and ok
 
 
 ## Étape « animate » (jalon 16) : nœud de la carte, « offset » [dx, dy] en cases (entiers),

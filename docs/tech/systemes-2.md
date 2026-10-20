@@ -848,6 +848,42 @@ forcée si l'issue pose des drapeaux) ; `test_static_encounter.gd`. **Reste apr�
 ajoute `GIFT_POKEMON` à `CutsceneStep`) : drapeaux de capture sur l'étape `wild_battle` (aujourd'hui
 `win_flags` / `lose_flags` seulement), acteur de carte caché, intro `legendary`, sauvegarde forcée.
 
+**Branchement fait (2026-10-21)** : l'étape `wild_battle` accepte quatre clés de plus (rien ne
+change pour les étapes existantes) :
+```json
+{ "wild_battle": "articuno", "level": 50, "intro": "legendary", "actor": "articuno",
+  "static": { "done": "articuno_done", "caught": "articuno_caught" },
+  "catch": ["…"], "win": ["…"] }
+```
+- `static` crée la `StaticEncounter` de l'étape (espèce et niveau de l'étape, identifiant =
+  `actor`, sinon l'espèce) ; `CutsceneStep.outcome_flags` donne ses drapeaux (capture → `done` +
+  `caught`, K.O. → `done`, fuite / fuite du sauvage / défaite → rien) **puis** ceux écrits
+  (`win`, `lose`, et `catch` nouveau : drapeaux d'une capture, aussi sans `static`) ;
+- issue qui consomme la rencontre → **sauvegarde forcée** par le `save_handler` du directeur
+  (même chemin que l'étape `save` : `Boot._on_cutscene_save_requested`, raison « rencontre fixe :
+  <id> »), à la sortie du combat, **avant** l'étape suivante (premier texte) ; une écriture en
+  panne retient la scène (comme `save`) ; puis l'acteur `actor` quitte la carte (`despawn`) ;
+- présence : le Pokémon de la carte est un PNJ ordinaire avec `"unless": ["<done>"]` (mécanisme
+  existant) ; la scène a sa variante `unless: [<done>]`. Aucun changement dans `boot.gd`, la
+  sauvegarde, le joueur ni les interactions ;
+- intro `legendary` : `WildEncounter.legendary_intro` → `BattleRequest.legendary_intro` →
+  `BattleStage.play_wild_intro(…, slowdown)`. Valeurs par défaut [D] : **recadrage et apparition du
+  sauvage 1,5 × plus lents** (`BattleStage.LEGENDARY_INTRO_SLOWDOWN`) ; le bandeau de texte garde
+  sa vitesse (aucune autre intro n'existait : seules TRAINER et WILD) ; ni cri ni effet ajouté
+  (la scène les joue par ses étapes, J24 T-20) ;
+- autres [D] : `static` exige `done` et `caught` distincts ; `actor` exige `static` et refuse
+  `player` ; la défaite garde le réveil existant (fin de la scène, rien posé, pas de sauvegarde
+  forcée) ; la sauvegarde forcée vient en plus de l'autosave « capture » déjà demandé par Boot.
+- QA S2G : départs `tools/debug_start/s2_legendary.json` (Reptincel N36, Roucool N10, 20 Super
+  Balls, 10 Poké Balls : K.O., capture, fuite) et `s2_legendary_weak.json` (Salamèche N5 seul :
+  défaite), Route 1 devant un **Mélofée N25 de QA** (`qa_s2_legendary`, case (23, 41), une case
+  au nord de `from_pallet_w`, présent seulement avec le drapeau `qa_s2_legendary` posé par le
+  départ) ; scène et textes de QA `data/cutscenes/qa_s2_legendary.json`,
+  `data/dialogues/qa_s2_legendary.json` ; à retirer à la clôture (S2Z, T33) avec l'entrée de
+  `data/npcs/route_1.json` (et l'exception `qa_*` de `test_dialogue_data`).
+  Tests : `test_cutscene_static_encounter.gd` (intégration), `test_cutscene_static_step.gd`,
+  `test_s2_legendary_start.gd`.
+
 #### T31 — A : lot d'effets de combat retenu par Kevin (un effet = une règle pure + des tests + ses textes)
 
 **Fait (2026-10-20), règles modernes [D]** (le moteur suit déjà la table des types et les critiques

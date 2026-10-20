@@ -261,3 +261,12 @@ de la Résidence, grand magasin et repaire Rocket : `test_eevee_gift`, `test_ele
 | Fichier | Partie |
 |---|---|
 | `s2_field_travel.json` | T25b : **Mont Sélénite 1F** (spawn `from_route_3_w`, tourné ↑), Centre du Mont Sélénite **enregistré** (clé `rest_point`). Équipe : Reptincel N18 à 20 PV, **Abra N15 (Téléport)**, **Taupiqueur N18 (Griffe, Tunnel)**. Menu → Équipe → Abra → onglet Capacités → Téléport → UTILISER : « Abra utilise Téléport ! », retour dans le Centre (point de réveil), **sans soin** (Reptincel toujours à 20 PV). Taupiqueur → Tunnel → UTILISER : « Taupiqueur creuse un tunnel ! », Route 3 devant la grotte (destination de la Corde Sortie). Tunnel hors grotte (Route 3) ou Téléport dans le Centre : « Impossible de l'utiliser ici. » dans le bandeau de l'Équipe |
+## Passe systèmes 2 — S2G (T30, rencontre légendaire fixe)
+
+| Fichier | Partie |
+|---|---|
+| `s2_legendary.json` | Route 1 (spawn `from_pallet_w`, tourné vers le nord), **Reptincel N36** et Roucool N10, 20 Super Balls, 10 Poké Balls, 5 Potions, drapeau de QA `qa_s2_legendary` : un **Mélofée N25 de QA** est juste devant le joueur (23, 41). OBSERVER → cri, combat à l'entrée « legendary » (1,5 × plus lente). **K.O.** ou **capture** → journal « [qa] point de sauvegarde sans écriture (écriture refusée pour la session) : rencontre fixe : qa_s2_legendary » **avant** le texte de QA qui suit, puis Mélofée quitte la carte (et n'y revient pas) ; **fuite** → rien, il reste. Relancer l'appli pour rejouer une autre issue |
+| `s2_legendary_weak.json` | Même départ, **Salamèche N5 seul** : **défaite** → réveil chez Maman, aucun drapeau, pas de sauvegarde forcée ; Mélofée est toujours sur la Route 1 |
+
+Le PNJ de QA (`data/npcs/route_1.json`), la scène et les textes `qa_s2_legendary` sont retirés à
+la clôture de la passe (S2Z, T33).

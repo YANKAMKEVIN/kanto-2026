@@ -46,6 +46,12 @@ extends Node
 ## Jalon 20 (`jalon-20.md` §2.5.2, T12) : étape « gift_pokemon » ([method PokemonGift.give] sur
 ## l'état de [method set_badges] et les espèces de [method set_pokemon_data], d'un seul bloc ;
 ## dialogue « reçoit », puis « au Stockage » si l'équipe est pleine ; [signal pokemon_gifted]).
+## Passe systèmes 2 (`systemes-2.md` §3.8, T30 ; politique d'Artikodin, `jalon-24.md` §2.7) : étape
+## « wild_battle » avec une rencontre fixe ([StaticEncounter], clé « static ») : capture →
+## `done` + `caught`, K.O. → `done`, fuite ou défaite → rien ; une issue qui consomme la rencontre
+## **force une sauvegarde** ([member save_handler], comme l'étape « save ») à la sortie du combat,
+## avant le premier texte qui suit, puis retire le Pokémon de la carte (clé « actor ») ; drapeaux
+## « catch » d'une capture ; entrée « legendary » plus lente ([member WildEncounter.legendary_intro]).
 
 signal cutscene_started(cutscene_id: StringName)
 ## Début d'une étape (tests, outils de capture).
@@ -87,6 +93,8 @@ const DESPAWN_FADE: float = 0.2
 const ANIMATE_REDUCED_FADE: float = 0.5
 ## Table d'origine d'une rencontre lancée par une étape « wild_battle » (traçabilité).
 const WILD_BATTLE_TABLE: StringName = &"cutscene"
+## Raison de la sauvegarde forcée d'une rencontre fixe consommée (T30) : « %s » = son identifiant.
+const STATIC_SAVE_REASON: String = "rencontre fixe : %s"
 const _ROUTER_SCRIPT := preload("res://game/autoload/scene_router.gd")
 ## Étapes qui agissent sur leur acteur : elles attendent d'abord la fin de sa marche en
 ## arrière-plan.
@@ -612,6 +620,7 @@ func _wild_battle(step: CutsceneStep) -> bool:
 		return true
 	var encounter := WildEncounter.new(step.species, step.level, WILD_BATTLE_TABLE)
 	encounter.ghost = GhostRule.is_ghost_for(step.ghost_mode, step.ghost_unless_item, _bag)
+	encounter.legendary_intro = step.intro == CutsceneStep.INTRO_LEGENDARY
 	var origin := _wild_origin()
 	var outcome: int = await _battle_runner.run_wild(encounter, _map, origin)
 	if outcome == Battle.Outcome.NONE:
@@ -620,6 +629,13 @@ func _wild_battle(step: CutsceneStep) -> bool:
 	if _flags != null:
 		for flag: StringName in step.outcome_flags(outcome):
 			_flags.set_flag(flag)
+	var fixed := step.static_encounter
+	if fixed != null and fixed.needs_forced_save(outcome):
+		# Rencontre consommée (T30) : écrite avant tout autre texte, puis le Pokémon quitte la carte.
+		if not await _save_checkpoint(STATIC_SAVE_REASON % fixed.id):
+			return false
+		if not step.actor.is_empty():
+			await _despawn(step)
 	if outcome != Battle.Outcome.LOSS:
 		return true
 	await _wake_up()
