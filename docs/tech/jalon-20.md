@@ -1333,7 +1333,7 @@ commit ; textes **mot pour mot** (§20 et annexe A validée).
 - §2.16 : dialogue, scène, warps conditionnels des deux postes du J20, `unless` des règles du J15 ;
   `test_saffron_gates`. Textes 215 à 219 (annexe A.14, validés). Vérifié dans la session 20-I.
 
-#### T24 — architecte : clôture
+#### T24 — architecte : clôture — **FAIT le 2026-10-20** (§10)
 - Retrait des cartes de QA (`qa_elevator_j20`, `qa_spin_j20`) et de leurs départs ; `etat-projet.md`,
   roadmap ; passation : J21 (Tour, 6F, `unless` de `back_to_tower`, Ossatueur), J26 (Safrania :
   carte `saffron_city` et ses quatre entrées, à brancher sur les warps du §2.16 ; Porygon), Route 16 (obstacle ouest), Jadielle (moteur des dalles) ;
@@ -1537,6 +1537,66 @@ capture renommée `20i_<n>.png` / `20ii_<n>.png` ou ligne du journal citée.
 la liste) ; la capture n'ayant pas d'écran de surnom, le don d'Évoli n'en propose pas non plus.
 
 **À fournir par Kevin** : la sauvegarde de sa vraie partie (après le J19) pour la QA finale.
+
+---
+
+## 10. Clôture et passation (T24, 2026-10-20)
+
+**État** : 20.0, 20-I (T9 à T18) et 20-II (T19 à T23), plus T25, faits sur `jalon-20`. **20-I
+validé par Kevin le 2026-10-20** (sa session S24) ; **20-II validé par Kevin le 2026-10-20** (passe
+agent S24 `build/qa/jalon20_20ii/rapport.md`, aucun bloquant ; QA finale = non-régression de sa
+vraie partie, restée en Forêt de Jade, reprise sans perte puis restaurée). **Fusion dans `main`
+accordée par Kevin** (2026-10-20).
+
+### 10.1 Retiré ou rangé au T24
+
+- **Cartes de QA retirées** (commit `8af6ef2c`) : `qa_spin_j20`, `qa_gift_j20`, `qa_elevator_j20`,
+  `_1f`, `_2f`, leur outil `tools/build_qa_j20.gd`, PNJ `data/npcs/qa_spin_j20.json` et
+  `qa_gift_j20.json`, fixtures `tests/fixtures/elevators/qa_j20_*.json`, et `Boot.elevators_path`
+  (lu seulement par ces tests). Aucun départ de débogage ne les visait (note au README).
+- **Tests rebasés sur les vraies cartes, sans perte de couverture** : `test_elevator_flow` (4,
+  grand magasin et cabine du repaire), `test_spin_slide` (10, vrai `rocket_hideout_b2f` ; Dresseurs
+  posés par le test pour la case d'arrêt, aucun sbire réel n'en voyant une ; contrôle des 43 + 16
+  dalles), `test_eevee_gift` (4), `test_map_catalog` (les cinq cartes passent dans la liste des
+  cartes de QA interdites).
+- **Départs de débogage gardés** : ceux de T17 et T21 (README, sections J20).
+- `project.godot` et filtre d'export : inchangés, aucune référence aux cartes retirées.
+
+### 10.2 Critères du §4
+
+- **20.0** : tenu (T0 à T8, T10, T11).
+- **20-I** : tenu (session de Kevin sur S24 ; passe agent T18).
+- **20-II** : tenu sur S24 pour Casino (affiche, interrupteur), dalles du B2F, Clé, ascenseur avec
+  Clé, Giovanni abordé et combattu, défaite → réveil, Tour avec le Scope (espèce identifiée),
+  59 fps, aucune erreur ; **tests seulement** (non vus sur téléphone) : 10 glisses variées, B3F,
+  départ du Rocket du Casino, T-50 sans Clé, porte du bureau en direct, victoire contre Giovanni
+  (T-53/54, Scope, Grand moment), Clé gardée après défaite, Corde Sortie au B3F, 6F bloqué,
+  reprises après appli tuée (glisse, cabine) ; vraie partie de Kevin : non-régression seulement
+  (sauvegarde en Forêt de Jade).
+
+### 10.3 Passation
+
+- **J21 (Tour 6F et Ossatueur)** : ajouter son `unless` à l'objectif `back_to_tower` (§2.11) ; la
+  Tour lit déjà le Scope au Sac (`got_rocket_hideout_b4f_silph_scope`, T21), le 6F reste un SPECTRE
+  bloqué ; Ossatueur et la suite de la Tour sont au J21.
+- **J26 (Safrania)** : créer `saffron_city` et ses quatre entrées, à brancher sur les warps
+  conditionnels des postes du J20 (§2.16, T25, mécanique en sommeil) ; remise de la boisson aux
+  gardes du J15 (marche à suivre : `etat-projet.md`, entrée « J20 T25 ») ; Porygon (Casino).
+- **Route 16** : la sortie ouest de Céladopole reste fermée (T-21) ; l'obstacle ouest (Ronflex) est
+  à poser avec la Route 16.
+- **Jadielle (Arène de Giovanni)** : le moteur des dalles (`SpinTileDirector`, §2.4) est
+  réutilisable tel quel ; seul un nœud `SpinTiles` dans la carte est à poser (§2.4.2).
+- **Art, lot « série 22 bis »** : planche d'exploration d'Évoli (le compagnon Évoli en dépend,
+  T22), icônes du Sac des objets J20, façades, intérieurs, Casino et repaire, dos de Voltali /
+  Pyroli.
+
+### 10.4 Points ouverts pour Kevin
+
+- Toast de la Clé « ajoutée aux objets clés » au lieu de « obtenue » (donnée `obtained: false`,
+  gardée par défaut).
+- Équilibrage de Giovanni : l'équipe du départ `giovanni` a perdu avec un pilotage agent sans
+  stratégie ; à juger en jeu réel.
+- Panneau de cabine à examiner (ne s'ouvre pas en entrant) ; titre « CÉLADOPOLE » dans le repaire.
 
 ---
 
