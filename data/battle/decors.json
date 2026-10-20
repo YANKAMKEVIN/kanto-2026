@@ -145,6 +145,33 @@
 			"foe_feet": [1559, 540],
 			"player_feet": [716, 972],
 			"horizon": 335
+		},
+		"route_7_8_urbaine": {
+			"zone": "route_8",
+			"variant": "urbaine",
+			"back": "res://assets/battle/decors/route_7_8_urbaine_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 540],
+			"player_feet": [716, 972],
+			"horizon": 450
+		},
+		"celadon_gym_serre": {
+			"zone": "celadon_gym",
+			"variant": "serre",
+			"back": "res://assets/battle/decors/celadon_gym_serre_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 540],
+			"player_feet": [716, 972],
+			"horizon": 410
+		},
+		"rocket_hideout_repaire": {
+			"zone": "rocket_hideout",
+			"variant": "repaire",
+			"back": "res://assets/battle/decors/rocket_hideout_repaire_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 540],
+			"player_feet": [716, 972],
+			"horizon": 433
 		}
 	},
 	"places": {
@@ -241,6 +268,30 @@
 		],
 		"pokemon_tower_6f": [
 			{ "decor": "tour_pokemon" }
+		],
+		"route_7": [
+			{ "decor": "route_7_8_urbaine" }
+		],
+		"route_8": [
+			{ "decor": "route_7_8_urbaine" }
+		],
+		"celadon_gym": [
+			{ "decor": "celadon_gym_serre" }
+		],
+		"celadon_game_corner": [
+			{ "decor": "rocket_hideout_repaire" }
+		],
+		"rocket_hideout_b1f": [
+			{ "decor": "rocket_hideout_repaire" }
+		],
+		"rocket_hideout_b2f": [
+			{ "decor": "rocket_hideout_repaire" }
+		],
+		"rocket_hideout_b3f": [
+			{ "decor": "rocket_hideout_repaire" }
+		],
+		"rocket_hideout_b4f": [
+			{ "decor": "rocket_hideout_repaire" }
 		]
 	}
 }
