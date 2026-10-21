@@ -31,6 +31,10 @@ var items: ItemLibrary = null
 var ghost: bool = false
 ## La fuite réussit toujours, sans tirage ([FleeCalc] n'est pas consulté) ; combat SPECTRE.
 var flee_always: bool = false
+## Jalon 21 (`jalon-21.md` §2.6) : le sauvage ne peut pas être capturé ; une Ball choisie est
+## refusée par le directeur avant d'être retirée du Sac ([method Battle.refuses_balls]). Le
+## reste est un combat sauvage ordinaire (fuite par [FleeCalc], XP). Faux par défaut.
+var uncatchable: bool = false
 
 
 ## Règles d'un combat sauvage : fuite permise, XP ×1, Balls et soins permis (bonus et soins

@@ -1,0 +1,71 @@
+{
+	"route_12_sign": {
+		"pages": ["ROUTE 12\nLavanville — Route 11"]
+	},
+	"route_12_pier_sign": {
+		"pages": ["PONTON DE PÊCHE\nPrière de ne pas effrayer les poissons."]
+	},
+	"route_12_fisher_1_before": {
+		"speaker": "Pêcheur Ned",
+		"pages": ["Ça mord ! Ça mord !", "Ah non… c'est toi."]
+	},
+	"route_12_fisher_1_defeated": {
+		"speaker": "Pêcheur Ned",
+		"pages": ["Bah ! Un petit poisson."]
+	},
+	"route_12_fisher_1_after": {
+		"speaker": "Pêcheur Ned",
+		"pages": ["Ma ligne s'est encore prise dans les algues."]
+	},
+	"route_12_fisher_2_before": {
+		"speaker": "Pêcheur Elton",
+		"pages": ["Patience !", "La pêche, c'est l'art d'attendre."]
+	},
+	"route_12_fisher_2_defeated": {
+		"speaker": "Pêcheur Elton",
+		"pages": ["Celui-là m'a filé entre les doigts !"]
+	},
+	"route_12_fisher_2_after": {
+		"speaker": "Pêcheur Elton",
+		"pages": ["Les plus gros dorment au fond.", "Un jour, ils mordront."]
+	},
+	"route_12_fisher_3_before": {
+		"speaker": "Pêcheur Bastien",
+		"pages": ["Le roi du ponton contre le petit dresseur !"]
+	},
+	"route_12_fisher_3_defeated": {
+		"speaker": "Pêcheur Bastien",
+		"pages": ["Trop fort !"]
+	},
+	"route_12_fisher_3_after": {
+		"speaker": "Pêcheur Bastien",
+		"pages": ["Tu m'as battu au combat.", "À la pêche, c'est une autre histoire."]
+	},
+	"route_12_fisher_4_before": {
+		"speaker": "Pêcheur Hervé",
+		"pages": ["J'aurais mieux fait d'aller travailler…"]
+	},
+	"route_12_fisher_4_defeated": {
+		"speaker": "Pêcheur Hervé",
+		"pages": ["Pas facile, tout ça…"]
+	},
+	"route_12_fisher_4_after": {
+		"speaker": "Pêcheur Hervé",
+		"pages": ["Perdre ? Ça ne me dérange plus.", "J'ai l'habitude."]
+	},
+	"route_12_gate_tm39": {
+		"speaker": "Jeune femme",
+		"variants": [
+			{ "unless": ["got_tm39"], "cutscene": "route_12_gate_tm39" },
+			{ "pages": ["D'ici, on voit tout le ponton. Les pêcheurs y passent leurs journées."] }
+		]
+	},
+	"route_12_gate_tm39_give": {
+		"speaker": "Jeune femme",
+		"pages": ["Tu as l'air pressé. Tiens, ça devrait te plaire."]
+	},
+	"route_12_gate_tm39_got": {
+		"narration": true,
+		"pages": ["{player} obtient la CT39 — Météores !", "Météores ne rate jamais sa cible."]
+	}
+}

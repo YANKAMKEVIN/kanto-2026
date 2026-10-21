@@ -265,6 +265,7 @@
 		"pokemon_tower_4f": "tower",
 		"pokemon_tower_5f": "tower",
 		"pokemon_tower_6f": "tower",
+		"pokemon_tower_7f": "tower",
 		"route_8": "golden_hour",
 		"route_8_gate": "interior_warm",
 		"route_8_underground_gate": "interior_warm",
@@ -296,6 +297,10 @@
 		"rocket_hideout_b2f": "hideout",
 		"rocket_hideout_b3f": "hideout",
 		"rocket_hideout_b4f": "hideout",
-		"rocket_hideout_elevator": "hideout"
+		"rocket_hideout_elevator": "hideout",
+		"route_16": "golden_hour",
+		"route_12": "golden_hour",
+		"route_12_gate": "interior_warm",
+		"route_12_gate_2f": "interior_warm"
 	}
 }

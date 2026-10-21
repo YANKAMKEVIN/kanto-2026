@@ -75,6 +75,8 @@
 		"celadon_gym",
 		"celadon_game_corner",
 		"qa_teleport",
-		"qa_teleport_2"
+		"qa_teleport_2",
+		"route_12_gate",
+		"route_12_gate_2f"
 	]
 }

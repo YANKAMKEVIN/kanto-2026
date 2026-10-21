@@ -23,8 +23,12 @@ const J20_FILES: Array[String] = [
 	"res://data/dialogues/celadon_gym.json", "res://data/npcs/celadon_game_corner.json",
 	"res://data/npcs/rocket_hideout_b1f.json", "res://data/npcs/rocket_hideout_b2f.json",
 	"res://data/npcs/rocket_hideout_b3f.json", "res://data/npcs/rocket_hideout_b4f.json",
-	"res://data/story/objectives.json",
+	# Jalon 21 (T14) : `objectives.json` lit désormais `ghost_marowak_calmed` et `fuji_rescued`.
 ]
+## Jalon 21 (T12 à T14) : fichiers qui posent légitimement des drapeaux du J21 (scènes, départs).
+const J21_FILES: Array[String] = ["j21_tower.json", "tower_marowak_qa.json",
+	"tower_marowak_noscope.json", "tower_marowak_weak.json", "tower_7f_qa.json",
+	"fuji_flute_qa.json", "j21_full_qa.json"]
 
 
 func _is_j21(flag: String) -> bool:
@@ -82,6 +86,8 @@ func test_no_data_sets_a_flag_of_the_jalon_21() -> void:
 		for file: String in DirAccess.get_files_at(dir):
 			if file.get_extension() != "json":
 				continue
+			if J21_FILES.has(file):
+				continue  # Jalon 21 : ces fichiers sont du J21
 			files += 1
 			_collect_set(_parse(dir + file), file, set_flags)
 	assert_gt(files, 100, "les quatre dossiers sont lus")
