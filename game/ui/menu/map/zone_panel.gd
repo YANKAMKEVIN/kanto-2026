@@ -276,7 +276,11 @@ func _service_chip(entry: ZoneEntryView) -> PanelContainer:
 	var chip := PanelContainer.new()
 	chip.theme_type_variation = &"MapChip"
 	chip.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_add_label(chip, entry.name, &"MapEntryText")
+	# Une ligne : dans la rangée qui coule, un libellé qui passe à la ligne tombait à une largeur
+	# nulle et s'écrivait lettre par lettre (QA S2E sur S21, « Centre » d'Argenta).
+	var label := _add_label(chip, entry.name, &"MapEntryText")
+	if label != null:
+		label.autowrap_mode = TextServer.AUTOWRAP_OFF
 	return chip
 
 
