@@ -24,6 +24,11 @@
 		"category": "tm", "hm": 3, "teaches": "surf",
 		"description": "Permet de traverser l'eau sur le dos d'un Pokémon. S'apprend aussi comme une CT."
 	},
+	"hm04": {
+		"name": "CS04 — Force", "plural": "CS04 — Force", "feminine": true,
+		"category": "tm", "hm": 4, "teaches": "strength",
+		"description": "Permet de pousser les rochers. S'apprend aussi comme une CT."
+	},
 	"old_rod": {
 		"name": "Canne", "plural": "Cannes", "feminine": true,
 		"category": "key", "key_use": "old_rod",
