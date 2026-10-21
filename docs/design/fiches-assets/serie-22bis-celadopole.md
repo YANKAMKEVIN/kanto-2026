@@ -130,3 +130,10 @@ Les autres cartes restent en coque.
   magasin, de l'Arène, du Casino et du B2F du repaire à l'intégration.
 - Le contrôle de l'inventaire (`inventaire-art.md`, commandes) ne signale plus aucune façade ni
   intérieur de Céladopole.
+
+## Validation
+
+- **2026-10-21 : planches de contact validées par Kevin** (« je valide »), telles quelles. Reportés à la
+  phase DA (règle 3) : canette `soda_pop` proche d'une marque (r2 possible), 4F recoloré plus olive
+  qu'ambre (conditionnel `INT_CELADON_DEPT_4F_COQUE` prêt), caisse du repaire à l'allure de coffre.
+  Évoli compagnon : marche refusée par Codex (2 essais sans jointe), repli app ChatGPT par Kevin.
