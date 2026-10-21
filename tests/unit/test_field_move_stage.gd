@@ -45,6 +45,20 @@ func test_stages_order() -> void:
 		"réduire les animations : le fondu seul")
 
 
+func test_stages_without_obstacle_strength() -> void:
+	var a := FieldMoveStage.APPEAR
+	var w := FieldMoveStage.WITHDRAW
+	assert_eq(FieldMoveStage.stages(false, true, false, false), [a, w] as Array[StringName],
+		"Force : le Pokémon apparaît puis rentre, ni effet ni fondu")
+	assert_eq(FieldMoveStage.stages(false, true, true, false), [a] as Array[StringName],
+		"Force par le compagnon : il reste dehors")
+	assert_eq(FieldMoveStage.stages(false, false, false, false), [] as Array[StringName])
+	assert_eq(FieldMoveStage.stages(true, true, false, false), [] as Array[StringName],
+		"réduire les animations : rien à montrer")
+	var team := Companion.BURST * 2.0 + FieldMoveStage.HOLD_DURATION
+	assert_lte(team, FieldMoveStage.MAX_DURATION)
+
+
 func test_durations_stay_under_two_seconds() -> void:
 	var team := Companion.BURST * 2.0 + FieldMoveStage.SLASH_DURATION + FieldMoveStage.CLEAR_FADE
 	var companion := Grid.WALK_STEP_DURATION + FieldMoveStage.SLASH_DURATION \

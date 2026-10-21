@@ -292,6 +292,12 @@ func is_running() -> bool:
 	return _mover != null and _mover.is_running()
 
 
+## Direction contre laquelle le joueur pousse encore ([signal bumped], direction toujours tenue) ;
+## ZERO sinon. Passe systèmes 2 (§2.7.2) : [StrengthDirector] y lit l'appui tenu contre un rocher.
+func get_bump_direction() -> Vector2i:
+	return _bump_direction
+
+
 ## Rectangle du personnage affiché, en coordonnées globales.
 func get_body_rect() -> Rect2:
 	return Rect2(global_position - Vector2(_body_size.x / 2.0, _body_size.y), _body_size)

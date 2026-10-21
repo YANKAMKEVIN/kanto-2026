@@ -24,6 +24,8 @@ const SLASH_DURATION: float = 0.35
 const CLEAR_FADE: float = 0.3
 const REDUCED_FADE: float = 0.3
 const MAX_DURATION: float = 2.0
+## Capacité sans obstacle (Force) : le Pokémon montré prend appui ce temps-là (s) [D].
+const HOLD_DURATION: float = 0.35
 
 
 ## Case du Pokémon qui coupe, pour le joueur sur [param player_cell] tourné vers [param facing] :
@@ -42,7 +44,16 @@ static func pick_cell(player_cell: Vector2i, facing: Vector2i, is_free: Callable
 
 ## Étapes jouées, dans l'ordre : [param reduce_motion] (fondu seul), [param shown] (un Pokémon
 ## est montré), [param is_companion] (c'est le compagnon resté dehors : il ne rentre pas).
-static func stages(reduce_motion: bool, shown: bool, is_companion: bool) -> Array[StringName]:
+## Passe systèmes 2 (Force, §2.7.1) : [param clears] faux = capacité **sans obstacle à retirer**
+## (le Pokémon apparaît, prend appui [constant HOLD_DURATION] s, rentre) : ni effet ni fondu.
+static func stages(reduce_motion: bool, shown: bool, is_companion: bool,
+		clears: bool = true) -> Array[StringName]:
+	if not clears:
+		if reduce_motion or not shown:
+			return [] as Array[StringName]
+		if is_companion:
+			return [APPEAR] as Array[StringName]
+		return [APPEAR, WITHDRAW] as Array[StringName]
 	if reduce_motion:
 		return [CLEAR] as Array[StringName]
 	if not shown:
