@@ -11,6 +11,6 @@
 		{ "species": "pikachu", "level": 18 }
 	],
 	"companion": 0,
-	"bag": { "hm03": 1, "poke_ball": 10, "potion": 5 },
+	"bag": { "hm03": 1, "old_rod": 1, "good_rod": 1, "super_rod": 1, "poke_ball": 10, "potion": 5 },
 	"money": 3000
 }
