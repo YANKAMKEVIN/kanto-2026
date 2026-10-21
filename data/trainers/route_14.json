@@ -1,6 +1,6 @@
 {
 	"route_14_bird_1": {
-		"name": "Ornithologue Firmin",
+		"name": "Ornithologue Ferdinand",
 		"ai": "random",
 		"can_lose": false,
 		"heal_after": false,
@@ -34,7 +34,7 @@
 		]
 	},
 	"route_14_bird_3": {
-		"name": "Ornithologue Anatole",
+		"name": "Ornithologue Léonce",
 		"ai": "random",
 		"can_lose": false,
 		"heal_after": false,

@@ -1,6 +1,6 @@
 {
 	"route_14_bird_1": {
-		"name": "Ornithologue Firmin", "ai": "random",
+		"name": "Ornithologue Ferdinand", "ai": "random",
 		"can_lose": false, "heal_after": false, "gives_exp": true,
 		"prize_money": 0, "prize_per_level": 25,
 		"team": [{ "species": "farfetchd", "level": 33 }]
@@ -12,7 +12,7 @@
 		"team": [{ "species": "spearow", "level": 29 }, { "species": "fearow", "level": 29 }]
 	},
 	"route_14_bird_3": {
-		"name": "Ornithologue Anatole", "ai": "random",
+		"name": "Ornithologue Léonce", "ai": "random",
 		"can_lose": false, "heal_after": false, "gives_exp": true,
 		"prize_money": 0, "prize_per_level": 25,
 		"team": [

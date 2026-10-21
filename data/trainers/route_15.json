@@ -23,7 +23,7 @@
 		]
 	},
 	"route_15_lass_2": {
-		"name": "Jeune Dresseuse Lou",
+		"name": "Jeune Dresseuse Lison",
 		"ai": "random",
 		"can_lose": false,
 		"heal_after": false,
@@ -38,7 +38,7 @@
 		]
 	},
 	"route_15_lass_3": {
-		"name": "Jeune Dresseuse Capucine",
+		"name": "Jeune Dresseuse Maëlle",
 		"ai": "random",
 		"can_lose": false,
 		"heal_after": false,

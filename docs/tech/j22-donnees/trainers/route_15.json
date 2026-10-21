@@ -9,13 +9,13 @@
 		]
 	},
 	"route_15_lass_2": {
-		"name": "Jeune Dresseuse Lou", "ai": "random",
+		"name": "Jeune Dresseuse Lison", "ai": "random",
 		"can_lose": false, "heal_after": false, "gives_exp": true,
 		"prize_money": 0, "prize_per_level": 20,
 		"team": [{ "species": "clefairy", "level": 33 }]
 	},
 	"route_15_lass_3": {
-		"name": "Jeune Dresseuse Capucine", "ai": "random",
+		"name": "Jeune Dresseuse Maëlle", "ai": "random",
 		"can_lose": false, "heal_after": false, "gives_exp": true,
 		"prize_money": 0, "prize_per_level": 20,
 		"team": [

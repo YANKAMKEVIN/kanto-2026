@@ -73,7 +73,8 @@ func test_route_22_west_and_route_2_forest_north_of_viridian() -> void:
 	assert_lt(r22.get_center().x, viridian.get_center().x)
 	assert_eq(r22.end.x, viridian.position.x, "Route 22 touche Jadielle")
 	assert_eq(r22.position.x, _rect("celadon_city").end.x, "Route 22 touche Céladopole")
-	assert_false(_zones.has("route_16"))
+	# Jalon 22 : la Route 16 revient avec sa carte (retirée au jalon 6).
+	assert_true(_zones.has("route_16"))
 	assert_lt(_rect("route_2").get_center().y, viridian.get_center().y)
 	assert_lt(_rect("viridian_forest").get_center().y, viridian.get_center().y)
 	assert_lt(_rect("pewter_city").get_center().y, _rect("viridian_forest").get_center().y)

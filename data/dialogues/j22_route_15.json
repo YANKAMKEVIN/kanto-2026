@@ -18,37 +18,37 @@
 		]
 	},
 	"route_15_lass_2_before": {
-		"speaker": "Jeune Dresseuse Lou",
+		"speaker": "Jeune Dresseuse Lison",
 		"pages": [
 			"Mon Mélofée est le plus mignon.\nEt le plus fort !"
 		]
 	},
 	"route_15_lass_2_defeated": {
-		"speaker": "Jeune Dresseuse Lou",
+		"speaker": "Jeune Dresseuse Lison",
 		"pages": [
 			"Le plus mignon, en tout cas."
 		]
 	},
 	"route_15_lass_2_after": {
-		"speaker": "Jeune Dresseuse Lou",
+		"speaker": "Jeune Dresseuse Lison",
 		"pages": [
 			"Il dort déjà…"
 		]
 	},
 	"route_15_lass_3_before": {
-		"speaker": "Jeune Dresseuse Capucine",
+		"speaker": "Jeune Dresseuse Maëlle",
 		"pages": [
 			"Mes plantes ont poussé\ntout l'été pour ce combat !"
 		]
 	},
 	"route_15_lass_3_defeated": {
-		"speaker": "Jeune Dresseuse Capucine",
+		"speaker": "Jeune Dresseuse Maëlle",
 		"pages": [
 			"Elles ont fané…"
 		]
 	},
 	"route_15_lass_3_after": {
-		"speaker": "Jeune Dresseuse Capucine",
+		"speaker": "Jeune Dresseuse Maëlle",
 		"pages": [
 			"Je vais les arroser."
 		]

@@ -850,6 +850,10 @@ Outils : `tools/build_j22_maps.gd` (12 cartes, tuiles provisoires), `tools/gen_j
 (7 intérieurs). Tests : `test_j22_maps`, `test_j22_data`, `test_j22_story` (vraie Boot),
 `test_j22_fishable`, `test_save_j22`.
 
+Suite complète : 6 489 / 6 496, puis les 7 échecs corrigés (relance ciblée 143 / 143). Prénoms
+renommés [D] (pris entre-temps par d'autres jalons) : Lou → Lison, Firmin → Ferdinand, Anatole →
+Léonce, Capucine → Maëlle.
+
 ### 8.2 Reste
 
 - **Art** : planches série 25 (vélo, pêche, Motard, Ornithologue, Loubard, frères pêcheurs,
