@@ -138,7 +138,7 @@ func _casino() -> void:
 
 func _glide() -> void:
 	await _stand(&"rocket_hideout_b2f", &"from_b1f_north", Vector2i(3, 15), Vector2i.RIGHT)
-	var spin: SpinTileDirector = _boot.call(&"get_spin_director")
+	var spin: ForcedSlideDirector = _boot.call(&"get_spin_director")
 	Input.action_press(&"move_right")
 	await _frames(3)
 	Input.action_release(&"move_right")

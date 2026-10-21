@@ -454,6 +454,23 @@ func _disconnect_player() -> void:
 		_player.bumped.disconnect(_on_player_bumped)
 
 
+## Suit le passage de [param cell] comme un pas libre fini vers [param direction] (warp
+## STEP_ON), sinon comme une poussée vers [param direction] (warp PUSH de bord). Sert à la fin
+## d'une glissade forcée (courant, passe systèmes 2 T15) : ses pas scriptés ne déclenchent aucun
+## passage ([method _on_player_moved]). Le joueur doit être libre. Vrai si un passage est suivi.
+func follow_warp_at(cell: Vector2i, direction: Vector2i) -> bool:
+	if _busy or not is_instance_valid(_current_map) or _player == null:
+		return false
+	var warps := _current_map.get_warps()
+	var warp := warps.find_on_step(cell, direction)
+	if warp == null:
+		warp = warps.find_on_push(cell, direction)
+	if warp == null:
+		return false
+	_follow(warp)
+	return true
+
+
 func _on_player_moved(cell: Vector2i) -> void:
 	if _busy or not is_instance_valid(_current_map):
 		return

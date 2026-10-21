@@ -52,7 +52,7 @@ const TIMEOUT := 12.0
 
 var _boot: Boot
 var _player: Player
-var _spin: SpinTileDirector
+var _spin: ForcedSlideDirector
 var _fs: MemoryFs
 var _saved_router: Array = []
 ## Cases des `moved` du joueur, et l'image simulée de chacun.
@@ -95,7 +95,7 @@ func test_the_slide_plays_step_by_step_at_running_speed() -> void:
 	assert_eq(_spin.get_field(), _boot.get_map().get_node(^"SpinTiles"), "SpinTiles trouvé")
 	await _walk_onto_the_arrow()
 	assert_true(_spin.is_running(), "la glisse part dans le pas qui pose sur la dalle")
-	assert_true(_player.is_blocked_by(SpinTileDirector.LOCK_REASON), "verrou « spin »")
+	assert_true(_player.is_blocked_by(ForcedSlideDirector.LOCK_REASON), "verrou « spin »")
 	assert_false(_boot.is_stable(), "partie pas stable pendant la glisse")
 	assert_false(_boot.get_hud().are_controls_visible(), "contrôles cachés")
 	assert_true(_player.is_running(), "pas de course")
