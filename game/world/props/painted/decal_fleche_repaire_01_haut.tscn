@@ -1,0 +1,14 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_wybol"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/decal_fleche_repaire_01_haut.png" id="2_s4nrr"]
+
+[node name="DecalFlecheRepaire01Haut" type="Node2D" unique_id=1575717740]
+script = ExtResource("1_wybol")
+footprint = Array[Vector2i]([])
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=240947586]
+unique_name_in_owner = true
+texture = ExtResource("2_s4nrr")
+centered = false
+offset = Vector2(-48, -96)

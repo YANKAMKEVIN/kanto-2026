@@ -14,14 +14,14 @@ extends SceneTree
 ## - Le tour (sans Coupe) mène à Erika en une trentaine de pas ; le **second arbuste** (8, 10)
 ##   ouvre un raccourci facultatif (contrat du J16 : [FlagGate] `unless cut_celadon_gym_inner_bush`
 ##   dont les cases sont occupées tant qu'il est debout ; case praticable dans `Ground`).
-## - **Art provisoire** : enveloppe dessinée d'après la grille (`tools/art/placeholders_celadopole.py`,
-##   bassins, sol, murs, verrière) ; haies et massifs = objets peints existants (Lavanville).
+## - **Art** : coque peinte de la série 22 bis (`int_celadon_gym_coque`, serre : bassins, sol, murs,
+##   verrière) ; haies et massifs = objets peints existants (Lavanville).
 ## - Lumière `greenhouse` (nouveau profil : vert filtré par la verrière, sans ombre portée).
 ## - Passages : sortie (7..9, 14) PUSH ↓ → `celadon_city` / `from_gym_w|e`.
 
 const PLAN_PATH: String = "res://tools/plans/celadopole_arene.txt"
 const OUT_PATH: String = "res://game/world/maps/celadon_gym.tscn"
-const SHELL_PATH: String = "res://assets/world/interiors/placeholder/ph_celadon_gym.png"
+const SHELL_PATH: String = "res://assets/world/interiors/int_celadon_gym_coque.png"
 const PROPS_DIR: String = "res://game/world/props/painted/"
 const RULES_SCRIPT: String = "res://game/world/props/painted_prop_rules.gd"
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")

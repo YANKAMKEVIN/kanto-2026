@@ -14,21 +14,21 @@ cible reste celle du cahier d'art : 2D HD peinte, « ni pixel art ».
 
 | Famille | Fait (peint) | Provisoire | Lot proposé |
 |---|---|---|---|
-| Façades de bâtiments | 33 | **10** (Céladopole, J20) | 1 |
-| Intérieurs (enveloppes de carte) | toutes les cartes jusqu'au J19 | **25** (Céladopole et repaire, J20) | 1 |
+| Façades de bâtiments | 44 (dont les 10 de Céladopole et la fontaine, série 22 bis) | 0 | — |
+| Intérieurs (enveloppes de carte) | toutes les cartes jusqu'au J19 et 17 de Céladopole (série 22 bis) | **8** (Casino, repaire : modules peints installés, constructeurs à adapter) | 1 |
 | Dos de combat (ton Pokémon) | **0** | **88 / 88** en pixel art 64 px | 2 |
 | Faces de combat (adversaire) | artwork officiel pour toutes les espèces | 3 en pixel (Saquedeneu, Rhinocorne, Kangourex) | 2 |
 | Fonds de combat (CB.3) | 35 lieux | **6** lieux | 3 |
-| Icônes du Sac | 16 | **29** objets sans icône | 1 (J20) et 4 |
+| Icônes du Sac | 45 (série 22 bis : 29 ajoutées) | 0 | — |
 | Objets de décor | tous sauf 2 | 2 (Bourg Palette) | 4 |
 | Personnages (PNJ, héros, rival…) | ≈ 100 apparences | aucun visible (fichiers pixel = repli) | — |
-| Compagnons d'exploration | 26 / 26 espèces de `companions.json` | Évoli (planche à faire, pas encore compagnon) | 1 |
+| Compagnons d'exploration | 27 / 27 espèces de `companions.json` (Évoli : série 22 bis) | aucun | — |
 
 Lots proposés à Kevin (ordre à confirmer) : **1** série 22 bis (Céladopole et repaire, fiche
 `fiches-assets/serie-22bis-celadopole.md`) ; **2** dos de combat ; **3** fonds de combat manquants ;
 **4** reliquats (icônes d'avant le J20, objets de Bourg Palette).
 
-## 1. Céladopole et repaire Rocket (J20) : aplats générés
+## 1. Céladopole et repaire Rocket (J20) : aplats générés — façades, 17 intérieurs et icônes REMPLACÉS par la série 22 bis ; restent le Casino et le repaire
 
 Dessinés par `tools/art/placeholders_celadopole.py` (T16) et `tools/art/placeholders_repaire.py`
 (T20) « aux dimensions finales » : remplacer = changer les images (mêmes identifiants, mêmes
@@ -81,8 +81,12 @@ Depuis la racine d'une copie à jour de `main` :
 ```bash
 # Façades et intérieurs en aplats : peu de couleurs (< ~900 sur une vignette de 256 px) et
 # fichiers des scripts placeholders_*.py ; regarder l'image avant de conclure.
-grep -ohE 'bldg_[a-z0-9_]+' tools/art/placeholders_*.py | sort -u
-ls assets/world/interiors/placeholder/
+# (façades de Céladopole : remplacées ; `placeholders_celadopole.py` ne doit plus être relancé)
+grep -ohE 'bldg_[a-z0-9_]+' tools/art/placeholders_*.py | sort -u | grep -v 'bldg_\(grand_magasin\|residence\|escalier_service\|casino\|coin_lots\|arene_celadopole\|restaurant\|hotel\|maison_chef\|maison_toit\)_01'
+# (les `ph_celadon_*` des 17 cartes remplacées restent sur disque comme références de taille de
+# `serie22bis.py` : ne plus les compter ; seuls comptent `ph_celadon_game_corner`, `ph_game_corner_wall`,
+# `ph_rocket_hideout_*`, `ph_hideout_office_door` tant que leurs constructeurs ne sont pas adaptés)
+ls assets/world/interiors/placeholder/ | grep -v 'ph_celadon_\(dept\|mansion\|restaurant\|chief\|hotel\|gym\)'
 # Dos de combat : largeur des images (64 = pixel art)
 for f in assets/sprites/pokemon/placeholder/*_back.png; do sips -g pixelWidth "$f" | tail -1; done | sort | uniq -c
 # Fonds de combat : clés "places" de data/battle/decors.json contre les cartes à combats

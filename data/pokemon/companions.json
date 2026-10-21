@@ -26,7 +26,8 @@
 		"nidorina": { "sprite": "pokemon/nidorina" },
 		"raticate": { "sprite": "pokemon/raticate" },
 		"fearow": { "sprite": "pokemon/fearow" },
-		"meowth": { "sprite": "pokemon/meowth" }
+		"meowth": { "sprite": "pokemon/meowth" },
+		"eevee": { "sprite": "pokemon/eevee" }
 	},
 	"contexts": {
 		"viridian_forest": "forest",

@@ -73,8 +73,25 @@ const TRAVERSABLE: Array[StringName] = [&"relief_escalier_01", &"ground_hautes_h
 	&"relief_paroi_grotte_sombre_05", &"relief_paroi_grotte_sombre_06",
 	&"relief_paroi_fendue_01", &"relief_mur_tour_01", &"relief_mur_tour_02",
 	&"relief_mur_tour_03", &"relief_mur_tour_04", &"relief_mur_tour_05",
-	&"relief_escalier_tour_01"]
+	&"relief_escalier_tour_01",
+	# Série 22 bis : modules du repaire et du Casino (cases déjà solides ou warps de la carte).
+	&"relief_mur_repaire_01", &"relief_mur_repaire_02", &"relief_mur_repaire_03",
+	&"relief_mur_repaire_04", &"relief_mur_repaire_05", &"relief_mur_casino_01",
+	&"relief_mur_casino_02", &"relief_mur_casino_03", &"relief_mur_casino_04",
+	&"relief_mur_casino_05", &"int_escalier_repaire_monte_01", &"int_escalier_repaire_descend_01",
+	&"decal_fleche_repaire_01", &"decal_fleche_repaire_01_haut", &"decal_fleche_repaire_01_bas",
+	&"decal_fleche_repaire_01_gauche", &"decal_arret_repaire_01",
+	&"int_porte_ascenseur_repaire_01", &"hideout_office_door", &"game_corner_wall",
+	&"int_affiche_casino_01"]
 const GROUND_LAYER: Array[StringName] = [
+	# Série 22 bis : modules du repaire et du Casino (murs, escaliers, décalcomanies, portes).
+	&"relief_mur_repaire_01", &"relief_mur_repaire_02", &"relief_mur_repaire_03",
+	&"relief_mur_repaire_04", &"relief_mur_repaire_05", &"relief_mur_casino_01",
+	&"relief_mur_casino_02", &"relief_mur_casino_03", &"relief_mur_casino_04",
+	&"relief_mur_casino_05", &"int_escalier_repaire_monte_01", &"int_escalier_repaire_descend_01",
+	&"decal_fleche_repaire_01", &"decal_fleche_repaire_01_haut", &"decal_fleche_repaire_01_bas",
+	&"decal_fleche_repaire_01_gauche", &"decal_arret_repaire_01",
+	&"int_porte_ascenseur_repaire_01", &"hideout_office_door", &"game_corner_wall",
 	&"prop_flaque_grotte_01", &"relief_mur_tour_01", &"relief_mur_tour_02",
 	&"relief_mur_tour_03", &"relief_mur_tour_04", &"relief_mur_tour_05",
 	&"relief_escalier_tour_01",

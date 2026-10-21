@@ -7748,7 +7748,570 @@
    "taille": [
     192,
     186
-   ]
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_fontaine_01_contact.png",
+    "decalage": [
+     -104,
+     -1
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     20
+    ]
+   }
+  },
+  "relief_mur_repaire_01": {
+   "fichier": "res://assets/world/relief/relief_mur_repaire_01.png",
+   "taille": [
+    192,
+    187
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_repaire_01_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "relief_mur_repaire_02": {
+   "fichier": "res://assets/world/relief/relief_mur_repaire_02.png",
+   "taille": [
+    192,
+    187
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_repaire_02_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "relief_mur_repaire_03": {
+   "fichier": "res://assets/world/relief/relief_mur_repaire_03.png",
+   "taille": [
+    192,
+    38
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_repaire_03_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "relief_mur_repaire_04": {
+   "fichier": "res://assets/world/relief/relief_mur_repaire_04.png",
+   "taille": [
+    34,
+    134
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_repaire_04_contact.png",
+    "decalage": [
+     -25,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     25,
+     11
+    ]
+   }
+  },
+  "relief_mur_repaire_05": {
+   "fichier": "res://assets/world/relief/relief_mur_repaire_05.png",
+   "taille": [
+    34,
+    46
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_repaire_05_contact.png",
+    "decalage": [
+     -25,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     25,
+     11
+    ]
+   }
+  },
+  "relief_mur_casino_01": {
+   "fichier": "res://assets/world/relief/relief_mur_casino_01.png",
+   "taille": [
+    192,
+    189
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_casino_01_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "relief_mur_casino_02": {
+   "fichier": "res://assets/world/relief/relief_mur_casino_02.png",
+   "taille": [
+    192,
+    186
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_casino_02_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "relief_mur_casino_03": {
+   "fichier": "res://assets/world/relief/relief_mur_casino_03.png",
+   "taille": [
+    192,
+    39
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_casino_03_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "relief_mur_casino_04": {
+   "fichier": "res://assets/world/relief/relief_mur_casino_04.png",
+   "taille": [
+    34,
+    167
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_casino_04_contact.png",
+    "decalage": [
+     -25,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     25,
+     11
+    ]
+   }
+  },
+  "relief_mur_casino_05": {
+   "fichier": "res://assets/world/relief/relief_mur_casino_05.png",
+   "taille": [
+    34,
+    51
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_casino_05_contact.png",
+    "decalage": [
+     -25,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     25,
+     11
+    ]
+   }
+  },
+  "int_caisse_repaire_01": {
+   "fichier": "res://assets/world/interiors/int_caisse_repaire_01.png",
+   "taille": [
+    96,
+    95
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_caisse_repaire_01_contact.png",
+    "decalage": [
+     -56,
+     -1
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     20
+    ]
+   }
+  },
+  "int_conduite_repaire_01": {
+   "fichier": "res://assets/world/interiors/int_conduite_repaire_01.png",
+   "taille": [
+    96,
+    186
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_conduite_repaire_01_contact.png",
+    "decalage": [
+     -56,
+     -19
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     29
+    ]
+   }
+  },
+  "int_console_repaire_01": {
+   "fichier": "res://assets/world/interiors/int_console_repaire_01.png",
+   "taille": [
+    96,
+    123
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_console_repaire_01_contact.png",
+    "decalage": [
+     -56,
+     -7
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     23
+    ]
+   }
+  },
+  "int_bureau_giovanni_01": {
+   "fichier": "res://assets/world/interiors/int_bureau_giovanni_01.png",
+   "taille": [
+    384,
+    203
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_bureau_giovanni_01_contact.png",
+    "decalage": [
+     -200,
+     -23
+    ],
+    "echelle": 2,
+    "taille": [
+     200,
+     31
+    ]
+   }
+  },
+  "int_escalier_repaire_monte_01": {
+   "fichier": "res://assets/world/interiors/int_escalier_repaire_monte_01.png",
+   "taille": [
+    96,
+    130
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_escalier_repaire_monte_01_contact.png",
+    "decalage": [
+     -56,
+     -8
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     23
+    ]
+   }
+  },
+  "int_escalier_repaire_descend_01": {
+   "fichier": "res://assets/world/interiors/int_escalier_repaire_descend_01.png",
+   "taille": [
+    96,
+    126
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_escalier_repaire_descend_01_contact.png",
+    "decalage": [
+     -56,
+     -7
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     23
+    ]
+   }
+  },
+  "decal_fleche_repaire_01": {
+   "fichier": "res://assets/world/interiors/decal_fleche_repaire_01.png",
+   "taille": [
+    96,
+    96
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/decal_fleche_repaire_01_contact.png",
+    "decalage": [
+     -56,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     11
+    ]
+   }
+  },
+  "decal_arret_repaire_01": {
+   "fichier": "res://assets/world/interiors/decal_arret_repaire_01.png",
+   "taille": [
+    96,
+    96
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/decal_arret_repaire_01_contact.png",
+    "decalage": [
+     -56,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     11
+    ]
+   }
+  },
+  "int_porte_ascenseur_repaire_01": {
+   "fichier": "res://assets/world/interiors/int_porte_ascenseur_repaire_01.png",
+   "taille": [
+    192,
+    139
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_porte_ascenseur_repaire_01_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "hideout_office_door": {
+   "fichier": "res://assets/world/interiors/hideout_office_door.png",
+   "taille": [
+    192,
+    96
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/hideout_office_door_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "int_machine_casino_01": {
+   "fichier": "res://assets/world/interiors/int_machine_casino_01.png",
+   "taille": [
+    96,
+    144
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_machine_casino_01_contact.png",
+    "decalage": [
+     -56,
+     -11
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     25
+    ]
+   }
+  },
+  "int_machine_casino_02": {
+   "fichier": "res://assets/world/interiors/int_machine_casino_02.png",
+   "taille": [
+    96,
+    142
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_machine_casino_02_contact.png",
+    "decalage": [
+     -56,
+     -10
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     24
+    ]
+   }
+  },
+  "int_tabouret_casino_01": {
+   "fichier": "res://assets/world/interiors/int_tabouret_casino_01.png",
+   "taille": [
+    96,
+    100
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_tabouret_casino_01_contact.png",
+    "decalage": [
+     -56,
+     -2
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     20
+    ]
+   }
+  },
+  "int_comptoir_casino_01": {
+   "fichier": "res://assets/world/interiors/int_comptoir_casino_01.png",
+   "taille": [
+    96,
+    60
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_comptoir_casino_01_contact.png",
+    "decalage": [
+     -56,
+     6
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     16
+    ]
+   }
+  },
+  "int_affiche_casino_01": {
+   "fichier": "res://assets/world/interiors/int_affiche_casino_01.png",
+   "taille": [
+    96,
+    132
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_affiche_casino_01_contact.png",
+    "decalage": [
+     -56,
+     -8
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     23
+    ]
+   }
+  },
+  "game_corner_wall": {
+   "fichier": "res://assets/world/interiors/game_corner_wall.png",
+   "taille": [
+    96,
+    96
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/game_corner_wall_contact.png",
+    "decalage": [
+     -56,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     11
+    ]
+   }
+  },
+  "decal_fleche_repaire_01_bas": {
+   "fichier": "res://assets/world/interiors/decal_fleche_repaire_01_bas.png",
+   "taille": [
+    96,
+    96
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/decal_fleche_repaire_01_bas_contact.png",
+    "decalage": [
+     -56,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     11
+    ]
+   }
+  },
+  "decal_fleche_repaire_01_gauche": {
+   "fichier": "res://assets/world/interiors/decal_fleche_repaire_01_gauche.png",
+   "taille": [
+    96,
+    96
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/decal_fleche_repaire_01_gauche_contact.png",
+    "decalage": [
+     -56,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     11
+    ]
+   }
+  },
+  "decal_fleche_repaire_01_haut": {
+   "fichier": "res://assets/world/interiors/decal_fleche_repaire_01_haut.png",
+   "taille": [
+    96,
+    96
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/decal_fleche_repaire_01_haut_contact.png",
+    "decalage": [
+     -56,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     11
+    ]
+   }
   }
  },
  "personnages": {
@@ -10116,6 +10679,38 @@
     "droite",
     "haut"
    ]
+  },
+  "evoli": {
+   "fichier": "res://assets/sprites/pokemon/painted/evoli_sheet.png",
+   "cellule": [
+    53,
+    58
+   ],
+   "hauteur": 56,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "evoli_idle": {
+   "fichier": "res://assets/sprites/pokemon/painted/evoli_idle_sheet.png",
+   "cellule": [
+    57,
+    58
+   ],
+   "hauteur": 56,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
   }
  },
  "images": {
@@ -10754,6 +11349,146 @@
    "taille": [
     384,
     384
+   ]
+  },
+  "int_celadon_dept_gf_coque": {
+   "fichier": "res://assets/world/interiors/int_celadon_dept_gf_coque.png",
+   "taille": [
+    1920,
+    1248
+   ]
+  },
+  "int_celadon_dept_2f_coque": {
+   "fichier": "res://assets/world/interiors/int_celadon_dept_2f_coque.png",
+   "taille": [
+    1920,
+    1248
+   ]
+  },
+  "int_celadon_dept_3f_coque": {
+   "fichier": "res://assets/world/interiors/int_celadon_dept_3f_coque.png",
+   "taille": [
+    1920,
+    1248
+   ]
+  },
+  "int_celadon_dept_5f_coque": {
+   "fichier": "res://assets/world/interiors/int_celadon_dept_5f_coque.png",
+   "taille": [
+    1920,
+    1248
+   ]
+  },
+  "int_celadon_dept_roof_coque": {
+   "fichier": "res://assets/world/interiors/int_celadon_dept_roof_coque.png",
+   "taille": [
+    1920,
+    1056
+   ]
+  },
+  "int_celadon_dept_elevator_coque": {
+   "fichier": "res://assets/world/interiors/int_celadon_dept_elevator_coque.png",
+   "taille": [
+    576,
+    576
+   ]
+  },
+  "int_celadon_mansion_gf_coque": {
+   "fichier": "res://assets/world/interiors/int_celadon_mansion_gf_coque.png",
+   "taille": [
+    1536,
+    1056
+   ]
+  },
+  "int_celadon_mansion_1f_coque": {
+   "fichier": "res://assets/world/interiors/int_celadon_mansion_1f_coque.png",
+   "taille": [
+    1536,
+    1056
+   ]
+  },
+  "int_celadon_mansion_2f_coque": {
+   "fichier": "res://assets/world/interiors/int_celadon_mansion_2f_coque.png",
+   "taille": [
+    1536,
+    1056
+   ]
+  },
+  "int_celadon_mansion_3f_coque": {
+   "fichier": "res://assets/world/interiors/int_celadon_mansion_3f_coque.png",
+   "taille": [
+    1536,
+    1056
+   ]
+  },
+  "int_celadon_mansion_roof_coque": {
+   "fichier": "res://assets/world/interiors/int_celadon_mansion_roof_coque.png",
+   "taille": [
+    1536,
+    960
+   ]
+  },
+  "int_celadon_mansion_roof_house_coque": {
+   "fichier": "res://assets/world/interiors/int_celadon_mansion_roof_house_coque.png",
+   "taille": [
+    960,
+    768
+   ]
+  },
+  "int_celadon_restaurant_coque": {
+   "fichier": "res://assets/world/interiors/int_celadon_restaurant_coque.png",
+   "taille": [
+    1440,
+    960
+   ]
+  },
+  "int_celadon_chief_house_coque": {
+   "fichier": "res://assets/world/interiors/int_celadon_chief_house_coque.png",
+   "taille": [
+    1440,
+    960
+   ]
+  },
+  "int_celadon_hotel_coque": {
+   "fichier": "res://assets/world/interiors/int_celadon_hotel_coque.png",
+   "taille": [
+    1440,
+    960
+   ]
+  },
+  "int_celadon_gym_coque": {
+   "fichier": "res://assets/world/interiors/int_celadon_gym_coque.png",
+   "taille": [
+    1632,
+    1536
+   ]
+  },
+  "int_rocket_hideout_elevator_coque": {
+   "fichier": "res://assets/world/interiors/int_rocket_hideout_elevator_coque.png",
+   "taille": [
+    576,
+    768
+   ]
+  },
+  "ground_beton_repaire_01": {
+   "fichier": "res://assets/world/ground/ground_beton_repaire_01.png",
+   "taille": [
+    384,
+    384
+   ]
+  },
+  "ground_moquette_casino_01": {
+   "fichier": "res://assets/world/ground/ground_moquette_casino_01.png",
+   "taille": [
+    384,
+    384
+   ]
+  },
+  "int_celadon_dept_4f_coque": {
+   "fichier": "res://assets/world/interiors/int_celadon_dept_4f_coque.png",
+   "taille": [
+    1920,
+    1248
    ]
   }
  }
