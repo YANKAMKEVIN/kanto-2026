@@ -123,7 +123,7 @@ func is_bike_blocked() -> bool:
 	if not is_instance_valid(_map) or not is_instance_valid(_player):
 		return false
 	if _player.get_mount() == Mount.Kind.BIKE:
-		return _map.cycling_road
+		return _map.is_cycling_road_at(_player.get_cell())
 	if _player.get_mount() == Mount.Kind.SURF:
 		return true
 	return not _map.mount_traits().allows_bike()
@@ -139,7 +139,8 @@ func on_map_changed(map: GameMap) -> void:
 	var current := _player.get_mount()
 	if _state != null:
 		current = _state.get(&"player_mount") as Mount.Kind
-	var kind := MountRules.on_map_entered(current, map.mount_traits(), _player.get_cell(),
+	var kind := MountRules.on_map_entered(current, map.mount_traits_at(_player.get_cell()),
+		_player.get_cell(),
 		map.get_grid(), has_bike())
 	_player.set_mount(kind, true)
 	_sync_state(kind)
@@ -156,7 +157,7 @@ func toggle_bike() -> BikeRules.Check:
 		or _player.get_mount() == Mount.Kind.SURF
 	var check: BikeRules.Check
 	if _player.get_mount() == Mount.Kind.BIKE:
-		check = BikeRules.can_dismount(_map.cycling_road, busy)
+		check = BikeRules.can_dismount(_map.is_cycling_road_at(_player.get_cell()), busy)
 	else:
 		check = BikeRules.can_mount(has_bike(), not _map.mount_traits().allows_bike(), busy)
 	if check == BikeRules.Check.OK:
