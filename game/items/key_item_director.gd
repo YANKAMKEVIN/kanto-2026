@@ -7,7 +7,9 @@ extends Node
 ## - **Poké Flûte** : un dormeur voisin ([method GameMap.flute_targets],
 ##   [method PokeFluteRules.field_target]) → sa scène (posée par le J21) ; sinon « {player} joue
 ##   de la Poké Flûte… Quel air entraînant ! » (dossier 24 §15.6.6) et la bulle « ♪ » du
-##   compagnon s'il est sorti.
+##   compagnon s'il est sorti ;
+## - **Cannes** (S2C-bis) : [method FishingDirector.use_rod] avec la canne choisie (sans eau
+##   pêchable devant : « On ne peut pas pêcher ici. »).
 ## Rien n'est consommé : un objet clé reste dans le Sac.
 
 ## La Flûte a joué hors combat : [param cutscene_id] = scène du dormeur réveillé, &"" si elle a
@@ -24,6 +26,7 @@ var _runner: DialogueRunner
 var _cutscenes: CutsceneDirector
 var _companion: CompanionController
 var _player: Player
+var _fishing: FishingDirector
 
 
 func _init() -> void:
@@ -41,6 +44,11 @@ func setup(state: Node, items: ItemLibrary, mount: MountDirector, runner: Dialog
 	_player = player
 
 
+## Pêche (S2C-bis) : les cannes lui sont aiguillées (null : une canne ne fait rien).
+func set_fishing(fishing: FishingDirector) -> void:
+	_fishing = fishing
+
+
 ## Utilise l'objet clé [param item_id] (menu déjà fermé). Faux si l'objet n'a pas d'usage connu
 ## ou n'est pas dans le Sac.
 func use(item_id: StringName) -> bool:
@@ -48,6 +56,8 @@ func use(item_id: StringName) -> bool:
 	if item == null or not item.has_key_use() or _state == null \
 			or not (_state.get(&"bag") as Bag).has(item_id):
 		return false
+	if FishingRules.RODS.has(item.key_use):
+		return _fishing != null and _fishing.use_rod(item.key_use)
 	match item.key_use:
 		ItemData.KEY_USE_BICYCLE:
 			_mount.toggle_bike()
