@@ -188,6 +188,27 @@ Aucune branche des J18, J19, J20 ni `j21-t5-donnees` n'est fusionnée.
   départs (§2.15) ; constantes de `test_poke_flute_rules.gd` encore nommées `snorlax_route_11_*`
   (données de test de la logique pure, à renommer `route_12` avec T19).
 
+### 0.6 T9b, 2026-10-21 : `origin/systemes-2` (main J20 + passe systèmes 2) et `j21-t5-donnees` fusionnés
+
+Session de nuit (Kevin : « je valide d'avance les textes recommandés » ; copie
+`~/dev/kanto-2026-wt-j21`, branche locale `jalon-21-nuit` poussée sur `origin/jalon-21`, car
+`jalon-21` reste extraite dans l'ancienne copie `.claude/worktrees/integ-j21`, propre et non touchée).
+
+- **Fusions** : `origin/systemes-2` (`main` = J20 terminé, série 22 bis, passe systèmes 2 complète),
+  puis `j21-t5-donnees`. Conflits : catalogue et manifeste d'art (entrées des deux côtés gardées),
+  tests d'inventaire, état du projet (les deux côtés).
+- **Doublons retirés** : `poke_flute` (celle de `items_systemes2.json`, avec `key_use`, fait foi ;
+  `items_j21.json` ne garde que `tm39`) ; `constrict` (celle du J20, `moves/celadon.json`, fait
+  foi : description « Serre la cible avec des lianes… » au lieu de « tentacules » [D]).
+- **Déjà livré par la passe systèmes 2 (à NE PAS recoder)** : T17 entier (`key_use`, Sac,
+  `KeyItemDirector`, `GameMap.flute_targets`, `InteractPoint.flute_cutscene`, Flûte en combat
+  `Kind.KEY_ITEM`, textes « Personne ne dort »), `Battle.refuses_balls()` (mode spectre du J19),
+  `wild_battle` avec `catch`, `static`, `actor`, `intro`. Variantes de DIALOGUE `if_items` (J20).
+- **Reste au J21** (T10, T11, T19) : variantes de SCÈNE `if_items`, `wild_battle` `flee` /
+  `clear` / `reveal` / `uncatchable`, `give` + `set`, `animate.skip_reduced`, révélation
+  (`dissolve_foe`), étape `flute`, acteurs de décor (`PropActor`).
+- `back_to_tower` (J20) existe : son `unless` est posé au T14.
+
 ## 1. Découpage
 
 ### 1.1 Sous-jalons et validations (dossier §17, L-16)
