@@ -10,6 +10,9 @@ var active: Battler = null
 var is_player: bool = false
 ## IA du camp ; null pour le joueur (ses choix viennent de la présentation).
 var ai: BattleAI = null
+## Murs levés sur le camp (Protection, Mur Lumière ; passe systèmes 2) : mur → tours restants.
+## Ils restent quand le Pokémon en jeu change.
+var screens: Dictionary[StringName, int] = {}
 
 
 func _init(side_party: Party, player_side: bool, side_trainer: String = "",
@@ -25,6 +28,22 @@ func send_out(pokemon: Pokemon, data: PokemonData) -> void:
 	var species := data.get_species(pokemon.species_id)
 	var types: Array[StringName] = species.types if species != null else []
 	active = Battler.new(pokemon, types)
+
+
+## Tours restants du mur [param screen] (0 : pas levé).
+func screen_turns(screen: StringName) -> int:
+	return int(screens.get(screen, 0))
+
+
+## Vrai si un mur du camp réduit les dégâts de [param move] (Protection : physiques, Mur
+## Lumière : spéciaux).
+func is_screened_from(move: MoveData) -> bool:
+	match move.category:
+		MoveData.Category.PHYSICAL:
+			return screen_turns(&"reflect") > 0
+		MoveData.Category.SPECIAL:
+			return screen_turns(&"light_screen") > 0
+	return false
 
 
 ## Vrai s'il reste au camp un Pokémon non K.O.

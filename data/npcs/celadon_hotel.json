@@ -1,0 +1,28 @@
+{
+	"receptionist": {
+		"cell": [
+			7,
+			3
+		],
+		"facing": "down",
+		"sprite": "hostess"
+	},
+	"guest_1": {
+		"cell": [
+			11,
+			6
+		],
+		"facing": "left",
+		"sprite": "gambler",
+		"dialogue": "celadon_hotel_guest_1"
+	},
+	"guest_2": {
+		"cell": [
+			5,
+			6
+		],
+		"facing": "up",
+		"sprite": "traveler",
+		"dialogue": "celadon_hotel_guest_2"
+	}
+}

@@ -1,11 +1,6 @@
 {
-	"_doc": "Jalon 24, T4 (docs/tech/jalon-24.md T4 ; dossier 27 §7.8, §10.3, §14.3) : objets dont le moteur ne sait pas encore lire l'usage ; ce dossier n'est lu par aucune bibliothèque (même mécanisme que data/j20_pending/). « revive » est la reprise À L'IDENTIQUE de jalon-20:data/j20_pending/items_t11.json (le T11 du J20 ajoute la clé « revive » à ItemLibrary) : ne pas le recréer, le prendre du J20. « max_repel » attend un système de Repousse (reporté depuis le J12, B-4) ; « max_elixir » attend un soin de PP. Clés proposées, non lues : « repel_steps » (pas sans rencontre, RB 250) et « restore_pp » (« all » : tous les PP de toutes les capacités). Prix RB ; descriptions à relire par Kevin.",
+	"_doc": "Jalon 24, T4 (docs/tech/jalon-24.md T4 ; dossier 27 §7.8, §10.3, §14.3) : objets dont le moteur ne sait pas encore lire l'usage ; ce dossier n'est lu par aucune bibliothèque (même mécanisme que data/j20_pending/). « revive » (Rappel) est lu depuis le T11 du J20 (data/items/items_j20.json) : retiré d'ici à la fusion de systemes-2 (2026-10-21). « max_repel » attend un système de Repousse (reporté depuis le J12, B-4) ; « max_elixir » attend un soin de PP. Clés proposées, non lues : « repel_steps » (pas sans rencontre, RB 250) et « restore_pp » (« all » : tous les PP de toutes les capacités). Prix RB ; descriptions à relire par Kevin.",
 	"items": {
-		"revive": {
-			"name": "Rappel", "plural": "Rappels", "feminine": false,
-			"category": "heal", "revive": 0.5, "price": 1500,
-			"description": "Ranime un Pokémon K.O. et lui rend la moitié de ses PV."
-		},
 		"max_repel": {
 			"name": "Max Repousse", "plural": "Max Repousses", "feminine": false,
 			"category": "field", "repel_steps": 250, "price": 700,

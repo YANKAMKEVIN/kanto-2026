@@ -1,0 +1,31 @@
+DÉCOR DE COMBAT — TOUR POKÉMON, LAVANVILLE (Kanto 2026). Image de PRODUCTION : le fond peint d'un écran de combat Pokémon sur smartphone en paysage, à l'intérieur d'une tour funéraire où l'on vient se souvenir des Pokémon disparus. AUCUN Pokémon, AUCUN personnage, AUCUNE interface, AUCUN texte.
+
+Trois images sont jointes.
+IMAGE 1 : un écran de combat de référence. Reprends sa VUE (caméra à hauteur d'yeux, légèrement plongeante, grand sol dégagé au centre), sa profondeur et sa qualité de peinture. Ne reprends PAS : les Pokémon, les cartes, les boutons, la rivière, le pont, le ciel.
+IMAGE 2 : une planche d'intention de décors de combat ; prends la dernière case (intérieur de pierre éclairé, sol de poussière) comme guide de la facture d'une salle de pierre. Ne reprends PAS sa teinte orange ni ses rochers.
+IMAGE 3 : un extrait de la vue de dessus de la tour (validée) : dalles de pierre gris violacé, stèles basses arrondies, fleurs pâles et offrandes à leur pied, bougies dans des niches. C'est la MATIÈRE et la PALETTE à reprendre, vues ici à hauteur d'yeux.
+
+FORMAT : paysage très large, rapport 2,17 : 1 (comme 2340 × 1080), la plus grande résolution possible, OPAQUE, cadrage plein, sans bord.
+
+LIEU : une grande salle d'un étage de la tour. Murs de blocs de pierre taillée gris violacé, plafond bas qu'on devine à peine. Contre le mur du fond, une RANGÉE DE STÈLES BASSES (pierres tombales arrondies, petites, à hauteur de genou, sans aucune inscription), avec à leur pied des fleurs fanées et des fleurs fraîches pâles (blanc, lilas, rose pâle) et quelques petites offrandes (un bol, un ruban). Une BOUGIE allumée sur deux ou trois stèles importantes et dans deux NICHES du mur du fond : petites flammes chaudes et calmes, halo doux et limité. Une BRUME LÉGÈRE, lilas pâle, qui glisse au ras du sol au fond et sur les côtés, transparente, sans jamais cacher le sol du centre. Quelques particules de poussière dans l'air, très discrètes.
+
+AMBIANCE : CALME ET SOLENNELLE, recueillie, triste et douce. AUCUNE horreur : ni crâne, ni os, ni toile d'araignée, ni sang, ni ombre menaçante, ni silhouette.
+
+COMPOSITION (positions en fractions de la largeur et de la hauteur de l'image, depuis le coin haut gauche) — à respecter précisément :
+- Fond (de 0 à 36 % de la hauteur) : le mur du fond et la rangée de stèles à son pied (base des stèles vers 34 à 38 % de la hauteur), une niche à bougie à x 24 % et une à x 76 %.
+- De 40 % de la hauteur jusqu'en bas : un GRAND SOL DÉGAGÉ et PLAT de dalles de pierre gris violacé, aux joints nets, où deux créatures pourront se faire face.
+- Point A (x 67 %, y 50 %) : sol plat, clair et lisible, un peu plus éclairé que le reste. Rien de haut dans un rayon de 12 % de la largeur autour.
+- Point B (x 31 %, y 97 %) : sol plat de dalles, une grande créature vue de dos y sera au premier plan. Rien de haut autour.
+- ZONE CALME en HAUT À GAUCHE (de 0 à 50 % de la largeur, de 0 à 45 % de la hauteur) : peu de détails et peu de contraste, valeurs simples (mur lisse gris violacé, lisible) ; la niche de x 24 % y reste douce.
+- ZONE CALME en BAS À DROITE (de 50 à 100 % de la largeur, de 55 à 100 % de la hauteur) : dalles simples, presque sans objet, valeurs moyennes, sans contraste fort.
+- Les deux coins du bas restent du SOL nu : ni stèle, ni bougie, ni fleur en gros plan.
+- Les 9 % de gauche et de droite de l'image ne contiennent rien d'important (ils seront rognés sur certains écrans).
+
+SOL : dalles de pierre gris violacé de tailles variées, usées, quelques pétales tombés près des stèles, jamais uniforme ; rien dans la zone centrale.
+
+PERSPECTIVE : à hauteur d'yeux, un peu plongeante ; le sol recule nettement vers le fond. Netteté partout (aucun flou de profondeur, pas de vignettage).
+
+RENDU (ADN visuel Kanto 2026) : illustration 2D peinte numériquement, RPG Pokémon moderne « HD-2D peint », formes simples, lisibles et arrondies, grandes masses douces (jamais en petits points ni en pixels), aucun trait noir (contours fins et doux plus sombres que la couleur), couleurs riches sans être fluo.
+LUMIÈRE : douce et FROIDE (gris violacé, lilas, bleu pâle) sur toute la salle, le centre du sol nettement lisible ; seules les bougies donnent de petits points chauds, limités à leur voisinage. Ombres violet froid, jamais noires. Jamais sombre au point de perdre le sol.
+
+INTERDITS : Pokémon, personnage, silhouette, fantôme, visage, crâne, os, texte (aucune inscription sur les stèles), chiffres, logo, signature, filigrane, cadre, interface, ciel, fenêtre ouverte sur l'extérieur, végétation verte, eau, noir pur, pixel art, flou, vignettage.

@@ -1,0 +1,58 @@
+{
+	"gastly": {
+		"dex": 92, "name": "Fantominus", "types": ["ghost", "poison"],
+		"base_stats": { "hp": 30, "atk": 35, "def": 30, "spa": 100, "spd": 35, "spe": 80 },
+		"male_ratio": 0.5, "growth_rate": "medium_slow", "base_exp": 62, "catch_rate": 190,
+		"learnset": [
+			[1, "lick"], [1, "confuse_ray"], [1, "night_shade"], [27, "hypnosis"],
+			[35, "dream_eater"]
+		],
+		"evolutions": [{ "into": "haunter", "method": "level", "level": 25 }]
+	},
+	"haunter": {
+		"dex": 93, "name": "Spectrum", "types": ["ghost", "poison"],
+		"base_stats": { "hp": 45, "atk": 50, "def": 45, "spa": 115, "spd": 55, "spe": 95 },
+		"male_ratio": 0.5, "growth_rate": "medium_slow", "base_exp": 142, "catch_rate": 90,
+		"learnset": [
+			[1, "lick"], [1, "confuse_ray"], [1, "night_shade"], [29, "hypnosis"],
+			[38, "dream_eater"]
+		]
+	},
+	"exeggcute": {
+		"dex": 102, "name": "Noeunoeuf", "types": ["grass", "psychic"],
+		"base_stats": { "hp": 60, "atk": 40, "def": 80, "spa": 60, "spd": 45, "spe": 40 },
+		"male_ratio": 0.5, "growth_rate": "slow", "base_exp": 65, "catch_rate": 90,
+		"learnset": [
+			[1, "barrage"], [1, "hypnosis"], [25, "reflect"], [28, "leech_seed"],
+			[32, "stun_spore"], [37, "poison_powder"], [42, "solar_beam"], [48, "sleep_powder"]
+		]
+	},
+	"cubone": {
+		"dex": 104, "name": "Osselait", "types": ["ground"],
+		"base_stats": { "hp": 50, "atk": 50, "def": 95, "spa": 40, "spd": 50, "spe": 35 },
+		"male_ratio": 0.5, "growth_rate": "medium_fast", "base_exp": 64, "catch_rate": 190,
+		"learnset": [
+			[1, "bone_club"], [1, "growl"], [25, "leer"], [31, "focus_energy"], [38, "thrash"],
+			[43, "bonemerang"], [46, "rage"]
+		],
+		"evolutions": [{ "into": "marowak", "method": "level", "level": 28 }]
+	},
+	"marowak": {
+		"dex": 105, "name": "Ossatueur", "types": ["ground"],
+		"base_stats": { "hp": 60, "atk": 80, "def": 110, "spa": 50, "spd": 80, "spe": 45 },
+		"male_ratio": 0.5, "growth_rate": "medium_fast", "base_exp": 149, "catch_rate": 75,
+		"learnset": [
+			[1, "bone_club"], [1, "growl"], [1, "leer"], [1, "focus_energy"], [25, "leer"],
+			[33, "focus_energy"], [41, "thrash"], [48, "bonemerang"], [55, "rage"]
+		]
+	},
+	"gyarados": {
+		"dex": 130, "name": "Léviator", "types": ["water", "flying"],
+		"base_stats": { "hp": 95, "atk": 125, "def": 79, "spa": 60, "spd": 100, "spe": 81 },
+		"male_ratio": 0.5, "growth_rate": "slow", "base_exp": 189, "catch_rate": 45,
+		"learnset": [
+			[1, "bite"], [1, "dragon_rage"], [1, "leer"], [1, "hydro_pump"], [20, "bite"],
+			[25, "dragon_rage"], [32, "leer"], [41, "hydro_pump"], [52, "hyper_beam"]
+		]
+	}
+}

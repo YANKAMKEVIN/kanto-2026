@@ -69,6 +69,9 @@ var hop_style: StringName = &""
 var shy_action: StringName = &""
 ## Rayon de déclenchement de [member shy_action], en cases (distance de Manhattan).
 var shy_radius: int = SHY_RADIUS_DEFAULT
+## Mode de déplacement (passe systèmes 2, S2C, §2.5.5) : [constant GridWorld.MoveMode.SURF] pour un
+## Nageur (données « move_mode »: « surf »), qui n'avance que sur l'eau surfable ; à pied sinon.
+var move_mode: GridWorld.MoveMode = GridWorld.MoveMode.WALK
 ## Routine de marche (jalon 5, dossier 07 §5 : le Voyageur) : liste de cases **voisines**
 ## parcourues en boucle (aller-retour = inclure le retour), pause à chaque case. Vide =
 ## PNJ immobile. Le PNJ ne quitte jamais ces cases ; à définir hors des hautes herbes et

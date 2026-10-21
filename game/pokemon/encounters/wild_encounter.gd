@@ -10,6 +10,14 @@ var species: StringName = &""
 var level: int = 1
 ## Identifiant de la table qui a produit ce tirage (traçabilité, tests).
 var table_id: StringName = &""
+## Combat SPECTRE (jalon 19, dossier 22 §6) : décidé au moment du tirage par
+## [method GhostRule.is_ghost] (clé [member EncounterTable.ghost_unless_item] et Sac du moment),
+## jamais par la table seule. Faux par défaut. L'espèce réelle reste dans [member species] :
+## elle n'est jamais montrée (masque [GhostDisguise]).
+var ghost: bool = false
+## Entrée en scène « légendaire » (passe systèmes 2, T30 : clé « intro » de l'étape de scène
+## « wild_battle ») : plus lente ([constant BattleStage.LEGENDARY_INTRO_SLOWDOWN]). Faux par défaut.
+var legendary_intro: bool = false
 
 
 func _init(encounter_species: StringName = &"", encounter_level: int = 1,

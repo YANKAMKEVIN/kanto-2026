@@ -1,0 +1,15 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_dctdo"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_kubl1"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/int_machine_casino_02.png" id="3_bkb8n"]
+
+[node name="IntMachineCasino02" type="Node2D" unique_id=1782575512]
+script = ExtResource("1_dctdo")
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1496202135]
+unique_name_in_owner = true
+material = ExtResource("2_kubl1")
+texture = ExtResource("3_bkb8n")
+centered = false
+offset = Vector2(-48, -142)

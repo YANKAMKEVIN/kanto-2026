@@ -29,6 +29,7 @@
 		"route_25": {"area": [1215, 100, 120, 30]},
 		"cerulean_cape": {"area": [1335, 40, 85, 60]},
 		"underground_path": {"area": [1005, 402, 60, 28]},
+		"underground_path_7_8": {"area": [985, 432, 90, 22]},
 		"route_6": {"area": [1275, 440, 105, 30]},
 		"route_11": {"area": [1505, 455, 60, 30]},
 		"route_5": {"area": [1145, 212, 30, 125]},

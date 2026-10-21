@@ -58,22 +58,30 @@ func challenge(npc: Npc) -> bool:
 	return _play(npc, TrainerEncounter.TALKED_TO)
 
 
-func _on_player_moved(cell: Vector2i) -> void:
+## J20 (T19, `jalon-20.md` §2.4.4) : même règle qu'après un pas libre, pour une case où le joueur
+## est arrivé sans pas libre (fin d'une glisse sur les dalles tournantes) : le premier Dresseur
+## non battu qui voit [param cell] lance sa séquence. Vrai si une séquence est partie ; rien si
+## le joueur est bloqué ou si une scène tourne.
+func check_at(cell: Vector2i) -> bool:
 	if not is_instance_valid(_map) or not is_instance_valid(_player) \
 			or not _player.is_input_enabled():
-		return
+		return false
 	if _cutscenes == null or _cutscenes.is_running() or not _player_can_fight():
-		return
+		return false
 	var grid := _map.get_grid()
 	for npc: Npc in _map.get_npcs():
 		if not _is_waiting_trainer(npc):
 			continue
 		var spec := npc.get_spec()
 		var distance := TrainerRules.sight_distance(grid, npc.get_cell(), spec.facing,
-			spec.sight, cell)
+			spec.sight, cell, spec.move_mode)
 		if distance >= 1:
-			_play(npc, distance)
-			return
+			return _play(npc, distance)
+	return false
+
+
+func _on_player_moved(cell: Vector2i) -> void:
+	check_at(cell)
 
 
 ## Vrai pour un Dresseur encore à battre.

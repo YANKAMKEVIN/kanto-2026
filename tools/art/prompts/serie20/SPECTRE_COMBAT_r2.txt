@@ -1,0 +1,17 @@
+SILHOUETTE DE COMBAT « SPECTRE » (Kanto 2026). Une seule image : l'apparition qu'un joueur voit en face de lui dans un combat, au fond d'une tour funéraire, tant qu'il n'a pas l'objet qui révèle les esprits. Ce n'est PAS une créature identifiable : c'est une présence de brume.
+
+Aucune image jointe.
+
+SUJET : une forme spectrale INDISTINCTE faite de brume violette, qui flotte au-dessus du sol. Une masse de vapeur plus dense au cœur (violet profond, lavande), qui se défait en volutes et en filaments vers les bords, de plus en plus transparente. La masse est À PEU PRÈS AUSSI LARGE QUE HAUTE (rapport proche de 1 : 1,1), irrégulière et asymétrique, comme une fumée lente qui s'enroule sur elle-même ; le bas s'amincit en une traîne de brume qui touche presque le bas de l'image, au centre (c'est là que sera posée l'ombre au sol). Quelques lueurs pâles diffuses à l'intérieur de la brume, sans forme.
+
+CE QU'ELLE N'EST PAS (à respecter absolument) :
+- AUCUN œil, aucune paire de points lumineux, aucune bouche, aucun visage, aucun crâne ;
+- AUCUNE silhouette humaine ni humanoïde : pas de tête ronde posée sur des épaules, pas de capuche, pas de cape, pas de robe, pas de bras, pas de mains, pas de silhouette de moine ou de fantôme en drap ;
+- AUCUNE forme d'animal ou de créature connue : pas d'oreilles, pas de pointes, pas de queue, pas de cornes, pas de dents, pas de sphère nette ;
+- pas de contour noir ni de trait de contour : les bords sont de la brume qui s'efface.
+
+RENDU : peinture numérique douce, de la même famille que les décors peints du jeu (illustration 2D « HD-2D peint », grandes masses douces, aucune texture photographique). Calme, triste et mystérieux, JAMAIS effrayant : pas de mouvement agressif, pas de griffes de fumée, pas de cri. Couleurs : violets et lavandes froids, quelques reflets bleu pâle ; jamais noir pur, jamais vert.
+
+CADRAGE : image CARRÉE 1024 × 1024, la forme entière, centrée horizontalement, qui occupe environ 80 % de la hauteur et 75 % de la largeur ; rien n'est coupé par les bords.
+FOND : PNG avec une vraie transparence (canal alpha), aucun damier dessiné, aucun fond coloré, aucun sol, aucune ombre portée.
+INTERDITS : texte, lettres, chiffres, logo, signature, cadre, sol, décor, personnage, Pokémon, œil, visage, main, capuche, contour noir, pixel art, 3D.

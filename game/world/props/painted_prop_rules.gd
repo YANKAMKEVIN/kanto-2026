@@ -53,6 +53,8 @@ const RULES: Dictionary[StringName, Dictionary] = {
 	&"prop_banc_01": {"width": 2, "depth": 1},
 	&"prop_lampadaire_01": {"width": 1, "depth": 1},
 	&"prop_panneau_01": {"width": 1, "depth": 1},
+	# Tour Pokémon (J19 T8) : panneau du Scope, même emprise que le panneau de bois.
+	&"prop_panneau_scope_01": {"width": 1, "depth": 1},
 	&"prop_rocher_01": {"width": 2, "depth": 1},
 	&"prop_haie_01": {"width": 4, "depth": 1},
 	&"prop_cloture_01": {"width": 4, "depth": 1},
@@ -601,6 +603,29 @@ const RULES: Dictionary[StringName, Dictionary] = {
 	&"prop_fleurs_pales_01": {"width": 1, "depth": 1},
 	&"prop_fleurs_pales_02": {"width": 2, "depth": 1},
 	&"prop_if_taille_01": {"width": 1, "depth": 1},
+	# Céladopole (série 22 bis, intégrée : façades peintes aux identifiants, tailles et emprises des
+	# provisoires du J20 T16) : emprise = toute l'image, porte(s) libre(s) au bas (la carte pose
+	# ses passages). Maison du toit : 5 × 4 sur la terrasse.
+	&"bldg_grand_magasin_01": {"shadow": true, "width": 14, "depth": 9, "fade": true,
+		"open": [Vector2i(-1, 0), Vector2i(0, 0)]},
+	&"bldg_residence_01": {"shadow": true, "width": 12, "depth": 8, "fade": true,
+		"open": [Vector2i(-1, 0), Vector2i(0, 0)]},
+	&"bldg_escalier_service_01": {"shadow": true, "width": 4, "depth": 4, "fade": true,
+		"open": [Vector2i(-1, 0), Vector2i(0, 0)]},
+	&"bldg_casino_01": {"shadow": true, "width": 12, "depth": 7, "fade": true,
+		"open": [Vector2i(-1, 0), Vector2i(0, 0)]},
+	&"bldg_coin_lots_01": {"shadow": true, "width": 8, "depth": 7, "fade": true},
+	&"bldg_arene_celadopole_01": {"shadow": true, "width": 12, "depth": 7, "fade": true,
+		"open": [Vector2i(-1, 0), Vector2i(0, 0)]},
+	&"bldg_restaurant_01": {"shadow": true, "width": 8, "depth": 7, "fade": true,
+		"open": [Vector2i(-1, 0), Vector2i(0, 0)]},
+	&"bldg_hotel_01": {"shadow": true, "width": 10, "depth": 7, "fade": true,
+		"open": [Vector2i(-1, 0), Vector2i(0, 0)]},
+	&"bldg_maison_chef_01": {"shadow": true, "width": 7, "depth": 6, "fade": true,
+		"open": [Vector2i(0, 0)]},
+	&"bldg_maison_toit_01": {"shadow": true, "width": 5, "depth": 4, "fade": true,
+		"open": [Vector2i(0, 0)]},
+	&"prop_fontaine_01": {"width": 2, "depth": 2},
 	# Tour (intérieur, mutualisé avec le J19) : murs sur le modèle de `relief_mur_souterrain_*`,
 	# escalier montant dans le mur (warp `STEP_ON`), tombes, bougeoir, comptoir 4 × 1, banc.
 	&"relief_mur_tour_01": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
@@ -616,6 +641,47 @@ const RULES: Dictionary[StringName, Dictionary] = {
 	&"int_bougeoir_tour_01": {"width": 1, "depth": 1},
 	&"int_comptoir_tour_01": {"width": 4, "depth": 1},
 	&"int_banc_tour_01": {"width": 1, "depth": 1},
+	# Repaire Rocket (série 22 bis, modules sur le modèle de la Tour) : murs, caisses, conduite,
+	# consoles, bureau de Giovanni 4 × 2, escaliers dans le mur (warp `STEP_ON`), flèches et disque
+	# d'arrêt peints au sol (décalcomanies 1 case), porte d'ascenseur (face de mur 2 cases) et
+	# porte du bureau (192 × 96, lue en direct par `build_rocket_hideout.gd`).
+	&"relief_mur_repaire_01": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_mur_repaire_02": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_mur_repaire_03": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_mur_repaire_04": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_CENTRE},
+	&"relief_mur_repaire_05": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_CENTRE},
+	&"int_caisse_repaire_01": {"width": 1, "depth": 1},
+	&"int_conduite_repaire_01": {"width": 1, "depth": 1},
+	&"int_console_repaire_01": {"width": 1, "depth": 1},
+	&"int_bureau_giovanni_01": {"width": 4, "depth": 2},
+	&"int_escalier_repaire_monte_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_CENTRE},
+	&"int_escalier_repaire_descend_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_CENTRE},
+	&"decal_fleche_repaire_01": {"traversable": true, "layer": LAYER_GROUND, "material": false},
+	&"decal_fleche_repaire_01_haut": {"traversable": true, "layer": LAYER_GROUND,
+		"material": false},
+	&"decal_fleche_repaire_01_bas": {"traversable": true, "layer": LAYER_GROUND, "material": false},
+	&"decal_fleche_repaire_01_gauche": {"traversable": true, "layer": LAYER_GROUND,
+		"material": false},
+	&"decal_arret_repaire_01": {"traversable": true, "layer": LAYER_GROUND, "material": false},
+	&"int_porte_ascenseur_repaire_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_EDGE},
+	&"hideout_office_door": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	# Casino de Céladopole (série 22 bis) : murs, machines et tabourets 1 × 1, comptoir à
+	# juxtaposer bout à bout, affiche au mur, pan de mur coulissant (96 × 96, lu en direct par
+	# `build_game_corner.gd`).
+	&"relief_mur_casino_01": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_mur_casino_02": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_mur_casino_03": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_mur_casino_04": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_CENTRE},
+	&"relief_mur_casino_05": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_CENTRE},
+	&"int_machine_casino_01": {"width": 1, "depth": 1},
+	&"int_machine_casino_02": {"width": 1, "depth": 1},
+	&"int_tabouret_casino_01": {"width": 1, "depth": 1},
+	&"int_comptoir_casino_01": {"width": 1, "depth": 1},
+	&"int_affiche_casino_01": {"traversable": true, "align": ALIGN_CENTRE},
+	&"game_corner_wall": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_CENTRE},
 }
 
 

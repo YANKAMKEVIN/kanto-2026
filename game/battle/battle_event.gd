@@ -127,6 +127,40 @@ extends RefCounted
 ## - COINS_SCATTERED : Jackpot réussi du joueur (camp PLAYER, le lanceur), juste après ses
 ##   dégâts ; [member amount] = pièces éparpillées par ce Jackpot (niveau × « per_level »). Le
 ##   Jackpot de l'adversaire n'en émet aucun (il ne rapporte rien au joueur).
+## Jalon 19 (Hurlement, Ultralaser) :
+## - RECHARGING : le lanceur d'un Ultralaser qui a touché se repose (« … doit se reposer ! ») ;
+##   ni MOVE_USED ni PP, son tour est perdu ;
+## - SCARED_AWAY : Hurlement en combat sauvage, la cible [member move_id] s'enfuit ; suit
+##   BATTLE_ENDED (FOE_FLED si c'est le sauvage, FLED si c'est le Pokémon du joueur) ;
+## - FORCED_OUT : Hurlement contre un Dresseur (ou d'un Dresseur), la cible quitte le terrain ;
+##   suit le SENT_OUT du remplaçant tiré au hasard dans son camp.
+## Jalon 19 (mode SPECTRE, dossier 22 §6.2, [GhostDisguise]) :
+## - GHOST_SCARED : le Pokémon du joueur a trop peur pour bouger (capacité remplacée : ni PP, ni
+##   tirage) ;
+## - GHOST_SPOKE : le SPECTRE (camp adverse) ne fait que parler ;
+## - tout événement du camp adverse d'un combat SPECTRE porte [member disguised] : espèce
+##   [constant GhostDisguise.SPECIES], niveau 0, sans genre (garde du Pokédex et du cri).
+## Passe systèmes 2 (`systemes-2.md` §2.11) :
+## - OHKO : une capacité K.O. en un coup a touché (camp de la cible), juste après son DAMAGE (les
+##   PV restants de la cible) ; « C'est un K.O. en un coup ! ».
+## - HEALED : Soin, le lanceur récupère [member amount] PV ([member hp] : après) ;
+## - SCREEN_STARTED / SCREEN_ENDED : le mur [member move_id] (« reflect », « light_screen ») est
+##   levé sur le camp [member side] / y prend fin (fin de tour) ;
+## - STATS_RESET : Buée Noire, tous les niveaux de statistiques reviennent à 0 (camp du lanceur).
+## Jalon 20 (objets du grand magasin de Céladopole, `jalon-20.md` §2.9.3 et §2.9.4) :
+## - BATTLE_ITEM_USED : objet de combat du joueur ([member item_id], [member item_name]) sur son
+##   Pokémon actif : « {player} utilise {item} ! » ; suivent STAT_CHANGED / STAT_UNCHANGED (objet
+##   X) ou FOCUSED / FAILED (Muscle +) ;
+## - ITEM_ESCAPE : Poupée Poké en combat sauvage (camp PLAYER) : la fuite est garantie ; suit
+##   BATTLE_ENDED (FLED) ;
+## - REVIVED : juste après l'ITEM_USED d'un Rappel, le Pokémon [member party_index] de l'équipe
+##   du joueur n'est plus K.O. ([member hp] : ses PV rendus).
+## Passe systèmes 2 (`systemes-2.md` §2.4, Poké Flûte) :
+## - FLUTE_PLAYED : le joueur joue de la Flûte (camp PLAYER) : « {player} joue de la Poké
+##   Flûte. » ;
+## - FLUTE_WOKE : muet, un par Pokémon réveillé (son camp, sa place) ; [member on_field] : il
+##   est en jeu (sa carte perd l'étiquette DOR) ;
+## - ALL_WOKE : « Tous les Pokémon endormis se réveillent ! », puis l'adversaire joue.
 ## Tous les autres événements sur un Pokémon portent dans [member status] son statut au moment
 ## de l'événement (SENT_OUT : la carte de PV l'affiche dès l'entrée ; FAINTED : toujours vide,
 ## le K.O. efface le statut).
@@ -147,6 +181,12 @@ enum Kind {
 	CHARGE_STARTED, CHARGE_RELEASED, CHARGE_BROKEN, DODGED, BALL_BLOCKED,
 	TELEPORTED, NOTHING_HAPPENED,
 	COINS_SCATTERED,
+	RECHARGING, SCARED_AWAY, FORCED_OUT,
+	GHOST_SCARED, GHOST_SPOKE,
+	OHKO,
+	HEALED, SCREEN_STARTED, SCREEN_ENDED, STATS_RESET,
+	ITEM_ESCAPE, REVIVED, BATTLE_ITEM_USED,
+	FLUTE_PLAYED, FLUTE_WOKE, ALL_WOKE,
 }
 enum SideId { PLAYER, FOE }
 
@@ -193,6 +233,11 @@ var item_name: String = ""
 var shake: int = 0
 ## Statut durable concerné ([constant StatusRules.NONE] = aucun) : voir l'en-tête.
 var status: StringName = StatusRules.NONE
+## Masqué par [method GhostDisguise.mask] (combat SPECTRE, jalon 19) : rien ne doit révéler
+## l'espèce réelle (Pokédex, cri, image, nom, niveau).
+var disguised: bool = false
+## FLUTE_WOKE (passe systèmes 2) : le Pokémon réveillé est en jeu (sinon sur le banc).
+var on_field: bool = false
 
 
 func _init(event_kind: Kind = Kind.BATTLE_STARTED, event_side: SideId = SideId.PLAYER) -> void:
@@ -212,4 +257,5 @@ func to_dict() -> Dictionary:
 		"exp_points_to": exp_points_to, "exp_points_need": exp_points_need,
 		"stat_gains": stat_gains, "healed": healed, "healed_hp": healed_hp,
 		"item": item_id, "item_name": item_name, "shake": shake, "status": status,
+		"disguised": disguised,
 	}

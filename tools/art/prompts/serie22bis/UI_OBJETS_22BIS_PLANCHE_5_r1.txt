@@ -1,0 +1,9 @@
+UI_OBJETS_22BIS_PLANCHE_5 — NOUVELLE image : une planche d'icônes d'objets peintes pour le Sac, pas une scène.
+Images jointes : potion, escape_rope = icônes existantes du jeu, ANCRES de style dans le style EXACT des icônes jointes (même rendu peint, même contour fin et coloré, même angle de trois quarts, même lumière, même finesse, même taille d'environ 240 px).
+
+PLANCHE de 4 icônes d'objets peintes pour le Sac, dans une image 1536 × 1024 divisée en quatre colonnes invisibles de 384 px : une icône CENTRÉE dans chacune des 4 PREMIÈRES colonnes (de gauche à droite), de 260 px de large au plus et 260 px de haut au plus, avec au moins 60 px de marge vide de chaque côté.
+1 (colonne 1) : l'EAU FRAÎCHE : une bouteille d'eau en plastique transparent bleuté, bouchon blanc, étiquette bleu clair UNIE à vague blanche (aucun texte), quelques gouttes de condensation.
+2 (colonne 2) : le SODA COOL : une canette cylindrique ROUGE vif à bande médiane blanche ondulée, languette d'aluminium, aucun texte.
+3 (colonne 3) : la LIMONADE : une bouteille de verre jaune clair trouble, bouchon à capsule, une rondelle de CITRON coincée sur le goulot et une paille rayée blanche et jaune ; aucun texte.
+4 (colonne 4) : la CLÉ ASCENSEUR : une CLÉ de métal argenté à large tête RECTANGULAIRE bordée de laiton et à panneton simple, avec un petit anneau de laiton ; aucun texte, aucun emblème, aucune lettre R.
+AUCUN halo, AUCUNE lueur, AUCUNE étincelle, AUCUN dégradé autour : chaque objet est net, avec seulement son contour fin, sur un fond entièrement transparent (canal alpha, aucune ombre). Interdit : texte, lettres, chiffres, logo, la lettre R, personnage.

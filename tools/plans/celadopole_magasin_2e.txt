@@ -1,0 +1,48 @@
+# Grand magasin de Céladopole, 2e étage (celadon_dept_2f) — grille fonctionnelle (jalon 20, dossier 23 §9 ;
+# préparée le 2026-10-14). Soins et CT : deux vendeurs.
+# 20 × 13 cases (enveloppe commune des 5 étages) ; sol y 3..10, x 1..18. Vérifiée par
+# tools/art/plan_check_celadopole.py.
+#
+# Légende (intérieurs du grand magasin) :
+#   K mur (bloqué : fond sur 3 rangées, parois, bas sur 2 rangées ; sortie sur l'avant-dernière
+#     rangée)   . sol (praticable)
+#   S escalier MONTANT (praticable, STEP_ON ↑)   Z escalier DESCENDANT (idem)   V porte de
+#     l'ASCENSEUR (idem)   X sortie (praticable, PUSH ↓)
+#   B comptoir (bloqué : on parle au vendeur par-dessus, depuis la case devant)   e étagère ou
+#     vitrine (bloquée)   m borne de jeu ou distributeur (bloqué)   t table   c canapé   n banc
+#   p plante (bloquée)   P tableau des étages (bloqué, examiné depuis la case devant)
+# Convention commune aux 5 étages : ESCALIERS À L'OUEST (S en x 2..3, Z en x 4..5, rangée 2),
+# ASCENSEUR À L'EST (V en x 16..17, rangée 2) ; mêmes cases à chaque étage. Arrivées : from_up
+# (descendu d'en haut, devant S), from_down (monté d'en bas, devant Z), from_elevator.
+# Tous les PNJ des intérieurs sont à des cases NON obligatoires (le contrôle le vérifie).
+
+PRATICABLES .XSZV
+
+GRILLE 20 13
+00 KKKKKKKKKKKKKKKKKKKK
+01 KKKKKKKKKKKKKKKKKKKK
+02 KKSSZZKKKKKKKKKKVVKK
+03 K..................K
+04 K..................K
+05 Ke....BBB..BBB....eK
+06 Ke................eK
+07 Ke................eK
+08 Ke................eK
+09 K..................K
+10 Kp................pK
+11 KKKKKKKKKKKKKKKKKKKK
+12 KKKKKKKKKKKKKKKKKKKK
+FIN
+
+POSITIONS
+escalier_haut        warp           2..3,2        libre   to=celadon_dept_3f spawn=from_down  # STEP_ON ↑ → celadon_dept_3f
+escalier_bas         warp           4..5,2        libre   to=celadon_dept_gf spawn=from_up  # STEP_ON ↑ → celadon_dept_gf
+ascenseur            warp           16..17,2      libre   to=celadon_dept_elevator spawn=entrance floor=2f  # STEP_ON ↑ → ascenseur, qui revient ici (floor=2f)
+from_up              spawn          2..3,3        libre    # arrivée depuis l'étage du dessus (devant S), tournée ↓
+from_down            spawn          4..5,3        libre    # arrivée depuis l'étage du dessous (devant Z), tournée ↓
+from_elevator        spawn          16..17,3      libre    # arrivée de l'ascenseur (devant V), tournée ↓
+vendeur_1            pnj            7,4           bloque  role=V1 facing=down shop=celadon_dept_2f_a  # Vendeur 1 : Super Ball, Super Potion, Rappel, soins de statut (§9) ; parlé depuis (7, 6) ↑
+vendeur_2            pnj            12,4          bloque  role=V2 facing=down shop=celadon_dept_2f_tm  # Vendeur 2 : CT dont la capacité existe à l'ouverture du J20 (§9, H-7) ; parlé depuis (12, 6) ↑
+client_1             pnj            4,8           bloque  role=P1 facing=right  # client
+client_2             pnj            15,8          bloque  role=P2 facing=left  # client
+FIN

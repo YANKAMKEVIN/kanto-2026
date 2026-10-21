@@ -1,6 +1,6 @@
 extends GutTest
 ## BoulderRules (jalon 24, T9 ; dossier 27 §6.3, `jalon-24.md` §2.5) : poussée d'un rocher de
-## Force (MOVED, FELL, REFUSED et ses raisons). Les cas reprennent ceux de
+## Force (MOVED, FELL, REFUSED et ses raisons ; ON_SWITCH, passe systèmes 2). Les cas reprennent ceux de
 ## `tools/art/plan_check_j24_seafoam.py` (b.), sur des rangées où le joueur est en x 1 et le
 ## rocher en x 2, poussé vers la droite.
 
@@ -98,6 +98,34 @@ func test_falls_into_an_open_hole() -> void:
 
 func test_plugged_hole_is_floor() -> void:
 	assert_eq(_push("#.BO.").outcome, BoulderRules.Outcome.MOVED)
+
+
+# --- Interrupteurs (passe systèmes 2, §2.7.4) ----------------------------------------
+
+func test_stops_on_a_switch() -> void:
+	var push := BoulderRules.push(_row("#.B.."), Vector2i(2, 0), RIGHT, {}, {},
+		{Vector2i(3, 0): &"victory_road_1f_switch"})
+	assert_eq(push.outcome, BoulderRules.Outcome.ON_SWITCH)
+	assert_eq(push.switch_id, &"victory_road_1f_switch")
+	assert_eq(push.target, Vector2i(3, 0))
+	assert_false(push.is_refused())
+
+
+func test_switch_does_not_bypass_refusals() -> void:
+	var switches := {Vector2i(3, 0): &"s"}
+	var grid := _row("#.B..")
+	grid.occupy(Vector2i(3, 0), RefCounted.new())
+	assert_eq(BoulderRules.push(grid, Vector2i(2, 0), RIGHT, {}, {}, switches).refusal,
+		BoulderRules.Refusal.OCCUPIED)
+	assert_eq(BoulderRules.push(_row("#.B.."), Vector2i(2, 0), RIGHT, {}, switches.duplicate(),
+		switches).refusal, BoulderRules.Refusal.NO_PUSH)
+
+
+func test_a_switch_elsewhere_is_ignored() -> void:
+	var push := BoulderRules.push(_row("#.B.."), Vector2i(2, 0), RIGHT, {}, {},
+		{Vector2i(4, 0): &"s"})
+	assert_eq(push.outcome, BoulderRules.Outcome.MOVED)
+	assert_eq(push.switch_id, &"")
 
 
 func test_pusher_rules() -> void:

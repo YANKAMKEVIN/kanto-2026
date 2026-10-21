@@ -74,7 +74,7 @@ func test_scene_grid_is_the_functional_grid() -> void:
 	# Panneaux : positions `bloque` posées sur une case de pelouse ou de pavés (décor, solide) ;
 	# cases des PNJ : réservées, libres au T14.
 	var signs: Array[Vector2i] = _plan.cells_at("panneau_ville") + _plan.cells_at(
-		"panneau_tour") + _plan.cells_at("panneau_fuji")
+		"panneau_tour") + _plan.cells_at("panneau_fuji") + _plan.cells_at("panneau_scope_j19")
 	var mismatches := 0
 	for y: int in SIZE.y:
 		for x: int in SIZE.x:
@@ -93,7 +93,9 @@ func test_scene_grid_is_the_functional_grid() -> void:
 func test_life_is_the_t16_people_the_three_signs_and_the_arrival_trigger() -> void:
 	# Trois panneaux examinables (T-18 à T-20), lus depuis la case voisine de la grille.
 	var signs := {&"lavender_town_sign": "panneau_ville", &"lavender_tower_sign": "panneau_tour",
-		&"lavender_pokemon_house_sign": "panneau_fuji"}
+		&"lavender_pokemon_house_sign": "panneau_fuji",
+		# J19 (T20) : le panneau du Scope Sylphe (dossier 22 §15.6.5).
+		&"lavender_scope_sign": "panneau_scope_j19"}
 	var seen: Array[StringName] = []
 	for point: Node in _map.get_node(^"Interactables").get_children():
 		var dialogue: StringName = point.get(&"dialogue_id")
@@ -102,7 +104,7 @@ func test_life_is_the_t16_people_the_three_signs_and_the_arrival_trigger() -> vo
 		if signs.has(dialogue):
 			assert_eq((point as Marker2D).call(&"get_cell"), _plan.cell_of(signs[dialogue]))
 	seen.sort()
-	assert_eq(seen.size(), 3)
+	assert_eq(seen.size(), 4, "trois panneaux du J18 + le panneau du Scope (J19, T20)")
 	# Un seul déclencheur : la scène silencieuse `lavender_reached`, sur les 3 cases de la 2e rangée.
 	var triggers := _map.get_node(^"Triggers")
 	assert_eq(triggers.get_child_count(), 1)
@@ -126,13 +128,11 @@ func test_life_is_the_t16_people_the_three_signs_and_the_arrival_trigger() -> vo
 				assert_true(_grid.is_occupied(cell), "%s : son PNJ y est" % id)
 	reserved.sort()
 	assert_eq(ids, reserved, "PNJ = cases « pnj » de la grille")
-	# Emplacement du panneau du Scope du J19 (42, 11) : rien n'y est posé.
+	# J19 (T20) : le panneau du Scope (42, 11) est posé, bloquant, lisible depuis (41, 11) →.
 	var scope := _plan.cell_of("panneau_scope_j19")
 	assert_eq(scope, Vector2i(42, 11))
-	assert_false(_grid.is_solid(scope))
+	assert_true(_grid.is_solid(scope))
 	assert_true(_reach().has(scope + Vector2i.LEFT), "lisible depuis (41, 11)")
-	for interaction: Interaction in _map.get_interactions().get_all():
-		assert_ne(interaction.cell, scope, "aucun examen en (42, 11)")
 
 
 func test_north_edge_leads_to_route_10_or_coming_soon() -> void:
@@ -152,10 +152,26 @@ func test_north_edge_leads_to_route_10_or_coming_soon() -> void:
 	assert_eq(_map.get_spawn_cell(&"from_route_10"), Vector2i(22, 0))
 
 
-func test_west_and_south_edges_are_coming_soon_and_reachable() -> void:
+## Jalon 20 (T15) : le bord ouest mène à la Route 8, rangée par rangée.
+func test_west_edge_leads_to_route_8_row_by_row() -> void:
 	var dist := _reach()
-	for entry: Array in [[Vector2i(0, 10), Vector2i.LEFT, "Route 8", "from_route_8_"],
-			[Vector2i(21, 35), Vector2i.DOWN, "Route 12", "from_route_12_"]]:
+	var suffixes := ["n", "c", "s"]
+	for i: int in 3:
+		var cell := Vector2i(0, 10 + i)
+		var warp := _map.get_warps().find_on_push(cell, Vector2i.LEFT)
+		assert_not_null(warp, "raccord %s" % cell)
+		if warp != null:
+			assert_false(warp.is_coming_soon())
+			assert_eq([warp.target_map, warp.target_spawn],
+				[&"route_8", StringName("from_lavender_" + suffixes[i])])
+		assert_true(dist.has(cell), "bord %s atteignable" % cell)
+		assert_eq(_map.get_spawn_cell(StringName("from_route_8_" + suffixes[i])),
+			Vector2i(1, 10 + i))
+
+
+func test_south_edge_is_coming_soon_and_reachable() -> void:
+	var dist := _reach()
+	for entry: Array in [[Vector2i(21, 35), Vector2i.DOWN, "Route 12", "from_route_12_"]]:
 		for i: int in 3:
 			var cell: Vector2i = entry[0] + (Vector2i(0, i) if entry[1] == Vector2i.LEFT
 				else Vector2i(i, 0))
@@ -203,7 +219,7 @@ func test_return_spawns_are_in_front_of_the_doors() -> void:
 func test_everything_walkable_is_connected() -> void:
 	var dist := _reach()
 	var signs: Array[Vector2i] = _plan.cells_at("panneau_ville") + _plan.cells_at(
-		"panneau_tour") + _plan.cells_at("panneau_fuji")
+		"panneau_tour") + _plan.cells_at("panneau_fuji") + _plan.cells_at("panneau_scope_j19")
 	for cell: Vector2i in _plan.cells_of(".pD"):
 		if signs.has(cell):
 			continue

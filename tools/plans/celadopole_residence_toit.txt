@@ -1,0 +1,29 @@
+# Toit de la Résidence Céladon (celadon_mansion_roof) — grille fonctionnelle (jalon 20, dossier 23
+# §10 ; préparée le 2026-10-14). Terrasse, vue sur la ville, maison du toit (N, 5 × 4, porte
+# D en (10, 5)). 16 × 10. On y monte UNIQUEMENT par l'escalier de service (entrée nord du
+# bâtiment) ; aucun escalier des étages n'y mène (contrôle : graphe des warps). Aucun PNJ.
+#
+# Légende : K mur / parapet   . sol   Z escalier de service (descendant)   N maison du toit
+#   (bloquée)   D porte de la maison (STEP_ON ↑)   n banc   p plante
+
+PRATICABLES .ZD
+
+GRILLE 16 10
+00 KKKKKKKKKKKKKKKK
+01 KKKKKKKKKKKKKKKK
+02 K.ZZ....NNNNN..K
+03 K.......NNNNN..K
+04 K.......NNNNN..K
+05 K.......NNDNN..K
+06 K..............K
+07 K....nn........K
+08 Kp............pK
+09 KKKKKKKKKKKKKKKK
+FIN
+
+POSITIONS
+escalier_service     warp           2..3,2        libre   to=celadon_city spawn=from_service  # STEP_ON ↑ → celadon_city, from_service (porte (30..31, 4)) : SEULE liaison de ce toit avec l'extérieur
+from_service         spawn          2..3,3        libre    # arrivée de l'escalier de service, tournée ↓
+porte_maison         warp           10,5          libre   to=celadon_mansion_roof_house spawn=entrance  # STEP_ON ↑ → celadon_mansion_roof_house
+from_house           spawn          10,6          libre    # sortie de la maison du toit, tournée ↓
+FIN

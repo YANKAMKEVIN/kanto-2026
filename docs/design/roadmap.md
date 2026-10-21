@@ -168,9 +168,14 @@ J15 Route 5 + Pension + souterrain + Route 6 + Carmin-sur-Mer (dossier 18)   ✅
 J16 S.S. Anne + rival n° 4 + Coupe + Major Bob + Badge Foudre (dossier 19)   ✅
 J17 Route 11 + Cave Taupiqueur + Route 2 est + CS05 Flash (dossier 20)   ✅
 J18 Route 9 + Route 10 + Grotte Sombre + Lavanville, Tour au rez-de-chaussée (dossier 21)   ✅
-J19 Tour Pokémon, étages 2F–6F, rival n° 5 (dossier 22)   ← ICI
-J20+ Suite de Kanto → Ligue → post-game
+J19 Tour Pokémon, étages 2F–6F, rival n° 5 (dossier 22)   ✅
+J20 Route 8 + Route 7 + Céladopole + Erika + repaire Rocket + Giovanni + Scope (dossier 23)   ✅
+J21+ Suite de Kanto → Ligue → post-game   ← ICI
 ```
+
+**Depuis le 2026-10-19**, l'ordre et le rythme des jalons suivent
+[`strategie-acceleration.md`](strategie-acceleration.md) : passe « systèmes 2 » avant le reste du
+contenu, 2 à 3 jalons en code au maximum, une seule intégration à la fois.
 
 J11 à J15 sont conçus et développés **en parallèle**, une session par jalon (2026-10-11) ;
 l'intégration d'un jalon attend seulement les systèmes qu'elle utilise.

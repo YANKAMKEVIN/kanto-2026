@@ -120,6 +120,30 @@
 			"contact": { "color": "#2a170a", "alpha": 0.5 },
 			"wind": 0.0
 		},
+		"greenhouse": {
+			"grade": {
+				"shadows": [0.94, 1.0, 0.94],
+				"midtones": [0.98, 1.03, 0.96],
+				"highlights": [1.0, 1.03, 0.94],
+				"strength": 1.0
+			},
+			"sun_direction": [-0.7, -0.7],
+			"rim": { "color": "#e6f5c8", "strength": 0.12, "width": 3.0 },
+			"contact": { "color": "#10241a", "alpha": 0.5 },
+			"wind": 0.0
+		},
+		"hideout": {
+			"grade": {
+				"shadows": [0.98, 1.0, 1.04],
+				"midtones": [1.0, 1.02, 1.04],
+				"highlights": [1.02, 1.04, 1.06],
+				"strength": 1.0
+			},
+			"sun_direction": [-0.7, -0.7],
+			"rim": { "color": "#e8f0ff", "strength": 0.1, "width": 3.0 },
+			"contact": { "color": "#141a28", "alpha": 0.55 },
+			"wind": 0.0
+		},
 		"lavender": {
 			"grade": {
 				"shadows": [1.02, 0.99, 1.07],
@@ -142,6 +166,18 @@
 			},
 			"sun_direction": [-0.7, -0.7],
 			"contact": { "color": "#1c1830", "alpha": 0.6 }
+		},
+		"tower": {
+			"grade": {
+				"shadows": [0.86, 0.82, 0.94],
+				"midtones": [0.95, 0.93, 1.0],
+				"highlights": [0.97, 0.96, 1.0],
+				"strength": 1.0
+			},
+			"sun_direction": [-0.7, -0.7],
+			"rim": { "color": "#c4b8e8", "strength": 0.08, "width": 3.0 },
+			"contact": { "color": "#0e0a18", "alpha": 0.55 },
+			"wind": 0.0
 		}
 	},
 	"maps": {
@@ -223,6 +259,43 @@
 		"pokemon_house": "interior_warm",
 		"lavender_house_1": "interior_warm",
 		"lavender_house_2": "interior_warm",
-		"pokemon_tower_1f": "tower_cold"
+		"pokemon_tower_1f": "tower_cold",
+		"pokemon_tower_2f": "tower",
+		"pokemon_tower_3f": "tower",
+		"pokemon_tower_4f": "tower",
+		"pokemon_tower_5f": "tower",
+		"pokemon_tower_6f": "tower",
+		"route_8": "golden_hour",
+		"route_8_gate": "interior_warm",
+		"route_8_underground_gate": "interior_warm",
+		"underground_path_7_8": "underground",
+		"route_7": "golden_hour",
+		"route_7_gate": "interior_warm",
+		"route_7_underground_gate": "interior_warm",
+		"celadon_city": "golden_hour",
+		"celadon_center": "interior_warm",
+		"celadon_dept_gf": "interior_warm",
+		"celadon_dept_2f": "interior_warm",
+		"celadon_dept_3f": "interior_warm",
+		"celadon_dept_4f": "interior_warm",
+		"celadon_dept_5f": "interior_warm",
+		"celadon_dept_roof": "golden_hour",
+		"celadon_dept_elevator": "interior_warm",
+		"celadon_mansion_gf": "interior_warm",
+		"celadon_mansion_1f": "interior_warm",
+		"celadon_mansion_2f": "interior_warm",
+		"celadon_mansion_3f": "interior_warm",
+		"celadon_mansion_roof": "golden_hour",
+		"celadon_mansion_roof_house": "interior_warm",
+		"celadon_restaurant": "interior_warm",
+		"celadon_chief_house": "interior_warm",
+		"celadon_hotel": "interior_warm",
+		"celadon_gym": "greenhouse",
+		"celadon_game_corner": "interior_warm",
+		"rocket_hideout_b1f": "hideout",
+		"rocket_hideout_b2f": "hideout",
+		"rocket_hideout_b3f": "hideout",
+		"rocket_hideout_b4f": "hideout",
+		"rocket_hideout_elevator": "hideout"
 	}
 }

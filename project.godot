@@ -64,6 +64,10 @@ menu={
 "deadzone": 0.2,
 "events": [Object(InputEventKey,"physical_keycode":4194305), Object(InputEventKey,"physical_keycode":77)]
 }
+bike={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"physical_keycode":66)]
+}
 
 [input_devices]
 

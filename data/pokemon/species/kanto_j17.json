@@ -25,7 +25,8 @@
 		"learnset": [
 			[1, "bite"], [1, "roar"], [18, "ember"], [23, "leer"], [30, "take_down"],
 			[39, "agility"], [50, "flamethrower"]
-		]
+		],
+		"evolutions": [{ "into": "arcanine", "method": "item", "item": "fire_stone" }]
 	},
 	"vulpix": {
 		"dex": 37, "name": "Goupix", "types": ["fire"],
@@ -34,7 +35,8 @@
 		"learnset": [
 			[1, "ember"], [1, "tail_whip"], [16, "quick_attack"], [21, "roar"],
 			[28, "confuse_ray"], [35, "flamethrower"], [42, "fire_spin"]
-		]
+		],
+		"evolutions": [{ "into": "ninetales", "method": "item", "item": "fire_stone" }]
 	},
 	"magnemite": {
 		"dex": 81, "name": "Magnéti", "types": ["electric", "steel"],

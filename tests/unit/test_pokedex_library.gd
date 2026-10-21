@@ -28,12 +28,14 @@ const EVOLUTION_NOTES: Array[StringName] = [&"kadabra_bond"]
 ## Descriptions validées par Kevin qui parlent d'évolution (exception à « jamais de
 ## divulgation ») : Léviator (dossier 22 §15.7, validé le 2026-10-15).
 const EVOLUTION_DESCRIPTIONS: Array[StringName] = [&"gyarados"]
-## Fiches en brouillon à faire relire par Kevin (vide : celles du J24 validées le 2026-10-19).
-const PENDING_DRAFT_DESCRIPTIONS: Array[StringName] = []
 ## Fiches autorisées à nommer une espèce que le joueur connaît forcément avant : Magnéton (« Trois
 ## Magnéti liés… », texte validé par Kevin le 2026-10-16 ; Magnéti se voit avant, chez l'Ingénieur
 ## Victor de la Route 11).
 const NAMED_SPECIES_OK: Dictionary[StringName, Array] = {&"magneton": [&"magnemite"]}
+## Espèces des données sans fiche : jamais vues au J19 (SPECTRE) ; Osselait a la sienne depuis le
+## J20 (annexe A n° 204), Ossatueur l'aura au J21
+## (dossier 22 §12.1).
+const NO_ENTRY_YET: Array[StringName] = [&"marowak"]
 
 var _data: PokemonData
 var _lib: PokedexLibrary
@@ -73,12 +75,16 @@ func test_every_species_of_the_data_has_an_entry_and_the_reverse() -> void:
 	_lib.load_file()
 	_lib.check_references(_data)
 	for id: StringName in _data.get_species_ids():
+		if NO_ENTRY_YET.has(id):
+			assert_false(_lib.has_species(id), "%s : pas encore de fiche" % id)
+			continue
 		assert_true(_lib.has_species(id), "%s a sa fiche de Pokédex" % id)
 		var info := _lib.get_species(id)
 		assert_gt(info.height, 0.0)
 		assert_gt(info.weight, 0.0)
 		assert_false(info.description.is_empty())
-	assert_eq(_lib.get_species_ids().size(), _data.get_species_ids().size())
+	assert_eq(_lib.get_species_ids().size(),
+		_data.get_species_ids().size() - NO_ENTRY_YET.size())
 
 
 func test_real_heights_and_weights_are_the_official_ones() -> void:
@@ -95,15 +101,9 @@ func test_real_heights_and_weights_are_the_official_ones() -> void:
 		&"weedle": [0.3, 3.2], &"kakuna": [0.6, 10.0], &"beedrill": [1.0, 29.5],
 		&"pikachu": [0.4, 6.0], &"raichu": [0.8, 30.0],
 		&"abra": [0.9, 19.5], &"kadabra": [1.3, 56.5], &"machop": [0.8, 19.5],
-		# Jalon 24 (T4, PokeAPI) ; Ptitard, Tentacool, Saquedeneu et Léviator repris des J19 à J21.
-		&"poliwag": [0.6, 12.4], &"tentacool": [0.9, 45.5], &"tangela": [1.0, 35.0],
-		&"gyarados": [6.5, 235.0], &"psyduck": [0.8, 19.6], &"golduck": [1.7, 76.6],
-		&"poliwhirl": [1.0, 20.0], &"poliwrath": [1.3, 54.0], &"tentacruel": [1.6, 55.0],
-		&"slowpoke": [1.2, 36.0], &"slowbro": [1.6, 78.5], &"seel": [1.1, 90.0],
-		&"dewgong": [1.7, 120.0], &"cloyster": [1.5, 132.5], &"krabby": [0.4, 6.5],
-		&"kingler": [1.3, 60.0], &"seadra": [1.2, 25.0], &"seaking": [1.3, 39.0],
-		&"magikarp": [0.9, 10.0], &"omanyte": [0.4, 7.5], &"omastar": [1.0, 35.0],
-		&"kabuto": [0.5, 11.5], &"kabutops": [1.3, 40.5], &"articuno": [1.7, 55.4],
+		# Jalon 19 (dossier 22 §15.7 ; Caninos vient du J17).
+		&"gastly": [1.3, 0.1], &"haunter": [1.6, 0.1],
+		&"exeggcute": [0.4, 2.5], &"gyarados": [6.5, 235.0],
 	}
 	for id: StringName in official:
 		assert_almost_eq(_lib.get_species(id).height, float(official[id][0]), 0.001, id)
@@ -114,10 +114,7 @@ func test_real_texts_are_validated_and_never_spoil() -> void:
 	_lib.load_file()
 	for id: StringName in _lib.get_species_ids():
 		var info := _lib.get_species(id)
-		if PENDING_DRAFT_DESCRIPTIONS.has(id):
-			assert_true(info.draft, "%s : brouillon du J24, à retirer de la liste" % id)
-		else:
-			assert_false(info.draft, "%s : description validée par Kevin" % id)
+		assert_false(info.draft, "%s : description validée par Kevin" % id)
 		var texts: Array[String] = []
 		if not EVOLUTION_DESCRIPTIONS.has(id):
 			texts.append(info.description)

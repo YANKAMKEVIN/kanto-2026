@@ -1,0 +1,11 @@
+{
+	"qa_teleport_2_card_key": {
+		"cell": [7, 5],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "qa_teleport_2_card_key",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": ["got_qa_teleport_2_card_key"]
+	}
+}

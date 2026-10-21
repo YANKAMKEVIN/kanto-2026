@@ -13,6 +13,10 @@ extends MenuScreen
 ##   vers soi-même. Les deux emplacements glissent l'un vers l'autre (TEAM_SWAP_TIME).
 ## - Emplacements vides : neutres, aucun texte, aucune action.
 ## - Une capacité touchée ouvre [MoveDetailSheet] ; un toucher ailleurs la referme.
+## - Passe systèmes 2 (T25b) : une capacité de voyage hors combat (Téléport, Tunnel,
+##   [member PokemonSheetView.field_moves]) ajoute UTILISER sous sa fiche détaillée (pas de
+##   quatrième action sous la fiche du Pokémon) → [signal field_move_requested] ; un refus
+##   revient par [method show_notice], dans le bandeau de l'en-tête.
 ## Composition (MM.1, maquette) : l'écran remonte dans la rangée du × (covers_header) et y pose
 ## son « ‹ » rond compact, la Poké Ball, « Équipe » et « 3/6 » (et STOCKAGE au Centre, ou la
 ## consigne de DÉPLACER) ; le bandeau d'état de l'hôte reste à droite. Panneaux de verre sur le
@@ -29,6 +33,9 @@ signal favorite_toggled(index: int)
 signal companion_toggled(index: int)
 ## UTILISER UN OBJET touché sur le Pokémon [param index] (lien croisé vers le Sac, 6B).
 signal use_item_requested(index: int)
+## UTILISER touché sous la fiche détaillée de la capacité [param move] du Pokémon [param index]
+## (passe systèmes 2, T25b).
+signal field_move_requested(index: int, move: StringName)
 
 const BACK_TEXT := "RETOUR"
 const STORAGE_TEXT := "STOCKAGE"
@@ -44,6 +51,8 @@ const TITLE_TEXT := "Équipe"
 const COUNT_FORMAT := "%d/%d"
 const MOVE_HINT_FORMAT := "Choisis où placer %s"
 const MOVE_ALONE_TEXT := "Il faut deux Pokémon pour en déplacer un."
+## T25b : libellé du Sac (« UTILISER »), réutilisé sous la fiche d'une capacité de voyage.
+const FIELD_USE_TEXT := "UTILISER"
 const BACK_ICON: Texture2D = preload("res://assets/ui/icons/battle/back.svg")
 const BALL_ICON: Texture2D = preload("res://assets/ui/icons/poke_ball.svg")
 const STORAGE_ICON: Texture2D = preload("res://assets/ui/icons/storage/deposit.svg")
@@ -62,6 +71,10 @@ var _drop_target: int = -1
 var _swap_pending: Vector2i = Vector2i(-1, -1)
 var _swap_tween: Tween
 var _hint_alone: bool = false
+## T25b : refus d'une capacité de voyage (bandeau), "" sinon.
+var _notice: String = ""
+## T25b : capacité de voyage de la fiche détaillée ouverte (&"" : aucune).
+var _field_move: StringName = &""
 
 var _slots: Array[TeamSlotCard] = []
 var _list: Control
@@ -80,6 +93,7 @@ var _favorite: Button
 var _companion: Button
 var _overlay: Control
 var _move_sheet: MoveDetailSheet
+var _field_use: Button
 
 
 func _init() -> void:
@@ -121,6 +135,7 @@ func show_team(view: TeamView, selected: int) -> void:
 	_selected = TeamViews.clamp_selection(selected, view.size())
 	_end_drag()
 	_close_move_sheet_now()
+	_notice = ""
 	_storage_button.visible = view.storage_available
 	if _move_mode and (_move_from < 0 or _move_from >= view.size()):
 		_set_move_mode(false)
@@ -223,11 +238,25 @@ func get_overlay() -> Control:
 	return _overlay
 
 
+## T25b : bouton UTILISER sous la fiche détaillée d'une capacité de voyage.
+func get_field_use_button() -> Button:
+	return _field_use
+
+
+## T25b : affiche [param text] dans le bandeau de l'en-tête (refus d'une capacité de voyage),
+## jusqu'au prochain geste sur l'équipe.
+func show_notice(text: String) -> void:
+	_notice = text
+	_update_move_ui()
+
+
 ## Ferme la fiche d'une capacité.
 func close_move_sheet() -> void:
 	if not _overlay.visible:
 		return
 	_overlay.visible = false
+	_field_use.visible = false
+	_field_move = &""
 	_move_sheet.close()
 
 
@@ -386,6 +415,14 @@ func _build_overlay() -> void:
 	_move_sheet = MOVE_SHEET_SCENE.instantiate() as MoveDetailSheet
 	_move_sheet.speed_scale = speed_scale
 	_overlay.add_child(_move_sheet)
+	_field_use = _action(FIELD_USE_TEXT, BAG_ICON)
+	_field_use.theme_type_variation = &"MenuActionOn"
+	_field_use.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	_field_use.autowrap_mode = TextServer.AUTOWRAP_OFF
+	_field_use.icon = null
+	_field_use.visible = false
+	_field_use.pressed.connect(_on_field_use_pressed)
+	_overlay.add_child(_field_use)
 
 
 ## Remet la vue à jour (fiche, vedette, actions, aspect des emplacements).
@@ -427,6 +464,8 @@ func _update_move_ui() -> void:
 		text = MOVE_HINT_FORMAT % _view.sheet_at(_move_from).member.display_name
 	elif _hint_alone:
 		text = MOVE_ALONE_TEXT
+	elif not _notice.is_empty():
+		text = _notice
 	_hint_label.text = text
 	_hint.visible = not text.is_empty()
 	_caption.visible = text.is_empty()
@@ -462,6 +501,7 @@ func _set_move_mode(on: bool) -> void:
 	_move_mode = on
 	_move_from = _selected if on else -1
 	_hint_alone = false
+	_notice = ""
 
 
 ## Demande l'échange de [param from] et [param to] (jamais vers soi, jamais vers un
@@ -524,6 +564,7 @@ func _on_slot_tapped(index: int) -> void:
 		return
 	Haptics.vibrate(UiTokens.HAPTIC_TICK_MS)
 	_hint_alone = false
+	_notice = ""
 	_select(index)
 	_update_move_ui()
 
@@ -534,6 +575,7 @@ func _on_drag_started(index: int) -> void:
 	_drag_from = index
 	_drop_target = -1
 	_hint_alone = false
+	_notice = ""
 	if _ghost == null:
 		_ghost = TeamSlotCard.new()
 		_ghost.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -646,6 +688,8 @@ func _on_move_tapped(index: int) -> void:
 		return
 	_move_sheet.speed_scale = speed_scale
 	_overlay.visible = true
+	_field_move = sheet_view.field_moves.get(index, &"")
+	_field_use.visible = _field_move != &""
 	_move_sheet.open(sheet_view.moves[index])
 	_move_sheet.size = Vector2(UiTokens.MOVE_DETAIL_WIDTH, 0.0)
 	await get_tree().process_frame
@@ -656,7 +700,22 @@ func _on_move_tapped(index: int) -> void:
 func _fit_move_sheet() -> void:
 	var height := _move_sheet.get_body().get_combined_minimum_size().y
 	_move_sheet.size = Vector2(UiTokens.MOVE_DETAIL_WIDTH, height)
-	_move_sheet.position = ((_overlay.size - _move_sheet.size) * 0.5).floor()
+	var block := _move_sheet.size
+	if _field_use.visible:
+		_field_use.size = Vector2(UiTokens.MOVE_DETAIL_WIDTH, UiTokens.TEAM_ACTION_HEIGHT)
+		block.y += UiTokens.GAP + _field_use.size.y
+	_move_sheet.position = ((_overlay.size - block) * 0.5).floor()
+	_field_use.position = _move_sheet.position + Vector2(0.0, height + UiTokens.GAP)
+
+
+## T25b : UTILISER sous la fiche d'une capacité de voyage : fiche refermée, intention émise.
+func _on_field_use_pressed() -> void:
+	if _view == null or _field_move == &"":
+		return
+	var move := _field_move
+	Haptics.vibrate(UiTokens.HAPTIC_TAP_MS)
+	_close_move_sheet_now()
+	field_move_requested.emit(_selected, move)
 
 
 func _on_overlay_input(event: InputEvent) -> void:
@@ -668,4 +727,6 @@ func _on_overlay_input(event: InputEvent) -> void:
 func _close_move_sheet_now() -> void:
 	if _overlay != null and _overlay.visible:
 		_overlay.visible = false
+		_field_use.visible = false
+		_field_move = &""
 		_move_sheet.close()

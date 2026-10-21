@@ -127,6 +127,8 @@ const LOOKS: Dictionary = {
 	"leo_humain": [CHARACTERS_DIR, "bill", ""],
 	# J15 T10 : Miaouss (compagnon), sans planche d'attente (colonne 0 de la marche).
 	"miaouss": [POKEMON_DIR, "meowth", ""],
+	# Série 22 bis : compagnon Évoli (planche de marche 4 × 4 et d'attente `evoli_idle`).
+	"evoli": [POKEMON_DIR, "eevee", ""],
 	# J15 T11 (série 17, Carmin-sur-Mer) : marin, docker, président du Fan Club, 128 px, avec leur
 	# planche d'attente. Le gardien de la Pension est `old_man` (décision du 2026-10-14).
 	"marin": [CHARACTERS_DIR, "sailor", ""],
@@ -152,11 +154,18 @@ const LOOKS: Dictionary = {
 	# `channeler`, mutualisé avec le J19), 128 px, sans planche d'attente → [constant IDLE_FROM_WALK].
 	"pokemaniac": [CHARACTERS_DIR, "pokemaniac", ""],
 	"exorciste": [CHARACTERS_DIR, "channeler", ""],
-	# J24 (série 27, T5) : Topdresseurs (128 px, sans planche d'attente → colonne 0 de la marche),
+	# J20 T10 (série 22, Céladopole, planches validées le 2026-10-16) : Erika, Giovanni, Rocket en
+	# civil, Intello, Beauté, Topdresseuse, 128 px, avec leur planche d'attente.
+	"erika": [CHARACTERS_DIR, "erika", ""],
+	"giovanni": [CHARACTERS_DIR, "giovanni", ""],
+	"rocket_civil": [CHARACTERS_DIR, "rocket_civilian", ""],
+	"intello": [CHARACTERS_DIR, "nerd", ""],
+	"beaute": [CHARACTERS_DIR, "beauty", ""],
+	"topdresseuse": [CHARACTERS_DIR, "cooltrainer_f", ""],
+	# J24 (série 27, T5) : Topdresseur (la Topdresseuse est celle du J20) (128 px, sans planche d'attente → colonne 0 de la marche),
 	# Nageur et Nageuse dans l'eau (tête et épaules, échelle de la marche), héros en Surf et monture
 	# seule (planches 4 × 4 ; le mode « Surf » de `CharacterLook` les branchera au T7).
 	"topdresseur": [CHARACTERS_DIR, "cooltrainer_m", ""],
-	"topdresseuse": [CHARACTERS_DIR, "cooltrainer_f", ""],
 	"nageur_eau": [CHARACTERS_DIR, "swimmer_water", ""],
 	"nageuse_eau": [CHARACTERS_DIR, "swimmer_f_water", ""],
 	"heros_surf": [CHARACTERS_DIR, "player_surf", ""],

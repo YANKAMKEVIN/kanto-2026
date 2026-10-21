@@ -1,0 +1,141 @@
+{
+	"route_8_nerd_anatole_before": {
+		"speaker": "Intello Anatole",
+		"pages": [
+			"Mes calculs disaient que personne\nne passerait aujourd'hui."
+		]
+	},
+	"route_8_nerd_anatole_defeated": {
+		"speaker": "Intello Anatole",
+		"pages": [
+			"Il faut que je revoie mes calculs."
+		]
+	},
+	"route_8_nerd_anatole_after": {
+		"speaker": "Intello Anatole",
+		"pages": [
+			"La probabilité de te revoir est faible.",
+			"Mais pas nulle."
+		]
+	},
+	"route_8_gambler_rene_before": {
+		"speaker": "Joueur René",
+		"pages": [
+			"On parie ? Non ? Tant pis,\non se bat quand même."
+		]
+	},
+	"route_8_gambler_rene_defeated": {
+		"speaker": "Joueur René",
+		"pages": [
+			"Je n'aurais pas misé sur moi."
+		]
+	},
+	"route_8_gambler_rene_after": {
+		"speaker": "Joueur René",
+		"pages": [
+			"Au Casino, on ne gagne\njamais contre la maison.",
+			"Contre toi non plus, apparemment."
+		]
+	},
+	"route_8_nerd_firmin_before": {
+		"speaker": "Intello Firmin",
+		"pages": [
+			"Mes Pokémon sont le résultat\nde longues expériences."
+		]
+	},
+	"route_8_nerd_firmin_defeated": {
+		"speaker": "Intello Firmin",
+		"pages": [
+			"L'expérience a échoué."
+		]
+	},
+	"route_8_nerd_firmin_after": {
+		"speaker": "Intello Firmin",
+		"pages": [
+			"Je note tout dans mon\ncarnet. Même mes défaites."
+		]
+	},
+	"route_8_lass_iris_before": {
+		"speaker": "Fillette Iris",
+		"pages": [
+			"Toutes les deux, on ne perd jamais !"
+		]
+	},
+	"route_8_lass_iris_defeated": {
+		"speaker": "Fillette Iris",
+		"pages": [
+			"D'accord, presque jamais."
+		]
+	},
+	"route_8_lass_iris_after": {
+		"speaker": "Fillette Iris",
+		"pages": [
+			"On va s'entraîner encore.",
+			"Toutes les deux."
+		]
+	},
+	"route_8_lass_margot_before": {
+		"speaker": "Fillette Margot",
+		"pages": [
+			"Enfin… presque jamais."
+		]
+	},
+	"route_8_lass_margot_defeated": {
+		"speaker": "Fillette Margot",
+		"pages": [
+			"D'accord, presque jamais."
+		]
+	},
+	"route_8_lass_margot_after": {
+		"speaker": "Fillette Margot",
+		"pages": [
+			"Mes Miaouss ont trouvé\nune pièce dans l'herbe.",
+			"C'est toujours ça."
+		]
+	},
+	"route_8_gambler_fernand_before": {
+		"speaker": "Joueur Fernand",
+		"pages": [
+			"Tu as l'air d'avoir de la chance.",
+			"Voyons si elle tient."
+		]
+	},
+	"route_8_gambler_fernand_defeated": {
+		"speaker": "Joueur Fernand",
+		"pages": [
+			"La chance a tourné."
+		]
+	},
+	"route_8_gambler_fernand_after": {
+		"speaker": "Joueur Fernand",
+		"pages": [
+			"À Céladopole, tout le monde parle du\nCasino. Moi, je n'y mets plus les pieds."
+		]
+	},
+	"route_8_lass_nina_before": {
+		"speaker": "Fillette Nina",
+		"pages": [
+			"Mes Mélofée dansent mieux\nqu'elles ne se battent.",
+			"Mais elles se battent quand même !"
+		]
+	},
+	"route_8_lass_nina_defeated": {
+		"speaker": "Fillette Nina",
+		"pages": [
+			"Elles ont perdu en dansant…"
+		]
+	},
+	"route_8_lass_nina_after": {
+		"speaker": "Fillette Nina",
+		"pages": [
+			"Lavanville est juste derrière.",
+			"Moi, je n'aime pas trop y aller."
+		]
+	},
+	"route_8_item_1": {
+		"cutscene": "route_8_item_1"
+	},
+	"route_8_hidden_1": {
+		"cutscene": "route_8_hidden_1"
+	}
+}

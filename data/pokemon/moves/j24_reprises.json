@@ -1,33 +1,4 @@
 {
-	"dragon_rage": {
-		"name": "Draco-Rage", "type": "dragon", "category": "status",
-		"accuracy": 100, "pp": 10,
-		"effects": [{ "kind": "fixed_damage", "mode": "value", "amount": 40 }],
-		"description": "Une onde de choc draconique. Inflige toujours 40 PV de dégâts."
-	},
-	"hyper_beam": {
-		"name": "Ultralaser", "type": "normal", "category": "special",
-		"power": 150, "accuracy": 90, "pp": 5, "pending_effects": ["recharge"],
-		"description": "Un rayon dévastateur. Le lanceur doit ensuite se reposer un tour. Sans effet dans le moteur actuel."
-	},
-	"constrict": {
-		"name": "Constriction", "type": "normal", "category": "physical",
-		"power": 10, "accuracy": 100, "pp": 35,
-		"effects": [{ "kind": "stat_stage", "stat": "spe", "stages": -1, "target": "foe", "chance": 10 }],
-		"description": "Serre la cible avec des lianes. Peut baisser sa Vitesse."
-	},
-	"stomp": {
-		"name": "Écrasement", "type": "normal", "category": "physical",
-		"power": 65, "accuracy": 100, "pp": 20,
-		"effects": [{ "kind": "flinch", "chance": 30 }],
-		"description": "Écrase la cible d'un pied lourd. Peut l'apeurer."
-	},
-	"mist": {
-		"name": "Brume", "type": "ice", "category": "status",
-		"accuracy": 0, "pp": 30,
-		"pending_effects": ["mist"],
-		"description": "Un voile blanc qui protège des baisses de statistiques. Sans effet dans le moteur actuel."
-	},
 	"amnesia": {
 		"name": "Amnésie", "type": "psychic", "category": "status",
 		"accuracy": 0, "pp": 20,

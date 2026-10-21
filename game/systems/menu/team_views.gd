@@ -16,6 +16,7 @@ const PLACE_LABELS: Dictionary[Pokemon.Origin, String] = {
 	Pokemon.Origin.STARTER: "Reçu à",
 	Pokemon.Origin.CAPTURE: "Capturé à",
 	Pokemon.Origin.UNKNOWN: "Rencontré à",
+	Pokemon.Origin.GIFT: "Reçu à", # J20 : Pokémon donné (texte du starter)
 }
 ## Phrase d'attachement du starter (onglet Histoire).
 const STARTER_NOTE: String = "Ton premier Pokémon"
@@ -30,9 +31,11 @@ const EXP_REMAINING_FORMAT: String = "%s XP avant le niveau suivant"
 ## null (lieux de l'Histoire vides) ; [param unlocks] décide de la révélation de l'évolution.
 ## Jalon 11 : [param companions] (espèces éligibles, null = aucune) et [param companion_uid]
 ## (le compagnon actuel) donnent le bouton FAIRE SORTIR / RAPPELER de chaque fiche.
+## Passe systèmes 2 (T25b) : [param field_moves] (Téléport, Tunnel) : capacités qu'une fiche
+## propose d'UTILISER quand le Pokémon les connaît ([member PokemonSheetView.field_moves]).
 static func build(party: Party, data: PokemonData, zones: ZoneLibrary, pokedex: Pokedex,
 		unlocks: MenuUnlocks, companions: CompanionCatalog = null,
-		companion_uid: String = "") -> TeamView:
+		companion_uid: String = "", field_moves: Array[StringName] = []) -> TeamView:
 	var view := TeamView.new()
 	var visible := unlocks != null and unlocks.pokedex_visible()
 	view.storage_available = unlocks != null and unlocks.storage_available()
@@ -40,6 +43,7 @@ static func build(party: Party, data: PokemonData, zones: ZoneLibrary, pokedex: 
 	for i: int in members.size():
 		var pokemon_sheet := sheet(members[i], i, data, zones, pokedex, visible)
 		pokemon_sheet.companion_action = companion_action(members[i], companions, companion_uid)
+		pokemon_sheet.field_moves = field_actions(members[i], data, field_moves)
 		view.members.append(pokemon_sheet.member)
 		view.sheets.append(pokemon_sheet)
 	return view
@@ -68,6 +72,23 @@ static func sheet(pokemon: Pokemon, index: int, data: PokemonData, zones: ZoneLi
 	view.evolution = EvolutionReveal.chain(pokemon.species_id, data, pokedex, pokedex_visible)
 	view.evolution_text = EvolutionReveal.text(view.evolution)
 	return view
+
+
+## Capacités de [param pokemon] parmi [param field_moves], par indice de la fiche (les capacités
+## inconnues des données n'ont pas de carte : [method BattleViews.moves] les saute aussi).
+static func field_actions(pokemon: Pokemon, data: PokemonData,
+		field_moves: Array[StringName]) -> Dictionary[int, StringName]:
+	var actions: Dictionary[int, StringName] = {}
+	if field_moves.is_empty():
+		return actions
+	var index := 0
+	for slot: MoveSlot in pokemon.moves:
+		if data.get_move(slot.move_id) == null:
+			continue
+		if field_moves.has(slot.move_id):
+			actions[index] = slot.move_id
+		index += 1
+	return actions
 
 
 ## Bouton du compagnon pour [param pokemon] : RAPPELER s'il est le compagnon actuel, FAIRE SORTIR

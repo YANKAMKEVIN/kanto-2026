@@ -35,6 +35,7 @@
 	"route_5_gate_rule": {
 		"variants": [
 			{
+				"unless": ["saffron_gates_open"],
 				"steps": [
 					{ "face": "route_5_guard", "to": "player" },
 					{ "face": "player", "to": "route_5_guard" },

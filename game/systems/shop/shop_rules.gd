@@ -25,6 +25,8 @@ enum Status {
 	NEEDS_CONFIRM,
 	## Quantité hors de 1 à [constant MAX_QUANTITY], ou objet absent.
 	BAD_QUANTITY,
+	## Achat d'un objet permanent (une CT, jalon 20) déjà dans le Sac.
+	ALREADY_OWNED,
 }
 
 ## Quantité maximale d'une transaction (sélecteur QUANTITÉ, dossier 09 §9 ; Rouge/Bleu).
@@ -49,10 +51,15 @@ static func stock(shop: ShopData, flags: StoryFlags) -> Array[StringName]:
 
 
 ## Quantité maximale achetable de [param item] avec [param money] : 0 à
-## [constant MAX_QUANTITY] (0 : objet sans prix, ou pas assez d'argent pour un seul).
-static func max_buy(item: ItemData, money: int) -> int:
+## [constant MAX_QUANTITY] (0 : objet sans prix, ou pas assez d'argent pour un seul). Un objet
+## permanent (une CT, jalon 20 §2.9.2) : 1 s'il n'est pas dans [param bag], 0 sinon.
+static func max_buy(item: ItemData, money: int, bag: Bag = null) -> int:
 	if item == null or item.price <= 0 or item.is_key() or money <= 0:
 		return 0
+	if item.is_permanent():
+		if bag != null and bag.has(item.id):
+			return 0
+		return 1 if money >= item.price else 0
 	return mini(MAX_QUANTITY, floori(float(money) / item.price))
 
 
@@ -75,12 +82,18 @@ static func sell_total(item: ItemData, quantity: int) -> int:
 
 
 ## Achète [param quantity] [param item] dans [param shop] : l'argent est débité, les objets
-## ajoutés au Sac (et marqués « obtenus en dernier »). Sinon le refus, et rien ne change.
+## ajoutés au Sac (et marqués « obtenus en dernier »). Sinon le refus, et rien ne change. Un
+## objet permanent (CT) s'achète un à la fois, seulement s'il n'est pas déjà dans le Sac.
 static func buy(state: Object, shop: ShopData, item: ItemData, quantity: int) -> Status:
 	if state == null or item == null or quantity < 1 or quantity > MAX_QUANTITY:
 		return Status.BAD_QUANTITY
 	if not stock(shop, state.flags).has(item.id) or item.price <= 0 or item.is_key():
 		return Status.NOT_SOLD_HERE
+	if item.is_permanent():
+		if (state.bag as Bag).has(item.id):
+			return Status.ALREADY_OWNED
+		if quantity > 1:
+			return Status.BAD_QUANTITY
 	var total := buy_total(item, quantity)
 	if total > int(state.money):
 		return Status.NOT_ENOUGH_MONEY

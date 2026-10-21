@@ -58,10 +58,14 @@ func get_slash() -> CutSlash:
 
 
 ## Coroutine : capacité [param move] sur [param target] (voir l'en-tête).
-func perform(move: StringName, target: Node2D) -> void:
+## Passe systèmes 2 (Force) : [param clears] faux = rien à retirer ; le Pokémon apparaît, prend
+## appui ([constant FieldMoveStage.HOLD_DURATION], vibration légère) et rentre ; ni effet ni
+## fondu ([method FieldMoveStage.stages]).
+func perform(move: StringName, target: Node2D, clears: bool = true) -> void:
 	if reduce_motion or not is_instance_valid(_map) or _player == null:
-		stage_started.emit(FieldMoveStage.CLEAR)
-		await _fade(target, FieldMoveStage.REDUCED_FADE)
+		if clears:
+			stage_started.emit(FieldMoveStage.CLEAR)
+			await _fade(target, FieldMoveStage.REDUCED_FADE)
 		return
 	var pokemon: Pokemon = user_source.call(move) if user_source.is_valid() else null
 	var facing := _player.get_facing()
@@ -73,7 +77,8 @@ func perform(move: StringName, target: Node2D) -> void:
 	var temporary: Companion = null
 	if cell != FieldMoveStage.NONE and not is_companion:
 		temporary = _make_pokemon(pokemon)
-	var plan := FieldMoveStage.stages(false, is_companion or temporary != null, is_companion)
+	var plan := FieldMoveStage.stages(false, is_companion or temporary != null, is_companion,
+		clears)
 	if plan.has(FieldMoveStage.APPEAR):
 		stage_started.emit(FieldMoveStage.APPEAR)
 		if is_companion:
@@ -85,16 +90,23 @@ func perform(move: StringName, target: Node2D) -> void:
 			temporary.set_grid(_map.get_grid())
 			temporary.place(cell, facing)
 			await temporary.appear()
-	stage_started.emit(FieldMoveStage.SLASH)
-	Haptics.vibrate(UiTokens.HAPTIC_TAP_MS)
-	_slash = CutSlash.new()
-	_map.add_child(_slash)
-	_slash.position = _map.to_local(_effect_position(target))
-	await _slash.play(FieldMoveStage.SLASH_DURATION)
-	_slash.queue_free()
-	_slash = null
-	stage_started.emit(FieldMoveStage.CLEAR)
-	await _fade(target, FieldMoveStage.CLEAR_FADE)
+	if plan.has(FieldMoveStage.SLASH):
+		stage_started.emit(FieldMoveStage.SLASH)
+		Haptics.vibrate(UiTokens.HAPTIC_TAP_MS)
+		_slash = CutSlash.new()
+		_map.add_child(_slash)
+		_slash.position = _map.to_local(_effect_position(target))
+		await _slash.play(FieldMoveStage.SLASH_DURATION)
+		_slash.queue_free()
+		_slash = null
+	if plan.has(FieldMoveStage.CLEAR):
+		stage_started.emit(FieldMoveStage.CLEAR)
+		await _fade(target, FieldMoveStage.CLEAR_FADE)
+	if not clears and not plan.is_empty():
+		Haptics.vibrate(UiTokens.HAPTIC_TAP_MS)
+		var hold := create_tween()
+		hold.tween_interval(FieldMoveStage.HOLD_DURATION)
+		await hold.finished
 	if plan.has(FieldMoveStage.WITHDRAW):
 		stage_started.emit(FieldMoveStage.WITHDRAW)
 		await temporary.withdraw()

@@ -45,56 +45,56 @@ func before_each() -> void:
 
 func test_can_mount_facing_free_surfable_water() -> void:
 	assert_eq(SurfRules.can_mount(_grid, Vector2i(2, 1), Vector2i.RIGHT, READY),
-		SurfRules.Mount.READY)
+		SurfRules.MountCheck.READY)
 
 
 func test_can_mount_reports_the_missing_condition() -> void:
 	assert_eq(SurfRules.can_mount(_grid, Vector2i(2, 1), Vector2i.RIGHT,
-		FieldMoves.State.NO_HM), SurfRules.Mount.NO_HM)
+		FieldMoves.State.NO_HM), SurfRules.MountCheck.NO_HM)
 	assert_eq(SurfRules.can_mount(_grid, Vector2i(2, 1), Vector2i.RIGHT,
-		FieldMoves.State.NO_BADGE), SurfRules.Mount.NO_BADGE)
+		FieldMoves.State.NO_BADGE), SurfRules.MountCheck.NO_BADGE)
 	assert_eq(SurfRules.can_mount(_grid, Vector2i(2, 1), Vector2i.RIGHT,
-		FieldMoves.State.NO_POKEMON), SurfRules.Mount.NO_POKEMON)
+		FieldMoves.State.NO_POKEMON), SurfRules.MountCheck.NO_POKEMON)
 
 
 func test_can_mount_not_water_already_surfing_or_decor() -> void:
 	assert_eq(SurfRules.can_mount(_grid, Vector2i(1, 1), Vector2i.RIGHT, READY),
-		SurfRules.Mount.NOT_WATER, "face à la terre (T-4)")
+		SurfRules.MountCheck.NOT_WATER, "face à la terre (T-4)")
 	assert_eq(SurfRules.can_mount(_grid, Vector2i(3, 1), Vector2i.RIGHT, READY),
-		SurfRules.Mount.NOT_WATER, "déjà en mer")
+		SurfRules.MountCheck.NOT_WATER, "déjà en mer")
 	_grid.set_surfable(Vector2i(2, 0))
 	_grid.set_surfable(Vector2i(2, 0), false)
 	assert_eq(SurfRules.can_mount(_grid, Vector2i(2, 1), Vector2i.UP, READY),
-		SurfRules.Mount.NOT_WATER, "eau décor")
+		SurfRules.MountCheck.NOT_WATER, "eau décor")
 	assert_eq(SurfRules.can_mount(_grid, Vector2i(2, 1), Vector2i(1, 1), READY),
-		SurfRules.Mount.NOT_WATER, "direction non cardinale")
+		SurfRules.MountCheck.NOT_WATER, "direction non cardinale")
 
 
 func test_can_mount_blocked_by_occupant_even_without_conditions() -> void:
 	var swimmer := RefCounted.new()
 	_grid.occupy(Vector2i(3, 1), swimmer)
 	assert_eq(SurfRules.can_mount(_grid, Vector2i(2, 1), Vector2i.RIGHT,
-		FieldMoves.State.NO_HM), SurfRules.Mount.BLOCKED)
+		FieldMoves.State.NO_HM), SurfRules.MountCheck.BLOCKED)
 
 
 func test_can_mount_forbidden_while_current_active() -> void:
 	assert_eq(SurfRules.can_mount(_grid, Vector2i(2, 1), Vector2i.RIGHT, READY, true),
-		SurfRules.Mount.FORBIDDEN, "T-14")
+		SurfRules.MountCheck.FORBIDDEN, "T-14")
 	assert_eq(SurfRules.can_mount(_grid, Vector2i(2, 1), Vector2i.RIGHT,
-		FieldMoves.State.NO_BADGE, true), SurfRules.Mount.NO_BADGE,
+		FieldMoves.State.NO_BADGE, true), SurfRules.MountCheck.NO_BADGE,
 		"les conditions manquantes priment")
 
 
 func test_mount_rules_by_ground_level() -> void:
 	var grid := _row(".w")
 	assert_eq(SurfRules.can_mount(grid, Vector2i(0, 0), Vector2i.RIGHT, READY),
-		SurfRules.Mount.READY, "depuis le sol bas")
+		SurfRules.MountCheck.READY, "depuis le sol bas")
 	grid = _row("=w")
 	assert_eq(SurfRules.can_mount(grid, Vector2i(0, 0), Vector2i.RIGHT, READY),
-		SurfRules.Mount.READY, "depuis un escalier")
+		SurfRules.MountCheck.READY, "depuis un escalier")
 	grid = _row(":w")
 	assert_eq(SurfRules.can_mount(grid, Vector2i(0, 0), Vector2i.RIGHT, READY),
-		SurfRules.Mount.BLOCKED, "jamais depuis le sol haut")
+		SurfRules.MountCheck.BLOCKED, "jamais depuis le sol haut")
 
 
 # --- En mer ----------------------------------------------------------------------
@@ -182,49 +182,66 @@ func test_terminals_are_reached_but_not_crossed() -> void:
 # --- Reprise (dossier §5.7, cas limites 1 et 2) -------------------------------------
 
 func test_resume_on_water_with_conditions() -> void:
-	var r := SurfRules.resume(_grid, Vector2i(4, 1), true, Vector2i(2, 1), Vector2i(0, 0), READY)
+	var r := SurfRules.resume(_grid, Vector2i(4, 1), Mount.Kind.SURF,
+		Vector2i(2, 1), Vector2i(0, 0), READY)
 	assert_eq(r.cell, Vector2i(4, 1))
-	assert_true(r.surfing)
+	assert_true(r.is_surfing())
 	assert_eq(r.reason, SurfRules.ResumeReason.AS_SAVED)
 	assert_false(r.ride_current)
 
 
 func test_resume_on_land_walks_even_if_surfing_was_saved() -> void:
-	var r := SurfRules.resume(_grid, Vector2i(1, 1), true, Vector2i(2, 1), Vector2i(0, 0), READY)
+	var r := SurfRules.resume(_grid, Vector2i(1, 1), Mount.Kind.SURF,
+		Vector2i(2, 1), Vector2i(0, 0), READY)
 	assert_eq(r.cell, Vector2i(1, 1))
-	assert_false(r.surfing)
+	assert_false(r.is_surfing())
 
 
 func test_resume_guard_last_land_when_surf_pokemon_is_gone() -> void:
-	var r := SurfRules.resume(_grid, Vector2i(4, 1), true, Vector2i(2, 1), Vector2i(0, 0),
+	var r := SurfRules.resume(_grid, Vector2i(4, 1), Mount.Kind.SURF,
+		Vector2i(2, 1), Vector2i(0, 0),
 		FieldMoves.State.NO_POKEMON)
 	assert_eq(r.cell, Vector2i(2, 1))
-	assert_false(r.surfing)
+	assert_false(r.is_surfing())
 	assert_eq(r.reason, SurfRules.ResumeReason.LAST_LAND)
 
 
 func test_resume_guard_spawn_when_last_land_is_unusable() -> void:
 	_grid.occupy(Vector2i(2, 1), RefCounted.new())
-	var r := SurfRules.resume(_grid, Vector2i(4, 1), true, Vector2i(2, 1), Vector2i(0, 0),
+	var r := SurfRules.resume(_grid, Vector2i(4, 1), Mount.Kind.SURF,
+		Vector2i(2, 1), Vector2i(0, 0),
 		FieldMoves.State.NO_HM)
 	assert_eq(r.cell, Vector2i(0, 0))
 	assert_eq(r.reason, SurfRules.ResumeReason.SPAWN)
-	assert_false(r.surfing)
-	r = SurfRules.resume(_grid, Vector2i(4, 1), true, Vector2i(40, 1), Vector2i(3, 0),
+	assert_false(r.is_surfing())
+	r = SurfRules.resume(_grid, Vector2i(4, 1), Mount.Kind.SURF, Vector2i(40, 1), Vector2i(3, 0),
 		FieldMoves.State.NO_HM)
 	assert_eq(r.cell, Vector2i(3, 0))
-	assert_true(r.surfing, "arrivée de la carte dans l'eau : Surf forcé")
+	assert_true(r.is_surfing(), "arrivée de la carte dans l'eau : Surf forcé")
 
 
 func test_resume_walking_on_water_is_impossible_so_guarded() -> void:
-	var r := SurfRules.resume(_grid, Vector2i(4, 1), false, Vector2i(2, 2), Vector2i(0, 0), READY)
+	var r := SurfRules.resume(_grid, Vector2i(4, 1), Mount.Kind.NONE,
+		Vector2i(2, 2), Vector2i(0, 0), READY)
 	assert_eq(r.cell, Vector2i(2, 2))
-	assert_false(r.surfing)
+	assert_false(r.is_surfing())
+
+
+func test_resume_keeps_the_bike_on_land() -> void:
+	var r := SurfRules.resume(_grid, Vector2i(1, 1), Mount.Kind.BIKE,
+		Vector2i(2, 1), Vector2i(0, 0), READY)
+	assert_eq(r.cell, Vector2i(1, 1))
+	assert_eq(r.mount, Mount.Kind.BIKE, "MountRules.on_map_entered décide ensuite selon la carte")
+	r = SurfRules.resume(_grid, Vector2i(4, 1), Mount.Kind.BIKE,
+		Vector2i(2, 1), Vector2i(0, 0), READY)
+	assert_eq(r.cell, Vector2i(2, 1), "Vélo sur l'eau : garde-fou")
+	assert_eq(r.mount, Mount.Kind.BIKE)
 
 
 func test_resume_on_a_current_starts_the_ride() -> void:
 	_grid.set_current(Vector2i(4, 1), Vector2i.DOWN)
-	var r := SurfRules.resume(_grid, Vector2i(4, 1), true, Vector2i(2, 1), Vector2i(0, 0), READY)
+	var r := SurfRules.resume(_grid, Vector2i(4, 1), Mount.Kind.SURF,
+		Vector2i(2, 1), Vector2i(0, 0), READY)
 	assert_eq(r.cell, Vector2i(4, 1))
 	assert_true(r.ride_current, "la glissade part dès l'arrivée (cas limite 2)")
 
@@ -237,10 +254,12 @@ func test_resume_generic_guard_without_exit_goes_to_spawn() -> void:
 	var exits := {Vector2i(0, 0): true}
 	var has_exit := func(cell: Vector2i) -> bool:
 		return SurfRules.reaches_any(_grid, cell, exits, false)
-	var r := SurfRules.resume(_grid, Vector2i(7, 1), false, Vector2i(7, 1), Vector2i(1, 2), READY,
+	var r := SurfRules.resume(_grid, Vector2i(7, 1), Mount.Kind.NONE,
+		Vector2i(7, 1), Vector2i(1, 2), READY,
 		has_exit)
 	assert_eq(r.cell, Vector2i(1, 2))
 	assert_eq(r.reason, SurfRules.ResumeReason.NO_EXIT)
-	r = SurfRules.resume(_grid, Vector2i(1, 1), false, Vector2i(1, 1), Vector2i(1, 2), READY,
+	r = SurfRules.resume(_grid, Vector2i(1, 1), Mount.Kind.NONE,
+		Vector2i(1, 1), Vector2i(1, 2), READY,
 		has_exit)
 	assert_eq(r.reason, SurfRules.ResumeReason.AS_SAVED, "une sortie : rien ne change")

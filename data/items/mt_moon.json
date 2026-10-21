@@ -21,7 +21,7 @@
 	},
 	"tm01": {
 		"name": "CT01 — Ultimapoing", "plural": "CT01 — Ultimapoing", "feminine": true,
-		"category": "tm", "tm": 1, "teaches": "mega_punch",
+		"category": "tm", "tm": 1, "teaches": "mega_punch", "price": 3000,
 		"description": "Un coup de poing d'une force incroyable."
 	}
 }

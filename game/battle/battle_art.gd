@@ -59,6 +59,8 @@ func height_m(species: StringName) -> float:
 ## visible dans la texture, pieds au bas-centre), official (bool : artwork HD, filtre
 ## linéaire ; sinon pixel art provisoire, NEAREST, échelle entière) }.
 func image(species: StringName, back: bool) -> Dictionary:
+	if species == GhostDisguise.SPECIES:
+		return _ghost_image(back)
 	if not back:
 		var official := _official(species)
 		if not official.is_empty():
@@ -73,6 +75,16 @@ func image(species: StringName, back: bool) -> Dictionary:
 		return {"texture": null, "official": false, "box": Rect2(Vector2.ZERO, BattleLayout.NATIVE)}
 	var sprite := load(path) as Texture2D
 	return {"texture": sprite, "official": false, "box": visible_box(sprite, path)}
+
+
+## Silhouette du SPECTRE (jalon 19, [GhostDisguise]) : peinte (filtre linéaire, comme un
+## artwork), taille de référence ; elle n'existe pas en dos (texture nulle).
+func _ghost_image(back: bool) -> Dictionary:
+	var path := GhostDisguise.TEXTURE_PATH
+	if back or not ResourceLoader.exists(path):
+		return {"texture": null, "official": false, "box": Rect2(Vector2.ZERO, BattleLayout.NATIVE)}
+	var texture := load(path) as Texture2D
+	return {"texture": texture, "official": true, "box": visible_box(texture, path)}
 
 
 ## Artwork officiel de [param species], resserré sur son cadre utile ; vide sans artwork.

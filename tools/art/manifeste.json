@@ -1573,6 +1573,136 @@
    "cases": 8,
    "ombre": false,
    "contact": null
+  },
+  {
+   "id": "prop_panneau_scope_01",
+   "source": "WORLD_PROP_PANNEAU_SCOPE_01_NE_r1.png",
+   "sortie": "assets/world/props/prop_panneau_scope_01.png",
+   "axe": "h",
+   "cases": 2,
+   "ombre": true,
+   "contact": 0.1
+  },
+  {
+   "id": "bldg_grand_magasin_01",
+   "source": "WORLD_BLDG_GRAND_MAGASIN_01_NE_r1.png",
+   "sortie": "assets/world/buildings/bldg_grand_magasin_01.png",
+   "taille_cases": [
+    14.0,
+    9.25
+   ],
+   "ombre": true,
+   "contact": 0.12
+  },
+  {
+   "id": "bldg_residence_01",
+   "source": "WORLD_BLDG_RESIDENCE_01_NE_r1.png",
+   "sortie": "assets/world/buildings/bldg_residence_01.png",
+   "taille_cases": [
+    12.0,
+    8.25
+   ],
+   "ombre": true,
+   "contact": 0.12
+  },
+  {
+   "id": "bldg_escalier_service_01",
+   "source": "WORLD_BLDG_ESCALIER_SERVICE_01_NE_r1.png",
+   "sortie": "assets/world/buildings/bldg_escalier_service_01.png",
+   "taille_cases": [
+    4.0,
+    4.25
+   ],
+   "ombre": true,
+   "contact": 0.12
+  },
+  {
+   "id": "bldg_casino_01",
+   "source": "WORLD_BLDG_CASINO_01_NE_r1.png",
+   "sortie": "assets/world/buildings/bldg_casino_01.png",
+   "taille_cases": [
+    12.0,
+    7.25
+   ],
+   "ombre": true,
+   "contact": 0.12
+  },
+  {
+   "id": "bldg_coin_lots_01",
+   "source": "WORLD_BLDG_COIN_LOTS_01_NE_r1.png",
+   "sortie": "assets/world/buildings/bldg_coin_lots_01.png",
+   "taille_cases": [
+    8.0,
+    7.25
+   ],
+   "ombre": true,
+   "contact": 0.12
+  },
+  {
+   "id": "bldg_arene_celadopole_01",
+   "source": "WORLD_BLDG_ARENE_CELADOPOLE_01_NE_r1.png",
+   "sortie": "assets/world/buildings/bldg_arene_celadopole_01.png",
+   "taille_cases": [
+    12.0,
+    7.25
+   ],
+   "ombre": true,
+   "contact": 0.12
+  },
+  {
+   "id": "bldg_restaurant_01",
+   "source": "WORLD_BLDG_RESTAURANT_01_NE_r1.png",
+   "sortie": "assets/world/buildings/bldg_restaurant_01.png",
+   "taille_cases": [
+    8.0,
+    7.25
+   ],
+   "ombre": true,
+   "contact": 0.12
+  },
+  {
+   "id": "bldg_hotel_01",
+   "source": "WORLD_BLDG_HOTEL_01_NE_r1.png",
+   "sortie": "assets/world/buildings/bldg_hotel_01.png",
+   "taille_cases": [
+    10.0,
+    7.25
+   ],
+   "ombre": true,
+   "contact": 0.12
+  },
+  {
+   "id": "bldg_maison_chef_01",
+   "source": "WORLD_BLDG_MAISON_CHEF_01_NE_r1.png",
+   "sortie": "assets/world/buildings/bldg_maison_chef_01.png",
+   "taille_cases": [
+    7.0,
+    6.25
+   ],
+   "ombre": true,
+   "contact": 0.12
+  },
+  {
+   "id": "bldg_maison_toit_01",
+   "source": "WORLD_BLDG_MAISON_TOIT_01_NE_r1.png",
+   "sortie": "assets/world/buildings/bldg_maison_toit_01.png",
+   "taille_cases": [
+    5.0,
+    4.25
+   ],
+   "ombre": true,
+   "contact": 0.12
+  },
+  {
+   "id": "prop_fontaine_01",
+   "source": "WORLD_PROP_FONTAINE_01_NE_r1.png",
+   "sortie": "assets/world/props/prop_fontaine_01.png",
+   "taille_cases": [
+    2.0,
+    1.9375
+   ],
+   "ombre": false,
+   "contact": 0.1
   }
  ],
  "hautes_herbes": {
@@ -1919,6 +2049,160 @@
     15,
     10
    ]
+  },
+  {
+   "id": "int_celadon_dept_gf_coque",
+   "source": "INT_CELADON_DEPT_GF_COQUE_NE_r1.png",
+   "sortie": "assets/world/interiors/int_celadon_dept_gf_coque.png",
+   "cases": [
+    20,
+    13
+   ]
+  },
+  {
+   "id": "int_celadon_dept_2f_coque",
+   "source": "INT_CELADON_DEPT_2F_COQUE_NE_r1.png",
+   "sortie": "assets/world/interiors/int_celadon_dept_2f_coque.png",
+   "cases": [
+    20,
+    13
+   ]
+  },
+  {
+   "id": "int_celadon_dept_3f_coque",
+   "source": "INT_CELADON_DEPT_3F_COQUE_NE_r1.png",
+   "sortie": "assets/world/interiors/int_celadon_dept_3f_coque.png",
+   "cases": [
+    20,
+    13
+   ]
+  },
+  {
+   "id": "int_celadon_dept_5f_coque",
+   "source": "INT_CELADON_DEPT_5F_COQUE_NE_r1.png",
+   "sortie": "assets/world/interiors/int_celadon_dept_5f_coque.png",
+   "cases": [
+    20,
+    13
+   ]
+  },
+  {
+   "id": "int_celadon_dept_roof_coque",
+   "source": "INT_CELADON_DEPT_ROOF_COQUE_NE_r1.png",
+   "sortie": "assets/world/interiors/int_celadon_dept_roof_coque.png",
+   "cases": [
+    20,
+    11
+   ]
+  },
+  {
+   "id": "int_celadon_dept_elevator_coque",
+   "source": "INT_CELADON_DEPT_ELEVATOR_COQUE_NE_r1.png",
+   "sortie": "assets/world/interiors/int_celadon_dept_elevator_coque.png",
+   "cases": [
+    6,
+    6
+   ]
+  },
+  {
+   "id": "int_celadon_mansion_gf_coque",
+   "source": "INT_CELADON_MANSION_GF_COQUE_NE_r1.png",
+   "sortie": "assets/world/interiors/int_celadon_mansion_gf_coque.png",
+   "cases": [
+    16,
+    11
+   ]
+  },
+  {
+   "id": "int_celadon_mansion_1f_coque",
+   "source": "INT_CELADON_MANSION_1F_COQUE_NE_r1.png",
+   "sortie": "assets/world/interiors/int_celadon_mansion_1f_coque.png",
+   "cases": [
+    16,
+    11
+   ]
+  },
+  {
+   "id": "int_celadon_mansion_2f_coque",
+   "source": "INT_CELADON_MANSION_1F_COQUE_NE_r1.png",
+   "sortie": "assets/world/interiors/int_celadon_mansion_2f_coque.png",
+   "cases": [
+    16,
+    11
+   ],
+   "note": "même image que le 1er étage (grilles identiques)"
+  },
+  {
+   "id": "int_celadon_mansion_3f_coque",
+   "source": "INT_CELADON_MANSION_3F_COQUE_NE_r1.png",
+   "sortie": "assets/world/interiors/int_celadon_mansion_3f_coque.png",
+   "cases": [
+    16,
+    11
+   ]
+  },
+  {
+   "id": "int_celadon_mansion_roof_coque",
+   "source": "INT_CELADON_MANSION_ROOF_COQUE_NE_r1.png",
+   "sortie": "assets/world/interiors/int_celadon_mansion_roof_coque.png",
+   "cases": [
+    16,
+    10
+   ]
+  },
+  {
+   "id": "int_celadon_mansion_roof_house_coque",
+   "source": "INT_CELADON_MANSION_ROOF_HOUSE_COQUE_NE_r1.png",
+   "sortie": "assets/world/interiors/int_celadon_mansion_roof_house_coque.png",
+   "cases": [
+    10,
+    8
+   ]
+  },
+  {
+   "id": "int_celadon_restaurant_coque",
+   "source": "INT_CELADON_RESTAURANT_COQUE_NE_r1.png",
+   "sortie": "assets/world/interiors/int_celadon_restaurant_coque.png",
+   "cases": [
+    15,
+    10
+   ]
+  },
+  {
+   "id": "int_celadon_chief_house_coque",
+   "source": "INT_CELADON_CHIEF_HOUSE_COQUE_NE_r1.png",
+   "sortie": "assets/world/interiors/int_celadon_chief_house_coque.png",
+   "cases": [
+    15,
+    10
+   ]
+  },
+  {
+   "id": "int_celadon_hotel_coque",
+   "source": "INT_CELADON_HOTEL_COQUE_NE_r1.png",
+   "sortie": "assets/world/interiors/int_celadon_hotel_coque.png",
+   "cases": [
+    15,
+    10
+   ]
+  },
+  {
+   "id": "int_celadon_gym_coque",
+   "source": "INT_CELADON_GYM_COQUE_NE_r1.png",
+   "sortie": "assets/world/interiors/int_celadon_gym_coque.png",
+   "cases": [
+    17,
+    16
+   ]
+  },
+  {
+   "id": "int_rocket_hideout_elevator_coque",
+   "source": "INT_ROCKET_HIDEOUT_ELEVATOR_COQUE_NE_r1.png",
+   "sortie": "assets/world/interiors/int_rocket_hideout_elevator_coque.png",
+   "cases": [
+    6,
+    8
+   ]
   }
  ],
  "decor": [
@@ -2146,6 +2430,24 @@
    "id": "ground_glace_01",
    "source": "WORLD_GROUND_GLACE_01_NE_r1.png",
    "sortie": "assets/world/ground/ground_glace_01.png",
+   "taille": 384,
+   "contraste": 0.8,
+   "couleur": 1.0,
+   "raccord": 24
+  },
+  {
+   "id": "ground_beton_repaire_01",
+   "source": "WORLD_GROUND_BETON_REPAIRE_01_NE_r1.png",
+   "sortie": "assets/world/ground/ground_beton_repaire_01.png",
+   "taille": 384,
+   "contraste": 0.8,
+   "couleur": 1.0,
+   "raccord": 24
+  },
+  {
+   "id": "ground_moquette_casino_01",
+   "source": "WORLD_GROUND_MOQUETTE_CASINO_01_NE_r1.png",
+   "sortie": "assets/world/ground/ground_moquette_casino_01.png",
    "taille": 384,
    "contraste": 0.8,
    "couleur": 1.0,
@@ -2752,14 +3054,6 @@
    "note": "série 27 (J24) ; Route 19 : Hugo, Malo ; look cooltrainer_m"
   },
   {
-   "id": "topdresseuse",
-   "source": "PNJ_TOPDRESSEUSE_NE_r1.png",
-   "sortie": "assets/sprites/characters/painted/topdresseuse_sheet.png",
-   "hauteur": 128,
-   "nettoyer": true,
-   "note": "série 27 (J24) ; Centre de Cramois'Île T-46 ; look cooltrainer_f"
-  },
-  {
    "id": "nageur_eau",
    "source": "PNJ_NAGEUR_EAU_NE_r1.png",
    "sortie": "assets/sprites/characters/painted/nageur_eau_sheet.png",
@@ -2790,6 +3084,42 @@
    "hauteur": 76,
    "nettoyer": true,
    "note": "série 27 : monture de Surf seule (apparition, saut), profil ≈ 104 px ; surf_mount"
+  },
+  {
+   "id": "erika",
+   "source": "PNJ_ERIKA_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/erika_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "giovanni",
+   "source": "PNJ_GIOVANNI_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/giovanni_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "rocket_civil",
+   "source": "PNJ_ROCKET_CIVIL_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/rocket_civil_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "intello",
+   "source": "PNJ_INTELLO_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/intello_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "beaute",
+   "source": "PNJ_BEAUTE_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/beaute_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "topdresseuse",
+   "source": "PNJ_TOPDRESSEUSE_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/topdresseuse_sheet.png",
+   "hauteur": 128
   }
  ],
  "pokemon": [
@@ -2972,6 +3302,13 @@
    "source": "POKE_SOPORIFIK_NE_r3.png",
    "sortie": "assets/sprites/pokemon/painted/soporifik_sheet.png",
    "hauteur": 76
+  },
+  {
+   "id": "evoli",
+   "source": "POKE_EVOLI_NE_r2.png",
+   "sortie": "assets/sprites/pokemon/painted/evoli_sheet.png",
+   "hauteur": 56,
+   "note": "J20 T22 ; compagnon `eevee` (data/pokemon/companions.json) ; hauteur 56 par défaut (règle 4)"
   }
  ],
  "heros_images": [
@@ -3301,6 +3638,48 @@
    "source": "PASSAGERE_ATTENTE_r1.png",
    "sortie": "assets/sprites/characters/painted/passagere_idle_sheet.png",
    "marche": "passagere"
+  },
+  {
+   "id": "erika_idle",
+   "source": "ERIKA_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/erika_idle_sheet.png",
+   "marche": "erika"
+  },
+  {
+   "id": "giovanni_idle",
+   "source": "GIOVANNI_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/giovanni_idle_sheet.png",
+   "marche": "giovanni"
+  },
+  {
+   "id": "rocket_civil_idle",
+   "source": "ROCKET_CIVIL_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/rocket_civil_idle_sheet.png",
+   "marche": "rocket_civil"
+  },
+  {
+   "id": "intello_idle",
+   "source": "INTELLO_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/intello_idle_sheet.png",
+   "marche": "intello"
+  },
+  {
+   "id": "beaute_idle",
+   "source": "BEAUTE_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/beaute_idle_sheet.png",
+   "marche": "beaute"
+  },
+  {
+   "id": "topdresseuse_idle",
+   "source": "TOPDRESSEUSE_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/topdresseuse_idle_sheet.png",
+   "marche": "topdresseuse"
+  },
+  {
+   "id": "evoli_idle",
+   "source": "EVOLI_ATTENTE_r2.png",
+   "sortie": "assets/sprites/pokemon/painted/evoli_idle_sheet.png",
+   "marche": "evoli"
   }
  ],
  "images_objets": [
@@ -4280,6 +4659,113 @@
     1,
     1,
     4,
+    1
+   ],
+   "contact": 0.2
+  },
+  {
+   "source": "WORLD_RELIEF_MUR_REPAIRE_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/relief/",
+   "colonnes": 3,
+   "lignes": 2,
+   "ids": [
+    "relief_mur_repaire_01",
+    "relief_mur_repaire_02",
+    "relief_mur_repaire_03",
+    "relief_mur_repaire_04",
+    "relief_mur_repaire_05"
+   ],
+   "cases": [
+    2,
+    2,
+    2,
+    0.35,
+    0.35
+   ],
+   "contact": 0.0
+  },
+  {
+   "source": "WORLD_RELIEF_MUR_CASINO_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/relief/",
+   "colonnes": 3,
+   "lignes": 2,
+   "ids": [
+    "relief_mur_casino_01",
+    "relief_mur_casino_02",
+    "relief_mur_casino_03",
+    "relief_mur_casino_04",
+    "relief_mur_casino_05"
+   ],
+   "cases": [
+    2,
+    2,
+    2,
+    0.35,
+    0.35
+   ],
+   "contact": 0.0
+  },
+  {
+   "source": "INT_REPAIRE_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/interiors/",
+   "colonnes": 3,
+   "lignes": 2,
+   "ids": [
+    "int_caisse_repaire_01",
+    "int_conduite_repaire_01",
+    "int_console_repaire_01",
+    "int_bureau_giovanni_01",
+    "int_escalier_repaire_monte_01",
+    "int_escalier_repaire_descend_01"
+   ],
+   "cases": [
+    1,
+    1,
+    1,
+    4,
+    1,
+    1
+   ],
+   "contact": 0.2
+  },
+  {
+   "source": "INT_DALLES_REPAIRE_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/interiors/",
+   "colonnes": 3,
+   "lignes": 2,
+   "ids": [
+    "decal_fleche_repaire_01",
+    "decal_arret_repaire_01",
+    "int_porte_ascenseur_repaire_01",
+    "hideout_office_door"
+   ],
+   "cases": [
+    1,
+    1,
+    2,
+    2
+   ],
+   "contact": 0.0
+  },
+  {
+   "source": "INT_CASINO_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/interiors/",
+   "colonnes": 3,
+   "lignes": 2,
+   "ids": [
+    "int_machine_casino_01",
+    "int_machine_casino_02",
+    "int_tabouret_casino_01",
+    "int_comptoir_casino_01",
+    "int_affiche_casino_01",
+    "game_corner_wall"
+   ],
+   "cases": [
+    1,
+    1,
+    1,
+    1,
+    1,
     1
    ],
    "contact": 0.2

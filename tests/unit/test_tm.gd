@@ -49,10 +49,13 @@ func test_compatibilities_of_rouge_bleu() -> void:
 	for id: StringName in _data.get_species_ids():
 		if _data.can_learn_tm(id, 34):
 			count += 1
-	# Jalon 15 (T12) : Miaouss et Persan, compatibles (Rouge/Bleu) ; jalon 17 (T7) : les huit.
-	# Jalon 24 (T4) : 24 espèces, toutes compatibles sauf Magicarpe.
-	assert_eq(count, 91, "91 espèces sur 96 (dossier 14 §6.1 ; + 12 du jalon 12, + 9 du jalon"
-		+ " 13, + 3 du jalon 14, + 2 du jalon 15, + 8 du jalon 17, + 23 du jalon 24)")
+	# Jalon 15 (T12) : Miaouss et Persan, compatibles (Rouge/Bleu) ; jalon 17 (T7) : les huit ;
+	# jalon 19 (T3) : les six de la Tour (Caninos vient du J17) ; jalon 20 (T7) : les onze
+	# (Caninos et Goupix sont ceux du J17) ; jalon 24 (T4) : 22 espèces, toutes compatibles sauf
+	# Magicarpe.
+	assert_eq(count, 106, "106 espèces sur 111 (dossier 14 §6.1 ; + 12 du jalon 12, + 9 du jalon"
+		+ " 13, + 3 du jalon 14, + 2 du jalon 15, + 8 du jalon 17, + 6 du jalon 19, + 11 du jalon 20,"
+		+ " + 21 du jalon 24)")
 
 
 ## Jalon 14 (T5, jalon-14.md §2.4) : CT19 Frappe Atlas (Route 25) et CT28 Tunnel (Rocket).
@@ -111,7 +114,6 @@ func test_tm_entries_are_validated() -> void:
 		"no_number": [{"teaches": "tackle"}, "« tm »"],
 		"bad_number": [{"tm": 51, "teaches": "tackle"}, "« tm »"],
 		"no_move": [{"tm": 2}, "« teaches »"],
-		"priced": [{"tm": 3, "teaches": "tackle", "price": 3000}, "n'a pas de prix"],
 	}
 	for id: String in cases:
 		var entry: Dictionary = base.duplicate()
@@ -128,4 +130,10 @@ func test_tm_entries_are_validated() -> void:
 	var twin: Dictionary = good.duplicate()
 	assert_false(lib.add_from_dict({"twin": twin}, "t"), "numéro unique")
 	assert_false(lib.check_moves(_data), "capacité inconnue")
-	assert_push_error_count(7)
+	# Jalon 20 (§2.9.2) : une CT peut avoir un prix (achetable une fois), jamais revendue.
+	var priced: Dictionary = base.duplicate()
+	priced.merge({"tm": 3, "teaches": "tackle", "price": 3000})
+	assert_true(lib.add_from_dict({"priced": priced}, "t"))
+	assert_eq(lib.get_item(&"priced").price, 3000)
+	assert_false(lib.get_item(&"priced").is_sellable())
+	assert_push_error_count(6)

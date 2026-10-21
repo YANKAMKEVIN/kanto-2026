@@ -1,0 +1,75 @@
+# Tour Pokémon 5F — grille fonctionnelle (jalon 19, lot 19.0, dossier 22 §4 à §9, conçue le
+# 2026-10-14). Source UNIQUE de la géométrie de la carte `pokemon_tower_5f` : contrôle
+# (tools/art/plan_check_tour_pokemon.py, qui relie les étages 2F à 6F par leurs escaliers) et, plus
+# tard, plan en aplats et outil de construction. Un changement de composition se fait ICI d'abord.
+#
+# 20 × 18 cases (dossier 22 §4.1, comme Rouge/Bleu) ; nord en haut ; x = colonne 0..19, y = rangée
+# 0..17. Géométrie reprise de Rouge/Bleu (pret/pokered, PokemonTower5F : escaliers en x = 3 et
+# x = 18, rangée 9), nettoyée de ses défauts d'extraction (cases isolées, trous de rendu).
+# Valeur par défaut (convention des GROTTES, pas celle de build_painted_interiors.gd) : les murs
+# sont DANS la grille, d'épaisseur variable (2 rangées au nord, parois en biais, massifs
+# intérieurs), la carte étant plus proche d'une grotte construite que d'une pièce 15 × 10 à mur
+# du fond sur 3 rangées ; le peintre habille les parois par-dessus. Bord de carte toujours
+# mur. Les tombes et stèles sont des obstacles bas, jamais des murs de découpe.
+#
+# Légende (commune aux étages 2F à 6F) :
+#   # mur (bloqué)                      . sol de la Tour (praticable ; terrain `floor`, rencontres
+#                                         de spectre dès le 3F)
+#   T tombe (bloquée, basse)            S stèle à bougie (bloquée ; halo additif au battement lent)
+#   Z zone purifiée (5F seulement : 2 × 2, praticable, ni rencontre ni vue de Dresseur)
+#   U escalier qui monte                V escalier qui descend
+#     (warp STEP_ON comme une porte ; la paire est donnée par paire= de la position « escalier »,
+#     l'arrivée par le « spawn » de même paire sur l'autre étage, sur la case voisine de
+#     l'escalier ; paires T12 (1F, J18), T23, T34, T45, T56, T67 (7F, hors J19))
+# Personnages, objets, déclencheurs et repères sont dans POSITIONS, pas dans la grille.
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 20 caractères), puis POSITIONS.
+# Ce qui est propre au 5F : la ZONE PURIFIÉE 2 × 2 au centre, en (10..11, 8..9) (cases Z,
+# praticables, hors rencontres, hors de toute vue). Une Exorciste qui ne combat pas se tient juste
+# à l'est (12, 8). Trois Exorcistes facultatives (alcôve nord, chambre centrale, alcôve sud) ;
+# Pépite en (6, 14). Aucun passage n'est obligé : un anneau relie l'escalier ouest à l'escalier est.
+
+PRATICABLES .ZUV
+
+GRILLE 20 18
+00 ####################
+01 #########S..S#######
+02 #########.....######
+03 #########......T####
+04 ##########..########
+05 #######........#####
+06 ####..............##
+07 ###.....####.......#
+08 ###..###..ZZ..###..#
+09 ###V.###..ZZ..###.U#
+10 ###..#......TT.....#
+11 ####.#....TT......##
+12 #######........#####
+13 ##########..########
+14 ######..........####
+15 ########......######
+16 #########....#######
+17 ####################
+FIN
+
+# POSITIONS — une ligne par élément :
+#   identifiant  type  cases  bloque|libre  [cle=valeur ...]  # commentaire
+# Types : escalier (paire=, sens=monte|descend, vers=carte), spawn (paire=, facing=), rival,
+# dresseur (Exorcistes : prenom=, facing=, sight=2..3, inevitable=oui|non), pnj (combat=non),
+# objet_visible (item=), cache (objet caché du J12, item= indice=), declencheur (role=), recul, zone (zone purifiée).
+# Sécurité : « sight » est la portée maximale ; la vue s'arrête à la première case bloquée.
+POSITIONS
+escalier_bas         escalier       3,9          libre   paire=T45 sens=descend vers=pokemon_tower_4f  # V, à gauche
+arrivee_T45          spawn          4,9          libre   paire=T45 facing=right  # arrivée depuis le 4F
+escalier_haut        escalier       18,9         libre   paire=T56 sens=monte vers=pokemon_tower_6f  # U, à droite
+arrivee_T56          spawn          17,9         libre   paire=T56 facing=left  # retour depuis le 6F
+zone_purifiee        zone           10..11,8..9  libre   role=Z1  # soin complet à l'entrée, fondu blanc, soin illimité (dossier 22 §9)
+exorciste_calme      pnj            12,8         bloque  role=calm facing=left combat=non  # Exorciste qui ne combat pas, juste à l'est de la zone
+tower_channeler_5    dresseur       14,3         bloque  prenom=Bérénice facing=left sight=3 inevitable=non  # alcôve nord
+tower_channeler_6    dresseur       6,10         bloque  prenom=Marthe facing=right sight=2 inevitable=non  # chambre centrale, côté ouest (ne voit pas la zone)
+tower_channeler_7    dresseur       9,16         bloque  prenom=Ysée facing=right sight=3 inevitable=non  # alcôve sud
+tower_5f_objet_1     objet_visible  6,14         bloque  role=O1 item=nugget  # Pépite (RB), coin sud-ouest
+tower_5f_cache_1     cache          4,11         bloque  role=O2 item=super_potion indice=offrande  # objet caché (RB : Élixir caché en (4, 12)) ; cul-de-sac ouest, petite offrande fanée
+repere_stele_n1      repere         9,1          bloque  role=stele
+repere_stele_n2      repere         12,1         bloque  role=stele
+FIN

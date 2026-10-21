@@ -1,0 +1,76 @@
+# Tour Pokémon 6F — grille fonctionnelle (jalon 19, lot 19.0, dossier 22 §4 à §9, conçue le
+# 2026-10-14). Source UNIQUE de la géométrie de la carte `pokemon_tower_6f` : contrôle
+# (tools/art/plan_check_tour_pokemon.py, qui relie les étages 2F à 6F par leurs escaliers) et, plus
+# tard, plan en aplats et outil de construction. Un changement de composition se fait ICI d'abord.
+#
+# 20 × 18 cases (dossier 22 §4.1, comme Rouge/Bleu) ; nord en haut ; x = colonne 0..19, y = rangée
+# 0..17. Géométrie reprise de Rouge/Bleu (pret/pokered, PokemonTower6F : escaliers en x = 3 et
+# x = 18, rangée 9), nettoyée de ses défauts d'extraction (cases isolées, trous de rendu).
+# Valeur par défaut (convention des GROTTES, pas celle de build_painted_interiors.gd) : les murs
+# sont DANS la grille, d'épaisseur variable (2 rangées au nord, parois en biais, massifs
+# intérieurs), la carte étant plus proche d'une grotte construite que d'une pièce 15 × 10 à mur
+# du fond sur 3 rangées ; le peintre habille les parois par-dessus. Bord de carte toujours
+# mur. Les tombes et stèles sont des obstacles bas, jamais des murs de découpe.
+#
+# Légende (commune aux étages 2F à 6F) :
+#   # mur (bloqué)                      . sol de la Tour (praticable ; terrain `floor`, rencontres
+#                                         de spectre dès le 3F)
+#   T tombe (bloquée, basse)            S stèle à bougie (bloquée ; halo additif au battement lent)
+#   Z zone purifiée (5F seulement : 2 × 2, praticable, ni rencontre ni vue de Dresseur)
+#   U escalier qui monte                V escalier qui descend
+#     (warp STEP_ON comme une porte ; la paire est donnée par paire= de la position « escalier »,
+#     l'arrivée par le « spawn » de même paire sur l'autre étage, sur la case voisine de
+#     l'escalier ; paires T12 (1F, J18), T23, T34, T45, T56, T67 (7F, hors J19))
+# Personnages, objets, déclencheurs et repères sont dans POSITIONS, pas dans la grille.
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 20 caractères), puis POSITIONS.
+# Ce qui est propre au 6F : DEUX Exorcistes INÉVITABLES. tower_channeler_8, en (16, 5) tournée vers
+# l'ouest, couvre (14..15, 5), les seules cases de la sortie nord de la salle d'arrivée ;
+# tower_channeler_9, en (6, 6) tournée vers le sud, couvre la colonne x = 6 (rangées 7 à 9), seul
+# passage vers le sud. L'escalier du 7F (U, (9, 16)) n'est accessible que par (10, 16) : c'est la
+# case du déclencheur du SPECTRE (dossier 22 §6.3 ; drapeau ghost_marowak_calmed posé au J21).
+# Le joueur est repoussé d'une case en (10, 15). ÉCART au dossier (« vers le sud ») : l'escalier
+# est au sud-ouest, donc le recul ne peut se faire qu'au NORD, à l'opposé de l'escalier.
+# Super Potion dans la poche de la colonne x = 15 (à la place de la Super Bonbon / Précision +).
+
+PRATICABLES .ZUV
+
+GRILLE 20 18
+00 ####################
+01 ####################
+02 ##########....######
+03 #######S.......S####
+04 ######.###..##..####
+05 #####.......##...###
+06 ####........##..####
+07 ###.........##.....#
+08 ######.#....##.....#
+09 ######.#####......V#
+10 ###.....####.......#
+11 ######......###.####
+12 #####.........#..###
+13 ######..TT..###.####
+14 ######......##..####
+15 ##########..########
+16 #########U...#######
+17 ####################
+FIN
+
+# POSITIONS — une ligne par élément :
+#   identifiant  type  cases  bloque|libre  [cle=valeur ...]  # commentaire
+# Types : escalier (paire=, sens=monte|descend, vers=carte), spawn (paire=, facing=), rival,
+# dresseur (Exorcistes : prenom=, facing=, sight=2..3, inevitable=oui|non), pnj (combat=non),
+# objet_visible (item=), declencheur (role=), recul, zone (zone purifiée).
+# Sécurité : « sight » est la portée maximale ; la vue s'arrête à la première case bloquée.
+POSITIONS
+escalier_bas         escalier       18,9         libre   paire=T56 sens=descend vers=pokemon_tower_5f  # V, à droite
+arrivee_T56          spawn          17,9         libre   paire=T56 facing=left  # arrivée depuis le 5F
+escalier_7f          escalier       9,16         libre   paire=T67 sens=monte vers=pokemon_tower_7f  # U : le warp existe, jamais atteint au J19 (7F non construit, K-13)
+declencheur_spectre  declencheur    10,16        libre   role=S1 flag=ghost_marowak_calmed  # seule case d'accès à l'escalier ; actif tant que ghost_marowak_calmed n'est pas posé
+recul_spectre        recul          10,15        libre   role=S1  # case de recul après le combat scripté (le déclencheur se réarme)
+tower_channeler_8    dresseur       16,5         bloque  prenom=Paulette facing=left sight=3 inevitable=oui  # vue (15, 5), (14, 5) : sortie nord de la salle d'arrivée
+tower_channeler_9    dresseur       6,6          bloque  prenom=Clémence facing=down sight=3 inevitable=oui  # vue (6, 7..9) : colonne x = 6, passage obligé vers le sud
+tower_6f_objet_1     objet_visible  14,14        bloque  role=O1 item=super_potion  # poche de la colonne x = 15, facultatif, hors de toute vue
+repere_stele_o       repere         7,3          bloque  role=stele
+repere_stele_e       repere         15,3         bloque  role=stele
+FIN

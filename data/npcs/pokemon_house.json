@@ -7,5 +7,11 @@
 	},
 	"nidoran_f": {
 		"cell": [4, 7], "facing": "up", "sprite": "pokemon/nidoran_f"
+	},
+	"homme": {
+		"cell": [11, 7], "facing": "left", "sprite": "traveler", "dialogue": "pokemon_house_man"
+	},
+	"fille": {
+		"cell": [3, 5], "facing": "left", "sprite": "lass_young", "dialogue": "pokemon_house_girl"
 	}
 }

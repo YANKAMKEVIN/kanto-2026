@@ -1,0 +1,23 @@
+# Carte de QA « téléporteurs », annexe — passe systèmes 2 (§2.9). Une salle sans autre issue que le
+# téléporteur (1, 1) → qa_teleport (8, 7). Carte Magnétique au sol (7, 5).
+#
+# Légende : # mur · . sol · T téléporteur · o objet au sol (bloqué)
+
+PRATICABLES .T
+
+GRILLE 10 8
+00 ##########
+01 #T.......#
+02 #........#
+03 #........#
+04 #........#
+05 #......o.#
+06 #........#
+07 ##########
+FIN
+
+POSITIONS
+tp_retour          teleporteur      1,1          libre   vers=qa_teleport:arr_c_est
+arr_salle          spawn            1,1          libre
+carte_magnetique   objet            7,5          bloque  item=card_key
+FIN

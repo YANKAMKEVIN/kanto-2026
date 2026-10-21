@@ -55,13 +55,20 @@ const SPECIES := {
 ## Reprises à l'identique de branches plus anciennes (règle d'ancienneté, jalon-24.md §0.1) :
 ## espèce → [fichier de reprise, branche d'origine].
 const SPECIES_REPRISES := {
-	&"poliwag": "j21-t5-donnees", &"tentacool": "j21-t5-donnees", &"tangela": "jalon-20",
-	&"gyarados": "jalon-19",
+	&"poliwag": "j21-t5-donnees", &"tentacool": "j21-t5-donnees",
 }
 const MOVE_REPRISES := {
-	&"dragon_rage": "jalon-19", &"hyper_beam": "jalon-19", &"constrict": "jalon-20",
-	&"stomp": "jalon-20", &"mist": "jalon-20", &"amnesia": "jalon-21",
-	&"barrier": "j21-t5-donnees",
+	&"amnesia": "jalon-21", &"barrier": "j21-t5-donnees",
+}
+## Reprises retirées à la fusion de systemes-2 (2026-10-21) : leur jalon est dans `main`.
+const MERGED_REPRISES := {
+	&"tangela": "res://data/pokemon/species/kanto_celadon.json",
+	&"gyarados": "res://data/pokemon/species/kanto_tower.json",
+	&"dragon_rage": "res://data/pokemon/moves/tower.json",
+	&"hyper_beam": "res://data/pokemon/moves/tower.json",
+	&"constrict": "res://data/pokemon/moves/celadon.json",
+	&"stomp": "res://data/pokemon/moves/celadon.json",
+	&"mist": "res://data/pokemon/moves/celadon.json",
 }
 ## Base d'argent de la classe de Rouge/Bleu (pic_pointers_money.asm) : Nageur 5, Canon (les
 ## Nageuses du §9.4) 70, Jeune Dresseuse 20, Ornithologue 25, Pêcheur 35, Boule (Nageur Dylan) 25.
@@ -193,8 +200,11 @@ func test_reprises_come_from_their_own_file() -> void:
 		assert_not_null(move, String(id))
 		if move != null:
 			assert_eq(move.source, "res://data/pokemon/moves/j24_reprises.json")
-	assert_eq(_items.get_item(&"great_ball").source,
-		"res://data/items/items_j24_reprises.json")
+	for id: StringName in MERGED_REPRISES:
+		var source: String = _data.get_species(id).source if _data.has_species(id) \
+			else _data.get_move(id).source
+		assert_eq(source, MERGED_REPRISES[id], String(id))
+	assert_eq(_items.get_item(&"great_ball").source, "res://data/items/items_j20.json")
 
 
 func test_learnsets_are_red_blue() -> void:
@@ -263,9 +273,9 @@ func test_new_moves_values() -> void:
 	assert_eq([cannon.min_hits, cannon.max_hits], [2, 5])
 	var blizzard := _data.get_move(&"blizzard").effect_of(MoveEffect.Kind.STATUS)
 	assert_eq([blizzard.status, blizzard.chance], [&"freeze", 10])
-	# Surf et Force appartiennent au J23 (P-2) ; Métronome reste en attente (T13).
-	assert_false(_data.has_move(&"surf"))
-	assert_false(_data.has_move(&"strength"))
+	# Surf et Force viennent de la passe systèmes 2 (S2C, S2D) ; Métronome reste en attente (T13).
+	assert_true(_data.has_move(&"surf"))
+	assert_true(_data.has_move(&"strength"))
 	assert_eq(_data.get_move(&"metronome").pending_effects, PackedStringArray(["metronome"]))
 
 
@@ -464,13 +474,14 @@ func test_new_items() -> void:
 
 
 func test_items_without_engine_support_wait_outside_the_libraries() -> void:
-	# Rappel (clé « revive » du T11 du J20, reprise à l'identique), Max Repousse et Max Élixir :
-	# data/j24_pending/, lu par aucune bibliothèque.
+	# Max Repousse et Max Élixir : data/j24_pending/, lu par aucune bibliothèque. Le Rappel
+	# (clé « revive ») est lu depuis le T11 du J20 (items_j20.json).
 	var pending: Dictionary = JSON.parse_string(
 		FileAccess.get_file_as_string(PENDING_DIR + "items.json"))
-	assert_eq((pending["items"] as Dictionary).keys(), ["revive", "max_repel", "max_elixir"])
-	for id: StringName in [&"revive", &"max_repel", &"max_elixir"]:
+	assert_eq((pending["items"] as Dictionary).keys(), ["max_repel", "max_elixir"])
+	for id: StringName in [&"max_repel", &"max_elixir"]:
 		assert_false(_items.has_item(id), String(id))
+	assert_eq(_items.get_item(&"revive").source, "res://data/items/items_j20.json")
 
 
 func test_cinnabar_mart_stock() -> void:
@@ -481,9 +492,10 @@ func test_cinnabar_mart_stock() -> void:
 	assert_not_null(shop)
 	if shop == null:
 		return
-	# Ordre de Rouge/Bleu (marts.asm) sans Max Repousse ni Rappel, en attente (§10.3).
+	# Ordre de Rouge/Bleu (marts.asm) sans Max Repousse, en attente (§10.3) ; le Rappel est lu
+	# depuis le J20 (fusion de systemes-2, 2026-10-21).
 	assert_eq(shop.item_ids(), [&"ultra_ball", &"great_ball", &"hyper_potion", &"escape_rope",
-		&"full_heal"] as Array[StringName])
+		&"full_heal", &"revive"] as Array[StringName])
 	var pending: Dictionary = JSON.parse_string(
 		FileAccess.get_file_as_string(PENDING_DIR + "shops.json"))
 	var full: Array = []

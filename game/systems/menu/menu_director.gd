@@ -52,6 +52,13 @@ signal pokedex_sheet_shown(view: PokedexSheetView)
 signal map_shown(view: MapView)
 ## Le panneau d'une zone découverte est à afficher (toucher, ou zone choisie à l'arrivée).
 signal map_zone_shown(view: ZonePanelView)
+## Passe systèmes 2 (§2.8, T24) : Vol accepté vers [param zone] ; Boot ferme le menu et envole.
+signal fly_requested(zone: StringName)
+## Passe systèmes 2 (T25b) : Téléport ou Tunnel accepté ([param move]) ; Boot ferme le menu et
+## lance le voyage.
+signal field_travel_requested(move: StringName)
+## Passe systèmes 2 (T25b) : refus à dire dans le bandeau de l'écran Équipe.
+signal team_notice_shown(text: String)
 ## L'écran Dresseur est à afficher : vue construite à l'entrée (et au retour d'un autre
 ## écran), le temps de jeu n'est pas rafraîchi en direct (jalon-06.md §6.11).
 signal trainer_shown(view: TrainerView)
@@ -85,6 +92,10 @@ signal tm_learn_requested(index: int, item_id: StringName)
 ## ([method FieldItemRules.check] = OK) : Boot ferme le menu, retire l'objet, raconte et agit.
 ## Rien n'est consommé par le menu.
 signal field_item_requested(item_id: StringName)
+## Objet clé utilisable (passe systèmes 2, `systemes-2.md` §2.4 : Bicyclette, Poké Flûte) :
+## UTILISER dans le Sac en exploration. Boot ferme le menu et l'aiguille par
+## [member ItemData.key_use] ; rien n'est consommé.
+signal key_item_requested(item_id: StringName)
 ## Pierre d'évolution (jalon 12, T23 ; `jalon-12.md` §2.9) utilisée sur le Pokémon COMPATIBLE
 ## [param index] : Boot ferme le menu et joue [method EvolutionDirector.play_item] ; la pierre
 ## est retirée par Boot au moment exact de l'évolution. Rien n'est consommé par le menu.
@@ -134,6 +145,10 @@ var _storage_selection: StorageSelection = StorageSelection.new()
 ## Grottes de Kanto et carte courante (jalon 12, T20 : Corde Sortie) ; null / vide = aucune.
 var _caves: CaveLibrary
 var _current_map: Callable = Callable()
+## Passe systèmes 2 (T24) : func(zone: StringName) -> bool, Vol permis vers cette zone.
+var _fly_check: Callable = Callable()
+## Passe systèmes 2 (T25b) : func(move: StringName) -> FieldTravelRules.Check (Téléport, Tunnel).
+var _field_travel_check: Callable = Callable()
 
 
 func _init() -> void:
@@ -579,7 +594,46 @@ func open_zone(zone: StringName) -> void:
 	var view := MapJournal.panel(zone, _state, _data, _zones, _items,
 		_unlocks.pokedex_visible())
 	if view != null:
+		view.fly_available = _fly_check.is_valid() and _fly_check.call(zone)
 		map_zone_shown.emit(view)
+
+
+## Passe systèmes 2 (T24) : [param check] = func(zone) -> bool (bouton « S'ENVOLER »).
+func set_fly_check(check: Callable) -> void:
+	_fly_check = check
+
+
+## « S'ENVOLER » touché : revérifié, puis [signal fly_requested] (Boot ferme le menu). Refusé
+## (la partie a changé depuis l'affichage du panneau) : rien.
+func request_fly(zone: StringName) -> void:
+	if _fly_check.is_valid() and _fly_check.call(zone):
+		fly_requested.emit(zone)
+
+
+## Passe systèmes 2 (T25b) : [param check] = func(move) -> [enum FieldTravelRules.Check] ; les
+## fiches de l'Équipe proposent alors UTILISER sur Téléport et Tunnel.
+func set_field_travel_check(check: Callable) -> void:
+	_field_travel_check = check
+
+
+## UTILISER touché sur la capacité [param move] du Pokémon [param index] (fiche de l'Équipe) :
+## permis → [signal field_travel_requested] (Boot ferme le menu) ; pas ici → le bandeau de
+## l'Équipe dit « Impossible de l'utiliser ici. » (texte de la Corde Sortie) ; occupé : rien.
+func request_field_travel(index: int, move: StringName) -> void:
+	if _state == null or not _field_travel_check.is_valid() \
+			or not FieldTravelRules.is_travel_move(move):
+		return
+	var pokemon: Pokemon = _state.party.get_at(index)
+	if pokemon == null or not pokemon.knows_move(move):
+		return
+	var check: FieldTravelRules.Check = _field_travel_check.call(move)
+	match check:
+		FieldTravelRules.Check.OK:
+			field_travel_requested.emit(move)
+		FieldTravelRules.Check.BUSY, FieldTravelRules.Check.UNKNOWN_MOVE:
+			pass
+		_:
+			team_notice_shown.emit(BagQuery.FIELD_REFUSAL_TEXT)
 
 
 ## [param with_sheet] : la fiche proposée par la grille (celle demandée par la route, sinon la
@@ -661,8 +715,11 @@ func _emit_settings() -> void:
 
 
 func _emit_team() -> void:
+	var travel: Array[StringName] = []
+	if _field_travel_check.is_valid():
+		travel = FieldTravelRules.MOVES
 	var view := TeamViews.build(_state.party, _data, _zones, _state.pokedex, _unlocks,
-		_companions, _state.get(&"companion_uid"))
+		_companions, _state.get(&"companion_uid"), travel)
 	_team_selected = TeamViews.clamp_selection(_team_selected, view.size())
 	team_shown.emit(view, _team_selected)
 
@@ -745,6 +802,9 @@ func _use_targetless_item(item_id: StringName) -> bool:
 	if not FieldItemRules.is_targetless(item):
 		return false
 	if not _state.bag.has(item_id):
+		return true
+	if item.has_key_use():
+		key_item_requested.emit(item_id)
 		return true
 	var map_id: StringName = _current_map.call() if _current_map.is_valid() else &""
 	var check := FieldItemRules.check(item, map_id, _caves)

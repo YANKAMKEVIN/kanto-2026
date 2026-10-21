@@ -5,7 +5,8 @@
 			{ "item": "great_ball" },
 			{ "item": "hyper_potion" },
 			{ "item": "escape_rope" },
-			{ "item": "full_heal" }
+			{ "item": "full_heal" },
+			{ "item": "revive" }
 		]
 	}
 }

@@ -26,9 +26,7 @@ extends RefCounted
 ## « floor » (sol des étages de la Tour Pokémon, jalon 19, `jalon-19.md` §2.2) : toute case
 ## praticable de la carte, sauf les cases calmes, les warps et les déclencheurs ; ne dépend pas
 ## des tuiles. [EncounterDirector] ne le lit qu'à partir du T11 du J19.
-## « water » (eau surfable, jalon 24, `jalon-24.md` §2.1 et T8 ; dossier 27 §11) : accepté dans
-## les données depuis le T4 du J24 (Routes 19 à 21, Cramois'Île) ; [EncounterDirector] ne le lit
-## qu'à partir du T8 du J24 : jusque-là, ces tables ne déclenchent rien.
+## « water » (passe systèmes 2, S2C, `systemes-2.md` §2.5.6) : case d'eau surfable, joueur en Surf.
 const TERRAINS: Array[StringName] = [&"grass", &"rubble", &"floor", &"water"]
 ## Dénominateur du taux de rencontre (le taux est « rate / 256 par pas »).
 const RATE_DEN: int = 256
@@ -45,6 +43,11 @@ var slots: Array[EncounterSlot] = []
 var ramp_from: int = 0
 ## Montée du taux : pas de la série où la rencontre est certaine (> [member ramp_from]).
 var ramp_max: int = 0
+## Mode SPECTRE (jalon 19, dossier 22 §6.1) : identifiant de l'objet qui révèle les Pokémon
+## de cette table (« silph_scope »). Vide : jamais de SPECTRE. La table ne décide rien : c'est
+## [method GhostRule.is_ghost], relu à chaque rencontre avec le Sac du moment, qui remplit
+## [member WildEncounter.ghost] (jamais un drapeau ni un cache).
+var ghost_unless_item: StringName = &""
 ## Fichier d'origine (messages d'erreur).
 var source: String = ""
 
