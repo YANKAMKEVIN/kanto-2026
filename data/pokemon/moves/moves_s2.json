@@ -9,5 +9,10 @@
 		"name": "Surf", "type": "water", "category": "special",
 		"power": 90, "accuracy": 100, "pp": 15,
 		"description": "Une grande vague s'abat sur tous les Pokémon alentour."
+	},
+	"strength": {
+		"name": "Force", "type": "normal", "category": "physical",
+		"power": 80, "accuracy": 100, "pp": 15,
+		"description": "Le lanceur frappe la cible de toute sa puissance. Permettra aussi de pousser les rochers."
 	}
 }

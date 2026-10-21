@@ -110,6 +110,15 @@ const TEXTS_S2C_FISH: Dictionary[StringName, Array] = {
 	&"fishing_nothing": ["Rien ne mord…"],
 	&"fishing_no_water": ["On ne peut pas pêcher ici."],
 }
+## Passe systèmes 2 (S2D) : textes de Force, joués par [StrengthDirector] (EXAMINER d'un rocher,
+## activation, chute) ; validés au dossier 27 T-5, T-6, T-7, T-15 (branche de conception du J24,
+## pas dans `main`) : comparés ici mot pour mot.
+const TEXTS_S2D_STRENGTH: Dictionary[StringName, Array] = {
+	&"strength_boulder": ["Un gros rocher. Il pourrait être déplacé.",
+		"Il faut le Badge Prisme pour utiliser Force hors des combats."],
+	&"strength_used": ["{pokemon} utilise Force ! Les rochers peuvent être déplacés."],
+	&"strength_boulder_fell": ["Le rocher a dévalé dans le trou !"],
+}
 ## Jalon 10 : textes verrouillés du dossier 12 (même forme que le dossier 10) et lot de textes du
 ## J10 (panneaux, noms affichés), où un retour à la ligne est écrit « \n ».
 const DOSSIER_12 := "res://docs/design/dossier-12-argenta.md"
@@ -837,6 +846,7 @@ func test_library_loads_without_error() -> void:
 		+ IDS_J16_SHIP + IDS_J16_RIVAL_CAPTAIN + IDS_J16_T15 + IDS_J17 + IDS_J18 + IDS_J19 + IDS_J20 \
 		+ IDS_J20_T17 + IDS_J20_T21 + IDS_S2B + S2_FIELD_TRAVEL
 	expected.append_array(TEXTS_S2C_FISH.keys())
+	expected.append_array(TEXTS_S2D_STRENGTH.keys())
 	expected.append_array(UNVALIDATED)
 	expected.sort()
 	assert_eq(found, expected)
@@ -852,7 +862,8 @@ func test_every_dialogue_is_used() -> void:
 	var played := _cutscenes.get_dialogue_ids()
 	for id: StringName in _real_ids():
 		if UNUSED_YET.has(id) or PLAYED_BY_COMPANION.has(id) or PLAYED_BY_BOOT.has(id) \
-				or S2_FIELD_TRAVEL.has(id) or TEXTS_S2C_FISH.has(id):
+				or S2_FIELD_TRAVEL.has(id) or TEXTS_S2C_FISH.has(id) \
+				or TEXTS_S2D_STRENGTH.has(id):
 			continue
 		assert_true(_used_on.has(id) or played.has(id),
 			"dialogue « %s » utilisé par un PNJ, un point ou une scène" % id)
@@ -1327,6 +1338,9 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			continue
 		if TEXTS_S2C_FISH.has(row[0]):
 			assert_true(TEXTS_S2C_FISH[row[0]].has(row[1]), "%s : %s" % [row[0], row[1]])
+			continue
+		if TEXTS_S2D_STRENGTH.has(row[0]):
+			assert_true(TEXTS_S2D_STRENGTH[row[0]].has(row[1]), "%s : %s" % [row[0], row[1]])
 			continue
 		var text: String = row[1]
 		for token: String in _DOSSIER_TOKENS:

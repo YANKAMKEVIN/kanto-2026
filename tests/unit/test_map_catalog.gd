@@ -36,7 +36,7 @@ func test_has_map() -> void:
 ## clôture S2Z : vider [constant S2_QA_MAPS] et retirer leur test `test_qa_mount_maps.gd`).
 const S2_QA_MAPS: Array[String] = ["qa_mount.tscn", "qa_mount_interieur.tscn",
 	"qa_mount_piste.tscn", "qa_teleport.tscn", "qa_teleport_2.tscn", "qa_sea.tscn",
-	"qa_sea_2.tscn"]
+	"qa_sea_2.tscn", "qa_strength.tscn", "qa_strength_b1.tscn"]
 
 
 func test_no_qa_map_is_shipped() -> void:

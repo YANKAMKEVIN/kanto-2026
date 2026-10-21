@@ -801,9 +801,20 @@ joués poussée par poussée, rechargement compris.
 
 #### T18 — C : `Boulder`, poussée dans `Player`, activation `field_move` — après T16c, T17
 
+**Fait (2026-10-21)** : `Boulder`, `StrengthDirector` (écoute `Player.bumped` : `player.gd` ne
+gagne que `get_bump_direction()`), `data/dialogues/strength.json`, `FieldMovePresenter.perform(…,
+clears)`. Détail et valeurs [D] : `etat-projet.md`, section S2D.
+
 #### T19 — A : `Warp.FALL`, `SceneRouter` — après T18
 
+**Fait (2026-10-21)** : `Warp.Trigger.FALL`, `unless_flags` (passages désactivés par un drapeau),
+`SceneRouter._find_fall` / `_is_warp_enabled`.
+
 #### T20 — C : interrupteurs, barrières, `qa_strength*` vivantes — après T18
+
+**Fait (2026-10-21)** : `BoulderSetup` (nœud `Boulders`), trous = `WarpPoint` FALL + deux `FlagGate`
+de dessin, interrupteur = deux `FlagGate`, barrière = `FlagGate` bloquant ; `tools/build_qa_strength.gd`,
+`hm04`, `strength`, départ `s2_strength`.
 
 #### T21 — A : `plan_check_boulders.py` générique (anti-blocage), tests sur les grilles du J24 — après T17
 

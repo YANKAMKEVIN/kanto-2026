@@ -20,6 +20,9 @@ extends Marker2D
 @export var coming_soon: String = ""
 ## Passe systèmes 2 (§2.9) : porte ordinaire ou téléporteur ([enum Warp.Style]).
 @export var style: Warp.Style = Warp.Style.DOOR
+## Passe systèmes 2 (§2.7.3) : drapeaux qui désactivent le passage (trou bouché, [member
+## Warp.unless_flags]).
+@export var unless_flags: Array[StringName] = []
 
 
 ## Case du passage, déduite de la position.
@@ -29,5 +32,7 @@ func get_cell() -> Vector2i:
 
 ## Donnée pure équivalente.
 func to_warp() -> Warp:
-	return Warp.new(get_cell(), trigger, direction, target_map, target_spawn, arrival_facing,
+	var warp := Warp.new(get_cell(), trigger, direction, target_map, target_spawn, arrival_facing,
 		coming_soon, style)
+	warp.unless_flags = unless_flags.duplicate()
+	return warp

@@ -443,6 +443,7 @@ func _ready() -> void:
 	_setup_flash()
 	_setup_mount()
 	_setup_fishing()
+	_setup_strength()
 	_setup_evolution_items()
 	# L'écran (jalon-06.md §6.6) : ouverture et vue dans la même frame, sans await (un fondu
 	# coupé laisse une coroutine non reprise).
@@ -2397,3 +2398,33 @@ func _setup_fishing() -> void:
 
 func get_fishing_director() -> FishingDirector:
 	return _fishing
+
+
+# --- Passe systèmes 2, S2D : Force (`systemes-2.md` §2.7) -----------------------------------
+
+var _strength: StrengthDirector
+
+
+## [StrengthDirector] : rochers de la carte (nœud `Boulders`), activation par EXAMINER, poussée,
+## sauvegarde forcée par le chemin de l'étape « save » des scènes ; Force retombe à chaque carte.
+## Le compagnon reste dehors pendant l'activation s'il est le Pokémon qui utilise Force. Les
+## contrôles restent affichés pendant une poussée (le joystick tenu enchaîne les poussées).
+func _setup_strength() -> void:
+	_strength = StrengthDirector.new()
+	_strength.process_mode = Node.PROCESS_MODE_PAUSABLE
+	add_child(_strength)
+	_strength.setup(GameState.flags, _player, _runner, _field_presenter)
+	_strength.save_handler = _on_cutscene_save_requested
+	SceneRouter.map_changed.connect(_strength.on_map_changed)
+	_strength.tree_exiting.connect(func() -> void:
+		if SceneRouter.map_changed.is_connected(_strength.on_map_changed):
+			SceneRouter.map_changed.disconnect(_strength.on_map_changed))
+	_strength.activation_started.connect(func() -> void:
+		var chosen := _companion.get_chosen()
+		_companion.on_cutscene_started(chosen != null
+			and _field_move_user(StrengthDirector.MOVE) == chosen))
+	_strength.activation_finished.connect(_companion.on_cutscene_finished)
+
+
+func get_strength_director() -> StrengthDirector:
+	return _strength
