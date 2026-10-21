@@ -1,0 +1,62 @@
+# Arène d'Erika (celadon_gym) — grille fonctionnelle (jalon 20, dossier 23 §11 ; préparée le
+# 2026-10-14). Source de la géométrie de la serre : coque de l'intérieur (verrière, bassins,
+# haies), outil des intérieurs, critères de test_celadon_gym. Vérifiée par
+# tools/art/plan_check_celadopole.py (profil celadopole_arene).
+#
+# 17 × 16 cases (≈ 17 × 15 du dossier, une rangée de plus pour le second lacet) : une SERRE
+# élégante. De bas en haut : l'entrée (x 2..14, y 11..13, un bassin décoratif au coin sud-ouest),
+# un PREMIER LACET (rangée de haies y 10, ouverte seulement à l'est, x 13..14), le couloir B
+# (y 8..9, 2 cases de large), un SECOND LACET (haies y 7, ouverte seulement à l'ouest, x 2..3),
+# le VESTIBULE (y 5..6) et, au fond, la serre d'Erika (x 6..10, y 2..3, bassins de part et
+# d'autre) fermée par une haie dont l'UNIQUE ouverture est la porte-haie (8, 4).
+#   - Le TOUR (sans Coupe) : entrée → est (x 13..14) → couloir B vers l'ouest → ouest (x 2..3)
+#     → vestibule → porte-haie. ≈ 30 pas.
+#   - Le RACCOURCI : un SECOND ARBUSTE À COUPER en (8, 10) ouvre la haie du premier lacet
+#     juste au-dessus de l'entrée : ≈ 18 pas. FACULTATIF (jamais indispensable).
+#   - E1..E4 : ÉVITABLES (une file libre à chaque fois, séparément et ensemble). E5 : INÉVITABLE
+#     (Topdresseuse dans le vestibule, sa ligne couvre la case (8, 5), seul accès à (8, 4)).
+# La salle est plus haute que l'écran (16 > 11,25 rangées) : la caméra suit le joueur.
+#
+# Légende :
+#   K mur (bloqué : fond sur 2 rangées, parois sur 2 colonnes, bas sur 2 rangées ; sortie sur
+#     l'avant-dernière rangée, convention des intérieurs)   . sol (praticable)
+#   x haie (bloquée)   w bassin (JAMAIS praticable)   j massif (bloqué)
+#   W ARBUSTE À COUPER (bloqué sans Coupe ; case CONDITIONNELLE)
+#   X sortie (praticable : la dalle dans l'ouverture du mur du bas, PUSH ↓)
+# Les Dresseuses ne sont PAS dessinées (cases « . ») : voir POSITIONS.
+#
+# Format : section GRILLE (« NN » + espace + 17 caractères par rangée), puis POSITIONS.
+
+PRATICABLES .X
+
+GRILLE 17 16
+00 KKKKKKKKKKKKKKKKK
+01 KKKKKKKKKKKKKKKKK
+02 KKwwwx.....xwwwKK
+03 KKwwwx.....xwwwKK
+04 KKxxxxxx.xxxxxxKK
+05 KKj............KK
+06 KK.............KK
+07 KK..xxxxxxxxxxxKK
+08 KK.............KK
+09 KK.............KK
+10 KKxxxxxxWxxxx..KK
+11 KK.............KK
+12 KKww...........KK
+13 KKww...........KK
+14 KKKKKKKXXXKKKKKKK
+15 KKKKKKKKKKKKKKKKK
+FIN
+
+POSITIONS
+sortie               warp           7..9,14       libre   to=celadon_city spawn=from_gym  # PUSH ↓ → celadon_city, from_gym
+entree               spawn          8,14          libre    # spawn « entrance » (sur la dalle), tourné ↑
+erika                pnj            8,2           bloque  role=ERIKA facing=down  # Erika, au fond de la serre, assoupie à l'arrivée (§11.3) ; scène celadon_gym_erika ; Empiflor 29, Saquedeneu 24, Rafflesia 29 (niveaux par simulation)
+parler_erika         repere         8,3           libre    # on lui parle d'ici, tourné ↑ ; on y accède par la porte-haie (8, 4), SEUL accès
+arbuste_interieur    coupe          8,10          bloque  condition=cut  # SECOND ARBUSTE À COUPER : raccourci FACULTATIF (la haie du premier lacet) ; Erika reste atteignable par le tour
+dresseuse_e1         dresseur       11,8          bloque  role=E1 facing=left sight=3 trainer=celadon_gym_lass_e1  # Fillette, Chétiflor + Boustiflor 23 ; garde la file haute du couloir B (la file basse y 9 reste libre) ; évitable
+dresseuse_e2         dresseur       4,8           bloque  role=E2 facing=right sight=3 trainer=celadon_gym_lass_e2  # Fillette, Mystherbe + Ortide 23 ; même file haute, côté ouest ; évitable
+dresseuse_e3         dresseur       4,12          bloque  role=E3 facing=right sight=3 trainer=celadon_gym_beauty_e3  # Beauté, Chétiflor ×2 24 ; au bord du bassin, dans l'ouest de l'entrée, hors du chemin ; évitable
+dresseuse_e4         dresseur       13,6          bloque  role=E4 facing=left sight=4 trainer=celadon_gym_young_e4  # Jeune Dresseuse, Bulbizarre + Herbizarre 24 ; garde la file basse du vestibule (y 6) ; la file haute y 5 reste libre ; évitable
+dresseuse_e5         dresseur       8,6           bloque  role=E5 facing=up sight=2 trainer=celadon_gym_topdresseuse_e5 mandatory=1  # Topdresseuse, Boustiflor + Ortide + Herbizarre 24 (IA smart) ; OBLIGATOIRE : sa ligne (8, 5)..(8, 4) couvre l'unique accès à la porte-haie d'Erika ; texte 33 après
+FIN

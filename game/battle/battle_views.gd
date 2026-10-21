@@ -80,11 +80,12 @@ static func party(battle: Battle, data: PokemonData,
 
 ## Carte d'information du Pokémon envoyé par [param event] (SENT_OUT) : nom, sexe, niveau,
 ## PV et statut (« PSN » dès l'entrée, jalon 9) ; PV chiffrés du côté du joueur seulement
-## (dossier 05 §5).
+## (dossier 05 §5). SPECTRE (jalon 19) : un événement masqué cache le niveau (« Nv. ?? »).
 static func card(event: BattleEvent) -> BattleCardView:
 	var view := BattleCardView.new(event.pokemon_name, card_gender(event.gender), event.level,
 		event.hp, event.max_hp, event.side == BattleEvent.SideId.PLAYER)
 	view.status = event.status
+	view.level_hidden = event.disguised
 	return view
 
 

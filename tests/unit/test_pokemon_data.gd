@@ -67,14 +67,15 @@ func test_real_data_loads_without_error() -> void:
 	assert_true(_data.load_dir())
 	assert_eq(_data.get_errors().size(), 0, _errors())
 	assert_eq(_data.get_type_chart().get_type_ids().size(), 18)
+	# Ordre du Pokédex ; jalon 20 (T7) : les 11 espèces de kanto_celadon.json.
 	assert_eq(_data.get_species_ids(), [&"bulbasaur", &"ivysaur", &"venusaur", &"charmander",
 		&"charmeleon", &"charizard", &"squirtle", &"wartortle", &"blastoise",
 		&"caterpie", &"metapod", &"butterfree", &"weedle", &"kakuna", &"beedrill",
 		&"pidgey", &"pidgeotto", &"pidgeot", &"rattata", &"raticate", &"spearow", &"fearow",
 		&"ekans", &"arbok", &"pikachu", &"raichu", &"sandshrew", &"sandslash", &"nidoran_f",
 		&"nidorina", &"nidoqueen", &"nidoran_m", &"nidorino", &"nidoking", &"clefairy",
-		&"clefable", &"vulpix", &"jigglypuff", &"wigglytuff", &"zubat", &"golbat", &"oddish",
-		&"gloom", &"paras", &"parasect",
+		&"clefable", &"vulpix", &"ninetales", &"jigglypuff", &"wigglytuff", &"zubat", &"golbat",
+		&"oddish", &"gloom", &"vileplume", &"paras", &"parasect",
 		# Jalon 22 (T4) : Mimitoss, Aéromite, Machopeur, Canarticho, Doduo, Dodrio, Tadmorv,
 		# Grotadmorv, Krabby, Électrode, Smogogo, Poissoroy, Magicarpe (kanto_j22.json).
 		&"venonat", &"venomoth",
@@ -83,19 +84,39 @@ func test_real_data_loads_without_error() -> void:
 		&"diglett", &"dugtrio",
 		# Jalon 15 (T12) : Miaouss et Persan (kanto_vermilion.json).
 		&"meowth", &"persian",
-		&"mankey", &"primeape", &"growlithe", &"abra", &"kadabra", &"machop", &"machoke",
-		&"bellsprout", &"weepinbell",
+		&"mankey", &"primeape", &"growlithe", &"arcanine", &"abra", &"kadabra", &"machop", &"machoke",
+		&"bellsprout", &"weepinbell", &"victreebel",
 		&"geodude", &"graveler", &"golem", &"magnemite", &"magneton", &"farfetchd", &"doduo",
-		&"dodrio", &"grimer", &"muk", &"shellder", &"onix",
-		&"drowzee", &"hypno", &"krabby", &"voltorb", &"electrode", &"koffing", &"weezing",
-		&"horsea", &"goldeen", &"seaking", &"staryu", &"starmie", &"magikarp"]
-		as Array[StringName])
-	assert_eq(_data.get_move_ids().size(), 118,
+		&"dodrio", &"grimer", &"muk", &"shellder",
+		# Jalon 19 (T3) : Fantominus, Spectrum, Noeunoeuf, Osselait, Ossatueur, Léviator
+		# (kanto_tower.json ; Caninos vient du J17).
+		&"gastly", &"haunter", &"onix",
+		&"drowzee", &"hypno", &"krabby", &"voltorb", &"electrode", &"exeggcute", &"cubone", &"marowak", &"koffing", &"weezing",
+		&"rhyhorn", &"tangela", &"kangaskhan",
+		&"horsea", &"goldeen", &"seaking", &"staryu", &"starmie", &"magikarp", &"gyarados",
+		&"eevee", &"vaporeon", &"jolteon", &"flareon"] as Array[StringName])
+	assert_eq(_data.get_move_ids().size(), 135,
 		"47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10) + Patience (J11) "
 		+ "+ 21 du Mont Sélénite (jalon 12) + 8 du jalon 13 (les 5 du J12 qu'il reprenait : "
 		+ "entrées du J12) + 6 du Cap d'Azuria (jalon 14) + Jackpot (J15) "
-		+ "+ Coupe et Tonnerre (jalon 16) + 7 du jalon 17 + 6 du jalon 22")
+		+ "+ Coupe et Tonnerre (jalon 16) + 7 du jalon 17 + 8 de la Tour Pokémon (J19 ; "
+		+ "Hypnose, Hurlement et Bélier viennent du J17) + 7 du jalon 20 + Vol (passe systèmes 2, T25) "
+		+ "+ Surf (S2C) + Force (S2D) + 5 du jalon 22 (Écrasement vient du J20)")
 	assert_true(_data.has_move(&"struggle"))
+
+
+func test_fly_move_data() -> void:
+	_data.load_dir()
+	var fly := _data.get_move(&"fly")
+	assert_not_null(fly)
+	if fly == null:
+		return
+	assert_eq([fly.name, fly.type, fly.category, fly.power, fly.accuracy, fly.pp],
+		["Vol", &"flying", MoveData.Category.PHYSICAL, 90, 95, 15])
+	assert_eq([fly.effects.size(), fly.effects[0].kind, fly.effects[0].texts,
+		fly.effects[0].invulnerable], [1, MoveEffect.Kind.CHARGE, &"fly", true],
+		"Vol : effet « charge » comme Tunnel (T25)")
+	assert_eq(fly.pending_effects.size(), 0)
 
 
 func test_real_species_values() -> void:
@@ -161,15 +182,31 @@ func test_real_evolution_chains() -> void:
 		&"abra": [&"kadabra", 16],
 		# Carmin-sur-Mer (jalon 15, §2.7.1) : Rouge/Bleu.
 		&"meowth": [&"persian", 28],
-		# Jalon 17 (§2.12.1) : Rouge/Bleu ; Caninos et Goupix (Pierre Feu absente) n'en déclarent
-		# pas.
+		# Jalon 17 (§2.12.1) : Rouge/Bleu.
 		&"diglett": [&"dugtrio", 26], &"drowzee": [&"hypno", 26], &"magnemite": [&"magneton", 30],
-		# Jalon 22 (§2.12) : Rouge/Bleu entre espèces présentes ; Magicarpe (Léviator absent),
-		# Krabby (Krabboss, coupé [D]) et Machopeur (Mackogneur absent) n'en déclarent pas.
+		# Céladopole (jalon 20, T7, §2.10.1) : pierres du grand magasin (Ortide, Boustiflor et
+		# Stari du J13 compris ; Caninos et Goupix du J17, qui reçoivent leur Pierre Feu) ; Évoli,
+		# à trois branches, à part ci-dessous.
+		&"gloom": [&"vileplume", &"leaf_stone"], &"weepinbell": [&"victreebel", &"leaf_stone"],
+		&"staryu": [&"starmie", &"water_stone"], &"growlithe": [&"arcanine", &"fire_stone"],
+		&"vulpix": [&"ninetales", &"fire_stone"],
+		# Tour Pokémon (jalon 19, §2.12) : Rouge/Bleu. Spectrum (échange, Ectoplasma absent) et
+		# Noeunoeuf (Pierre Plante absente) n'en déclarent pas.
+		&"gastly": [&"haunter", 25], &"cubone": [&"marowak", 28],
+		# Jalon 22 (§2.12) : Rouge/Bleu entre espèces présentes ; Krabby (Krabboss, coupé [D]) et
+		# Machopeur (Mackogneur absent) n'en déclarent pas ; Magicarpe → Léviator (J19) au N20.
 		&"venonat": [&"venomoth", 31], &"doduo": [&"dodrio", 31], &"grimer": [&"muk", 38],
+		&"magikarp": [&"gyarados", 20],
 	}
+	var eevee := _data.get_species(&"eevee").evolutions
+	assert_eq(eevee.map(func(r: EvolutionRule) -> Array: return [r.into, r.method, r.item]), [
+		[&"vaporeon", EvolutionRule.Method.ITEM, &"water_stone"],
+		[&"jolteon", EvolutionRule.Method.ITEM, &"thunder_stone"],
+		[&"flareon", EvolutionRule.Method.ITEM, &"fire_stone"]])
 	for id: StringName in _data.get_species_ids():
 		var rules := _data.get_species(id).evolutions
+		if id == &"eevee":
+			continue
 		if not expected.has(id):
 			assert_eq(rules.size(), 0, "%s : forme finale" % id)
 			continue
@@ -238,12 +275,19 @@ func test_real_move_values() -> void:
 		[MoveEffect.Kind.STATUS, &"burn", 10])
 
 
+## Capacités du J19 nécessaires aux learnsets complets (plan jalon-19 §0.4 n° 1) dont la
+## description, hors du lot §15.7 du dossier 22, attend la relecture de Kevin : « draft ».
+## Retirer l'identifiant d'ici quand le texte est validé.
+const DRAFT_DESCRIPTIONS: Array[StringName] = []
+
+
 func test_every_real_move_has_a_validated_description() -> void:
 	_data.load_dir()
 	for id: StringName in _data.get_move_ids():
 		var move := _data.get_move(id)
 		assert_false(move.description.is_empty(), String(id))
-		assert_false(move.draft, "%s : description validé par Kevin le 2026-10-06" % id)
+		assert_eq(move.draft, DRAFT_DESCRIPTIONS.has(id),
+			"%s : description validée par Kevin (sauf brouillons listés)" % id)
 
 
 # --- Fixture valide ---------------------------------------------------------------------
@@ -433,6 +477,13 @@ func test_real_catch_rates_are_the_official_ones() -> void:
 		# Jalon 17 (T7).
 		&"diglett": 255, &"dugtrio": 50, &"drowzee": 190, &"hypno": 75, &"magnemite": 190,
 		&"magneton": 60, &"growlithe": 190, &"vulpix": 190,
+		# Jalon 20 (T7).
+		&"arcanine": 75, &"ninetales": 75, &"eevee": 45,
+		&"vaporeon": 45, &"jolteon": 45, &"flareon": 45, &"victreebel": 45, &"tangela": 45,
+		&"vileplume": 45, &"rhyhorn": 120, &"kangaskhan": 45,
+		# Jalon 19 (T3, Tour Pokémon ; Caninos vient du J17).
+		&"gastly": 190, &"haunter": 90, &"exeggcute": 90, &"cubone": 190,
+		&"marowak": 75, &"gyarados": 45,
 		# Jalon 22 (T4).
 		&"venonat": 190, &"venomoth": 75, &"machoke": 90, &"farfetchd": 45, &"doduo": 190,
 		&"dodrio": 45, &"grimer": 190, &"muk": 75, &"krabby": 225, &"electrode": 60,
@@ -666,7 +717,7 @@ func test_route_22_moves_values() -> void:
 		&"fury_attack": [], &"fury_swipes": [],
 		&"double_kick": [], &"poison_sting": [],
 		&"thrash": ["rampage"], &"body_slam": [],
-		&"seismic_toss": [], &"horn_drill": ["ohko"],
+		&"seismic_toss": [], &"horn_drill": [],
 	}
 	for id: StringName in pending:
 		assert_eq(_data.get_move(id).pending_effects, PackedStringArray(pending[id]),
@@ -777,12 +828,14 @@ func test_moves_without_effect_say_so() -> void:
 	# Lot de textes du jalon 9 (verrouillé le 2026-10-07) : toute capacité de statut dont
 	# l'effet n'est pas joué porte « Sans effet dans le moteur actuel. », Poudre Dodo comprise.
 	# Jalon 11 : la mention part avec l'effet (Cage-Éclair, Para-Spore, Poudre Dodo au T4).
+	# Jalon 19 : Cyclone (changement forcé, décision de Kevin du 2026-10-16).
+	# Passe systèmes 2 : Empal'Korne (K.O. en un coup, test_ohko.gd).
 	_data.load_dir()
-	for id: StringName in [&"whirlwind", &"mirror_move", &"horn_drill"]:
+	for id: StringName in [&"mirror_move"]:
 		assert_true(_data.get_move(id).description.ends_with(
 			" Sans effet dans le moteur actuel."), String(id))
 	for id: StringName in [&"thunder_wave", &"stun_spore", &"sleep_powder", &"supersonic",
-			&"focus_energy", &"super_fang", &"seismic_toss"]:
+			&"focus_energy", &"super_fang", &"seismic_toss", &"whirlwind", &"horn_drill"]:
 		assert_false(_data.get_move(id).description.contains("Sans effet"), String(id))
 	assert_eq(_data.get_move(&"sleep_powder").description,
 		"Une poudre soporifique qui endort la cible.")
@@ -872,10 +925,9 @@ func test_j14_moves() -> void:
 		&"teleport": ["Téléport", &"psychic", MoveData.Category.STATUS, 0, 0, 20, []],
 		&"dig": ["Tunnel", &"ground", MoveData.Category.PHYSICAL, 100, 100, 10, []],
 		&"low_kick": ["Balayage", &"fighting", MoveData.Category.PHYSICAL, 50, 90, 20, []],
-		&"submission": ["Sacrifice", &"fighting", MoveData.Category.PHYSICAL, 80, 80, 25,
-			["recoil_damage"]],
+		&"submission": ["Sacrifice", &"fighting", MoveData.Category.PHYSICAL, 80, 80, 25, []],
 		&"psychic": ["Psyko", &"psychic", MoveData.Category.SPECIAL, 90, 100, 10, []],
-		&"reflect": ["Protection", &"psychic", MoveData.Category.STATUS, 0, 0, 20, ["reflect"]],
+		&"reflect": ["Protection", &"psychic", MoveData.Category.STATUS, 0, 0, 20, []],
 	}
 	for id: StringName in rows:
 		var row: Array = rows[id]

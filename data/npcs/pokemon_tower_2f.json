@@ -1,0 +1,22 @@
+{
+	"tower_rival": {
+		"cell": [
+			14,
+			5
+		],
+		"facing": "left",
+		"sprite": "rival",
+		"unless": [
+			"rival_tower_won"
+		]
+	},
+	"exorciste_calme": {
+		"cell": [
+			3,
+			7
+		],
+		"facing": "right",
+		"sprite": "channeler",
+		"dialogue": "tower_2f_calm"
+	}
+}

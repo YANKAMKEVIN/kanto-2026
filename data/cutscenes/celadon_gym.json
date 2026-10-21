@@ -1,0 +1,148 @@
+{
+	"celadon_gym_erika": {
+		"variants": [
+			{
+				"unless": [
+					"badge_rainbow"
+				],
+				"steps": [
+					{
+						"face": "erika",
+						"to": "player"
+					},
+					{
+						"dialogue": "celadon_gym_erika_intro",
+						"unless": [
+							"erika_met"
+						]
+					},
+					{
+						"dialogue": "celadon_gym_erika_resume",
+						"if": [
+							"erika_met"
+						]
+					},
+					{
+						"champion_card": "celadon_gym_erika",
+						"unless": [
+							"erika_met"
+						]
+					},
+					{
+						"set": [
+							"erika_met"
+						]
+					},
+					{
+						"battle": "celadon_gym_erika",
+						"win": [
+							"badge_rainbow"
+						]
+					},
+					{
+						"wait": 0.6,
+						"if": [
+							"badge_rainbow"
+						]
+					},
+					{
+						"dialogue": "celadon_gym_erika_won",
+						"if": [
+							"badge_rainbow"
+						]
+					},
+					{
+						"badge": "rainbow",
+						"if": [
+							"badge_rainbow"
+						]
+					},
+					{
+						"dialogue": "celadon_gym_erika_badge",
+						"if": [
+							"badge_rainbow"
+						]
+					},
+					{
+						"dialogue": "celadon_gym_erika_tm",
+						"if": [
+							"badge_rainbow"
+						],
+						"unless": [
+							"tm21_received"
+						]
+					},
+					{
+						"give": "tm21",
+						"count": 1,
+						"if": [
+							"badge_rainbow"
+						],
+						"unless": [
+							"tm21_received"
+						]
+					},
+					{
+						"dialogue": "celadon_gym_erika_tm_use",
+						"if": [
+							"badge_rainbow"
+						],
+						"unless": [
+							"tm21_received"
+						]
+					},
+					{
+						"set": [
+							"tm21_received"
+						],
+						"if": [
+							"badge_rainbow"
+						]
+					},
+					{
+						"dialogue": "celadon_gym_erika_lost",
+						"unless": [
+							"badge_rainbow"
+						]
+					},
+					{
+						"wake_up": true,
+						"unless": [
+							"badge_rainbow"
+						]
+					}
+				]
+			}
+		]
+	},
+	"celadon_gym_erika_tm_late": {
+		"variants": [
+			{
+				"steps": [
+					{
+						"face": "erika",
+						"to": "player"
+					},
+					{
+						"dialogue": "celadon_gym_erika_tm_late"
+					},
+					{
+						"dialogue": "celadon_gym_erika_tm"
+					},
+					{
+						"give": "tm21",
+						"count": 1
+					},
+					{
+						"dialogue": "celadon_gym_erika_tm_use"
+					},
+					{
+						"set": [
+							"tm21_received"
+						]
+					}
+				]
+			}
+		]
+	}
+}

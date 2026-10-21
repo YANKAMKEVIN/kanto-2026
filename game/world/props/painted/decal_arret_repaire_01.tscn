@@ -1,0 +1,14 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_i71m7"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/decal_arret_repaire_01.png" id="2_r33p6"]
+
+[node name="DecalArretRepaire01" type="Node2D" unique_id=130891470]
+script = ExtResource("1_i71m7")
+footprint = Array[Vector2i]([])
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1478980274]
+unique_name_in_owner = true
+texture = ExtResource("2_r33p6")
+centered = false
+offset = Vector2(-48, -96)

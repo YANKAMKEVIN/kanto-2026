@@ -1,0 +1,28 @@
+{
+	"hostess": {
+		"cell": [
+			9,
+			4
+		],
+		"facing": "down",
+		"sprite": "hostess"
+	},
+	"customer_1": {
+		"cell": [
+			5,
+			8
+		],
+		"facing": "right",
+		"sprite": "passenger_f",
+		"dialogue": "celadon_dept_gf_customer_1"
+	},
+	"customer_2": {
+		"cell": [
+			14,
+			7
+		],
+		"facing": "left",
+		"sprite": "traveler",
+		"dialogue": "celadon_dept_gf_customer_2"
+	}
+}

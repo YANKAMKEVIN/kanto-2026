@@ -5,7 +5,8 @@
 		"male_ratio": 0.5, "growth_rate": "slow", "base_exp": 40, "catch_rate": 255,
 		"learnset": [
 			[1, "splash"], [15, "tackle"]
-		]
+		],
+		"evolutions": [{ "into": "gyarados", "method": "level", "level": 20 }]
 	},
 	"krabby": {
 		"dex": 98, "name": "Krabby", "types": ["water"],

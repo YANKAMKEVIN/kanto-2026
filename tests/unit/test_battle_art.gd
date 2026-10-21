@@ -5,6 +5,9 @@ extends GutTest
 ## 2340 de large.
 
 const VIEWS: Array[Vector2] = [Vector2(1920, 1080), Vector2(2340, 1080)]
+## Espèces des données jamais affichées au J19 : Osselait et Ossatueur n'apparaissent qu'en
+## SPECTRE (silhouette), sans image propre (jalon-19.md §2.12) ; leur art arrive au J20 / J21.
+const NEVER_SHOWN: Array[StringName] = [&"cubone", &"marowak"]
 
 var _art := BattleArt.new()
 
@@ -40,6 +43,8 @@ func test_every_species_of_the_data_has_its_front_and_back() -> void:
 	var ids := data.get_species_ids()
 	assert_gt(ids.size(), 40)
 	for id: StringName in ids:
+		if NEVER_SHOWN.has(id):
+			continue
 		for back: bool in [false, true]:
 			var path := BattleArt.placeholder_path(id, back)
 			assert_true(ResourceLoader.exists(path), "sprite provisoire %s" % path)

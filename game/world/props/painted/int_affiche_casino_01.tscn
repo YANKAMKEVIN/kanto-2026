@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_tov1r"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_v801k"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/int_affiche_casino_01.png" id="3_dlsr8"]
+
+[node name="IntAfficheCasino01" type="Node2D" unique_id=754312727]
+script = ExtResource("1_tov1r")
+footprint = Array[Vector2i]([])
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1354271308]
+unique_name_in_owner = true
+material = ExtResource("2_v801k")
+texture = ExtResource("3_dlsr8")
+centered = false
+offset = Vector2(-48, -132)

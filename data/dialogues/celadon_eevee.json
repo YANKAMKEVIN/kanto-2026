@@ -1,0 +1,18 @@
+{
+	"celadon_eevee_ball": {
+		"narration": true,
+		"pages": ["Un Pokémon attend dans cette Poké Ball.", "Le prendre ?"],
+		"choice": {
+			"confirm": "OUI", "cancel": "NON", "confirm_cutscene": "celadon_eevee_gift",
+			"cancel_pages": []
+		}
+	},
+	"celadon_eevee_received": {
+		"narration": true,
+		"pages": ["{player} reçoit Évoli !"]
+	},
+	"celadon_eevee_stored": {
+		"narration": true,
+		"pages": ["Évoli a été envoyé au stockage."]
+	}
+}

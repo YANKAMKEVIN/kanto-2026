@@ -1,0 +1,11 @@
+{
+	"qa_sea_swimmer": {
+		"name": "Nageur QA", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true,
+		"prize_money": 0, "prize_per_level": 15,
+		"team": [
+			{ "species": "goldeen", "level": 18 },
+			{ "species": "shellder", "level": 20 }
+		]
+	}
+}

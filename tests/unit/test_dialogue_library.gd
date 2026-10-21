@@ -322,7 +322,8 @@ func test_every_known_action_is_accepted() -> void:
 		assert_true(_library.add_from_dict({String(action): {"pages": ["x"],
 			"action": String(action)}}, "test"), String(action))
 	assert_eq(DialogueLibrary.ACTIONS, [&"heal", &"center_heal", &"open_shop",
-		&"open_storage", &"open_daycare"] as Array[StringName], "J15 : la Pension")
+		&"open_storage", &"open_daycare", &"open_elevator"] as Array[StringName],
+		"J15 : la Pension ; J20 (T13) : l'ascenseur")
 
 
 ## J15 : le gardien de la Pension n'a pas de réplique à lui (action seule, sans page).
@@ -483,3 +484,64 @@ func test_invalid_choice_flags_are_rejected() -> void:
 			"test"), str(bad[i]))
 	assert_push_error_count(bad.size())
 	assert_eq(_library.size(), 0)
+
+
+func test_page_voice_spirit_is_read_and_unknown_voice_is_refused() -> void:
+	assert_true(_library.add_from_dict({"e1": {"pages": [
+		{"text": "Laisse… nous…", "voice": "spirit"}, "Normal."]}}, "test"),
+		str(_library.get_errors()))
+	var pages := _library.get_dialogue(&"e1").variants[0].pages
+	assert_eq(pages[0].voice, &"spirit")
+	assert_eq(pages[1].voice, &"", "voix normale par défaut")
+	var other := DialogueLibrary.new()
+	assert_false(other.add_from_dict({"e2": {"pages": [
+		{"text": "Boo", "voice": "demon"}]}}, "test"))
+	assert_string_contains("\n".join(other.get_errors()), "voice")
+	assert_push_error("voice")
+
+
+## Jalon 20 (§2.9.1) : « shop » choisit la boutique d'un vendeur, seulement avec open_shop.
+func test_shop_key_needs_the_open_shop_action() -> void:
+	assert_true(_library.add_from_dict({"seller": {"pages": ["Bienvenue !"],
+		"action": "open_shop", "shop": "celadon_dept_5f"}}, "test"))
+	assert_eq(_library.get_dialogue(&"seller").variants[0].shop, &"celadon_dept_5f")
+	assert_false(_library.add_from_dict({"a": {"pages": ["x"], "shop": "celadon_dept_4f"}},
+		"test"), "sans action")
+	assert_false(_library.add_from_dict({"b": {"pages": ["x"], "action": "center_heal",
+		"shop": "celadon_dept_4f"}}, "test"), "autre action")
+	assert_false(_library.add_from_dict({"c": {"pages": ["x"], "action": "open_shop",
+		"shop": ""}}, "test"), "identifiant vide")
+	assert_push_error_count(3)
+	assert_eq(_library.size(), 1)
+
+
+## Jalon 20 (§2.9.6, §2.16) : variantes selon le Sac (« if_items » / « unless_items ») et selon
+## une zone jouable (« if_zone ») ; sans source, ces variantes ne s'appliquent pas.
+func test_item_and_zone_conditions() -> void:
+	assert_true(_library.add_from_dict({"guard": {"variants": [
+		{"if_zone": "saffron_city", "if_items": ["fresh_water", "soda_pop"], "pages": ["deux"]},
+		{"if_zone": "saffron_city", "unless_items": ["lemonade"], "pages": ["sans limonade"]},
+		{"pages": ["fermé"]},
+	]}}, "test"))
+	var guard := _library.get_dialogue(&"guard")
+	assert_eq(guard.variants[0].if_items, [&"fresh_water", &"soda_pop"] as Array[StringName])
+	assert_eq(guard.variants[1].unless_items, [&"lemonade"] as Array[StringName])
+	assert_eq(guard.variants[0].if_zone, &"saffron_city")
+	var bag: Array[StringName] = [&"fresh_water", &"soda_pop"]
+	var has := func(id: StringName) -> bool: return bag.has(id)
+	var open := func(_zone: StringName) -> bool: return true
+	var closed := func(_zone: StringName) -> bool: return false
+	var flags := StoryFlags.new()
+	assert_eq(guard.pick(flags, null, 0, Callable(), has, open).pages[0].text, "deux")
+	bag.erase(&"soda_pop")
+	assert_eq(guard.pick(flags, null, 0, Callable(), has, open).pages[0].text, "sans limonade")
+	bag.append(&"lemonade")
+	assert_eq(guard.pick(flags, null, 0, Callable(), has, open).pages[0].text, "fermé")
+	assert_eq(guard.pick(flags, null, 0, Callable(), has, closed).pages[0].text, "fermé")
+	assert_eq(guard.pick(flags).pages[0].text, "fermé", "sans source : rien d'autre")
+	for bad: Dictionary in [{"if_items": []}, {"if_items": "fresh_water"},
+			{"unless_items": ["a", "a"]}, {"if_zone": ""}]:
+		var entry := {"pages": ["x"]}
+		entry.merge(bad)
+		assert_false(_library.add_from_dict({"bad": entry}, "test"), str(bad))
+	assert_push_error_count(4)

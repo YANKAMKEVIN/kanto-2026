@@ -1,0 +1,27 @@
+{
+	"old_lady": {
+		"cell": [
+			8,
+			4
+		],
+		"facing": "down",
+		"sprite": "aoki",
+		"dialogue": "celadon_mansion_old_lady"
+	},
+	"meowth": {
+		"cell": [
+			6,
+			4
+		],
+		"facing": "down",
+		"sprite": "pokemon/meowth"
+	},
+	"clefairy": {
+		"cell": [
+			10,
+			4
+		],
+		"facing": "down",
+		"sprite": "pokemon/clefairy"
+	}
+}

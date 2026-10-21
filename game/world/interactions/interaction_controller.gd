@@ -36,6 +36,15 @@ signal companion_talked
 ## Appui sur un objet à fouiller d'un puzzle d'interrupteurs (jalon 16, `jalon-16.md` §2.6) :
 ## Boot fouille le puzzle et joue le dialogue du résultat ; aucun dialogue ici.
 signal puzzle_searched(puzzle_id: StringName, slot: int)
+## Passe systèmes 2 (§2.10) : appui OUVRIR sur une porte à carte ([constant Interaction.Kind.OPEN])
+## en [param cell] ; [KeyDoorDirector] ouvre ou refuse, aucun dialogue ici.
+signal door_requested(cell: Vector2i)
+## Passe systèmes 2 (§2.5) : appui SURFER face à l'eau ([constant Interaction.Kind.SURF]) ;
+## [MountDirector] monte, aucun dialogue ici.
+signal surf_requested(cell: Vector2i)
+## S2C-bis : appui PÊCHER face à une eau pêchable ([constant Interaction.Kind.FISH]) ;
+## [FishingDirector] pêche, aucun dialogue ici.
+signal fish_requested(cell: Vector2i)
 
 const NO_TARGET: int = -1
 ## Délai entre l'arrivée sur la carte et l'ouverture de la boîte d'un dialogue automatique.
@@ -54,6 +63,10 @@ var _wait_release: bool = false
 var _flags: StoryFlags
 ## Fournisseur de l'interaction du compagnon (jalon 11, [method InteractionFinder.find]).
 var _companion: Object
+## Cible de **terrain** (passe systèmes 2) quand aucune entité ni point fixe n'est devant le
+## joueur : `func(cell: Vector2i, facing: Vector2i) -> Interaction` (null : rien). Sert à l'eau
+## (SURFER, PÊCHER, EXAMINER `surf_water`). Non valide : aucune.
+var terrain_target: Callable
 
 
 func _ready() -> void:
@@ -67,6 +80,8 @@ func _process(_delta: float) -> void:
 			_player.get_cell(), _player.get_facing(), _companion)
 		if target != null and not target.is_available(_flags):
 			target = null  # jalon 12 : objet caché déjà trouvé (drapeau « unless » levé)
+		if target == null and terrain_target.is_valid():
+			target = terrain_target.call(_player.get_cell(), _player.get_facing())
 	_set_target(target)
 	if _wait_release:
 		if Input.is_action_pressed(_INTERACT):
@@ -158,6 +173,18 @@ func _interact(target: Interaction) -> void:
 	if target.is_puzzle_slot():
 		_wait_release = true
 		puzzle_searched.emit(target.puzzle, target.puzzle_slot)
+		return
+	if target.kind == Interaction.Kind.OPEN:
+		_wait_release = true
+		door_requested.emit(target.cell)
+		return
+	if target.kind == Interaction.Kind.SURF:
+		_wait_release = true
+		surf_requested.emit(target.cell)
+		return
+	if target.kind == Interaction.Kind.FISH:
+		_wait_release = true
+		fish_requested.emit(target.cell)
 		return
 	var npc := target.source as Npc
 	if target.kind == Interaction.Kind.MEET:

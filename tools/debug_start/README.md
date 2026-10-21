@@ -71,6 +71,7 @@ rm "$HOME/Library/Application Support/Godot/app_userdata/Kanto 2026/debug_start.
 | `badge_after.json` | J10 (T8) : Badge Roche obtenu (`badge_boulder`, `brock_met`, Liam battu), dans l'Arène (spawn `entrance`) : réactions au badge (guide, enfant, Dresseuse, Montagnard), allusion de Pierre au rival, objectif « continuer vers la Route 3. », garde de la Route 3 qui se décale. **Aucun Grand moment « badge »** (il est enregistré par l'étape `badge` de la vraie scène, T9) |
 | `status_qa.json` | J11 (11A, T9) : QA des statuts **sans carte de QA** (écart au plan : clé `wild`). Route 1 (spawn `from_pallet_w`), fin du J9 (`poison_unlocked`). Équipe : Salamèche N18 (Flammèche : brûlure), Papilusion N17 (Choc Mental, Poudre Toxik, Para-Spore, Poudre Dodo), Nidoran♂ N16 (Puissance, Double Pied), Rattata N16 **brûlé** (Croc de Mort, Croc Fatal), Pikachu N14 **endormi 3 tours** (clé de membre `status_turns`), Roucool N12 **paralysé** (Frappe Atlas) ; Piafabec N10 **gelé** au Stockage. Sac : 10 Potions, 5 Poké Balls, 3 de chaque remède, 2 Antigels ; 5 000 ₽. Clé **`wild`** : les herbes de la Route 1 donnent, pour la session, Pikachu N12 (Cage-Éclair), Papilusion N17 (Para-Spore, Poudre Dodo, Choc Mental), Dardargnan N16 (Furie, Puissance), Rattata N14 (Croc de Mort), taux 60. Rien n'est sauvegardé |
 | `daycare_v7_qa.json` | J15 (15.0, T2/T3) : Salamèche N12, Roucool N9, Chenipan N5 au Stockage, et **Rattata N10 à la Pension avec 500 XP en attente** (clé `daycare` : un membre + `pending_exp`), 3 000 ₽, devant la porte du Centre de Jadielle (spawn `from_center`). **Clé `autosave: true` : ce départ REMPLACE `user://save.json`** (copier d'abord la vraie sauvegarde). Relancer ensuite **sans** départ : le journal affiche « [qa] pension relue : Rattata N10 (dépôt N10), 500 XP en attente, uid … » et `save.json` contient `"daycare"` (version 7). Aucune Pension visible en jeu avant le T4 |
+| `s2_save.json` | Passe systèmes 2 (S2A, T5) : copie de `route_3.json` (fin du J10, Reptincel N17 compagnon, Papilusion N15, Roucool N14, 5 Poké Balls, 5 Potions, 2 Antidotes, 4 300 ₽, entrée ouest de la Route 3) **avec `autosave: true` : ce départ REMPLACE `user://save.json`** (copier d'abord la vraie sauvegarde). Retirer ensuite `files/debug_start.json` pour que chaque relance lise la sauvegarde. Hugo (goulet, inévitable) : dialogue + combat ; herbes H4 ; Argenta à l'ouest : changement de carte. Interruptions réelles pendant un dialogue, un combat, une scène ; le journal affiche « [save] point de reprise : … µs » et « Sauvegarde du point de reprise (…) » |
 | `route_5.json` | J15 (T13) : Rocket d'Azuria battu et barrage levé (`cerulean_south_guard_left`), **sans** Passe Bateau, Salamèche N22, Papilusion N20, Roucool N18, 3 000 ₽, à l'entrée nord de la Route 5 (spawn `from_cerulean_c`, tourné vers le sud) : Pension (porte (27, 27)), poste nord (T-15 puis T-16, recul), entrée du souterrain (bâtiment puis escalier vers `underground_path`), Super Potion (11, 15), Antidote caché (tronc, (16, 31)) ; un pas vers le nord : Azuria |
 | `companion_qa.json` | J11 (11D, T20d/T21) : QA du compagnon. Jadielle, devant le Centre (spawn `from_center`, tourné vers le sud), fin du J9 (`poison_unlocked`, Dresseurs de la forêt pas battus). Équipe : **Salamèche N15 à 1 XP du N16, compagnon** (clé `companion` : place dans l'équipe ; il évolue au premier combat gagné et Reptincel, qui a sa planche depuis le 2026-10-13, reste compagnon), Roucool N12, Rattata N10 **K.O.** (éligible : reste invisible), Nidoran ♂ N11 **empoisonné** (« … », phrase « pas dans son assiette »), Nidoran ♀ N9 à 4 PV (« fatiguée »), Chenipan N6 (aucun bouton). 10 Potions, 3 Antidotes, 10 Poké Balls, 3 000 ₽. Parcours : Jadielle (« passants », Centre, Boutique), Route 1 (rebords), Bourg Palette (l'étang : « regarde l'eau »), Route 2, Forêt de Jade (« forêt », Dresseurs), Argenta |
 | `route_3.json` | J12 (T18, session 12A) : fin du J10 (Badge Roche, garde de la Route 3 décalé), **Reptincel N17 compagnon** (clé `companion`), Papilusion N15, Roucool N14, 5 Poké Balls, 5 Potions, 2 Antidotes, 4 300 ₽, à l'entrée ouest de la Route 3 (spawn `from_pewter_c`, tourné vers l'est). Premier pas : objectif « traverser le Mont Sélénite. » (en silence). Aucun Dresseur battu, aucun objet ramassé : Hugo (goulet, inévitable), embranchement nord (Sacha) / sud (Enzo), Inès (poche du sud, Poké Ball), Réveil caché face au caillou (36, 18) depuis le sentier du rebord, Léa (goulet de la jonction, inévitable), H4, plateau du Centre (Potion), Nolan (Anti-Para) |
@@ -99,6 +100,8 @@ rm "$HOME/Library/Application Support/Godot/app_userdata/Kanto 2026/debug_start.
 | `route_6.json` | J15 (T14) : même partie que `route_25.json` (Charmander N22, Papilusion N20, Roucool N18), à la sortie du bâtiment du souterrain de la Route 6 (spawn `from_underground`, tourné vers le sud) : Chloé juste devant |
 | `vermilion.json` | J15 (T14) : même partie, à l'entrée nord de Carmin-sur-Mer (spawn `from_route_6_c`, tourné vers le sud) |
 | `route_11.json` | J17 (T17) : même partie que `vermilion.json`, à l'arrivée de Carmin sur la Route 11 (spawn `from_vermilion_c`, tourné vers l'est) : Arthur dans le goulet |
+| `route_9.json` | J18 (T18) : sortie du J16 plausible (Badges Roche et Cascade, Passe Bateau, Reptincel N25, Roucoups N22, Férosinge N22, Ortide N21, 3 Potions, 2 Super Potions, 2 Antidotes, 6 000 ₽), à l'arrivée d'Azuria sur la Route 9 (spawn `from_cerulean`, tourné vers l'est). Le raccord Azuria ↔ Route 9 attend la Coupe du J16 : ce départ le remplace. Le premier pas vers l'est pose `route_9_entered` (objectif « traverser la Route 9 vers l'est. ») ; Lou voit le joueur au goulet |
+| `route_10_center.json` | J18 (T18) : même partie, `route_9_entered` et `route_10_reached` posés, dans le Centre de la Route 10 (spawn `entrance`, tourné vers le haut), Reptincel à 12 PV et Roucoups K.O. : SOIGNER → toast « Point de repos enregistré — Route 10 » ; une défaite ramène ensuite à ce Centre |
 | `route_5_daycare.json` | J15 (T15/T20, session 15A) : **vraie Pension** (`route_5_daycare`, spawn `counter` devant le comptoir, tourné vers le gardien), Pension vide, **Miaouss N17 compagnon** (Jackpot), Salamèche N22, Roucool N18 **K.O.** (déposable), 3 000 ₽ : déposer Miaouss → T-6, plus de compagnon dehors |
 | `route_5_daycare_last.json` | J15 (15A) : même Pension, Miaouss N17 **seul en forme** (Salamèche et Roucool K.O.) : sa carte est refusée (T-5) dans le sélecteur, un K.O. se dépose |
 | `route_5_daycare_ready.json` | J15 (15A) : même Pension, **Salamèche N14 gardé** (1 PV, empoisonné, 4 capacités) + 950 XP → N16 : T-8 « 300 ₽ », Groz'Yeux au N15 → écran d'oubli (refus possible), **évolution en Reptincel proposée et annulable**, rendu soigné ; équipe Papilusion N20, Roucool N18, Miaouss N17 compagnon ; 5 000 ₽. En sortant : les pas comptent (marche et course) |
@@ -137,6 +140,13 @@ et l'IA qui creuse sont couverts par les tests de combat ; Abra se rencontre sur
 | `route_2_futur_a.json` | J17 (T21) : **dans la clairière de FUTUR A** de la Route 2 sud (spawn `debug_futur_a`, (2, 19), tourné vers l'ouest) : Super Potion en (1, 17) ; l'arbuste (4, 19) la ferme (raccourci sans CS01 ; dans le jeu, on y entre en le coupant : `route_2_futur_a_cut`) |
 | `route_2_east_cut.json` | J17 (T23) : comme `route_2_east_south` (10 espèces), plus **CS01 et Badge Cascade** (drapeaux jusqu'à Azuria), **devant l'arbuste** du couloir, au nord (spawn `debug_bush`, (6, 20), tourné vers le sud) : « Salamèche peut couper cet arbuste. / Utiliser Coupe ? » → COUPER : « Salamèche utilise Coupe ! », l'arbuste disparaît **pour toujours** (`cut_route_2_east_bush`), le sud du couloir s'ouvre |
 | `route_2_futur_a_cut.json` | J17 (T23) : même partie, Route 2 sud **devant l'arbuste de FUTUR A**, à l'est (spawn `debug_futur_a_bush`, (5, 19), tourné vers l'ouest) : COUPER → `cut_route_2_futur_a`, la clairière et sa Super Potion s'ouvrent. Sans CS01 : texte T7 du dossier 11 (« Les branches sont trop épaisses… ») ; avec CS01 sans Badge Cascade : texte du J16 |
+| `cerulean_east_cut.json` | J18 (T15) : partie de `route_9` (sortie du J16 plausible, Reptincel N25 en tête) plus **CS01** et `got_hm01`, à Azuria **devant l'arbre à couper** de la sortie est (spawn `east_tree_start`, (52, 23), tourné vers l'est) : COUPER → `cut_cerulean_east_tree`, le raccord (55, 22..24) mène à la Route 9 |
+| `route_10_south.json` | J18 (T24) : Badges Roche et Cascade, `route_9_entered`, `route_10_reached`, Charmeleon N24, Pikachu N20, Papilusion N20, Roucoups N19, à la **sortie sud de la Grotte Sombre** (spawn `from_dark_cave_s_w`, tourné vers le sud) : Hector et Paul facultatifs, Super Potion, objectif « Rejoindre Lavanville, au sud. » dès le premier pas ; Lavanville jamais découverte : la légende s'affiche à l'arrivée par le sud de la Route 10 |
+| `lavender.json` | J18 (T24) : même partie + `dark_cave_crossed`, arrivée à Lavanville par le nord (spawn `from_route_10`, tourné vers le sud) ; **aucune légende** (départ de débogage) ; `lavender_reached` posé au premier pas vers le sud |
+| `pokemon_tower_1f.json` | J18 (T24) : même partie + `lavender_reached`, dans la Tour Pokémon à l'entrée (spawn `entrance`, tourné vers le nord) : gardien, visiteurs, tombes, Exorciste devant l'escalier (T-34 puis T-35, objectif « Revenir plus tard à la Tour Pokémon. ») |
+| `dark_cave_1f.json` | J18 (T20) : Pikachu N20, Reptincel N22, Roucarnage N19, **sans CS05** (Flash indisponible), 5 Potions, 2 Super Potions, 2 Antidotes, 2 Cordes Sortie, à l'entrée nord de la Grotte Sombre (spawn `from_route_10_n_w`, tourné vers le sud) : voile sombre et « Il fait très sombre ici… » une fois |
+| `dark_cave_1f_flash.json` | J18 (T20) : comme `dark_cave_1f` avec la **CS05** au Sac et Pikachu (compatible) : Flash automatique à l'entrée, « Pikachu utilise Flash ! » |
+| `dark_cave_b1f.json` | J18 (T20) : comme `dark_cave_1f_flash`, à l'arrivée de l'échelle A du B1F (spawn `arrivee_a`) : colonne, flaque, passage étroit (Marcel), racines (Super Potion cachée). L'arrivée de l'échelle B (`arrivee_b`, côté Marcel) n'a pas de départ : copier le fichier et changer `spawn` (QA du 2026-10-19) |
 
 La carte de QA `qa_switch_j13` (J13, T14), ses données, son outil de construction et de capture,
 son test et le départ `switch_qa` ont été **retirés au T22** (les Dresseurs qui changent de
@@ -192,3 +202,84 @@ Pokédex existe **sans** que le drapeau d'histoire `pokedex_activated` soit pos�
 sauvegardé. Même garde que le départ de débogage (build debug, Boot scène principale, fichier
 présent). Se combine avec `--debug-start` ou avec la vraie partie ; sans l'option, le fichier est
 retiré. Sur le Mac : `echo '{ "pokedex": true }' > "$HOME/Library/Application Support/Godot/app_userdata/Kanto 2026/debug_unlocks.json"`.
+
+## Jalon 19 (T14) : départs de la Tour Pokémon (QA 19A)
+
+Même partie que `pokemon_tower_1f` (Lavanville atteinte, `tower_stairs_open`), Centre de Lavanville **enregistré** (clé `rest_point`, J19 T14 : une défaite réveille là).
+
+| Fichier | Partie |
+|---|---|
+| `tower_ghost_qa.json` | 3F, à l'arrivée de l'escalier (spawn `arrivee_T23`, tourné vers l'est). Équipe : Reptincel N24, Pikachu N20, **Rondoudou N15** (le plus lent), **Papilusion N20 endormi** (5 tours), Roucoups N19 ; 10 Poké Balls, Potions, Super Potions. Clé `wild` : table `floor` forcée (taux 255, Fantominus N20, `ghost_unless_item: silph_scope`) → un SPECTRE dès les premiers pas ; les 2 Exorcistes du 3F sont là (QA 19A n° 1 à 8) |
+| `tower_exorcist_weak.json` | **4F**, à l'arrivée de l'escalier (spawn `arrivee_T34`, tourné vers l'ouest) : Salamèche **N6** seul (Rugissement), 2 Poké Balls. Deux pas vers l'ouest, Solange (E3, inévitable, (15, 7)) voit le joueur : perdre → réveil au Centre de Lavanville, Solange toujours à battre (QA 19A n° 9) |
+| `tower_6f_block.json` | 6F, case `devant_spectre` (10, 14), tourné vers le sud : deux pas, le déclencheur (10, 16) joue §15.3.7 → combat SPECTRE → fuite → recul en (10, 15) → §15.3.8. **Rival n° 5 non battu** (`rival_tower_won` absent) : les drapeaux sont indépendants (dossier 22 §16 n° 10) |
+| `tower_rival.json` | 2F, arrivée de l'escalier (spawn `arrivee_T12`, tourné vers l'ouest) : Salamèche N24, Pikachu, Rondoudou, Roucoups ; trois pas (haut, ouest, haut) jusqu'à (14, 6) lancent la scène du rival n° 5 |
+| `tower_rival_weak.json` | idem, Salamèche **N5** seul : défaite → réveil au Centre de Lavanville |
+
+## Jalon 20 (T17) : départs de la vie du 20-I (Routes 7 et 8, souterrain, Céladopole, Arène d'Erika)
+
+Équipe de référence « arrivée J19 » : Reptincel N28, Roucoups N24, Papilusion N22, Sabelette N22 (apte à Couper avec la CS01), 10 Poké Balls, Potions, CS01 ; Badges Roche, Cascade, Foudre ; Lavanville atteinte ; 6 000 ₽. Centre de Lavanville enregistré (Céladopole : `celadon_center` pour les départs en ville). Les drapeaux d'arrivée `route_8_reached` / `celadon_reached` sont posés dès que le départ est plus loin que l'entrée.
+
+| Fichier | Partie |
+|---|---|
+| `route_8.json` | bord est de la Route 8 (spawn `from_lavender_c`, tourné vers l'ouest) : Fillettes Nina et Joueur Fernand, puis le duo Iris / Margot (combats successifs), D3 et la Super Potion sur le chemin haut |
+| `route_8_west.json` | place de l'ouest (spawn `west_square`, tourné vers l'est) : Joueur René (inévitable), poste de Safrania, couloir de l'entrée du souterrain |
+| `underground_7_8.json` | entrée ouest du souterrain (spawn `from_route_7_n`, tourné vers l'est) : Pépite (niche) et Super Potion (coude) cachées |
+| `route_7.json` | Route 7, sortie du bâtiment d'entrée du souterrain (spawn `from_underground`) |
+| `celadon.json` | entrée est de Céladopole (spawn `from_route_7_c`, tourné vers l'ouest) : le Rappel caché de la ruelle (46, 27), les 14 PNJ |
+| `celadon_dept.json` | RdC du grand magasin, 5 000 ₽, **Eau Fraîche** et **Soda Cool** : vendeurs, ascenseur, toit (distributeurs, fillette) |
+| `celadon_dept_tm01.json` | 2e étage, **CT01 déjà au Sac** : la boutique des CT affiche « Déjà dans le Sac » |
+| `celadon_eevee_full.json` | maison du toit de la Résidence, **équipe de 6** : Évoli part au Stockage (message n° 30) |
+| `celadon_gym_outside.json` | devant l'arbuste de l'enclos de l'Arène (spawn `gym_front`, tourné vers l'ouest) : COUPER ouvre l'enclos |
+| `celadon_gym.json` | à l'entrée de l'Arène, arbustes coupés : cinq Dresseuses, Erika |
+| `erika_weak.json` | idem, Salamèche **N5** seul, les cinq Dresseuses déjà battues : perdre contre Erika → réveil au Centre de Céladopole, Dresseuses gardées |
+| `erika_win.json` | idem, Reptincel **N40** et Roucoups **N36**, les cinq Dresseuses déjà battues : battre Erika → Badge Prisme, CT21 (QA 20-I, valeur par défaut) |
+
+## Jalon 20 (T21) : départs de la vie du 20-II (Casino, repaire Rocket, Giovanni, Tour avec le Scope)
+
+Même partie que `celadon.json` (équipe de référence « arrivée J19 », CS01, Badges Roche, Cascade, Foudre) avec `celadon_reached` ; Centre de Céladopole enregistré (défaite → réveil là). Chaque départ pose les étapes déjà franchies (Rocket de l'affiche battu, interrupteur, sbires des étages au-dessus battus).
+
+| Fichier | Partie |
+|---|---|
+| `game_corner.json` | entrée du Casino (spawn `entrance`, tourné ↑) : Rocket de l'affiche (9, 5) à battre, cinq PNJ, machines, puis l'affiche et l'interrupteur (OUI / NON) |
+| `rocket_hideout_b1f.json` | B1F, au pied de l'escalier du Casino (spawn `from_casino`) : trois sbires, Corde Sortie, Super Potion, Rappel caché (21, 15) lu depuis (20, 15) tourné → |
+| `rocket_hideout_b2f.json` | B2F, arrivée nord (spawn `from_b1f_north`), sbires du B1F battus : **dalles tournantes** (labyrinthe ouest), sbire de la salle centrale, quatre objets |
+| `rocket_hideout_b3f.json` | B3F (spawn `from_b2f`), B1F et B2F battus : dalles, deux sbires, Super Potion, Super Bonbon, Pépite cachée (27, 17) lue depuis (27, 16) tourné ↓ |
+| `rocket_hideout_key.json` | B4F ouest (spawn `from_b3f`), **sbire de la Clé déjà battu** : lui reparler → la Clé tombe en (10, 2) |
+| `rocket_hideout_lift.json` | B1F devant l'ascenseur (spawn `from_elevator`, tourné ↓), **Clé au Sac** : un pas vers le bas → cabine, panneau B1F / B2F / B4F |
+| `giovanni.json` | B4F est, sortie de l'ascenseur (spawn `from_elevator`, tourné ↑), Clé au Sac, **gardes battus, porte ouverte** : Giovanni (25, 3), à aborder par le côté |
+| `giovanni_weak.json` | idem, Salamèche **N5** seul : perdre → réveil au Centre de Céladopole, Clé et sbires battus gardés ; nouvel essai : n° 156 |
+| `tower_scope.json` | Tour 3F (spawn `arrivee_T23`), **Scope Sylphe au Sac**, Giovanni battu : rencontres identifiées, le 6F reste un SPECTRE |
+
+Les cartes de QA du J20 (`qa_gift_j20`, `qa_elevator_j20`, `qa_elevator_j20_1f` / `_2f`,
+`qa_spin_j20`), leur outil `tools/build_qa_j20.gd`, leurs PNJ et les ascenseurs de test
+(`tests/fixtures/elevators/`) ont été **retirés au T24** ; elles n'avaient aucun départ. Le don
+d'Évoli, l'ascenseur et les dalles tournantes sont éprouvés sur les vraies cartes (maison du toit
+de la Résidence, grand magasin et repaire Rocket : `test_eevee_gift`, `test_elevator_flow`,
+`test_spin_slide`).
+
+## Passe systèmes 2 (T9) : cartes de QA de la monture
+
+Cartes `qa_mount` (extérieur : rebord rangée 14, maison, dormeur 2 × 1 qui ferme le nord),
+`qa_mount_interieur` (refus du Vélo) et `qa_mount_piste` (`cycling_road`, pente, Dresseur de
+l'alcôve), construites par `tools/build_qa_mount.gd` d'après `tools/plans/qa_mount*.txt`. Aucun
+passage du jeu n'y mène. **Retirées à la clôture de la passe (S2Z)** avec leurs données `qa_mount*`.
+
+| Fichier | Partie |
+|---|---|
+| `s2_bike.json` | Pikachu N12 (compagnon) et Roucool N12 **endormi** (`status: sleep`), Bicyclette et Poké Flûte au Sac (+ 10 Poké Balls, 5 Potions), 3 000 ₽, sur `qa_mount` (spawn `depart`, tourné vers le haut). Vélo : bouton du HUD / Sac, saut du rebord, refus dans la maison ; entrées de la Piste à l'est (19, 8) et (19, 16) : monté d'office, descente refusée, dérive sur la pente, le Gamin QA (Soporifik N8, Hypnose) voit la pente depuis son alcôve ; Flûte : à côté du dormeur (10..11, 4) réveil et passage au nord, en combat contre le Gamin QA réveil des endormis |
+| `s2_surf.json` | Carapuce N20 (compatible CS03) et Pikachu N18 (compagnon 0), CS03 + 10 Poké Balls + 5 Potions au Sac, Badge Âme (`badge_soul`), sur `qa_sea` (spawn `depart` (2, 16), tourné vers le haut). Surf : montée depuis la plage, nage, descente sur l'îlot, rencontres `water`, courant (12..21, 4) puis (21, 4..9) jusqu'au passage (21, 10) → `qa_sea_2`, bord est (25, 11..14), Nageur QA (15, 13) (Poissirène N18, Kokiyas N20) qui voit vers l'ouest et nage vers le joueur |
+
+## Passe systèmes 2 (`docs/tech/systemes-2.md`)
+
+| Fichier | Partie |
+|---|---|
+| `s2_field_travel.json` | T25b : **Mont Sélénite 1F** (spawn `from_route_3_w`, tourné ↑), Centre du Mont Sélénite **enregistré** (clé `rest_point`). Équipe : Reptincel N18 à 20 PV, **Abra N15 (Téléport)**, **Taupiqueur N18 (Griffe, Tunnel)**. Menu → Équipe → Abra → onglet Capacités → Téléport → UTILISER : « Abra utilise Téléport ! », retour dans le Centre (point de réveil), **sans soin** (Reptincel toujours à 20 PV). Taupiqueur → Tunnel → UTILISER : « Taupiqueur creuse un tunnel ! », Route 3 devant la grotte (destination de la Corde Sortie). Tunnel hors grotte (Route 3) ou Téléport dans le Centre : « Impossible de l'utiliser ici. » dans le bandeau de l'Équipe |
+## Passe systèmes 2 — S2G (T30, rencontre légendaire fixe)
+
+| Fichier | Partie |
+|---|---|
+| `s2_legendary.json` | Route 1 (spawn `from_pallet_w`, tourné vers le nord), **Reptincel N36** et Roucool N10, 20 Super Balls, 10 Poké Balls, 5 Potions, drapeau de QA `qa_s2_legendary` : un **Mélofée N25 de QA** est juste devant le joueur (23, 41). OBSERVER → cri, combat à l'entrée « legendary » (1,5 × plus lente). **K.O.** ou **capture** → journal « [qa] point de sauvegarde sans écriture (écriture refusée pour la session) : rencontre fixe : qa_s2_legendary » **avant** le texte de QA qui suit, puis Mélofée quitte la carte (et n'y revient pas) ; **fuite** → rien, il reste. Relancer l'appli pour rejouer une autre issue |
+| `s2_legendary_weak.json` | Même départ, **Salamèche N5 seul** : **défaite** → réveil chez Maman, aucun drapeau, pas de sauvegarde forcée ; Mélofée est toujours sur la Route 1 |
+
+Le PNJ de QA (`data/npcs/route_1.json`), la scène et les textes `qa_s2_legendary` sont retirés à
+la clôture de la passe (S2Z, T33).

@@ -49,6 +49,8 @@ class VisibilityInput:
 	var in_transition: bool = false
 	## Une case lui est attribuée ([CompanionTrail]).
 	var placed: bool = false
+	## Le joueur est monté (Vélo, Surf ; passe systèmes 2, `systemes-2.md` §2.2) : il rentre.
+	var mounted: bool = false
 
 
 ## Vrai si [param pokemon] peut être compagnon (FAIRE SORTIR n'existe que pour lui).
@@ -61,7 +63,8 @@ static func is_visible(input: VisibilityInput, catalog: CompanionCatalog) -> boo
 	if input == null or not is_eligible(input.chosen, catalog):
 		return false
 	return not input.chosen.is_fainted() and not input.map_interior and not input.in_cutscene \
-		and not input.in_battle and not input.in_transition and input.placed
+		and not input.in_battle and not input.in_transition and not input.mounted \
+		and input.placed
 
 
 ## Faut-il effacer le choix ? [param chosen] : le Pokémon désigné par l'identifiant du choix,

@@ -1,0 +1,30 @@
+{
+	"rocket_b2f_1": {
+		"cell": [20, 12], "facing": "down", "sprite": "rocket_grunt_m",
+		"dialogue": "rocket_hideout_b2f_1_after",
+		"trainer": {
+			"id": "rocket_hideout_b2f_1", "sight": 4, "before": "rocket_hideout_b2f_1_before",
+			"defeated": "rocket_hideout_b2f_1_defeated"
+		}
+	},
+	"rocket_hideout_b2f_item_1": {
+		"cell": [1, 11], "facing": "down", "sprite": "object/poke_ball_ground",
+		"dialogue": "rocket_hideout_b2f_item_1", "verb": "take", "turn_to_player": false,
+		"unless": ["got_rocket_hideout_b2f_item_1"]
+	},
+	"rocket_hideout_b2f_item_2": {
+		"cell": [16, 8], "facing": "down", "sprite": "object/poke_ball_ground",
+		"dialogue": "rocket_hideout_b2f_item_2", "verb": "take", "turn_to_player": false,
+		"unless": ["got_rocket_hideout_b2f_item_2"]
+	},
+	"rocket_hideout_b2f_item_3": {
+		"cell": [6, 12], "facing": "down", "sprite": "object/poke_ball_ground",
+		"dialogue": "rocket_hideout_b2f_item_3", "verb": "take", "turn_to_player": false,
+		"unless": ["got_rocket_hideout_b2f_item_3"]
+	},
+	"rocket_hideout_b2f_item_4": {
+		"cell": [3, 21], "facing": "down", "sprite": "object/poke_ball_ground",
+		"dialogue": "rocket_hideout_b2f_item_4", "verb": "take", "turn_to_player": false,
+		"unless": ["got_rocket_hideout_b2f_item_4"]
+	}
+}

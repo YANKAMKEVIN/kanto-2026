@@ -55,6 +55,12 @@ extends RefCounted
 ## CHARGE_RELEASED : SURFACE (sans phrase) ; CHARGE_BROKEN : SURFACE puis le message ; TELEPORTED :
 ## VANISH puis le message ; DODGED, BALL_BLOCKED, NOTHING_HAPPENED : le message seulement (pas de
 ## THROW : la Ball n'est pas lancée).
+## Jalon 19 : SCARED_AWAY comme TELEPORTED (VANISH puis le message) ; FORCED_OUT comme WITHDRAWN
+## (le message, puis WITHDRAW) ; RECHARGING : le message seulement.
+## Jalon 20 : BATTLE_ITEM_USED → le message, puis HEAL (la carte du joueur revient après le Sac ;
+## la barre ne bouge pas) ; ITEM_ESCAPE, REVIVED : les messages seulement.
+## Passe systèmes 2 : FLUTE_WOKE (muet) → STATUS_TAG si le Pokémon réveillé est en jeu ;
+## FLUTE_PLAYED, ALL_WOKE : les messages seulement.
 ## Les phrases viennent de [BattleText] : rien n'est écrit ici.
 
 
@@ -112,6 +118,9 @@ static func beats(event: BattleEvent, texts: BattleText, data: PokemonData,
 			result.append_array(messages.slice(0, 1))
 			result.append(BattleBeat.new(BattleBeat.Kind.HEAL, event))
 			result.append_array(messages.slice(1))
+		BattleEvent.Kind.BATTLE_ITEM_USED:
+			result.append_array(messages)
+			result.append(BattleBeat.new(BattleBeat.Kind.HEAL, event))
 		BattleEvent.Kind.STATUS_INFLICTED:
 			result.append_array(messages)
 			result.append(BattleBeat.new(BattleBeat.Kind.STATUS_TAG, event))
@@ -121,6 +130,9 @@ static func beats(event: BattleEvent, texts: BattleText, data: PokemonData,
 		BattleEvent.Kind.STATUS_CURED, BattleEvent.Kind.STATUS_ENDED:
 			result.append(BattleBeat.new(BattleBeat.Kind.STATUS_TAG, event))
 			result.append_array(messages)
+		BattleEvent.Kind.FLUTE_WOKE:
+			if event.on_field:
+				result.append(BattleBeat.new(BattleBeat.Kind.STATUS_TAG, event))
 		BattleEvent.Kind.BIDE_UNLEASHED:
 			# Patience, tour 3 : « … riposte ! », puis l'élan d'une attaque physique.
 			result.append_array(messages)
@@ -143,13 +155,13 @@ static func beats(event: BattleEvent, texts: BattleText, data: PokemonData,
 		BattleEvent.Kind.CHARGE_BROKEN:
 			result.append(BattleBeat.new(BattleBeat.Kind.SURFACE, event))
 			result.append_array(messages)
-		BattleEvent.Kind.TELEPORTED:
+		BattleEvent.Kind.TELEPORTED, BattleEvent.Kind.SCARED_AWAY:
 			result.append(BattleBeat.new(BattleBeat.Kind.VANISH, event))
 			result.append_array(messages)
-		BattleEvent.Kind.WITHDRAWN:
+		BattleEvent.Kind.WITHDRAWN, BattleEvent.Kind.FORCED_OUT:
 			result.append_array(messages)
 			result.append(BattleBeat.new(BattleBeat.Kind.WITHDRAW, event))
-		BattleEvent.Kind.DRAINED_HP:
+		BattleEvent.Kind.DRAINED_HP, BattleEvent.Kind.HEALED:
 			result.append(BattleBeat.new(BattleBeat.Kind.HP, event))
 			result.append_array(messages)
 		BattleEvent.Kind.RESTED:

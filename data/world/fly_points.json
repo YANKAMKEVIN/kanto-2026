@@ -1,0 +1,16 @@
+{
+	"_doc": "Destinations du Vol (passe systèmes 2, docs/tech/systemes-2.md §2.8), dans l'ordre de Rouge/Bleu : zone (zones.json) → carte et point d'arrivée (devant le Centre ; Bourg Palette : devant la maison du joueur [D, RB]). Une destination est ouverte quand sa carte est dans les cartes découvertes. Les villes pas encore construites portent l'identifiant de carte prévu par leur jalon et « from_center » [D] : leur jalon confirme ou corrige le point d'arrivée.",
+	"points": [
+		{ "zone": "pallet_town", "map": "pallet_town", "spawn": "player_house_door" },
+		{ "zone": "viridian_city", "map": "viridian_city", "spawn": "from_center" },
+		{ "zone": "pewter_city", "map": "pewter_city", "spawn": "from_center" },
+		{ "zone": "cerulean_city", "map": "cerulean_city", "spawn": "from_center" },
+		{ "zone": "lavender_town", "map": "lavender_town", "spawn": "retour_centre" },
+		{ "zone": "vermilion_city", "map": "vermilion_city", "spawn": "from_center" },
+		{ "zone": "celadon_city", "map": "celadon_city", "spawn": "from_center_w" },
+		{ "zone": "fuchsia_city", "map": "fuchsia_city", "spawn": "from_center" },
+		{ "zone": "cinnabar_island", "map": "cinnabar_island", "spawn": "from_center" },
+		{ "zone": "indigo_plateau", "map": "indigo_plateau", "spawn": "from_center" },
+		{ "zone": "saffron_city", "map": "saffron_city", "spawn": "from_center" }
+	]
+}

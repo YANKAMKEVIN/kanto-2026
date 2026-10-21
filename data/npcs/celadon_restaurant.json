@@ -1,0 +1,28 @@
+{
+	"waiter": {
+		"cell": [
+			3,
+			3
+		],
+		"facing": "down",
+		"sprite": "clerk"
+	},
+	"gambler": {
+		"cell": [
+			8,
+			5
+		],
+		"facing": "right",
+		"sprite": "gambler",
+		"dialogue": "celadon_restaurant_gambler"
+	},
+	"diner": {
+		"cell": [
+			12,
+			7
+		],
+		"facing": "up",
+		"sprite": "gentleman",
+		"dialogue": "celadon_restaurant_diner"
+	}
+}

@@ -198,6 +198,16 @@ var _veil_debug: StringName = &""
 ## Flash automatique à l'arrivée sur une carte obscure (J17 T24, Q-1 « tout J17 » ; contrat commun
 ## avec le J18, `jalon-18.md` §3.3).
 var _flash: FlashDirector
+## J20 (T13, `jalon-20.md` §2.3) : ascenseurs (cabine, panneau, trajet, position sauvée).
+var _elevators := ElevatorLibrary.new()
+var _elevator: ElevatorDirector
+var _elevator_panel: ElevatorPanel
+var _pending_elevator: bool = false
+## J20 (T19, `jalon-20.md` §2.4.4) : dalles tournantes du repaire (glisse, verrou, reprise).
+var _forced_slide: ForcedSlideDirector
+## Passe systèmes 2 (S2B) : monture (Vélo) et objets clés utilisables (Bicyclette, Poké Flûte).
+var _mount: MountDirector
+var _key_items: KeyItemDirector
 
 @onready var _world: Node2D = %World
 @onready var _hud: ExplorationHud = %ExplorationHud
@@ -223,6 +233,7 @@ var _flash: FlashDirector
 
 func _ready() -> void:
 	_save_coordinator.setup(_can_write, is_stable, _persist_snapshot)
+	_setup_save_checkpoint()
 	GameState.new_game()
 	_lighting = WorldLighting.new()
 	_lighting.process_mode = Node.PROCESS_MODE_PAUSABLE
@@ -235,6 +246,11 @@ func _ready() -> void:
 	_flash = FlashDirector.new()
 	_flash.process_mode = Node.PROCESS_MODE_PAUSABLE
 	add_child(_flash)
+	# J20 (T13) : directeur de l'ascenseur, créé avant les réglages (« Réduire les animations »).
+	_elevator = ElevatorDirector.new()
+	_elevator.name = "ElevatorDirector"
+	_elevator.process_mode = Node.PROCESS_MODE_PAUSABLE
+	add_child(_elevator)
 	_load_settings()
 	# Compteur de fps de QA (journal « [perf] »), seulement en build debug, Boot scène principale.
 	if PerfCounter.is_allowed(OS.is_debug_build(), get_tree().current_scene == self):
@@ -244,6 +260,7 @@ func _ready() -> void:
 	_library.load_dir()
 	_cutscenes.load_dir()
 	_runner.setup(_library, GameState.flags, _dialogue_box, _player)
+	_setup_forced_slides()
 	# Centre Pokémon (jalon 7, 7A.2, jalon-07.md §6.2) : actions de dialogue (soins), choix à deux
 	# cartes dans la boîte de dialogue (T7), réveil au point de repos.
 	_rest_points.load_file()
@@ -264,6 +281,9 @@ func _ready() -> void:
 	_interactions.set_story_flags(GameState.flags)
 	_interactions.challenge_requested.connect(_trainer_watcher.challenge)
 	_pokemon.load_dir()
+	# Combats sauvages scriptés (jalon 19) : leurs espèces sont vérifiées une fois les données
+	# Pokémon chargées (une scène qui nomme une espèce inconnue est écartée).
+	_cutscenes.check_species(_pokemon)
 	if _offer.load_file():
 		_offer.check_species(_pokemon)
 	_starter_choice.setup(_offer, _pokemon, GameState, _player, _sheet, _hud, _cutscenes_node,
@@ -290,6 +310,10 @@ func _ready() -> void:
 	_cutscenes_node.set_trainers(_trainers)
 	_badges.load_file()
 	_cutscenes_node.set_badges(_badges, GameState)
+	# J20 (§2.5.2, T12) : don de Pokémon (étape « gift_pokemon », Évoli) ; le Pokédex suit par
+	# GameState.pokedex.recorded (toasts existants).
+	_cutscenes_node.set_pokemon_data(_pokemon)
+	_cutscenes_node.pokemon_gifted.connect(_on_pokemon_gifted)
 	_evolutions = EvolutionDirector.new()
 	_evolutions.name = "EvolutionDirector"
 	_evolutions.process_mode = Node.PROCESS_MODE_PAUSABLE
@@ -320,6 +344,10 @@ func _ready() -> void:
 	_daycare.deposited.connect(_on_daycare_deposited.unbind(1))
 	_daycare.finished.connect(_on_daycare_finished)
 	_services.daycare_requested.connect(_on_daycare_requested)
+	_setup_elevators()
+	_setup_teleporters()
+	_setup_fly()
+	_setup_field_travel()
 	_cutscenes_node.set_inventory(GameState.bag, _items)
 	# Remise du colis (jalon-07.md §3.6.2, T19) : jeton {first_wild_species} des répliques de
 	# Chen, scène lancée par une variante de dialogue (« colis en main »), légende POKÉDEX ACTIVÉ.
@@ -330,6 +358,10 @@ func _ready() -> void:
 	_runner.caught_count = func() -> int: return GameState.pokedex.caught_count()
 	# Capacités de terrain (jalon 16) : état de Coupe pour les variantes « field » de l'arbuste.
 	_runner.field_source = field_state
+	# Jalon 20 (§2.9.6, §2.16) : variantes selon le Sac et selon les zones jouables (postes de
+	# Safrania).
+	_runner.item_source = func(id: StringName) -> bool: return (GameState.bag as Bag).has(id)
+	_runner.zone_source = _zones.is_playable
 	# OUV.2 : prénoms du joueur et du rival (`{player}`, `{rival}`) aussi dans le nom du dresseur.
 	_texts.token_values = _dialogue_token_values
 	_runner.cutscene_requested.connect(_on_cutscene_requested)
@@ -409,6 +441,9 @@ func _ready() -> void:
 	_setup_companion()
 	_setup_caves()
 	_setup_flash()
+	_setup_mount()
+	_setup_fishing()
+	_setup_strength()
 	_setup_evolution_items()
 	# L'écran (jalon-06.md §6.6) : ouverture et vue dans la même frame, sans await (un fondu
 	# coupé laisse une coroutine non reprise).
@@ -509,16 +544,18 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	GameState.add_play_time(_lifecycle.play_time_step(delta, _is_opening_active()))
+	_watch_save_checkpoint(delta)
 	_save_coordinator.process(delta)
 	if not _dex_toasts.is_empty():
 		_show_next_dex_toast()
 
 
-## Boot transmet les notifications ; le cycle de vie décide du temps de jeu et le
-## coordinateur garde les mêmes conditions d'écriture stable qu'en exploration.
+## Boot transmet les notifications ; le cycle de vie décide du temps de jeu, le point de reprise
+## de ce qui s'écrit à la mise en arrière-plan (passe systèmes 2, S2A).
 func _notification(what: int) -> void:
 	if _lifecycle.handle_notification(what):
-		_save_coordinator.flush_if_stable("arrière-plan")
+		_save_in_background("arrière-plan")
+	_on_focus_change(SessionLifecycle.focus_change(what))
 	if what == NOTIFICATION_WM_GO_BACK_REQUEST:
 		_on_go_back()
 
@@ -798,7 +835,8 @@ func is_stable() -> bool:
 		and not SceneRouter.is_transitioning() and not _runner.is_running() \
 		and not _cutscenes_node.is_running() and not _starter_choice.is_sheet_open() \
 		and not _battle_director.is_running() and not _encounters.is_running() \
-		and not _flash.is_running()
+		and not _flash.is_running() and not _elevator.is_running() \
+		and not _forced_slide.is_running()
 
 
 ## Garde d'ouverture du Menu Dresseur : partie stable (ce qui exclut dialogue, scène, rencontre,
@@ -829,6 +867,9 @@ func _on_go_back() -> void:
 	# Pension (J15) : écran du dépôt = ANNULER ; le reste de la conversation avale le geste.
 	if _daycare.handle_back():
 		return
+	# J20 (T13) : panneau d'étages = FERMER ; pendant un trajet, avalé.
+	if _elevator.handle_back():
+		return
 	if _menu.is_open() and _screen_back():
 		return
 	if _menu.handle_back():
@@ -846,7 +887,7 @@ func _on_menu_opened() -> void:
 	# pour que la Carte et le Dresseur sachent où est le joueur dès une partie neuve.
 	var here := SceneRouter.get_current_map()
 	if is_instance_valid(here) and is_instance_valid(_player):
-		GameState.set_player_location(here.map_id, _player.get_cell(), _player.get_facing())
+		_push_stable_location(here.map_id)
 	_hud.hide_zone_title()
 	# Le fondu du titre est un Tween du HUD, gelé par la pause : masqué net (la fin du fondu,
 	# reprise à la fermeture, ne change plus rien).
@@ -1208,8 +1249,11 @@ func _persist_snapshot(reason: String) -> Error:
 	var map := SceneRouter.get_current_map()
 	if not is_instance_valid(map) or not is_instance_valid(_player):
 		return ERR_UNAVAILABLE
-	GameState.set_player_location(map.map_id, _player.get_cell(), _player.get_facing())
-	var error := save_system.write(GameState.to_dict())
+	_push_stable_location(map.map_id)
+	var snapshot := GameState.to_dict()
+	var error := save_system.write(snapshot)
+	if error == OK:
+		_checkpoint.note_written(snapshot, background_clock.call(), _background_write)
 	if OS.is_debug_build():
 		print("Sauvegarde automatique (%s) : %s %s, %s" % [reason, map.map_id,
 			_player.get_cell(), error_string(error)])
@@ -1254,6 +1298,10 @@ func _on_map_changed(map: GameMap) -> void:
 	_services.set_map(map)
 	_daycare.set_map(map)
 	_recovery.set_map(map)
+	# J20 (T13) : cabine d'ascenseur (étage courant d'après la carte quittée, sortie réorientée).
+	_elevator.set_map(map, _arrival_from)
+	# J20 (T19) : dalles tournantes ; joueur posé sur une dalle → case stable (avant le compagnon).
+	_forced_slide.set_map(map)
 	_companion.on_map_changed(map)
 	_field_presenter.set_map(map)
 	# Décor de combat de la carte chargé en tâche de fond (correctif QA S24 du CB.3).
@@ -1338,6 +1386,9 @@ func _on_map_entered(map: GameMap) -> void:
 	_active_puzzles.clear()
 	GameState.discover_map(map.map_id)
 	_companion.on_map_entered(map)
+	# Passe systèmes 2 (T15) : arrivée en Surf sur un courant (reprise) → la glissade part ici ;
+	# l'autosave d'arrivée attend sa fin (partie pas stable).
+	_forced_slide.ride_from_here()
 	request_autosave("changement de carte")
 	var indoors := map.interior and not _zones.interior_title_of(map.map_id)
 	if _announcer.should_announce(map.display_name, indoors):
@@ -1351,7 +1402,8 @@ func _on_target_changed(kind: int) -> void:
 	if kind == InteractionController.NO_TARGET:
 		_hud.hide_interact()
 	else:
-		_hud.show_interact(Interaction.kind_name(kind as Interaction.Kind))
+		_hud.show_interact(Interaction.kind_name(kind as Interaction.Kind),
+			kind == Interaction.Kind.FISH and _can_surf_ahead())
 
 
 func _on_dialogue_started(_dialogue_id: StringName) -> void:
@@ -1375,6 +1427,9 @@ func _on_dialogue_finished(_dialogue_id: StringName) -> void:
 	elif _pending_daycare:
 		_pending_daycare = false
 		_daycare.run()
+	elif _pending_elevator:
+		_pending_elevator = false
+		_elevator.open_panel()
 
 
 ## « open_shop » (le marchand, jalon-07.md §6.10) : la Boutique s'ouvre en écran seul dès la fin
@@ -1515,6 +1570,9 @@ func _on_starter_chosen(player_species: StringName, _rival_species: StringName) 
 ## (le rival au labo, décision Q-D). Les sauvages sont enregistrés par l'[EncounterDirector]
 ## au début de la rencontre (une seule observation par rencontre).
 func _on_battle_event(event: BattleEvent) -> void:
+	# SPECTRE (jalon 19, K-9) : un événement masqué n'enregistre rien (ni le 6F scénarisé).
+	if GhostDisguise.is_masked(event):
+		return
 	if event.kind == BattleEvent.Kind.SENT_OUT and event.side == BattleEvent.SideId.FOE \
 			and not _encounters.is_running():
 		GameState.record_seen(event.species_id, _current_map_id())
@@ -1584,6 +1642,13 @@ func _on_checkpoint_save_failed(_reason: String, _error: Error) -> void:
 func _on_pokemon_caught() -> void:
 	_companion.note_joy()
 	request_autosave("capture")
+
+
+## J20 (§2.5.2, T12) : Pokémon donné (équipe ou Stockage, drapeau levé d'un seul bloc) :
+## compagnon à jour, autosave demandé (écrit à la fin de la scène, partie stable).
+func _on_pokemon_gifted(_pokemon: Pokemon, _stored: bool) -> void:
+	_companion.refresh()
+	request_autosave("don")
 
 
 ## Objet trouvé dans le monde (étape « give » marquée « found », la Potion de la Route 1) :
@@ -1707,7 +1772,8 @@ func _refresh_controls() -> void:
 		and not _encounters.is_running() and not _player.is_blocked_by(EVOLUTION_ITEM)
 		and not _player.is_blocked_by(RARE_CANDY)
 		and not (_daycare != null and _daycare.is_running())
-		and not _player.is_blocked_by(FlashDirector.LOCK_REASON))
+		and not _player.is_blocked_by(FlashDirector.LOCK_REASON)
+		and not _elevator.is_running() and not _forced_slide.is_running())
 
 
 ## Racine de composition : les dépendances sont explicites et câblées une seule fois.
@@ -1761,6 +1827,9 @@ func _apply_settings(s: GameSettings) -> void:
 	# saut et sortie de Ball adoucis.
 	_darkness.set_reduce_motion(s.reduce_motion)
 	_flash.reduce_motion = s.reduce_motion
+	if _elevator_panel != null:
+		_elevator_panel.reduce_motion = s.reduce_motion
+	_elevator.reduce_motion = s.reduce_motion  # J20 (T13) : pas de secousse
 
 
 ## « Sauvegarder maintenant » : écrit la sauvegarde et affiche le résultat dans l'écran.
@@ -1823,6 +1892,37 @@ func _on_field_item_requested(item_id: StringName) -> void:
 		await _runner.dialogue_finished
 	GameState.bag.remove(item_id, 1)
 	SceneRouter.change_map(exit.map, exit.spawn, exit.facing)
+
+
+# --- Passe systèmes 2 (S2B) : monture, Vélo, objets clés utilisables -------------------------
+
+## [MountDirector] (arrivée, Vélo, bouton du HUD) et [KeyItemDirector] (UTILISER d'un objet clé
+## dans le Sac : menu fermé, puis l'objet aiguillé par son usage).
+func _setup_mount() -> void:
+	_mount = MountDirector.new()
+	_mount.process_mode = Node.PROCESS_MODE_PAUSABLE
+	add_child(_mount)
+	_mount.setup(GameState, _player, _runner, _hud)
+	_mount.can_toggle = func() -> bool: return is_stable() and not _is_opening_active()
+	# S2C (§2.5) : SURFER au bouton contextuel, face à l'eau.
+	_mount.surf_state = func() -> FieldMoves.State: return field_state(&"surf").state
+	_interactions.terrain_target = _mount.surf_target
+	_interactions.surf_requested.connect(_mount.start_surf.unbind(1))
+	_key_items = KeyItemDirector.new()
+	_key_items.process_mode = Node.PROCESS_MODE_PAUSABLE
+	add_child(_key_items)
+	_key_items.setup(GameState, _items, _mount, _runner, _cutscenes_node, _companion, _player)
+	_menu.key_item_requested.connect(func(item_id: StringName) -> void:
+		_menu.close()
+		_key_items.use(item_id))
+
+
+func get_mount_director() -> MountDirector:
+	return _mount
+
+
+func get_key_item_director() -> KeyItemDirector:
+	return _key_items
 
 
 # --- Jalon 12 (T23) : évolution par pierre hors combat ------------------------------------
@@ -1949,3 +2049,382 @@ func _end_rare_candy() -> void:
 func is_rare_candy_running() -> bool:
 	return _candy_index >= 0
 
+
+# --- Jalon 20 (T13) : ascenseur ----------------------------------------------------------------
+
+## Ascenseurs (`data/world/elevators.json`), directeur, écran du panneau (provisoire jusqu'au
+## T14) ; le dialogue du panneau (`open_elevator`) l'ouvre à sa fin, comme la Boutique.
+func _setup_elevators() -> void:
+	if not _elevators.load_file():
+		for error: String in _elevators.get_errors():
+			push_error("Boot : %s" % error)
+	_elevator.setup(_elevators, GameState, _player, _runner, _fade)
+	_elevator.spawn_cell_source = _spawn_cell
+	_elevator_panel = ElevatorPanel.new()
+	_elevator_panel.name = "ElevatorPanel"
+	if _settings != null:
+		_elevator_panel.reduce_motion = _settings.reduce_motion
+	_elevator_panel.process_mode = Node.PROCESS_MODE_PAUSABLE
+	add_child(_elevator_panel)
+	_elevator.set_panel(_elevator_panel)
+	_elevator.ride_started.connect(_on_elevator_ride_started.unbind(1))
+	_elevator.ride_finished.connect(_on_elevator_ride_finished.unbind(1))
+	_elevator.panel_opened.connect(_refresh_controls.unbind(1))
+	_elevator.panel_closed.connect(_refresh_controls)
+	_services.elevator_requested.connect(_on_elevator_requested)
+
+
+func get_elevator_director() -> ElevatorDirector:
+	return _elevator
+
+
+## « open_elevator » (le panneau de la cabine) : il s'ouvre à la fin du dialogue.
+func _on_elevator_requested() -> void:
+	_pending_elevator = true
+
+
+func _on_elevator_ride_started() -> void:
+	_companion.on_cutscene_started()
+	_refresh_controls()
+
+
+func _on_elevator_ride_finished() -> void:
+	_companion.on_cutscene_finished()
+	_refresh_controls()
+
+
+## Position du joueur poussée dans GameState, jamais la cabine d'un ascenseur (§2.3.5).
+func _push_stable_location(map_id: StringName) -> void:
+	var at := _elevator.stable_location(map_id, _player.get_cell(), _player.get_facing())
+	GameState.set_player_location(at["map"], at["cell"], at["facing"])
+
+
+## J20 (T19, `jalon-20.md` §2.4.4) et passe systèmes 2 (T15, `systemes-2.md` §2.6) : directeur
+## des glissades forcées (dalles tournantes, courants du Surf), branché sur le pas du joueur
+## **avant** tout autre écouteur (directeur de scènes, Dresseurs, rencontres, routeur) : le pas
+## qui lance une glissade bloque le joueur avant qu'ils ne le voient.
+func _setup_forced_slides() -> void:
+	_forced_slide = ForcedSlideDirector.new()
+	_forced_slide.name = "ForcedSlideDirector"
+	_forced_slide.process_mode = Node.PROCESS_MODE_PAUSABLE
+	add_child(_forced_slide)
+	_forced_slide.setup(_player, _trainer_watcher)
+	_forced_slide.slide_started.connect(_on_forced_slide_started.unbind(1))
+	_forced_slide.slide_finished.connect(_on_forced_slide_finished.unbind(1))
+	_forced_slide.warp_reached.connect(_on_forced_slide_warp_reached)
+
+
+func get_forced_slide_director() -> ForcedSlideDirector:
+	return _forced_slide
+
+
+## Ancien nom (J20, J28) : même directeur que [method get_forced_slide_director].
+func get_spin_director() -> ForcedSlideDirector:
+	return _forced_slide
+
+
+func _on_forced_slide_started() -> void:
+	_companion.on_cutscene_started()
+	_refresh_controls()
+
+
+func _on_forced_slide_finished() -> void:
+	_companion.on_cutscene_finished()
+	_refresh_controls()
+
+
+## Courant fini sur un passage : suivi comme un pas libre (verrou de la glissade déjà levé).
+func _on_forced_slide_warp_reached(cell: Vector2i, direction: Vector2i) -> void:
+	if not SceneRouter.follow_warp_at(cell, direction):
+		push_error("Boot : aucun passage à suivre en %s au bout du courant" % cell)
+
+
+# --- Passe systèmes 2, S2A : sauvegarde à la mise en arrière-plan (`systemes-2.md` §2.12) ------
+
+## Point de reprise : instantané capturé au passage stable → instable (dialogue, scène,
+## rencontre, combat, transition), remplacé par chaque écriture réussie.
+var _checkpoint := SaveCheckpoint.new()
+## Horloge du point de reprise, en secondes (délai de garde, écart entre écritures) ; les tests
+## la remplacent avant l'entrée dans l'arbre.
+var background_clock: Callable
+var _was_stable: bool = false
+## Position de la dernière image stable ({ map, cell, facing }) : celle du point de reprise (la
+## première image instable peut avoir posé le joueur sur une dalle tournante).
+var _stable_location: Dictionary = {}
+## Vrai pendant une écriture déclenchée par l'arrière-plan ([method SaveCheckpoint.note_written]).
+var _background_write: bool = false
+## Nouvelle tentative d'écriture du point de reprise après un échec (s restantes, −1 sinon).
+var _checkpoint_retry: float = -1.0
+## Plus longue capture de la session (µs), pour la mesure sur téléphone (budget < 5 ms).
+var _checkpoint_max_usec: int = 0
+
+
+func _setup_save_checkpoint() -> void:
+	if not background_clock.is_valid():
+		background_clock = func() -> float: return Time.get_ticks_msec() / 1000.0
+
+
+func get_save_checkpoint() -> SaveCheckpoint:
+	return _checkpoint
+
+
+## Une fois par image, avant le coordinateur : capture au passage stable → instable, délai de
+## garde d'un `FOCUS_OUT`, nouvelle tentative après un échec.
+func _watch_save_checkpoint(delta: float) -> void:
+	var stable := is_stable()
+	if stable:
+		_stable_location = {"map": _current_map_id(), "cell": _player.get_cell(),
+			"facing": _player.get_facing()}
+	elif _was_stable and _can_write():
+		_capture_checkpoint()
+	_was_stable = stable
+	if _checkpoint.focus_due(background_clock.call()):
+		_save_in_background("arrière-plan (focus perdu)")
+	if _checkpoint_retry >= 0.0:
+		_checkpoint_retry = maxf(0.0, _checkpoint_retry - maxf(delta, 0.0))
+		if _checkpoint_retry == 0.0:
+			_checkpoint_retry = -1.0
+			# Redevenue stable, la partie s'écrit par les autosaves ordinaires.
+			if not stable:
+				_save_in_background("nouvelle tentative")
+
+
+## Instantané de l'état courant, à la position de la dernière image stable.
+func _capture_checkpoint() -> void:
+	if _stable_location.is_empty():
+		return
+	var start := Time.get_ticks_usec()
+	var at := _elevator.stable_location(_stable_location["map"], _stable_location["cell"],
+		_stable_location["facing"])
+	GameState.set_player_location(at["map"], at["cell"], at["facing"])
+	_checkpoint.capture(GameState.to_dict())
+	var spent := Time.get_ticks_usec() - start
+	_checkpoint_max_usec = maxi(_checkpoint_max_usec, spent)
+	if OS.is_debug_build():
+		print("[save] point de reprise : %d µs (max %d µs)" % [spent, _checkpoint_max_usec])
+
+
+## Mise en arrière-plan (`PAUSED`, `WM_CLOSE_REQUEST`, `FOCUS_OUT` échu) : état courant si la
+## partie est stable, sinon le point de reprise s'il est plus récent que le disque.
+func _save_in_background(reason: String) -> void:
+	if not _can_write():
+		return
+	match _checkpoint.decide(is_stable(), background_clock.call()):
+		SaveCheckpoint.Decision.WRITE_CURRENT:
+			_background_write = true
+			_save_coordinator.flush_if_stable(reason)
+			_background_write = false
+		SaveCheckpoint.Decision.WRITE_CHECKPOINT:
+			_write_checkpoint(reason)
+
+
+func _write_checkpoint(reason: String) -> void:
+	var snapshot := _checkpoint.get_snapshot()
+	var error := save_system.write(snapshot)
+	if error == OK:
+		_checkpoint.note_written(snapshot, background_clock.call(), true)
+		_checkpoint_retry = -1.0
+	else:
+		_checkpoint_retry = SaveCoordinator.RETRY_DELAY
+	if OS.is_debug_build():
+		print("Sauvegarde du point de reprise (%s) : %s %s, %s" % [reason,
+			snapshot.get("map", ""), snapshot.get("cell", ""), error_string(error)])
+
+
+func _on_focus_change(change: SessionLifecycle.Focus) -> void:
+	if change != SessionLifecycle.Focus.NONE and OS.is_debug_build():
+		print("[save] focus %s à %.2f s" % [SessionLifecycle.Focus.keys()[change],
+			background_clock.call()])
+	match change:
+		SessionLifecycle.Focus.LOST:
+			_checkpoint.focus_out(background_clock.call())
+		SessionLifecycle.Focus.REGAINED:
+			_checkpoint.focus_in()
+
+
+# --- Passe systèmes 2 (S2F) : téléporteurs et portes à carte -----------------------------------
+
+## Téléporteurs (`systemes-2.md` §2.9) : à la fin d'un replacement sur la même carte, le compagnon
+## ressort comme après l'écran « à venir ». Portes à carte (§2.10) : [KeyDoorDirector] répond à
+## l'appui OUVRIR. Un seul bloc, déconnecté à la sortie par le directeur lui-même.
+var _key_doors: KeyDoorDirector
+
+
+func _setup_teleporters() -> void:
+	_key_doors = KeyDoorDirector.new()
+	_key_doors.name = "KeyDoorDirector"
+	_key_doors.process_mode = Node.PROCESS_MODE_PAUSABLE
+	add_child(_key_doors)
+	_key_doors.setup(GameState.flags, GameState.bag, _player, _runner,
+		SceneRouter.get_current_map, request_autosave)
+	_interactions.door_requested.connect(_key_doors.on_door_requested)
+	var on_relocated := func(_map: GameMap) -> void: _on_coming_soon_finished(_map)
+	SceneRouter.relocated.connect(on_relocated)
+	_key_doors.tree_exiting.connect(func() -> void:
+		if SceneRouter.relocated.is_connected(on_relocated):
+			SceneRouter.relocated.disconnect(on_relocated))
+
+
+func get_key_door_director() -> KeyDoorDirector:
+	return _key_doors
+
+
+# --- Passe systèmes 2 (S2E) : Vol -------------------------------------------------------------
+
+var _fly: FlyDirector
+
+
+## Vol (`systemes-2.md` §2.8, T24–T25) : destinations de `fly_points.json`, bouton « S'ENVOLER »
+## de la Carte (Q-4), menu fermé puis [FlyDirector].
+func _setup_fly() -> void:
+	var rules := FlyRules.new()
+	rules.load_file()
+	_fly = FlyDirector.new()
+	_fly.name = "FlyDirector"
+	_fly.process_mode = Node.PROCESS_MODE_PAUSABLE
+	add_child(_fly)
+	_fly.setup(rules, func() -> Dictionary: return GameState.discovered_maps,
+		func(move: StringName) -> Variant: return _runner.field_source.call(move), _caves, SceneRouter.get_current_map, _player, _runner, SceneRouter,
+		_companion)
+	_menu.set_fly_check(_fly.can_fly_to)
+	_menu.fly_requested.connect(func(zone: StringName) -> void:
+		_menu.close()
+		_fly.fly(zone))
+	if _menu_screen.has_signal(&"map_fly_requested"):
+		_menu_screen.map_fly_requested.connect(_menu.request_fly)
+	_fly.flight_started.connect(_refresh_controls.unbind(1))
+	_fly.flight_finished.connect(_refresh_controls.unbind(1))
+
+
+func get_fly_director() -> FlyDirector:
+	return _fly
+
+
+# --- Passe systèmes 2 (S2E, T25b) : Téléport et Tunnel hors combat ----------------------------
+
+var _field_travel: FieldTravelDirector
+
+
+## Téléport (au point du réveil, sans soin) et Tunnel (sortie de grotte, comme la Corde Sortie) :
+## UTILISER sous la fiche de la capacité dans l'Équipe, menu fermé puis [FieldTravelDirector].
+func _setup_field_travel() -> void:
+	_field_travel = FieldTravelDirector.new()
+	_field_travel.name = "FieldTravelDirector"
+	_field_travel.process_mode = Node.PROCESS_MODE_PAUSABLE
+	add_child(_field_travel)
+	_field_travel.setup(field_state, _recovery.wakeup_point, _caves, SceneRouter.get_current_map,
+		_player, _runner, SceneRouter, _companion)
+	_menu.set_field_travel_check(_field_travel.check)
+	_menu.field_travel_requested.connect(func(move: StringName) -> void:
+		_menu.close()
+		_field_travel.travel(move))
+	if _menu_screen.has_signal(&"team_field_move_requested"):
+		_menu_screen.team_field_move_requested.connect(_menu.request_field_travel)
+		_menu.team_notice_shown.connect(_menu_screen.show_team_notice)
+	_field_travel.travel_started.connect(_refresh_controls.unbind(1))
+	_field_travel.travel_finished.connect(_refresh_controls.unbind(1))
+
+
+func get_field_travel_director() -> FieldTravelDirector:
+	return _field_travel
+
+
+# --- Passe systèmes 2 (S2C-bis) : pêche --------------------------------------------------------
+
+## Choix « Pêcher / Surfer » par appui long (option A de Kevin) : OUI = PÊCHER, NON = SURFER.
+const WATER_CHOICE_DIALOGUE: StringName = &"water_choice"
+enum WaterChoice { NONE, FISH, SURF }
+
+var _fishing: FishingDirector
+var _water_choice: WaterChoice = WaterChoice.NONE
+
+
+## Pêche (J22 §2.7) : cible de terrain PÊCHER, appui, cannes du Sac ([KeyItemDirector]). Tables
+## chargées sans contrôle des espèces (celles du J22 manquent) : le directeur refuse une espèce
+## inconnue au moment de la touche. Après [method _setup_mount] (objets clés).
+## Vrai si SURFER est possible devant le joueur (même s'il voit PÊCHER).
+func _can_surf_ahead() -> bool:
+	var target := _mount.surf_target(_player.get_cell(), _player.get_facing())
+	return target != null and target.kind == Interaction.Kind.SURF
+
+
+## Appui long sur PÊCHER (mode choix) : « Pêcher / Surfer ».
+func _on_water_choice_requested() -> void:
+	if _runner.is_running() or _fishing.is_running() or not _player.is_input_enabled() \
+			or _player.is_moving() or not _can_surf_ahead():
+		return
+	_water_choice = WaterChoice.NONE
+	_runner.play(WATER_CHOICE_DIALOGUE)
+
+
+func _on_water_choice_finished(dialogue_id: StringName) -> void:
+	if dialogue_id != WATER_CHOICE_DIALOGUE:
+		return
+	var choice := _water_choice
+	_water_choice = WaterChoice.NONE
+	if choice == WaterChoice.FISH:
+		_fishing.on_fish_requested(_player.get_cell() + _player.get_facing())
+	elif choice == WaterChoice.SURF:
+		_mount.start_surf()
+
+
+func _setup_fishing() -> void:
+	var tables := WaterRodTables.new()
+	tables.load_game_files()
+	_fishing = FishingDirector.new()
+	_fishing.process_mode = Node.PROCESS_MODE_PAUSABLE
+	add_child(_fishing)
+	_fishing.setup(GameState, tables, _pokemon, _player, _runner, _encounters, _companion)
+	SceneRouter.map_changed.connect(_fishing.set_map)
+	_fishing.tree_exiting.connect(func() -> void:
+		if SceneRouter.map_changed.is_connected(_fishing.set_map):
+			SceneRouter.map_changed.disconnect(_fishing.set_map))
+	# Cible de terrain : la pêche d'abord (case pêchable et canne au Sac, [D]), sinon le Surf.
+	_interactions.terrain_target = func(c: Vector2i, f: Vector2i) -> Interaction:
+		var target := _fishing.target_at(c, f)
+		return target if target != null else _mount.surf_target(c, f)
+	_interactions.fish_requested.connect(_fishing.on_fish_requested)
+	# Option A de Kevin (2026-10-21) : PÊCHER face à une eau où l'on peut aussi surfer ; un appui
+	# long ouvre le choix « Pêcher / Surfer », joué au premier plan puis lancé à sa fermeture.
+	_hud.interact_long_pressed.connect(_on_water_choice_requested)
+	_runner.choice_made.connect(func(confirmed: bool) -> void:
+		if _runner.get_dialogue_id() == WATER_CHOICE_DIALOGUE:
+			_water_choice = WaterChoice.FISH if confirmed else WaterChoice.SURF)
+	_runner.dialogue_finished.connect(_on_water_choice_finished)
+	_key_items.set_fishing(_fishing)
+	_fishing.fishing_started.connect(_refresh_controls.unbind(1))
+	_fishing.fishing_finished.connect(_refresh_controls.unbind(1))
+
+
+func get_fishing_director() -> FishingDirector:
+	return _fishing
+
+
+# --- Passe systèmes 2, S2D : Force (`systemes-2.md` §2.7) -----------------------------------
+
+var _strength: StrengthDirector
+
+
+## [StrengthDirector] : rochers de la carte (nœud `Boulders`), activation par EXAMINER, poussée,
+## sauvegarde forcée par le chemin de l'étape « save » des scènes ; Force retombe à chaque carte.
+## Le compagnon reste dehors pendant l'activation s'il est le Pokémon qui utilise Force. Les
+## contrôles restent affichés pendant une poussée (le joystick tenu enchaîne les poussées).
+func _setup_strength() -> void:
+	_strength = StrengthDirector.new()
+	_strength.process_mode = Node.PROCESS_MODE_PAUSABLE
+	add_child(_strength)
+	_strength.setup(GameState.flags, _player, _runner, _field_presenter)
+	_strength.save_handler = _on_cutscene_save_requested
+	SceneRouter.map_changed.connect(_strength.on_map_changed)
+	_strength.tree_exiting.connect(func() -> void:
+		if SceneRouter.map_changed.is_connected(_strength.on_map_changed):
+			SceneRouter.map_changed.disconnect(_strength.on_map_changed))
+	_strength.activation_started.connect(func() -> void:
+		var chosen := _companion.get_chosen()
+		_companion.on_cutscene_started(chosen != null
+			and _field_move_user(StrengthDirector.MOVE) == chosen))
+	_strength.activation_finished.connect(_companion.on_cutscene_finished)
+
+
+func get_strength_director() -> StrengthDirector:
+	return _strength

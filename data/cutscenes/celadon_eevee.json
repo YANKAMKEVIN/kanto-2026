@@ -1,0 +1,10 @@
+{
+	"celadon_eevee_gift": {
+		"unless": ["eevee_received"],
+		"steps": [
+			{ "gift_pokemon": "eevee", "level": 25, "flag": "eevee_received",
+				"say": "celadon_eevee_received", "say_stored": "celadon_eevee_stored" },
+			{ "despawn": "eevee_ball", "if": ["eevee_received"] }
+		]
+	}
+}

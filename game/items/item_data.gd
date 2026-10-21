@@ -44,6 +44,21 @@ const FIELD_USE_EVOLUTION_STONE: StringName = &"evolution_stone"
 const FIELD_USE_RARE_CANDY: StringName = &"rare_candy"
 const FIELD_USES: Array[StringName] = [FIELD_USE_ESCAPE_ROPE, FIELD_USE_EVOLUTION_STONE,
 	FIELD_USE_RARE_CANDY]
+## Usages en combat d'un objet COMBAT (jalon 20, `jalon-20.md` §2.9.3 ; [member battle_use]) :
+## un étage de statistique (objets X), la Puissance (Muscle +), la fuite garantie (Poupée Poké,
+## combat sauvage seulement). Ajouts en fin.
+const BATTLE_USE_STAT_STAGE: StringName = &"stat_stage"
+const BATTLE_USE_CRIT_UP: StringName = &"crit_up"
+const BATTLE_USE_ESCAPE: StringName = &"escape"
+const BATTLE_USES: Array[StringName] = [BATTLE_USE_STAT_STAGE, BATTLE_USE_CRIT_UP,
+	BATTLE_USE_ESCAPE]
+## Usages d'un objet clé (passe systèmes 2, `systemes-2.md` §2.4 ; [member key_use]) : la Poké
+## Flûte (exploration et combat), la Bicyclette (exploration), les trois cannes (exploration,
+## pêche de la passe, S2C-bis). Ajouts en fin.
+const KEY_USE_POKE_FLUTE: StringName = &"poke_flute"
+const KEY_USE_BICYCLE: StringName = &"bicycle"
+const KEY_USES: Array[StringName] = [KEY_USE_POKE_FLUTE, KEY_USE_BICYCLE, &"old_rod",
+	&"good_rod", &"super_rod"]
 
 var id: StringName = &""
 ## Nom au singulier (« Poké Ball ») et au pluriel (« Poké Balls »).
@@ -87,6 +102,19 @@ var field_use: StringName = &""
 ## « Fossile Dôme » / « obtenu ») au lieu de « ajouté aux objets clés ». Clé « obtained » des
 ## données, facultative (faux par défaut).
 var obtained: bool = false
+## Usage en combat d'un objet COMBAT (jalon 20 ; [constant BATTLE_USES]) : &"" = aucun. Clé
+## « battle_use » des données : [code]{ "kind": "stat_stage", "stat": "atk", "stages": 1 }[/code],
+## [code]{ "kind": "crit_up" }[/code] ou [code]{ "kind": "escape" }[/code].
+var battle_use: StringName = &""
+## Objet X ([constant BATTLE_USE_STAT_STAGE]) : statistique et étages gagnés.
+var battle_stat: StringName = &""
+var battle_stages: int = 0
+## Rappel (jalon 20, §2.9.4) : fraction des PV max rendue à un Pokémon **K.O.** (0 = pas un
+## Rappel). Clé « revive » des données, réservée aux soins.
+var revive: float = 0.0
+## Usage d'un objet clé (passe systèmes 2 ; [constant KEY_USES]) : &"" = aucun (l'objet se
+## consulte, sans UTILISER). Clé « key_use » des données, réservée à la catégorie OBJETS CLÉS.
+var key_use: StringName = &""
 
 
 ## Identifiant de la catégorie dans les fichiers (&"ball", &"heal"…) : onglet du Sac.
@@ -103,6 +131,9 @@ func contexts() -> Array[StringName]:
 		Category.HEAL:
 			return [CONTEXT_FIELD, CONTEXT_WILD_BATTLE, CONTEXT_TRAINER_BATTLE]
 		Category.BATTLE:
+			if battle_use == BATTLE_USE_ESCAPE:
+				# La Poupée Poké : combat sauvage seulement (jalon 20, §2.9.3).
+				return [CONTEXT_WILD_BATTLE]
 			return [CONTEXT_WILD_BATTLE, CONTEXT_TRAINER_BATTLE]
 		Category.FIELD:
 			if field_use.is_empty():
@@ -110,6 +141,11 @@ func contexts() -> Array[StringName]:
 			return [CONTEXT_FIELD]
 		Category.TM:
 			return [CONTEXT_FIELD]
+		Category.KEY:
+			if key_use == KEY_USE_POKE_FLUTE:
+				return [CONTEXT_FIELD, CONTEXT_WILD_BATTLE, CONTEXT_TRAINER_BATTLE]
+			if not key_use.is_empty():
+				return [CONTEXT_FIELD]
 	return []
 
 
@@ -120,9 +156,20 @@ func usable_in(context: StringName) -> bool:
 
 
 ## Vrai si l'objet se donne à un Pokémon de l'équipe (choix du Pokémon, [ItemUse]) : les soins
-## (de PV ou de statut).
+## (de PV ou de statut) et le Rappel (jalon 20).
 func targets_pokemon() -> bool:
-	return category == Category.HEAL and (heal_amount > 0 or not cures.is_empty())
+	return category == Category.HEAL and (heal_amount > 0 or not cures.is_empty() \
+		or is_revive())
+
+
+## Rappel (jalon 20) : se donne seulement à un Pokémon K.O.
+func is_revive() -> bool:
+	return revive > 0.0
+
+
+## Objet COMBAT avec un usage (jalon 20) : se joue sur le Pokémon actif, sans choix de cible.
+func has_battle_use() -> bool:
+	return category == Category.BATTLE and not battle_use.is_empty()
 
 
 ## Vrai si l'objet soigne le statut [param status].
@@ -192,5 +239,9 @@ func sell_price() -> int:
 
 
 ## Vrai si l'objet a un usage en exploration (jalon 12 : UTILISER d'un objet AVENTURE).
+func has_key_use() -> bool:
+	return category == Category.KEY and not key_use.is_empty()
+
+
 func has_field_use() -> bool:
 	return category == Category.FIELD and not field_use.is_empty()

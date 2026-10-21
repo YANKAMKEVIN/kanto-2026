@@ -118,6 +118,60 @@
 			"foe_feet": [1559, 540],
 			"player_feet": [716, 972],
 			"horizon": 380
+		},
+		"route_9_roche": {
+			"zone": "route_9",
+			"variant": "roche",
+			"back": "res://assets/battle/decors/route_9_roche_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 540],
+			"player_feet": [716, 972],
+			"horizon": 400
+		},
+		"dark_cave_galerie": {
+			"zone": "dark_cave",
+			"variant": "galerie",
+			"back": "res://assets/battle/decors/dark_cave_galerie_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 540],
+			"player_feet": [716, 972],
+			"horizon": 440
+		},
+		"tour_pokemon": {
+			"zone": "pokemon_tower",
+			"variant": "salle",
+			"back": "res://assets/battle/decors/tour_pokemon_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 540],
+			"player_feet": [716, 972],
+			"horizon": 335
+		},
+		"route_7_8_urbaine": {
+			"zone": "route_8",
+			"variant": "urbaine",
+			"back": "res://assets/battle/decors/route_7_8_urbaine_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 540],
+			"player_feet": [716, 972],
+			"horizon": 450
+		},
+		"celadon_gym_serre": {
+			"zone": "celadon_gym",
+			"variant": "serre",
+			"back": "res://assets/battle/decors/celadon_gym_serre_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 540],
+			"player_feet": [716, 972],
+			"horizon": 410
+		},
+		"rocket_hideout_repaire": {
+			"zone": "rocket_hideout",
+			"variant": "repaire",
+			"back": "res://assets/battle/decors/rocket_hideout_repaire_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 540],
+			"player_feet": [716, 972],
+			"horizon": 433
 		}
 	},
 	"places": {
@@ -187,6 +241,57 @@
 		],
 		"vermilion_gym": [
 			{ "decor": "vermilion_gym_salle" }
+		],
+		"route_9": [
+			{ "decor": "route_9_roche" }
+		],
+		"route_10": [
+			{ "decor": "route_9_roche" }
+		],
+		"dark_cave_1f": [
+			{ "decor": "dark_cave_galerie" }
+		],
+		"dark_cave_b1f": [
+			{ "decor": "dark_cave_galerie" }
+		],
+		"pokemon_tower_2f": [
+			{ "decor": "tour_pokemon" }
+		],
+		"pokemon_tower_3f": [
+			{ "decor": "tour_pokemon" }
+		],
+		"pokemon_tower_4f": [
+			{ "decor": "tour_pokemon" }
+		],
+		"pokemon_tower_5f": [
+			{ "decor": "tour_pokemon" }
+		],
+		"pokemon_tower_6f": [
+			{ "decor": "tour_pokemon" }
+		],
+		"route_7": [
+			{ "decor": "route_7_8_urbaine" }
+		],
+		"route_8": [
+			{ "decor": "route_7_8_urbaine" }
+		],
+		"celadon_gym": [
+			{ "decor": "celadon_gym_serre" }
+		],
+		"celadon_game_corner": [
+			{ "decor": "rocket_hideout_repaire" }
+		],
+		"rocket_hideout_b1f": [
+			{ "decor": "rocket_hideout_repaire" }
+		],
+		"rocket_hideout_b2f": [
+			{ "decor": "rocket_hideout_repaire" }
+		],
+		"rocket_hideout_b3f": [
+			{ "decor": "rocket_hideout_repaire" }
+		],
+		"rocket_hideout_b4f": [
+			{ "decor": "rocket_hideout_repaire" }
 		]
 	}
 }

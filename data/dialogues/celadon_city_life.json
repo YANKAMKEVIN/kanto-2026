@@ -1,0 +1,101 @@
+{
+	"celadon_fisherman": {
+		"speaker": "Pêcheur",
+		"pages": [
+			"Pas de pêche ici, c'est interdit.",
+			"Alors je regarde l'eau, avec mon\nTartard. On aime ça, tous les deux."
+		]
+	},
+	"celadon_old_man": {
+		"speaker": "Vieil homme",
+		"pages": [
+			"J'ai grandi à Lavanville.",
+			"Ces temps-ci, on dit que la\nTour ne dort plus la nuit."
+		]
+	},
+	"celadon_gardener_f": {
+		"speaker": "Jardinière",
+		"pages": [
+			"Erika soigne chaque plante\nde son Arène elle-même.",
+			"Même l'arbuste devant l'entrée. Il\nfaut bien le Couper pour entrer."
+		]
+	},
+	"celadon_casino_client": {
+		"speaker": "Client",
+		"pages": [
+			"Le patron du Casino a de drôles d'amis.",
+			"Toujours en costume, jamais un sourire."
+		]
+	},
+	"celadon_clerk": {
+		"speaker": "Employé",
+		"pages": [
+			"Sylphe ? Une grande\nentreprise de Safrania.",
+			"Ils fabriquent des appareils\nque personne ne comprend."
+		]
+	},
+	"celadon_kid": {
+		"speaker": "Enfant",
+		"pages": [
+			"On dit que si on jette une pièce\ndans la fontaine, le vœu se réalise.",
+			"J'en ai jeté trois. J'attends encore."
+		]
+	},
+	"celadon_stroller": {
+		"speaker": "Promeneur",
+		"pages": [
+			"Au bout de l'avenue, il\nn'y a que des arbres.",
+			"C'est pour ça que je viens\nlire ici. Personne ne passe."
+		]
+	},
+	"celadon_shopper": {
+		"speaker": "Cliente",
+		"pages": [
+			"Cinq étages de magasin.",
+			"Je n'arrive jamais à tout\nvoir en une seule journée."
+		]
+	},
+	"celadon_tourist": {
+		"speaker": "Touriste",
+		"pages": [
+			"Je suis venu pour les jardins.",
+			"J'ai prolongé mon séjour d'une semaine."
+		]
+	},
+	"celadon_gardener_m": {
+		"speaker": "Jardinier",
+		"pages": [
+			"On replante ces massifs à chaque saison.",
+			"Erika passe parfois nous\ndonner des conseils."
+		]
+	},
+	"celadon_youth": {
+		"speaker": "Jeune homme",
+		"pages": [
+			"De Lavanville, je prends\ntoujours le souterrain.",
+			"C'est long, mais au\nmoins il ne pleut pas."
+		]
+	},
+	"celadon_cook": {
+		"speaker": "Cuisinier",
+		"pages": [
+			"Depuis que le Casino est fermé,\nle restaurant ne désemplit pas.",
+			"Je ne m'en plains pas."
+		]
+	},
+	"celadon_rocket_1": {
+		"speaker": "Inconnu",
+		"pages": [
+			"Tu regardes quoi ? Circule."
+		]
+	},
+	"celadon_rocket_2": {
+		"speaker": "Inconnu",
+		"pages": [
+			"… Le Casino ? Il est\ntrès bien, le Casino."
+		]
+	},
+	"celadon_hidden_1": {
+		"cutscene": "celadon_hidden_1"
+	}
+}

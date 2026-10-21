@@ -9,12 +9,6 @@
 		"power": 55, "accuracy": 100, "pp": 30,
 		"description": "Serre la cible entre de puissantes pinces."
 	},
-	"stomp": {
-		"name": "Écrasement", "type": "normal", "category": "physical",
-		"power": 65, "accuracy": 100, "pp": 20,
-		"effects": [{ "kind": "flinch", "chance": 30 }],
-		"description": "Écrase la cible d'un pied lourd. Peut l'apeurer."
-	},
 	"crabhammer": {
 		"name": "Pince-Masse", "type": "water", "category": "physical",
 		"power": 100, "accuracy": 90, "pp": 10, "crit_stage": 1,

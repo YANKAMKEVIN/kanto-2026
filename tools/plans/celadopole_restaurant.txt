@@ -1,0 +1,30 @@
+# Restaurant de Céladopole (celadon_restaurant) — grille fonctionnelle (jalon 20, dossier 23 ; préparée le 2026-10-14).
+# Salle de restaurant : comptoir, tables, 3 PNJ. PAS de Boîte Jetons (H-6) : le client se plaint d'avoir tout perdu au Casino (texte 44).
+# Enveloppe réutilisée 15 × 10 (même coque que les maisons d'Azuria et d'Argenta).
+#
+# Légende :
+#   K mur (bloqué)   . sol (praticable)   X sortie (praticable : paillasson, PUSH ↓)
+#   B comptoir (bloqué)   t table   c canapé   p plante   e étagère
+
+PRATICABLES .X
+
+GRILLE 15 10
+00 KKKKKKKKKKKKKKK
+01 KKKKKKKKKKKKKKK
+02 KKKKKKKKKKKKKKK
+03 K.........eee.K
+04 K.BBBB........K
+05 K........ttt..K
+06 K........ttt..K
+07 Kp...........pK
+08 KKKKKKXXXKKKKKK
+09 KKKKKKKKKKKKKKK
+FIN
+
+POSITIONS
+sortie               warp           6..8,8        libre   to=celadon_city spawn=from_restaurant  # PUSH ↓ → celadon_city, from_restaurant
+entree               spawn          7,8           libre    # spawn « entrance », tourné ↑
+serveur              pnj            3,3           bloque  role=P1 facing=down  # serveur derrière le comptoir (2..5, 4) ; on lui parle depuis (3, 5) ↑
+client_casino        pnj            8,5           bloque  role=P2 facing=right  # texte 44 (« J'ai tout perdu au Casino hier soir ») ; assis à gauche de la table
+convive              pnj            12,7          bloque  role=P3 facing=up  # convive
+FIN

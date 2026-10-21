@@ -1,0 +1,63 @@
+{
+ "map": "route_9",
+ "spawn": "from_cerulean",
+ "facing": "right",
+ "flags": [
+  "mom_greeted",
+  "rival_met",
+  "oak_met",
+  "oak_lab_reunion",
+  "starter_offered",
+  "starter_chosen",
+  "taken_charmander",
+  "taken_squirtle",
+  "rival_lab_won",
+  "rival_challenged",
+  "rival_battle_done",
+  "rival_left_lab",
+  "viridian_arrived",
+  "got_oak_parcel",
+  "pokedex_activated",
+  "poison_unlocked",
+  "beaten_forest_scout_theo",
+  "pewter_arrived",
+  "beaten_pewter_gym_liam",
+  "brock_met",
+  "badge_boulder",
+  "tm34_received",
+  "cerulean_reached",
+  "cerulean_rocket_spotted",
+  "cerulean_rocket_beaten",
+  "got_tm28",
+  "bill_met",
+  "bill_restored",
+  "got_ss_ticket",
+  "got_bill_rare_candy",
+  "badge_cascade"
+ ],
+ "party": [
+  {
+   "species": "charmeleon",
+   "level": 25
+  },
+  {
+   "species": "pidgeotto",
+   "level": 22
+  },
+  {
+   "species": "mankey",
+   "level": 22
+  },
+  {
+   "species": "gloom",
+   "level": 21
+  }
+ ],
+ "bag": {
+  "poke_ball": 10,
+  "potion": 3,
+  "super_potion": 2,
+  "antidote": 2
+ },
+ "money": 6000
+}

@@ -44,10 +44,38 @@ const MAP_IDS: Array[StringName] = [
 	&"ss_anne_main_deck", &"ss_anne_captain_corridor", &"ss_anne_captain_room",
 	&"ss_anne_restaurant", &"ss_anne_lower_deck", &"ss_anne_outer_deck", &"ss_anne_cabin_a",
 	&"ss_anne_cabin_b", &"ss_anne_cabin_c", &"vermilion_gym",
+	# Jalon 18 (T12) : Route 9, Route 10 et son Centre (Azuria, Grotte Sombre et Lavanville :
+	# « à venir » tant que leurs cartes J18 ne sont pas là).
+	&"route_9", &"route_10", &"route_10_center",
+	# Jalon 18 (T13) : la Grotte Sombre (sorties en repli « à venir » tant que la Route 10 manque).
+	&"dark_cave_1f", &"dark_cave_b1f",
+	# Jalon 18 (T14) : Lavanville, ses intérieurs et le rez-de-chaussée de la Tour.
+	&"lavender_town", &"lavender_center", &"lavender_mart", &"pokemon_house",
+	&"lavender_house_1", &"lavender_house_2", &"pokemon_tower_1f",
+	# Jalon 20 (T16) : Céladopole, son grand magasin, sa Résidence, ses petits intérieurs, l'Arène.
+	&"celadon_city", &"celadon_center", &"celadon_dept_gf", &"celadon_dept_2f",
+	&"celadon_dept_3f", &"celadon_dept_4f", &"celadon_dept_5f", &"celadon_dept_roof",
+	&"celadon_dept_elevator", &"celadon_mansion_gf", &"celadon_mansion_1f",
+	&"celadon_mansion_2f", &"celadon_mansion_3f", &"celadon_mansion_roof",
+	&"celadon_mansion_roof_house", &"celadon_restaurant", &"celadon_chief_house",
+	&"celadon_hotel", &"celadon_gym", &"route_7",
+	# Jalon 20 (T20) : le Casino, le repaire Rocket (B1F à B4F) et sa cabine d'ascenseur.
+	&"celadon_game_corner", &"rocket_hideout_b1f", &"rocket_hideout_b2f", &"rocket_hideout_b3f",
+	&"rocket_hideout_b4f", &"rocket_hideout_elevator",
 ]
+## Cartes dont les passages « à venir » sont comptés dans leur propre test (jalon 18).
+const OWN_COMING_SOON_COUNT: Array[StringName] = [&"lavender_town", &"pokemon_tower_1f"]
 ## Retours pas encore branchés : [carte d'origine, carte cible]. Jalon 16 (T15) : vide (Carmin
 ## mène au pont principal du S.S. Anne et à l'Arène ; les retours sont vérifiés).
-const PENDING_RETURNS: Array = []
+const PENDING_RETURNS: Array = [
+	# Jalon 20 (T16) : la sortie de la cabine du grand magasin mène au RdC ; l'`ElevatorDirector`
+	# (T13) la réoriente vers l'étage courant.
+	[&"celadon_dept_2f", &"celadon_dept_elevator"], [&"celadon_dept_3f", &"celadon_dept_elevator"],
+	[&"celadon_dept_4f", &"celadon_dept_elevator"], [&"celadon_dept_5f", &"celadon_dept_elevator"],
+	# Jalon 20 (T20) : la sortie de la cabine du repaire mène au B1F (réorientée par le moteur).
+	[&"rocket_hideout_b2f", &"rocket_hideout_elevator"],
+	[&"rocket_hideout_b4f", &"rocket_hideout_elevator"],
+]
 ## Cartes construites par une autre tâche en parallèle (jalon 7 : la Route 22, T22 ; jalon 10 :
 ## Argenta, T11, pendant les intérieurs du T13) : un warp qui y mène est vérifié seulement si la
 ## carte existe déjà (sinon le test le signale).
@@ -131,7 +159,7 @@ func test_every_coming_soon_warp_returns_to_a_walkable_spawn_of_its_own_map() ->
 	for map_id: StringName in _maps:
 		var map: GameMap = _maps[map_id]
 		for warp: Warp in map.get_warps().get_all():
-			if not warp.is_coming_soon():
+			if not warp.is_coming_soon() or OWN_COMING_SOON_COUNT.has(map_id):
 				continue
 			found += 1
 			var label := "%s %s « %s »" % [map_id, warp.cell, warp.coming_soon]
@@ -143,7 +171,10 @@ func test_every_coming_soon_warp_returns_to_a_walkable_spawn_of_its_own_map() ->
 	# nord du poste vers Safrania (2 cases, jamais atteinte). Jalon 15 (T14) : Route 11
 	# (trois cases), Safrania (porte nord de la Route 6, une). Jalon 16 (T15) : l'Arène de
 	# Carmin et l'embarquement du S.S. Anne sont branchés. Jalon 17 (T17) : le bord est de Carmin
-	# mène à la vraie Route 11.
+	# mène à la vraie Route 11. Jalon 18 (T15) : Azuria et la Route 9 sont reliées (arbre coupé du
+	# J16) ; la Grotte Sombre et Lavanville sont reliées à la Route 10, et les passages de
+	# Lavanville et de la Tour sont comptés dans leurs propres tests.
+	# Jalon 20 (T16) : le Casino de Céladopole (2 cases) restait « à venir » jusqu'au T20 (construit).
 	assert_eq(found, 3, "« SAFRANIA » (2), Safrania (1)")
 
 

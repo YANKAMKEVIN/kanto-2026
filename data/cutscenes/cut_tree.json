@@ -34,5 +34,41 @@
 				]
 			}
 		]
+	},
+	"cut_tree_cerulean_east": {
+		"variants": [
+			{
+				"unless": ["cut_cerulean_east_tree"],
+				"steps": [
+					{ "field_move": "cut", "on": "Entities/EastTree" },
+					{ "set": ["cut_cerulean_east_tree"] },
+					{ "dialogue": "cut_tree_used" }
+				]
+			}
+		]
+	},
+	"cut_tree_celadon_gym_bush": {
+		"variants": [
+			{
+				"unless": ["cut_celadon_gym_bush"],
+				"steps": [
+					{ "field_move": "cut", "on": "Entities/GymBush" },
+					{ "set": ["cut_celadon_gym_bush"] },
+					{ "dialogue": "cut_tree_used" }
+				]
+			}
+		]
+	},
+	"cut_tree_celadon_gym_inner_bush": {
+		"variants": [
+			{
+				"unless": ["cut_celadon_gym_inner_bush"],
+				"steps": [
+					{ "field_move": "cut", "on": "Entities/GymInnerBush" },
+					{ "set": ["cut_celadon_gym_inner_bush"] },
+					{ "dialogue": "cut_tree_used" }
+				]
+			}
+		]
 	}
 }

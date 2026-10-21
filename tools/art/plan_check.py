@@ -30,15 +30,30 @@ itinéraires, rebords, herbes obligatoires, objet caché « cache », durée de 
 `azuria_velos.txt`, `azuria_maison.txt` → `plan_check_azuria.py` (recouvrement exact du sas, raccords
 entre cartes, rebord unique, eau et ponts, Centre premier bâtiment, rival, Ondine, pont Pépite).
 
+**Jalon 20** (dossier 23 §12–§13) : `casino.txt`, `repaire_b1f.txt` … `repaire_b4f.txt`,
+`repaire_ascenseur.txt` → `plan_check_repaire.py` (dalles tournantes, raccords, atteignabilité en six
+états, deux moitiés disjointes du B4F ; les contrôles globaux sont lancés par `repaire_ascenseur`).
+
 **Azuria après J14** (variante `J14` de `azuria.txt`, jalon 14 T20a) : `plan_check_azuria_j14.py`,
 lancé à part (jardin, impasse, poursuite, vue du Rocket, aucune case coincée, sortie sud).
+
+**Azuria après J18** (variante `J18` de `azuria.txt`, cumulative sur J14, dossier 21 §9) :
+`plan_check_azuria_j18.py`, lancé à part (arbre à couper, raccord est sur la Route 9).
 
 **Route 25** (`route_25.txt`, jalon 14) : `verifier_route_25`, dans `plan_check_route_25.py`
 (raccord ouest, maison de Léo, D1 et D2 inévitables, H3 obligatoire, rebord de la terrasse,
 largeur du chemin, durée de traversée).
 
+**Légende commune** (passe systèmes 2, `docs/tech/systemes-2.md` §1.3) : `--legende` contrôle,
+sur **toutes** les grilles de `tools/plans/` (ou celles données), les types de positions communs
+aux systèmes (rochers, trous, chutes, interrupteurs, barrières, téléporteurs, portes à carte,
+courants, arrivées du Vol) : attributs obligatoires, références entre positions et entre cartes,
+pas de courant et de dalle dans une même grille. Les **caractères** de cases restent propres à
+chaque grille (`T`, `K`, `S` y ont déjà d'autres sens) ; seuls les types de positions sont communs.
+
 Usage : python3 tools/art/plan_check.py [grille.txt ...]   (code 1 si un critère échoue)
         sans argument : toutes les grilles connues (Route 2, Forêt de Jade, Route 3, J13, Route 25).
+        python3 tools/art/plan_check.py --legende [grille.txt ...]
 """
 from __future__ import annotations
 
@@ -658,6 +673,14 @@ def _azuria(nom: str):
 	return verifier
 
 
+def _j18(nom: str):
+	"""Grilles du jalon 18 (dossier 21) : profils dans `plan_check_<nom>.py` (import tardif)."""
+	def verifier(chemin: Path) -> bool:
+		import importlib
+		return getattr(importlib.import_module(f"plan_check_{nom}"), f"verifier_{nom}")(chemin)
+	return verifier
+
+
 def verifier_route_25(chemin: Path) -> bool:
 	"""Route 25 et Cap d'Azuria (jalon 14) : profil dans `plan_check_route_25.py`."""
 	from plan_check_route_25 import verifier_route_25 as verifier
@@ -666,12 +689,137 @@ def verifier_route_25(chemin: Path) -> bool:
 
 VERIFICATEURS = {"route_2": verifier_route_2, "viridian_forest": verifier_foret,
 	"route_3": verifier_route_3, "route_25": verifier_route_25, "route_6": verifier_route_6,
-	"vermilion_city": verifier_vermilion_city,
+	"vermilion_city": verifier_vermilion_city, "route_9": _j18("route_9"), "route_10": _j18("route_10"),
 	**{n: _azuria(n) for n in ("route_4", "azuria", "route_24", "azuria_arene", "azuria_velos",
 		"azuria_maison")}}
 
 
+# --- Légende commune (passe systèmes 2, §1.3) -------------------------------------------------
+
+# Type de position commun → attributs obligatoires (« a|b » : l'un ou l'autre ; `unless=` est la
+# forme du J16, Arène de Carmin).
+LEGENDE_TYPES: dict[str, tuple[str, ...]] = {
+	"rocher": ("ordre",),
+	"trou": ("n", "drapeau"),
+	"chute_rocher": ("depuis",),
+	"chute_joueur": ("depuis",),
+	"interrupteur": ("drapeau|flag",),  # « flag= » : affiche du Casino (J20)
+	"barriere": ("ouverte_si|unless",),
+	"teleporteur": ("vers",),
+	"porte_carte": ("cle",),
+	"courant": ("id",),
+	"vol_arrivee": ("ville",),
+}
+# Types qui n'occupent qu'une case.
+LEGENDE_UNE_CASE = ("trou", "interrupteur", "teleporteur", "porte_carte", "rocher")
+
+
+def _cible(valeur: str) -> tuple[str, str] | None:
+	"""« carte:repère » → (carte, repère) ; None si la forme est fausse."""
+	carte, sep, repere = valeur.partition(":")
+	return (carte, repere) if sep and carte and repere else None
+
+
+def verifier_legende(chemin: Path, dossier: Path | None = None) -> list[str]:
+	"""Erreurs de légende commune d'une grille (liste vide : conforme)."""
+	dossier = dossier or chemin.parent
+	nom = chemin.stem
+	try:
+		plan = lire(chemin)
+	except ValueError as e:
+		return [f"{nom} : illisible ({e})"]
+	erreurs: list[str] = []
+	autres: dict[str, Plan | None] = {nom: plan}
+
+	def autre(carte: str) -> Plan | None:
+		if carte not in autres:
+			fichier = dossier / f"{carte}.txt"
+			try:
+				autres[carte] = lire(fichier) if fichier.exists() else None
+			except ValueError:
+				autres[carte] = None
+		return autres[carte]
+
+	trous = {p.attrs.get("n"): p for p in plan.of_kind("trou")}
+	if len(trous) != len(plan.of_kind("trou")):
+		erreurs.append(f"{nom} : deux trous de même numéro")
+	for p in plan.positions.values():
+		requis = LEGENDE_TYPES.get(p.kind)
+		if requis is None:
+			continue
+		for cle in requis:
+			if not any(p.attrs.get(c) for c in cle.split("|")):
+				erreurs.append(f"{nom} : {p.ident} ({p.kind}) sans « {cle}= »")
+		if p.kind in LEGENDE_UNE_CASE and len(p.cells) != 1:
+			erreurs.append(f"{nom} : {p.ident} ({p.kind}) sur {len(p.cells)} cases au lieu d'une")
+		if p.kind == "rocher" and "trou" in p.attrs and p.attrs["trou"] not in trous:
+			erreurs.append(f"{nom} : {p.ident} vise le trou {p.attrs['trou']}, absent")
+		if p.kind == "teleporteur" and p.attrs.get("vers"):
+			cible = _cible(p.attrs["vers"])
+			if cible is None:
+				erreurs.append(f"{nom} : {p.ident} : vers={p.attrs['vers']} (attendu carte:repère)")
+			elif (dest := autre(cible[0])) is not None and cible[1] not in dest.positions:
+				erreurs.append(f"{nom} : {p.ident} : repère {cible[1]} absent de {cible[0]}")
+			elif cible[0] == nom and plan.positions[cible[1]].cells == p.cells:
+				erreurs.append(f"{nom} : {p.ident} arrive sur lui-même")
+		if p.kind in ("chute_rocher", "chute_joueur") and p.attrs.get("depuis"):
+			cible = _cible(p.attrs["depuis"])
+			if cible is None:
+				erreurs.append(f"{nom} : {p.ident} : depuis={p.attrs['depuis']} (attendu carte:n)")
+			elif (dessus := autre(cible[0])) is not None and cible[1] not in \
+					{t.attrs.get("n") for t in dessus.of_kind("trou")}:
+				erreurs.append(f"{nom} : {p.ident} : trou {cible[1]} absent de {cible[0]}")
+		if p.kind == "trou" and p.attrs.get("chute") and (dossier / f"{p.attrs['chute']}.txt").exists():
+			dessous = autre(p.attrs["chute"])
+			n = p.attrs.get("n")
+			if dessous is not None and not any(c.attrs.get("depuis") == f"{nom}:{n}"
+					for c in dessous.of_kind("chute_joueur")):
+				erreurs.append(f"{nom} : {p.ident} : aucune chute_joueur depuis={nom}:{n} "
+					f"dans {p.attrs['chute']}")
+	if plan.of_kind("courant") and plan.of_kind("dalle"):
+		erreurs.append(f"{nom} : courants et dalles dans la même grille (« ^ v < > » à double sens)")
+	return erreurs
+
+
+def main_legende(args: list[str]) -> int:
+	chemins = [Path(a).resolve() for a in args] or sorted((RACINE / "tools/plans").glob("*.txt"))
+	erreurs = [e for chemin in chemins for e in verifier_legende(chemin)]
+	for e in erreurs:
+		print(e)
+	print(f"Légende commune : {len(chemins)} grille(s), "
+		+ ("conforme." if not erreurs else f"{len(erreurs)} erreur(s)."))
+	return 0 if not erreurs else 1
+
+
+def _repaire(nom: str):
+	"""Grilles du jalon 20 : profils dans `plan_check_repaire.py` (import tardif, comme la Route 3)."""
+	def verifier(chemin: Path) -> bool:
+		import plan_check_repaire
+		return plan_check_repaire.VERIFICATEURS[nom](chemin)
+	return verifier
+
+
+VERIFICATEURS.update({n: _repaire(n) for n in ("casino", "repaire_b1f", "repaire_b2f",
+	"repaire_b3f", "repaire_b4f", "repaire_ascenseur")})
+
+
+def _profil(module: str, nom: str):
+	"""Grilles du jalon 20 (ville et routes) : import tardif, comme le repaire."""
+	def verifier(chemin: Path) -> bool:
+		mod = __import__(module)
+		return mod.VERIFICATEURS[nom](chemin)
+	return verifier
+
+
+VERIFICATEURS.update({n: _profil("plan_check_routes_j20", n) for n in ("route_8", "route_7",
+	"souterrain_7_8", "souterrain_entree", "poste_safrania")})
+VERIFICATEURS.update({p.stem: _profil("plan_check_celadopole", p.stem)
+	for p in sorted((RACINE / "tools/plans").glob("celadopole*.txt"))})
+
+
 def main() -> int:
+	if sys.argv[1:2] == ["--legende"]:
+		return main_legende(sys.argv[2:])
 	chemins = [Path(a) for a in sys.argv[1:]] or [RACINE / f"tools/plans/{n}.txt"
 		for n in VERIFICATEURS]
 	ok = True

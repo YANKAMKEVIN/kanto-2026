@@ -1,0 +1,2908 @@
+{
+	"version": 1,
+	"title": "Seuils du rival n° 5 (jalon 19 T21 préliminaire)",
+	"description": "Jalon 19 T21 (plan jalon-19 T21, §7 ; résultats : docs/tech/jalon-19-equilibrage.md). Le rival seul, équipe soignée, 5 Super Potions, 3 Antidotes, 2 Réveils, joueurs attentif et expert, au premier essai (les reprises du simulateur ne rachètent pas d'objets : « en trois essais » se calcule 1 − (1 − p)³). Équipes = celles de tower_scenario.json, plus « plus1 » (référence du J18 + 1 niveau, plan §0.2). Un réglage = un groupe facultatif (Centre + rival) ; les capacités absentes = capacités naturelles au niveau. Préliminaire : à relancer après T10 sur les vraies sorties des J16 à J18.",
+	"seeds": 200,
+	"heal_at_start": true,
+	"teams": [
+		{
+			"name": "Reptincel 24, Roucoups 21, Papilusion 20, Sabelette 19, Pikachu 20",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 24
+				},
+				{
+					"species": "pidgeotto",
+					"level": 21,
+					"moves": [
+						"gust",
+						"sand_attack",
+						"quick_attack"
+					]
+				},
+				{
+					"species": "butterfree",
+					"level": 20
+				},
+				{
+					"species": "sandshrew",
+					"level": 19
+				},
+				{
+					"species": "pikachu",
+					"level": 20
+				}
+			]
+		},
+		{
+			"name": "Herbizarre 24, Roucoups 21, Papilusion 20, Sabelette 19, Pikachu 20",
+			"starter": "bulbasaur",
+			"members": [
+				{
+					"species": "ivysaur",
+					"level": 24
+				},
+				{
+					"species": "pidgeotto",
+					"level": 21,
+					"moves": [
+						"gust",
+						"sand_attack",
+						"quick_attack"
+					]
+				},
+				{
+					"species": "butterfree",
+					"level": 20
+				},
+				{
+					"species": "sandshrew",
+					"level": 19
+				},
+				{
+					"species": "pikachu",
+					"level": 20
+				}
+			]
+		},
+		{
+			"name": "Carabaffe 24, Roucoups 21, Papilusion 20, Sabelette 19, Pikachu 20",
+			"starter": "squirtle",
+			"members": [
+				{
+					"species": "wartortle",
+					"level": 24
+				},
+				{
+					"species": "pidgeotto",
+					"level": 21,
+					"moves": [
+						"gust",
+						"sand_attack",
+						"quick_attack"
+					]
+				},
+				{
+					"species": "butterfree",
+					"level": 20
+				},
+				{
+					"species": "sandshrew",
+					"level": 19
+				},
+				{
+					"species": "pikachu",
+					"level": 20
+				}
+			]
+		},
+		{
+			"name": "bas : Reptincel 22, Roucoups 19, Papilusion 18",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 22
+				},
+				{
+					"species": "pidgeotto",
+					"level": 19,
+					"moves": [
+						"gust",
+						"sand_attack",
+						"quick_attack"
+					]
+				},
+				{
+					"species": "butterfree",
+					"level": 18
+				}
+			]
+		},
+		{
+			"name": "bas : Herbizarre 22, Roucoups 19, Papilusion 18",
+			"starter": "bulbasaur",
+			"members": [
+				{
+					"species": "ivysaur",
+					"level": 22
+				},
+				{
+					"species": "pidgeotto",
+					"level": 19,
+					"moves": [
+						"gust",
+						"sand_attack",
+						"quick_attack"
+					]
+				},
+				{
+					"species": "butterfree",
+					"level": 18
+				}
+			]
+		},
+		{
+			"name": "bas : Carabaffe 22, Roucoups 19, Papilusion 18",
+			"starter": "squirtle",
+			"members": [
+				{
+					"species": "wartortle",
+					"level": 22
+				},
+				{
+					"species": "pidgeotto",
+					"level": 19,
+					"moves": [
+						"gust",
+						"sand_attack",
+						"quick_attack"
+					]
+				},
+				{
+					"species": "butterfree",
+					"level": 18
+				}
+			]
+		},
+		{
+			"name": "plus1 : Reptincel 25, Roucoups 22, Papilusion 21, Sabelette 20, Pikachu 21",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 25
+				},
+				{
+					"species": "pidgeotto",
+					"level": 22,
+					"moves": [
+						"gust",
+						"sand_attack",
+						"quick_attack"
+					]
+				},
+				{
+					"species": "butterfree",
+					"level": 21
+				},
+				{
+					"species": "sandshrew",
+					"level": 20
+				},
+				{
+					"species": "pikachu",
+					"level": 21
+				}
+			]
+		},
+		{
+			"name": "plus1 : Herbizarre 25, Roucoups 22, Papilusion 21, Sabelette 20, Pikachu 21",
+			"starter": "bulbasaur",
+			"members": [
+				{
+					"species": "ivysaur",
+					"level": 25
+				},
+				{
+					"species": "pidgeotto",
+					"level": 22,
+					"moves": [
+						"gust",
+						"sand_attack",
+						"quick_attack"
+					]
+				},
+				{
+					"species": "butterfree",
+					"level": 21
+				},
+				{
+					"species": "sandshrew",
+					"level": 20
+				},
+				{
+					"species": "pikachu",
+					"level": 21
+				}
+			]
+		},
+		{
+			"name": "plus1 : Carabaffe 25, Roucoups 22, Papilusion 21, Sabelette 20, Pikachu 21",
+			"starter": "squirtle",
+			"members": [
+				{
+					"species": "wartortle",
+					"level": 25
+				},
+				{
+					"species": "pidgeotto",
+					"level": 22,
+					"moves": [
+						"gust",
+						"sand_attack",
+						"quick_attack"
+					]
+				},
+				{
+					"species": "butterfree",
+					"level": 21
+				},
+				{
+					"species": "sandshrew",
+					"level": 20
+				},
+				{
+					"species": "pikachu",
+					"level": 21
+				}
+			]
+		}
+	],
+	"tables": {},
+	"trainers": {
+		"rival_tower_01": {
+			"name": "{rival}",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 35,
+			"end_message": false,
+			"start_message": true,
+			"bag": true,
+			"moment": "win",
+			"switch": true,
+			"team_by_starter": {
+				"bulbasaur": [
+					{
+						"species": "pidgeotto",
+						"level": 22,
+						"moves": [
+							"gust",
+							"sand_attack",
+							"quick_attack"
+						]
+					},
+					{
+						"species": "exeggcute",
+						"level": 22
+					},
+					{
+						"species": "gyarados",
+						"level": 22,
+						"moves": [
+							"bite",
+							"dragon_rage",
+							"leer"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 18
+					},
+					{
+						"species": "charmeleon",
+						"level": 22,
+						"moves": [
+							"scratch",
+							"growl",
+							"ember",
+							"leer"
+						]
+					}
+				],
+				"charmander": [
+					{
+						"species": "pidgeotto",
+						"level": 22,
+						"moves": [
+							"gust",
+							"sand_attack",
+							"quick_attack"
+						]
+					},
+					{
+						"species": "growlithe",
+						"level": 22,
+						"moves": [
+							"bite",
+							"ember",
+							"leer"
+						]
+					},
+					{
+						"species": "exeggcute",
+						"level": 22
+					},
+					{
+						"species": "kadabra",
+						"level": 18
+					},
+					{
+						"species": "wartortle",
+						"level": 22
+					}
+				],
+				"squirtle": [
+					{
+						"species": "pidgeotto",
+						"level": 22,
+						"moves": [
+							"gust",
+							"sand_attack",
+							"quick_attack"
+						]
+					},
+					{
+						"species": "gyarados",
+						"level": 22,
+						"moves": [
+							"bite",
+							"dragon_rage",
+							"leer"
+						]
+					},
+					{
+						"species": "growlithe",
+						"level": 22,
+						"moves": [
+							"bite",
+							"ember",
+							"leer"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 18
+					},
+					{
+						"species": "ivysaur",
+						"level": 22
+					}
+				]
+			}
+		},
+		"rival_tower_02": {
+			"name": "{rival}",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 35,
+			"end_message": false,
+			"start_message": true,
+			"bag": true,
+			"moment": "win",
+			"switch": true,
+			"team_by_starter": {
+				"bulbasaur": [
+					{
+						"species": "pidgeotto",
+						"level": 22,
+						"moves": [
+							"gust",
+							"sand_attack",
+							"quick_attack"
+						]
+					},
+					{
+						"species": "exeggcute",
+						"level": 22
+					},
+					{
+						"species": "gyarados",
+						"level": 22,
+						"moves": [
+							"bite",
+							"dragon_rage",
+							"leer"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 18,
+						"moves": [
+							"confusion",
+							"psybeam"
+						]
+					},
+					{
+						"species": "charmeleon",
+						"level": 22,
+						"moves": [
+							"scratch",
+							"growl",
+							"ember",
+							"leer"
+						]
+					}
+				],
+				"charmander": [
+					{
+						"species": "pidgeotto",
+						"level": 22,
+						"moves": [
+							"gust",
+							"sand_attack",
+							"quick_attack"
+						]
+					},
+					{
+						"species": "growlithe",
+						"level": 22,
+						"moves": [
+							"bite",
+							"ember",
+							"leer"
+						]
+					},
+					{
+						"species": "exeggcute",
+						"level": 22
+					},
+					{
+						"species": "kadabra",
+						"level": 18,
+						"moves": [
+							"confusion",
+							"psybeam"
+						]
+					},
+					{
+						"species": "wartortle",
+						"level": 22
+					}
+				],
+				"squirtle": [
+					{
+						"species": "pidgeotto",
+						"level": 22,
+						"moves": [
+							"gust",
+							"sand_attack",
+							"quick_attack"
+						]
+					},
+					{
+						"species": "gyarados",
+						"level": 22,
+						"moves": [
+							"bite",
+							"dragon_rage",
+							"leer"
+						]
+					},
+					{
+						"species": "growlithe",
+						"level": 22,
+						"moves": [
+							"bite",
+							"ember",
+							"leer"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 18,
+						"moves": [
+							"confusion",
+							"psybeam"
+						]
+					},
+					{
+						"species": "ivysaur",
+						"level": 22
+					}
+				]
+			}
+		},
+		"rival_tower_03": {
+			"name": "{rival}",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 35,
+			"end_message": false,
+			"start_message": true,
+			"bag": true,
+			"moment": "win",
+			"switch": true,
+			"team_by_starter": {
+				"bulbasaur": [
+					{
+						"species": "pidgeotto",
+						"level": 22,
+						"moves": [
+							"gust",
+							"sand_attack",
+							"quick_attack"
+						]
+					},
+					{
+						"species": "exeggcute",
+						"level": 22
+					},
+					{
+						"species": "gyarados",
+						"level": 22,
+						"moves": [
+							"bite",
+							"dragon_rage",
+							"leer"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 20
+					},
+					{
+						"species": "charmeleon",
+						"level": 22,
+						"moves": [
+							"scratch",
+							"growl",
+							"ember",
+							"leer"
+						]
+					}
+				],
+				"charmander": [
+					{
+						"species": "pidgeotto",
+						"level": 22,
+						"moves": [
+							"gust",
+							"sand_attack",
+							"quick_attack"
+						]
+					},
+					{
+						"species": "growlithe",
+						"level": 22,
+						"moves": [
+							"bite",
+							"ember",
+							"leer"
+						]
+					},
+					{
+						"species": "exeggcute",
+						"level": 22
+					},
+					{
+						"species": "kadabra",
+						"level": 20
+					},
+					{
+						"species": "wartortle",
+						"level": 22
+					}
+				],
+				"squirtle": [
+					{
+						"species": "pidgeotto",
+						"level": 22,
+						"moves": [
+							"gust",
+							"sand_attack",
+							"quick_attack"
+						]
+					},
+					{
+						"species": "gyarados",
+						"level": 22,
+						"moves": [
+							"bite",
+							"dragon_rage",
+							"leer"
+						]
+					},
+					{
+						"species": "growlithe",
+						"level": 22,
+						"moves": [
+							"bite",
+							"ember",
+							"leer"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 20
+					},
+					{
+						"species": "ivysaur",
+						"level": 22
+					}
+				]
+			}
+		},
+		"rival_tower_04": {
+			"name": "{rival}",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 35,
+			"end_message": false,
+			"start_message": true,
+			"bag": true,
+			"moment": "win",
+			"switch": true,
+			"team_by_starter": {
+				"bulbasaur": [
+					{
+						"species": "pidgeotto",
+						"level": 22,
+						"moves": [
+							"gust",
+							"sand_attack",
+							"quick_attack"
+						]
+					},
+					{
+						"species": "exeggcute",
+						"level": 22
+					},
+					{
+						"species": "gyarados",
+						"level": 22,
+						"moves": [
+							"bite",
+							"dragon_rage",
+							"leer"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 20,
+						"moves": [
+							"confusion",
+							"psybeam"
+						]
+					},
+					{
+						"species": "charmeleon",
+						"level": 22,
+						"moves": [
+							"scratch",
+							"growl",
+							"ember",
+							"leer"
+						]
+					}
+				],
+				"charmander": [
+					{
+						"species": "pidgeotto",
+						"level": 22,
+						"moves": [
+							"gust",
+							"sand_attack",
+							"quick_attack"
+						]
+					},
+					{
+						"species": "growlithe",
+						"level": 22,
+						"moves": [
+							"bite",
+							"ember",
+							"leer"
+						]
+					},
+					{
+						"species": "exeggcute",
+						"level": 22
+					},
+					{
+						"species": "kadabra",
+						"level": 20,
+						"moves": [
+							"confusion",
+							"psybeam"
+						]
+					},
+					{
+						"species": "wartortle",
+						"level": 22
+					}
+				],
+				"squirtle": [
+					{
+						"species": "pidgeotto",
+						"level": 22,
+						"moves": [
+							"gust",
+							"sand_attack",
+							"quick_attack"
+						]
+					},
+					{
+						"species": "gyarados",
+						"level": 22,
+						"moves": [
+							"bite",
+							"dragon_rage",
+							"leer"
+						]
+					},
+					{
+						"species": "growlithe",
+						"level": 22,
+						"moves": [
+							"bite",
+							"ember",
+							"leer"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 20,
+						"moves": [
+							"confusion",
+							"psybeam"
+						]
+					},
+					{
+						"species": "ivysaur",
+						"level": 22
+					}
+				]
+			}
+		},
+		"rival_tower_05": {
+			"name": "{rival}",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 35,
+			"end_message": false,
+			"start_message": true,
+			"bag": true,
+			"moment": "win",
+			"switch": true,
+			"team_by_starter": {
+				"bulbasaur": [
+					{
+						"species": "pidgeotto",
+						"level": 23,
+						"moves": [
+							"gust",
+							"sand_attack",
+							"quick_attack"
+						]
+					},
+					{
+						"species": "exeggcute",
+						"level": 22
+					},
+					{
+						"species": "gyarados",
+						"level": 22,
+						"moves": [
+							"bite",
+							"dragon_rage",
+							"leer"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 18
+					},
+					{
+						"species": "charmeleon",
+						"level": 23,
+						"moves": [
+							"scratch",
+							"growl",
+							"ember",
+							"leer"
+						]
+					}
+				],
+				"charmander": [
+					{
+						"species": "pidgeotto",
+						"level": 23,
+						"moves": [
+							"gust",
+							"sand_attack",
+							"quick_attack"
+						]
+					},
+					{
+						"species": "growlithe",
+						"level": 22,
+						"moves": [
+							"bite",
+							"ember",
+							"leer"
+						]
+					},
+					{
+						"species": "exeggcute",
+						"level": 22
+					},
+					{
+						"species": "kadabra",
+						"level": 18
+					},
+					{
+						"species": "wartortle",
+						"level": 23
+					}
+				],
+				"squirtle": [
+					{
+						"species": "pidgeotto",
+						"level": 23,
+						"moves": [
+							"gust",
+							"sand_attack",
+							"quick_attack"
+						]
+					},
+					{
+						"species": "gyarados",
+						"level": 22,
+						"moves": [
+							"bite",
+							"dragon_rage",
+							"leer"
+						]
+					},
+					{
+						"species": "growlithe",
+						"level": 22,
+						"moves": [
+							"bite",
+							"ember",
+							"leer"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 18
+					},
+					{
+						"species": "ivysaur",
+						"level": 23
+					}
+				]
+			}
+		},
+		"rival_tower_06": {
+			"name": "{rival}",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 35,
+			"end_message": false,
+			"start_message": true,
+			"bag": true,
+			"moment": "win",
+			"switch": true,
+			"team_by_starter": {
+				"bulbasaur": [
+					{
+						"species": "pidgeotto",
+						"level": 23,
+						"moves": [
+							"gust",
+							"sand_attack",
+							"quick_attack"
+						]
+					},
+					{
+						"species": "exeggcute",
+						"level": 22
+					},
+					{
+						"species": "gyarados",
+						"level": 22,
+						"moves": [
+							"bite",
+							"dragon_rage",
+							"leer"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 18,
+						"moves": [
+							"confusion",
+							"psybeam"
+						]
+					},
+					{
+						"species": "charmeleon",
+						"level": 23,
+						"moves": [
+							"scratch",
+							"growl",
+							"ember",
+							"leer"
+						]
+					}
+				],
+				"charmander": [
+					{
+						"species": "pidgeotto",
+						"level": 23,
+						"moves": [
+							"gust",
+							"sand_attack",
+							"quick_attack"
+						]
+					},
+					{
+						"species": "growlithe",
+						"level": 22,
+						"moves": [
+							"bite",
+							"ember",
+							"leer"
+						]
+					},
+					{
+						"species": "exeggcute",
+						"level": 22
+					},
+					{
+						"species": "kadabra",
+						"level": 18,
+						"moves": [
+							"confusion",
+							"psybeam"
+						]
+					},
+					{
+						"species": "wartortle",
+						"level": 23
+					}
+				],
+				"squirtle": [
+					{
+						"species": "pidgeotto",
+						"level": 23,
+						"moves": [
+							"gust",
+							"sand_attack",
+							"quick_attack"
+						]
+					},
+					{
+						"species": "gyarados",
+						"level": 22,
+						"moves": [
+							"bite",
+							"dragon_rage",
+							"leer"
+						]
+					},
+					{
+						"species": "growlithe",
+						"level": 22,
+						"moves": [
+							"bite",
+							"ember",
+							"leer"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 18,
+						"moves": [
+							"confusion",
+							"psybeam"
+						]
+					},
+					{
+						"species": "ivysaur",
+						"level": 23
+					}
+				]
+			}
+		},
+		"rival_tower_07": {
+			"name": "{rival}",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 35,
+			"end_message": false,
+			"start_message": true,
+			"bag": true,
+			"moment": "win",
+			"switch": true,
+			"team_by_starter": {
+				"bulbasaur": [
+					{
+						"species": "pidgeotto",
+						"level": 24,
+						"moves": [
+							"gust",
+							"sand_attack",
+							"quick_attack"
+						]
+					},
+					{
+						"species": "exeggcute",
+						"level": 22
+					},
+					{
+						"species": "gyarados",
+						"level": 22,
+						"moves": [
+							"bite",
+							"dragon_rage",
+							"leer"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 18
+					},
+					{
+						"species": "charmeleon",
+						"level": 24,
+						"moves": [
+							"scratch",
+							"growl",
+							"ember",
+							"leer"
+						]
+					}
+				],
+				"charmander": [
+					{
+						"species": "pidgeotto",
+						"level": 24,
+						"moves": [
+							"gust",
+							"sand_attack",
+							"quick_attack"
+						]
+					},
+					{
+						"species": "growlithe",
+						"level": 22,
+						"moves": [
+							"bite",
+							"ember",
+							"leer"
+						]
+					},
+					{
+						"species": "exeggcute",
+						"level": 22
+					},
+					{
+						"species": "kadabra",
+						"level": 18
+					},
+					{
+						"species": "wartortle",
+						"level": 24
+					}
+				],
+				"squirtle": [
+					{
+						"species": "pidgeotto",
+						"level": 24,
+						"moves": [
+							"gust",
+							"sand_attack",
+							"quick_attack"
+						]
+					},
+					{
+						"species": "gyarados",
+						"level": 22,
+						"moves": [
+							"bite",
+							"dragon_rage",
+							"leer"
+						]
+					},
+					{
+						"species": "growlithe",
+						"level": 22,
+						"moves": [
+							"bite",
+							"ember",
+							"leer"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 18
+					},
+					{
+						"species": "ivysaur",
+						"level": 24
+					}
+				]
+			}
+		},
+		"rival_tower_08": {
+			"name": "{rival}",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 35,
+			"end_message": false,
+			"start_message": true,
+			"bag": true,
+			"moment": "win",
+			"switch": true,
+			"team_by_starter": {
+				"bulbasaur": [
+					{
+						"species": "pidgeotto",
+						"level": 24,
+						"moves": [
+							"gust",
+							"sand_attack",
+							"quick_attack"
+						]
+					},
+					{
+						"species": "exeggcute",
+						"level": 22
+					},
+					{
+						"species": "gyarados",
+						"level": 22,
+						"moves": [
+							"bite",
+							"dragon_rage",
+							"leer"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 18,
+						"moves": [
+							"confusion",
+							"psybeam"
+						]
+					},
+					{
+						"species": "charmeleon",
+						"level": 24,
+						"moves": [
+							"scratch",
+							"growl",
+							"ember",
+							"leer"
+						]
+					}
+				],
+				"charmander": [
+					{
+						"species": "pidgeotto",
+						"level": 24,
+						"moves": [
+							"gust",
+							"sand_attack",
+							"quick_attack"
+						]
+					},
+					{
+						"species": "growlithe",
+						"level": 22,
+						"moves": [
+							"bite",
+							"ember",
+							"leer"
+						]
+					},
+					{
+						"species": "exeggcute",
+						"level": 22
+					},
+					{
+						"species": "kadabra",
+						"level": 18,
+						"moves": [
+							"confusion",
+							"psybeam"
+						]
+					},
+					{
+						"species": "wartortle",
+						"level": 24
+					}
+				],
+				"squirtle": [
+					{
+						"species": "pidgeotto",
+						"level": 24,
+						"moves": [
+							"gust",
+							"sand_attack",
+							"quick_attack"
+						]
+					},
+					{
+						"species": "gyarados",
+						"level": 22,
+						"moves": [
+							"bite",
+							"dragon_rage",
+							"leer"
+						]
+					},
+					{
+						"species": "growlithe",
+						"level": 22,
+						"moves": [
+							"bite",
+							"ember",
+							"leer"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 18,
+						"moves": [
+							"confusion",
+							"psybeam"
+						]
+					},
+					{
+						"species": "ivysaur",
+						"level": 24
+					}
+				]
+			}
+		},
+		"rival_tower_09": {
+			"name": "{rival}",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 35,
+			"end_message": false,
+			"start_message": true,
+			"bag": true,
+			"moment": "win",
+			"switch": true,
+			"team_by_starter": {
+				"bulbasaur": [
+					{
+						"species": "pidgeotto",
+						"level": 24,
+						"moves": [
+							"gust",
+							"sand_attack",
+							"quick_attack"
+						]
+					},
+					{
+						"species": "exeggcute",
+						"level": 23
+					},
+					{
+						"species": "gyarados",
+						"level": 22,
+						"moves": [
+							"bite",
+							"dragon_rage",
+							"leer"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 20
+					},
+					{
+						"species": "charmeleon",
+						"level": 25,
+						"moves": [
+							"scratch",
+							"growl",
+							"ember",
+							"leer"
+						]
+					}
+				],
+				"charmander": [
+					{
+						"species": "pidgeotto",
+						"level": 24,
+						"moves": [
+							"gust",
+							"sand_attack",
+							"quick_attack"
+						]
+					},
+					{
+						"species": "growlithe",
+						"level": 23,
+						"moves": [
+							"bite",
+							"ember",
+							"leer"
+						]
+					},
+					{
+						"species": "exeggcute",
+						"level": 22
+					},
+					{
+						"species": "kadabra",
+						"level": 20
+					},
+					{
+						"species": "wartortle",
+						"level": 25
+					}
+				],
+				"squirtle": [
+					{
+						"species": "pidgeotto",
+						"level": 24,
+						"moves": [
+							"gust",
+							"sand_attack",
+							"quick_attack"
+						]
+					},
+					{
+						"species": "gyarados",
+						"level": 23,
+						"moves": [
+							"bite",
+							"dragon_rage",
+							"leer"
+						]
+					},
+					{
+						"species": "growlithe",
+						"level": 22,
+						"moves": [
+							"bite",
+							"ember",
+							"leer"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 20
+					},
+					{
+						"species": "ivysaur",
+						"level": 25
+					}
+				]
+			}
+		},
+		"rival_tower_10": {
+			"name": "{rival}",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 35,
+			"end_message": false,
+			"start_message": true,
+			"bag": true,
+			"moment": "win",
+			"switch": true,
+			"team_by_starter": {
+				"bulbasaur": [
+					{
+						"species": "pidgeotto",
+						"level": 24,
+						"moves": [
+							"gust",
+							"sand_attack",
+							"quick_attack"
+						]
+					},
+					{
+						"species": "exeggcute",
+						"level": 23
+					},
+					{
+						"species": "gyarados",
+						"level": 22,
+						"moves": [
+							"bite",
+							"dragon_rage",
+							"leer"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 20,
+						"moves": [
+							"confusion",
+							"psybeam"
+						]
+					},
+					{
+						"species": "charmeleon",
+						"level": 25,
+						"moves": [
+							"scratch",
+							"growl",
+							"ember",
+							"leer"
+						]
+					}
+				],
+				"charmander": [
+					{
+						"species": "pidgeotto",
+						"level": 24,
+						"moves": [
+							"gust",
+							"sand_attack",
+							"quick_attack"
+						]
+					},
+					{
+						"species": "growlithe",
+						"level": 23,
+						"moves": [
+							"bite",
+							"ember",
+							"leer"
+						]
+					},
+					{
+						"species": "exeggcute",
+						"level": 22
+					},
+					{
+						"species": "kadabra",
+						"level": 20,
+						"moves": [
+							"confusion",
+							"psybeam"
+						]
+					},
+					{
+						"species": "wartortle",
+						"level": 25
+					}
+				],
+				"squirtle": [
+					{
+						"species": "pidgeotto",
+						"level": 24,
+						"moves": [
+							"gust",
+							"sand_attack",
+							"quick_attack"
+						]
+					},
+					{
+						"species": "gyarados",
+						"level": 23,
+						"moves": [
+							"bite",
+							"dragon_rage",
+							"leer"
+						]
+					},
+					{
+						"species": "growlithe",
+						"level": 22,
+						"moves": [
+							"bite",
+							"ember",
+							"leer"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 20,
+						"moves": [
+							"confusion",
+							"psybeam"
+						]
+					},
+					{
+						"species": "ivysaur",
+						"level": 25
+					}
+				]
+			}
+		},
+		"rival_tower_11": {
+			"name": "{rival}",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 35,
+			"end_message": false,
+			"start_message": true,
+			"bag": true,
+			"moment": "win",
+			"switch": true,
+			"team_by_starter": {
+				"bulbasaur": [
+					{
+						"species": "pidgeotto",
+						"level": 25,
+						"moves": [
+							"gust",
+							"sand_attack",
+							"quick_attack"
+						]
+					},
+					{
+						"species": "exeggcute",
+						"level": 23
+					},
+					{
+						"species": "gyarados",
+						"level": 22,
+						"moves": [
+							"bite",
+							"dragon_rage",
+							"leer"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 20
+					},
+					{
+						"species": "charmeleon",
+						"level": 25,
+						"moves": [
+							"scratch",
+							"growl",
+							"ember",
+							"leer"
+						]
+					}
+				],
+				"charmander": [
+					{
+						"species": "pidgeotto",
+						"level": 25,
+						"moves": [
+							"gust",
+							"sand_attack",
+							"quick_attack"
+						]
+					},
+					{
+						"species": "growlithe",
+						"level": 23,
+						"moves": [
+							"bite",
+							"ember",
+							"leer"
+						]
+					},
+					{
+						"species": "exeggcute",
+						"level": 22
+					},
+					{
+						"species": "kadabra",
+						"level": 20
+					},
+					{
+						"species": "wartortle",
+						"level": 25
+					}
+				],
+				"squirtle": [
+					{
+						"species": "pidgeotto",
+						"level": 25,
+						"moves": [
+							"gust",
+							"sand_attack",
+							"quick_attack"
+						]
+					},
+					{
+						"species": "gyarados",
+						"level": 23,
+						"moves": [
+							"bite",
+							"dragon_rage",
+							"leer"
+						]
+					},
+					{
+						"species": "growlithe",
+						"level": 22,
+						"moves": [
+							"bite",
+							"ember",
+							"leer"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 20
+					},
+					{
+						"species": "ivysaur",
+						"level": 25
+					}
+				]
+			}
+		},
+		"rival_tower_12": {
+			"name": "{rival}",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 35,
+			"end_message": false,
+			"start_message": true,
+			"bag": true,
+			"moment": "win",
+			"switch": true,
+			"team_by_starter": {
+				"bulbasaur": [
+					{
+						"species": "pidgeotto",
+						"level": 25,
+						"moves": [
+							"gust",
+							"sand_attack",
+							"quick_attack"
+						]
+					},
+					{
+						"species": "exeggcute",
+						"level": 23
+					},
+					{
+						"species": "gyarados",
+						"level": 22,
+						"moves": [
+							"bite",
+							"dragon_rage",
+							"leer"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 20,
+						"moves": [
+							"confusion",
+							"psybeam"
+						]
+					},
+					{
+						"species": "charmeleon",
+						"level": 25,
+						"moves": [
+							"scratch",
+							"growl",
+							"ember",
+							"leer"
+						]
+					}
+				],
+				"charmander": [
+					{
+						"species": "pidgeotto",
+						"level": 25,
+						"moves": [
+							"gust",
+							"sand_attack",
+							"quick_attack"
+						]
+					},
+					{
+						"species": "growlithe",
+						"level": 23,
+						"moves": [
+							"bite",
+							"ember",
+							"leer"
+						]
+					},
+					{
+						"species": "exeggcute",
+						"level": 22
+					},
+					{
+						"species": "kadabra",
+						"level": 20,
+						"moves": [
+							"confusion",
+							"psybeam"
+						]
+					},
+					{
+						"species": "wartortle",
+						"level": 25
+					}
+				],
+				"squirtle": [
+					{
+						"species": "pidgeotto",
+						"level": 25,
+						"moves": [
+							"gust",
+							"sand_attack",
+							"quick_attack"
+						]
+					},
+					{
+						"species": "gyarados",
+						"level": 23,
+						"moves": [
+							"bite",
+							"dragon_rage",
+							"leer"
+						]
+					},
+					{
+						"species": "growlithe",
+						"level": 22,
+						"moves": [
+							"bite",
+							"ember",
+							"leer"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 20,
+						"moves": [
+							"confusion",
+							"psybeam"
+						]
+					},
+					{
+						"species": "ivysaur",
+						"level": 25
+					}
+				]
+			}
+		},
+		"rival_tower_13": {
+			"name": "{rival}",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 35,
+			"end_message": false,
+			"start_message": true,
+			"bag": true,
+			"moment": "win",
+			"switch": true,
+			"team_by_starter": {
+				"bulbasaur": [
+					{
+						"species": "pidgeotto",
+						"level": 25,
+						"moves": [
+							"gust",
+							"sand_attack",
+							"quick_attack"
+						]
+					},
+					{
+						"species": "exeggcute",
+						"level": 24
+					},
+					{
+						"species": "gyarados",
+						"level": 23,
+						"moves": [
+							"bite",
+							"dragon_rage",
+							"leer"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 18
+					},
+					{
+						"species": "charmeleon",
+						"level": 22,
+						"moves": [
+							"scratch",
+							"growl",
+							"ember",
+							"leer"
+						]
+					}
+				],
+				"charmander": [
+					{
+						"species": "pidgeotto",
+						"level": 25,
+						"moves": [
+							"gust",
+							"sand_attack",
+							"quick_attack"
+						]
+					},
+					{
+						"species": "growlithe",
+						"level": 24,
+						"moves": [
+							"bite",
+							"ember",
+							"leer"
+						]
+					},
+					{
+						"species": "exeggcute",
+						"level": 23
+					},
+					{
+						"species": "kadabra",
+						"level": 18
+					},
+					{
+						"species": "wartortle",
+						"level": 22
+					}
+				],
+				"squirtle": [
+					{
+						"species": "pidgeotto",
+						"level": 25,
+						"moves": [
+							"gust",
+							"sand_attack",
+							"quick_attack"
+						]
+					},
+					{
+						"species": "gyarados",
+						"level": 24,
+						"moves": [
+							"bite",
+							"dragon_rage",
+							"leer"
+						]
+					},
+					{
+						"species": "growlithe",
+						"level": 23,
+						"moves": [
+							"bite",
+							"ember",
+							"leer"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 18
+					},
+					{
+						"species": "ivysaur",
+						"level": 22
+					}
+				]
+			}
+		},
+		"rival_tower_14": {
+			"name": "{rival}",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 35,
+			"end_message": false,
+			"start_message": true,
+			"bag": true,
+			"moment": "win",
+			"switch": true,
+			"team_by_starter": {
+				"bulbasaur": [
+					{
+						"species": "pidgeotto",
+						"level": 25,
+						"moves": [
+							"gust",
+							"sand_attack",
+							"quick_attack"
+						]
+					},
+					{
+						"species": "exeggcute",
+						"level": 24
+					},
+					{
+						"species": "gyarados",
+						"level": 23,
+						"moves": [
+							"bite",
+							"dragon_rage",
+							"leer"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 18,
+						"moves": [
+							"confusion",
+							"psybeam"
+						]
+					},
+					{
+						"species": "charmeleon",
+						"level": 22,
+						"moves": [
+							"scratch",
+							"growl",
+							"ember",
+							"leer"
+						]
+					}
+				],
+				"charmander": [
+					{
+						"species": "pidgeotto",
+						"level": 25,
+						"moves": [
+							"gust",
+							"sand_attack",
+							"quick_attack"
+						]
+					},
+					{
+						"species": "growlithe",
+						"level": 24,
+						"moves": [
+							"bite",
+							"ember",
+							"leer"
+						]
+					},
+					{
+						"species": "exeggcute",
+						"level": 23
+					},
+					{
+						"species": "kadabra",
+						"level": 18,
+						"moves": [
+							"confusion",
+							"psybeam"
+						]
+					},
+					{
+						"species": "wartortle",
+						"level": 22
+					}
+				],
+				"squirtle": [
+					{
+						"species": "pidgeotto",
+						"level": 25,
+						"moves": [
+							"gust",
+							"sand_attack",
+							"quick_attack"
+						]
+					},
+					{
+						"species": "gyarados",
+						"level": 24,
+						"moves": [
+							"bite",
+							"dragon_rage",
+							"leer"
+						]
+					},
+					{
+						"species": "growlithe",
+						"level": 23,
+						"moves": [
+							"bite",
+							"ember",
+							"leer"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 18,
+						"moves": [
+							"confusion",
+							"psybeam"
+						]
+					},
+					{
+						"species": "ivysaur",
+						"level": 22
+					}
+				]
+			}
+		},
+		"rival_tower_15": {
+			"name": "{rival}",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 35,
+			"end_message": false,
+			"start_message": true,
+			"bag": true,
+			"moment": "win",
+			"switch": true,
+			"team_by_starter": {
+				"bulbasaur": [
+					{
+						"species": "pidgeotto",
+						"level": 22,
+						"moves": [
+							"gust",
+							"sand_attack",
+							"quick_attack"
+						]
+					},
+					{
+						"species": "exeggcute",
+						"level": 22
+					},
+					{
+						"species": "gyarados",
+						"level": 22,
+						"moves": [
+							"tackle",
+							"leer"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 18,
+						"moves": [
+							"confusion",
+							"psybeam"
+						]
+					},
+					{
+						"species": "charmeleon",
+						"level": 22,
+						"moves": [
+							"scratch",
+							"growl",
+							"leer",
+							"rage"
+						]
+					}
+				],
+				"charmander": [
+					{
+						"species": "pidgeotto",
+						"level": 22,
+						"moves": [
+							"gust",
+							"sand_attack",
+							"quick_attack"
+						]
+					},
+					{
+						"species": "growlithe",
+						"level": 22,
+						"moves": [
+							"bite",
+							"ember",
+							"leer"
+						]
+					},
+					{
+						"species": "exeggcute",
+						"level": 22
+					},
+					{
+						"species": "kadabra",
+						"level": 18
+					},
+					{
+						"species": "wartortle",
+						"level": 22
+					}
+				],
+				"squirtle": [
+					{
+						"species": "pidgeotto",
+						"level": 22,
+						"moves": [
+							"gust",
+							"sand_attack",
+							"quick_attack"
+						]
+					},
+					{
+						"species": "gyarados",
+						"level": 22,
+						"moves": [
+							"bite",
+							"dragon_rage",
+							"leer"
+						]
+					},
+					{
+						"species": "growlithe",
+						"level": 22,
+						"moves": [
+							"bite",
+							"ember",
+							"leer"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 18
+					},
+					{
+						"species": "ivysaur",
+						"level": 22
+					}
+				]
+			}
+		},
+		"rival_tower_16": {
+			"name": "{rival}",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 35,
+			"end_message": false,
+			"start_message": true,
+			"bag": true,
+			"moment": "win",
+			"switch": true,
+			"team_by_starter": {
+				"bulbasaur": [
+					{
+						"species": "pidgeotto",
+						"level": 22,
+						"moves": [
+							"gust",
+							"sand_attack",
+							"quick_attack"
+						]
+					},
+					{
+						"species": "exeggcute",
+						"level": 22,
+						"moves": [
+							"barrage"
+						]
+					},
+					{
+						"species": "gyarados",
+						"level": 22,
+						"moves": [
+							"tackle",
+							"leer"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 18
+					},
+					{
+						"species": "charmander",
+						"level": 22,
+						"moves": [
+							"scratch",
+							"growl",
+							"ember",
+							"leer"
+						]
+					}
+				],
+				"charmander": [
+					{
+						"species": "pidgeotto",
+						"level": 22,
+						"moves": [
+							"gust",
+							"sand_attack",
+							"quick_attack"
+						]
+					},
+					{
+						"species": "growlithe",
+						"level": 22,
+						"moves": [
+							"bite",
+							"ember",
+							"leer"
+						]
+					},
+					{
+						"species": "exeggcute",
+						"level": 22
+					},
+					{
+						"species": "kadabra",
+						"level": 18
+					},
+					{
+						"species": "wartortle",
+						"level": 22
+					}
+				],
+				"squirtle": [
+					{
+						"species": "pidgeotto",
+						"level": 22,
+						"moves": [
+							"gust",
+							"sand_attack",
+							"quick_attack"
+						]
+					},
+					{
+						"species": "gyarados",
+						"level": 22,
+						"moves": [
+							"bite",
+							"dragon_rage",
+							"leer"
+						]
+					},
+					{
+						"species": "growlithe",
+						"level": 22,
+						"moves": [
+							"bite",
+							"ember",
+							"leer"
+						]
+					},
+					{
+						"species": "kadabra",
+						"level": 18
+					},
+					{
+						"species": "ivysaur",
+						"level": 22
+					}
+				]
+			}
+		}
+	},
+	"steps": [
+		{
+			"label": "Centre de Lavanville (départ)",
+			"center": true
+		},
+		{
+			"label": "Centre (r01)",
+			"center": true,
+			"optional": "r01"
+		},
+		{
+			"label": "Rival r01 : retenu 22, Kadabra 18",
+			"trainer": "rival_tower_01",
+			"optional": "r01"
+		},
+		{
+			"label": "Centre (r02)",
+			"center": true,
+			"optional": "r02"
+		},
+		{
+			"label": "Rival r02 : retenu 22, Kadabra 18, Kadabra du J16",
+			"trainer": "rival_tower_02",
+			"optional": "r02"
+		},
+		{
+			"label": "Centre (r03)",
+			"center": true,
+			"optional": "r03"
+		},
+		{
+			"label": "Rival r03 : 22, Kadabra 20",
+			"trainer": "rival_tower_03",
+			"optional": "r03"
+		},
+		{
+			"label": "Centre (r04)",
+			"center": true,
+			"optional": "r04"
+		},
+		{
+			"label": "Rival r04 : 22, Kadabra 20, Kadabra du J16",
+			"trainer": "rival_tower_04",
+			"optional": "r04"
+		},
+		{
+			"label": "Centre (r05)",
+			"center": true,
+			"optional": "r05"
+		},
+		{
+			"label": "Rival r05 : 23/22/22, Kadabra 18, starter 23",
+			"trainer": "rival_tower_05",
+			"optional": "r05"
+		},
+		{
+			"label": "Centre (r06)",
+			"center": true,
+			"optional": "r06"
+		},
+		{
+			"label": "Rival r06 : 23/22/22, Kadabra 18, starter 23, Kadabra du J16",
+			"trainer": "rival_tower_06",
+			"optional": "r06"
+		},
+		{
+			"label": "Centre (r07)",
+			"center": true,
+			"optional": "r07"
+		},
+		{
+			"label": "Rival r07 : 24/22/22, Kadabra 18, starter 24",
+			"trainer": "rival_tower_07",
+			"optional": "r07"
+		},
+		{
+			"label": "Centre (r08)",
+			"center": true,
+			"optional": "r08"
+		},
+		{
+			"label": "Rival r08 : 24/22/22, Kadabra 18, starter 24, Kadabra du J16",
+			"trainer": "rival_tower_08",
+			"optional": "r08"
+		},
+		{
+			"label": "Centre (r09)",
+			"center": true,
+			"optional": "r09"
+		},
+		{
+			"label": "Rival r09 : 24/23/22, Kadabra 20, starter 25",
+			"trainer": "rival_tower_09",
+			"optional": "r09"
+		},
+		{
+			"label": "Centre (r10)",
+			"center": true,
+			"optional": "r10"
+		},
+		{
+			"label": "Rival r10 : 24/23/22, Kadabra 20, starter 25, Kadabra du J16",
+			"trainer": "rival_tower_10",
+			"optional": "r10"
+		},
+		{
+			"label": "Centre (r11)",
+			"center": true,
+			"optional": "r11"
+		},
+		{
+			"label": "Rival r11 : Rouge/Bleu 25/23/22, Kadabra 20, starter 25",
+			"trainer": "rival_tower_11",
+			"optional": "r11"
+		},
+		{
+			"label": "Centre (r12)",
+			"center": true,
+			"optional": "r12"
+		},
+		{
+			"label": "Rival r12 : Rouge/Bleu 25/23/22, Kadabra 20, starter 25, Kadabra du J16",
+			"trainer": "rival_tower_12",
+			"optional": "r12"
+		},
+		{
+			"label": "Centre (r13)",
+			"center": true,
+			"optional": "r13"
+		},
+		{
+			"label": "Rival r13 : 25/24/23, Kadabra 18, starter 22",
+			"trainer": "rival_tower_13",
+			"optional": "r13"
+		},
+		{
+			"label": "Centre (r14)",
+			"center": true,
+			"optional": "r14"
+		},
+		{
+			"label": "Rival r14 : 25/24/23, Kadabra 18, starter 22, Kadabra du J16",
+			"trainer": "rival_tower_14",
+			"optional": "r14"
+		},
+		{
+			"label": "Centre (r15)",
+			"center": true,
+			"optional": "r15"
+		},
+		{
+			"label": "Rival r15 : Bulbizarre adouci : Léviator Charge/Groz'Yeux, Reptincel sans Flammèche, Kadabra du J16",
+			"trainer": "rival_tower_15",
+			"optional": "r15"
+		},
+		{
+			"label": "Centre (r16)",
+			"center": true,
+			"optional": "r16"
+		},
+		{
+			"label": "Rival r16 : Bulbizarre très adouci : Léviator Charge/Groz'Yeux, Noeunoeuf sans Hypnose, Salamèche 22",
+			"trainer": "rival_tower_16",
+			"optional": "r16"
+		}
+	],
+	"variants": [
+		{
+			"name": "r01, attentif",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"super_potion": 5,
+				"antidote": 3,
+				"awakening": 2
+			},
+			"optional": [
+				"r01"
+			]
+		},
+		{
+			"name": "r01, expert",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"super_potion": 5,
+				"antidote": 3,
+				"awakening": 2
+			},
+			"optional": [
+				"r01"
+			]
+		},
+		{
+			"name": "r02, attentif",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"super_potion": 5,
+				"antidote": 3,
+				"awakening": 2
+			},
+			"optional": [
+				"r02"
+			]
+		},
+		{
+			"name": "r02, expert",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"super_potion": 5,
+				"antidote": 3,
+				"awakening": 2
+			},
+			"optional": [
+				"r02"
+			]
+		},
+		{
+			"name": "r03, attentif",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"super_potion": 5,
+				"antidote": 3,
+				"awakening": 2
+			},
+			"optional": [
+				"r03"
+			]
+		},
+		{
+			"name": "r03, expert",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"super_potion": 5,
+				"antidote": 3,
+				"awakening": 2
+			},
+			"optional": [
+				"r03"
+			]
+		},
+		{
+			"name": "r04, attentif",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"super_potion": 5,
+				"antidote": 3,
+				"awakening": 2
+			},
+			"optional": [
+				"r04"
+			]
+		},
+		{
+			"name": "r04, expert",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"super_potion": 5,
+				"antidote": 3,
+				"awakening": 2
+			},
+			"optional": [
+				"r04"
+			]
+		},
+		{
+			"name": "r05, attentif",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"super_potion": 5,
+				"antidote": 3,
+				"awakening": 2
+			},
+			"optional": [
+				"r05"
+			]
+		},
+		{
+			"name": "r05, expert",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"super_potion": 5,
+				"antidote": 3,
+				"awakening": 2
+			},
+			"optional": [
+				"r05"
+			]
+		},
+		{
+			"name": "r06, attentif",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"super_potion": 5,
+				"antidote": 3,
+				"awakening": 2
+			},
+			"optional": [
+				"r06"
+			]
+		},
+		{
+			"name": "r06, expert",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"super_potion": 5,
+				"antidote": 3,
+				"awakening": 2
+			},
+			"optional": [
+				"r06"
+			]
+		},
+		{
+			"name": "r07, attentif",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"super_potion": 5,
+				"antidote": 3,
+				"awakening": 2
+			},
+			"optional": [
+				"r07"
+			]
+		},
+		{
+			"name": "r07, expert",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"super_potion": 5,
+				"antidote": 3,
+				"awakening": 2
+			},
+			"optional": [
+				"r07"
+			]
+		},
+		{
+			"name": "r08, attentif",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"super_potion": 5,
+				"antidote": 3,
+				"awakening": 2
+			},
+			"optional": [
+				"r08"
+			]
+		},
+		{
+			"name": "r08, expert",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"super_potion": 5,
+				"antidote": 3,
+				"awakening": 2
+			},
+			"optional": [
+				"r08"
+			]
+		},
+		{
+			"name": "r09, attentif",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"super_potion": 5,
+				"antidote": 3,
+				"awakening": 2
+			},
+			"optional": [
+				"r09"
+			]
+		},
+		{
+			"name": "r09, expert",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"super_potion": 5,
+				"antidote": 3,
+				"awakening": 2
+			},
+			"optional": [
+				"r09"
+			]
+		},
+		{
+			"name": "r10, attentif",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"super_potion": 5,
+				"antidote": 3,
+				"awakening": 2
+			},
+			"optional": [
+				"r10"
+			]
+		},
+		{
+			"name": "r10, expert",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"super_potion": 5,
+				"antidote": 3,
+				"awakening": 2
+			},
+			"optional": [
+				"r10"
+			]
+		},
+		{
+			"name": "r11, attentif",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"super_potion": 5,
+				"antidote": 3,
+				"awakening": 2
+			},
+			"optional": [
+				"r11"
+			]
+		},
+		{
+			"name": "r11, expert",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"super_potion": 5,
+				"antidote": 3,
+				"awakening": 2
+			},
+			"optional": [
+				"r11"
+			]
+		},
+		{
+			"name": "r12, attentif",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"super_potion": 5,
+				"antidote": 3,
+				"awakening": 2
+			},
+			"optional": [
+				"r12"
+			]
+		},
+		{
+			"name": "r12, expert",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"super_potion": 5,
+				"antidote": 3,
+				"awakening": 2
+			},
+			"optional": [
+				"r12"
+			]
+		},
+		{
+			"name": "r13, attentif",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"super_potion": 5,
+				"antidote": 3,
+				"awakening": 2
+			},
+			"optional": [
+				"r13"
+			]
+		},
+		{
+			"name": "r13, expert",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"super_potion": 5,
+				"antidote": 3,
+				"awakening": 2
+			},
+			"optional": [
+				"r13"
+			]
+		},
+		{
+			"name": "r14, attentif",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"super_potion": 5,
+				"antidote": 3,
+				"awakening": 2
+			},
+			"optional": [
+				"r14"
+			]
+		},
+		{
+			"name": "r14, expert",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"super_potion": 5,
+				"antidote": 3,
+				"awakening": 2
+			},
+			"optional": [
+				"r14"
+			]
+		},
+		{
+			"name": "r15, attentif",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"super_potion": 5,
+				"antidote": 3,
+				"awakening": 2
+			},
+			"optional": [
+				"r15"
+			]
+		},
+		{
+			"name": "r15, expert",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"super_potion": 5,
+				"antidote": 3,
+				"awakening": 2
+			},
+			"optional": [
+				"r15"
+			]
+		},
+		{
+			"name": "r16, attentif",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"super_potion": 5,
+				"antidote": 3,
+				"awakening": 2
+			},
+			"optional": [
+				"r16"
+			]
+		},
+		{
+			"name": "r16, expert",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"super_potion": 5,
+				"antidote": 3,
+				"awakening": 2
+			},
+			"optional": [
+				"r16"
+			]
+		}
+	]
+}

@@ -12,7 +12,8 @@ extends RefCounted
 
 ## Vrai si [param move] vise le Pokémon d'en face : capacité offensive, ou capacité de statut
 ## dont un effet touche la cible (statut, confusion, graine, apeurement, dégâts fixes, niveau
-## d'une statistique de la cible). Puissance, Armure, Patience, Téléport : non.
+## d'une statistique de la cible, Hurlement du jalon 19). Puissance, Armure, Patience, Téléport :
+## non.
 static func targets_foe(move: MoveData) -> bool:
 	if move == null:
 		return false
@@ -21,7 +22,8 @@ static func targets_foe(move: MoveData) -> bool:
 	for effect: MoveEffect in move.effects:
 		match effect.kind:
 			MoveEffect.Kind.STATUS, MoveEffect.Kind.CONFUSION, MoveEffect.Kind.SEED, \
-					MoveEffect.Kind.FLINCH, MoveEffect.Kind.FIXED_DAMAGE:
+					MoveEffect.Kind.FLINCH, MoveEffect.Kind.FIXED_DAMAGE, \
+					MoveEffect.Kind.FORCE_SWITCH, MoveEffect.Kind.OHKO:
 				return true
 			MoveEffect.Kind.STAT_STAGE:
 				if effect.target == MoveEffect.Target.FOE:

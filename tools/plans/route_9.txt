@@ -1,0 +1,109 @@
+# Route 9 — grille fonctionnelle (jalon 18, dossier 21 §3, §13.1 ; v2 du 2026-10-14 : sentier
+# SERPENTANT à angles droits, relief en terrasses, à valider par Kevin). Source UNIQUE de la
+# géométrie : plan en aplats (tools/art/plan_aplats_j18.py), vue générale peinte, puis outil de
+# construction et tests du J18 (18A). Un changement de composition se fait ICI d'abord, puis plan,
+# puis image. Contrôle : tools/art/plan_check_route_9.py.
+#
+# 80 × 36 cases (enveloppe du dossier, §3.1) ; nord en haut ; x = colonne 0..79, y = rangée 0..35.
+# Raccord OUEST : (0, 22..24) ↔ Azuria (55, 22..24), derrière l'arbre à couper de la barrière est
+# (53, 23) (Coupe, J16). Raccord EST : (79, 12..14) ↔ Route 10 nord (0, 12..14). Mêmes rangées, aucun
+# décalage. Aucune porte de bâtiment (le Centre est sur la Route 10).
+#
+# LE SENTIER SERPENTE (6 changements de direction francs, une terrasse après l'autre) :
+#   ① → EST  y 22..24, x 0..26 — la sortie d'Azuria : clairière puis goulet de 3 cases (x 8..13) ;
+#      R9-1 Lou, INÉVITABLE, dans l'alcôve nord (10, 19..21). Petite poche d'herbes H1 au sud (évitable).
+#   ② ↑ NORD x 24..26, y 16..24 — la RAMPE qui monte à la terrasse haute (falaise à l'est).
+#   ③ → EST  y 8..16, x 24..49 — la TERRASSE HAUTE (falaise au nord, falaise au sud, y 17) : deux
+#      COULOIRS séparés par un muret de rochers (y 12, x 29..43) qui se rejoignent à l'est (x 44) :
+#        HAUT (nord, y 8..11) — R9-2 Adam (ligne sur toute la largeur du couloir), Super Potion ;
+#                 sans herbe ; un peu plus long.
+#        BAS  (sud, y 13..16) — poche d'herbes H2 (x 32..37, 6 cases) ; R9-3 Jules, dans l'encoche
+#                 du muret (35, 12), voit les 3 rangées d'herbes mais pas la rangée du bas (y 16).
+#   ④ ↓ SUD  x 47..49, y 13..28 — la DESCENTE à l'extrémité est de la terrasse. À l'ouest, la vallée
+#      encaissée (x 28..45, y 18..26), sous la terrasse : poche d'herbes H3, R9-7 Noa (détour,
+#      ouverture (46, 20..22)), Antidote.
+#   ⑤ → EST  y 26..28, x 47..57 — le PASSAGE ENTRE DEUX ROCHERS (x 50..57) ; R9-5 Bernard,
+#      INÉVITABLE, dans l'alcôve sud (54, 29..31).
+#   ⑥ ↑ NORD x 58..61, y 12..28 — la MONTÉE (4 cases de large) ; R9-4 Zoé dans une niche à
+#      l'ouest (57, 19), évitable par la colonne x 61.
+#   ⑦ → EST  y 12..14, x 58..79 — le flanc est : bande d'herbes H4 obligatoire (x 68..71) ; poche de
+#      la terrasse est (x 64..77, y 16..21) : REBORD (64..67, 15) sauté depuis le sentier, ouverture
+#      ouest (62..63, 19..20) (pas un piège) ; R9-6 Gilles ; 2 Poké Balls au fond.
+# Masse rocheuse (K) : y 0..7 sur toute la moitié est, puis y 8..9 à l'est de x 52.
+#
+# Légende (identique à route_3.txt, sans bâtiment) :
+#   T forêt et bosquets (bloqués)        . herbe rase            = chemin de terre
+#   h hautes herbes                      v rebord (sauté vers le sud ; ne se monte pas)
+#   o sol rocheux praticable (terrasses) K paroi / falaise (bloquée)   R rochers (bloqués)
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 80 caractères), puis POSITIONS.
+
+PRATICABLES .=hvo
+
+GRILLE 80 36
+00 TTTTTTTTTTTTTTKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+01 TTTTTTTTTTTTTTKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+02 TTTTTTTTTTTTTTKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+03 TTTTTTTTTTTTTTKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+04 TTTTTTTTTTTTTTKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+05 TTTTTTTTTTTTTTKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+06 TTTTTTTTTTTTTTKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+07 TTTTTTTTTTTTTTKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+08 TTTTTTTTTTTTTTTTTTTTTTTTooooooooooooooooooooooooooKTKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+09 TTTTTTTTTTTTTTTTTTTTTTTTooooooRRooooooooRRooooooooKTKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+10 TTTTTTTTTTTTTTTTTTTTTTTTooooooRRooooooooooooooooooKTTTTTTTTooooooooTTTTTTTTTTTTT
+11 TTTTTTTTTTTTTTTTTTTTTTTTooooooooooooooooooooooooooKTTTTTTTTooooooooTTTTTTTTTTTTT
+12 TTTTTTTTTTTTTTTTTTTTTTTToooooRRRRRR.RRRRRRRRooooooKTTTTTTT==========hhhh========
+13 TTTTTTTTTTTTTTTTTTTTTTTT========hhhhhh============KTTTTTTT==========hhhh========
+14 TTTTTTTTTTTTTTTTTTTTTTTT========hhhhhh============KTTTTTTT==========hhhh========
+15 TTTTTTTTTTTTTTTTTTTTTTTT========hhhhhh============KTTTTTTT====TTvvvvTTTTTTTTTTTT
+16 TTTTTTTTTTTTTTTTTTTTTTTT========hhhhhh============KTTTTTTT====TTooooooooooooooTT
+17 TTTTTTTTTTTTTTTTTTTTTTTT===KKKKKKKKKKKKKKKKKKKK===TTTTTTTT====TTooooooooooooooTT
+18 TT...TT.TTTTTTTTTTTTTTTT===T..................R===TTTTTT..====TTooooooooooooooTT
+19 TT...TT.TT.TTTTTTTTTTTTT===T..hhhhhhh...RR....R===TTTTTT..====ooooooRRooooooooTT
+20 T.......TT.TTTTTTTTTTTTT===T..hhhhhhh...RR.....===TTTTTT..====ooooooRRoooooRRoTT
+21 T.......RR.RRRTTTTTTTTTT===T..hhhhhhh..........===TTTTTTTT====TToooooooooooRRoTT
+22 ===========================T..hhhhhhh..........===TTTTTTTT====TTTTTTTTTTTTTTTTTT
+23 ===========================T..hhhhhhh.........R===TTTTTTTT====TTTTTTTTTTTTTTTTTT
+24 ===========================T..hhhhhhh......TT.R===TTTTTTTT====TTTTTTTTTTTTTTTTTT
+25 T.......RRRRRR.........TTTTT..hhhhhhh......TT.R===RRRRRRRR====TTTTTTTTTTTTTTTTTT
+26 T.TT....TTTTTT.hhhhhh..TTTTT..................R===============TTTTTTTTTTTTTTTTTT
+27 T.TT....TTTTTTTThhhhh..TTTTTTTTTTTTTTTTTTTTTTTT===============TTTTTTTTTTTTTTTTTT
+28 T.......TTTTTTTThhhhh..TTTTTTTTTTTTTTTTTTTTTTTT===============TTTTTTTTTTTTTTTTTT
+29 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTRRRR.RRRTTTTTTTTTTTTTTTTTTTTTT
+30 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT.TTTTTTTTTTTTTTTTTTTTTTTTT
+31 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT.TTTTTTTTTTTTTTTTTTTTTTTTT
+32 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+33 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+34 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+35 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+FIN
+
+# POSITIONS (défauts du 2026-10-14, v2) — une ligne par élément :
+#   identifiant  type  cases  bloque|libre  [cle=valeur ...]  # commentaire
+# Types : ceux de route_3.txt. « itineraire » : coupe d'un des deux couloirs de la terrasse (role=haut / bas).
+POSITIONS
+warp_ouest          warp           0,22..24     libre   # PUSH ← → cerulean_city, from_route_9 (Azuria (55, 22..24))
+from_cerulean       spawn          0,22..24     libre   # arrivée d'Azuria, tournée →
+warp_est            warp           79,12..14    libre   # PUSH → → route_10, from_route_9 (Route 10 (0, 12..14))
+from_route_10       spawn          79,12..14    libre   # arrivée de la Route 10, tournée ←
+lou                 dresseur       10,19        bloque  role=R9-1 facing=down sight=5 trainer=route_9_lass_lou  # Jeune Dresseuse, Mystherbe/Chétiflor/Mystherbe/Chétiflor Nv. 18, 360 ₽ ; inévitable
+adam                dresseur       36,8         bloque  role=R9-2 facing=down sight=3 trainer=route_9_camper_adam  # Campeur, Férosinge* Nv. 20 + Salamèche Nv. 21, 420 ₽ ; couloir haut de la terrasse
+jules               dresseur       35,12        bloque  role=R9-3 facing=down sight=3 trainer=route_9_camper_jules  # Campeur, Rattata + Abo + Sabelette Nv. 19, 380 ₽ ; encoche du muret, garde H2
+zoe                 dresseur       57,19        bloque  role=R9-4 facing=right sight=3 trainer=route_9_lass_zoe  # Jeune Dresseuse, Miaouss Nv. 23, 460 ₽ ; niche du sentier de la montée
+benoit              dresseur       54,31        bloque  role=R9-5 facing=up sight=5 trainer=route_9_hiker_benoit  # Montagnard, Machoc Nv. 20 + Onix Nv. 20, 700 ₽ ; inévitable
+gilles              dresseur       75,18        bloque  role=R9-6 facing=left sight=4 trainer=route_9_hiker_gilles  # Montagnard, Racaillou/Machoc/Racaillou Nv. 20, 700 ₽ ; terrasse est
+noa                 dresseur       38,22        bloque  role=R9-7 facing=left sight=4 trainer=route_9_scout_noa  # Scout, Dardargnan Nv. 19 x2, 228 ₽ ; garde la vallée d'herbes (détour)
+route_9_item_1      objet_visible  32,9         bloque  role=O1 item=super_potion  # couloir haut de la terrasse (récompense)
+route_9_item_2      objet_visible  29,25        bloque  role=O2 item=antidote  # coin ouest de la vallée de Noa
+route_9_item_3      objet_visible  65,20        bloque  role=O3 item=poke_ball qty=2  # fond de la terrasse de Gilles (Poké Ball x2)
+piafabec_1          pokemon        52,25        bloque  shy=fly  # sur le rocher du goulet de Bernard (fuit, rayon 2)
+racaillou_1         pokemon        63,11        bloque  shy=sleep  # endormi contre la falaise, au-dessus du sentier est
+panneau_ouest       panneau        3,21         bloque  # « ROUTE 9 » / « Azuria — Route 10 », lu depuis (3, 22) ↑
+herbes_h1           herbes         17,27        libre   role=H1  # poche du couloir de départ (évitable)
+herbes_h2           herbes         34,14        libre   role=H2  # couloir bas de la terrasse (obligatoire sur ce couloir)
+herbes_h3           herbes         33,22        libre   role=H3  # vallée de Noa (détour)
+herbes_h4           herbes         69,13        libre   role=H4  # flanc est (obligatoire)
+itineraire_bas      itineraire     40,13..16    libre   role=bas   # coupe du couloir bas
+itineraire_haut     itineraire     40,8..11     libre   role=haut  # coupe du couloir haut
+FIN

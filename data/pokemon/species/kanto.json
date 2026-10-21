@@ -316,7 +316,8 @@
 			[1, "absorb"], [1, "poison_powder"], [1, "stun_spore"], [15, "poison_powder"],
 			[17, "stun_spore"], [19, "sleep_powder"], [28, "acid"], [38, "petal_dance"],
 			[52, "solar_beam"]
-		]
+		],
+		"evolutions": [{ "into": "vileplume", "method": "item", "item": "leaf_stone" }]
 	},
 	"mankey": {
 		"dex": 56, "name": "Férosinge", "types": ["fighting"],
@@ -357,7 +358,8 @@
 			[1, "vine_whip"], [1, "growth"], [1, "wrap"], [13, "wrap"], [15, "poison_powder"],
 			[18, "sleep_powder"], [23, "stun_spore"], [29, "acid"], [38, "razor_leaf"],
 			[49, "slam"]
-		]
+		],
+		"evolutions": [{ "into": "victreebel", "method": "item", "item": "leaf_stone" }]
 	},
 	"geodude": {
 		"dex": 74, "name": "Racaillou", "types": ["rock", "ground"],
@@ -431,7 +433,8 @@
 		"learnset": [
 			[1, "tackle"], [17, "water_gun"], [22, "harden"], [27, "recover"], [32, "swift"],
 			[37, "minimize"], [42, "light_screen"], [47, "hydro_pump"]
-		]
+		],
+		"evolutions": [{ "into": "starmie", "method": "item", "item": "water_stone" }]
 	},
 	"starmie": {
 		"dex": 121, "name": "Staross", "types": ["water", "psychic"],

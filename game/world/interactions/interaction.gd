@@ -16,7 +16,12 @@ extends RefCounted
 ## Verbe du bouton contextuel : Parler / Examiner / Observer / Rencontrer / Prendre
 ## ([constant Kind.TAKE] : objet visible au sol, jalon 8 §2.3, porté par un PNJ). Nouvelles
 ## valeurs en fin d'enum (les scripts d'outil écrivent les valeurs dans les cartes).
-enum Kind { TALK, EXAMINE, OBSERVE, MEET, TAKE }
+## [constant Kind.OPEN] (« Ouvrir », passe systèmes 2 §2.10) : porte à carte ([KeyDoor]) ; ne joue
+## pas de dialogue, le contrôleur d'interactions signale la porte et [KeyDoorDirector] répond.
+## [constant Kind.SURF] (« Surfer », §2.5) et [constant Kind.FISH] (« Pêcher », S2C-bis) : cibles
+## de **terrain** (une case d'eau, sans entité), proposées par [member
+## InteractionController.terrain_target] ; pas de dialogue, le contrôleur signale la demande.
+enum Kind { TALK, EXAMINE, OBSERVE, MEET, TAKE, OPEN, SURF, FISH }
 
 var kind: Kind = Kind.EXAMINE
 var cell: Vector2i = Vector2i.ZERO
@@ -48,9 +53,12 @@ func _init(
 
 
 ## Orientation nulle ou cardinale ; dialogue renseigné, sauf MEET : pas de dialogue, mais
-## une [member source] (le PNJ rencontré) obligatoire.
+## une [member source] (le PNJ rencontré) obligatoire ; SURF et FISH (cibles de terrain) n'en
+## ont pas.
 func is_valid() -> bool:
-	if kind == Kind.MEET:
+	if kind == Kind.SURF or kind == Kind.FISH:
+		pass
+	elif kind == Kind.MEET:
 		if source == null or not dialogue_id.is_empty():
 			return false
 	elif dialogue_id.is_empty():
@@ -79,6 +87,12 @@ static func kind_name(value: Kind) -> StringName:
 			return &"meet"
 		Kind.TAKE:
 			return &"take"
+		Kind.OPEN:
+			return &"open"
+		Kind.SURF:
+			return &"surf"
+		Kind.FISH:
+			return &"fish"
 	return &"examine"
 
 
@@ -95,6 +109,12 @@ static func kind_from_name(value: String) -> int:
 			return Kind.MEET
 		"take":
 			return Kind.TAKE
+		"open":
+			return Kind.OPEN
+		"surf":
+			return Kind.SURF
+		"fish":
+			return Kind.FISH
 	return -1
 
 

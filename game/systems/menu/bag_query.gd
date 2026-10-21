@@ -45,6 +45,8 @@ const REASONS: Dictionary[ItemUse.Check, String] = {
 	ItemUse.Check.WRONG_CONTEXT: "Pas maintenant",
 	ItemUse.Check.NOT_USABLE: "Sans effet",
 	ItemUse.Check.NO_EFFECT: "Sans effet",
+	# Jalon 20 (annexe A, n° 166) : un Rappel sur un Pokémon debout.
+	ItemUse.Check.NOT_FAINTED: "Pas K.O.",
 }
 ## Phrase de refus quand on touche un Pokémon qui ne peut pas recevoir l'objet.
 const REFUSAL_FORMATS: Dictionary[ItemUse.Check, String] = {
@@ -54,6 +56,8 @@ const REFUSAL_FORMATS: Dictionary[ItemUse.Check, String] = {
 	ItemUse.Check.WRONG_CONTEXT: "Pas maintenant.",
 	ItemUse.Check.NOT_USABLE: "Cela n'aurait aucun effet sur %s.",
 	ItemUse.Check.NO_EFFECT: "Cela n'aurait aucun effet sur %s.",
+	# Jalon 20 (annexe A, n° 165) : texte « aucun effet » existant.
+	ItemUse.Check.NOT_FAINTED: "Cela n'aurait aucun effet sur %s.",
 }
 ## Résultat d'un soin : « +20 PV — Salamèche 33/51 ».
 const RESULT_FORMAT: String = "+%d PV — %s %d/%d"
@@ -67,6 +71,8 @@ const STATUS_CURED_FORMATS: Dictionary[StringName, Array] = {
 	StatusRules.BURN: ["%s n'est plus brûlé.", "%s n'est plus brûlée."],
 	StatusRules.FREEZE: ["%s n'est plus gelé !", "%s n'est plus gelée !"],
 }
+## Résultat d'un Rappel (jalon 20, annexe A, n° 164).
+const REVIVED_FORMAT: String = "%s reprend connaissance !"
 ## Sac sans objet (Q-2) ; depuis la fiche Équipe, aucun objet à donner.
 const EMPTY_TEXT: String = "Ton Sac est vide."
 const EMPTY_TEAM_TEXT: String = "Aucun soin dans ton Sac."
@@ -219,6 +225,8 @@ static func result_text(result: ItemUseResult, pokemon_name: String) -> String:
 		return ""
 	if not result.is_ok():
 		return reason_text(result.check)
+	if result.revived:
+		return REVIVED_FORMAT % pokemon_name
 	if result.amount() == 0 and STATUS_CURED_FORMATS.has(result.status_cured):
 		var formats: Array = STATUS_CURED_FORMATS[result.status_cured]
 		var female := result.gender == Pokemon.Gender.FEMALE

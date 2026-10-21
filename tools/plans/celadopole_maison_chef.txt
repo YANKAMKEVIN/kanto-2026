@@ -1,0 +1,29 @@
+# Maison du chef de Céladopole (celadon_chief_house) — grille fonctionnelle (jalon 20, dossier 23 ; préparée le 2026-10-14).
+# Maison du chef (RB : « Chief house »). Deux habitants et leur salon. Rôle exact à trancher (voir le compte rendu).
+# Enveloppe réutilisée 15 × 10 (même coque que les maisons d'Azuria et d'Argenta).
+#
+# Légende :
+#   K mur (bloqué)   . sol (praticable)   X sortie (praticable : paillasson, PUSH ↓)
+#   B comptoir (bloqué)   t table   c canapé   p plante   e étagère
+
+PRATICABLES .X
+
+GRILLE 15 10
+00 KKKKKKKKKKKKKKK
+01 KKKKKKKKKKKKKKK
+02 KKKKKKKKKKKKKKK
+03 K.ccc......eeeK
+04 K........ttt..K
+05 K........ttt..K
+06 K.............K
+07 Kp...........pK
+08 KKKKKKXXXKKKKKK
+09 KKKKKKKKKKKKKKK
+FIN
+
+POSITIONS
+sortie               warp           6..8,8        libre   to=celadon_city spawn=from_chief  # PUSH ↓ → celadon_city, from_chief
+entree               spawn          7,8           libre    # spawn « entrance », tourné ↑
+le_chef              pnj            6,5           bloque  role=P1 facing=right  # le chef de la maison ; propos à rédiger (hors lot de textes §20)
+habitante            pnj            12,7          bloque  role=P2 facing=left  # habitante
+FIN

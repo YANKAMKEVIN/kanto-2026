@@ -15,6 +15,8 @@ extends RefCounted
 ## - **Super Bonbon** ([constant ItemData.FIELD_USE_RARE_CANDY], jalon 14, T18b) : partout en
 ##   exploration ; le choix du Pokémon (niveau 100, K.O.) est une autre règle ([RareCandy]).
 ## - Un objet sans [member ItemData.field_use] (ou absent) : NOT_FIELD_USE (pas de UTILISER).
+## - Passe systèmes 2 : un objet clé à [member ItemData.key_use] (Bicyclette, Poké Flûte) :
+##   OK partout, sans cible ; son directeur dit les refus.
 
 enum Check { OK, NOT_HERE, NOT_FIELD_USE }
 
@@ -22,6 +24,10 @@ enum Check { OK, NOT_HERE, NOT_FIELD_USE }
 ## Peut-on utiliser [param item] sur la carte [param map_id] ? [param caves] : les grottes de
 ## Kanto (null = aucune grotte connue).
 static func check(item: ItemData, map_id: StringName, caves: CaveLibrary) -> Check:
+	# Passe systèmes 2 : un objet clé utilisable sert partout ; ses refus (Vélo en intérieur…)
+	# sont ceux de son directeur, avec leurs textes.
+	if item != null and item.has_key_use():
+		return Check.OK
 	if item == null or not item.has_field_use():
 		return Check.NOT_FIELD_USE
 	match item.field_use:
@@ -49,5 +55,7 @@ static func escape_target(map_id: StringName, caves: CaveLibrary,
 ## Vrai si [param item] s'utilise sans choisir de Pokémon (la Corde Sortie) : UTILISER agit
 ## directement, sans le choix du Pokémon.
 static func is_targetless(item: ItemData) -> bool:
+	if item != null and item.has_key_use():
+		return true
 	return item != null and item.has_field_use() \
 		and item.field_use == ItemData.FIELD_USE_ESCAPE_ROPE

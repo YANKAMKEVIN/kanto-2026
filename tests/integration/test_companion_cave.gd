@@ -217,5 +217,8 @@ func test_reduce_motion_freezes_the_glows() -> void:
 	assert_false(LightGlow.is_reduce_motion())
 	assert_true(menu.change_setting(GameSettings.REDUCE_MOTION, true))
 	assert_true(LightGlow.is_reduce_motion(), "vacillement coupé")
+	# Brume de la Tour Pokémon (jalon 19, T10) : même réglage, par `SettingsApplier`.
+	assert_true(MistLayer.is_reduce_motion(), "brume cachée")
 	assert_true(menu.change_setting(GameSettings.REDUCE_MOTION, false))
 	assert_false(LightGlow.is_reduce_motion(), "vacillement rendu")
+	assert_false(MistLayer.is_reduce_motion(), "brume rendue")

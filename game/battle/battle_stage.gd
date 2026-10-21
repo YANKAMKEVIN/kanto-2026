@@ -78,6 +78,9 @@ const APPEAR_DROP: float = 24.0
 const WILD_CAMERA_DURATION: float = 0.30
 const WILD_APPEAR_DURATION: float = 0.30
 const WILD_APPEAR_DROP: float = 40.0
+## Entrée « légendaire » d'une rencontre fixe (passe systèmes 2, T30 ; `jalon-24.md` §2.7 :
+## ≈ 1,5 × plus lente [D]) : facteur des durées de [method play_wild_intro].
+const LEGENDARY_INTRO_SLOWDOWN: float = 1.5
 const PARTNER_ENTER_DURATION: float = 0.32
 ## Animations des temps (dossier 05 §4, §9) : élan physique, pulsation spéciale, bond de
 ## statut, coup (clignotement + tremblement), K.O. (chute + fondu).
@@ -458,7 +461,10 @@ func show_pokemon(side: BattleEvent.SideId, species: StringName) -> void:
 ## puis le sauvage [param foe_species] apparaît à sa place de combat (bond depuis le bas +
 ## fondu). Le cadrage vise [param origin_world] (l'herbe qui bouge) et le joueur. Le partenaire
 ## entre ensuite par [method play_partner_enter]. Refusé (erreur) si un combat est déjà affiché.
-func play_wild_intro(camera: Camera2D, foe_species: StringName, origin_world: Vector2) -> void:
+## [param slowdown] (T30) multiplie les durées du recadrage et de l'apparition
+## ([constant LEGENDARY_INTRO_SLOWDOWN] pour une rencontre légendaire).
+func play_wild_intro(camera: Camera2D, foe_species: StringName, origin_world: Vector2,
+		slowdown: float = 1.0) -> void:
 	if _active:
 		push_error("BattleStage : un combat est déjà affiché")
 		return
@@ -488,10 +494,10 @@ func play_wild_intro(camera: Camera2D, foe_species: StringName, origin_world: Ve
 	# le monde se floute et se fond dans le décor.
 	var tween := _new_tween()
 	tween.tween_method(_set_recompose, 0.0, 1.0,
-		WILD_DECOR_DURATION if _decor != null else WILD_CAMERA_DURATION)
+		(WILD_DECOR_DURATION if _decor != null else WILD_CAMERA_DURATION) * slowdown)
 	await _play(tween)
 	if _active:
-		await _appear(BattleEvent.SideId.FOE, WILD_APPEAR_DROP, WILD_APPEAR_DURATION)
+		await _appear(BattleEvent.SideId.FOE, WILD_APPEAR_DROP, WILD_APPEAR_DURATION * slowdown)
 
 
 ## Coroutine (~0,3 s) : le partenaire [param player_species] entre en courant depuis le bord

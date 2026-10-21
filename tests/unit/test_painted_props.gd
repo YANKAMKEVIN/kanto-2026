@@ -65,8 +65,36 @@ const TRAVERSABLE: Array[StringName] = [&"relief_escalier_01", &"ground_hautes_h
 	&"relief_bastingage_01", &"relief_bastingage_02", &"relief_bastingage_sud_01",
 	&"relief_bastingage_est_01", &"relief_bastingage_angle_ne_01",
 	&"relief_bastingage_angle_se_01", &"bldg_ss_anne_superstructure_01",
-	&"int_barriere_active_01", &"int_barriere_coupee_01"]
+	&"int_barriere_active_01", &"int_barriere_coupee_01",
+	# Série 21 (J18) : lointains, flaque, parois de la Grotte Sombre, murs et escalier de la Tour.
+	&"bldg_centrale_lointaine_01", &"prop_tour_lointaine_01", &"prop_flaque_grotte_01",
+	&"relief_paroi_grotte_sombre_01", &"relief_paroi_grotte_sombre_02",
+	&"relief_paroi_grotte_sombre_03", &"relief_paroi_grotte_sombre_04",
+	&"relief_paroi_grotte_sombre_05", &"relief_paroi_grotte_sombre_06",
+	&"relief_paroi_fendue_01", &"relief_mur_tour_01", &"relief_mur_tour_02",
+	&"relief_mur_tour_03", &"relief_mur_tour_04", &"relief_mur_tour_05",
+	&"relief_escalier_tour_01",
+	# Série 22 bis : modules du repaire et du Casino (cases déjà solides ou warps de la carte).
+	&"relief_mur_repaire_01", &"relief_mur_repaire_02", &"relief_mur_repaire_03",
+	&"relief_mur_repaire_04", &"relief_mur_repaire_05", &"relief_mur_casino_01",
+	&"relief_mur_casino_02", &"relief_mur_casino_03", &"relief_mur_casino_04",
+	&"relief_mur_casino_05", &"int_escalier_repaire_monte_01", &"int_escalier_repaire_descend_01",
+	&"decal_fleche_repaire_01", &"decal_fleche_repaire_01_haut", &"decal_fleche_repaire_01_bas",
+	&"decal_fleche_repaire_01_gauche", &"decal_arret_repaire_01",
+	&"int_porte_ascenseur_repaire_01", &"hideout_office_door", &"game_corner_wall",
+	&"int_affiche_casino_01"]
 const GROUND_LAYER: Array[StringName] = [
+	# Série 22 bis : modules du repaire et du Casino (murs, escaliers, décalcomanies, portes).
+	&"relief_mur_repaire_01", &"relief_mur_repaire_02", &"relief_mur_repaire_03",
+	&"relief_mur_repaire_04", &"relief_mur_repaire_05", &"relief_mur_casino_01",
+	&"relief_mur_casino_02", &"relief_mur_casino_03", &"relief_mur_casino_04",
+	&"relief_mur_casino_05", &"int_escalier_repaire_monte_01", &"int_escalier_repaire_descend_01",
+	&"decal_fleche_repaire_01", &"decal_fleche_repaire_01_haut", &"decal_fleche_repaire_01_bas",
+	&"decal_fleche_repaire_01_gauche", &"decal_arret_repaire_01",
+	&"int_porte_ascenseur_repaire_01", &"hideout_office_door", &"game_corner_wall",
+	&"prop_flaque_grotte_01", &"relief_mur_tour_01", &"relief_mur_tour_02",
+	&"relief_mur_tour_03", &"relief_mur_tour_04", &"relief_mur_tour_05",
+	&"relief_escalier_tour_01",
 	&"relief_falaise_01", &"relief_escalier_01", &"prop_massif_01", &"relief_muret_01",
 	&"relief_escalier_ville_01",
 	&"ground_champ_01", &"prop_ponton_01", &"relief_escalier_bois_01", &"relief_rebord_01",
@@ -111,7 +139,9 @@ const GROUND_LAYER: Array[StringName] = [
 const SHADOWLESS_BUILDINGS: Array[String] = ["bldg_poste_foret_nord_01",
 	"bldg_ss_anne_proue_01", "bldg_ss_anne_milieu_01", "bldg_ss_anne_poupe_01",
 	# Série 18 : la superstructure du pont extérieur (sur le pont, sans soleil rasant).
-	"bldg_ss_anne_superstructure_01"]
+	"bldg_ss_anne_superstructure_01",
+	# Série 21 (J18) : la centrale lointaine de la Route 10.
+	"bldg_centrale_lointaine_01"]
 ## Objets de Bourg Palette, de ses intérieurs et de la Route 1 (DA.0) : tous au catalogue,
 ## chacun avec sa règle et sa scène (assets des scènes du prototype validé).
 const DA0_OBJECTS: Array[StringName] = [

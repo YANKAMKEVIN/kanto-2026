@@ -1,0 +1,51 @@
+{
+	"pokemon_house_kid": {
+		"speaker": "Enfant",
+		"variants": [
+			{
+				"unless": ["pokemon_house_kid_talked"], "set": ["pokemon_house_kid_talked"],
+				"pages": [
+					"Papy Fuji est monté à la Tour…",
+					"Il n'est pas redescendu.\nIl revient toujours, d'habitude."
+				]
+			},
+			{
+				"pages": ["Ces Pokémon n'avaient plus de Dresseur.\nMaintenant, ils nous ont nous."]
+			}
+		]
+	},
+	"pokemon_house_man": {
+		"speaker": "Homme",
+		"pages": [
+			"M. Fuji m'a dit avoir vu des gens\nmonter à la Tour, la nuit.",
+			"Pas des visiteurs. Il est allé voir.\nDepuis…"
+		]
+	},
+	"pokemon_house_girl": {
+		"speaker": "Fillette",
+		"pages": [
+			"Osselait attend sa maman.",
+			"On dit qu'elle s'est fait attraper\nen protégeant son petit…",
+			"par des gens qui ne venaient pas\nprier."
+		]
+	},
+	"lavender_center_gentleman": {
+		"speaker": "Gentleman",
+		"pages": [
+			"Des hommes en noir, j'en ai vu traîner\nautour du Casino de Céladopole.",
+			"Toujours là où il y a de l'argent,\nces gens-là."
+		]
+	},
+	"lavender_house_1_old_lady": {
+		"speaker": "Vieille dame",
+		"pages": ["Mon Roucool chantait tous les matins\nà la fenêtre.", "Je laisse toujours la fenêtre\nouverte."]
+	},
+	"lavender_house_2_wife": {
+		"speaker": "Habitante",
+		"pages": ["On monte des fleurs à la Tour\nchaque semaine.", "Ça nous fait du bien, à nous aussi."]
+	},
+	"lavender_house_2_husband": {
+		"speaker": "Habitant",
+		"pages": ["On monte des fleurs à la Tour\nchaque semaine.", "Ça nous fait du bien, à nous aussi."]
+	}
+}
