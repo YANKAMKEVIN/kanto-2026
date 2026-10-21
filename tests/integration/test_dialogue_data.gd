@@ -951,6 +951,8 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		# Jalon 21 (T13, T14) : Fuji remercie au 7F, remise de la Poké Flûte à la maison.
 		&"tower_7f_fuji_thanks", &"fuji_flute_give", &"fuji_flute_received",
 		&"fuji_flute_explain",
+		# Jalon 21 (T12) : la variante A du 6F (Ossatueur retenu, son âme, la paix).
+		&"tower_6f_marowak_held", &"tower_6f_marowak_soul", &"tower_6f_marowak_peace",
 		# Jalon 19 (T17) : le rival n° 5 (joué par sa scène).
 		&"rival_tower_intro", &"rival_tower_lost", &"rival_tower_resume", &"rival_tower_won",
 		# Jalon 19 (T18) : la zone purifiée du 5F.
@@ -1123,6 +1125,8 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		&"tower_ghost_met",
 		# Jalon 21 (T13, T14) : Fuji sauvé, Poké Flûte reçue.
 		&"fuji_rescued", &"got_poke_flute",
+		# Jalon 21 (T12) : Ossatueur apaisé (victoire de la variante A du 6F), brume levée.
+		&"ghost_marowak_calmed", &"tower_6f_mist_lifted",
 		# Jalon 20 (T25) : boisson donnée, les quatre postes de Safrania s'ouvrent.
 		&"saffron_gates_open",
 		# Jalon 20 (T12) : Évoli reçu (étape « gift_pokemon »).

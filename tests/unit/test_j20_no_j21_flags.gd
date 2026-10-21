@@ -28,7 +28,13 @@ const J20_FILES: Array[String] = [
 ## Jalon 21 (T12 à T14) : fichiers qui posent légitimement des drapeaux du J21 (scènes, départs).
 const J21_FILES: Array[String] = ["j21_tower.json", "tower_marowak_qa.json",
 	"tower_marowak_noscope.json", "tower_marowak_weak.json", "tower_7f_qa.json",
-	"fuji_flute_qa.json", "j21_full_qa.json"]
+	"fuji_flute_qa.json", "j21_full_qa.json",
+	# Jalon 21 (T21, T22) : départs de la Route 12 et du Ronflex 16.
+	"route_12_qa.json", "snorlax_16_qa.json"]
+## Jalon 21 (T12, `jalon-21.md` §2.7) : seule exception dans un fichier du J19, la variante A de
+## `tower_6f_ghost` (révélation, `if_items`), ajoutée en tête de `pokemon_tower_floors.json`.
+const J21_VARIANT_FILE: String = "pokemon_tower_floors.json"
+const J21_VARIANT_SCENE: String = "tower_6f_ghost"
 
 
 func _is_j21(flag: String) -> bool:
@@ -89,11 +95,26 @@ func test_no_data_sets_a_flag_of_the_jalon_21() -> void:
 			if J21_FILES.has(file):
 				continue  # Jalon 21 : ces fichiers sont du J21
 			files += 1
-			_collect_set(_parse(dir + file), file, set_flags)
+			var parsed: Variant = _parse(dir + file)
+			if file == J21_VARIANT_FILE and dir == "res://data/cutscenes/":
+				parsed = _without_j21_variant(parsed)
+			_collect_set(parsed, file, set_flags)
 	assert_gt(files, 100, "les quatre dossiers sont lus")
 	assert_gt(set_flags.size(), 100, "des drapeaux sont bien posés")
 	for entry: String in set_flags:
 		assert_false(_is_j21(entry.get_slice(" → ", 1)), "drapeau du J21 posé : %s" % entry)
+
+
+## Jalon 21 : `tower_6f_ghost` sans sa variante A (la seule qui a des `if_items`).
+func _without_j21_variant(parsed: Variant) -> Variant:
+	var scene: Dictionary = (parsed as Dictionary)[J21_VARIANT_SCENE]
+	var kept: Array = []
+	for variant: Variant in scene["variants"]:
+		if not (variant as Dictionary).has("if_items"):
+			kept.append(variant)
+	assert_eq(kept.size(), (scene["variants"] as Array).size() - 1, "une variante A du J21")
+	scene["variants"] = kept
+	return parsed
 
 
 func test_the_jalon_20_data_reads_no_flag_of_the_jalon_21_nor_a_scope_flag() -> void:

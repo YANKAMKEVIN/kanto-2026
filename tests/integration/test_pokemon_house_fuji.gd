@@ -154,10 +154,28 @@ func test_flute_scene_exists_and_is_gated() -> void:
 	assert_not_null(scene)
 	assert_eq(scene.variants.size(), 1)
 	assert_eq(scene.variants[0].if_flags, [&"fuji_rescued"] as Array[StringName])
-	assert_eq(scene.variants[0].unless_flags, [&"got_poke_flute"] as Array[StringName])
-	assert_null(scene.pick(_flags([])), "sans sauvetage : rien")
-	assert_null(scene.pick(_flags([&"fuji_rescued", &"got_poke_flute"])), "déjà reçue : rien")
-	assert_not_null(scene.pick(_flags([&"fuji_rescued"])))
+	# Jalon 21 (plan §2.9, T12-T14) : la POSSESSION fait foi (« unless_items »), pas le drapeau ;
+	# `got_poke_flute` est levé par l'étape `give … set` elle-même.
+	assert_eq(scene.variants[0].unless_flags, [] as Array[StringName])
+	assert_eq(scene.variants[0].unless_items, [&"poke_flute"] as Array[StringName])
+	var give_step: CutsceneStep = null
+	for step: CutsceneStep in scene.variants[0].steps:
+		if step.kind == CutsceneStep.Kind.GIVE:
+			give_step = step
+	assert_not_null(give_step, "étape give")
+	if give_step != null:
+		assert_eq(give_step.flags, [&"got_poke_flute"] as Array[StringName], "give + set")
+	var empty := Bag.new()
+	var with_flute := Bag.new()
+	with_flute.add(&"poke_flute")
+	assert_null(scene.pick(_flags([]), empty), "sans sauvetage : rien")
+	assert_null(scene.pick(_flags([&"fuji_rescued", &"got_poke_flute"]), with_flute),
+		"déjà reçue : rien")
+	assert_null(scene.pick(_flags([&"fuji_rescued"]), with_flute),
+		"Flûte déjà dans le Sac sans drapeau : rien")
+	assert_not_null(scene.pick(_flags([&"fuji_rescued", &"got_poke_flute"]), empty),
+		"drapeau sans Flûte : remise")
+	assert_not_null(scene.pick(_flags([&"fuji_rescued"]), empty))
 
 
 # --- Lavanville après le sauvetage (§15.5) ---------------------------------------------------

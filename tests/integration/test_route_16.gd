@@ -180,6 +180,37 @@ func test_cells_are_free_after_snorlax_is_done() -> void:
 	assert_true(gate.visible, "Ronflex revient sans le drapeau (sauvegarde sans _done)")
 
 
+## Jalon 21 (§5 n° 12, §2.14 n° 7, 8) : les deux Ronflex sont indépendants. Battre ou capturer
+## celui de la Route 12 ne libère pas celui de la Route 16, et l'inverse.
+func test_the_two_snorlax_are_independent() -> void:
+	var gate := _map.find_child("Ronflex", true, false) as FlagGate
+	assert_not_null(gate)
+	_map.apply_flag_gates(_flags([&"snorlax_route_12_done", &"snorlax_route_12_caught",
+		&"snorlax_route_12_woken"]))
+	assert_true(gate.visible, "Route 16 : Ronflex toujours là")
+	for cell: Vector2i in SNORLAX:
+		assert_true(_grid.is_occupied(cell), "Route 16 : occupé %s" % cell)
+	var twelve := (load("res://game/world/maps/route_12.tscn") as PackedScene).instantiate() \
+		as GameMap
+	add_child_autofree(twelve)
+	var other := twelve.find_child("Ronflex", true, false) as FlagGate
+	assert_not_null(other)
+	twelve.apply_flag_gates(_flags([DONE, &"snorlax_route_16_caught", &"snorlax_route_16_woken"]))
+	assert_true(other.visible, "Route 12 : Ronflex toujours là")
+	for cell: Vector2i in other.blocking_cells:
+		assert_true(twelve.get_grid().is_occupied(cell), "Route 12 : occupé %s" % cell)
+	# Chaque scène ne lit et n'écrit que ses propres drapeaux.
+	var cutscenes := CutsceneLibrary.new()
+	assert_true(cutscenes.load_dir())
+	var flags := _flags([&"snorlax_route_12_done"])
+	assert_not_null(cutscenes.get_cutscene(&"snorlax_route_16_wake").pick(flags),
+		"Route 16 : réveil encore possible")
+	flags = _flags([DONE])
+	assert_not_null(cutscenes.get_cutscene(&"snorlax_route_12_wake").pick(flags),
+		"Route 12 : réveil encore possible")
+	_asleep()
+
+
 func test_snorlax_node_gate_and_point() -> void:
 	var gate := _map.find_child("Ronflex", true, false) as FlagGate
 	assert_not_null(gate, "FlagGate « Ronflex »")
@@ -323,22 +354,29 @@ func test_snorlax_dialogue_follows_the_plan_table() -> void:
 		assert_eq(v[i].choice.confirm_cutscene, &"snorlax_route_16_wake")
 	assert_eq(v[2].unless_flags, [&"snorlax_route_16_seen"] as Array[StringName])
 	assert_eq(v[2].set_flags, [&"snorlax_route_16_seen"] as Array[StringName])
-	# T-6 / T-7 : mot pour mot ceux de `route_11_snorlax` (J17).
-	var old := dialogues.get_dialogue(&"route_11_snorlax")
-	for pair: Array in [[2, 0], [3, 1]]:
+	# T-6 / T-7 : mot pour mot ceux du J17, repris par `snorlax_route_12` (M-3 : `route_11_snorlax`
+	# est retiré avec le Ronflex de la Route 11 ; jalon 21, T20), variantes 3 et 4.
+	var old := dialogues.get_dialogue(&"snorlax_route_12")
+	assert_false(dialogues.has_dialogue(&"route_11_snorlax"), "M-3 : repris par la Route 12")
+	for pair: Array in [[2, 2], [3, 3]]:
 		var new_pages: Array[String] = []
 		var old_pages: Array[String] = []
 		for page: DialoguePage in v[pair[0]].pages:
 			new_pages.append(page.text)
 		for page: DialoguePage in old.variants[pair[1]].pages:
 			old_pages.append(page.text)
-		assert_eq(new_pages, old_pages, "T-%d" % (6 + pair[1]))
+		assert_eq(new_pages, old_pages, "T-%d" % (4 + pair[1]))
+	# Jalon 21 (T20, T22) : les répliques du réveil sont communes aux deux Ronflex
+	# (`j21_snorlax.json`, §15.6.3, §15.7.2 à §15.7.4) ; les copies `_16` sont supprimées.
+	for gone: StringName in [&"snorlax_flute_played_16", &"snorlax_wakes_16", &"snorlax_calms_16",
+			&"snorlax_sleeps_16"]:
+		assert_false(dialogues.has_dialogue(gone), "%s : réplique commune" % gone)
 	var texts := {
-		&"snorlax_flute_played_16": ["{player} joue de la Poké Flûte."],
-		&"snorlax_wakes_16": ["Ronflex se réveille !", "Il attaque, de très mauvaise humeur !"],
-		&"snorlax_calms_16": ["Ronflex se calme…",
+		&"snorlax_flute_played": ["{player} joue de la Poké Flûte."],
+		&"snorlax_wakes": ["Ronflex se réveille !", "Il attaque, de très mauvaise humeur !"],
+		&"snorlax_calms": ["Ronflex se calme…",
 			"Avec un grand bâillement, il retourne dans les montagnes."],
-		&"snorlax_sleeps_16": ["Ronflex bâille…", "et se rendort aussitôt."],
+		&"snorlax_sleeps": ["Ronflex bâille…", "et se rendort aussitôt."],
 	}
 	for id: StringName in texts:
 		var dialogue := dialogues.get_dialogue(id)
@@ -360,22 +398,30 @@ func test_wake_cutscene_uses_existing_steps_only() -> void:
 	var kinds: Array[CutsceneStep.Kind] = []
 	for step: CutsceneStep in variant.steps:
 		kinds.append(step.kind)
-	assert_eq(kinds, [CutsceneStep.Kind.DIALOGUE, CutsceneStep.Kind.DIALOGUE,
+	# Jalon 21 (§2.10, T19) : notes de la Flûte, saut et « ! » de l'acteur de décor `Snorlax`,
+	# `clear` de `_awake` dans les quatre issues ; répliques communes aux deux Ronflex.
+	assert_eq(kinds, [CutsceneStep.Kind.FLUTE, CutsceneStep.Kind.DIALOGUE,
+		CutsceneStep.Kind.REACT, CutsceneStep.Kind.EMOTE, CutsceneStep.Kind.DIALOGUE,
 		CutsceneStep.Kind.SET_FLAGS, CutsceneStep.Kind.WILD_BATTLE, CutsceneStep.Kind.DIALOGUE,
 		CutsceneStep.Kind.DIALOGUE] as Array[CutsceneStep.Kind])
 	var steps := variant.steps
-	assert_eq(steps[0].dialogue_id, &"snorlax_flute_played_16")
-	assert_eq(steps[1].dialogue_id, &"snorlax_wakes_16")
-	assert_eq(steps[2].flags, [&"snorlax_route_16_awake", &"snorlax_route_16_woken"] as Array[StringName])
-	assert_eq(steps[3].species, &"snorlax")
-	assert_eq(steps[3].level, 30)
-	assert_eq(steps[3].win_flags, [DONE] as Array[StringName])
-	assert_eq(steps[3].catch_flags, [DONE, &"snorlax_route_16_caught"] as Array[StringName])
-	assert_eq(steps[4].dialogue_id, &"snorlax_calms_16")
-	assert_eq(steps[4].if_flags, [DONE] as Array[StringName])
-	assert_eq(steps[4].unless_flags, [&"snorlax_route_16_caught"] as Array[StringName])
-	assert_eq(steps[5].dialogue_id, &"snorlax_sleeps_16")
-	assert_eq(steps[5].unless_flags, [DONE] as Array[StringName])
+	assert_eq(steps[1].dialogue_id, &"snorlax_flute_played")
+	assert_eq(steps[2].actor, &"Snorlax")
+	assert_eq(steps[3].actor, &"Snorlax")
+	assert_eq(steps[3].emote, &"exclamation")
+	assert_eq(steps[4].dialogue_id, &"snorlax_wakes")
+	assert_eq(steps[5].flags, [&"snorlax_route_16_awake", &"snorlax_route_16_woken"] as Array[StringName])
+	var battle := steps[6]
+	assert_eq(battle.species, &"snorlax")
+	assert_eq(battle.level, 30)
+	assert_eq(battle.win_flags, [DONE] as Array[StringName])
+	assert_eq(battle.catch_flags, [DONE, &"snorlax_route_16_caught"] as Array[StringName])
+	assert_eq(battle.clear_flags, [&"snorlax_route_16_awake"] as Array[StringName])
+	assert_eq(steps[7].dialogue_id, &"snorlax_calms")
+	assert_eq(steps[7].if_flags, [DONE] as Array[StringName])
+	assert_eq(steps[7].unless_flags, [&"snorlax_route_16_caught"] as Array[StringName])
+	assert_eq(steps[8].dialogue_id, &"snorlax_sleeps")
+	assert_eq(steps[8].unless_flags, [DONE] as Array[StringName])
 	# Titre de zone : drapeau posé une seule fois.
 	var visited := cutscenes.get_cutscene(&"route_16_visited")
 	assert_not_null(visited)
