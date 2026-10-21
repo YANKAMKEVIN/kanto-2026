@@ -104,22 +104,20 @@ Les autres cartes restent en coque.
   `fire_stone`, `water_stone`, `thunder_stone`, `leaf_stone`, `fresh_water`, `soda_pop`,
   `lemonade`, `tm13`, `tm21`, `lift_key`, `silph_scope`. Les 9 icônes manquantes d'avant le J20
   (`burn_heal`, `ice_heal`, `hm01`, `tm01`, `tm11`, `tm19`, `tm24`, `tm28`, `tm34`) peuvent partir
-  dans la même passe (même gabarit) : **Q-3**.
+  dans la même passe (même gabarit) : **oui** (Q-3, Kevin).
 - **Planche d'exploration d'Évoli** (marche 4 × 4 + attente, modèle des 26 compagnons de
   `data/pokemon/companions.json`) : le compagnon Évoli en dépend (`jalon-20.md` T22).
 - **Dos de Voltali et Pyroli** : refusés par Codex au J20 (`DOS_PYROLI_r3.txt` prêt). Ils relèvent du
-  **lot des dos de combat** (inventaire, lot 2) plutôt que de ce lot ; à y déplacer si Kevin
-  confirme (**Q-4**).
+  **lot des dos de combat** (inventaire, lot 2) plutôt que de ce lot ; déplacés vers ce lot
+  (Q-4, Kevin, 2026-10-21).
 
 ## Questions pour Kevin
 
 - **Q-1 — TRANCHÉE par Kevin (2026-10-21)** : intérieurs générés directement d'après les grilles
   et les coques existantes ; **pas de planche d'ambiance** à valider avant.
 - **Q-2 — TRANCHÉE par Kevin (2026-10-21)** : repaire et Casino **en modules** (point technique du §B).
-- **Q-3 — [D] oui (2026-10-21, lancement de la série)** : les 9 icônes d'avant le J20 partent dans
-  la même passe (29 icônes).
-- **Q-4 — [D] oui (2026-10-21)** : dos de Voltali et de Pyroli déplacés vers le **lot des dos de
-  combat** (inventaire, lot 2) ; rien dans ce lot.
+- **Q-3 — TRANCHÉE par Kevin (2026-10-21)** : oui, les 9 icônes d'avant le J20 partent dans la même passe.
+- **Q-4 — TRANCHÉE par Kevin (2026-10-21)** : oui, les dos de Voltali et Pyroli passent au lot des dos de combat.
 
 ## Contrôles d'acceptation
 
@@ -130,10 +128,3 @@ Les autres cartes restent en coque.
   magasin, de l'Arène, du Casino et du B2F du repaire à l'intégration.
 - Le contrôle de l'inventaire (`inventaire-art.md`, commandes) ne signale plus aucune façade ni
   intérieur de Céladopole.
-
-## Validation
-
-- **2026-10-21 : planches de contact validées par Kevin** (« je valide »), telles quelles. Reportés à la
-  phase DA (règle 3) : canette `soda_pop` proche d'une marque (r2 possible), 4F recoloré plus olive
-  qu'ambre (conditionnel `INT_CELADON_DEPT_4F_COQUE` prêt), caisse du repaire à l'allure de coffre.
-  Évoli compagnon : marche refusée par Codex (2 essais sans jointe), repli app ChatGPT par Kevin.
