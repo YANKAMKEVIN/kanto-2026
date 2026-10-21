@@ -104,20 +104,20 @@ Les autres cartes restent en coque.
   `fire_stone`, `water_stone`, `thunder_stone`, `leaf_stone`, `fresh_water`, `soda_pop`,
   `lemonade`, `tm13`, `tm21`, `lift_key`, `silph_scope`. Les 9 icônes manquantes d'avant le J20
   (`burn_heal`, `ice_heal`, `hm01`, `tm01`, `tm11`, `tm19`, `tm24`, `tm28`, `tm34`) peuvent partir
-  dans la même passe (même gabarit) : **Q-3**.
+  dans la même passe (même gabarit) : **oui** (Q-3, Kevin).
 - **Planche d'exploration d'Évoli** (marche 4 × 4 + attente, modèle des 26 compagnons de
   `data/pokemon/companions.json`) : le compagnon Évoli en dépend (`jalon-20.md` T22).
 - **Dos de Voltali et Pyroli** : refusés par Codex au J20 (`DOS_PYROLI_r3.txt` prêt). Ils relèvent du
-  **lot des dos de combat** (inventaire, lot 2) plutôt que de ce lot ; à y déplacer si Kevin
-  confirme (**Q-4**).
+  **lot des dos de combat** (inventaire, lot 2) plutôt que de ce lot ; déplacés vers ce lot
+  (Q-4, Kevin, 2026-10-21).
 
 ## Questions pour Kevin
 
 - **Q-1 — TRANCHÉE par Kevin (2026-10-21)** : intérieurs générés directement d'après les grilles
   et les coques existantes ; **pas de planche d'ambiance** à valider avant.
 - **Q-2 — TRANCHÉE par Kevin (2026-10-21)** : repaire et Casino **en modules** (point technique du §B).
-- **Q-3** : les 9 icônes d'avant le J20 dans la même passe ?
-- **Q-4** : Voltali et Pyroli vers le lot des dos ?
+- **Q-3 — TRANCHÉE par Kevin (2026-10-21)** : oui, les 9 icônes d'avant le J20 partent dans la même passe.
+- **Q-4 — TRANCHÉE par Kevin (2026-10-21)** : oui, les dos de Voltali et Pyroli passent au lot des dos de combat.
 
 ## Contrôles d'acceptation
 
