@@ -62,6 +62,8 @@ const MAP_IDS: Array[StringName] = [
 	# Jalon 20 (T20) : le Casino, le repaire Rocket (B1F à B4F) et sa cabine d'ascenseur.
 	&"celadon_game_corner", &"rocket_hideout_b1f", &"rocket_hideout_b2f", &"rocket_hideout_b3f",
 	&"rocket_hideout_b4f", &"rocket_hideout_elevator",
+	# Jalon 21 (T21) : la Route 12 nord et son poste (1F traversant, 2F).
+	&"route_12", &"route_12_gate", &"route_12_gate_2f",
 ]
 ## Cartes dont les passages « à venir » sont comptés dans leur propre test (jalon 18).
 const OWN_COMING_SOON_COUNT: Array[StringName] = [&"lavender_town", &"pokemon_tower_1f"]
@@ -175,8 +177,9 @@ func test_every_coming_soon_warp_returns_to_a_walkable_spawn_of_its_own_map() ->
 	# J16) ; la Grotte Sombre et Lavanville sont reliées à la Route 10, et les passages de
 	# Lavanville et de la Tour sont comptés dans leurs propres tests.
 	# Jalon 20 (T16) : le Casino de Céladopole (2 cases) restait « à venir » jusqu'au T20 (construit).
-	# Jalon 21 (T9a, décision M-3) : bord est de la Route 11, « Route 12 » (deux cases) jusqu'au T21.
-	assert_eq(found, 5, "« SAFRANIA » (2), Safrania (1), Route 12 (2)")
+	# Jalon 21 (T21) : la Route 11 et Lavanville mènent à la vraie Route 12 ; reste son bord sud
+	# « Route 12 » (deux cases, J22).
+	assert_eq(found, 5, "« SAFRANIA » (2), Safrania (1), Route 12 sud (2)")
 
 
 ## Warp de [param map] qui ramène à [param origin] depuis [param arrival] : sur la case

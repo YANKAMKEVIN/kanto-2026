@@ -49,9 +49,7 @@ const GATE_GUARDS: Array[StringName] = [&"forest_gate_north_guard", &"forest_gat
 ## (T18 Route 9 / 10, T20 grotte ; T24 : Lavanville et Tour posés, retirés de la liste) ; « Il fait très sombre ici… » (T-3) est
 ## celui du J17 (`dark_caves.json`, joué par FlashDirector : [constant PLAYED_BY_BOOT]).
 const UNUSED_YET: Array[StringName] = [
-	# J21 T9a (décision M-3) : Ronflex a quitté la Route 11 ; T-6 / T-7 attendent le Ronflex de la
-	# Route 12 (J21 T19-T21), qui les reprend.
-	&"route_11_snorlax",
+	# Jalon 21 (T21) : `route_11_snorlax` repris par `snorlax_route_12` (retiré de la liste).
 	&"dark_cave_1f_sign", &"dark_cave_column", &"dark_cave_roots", &"dark_cave_crack",
 	&"dark_cave_b1f_hidden_1",
 	# Jalon 20 (T17) : la Poké Ball d'Évoli (maison du toit) et le panneau d'ascenseur (cabine du
@@ -224,6 +222,8 @@ const MAPS: Array[StringName] = [
 	&"celadon_restaurant", &"celadon_chief_house", &"celadon_hotel",
 	# Jalon 20 (T21) : la vie du 20-II (Casino déjà listé ; repaire Rocket B1F à B4F).
 	&"rocket_hideout_b1f", &"rocket_hideout_b2f", &"rocket_hideout_b3f", &"rocket_hideout_b4f",
+	# Jalon 21 (T21) : la Route 12 (panneaux, Pêcheurs, Ronflex) et le 2F du poste (CT39).
+	&"route_12", &"route_12_gate_2f",
 ]
 ## Lot de textes validé par Kevin le 2026-10-06 (anciens brouillons : panneau, observations,
 ## soin de Maman, terminal du Stockage, portes de Jadielle…) : source des textes hors dossiers.
@@ -392,7 +392,7 @@ const IDS: Array[StringName] = [
 ## de l'est (route_2.json) ; T24 : avertissement sans Flash (dark_caves.json).
 const IDS_J17: Array[StringName] = [
 	&"dark_cave_too_dark",
-	&"route_11_sign", &"route_11_cave_sign", &"route_11_snorlax",
+	&"route_11_sign", &"route_11_cave_sign",
 	&"route_11_youngster_lucas_before", &"route_11_youngster_lucas_defeated",
 	&"route_11_youngster_lucas_after", &"route_11_youngster_arthur_before",
 	&"route_11_youngster_arthur_defeated", &"route_11_youngster_arthur_after",
@@ -548,6 +548,17 @@ const IDS_J20_T17: Array[StringName] = [
 	&"route_8_nerd_anatole_defeated", &"route_8_nerd_firmin_after", &"route_8_nerd_firmin_before",
 	&"route_8_nerd_firmin_defeated", &"souterrain_hidden_1", &"souterrain_hidden_2",
 	&"underground_7_8_resident",
+]
+## Jalon 21 (T21) : Route 12 (dossier 24 §15.7, §15.8, §15.8 bis, annexe A) et Ronflex.
+const IDS_J21_T21: Array[StringName] = [
+	&"route_12_sign", &"route_12_pier_sign",
+	&"route_12_fisher_1_before", &"route_12_fisher_1_defeated", &"route_12_fisher_1_after",
+	&"route_12_fisher_2_before", &"route_12_fisher_2_defeated", &"route_12_fisher_2_after",
+	&"route_12_fisher_3_before", &"route_12_fisher_3_defeated", &"route_12_fisher_3_after",
+	&"route_12_fisher_4_before", &"route_12_fisher_4_defeated", &"route_12_fisher_4_after",
+	&"route_12_gate_tm39", &"route_12_gate_tm39_give", &"route_12_gate_tm39_got",
+	&"snorlax_route_12", &"snorlax_flute_played", &"snorlax_wakes", &"snorlax_calms",
+	&"snorlax_sleeps",
 ]
 ## Jalon 20 (T21) : la vie du 20-II (dossier 23 §20.6, §20.7 et annexe A.5, A.8 du plan, textes
 ## 39 à 55, 95 à 100, 130 à 156) ; un identifiant par dialogue des données.
@@ -847,7 +858,7 @@ func test_library_loads_without_error() -> void:
 	found.sort()
 	var expected := IDS + IDS_J14_BILL + IDS_J14_ROCKET + IDS_J15_ROUTE_5 + IDS_J16_GYM \
 		+ IDS_J16_SHIP + IDS_J16_RIVAL_CAPTAIN + IDS_J16_T15 + IDS_J17 + IDS_J18 + IDS_J19 + IDS_J20 \
-		+ IDS_J20_T17 + IDS_J20_T21 + IDS_S2B + S2_FIELD_TRAVEL
+		+ IDS_J20_T17 + IDS_J20_T21 + IDS_J21_T21 + IDS_S2B + S2_FIELD_TRAVEL
 	expected.append_array(TEXTS_S2C_FISH.keys())
 	expected.append_array(TEXTS_S2D_STRENGTH.keys())
 	expected.append_array(UNVALIDATED)
@@ -887,6 +898,9 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		&"tower_6f_ghost_after", &"tower_6f_ghost_warning",
 		# Jalon 20 (T25) : la boisson donnée au garde d'un poste de Safrania.
 		&"saffron_gate_drink_lemonade", &"saffron_gate_drink_soda", &"saffron_gate_drink_water",
+		# Jalon 21 (T21) : CT39 du poste et réveil de Ronflex.
+		&"route_12_gate_tm39_give", &"route_12_gate_tm39_got", &"snorlax_flute_played",
+		&"snorlax_wakes", &"snorlax_calms", &"snorlax_sleeps",
 		# Jalon 20 (T12) : le don d'Évoli.
 		&"celadon_eevee_received", &"celadon_eevee_stored",
 		# Jalon 20 (T17) : Erika (scène de l'Arène et rattrapage de la CT21) et la fillette du toit.
@@ -1036,11 +1050,13 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 			&"ss_anne_departure_chosen", &"ss_anne_exit_told"]
 			+ SET_J14_BILL_DIALOGUES + SET_J14_ROCKET_DIALOGUES
 			# Jalon 17 (T8) : Ronflex vu, assistant rencontré, barrière de FUTUR B ouverte.
-			+ [&"hm05_assistant_met", &"route_2_east_gate_open", &"snorlax_route_11_seen"]
+			+ [&"hm05_assistant_met", &"route_2_east_gate_open", &"snorlax_route_12_seen"]
 			+ SET_J18_DIALOGUES
 			# Jalon 20 (T21) : porte du bureau ouverte par le second garde battu (§2.7.3).
 			+ [&"rocket_hideout_b4f_door_open"]))
-	assert_eq(cutscenes.get_set_flags(), _sorted([&"badge_boulder", &"badge_cascade",
+	assert_eq(cutscenes.get_set_flags(), _sorted([&"got_tm39", &"route_12_visited",
+		&"snorlax_route_12_awake", &"snorlax_route_12_caught", &"snorlax_route_12_done",
+		&"snorlax_route_12_woken", &"badge_boulder", &"badge_cascade",
 		&"beaten_mt_moon_researcher", &"beaten_nugget_rocket", &"brock_met", &"cerulean_reached", &"got_mt_moon_1f_hidden_1",
 		&"got_mt_moon_1f_item_1", &"got_mt_moon_b1f_item_1", &"got_mt_moon_b1f_item_2",
 		&"got_mt_moon_b2f_hidden_1", &"got_mt_moon_b2f_item_1", &"got_nugget", &"got_oak_parcel",
@@ -1321,6 +1337,9 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 		.replace("\n  ", " ")
 	var dossier_20 := FileAccess.get_file_as_string(DOSSIER_20).replace("**", "")
 	var annex_a_17 := AnnexATexts.annex_a(FileAccess.get_file_as_string(JALON_17))
+	# Jalon 21 (T21) : textes validés du dossier 24 (§15) et de l'annexe A du plan.
+	var j21_texts := FileAccess.get_file_as_string("res://docs/design/dossier-24-repos-des-esprits.md") \
+		+ FileAccess.get_file_as_string("res://docs/tech/jalon-21.md")
 	var dossier_17 := FileAccess.get_file_as_string(DOSSIER_17) \
 		+ FileAccess.get_file_as_string(PLAN_J14).replace("\n  ", " ")
 	# Formes accordées « fatigué[e] » (n° 55) : masculin et féminin.
@@ -1374,6 +1393,9 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			# J12 (T18) : une réplique du §20 coupée en deux lignes dans sa bulle (retour à la
 			# ligne de mise en page) : la bulle entière est une citation du dossier.
 			or dossier_15.contains("« %s »" % text.replace("\n", " "))
+			# J21 (T21) : dossier 24 §15 et annexe A du plan (bulles « / », panneaux sur deux lignes).
+			or j21_texts.contains(text.replace("{joueur}", "{player}"))
+			or j21_texts.contains(text.replace("{joueur}", "{player}").replace("\n", " / "))
 			# J14 (T17) : dossier 17 §15 et annexe A du plan.
 			or dossier_17.contains("« %s »" % text.replace("{player}", "{joueur}"))
 			or dossier_17.contains(text.replace("\n", " "))
@@ -1613,7 +1635,7 @@ func test_oak_parcel_lines() -> void:
 	# Jalon 18 (T16) : sept objets au sol (Route 9, Route 10, grotte) et la Super Potion cachée.
 	# Jalon 20 (T21) : onze objets au sol et trois caches du repaire, la Clé (chute et prise),
 	# Giovanni et le Scope Sylphe.
-	assert_eq(launched, 103, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
+	assert_eq(launched, 104, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
 		+ "sa CT34, Ondine (pont, Arène et rattrapage), écran, module, console, objets de la "
 		+ "Route 25, le Rocket d'Azuria (2) et le barrage sud ; J15 : objets de la Route 5 ; "
 		+ "J16 : Major Bob (2), neuf objets du S.S. Anne, le capitaine, le marin (2) ; "
@@ -1645,6 +1667,8 @@ func test_oak_parcel_lines() -> void:
 				or (row[0] == &"rival_tower_intro" and row[1].contains("{player}")) \
 				or (String(row[0]).begins_with("saffron_gate_drink_") and row[1].contains("{player}")) \
 				or row[0] == &"celadon_eevee_received" or row[0] == &"fishing_cast" \
+				or (row[0] in [&"route_12_gate_tm39_got", &"snorlax_flute_played"] \
+					and row[1].contains("{player}")) \
 				or (row[0] in [&"rocket_hideout_b4f_lift_key_got",
 					&"rocket_hideout_b4f_silph_scope_got"] and row[1].contains("{player}")) \
 				or (String(row[0]).begins_with("celadon_gym_erika_") and row[1].contains("{player}")):

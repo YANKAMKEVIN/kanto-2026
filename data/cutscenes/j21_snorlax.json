@@ -1,0 +1,24 @@
+{
+	"snorlax_route_12_wake": {
+		"variants": [
+			{
+				"unless": ["snorlax_route_12_done"],
+				"steps": [
+					{ "dialogue": "snorlax_flute_played" },
+					{ "dialogue": "snorlax_wakes" },
+					{ "set": ["snorlax_route_12_awake", "snorlax_route_12_woken"] },
+					{
+						"wild_battle": "snorlax", "level": 30,
+						"win": ["snorlax_route_12_done"],
+						"catch": ["snorlax_route_12_done", "snorlax_route_12_caught"]
+					},
+					{
+						"dialogue": "snorlax_calms",
+						"if": ["snorlax_route_12_done"], "unless": ["snorlax_route_12_caught"]
+					},
+					{ "dialogue": "snorlax_sleeps", "unless": ["snorlax_route_12_done"] }
+				]
+			}
+		]
+	}
+}

@@ -283,3 +283,9 @@ passage du jeu n'y mène. **Retirées à la clôture de la passe (S2Z)** avec le
 
 Le PNJ de QA (`data/npcs/route_1.json`), la scène et les textes `qa_s2_legendary` sont retirés à
 la clôture de la passe (S2Z, T33).
+
+## Jalon 21 (T21) : Route 12 nord
+
+| Fichier | Partie |
+|---|---|
+| `route_12_qa.json` | Lavanville, bord sud (spawn `from_route_12`, tourné ↓) : équipe de référence du J21 [D] (Reptincel N33, Roucarnage N30, Papilusion N28, Évoli N25, Nidorino N28 **endormi**, Abo N26 **empoisonné**), 10 Poké Balls, 10 Super Potions, 3 Réveils, Corde Sortie, Scope Sylphe et **Poké Flûte**, 5 000 ₽, Badges jusqu'au Prisme. Pêcheurs non battus, `got_tm39` absent : descendre le ponton (Pêcheur Ned inévitable), poste traversé (CT39 au 2F), Ronflex au croisement |

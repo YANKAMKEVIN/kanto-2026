@@ -296,6 +296,9 @@
 		"rocket_hideout_b2f": "hideout",
 		"rocket_hideout_b3f": "hideout",
 		"rocket_hideout_b4f": "hideout",
-		"rocket_hideout_elevator": "hideout"
+		"rocket_hideout_elevator": "hideout",
+		"route_12": "golden_hour",
+		"route_12_gate": "interior_warm",
+		"route_12_gate_2f": "interior_warm"
 	}
 }
