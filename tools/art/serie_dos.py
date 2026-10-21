@@ -270,6 +270,23 @@ ANCRES = (
 	"Aucune image jointe.")
 ESSAIS = (1, 2, 3, 4)
 
+## Révisions après relecture de la planche (2026-10-22) : sujet corrigé -> nouveaux fichiers _r5 à _r8
+## (même règle : r5 et r6 AVEC images jointes, r7 et r8 SANS ; les prompts r1 à r4 restent tels quels).
+REVISIONS = {
+	"MIAOUSS": ("petit chat beige debout sur ses deux pattes arrière, petit museau, longues MOUSTACHES fines, "
+		"oreilles pointues NOIRES à l'intérieur brun, une petite PIÈCE DORÉE ovale sur le front (de dos, on n'en "
+		"voit au plus que le bord), pattes courtes, queue fine à BOUT ENROULÉ brun"),
+	"KADABRA": ("humanoïde JAUNE mince et debout, PLASTRON brun en forme d'armure sur le torse et les épaules, "
+		"grandes oreilles pointues, longues MOUSTACHES blanches, longue queue épaisse jaune marquée d'une bande "
+		"brune, tenant une CUILLÈRE d'argent dans une main"),
+	"NIDORINA": ("petite créature quadrupède dodue BLEU PÂLE (bleu-gris clair) comme un gros lapin, de grandes oreilles "
+		"rondes à l'intérieur turquoise, dos tacheté de taches bleu plus foncé et orné de quelques petits PIQUANTS "
+		"crème, pattes courtes, queue fine"),
+	"RACAILLOU": ("grosse BOULE de roche grise rugueuse, SANS AUCUNE JAMBE ni pied, flottant juste au-dessus du sol ; "
+		"seulement DEUX BRAS de pierre musclés, de part et d'autre de la boule, terminés par des poings de roche ; "
+		"de dos : la boule ronde au centre et les deux bras"),
+}
+
 
 def jointes(num: int, r: int) -> list[Path]:
 	if r == 1:
@@ -282,10 +299,13 @@ def jointes(num: int, r: int) -> list[Path]:
 def images() -> list[dict]:
 	liste = []
 	for ident, num, _fr, prio, sujet in ESPECES:
-		for r in ESSAIS:
+		rev = REVISIONS.get(ident)
+		for r in ESSAIS + ((5, 6, 7, 8) if rev else ()):
+			k = (r - 1) % 4 + 1  # motif de l'essai (avec / sans images)
 			liste.append({"ident": ident, "num": num, "r": r, "prio": prio, "nom": f"DOS_{ident}_r{r}",
-				"fichier": PROMPTS / f"DOS_{ident}_r{r}.txt", "jointes": jointes(num, r),
-				"texte": DOS.format(nom=NOM[r - 1], ancres=ANCRES[r - 1], sujet=sujet, fin=FIN_DETOURE)})
+				"fichier": PROMPTS / f"DOS_{ident}_r{r}.txt", "jointes": jointes(num, k),
+				"texte": DOS.format(nom=NOM[k - 1], ancres=ANCRES[k - 1], fin=FIN_DETOURE,
+					sujet=rev if (rev and r > 4) else sujet)})
 	return liste
 
 
@@ -326,7 +346,7 @@ def _essai(im: dict) -> bool:
 
 def _espece(ident: str) -> bool:
 	"""Essais r1 à r4 dans l'ordre jusqu'au premier qui réussit."""
-	for im in (i for i in images() if i["ident"] == ident):
+	for im in (i for i in images() if i["ident"] == ident and (i["r"] > 4 or ident not in REVISIONS)):
 		if _essai(im):
 			return True
 	return False
@@ -343,7 +363,7 @@ def generer(noms: list[str]) -> None:
 # --- Préparation ----------------------------------------------------------------------
 ## Essais retenus après relecture (Kevin, ou ma relecture de la nuit) : clé = identifiant, valeur = essai.
 ## Par défaut : le plus petit r disponible.
-RETENUS: dict[str, str] = {}
+RETENUS: dict[str, str] = {}  # remplis après relecture (révisions : voir REVISIONS)
 
 
 def retenu(ident: str) -> Path | None:
