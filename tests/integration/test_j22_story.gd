@@ -198,3 +198,16 @@ func test_fishing_on_the_route_12_pier_offers_fish() -> void:
 	if target != null:
 		assert_eq(target.kind, Interaction.Kind.FISH, "PÊCHER face à l'eau")
 		assert_eq(target.cell, Vector2i(24, 5))
+
+
+func test_route_17_slope_drifts_down_without_input() -> void:
+	await _start(&"route_17", &"from_route_16", [&"got_bicycle"], [&"bicycle"])
+	# La Bicyclette arrive au Sac après le chargement de la carte : arrivée rejouée.
+	_boot.get_mount_director().on_map_changed(_boot.get_map())
+	assert_eq(_player.get_mount(), Mount.Kind.BIKE, "Piste : en selle d'office")
+	# Place du départ plate (rangées 0..7) : on se pose au début de la pente ouest.
+	_boot.get_map().spawn_player_at(_player, Vector2i(12, 9), Vector2i.DOWN)
+	var start := _player.get_cell()
+	await wait_until(func() -> bool: return _player.get_cell().y >= start.y + 3, 5.0)
+	assert_gte(_player.get_cell().y, start.y + 3, "dérive vers le bas sans appui")
+	assert_eq(_player.get_cell().x, start.x)
