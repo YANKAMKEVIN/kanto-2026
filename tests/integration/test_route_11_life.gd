@@ -170,17 +170,15 @@ func test_east_narrows_are_free_and_silent() -> void:
 	assert_push_error_count(0)
 
 
-func test_east_edge_shows_route_12_coming_soon_then_returns() -> void:
+## Jalon 21 (T21) : le bord est mène à la Route 12 (arrivée `from_route_11_s`, tourné →).
+func test_east_edge_leads_to_route_12() -> void:
 	await _start(Vector2i(75, 15), Vector2i.RIGHT, true)
-	watch_signals(SceneRouter)
 	Input.action_press(&"move_right")
-	await wait_for_signal(SceneRouter.coming_soon_shown, TIMEOUT)
+	await wait_until(func() -> bool: return _boot.get_map().map_id == &"route_12", TIMEOUT)
 	Input.action_release(&"move_right")
-	assert_signal_emitted_with_parameters(SceneRouter, "coming_soon_shown", ["Route 12"])
-	await wait_for_signal(SceneRouter.coming_soon_finished, TIMEOUT)
-	assert_eq(_boot.get_map().map_id, &"route_11", "aucune carte chargée")
-	assert_eq(_player.get_cell(), Vector2i(74, 15), "retour juste à l'ouest du bord")
-	assert_eq(_player.get_facing(), Vector2i.LEFT, "tourné vers la route")
+	assert_eq(_boot.get_map().map_id, &"route_12")
+	assert_eq(_player.get_cell(), Vector2i(0, 94))
+	assert_eq(_player.get_facing(), Vector2i.RIGHT)
 	assert_push_error_count(0)
 
 
@@ -302,14 +300,11 @@ func test_every_dialogue_of_the_file_is_used() -> void:
 	add_child_autofree(map)
 	for interaction: Interaction in map.get_interactions().get_all():
 		used[interaction.dialogue_id] = true
-	# M-3 (J21 T9a) : `route_11_snorlax` (T-6, T-7) reste dans le fichier, réservé au Ronflex de
-	# la Route 12 (J21 T19-T21) ; plus aucun point de la Route 11 ne le lit.
-	assert_true(raw.has("route_11_snorlax"), "T-6 / T-7 gardés pour la Route 12")
-	assert_false(used.has(&"route_11_snorlax"), "Ronflex retiré de la Route 11")
-	used[&"route_11_snorlax"] = true
+	# Jalon 21 (T21) : `route_11_snorlax` est repris par `snorlax_route_12` (retiré du fichier).
+	assert_false(raw.has("route_11_snorlax"), "T-6 / T-7 repris par la Route 12")
 	for key: String in raw:
 		assert_true(used.has(StringName(key)), "%s : utilisé" % key)
 	for id: StringName in used:
 		if not String(id).is_empty():
 			assert_true(raw.has(String(id)), "%s : défini" % id)
-	assert_eq(raw.size(), 3 + 8 * 3 + 3, "2 panneaux, Ronflex (réservé, M-3), 8 × 3 répliques, 3 objets")
+	assert_eq(raw.size(), 2 + 8 * 3 + 3, "2 panneaux, 8 × 3 répliques, 3 objets (Ronflex repris par la Route 12, T21)")

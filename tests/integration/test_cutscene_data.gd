@@ -70,6 +70,8 @@ const MAPS: Array[StringName] = [
 	&"celadon_city", &"celadon_gym",
 	# Jalon 20 (T17) : arrivées silencieuses (Route 8 est, Céladopole est).
 	&"route_8",
+	# Jalon 21 (T21) : arrivée silencieuse sur la Route 12.
+	&"route_12",
 ]
 ## Jalon 7 (T18) : partie qui revient au labo avec le colis (rival parti après le combat).
 const PARCEL_FLAGS: Array[StringName] = [
@@ -236,6 +238,9 @@ const VARIANT_FLAGS: Dictionary = {
 	&"route_10_reached": [PEWTER_FLAGS], &"dark_cave_crossed": [PEWTER_FLAGS],
 	&"tower_6f_ghost": [PEWTER_FLAGS], &"tower_guardian": [PEWTER_FLAGS],
 	&"tower_rival": [PEWTER_FLAGS],
+	# Jalon 21 (T21) : Route 12 (arrivée silencieuse, CT39 du poste, réveil de Ronflex).
+	&"route_12_visited": [PEWTER_FLAGS], &"route_12_gate_tm39": [PEWTER_FLAGS],
+	&"snorlax_route_12_wake": [PEWTER_FLAGS],
 	# Jalon 19 (T18) : zone purifiée et objets de la Tour.
 	&"tower_purified_zone": [PEWTER_FLAGS], &"tower_3f_objet_1": [PEWTER_FLAGS],
 	&"tower_4f_objet_1": [PEWTER_FLAGS], &"tower_4f_objet_2": [PEWTER_FLAGS],
@@ -393,6 +398,8 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"tower_3f_objet_1": &"pokemon_tower_3f", &"tower_4f_objet_1": &"pokemon_tower_4f",
 	&"tower_4f_objet_2": &"pokemon_tower_4f", &"tower_5f_objet_1": &"pokemon_tower_5f",
 	&"tower_5f_cache_1": &"pokemon_tower_5f", &"tower_6f_objet_1": &"pokemon_tower_6f",
+	# Jalon 21 (T21) : CT39 (dialogue de la jeune femme du 2F) et réveil de Ronflex (choix OUI).
+	&"route_12_gate_tm39": &"route_12_gate_2f", &"snorlax_route_12_wake": &"route_12",
 }
 ## Scènes à déclencheur dont la carte n'est pas encore construite → leur carte (simulées sur les
 ## PNJ de son fichier). Vidée au T19 du jalon 9 (la forêt existe), puis au T11 du jalon 10 (les
@@ -517,7 +524,9 @@ func test_library_loads_without_error() -> void:
 		# Jalon 20 (T17) : arrivées, objet et caches, Erika, échange de la fillette.
 		&"route_8_reached", &"celadon_reached", &"route_8_item_1", &"route_8_hidden_1",
 		&"souterrain_hidden_1", &"souterrain_hidden_2", &"celadon_hidden_1",
-		&"celadon_gym_erika", &"celadon_gym_erika_tm_late", &"celadon_roof_trade"]
+		&"celadon_gym_erika", &"celadon_gym_erika_tm_late", &"celadon_roof_trade",
+		# Jalon 21 (T21) : Route 12.
+		&"route_12_visited", &"route_12_gate_tm39", &"snorlax_route_12_wake"]
 		+ J18_IDS + J20_T21_IDS))
 
 

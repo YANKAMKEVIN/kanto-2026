@@ -223,9 +223,9 @@ func test_cave_mouth_warps_into_the_cave() -> void:
 	assert_eq(_map.get_warps().size(), 7, "trois raccords ouest, deux bouches, deux cases à l'est")
 
 
-## M-3 (J21 T9a) : le bord est n'est plus une impasse muette. Tant que la Route 12 n'existe pas, il
-## montre « ROUTE 12 — À venir » et rend le joueur sur la case juste à l'ouest, tourné ←.
-func test_east_edge_is_route_12_coming_soon() -> void:
+## Jalon 21 (T21) : le bord est est le raccord réel vers la Route 12 (`route_12` / `from_route_11_n|s`),
+## les retours `from_route_12_n|s` (74, 14..15) tournés ← sont gardés (avant : « ROUTE 12 — À venir »).
+func test_east_edge_leads_to_route_12() -> void:
 	var suffixes := ["n", "s"]
 	for i: int in EAST_EDGE.size():
 		var cell: Vector2i = EAST_EDGE[i]
@@ -233,10 +233,9 @@ func test_east_edge_is_route_12_coming_soon() -> void:
 		var warp := _map.get_warps().find_on_push(cell, Vector2i.RIGHT)
 		assert_not_null(warp, "bord est PUSH → en %s" % cell)
 		if warp != null:
-			assert_true(warp.is_coming_soon(), "Route 12 à venir")
-			assert_eq(warp.coming_soon, "Route 12")
-			assert_eq(warp.target_spawn, StringName("from_route_12_" + suffixes[i]))
-			assert_eq(warp.get_arrival_facing(Vector2i.RIGHT), Vector2i.LEFT)
+			assert_false(warp.is_coming_soon())
+			assert_eq([warp.target_map, warp.target_spawn],
+				[&"route_12", StringName("from_route_11_" + suffixes[i])])
 		assert_eq(_map.get_spawn_cell(StringName("from_route_12_" + suffixes[i])),
 			cell + Vector2i.LEFT)
 

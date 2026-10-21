@@ -61,7 +61,7 @@ const EAST_EXITS: Array = [
 	["Route12N", Vector2i(75, 14), "from_route_12_n"],
 	["Route12S", Vector2i(75, 15), "from_route_12_s"],
 ]
-const EAST_COMING_SOON: String = "Route 12"
+const EAST_MAP: StringName = &"route_12"
 ## Bouche de la Cave (STEP_ON ↑) : [nœud, case, spawn de la Cave, spawn d'ici (devant, tourné ↓)].
 const MOUTH: Array = [
 	["CaveW", Vector2i(15, 7), &"from_route_11_w", "from_cave_w"],
@@ -293,10 +293,11 @@ func _add_passages() -> void:
 		_kit.call(&"add_spawn", entry[3], (entry[1] as Vector2i) + Vector2i.DOWN)
 		_kit.call(&"add_warp", entry[0], entry[1], Kit.STEP_ON, Vector2i.UP, CAVE_MAP,
 			entry[2], Vector2i.UP)
+	# Jalon 21 (T21) : bord est → `route_12` / `from_route_11_n|s` (retours `from_route_12_n|s` gardés).
 	for entry: Array in EAST_EXITS:
 		_kit.call(&"add_spawn", entry[2], (entry[1] as Vector2i) + Vector2i.LEFT)
-		_kit.call(&"add_warp", entry[0], entry[1], Kit.PUSH, Vector2i.RIGHT, &"",
-			StringName(entry[2]), Vector2i.LEFT, EAST_COMING_SOON)
+		_kit.call(&"add_warp", entry[0], entry[1], Kit.PUSH, Vector2i.RIGHT, EAST_MAP,
+			StringName("from_route_11_" + String(entry[2]).right(1)), Vector2i.RIGHT)
 
 
 ## Points d'examen : panneaux (lus de face depuis le sud, tournés ↑) et pierre-indice (de tous

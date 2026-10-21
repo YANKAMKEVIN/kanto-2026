@@ -298,6 +298,9 @@
 		],
 		"route_16": [
 			{ "decor": "route_5_6_prairie" }
+		],
+		"route_12": [
+			{ "decor": "route_24_pont" }
 		]
 	}
 }

@@ -223,6 +223,11 @@
 			"name": "Route 16", "kind": "route", "maps": ["route_16"],
 			"subtitle": "Céladopole",
 			"description": "Une route boisée à l'ouest de Céladopole."
+		},
+		"route_12": {
+			"name": "Route 12", "kind": "route", "maps": ["route_12", "route_12_gate", "route_12_gate_2f"],
+			"subtitle": "Lavanville — Route 11",
+			"description": "Une longue route au bord de l'eau, au sud de Lavanville."
 		}
 	}
 }
