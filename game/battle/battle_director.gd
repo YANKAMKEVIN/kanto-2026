@@ -414,6 +414,10 @@ func _choose_action(actions: Dictionary[StringName, bool], can_flee: bool) -> Ba
 					await _hud.show_message(_texts.get_template(&"flute_no_effect_2"))
 				_show_own_card()
 				continue
+			if chosen.kind == BattleAction.Kind.KEY_ITEM:
+				# Le Sac a caché la carte du joueur ; aucun beat de la Flûte ne la ramène (QA S21).
+				_show_own_card()
+				return chosen
 			var chosen_item := _items.get_item(chosen.item_id) if _items != null else null
 			if chosen.kind == BattleAction.Kind.ITEM and not chosen.is_heal() \
 					and chosen_item != null and chosen_item.category == ItemData.Category.BALL \

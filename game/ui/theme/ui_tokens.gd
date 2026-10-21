@@ -114,8 +114,9 @@ const ROUND_BUTTON_ICON := 64
 ## Centre du bouton courir mesuré depuis le coin bas-droit de l'écran (position de la
 ## planche ; le coin est laissé au bouton contextuel).
 const RUN_BUTTON_CENTER_FROM_CORNER := Vector2(440, 220)
-## Bouton Vélo (passe systèmes 2, `systemes-2.md` §2.3) : au-dessus du bouton courir [D, J22].
-const BIKE_BUTTON_CENTER_FROM_CORNER := Vector2(440, 390)
+## Bouton Vélo (passe systèmes 2, `systemes-2.md` §2.3) : à gauche du bouton courir, même hauteur
+## [D] ; au-dessus, il couvrait l'étiquette du bouton contextuel (QA S21, 2026-10-21).
+const BIKE_BUTTON_CENTER_FROM_CORNER := Vector2(620, 220)
 ## Bouton Vélo grisé (intérieur, Piste) : opacité [D] ; le toucher dit le refus.
 const BIKE_BUTTON_DIMMED_ALPHA := 0.45
 

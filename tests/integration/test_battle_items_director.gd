@@ -88,10 +88,11 @@ func _trainer() -> BattleRequest:
 ## Joue [param request] : à chaque choix, l'étape suivante de [param plan] — un tableau
 ## [onglet, objet, cible] (SAC, onglet, objet, UTILISER, puis la cible si ≥ 0) ou &"attack" ;
 ## plan épuisé : ATTAQUER (1re capacité). Un Sac sans objet utilisable : « ‹ » (noté dans
-## « empty_bag »). Renvoie { outcome, events, picker, empty_bag }.
+## « empty_bag »). Renvoie { outcome, events, picker, empty_bag, card_missing } ; card_missing :
+## la carte du joueur absente à un retour au menu des actions.
 func _play(request: BattleRequest, plan: Array) -> Dictionary:
 	var report := {"outcome": Battle.Outcome.NONE, "events": [], "picker": null,
-		"empty_bag": false}
+		"empty_bag": false, "card_missing": false}
 	_director.event_played.connect(func(e: BattleEvent) -> void: report["events"].append(e))
 	var done: Array[bool] = [false]
 	var runner := func() -> void:
@@ -120,6 +121,8 @@ func _play(request: BattleRequest, plan: Array) -> Dictionary:
 			panel.get_action_button().pressed.emit()
 		elif battle != null and battle.get_state() == Battle.State.CHOOSING \
 				and _hud.get_zone() == BattleHud.Zone.ACTIONS:
+			if not _hud.get_card(BattleHud.Side.PLAYER).is_shown():
+				report["card_missing"] = true
 			step = plan.pop_front() if not plan.is_empty() else &"attack"
 			picked = false
 			_hud.action_selected.emit(ActionGrid.BAG if step is Array else ActionGrid.ATTACK)
@@ -213,6 +216,7 @@ func test_the_flute_wakes_the_sleeper_and_stays_in_the_bag() -> void:
 	assert_true(kinds.has(BattleEvent.Kind.FLUTE_PLAYED))
 	assert_lt(kinds.find(BattleEvent.Kind.FLUTE_WOKE), kinds.find(BattleEvent.Kind.ALL_WOKE))
 	assert_true(_state.bag.has(&"poke_flute"), "un objet clé n'est jamais retiré")
+	assert_false(report["card_missing"], "la carte du joueur revient après la Flûte (QA S21)")
 	assert_eq(report["outcome"], Battle.Outcome.WIN)
 	assert_push_error_count(0)
 
@@ -227,5 +231,6 @@ func test_without_a_sleeper_the_flute_takes_no_turn() -> void:
 	var first: BattleEvent = report["events"][first_turn]
 	assert_eq(first.turn, 1, "le tour suivant est le premier : aucun tour pris")
 	assert_true(_state.bag.has(&"poke_flute"))
+	assert_false(report["card_missing"], "la carte du joueur revient")
 	assert_eq(report["outcome"], Battle.Outcome.WIN)
 	assert_push_error_count(0)
