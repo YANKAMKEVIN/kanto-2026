@@ -121,11 +121,13 @@ func test_real_tables_load_without_error() -> void:
 	var lib := _lib()
 	assert_true(lib.load_dir(), "\n".join(lib.get_errors()))
 	# Jalon 17 (T8) : Route 11, Cave Taupiqueur ; jalon 18 (T16) : Route 9, Route 10, Grotte Sombre ;
-	# jalon 19 (T5) : Tour Pokémon ; passe systèmes 2 (S2C) : eau de la carte de QA `qa_sea`.
+	# jalon 19 (T5) : Tour Pokémon ; passe systèmes 2 (S2C) : eau de la carte de QA `qa_sea` ;
+	# Jalon 21 (T5) : sommet de la Tour (7F).
 	assert_eq(lib.get_ids(), [&"dark_cave_1f_rubble", &"dark_cave_b1f_rubble",
 		&"digletts_cave_rubble", &"mt_moon_1f_rubble",
 		&"mt_moon_b1f_rubble", &"mt_moon_b2f_rubble", &"pokemon_tower_high", &"pokemon_tower_low",
-		&"pokemon_tower_mid", &"qa_sea_water", &"route_10_grass", &"route_11_grass",
+		&"pokemon_tower_mid", &"pokemon_tower_top", &"qa_sea_water", &"route_10_grass",
+		&"route_11_grass",
 		&"route_1_grass", &"route_22_grass", &"route_24_grass",
 		&"route_25_grass", &"route_2_grass", &"route_2_north_grass", &"route_3_grass",
 		&"route_4_grass", &"route_5_grass", &"route_6_grass", &"route_7_grass",
@@ -204,7 +206,10 @@ func test_every_wild_species_has_battle_sprites() -> void:
 	# + 3 tables de la Tour Pokémon (J19) : hors de la boucle, car leurs rencontres sont des
 	# SPECTRES sans le Scope (dossier 22 §6) ; Osselait n'a pas de sprite avant le J20.
 	# + la table d'eau de la carte de QA `qa_sea` (S2C, retirée à S2Z).
-	assert_eq(lib.size(), 26, "une table par couple ci-dessous, plus les 3 de la Tour et qa_sea")
+	# Jalon 21 (T5) : + la table du 7F (`pokemon_tower_top`), hors de la boucle comme les
+	# autres tables de la Tour (SPECTRES sans le Scope).
+	assert_eq(lib.size(), 27,
+		"une table par couple ci-dessous, plus les 4 de la Tour (J19, J21) et qa_sea")
 	for pair: Array in [[&"route_1", &"grass"], [&"route_2", &"grass"],
 			[&"route_22", &"grass"], [&"viridian_forest", &"grass"], [&"route_2_north", &"grass"],
 			[&"route_3", &"grass"], [&"mt_moon_1f", &"rubble"], [&"mt_moon_b1f", &"rubble"],
