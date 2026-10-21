@@ -1898,6 +1898,10 @@ func _setup_mount() -> void:
 	add_child(_mount)
 	_mount.setup(GameState, _player, _runner, _hud)
 	_mount.can_toggle = func() -> bool: return is_stable() and not _is_opening_active()
+	# S2C (§2.5) : SURFER au bouton contextuel, face à l'eau.
+	_mount.surf_state = func() -> FieldMoves.State: return field_state(&"surf").state
+	_interactions.terrain_target = _mount.surf_target
+	_interactions.surf_requested.connect(_mount.start_surf.unbind(1))
 	_key_items = KeyItemDirector.new()
 	_key_items.process_mode = Node.PROCESS_MODE_PAUSABLE
 	add_child(_key_items)

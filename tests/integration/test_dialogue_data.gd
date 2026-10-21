@@ -84,16 +84,22 @@ const PLAYED_BY_COMPANION: Array[StringName] = [
 ## Jalon 20 (T13) : refus du panneau sans la Clé (T-50), joué par ElevatorDirector.
 ## Passe systèmes 2 (S2B) : refus du Vélo (MountDirector) et Flûte « ailleurs » (KeyItemDirector).
 const PLAYED_BY_BOOT: Array[StringName] = [&"escape_rope_used", &"dark_cave_too_dark",
-	&"elevator_locked", &"bike_indoors", &"bike_cycling_road_walk", &"poke_flute_played"]
+	&"elevator_locked", &"bike_indoors", &"bike_cycling_road_walk", &"poke_flute_played",
+	&"surf_water", &"surf_first_ride", &"surf_current_too_strong"]
 ## Passe systèmes 2 (S2B) : textes validés des dossiers 25 (§16.1.3, §16.1.4) et 24 (§15.6.6),
 ## qui vivent encore sur les branches de conception du J21 et du J22 (pas dans `main`) : comparés
 ## ici mot pour mot, page par page.
+## S2C : textes du Surf, dossier 27 T-1, T-2, T-3, T-14 (branche du J24).
 const IDS_S2B: Array[StringName] = [&"bike_cycling_road_walk", &"bike_indoors",
-	&"poke_flute_played"]
+	&"poke_flute_played", &"surf_water", &"surf_first_ride", &"surf_current_too_strong"]
 const TEXTS_S2B: Dictionary[StringName, Array] = {
 	&"bike_indoors": ["Ce n'est pas le moment de pédaler !"],
 	&"bike_cycling_road_walk": ["Pas de marche à pied", "sur la Piste Cyclable !"],
 	&"poke_flute_played": ["{player} joue de la Poké Flûte…", "Quel air entraînant !"],
+	&"surf_water": ["L'eau est profonde. Un Pokémon pourrait vous porter.",
+		"Il faut le Badge Âme pour utiliser Surf hors des combats."],
+	&"surf_first_ride": ["{pokemon} vous porte sur l'eau !"],
+	&"surf_current_too_strong": ["Le courant est beaucoup trop fort !"],
 }
 ## Jalon 10 : textes verrouillés du dossier 12 (même forme que le dossier 10) et lot de textes du
 ## J10 (panneaux, noms affichés), où un retour à la ligne est écrit « \n ».

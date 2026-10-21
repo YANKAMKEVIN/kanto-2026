@@ -86,7 +86,10 @@ func test_kind_values_are_stable_and_open_is_last() -> void:
 	assert_eq(Interaction.Kind.OBSERVE, 2)
 	assert_eq(Interaction.Kind.MEET, 3)
 	assert_eq(Interaction.Kind.TAKE, 4)
-	assert_eq(Interaction.Kind.OPEN, Interaction.Kind.size() - 1)
+	assert_eq(Interaction.Kind.OPEN, 5)
+	# Passe systèmes 2 (S2C) : cibles de terrain, en fin d'enum.
+	assert_eq(Interaction.Kind.SURF, 6)
+	assert_eq(Interaction.Kind.FISH, Interaction.Kind.size() - 1)
 
 
 func test_take_needs_a_dialogue_and_has_a_button_verb() -> void:

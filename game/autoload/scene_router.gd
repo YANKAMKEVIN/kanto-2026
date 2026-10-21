@@ -62,6 +62,10 @@ var last_change_ms: float = 0.0
 ## Lectures de cartes demandées au disque depuis la création du routeur (chargement direct ou
 ## en arrière-plan) : mesure et tests du cache borné (jalon 9 T18).
 var disk_loads: int = 0
+## Passe systèmes 2 (S2C, §2.5) : case de reprise propre à la monture, lue par [method start_at] :
+## `func(map: GameMap, cell: Vector2i) -> Vector2i` ; (-1, -1) = la règle habituelle
+## ([method GameMap.find_standing_cell]). Posé par [MountDirector] (reprise en Surf sur l'eau).
+var arrival_resolver: Callable
 
 var _world: Node2D
 var _player: Player
@@ -145,7 +149,11 @@ func start_at(map_id: StringName, cell: Vector2i, facing: Vector2i) -> GameMap:
 	var old: GameMap = _current_map if is_instance_valid(_current_map) else null
 	_world.add_child(map)
 	_apply_arrival_flags(map)
-	var target := map.find_standing_cell(cell, _player)
+	var target := Vector2i(-1, -1)
+	if arrival_resolver.is_valid():
+		target = arrival_resolver.call(map, cell)
+	if target == Vector2i(-1, -1):
+		target = map.find_standing_cell(cell, _player)
 	if target == Vector2i(-1, -1):
 		push_warning("SceneRouter : reprise impossible, aucune case libre sur %s" % map_id)
 		_world.remove_child(map)
