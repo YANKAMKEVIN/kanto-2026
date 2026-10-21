@@ -1,0 +1,133 @@
+# Repaire Rocket B2F — grille fonctionnelle (jalon 20, dossier 23 §13.2 et §13.3 ; 2026-10-14).
+# GÉOMÉTRIE ROUGE/BLEU CASE POUR CASE (dalles comprises). Source : pret/pokered,
+# maps/RocketHideoutB2F.blk (15 × 14 blocks = 30 × 28 cases), tileset Facility (collision = tuile en
+# bas à gauche de chaque case), data/maps/objects/RocketHideoutB2F.asm, scripts/RocketHideoutB2F.asm
+# (43 dalles). Vérifiée par tools/art/plan_check.py (profil repaire_b2f).
+#
+# 30 × 28 cases. Trois grands secteurs ne se rejoignent QUE par les dalles : le secteur NORD-EST /
+# CENTRAL (arrivée du B1F en (27, 8), couloir y 14..15, salle centrale avec l'escalier vers le B3F
+# (21, 8) et le sbire), la coursive nord du labyrinthe (x 1..17, y 7 : Pierre Lune, Pépite) et le
+# secteur SUD-EST (x 11..28, y 17..26 : escalier du B1F sud (21, 22), ascenseur). Le reste du
+# labyrinthe (CT07, Super Potion) est fait de poches que seules les dalles desservent.
+#
+# RACCORDS :
+#   B2F (27, 8) U ↔ B1F (23, 2) D       arrivée B2F (27, 9)        [RB : warp 1]
+#   B2F (21,22) U ↔ B1F (21,24) D       arrivée B2F (21,23)        [RB : warp 4, coin sud-est]
+#   B2F (21, 8) D ↔ B3F (25, 6) U       arrivée B2F (21, 9)        [RB : warp 2]
+#   Ascenseur : portes B2F (24..25, 19) ; arrivée à la sortie de la cabine (25, 18) [RB : warps 3 et 5]
+#
+# Dresseur (1) : sbire RB n° 13, Nosferapti / Smogo / Tadmorv / Nosferapti / Rattatac 17.
+# Objets : Pierre Lune, Pépite, CT07 Empal’Korne (si la capacité existe, sinon → Super Potion
+# [H-7], `fallback=`), Super Potion. 12 cases d'arrêt, 43 dalles (sur 43 de RB).
+#
+# Légende (commune aux quatre étages) :
+#   # mur, vide ou décor mural (bloqué)           . sol de béton (praticable, aucune rencontre)
+#   X caisse / bloc du labyrinthe (bloqué)        P conduite (bloquée)
+#   M console, bureau ou machine (bloqué)         < > ^ v dalle tournante (voir « Dalles »)
+#   o case d'arrêt, disque clair (praticable)     U escalier qui monte    D escalier qui descend
+#   L porte de l'ascenseur (praticable, fondu comme une porte)
+#   B porte du bureau de Giovanni (B4F ; bloquée jusqu'à la défaite des deux gardes)
+# Personnages, objets, raccords, dalles (trajets RB) et repères sont dans POSITIONS, pas dans la
+# grille. Cases : 1 case = 1 tuile de 16 px de Rouge/Bleu (une « block » RB = 2 × 2 cases) ;
+# x = colonne, y = rangée, nord en haut. Les marges vides de RB sont CONSERVÉES : les coordonnées
+# sont celles du désassemblage, ce qui permet de recopier les tables RB telles quelles.
+#
+# Dalles (§13.3 du dossier 23, règle vérifiée contre RB) : posé sur une flèche, le joueur glisse
+# dans sa direction, case par case, en ligne droite ; chaque flèche rencontrée sur le trajet change
+# la direction de glisse ; la glisse s'arrête sur la première case d'arrêt « o ». Le contrôle
+# (tools/art/plan_check_repaire.py) simule cette règle sur la grille ET la compare aux trajets RB
+# recopiés en POSITIONS (kind=dalle : dir= premier pas, trajet= suite <direction><nombre> avec N S
+# E O, arret= case d'arrêt). Source RB : scripts/RocketHideoutB{2,3}F.asm (tables lues de la fin
+# vers le début) ; aucune différence entre le modèle et les listes RB.
+
+PRATICABLES .<>^voUDL
+
+GRILLE 30 28
+00 ##############################
+01 ##############################
+02 ##############################
+03 ##############################
+04 ##############################
+05 ##############################
+06 ##############################
+07 #.....X...........#....#.....#
+08 #.XXX.X.X.X.X.X..X#..D.#P..U.#
+09 #.o.<...<.<.<.XXXX#....#P....#
+10 #XX..XXXXX^X.v...<.....#P....#
+11 #.X.>...o..X^....<.....#P....#
+12 #.X.XX.X^X.X.>oXXX.....#P....#
+13 #....XXX.X.X^..Xo......#P....#
+14 #XXX.>...v.vXXXX^X#..........#
+15 #...>...^.^.XXo..X#..........#
+16 #.XX^XXX.o.>.>.v^X############
+17 #....XXXXX>.>.^..X#..........#
+18 #.XXX...X..v.<.o^X#..........#
+19 #.o.<...<.^..<XX.X#....#LL####
+20 #.XX.XoX.X.o...X.......#######
+21 #.X....X.XXXXX.X.......#######
+22 #..X^X^X.v...<.X..#..U.#######
+23 #..X.X.X^....<.X..#....#######
+24 #..X.X^X.o.XXXXX.X#....#######
+25 #......XXX>...o..X#....#######
+26 #...XXXXXXXXXXXXXX#....#######
+27 ##############################
+FIN
+
+POSITIONS
+vers_b1f_nord          escalier       27,8         libre   paire=b1_b2_nord sens=monte vers=rocket_hideout_b1f:23,2  # RB warp 1
+arrivee_b1f_nord       spawn          27,9         libre   paire=b1_b2_nord facing=down  # arrivée depuis le B1F (nord)
+vers_b1f_sud           escalier       21,22        libre   paire=b1_b2_sud sens=monte vers=rocket_hideout_b1f:21,24  # RB warp 4
+arrivee_b1f_sud        spawn          21,23        libre   paire=b1_b2_sud facing=down  # arrivée depuis le B1F (sud)
+vers_b3f               escalier       21,8         libre   paire=b2_b3 sens=descend vers=rocket_hideout_b3f:25,6  # RB warp 2
+arrivee_b3f            spawn          21,9         libre   paire=b2_b3 facing=up  # retour du B3F
+ascenseur_b2f          ascenseur      24..25,19    libre   etage=B2F vers=rocket_hideout_elevator  # portes de l’ascenseur (RB warps 3 et 5)
+arrivee_ascenseur      spawn          25,18        libre   paire=ascenseur etage=B2F facing=up  # sortie de la cabine
+sbire_b2               dresseur       20,12        bloque  role=R4 facing=down sight=4 trainer=rocket_hideout_b2f_1  # RB n° 13 : Nosferapti, Smogo, Tadmorv, Nosferapti, Rattatac 17 ; salle centrale
+pierre_lune            objet_visible  1,11         bloque  item=moon_stone  # secteur nord du labyrinthe
+pepite                 objet_visible  16,8         bloque  item=nugget  # coin nord-est de la coursive nord
+ct07                   objet_visible  6,12         bloque  item=tm_horn_drill fallback=super_potion  # CT07 Empal’Korne (RB) : au coeur du labyrinthe
+super_potion           objet_visible  3,21         bloque  item=super_potion  # sud-ouest du labyrinthe
+dalle_4_9              dalle          4,9          libre   dir=O trajet=O2 arret=2,9
+dalle_8_9              dalle          8,9          libre   dir=O trajet=O6 arret=2,9
+dalle_10_9             dalle          10,9         libre   dir=O trajet=O8 arret=2,9
+dalle_12_9             dalle          12,9         libre   dir=O trajet=O10 arret=2,9
+dalle_10_10            dalle          10,10        libre   dir=N trajet=N1,O8 arret=2,9
+dalle_13_10            dalle          13,10        libre   dir=S trajet=S2,E1 arret=14,12
+dalle_17_10            dalle          17,10        libre   dir=O trajet=O4,S2,E1 arret=14,12
+dalle_4_11             dalle          4,11         libre   dir=E trajet=E4 arret=8,11
+dalle_12_11            dalle          12,11        libre   dir=N trajet=N2,O10 arret=2,9
+dalle_17_11            dalle          17,11        libre   dir=O trajet=O5,N2,O10 arret=2,9
+dalle_8_12             dalle          8,12         libre   dir=N trajet=N1 arret=8,11
+dalle_13_12            dalle          13,12        libre   dir=E trajet=E1 arret=14,12
+dalle_12_13            dalle          12,13        libre   dir=N trajet=N4,O10 arret=2,9
+dalle_5_14             dalle          5,14         libre   dir=E trajet=E4,S2 arret=9,16
+dalle_9_14             dalle          9,14         libre   dir=S trajet=S2 arret=9,16
+dalle_11_14            dalle          11,14        libre   dir=S trajet=S2,E4,S2 arret=15,18
+dalle_16_14            dalle          16,14        libre   dir=N trajet=N1 arret=16,13
+dalle_4_15             dalle          4,15         libre   dir=E trajet=E4,N4 arret=8,11
+dalle_8_15             dalle          8,15         libre   dir=N trajet=N4 arret=8,11
+dalle_10_15            dalle          10,15        libre   dir=N trajet=N6,O8 arret=2,9
+dalle_4_16             dalle          4,16         libre   dir=N trajet=N1,E4,N4 arret=8,11
+dalle_11_16            dalle          11,16        libre   dir=E trajet=E4,S2 arret=15,18
+dalle_13_16            dalle          13,16        libre   dir=E trajet=E2,S2 arret=15,18
+dalle_15_16            dalle          15,16        libre   dir=S trajet=S2 arret=15,18
+dalle_16_16            dalle          16,16        libre   dir=N trajet=N3 arret=16,13
+dalle_10_17            dalle          10,17        libre   dir=E trajet=E4,N2 arret=14,15
+dalle_12_17            dalle          12,17        libre   dir=E trajet=E2,N2 arret=14,15
+dalle_14_17            dalle          14,17        libre   dir=N trajet=N2 arret=14,15
+dalle_11_18            dalle          11,18        libre   dir=S trajet=S2 arret=11,20
+dalle_13_18            dalle          13,18        libre   dir=O trajet=O2,S2 arret=11,20
+dalle_16_18            dalle          16,18        libre   dir=N trajet=N5 arret=16,13
+dalle_4_19             dalle          4,19         libre   dir=O trajet=O2 arret=2,19
+dalle_8_19             dalle          8,19         libre   dir=O trajet=O6 arret=2,19
+dalle_10_19            dalle          10,19        libre   dir=N trajet=N2,E4,N2 arret=14,15
+dalle_13_19            dalle          13,19        libre   dir=O trajet=O3,N2,E4,N2 arret=14,15
+dalle_4_22             dalle          4,22         libre   dir=N trajet=N3,O2 arret=2,19
+dalle_6_22             dalle          6,22         libre   dir=N trajet=N2 arret=6,20
+dalle_9_22             dalle          9,22         libre   dir=S trajet=S2 arret=9,24
+dalle_13_22            dalle          13,22        libre   dir=O trajet=O4,S2 arret=9,24
+dalle_8_23             dalle          8,23         libre   dir=N trajet=N4,O6 arret=2,19
+dalle_13_23            dalle          13,23        libre   dir=O trajet=O5,N4,O6 arret=2,19
+dalle_6_24             dalle          6,24         libre   dir=N trajet=N4 arret=6,20
+dalle_10_25            dalle          10,25        libre   dir=E trajet=E4 arret=14,25
+FIN

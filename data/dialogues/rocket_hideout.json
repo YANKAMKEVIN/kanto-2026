@@ -1,0 +1,205 @@
+{
+	"rocket_hideout_b1f_1_before": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Un intrus ? Personne n'entre ici\nsans badge d'accès."]
+	},
+	"rocket_hideout_b1f_1_defeated": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Ton badge d'accès, tu l'as eu où ?"]
+	},
+	"rocket_hideout_b1f_1_after": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Je vais devoir faire un rapport."]
+	},
+	"rocket_hideout_b1f_2_before": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Cette zone est réservée au personnel."]
+	},
+	"rocket_hideout_b1f_2_defeated": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Mon chef ne va pas être content."]
+	},
+	"rocket_hideout_b1f_2_after": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Je ne t'ai pas vu.", "Toi non plus, d'ailleurs."]
+	},
+	"rocket_hideout_b1f_3_before": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Un livreur ?", "Non… Tu n'as pas de colis."]
+	},
+	"rocket_hideout_b1f_3_defeated": {
+		"speaker": "Sbire Rocket",
+		"pages": ["La logistique, ce n'est pas le combat."]
+	},
+	"rocket_hideout_b1f_3_after": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Les caisses ne vont pas\nse ranger toutes seules."]
+	},
+	"rocket_hideout_b2f_1_before": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Tu t'es perdu ?", "Moi aussi, ma première semaine."]
+	},
+	"rocket_hideout_b2f_1_defeated": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Au moins, les dalles, elles obéissent."]
+	},
+	"rocket_hideout_b2f_1_after": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Ces dalles, on les a installées\npour ralentir les curieux."]
+	},
+	"rocket_hideout_b3f_1_before": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Encore un étage, encore un intrus.", "Les journées sont longues."]
+	},
+	"rocket_hideout_b3f_1_defeated": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Je vais demander une mutation."]
+	},
+	"rocket_hideout_b3f_1_after": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Le patron est plus bas.", "Il ne reçoit personne."]
+	},
+	"rocket_hideout_b3f_2_before": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Technicien de maintenance.", "Je m'occupe aussi des intrus."]
+	},
+	"rocket_hideout_b3f_2_defeated": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Panne générale."]
+	},
+	"rocket_hideout_b3f_2_after": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Ces machines coûtent une fortune.", "Ne touche à rien."]
+	},
+	"rocket_hideout_b4f_key_before": {
+		"speaker": "Sbire Rocket",
+		"pages": ["La Clé Ascenseur ne quitte\njamais ma poche.", "Jamais."]
+	},
+	"rocket_hideout_b4f_key_defeated": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Non !…"]
+	},
+	"rocket_hideout_b4f_key_after": {
+		"speaker": "Sbire Rocket",
+		"variants": [
+			{ "unless": ["rocket_dropped_lift_key"], "cutscene": "rocket_hideout_key_drop" },
+			{ "pages": ["Si on te demande, tu l'as\ntrouvée par terre."] }
+		]
+	},
+	"rocket_hideout_b4f_key_dropped": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Oh non. J'ai laissé tomber\nla Clé Ascenseur."]
+	},
+	"rocket_hideout_b4f_lift_key": {
+		"cutscene": "rocket_hideout_b4f_lift_key"
+	},
+	"rocket_hideout_b4f_lift_key_got": {
+		"narration": true,
+		"pages": ["{player} obtient la Clé Ascenseur !"]
+	},
+	"rocket_hideout_b4f_guard_1_before": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Le patron ne reçoit pas."]
+	},
+	"rocket_hideout_b4f_guard_1_defeated": {
+		"speaker": "Sbire Rocket",
+		"variants": [
+			{
+				"if": ["beaten_rocket_hideout_b4f_guard_1", "beaten_rocket_hideout_b4f_guard_2"],
+				"set": ["rocket_hideout_b4f_door_open"],
+				"pages": ["… Je ne suis plus vraiment de garde."]
+			},
+			{ "pages": ["… Je ne suis plus vraiment de garde."] }
+		]
+	},
+	"rocket_hideout_b4f_guard_1_after": {
+		"speaker": "Sbire Rocket",
+		"variants": [
+			{
+				"if": ["beaten_rocket_hideout_b4f_guard_1", "beaten_rocket_hideout_b4f_guard_2"],
+				"unless": ["rocket_hideout_b4f_door_open"],
+				"set": ["rocket_hideout_b4f_door_open"],
+				"pages": ["Le patron n'aime pas être dérangé.", "Tu vas l'apprendre."]
+			},
+			{ "pages": ["Le patron n'aime pas être dérangé.", "Tu vas l'apprendre."] }
+		]
+	},
+	"rocket_hideout_b4f_guard_2_before": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Personne ne passe cette porte\nsans rendez-vous."]
+	},
+	"rocket_hideout_b4f_guard_2_defeated": {
+		"speaker": "Sbire Rocket",
+		"variants": [
+			{
+				"if": ["beaten_rocket_hideout_b4f_guard_1", "beaten_rocket_hideout_b4f_guard_2"],
+				"set": ["rocket_hideout_b4f_door_open"],
+				"pages": ["La porte… Tant pis."]
+			},
+			{ "pages": ["La porte… Tant pis."] }
+		]
+	},
+	"rocket_hideout_b4f_guard_2_after": {
+		"speaker": "Sbire Rocket",
+		"variants": [
+			{
+				"if": ["beaten_rocket_hideout_b4f_guard_1", "beaten_rocket_hideout_b4f_guard_2"],
+				"unless": ["rocket_hideout_b4f_door_open"],
+				"set": ["rocket_hideout_b4f_door_open"],
+				"pages": ["Je n'ai rien vu.", "C'est mieux pour tout le monde."]
+			},
+			{ "pages": ["Je n'ai rien vu.", "C'est mieux pour tout le monde."] }
+		]
+	},
+	"rocket_hideout_b4f_office_door": {
+		"narration": true,
+		"pages": ["La porte est verrouillée."]
+	},
+	"giovanni_hideout": {
+		"speaker": "Giovanni",
+		"variants": [
+			{ "cutscene": "giovanni_hideout" }
+		]
+	},
+	"giovanni_hideout_intro": {
+		"speaker": "Giovanni",
+		"pages": ["Tu es donc l'enfant qui dérange\nmes affaires depuis le Mont Sélénite.",
+			"La Tour Pokémon cache une chose\nqui m'intéresse.",
+			"Je n'aime pas qu'on se mette\nen travers de mon chemin."]
+	},
+	"giovanni_hideout_resume": {
+		"speaker": "Giovanni",
+		"pages": ["Encore toi.", "Soit."]
+	},
+	"giovanni_hideout_won": {
+		"speaker": "Giovanni",
+		"pages": ["… Je vois.", "Ce repaire ne m'est plus utile.",
+			"Garde ta victoire.\nNous nous reverrons."]
+	},
+	"giovanni_hideout_lost": {
+		"speaker": "Giovanni",
+		"pages": ["Rentre chez toi.", "Et oublie ce que tu as vu ici."]
+	},
+	"rocket_hideout_b4f_silph_scope": {
+		"cutscene": "rocket_hideout_b4f_silph_scope"
+	},
+	"rocket_hideout_b4f_silph_scope_got": {
+		"narration": true,
+		"pages": ["{player} obtient le Scope Sylphe !",
+			"Il permet de voir ce que\nl'œil seul ne voit pas."]
+	},
+	"rocket_hideout_b1f_item_1": { "cutscene": "rocket_hideout_b1f_item_1" },
+	"rocket_hideout_b1f_item_2": { "cutscene": "rocket_hideout_b1f_item_2" },
+	"rocket_hideout_b1f_hidden_1": { "cutscene": "rocket_hideout_b1f_hidden_1" },
+	"rocket_hideout_b2f_item_1": { "cutscene": "rocket_hideout_b2f_item_1" },
+	"rocket_hideout_b2f_item_2": { "cutscene": "rocket_hideout_b2f_item_2" },
+	"rocket_hideout_b2f_item_3": { "cutscene": "rocket_hideout_b2f_item_3" },
+	"rocket_hideout_b2f_item_4": { "cutscene": "rocket_hideout_b2f_item_4" },
+	"rocket_hideout_b3f_item_1": { "cutscene": "rocket_hideout_b3f_item_1" },
+	"rocket_hideout_b3f_item_2": { "cutscene": "rocket_hideout_b3f_item_2" },
+	"rocket_hideout_b3f_hidden_1": { "cutscene": "rocket_hideout_b3f_hidden_1" },
+	"rocket_hideout_b4f_item_1": { "cutscene": "rocket_hideout_b4f_item_1" },
+	"rocket_hideout_b4f_item_2": { "cutscene": "rocket_hideout_b4f_item_2" },
+	"rocket_hideout_b4f_item_3": { "cutscene": "rocket_hideout_b4f_item_3" },
+	"rocket_hideout_b4f_hidden_1": { "cutscene": "rocket_hideout_b4f_hidden_1" }
+}

@@ -1,0 +1,539 @@
+{
+	"rocket_hideout_key_drop": {
+		"variants": [
+			{
+				"unless": [
+					"rocket_dropped_lift_key"
+				],
+				"steps": [
+					{
+						"face": "rocket_key",
+						"to": "player"
+					},
+					{
+						"dialogue": "rocket_hideout_b4f_key_dropped"
+					},
+					{
+						"set": [
+							"rocket_dropped_lift_key"
+						]
+					},
+					{
+						"move": "player",
+						"to": [
+							11,
+							3
+						]
+					},
+					{
+						"spawn": "rocket_hideout_b4f_lift_key",
+						"sprite": "object/poke_ball_ground",
+						"cell": [
+							10,
+							2
+						],
+						"facing": "down",
+						"dialogue": "rocket_hideout_b4f_lift_key",
+						"verb": "take",
+						"turn_to_player": false
+					},
+					{
+						"face": "player",
+						"to": "up"
+					}
+				]
+			}
+		]
+	},
+	"rocket_hideout_b4f_lift_key": {
+		"variants": [
+			{
+				"unless": [
+					"got_rocket_hideout_b4f_lift_key"
+				],
+				"steps": [
+					{
+						"despawn": "rocket_hideout_b4f_lift_key"
+					},
+					{
+						"dialogue": "rocket_hideout_b4f_lift_key_got"
+					},
+					{
+						"give": "lift_key",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_rocket_hideout_b4f_lift_key"
+						]
+					}
+				]
+			}
+		]
+	},
+	"giovanni_hideout": {
+		"variants": [
+			{
+				"unless": [
+					"giovanni_hideout_won"
+				],
+				"steps": [
+					{
+						"face": "giovanni",
+						"to": "player"
+					},
+					{
+						"face": "player",
+						"to": "giovanni"
+					},
+					{
+						"dialogue": "giovanni_hideout_intro",
+						"unless": [
+							"giovanni_met"
+						]
+					},
+					{
+						"dialogue": "giovanni_hideout_resume",
+						"if": [
+							"giovanni_met"
+						]
+					},
+					{
+						"champion_card": "giovanni_hideout",
+						"unless": [
+							"giovanni_met"
+						]
+					},
+					{
+						"set": [
+							"giovanni_met"
+						]
+					},
+					{
+						"battle": "giovanni_hideout",
+						"win": [
+							"giovanni_hideout_won"
+						]
+					},
+					{
+						"wait": 0.6,
+						"if": [
+							"giovanni_hideout_won"
+						]
+					},
+					{
+						"dialogue": "giovanni_hideout_won",
+						"if": [
+							"giovanni_hideout_won"
+						]
+					},
+					{
+						"wait": 0.4,
+						"if": [
+							"giovanni_hideout_won"
+						]
+					},
+					{
+						"despawn": "giovanni",
+						"if": [
+							"giovanni_hideout_won"
+						]
+					},
+					{
+						"dialogue": "giovanni_hideout_lost",
+						"unless": [
+							"giovanni_hideout_won"
+						]
+					},
+					{
+						"wake_up": true,
+						"unless": [
+							"giovanni_hideout_won"
+						]
+					},
+					{
+						"move": "player",
+						"to": [
+							25,
+							3
+						]
+					},
+					{
+						"face": "player",
+						"to": "up"
+					},
+					{
+						"spawn": "rocket_hideout_b4f_silph_scope",
+						"sprite": "object/poke_ball_ground",
+						"cell": [
+							25,
+							2
+						],
+						"facing": "down",
+						"dialogue": "rocket_hideout_b4f_silph_scope",
+						"verb": "take",
+						"turn_to_player": false
+					},
+					{
+						"moment": "giovanni"
+					}
+				]
+			}
+		]
+	},
+	"rocket_hideout_b4f_silph_scope": {
+		"variants": [
+			{
+				"unless": [
+					"got_rocket_hideout_b4f_silph_scope"
+				],
+				"steps": [
+					{
+						"despawn": "rocket_hideout_b4f_silph_scope"
+					},
+					{
+						"dialogue": "rocket_hideout_b4f_silph_scope_got"
+					},
+					{
+						"give": "silph_scope",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_rocket_hideout_b4f_silph_scope"
+						]
+					}
+				]
+			}
+		]
+	},
+	"rocket_hideout_b1f_item_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_rocket_hideout_b1f_item_1"
+				],
+				"steps": [
+					{
+						"despawn": "rocket_hideout_b1f_item_1"
+					},
+					{
+						"give": "escape_rope",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_rocket_hideout_b1f_item_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"rocket_hideout_b1f_item_2": {
+		"variants": [
+			{
+				"unless": [
+					"got_rocket_hideout_b1f_item_2"
+				],
+				"steps": [
+					{
+						"despawn": "rocket_hideout_b1f_item_2"
+					},
+					{
+						"give": "super_potion",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_rocket_hideout_b1f_item_2"
+						]
+					}
+				]
+			}
+		]
+	},
+	"rocket_hideout_b1f_hidden_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_rocket_hideout_b1f_hidden_1"
+				],
+				"steps": [
+					{
+						"give": "revive",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_rocket_hideout_b1f_hidden_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"rocket_hideout_b2f_item_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_rocket_hideout_b2f_item_1"
+				],
+				"steps": [
+					{
+						"despawn": "rocket_hideout_b2f_item_1"
+					},
+					{
+						"give": "moon_stone",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_rocket_hideout_b2f_item_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"rocket_hideout_b2f_item_2": {
+		"variants": [
+			{
+				"unless": [
+					"got_rocket_hideout_b2f_item_2"
+				],
+				"steps": [
+					{
+						"despawn": "rocket_hideout_b2f_item_2"
+					},
+					{
+						"give": "nugget",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_rocket_hideout_b2f_item_2"
+						]
+					}
+				]
+			}
+		]
+	},
+	"rocket_hideout_b2f_item_3": {
+		"variants": [
+			{
+				"unless": [
+					"got_rocket_hideout_b2f_item_3"
+				],
+				"steps": [
+					{
+						"despawn": "rocket_hideout_b2f_item_3"
+					},
+					{
+						"give": "super_potion",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_rocket_hideout_b2f_item_3"
+						]
+					}
+				]
+			}
+		]
+	},
+	"rocket_hideout_b2f_item_4": {
+		"variants": [
+			{
+				"unless": [
+					"got_rocket_hideout_b2f_item_4"
+				],
+				"steps": [
+					{
+						"despawn": "rocket_hideout_b2f_item_4"
+					},
+					{
+						"give": "super_potion",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_rocket_hideout_b2f_item_4"
+						]
+					}
+				]
+			}
+		]
+	},
+	"rocket_hideout_b3f_item_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_rocket_hideout_b3f_item_1"
+				],
+				"steps": [
+					{
+						"despawn": "rocket_hideout_b3f_item_1"
+					},
+					{
+						"give": "super_potion",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_rocket_hideout_b3f_item_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"rocket_hideout_b3f_item_2": {
+		"variants": [
+			{
+				"unless": [
+					"got_rocket_hideout_b3f_item_2"
+				],
+				"steps": [
+					{
+						"despawn": "rocket_hideout_b3f_item_2"
+					},
+					{
+						"give": "rare_candy",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_rocket_hideout_b3f_item_2"
+						]
+					}
+				]
+			}
+		]
+	},
+	"rocket_hideout_b3f_hidden_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_rocket_hideout_b3f_hidden_1"
+				],
+				"steps": [
+					{
+						"give": "nugget",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_rocket_hideout_b3f_hidden_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"rocket_hideout_b4f_item_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_rocket_hideout_b4f_item_1"
+				],
+				"steps": [
+					{
+						"despawn": "rocket_hideout_b4f_item_1"
+					},
+					{
+						"give": "super_potion",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_rocket_hideout_b4f_item_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"rocket_hideout_b4f_item_2": {
+		"variants": [
+			{
+				"unless": [
+					"got_rocket_hideout_b4f_item_2"
+				],
+				"steps": [
+					{
+						"despawn": "rocket_hideout_b4f_item_2"
+					},
+					{
+						"give": "revive",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_rocket_hideout_b4f_item_2"
+						]
+					}
+				]
+			}
+		]
+	},
+	"rocket_hideout_b4f_item_3": {
+		"variants": [
+			{
+				"unless": [
+					"got_rocket_hideout_b4f_item_3"
+				],
+				"steps": [
+					{
+						"despawn": "rocket_hideout_b4f_item_3"
+					},
+					{
+						"give": "super_potion",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_rocket_hideout_b4f_item_3"
+						]
+					}
+				]
+			}
+		]
+	},
+	"rocket_hideout_b4f_hidden_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_rocket_hideout_b4f_hidden_1"
+				],
+				"steps": [
+					{
+						"give": "super_potion",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_rocket_hideout_b4f_hidden_1"
+						]
+					}
+				]
+			}
+		]
+	}
+}

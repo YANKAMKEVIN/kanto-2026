@@ -16,6 +16,8 @@ var remaining: int = 0
 var status_cured: StringName = StatusRules.NONE
 ## Sexe du Pokémon (accord du résultat : « … n'est plus empoisonnée. »).
 var gender: Pokemon.Gender = Pokemon.Gender.NONE
+## Vrai si un Rappel a ranimé le Pokémon (jalon 20 : « … reprend connaissance ! »).
+var revived: bool = false
 
 
 ## Vrai si l'objet a servi (un exemplaire en moins, effet appliqué).

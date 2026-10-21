@@ -1,0 +1,173 @@
+{
+	"celadon_gym_lass_lila_before": {
+		"speaker": "Fillette Lila",
+		"pages": [
+			"Chut… Les fleurs n'aiment pas le bruit."
+		]
+	},
+	"celadon_gym_lass_lila_defeated": {
+		"speaker": "Fillette Lila",
+		"pages": [
+			"Au moins, tu as été silencieux."
+		]
+	},
+	"celadon_gym_lass_lila_after": {
+		"speaker": "Fillette Lila",
+		"pages": [
+			"Erika n'aime pas qu'on\ncoure dans la serre."
+		]
+	},
+	"celadon_gym_lass_capucine_before": {
+		"speaker": "Fillette Capucine",
+		"pages": [
+			"Tu as coupé l'arbuste ?",
+			"Erika va le remarquer."
+		]
+	},
+	"celadon_gym_lass_capucine_defeated": {
+		"speaker": "Fillette Capucine",
+		"pages": [
+			"Mes fleurs sont fanées…"
+		]
+	},
+	"celadon_gym_lass_capucine_after": {
+		"speaker": "Fillette Capucine",
+		"pages": [
+			"Ici, chaque plante a un nom.",
+			"Je les connais toutes."
+		]
+	},
+	"celadon_gym_beauty_violette_before": {
+		"speaker": "Beauté Violette",
+		"pages": [
+			"L'élégance, c'est aussi\nsavoir se défendre."
+		]
+	},
+	"celadon_gym_beauty_violette_defeated": {
+		"speaker": "Beauté Violette",
+		"pages": [
+			"Perdre avec élégance, c'est déjà ça."
+		]
+	},
+	"celadon_gym_beauty_violette_after": {
+		"speaker": "Beauté Violette",
+		"pages": [
+			"Je viens ici pour le calme.",
+			"Et pour Erika, bien sûr."
+		]
+	},
+	"celadon_gym_jr_trainer_apolline_before": {
+		"speaker": "Jeune Dresseuse Apolline",
+		"pages": [
+			"Mes Pokémon poussent aussi vite\nque les plantes de la serre !"
+		]
+	},
+	"celadon_gym_jr_trainer_apolline_defeated": {
+		"speaker": "Jeune Dresseuse Apolline",
+		"pages": [
+			"Il leur faut encore un peu de soleil."
+		]
+	},
+	"celadon_gym_jr_trainer_apolline_after": {
+		"speaker": "Jeune Dresseuse Apolline",
+		"pages": [
+			"Le bassin, au fond, c'est\nl'endroit préféré d'Erika."
+		]
+	},
+	"celadon_gym_cooltrainer_camelia_before": {
+		"speaker": "Topdresseuse Camélia",
+		"pages": [
+			"Personne ne réveille Erika\nsans passer par moi."
+		]
+	},
+	"celadon_gym_cooltrainer_camelia_defeated": {
+		"speaker": "Topdresseuse Camélia",
+		"pages": [
+			"Bien. Tu as le droit de la déranger."
+		]
+	},
+	"celadon_gym_cooltrainer_camelia_after": {
+		"speaker": "Topdresseuse Camélia",
+		"pages": [
+			"Erika t'attend. Elle ne t'a\nsans doute pas entendu arriver."
+		]
+	},
+	"celadon_gym_erika": {
+		"speaker": "Erika",
+		"variants": [
+			{
+				"if": [
+					"badge_rainbow"
+				],
+				"unless": [
+					"tm21_received"
+				],
+				"cutscene": "celadon_gym_erika_tm_late"
+			},
+			{
+				"if": [
+					"badge_rainbow"
+				],
+				"pages": [
+					"Reviens quand tu veux. Les\nfleurs changent à chaque saison."
+				]
+			},
+			{
+				"cutscene": "celadon_gym_erika"
+			}
+		]
+	},
+	"celadon_gym_erika_intro": {
+		"speaker": "Erika",
+		"pages": [
+			"Oh… Bonjour. Je crois\nque je m'étais assoupie.",
+			"Je suis Erika. Les plantes\nm'apprennent la patience.",
+			"Voyons ce que tu as appris, toi."
+		]
+	},
+	"celadon_gym_erika_resume": {
+		"speaker": "Erika",
+		"pages": [
+			"Te revoilà.",
+			"Reprenons, sans nous presser."
+		]
+	},
+	"celadon_gym_erika_lost": {
+		"speaker": "Erika",
+		"pages": [
+			"Les plantes repoussent toujours.",
+			"Reviens quand tu seras prêt."
+		]
+	},
+	"celadon_gym_erika_won": {
+		"speaker": "Erika",
+		"pages": [
+			"Tu as gagné. Avec beaucoup d'élégance."
+		]
+	},
+	"celadon_gym_erika_badge": {
+		"speaker": "Erika",
+		"pages": [
+			"{player} reçoit le Badge Prisme !"
+		]
+	},
+	"celadon_gym_erika_tm": {
+		"speaker": "Erika",
+		"pages": [
+			"Prends aussi ceci."
+		]
+	},
+	"celadon_gym_erika_tm_use": {
+		"speaker": "Erika",
+		"pages": [
+			"{player} reçoit la CT21 Méga-Sangsue !",
+			"Elle reprend des forces à l'adversaire."
+		]
+	},
+	"celadon_gym_erika_tm_late": {
+		"speaker": "Erika",
+		"pages": [
+			"Attends. J'ai oublié de te donner ceci."
+		]
+	}
+}

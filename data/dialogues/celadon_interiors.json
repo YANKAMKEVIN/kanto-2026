@@ -1,0 +1,91 @@
+{
+	"celadon_mansion_old_lady": {
+		"speaker": "Vieille dame",
+		"pages": [
+			"Bienvenue. Je reçois rarement\ndes visiteurs, mais j'aime ça."
+		]
+	},
+	"celadon_mansion_1f_man": {
+		"speaker": "Habitant",
+		"pages": [
+			"Cette résidence est la\nplus chic de la ville.",
+			"Les loyers aussi, d'ailleurs."
+		]
+	},
+	"celadon_mansion_1f_woman": {
+		"speaker": "Habitante",
+		"pages": [
+			"La dame du rez-de-chaussée\nconnaît tout le monde ici.",
+			"Et tous les Pokémon du quartier."
+		]
+	},
+	"celadon_mansion_2f_man": {
+		"speaker": "Habitant",
+		"pages": [
+			"Les murs sont épais. On\nn'entend jamais les voisins.",
+			"C'est reposant."
+		]
+	},
+	"celadon_mansion_2f_woman": {
+		"speaker": "Habitante",
+		"pages": [
+			"Mes plantes poussent mieux depuis\nque j'ai suivi les conseils d'Erika."
+		]
+	},
+	"celadon_chief_man": {
+		"speaker": "Habitant",
+		"pages": [
+			"Mon fils veut devenir Dresseur.",
+			"Moi, j'aurais préféré qu'il\nreprenne la boutique."
+		]
+	},
+	"celadon_chief_woman": {
+		"speaker": "Habitante",
+		"pages": [
+			"Le soir, on entendait la\nmusique du Casino jusqu'ici.",
+			"Depuis qu'il est fermé, on dort mieux."
+		]
+	},
+	"celadon_hotel_reception": {
+		"speaker": "Réceptionniste",
+		"pages": [
+			"Bienvenue.",
+			"Nous sommes complets toute\nla semaine, désolée."
+		]
+	},
+	"celadon_hotel_guest_1": {
+		"speaker": "Client",
+		"pages": [
+			"Je suis venu pour le Casino.",
+			"“Fermé pour inventaire”… Drôle de\nfaçon de commencer des vacances."
+		]
+	},
+	"celadon_hotel_guest_2": {
+		"speaker": "Client",
+		"pages": [
+			"Ma chambre donne sur les jardins.",
+			"Le matin, tout sent la fleur."
+		]
+	},
+	"celadon_restaurant_waiter": {
+		"speaker": "Serveur",
+		"pages": [
+			"Une table ? Il faudra patienter un peu.",
+			"Nous sommes pleins depuis ce matin."
+		]
+	},
+	"celadon_restaurant_gambler": {
+		"speaker": "Client",
+		"pages": [
+			"J'ai tout perdu au Casino hier soir.",
+			"Et ce matin, ils ont\nfermé “pour inventaire”."
+		]
+	},
+	"celadon_restaurant_diner": {
+		"speaker": "Convive",
+		"pages": [
+			"Ici, tout est bon.",
+			"Surtout les desserts."
+		]
+	}
+}

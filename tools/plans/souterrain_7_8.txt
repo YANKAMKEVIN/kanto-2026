@@ -1,0 +1,53 @@
+# Souterrain ouest-est (Route 7 ↔ Route 8) — grille fonctionnelle (jalon 20, dossier 23 §4, §20.1 ;
+# préparée le 2026-10-14). Contrôle : tools/art/plan_check_routes_j20.py (profil souterrain_7_8).
+#
+# 48 × 10 cases (enveloppe du dossier, §4) ; nord en haut ; x = colonne 0..47, y = rangée 0..9.
+# Aucune rencontre, aucun Dresseur, aucune herbe (RB). Couloir de 2 cases de large AU MOINS partout
+# (le compagnon suit) : chaque case praticable appartient à un carré 2 × 2 de sol praticable.
+# Pas de labyrinthe : un seul itinéraire (ouest → est) et deux impasses à objet.
+#
+# Composition, de l'ouest (Route 7) à l'est (Route 8) :
+#   - escalier ouest E (2, 5..6) → bâtiment d'entrée de la Route 7 ; arrivée en (3, 5..6) tournée → ;
+#   - couloir ouest (x 3..25, y 5..6) ;
+#   - NICHE LATÉRALE au tiers ouest (x 8..15, y 2..4) : bancs (9..10, 2) et (13..14, 2), carrelage
+#     fissuré, lampe qui grésille ; Pépite cachée en (15, 2) ;
+#   - COUDE au milieu : puits vertical (x 24..25, y 1..8) ; l'itinéraire descend de la rangée 5..6
+#     à la rangée 7..8 ; la GALERIE EN COUDE part du haut du puits vers l'est (x 26..34, y 1..2) :
+#     impasse, avec l'objet caché (Super Potion à la place de l'Huile, valeur par défaut §21) en
+#     (34, 1) ;
+#   - couloir est (x 26..44, y 7..8) ; escalier est E (45, 7..8) → bâtiment d'entrée de la Route 8 ;
+#     arrivée en (44, 7..8) tournée ← (RB : escalier ouest bas, escalier est haut ; ici inversé en
+#     hauteur, sans conséquence).
+# Lumière : néons froids réguliers, un tube qui clignote lentement (art). Son : écho des pas.
+#
+# Légende : K mur (bloqué)   . sol (praticable)   E escalier (praticable, STEP_ON vers le bâtiment
+# d'entrée)   b banc (bloqué)   n lampe / pilier (bloqué)
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 48 caractères), puis POSITIONS.
+
+PRATICABLES .E
+
+GRILLE 48 10
+00 KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+01 KKKKKKKKKKKKKKKKKKKKKKKK...........KKKKKKKKKKKKK
+02 KKKKKKKKKbb..bb.KKKKKKKK...........KKKKKKKKKKKKK
+03 KKKKKKKKn.......KKKKKKKK..KKKKKKKKKKKKKKKKKKKKKK
+04 KKKKKKKK........KKKKKKKK..KKKKKKKKKKKKKKKKKKKKKK
+05 KKE.......................KKKKKKKKKKKKKKKKKKKKKK
+06 KKE.......................KKKKKKKKKKKKKKKKKKKKKK
+07 KKKKKKKKKKKKKKKKKKKKKKKK.....................EKK
+08 KKKKKKKKKKKKKKKKKKKKKKKK.....................EKK
+09 KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+FIN
+
+POSITIONS
+escalier_ouest      escalier       2,5..6       libre   vers=underground_entrance_r7 spawn=from_underground  # STEP_ON ← : remonte au bâtiment d'entrée de la Route 7
+from_entree_r7      spawn          3,5..6       libre   # arrivée depuis la Route 7, tournée →
+escalier_est        escalier       45,7..8      libre   vers=underground_entrance_r8 spawn=from_underground  # STEP_ON → : remonte au bâtiment d'entrée de la Route 8
+from_entree_r8      spawn          44,7..8      libre   # arrivée depuis la Route 8, tournée ←
+souterrain_hidden_1 cache          15,2         bloque  role=O1 item=nugget indice=carrelage  # Pépite : carrelage fissuré, fond de la niche
+souterrain_hidden_2 cache          34,1         bloque  role=O2 item=super_potion indice=carrelage  # Super Potion (Huile RB) : bout de la galerie en coude
+repere_niche        repere         8..15,2..4   libre   role=niche  # niche latérale (bancs, carrelage fissuré, lampe)
+repere_coude        repere         24..25,1..8  libre   role=coude  # puits du coude
+repere_galerie      repere         26..34,1..2  libre   role=galerie  # galerie en coude (impasse)
+FIN

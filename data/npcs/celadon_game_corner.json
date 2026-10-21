@@ -1,0 +1,31 @@
+{
+	"game_corner_rocket": {
+		"cell": [9, 5], "facing": "up", "sprite": "rocket_grunt_m",
+		"dialogue": "game_corner_rocket_defeated",
+		"unless": ["beaten_celadon_game_corner_rocket"],
+		"trainer": {
+			"id": "celadon_game_corner_rocket", "sight": 1,
+			"before": "game_corner_rocket_before", "defeated": "game_corner_rocket_defeated",
+			"leave": [[0, 3], [-5, 3], [-5, 8]]
+		}
+	},
+	"game_corner_clerk": {
+		"cell": [5, 6], "facing": "down", "sprite": "clerk", "dialogue": "game_corner_clerk"
+	},
+	"game_corner_client_1": {
+		"cell": [2, 10], "facing": "left", "sprite": "old_man",
+		"dialogue": "game_corner_client_1"
+	},
+	"game_corner_client_2": {
+		"cell": [8, 11], "facing": "left", "sprite": "passenger_f",
+		"dialogue": "game_corner_client_2"
+	},
+	"game_corner_client_3": {
+		"cell": [11, 15], "facing": "right", "sprite": "gambler",
+		"dialogue": "game_corner_client_3"
+	},
+	"game_corner_client_4": {
+		"cell": [17, 13], "facing": "right", "sprite": "gentleman",
+		"dialogue": "game_corner_client_4"
+	}
+}

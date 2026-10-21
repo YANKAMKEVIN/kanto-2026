@@ -1,0 +1,23 @@
+{
+	"fishing_cast": {
+		"narration": true,
+		"pages": ["{player} lance sa ligne…"]
+	},
+	"fishing_bite": {
+		"narration": true,
+		"pages": ["Oh ! Ça mord !"]
+	},
+	"fishing_nothing": {
+		"narration": true,
+		"pages": ["Rien ne mord…"]
+	},
+	"fishing_no_water": {
+		"narration": true,
+		"pages": ["On ne peut pas pêcher ici."]
+	},
+	"water_choice": {
+		"narration": true,
+		"pages": ["Que faire ?"],
+		"choice": { "confirm": "PÊCHER", "cancel": "SURFER", "cancel_pages": [] }
+	}
+}

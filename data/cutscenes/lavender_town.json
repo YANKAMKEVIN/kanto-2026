@@ -1,0 +1,12 @@
+{
+	"lavender_reached": {
+		"variants": [
+			{
+				"unless": ["lavender_reached"],
+				"steps": [
+					{ "set": ["lavender_reached"] }
+				]
+			}
+		]
+	}
+}

@@ -60,14 +60,23 @@ const _EFFECT_KEYS: Dictionary[MoveEffect.Kind, Array] = {
 	MoveEffect.Kind.DISABLE: ["kind", "turns"],
 	MoveEffect.Kind.REST: ["kind"],
 	MoveEffect.Kind.SELF_KO: ["kind"],
-	MoveEffect.Kind.CHARGE: ["kind", "texts", "invulnerable"],
+	MoveEffect.Kind.CHARGE: ["kind", "texts", "invulnerable", "stat_up"],
 	MoveEffect.Kind.TELEPORT: ["kind"],
 	MoveEffect.Kind.COINS: ["kind", "per_level"],
+	MoveEffect.Kind.REQUIRES_SLEEP: ["kind"],
+	MoveEffect.Kind.FORCE_SWITCH: ["kind"],
+	MoveEffect.Kind.RECOIL_DAMAGE: ["kind", "fraction"],
+	MoveEffect.Kind.RECHARGE: ["kind"],
+	MoveEffect.Kind.OHKO: ["kind"],
+	MoveEffect.Kind.HEAL: ["kind", "fraction"],
+	MoveEffect.Kind.SCREEN: ["kind", "screen"],
+	MoveEffect.Kind.HAZE: ["kind"],
 }
 ## Clés d'effet facultatives (toutes les autres de [constant _EFFECT_KEYS] sont obligatoires).
 ## « amount » : obligatoire pour FIXED_DAMAGE « value » seulement ([method _parse_effect]) ;
 ## « invulnerable » : CHARGE seulement (jalon 14).
-const _EFFECT_OPTIONAL: Array[String] = ["chance", "immune_types", "amount", "invulnerable"]
+const _EFFECT_OPTIONAL: Array[String] = ["chance", "immune_types", "amount", "invulnerable",
+	"stat_up"]
 ## Bornes des nombres de tours de TRAP et DISABLE, et des dégâts de FIXED_DAMAGE « value ».
 const _EFFECT_MAX_TURNS: int = 8
 const _FIXED_VALUE_MAX: int = 999
@@ -601,6 +610,17 @@ func _parse_effect(value: Variant, where: String) -> MoveEffect:
 	if effect.kind in [MoveEffect.Kind.DRAIN, MoveEffect.Kind.TRAP, MoveEffect.Kind.DISABLE,
 			MoveEffect.Kind.REST, MoveEffect.Kind.SELF_KO]:
 		return effect if _read_effect_j12(entry, effect, where) and ok else null
+	# Jalon 19 : seule RECOIL_DAMAGE a une valeur (« fraction », lue comme celle du drain).
+	if effect.kind in [MoveEffect.Kind.REQUIRES_SLEEP, MoveEffect.Kind.FORCE_SWITCH,
+			MoveEffect.Kind.RECOIL_DAMAGE, MoveEffect.Kind.RECHARGE, MoveEffect.Kind.OHKO,
+			MoveEffect.Kind.HEAL, MoveEffect.Kind.HAZE]:
+		return effect if _read_effect_j12(entry, effect, where) and ok else null
+	if effect.kind == MoveEffect.Kind.SCREEN:
+		if entry.get("screen") is String and MoveEffect.SCREENS.has(StringName(entry["screen"])):
+			effect.screen = StringName(entry["screen"])
+			return effect if ok else null
+		return _null_fail("%s : « screen » vaut %s" % [where,
+			", ".join(PackedStringArray(MoveEffect.SCREENS))])
 	if effect.kind == MoveEffect.Kind.COINS:
 		if entry.has("per_level"):
 			if _read_int(entry["per_level"], 1, _COINS_PER_LEVEL_MAX, where + " per_level"):
@@ -692,6 +712,12 @@ func _parse_charge(entry: Dictionary, effect: MoveEffect, where: String) -> Move
 		if not entry["invulnerable"] is bool:
 			return _null_fail("%s : « invulnerable » vaut true ou false" % where)
 		effect.invulnerable = entry["invulnerable"]
+	if entry.has("stat_up"):
+		var stat: Variant = entry["stat_up"]
+		if not stat is String or not MoveEffect.STAGE_STATS.has(StringName(stat)):
+			return _null_fail("%s : « stat_up » vaut %s" % [where,
+				", ".join(PackedStringArray(MoveEffect.STAGE_STATS))])
+		effect.stat_up = StringName(stat)
 	return effect
 
 

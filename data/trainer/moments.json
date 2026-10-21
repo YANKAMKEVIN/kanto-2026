@@ -27,6 +27,10 @@
 		"bill_restored": {
 			"title": "Léo a retrouvé forme humaine",
 			"detail": ""
+		},
+		"giovanni": {
+			"title": "Le repaire sous le Casino",
+			"detail": "Giovanni est parti. Le Scope Sylphe est à toi."
 		}
 	},
 	"outcomes": {
@@ -49,6 +53,10 @@
 		"cerulean_city": {
 			"title": "Arrivée à Azuria",
 			"detail": "Une ville d'eau et de lumière."
+		},
+		"celadon_city": {
+			"title": "Arrivée à Céladopole",
+			"detail": "La ville des fleurs et du commerce."
 		}
 	}
 }

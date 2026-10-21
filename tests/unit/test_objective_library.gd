@@ -16,9 +16,13 @@ func test_real_data_loads_without_error() -> void:
 	assert_eq(library.get_errors().size(), 0)
 	# Jalon 15 (T15, jalon-15.md §2.7.9) : « explorer Carmin-sur-Mer. » puis « rejoindre
 	# Carmin-sur-Mer, au sud. » en tête (ordre du voyage), devant le S.S. Anne du J14.
-	# Jalon 16 (T13, jalon-16.md §2.9) : après le rival n° 4 et la CS01, en tête ; (T14) l'Arène
-	# de Carmin devant (dossier 19 §0.5, objectifs R-9).
-	assert_eq(library.get_ids(), [&"face_surge", &"open_surge_barrier",
+	# Jalon 18 (T16, jalon-18.md §4.13) : ses cinq objectifs en tête, le plus avancé d'abord
+	# (test_j18_data) ; derrière eux, ceux du jalon 16 (T13, T14 : Arène de Carmin, R-9).
+	# Jalon 19 (clôture T24, dossier 22 §15.7) : ses deux objectifs devant ceux du J18.
+	# Jalon 20 (T17, jalon-20.md §2.11) : ses quatre objectifs en tête, le plus avancé d'abord.
+	assert_eq(library.get_ids(), [&"back_to_tower", &"search_game_corner", &"explore_celadon",
+		&"go_celadon", &"see_the_ghosts", &"climb_tower", &"tower_later", &"visit_tower", &"reach_lavender",
+		&"cross_dark_cave", &"cross_route_9", &"face_surge", &"open_surge_barrier",
 		&"go_vermilion_gym", &"hm01_cascade_badge", &"help_captain",
 		&"explore_vermilion", &"go_vermilion", &"ss_anne", &"help_bill",
 		&"go_cerulean_cape",
@@ -74,7 +78,12 @@ func test_q4_nothing_before_the_rival_battle_then_reach_viridian() -> void:
 ## (T28) `route_4_reached` par celle du déclencheur du sas (data/cutscenes/route_4.json), posé
 ## aussi sur la vraie Route 4 du J13 (mêmes cases).
 ## Jalon 16 (T14) : `cut_vermilion_gym_bush` sera levé par la scène de Coupe de l'arbuste (T15).
-const _PENDING_FLAGS: Array[StringName] = [&"viridian_arrived", &"cut_vermilion_gym_bush"]
+## Jalon 19 (T16) : `tower_medium_talked` (objectif « revenir plus tard à la Tour », J18) n'est plus
+## levé depuis que la gardienne joue la scène `tower_guardian` (Q-1 : objectifs du J19).
+## Jalon 20 (T17) : `game_corner_switch` et `got_rocket_hideout_b4f_silph_scope` sont levés par le
+## Casino et le repaire (T21).
+const _PENDING_FLAGS: Array[StringName] = [&"viridian_arrived", &"cut_vermilion_gym_bush",
+	&"tower_medium_talked", &"game_corner_switch", &"got_rocket_hideout_b4f_silph_scope"]
 
 
 ## Jalon 10 (dossier 12 §16, jalon-10.md §2.10) : « continuer vers le nord. » jusqu'à Argenta,
@@ -345,3 +354,26 @@ func test_bill_objectives_in_order() -> void:
 	assert_eq(library.current(flags), "le S.S. Anne fait escale à Carmin-sur-Mer.")
 	for id: StringName in [&"ss_anne", &"help_bill", &"go_cerulean_cape"]:
 		assert_false(library.is_draft(id), "texte validé (dossier 17 §15)")
+
+
+## Jalon 20 (T17, jalon-20.md §2.11, textes 56 à 59) : de la Route 8 à la Tour, quatre états en
+## tête de liste, chacun efface le précédent ; les objectifs de la Tour (J19) passent derrière.
+func test_j20_celadon_objectives_in_order() -> void:
+	var library := ObjectiveLibrary.new()
+	library.load_file()
+	var flags := StoryFlags.new()
+	for flag: StringName in [&"badge_boulder", &"cerulean_reached", &"badge_cascade",
+			&"lavender_reached", &"tower_stairs_open", &"tower_ghost_met"]:
+		flags.set_flag(flag)
+	assert_eq(library.current_id(flags), &"see_the_ghosts", "avant la Route 8 : la Tour")
+	flags.set_flag(&"route_8_reached")
+	assert_eq(library.current(flags), "rejoindre Céladopole.", "texte 56")
+	flags.set_flag(&"celadon_reached")
+	assert_eq(library.current(flags), "explorer Céladopole.", "texte 57")
+	flags.set_flag(&"game_corner_switch")
+	assert_eq(library.current(flags), "fouiller sous le Casino.", "texte 58")
+	flags.set_flag(&"got_rocket_hideout_b4f_silph_scope")
+	assert_eq(library.current(flags), "retourner à la Tour Pokémon.", "texte 59")
+	for id: StringName in [&"back_to_tower", &"search_game_corner", &"explore_celadon",
+			&"go_celadon"]:
+		assert_false(library.is_draft(id), "texte validé (dossier 23 §20.8)")

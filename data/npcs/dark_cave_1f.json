@@ -1,0 +1,36 @@
+{
+	"g1_roger": {
+		"cell": [24, 8], "facing": "right", "sprite": "hiker",
+		"dialogue": "dark_cave_roger_after",
+		"trainer": {
+			"id": "dark_cave_roger", "sight": 4,
+			"before": "dark_cave_roger_before", "defeated": "dark_cave_roger_defeated"
+		}
+	},
+	"g2_simon": {
+		"cell": [13, 15], "facing": "right", "sprite": "pokemaniac",
+		"dialogue": "dark_cave_simon_after",
+		"trainer": {
+			"id": "dark_cave_simon", "sight": 5,
+			"before": "dark_cave_simon_before", "defeated": "dark_cave_simon_defeated"
+		}
+	},
+	"g5_yanis": {
+		"cell": [35, 41], "facing": "left", "sprite": "pokemaniac",
+		"dialogue": "dark_cave_yanis_after",
+		"trainer": {
+			"id": "dark_cave_yanis", "sight": 5,
+			"before": "dark_cave_yanis_before", "defeated": "dark_cave_yanis_defeated"
+		}
+	},
+	"dark_cave_1f_item_1": {
+		"cell": [39, 20], "facing": "down", "sprite": "object/poke_ball_ground",
+		"dialogue": "dark_cave_1f_item_1", "verb": "take", "turn_to_player": false,
+		"unless": ["got_dark_cave_1f_item_1"]
+	},
+	"dark_cave_1f_item_2": {
+		"cell": [17, 46], "facing": "down", "sprite": "object/poke_ball_ground",
+		"dialogue": "dark_cave_1f_item_2", "verb": "take", "turn_to_player": false,
+		"unless": ["got_dark_cave_1f_item_2"]
+	}
+}

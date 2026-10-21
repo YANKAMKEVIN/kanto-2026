@@ -25,6 +25,7 @@
 	"route_6_gate_rule_w": {
 		"variants": [
 			{
+				"unless": ["saffron_gates_open"],
 				"steps": [
 					{ "face": "saffron_guard", "to": "player" },
 					{ "face": "player", "to": "saffron_guard" },
@@ -37,6 +38,7 @@
 	"route_6_gate_rule_e": {
 		"variants": [
 			{
+				"unless": ["saffron_gates_open"],
 				"steps": [
 					{ "face": "saffron_guard", "to": "player" },
 					{ "face": "player", "to": "saffron_guard" },
@@ -49,6 +51,7 @@
 	"route_6_gate_rule_s": {
 		"variants": [
 			{
+				"unless": ["saffron_gates_open"],
 				"steps": [
 					{ "face": "player", "to": "up" },
 					{ "dialogue": "route_6_guard" },

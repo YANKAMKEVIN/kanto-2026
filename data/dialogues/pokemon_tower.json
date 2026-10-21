@@ -1,0 +1,68 @@
+{
+	"pokemon_tower_keeper": {
+		"speaker": "Gardien",
+		"pages": [
+			"Bienvenue à la Tour Pokémon.",
+			"On vient ici se souvenir de ceux\nqui nous ont accompagnés.",
+			"Prends ton temps."
+		]
+	},
+	"pokemon_tower_visitor_f": {
+		"speaker": "Visiteuse",
+		"pages": ["Mon Rattata m'a suivi pendant\nquinze ans.", "Il était têtu, et je l'adorais."]
+	},
+	"pokemon_tower_visitor_m": {
+		"speaker": "Visiteur",
+		"pages": ["…", "Je n'ai pas grand-chose à dire.\nJe suis juste venu."]
+	},
+	"pokemon_tower_girl": {
+		"speaker": "Jeune fille",
+		"pages": ["Je viens chaque semaine.\nPour qu'il ne se sente pas seul."]
+	},
+	"pokemon_tower_exorcist": {
+		"speaker": "Exorciste",
+		"variants": [
+			{
+				"if": ["tower_stairs_open"],
+				"pages": ["Je prie pour ceux qui reposent ici…\net pour ceux qui sont montés."]
+			},
+			{
+				"unless": ["tower_stairs_open"],
+				"cutscene": "tower_guardian"
+			}
+		]
+	},
+	"tower_guardian_worried": {
+		"speaker": "Exorciste",
+		"pages": [
+			"Ah… C'est vous.\nPardonnez-moi, je priais.",
+			"Les esprits sont agités, ces derniers\njours. Même ici, on ne trouve plus le calme.",
+			"M. Fuji est monté il y a plusieurs\njours. Il n'est jamais redescendu.",
+			"Si vous montez…\nrestez près de vos Pokémon."
+		]
+	},
+	"pokemon_tower_grave_1": {
+		"narration": true,
+		"pages": ["Ici repose Plumo. Il chantait pour\nréveiller toute la maison."]
+	},
+	"pokemon_tower_grave_2": {
+		"narration": true,
+		"pages": ["Pour Caillou, qui n'a jamais eu\npeur de rien."]
+	},
+	"pokemon_tower_grave_3": {
+		"narration": true,
+		"pages": ["Tu nous as appris la patience.\nMerci, Mousse."]
+	},
+	"pokemon_tower_grave_4": {
+		"narration": true,
+		"pages": ["À notre Rondoudou, qui endormait\nles enfants."]
+	},
+	"pokemon_tower_grave_5": {
+		"narration": true,
+		"pages": ["Repose en paix, vieil ami.\nOn se reverra."]
+	},
+	"pokemon_tower_grave": {
+		"narration": true,
+		"pages": ["Une tombe bien entretenue."]
+	}
+}

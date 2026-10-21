@@ -64,7 +64,8 @@ static func check_params(params: Dictionary) -> PackedStringArray:
 
 ## Calcule [member values] et [member glow] avec les sources [param lights] : { "center":
 ## Vector2, "radius": float (pixels), "strength": float, "add": float (facultatif),
-## "color": Color (facultatif) }.
+## "color": Color (facultatif) }. Réglage facultatif « lift » (0 par défaut) : lueur de fond
+## ajoutée à tout le sol, de la teinte « tint ».
 func compute(lights: Array) -> void:
 	var distance := _wall_distance()
 	var ambient := float(_params["ambient"])
@@ -91,6 +92,16 @@ func compute(lights: Array) -> void:
 			var edge := lerpf(edge_min, 1.0, smoothstep(0.0, edge_radius, d))
 			var room := lerpf(room_min, 1.0, smoothstep(0.0, room_radius, d))
 			values[i] = ambient * edge * room
+	# Lumière de fond (facultative, T20) : « lift » ajoute à tout le sol une lueur uniforme de
+	# la teinte de l'étage (Grotte Sombre : sol sombre et voile d'obscurité par-dessus).
+	var lift := float(_params.get("lift", 0.0))
+	if lift > 0.0:
+		var base: Color = _params["tint"]
+		for i: int in width * height:
+			if open_mask[i] == 1:
+				glow[i * 3] = lift * base.r
+				glow[i * 3 + 1] = lift * base.g
+				glow[i * 3 + 2] = lift * base.b
 	for light: Dictionary in lights:
 		_add_light(light, open_mask)
 

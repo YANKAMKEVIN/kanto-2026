@@ -38,8 +38,10 @@ func test_tm_and_other_key_items_toasts_are_unchanged() -> void:
 	assert_false(parcel.obtained)
 	assert_eq(parcel.quantity_text(1), parcel.name.to_upper())
 	assert_eq(parcel.added_text(1), "ajouté aux objets clés")
+	# Jalon 20 (T7, plan §2.7.5) : le Scope Sylphe aussi (toast « obtenu », T-55).
+	assert_true(_items.get_item(&"silph_scope").obtained)
 	for id: StringName in _items.get_ids():
-		if id != &"dome_fossil" and id != &"helix_fossil":
+		if id not in [&"dome_fossil", &"helix_fossil", &"silph_scope"]:
 			assert_false(_items.get_item(id).obtained, "%s : pas « obtained »" % id)
 
 

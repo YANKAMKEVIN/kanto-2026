@@ -1,0 +1,14 @@
+{
+	"fly_takeoff": {
+		"narration": true,
+		"variants": [
+			{ "field": "fly:ready", "pages": ["{pokemon} s'envole très haut !"] }
+		]
+	},
+	"fly_landing": {
+		"narration": true,
+		"variants": [
+			{ "field": "fly:ready", "pages": ["{pokemon} redescend."] }
+		]
+	}
+}

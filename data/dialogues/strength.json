@@ -1,0 +1,44 @@
+{
+	"strength_boulder": {
+		"narration": true,
+		"variants": [
+			{
+				"field": "strength:no_hm",
+				"pages": ["Un gros rocher. Il pourrait être déplacé."]
+			},
+			{
+				"field": "strength:no_badge",
+				"pages": ["Il faut le Badge Prisme pour utiliser Force hors des combats."]
+			},
+			{
+				"field": "strength:no_pokemon",
+				"pages": ["Un gros rocher. Il pourrait être déplacé."]
+			},
+			{
+				"field": "strength:ready",
+				"pages": ["Un gros rocher. Il pourrait être déplacé."],
+				"choice": {
+					"confirm": "UTILISER",
+					"cancel": "LAISSER",
+					"cancel_pages": []
+				}
+			},
+			{
+				"pages": ["Un gros rocher. Il pourrait être déplacé."]
+			}
+		]
+	},
+	"strength_used": {
+		"narration": true,
+		"variants": [
+			{
+				"field": "strength:ready",
+				"pages": ["{pokemon} utilise Force ! Les rochers peuvent être déplacés."]
+			}
+		]
+	},
+	"strength_boulder_fell": {
+		"narration": true,
+		"pages": ["Le rocher a dévalé dans le trou !"]
+	}
+}

@@ -33,7 +33,8 @@ Forêt de Jade, `heros_foret`).
 Code de sortie 1 si un seuil n'est pas tenu.
 
 Option `--halo` (J17 T25, voile d'obscurité) : mesure les captures de `tools/capture_flash.sh`
-(voile posé sur une grotte de `PLANS` ; la carte de QA `qa_flash` est retirée au J17 T28 ; nom
+(voile posé sur une grotte de `PLANS` ; la carte de QA `qa_flash` est retirée au J17 T28 ;
+J18 : Grotte Sombre, `tools/capture_dark_cave_voile.sh` ; nom
 `<sans_voile|dark|lit>_<lieu>.png` + `_vide`) : contraste du héros ≥ 3,0 dans le halo (héros
 contre le sol qu'il recouvre) et **sol hors du halo ≥ 0,10** (cases praticables entièrement à
 l'écran, plus loin du joueur que la fin du fondu : 4 cases sans Flash, 9 avec ;
@@ -57,8 +58,10 @@ PLANS = {
 	"mt_moon_b1f": "tools/plans/mont_selenite_b1f.txt",
 	"mt_moon_b2f": "tools/plans/mont_selenite_b2f.txt",
 	"digletts_cave": "tools/plans/digletts_cave.txt",
+	"dark_cave_1f": "tools/plans/grotte_sombre_1f.txt",
+	"dark_cave_b1f": "tools/plans/grotte_sombre_b1f.txt",
 }
-SOL = set(".gjUVE")
+SOL = set(".gjUVEe")
 PAROI = set("#*")
 SEUIL_SOL = 0.22
 SEUIL_RAPPORT = 2.0

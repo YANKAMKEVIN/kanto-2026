@@ -17,6 +17,9 @@ extends RefCounted
 ## premier de l'équipe (défaut du §0.5).
 ## Jalon 17 (T24, dossier 20 T-17) : « cue » (facultatif) : texte de la mise en scène de la
 ## capacité, jeton `{pokemon}` ([method cue_text]) — « {pokemon} utilise Flash ! ».
+## Passe systèmes 2 (T25b, Téléport et Tunnel hors combat) : une capacité **sans CS**
+## (`"hm": ""`) ne demande que d'être **connue** par un Pokémon de l'équipe (pas de compatibilité
+## par CS) ; jamais NO_HM, NO_BADGE seulement si un badge est donné.
 
 enum State { NO_HM, NO_BADGE, NO_POKEMON, READY }
 
@@ -89,6 +92,12 @@ func hm_of(move: StringName) -> StringName:
 	return _rules.get(move, {}).get(&"hm", &"")
 
 
+## Vrai si [param move] se débloque par une CS ; faux pour une capacité connue seulement
+## (`"hm": ""`, T25b : Téléport, Tunnel) ou inconnue.
+func needs_hm(move: StringName) -> bool:
+	return hm_of(move) != &""
+
+
 ## Texte de la mise en scène de [param move] (« cue »), `{pokemon}` remplacé par
 ## [param pokemon_name] ; "" sans texte ou sans nom.
 func cue_text(move: StringName, pokemon_name: String) -> String:
@@ -102,9 +111,11 @@ func check(move: StringName, party: Party, bag: Bag, flags: StoryFlags, items: I
 		data: PokemonData, companion: Pokemon = null) -> Result:
 	if not _rules.has(move):
 		return Result.new(State.NO_HM)
-	var hm := items.get_item(hm_of(move)) if items != null else null
-	if hm == null or not hm.is_hm() or bag == null or not bag.has(hm.id):
-		return Result.new(State.NO_HM)
+	var hm: ItemData = null
+	if needs_hm(move):
+		hm = items.get_item(hm_of(move)) if items != null else null
+		if hm == null or not hm.is_hm() or bag == null or not bag.has(hm.id):
+			return Result.new(State.NO_HM)
 	var compatible := _compatible_index(move, hm, party, data, companion)
 	var badge: StringName = _rules[move][&"badge"]
 	if badge != &"" and (flags == null or not flags.has_flag(badge)):
@@ -144,8 +155,11 @@ func _named(result: Result, party: Party, data: PokemonData) -> Result:
 	return result
 
 
+## [param hm] null : capacité sans CS, il faut la connaître.
 func _can_use(move: StringName, hm: ItemData, pokemon: Pokemon, data: PokemonData) -> bool:
-	return pokemon.knows_move(move) or data.can_learn_hm(pokemon.species_id, hm.hm_number)
+	if pokemon.knows_move(move):
+		return true
+	return hm != null and data != null and data.can_learn_hm(pokemon.species_id, hm.hm_number)
 
 
 ## « cue » : absent, ou un texte dont les seuls jetons sont `{pokemon}`.

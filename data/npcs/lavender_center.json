@@ -1,0 +1,9 @@
+{
+	"nurse": {
+		"cell": [7, 3], "facing": "down", "sprite": "nurse"
+	},
+	"gentleman": {
+		"cell": [11, 5], "facing": "left", "sprite": "gentleman",
+		"dialogue": "lavender_center_gentleman"
+	}
+}

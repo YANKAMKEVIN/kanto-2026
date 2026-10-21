@@ -18,8 +18,17 @@ extends RefCounted
 ## joueur sur [member target_spawn], un point d'apparition de la **carte courante**
 ## ([member target_map] est alors ignoré). En release, le passage est inerte : le bord reste
 ## simplement bloqué.
+##
+## Passe systèmes 2 (`docs/tech/systemes-2.md` §2.9) : [member style] [constant Style.TELEPORT]
+## = téléporteur de Rouge/Bleu (un [constant STEP_ON] sans direction) ; vers la carte courante,
+## le routeur replace le joueur sans recharger la carte ([method SceneRouter.relocate]). Aucun
+## verrou d'arrivée : apparaître sur un téléporteur ne le déclenche pas (règle de [constant STEP_ON]).
 
-enum Trigger { STEP_ON, PUSH }
+## Passe systèmes 2 (§2.7.3) : [constant FALL] = trou (chute du joueur) : un pas terminé sur la
+## case, toutes directions, sauf si un drapeau de [member unless_flags] est posé (trou bouché).
+enum Trigger { STEP_ON, PUSH, FALL }
+## Nouvelles valeurs en fin d'enum (les outils de construction écrivent les valeurs dans les cartes).
+enum Style { DOOR, TELEPORT }
 
 var cell: Vector2i
 var trigger: Trigger
@@ -29,6 +38,11 @@ var target_spawn: StringName
 var facing: Vector2i
 ## Libellé de la destination « à venir » (vide : passage ordinaire).
 var coming_soon: String
+## Porte ordinaire (fondu habituel) ou téléporteur (fondu court, même carte sans rechargement).
+var style: Style
+## Passe systèmes 2 (§2.7.3) : drapeaux qui **désactivent** le passage (un trou bouché ne fait
+## plus tomber). Vide : toujours actif. Lu par le routeur, pas par [WarpTable].
+var unless_flags: Array[StringName] = []
 
 
 func _init(
@@ -38,7 +52,8 @@ func _init(
 	to_map: StringName,
 	to_spawn: StringName,
 	arrival_facing: Vector2i = Vector2i.ZERO,
-	soon_label: String = ""
+	soon_label: String = "",
+	warp_style: Style = Style.DOOR
 ) -> void:
 	cell = warp_cell
 	trigger = warp_trigger
@@ -47,6 +62,7 @@ func _init(
 	target_spawn = to_spawn
 	facing = arrival_facing
 	coming_soon = soon_label
+	style = warp_style
 
 
 ## Cohérence de la donnée : cible renseignée (carte et spawn ; pour une destination « à
@@ -63,6 +79,11 @@ func is_valid() -> bool:
 ## Vrai si le passage mène à une destination « à venir » (écran provisoire, pas de carte).
 func is_coming_soon() -> bool:
 	return not coming_soon.is_empty()
+
+
+## Vrai pour un téléporteur ([constant Style.TELEPORT]).
+func is_teleport() -> bool:
+	return style == Style.TELEPORT
 
 
 ## Vrai si un pas terminé sur [param at_cell], fait vers [param step_direction], déclenche.

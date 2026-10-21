@@ -1,0 +1,11 @@
+{
+	"qa_sea_swimmer_before": {
+		"speaker": "Nageur QA", "pages": ["Je t'ai vu sur l'eau ! Viens, on se mesure !"]
+	},
+	"qa_sea_swimmer_defeated": {
+		"speaker": "Nageur QA", "pages": ["Bien nagé. L'eau est à toi."]
+	},
+	"qa_sea_swimmer_after": {
+		"speaker": "Nageur QA", "pages": ["Le courant file vers le passage, au nord-est."]
+	}
+}

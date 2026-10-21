@@ -1,0 +1,9 @@
+UI_OBJETS_22BIS_PLANCHE_4 — NOUVELLE image : une planche d'icônes d'objets peintes pour le Sac, pas une scène.
+Images jointes : moon_stone, nugget = icônes existantes du jeu, ANCRES de style dans le style EXACT des icônes jointes (même rendu peint, même contour fin et coloré, même angle de trois quarts, même lumière, même finesse, même taille d'environ 240 px).
+
+PLANCHE de 4 icônes d'objets peintes pour le Sac, dans une image 1536 × 1024 divisée en quatre colonnes invisibles de 384 px : une icône CENTRÉE dans chacune des 4 PREMIÈRES colonnes (de gauche à droite), de 260 px de large au plus et 260 px de haut au plus, avec au moins 60 px de marge vide de chaque côté.
+1 (colonne 1) : la PIERRE FEU : une pierre OVALE polie et lustrée à facettes douces, rouge-orangé chaud translucide, avec une petite flamme claire gravée en relief au centre.
+2 (colonne 2) : la PIERRE EAU : la même pierre ovale (même forme et même taille), BLEU limpide translucide, avec une petite goutte claire gravée en relief.
+3 (colonne 3) : la PIERRE FOUDRE : la même pierre ovale, JAUNE vif translucide, avec un petit éclair clair gravé en relief.
+4 (colonne 4) : la PIERRE PLANTE : la même pierre ovale, VERT feuille translucide veinée, avec une petite feuille claire gravée en relief.
+AUCUN halo, AUCUNE lueur, AUCUNE étincelle, AUCUN dégradé autour : chaque objet est net, avec seulement son contour fin, sur un fond entièrement transparent (canal alpha, aucune ombre). Interdit : texte, lettres, chiffres, logo, la lettre R, personnage.

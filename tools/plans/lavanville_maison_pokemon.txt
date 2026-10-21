@@ -1,0 +1,39 @@
+# Maison des Pokémon de Lavanville (pokemon_house) — grille fonctionnelle (jalon 18 T14, défauts
+# de la règle 4 ; dossier 21 §6.2, I-23 : maison ouverte, un enfant, deux Pokémon (Rondoudou,
+# Nidoran ♀), M. Fuji absent « à la Tour »). Enveloppe des maisons d'Argenta, paniers de la Pension.
+# **Sans PNJ au T14** : les cases de l'enfant et des deux Pokémon sont réservées (T18).
+#
+# Légende :
+#   K mur (bloqué)          . sol (praticable)
+#   X sortie vers Lavanville (praticable : paillasson, PUSH ↓)
+#   F réfrigérateur (1, 3)   C plan de travail (2..4, 3)   H cuisinière (5, 3)
+#   S canapé (10..12, 3)   d lampe (13, 3)   T table à manger (9..11, 5..6)
+#   p paniers de Pokémon (2, 5) et (3, 6)   x plante (1, 7), (13, 7)
+#   h enfant (7, 6), Rondoudou (4, 5), Nidoran ♀ (4, 7) ; J19 : homme (11, 7), fille (3, 5)
+#
+# Format : section GRILLE (« NN » + espace + 15 caractères par rangée), puis POSITIONS.
+
+PRATICABLES .Xh
+
+GRILLE 15 10
+00 KKKKKKKKKKKKKKK
+01 KKKKKKKKKKKKKKK
+02 KKKKKKKKKKKKKKK
+03 KFCCCH....SSSdK
+04 K.............K
+05 K.p.h....TTT..K
+06 K..p...h.TTT..K
+07 Kx..h........xK
+08 KKKKKKXXXKKKKKK
+09 KKKKKKKKKKKKKKK
+FIN
+
+POSITIONS
+sortie              warp           6..8,8       libre   # PUSH ↓ → lavender_town, retour_fuji
+entree              spawn          7,8          libre   # spawn « entrance », tourné ↑
+rondoudou           pnj            4,5          bloque  facing=down  # Pokémon d'ambiance (réservé)
+enfant              pnj            7,6          bloque  facing=left  # T-25 remplacé au J19 (§15.6.1), puis T-26
+nidoran_f           pnj            4,7          bloque  facing=up  # Pokémon d'ambiance (réservé)
+homme               pnj            11,7         bloque  facing=left  # J19 (T20, §15.6.2) : au sud de la table
+fille               pnj            3,5          bloque  facing=left  # J19 (T20, §15.6.3, Q-2 = A) : près du panier d'Osselait (sans Osselait visible)
+FIN

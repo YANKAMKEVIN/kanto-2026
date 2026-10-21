@@ -1,8 +1,21 @@
 {
 	"route_5_guard": {
-		"cell": [4, 2],
+		"cell": [
+			4,
+			2
+		],
 		"facing": "down",
 		"sprite": "guard",
-		"dialogue": "route_5_guard"
+		"dialogue": "route_5_guard",
+		"moved": {
+			"if": [
+				"saffron_gates_open"
+			],
+			"cell": [
+				3,
+				3
+			],
+			"facing": "right"
+		}
 	}
 }

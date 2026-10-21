@@ -18,14 +18,17 @@ extends RefCounted
 ## pas vérifiées ici (tests de données, §4). Clé facultative « ramp » (montée du taux avec les
 ## pas d'herbe sans rencontre, voir [method EncounterTable.effective_rate]) :
 ## [code]"ramp": { "from_step": 15, "max_steps": 20 }[/code] avec 1 ≤ from_step < max_steps ≤ 255.
-## Sans « ramp », le taux reste fixe. Une entrée invalide est écartée
+## Sans « ramp », le taux reste fixe. Clé facultative « ghost_unless_item » (jalon 19, mode
+## SPECTRE) : un identifiant d'objet non vide ([member EncounterTable.ghost_unless_item]) ; il
+## n'est [b]pas[/b] vérifié contre [ItemLibrary] (« silph_scope » n'existe qu'au J20).
+## Une entrée invalide est écartée
 ## ([method get_errors], push_error).
 
 const DATA_DIR: String = "res://data/encounters/"
 
 const _KEYS: Array[String] = ["maps", "terrain", "rate", "slots"]
 const _GRASS: StringName = &"grass"
-const _OPTIONAL_KEYS: Array[String] = ["ramp"]
+const _OPTIONAL_KEYS: Array[String] = ["ramp", "ghost_unless_item"]
 const _RAMP_KEYS: Array[String] = ["from_step", "max_steps"]
 const _SLOT_KEYS: Array[String] = ["species", "levels", "weight"]
 
@@ -101,6 +104,11 @@ func get_table(map_id: StringName, terrain: StringName = &"grass") -> EncounterT
 	return _tables.get(id)
 
 
+## Table d'identifiant [param id], ou null.
+func get_table_by_id(id: StringName) -> EncounterTable:
+	return _tables.get(id)
+
+
 func has_table(map_id: StringName, terrain: StringName = &"grass") -> bool:
 	return _by_map.has(_map_key(map_id, terrain))
 
@@ -114,7 +122,8 @@ func override_grass(map_id: StringName, entry: Dictionary, source: String = "") 
 
 
 ## Débogage (jalon 12, T20) : remplace la table de [param map_id] sur [param terrain]
-## ([constant EncounterTable.TERRAINS]) par [param entry] (sans « maps » ni « terrain »).
+## ([constant EncounterTable.TERRAINS]) par [param entry] (sans « maps » ni « terrain » ;
+## « ramp » et « ghost_unless_item » acceptés, jalon 19).
 ## Faux (erreur signalée) si le terrain est inconnu ou la table invalide : rien ne change.
 func override_table(map_id: StringName, terrain: StringName, entry: Dictionary,
 		source: String = "") -> bool:
@@ -177,6 +186,12 @@ func _parse_table(value: Variant, where: String) -> EncounterTable:
 			table.rate = int(entry["rate"])
 	if entry.has("ramp"):
 		ok = _read_ramp(entry["ramp"], table, where) and ok
+	if entry.has("ghost_unless_item"):
+		var item: Variant = entry["ghost_unless_item"]
+		if not item is String or (item as String).is_empty():
+			ok = _fail("%s : « ghost_unless_item » est un identifiant d'objet non vide" % where)
+		else:
+			table.ghost_unless_item = StringName(item)
 	if entry.has("maps"):
 		ok = _read_maps(entry["maps"], table.maps, where) and ok
 	if entry.has("slots"):

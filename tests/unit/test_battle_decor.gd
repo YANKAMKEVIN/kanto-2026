@@ -184,3 +184,16 @@ func test_fit_scale_follows_ground_span() -> void:
 		"size": [4680, 2160], "foe_feet": [3118, 1080], "player_feet": [1432, 1944]}))
 	var rect := decor.fit(Vector2(2340, 1080))
 	assert_almost_eq(rect.size.x / decor.size.x, 0.5, 0.002)
+
+
+## Jalon 19 (T14) : le décor « tour_pokemon » sert les cinq étages (2F à 6F), partout dans la carte.
+func test_tower_decor_serves_the_five_floors() -> void:
+	var catalog := _catalog()
+	for floor_name: String in ["2f", "3f", "4f", "5f", "6f"]:
+		var map_id := StringName("pokemon_tower_%s" % floor_name)
+		for cell: Vector2i in [Vector2i.ZERO, Vector2i(10, 9), Vector2i(19, 17)]:
+			var decor := catalog.pick(map_id, cell)
+			assert_not_null(decor, "%s %s : décor" % [map_id, cell])
+			if decor != null:
+				assert_eq(decor.id, &"tour_pokemon", "%s : décor de la Tour" % map_id)
+		assert_eq(catalog.default_for(map_id).id, &"tour_pokemon", "%s : préchargé" % map_id)

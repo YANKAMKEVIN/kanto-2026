@@ -171,3 +171,28 @@ func test_in_a_release_build_the_gate_is_inert() -> void:
 	assert_eq(_player.get_cell(), GATE, "au bord de la carte, rien ne se passe")
 	assert_true(_player.is_input_enabled())
 	assert_eq(_boot.get_map().map_id, MAP)
+
+
+## Jalon 18 (T12) : le bord ouest de la Route 9 menait à « AZURIA — À venir » ; depuis le T15
+## (variante J18 d'Azuria, arbre coupé du J16), il mène à Azuria, sans écran « à venir », sur la
+## même rangée (55, 23), tourné vers l'ouest.
+func test_route_9_west_edge_leads_to_azuria_without_coming_soon() -> void:
+	_boot = BOOT_SCENE.instantiate() as Boot
+	_boot.save_system = _save
+	_boot.start_map = &"route_9"
+	_boot.start_spawn = &"from_cerulean"
+	_boot.start_facing = Vector2i.LEFT
+	add_child_autofree(_boot)
+	_player = _boot.get_player()
+	var screen := _boot.get_coming_soon_screen()
+	await wait_process_frames(3)
+	assert_eq(_player.get_cell(), Vector2i(0, 23))
+	Input.action_press(&"move_left")
+	await wait_until(func() -> bool: return SceneRouter.is_transitioning(), TIMEOUT)
+	Input.action_release(&"move_left")
+	assert_false(screen.is_showing(), "pas d'écran « à venir »")
+	await wait_until(func() -> bool: return not SceneRouter.is_transitioning() \
+		and _boot.get_map().map_id == &"cerulean_city", TIMEOUT)
+	assert_eq(_boot.get_map().map_id, &"cerulean_city")
+	assert_eq(_player.get_cell(), Vector2i(55, 23), "arrivée sur la même rangée")
+	assert_eq(_player.get_facing(), Vector2i.LEFT, "tourné vers l'ouest")

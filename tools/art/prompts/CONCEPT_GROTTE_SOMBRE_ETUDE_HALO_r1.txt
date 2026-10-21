@@ -1,0 +1,38 @@
+CONCEPT ART — ÉTUDE D'AMBIANCE DU HALO DE LA GROTTE SOMBRE, « SANS FLASH » ET « AVEC FLASH » (Kanto 2026), image de référence de direction artistique (ce n'est PAS un rendu du jeu : une peinture qui montre l'effet visé).
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. Il montre DEUX FOIS la MÊME salle de la grotte (la salle de la grande colonne, au niveau -1), côte à côte : la moitié GAUCHE de l'image et la moitié DROITE sont strictement identiques (même salle, même pièces, même place du héros). Une fine ligne noire verticale au milieu sépare les deux moitiés.
+Légende du plan (pour chaque moitié) :
+- brun très foncé = ROCHE PLEINE et parois infranchissables (tout autour de la salle) ;
+- gris-beige sableux = SOL de la salle, plat, humide ;
+- brun-orangé moucheté = zones de GRAVATS (éboulis) : une grande en haut à droite de la salle, une à gauche, une en bas à droite, une étroite qui sort de la salle vers le bas à gauche (un passage de gravats) ;
+- gros rectangle arrondi gris-brun au centre-gauche = la GRANDE COLONNE de roche qui monte jusqu'au plafond ;
+- petits disques sombres cerclés = rochers isolés et stalagmites (quatre autour de la salle) ;
+- point rouge et blanc juste sous la colonne = une Poké Ball posée au sol (une Super Potion) ;
+- petit ANNEAU BLANC en bas de la salle, à droite de la colonne = la POSITION DU HÉROS (l'anneau n'est qu'un repère : ne le dessine pas ; mets le héros à sa place) ;
+- en haut à droite de la salle, le sol commence à s'éclaircir légèrement = le début d'un couloir qui sort vers l'est (la salle a deux sorties : ce couloir en haut à droite, le passage de gravats en bas à gauche).
+Respecte ce plan À LA LETTRE dans les DEUX moitiés : forme de la salle, colonne, gravats, rochers, sorties, place du héros. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+RÈGLE ABSOLUE : le sol praticable garde des bords droits et lisibles, aux angles droits ; la salle est un rectangle à angles droits ; pas de diagonale ni de courbe pour le sol.
+
+IMAGE 2 : la vue générale de la Grotte Sombre, DU MÊME LIEU. Respecte EXACTEMENT son rendu : même pinceau, même palette brune et ocre sombre, mêmes parois en blocs arrondis, même sol sableux, mêmes gravats, même colonne, même Poké Ball, mêmes personnages. Ne reprends PAS sa composition : seulement la salle de la colonne du bas, montrée en grand, deux fois.
+
+Format : PAYSAGE 1536 × 1024, DEUX DEMI-IMAGES côte à côte de 768 × 1024 chacune (portrait), vue plongeante, comme le plan. Aucune bordure décorative : une simple ligne sombre nette entre les deux.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus de trois quarts, projection oblique frontale, sans point de fuite. Les verticales restent verticales.
+- Aucun trait noir : contours fins et doux. Ombres colorées bleu-violet profond et brun-prune, jamais grises ni noires.
+
+LE HÉROS : un garçon d'une dizaine d'années, casquette rouge, veste bleue, pantalon sombre, petit, vu de trois quarts de dos, face au nord ; sa lumière est la SEULE source de la salle, une lueur chaude et douce centrée sur lui.
+
+AMBIANCE — l'effet du voile d'obscurité du jeu (un voile bleu nuit presque opaque, percé d'un trou lumineux doux centré sur le héros ; il couvre le décor et les objets, mais JAMAIS le héros) :
+- MOITIÉ GAUCHE, « SANS FLASH » : un PETIT CERCLE de lumière autour du héros (≈ 2,5 cases de rayon, c'est-à-dire un peu plus de deux fois la hauteur du héros), très net au centre, au bord qui se fond en douceur sur 1,5 case. Hors du cercle, la salle est SOMBRE mais JAMAIS noire : le sol reste d'un bleu-violet profond clairement plus clair que les parois, la colonne et les amas de gravats se devinent en silhouettes, on distingue encore le relief ; ce qui est loin est seulement plus sombre, pas effacé. Le Poké Ball sous la colonne, dans le halo, est bien visible.
+- MOITIÉ DROITE, « AVEC FLASH » : la même salle, le même héros, mais la lumière est LARGE (≈ 7 cases de rayon) : presque toute la salle est éclairée, claire, nette ; la colonne, tous les gravats, les rochers, les deux sorties se lisent bien ; seul le bord de l'image (parois du haut et des côtés, fond de la sortie du haut) tombe dans une PÉNOMBRE DOUCE, légère, qui ne devient jamais noire. Lueur plus blanche et plus large que celle de gauche.
+- Les deux moitiés montrent le CONTRASTE : à gauche l'on avance à tâtons, avec un peu d'inquiétude ; à droite on respire, on voit où l'on va. La Grotte Sombre n'est JAMAIS effrayante.
+- Pas de texte, pas de légende, pas de pictogramme « sans Flash / avec Flash » dans l'image.
+
+INTERDITS : texte, lettres, chiffres, étiquettes, logo, signature, filigrane, cadre décoratif, interface, barre, jauge ; noir total, vignettage noir uniforme, yeux dans le noir, silhouettes menaçantes, ambiance d'horreur ; Team Rocket, caisses, cristaux, champignons géants, lave, décor féerique ; ciel, herbe, arbres ; Pokémon et autres personnages (le héros est seul) ; flou de profondeur ; pixel art.
+
+L'image doit raconter, sans texte : la même salle de grotte, d'abord traversée à la seule lueur d'un petit cercle autour du héros, puis révélée presque entière quand on a pensé à Flash.

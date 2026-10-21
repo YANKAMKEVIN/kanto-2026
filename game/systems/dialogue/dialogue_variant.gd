@@ -22,6 +22,16 @@ var auto: bool = false
 ## « heal »: true) fait émettre [signal DialogueRunner.heal_requested] ; les autres passent par
 ## [member DialogueRunner.action_handler]. Jamais avec [member choice].
 var action: StringName = &""
+## Boutique ouverte par [code]open_shop[/code] (jalon 20, `jalon-20.md` §2.9.1 : un vendeur, une
+## boutique de `data/shops/`) ; &"" = celle de la carte courante. Clé « shop », permise seulement
+## avec l'action [code]open_shop[/code].
+var shop: StringName = &""
+## Jalon 20 (`jalon-20.md` §2.9.6, §2.16) : objets exigés dans le Sac (« if_items » : tous) ou
+## absents (« unless_items » : aucun) ; zone qui doit être jouable (« if_zone »,
+## [method ZoneLibrary.is_playable] : le garde de Safrania ne demande rien avant la ville).
+var if_items: Array[StringName] = []
+var unless_items: Array[StringName] = []
+var if_zone: StringName = &""
 ## Choix à deux cartes après la dernière page (la question) ; null = aucun.
 var choice: DialogueChoice = null
 ## Scène lancée à la fin du dialogue ([signal DialogueRunner.cutscene_requested]) ; &"" = aucune.

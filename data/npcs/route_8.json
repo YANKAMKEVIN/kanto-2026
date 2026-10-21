@@ -1,0 +1,133 @@
+{
+	"anatole": {
+		"cell": [
+			15,
+			8
+		],
+		"facing": "left",
+		"sprite": "nerd",
+		"dialogue": "route_8_nerd_anatole_after",
+		"trainer": {
+			"id": "route_8_nerd_anatole",
+			"sight": 5,
+			"before": "route_8_nerd_anatole_before",
+			"defeated": "route_8_nerd_anatole_defeated"
+		}
+	},
+	"rene": {
+		"cell": [
+			24,
+			16
+		],
+		"facing": "up",
+		"sprite": "gambler",
+		"dialogue": "route_8_gambler_rene_after",
+		"trainer": {
+			"id": "route_8_gambler_rene",
+			"sight": 5,
+			"before": "route_8_gambler_rene_before",
+			"defeated": "route_8_gambler_rene_defeated"
+		}
+	},
+	"firmin": {
+		"cell": [
+			46,
+			5
+		],
+		"facing": "down",
+		"sprite": "nerd",
+		"dialogue": "route_8_nerd_firmin_after",
+		"trainer": {
+			"id": "route_8_nerd_firmin",
+			"sight": 4,
+			"before": "route_8_nerd_firmin_before",
+			"defeated": "route_8_nerd_firmin_defeated"
+		}
+	},
+	"iris": {
+		"cell": [
+			58,
+			8
+		],
+		"facing": "down",
+		"sprite": "lass",
+		"dialogue": "route_8_lass_iris_after",
+		"trainer": {
+			"id": "route_8_lass_iris",
+			"sight": 5,
+			"before": "route_8_lass_iris_before",
+			"defeated": "route_8_lass_iris_defeated"
+		}
+	},
+	"margot": {
+		"cell": [
+			59,
+			8
+		],
+		"facing": "down",
+		"sprite": "lass",
+		"dialogue": "route_8_lass_margot_after",
+		"trainer": {
+			"id": "route_8_lass_margot",
+			"sight": 5,
+			"before": "route_8_lass_margot_before",
+			"defeated": "route_8_lass_margot_defeated"
+		}
+	},
+	"fernand": {
+		"cell": [
+			67,
+			7
+		],
+		"facing": "down",
+		"sprite": "gambler",
+		"dialogue": "route_8_gambler_fernand_after",
+		"trainer": {
+			"id": "route_8_gambler_fernand",
+			"sight": 6,
+			"before": "route_8_gambler_fernand_before",
+			"defeated": "route_8_gambler_fernand_defeated"
+		}
+	},
+	"nina": {
+		"cell": [
+			74,
+			7
+		],
+		"facing": "down",
+		"sprite": "lass",
+		"dialogue": "route_8_lass_nina_after",
+		"trainer": {
+			"id": "route_8_lass_nina",
+			"sight": 6,
+			"before": "route_8_lass_nina_before",
+			"defeated": "route_8_lass_nina_defeated"
+		}
+	},
+	"route_8_item_1": {
+		"cell": [
+			37,
+			5
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "route_8_item_1",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_route_8_item_1"
+		]
+	},
+	"roucool_1": {
+		"cell": [
+			53,
+			6
+		],
+		"facing": "left",
+		"sprite": "pokemon/pidgey",
+		"shy": {
+			"action": "fly",
+			"radius": 2
+		}
+	}
+}

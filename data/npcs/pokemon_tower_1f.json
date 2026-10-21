@@ -1,0 +1,19 @@
+{
+	"gardien": {
+		"cell": [3, 12], "facing": "down", "sprite": "old_man", "dialogue": "pokemon_tower_keeper"
+	},
+	"visiteuse": {
+		"cell": [2, 7], "facing": "right", "sprite": "lass", "dialogue": "pokemon_tower_visitor_f"
+	},
+	"visiteur": {
+		"cell": [17, 5], "facing": "left", "sprite": "traveler", "dialogue": "pokemon_tower_visitor_m"
+	},
+	"jeune_fille": {
+		"cell": [13, 10], "facing": "up", "sprite": "lass_young", "dialogue": "pokemon_tower_girl"
+	},
+	"exorciste_gardienne": {
+		"cell": [17, 3], "facing": "up", "sprite": "channeler",
+		"dialogue": "pokemon_tower_exorcist",
+		"moved": { "if": ["tower_stairs_open"], "cell": [18, 3], "facing": "left" }
+	}
+}

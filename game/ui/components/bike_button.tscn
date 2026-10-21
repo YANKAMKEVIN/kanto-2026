@@ -1,0 +1,11 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/ui/components/round_button_visual.gd" id="1_visual"]
+[ext_resource type="Texture2D" path="res://assets/ui/icons/bike.svg" id="2_bike"]
+
+[node name="BikeButton" type="TouchScreenButton"]
+visibility_mode = 0
+
+[node name="Visual" type="Node2D" parent="."]
+script = ExtResource("1_visual")
+icon = ExtResource("2_bike")

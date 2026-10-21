@@ -1,0 +1,41 @@
+# Grand magasin de Céladopole, toit-terrasse (celadon_dept_roof) — grille fonctionnelle (jalon 20,
+# dossier 23 §9 ; préparée le 2026-10-14). Terrasse ouverte sur le ciel, vue sur la ville : 3
+# distributeurs au fond, une fillette, des bancs. Un seul escalier (vers le 5e). 20 × 11.
+#
+# Légende (intérieurs du grand magasin) :
+#   K mur (bloqué : fond sur 3 rangées, parois, bas sur 2 rangées ; sortie sur l'avant-dernière
+#     rangée)   . sol (praticable)
+#   S escalier MONTANT (praticable, STEP_ON ↑)   Z escalier DESCENDANT (idem)   V porte de
+#     l'ASCENSEUR (idem)   X sortie (praticable, PUSH ↓)
+#   B comptoir (bloqué : on parle au vendeur par-dessus, depuis la case devant)   e étagère ou
+#     vitrine (bloquée)   m borne de jeu ou distributeur (bloqué)   t table   c canapé   n banc
+#   p plante (bloquée)   P tableau des étages (bloqué, examiné depuis la case devant)
+# Convention commune aux 5 étages : ESCALIERS À L'OUEST (S en x 2..3, Z en x 4..5, rangée 2),
+# ASCENSEUR À L'EST (V en x 16..17, rangée 2) ; mêmes cases à chaque étage. Arrivées : from_up
+# (descendu d'en haut, devant S), from_down (monté d'en bas, devant Z), from_elevator.
+# Tous les PNJ des intérieurs sont à des cases NON obligatoires (le contrôle le vérifie).
+
+PRATICABLES .XSZV
+
+GRILLE 20 11
+00 KKKKKKKKKKKKKKKKKKKK
+01 KKKKKKKKKKKKKKKKKKKK
+02 K.ZZ......m.m.m....K
+03 K..................K
+04 K..................K
+05 K..................K
+06 K..................K
+07 K..................K
+08 K.......nn.........K
+09 Kp................pK
+10 KKKKKKKKKKKKKKKKKKKK
+FIN
+
+POSITIONS
+escalier_bas         warp           2..3,2        libre   to=celadon_dept_5f spawn=from_up  # STEP_ON ↑ → celadon_dept_5f (le toit se rejoint par l'escalier du 5e ; PAS d'ascenseur)
+from_down            spawn          2..3,3        libre    # arrivée du 5e, tournée ↓
+distributeur_eau     decor          10,2          bloque  item=fresh_water price=200  # Eau Fraîche 200 ₽ (50 PV), lu depuis (10, 3) ↑
+distributeur_soda    decor          12,2          bloque  item=soda_pop price=300  # Soda Cool 300 ₽ (60 PV), lu depuis (12, 3) ↑
+distributeur_limonade decor          14,2          bloque  item=lemonade price=350  # Limonade 350 ₽ (80 PV), lu depuis (14, 3) ↑
+fillette             pnj            17,5          bloque  role=P1 facing=left  # fillette assoiffée : échange une boisson contre une CT (§9, textes 24-25), CT13 / 48 / 49 selon l'existence de la capacité
+FIN

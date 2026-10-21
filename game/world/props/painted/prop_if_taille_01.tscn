@@ -1,0 +1,15 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_2i1l1"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_mbtox"]
+[ext_resource type="Texture2D" path="res://assets/world/props/prop_if_taille_01.png" id="3_5hyj4"]
+
+[node name="PropIfTaille01" type="Node2D" unique_id=707027920]
+script = ExtResource("1_2i1l1")
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=470284777]
+unique_name_in_owner = true
+material = ExtResource("2_mbtox")
+texture = ExtResource("3_5hyj4")
+centered = false
+offset = Vector2(-48, -167)
