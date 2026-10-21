@@ -653,25 +653,116 @@ donnaient plus de 500 000 états. Les cartes `.tscn` (sans vie) attendent le J20
 `note_written` (l'instantané écrit devient le point de reprise, pas plus récent que le disque),
 `decide` (stable → état courant ; instable → point de reprise s'il est plus récent ; rien à moins de
 2 s de la dernière écriture), délai de garde de `FOCUS_OUT` (1 s, un seul déclenchement).
-`test_save_checkpoint.gd`. **Reste après le J20** : branchement dans `Boot` (capture aux passages
+`test_save_checkpoint.gd`. **Branchement fait (2026-10-20, branche `s2a-sauvegarde`)**, voir ci-dessous ; avant : : branchement dans `Boot` (capture aux passages
 stable → instable, `note_written` dans l'écrivain, `FOCUS_OUT` / `FOCUS_IN` via `SessionLifecycle`),
 tests `Boot` + `MemoryFs`, mesure de la capture sur S24, session S2A (validée seule).
 
+**Branchement dans `Boot` (2026-10-20)** — bloc « Passe systèmes 2, S2A » en fin de `boot.gd`
+(`_setup_save_checkpoint`) et trois points d'appel d'une ligne (`_process`, `_notification`,
+`_persist_snapshot`) :
+- **capture** : `Boot._process` compare `is_stable()` à l'image précédente ; au passage stable →
+  instable (et si l'écriture est permise), `GameState.to_dict()` est capturé avec la **position
+  de la dernière image stable** (retenue à chaque image stable, passée par
+  `ElevatorDirector.stable_location` : jamais sur une dalle tournante ni dans une glisse). Écart
+  [D] : le reste de l'état est celui de la **première image** de l'instabilité (ce qu'a changé
+  l'image qui a ouvert le dialogue, par exemple le « vu » d'une rencontre, y est) ; aucun fichier
+  d'un autre système touché (pas de signal de départ ajouté aux directeurs) ;
+- **`note_written`** dans `_persist_snapshot` (toute écriture réussie : autosave, écriture
+  immédiate, Menu, arrière-plan) et après l'écriture du point de reprise ;
+- **`FOCUS_OUT` / `FOCUS_IN`** : `SessionLifecycle.focus_change` (`RESUMED` vaut `FOCUS_IN`) ; le
+  délai de garde est relu à chaque image ;
+- **écart [D] à la partie pure** : l'écart de 2 s ne porte que sur les écritures **d'arrière-plan**
+  (`note_written(…, background)`) ; une autosave ordinaire juste avant n'empêche pas l'écriture à
+  la mise en arrière-plan (sinon les 2 s de jeu qui suivent une autosave seraient perdues, et
+  `PAUSED` juste après l'arrivée sur une carte n'écrirait rien) ;
+- **échec** de l'écriture du point de reprise : nouvelle tentative après 5 s
+  (`SaveCoordinator.RETRY_DELAY`) tant que la partie est instable ; redevenue stable, les
+  autosaves ordinaires prennent le relais ;
+- **mesure** : journal debug « [save] point de reprise : N µs (max M µs) » à chaque capture ;
+- horloge injectable `Boot.background_clock` (tests) ; départ `s2_save` (Route 3, autosave actif) ;
+- tests : `tests/integration/test_save_background.gd` (dialogue, scène + relance, écriture
+  immédiate, combat sauvage, `FOCUS_OUT` court / long, 2 s, échec puis nouvelle tentative, départ
+  `s2_save`) ; `test_save_boot.gd` (scène, défaite) et `test_spin_slide.gd` (arrêt en pleine
+  glisse) adaptés : l'arrière-plan écrit désormais le point de reprise d'avant, jamais l'état du
+  milieu ;
+- mesure sur Mac (headless) : 80 à 320 µs par capture.
+
 #### T5 — Q : **session S2A** → K (interruptions réelles, §6)
+
+**QA agent sur S21 (`RFCR40827ZZ`, 2026-10-21, APK debug de `s2a-sauvegarde`, départ `s2_save`,
+vraie sauvegarde de Kevin copiée puis restaurée à l'identique) : 5 scénarios sur 5 OK.**
+
+| # | Interruption | Écrit | Relance |
+|---|---|---|---|
+| 1 | dialogue de Hugo, bouton marche | point de reprise, Route 3 (19, 26), 4 300 ₽, Hugo non battu | après déverrouillage : dialogue intact ; puis arrêt forcé en plein dialogue → reprise en (19, 26), Hugo à rejouer |
+| 2 | combat contre Hugo, Accueil puis arrêt forcé | point de reprise d'avant le combat (PV pleins, Hugo non battu) | reprise en (19, 26), juste avant |
+| 3 | rideau de notifications 0,5 s puis 3 s | rien | — (voir ci-dessous) |
+| 4 | appel simulé (composeur Samsung en plein écran, `am start -a DIAL`) pendant le dialogue, puis arrêt forcé | point de reprise d'avant Hugo | reprise en (19, 26) |
+| 5 | Route 3 → Argenta, arrêt forcé à l'arrivée | autosave d'arrivée, Argenta (51, 26) | reprise à Argenta (51, 26) |
+
+- **Durée de la capture sur S21 : 0,9 à 1,4 ms** (budget 5 ms) ; Mac : 0,08 à 0,3 ms.
+- **Constat : Godot 4.7 sous Android n'envoie `FOCUS_OUT` qu'avec la mise en pause.** Le rideau prend
+  bien le focus de la fenêtre (`mCurrentFocus=NotificationShade`) mais le jeu ne reçoit rien ; le
+  délai de garde de 1 s ne sert donc qu'au Mac et aux plateformes qui l'envoient seul. Sans
+  conséquence : un appel qui prend l'écran, l'Accueil ou le bouton marche passent par `PAUSED`, qui
+  écrit. Un bandeau d'appel ignoré n'écrit rien (rien n'est perdu tant que le jeu tourne).
+- Journal debug ajouté pendant la QA : « [save] focus LOST / REGAINED à N s ».
 
 ### 3.3 S2B — État monté, Vélo, Flûte
 
 #### T6 — A : `Mount`, `MountRules`, `MapTraits`, `GameState.player_mount`, `last_land_cell` — après T3
 
+**Fait (2026-10-20, branche `s2b-monture`)** : `GameState.player_mount` (`Mount.Kind`) et
+`last_land_cell` ; sauvegardés sous `mount` et `last_land_cell` (clés à plat, comme `cell`), **écrits
+seulement s'ils disent quelque chose** [D] (à pied et à terre, le fichier est celui d'avant la passe :
+critère 3) ; `set_player_location` tient `last_land_cell` hors du Surf. `GameMap.cycling_road`,
+`GameMap.slope_cells` (→ `GridWorld.set_slope`, bit 6 du second octet), `GameMap.mount_traits()`.
+Tests : `test_save_v7_mount_fields.gd`.
+
 #### T7 — C : `Player` monté, `MountDirector`, compagnon — après T6
+
+**Fait** : `Player.set_mount` / `get_mount` / `get_move_mode`, signal `mount_changed`, durées par
+`MountRules.step_duration` (course ignorée), `step_started` en `&"bike"` / `&"surf"`, animations
+`bike_*` / `surf_*` si l'apparence les a (sinon la marche : placeholders, règle 3). Dérive de la pente
+dans `Player._process` (§2.3 ; « Dresseur qui voit » = joueur bloqué, la vue le bloque dans le
+`moved` du pas). `MountDirector` (`game/world/mount/`) : monture d'arrivée sur
+`SceneRouter.map_changed` (écran noir, sans mise en scène [D], au lieu de `map_entered`), Vélo,
+`GameState` tenu à jour. **Compagnon** : `CompanionController` écoute lui-même
+`Player.mount_changed` (`CompanionRules.VisibilityInput.mounted`) [D] : rentré monté, ressorti à pied.
+La mise en scène du Surf (saut) reste à S2C. Tests : `test_player_mount.gd`,
+`test_mount_director.gd`.
 
 #### T8 — U : bouton Vélo du HUD, refus — après T7
 
+**Fait** : `%BikeButton` (`game/ui/components/bike_button.tscn`, icône `assets/ui/icons/bike.svg`
+provisoire), au-dessus du bouton courir (`UiTokens.BIKE_BUTTON_CENTER_FROM_CORNER` = 440, 390 [D]),
+miroir gaucher, même échelle ; visible avec la Bicyclette et les contrôles ; grisé (opacité 0,45
+[D]) en intérieur et sur la Piste, toucher actif (le refus joue son texte). Touche B (`bike`). Textes
+(dossier 25 §16.1.3, §16.1.4) dans `data/dialogues/mount.json`. Tests : `test_bike_button.gd`.
+
 #### T9 — C : pente, `cycling_road`, `qa_mount` vivante — après T7, T3c
+
+**Écart [D]** : `cycling_road` est un booléen **par carte** (la Route 17 de RB) : la Piste de
+`qa_mount` devient une carte à part, `qa_mount_piste` (grilles réécrites, contrôle relancé).
 
 #### T10 — A : `key_use`, aiguillage Sac → Vélo / Flûte (exploration) — après T6
 
+**Fait** : `ItemData.key_use` (`KEY_USES`, clé réservée aux objets clés), contextes (Flûte :
+exploration + combats ; Vélo, cannes : exploration) ; `FieldItemRules` : OK et sans cible pour un
+objet clé utilisable ; `MenuDirector.key_item_requested` → Boot ferme le menu →
+`KeyItemDirector.use` (Vélo → `MountDirector.toggle_bike` ; Flûte → dormeur voisin
+(`GameMap.flute_targets`, `InteractPoint.flute_cutscene`) ou « … Quel air entraînant ! » + bulle
+« ♪ » du compagnon). `poke_flute` et `bicycle` créés dans `data/items/items_systemes2.json` (textes
+validés des dossiers 24 et 25) : **le J21 et le J22 retirent leur doublon à leur fusion**.
+Tests : `test_key_use.gd`, `test_mount_director.gd`.
+
 #### T11 — A : Flûte en combat (`Kind.KEY_ITEM`) — après T10
+
+**Fait** : `BattleAction.Kind.KEY_ITEM` (fin d'énum), `Battle.can_use_key_items`,
+`flute_has_effect`, `_play_flute` (FLUTE_PLAYED, un FLUTE_WOKE muet par réveillé avec `on_field`,
+ALL_WOKE, puis le tour adverse) ; directeur : sans dormeur, « Personne ne dort. » / « La Flûte
+n'aurait aucun effet. », aucun tour ; jamais retirée du Sac. Tests : `test_flute_battle.gd`,
+`test_battle_items_director.gd`.
 
 #### T11b — Q : **session S2B** → K
 
@@ -756,7 +847,7 @@ Tests `test_fly_integration.gd`, `test_s2ef_boot.gd` (vraie scène Boot).
 
 **Vol en combat fait (2026-10-21)** : `fly` en données seulement (`data/pokemon/moves/moves_s2.json` :
 Vol, vol, physique, 90 / 95 / PP 15, effet `charge` avec `invulnerable`, comme Tunnel) ; textes
-`charge_fly_start` / `charge_fly_broken` (provisoires, §8.1) ; CS02 `hm02` (`items_s2.json`, enseigne
+`charge_fly_start` / `charge_fly_broken` (provisoires, §8.1) ; CS02 `hm02` (`items_systemes2.json`, enseigne
 `fly`). Compatibilités déjà générées (`hm_species` : Roucool, Roucoups, Roucarnage, Piafabec,
 Rapasdepic). Le moteur ne distingue pas « sous terre » et « en l'air » (`ChargeRules.dodges` : toute
 capacité visant la cible est évitée) : Séisme/Abîme contre Tunnel et Fatal-Foudre/Tornade contre Vol
@@ -830,7 +921,7 @@ icône de clé provisoire) : le contrôleur d'interactions émet `door_requested
 un dialogue ; `KeyDoorDirector` (bloc `_setup_teleporters` de Boot, qui relaie aussi `relocated` au
 compagnon) : avec la clé, battant effacé en 0,3 s [D], drapeau levé (cases libérées, OUVRIR retiré),
 autosave demandé, carte gardée ; sans, « Il faut une carte. » (`key_door_locked`). Objet `card_key`
-(`items_s2.json`). Cartes `qa_teleport` et `qa_teleport_2` (`tools/build_qa_teleport.gd`, enveloppes
+(`items_systemes2.json`). Cartes `qa_teleport` et `qa_teleport_2` (`tools/build_qa_teleport.gd`, enveloppes
 `tools/art/placeholders_qa_teleport.py`, déclarées dans `interiors.json`, exception dans
 `test_map_catalog` à retirer en S2Z) ; sorties vers `celadon_city:from_center_w` [D] (`qa_mount` est
 sur la branche S2B) ; départ `s2_teleport`. Tests `test_key_door.gd`, `test_qa_teleport_map.gd`,

@@ -403,9 +403,17 @@ func _choose_action(actions: Dictionary[StringName, bool], can_flee: bool) -> Ba
 				continue
 			return BattleAction.run()
 		if action == ActionGrid.BAG and actions.get(ActionGrid.BAG, false) \
-				and (_battle.can_use_balls() or _battle.can_use_heal_items()):
+				and (_battle.can_use_balls() or _battle.can_use_heal_items()
+					or _battle.can_use_key_items()):
 			var chosen := await _choose_item()
 			if chosen == null:
+				continue
+			if chosen.kind == BattleAction.Kind.KEY_ITEM and not _battle.flute_has_effect():
+				# Poké Flûte sans dormeur (dossier 24 §8, L-9) : aucun tour pris.
+				if _texts != null:
+					await _hud.show_message(_texts.get_template(&"flute_no_effect"))
+					await _hud.show_message(_texts.get_template(&"flute_no_effect_2"))
+				_show_own_card()
 				continue
 			var chosen_item := _items.get_item(chosen.item_id) if _items != null else null
 			if chosen.kind == BattleAction.Kind.ITEM and not chosen.is_heal() \
@@ -459,6 +467,8 @@ func _choose_item() -> BattleAction:
 		var item := _items.get_item(id) if _items != null else null
 		if item != null and item.has_battle_use():
 			return BattleAction.use_item(id)
+		if item != null and item.has_key_use():
+			return BattleAction.key_item(id)
 		if item == null or not item.targets_pokemon():
 			return BattleAction.ball(id)
 		var index := await _choose_target(item)

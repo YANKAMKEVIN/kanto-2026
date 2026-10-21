@@ -229,7 +229,7 @@ func test_an_app_killed_mid_slide_resumes_on_the_last_stable_save() -> void:
 	assert_true(_spin.is_running(), "en pleine glisse")
 	assert_ne(_player.get_cell(), ARROW, "déjà parti de la dalle")
 	_boot._notification(Node.NOTIFICATION_APPLICATION_PAUSED)
-	assert_eq(_saved_cell(), START, "rien d'écrit à l'arrière-plan")
+	assert_eq(_saved_cell(), START, "arrière-plan : case d'avant la glisse (point de reprise S2A)")
 	_sim.finish()
 	_sim = null
 	_boot.queue_free()

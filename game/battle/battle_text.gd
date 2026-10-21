@@ -158,6 +158,7 @@ const TEMPLATE_IDS: Array[StringName] = [
 	&"charge_solar_beam_start", &"charge_solar_beam_broken",
 	&"charge_skull_bash_start", &"charge_skull_bash_broken",
 	&"battle_item_used", &"item_escape", &"item_escape_2", &"revived",
+	&"flute_played", &"flute_all_woke", &"flute_no_effect", &"flute_no_effect_2",
 ]
 ## Entre deux gains de statistiques du bilan (« PV +2 · Attaque +1 »).
 const SUMMARY_SEPARATOR: String = " · "
@@ -365,6 +366,10 @@ func lines(event: BattleEvent, data: PokemonData, trainer: TrainerData = null) \
 			result.append(_fill(&"item_escape_2", event, data))
 		BattleEvent.Kind.REVIVED:
 			result.append(_fill(&"revived", event, data))
+		BattleEvent.Kind.FLUTE_PLAYED:
+			result.append(_fill(&"flute_played", event, data))
+		BattleEvent.Kind.ALL_WOKE:
+			result.append(_fill(&"flute_all_woke", event, data))
 		BattleEvent.Kind.FAILED:
 			result.append(_fill(&"move_failed", event, data))
 		BattleEvent.Kind.CONFUSED:

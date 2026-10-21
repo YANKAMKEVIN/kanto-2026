@@ -52,6 +52,13 @@ const BATTLE_USE_CRIT_UP: StringName = &"crit_up"
 const BATTLE_USE_ESCAPE: StringName = &"escape"
 const BATTLE_USES: Array[StringName] = [BATTLE_USE_STAT_STAGE, BATTLE_USE_CRIT_UP,
 	BATTLE_USE_ESCAPE]
+## Usages d'un objet clé (passe systèmes 2, `systemes-2.md` §2.4 ; [member key_use]) : la Poké
+## Flûte (exploration et combat), la Bicyclette (exploration), les trois cannes (exploration,
+## pêche de la passe, S2C-bis). Ajouts en fin.
+const KEY_USE_POKE_FLUTE: StringName = &"poke_flute"
+const KEY_USE_BICYCLE: StringName = &"bicycle"
+const KEY_USES: Array[StringName] = [KEY_USE_POKE_FLUTE, KEY_USE_BICYCLE, &"old_rod",
+	&"good_rod", &"super_rod"]
 
 var id: StringName = &""
 ## Nom au singulier (« Poké Ball ») et au pluriel (« Poké Balls »).
@@ -105,6 +112,9 @@ var battle_stages: int = 0
 ## Rappel (jalon 20, §2.9.4) : fraction des PV max rendue à un Pokémon **K.O.** (0 = pas un
 ## Rappel). Clé « revive » des données, réservée aux soins.
 var revive: float = 0.0
+## Usage d'un objet clé (passe systèmes 2 ; [constant KEY_USES]) : &"" = aucun (l'objet se
+## consulte, sans UTILISER). Clé « key_use » des données, réservée à la catégorie OBJETS CLÉS.
+var key_use: StringName = &""
 
 
 ## Identifiant de la catégorie dans les fichiers (&"ball", &"heal"…) : onglet du Sac.
@@ -131,6 +141,11 @@ func contexts() -> Array[StringName]:
 			return [CONTEXT_FIELD]
 		Category.TM:
 			return [CONTEXT_FIELD]
+		Category.KEY:
+			if key_use == KEY_USE_POKE_FLUTE:
+				return [CONTEXT_FIELD, CONTEXT_WILD_BATTLE, CONTEXT_TRAINER_BATTLE]
+			if not key_use.is_empty():
+				return [CONTEXT_FIELD]
 	return []
 
 
@@ -224,5 +239,9 @@ func sell_price() -> int:
 
 
 ## Vrai si l'objet a un usage en exploration (jalon 12 : UTILISER d'un objet AVENTURE).
+func has_key_use() -> bool:
+	return category == Category.KEY and not key_use.is_empty()
+
+
 func has_field_use() -> bool:
 	return category == Category.FIELD and not field_use.is_empty()

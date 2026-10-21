@@ -1,0 +1,10 @@
+{
+	"bike_indoors": {
+		"narration": true,
+		"pages": ["Ce n'est pas le moment de pédaler !"]
+	},
+	"bike_cycling_road_walk": {
+		"narration": true,
+		"pages": ["Pas de marche à pied", "sur la Piste Cyclable !"]
+	}
+}

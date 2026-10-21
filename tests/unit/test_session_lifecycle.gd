@@ -34,3 +34,14 @@ func test_window_close_requests_a_save_without_changing_focus() -> void:
 	assert_true(lifecycle.handle_notification(Node.NOTIFICATION_WM_CLOSE_REQUEST))
 	assert_true(lifecycle.in_foreground)
 	assert_false(lifecycle.handle_notification(Node.NOTIFICATION_WM_GO_BACK_REQUEST))
+
+
+func test_focus_changes_for_the_save_grace_delay() -> void:
+	assert_eq(SessionLifecycle.focus_change(Node.NOTIFICATION_APPLICATION_FOCUS_OUT),
+		SessionLifecycle.Focus.LOST)
+	assert_eq(SessionLifecycle.focus_change(Node.NOTIFICATION_APPLICATION_FOCUS_IN),
+		SessionLifecycle.Focus.REGAINED)
+	assert_eq(SessionLifecycle.focus_change(Node.NOTIFICATION_APPLICATION_RESUMED),
+		SessionLifecycle.Focus.REGAINED)
+	assert_eq(SessionLifecycle.focus_change(Node.NOTIFICATION_APPLICATION_PAUSED),
+		SessionLifecycle.Focus.NONE)

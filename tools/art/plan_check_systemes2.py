@@ -16,9 +16,9 @@ leurs propres grilles :
 - **Surf et courants** (`verifier_mer`) : règles de `SurfRules` (monter de la terre vers l'eau
   surfable, nager, descendre) ; toute eau surfable est atteignable ; l'eau décor jamais ; chaque
   courant se termine (eau calme, terre ou passage) sans boucle ni blocage ; un Nageur est sur l'eau.
-- **Monture** (`verifier_monture`) : pentes seulement sur la Piste, dérive de chaque case de pente
-  jusqu'à un palier, Dresseur dont la vue coupe la pente, dormeur qui ferme une zone, rebord,
-  porte d'intérieur.
+- **Monture** (`verifier_monture`, `verifier_liens_monture`) : pentes seulement sur la Piste, dérive de
+  chaque case de pente jusqu'à un palier, Dresseur dont la vue coupe la pente, dormeur qui ferme une
+  zone, rebord, porte d'intérieur ; warps entre qa_mount, qa_mount_piste et qa_mount_interieur.
 
 Caractères communs (légende de chaque grille, ligne `PRATICABLES`) : `w` eau surfable, `~` eau
 décor, `^ v < >` courant **sur l'eau** (grilles de mer) ou rebord `v` (grilles à terre : seul `v`),
@@ -441,52 +441,56 @@ def verifier_mer(chemin: Path, rapport: Rapport | None = None) -> Rapport:
 # --- Monture (Vélo, Piste, pente, Flûte) ----------------------------------------------------------
 
 def verifier_monture(chemin: Path, rapport: Rapport | None = None) -> Rapport:
+	"""Une carte de la monture. Contrôles par contenu : pentes (seulement sur la Piste, dérive
+	jusqu'à un palier, Dresseur dont la vue les coupe, atteignables), rebord, porte d'intérieur et
+	dormeur (extérieur). `cycling_road` étant un booléen par carte (T9 [D]), la Piste est une carte
+	à part : une carte sans pente ne les contrôle pas ; les liens entre cartes sont dans
+	`verifier_liens_monture`."""
 	plan = lire(chemin)
 	r = rapport or Rapport(f"Monture : {chemin.name}")
 	pistes = {c for p in plan.of_kind("piste") for c in p.cells}
 	pentes = plan.cells_of("/")
-	r.ok(bool(pentes), "au moins une case de pente")
-	r.ok(all(c in pistes for c in pentes), "pentes seulement sur la Piste")
 	fixes = _bloquees(plan)
 
 	def libre(c: Case) -> bool:
 		return _dans(plan, c) and plan.at(*c) in plan.praticables and c not in fixes
 
-	# dérive vers le bas : s'arrête sur un palier (case praticable sans pente) ou un obstacle
-	paliers = set()
-	for c in pentes:
-		x = c
-		while plan.at(*x) == "/":
-			n = _plus(x, (0, 1))
-			if not libre(n):
-				break
-			x = n
-		r.ok(plan.at(*x) != "/" or not libre(_plus(x, (0, 1))), f"dérive depuis {c} : fin")
-		r.ok(x in pistes, f"dérive depuis {c} : reste sur la Piste")
-		paliers.add(x)
-	r.note(f"{len(pentes)} cases de pente, {len(paliers)} cases d'arrêt de dérive")
-	# Dresseur dont la vue coupe la pente
-	vues = 0
-	for p in plan.of_kind("dresseur"):
-		d = {"left": (-1, 0), "right": (1, 0), "up": (0, -1), "down": (0, 1)}[p.attrs["facing"]]
-		portee = int(p.attrs.get("sight", "4"))
-		ligne = [_plus(p.cells[0], d, k) for k in range(1, portee + 1)]
-		if any(_dans(plan, c) and plan.at(*c) == "/" for c in ligne):
-			vues += 1
-	r.ok(vues >= 1, "un Dresseur voit une case de pente")
-	# entrée, rebord, porte d'intérieur, dormeur
-	depart = _cases(plan, "depart")
-	if not r.ok(len(depart) == 1, "une seule position « depart »"):
+	entrees = [c for k in ("spawn", "depart") for p in plan.of_kind(k) for c in p.cells]
+	if pentes:
+		r.ok(all(c in pistes for c in pentes), "pentes seulement sur la Piste")
+		# dérive vers le bas : s'arrête sur un palier (case praticable sans pente) ou un obstacle
+		paliers = set()
+		for c in pentes:
+			x = c
+			while plan.at(*x) == "/":
+				n = _plus(x, (0, 1))
+				if not libre(n):
+					break
+				x = n
+			r.ok(plan.at(*x) != "/" or not libre(_plus(x, (0, 1))), f"dérive depuis {c} : fin")
+			r.ok(x in pistes, f"dérive depuis {c} : reste sur la Piste")
+			paliers.add(x)
+		r.note(f"{len(pentes)} cases de pente, {len(paliers)} cases d'arrêt de dérive")
+		# Dresseur dont la vue coupe la pente
+		vues = 0
+		for p in plan.of_kind("dresseur"):
+			d = {"left": (-1, 0), "right": (1, 0), "up": (0, -1), "down": (0, 1)}[p.attrs["facing"]]
+			portee = int(p.attrs.get("sight", "4"))
+			ligne = [_plus(p.cells[0], d, k) for k in range(1, portee + 1)]
+			if any(_dans(plan, c) and plan.at(*c) == "/" for c in ligne):
+				vues += 1
+		r.ok(vues >= 1, "un Dresseur voit une case de pente")
+	if not r.ok(bool(entrees), "au moins une entrée (depart ou spawn)"):
 		return r
 
-	def atteint(bloq: set[Case]) -> set[Case]:
-		vus = {depart[0]}
-		file = deque([depart[0]])
+	def atteint(depart: Case) -> set[Case]:
+		vus = {depart}
+		file = deque([depart])
 		while file:
 			c = file.popleft()
 			for d in DIRECTIONS:
 				n = _plus(c, d)
-				if not libre(n) or n in bloq:
+				if not libre(n):
 					continue
 				if plan.at(*n) == "v":
 					if d != (0, 1):
@@ -499,17 +503,22 @@ def verifier_monture(chemin: Path, rapport: Rapport | None = None) -> Rapport:
 					file.append(n)
 		return vus
 
-	zone = atteint(set())
-	r.ok(bool(set(pentes) & zone), "la pente est atteignable")
-	r.ok(bool(plan.cells_of("v")), "au moins un rebord")
-	portes = [p for p in plan.of_kind("warp") if p.attrs.get("interieur") == "oui"]
-	r.ok(any(c in zone for p in portes for c in p.cells), "une porte d'intérieur atteignable")
+	zone: set[Case] = set()
+	for e in entrees:
+		zone |= atteint(e)
+	if pentes:
+		r.ok(bool(set(pentes) & zone), "la pente est atteignable")
+	depart = _cases(plan, "depart")
+	if depart:
+		r.ok(bool(plan.cells_of("v")), "au moins un rebord")
+		portes = [p for p in plan.of_kind("warp") if p.attrs.get("interieur") == "oui"]
+		r.ok(any(c in zone for p in portes for c in p.cells), "une porte d'intérieur atteignable")
 	for p in plan.of_kind("dormeur"):
 		autour = {_plus(c, d) for c in p.cells for d in DIRECTIONS} - set(p.cells)
 		r.ok(bool(autour & zone), f"{p.ident} : on peut jouer de la Flûte à côté")
 		derriere = set(_cases(plan, "derriere_dormeur"))
 		r.ok(bool(derriere) and not (derriere & zone), f"{p.ident} : la zone derrière est fermée")
-		ouvert = atteint(set())
+		# réveillé, le dormeur ne bloque plus : la zone derrière s'ouvre
 		fixes_sans = fixes - set(p.cells)
 		vus = {depart[0]}
 		file = deque([depart[0]])
@@ -522,7 +531,32 @@ def verifier_monture(chemin: Path, rapport: Rapport | None = None) -> Rapport:
 					vus.add(n)
 					file.append(n)
 		r.ok(bool(derriere & vus), f"{p.ident} : réveillé, la zone derrière s'ouvre")
-		del ouvert
+	return r
+
+
+def verifier_liens_monture(chemins: list[Path], rapport: Rapport | None = None) -> Rapport:
+	"""Warps entre les cartes de QA de la monture : chaque `vers=carte:repère` mène à un repère
+	(spawn) qui existe, praticable, et chaque warp a son retour."""
+	plans = {c.stem: lire(c) for c in chemins}
+	r = rapport or Rapport("Monture, liens : " + ", ".join(c.name for c in chemins))
+	for carte, plan in plans.items():
+		for p in plan.of_kind("warp"):
+			vers = p.attrs.get("vers", "")
+			if not r.ok(":" in vers, f"{carte}/{p.ident} : vers=<carte>:<spawn>"):
+				continue
+			cible, repere = vers.split(":", 1)
+			if not r.ok(cible in plans, f"{carte}/{p.ident} : carte {cible} absente"):
+				continue
+			dest = plans[cible]
+			spawns = {q.ident: q for q in dest.positions.values() if q.kind in ("spawn", "depart")}
+			if not r.ok(repere in spawns, f"{carte}/{p.ident} : repère {repere} absent de {cible}"):
+				continue
+			c = spawns[repere].cells[0]
+			r.ok(dest.at(*c) in dest.praticables, f"{carte}/{p.ident} : arrivée praticable")
+			retours = [q for q in dest.of_kind("warp")
+				if q.attrs.get("vers", "").startswith(carte + ":")]
+			r.ok(bool(retours), f"{carte}/{p.ident} : {cible} a un warp de retour vers {carte}")
+			r.note(f"{carte}/{p.ident} -> {vers}")
 	return r
 
 
@@ -585,6 +619,20 @@ FIN
 # Depuis « depart », tout va bien ; depuis l'arrivée de l'est, le rocher (4, 2) poussé deux fois
 # vers le sud mure la sortie (4, 4) : seul un contrôle de toutes les entrées le voit.
 
+_PIEGE_PENTE = """PRATICABLES ./
+GRILLE 5 5
+00 #####
+01 #./.#
+02 #/..#
+03 #...#
+04 #####
+FIN
+POSITIONS
+depart  depart  1,1  libre
+FIN
+"""
+# Pentes « / » hors de toute position « piste » : refusées.
+
 _PIEGE_LEGENDE = """PRATICABLES .BSE
 GRILLE 6 3
 00 ######
@@ -609,6 +657,7 @@ def autotest() -> bool:
 			("piege_entree", _PIEGE_ENTREE, verifier_force, "anti-blocage"),
 			("qa_x", _PIEGE_TELEPORT, lambda p: verifier_teleporteurs([p]), "n'existe pas"),
 			("piege_courant", _PIEGE_COURANT, verifier_mer, "BOUCLE"),
+			("piege_pente", _PIEGE_PENTE, verifier_monture, "seulement sur la Piste"),
 		]:
 			chemin = Path(dossier) / f"{nom}.txt"
 			chemin.write_text(texte, encoding="utf-8")
@@ -630,6 +679,10 @@ def main() -> int:
 		return 0 if autotest() else 1
 	rapports = [
 		verifier_monture(PLANS / "qa_mount.txt"),
+		verifier_monture(PLANS / "qa_mount_piste.txt"),
+		verifier_monture(PLANS / "qa_mount_interieur.txt"),
+		verifier_liens_monture([PLANS / "qa_mount.txt", PLANS / "qa_mount_piste.txt",
+			PLANS / "qa_mount_interieur.txt"]),
 		verifier_mer(PLANS / "qa_sea.txt"),
 		verifier_mer(PLANS / "qa_sea_2.txt"),
 		verifier_force(PLANS / "qa_strength.txt"),

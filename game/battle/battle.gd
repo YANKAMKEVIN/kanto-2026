@@ -288,6 +288,8 @@ func is_legal(action: BattleAction) -> bool:
 		return _is_legal_heal(action)
 	if action.kind == BattleAction.Kind.SWITCH:
 		return check_switch(action.target) == SwitchCheck.OK
+	if action.kind == BattleAction.Kind.KEY_ITEM:
+		return _is_flute(action.item_id) and flute_has_effect()
 	if action.kind == BattleAction.Kind.ITEM:
 		var battle_item := _battle_item(action)
 		if battle_item != null:
@@ -364,6 +366,19 @@ func can_use_heal_items() -> bool:
 		and _rules.items != null
 
 
+## Vrai si le joueur peut jouer d'un objet clé maintenant (passe systèmes 2 : la Poké Flûte ;
+## objets connus). Ni le Sac ni l'effet ne sont consultés ([method flute_has_effect]).
+func can_use_key_items() -> bool:
+	return _state == State.CHOOSING and _rules != null and _rules.items != null
+
+
+## Vrai si la Flûte réveillerait quelqu'un : un Pokémon endormi non K.O. dans l'une des deux
+## équipes ([method PokeFluteRules.sleepers]). Sans effet, elle ne prend pas le tour (le
+## directeur le dit sans rien soumettre).
+func flute_has_effect() -> bool:
+	return not PokeFluteRules.sleepers(_player.party, _foe.party).is_empty()
+
+
 ## Contexte d'usage des objets de ce combat ([constant ItemData.CONTEXT_WILD_BATTLE] ou
 ## [constant ItemData.CONTEXT_TRAINER_BATTLE]).
 func item_context() -> StringName:
@@ -400,6 +415,9 @@ func submit(action: BattleAction) -> Array[BattleEvent]:
 			_use_battle_item(battle_item, events)
 		else:
 			_throw_ball(action.item_id, events)
+		return events
+	if action.kind == BattleAction.Kind.KEY_ITEM:
+		_play_flute(events)
 		return events
 	var foe_action := _foe_action()
 	if foe_action.kind == BattleAction.Kind.SWITCH:
@@ -551,6 +569,31 @@ func _use_battle_item(item: ItemData, events: Array[BattleEvent]) -> void:
 			active.focused = true
 			events.append(_event(BattleEvent.Kind.FOCUSED, _player))
 	_foe_turn_alone(events)
+
+
+## Poké Flûte (passe systèmes 2, dossier 24 §8 ; jouée avant les capacités, aucun tirage
+## propre) : FLUTE_PLAYED, un FLUTE_WOKE par Pokémon réveillé (joueur, puis adversaire),
+## ALL_WOKE, puis l'adversaire joue. Le tour est pris.
+func _play_flute(events: Array[BattleEvent]) -> void:
+	events.append(_event(BattleEvent.Kind.FLUTE_PLAYED, _player))
+	var sleepers := PokeFluteRules.sleepers(_player.party, _foe.party)
+	for pokemon: Pokemon in PokeFluteRules.wake_all(sleepers):
+		var mine := _player.party.index_of(pokemon) >= 0
+		var side := _player if mine else _foe
+		var woke := _pokemon_event(BattleEvent.Kind.FLUTE_WOKE,
+			BattleEvent.SideId.PLAYER if mine else BattleEvent.SideId.FOE, pokemon)
+		woke.on_field = side.active != null and side.active.pokemon == pokemon
+		events.append(woke)
+	events.append(_event(BattleEvent.Kind.ALL_WOKE, _player))
+	_foe_turn_alone(events)
+
+
+## Vrai si [param item_id] est la Poké Flûte des objets du combat.
+func _is_flute(item_id: StringName) -> bool:
+	if _rules == null or _rules.items == null:
+		return false
+	var item := _rules.items.get_item(item_id)
+	return item != null and item.key_use == ItemData.KEY_USE_POKE_FLUTE
 
 
 func _is_legal_heal(action: BattleAction) -> bool:

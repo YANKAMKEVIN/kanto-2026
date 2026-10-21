@@ -73,6 +73,14 @@ var heal_spawn: StringName = DEFAULT_HEAL_SPAWN
 var current_map: StringName = &""
 var player_cell: Vector2i = Vector2i.ZERO
 var player_facing: Vector2i = Vector2i.DOWN
+## Monture du joueur (passe systèmes 2, `systemes-2.md` §2.2 et §2.13) : tenue à jour par
+## [MountDirector] à chaque changement. Sauvegardée sous « mount » ([constant Mount.NAMES]),
+## champ facultatif de la v7 : absent ou inconnu = à pied.
+var player_mount: Mount.Kind = Mount.Kind.NONE
+## Dernière case à terre du joueur sur [member current_map] (Surf, §2.13) : tenue à jour par
+## [MountDirector] à chaque pas hors de l'eau. Sauvegardée sous « last_land_cell » ; absente =
+## [member player_cell].
+var last_land_cell: Vector2i = Vector2i.ZERO
 ## Nom du joueur (« Kevin » par défaut : pas encore d'écran de nom, dossier 08 §12).
 var player_name: String = DEFAULT_PLAYER_NAME
 ## Prénom du rival (sauvegarde v5, dossier 13 §3.4) : toujours un prénom valide ([NameRules]),
@@ -140,6 +148,8 @@ func new_game(rng_seed: int = -1) -> void:
 	current_map = &""
 	player_cell = Vector2i.ZERO
 	player_facing = Vector2i.DOWN
+	player_mount = Mount.Kind.NONE
+	last_land_cell = Vector2i.ZERO
 	player_name = DEFAULT_PLAYER_NAME
 	rival_name = DEFAULT_RIVAL_NAME
 	player_look = DEFAULT_PLAYER_LOOK
@@ -166,6 +176,9 @@ func set_player_location(map: StringName, cell: Vector2i, facing: Vector2i) -> v
 	current_map = map
 	player_cell = cell
 	player_facing = facing
+	# Passe systèmes 2 : à terre, la case est aussi la dernière case à terre.
+	if player_mount != Mount.Kind.SURF:
+		last_land_cell = cell
 
 
 ## Secondes de jeu au premier plan ([param delta] ≤ 0 ignoré).
@@ -277,7 +290,7 @@ func to_dict() -> Dictionary:
 	map_ids.sort_custom(func(a: StringName, b: StringName) -> bool: return String(a) < String(b))
 	for map: StringName in map_ids:
 		discovered[String(map)] = discovered_maps[map]
-	return {
+	var result := {
 		"player_name": player_name,
 		"rival_name": rival_name,
 		"player_look": String(player_look),
@@ -303,6 +316,13 @@ func to_dict() -> Dictionary:
 		"companion": companion_uid,
 		"daycare": daycare.to_dict(),
 	}
+	# Passe systèmes 2 (§2.13) : champs facultatifs de la v7, écrits seulement s'ils disent
+	# quelque chose (à pied et à terre, le fichier reste celui d'avant la passe).
+	if player_mount != Mount.Kind.NONE:
+		result["mount"] = String(Mount.to_name(player_mount))
+	if last_land_cell != player_cell:
+		result["last_land_cell"] = JsonFields.vector2i_to_array(last_land_cell)
+	return result
 
 
 ## Remplace tout l'état par [param dict] ([method to_dict], déjà migré par [SaveSystem]).
@@ -325,6 +345,9 @@ func load_dict(dict: Dictionary, data: PokemonData) -> bool:
 	player_facing = JsonFields.get_vector2i(dict, "facing", Vector2i.DOWN)
 	if player_facing == Vector2i.ZERO:
 		player_facing = Vector2i.DOWN
+	# Passe systèmes 2 (§2.13) : champs facultatifs de la v7.
+	player_mount = Mount.from_name(JsonFields.get_id(dict, "mount"))
+	last_land_cell = JsonFields.get_vector2i(dict, "last_land_cell", player_cell)
 	heal_map = JsonFields.get_id(dict, "heal_map", DEFAULT_HEAL_MAP)
 	heal_spawn = JsonFields.get_id(dict, "heal_spawn", DEFAULT_HEAL_SPAWN)
 	if heal_map.is_empty() or heal_spawn.is_empty():

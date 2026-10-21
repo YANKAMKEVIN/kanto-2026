@@ -1,0 +1,22 @@
+{
+	"poke_flute": {
+		"name": "Poké Flûte", "plural": "Poké Flûtes", "feminine": true,
+		"category": "key", "key_use": "poke_flute",
+		"description": "Une flûte à la mélodie douce. Elle réveille les Pokémon endormis."
+	},
+	"bicycle": {
+		"name": "Bicyclette", "plural": "Bicyclettes", "feminine": true,
+		"category": "key", "key_use": "bicycle",
+		"description": "Une bicyclette pliante. Elle va deux fois plus vite que la marche."
+		},
+	"card_key": {
+		"name": "Carte Magnétique", "plural": "Cartes Magnétiques", "feminine": true,
+		"category": "key",
+		"description": "Une carte électronique qui ouvre les portes verrouillées."
+	},
+	"hm02": {
+		"name": "CS02 — Vol", "plural": "CS02 — Vol", "feminine": true,
+		"category": "tm", "hm": 2, "teaches": "fly",
+		"description": "Permet de s'envoler vers une ville déjà visitée. S'apprend aussi comme une CT."
+	}
+}
