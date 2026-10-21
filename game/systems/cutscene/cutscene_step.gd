@@ -106,6 +106,17 @@ extends RefCounted
 ##   ([method PokemonGift.give], une seule fois par drapeau [member gift_flag]) ; s'il est donné,
 ##   le dialogue [member dialogue_id] (« reçoit ») puis, s'il est allé au Stockage,
 ##   [member dialogue_stored] (facultatif). Déjà reçu : rien, l'étape passe.
+## Jalon 21 (`jalon-21.md` §2.3) :
+## - « wild_battle » : [member flee_flags] (clé « flee », levés sur FLED), [member clear_flags]
+##   (clé « clear », **effacés** à la fin du combat quelle que soit l'issue, avant le réveil
+##   d'une défaite), [member reveal] (intro « révélation » du Scope Sylphe) et
+##   [member uncatchable] (Ball refusée avant le lancer) ;
+## - « give » : [member flags] (clé « set ») levés seulement si l'objet est entré dans le Sac ;
+## - « animate » : [member skip_reduced] (étape sautée avec « Réduire les animations ») ;
+## - [constant Kind.FLUTE] : notes de la Poké Flûte au-dessus du joueur ([FluteNotes]) ; la
+##   scène attend leur fin ;
+## - « react » / « emote » acceptent un **acteur de décor** (nœud du groupe
+##   [constant PropActor.GROUP] de la carte, [PropActor]) quand l'identifiant n'est pas un PNJ.
 
 ## Nouvelles valeurs en fin d'enum (ordre de [constant TYPE_KEYS]).
 enum Kind {
@@ -115,6 +126,7 @@ enum Kind {
 	FIELD_MOVE, SAVE, ANIMATE,
 	WILD_BATTLE,
 	GIFT_POKEMON,
+	FLUTE, # Jalon 21
 }
 
 ## Clé de type de chaque étape dans les fichiers, dans l'ordre de [enum Kind].
@@ -126,6 +138,7 @@ const TYPE_KEYS: Array[String] = [
 	"field_move", "save", "animate",
 	"wild_battle",
 	"gift_pokemon",
+	"flute", # Jalon 21
 ]
 ## Bulles d'une étape « emote » (clé « kind ») : le « ! » du Dresseur qui repère le joueur.
 const EMOTE_KINDS: Array[StringName] = [&"exclamation"]
@@ -202,6 +215,15 @@ var intro: StringName = &""
 ## [member level] et [member dialogue_id] (clé « say ») servent aussi.
 var gift_flag: StringName = &""
 var dialogue_stored: StringName = &""
+## Étape « wild_battle », jalon 21 (§2.3) : drapeaux levés sur une fuite (clé « flee »),
+## drapeaux effacés à la fin du combat (clé « clear »), intro « révélation » (clé « reveal ») et
+## Ball refusée (clé « uncatchable »).
+var flee_flags: Array[StringName] = []
+var clear_flags: Array[StringName] = []
+var reveal: bool = false
+var uncatchable: bool = false
+## Étape « animate », jalon 21 : sautée si « Réduire les animations » est actif.
+var skip_reduced: bool = false
 ## Conditions de l'étape (toutes levées / aucune levée), vides = toujours jouée.
 var if_flags: Array[StringName] = []
 var unless_flags: Array[StringName] = []
@@ -246,7 +268,7 @@ func applies(flags: StoryFlags) -> bool:
 
 ## Drapeaux à lever pour l'issue [param outcome] d'un combat ([enum Battle.Outcome]) :
 ## [member win_flags] pour WIN, [member lose_flags] pour LOSS, [member catch_flags] pour CAUGHT
-## (T30), rien sinon. Avec une rencontre fixe ([member static_encounter]), ses drapeaux
+## (T30), [member flee_flags] pour FLED (jalon 21), rien sinon. Avec une rencontre fixe ([member static_encounter]), ses drapeaux
 ## ([method StaticEncounter.flags_for]) d'abord, sans doublon.
 func outcome_flags(outcome: int) -> Array[StringName]:
 	var raised: Array[StringName] = []
@@ -260,6 +282,8 @@ func outcome_flags(outcome: int) -> Array[StringName]:
 			written = lose_flags
 		Battle.Outcome.CAUGHT:
 			written = catch_flags
+		Battle.Outcome.FLED: # Jalon 21
+			written = flee_flags
 	for flag: StringName in written:
 		if not raised.has(flag):
 			raised.append(flag)
@@ -311,6 +335,11 @@ func copy() -> CutsceneStep:
 	other.intro = intro
 	other.gift_flag = gift_flag
 	other.dialogue_stored = dialogue_stored
+	other.flee_flags = flee_flags.duplicate()
+	other.clear_flags = clear_flags.duplicate()
+	other.reveal = reveal
+	other.uncatchable = uncatchable
+	other.skip_reduced = skip_reduced
 	other.badge_id = badge_id
 	other.moment_type = moment_type
 	other.moment_details = moment_details.duplicate()
