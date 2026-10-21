@@ -27,6 +27,9 @@
 		},
 		"celadon_center": {
 			"spawn": "heal", "facing": "up", "wakeup_dialogue": "nurse_wakeup", "registers": true
+		},
+		"cinnabar_center": {
+			"spawn": "heal", "facing": "up", "wakeup_dialogue": "nurse_wakeup", "registers": true
 		}
 	}
 }

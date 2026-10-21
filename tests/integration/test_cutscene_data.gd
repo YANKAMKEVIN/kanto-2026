@@ -70,6 +70,8 @@ const MAPS: Array[StringName] = [
 	&"celadon_city", &"celadon_gym",
 	# Jalon 20 (T17) : arrivées silencieuses (Route 8 est, Céladopole est).
 	&"route_8",
+	# Jalon 24 (T12) : la porte fermée de l'Arène de Cramois'Île (T-42 et recul).
+	&"cinnabar_island",
 ]
 ## Jalon 7 (T18) : partie qui revient au labo avec le colis (rival parti après le combat).
 const PARCEL_FLAGS: Array[StringName] = [
@@ -256,6 +258,14 @@ const VARIANT_FLAGS: Dictionary = {
 	&"celadon_hidden_1": [PEWTER_FLAGS],
 	&"celadon_gym_erika": [PEWTER_FLAGS], &"celadon_gym_erika_tm_late": [PEWTER_FLAGS],
 	&"celadon_roof_trade": [PEWTER_FLAGS],
+	# Jalon 24 : objets, caches, Artikodin, porte de l'Arène, CT35, fossiles.
+	&"route_20_item_1": [PEWTER_FLAGS], &"route_21_item_1": [PEWTER_FLAGS],
+	&"seafoam_b2f_hidden_1": [PEWTER_FLAGS], &"seafoam_b4f_hidden_1": [PEWTER_FLAGS],
+	&"articuno": [PEWTER_FLAGS], &"cinnabar_gym_locked": [PEWTER_FLAGS],
+	&"cinnabar_lab_tm35": [PEWTER_FLAGS],
+	&"cinnabar_fossil_take_kabuto": [PEWTER_FLAGS], &"cinnabar_fossil_take_omanyte": [PEWTER_FLAGS],
+	&"cinnabar_fossil_give_kabuto": [PEWTER_FLAGS + [&"fossil_reviving_kabuto", &"fossil_ready"]],
+	&"cinnabar_fossil_give_omanyte": [PEWTER_FLAGS + [&"fossil_reviving_omanyte", &"fossil_ready"]],
 	# Jalon 20 (T21) : interrupteur (une fois), chute et prise de la Clé, Giovanni, Scope, objets.
 	&"game_corner_switch": [PEWTER_FLAGS], &"rocket_hideout_key_drop": [PEWTER_FLAGS],
 	&"rocket_hideout_b4f_lift_key": [PEWTER_FLAGS + [&"rocket_dropped_lift_key"]],
@@ -393,6 +403,15 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"tower_3f_objet_1": &"pokemon_tower_3f", &"tower_4f_objet_1": &"pokemon_tower_4f",
 	&"tower_4f_objet_2": &"pokemon_tower_4f", &"tower_5f_objet_1": &"pokemon_tower_5f",
 	&"tower_5f_cache_1": &"pokemon_tower_5f", &"tower_6f_objet_1": &"pokemon_tower_6f",
+	# Jalon 24 : objets (PNJ « objet »), caches (points d'examen), Artikodin (son PNJ), CT35 et
+	# fossiles (dialogues des scientifiques, « cutscene » ou « confirm_cutscene »).
+	&"route_20_item_1": &"route_20", &"route_21_item_1": &"route_21",
+	&"seafoam_b2f_hidden_1": &"seafoam_b2f", &"seafoam_b4f_hidden_1": &"seafoam_b4f",
+	&"articuno": &"seafoam_b4f", &"cinnabar_lab_tm35": &"cinnabar_lab_rd",
+	&"cinnabar_fossil_take_kabuto": &"cinnabar_lab_fossil",
+	&"cinnabar_fossil_take_omanyte": &"cinnabar_lab_fossil",
+	&"cinnabar_fossil_give_kabuto": &"cinnabar_lab_fossil",
+	&"cinnabar_fossil_give_omanyte": &"cinnabar_lab_fossil",
 }
 ## Scènes à déclencheur dont la carte n'est pas encore construite → leur carte (simulées sur les
 ## PNJ de son fichier). Vidée au T19 du jalon 9 (la forêt existe), puis au T11 du jalon 10 (les
@@ -517,7 +536,12 @@ func test_library_loads_without_error() -> void:
 		# Jalon 20 (T17) : arrivées, objet et caches, Erika, échange de la fillette.
 		&"route_8_reached", &"celadon_reached", &"route_8_item_1", &"route_8_hidden_1",
 		&"souterrain_hidden_1", &"souterrain_hidden_2", &"celadon_hidden_1",
-		&"celadon_gym_erika", &"celadon_gym_erika_tm_late", &"celadon_roof_trade"]
+		&"celadon_gym_erika", &"celadon_gym_erika_tm_late", &"celadon_roof_trade",
+		# Jalon 24.
+		&"route_20_item_1", &"route_21_item_1", &"seafoam_b2f_hidden_1", &"seafoam_b4f_hidden_1",
+		&"articuno", &"cinnabar_gym_locked", &"cinnabar_lab_tm35", &"cinnabar_fossil_take_kabuto",
+		&"cinnabar_fossil_take_omanyte", &"cinnabar_fossil_give_kabuto",
+		&"cinnabar_fossil_give_omanyte"]
 		+ J18_IDS + J20_T21_IDS))
 
 
@@ -642,6 +666,7 @@ func test_only_world_items_are_found_items() -> void:
 		"rocket_hideout_b4f_lift_key:lift_key", "rocket_hideout_b4f_silph_scope:silph_scope",
 		"route_10_item_1:super_potion", "route_11_hidden_1:poke_ball",
 		"route_11_item_1:super_potion", "route_11_item_2:awakening", "route_1_potion:potion",
+		"route_20_item_1:great_ball", "route_21_item_1:hyper_potion",
 		"route_24_antidote:antidote", "route_24_item_1:potion", "route_25_hidden_1:potion",
 		"route_25_item_1:tm19", "route_25_item_2:potion", "route_25_item_3:poke_ball",
 		"route_2_east_item_1:moon_stone", "route_2_east_item_2:rare_candy",
@@ -653,6 +678,7 @@ func test_only_world_items_are_found_items() -> void:
 		"route_6_hidden_1:super_potion", "route_6_item_1:poke_ball",
 		"route_8_hidden_1:revive", "route_8_item_1:super_potion",
 		"route_9_item_1:super_potion", "route_9_item_2:antidote", "route_9_item_3:poke_ball",
+		"seafoam_b2f_hidden_1:nugget", "seafoam_b4f_hidden_1:ultra_ball",
 		"souterrain_hidden_1:nugget", "souterrain_hidden_2:super_potion",
 		"ss_anne_hidden_1:awakening", "ss_anne_hidden_2:antidote", "ss_anne_hidden_3:potion",
 		"ss_anne_item_01:potion", "ss_anne_item_02:potion", "ss_anne_item_03:super_potion",

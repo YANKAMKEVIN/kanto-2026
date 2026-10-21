@@ -1,0 +1,7 @@
+{
+	"articuno": {
+		"cell": [6, 1], "facing": "down", "sprite": "pokemon/articuno",
+		"dialogue": "articuno", "verb": "observe", "turn_to_player": false,
+		"unless": ["articuno_done"]
+	}
+}

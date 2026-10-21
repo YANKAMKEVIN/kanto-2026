@@ -155,8 +155,6 @@
 			"description": "Une ville prospère, verte et commerçante. Sous les néons du Casino, l'ambiance n'est plus la même."
 		},
 		"fuchsia_city": { "name": "Parmanie", "kind": "town", "maps": [] },
-		"route_21": { "name": "Route 21", "kind": "sea_route", "maps": [] },
-		"cinnabar_island": { "name": "Cramois'Île", "kind": "town", "maps": [] },
 		"route_23": { "name": "Route 23", "kind": "route", "maps": [] },
 		"indigo_plateau": { "name": "Plateau Indigo", "kind": "place", "maps": [] },
 		"route_25": {
@@ -212,6 +210,41 @@
 				{ "id": "pokemon_center", "found_on": "route_10_center" }
 			],
 			"description": "Une route coupée en deux par la falaise et la rivière. On ne passe d'un côté à l'autre que par la Grotte Sombre."
+		},
+		"route_19": {
+			"name": "Route 19", "kind": "sea_route", "maps": ["route_19"],
+			"subtitle": "Parmanie — Route 20",
+			"description": "Une route marine qui part de la plage de Parmanie. Des nageurs y attendent au large, entre les vagues."
+		},
+		"route_20": {
+			"name": "Route 20", "kind": "sea_route", "maps": ["route_20"],
+			"subtitle": "Route 19 — Cramois'Île",
+			"description": "Une longue traversée vers l'ouest. Au milieu de la mer, les falaises blanches des Îles Écume."
+		},
+		"seafoam_islands": {
+			"name": "Îles Écume", "kind": "place",
+			"maps": ["seafoam_1f", "seafoam_b1f", "seafoam_b2f", "seafoam_b3f", "seafoam_b4f"],
+			"subtitle": "Route 20",
+			"description": "Des grottes de glace sous deux îlots jumeaux. Les rochers y changent le cours de l'eau."
+		},
+		"route_21": {
+			"name": "Route 21", "kind": "sea_route", "maps": ["route_21"],
+			"subtitle": "Bourg Palette — Cramois'Île",
+			"description": "Une route marine entre Bourg Palette et Cramois'Île, avec une prairie qu'on n'atteint qu'en Surf."
+		},
+		"cinnabar_island": {
+			"name": "Cramois'Île", "kind": "town",
+			"maps": [
+				"cinnabar_island", "cinnabar_center", "cinnabar_mart", "cinnabar_lab",
+				"cinnabar_lab_meeting", "cinnabar_lab_rd", "cinnabar_lab_fossil"
+			],
+			"subtitle": "Route 20 — Route 21",
+			"services": [
+				{ "id": "pokemon_center", "found_on": "cinnabar_center" },
+				{ "id": "poke_mart", "found_on": "cinnabar_mart" },
+				{ "id": "gym", "found_on": "cinnabar_island" }
+			],
+			"description": "Une île volcanique au sud-ouest de Kanto. On y vient pour son Labo, ses fossiles et son Arène."
 		},
 		"dark_cave": {
 			"name": "Grotte Sombre", "kind": "place", "maps": ["dark_cave_1f", "dark_cave_b1f"],
