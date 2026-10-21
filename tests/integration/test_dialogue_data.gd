@@ -771,6 +771,8 @@ var _offer: StarterOffer
 var _used_on: Dictionary[StringName, Array] = {}
 ## Carte → identifiants de PNJ.
 var _npc_ids: Dictionary[StringName, Array] = {}
+## Jalon 21 : carte → acteurs de décor déclarés (nœuds du groupe « scene_props », [PropActor]).
+var _prop_ids: Dictionary[StringName, Array] = {}
 ## Dialogue joué par une scène → PNJ créés (« spawn ») par cette scène.
 var _spawned_for: Dictionary[StringName, Array] = {}
 
@@ -811,6 +813,10 @@ func before_all() -> void:
 				if spec.has_rematch():
 					_use(spec.rematch_dialogue, map_id)
 		var map := (load(MapCatalog.scene_path(map_id)) as PackedScene).instantiate()
+		_prop_ids[map_id] = []
+		for node: Node in map.find_children("*", "", true, false):
+			if node.is_in_group(PropActor.GROUP):
+				(_prop_ids[map_id] as Array).append(StringName(node.name))
 		for point: Node in map.get_node(^"Interactables").get_children():
 			_use((point as InteractPoint).dialogue_id, map_id)
 			# Jalon 16 (T11) : objet à fouiller d'un puzzle : Boot joue les textes du puzzle et
@@ -1026,7 +1032,9 @@ func test_every_react_targets_an_npc_of_the_map_where_it_is_used() -> void:
 		var maps: Array = _used_on.get(row[0], [])
 		assert_false(maps.is_empty(), "%s utilisé" % row[0])
 		for map_id: StringName in maps:
-			assert_true((_npc_ids[map_id] as Array).has(page.react),
+			# Jalon 21 : un acteur de décor déclaré sur la carte vaut un PNJ.
+			assert_true((_npc_ids[map_id] as Array).has(page.react)
+				or (_prop_ids.get(map_id, []) as Array).has(page.react),
 				"%s : « react » %s sur %s" % [row[0], page.react, map_id])
 
 
