@@ -323,9 +323,9 @@ func _add_snorlax(entities: Node2D) -> void:
 	blocking.assign(cells)
 	gate.set(&"blocking_cells", blocking)
 	_kit.call(&"attach", entities, gate)
-	# TODO (script PropActor au T20) : donner à `Snorlax` le script `game/world/prop_actor.gd`
-	# (`react()` / `show_emote()` pour la scène du réveil) ; il est déjà du groupe `scene_props`.
+	# Jalon 21 (T20) : `PropActor` (`react()` / `show_emote()` pour la scène du réveil).
 	var body := Node2D.new()
+	body.set_script(load("res://game/world/prop_actor.gd"))
 	body.name = "Snorlax"
 	body.add_to_group(&"scene_props", true)
 	_kit.call(&"attach", gate, body)

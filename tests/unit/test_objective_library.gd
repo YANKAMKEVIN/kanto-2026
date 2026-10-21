@@ -85,9 +85,7 @@ func test_q4_nothing_before_the_rival_battle_then_reach_viridian() -> void:
 ## Jalon 20 (T17) : `game_corner_switch` et `got_rocket_hideout_b4f_silph_scope` sont levés par le
 ## Casino et le repaire (T21).
 const _PENDING_FLAGS: Array[StringName] = [&"viridian_arrived", &"cut_vermilion_gym_bush",
-	&"tower_medium_talked", &"game_corner_switch", &"got_rocket_hideout_b4f_silph_scope",
-	# Jalon 21 (T12) : levé par la variante A du 6F (session parente, après fusion).
-	&"ghost_marowak_calmed"]
+	&"tower_medium_talked", &"game_corner_switch", &"got_rocket_hideout_b4f_silph_scope"]
 
 
 ## Jalon 10 (dossier 12 §16, jalon-10.md §2.10) : « continuer vers le nord. » jusqu'à Argenta,

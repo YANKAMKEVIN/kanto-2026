@@ -77,8 +77,7 @@ const SNORLAX_DIALOGUE: StringName = &"snorlax_route_16"
 const SNORLAX_FLUTE_CUTSCENE: StringName = &"snorlax_route_16_wake"
 const SNORLAX_FRAMES: String = "res://assets/sprites/pokemon/painted/snorlax_frames.tres"
 const SHADOW_TEXTURE: String = "res://assets/sprites/characters/placeholder/shadow.png"
-## `PropActor` (jalon 21 T19, écrit dans une autre branche) : posé sur le nœud `Snorlax` dès que le
-## script existe. TODO (intégration) : retirer le test d'existence.
+## `PropActor` (jalon 21 T19) : script du nœud `Snorlax` (réveil : saut et « ! »).
 const PROP_ACTOR: String = "res://game/world/prop_actor.gd"
 const SCENE_PROPS_GROUP: StringName = &"scene_props"
 
@@ -225,8 +224,7 @@ func _add_snorlax(entities: Node2D) -> void:
 	_kit.call(&"attach", entities, gate)
 	var snorlax := Node2D.new()
 	snorlax.name = "Snorlax"
-	if ResourceLoader.exists(PROP_ACTOR):
-		snorlax.set_script(load(PROP_ACTOR))
+	snorlax.set_script(load(PROP_ACTOR))
 	_kit.call(&"attach", gate, snorlax)
 	snorlax.add_to_group(SCENE_PROPS_GROUP, true)
 	var shadow := Sprite2D.new()

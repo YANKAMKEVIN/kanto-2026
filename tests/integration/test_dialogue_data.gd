@@ -49,8 +49,6 @@ const GATE_GUARDS: Array[StringName] = [&"forest_gate_north_guard", &"forest_gat
 ## (T18 Route 9 / 10, T20 grotte ; T24 : Lavanville et Tour posés, retirés de la liste) ; « Il fait très sombre ici… » (T-3) est
 ## celui du J17 (`dark_caves.json`, joué par FlashDirector : [constant PLAYED_BY_BOOT]).
 const UNUSED_YET: Array[StringName] = [
-	# J21 : joués par la variante A du 6F (session parente).
-	&"tower_6f_marowak_held", &"tower_6f_marowak_soul", &"tower_6f_marowak_peace",
 	# Jalon 21 (T21) : `route_11_snorlax` repris par `snorlax_route_12` (retiré de la liste).
 	&"dark_cave_1f_sign", &"dark_cave_column", &"dark_cave_roots", &"dark_cave_crack",
 	&"dark_cave_b1f_hidden_1",
@@ -234,28 +232,17 @@ const MAPS: Array[StringName] = [
 	&"route_12", &"route_12_gate_2f",
 ]
 ## Jalon 21 (T22) : dialogues de Ronflex de la Route 16 (`j21_snorlax_16.json`, dossier 24 §15.6-§15.7).
-## Les répliques communes sont suffixées `_16` (même texte que celles de la Route 12 de
-## `j21_snorlax.json`) pour éviter la collision d'identifiants [D] ; la session parente dédoublonnera.
-const IDS_J21_T22: Array[StringName] = [
-	&"snorlax_route_16", &"snorlax_flute_played_16", &"snorlax_wakes_16", &"snorlax_calms_16",
-	&"snorlax_sleeps_16",
-]
+## Les répliques communes (flûte jouée, réveil, calme, rendormi) sont celles de `j21_snorlax.json`.
+const IDS_J21_T22: Array[StringName] = [&"snorlax_route_16"]
 ## Jalon 21 (T22) : textes validés (dossier 24 §15.6.3, §15.7 ; T-6 et T-7 du J17), page par page.
 const TEXTS_J21_T22: Dictionary[StringName, Array] = {
 	&"snorlax_route_16": ["Ronflex dort de nouveau.", "Il ronfle comme si de rien n'était.",
 		"Jouer de la Poké Flûte ?", "Un énorme Pokémon dort au milieu du chemin.",
 		"Il ne bouge pas d'un pouce.", "Il ronfle paisiblement.",
 		"Rien ne semble pouvoir le réveiller."],
-	&"snorlax_flute_played_16": ["{joueur} joue de la Poké Flûte."],
-	&"snorlax_wakes_16": ["Ronflex se réveille !", "Il attaque, de très mauvaise humeur !"],
-	&"snorlax_calms_16": ["Ronflex se calme…",
-		"Avec un grand bâillement, il retourne dans les montagnes."],
-	&"snorlax_sleeps_16": ["Ronflex bâille…", "et se rendort aussitôt."],
 }
 ## Jalon 21 (T22) : jouées par la scène `snorlax_route_16_wake` (le premier est lu par le point).
-const PLAYED_J21_T22: Array[StringName] = [
-	&"snorlax_flute_played_16", &"snorlax_wakes_16", &"snorlax_calms_16", &"snorlax_sleeps_16",
-]
+const PLAYED_J21_T22: Array[StringName] = []
 ## Lot de textes validé par Kevin le 2026-10-06 (anciens brouillons : panneau, observations,
 ## soin de Maman, terminal du Stockage, portes de Jadielle…) : source des textes hors dossiers.
 const TEXTES_VALIDES := "res://docs/design/textes/textes-brouillon-j7.md"
@@ -760,10 +747,9 @@ const SET_J14_BILL_CUTSCENES: Array[StringName] = [
 ## Jalon 16 (T12, T15) : `got_hm01` (lu par le marin de la passerelle et le départ du navire) est
 ## levé par la scène du capitaine (T13). Jalon 18 (T16) : `tower_stairs_open` (présence de
 ## l'Exorciste de la Tour) est levé au J19 (T16 : scène `tower_guardian`, dossier 22 K-3).
-## Jalon 21 (T14) : `snorlax_route_12_woken` et `_16_woken` (lus par M. Fuji, §15.4.7) sont levés
-## par les scènes des Ronflex (T19 à T22, autre session).
-const FUTURE_FLAGS: Array[StringName] = [&"ghost_marowak_calmed", &"snorlax_route_12_woken",
-	&"snorlax_route_16_woken"]
+## Jalon 21 : `ghost_marowak_calmed` (6F) et `snorlax_route_*_woken` (Ronflex) sont levés par leurs
+## scènes : plus aucun drapeau futur.
+const FUTURE_FLAGS: Array[StringName] = []
 var _library: DialogueLibrary
 var _cutscenes: CutsceneLibrary
 var _offer: StarterOffer
@@ -1739,7 +1725,6 @@ func test_oak_parcel_lines() -> void:
 				or (row[0] == &"rival_tower_intro" and row[1].contains("{player}")) \
 				or (String(row[0]).begins_with("saffron_gate_drink_") and row[1].contains("{player}")) \
 				or row[0] == &"celadon_eevee_received" or row[0] == &"fishing_cast" \
-				or row[0] == &"snorlax_flute_played_16" \
 				or (row[0] in [&"route_12_gate_tm39_got", &"snorlax_flute_played"] \
 					and row[1].contains("{player}")) \
 				or (row[0] in [&"rocket_hideout_b4f_lift_key_got",

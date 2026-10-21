@@ -17,13 +17,12 @@
 		"variants": [
 			{
 				"if": ["fuji_rescued"],
-				"unless": ["got_poke_flute"],
+				"unless_items": ["poke_flute"],
 				"steps": [
 					{ "face": "mr_fuji", "to": "player" },
 					{ "face": "player", "to": "mr_fuji" },
 					{ "dialogue": "fuji_flute_give" },
-					{ "give": "poke_flute", "count": 1 },
-					{ "set": ["got_poke_flute"] },
+					{ "give": "poke_flute", "count": 1, "set": ["got_poke_flute"] },
 					{ "dialogue": "fuji_flute_received" },
 					{ "dialogue": "fuji_flute_explain" }
 				]
