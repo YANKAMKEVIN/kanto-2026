@@ -295,6 +295,9 @@
 		],
 		"rocket_hideout_b4f": [
 			{ "decor": "rocket_hideout_repaire" }
+		],
+		"route_16": [
+			{ "decor": "route_5_6_prairie" }
 		]
 	}
 }
