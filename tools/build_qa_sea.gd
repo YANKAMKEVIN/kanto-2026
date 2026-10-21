@@ -10,7 +10,7 @@ extends SceneTree
 ##     (0, 11..14) → `qa_sea`.
 ## L'eau surfable (`w > v s`) est posée avec `surf_cells` ; `>` `v` remplissent `current_cells` (sens
 ## du flux) ; `s` remplit `forced_surf_cells`. `fishable_cells` [D] : colonne x = 7 de `qa_sea`,
-## rangées 2..16 (le long de la plage).
+## rangées 2..9 (moitié nord de la plage) ; la moitié sud (10..16) reste à SURFER.
 ##
 ##   godot --headless --path . -s res://tools/build_qa_sea.gd
 ##   godot --headless --path . --import
@@ -49,7 +49,7 @@ func _build_sea() -> void:
 	_paint(root, plan)
 	_sea_data(root, plan)
 	var fishable: Array[Vector2i] = []
-	for y: int in range(2, 17):
+	for y: int in range(2, 10):
 		fishable.append(Vector2i(FISHABLE_COLUMN, y))
 	root.set(&"fishable_cells", fishable)
 	_spawn(root, "depart", plan.cell_of("depart"))

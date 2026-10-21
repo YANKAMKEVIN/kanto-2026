@@ -74,14 +74,17 @@ func test_the_island_and_the_beach_are_land() -> void:
 	assert_false(grid.is_surfable(Vector2i(25, 5)), "colonne 25 hors bande de sortie : décor")
 
 
-func test_fishable_cells_are_the_water_column_along_the_beach() -> void:
+func test_fishable_cells_are_the_water_column_along_the_north_beach() -> void:
 	var sea := _map(&"qa_sea")
 	var grid := sea.get_grid()
-	assert_eq(sea.fishable_cells.size(), 15)
-	for y: int in range(2, 17):
+	assert_eq(sea.fishable_cells.size(), 8)
+	for y: int in range(2, 10):
 		var cell := Vector2i(7, y)
 		assert_true(cell in sea.fishable_cells, "pêche en %s" % cell)
 		assert_true(grid.is_surfable(cell))
+	# Moitié sud : SURFER depuis la plage (QA S2C sur téléphone).
+	for y: int in range(10, 17):
+		assert_false(Vector2i(7, y) in sea.fishable_cells, "Surf en (7, %d)" % y)
 	assert_true(_map(&"qa_sea_2").fishable_cells.is_empty())
 
 
