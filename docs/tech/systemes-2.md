@@ -1102,7 +1102,10 @@ IA qui évite un `ohko` voué à l'échec ; `FOCUS_OUT` écrit après 1 s ; pas 
 2 s ; budget d'instantané < 5 ms ; Vélo permis en grotte (dossier 25) ; bouton Vélo au-dessus du
 bouton Course ; touche B.
 
-### 8.1 Lot de textes à valider (passe systèmes 2, 2026-10-20)
+### 8.1 Lot de textes (passe systèmes 2, 2026-10-20) — **VALIDÉ par Kevin le 2026-10-21**
+
+**Validé tel quel** (« oui valide tout », 2026-10-21) : les 11 messages ci-dessous restent dans
+`data/battle/messages.json` sans changement.
 
 Textes provisoires déjà en jeu (`data/battle/messages.json`), à valider ou corriger d'un bloc :
 
