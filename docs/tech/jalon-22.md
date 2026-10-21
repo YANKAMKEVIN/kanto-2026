@@ -33,6 +33,11 @@
 > - Art : grille et vue générale avant le code (déjà faites et validées) ; le reste par lots ; le code
 >   ne bloque jamais sur l'art.
 
+> **État au 2026-10-21 (session de nuit, branche `jalon-22`) : le J22 est codé en contenu sur les
+> systèmes de la passe systèmes 2.** `origin/systemes-2` (main J20 + passe complète) fusionnée ;
+> la passe est propriétaire du Vélo, de la Piste, de la pente, de la pêche et de `key_use` : le
+> J22 ne les recode pas, il pose cartes et données. Voir §0.5 (alignement T10) et §8 (QA).
+
 **Pré-requis.** Dossier 25 validé. Grilles du J22 **à produire** (T6) et à faire valider par Kevin.
 Grille de la Route 12 du J21 (`origin/jalon-21` à `925ec9f3`, M-3 appliqué) : le J22 part du bord
 `warp_sud` (25..26, 101).
@@ -142,6 +147,36 @@ tournantes, compagnon rentré) ; `jalon-16.md` (`field_move`, Coupe) ; `jalon-12
 12. **Pente et Dresseurs** : la vue des Dresseurs est vérifiée à chaque fin de pas
     (`trainer_rules.gd`). La dérive interroge la même vérification **avant** de lancer le pas
     suivant (§2.3).
+
+### 0.5 Alignement (T10, 2026-10-21) sur `origin/systemes-2` (main J20 + passe systèmes 2)
+
+Fusion de `origin/systemes-2` dans `jalon-22` (`5ee69e45`). Réponses aux points du T10 :
+
+| Point | État réel | Décision |
+|---|---|---|
+| `key_use` | Livré par la passe (S2B T10) : `bicycle`, `old_rod`, `good_rod`, `super_rod` dans `items_systemes2.json` | Doublons du J22 retirés (`items_j22.json` ne garde que Bon, Hyper Potion, Hyper Ball, CT09). T11 **fait par la passe**. |
+| Mode Vélo, bouton HUD, Piste, pente | Livrés (`Mount`, `MountRules`, `MountDirector`, `BikeButton`, `GameMap.cycling_road`, `slope_cells`) | T14, T15, T16 **faits par la passe**. Écart [D] du J22 : `GameMap.cycling_road_cells` (Piste sur une partie de carte : Route 16 ouest voie basse, Route 18 ouest) ; `MountDirector` et `FishingDirector` lisent la case du joueur. |
+| Pêche | Livrée (S2C-bis : `FishingDirector`, PÊCHER, tables `data/fishing/water_rod.json`) | T13 (système) **fait par la passe** ; le J22 branche `data/world/fishable.json` dans `GameMap.fishable_set` (cartes livrées) et marque ses cartes (« f »). |
+| `if_items`, étape de retrait | `if_items` / `unless_items` sur les dialogues (J20) ; étape `take` (J20) | Échange du Bon : variante `if_items [bike_voucher]` + scène avec `take`. Les scènes n'ont pas de condition d'objet : les gardes de la Piste lisent `got_bicycle` (posé seulement par l'échange). |
+| `full_heal` (Total Soin) | Absent | Antidote à la Boutique de Parmanie (dossier §10.2). |
+| CT20 Frénésie | `rage` en `pending_effects` (aucun effet) | **CT09 Bélier** à sa place [D] (Bélier existe, recul codé, jamais distribuée) ; texte §16.8.12. À confirmer par Kevin. |
+| Grottes `interior` | Mont Sélénite, Cave Taupiqueur, Grotte Sombre : extérieures | Vélo permis (MapTraits). |
+| Routes 12 et 16 du J21 | Pas encore construites (`origin/jalon-21` à `3fbca1ff` : grilles seulement) | Passages vers elles « À venir » ; contrat ci-dessous. |
+| Ptitard, Tentacool | Au J21 seulement (`kanto_j21.json`, Amnésie et Bouclier dans `moves/j21.json`) | **Copie à l'identique** (`species/kanto_j22_j21.json`, `moves/j22_j21.json`, Pokédex) ; **à retirer à la fusion du J21** (doublons d'identifiants). Dos provisoires repris du J24 (mêmes fichiers). |
+| Léviator, Saquedeneu, Kangourex | Présents (J19, J20) | Magicarpe → Léviator au N20. |
+| Planches série 25 (vélo, pêche, PNJ, Kangourex, Ramoloss) | Images brutes hors dépôt ; rien d'intégré | Sprites existants en remplacement [D] (Pêcheur → `haru`, Motard → `rocker`, Ornithologue → `naturalist`, Loubard → `docker`) ; Kangourex et Ramoloss : examen seulement (pas de planche). |
+| Fonds de combat CB.3 du J22 | Non intégrés | Fonds existants [D] : Route 12 sud → `route_11_coast` ; 13–15, Parmanie → `route_5_6_prairie` ; 16–18 → `route_7_8_urbaine`. |
+| Maison de Vol (Q-9 de la passe) | « Le J22, en données » | Maison `route_16_fly_house` et CS02 posées (textes §16.8.13 à 15). |
+
+**Contrat avec le J21 (Route 12 nord, Route 16 est)** — rien n'est modifié dans ses cartes :
+- `route_12` : le bord `warp_sud` (25..26, 101) doit mener à `route_12_south` / `from_route_12`
+  (case 25) et `from_route_12_1` (case 26) ; la Route 12 sud revient sur `route_12` /
+  `from_route_12_sud` (puis `_1`).
+- `route_16` : porte basse (15..16, 20) → `route_16_gate` / `entrance_bas_est` (+ `_1`), arrivée
+  `from_poste` ; porte haute (19..20, 13) → `entrance_haut_est` (+ `_1`), arrivée `from_poste_haut`
+  (cases notées en tête de `route_16_gate.txt`) ; arbre (38..39, 19..20) coupable
+  (`cut_route_16_tree`), bloc « J22 » de `build_route_16.gd` (T19) : **à faire à la fusion du J21**.
+- Après la fusion : relancer `tools/build_j22_maps.gd` (les « À venir » deviennent des passages).
 
 ---
 
@@ -788,3 +823,56 @@ Maintenant  : T1 ─→ T2 ∥ T3 ∥ T4 ∥ T5 (rédaction) ; T6 (K) ─→ T9 
 | Retrait d'objet (échange du Bon) | étape existante, sinon `give` avec `count: -1` |
 | Animation de pêche sans planche | `idle` + bulle « … » |
 | Série d'art | 25 (24 prise par le J19) |
+
+---
+
+## 8. État des tâches et QA (2026-10-21, session de nuit)
+
+### 8.1 Fait
+
+| Tâche | Où |
+|---|---|
+| T10 alignement | §0.5 ; fusion de `origin/systemes-2` |
+| T11, T14, T15, T16 (systèmes) | **passe systèmes 2** (réutilisés tels quels) ; `cycling_road_cells` [D] du J22 |
+| T12 cases pêchables, Route 12 sud | `GameMap.fishable_set` + `fishable.json` ; `route_12_south`, maison de la Méga Canne |
+| T13 cannes | Canne (pêcheur de Carmin, variante), Méga Canne (Route 12 sud), Super Canne (Parmanie) |
+| T17 Bon et Bicyclette | Fan Club (choix OUI / NON), Boutique de Vélos d'Azuria (`if_items`, `take`) |
+| T18 postes de la Piste | `route_16_gate` (deux couloirs), `route_18_gate` ; refus et recul, salut une fois, montée d'office côté Piste |
+| T19 Route 16 ouest | voie basse = Piste (cases), voie haute à pied, objet caché, **maison de Vol + CS02** (Q-9) ; arbre de la Route 16 est : au J21 (§0.5) |
+| T20 Routes 17 et 18 | pente, 3 paliers, 5 cachés ; Route 18 (Piste à l'ouest, poste, étang pêchable à l'est) |
+| T21 Routes 13, 14, 15, poste 15 | 1F + 2F (assistant, jumelles), 21 Dresseurs, objets (CT09 pour la CT20) |
+| T24 Parmanie | ville, Centre (repos), Boutique (`fuchsia_mart`), Super Canne, Salle de réunion, grand-père ; portes Arène, Safari, Gardien « À venir » ; Route 19 « À venir » ; enclos (panneaux, examen) |
+| T25 (partie) | `test_save_j22` (v7, drapeaux, monture, Bon) ; contrat Safrania (`test_j22_data`) |
+| Départs §2.14 | `fishing_qa`, `route_12_south_qa`, `route_15_qa`, `bike_qa`, `cycling_road_qa`, `cycling_road_nobike_qa`, `fuchsia_qa`, `j22_full_qa` (part de la Route 12 sud tant que la Route 12 nord n'existe pas) |
+
+Outils : `tools/build_j22_maps.gd` (12 cartes, tuiles provisoires), `tools/gen_j22_data.py`
+(PNJ, Dresseurs, répliques, rencontres, objets depuis les grilles), `build_painted_interiors.gd --j22`
+(7 intérieurs). Tests : `test_j22_maps`, `test_j22_data`, `test_j22_story` (vraie Boot),
+`test_j22_fishable`, `test_save_j22`.
+
+### 8.2 Reste
+
+- **Art** : planches série 25 (vélo, pêche, Motard, Ornithologue, Loubard, frères pêcheurs,
+  Kangourex, Ramoloss), fonds CB.3, cartes peintes depuis les vues validées (aujourd'hui : tuiles
+  provisoires, règle 3).
+- **Fusion du J21** : retirer `kanto_j22_j21.json`, `moves/j22_j21.json` et les deux fiches du
+  Pokédex en double ; appliquer le contrat de §0.5 (Route 12, Route 16, arbre) ; relancer
+  `build_j22_maps.gd` ; `j22_full_qa` repart de Lavanville.
+- **T25 équilibrage** (simulation N30–34 sur chaque chemin) : non lancé.
+- **QA téléphone 22A, 22B, 22C** (T22, T23, T26) : liste ci-dessous, pour Kevin.
+
+### 8.3 QA téléphone (pour Kevin)
+
+| n° | Départ | Geste | Attendu |
+|---|---|---|---|
+| 1 | `fishing_qa` | parler au pêcheur ; sortir ; pêcher au quai de Carmin | Canne reçue ; PÊCHER ; Magicarpe N5 |
+| 2 | `route_12_south_qa` | descendre le ponton ; Méga Canne (maison) ; pêcher au ponton | table par défaut (Tentacool, Krabby, Poissirène, Magicarpe) |
+| 3 | (suite) | Routes 13 → 14 → 15 → poste 15 (2F : assistant, jumelles) → Parmanie | Dresseurs évitables sauf un par route ; textes |
+| 4 | `bike_qa` | Fan Club : NON puis OUI ; Azuria : vendeur | Bon une fois, puis Bicyclette ; bouton Vélo du HUD |
+| 5 | `cycling_road_nobike_qa` | aller vers la Piste dans le poste 16 | « Désolé ! La Piste Cyclable… », recul d'une case |
+| 6 | `cycling_road_qa` | traverser le poste vers la Piste | salut une fois ; sortie en selle ; descente refusée sur la voie basse |
+| 7 | (suite) | Route 17 sans toucher : dérive, paliers, Dresseurs en retrait ; objets cachés à vélo | confortable au doigt ; ≥ 58 fps |
+| 8 | (suite) | Route 18 → poste 18 → Parmanie | à pied côté est ; étang pêchable |
+| 9 | `fuchsia_qa` | Parmanie : Centre, Boutique, Salle de réunion, grand-père, Super Canne, étang ; portes Arène / Safari / Gardien / Route 19 | intérieurs, « À venir » en debug ; Poissoroy possible à la Méga Canne |
+| 10 | (Route 16 ouest, voie haute) | entrer dans la maison de Vol | CS02 reçue une fois |
+| 11 | partout | relancer l'appli | état gardé (v7) |
