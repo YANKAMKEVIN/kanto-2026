@@ -47,6 +47,10 @@ const _GRASS_TERRAIN: StringName = &"grass"
 const _RUBBLE_TERRAIN: StringName = &"rubble"
 ## Sol de la Tour Pokémon (jalon 19).
 const _FLOOR_TERRAIN: StringName = &"floor"
+## Eau surfable (S2C) : le joueur à pied ne s'y tient jamais, la case suffit.
+const _WATER_TERRAIN: StringName = &"water"
+## Pêche (S2C-bis, [FishingDirector]) : jamais tiré au pas, seulement par [method start_encounter].
+const WATER_ROD_TERRAIN: StringName = &"water_rod"
 
 ## Faux : aucun tirage (outils de capture, tests d'autres systèmes).
 var enabled: bool = true
@@ -106,8 +110,8 @@ func get_quiet_steps() -> int:
 
 ## Terrain de rencontre de [param cell] sur la carte courante (jalon 12, T20) : &"grass" (hautes
 ## herbes), &"rubble" (gravats), &"floor" (sol de la Tour, jalon 19 : carte avec une table
-## « floor », case praticable hors cases calmes, warps et déclencheurs), &"" (aucun : sol calme,
-## chemin, hors carte, sans carte).
+## « floor », case praticable hors cases calmes, warps et déclencheurs), &"water" (S2C : eau
+## surfable, le joueur y est en Surf), &"" (aucun : sol calme, chemin, hors carte, sans carte).
 func terrain_at(cell: Vector2i) -> StringName:
 	var grid := _map.get_grid() if _map != null else null
 	if grid == null:
@@ -118,18 +122,23 @@ func terrain_at(cell: Vector2i) -> StringName:
 		return _RUBBLE_TERRAIN
 	if _is_floor(grid, cell):
 		return _FLOOR_TERRAIN
+	if grid.is_surfable(cell):
+		return _WATER_TERRAIN
 	return &""
 
 
 ## Lance la rencontre [param encounter] sans tirage (scénario de capture, départ de débogage,
-## tests). Faux si une rencontre ou un combat tourne déjà, ou sans carte.
-func start_encounter(encounter: WildEncounter) -> bool:
+## tests). Faux si une rencontre ou un combat tourne déjà, ou sans carte. [param terrain] :
+## terrain imposé (&"" : celui de la case du joueur) ; [constant WATER_ROD_TERRAIN] (pêche,
+## S2C-bis) : aucune introduction (ni herbe, ni éboulis), la touche a déjà été jouée.
+func start_encounter(encounter: WildEncounter, terrain: StringName = &"") -> bool:
 	if encounter == null or _running or _map == null:
 		return false
 	if _battles != null and _battles.is_running():
 		return false
 	var cell := _player.get_cell() if is_instance_valid(_player) else Vector2i.ZERO
-	var terrain := terrain_at(cell)
+	if terrain.is_empty():
+		terrain = terrain_at(cell)
 	# Même calcul qu'un tirage (jalon 19) : la table d'origine, sinon celle de la case. Un
 	# SPECTRE déjà demandé par l'appelant le reste.
 	var table := _library.get_table_by_id(encounter.table_id) \
@@ -221,7 +230,8 @@ func _run(encounter: WildEncounter, origin: Vector2i,
 		encounter_started.emit(encounter.species, encounter.level)
 	if terrain == _RUBBLE_TERRAIN:
 		await _play_rubble_beat(origin, encounter.species, ghost)
-	elif terrain != _FLOOR_TERRAIN:
+	elif terrain != _FLOOR_TERRAIN and terrain != _WATER_TERRAIN \
+			and terrain != WATER_ROD_TERRAIN:
 		await _play_grass_beat(origin, encounter.species, ghost)
 	# Les objets connus du combat : sans eux, aucune Ball n'est légale (jalon 5D).
 	var items := _battles.get_item_library() if _battles != null else null

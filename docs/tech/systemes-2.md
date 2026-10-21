@@ -340,6 +340,12 @@ trajet de forme `SpinSlide` : dalles (J20, J28), courants (`CurrentField.ride`, 
 `Boot.is_stable()` reste faux pendant une glissade. La fin d'un courant peut être un warp
 (`Ride.warp`). Pas de nouveau directeur si celui du J20 est déjà générique : on le renomme seulement.
 
+**Fait (T15)** : `game/world/forced_slide/` — `ForcedSlide` (forme commune ; `SpinSlide` et
+`CurrentField.Ride` en héritent), `ForcedSlideDirector` (ex-`SpinTileDirector`, verrou
+`forced_slide`, signaux `slide_started` / `slide_finished` / `warp_reached`, `ride_from_here()` à
+l'arrivée) ; `Boot.get_forced_slide_director()` (alias `get_spin_director()`) ;
+`SceneRouter.follow_warp_at(cell, direction)` pour le passage au bout d'un courant.
+
 ### 2.7 Force (S2D, T17–T22)
 
 #### 2.7.1 Activation

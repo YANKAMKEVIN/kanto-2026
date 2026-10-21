@@ -67,7 +67,8 @@ const J17_TOKENS: Dictionary[String, Array] = {
 ## Textes pas encore validés, exemptés du contrôle « mot pour mot » (jalon 14 T16 : ceux du
 ## coquillage de la Route 25, validés depuis : dossier 17 §15 n° 71 ; le n° 72 est retiré le 2026-10-14).
 ## Jalon 20 (T17) : le panneau neutre de la cabine du T16 est remplacé par `elevator_panel` (T13).
-const UNVALIDATED: Array[StringName] = []
+## S2C (option A de Kevin, 2026-10-21) : question du choix « Pêcher / Surfer » [D], à valider.
+const UNVALIDATED: Array[StringName] = [&"water_choice"]
 ## Passe systèmes 2 (T25b) : Téléport et Tunnel hors combat, joués par [FieldTravelDirector] ;
 ## textes provisoires du lot `systemes-2.md` §8.1 (pas encore dans un dossier).
 const S2_FIELD_TRAVEL: Array[StringName] = [&"dig_used", &"teleport_used", &"fly_takeoff",
@@ -84,16 +85,30 @@ const PLAYED_BY_COMPANION: Array[StringName] = [
 ## Jalon 20 (T13) : refus du panneau sans la Clé (T-50), joué par ElevatorDirector.
 ## Passe systèmes 2 (S2B) : refus du Vélo (MountDirector) et Flûte « ailleurs » (KeyItemDirector).
 const PLAYED_BY_BOOT: Array[StringName] = [&"escape_rope_used", &"dark_cave_too_dark",
-	&"elevator_locked", &"bike_indoors", &"bike_cycling_road_walk", &"poke_flute_played"]
+	&"elevator_locked", &"bike_indoors", &"bike_cycling_road_walk", &"poke_flute_played",
+	&"surf_water", &"surf_first_ride", &"surf_current_too_strong", &"water_choice"]
 ## Passe systèmes 2 (S2B) : textes validés des dossiers 25 (§16.1.3, §16.1.4) et 24 (§15.6.6),
 ## qui vivent encore sur les branches de conception du J21 et du J22 (pas dans `main`) : comparés
 ## ici mot pour mot, page par page.
+## S2C : textes du Surf, dossier 27 T-1, T-2, T-3, T-14 (branche du J24).
 const IDS_S2B: Array[StringName] = [&"bike_cycling_road_walk", &"bike_indoors",
-	&"poke_flute_played"]
+	&"poke_flute_played", &"surf_water", &"surf_first_ride", &"surf_current_too_strong"]
 const TEXTS_S2B: Dictionary[StringName, Array] = {
 	&"bike_indoors": ["Ce n'est pas le moment de pédaler !"],
 	&"bike_cycling_road_walk": ["Pas de marche à pied", "sur la Piste Cyclable !"],
 	&"poke_flute_played": ["{player} joue de la Poké Flûte…", "Quel air entraînant !"],
+	&"surf_water": ["L'eau est profonde. Un Pokémon pourrait vous porter.",
+		"Il faut le Badge Âme pour utiliser Surf hors des combats."],
+	&"surf_first_ride": ["{pokemon} vous porte sur l'eau !"],
+	&"surf_current_too_strong": ["Le courant est beaucoup trop fort !"],
+}
+## Passe systèmes 2 (S2C-bis) : textes de la pêche, joués par [FishingDirector] ; validés au
+## dossier 25 §16.2.8 à §16.2.11 (branche de conception du J22, pas dans `main`).
+const TEXTS_S2C_FISH: Dictionary[StringName, Array] = {
+	&"fishing_cast": ["{player} lance sa ligne…"],
+	&"fishing_bite": ["Oh ! Ça mord !"],
+	&"fishing_nothing": ["Rien ne mord…"],
+	&"fishing_no_water": ["On ne peut pas pêcher ici."],
 }
 ## Jalon 10 : textes verrouillés du dossier 12 (même forme que le dossier 10) et lot de textes du
 ## J10 (panneaux, noms affichés), où un retour à la ligne est écrit « \n ».
@@ -821,6 +836,8 @@ func test_library_loads_without_error() -> void:
 	var expected := IDS + IDS_J14_BILL + IDS_J14_ROCKET + IDS_J15_ROUTE_5 + IDS_J16_GYM \
 		+ IDS_J16_SHIP + IDS_J16_RIVAL_CAPTAIN + IDS_J16_T15 + IDS_J17 + IDS_J18 + IDS_J19 + IDS_J20 \
 		+ IDS_J20_T17 + IDS_J20_T21 + IDS_S2B + S2_FIELD_TRAVEL
+	expected.append_array(TEXTS_S2C_FISH.keys())
+	expected.append_array(UNVALIDATED)
 	expected.sort()
 	assert_eq(found, expected)
 
@@ -835,7 +852,7 @@ func test_every_dialogue_is_used() -> void:
 	var played := _cutscenes.get_dialogue_ids()
 	for id: StringName in _real_ids():
 		if UNUSED_YET.has(id) or PLAYED_BY_COMPANION.has(id) or PLAYED_BY_BOOT.has(id) \
-				or S2_FIELD_TRAVEL.has(id):
+				or S2_FIELD_TRAVEL.has(id) or TEXTS_S2C_FISH.has(id):
 			continue
 		assert_true(_used_on.has(id) or played.has(id),
 			"dialogue « %s » utilisé par un PNJ, un point ou une scène" % id)
@@ -1308,6 +1325,9 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 		if TEXTS_S2B.has(row[0]):
 			assert_true(TEXTS_S2B[row[0]].has(row[1]), "%s : %s" % [row[0], row[1]])
 			continue
+		if TEXTS_S2C_FISH.has(row[0]):
+			assert_true(TEXTS_S2C_FISH[row[0]].has(row[1]), "%s : %s" % [row[0], row[1]])
+			continue
 		var text: String = row[1]
 		for token: String in _DOSSIER_TOKENS:
 			text = text.replace(token, _DOSSIER_TOKENS[token])
@@ -1607,7 +1627,7 @@ func test_oak_parcel_lines() -> void:
 		elif row[0] == &"nugget_rocket_given" \
 				or (row[0] == &"rival_tower_intro" and row[1].contains("{player}")) \
 				or (String(row[0]).begins_with("saffron_gate_drink_") and row[1].contains("{player}")) \
-				or row[0] == &"celadon_eevee_received" \
+				or row[0] == &"celadon_eevee_received" or row[0] == &"fishing_cast" \
 				or (row[0] in [&"rocket_hideout_b4f_lift_key_got",
 					&"rocket_hideout_b4f_silph_scope_got"] and row[1].contains("{player}")) \
 				or (String(row[0]).begins_with("celadon_gym_erika_") and row[1].contains("{player}")):

@@ -5,7 +5,7 @@
 # rencontres « water », Nageur (15, 13) qui voit vers l'ouest, eau décor (rangées 0..1 et colonne
 # 25 hors de la bande de sortie) jamais atteinte ; COURANT : flèches > (12..20, 4) puis v (21, 4..9)
 # jusqu'au passage (21, 10) → qa_sea_2 ; bord est en mer (25, 11..14) → qa_sea_2 (monture transmise) ;
-# arrivée en Surf forcé « s » (24, 12) depuis qa_sea_2. Pêche (S2C-bis) depuis la plage.
+# arrivée en Surf forcé « s » (24, 12) depuis qa_sea_2. Pêche (S2C-bis) depuis la plage, rangées 2..9 ; SURFER depuis les rangées 10..16.
 # Contrôle : tools/art/plan_check_systemes2.py.
 #
 # Légende :

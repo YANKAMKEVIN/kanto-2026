@@ -297,6 +297,11 @@ func get_cell() -> Vector2i:
 	return _mover.get_cell() if _mover != null else _cell
 
 
+## Mode de déplacement lu par [method GridWorld.move_mode_of] : SURF pour un Nageur (S2C).
+func get_move_mode() -> GridWorld.MoveMode:
+	return _spec.move_mode
+
+
 func get_facing() -> Vector2i:
 	return _facing
 
@@ -357,7 +362,14 @@ func leave_grid() -> void:
 func step(direction: Vector2i, run: bool = false) -> bool:
 	if _mover == null or _hopping or not Grid.is_cardinal(direction):
 		return false
-	var started := _mover.start_step(direction, run and can_run())
+	# Un Nageur reste sur l'eau surfable : la grille en SURF accepte aussi la terre (c'est la règle
+	# du joueur qui descend), pas lui.
+	var started := false
+	if _spec.move_mode != GridWorld.MoveMode.SURF \
+			or _grid.is_surfable(_mover.get_cell() + direction):
+		started = _mover.start_step(direction, run and can_run())
+	else:
+		_mover.face(direction)
 	_facing = _mover.get_facing()
 	if not started:
 		_play_idle()

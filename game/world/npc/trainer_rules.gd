@@ -34,9 +34,10 @@ static func is_beaten(flags: StoryFlags, trainer_id: StringName) -> bool:
 ## Distance (1..[param sight]) du joueur [param target] sur la ligne droite devant le Dresseur
 ## (case [param from], orientation [param facing]), ou [constant NOT_SEEN]. La ligne s'arrête à
 ## la première case hors carte, solide, d'eau, ou occupée par un autre que le joueur ; les
-## hautes herbes et les rebords ne la coupent pas.
+## hautes herbes et les rebords ne la coupent pas. S2C : pour un Nageur
+## ([param mode] SURF), l'eau **surfable** ne coupe pas la ligne (il voit le joueur en Surf).
 static func sight_distance(grid: GridWorld, from: Vector2i, facing: Vector2i, sight: int,
-		target: Vector2i) -> int:
+		target: Vector2i, mode: GridWorld.MoveMode = GridWorld.MoveMode.WALK) -> int:
 	if grid == null or not Grid.is_cardinal(facing):
 		return NOT_SEEN
 	for distance: int in range(1, sight + 1):
@@ -45,7 +46,10 @@ static func sight_distance(grid: GridWorld, from: Vector2i, facing: Vector2i, si
 			return NOT_SEEN
 		if cell == target:
 			return distance
-		if grid.is_solid(cell) or grid.is_water(cell) or grid.is_occupied(cell):
+		if grid.is_solid(cell) or grid.is_occupied(cell):
+			return NOT_SEEN
+		if grid.is_water(cell) and not (mode == GridWorld.MoveMode.SURF
+				and grid.is_surfable(cell)):
 			return NOT_SEEN
 	return NOT_SEEN
 

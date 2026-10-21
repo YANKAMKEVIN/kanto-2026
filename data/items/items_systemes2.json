@@ -18,5 +18,25 @@
 		"name": "CS02 — Vol", "plural": "CS02 — Vol", "feminine": true,
 		"category": "tm", "hm": 2, "teaches": "fly",
 		"description": "Permet de s'envoler vers une ville déjà visitée. S'apprend aussi comme une CT."
+	},
+	"hm03": {
+		"name": "CS03 — Surf", "plural": "CS03 — Surf", "feminine": true,
+		"category": "tm", "hm": 3, "teaches": "surf",
+		"description": "Permet de traverser l'eau sur le dos d'un Pokémon. S'apprend aussi comme une CT."
+	},
+	"old_rod": {
+		"name": "Canne", "plural": "Cannes", "feminine": true,
+		"category": "key", "key_use": "old_rod",
+		"description": "Une vieille canne à pêche. Avec elle, on pêche près des berges."
+	},
+	"good_rod": {
+		"name": "Super Canne", "plural": "Super Cannes", "feminine": true,
+		"category": "key", "key_use": "good_rod",
+		"description": "Une bonne canne à pêche. Les Pokémon y mordent plus volontiers."
+	},
+	"super_rod": {
+		"name": "Méga Canne", "plural": "Méga Cannes", "feminine": true,
+		"category": "key", "key_use": "super_rod",
+		"description": "La meilleure canne à pêche. Elle attire des Pokémon rares."
 	}
 }

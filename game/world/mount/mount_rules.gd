@@ -7,6 +7,15 @@ extends RefCounted
 
 ## Vitesse en Surf : la marche × 1,15 [D, `jalon-24.md` §2.3].
 const SURF_SPEED_FACTOR: float = 1.15
+## Saut de montée en Surf et de descente sur la rive, en secondes [D, `systemes-2.md` §8].
+const SURF_HOP_DURATION: float = 0.5
+
+
+## Vrai si le pas de [param from] à [param to] en Surf est un saut : il passe de la terre à
+## l'eau surfable (montée) ou de l'eau à la terre (descente).
+static func is_surf_hop(kind: Mount.Kind, grid: GridWorld, from: Vector2i, to: Vector2i) -> bool:
+	return kind == Mount.Kind.SURF and grid != null \
+		and grid.is_surfable(from) != grid.is_surfable(to)
 
 
 ## Monture à l'arrivée sur une carte (warp, bord, chargement), de case d'arrivée

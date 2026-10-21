@@ -32,6 +32,8 @@ signal champion_card_hidden
 signal menu_requested
 ## Le bouton Vélo est touché (passe systèmes 2) : monter ou descendre, ou dire le refus.
 signal bike_requested
+## Appui long sur le bouton contextuel en mode choix (PÊCHER / SURFER, S2C option A).
+signal interact_long_pressed
 
 @onready var _zone_title: ZoneTitle = %ZoneTitle
 @onready var _caption: WorldCaption = %WorldCaption
@@ -66,6 +68,7 @@ func _ready() -> void:
 	(_menu_button.get_node(^"Visual") as Node2D).modulate.a = UiTokens.MENU_BUTTON_ALPHA
 	_menu_button.pressed.connect(_on_menu_pressed)
 	_bike_button.pressed.connect(_on_bike_pressed)
+	_interact_button.long_pressed.connect(interact_long_pressed.emit)
 	_apply_bike_button()
 	_zone_title.title_hidden.connect(title_hidden.emit)
 	_caption.caption_hidden.connect(caption_hidden.emit)
@@ -144,8 +147,10 @@ func show_toast(title: String, detail: String, icon: Texture2D = null) -> void:
 ## EXAMINER, &"observe" → OBSERVER, &"take" → PRENDRE, &"meet" → RENCONTRER). Pendant un
 ## dialogue (contrôles cachés), le verbe est retenu et le bouton n'apparaîtra qu'au retour
 ## des contrôles.
-func show_interact(verb: StringName) -> void:
+## [param hold_choice] : un appui long émet [signal interact_long_pressed] (point doré [D]).
+func show_interact(verb: StringName, hold_choice: bool = false) -> void:
 	_interact_verb = verb
+	_interact_button.set_hold_choice(hold_choice)
 	if _controls_visible:
 		_interact_button.show_verb(verb)
 
@@ -153,6 +158,7 @@ func show_interact(verb: StringName) -> void:
 ## Fait disparaître le bouton contextuel (fondu ANIM_MICRO) : plus rien devant le joueur.
 func hide_interact() -> void:
 	_interact_verb = &""
+	_interact_button.set_hold_choice(false)
 	_interact_button.hide_verb()
 
 

@@ -13,7 +13,9 @@ extends Node2D
 ## Surf) : durée des pas ([method MountRules.step_duration], course ignorée), animations
 ## `bike_*` / `surf_*` si l'apparence les a (sinon celles de la marche), mode d'accès de la grille
 ## ([method get_move_mode]) ; en Vélo sur une pente de la Piste, sans appui, il dérive vers le
-## bas ([CyclingSlope]). La mise en scène (compagnon, refus, arrivée) est dans [MountDirector].
+## bas ([CyclingSlope]). En Surf, le pas qui monte sur l'eau ou descend sur la rive est un saut
+## d'une case ([method MountRules.is_surf_hop]). La mise en scène (compagnon, refus, arrivée,
+## montée et descente du Surf) est dans [MountDirector].
 
 signal moved(cell: Vector2i)
 ## Un pas commence (jalon 11, relais de [signal GridMover.step_started] pour le compagnon) :
@@ -135,6 +137,8 @@ func enter_map(grid: GridWorld, cell: Vector2i, facing: Vector2i, bounds: Rect2i
 	_mover = GridMover.new(grid, self)
 	_mover.set_locked(not is_input_enabled())
 	_apply_mount_speed()
+	_mover.hop_rule = _is_surf_hop
+	_mover.hop_duration = MountRules.SURF_HOP_DURATION
 	_mover.facing_changed.connect(_on_facing_changed)
 	_mover.step_finished.connect(_on_step_finished)
 	_mover.bumped.connect(_on_bumped)
@@ -427,6 +431,12 @@ func _mounted_animation(anim: StringName) -> StringName:
 	var base := String(anim).replace("run_", "walk_")
 	var mounted := StringName("%s_%s" % [Mount.to_name(_mount), base])
 	return mounted if _sprite.sprite_frames.has_animation(mounted) else anim
+
+
+## Saut de montée en Surf ou de descente sur la rive ([method MountRules.is_surf_hop]) : lu par
+## [member GridMover.hop_rule] à chaque pas.
+func _is_surf_hop(from: Vector2i, to: Vector2i) -> bool:
+	return MountRules.is_surf_hop(_mount, _grid, from, to)
 
 
 ## Dérive de la pente ([CyclingSlope]) : en Vélo, sur une case de pente, joueur libre. La vue

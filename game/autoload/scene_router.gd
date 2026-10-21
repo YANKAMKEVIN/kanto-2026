@@ -62,6 +62,10 @@ var last_change_ms: float = 0.0
 ## Lectures de cartes demandées au disque depuis la création du routeur (chargement direct ou
 ## en arrière-plan) : mesure et tests du cache borné (jalon 9 T18).
 var disk_loads: int = 0
+## Passe systèmes 2 (S2C, §2.5) : case de reprise propre à la monture, lue par [method start_at] :
+## `func(map: GameMap, cell: Vector2i) -> Vector2i` ; (-1, -1) = la règle habituelle
+## ([method GameMap.find_standing_cell]). Posé par [MountDirector] (reprise en Surf sur l'eau).
+var arrival_resolver: Callable
 
 var _world: Node2D
 var _player: Player
@@ -145,7 +149,11 @@ func start_at(map_id: StringName, cell: Vector2i, facing: Vector2i) -> GameMap:
 	var old: GameMap = _current_map if is_instance_valid(_current_map) else null
 	_world.add_child(map)
 	_apply_arrival_flags(map)
-	var target := map.find_standing_cell(cell, _player)
+	var target := Vector2i(-1, -1)
+	if arrival_resolver.is_valid():
+		target = arrival_resolver.call(map, cell)
+	if target == Vector2i(-1, -1):
+		target = map.find_standing_cell(cell, _player)
 	if target == Vector2i(-1, -1):
 		push_warning("SceneRouter : reprise impossible, aucune case libre sur %s" % map_id)
 		_world.remove_child(map)
@@ -444,6 +452,23 @@ func _disconnect_player() -> void:
 		_player.moved.disconnect(_on_player_moved)
 	if _player.bumped.is_connected(_on_player_bumped):
 		_player.bumped.disconnect(_on_player_bumped)
+
+
+## Suit le passage de [param cell] comme un pas libre fini vers [param direction] (warp
+## STEP_ON), sinon comme une poussée vers [param direction] (warp PUSH de bord). Sert à la fin
+## d'une glissade forcée (courant, passe systèmes 2 T15) : ses pas scriptés ne déclenchent aucun
+## passage ([method _on_player_moved]). Le joueur doit être libre. Vrai si un passage est suivi.
+func follow_warp_at(cell: Vector2i, direction: Vector2i) -> bool:
+	if _busy or not is_instance_valid(_current_map) or _player == null:
+		return false
+	var warps := _current_map.get_warps()
+	var warp := warps.find_on_step(cell, direction)
+	if warp == null:
+		warp = warps.find_on_push(cell, direction)
+	if warp == null:
+		return false
+	_follow(warp)
+	return true
 
 
 func _on_player_moved(cell: Vector2i) -> void:

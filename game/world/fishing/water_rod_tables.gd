@@ -23,6 +23,9 @@ extends RefCounted
 ## [constant EncounterTable.RATE_DEN] (100 % → 256, 50 % → 128, 75 % → 192).
 
 const DATA_PATH: String = "res://data/fishing/water_rod.json"
+## Tables propres à la carte de QA `qa_sea` (S2C-bis [D], retirées à la clôture S2Z) : espèces
+## déjà présentes, les tables globales citant des espèces du J22.
+const QA_DATA_PATH: String = "res://data/fishing/water_rod_qa.json"
 const TERRAIN: StringName = &"water_rod"
 ## Carte joker : table valable sur toutes les cartes sans table propre.
 const ANY_MAP: StringName = &"*"
@@ -55,6 +58,14 @@ func load_file(path: String = DATA_PATH) -> bool:
 	if not parsed is Dictionary:
 		return _fail("%s : un objet JSON est attendu" % path)
 	return add_from_dict(parsed, path)
+
+
+## Charge les tables du jeu ([constant DATA_PATH], puis [constant QA_DATA_PATH] s'il existe).
+func load_game_files() -> bool:
+	var ok := load_file(DATA_PATH)
+	if FileAccess.file_exists(QA_DATA_PATH):
+		ok = load_file(QA_DATA_PATH) and ok
+	return ok
 
 
 ## Ajoute les tables d'un objet « identifiant → table ». Faux si une entrée est invalide.

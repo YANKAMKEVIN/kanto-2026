@@ -7,6 +7,13 @@ extends TouchScreenButton
 ## (ANIM_MICRO), hide_verb le fait disparaître de même. Invisible, il ne reçoit pas le
 ## toucher. Il presse l'action « interact » (comme E ou Espace au clavier) : il ne sait pas
 ## à quoi elle sert. Vibration courte à l'appui.
+##
+## Choix par appui long (S2C, option A de Kevin, 2026-10-21) : avec [method set_hold_choice], un
+## appui court presse toujours « interact » (au relâcher), un appui tenu [constant UiTokens.LONG_PRESS]
+## émet [signal long_pressed] ; un point doré sur le bouton le signale [D].
+
+## Appui tenu UiTokens.LONG_PRESS quand le choix par appui long est actif.
+signal long_pressed
 
 ## Verbe → libellé (texte d'interface) et icône. « take » (Prendre) est prévu pour les
 ## objets ramassables, sans usage au jalon 3A. « meet » (Rencontrer) : un starter du labo
@@ -19,9 +26,21 @@ const VERBS: Dictionary[StringName, Dictionary] = {
 	&"meet": {"label": "RENCONTRER", "icon": preload("res://assets/ui/icons/meet.svg")},
 	# Passe systèmes 2 (§2.10) : porte à carte.
 	&"open": {"label": "OUVRIR", "icon": preload("res://assets/ui/icons/open.svg")},
+	# Passe systèmes 2 (§2.5, S2C-bis) : cibles de terrain (eau).
+	&"surf": {"label": "SURFER", "icon": preload("res://assets/ui/icons/surf.svg")},
+	&"fish": {"label": "PÊCHER", "icon": preload("res://assets/ui/icons/fish.svg")},
 }
 
+## Point doré du choix par appui long [D] : rayon et place (depuis le centre du bouton).
+const HOLD_HINT_RADIUS: float = 11.0
+const HOLD_HINT_OFFSET := Vector2(0.34, -0.34) * UiTokens.ROUND_BUTTON
+
 var _verb: StringName = &""
+## Choix par appui long actif (PÊCHER face à une eau où l'on peut aussi surfer).
+var _hold_choice: bool = false
+## Temps tenu depuis l'appui (s) ; -1 hors appui ou après l'appui long.
+var _held: float = -1.0
+var _hint: Node2D
 var _tween: Tween
 ## Vrai (mode gaucher) : le bouton est au bord gauche, la pastille du verbe passe à sa droite.
 var _mirrored: bool = false
@@ -36,8 +55,28 @@ func _ready() -> void:
 	visibility_mode = VISIBILITY_ALWAYS
 	passby_press = false
 	pressed.connect(_on_pressed)
+	released.connect(_on_released)
 	visible = false
 	modulate.a = 0.0
+	_hint = Node2D.new()
+	_hint.name = "HoldHint"
+	_hint.position = HOLD_HINT_OFFSET
+	_hint.visible = false
+	_hint.draw.connect(func() -> void:
+		_hint.draw_circle(Vector2.ZERO, HOLD_HINT_RADIUS + 2.0, UiTokens.ACCENT_TEXT)
+		_hint.draw_circle(Vector2.ZERO, HOLD_HINT_RADIUS, UiTokens.ACCENT))
+	add_child(_hint)
+	set_process(false)
+
+
+func _process(delta: float) -> void:
+	if _held < 0.0:
+		return
+	_held += delta
+	if _held >= UiTokens.LONG_PRESS:
+		_held = -1.0
+		Haptics.vibrate(UiTokens.HAPTIC_TAP_MS)
+		long_pressed.emit()
 
 
 ## Affiche le bouton avec le verbe [param verb] (&"talk", &"examine", &"observe", &"take",
@@ -57,6 +96,22 @@ func show_verb(verb: StringName) -> void:
 	_place_tag()
 	visible = true
 	_fade_to(1.0)
+
+
+## Active (true) ou retire le choix par appui long : le bouton ne presse plus « interact » à
+## l'appui mais au relâcher d'un appui court ; tenu, il émet [signal long_pressed].
+func set_hold_choice(enabled: bool) -> void:
+	if enabled == _hold_choice:
+		return
+	_hold_choice = enabled
+	action = "" if enabled else "interact"
+	_held = -1.0
+	_hint.visible = enabled
+	set_process(enabled)
+
+
+func has_hold_choice() -> bool:
+	return _hold_choice
 
 
 ## Mode gaucher : la pastille du verbe se place à droite du bouton (il est au bord gauche).
@@ -118,8 +173,21 @@ func _fade_to(alpha: float) -> void:
 
 func _hide() -> void:
 	visible = false
+	_held = -1.0
 	Input.action_release(&"interact")
 
 
 func _on_pressed() -> void:
 	Haptics.vibrate(UiTokens.HAPTIC_TAP_MS)
+	if _hold_choice:
+		_held = 0.0
+
+
+## Appui court en mode choix : « interact » pressé une image, comme un appui ordinaire.
+func _on_released() -> void:
+	if not _hold_choice or _held < 0.0:
+		return
+	_held = -1.0
+	Input.action_press(&"interact")
+	await get_tree().process_frame
+	Input.action_release(&"interact")

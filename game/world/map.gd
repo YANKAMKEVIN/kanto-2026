@@ -71,6 +71,16 @@ const _NPC_SCENE: PackedScene = preload("res://game/world/npc/npc.tscn")
 ## Cases de pente de la Piste (§2.3) : sans appui, le joueur en Vélo y dérive vers le bas
 ## ([CyclingSlope]) ; les paliers sont les cases sans marque. Vide : aucune.
 @export var slope_cells: Array[Vector2i] = []
+## Cases d'eau **surfable** (passe systèmes 2, §2.5) : l'eau est posée avec ([method
+## GridWorld.set_surfable]). Les autres cases d'eau restent du décor. Vide : aucune.
+@export var surf_cells: Array[Vector2i] = []
+## Courants actifs (§2.6) : case → direction cardinale du flux ([method GridWorld.set_current]),
+## joués par [ForcedSlideDirector]. Vide : aucun.
+@export var current_cells: Dictionary[Vector2i, Vector2i] = {}
+## Cases où l'on arrive en Surf même par un warp à pied (§2.5, « Surf forcé »).
+@export var forced_surf_cells: Array[Vector2i] = []
+## Cases d'eau où l'on peut pêcher (S2C-bis, [FishingSpot]). Vide : aucune.
+@export var fishable_cells: Array[Vector2i] = []
 
 var _grid: GridWorld
 var _warps: WarpTable
@@ -270,7 +280,18 @@ func flute_targets() -> Array[FluteTarget]:
 
 ## Ce que la carte permet à la monture du joueur (passe systèmes 2, §2.2).
 func mount_traits() -> MapTraits:
-	return MapTraits.new(interior, cycling_road)
+	var traits := MapTraits.new(interior, cycling_road)
+	for cell: Vector2i in forced_surf_cells:
+		traits.forced_surf_cells[cell] = true
+	return traits
+
+
+## Cases pêchables de la carte, en ensemble ([method FishingSpot.in_front]).
+func fishable_set() -> Dictionary[Vector2i, bool]:
+	var cells: Dictionary[Vector2i, bool] = {}
+	for cell: Vector2i in fishable_cells:
+		cells[cell] = true
+	return cells
 
 
 ## Ajoute le joueur à `Entities` et le place sur le spawn.
@@ -340,6 +361,10 @@ func _build_grid() -> void:
 		_grid.set_solid(cell)
 	for cell: Vector2i in slope_cells:
 		_grid.set_slope(cell)
+	for cell: Vector2i in surf_cells:
+		_grid.set_surfable(cell)
+	for cell: Vector2i in current_cells:
+		_grid.set_current(cell, current_cells[cell])
 	# Objets triés par les pieds (Entities) et relief peint posé au sol (GroundDecals :
 	# falaises, massif ; jalon-07.md §6.6).
 	for layer_path: NodePath in _PROP_LAYERS:

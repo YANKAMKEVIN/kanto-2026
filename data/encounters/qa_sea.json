@@ -1,0 +1,13 @@
+{
+	"qa_sea_water": {
+		"maps": ["qa_sea"],
+		"terrain": "water",
+		"rate": 25,
+		"slots": [
+			{ "species": "goldeen", "levels": [15, 18], "weight": 35 },
+			{ "species": "horsea", "levels": [15, 18], "weight": 30 },
+			{ "species": "shellder", "levels": [16, 19], "weight": 20 },
+			{ "species": "staryu", "levels": [16, 19], "weight": 15 }
+		]
+	}
+}

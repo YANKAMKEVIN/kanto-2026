@@ -1,10 +1,61 @@
 {
 	"bike_indoors": {
 		"narration": true,
-		"pages": ["Ce n'est pas le moment de pédaler !"]
+		"pages": [
+			"Ce n'est pas le moment de pédaler !"
+		]
 	},
 	"bike_cycling_road_walk": {
 		"narration": true,
-		"pages": ["Pas de marche à pied", "sur la Piste Cyclable !"]
+		"pages": [
+			"Pas de marche à pied",
+			"sur la Piste Cyclable !"
+		]
+	},
+	"surf_water": {
+		"narration": true,
+		"variants": [
+			{
+				"field": "surf:no_hm",
+				"pages": [
+					"L'eau est profonde. Un Pokémon pourrait vous porter."
+				]
+			},
+			{
+				"field": "surf:no_badge",
+				"pages": [
+					"Il faut le Badge Âme pour utiliser Surf hors des combats."
+				]
+			},
+			{
+				"field": "surf:no_pokemon",
+				"pages": [
+					"L'eau est profonde. Un Pokémon pourrait vous porter."
+				]
+			},
+			{
+				"field": "surf:ready",
+				"pages": [
+					"L'eau est profonde. Un Pokémon pourrait vous porter."
+				]
+			}
+		]
+	},
+	"surf_first_ride": {
+		"narration": true,
+		"variants": [
+			{
+				"field": "surf:ready",
+				"pages": [
+					"{pokemon} vous porte sur l'eau !"
+				]
+			}
+		]
+	},
+	"surf_current_too_strong": {
+		"narration": true,
+		"pages": [
+			"Le courant est beaucoup trop fort !"
+		]
 	}
 }
