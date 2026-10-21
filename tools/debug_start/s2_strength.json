@@ -1,0 +1,18 @@
+{
+	"map": "qa_strength", "spawn": "depart", "facing": "up",
+	"flags": [
+		"mom_greeted", "rival_met", "oak_met", "oak_lab_reunion", "starter_offered",
+		"starter_chosen", "taken_charmander", "taken_squirtle", "rival_lab_won",
+		"rival_challenged", "rival_battle_done", "rival_left_lab", "viridian_arrived",
+		"got_oak_parcel", "pokedex_activated", "poison_unlocked", "badge_soul",
+		"badge_rainbow"
+	],
+	"party": [
+		{ "species": "squirtle", "level": 30,
+			"moves": ["tackle", "water_gun", "bite", "strength"] },
+		{ "species": "pikachu", "level": 18 }
+	],
+	"companion": 0,
+	"bag": { "hm04": 1, "poke_ball": 10, "potion": 5 },
+	"money": 3000
+}
