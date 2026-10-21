@@ -2,7 +2,7 @@
 """Vérifie les trois grilles du jalon 21 (lot 21.0, dossier 24 §6, §9, §10) par recherche de chemin.
 
 Grilles : `tools/plans/pokemon_tower_7f.txt`, `route_12.txt` (Route 12 nord), `route_16.txt` (Route 16
-est), plus la variante `celadopole_j21.txt` (bande ouest de Céladopole, T8). Lecture par `plan_grille.lire` ; un pas = une case, 4 directions ; une porte (`D`) et un escalier
+est), plus la bande ouest de Céladopole (`celadopole.txt`, variante du T8 appliquée au T22). Lecture par `plan_grille.lire` ; un pas = une case, 4 directions ; une porte (`D`) et un escalier
 (`V`) mènent à une autre carte : on y entre, on ne les traverse pas — sauf les deux portes du poste de la
 Route 12, reliées par l'intérieur (attribut `lie=`), qui forment un passage.
 
@@ -80,9 +80,6 @@ class Rapport:
 def voisine(nom: str) -> tuple[Plan | None, str]:
 	"""Grille voisine : `tools/plans/<nom>.txt`, sinon la première branche connue qui l'a."""
 	chemin = PLANS / f"{nom}.txt"
-	if nom == "celadopole" and (PLANS / "celadopole_j21.txt").exists():
-		chemin = PLANS / "celadopole_j21.txt"  # variante du J21 (avant l'application de T22)
-		return lire(chemin), "tools/plans/celadopole_j21.txt"
 	if chemin.exists():
 		return lire(chemin), f"tools/plans/{nom}.txt"
 	for ref in REFS.get(nom, []):
@@ -664,33 +661,20 @@ def verifier_route_16(r: Rapport, apercu: bool) -> None:
 
 
 def verifier_celadopole_j21(r: Rapport, apercu: bool) -> None:
-	"""Variante `celadopole_j21.txt` : la grille du J20 (`celadopole.txt`) à l'identique, sauf la
-	bande ouest (0..3, 21..23) ouverte vers la Route 16."""
-	k = Carte("celadopole_j21")
+	"""Bande ouest de la grille réelle `celadopole.txt` (variante du T8 appliquée au T22, jalon 21) :
+	(0..3, 21..23) en chemin, `warp_ouest` vers la Route 16, `obstacle_ouest` supprimé."""
 	base, src = voisine_j20()
-	r.titre("1. Dimensions et écart avec la grille du J20")
-	r.critere(k.largeur == 70 and k.hauteur == 46, f"{k.largeur} × {k.hauteur} (attendu 70 × 46)")
+	r.titre("1. Dimensions et bande ouest")
 	if base is None:
-		r.critere(SANS_VOISINES, "grille du J20 introuvable (--sans-voisines pour passer)")
+		r.critere(SANS_VOISINES, "celadopole.txt introuvable (--sans-voisines pour passer)")
 		return
-	b = Carte("celadopole_j20", base)
+	k = Carte("celadopole", base)
+	r.critere(k.largeur == 70 and k.hauteur == 46, f"{k.largeur} × {k.hauteur} (attendu 70 × 46) — {src}")
 	bande = {(x, y) for x in range(4) for y in (21, 22, 23)}
-	diff = {(x, y) for y in range(b.hauteur) for x in range(b.largeur)
-		if k.plan.rows[y][x] != b.plan.rows[y][x]}
-	r.critere(diff == bande, f"seules différences de caractères : les 12 cases (0..3, 21..23) "
-		f"({sorted(diff - bande) or 'aucune autre'}) — base {src}")
-	r.critere(all(k.car(c) == "p" for c in bande) and all(b.car(c) in "sT" for c in bande),
-		"ces 12 cases passent de haie « T » / talus « s » à pavé « p »")
-	r.critere(k.plan.praticables == b.plan.praticables, "mêmes caractères praticables")
+	r.critere(all(k.car(c) == "p" for c in bande), "les 12 cases (0..3, 21..23) sont du pavé « p »")
 
 	r.titre("2. Positions")
-	ajoutees = set(k.pos) - set(b.pos)
-	retirees = set(b.pos) - set(k.pos)
-	r.critere(ajoutees == {"warp_ouest", "from_route_16"} and retirees == {"obstacle_ouest"},
-		f"ajoutées {sorted(ajoutees)}, retirées {sorted(retirees)}")
-	communes_ok = all(k.pos[i].cells == b.pos[i].cells and k.pos[i].kind == b.pos[i].kind
-		and k.pos[i].attrs == b.pos[i].attrs for i in set(k.pos) & set(b.pos))
-	r.critere(communes_ok, "toutes les autres positions sont identiques")
+	r.critere("obstacle_ouest" not in k.pos, "examen obstacle_ouest supprimé (texte 21 du J20 avec lui)")
 	w, f = k.pos["warp_ouest"], k.pos["from_route_16"]
 	r.critere(w.kind == "warp" and w.cells == [(0, 21), (0, 22), (0, 23)] and w.attrs.get("to") == "route_16"
 		and w.attrs.get("spawn") == "from_celadon", "warp_ouest (0, 21..23) → route_16 / from_celadon")
@@ -709,8 +693,6 @@ def verifier_celadopole_j21(r: Rapport, apercu: bool) -> None:
 	r.critere(all(c in e for c in w.cells) and all(c in e for c in f.cells),
 		f"le passage ouest est atteint depuis la Route 7 ({e.get((0, 22))} pas)")
 	r.critere(len(d) > 500, f"{len(d)} cases atteignables depuis l'arrivée de la Route 16")
-	bk = b.distances([b.pos["from_route_7"].cells[0]])
-	r.critere(all(c in e for c in bk if b.libre(c)), "toute case atteinte au J20 l'est toujours")
 	r16 = Carte("route_16")
 	r.critere(r16.pos["warp_est"].cells == [(43, 21), (43, 22), (43, 23)]
 		and r16.pos["warp_est"].attrs.get("spawn") == "from_route_16",

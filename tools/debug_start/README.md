@@ -283,3 +283,9 @@ passage du jeu n'y mène. **Retirées à la clôture de la passe (S2Z)** avec le
 
 Le PNJ de QA (`data/npcs/route_1.json`), la scène et les textes `qa_s2_legendary` sont retirés à
 la clôture de la passe (S2Z, T33).
+
+## Jalon 21 (T22) : Route 16 est
+
+| Fichier | Partie |
+|---|---|
+| `snorlax_16_qa.json` | Route 16, devant Ronflex (spawn `face_ronflex`, case (26, 22), tourné ←), **Poké Flûte** et **1 Poké Ball** au Sac, équipe de référence du J21 [D] (Reptincel N33, Roucarnage N30, Papilusion N28, Évoli N25, Nidorino N28 **endormi**, Sabelette N26 empoisonnée), Badges jusqu'au Prisme, Centre de Céladopole enregistré. Parler à Ronflex : « Jouer de la Poké Flûte ? » ; réveil, combat N30 ; **fuite** et **défaite** (une seule Ball) rejouables ; K.O. ou capture : le goulet s'ouvre sur la porte du poste (« Route 16 — à venir » en développement) ; `route_16_visited` : non posé par ce départ (il l'est en entrant par Céladopole) |

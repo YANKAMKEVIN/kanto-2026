@@ -217,6 +217,11 @@
 			"name": "Grotte Sombre", "kind": "place", "maps": ["dark_cave_1f", "dark_cave_b1f"],
 			"subtitle": "Route 10",
 			"description": "Un tunnel sans lumière sous la montagne. On y avance de repère en repère, une colonne, une fente, une flaque."
+		},
+		"route_16": {
+			"name": "Route 16", "kind": "route", "maps": ["route_16"],
+			"subtitle": "Céladopole",
+			"description": "Une route boisée à l'ouest de Céladopole."
 		}
 	}
 }

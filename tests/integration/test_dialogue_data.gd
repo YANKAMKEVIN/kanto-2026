@@ -224,6 +224,31 @@ const MAPS: Array[StringName] = [
 	&"celadon_restaurant", &"celadon_chief_house", &"celadon_hotel",
 	# Jalon 20 (T21) : la vie du 20-II (Casino déjà listé ; repaire Rocket B1F à B4F).
 	&"rocket_hideout_b1f", &"rocket_hideout_b2f", &"rocket_hideout_b3f", &"rocket_hideout_b4f",
+	# Jalon 21 (T22) : la Route 16 est (Ronflex ; aucun autre texte).
+	&"route_16",
+]
+## Jalon 21 (T22) : dialogues de Ronflex de la Route 16 (`j21_snorlax_16.json`, dossier 24 §15.6-§15.7).
+## Les répliques communes sont suffixées `_16` (même texte que celles de la Route 12 de
+## `j21_snorlax.json`) pour éviter la collision d'identifiants [D] ; la session parente dédoublonnera.
+const IDS_J21_T22: Array[StringName] = [
+	&"snorlax_route_16", &"snorlax_flute_played_16", &"snorlax_wakes_16", &"snorlax_calms_16",
+	&"snorlax_sleeps_16",
+]
+## Jalon 21 (T22) : textes validés (dossier 24 §15.6.3, §15.7 ; T-6 et T-7 du J17), page par page.
+const TEXTS_J21_T22: Dictionary[StringName, Array] = {
+	&"snorlax_route_16": ["Ronflex dort de nouveau.", "Il ronfle comme si de rien n'était.",
+		"Jouer de la Poké Flûte ?", "Un énorme Pokémon dort au milieu du chemin.",
+		"Il ne bouge pas d'un pouce.", "Il ronfle paisiblement.",
+		"Rien ne semble pouvoir le réveiller."],
+	&"snorlax_flute_played_16": ["{joueur} joue de la Poké Flûte."],
+	&"snorlax_wakes_16": ["Ronflex se réveille !", "Il attaque, de très mauvaise humeur !"],
+	&"snorlax_calms_16": ["Ronflex se calme…",
+		"Avec un grand bâillement, il retourne dans les montagnes."],
+	&"snorlax_sleeps_16": ["Ronflex bâille…", "et se rendort aussitôt."],
+}
+## Jalon 21 (T22) : jouées par la scène `snorlax_route_16_wake` (le premier est lu par le point).
+const PLAYED_J21_T22: Array[StringName] = [
+	&"snorlax_flute_played_16", &"snorlax_wakes_16", &"snorlax_calms_16", &"snorlax_sleeps_16",
 ]
 ## Lot de textes validé par Kevin le 2026-10-06 (anciens brouillons : panneau, observations,
 ## soin de Maman, terminal du Stockage, portes de Jadielle…) : source des textes hors dossiers.
@@ -504,7 +529,7 @@ const IDS_J20: Array[StringName] = [
 	# T13 : panneau d'ascenseur (sans page) et refus sans la Clé (texte 50).
 	&"elevator_panel", &"elevator_locked",
 	# T16 : Céladopole (panneaux, examens, arbustes de Coupe, tableau et panneau d'ascenseur).
-	&"celadon_city_sign", &"celadon_gym_sign", &"celadon_west_block", &"celadon_dept_board",
+	&"celadon_city_sign", &"celadon_gym_sign", &"celadon_dept_board",
 	&"celadon_mansion_office_door", &"celadon_gym_bush",
 	&"celadon_gym_inner_bush",
 	# T20 : machines du Casino (texte 39).
@@ -847,7 +872,7 @@ func test_library_loads_without_error() -> void:
 	found.sort()
 	var expected := IDS + IDS_J14_BILL + IDS_J14_ROCKET + IDS_J15_ROUTE_5 + IDS_J16_GYM \
 		+ IDS_J16_SHIP + IDS_J16_RIVAL_CAPTAIN + IDS_J16_T15 + IDS_J17 + IDS_J18 + IDS_J19 + IDS_J20 \
-		+ IDS_J20_T17 + IDS_J20_T21 + IDS_S2B + S2_FIELD_TRAVEL
+		+ IDS_J20_T17 + IDS_J20_T21 + IDS_S2B + S2_FIELD_TRAVEL + IDS_J21_T22
 	expected.append_array(TEXTS_S2C_FISH.keys())
 	expected.append_array(TEXTS_S2D_STRENGTH.keys())
 	expected.append_array(UNVALIDATED)
@@ -939,7 +964,9 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		+ PLAYED_J15_ROUTE_5 + PLAYED_J16_GYM + PLAYED_J16_RIVAL_CAPTAIN
 		+ PLAYED_J16_T15
 		# Jalon 17 (T8) : remise de la CS05 par l'assistant (scène lancée par son dialogue).
-		+ [&"route_2_east_assistant_hm05_system", &"route_2_east_assistant_hm05_use"]))
+		+ [&"route_2_east_assistant_hm05_system", &"route_2_east_assistant_hm05_use"]
+		# Jalon 21 (T22) : le réveil de Ronflex (Route 16).
+		+ PLAYED_J21_T22))
 	for id: StringName in played:
 		assert_true(_library.has_dialogue(id), "dialogue « %s » défini" % id)
 		if UNUSED_YET.has(id):
@@ -1039,7 +1066,9 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 			+ [&"hm05_assistant_met", &"route_2_east_gate_open", &"snorlax_route_11_seen"]
 			+ SET_J18_DIALOGUES
 			# Jalon 20 (T21) : porte du bureau ouverte par le second garde battu (§2.7.3).
-			+ [&"rocket_hideout_b4f_door_open"]))
+			+ [&"rocket_hideout_b4f_door_open"]
+			# Jalon 21 (T22) : Ronflex de la Route 16 vu (T-6, T-7 repris).
+			+ [&"snorlax_route_16_seen"]))
 	assert_eq(cutscenes.get_set_flags(), _sorted([&"badge_boulder", &"badge_cascade",
 		&"beaten_mt_moon_researcher", &"beaten_nugget_rocket", &"brock_met", &"cerulean_reached", &"got_mt_moon_1f_hidden_1",
 		&"got_mt_moon_1f_item_1", &"got_mt_moon_b1f_item_1", &"got_mt_moon_b1f_item_2",
@@ -1111,7 +1140,10 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		&"got_rocket_hideout_b2f_item_4", &"got_rocket_hideout_b3f_item_1",
 		&"got_rocket_hideout_b3f_item_2", &"got_rocket_hideout_b3f_hidden_1",
 		&"got_rocket_hideout_b4f_item_1", &"got_rocket_hideout_b4f_item_2",
-		&"got_rocket_hideout_b4f_item_3", &"got_rocket_hideout_b4f_hidden_1"]))
+		&"got_rocket_hideout_b4f_item_3", &"got_rocket_hideout_b4f_hidden_1"]
+		# Jalon 21 (T22) : titre de zone de la Route 16, réveil de Ronflex 16 (`_awake` jamais sur disque).
+		+ [&"route_16_visited", &"snorlax_route_16_awake", &"snorlax_route_16_woken",
+		&"snorlax_route_16_done", &"snorlax_route_16_caught"]))
 	assert_eq(_used_on.get(&"oak_lab_reunion"), [&"oak_lab"], "joué au labo, après le fondu")
 	assert_eq(_used_on.get(&"oak_starter_offer"), [&"oak_lab"], "joué au labo")
 
@@ -1335,6 +1367,9 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 		# texte n'est encore dans aucun dossier.
 		if GATE_GUARDS.has(row[0]) or UNVALIDATED.has(row[0]) or S2_FIELD_TRAVEL.has(row[0]) \
 				or (row[3] as DialogueVariant).draft:
+			continue
+		if TEXTS_J21_T22.has(row[0]):
+			assert_true(TEXTS_J21_T22[row[0]].has(text_t22(row[1])), "%s : %s" % [row[0], row[1]])
 			continue
 		if TEXTS_S2B.has(row[0]):
 			assert_true(TEXTS_S2B[row[0]].has(row[1]), "%s : %s" % [row[0], row[1]])
@@ -1645,6 +1680,7 @@ func test_oak_parcel_lines() -> void:
 				or (row[0] == &"rival_tower_intro" and row[1].contains("{player}")) \
 				or (String(row[0]).begins_with("saffron_gate_drink_") and row[1].contains("{player}")) \
 				or row[0] == &"celadon_eevee_received" or row[0] == &"fishing_cast" \
+				or row[0] == &"snorlax_flute_played_16" \
 				or (row[0] in [&"rocket_hideout_b4f_lift_key_got",
 					&"rocket_hideout_b4f_silph_scope_got"] and row[1].contains("{player}")) \
 				or (String(row[0]).begins_with("celadon_gym_erika_") and row[1].contains("{player}")):
@@ -1657,6 +1693,11 @@ func test_oak_parcel_lines() -> void:
 			expected = [DialogueTokens.POKEMON]
 		assert_eq(tokens, expected, "%s : jeton" % row[0])
 
+
+
+## Jalon 21 (T22) : le jeton « {player} » s'écrit « {joueur} » dans les textes validés.
+static func text_t22(text: String) -> String:
+	return text.replace("{player}", "{joueur}")
 
 
 ## Forme d'une réplique dans le dossier 10 : « ligne » ou « ligne 1 » / « ligne 2 ».
