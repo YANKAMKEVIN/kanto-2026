@@ -5,7 +5,7 @@
 [ext_resource type="Script" path="res://game/world/warp_point.gd" id="3_8jmsg"]
 [ext_resource type="Script" path="res://game/world/interactions/interact_point.gd" id="4_js6kv"]
 
-[node name="Route15Gate2f" type="Node2D" unique_id=600684793]
+[node name="Route15Gate2f" type="Node2D" unique_id=2024411769]
 script = ExtResource("1_grsbb")
 map_id = &"route_15_gate_2f"
 display_name = "Route 15"
@@ -14,27 +14,27 @@ size = Vector2i(12, 10)
 blocked_cells = Array[Vector2i]([Vector2i(2, 3), Vector2i(7, 3), Vector2i(2, 6), Vector2i(3, 6), Vector2i(1, 7), Vector2i(10, 7)])
 interior = true
 
-[node name="Ground" type="TileMapLayer" parent="." unique_id=743824604]
+[node name="Ground" type="TileMapLayer" parent="." unique_id=1196625891]
 tile_map_data = PackedByteArray("AAAAAAAAAAABAAIAAAABAAAAAAAAAAIAAAACAAAAAAABAAIAAAADAAAAAAAAAAIAAAAEAAAAAAAAAAIAAAAFAAAAAAAAAAIAAAAGAAAAAAAAAAIAAAAHAAAAAAAAAAIAAAAIAAAAAAAAAAIAAAAJAAAAAAAAAAIAAAAKAAAAAAABAAIAAAALAAAAAAABAAIAAAAAAAEAAAAAAAIAAAABAAEAAAABAAIAAAACAAEAAAABAAIAAAADAAEAAAAAAAIAAAAEAAEAAAAAAAIAAAAFAAEAAAABAAIAAAAGAAEAAAABAAIAAAAHAAEAAAABAAIAAAAIAAEAAAAAAAIAAAAJAAEAAAAAAAIAAAAKAAEAAAABAAIAAAALAAEAAAAAAAIAAAAAAAIAAAAAAAIAAAABAAIAAAAAAAIAAAACAAIAAAABAAIAAAADAAIAAAABAAIAAAAEAAIAAAAAAAIAAAAFAAIAAAABAAIAAAAGAAIAAAAAAAIAAAAHAAIAAAAAAAIAAAAIAAIAAAAAAAIAAAAJAAIAAAAAAAIAAAAKAAIAAAAAAAIAAAALAAIAAAAAAAIAAAAAAAMAAAABAAIAAAABAAMAAAACAAAAAAACAAMAAAAAAAcAAAADAAMAAAABAAAAAAAEAAMAAAAAAAAAAAAFAAMAAAABAAAAAAAGAAMAAAACAAAAAAAHAAMAAAAAAAcAAAAIAAMAAAAAAAAAAAAJAAMAAAAAAAAAAAAKAAMAAAAAAAYAAAALAAMAAAAAAAIAAAAAAAQAAAAAAAIAAAABAAQAAAABAAAAAAACAAQAAAAAAAAAAAADAAQAAAAAAAAAAAAEAAQAAAABAAAAAAAFAAQAAAAAAAAAAAAGAAQAAAACAAAAAAAHAAQAAAAAAAAAAAAIAAQAAAAAAAAAAAAJAAQAAAACAAAAAAAKAAQAAAAAAAAAAAALAAQAAAAAAAIAAAAAAAUAAAABAAIAAAABAAUAAAABAAAAAAACAAUAAAACAAAAAAADAAUAAAAAAAAAAAAEAAUAAAAAAAAAAAAFAAUAAAAAAAAAAAAGAAUAAAACAAAAAAAHAAUAAAAAAAAAAAAIAAUAAAAAAAAAAAAJAAUAAAACAAAAAAAKAAUAAAAAAAAAAAALAAUAAAABAAIAAAAAAAYAAAAAAAIAAAABAAYAAAACAAAAAAACAAYAAAAAAAcAAAADAAYAAAAAAAcAAAAEAAYAAAABAAAAAAAFAAYAAAAAAAAAAAAGAAYAAAABAAAAAAAHAAYAAAABAAAAAAAIAAYAAAABAAAAAAAJAAYAAAABAAAAAAAKAAYAAAAAAAAAAAALAAYAAAAAAAIAAAAAAAcAAAAAAAIAAAABAAcAAAAAAAcAAAACAAcAAAACAAAAAAADAAcAAAABAAAAAAAEAAcAAAACAAAAAAAFAAcAAAACAAAAAAAGAAcAAAAAAAAAAAAHAAcAAAACAAAAAAAIAAcAAAAAAAAAAAAJAAcAAAABAAAAAAAKAAcAAAABAAcAAAALAAcAAAAAAAIAAAAAAAgAAAAAAAIAAAABAAgAAAAAAAIAAAACAAgAAAAAAAIAAAADAAgAAAABAAIAAAAEAAgAAAABAAIAAAAFAAgAAAABAAIAAAAGAAgAAAAAAAIAAAAHAAgAAAAAAAIAAAAIAAgAAAABAAIAAAAJAAgAAAABAAIAAAAKAAgAAAAAAAIAAAALAAgAAAABAAIAAAAAAAkAAAAAAAIAAAABAAkAAAAAAAIAAAACAAkAAAAAAAIAAAADAAkAAAAAAAIAAAAEAAkAAAAAAAIAAAAFAAkAAAAAAAIAAAAGAAkAAAABAAIAAAAHAAkAAAAAAAIAAAAIAAkAAAABAAIAAAAJAAkAAAAAAAIAAAAKAAkAAAABAAIAAAALAAkAAAABAAIAAAA=")
 tile_set = ExtResource("2_lxuct")
 
-[node name="Detail" type="TileMapLayer" parent="." unique_id=1646172999]
+[node name="Detail" type="TileMapLayer" parent="." unique_id=1672006273]
 tile_set = ExtResource("2_lxuct")
 
-[node name="Obstacles" type="TileMapLayer" parent="." unique_id=1519888476]
+[node name="Obstacles" type="TileMapLayer" parent="." unique_id=1289514466]
 tile_set = ExtResource("2_lxuct")
 
-[node name="Entities" type="Node2D" parent="." unique_id=1602564278]
+[node name="Entities" type="Node2D" parent="." unique_id=112506761]
 unique_name_in_owner = true
 y_sort_enabled = true
 
-[node name="Overhead" type="TileMapLayer" parent="." unique_id=1529174929]
+[node name="Overhead" type="TileMapLayer" parent="." unique_id=1441902254]
 z_index = 10
 tile_set = ExtResource("2_lxuct")
 
-[node name="Warps" type="Node2D" parent="." unique_id=548043796]
+[node name="Warps" type="Node2D" parent="." unique_id=591299497]
 
-[node name="EscalierDescend_0" type="Marker2D" parent="Warps" unique_id=1859055750]
+[node name="EscalierDescend_0" type="Marker2D" parent="Warps" unique_id=1007502392]
 position = Vector2(1008, 384)
 script = ExtResource("3_8jmsg")
 direction = Vector2i(0, -1)
@@ -42,23 +42,23 @@ target_map = &"route_15_gate"
 target_spawn = &"from_2f"
 arrival_facing = Vector2i(0, 1)
 
-[node name="Interactables" type="Node2D" parent="." unique_id=533696851]
+[node name="Interactables" type="Node2D" parent="." unique_id=694407118]
 
-[node name="JumellesOuest" type="Marker2D" parent="Interactables" unique_id=445094625]
+[node name="JumellesOuest" type="Marker2D" parent="Interactables" unique_id=217642879]
 position = Vector2(240, 384)
 script = ExtResource("4_js6kv")
 dialogue_id = &"route_15_gate_2f_jumelles_ouest"
 facing = Vector2i(0, -1)
 
-[node name="JumellesEst" type="Marker2D" parent="Interactables" unique_id=102594894]
+[node name="JumellesEst" type="Marker2D" parent="Interactables" unique_id=1339304955]
 position = Vector2(720, 384)
 script = ExtResource("4_js6kv")
 dialogue_id = &"route_15_gate_2f_jumelles_est"
 facing = Vector2i(0, -1)
 
-[node name="Spawns" type="Node2D" parent="." unique_id=1768360139]
+[node name="Spawns" type="Node2D" parent="." unique_id=249456820]
 
-[node name="from_1f" type="Marker2D" parent="Spawns" unique_id=1110159919]
+[node name="from_1f" type="Marker2D" parent="Spawns" unique_id=1397210522]
 position = Vector2(1008, 480)
 
-[node name="Triggers" type="Node2D" parent="." unique_id=253935274]
+[node name="Triggers" type="Node2D" parent="." unique_id=1913645317]

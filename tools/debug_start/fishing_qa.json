@@ -1,0 +1,105 @@
+{
+	"map": "vermilion_fisher_house",
+	"spawn": "entrance",
+	"facing": "up",
+	"flags": [
+		"mom_greeted",
+		"rival_met",
+		"oak_met",
+		"oak_lab_reunion",
+		"starter_offered",
+		"starter_chosen",
+		"taken_charmander",
+		"taken_squirtle",
+		"rival_lab_won",
+		"rival_challenged",
+		"rival_battle_done",
+		"rival_left_lab",
+		"viridian_arrived",
+		"got_oak_parcel",
+		"pokedex_activated",
+		"poison_unlocked",
+		"pewter_arrived",
+		"beaten_pewter_gym_liam",
+		"brock_met",
+		"badge_boulder",
+		"tm34_received",
+		"cerulean_reached",
+		"rival_cerulean_won",
+		"got_ss_ticket",
+		"badge_cascade",
+		"rival_ss_anne_won",
+		"got_hm01",
+		"ss_anne_departed",
+		"badge_thunder",
+		"surge_met",
+		"tm24_received",
+		"route_9_entered",
+		"route_10_reached",
+		"dark_cave_crossed",
+		"lavender_reached",
+		"tower_stairs_open",
+		"route_8_reached",
+		"celadon_reached",
+		"beaten_celadon_game_corner_rocket",
+		"game_corner_switch",
+		"beaten_rocket_hideout_b1f_1",
+		"beaten_rocket_hideout_b1f_2",
+		"beaten_rocket_hideout_b1f_3",
+		"beaten_rocket_hideout_b2f_1",
+		"beaten_rocket_hideout_b3f_1",
+		"beaten_rocket_hideout_b3f_2",
+		"beaten_rocket_hideout_b4f_key",
+		"rocket_dropped_lift_key",
+		"got_rocket_hideout_b4f_lift_key",
+		"beaten_rocket_hideout_b4f_guard_1",
+		"beaten_rocket_hideout_b4f_guard_2",
+		"rocket_hideout_b4f_door_open",
+		"giovanni_hideout_won",
+		"got_silph_scope",
+		"beaten_celadon_gym_erika",
+		"badge_rainbow",
+		"tm21_received",
+		"got_poke_flute",
+		"snorlax_route_12_woken",
+		"snorlax_route_12_done",
+		"snorlax_route_16_woken",
+		"snorlax_route_16_done"
+	],
+	"party": [
+		{
+			"species": "charizard",
+			"level": 36
+		},
+		{
+			"species": "pidgeot",
+			"level": 34
+		},
+		{
+			"species": "jolteon",
+			"level": 30
+		},
+		{
+			"species": "poliwag",
+			"level": 28
+		},
+		{
+			"species": "eevee",
+			"level": 28
+		},
+		{
+			"species": "nidorino",
+			"level": 30
+		}
+	],
+	"bag": {
+		"great_ball": 10,
+		"super_potion": 10,
+		"revive": 3,
+		"poke_flute": 1,
+		"hm01": 1,
+		"escape_rope": 2
+	},
+	"money": 8000,
+	"rest_point": "vermilion_center"
+}

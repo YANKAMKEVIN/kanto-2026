@@ -446,7 +446,8 @@ func _trigger(root: Node, node_name: String, cells: Array[Vector2i], direction: 
 	var point := Marker2D.new()
 	point.set_script(load("res://game/world/triggers/event_trigger_point.gd"))
 	point.name = node_name
-	point.position = _world(top_left)
+	# Ancre en bas à gauche (EventTriggerPoint : y -(size.y-1)..0).
+	point.position = _world(Vector2i(top_left.x, bottom_right.y))
 	point.set(&"size", bottom_right - top_left + Vector2i.ONE)
 	point.set(&"direction", direction)
 	point.set(&"cutscene_id", cutscene)
