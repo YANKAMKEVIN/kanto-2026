@@ -24,7 +24,7 @@ cible reste celle du cahier d'art : 2D HD peinte, « ni pixel art ».
 | Personnages (PNJ, héros, rival…) | ≈ 100 apparences | aucun visible (fichiers pixel = repli) | — |
 | Compagnons d'exploration | 26 / 26 espèces de `companions.json` | Évoli (planche à faire, pas encore compagnon) | 1 |
 
-Lots proposés à Kevin (ordre à confirmer) : **1** série 22 bis (Céladopole et repaire, fiche
+Ordre des lots **validé par Kevin le 2026-10-21** : **1** série 22 bis (Céladopole et repaire, fiche
 `fiches-assets/serie-22bis-celadopole.md`) ; **2** dos de combat ; **3** fonds de combat manquants ;
 **4** reliquats (icônes d'avant le J20, objets de Bourg Palette).
 
