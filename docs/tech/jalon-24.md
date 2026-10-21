@@ -91,6 +91,75 @@ avec `gh run watch` au lieu de lancer la suite complète sur le Mac.
 En attente de la passe systèmes 2 : T7, T8, T10, T15 à T17 ; T11 à T14 et T18 à T21 attendent
 en plus la fusion des J19 à J23.
 
+### 0.5 Reprise de nuit (2026-10-21/22) : contenu sur la passe systèmes 2
+
+Worktree `~/dev/kanto-2026-wt-j24` (branche locale `j24-nuit`, poussée sur `origin/jalon-24` ; la
+branche locale `jalon-24` est prise par `~/dev/kanto-2026/.claude/worktrees/integ-j24`, intouchée).
+
+**Fusion de `origin/systemes-2`** (`c0472207`) : la logique de la passe fait foi (`GridWorld`,
+`SurfRules`, `BoulderRules`, `CurrentField` dans `game/world/surf/` ; doublon du J24 retiré). Reprises
+fusionnées retirées (Saquedeneu, Léviator, Ligotage, Écrasement, Brume, Draco-Rage, Ultralaser,
+Super Ball ; Ultralaser = version du J19) ; Rappel lu depuis le J20, ajouté à la Boutique ;
+Topdresseuse = planche du J20 ; `tm_compatibility.json` régénéré.
+
+**Fait** (tuiles provisoires `OverworldTiles`, aplats ; la grille fait foi) :
+- **T15 Îles Écume** : `tools/build_j24_seafoam.gd` (5 étages). Branchements J24 sur la passe :
+  `SeafoamFloorGate` (FlagGate sans dessin : niveaux de sol + courants actifs selon les 8
+  drapeaux, chevrons dessinés), `SeafoamBoulderSetup` / `SeafoamBoulderField` (rochers présents
+  calculés par `SeafoamState`, rochers tombés dans l'eau = FlagGate bloquant), trous `Warp` FALL
+  → spawn `chute_<étage>_<n>`, échelles et passages STEP_ON → `arrivee_<paire>`. Panneaux T-11 à
+  T-13, caches Pépite (B2F) et Hyper Ball (B4F). **Points ouverts de la passe vérifiés** par
+  `test_j24_seafoam_flow` : chute → Surf forcé dans l'eau → courant 1 → passage W1 → B4F en Surf.
+- **T8, T11, T12 la mer et Cramois'Île** : `tools/build_j24_sea.gd` (Routes 19, 20, 21, ville ;
+  bords PUSH case par case, grottes, portes, gravats du Manoir T-43, porte de l'Arène T-42 + recul),
+  `build_painted_interiors.gd --cinnabar` (Centre, Boutique, Labo en 4 pièces, enveloppes série
+  27). 29 Dresseurs (Nageurs `move_mode: surf`), objets visibles, PNJ et textes du §15.
+- **T13** : CT35 (`got_tm35`, sauvegarde), résurrection (`FossilReadyGate` sur la ville : pose
+  `fossil_ready`, efface les drapeaux d'une résurrection finie ; dons par `gift_pokemon`
+  `fossil_revived_<espèce>`, sauvegarde), **effet Métronome** (`MetronomeRules`, tirage par le
+  générateur du combat).
+- **T18 Artikodin** : PNJ `pokemon/articuno` du B4F (OBSERVER) → scène `articuno` (T-20,
+  `wild_battle` N50 `intro: legendary`, `static` done/caught, T-21 après un K.O.).
+- Zones (`route_19`, `route_20`, `seafoam_islands`, `route_21`, `cinnabar_island`), intérieurs,
+  lumières, point de repos, rectangles proposés sur la Carte. Départs `j24_surf`, `j24_seafoam`,
+  `j24_seafoam_b3f`, `j24_articuno`, `j24_cinnabar`.
+
+**Valeurs par défaut [D]** : prénoms déjà pris au J20 changés (Nageuse Iris → **Inès**, Nageuse
+Nina → **Noémie**, Pêcheur René → **Rémi** ; identifiants inchangés) ; Pêcheurs vue 1 (la donnée refuse 0 ; RB : il faut leur parler) ;
+apparences Ornithologue = `naturalist`, Pêcheur = `sailor`, employée Sylphe = `hostess` ;
+Métronome écarte aussi les capacités à plusieurs tours (charge, Patience, repos forcé, piège,
+Entrave, Téléport) ; lumières des étages = profils des grottes du J12 ; Max Repousse (Route 21) et
+Max Élixir (B3F) non posés tant que leurs objets attendent (`data/j24_pending/`) ; mises en page
+des textes et répliques de don « validées par Kevin le 2026-10-21, validation d'avance »
+(`TEXTS_J24` dans `test_dialogue_data`).
+
+**Contrats laissés aux autres jalons** :
+- **J22 (Parmanie)** : Route 19 nord = « à venir » (PARMANIE), retour sur la case du dessous. À la
+  fusion du J22 : remplacer par des PUSH ↑ vers `fuchsia_city` (spawns `from_route_19_<i>`,
+  colonnes Parmanie = colonnes Route 19 + 15, rangée 53) et, côté Parmanie, PUSH ↓ vers
+  `route_19` / `from_fuchsia_city_<i>` (spawns déjà posés). Le rocher du Gardien (T16) attend aussi.
+- **Bourg Palette (T11)** : Route 21 nord = « à venir » (BOURG PALETTE). À faire avec l'accord de
+  Kevin : eau surfable (10..14, 32..33) de `pallet_town`, PUSH ↓ vers `route_21` /
+  `from_pallet_town_<i>`, et l'inverse (T-70 de la mère, `mom_saw_surf`).
+- **J21** : poliwag / tentacool restent en reprise (`kanto_j24_reprises.json`).
+
+**Reste** : QA téléphone 24A–24D (Kevin), T16, côte de Bourg Palette, T19 (simulation
+d'équilibrage), art définitif des cartes (vues peintes de la série 27 non encore posées), T-14
+(SURFER refusé depuis l'escalier du B4F tant que le courant 2 est actif : non branché, le courant
+ramène de toute façon), T-70.
+
+**Liste de QA pour Kevin** (départs de `tools/debug_start/`) :
+1. `j24_surf` (plage de la Route 19) : SURFER, Nageurs qui viennent en Surf, combat sur l'eau puis
+   retour en Surf, bord ouest → Route 20, entrée ouest des Îles Écume.
+2. `j24_seafoam` (1F) : Force, pousser les rochers dans les trous (sauvegarde forcée), descendre,
+   rochers tombés aux étages du dessous, changer d'étage remet les rochers libres (T-11).
+3. `j24_seafoam_b3f` : courant 1 calme ; pousser les 4 rochers ; sauter dans un trou → B4F.
+4. `j24_articuno` (B4F, 8 trous bouchés) : surfer jusqu'à la salle, OBSERVER, combat ; capture,
+   K.O. (T-21), fuite (il reste).
+5. `j24_cinnabar` (Fossile Dôme) : Labo — confier le fossile, ressortir, revenir : Kabuto N30 ;
+   CT35 ; PC (T-58) ; porte de l'Arène (recul) ; Centre et Boutique (Rappel en vente) ; Route 21
+   (prairie en Surf, Pêcheurs, îlots) et Route 20 vers les Îles Écume (entrée est).
+
 ## 1. Découpage
 
 ### 1.1 Sous-jalons et validations (dossier §17)

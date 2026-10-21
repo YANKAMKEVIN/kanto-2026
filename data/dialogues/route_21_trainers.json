@@ -84,15 +84,15 @@
 		"pages": ["Le volcan réchauffe un peu l'eau\nprès de l'île."]
 	},
 	"route_21_fisher_rene_before": {
-		"speaker": "Pêcheur René",
+		"speaker": "Pêcheur Rémi",
 		"pages": ["Ne fais pas fuir les poissons !"]
 	},
 	"route_21_fisher_rene_defeated": {
-		"speaker": "Pêcheur René",
+		"speaker": "Pêcheur Rémi",
 		"pages": ["Ils sont partis de toute façon."]
 	},
 	"route_21_fisher_rene_after": {
-		"speaker": "Pêcheur René",
+		"speaker": "Pêcheur Rémi",
 		"pages": ["Les Kokiyas mordent mieux par\ntemps gris."]
 	},
 	"route_21_fisher_yves_before": {

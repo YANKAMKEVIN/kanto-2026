@@ -1,5 +1,21 @@
 # État du projet — note de passage
 
+## J24 — reprise de nuit (2026-10-21, branche `jalon-24`, worktree `~/dev/kanto-2026-wt-j24`)
+
+- **Fait** : fusion de `systemes-2` (la logique de la passe fait foi) ; cartes provisoires des
+  Routes 19, 20, 21, des 5 étages des Îles Écume, de Cramois'Île, de son Centre, de sa Boutique et
+  du Labo (4 pièces) ; 29 Dresseurs, objets, PNJ et textes du §15 ; Artikodin (rencontre fixe) ;
+  CT35 ; résurrection des fossiles ; **effet Métronome** ; départs `j24_*`. Points ouverts J24 de
+  la passe (Surf forcé après une chute, courant qui finit sur un passage, courants invisibles)
+  vérifiés ou réglés. Détail, valeurs par défaut, contrats J22 / Bourg Palette et liste de QA :
+  `docs/tech/jalon-24.md` §0.5.
+- **Textes** : mises en page et répliques de don recommandées — validé par Kevin le 2026-10-21,
+  validation d'avance.
+- **Attend Kevin** : QA téléphone (5 départs `j24_*`), accord pour la côte sud de Bourg Palette
+  (T11) ; Parmanie et le rocher du Gardien attendent la fusion du J22.
+- **Reportés** : cartes en tuiles provisoires (vues peintes de la série 27 à poser) ; T-14 et
+  T-70 non branchés ; Max Repousse et Max Élixir non posés (objets en attente).
+
 J24 en pause (2026-10-19, stratégie d'accélération de Kevin) : partie indépendante terminée et poussée (lot 24.0, logique pure de 24A et 24C, art de la série 27, 5 612 / 5 612). T7 (Surf) et tout ce qui touche une carte réelle attendent la **passe systèmes 2**, à qui le J24 propose sa logique pure (`SurfRules`, `BoulderRules`, `SeafoamState`, `CurrentField`, `GridWorld` surfable) ; plan `docs/tech/jalon-24.md` §0.4.
 
 Synchronisation (2026-10-19, branche `j24-sync-main` depuis `origin/jalon-24`) : fusion de `main` (`d397b2df`, J16 + J17 + J18 terminés) dans le J24 — reprises retirées : `hypnosis`, `headbutt`, `take_down` (J17, identiques) ; `tm_compatibility.json` régénéré (96 espèces) ; listes des tests partagés fusionnées ; suite complète 5 528 tests, 5 527 au premier passage (`test_dark_cave_flash` perturbé par une autre session qui écrivait le même fichier `user://` en parallèle ; 9 / 9 relancé seul), import sans erreur, plan_check tous conformes.

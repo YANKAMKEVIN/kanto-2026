@@ -24,15 +24,15 @@
 		"pages": ["Le courant tire vers les grottes,\nfais attention."]
 	},
 	"route_20_swimmer_iris_before": {
-		"speaker": "Nageuse Iris",
+		"speaker": "Nageuse Inès",
 		"pages": ["Tu m'as trouvée ?\nPersonne ne vient jamais ici."]
 	},
 	"route_20_swimmer_iris_defeated": {
-		"speaker": "Nageuse Iris",
+		"speaker": "Nageuse Inès",
 		"pages": ["Tu méritais d'arriver jusqu'ici."]
 	},
 	"route_20_swimmer_iris_after": {
-		"speaker": "Nageuse Iris",
+		"speaker": "Nageuse Inès",
 		"pages": ["C'est mon coin secret.\nGarde-le pour toi."]
 	},
 	"route_20_swimmer_lou_before": {
@@ -99,15 +99,15 @@
 		"pages": ["On trouve des Kokiyas partout dans\nces eaux."]
 	},
 	"route_20_swimmer_nina_before": {
-		"speaker": "Nageuse Nina",
+		"speaker": "Nageuse Noémie",
 		"pages": ["Cramois'Île ?\nTout droit vers l'ouest."]
 	},
 	"route_20_swimmer_nina_defeated": {
-		"speaker": "Nageuse Nina",
+		"speaker": "Nageuse Noémie",
 		"pages": ["Je me suis trompée de direction…"]
 	},
 	"route_20_swimmer_nina_after": {
-		"speaker": "Nageuse Nina",
+		"speaker": "Nageuse Noémie",
 		"pages": ["Il y a un Labo célèbre là-bas."]
 	},
 	"route_20_swimmer_elsa_before": {

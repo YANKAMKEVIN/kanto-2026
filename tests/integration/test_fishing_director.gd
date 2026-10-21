@@ -207,8 +207,11 @@ func test_player_is_blocked_during_the_wait() -> void:
 func test_unknown_species_bites_nothing() -> void:
 	var data := PokemonData.new()
 	assert_true(data.load_dir())
+	# Jalon 24 : Magicarpe existe désormais ; une table à espèce inconnue garde le cas.
 	var tables := WaterRodTables.new()
-	assert_true(tables.load_file(WaterRodTables.DATA_PATH), "tables globales du J22")
+	assert_true(tables.add_from_dict({"old_rod_any": {"maps": ["*"], "terrain": "water_rod",
+		"rod": "old_rod", "rate": 100,
+		"slots": [{"species": "missingno", "level": 5, "weight": 1}]}}, "test"))
 	_director.setup(_state, tables, data, _player, _runner, _encounters, null)
 	_state.bag.add(&"old_rod")
 	_fish_until(&"old_rod", func() -> bool: return not _director.is_running())
@@ -333,6 +336,13 @@ func test_boot_offers_fish_and_is_unstable_while_fishing() -> void:
 	map.fishable_cells = [water]
 	var fishing := boot.get_fishing_director()
 	fishing.set_map(map)
+	# Jalon 24 : Magicarpe existe désormais ; une table à espèce inconnue garde le cas « rien ne
+	# mord » sans lancer de combat (le joueur de ce test n'a pas d'équipe).
+	var tables := WaterRodTables.new()
+	tables.add_from_dict({"old_rod_any": {"maps": ["*"], "terrain": "water_rod",
+		"rod": "old_rod", "rate": 100,
+		"slots": [{"species": "missingno", "level": 5, "weight": 1}]}}, "test")
+	fishing._tables = tables
 	await wait_process_frames(2)
 	var before := boot.get_interaction_controller().get_target()
 	assert_true(before == null or before.kind != Interaction.Kind.FISH, "sans canne : pas PÊCHER")
@@ -351,7 +361,7 @@ func test_boot_offers_fish_and_is_unstable_while_fishing() -> void:
 		return boot.get_dialogue_runner().is_running() or not fishing.is_running(), TIMEOUT)
 	await _finish_dialogues(boot)
 	await wait_until(func() -> bool: return not fishing.is_running(), TIMEOUT)
-	# La Canne de la table globale cite Magicarpe (J22) : rien ne mord, sans planter.
+	# Espèce inconnue : rien ne mord, sans planter.
 	assert_push_error("espèce inconnue")
 	assert_false(fishing.is_running())
 	await wait_until(func() -> bool: return boot.is_stable(), TIMEOUT)

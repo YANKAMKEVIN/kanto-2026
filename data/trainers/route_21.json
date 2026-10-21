@@ -51,7 +51,7 @@
 		]
 	},
 	"route_21_fisher_rene": {
-		"name": "Pêcheur René", "ai": "random",
+		"name": "Pêcheur Rémi", "ai": "random",
 		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 1085,
 		"team": [{ "species": "shellder", "level": 31 }, { "species": "cloyster", "level": 31 }]
 	},

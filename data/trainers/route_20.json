@@ -13,7 +13,7 @@
 		]
 	},
 	"route_20_swimmer_iris": {
-		"name": "Nageuse Iris", "ai": "random",
+		"name": "Nageuse Inès", "ai": "random",
 		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 2450,
 		"team": [{ "species": "seaking", "level": 35 }]
 	},
@@ -58,7 +58,7 @@
 		]
 	},
 	"route_20_swimmer_nina": {
-		"name": "Nageuse Nina", "ai": "random",
+		"name": "Nageuse Noémie", "ai": "random",
 		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 620,
 		"team": [{ "species": "goldeen", "level": 31 }, { "species": "seaking", "level": 31 }]
 	},

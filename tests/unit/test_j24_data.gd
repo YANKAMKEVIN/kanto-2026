@@ -91,7 +91,7 @@ const TRAINERS := {
 	&"route_20_swimmer_ronan": [20, "Nageur Ronan", 5, 31, [&"shellder", &"cloyster"]],
 	&"route_20_swimmer_solene": [20, "Nageuse Solène", 70, 30,
 		[&"seadra", &"horsea", &"seadra"]],
-	&"route_20_swimmer_iris": [20, "Nageuse Iris", 70, 35, [&"seaking"]],
+	&"route_20_swimmer_iris": [20, "Nageuse Inès", 70, 35, [&"seaking"]],
 	&"route_20_swimmer_lou": [20, "Nageuse Lou", 20, 30, [&"tentacool", &"horsea", &"seel"]],
 	&"route_20_swimmer_mathis": [20, "Nageur Mathis", 5, 35, [&"staryu"]],
 	&"route_20_swimmer_kilian": [20, "Nageur Kilian", 5, 28,
@@ -100,7 +100,7 @@ const TRAINERS := {
 		[&"fearow", &"fearow", &"pidgeotto"]],
 	&"route_20_swimmer_clara": [20, "Nageuse Clara", 70, 30,
 		[&"shellder", &"shellder", &"cloyster"]],
-	&"route_20_swimmer_nina": [20, "Nageuse Nina", 20, 31, [&"goldeen", &"seaking"]],
+	&"route_20_swimmer_nina": [20, "Nageuse Noémie", 20, 31, [&"goldeen", &"seaking"]],
 	&"route_20_swimmer_elsa": [20, "Nageuse Elsa", 70, 31, [&"poliwag", &"seaking"]],
 	&"route_21_fisher_gilles": [21, "Pêcheur Gilles", 35, 28,
 		[&"seaking", &"goldeen", &"seaking", &"seaking"]],
@@ -112,7 +112,7 @@ const TRAINERS := {
 	&"route_21_swimmer_simon": [21, "Nageur Simon", 5, 37, [&"starmie"]],
 	&"route_21_swimmer_arthur": [21, "Nageur Arthur", 5, 33, [&"staryu", &"wartortle"]],
 	&"route_21_swimmer_noe": [21, "Nageur Noé", 5, 32, [&"poliwhirl", &"tentacool", &"seadra"]],
-	&"route_21_fisher_rene": [21, "Pêcheur René", 35, 31, [&"shellder", &"cloyster"]],
+	&"route_21_fisher_rene": [21, "Pêcheur Rémi", 35, 31, [&"shellder", &"cloyster"]],
 	&"route_21_fisher_yves": [21, "Pêcheur Yves", 35, 33, [&"seaking", &"goldeen"]],
 }
 ## Capacités dont l'effet manque au moteur (pending_effects) et que l'on rencontre au J24 : chez
@@ -509,7 +509,14 @@ func test_cinnabar_mart_stock() -> void:
 # --- Outils -----------------------------------------------------------------------------
 
 ## Répliques « … » (avant, défaite, après) du Dresseur [param name] (dossier §15.4).
+## Prénoms changés à la fusion de systemes-2 (déjà pris au J20, test_celadon_data) : nom en jeu →
+## nom du dossier 27 §15.4 [D].
+const RENAMED := {"Nageuse Inès": "Nageuse Iris", "Nageuse Noémie": "Nageuse Nina",
+	"Pêcheur Rémi": "Pêcheur René"}
+
+
 func _validated(name: String) -> Array[String]:
+	name = RENAMED.get(name, name)
 	var found: Array[String] = []
 	var regex := RegEx.create_from_string("« (.+?) »")
 	for line: String in _dossier.split("\n"):

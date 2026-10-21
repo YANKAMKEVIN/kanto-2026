@@ -133,6 +133,8 @@ func _build(map_id: String) -> void:
 		_add_sign(root, entities, plan.cell_of(id), signs[id])
 	if map_id == "cinnabar_island":
 		_cinnabar(root, entities, plan)
+		# Arrivée du Vol (`data/world/fly_points.json`) : devant le Centre.
+		_spawn(root, "from_center", plan.cell_of("from_centre"))
 	_save(root, MAPS_DIR + map_id + ".tscn")
 
 
