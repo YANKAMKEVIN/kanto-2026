@@ -43,6 +43,8 @@ extends RefCounted
 ## « facing » facultatif, celle de l'entrée par défaut) ; refusée avec « trainer » (sa vision
 ## lit l'orientation de l'entrée) et « route » (la boucle part de « cell »), voir
 ## [method _read_moved].
+## move_mode (passe systèmes 2, S2C) : « walk » (défaut) ou « surf » (Nageur : il se déplace sur
+## l'eau surfable, y compris pour rejoindre le joueur).
 ## Le verbe « meet » (Rencontrer) est refusé : il est posé par le code (jalon 4 §3.5).
 ## Toute autre clé est une erreur. Pas de fichier = aucun PNJ sur la carte (sans erreur).
 ## L'identifiant « player » est réservé au joueur.
@@ -57,7 +59,7 @@ const KEYS: Array[String] = [
 	"cell", "facing", "sprite", "dialogue", "verb", "turn_to_player", "keep_facing", "lift",
 	"hop_style", "shy", "route", "if", "unless", "species", "idle_react", "look",
 	"trainer",
-	"moved",
+	"moved", "move_mode",
 ]
 ## Clés du bloc « trainer » ([method _read_trainer]).
 const TRAINER_KEYS: Array[String] = ["id", "sight", "before", "defeated", "rematch", "leave"]
@@ -232,6 +234,14 @@ static func parse_entry(value: Variant, errors: PackedStringArray) -> NpcSpec:
 			spec.idle_react_every = float(every)
 	if entry.has("look"):
 		_read_look(entry["look"], spec, errors)
+	if entry.has("move_mode"):
+		match str(entry["move_mode"]):
+			"walk":
+				spec.move_mode = GridWorld.MoveMode.WALK
+			"surf":
+				spec.move_mode = GridWorld.MoveMode.SURF
+			_:
+				errors.append("« move_mode » vaut walk ou surf")
 	if entry.has("species"):
 		if not entry["species"] is String or (entry["species"] as String).is_empty():
 			errors.append("« species » doit être un identifiant d'espèce")

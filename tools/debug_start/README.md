@@ -267,6 +267,7 @@ passage du jeu n'y mène. **Retirées à la clôture de la passe (S2Z)** avec le
 | Fichier | Partie |
 |---|---|
 | `s2_bike.json` | Pikachu N12 (compagnon) et Roucool N12 **endormi** (`status: sleep`), Bicyclette et Poké Flûte au Sac (+ 10 Poké Balls, 5 Potions), 3 000 ₽, sur `qa_mount` (spawn `depart`, tourné vers le haut). Vélo : bouton du HUD / Sac, saut du rebord, refus dans la maison ; entrées de la Piste à l'est (19, 8) et (19, 16) : monté d'office, descente refusée, dérive sur la pente, le Gamin QA (Soporifik N8, Hypnose) voit la pente depuis son alcôve ; Flûte : à côté du dormeur (10..11, 4) réveil et passage au nord, en combat contre le Gamin QA réveil des endormis |
+| `s2_surf.json` | Carapuce N20 (compatible CS03) et Pikachu N18 (compagnon 0), CS03 + 10 Poké Balls + 5 Potions au Sac, Badge Âme (`badge_soul`), sur `qa_sea` (spawn `depart` (2, 16), tourné vers le haut). Surf : montée depuis la plage, nage, descente sur l'îlot, rencontres `water`, courant (12..21, 4) puis (21, 4..9) jusqu'au passage (21, 10) → `qa_sea_2`, bord est (25, 11..14), Nageur QA (15, 13) (Poissirène N18, Kokiyas N20) qui voit vers l'ouest et nage vers le joueur |
 
 ## Passe systèmes 2 (`docs/tech/systemes-2.md`)
 

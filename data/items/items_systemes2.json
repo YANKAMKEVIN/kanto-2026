@@ -18,5 +18,10 @@
 		"name": "CS02 — Vol", "plural": "CS02 — Vol", "feminine": true,
 		"category": "tm", "hm": 2, "teaches": "fly",
 		"description": "Permet de s'envoler vers une ville déjà visitée. S'apprend aussi comme une CT."
+	},
+	"hm03": {
+		"name": "CS03 — Surf", "plural": "CS03 — Surf", "feminine": true,
+		"category": "tm", "hm": 3, "teaches": "surf",
+		"description": "Permet de traverser l'eau sur le dos d'un Pokémon. S'apprend aussi comme une CT."
 	}
 }
