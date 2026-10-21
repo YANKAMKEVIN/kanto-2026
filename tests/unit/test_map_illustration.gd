@@ -17,7 +17,8 @@ func test_real_illustration_loads_without_error() -> void:
 	assert_eq(_art.get_image_size(), Vector2i(1586, 992))
 	assert_eq(_art.area_of(&"pallet_town"), Rect2i(715, 595, 200, 110))
 	assert_eq(_art.area_of(&"route_1"), Rect2i(775, 445, 50, 150))
-	assert_false(_art.has_area(&"route_16"), "Route 16 retirée (décision de Kevin)")
+	# Jalon 22 : la Route 16 (retirée au jalon 6, faute de carte) revient avec sa carte.
+	assert_true(_art.has_area(&"route_16"))
 	assert_eq(_art.area_of(&"nowhere"), Rect2i())
 
 

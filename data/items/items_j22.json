@@ -13,5 +13,10 @@
 		"name": "Hyper Ball", "plural": "Hyper Balls", "feminine": true,
 		"category": "ball", "catch_bonus": 2, "price": 1200,
 		"description": "Une Ball très performante. Elle capture mieux qu'une Super Ball."
+	},
+	"tm09": {
+		"name": "CT09 — Bélier", "plural": "CT09 — Bélier", "feminine": true,
+		"category": "tm", "tm": 9, "teaches": "take_down",
+		"description": "Une charge violente. Le lanceur subit une partie des dégâts infligés."
 	}
 }

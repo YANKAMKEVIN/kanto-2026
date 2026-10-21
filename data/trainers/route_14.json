@@ -1,0 +1,139 @@
+{
+	"route_14_bird_1": {
+		"name": "Ornithologue Firmin",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 25,
+		"team": [
+			{
+				"species": "farfetchd",
+				"level": 33
+			}
+		]
+	},
+	"route_14_bird_2": {
+		"name": "Ornithologue Hector",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 25,
+		"team": [
+			{
+				"species": "spearow",
+				"level": 29
+			},
+			{
+				"species": "fearow",
+				"level": 29
+			}
+		]
+	},
+	"route_14_bird_3": {
+		"name": "Ornithologue Anatole",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 25,
+		"team": [
+			{
+				"species": "pidgey",
+				"level": 28
+			},
+			{
+				"species": "doduo",
+				"level": 28
+			},
+			{
+				"species": "pidgeotto",
+				"level": 28
+			}
+		]
+	},
+	"route_14_bird_4": {
+		"name": "Ornithologue Lucien",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 25,
+		"team": [
+			{
+				"species": "pidgeotto",
+				"level": 29
+			},
+			{
+				"species": "fearow",
+				"level": 29
+			}
+		]
+	},
+	"route_14_biker_1": {
+		"name": "Motard Johnny",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 20,
+		"team": [
+			{
+				"species": "koffing",
+				"level": 29
+			},
+			{
+				"species": "grimer",
+				"level": 29
+			}
+		]
+	},
+	"route_14_biker_2": {
+		"name": "Motard Ricky",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 20,
+		"team": [
+			{
+				"species": "koffing",
+				"level": 29
+			},
+			{
+				"species": "muk",
+				"level": 29
+			}
+		]
+	},
+	"route_14_biker_3": {
+		"name": "Motard Tony",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 20,
+		"team": [
+			{
+				"species": "grimer",
+				"level": 28
+			},
+			{
+				"species": "grimer",
+				"level": 28
+			},
+			{
+				"species": "koffing",
+				"level": 28
+			}
+		]
+	}
+}

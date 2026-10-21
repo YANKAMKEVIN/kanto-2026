@@ -1394,7 +1394,9 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			or _each_line_quoted(dossier_23, text)
 			or _in_dossier_18(dossier_23, text) or _in_dossier_18(plan_j20, text)
 			# J20 (T12) : « {player} » écrit tel quel dans le dossier 23 (texte 29).
-			or _each_line_quoted(dossier_23, text.replace("{joueur}", "{player}")),
+			or _each_line_quoted(dossier_23, text.replace("{joueur}", "{player}"))
+			# J22 (T13, T17) : dossier 25 §16, bulles « / » et lignes à plat.
+			or dossier_25.contains(J22Ids.flat_text(row[1])),
 			"%s : « %s » dans un dossier de conception" % [row[0], text])
 
 
@@ -1610,7 +1612,9 @@ func test_oak_parcel_lines() -> void:
 	# Jalon 18 (T16) : sept objets au sol (Route 9, Route 10, grotte) et la Super Potion cachée.
 	# Jalon 20 (T21) : onze objets au sol et trois caches du repaire, la Clé (chute et prise),
 	# Giovanni et le Scope Sylphe.
-	assert_eq(launched, 103, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
+	# Jalon 22 (T13, T17) : la Canne du pêcheur de Carmin, l'échange du Bon à Azuria (les données
+	# des fichiers j22_*.json sont vérifiées par test_j22_data).
+	assert_eq(launched, 105, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
 		+ "sa CT34, Ondine (pont, Arène et rattrapage), écran, module, console, objets de la "
 		+ "Route 25, le Rocket d'Azuria (2) et le barrage sud ; J15 : objets de la Route 5 ; "
 		+ "J16 : Major Bob (2), neuf objets du S.S. Anne, le capitaine, le marin (2) ; "
@@ -1618,7 +1622,8 @@ func test_oak_parcel_lines() -> void:
 		+ "et la Corde Sortie de la Cave ; J18 : huit objets ; J19 : la gardienne de la Tour et six objets de la Tour (T18) ; "
 		+ "J20 (T17) : Super Potion de la Route 8, quatre caches (Route 8, souterrain ×2, "
 		+ "ville), Erika (2) ; "
-		+ "J20 (T21) : repaire (11 objets, 3 caches, Clé ×2, Giovanni, Scope)")
+		+ "J20 (T21) : repaire (11 objets, 3 caches, Clé ×2, Giovanni, Scope) ; "
+		+ "J22 : la Canne, la Bicyclette")
 	# Le jeton n'apparaît que dans la réplique de l'espèce, « {pokemon} » dans les phrases du
 	# compagnon (J11), et ceux de la Pension dans ses répliques (J15).
 	for row: Array in _pages():
@@ -1762,9 +1767,15 @@ func _real_ids() -> Array[StringName]:
 	return _without_qa(_library.get_ids())
 
 
+## Sans les cartes de QA ni les données du jalon 22 (fichiers `j22_*.json`, vérifiés par
+## `test_j22_data.gd`).
 func _without_qa(ids: Array[StringName]) -> Array[StringName]:
+	var j22 := J22Ids.in_dir("res://data/dialogues/")
 	var result: Array[StringName] = []
 	for id: StringName in ids:
-		if not MapCatalog.is_qa_map(id):
+		if not MapCatalog.is_qa_map(id) and not j22.has(id):
 			result.append(id)
 	return result
+
+
+const J22Ids := preload("res://tests/helpers/j22_ids.gd")

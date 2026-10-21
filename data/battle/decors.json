@@ -292,6 +292,30 @@
 		],
 		"rocket_hideout_b4f": [
 			{ "decor": "rocket_hideout_repaire" }
+		],
+		"route_12_south": [
+			{ "decor": "route_11_coast" }
+		],
+		"route_13": [
+			{ "decor": "route_5_6_prairie" }
+		],
+		"route_14": [
+			{ "decor": "route_5_6_prairie" }
+		],
+		"route_15": [
+			{ "decor": "route_5_6_prairie" }
+		],
+		"route_16_west": [
+			{ "decor": "route_7_8_urbaine" }
+		],
+		"route_17": [
+			{ "decor": "route_7_8_urbaine" }
+		],
+		"route_18": [
+			{ "decor": "route_7_8_urbaine" }
+		],
+		"fuchsia_city": [
+			{ "decor": "route_5_6_prairie" }
 		]
 	}
 }

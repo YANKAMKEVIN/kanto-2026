@@ -639,6 +639,25 @@ minicarte.
 3. *(Pokédex, Magicarpe)* reprise de la fiche officielle, réécrite au ton du projet en 22.0 [D] (même
    règle pour les 12 espèces).
 
+### 16.8 Textes recommandés au codage — validés par Kevin le 2026-10-21, validation d'avance
+
+> Textes qui manquaient au lot du §16 quand les cartes ont été codées (session de nuit du
+> 2026-10-21). Kevin a écrit « je valide d'avance les textes recommandés » : ils sont validés,
+> relisibles en QA comme les autres.
+
+1. *(panneau de conseil, Route 13)* « CONSEIL DU DRESSEUR / Un Dresseur attend parfois » / « derrière une clôture. / Regarde bien autour de toi ! »
+2. *(garde du poste 15, 1F)* « Parmanie est tout près, à l'ouest. / Bonne route ! »
+3. *(panneau de fin, Route 17)* « FIN DE LA PISTE CYCLABLE / Parmanie : Route 18, à l'est »
+4. *(Carte, Route 12)* « Au sud du croisement, un long ponton de pêcheurs longe le lac, puis le chemin s'enfonce dans les herbes. »
+5. *(Carte, Route 13)* « Un dédale de clôtures au bord de l'eau. Les Dresseurs y attendent derrière chaque barrière. »
+6. *(Carte, Route 14)* « Deux chemins descendent vers le sud, de part et d'autre de grandes herbes. »
+7. *(Carte, Route 15)* « Une route de prairies qui mène à Parmanie. Un poste de garde la coupe en deux. »
+8. *(Carte, Route 16)* « À l'ouest de Céladopole, le poste de garde ouvre la Piste Cyclable. Plus haut, une voie tranquille à pied. »
+9. *(Carte, Route 17)* « Une longue descente au bord de la mer, réservée aux vélos. On s'y laisse glisser jusqu'à Parmanie. »
+10. *(Carte, Route 18)* « La fin de la Piste Cyclable. Après le poste, un chemin à pied longe un étang jusqu'à Parmanie. »
+11. *(Carte, Parmanie)* « Une ville basse et verte, ouverte sur la mer. Au nord, le Parc Safari ; près des enclos, des Pokémon venus d'ailleurs. »
+12. *(CT09, Sac ; la CT20 Frénésie n'a pas d'effet dans le moteur : CT09 Bélier à sa place, T10)* « Une charge violente. Le lanceur subit une partie des dégâts infligés. »
+
 ## 17. Cas limites (à couvrir au plan technique)
 
 | Cas | Comportement |

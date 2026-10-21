@@ -25,14 +25,15 @@ func test_real_data_loads_without_error() -> void:
 	# Jalon 20 (T7) : items_j20.json (Super Ball, pierres, boissons, CT13, CT21, Clé Ascenseur,
 	# Scope Sylphe) ; jalon 20 (T11) : Rappel, Poupée Poké, objets X, Muscle +.
 	# Passe systèmes 2 (S2B) : items_systemes2.json (Poké Flûte, Bicyclette) ; S2C : CS03 (hm03) ; S2D : CS04 (hm04) ; S2C-bis : cannes.
-	# Jalon 22 (T4) : Bon de Commande, Hyper Potion, Hyper Ball (ultra_ball) (items_j22.json).
+	# Jalon 22 (T4) : Bon de Commande, Hyper Potion, Hyper Ball (ultra_ball) ; T10 : CT09 Bélier
+	# à la place de la CT20 (Frénésie sans effet dans le moteur) (items_j22.json).
 	assert_eq(_library.get_ids(), [&"antidote", &"awakening", &"bicycle", &"bike_voucher", &"burn_heal",
 		&"card_key", &"dire_hit",
 		&"dome_fossil", &"escape_rope", &"fire_stone", &"fresh_water", &"full_restore",
 		&"good_rod", &"great_ball", &"helix_fossil", &"hm01", &"hm02", &"hm03", &"hm04", &"hm05", &"hyper_potion", &"ice_heal", &"leaf_stone", &"lemonade",
 		&"lift_key", &"moon_stone", &"nugget", &"oak_parcel", &"old_rod", &"paralyze_heal", &"poke_ball",
 		&"poke_doll", &"poke_flute", &"potion", &"rare_candy", &"revive", &"silph_scope", &"soda_pop",
-		&"ss_ticket", &"super_potion", &"super_rod", &"thunder_stone", &"tm01", &"tm11", &"tm13", &"tm19",
+		&"ss_ticket", &"super_potion", &"super_rod", &"thunder_stone", &"tm01", &"tm09", &"tm11", &"tm13", &"tm19",
 		&"tm21", &"tm24", &"tm28", &"tm34", &"ultra_ball", &"water_stone", &"x_accuracy", &"x_attack",
 		&"x_defend", &"x_special", &"x_speed"] as Array[StringName])
 	var ball := _library.get_item(&"poke_ball")
@@ -57,7 +58,7 @@ func test_real_data_loads_without_error() -> void:
 		&"water_stone",
 		&"thunder_stone", &"leaf_stone", &"fresh_water", &"soda_pop", &"lemonade", &"tm13",
 		&"tm21", &"lift_key", &"silph_scope", &"bike_voucher", &"hyper_potion",
-		&"ultra_ball", &"poke_flute", &"bicycle", &"card_key", &"hm02", &"hm03", &"hm04",
+		&"ultra_ball", &"tm09", &"poke_flute", &"bicycle", &"card_key", &"hm02", &"hm03", &"hm04",
 		&"old_rod", &"good_rod", &"super_rod", &"hm05", &"escape_rope", &"moon_stone", &"dome_fossil", &"helix_fossil", &"tm01", &"super_potion",
 		&"full_restore"] as Array[StringName],
 		"ordre alphabétique des fichiers (items, items_j14, items_j16, items_j20, "

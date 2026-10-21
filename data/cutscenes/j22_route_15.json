@@ -1,0 +1,26 @@
+{
+	"route_15_item_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_route_15_item_1"
+				],
+				"steps": [
+					{
+						"despawn": "route_15_item_1"
+					},
+					{
+						"give": "tm09",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_route_15_item_1"
+						]
+					}
+				]
+			}
+		]
+	}
+}

@@ -75,6 +75,16 @@
 		"celadon_gym",
 		"celadon_game_corner",
 		"qa_teleport",
-		"qa_teleport_2"
+		"qa_teleport_2",
+		"route_15_gate",
+		"route_15_gate_2f",
+		"route_16_gate",
+		"route_18_gate",
+		"route_12_rod_house",
+		"fuchsia_center",
+		"fuchsia_mart",
+		"fuchsia_meeting_room",
+		"fuchsia_grandpa_house",
+		"fuchsia_good_rod_house"
 	]
 }
