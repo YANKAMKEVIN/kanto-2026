@@ -142,7 +142,7 @@ const CELADON := [&"celadon_center", &"celadon_dept_gf", &"celadon_dept_2f", &"c
 	&"celadon_mansion_roof", &"celadon_mansion_roof_house", &"celadon_restaurant",
 	&"celadon_chief_house", &"celadon_hotel"]
 ## Jalon 22 (T12, T24) : maison de la Méga Canne (Route 12 sud) et intérieurs de Parmanie.
-const J22 := [&"route_12_rod_house", &"fuchsia_center", &"fuchsia_mart", &"fuchsia_meeting_room",
+const J22 := [&"route_12_rod_house", &"route_16_fly_house", &"fuchsia_center", &"fuchsia_mart", &"fuchsia_meeting_room",
 	&"fuchsia_grandpa_house", &"fuchsia_good_rod_house"]
 const PLANS_DIR := "res://tools/plans/"
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
@@ -2394,11 +2394,14 @@ func _j22_rooms() -> Array[Dictionary]:
 	var meeting_room := _vermilion_fan_club()
 	_retarget(meeting_room, &"fuchsia_meeting_room", "FuchsiaMeetingRoom", "Parmanie",
 		&"fuchsia_city", &"from_meeting_room")
+	var fly_house := _vermilion_house_1()
+	_retarget(fly_house, &"route_16_fly_house", "Route16FlyHouse", "Route 16", &"route_16_west",
+		&"from_fly_house")
 	var grandpa := _cerulean_house()
 	_retarget(grandpa, &"fuchsia_grandpa_house", "FuchsiaGrandpaHouse", "Parmanie",
 		&"fuchsia_city", &"from_grandpa_house")
 	return [
-		rod_house,
+		rod_house, fly_house,
 		_pokemon_center(&"fuchsia_center", "FuchsiaCenter", "Parmanie",
 			[&"fuchsia_city", &"from_center"]),
 		_poke_mart(&"fuchsia_mart", "FuchsiaMart", "Parmanie", [&"fuchsia_city", &"from_mart"]),

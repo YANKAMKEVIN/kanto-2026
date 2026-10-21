@@ -211,3 +211,12 @@ func test_route_17_slope_drifts_down_without_input() -> void:
 	await wait_until(func() -> bool: return _player.get_cell().y >= start.y + 3, 5.0)
 	assert_gte(_player.get_cell().y, start.y + 3, "dérive vers le bas sans appui")
 	assert_eq(_player.get_cell().x, start.x)
+
+
+func test_the_fly_house_gives_hm02_once() -> void:
+	await _start(&"route_16_fly_house", &"entrance")
+	await _talk_to(&"girl")
+	assert_true((GameState.bag as Bag).has(&"hm02"), "CS02")
+	assert_has(_pages, "Kevin reçoit la CS02 — Vol !")
+	await _talk_to(&"girl")
+	assert_eq((GameState.bag as Bag).count_of(&"hm02"), 1, "une fois")

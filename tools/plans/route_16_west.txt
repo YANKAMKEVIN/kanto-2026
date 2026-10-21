@@ -82,7 +82,8 @@ porte_poste_bas        warp           35..36,15      libre   to=route_16_gate sp
 from_poste_bas         spawn          35..36,16      libre   facing=down  # sortie du couloir bas sur la Piste, tournée ↓, EN SELLE
 warp_sud               warp           12..14,26      libre   to=route_17 spawn=from_route_16  # PUSH ↓ → Route 17 (12..14, 0)
 from_route_17          spawn          12..14,26      libre   facing=up  # arrivée de la Route 17, tournée ↑
-porte_maison_vol       warp           7,6            libre   coming_soon=route_16_fly_house  # maison de Vol : porte RÉSERVÉE au J23 (M-18) ; « À venir » en développement
+porte_maison_vol       warp           7,6            libre   to=route_16_fly_house spawn=entrance  # STEP_ON ↑ → maison de Vol (Q-9 de la passe systèmes 2 : le J22 pose la maison et la CS02, en données)
+from_fly_house         spawn          7,7            libre   facing=down  # sortie de la maison de Vol, tournée ↓
 route_16_biker_1       dresseur       30,16          bloque  role=D1 trainer=route_16_biker_1 facing=down sight=5 rbsight=3 inevitable=non rb=17,12  # Motard, Tadmorv 29 + Smogo 29 ; alcôve nord, vue (30, 17..18) : voie nord → prendre la voie sud
 route_16_cueball_1     dresseur       24,23          bloque  role=D2 trainer=route_16_cueball_1 facing=up sight=3 rbsight=2 inevitable=non rb=14,13  # Loubard, Machoc / Férosinge / Machoc 28 ; alcôve sud, vue (24, 21..22) : passer au nord (passage 27..28)
 route_16_cueball_2     dresseur       18,16          bloque  role=D3 trainer=route_16_cueball_2 facing=down sight=3 rbsight=2 inevitable=non rb=11,12  # Loubard, Férosinge 29 + Machoc 29 ; alcôve nord, vue (18, 17..18) : passer au sud (passage 21..22)

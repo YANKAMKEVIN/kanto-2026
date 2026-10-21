@@ -657,6 +657,9 @@ minicarte.
 10. *(Carte, Route 18)* « La fin de la Piste Cyclable. Après le poste, un chemin à pied longe un étang jusqu'à Parmanie. »
 11. *(Carte, Parmanie)* « Une ville basse et verte, ouverte sur la mer. Au nord, le Parc Safari ; près des enclos, des Pokémon venus d'ailleurs. »
 12. *(CT09, Sac ; la CT20 Frénésie n'a pas d'effet dans le moteur : CT09 Bélier à sa place, T10)* « Une charge violente. Le lanceur subit une partie des dégâts infligés. »
+13. *(maison de Vol, Route 16, fillette ; Q-9 de la passe systèmes 2 : le J22 pose la maison et la CS02)* « Oh ! Tu as trouvé ma cachette secrète ! » / « Ne le dis à personne… / Tiens, prends ça. »
+14. *(système)* « {player} reçoit la CS02 — Vol ! »
+15. *(fillette, ensuite)* « Avec le Badge Foudre, ton Pokémon / t'emmène dans les villes déjà visitées. »
 
 ## 17. Cas limites (à couvrir au plan technique)
 

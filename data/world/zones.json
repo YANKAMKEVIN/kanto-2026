@@ -220,7 +220,7 @@
 			"description": "Une route de prairies qui mène à Parmanie. Un poste de garde la coupe en deux."
 		},
 		"route_16": {
-			"name": "Route 16", "kind": "route", "maps": ["route_16_west", "route_16_gate"],
+			"name": "Route 16", "kind": "route", "maps": ["route_16_west", "route_16_gate", "route_16_fly_house"],
 			"subtitle": "Céladopole — Piste Cyclable",
 			"description": "À l'ouest de Céladopole, le poste de garde ouvre la Piste Cyclable. Plus haut, une voie tranquille à pied."
 		},

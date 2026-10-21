@@ -218,5 +218,28 @@
 				]
 			}
 		]
+	},
+	"j22_hm02": {
+		"variants": [
+			{
+				"unless": [
+					"got_hm02"
+				],
+				"steps": [
+					{
+						"dialogue": "j22_got_hm02"
+					},
+					{
+						"give": "hm02",
+						"count": 1
+					},
+					{
+						"set": [
+							"got_hm02"
+						]
+					}
+				]
+			}
+		]
 	}
 }

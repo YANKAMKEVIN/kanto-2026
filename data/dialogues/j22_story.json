@@ -140,5 +140,31 @@
 		"pages": [
 			"J'ai pêché dans toutes les eaux\nde Kanto. La mer, ici, est la plus belle."
 		]
+	},
+	"j22_fly_house_girl": {
+		"speaker": "Fillette",
+		"variants": [
+			{
+				"unless": [
+					"got_hm02"
+				],
+				"pages": [
+					"Oh ! Tu as trouvé ma cachette secrète !",
+					"Ne le dis à personne…\nTiens, prends ça."
+				],
+				"cutscene": "j22_hm02"
+			},
+			{
+				"pages": [
+					"Avec le Badge Foudre, ton Pokémon\nt'emmène dans les villes déjà visitées."
+				]
+			}
+		]
+	},
+	"j22_got_hm02": {
+		"narration": true,
+		"pages": [
+			"{player} reçoit la CS02 — Vol !"
+		]
 	}
 }

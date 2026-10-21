@@ -4,7 +4,8 @@ extends GutTest
 
 const MAPS: Array[StringName] = [&"route_12_south", &"route_13", &"route_14", &"route_15",
 	&"route_15_gate", &"route_15_gate_2f", &"route_16_west", &"route_16_gate", &"route_17",
-	&"route_18", &"route_18_gate", &"fuchsia_city", &"route_12_rod_house", &"fuchsia_center",
+	&"route_18", &"route_18_gate", &"fuchsia_city", &"route_12_rod_house", &"route_16_fly_house",
+	&"fuchsia_center",
 	&"fuchsia_mart", &"fuchsia_meeting_room", &"fuchsia_grandpa_house",
 	&"fuchsia_good_rod_house"]
 ## Cartes d'autres jalons pas encore construites : leurs passages sont « À venir ».
@@ -132,7 +133,8 @@ func test_npcs_stand_on_their_cells() -> void:
 
 func test_interiors_are_interiors() -> void:
 	for id: StringName in [&"route_15_gate", &"route_15_gate_2f", &"route_16_gate",
-			&"route_18_gate", &"route_12_rod_house", &"fuchsia_center", &"fuchsia_mart",
+			&"route_18_gate", &"route_12_rod_house", &"route_16_fly_house", &"fuchsia_center",
+			&"fuchsia_mart",
 			&"fuchsia_meeting_room", &"fuchsia_grandpa_house", &"fuchsia_good_rod_house"]:
 		assert_true(_map(id).interior, String(id))
 	for id: StringName in [&"route_12_south", &"route_16_west", &"route_17", &"fuchsia_city"]:
