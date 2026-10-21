@@ -442,6 +442,7 @@ func _ready() -> void:
 	_setup_caves()
 	_setup_flash()
 	_setup_mount()
+	_setup_fishing()
 	_setup_evolution_items()
 	# L'écran (jalon-06.md §6.6) : ouverture et vue dans la même frame, sans await (un fondu
 	# coupé laisse une coroutine non reprise).
@@ -2324,3 +2325,36 @@ func _setup_field_travel() -> void:
 
 func get_field_travel_director() -> FieldTravelDirector:
 	return _field_travel
+
+
+# --- Passe systèmes 2 (S2C-bis) : pêche --------------------------------------------------------
+
+var _fishing: FishingDirector
+
+
+## Pêche (J22 §2.7) : cible de terrain PÊCHER, appui, cannes du Sac ([KeyItemDirector]). Tables
+## chargées sans contrôle des espèces (celles du J22 manquent) : le directeur refuse une espèce
+## inconnue au moment de la touche. Après [method _setup_mount] (objets clés).
+func _setup_fishing() -> void:
+	var tables := WaterRodTables.new()
+	tables.load_game_files()
+	_fishing = FishingDirector.new()
+	_fishing.process_mode = Node.PROCESS_MODE_PAUSABLE
+	add_child(_fishing)
+	_fishing.setup(GameState, tables, _pokemon, _player, _runner, _encounters, _companion)
+	SceneRouter.map_changed.connect(_fishing.set_map)
+	_fishing.tree_exiting.connect(func() -> void:
+		if SceneRouter.map_changed.is_connected(_fishing.set_map):
+			SceneRouter.map_changed.disconnect(_fishing.set_map))
+	# Cible de terrain : la pêche d'abord (case pêchable et canne au Sac, [D]), sinon le Surf.
+	_interactions.terrain_target = func(c: Vector2i, f: Vector2i) -> Interaction:
+		var target := _fishing.target_at(c, f)
+		return target if target != null else _mount.surf_target(c, f)
+	_interactions.fish_requested.connect(_fishing.on_fish_requested)
+	_key_items.set_fishing(_fishing)
+	_fishing.fishing_started.connect(_refresh_controls.unbind(1))
+	_fishing.fishing_finished.connect(_refresh_controls.unbind(1))
+
+
+func get_fishing_director() -> FishingDirector:
+	return _fishing

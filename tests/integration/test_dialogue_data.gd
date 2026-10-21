@@ -101,6 +101,14 @@ const TEXTS_S2B: Dictionary[StringName, Array] = {
 	&"surf_first_ride": ["{pokemon} vous porte sur l'eau !"],
 	&"surf_current_too_strong": ["Le courant est beaucoup trop fort !"],
 }
+## Passe systèmes 2 (S2C-bis) : textes de la pêche, joués par [FishingDirector] ; validés au
+## dossier 25 §16.2.8 à §16.2.11 (branche de conception du J22, pas dans `main`).
+const TEXTS_S2C_FISH: Dictionary[StringName, Array] = {
+	&"fishing_cast": ["{player} lance sa ligne…"],
+	&"fishing_bite": ["Oh ! Ça mord !"],
+	&"fishing_nothing": ["Rien ne mord…"],
+	&"fishing_no_water": ["On ne peut pas pêcher ici."],
+}
 ## Jalon 10 : textes verrouillés du dossier 12 (même forme que le dossier 10) et lot de textes du
 ## J10 (panneaux, noms affichés), où un retour à la ligne est écrit « \n ».
 const DOSSIER_12 := "res://docs/design/dossier-12-argenta.md"
@@ -827,6 +835,7 @@ func test_library_loads_without_error() -> void:
 	var expected := IDS + IDS_J14_BILL + IDS_J14_ROCKET + IDS_J15_ROUTE_5 + IDS_J16_GYM \
 		+ IDS_J16_SHIP + IDS_J16_RIVAL_CAPTAIN + IDS_J16_T15 + IDS_J17 + IDS_J18 + IDS_J19 + IDS_J20 \
 		+ IDS_J20_T17 + IDS_J20_T21 + IDS_S2B + S2_FIELD_TRAVEL
+	expected.append_array(TEXTS_S2C_FISH.keys())
 	expected.sort()
 	assert_eq(found, expected)
 
@@ -841,7 +850,7 @@ func test_every_dialogue_is_used() -> void:
 	var played := _cutscenes.get_dialogue_ids()
 	for id: StringName in _real_ids():
 		if UNUSED_YET.has(id) or PLAYED_BY_COMPANION.has(id) or PLAYED_BY_BOOT.has(id) \
-				or S2_FIELD_TRAVEL.has(id):
+				or S2_FIELD_TRAVEL.has(id) or TEXTS_S2C_FISH.has(id):
 			continue
 		assert_true(_used_on.has(id) or played.has(id),
 			"dialogue « %s » utilisé par un PNJ, un point ou une scène" % id)
@@ -1314,6 +1323,9 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 		if TEXTS_S2B.has(row[0]):
 			assert_true(TEXTS_S2B[row[0]].has(row[1]), "%s : %s" % [row[0], row[1]])
 			continue
+		if TEXTS_S2C_FISH.has(row[0]):
+			assert_true(TEXTS_S2C_FISH[row[0]].has(row[1]), "%s : %s" % [row[0], row[1]])
+			continue
 		var text: String = row[1]
 		for token: String in _DOSSIER_TOKENS:
 			text = text.replace(token, _DOSSIER_TOKENS[token])
@@ -1613,7 +1625,7 @@ func test_oak_parcel_lines() -> void:
 		elif row[0] == &"nugget_rocket_given" \
 				or (row[0] == &"rival_tower_intro" and row[1].contains("{player}")) \
 				or (String(row[0]).begins_with("saffron_gate_drink_") and row[1].contains("{player}")) \
-				or row[0] == &"celadon_eevee_received" \
+				or row[0] == &"celadon_eevee_received" or row[0] == &"fishing_cast" \
 				or (row[0] in [&"rocket_hideout_b4f_lift_key_got",
 					&"rocket_hideout_b4f_silph_scope_got"] and row[1].contains("{player}")) \
 				or (String(row[0]).begins_with("celadon_gym_erika_") and row[1].contains("{player}")):
