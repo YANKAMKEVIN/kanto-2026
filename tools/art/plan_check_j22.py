@@ -65,7 +65,9 @@ CARTES = {
 }
 # Cartes d'autres jalons ou intérieurs modèles : destinations terminales (non parcourues ici).
 EXTERNES = {"route_12", "route_16", "route_12_rod_house", "fuchsia_center", "fuchsia_mart",
-	"fuchsia_meeting_room", "fuchsia_grandpa_house", "fuchsia_good_rod_house"}
+	"fuchsia_meeting_room", "fuchsia_grandpa_house", "fuchsia_good_rod_house",
+	# Maison de Vol : ouverte par le J22 (Q-9 de la passe systèmes 2, 2026-10-21).
+	"route_16_fly_house"}
 
 # Dossier §9 : id → (carte, portée RB). Portée du projet = RB × 1,5 arrondie au-dessus.
 DRESSEURS = {
@@ -111,8 +113,7 @@ OBJETS = {
 		("cache", "nugget", "got_route_17_hidden_3"), ("cache", "full_restore", "got_route_17_hidden_4"),
 		("cache", "nugget", "got_route_17_hidden_5")],
 }
-PORTES_J23 = {("fuchsia_city", "porte_arene"), ("fuchsia_city", "porte_safari"), ("fuchsia_city", "porte_gardien"),
-	("route_16_west", "porte_maison_vol")}
+PORTES_J23 = {("fuchsia_city", "porte_arene"), ("fuchsia_city", "porte_safari"), ("fuchsia_city", "porte_gardien")}
 # Cartes livrées (M-8) : (fichier, variante, eau).
 LIVREES = {
 	"vermilion_city": ("vermilion_city", None, "W"), "cerulean_city": ("azuria", "J14", "w"),
