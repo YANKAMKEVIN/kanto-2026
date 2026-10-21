@@ -29,8 +29,8 @@ const SIGN_PROP: String = "prop_panneau_01"
 const STEP_ON: int = 0
 const PUSH: int = 1
 
-## Cartes : grille, identifiant, nom, région, intérieur, Piste (« all », « cells », « »), colonne
-## de départ et largeur (le poste 15 a ses deux étages côte à côte dans une grille).
+## Cartes : grille, identifiant, nom, région, intérieur, Piste (« all », « cells », « »),
+## colonne de départ et largeur (le poste 15 a ses deux étages côte à côte dans une grille).
 const MAPS: Array[Dictionary] = [
 	{"plan": "route_12_sud", "id": &"route_12_south", "name": "Route 12",
 		"region": "Lavanville — Parmanie", "seed": 2201},
@@ -50,7 +50,8 @@ const MAPS: Array[Dictionary] = [
 		"region": "Route 16", "interior": true, "seed": 2208},
 	{"plan": "route_17", "id": &"route_17", "name": "Route 17", "region": "Piste Cyclable",
 		"cycling": "all", "seed": 2209},
-	{"plan": "route_18", "id": &"route_18", "name": "Route 18", "region": "Piste Cyclable — Parmanie",
+	{"plan": "route_18", "id": &"route_18", "name": "Route 18",
+		"region": "Piste Cyclable — Parmanie",
 		"cycling": "cells", "seed": 2210},
 	{"plan": "route_18_gate", "id": &"route_18_gate", "name": "Route 18",
 		"region": "Route 18", "interior": true, "seed": 2211},

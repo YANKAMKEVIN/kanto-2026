@@ -1,5 +1,6 @@
 extends GutTest
-## Jalon 22 (T12, T16) : cases pêchables des cartes livrées (`data/world/fishable.json`, §0.4 n° 2)
+## Jalon 22 (T12, T16) : cases pêchables des cartes livrées (`data/world/fishable.json`,
+## §0.4 n° 2)
 ## et Piste Cyclable en partie (`GameMap.cycling_road_cells`).
 
 ## La Route 25 figure au dossier (M-8) mais sa grille n'a aucune eau qui borde une case
