@@ -168,6 +168,8 @@ func test_the_lower_floor() -> void:
 	assert_not_null(ladder, "échelle")
 	assert_eq([ladder.target_map, ladder.target_spawn], [&"qa_strength", &"from_b1"])
 	assert_true(upper.has_spawn(ladder.target_spawn))
+	assert_eq(map.get_warps().find_on_step(Vector2i(9, 5), Vector2i.DOWN), ladder,
+		"échelle prise dans les deux sens")
 	# Rochers tombés : visibles et bloquants seulement une fois le trou bouché.
 	var grid := map.get_grid()
 	map.apply_flag_gates(_flags())

@@ -128,7 +128,8 @@ func _build_lower() -> void:
 	for id: String in _ids(plan, "chute_joueur"):
 		_spawn(root, id, plan.cell_of(id))
 	_spawn(root, "from_strength", plan.cell_of("from_strength"))
-	_warp(root, "Echelle", plan.cell_of("echelle_haut"), STEP_ON, Vector2i.UP, &"qa_strength",
+	# Sans direction, comme les échelles des vraies cartes (QA S2D : on la prenait seulement en montant).
+	_warp(root, "Echelle", plan.cell_of("echelle_haut"), STEP_ON, Vector2i.ZERO, &"qa_strength",
 		&"from_b1", Vector2i.DOWN, [])
 	var ladder := _gate(root, entities, "EchelleDessin", plan.cell_of("echelle_haut"), [], [])
 	_rect(root, ladder, Rect2(-30, -88, 60, 80), Color(0.55, 0.38, 0.2))
@@ -143,8 +144,7 @@ func _build_lower() -> void:
 		var rock := _gate(root, entities, "RocherTombe%d" % number, cell, [flag], [])
 		var blocking: Array[Vector2i] = [cell]
 		rock.set(&"blocking_cells", blocking)
-		_rect(root, rock, Rect2(-36, -84, 72, 72), Color(0.5, 0.46, 0.4))
-		_rect(root, rock, Rect2(-26, -76, 40, 30), Color(0.66, 0.62, 0.56))
+		_boulder(root, rock)
 	_save(root, MAPS_DIR + "qa_strength_b1.tscn")
 
 
@@ -194,6 +194,37 @@ func _gate(root: Node, parent: Node, gate_name: String, cell: Vector2i, if_flags
 	gate.set(&"unless_flags", unless)
 	_attach(root, parent, gate)
 	return gate
+
+
+## Rocher tombé : même dessin que [Boulder] (ombre, corps, reflets, fêlure), en polygones.
+func _boulder(root: Node, parent: Node) -> void:
+	var r: float = Boulder.RADIUS
+	var body := Vector2(0.0, -r - 2.0)
+	_disc(root, parent, Vector2(0.0, -4.0), Boulder.SHADOW_SIZE, Boulder.COLOR_SHADOW)
+	_disc(root, parent, body, Vector2(r, r), Boulder.COLOR_BODY)
+	_disc(root, parent, body + Vector2(-8.0, -10.0), Vector2(r, r) * 0.7, Boulder.COLOR_LIGHT)
+	_disc(root, parent, body + Vector2(-14.0, -16.0), Vector2(r, r) * 0.35,
+		Boulder.COLOR_LIGHT.lightened(0.12))
+	var crack := Line2D.new()
+	crack.name = "Dessin"
+	crack.width = 3.0
+	crack.default_color = Boulder.COLOR_CRACK
+	crack.points = PackedVector2Array([body + Vector2(6.0, -30.0), body + Vector2(0.0, -12.0),
+		body + Vector2(10.0, 2.0), body + Vector2(4.0, 20.0)])
+	_attach(root, parent, crack)
+
+
+## Ellipse pleine de demi-axes [param radii] centrée sur [param center].
+func _disc(root: Node, parent: Node, center: Vector2, radii: Vector2, color: Color) -> void:
+	var points := PackedVector2Array()
+	for i: int in 32:
+		var angle := TAU * i / 32.0
+		points.append(center + Vector2(cos(angle) * radii.x, sin(angle) * radii.y))
+	var poly := Polygon2D.new()
+	poly.name = "Dessin"
+	poly.color = color
+	poly.polygon = points
+	_attach(root, parent, poly)
 
 
 func _rect(root: Node, parent: Node, rect: Rect2, color: Color) -> void:
