@@ -12,8 +12,8 @@ extends SceneTree
 ## - **La grille fait foi** : sol de béton sans rencontre ; murs, caisses (`X`), conduites (`P`),
 ##   consoles (`M`) bloqués ; `<` `>` `^` `v` dalles tournantes et `o` cases d'arrêt praticables.
 ## - **Dalles** : nœud `SpinTiles` ([SpinTileField], §2.4.2) : flèches et arrêts lus de la grille ;
-##   les images des flèches et des disques sont cuites dans l'enveloppe (aucun nœud par case).
-##   Le directeur (T19) fait le reste.
+##   le directeur (T19) fait le reste. Image : une décalcomanie par case (flèche orientée comme
+##   `< > ^ v`, disque sur `o`), couche du sol, sans emprise.
 ## - **Passages** : escaliers `STEP_ON` sans direction vers l'arrivée de même paire de l'étage
 ##   voisin (`from_<paire>`) ; portes d'ascenseur (24..25, y) `STEP_ON` sans direction vers la
 ##   cabine (`entrance_w|e`) ; sortie de la cabine vers le B1F (`from_elevator`), que
@@ -26,14 +26,56 @@ extends SceneTree
 ##   fermée examinable depuis le sud (`rocket_hideout_b4f_office_door`, texte 153).
 ## - **Cabine** : un point d'examen `elevator_panel` (action `open_elevator`, T13) en (1, 1).
 ## - Lumière `hideout` ; cartes de « grotte » (`caves.json`, `interior = false`).
-## - **Art provisoire** : `tools/art/placeholders_repaire.py` (enveloppes `ph_rocket_hideout_*`).
+## - **Art en modules** (série 22 bis, fiche `serie-22bis-celadopole.md` §B, Q-2 : seule dérogation
+##   à la règle de remplacement) : les quatre étages sont bâtis sur `tools/cave_map_kit.gd` comme la
+##   Tour (sol de béton peint, masse sombre sur les murs et les marges vides, murs
+##   `relief_mur_repaire_*` aux rôles de la Tour par `tools/module_walls.gd`, caisses `X`,
+##   conduites `P`, consoles `M`, bureau de Giovanni sur le bloc 4 × 2 du B4F, escaliers `U` / `D`
+##   et portes d'ascenseur `L` au sol). Le kit ne sert qu'à l'image : ses couches logiques
+##   (`Ground`…) sont retirées, la collision reste `blocked_cells` d'après la grille (la porte `B`
+##   y est praticable, sa FlagGate l'occupe). La cabine reste une **coque peinte** (`Shell`).
+##   Deux passes au premier lancement (masque du sol écrit : importer puis relancer, code 2).
 
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
+const Kit := preload("res://tools/cave_map_kit.gd")
+const ModuleWalls := preload("res://tools/module_walls.gd")
 const TILE: int = 96
 const STEP_ON: int = 0
-const SHELL_DIR: String = "res://assets/world/interiors/placeholder/"
 const OUT_DIR: String = "res://game/world/maps/"
-const DOOR_PATH: String = "res://assets/world/interiors/placeholder/ph_hideout_office_door.png"
+const MASK_PATH: String = "res://assets/world/maps/%s_ground.png"
+const CAR_SHELL_PATH: String = "res://assets/world/interiors/int_rocket_hideout_elevator_coque.png"
+const DOOR_PATH: String = "res://assets/world/interiors/hideout_office_door.png"
+## Sol de béton (canal de base) et masse sombre des murs et des marges vides (canal G), comme la
+## Tour ; frontière bruitée gris anthracite [D].
+const GROUND_FLOOR: String = "res://assets/world/ground/ground_beton_repaire_01.png"
+const GROUND_MASS: String = "res://assets/world/ground/ground_masse_roche_01.png"
+const BORDER_COLOR := Color(0.17, 0.18, 0.21)
+## Caractère sans cellule : pas de gravats dans le repaire (canal R inutilisé).
+const NO_RUBBLE_MARK: String = "~"
+const WALL_MARK: String = "#"
+const WALL_PREFIX: String = "relief_mur_repaire"
+const CRATE: String = "int_caisse_repaire_01"
+const PIPE: String = "int_conduite_repaire_01"
+const CONSOLE: String = "int_console_repaire_01"
+const DESK: String = "int_bureau_giovanni_01"
+## Bureau de Giovanni : bloc `M` de 4 × 2 du bureau du B4F (24..27, 4..5), ancré sur la 3e case
+## de la rangée du bas (module pair, pied sur le bord).
+const DESK_MAP: StringName = &"rocket_hideout_b4f"
+const DESK_RECT := Rect2i(24, 4, 4, 2)
+const DESK_ANCHOR := Vector2i(26, 5)
+const STAIRS_UP: String = "int_escalier_repaire_monte_01"
+const STAIRS_DOWN: String = "int_escalier_repaire_descend_01"
+const ELEVATOR_DOOR: String = "int_porte_ascenseur_repaire_01"
+const ARROW_DECALS: Dictionary[String, String] = {
+	"<": "decal_fleche_repaire_01_gauche", ">": "decal_fleche_repaire_01",
+	"^": "decal_fleche_repaire_01_haut", "v": "decal_fleche_repaire_01_bas",
+}
+const STOP_DECAL: String = "decal_arret_repaire_01"
+## Graines des étages : [logique, décor, murs].
+const SEEDS: Dictionary[StringName, Array] = {
+	&"rocket_hideout_b1f": [2201, 2202, 2203], &"rocket_hideout_b2f": [2211, 2212, 2213],
+	&"rocket_hideout_b3f": [2221, 2222, 2223], &"rocket_hideout_b4f": [2231, 2232, 2233],
+}
 const DISPLAY_NAME: String = "Céladopole"
 const LIGHT_PROFILE: StringName = &"hideout"
 const CAR_MAP: StringName = &"rocket_hideout_elevator"
@@ -86,6 +128,8 @@ var _root: Node2D
 var _plans: Dictionary[StringName, PlanGrid] = {}
 var _map_id: StringName
 var _errors: int = 0
+var _masks_written: int = 0
+var _kit: Object
 
 
 func _init() -> void:
@@ -106,41 +150,27 @@ func _init() -> void:
 		if map_id == &"celadon_game_corner" or (only != &"" and only != map_id):
 			continue
 		_build(map_id)
-	quit(1 if _errors > 0 else 0)
+	if _errors > 0:
+		quit(1)
+	elif _masks_written > 0:
+		print("build_rocket_hideout : %d masque(s) écrit(s) ; importer (--import) puis relancer"
+			% _masks_written)
+		quit(2)
+	else:
+		quit(0)
 
 
 func _build(map_id: StringName) -> void:
 	_map_id = map_id
 	var plan: PlanGrid = _plans[map_id]
 	var size: Vector2i = MAPS[map_id][2]
-	_root = Node2D.new()
-	_root.name = MAPS[map_id][0]
-	_root.set_script(load("res://game/world/map.gd"))
-	_root.set(&"map_id", map_id)
-	_root.set(&"display_name", DISPLAY_NAME)
-	_root.set(&"size", size)
-	_root.set(&"interior", false)
-	_root.set(&"light_profile", LIGHT_PROFILE)
-	var shell := Sprite2D.new()
-	shell.name = "Shell"
-	shell.texture = load(SHELL_DIR + "ph_%s.png" % map_id)
-	shell.centered = false
-	shell.z_index = -3
-	_attach(_root, shell)
-	if shell.texture.get_size() != Vector2(size * TILE):
-		push_error("%s : enveloppe %s ≠ %s cases" % [map_id, shell.texture.get_size(), size])
-		_errors += 1
-		_root.free()
+	var entities: Node2D
+	if map_id == CAR_MAP:
+		entities = _make_car_root(size)
+	else:
+		entities = _make_floor_root(map_id, plan, size)
+	if entities == null:
 		return
-	var entities := Node2D.new()
-	entities.name = "Entities"
-	entities.y_sort_enabled = true
-	_attach(_root, entities)
-	entities.unique_name_in_owner = true
-	for group: String in ["Warps", "Interactables", "Spawns", "Triggers"]:
-		var node := Node2D.new()
-		node.name = group
-		_attach(_root, node)
 	_add_spawns(plan)
 	_add_stairs(plan)
 	_add_elevator_doors(plan)
@@ -165,6 +195,11 @@ func _build(map_id: StringName) -> void:
 			if not open:
 				blocked.append(cell)
 	_root.set(&"blocked_cells", blocked)
+	if _kit != null and not (_kit.get(&"errors") as PackedStringArray).is_empty():
+		push_error("%s :\n%s" % [map_id, "\n".join(_kit.get(&"errors"))])
+		_errors += 1
+		_root.free()
+		return
 	var packed := PackedScene.new()
 	var err := packed.pack(_root)
 	if err == OK:
@@ -174,6 +209,125 @@ func _build(map_id: StringName) -> void:
 	if err != OK:
 		_errors += 1
 	_root.free()
+
+
+## Cabine : coque peinte (`Shell`, 576 × 768), comme les autres cabines.
+func _make_car_root(size: Vector2i) -> Node2D:
+	_kit = null
+	_root = Node2D.new()
+	_root.name = MAPS[CAR_MAP][0]
+	_root.set_script(load("res://game/world/map.gd"))
+	_root.set(&"map_id", CAR_MAP)
+	_root.set(&"display_name", DISPLAY_NAME)
+	_root.set(&"size", size)
+	_root.set(&"interior", false)
+	_root.set(&"light_profile", LIGHT_PROFILE)
+	var shell := Sprite2D.new()
+	shell.name = "Shell"
+	shell.texture = load(CAR_SHELL_PATH)
+	shell.centered = false
+	shell.z_index = -3
+	_attach(_root, shell)
+	if shell.texture.get_size() != Vector2(size * TILE):
+		push_error("%s : coque %s ≠ %s cases" % [CAR_MAP, shell.texture.get_size(), size])
+		_errors += 1
+		_root.free()
+		return null
+	var entities := Node2D.new()
+	entities.name = "Entities"
+	entities.y_sort_enabled = true
+	_attach(_root, entities)
+	entities.unique_name_in_owner = true
+	for group: String in ["Warps", "Interactables", "Spawns", "Triggers"]:
+		var node := Node2D.new()
+		node.name = group
+		_attach(_root, node)
+	return entities
+
+
+## Étage en modules sur le kit : racine, sol peint (masque), murs, mobilier, décalcomanies des
+## dalles. Les couches logiques du kit sont retirées (collision = `blocked_cells`). Null si le
+## masque vient d'être écrit ou en cas d'erreur.
+func _make_floor_root(map_id: StringName, plan: PlanGrid, size: Vector2i) -> Node2D:
+	var seeds: Array = SEEDS[map_id]
+	_kit = Kit.new("res://tools/plans/%s.txt" % MAPS[map_id][1], size, seeds[0], seeds[1],
+		plan.walkable)
+	_kit.set(&"floor_texture_path", GROUND_FLOOR)
+	_kit.set(&"rubble_texture_path", GROUND_FLOOR)
+	_kit.set(&"mass_texture_path", GROUND_MASS)
+	_kit.set(&"border_color", BORDER_COLOR)
+	_kit.set(&"rubble_mark", NO_RUBBLE_MARK)
+	_kit.set(&"rubble_is_logic", false)
+	_kit.set(&"wall_marks", WALL_MARK)
+	if not (_kit.get(&"errors") as PackedStringArray).is_empty():
+		push_error("%s :\n%s" % [map_id, "\n".join(_kit.get(&"errors"))])
+		_errors += 1
+		return null
+	_root = _kit.call(&"make_root", MAPS[map_id][0], map_id, DISPLAY_NAME, LIGHT_PROFILE)
+	if not _kit.call(&"add_ground", MASK_PATH % map_id):
+		if not (_kit.get(&"errors") as PackedStringArray).is_empty():
+			push_error("%s :\n%s" % [map_id, "\n".join(_kit.get(&"errors"))])
+			_errors += 1
+		else:
+			_masks_written += 1
+		_kit.call(&"discard")
+		return null
+	for layer_name: String in ["Ground", "Detail", "Obstacles"]:
+		var layer := _root.get_node(layer_name)
+		_root.remove_child(layer)
+		layer.free()
+	var walls: Vector3i = ModuleWalls.new(_kit, WALL_PREFIX, WALL_MARK, WALL_MARK,
+		seeds[2]).place()
+	var props := _place_furniture(map_id, plan)
+	var decals := _place_floor_marks(plan)
+	print("%s : murs %d faces / %d côtés / %d couronnes, %d meubles, %d marques au sol" % [
+		map_id, walls.x, walls.y, walls.z, props, decals])
+	return _kit.get(&"entities")
+
+
+## Caisses `X`, conduites `P`, consoles `M` (le bloc 4 × 2 du bureau du B4F reçoit le bureau de
+## Giovanni), une par case. Renvoie le nombre d'objets.
+func _place_furniture(map_id: StringName, plan: PlanGrid) -> int:
+	var entities: Node2D = _kit.get(&"entities")
+	var count := 0
+	for entry: Array in [["X", CRATE, "Crate"], ["P", PIPE, "Pipe"], ["M", CONSOLE, "Console"]]:
+		for cell: Vector2i in plan.cells_of(entry[0]):
+			if map_id == DESK_MAP and DESK_RECT.has_point(cell):
+				continue
+			_kit.call(&"add_prop_at", entities, entry[1], cell, "%s%03d" % [entry[2], count])
+			count += 1
+	if map_id == DESK_MAP:
+		_kit.call(&"add_prop_at", entities, DESK, DESK_ANCHOR, "GiovanniDesk")
+		count += 1
+	return count
+
+
+## Au sol, sans emprise : escaliers `U` / `D`, portes d'ascenseur `L` (un module de 2 cases par
+## paire, ancré sur la case de droite), flèches des dalles orientées comme la grille, disques
+## d'arrêt `o`. Renvoie le nombre de marques.
+func _place_floor_marks(plan: PlanGrid) -> int:
+	var count := 0
+	for cell: Vector2i in plan.cells_of("U"):
+		_kit.call(&"add_floor_prop", STAIRS_UP, cell, "StairsUp%d" % count)
+		count += 1
+	for cell: Vector2i in plan.cells_of("D"):
+		_kit.call(&"add_floor_prop", STAIRS_DOWN, cell, "StairsDown%d" % count)
+		count += 1
+	for id: String in plan.positions:
+		if plan.positions[id]["kind"] != "ascenseur":
+			continue
+		var cells: Array[Vector2i] = plan.cells_at(id)
+		cells.sort()
+		_kit.call(&"add_floor_prop", ELEVATOR_DOOR, cells[1], "ElevatorDoorPanel")
+		count += 1
+	for character: String in ARROW_DECALS:
+		for cell: Vector2i in plan.cells_of(character):
+			_kit.call(&"add_floor_prop", ARROW_DECALS[character], cell, "Arrow%03d" % count)
+			count += 1
+	for cell: Vector2i in plan.cells_of("o"):
+		_kit.call(&"add_floor_prop", STOP_DECAL, cell, "Stop%03d" % count)
+		count += 1
+	return count
 
 
 func _add_spawns(plan: PlanGrid) -> void:
@@ -266,7 +420,7 @@ func _add_spin_tiles(plan: PlanGrid) -> void:
 
 
 ## Porte du bureau : [FlagGate] occupant (24..25, 11) tant que `rocket_hideout_b4f_door_open`
-## n'est pas levé ; le battant est l'image `ph_hideout_office_door.png`.
+## n'est pas levé ; le battant est l'image peinte `hideout_office_door.png` (192 × 96).
 func _add_office_door(entities: Node2D) -> void:
 	var gate := Node2D.new()
 	gate.set_script(load("res://game/world/flag_gate.gd"))

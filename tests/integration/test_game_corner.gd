@@ -46,7 +46,10 @@ func test_metadata_light_and_shell() -> void:
 	lighting.load_file()
 	assert_eq(lighting.get_map_profile(&"celadon_game_corner"), &"interior_warm")
 	assert_true(MapCatalog.load_interiors().has(&"celadon_game_corner"))
-	assert_eq((_map.get_node(^"Shell") as Sprite2D).texture.get_size(), Vector2(SIZE * 96))
+	# En modules (série 22 bis, Q-2) : sol peint, plus d'enveloppe ni de couche logique du kit.
+	assert_null(_map.get_node_or_null(^"Shell"))
+	assert_not_null(_map.get_node_or_null(^"PaintedGround"))
+	assert_null(_map.get_node_or_null(^"Ground"))
 	assert_lte(GridPaths.count_nodes(_map), 3000)
 	# Halos néon (couper « Réduire les animations » : le type vacille).
 	var glows := _map.get_node(^"Glows").get_children()
@@ -153,6 +156,12 @@ func test_stairs_are_unreachable_without_the_switch() -> void:
 
 func test_wall_hides_the_stairs_only_while_standing() -> void:
 	var gate := _map.get_node(^"Entities/SlidingWall") as FlagGate
+	# Le pan de mur peint passe devant l'image de l'escalier (couche du sol) tant qu'il est là.
+	var panel := gate.get_node(^"Panel") as Sprite2D
+	assert_eq(panel.texture.get_size(), Vector2(96, 96))
+	var stairs := _map.get_node(^"GroundDecals/StairsProp") as Node2D
+	assert_gt(_map.get_node(^"Entities").z_index + gate.z_index + panel.z_index,
+		_map.get_node(^"GroundDecals").z_index + stairs.z_index)
 	_map.apply_flag_gates(null)
 	assert_true(gate.visible, "sans drapeau : le mur est affiché")
 	var flags := StoryFlags.new()

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://5wdjqy4ggbyb"
-path="res://.godot/imported/ph_rocket_hideout_b1f.png-fd40b0d5dcbb27014895f3854696aa37.ctex"
+uid="uid://pgquju2dk8mo"
+path="res://.godot/imported/rocket_hideout_b4f_ground.png-22a10dfaee73c7b923009e115b2cbf70.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/world/interiors/placeholder/ph_rocket_hideout_b1f.png"
-dest_files=["res://.godot/imported/ph_rocket_hideout_b1f.png-fd40b0d5dcbb27014895f3854696aa37.ctex"]
+source_file="res://assets/world/maps/rocket_hideout_b4f_ground.png"
+dest_files=["res://.godot/imported/rocket_hideout_b4f_ground.png-22a10dfaee73c7b923009e115b2cbf70.ctex"]
 
 [params]
 

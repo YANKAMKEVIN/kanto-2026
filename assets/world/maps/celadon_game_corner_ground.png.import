@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c4evythvwr2pu"
-path="res://.godot/imported/ph_rocket_hideout_elevator.png-db7e42f0d5c181ae749e5d8abfa575e4.ctex"
+uid="uid://c8l6jnw0toak1"
+path="res://.godot/imported/celadon_game_corner_ground.png-6593b8a1c5d3844977d57f07e8d75be9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/world/interiors/placeholder/ph_rocket_hideout_elevator.png"
-dest_files=["res://.godot/imported/ph_rocket_hideout_elevator.png-db7e42f0d5c181ae749e5d8abfa575e4.ctex"]
+source_file="res://assets/world/maps/celadon_game_corner_ground.png"
+dest_files=["res://.godot/imported/celadon_game_corner_ground.png-6593b8a1c5d3844977d57f07e8d75be9.ctex"]
 
 [params]
 

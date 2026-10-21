@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cwpm4hwoygqnu"
-path="res://.godot/imported/ph_hideout_office_door.png-387da326943b3fe2a9805e590b46f42f.ctex"
+uid="uid://4ht41x57bfsb"
+path="res://.godot/imported/rocket_hideout_b2f_ground.png-7526c304a5c755e5c98b219feda9ead3.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/world/interiors/placeholder/ph_hideout_office_door.png"
-dest_files=["res://.godot/imported/ph_hideout_office_door.png-387da326943b3fe2a9805e590b46f42f.ctex"]
+source_file="res://assets/world/maps/rocket_hideout_b2f_ground.png"
+dest_files=["res://.godot/imported/rocket_hideout_b2f_ground.png-7526c304a5c755e5c98b219feda9ead3.ctex"]
 
 [params]
 

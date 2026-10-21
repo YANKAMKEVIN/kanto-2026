@@ -15,7 +15,7 @@ cible reste celle du cahier d'art : 2D HD peinte, « ni pixel art ».
 | Famille | Fait (peint) | Provisoire | Lot proposé |
 |---|---|---|---|
 | Façades de bâtiments | 44 (dont les 10 de Céladopole et la fontaine, série 22 bis) | 0 | — |
-| Intérieurs (enveloppes de carte) | toutes les cartes jusqu'au J19 et 17 de Céladopole (série 22 bis) | **8** (Casino, repaire : modules peints installés, constructeurs à adapter) | 1 |
+| Intérieurs (enveloppes de carte) | toutes les cartes jusqu'au J19, 17 de Céladopole (série 22 bis), Casino et repaire en modules peints (série 22 bis, Q-2) | 0 | — |
 | Dos de combat (ton Pokémon) | **0** | **88 / 88** en pixel art 64 px | 2 |
 | Faces de combat (adversaire) | artwork officiel pour toutes les espèces | 3 en pixel (Saquedeneu, Rhinocorne, Kangourex) | 2 |
 | Fonds de combat (CB.3) | 35 lieux | **6** lieux | 3 |
@@ -28,7 +28,7 @@ Lots proposés à Kevin (ordre à confirmer) : **1** série 22 bis (Céladopole 
 `fiches-assets/serie-22bis-celadopole.md`) ; **2** dos de combat ; **3** fonds de combat manquants ;
 **4** reliquats (icônes d'avant le J20, objets de Bourg Palette).
 
-## 1. Céladopole et repaire Rocket (J20) : aplats générés — façades, 17 intérieurs et icônes REMPLACÉS par la série 22 bis ; restent le Casino et le repaire
+## 1. Céladopole et repaire Rocket (J20) : aplats générés — TOUS REMPLACÉS par la série 22 bis (Casino et repaire en modules)
 
 Dessinés par `tools/art/placeholders_celadopole.py` (T16) et `tools/art/placeholders_repaire.py`
 (T20) « aux dimensions finales » : remplacer = changer les images (mêmes identifiants, mêmes
@@ -42,6 +42,11 @@ dimensions, mêmes emprises), pas les cartes. Détail et cibles : fiche de la s�
   2e à 5e, toit, ascenseur), Résidence (rez-de-chaussée, 1er à 3e, toit, maison du toit), restaurant,
   maison du chef, hôtel, Arène ; Casino, mur coulissant du Casino ; repaire B1F à B4F, cabine du
   repaire, porte du bureau de Giovanni.
+- **Casino et repaire (2026-10-21)** : construits **en modules** (`tools/build_game_corner.gd`,
+  `tools/build_rocket_hideout.gd` sur `tools/cave_map_kit.gd` et `tools/module_walls.gd`) ; cabine
+  du repaire = coque `int_rocket_hideout_elevator_coque`, mur coulissant et porte du bureau =
+  `game_corner_wall.png`, `hideout_office_door.png`. Les `ph_celadon_game_corner`,
+  `ph_game_corner_wall`, `ph_rocket_hideout_*` et `ph_hideout_office_door` sont **supprimés**.
 
 ## 2. Combat
 
@@ -84,8 +89,8 @@ Depuis la racine d'une copie à jour de `main` :
 # (façades de Céladopole : remplacées ; `placeholders_celadopole.py` ne doit plus être relancé)
 grep -ohE 'bldg_[a-z0-9_]+' tools/art/placeholders_*.py | sort -u | grep -v 'bldg_\(grand_magasin\|residence\|escalier_service\|casino\|coin_lots\|arene_celadopole\|restaurant\|hotel\|maison_chef\|maison_toit\)_01'
 # (les `ph_celadon_*` des 17 cartes remplacées restent sur disque comme références de taille de
-# `serie22bis.py` : ne plus les compter ; seuls comptent `ph_celadon_game_corner`, `ph_game_corner_wall`,
-# `ph_rocket_hideout_*`, `ph_hideout_office_door` tant que leurs constructeurs ne sont pas adaptés)
+# `serie22bis.py` : ne plus les compter ; ceux du Casino et du repaire sont supprimés : la liste
+# ci-dessous doit être vide)
 ls assets/world/interiors/placeholder/ | grep -v 'ph_celadon_\(dept\|mansion\|restaurant\|chief\|hotel\|gym\)'
 # Dos de combat : largeur des images (64 = pixel art)
 for f in assets/sprites/pokemon/placeholder/*_back.png; do sips -g pixelWidth "$f" | tail -1; done | sort | uniq -c

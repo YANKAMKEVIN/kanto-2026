@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://2ldtlnqo5w1p"
-path="res://.godot/imported/ph_game_corner_wall.png-aba18d4d1df6a646c880043f0c4e4cfd.ctex"
+uid="uid://di0arc65hujms"
+path="res://.godot/imported/rocket_hideout_b3f_ground.png-3b0fae39fd615809d1a31868a88e1bf7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/world/interiors/placeholder/ph_game_corner_wall.png"
-dest_files=["res://.godot/imported/ph_game_corner_wall.png-aba18d4d1df6a646c880043f0c4e4cfd.ctex"]
+source_file="res://assets/world/maps/rocket_hideout_b3f_ground.png"
+dest_files=["res://.godot/imported/rocket_hideout_b3f_ground.png-3b0fae39fd615809d1a31868a88e1bf7.ctex"]
 
 [params]
 
