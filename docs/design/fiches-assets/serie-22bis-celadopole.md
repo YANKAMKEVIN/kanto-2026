@@ -89,9 +89,9 @@ par carte** à la même taille, mobilier compris (modèle `int_ss_anne_pont_prin
 | `game_corner_wall` | — | 96 × 96 | pan de mur coulissant posé sur l'escalier (17, 4) |
 | `hideout_office_door` | — | 192 × 96 | porte du bureau de Giovanni (24..25, 11) du B4F |
 
-**Point technique [D]** (décision de la session d'art, à noter ici) : une coque de 30 × 28 cases ne
+**Point technique (Q-2, validé par Kevin le 2026-10-21)** : une coque de 30 × 28 cases ne
 se génère pas d'un bloc (la série 21 a écarté les coques de plus de 20 × 18 : image générée à 1 024²
-puis étirée ×1,9, floue). Défaut proposé : **repaire et Casino en modules** (sol, murs, caisses,
+puis étirée ×1,9, floue). Décision : **repaire et Casino en modules** (sol, murs, caisses,
 consoles, flèches ×4 directions, disque d'arrêt, escaliers) sur `cave_map_kit.gd`, comme la Tour
 (série 21) ; c'est la seule dérogation à la règle de remplacement (outils
 `tools/build_rocket_hideout.gd` et `tools/build_game_corner.gd` à adapter, dalles inchangées).
@@ -115,7 +115,7 @@ Les autres cartes restent en coque.
 
 - **Q-1 — TRANCHÉE par Kevin (2026-10-21)** : intérieurs générés directement d'après les grilles
   et les coques existantes ; **pas de planche d'ambiance** à valider avant.
-- **Q-2** : repaire et Casino en modules (défaut ci-dessus) plutôt qu'en coques géantes ?
+- **Q-2 — TRANCHÉE par Kevin (2026-10-21)** : repaire et Casino **en modules** (point technique du §B).
 - **Q-3** : les 9 icônes d'avant le J20 dans la même passe ?
 - **Q-4** : Voltali et Pyroli vers le lot des dos ?
 
