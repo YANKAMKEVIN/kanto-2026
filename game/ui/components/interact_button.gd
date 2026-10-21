@@ -19,6 +19,9 @@ const VERBS: Dictionary[StringName, Dictionary] = {
 	&"meet": {"label": "RENCONTRER", "icon": preload("res://assets/ui/icons/meet.svg")},
 	# Passe systèmes 2 (§2.10) : porte à carte.
 	&"open": {"label": "OUVRIR", "icon": preload("res://assets/ui/icons/open.svg")},
+	# Passe systèmes 2 (§2.5, S2C-bis) : cibles de terrain (eau).
+	&"surf": {"label": "SURFER", "icon": preload("res://assets/ui/icons/surf.svg")},
+	&"fish": {"label": "PÊCHER", "icon": preload("res://assets/ui/icons/fish.svg")},
 }
 
 var _verb: StringName = &""
