@@ -2126,7 +2126,7 @@ func _celadon_underground_gate(route: int) -> Dictionary:
 # --- Jalon 20 (T16) : Céladopole ---------------------------------------------------------------
 
 const CELADON_TITLE := "Céladopole"
-const PLACEHOLDER_DIR := "res://assets/world/interiors/placeholder/"
+const INTERIORS_DIR := "res://assets/world/interiors/"
 ## Étages du grand magasin : [identifiant, grille].
 const DEPT_FLOORS: Array = [
 	["gf", "celadopole_magasin_rdc.txt"], ["2f", "celadopole_magasin_2e.txt"],
@@ -2159,7 +2159,7 @@ const MANSION_FLOORS: Array = [
 ## Les dix-sept intérieurs de Céladopole construits ici (jalon-20.md §2.2, grilles
 ## `celadopole_*.txt`) : Centre (définition commune), grand magasin (cinq étages, toit, cabine
 ## d'ascenseur), Résidence (quatre niveaux, toit, maison du toit), maison du chef, restaurant et
-## hôtel. Titre « Céladopole » ; enveloppes provisoires (`ph_<carte>.png`). Les PNJ, vendeurs,
+## hôtel. Titre « Céladopole » ; coques peintes de la série 22 bis (`int_<carte>_coque.png`). Les PNJ, vendeurs,
 ## distributeurs, Évoli et la Poké Ball viennent au T17 ; le moteur d'ascenseur au T13.
 func _celadon_rooms() -> Array[Dictionary]:
 	var rooms: Array[Dictionary] = []
@@ -2183,7 +2183,7 @@ func _celadon_rooms() -> Array[Dictionary]:
 	return rooms
 
 
-## Pièce relue sur sa grille : enveloppe provisoire `ph_<id>.png` ; [param light] `interior_warm`
+## Pièce relue sur sa grille : coque peinte `int_<id>_coque.png` ; [param light] `interior_warm`
 ## (toits : `golden_hour`, ciel ouvert).
 func _celadon_room(id: StringName, node: String, plan: String, walkable: String,
 		light: StringName = &"interior_warm") -> Dictionary:
@@ -2193,7 +2193,7 @@ func _celadon_room(id: StringName, node: String, plan: String, walkable: String,
 		_errors += 1
 	return {
 		"id": id, "node": node, "size": Vector2i(grid.width, grid.height),
-		"shell": PLACEHOLDER_DIR + "ph_%s.png" % id,
+		"shell": INTERIORS_DIR + "int_%s_coque.png" % id,
 		"title": CELADON_TITLE, "light": light,
 		"plan": PLANS_DIR + plan, "walkable": walkable,
 		"spawns": {}, "warps": [], "interactables": [],

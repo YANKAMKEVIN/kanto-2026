@@ -71,8 +71,16 @@ func test_metadata_light_and_cave_category() -> void:
 		assert_true(caves.is_cave(map_id), "%s : catégorie grotte" % map_id)
 		assert_eq(caves.cave_of(map_id), &"rocket_hideout")
 		assert_false(caves.is_dark(map_id), "aucune obscurité punitive")
-		assert_eq((map.get_node(^"Shell") as Sprite2D).texture.get_size(),
-			Vector2(SIZES[map_id] * 96), "%s : enveloppe aux dimensions de la grille" % map_id)
+		if map_id == &"rocket_hideout_elevator":
+			# La cabine reste une coque peinte, aux dimensions de la grille.
+			assert_eq((map.get_node(^"Shell") as Sprite2D).texture.get_size(),
+				Vector2(SIZES[map_id] * 96), "%s : coque aux dimensions de la grille" % map_id)
+		else:
+			# Étages en modules (série 22 bis, Q-2) : sol peint, aucune enveloppe, aucune couche
+			# logique du kit (la collision vient de `blocked_cells`, voir la grille ci-dessous).
+			assert_null(map.get_node_or_null(^"Shell"), "%s : plus d'enveloppe" % map_id)
+			assert_not_null(map.get_node_or_null(^"PaintedGround"), "%s : sol peint" % map_id)
+			assert_null(map.get_node_or_null(^"Ground"), "%s : pas de Ground logique" % map_id)
 	var hideout := lighting.get_profile(&"hideout")
 	assert_not_null(hideout, "profil hideout")
 	assert_eq(caves.get_maps(&"rocket_hideout").size(), 5)
@@ -130,6 +138,37 @@ func test_spin_tiles_equal_the_grid() -> void:
 		assert_eq(field.stops.size(), stops.size(), "%s : cases d'arrêt" % map_id)
 		for cell: Vector2i in stops:
 			assert_true(field.stops.has(cell), "%s : arrêt %s" % [map_id, cell])
+		_assert_floor_marks(map_id, plan)
+
+
+## Une décalcomanie par dalle, orientée comme la flèche de la grille, et un disque par arrêt,
+## posés sur leur case (couche du sol, sans emprise).
+func _assert_floor_marks(map_id: StringName, plan: PlanGrid) -> void:
+	var images := {
+		"<": "decal_fleche_repaire_01_gauche", ">": "decal_fleche_repaire_01",
+		"^": "decal_fleche_repaire_01_haut", "v": "decal_fleche_repaire_01_bas",
+		"o": "decal_arret_repaire_01",
+	}
+	var found: Dictionary = {}
+	for child: Node in _maps[map_id].get_node(^"GroundDecals").get_children():
+		var sprite := child.get_node_or_null(^"Sprite") as Sprite2D
+		if sprite == null or sprite.texture == null:
+			continue
+		var image := sprite.texture.resource_path.get_file().get_basename()
+		if not image.begins_with("decal_"):
+			continue
+		var prop := child as Node2D
+		var cell := Vector2i(floori(prop.position.x / 96.0), floori(prop.position.y / 96.0) - 1)
+		found[cell] = image
+		assert_eq((prop as WorldProp).get_footprint().size(), 0, "%s %s : sans emprise" % [
+			map_id, cell])
+	var expected := 0
+	for character: String in images:
+		for cell: Vector2i in plan.cells_of(character):
+			expected += 1
+			assert_eq(found.get(cell, ""), images[character], "%s %s « %s »" % [map_id, cell,
+				character])
+	assert_eq(found.size(), expected, "%s : une marque par dalle et par arrêt" % map_id)
 
 
 func test_every_slide_ends_on_a_walkable_stop_of_the_grid() -> void:

@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_g0l87"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_riij8"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/int_escalier_repaire_descend_01.png" id="3_d2cxx"]
+
+[node name="IntEscalierRepaireDescend01" type="Node2D" unique_id=251810734]
+script = ExtResource("1_g0l87")
+footprint = Array[Vector2i]([])
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1186281049]
+unique_name_in_owner = true
+material = ExtResource("2_riij8")
+texture = ExtResource("3_d2cxx")
+centered = false
+offset = Vector2(-48, -126)

@@ -127,6 +127,8 @@ const LOOKS: Dictionary = {
 	"leo_humain": [CHARACTERS_DIR, "bill", ""],
 	# J15 T10 : Miaouss (compagnon), sans planche d'attente (colonne 0 de la marche).
 	"miaouss": [POKEMON_DIR, "meowth", ""],
+	# Série 22 bis : compagnon Évoli (planche de marche 4 × 4 et d'attente `evoli_idle`).
+	"evoli": [POKEMON_DIR, "eevee", ""],
 	# J15 T11 (série 17, Carmin-sur-Mer) : marin, docker, président du Fan Club, 128 px, avec leur
 	# planche d'attente. Le gardien de la Pension est `old_man` (décision du 2026-10-14).
 	"marin": [CHARACTERS_DIR, "sailor", ""],

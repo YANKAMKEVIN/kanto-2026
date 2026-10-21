@@ -603,9 +603,9 @@ const RULES: Dictionary[StringName, Dictionary] = {
 	&"prop_fleurs_pales_01": {"width": 1, "depth": 1},
 	&"prop_fleurs_pales_02": {"width": 2, "depth": 1},
 	&"prop_if_taille_01": {"width": 1, "depth": 1},
-	# Céladopole (J20 T16), façades PROVISOIRES de `tools/art/placeholders_celadopole.py` (le kit
-	# de la série 22 bis les remplacera, mêmes identifiants et emprises) : emprise = toute l'image,
-	# porte(s) libre(s) au bas (la carte pose ses passages). Maison du toit : 5 × 4 sur la terrasse.
+	# Céladopole (série 22 bis, intégrée : façades peintes aux identifiants, tailles et emprises des
+	# provisoires du J20 T16) : emprise = toute l'image, porte(s) libre(s) au bas (la carte pose
+	# ses passages). Maison du toit : 5 × 4 sur la terrasse.
 	&"bldg_grand_magasin_01": {"shadow": true, "width": 14, "depth": 9, "fade": true,
 		"open": [Vector2i(-1, 0), Vector2i(0, 0)]},
 	&"bldg_residence_01": {"shadow": true, "width": 12, "depth": 8, "fade": true,
@@ -641,6 +641,47 @@ const RULES: Dictionary[StringName, Dictionary] = {
 	&"int_bougeoir_tour_01": {"width": 1, "depth": 1},
 	&"int_comptoir_tour_01": {"width": 4, "depth": 1},
 	&"int_banc_tour_01": {"width": 1, "depth": 1},
+	# Repaire Rocket (série 22 bis, modules sur le modèle de la Tour) : murs, caisses, conduite,
+	# consoles, bureau de Giovanni 4 × 2, escaliers dans le mur (warp `STEP_ON`), flèches et disque
+	# d'arrêt peints au sol (décalcomanies 1 case), porte d'ascenseur (face de mur 2 cases) et
+	# porte du bureau (192 × 96, lue en direct par `build_rocket_hideout.gd`).
+	&"relief_mur_repaire_01": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_mur_repaire_02": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_mur_repaire_03": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_mur_repaire_04": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_CENTRE},
+	&"relief_mur_repaire_05": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_CENTRE},
+	&"int_caisse_repaire_01": {"width": 1, "depth": 1},
+	&"int_conduite_repaire_01": {"width": 1, "depth": 1},
+	&"int_console_repaire_01": {"width": 1, "depth": 1},
+	&"int_bureau_giovanni_01": {"width": 4, "depth": 2},
+	&"int_escalier_repaire_monte_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_CENTRE},
+	&"int_escalier_repaire_descend_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_CENTRE},
+	&"decal_fleche_repaire_01": {"traversable": true, "layer": LAYER_GROUND, "material": false},
+	&"decal_fleche_repaire_01_haut": {"traversable": true, "layer": LAYER_GROUND,
+		"material": false},
+	&"decal_fleche_repaire_01_bas": {"traversable": true, "layer": LAYER_GROUND, "material": false},
+	&"decal_fleche_repaire_01_gauche": {"traversable": true, "layer": LAYER_GROUND,
+		"material": false},
+	&"decal_arret_repaire_01": {"traversable": true, "layer": LAYER_GROUND, "material": false},
+	&"int_porte_ascenseur_repaire_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_EDGE},
+	&"hideout_office_door": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	# Casino de Céladopole (série 22 bis) : murs, machines et tabourets 1 × 1, comptoir à
+	# juxtaposer bout à bout, affiche au mur, pan de mur coulissant (96 × 96, lu en direct par
+	# `build_game_corner.gd`).
+	&"relief_mur_casino_01": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_mur_casino_02": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_mur_casino_03": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_mur_casino_04": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_CENTRE},
+	&"relief_mur_casino_05": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_CENTRE},
+	&"int_machine_casino_01": {"width": 1, "depth": 1},
+	&"int_machine_casino_02": {"width": 1, "depth": 1},
+	&"int_tabouret_casino_01": {"width": 1, "depth": 1},
+	&"int_comptoir_casino_01": {"width": 1, "depth": 1},
+	&"int_affiche_casino_01": {"traversable": true, "align": ALIGN_CENTRE},
+	&"game_corner_wall": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_CENTRE},
 }
 
 

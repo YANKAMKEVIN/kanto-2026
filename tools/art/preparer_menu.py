@@ -54,6 +54,15 @@ PLANCHES_OBJETS_SUIVANTES = [
 	("UI_OBJETS_J17_PLANCHE_r1.png", ["hm05"]),
 	# Série 18 (J16 T10) : Anti-Para et Réveil (`serie18.ICONES_IDS`).
 	("UI_OBJETS_J16_PLANCHE_r1.png", ["paralyze_heal", "awakening"]),
+	# Série 22 bis (29 icônes, `serie22bis.ICONES_PLANCHES`).
+	("UI_OBJETS_22BIS_PLANCHE_1_r1.png", ['great_ball', 'revive', 'poke_doll', 'silph_scope']),
+	("UI_OBJETS_22BIS_PLANCHE_2_r1.png", ['x_attack', 'x_defend', 'x_speed', 'x_special']),
+	("UI_OBJETS_22BIS_PLANCHE_3_r1.png", ['x_accuracy', 'dire_hit', 'burn_heal', 'ice_heal']),
+	("UI_OBJETS_22BIS_PLANCHE_4_r1.png", ['fire_stone', 'water_stone', 'thunder_stone', 'leaf_stone']),
+	("UI_OBJETS_22BIS_PLANCHE_5_r1.png", ['fresh_water', 'soda_pop', 'lemonade', 'lift_key']),
+	("UI_OBJETS_22BIS_PLANCHE_6_r1.png", ['hm01', 'tm01', 'tm11']),
+	("UI_OBJETS_22BIS_PLANCHE_7_r1.png", ['tm13', 'tm19', 'tm21']),
+	("UI_OBJETS_22BIS_PLANCHE_8_r1.png", ['tm24', 'tm28', 'tm34']),
 ]
 
 

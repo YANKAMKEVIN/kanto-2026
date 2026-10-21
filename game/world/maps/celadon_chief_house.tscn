@@ -1,10 +1,10 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://game/world/map.gd" id="1_t1841"]
-[ext_resource type="Texture2D" path="res://assets/world/interiors/placeholder/ph_celadon_chief_house.png" id="2_ls2f3"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/int_celadon_chief_house_coque.png" id="2_ls2f3"]
 [ext_resource type="Script" path="res://game/world/warp_point.gd" id="3_a03s5"]
 
-[node name="CeladonChiefHouse" type="Node2D" unique_id=1296813930]
+[node name="CeladonChiefHouse" type="Node2D" unique_id=1007825321]
 script = ExtResource("1_t1841")
 map_id = &"celadon_chief_house"
 display_name = "Céladopole"
@@ -13,18 +13,18 @@ blocked_cells = Array[Vector2i]([Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0),
 interior = true
 light_profile = &"interior_warm"
 
-[node name="Shell" type="Sprite2D" parent="." unique_id=1188594460]
+[node name="Shell" type="Sprite2D" parent="." unique_id=2087001443]
 z_index = -3
 texture = ExtResource("2_ls2f3")
 centered = false
 
-[node name="Entities" type="Node2D" parent="." unique_id=1981504760]
+[node name="Entities" type="Node2D" parent="." unique_id=740286580]
 unique_name_in_owner = true
 y_sort_enabled = true
 
-[node name="Warps" type="Node2D" parent="." unique_id=1972978303]
+[node name="Warps" type="Node2D" parent="." unique_id=1810060080]
 
-[node name="Exit0" type="Marker2D" parent="Warps" unique_id=1040462045]
+[node name="Exit0" type="Marker2D" parent="Warps" unique_id=1751054051]
 position = Vector2(624, 864)
 script = ExtResource("3_a03s5")
 trigger = 1
@@ -33,7 +33,7 @@ target_map = &"celadon_city"
 target_spawn = &"from_chief"
 arrival_facing = Vector2i(0, 1)
 
-[node name="Exit1" type="Marker2D" parent="Warps" unique_id=219022509]
+[node name="Exit1" type="Marker2D" parent="Warps" unique_id=1036634691]
 position = Vector2(720, 864)
 script = ExtResource("3_a03s5")
 trigger = 1
@@ -42,7 +42,7 @@ target_map = &"celadon_city"
 target_spawn = &"from_chief"
 arrival_facing = Vector2i(0, 1)
 
-[node name="Exit2" type="Marker2D" parent="Warps" unique_id=1577733791]
+[node name="Exit2" type="Marker2D" parent="Warps" unique_id=303067229]
 position = Vector2(816, 864)
 script = ExtResource("3_a03s5")
 trigger = 1
@@ -51,11 +51,11 @@ target_map = &"celadon_city"
 target_spawn = &"from_chief"
 arrival_facing = Vector2i(0, 1)
 
-[node name="Interactables" type="Node2D" parent="." unique_id=1884704811]
+[node name="Interactables" type="Node2D" parent="." unique_id=1607583131]
 
-[node name="Spawns" type="Node2D" parent="." unique_id=965451170]
+[node name="Spawns" type="Node2D" parent="." unique_id=1682730303]
 
-[node name="entrance" type="Marker2D" parent="Spawns" unique_id=1830051022]
+[node name="entrance" type="Marker2D" parent="Spawns" unique_id=274828584]
 position = Vector2(720, 864)
 
-[node name="Triggers" type="Node2D" parent="." unique_id=1223647804]
+[node name="Triggers" type="Node2D" parent="." unique_id=534060747]

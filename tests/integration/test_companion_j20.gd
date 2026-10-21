@@ -4,7 +4,7 @@ extends GutTest
 ## souterrain, à Céladopole (phrase « ville ») et dans le repaire Rocket (grotte non intérieure,
 ## phrase générique) ; rentré dans les intérieurs (Centre, toit du grand magasin) ; rappelé
 ## pendant une glisse sur dalle et un trajet d'ascenseur (grand magasin, repaire) puis de retour ;
-## Évoli (aucune planche d'exploration peinte) n'est pas éligible (règle J11 : aucun substitut) ;
+## Évoli est éligible depuis la planche d'exploration peinte de la série 22 bis ;
 ## après le don d'Évoli le compagnon choisi reste celui de la partie.
 
 const MemoryFs := preload("res://tests/helpers/memory_file_system.gd")
@@ -152,10 +152,9 @@ func test_catalog_contexts_and_eevee_rule() -> void:
 			&"rocket_hideout_b1f", &"rocket_hideout_b2f", &"rocket_hideout_b4f"]:
 		assert_eq(catalog.context_of(map_id), &"", "%s : générique [D]" % map_id)
 	assert_true(catalog.is_eligible_species(&"meowth"))
-	assert_false(catalog.is_eligible_species(&"eevee"),
-		"Évoli : aucune planche d'exploration peinte, aucun substitut (règle J11)")
-	assert_false(ResourceLoader.exists("res://assets/sprites/pokemon/painted/eevee_frames.tres"),
-		"si la planche d'Évoli arrive, l'ajouter à companions.json")
+	assert_true(catalog.is_eligible_species(&"eevee"),
+		"Évoli : planche d'exploration peinte de la série 22 bis")
+	assert_true(ResourceLoader.exists("res://assets/sprites/pokemon/painted/eevee_frames.tres"))
 
 
 # --- Dehors : il suit -----------------------------------------------------------------------------
@@ -315,11 +314,11 @@ func test_the_companion_survives_the_eevee_gift() -> void:
 	await wait_process_frames(2)
 	assert_eq(_companion.get_chosen(), chosen, "le compagnon reste Miaouss")
 	assert_true(_companion.is_shown(), "il est toujours là")
-	# Même désigné de force, Évoli est écarté au rafraîchissement (inéligible).
+	# Désigné, Évoli devient le compagnon (planche d'exploration de la série 22 bis) et s'affiche.
 	GameState.set_companion(eevee)
 	_companion.refresh()
 	await wait_process_frames(2)
-	assert_eq(GameState.companion_uid, "", "choix effacé : Évoli inéligible")
-	await wait_until(func() -> bool: return not _companion.is_shown(), TIMEOUT)
-	assert_false(_companion.is_shown(), "personne ne suit")
+	assert_eq(GameState.companion_uid, eevee.uid, "Évoli éligible : choix conservé")
+	await wait_until(func() -> bool: return _companion.is_shown(), TIMEOUT)
+	assert_true(_companion.is_shown(), "Évoli suit")
 	assert_push_error_count(0)
