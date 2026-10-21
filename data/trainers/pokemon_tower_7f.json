@@ -1,0 +1,23 @@
+{
+	"tower_rocket_1": {
+		"name": "Sbire Rocket", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 750,
+		"team": [
+			{ "species": "zubat", "level": 25 }, { "species": "zubat", "level": 25 },
+			{ "species": "golbat", "level": 25 }
+		]
+	},
+	"tower_rocket_2": {
+		"name": "Sbire Rocket", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 780,
+		"team": [{ "species": "koffing", "level": 26 }, { "species": "drowzee", "level": 26 }]
+	},
+	"tower_rocket_3": {
+		"name": "Sbire Rocket", "ai": "smart",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 690,
+		"team": [
+			{ "species": "zubat", "level": 23 }, { "species": "rattata", "level": 23 },
+			{ "species": "raticate", "level": 23 }, { "species": "zubat", "level": 23 }
+		]
+	}
+}
