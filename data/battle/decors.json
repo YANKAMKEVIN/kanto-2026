@@ -269,6 +269,9 @@
 		"pokemon_tower_6f": [
 			{ "decor": "tour_pokemon" }
 		],
+		"pokemon_tower_7f": [
+			{ "decor": "tour_pokemon" }
+		],
 		"route_7": [
 			{ "decor": "route_7_8_urbaine" }
 		],

@@ -2004,6 +2004,13 @@ func _pokemon_house() -> Dictionary:
 		[&"int_panier_pokemon_01", Vector2i(3, 6), 6.85, "BasketB"],
 	]
 	room["rugs"] = [[&"int_tapis_plaid_01", Vector2(6.0, 6.2), "RugPlaid"]]
+	# Jalon 21 (T14, §2.9) : arrivée par la téléportation du 7F, devant M. Fuji ((7, 3) près de la
+	# fenêtre [D], tourné ↓) ; le joueur s'y tient tourné ↑ (le `facing` est celui du change_map).
+	(room["spawns"] as Dictionary)["devant_fuji"] = Vector2i(7, 4)
+	# Jalon 21 (T14) : déclencheur d'entrée `pokemon_house_flute` (sans direction) sur les trois
+	# cases du premier pas depuis le paillasson (6..8, 7) ; la scène ne joue que si la Flûte
+	# est due (sinon rien ne se passe).
+	room["triggers"] = [["FluteTrigger", Vector2i(6, 7), Vector2i(3, 1), &"pokemon_house_flute"]]
 	return room
 
 

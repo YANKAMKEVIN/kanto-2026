@@ -49,6 +49,8 @@ const GATE_GUARDS: Array[StringName] = [&"forest_gate_north_guard", &"forest_gat
 ## (T18 Route 9 / 10, T20 grotte ; T24 : Lavanville et Tour posés, retirés de la liste) ; « Il fait très sombre ici… » (T-3) est
 ## celui du J17 (`dark_caves.json`, joué par FlashDirector : [constant PLAYED_BY_BOOT]).
 const UNUSED_YET: Array[StringName] = [
+	# J21 : joués par la variante A du 6F (session parente).
+	&"tower_6f_marowak_held", &"tower_6f_marowak_soul", &"tower_6f_marowak_peace",
 	# J21 T9a (décision M-3) : Ronflex a quitté la Route 11 ; T-6 / T-7 attendent le Ronflex de la
 	# Route 12 (J21 T19-T21), qui les reprend.
 	&"route_11_snorlax",
@@ -153,6 +155,8 @@ const DOSSIER_11 := "res://docs/design/dossier-11-route-2.md"
 ## titre d'un panneau ; jetons {n}, {reste}) et annexe A de son plan (accord à 1 espèce, Q-2).
 ## Jalon 19 (T14) : lot de textes du dossier 22 §15 (Exorcistes §15.4, SPECTRE §15.3, §15.7).
 const DOSSIER_22 := "res://docs/design/dossier-22-tour-pokemon.md"
+## Jalon 21 (T12 à T14) : textes du dossier 24 §15 (Tour résolue, Fuji, Lavanville après le sauvetage).
+const DOSSIER_24 := "res://docs/design/dossier-24-repos-des-esprits.md"
 const DOSSIER_20 := "res://docs/design/dossier-20-chemins-retrouves.md"
 const JALON_17 := "res://docs/tech/jalon-17.md"
 const _DOSSIER_TOKENS: Dictionary[String, String] = {"{first_wild_species}": "{espèce}",
@@ -224,6 +228,8 @@ const MAPS: Array[StringName] = [
 	&"celadon_restaurant", &"celadon_chief_house", &"celadon_hotel",
 	# Jalon 20 (T21) : la vie du 20-II (Casino déjà listé ; repaire Rocket B1F à B4F).
 	&"rocket_hideout_b1f", &"rocket_hideout_b2f", &"rocket_hideout_b3f", &"rocket_hideout_b4f",
+	# Jalon 21 (T13) : le 7F (Sbires, M. Fuji).
+	&"pokemon_tower_7f",
 ]
 ## Lot de textes validé par Kevin le 2026-10-06 (anciens brouillons : panneau, observations,
 ## soin de Maman, terminal du Stockage, portes de Jadielle…) : source des textes hors dossiers.
@@ -584,6 +590,15 @@ const IDS_J20_T21: Array[StringName] = [
 const DOSSIER_23 := "res://docs/design/dossier-23-celadopole.md"
 ## Jalon 20 (T25) : annexe A.14 du plan (postes de Safrania, textes 215 à 219).
 const PLAN_J20 := "res://docs/tech/jalon-20.md"
+## Jalon 21 (T12 à T14) : `data/dialogues/j21_tower.json`.
+const IDS_J21: Array[StringName] = [
+	&"tower_6f_marowak_held", &"tower_6f_marowak_soul", &"tower_6f_marowak_peace",
+	&"tower_rocket_1_before", &"tower_rocket_1_defeated", &"tower_rocket_1_after",
+	&"tower_rocket_2_before", &"tower_rocket_2_defeated", &"tower_rocket_2_after",
+	&"tower_rocket_3_before", &"tower_rocket_3_defeated", &"tower_rocket_3_after",
+	&"tower_7f_fuji", &"tower_7f_fuji_thanks", &"fuji_flute_give", &"fuji_flute_received",
+	&"fuji_flute_explain", &"pokemon_house_fuji",
+]
 const IDS_J19: Array[StringName] = [
 	&"tower_channeler_1_after",
 	&"tower_channeler_1_before",
@@ -709,7 +724,10 @@ const SET_J14_BILL_CUTSCENES: Array[StringName] = [
 ## Jalon 16 (T12, T15) : `got_hm01` (lu par le marin de la passerelle et le départ du navire) est
 ## levé par la scène du capitaine (T13). Jalon 18 (T16) : `tower_stairs_open` (présence de
 ## l'Exorciste de la Tour) est levé au J19 (T16 : scène `tower_guardian`, dossier 22 K-3).
-const FUTURE_FLAGS: Array[StringName] = [&"ghost_marowak_calmed"]
+## Jalon 21 (T14) : `snorlax_route_12_woken` et `_16_woken` (lus par M. Fuji, §15.4.7) sont levés
+## par les scènes des Ronflex (T19 à T22, autre session).
+const FUTURE_FLAGS: Array[StringName] = [&"ghost_marowak_calmed", &"snorlax_route_12_woken",
+	&"snorlax_route_16_woken"]
 var _library: DialogueLibrary
 var _cutscenes: CutsceneLibrary
 var _offer: StarterOffer
@@ -847,7 +865,7 @@ func test_library_loads_without_error() -> void:
 	found.sort()
 	var expected := IDS + IDS_J14_BILL + IDS_J14_ROCKET + IDS_J15_ROUTE_5 + IDS_J16_GYM \
 		+ IDS_J16_SHIP + IDS_J16_RIVAL_CAPTAIN + IDS_J16_T15 + IDS_J17 + IDS_J18 + IDS_J19 + IDS_J20 \
-		+ IDS_J20_T17 + IDS_J20_T21 + IDS_S2B + S2_FIELD_TRAVEL
+		+ IDS_J20_T17 + IDS_J20_T21 + IDS_J21 + IDS_S2B + S2_FIELD_TRAVEL
 	expected.append_array(TEXTS_S2C_FISH.keys())
 	expected.append_array(TEXTS_S2D_STRENGTH.keys())
 	expected.append_array(UNVALIDATED)
@@ -899,6 +917,9 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		&"rocket_hideout_b4f_lift_key_got", &"rocket_hideout_b4f_silph_scope_got",
 		# Jalon 19 (T16) : la gardienne du rez-de-chaussée.
 		&"tower_guardian_worried",
+		# Jalon 21 (T13, T14) : Fuji remercie au 7F, remise de la Poké Flûte à la maison.
+		&"tower_7f_fuji_thanks", &"fuji_flute_give", &"fuji_flute_received",
+		&"fuji_flute_explain",
 		# Jalon 19 (T17) : le rival n° 5 (joué par sa scène).
 		&"rival_tower_intro", &"rival_tower_lost", &"rival_tower_resume", &"rival_tower_won",
 		# Jalon 19 (T18) : la zone purifiée du 5F.
@@ -1061,6 +1082,8 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		&"rival_tower_lost_once", &"rival_tower_retried", &"rival_tower_won",
 		# Jalon 19 (T24) : première rencontre du SPECTRE du 6F (dossier 22 §13).
 		&"tower_ghost_met",
+		# Jalon 21 (T13, T14) : Fuji sauvé, Poké Flûte reçue.
+		&"fuji_rescued", &"got_poke_flute",
 		# Jalon 20 (T25) : boisson donnée, les quatre postes de Safrania s'ouvrent.
 		&"saffron_gates_open",
 		# Jalon 20 (T12) : Évoli reçu (étape « gift_pokemon »).
@@ -1317,6 +1340,7 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 		.replace("\n    ", " ")
 	for drink: String in ["une Eau Fraîche", "un Soda Cool", "une Limonade"]:
 		plan_j20 += plan_j20.replace("[Joueur] donne un(e) [boisson]", "{joueur} donne " + drink)
+	var dossier_24 := FileAccess.get_file_as_string(DOSSIER_24)
 	var dossier_22 := FileAccess.get_file_as_string(DOSSIER_22).replace("\n   ", " ") \
 		.replace("\n  ", " ")
 	var dossier_20 := FileAccess.get_file_as_string(DOSSIER_20).replace("**", "")
@@ -1393,6 +1417,8 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			or _in_dossier_18(dossier_22, text.replace("{joueur}", "{player}"))
 			# J19 (T17) : citation du §15 repliée sur deux lignes du dossier.
 			or _in_dossier_18(_flat_lines(dossier_22), text)
+			# J21 (T12 à T14) : dossier 24 §15, « / » entre les deux lignes d'une bulle.
+			or _in_dossier_18(dossier_24, text.replace("{joueur}", "{player}").replace("\n", " / "))
 			# J20 (T15) : dossier 23 §20, un panneau sur deux lignes, une citation par ligne.
 			or _each_line_quoted(dossier_23, text)
 			or _in_dossier_18(dossier_23, text) or _in_dossier_18(plan_j20, text)
@@ -1613,7 +1639,7 @@ func test_oak_parcel_lines() -> void:
 	# Jalon 18 (T16) : sept objets au sol (Route 9, Route 10, grotte) et la Super Potion cachée.
 	# Jalon 20 (T21) : onze objets au sol et trois caches du repaire, la Clé (chute et prise),
 	# Giovanni et le Scope Sylphe.
-	assert_eq(launched, 103, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
+	assert_eq(launched, 105, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
 		+ "sa CT34, Ondine (pont, Arène et rattrapage), écran, module, console, objets de la "
 		+ "Route 25, le Rocket d'Azuria (2) et le barrage sud ; J15 : objets de la Route 5 ; "
 		+ "J16 : Major Bob (2), neuf objets du S.S. Anne, le capitaine, le marin (2) ; "
@@ -1621,7 +1647,8 @@ func test_oak_parcel_lines() -> void:
 		+ "et la Corde Sortie de la Cave ; J18 : huit objets ; J19 : la gardienne de la Tour et six objets de la Tour (T18) ; "
 		+ "J20 (T17) : Super Potion de la Route 8, quatre caches (Route 8, souterrain ×2, "
 		+ "ville), Erika (2) ; "
-		+ "J20 (T21) : repaire (11 objets, 3 caches, Clé ×2, Giovanni, Scope)")
+		+ "J20 (T21) : repaire (11 objets, 3 caches, Clé ×2, Giovanni, Scope) ; "
+		+ "J21 (T13, T14) : M. Fuji au 7F et dans sa maison")
 	# Le jeton n'apparaît que dans la réplique de l'espèce, « {pokemon} » dans les phrases du
 	# compagnon (J11), et ceux de la Pension dans ses répliques (J15).
 	for row: Array in _pages():
@@ -1630,6 +1657,8 @@ func test_oak_parcel_lines() -> void:
 			continue
 		if IDS_J14_BILL.has(row[0]):
 			continue # {player} de Léo (dossier 17 §15) : testé dans test_bill_house
+		if row[0] in [&"fuji_flute_give", &"fuji_flute_received"]:
+			continue # Jalon 21 (T14) : {player} de la remise de la Flûte (§15.4), test_pokemon_house_fuji
 		var tokens := DialogueTokens.tokens_in(row[1])
 		if String(row[0]).begins_with("daycare_"):
 			for token: StringName in tokens:

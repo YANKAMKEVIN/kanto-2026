@@ -117,7 +117,8 @@
 			"maps": [
 				"lavender_town", "lavender_center", "lavender_mart", "pokemon_house",
 				"lavender_house_1", "lavender_house_2", "pokemon_tower_1f", "pokemon_tower_2f",
-				"pokemon_tower_3f", "pokemon_tower_4f", "pokemon_tower_5f", "pokemon_tower_6f"
+				"pokemon_tower_3f", "pokemon_tower_4f", "pokemon_tower_5f", "pokemon_tower_6f",
+				"pokemon_tower_7f"
 			],
 			"subtitle": "Route 10 — Route 8 — Route 12",
 			"services": [

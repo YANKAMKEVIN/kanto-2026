@@ -283,3 +283,16 @@ passage du jeu n'y mène. **Retirées à la clôture de la passe (S2Z)** avec le
 
 Le PNJ de QA (`data/npcs/route_1.json`), la scène et les textes `qa_s2_legendary` sont retirés à
 la clôture de la passe (S2Z, T33).
+
+## Jalon 21 (T12 à T14) : départs de la Tour résolue (QA 21A)
+
+Équipe de référence [D, `jalon-21.md` §2.15] : Reptincel N33, Roucarnage N30, Papilusion N28 (Poudre Dodo), Évoli N25, Nidorino N28 **endormi** (`status_turns` 3), Sabelette N26 **empoisonné** ; 10 Poké Balls, 10 Super Potions, 3 Réveils, 2 Cordes Sortie, Scope Sylphe ; 5 000 ₽ ; Badge Prisme et drapeaux des J18 à J20 jusqu'au Scope ; Centre de Lavanville enregistré (`rest_point`).
+
+| Fichier | Partie |
+|---|---|
+| `tower_marowak_qa.json` | 6F, `devant_spectre` (10, 14) tourné ↓, Exorcistes 8 et 9 et rival n° 5 battus, **Scope au Sac** : la scène d'Ossatueur (variante A, écrite après la fusion par la session parente) ; en attendant, le SPECTRE du J19 |
+| `tower_marowak_noscope.json` | idem **sans** Scope (ni objet ni drapeau) : le SPECTRE du J19, inchangé (non-régression) |
+| `tower_marowak_weak.json` | idem avec Salamèche N8 seul : défaite → Centre de Lavanville, déclencheur réarmé |
+| `tower_7f_qa.json` | 7F, `arrivee_T67` tourné →, `ghost_marowak_calmed` et `tower_6f_mist_lifted` levés, **Sbires non battus** : monter vers Fuji (10, 3) |
+| `fuji_flute_qa.json` | Maison des Pokémon, `devant_fuji` tourné ↑, `fuji_rescued` et Sbires battus, **sans Flûte** (cas « entre deux scènes ») : parler à Fuji, ou sortir et rentrer (déclencheur d'entrée) |
+| `j21_full_qa.json` | Lavanville devant la Tour (`retour_tour`), Scope, **rien du J21 ni de la Tour du J19** : parcours complet |

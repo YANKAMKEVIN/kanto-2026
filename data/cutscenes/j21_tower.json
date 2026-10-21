@@ -1,0 +1,33 @@
+{
+	"tower_7f_fuji_rescue": {
+		"next": "pokemon_house_flute",
+		"variants": [
+			{
+				"unless": ["fuji_rescued"],
+				"steps": [
+					{ "face": "mr_fuji", "to": "player" },
+					{ "dialogue": "tower_7f_fuji_thanks" },
+					{ "set": ["fuji_rescued"] },
+					{ "change_map": "pokemon_house", "at": "devant_fuji", "facing": "up" }
+				]
+			}
+		]
+	},
+	"pokemon_house_flute": {
+		"variants": [
+			{
+				"if": ["fuji_rescued"],
+				"unless": ["got_poke_flute"],
+				"steps": [
+					{ "face": "mr_fuji", "to": "player" },
+					{ "face": "player", "to": "mr_fuji" },
+					{ "dialogue": "fuji_flute_give" },
+					{ "give": "poke_flute", "count": 1 },
+					{ "set": ["got_poke_flute"] },
+					{ "dialogue": "fuji_flute_received" },
+					{ "dialogue": "fuji_flute_explain" }
+				]
+			}
+		]
+	}
+}
