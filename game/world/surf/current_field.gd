@@ -14,10 +14,10 @@ extends RefCounted
 ## Erreurs de données (jamais sur les grilles validées, prouvé par `plan_check_j24_seafoam.py`) :
 ## case suivante infranchissable (BLOCKED), boucle (LOOP), trajet trop long (TOO_LONG).
 ##
-## **Lecture en jeu** : le trajet a la forme de `SpinSlide` du J20 (cases sans la case de départ,
-## une direction par pas, case de fin, statut). Après la fusion du J20, le directeur du joueur le
-## jouera avec la glissade de `SpinSlide` (aucune entrée, pas de sauvegarde pendant la glissade :
-## [method Ride.can_save]) ; ce fichier ne dépend pas du J20 (règle d'ancienneté, §0.1).
+## **Lecture en jeu** : le trajet est un [ForcedSlide] (forme commune avec les dalles du J20 :
+## cases sans la case de départ, une direction par pas, case de fin), joué par
+## [ForcedSlideDirector] (aucune entrée, pas de sauvegarde pendant la glissade :
+## [method ForcedSlide.can_save]) ; passe systèmes 2, T15.
 
 enum Status {
 	OK, ## Le trajet se termine normalement.
@@ -33,44 +33,14 @@ const MAX_STEPS: int = 64
 
 ## Trajet d'une glissade de courant, calculé d'avance par [method CurrentField.ride].
 class Ride:
-	extends RefCounted
-	var start: Vector2i = Vector2i.ZERO
-	## Cases traversées dans l'ordre, **sans** la case de départ.
-	var cells: Array[Vector2i] = []
-	## Direction de chaque pas (même longueur que [member cells]).
-	var facings: Array[Vector2i] = []
-	## Dernière case atteinte ([member start] si aucun pas).
-	var end: Vector2i = Vector2i.ZERO
+	extends ForcedSlide
 	var status: Status = Status.NOT_A_CURRENT
-	## Le trajet finit sur un terminal (passage, warp) : l'appelant déclenche le transfert.
-	var warp: bool = false
-	## Le trajet finit sur une case de terre : le joueur y repasse à pied.
-	var dismounts: bool = false
-	## Pas déjà joués par le directeur.
-	var steps_done: int = 0
 
 	func is_ok() -> bool:
 		return status == Status.OK
 
-	func size() -> int:
-		return cells.size()
-
-	## Vrai tant qu'un trajet valide n'a pas fini de se jouer.
-	func is_sliding() -> bool:
-		return status == Status.OK and steps_done < cells.size()
-
-	## Faux pendant la glissade (dossier §5.7 : jamais de sauvegarde sur un courant).
-	func can_save() -> bool:
-		return not is_sliding()
-
-	## Direction du prochain pas (ZERO si fini ou invalide).
-	func next_direction() -> Vector2i:
-		return facings[steps_done] if is_sliding() else Vector2i.ZERO
-
-	## Marque le prochain pas comme joué.
-	func step_done() -> void:
-		if is_sliding():
-			steps_done += 1
+	func status_name() -> String:
+		return Status.keys()[status]
 
 
 ## Trajet depuis la case de courant [param start] (où le joueur vient d'entrer).

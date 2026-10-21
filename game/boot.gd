@@ -204,7 +204,7 @@ var _elevator: ElevatorDirector
 var _elevator_panel: ElevatorPanel
 var _pending_elevator: bool = false
 ## J20 (T19, `jalon-20.md` §2.4.4) : dalles tournantes du repaire (glisse, verrou, reprise).
-var _spin: SpinTileDirector
+var _forced_slide: ForcedSlideDirector
 ## Passe systèmes 2 (S2B) : monture (Vélo) et objets clés utilisables (Bicyclette, Poké Flûte).
 var _mount: MountDirector
 var _key_items: KeyItemDirector
@@ -260,7 +260,7 @@ func _ready() -> void:
 	_library.load_dir()
 	_cutscenes.load_dir()
 	_runner.setup(_library, GameState.flags, _dialogue_box, _player)
-	_setup_spin_tiles()
+	_setup_forced_slides()
 	# Centre Pokémon (jalon 7, 7A.2, jalon-07.md §6.2) : actions de dialogue (soins), choix à deux
 	# cartes dans la boîte de dialogue (T7), réveil au point de repos.
 	_rest_points.load_file()
@@ -834,7 +834,7 @@ func is_stable() -> bool:
 		and not _cutscenes_node.is_running() and not _starter_choice.is_sheet_open() \
 		and not _battle_director.is_running() and not _encounters.is_running() \
 		and not _flash.is_running() and not _elevator.is_running() \
-		and not _spin.is_running()
+		and not _forced_slide.is_running()
 
 
 ## Garde d'ouverture du Menu Dresseur : partie stable (ce qui exclut dialogue, scène, rencontre,
@@ -1299,7 +1299,7 @@ func _on_map_changed(map: GameMap) -> void:
 	# J20 (T13) : cabine d'ascenseur (étage courant d'après la carte quittée, sortie réorientée).
 	_elevator.set_map(map, _arrival_from)
 	# J20 (T19) : dalles tournantes ; joueur posé sur une dalle → case stable (avant le compagnon).
-	_spin.set_map(map)
+	_forced_slide.set_map(map)
 	_companion.on_map_changed(map)
 	_field_presenter.set_map(map)
 	# Décor de combat de la carte chargé en tâche de fond (correctif QA S24 du CB.3).
@@ -1384,6 +1384,9 @@ func _on_map_entered(map: GameMap) -> void:
 	_active_puzzles.clear()
 	GameState.discover_map(map.map_id)
 	_companion.on_map_entered(map)
+	# Passe systèmes 2 (T15) : arrivée en Surf sur un courant (reprise) → la glissade part ici ;
+	# l'autosave d'arrivée attend sa fin (partie pas stable).
+	_forced_slide.ride_from_here()
 	request_autosave("changement de carte")
 	var indoors := map.interior and not _zones.interior_title_of(map.map_id)
 	if _announcer.should_announce(map.display_name, indoors):
@@ -1767,7 +1770,7 @@ func _refresh_controls() -> void:
 		and not _player.is_blocked_by(RARE_CANDY)
 		and not (_daycare != null and _daycare.is_running())
 		and not _player.is_blocked_by(FlashDirector.LOCK_REASON)
-		and not _elevator.is_running() and not _spin.is_running())
+		and not _elevator.is_running() and not _forced_slide.is_running())
 
 
 ## Racine de composition : les dépendances sont explicites et câblées une seule fois.
@@ -2089,31 +2092,44 @@ func _push_stable_location(map_id: StringName) -> void:
 	GameState.set_player_location(at["map"], at["cell"], at["facing"])
 
 
-## J20 (T19, `jalon-20.md` §2.4.4) : directeur des dalles tournantes, branché sur le pas du joueur
+## J20 (T19, `jalon-20.md` §2.4.4) et passe systèmes 2 (T15, `systemes-2.md` §2.6) : directeur
+## des glissades forcées (dalles tournantes, courants du Surf), branché sur le pas du joueur
 ## **avant** tout autre écouteur (directeur de scènes, Dresseurs, rencontres, routeur) : le pas
-## qui pose le joueur sur une dalle bloque le joueur avant qu'ils ne le voient.
-func _setup_spin_tiles() -> void:
-	_spin = SpinTileDirector.new()
-	_spin.name = "SpinTileDirector"
-	_spin.process_mode = Node.PROCESS_MODE_PAUSABLE
-	add_child(_spin)
-	_spin.setup(_player, _trainer_watcher)
-	_spin.slide_started.connect(_on_spin_slide_started.unbind(1))
-	_spin.slide_finished.connect(_on_spin_slide_finished.unbind(1))
+## qui lance une glissade bloque le joueur avant qu'ils ne le voient.
+func _setup_forced_slides() -> void:
+	_forced_slide = ForcedSlideDirector.new()
+	_forced_slide.name = "ForcedSlideDirector"
+	_forced_slide.process_mode = Node.PROCESS_MODE_PAUSABLE
+	add_child(_forced_slide)
+	_forced_slide.setup(_player, _trainer_watcher)
+	_forced_slide.slide_started.connect(_on_forced_slide_started.unbind(1))
+	_forced_slide.slide_finished.connect(_on_forced_slide_finished.unbind(1))
+	_forced_slide.warp_reached.connect(_on_forced_slide_warp_reached)
 
 
-func get_spin_director() -> SpinTileDirector:
-	return _spin
+func get_forced_slide_director() -> ForcedSlideDirector:
+	return _forced_slide
 
 
-func _on_spin_slide_started() -> void:
+## Ancien nom (J20, J28) : même directeur que [method get_forced_slide_director].
+func get_spin_director() -> ForcedSlideDirector:
+	return _forced_slide
+
+
+func _on_forced_slide_started() -> void:
 	_companion.on_cutscene_started()
 	_refresh_controls()
 
 
-func _on_spin_slide_finished() -> void:
+func _on_forced_slide_finished() -> void:
 	_companion.on_cutscene_finished()
 	_refresh_controls()
+
+
+## Courant fini sur un passage : suivi comme un pas libre (verrou de la glissade déjà levé).
+func _on_forced_slide_warp_reached(cell: Vector2i, direction: Vector2i) -> void:
+	if not SceneRouter.follow_warp_at(cell, direction):
+		push_error("Boot : aucun passage à suivre en %s au bout du courant" % cell)
 
 
 # --- Passe systèmes 2, S2A : sauvegarde à la mise en arrière-plan (`systemes-2.md` §2.12) ------
