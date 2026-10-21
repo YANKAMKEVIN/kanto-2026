@@ -31,10 +31,10 @@ taille différente) se décide avant la génération et se note ici.
 - **DA et composition** : `reference/celadopole-vue-generale-v1.png` (validée), seule vue peinte du
   lot. **Géométrie, qui fait foi** : `tools/plans/celadopole.txt` et les grilles d'intérieur
   `tools/plans/celadopole_*.txt`, `casino.txt`, `repaire_*.txt`.
-- **Intérieurs : aucune vue peinte**. Repli [D] : les coques peintes existantes servent d'ancre de
+- **Intérieurs : aucune vue peinte**, et pas de planche d'ambiance (Q-1, Kevin, 2026-10-21) : les coques peintes existantes servent d'ancre de
   style (`int_centre_coque`, `int_boutique_coque`, `int_maison_argenta_coque`,
   `int_ss_anne_restaurant_coque`, `int_arene_azuria_coque`) ; contenu d'après le dossier 23 et les
-  grilles. **Question Q-1 pour Kevin** ci-dessous.
+  grilles.
 - **Prompts** : ADN visuel v1 (cahier d'art §1.3), **lumière NE**, golden hour pour les façades
   (profil de la carte `golden_hour`), lumière neutre pour les intérieurs (`interior_warm` fait le
   reste). « Ni pixel art » : pas de contour noir, pas d'aplats, matières lisibles à 1:1.
@@ -113,9 +113,8 @@ Les autres cartes restent en coque.
 
 ## Questions pour Kevin
 
-- **Q-1** : pas de vue peinte des intérieurs. Défaut : générer directement d'après les grilles et
-  les coques existantes. Autre choix : une planche d'ambiance des intérieurs (magasin, Résidence,
-  serre, Casino, repaire) validée avant, une étape de plus.
+- **Q-1 — TRANCHÉE par Kevin (2026-10-21)** : intérieurs générés directement d'après les grilles
+  et les coques existantes ; **pas de planche d'ambiance** à valider avant.
 - **Q-2** : repaire et Casino en modules (défaut ci-dessus) plutôt qu'en coques géantes ?
 - **Q-3** : les 9 icônes d'avant le J20 dans la même passe ?
 - **Q-4** : Voltali et Pyroli vers le lot des dos ?
