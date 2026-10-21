@@ -1401,7 +1401,8 @@ func _on_target_changed(kind: int) -> void:
 	if kind == InteractionController.NO_TARGET:
 		_hud.hide_interact()
 	else:
-		_hud.show_interact(Interaction.kind_name(kind as Interaction.Kind))
+		_hud.show_interact(Interaction.kind_name(kind as Interaction.Kind),
+			kind == Interaction.Kind.FISH and _can_surf_ahead())
 
 
 func _on_dialogue_started(_dialogue_id: StringName) -> void:
@@ -2329,12 +2330,43 @@ func get_field_travel_director() -> FieldTravelDirector:
 
 # --- Passe systèmes 2 (S2C-bis) : pêche --------------------------------------------------------
 
+## Choix « Pêcher / Surfer » par appui long (option A de Kevin) : OUI = PÊCHER, NON = SURFER.
+const WATER_CHOICE_DIALOGUE: StringName = &"water_choice"
+enum WaterChoice { NONE, FISH, SURF }
+
 var _fishing: FishingDirector
+var _water_choice: WaterChoice = WaterChoice.NONE
 
 
 ## Pêche (J22 §2.7) : cible de terrain PÊCHER, appui, cannes du Sac ([KeyItemDirector]). Tables
 ## chargées sans contrôle des espèces (celles du J22 manquent) : le directeur refuse une espèce
 ## inconnue au moment de la touche. Après [method _setup_mount] (objets clés).
+## Vrai si SURFER est possible devant le joueur (même s'il voit PÊCHER).
+func _can_surf_ahead() -> bool:
+	var target := _mount.surf_target(_player.get_cell(), _player.get_facing())
+	return target != null and target.kind == Interaction.Kind.SURF
+
+
+## Appui long sur PÊCHER (mode choix) : « Pêcher / Surfer ».
+func _on_water_choice_requested() -> void:
+	if _runner.is_running() or _fishing.is_running() or not _player.is_input_enabled() \
+			or _player.is_moving() or not _can_surf_ahead():
+		return
+	_water_choice = WaterChoice.NONE
+	_runner.play(WATER_CHOICE_DIALOGUE)
+
+
+func _on_water_choice_finished(dialogue_id: StringName) -> void:
+	if dialogue_id != WATER_CHOICE_DIALOGUE:
+		return
+	var choice := _water_choice
+	_water_choice = WaterChoice.NONE
+	if choice == WaterChoice.FISH:
+		_fishing.on_fish_requested(_player.get_cell() + _player.get_facing())
+	elif choice == WaterChoice.SURF:
+		_mount.start_surf()
+
+
 func _setup_fishing() -> void:
 	var tables := WaterRodTables.new()
 	tables.load_game_files()
@@ -2351,6 +2383,13 @@ func _setup_fishing() -> void:
 		var target := _fishing.target_at(c, f)
 		return target if target != null else _mount.surf_target(c, f)
 	_interactions.fish_requested.connect(_fishing.on_fish_requested)
+	# Option A de Kevin (2026-10-21) : PÊCHER face à une eau où l'on peut aussi surfer ; un appui
+	# long ouvre le choix « Pêcher / Surfer », joué au premier plan puis lancé à sa fermeture.
+	_hud.interact_long_pressed.connect(_on_water_choice_requested)
+	_runner.choice_made.connect(func(confirmed: bool) -> void:
+		if _runner.get_dialogue_id() == WATER_CHOICE_DIALOGUE:
+			_water_choice = WaterChoice.FISH if confirmed else WaterChoice.SURF)
+	_runner.dialogue_finished.connect(_on_water_choice_finished)
 	_key_items.set_fishing(_fishing)
 	_fishing.fishing_started.connect(_refresh_controls.unbind(1))
 	_fishing.fishing_finished.connect(_refresh_controls.unbind(1))

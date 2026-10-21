@@ -67,7 +67,8 @@ const J17_TOKENS: Dictionary[String, Array] = {
 ## Textes pas encore validés, exemptés du contrôle « mot pour mot » (jalon 14 T16 : ceux du
 ## coquillage de la Route 25, validés depuis : dossier 17 §15 n° 71 ; le n° 72 est retiré le 2026-10-14).
 ## Jalon 20 (T17) : le panneau neutre de la cabine du T16 est remplacé par `elevator_panel` (T13).
-const UNVALIDATED: Array[StringName] = []
+## S2C (option A de Kevin, 2026-10-21) : question du choix « Pêcher / Surfer » [D], à valider.
+const UNVALIDATED: Array[StringName] = [&"water_choice"]
 ## Passe systèmes 2 (T25b) : Téléport et Tunnel hors combat, joués par [FieldTravelDirector] ;
 ## textes provisoires du lot `systemes-2.md` §8.1 (pas encore dans un dossier).
 const S2_FIELD_TRAVEL: Array[StringName] = [&"dig_used", &"teleport_used", &"fly_takeoff",
@@ -85,7 +86,7 @@ const PLAYED_BY_COMPANION: Array[StringName] = [
 ## Passe systèmes 2 (S2B) : refus du Vélo (MountDirector) et Flûte « ailleurs » (KeyItemDirector).
 const PLAYED_BY_BOOT: Array[StringName] = [&"escape_rope_used", &"dark_cave_too_dark",
 	&"elevator_locked", &"bike_indoors", &"bike_cycling_road_walk", &"poke_flute_played",
-	&"surf_water", &"surf_first_ride", &"surf_current_too_strong"]
+	&"surf_water", &"surf_first_ride", &"surf_current_too_strong", &"water_choice"]
 ## Passe systèmes 2 (S2B) : textes validés des dossiers 25 (§16.1.3, §16.1.4) et 24 (§15.6.6),
 ## qui vivent encore sur les branches de conception du J21 et du J22 (pas dans `main`) : comparés
 ## ici mot pour mot, page par page.
@@ -836,6 +837,7 @@ func test_library_loads_without_error() -> void:
 		+ IDS_J16_SHIP + IDS_J16_RIVAL_CAPTAIN + IDS_J16_T15 + IDS_J17 + IDS_J18 + IDS_J19 + IDS_J20 \
 		+ IDS_J20_T17 + IDS_J20_T21 + IDS_S2B + S2_FIELD_TRAVEL
 	expected.append_array(TEXTS_S2C_FISH.keys())
+	expected.append_array(UNVALIDATED)
 	expected.sort()
 	assert_eq(found, expected)
 

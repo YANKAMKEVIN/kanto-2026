@@ -66,6 +66,8 @@ func _surf_east_from_the_beach() -> void:
 	# Colonne x = 7 pêchable et cannes au Sac : PÊCHER prime sur SURFER [D].
 	assert_eq(_boot.get_interaction_controller().get_target().kind, Interaction.Kind.FISH,
 		"PÊCHER face à l'eau pêchable")
+	assert_true(_boot.get_hud().get_interact_button().has_hold_choice(),
+		"SURFER aussi possible : appui long « Pêcher / Surfer » (option A)")
 	assert_eq(_boot.get_mount_director().start_surf(), SurfRules.MountCheck.READY)
 	await wait_until(func() -> bool: return not _player.is_moving(), TIMEOUT)
 	assert_eq(_player.get_mount(), Mount.Kind.SURF)
@@ -112,3 +114,45 @@ func test_a_save_at_sea_resumes_surfing() -> void:
 	assert_eq(_boot.get_map().map_id, &"qa_sea")
 	assert_eq(_player.get_cell(), Vector2i(7, 10), "reprise sur l'eau")
 	assert_eq(_player.get_mount(), Mount.Kind.SURF)
+
+
+func _long_press_choice(confirmed: bool) -> void:
+	await _walk(Vector2i.UP, 12)
+	await _walk(Vector2i.RIGHT, 4)
+	await wait_process_frames(2)
+	var runner := _boot.get_dialogue_runner()
+	_boot.get_hud().get_interact_button().long_pressed.emit()
+	assert_eq(runner.get_dialogue_id(), Boot.WATER_CHOICE_DIALOGUE, "choix ouvert")
+	var box := _boot.get_dialogue_box()
+	var deadline := Time.get_ticks_msec() + int(TIMEOUT * 1000)
+	while runner.is_running() and runner.get_dialogue_id() == Boot.WATER_CHOICE_DIALOGUE \
+			and Time.get_ticks_msec() < deadline:
+		if runner.is_awaiting_choice():
+			runner.choose(confirmed)
+		elif box.is_open():
+			box.advance_requested.emit()
+		await wait_process_frames(1)
+	assert_ne(runner.get_dialogue_id(), Boot.WATER_CHOICE_DIALOGUE, "choix fermé")
+
+
+func test_long_press_then_surf_mounts() -> void:
+	await _long_press_choice(false)
+	assert_true(await wait_until(func() -> bool: return _player.get_mount() == Mount.Kind.SURF \
+		and not _player.is_moving(), TIMEOUT), "en Surf")
+	assert_eq(_player.get_cell(), Vector2i(7, 4), "SURFER choisi : sur l'eau")
+
+
+func test_long_press_then_fish_casts() -> void:
+	await _long_press_choice(true)
+	assert_true(await wait_until(func() -> bool: return _boot.get_dialogue_runner() \
+		.get_dialogue_id() == &"fishing_cast", TIMEOUT), "ligne lancée")
+	assert_eq(_player.get_mount(), Mount.Kind.NONE, "PÊCHER choisi : à pied")
+
+
+func test_the_south_beach_has_no_hold_choice() -> void:
+	await _walk(Vector2i.UP, 4)
+	await _walk(Vector2i.RIGHT, 4)
+	await wait_process_frames(2)
+	assert_eq(_player.get_cell(), Vector2i(6, 12))
+	assert_eq(_boot.get_interaction_controller().get_target().kind, Interaction.Kind.SURF)
+	assert_false(_boot.get_hud().get_interact_button().has_hold_choice(), "SURFER seul")
