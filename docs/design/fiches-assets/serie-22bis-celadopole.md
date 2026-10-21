@@ -116,8 +116,10 @@ Les autres cartes restent en coque.
 - **Q-1 — TRANCHÉE par Kevin (2026-10-21)** : intérieurs générés directement d'après les grilles
   et les coques existantes ; **pas de planche d'ambiance** à valider avant.
 - **Q-2 — TRANCHÉE par Kevin (2026-10-21)** : repaire et Casino **en modules** (point technique du §B).
-- **Q-3** : les 9 icônes d'avant le J20 dans la même passe ?
-- **Q-4** : Voltali et Pyroli vers le lot des dos ?
+- **Q-3 — [D] oui (2026-10-21, lancement de la série)** : les 9 icônes d'avant le J20 partent dans
+  la même passe (29 icônes).
+- **Q-4 — [D] oui (2026-10-21)** : dos de Voltali et de Pyroli déplacés vers le **lot des dos de
+  combat** (inventaire, lot 2) ; rien dans ce lot.
 
 ## Contrôles d'acceptation
 

@@ -1,0 +1,9 @@
+UI_OBJETS_22BIS_PLANCHE_1 — NOUVELLE image : une planche d'icônes d'objets peintes pour le Sac, pas une scène.
+Images jointes : poke_ball, potion = icônes existantes du jeu, ANCRES de style dans le style EXACT des icônes jointes (même rendu peint, même contour fin et coloré, même angle de trois quarts, même lumière, même finesse, même taille d'environ 240 px).
+
+PLANCHE de 4 icônes d'objets peintes pour le Sac, dans une image 1536 × 1024 divisée en quatre colonnes invisibles de 384 px : une icône CENTRÉE dans chacune des 4 PREMIÈRES colonnes (de gauche à droite), de 260 px de large au plus et 260 px de haut au plus, avec au moins 60 px de marge vide de chaque côté.
+1 (colonne 1) : la SUPER BALL : une sphère comme la Poké Ball jointe (même modèle, même taille, même bande médiane et même bouton central), mais le dessus est BLEU franc avec deux petites bandes ROUGES sur les côtés, le dessous blanc crème.
+2 (colonne 2) : le RAPPEL : un CRISTAL taillé en losange allongé, jaune citron translucide à facettes nettes et reflets blancs crème, posé sur sa pointe basse, brillant mais net.
+3 (colonne 3) : la POUPÉE POKÉ : une petite POUPÉE de tissu ronde et potelée, corps crème, bonnet et nœud ROUGES, deux gros yeux boutons noirs, petits bras écartés, assise ; mignonne, générique (ce n'est AUCUN Pokémon existant).
+4 (colonne 4) : le SCOPE SYLPHE : de grosses LUNETTES de visée de métal gris-bleu à large monture épaisse et à UNE grosse LENTILLE ronde rose-rouge translucide (un viseur technique), une sangle noire courte de chaque côté ; objet unique et un peu mystérieux.
+AUCUN halo, AUCUNE lueur, AUCUNE étincelle, AUCUN dégradé autour : chaque objet est net, avec seulement son contour fin, sur un fond entièrement transparent (canal alpha, aucune ombre). Interdit : texte, lettres, chiffres, logo, la lettre R, personnage.

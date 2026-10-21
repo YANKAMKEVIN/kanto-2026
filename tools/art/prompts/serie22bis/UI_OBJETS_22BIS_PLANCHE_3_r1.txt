@@ -1,0 +1,9 @@
+UI_OBJETS_22BIS_PLANCHE_3 — NOUVELLE image : une planche d'icônes d'objets peintes pour le Sac, pas une scène.
+Images jointes : antidote, super_potion = icônes existantes du jeu, ANCRES de style dans le style EXACT des icônes jointes (même rendu peint, même contour fin et coloré, même angle de trois quarts, même lumière, même finesse, même taille d'environ 240 px).
+
+PLANCHE de 4 icônes d'objets peintes pour le Sac, dans une image 1536 × 1024 divisée en quatre colonnes invisibles de 384 px : une icône CENTRÉE dans chacune des 4 PREMIÈRES colonnes (de gauche à droite), de 260 px de large au plus et 260 px de haut au plus, avec au moins 60 px de marge vide de chaque côté.
+1 (colonne 1) : la PRÉCISION + : la MÊME fiole d'apothicaire que les quatre « + » (corps de verre rond et trapu, col court, bouchon de liège), au liquide VERT franc, plaque blanche portant une petite FLÈCHE droite stylisée verte.
+2 (colonne 2) : le MUSCLE + : la MÊME fiole au liquide ORANGE foncé, plaque blanche portant un petit POING fermé stylisé orange.
+3 (colonne 3) : l'ANTI-BRÛLE : le MÊME flacon vaporisateur que l'Antidote jointe (même forme, même taille, même gâchette) mais au corps ROUGE-ORANGÉ, gâchette et bouchon blancs.
+4 (colonne 4) : l'ANTIGEL : le même flacon vaporisateur, au corps TURQUOISE glacé pâle, gâchette et bouchon blancs.
+AUCUN halo, AUCUNE lueur, AUCUNE étincelle, AUCUN dégradé autour : chaque objet est net, avec seulement son contour fin, sur un fond entièrement transparent (canal alpha, aucune ombre). Interdit : texte, lettres, chiffres, logo, la lettre R, personnage.
