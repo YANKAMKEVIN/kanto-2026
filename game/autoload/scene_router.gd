@@ -476,7 +476,9 @@ func _on_player_moved(cell: Vector2i) -> void:
 		return
 	if not _player.is_input_enabled():
 		return  # pas scripté (scène) : jamais une porte (jalon-03b.md §2.4)
-	_follow(_current_map.get_warps().find_on_step(cell, _player.get_facing()))
+	var warps := _current_map.get_warps()
+	var warp := warps.find_on_step(cell, _player.get_facing())
+	_follow(warp if warp != null else _find_fall(warps, cell))
 
 
 func _on_player_bumped(direction: Vector2i) -> void:
@@ -485,11 +487,34 @@ func _on_player_bumped(direction: Vector2i) -> void:
 	_follow(_current_map.get_warps().find_on_push(_player.get_cell(), direction))
 
 
+## Passe systèmes 2 (§2.7.3) : trou ([constant Warp.Trigger.FALL]) de [param cell] encore ouvert
+## (aucun drapeau de [member Warp.unless_flags] posé), ou null. Le joueur y tombe à la fin d'un pas
+## libre, dans toutes les directions ; un trou bouché par un rocher est un sol ordinaire.
+func _find_fall(warps: WarpTable, cell: Vector2i) -> Warp:
+	for warp: Warp in warps.get_at(cell):
+		if warp.trigger == Warp.Trigger.FALL and _is_warp_enabled(warp):
+			return warp
+	return null
+
+
+## Faux si un drapeau de [member Warp.unless_flags] est posé (drapeaux de [member arrival_flags] ;
+## sans source : aucun drapeau).
+func _is_warp_enabled(warp: Warp) -> bool:
+	if warp.unless_flags.is_empty() or not arrival_flags.is_valid():
+		return true
+	var flags := arrival_flags.call() as StoryFlags
+	return flags == null or flags.has_none(warp.unless_flags)
+
+
 func _follow(warp: Warp) -> void:
-	if warp == null:
+	if warp == null or not _is_warp_enabled(warp):
 		return
 	var arrival_facing := warp.get_arrival_facing(_player.get_facing())
-	if warp.is_coming_soon():
+	if warp.trigger == Warp.Trigger.FALL:
+		# Chute : fondu court (celui des téléporteurs) [D], arrivée à l'étage du dessous.
+		_change_map(warp.target_map, warp.target_spawn, arrival_facing,
+			teleport_fade_duration, teleport_fade_duration)
+	elif warp.is_coming_soon():
 		show_coming_soon(warp.coming_soon, warp.target_spawn, arrival_facing)
 	elif warp.is_teleport() and warp.target_map == _current_map.map_id:
 		relocate(warp.target_spawn, arrival_facing)
