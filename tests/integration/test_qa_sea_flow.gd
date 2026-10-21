@@ -63,8 +63,9 @@ func _surf_east_from_the_beach() -> void:
 	await _walk(Vector2i.UP, 12)
 	await _walk(Vector2i.RIGHT, 4)
 	assert_eq(_player.get_cell(), Vector2i(6, 4))
-	assert_eq(_boot.get_interaction_controller().get_target().kind, Interaction.Kind.SURF,
-		"SURFER face à l'eau, conditions réunies")
+	# Colonne x = 7 pêchable et cannes au Sac : PÊCHER prime sur SURFER [D].
+	assert_eq(_boot.get_interaction_controller().get_target().kind, Interaction.Kind.FISH,
+		"PÊCHER face à l'eau pêchable")
 	assert_eq(_boot.get_mount_director().start_surf(), SurfRules.MountCheck.READY)
 	await wait_until(func() -> bool: return not _player.is_moving(), TIMEOUT)
 	assert_eq(_player.get_mount(), Mount.Kind.SURF)

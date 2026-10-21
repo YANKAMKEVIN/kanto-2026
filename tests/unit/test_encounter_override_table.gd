@@ -45,7 +45,7 @@ func test_override_refuses_unknown_terrain_and_terrain_key() -> void:
 	var library := EncounterLibrary.new(_data)
 	assert_true(library.load_dir())
 	var before := library.get_table(&"mt_moon_1f", &"rubble")
-	assert_false(library.override_table(&"mt_moon_1f", &"water", _wild, "t"))
+	assert_false(library.override_table(&"mt_moon_1f", &"lava", _wild, "t"))
 	assert_string_contains("\n".join(library.get_errors()), "terrain inconnu")
 	var with_terrain := _wild.duplicate()
 	with_terrain["terrain"] = "rubble"
