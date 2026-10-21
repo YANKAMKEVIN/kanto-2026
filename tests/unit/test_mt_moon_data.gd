@@ -58,7 +58,7 @@ const MOVES := {
 	&"minimize": [&"normal", MoveData.Category.STATUS, 0, 0, 10, []],
 	&"mega_punch": [&"normal", MoveData.Category.PHYSICAL, 80, 85, 20, []],
 	&"sonic_boom": [&"normal", MoveData.Category.STATUS, 0, 90, 20, []],
-	&"metronome": [&"normal", MoveData.Category.STATUS, 0, 0, 10, ["metronome"]],
+	&"metronome": [&"normal", MoveData.Category.STATUS, 0, 0, 10, []],
 	&"haze": [&"ice", MoveData.Category.STATUS, 0, 0, 30, []],
 	&"light_screen": [&"psychic", MoveData.Category.STATUS, 0, 0, 30, []],
 	&"double_edge": [&"normal", MoveData.Category.PHYSICAL, 120, 100, 15, []],
@@ -181,8 +181,10 @@ func test_moves_reuse_the_j11_effect_kinds() -> void:
 	assert_eq([smoke.stat, smoke.stages, smoke.target], [&"acc", -1, MoveEffect.Target.FOE])
 	var mini: MoveEffect = _data.get_move(&"minimize").effects[0]
 	assert_eq([mini.stat, mini.stages, mini.target], [&"eva", 1, MoveEffect.Target.SELF])
-	for id: StringName in [&"metronome", &"pound", &"mega_punch"]:
+	for id: StringName in [&"pound", &"mega_punch"]:
 		assert_eq(_data.get_move(id).effects.size(), 0, "%s : rien de codé" % id)
+	# Jalon 24 (T13) : Métronome (tests/unit/test_metronome.gd).
+	assert_eq(_data.get_move(&"metronome").effects[0].kind, MoveEffect.Kind.METRONOME)
 	# Passe systèmes 2 : Buée Noire et Mur Lumière (tests/unit/test_battle_lot_s2g.gd).
 	assert_eq(_data.get_move(&"haze").effects[0].kind, MoveEffect.Kind.HAZE)
 	assert_eq(_data.get_move(&"light_screen").effects[0].screen, &"light_screen")
@@ -210,7 +212,7 @@ func test_move_texts_are_the_validated_ones() -> void:
 		if DOSSIER_DESCRIPTIONS.has(id):
 			assert_true(_dossier.contains("%s : « %s »" % [DOSSIER_DESCRIPTIONS[id],
 				move.description]), "%s : description (§20)" % id)
-		elif id in [&"double_edge", &"haze", &"light_screen"]:
+		elif id in [&"double_edge", &"haze", &"light_screen", &"metronome"]:
 			# Jalon 19 : la mention « Sans effet » de l'annexe A.2 est retirée, le reste est le même.
 			assert_true(_plan.contains("%s « %s Sans effet dans le moteur actuel. »"
 				% [move.name, move.description]), "%s : description (annexe A.2)" % id)
@@ -219,12 +221,9 @@ func test_move_texts_are_the_validated_ones() -> void:
 				"%s : nom et description (annexe A.2)" % id)
 	assert_true(_dossier.contains("45. Destruction : « %s »" % _data.get_move(
 		&"self_destruct").description), "Destruction : description remplacée (n° 45)")
-	# Reportés : la mention, seulement là où l'effet manque pour de bon au J12.
-	for id: StringName in [&"metronome"]:
-		assert_true(_data.get_move(id).description.ends_with(
-			" Sans effet dans le moteur actuel."), String(id))
+	# Jalon 24 (T13) : plus aucun report (Métronome codé).
 	for id: StringName in [&"leech_life", &"wrap", &"disable", &"rest", &"sonic_boom",
-			&"double_edge", &"haze", &"light_screen"]:
+			&"double_edge", &"haze", &"light_screen", &"metronome"]:
 		assert_false(_data.get_move(id).description.contains("Sans effet"), String(id))
 
 

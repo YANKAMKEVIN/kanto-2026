@@ -8,6 +8,8 @@ extends FlagGate
 ##   [member high_cells], [member stairs_cells] ([method GridWorld.set_level]) ;
 ## - **courants** : actifs ou calmes selon les 8 drapeaux ([method SeafoamState.Floor.apply_to]).
 ## Sans drapeaux connus (grille construite avant l'arrivée), ceux de [code]GameState[/code].
+## Les courants actifs sont dessinés (écume orientée provisoire : chevrons clairs, dossier 27 §7.4
+## « les cases de courant sont visibles ») ; un courant calme ne l'est plus.
 
 ## Étage (identifiant de la carte) dans `data/world/seafoam.json`.
 @export var floor_id: StringName = &""
@@ -18,6 +20,8 @@ extends FlagGate
 static var _state: SeafoamState = null
 
 var _flags: StoryFlags = null
+## Cases des courants actifs dessinés : case → direction.
+var _drawn: Dictionary[Vector2i, Vector2i] = {}
 
 
 ## Données des étages (chargées une fois).
@@ -46,6 +50,21 @@ func apply_to_grid(grid: GridWorld) -> void:
 	var floor_state := state().floor_state(floor_id, _current_flags())
 	if floor_state != null:
 		floor_state.apply_to(grid)
+		_drawn = floor_state.active_current_cells()
+		queue_redraw()
+
+
+func _draw() -> void:
+	var tile := float(Grid.TILE_SIZE)
+	var color := Color(0.88, 0.96, 1.0, 0.55)
+	for cell: Vector2i in _drawn:
+		var center := (Vector2(cell) + Vector2(0.5, 0.5)) * tile
+		var dir := Vector2(_drawn[cell])
+		var side := Vector2(-dir.y, dir.x)
+		for offset: float in [-18.0, 14.0]:
+			var tip := center + dir * (offset + 14.0)
+			draw_polyline(PackedVector2Array([tip - dir * 16.0 + side * 16.0, tip,
+				tip - dir * 16.0 - side * 16.0]), color, 5.0)
 
 
 ## État de l'étage avec les drapeaux connus (null : étage inconnu).

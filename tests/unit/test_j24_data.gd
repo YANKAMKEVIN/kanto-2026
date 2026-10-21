@@ -273,10 +273,11 @@ func test_new_moves_values() -> void:
 	assert_eq([cannon.min_hits, cannon.max_hits], [2, 5])
 	var blizzard := _data.get_move(&"blizzard").effect_of(MoveEffect.Kind.STATUS)
 	assert_eq([blizzard.status, blizzard.chance], [&"freeze", 10])
-	# Surf et Force viennent de la passe systèmes 2 (S2C, S2D) ; Métronome reste en attente (T13).
+	# Surf et Force viennent de la passe systèmes 2 (S2C, S2D) ; Métronome est codé (T13, test_metronome).
 	assert_true(_data.has_move(&"surf"))
 	assert_true(_data.has_move(&"strength"))
-	assert_eq(_data.get_move(&"metronome").pending_effects, PackedStringArray(["metronome"]))
+	assert_eq(_data.get_move(&"metronome").pending_effects, PackedStringArray(),
+		"Métronome codé au T13")
 
 
 func test_pending_effects_met_in_the_jalon_are_the_known_ones() -> void:

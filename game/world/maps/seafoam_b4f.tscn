@@ -8,7 +8,7 @@
 [ext_resource type="Script" path="res://game/world/interactions/interact_point.gd" id="6_hytuu"]
 [ext_resource type="Script" path="res://game/world/seafoam/seafoam_boulder_setup.gd" id="7_wlxq0"]
 
-[node name="SeafoamB4F" type="Node2D" unique_id=1758182757]
+[node name="SeafoamB4F" type="Node2D" unique_id=1668961135]
 script = ExtResource("1_kyq2k")
 map_id = &"seafoam_b4f"
 display_name = "Îles Écume"
@@ -26,205 +26,205 @@ Vector2i(7, 13): Vector2i(0, -1)
 })
 forced_surf_cells = Array[Vector2i]([Vector2i(20, 16), Vector2i(21, 16), Vector2i(4, 14), Vector2i(5, 14)])
 
-[node name="Ground" type="TileMapLayer" parent="." unique_id=1669248306]
+[node name="Ground" type="TileMapLayer" parent="." unique_id=1141203627]
 tile_map_data = PackedByteArray("AAAAAAAAAAABAAcAAAABAAAAAAABAAcAAAACAAAAAAAAAAkAAAADAAAAAAABAAkAAAAEAAAAAAAAAAcAAAAFAAAAAAACAAMAAAAGAAAAAAACAAMAAAAHAAAAAAAAAAMAAAAIAAAAAAABAAMAAAAJAAAAAAAAAAMAAAAKAAAAAAACAAMAAAALAAAAAAABAAcAAAAMAAAAAAABAAkAAAANAAAAAAACAAkAAAAOAAAAAAABAAcAAAAPAAAAAAACAAMAAAAQAAAAAAACAAMAAAARAAAAAAABAAMAAAASAAAAAAABAAMAAAATAAAAAAACAAMAAAAUAAAAAAAAAAMAAAAVAAAAAAABAAMAAAAWAAAAAAACAAMAAAAXAAAAAAACAAMAAAAYAAAAAAABAAMAAAAZAAAAAAACAAMAAAAaAAAAAAAAAAMAAAAbAAAAAAABAAcAAAAcAAAAAAAAAAcAAAAdAAAAAAAAAAcAAAAAAAEAAAABAAcAAAABAAEAAAAAAAcAAAACAAEAAAABAAkAAAADAAEAAAAAAAkAAAAEAAEAAAABAAcAAAAFAAEAAAAAAAMAAAAGAAEAAAABAAMAAAAHAAEAAAABAAMAAAAIAAEAAAAAAAMAAAAJAAEAAAABAAMAAAAKAAEAAAACAAMAAAALAAEAAAAAAAcAAAAMAAEAAAACAAkAAAANAAEAAAAAAAkAAAAOAAEAAAABAAcAAAAPAAEAAAAAAAMAAAAQAAEAAAAAAAMAAAARAAEAAAAAAAMAAAASAAEAAAACAAMAAAATAAEAAAAAAAMAAAAUAAEAAAABAAMAAAAVAAEAAAAAAAMAAAAWAAEAAAACAAMAAAAXAAEAAAACAAIAAAAYAAEAAAACAAMAAAAZAAEAAAAAAAMAAAAaAAEAAAAAAAMAAAAbAAEAAAAAAAcAAAAcAAEAAAABAAcAAAAdAAEAAAABAAcAAAAAAAIAAAABAAcAAAABAAIAAAAAAAcAAAACAAIAAAABAAkAAAADAAIAAAABAAkAAAAEAAIAAAAAAAcAAAAFAAIAAAACAAMAAAAGAAIAAAAAAAMAAAAHAAIAAAACAAMAAAAIAAIAAAAAAAMAAAAJAAIAAAABAAMAAAAKAAIAAAACAAMAAAALAAIAAAAAAAcAAAAMAAIAAAACAAkAAAANAAIAAAABAAkAAAAOAAIAAAAAAAcAAAAPAAIAAAAAAAMAAAAQAAIAAAACAAMAAAARAAIAAAACAAMAAAASAAIAAAAAAAMAAAATAAIAAAACAAMAAAAUAAIAAAACAAMAAAAVAAIAAAAAAAMAAAAWAAIAAAACAAMAAAAXAAIAAAAAAAMAAAAYAAIAAAABAAMAAAAZAAIAAAABAAMAAAAaAAIAAAACAAMAAAAbAAIAAAABAAcAAAAcAAIAAAABAAcAAAAdAAIAAAAAAAcAAAAAAAMAAAAAAAcAAAABAAMAAAABAAcAAAACAAMAAAACAAkAAAADAAMAAAAAAAkAAAAEAAMAAAAAAAcAAAAFAAMAAAABAAcAAAAGAAMAAAABAAcAAAAHAAMAAAAAAAUAAAAIAAMAAAABAAcAAAAJAAMAAAAAAAcAAAAKAAMAAAABAAcAAAALAAMAAAABAAcAAAAMAAMAAAAAAAkAAAANAAMAAAABAAkAAAAOAAMAAAAAAAcAAAAPAAMAAAAAAAMAAAAQAAMAAAACAAMAAAARAAMAAAABAAMAAAASAAMAAAABAAMAAAATAAMAAAAAAAMAAAAUAAMAAAAAAAMAAAAVAAMAAAABAAMAAAAWAAMAAAAAAAMAAAAXAAMAAAACAAMAAAAYAAMAAAACAAMAAAAZAAMAAAACAAMAAAAaAAMAAAABAAMAAAAbAAMAAAABAAcAAAAcAAMAAAAAAAcAAAAdAAMAAAAAAAcAAAAAAAQAAAAAAAcAAAABAAQAAAAAAAcAAAACAAQAAAACAAkAAAADAAQAAAAAAAkAAAAEAAQAAAACAAkAAAAFAAQAAAACAAkAAAAGAAQAAAACAAkAAAAHAAQAAAAAAAkAAAAIAAQAAAABAAkAAAAJAAQAAAACAAkAAAAKAAQAAAAAAAkAAAALAAQAAAACAAkAAAAMAAQAAAACAAkAAAANAAQAAAAAAAkAAAAOAAQAAAABAAcAAAAPAAQAAAACAAMAAAAQAAQAAAAAAAMAAAARAAQAAAABAAMAAAASAAQAAAACAAMAAAATAAQAAAAAAAMAAAAUAAQAAAACAAMAAAAVAAQAAAABAAMAAAAWAAQAAAAAAAMAAAAXAAQAAAAAAAMAAAAYAAQAAAABAAMAAAAZAAQAAAACAAIAAAAaAAQAAAACAAMAAAAbAAQAAAAAAAcAAAAcAAQAAAAAAAcAAAAdAAQAAAABAAcAAAAAAAUAAAABAAcAAAABAAUAAAABAAcAAAACAAUAAAAAAAkAAAADAAUAAAAAAAkAAAAEAAUAAAABAAkAAAAFAAUAAAABAAkAAAAGAAUAAAACAAkAAAAHAAUAAAABAAkAAAAIAAUAAAACAAkAAAAJAAUAAAAAAAkAAAAKAAUAAAABAAkAAAALAAUAAAACAAkAAAAMAAUAAAACAAkAAAANAAUAAAABAAkAAAAOAAUAAAABAAcAAAAPAAUAAAAAAAMAAAAQAAUAAAACAAMAAAARAAUAAAABAAcAAAASAAUAAAAAAAcAAAATAAUAAAAAAAcAAAAUAAUAAAABAAcAAAAVAAUAAAABAAcAAAAWAAUAAAAAAAcAAAAXAAUAAAABAAUAAAAYAAUAAAABAAcAAAAZAAUAAAABAAcAAAAaAAUAAAAAAAcAAAAbAAUAAAAAAAcAAAAcAAUAAAAAAAcAAAAdAAUAAAAAAAcAAAAAAAYAAAAAAAcAAAABAAYAAAABAAcAAAACAAYAAAACAAkAAAADAAYAAAABAAkAAAAEAAYAAAABAAkAAAAFAAYAAAAAAAkAAAAGAAYAAAABAAcAAAAHAAYAAAAAAAMAAAAIAAYAAAABAAMAAAAJAAYAAAAAAAMAAAAKAAYAAAACAAMAAAALAAYAAAAAAAMAAAAMAAYAAAABAAMAAAANAAYAAAABAAMAAAAOAAYAAAAAAAMAAAAPAAYAAAACAAMAAAAQAAYAAAABAAMAAAARAAYAAAABAAcAAAASAAYAAAACAAkAAAATAAYAAAAAAAkAAAAUAAYAAAACAAkAAAAVAAYAAAAAAAkAAAAWAAYAAAABAAkAAAAXAAYAAAAAAAkAAAAYAAYAAAACAAkAAAAZAAYAAAABAAkAAAAaAAYAAAABAAkAAAAbAAYAAAABAAkAAAAcAAYAAAABAAcAAAAdAAYAAAABAAcAAAAAAAcAAAAAAAcAAAABAAcAAAABAAcAAAACAAcAAAACAAkAAAADAAcAAAAAAAkAAAAEAAcAAAABAAkAAAAFAAcAAAABAAkAAAAGAAcAAAAAAAcAAAAHAAcAAAAAAAMAAAAIAAcAAAAAAAMAAAAJAAcAAAABAAMAAAAKAAcAAAACAAMAAAALAAcAAAACAAIAAAAMAAcAAAACAAMAAAANAAcAAAAAAAMAAAAOAAcAAAACAAMAAAAPAAcAAAACAAMAAAAQAAcAAAACAAMAAAARAAcAAAABAAcAAAASAAcAAAAAAAkAAAATAAcAAAACAAkAAAAUAAcAAAABAAkAAAAVAAcAAAAAAAkAAAAWAAcAAAAAAAkAAAAXAAcAAAAAAAkAAAAYAAcAAAACAAkAAAAZAAcAAAABAAkAAAAaAAcAAAAAAAkAAAAbAAcAAAACAAkAAAAcAAcAAAAAAAcAAAAdAAcAAAAAAAcAAAAAAAgAAAABAAcAAAABAAgAAAAAAAcAAAACAAgAAAACAAkAAAADAAgAAAACAAkAAAAEAAgAAAABAAkAAAAFAAgAAAACAAkAAAAGAAgAAAAAAAcAAAAHAAgAAAACAAMAAAAIAAgAAAACAAMAAAAJAAgAAAACAAMAAAAKAAgAAAABAAMAAAALAAgAAAACAAMAAAAMAAgAAAABAAMAAAANAAgAAAABAAMAAAAOAAgAAAACAAMAAAAPAAgAAAACAAMAAAAQAAgAAAACAAMAAAARAAgAAAABAAcAAAASAAgAAAAAAAkAAAATAAgAAAABAAkAAAAUAAgAAAACAAkAAAAVAAgAAAAAAAkAAAAWAAgAAAAAAAkAAAAXAAgAAAACAAkAAAAYAAgAAAAAAAkAAAAZAAgAAAAAAAkAAAAaAAgAAAAAAAkAAAAbAAgAAAABAAkAAAAcAAgAAAABAAcAAAAdAAgAAAABAAcAAAAAAAkAAAABAAcAAAABAAkAAAAAAAcAAAACAAkAAAAAAAkAAAADAAkAAAAAAAkAAAAEAAkAAAACAAkAAAAFAAkAAAABAAkAAAAGAAkAAAABAAcAAAAHAAkAAAACAAMAAAAIAAkAAAABAAMAAAAJAAkAAAABAAMAAAAKAAkAAAAAAAMAAAALAAkAAAAAAAMAAAAMAAkAAAAAAAMAAAANAAkAAAACAAMAAAAOAAkAAAAAAAMAAAAPAAkAAAAAAAcAAAAQAAkAAAABAAcAAAARAAkAAAABAAcAAAASAAkAAAAAAAkAAAATAAkAAAABAAkAAAAUAAkAAAAAAAkAAAAVAAkAAAACAAkAAAAWAAkAAAACAAkAAAAXAAkAAAABAAkAAAAYAAkAAAAAAAkAAAAZAAkAAAAAAAkAAAAaAAkAAAACAAkAAAAbAAkAAAACAAkAAAAcAAkAAAABAAcAAAAdAAkAAAABAAcAAAAAAAoAAAABAAcAAAABAAoAAAAAAAcAAAACAAoAAAABAAkAAAADAAoAAAACAAkAAAAEAAoAAAABAAkAAAAFAAoAAAAAAAkAAAAGAAoAAAAAAAcAAAAHAAoAAAABAAMAAAAIAAoAAAABAAMAAAAJAAoAAAABAAMAAAAKAAoAAAABAAMAAAALAAoAAAABAAMAAAAMAAoAAAABAAMAAAANAAoAAAABAAMAAAAOAAoAAAAAAAMAAAAPAAoAAAAAAAcAAAAQAAoAAAACAAkAAAARAAoAAAAAAAkAAAASAAoAAAACAAkAAAATAAoAAAABAAkAAAAUAAoAAAACAAkAAAAVAAoAAAACAAkAAAAWAAoAAAAAAAkAAAAXAAoAAAAAAAkAAAAYAAoAAAAAAAkAAAAZAAoAAAABAAkAAAAaAAoAAAAAAAkAAAAbAAoAAAAAAAkAAAAcAAoAAAAAAAcAAAAdAAoAAAABAAcAAAAAAAsAAAABAAcAAAABAAsAAAAAAAcAAAACAAsAAAABAAkAAAADAAsAAAABAAkAAAAEAAsAAAABAAkAAAAFAAsAAAACAAkAAAAGAAsAAAAAAAcAAAAHAAsAAAABAAUAAAAIAAsAAAAAAAcAAAAJAAsAAAABAAcAAAAKAAsAAAABAAcAAAALAAsAAAABAAcAAAAMAAsAAAAAAAcAAAANAAsAAAACAAMAAAAOAAsAAAAAAAMAAAAPAAsAAAABAAcAAAAQAAsAAAACAAkAAAARAAsAAAABAAkAAAASAAsAAAAAAAkAAAATAAsAAAAAAAkAAAAUAAsAAAAAAAkAAAAVAAsAAAAAAAkAAAAWAAsAAAAAAAkAAAAXAAsAAAACAAkAAAAYAAsAAAABAAkAAAAZAAsAAAAAAAkAAAAaAAsAAAACAAkAAAAbAAsAAAABAAkAAAAcAAsAAAAAAAcAAAAdAAsAAAAAAAcAAAAAAAwAAAABAAcAAAABAAwAAAABAAcAAAACAAwAAAACAAkAAAADAAwAAAAAAAkAAAAEAAwAAAAAAAkAAAAFAAwAAAACAAkAAAAGAAwAAAABAAkAAAAHAAwAAAACAAkAAAAIAAwAAAACAAkAAAAJAAwAAAAAAAkAAAAKAAwAAAACAAkAAAALAAwAAAABAAkAAAAMAAwAAAABAAcAAAANAAwAAAABAAMAAAAOAAwAAAACAAMAAAAPAAwAAAABAAcAAAAQAAwAAAACAAkAAAARAAwAAAABAAkAAAASAAwAAAACAAkAAAATAAwAAAAAAAkAAAAUAAwAAAAAAAkAAAAVAAwAAAAAAAkAAAAWAAwAAAABAAkAAAAXAAwAAAABAAkAAAAYAAwAAAABAAkAAAAZAAwAAAABAAkAAAAaAAwAAAABAAkAAAAbAAwAAAACAAkAAAAcAAwAAAABAAcAAAAdAAwAAAAAAAcAAAAAAA0AAAABAAcAAAABAA0AAAABAAcAAAACAA0AAAAAAAkAAAADAA0AAAAAAAkAAAAEAA0AAAACAAkAAAAFAA0AAAAAAAkAAAAGAA0AAAABAAkAAAAHAA0AAAACAAkAAAAIAA0AAAABAAkAAAAJAA0AAAACAAkAAAAKAA0AAAACAAkAAAALAA0AAAACAAkAAAAMAA0AAAAAAAcAAAANAA0AAAAAAAMAAAAOAA0AAAABAAMAAAAPAA0AAAAAAAcAAAAQAA0AAAABAAkAAAARAA0AAAAAAAkAAAASAA0AAAACAAkAAAATAA0AAAABAAkAAAAUAA0AAAAAAAkAAAAVAA0AAAACAAkAAAAWAA0AAAAAAAkAAAAXAA0AAAAAAAkAAAAYAA0AAAABAAkAAAAZAA0AAAABAAkAAAAaAA0AAAACAAkAAAAbAA0AAAAAAAkAAAAcAA0AAAABAAcAAAAdAA0AAAAAAAcAAAAAAA4AAAABAAcAAAABAA4AAAABAAcAAAACAA4AAAAAAAkAAAADAA4AAAABAAkAAAAEAA4AAAABAAkAAAAFAA4AAAABAAkAAAAGAA4AAAAAAAcAAAAHAA4AAAAAAAMAAAAIAA4AAAACAAMAAAAJAA4AAAAAAAMAAAAKAA4AAAAAAAMAAAALAA4AAAACAAMAAAAMAA4AAAAAAAMAAAANAA4AAAACAAMAAAAOAA4AAAAAAAMAAAAPAA4AAAAAAAMAAAAQAA4AAAACAAMAAAARAA4AAAAAAAMAAAASAA4AAAABAAMAAAATAA4AAAAAAAcAAAAUAA4AAAACAAkAAAAVAA4AAAACAAkAAAAWAA4AAAAAAAkAAAAXAA4AAAABAAkAAAAYAA4AAAAAAAkAAAAZAA4AAAAAAAkAAAAaAA4AAAAAAAkAAAAbAA4AAAAAAAkAAAAcAA4AAAAAAAcAAAAdAA4AAAAAAAcAAAAAAA8AAAAAAAcAAAABAA8AAAAAAAcAAAACAA8AAAABAAkAAAADAA8AAAABAAkAAAAEAA8AAAABAAkAAAAFAA8AAAAAAAkAAAAGAA8AAAAAAAcAAAAHAA8AAAACAAMAAAAIAA8AAAABAAMAAAAJAA8AAAABAAIAAAAKAA8AAAACAAMAAAALAA8AAAABAAMAAAAMAA8AAAACAAMAAAANAA8AAAAAAAMAAAAOAA8AAAABAAMAAAAPAA8AAAAAAAMAAAAQAA8AAAACAAMAAAARAA8AAAABAAMAAAASAA8AAAABAAMAAAATAA8AAAAAAAcAAAAUAA8AAAAAAAkAAAAVAA8AAAAAAAkAAAAWAA8AAAACAAkAAAAXAA8AAAAAAAkAAAAYAA8AAAABAAkAAAAZAA8AAAACAAkAAAAaAA8AAAABAAkAAAAbAA8AAAAAAAkAAAAcAA8AAAAAAAcAAAAdAA8AAAAAAAcAAAAAABAAAAAAAAcAAAABABAAAAAAAAcAAAACABAAAAAAAAcAAAADABAAAAAAAAcAAAAEABAAAAABAAkAAAAFABAAAAABAAkAAAAGABAAAAAAAAcAAAAHABAAAAACAAMAAAAIABAAAAACAAMAAAAJABAAAAAAAAMAAAAKABAAAAACAAMAAAALABAAAAABAAMAAAAMABAAAAAAAAMAAAANABAAAAABAAMAAAAOABAAAAABAAMAAAAPABAAAAAAAAMAAAAQABAAAAACAAMAAAARABAAAAAAAAMAAAASABAAAAAAAAMAAAATABAAAAAAAAcAAAAUABAAAAACAAkAAAAVABAAAAABAAkAAAAWABAAAAABAAcAAAAXABAAAAABAAcAAAAYABAAAAABAAcAAAAZABAAAAAAAAIAAAAaABAAAAABAAcAAAAbABAAAAABAAcAAAAcABAAAAAAAAcAAAAdABAAAAAAAAcAAAAAABEAAAABAAcAAAABABEAAAABAAcAAAACABEAAAAAAAcAAAADABEAAAABAAcAAAAEABEAAAAAAAkAAAAFABEAAAABAAkAAAAGABEAAAABAAcAAAAHABEAAAABAAcAAAAIABEAAAABAAcAAAAJABEAAAABAAcAAAAKABEAAAAAAAcAAAALABEAAAABAAcAAAAMABEAAAABAAcAAAANABEAAAAAAAcAAAAOABEAAAABAAcAAAAPABEAAAAAAAcAAAAQABEAAAABAAcAAAARABEAAAABAAcAAAASABEAAAABAAcAAAATABEAAAABAAcAAAAUABEAAAAAAAkAAAAVABEAAAAAAAkAAAAWABEAAAAAAAcAAAAXABEAAAAAAAcAAAAYABEAAAAAAAcAAAAZABEAAAAAAAcAAAAaABEAAAAAAAcAAAAbABEAAAABAAcAAAAcABEAAAAAAAcAAAAdABEAAAAAAAcAAAA=")
 tile_set = ExtResource("2_ftoow")
 
-[node name="Detail" type="TileMapLayer" parent="." unique_id=2007184223]
+[node name="Detail" type="TileMapLayer" parent="." unique_id=130830730]
 tile_set = ExtResource("2_ftoow")
 
-[node name="Obstacles" type="TileMapLayer" parent="." unique_id=1161498291]
+[node name="Obstacles" type="TileMapLayer" parent="." unique_id=127925523]
 tile_set = ExtResource("2_ftoow")
 
-[node name="Entities" type="Node2D" parent="." unique_id=1707920577]
+[node name="Entities" type="Node2D" parent="." unique_id=1670034814]
 unique_name_in_owner = true
 y_sort_enabled = true
 
-[node name="EtatEtage" type="Node2D" parent="Entities" unique_id=666986746]
+[node name="EtatEtage" type="Node2D" parent="Entities" unique_id=806807037]
 script = ExtResource("3_7jwj1")
 floor_id = &"seafoam_b4f"
 low_cells = Array[Vector2i]([Vector2i(2, 0), Vector2i(3, 0), Vector2i(12, 0), Vector2i(13, 0), Vector2i(2, 1), Vector2i(3, 1), Vector2i(12, 1), Vector2i(13, 1), Vector2i(2, 2), Vector2i(3, 2), Vector2i(12, 2), Vector2i(13, 2), Vector2i(2, 3), Vector2i(3, 3), Vector2i(12, 3), Vector2i(13, 3), Vector2i(2, 4), Vector2i(3, 4), Vector2i(4, 4), Vector2i(5, 4), Vector2i(6, 4), Vector2i(7, 4), Vector2i(8, 4), Vector2i(9, 4), Vector2i(10, 4), Vector2i(11, 4), Vector2i(12, 4), Vector2i(13, 4), Vector2i(2, 5), Vector2i(3, 5), Vector2i(4, 5), Vector2i(5, 5), Vector2i(6, 5), Vector2i(7, 5), Vector2i(8, 5), Vector2i(9, 5), Vector2i(10, 5), Vector2i(11, 5), Vector2i(12, 5), Vector2i(13, 5), Vector2i(2, 6), Vector2i(3, 6), Vector2i(4, 6), Vector2i(5, 6), Vector2i(18, 6), Vector2i(19, 6), Vector2i(20, 6), Vector2i(21, 6), Vector2i(22, 6), Vector2i(23, 6), Vector2i(24, 6), Vector2i(25, 6), Vector2i(26, 6), Vector2i(27, 6), Vector2i(2, 7), Vector2i(3, 7), Vector2i(4, 7), Vector2i(5, 7), Vector2i(18, 7), Vector2i(19, 7), Vector2i(20, 7), Vector2i(21, 7), Vector2i(22, 7), Vector2i(23, 7), Vector2i(24, 7), Vector2i(25, 7), Vector2i(26, 7), Vector2i(27, 7), Vector2i(2, 8), Vector2i(3, 8), Vector2i(4, 8), Vector2i(5, 8), Vector2i(18, 8), Vector2i(19, 8), Vector2i(20, 8), Vector2i(21, 8), Vector2i(22, 8), Vector2i(23, 8), Vector2i(24, 8), Vector2i(25, 8), Vector2i(26, 8), Vector2i(27, 8), Vector2i(2, 9), Vector2i(3, 9), Vector2i(4, 9), Vector2i(5, 9), Vector2i(18, 9), Vector2i(19, 9), Vector2i(20, 9), Vector2i(21, 9), Vector2i(22, 9), Vector2i(23, 9), Vector2i(24, 9), Vector2i(25, 9), Vector2i(26, 9), Vector2i(27, 9), Vector2i(2, 10), Vector2i(3, 10), Vector2i(4, 10), Vector2i(5, 10), Vector2i(16, 10), Vector2i(17, 10), Vector2i(18, 10), Vector2i(19, 10), Vector2i(20, 10), Vector2i(21, 10), Vector2i(22, 10), Vector2i(23, 10), Vector2i(24, 10), Vector2i(25, 10), Vector2i(26, 10), Vector2i(27, 10), Vector2i(2, 11), Vector2i(3, 11), Vector2i(4, 11), Vector2i(5, 11), Vector2i(16, 11), Vector2i(17, 11), Vector2i(18, 11), Vector2i(19, 11), Vector2i(20, 11), Vector2i(21, 11), Vector2i(22, 11), Vector2i(23, 11), Vector2i(24, 11), Vector2i(25, 11), Vector2i(26, 11), Vector2i(27, 11), Vector2i(2, 12), Vector2i(3, 12), Vector2i(4, 12), Vector2i(5, 12), Vector2i(6, 12), Vector2i(7, 12), Vector2i(8, 12), Vector2i(9, 12), Vector2i(10, 12), Vector2i(11, 12), Vector2i(16, 12), Vector2i(17, 12), Vector2i(18, 12), Vector2i(19, 12), Vector2i(20, 12), Vector2i(21, 12), Vector2i(22, 12), Vector2i(23, 12), Vector2i(24, 12), Vector2i(25, 12), Vector2i(26, 12), Vector2i(27, 12), Vector2i(2, 13), Vector2i(3, 13), Vector2i(4, 13), Vector2i(5, 13), Vector2i(6, 13), Vector2i(7, 13), Vector2i(8, 13), Vector2i(9, 13), Vector2i(10, 13), Vector2i(11, 13), Vector2i(16, 13), Vector2i(17, 13), Vector2i(18, 13), Vector2i(19, 13), Vector2i(20, 13), Vector2i(21, 13), Vector2i(22, 13), Vector2i(23, 13), Vector2i(24, 13), Vector2i(25, 13), Vector2i(26, 13), Vector2i(27, 13), Vector2i(2, 14), Vector2i(3, 14), Vector2i(4, 14), Vector2i(5, 14), Vector2i(20, 14), Vector2i(21, 14), Vector2i(22, 14), Vector2i(23, 14), Vector2i(24, 14), Vector2i(25, 14), Vector2i(26, 14), Vector2i(27, 14), Vector2i(2, 15), Vector2i(3, 15), Vector2i(4, 15), Vector2i(5, 15), Vector2i(20, 15), Vector2i(21, 15), Vector2i(22, 15), Vector2i(23, 15), Vector2i(24, 15), Vector2i(25, 15), Vector2i(26, 15), Vector2i(27, 15), Vector2i(4, 16), Vector2i(5, 16), Vector2i(20, 16), Vector2i(21, 16), Vector2i(25, 16), Vector2i(4, 17), Vector2i(5, 17), Vector2i(20, 17), Vector2i(21, 17)])
 high_cells = Array[Vector2i]([Vector2i(5, 0), Vector2i(6, 0), Vector2i(7, 0), Vector2i(8, 0), Vector2i(9, 0), Vector2i(10, 0), Vector2i(15, 0), Vector2i(16, 0), Vector2i(17, 0), Vector2i(18, 0), Vector2i(19, 0), Vector2i(20, 0), Vector2i(21, 0), Vector2i(22, 0), Vector2i(23, 0), Vector2i(24, 0), Vector2i(25, 0), Vector2i(26, 0), Vector2i(5, 1), Vector2i(6, 1), Vector2i(7, 1), Vector2i(8, 1), Vector2i(9, 1), Vector2i(10, 1), Vector2i(15, 1), Vector2i(16, 1), Vector2i(17, 1), Vector2i(18, 1), Vector2i(19, 1), Vector2i(20, 1), Vector2i(21, 1), Vector2i(22, 1), Vector2i(24, 1), Vector2i(25, 1), Vector2i(26, 1), Vector2i(5, 2), Vector2i(6, 2), Vector2i(7, 2), Vector2i(8, 2), Vector2i(9, 2), Vector2i(10, 2), Vector2i(15, 2), Vector2i(16, 2), Vector2i(17, 2), Vector2i(18, 2), Vector2i(19, 2), Vector2i(20, 2), Vector2i(21, 2), Vector2i(22, 2), Vector2i(23, 2), Vector2i(24, 2), Vector2i(25, 2), Vector2i(26, 2), Vector2i(15, 3), Vector2i(16, 3), Vector2i(17, 3), Vector2i(18, 3), Vector2i(19, 3), Vector2i(20, 3), Vector2i(21, 3), Vector2i(22, 3), Vector2i(23, 3), Vector2i(24, 3), Vector2i(25, 3), Vector2i(26, 3), Vector2i(15, 4), Vector2i(16, 4), Vector2i(17, 4), Vector2i(18, 4), Vector2i(19, 4), Vector2i(20, 4), Vector2i(21, 4), Vector2i(22, 4), Vector2i(23, 4), Vector2i(24, 4), Vector2i(26, 4), Vector2i(15, 5), Vector2i(16, 5), Vector2i(7, 6), Vector2i(8, 6), Vector2i(9, 6), Vector2i(10, 6), Vector2i(11, 6), Vector2i(12, 6), Vector2i(13, 6), Vector2i(14, 6), Vector2i(15, 6), Vector2i(16, 6), Vector2i(7, 7), Vector2i(8, 7), Vector2i(9, 7), Vector2i(10, 7), Vector2i(12, 7), Vector2i(13, 7), Vector2i(14, 7), Vector2i(15, 7), Vector2i(16, 7), Vector2i(7, 8), Vector2i(8, 8), Vector2i(9, 8), Vector2i(10, 8), Vector2i(11, 8), Vector2i(12, 8), Vector2i(13, 8), Vector2i(14, 8), Vector2i(15, 8), Vector2i(16, 8), Vector2i(7, 9), Vector2i(8, 9), Vector2i(9, 9), Vector2i(10, 9), Vector2i(11, 9), Vector2i(12, 9), Vector2i(13, 9), Vector2i(14, 9), Vector2i(7, 10), Vector2i(8, 10), Vector2i(9, 10), Vector2i(10, 10), Vector2i(11, 10), Vector2i(12, 10), Vector2i(13, 10), Vector2i(14, 10), Vector2i(13, 11), Vector2i(14, 11), Vector2i(13, 12), Vector2i(14, 12), Vector2i(13, 13), Vector2i(14, 13), Vector2i(7, 14), Vector2i(8, 14), Vector2i(9, 14), Vector2i(10, 14), Vector2i(11, 14), Vector2i(12, 14), Vector2i(13, 14), Vector2i(14, 14), Vector2i(15, 14), Vector2i(16, 14), Vector2i(17, 14), Vector2i(18, 14), Vector2i(7, 15), Vector2i(8, 15), Vector2i(10, 15), Vector2i(11, 15), Vector2i(12, 15), Vector2i(13, 15), Vector2i(14, 15), Vector2i(15, 15), Vector2i(16, 15), Vector2i(17, 15), Vector2i(18, 15), Vector2i(7, 16), Vector2i(8, 16), Vector2i(9, 16), Vector2i(10, 16), Vector2i(11, 16), Vector2i(12, 16), Vector2i(13, 16), Vector2i(14, 16), Vector2i(15, 16), Vector2i(16, 16), Vector2i(17, 16), Vector2i(18, 16)])
 stairs_cells = Array[Vector2i]([Vector2i(7, 3), Vector2i(23, 5), Vector2i(7, 11)])
 
-[node name="EchelleDessin_11_7" type="Node2D" parent="Entities" unique_id=1813733830]
+[node name="EchelleDessin_11_7" type="Node2D" parent="Entities" unique_id=89204728]
 position = Vector2(1104, 768)
 script = ExtResource("4_ihh68")
 
-[node name="Dessin" type="Polygon2D" parent="Entities/EchelleDessin_11_7" unique_id=1535966526]
+[node name="Dessin" type="Polygon2D" parent="Entities/EchelleDessin_11_7" unique_id=1373443379]
 color = Color(0.62, 0.46, 0.26, 1)
 polygon = PackedVector2Array(-30, -88, 30, -88, 30, -8, -30, -8)
 
-[node name="@Polygon2D@94" type="Polygon2D" parent="Entities/EchelleDessin_11_7" unique_id=731197081]
+[node name="@Polygon2D@94" type="Polygon2D" parent="Entities/EchelleDessin_11_7" unique_id=121626223]
 color = Color(0.34100002, 0.25300002, 0.14299999, 1)
 polygon = PackedVector2Array(-22, -80, 22, -80, 22, -72, -22, -72)
 
-[node name="@Polygon2D@95" type="Polygon2D" parent="Entities/EchelleDessin_11_7" unique_id=1288283265]
+[node name="@Polygon2D@95" type="Polygon2D" parent="Entities/EchelleDessin_11_7" unique_id=1915659854]
 color = Color(0.34100002, 0.25300002, 0.14299999, 1)
 polygon = PackedVector2Array(-22, -56, 22, -56, 22, -48, -22, -48)
 
-[node name="@Polygon2D@96" type="Polygon2D" parent="Entities/EchelleDessin_11_7" unique_id=953790120]
+[node name="@Polygon2D@96" type="Polygon2D" parent="Entities/EchelleDessin_11_7" unique_id=1675579890]
 color = Color(0.34100002, 0.25300002, 0.14299999, 1)
 polygon = PackedVector2Array(-22, -32, 22, -32, 22, -24, -22, -24)
 
-[node name="EchelleDessin_25_4" type="Node2D" parent="Entities" unique_id=43455777]
+[node name="EchelleDessin_25_4" type="Node2D" parent="Entities" unique_id=236219053]
 position = Vector2(2448, 480)
 script = ExtResource("4_ihh68")
 
-[node name="Dessin" type="Polygon2D" parent="Entities/EchelleDessin_25_4" unique_id=192242546]
+[node name="Dessin" type="Polygon2D" parent="Entities/EchelleDessin_25_4" unique_id=686416746]
 color = Color(0.62, 0.46, 0.26, 1)
 polygon = PackedVector2Array(-30, -88, 30, -88, 30, -8, -30, -8)
 
-[node name="@Polygon2D@97" type="Polygon2D" parent="Entities/EchelleDessin_25_4" unique_id=1129666919]
+[node name="@Polygon2D@97" type="Polygon2D" parent="Entities/EchelleDessin_25_4" unique_id=1643884706]
 color = Color(0.34100002, 0.25300002, 0.14299999, 1)
 polygon = PackedVector2Array(-22, -80, 22, -80, 22, -72, -22, -72)
 
-[node name="@Polygon2D@98" type="Polygon2D" parent="Entities/EchelleDessin_25_4" unique_id=1775212275]
+[node name="@Polygon2D@98" type="Polygon2D" parent="Entities/EchelleDessin_25_4" unique_id=1648371524]
 color = Color(0.34100002, 0.25300002, 0.14299999, 1)
 polygon = PackedVector2Array(-22, -56, 22, -56, 22, -48, -22, -48)
 
-[node name="@Polygon2D@99" type="Polygon2D" parent="Entities/EchelleDessin_25_4" unique_id=1027341154]
+[node name="@Polygon2D@99" type="Polygon2D" parent="Entities/EchelleDessin_25_4" unique_id=180619521]
 color = Color(0.34100002, 0.25300002, 0.14299999, 1)
 polygon = PackedVector2Array(-22, -32, 22, -32, 22, -24, -22, -24)
 
-[node name="RocherTombe_4_15" type="Node2D" parent="Entities" unique_id=909907574]
+[node name="RocherTombe_4_15" type="Node2D" parent="Entities" unique_id=449177363]
 position = Vector2(432, 1536)
 script = ExtResource("4_ihh68")
 if_flags = Array[StringName]([&"seafoam_b3f_hole_1_filled"])
 blocking_cells = Array[Vector2i]([Vector2i(4, 15)])
 
-[node name="Dessin" type="Polygon2D" parent="Entities/RocherTombe_4_15" unique_id=719495901]
+[node name="Dessin" type="Polygon2D" parent="Entities/RocherTombe_4_15" unique_id=858535683]
 color = Color(0, 0, 0, 0.3)
 polygon = PackedVector2Array(46, -4, 45.116123, -1.4638257, 42.49846, 0.9748845, 38.2476, 3.222413, 32.526913, 5.1923885, 25.55623, 6.809105, 17.603437, 8.010434, 8.974154, 8.750209, 2.8166876e-15, 9, -8.974154, 8.750209, -17.603437, 8.010434, -25.55623, 6.809105, -32.526913, 5.1923885, -38.2476, 3.222413, -42.49846, 0.9748845, -45.116123, -1.4638257, -46, -4, -45.116123, -6.5361743, -42.49846, -8.974884, -38.2476, -11.222413, -32.526913, -13.192389, -25.55623, -14.809105, -17.603437, -16.010433, -8.974154, -16.75021, -8.4500625e-15, -17, 8.974154, -16.75021, 17.603437, -16.010433, 25.55623, -14.809105, 32.526913, -13.192389, 38.2476, -11.222413, 42.49846, -8.974884, 45.116123, -6.5361743)
 
-[node name="@Polygon2D@100" type="Polygon2D" parent="Entities/RocherTombe_4_15" unique_id=387312735]
+[node name="@Polygon2D@100" type="Polygon2D" parent="Entities/RocherTombe_4_15" unique_id=664680426]
 color = Color(0.55, 0.5, 0.45, 1)
 polygon = PackedVector2Array(40, -42, 39.23141, -34.19639, 36.95518, -26.692661, 33.258785, -19.777191, 28.284271, -13.715729, 22.222809, -8.741215, 15.307338, -5.044819, 7.8036127, -2.768589, 2.4492936e-15, -2, -7.8036127, -2.768589, -15.307338, -5.044819, -22.222809, -8.741215, -28.284271, -13.715729, -33.258785, -19.777191, -36.95518, -26.692661, -39.23141, -34.19639, -40, -42, -39.23141, -49.80361, -36.95518, -57.30734, -33.258785, -64.22281, -28.284271, -70.28427, -22.222809, -75.25879, -15.307338, -78.955185, -7.8036127, -81.231415, -7.34788e-15, -82, 7.8036127, -81.231415, 15.307338, -78.955185, 22.222809, -75.25879, 28.284271, -70.28427, 33.258785, -64.22281, 36.95518, -57.30734, 39.23141, -49.80361)
 
-[node name="@Polygon2D@101" type="Polygon2D" parent="Entities/RocherTombe_4_15" unique_id=169885976]
+[node name="@Polygon2D@101" type="Polygon2D" parent="Entities/RocherTombe_4_15" unique_id=13824775]
 color = Color(0.7, 0.66, 0.6, 1)
 polygon = PackedVector2Array(20, -52, 19.461988, -46.53747, 17.868628, -41.284863, 15.281149, -36.444035, 11.79899, -32.20101, 7.5559664, -28.718851, 2.7151365, -26.131372, -2.5374708, -24.538012, -8, -24, -13.462529, -24.538012, -18.715137, -26.131372, -23.555965, -28.718851, -27.79899, -32.20101, -31.281149, -36.444035, -33.86863, -41.284863, -35.46199, -46.53747, -36, -52, -35.46199, -57.46253, -33.86863, -62.715137, -31.281149, -67.55597, -27.79899, -71.79899, -23.555965, -75.28115, -18.715137, -77.86863, -13.462529, -79.46199, -8, -80, -2.5374708, -79.46199, 2.7151365, -77.86863, 7.5559664, -75.28115, 11.79899, -71.79899, 15.281149, -67.55597, 17.868628, -62.715137, 19.461988, -57.46253)
 
-[node name="@Polygon2D@102" type="Polygon2D" parent="Entities/RocherTombe_4_15" unique_id=1989804318]
+[node name="@Polygon2D@102" type="Polygon2D" parent="Entities/RocherTombe_4_15" unique_id=1396138101]
 color = Color(0.736, 0.7008, 0.648, 1)
 polygon = PackedVector2Array(0, -58, -0.26900578, -55.268734, -1.0656862, -52.642433, -2.3594255, -50.222015, -4.100505, -48.100506, -6.222017, -46.359425, -8.642431, -45.065685, -11.268736, -44.269005, -14, -44, -16.731264, -44.269005, -19.357569, -45.065685, -21.777983, -46.359425, -23.899494, -48.100506, -25.640575, -50.222015, -26.934315, -52.642433, -27.730995, -55.268734, -28, -58, -27.730995, -60.731266, -26.934315, -63.357567, -25.640575, -65.777985, -23.899494, -67.8995, -21.777983, -69.64057, -19.357569, -70.93431, -16.731264, -71.730995, -14, -72, -11.268736, -71.730995, -8.642431, -70.93431, -6.222017, -69.64057, -4.100505, -67.8995, -2.3594255, -65.777985, -1.0656862, -63.357567, -0.26900578, -60.731266)
 
-[node name="RocherTombe_5_15" type="Node2D" parent="Entities" unique_id=1624599920]
+[node name="RocherTombe_5_15" type="Node2D" parent="Entities" unique_id=1991545312]
 position = Vector2(528, 1536)
 script = ExtResource("4_ihh68")
 if_flags = Array[StringName]([&"seafoam_b3f_hole_2_filled"])
 blocking_cells = Array[Vector2i]([Vector2i(5, 15)])
 
-[node name="Dessin" type="Polygon2D" parent="Entities/RocherTombe_5_15" unique_id=1832433048]
+[node name="Dessin" type="Polygon2D" parent="Entities/RocherTombe_5_15" unique_id=643778704]
 color = Color(0, 0, 0, 0.3)
 polygon = PackedVector2Array(46, -4, 45.116123, -1.4638257, 42.49846, 0.9748845, 38.2476, 3.222413, 32.526913, 5.1923885, 25.55623, 6.809105, 17.603437, 8.010434, 8.974154, 8.750209, 2.8166876e-15, 9, -8.974154, 8.750209, -17.603437, 8.010434, -25.55623, 6.809105, -32.526913, 5.1923885, -38.2476, 3.222413, -42.49846, 0.9748845, -45.116123, -1.4638257, -46, -4, -45.116123, -6.5361743, -42.49846, -8.974884, -38.2476, -11.222413, -32.526913, -13.192389, -25.55623, -14.809105, -17.603437, -16.010433, -8.974154, -16.75021, -8.4500625e-15, -17, 8.974154, -16.75021, 17.603437, -16.010433, 25.55623, -14.809105, 32.526913, -13.192389, 38.2476, -11.222413, 42.49846, -8.974884, 45.116123, -6.5361743)
 
-[node name="@Polygon2D@103" type="Polygon2D" parent="Entities/RocherTombe_5_15" unique_id=598940758]
+[node name="@Polygon2D@103" type="Polygon2D" parent="Entities/RocherTombe_5_15" unique_id=711895488]
 color = Color(0.55, 0.5, 0.45, 1)
 polygon = PackedVector2Array(40, -42, 39.23141, -34.19639, 36.95518, -26.692661, 33.258785, -19.777191, 28.284271, -13.715729, 22.222809, -8.741215, 15.307338, -5.044819, 7.8036127, -2.768589, 2.4492936e-15, -2, -7.8036127, -2.768589, -15.307338, -5.044819, -22.222809, -8.741215, -28.284271, -13.715729, -33.258785, -19.777191, -36.95518, -26.692661, -39.23141, -34.19639, -40, -42, -39.23141, -49.80361, -36.95518, -57.30734, -33.258785, -64.22281, -28.284271, -70.28427, -22.222809, -75.25879, -15.307338, -78.955185, -7.8036127, -81.231415, -7.34788e-15, -82, 7.8036127, -81.231415, 15.307338, -78.955185, 22.222809, -75.25879, 28.284271, -70.28427, 33.258785, -64.22281, 36.95518, -57.30734, 39.23141, -49.80361)
 
-[node name="@Polygon2D@104" type="Polygon2D" parent="Entities/RocherTombe_5_15" unique_id=1744991193]
+[node name="@Polygon2D@104" type="Polygon2D" parent="Entities/RocherTombe_5_15" unique_id=681761615]
 color = Color(0.7, 0.66, 0.6, 1)
 polygon = PackedVector2Array(20, -52, 19.461988, -46.53747, 17.868628, -41.284863, 15.281149, -36.444035, 11.79899, -32.20101, 7.5559664, -28.718851, 2.7151365, -26.131372, -2.5374708, -24.538012, -8, -24, -13.462529, -24.538012, -18.715137, -26.131372, -23.555965, -28.718851, -27.79899, -32.20101, -31.281149, -36.444035, -33.86863, -41.284863, -35.46199, -46.53747, -36, -52, -35.46199, -57.46253, -33.86863, -62.715137, -31.281149, -67.55597, -27.79899, -71.79899, -23.555965, -75.28115, -18.715137, -77.86863, -13.462529, -79.46199, -8, -80, -2.5374708, -79.46199, 2.7151365, -77.86863, 7.5559664, -75.28115, 11.79899, -71.79899, 15.281149, -67.55597, 17.868628, -62.715137, 19.461988, -57.46253)
 
-[node name="@Polygon2D@105" type="Polygon2D" parent="Entities/RocherTombe_5_15" unique_id=567823879]
+[node name="@Polygon2D@105" type="Polygon2D" parent="Entities/RocherTombe_5_15" unique_id=460557251]
 color = Color(0.736, 0.7008, 0.648, 1)
 polygon = PackedVector2Array(0, -58, -0.26900578, -55.268734, -1.0656862, -52.642433, -2.3594255, -50.222015, -4.100505, -48.100506, -6.222017, -46.359425, -8.642431, -45.065685, -11.268736, -44.269005, -14, -44, -16.731264, -44.269005, -19.357569, -45.065685, -21.777983, -46.359425, -23.899494, -48.100506, -25.640575, -50.222015, -26.934315, -52.642433, -27.730995, -55.268734, -28, -58, -27.730995, -60.731266, -26.934315, -63.357567, -25.640575, -65.777985, -23.899494, -67.8995, -21.777983, -69.64057, -19.357569, -70.93431, -16.731264, -71.730995, -14, -72, -11.268736, -71.730995, -8.642431, -70.93431, -6.222017, -69.64057, -4.100505, -67.8995, -2.3594255, -65.777985, -1.0656862, -63.357567, -0.26900578, -60.731266)
 
-[node name="Panneau_9_15" type="Node2D" parent="Entities" unique_id=1122179664]
+[node name="Panneau_9_15" type="Node2D" parent="Entities" unique_id=829803268]
 position = Vector2(912, 1536)
 script = ExtResource("4_ihh68")
 blocking_cells = Array[Vector2i]([Vector2i(9, 15)])
 
-[node name="Dessin" type="Polygon2D" parent="Entities/Panneau_9_15" unique_id=1628870457]
+[node name="Dessin" type="Polygon2D" parent="Entities/Panneau_9_15" unique_id=1841436393]
 color = Color(0.4, 0.28, 0.14, 1)
 polygon = PackedVector2Array(-6, -60, 6, -60, 6, -4, -6, -4)
 
-[node name="@Polygon2D@106" type="Polygon2D" parent="Entities/Panneau_9_15" unique_id=1274791000]
+[node name="@Polygon2D@106" type="Polygon2D" parent="Entities/Panneau_9_15" unique_id=1199850017]
 color = Color(0.72, 0.56, 0.32, 1)
 polygon = PackedVector2Array(-34, -90, 34, -90, 34, -50, -34, -50)
 
-[node name="Panneau_23_1" type="Node2D" parent="Entities" unique_id=717367781]
+[node name="Panneau_23_1" type="Node2D" parent="Entities" unique_id=1733467956]
 position = Vector2(2256, 192)
 script = ExtResource("4_ihh68")
 blocking_cells = Array[Vector2i]([Vector2i(23, 1)])
 
-[node name="Dessin" type="Polygon2D" parent="Entities/Panneau_23_1" unique_id=861602971]
+[node name="Dessin" type="Polygon2D" parent="Entities/Panneau_23_1" unique_id=410714621]
 color = Color(0.4, 0.28, 0.14, 1)
 polygon = PackedVector2Array(-6, -60, 6, -60, 6, -4, -6, -4)
 
-[node name="@Polygon2D@107" type="Polygon2D" parent="Entities/Panneau_23_1" unique_id=2078192680]
+[node name="@Polygon2D@107" type="Polygon2D" parent="Entities/Panneau_23_1" unique_id=684667376]
 color = Color(0.72, 0.56, 0.32, 1)
 polygon = PackedVector2Array(-34, -90, 34, -90, 34, -50, -34, -50)
 
-[node name="Overhead" type="TileMapLayer" parent="." unique_id=1600170551]
+[node name="Overhead" type="TileMapLayer" parent="." unique_id=1897009389]
 z_index = 10
 tile_set = ExtResource("2_ftoow")
 
-[node name="Warps" type="Node2D" parent="." unique_id=1909449102]
+[node name="Warps" type="Node2D" parent="." unique_id=247063507]
 
-[node name="Echelle_p11" type="Marker2D" parent="Warps" unique_id=608540856]
+[node name="Echelle_p11" type="Marker2D" parent="Warps" unique_id=379559381]
 position = Vector2(1104, 768)
 script = ExtResource("5_jmart")
 target_map = &"seafoam_b3f"
 target_spawn = &"arrivee_p11"
 arrival_facing = Vector2i(0, 1)
 
-[node name="Echelle_p12" type="Marker2D" parent="Warps" unique_id=1075300377]
+[node name="Echelle_p12" type="Marker2D" parent="Warps" unique_id=605420550]
 position = Vector2(2448, 480)
 script = ExtResource("5_jmart")
 target_map = &"seafoam_b3f"
 target_spawn = &"arrivee_p12"
 arrival_facing = Vector2i(0, 1)
 
-[node name="Passage_w2" type="Marker2D" parent="Warps" unique_id=225392520]
+[node name="Passage_w2" type="Marker2D" parent="Warps" unique_id=1241694031]
 position = Vector2(2064, 1728)
 script = ExtResource("5_jmart")
 target_map = &"seafoam_b3f"
 target_spawn = &"arrivee_w2"
 arrival_facing = Vector2i(0, 1)
 
-[node name="Interactables" type="Node2D" parent="." unique_id=506512392]
+[node name="Interactables" type="Node2D" parent="." unique_id=736731275]
 
-[node name="PanneauPoint_9_15" type="Marker2D" parent="Interactables" unique_id=1137846550]
+[node name="PanneauPoint_9_15" type="Marker2D" parent="Interactables" unique_id=1617034854]
 position = Vector2(912, 1536)
 script = ExtResource("6_hytuu")
 dialogue_id = &"seafoam_sign_currents"
 
-[node name="PanneauPoint_23_1" type="Marker2D" parent="Interactables" unique_id=1805149815]
+[node name="PanneauPoint_23_1" type="Marker2D" parent="Interactables" unique_id=2136802639]
 position = Vector2(2256, 192)
 script = ExtResource("6_hytuu")
 dialogue_id = &"seafoam_sign_danger"
 
-[node name="Cache_25_16" type="Marker2D" parent="Interactables" unique_id=1181654755]
+[node name="Cache_25_16" type="Marker2D" parent="Interactables" unique_id=850020329]
 position = Vector2(2448, 1632)
 script = ExtResource("6_hytuu")
 dialogue_id = &"seafoam_b4f_hidden_1"
 unless_flags = Array[StringName]([&"got_seafoam_b4f_hidden_1"])
 
-[node name="Spawns" type="Node2D" parent="." unique_id=26039969]
+[node name="Spawns" type="Node2D" parent="." unique_id=1189335987]
 
-[node name="arrivee_p11" type="Marker2D" parent="Spawns" unique_id=1137075708]
+[node name="arrivee_p11" type="Marker2D" parent="Spawns" unique_id=868102246]
 position = Vector2(1104, 864)
 
-[node name="arrivee_p12" type="Marker2D" parent="Spawns" unique_id=833581105]
+[node name="arrivee_p12" type="Marker2D" parent="Spawns" unique_id=1877105040]
 position = Vector2(2448, 384)
 
-[node name="arrivee_w2" type="Marker2D" parent="Spawns" unique_id=767468828]
+[node name="arrivee_w2" type="Marker2D" parent="Spawns" unique_id=16703155]
 position = Vector2(2064, 1632)
 
-[node name="arrivee_w1" type="Marker2D" parent="Spawns" unique_id=511372262]
+[node name="arrivee_w1" type="Marker2D" parent="Spawns" unique_id=739530781]
 position = Vector2(1968, 1632)
 
-[node name="chute_seafoam_b3f_1" type="Marker2D" parent="Spawns" unique_id=1874917856]
+[node name="chute_seafoam_b3f_1" type="Marker2D" parent="Spawns" unique_id=166136903]
 position = Vector2(432, 1440)
 
-[node name="chute_seafoam_b3f_2" type="Marker2D" parent="Spawns" unique_id=1432953443]
+[node name="chute_seafoam_b3f_2" type="Marker2D" parent="Spawns" unique_id=116635533]
 position = Vector2(528, 1440)
 
-[node name="Triggers" type="Node2D" parent="." unique_id=1677340388]
+[node name="Triggers" type="Node2D" parent="." unique_id=1875970460]
 
-[node name="Boulders" type="Node" parent="." unique_id=1136522734]
+[node name="Boulders" type="Node" parent="." unique_id=1942403709]
 script = ExtResource("7_wlxq0")
 floor_id = &"seafoam_b4f"
 water_fall_cells = Array[Vector2i]([Vector2i(4, 15), Vector2i(5, 15)])
