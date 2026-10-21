@@ -24,7 +24,9 @@ extends RefCounted
 ## le routeur replace le joueur sans recharger la carte ([method SceneRouter.relocate]). Aucun
 ## verrou d'arrivée : apparaître sur un téléporteur ne le déclenche pas (règle de [constant STEP_ON]).
 
-enum Trigger { STEP_ON, PUSH }
+## Passe systèmes 2 (§2.7.3) : [constant FALL] = trou (chute du joueur) : un pas terminé sur la
+## case, toutes directions, sauf si un drapeau de [member unless_flags] est posé (trou bouché).
+enum Trigger { STEP_ON, PUSH, FALL }
 ## Nouvelles valeurs en fin d'enum (les outils de construction écrivent les valeurs dans les cartes).
 enum Style { DOOR, TELEPORT }
 
@@ -38,6 +40,9 @@ var facing: Vector2i
 var coming_soon: String
 ## Porte ordinaire (fondu habituel) ou téléporteur (fondu court, même carte sans rechargement).
 var style: Style
+## Passe systèmes 2 (§2.7.3) : drapeaux qui **désactivent** le passage (un trou bouché ne fait
+## plus tomber). Vide : toujours actif. Lu par le routeur, pas par [WarpTable].
+var unless_flags: Array[StringName] = []
 
 
 func _init(
