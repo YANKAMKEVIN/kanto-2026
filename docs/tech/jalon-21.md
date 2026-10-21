@@ -871,6 +871,14 @@ l'ordre des jalons. **Défaut : série 23 pour le J21**, revérifiée au T6 (fic
 
 ## 3. Tâches
 
+> **État au 2026-10-22 (session de nuit, textes validés d'avance par Kevin le 2026-10-21)** : T0 à
+> T14 et T17 à T22 faits ; T15 et T23 en partie ; restent les QA téléphone T16 et T24, la clôture
+> T25. Détail et valeurs [D] : `etat-projet.md`, entrée du 2026-10-21/22. Fichiers nouveaux :
+> `data/cutscenes/j21_tower.json`, `j21_snorlax.json`, `j21_snorlax_16.json`, dialogues `j21_*.json`,
+> `tools/build_route_12.gd`, `build_route_16.gd`, `game/world/prop_actor.gd`,
+> `game/world/effects/flute_notes.gd`, cartes `pokemon_tower_7f`, `route_12`, `route_12_gate(_2f)`,
+> `route_16`.
+
 Chaque tâche :
 - part d'une branche `j21-t<n>-<sujet>` créée depuis `jalon-21` ;
 - n'utilise jamais `pkill` ni `killall` (arrêter ses propres processus par PID) ;
@@ -941,7 +949,7 @@ Kevin.
   `plan_check_j21.py`.
 - **CA** : Kevin valide grilles (§19) et vues ; contrôle conforme.
 
-#### T9 — A : alignement après la clôture du J20 — **après la clôture du J20**
+#### T9 — **FAIT (T9a 2026-10-19, T9b 2026-10-21, §0.5, §0.6)** — A : alignement après la clôture du J20 — **après la clôture du J20**
 - Fusionner `origin/main` (J16 à J20) dans `jalon-21`, puis les branches de T5.
 - Vérifier chaque ligne du §0.2 et du §0.3 ; noter les écarts ici (§0).
 - Vérifier que le J19 a livré `wild_battle`, `refuses_balls`, `MistLayer`,
@@ -955,7 +963,7 @@ Kevin.
 
 ### 3.2 Sous-jalon 21A (la Tour résolue)
 
-#### T10 — A : scènes et combat sauvage scripté — après T9
+#### T10 — **FAIT (2026-10-21)** — A : scènes et combat sauvage scripté — après T9
 - Fichiers : `cutscene_step.gd`, `cutscene_library.gd`, `cutscene_director.gd`,
   `cutscene_variant.gd`, `cutscene.gd` (§2.3 : `if_items`/`unless_items`, clés de
   `wild_battle`, `give` + `set`, `animate.skip_reduced`) ; `wild_encounter.gd`,
@@ -974,7 +982,7 @@ Kevin.
   - `test_battle_reveal` : événements non masqués ; Ossatueur « vu » au Pokédex.
 - **CA** : `test_battle*.gd` et les tests du J19 verts sans changer leurs attentes.
 
-#### T11 — U : intro « révélation » — après T10
+#### T11 — **FAIT (2026-10-21)** — U : intro « révélation » — après T10
 - `battle_stage.gd` : `dissolve_foe(species)` (fondu croisé 1,0 s, `Tween`, coupé par « Réduire
   les animations »).
 - **Tests** : `test_battle_stage_reveal` (`TweenClock` : silhouette pleine au départ, artwork
@@ -982,7 +990,7 @@ Kevin.
 - **Captures 2340 × 1080** : silhouette + `ghost_revealed`, mi-fondu, Ossatueur + « C'est un
   Ossatueur ! », refus de la Ball.
 
-#### T12 — C : 6F révélé et brume — après T10, T11, T7
+#### T12 — **FAIT (2026-10-21)** — C : 6F révélé et brume — après T10, T11, T7
 - `data/cutscenes/pokemon_tower_floors.json` (variante A en tête), `data/dialogues/j21_tower.json`
   (§15.1.5–7) ; `tools/build_pokemon_tower.gd` (bloc J21 : `arrivee_T67`, escalier réel, deux
   brumes, `SpiritLight`) ; grille du 6F (`arrivee_T67`) ; départs `tower_marowak_qa`, `_noscope`,
@@ -998,7 +1006,7 @@ Kevin.
   - compagnon : il rentre à la scène, ressort ensuite ; ni blocage ni chevauchement (§16 n° 10).
 - **CA** : captures du 6F avant / après.
 
-#### T13 — C : 7F, Sbires, Fuji, téléportation — après T10, T5, T7
+#### T13 — **FAIT (2026-10-21)** — C : 7F, Sbires, Fuji, téléportation — après T10, T5, T7
 - `tools/build_pokemon_tower.gd -- --etage=7f` ; `game/world/maps/pokemon_tower_7f.tscn` ;
   `data/npcs/pokemon_tower_7f.json` ; dialogues §15.2, §15.3 ; scène
   `tower_7f_fuji_rescue` ; `caves.json`, `zones.json`, `lighting.json`, `light_glows.json` ;
@@ -1013,7 +1021,7 @@ Kevin.
   - Corde Sortie au 7F : devant la Tour ; Fuji non sauvé attend (§16 n° 11) ;
   - rencontres : jamais sur l'escalier ni sur une case de PNJ ; taux 15.
 
-#### T14 — C : Maison de Fuji, Lavanville, objectifs — après T13
+#### T14 — **FAIT (2026-10-21)** — C : Maison de Fuji, Lavanville, objectifs — après T13
 - `build_painted_interiors.gd` (pièce `pokemon_house`, bloc J21 : `devant_fuji`, déclencheur
   d'entrée) ; `data/npcs/pokemon_house.json` (Fuji, Osselait) ; scène `pokemon_house_flute` ;
   dialogues §15.4, §15.5 ; `objectives.json` ; départ `fuji_flute_qa`.
@@ -1026,13 +1034,13 @@ Kevin.
   - variantes de Lavanville mot pour mot, seulement avec `fuji_rescued` ;
   - objectifs : `back_to_tower` → `find_fuji` → `visit_fuji` → aucun du J21.
 
-#### T15 — A : contrat et interruptions 21A — après T12 à T14
+#### T15 — **FAIT en partie (2026-10-22 : coupures n° 1, 3, 4, 9 ; contrat)** — A : contrat et interruptions 21A — après T12 à T14
 - `tests/integration/test_save_j21.gd` (n° 1 à 4, 9, 10 du §2.14) ;
   `tests/unit/test_j21_flags_contract.gd` (toute donnée qui pose un drapeau du J21 est dans un
   fichier du J21 ou un bloc « J21 » ; aucune donnée du J19 / J20 n'en pose, sauf le `unless` du
   6F) ; `VERSION == 7`.
 
-#### T16 — Q : **session 21A** → K — après T15
+#### T16 — **À FAIRE (Kevin, téléphone)** — Q : **session 21A** → K — après T15
 
 Protocole des J15–J19 : APK debug, `tools/deploy_s24.sh --debug-start <départ>`, **30 à 45 min**,
 preuves `21a_<n>.png`, rapport `build/qa/jalon21_t16/`.
@@ -1054,7 +1062,7 @@ preuves `21a_<n>.png`, rapport `build/qa/jalon21_t16/`.
 
 ### 3.3 Sous-jalon 21B (la Flûte)
 
-#### T17 — A : objet clé utilisable — après T16 (ou en parallèle de T12–T14 si le moteur est libre)
+#### T17 — **FAIT par la passe systèmes 2 (S2B, T10–T11)** — A : objet clé utilisable — après T16 (ou en parallèle de T12–T14 si le moteur est libre)
 - Fichiers (§2.1, §2.2, §2.4) : `item_data.gd`, `item_library.gd`, `field_item_rules.gd`,
   `items_j21.json` (`key_use`), `boot.gd` (aiguillage de `field_item_requested`, bulle du
   compagnon), `battle_action.gd`, `battle_event.gd`, `battle.gd`, `battle_director.gd`,
@@ -1070,7 +1078,7 @@ preuves `21a_<n>.png`, rapport `build/qa/jalon21_t16/`.
   - `tests/integration/test_poke_flute_field.gd` : « ailleurs » (§15.6.6), bulle « ♪ » si le
     compagnon est sorti ; Flûte jamais retirée du Sac.
 
-#### T18 — U : présentation de la Flûte — après T17
+#### T18 — **FAIT (onglet et carte : passe systèmes 2 ; notes `FluteNotes` : J21 T19)** — U : présentation de la Flûte — après T17
 - `BattleBagPanel` (onglet OBJETS CLÉS), cartes (pastille retirée sur `FLUTE_WOKE`),
   `game/world/effects/flute_notes.gd`, icône.
 - **Tests** : `test_battle_bag_panel` (onglet présent seulement avec la Flûte ; UTILISER) ;
@@ -1078,14 +1086,14 @@ preuves `21a_<n>.png`, rapport `build/qa/jalon21_t16/`.
   libéré à la fin).
 - **Captures** : Sac de combat (onglet), « Personne ne dort… », réveil, notes en exploration.
 
-#### T19 — A : étape `flute`, acteurs de décor, cibles de la Flûte — après T17
+#### T19 — **FAIT (2026-10-21)** — A : étape `flute`, acteurs de décor, cibles de la Flûte — après T17
 - `cutscene_step.gd` (`FLUTE`), `cutscene_director.gd` (`flute`, `react` / `emote` sur un
   acteur de décor), `game/world/prop_actor.gd`, `interact_point.gd` (`flute_cutscene`),
   `game/world/map.gd` (`flute_targets()`).
 - **Tests** : `test_cutscene_library` (`flute`) ; `test_prop_actor` ; `test_map_flute_targets`
   (carte de test : un point 2 × 2 → une cible ; caché par drapeau → aucune).
 
-#### T20 — C : Ronflex du croisement de la Route 12 (M-3) — après T19, T5, T21
+#### T20 — **FAIT (2026-10-22)** — C : Ronflex du croisement de la Route 12 (M-3) — après T19, T5, T21
 - `tools/build_route_12.gd` (Ronflex : `FlagGate`, `PropActor`, `InteractPoint`, `flute_cutscene`) ;
   `tools/build_route_11.gd` (bloc J21 : **retrait** de Ronflex, warp est, `from_route_12`) ; `data/dialogues/j21_snorlax.json` (§15.7, choix) ; scène
   `snorlax_route_12_wake` ; départ `poke_flute_qa`.
@@ -1101,7 +1109,7 @@ preuves `21a_<n>.png`, rapport `build/qa/jalon21_t16/`.
   - la Route 11 n'a plus de Ronflex (66..67, 14..15 praticables dès le J21) ;
   - compagnon : passe avec le joueur après le réveil (§16 n° 10).
 
-#### T21 — C : Route 12 nord, poste, Pêcheurs, raccords — après T19, T5, T8 (avant T20)
+#### T21 — **FAIT (2026-10-21)** — C : Route 12 nord, poste, Pêcheurs, raccords — après T19, T5, T8 (avant T20)
 - `tools/build_route_12.gd`, `game/world/maps/route_12.tscn`, pièces `route_12_gate` et
   `route_12_gate_2f`, `data/npcs/route_12.json`, `route_12_gate.json`, dialogues (§15.8,
   annexe A), scène de la CT39 ; `build_lavender_town.gd` (bord sud) ; `zones.json`,
@@ -1111,7 +1119,7 @@ preuves `21a_<n>.png`, rapport `build/qa/jalon21_t16/`.
   traversé dans les deux sens ; CT39 une fois (`got_tm39`, rechargement) ; Pêcheur 1 inévitable,
   2 à 4 évitables (vraie scène) ; aucune rencontre en 1 000 pas ; Lavanville → Ronflex au croisement ; ≤ 3 000 nœuds.
 
-#### T22 — C : Route 16 est, Ronflex 16, raccord de Céladopole — après T19, T9
+#### T22 — **FAIT (2026-10-21)** — C : Route 16 est, Ronflex 16, raccord de Céladopole — après T19, T9
 - `celadopole.txt` (variante appliquée), `build_celadon_city.gd` (bloc J21),
   `tools/build_route_16.gd`, `route_16.tscn`, `data/npcs/route_16.json`, scène
   `snorlax_route_16_wake` ; départ `snorlax_16_qa`.
@@ -1120,13 +1128,13 @@ preuves `21a_<n>.png`, rapport `build/qa/jalon21_t16/`.
   rencontre ; mêmes issues que T20 ; **indépendance** : capturer / battre l'un ne change pas
   l'autre (§16 n° 12) ; aucun texte ne contient « Vélo ».
 
-#### T23 — A : sauvegarde, contrat, simulation légère — après T20 à T22
+#### T23 — **FAIT en partie (2026-10-22 : coupures n° 5, 7 ; reste 1 bis, 2, 3 bis, 6, 8, 10, 11, simulation)** — A : sauvegarde, contrat, simulation légère — après T20 à T22
 - `test_save_j21` complet (§2.14, n° 5 à 8, 11) ; `test_j21_flags_contract` (étendu) ;
   vérification d'équilibre légère : un joueur à N28–35 bat Sbires, Pêcheurs, Ossatueur et
   Ronflex sans défaite en simulation (`tools/simulate_mt_moon.gd -- --scenario=j21`, 100 parties)
   [D : aucun réglage attendu, L-7 et L-12].
 
-#### T24 — Q : **session 21B** et QA de bout en bout → K, fusion — après T23
+#### T24 — **À FAIRE (Kevin, téléphone)** — Q : **session 21B** et QA de bout en bout → K, fusion — après T23
 
 | n° | Départ | Geste | Attendu |
 |---|---|---|---|
@@ -1146,7 +1154,7 @@ preuves `21a_<n>.png`, rapport `build/qa/jalon21_t16/`.
 **Critère de clôture (dossier §17)** : le joueur apaise Ossatueur, sauve M. Fuji, obtient la Poké
 Flûte, affronte les deux Ronflex et continue librement, sans blocage.
 
-#### T25 — A : clôture et passation — après T24
+#### T25 — **À FAIRE** — A : clôture et passation — après T24
 - `etat-projet.md`, roadmap (ligne J21 avec l'accord de Kevin), `CLAUDE.md`.
 - **Passation au J22** : Route 12 sud (`warp_sud`, `from_route_12_sud`) ; **ce qui ferme la
   Route 12 sud sans Flûte** (dossier §10.3, non tranché) ; Pêcheur n° 11 (Magicarpe ×2) ;
