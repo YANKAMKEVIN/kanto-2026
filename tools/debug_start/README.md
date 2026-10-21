@@ -256,3 +256,14 @@ Les cartes de QA du J20 (`qa_gift_j20`, `qa_elevator_j20`, `qa_elevator_j20_1f` 
 d'Évoli, l'ascenseur et les dalles tournantes sont éprouvés sur les vraies cartes (maison du toit
 de la Résidence, grand magasin et repaire Rocket : `test_eevee_gift`, `test_elevator_flow`,
 `test_spin_slide`).
+
+## Passe systèmes 2 (T9) : cartes de QA de la monture
+
+Cartes `qa_mount` (extérieur : rebord rangée 14, maison, dormeur 2 × 1 qui ferme le nord),
+`qa_mount_interieur` (refus du Vélo) et `qa_mount_piste` (`cycling_road`, pente, Dresseur de
+l'alcôve), construites par `tools/build_qa_mount.gd` d'après `tools/plans/qa_mount*.txt`. Aucun
+passage du jeu n'y mène. **Retirées à la clôture de la passe (S2Z)** avec leurs données `qa_mount*`.
+
+| Fichier | Partie |
+|---|---|
+| `s2_bike.json` | Pikachu N12 (compagnon) et Roucool N12 **endormi** (`status: sleep`), Bicyclette et Poké Flûte au Sac (+ 10 Poké Balls, 5 Potions), 3 000 ₽, sur `qa_mount` (spawn `depart`, tourné vers le haut). Vélo : bouton du HUD / Sac, saut du rebord, refus dans la maison ; entrées de la Piste à l'est (19, 8) et (19, 16) : monté d'office, descente refusée, dérive sur la pente, le Gamin QA (Soporifik N8, Hypnose) voit la pente depuis son alcôve ; Flûte : à côté du dormeur (10..11, 4) réveil et passage au nord, en combat contre le Gamin QA réveil des endormis |

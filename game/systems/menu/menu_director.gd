@@ -85,6 +85,10 @@ signal tm_learn_requested(index: int, item_id: StringName)
 ## ([method FieldItemRules.check] = OK) : Boot ferme le menu, retire l'objet, raconte et agit.
 ## Rien n'est consommé par le menu.
 signal field_item_requested(item_id: StringName)
+## Objet clé utilisable (passe systèmes 2, `systemes-2.md` §2.4 : Bicyclette, Poké Flûte) :
+## UTILISER dans le Sac en exploration. Boot ferme le menu et l'aiguille par
+## [member ItemData.key_use] ; rien n'est consommé.
+signal key_item_requested(item_id: StringName)
 ## Pierre d'évolution (jalon 12, T23 ; `jalon-12.md` §2.9) utilisée sur le Pokémon COMPATIBLE
 ## [param index] : Boot ferme le menu et joue [method EvolutionDirector.play_item] ; la pierre
 ## est retirée par Boot au moment exact de l'évolution. Rien n'est consommé par le menu.
@@ -745,6 +749,9 @@ func _use_targetless_item(item_id: StringName) -> bool:
 	if not FieldItemRules.is_targetless(item):
 		return false
 	if not _state.bag.has(item_id):
+		return true
+	if item.has_key_use():
+		key_item_requested.emit(item_id)
 		return true
 	var map_id: StringName = _current_map.call() if _current_map.is_valid() else &""
 	var check := FieldItemRules.check(item, map_id, _caves)

@@ -17,6 +17,8 @@ extends Node
 ##   à droite, vers le joueur, toutes les [constant REST_PERIOD] s) ; enthousiasme en attente
 ##   ([method note_joy] : victoire contre un Dresseur, capture, niveau du compagnon, soin au
 ##   Centre), joué une fois à son retour sur une carte d'extérieur (petit saut + « ♪ »).
+## - **Monture** (passe systèmes 2, `systemes-2.md` §2.2) : il rentre quand le joueur monte (Vélo,
+##   Surf) et ressort derrière lui quand il descend ([signal Player.mount_changed]).
 
 ## Le joueur a parlé au compagnon : Boot joue la phrase [param dialogue_id] (jeton
 ## « {pokemon} » = son nom, [constant DialogueTokens.POKEMON]).
@@ -74,9 +76,11 @@ func setup(state: Node, catalog: CompanionCatalog, data: PokemonData, player: Pl
 	_data = data
 	if _player != null and _player.step_started.is_connected(_on_player_step):
 		_player.step_started.disconnect(_on_player_step)
+		_player.mount_changed.disconnect(_on_player_mount_changed)
 	_player = player
 	if _player != null:
 		_player.step_started.connect(_on_player_step)
+		_player.mount_changed.connect(_on_player_mount_changed)
 	_interaction = Interaction.new(Interaction.Kind.TALK, Vector2i.ZERO, TALK_DIALOGUE,
 		Vector2i.ZERO, self)
 	set_process(true)
@@ -310,6 +314,15 @@ func _on_player_step(from: Vector2i, to: Vector2i, kind: StringName) -> void:
 		_node.step_finished.connect(_play_joy_if_pending.unbind(1), CONNECT_ONE_SHOT)
 
 
+## Le joueur monte (il rentre dans sa Ball) ou descend (il ressort derrière lui, sinon au premier
+## pas) ; rien pendant une transition (l'arrivée le replace).
+func _on_player_mount_changed(kind: Mount.Kind) -> void:
+	if kind != Mount.Kind.NONE:
+		_hide(false)
+	elif not _in_transition:
+		_place_and_show(true)
+
+
 ## Règles de visibilité sauf la case (le suivi l'attribue) ; [param need_place] : exiger la case.
 func _visible_rules(need_place: bool) -> bool:
 	var input := CompanionRules.VisibilityInput.new()
@@ -319,6 +332,7 @@ func _visible_rules(need_place: bool) -> bool:
 	input.in_battle = _in_battle
 	input.in_transition = _in_transition
 	input.placed = _trail.is_placed() or not need_place
+	input.mounted = _player != null and _player.get_mount() != Mount.Kind.NONE
 	return CompanionRules.is_visible(input, _catalog)
 
 

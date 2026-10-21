@@ -61,6 +61,8 @@ const J17_TOKENS: Dictionary[String, Array] = {
 	"Ton Pokédex compte {caught} espèces capturées.": [&"caught"],
 	"Encore {caught_missing}, et c'est à toi.": [&"caught_missing"],
 	"{player} reçoit la CS05 — Flash !": [&"player"],
+	# Passe systèmes 2 (S2B) : la Poké Flûte jouée « ailleurs ».
+	"{player} joue de la Poké Flûte…": [&"player"],
 }
 ## Textes pas encore validés, exemptés du contrôle « mot pour mot » (jalon 14 T16 : ceux du
 ## coquillage de la Route 25, validés depuis : dossier 17 §15 n° 71 ; le n° 72 est retiré le 2026-10-14).
@@ -76,8 +78,19 @@ const PLAYED_BY_COMPANION: Array[StringName] = [
 ## ([constant Boot.ESCAPE_ROPE_DIALOGUE], dossier 15 §20 n° 33).
 ## Jalon 17 (T24) : avertissement sans Flash, joué par FlashDirector (dossier 21 T-3).
 ## Jalon 20 (T13) : refus du panneau sans la Clé (T-50), joué par ElevatorDirector.
+## Passe systèmes 2 (S2B) : refus du Vélo (MountDirector) et Flûte « ailleurs » (KeyItemDirector).
 const PLAYED_BY_BOOT: Array[StringName] = [&"escape_rope_used", &"dark_cave_too_dark",
-	&"elevator_locked"]
+	&"elevator_locked", &"bike_indoors", &"bike_cycling_road_walk", &"poke_flute_played"]
+## Passe systèmes 2 (S2B) : textes validés des dossiers 25 (§16.1.3, §16.1.4) et 24 (§15.6.6),
+## qui vivent encore sur les branches de conception du J21 et du J22 (pas dans `main`) : comparés
+## ici mot pour mot, page par page.
+const IDS_S2B: Array[StringName] = [&"bike_cycling_road_walk", &"bike_indoors",
+	&"poke_flute_played"]
+const TEXTS_S2B: Dictionary[StringName, Array] = {
+	&"bike_indoors": ["Ce n'est pas le moment de pédaler !"],
+	&"bike_cycling_road_walk": ["Pas de marche à pied", "sur la Piste Cyclable !"],
+	&"poke_flute_played": ["{player} joue de la Poké Flûte…", "Quel air entraînant !"],
+}
 ## Jalon 10 : textes verrouillés du dossier 12 (même forme que le dossier 10) et lot de textes du
 ## J10 (panneaux, noms affichés), où un retour à la ligne est écrit « \n ».
 const DOSSIER_12 := "res://docs/design/dossier-12-argenta.md"
@@ -803,7 +816,7 @@ func test_library_loads_without_error() -> void:
 	found.sort()
 	var expected := IDS + IDS_J14_BILL + IDS_J14_ROCKET + IDS_J15_ROUTE_5 + IDS_J16_GYM \
 		+ IDS_J16_SHIP + IDS_J16_RIVAL_CAPTAIN + IDS_J16_T15 + IDS_J17 + IDS_J18 + IDS_J19 + IDS_J20 \
-		+ IDS_J20_T17 + IDS_J20_T21
+		+ IDS_J20_T17 + IDS_J20_T21 + IDS_S2B
 	expected.sort()
 	assert_eq(found, expected)
 
@@ -1282,6 +1295,9 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 		# Une variante en brouillon (PENDING_DRAFT_VARIANTS) attend la relecture de Kevin : son
 		# texte n'est encore dans aucun dossier.
 		if GATE_GUARDS.has(row[0]) or UNVALIDATED.has(row[0]) or (row[3] as DialogueVariant).draft:
+			continue
+		if TEXTS_S2B.has(row[0]):
+			assert_true(TEXTS_S2B[row[0]].has(row[1]), "%s : %s" % [row[0], row[1]])
 			continue
 		var text: String = row[1]
 		for token: String in _DOSSIER_TOKENS:

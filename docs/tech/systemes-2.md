@@ -712,15 +712,57 @@ vraie sauvegarde de Kevin copiée puis restaurée à l'identique) : 5 scénarios
 
 #### T6 — A : `Mount`, `MountRules`, `MapTraits`, `GameState.player_mount`, `last_land_cell` — après T3
 
+**Fait (2026-10-20, branche `s2b-monture`)** : `GameState.player_mount` (`Mount.Kind`) et
+`last_land_cell` ; sauvegardés sous `mount` et `last_land_cell` (clés à plat, comme `cell`), **écrits
+seulement s'ils disent quelque chose** [D] (à pied et à terre, le fichier est celui d'avant la passe :
+critère 3) ; `set_player_location` tient `last_land_cell` hors du Surf. `GameMap.cycling_road`,
+`GameMap.slope_cells` (→ `GridWorld.set_slope`, bit 6 du second octet), `GameMap.mount_traits()`.
+Tests : `test_save_v7_mount_fields.gd`.
+
 #### T7 — C : `Player` monté, `MountDirector`, compagnon — après T6
+
+**Fait** : `Player.set_mount` / `get_mount` / `get_move_mode`, signal `mount_changed`, durées par
+`MountRules.step_duration` (course ignorée), `step_started` en `&"bike"` / `&"surf"`, animations
+`bike_*` / `surf_*` si l'apparence les a (sinon la marche : placeholders, règle 3). Dérive de la pente
+dans `Player._process` (§2.3 ; « Dresseur qui voit » = joueur bloqué, la vue le bloque dans le
+`moved` du pas). `MountDirector` (`game/world/mount/`) : monture d'arrivée sur
+`SceneRouter.map_changed` (écran noir, sans mise en scène [D], au lieu de `map_entered`), Vélo,
+`GameState` tenu à jour. **Compagnon** : `CompanionController` écoute lui-même
+`Player.mount_changed` (`CompanionRules.VisibilityInput.mounted`) [D] : rentré monté, ressorti à pied.
+La mise en scène du Surf (saut) reste à S2C. Tests : `test_player_mount.gd`,
+`test_mount_director.gd`.
 
 #### T8 — U : bouton Vélo du HUD, refus — après T7
 
+**Fait** : `%BikeButton` (`game/ui/components/bike_button.tscn`, icône `assets/ui/icons/bike.svg`
+provisoire), au-dessus du bouton courir (`UiTokens.BIKE_BUTTON_CENTER_FROM_CORNER` = 440, 390 [D]),
+miroir gaucher, même échelle ; visible avec la Bicyclette et les contrôles ; grisé (opacité 0,45
+[D]) en intérieur et sur la Piste, toucher actif (le refus joue son texte). Touche B (`bike`). Textes
+(dossier 25 §16.1.3, §16.1.4) dans `data/dialogues/mount.json`. Tests : `test_bike_button.gd`.
+
 #### T9 — C : pente, `cycling_road`, `qa_mount` vivante — après T7, T3c
+
+**Écart [D]** : `cycling_road` est un booléen **par carte** (la Route 17 de RB) : la Piste de
+`qa_mount` devient une carte à part, `qa_mount_piste` (grilles réécrites, contrôle relancé).
 
 #### T10 — A : `key_use`, aiguillage Sac → Vélo / Flûte (exploration) — après T6
 
+**Fait** : `ItemData.key_use` (`KEY_USES`, clé réservée aux objets clés), contextes (Flûte :
+exploration + combats ; Vélo, cannes : exploration) ; `FieldItemRules` : OK et sans cible pour un
+objet clé utilisable ; `MenuDirector.key_item_requested` → Boot ferme le menu →
+`KeyItemDirector.use` (Vélo → `MountDirector.toggle_bike` ; Flûte → dormeur voisin
+(`GameMap.flute_targets`, `InteractPoint.flute_cutscene`) ou « … Quel air entraînant ! » + bulle
+« ♪ » du compagnon). `poke_flute` et `bicycle` créés dans `data/items/items_systemes2.json` (textes
+validés des dossiers 24 et 25) : **le J21 et le J22 retirent leur doublon à leur fusion**.
+Tests : `test_key_use.gd`, `test_mount_director.gd`.
+
 #### T11 — A : Flûte en combat (`Kind.KEY_ITEM`) — après T10
+
+**Fait** : `BattleAction.Kind.KEY_ITEM` (fin d'énum), `Battle.can_use_key_items`,
+`flute_has_effect`, `_play_flute` (FLUTE_PLAYED, un FLUTE_WOKE muet par réveillé avec `on_field`,
+ALL_WOKE, puis le tour adverse) ; directeur : sans dormeur, « Personne ne dort. » / « La Flûte
+n'aurait aucun effet. », aucun tour ; jamais retirée du Sac. Tests : `test_flute_battle.gd`,
+`test_battle_items_director.gd`.
 
 #### T11b — Q : **session S2B** → K
 

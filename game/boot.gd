@@ -205,6 +205,9 @@ var _elevator_panel: ElevatorPanel
 var _pending_elevator: bool = false
 ## J20 (T19, `jalon-20.md` §2.4.4) : dalles tournantes du repaire (glisse, verrou, reprise).
 var _spin: SpinTileDirector
+## Passe systèmes 2 (S2B) : monture (Vélo) et objets clés utilisables (Bicyclette, Poké Flûte).
+var _mount: MountDirector
+var _key_items: KeyItemDirector
 
 @onready var _world: Node2D = %World
 @onready var _hud: ExplorationHud = %ExplorationHud
@@ -435,6 +438,7 @@ func _ready() -> void:
 	_setup_companion()
 	_setup_caves()
 	_setup_flash()
+	_setup_mount()
 	_setup_evolution_items()
 	# L'écran (jalon-06.md §6.6) : ouverture et vue dans la même frame, sans await (un fondu
 	# coupé laisse une coroutine non reprise).
@@ -1879,6 +1883,33 @@ func _on_field_item_requested(item_id: StringName) -> void:
 		await _runner.dialogue_finished
 	GameState.bag.remove(item_id, 1)
 	SceneRouter.change_map(exit.map, exit.spawn, exit.facing)
+
+
+# --- Passe systèmes 2 (S2B) : monture, Vélo, objets clés utilisables -------------------------
+
+## [MountDirector] (arrivée, Vélo, bouton du HUD) et [KeyItemDirector] (UTILISER d'un objet clé
+## dans le Sac : menu fermé, puis l'objet aiguillé par son usage).
+func _setup_mount() -> void:
+	_mount = MountDirector.new()
+	_mount.process_mode = Node.PROCESS_MODE_PAUSABLE
+	add_child(_mount)
+	_mount.setup(GameState, _player, _runner, _hud)
+	_mount.can_toggle = func() -> bool: return is_stable() and not _is_opening_active()
+	_key_items = KeyItemDirector.new()
+	_key_items.process_mode = Node.PROCESS_MODE_PAUSABLE
+	add_child(_key_items)
+	_key_items.setup(GameState, _items, _mount, _runner, _cutscenes_node, _companion, _player)
+	_menu.key_item_requested.connect(func(item_id: StringName) -> void:
+		_menu.close()
+		_key_items.use(item_id))
+
+
+func get_mount_director() -> MountDirector:
+	return _mount
+
+
+func get_key_item_director() -> KeyItemDirector:
+	return _key_items
 
 
 # --- Jalon 12 (T23) : évolution par pierre hors combat ------------------------------------

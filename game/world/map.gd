@@ -65,6 +65,12 @@ const _NPC_SCENE: PackedScene = preload("res://game/world/npc/npc.tscn")
 ## Cases « calmes » (Tour Pokémon, 5F : dalle purifiée et ses voisines praticables) : aucune
 ## rencontre sauvage n'y est tirée (jalon 19, docs/tech/jalon-19.md §2.2). Vide : aucune.
 @export var calm_cells: Array[Vector2i] = []
+## Tronçon de Piste Cyclable (passe systèmes 2, `systemes-2.md` §2.3) : on y monte d'office en
+## Vélo avec la Bicyclette, on n'en descend pas ([MountRules], [BikeRules]).
+@export var cycling_road: bool = false
+## Cases de pente de la Piste (§2.3) : sans appui, le joueur en Vélo y dérive vers le bas
+## ([CyclingSlope]) ; les paliers sont les cases sans marque. Vide : aucune.
+@export var slope_cells: Array[Vector2i] = []
 
 var _grid: GridWorld
 var _warps: WarpTable
@@ -243,6 +249,30 @@ func get_entities() -> Node2D:
 	return get_node(^"Entities") as Node2D
 
 
+## Dormeurs de la Poké Flûte (passe systèmes 2, §2.4) : un [FluteTarget] par point
+## d'interaction qui porte une [member InteractPoint.flute_cutscene].
+func flute_targets() -> Array[FluteTarget]:
+	var targets: Array[FluteTarget] = []
+	var points := get_node_or_null(^"Interactables")
+	if points == null:
+		return targets
+	for child: Node in points.get_children():
+		var point := child as InteractPoint
+		if point == null or point.flute_cutscene.is_empty():
+			continue
+		var target := FluteTarget.new()
+		target.cells = point.get_cells()
+		target.unless_flags = point.unless_flags.duplicate()
+		target.cutscene_id = point.flute_cutscene
+		targets.append(target)
+	return targets
+
+
+## Ce que la carte permet à la monture du joueur (passe systèmes 2, §2.2).
+func mount_traits() -> MapTraits:
+	return MapTraits.new(interior, cycling_road)
+
+
 ## Ajoute le joueur à `Entities` et le place sur le spawn.
 func spawn_player(player: Player, spawn_name: StringName, facing: Vector2i) -> void:
 	var entities := get_entities()
@@ -308,6 +338,8 @@ func _build_grid() -> void:
 			_read_layer(layer)
 	for cell: Vector2i in blocked_cells:
 		_grid.set_solid(cell)
+	for cell: Vector2i in slope_cells:
+		_grid.set_slope(cell)
 	# Objets triés par les pieds (Entities) et relief peint posé au sol (GroundDecals :
 	# falaises, massif ; jalon-07.md §6.6).
 	for layer_path: NodePath in _PROP_LAYERS:

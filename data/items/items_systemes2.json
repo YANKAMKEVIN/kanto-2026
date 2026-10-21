@@ -1,0 +1,12 @@
+{
+	"poke_flute": {
+		"name": "Poké Flûte", "plural": "Poké Flûtes", "feminine": true,
+		"category": "key", "key_use": "poke_flute",
+		"description": "Une flûte à la mélodie douce. Elle réveille les Pokémon endormis."
+	},
+	"bicycle": {
+		"name": "Bicyclette", "plural": "Bicyclettes", "feminine": true,
+		"category": "key", "key_use": "bicycle",
+		"description": "Une bicyclette pliante. Elle va deux fois plus vite que la marche."
+	}
+}
