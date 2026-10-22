@@ -22,7 +22,9 @@ func test_config_reads_the_red_blue_values() -> void:
 
 func test_config_lists_the_four_zones_and_the_houses() -> void:
 	for map: StringName in [&"safari_zone_center", &"safari_zone_east", &"safari_zone_north",
-			&"safari_zone_west", &"safari_zone_rest_house", &"safari_zone_secret_house"]:
+			&"safari_zone_west", &"safari_zone_rest_house_center", &"safari_zone_rest_house_east",
+			&"safari_zone_rest_house_north", &"safari_zone_rest_house_west",
+			&"safari_zone_secret_house"]:
 		assert_true(_config.is_safari_map(map), "%s compte les pas" % map)
 	assert_false(_config.is_safari_map(&"safari_zone_gate"), "la Porte ne compte pas les pas")
 	assert_false(_config.is_safari_map(&"fuchsia_city"))

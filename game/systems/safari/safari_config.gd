@@ -29,7 +29,7 @@ var steps: int = 500
 var ball_bonus: float = 2.0
 var maps: Array[StringName] = []
 var end_map: StringName = &"safari_zone_gate"
-var end_spawn: StringName = &"end_of_visit"
+var end_spawn: StringName = &"arrivee_fin"
 
 var _errors: PackedStringArray = PackedStringArray()
 

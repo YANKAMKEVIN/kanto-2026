@@ -8,7 +8,7 @@
 #   SUD (rangée 53) : bord « À venir » réservé à la Route 19 du J24 (coming_soon=route_19) : praticables
 #     EXACTEMENT les colonnes 24..32 (terrasse de sable) et 34..35 (couloir) ; colonne 33 = poteau (R) ;
 #     colonne Parmanie = colonne Route 19 + 15 (grille route_19.txt du J24 : (9..17, 0) et (19..20, 0)).
-#   NORD : porte du Parc Safari (28..29, 7), réservée au J23.
+#   NORD : porte du Parc Safari (28..29, 7), réservée au J23 (ouverte au J23 : Porte du Parc).
 #
 # Composition (ville basse, verte et ouverte) :
 #   NORD : bâtiment d'entrée du Parc Safari (10 × 6) au bout de l'avenue nord-sud ; enclos clôturés :
@@ -125,14 +125,17 @@ porte_boutique         warp           7..8,19        libre   to=fuchsia_mart spa
 porte_salle_reunion    warp           18..19,18      libre   to=fuchsia_meeting_room spawn=entrance  # Salle de réunion du club du Safari (modèle carmin_fan_club.txt)
 porte_grand_pere       warp           19,40          libre   to=fuchsia_grandpa_house spawn=entrance  # maison du grand-père (modèle azuria_maison.txt)
 porte_super_canne      warp           53,40          libre   to=fuchsia_good_rod_house spawn=entrance  # maison de la Super Canne (modèle carmin_pecheur.txt)
-porte_arene            warp           7..8,40        libre   coming_soon=fuchsia_gym  # Arène de Koga : RÉSERVÉE au J23
-porte_safari           warp           28..29,7       libre   coming_soon=safari_zone_gate  # Parc Safari : RÉSERVÉ au J23
-porte_gardien          warp           44,40          libre   coming_soon=wardens_house  # Maison du Gardien : RÉSERVÉE au J23 (M-19)
+porte_arene            warp           7..8,40        libre   to=fuchsia_gym spawn=entree  # Arène de Koga : réservée par le J22, ouverte au J23
+porte_safari           warp           28..29,7       libre   to=safari_zone_gate spawn=entree  # Parc Safari : réservé par le J22, ouvert au J23
+porte_gardien          warp           44,40          libre   to=wardens_house spawn=entree  # Maison du Gardien : réservée par le J22 (M-19), ouverte au J23
 from_center            spawn          34..35,41      libre   facing=down  # sortie, tournée ↓
 from_mart              spawn          7..8,20        libre   facing=down  # sortie, tournée ↓
 from_meeting_room      spawn          18..19,19      libre   facing=down  # sortie, tournée ↓
 from_grandpa_house     spawn          19,41          libre   facing=down  # sortie, tournée ↓
 from_good_rod_house    spawn          53,41          libre   facing=down  # sortie, tournée ↓
+from_safari            spawn          28..29,8       libre   facing=down  # J23 : sortie de la Porte du Parc Safari, tournée ↓
+from_gym               spawn          7..8,41        libre   facing=down  # J23 : sortie de l'Arène de Koga, tournée ↓
+from_wardens_house     spawn          44,41          libre   facing=down  # J23 : sortie de la maison du Gardien, tournée ↓
 kangourex              pokemon        40,5           bloque  role=E1 species=kangaskhan routine=wander  # Kangourex peint (M-20), enclos (37..43, 3..8) ; examen T-61 ; décor : ni combat, ni Pokédex
 ramoloss               pokemon        50,5           bloque  role=E2 species=slowpoke routine=wander  # Ramoloss peint (M-20), enclos (47..54, 3..8) ; examen T-62
 panneau_fossile        panneau        6,10           bloque  role=T-66  # enclos fossile ; lu depuis (6, 11) ↑

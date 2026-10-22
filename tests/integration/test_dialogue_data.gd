@@ -999,12 +999,21 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 	# retirées au T20).
 	var dialogues := DialogueLibrary.new()
 	var cutscenes := CutsceneLibrary.new()
-	for pair: Array in [[dialogues, "res://data/dialogues/"], [cutscenes, "res://data/cutscenes/"]]:
+	# J22 et J23 : fichiers générés (`j22_*`, `j23_*`), vérifiés par `test_j22_data.gd` et
+	# `test_j23_data.gd` ; ici, seulement les drapeaux qu'ils lèvent (lus ailleurs).
+	var generated_dialogues := DialogueLibrary.new()
+	var generated_cutscenes := CutsceneLibrary.new()
+	for pair: Array in [[dialogues, "res://data/dialogues/", generated_dialogues],
+			[cutscenes, "res://data/cutscenes/", generated_cutscenes]]:
 		for file: String in DirAccess.get_files_at(pair[1]):
-			if file.get_extension() == "json" and not MapCatalog.is_qa_map(StringName(file)):
-				assert_true(pair[0].load_file((pair[1] as String).path_join(file)), file)
+			if file.get_extension() != "json" or MapCatalog.is_qa_map(StringName(file)):
+				continue
+			var library: Variant = pair[2] if file.begins_with("j22_") \
+				or file.begins_with("j23_") else pair[0]
+			assert_true(library.load_file((pair[1] as String).path_join(file)), file)
 	var set_flags := dialogues.get_set_flags() + cutscenes.get_set_flags() \
-		+ StarterChoice.get_set_flags(_offer)
+		+ StarterChoice.get_set_flags(_offer) + generated_dialogues.get_set_flags() \
+		+ generated_cutscenes.get_set_flags()
 	var read_flags := dialogues.get_condition_flags() + cutscenes.get_condition_flags()
 	for map_id: StringName in MAPS:
 		for spec: NpcSpec in NpcRoster.load_for_map(map_id).get_all():
@@ -1309,6 +1318,9 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 	var dossier_21 := FileAccess.get_file_as_string(DOSSIER_21) \
 		+ FileAccess.get_file_as_string(PLAN_J18)
 	var dossier_23 := FileAccess.get_file_as_string(DOSSIER_23).replace("\n    ", " ")
+	# J22 (T13, T17) : dossier 25, à plat (déclaration manquante à la fusion du J22, rétablie au J23).
+	var dossier_25 := J22Ids.flat_text(FileAccess.get_file_as_string(
+		"res://docs/design/dossier-25-deux-chemins-parmanie.md"))
 	# T25 (n° 219) : « [Joueur] donne un(e) [boisson] au garde. », écrit pour chaque boisson.
 	var plan_j20 := FileAccess.get_file_as_string(PLAN_J20).replace("\n     ", " ") \
 		.replace("\n    ", " ")
@@ -1770,7 +1782,7 @@ func _real_ids() -> Array[StringName]:
 ## Sans les cartes de QA ni les données du jalon 22 (fichiers `j22_*.json`, vérifiés par
 ## `test_j22_data.gd`).
 func _without_qa(ids: Array[StringName]) -> Array[StringName]:
-	var j22 := J22Ids.in_dir("res://data/dialogues/")
+	var j22 := J22Ids.generated_in_dir("res://data/dialogues/")
 	var result: Array[StringName] = []
 	for id: StringName in ids:
 		if not MapCatalog.is_qa_map(id) and not j22.has(id):

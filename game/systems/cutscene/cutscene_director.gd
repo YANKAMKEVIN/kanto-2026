@@ -165,6 +165,8 @@ var field_move_handler: Callable
 ## Un point critique ne peut jamais avancer sans un retour OK ; ERR_BUSY = refus passager,
 ## réessayé à l'image suivante sans [signal save_failed].
 var save_handler: Callable
+## J23 : gestionnaire des étapes « safari » (`func(action: StringName) -> void`, [SafariDirector]).
+var safari_handler: Callable
 ## Délai de nouvelle tentative, indépendant des préférences d'animation ; 0 = image suivante.
 var save_retry_delay: float = SaveCoordinator.RETRY_DELAY
 
@@ -420,6 +422,12 @@ func _play_step(source_step: CutsceneStep) -> bool:
 			return await _wild_battle(step)
 		CutsceneStep.Kind.GIFT_POKEMON:
 			await _gift_pokemon(step)
+		CutsceneStep.Kind.SAFARI:
+			# J23 : visite du Parc Safari ([SafariDirector]) ; sans gestionnaire, rien.
+			if safari_handler.is_valid():
+				safari_handler.call(StringName(step.text))
+			else:
+				_step_error("aucun gestionnaire de la visite Safari")
 		_:
 			_step_error("étape « %s » inconnue" % CutsceneStep.kind_name(step.kind))
 	return true

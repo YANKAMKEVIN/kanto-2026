@@ -106,6 +106,12 @@ extends RefCounted
 ##   ([method PokemonGift.give], une seule fois par drapeau [member gift_flag]) ; s'il est donné,
 ##   le dialogue [member dialogue_id] (« reçoit ») puis, s'il est allé au Stockage,
 ##   [member dialogue_stored] (facultatif). Déjà reçu : rien, l'étape passe.
+## Jalon 23 (`jalon-23.md` §2.1, §2.2), la Porte du Parc Safari :
+## - [constant Kind.SAFARI] : action [member text] ([constant SAFARI_ACTIONS]) jouée par le
+##   gestionnaire [member CutsceneDirector.safari_handler] ([SafariDirector]) : « enter » (péage de
+##   500 ₽ et début de visite ; refus sans débit partiel : drapeau `safari_pay_failed`),
+##   « leave » (fin de visite volontaire, Balls perdues), « clear » (drapeaux de passage
+##   `safari_gate_yes`, `safari_gate_leave_yes`, `safari_pay_failed` remis à faux).
 
 ## Nouvelles valeurs en fin d'enum (ordre de [constant TYPE_KEYS]).
 enum Kind {
@@ -115,6 +121,8 @@ enum Kind {
 	FIELD_MOVE, SAVE, ANIMATE,
 	WILD_BATTLE,
 	GIFT_POKEMON,
+	## J23 (`jalon-23.md` §2.1, §2.2) : visite du Parc Safari.
+	SAFARI,
 }
 
 ## Clé de type de chaque étape dans les fichiers, dans l'ordre de [enum Kind].
@@ -126,7 +134,11 @@ const TYPE_KEYS: Array[String] = [
 	"field_move", "save", "animate",
 	"wild_battle",
 	"gift_pokemon",
+	"safari",
 ]
+## Actions d'une étape « safari » (J23) : péage et début de visite, sortie volontaire, remise à
+## zéro des drapeaux de passage du comptoir.
+const SAFARI_ACTIONS: Array[String] = ["enter", "leave", "clear"]
 ## Bulles d'une étape « emote » (clé « kind ») : le « ! » du Dresseur qui repère le joueur.
 const EMOTE_KINDS: Array[StringName] = [&"exclamation"]
 ## Entrées en scène d'une étape « wild_battle » (clé « intro », T30) ; &"" = l'entrée sauvage

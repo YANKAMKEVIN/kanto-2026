@@ -9,6 +9,11 @@
 		"category": "tm", "tm": 37, "teaches": "egg_bomb",
 		"description": "Le lanceur projette violemment un gros œuf sur la cible."
 	},
+	"tm40": {
+		"name": "CT40 — Coud'Krâne", "plural": "CT40 — Coud'Krâne", "feminine": true,
+		"category": "tm", "tm": 40, "teaches": "skull_bash",
+		"description": "Rentre la tête au premier tour, ce qui augmente sa Défense, puis charge au second."
+	},
 	"gold_teeth": {
 		"name": "Dents d'Or", "plural": "Dents d'Or", "feminine": true, "category": "key",
 		"description": "Le dentier en or du Gardien du Parc Safari."

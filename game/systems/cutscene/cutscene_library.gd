@@ -136,6 +136,7 @@ const _EXTRA_KEYS: Array[Array] = [
 	["on"], [], ["offset", "duration", "fade"],
 	["level", "ghost", "ghost_unless_item", "win", "lose", "catch", "static", "actor", "intro"],
 	["level", "flag", "say", "say_stored"],
+	[],
 ]
 ## Conditions permises sur toute étape sauf spawn.
 const _CONDITION_KEYS: Array[String] = ["if", "unless"]
@@ -571,6 +572,12 @@ func _parse_step(value: Variant, where: String) -> CutsceneStep:
 			ok = _parse_wild_battle(entry, step, where) and ok
 		CutsceneStep.Kind.GIFT_POKEMON:
 			ok = _parse_gift_pokemon(entry, step, where) and ok
+		CutsceneStep.Kind.SAFARI: # J23
+			if not main is String or not CutsceneStep.SAFARI_ACTIONS.has(main):
+				ok = _fail("%s : « safari » vaut %s" % [where,
+					", ".join(PackedStringArray(CutsceneStep.SAFARI_ACTIONS))])
+			else:
+				step.text = main
 	return step if ok else null
 
 

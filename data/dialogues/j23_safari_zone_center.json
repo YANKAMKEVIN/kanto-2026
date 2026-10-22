@@ -1,0 +1,18 @@
+{
+	"safari_zone_center_panneau_maison_repos": {
+		"narration": true,
+		"pages": [
+			"MAISON DE REPOS"
+		]
+	},
+	"safari_zone_center_panneau_conseils": {
+		"narration": true,
+		"pages": [
+			"PARC SAFARI — ZONE CENTRE",
+			"Respectez les Pokémon, ne les nourrissez qu'aux appâts."
+		]
+	},
+	"safari_zone_center_pepite": {
+		"cutscene": "safari_zone_center_pepite"
+	}
+}
