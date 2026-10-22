@@ -1,0 +1,533 @@
+{
+	"chansey": {
+		"dex": 113,
+		"name": "Leveinard",
+		"types": [
+			"normal"
+		],
+		"base_stats": {
+			"hp": 250,
+			"atk": 5,
+			"def": 5,
+			"spa": 35,
+			"spd": 105,
+			"spe": 50
+		},
+		"male_ratio": 0.0,
+		"growth_rate": "fast",
+		"base_exp": 395,
+		"catch_rate": 30,
+		"learnset": [
+			[
+				1,
+				"pound"
+			],
+			[
+				1,
+				"double_slap"
+			],
+			[
+				24,
+				"sing"
+			],
+			[
+				30,
+				"growl"
+			],
+			[
+				38,
+				"minimize"
+			],
+			[
+				44,
+				"defense_curl"
+			],
+			[
+				48,
+				"light_screen"
+			],
+			[
+				54,
+				"double_edge"
+			]
+		]
+	},
+	"golduck": {
+		"dex": 55,
+		"name": "Akwakwak",
+		"types": [
+			"water"
+		],
+		"base_stats": {
+			"hp": 80,
+			"atk": 82,
+			"def": 78,
+			"spa": 95,
+			"spd": 80,
+			"spe": 85
+		},
+		"male_ratio": 0.5,
+		"growth_rate": "medium_fast",
+		"base_exp": 175,
+		"catch_rate": 75,
+		"learnset": [
+			[
+				1,
+				"scratch"
+			],
+			[
+				1,
+				"tail_whip"
+			],
+			[
+				1,
+				"disable"
+			],
+			[
+				28,
+				"tail_whip"
+			],
+			[
+				31,
+				"disable"
+			],
+			[
+				39,
+				"confusion"
+			],
+			[
+				48,
+				"fury_swipes"
+			],
+			[
+				59,
+				"hydro_pump"
+			]
+		]
+	},
+	"tentacruel": {
+		"dex": 73,
+		"name": "Tentacruel",
+		"types": [
+			"water",
+			"poison"
+		],
+		"base_stats": {
+			"hp": 80,
+			"atk": 70,
+			"def": 65,
+			"spa": 80,
+			"spd": 120,
+			"spe": 100
+		},
+		"male_ratio": 0.5,
+		"growth_rate": "slow",
+		"base_exp": 180,
+		"catch_rate": 60,
+		"learnset": [
+			[
+				1,
+				"acid"
+			],
+			[
+				1,
+				"supersonic"
+			],
+			[
+				1,
+				"wrap"
+			],
+			[
+				7,
+				"supersonic"
+			],
+			[
+				13,
+				"wrap"
+			],
+			[
+				18,
+				"poison_sting"
+			],
+			[
+				22,
+				"water_gun"
+			],
+			[
+				27,
+				"constrict"
+			],
+			[
+				35,
+				"barrier"
+			],
+			[
+				43,
+				"screech"
+			],
+			[
+				50,
+				"hydro_pump"
+			]
+		]
+	},
+	"dewgong": {
+		"dex": 87,
+		"name": "Lamantine",
+		"types": [
+			"water",
+			"ice"
+		],
+		"base_stats": {
+			"hp": 90,
+			"atk": 70,
+			"def": 80,
+			"spa": 70,
+			"spd": 95,
+			"spe": 70
+		},
+		"male_ratio": 0.5,
+		"growth_rate": "medium_fast",
+		"base_exp": 166,
+		"catch_rate": 75,
+		"learnset": [
+			[
+				1,
+				"headbutt"
+			],
+			[
+				1,
+				"growl"
+			],
+			[
+				1,
+				"aurora_beam"
+			],
+			[
+				30,
+				"growl"
+			],
+			[
+				35,
+				"aurora_beam"
+			],
+			[
+				44,
+				"rest"
+			],
+			[
+				50,
+				"take_down"
+			],
+			[
+				56,
+				"ice_beam"
+			]
+		]
+	},
+	"cloyster": {
+		"dex": 91,
+		"name": "Crustabri",
+		"types": [
+			"water",
+			"ice"
+		],
+		"base_stats": {
+			"hp": 50,
+			"atk": 95,
+			"def": 180,
+			"spa": 85,
+			"spd": 45,
+			"spe": 70
+		},
+		"male_ratio": 0.5,
+		"growth_rate": "slow",
+		"base_exp": 184,
+		"catch_rate": 60,
+		"learnset": [
+			[
+				1,
+				"withdraw"
+			],
+			[
+				1,
+				"supersonic"
+			],
+			[
+				1,
+				"clamp"
+			],
+			[
+				1,
+				"aurora_beam"
+			],
+			[
+				50,
+				"spike_cannon"
+			]
+		]
+	},
+	"kingler": {
+		"dex": 99,
+		"name": "Krabboss",
+		"types": [
+			"water"
+		],
+		"base_stats": {
+			"hp": 55,
+			"atk": 130,
+			"def": 115,
+			"spa": 50,
+			"spd": 50,
+			"spe": 75
+		},
+		"male_ratio": 0.5,
+		"growth_rate": "medium_fast",
+		"base_exp": 166,
+		"catch_rate": 60,
+		"learnset": [
+			[
+				1,
+				"bubble"
+			],
+			[
+				1,
+				"leer"
+			],
+			[
+				1,
+				"vise_grip"
+			],
+			[
+				20,
+				"vise_grip"
+			],
+			[
+				25,
+				"guillotine"
+			],
+			[
+				34,
+				"stomp"
+			],
+			[
+				42,
+				"crabhammer"
+			],
+			[
+				49,
+				"harden"
+			]
+		]
+	},
+	"lapras": {
+		"dex": 131,
+		"name": "Lokhlass",
+		"types": [
+			"water",
+			"ice"
+		],
+		"base_stats": {
+			"hp": 130,
+			"atk": 85,
+			"def": 80,
+			"spa": 85,
+			"spd": 95,
+			"spe": 60
+		},
+		"male_ratio": 0.5,
+		"growth_rate": "slow",
+		"base_exp": 187,
+		"catch_rate": 45,
+		"learnset": [
+			[
+				1,
+				"water_gun"
+			],
+			[
+				1,
+				"growl"
+			],
+			[
+				16,
+				"sing"
+			],
+			[
+				20,
+				"mist"
+			],
+			[
+				25,
+				"body_slam"
+			],
+			[
+				31,
+				"confuse_ray"
+			],
+			[
+				38,
+				"ice_beam"
+			],
+			[
+				46,
+				"hydro_pump"
+			]
+		]
+	},
+	"alakazam": {
+		"dex": 65,
+		"name": "Alakazam",
+		"types": [
+			"psychic"
+		],
+		"base_stats": {
+			"hp": 55,
+			"atk": 50,
+			"def": 45,
+			"spa": 135,
+			"spd": 95,
+			"spe": 120
+		},
+		"male_ratio": 0.75,
+		"growth_rate": "medium_slow",
+		"base_exp": 225,
+		"catch_rate": 50,
+		"learnset": [
+			[
+				1,
+				"teleport"
+			],
+			[
+				1,
+				"confusion"
+			],
+			[
+				1,
+				"disable"
+			],
+			[
+				16,
+				"confusion"
+			],
+			[
+				20,
+				"disable"
+			],
+			[
+				27,
+				"psybeam"
+			],
+			[
+				31,
+				"recover"
+			],
+			[
+				38,
+				"psychic"
+			],
+			[
+				42,
+				"reflect"
+			]
+		]
+	},
+	"venomoth": {
+		"dex": 49,
+		"name": "Aéromite",
+		"types": [
+			"bug",
+			"poison"
+		],
+		"base_stats": {
+			"hp": 70,
+			"atk": 65,
+			"def": 60,
+			"spa": 90,
+			"spd": 75,
+			"spe": 90
+		},
+		"male_ratio": 0.5,
+		"growth_rate": "medium_fast",
+		"base_exp": 158,
+		"catch_rate": 75,
+		"learnset": [
+			[
+				1,
+				"tackle"
+			],
+			[
+				1,
+				"disable"
+			],
+			[
+				1,
+				"poison_powder"
+			],
+			[
+				1,
+				"leech_life"
+			],
+			[
+				24,
+				"poison_powder"
+			],
+			[
+				27,
+				"leech_life"
+			],
+			[
+				30,
+				"stun_spore"
+			],
+			[
+				38,
+				"psybeam"
+			]
+		]
+	},
+	"machoke": {
+		"dex": 67,
+		"name": "Machopeur",
+		"types": [
+			"fighting"
+		],
+		"base_stats": {
+			"hp": 80,
+			"atk": 100,
+			"def": 70,
+			"spa": 50,
+			"spd": 60,
+			"spe": 45
+		},
+		"male_ratio": 0.75,
+		"growth_rate": "medium_slow",
+		"base_exp": 142,
+		"catch_rate": 90,
+		"learnset": [
+			[
+				1,
+				"karate_chop"
+			],
+			[
+				1,
+				"low_kick"
+			],
+			[
+				1,
+				"leer"
+			],
+			[
+				20,
+				"low_kick"
+			],
+			[
+				25,
+				"leer"
+			],
+			[
+				36,
+				"focus_energy"
+			]
+		]
+	}
+}

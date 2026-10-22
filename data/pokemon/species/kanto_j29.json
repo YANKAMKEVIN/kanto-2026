@@ -1,0 +1,172 @@
+{
+	"lickitung": {
+		"dex": 108,
+		"name": "Excelangue",
+		"types": [
+			"normal"
+		],
+		"base_stats": {
+			"hp": 90,
+			"atk": 55,
+			"def": 75,
+			"spa": 60,
+			"spd": 75,
+			"spe": 30
+		},
+		"male_ratio": 0.5,
+		"growth_rate": "medium_fast",
+		"base_exp": 77,
+		"catch_rate": 45,
+		"learnset": [
+			[
+				1,
+				"wrap"
+			],
+			[
+				1,
+				"supersonic"
+			],
+			[
+				7,
+				"stomp"
+			],
+			[
+				15,
+				"disable"
+			],
+			[
+				23,
+				"defense_curl"
+			],
+			[
+				31,
+				"slam"
+			],
+			[
+				39,
+				"screech"
+			]
+		]
+	},
+	"mr_mime": {
+		"dex": 122,
+		"name": "M. Mime",
+		"types": [
+			"psychic"
+		],
+		"base_stats": {
+			"hp": 40,
+			"atk": 45,
+			"def": 65,
+			"spa": 100,
+			"spd": 120,
+			"spe": 90
+		},
+		"male_ratio": 0.5,
+		"growth_rate": "medium_fast",
+		"base_exp": 161,
+		"catch_rate": 45,
+		"learnset": [
+			[
+				1,
+				"confusion"
+			],
+			[
+				1,
+				"barrier"
+			],
+			[
+				15,
+				"light_screen"
+			],
+			[
+				23,
+				"double_slap"
+			],
+			[
+				31,
+				"meditate"
+			],
+			[
+				39,
+				"substitute"
+			]
+		]
+	},
+	"exeggutor": {
+		"dex": 103,
+		"name": "Noadkoko",
+		"types": [
+			"grass",
+			"psychic"
+		],
+		"base_stats": {
+			"hp": 95,
+			"atk": 95,
+			"def": 85,
+			"spa": 125,
+			"spd": 65,
+			"spe": 55
+		},
+		"male_ratio": 0.5,
+		"growth_rate": "slow",
+		"base_exp": 186,
+		"catch_rate": 45,
+		"learnset": [
+			[
+				1,
+				"barrage"
+			],
+			[
+				1,
+				"hypnosis"
+			],
+			[
+				28,
+				"stomp"
+			]
+		]
+	},
+	"moltres": {
+		"dex": 146,
+		"name": "Sulfura",
+		"types": [
+			"fire",
+			"flying"
+		],
+		"base_stats": {
+			"hp": 90,
+			"atk": 100,
+			"def": 90,
+			"spa": 125,
+			"spd": 85,
+			"spe": 90
+		},
+		"male_ratio": -1,
+		"growth_rate": "slow",
+		"base_exp": 261,
+		"catch_rate": 3,
+		"learnset": [
+			[
+				1,
+				"peck"
+			],
+			[
+				1,
+				"fire_spin"
+			],
+			[
+				51,
+				"leer"
+			],
+			[
+				55,
+				"agility"
+			],
+			[
+				60,
+				"sky_attack"
+			]
+		]
+	}
+}
