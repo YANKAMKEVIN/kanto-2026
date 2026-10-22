@@ -107,6 +107,16 @@ extends RefCounted
 ##   le dialogue [member dialogue_id] (« reçoit ») puis, s'il est allé au Stockage,
 ##   [member dialogue_stored] (facultatif). Déjà reçu : rien, l'étape passe.
 
+## Jalon 25 (`jalon-25.md` §2.1, §2.3, §2.5), le Manoir, l'Arène de Cramois'Île et les échanges :
+## - [constant Kind.UNSET_FLAGS] : [member flags] baissés (drapeaux de travail d'une scène : la
+##   réponse d'un quiz, une offre acceptée) ;
+## - [constant Kind.TOGGLE_FLAGS] : chaque drapeau de [member flags] basculé (interrupteur du
+##   Manoir, [MansionSwitch]) ;
+## - [constant Kind.TRADE] : échange fixe [member trade_id] ([InGameTrade]) : aucun candidat →
+##   dialogue [member dialogue_id] (« wrong ») ; le joueur choisit le Pokémon (sélecteur de Boot)
+##   ou renonce → [member dialogue_stored] (« refuse ») ; fait → les dialogues [member say]
+##   dans l'ordre. Déjà fait : rien.
+
 ## Nouvelles valeurs en fin d'enum (ordre de [constant TYPE_KEYS]).
 enum Kind {
 	WAIT, DIALOGUE, FACE, SET_FLAGS, SPAWN, MOVE, CHANGE_MAP, HOP, LEAN, DESPAWN, BATTLE, GIVE,
@@ -115,6 +125,7 @@ enum Kind {
 	FIELD_MOVE, SAVE, ANIMATE,
 	WILD_BATTLE,
 	GIFT_POKEMON,
+	UNSET_FLAGS, TOGGLE_FLAGS, TRADE,
 }
 
 ## Clé de type de chaque étape dans les fichiers, dans l'ordre de [enum Kind].
@@ -126,6 +137,7 @@ const TYPE_KEYS: Array[String] = [
 	"field_move", "save", "animate",
 	"wild_battle",
 	"gift_pokemon",
+	"unset", "toggle", "trade",
 ]
 ## Bulles d'une étape « emote » (clé « kind ») : le « ! » du Dresseur qui repère le joueur.
 const EMOTE_KINDS: Array[StringName] = [&"exclamation"]
@@ -202,6 +214,8 @@ var intro: StringName = &""
 ## [member level] et [member dialogue_id] (clé « say ») servent aussi.
 var gift_flag: StringName = &""
 var dialogue_stored: StringName = &""
+var trade_id: StringName = &""
+var say: Array[StringName] = []
 ## Conditions de l'étape (toutes levées / aucune levée), vides = toujours jouée.
 var if_flags: Array[StringName] = []
 var unless_flags: Array[StringName] = []
@@ -311,6 +325,8 @@ func copy() -> CutsceneStep:
 	other.intro = intro
 	other.gift_flag = gift_flag
 	other.dialogue_stored = dialogue_stored
+	other.trade_id = trade_id
+	other.say = say.duplicate()
 	other.badge_id = badge_id
 	other.moment_type = moment_type
 	other.moment_details = moment_details.duplicate()

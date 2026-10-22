@@ -136,6 +136,7 @@ const _EXTRA_KEYS: Array[Array] = [
 	["on"], [], ["offset", "duration", "fade"],
 	["level", "ghost", "ghost_unless_item", "win", "lose", "catch", "static", "actor", "intro"],
 	["level", "flag", "say", "say_stored"],
+	[], [], ["wrong", "refuse", "say"],
 ]
 ## Conditions permises sur toute étape sauf spawn.
 const _CONDITION_KEYS: Array[String] = ["if", "unless"]
@@ -282,6 +283,10 @@ func get_set_flags() -> Array[StringName]:
 				raised += step.static_encounter.flags_for(Battle.Outcome.CAUGHT)
 		elif step.kind == CutsceneStep.Kind.GIFT_POKEMON: # J20
 			raised = [step.gift_flag]
+		elif step.kind == CutsceneStep.Kind.TOGGLE_FLAGS: # J25 : l'interrupteur se lève aussi
+			raised = step.flags
+		elif step.kind == CutsceneStep.Kind.TRADE: # J25
+			raised = [InGameTrade.done_flag(step.trade_id)]
 		for flag: StringName in raised:
 			found[flag] = true
 	return _sorted_keys(found)
@@ -351,6 +356,9 @@ func get_dialogue_ids() -> Array[StringName]:
 			found[step.dialogue_id] = true
 			if not step.dialogue_stored.is_empty():
 				found[step.dialogue_stored] = true
+		elif step.kind == CutsceneStep.Kind.TRADE: # J25
+			for id: StringName in [step.dialogue_id, step.dialogue_stored] + step.say:
+				found[id] = true
 	return _sorted_keys(found)
 
 
@@ -475,6 +483,11 @@ func _parse_step(value: Variant, where: String) -> CutsceneStep:
 				ok = _fail("%s : « set » doit être une liste non vide de drapeaux" % where)
 			else:
 				ok = _read_flags(entry, "set", step.flags, where) and ok
+		CutsceneStep.Kind.UNSET_FLAGS, CutsceneStep.Kind.TOGGLE_FLAGS: # J25
+			if not main is Array or (main as Array).is_empty():
+				ok = _fail("%s : « %s » doit être une liste non vide de drapeaux" % [where, type_key])
+			else:
+				ok = _read_flags(entry, type_key, step.flags, where) and ok
 		CutsceneStep.Kind.SPAWN:
 			ok = _parse_spawn(entry, step, where) and ok
 		CutsceneStep.Kind.MOVE:
@@ -571,7 +584,26 @@ func _parse_step(value: Variant, where: String) -> CutsceneStep:
 			ok = _parse_wild_battle(entry, step, where) and ok
 		CutsceneStep.Kind.GIFT_POKEMON:
 			ok = _parse_gift_pokemon(entry, step, where) and ok
+		CutsceneStep.Kind.TRADE:
+			ok = _parse_trade(entry, step, where) and ok
 	return step if ok else null
+
+
+## trade (jalon 25, §2.5) : identifiant d'échange, dialogues « wrong », « refuse », « say » (liste).
+func _parse_trade(entry: Dictionary, step: CutsceneStep, where: String) -> bool:
+	var ok := _read_id(entry["trade"], where + " trade", func(v: StringName) -> void:
+		step.trade_id = v)
+	ok = _read_id(entry.get("wrong"), where + " wrong", func(v: StringName) -> void:
+		step.dialogue_id = v) and ok
+	ok = _read_id(entry.get("refuse"), where + " refuse", func(v: StringName) -> void:
+		step.dialogue_stored = v) and ok
+	var said: Variant = entry.get("say", [])
+	if not said is Array:
+		return _fail("%s : « say » doit être une liste de dialogues" % where)
+	for value: Variant in said:
+		ok = _read_id(value, where + " say", func(v: StringName) -> void:
+			step.say.append(v)) and ok
+	return ok
 
 
 ## gift_pokemon (jalon 20, §2.5.2) : espèce, niveau 1..100, drapeau, dialogue(s).

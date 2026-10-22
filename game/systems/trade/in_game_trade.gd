@@ -20,9 +20,8 @@ enum Status {
 }
 
 const DATA_PATH: String = "res://data/trades/cinnabar.json"
-## Origine du Pokémon reçu. `Pokemon.Origin.TRADE` n'existe pas encore : l'énumération est
-## étendue à l'intégration, après la fusion du J20 (qui ajoute GIFT ; règle d'ancienneté).
-const RECEIVED_ORIGIN: Pokemon.Origin = Pokemon.Origin.CAPTURE
+## Origine du Pokémon reçu (ajoutée en fin d'énumération à l'intégration du J25).
+const RECEIVED_ORIGIN: Pokemon.Origin = Pokemon.Origin.TRADE
 
 var _trades: Dictionary[StringName, Dictionary] = {}
 var _errors: PackedStringArray = PackedStringArray()
