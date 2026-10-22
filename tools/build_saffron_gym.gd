@@ -29,10 +29,10 @@ const PUSH: int = 1
 const STYLE_TELEPORT: int = 1
 const SHELL_DIR: String = "res://assets/world/interiors/placeholder/"
 const OUT_DIR: String = "res://game/world/maps/"
-## Carte → [nœud racine, grille, nom affiché].
+## Carte → [nœud racine, grille, nom affiché (celui de la zone, comme l'Arène d'Erika)].
 const MAPS: Dictionary = {
-	&"saffron_gym": ["SaffronGym", "safrania_arene", "Arène de Safrania"],
-	&"fighting_dojo": ["FightingDojo", "safrania_dojo", "Dojo de Combat"],
+	&"saffron_gym": ["SaffronGym", "safrania_arene", "Safrania"],
+	&"fighting_dojo": ["FightingDojo", "safrania_dojo", "Safrania"],
 }
 
 var _root: Node2D

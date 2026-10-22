@@ -215,11 +215,12 @@ func test_service_catalog_and_the_services_of_viridian() -> void:
 	assert_eq(route_5.size(), 1, "Route 5 : la Pension seule")
 	if route_5.size() == 1:
 		assert_eq([route_5[0].id, route_5[0].found_on], [&"daycare", &"route_5_daycare"])
-	# Jalon 26 (T6) : Safrania, le Centre et la Boutique (l'Arène viendra avec sa carte, J27).
+	# Jalon 26 (T6) : Safrania, le Centre et la Boutique ; jalon 27 (T6) : l'Arène de Morgane.
 	var saffron: Dictionary = {}
 	for service: ZoneService in _zones.get_zone(&"saffron_city").services:
 		saffron[service.id] = service.found_on
-	assert_eq(saffron, {&"pokemon_center": &"saffron_center", &"poke_mart": &"saffron_mart"})
+	assert_eq(saffron, {&"pokemon_center": &"saffron_center", &"poke_mart": &"saffron_mart",
+		&"gym": &"saffron_gym"})
 	var found: Dictionary = {}
 	for service: ZoneService in _zones.get_zone(&"viridian_city").services:
 		found[service.id] = service.found_on
