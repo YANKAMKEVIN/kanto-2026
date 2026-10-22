@@ -602,7 +602,8 @@ func test_every_trainer_and_item_step_exists() -> void:
 func test_every_champion_card_and_badge_step_exists() -> void:
 	# Jalon 23 (T19) : Koga.
 	assert_eq(_cutscenes.get_card_trainer_ids(), [&"celadon_gym_erika", &"cerulean_gym_misty",
-		&"fuchsia_gym_koga", &"giovanni_hideout", &"pewter_gym_brock", &"vermilion_gym_surge"] as Array[StringName])
+		&"fuchsia_gym_koga", &"giovanni_hideout", &"pewter_gym_brock", &"vermilion_gym_surge"]
+		as Array[StringName])
 	for id: StringName in _cutscenes.get_card_trainer_ids():
 		var trainer := _trainers.get_trainer(id)
 		assert_true(trainer != null and trainer.has_card(), "« %s » a une carte" % id)

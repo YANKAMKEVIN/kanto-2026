@@ -1,6 +1,6 @@
 extends GutTest
-## Koga de bout en bout (jalon 23 T19, `jalon-23.md` §2.13 ; dossier 26 §8 textes 38 à 44, §10.3)
-## avec la vraie scène Boot, la vraie carte `fuchsia_gym` et ses PNJ, la vraie scène
+## Koga de bout en bout (jalon 23 T19, `jalon-23.md` §2.13 ; dossier 26 §8 textes 38 à 44,
+## §10.3) avec la vraie scène Boot, la vraie carte `fuchsia_gym` et ses PNJ, la vraie scène
 ## `fuchsia_gym_koga`, les vraies données (Koga, carte, Badge Âme, CT06), les vraies entrées, le
 ## combat instantané et une sauvegarde en mémoire (modèle : `test_erika_flow.gd`) :
 ## - victoire : textes 38 et 39 → carte « KOGA » → combat → 40 → « BADGE ÂME » (41, une vibration

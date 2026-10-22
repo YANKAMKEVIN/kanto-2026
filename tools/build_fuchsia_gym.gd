@@ -11,7 +11,8 @@ extends SceneTree
 ## - « K » mur ; « . » parquet ; « X » sortie (PUSH ↓ → `fuchsia_city` / `from_gym`, arrivée
 ##   tournée vers le bas : spawn posé à Parmanie par la session principale du J23).
 ## - « i » : **mur invisible** = case bloquée ordinaire ([member GameMap.blocked_cells]),
-##   dessinée comme le parquet avec une **variante de lame différente** (indice au sol, N-15 [D] :
+##   dessinée comme le parquet avec une **variante de lame différente**
+##   (indice au sol, N-15 [D] :
 ##   parquet ordinaire variante 0, sous un « i » variante 1) ; nœud `InvisibleWalls`
 ##   ([InvisibleWallHint]) pour l'indice au contact.
 ## - « S » statue : case bloquée (tuile RUG provisoire) + examen, texte 35 (le panneau de

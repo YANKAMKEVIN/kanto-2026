@@ -1,8 +1,8 @@
 extends GutTest
 ## Poison grave branché dans le moteur (jalon 23, T18 ; `jalon-23.md` §2.12, dossier 26 §10.4,
 ## N-14) : Toxik (capacité et CT06), dégâts N/16 croissants en fin de tour ([ToxicRules]),
-## remise à zéro au changement de Pokémon et en fin de combat (reste un poison simple), étiquette
-## « PSN+ », IA « smart » (Toxik ne vise ni un Pokémon déjà empoisonné ni un type Poison).
+## remise à zéro au changement de Pokémon et en fin de combat (reste un poison simple),
+## étiquette « PSN+ », IA « smart » (Toxik ne vise ni un Pokémon déjà empoisonné ni un type Poison).
 ##
 ## IV 0 ; combat sauvage : Smogogo (Nv. 43, Toxik et Boul'Armure) contre Rattata puis Roucool
 ## (Nv. 40, Boul'Armure). Boul'Armure ne tire rien ; un tour = l'IA de Smogogo (roll(2) : 1 =
