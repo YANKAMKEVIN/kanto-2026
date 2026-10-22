@@ -69,7 +69,8 @@ const MAPS: Dictionary = {
 			["warp_nord_terre", "route_21", "from_cinnabar_island_terre", Vector2i.UP],
 			["warp_est", "route_20", "from_cinnabar_island", Vector2i.RIGHT]],
 		"coming_soon": [],
-		"doors": [["porte_labo", "cinnabar_lab", "entrance"],
+		"doors": [["porte_manoir", "pokemon_mansion_1f", "depuis_ile"],
+			["porte_labo", "cinnabar_lab", "entrance"],
 			["porte_centre", "cinnabar_center", "entrance"],
 			["porte_boutique", "cinnabar_mart", "entrance"]],
 		"signs": {"panneau_ville": &"cinnabar_sign", "panneau_arene": &"cinnabar_gym_sign"},
@@ -138,7 +139,7 @@ func _build(map_id: String) -> void:
 	_save(root, MAPS_DIR + map_id + ".tscn")
 
 
-## Cramois'Île : aplats des bâtiments, gravats du Manoir (EXAMINER, T-43), porte fermée de
+## Cramois'Île : aplats des bâtiments, porte du Manoir (J25, X-25), porte fermée de
 ## l'Arène (déclencheur : T-42 et recul, scène `cinnabar_gym_locked`).
 func _cinnabar(root: Node, entities: Node, plan: Object) -> void:
 	for c: String in BUILDINGS:
@@ -146,13 +147,12 @@ func _cinnabar(root: Node, entities: Node, plan: Object) -> void:
 		var gate := _gate(root, entities, "Batiment_" + c, rect.position + Vector2i(0, rect.size.y - 1))
 		_rect(root, gate, Rect2(-TILE / 2.0, -rect.size.y * TILE, rect.size.x * TILE,
 			rect.size.y * TILE), BUILDINGS[c])
-	var rubble := Marker2D.new()
-	rubble.set_script(load("res://game/world/interactions/interact_point.gd"))
-	rubble.name = "ManoirGravats"
-	rubble.position = _world(plan.cell_of("examen_manoir"))
-	rubble.set(&"dialogue_id", &"cinnabar_mansion_rubble")
-	rubble.set(&"size", Vector2i(2, 1))
-	_attach(root, root.get_node(^"Interactables"), rubble)
+	# J25 (X-25) : la porte du Manoir remplace les gravats (porte dans « doors ») ; l'interrupteur
+	# du Manoir revient à ARRÊT sur l'île ([MansionSwitchReset]).
+	var mansion := Node2D.new()
+	mansion.set_script(load("res://game/world/puzzle/mansion_switch_reset.gd"))
+	mansion.name = "InterrupteurManoir"
+	_attach(root, entities, mansion)
 	var trigger := Marker2D.new()
 	trigger.set_script(load("res://game/world/triggers/event_trigger_point.gd"))
 	trigger.name = "PorteArene"

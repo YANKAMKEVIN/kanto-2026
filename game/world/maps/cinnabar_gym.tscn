@@ -1,0 +1,813 @@
+[gd_scene format=4]
+
+[ext_resource type="Script" path="res://game/world/map.gd" id="1_ubajb"]
+[ext_resource type="TileSet" path="res://assets/tiles/overworld.tres" id="2_dm61y"]
+[ext_resource type="Script" path="res://game/world/flag_gate.gd" id="3_x6gum"]
+[ext_resource type="Script" path="res://game/world/warp_point.gd" id="4_0yd3a"]
+[ext_resource type="Script" path="res://game/world/interactions/interact_point.gd" id="5_caxar"]
+
+[node name="CinnabarGym" type="Node2D" unique_id=1590889943]
+script = ExtResource("1_ubajb")
+map_id = &"cinnabar_gym"
+display_name = "Arène de Cramois'Île"
+size = Vector2i(20, 18)
+interior = true
+light_profile = &"interior_warm"
+
+[node name="Ground" type="TileMapLayer" parent="." unique_id=1237430010]
+tile_map_data = PackedByteArray("AAAAAAAAAAABAAcAAAABAAAAAAABAAcAAAACAAAAAAAAAAcAAAADAAAAAAABAAcAAAAEAAAAAAABAAcAAAAFAAAAAAABAAcAAAAGAAAAAAABAAcAAAAHAAAAAAAAAAcAAAAIAAAAAAAAAAcAAAAJAAAAAAABAAcAAAAKAAAAAAAAAAcAAAALAAAAAAABAAcAAAAMAAAAAAABAAcAAAANAAAAAAABAAcAAAAOAAAAAAAAAAcAAAAPAAAAAAABAAcAAAAQAAAAAAAAAAcAAAARAAAAAAABAAcAAAASAAAAAAAAAAcAAAATAAAAAAAAAAcAAAAAAAEAAAAAAAcAAAABAAEAAAABAAMAAAACAAEAAAAAAAcAAAADAAEAAAAAAAcAAAAEAAEAAAAAAAcAAAAFAAEAAAAAAAcAAAAGAAEAAAAAAAcAAAAHAAEAAAABAAcAAAAIAAEAAAABAAcAAAAJAAEAAAAAAAMAAAAKAAEAAAAAAAcAAAALAAEAAAAAAAcAAAAMAAEAAAACAAMAAAANAAEAAAAAAAMAAAAOAAEAAAAAAAMAAAAPAAEAAAAAAAMAAAAQAAEAAAABAAMAAAARAAEAAAABAAMAAAASAAEAAAAAAAMAAAATAAEAAAACAAMAAAAAAAIAAAABAAcAAAABAAIAAAACAAMAAAACAAIAAAACAAMAAAADAAIAAAACAAMAAAAEAAIAAAACAAMAAAAFAAIAAAAAAAMAAAAGAAIAAAABAAcAAAAHAAIAAAABAAcAAAAIAAIAAAABAAcAAAAJAAIAAAACAAMAAAAKAAIAAAAAAAMAAAALAAIAAAACAAMAAAAMAAIAAAABAAMAAAANAAIAAAAAAAMAAAAOAAIAAAABAAcAAAAPAAIAAAABAAMAAAAQAAIAAAABAAMAAAARAAIAAAABAAMAAAASAAIAAAABAAMAAAATAAIAAAAAAAMAAAAAAAMAAAAAAAcAAAABAAMAAAACAAMAAAACAAMAAAACAAMAAAADAAMAAAAAAAMAAAAEAAMAAAABAAMAAAAFAAMAAAABAAMAAAAGAAMAAAABAAcAAAAHAAMAAAAAAAcAAAAIAAMAAAABAAcAAAAJAAMAAAABAAMAAAAKAAMAAAAAAAMAAAALAAMAAAABAAMAAAAMAAMAAAAAAAMAAAANAAMAAAAAAAMAAAAOAAMAAAABAAcAAAAPAAMAAAABAAMAAAAQAAMAAAACAAMAAAARAAMAAAACAAMAAAASAAMAAAACAAMAAAATAAMAAAAAAAMAAAAAAAQAAAABAAcAAAABAAQAAAAAAAMAAAACAAQAAAACAAMAAAADAAQAAAAAAAMAAAAEAAQAAAACAAMAAAAFAAQAAAAAAAMAAAAGAAQAAAABAAcAAAAHAAQAAAABAAcAAAAIAAQAAAABAAcAAAAJAAQAAAACAAMAAAAKAAQAAAAAAAMAAAALAAQAAAACAAMAAAAMAAQAAAAAAAMAAAANAAQAAAAAAAMAAAAOAAQAAAABAAcAAAAPAAQAAAAAAAMAAAAQAAQAAAACAAMAAAARAAQAAAAAAAMAAAASAAQAAAACAAMAAAATAAQAAAABAAMAAAAAAAUAAAAAAAcAAAABAAUAAAAAAAMAAAACAAUAAAABAAMAAAADAAUAAAACAAMAAAAEAAUAAAABAAMAAAAFAAUAAAACAAMAAAAGAAUAAAABAAcAAAAHAAUAAAABAAcAAAAIAAUAAAABAAcAAAAJAAUAAAACAAMAAAAKAAUAAAAAAAMAAAALAAUAAAAAAAMAAAAMAAUAAAAAAAMAAAANAAUAAAAAAAMAAAAOAAUAAAAAAAcAAAAPAAUAAAAAAAMAAAAQAAUAAAABAAMAAAARAAUAAAACAAMAAAASAAUAAAABAAMAAAATAAUAAAACAAMAAAAAAAYAAAAAAAcAAAABAAYAAAAAAAcAAAACAAYAAAABAAcAAAADAAYAAAAAAAcAAAAEAAYAAAAAAAMAAAAFAAYAAAAAAAMAAAAGAAYAAAABAAcAAAAHAAYAAAAAAAcAAAAIAAYAAAABAAcAAAAJAAYAAAAAAAcAAAAKAAYAAAAAAAcAAAALAAYAAAABAAcAAAAMAAYAAAABAAMAAAANAAYAAAACAAMAAAAOAAYAAAABAAcAAAAPAAYAAAAAAAcAAAAQAAYAAAAAAAcAAAARAAYAAAAAAAcAAAASAAYAAAAAAAMAAAATAAYAAAABAAMAAAAAAAcAAAABAAcAAAABAAcAAAABAAcAAAACAAcAAAACAAMAAAADAAcAAAAAAAMAAAAEAAcAAAABAAMAAAAFAAcAAAACAAMAAAAGAAcAAAAAAAcAAAAHAAcAAAABAAcAAAAIAAcAAAAAAAcAAAAJAAcAAAABAAcAAAAKAAcAAAAAAAMAAAALAAcAAAACAAMAAAAMAAcAAAAAAAMAAAANAAcAAAABAAMAAAAOAAcAAAAAAAcAAAAPAAcAAAABAAcAAAAQAAcAAAABAAMAAAARAAcAAAACAAMAAAASAAcAAAABAAMAAAATAAcAAAAAAAMAAAAAAAgAAAABAAcAAAABAAgAAAABAAMAAAACAAgAAAABAAMAAAADAAgAAAACAAMAAAAEAAgAAAABAAMAAAAFAAgAAAABAAMAAAAGAAgAAAAAAAcAAAAHAAgAAAAAAAcAAAAIAAgAAAABAAcAAAAJAAgAAAAAAAMAAAAKAAgAAAAAAAMAAAALAAgAAAABAAMAAAAMAAgAAAACAAMAAAANAAgAAAABAAMAAAAOAAgAAAAAAAcAAAAPAAgAAAABAAMAAAAQAAgAAAAAAAMAAAARAAgAAAAAAAMAAAASAAgAAAAAAAMAAAATAAgAAAABAAMAAAAAAAkAAAAAAAcAAAABAAkAAAABAAMAAAACAAkAAAACAAMAAAADAAkAAAACAAMAAAAEAAkAAAACAAMAAAAFAAkAAAAAAAMAAAAGAAkAAAAAAAcAAAAHAAkAAAABAAcAAAAIAAkAAAAAAAcAAAAJAAkAAAACAAMAAAAKAAkAAAAAAAMAAAALAAkAAAAAAAMAAAAMAAkAAAACAAMAAAANAAkAAAABAAMAAAAOAAkAAAABAAcAAAAPAAkAAAABAAMAAAAQAAkAAAABAAMAAAARAAkAAAABAAMAAAASAAkAAAAAAAMAAAATAAkAAAACAAMAAAAAAAoAAAABAAcAAAABAAoAAAABAAMAAAACAAoAAAABAAMAAAADAAoAAAACAAMAAAAEAAoAAAACAAMAAAAFAAoAAAABAAMAAAAGAAoAAAAAAAcAAAAHAAoAAAABAAcAAAAIAAoAAAABAAcAAAAJAAoAAAACAAMAAAAKAAoAAAABAAMAAAALAAoAAAACAAMAAAAMAAoAAAAAAAMAAAANAAoAAAABAAMAAAAOAAoAAAABAAcAAAAPAAoAAAABAAMAAAAQAAoAAAACAAMAAAARAAoAAAACAAMAAAASAAoAAAAAAAMAAAATAAoAAAABAAMAAAAAAAsAAAAAAAcAAAABAAsAAAACAAMAAAACAAsAAAABAAMAAAADAAsAAAABAAMAAAAEAAsAAAACAAMAAAAFAAsAAAABAAMAAAAGAAsAAAABAAcAAAAHAAsAAAAAAAcAAAAIAAsAAAAAAAcAAAAJAAsAAAABAAMAAAAKAAsAAAAAAAMAAAALAAsAAAACAAMAAAAMAAsAAAACAAMAAAANAAsAAAABAAMAAAAOAAsAAAABAAcAAAAPAAsAAAAAAAcAAAAQAAsAAAAAAAcAAAARAAsAAAAAAAcAAAASAAsAAAACAAMAAAATAAsAAAAAAAMAAAAAAAwAAAAAAAcAAAABAAwAAAAAAAcAAAACAAwAAAAAAAcAAAADAAwAAAAAAAcAAAAEAAwAAAACAAMAAAAFAAwAAAAAAAMAAAAGAAwAAAAAAAcAAAAHAAwAAAABAAcAAAAIAAwAAAABAAcAAAAJAAwAAAAAAAcAAAAKAAwAAAABAAcAAAALAAwAAAAAAAcAAAAMAAwAAAACAAMAAAANAAwAAAABAAMAAAAOAAwAAAABAAcAAAAPAAwAAAAAAAMAAAAQAAwAAAACAAMAAAARAAwAAAABAAcAAAASAAwAAAACAAMAAAATAAwAAAAAAAMAAAAAAA0AAAABAAcAAAABAA0AAAAAAAcAAAACAA0AAAAAAAMAAAADAA0AAAABAAMAAAAEAA0AAAABAAMAAAAFAA0AAAAAAAMAAAAGAA0AAAABAAcAAAAHAA0AAAAAAAcAAAAIAA0AAAABAAcAAAAJAA0AAAABAAcAAAAKAA0AAAACAAMAAAALAA0AAAACAAMAAAAMAA0AAAACAAMAAAANAA0AAAABAAMAAAAOAA0AAAABAAcAAAAPAA0AAAAAAAMAAAAQAA0AAAABAAMAAAARAA0AAAACAAMAAAASAA0AAAABAAMAAAATAA0AAAAAAAMAAAAAAA4AAAABAAcAAAABAA4AAAACAAMAAAACAA4AAAACAAMAAAADAA4AAAABAAMAAAAEAA4AAAACAAMAAAAFAA4AAAAAAAMAAAAGAA4AAAABAAcAAAAHAA4AAAAAAAcAAAAIAA4AAAABAAcAAAAJAA4AAAACAAMAAAAKAA4AAAAAAAMAAAALAA4AAAABAAMAAAAMAA4AAAAAAAMAAAANAA4AAAABAAMAAAAOAA4AAAAAAAcAAAAPAA4AAAABAAMAAAAQAA4AAAAAAAMAAAARAA4AAAABAAMAAAASAA4AAAACAAMAAAATAA4AAAABAAMAAAAAAA8AAAAAAAcAAAABAA8AAAACAAMAAAACAA8AAAAAAAMAAAADAA8AAAACAAMAAAAEAA8AAAABAAMAAAAFAA8AAAACAAMAAAAGAA8AAAABAAcAAAAHAA8AAAABAAcAAAAIAA8AAAABAAcAAAAJAA8AAAABAAMAAAAKAA8AAAACAAMAAAALAA8AAAABAAMAAAAMAA8AAAAAAAMAAAANAA8AAAACAAMAAAAOAA8AAAAAAAcAAAAPAA8AAAAAAAMAAAAQAA8AAAACAAMAAAARAA8AAAAAAAMAAAASAA8AAAABAAMAAAATAA8AAAAAAAMAAAAAABAAAAAAAAcAAAABABAAAAABAAMAAAACABAAAAABAAMAAAADABAAAAABAAMAAAAEABAAAAACAAMAAAAFABAAAAAAAAMAAAAGABAAAAABAAMAAAAHABAAAAABAAMAAAAIABAAAAACAAMAAAAJABAAAAACAAMAAAAKABAAAAACAAMAAAALABAAAAAAAAMAAAAMABAAAAABAAMAAAANABAAAAACAAMAAAAOABAAAAABAAcAAAAPABAAAAAAAAcAAAAQABAAAAAAAAMAAAARABAAAAABAAMAAAASABAAAAAAAAMAAAATABAAAAABAAMAAAAAABEAAAABAAcAAAABABEAAAACAAMAAAACABEAAAACAAMAAAADABEAAAACAAMAAAAEABEAAAACAAMAAAAFABEAAAABAAMAAAAGABEAAAAAAAMAAAAHABEAAAAAAAMAAAAIABEAAAACAAMAAAAJABEAAAABAAMAAAAKABEAAAABAAMAAAALABEAAAAAAAMAAAAMABEAAAACAAMAAAANABEAAAACAAMAAAAOABEAAAABAAcAAAAPABEAAAABAAMAAAAQABEAAAACAAIAAAARABEAAAACAAIAAAASABEAAAAAAAMAAAATABEAAAAAAAMAAAA=")
+tile_set = ExtResource("2_dm61y")
+
+[node name="Detail" type="TileMapLayer" parent="." unique_id=516499682]
+tile_set = ExtResource("2_dm61y")
+
+[node name="Obstacles" type="TileMapLayer" parent="." unique_id=853823538]
+tile_set = ExtResource("2_dm61y")
+
+[node name="Entities" type="Node2D" parent="." unique_id=2036741053]
+unique_name_in_owner = true
+y_sort_enabled = true
+
+[node name="Machine_1" type="Node2D" parent="Entities" unique_id=620267711]
+position = Vector2(1488, 768)
+script = ExtResource("3_x6gum")
+blocking_cells = Array[Vector2i]([Vector2i(15, 7)])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Machine_1" unique_id=854503698]
+color = Color(0.3, 0.32, 0.36, 1)
+polygon = PackedVector2Array(-34, -96, 34, -96, 34, -4, -34, -4)
+
+[node name="@Polygon2D@2" type="Polygon2D" parent="Entities/Machine_1" unique_id=1998436425]
+color = Color(0.4, 0.8, 0.95, 1)
+polygon = PackedVector2Array(-24, -84, 24, -84, 24, -54, -24, -54)
+
+[node name="Machine_2" type="Node2D" parent="Entities" unique_id=1380781101]
+position = Vector2(1008, 192)
+script = ExtResource("3_x6gum")
+blocking_cells = Array[Vector2i]([Vector2i(10, 1)])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Machine_2" unique_id=1488536236]
+color = Color(0.3, 0.32, 0.36, 1)
+polygon = PackedVector2Array(-34, -96, 34, -96, 34, -4, -34, -4)
+
+[node name="@Polygon2D@3" type="Polygon2D" parent="Entities/Machine_2" unique_id=284657647]
+color = Color(0.4, 0.8, 0.95, 1)
+polygon = PackedVector2Array(-24, -84, 24, -84, 24, -54, -24, -54)
+
+[node name="Machine_3" type="Node2D" parent="Entities" unique_id=1638533696]
+position = Vector2(912, 768)
+script = ExtResource("3_x6gum")
+blocking_cells = Array[Vector2i]([Vector2i(9, 7)])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Machine_3" unique_id=1331345926]
+color = Color(0.3, 0.32, 0.36, 1)
+polygon = PackedVector2Array(-34, -96, 34, -96, 34, -4, -34, -4)
+
+[node name="@Polygon2D@4" type="Polygon2D" parent="Entities/Machine_3" unique_id=1025712310]
+color = Color(0.4, 0.8, 0.95, 1)
+polygon = PackedVector2Array(-24, -84, 24, -84, 24, -54, -24, -54)
+
+[node name="Machine_4" type="Node2D" parent="Entities" unique_id=1363220890]
+position = Vector2(912, 1344)
+script = ExtResource("3_x6gum")
+blocking_cells = Array[Vector2i]([Vector2i(9, 13)])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Machine_4" unique_id=961314458]
+color = Color(0.3, 0.32, 0.36, 1)
+polygon = PackedVector2Array(-34, -96, 34, -96, 34, -4, -34, -4)
+
+[node name="@Polygon2D@5" type="Polygon2D" parent="Entities/Machine_4" unique_id=1487455513]
+color = Color(0.4, 0.8, 0.95, 1)
+polygon = PackedVector2Array(-24, -84, 24, -84, 24, -54, -24, -54)
+
+[node name="Machine_5" type="Node2D" parent="Entities" unique_id=1203187023]
+position = Vector2(144, 1344)
+script = ExtResource("3_x6gum")
+blocking_cells = Array[Vector2i]([Vector2i(1, 13)])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Machine_5" unique_id=1758667920]
+color = Color(0.3, 0.32, 0.36, 1)
+polygon = PackedVector2Array(-34, -96, 34, -96, 34, -4, -34, -4)
+
+[node name="@Polygon2D@6" type="Polygon2D" parent="Entities/Machine_5" unique_id=1592802849]
+color = Color(0.4, 0.8, 0.95, 1)
+polygon = PackedVector2Array(-24, -84, 24, -84, 24, -54, -24, -54)
+
+[node name="Machine_6" type="Node2D" parent="Entities" unique_id=605224206]
+position = Vector2(144, 768)
+script = ExtResource("3_x6gum")
+blocking_cells = Array[Vector2i]([Vector2i(1, 7)])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Machine_6" unique_id=118206248]
+color = Color(0.3, 0.32, 0.36, 1)
+polygon = PackedVector2Array(-34, -96, 34, -96, 34, -4, -34, -4)
+
+[node name="@Polygon2D@7" type="Polygon2D" parent="Entities/Machine_6" unique_id=1012466073]
+color = Color(0.4, 0.8, 0.95, 1)
+polygon = PackedVector2Array(-24, -84, 24, -84, 24, -54, -24, -54)
+
+[node name="Herse1_18_6" type="Node2D" parent="Entities" unique_id=1581755589]
+position = Vector2(1776, 672)
+script = ExtResource("3_x6gum")
+unless_flags = Array[StringName]([&"cinnabar_gym_gate_1", &"beaten_cinnabar_gym_2"])
+blocking_cells = Array[Vector2i]([Vector2i(18, 6)])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Herse1_18_6" unique_id=1448289788]
+color = Color(0.35, 0.12, 0.08, 1)
+polygon = PackedVector2Array(-46, -100, 46, -100, 46, -90, -46, -90)
+
+[node name="@Polygon2D@8" type="Polygon2D" parent="Entities/Herse1_18_6" unique_id=1522973327]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(-38, -96, -28, -96, -28, -4, -38, -4)
+
+[node name="@Polygon2D@9" type="Polygon2D" parent="Entities/Herse1_18_6" unique_id=1952157388]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(-18, -96, -8, -96, -8, -4, -18, -4)
+
+[node name="@Polygon2D@10" type="Polygon2D" parent="Entities/Herse1_18_6" unique_id=1840321666]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(2, -96, 12, -96, 12, -4, 2, -4)
+
+[node name="@Polygon2D@11" type="Polygon2D" parent="Entities/Herse1_18_6" unique_id=245314797]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(22, -96, 32, -96, 32, -4, 22, -4)
+
+[node name="Herse1_19_6" type="Node2D" parent="Entities" unique_id=1451152466]
+position = Vector2(1872, 672)
+script = ExtResource("3_x6gum")
+unless_flags = Array[StringName]([&"cinnabar_gym_gate_1", &"beaten_cinnabar_gym_2"])
+blocking_cells = Array[Vector2i]([Vector2i(19, 6)])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Herse1_19_6" unique_id=1023546095]
+color = Color(0.35, 0.12, 0.08, 1)
+polygon = PackedVector2Array(-46, -100, 46, -100, 46, -90, -46, -90)
+
+[node name="@Polygon2D@12" type="Polygon2D" parent="Entities/Herse1_19_6" unique_id=1124555310]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(-38, -96, -28, -96, -28, -4, -38, -4)
+
+[node name="@Polygon2D@13" type="Polygon2D" parent="Entities/Herse1_19_6" unique_id=1492802519]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(-18, -96, -8, -96, -8, -4, -18, -4)
+
+[node name="@Polygon2D@14" type="Polygon2D" parent="Entities/Herse1_19_6" unique_id=1573184155]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(2, -96, 12, -96, 12, -4, 2, -4)
+
+[node name="@Polygon2D@15" type="Polygon2D" parent="Entities/Herse1_19_6" unique_id=361674790]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(22, -96, 32, -96, 32, -4, 22, -4)
+
+[node name="Herse1_18_7" type="Node2D" parent="Entities" unique_id=547512480]
+position = Vector2(1776, 768)
+script = ExtResource("3_x6gum")
+unless_flags = Array[StringName]([&"cinnabar_gym_gate_1", &"beaten_cinnabar_gym_2"])
+blocking_cells = Array[Vector2i]([Vector2i(18, 7)])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Herse1_18_7" unique_id=2004318114]
+color = Color(0.35, 0.12, 0.08, 1)
+polygon = PackedVector2Array(-46, -100, 46, -100, 46, -90, -46, -90)
+
+[node name="@Polygon2D@16" type="Polygon2D" parent="Entities/Herse1_18_7" unique_id=813273027]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(-38, -96, -28, -96, -28, -4, -38, -4)
+
+[node name="@Polygon2D@17" type="Polygon2D" parent="Entities/Herse1_18_7" unique_id=960716025]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(-18, -96, -8, -96, -8, -4, -18, -4)
+
+[node name="@Polygon2D@18" type="Polygon2D" parent="Entities/Herse1_18_7" unique_id=32023099]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(2, -96, 12, -96, 12, -4, 2, -4)
+
+[node name="@Polygon2D@19" type="Polygon2D" parent="Entities/Herse1_18_7" unique_id=1453815898]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(22, -96, 32, -96, 32, -4, 22, -4)
+
+[node name="Herse1_19_7" type="Node2D" parent="Entities" unique_id=1612691031]
+position = Vector2(1872, 768)
+script = ExtResource("3_x6gum")
+unless_flags = Array[StringName]([&"cinnabar_gym_gate_1", &"beaten_cinnabar_gym_2"])
+blocking_cells = Array[Vector2i]([Vector2i(19, 7)])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Herse1_19_7" unique_id=1187897673]
+color = Color(0.35, 0.12, 0.08, 1)
+polygon = PackedVector2Array(-46, -100, 46, -100, 46, -90, -46, -90)
+
+[node name="@Polygon2D@20" type="Polygon2D" parent="Entities/Herse1_19_7" unique_id=316756391]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(-38, -96, -28, -96, -28, -4, -38, -4)
+
+[node name="@Polygon2D@21" type="Polygon2D" parent="Entities/Herse1_19_7" unique_id=1301035079]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(-18, -96, -8, -96, -8, -4, -18, -4)
+
+[node name="@Polygon2D@22" type="Polygon2D" parent="Entities/Herse1_19_7" unique_id=1100721397]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(2, -96, 12, -96, 12, -4, 2, -4)
+
+[node name="@Polygon2D@23" type="Polygon2D" parent="Entities/Herse1_19_7" unique_id=859553592]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(22, -96, 32, -96, 32, -4, 22, -4)
+
+[node name="Herse2_12_6" type="Node2D" parent="Entities" unique_id=1016236352]
+position = Vector2(1200, 672)
+script = ExtResource("3_x6gum")
+unless_flags = Array[StringName]([&"cinnabar_gym_gate_2", &"beaten_cinnabar_gym_3"])
+blocking_cells = Array[Vector2i]([Vector2i(12, 6)])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Herse2_12_6" unique_id=335140097]
+color = Color(0.35, 0.12, 0.08, 1)
+polygon = PackedVector2Array(-46, -100, 46, -100, 46, -90, -46, -90)
+
+[node name="@Polygon2D@24" type="Polygon2D" parent="Entities/Herse2_12_6" unique_id=579864382]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(-38, -96, -28, -96, -28, -4, -38, -4)
+
+[node name="@Polygon2D@25" type="Polygon2D" parent="Entities/Herse2_12_6" unique_id=943303158]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(-18, -96, -8, -96, -8, -4, -18, -4)
+
+[node name="@Polygon2D@26" type="Polygon2D" parent="Entities/Herse2_12_6" unique_id=707081803]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(2, -96, 12, -96, 12, -4, 2, -4)
+
+[node name="@Polygon2D@27" type="Polygon2D" parent="Entities/Herse2_12_6" unique_id=923243990]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(22, -96, 32, -96, 32, -4, 22, -4)
+
+[node name="Herse2_13_6" type="Node2D" parent="Entities" unique_id=971677023]
+position = Vector2(1296, 672)
+script = ExtResource("3_x6gum")
+unless_flags = Array[StringName]([&"cinnabar_gym_gate_2", &"beaten_cinnabar_gym_3"])
+blocking_cells = Array[Vector2i]([Vector2i(13, 6)])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Herse2_13_6" unique_id=1084724879]
+color = Color(0.35, 0.12, 0.08, 1)
+polygon = PackedVector2Array(-46, -100, 46, -100, 46, -90, -46, -90)
+
+[node name="@Polygon2D@28" type="Polygon2D" parent="Entities/Herse2_13_6" unique_id=1019317611]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(-38, -96, -28, -96, -28, -4, -38, -4)
+
+[node name="@Polygon2D@29" type="Polygon2D" parent="Entities/Herse2_13_6" unique_id=1408867864]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(-18, -96, -8, -96, -8, -4, -18, -4)
+
+[node name="@Polygon2D@30" type="Polygon2D" parent="Entities/Herse2_13_6" unique_id=102026483]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(2, -96, 12, -96, 12, -4, 2, -4)
+
+[node name="@Polygon2D@31" type="Polygon2D" parent="Entities/Herse2_13_6" unique_id=528133268]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(22, -96, 32, -96, 32, -4, 22, -4)
+
+[node name="Herse2_12_7" type="Node2D" parent="Entities" unique_id=1077994193]
+position = Vector2(1200, 768)
+script = ExtResource("3_x6gum")
+unless_flags = Array[StringName]([&"cinnabar_gym_gate_2", &"beaten_cinnabar_gym_3"])
+blocking_cells = Array[Vector2i]([Vector2i(12, 7)])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Herse2_12_7" unique_id=1320895827]
+color = Color(0.35, 0.12, 0.08, 1)
+polygon = PackedVector2Array(-46, -100, 46, -100, 46, -90, -46, -90)
+
+[node name="@Polygon2D@32" type="Polygon2D" parent="Entities/Herse2_12_7" unique_id=1344742908]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(-38, -96, -28, -96, -28, -4, -38, -4)
+
+[node name="@Polygon2D@33" type="Polygon2D" parent="Entities/Herse2_12_7" unique_id=1606066164]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(-18, -96, -8, -96, -8, -4, -18, -4)
+
+[node name="@Polygon2D@34" type="Polygon2D" parent="Entities/Herse2_12_7" unique_id=393740353]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(2, -96, 12, -96, 12, -4, 2, -4)
+
+[node name="@Polygon2D@35" type="Polygon2D" parent="Entities/Herse2_12_7" unique_id=1162905669]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(22, -96, 32, -96, 32, -4, 22, -4)
+
+[node name="Herse2_13_7" type="Node2D" parent="Entities" unique_id=429449390]
+position = Vector2(1296, 768)
+script = ExtResource("3_x6gum")
+unless_flags = Array[StringName]([&"cinnabar_gym_gate_2", &"beaten_cinnabar_gym_3"])
+blocking_cells = Array[Vector2i]([Vector2i(13, 7)])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Herse2_13_7" unique_id=621572058]
+color = Color(0.35, 0.12, 0.08, 1)
+polygon = PackedVector2Array(-46, -100, 46, -100, 46, -90, -46, -90)
+
+[node name="@Polygon2D@36" type="Polygon2D" parent="Entities/Herse2_13_7" unique_id=1499292652]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(-38, -96, -28, -96, -28, -4, -38, -4)
+
+[node name="@Polygon2D@37" type="Polygon2D" parent="Entities/Herse2_13_7" unique_id=1107731563]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(-18, -96, -8, -96, -8, -4, -18, -4)
+
+[node name="@Polygon2D@38" type="Polygon2D" parent="Entities/Herse2_13_7" unique_id=255196427]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(2, -96, 12, -96, 12, -4, 2, -4)
+
+[node name="@Polygon2D@39" type="Polygon2D" parent="Entities/Herse2_13_7" unique_id=520199282]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(22, -96, 32, -96, 32, -4, 22, -4)
+
+[node name="Herse3_12_12" type="Node2D" parent="Entities" unique_id=2024208948]
+position = Vector2(1200, 1248)
+script = ExtResource("3_x6gum")
+unless_flags = Array[StringName]([&"cinnabar_gym_gate_3", &"beaten_cinnabar_gym_4"])
+blocking_cells = Array[Vector2i]([Vector2i(12, 12)])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Herse3_12_12" unique_id=44835345]
+color = Color(0.35, 0.12, 0.08, 1)
+polygon = PackedVector2Array(-46, -100, 46, -100, 46, -90, -46, -90)
+
+[node name="@Polygon2D@40" type="Polygon2D" parent="Entities/Herse3_12_12" unique_id=1529190883]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(-38, -96, -28, -96, -28, -4, -38, -4)
+
+[node name="@Polygon2D@41" type="Polygon2D" parent="Entities/Herse3_12_12" unique_id=1452205027]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(-18, -96, -8, -96, -8, -4, -18, -4)
+
+[node name="@Polygon2D@42" type="Polygon2D" parent="Entities/Herse3_12_12" unique_id=253127659]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(2, -96, 12, -96, 12, -4, 2, -4)
+
+[node name="@Polygon2D@43" type="Polygon2D" parent="Entities/Herse3_12_12" unique_id=1459280391]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(22, -96, 32, -96, 32, -4, 22, -4)
+
+[node name="Herse3_13_12" type="Node2D" parent="Entities" unique_id=589583755]
+position = Vector2(1296, 1248)
+script = ExtResource("3_x6gum")
+unless_flags = Array[StringName]([&"cinnabar_gym_gate_3", &"beaten_cinnabar_gym_4"])
+blocking_cells = Array[Vector2i]([Vector2i(13, 12)])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Herse3_13_12" unique_id=1706021707]
+color = Color(0.35, 0.12, 0.08, 1)
+polygon = PackedVector2Array(-46, -100, 46, -100, 46, -90, -46, -90)
+
+[node name="@Polygon2D@44" type="Polygon2D" parent="Entities/Herse3_13_12" unique_id=857924340]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(-38, -96, -28, -96, -28, -4, -38, -4)
+
+[node name="@Polygon2D@45" type="Polygon2D" parent="Entities/Herse3_13_12" unique_id=1803423865]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(-18, -96, -8, -96, -8, -4, -18, -4)
+
+[node name="@Polygon2D@46" type="Polygon2D" parent="Entities/Herse3_13_12" unique_id=1344986380]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(2, -96, 12, -96, 12, -4, 2, -4)
+
+[node name="@Polygon2D@47" type="Polygon2D" parent="Entities/Herse3_13_12" unique_id=769866419]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(22, -96, 32, -96, 32, -4, 22, -4)
+
+[node name="Herse3_12_13" type="Node2D" parent="Entities" unique_id=1643841710]
+position = Vector2(1200, 1344)
+script = ExtResource("3_x6gum")
+unless_flags = Array[StringName]([&"cinnabar_gym_gate_3", &"beaten_cinnabar_gym_4"])
+blocking_cells = Array[Vector2i]([Vector2i(12, 13)])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Herse3_12_13" unique_id=1369752286]
+color = Color(0.35, 0.12, 0.08, 1)
+polygon = PackedVector2Array(-46, -100, 46, -100, 46, -90, -46, -90)
+
+[node name="@Polygon2D@48" type="Polygon2D" parent="Entities/Herse3_12_13" unique_id=46229624]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(-38, -96, -28, -96, -28, -4, -38, -4)
+
+[node name="@Polygon2D@49" type="Polygon2D" parent="Entities/Herse3_12_13" unique_id=908077839]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(-18, -96, -8, -96, -8, -4, -18, -4)
+
+[node name="@Polygon2D@50" type="Polygon2D" parent="Entities/Herse3_12_13" unique_id=714695652]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(2, -96, 12, -96, 12, -4, 2, -4)
+
+[node name="@Polygon2D@51" type="Polygon2D" parent="Entities/Herse3_12_13" unique_id=9726108]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(22, -96, 32, -96, 32, -4, 22, -4)
+
+[node name="Herse3_13_13" type="Node2D" parent="Entities" unique_id=2092439349]
+position = Vector2(1296, 1344)
+script = ExtResource("3_x6gum")
+unless_flags = Array[StringName]([&"cinnabar_gym_gate_3", &"beaten_cinnabar_gym_4"])
+blocking_cells = Array[Vector2i]([Vector2i(13, 13)])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Herse3_13_13" unique_id=1373538958]
+color = Color(0.35, 0.12, 0.08, 1)
+polygon = PackedVector2Array(-46, -100, 46, -100, 46, -90, -46, -90)
+
+[node name="@Polygon2D@52" type="Polygon2D" parent="Entities/Herse3_13_13" unique_id=1354005471]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(-38, -96, -28, -96, -28, -4, -38, -4)
+
+[node name="@Polygon2D@53" type="Polygon2D" parent="Entities/Herse3_13_13" unique_id=621678548]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(-18, -96, -8, -96, -8, -4, -18, -4)
+
+[node name="@Polygon2D@54" type="Polygon2D" parent="Entities/Herse3_13_13" unique_id=921354070]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(2, -96, 12, -96, 12, -4, 2, -4)
+
+[node name="@Polygon2D@55" type="Polygon2D" parent="Entities/Herse3_13_13" unique_id=953460172]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(22, -96, 32, -96, 32, -4, 22, -4)
+
+[node name="Herse4_6_16" type="Node2D" parent="Entities" unique_id=883959031]
+position = Vector2(624, 1632)
+script = ExtResource("3_x6gum")
+unless_flags = Array[StringName]([&"cinnabar_gym_gate_4", &"beaten_cinnabar_gym_5"])
+blocking_cells = Array[Vector2i]([Vector2i(6, 16)])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Herse4_6_16" unique_id=675072063]
+color = Color(0.35, 0.12, 0.08, 1)
+polygon = PackedVector2Array(-46, -100, 46, -100, 46, -90, -46, -90)
+
+[node name="@Polygon2D@56" type="Polygon2D" parent="Entities/Herse4_6_16" unique_id=528006470]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(-38, -96, -28, -96, -28, -4, -38, -4)
+
+[node name="@Polygon2D@57" type="Polygon2D" parent="Entities/Herse4_6_16" unique_id=2042598523]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(-18, -96, -8, -96, -8, -4, -18, -4)
+
+[node name="@Polygon2D@58" type="Polygon2D" parent="Entities/Herse4_6_16" unique_id=1246526826]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(2, -96, 12, -96, 12, -4, 2, -4)
+
+[node name="@Polygon2D@59" type="Polygon2D" parent="Entities/Herse4_6_16" unique_id=1687714440]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(22, -96, 32, -96, 32, -4, 22, -4)
+
+[node name="Herse4_7_16" type="Node2D" parent="Entities" unique_id=748251846]
+position = Vector2(720, 1632)
+script = ExtResource("3_x6gum")
+unless_flags = Array[StringName]([&"cinnabar_gym_gate_4", &"beaten_cinnabar_gym_5"])
+blocking_cells = Array[Vector2i]([Vector2i(7, 16)])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Herse4_7_16" unique_id=1928344261]
+color = Color(0.35, 0.12, 0.08, 1)
+polygon = PackedVector2Array(-46, -100, 46, -100, 46, -90, -46, -90)
+
+[node name="@Polygon2D@60" type="Polygon2D" parent="Entities/Herse4_7_16" unique_id=1342508711]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(-38, -96, -28, -96, -28, -4, -38, -4)
+
+[node name="@Polygon2D@61" type="Polygon2D" parent="Entities/Herse4_7_16" unique_id=121322955]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(-18, -96, -8, -96, -8, -4, -18, -4)
+
+[node name="@Polygon2D@62" type="Polygon2D" parent="Entities/Herse4_7_16" unique_id=51628121]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(2, -96, 12, -96, 12, -4, 2, -4)
+
+[node name="@Polygon2D@63" type="Polygon2D" parent="Entities/Herse4_7_16" unique_id=1429573518]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(22, -96, 32, -96, 32, -4, 22, -4)
+
+[node name="Herse4_6_17" type="Node2D" parent="Entities" unique_id=60038796]
+position = Vector2(624, 1728)
+script = ExtResource("3_x6gum")
+unless_flags = Array[StringName]([&"cinnabar_gym_gate_4", &"beaten_cinnabar_gym_5"])
+blocking_cells = Array[Vector2i]([Vector2i(6, 17)])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Herse4_6_17" unique_id=1272655700]
+color = Color(0.35, 0.12, 0.08, 1)
+polygon = PackedVector2Array(-46, -100, 46, -100, 46, -90, -46, -90)
+
+[node name="@Polygon2D@64" type="Polygon2D" parent="Entities/Herse4_6_17" unique_id=366287590]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(-38, -96, -28, -96, -28, -4, -38, -4)
+
+[node name="@Polygon2D@65" type="Polygon2D" parent="Entities/Herse4_6_17" unique_id=1567765356]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(-18, -96, -8, -96, -8, -4, -18, -4)
+
+[node name="@Polygon2D@66" type="Polygon2D" parent="Entities/Herse4_6_17" unique_id=1816186444]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(2, -96, 12, -96, 12, -4, 2, -4)
+
+[node name="@Polygon2D@67" type="Polygon2D" parent="Entities/Herse4_6_17" unique_id=1199430937]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(22, -96, 32, -96, 32, -4, 22, -4)
+
+[node name="Herse4_7_17" type="Node2D" parent="Entities" unique_id=1290203863]
+position = Vector2(720, 1728)
+script = ExtResource("3_x6gum")
+unless_flags = Array[StringName]([&"cinnabar_gym_gate_4", &"beaten_cinnabar_gym_5"])
+blocking_cells = Array[Vector2i]([Vector2i(7, 17)])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Herse4_7_17" unique_id=1081773981]
+color = Color(0.35, 0.12, 0.08, 1)
+polygon = PackedVector2Array(-46, -100, 46, -100, 46, -90, -46, -90)
+
+[node name="@Polygon2D@68" type="Polygon2D" parent="Entities/Herse4_7_17" unique_id=1857513464]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(-38, -96, -28, -96, -28, -4, -38, -4)
+
+[node name="@Polygon2D@69" type="Polygon2D" parent="Entities/Herse4_7_17" unique_id=577720104]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(-18, -96, -8, -96, -8, -4, -18, -4)
+
+[node name="@Polygon2D@70" type="Polygon2D" parent="Entities/Herse4_7_17" unique_id=1642290374]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(2, -96, 12, -96, 12, -4, 2, -4)
+
+[node name="@Polygon2D@71" type="Polygon2D" parent="Entities/Herse4_7_17" unique_id=1455415375]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(22, -96, 32, -96, 32, -4, 22, -4)
+
+[node name="Herse5_4_12" type="Node2D" parent="Entities" unique_id=1302705683]
+position = Vector2(432, 1248)
+script = ExtResource("3_x6gum")
+unless_flags = Array[StringName]([&"cinnabar_gym_gate_5", &"beaten_cinnabar_gym_6"])
+blocking_cells = Array[Vector2i]([Vector2i(4, 12)])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Herse5_4_12" unique_id=1260184625]
+color = Color(0.35, 0.12, 0.08, 1)
+polygon = PackedVector2Array(-46, -100, 46, -100, 46, -90, -46, -90)
+
+[node name="@Polygon2D@72" type="Polygon2D" parent="Entities/Herse5_4_12" unique_id=1834734921]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(-38, -96, -28, -96, -28, -4, -38, -4)
+
+[node name="@Polygon2D@73" type="Polygon2D" parent="Entities/Herse5_4_12" unique_id=1637324366]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(-18, -96, -8, -96, -8, -4, -18, -4)
+
+[node name="@Polygon2D@74" type="Polygon2D" parent="Entities/Herse5_4_12" unique_id=714788088]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(2, -96, 12, -96, 12, -4, 2, -4)
+
+[node name="@Polygon2D@75" type="Polygon2D" parent="Entities/Herse5_4_12" unique_id=779212655]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(22, -96, 32, -96, 32, -4, 22, -4)
+
+[node name="Herse5_5_12" type="Node2D" parent="Entities" unique_id=464241706]
+position = Vector2(528, 1248)
+script = ExtResource("3_x6gum")
+unless_flags = Array[StringName]([&"cinnabar_gym_gate_5", &"beaten_cinnabar_gym_6"])
+blocking_cells = Array[Vector2i]([Vector2i(5, 12)])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Herse5_5_12" unique_id=889592586]
+color = Color(0.35, 0.12, 0.08, 1)
+polygon = PackedVector2Array(-46, -100, 46, -100, 46, -90, -46, -90)
+
+[node name="@Polygon2D@76" type="Polygon2D" parent="Entities/Herse5_5_12" unique_id=629598756]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(-38, -96, -28, -96, -28, -4, -38, -4)
+
+[node name="@Polygon2D@77" type="Polygon2D" parent="Entities/Herse5_5_12" unique_id=1304150476]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(-18, -96, -8, -96, -8, -4, -18, -4)
+
+[node name="@Polygon2D@78" type="Polygon2D" parent="Entities/Herse5_5_12" unique_id=1087867227]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(2, -96, 12, -96, 12, -4, 2, -4)
+
+[node name="@Polygon2D@79" type="Polygon2D" parent="Entities/Herse5_5_12" unique_id=1870601377]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(22, -96, 32, -96, 32, -4, 22, -4)
+
+[node name="Herse5_4_13" type="Node2D" parent="Entities" unique_id=1106631844]
+position = Vector2(432, 1344)
+script = ExtResource("3_x6gum")
+unless_flags = Array[StringName]([&"cinnabar_gym_gate_5", &"beaten_cinnabar_gym_6"])
+blocking_cells = Array[Vector2i]([Vector2i(4, 13)])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Herse5_4_13" unique_id=182879432]
+color = Color(0.35, 0.12, 0.08, 1)
+polygon = PackedVector2Array(-46, -100, 46, -100, 46, -90, -46, -90)
+
+[node name="@Polygon2D@80" type="Polygon2D" parent="Entities/Herse5_4_13" unique_id=511035674]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(-38, -96, -28, -96, -28, -4, -38, -4)
+
+[node name="@Polygon2D@81" type="Polygon2D" parent="Entities/Herse5_4_13" unique_id=1486373063]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(-18, -96, -8, -96, -8, -4, -18, -4)
+
+[node name="@Polygon2D@82" type="Polygon2D" parent="Entities/Herse5_4_13" unique_id=1776875969]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(2, -96, 12, -96, 12, -4, 2, -4)
+
+[node name="@Polygon2D@83" type="Polygon2D" parent="Entities/Herse5_4_13" unique_id=11974936]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(22, -96, 32, -96, 32, -4, 22, -4)
+
+[node name="Herse5_5_13" type="Node2D" parent="Entities" unique_id=879973915]
+position = Vector2(528, 1344)
+script = ExtResource("3_x6gum")
+unless_flags = Array[StringName]([&"cinnabar_gym_gate_5", &"beaten_cinnabar_gym_6"])
+blocking_cells = Array[Vector2i]([Vector2i(5, 13)])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Herse5_5_13" unique_id=1430946975]
+color = Color(0.35, 0.12, 0.08, 1)
+polygon = PackedVector2Array(-46, -100, 46, -100, 46, -90, -46, -90)
+
+[node name="@Polygon2D@84" type="Polygon2D" parent="Entities/Herse5_5_13" unique_id=989351786]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(-38, -96, -28, -96, -28, -4, -38, -4)
+
+[node name="@Polygon2D@85" type="Polygon2D" parent="Entities/Herse5_5_13" unique_id=1556319657]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(-18, -96, -8, -96, -8, -4, -18, -4)
+
+[node name="@Polygon2D@86" type="Polygon2D" parent="Entities/Herse5_5_13" unique_id=490772446]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(2, -96, 12, -96, 12, -4, 2, -4)
+
+[node name="@Polygon2D@87" type="Polygon2D" parent="Entities/Herse5_5_13" unique_id=1651310484]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(22, -96, 32, -96, 32, -4, 22, -4)
+
+[node name="Herse6_4_6" type="Node2D" parent="Entities" unique_id=856668027]
+position = Vector2(432, 672)
+script = ExtResource("3_x6gum")
+unless_flags = Array[StringName]([&"cinnabar_gym_gate_6", &"beaten_cinnabar_gym_7"])
+blocking_cells = Array[Vector2i]([Vector2i(4, 6)])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Herse6_4_6" unique_id=1309465258]
+color = Color(0.35, 0.12, 0.08, 1)
+polygon = PackedVector2Array(-46, -100, 46, -100, 46, -90, -46, -90)
+
+[node name="@Polygon2D@88" type="Polygon2D" parent="Entities/Herse6_4_6" unique_id=1844709214]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(-38, -96, -28, -96, -28, -4, -38, -4)
+
+[node name="@Polygon2D@89" type="Polygon2D" parent="Entities/Herse6_4_6" unique_id=754993280]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(-18, -96, -8, -96, -8, -4, -18, -4)
+
+[node name="@Polygon2D@90" type="Polygon2D" parent="Entities/Herse6_4_6" unique_id=721993472]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(2, -96, 12, -96, 12, -4, 2, -4)
+
+[node name="@Polygon2D@91" type="Polygon2D" parent="Entities/Herse6_4_6" unique_id=752456003]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(22, -96, 32, -96, 32, -4, 22, -4)
+
+[node name="Herse6_5_6" type="Node2D" parent="Entities" unique_id=1223711748]
+position = Vector2(528, 672)
+script = ExtResource("3_x6gum")
+unless_flags = Array[StringName]([&"cinnabar_gym_gate_6", &"beaten_cinnabar_gym_7"])
+blocking_cells = Array[Vector2i]([Vector2i(5, 6)])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Herse6_5_6" unique_id=1221018924]
+color = Color(0.35, 0.12, 0.08, 1)
+polygon = PackedVector2Array(-46, -100, 46, -100, 46, -90, -46, -90)
+
+[node name="@Polygon2D@92" type="Polygon2D" parent="Entities/Herse6_5_6" unique_id=152690923]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(-38, -96, -28, -96, -28, -4, -38, -4)
+
+[node name="@Polygon2D@93" type="Polygon2D" parent="Entities/Herse6_5_6" unique_id=80921268]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(-18, -96, -8, -96, -8, -4, -18, -4)
+
+[node name="@Polygon2D@94" type="Polygon2D" parent="Entities/Herse6_5_6" unique_id=1953804239]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(2, -96, 12, -96, 12, -4, 2, -4)
+
+[node name="@Polygon2D@95" type="Polygon2D" parent="Entities/Herse6_5_6" unique_id=178932310]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(22, -96, 32, -96, 32, -4, 22, -4)
+
+[node name="Herse6_4_7" type="Node2D" parent="Entities" unique_id=539402378]
+position = Vector2(432, 768)
+script = ExtResource("3_x6gum")
+unless_flags = Array[StringName]([&"cinnabar_gym_gate_6", &"beaten_cinnabar_gym_7"])
+blocking_cells = Array[Vector2i]([Vector2i(4, 7)])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Herse6_4_7" unique_id=2110106678]
+color = Color(0.35, 0.12, 0.08, 1)
+polygon = PackedVector2Array(-46, -100, 46, -100, 46, -90, -46, -90)
+
+[node name="@Polygon2D@96" type="Polygon2D" parent="Entities/Herse6_4_7" unique_id=179472525]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(-38, -96, -28, -96, -28, -4, -38, -4)
+
+[node name="@Polygon2D@97" type="Polygon2D" parent="Entities/Herse6_4_7" unique_id=1221884989]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(-18, -96, -8, -96, -8, -4, -18, -4)
+
+[node name="@Polygon2D@98" type="Polygon2D" parent="Entities/Herse6_4_7" unique_id=1016507478]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(2, -96, 12, -96, 12, -4, 2, -4)
+
+[node name="@Polygon2D@99" type="Polygon2D" parent="Entities/Herse6_4_7" unique_id=675968724]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(22, -96, 32, -96, 32, -4, 22, -4)
+
+[node name="Herse6_5_7" type="Node2D" parent="Entities" unique_id=1453846215]
+position = Vector2(528, 768)
+script = ExtResource("3_x6gum")
+unless_flags = Array[StringName]([&"cinnabar_gym_gate_6", &"beaten_cinnabar_gym_7"])
+blocking_cells = Array[Vector2i]([Vector2i(5, 7)])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Herse6_5_7" unique_id=1676356781]
+color = Color(0.35, 0.12, 0.08, 1)
+polygon = PackedVector2Array(-46, -100, 46, -100, 46, -90, -46, -90)
+
+[node name="@Polygon2D@100" type="Polygon2D" parent="Entities/Herse6_5_7" unique_id=1636361153]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(-38, -96, -28, -96, -28, -4, -38, -4)
+
+[node name="@Polygon2D@101" type="Polygon2D" parent="Entities/Herse6_5_7" unique_id=1658281897]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(-18, -96, -8, -96, -8, -4, -18, -4)
+
+[node name="@Polygon2D@102" type="Polygon2D" parent="Entities/Herse6_5_7" unique_id=236091548]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(2, -96, 12, -96, 12, -4, 2, -4)
+
+[node name="@Polygon2D@103" type="Polygon2D" parent="Entities/Herse6_5_7" unique_id=724427021]
+color = Color(0.62, 0.3, 0.16, 1)
+polygon = PackedVector2Array(22, -96, 32, -96, 32, -4, 22, -4)
+
+[node name="StatueArene" type="Node2D" parent="Entities" unique_id=1383328618]
+position = Vector2(1680, 1344)
+script = ExtResource("3_x6gum")
+blocking_cells = Array[Vector2i]([Vector2i(17, 13)])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/StatueArene" unique_id=2039493898]
+color = Color(0.3, 0.26, 0.24, 1)
+polygon = PackedVector2Array(-36, -30, 36, -30, 36, -4, -36, -4)
+
+[node name="@Polygon2D@104" type="Polygon2D" parent="Entities/StatueArene" unique_id=2032577975]
+color = Color(0.6, 0.36, 0.22, 1)
+polygon = PackedVector2Array(-24, -110, 24, -110, 24, -28, -24, -28)
+
+[node name="Overhead" type="TileMapLayer" parent="." unique_id=41272031]
+z_index = 10
+tile_set = ExtResource("2_dm61y")
+
+[node name="Warps" type="Node2D" parent="." unique_id=1732824282]
+
+[node name="Entree_1" type="Marker2D" parent="Warps" unique_id=1546105035]
+position = Vector2(1584, 1728)
+script = ExtResource("4_0yd3a")
+trigger = 1
+direction = Vector2i(0, 1)
+target_map = &"cinnabar_island"
+target_spawn = &"from_arene"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Entree_2" type="Marker2D" parent="Warps" unique_id=1978393939]
+position = Vector2(1680, 1728)
+script = ExtResource("4_0yd3a")
+trigger = 1
+direction = Vector2i(0, 1)
+target_map = &"cinnabar_island"
+target_spawn = &"from_arene"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Interactables" type="Node2D" parent="." unique_id=970690136]
+
+[node name="MachinePoint_1" type="Marker2D" parent="Interactables" unique_id=630855220]
+position = Vector2(1488, 768)
+script = ExtResource("5_caxar")
+dialogue_id = &"cinnabar_gym_quiz_1"
+facing = Vector2i(0, -1)
+
+[node name="MachinePoint_2" type="Marker2D" parent="Interactables" unique_id=1824528900]
+position = Vector2(1008, 192)
+script = ExtResource("5_caxar")
+dialogue_id = &"cinnabar_gym_quiz_2"
+facing = Vector2i(0, -1)
+
+[node name="MachinePoint_3" type="Marker2D" parent="Interactables" unique_id=1340297812]
+position = Vector2(912, 768)
+script = ExtResource("5_caxar")
+dialogue_id = &"cinnabar_gym_quiz_3"
+facing = Vector2i(0, -1)
+
+[node name="MachinePoint_4" type="Marker2D" parent="Interactables" unique_id=182834821]
+position = Vector2(912, 1344)
+script = ExtResource("5_caxar")
+dialogue_id = &"cinnabar_gym_quiz_4"
+facing = Vector2i(0, -1)
+
+[node name="MachinePoint_5" type="Marker2D" parent="Interactables" unique_id=243302913]
+position = Vector2(144, 1344)
+script = ExtResource("5_caxar")
+dialogue_id = &"cinnabar_gym_quiz_5"
+facing = Vector2i(0, -1)
+
+[node name="MachinePoint_6" type="Marker2D" parent="Interactables" unique_id=20623941]
+position = Vector2(144, 768)
+script = ExtResource("5_caxar")
+dialogue_id = &"cinnabar_gym_quiz_6"
+facing = Vector2i(0, -1)
+
+[node name="Spawns" type="Node2D" parent="." unique_id=371537060]
+
+[node name="depuis_ile" type="Marker2D" parent="Spawns" unique_id=968452605]
+position = Vector2(1584, 1632)
+
+[node name="Triggers" type="Node2D" parent="." unique_id=139361633]
