@@ -126,8 +126,9 @@ func test_real_tables_load_without_error() -> void:
 	# Îles Écume (test_j24_data).
 	assert_eq(lib.get_ids(), [&"cinnabar_island_water", &"dark_cave_1f_rubble",
 		&"dark_cave_b1f_rubble", &"digletts_cave_rubble", &"mt_moon_1f_rubble",
-		&"mt_moon_b1f_rubble", &"mt_moon_b2f_rubble", &"pokemon_tower_high", &"pokemon_tower_low",
-		&"pokemon_tower_mid", &"qa_sea_water", &"route_10_grass", &"route_11_grass",
+		&"mt_moon_b1f_rubble", &"mt_moon_b2f_rubble", &"pokemon_mansion_1f_floor",
+		&"pokemon_mansion_2f_floor", &"pokemon_mansion_3f_floor", &"pokemon_mansion_b1f_floor",
+		&"pokemon_tower_high", &"pokemon_tower_low", &"pokemon_tower_mid", &"qa_sea_water", &"route_10_grass", &"route_11_grass",
 		&"route_19_water", &"route_1_grass", &"route_20_water", &"route_21_grass",
 		&"route_21_water", &"route_22_grass", &"route_24_grass", &"route_25_grass",
 		&"route_2_grass", &"route_2_north_grass", &"route_3_grass", &"route_4_grass",
@@ -207,7 +208,7 @@ func test_every_wild_species_has_battle_sprites() -> void:
 	# + 3 tables de la Tour Pokémon (J19) : hors de la boucle, car leurs rencontres sont des
 	# SPECTRES sans le Scope (dossier 22 §6) ; Osselait n'a pas de sprite avant le J20.
 	# + la table d'eau de la carte de QA `qa_sea` (S2C, retirée à S2Z).
-	assert_eq(lib.size(), 36, "une table par couple ci-dessous, plus les 3 de la Tour et qa_sea")
+	assert_eq(lib.size(), 40, "une table par couple ci-dessous, plus les 3 de la Tour et qa_sea (dont les 4 du Manoir, J25)")
 	for pair: Array in [[&"route_1", &"grass"], [&"route_2", &"grass"],
 			[&"route_22", &"grass"], [&"viridian_forest", &"grass"], [&"route_2_north", &"grass"],
 			[&"route_3", &"grass"], [&"mt_moon_1f", &"rubble"], [&"mt_moon_b1f", &"rubble"],
@@ -224,7 +225,10 @@ func test_every_wild_species_has_battle_sprites() -> void:
 			[&"route_19", &"water"], [&"route_20", &"water"], [&"route_21", &"water"],
 			[&"route_21", &"grass"], [&"cinnabar_island", &"water"],
 			[&"seafoam_1f", &"floor"], [&"seafoam_b1f", &"floor"], [&"seafoam_b2f", &"floor"],
-			[&"seafoam_b3f", &"floor"], [&"seafoam_b4f", &"floor"]]:
+			[&"seafoam_b3f", &"floor"], [&"seafoam_b4f", &"floor"],
+			# Jalon 25 (T9) : Manoir Pokémon.
+			[&"pokemon_mansion_1f", &"floor"], [&"pokemon_mansion_2f", &"floor"],
+			[&"pokemon_mansion_3f", &"floor"], [&"pokemon_mansion_b1f", &"floor"]]:
 		for slot: EncounterSlot in lib.get_table(pair[0], pair[1]).slots:
 			for view: String in ["front", "back"]:
 				var path := "res://assets/sprites/pokemon/placeholder/%s_%s.png" % [
@@ -333,6 +337,6 @@ func test_real_tables_carry_no_ghost_item_outside_the_tower() -> void:
 		if String(id).begins_with("pokemon_tower_"):
 			continue
 		assert_true(table.ghost_unless_item.is_empty(), String(id))
-		# Jalon 24 (T4) : le sol des Îles Écume est aussi un terrain « floor », sans SPECTRE.
-		if not String(id).begins_with("seafoam_"):
+		# Jalon 24 (T4) : le sol des Îles Écume est aussi un terrain « floor », sans SPECTRE ; J25 : Manoir.
+		if not (String(id).begins_with("seafoam_") or String(id).begins_with("pokemon_mansion_")):
 			assert_ne(table.terrain, &"floor", String(id))

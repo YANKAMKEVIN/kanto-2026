@@ -6,170 +6,170 @@
 [ext_resource type="Script" path="res://game/world/warp_point.gd" id="4_6ulrp"]
 [ext_resource type="Script" path="res://game/world/interactions/interact_point.gd" id="5_pt4pp"]
 
-[node name="PewterMuseumReserve" type="Node2D" unique_id=67212524]
+[node name="PewterMuseumReserve" type="Node2D" unique_id=225564940]
 script = ExtResource("1_vxpo8")
 map_id = &"pewter_museum_reserve"
-display_name = "Musée d'Argenta"
+display_name = "Argenta"
 size = Vector2i(15, 10)
 interior = true
 light_profile = &"interior_warm"
 
-[node name="Ground" type="TileMapLayer" parent="." unique_id=1485080699]
+[node name="Ground" type="TileMapLayer" parent="." unique_id=1594384021]
 tile_map_data = PackedByteArray("AAAAAAAAAAABAAcAAAABAAAAAAABAAcAAAACAAAAAAAAAAcAAAADAAAAAAAAAAcAAAAEAAAAAAABAAcAAAAFAAAAAAAAAAcAAAAGAAAAAAABAAcAAAAHAAAAAAABAAcAAAAIAAAAAAAAAAcAAAAJAAAAAAABAAcAAAAKAAAAAAAAAAcAAAALAAAAAAABAAcAAAAMAAAAAAABAAcAAAANAAAAAAAAAAcAAAAOAAAAAAAAAAcAAAAAAAEAAAABAAcAAAABAAEAAAAAAAcAAAACAAEAAAABAAcAAAADAAEAAAAAAAcAAAAEAAEAAAAAAAcAAAAFAAEAAAAAAAcAAAAGAAEAAAAAAAcAAAAHAAEAAAABAAcAAAAIAAEAAAAAAAcAAAAJAAEAAAABAAcAAAAKAAEAAAAAAAcAAAALAAEAAAABAAcAAAAMAAEAAAAAAAcAAAANAAEAAAAAAAcAAAAOAAEAAAABAAcAAAAAAAIAAAAAAAcAAAABAAIAAAAAAAcAAAACAAIAAAABAAcAAAADAAIAAAABAAcAAAAEAAIAAAABAAcAAAAFAAIAAAABAAcAAAAGAAIAAAAAAAcAAAAHAAIAAAABAAcAAAAIAAIAAAAAAAcAAAAJAAIAAAAAAAcAAAAKAAIAAAAAAAcAAAALAAIAAAABAAcAAAAMAAIAAAAAAAcAAAANAAIAAAABAAcAAAAOAAIAAAABAAcAAAAAAAMAAAABAAcAAAABAAMAAAAAAAcAAAACAAMAAAABAAcAAAADAAMAAAABAAUAAAAEAAMAAAAAAAUAAAAFAAMAAAABAAUAAAAGAAMAAAABAAUAAAAHAAMAAAABAAUAAAAIAAMAAAAAAAUAAAAJAAMAAAAAAAUAAAAKAAMAAAAAAAUAAAALAAMAAAAAAAUAAAAMAAMAAAAAAAUAAAANAAMAAAABAAUAAAAOAAMAAAAAAAcAAAAAAAQAAAAAAAcAAAABAAQAAAABAAUAAAACAAQAAAAAAAUAAAADAAQAAAAAAAUAAAAEAAQAAAAAAAUAAAAFAAQAAAAAAAUAAAAGAAQAAAABAAUAAAAHAAQAAAABAAUAAAAIAAQAAAAAAAUAAAAJAAQAAAABAAUAAAAKAAQAAAAAAAUAAAALAAQAAAAAAAUAAAAMAAQAAAAAAAUAAAANAAQAAAAAAAUAAAAOAAQAAAAAAAcAAAAAAAUAAAABAAcAAAABAAUAAAABAAUAAAACAAUAAAAAAAUAAAADAAUAAAAAAAcAAAAEAAUAAAABAAcAAAAFAAUAAAAAAAcAAAAGAAUAAAABAAcAAAAHAAUAAAAAAAcAAAAIAAUAAAABAAUAAAAJAAUAAAABAAUAAAAKAAUAAAABAAUAAAALAAUAAAABAAUAAAAMAAUAAAABAAUAAAANAAUAAAABAAUAAAAOAAUAAAABAAcAAAAAAAYAAAAAAAcAAAABAAYAAAAAAAUAAAACAAYAAAABAAUAAAADAAYAAAAAAAUAAAAEAAYAAAAAAAUAAAAFAAYAAAAAAAUAAAAGAAYAAAAAAAUAAAAHAAYAAAABAAUAAAAIAAYAAAAAAAUAAAAJAAYAAAABAAUAAAAKAAYAAAAAAAUAAAALAAYAAAAAAAUAAAAMAAYAAAAAAAUAAAANAAYAAAAAAAUAAAAOAAYAAAAAAAcAAAAAAAcAAAABAAcAAAABAAcAAAABAAcAAAACAAcAAAABAAcAAAADAAcAAAABAAUAAAAEAAcAAAAAAAUAAAAFAAcAAAABAAUAAAAGAAcAAAAAAAUAAAAHAAcAAAABAAUAAAAIAAcAAAAAAAUAAAAJAAcAAAABAAUAAAAKAAcAAAAAAAUAAAALAAcAAAAAAAUAAAAMAAcAAAABAAUAAAANAAcAAAAAAAUAAAAOAAcAAAABAAcAAAAAAAgAAAABAAcAAAABAAgAAAAAAAcAAAACAAgAAAABAAcAAAADAAgAAAAAAAcAAAAEAAgAAAAAAAcAAAAFAAgAAAABAAcAAAAGAAgAAAACAAIAAAAHAAgAAAACAAIAAAAIAAgAAAACAAIAAAAJAAgAAAAAAAcAAAAKAAgAAAABAAcAAAALAAgAAAABAAcAAAAMAAgAAAAAAAcAAAANAAgAAAAAAAcAAAAOAAgAAAABAAcAAAAAAAkAAAAAAAcAAAABAAkAAAABAAcAAAACAAkAAAAAAAcAAAADAAkAAAAAAAcAAAAEAAkAAAABAAcAAAAFAAkAAAAAAAcAAAAGAAkAAAABAAcAAAAHAAkAAAABAAcAAAAIAAkAAAABAAcAAAAJAAkAAAAAAAcAAAAKAAkAAAABAAcAAAALAAkAAAAAAAcAAAAMAAkAAAAAAAcAAAANAAkAAAABAAcAAAAOAAkAAAAAAAcAAAA=")
 tile_set = ExtResource("2_62bgj")
 
-[node name="Detail" type="TileMapLayer" parent="." unique_id=784037965]
+[node name="Detail" type="TileMapLayer" parent="." unique_id=1723917898]
 tile_set = ExtResource("2_62bgj")
 
-[node name="Obstacles" type="TileMapLayer" parent="." unique_id=1949912178]
+[node name="Obstacles" type="TileMapLayer" parent="." unique_id=662087273]
 tile_set = ExtResource("2_62bgj")
 
-[node name="Entities" type="Node2D" parent="." unique_id=991720279]
+[node name="Entities" type="Node2D" parent="." unique_id=361974312]
 unique_name_in_owner = true
 y_sort_enabled = true
 
-[node name="Meuble_3_5" type="Node2D" parent="Entities" unique_id=1846968820]
+[node name="Meuble_3_5" type="Node2D" parent="Entities" unique_id=1501262700]
 position = Vector2(336, 576)
 script = ExtResource("3_h50ri")
 blocking_cells = Array[Vector2i]([Vector2i(3, 5)])
 
-[node name="Dessin" type="Polygon2D" parent="Entities/Meuble_3_5" unique_id=2099674890]
+[node name="Dessin" type="Polygon2D" parent="Entities/Meuble_3_5" unique_id=345703498]
 color = Color(0.5, 0.34, 0.2, 1)
 polygon = PackedVector2Array(-46, -76, 46, -76, 46, -4, -46, -4)
 
-[node name="Meuble_4_5" type="Node2D" parent="Entities" unique_id=1086272651]
+[node name="Meuble_4_5" type="Node2D" parent="Entities" unique_id=454206458]
 position = Vector2(432, 576)
 script = ExtResource("3_h50ri")
 blocking_cells = Array[Vector2i]([Vector2i(4, 5)])
 
-[node name="Dessin" type="Polygon2D" parent="Entities/Meuble_4_5" unique_id=422717999]
+[node name="Dessin" type="Polygon2D" parent="Entities/Meuble_4_5" unique_id=912358850]
 color = Color(0.5, 0.34, 0.2, 1)
 polygon = PackedVector2Array(-46, -76, 46, -76, 46, -4, -46, -4)
 
-[node name="Meuble_5_5" type="Node2D" parent="Entities" unique_id=1108038362]
+[node name="Meuble_5_5" type="Node2D" parent="Entities" unique_id=1258609656]
 position = Vector2(528, 576)
 script = ExtResource("3_h50ri")
 blocking_cells = Array[Vector2i]([Vector2i(5, 5)])
 
-[node name="Dessin" type="Polygon2D" parent="Entities/Meuble_5_5" unique_id=2118249574]
+[node name="Dessin" type="Polygon2D" parent="Entities/Meuble_5_5" unique_id=2055962029]
 color = Color(0.5, 0.34, 0.2, 1)
 polygon = PackedVector2Array(-46, -76, 46, -76, 46, -4, -46, -4)
 
-[node name="Meuble_6_5" type="Node2D" parent="Entities" unique_id=5151491]
+[node name="Meuble_6_5" type="Node2D" parent="Entities" unique_id=130710006]
 position = Vector2(624, 576)
 script = ExtResource("3_h50ri")
 blocking_cells = Array[Vector2i]([Vector2i(6, 5)])
 
-[node name="Dessin" type="Polygon2D" parent="Entities/Meuble_6_5" unique_id=1166449594]
+[node name="Dessin" type="Polygon2D" parent="Entities/Meuble_6_5" unique_id=1296766797]
 color = Color(0.5, 0.34, 0.2, 1)
 polygon = PackedVector2Array(-46, -76, 46, -76, 46, -4, -46, -4)
 
-[node name="Meuble_7_5" type="Node2D" parent="Entities" unique_id=300462324]
+[node name="Meuble_7_5" type="Node2D" parent="Entities" unique_id=1329207576]
 position = Vector2(720, 576)
 script = ExtResource("3_h50ri")
 blocking_cells = Array[Vector2i]([Vector2i(7, 5)])
 
-[node name="Dessin" type="Polygon2D" parent="Entities/Meuble_7_5" unique_id=130871622]
+[node name="Dessin" type="Polygon2D" parent="Entities/Meuble_7_5" unique_id=1673695803]
 color = Color(0.5, 0.34, 0.2, 1)
 polygon = PackedVector2Array(-46, -76, 46, -76, 46, -4, -46, -4)
 
-[node name="Meuble_1_3" type="Node2D" parent="Entities" unique_id=1490516164]
+[node name="Meuble_1_3" type="Node2D" parent="Entities" unique_id=501352911]
 position = Vector2(144, 384)
 script = ExtResource("3_h50ri")
 blocking_cells = Array[Vector2i]([Vector2i(1, 3)])
 
-[node name="Dessin" type="Polygon2D" parent="Entities/Meuble_1_3" unique_id=52728668]
+[node name="Dessin" type="Polygon2D" parent="Entities/Meuble_1_3" unique_id=1154218622]
 color = Color(0.62, 0.5, 0.32, 1)
 polygon = PackedVector2Array(-46, -76, 46, -76, 46, -4, -46, -4)
 
-[node name="Meuble_2_3" type="Node2D" parent="Entities" unique_id=1478876842]
+[node name="Meuble_2_3" type="Node2D" parent="Entities" unique_id=242081297]
 position = Vector2(240, 384)
 script = ExtResource("3_h50ri")
 blocking_cells = Array[Vector2i]([Vector2i(2, 3)])
 
-[node name="Dessin" type="Polygon2D" parent="Entities/Meuble_2_3" unique_id=1267414067]
+[node name="Dessin" type="Polygon2D" parent="Entities/Meuble_2_3" unique_id=1158795872]
 color = Color(0.62, 0.5, 0.32, 1)
 polygon = PackedVector2Array(-46, -76, 46, -76, 46, -4, -46, -4)
 
-[node name="Meuble_1_7" type="Node2D" parent="Entities" unique_id=1495262456]
+[node name="Meuble_1_7" type="Node2D" parent="Entities" unique_id=1408696754]
 position = Vector2(144, 768)
 script = ExtResource("3_h50ri")
 blocking_cells = Array[Vector2i]([Vector2i(1, 7)])
 
-[node name="Dessin" type="Polygon2D" parent="Entities/Meuble_1_7" unique_id=688400358]
+[node name="Dessin" type="Polygon2D" parent="Entities/Meuble_1_7" unique_id=241548103]
 color = Color(0.62, 0.5, 0.32, 1)
 polygon = PackedVector2Array(-46, -76, 46, -76, 46, -4, -46, -4)
 
-[node name="Meuble_2_7" type="Node2D" parent="Entities" unique_id=1467277519]
+[node name="Meuble_2_7" type="Node2D" parent="Entities" unique_id=218838659]
 position = Vector2(240, 768)
 script = ExtResource("3_h50ri")
 blocking_cells = Array[Vector2i]([Vector2i(2, 7)])
 
-[node name="Dessin" type="Polygon2D" parent="Entities/Meuble_2_7" unique_id=1443888394]
+[node name="Dessin" type="Polygon2D" parent="Entities/Meuble_2_7" unique_id=1989197426]
 color = Color(0.62, 0.5, 0.32, 1)
 polygon = PackedVector2Array(-46, -76, 46, -76, 46, -4, -46, -4)
 
-[node name="VitrinePleine" type="Node2D" parent="Entities" unique_id=1682882467]
+[node name="VitrinePleine" type="Node2D" parent="Entities" unique_id=16878037]
 position = Vector2(1104, 384)
 script = ExtResource("3_h50ri")
 unless_flags = Array[StringName]([&"pewter_museum_got_old_amber"])
 
-[node name="Dessin" type="Polygon2D" parent="Entities/VitrinePleine" unique_id=447468828]
+[node name="Dessin" type="Polygon2D" parent="Entities/VitrinePleine" unique_id=797096383]
 color = Color(0.95, 0.66, 0.2, 1)
 polygon = PackedVector2Array(-20, -70, 20, -70, 20, -40, -20, -40)
 
-[node name="Meuble_11_3" type="Node2D" parent="Entities" unique_id=29977441]
+[node name="Meuble_11_3" type="Node2D" parent="Entities" unique_id=1407797330]
 position = Vector2(1104, 384)
 script = ExtResource("3_h50ri")
 blocking_cells = Array[Vector2i]([Vector2i(11, 3)])
 
-[node name="Dessin" type="Polygon2D" parent="Entities/Meuble_11_3" unique_id=2036439676]
+[node name="Dessin" type="Polygon2D" parent="Entities/Meuble_11_3" unique_id=455570496]
 color = Color(0.7, 0.84, 0.9, 0.6)
 polygon = PackedVector2Array(-46, -76, 46, -76, 46, -4, -46, -4)
 
-[node name="Overhead" type="TileMapLayer" parent="." unique_id=1234663424]
+[node name="Overhead" type="TileMapLayer" parent="." unique_id=1216687649]
 z_index = 10
 tile_set = ExtResource("2_62bgj")
 
-[node name="Warps" type="Node2D" parent="." unique_id=2034318128]
+[node name="Warps" type="Node2D" parent="." unique_id=1147280836]
 
-[node name="Sortie_1" type="Marker2D" parent="Warps" unique_id=1481313748]
+[node name="Sortie_1" type="Marker2D" parent="Warps" unique_id=2102037748]
 position = Vector2(624, 864)
 script = ExtResource("4_6ulrp")
 trigger = 1
 direction = Vector2i(0, 1)
 target_map = &"pewter_city"
 target_spawn = &"from_museum_reserve"
-arrival_facing = Vector2i(0, 1)
+arrival_facing = Vector2i(1, 0)
 
-[node name="Sortie_2" type="Marker2D" parent="Warps" unique_id=1720765509]
+[node name="Sortie_2" type="Marker2D" parent="Warps" unique_id=2100976427]
 position = Vector2(720, 864)
 script = ExtResource("4_6ulrp")
 trigger = 1
 direction = Vector2i(0, 1)
 target_map = &"pewter_city"
 target_spawn = &"from_museum_reserve"
-arrival_facing = Vector2i(0, 1)
+arrival_facing = Vector2i(1, 0)
 
-[node name="Sortie_3" type="Marker2D" parent="Warps" unique_id=1845833195]
+[node name="Sortie_3" type="Marker2D" parent="Warps" unique_id=335883423]
 position = Vector2(816, 864)
 script = ExtResource("4_6ulrp")
 trigger = 1
 direction = Vector2i(0, 1)
 target_map = &"pewter_city"
 target_spawn = &"from_museum_reserve"
-arrival_facing = Vector2i(0, 1)
+arrival_facing = Vector2i(1, 0)
 
-[node name="Interactables" type="Node2D" parent="." unique_id=1019624031]
+[node name="Interactables" type="Node2D" parent="." unique_id=1301856119]
 
-[node name="VitrinePoint" type="Marker2D" parent="Interactables" unique_id=1109349038]
+[node name="VitrinePoint" type="Marker2D" parent="Interactables" unique_id=140440756]
 position = Vector2(1104, 384)
 script = ExtResource("5_pt4pp")
 dialogue_id = &"pewter_museum_reserve_showcase"
 
-[node name="Spawns" type="Node2D" parent="." unique_id=936343769]
+[node name="Spawns" type="Node2D" parent="." unique_id=1273165097]
 
-[node name="entree" type="Marker2D" parent="Spawns" unique_id=377365247]
+[node name="entree" type="Marker2D" parent="Spawns" unique_id=1918994668]
 position = Vector2(720, 768)
 
-[node name="Triggers" type="Node2D" parent="." unique_id=1680427590]
+[node name="Triggers" type="Node2D" parent="." unique_id=645324256]

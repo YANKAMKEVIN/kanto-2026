@@ -26,15 +26,16 @@ func test_real_data_loads_without_error() -> void:
 	# Scope Sylphe) ; jalon 20 (T11) : Rappel, Poupée Poké, objets X, Muscle +.
 	# Passe systèmes 2 (S2B) : items_systemes2.json (Poké Flûte, Bicyclette) ; S2C : CS03 (hm03) ; S2D : CS04 (hm04) ; S2C-bis : cannes.
 	# Jalon 24 (T4) : items_j24.json (Hyper Ball, Hyper Potion, Total Soin, CT35).
+	# Jalon 25 (T8) : items_j25.json (Clé Secrète, Vieil Ambre, CT38, Potion Max, Rappel Max, CT14, CT22).
 	assert_eq(_library.get_ids(), [&"antidote", &"awakening", &"bicycle", &"burn_heal",
 		&"card_key", &"dire_hit",
 		&"dome_fossil", &"escape_rope", &"fire_stone", &"fresh_water", &"full_heal", &"full_restore",
 		&"good_rod", &"great_ball", &"helix_fossil", &"hm01", &"hm02", &"hm03", &"hm04", &"hm05",
 		&"hyper_potion", &"ice_heal", &"leaf_stone", &"lemonade",
-		&"lift_key", &"moon_stone", &"nugget", &"oak_parcel", &"old_rod", &"paralyze_heal", &"poke_ball",
-		&"poke_doll", &"poke_flute", &"potion", &"rare_candy", &"revive", &"silph_scope", &"soda_pop",
-		&"ss_ticket", &"super_potion", &"super_rod", &"thunder_stone", &"tm01", &"tm11", &"tm13", &"tm19",
-		&"tm21", &"tm24", &"tm28", &"tm34", &"tm35", &"ultra_ball", &"water_stone", &"x_accuracy",
+		&"lift_key", &"max_potion", &"max_revive", &"moon_stone", &"nugget", &"oak_parcel", &"old_amber", &"old_rod", &"paralyze_heal", &"poke_ball",
+		&"poke_doll", &"poke_flute", &"potion", &"rare_candy", &"revive", &"secret_key", &"silph_scope", &"soda_pop",
+		&"ss_ticket", &"super_potion", &"super_rod", &"thunder_stone", &"tm01", &"tm11", &"tm13", &"tm14", &"tm19",
+		&"tm21", &"tm22", &"tm24", &"tm28", &"tm34", &"tm35", &"tm38", &"ultra_ball", &"water_stone", &"x_accuracy",
 		&"x_attack", &"x_defend", &"x_special", &"x_speed"] as Array[StringName])
 	var ball := _library.get_item(&"poke_ball")
 	assert_eq(ball.name, "Poké Ball")
@@ -58,10 +59,11 @@ func test_real_data_loads_without_error() -> void:
 		&"water_stone",
 		&"thunder_stone", &"leaf_stone", &"fresh_water", &"soda_pop", &"lemonade", &"tm13",
 		&"tm21", &"lift_key", &"silph_scope", &"ultra_ball", &"hyper_potion", &"full_heal", &"tm35",
+		&"secret_key", &"old_amber", &"tm38", &"max_potion", &"max_revive", &"tm14", &"tm22",
 		&"poke_flute", &"bicycle", &"card_key", &"hm02", &"hm03", &"hm04",
 		&"old_rod", &"good_rod", &"super_rod", &"hm05", &"escape_rope", &"moon_stone", &"dome_fossil", &"helix_fossil", &"tm01", &"super_potion",
 		&"full_restore"] as Array[StringName],
-		"ordre alphabétique des fichiers (items, items_j14, items_j16, items_j20, items_j24, "
+		"ordre alphabétique des fichiers (items, items_j14, items_j16, items_j20, items_j24, items_j25, "
 		+ "items_systemes2, j17, mt_moon, vermilion)")
 	assert_eq([ball.order, potion.order], [0, 1])
 

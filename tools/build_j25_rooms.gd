@@ -42,7 +42,7 @@ func _init() -> void:
 
 func _build_gym() -> void:
 	var plan := _plan("cramois_arene")
-	var root := _new_map("CinnabarGym", &"cinnabar_gym", "Arène de Cramois'Île",
+	var root := _new_map("CinnabarGym", &"cinnabar_gym", "Cramois'Île",
 		Vector2i(plan.width, plan.height))
 	var entities: Node = root.get_node(^"Entities")
 	_paint(root, plan, "#Q", _over.Kind.COBBLE)
@@ -89,7 +89,7 @@ func _build_gym() -> void:
 
 func _build_reserve() -> void:
 	var plan := _plan("argenta_musee_reserve")
-	var root := _new_map("PewterMuseumReserve", &"pewter_museum_reserve", "Musée d'Argenta",
+	var root := _new_map("PewterMuseumReserve", &"pewter_museum_reserve", "Argenta",
 		Vector2i(plan.width, plan.height))
 	var entities: Node = root.get_node(^"Entities")
 	_paint(root, plan, "Ktvr", _over.Kind.BOARDWALK)

@@ -190,6 +190,24 @@
 			"foe_feet": [1559, 540],
 			"player_feet": [716, 972],
 			"horizon": 433
+		},
+		"manoir_salle": {
+			"zone": "pokemon_mansion",
+			"variant": "salle",
+			"back": "res://assets/battle/decors/tour_pokemon_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 540],
+			"player_feet": [716, 972],
+			"horizon": 335
+		},
+		"arene_cramois": {
+			"zone": "cinnabar_gym",
+			"variant": "arene",
+			"back": "res://assets/battle/decors/vermilion_gym_salle_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 540],
+			"player_feet": [716, 972],
+			"horizon": 380
 		}
 	},
 	"places": {
@@ -310,6 +328,21 @@
 		],
 		"rocket_hideout_b4f": [
 			{ "decor": "rocket_hideout_repaire" }
+		],
+		"pokemon_mansion_1f": [
+			{ "decor": "manoir_salle" }
+		],
+		"pokemon_mansion_2f": [
+			{ "decor": "manoir_salle" }
+		],
+		"pokemon_mansion_3f": [
+			{ "decor": "manoir_salle" }
+		],
+		"pokemon_mansion_b1f": [
+			{ "decor": "manoir_salle" }
+		],
+		"cinnabar_gym": [
+			{ "decor": "arene_cramois" }
 		]
 	}
 }

@@ -52,10 +52,10 @@ func test_compatibilities_of_rouge_bleu() -> void:
 	# Jalon 15 (T12) : Miaouss et Persan, compatibles (Rouge/Bleu) ; jalon 17 (T7) : les huit ;
 	# jalon 19 (T3) : les six de la Tour (Caninos vient du J17) ; jalon 20 (T7) : les onze
 	# (Caninos et Goupix sont ceux du J17) ; jalon 24 (T4) : 22 espèces, toutes compatibles sauf
-	# Magicarpe.
-	assert_eq(count, 106, "106 espèces sur 111 (dossier 14 §6.1 ; + 12 du jalon 12, + 9 du jalon"
+	# Magicarpe ; jalon 25 (T7) : les huit, toutes compatibles.
+	assert_eq(count, 114, "114 espèces sur 119 (dossier 14 §6.1 ; + 12 du jalon 12, + 9 du jalon"
 		+ " 13, + 3 du jalon 14, + 2 du jalon 15, + 8 du jalon 17, + 6 du jalon 19, + 11 du jalon 20,"
-		+ " + 21 du jalon 24)")
+		+ " + 21 du jalon 24, + 8 du jalon 25)")
 
 
 ## Jalon 14 (T5, jalon-14.md §2.4) : CT19 Frappe Atlas (Route 25) et CT28 Tunnel (Rocket).

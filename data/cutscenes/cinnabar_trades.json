@@ -1,0 +1,158 @@
+{
+	"cinnabar_trade_hector": {
+		"variants": [
+			{
+				"if": [
+					"cinnabar_trade_electrode_done"
+				],
+				"steps": [
+					{
+						"dialogue": "cinnabar_trade_hector_after"
+					}
+				]
+			},
+			{
+				"steps": [
+					{
+						"unset": [
+							"cinnabar_trade_offer_accepted",
+							"cinnabar_trade_offer_declined"
+						]
+					},
+					{
+						"dialogue": "cinnabar_trade_hector_offer"
+					},
+					{
+						"dialogue": "cinnabar_trade_hector_refuse",
+						"if": [
+							"cinnabar_trade_offer_declined"
+						]
+					},
+					{
+						"trade": "cinnabar_trade_electrode",
+						"wrong": "cinnabar_trade_hector_wrong",
+						"refuse": "cinnabar_trade_hector_refuse",
+						"say": [
+							"cinnabar_trade_cable",
+							"cinnabar_trade_hector_done",
+							"cinnabar_trade_hector_thanks"
+						],
+						"if": [
+							"cinnabar_trade_offer_accepted"
+						]
+					},
+					{
+						"unset": [
+							"cinnabar_trade_offer_accepted",
+							"cinnabar_trade_offer_declined"
+						]
+					}
+				]
+			}
+		]
+	},
+	"cinnabar_trade_marc": {
+		"variants": [
+			{
+				"if": [
+					"cinnabar_trade_seel_done"
+				],
+				"steps": [
+					{
+						"dialogue": "cinnabar_trade_marc_after"
+					}
+				]
+			},
+			{
+				"steps": [
+					{
+						"unset": [
+							"cinnabar_trade_offer_accepted",
+							"cinnabar_trade_offer_declined"
+						]
+					},
+					{
+						"dialogue": "cinnabar_trade_marc_offer"
+					},
+					{
+						"dialogue": "cinnabar_trade_marc_refuse",
+						"if": [
+							"cinnabar_trade_offer_declined"
+						]
+					},
+					{
+						"trade": "cinnabar_trade_seel",
+						"wrong": "cinnabar_trade_marc_wrong",
+						"refuse": "cinnabar_trade_marc_refuse",
+						"say": [
+							"cinnabar_trade_cable",
+							"cinnabar_trade_marc_done",
+							"cinnabar_trade_marc_thanks"
+						],
+						"if": [
+							"cinnabar_trade_offer_accepted"
+						]
+					},
+					{
+						"unset": [
+							"cinnabar_trade_offer_accepted",
+							"cinnabar_trade_offer_declined"
+						]
+					}
+				]
+			}
+		]
+	},
+	"cinnabar_trade_lina": {
+		"variants": [
+			{
+				"if": [
+					"cinnabar_trade_tangela_done"
+				],
+				"steps": [
+					{
+						"dialogue": "cinnabar_trade_lina_after"
+					}
+				]
+			},
+			{
+				"steps": [
+					{
+						"unset": [
+							"cinnabar_trade_offer_accepted",
+							"cinnabar_trade_offer_declined"
+						]
+					},
+					{
+						"dialogue": "cinnabar_trade_lina_offer"
+					},
+					{
+						"dialogue": "cinnabar_trade_lina_refuse",
+						"if": [
+							"cinnabar_trade_offer_declined"
+						]
+					},
+					{
+						"trade": "cinnabar_trade_tangela",
+						"wrong": "cinnabar_trade_lina_wrong",
+						"refuse": "cinnabar_trade_lina_refuse",
+						"say": [
+							"cinnabar_trade_cable",
+							"cinnabar_trade_lina_done",
+							"cinnabar_trade_lina_thanks"
+						],
+						"if": [
+							"cinnabar_trade_offer_accepted"
+						]
+					},
+					{
+						"unset": [
+							"cinnabar_trade_offer_accepted",
+							"cinnabar_trade_offer_declined"
+						]
+					}
+				]
+			}
+		]
+	}
+}

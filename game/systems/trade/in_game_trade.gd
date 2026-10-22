@@ -126,6 +126,24 @@ func execute(id: StringName, index: int, party: Party, pokedex: Pokedex, flags: 
 	return result
 
 
+## Titre du choix [D] ; raison d'une place refusée [D].
+const PICK_TITLE: String = "Échanger un Pokémon"
+const REFUSED_REASON: String = "Pas l'espèce demandée"
+
+
+## Vue du choix pour le [PartyPicker] : [param party] entière, [param accepted] utilisables, les
+## autres places avec leur raison.
+static func picker_view(party: Party, accepted: Array[int], data: PokemonData) -> PartyPickerView:
+	var picker := PartyPickerView.new()
+	picker.title = PICK_TITLE
+	var members := party.get_all()
+	for i: int in members.size():
+		var ok := i in accepted
+		picker.targets.append(PartyTargetView.new(DashboardViews.member(members[i], i, data),
+			ok, "" if ok else REFUSED_REASON, REFUSED_REASON))
+	return picker
+
+
 func _fail(message: String) -> bool:
 	_errors.append(message)
 	push_error("InGameTrade : " + message)

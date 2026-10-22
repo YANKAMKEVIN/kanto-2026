@@ -30,5 +30,32 @@
 		"heal_amount": 999,
 		"price": 2500,
 		"description": "Restaure tous les PV d'un Pokémon."
+	},
+	"max_revive": {
+		"name": "Rappel Max",
+		"plural": "Rappels Max",
+		"feminine": false,
+		"category": "heal",
+		"revive": 1.0,
+		"price": 4000,
+		"description": "Ranime un Pokémon K.O. avec tous ses PV."
+	},
+	"tm14": {
+		"name": "CT14 — Blizzard",
+		"plural": "CT14 — Blizzard",
+		"feminine": true,
+		"category": "tm",
+		"tm": 14,
+		"teaches": "blizzard",
+		"description": "Apprend Blizzard à un Pokémon."
+	},
+	"tm22": {
+		"name": "CT22 — Lance-Soleil",
+		"plural": "CT22 — Lance-Soleil",
+		"feminine": true,
+		"category": "tm",
+		"tm": 22,
+		"teaches": "solar_beam",
+		"description": "Apprend Lance-Soleil à un Pokémon."
 	}
 }

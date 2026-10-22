@@ -1,8 +1,24 @@
 {
 	"cinnabar_trade_hector_offer": {
 		"speaker": "Papi Hector",
-		"pages": [
-			"Bonjour ! Tu veux échanger ton Raichu\ncontre mon Électrode ?"
+		"variants": [
+			{
+				"pages": [
+					"Bonjour ! Tu veux échanger ton Raichu\ncontre mon Électrode ?"
+				],
+				"choice": {
+					"confirm": "ÉCHANGER",
+					"cancel": "NON",
+					"confirm_set": [
+						"cinnabar_trade_offer_accepted"
+					],
+					"cancel_set": [
+						"cinnabar_trade_offer_declined"
+					],
+					"confirm_pages": [],
+					"cancel_pages": []
+				}
+			}
 		]
 	},
 	"cinnabar_trade_hector_refuse": {
@@ -31,8 +47,24 @@
 	},
 	"cinnabar_trade_lina_offer": {
 		"speaker": "Lina",
-		"pages": [
-			"Salut ! Tu as un Mimitoss ?\nTu l'échangerais contre un Saquedeneu ?"
+		"variants": [
+			{
+				"pages": [
+					"Salut ! Tu as un Mimitoss ?\nTu l'échangerais contre un Saquedeneu ?"
+				],
+				"choice": {
+					"confirm": "ÉCHANGER",
+					"cancel": "NON",
+					"confirm_set": [
+						"cinnabar_trade_offer_accepted"
+					],
+					"cancel_set": [
+						"cinnabar_trade_offer_declined"
+					],
+					"confirm_pages": [],
+					"cancel_pages": []
+				}
+			}
 		]
 	},
 	"cinnabar_trade_lina_refuse": {
@@ -61,8 +93,24 @@
 	},
 	"cinnabar_trade_marc_offer": {
 		"speaker": "Scientifique Marc",
-		"pages": [
-			"Je cherche un Ponyta !\nJe te l'échange contre un Otaria ?"
+		"variants": [
+			{
+				"pages": [
+					"Je cherche un Ponyta !\nJe te l'échange contre un Otaria ?"
+				],
+				"choice": {
+					"confirm": "ÉCHANGER",
+					"cancel": "NON",
+					"confirm_set": [
+						"cinnabar_trade_offer_accepted"
+					],
+					"cancel_set": [
+						"cinnabar_trade_offer_declined"
+					],
+					"confirm_pages": [],
+					"cancel_pages": []
+				}
+			}
 		]
 	},
 	"cinnabar_trade_marc_refuse": {

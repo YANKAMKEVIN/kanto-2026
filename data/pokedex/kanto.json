@@ -584,6 +584,46 @@
 		"cubone": {
 			"height": 0.4, "weight": 6.5,
 			"description": "Il porte le crâne de sa mère comme un casque. Les nuits de lune, on l'entend pleurer doucement."
+		},
+		"ponyta": {
+			"height": 1.0, "weight": 30.0,
+			"description": "Sa crinière de flammes ne brûle que ceux qu'il n'aime pas. Il court dès sa naissance, de plus en plus vite.",
+			"notes": [
+				{ "id": "ponyta_mansion", "unlock": { "seen": 1 },
+				  "text": "Dans le vieux manoir brûlé, il trotte entre les meubles noircis comme s'il était chez lui." }
+			]
+		},
+		"rapidash": {
+			"height": 1.7, "weight": 95.0,
+			"description": "Il galope si vite que ses sabots touchent à peine le sol. Ses flammes s'allongent quand il accélère."
+		},
+		"magmar": {
+			"height": 1.3, "weight": 44.5,
+			"description": "Son corps brûle comme une braise. Il aime les lieux chauds et respire des flammes à chaque souffle.",
+			"notes": [
+				{ "id": "magmar_mansion", "unlock": { "seen": 1 },
+				  "text": "Aperçu dans les étages du manoir. Là où il passe, l'air tremble de chaleur." }
+			]
+		},
+		"aerodactyl": {
+			"height": 1.8, "weight": 59.0,
+			"description": "Un Pokémon des temps anciens, ramené à la vie depuis un morceau d'ambre. Il fend l'air en poussant des cris aigus."
+		},
+		"grimer": {
+			"height": 0.9, "weight": 30.0,
+			"description": "Une boue vivante qui glisse là où l'eau est sale. Elle se faufile par les grilles et les tuyaux."
+		},
+		"muk": {
+			"height": 1.2, "weight": 30.0,
+			"description": "Son odeur fait faner l'herbe sur son passage. Ce qu'il touche reste collant pendant des jours."
+		},
+		"weezing": {
+			"height": 1.2, "weight": 9.5,
+			"description": "Deux sphères gonflées de gaz qui flottent ensemble. Elles se regonflent l'une l'autre en respirant l'air vicié."
+		},
+		"electrode": {
+			"height": 1.2, "weight": 66.6,
+			"description": "Gorgé d'électricité, il roule à toute allure. Au moindre choc, il éclate dans un grand fracas."
 		}
 	}
 }

@@ -21,6 +21,8 @@ const ENCOUNTERABLE: Array[StringName] = [
 	&"meowth",
 	# Jalon 17 (annexe A.2 de jalon-17.md, validée le 2026-10-16) : Taupiqueur, Soporifik.
 	&"diglett", &"drowzee",
+	# Jalon 25 (kanto_j25_entrees.json, validé d'avance le 2026-10-21) : Ponyta, Magmar (Manoir).
+	&"ponyta", &"magmar",
 ]
 ## Notes validées par Kevin qui parlent de l'évolution (exception à « jamais de divulgation ») :
 ## celle de Kadabra (dossier 17 §15, n° 64) cite son origine, Abra, déjà vue pour l'avoir.

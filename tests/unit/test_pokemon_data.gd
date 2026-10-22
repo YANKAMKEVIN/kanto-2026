@@ -90,24 +90,26 @@ func test_real_data_loads_without_error() -> void:
 		&"poliwag", &"poliwhirl", &"poliwrath",
 		&"abra", &"kadabra", &"machop",
 		&"bellsprout", &"weepinbell", &"victreebel", &"tentacool", &"tentacruel",
-		&"geodude", &"graveler", &"golem", &"slowpoke", &"slowbro", &"magnemite", &"magneton",
-		&"seel", &"dewgong", &"shellder", &"cloyster",
+		&"geodude", &"graveler", &"golem", &"ponyta", &"rapidash", &"slowpoke", &"slowbro", &"magnemite", &"magneton",
+		&"seel", &"dewgong", &"grimer", &"muk", &"shellder", &"cloyster",
 		# Jalon 19 (T3) : Fantominus, Spectrum, Noeunoeuf, Osselait, Ossatueur, Léviator
 		# (kanto_tower.json ; Caninos vient du J17).
 		&"gastly", &"haunter", &"onix",
-		&"drowzee", &"hypno", &"krabby", &"kingler", &"voltorb", &"exeggcute", &"cubone",
-		&"marowak", &"koffing", &"rhyhorn", &"tangela", &"kangaskhan",
-		&"horsea", &"seadra", &"goldeen", &"seaking", &"staryu", &"starmie", &"magikarp",
+		&"drowzee", &"hypno", &"krabby", &"kingler", &"voltorb", &"electrode", &"exeggcute", &"cubone",
+		&"marowak", &"koffing", &"weezing", &"rhyhorn", &"tangela", &"kangaskhan",
+		&"horsea", &"seadra", &"goldeen", &"seaking", &"staryu", &"starmie", &"magmar", &"magikarp",
 		&"gyarados", &"eevee", &"vaporeon", &"jolteon", &"flareon",
-		&"omanyte", &"omastar", &"kabuto", &"kabutops", &"articuno"] as Array[StringName])
-	assert_eq(_data.get_move_ids().size(), 138,
+		&"omanyte", &"omastar", &"kabuto", &"kabutops", &"aerodactyl", &"articuno"] as Array[StringName])
+	# Jalon 25 (T7) : kanto_j25.json (Ponyta, Galopa, Magmar, Ptéra) et les reprises du J22 non fusionné
+	# (kanto_j25_reprises.json : Tadmorv, Grotadmorv, Smogogo, Électrode).
+	assert_eq(_data.get_move_ids().size(), 140,
 		"47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10) + Patience (J11) "
 		+ "+ 21 du Mont Sélénite (jalon 12) + 8 du jalon 13 (les 5 du J12 qu'il reprenait : "
 		+ "entrées du J12) + 6 du Cap d'Azuria (jalon 14) + Jackpot (J15) "
 		+ "+ Coupe et Tonnerre (jalon 16) + 7 du jalon 17 + 8 de la Tour Pokémon (J19 ; "
 		+ "Hypnose, Hurlement et Bélier viennent du J17) + 7 du jalon 20 + Vol (passe systèmes 2, T25) "
 		+ "+ Surf (S2C) + Force (S2D) + 6 du J24 (j24.json) + Amnésie et Bouclier (reprises du J21, "
-		+ "j24_reprises.json)")
+		+ "j24_reprises.json) + Déflagration et Poing de Feu (J25, j25.json)")
 	assert_true(_data.has_move(&"struggle"))
 
 
@@ -208,6 +210,8 @@ func test_real_evolution_chains() -> void:
 		&"horsea": [&"seadra", 32], &"goldeen": [&"seaking", 33],
 		&"magikarp": [&"gyarados", 20], &"omanyte": [&"omastar", 40],
 		&"kabuto": [&"kabutops", 40],
+		# Jalon 25 (T7) : Ponyta (Rouge/Bleu).
+		&"ponyta": [&"rapidash", 40], &"grimer": [&"muk", 38],
 	}
 	var eevee := _data.get_species(&"eevee").evolutions
 	assert_eq(eevee.map(func(r: EvolutionRule) -> Array: return [r.into, r.method, r.item]), [
@@ -501,6 +505,9 @@ func test_real_catch_rates_are_the_official_ones() -> void:
 		&"dewgong": 75, &"cloyster": 60, &"krabby": 225, &"kingler": 60,
 		&"seadra": 75, &"seaking": 60, &"magikarp": 255, &"omanyte": 45,
 		&"omastar": 45, &"kabuto": 45, &"kabutops": 45, &"articuno": 3,
+		# Jalon 25 (T7) ; Tadmorv, Grotadmorv, Smogogo et Électrode repris du J22.
+		&"ponyta": 190, &"rapidash": 60, &"magmar": 45, &"aerodactyl": 45,
+		&"grimer": 190, &"muk": 75, &"weezing": 60, &"electrode": 60,
 	}
 	assert_eq(_data.get_species_ids().size(), expected.size(), "toutes les espèces")
 	for id: StringName in _data.get_species_ids():

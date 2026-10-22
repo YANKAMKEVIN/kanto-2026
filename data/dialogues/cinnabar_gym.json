@@ -1,10 +1,4 @@
 {
-	"cinnabar_gym_sign": {
-		"narration": true,
-		"pages": [
-			"ARÈNE DE CRAMOIS'ÎLE — CHAMPION : AUGUSTE\nLe maître du quiz au sang chaud !"
-		]
-	},
 	"cinnabar_gym_door_unlock": {
 		"narration": true,
 		"pages": [
@@ -50,12 +44,6 @@
 			"Raté ! Mauvaise réponse !"
 		]
 	},
-	"cinnabar_gym_quiz_open": {
-		"narration": true,
-		"pages": [
-			"Porte ouverte."
-		]
-	},
 	"cinnabar_gym_1_before": {
 		"speaker": "Intello Paulin",
 		"pages": [
@@ -70,7 +58,6 @@
 	},
 	"cinnabar_gym_1_after": {
 		"speaker": "Intello Paulin",
-		"draft": true,
 		"pages": [
 			"Tu sais à quelle température monte\nle souffle d'un Pokémon Feu ?"
 		]
@@ -89,26 +76,24 @@
 	},
 	"cinnabar_gym_2_after": {
 		"speaker": "Pillard Rico",
-		"draft": true,
 		"pages": [
 			"J'étais voleur. Grâce aux Pokémon,\nje suis devenu honnête !"
 		]
 	},
 	"cinnabar_gym_3_before": {
-		"speaker": "Intello Ernest",
+		"speaker": "Intello Léopold",
 		"pages": [
 			"Tu ne gagneras pas !\nJ'ai tout étudié sur les Pokémon !"
 		]
 	},
 	"cinnabar_gym_3_defeated": {
-		"speaker": "Intello Ernest",
+		"speaker": "Intello Léopold",
 		"pages": [
 			"Trop chaud pour moi !"
 		]
 	},
 	"cinnabar_gym_3_after": {
-		"speaker": "Intello Ernest",
-		"draft": true,
+		"speaker": "Intello Léopold",
 		"pages": [
 			"Tu ne gagneras pas !\nJ'ai tout étudié sur les Pokémon !"
 		]
@@ -127,25 +112,24 @@
 	},
 	"cinnabar_gym_4_after": {
 		"speaker": "Pillard Fred",
-		"draft": true,
 		"pages": [
 			"J'aime juste les Pokémon Feu !"
 		]
 	},
 	"cinnabar_gym_5_before": {
-		"speaker": "Intello Gustave",
+		"speaker": "Intello Octave",
 		"pages": [
 			"Je sais pourquoi Auguste est devenu Dresseur !"
 		]
 	},
 	"cinnabar_gym_5_defeated": {
-		"speaker": "Intello Gustave",
+		"speaker": "Intello Octave",
 		"pages": [
 			"Trop chaud pour moi !"
 		]
 	},
 	"cinnabar_gym_5_after": {
-		"speaker": "Intello Gustave",
+		"speaker": "Intello Octave",
 		"pages": [
 			"Un jour, il s'est perdu en montagne.\nUn oiseau de feu est apparu…",
 			"Sa lumière l'a guidé jusqu'en bas."
@@ -165,7 +149,6 @@
 	},
 	"cinnabar_gym_6_after": {
 		"speaker": "Pillard Jojo",
-		"draft": true,
 		"pages": [
 			"J'ai visité beaucoup d'Arènes,\nmais celle-ci est ma préférée !"
 		]
@@ -184,7 +167,6 @@
 	},
 	"cinnabar_gym_7_after": {
 		"speaker": "Intello Marius",
-		"draft": true,
 		"pages": [
 			"Le Feu craint l'eau !"
 		]

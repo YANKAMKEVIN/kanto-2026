@@ -704,6 +704,11 @@ func get_daycare_overlay() -> DaycareOverlay:
 	return _daycare_overlay
 
 
+## J25 : choix du Pokémon d'un échange fixe (tests).
+func get_trade_overlay() -> TradeOverlay:
+	return _trade_overlay
+
+
 func get_daycare_director() -> DaycareDirector:
 	return _daycare
 
@@ -1658,7 +1663,7 @@ func _on_pokemon_caught() -> void:
 
 ## J25 (§2.5) : choix du Pokémon d'un échange fixe (places de l'espèce demandée) ; −1 = renonce.
 func _on_trade_pick_requested(_trade_id: StringName, accepted: Array[int]) -> int:
-	return await _trade_overlay.pick(TradeOverlay.view_for(GameState.party, accepted, _pokemon))
+	return await _trade_overlay.pick(InGameTrade.picker_view(GameState.party, accepted, _pokemon))
 
 
 ## J25 (§2.5) : échange fait d'un seul bloc : compagnon à jour (le Pokémon donné a pu l'être,

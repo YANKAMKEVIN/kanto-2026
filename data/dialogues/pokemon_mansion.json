@@ -29,8 +29,20 @@
 	},
 	"mansion_statue": {
 		"narration": true,
-		"pages": [
-			"Un interrupteur secret !\nL'actionner ?"
+		"variants": [
+			{
+				"pages": [
+					"Un interrupteur secret !\nL'actionner ?"
+				],
+				"choice": {
+					"confirm": "OUI",
+					"cancel": "NON",
+					"confirm_cutscene": "mansion_switch",
+					"cancel_pages": [
+						"Pas encore."
+					]
+				}
+			}
 		]
 	},
 	"mansion_statue_yes": {
@@ -39,26 +51,20 @@
 			"Qui ne le ferait pas ?"
 		]
 	},
-	"mansion_statue_no": {
-		"narration": true,
-		"pages": [
-			"Pas encore."
-		]
-	},
 	"mansion_scientist_1_before": {
-		"speaker": "Scientifique Armand",
+		"speaker": "Scientifique Aurélien",
 		"pages": [
 			"Qui êtes-vous ?\nPersonne ne devrait être ici."
 		]
 	},
 	"mansion_scientist_1_defeated": {
-		"speaker": "Scientifique Armand",
+		"speaker": "Scientifique Aurélien",
 		"pages": [
 			"Une clé ?\nJe ne vois pas de quoi tu parles."
 		]
 	},
 	"mansion_scientist_1_after": {
-		"speaker": "Scientifique Armand",
+		"speaker": "Scientifique Aurélien",
 		"pages": [
 			"Ce manoir a brûlé il y a longtemps.\nLes notes, elles, sont restées."
 		]
@@ -89,7 +95,6 @@
 	},
 	"mansion_burglar_2_defeated": {
 		"speaker": "Pillard Lulu",
-		"draft": true,
 		"pages": [
 			"Perdu, en plus de ça…"
 		]
@@ -101,20 +106,19 @@
 		]
 	},
 	"mansion_scientist_2_before": {
-		"speaker": "Scientifique Odile",
+		"speaker": "Scientifique Clothilde",
 		"pages": [
 			"Mon mentor vivait ici."
 		]
 	},
 	"mansion_scientist_2_defeated": {
-		"speaker": "Scientifique Odile",
-		"draft": true,
+		"speaker": "Scientifique Clothilde",
 		"pages": [
 			"Je n'étais pas prête."
 		]
 	},
 	"mansion_scientist_2_after": {
-		"speaker": "Scientifique Odile",
+		"speaker": "Scientifique Clothilde",
 		"pages": [
 			"Coincé ? Essaie de sauter par là-bas !"
 		]
@@ -127,7 +131,6 @@
 	},
 	"mansion_burglar_3_defeated": {
 		"speaker": "Pillard Tito",
-		"draft": true,
 		"pages": [
 			"Aïe. Encore raté."
 		]
@@ -146,7 +149,6 @@
 	},
 	"mansion_scientist_3_defeated": {
 		"speaker": "Scientifique Prosper",
-		"draft": true,
 		"pages": [
 			"Mes calculs étaient faux."
 		]
