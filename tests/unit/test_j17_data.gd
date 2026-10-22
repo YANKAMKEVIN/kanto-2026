@@ -164,18 +164,19 @@ func test_route_11_signs() -> void:
 		[_sign("T-11")] as Array[String])
 
 
+## Jalon 21 (T21, M-3) : T-6 / T-7 sont repris par le Ronflex de la Route 12 (`snorlax_route_12`,
+## variantes 3 et 4 après les deux variantes de la Flûte) ; `route_11_snorlax` n'existe plus.
 func test_snorlax_says_t6_once_then_t7() -> void:
-	var snorlax := _dialogues.get_dialogue(&"route_11_snorlax")
+	assert_false(_dialogues.has_dialogue(&"route_11_snorlax"), "retiré de la Route 11")
+	var snorlax := _dialogues.get_dialogue(&"snorlax_route_12")
 	assert_true(snorlax.narration, "examen : narration")
-	assert_eq(snorlax.variants.size(), 2)
+	assert_eq(snorlax.variants.size(), 4)
 	var first := snorlax.pick(_flags())
-	assert_same(first, snorlax.variants[0])
-	assert_eq(first.set_flags, [&"snorlax_route_11_seen"] as Array[StringName])
-	assert_eq(_texts(snorlax, 0), _bubbles("T-6"))
-	assert_same(snorlax.pick(_flags([&"snorlax_route_11_seen"])), snorlax.variants[1])
-	assert_eq(_texts(snorlax, 1), _bubbles("T-7"))
-	var used := _dialogues.get_condition_flags()
-	assert_false(used.has(&"snorlax_route_11_awake"), "le réveil est un drapeau de la carte")
+	assert_same(first, snorlax.variants[2])
+	assert_eq(first.set_flags, [&"snorlax_route_12_seen"] as Array[StringName])
+	assert_eq(_texts(snorlax, 2), _bubbles("T-6"))
+	assert_same(snorlax.pick(_flags([&"snorlax_route_12_seen"])), snorlax.variants[3])
+	assert_eq(_texts(snorlax, 3), _bubbles("T-7"))
 
 
 # --- Assistant et CS05 ------------------------------------------------------------------

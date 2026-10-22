@@ -5,10 +5,6 @@
 	"celadon_gym_sign": {
 		"pages": ["ARÈNE DE CÉLADOPOLE\nChampion : Erika — la beauté des plantes"]
 	},
-	"celadon_west_block": {
-		"narration": true,
-		"pages": ["Des arbres serrés et un talus. On ne passe pas."]
-	},
 	"celadon_dept_board": {
 		"pages": ["RdC Accueil · 2e Soins et CT · 3e Jeux · 4e Cadeaux et pierres · 5e Salon · Toit"]
 	},

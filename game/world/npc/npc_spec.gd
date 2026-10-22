@@ -58,6 +58,10 @@ var verb: Interaction.Kind = Interaction.Kind.TALK
 var turn_to_player: bool = true
 ## Garde l'orientation prise pendant le dialogue au lieu de reprendre [member facing].
 var keep_facing: bool = false
+## Pose d'attente (J21 : la prière de M. Fuji au 7F) : animation de l'apparence jouée **à la
+## place de** `idle_<dir>` tant qu'il regarde dans son orientation de repos ([member facing]) ;
+## tourné ailleurs (scène « face », interaction), il reprend l'attente debout. Vide = aucune.
+var pose: StringName = &""
 ## Élévation du sprite en pixels (Pokémon posé sur une table) ; la case et le tri en
 ## profondeur ne changent pas.
 var lift: int = 0

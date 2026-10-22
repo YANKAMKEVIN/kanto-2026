@@ -77,6 +77,8 @@ func _play_flute() -> void:
 	if not cutscene.is_empty() and _cutscenes != null and _cutscenes.play(cutscene):
 		flute_played.emit(cutscene)
 		return
+	if _cutscenes != null:
+		_cutscenes.play_flute_notes() # Jalon 21 : les notes, sans attendre (même fonction)
 	if _runner != null:
 		_runner.play(FLUTE_ELSEWHERE_DIALOGUE, null, map)
 	if _companion != null and _companion.is_shown():

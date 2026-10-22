@@ -158,10 +158,12 @@ func test_the_man_and_the_girl_stand_in_the_pokemon_house_and_say_15_6_2_and_3()
 		assert_ne(_quote(entry[2]), "")
 		assert_eq(_said(), _quote(entry[2]), "§15.6.%d" % entry[2])
 		assert_eq(_speakers[0], entry[3])
-	# Aucun Osselait visible au J19 : seuls Rondoudou et Nidoran femelle sont des Pokémon.
+	# Jalon 21 (T14) : Osselait (« pokemon/cubone ») est posé près de la fille, avec Rondoudou et
+	# Nidoran femelle ; aucun autre Pokémon.
 	for npc: Npc in map.get_npcs():
 		if String(npc.get_spec().sprite).begins_with("pokemon/"):
-			assert_true(["pokemon/jigglypuff", "pokemon/nidoran_f"].has(npc.get_spec().sprite))
+			assert_true(["pokemon/jigglypuff", "pokemon/nidoran_f", "pokemon/cubone"].has(
+				npc.get_spec().sprite))
 
 
 func test_the_gentleman_of_the_center_says_15_6_4() -> void:
