@@ -1,0 +1,85 @@
+# Grotte Inconnue 1F — grille fonctionnelle v1 (jalon 31, T3 ; passe `docs/design/passes/j31-v1-chatgpt.md`
+# §4 ; plan `docs/tech/jalon-31.md` §2.2). Relevé 1:1 de ROUGE/BLEU (pas de Rouge Feu/Vert Feuille),
+# décodé du désassemblage `pokered` par `tools/art/cerulean_cave_rb_decode.py` ; contrôle :
+# `tools/art/plan_check_cerulean_cave.py` (relie les trois étages par les échelles). La grille fait
+# foi : un changement de composition se fait ICI d'abord. À valider par Kevin (T3).
+#
+# 30 × 18 cases ; nord en haut ; x = colonne 0..29, y = rangée 0..17.
+# Entrée : bouche (24..25, 17) depuis Azuria ; arrivée (24, 16), tournée vers le nord.
+# Parcours : grand lac central (Surf obligatoire, x 8..29, y 4..15) ; plateformes hautes (:) reliées
+# au sol bas par des escaliers (=). Six échelles montent au 2F (P1..P6), une descend au B1F (P7,
+# coin ouest (0, 6)), seul accès au B1F et à Mewtwo.
+# Objets (RB) : Guérison (7, 13), Max Élixir (19, 3), Pépite (5, 0) ; caché : Super Bonbon (RB
+# (14, 11)).
+#
+# Écarts avec RB (`cerulean_cave_rb_decode.py --ecarts`) : 27 cases de sol SANS ACCÈS dans RB
+# (poches décoratives : jamais atteintes, ni à pied ni en Surf, collisions par paires) → roche,
+# comme au J24 : (1..3, 0), (1, 4), (19, 0), (21, 0), (7, 4..6), (9, 4), (5..7, 14), (13, 14),
+# (21..23, 16) (plateforme haute contre l'entrée), (27..28, 12..16) (plateforme haute à l'est de
+# l'entrée) ; la case de l'objet caché devient l'indice x (règle des grottes du projet, J18, J24).
+# Arrivée P5 (2, 3) : à l'est de l'échelle, côté sol bas (RB : on arrive sur l'échelle et on en
+# descend où l'on veut ; la case (1, 4), sol haut sans issue, est une poche).
+#
+# Légende (commune aux trois étages ; caractères des Îles Écume du J24, décodage RB 1:1) :
+#   # roche (bloquée)          . sol bas (RB $20)          : sol haut (RB $05, plateforme)
+#   = escalier taillé (RB $15) : seul passage entre sol bas et sol haut
+#   w eau surfable (RB $14), au niveau du sol bas : on ne monte en Surf et on ne débarque que
+#     sur sol bas, escalier ou échelle, jamais sur le sol haut (collisions par paires de RB)
+#   U échelle qui monte   V échelle qui descend : praticables, entrer dessus fait arriver (fondu)
+#     sur le « spawn » de même paire de l'autre étage ; on ne s'arrête jamais sur une échelle
+#   E bouche de la grotte (1F seulement), sortie vers Azuria
+#   x indice d'objet caché (caillou clair dans la roche, bloqué) ; l'objet se prend depuis la
+#     case de sol voisine donnée par sa position « objet_cache »
+# Rencontres : terrain « floor » (toute case praticable, comme les Îles Écume du J24), taux et
+# espèces de RB par étage (`data/encounters/cerulean_cave.json`) ; aucune sur l'eau (RB : taux 0),
+# Super Canne : groupe 9 de RB (`data/fishing/water_rod_cerulean_cave.json`).
+# Aucun Dresseur (§8.1 du plan, défaut [D] : fidèle à RB).
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 30 caractères), puis POSITIONS.
+#   identifiant  type  cases  bloque|libre  [cle=valeur ...]  # commentaire
+
+PRATICABLES .:=wUVE
+
+GRILLE 30 18
+00 #####::::::::::::######::::::#
+01 #####::U:::::::::######::::U:#
+02 #####::::::::::::######::::::#
+03 #U.############=###.###=######
+04 ##....########wwwwwwwwwwwwwwww
+05 #####.########wwwwwwwwwwwwwwww
+06 V#....##wwwwwwww#####:::::##ww
+07 ...#####wwwwwwww#####::U::##ww
+08 #::::::#ww#::::::::##:::::##ww
+09 #::::::#ww#:::::::U##::##=##ww
+10 #::::::#ww#:::##:::##::#wwwwww
+11 #::U:###ww#:::x#:::##=##wwwwww
+12 #::::###ww#:::::##:##..#######
+13 #=#####.ww#=###:##:##...######
+14 ...#####wwww###::::#......####
+15 ....####wwww#####=##......####
+16 #......########...######..####
+17 ##...............#######EE####
+FIN
+
+POSITIONS
+entree           spawn          24,16        libre   facing=up  # arrivée depuis Azuria
+sortie           warp           24..25,17    libre   vers=cerulean_city:from_cerulean_cave  # PUSH ↓ ; point d'arrivée d'Azuria à créer (31A, géographie à trancher, §8)
+echelle_p1     echelle        27,1          libre   paire=P1 sens=monte vers=cerulean_cave_2f
+arrivee_p1     spawn          27,2          libre   paire=P1
+echelle_p2     echelle        23,7          libre   paire=P2 sens=monte vers=cerulean_cave_2f
+arrivee_p2     spawn          23,8          libre   paire=P2
+echelle_p3     echelle        18,9          libre   paire=P3 sens=monte vers=cerulean_cave_2f
+arrivee_p3     spawn          18,10         libre   paire=P3
+echelle_p4     echelle        7,1          libre   paire=P4 sens=monte vers=cerulean_cave_2f
+arrivee_p4     spawn          7,2          libre   paire=P4
+echelle_p5     echelle        1,3          libre   paire=P5 sens=monte vers=cerulean_cave_2f
+arrivee_p5     spawn          2,3          libre   paire=P5
+echelle_p6     echelle        3,11         libre   paire=P6 sens=monte vers=cerulean_cave_2f
+arrivee_p6     spawn          3,12         libre   paire=P6
+echelle_p7     echelle        0,6          libre   paire=P7 sens=descend vers=cerulean_cave_b1f
+arrivee_p7     spawn          0,7          libre   paire=P7
+objet_1f_1    objet          7,13         bloque  item=full_restore
+objet_1f_2    objet          19,3          bloque  item=max_elixir
+objet_1f_3    objet          5,0          bloque  item=nugget
+cache_1f_1    objet_cache    14,12         libre   item=rare_candy  # RB : (14, 11), dans la roche (indice x) ; pris depuis (14, 12), tourné vers l'indice
+FIN
