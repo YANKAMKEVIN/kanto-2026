@@ -832,6 +832,11 @@ func _shadow_rest_y() -> float:
 func _play_idle() -> void:
 	if _sprite == null or _sprite.sprite_frames == null:
 		return
+	# Pose d'attente (J21, prière de Fuji) : seulement dans l'orientation de repos.
+	if not _spec.pose.is_empty() and _facing == _spec.facing \
+			and _sprite.sprite_frames.has_animation(_spec.pose):
+		_sprite.play(_spec.pose)
+		return
 	var anim: StringName = _IDLE_ANIMS.get(_facing, &"idle_down")
 	if _sprite.sprite_frames.has_animation(anim):
 		_sprite.play(anim)

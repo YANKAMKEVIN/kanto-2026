@@ -248,3 +248,31 @@ func test_border_decals_follow_the_paving_edge_with_a_fixed_seed() -> void:
 	# Une case pavée au bord de la carte n'a pas de décor côté extérieur.
 	var edge := BorderDecals.plan({Vector2i(0, 0): true}, Vector2i(1, 1), 1)
 	assert_true(edge.is_empty())
+
+
+# --- J21 : étalonnage « à plat » (CanvasModulate du monde), QA A17 ---------------------------
+
+func test_flat_grade_uses_a_world_canvas_modulate_without_screen_copy() -> void:
+	var tower := _library.get_profile(&"tower")
+	var lighting := _lighting()
+	var modulate := lighting.get_world_modulate()
+	assert_null(modulate.get_parent(), "posé par Boot dans le canevas du monde, hors du calque")
+	add_child(modulate)
+	lighting.apply(tower)
+	assert_true(lighting.is_grade_visible())
+	assert_true(lighting.is_grade_flat())
+	assert_false((lighting.get_node(^"Grade") as CanvasItem).visible, "pas de copie de l'écran")
+	assert_true(modulate.visible)
+	assert_eq(modulate.color, Color(0.95, 0.93, 1.0))
+	assert_false(lighting.is_battle_grade_visible(), "hors combat : aucun calque")
+	lighting.set_battle_active(true)
+	assert_true(lighting.is_battle_grade_visible(), "combat : BattleStage reçoit le gain")
+	lighting.set_battle_active(false)
+	assert_false(lighting.is_battle_grade_visible())
+	lighting.apply(_golden)
+	assert_false(lighting.is_grade_flat())
+	assert_false(modulate.visible, "ailleurs : CanvasModulate caché, étalonnage par zones")
+	assert_true((lighting.get_node(^"Grade") as CanvasItem).visible)
+	lighting.set_battle_active(true)
+	assert_false(lighting.is_battle_grade_visible())
+	remove_child(modulate)

@@ -25,6 +25,6 @@
 	},
 	"mr_fuji": {
 		"cell": [10, 3], "facing": "up", "sprite": "mr_fuji", "dialogue": "tower_7f_fuji",
-		"unless": ["fuji_rescued"]
+		"pose": "pray", "turn_to_player": false, "unless": ["fuji_rescued"]
 	}
 }

@@ -1345,7 +1345,7 @@ Les départs de débogage n'écrivent pas la sauvegarde : la vraie partie de Kev
 
 ### Défauts et remarques
 
-1. **fps sur A17 très en dessous de la cible** (moyennes des lignes `[perf]`) : Tour 6F/7F 35–41,
+1. **[Corrigé pour la Tour le 2026-10-22, voir « Perf de la Tour sur A17 »]** **fps sur A17 très en dessous de la cible** (moyennes des lignes `[perf]`) : Tour 6F/7F 35–41,
    Route 12 23–27 (creux 20), Route 16 24–27, Route 11 ≈ 25, intérieurs 47–59. Aucun écran ne tient
    58. L'A17 (Mali-G57 MC2) est bien plus faible que le S24 de référence : à décider si la cible
    s'applique à lui.
@@ -1359,3 +1359,76 @@ Les départs de débogage n'écrivent pas la sauvegarde : la vraie partie de Kev
    avalé (il faut réappuyer). Peut-être voulu (verrou d'appui).
 5. Journal Godot : **aucune erreur ni avertissement** sur toute la session ; changements de carte
    26–270 ms.
+
+## Décisions de Kevin du 2026-10-22 (page d'arbitrages) et suites
+
+**Validé par Kevin le 2026-10-22** :
+
+1. **Optimiser la Tour 6F et 7F avant la fusion** (défaut n° 1 de la QA de nuit) → fait, ci-dessous.
+2. **Brancher la prière de M. Fuji au 7F avant la fusion** → fait, ci-dessous.
+3. **Façade provisoire du poste de la Route 16** (`bldg_velos_01`, valeur [D] du T22) **gardée
+   jusqu'au lot d'art**.
+4. **Prénoms renommés acceptés** (valeurs [D] du J21, dont les Pêcheurs de la Route 12 : Ned,
+   Elton, Bastien, Hervé).
+5. **Textes validés** (lot du J21 tel qu'il est dans les données).
+
+### Perf de la Tour sur A17 (2026-10-22)
+
+**Mesure** : Galaxy A17 (`R5GYB2R7W2Y`, Mali-G57 MC2, 2340 × 1080) par adb, APK debug, départs
+`tower_5f_zone`, `tower_marowak_qa`, `tower_7f_qa`, lignes `[perf]` du `logcat` (fenêtres de
+2 s, ≈ 1 min par étage) ; journaux et captures dans `build/logs/` de la copie (hors dépôt).
+
+**Cause** : pas le J21. Le **5F du J19 tombait aussi à 39 i/s** sur l'A17 (il tient 60 sur le
+S24) ; les appels de dessin sont bas (≈ 48) et cacher les murs, halos, liseré ou `Overhead` ne
+change rien. Le coût vient des **calques plein écran** empilés, que le Mali-G57 paie à chaque
+pixel : sondes en coupant une couche à la fois (5F, i/s de moyenne) : sol peint `ground_blend`
+(trois bruits à sinus par pixel) + 9 ; étalonnage d'écran (copie de l'écran + passe) + 6 ;
+brume + 2 ; ombrage `CaveShade` et lumière `CaveFloorLight` + 1 à 2 chacun ; carte entière
+cachée = 50 (étalonnage seul) puis 60.
+
+**Corrections** (aucune intention visuelle changée ; captures A17 avant / après relues) :
+
+- **Sol cuit** (`PaintedGround.bake`) : un sol **sans rivage** (rien n'y dépend du temps) est rendu
+  **une fois** dans un `SubViewport` aux mêmes coordonnées du monde, puis affiché comme une
+  texture : mêmes pixels. Sur une carte de grotte (frère `CaveShade`), les couches immobiles qui
+  suivent le sol (rebords et escaliers de `GroundDecals`, `CaveShade`, `CaveFloorLight`) sont
+  cuites avec lui, dans leur ordre, puis cachées. Pas de cuisson au-delà de 2048² px (≈ 16 Mo) ni
+  sous GUT / headless. Écart : les ombres de contact (z −2) passent au-dessus de l'ombrage cuit au
+  lieu de dessous (invisible sur les captures).
+- **Brume portée par le sol cuit** : le sol cuit dessine la brume dans sa propre passe
+  (`baked_ground_mist.gdshader`, même calcul que `mist_scroll` via `mist_common.gdshaderinc`) ;
+  la `MistLayer` reste l'autorité (portes 6F dense / légère, alpha, « Réduire les animations »)
+  et ne se dessine plus (`is_merged`).
+- **Étalonnage à plat de la Tour** (`lighting.json`, profil `tower`, `"flat": true`) : au lieu de
+  relire l'écran, un `CanvasModulate` du monde au gain des tons moyens (0,95 ; 0,93 ; 1,0) — le
+  meilleur gain unique calculé sur une capture du 5F est (0,949 ; 0,931 ; 0,995). En combat, le
+  même gain passe sur BattleStage par un calque multiplicatif. Profil `tower_cold` (1F) et
+  extérieurs inchangés.
+
+**Résultat** (A17, i/s moyens par fenêtre de 2 s ; « creux » = image la plus lente de la fenêtre) :
+
+| Étage | Avant | Après |
+|---|---|---|
+| 5F (J19) | 38–40, creux 28–31 | 55–60 (≈ 57), creux 31–44 |
+| 6F | 35–41, creux 30 | **58–60 (≈ 59,8)**, creux 60 sur la plupart des fenêtres, 37–39 sur ≈ 1/3 |
+| 7F | 37–40 | **59–60 (≈ 59,9)**, creux 60 sur 2/3 des fenêtres, 38–40 sur le reste |
+
+Moyenne ≥ 58 **tenue** au 6F et au 7F. **Creux ≥ 50 pas tenu partout** : une image isolée de
+≈ 25 ms toutes les quelques secondes (aucune avec la carte cachée) ; cause non trouvée (GPU au
+bord du budget, régulation de fréquence du Mali ?). Le J19 notait déjà « creux ≥ 50 non tenu »
+sur le S24. Bénéfice aussi pour les autres cartes de grotte et pour le sol de toute carte
+sans rivage jusqu'à 2048² px. **Non traité** : Route 12 (eau, 23–27 i/s), Route 16, Route 11 —
+sol avec rivage ou trop grand, non cuit ; à reprendre si Kevin applique la cible à l'A17.
+
+Tests : `test_tower_ground_bake` (cuisson des 2F–7F, couches cachées, brume fusionnée qui suit
+sa porte et « Réduire les animations »), `test_lighting_library` / `test_world_lighting`
+(`grade.flat`, `CanvasModulate`, calque de combat). Suite complète : **6 662 / 6 662**.
+
+### Prière de M. Fuji (2026-10-22)
+
+Clé de PNJ **`pose`** (`NpcRoster`, `NpcSpec.pose`) : animation jouée **à la place de
+`idle_<dir>` tant que le PNJ regarde dans son orientation de repos**. Fuji au 7F : `"pose":
+"pray"` (dos, deux images au souffle, déjà dans `mr_fuji_frames.tres` depuis le T7) et
+`"turn_to_player": false` (il reste en prière pendant « … ») ; l'étape `face mr_fuji → player`
+de `tower_7f_fuji_rescue` le relève (attente debout tournée). Vu sur l'A17 (dos agenouillé
+devant l'autel). Tests : `test_npc_pose`.

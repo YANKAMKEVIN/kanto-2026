@@ -7,6 +7,11 @@ extends Sprite2D
 ## le mouvement vient de `TIME` dans le shader. Alpha plafonné à [constant ALPHA_MAX].
 ## « Réduire les animations » : [method set_reduce_motion] la cache (modèle de
 ## `LightGlow.set_reduce_motion`), branchée dans `SettingsApplier` (T10).
+## **Fusion avec le sol cuit** (J21, QA A17) : quand le sol peint de la carte est cuit
+## ([method PaintedGround.is_baked]) et couvre exactement la même zone, c'est le sol qui dessine
+## la brume dans sa propre passe ([method PaintedGround.refresh_mist]) et ce calque ne se dessine
+## plus ([method is_merged]) ; il reste l'autorité (visibilité, porte de drapeaux, alpha,
+## « Réduire les animations »). Chaque changement redemande la fusion au sol.
 
 const SHADER: Shader = preload("res://game/world/lighting/shaders/mist_scroll.gdshader")
 const TEXTURE_PATH: String = "res://assets/world/mist_noise_01.png"
@@ -17,6 +22,8 @@ const Z_MIST: int = -1
 static var _material: ShaderMaterial
 static var _reduce_motion: bool = false
 static var _instances: Array[MistLayer] = []
+
+var _merged: bool = false
 
 ## Taille de la zone couverte (pixels du monde) : celle de la carte.
 @export var area: Vector2i = Vector2i(1920, 1728):
@@ -29,6 +36,7 @@ static var _instances: Array[MistLayer] = []
 	set(value):
 		alpha = clampf(value, 0.0, ALPHA_MAX)
 		self_modulate.a = alpha
+		_refresh_ground()
 
 
 func _init() -> void:
@@ -50,6 +58,12 @@ func _exit_tree() -> void:
 	_instances.erase(self)
 
 
+func _notification(what: int) -> void:
+	# Porte de drapeaux ou « Réduire les animations » : le sol cuit reprend (ou lâche) la brume.
+	if what == NOTIFICATION_VISIBILITY_CHANGED:
+		_refresh_ground()
+
+
 ## Cache (vrai) ou rend la brume sur toutes les cartes (« Réduire les animations »).
 static func set_reduce_motion(enabled: bool) -> void:
 	_reduce_motion = enabled
@@ -57,13 +71,50 @@ static func set_reduce_motion(enabled: bool) -> void:
 		layer.visible = not enabled
 
 
+## Brumes présentes dans l'arbre.
+static func get_instances() -> Array[MistLayer]:
+	return _instances.duplicate()
+
+
 static func is_reduce_motion() -> bool:
 	return _reduce_motion
 
 
-## Vrai si la brume est affichée.
+## Vrai si la brume est affichée (par ce calque ou, fusionnée, par le sol cuit).
 func is_misting() -> bool:
 	return visible and texture != null
+
+
+## Vrai si la brume est dessinée par le sol cuit : ce calque ne se dessine plus.
+func is_merged() -> bool:
+	return _merged
+
+
+## Fusion décidée par [method PaintedGround.refresh_mist] : le calque cesse (ou reprend) de se
+## dessiner, sans toucher à [member CanvasItem.visible] (qui reste l'état logique).
+func set_merged(merged: bool) -> void:
+	_merged = merged
+	RenderingServer.canvas_item_set_visible(get_canvas_item(), visible and not merged)
+
+
+## Sol peint de la carte qui contient ce calque (null hors d'une carte).
+func find_ground() -> PaintedGround:
+	var node := get_parent()
+	while node != null:
+		if node is GameMap:
+			return node.get_node_or_null(^"PaintedGround") as PaintedGround
+		node = node.get_parent()
+	return null
+
+
+func _refresh_ground() -> void:
+	if not is_inside_tree():
+		return
+	var ground := find_ground()
+	if ground != null:
+		ground.refresh_mist()
+	elif _merged:
+		set_merged(false)
 
 
 func _apply() -> void:
