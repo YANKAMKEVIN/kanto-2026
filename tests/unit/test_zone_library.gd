@@ -49,7 +49,7 @@ func _root_property(map_id: StringName, property: StringName) -> Variant:
 func test_real_data_loads_without_error() -> void:
 	assert_true(_zones.load_file(), "\n".join(_zones.get_errors()))
 	assert_eq(_zones.get_errors().size(), 0)
-	assert_eq(_zones.size(), 42, "Route 24 (jalon 13), Route 25 et Cap d'Azuria (jalon 14), "
+	assert_eq(_zones.size(), 43, "Parc Safari (jalon 23), Route 24 (jalon 13), Route 25 et Cap d'Azuria (jalon 14), "
 		+ "passage souterrain (jalon 15 T18), Route 6 (jalon 15 T14), Route 5 (jalon 15 T13), "
 		+ "S.S. Anne (jalon 16 T11), Cave Taupiqueur (jalon 17 T15), Route 11 (jalon 17 T16), "
 		+ "Routes 9 et 10 (jalon 18 T12), Grotte Sombre (jalon 18 T13), souterrain des Routes 7 "
@@ -89,6 +89,12 @@ func test_zone_names_match_the_map_titles() -> void:
 			# J19 T16 : les étages 2F à 6F de même.
 			assert_eq(_root_property(map_id, &"display_name"), "Tour Pokémon")
 			assert_eq(_zones.zone_of(map_id), &"lavender_town", String(map_id))
+			continue
+		if _zones.zone_of(map_id) == &"safari_zone":
+			# J23 (annexe A-12) : « PARC SAFARI — ZONE CENTRE »…, « MAISON SECRÈTE ».
+			assert_true(String(_root_property(map_id, &"display_name")) in ["Parc Safari",
+				"Parc Safari — Zone Centre", "Parc Safari — Zone Est", "Parc Safari — Zone Nord",
+				"Parc Safari — Zone Ouest", "Maison de repos", "Maison Secrète"], String(map_id))
 			continue
 		assert_eq(_root_property(map_id, &"display_name"), _zones.zone_name_of(map_id),
 			"titre de « %s » = nom de sa zone" % map_id)

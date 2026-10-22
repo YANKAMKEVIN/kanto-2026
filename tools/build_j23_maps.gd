@@ -60,7 +60,7 @@ const MAPS: Array[Dictionary] = [
 		"seed": 2309},
 	{"plan": "safari_maison_secrete", "id": &"safari_zone_secret_house",
 		"name": "Maison Secrète", "region": REGION, "interior": true, "seed": 2310},
-	{"plan": "parmanie_maison_gardien", "id": &"wardens_house", "name": "Maison du Gardien",
+	{"plan": "parmanie_maison_gardien", "id": &"wardens_house", "name": "Parmanie",
 		"region": "Parmanie", "interior": true, "seed": 2311},
 ]
 
