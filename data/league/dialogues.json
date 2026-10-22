@@ -1,0 +1,89 @@
+{
+	"league_guard_door": {
+		"speaker": "Garde",
+		"pages": ["Au-delà de cette porte, pas de retour avant la fin. Tu es prêt ?"],
+		"choice": { "confirm": "OUI", "cancel": "NON", "cancel_pages": [] }
+	},
+	"league_lorelei_before": {
+		"speaker": "Olga",
+		"pages": [
+			"Bienvenue à la Ligue Pokémon. Je suis Olga, du Conseil des Quatre.",
+			"Mes Pokémon de glace vont te figer sur place !"
+		]
+	},
+	"league_lorelei_defeated": {
+		"speaker": "Olga",
+		"pages": ["Tu as du talent… Va. Les autres t'attendent."]
+	},
+	"league_bruno_before": {
+		"speaker": "Aldo",
+		"pages": [
+			"Je suis Aldo ! Mes Pokémon et moi nous entraînons sans relâche.",
+			"Voyons si tu tiens le choc !"
+		]
+	},
+	"league_bruno_defeated": {
+		"speaker": "Aldo",
+		"pages": ["Ma force n'a pas suffi… Continue !"]
+	},
+	"league_agatha_before": {
+		"speaker": "Agatha",
+		"pages": [
+			"Je suis Agatha. Ce vieux Chen ne jure que par toi ?",
+			"Je vais te montrer ce qu'est un vrai Dresseur."
+		]
+	},
+	"league_agatha_defeated": {
+		"speaker": "Agatha",
+		"pages": ["Hé hé… Tu iras loin, petit. Va voir Peter."]
+	},
+	"league_lance_before": {
+		"speaker": "Peter",
+		"pages": [
+			"Je suis Peter, maître des Dragons.",
+			"On dit qu'ils sont invincibles. Prouve le contraire !"
+		]
+	},
+	"league_lance_defeated": {
+		"speaker": "Peter",
+		"pages": ["Je n'ai plus rien à t'apprendre. Le Champion t'attend."]
+	},
+	"rival_champion_before": {
+		"speaker": "{rival}",
+		"pages": [
+			"{player} ! Je suis arrivé ici avant toi. Je suis le Champion maintenant.",
+			"Tu sais ce que ça veut dire ? Que je suis le meilleur Dresseur du monde !"
+		]
+	},
+	"rival_champion_defeated": {
+		"speaker": "{rival}",
+		"pages": ["Non… Pas maintenant… Pas contre toi…"]
+	},
+	"rival_champion_won": {
+		"speaker": "{rival}",
+		"pages": ["Tu vois ? Le titre est à moi."]
+	},
+	"league_oak_congrats": {
+		"speaker": "Prof. Chen",
+		"pages": ["{player} ! Félicitations. Tu es le nouveau Champion de la Ligue Pokémon."]
+	},
+	"league_oak_to_rival": {
+		"speaker": "Prof. Chen",
+		"pages": [
+			"{rival}… Tu as oublié de traiter tes Pokémon avec confiance et amour.",
+			"C'est pour cela que tu as perdu."
+		]
+	},
+	"league_oak_hall": {
+		"speaker": "Prof. Chen",
+		"pages": ["Viens. Ton équipe mérite d'entrer au Panthéon."]
+	},
+	"league_hall_welcome": {
+		"narration": true,
+		"pages": ["Bienvenue au Panthéon !"]
+	},
+	"league_ending": {
+		"narration": true,
+		"pages": ["{player} et son équipe entrent dans la légende."]
+	}
+}
