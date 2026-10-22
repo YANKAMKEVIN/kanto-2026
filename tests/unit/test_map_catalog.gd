@@ -29,13 +29,25 @@ func test_has_map() -> void:
 ## retirée ; jalon 12 (T28) : `qa_moves_j12` ; jalon 13 (T22) : `qa_switch_j13` ; jalon 14
 ## (T24) : `qa_charge_j14` ; jalon 15 (T23) : `qa_daycare` ; jalon 16 (T20) : `qa_dock_j16`,
 ## `qa_ship_j16`, `qa_gym_j16` ; jalon 17 (T28) : `qa_flash`, `qa_flash_entry` (les tests du
-## voile et de Flash tournent sur la Cave Taupiqueur rendue obscure en mémoire).
+## voile et de Flash tournent sur la Cave Taupiqueur rendue obscure en mémoire) ; jalon 20 (T24) :
+## `qa_gift_j20`, `qa_elevator_j20`, `_1f`, `_2f`, `qa_spin_j20` (le don, l'ascenseur et les dalles
+## tournantes sont éprouvés sur la maison du toit, le grand magasin et le repaire Rocket).
+## Passe systèmes 2 (T9) : les trois cartes de QA de la monture sont **encore là** (retirées à la
+## clôture S2Z : vider [constant S2_QA_MAPS] et retirer leur test `test_qa_mount_maps.gd`).
+const S2_QA_MAPS: Array[String] = ["qa_mount.tscn", "qa_mount_interieur.tscn",
+	"qa_mount_piste.tscn", "qa_teleport.tscn", "qa_teleport_2.tscn", "qa_sea.tscn",
+	"qa_sea_2.tscn", "qa_strength.tscn", "qa_strength_b1.tscn"]
+
+
 func test_no_qa_map_is_shipped() -> void:
 	for map_id: StringName in [&"qa_forest_systems", &"qa_moves_j12", &"qa_switch_j13",
 			&"qa_charge_j14", &"qa_daycare", &"qa_dock_j16", &"qa_ship_j16", &"qa_gym_j16",
-			&"qa_flash", &"qa_flash_entry"]:
+			&"qa_flash", &"qa_flash_entry", &"qa_gift_j20", &"qa_elevator_j20",
+			&"qa_elevator_j20_1f", &"qa_elevator_j20_2f", &"qa_spin_j20"]:
 		assert_false(MapCatalog.has_map(map_id), "%s retirée" % map_id)
 	for file: String in DirAccess.get_files_at(MapCatalog.MAPS_DIR):
+		if S2_QA_MAPS.has(file):
+			continue
 		assert_false(file.begins_with("qa_"), "%s : carte de QA livrée" % file)
 
 
@@ -61,6 +73,8 @@ func test_interiors_list_matches_the_scenes() -> void:
 		if not file.ends_with(".tscn"):
 			continue
 		var map_id := StringName(file.get_basename())
+		if S2_QA_MAPS.has(file):
+			continue  # carte de QA de la passe systèmes 2 : hors de la liste de préchargement
 		assert_eq(listed.has(map_id), _scene_interior(MapCatalog.MAPS_DIR + file),
 			"%s : liste des intérieurs à jour (data/world/interiors.json)" % map_id)
 	for map_id: StringName in listed:

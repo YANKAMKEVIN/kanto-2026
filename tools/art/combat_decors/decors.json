@@ -136,5 +136,41 @@
 		],
 		"taille": [2340, 1080],
 		"qualite": 90
+	},
+	"tour_pokemon": {
+		"composition": "COMBAT_DECOR_TOUR_POKEMON_r1.png",
+		"tuiles": [
+			{ "image": "COMBAT_DECOR_TOUR_POKEMON_r1_TL.png", "portion": [0, 0, 999, 851] },
+			{ "image": "COMBAT_DECOR_TOUR_POKEMON_r1_TR.png", "portion": [849, 0, 1848, 851] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"route_7_8_urbaine": {
+		"composition": "COMBAT_DECOR_URBAINE_r1.png",
+		"tuiles": [
+			{ "image": "COMBAT_DECOR_URBAINE_r1_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "COMBAT_DECOR_URBAINE_r1_TR.png", "portion": [846, 0, 1846, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"celadon_gym_serre": {
+		"composition": "COMBAT_DECOR_SERRE_r1.png",
+		"tuiles": [
+			{ "image": "COMBAT_DECOR_SERRE_r1_TL.png", "portion": [0, 0, 998, 850] },
+			{ "image": "COMBAT_DECOR_SERRE_r1_TR.png", "portion": [852, 0, 1850, 850] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"rocket_hideout_repaire": {
+		"composition": "COMBAT_DECOR_REPAIRE_r1.png",
+		"tuiles": [
+			{ "image": "COMBAT_DECOR_REPAIRE_r1_TL.png", "portion": [0, 0, 974, 830] },
+			{ "image": "COMBAT_DECOR_REPAIRE_r1_TR.png", "portion": [922, 0, 1896, 830] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
 	}
 }

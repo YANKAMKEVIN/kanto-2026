@@ -116,7 +116,8 @@
 			"name": "Lavanville", "kind": "town",
 			"maps": [
 				"lavender_town", "lavender_center", "lavender_mart", "pokemon_house",
-				"lavender_house_1", "lavender_house_2", "pokemon_tower_1f"
+				"lavender_house_1", "lavender_house_2", "pokemon_tower_1f", "pokemon_tower_2f",
+				"pokemon_tower_3f", "pokemon_tower_4f", "pokemon_tower_5f", "pokemon_tower_6f"
 			],
 			"subtitle": "Route 10 — Route 8 — Route 12",
 			"services": [
@@ -125,11 +126,45 @@
 			],
 			"description": "Une petite ville silencieuse au pied de la Tour Pokémon. On y vient de loin pour se souvenir."
 		},
-		"route_8": { "name": "Route 8", "kind": "route", "maps": [] },
+		"route_8": {
+			"name": "Route 8", "kind": "route",
+			"maps": ["route_8", "route_8_gate", "route_8_underground_gate"],
+			"subtitle": "Lavanville — Safrania",
+			"description": "Une route de Dresseurs entre deux chemins. À l'ouest, le poste de Safrania et l'entrée du souterrain."
+		},
+		"underground_path_7_8": {
+			"name": "Passage souterrain", "kind": "place", "maps": ["underground_path_7_8"],
+			"subtitle": "Route 7 — Route 8",
+			"description": "Un long couloir carrelé sous Safrania. Des néons froids, et presque personne."
+		},
 		"saffron_city": { "name": "Safrania", "kind": "town", "maps": [] },
-		"route_7": { "name": "Route 7", "kind": "route", "maps": [] },
-		"celadon_city": { "name": "Céladopole", "kind": "town", "maps": [] },
-		"fuchsia_city": { "name": "Parmanie", "kind": "town", "maps": [] },
+		"route_7": {
+			"name": "Route 7", "kind": "route",
+			"maps": ["route_7", "route_7_gate", "route_7_underground_gate"],
+			"subtitle": "Céladopole — Safrania",
+			"description": "Une courte route en pente douce. Les toits de Céladopole apparaissent entre les arbres."
+		},
+		"celadon_city": {
+			"name": "Céladopole", "kind": "town",
+			"maps": ["celadon_city", "celadon_center", "celadon_dept_gf", "celadon_dept_2f", "celadon_dept_3f", "celadon_dept_4f", "celadon_dept_5f", "celadon_dept_roof", "celadon_dept_elevator", "celadon_mansion_gf", "celadon_mansion_1f", "celadon_mansion_2f", "celadon_mansion_3f", "celadon_mansion_roof", "celadon_mansion_roof_house", "celadon_restaurant", "celadon_chief_house", "celadon_hotel", "celadon_gym", "celadon_game_corner", "rocket_hideout_b1f", "rocket_hideout_b2f", "rocket_hideout_b3f", "rocket_hideout_b4f", "rocket_hideout_elevator"],
+			"services": [
+				{ "id": "pokemon_center", "found_on": "celadon_center" },
+				{ "id": "poke_mart", "found_on": "celadon_dept_gf" },
+				{ "id": "gym", "found_on": "celadon_gym" }
+			],
+			"description": "Une ville prospère, verte et commerçante. Sous les néons du Casino, l'ambiance n'est plus la même."
+		},
+		"fuchsia_city": {
+			"name": "Parmanie", "kind": "town",
+			"maps": ["fuchsia_city", "fuchsia_center", "fuchsia_mart", "fuchsia_meeting_room",
+				"fuchsia_grandpa_house", "fuchsia_good_rod_house"],
+			"subtitle": "Route 15 — Route 18",
+			"services": [
+				{ "id": "pokemon_center", "found_on": "fuchsia_center" },
+				{ "id": "poke_mart", "found_on": "fuchsia_mart" }
+			],
+			"description": "Une ville basse et verte, ouverte sur la mer. Au nord, le Parc Safari ; près des enclos, des Pokémon venus d'ailleurs."
+		},
 		"route_21": { "name": "Route 21", "kind": "sea_route", "maps": [] },
 		"cinnabar_island": { "name": "Cramois'Île", "kind": "town", "maps": [] },
 		"route_23": { "name": "Route 23", "kind": "route", "maps": [] },
@@ -163,6 +198,41 @@
 			"name": "Route 11", "kind": "route", "maps": ["route_11"],
 			"subtitle": "Carmin-sur-Mer — Route 12",
 			"description": "Une route côtière entre les prairies et la mer, à l'est de Carmin."
+		},
+		"route_12": {
+			"name": "Route 12", "kind": "route", "maps": ["route_12_south", "route_12_rod_house"],
+			"subtitle": "Lavanville — Parmanie",
+			"description": "Au sud du croisement, un long ponton de pêcheurs longe le lac, puis le chemin s'enfonce dans les herbes."
+		},
+		"route_13": {
+			"name": "Route 13", "kind": "route", "maps": ["route_13"],
+			"subtitle": "Route 12 — Route 14",
+			"description": "Un dédale de clôtures au bord de l'eau. Les Dresseurs y attendent derrière chaque barrière."
+		},
+		"route_14": {
+			"name": "Route 14", "kind": "route", "maps": ["route_14"],
+			"subtitle": "Route 13 — Route 15",
+			"description": "Deux chemins descendent vers le sud, de part et d'autre de grandes herbes."
+		},
+		"route_15": {
+			"name": "Route 15", "kind": "route", "maps": ["route_15", "route_15_gate", "route_15_gate_2f"],
+			"subtitle": "Route 14 — Parmanie",
+			"description": "Une route de prairies qui mène à Parmanie. Un poste de garde la coupe en deux."
+		},
+		"route_16": {
+			"name": "Route 16", "kind": "route", "maps": ["route_16_west", "route_16_gate", "route_16_fly_house"],
+			"subtitle": "Céladopole — Piste Cyclable",
+			"description": "À l'ouest de Céladopole, le poste de garde ouvre la Piste Cyclable. Plus haut, une voie tranquille à pied."
+		},
+		"route_17": {
+			"name": "Route 17", "kind": "route", "maps": ["route_17"],
+			"subtitle": "La Piste Cyclable",
+			"description": "Une longue descente au bord de la mer, réservée aux vélos. On s'y laisse glisser jusqu'à Parmanie."
+		},
+		"route_18": {
+			"name": "Route 18", "kind": "route", "maps": ["route_18", "route_18_gate"],
+			"subtitle": "Piste Cyclable — Parmanie",
+			"description": "La fin de la Piste Cyclable. Après le poste, un chemin à pied longe un étang jusqu'à Parmanie."
 		},
 		"ss_anne": {
 			"name": "S.S. Anne", "kind": "place",

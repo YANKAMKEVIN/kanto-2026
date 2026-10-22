@@ -66,6 +66,7 @@ var _description: Label
 var _quantity_caption: Label
 var _stepper: QuantityStepper
 var _total_caption: Label
+var _total_row: HBoxContainer
 var _total: Label
 var _note: Label
 var _confirm: Button
@@ -457,7 +458,8 @@ func _build_detail(parent: Control) -> void:
 	_stepper = QuantityStepper.new()
 	_stepper.changed.connect(_on_stepper_changed)
 	_detail_column.add_child(_stepper)
-	var total_row := HBoxContainer.new()
+	_total_row = HBoxContainer.new()
+	var total_row := _total_row
 	total_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	total_row.add_theme_constant_override(&"separation", UiTokens.GAP)
 	_detail_column.add_child(total_row)
@@ -587,10 +589,16 @@ func _refresh_quantity() -> void:
 	if entry == null:
 		return
 	_stepper.configure(entry.max_quantity, _quantity)
+	# Objet permanent déjà possédé (CT) : ni quantité ni total, la ligne « Déjà dans le Sac »
+	# suffit (J20 T14).
+	var owned := entry.reason == ShopViews.TEXT_ALREADY_OWNED
+	_quantity_caption.visible = not owned
+	_stepper.visible = not owned
+	_total_row.visible = not owned
 	_total.text = ShopViews.total_text(entry.unit_price, _quantity)
 	var available := entry.is_available()
 	_note.text = entry.reason
-	_note.visible = not available and not entry.reason.is_empty()
+	_note.visible = not available and not entry.reason.is_empty() and not owned
 	_confirm.modulate.a = 1.0 if available else UiTokens.SHOP_DISABLED_ALPHA
 	_total.modulate.a = 1.0 if available else UiTokens.SHOP_DISABLED_ALPHA
 

@@ -1,0 +1,14 @@
+{
+	"underground_7_8_resident": {
+		"speaker": "Habitant",
+		"pages": [
+			"Le souterrain passe sous Safrania.\nPlus court, et plus calme."
+		]
+	},
+	"souterrain_hidden_1": {
+		"cutscene": "souterrain_hidden_1"
+	},
+	"souterrain_hidden_2": {
+		"cutscene": "souterrain_hidden_2"
+	}
+}

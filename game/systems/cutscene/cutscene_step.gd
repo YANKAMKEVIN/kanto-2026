@@ -89,6 +89,23 @@ extends RefCounted
 ## - [constant Kind.ANIMATE] : déplace le nœud [member target] de la carte de [member offset]
 ##   cases en [member seconds] s, puis le masque si [member fade] ; « Réduire les animations » :
 ##   fondu sur place ; la scène attend la fin.
+## Jalon 19 (`jalon-19.md` §2.4, T13), le SPECTRE du 6F :
+## - [constant Kind.WILD_BATTLE] : combat **sauvage** scripté contre [member species] au niveau
+##   [member level] (hors des herbes, depuis la case devant le joueur) ; combat SPECTRE selon
+##   [method GhostRule.is_ghost_for] ([member ghost_mode], [member ghost_unless_item], Sac du
+##   moment) ; [member win_flags] / [member lose_flags] facultatifs ; défaite : réveil au point
+##   de repos et **fin de la scène** (comme « wake_up »).
+##   Passe systèmes 2 (T30, `systemes-2.md` §3.8 ; politique d'Artikodin, `jalon-24.md` §2.7) :
+##   [member catch_flags] (clé « catch ») levés sur une capture ; rencontre fixe
+##   [member static_encounter] (clé « static » : drapeaux `done` / `caught`, [StaticEncounter]) ;
+##   [member actor] (clé « actor », avec « static » seulement) : le Pokémon de la carte, retiré
+##   quand la rencontre est consommée ; [member intro] (clé « intro ») : entrée en scène
+##   ([constant INTRO_LEGENDARY] : plus lente).
+## Jalon 20 (`jalon-20.md` §2.5.2, T12), le don d'Évoli :
+## - [constant Kind.GIFT_POKEMON] : [member species] au niveau [member level] donné au joueur
+##   ([method PokemonGift.give], une seule fois par drapeau [member gift_flag]) ; s'il est donné,
+##   le dialogue [member dialogue_id] (« reçoit ») puis, s'il est allé au Stockage,
+##   [member dialogue_stored] (facultatif). Déjà reçu : rien, l'étape passe.
 
 ## Nouvelles valeurs en fin d'enum (ordre de [constant TYPE_KEYS]).
 enum Kind {
@@ -96,6 +113,8 @@ enum Kind {
 	CAPTION, TAKE, SCARE, WAKE_UP, REACT, EMOTE, CHAMPION_CARD, BADGE, MOMENT,
 	FLASH,
 	FIELD_MOVE, SAVE, ANIMATE,
+	WILD_BATTLE,
+	GIFT_POKEMON,
 }
 
 ## Clé de type de chaque étape dans les fichiers, dans l'ordre de [enum Kind].
@@ -105,9 +124,15 @@ const TYPE_KEYS: Array[String] = [
 	"champion_card", "badge", "moment",
 	"flash",
 	"field_move", "save", "animate",
+	"wild_battle",
+	"gift_pokemon",
 ]
 ## Bulles d'une étape « emote » (clé « kind ») : le « ! » du Dresseur qui repère le joueur.
 const EMOTE_KINDS: Array[StringName] = [&"exclamation"]
+## Entrées en scène d'une étape « wild_battle » (clé « intro », T30) ; &"" = l'entrée sauvage
+## ordinaire.
+const INTRO_LEGENDARY: StringName = &"legendary"
+const INTROS: Array[StringName] = [INTRO_LEGENDARY]
 ## Préfixe d'un alias d'acteur (« $player_starter »).
 const ALIAS_PREFIX: String = "$"
 const _ALIAS_CHARS: String = "abcdefghijklmnopqrstuvwxyz_"
@@ -160,6 +185,23 @@ var field_move: StringName = &""
 ## Étape « animate » (jalon 16) : déplacement en cases, et masquage à la fin.
 var offset: Vector2i = Vector2i.ZERO
 var fade: bool = false
+## Étape « wild_battle » (jalon 19) : espèce et niveau du Pokémon sauvage, règle du SPECTRE
+## (clé « ghost » : [constant GhostRule.ALWAYS] ou vide ; clé « ghost_unless_item »).
+var species: StringName = &""
+var level: int = 1
+var ghost_mode: StringName = &""
+var ghost_unless_item: StringName = &""
+## Étape « wild_battle », passe systèmes 2 (T30) : drapeaux d'une capture (clé « catch »),
+## rencontre fixe (clé « static », null = combat ordinaire ; partagée entre copies) et entrée en
+## scène (clé « intro », [constant INTROS] ou &"").
+var catch_flags: Array[StringName] = []
+var static_encounter: StaticEncounter = null
+var intro: StringName = &""
+## Étape « gift_pokemon » (jalon 20) : drapeau du don (clé « flag ») et dialogue joué si le
+## Pokémon part au Stockage (clé « say_stored », &"" = aucun) ; [member species],
+## [member level] et [member dialogue_id] (clé « say ») servent aussi.
+var gift_flag: StringName = &""
+var dialogue_stored: StringName = &""
 ## Conditions de l'étape (toutes levées / aucune levée), vides = toujours jouée.
 var if_flags: Array[StringName] = []
 var unless_flags: Array[StringName] = []
@@ -203,14 +245,25 @@ func applies(flags: StoryFlags) -> bool:
 
 
 ## Drapeaux à lever pour l'issue [param outcome] d'un combat ([enum Battle.Outcome]) :
-## [member win_flags] pour WIN, [member lose_flags] pour LOSS, rien sinon.
+## [member win_flags] pour WIN, [member lose_flags] pour LOSS, [member catch_flags] pour CAUGHT
+## (T30), rien sinon. Avec une rencontre fixe ([member static_encounter]), ses drapeaux
+## ([method StaticEncounter.flags_for]) d'abord, sans doublon.
 func outcome_flags(outcome: int) -> Array[StringName]:
+	var raised: Array[StringName] = []
+	if static_encounter != null:
+		raised = static_encounter.flags_for(outcome)
+	var written: Array[StringName] = []
 	match outcome:
 		Battle.Outcome.WIN:
-			return win_flags.duplicate()
+			written = win_flags
 		Battle.Outcome.LOSS:
-			return lose_flags.duplicate()
-	return []
+			written = lose_flags
+		Battle.Outcome.CAUGHT:
+			written = catch_flags
+	for flag: StringName in written:
+		if not raised.has(flag):
+			raised.append(flag)
+	return raised
 
 
 ## Copie indépendante de l'étape (le directeur y remplace les alias ; les étapes de la
@@ -249,6 +302,15 @@ func copy() -> CutsceneStep:
 	other.field_move = field_move
 	other.offset = offset
 	other.fade = fade
+	other.species = species
+	other.level = level
+	other.ghost_mode = ghost_mode
+	other.ghost_unless_item = ghost_unless_item
+	other.catch_flags = catch_flags.duplicate()
+	other.static_encounter = static_encounter
+	other.intro = intro
+	other.gift_flag = gift_flag
+	other.dialogue_stored = dialogue_stored
 	other.badge_id = badge_id
 	other.moment_type = moment_type
 	other.moment_details = moment_details.duplicate()

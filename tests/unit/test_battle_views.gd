@@ -30,6 +30,22 @@ func test_card_of_the_player_shows_hp_numbers_and_the_foe_does_not() -> void:
 	assert_false(BattleViews.card(event).show_hp_numbers, "jamais pour l'adversaire")
 
 
+func test_card_of_a_masked_ghost_hides_the_level_and_stays_valid() -> void:
+	var event := BattleEvent.new(BattleEvent.Kind.SENT_OUT, BattleEvent.SideId.FOE)
+	event.pokemon_name = "SPECTRE"
+	event.hp = 30
+	event.max_hp = 30
+	assert_true(GhostDisguise.mask(event))
+	var view := BattleViews.card(event)
+	assert_true(view.level_hidden, "niveau masqué (Nv. ??)")
+	assert_true(view.is_valid(), "une carte au niveau masqué reste valide")
+	assert_eq(view.display_name, "SPECTRE")
+	assert_false(view.show_hp_numbers)
+	event.disguised = false
+	event.level = 12
+	assert_false(BattleViews.card(event).level_hidden, "niveau montré hors SPECTRE")
+
+
 func test_genders() -> void:
 	assert_eq(BattleViews.card_gender(Pokemon.Gender.MALE), BattleCardView.Gender.MALE)
 	assert_eq(BattleViews.card_gender(Pokemon.Gender.FEMALE), BattleCardView.Gender.FEMALE)

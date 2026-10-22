@@ -93,8 +93,9 @@ func test_new_moves_follow_red_blue() -> void:
 	assert_eq(dance.pending_effects.size(), 0)
 	var guillotine := _data.get_move(&"guillotine")
 	assert_eq([guillotine.accuracy, guillotine.pp], [30, 5])
-	assert_eq(guillotine.pending_effects, PackedStringArray(["ohko"]),
-		"comme Empal'Korne : K.O. en un coup pas encore joué")
+	assert_eq(guillotine.pending_effects.size(), 0,
+		"K.O. en un coup joué par la passe systèmes 2 (A-33 : mention « Sans effet » retirée)")
+	assert_eq(guillotine.effects.size(), 1, "effet ohko, comme Empal'Korne")
 
 
 func test_pokedex_entries_at_official_size() -> void:

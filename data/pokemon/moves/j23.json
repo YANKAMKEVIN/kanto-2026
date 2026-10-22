@@ -1,14 +1,4 @@
 {
-	"surf": {
-		"name": "Surf", "type": "water", "category": "special",
-		"power": 95, "accuracy": 100, "pp": 15,
-		"description": "Une énorme vague déferle sur la cible. Permettra aussi de nager sur l'eau."
-	},
-	"strength": {
-		"name": "Force", "type": "normal", "category": "physical",
-		"power": 80, "accuracy": 100, "pp": 15,
-		"description": "Le lanceur frappe la cible de toute sa puissance. Permettra aussi de pousser les rochers."
-	},
 	"egg_bomb": {
 		"name": "Bomb'Œuf", "type": "normal", "category": "physical",
 		"power": 100, "accuracy": 75, "pp": 10,
@@ -27,19 +17,7 @@
 	},
 	"guillotine": {
 		"name": "Guillotine", "type": "normal", "category": "status",
-		"accuracy": 30, "pp": 5, "pending_effects": ["ohko"],
-		"description": "Une pince géante qui met K.O. d'un coup. Sans effet dans le moteur actuel."
-	},
-	"swords_dance": {
-		"name": "Danse-Lames", "type": "normal", "category": "status",
-		"accuracy": 0, "pp": 30,
-		"effects": [{ "kind": "stat_stage", "stat": "atk", "stages": 2, "target": "self" }],
-		"description": "Une danse guerrière qui exalte le lanceur. Augmente beaucoup son Attaque."
-	},
-	"stomp": {
-		"name": "Écrasement", "type": "normal", "category": "physical",
-		"power": 65, "accuracy": 100, "pp": 20,
-		"effects": [{ "kind": "flinch", "chance": 30 }],
-		"description": "Écrase la cible d'un pied lourd. Peut l'apeurer."
+		"accuracy": 30, "pp": 5, "effects": [{ "kind": "ohko" }],
+		"description": "Une pince géante qui met K.O. d'un coup."
 	}
 }

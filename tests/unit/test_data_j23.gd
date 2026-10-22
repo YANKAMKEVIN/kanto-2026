@@ -19,9 +19,11 @@ func _move(id: StringName) -> MoveData:
 	return _data.get_move(id)
 
 
-func test_surf_and_strength_follow_red_blue() -> void:
+## Surf et Force sont les données de la passe systèmes 2 (`moves_s2.json`), propriétaire : Surf à
+## 90 de puissance (valeur de la passe, RB : 95), gardée telle quelle à la fusion du J22.
+func test_surf_and_strength_come_from_systemes_2() -> void:
 	var surf := _move(&"surf")
-	assert_eq([surf.type, surf.power, surf.accuracy, surf.pp], [&"water", 95, 100, 15])
+	assert_eq([surf.type, surf.power, surf.accuracy, surf.pp], [&"water", 90, 100, 15])
 	var strength := _move(&"strength")
 	assert_eq([strength.type, strength.power, strength.accuracy, strength.pp],
 		[&"normal", 80, 100, 15])

@@ -1,0 +1,26 @@
+DÉCOR DE COMBAT — REPAIRE SOUTERRAIN D'UNE ORGANISATION, SOUS UN CASINO (Kanto 2026). Image de PRODUCTION : le fond peint d'un écran de combat Pokémon sur smartphone en paysage. AUCUN Pokémon, AUCUN personnage, AUCUNE interface, AUCUN texte.
+
+Images jointes.
+IMAGE 1 : un écran de combat de référence. Reprends sa VUE (caméra à hauteur d'yeux, légèrement plongeante, grand sol dégagé au centre), sa profondeur et sa qualité de peinture. Ne reprends PAS : les Pokémon, les cartes, les boutons, la rivière, le pont, le coucher de soleil orange.
+IMAGE 2 : une planche d'intention de décors de combat (guide de facture).
+
+
+FORMAT : paysage très large, rapport 2,17 : 1 (comme 2340 × 1080), la plus grande résolution possible, OPAQUE, cadrage plein, sans bord.
+
+LIEU : une grande salle technique d'un repaire souterrain moderne : murs de BÉTON gris clair à panneaux, PILIERS d'acier, CONDUITES et faisceaux de CÂBLES le long des murs et du plafond bas, quelques CAISSES de bois et de métal empilées sur les côtés, une console éteinte au fond ; des RAMPES DE NÉONS BLANCS au plafond. Sol de béton lisse gris, quelques marques de peinture de sol jaunes au bord (lignes, jamais de lettres). Organisé, propre, crédible : ni ruine, ni cachot. Tendu sans être angoissant.
+
+COMPOSITION (fractions depuis le coin haut gauche) — à respecter précisément :
+- Fond (de 0 à 38 % de la hauteur) : le mur du fond en béton, des conduites, une porte d'acier fermée au centre-gauche, des caisses empilées à droite (x 78 à 92 %), base du mur vers 36 % de la hauteur.
+- De 40 % de la hauteur jusqu'en bas : GRAND SOL DÉGAGÉ et PLAT de béton gris lisse.
+- Point A (x 67 %, y 50 %) : sol nu, plat et bien lisible, une créature y posera les pieds. Rien de haut dans un rayon de 12 % de la largeur autour.
+- Point B (x 31 %, y 97 %) : sol plat et nu, une grande créature vue de dos y sera au premier plan. Rien de haut autour.
+- ZONE CALME en HAUT À GAUCHE (de 0 à 50 % de la largeur, de 0 à 45 % de la hauteur) : peu de détails et peu de contraste, valeurs simples.
+- ZONE CALME en BAS À DROITE (de 50 à 100 % de la largeur, de 55 à 100 % de la hauteur) : sol simple, presque sans objet, valeurs moyennes, sans contraste fort.
+- Les deux coins du bas restent du SOL nu : pas de buisson ni de gros objet en gros plan.
+- Les 9 % de gauche et de droite de l'image ne contiennent rien d'important (ils seront rognés sur certains écrans).
+
+LUMIÈRE : lumière BLANCHE et un peu dure des néons, venant du haut, froide et uniforme, le centre du sol nettement lisible ; ombres gris-bleu froides, jamais noires. Aucune obscurité, aucune lumière rouge d'alarme.
+
+RENDU (ADN visuel Kanto 2026) : illustration 2D peinte numériquement, RPG Pokémon moderne « HD-2D peint », formes simples, lisibles et arrondies, grandes masses douces (jamais en petits points ni en pixels), aucun trait noir (contours fins et doux plus sombres que la couleur), couleurs riches sans être fluo. Netteté partout (aucun flou de profondeur, pas de vignettage). Perspective à hauteur d'yeux, un peu plongeante, le sol recule nettement vers le fond.
+
+INTERDITS : Pokémon, animal, personnage, silhouette, texte, lettres (aucun R, aucun logo), chiffres, panneau, écran allumé, arme, sang, signature, filigrane, cadre, interface, ciel, fenêtre, végétation, pixel art, flou, vignettage.

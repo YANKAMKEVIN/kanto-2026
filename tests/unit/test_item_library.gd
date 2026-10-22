@@ -21,14 +21,23 @@ func test_real_data_loads_without_error() -> void:
 	# Jalon 12 : data/items/mt_moon.json (Corde Sortie, Pierre Lune, fossiles, CT01) ; jalon 14 :
 	# items_j14.json (CT19, CT28, Passe Bateau, Super Bonbon) ; jalon 15 (T12) : Super Potion et
 	# Guérison (data/items/vermilion.json) ; jalon 16 : items_j16.json (CS01, CT24 ; la Super
-	# Potion du J16 est celle du J15) ; jalon 17 (T7) : CS05 (data/items/j17.json) ; jalon 23 (T6) :
-	# CS03, CS04, CT32, CT37, Dents d'Or (data/items/items_j23.json).
-	assert_eq(_library.get_ids(), [&"antidote", &"awakening", &"burn_heal", &"dome_fossil",
-		&"escape_rope", &"full_restore", &"gold_teeth", &"helix_fossil", &"hm01", &"hm03",
-		&"hm04", &"hm05", &"ice_heal",
-		&"moon_stone", &"nugget", &"oak_parcel", &"paralyze_heal", &"poke_ball", &"potion",
-		&"rare_candy", &"ss_ticket", &"super_potion", &"tm01", &"tm11", &"tm19", &"tm24", &"tm28",
-		&"tm32", &"tm34", &"tm37"] as Array[StringName])
+	# Potion du J16 est celle du J15) ; jalon 17 (T7) : CS05 (data/items/j17.json).
+	# Jalon 20 (T7) : items_j20.json (Super Ball, pierres, boissons, CT13, CT21, Clé Ascenseur,
+	# Scope Sylphe) ; jalon 20 (T11) : Rappel, Poupée Poké, objets X, Muscle +.
+	# Passe systèmes 2 (S2B) : items_systemes2.json (Poké Flûte, Bicyclette) ; S2C : CS03 (hm03) ; S2D : CS04 (hm04) ; S2C-bis : cannes.
+	# Jalon 22 (T4) : Bon de Commande, Hyper Potion, Hyper Ball (ultra_ball) ; T10 : CT09 Bélier
+	# à la place de la CT20 (Frénésie sans effet dans le moteur) (items_j22.json).
+	# Jalon 23 (T6) : CT32, CT37, Dents d'Or (items_j23.json ; CS03 et CS04 sont celles de la passe
+	# systèmes 2).
+	assert_eq(_library.get_ids(), [&"antidote", &"awakening", &"bicycle", &"bike_voucher", &"burn_heal",
+		&"card_key", &"dire_hit",
+		&"dome_fossil", &"escape_rope", &"fire_stone", &"fresh_water", &"full_restore",
+		&"gold_teeth", &"good_rod", &"great_ball", &"helix_fossil", &"hm01", &"hm02", &"hm03", &"hm04", &"hm05", &"hyper_potion", &"ice_heal", &"leaf_stone", &"lemonade",
+		&"lift_key", &"moon_stone", &"nugget", &"oak_parcel", &"old_rod", &"paralyze_heal", &"poke_ball",
+		&"poke_doll", &"poke_flute", &"potion", &"rare_candy", &"revive", &"silph_scope", &"soda_pop",
+		&"ss_ticket", &"super_potion", &"super_rod", &"thunder_stone", &"tm01", &"tm09", &"tm11", &"tm13", &"tm19",
+		&"tm21", &"tm24", &"tm28", &"tm32", &"tm34", &"tm37", &"ultra_ball", &"water_stone", &"x_accuracy", &"x_attack",
+		&"x_defend", &"x_special", &"x_speed"] as Array[StringName])
 	var ball := _library.get_item(&"poke_ball")
 	assert_eq(ball.name, "Poké Ball")
 	assert_eq(ball.plural, "Poké Balls")
@@ -46,11 +55,17 @@ func test_real_data_loads_without_error() -> void:
 	assert_eq(_library.get_ids_in_data_order(),
 		[&"poke_ball", &"potion", &"antidote", &"paralyze_heal", &"awakening", &"burn_heal", &"ice_heal",
 		&"nugget", &"tm11", &"tm34", &"oak_parcel", &"tm19", &"tm28", &"ss_ticket",
-		&"rare_candy", &"hm01", &"tm24", &"hm03", &"hm04", &"tm32", &"tm37", &"gold_teeth",
-		&"hm05", &"escape_rope", &"moon_stone", &"dome_fossil",
-		&"helix_fossil", &"tm01", &"super_potion", &"full_restore"] as Array[StringName],
-		"ordre alphabétique des fichiers (items, items_j14, items_j16, items_j23, j17, mt_moon, "
-		+ "vermilion)")
+		&"rare_candy", &"hm01", &"tm24", &"great_ball", &"revive", &"poke_doll", &"x_attack",
+		&"x_defend", &"x_speed", &"x_special", &"x_accuracy", &"dire_hit", &"fire_stone",
+		&"water_stone",
+		&"thunder_stone", &"leaf_stone", &"fresh_water", &"soda_pop", &"lemonade", &"tm13",
+		&"tm21", &"lift_key", &"silph_scope", &"bike_voucher", &"hyper_potion",
+		&"ultra_ball", &"tm09", &"tm32", &"tm37", &"gold_teeth",
+		&"poke_flute", &"bicycle", &"card_key", &"hm02", &"hm03", &"hm04",
+		&"old_rod", &"good_rod", &"super_rod", &"hm05", &"escape_rope", &"moon_stone", &"dome_fossil", &"helix_fossil", &"tm01", &"super_potion",
+		&"full_restore"] as Array[StringName],
+		"ordre alphabétique des fichiers (items, items_j14, items_j16, items_j20, "
+		+ "items_j22, items_j23, items_systemes2, j17, mt_moon, vermilion)")
 	assert_eq([ball.order, potion.order], [0, 1])
 
 
@@ -299,7 +314,7 @@ func test_invalid_prices_are_rejected() -> void:
 	assert_push_error_count(4)
 	var errors := "\n".join(_library.get_errors())
 	assert_string_contains(errors, "« price » doit être un entier ≥ 0")
-	assert_string_contains(errors, "un objet clé ou une CT n'a pas de prix")
+	assert_string_contains(errors, "un objet clé ou une CS n'a pas de prix")
 
 
 ## Jalon 9 : un soin rend des PV et / ou soigne des statuts (« cures »).
@@ -316,7 +331,7 @@ func test_cures() -> void:
 	both["heal_amount"] = 20
 	assert_true(_library.add_from_dict({"both": both}, "test"), "PV et statut ensemble")
 	var cases := {
-		"a": [{"category": "heal"}, "un soin a « heal_amount » ou « cures »"],
+		"a": [{"category": "heal"}, "un soin a « heal_amount », « cures » ou « revive »"],
 		"b": [{"cures": []}, "« cures » doit être une liste non vide"],
 		"c": [{"cures": ["toxic"]}, "« cures » doit être une liste non vide"],
 		"d": [{"cures": ["poison", "poison"]}, "sans doublon"],

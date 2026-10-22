@@ -1,0 +1,33 @@
+CONCEPT ART — INTÉRIEUR DU POSTE DE LA ROUTE 15, REZ-DE-CHAUSSÉE ET ÉTAGE (Kanto 2026), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre : DEUX PIÈCES CÔTE À CÔTE, séparées par une bande noire (hors de la carte). À GAUCHE le rez-de-chaussée, À DROITE l'étage. Chaque pièce est un rectangle de 10 cases sur 5 de sol, entouré de murs.
+Légende du plan :
+- gris-brun foncé = murs et hors-champ ; bande brun clair au-dessus du sol = le MUR DU FOND, vu de face (on voit sa face, haute de deux cases) ;
+- beige = PLANCHER de bois clair ;
+- REZ-DE-CHAUSSÉE (gauche) : deux rectangles bruns en haut à gauche = une BIBLIOTHÈQUE contre le mur du fond ; long rectangle brun au milieu = le COMPTOIR du garde ; marches grises en haut à droite = un ESCALIER qui MONTE ; deux bandes très sombres au milieu des murs GAUCHE et DROIT = les deux PORTES LATÉRALES (le poste se traverse d'ouest en est), avec un paillasson ; deux disques verts dans les coins du bas = plantes en pot ;
+- ÉTAGE (droite) : deux petits carrés sombres encadrés contre le mur du fond = deux JUMELLES D'OBSERVATION sur pied, chacune devant une grande FENÊTRE du mur du fond (on voit par les fenêtres un paysage de prairie et d'arbres) ; rectangle brun en bas à gauche = une TABLE basse ; marches grises en haut à droite = l'ESCALIER qui DESCEND ; deux disques verts dans les coins du bas = plantes en pot. L'espace libre au milieu est la place où se tient l'assistant du professeur (ne le dessine pas).
+Respecte ce plan À LA LETTRE : deux pièces côte à côte de mêmes dimensions, la place de chaque meuble, les portes latérales du rez-de-chaussée, les escaliers en haut à droite des deux pièces. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+IMAGE 2 : un intérieur validé du même jeu (la maison de Léo). Respecte EXACTEMENT son style de rendu : même pinceau, même plancher, mêmes boiseries, mêmes plantes, même découpe de la pièce sur fond sombre (murs coupés, vue de dessus de trois quarts). Ne reprends PAS ses meubles ni sa composition, NI SA LUMIÈRE DORÉE ni ses taches de soleil au sol.
+
+Format : PAYSAGE 1536 × 1024, les deux pièces côte à côte au centre, sur fond très sombre, comme le plan.
+
+AMBIANCE — « un poste de garde-route » : un bâtiment officiel, propre et sobre, accueillant ; murs crème et lambris de bois, plancher clair ; au rez-de-chaussée, un comptoir de bois et une bibliothèque ; à l'étage, une salle d'observation calme avec deux paires de jumelles sur pied devant de grandes fenêtres.
+
+RÈGLE DE LA GRILLE : murs, meubles et sol suivent une grille ; uniquement des bords horizontaux et verticaux à ANGLES DROITS ; les pièces sont des rectangles.
+OBJETS RARES : seulement les meubles du plan ; pas de bibelots en plus.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats. Le feuillage est peint en grandes masses douces.
+- Perspective : vue de dessus orthogonale, axes de l'image alignés sur la grille, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud).
+- Aucun trait noir : contours fins et doux, plus sombres et plus saturés que la couleur locale. Ombres propres colorées, légèrement bleutées, jamais grises ni noires. Aucune ombre portée allongée.
+- LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche ; volumes conservés par un ombrage doux ; aucune teinte dorée ou orangée, aucun liseré chaud ; ombres propres neutres, légèrement bleutées. NE REPRENDS PAS la lumière dorée de l'image de référence : le jeu ajoute lui-même l'éclairage.
+
+PERSONNE : aucun personnage, aucun Pokémon, aucun animal. Le lieu est VIDE.
+
+INTERDITS : texte, lettres, chiffres, étiquettes, panneaux lisibles, logo, signature, filigrane, cadre, interface, Poké Ball ; route goudronnée, véhicule ; arbres orange ou automnaux ; neige ; brouillard, flou de profondeur, vignettage ; pixel art, 3D.
+- Interdits propres à cette vue : lit, cabine, machine, écran, ordinateur ; tapis aux motifs ; affiches ou cadres avec du texte.
+
+L'image doit raconter, sans texte : les deux étages vides d'un petit poste de garde, un comptoir en bas, des jumelles tournées vers la plaine en haut.

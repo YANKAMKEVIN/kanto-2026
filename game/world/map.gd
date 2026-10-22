@@ -62,6 +62,36 @@ const _NPC_SCENE: PackedScene = preload("res://game/world/npc/npc.tscn")
 ## Bande d'herbe devant les jambes du joueur en hautes herbes (cartes peintes : moitié basse
 ## des touffes, `ground_hautes_herbes_*_bas.png`). Nulle : la bande provisoire du joueur.
 @export var grass_front: Texture2D
+## Cases « calmes » (Tour Pokémon, 5F : dalle purifiée et ses voisines praticables) : aucune
+## rencontre sauvage n'y est tirée (jalon 19, docs/tech/jalon-19.md §2.2). Vide : aucune.
+@export var calm_cells: Array[Vector2i] = []
+## Tronçon de Piste Cyclable (passe systèmes 2, `systemes-2.md` §2.3) : on y monte d'office en
+## Vélo avec la Bicyclette, on n'en descend pas ([MountRules], [BikeRules]).
+@export var cycling_road: bool = false
+## Cases de pente de la Piste (§2.3) : sans appui, le joueur en Vélo y dérive vers le bas
+## ([CyclingSlope]) ; les paliers sont les cases sans marque. Vide : aucune.
+@export var slope_cells: Array[Vector2i] = []
+## Cases d'eau **surfable** (passe systèmes 2, §2.5) : l'eau est posée avec ([method
+## GridWorld.set_surfable]). Les autres cases d'eau restent du décor. Vide : aucune.
+@export var surf_cells: Array[Vector2i] = []
+## Courants actifs (§2.6) : case → direction cardinale du flux ([method GridWorld.set_current]),
+## joués par [ForcedSlideDirector]. Vide : aucun.
+@export var current_cells: Dictionary[Vector2i, Vector2i] = {}
+## Cases où l'on arrive en Surf même par un warp à pied (§2.5, « Surf forcé »).
+@export var forced_surf_cells: Array[Vector2i] = []
+## Cases d'eau où l'on peut pêcher (S2C-bis, [FishingSpot]). Vide : aucune. Jalon 22 (T12) :
+## [method fishable_set] y ajoute les rectangles de [constant FISHABLE_PATH] pour cette carte
+## (cartes livrées avant le J22, dont on ne réécrit pas les grilles).
+@export var fishable_cells: Array[Vector2i] = []
+## Jalon 22 (T16 [D]) : cases de Piste Cyclable d'une carte qui n'est Piste qu'en partie (Route 16
+## ouest, voie basse ; Route 18, partie ouest). [member cycling_road] vrai = toute la carte.
+@export var cycling_road_cells: Array[Vector2i] = []
+
+## Cases pêchables des cartes déjà livrées (jalon 22 §0.4 n° 2) : « maps » → carte →
+## rectangles [x, y, largeur, hauteur].
+const FISHABLE_PATH: String = "res://data/world/fishable.json"
+static var _fishable_rects: Dictionary = {}
+static var _fishable_loaded: bool = false
 
 var _grid: GridWorld
 var _warps: WarpTable
@@ -240,6 +270,75 @@ func get_entities() -> Node2D:
 	return get_node(^"Entities") as Node2D
 
 
+## Dormeurs de la Poké Flûte (passe systèmes 2, §2.4) : un [FluteTarget] par point
+## d'interaction qui porte une [member InteractPoint.flute_cutscene].
+func flute_targets() -> Array[FluteTarget]:
+	var targets: Array[FluteTarget] = []
+	var points := get_node_or_null(^"Interactables")
+	if points == null:
+		return targets
+	for child: Node in points.get_children():
+		var point := child as InteractPoint
+		if point == null or point.flute_cutscene.is_empty():
+			continue
+		var target := FluteTarget.new()
+		target.cells = point.get_cells()
+		target.unless_flags = point.unless_flags.duplicate()
+		target.cutscene_id = point.flute_cutscene
+		targets.append(target)
+	return targets
+
+
+## Ce que la carte permet à la monture du joueur (passe systèmes 2, §2.2).
+func mount_traits() -> MapTraits:
+	var traits := MapTraits.new(interior, cycling_road)
+	for cell: Vector2i in forced_surf_cells:
+		traits.forced_surf_cells[cell] = true
+	return traits
+
+
+## Cases pêchables de la carte, en ensemble ([method FishingSpot.in_front]) : celles de la
+## scène et celles de [constant FISHABLE_PATH] pour [member map_id] (jalon 22, T12).
+func fishable_set() -> Dictionary[Vector2i, bool]:
+	var cells: Dictionary[Vector2i, bool] = {}
+	for cell: Vector2i in fishable_cells:
+		cells[cell] = true
+	for rect: Rect2i in fishable_rects_for(map_id):
+		for y: int in range(rect.position.y, rect.end.y):
+			for x: int in range(rect.position.x, rect.end.x):
+				cells[Vector2i(x, y)] = true
+	return cells
+
+
+## Rectangles pêchables de [constant FISHABLE_PATH] pour [param id] (vide si aucun).
+static func fishable_rects_for(id: StringName) -> Array[Rect2i]:
+	if not _fishable_loaded:
+		_fishable_loaded = true
+		var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(FISHABLE_PATH))
+		if parsed is Dictionary and (parsed as Dictionary).get("maps") is Dictionary:
+			_fishable_rects = (parsed as Dictionary)["maps"]
+		else:
+			push_error("GameMap : %s illisible" % FISHABLE_PATH)
+	var rects: Array[Rect2i] = []
+	for entry: Variant in _fishable_rects.get(String(id), []):
+		var r: Array = entry
+		rects.append(Rect2i(int(r[0]), int(r[1]), int(r[2]), int(r[3])))
+	return rects
+
+
+## Vrai si [param cell] est sur la Piste Cyclable (toute la carte, ou une case de
+## [member cycling_road_cells]).
+func is_cycling_road_at(cell: Vector2i) -> bool:
+	return cycling_road or cycling_road_cells.has(cell)
+
+
+## [method mount_traits] vus depuis [param cell] (Piste en partie, jalon 22).
+func mount_traits_at(cell: Vector2i) -> MapTraits:
+	var traits := mount_traits()
+	traits.cycling_road = is_cycling_road_at(cell)
+	return traits
+
+
 ## Ajoute le joueur à `Entities` et le place sur le spawn.
 func spawn_player(player: Player, spawn_name: StringName, facing: Vector2i) -> void:
 	var entities := get_entities()
@@ -305,6 +404,12 @@ func _build_grid() -> void:
 			_read_layer(layer)
 	for cell: Vector2i in blocked_cells:
 		_grid.set_solid(cell)
+	for cell: Vector2i in slope_cells:
+		_grid.set_slope(cell)
+	for cell: Vector2i in surf_cells:
+		_grid.set_surfable(cell)
+	for cell: Vector2i in current_cells:
+		_grid.set_current(cell, current_cells[cell])
 	# Objets triés par les pieds (Entities) et relief peint posé au sol (GroundDecals :
 	# falaises, massif ; jalon-07.md §6.6).
 	for layer_path: NodePath in _PROP_LAYERS:

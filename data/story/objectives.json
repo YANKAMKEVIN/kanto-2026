@@ -1,5 +1,40 @@
 [
 	{
+		"id": "back_to_tower",
+		"text": "retourner à la Tour Pokémon.",
+		"if": ["got_rocket_hideout_b4f_silph_scope"]
+	},
+	{
+		"id": "search_game_corner",
+		"text": "fouiller sous le Casino.",
+		"if": ["game_corner_switch"],
+		"unless": ["got_rocket_hideout_b4f_silph_scope"]
+	},
+	{
+		"id": "explore_celadon",
+		"text": "explorer Céladopole.",
+		"if": ["celadon_reached"],
+		"unless": ["game_corner_switch"]
+	},
+	{
+		"id": "go_celadon",
+		"text": "rejoindre Céladopole.",
+		"if": ["route_8_reached"],
+		"unless": ["celadon_reached"]
+	},
+	{
+		"id": "see_the_ghosts",
+		"text": "trouver un moyen de voir les spectres.",
+		"if": ["tower_ghost_met"],
+		"unless": ["got_rocket_hideout_b4f_silph_scope"]
+	},
+	{
+		"id": "climb_tower",
+		"text": "monter dans la Tour Pokémon.",
+		"if": ["tower_stairs_open"],
+		"unless": ["tower_ghost_met"]
+	},
+	{
 		"id": "tower_later",
 		"text": "revenir plus tard à la Tour Pokémon.",
 		"if": ["tower_medium_talked"]

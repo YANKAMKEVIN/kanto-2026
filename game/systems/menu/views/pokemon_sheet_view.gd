@@ -36,6 +36,9 @@ var evolution_text: String = ""
 ## compagnon), RAPPELER (le compagnon actuel) ou rien (espèce sans planche, A-11).
 enum CompanionAction { NONE, SEND_OUT, RECALL }
 var companion_action: CompanionAction = CompanionAction.NONE
+## Passe systèmes 2 (T25b) : capacités utilisables hors combat depuis la fiche (Téléport,
+## Tunnel) : indice dans [member moves] → identifiant de la capacité. Vide : aucune.
+var field_moves: Dictionary[int, StringName] = {}
 
 
 ## Vue affichable : un membre valide, au moins un type, six statistiques, une capacité, une

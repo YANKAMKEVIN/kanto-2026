@@ -30,14 +30,21 @@ extends RefCounted
 ## ([member ItemData.obtained], les fossiles).
 ## Jalon 16 : une CS est une CT (« tm ») qui porte « hm » (numéro de 1 à 5, unique) **au lieu**
 ## de « tm » ([member ItemData.hm_number]) ; « hm » est refusée hors de la catégorie CT.
+## Jalon 20 (`jalon-20.md` §2.9.2 à §2.9.4) : « battle_use » ([member ItemData.battle_use]),
+## facultatif pour un objet COMBAT et refusé ailleurs ; « revive » (fraction des PV, 0 < f ≤ 1,
+## [member ItemData.revive]), réservé aux soins (un Rappel est un soin à lui seul) ; une CT
+## (pas une CS) peut avoir un prix (achetable une fois, jamais revendue).
+## Passe systèmes 2 (`systemes-2.md` §2.4) : « key_use » ([member ItemData.key_use]), facultatif
+## pour un objet clé et refusé ailleurs.
 
 const DATA_DIR: String = "res://data/items/"
 
 const _KEYS: Array[String] = [
 	"name", "plural", "feminine", "category", "catch_bonus", "heal_amount", "cures",
 	"description", "draft", "price", "tm", "teaches", "field_use", "obtained",
-	"hm",
+	"hm", "battle_use", "revive", "key_use",
 ]
+const _BATTLE_USE_KEYS: Array[String] = ["kind", "stat", "stages"]
 ## Numéros des CT de Rouge/Bleu (dossier 14 §6.1).
 const TM_MIN: int = 1
 const TM_MAX: int = 50
@@ -178,8 +185,15 @@ func _parse_item(value: Variant, where: String) -> ItemData:
 	elif entry.has("catch_bonus"):
 		ok = _fail("%s : « catch_bonus » est réservé aux Balls" % where)
 	if item.category == ItemData.Category.HEAL:
-		if not entry.has("heal_amount") and not entry.has("cures"):
-			ok = _fail("%s : un soin a « heal_amount » ou « cures »" % where)
+		if not entry.has("heal_amount") and not entry.has("cures") and not entry.has("revive"):
+			ok = _fail("%s : un soin a « heal_amount », « cures » ou « revive »" % where)
+		if entry.has("revive"):
+			var fraction: Variant = entry["revive"]
+			if not (fraction is float or fraction is int) or float(fraction) <= 0.0 \
+					or float(fraction) > 1.0:
+				ok = _fail("%s : « revive » doit être une fraction 0 < f ≤ 1" % where)
+			else:
+				item.revive = float(fraction)
 		if entry.has("heal_amount"):
 			var amount: Variant = entry["heal_amount"]
 			if not JsonFields.is_int(amount) or int(amount) <= 0:
@@ -189,9 +203,14 @@ func _parse_item(value: Variant, where: String) -> ItemData:
 		if entry.has("cures"):
 			ok = _read_cures(entry["cures"], item, where) and ok
 	else:
-		for key: String in ["heal_amount", "cures"]:
+		for key: String in ["heal_amount", "cures", "revive"]:
 			if entry.has(key):
 				ok = _fail("%s : « %s » est réservé aux soins" % [where, key])
+	if item.category == ItemData.Category.BATTLE:
+		if entry.has("battle_use"):
+			ok = _read_battle_use(entry["battle_use"], item, where) and ok
+	elif entry.has("battle_use"):
+		ok = _fail("%s : « battle_use » est réservé aux objets COMBAT (battle)" % where)
 	if item.category == ItemData.Category.TM and entry.has("hm"):
 		var hm: Variant = entry["hm"]
 		var teaches_hm: Variant = entry.get("teaches")
@@ -229,6 +248,8 @@ func _parse_item(value: Variant, where: String) -> ItemData:
 				ok = _fail("%s : « %s » est réservé aux CT" % [where, key])
 	if entry.has("field_use"):
 		ok = _read_field_use(entry["field_use"], item, where) and ok
+	if entry.has("key_use"):
+		ok = _read_key_use(entry["key_use"], item, where) and ok
 	if entry.has("obtained"):
 		if entry["obtained"] is bool:
 			item.obtained = entry["obtained"]
@@ -238,8 +259,8 @@ func _parse_item(value: Variant, where: String) -> ItemData:
 		var price: Variant = entry["price"]
 		if not JsonFields.is_int(price) or int(price) < 0:
 			ok = _fail("%s : « price » doit être un entier ≥ 0 (₽)" % where)
-		elif (item.is_key() or item.is_permanent()) and int(price) > 0:
-			ok = _fail("%s : un objet clé ou une CT n'a pas de prix" % where)
+		elif (item.is_key() or item.is_hm()) and int(price) > 0:
+			ok = _fail("%s : un objet clé ou une CS n'a pas de prix" % where)
 		else:
 			item.price = int(price)
 	return item if ok else null
@@ -294,6 +315,39 @@ func _read_cures(value: Variant, item: ItemData, where: String) -> bool:
 	return true
 
 
+## Usage en combat (jalon 20) : « kind » de [constant ItemData.BATTLE_USES] ; un objet X a
+## aussi « stat » ([constant MoveEffect.STAGE_STATS]) et « stages » (entier de 1 à 6).
+func _read_battle_use(value: Variant, item: ItemData, where: String) -> bool:
+	var message := "%s : « battle_use » vaut { \"kind\": %s… }" % [where,
+		", ".join(PackedStringArray(ItemData.BATTLE_USES))]
+	if not value is Dictionary:
+		return _fail(message)
+	var use: Dictionary = value
+	for key: Variant in use:
+		if not _BATTLE_USE_KEYS.has(str(key)):
+			return _fail("%s : clé inconnue « %s » dans « battle_use »" % [where, key])
+	var kind: Variant = use.get("kind")
+	if not kind is String or not ItemData.BATTLE_USES.has(StringName(kind)):
+		return _fail(message)
+	var stat_stage := StringName(kind) == ItemData.BATTLE_USE_STAT_STAGE
+	if not stat_stage:
+		if use.has("stat") or use.has("stages"):
+			return _fail("%s : « stat » et « stages » sont réservés à « stat_stage »" % where)
+	else:
+		var stat: Variant = use.get("stat")
+		var stages: Variant = use.get("stages")
+		if not stat is String or not MoveEffect.STAGE_STATS.has(StringName(stat)):
+			return _fail("%s : « stat » vaut %s" % [where,
+				", ".join(PackedStringArray(MoveEffect.STAGE_STATS))])
+		if not JsonFields.is_int(stages) or int(stages) < 1 or int(stages) > Battler.STAGE_MAX:
+			return _fail("%s : « stages » doit être un entier de 1 à %d" % [where,
+				Battler.STAGE_MAX])
+		item.battle_stat = StringName(stat)
+		item.battle_stages = int(stages)
+	item.battle_use = StringName(kind)
+	return true
+
+
 ## Usage en exploration (jalon 12) : un des [constant ItemData.FIELD_USES], objet AVENTURE seul.
 func _read_field_use(value: Variant, item: ItemData, where: String) -> bool:
 	if item.category != ItemData.Category.FIELD:
@@ -302,6 +356,17 @@ func _read_field_use(value: Variant, item: ItemData, where: String) -> bool:
 		return _fail("%s : « field_use » vaut %s" % [where,
 			", ".join(PackedStringArray(ItemData.FIELD_USES))])
 	item.field_use = StringName(value)
+	return true
+
+
+## Passe systèmes 2 : « key_use » ([constant ItemData.KEY_USES]), réservé aux objets clés.
+func _read_key_use(value: Variant, item: ItemData, where: String) -> bool:
+	if item.category != ItemData.Category.KEY:
+		return _fail("%s : « key_use » est réservé aux objets clés (key)" % where)
+	if not value is String or not ItemData.KEY_USES.has(StringName(value)):
+		return _fail("%s : « key_use » vaut %s" % [where,
+			", ".join(PackedStringArray(ItemData.KEY_USES))])
+	item.key_use = StringName(value)
 	return true
 
 

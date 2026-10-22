@@ -10,6 +10,7 @@ extends SceneTree
 ##   DialogSpeaker    Label   nom du locuteur, gras, DIALOG_SPEAKER
 ##   DialogText       Label   réplique, FONT_BODY, TEXT
 ##   DialogNarration  Label   narration (Examiner, Observer), italique, DIALOG_NARRATION
+##   DialogSpirit     Label   voix d'esprit (Exorciste possédé), italique, DIALOG_SPIRIT
 ##   DialogContinue   Label   indicateur de suite « › », gras, ACCENT
 ##   InteractLabel    PanelContainer  pastille du verbe du bouton contextuel
 ##   InteractLabelText Label  verbe (PARLER…), gras, majuscules
@@ -153,7 +154,8 @@ func _init() -> void:
 	_add_plain_label(theme, &"DialogSpeaker", t.DIALOG_SPEAKER_FONT, t.DIALOG_SPEAKER, bold)
 	_add_plain_label(theme, &"DialogText", t.FONT_BODY, t.TEXT, null)
 	_add_plain_label(theme, &"DialogNarration", t.FONT_BODY, t.DIALOG_NARRATION, italic)
-	for type: StringName in [&"DialogText", &"DialogNarration"]:
+	_add_plain_label(theme, &"DialogSpirit", t.FONT_BODY, t.DIALOG_SPIRIT, italic)
+	for type: StringName in [&"DialogText", &"DialogNarration", &"DialogSpirit"]:
 		theme.set_constant(&"line_spacing", type, t.DIALOG_LINE_SPACING)
 	_add_plain_label(theme, &"DialogContinue", t.DIALOG_CONTINUE_FONT, t.ACCENT, bold)
 

@@ -22,7 +22,8 @@ extends SceneTree
 ##   (buis), fleurs pâles, ifs du parvis, bancs, arbres repères, trois panneaux.
 ## - Passages : portes STEP_ON ↑ des six bâtiments (spawns `retour_*`), nord (21..23, 0) PUSH ↑
 ##   vers la Route 10 (`route_10` / `from_lavender_w|c|e`, ou « Route 10 — À venir » tant que la
-##   carte n'existe pas), ouest (0, 10..12) « Route 8 — À venir » et sud (21..23, 35) « Route 12 —
+##   carte n'existe pas), ouest (0, 10..12) PUSH ← vers la Route 8 (`route_8` / `from_lavender_n|c|s`,
+##   jalon 20 T15 ; « Route 8 — À venir » sans sa carte) et sud (21..23, 35) « Route 12 —
 ##   À venir » (`coming_soon`, développement : en release les bords sont bloqués).
 
 const Kit := preload("res://tools/cerulean_map_kit.gd")
@@ -69,12 +70,15 @@ const BUILDINGS: Array = [
 const INTERIOR_SPAWN: StringName = &"entrance"
 ## La maison 2 (`N`) est la maison 1 en miroir (fiche, variation n° 4).
 const MIRRORED: Array[String] = ["House2"]
-## Panneaux : [position de la grille, nom du nœud, dialogue (T-18 à T-20), orientation du
-## joueur qui lit].
+## Panneaux : [position de la grille, nom du nœud, dialogue (T-18 à T-20, §15.6.5 du dossier 22),
+## orientation du joueur qui lit, (objet, si ce n'est pas le panneau commun)].
 const SIGNS: Array = [
 	["panneau_ville", "SignCity", &"lavender_town_sign", Vector2i.RIGHT],
 	["panneau_tour", "SignTower", &"lavender_tower_sign", Vector2i.UP],
 	["panneau_fuji", "SignPokemonHouse", &"lavender_pokemon_house_sign", Vector2i.UP],
+	# J19 (T20) : panneau du Scope Sylphe (dossier 22 §15.6.5), objet propre, lu depuis (41, 11) →.
+	["panneau_scope_j19", "SignScope", &"lavender_scope_sign", Vector2i.RIGHT,
+		"prop_panneau_scope_01"],
 ]
 ## Arrivée à Lavanville (T24) : scène silencieuse `lavender_reached` (objectif « Visiter la
 ## Tour Pokémon. »), tout pas vers le bas sur la 2e rangée (position `legende_arrivee`).
@@ -191,14 +195,21 @@ func _add_passages() -> void:
 				Vector2i.UP, &"", StringName("from_route_10_" + suffix), Vector2i.DOWN,
 				"Route 10")
 	_kit.call(&"add_spawn", "from_route_10", north[1])
-	# Ouest : « ROUTE 8 — À venir » ; retour une case à l'intérieur, tourné vers l'est.
+	# Ouest : la Route 8 (jalon 20 T15) / `from_lavender_n|c|s`, rangée par rangée ; « ROUTE 8 —
+	# À venir » tant que sa carte n'existe pas (retour une case à l'intérieur, tourné vers l'est).
 	var west: Array[Vector2i] = _plan().call(&"cells_at", "warp_ouest")
 	var west_back: Array[Vector2i] = _plan().call(&"cells_at", "from_route_8")
+	var west_built := ResourceLoader.exists("res://game/world/maps/route_8.tscn")
 	for i: int in west.size():
 		var name := "from_route_8_" + SUFFIXES_V[i]
 		_kit.call(&"add_spawn", name, west_back[i])
-		_kit.call(&"add_warp", "Route8" + SUFFIXES_V[i].to_upper(), west[i], Kit.PUSH,
-			Vector2i.LEFT, &"", StringName(name), Vector2i.RIGHT, "Route 8")
+		if west_built:
+			_kit.call(&"add_warp", "Route8" + SUFFIXES_V[i].to_upper(), west[i], Kit.PUSH,
+				Vector2i.LEFT, &"route_8", StringName("from_lavender_" + SUFFIXES_V[i]),
+				Vector2i.LEFT)
+		else:
+			_kit.call(&"add_warp", "Route8" + SUFFIXES_V[i].to_upper(), west[i], Kit.PUSH,
+				Vector2i.LEFT, &"", StringName(name), Vector2i.RIGHT, "Route 8")
 	# Sud : « ROUTE 12 — À venir » ; retour une case au nord, tourné vers le haut.
 	var south: Array[Vector2i] = _plan().call(&"cells_at", "warp_sud")
 	var south_back: Array[Vector2i] = _plan().call(&"cells_at", "from_route_12")
@@ -229,7 +240,7 @@ func _add_passages() -> void:
 
 
 ## Examen des trois panneaux et déclencheur de l'arrivée (les PNJ viennent de `NPCS_PATH`).
-## Le panneau du Scope Sylphe (42, 11) est réservé au J19 : rien n'y est posé.
+## Le panneau du Scope Sylphe (42, 11) est posé par le J19 (T20), comme les trois autres.
 func _add_life() -> void:
 	for entry: Array in SIGNS:
 		_kit.call(&"add_interactable", String(entry[1]) + "Point", _cell(entry[0]), Vector2i.ONE,
@@ -270,7 +281,8 @@ func _place_props(entities: Node2D) -> void:
 			"Bench%d" % index)
 		index += 1
 	for entry: Array in SIGNS:
-		_kit.call(&"add_prop_at", entities, "prop_panneau_01", _cell(entry[0]), entry[1])
+		var prop_id: String = entry[4] if entry.size() > 4 else "prop_panneau_01"
+		_kit.call(&"add_prop_at", entities, prop_id, _cell(entry[0]), entry[1])
 	# Haies `x` : buis taillés, deux modèles jamais identiques côte à côte, valeur variée.
 	var chosen: Dictionary = {}
 	index = 0

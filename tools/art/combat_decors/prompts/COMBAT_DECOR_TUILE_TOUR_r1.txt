@@ -1,0 +1,9 @@
+AGRANDISSEMENT D'UNE PORTION DE DÉCOR (Kanto 2026). L'image jointe est une portion d'un décor peint (l'intérieur d'une tour funéraire : dalles, stèles, bougies, brume légère). Produis EXACTEMENT LA MÊME IMAGE, à une résolution plus élevée, avec plus de finesse dans la peinture.
+
+RÈGLES ABSOLUES :
+- Même cadrage au pixel près : même largeur et même hauteur relatives, chaque élément (stèles, fleurs, bougies, niches, joints des dalles, blocs du mur, nappes de brume) exactement à la même place et à la même taille. N'ajoute rien, n'enlève rien, ne déplace rien, ne recadre pas, ne prolonge pas l'image.
+- Mêmes couleurs, même lumière, même style (illustration 2D peinte « HD-2D peint », masses douces, aucun trait noir).
+- Seulement plus de netteté et de détails fins dans le pinceau (grain de la pierre, pétales, flammes), comme une version haute définition du même tableau.
+- Aucun flou, aucun texte, aucune inscription, aucun personnage, aucune créature, aucun cadre.
+
+FORMAT : même rapport largeur / hauteur que l'image jointe (environ 1,17 : 1, légèrement plus large que haute), la plus grande résolution possible, OPAQUE.

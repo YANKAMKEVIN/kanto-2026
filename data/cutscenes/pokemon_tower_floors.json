@@ -1,0 +1,321 @@
+{
+	"tower_6f_ghost": {
+		"variants": [
+			{
+				"unless": [
+					"ghost_marowak_calmed"
+				],
+				"steps": [
+					{
+						"react": "player"
+					},
+					{
+						"wait": 0.6
+					},
+					{
+						"dialogue": "tower_6f_ghost_warning"
+					},
+					{
+						"wild_battle": "marowak",
+						"level": 30,
+						"ghost": "always"
+					},
+					{
+						"move": "player",
+						"path": [
+							"up"
+						],
+						"keep_facing": true
+					},
+					{
+						"dialogue": "tower_6f_ghost_after"
+					},
+					{
+						"set": [
+							"tower_ghost_met"
+						]
+					}
+				]
+			}
+		]
+	},
+	"tower_guardian": {
+		"variants": [
+			{
+				"unless": [
+					"tower_stairs_open"
+				],
+				"steps": [
+					{
+						"face": "exorciste_gardienne",
+						"to": "player"
+					},
+					{
+						"dialogue": "tower_guardian_worried"
+					},
+					{
+						"move": "exorciste_gardienne",
+						"path": [
+							"right"
+						]
+					},
+					{
+						"face": "exorciste_gardienne",
+						"to": "left"
+					},
+					{
+						"set": [
+							"tower_stairs_open"
+						]
+					}
+				]
+			}
+		]
+	},
+	"tower_rival": {
+		"variants": [
+			{
+				"unless": [
+					"rival_tower_won"
+				],
+				"steps": [
+					{
+						"face": "tower_rival",
+						"to": "player"
+					},
+					{
+						"face": "player",
+						"to": "tower_rival"
+					},
+					{
+						"dialogue": "rival_tower_intro",
+						"unless": [
+							"rival_tower_lost_once"
+						]
+					},
+					{
+						"dialogue": "rival_tower_resume",
+						"if": [
+							"rival_tower_lost_once"
+						]
+					},
+					{
+						"set": [
+							"rival_tower_retried"
+						],
+						"if": [
+							"rival_tower_lost_once"
+						]
+					},
+					{
+						"battle": "rival_tower",
+						"win": [
+							"rival_tower_won"
+						],
+						"lose": [
+							"rival_tower_lost_once"
+						]
+					},
+					{
+						"wait": 2.0,
+						"if": [
+							"rival_tower_won"
+						]
+					},
+					{
+						"dialogue": "rival_tower_won",
+						"if": [
+							"rival_tower_won"
+						]
+					},
+					{
+						"move": "tower_rival",
+						"to": [
+							17,
+							9
+						],
+						"if": [
+							"rival_tower_won"
+						]
+					},
+					{
+						"despawn": "tower_rival",
+						"if": [
+							"rival_tower_won"
+						]
+					},
+					{
+						"dialogue": "rival_tower_lost",
+						"unless": [
+							"rival_tower_won"
+						]
+					},
+					{
+						"wake_up": true,
+						"unless": [
+							"rival_tower_won"
+						]
+					}
+				]
+			}
+		]
+	},
+	"tower_purified_zone": {
+		"variants": [
+			{
+				"steps": [
+					{
+						"flash": 1
+					},
+					{
+						"dialogue": "tower_purified_zone_heal"
+					},
+					{
+						"dialogue": "tower_purified_zone_done"
+					}
+				]
+			}
+		]
+	},
+	"tower_3f_objet_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_tower_3f_objet_1"
+				],
+				"steps": [
+					{
+						"despawn": "tower_3f_objet_1"
+					},
+					{
+						"give": "escape_rope",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_tower_3f_objet_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"tower_4f_objet_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_tower_4f_objet_1"
+				],
+				"steps": [
+					{
+						"despawn": "tower_4f_objet_1"
+					},
+					{
+						"give": "awakening",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_tower_4f_objet_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"tower_4f_objet_2": {
+		"variants": [
+			{
+				"unless": [
+					"got_tower_4f_objet_2"
+				],
+				"steps": [
+					{
+						"despawn": "tower_4f_objet_2"
+					},
+					{
+						"give": "super_potion",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_tower_4f_objet_2"
+						]
+					}
+				]
+			}
+		]
+	},
+	"tower_5f_objet_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_tower_5f_objet_1"
+				],
+				"steps": [
+					{
+						"despawn": "tower_5f_objet_1"
+					},
+					{
+						"give": "nugget",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_tower_5f_objet_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"tower_6f_objet_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_tower_6f_objet_1"
+				],
+				"steps": [
+					{
+						"despawn": "tower_6f_objet_1"
+					},
+					{
+						"give": "super_potion",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_tower_6f_objet_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"tower_5f_cache_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_tower_5f_cache_1"
+				],
+				"steps": [
+					{
+						"give": "super_potion",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_tower_5f_cache_1"
+						]
+					}
+				]
+			}
+		]
+	}
+}

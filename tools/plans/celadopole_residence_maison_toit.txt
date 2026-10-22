@@ -1,0 +1,25 @@
+# Maison du toit de la Résidence (celadon_mansion_roof_house) — grille fonctionnelle (jalon 20,
+# dossier 23 §10, H-10 ; préparée le 2026-10-14). Pièce unique de 10 × 8 : une table et, dessus,
+# la Poké Ball d'Évoli (don unique, drapeau eevee_received). Aucun PNJ.
+#
+# Légende : K mur   . sol   t table (bloquée ; la Poké Ball est sur sa case centrale (4, 3))
+#   p plante   X sortie (PUSH ↓)
+
+PRATICABLES .X
+
+GRILLE 10 8
+00 KKKKKKKKKK
+01 KKKKKKKKKK
+02 KKKKKKKKKK
+03 K..ttt...K
+04 K........K
+05 Kp......pK
+06 KKKKXXKKKK
+07 KKKKKKKKKK
+FIN
+
+POSITIONS
+sortie               warp           4..5,6        libre   to=celadon_mansion_roof spawn=from_house  # PUSH ↓ → celadon_mansion_roof, from_house
+entree               spawn          4,6           libre    # spawn « entrance », tourné ↑
+poke_ball_evoli      objet_don      4,3           bloque  item=eevee level=25 flag=eevee_received  # Poké Ball d'Évoli N25 sur la table (textes 28-30), lue depuis (4, 4) ↑ ; disparaît après le don ; stockage si équipe pleine (H-10)
+FIN

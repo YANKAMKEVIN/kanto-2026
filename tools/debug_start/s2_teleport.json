@@ -1,0 +1,10 @@
+{
+	"map": "qa_teleport",
+	"spawn": "start",
+	"facing": "up",
+	"flags": [],
+	"party": [
+		{ "species": "charmander", "level": 10 },
+		{ "species": "pidgey", "level": 9 }
+	]
+}

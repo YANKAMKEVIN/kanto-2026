@@ -1,0 +1,109 @@
+{
+	"celadon_game_corner_rocket": {
+		"name": "Sbire Rocket", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 600,
+		"team": [
+			{ "species": "raticate", "level": 20 },
+			{ "species": "zubat", "level": 20 }
+		]
+	},
+	"rocket_hideout_b1f_1": {
+		"name": "Sbire Rocket", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 630,
+		"team": [
+			{ "species": "kadabra", "level": 21 },
+			{ "species": "machop", "level": 21 }
+		]
+	},
+	"rocket_hideout_b1f_2": {
+		"name": "Sbire Rocket", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 630,
+		"team": [
+			{ "species": "raticate", "level": 21 },
+			{ "species": "raticate", "level": 21 }
+		]
+	},
+	"rocket_hideout_b1f_3": {
+		"name": "Sbire Rocket", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 600,
+		"team": [
+			{ "species": "ekans", "level": 20 },
+			{ "species": "koffing", "level": 20 },
+			{ "species": "koffing", "level": 20 }
+		]
+	},
+	"rocket_hideout_b2f_1": {
+		"name": "Sbire Rocket", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 510,
+		"team": [
+			{ "species": "zubat", "level": 17 },
+			{ "species": "koffing", "level": 17 },
+			{ "species": "ekans", "level": 17 },
+			{ "species": "zubat", "level": 17 },
+			{ "species": "raticate", "level": 17 }
+		]
+	},
+	"rocket_hideout_b3f_1": {
+		"name": "Sbire Rocket", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 600,
+		"team": [
+			{ "species": "rattata", "level": 20 },
+			{ "species": "raticate", "level": 20 },
+			{ "species": "kadabra", "level": 20 }
+		]
+	},
+	"rocket_hideout_b3f_2": {
+		"name": "Sbire Rocket", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 630,
+		"team": [
+			{ "species": "machop", "level": 21 },
+			{ "species": "machop", "level": 21 }
+		]
+	},
+	"rocket_hideout_b4f_key": {
+		"name": "Sbire Rocket", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 630,
+		"team": [
+			{ "species": "koffing", "level": 21 },
+			{ "species": "zubat", "level": 21 }
+		]
+	},
+	"rocket_hideout_b4f_guard_1": {
+		"name": "Sbire Rocket", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 690,
+		"team": [
+			{ "species": "sandshrew", "level": 23 },
+			{ "species": "ekans", "level": 23 },
+			{ "species": "sandslash", "level": 23 }
+		]
+	},
+	"rocket_hideout_b4f_guard_2": {
+		"name": "Sbire Rocket", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 690,
+		"team": [
+			{ "species": "ekans", "level": 23 },
+			{ "species": "sandshrew", "level": 23 },
+			{ "species": "arbok", "level": 23 }
+		]
+	},
+	"giovanni_hideout": {
+		"name": "Giovanni", "ai": "smart",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 2475,
+		"start_message": false, "end_message": true, "bag": true, "switch": true,
+		"card": { "name": "GIOVANNI", "title": "Chef de la Team Rocket" },
+		"team": [
+			{
+				"species": "onix", "level": 23,
+				"moves": ["tackle", "screech", "bind", "rock_throw"]
+			},
+			{
+				"species": "rhyhorn", "level": 22,
+				"moves": ["horn_attack"]
+			},
+			{
+				"species": "kangaskhan", "level": 25,
+				"moves": ["comet_punch", "bite"]
+			}
+		]
+	}
+}

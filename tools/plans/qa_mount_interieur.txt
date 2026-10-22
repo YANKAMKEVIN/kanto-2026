@@ -1,0 +1,21 @@
+# Intérieur de QA « monture » — passe systèmes 2 (§2.3). Intérieur : le Vélo est refusé, on y entre à
+# pied ; tapis de sortie (3..4, 5) → qa_mount, from_interieur.
+#
+# Légende : # mur · . sol · E tapis de sortie (warp PUSH ↓)
+
+PRATICABLES .E
+
+GRILLE 8 6
+00 ########
+01 #......#
+02 #......#
+03 #......#
+04 #......#
+05 ###EE###
+FIN
+
+POSITIONS
+entree             spawn            3,4          libre
+sortie_o           warp             3,5          libre   vers=qa_mount:from_interieur
+sortie_e           warp             4,5          libre   vers=qa_mount:from_interieur
+FIN

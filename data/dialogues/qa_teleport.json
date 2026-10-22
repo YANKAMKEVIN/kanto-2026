@@ -1,0 +1,13 @@
+{
+	"qa_teleport_2_card_key": {
+		"cutscene": "qa_teleport_2_card_key"
+	},
+	"qa_teleport_2_card_key_got": {
+		"narration": true,
+		"pages": ["{player} obtient la Carte Magnétique !"]
+	},
+	"qa_teleport_goal": {
+		"narration": true,
+		"pages": ["Bravo ! Le parcours des téléporteurs est terminé."]
+	}
+}

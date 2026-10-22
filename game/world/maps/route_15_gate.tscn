@@ -1,0 +1,99 @@
+[gd_scene format=4]
+
+[ext_resource type="Script" path="res://game/world/map.gd" id="1_5ass5"]
+[ext_resource type="TileSet" path="res://assets/tiles/interior.tres" id="2_tpnsp"]
+[ext_resource type="Script" path="res://game/world/warp_point.gd" id="3_h1smy"]
+
+[node name="Route15Gate" type="Node2D" unique_id=1404475972]
+script = ExtResource("1_5ass5")
+map_id = &"route_15_gate"
+display_name = "Route 15"
+region = "Route 15"
+size = Vector2i(12, 10)
+blocked_cells = Array[Vector2i]([Vector2i(1, 3), Vector2i(2, 3), Vector2i(5, 4), Vector2i(6, 4), Vector2i(7, 4), Vector2i(1, 7), Vector2i(10, 7)])
+interior = true
+
+[node name="Ground" type="TileMapLayer" parent="." unique_id=939371919]
+tile_map_data = PackedByteArray("AAAAAAAAAAABAAIAAAABAAAAAAABAAIAAAACAAAAAAABAAIAAAADAAAAAAABAAIAAAAEAAAAAAAAAAIAAAAFAAAAAAAAAAIAAAAGAAAAAAAAAAIAAAAHAAAAAAAAAAIAAAAIAAAAAAABAAIAAAAJAAAAAAAAAAIAAAAKAAAAAAABAAIAAAALAAAAAAABAAIAAAAAAAEAAAAAAAIAAAABAAEAAAAAAAIAAAACAAEAAAAAAAIAAAADAAEAAAABAAIAAAAEAAEAAAAAAAIAAAAFAAEAAAABAAIAAAAGAAEAAAABAAIAAAAHAAEAAAAAAAIAAAAIAAEAAAABAAIAAAAJAAEAAAAAAAIAAAAKAAEAAAAAAAIAAAALAAEAAAAAAAIAAAAAAAIAAAABAAIAAAABAAIAAAABAAIAAAACAAIAAAAAAAIAAAADAAIAAAABAAIAAAAEAAIAAAABAAIAAAAFAAIAAAABAAIAAAAGAAIAAAAAAAIAAAAHAAIAAAAAAAIAAAAIAAIAAAAAAAIAAAAJAAIAAAABAAIAAAAKAAIAAAAAAAIAAAALAAIAAAAAAAIAAAAAAAMAAAAAAAIAAAABAAMAAAABAAcAAAACAAMAAAAAAAcAAAADAAMAAAABAAAAAAAEAAMAAAABAAAAAAAFAAMAAAAAAAAAAAAGAAMAAAABAAAAAAAHAAMAAAABAAAAAAAIAAMAAAAAAAAAAAAJAAMAAAACAAAAAAAKAAMAAAAAAAYAAAALAAMAAAAAAAIAAAAAAAQAAAABAAIAAAABAAQAAAAAAAAAAAACAAQAAAAAAAAAAAADAAQAAAACAAAAAAAEAAQAAAABAAAAAAAFAAQAAAAAAAcAAAAGAAQAAAAAAAcAAAAHAAQAAAABAAcAAAAIAAQAAAACAAAAAAAJAAQAAAAAAAAAAAAKAAQAAAACAAAAAAALAAQAAAAAAAIAAAAAAAUAAAAAAAYAAAABAAUAAAABAAAAAAACAAUAAAACAAAAAAADAAUAAAACAAAAAAAEAAUAAAABAAAAAAAFAAUAAAACAAAAAAAGAAUAAAACAAAAAAAHAAUAAAACAAAAAAAIAAUAAAAAAAAAAAAJAAUAAAABAAAAAAAKAAUAAAABAAAAAAALAAUAAAAAAAYAAAAAAAYAAAAAAAYAAAABAAYAAAACAAAAAAACAAYAAAABAAAAAAADAAYAAAAAAAAAAAAEAAYAAAABAAAAAAAFAAYAAAABAAAAAAAGAAYAAAACAAAAAAAHAAYAAAABAAAAAAAIAAYAAAABAAAAAAAJAAYAAAABAAAAAAAKAAYAAAAAAAAAAAALAAYAAAAAAAYAAAAAAAcAAAAAAAIAAAABAAcAAAAAAAcAAAACAAcAAAABAAAAAAADAAcAAAAAAAAAAAAEAAcAAAACAAAAAAAFAAcAAAABAAAAAAAGAAcAAAAAAAAAAAAHAAcAAAABAAAAAAAIAAcAAAABAAAAAAAJAAcAAAABAAAAAAAKAAcAAAAAAAcAAAALAAcAAAABAAIAAAAAAAgAAAABAAIAAAABAAgAAAABAAIAAAACAAgAAAABAAIAAAADAAgAAAABAAIAAAAEAAgAAAAAAAIAAAAFAAgAAAABAAIAAAAGAAgAAAABAAIAAAAHAAgAAAAAAAIAAAAIAAgAAAAAAAIAAAAJAAgAAAABAAIAAAAKAAgAAAABAAIAAAALAAgAAAAAAAIAAAAAAAkAAAABAAIAAAABAAkAAAABAAIAAAACAAkAAAAAAAIAAAADAAkAAAABAAIAAAAEAAkAAAABAAIAAAAFAAkAAAAAAAIAAAAGAAkAAAABAAIAAAAHAAkAAAAAAAIAAAAIAAkAAAAAAAIAAAAJAAkAAAAAAAIAAAAKAAkAAAAAAAIAAAALAAkAAAAAAAIAAAA=")
+tile_set = ExtResource("2_tpnsp")
+
+[node name="Detail" type="TileMapLayer" parent="." unique_id=2028858370]
+tile_set = ExtResource("2_tpnsp")
+
+[node name="Obstacles" type="TileMapLayer" parent="." unique_id=169011613]
+tile_set = ExtResource("2_tpnsp")
+
+[node name="Entities" type="Node2D" parent="." unique_id=1683103803]
+unique_name_in_owner = true
+y_sort_enabled = true
+
+[node name="Overhead" type="TileMapLayer" parent="." unique_id=278209609]
+z_index = 10
+tile_set = ExtResource("2_tpnsp")
+
+[node name="Warps" type="Node2D" parent="." unique_id=510366477]
+
+[node name="SortieOuest_0" type="Marker2D" parent="Warps" unique_id=506808446]
+position = Vector2(48, 576)
+script = ExtResource("3_h1smy")
+trigger = 1
+direction = Vector2i(-1, 0)
+target_map = &"route_15"
+target_spawn = &"from_poste_ouest"
+arrival_facing = Vector2i(-1, 0)
+
+[node name="SortieOuest_1" type="Marker2D" parent="Warps" unique_id=511229826]
+position = Vector2(48, 672)
+script = ExtResource("3_h1smy")
+trigger = 1
+direction = Vector2i(-1, 0)
+target_map = &"route_15"
+target_spawn = &"from_poste_ouest_1"
+arrival_facing = Vector2i(-1, 0)
+
+[node name="SortieEst_0" type="Marker2D" parent="Warps" unique_id=1707623031]
+position = Vector2(1104, 576)
+script = ExtResource("3_h1smy")
+trigger = 1
+direction = Vector2i(1, 0)
+target_map = &"route_15"
+target_spawn = &"from_poste_est"
+arrival_facing = Vector2i(1, 0)
+
+[node name="SortieEst_1" type="Marker2D" parent="Warps" unique_id=2060938505]
+position = Vector2(1104, 672)
+script = ExtResource("3_h1smy")
+trigger = 1
+direction = Vector2i(1, 0)
+target_map = &"route_15"
+target_spawn = &"from_poste_est_1"
+arrival_facing = Vector2i(1, 0)
+
+[node name="EscalierMonte_0" type="Marker2D" parent="Warps" unique_id=690611906]
+position = Vector2(1008, 384)
+script = ExtResource("3_h1smy")
+direction = Vector2i(0, -1)
+target_map = &"route_15_gate_2f"
+target_spawn = &"from_1f"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Interactables" type="Node2D" parent="." unique_id=1769704449]
+
+[node name="Spawns" type="Node2D" parent="." unique_id=159868840]
+
+[node name="entrance_ouest" type="Marker2D" parent="Spawns" unique_id=2022978981]
+position = Vector2(144, 576)
+
+[node name="entrance_ouest_1" type="Marker2D" parent="Spawns" unique_id=423625659]
+position = Vector2(144, 672)
+
+[node name="entrance_est" type="Marker2D" parent="Spawns" unique_id=1630560986]
+position = Vector2(1008, 576)
+
+[node name="entrance_est_1" type="Marker2D" parent="Spawns" unique_id=260515266]
+position = Vector2(1008, 672)
+
+[node name="from_2f" type="Marker2D" parent="Spawns" unique_id=633921942]
+position = Vector2(1008, 480)
+
+[node name="Triggers" type="Node2D" parent="." unique_id=807271281]

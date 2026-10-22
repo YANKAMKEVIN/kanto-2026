@@ -1,0 +1,38 @@
+{
+	"route_18_bird_1_before": {
+		"speaker": "Ornithologue Albert",
+		"pages": ["Du haut de la Piste,\non voit les oiseaux de mer."]
+	},
+	"route_18_bird_1_defeated": {
+		"speaker": "Ornithologue Albert",
+		"pages": ["Ils se sont envolés…"]
+	},
+	"route_18_bird_1_after": {
+		"speaker": "Ornithologue Albert",
+		"pages": ["Parmanie est juste à l'est."]
+	},
+	"route_18_bird_2_before": {
+		"speaker": "Ornithologue Edmond",
+		"pages": ["Du haut de la Piste,\non voit les oiseaux de mer."]
+	},
+	"route_18_bird_2_defeated": {
+		"speaker": "Ornithologue Edmond",
+		"pages": ["Ils se sont envolés…"]
+	},
+	"route_18_bird_2_after": {
+		"speaker": "Ornithologue Edmond",
+		"pages": ["Parmanie est juste à l'est."]
+	},
+	"route_18_bird_3_before": {
+		"speaker": "Ornithologue Ernest",
+		"pages": ["Du haut de la Piste,\non voit les oiseaux de mer."]
+	},
+	"route_18_bird_3_defeated": {
+		"speaker": "Ornithologue Ernest",
+		"pages": ["Ils se sont envolés…"]
+	},
+	"route_18_bird_3_after": {
+		"speaker": "Ornithologue Ernest",
+		"pages": ["Parmanie est juste à l'est."]
+	}
+}

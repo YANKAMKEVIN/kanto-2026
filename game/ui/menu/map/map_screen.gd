@@ -22,6 +22,8 @@ extends MenuScreen
 
 ## Une zone découverte touchée sur l'illustration ou dans la frise (jamais une autre zone).
 signal zone_touched(zone: StringName)
+## Passe systèmes 2 (§2.8, T24) : « S'ENVOLER » touché dans le panneau de [param zone].
+signal fly_requested(zone: StringName)
 
 const BACK_TEXT := "RETOUR"
 ## Titre et région de l'en-tête (MM.2 ; la vue garde « CARTE — KANTO » pour les tests de logique).
@@ -93,6 +95,7 @@ func _ready() -> void:
 	_panel.speed_scale = speed_scale
 	_panel.visible = false
 	_panel.route_requested.connect(route_requested.emit)
+	_panel.fly_requested.connect(fly_requested.emit)
 	_body.add_child(_panel)
 	_strip = ZoneStrip.new()
 	_strip.zone_chosen.connect(zone_touched.emit)

@@ -1,0 +1,11 @@
+{
+	"assistant": {
+		"cell": [
+			4,
+			5
+		],
+		"facing": "down",
+		"sprite": "researcher",
+		"dialogue": "route_15_gate_2f_assistant"
+	}
+}

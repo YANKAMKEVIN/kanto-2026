@@ -1,14 +1,4 @@
 {
-	"hm03": {
-		"name": "CS03 — Surf", "plural": "CS03 — Surf", "feminine": true,
-		"category": "tm", "hm": 3, "teaches": "surf",
-		"description": "Permet de nager sur l'eau. Enseigne aussi une attaque."
-	},
-	"hm04": {
-		"name": "CS04 — Force", "plural": "CS04 — Force", "feminine": true,
-		"category": "tm", "hm": 4, "teaches": "strength",
-		"description": "Permet de pousser les rochers. Enseigne aussi une attaque."
-	},
 	"tm32": {
 		"name": "CT32 — Reflet", "plural": "CT32 — Reflet", "feminine": true,
 		"category": "tm", "tm": 32, "teaches": "double_team",

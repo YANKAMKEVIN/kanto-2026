@@ -29,6 +29,13 @@ const EVOLUTION_NOTES: Array[StringName] = [&"kadabra_bond"]
 ## Magnéti liés… », texte validé par Kevin le 2026-10-16 ; Magnéti se voit avant, chez l'Ingénieur
 ## Victor de la Route 11).
 const NAMED_SPECIES_OK: Dictionary[StringName, Array] = {&"magneton": [&"magnemite"]}
+## Espèces des données sans fiche : jamais vues au J19 (SPECTRE) ; Osselait a la sienne depuis le
+## J20 (annexe A n° 204), Ossatueur l'aura au J21
+## (dossier 22 §12.1).
+const NO_ENTRY_YET: Array[StringName] = [&"marowak"]
+## Descriptions validées par Kevin qui parlent d'évolution (exception à « jamais de
+## divulgation ») : Léviator (dossier 22 §15.7, validé le 2026-10-15).
+const EVOLUTION_DESCRIPTIONS: Array[StringName] = [&"gyarados"]
 
 var _data: PokemonData
 var _lib: PokedexLibrary
@@ -68,12 +75,16 @@ func test_every_species_of_the_data_has_an_entry_and_the_reverse() -> void:
 	_lib.load_file()
 	_lib.check_references(_data)
 	for id: StringName in _data.get_species_ids():
+		if NO_ENTRY_YET.has(id):
+			assert_false(_lib.has_species(id), "%s : pas encore de fiche" % id)
+			continue
 		assert_true(_lib.has_species(id), "%s a sa fiche de Pokédex" % id)
 		var info := _lib.get_species(id)
 		assert_gt(info.height, 0.0)
 		assert_gt(info.weight, 0.0)
 		assert_false(info.description.is_empty())
-	assert_eq(_lib.get_species_ids().size(), _data.get_species_ids().size())
+	assert_eq(_lib.get_species_ids().size(),
+		_data.get_species_ids().size() - NO_ENTRY_YET.size())
 
 
 func test_real_heights_and_weights_are_the_official_ones() -> void:
@@ -90,6 +101,9 @@ func test_real_heights_and_weights_are_the_official_ones() -> void:
 		&"weedle": [0.3, 3.2], &"kakuna": [0.6, 10.0], &"beedrill": [1.0, 29.5],
 		&"pikachu": [0.4, 6.0], &"raichu": [0.8, 30.0],
 		&"abra": [0.9, 19.5], &"kadabra": [1.3, 56.5], &"machop": [0.8, 19.5],
+		# Jalon 19 (dossier 22 §15.7 ; Caninos vient du J17).
+		&"gastly": [1.3, 0.1], &"haunter": [1.6, 0.1],
+		&"exeggcute": [0.4, 2.5], &"gyarados": [6.5, 235.0],
 	}
 	for id: StringName in official:
 		assert_almost_eq(_lib.get_species(id).height, float(official[id][0]), 0.001, id)
@@ -101,7 +115,9 @@ func test_real_texts_are_validated_and_never_spoil() -> void:
 	for id: StringName in _lib.get_species_ids():
 		var info := _lib.get_species(id)
 		assert_false(info.draft, "%s : description validée par Kevin" % id)
-		var texts: Array[String] = [info.description]
+		var texts: Array[String] = []
+		if not EVOLUTION_DESCRIPTIONS.has(id):
+			texts.append(info.description)
 		for note: PokedexNoteData in info.notes:
 			assert_false(note.draft, "%s : note validée par Kevin" % note.id)
 			if not EVOLUTION_NOTES.has(note.id):

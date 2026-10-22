@@ -26,7 +26,8 @@
 		"nidorina": { "sprite": "pokemon/nidorina" },
 		"raticate": { "sprite": "pokemon/raticate" },
 		"fearow": { "sprite": "pokemon/fearow" },
-		"meowth": { "sprite": "pokemon/meowth" }
+		"meowth": { "sprite": "pokemon/meowth" },
+		"eevee": { "sprite": "pokemon/eevee" }
 	},
 	"contexts": {
 		"viridian_forest": "forest",
@@ -39,6 +40,7 @@
 		"digletts_cave": "cave",
 		"route_2_east": "forest",
 		"dark_cave_1f": "cave",
-		"dark_cave_b1f": "cave"
+		"dark_cave_b1f": "cave",
+		"celadon_city": "city"
 	}
 }

@@ -1,0 +1,23 @@
+# Ascenseur du grand magasin (celadon_dept_elevator) — grille fonctionnelle (jalon 20, dossier 23
+# §9 ; préparée le 2026-10-14). Cabine de 4 × 2 cases (6 × 6), panneau d'étages au fond. Dessert
+# du RdC au 5e (RB) ; le toit se rejoint par l'escalier du 5e. Le magasin n'exige AUCUNE clé
+# (contrairement à l'ascenseur du repaire).
+#
+# Légende : K mur   . sol   P panneau d'étages (bloqué)   X sortie/porte (praticable, PUSH ↓)
+
+PRATICABLES .X
+
+GRILLE 6 6
+00 KKKKKK
+01 KKPPKK
+02 K....K
+03 K....K
+04 KKXXKK
+05 KKKKKK
+FIN
+
+POSITIONS
+sortie               warp           2..3,4        libre   to=@origin spawn=from_elevator floors=gf,2f,3f,4f,5f  # PUSH ↓ → l'étage choisi au panneau (RdC, 2e, 3e, 4e, 5e), arrivée « from_elevator » ; fondu 0,4 s + légère secousse (§21)
+entree               spawn          2,4           libre    # spawn « entrance », tourné ↑
+panneau_etages       panneau        2..3,1        bloque  kind=ascenseur floors=gf,2f,3f,4f,5f  # panneau d'étages (RdC → 5e ; PAS le toit) ; lu depuis (2..3, 2) ↑
+FIN

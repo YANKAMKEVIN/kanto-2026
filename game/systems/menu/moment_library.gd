@@ -47,9 +47,13 @@ const FOSSIL: StringName = &"fossil"
 ## Léo redevenu humain (J14, dossier 17 §13 : `bill_restored`, texte n° 69 ; lieu = zone de la
 ## carte du moment, « Cap d'Azuria »). Écrit une seule fois par l'étape de scène « moment ».
 const BILL_RESTORED: StringName = &"bill_restored"
+## Giovanni a quitté son repaire sous le Casino de Céladopole (J20, dossier 23 §13.5, texte n° 172 ;
+## lieu = zone de la carte du moment). Écrit une seule fois par l'étape de scène « moment »
+## (scène de Giovanni, T21).
+const GIOVANNI: StringName = &"giovanni"
 ## Ajouts en fin (types des jalons suivants après).
 const TYPES: Array[StringName] = [STARTER, RIVAL_BATTLE, FIRST_CAPTURE, ZONE_ARRIVAL, BADGE,
-	FOSSIL, BILL_RESTORED]
+	FOSSIL, BILL_RESTORED, GIOVANNI]
 ## Clé des détails d'un moment [constant FOSSIL] : l'objet obtenu (identifiant de [ItemLibrary]).
 const DETAIL_ITEM: String = "item"
 
@@ -73,6 +77,7 @@ const _MARKS: Dictionary[StringName, Array] = {
 	BADGE: [MARK_ZONE, MARK_BADGE, MARK_CITY, MARK_LEADER],
 	FOSSIL: [MARK_ZONE, MARK_FOSSIL],
 	BILL_RESTORED: [MARK_ZONE],
+	GIOVANNI: [MARK_ZONE],
 }
 
 var _texts: Dictionary[StringName, MomentTextData] = {}

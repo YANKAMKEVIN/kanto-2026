@@ -1,0 +1,11 @@
+{
+	"fuchsia_mart": {
+		"stock": [
+			{ "item": "ultra_ball" },
+			{ "item": "great_ball" },
+			{ "item": "super_potion" },
+			{ "item": "hyper_potion" },
+			{ "item": "antidote" }
+		]
+	}
+}

@@ -1,0 +1,29 @@
+{
+	"player_1": {
+		"cell": [
+			8,
+			4
+		],
+		"facing": "up",
+		"sprite": "youngster",
+		"dialogue": "celadon_dept_3f_player_1"
+	},
+	"player_2": {
+		"cell": [
+			12,
+			4
+		],
+		"facing": "up",
+		"sprite": "kid",
+		"dialogue": "celadon_dept_3f_player_2"
+	},
+	"gift_man": {
+		"cell": [
+			15,
+			6
+		],
+		"facing": "left",
+		"sprite": "gentleman",
+		"dialogue": "celadon_dept_3f_gift_man"
+	}
+}

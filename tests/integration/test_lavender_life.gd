@@ -271,15 +271,6 @@ func test_the_three_signs_say_t18_to_t20() -> void:
 		assert_eq(_pages, [entry[2]] as Array[String], entry[0])
 
 
-func test_the_scope_sign_spot_is_empty_for_j19() -> void:
-	await _start(&"lavender_town", &"from_route_10", "lavender", Vector2i(22, 0),
-		Vector2i.DOWN)
-	var spot := _plan.cell_of("panneau_scope_j19")
-	assert_eq(spot, Vector2i(42, 11))
-	for interaction: Interaction in _boot.get_map().get_interactions().get_all():
-		assert_ne(interaction.cell, spot, "rien d'examinable au J18")
-
-
 func test_the_four_inhabitants_say_t21_to_t24() -> void:
 	await _start(&"lavender_town", &"from_route_10", "lavender", Vector2i(22, 0),
 		Vector2i.DOWN)
@@ -309,8 +300,9 @@ func test_the_pokemon_house_kid_says_t25_then_t26() -> void:
 			assert_true(npc.get_spec().dialogue.is_empty(), "%s : aucun texte" % ambient)
 	assert_false(GameState.flags.has_flag(&"pokemon_house_kid_talked"))
 	await _talk_to(&"enfant")
-	assert_eq(_pages, ["Papy Fuji ? Il passe ses journées\nà la Tour.",
-		"Il dit que quelqu'un doit veiller\nsur eux."] as Array[String], "T-25")
+	# J19 (T20) : T-25 remplacé par le §15.6.1 du dossier 22 (Fuji est monté et n'est pas redescendu).
+	assert_eq(_pages, ["Papy Fuji est monté à la Tour…",
+		"Il n'est pas redescendu.\nIl revient toujours, d'habitude."] as Array[String], "§15.6.1")
 	assert_true(GameState.flags.has_flag(&"pokemon_house_kid_talked"))
 	await _talk_to(&"enfant")
 	assert_eq(_pages, ["Ces Pokémon n'avaient plus de Dresseur.\nMaintenant, ils nous ont nous."] \

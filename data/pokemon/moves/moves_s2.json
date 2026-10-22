@@ -1,0 +1,18 @@
+{
+	"fly": {
+		"name": "Vol", "type": "flying", "category": "physical",
+		"power": 90, "accuracy": 95, "pp": 15,
+		"effects": [{ "kind": "charge", "texts": "fly", "invulnerable": true }],
+		"description": "Le lanceur s'envole au premier tour et frappe au second. En l'air, il évite les attaques."
+	},
+	"surf": {
+		"name": "Surf", "type": "water", "category": "special",
+		"power": 90, "accuracy": 100, "pp": 15,
+		"description": "Une grande vague s'abat sur tous les Pokémon alentour."
+	},
+	"strength": {
+		"name": "Force", "type": "normal", "category": "physical",
+		"power": 80, "accuracy": 100, "pp": 15,
+		"description": "Le lanceur frappe la cible de toute sa puissance. Permettra aussi de pousser les rochers."
+	}
+}

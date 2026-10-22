@@ -138,3 +138,26 @@ func test_open_storage_asks_for_the_storage_and_returns_at_once() -> void:
 	assert_false(_services.is_running(), "rend la main tout de suite")
 	assert_false(_all_healed(), "aucun soin")
 	assert_push_error_count(0)
+
+
+## Jalon 20 (T13) : le panneau d'une cabine demande l'ascenseur et rend la main tout de suite.
+func test_open_elevator_asks_for_the_panel_and_returns_at_once() -> void:
+	var asked: Array[bool] = []
+	_services.elevator_requested.connect(func() -> void: asked.append(true))
+	await _services.run_action(&"open_elevator")
+	assert_eq(asked.size(), 1, "le panneau est demandé")
+	assert_false(_services.is_running(), "rend la main tout de suite")
+	assert_false(_all_healed(), "aucun soin")
+	assert_push_error_count(0)
+
+
+## Jalon 20 (§2.9.1) : un vendeur ouvre sa boutique (clé « shop »), pas celle de la carte.
+func test_open_shop_with_a_shop_id_asks_for_that_shop() -> void:
+	var map := (load(MART) as PackedScene).instantiate() as GameMap
+	add_child_autofree(map)
+	_services.set_map(map)
+	var shops: Array[StringName] = []
+	_services.shop_requested.connect(shops.append)
+	await _services.run_action(&"open_shop", &"celadon_dept_5f")
+	await _services.run_action(&"open_shop")
+	assert_eq(shops, [&"celadon_dept_5f", &"viridian_mart"] as Array[StringName])

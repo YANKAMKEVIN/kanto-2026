@@ -55,6 +55,15 @@ extends SceneTree
 ##     Maison des Pokémon et maisons relues sur leur grille (`tools/plans/lavanville_maison_*.txt`),
 ##     **sans PNJ** (T18) ; la Tour (`pokemon_tower_1f`) est en modules (`tools/build_pokemon_tower.gd`)
 ##   godot --headless --path . -s res://tools/build_painted_interiors.gd -- --lavanville
+##   route_7_gate, route_8_gate, route_7_underground_gate, route_8_underground_gate — postes de
+##     Safrania et bâtiments d'entrée du souterrain (jalon 20 T15, `--routes78`)
+##   celadon_center, celadon_dept_gf|2f|3f|4f|5f|roof|elevator, celadon_mansion_gf|1f|2f|3f|roof|
+##   roof_house, celadon_restaurant, celadon_chief_house, celadon_hotel — Céladopole (jalon 20 T16,
+##     jalon-20.md §2.2 ; `--celadon`) : Centre = définition commune ; les autres relus sur leur
+##     grille (`tools/plans/celadopole_*.txt`), enveloppes **provisoires** dessinées d'après la
+##     grille (`tools/art/placeholders_celadopole.py`, série 22 bis à venir) ; **sans PNJ** (T17).
+##     L'Arène d'Erika (`celadon_gym`) est dans `tools/build_celadon_gym.gd`.
+##   godot --headless --path . -s res://tools/build_painted_interiors.gd -- --celadon
 ##   godot --headless --path . -s res://tools/build_painted_interiors.gd   (toutes les pièces)
 ##   godot --headless --path . --import
 ##
@@ -123,6 +132,18 @@ const SEA_TINT := Color(0.58, 0.68, 0.9)
 ## Jalon 18 (T14) : les cinq intérieurs peints de Lavanville.
 const LAVANVILLE := [&"lavender_center", &"lavender_mart", &"pokemon_house",
 	&"lavender_house_1", &"lavender_house_2"]
+## Jalon 20 (T15) : postes de Safrania et bâtiments d'entrée du souterrain des Routes 7 et 8.
+const ROUTES_7_8 := [&"route_7_gate", &"route_8_gate", &"route_7_underground_gate",
+	&"route_8_underground_gate"]
+## Jalon 20 (T16) : Céladopole (hors Arène, `tools/build_celadon_gym.gd`).
+const CELADON := [&"celadon_center", &"celadon_dept_gf", &"celadon_dept_2f", &"celadon_dept_3f",
+	&"celadon_dept_4f", &"celadon_dept_5f", &"celadon_dept_roof", &"celadon_dept_elevator",
+	&"celadon_mansion_gf", &"celadon_mansion_1f", &"celadon_mansion_2f", &"celadon_mansion_3f",
+	&"celadon_mansion_roof", &"celadon_mansion_roof_house", &"celadon_restaurant",
+	&"celadon_chief_house", &"celadon_hotel"]
+## Jalon 22 (T12, T24) : maison de la Méga Canne (Route 12 sud) et intérieurs de Parmanie.
+const J22 := [&"route_12_rod_house", &"route_16_fly_house", &"fuchsia_center", &"fuchsia_mart", &"fuchsia_meeting_room",
+	&"fuchsia_grandpa_house", &"fuchsia_good_rod_house"]
 const PLANS_DIR := "res://tools/plans/"
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 const LOGIC_DIR := "res://tests/fixtures/maps/"
@@ -152,6 +173,9 @@ func _init() -> void:
 	rooms.append(_pokemon_center(&"route_10_center", "Route10Center", "Route 10",
 		[&"route_10", &"from_center"]))
 	rooms.append_array(_lavender_rooms())
+	rooms.append_array(_routes_7_8_rooms())
+	rooms.append_array(_celadon_rooms())
+	rooms.append_array(_j22_rooms())
 	for room: Dictionary in rooms:
 		if not wanted.is_empty() and not wanted.has(room["id"]):
 			continue
@@ -199,6 +223,12 @@ func _wanted_rooms() -> Array:
 			wanted.append_array(SS_ANNE + [&"vermilion_gym"])
 		elif arg == "--lavanville":
 			wanted.append_array(LAVANVILLE)
+		elif arg == "--routes78":
+			wanted.append_array(ROUTES_7_8)
+		elif arg == "--celadon":
+			wanted.append_array(CELADON)
+		elif arg == "--j22":
+			wanted.append_array(J22)
 		elif arg.begins_with("--rooms="):
 			for id: String in arg.trim_prefix("--rooms=").split(","):
 				wanted.append(StringName(id))
@@ -1167,6 +1197,7 @@ func _build(room: Dictionary) -> Node2D:
 	var warp_script: GDScript = load("res://game/world/warp_point.gd")
 	if room.has("exit"):
 		var target: Array = room["exit_target"]
+		var exit_spawns: Array = room.get("exit_spawns", [])
 		var index := 0
 		for cell: Vector2i in room["exit"]:
 			var point := Marker2D.new()
@@ -1176,7 +1207,9 @@ func _build(room: Dictionary) -> Node2D:
 			point.set(&"trigger", PUSH)
 			point.set(&"direction", Vector2i.DOWN)
 			point.set(&"target_map", target[0])
-			point.set(&"target_spawn", target[1])
+			# Jalon 20 : une arrivée par case de la porte (`from_<lieu>_w|e`), sinon la même.
+			point.set(&"target_spawn", exit_spawns[index] if index < exit_spawns.size()
+				else target[1])
 			point.set(&"arrival_facing", Vector2i.DOWN)
 			_attach(root, root.get_node(^"Warps"), point)
 			index += 1
@@ -1998,3 +2031,388 @@ func _lavender_house_2() -> Dictionary:
 	room["furniture"] = azuria["furniture"]
 	room["rugs"] = azuria["rugs"]
 	return room
+
+
+# --- Jalon 20 (T15) : Routes 7 et 8 ------------------------------------------------------------
+
+## Postes de Safrania et bâtiments d'entrée du souterrain des Routes 7 et 8 (`jalon-20.md` §2.1,
+## §2.2 ; grilles `poste_safrania.txt` et `souterrain_entree.txt`, une enveloppe pour les deux
+## routes). La coque du poste du J15 (10 × 8, `_gate_room`) est gardée **telle quelle** (§2.2) :
+## les grilles (12 × 10) s'y lisent décalées d'une case (porte côté route (4..5, 7), porte du
+## nord ou escalier (4..5, 1..2)). Habitant (texte 10) et garde (texte 12) : PNJ des données (T17,
+## T25).
+func _routes_7_8_rooms() -> Array[Dictionary]:
+	var rooms: Array[Dictionary] = []
+	for route: int in [7, 8]:
+		rooms.append(_saffron_gate(route))
+	for route: int in [7, 8]:
+		rooms.append(_celadon_underground_gate(route))
+	return rooms
+
+
+## Coque commune (celle de `_gate_room`, J15) : sortie STEP_ON ↓ vers la Route [param route] /
+## [param exit_spawn] ; arrivée `entrance` (4, 6), tournée ↑.
+func _route_7_8_room(id: StringName, node: String, route: int, exit_spawn: StringName) \
+		-> Dictionary:
+	var route_map := StringName("route_%d" % route)
+	return {
+		"id": id, "node": node, "size": Vector2i(10, 8),
+		"shell": "res://assets/world/interiors/int_poste_foret_coque.png",
+		"title": "Route %d" % route, "light": &"interior_warm",
+		"floor": Rect2i(1, 2, 8, 5),
+		"doors": [Vector2i(4, 7), Vector2i(5, 7), Vector2i(4, 1), Vector2i(5, 1)],
+		"props": [
+			[&"int_meuble_bas_01", Vector2i(2, 2), 3.0, "LowCabinet"],
+			[&"int_porte_manteau_01", Vector2i(8, 2), 3.0, "CoatRack"],
+			[&"int_plante", Vector2i(1, 6), 7.0, "PlantWest"],
+			[&"int_plante", Vector2i(8, 6), 7.0, "PlantEast"],
+		],
+		"spawns": {"entrance": Vector2i(4, 6)},
+		"warps": [
+			["ToRouteW", Vector2i(4, 7), STEP_ON, Vector2i.DOWN, route_map, exit_spawn,
+				Vector2i.DOWN],
+			["ToRouteE", Vector2i(5, 7), STEP_ON, Vector2i.DOWN, route_map, exit_spawn,
+				Vector2i.DOWN],
+		],
+	}
+
+
+## Poste de Safrania (grille `poste_safrania.txt`) : la porte de Safrania (4..5, 1), fermée par le
+## garde (`saffron_guard`, `data/npcs/route_<n>_gate.json`) en (4, 2) et la barrière (plante) en
+## (5, 2) ; le garde s'écarte en (3, 2) quand les postes s'ouvrent (T25, `saffron_gates_open`).
+func _saffron_gate(route: int) -> Dictionary:
+	var room := _route_7_8_room(StringName("route_%d_gate" % route), "Route%dGate" % route, route,
+		&"from_gate")
+	# Le garde s'écarte vers (3, 2) une fois la boisson donnée (T25, §2.16) : pas d'armoire basse.
+	room["props"] = (room["props"] as Array).filter(func(prop: Array) -> bool:
+		return prop[3] != "LowCabinet")
+	(room["props"] as Array).append([&"int_plante", Vector2i(5, 2), 2.95, "Barrier"])
+	(room["spawns"] as Dictionary)["north_door"] = Vector2i(4, 3)
+	# Porte de Safrania : la ville (J26) / `from_gate_r<n>` dès que sa carte existe ; avant,
+	# « Safrania — À venir » (jamais atteinte : le garde la ferme tant que les postes sont clos).
+	var city := ResourceLoader.exists(MAPS_DIR + "saffron_city.tscn")
+	for entry: Array in [["ToSaffronW", Vector2i(4, 1)], ["ToSaffronE", Vector2i(5, 1)]]:
+		if city:
+			(room["warps"] as Array).append([entry[0], entry[1], STEP_ON, Vector2i.UP,
+				&"saffron_city", StringName("from_gate_r%d" % route), Vector2i.UP])
+		else:
+			(room["warps"] as Array).append([entry[0], entry[1], STEP_ON, Vector2i.UP, &"",
+				&"north_door", Vector2i.DOWN, "Safrania"])
+	return room
+
+
+## Bâtiment d'entrée du souterrain (grille `souterrain_entree.txt`) : escalier descendant sur
+## (4..5, 2), STEP_ON sans direction vers `underground_path_7_8` / `from_route_<n>_n|s` (« à
+## venir » tant que la carte n'existe pas) ; retour du souterrain `from_underground` (4, 3), tourné
+## ↓ ; panneau (texte 2) au mur du fond (7, 1), EXAMINER depuis (7, 2) tourné ↑.
+func _celadon_underground_gate(route: int) -> Dictionary:
+	var room := _route_7_8_room(StringName("route_%d_underground_gate" % route),
+		"Route%dUndergroundGate" % route, route, &"from_underground")
+	room["doors"] = [Vector2i(4, 7), Vector2i(5, 7)]
+	(room["props"] as Array).append([&"int_escalier_descendant_01", Vector2i(5, 2), 3.0,
+		"Stairs"])
+	(room["spawns"] as Dictionary)["from_underground"] = Vector2i(4, 3)
+	var built := ResourceLoader.exists(MAPS_DIR + "underground_path_7_8.tscn")
+	var index := 0
+	for suffix: String in ["n", "s"]:
+		var cell := Vector2i(4 + index, 2)
+		if built:
+			(room["warps"] as Array).append(["ToUnderground" + suffix.to_upper(), cell, STEP_ON,
+				Vector2i.ZERO, &"underground_path_7_8",
+				StringName("from_route_%d_%s" % [route, suffix]), Vector2i.DOWN])
+		else:
+			(room["warps"] as Array).append(["ToUnderground" + suffix.to_upper(), cell, STEP_ON,
+				Vector2i.ZERO, &"", &"from_underground", Vector2i.DOWN, "Passage souterrain"])
+		index += 1
+	room["interactables"] = [["UndergroundSign", Vector2i(7, 1), Vector2i.ONE,
+		StringName("route_%d_underground_sign" % route), EXAMINE, Vector2i.UP]]
+	return room
+
+
+# --- Jalon 20 (T16) : Céladopole ---------------------------------------------------------------
+
+const CELADON_TITLE := "Céladopole"
+const INTERIORS_DIR := "res://assets/world/interiors/"
+## Étages du grand magasin : [identifiant, grille].
+const DEPT_FLOORS: Array = [
+	["gf", "celadopole_magasin_rdc.txt"], ["2f", "celadopole_magasin_2e.txt"],
+	["3f", "celadopole_magasin_3e.txt"], ["4f", "celadopole_magasin_4e.txt"],
+	["5f", "celadopole_magasin_5e.txt"],
+]
+## Comptoirs parlants (T17) : on parle au vendeur par-dessus le comptoir, depuis la case devant lui
+## (tourné ↑). [nœud, case de gauche du comptoir, largeur, dialogue du vendeur] par étage.
+const DEPT_COUNTERS: Dictionary = {
+	"gf": [["HostessCounter", Vector2i(7, 5), 6, &"celadon_dept_hostess"]],
+	"2f": [["ClerkCounterA", Vector2i(6, 5), 3, &"celadon_dept_2f_clerk"],
+		["ClerkCounterB", Vector2i(11, 5), 3, &"celadon_dept_2f_clerk_tm"]],
+	"4f": [["ClerkCounterA", Vector2i(6, 5), 3, &"celadon_dept_4f_clerk"],
+		["ClerkCounterB", Vector2i(11, 5), 3, &"celadon_dept_4f_clerk_stones"]],
+	"5f": [["ClerkCounter", Vector2i(9, 5), 3, &"celadon_dept_5f_clerk"]],
+}
+## Distributeurs du toit (T17) : [nœud, case, dialogue] (EXAMINER depuis la case du sud, ↑).
+const ROOF_DISPENSERS: Array = [
+	["DispenserWater", Vector2i(10, 2), &"celadon_dept_roof_water"],
+	["DispenserSoda", Vector2i(12, 2), &"celadon_dept_roof_soda"],
+	["DispenserLemonade", Vector2i(14, 2), &"celadon_dept_roof_lemonade"],
+]
+## Étages de la Résidence : [identifiant, grille].
+const MANSION_FLOORS: Array = [
+	["gf", "celadopole_residence_rdc.txt"], ["1f", "celadopole_residence_1er.txt"],
+	["2f", "celadopole_residence_2e.txt"], ["3f", "celadopole_residence_3e.txt"],
+]
+
+
+## Les dix-sept intérieurs de Céladopole construits ici (jalon-20.md §2.2, grilles
+## `celadopole_*.txt`) : Centre (définition commune), grand magasin (cinq étages, toit, cabine
+## d'ascenseur), Résidence (quatre niveaux, toit, maison du toit), maison du chef, restaurant et
+## hôtel. Titre « Céladopole » ; coques peintes de la série 22 bis (`int_<carte>_coque.png`). Les PNJ, vendeurs,
+## distributeurs, Évoli et la Poké Ball viennent au T17 ; le moteur d'ascenseur au T13.
+func _celadon_rooms() -> Array[Dictionary]:
+	var rooms: Array[Dictionary] = []
+	var center := _pokemon_center(&"celadon_center", "CeladonCenter", CELADON_TITLE,
+		[&"celadon_city", &"from_center_e"])
+	center["exit_spawns"] = _celadon_exit_spawns("center", 3)
+	rooms.append(center)
+	for index: int in DEPT_FLOORS.size():
+		rooms.append(_celadon_dept_floor(index))
+	rooms.append(_celadon_dept_roof())
+	rooms.append(_celadon_dept_elevator())
+	for index: int in MANSION_FLOORS.size():
+		rooms.append(_celadon_mansion_floor(index))
+	rooms.append(_celadon_mansion_roof())
+	rooms.append(_celadon_mansion_roof_house())
+	for entry: Array in [[&"celadon_restaurant", "CeladonRestaurant",
+			"celadopole_restaurant.txt", "restaurant"],
+			[&"celadon_chief_house", "CeladonChiefHouse", "celadopole_maison_chef.txt", "chief"],
+			[&"celadon_hotel", "CeladonHotel", "celadopole_hotel.txt", "hotel"]]:
+		rooms.append(_celadon_small_room(entry[0], entry[1], entry[2], entry[3]))
+	return rooms
+
+
+## Pièce relue sur sa grille : coque peinte `int_<id>_coque.png` ; [param light] `interior_warm`
+## (toits : `golden_hour`, ciel ouvert).
+func _celadon_room(id: StringName, node: String, plan: String, walkable: String,
+		light: StringName = &"interior_warm") -> Dictionary:
+	var grid := PlanGrid.new()
+	if not grid.load_file(PLANS_DIR + plan):
+		push_error("%s : grille %s illisible (%s)" % [id, plan, grid.error])
+		_errors += 1
+	return {
+		"id": id, "node": node, "size": Vector2i(grid.width, grid.height),
+		"shell": INTERIORS_DIR + "int_%s_coque.png" % id,
+		"title": CELADON_TITLE, "light": light,
+		"plan": PLANS_DIR + plan, "walkable": walkable,
+		"spawns": {}, "warps": [], "interactables": [],
+	}
+
+
+## Arrivées d'une porte de la ville : `from_<base>_w` à gauche, `_e` à droite (la case du milieu
+## d'une sortie à trois cases sort à gauche).
+func _celadon_exit_spawns(base: String, count: int) -> Array:
+	var names: Array = []
+	for index: int in count:
+		names.append(StringName("from_%s_%s" % [base, "e" if index == count - 1 else "w"]))
+	return names
+
+
+## Sortie PUSH ↓ vers la ville : [param cells] → `from_<base>_w|e`.
+func _celadon_exit_warps(cells: Array, base: String) -> Array:
+	var warps: Array = []
+	var spawns := _celadon_exit_spawns(base, cells.size())
+	for index: int in cells.size():
+		warps.append(["Exit%d" % index, cells[index], PUSH, Vector2i.DOWN, &"celadon_city",
+			spawns[index], Vector2i.DOWN])
+	return warps
+
+
+## Escalier : cases sur la rangée 2, STEP_ON sans direction (J12), arrivée tournée ↓.
+func _celadon_stairs(prefix: String, x: int, target: StringName, spawn: StringName) -> Array:
+	var warps: Array = []
+	for index: int in 2:
+		warps.append(["%s%d" % [prefix, index], Vector2i(x + index, 2), STEP_ON, Vector2i.ZERO,
+			target, spawn, Vector2i.DOWN])
+	return warps
+
+
+## Étage du grand magasin (une enveloppe par étage, un accent de couleur chacun) : escaliers à
+## l'ouest (S montant (2..3, 2), Z descendant (4..5, 2)), porte de l'ascenseur à l'est (16..17, 2),
+## arrivées `from_up` (devant S), `from_down` (devant Z), `from_elevator` (devant la porte).
+func _celadon_dept_floor(index: int) -> Dictionary:
+	var floor_id: String = DEPT_FLOORS[index][0]
+	var room := _celadon_room(StringName("celadon_dept_" + floor_id),
+		"CeladonDept" + floor_id.to_upper(), DEPT_FLOORS[index][1], ".XSZV")
+	var spawns: Dictionary = room["spawns"]
+	var warps: Array = room["warps"]
+	spawns["from_up"] = Vector2i(2, 3)
+	spawns["from_elevator"] = Vector2i(16, 3)
+	if index > 0:
+		spawns["from_down"] = Vector2i(4, 3)
+		warps.append_array(_celadon_stairs("StairsDown", 4,
+			StringName("celadon_dept_" + DEPT_FLOORS[index - 1][0]), &"from_up"))
+	var above: StringName = &"celadon_dept_roof" if index == DEPT_FLOORS.size() - 1 \
+		else StringName("celadon_dept_" + DEPT_FLOORS[index + 1][0])
+	warps.append_array(_celadon_stairs("StairsUp", 2, above, &"from_down"))
+	for door: int in 2:
+		warps.append(["Elevator%d" % door, Vector2i(16 + door, 2), STEP_ON, Vector2i.UP,
+			&"celadon_dept_elevator", &"entrance", Vector2i.UP])
+	if index == 0:
+		spawns["entrance"] = Vector2i(9, 11)
+		warps.append_array(_celadon_exit_warps([Vector2i(9, 11), Vector2i(10, 11)], "dept"))
+		# Tableau des étages (texte 22), lu depuis la case devant lui, tourné ↑.
+		room["interactables"] = [["FloorBoard", Vector2i(9, 2), Vector2i(2, 1),
+			&"celadon_dept_board", EXAMINE, Vector2i.UP]]
+	for counter: Array in DEPT_COUNTERS.get(floor_id, []):
+		(room["interactables"] as Array).append([counter[0], counter[1],
+			Vector2i(counter[2], 1), counter[3], TALK, Vector2i.UP])
+	return room
+
+
+## Toit-terrasse du grand magasin (carte intérieure à ciel ouvert, sans compagnon) : on y monte par
+## l'escalier du 5e (jamais par l'ascenseur) ; trois distributeurs (EXAMINER, T17) ; la fillette
+## est un PNJ des données.
+func _celadon_dept_roof() -> Dictionary:
+	var room := _celadon_room(&"celadon_dept_roof", "CeladonDeptRoof",
+		"celadopole_magasin_toit.txt", ".XSZV", &"golden_hour")
+	(room["spawns"] as Dictionary)["from_down"] = Vector2i(2, 3)
+	(room["warps"] as Array).append_array(_celadon_stairs("StairsDown", 2, &"celadon_dept_5f",
+		&"from_up"))
+	for dispenser: Array in ROOF_DISPENSERS:
+		(room["interactables"] as Array).append([dispenser[0], dispenser[1], Vector2i.ONE,
+			dispenser[2], EXAMINE, Vector2i.UP])
+	return room
+
+
+## Cabine de l'ascenseur (6 × 6) : la sortie ramène au premier étage (RdC) ; le moteur
+## (`ElevatorDirector`, T13) la réoriente vers l'étage courant. Panneau d'étages examiné depuis
+## (2..3, 2), tourné ↑ : dialogue `elevator_panel` (T13 : `open_elevator`, un seul pour toutes les
+## cabines).
+func _celadon_dept_elevator() -> Dictionary:
+	var room := _celadon_room(&"celadon_dept_elevator", "CeladonDeptElevator",
+		"celadopole_magasin_ascenseur.txt", ".X")
+	(room["spawns"] as Dictionary)["entrance"] = Vector2i(2, 4)
+	var warps: Array = room["warps"]
+	for index: int in 2:
+		warps.append(["Exit%d" % index, Vector2i(2 + index, 4), PUSH, Vector2i.DOWN,
+			&"celadon_dept_gf", &"from_elevator", Vector2i.DOWN])
+	room["interactables"] = [["ElevatorPanel", Vector2i(2, 1), Vector2i(2, 1),
+		&"elevator_panel", EXAMINE, Vector2i.UP]]
+	return room
+
+
+## Niveau de la Résidence : hall (RdC, sortie PUSH ↓ vers la ville) puis paliers ; escaliers S
+## (2..3, 2) montants, Z (4..5, 2) descendants. 3e : seulement Z, et la porte « BUREAU PRIVÉ »
+## (8, 2), examinée depuis (8, 3), sans warp.
+func _celadon_mansion_floor(index: int) -> Dictionary:
+	var floor_id: String = MANSION_FLOORS[index][0]
+	var room := _celadon_room(StringName("celadon_mansion_" + floor_id),
+		"CeladonMansion" + floor_id.to_upper(), MANSION_FLOORS[index][1], ".XSZ")
+	var spawns: Dictionary = room["spawns"]
+	var warps: Array = room["warps"]
+	if index < MANSION_FLOORS.size() - 1:
+		spawns["from_up"] = Vector2i(2, 3)
+		warps.append_array(_celadon_stairs("StairsUp", 2,
+			StringName("celadon_mansion_" + MANSION_FLOORS[index + 1][0]), &"from_down"))
+	if index > 0:
+		spawns["from_down"] = Vector2i(4, 3)
+		warps.append_array(_celadon_stairs("StairsDown", 4,
+			StringName("celadon_mansion_" + MANSION_FLOORS[index - 1][0]), &"from_up"))
+	else:
+		spawns["entrance"] = Vector2i(7, 9)
+		warps.append_array(_celadon_exit_warps([Vector2i(7, 9), Vector2i(8, 9)], "mansion"))
+	if index == MANSION_FLOORS.size() - 1:
+		room["interactables"] = [["PrivateOffice", Vector2i(8, 2), Vector2i.ONE,
+			&"celadon_mansion_office_door", EXAMINE, Vector2i.UP]]
+	return room
+
+
+## Toit de la Résidence : on y entre seulement par l'escalier de service de la ville (Z (2..3, 2)
+## le ramène, arrivées `from_service_w|e`) ; la maison du toit (porte D (10, 5), emprise 5 × 4).
+func _celadon_mansion_roof() -> Dictionary:
+	var room := _celadon_room(&"celadon_mansion_roof", "CeladonMansionRoof",
+		"celadopole_residence_toit.txt", ".ZD", &"golden_hour")
+	var spawns: Dictionary = room["spawns"]
+	spawns["from_service"] = Vector2i(2, 3)
+	spawns["from_house"] = Vector2i(10, 6)
+	var warps: Array = room["warps"]
+	var back := _celadon_exit_spawns("service", 2)
+	for index: int in 2:
+		warps.append(["ServiceStairs%d" % index, Vector2i(2 + index, 2), STEP_ON, Vector2i.ZERO,
+			&"celadon_city", back[index], Vector2i.DOWN])
+	warps.append(["DoorHouse", Vector2i(10, 5), STEP_ON, Vector2i.UP,
+		&"celadon_mansion_roof_house", &"entrance", Vector2i.UP])
+	room["props"] = [[&"bldg_maison_toit_01", Vector2i(10, 5), 5.9, "RoofHouse"]]
+	return room
+
+
+## Maison du toit (10 × 8) : la Poké Ball d'Évoli (4, 3) est le PNJ `eevee_ball` des données (T17).
+func _celadon_mansion_roof_house() -> Dictionary:
+	var room := _celadon_room(&"celadon_mansion_roof_house", "CeladonMansionRoofHouse",
+		"celadopole_residence_maison_toit.txt", ".X")
+	(room["spawns"] as Dictionary)["entrance"] = Vector2i(4, 6)
+	for index: int in 2:
+		(room["warps"] as Array).append(["Exit%d" % index, Vector2i(4 + index, 6), PUSH,
+			Vector2i.DOWN, &"celadon_mansion_roof", &"from_house", Vector2i.DOWN])
+	return room
+
+
+## Restaurant, maison du chef, hôtel (15 × 10, sortie à trois cases (6..8, 8) vers la ville ;
+## [param base] : début du nom des arrivées de la ville). La maison du chef n'a qu'une porte :
+## `from_chief`.
+func _celadon_small_room(id: StringName, node: String, plan: String, base: String) -> Dictionary:
+	var room := _celadon_room(id, node, plan, ".X")
+	(room["spawns"] as Dictionary)["entrance"] = Vector2i(7, 8)
+	# Comptoirs parlants (T17) : réception de l'hôtel (5..9, 4), serveur du restaurant (2..5, 4).
+	if base == "hotel":
+		(room["interactables"] as Array).append(["ReceptionCounter", Vector2i(5, 4),
+			Vector2i(5, 1), &"celadon_hotel_reception", TALK, Vector2i.UP])
+	elif base == "restaurant":
+		(room["interactables"] as Array).append(["WaiterCounter", Vector2i(2, 4),
+			Vector2i(4, 1), &"celadon_restaurant_waiter", TALK, Vector2i.UP])
+	var cells: Array = [Vector2i(6, 8), Vector2i(7, 8), Vector2i(8, 8)]
+	if base == "chief":
+		for index: int in cells.size():
+			(room["warps"] as Array).append(["Exit%d" % index, cells[index], PUSH,
+				Vector2i.DOWN, &"celadon_city", &"from_chief", Vector2i.DOWN])
+	else:
+		(room["warps"] as Array).append_array(_celadon_exit_warps(cells, base))
+	return room
+
+
+# --- Jalon 22 (T12, T24) : maison de la Méga Canne, Parmanie --------------------------------------
+
+## Intérieurs du J22 sur les enveloppes existantes [D] (dossier 25 §10.2 ; grilles des modèles
+## citées par `parmanie.txt` et `route_12_sud.txt`) : maisons des cannes = maison du Pêcheur de
+## Carmin ; Salle de réunion = Fan Club ; maison du grand-père = maison d'Azuria ; Centre et
+## Boutique = modèles communs. PNJ : `data/npcs/<pièce>.json`.
+func _j22_rooms() -> Array[Dictionary]:
+	var rod_house := _vermilion_fisher_house()
+	_retarget(rod_house, &"route_12_rod_house", "Route12RodHouse", "Route 12", &"route_12_south",
+		&"from_rod_house")
+	var good_rod_house := _vermilion_fisher_house()
+	_retarget(good_rod_house, &"fuchsia_good_rod_house", "FuchsiaGoodRodHouse", "Parmanie",
+		&"fuchsia_city", &"from_good_rod_house")
+	var meeting_room := _vermilion_fan_club()
+	_retarget(meeting_room, &"fuchsia_meeting_room", "FuchsiaMeetingRoom", "Parmanie",
+		&"fuchsia_city", &"from_meeting_room")
+	var fly_house := _vermilion_house_1()
+	_retarget(fly_house, &"route_16_fly_house", "Route16FlyHouse", "Route 16", &"route_16_west",
+		&"from_fly_house")
+	var grandpa := _cerulean_house()
+	_retarget(grandpa, &"fuchsia_grandpa_house", "FuchsiaGrandpaHouse", "Parmanie",
+		&"fuchsia_city", &"from_grandpa_house")
+	return [
+		rod_house, fly_house,
+		_pokemon_center(&"fuchsia_center", "FuchsiaCenter", "Parmanie",
+			[&"fuchsia_city", &"from_center"]),
+		_poke_mart(&"fuchsia_mart", "FuchsiaMart", "Parmanie", [&"fuchsia_city", &"from_mart"]),
+		meeting_room, grandpa, good_rod_house,
+	]
+
+
+## Même pièce sous un autre identifiant : sorties vers [param map] / [param spawn].
+func _retarget(room: Dictionary, id: StringName, node: String, title: String, map: StringName,
+		spawn: StringName) -> void:
+	room["id"] = id
+	room["node"] = node
+	room["title"] = title
+	room["warps"] = _pewter_exits([Vector2i(6, 8), Vector2i(7, 8), Vector2i(8, 8)], spawn, map)

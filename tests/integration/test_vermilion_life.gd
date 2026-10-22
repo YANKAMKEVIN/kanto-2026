@@ -21,9 +21,10 @@ const TXT_01: Array[String] = ["Ton Passe Bateau, s'il te plaît.", "Parfait, bi
 const T27 := "Ce paquebot fait le tour du monde. Les Dresseurs à bord viennent de partout."
 const T28 := "On charge depuis l'aube. Des caisses, des malles… et des Pokémon de toutes les régions."
 const T29 := "Un jeune arbre pousse devant l'entrée. Impossible de passer."
-const T33: Array[String] = ["Tu aimes les Pokémon ? Alors écoute-moi parler de mon Ponyta !",
-	"Sa crinière, sa démarche… un champion !",
-	"Reviens quand tu veux, j'ai toujours une histoire à raconter !"]
+## Jalon 22 (T17) : le président propose son histoire et le Bon de Commande (dossier 25 §16.1.8) ;
+## une fois le Bon reçu, il passe le bonjour de son Ponyta (§16.1.12). Le choix est testé par
+## `test_j22_story.gd`.
+const T33: Array[String] = ["Mon Ponyta te passe le bonjour !"]
 const T34 := "Ici, on ne se bat pas. On se raconte nos Pokémon."
 const A4_MEMBER := "Mon Miaouss adore qu'on parle de lui. Regarde comme il se tient droit !"
 const TREE := Vector2i(49, 10)
@@ -169,7 +170,8 @@ func test_examining_the_young_tree_says_t29_and_the_gym_stays_shut() -> void:
 
 func test_fan_club_chairman_and_members() -> void:
 	await _start(&"vermilion_fan_club", &"entrance")
-	assert_eq(await _talk_to(&"chairman"), T33, "T-33")
+	GameState.flags.set_flag(&"got_bike_voucher")
+	assert_eq(await _talk_to(&"chairman"), T33, "T-33 (après le Bon, J22)")
 	assert_eq(await _talk_to(&"member_1"), [T34] as Array[String], "T-34")
 	assert_eq(await _talk_to(&"member_2"), [A4_MEMBER] as Array[String], "annexe A.4")
 	assert_push_error_count(0)

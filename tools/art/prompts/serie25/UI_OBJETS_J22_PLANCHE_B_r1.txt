@@ -1,0 +1,11 @@
+UI_OBJETS_J22_PLANCHE_B — NOUVELLE image pour l'interface (Sac) du jeu Kanto 2026, pas une capture d'écran.
+Les images jointes donnent la direction artistique et la forme des objets ; n'en reproduis ni la mise en page ni les textes.
+
+RENDU : illustration 2D peinte numériquement, dans le style d'un RPG Pokémon moderne « HD-2D peint » : formes simples et arrondies, contour fin et doux plus sombre que la couleur, aucun trait noir, volumes doux, couleurs chaudes et lumineuses, pinceau net. Ni pixel art, ni 3D, ni photo. Lumière douce de jour venant du haut à gauche.
+
+IMAGE : PLANCHE de TROIS icônes d'objets peintes pour le Sac, dans une image 1536 × 1024 divisée en quatre colonnes invisibles de 384 px : une icône CENTRÉE dans chaque colonne utilisée, de 280 px au plus dans sa plus grande dimension, avec au moins 50 px de vide de chaque côté, aucune icône ne touche ni ne chevauche sa voisine ; dans le style EXACT de la planche jointe MENU_OBJETS_PLANCHE et des icônes jointes (même rendu peint lisse, même angle de trois quarts, même lumière, même contour fin coloré). La quatrième colonne reste VIDE (transparente).
+1 (colonne 1) : la MÉGA CANNE : une grande canne à pêche de compétition NOIRE et OR lustrée, anneaux dorés, poignée rouge sombre, gros moulinet doré, vue en diagonale (du bas à gauche vers le haut à droite) pour tenir dans la colonne, avec son moulinet et une boucle de fil.
+2 (colonne 2) : l'HYPER POTION : le même vaporisateur que la Potion et la Super Potion jointes (même forme de flacon rond et de gâchette blanche), liquide ROSE FUCHSIA et bague ROSE FONCÉ.
+3 (colonne 3) : l'HYPER BALL : la même balle de capture que la Poké Ball jointe (même forme, même rendu, même bouton blanc central, même bande noire), dont la moitié haute est NOIRE avec deux bandes JAUNE D'OR en forme de « H » sur le dessus, la moitié basse BLANCHE.
+AUCUN halo, AUCUNE lueur, AUCUNE étincelle, AUCUN dégradé autour : chaque objet est net, avec seulement son contour fin, sur un fond entièrement transparent (canal alpha, aucune ombre). Aucun texte, aucune lettre (même sur le bon et sur les balles), aucun chiffre.
+Format : PNG paysage 1536 × 1024, fond TRANSPARENT (canal alpha).

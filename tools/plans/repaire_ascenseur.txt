@@ -1,0 +1,42 @@
+# Repaire Rocket, ascenseur (cabine) — grille fonctionnelle (jalon 20, dossier 23 §13.4 ; 2026-10-14).
+# Source : pret/pokered, maps/RocketHideoutElevator.blk (3 × 4 blocks = 6 × 8 cases, tileset Lobby),
+# data/maps/objects/RocketHideoutElevator.asm (portes en (2, 1) et (3, 1), panneau en (1, 1)),
+# scripts/RocketHideoutElevator.asm (étages B1F, B2F, B4F). Vérifiée par tools/art/plan_check.py
+# (profil repaire_ascenseur, qui relie aussi les six cartes du repaire).
+#
+# 6 × 8 cases : cabine intérieure 4 × 5 (x 1..4, y 2..6), deux portes en haut (L), panneau
+# d'étages au mur nord-ouest (P, bloqué ; on le lit depuis (1, 2) tourné vers le nord).
+# Mécanique (dossier §13.4, partagée avec le grand magasin) : fondu de 0,4 s, légère secousse. SANS la
+# Clé Ascenseur (`lift_key`) : « Le panneau ne répond pas. Il faut une clé. » ; avec : panneau B1F /
+# B2F / B4F SEULEMENT. Le choix d'un étage vous dépose à l'arrivée « ascenseur » de cet étage ; les
+# portes (L) ramènent à l'étage courant (par défaut : celui d'où l'on vient).
+#
+# RACCORDS (portes d'ascenseur des étages → cabine ; chacune des deux portes pose le joueur devant
+# la porte de même côté) :
+#   B1F (24..25,19) → cabine (2, 2) / (3, 2) ;  sortie B1F : arrivée (25, 18)
+#   B2F (24..25,19) → cabine (2, 2) / (3, 2) ;  sortie B2F : arrivée (25, 18)
+#   B4F (24..25,15) → cabine (2, 2) / (3, 2) ;  sortie B4F : arrivée (25, 14)
+#   (RB posait le joueur sur la porte même ; on le pose une case devant.)
+#
+# Légende : # mur / décor (bloqué) · . sol (praticable) · L porte (praticable, fondu) · P panneau
+# d'étages (bloqué, interactif depuis sa case d'accès).
+
+PRATICABLES .L
+
+GRILLE 6 8
+00 ######
+01 #PLL##
+02 #....#
+03 #....#
+04 #....#
+05 #....#
+06 #....#
+07 ######
+FIN
+
+POSITIONS
+entree_gauche          spawn          2,2          libre   role=entree_g facing=down  # arrivée par la porte gauche d’un étage
+entree_droite          spawn          3,2          libre   role=entree_d facing=down  # arrivée par la porte droite d’un étage
+portes_cabine          sortie         2..3,1       libre   role=portes  # retour à l’étage courant
+panneau                panneau        1,1          bloque  depuis=1,2 face=N cle=lift_key etages=B1F,B2F,B4F  # panneau d’étages ; muet sans la Clé
+FIN

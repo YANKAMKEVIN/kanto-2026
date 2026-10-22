@@ -1,0 +1,65 @@
+# Route 7 — grille fonctionnelle (jalon 20, dossier 23 §5, §6, §20.2 ; préparée le 2026-10-14).
+# Source UNIQUE de la géométrie (voir route_8.txt). Contrôle : tools/art/plan_check_routes_j20.py
+# (profil route_7).
+#
+# 28 × 24 cases (enveloppe du dossier, §5, §21) ; nord en haut ; x = colonne 0..27, y = rangée 0..23.
+# Raccord OUEST IMPOSÉ : (0, 10..12) ↔ Céladopole (69, 21..23) : mêmes trois rangées que le côté
+# Céladopole décalées de 11 (rangées 21..23 de la ville ↔ rangées 10..12 de la route) ; la
+# grille de Céladopole fait foi pour sa colonne 69. Pas d'autre raccord : la route se termine, à l'est,
+# au poste de garde de Safrania (porte (23, 7)) ; le bâtiment d'entrée du souterrain est au
+# sud-est (porte (23, 17)). Enveloppes des bâtiments : 7 × 4 (comme la Route 8).
+#
+# Composition : route de terre de 3 cases depuis l'ouest (rangées 10..12), qui monte à l'est vers
+# le poste (x 22..24) ; branche sud (x 14..16) puis sentier est (y 18..19) vers l'entrée du
+# souterrain. Deux zones de hautes herbes, évitables : H1 au nord-ouest (x 3..10, y 5..8),
+# H2 au sud-ouest (x 3..11, y 14..19). Aucun Dresseur, aucun objet (dossier §5). La « pente douce
+# vers l'ouest » est de l'art (terrasses peintes, toits de Céladopole qui apparaissent) : elle
+# n'a aucun effet sur la grille (aucun rebord).
+#
+# Légende : celle de route_8.txt (sans corniche).
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 28 caractères), puis POSITIONS.
+
+PRATICABLES .=hD
+
+GRILLE 28 24
+00 TTTTTTTTTTTTTTTTTTTTTTTTTTTT
+01 TTTTTTTTTTTTTTTTTTTTTTTTTTTT
+02 TTTTTTTTTTTTTTTTTTTTTTTTTTTT
+03 TTTTTTTTTTTTTTTTTTTTTTTTTTTT
+04 T...................PPPPPPPT
+05 TG.hhhhhhhh..G..R...PPPPPPPT
+06 T..hhhhhhhh.......G.PPPPPPPT
+07 T..hhhhhhhh.........PPPDPPPT
+08 T..hhhhhhhh..x...x....===..T
+09 T.x................R..===.GT
+10 =========================.RT
+11 =========================..T
+12 =========================.GT
+13 T.x..........x===.G........T
+14 T..hhhhhhhhhR.===..xPPPPPPPT
+15 T..hhhhhhhhhG.===...PPPPPPPT
+16 T..hhhhhhhhh..===...PPPPPPPT
+17 T..hhhhhhhhh..===...PPPDPPPT
+18 T..hhhhhhhhhx.===========..T
+19 TG.hhhhhhhhh..===========.GT
+20 T...........G....R........xT
+21 TTTTTTTTTTTTTTTTTTTTTTTTTTTT
+22 TTTTTTTTTTTTTTTTTTTTTTTTTTTT
+23 TTTTTTTTTTTTTTTTTTTTTTTTTTTT
+FIN
+
+POSITIONS
+warp_ouest          warp           0,10..12     libre   vers=celadon_city spawn=from_route_7  # PUSH ← → Céladopole (69, 21..23)
+from_celadon        spawn          0,10..12     libre   # arrivée de Céladopole, tournée →
+porte_poste         warp           23,7         libre   vers=safrania_gate_r7 spawn=entree  # STEP_ON ↑ → poste de garde (enveloppe safrania_gate)
+from_poste          spawn          23,8         libre   # sortie du poste, tournée ↓
+porte_souterrain    warp           23,17        libre   vers=underground_entrance_r7 spawn=entree  # STEP_ON ↑ → bâtiment d'entrée (enveloppe underground_entrance)
+from_souterrain     spawn          23,18        libre   # sortie du bâtiment d'entrée, tournée ↓
+panneau_route       panneau        3,9          bloque  # texte 11 « ROUTE 7 » / « Céladopole ← → Safrania », lu depuis (3, 10) ↑
+panneau_souterrain  panneau        19,17        bloque  # texte 2 « PASSAGE SOUTERRAIN » / « Route 7 — Céladopole », lu depuis (19, 18) ↑
+herbes_h1           herbes         6,6          libre   role=H1  # nord-ouest (évitable)
+herbes_h2           herbes         7,16         libre   role=H2  # sud-ouest (évitable)
+roucool_1           pokemon        12,7         bloque  shy=fly  # prairie du nord
+mystherbe_1         pokemon        16,16        bloque  shy=notice  # entre la route et le sentier sud
+FIN

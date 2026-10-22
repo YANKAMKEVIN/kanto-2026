@@ -1,0 +1,65 @@
+CONCEPT ART — VUE GÉNÉRALE DE CÉLADOPOLE, LA GRANDE VILLE VERTE ET ÉLÉGANTE (Kanto 2026), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. Le NORD est en haut. La ville est entourée de forêt dense (les marges de l'image).
+Légende du plan :
+- vert très foncé = forêt dense infranchissable ; vert moyen = pelouse rase ; rangées de petits disques vert sombre = HAIES de buissons taillées ; grands disques verts = arbres isolés (le pied est en bas du disque) ; rectangles vert-olive semés de petits points roses, blancs et mauves = MASSIFS de fleurs taillés, bordés de buis ;
+- beige-gris à carreaux = RUES, AVENUE et PLACES PAVÉES de pierre claire ; blanc cassé à carreaux = QUAI de pierre claire autour de l'étang ;
+- BLEU = EAU : un ÉTANG rectangulaire en haut au centre, entouré sur ses quatre côtés par un quai de pierre de deux cases de large ; l'eau n'a que des bords droits ;
+- la grande AVENUE pavée traverse toute la ville d'est en ouest, juste au-dessus du milieu de l'image ; à DROITE elle sort par le bord de l'image (la route d'arrivée) ; à GAUCHE elle s'arrête net sur une bande brune = un TALUS de terre herbeuse, doublé d'une haie d'arbres denses : AUCUN passage à l'ouest ;
+- deux RUES pavées nord-sud de quatre cases croisent l'avenue (l'une à gauche du centre, l'autre à droite), et une rue pavée longe le bas de la ville ;
+- rectangle ROUGE et blanc à DROITE = le CENTRE DE SOINS (toit rouge, porte au milieu de sa façade sud), juste au nord de l'avenue, près de l'arrivée ;
+- grand rectangle à toit GRIS CLAIR bordé d'un parapet, en haut à GAUCHE = le GRAND MAGASIN, le plus grand et le plus HAUT bâtiment de la ville, à TOIT-TERRASSE (les petits disques verts du toit sont des bacs de plantes) ; devant lui, au sud, un petit parc de pelouse, de massifs, d'arbres et de bancs, coupé par l'allée qui mène à sa porte ;
+- rectangle à toit BLEU ARDOISE et murs MIEL en haut au centre-gauche = la RÉSIDENCE, immeuble élégant de briques miel ; derrière elle, au nord, une ruelle de service pavée bordée de haies, et tout en haut le petit bâtiment brun = une petite TOUR D'ESCALIER DE SERVICE accolée au nord ;
+- rectangle MAGENTA à murs violet sombre cerné d'OR, au centre-sud = le CASINO, porte au milieu de sa façade sud ; la bande GRISE juste à sa droite = une RUELLE étroite et SOMBRE, en cul-de-sac, fermée au nord par une haie ; le rectangle GRIS à droite de la ruelle = la FAÇADE de l'ANCIEN COMPTOIR voisin, éteinte : longue vitrine sombre, AUCUNE porte ;
+- petit disque bleu cerclé de pierre sur la place, à gauche du Casino = la FONTAINE ronde ;
+- en bas à GAUCHE, dans un grand ENCLOS de pelouse ceint de HAIES sur ses quatre côtés = l'ARÈNE, une SERRE élégante (toit vert clair à montants = verrière verte) ; une allée part de sa porte vers le sud ; le petit disque VERT CLAIR sur la haie est de l'enclos (en bas à droite de l'enclos) = un petit ARBUSTE isolé qui bouche la seule ouverture de la haie ; l'enclos n'a AUCUNE autre ouverture ;
+- en bas, trois bâtiments face au sud sur la rue du bas : à gauche une MAISON (toit de tuiles rouille), au centre un RESTAURANT (toit orange-brun, auvent crème), à droite un HÔTEL (toit bleu-gris, plus large) ;
+- à droite, sous l'avenue, une PELOUSE avec deux arbres et un banc ; à droite de l'étang, un petit jardin avec deux arbres et un banc ;
+- petits traits bruns = BANCS ; petits carrés ocre = panneaux en bois SANS TEXTE ; petits rectangles bruns = PORTES, toujours sur la façade sud.
+Respecte ce plan À LA LETTRE : position et taille de chaque bâtiment, de l'étang et de son quai, de l'avenue, des rues, de la place et de la fontaine, des massifs, des haies, de l'enclos de l'Arène, de la ruelle et du talus de l'ouest. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+RÈGLE ABSOLUE : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; rues, avenue, quais, bords de l'étang, des places, des massifs et des jardins suivent une grille : uniquement des segments horizontaux et verticaux à angles droits, AUCUN segment en diagonale ni courbe (seule la vasque de la fontaine est ronde). Aucun escalier extérieur, sauf la petite tour d'escalier de service au nord de la Résidence. Le sol de la ville est plat.
+
+IMAGE 2 : la vue générale d'Azuria, une autre ville. Respecte EXACTEMENT son style de rendu : même pinceau, mêmes arbres en masses arrondies, mêmes haies, même pavage de pierre claire, même eau, même saturation, MÊME LUMIÈRE, mêmes personnages ; le CENTRE DE SOINS est exactement le même bâtiment qu'à Azuria (toit rouge avec emblème rond blanc, grande porte vitrée). Ne reprends PAS sa composition : ni canal, ni baie, ni ponts, ni îlot.
+
+Format : PAYSAGE 1536 × 1024, vue plongeante sur toute la ville, comme le plan.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG de créatures moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats. Le feuillage est peint en grandes masses douces.
+- Perspective : vue de dessus de trois quarts, projection oblique frontale, sans point de fuite. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud).
+- Aucun trait noir : contours fins et doux, plus sombres et plus saturés que la couleur locale. Ombres colorées bleu-vert ou violet froid, jamais grises.
+
+IDENTITÉ DE CÉLADOPOLE : « la grande ville prospère, verte et élégante du milieu du voyage ». Plus grande, plus dense et plus soignée qu'Azuria, mais calme : la nature y est domestiquée. Les lumières et les ombres : rien en surface ne montre ce qui se cache dessous, seul le Casino détonne.
+- Palette : pierre claire, briques couleur miel, verdure taillée très soignée, verre et acier discrets ; toits de tuiles chaudes sur la maison et le restaurant, ardoise bleu-gris sur la Résidence et l'hôtel ; massifs fleuris de rose pâle, de blanc et de mauve. Nature dense, objets rares : pas de bric-à-brac.
+- Le GRAND MAGASIN : le bâtiment le plus HAUT de la ville (plusieurs étages bien lisibles, grandes vitrines au rez-de-chaussée, large porte vitrée), surmonté d'un TOIT-TERRASSE ouvert sur le ciel, avec garde-corps, bacs de plantes et quelques parasols ; sans aucun texte ni enseigne écrite.
+- La RÉSIDENCE : immeuble résidentiel élégant de briques miel, corniches de pierre claire, balcons fleuris, toit d'ardoise ; au NORD, sur sa face arrière, une petite TOUR D'ESCALIER DE SERVICE étroite, discrète, avec sa porte, au bout d'une ruelle de service bordée de haies.
+- L'ÉTANG : eau calme vert-bleu avec quelques nénuphars, quai de pierre claire à fine margelle tout autour ; aucune barque, aucun ponton.
+- L'AVENUE est large, pavée de pierre claire, bordée de MASSIFS taillés fleuris et de quelques arbres ; la PLACE de la fontaine est au sud de l'avenue, avec une fontaine ronde de pierre claire à vasque.
+- L'ARÈNE est une SERRE élégante : structure claire fine, grande VERRIÈRE VERTE translucide où l'on devine des plantes, porte double vitrée au centre de sa façade sud ; elle est posée au milieu d'un jardin ceint de HAIES hautes et taillées sur les quatre côtés ; la seule ouverture de la haie, sur le côté est, est bouchée par un PETIT ARBUSTE isolé, rond et touffu, plus clair que la haie.
+- Le CASINO est le SEUL bâtiment aux NÉONS : bandeaux et cadres lumineux MAGENTA et OR, un peu trop vifs, qui jettent un reflet coloré sur le pavé devant sa porte ; façade sombre et brillante, sans aucune lettre, aucun chiffre, aucun symbole de jeu. Juste à sa droite, une RUELLE ÉTROITE PLUS SOMBRE que le reste de la ville, dans l'ombre, en cul-de-sac fermé par une haie, avec une ou deux poubelles.
+- La FAÇADE DE L'ANCIEN COMPTOIR voisin : éteinte, terne, grise, longue vitrine sombre et vide, rideau baissé, AUCUNE porte, aucune lumière, aucune enseigne.
+- À l'OUEST, l'avenue se termine net sur un TALUS de terre herbeuse et une HAIE D'ARBRES DENSES : on voit qu'on ne passe pas ; aucun panneau.
+- Lumière de fin d'après-midi, GOLDEN HOUR, dorée sur les façades, ombres longues et douces vers le nord-ouest ; reflets chauds sur l'étang (comme Azuria).
+
+VIE (très discrète, personnages petits, aucun ne ressemble au héros à casquette rouge et veste bleue) :
+- un PÊCHEUR assis sur le quai SUD de l'étang, sans canne à pêche, chapeau de paille, qui regarde l'eau ; juste à côté de lui, assise sur le quai, une petite CRÉATURE amphibienne BLEUE toute ronde, au ventre blanc marqué d'une SPIRALE noire, gros yeux, gants blancs : c'est la SEULE créature de l'image ;
+- deux SILHOUETTES en COSTUME SOMBRE élégant, chapeau sombre, IMMOBILES : l'une sur le pavé juste à gauche de la porte du Casino, l'autre debout dans la ruelle sombre ; aucune lettre, aucun logo sur eux ;
+- une JARDINIÈRE (tablier vert, chapeau de paille, sécateur) penchée sur un massif de la place, près de la fontaine ;
+- deux ou trois PASSANTS élégants dispersés : une femme qui regarde les vitrines du grand magasin, un employé de bureau en chemise à mallette sur la promenade au nord de l'avenue, un enfant près de la fontaine.
+Pas de foule. Aucun autre animal, aucun oiseau, aucun poisson.
+
+INTERDITS : texte, lettres, chiffres, étiquettes, panneaux lisibles, enseignes écrites, logo (seul l'emblème rond blanc sans texte du Centre de soins est permis), signature, filigrane, cadre, interface ; tout bâtiment absent du plan ; escaliers extérieurs (sauf la tour de service), terrasses de café ; route goudronnée, voiture, véhicule ; foule ; jetons, cartes à jouer, symboles de casino ; arbres orange ou automnaux ; neige ; brouillard, flou de profondeur, vignettage ; pixel art.
+
+L'image doit raconter, sans texte : on arrive par l'est d'une grande avenue fleurie, le Centre aux toits rouges à portée de main ; la ville s'ouvre, riche et verte, dominée par le grand magasin à toit-terrasse, avec un étang tranquille, une résidence élégante, une serre d'émeraude cachée derrière ses haies, et au cœur de tout cela un casino aux néons trop vifs, une ruelle d'ombre et deux hommes qui ne bougent pas.
+
+CORRECTIONS (2e essai ; le 1er essai est très bon sur le style, la lumière, la composition générale, le Centre, la serre, le Casino et ses néons, la façade éteinte, la place et la fontaine, les massifs et les trois bâtiments du sud : garde-les à l'identique, sauf ceci) :
+1. À l'OUEST, au bout de l'avenue (bord gauche), il n'y a AUCUN pont, aucune passerelle, aucune planche, aucun ponton de bois : l'avenue s'arrête sur un TALUS de terre et d'herbe (petit relief brun-vert en pente douce), derrière lequel se dresse une HAIE D'ARBRES DENSES serrés jusqu'au bord de l'image.
+2. L'ÉTANG est entouré sur ses quatre côtés d'un QUAI de pierre blanc-crème de DEUX cases de large, plus clair que le pavé des rues, avec une fine margelle au bord de l'eau.
+3. Sur le quai SUD de l'étang, bien visibles : le PÊCHEUR assis (chapeau de paille, sans canne, mains sur les genoux, tourné vers l'eau) et, assise juste à sa droite, la petite CRÉATURE amphibienne BLEUE toute ronde au ventre blanc à SPIRALE noire.
+4. Sur la haie EST de l'enclos de l'Arène, en bas à droite de l'enclos, un PETIT ARBUSTE rond et touffu, vert plus clair que la haie, bouche la SEULE ouverture de la haie, face à la rue ; la haie de l'enclos est continue partout ailleurs (au sud, l'allée de la serre s'arrête contre la haie).
+5. Le GRAND MAGASIN est nettement le bâtiment le plus HAUT de la ville : quatre étages lisibles de fenêtres et de vitrines au-dessus du rez-de-chaussée, son toit-terrasse (parasols, bacs de plantes, garde-corps) tout en haut.
+6. La RÉSIDENCE est un immeuble élégant de trois étages de briques miel (rangées régulières de fenêtres et de balcons fleuris), pas une maison ; la petite tour d'escalier de service reste accolée à son nord.
+7. (3e essai ; le 2e essai est excellent : garde TOUT à l'identique — composition, bâtiments, serre et son arbuste, talus de l'ouest, Casino, façade éteinte, pêcheur et créature, passants, lumière — SAUF ceci :) l'ÉTANG est ceint d'un QUAI distinct en dalles de pierre BLANC-CRÈME, plus clair que le pavé beige des rues, de DEUX cases de large sur ses quatre côtés, avec une margelle ; le pêcheur et la créature restent assis sur ce quai, au sud.
+8. Des deux SILHOUETTES en costume sombre, UNE SEULE reste devant le Casino, à GAUCHE de sa porte ; l'AUTRE se tient debout, immobile, DANS la ruelle étroite entre le Casino et la façade éteinte, près des poubelles ; cette ruelle est nettement PLUS SOMBRE que le reste de la ville (dans l'ombre froide, sans le soleil doré).

@@ -45,3 +45,12 @@ func test_every_lit_map_is_planned() -> void:
 		if current.is_empty():
 			continue
 		assert_eq(_library.get_map_profile(map_id), current, "%s est au plan" % map_id)
+
+
+func test_pokemon_tower_floors_use_the_tower_profile() -> void:
+	assert_true(_library.has_profile(&"tower"), "profil « tower »")
+	for floor_name: String in ["2f", "3f", "4f", "5f", "6f"]:
+		var map_id := StringName("pokemon_tower_" + floor_name)
+		assert_eq(_library.get_map_profile(map_id), &"tower", "%s : plan" % map_id)
+		assert_eq(_scene_profile(MAPS_DIR + String(map_id) + ".tscn"), &"tower",
+			"%s : scène" % map_id)

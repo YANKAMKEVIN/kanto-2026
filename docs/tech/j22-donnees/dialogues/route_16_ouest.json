@@ -1,0 +1,62 @@
+{
+	"route_16_biker_1_before": {
+		"speaker": "Motard Rudy",
+		"pages": ["La Piste, c'est notre territoire !"]
+	},
+	"route_16_biker_1_defeated": {
+		"speaker": "Motard Rudy",
+		"pages": ["Hé ! Doucement !"]
+	},
+	"route_16_biker_1_after": {
+		"speaker": "Motard Rudy",
+		"pages": ["D'accord, d'accord. Passe."]
+	},
+	"route_16_cueball_1_before": {
+		"speaker": "Loubard Brutus",
+		"pages": ["Tu cherches la bagarre ?\nTu l'as trouvée !"]
+	},
+	"route_16_cueball_1_defeated": {
+		"speaker": "Loubard Brutus",
+		"pages": ["Aïe… Ça cogne !"]
+	},
+	"route_16_cueball_1_after": {
+		"speaker": "Loubard Brutus",
+		"pages": ["Toi, t'as de la poigne."]
+	},
+	"route_16_cueball_2_before": {
+		"speaker": "Loubard Marco",
+		"pages": ["Tu cherches la bagarre ?\nTu l'as trouvée !"]
+	},
+	"route_16_cueball_2_defeated": {
+		"speaker": "Loubard Marco",
+		"pages": ["Aïe… Ça cogne !"]
+	},
+	"route_16_cueball_2_after": {
+		"speaker": "Loubard Marco",
+		"pages": ["Toi, t'as de la poigne."]
+	},
+	"route_16_biker_2_before": {
+		"speaker": "Motard Jimmy",
+		"pages": ["Personne ne passe sans m'affronter !"]
+	},
+	"route_16_biker_2_defeated": {
+		"speaker": "Motard Jimmy",
+		"pages": ["Bon. Toi, tu passes."]
+	},
+	"route_16_biker_2_after": {
+		"speaker": "Motard Jimmy",
+		"pages": ["Roule, et ne te retourne pas."]
+	},
+	"route_16_cueball_3_before": {
+		"speaker": "Loubard Bastien",
+		"pages": ["Tu cherches la bagarre ?\nTu l'as trouvée !"]
+	},
+	"route_16_cueball_3_defeated": {
+		"speaker": "Loubard Bastien",
+		"pages": ["Aïe… Ça cogne !"]
+	},
+	"route_16_cueball_3_after": {
+		"speaker": "Loubard Bastien",
+		"pages": ["Toi, t'as de la poigne."]
+	}
+}

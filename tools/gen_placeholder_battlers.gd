@@ -13,6 +13,8 @@ extends SceneTree
 ## Jalon 14 (jalon-14.md §2.13) : les trois espèces du Cap d'Azuria (Abra, Kadabra, Machoc).
 ## Jalon 15 (jalon-15.md §2.7.1) : Miaouss et Persan (Rattatac vient du jalon 12).
 ## Jalon 17 (jalon-17.md §2.12.1) : les huit espèces de la Route 11 et de la Cave Taupiqueur.
+## Jalon 19 (jalon-19.md §2.12, T3) : Fantominus, Spectrum, Noeunoeuf, Léviator. Osselait
+## et Ossatueur n'en ont pas : ils ne s'affichent jamais au J19 (SPECTRE).
 ## Jalon 23 (jalon-23.md §2.14) : Leveinard, Insécateur, Scarabrute, Tauros (Parc Safari).
 ## Pixel art 64 × 64 natif, affiché en NEAREST par le BattleStage (×4 de dos, ×3 de face) :
 ##   assets/sprites/pokemon/placeholder/<espèce>_front.png   (vue de face : l'adversaire)
@@ -52,6 +54,12 @@ const SPECIES: Array[String] = [
 	"meowth", "persian",
 	# Jalon 17 (jalon-17.md §2.12.1) : Route 11, Cave Taupiqueur, Dresseurs (dos Colab au T13).
 	"diglett", "dugtrio", "drowzee", "hypno", "magnemite", "magneton", "growlithe", "vulpix",
+	# Jalon 20 (jalon-20.md §2.10.1, T7) : évolutions de Caninos et Goupix (ceux du J17), Évoli et
+	# ses trois évolutions, les espèces d'Erika et de Giovanni. Ajouts en fin ; dos Colab au T3.
+	"arcanine", "ninetales", "eevee", "vaporeon", "jolteon", "flareon",
+	"victreebel", "tangela", "vileplume", "rhyhorn", "kangaskhan",
+	# Jalon 19 (jalon-19.md §2.12) : Exorcistes et rival n° 5 (Caninos vient du J17). Ajouts en fin.
+	"gastly", "haunter", "exeggcute", "gyarados",
 	# Jalon 23 (jalon-23.md §2.14, T6) : les quatre espèces rares du Parc Safari sans lien avec un
 	# autre jalon (Mimitoss, Doduo, Tadmorv, Smogogo et leurs lignées viennent du J22).
 	"chansey", "scyther", "pinsir", "tauros",
@@ -1635,6 +1643,269 @@ func _draw_vulpix(img: Image, back: bool) -> void:
 	_eye(img, 18, 23, Color("#5a2a1a"))
 	_eye(img, 29, 23, Color("#5a2a1a"))
 	_r(img, 25, 32, 3, 2, OUTLINE)
+
+
+# --- Jalon 20 : Routes 7 et 8, Céladopole, Erika, Giovanni ----------------------------
+
+## Arcanin : grand chien orange, crinière et queue crème touffues, rayures noires.
+func _draw_arcanine(img: Image, back: bool) -> void:
+	var fur := Color("#e07a30")
+	var cream := Color("#f2e2b8")
+	_e(img, 54, 30, 7, 12, cream, true)
+	_e(img, 34, 40, 20, 13, fur, true)
+	for x: int in [28, 36, 44]:
+		_line(img, Vector2(x, 31), Vector2(x - 3, 41), OUTLINE, 2)
+	_r(img, 16, 50, 8, 12, fur.darkened(0.15))
+	_r(img, 42, 50, 8, 12, fur.darkened(0.15))
+	_e(img, 22, 26, 13, 12, cream, true)
+	_e(img, 20, 16, 11, 10, fur, true)
+	_e(img, 12, 7, 3, 6, fur.darkened(0.1), true)
+	_e(img, 27, 7, 3, 6, fur.darkened(0.1), true)
+	if back:
+		return
+	_e(img, 18, 22, 6, 4, cream, true)
+	_r(img, 16, 20, 4, 2, OUTLINE)
+	_eye(img, 12, 12, Color("#5a3a20"))
+	_eye(img, 22, 12, Color("#5a3a20"))
+
+
+## Feunard : renard crème élancé, neuf queues en éventail.
+func _draw_ninetales(img: Image, back: bool) -> void:
+	var fur := Color("#f0dca0")
+	var tip := Color("#e89048")
+	for i: int in 9:
+		var a := deg_to_rad(-100.0 + 18.0 * i)
+		var end := Vector2(44, 40) + Vector2(cos(a), sin(a)) * 18.0
+		_line(img, Vector2(44, 40), end, fur.darkened(0.08), 3)
+		_r(img, int(end.x) - 1, int(end.y) - 1, 3, 3, tip)
+	_e(img, 30, 44, 14, 10, fur, true)
+	_r(img, 20, 52, 5, 10, fur.darkened(0.15))
+	_r(img, 34, 52, 5, 10, fur.darkened(0.15))
+	_e(img, 22, 26, 11, 10, fur, true)
+	_e(img, 14, 14, 3, 7, fur.darkened(0.1), true)
+	_e(img, 29, 14, 3, 7, fur.darkened(0.1), true)
+	if back:
+		return
+	_eye(img, 15, 23, Color("#b03030"))
+	_eye(img, 25, 23, Color("#b03030"))
+	_r(img, 21, 31, 3, 2, OUTLINE)
+
+
+## Évoli : petit mammifère brun, collerette et bout de queue crème, grandes oreilles.
+func _draw_eevee(img: Image, back: bool) -> void:
+	_draw_eeveelution(img, back, Color("#a8703a"), Color("#f0e0b8"), 0)
+
+
+## Aquali : corps bleu, collerette blanche en nageoire, queue de poisson.
+func _draw_vaporeon(img: Image, back: bool) -> void:
+	_draw_eeveelution(img, back, Color("#5aa0d8"), Color("#f0f4f8"), 1)
+
+
+## Voltali : poil jaune hérissé, collerette blanche en pointes.
+func _draw_jolteon(img: Image, back: bool) -> void:
+	_draw_eeveelution(img, back, Color("#f0d030"), Color("#f8f8f0"), 2)
+
+
+## Pyroli : poil orange, collerette et queue jaune pâle, très touffues.
+func _draw_flareon(img: Image, back: bool) -> void:
+	_draw_eeveelution(img, back, Color("#e86a30"), Color("#f8e098"), 3)
+
+
+## Famille d'Évoli : même silhouette ; [param form] 0 Évoli, 1 Aquali, 2 Voltali, 3 Pyroli.
+func _draw_eeveelution(img: Image, back: bool, fur: Color, ruff: Color, form: int) -> void:
+	if form == 1:
+		_line(img, Vector2(42, 48), Vector2(56, 36), fur, 4)
+		_e(img, 57, 32, 5, 7, fur.lightened(0.2), true)
+	else:
+		_e(img, 50, 38, 7, 10, fur, true)
+		_e(img, 54, 32, 4, 5, ruff, true)
+	_e(img, 32, 47, 14, 10, fur, true)
+	_r(img, 22, 54, 6, 8, fur.darkened(0.15))
+	_r(img, 36, 54, 6, 8, fur.darkened(0.15))
+	if form == 2:
+		for i: int in 7:
+			var a := deg_to_rad(40.0 + 16.0 * i)
+			_line(img, Vector2(28, 38), Vector2(28, 38) + Vector2(cos(a), sin(a)) * 11.0, ruff, 2)
+	else:
+		_e(img, 28, 38, 11, 7, ruff, true)
+	_e(img, 28, 24, 11, 10, fur, true)
+	_e(img, 18, 10, 4, 9, fur.darkened(0.1), true)
+	_e(img, 38, 10, 4, 9, fur.darkened(0.1), true)
+	if form == 3:
+		_e(img, 28, 15, 6, 4, ruff, true)
+	if back:
+		return
+	_eye(img, 20, 21, Color("#4a2a1a"))
+	_eye(img, 31, 21, Color("#4a2a1a"))
+	_r(img, 27, 30, 3, 2, OUTLINE)
+
+
+## Empiflor : grand calice jaune-vert ouvert vers le haut, feuille en couvercle, liane.
+func _draw_victreebel(img: Image, back: bool) -> void:
+	var bell := Color("#d8d040")
+	var leaf := Color("#4a9a40")
+	_line(img, Vector2(40, 8), Vector2(52, 2), Color("#7a5a30"), 2)
+	_leaf(img, Vector2(36, 12), Vector2(56, 8), 6, leaf)
+	_e(img, 32, 38, 20, 23, bell, true)
+	_leaf(img, Vector2(14, 44), Vector2(2, 56), 6, leaf)
+	_leaf(img, Vector2(50, 44), Vector2(62, 56), 6, leaf)
+	if back:
+		_r(img, 20, 30, 24, 2, bell.darkened(0.3))
+		return
+	_e(img, 32, 26, 15, 9, Color("#e8d8a0"))
+	_e(img, 32, 30, 11, 5, Color("#c04040"))
+	_eye(img, 20, 40, Color("#2a2a30"))
+	_eye(img, 39, 40, Color("#2a2a30"))
+
+
+## Saquedeneu : boule de lianes bleues emmêlées, pieds rouges, yeux dans l'ombre.
+func _draw_tangela(img: Image, back: bool) -> void:
+	var vine := Color("#3a5ab0")
+	_r(img, 20, 55, 9, 7, Color("#c03a30"))
+	_r(img, 35, 55, 9, 7, Color("#c03a30"))
+	_e(img, 32, 34, 22, 22, vine, true)
+	for i: int in 9:
+		var y := 16 + i * 4
+		_line(img, Vector2(14, y), Vector2(50, y + (2 if i % 2 == 0 else -2)),
+			vine.darkened(0.3), 1)
+	if back:
+		return
+	_r(img, 20, 30, 24, 8, Color("#101018"))
+	_r(img, 24, 32, 4, 4, WHITE)
+	_r(img, 36, 32, 4, 4, WHITE)
+
+
+## Rafflesia : corps bleu d'Ortide, immense fleur rouge à pois blancs sur la tête.
+func _draw_vileplume(img: Image, back: bool) -> void:
+	var body := Color("#3a4a98")
+	var petal := Color("#d03a3a")
+	_e(img, 32, 16, 30, 13, petal, true)
+	for p: Vector2i in [Vector2i(12, 14), Vector2i(24, 8), Vector2i(40, 8), Vector2i(52, 14),
+			Vector2i(32, 20)]:
+		_e(img, p.x, p.y, 3, 2, Color("#f0d0d0"))
+	_e(img, 32, 16, 6, 4, Color("#6a3060"))
+	_r(img, 21, 55, 8, 7, body.darkened(0.2))
+	_r(img, 35, 55, 8, 7, body.darkened(0.2))
+	_e(img, 32, 44, 15, 13, body, true)
+	if back:
+		return
+	_e(img, 26, 42, 3, 3, Color("#e03040"))
+	_e(img, 38, 42, 3, 3, Color("#e03040"))
+	_r(img, 28, 49, 8, 2, body.darkened(0.45))
+
+
+## Rhinocorne : rhinocéros gris à plaques, corne blanche sur le museau.
+func _draw_rhyhorn(img: Image, back: bool) -> void:
+	var hide := Color("#9a9aa8")
+	_e(img, 36, 40, 22, 14, hide, true)
+	for x: int in [26, 36, 46]:
+		_line(img, Vector2(x, 28), Vector2(x + 4, 44), hide.darkened(0.3), 1)
+	_r(img, 18, 50, 9, 12, hide.darkened(0.2))
+	_r(img, 46, 50, 9, 12, hide.darkened(0.2))
+	_e(img, 16, 36, 12, 10, hide, true)
+	_line(img, Vector2(8, 30), Vector2(4, 20), Color("#f0ece0"), 4)
+	_e(img, 20, 24, 3, 5, hide.darkened(0.15), true)
+	if back:
+		return
+	_eye(img, 13, 31, Color("#c03030"))
+	_r(img, 8, 41, 6, 2, OUTLINE)
+
+
+## Kangourex : grande mère brune debout, ventre crème, petit dans la poche.
+func _draw_kangaskhan(img: Image, back: bool) -> void:
+	var fur := Color("#8a6a48")
+	var belly := Color("#e8d8a8")
+	_e(img, 46, 52, 12, 6, fur.darkened(0.1), true)
+	_e(img, 32, 40, 17, 20, fur, true)
+	_r(img, 20, 54, 9, 8, fur.darkened(0.2))
+	_r(img, 35, 54, 9, 8, fur.darkened(0.2))
+	_e(img, 30, 14, 11, 10, fur, true)
+	_e(img, 22, 6, 3, 5, fur.darkened(0.1), true)
+	_e(img, 38, 6, 3, 5, fur.darkened(0.1), true)
+	if back:
+		return
+	_e(img, 32, 44, 11, 13, belly, true)
+	_e(img, 32, 46, 6, 5, fur.lightened(0.15), true)
+	_r(img, 30, 45, 2, 2, OUTLINE)
+	_r(img, 34, 45, 2, 2, OUTLINE)
+	_eye(img, 23, 11, Color("#2a2a30"))
+	_eye(img, 33, 11, Color("#2a2a30"))
+	_r(img, 27, 20, 6, 2, OUTLINE)
+# --- Tour Pokémon (jalon 19) -----------------------------------------------------
+
+## Fantominus : boule de gaz sombre, halo violet autour, grands yeux, bouche ouverte.
+func _draw_gastly(img: Image, back: bool) -> void:
+	var gas := Color("#9a7ac8")
+	_e(img, 32, 34, 25, 23, Color(gas, 0.55))
+	_e(img, 32, 34, 15, 14, Color("#2a2234"), true)
+	if back:
+		return
+	_e(img, 25, 31, 4, 4, WHITE)
+	_e(img, 39, 31, 4, 4, WHITE)
+	_r(img, 26, 31, 2, 3, EYE)
+	_r(img, 38, 31, 2, 3, EYE)
+	_e(img, 32, 41, 6, 3, Color("#c04a6a"))
+	_r(img, 28, 39, 2, 2, WHITE)
+	_r(img, 35, 39, 2, 2, WHITE)
+
+
+## Spectrum : corps violet sans jambes, crête pointue, deux mains qui flottent, large sourire.
+func _draw_haunter(img: Image, back: bool) -> void:
+	var skin := Color("#6a4a98")
+	_poly(img, PackedVector2Array([Vector2(18, 20), Vector2(32, 4), Vector2(46, 20)]), skin)
+	_e(img, 32, 30, 17, 16, skin, true)
+	_poly(img, PackedVector2Array([Vector2(20, 40), Vector2(44, 40), Vector2(32, 60)]),
+		skin.darkened(0.15))
+	_e(img, 8, 36, 5, 5, skin.lightened(0.1), true)
+	_e(img, 56, 36, 5, 5, skin.lightened(0.1), true)
+	if back:
+		return
+	_r(img, 22, 24, 7, 4, WHITE)
+	_r(img, 35, 24, 7, 4, WHITE)
+	_r(img, 25, 25, 2, 3, EYE)
+	_r(img, 38, 25, 2, 3, EYE)
+	_r(img, 24, 34, 16, 3, Color("#c04a6a"))
+	_r(img, 26, 34, 2, 2, WHITE)
+	_r(img, 36, 34, 2, 2, WHITE)
+
+
+## Noeunoeuf : six œufs roses serrés, fissures, petits visages.
+func _draw_exeggcute(img: Image, back: bool) -> void:
+	var shell := Color("#f0c0c0")
+	var crack := Color("#c0807a")
+	var eggs: Array[Vector2i] = [Vector2i(16, 50), Vector2i(32, 52), Vector2i(48, 50),
+		Vector2i(22, 34), Vector2i(42, 34), Vector2i(32, 20)]
+	for egg: Vector2i in eggs:
+		_e(img, egg.x, egg.y, 9, 10, shell, true)
+		_line(img, Vector2(egg.x - 5, egg.y - 3), Vector2(egg.x + 1, egg.y - 6), crack, 1)
+		if back:
+			continue
+		_r(img, egg.x - 4, egg.y, 2, 2, EYE)
+		_r(img, egg.x + 2, egg.y, 2, 2, EYE)
+		_r(img, egg.x - 1, egg.y + 4, 3, 1, crack.darkened(0.3))
+
+
+## Léviator : serpent de mer bleu dressé en S, ventre crème, crête et barbillons.
+func _draw_gyarados(img: Image, back: bool) -> void:
+	var skin := Color("#3a6ac8")
+	var belly := Color("#f0e0a0")
+	_e(img, 40, 56, 18, 6, skin.darkened(0.1), true)
+	_line(img, Vector2(44, 54), Vector2(28, 40), skin, 9)
+	_line(img, Vector2(28, 40), Vector2(36, 24), skin, 8)
+	_e(img, 32, 16, 13, 10, skin, true)
+	_poly(img, PackedVector2Array([Vector2(26, 8), Vector2(32, 0), Vector2(38, 8)]), WHITE)
+	if back:
+		_line(img, Vector2(40, 30), Vector2(48, 44), Color("#2a4a98"), 2)
+		return
+	_line(img, Vector2(42, 52), Vector2(30, 41), belly, 3)
+	_line(img, Vector2(30, 40), Vector2(36, 27), belly, 3)
+	_r(img, 24, 12, 5, 4, WHITE)
+	_r(img, 35, 12, 5, 4, WHITE)
+	_r(img, 26, 13, 2, 3, EYE)
+	_r(img, 37, 13, 2, 3, EYE)
+	_r(img, 25, 21, 14, 3, Color("#2a2a4a"))
+	_line(img, Vector2(22, 20), Vector2(12, 26), WHITE, 1)
+	_line(img, Vector2(42, 20), Vector2(52, 26), WHITE, 1)
 
 ## Leveinard : œuf rose sur pattes, poche ventrale avec un œuf blanc, mèches sur les côtés.
 func _draw_chansey(img: Image, back: bool) -> void:

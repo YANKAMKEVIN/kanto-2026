@@ -32,6 +32,8 @@ func apply(s: GameSettings, device: Dictionary, evolution_screen: EvolutionScree
 	# Halos des grottes (jalon 12, T7 / T20) et lueur « hint » chez Léo (jalon 14) : vacillement
 	# coupé.
 	LightGlow.set_reduce_motion(s.reduce_motion)
+	# Brume de la Tour Pokémon (jalon 19, T19) : cachée.
+	MistLayer.set_reduce_motion(s.reduce_motion)
 	# Carte du Champion (jalon 10, T5) : sans glissé, un fondu court.
 	hud.get_champion_card().reduce_motion = s.reduce_motion
 	cutscenes.reduce_motion = s.reduce_motion
