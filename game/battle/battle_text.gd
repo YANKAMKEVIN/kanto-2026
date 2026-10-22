@@ -128,6 +128,8 @@ const TEMPLATE_IDS: Array[StringName] = [
 	&"summary_exp", &"summary_level", &"summary_stat", &"summary_continue",
 	&"status_inflicted_poison", &"status_unchanged_poison", &"status_damaged_poison",
 	&"status_cured_poison",
+	# Jalon 23 (T18) : poison grave (Toxik).
+	&"status_inflicted_toxic", &"status_damaged_toxic",
 	&"status_inflicted_paralysis", &"status_unchanged_paralysis", &"status_prevented_paralysis",
 	&"status_cured_paralysis",
 	&"status_inflicted_sleep", &"status_unchanged_sleep", &"status_prevented_sleep",

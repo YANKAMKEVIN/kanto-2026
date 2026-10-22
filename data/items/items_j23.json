@@ -17,5 +17,10 @@
 	"gold_teeth": {
 		"name": "Dents d'Or", "plural": "Dents d'Or", "feminine": true, "category": "key",
 		"description": "Le dentier en or du Gardien du Parc Safari."
+	},
+	"tm06": {
+		"name": "CT06 — Toxik", "plural": "CT06 — Toxik", "feminine": true,
+		"category": "tm", "tm": 6, "teaches": "toxic",
+		"description": "Empoisonne gravement."
 	}
 }

@@ -717,16 +717,35 @@ func _drain_seed(side: BattleSide, events: Array[BattleEvent]) -> void:
 func _status_damage(side: BattleSide, events: Array[BattleEvent]) -> void:
 	var victim := side.active.pokemon
 	var amount := StatusRules.end_turn_damage(victim)
+	# Jalon 23 (T18) : poison grave, N/16 croissant ([ToxicRules]) ; soigné entre-temps → oublié.
+	var toxic := _toxic_tick(side.active)
+	if toxic > 0:
+		amount = toxic
 	if amount <= 0:
 		return
 	var damaged := _event(BattleEvent.Kind.STATUS_DAMAGED, side)
-	damaged.status = victim.status
+	damaged.status = StatusRules.TOXIC if toxic > 0 else victim.status
 	damaged.amount = victim.take_damage(amount)
 	damaged.hp = victim.hp
 	events.append(damaged)
 	if victim.is_fainted():
 		_faint(side, events)
 		_check_end(events)
+
+
+## Jalon 23 (T18) : fin de tour du poison grave de [param battler] : compteur +1 puis dégâts
+## ([method ToxicRules.end_turn_damage]) ; 0 s'il n'est pas (ou plus) gravement empoisonné.
+func _toxic_tick(battler: Battler) -> int:
+	if not battler.toxic:
+		return 0
+	if battler.pokemon.status != StatusRules.POISON:
+		battler.toxic = false
+		battler.toxic_counter = ToxicRules.reset_counter()
+		return 0
+	if battler.pokemon.is_fainted():
+		return 0
+	battler.toxic_counter = ToxicRules.next_counter(battler.toxic_counter)
+	return ToxicRules.end_turn_damage(battler.pokemon, battler.toxic_counter)
 
 
 func _player_goes_second(player_action: BattleAction, foe_action: BattleAction) -> bool:
@@ -1241,8 +1260,11 @@ func _inflict_status(effect: MoveEffect, move: MoveData, target_side: BattleSide
 	var check := StatusRules.can_inflict(effect.status, target.pokemon, target.types)
 	if check == StatusRules.Inflict.OK:
 		StatusRules.apply(effect.status, target.pokemon, _rng)
+		# Jalon 23 (T18) : poison grave (Toxik) sur le combattant, compteur à zéro.
+		target.toxic = effect.toxic
+		target.toxic_counter = ToxicRules.reset_counter()
 		var inflicted := _event(BattleEvent.Kind.STATUS_INFLICTED, target_side)
-		inflicted.status = effect.status
+		inflicted.status = StatusRules.TOXIC if effect.toxic else effect.status
 		events.append(inflicted)
 		return
 	if move.is_damaging():

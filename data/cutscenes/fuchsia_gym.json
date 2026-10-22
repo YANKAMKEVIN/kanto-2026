@@ -1,0 +1,130 @@
+{
+	"fuchsia_gym_koga": {
+		"variants": [
+			{
+				"unless": [
+					"badge_soul"
+				],
+				"steps": [
+					{
+						"face": "koga",
+						"to": "player"
+					},
+					{
+						"dialogue": "fuchsia_gym_koga_intro",
+						"unless": [
+							"koga_met"
+						]
+					},
+					{
+						"dialogue": "fuchsia_gym_koga_resume",
+						"if": [
+							"koga_met"
+						]
+					},
+					{
+						"champion_card": "fuchsia_gym_koga",
+						"unless": [
+							"koga_met"
+						]
+					},
+					{
+						"set": [
+							"koga_met"
+						]
+					},
+					{
+						"battle": "fuchsia_gym_koga",
+						"win": [
+							"badge_soul"
+						]
+					},
+					{
+						"wait": 0.6,
+						"if": [
+							"badge_soul"
+						]
+					},
+					{
+						"dialogue": "fuchsia_gym_koga_won",
+						"if": [
+							"badge_soul"
+						]
+					},
+					{
+						"badge": "soul",
+						"if": [
+							"badge_soul"
+						]
+					},
+					{
+						"dialogue": "fuchsia_gym_koga_tm",
+						"if": [
+							"badge_soul"
+						],
+						"unless": [
+							"tm06_received"
+						]
+					},
+					{
+						"give": "tm06",
+						"count": 1,
+						"if": [
+							"badge_soul"
+						],
+						"unless": [
+							"tm06_received"
+						]
+					},
+					{
+						"set": [
+							"tm06_received"
+						],
+						"if": [
+							"badge_soul"
+						]
+					},
+					{
+						"dialogue": "fuchsia_gym_koga_lost",
+						"unless": [
+							"badge_soul"
+						]
+					},
+					{
+						"wake_up": true,
+						"unless": [
+							"badge_soul"
+						]
+					}
+				]
+			}
+		]
+	},
+	"fuchsia_gym_koga_tm_late": {
+		"variants": [
+			{
+				"steps": [
+					{
+						"face": "koga",
+						"to": "player"
+					},
+					{
+						"dialogue": "fuchsia_gym_koga_tm_late"
+					},
+					{
+						"dialogue": "fuchsia_gym_koga_tm"
+					},
+					{
+						"give": "tm06",
+						"count": 1
+					},
+					{
+						"set": [
+							"tm06_received"
+						]
+					}
+				]
+			}
+		]
+	}
+}
