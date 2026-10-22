@@ -1,0 +1,12 @@
+{
+	"indigo_plateau_lobby": {
+		"stock": [
+			{ "item": "ultra_ball" },
+			{ "item": "great_ball" },
+			{ "item": "full_restore" },
+			{ "item": "max_potion" },
+			{ "item": "full_heal" },
+			{ "item": "revive" }
+		]
+	}
+}

@@ -1,0 +1,54 @@
+{
+	"tm43": {
+		"name": "CT43 — Piqué",
+		"plural": "CT43 — Piqué",
+		"feminine": true,
+		"category": "tm",
+		"tm": 43,
+		"teaches": "sky_attack",
+		"description": "Le lanceur s'entoure d'une lueur au premier tour, puis fond sur la cible au second."
+	},
+	"tm17": {
+		"name": "CT17 — Sacrifice",
+		"plural": "CT17 — Sacrifice",
+		"feminine": true,
+		"category": "tm",
+		"tm": 17,
+		"teaches": "submission",
+		"description": "Un coup puissant qui blesse aussi le lanceur."
+	},
+	"tm05": {
+		"name": "CT05 — Ultimawashi",
+		"plural": "CT05 — Ultimawashi",
+		"feminine": true,
+		"category": "tm",
+		"tm": 5,
+		"teaches": "mega_kick",
+		"description": "Un coup de pied d'une puissance phénoménale."
+	},
+	"tm47": {
+		"name": "CT47 — Explosion",
+		"plural": "CT47 — Explosion",
+		"feminine": true,
+		"category": "tm",
+		"tm": 47,
+		"teaches": "explosion",
+		"description": "Le lanceur explose et inflige d'énormes dégâts, mais tombe K.O."
+	},
+	"guard_spec": {
+		"name": "Défense Spéc.",
+		"plural": "Défense Spéc.",
+		"feminine": true,
+		"category": "field",
+		"price": 0,
+		"description": "Protège l'équipe des baisses de statistiques. Sans effet dans le moteur actuel."
+	},
+	"max_ether": {
+		"name": "Max Éther",
+		"plural": "Max Éthers",
+		"feminine": false,
+		"category": "field",
+		"price": 0,
+		"description": "Rend tous les PP d'une capacité. Sans effet dans le moteur actuel."
+	}
+}
