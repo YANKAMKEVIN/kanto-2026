@@ -1,0 +1,35 @@
+# Maison de M. Psy, Safrania (saffron_psychic_house) — grille fonctionnelle v1 (jalon 26, T2 ;
+# 2026-10-22). Même enveloppe et même mobilier que les maisons du projet (lavanville_maison_1.txt,
+# maison du tailleur d'Argenta, maison 1 de Carmin : 15 × 10, sortie (6..8, 8)).
+# Source RB : pret/pokered data/maps/objects/MrPsychicsHouse.asm (M. Psy (5, 3), tourné à gauche).
+# Q26-3, défaut retenu : maison posée et HABITÉE, SANS remise de CT (RB : CT29 Psyko, reportée) [D].
+#
+# Légende :
+#   K mur (bloqué)          . sol (praticable)
+#   X sortie vers Safrania (praticable : paillasson, PUSH ↓)
+#   F réfrigérateur (1, 3)   C plan de travail (2..4, 3)   H cuisinière (5, 3)
+#   T table à manger (2..4, 5..6)   S canapé (10..12, 3)   b table basse (10..11, 5)
+#   d lampe (13, 3)   p porte-manteau (5, 7)   x plante (1, 7), (13, 7)
+
+CARTE saffron_psychic_house
+
+PRATICABLES .X
+
+GRILLE 15 10
+00 KKKKKKKKKKKKKKK
+01 KKKKKKKKKKKKKKK
+02 KKKKKKKKKKKKKKK
+03 KFCCCH....SSSdK
+04 K.............K
+05 K.TTT.....bb..K
+06 K.TTT.........K
+07 Kx...p.......xK
+08 KKKKKKXXXKKKKKK
+09 KKKKKKKKKKKKKKK
+FIN
+
+POSITIONS
+sortie              warp           6..8,8       libre   to=saffron_city spawn=from_psychic_house  # PUSH ↓ → saffron_city, from_psychic_house
+entrance            spawn          7,8          libre   facing=up  # arrivée depuis Safrania (sur le paillasson)
+m_psy               pnj            12,6         bloque  role=saffron_mr_psychic facing=left  # RB M. Psy (5, 3) ; aucune CT au J26 (Q26-3)
+FIN

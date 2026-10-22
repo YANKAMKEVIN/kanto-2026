@@ -1,0 +1,187 @@
+# Safrania (saffron_city) — grille fonctionnelle v1 (jalon 26, T2 ; préparée le 2026-10-22 pour la
+# vue générale peinte du T5). Source UNIQUE de la géométrie : plan en aplats, vue générale peinte,
+# puis outil de construction du T6. Un changement de composition se fait ICI d'abord. Contrôles :
+# python3 -I tools/art/plan_check_j26.py (profil safrania ; aussi par tools/art/plan_check.py) et
+# python3 -I tools/art/plan_check.py --legende.
+#
+# 60 × 50 cases ; nord en haut ; x = colonne 0..59, y = rangée 0..49.
+# ÉCHELLE : la ville RB (pret/pokered maps/SaffronCity.blk, 20 × 18 blocs = 40 × 36 cases, tileset
+# Overworld ; décodée par tools/art/silph_rb_decode.py --safrania) est RECOMPOSÉE à l'échelle des
+# villes précédentes (Céladopole 70 × 46, Carmin 64 × 43, Lavanville 44 × 36) avec les emprises du
+# projet (Centre et Boutique 8 × 7, maisons 7 × 6) ; la TOPOLOGIE RB est gardée [D] :
+#   - un anneau de rues : rue A (y 10..12, RB y 6..7), rue D (y 40..42, RB y 30..31), avenues ouest
+#     (x 3..5, RB x 2..3) et est (x 54..56, RB x 36..37) ;
+#   - rue B (y 20..22, RB y 12..15) et rue C (y 30..32, RB y 22..25), la rue B COUPÉE par la Sylphe
+#     comme en RB (on passe de l'ouest à l'est par les avenues, la rue A ou la rue C) ;
+#   - quatre sorties : route du NORD au milieu de la rangée A (x 28..31, RB x 18..21), route du SUD
+#     au milieu de la rangée E (x 28..31, RB x 20..21), OUEST et EST au niveau de la rangée C
+#     (y 25..26, RB y 16..18) au bout des avenues ;
+#   - mêmes rangées de bâtiments et même ordre d'ouest en est : rangée A (immeuble, maison du
+#     Copieur, immeuble, [route du nord], Dojo, Arène), rangée B (immeuble, maison du Roucool,
+#     SYLPHE, Boutique, immeuble), rangée C (immeubles, Sylphe, immeubles), rangée D (immeuble,
+#     Centre, immeuble, square, maison de M. Psy, immeuble), rangée E (dos d'immeubles au sud).
+#
+# RACCORDS (les quatre postes ; portes de 2 cases ; « from_* » = arrivée, une case devant) :
+#   NORD  porte (29..30, 2) STEP_ON ↑ → route_5_gate:north_door (poste J15, intérieur ; l'ouverture
+#         nord (4..5, 1) du poste mènera à saffron_city:from_gate_r5 au T6) ; arrivée from_gate_r5
+#         (29..30, 3), tournée ↓.
+#   SUD   porte (29..30, 47) STEP_ON ↓ → route_6:from_saffron (Route 6 : le « poste » est la porte
+#         porte_safrania (36, 7) de route_6.txt, STEP_ON ↑ ; le T6 lui donne la cible
+#         saffron_city:from_gate_r6 et ajoute l'arrivée from_saffron en (36, 8), tournée ↓, case
+#         libérée par le garde qui s'écarte en (35, 8) quand les postes s'ouvrent) ; arrivée
+#         from_gate_r6 (29..30, 46), tournée ↑.
+#   OUEST porte (2, 25..26) STEP_ON ← → route_7_gate:north_door (poste du J20, grille
+#         poste_safrania.txt ; build_painted_interiors.gd _saffron_gate vise déjà
+#         saffron_city:from_gate_r7) ; arrivée from_gate_r7 (3, 25..26), tournée →.
+#   EST   porte (57, 25..26) STEP_ON → → route_8_gate:north_door ; arrivée from_gate_r8
+#         (56, 25..26), tournée ←.
+#   [D] Les postes sont dessinés côté ville comme de petites façades « P » au bord (4 × 3 au nord
+#   et au sud, 3 × 5 à l'ouest et à l'est), porte tournée vers la ville. L'orientation à l'arrivée
+#   dans la ville est celle de la colonne « tournée » ci-dessus (les warps actuels du J20 disent ↑ :
+#   le T6 les corrige).
+#
+# PORTES (cases d'entrée ; chaque porte a sa case de sortie « from_* » juste devant, tournée ↓) :
+#   maison du Copieur (14, 9) · Dojo (37..38, 9) « À venir » (J27) · Arène (50, 9) « À venir »
+#   (J27), UNE case [D] pour que le sbire (50, 10) la ferme à lui seul · maison du Roucool (17, 19)
+#   · Boutique (41..42, 19) · SYLPHE (29..30, 29) · Centre (17..18, 39) · maison de M. Psy (40, 39).
+#   Le Vol arrive sur from_center (17..18, 40) (data/world/fly_points.json).
+#
+# OCCUPATION (RB, pret/pokered data/maps/objects/SaffronCity.asm, toggleable_objects) : sept sbires
+# (RB Rocket 1 à 7) `unless=silph_giovanni_defeated` ; trois d'entre eux se tiennent devant une
+# porte, comme RB : maison du Copieur (RB (7, 6)), maison du Roucool (RB (13, 12)) et ARÈNE
+# (RB (34, 4)) ; ces trois bâtiments sont donc fermés pendant l'occupation [D, RB]. Le Dojo, le
+# Centre, la Boutique, la Sylphe et la maison de M. Psy restent libres. Garde de la Sylphe : RB n° 9
+# (19, 22), À CÔTÉ de la porte, sans la fermer [D] (RB n° 8, devant la porte jusqu'au sauvetage de
+# M. Fuji, n'est pas repris : aucune condition sur la Tour). Libération (`if=silph_giovanni_defeated`,
+# RB : scientifique, employés, gentleman et son Roucarnage, rocker) et deux habitants [D] (T26-03,
+# T26-19).
+#
+# Légende :
+#   T arbres (bordure, bloqués)   p pavé (praticable)   . pelouse (praticable)   x haie, muret,
+#   clôture (bloqués)   j massif fleuri (bloqué)   n panneau (bloqué, lu depuis la case devant)
+#   B immeuble sans porte   c maison du Copieur   r maison du Roucool   S SYLPHE SARL (14 × 17)
+#   O Boutique   C Centre Pokémon   y maison de M. Psy   J Dojo (10 × 7)   Z Arène (12 × 7)
+#   P poste de garde (façade au bord de la carte)   (emprises bloquées)
+#   D porte (praticable, STEP_ON vers le bâtiment)
+#
+# Positions : types de celadopole.txt (warp to= spawn=, spawn, pnj, panneau) ; en plus
+# `dir=` sur les portes (sens du pas qui entre), `unless=` / `if=` sur les PNJ conditionnels,
+# `mouvement=` (RB WALK), `a_venir=oui` sur les portes du J27, `debug=oui` sur les points d'apparition
+# de débogage, `vol_arrivee` (légende commune).
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 60 caractères), puis POSITIONS.
+
+CARTE saffron_city
+
+PRATICABLES .pD
+
+GRILLE 60 50
+00 TTTTTTTTTTTTTTTTTTTTTTTTTTTTPPPPTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+01 TTTTTTTTTTTTTTTTTTTTTTTTTTTTPPPPTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+02 TTTTTTTTTTTTTTTTTTTTTTTTTTTTPDDPTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+03 TTTTTTTTTTTTTTTTTTTTTTTTTTTTppppTJJJJJJJJJJxZZZZZZZZZZZZxTTT
+04 TTTBBBBBBBxcccccccxBBBBBBB..pppp.JJJJJJJJJJxZZZZZZZZZZZZxTTT
+05 TTTBBBBBBBxcccccccxBBBBBBB..pppp.JJJJJJJJJJxZZZZZZZZZZZZxTTT
+06 TTTBBBBBBBxcccccccxBBBBBBB..pppp.JJJJJJJJJJxZZZZZZZZZZZZxTTT
+07 TTTBBBBBBBxcccccccxBBBBBBB..pppp.JJJJJJJJJJxZZZZZZZZZZZZxTTT
+08 TTTBBBBBBBxcccccccxBBBBBBB..pppp.JJJJJJJJJJxZZZZZZZZZZZZxTTT
+09 TTTBBBBBBBxcccDcccxBBBBBBB.npppp.JJJJDDJJJJnZZZZZZDZZZZZnTTT
+10 TTTppppppppppppppppppppppppppppppppppppppppppppppppppppppTTT
+11 TTTppppppppppppppppppppppppppppppppppppppppppppppppppppppTTT
+12 TTTppppppppppppppppppppppppppppppppppppppppppppppppppppppTTT
+13 TTTpppxxxxxxxxxxxxxxxxxSSSSSSSSSSSSSSxOOOOOOOOxxxxxxxxpppTTT
+14 TTTpppBBBBBBBxrrrrrrrxxSSSSSSSSSSSSSSxOOOOOOOOxBBBBBBBpppTTT
+15 TTTpppBBBBBBBxrrrrrrrxxSSSSSSSSSSSSSSxOOOOOOOOxBBBBBBBpppTTT
+16 TTTpppBBBBBBBxrrrrrrrxxSSSSSSSSSSSSSSxOOOOOOOOxBBBBBBBpppTTT
+17 TTTpppBBBBBBBxrrrrrrrxxSSSSSSSSSSSSSSxOOOOOOOOxBBBBBBBpppTTT
+18 TTTpppBBBBBBBxrrrrrrrxxSSSSSSSSSSSSSSxOOOOOOOOxBBBBBBBpppTTT
+19 TTTpppBBBBBBBxrrrDrrrxxSSSSSSSSSSSSSSxOOODDOOOnBBBBBBBpppTTT
+20 TTTppppppppppppppppppppSSSSSSSSSSSSSSppppppppppppppppppppTTT
+21 TTTppppppppppppppppppppSSSSSSSSSSSSSSppppppppppppppppppppTTT
+22 TTTppppppppppppppppppppSSSSSSSSSSSSSSppppppppppppppppppppTTT
+23 PPPpppnxxxxxxxxxxxxxxxxSSSSSSSSSSSSSSxxxxxxxxxxxxxxxxxpppPPP
+24 PPPpppBBBBBBBxBBBBBBBxxSSSSSSSSSSSSSSxBBBBBBBxBBBBBBBxpppPPP
+25 PPDpppBBBBBBBxBBBBBBBxxSSSSSSSSSSSSSSxBBBBBBBxBBBBBBBxpppDPP
+26 PPDpppBBBBBBBxBBBBBBBxxSSSSSSSSSSSSSSxBBBBBBBxBBBBBBBxpppDPP
+27 PPPpppBBBBBBBxBBBBBBBxxSSSSSSSSSSSSSSxBBBBBBBxBBBBBBBxpppPPP
+28 TTTpppBBBBBBBxBBBBBBBxxSSSSSSSSSSSSSSxBBBBBBBxBBBBBBBxpppTTT
+29 TTTpppBBBBBBBnBBBBBBBxnSSSSSSDDSSSSSSxBBBBBBBxBBBBBBBnpppTTT
+30 TTTppppppppppppppppppppppppppppppppppppppppppppppppppppppTTT
+31 TTTppppppppppppppppppppppppppppppppppppppppppppppppppppppTTT
+32 TTTppppppppppppppppppppppppppppppppppppppppppppppppppppppTTT
+33 TTTpppxxxxxxxxCCCCCCCCxxxxxxxx......xxxxxxxxxxxxxxxxxxpppTTT
+34 TTTpppBBBBBBBxCCCCCCCCxBBBBBBB......xyyyyyyyxBBBBBBBxxpppTTT
+35 TTTpppBBBBBBBxCCCCCCCCxBBBBBBB.j..j.xyyyyyyyxBBBBBBBxxpppTTT
+36 TTTpppBBBBBBBxCCCCCCCCxBBBBBBB......xyyyyyyyxBBBBBBBxxpppTTT
+37 TTTpppBBBBBBBxCCCCCCCCxBBBBBBB......xyyyyyyyxBBBBBBBxxpppTTT
+38 TTTpppBBBBBBBxCCCCCCCCxBBBBBBB......xyyyyyyyxBBBBBBBxxpppTTT
+39 TTTpppBBBBBBBxCCCDDCCCnBBBBBBBxxxxxxnyyyDyyyxBBBBBBBxxpppTTT
+40 TTTppppppppppppppppppppppppppppppppppppppppppppppppppppppTTT
+41 TTTppppppppppppppppppppppppppppppppppppppppppppppppppppppTTT
+42 TTTppppppppppppppppppppppppppppppppppppppppppppppppppppppTTT
+43 TTTBBBBBBBBxBBBBBBBBxBBBBBBxppppxBBBBBBxBBBBBBBBxBBBBBBBBTTT
+44 TTTBBBBBBBBxBBBBBBBBxBBBBBBxppppxBBBBBBxBBBBBBBBxBBBBBBBBTTT
+45 TTTBBBBBBBBxBBBBBBBBxBBBBBBxppppxBBBBBBxBBBBBBBBxBBBBBBBBTTT
+46 TTTBBBBBBBBxBBBBBBBBxBBBBBBxppppxBBBBBBxBBBBBBBBxBBBBBBBBTTT
+47 TTTTTTTTTTTTTTTTTTTTTTTTTTTTPDDPTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+48 TTTTTTTTTTTTTTTTTTTTTTTTTTTTPPPPTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+49 TTTTTTTTTTTTTTTTTTTTTTTTTTTTPPPPTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+FIN
+
+POSITIONS
+porte_poste_r5       warp           29..30,2      libre   to=route_5_gate spawn=north_door dir=up  # STEP_ON ↑ → poste de la Route 5 (intérieur du J15), arrivée devant son ouverture nord
+from_gate_r5         spawn          29..30,3      libre   facing=down  # arrivée depuis le poste de la Route 5
+porte_poste_r6       warp           29..30,47     libre   to=route_6 spawn=from_saffron dir=down  # STEP_ON ↓ → Route 6, devant porte_safrania (36, 7) ; from_saffron (36, 8) à créer au T6
+from_gate_r6         spawn          29..30,46     libre   facing=up  # arrivée depuis la Route 6 (porte_safrania)
+porte_poste_r7       warp           2,25..26      libre   to=route_7_gate spawn=north_door dir=left  # STEP_ON ← → poste de la Route 7 (J20)
+from_gate_r7         spawn          3,25..26      libre   facing=right  # arrivée depuis le poste de la Route 7
+porte_poste_r8       warp           57,25..26     libre   to=route_8_gate spawn=north_door dir=right  # STEP_ON → → poste de la Route 8 (J20)
+from_gate_r8         spawn          56,25..26     libre   facing=left  # arrivée depuis le poste de la Route 8
+porte_copieur        warp           14,9          libre   to=saffron_copycat_house_1f spawn=entrance dir=up  # STEP_ON ↑ → maison du Copieur (RB warp 1)
+from_copycat_house   spawn          14,10         libre   facing=down  # sortie de la maison du Copieur
+porte_dojo           warp           37..38,9      libre   to=fighting_dojo spawn=entrance dir=up a_venir=oui  # STEP_ON ↑ → Dojo (RB warp 2) : « À venir » jusqu'au J27 ; LIBRE pendant l'occupation
+from_dojo            spawn          37..38,10     libre   facing=down  # sortie du Dojo (J27)
+porte_arene          warp           50,9          libre   to=saffron_gym spawn=entrance dir=up a_venir=oui  # STEP_ON ↑ → Arène de Morgane (RB warp 3) : « À venir » jusqu'au J27 ; fermée par le sbire pendant l'occupation
+from_gym             spawn          50,10         libre   facing=down  # sortie de l'Arène (J27)
+porte_roucool        warp           17,19         libre   to=saffron_pidgey_house spawn=entrance dir=up  # STEP_ON ↑ → maison du Roucool messager (RB warp 4)
+from_pidgey_house    spawn          17,20         libre   facing=down  # sortie de la maison du Roucool
+porte_boutique       warp           41..42,19     libre   to=saffron_mart spawn=entrance dir=up  # STEP_ON ↑ → Boutique (RB warp 5)
+from_mart            spawn          41..42,20     libre   facing=down  # sortie de la Boutique
+porte_sylphe         warp           29..30,29     libre   to=silph_co_1f spawn=from_city dir=up  # STEP_ON ↑ → Sylphe SARL 1F (RB warp 6)
+from_silph           spawn          29..30,30     libre   facing=down  # sortie de la Sylphe (sylphe_1f.txt : sortie_ville)
+porte_centre         warp           17..18,39     libre   to=saffron_center spawn=entrance dir=up  # STEP_ON ↑ → Centre Pokémon (RB warp 7)
+from_center          spawn          17..18,40     libre   facing=down  # sortie du Centre ; aussi l'arrivée du Vol (fly_points.json) et du réveil
+vol_safrania         vol_arrivee    17,40         libre   ville=saffron_city  # arrivée du Vol = from_center (légende commune)
+porte_psy            warp           40,39         libre   to=saffron_psychic_house spawn=entrance dir=up  # STEP_ON ↑ → maison de M. Psy (RB warp 8)
+from_psychic_house   spawn          40,40         libre   facing=down  # sortie de la maison de M. Psy
+sbire_1              pnj            14,10         bloque  role=saffron_rocket facing=down unless=silph_giovanni_defeated  # RB Rocket 1 (7, 6) : devant la maison du Copieur (la ferme), T26-01
+sbire_2              pnj            25,11         bloque  role=saffron_rocket facing=left mouvement=gauche_droite unless=silph_giovanni_defeated  # RB Rocket 2 (20, 8), WALK LEFT_RIGHT : rue A, devant la route du nord, T26-01
+garde_arene          pnj            50,10         bloque  role=saffron_rocket_gym facing=down unless=silph_giovanni_defeated  # RB Rocket 3 (34, 4) : DEVANT LA PORTE DE L'ARÈNE (contrat J27), T26-02
+sbire_4              pnj            17,20         bloque  role=saffron_rocket facing=down unless=silph_giovanni_defeated  # RB Rocket 4 (13, 12) : devant la maison du Roucool (la ferme), T26-01
+sbire_5              pnj            12,31         bloque  role=saffron_rocket facing=right mouvement=gauche_droite unless=silph_giovanni_defeated  # RB Rocket 5 (11, 25), WALK LEFT_RIGHT : rue C ouest, T26-01
+sbire_6              pnj            48,21         bloque  role=saffron_rocket facing=left mouvement=gauche_droite unless=silph_giovanni_defeated  # RB Rocket 6 (32, 13), WALK LEFT_RIGHT : rue B est, T26-01
+sbire_7              pnj            24,41         bloque  role=saffron_rocket facing=right mouvement=gauche_droite unless=silph_giovanni_defeated  # RB Rocket 7 (18, 30), WALK LEFT_RIGHT : rue D, T26-01
+garde_sylphe         pnj            31,30         bloque  role=saffron_rocket_silph facing=down unless=silph_giovanni_defeated  # RB Rocket 9 (19, 22) : à côté de la porte de la Sylphe, sans la fermer [D]
+habitant_occupe      pnj            9,41          bloque  role=saffron_resident facing=right unless=silph_giovanni_defeated  # habitant inquiet, T26-03 [D] (aucun habitant en RB pendant l'occupation)
+habitant_libre       pnj            9,41          bloque  role=saffron_resident facing=right if=silph_giovanni_defeated  # même habitant, T26-19 [D]
+lib_scientifique     pnj            8,21          bloque  role=saffron_scientist facing=down mouvement=libre if=silph_giovanni_defeated  # RB scientifique (8, 14), WALK ANY_DIR
+lib_employe          pnj            33,31         bloque  role=saffron_silph_worker_m facing=down if=silph_giovanni_defeated  # RB employé (23, 23)
+lib_employee         pnj            20,41         bloque  role=saffron_silph_worker_f facing=left mouvement=gauche_droite if=silph_giovanni_defeated  # RB employée (17, 30), WALK LEFT_RIGHT
+lib_gentleman        pnj            49,20         bloque  role=saffron_gentleman facing=down if=silph_giovanni_defeated  # RB gentleman (30, 12)
+lib_roucarnage       pnj            50,20         bloque  role=saffron_pidgeot facing=down if=silph_giovanni_defeated  # RB Roucarnage du gentleman (31, 12)
+lib_rocker           pnj            27,12         bloque  role=saffron_rocker facing=up if=silph_giovanni_defeated  # RB rocker (18, 8)
+panneau_ville        panneau        27,9          bloque  depuis=27,10 face=N  # T26-22 « SAFRANIA — Ville dorée… » (RB (17, 5), à l'ouest de la route du nord)
+panneau_dojo         panneau        43,9          bloque  depuis=43,10 face=N  # Dojo (RB (27, 5))
+panneau_arene        panneau        56,9          bloque  depuis=56,10 face=N  # « ARÈNE DE SAFRANIA » (RB (35, 5))
+panneau_boutique     panneau        46,19         bloque  depuis=46,20 face=N  # Boutique (RB (26, 11))
+panneau_sylphe       panneau        22,29         bloque  depuis=22,30 face=N  # « SYLPHE SARL » (RB (15, 21))
+panneau_centre       panneau        22,39         bloque  depuis=22,40 face=N  # Centre Pokémon (RB (10, 29))
+panneau_psy          panneau        36,39         bloque  depuis=36,40 face=N  # « Maison de M. Psy » (RB (27, 29))
+conseils_1           panneau        53,29         bloque  depuis=53,30 face=N  # conseils du Dresseur (RB TRAINER_TIPS1 (39, 19))
+conseils_2           panneau        13,29         bloque  depuis=13,30 face=N  # conseils du Dresseur (RB TRAINER_TIPS2 (5, 21))
+panneau_produit      panneau        6,23          bloque  depuis=6,22 face=S  # « dernier produit de la Sylphe » (RB (1, 19), à l'entrée ouest)
+debug_porte_sylphe   spawn          29,31         libre   facing=up debug=oui  # départ de débogage : devant la Sylphe
+debug_arene          spawn          48,11         libre   facing=right debug=oui  # départ de débogage : rue A, vue sur le sbire de l'Arène
+debug_centre         spawn          17,41         libre   facing=up debug=oui  # départ de débogage : devant le Centre
+debug_poste_r8       spawn          54,25         libre   facing=left debug=oui  # départ de débogage : entrée est (saffron_gate)
+FIN
