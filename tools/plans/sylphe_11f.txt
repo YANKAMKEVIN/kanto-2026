@@ -1,0 +1,100 @@
+# Sylphe SARL 11F (silph_co_11f) — grille fonctionnelle v1 (jalon 26, T2 ; préparée le 2026-10-22).
+# GÉOMÉTRIE ROUGE/BLEU CASE POUR CASE (puzzle à 1:1, règle du J24 §2.11 ; jalon-26.md §2.1).
+# Source : pret/pokered, maps/SilphCo11F.blk (9 × 9 blocs = 18 × 18 cases),
+# tileset INTERIOR (gfx/blocksets/interior.bst ; collision Interior_Coll ; dalle $55),
+# warps et objets de data/maps/objects/SilphCo11F.asm, portes électroniques et en-têtes de Dresseurs
+# de scripts/SilphCo11F.asm, objets cachés de data/events/hidden_events.asm. Décodeur :
+# tools/art/silph_rb_decode.py (--brouillon, --ecarts, --graphe). Contrôles : tools/art/plan_check_j26.py,
+# tools/art/plan_check_teleports.py (les 11 étages et la cabine), tools/art/plan_check.py --legende.
+#
+# 18 × 18 cases. Le décor change (bureaux peints), la topologie reste celle de RB.
+#
+# RACCORDS (case de départ → carte:point d'apparition ; points d'apparition aux noms finals Godot) :
+#   escalier descend (9,0) → silph_co_10f:from_11f [paire e10_11]
+#   ascenseur (13,0) → silph_co_elevator:entrance ; retour from_elevator une case devant
+#   téléporteur (3,2) → silph_co_7f:tp_4 [paire t7f4_11f4]
+#   porte électronique d1 (6,13) + case b (voir POSITIONS)
+#
+# Salle du conseil, tileset INTERIOR de RB (dalle $55). Trois secteurs : est (escalier du 10F,
+# ascenseur, sbire 11F-2 : cul-de-sac), ouest (dalle (3, 2) ↔ 7F (5, 7), sbire 11F-1) et le
+# bureau du président (x 5..12, y 5..16 : président (7, 5), secrétaire (10, 5), GIOVANNI (6, 9)),
+# fermé par la seule porte électronique d1 (6..7, 13). On n'y entre donc que par le 7F (rival)
+# et avec la Carte (contrôlé). RB : un pas sur (6, 13) ou (7, 12) lance la scène de Giovanni (il
+# descend de 3 cases). « but » : repère du contrôle (Giovanni engagé), ignoré par la construction.
+# [D] Le warp RB n° 3 (5, 5) → LAST_MAP est INACCESSIBLE en RB (sous le bureau) : omis.
+#
+# Salles (graphe RB, portes fermées ; tools/art/silph_rb_decode.py --graphe) :
+#   11F-A (59 cases) : Rocket 11F-1
+#   -> téléporteur (3, 2) → 7F-A (5, 7)
+#   -> porte à carte d1 (6, 13) → 11F-C
+#   -> porte à carte d1 (7, 13) → 11F-C
+#   11F-B (50 cases) : Rocket 11F-2
+#   -> escalier ↓ (9, 0) → 10F-A (10, 0)
+#   -> ascenseur (cabine : tous les étages) depuis (13, 0)
+#   11F-C (66 cases) : président, GIOVANNI
+#   -> porte à carte d1 (6, 13) → 11F-A
+#   -> porte à carte d1 (7, 13) → 11F-A
+#
+# Dresseurs : trainer=silph_co_<n>f_<k>, k = rang du Dresseur dans l'ordre des object_event RB de
+# l'étage ; facing= et sight= de RB (en-têtes « trainer … , <vue> ») ; équipe RB en commentaire.
+# Objets : item= identifiant du projet, fallback= tant qu'il n'existe pas dans data/items [D].
+#
+# Légende (commune aux onze étages ; caractères propres à ces grilles) :
+#   # mur, cloison ou vide (bloqué)            . sol de bureau (praticable)
+#   M mobilier : bureaux, tables, plantes, machines (bloqué)
+#   T dalle de téléportation (praticable : un pas dessus transporte ; arriver dessus ne la
+#     déclenche pas) — position « teleporteur » (vers=<carte>:<point d'apparition>, paire=)
+#   U escalier qui monte    D escalier qui descend (praticables, STEP_ON sans direction, dans le
+#     mur nord ; l'arrivée est posée UNE CASE DEVANT, tournée vers le bas)
+#   L porte de l'ascenseur (praticable, fondu comme une porte ; arrivée une case devant)
+#   K case d'une porte électronique (praticable dans la grille, bloquée par la position
+#     « porte_carte » tant que la porte est fermée ; une porte RB couvre DEUX cases : deux
+#     positions de même id=, un seul drapeau door_silph_co_<n>f_<id>_open)
+#   E sortie vers Safrania (1F seulement, praticable, PUSH ↓)
+# Personnages, objets, raccords et repères sont dans POSITIONS. Cases : 1 case = 1 tuile de 16 px
+# de Rouge/Bleu (un bloc RB = 2 × 2 cases) ; x = colonne, y = rangée, nord en haut ; les marges
+# de RB sont CONSERVÉES (coordonnées du désassemblage, tables RB recopiables telles quelles).
+
+CARTE silph_co_11f
+
+PRATICABLES .TUDLK
+
+GRILLE 18 18
+00 #########D###L####
+01 #...#...........##
+02 #..T#...........##
+03 #...##########..##
+04 #...###MM#M###..##
+05 #...#........#..##
+06 #...#.MMMM...#..##
+07 #...#.MMMM...#..##
+08 #...#.MMMM...#..##
+09 #...#........#..##
+10 #...#........#..##
+11 #...#........#..##
+12 #...#.....MM.#..##
+13 #...##KK#....#..##
+14 #.......#....#..##
+15 #.......#....#..##
+16 #.......#....#..##
+17 ##################
+FIN
+
+POSITIONS
+vers_10f                escalier       9,0          libre   vers=silph_co_10f:from_11f paire=e10_11 sens=descend  # RB warp 1 → silph_co_10f warp 2 (10, 0)
+from_10f                spawn          9,1          libre   paire=e10_11 facing=down  # arrivée depuis le 10F, une case devant l'escalier
+ascenseur               ascenseur      13,0         libre   etage=11F vers=silph_co_elevator:entrance  # porte de l'ascenseur (RB warp 2)
+from_elevator           spawn          13,1         libre   paire=ascenseur etage=11F facing=down  # sortie de la cabine, une case devant la porte
+teleporteur_4           teleporteur    3,2          libre   vers=silph_co_7f:tp_4 paire=t7f4_11f4  # RB warp 4 → 7F warp 4 (5, 7)
+tp_4                    spawn          3,2          libre     # arrivée sur la dalle (ne la déclenche pas) ; orientation conservée
+porte_d1_a              porte_carte    6,13         bloque  id=d1 cle=card_key  # RB bloc (3, 6) fermé par $20, EVENT_SILPH_CO_11_UNLOCKED_DOOR
+porte_d1_b              porte_carte    7,13         bloque  id=d1 cle=card_key  # RB bloc (3, 6) fermé par $20, EVENT_SILPH_CO_11_UNLOCKED_DOOR
+president               pnj            7,5          bloque  role=silph_co_president facing=down  # RB SPRITE_SILPH_PRESIDENT, STAY
+secretaire              pnj            10,5         bloque  role=silph_co_11f_secretary facing=down  # RB SPRITE_BEAUTY, STAY
+giovanni                giovanni       6,9          bloque  trainer=silph_co_giovanni facing=down inevitable=oui scene=oui  # RB OPP_GIOVANNI, 2
+dresseur_1              dresseur       3,16         bloque  trainer=silph_co_11f_1 facing=up sight=4 classe=rocket  # RB objet 4 : OPP_ROCKET, 41
+dresseur_2              dresseur       15,9         bloque  trainer=silph_co_11f_2 facing=up sight=3 classe=rocket  # RB objet 5 : OPP_ROCKET, 40
+declencheur_giovanni_1  declencheur    6,13         libre   scene=silph_co_giovanni  # RB : le pas sur cette case lance la scène
+declencheur_giovanni_2  declencheur    7,12         libre   scene=silph_co_giovanni  # RB : le pas sur cette case lance la scène
+but                     but            7,12         libre     # repère du contrôle : case de déclenchement de Giovanni (RB) ; ignoré par la construction
+FIN

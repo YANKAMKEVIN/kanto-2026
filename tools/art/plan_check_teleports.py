@@ -21,6 +21,14 @@ grilles (une ou plusieurs cartes ; les téléporteurs peuvent changer de carte).
 Le contrôle de base (états, but, carte, retour) est celui de `plan_check_systemes2.py`
 (`verifier_teleporteurs`), importé ici.
 
+Jalon 26 (Sylphe SARL, 11 étages et une cabine) : l'identifiant de carte d'une grille est celui de
+sa ligne `CARTE <id>` (sinon le nom du fichier) ; les **passages** entre cartes du lot (`escalier`,
+`ascenseur`, `warp` à `vers=<carte>:<repère>`, `sortie` de cabine à `etages=<carte>:<repère>;…`)
+transportent comme un téléporteur, dans l'exploration comme dans le graphe ; une dalle ou un
+escalier relie TOUTES les salles qui le bordent ; un objet au sol (`objet`, `objet_visible`) se
+ramasse depuis une case voisine et ne coupe pas une salle. La Carte Magnétique peut être un
+`objet_visible item=card_key`.
+
 Usage : python3 -I tools/art/plan_check_teleports.py [grille.txt ...]   (sans argument : qa_teleport*.txt)
         python3 -I tools/art/plan_check_teleports.py --autotest        (le contrôle refuse des pièges connus)
 Code 1 si un critère échoue.
@@ -34,8 +42,10 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 from plan_check_systemes2 import (  # noqa: E402
-	DIRECTIONS, PLANS, Case, Rapport, _bloquees, _cases, _dans, _plus, verifier_teleporteurs,
+	DIRECTIONS, KINDS_CARTE, PLANS, Case, Rapport, _bloquees, _cases, _dans, _plus, passages,
+	verifier_teleporteurs,
 )
+from plan_grille import carte as carte_de  # noqa: E402
 from plan_grille import lire  # noqa: E402
 
 
@@ -46,8 +56,7 @@ def _proches(a: Case, b: Case) -> bool:
 
 def _pads(plans: dict) -> dict:
 	"""(carte, case) -> (ident, carte d'arrivée, case d'arrivée) pour les téléporteurs valides."""
-	spawns = {(carte, p.ident): p.cells[0] for carte, plan in plans.items()
-		for p in plan.positions.values() if p.kind in ("spawn", "depart")}
+	spawns = _spawns(plans)
 	pads = {}
 	for carte, plan in plans.items():
 		for p in plan.of_kind("teleporteur"):
@@ -84,14 +93,21 @@ def verifier_paires(plans: dict, pads: dict, r: Rapport) -> None:
 			r.note(f"paire « {nom} » : {ca}/{a.ident} <-> {cb}/{b.ident}")
 
 
+def _spawns(plans: dict) -> dict:
+	return {(carte, p.ident): p.cells[0] for carte, plan in plans.items()
+		for p in plan.positions.values() if p.kind in ("spawn", "depart")}
+
+
 def _graphe_salles(plans: dict, pads: dict, r: Rapport) -> None:
 	portes = {(carte, c) for carte, plan in plans.items() for c in plan.cells_of("K")}
-	fixes = {carte: _bloquees(plan, ("porte_carte",)) for carte, plan in plans.items()}
+	# Un objet au sol se ramasse depuis une case voisine puis disparaît : il ne coupe pas une salle.
+	fixes = {carte: _bloquees(plan, ("porte_carte",) + KINDS_CARTE) for carte, plan in plans.items()}
+	liens = passages(plans, _spawns(plans))  # escaliers, ascenseur (jalon 26)
 
 	def libre(carte: str, c: Case) -> bool:
 		plan = plans[carte]
 		return (_dans(plan, c) and plan.at(*c) in plan.praticables and c not in fixes[carte]
-			and (carte, c) not in portes and (carte, c) not in pads)
+			and (carte, c) not in portes and (carte, c) not in pads and (carte, c) not in liens)
 
 	salle: dict[tuple[str, Case], int] = {}
 	nb = 0
@@ -110,7 +126,16 @@ def _graphe_salles(plans: dict, pads: dict, r: Rapport) -> None:
 							salle[(carte, n)] = nb
 							file.append(n)
 				nb += 1
-	for carte, c in sorted(pads):  # un téléporteur fait partie de la salle de ses voisines
+	a_pied = dict(salle)
+
+	def autour(carte: str, c: Case) -> set[int]:
+		"""Salles touchées par une case : la sienne, ou celles de ses voisines (dalle, escalier : on
+		y arrive et on en repart vers chacune de ses voisines)."""
+		if (carte, c) in a_pied:
+			return {a_pied[(carte, c)]}
+		return {a_pied[(carte, _plus(c, d))] for d in DIRECTIONS if (carte, _plus(c, d)) in a_pied}
+
+	for carte, c in sorted(set(pads) | set(liens)):  # un téléporteur, un escalier : salle voisine
 		for d in DIRECTIONS:
 			if (carte, _plus(c, d)) in salle:
 				salle[(carte, c)] = salle[(carte, _plus(c, d))]
@@ -134,7 +159,7 @@ def _graphe_salles(plans: dict, pads: dict, r: Rapport) -> None:
 					contenu[i].append(p.kind if p.kind != "spawn" else f"arrivée {p.ident}")
 	cartes_salles: set[int] = set()
 	for carte, plan in plans.items():
-		for p in plan.of_kind("objet"):
+		for p in (q for k in KINDS_CARTE for q in plan.of_kind(k)):
 			if p.attrs.get("item") == "card_key":
 				for c in p.cells:
 					for d in DIRECTIONS:
@@ -144,11 +169,17 @@ def _graphe_salles(plans: dict, pads: dict, r: Rapport) -> None:
 							if "carte magnétique" not in contenu[i]:
 								contenu[i].append("carte magnétique")
 	for (carte, c), (ident, cc, dest) in sorted(pads.items()):
-		a = salle[(carte, c)]
-		b = salle.get((cc, dest))
-		contenu[a].append(f"téléporteur {ident}")
-		if b is not None:
-			arcs[a].append((b, f"téléporteur {ident} {c}", False))
+		contenu[salle[(carte, c)]].append(f"téléporteur {ident}")
+		for a in autour(carte, c):
+			for b in sorted(autour(cc, dest)):
+				if (b, f"téléporteur {ident} {c}", False) not in arcs[a]:
+					arcs[a].append((b, f"téléporteur {ident} {c}", False))
+	for (carte, c), dests in sorted(liens.items()):
+		for a in autour(carte, c):
+			for cc, dest in dests:
+				for b in sorted(autour(cc, dest)):
+					if (b, f"passage {carte} {c}", False) not in arcs[a]:
+						arcs[a].append((b, f"passage {carte} {c}", False))
 	for carte, c in sorted(portes):
 		voisines = sorted({salle[(carte, _plus(c, d))] for d in DIRECTIONS if (carte, _plus(c, d)) in salle})
 		for a in voisines:
@@ -184,7 +215,7 @@ def _graphe_salles(plans: dict, pads: dict, r: Rapport) -> None:
 
 
 def verifier_teleports(chemins: list[Path]) -> Rapport:
-	plans = {c.stem: lire(c) for c in chemins}
+	plans = {carte_de(c): lire(c) for c in chemins}
 	r = Rapport("Téléporteurs (générique) : " + ", ".join(c.name for c in chemins))
 	verifier_teleporteurs(chemins, r)
 	pads = _pads(plans)

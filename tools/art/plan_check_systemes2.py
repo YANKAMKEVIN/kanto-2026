@@ -39,6 +39,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 from plan_check import verifier_legende  # noqa: E402
 from plan_grille import Plan, lire  # noqa: E402
+from plan_grille import carte as carte_de  # noqa: E402
 
 RACINE = Path(__file__).resolve().parents[2]
 PLANS = RACINE / "tools" / "plans"
@@ -248,14 +249,43 @@ def verifier_etage_inferieur(chemin: Path, dessus: Path) -> Rapport:
 
 # --- Téléporteurs et portes à carte -------------------------------------------------------------
 
+# Objet qui donne la carte magnétique (grilles de QA : « objet » ; jalon 26 : « objet_visible »).
+KINDS_CARTE = ("objet", "objet_visible")
+# Passages entre cartes du lot (jalon 26, Sylphe SARL : étages reliés par escaliers et ascenseur) :
+# un pas sur la case transporte, comme un téléporteur, vers `vers=<carte>:<repère>` ; la sortie de
+# cabine d'ascenseur (`sortie`) liste ses destinations dans `etages=<carte>:<repère>;…`. Seules
+# comptent les cibles présentes dans le lot de grilles contrôlé (les autres sorties sont ignorées).
+KINDS_PASSAGE = ("escalier", "ascenseur", "warp", "sortie")
+
+
+def passages(plans: dict[str, Plan], spawns: dict[tuple[str, str], Case]) \
+		-> dict[tuple[str, Case], list[tuple[str, Case]]]:
+	"""(carte, case) → destinations (carte, case) des passages qui visent une carte du lot."""
+	out: dict[tuple[str, Case], list[tuple[str, Case]]] = {}
+	for nom, plan in plans.items():
+		for p in plan.positions.values():
+			if p.kind not in KINDS_PASSAGE:
+				continue
+			cibles = [v for v in p.attrs.get("etages", "").split(";") if ":" in v]
+			if ":" in p.attrs.get("vers", ""):
+				cibles.append(p.attrs["vers"])
+			dests = [(c, spawns[(c, s)]) for c, s in (v.split(":", 1) for v in cibles)
+				if (c, s) in spawns]
+			if dests:
+				for c in p.cells:
+					out[(nom, c)] = dests
+	return out
+
+
 def verifier_teleporteurs(chemins: list[Path], rapport: Rapport | None = None) -> Rapport:
-	plans = {c.stem: lire(c) for c in chemins}
+	plans = {carte_de(c): lire(c) for c in chemins}
 	r = rapport or Rapport("Téléporteurs : " + ", ".join(c.name for c in chemins))
 	spawns: dict[tuple[str, str], Case] = {}
-	for carte, plan in plans.items():
+	for carte_, plan in plans.items():
 		for p in plan.positions.values():
 			if p.kind in ("spawn", "depart"):
-				spawns[(carte, p.ident)] = p.cells[0]
+				spawns[(carte_, p.ident)] = p.cells[0]
+	liens = passages(plans, spawns)
 	pads: dict[tuple[str, Case], tuple[str, Case]] = {}
 	for carte, plan in plans.items():
 		for p in plan.of_kind("teleporteur"):
@@ -278,7 +308,7 @@ def verifier_teleporteurs(chemins: list[Path], rapport: Rapport | None = None) -
 	departs = [(k[0], c) for k, c in spawns.items() if k[1] == "depart"]
 	if not r.ok(len(departs) == 1, "une seule position « depart »"):
 		return r
-	cles = {(carte, c) for carte, plan in plans.items() for p in plan.of_kind("objet")
+	cles = {(carte, c) for carte, plan in plans.items() for k in KINDS_CARTE for p in plan.of_kind(k)
 		if p.attrs.get("item") == "card_key" for c in p.cells}
 	buts = {(carte, c) for carte, plan in plans.items() for c in _cases(plan, "but")}
 	portes = {(carte, c) for carte, plan in plans.items() for c in plan.cells_of("K")}
@@ -288,7 +318,8 @@ def verifier_teleporteurs(chemins: list[Path], rapport: Rapport | None = None) -
 	def voisins(etat):
 		carte, c, cle = etat
 		plan = plans[carte]
-		fixes = _bloquees(plan, ("porte_carte",))
+		# Un objet au sol se ramasse depuis une case voisine puis disparaît : il ne bloque pas.
+		fixes = _bloquees(plan, ("porte_carte",) + KINDS_CARTE)
 		for d in DIRECTIONS:
 			n = _plus(c, d)
 			if not _dans(plan, n) or n in fixes or plan.at(*n) not in plan.praticables:
@@ -298,6 +329,9 @@ def verifier_teleporteurs(chemins: list[Path], rapport: Rapport | None = None) -
 			if (carte, n) in pads:  # un pas sur un téléporteur : transport
 				dest = pads[(carte, n)]
 				yield (dest[0], dest[1], cle)
+			elif (carte, n) in liens:  # escalier, ascenseur, sortie de cabine (jalon 26)
+				for dest in liens[(carte, n)]:
+					yield (dest[0], dest[1], cle)
 			else:
 				yield (carte, n, cle)
 		# ramasser la carte magnétique depuis une case voisine

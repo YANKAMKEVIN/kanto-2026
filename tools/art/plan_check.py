@@ -62,7 +62,7 @@ from collections import deque
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-from plan_grille import HERBES, PORTE, REBORD, Plan, lire  # noqa: E402
+from plan_grille import HERBES, PORTE, REBORD, Plan, carte, index_cartes, lire  # noqa: E402
 
 RACINE = Path(__file__).resolve().parents[2]
 DIRECTIONS = [(0, -1), (0, 1), (-1, 0), (1, 0)]
@@ -723,17 +723,22 @@ def _cible(valeur: str) -> tuple[str, str] | None:
 def verifier_legende(chemin: Path, dossier: Path | None = None) -> list[str]:
 	"""Erreurs de légende commune d'une grille (liste vide : conforme)."""
 	dossier = dossier or chemin.parent
-	nom = chemin.stem
+	nom = carte(chemin)
 	try:
 		plan = lire(chemin)
 	except ValueError as e:
 		return [f"{nom} : illisible ({e})"]
 	erreurs: list[str] = []
 	autres: dict[str, Plan | None] = {nom: plan}
+	index: dict[str, Path] = {}
 
 	def autre(carte: str) -> Plan | None:
 		if carte not in autres:
 			fichier = dossier / f"{carte}.txt"
+			if not fichier.exists():  # ligne « CARTE <id> » (jalon 26 : sylphe_3f.txt → silph_co_3f)
+				if not index:
+					index.update(index_cartes(dossier))
+				fichier = index.get(carte, fichier)
 			try:
 				autres[carte] = lire(fichier) if fichier.exists() else None
 			except ValueError:

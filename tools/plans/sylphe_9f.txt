@@ -1,0 +1,123 @@
+# Sylphe SARL 9F (silph_co_9f) — grille fonctionnelle v1 (jalon 26, T2 ; préparée le 2026-10-22).
+# GÉOMÉTRIE ROUGE/BLEU CASE POUR CASE (puzzle à 1:1, règle du J24 §2.11 ; jalon-26.md §2.1).
+# Source : pret/pokered, maps/SilphCo9F.blk (13 × 9 blocs = 26 × 18 cases),
+# tileset Facility (gfx/blocksets/facility.bst ; collision Facility_Coll ; dalle $20),
+# warps et objets de data/maps/objects/SilphCo9F.asm, portes électroniques et en-têtes de Dresseurs
+# de scripts/SilphCo9F.asm, objets cachés de data/events/hidden_events.asm. Décodeur :
+# tools/art/silph_rb_decode.py (--brouillon, --ecarts, --graphe). Contrôles : tools/art/plan_check_j26.py,
+# tools/art/plan_check_teleports.py (les 11 étages et la cabine), tools/art/plan_check.py --legende.
+#
+# 26 × 18 cases. Le décor change (bureaux peints), la topologie reste celle de RB.
+#
+# RACCORDS (case de départ → carte:point d'apparition ; points d'apparition aux noms finals Godot) :
+#   escalier monte (14,0) → silph_co_10f:from_9f [paire e9_10]
+#   escalier descend (16,0) → silph_co_8f:from_9f [paire e8_9]
+#   ascenseur (18,0) → silph_co_elevator:entrance ; retour from_elevator une case devant
+#   téléporteur (9,3) → silph_co_3f:tp_8 [paire t3f8_9f4]
+#   téléporteur (17,15) → silph_co_5f:tp_5 [paire t5f5_9f5]
+#   porte électronique d1 (3,8) + case b (voir POSITIONS)
+#   porte électronique d2 (18,4) + case b (voir POSITIONS)
+#   porte électronique d3 (18,10) + case b (voir POSITIONS)
+#   porte électronique d4 (11,12) + case b (voir POSITIONS)
+#
+# Infirmière (3, 14) : en RB elle soigne l'équipe (SilphCo9FNurseText) ; rôle
+# silph_co_9f_nurse [D : soin à brancher au T9 sur le modèle de la mère du joueur, ou simple
+# réplique]. Objet caché RB : Potion Max en (2, 15) (→ Super Potion [D]).
+#
+# Salles (graphe RB, portes fermées ; tools/art/silph_rb_decode.py --graphe) :
+#   9F-A (47 cases) : Rocket 9F-1
+#   -> téléporteur (9, 3) → 3F-B (3, 11)
+#   -> porte à carte d1 (3, 8) → 9F-C
+#   -> porte à carte d1 (3, 9) → 9F-C
+#   9F-B (114 cases) : Scientifique 9F-2, Rocket 9F-3
+#   -> escalier ↑ (14, 0) → 10F-A (8, 0)
+#   -> escalier ↓ (16, 0) → 8F-B (16, 0)
+#   -> ascenseur (cabine : tous les étages) depuis (18, 0)
+#   -> téléporteur (17, 15) → 5F-B (9, 15)
+#   -> porte à carte d4 (11, 12) → 9F-C
+#   -> porte à carte d4 (11, 13) → 9F-C
+#   -> porte à carte d2 (18, 4) → 9F-D
+#   -> porte à carte d3 (18, 10) → 9F-D
+#   -> porte à carte d2 (19, 4) → 9F-D
+#   -> porte à carte d3 (19, 10) → 9F-D
+#   9F-C (64 cases) : —
+#   -> porte à carte d1 (3, 8) → 9F-A
+#   -> porte à carte d1 (3, 9) → 9F-A
+#   -> porte à carte d4 (11, 12) → 9F-B
+#   -> porte à carte d4 (11, 13) → 9F-B
+#   9F-D (31 cases) : —
+#   -> porte à carte d2 (18, 4) → 9F-B
+#   -> porte à carte d3 (18, 10) → 9F-B
+#   -> porte à carte d2 (19, 4) → 9F-B
+#   -> porte à carte d3 (19, 10) → 9F-B
+#
+# Dresseurs : trainer=silph_co_<n>f_<k>, k = rang du Dresseur dans l'ordre des object_event RB de
+# l'étage ; facing= et sight= de RB (en-têtes « trainer … , <vue> ») ; équipe RB en commentaire.
+# Objets : item= identifiant du projet, fallback= tant qu'il n'existe pas dans data/items [D].
+#
+# Légende (commune aux onze étages ; caractères propres à ces grilles) :
+#   # mur, cloison ou vide (bloqué)            . sol de bureau (praticable)
+#   M mobilier : bureaux, tables, plantes, machines (bloqué)
+#   T dalle de téléportation (praticable : un pas dessus transporte ; arriver dessus ne la
+#     déclenche pas) — position « teleporteur » (vers=<carte>:<point d'apparition>, paire=)
+#   U escalier qui monte    D escalier qui descend (praticables, STEP_ON sans direction, dans le
+#     mur nord ; l'arrivée est posée UNE CASE DEVANT, tournée vers le bas)
+#   L porte de l'ascenseur (praticable, fondu comme une porte ; arrivée une case devant)
+#   K case d'une porte électronique (praticable dans la grille, bloquée par la position
+#     « porte_carte » tant que la porte est fermée ; une porte RB couvre DEUX cases : deux
+#     positions de même id=, un seul drapeau door_silph_co_<n>f_<id>_open)
+#   E sortie vers Safrania (1F seulement, praticable, PUSH ↓)
+# Personnages, objets, raccords et repères sont dans POSITIONS. Cases : 1 case = 1 tuile de 16 px
+# de Rouge/Bleu (un bloc RB = 2 × 2 cases) ; x = colonne, y = rangée, nord en haut ; les marges
+# de RB sont CONSERVÉES (coordonnées du désassemblage, tables RB recopiables telles quelles).
+
+CARTE silph_co_9f
+
+PRATICABLES .TUDLK
+
+GRILLE 26 18
+00 ##############U#D#L#######
+01 #..........#.............#
+02 #..........#.............#
+03 #........T.#.............#
+04 #..#########..####KK###..#
+05 #..#.......#..#.......#..#
+06 #..#..MMMM.#..#.......#M.#
+07 #..#..MMMM.#..#...MM..#M.#
+08 #..K..######M.#...MM..#M.#
+09 #..K....#..#M.#.......#M.#
+10 #..#....#..#M.####KK####.#
+11 #..#....#..#M.#........#.#
+12 #..#M.M....K..#.MMMM...#.#
+13 #####.#....K..#.MMMM...#.#
+14 #.M.M.M.#..#..#...MM.....#
+15 #.#.#.#.#..#..#..TMM.....#
+16 #.......#..#..#..........#
+17 ##########################
+FIN
+
+POSITIONS
+vers_10f                escalier       14,0         libre   vers=silph_co_10f:from_9f paire=e9_10 sens=monte  # RB warp 1 → silph_co_10f warp 1 (8, 0)
+from_10f                spawn          14,1         libre   paire=e9_10 facing=down  # arrivée depuis le 10F, une case devant l'escalier
+vers_8f                 escalier       16,0         libre   vers=silph_co_8f:from_9f paire=e8_9 sens=descend  # RB warp 2 → silph_co_8f warp 1 (16, 0)
+from_8f                 spawn          16,1         libre   paire=e8_9 facing=down  # arrivée depuis le 8F, une case devant l'escalier
+ascenseur               ascenseur      18,0         libre   etage=9F vers=silph_co_elevator:entrance  # porte de l'ascenseur (RB warp 3)
+from_elevator           spawn          18,1         libre   paire=ascenseur etage=9F facing=down  # sortie de la cabine, une case devant la porte
+teleporteur_4           teleporteur    9,3          libre   vers=silph_co_3f:tp_8 paire=t3f8_9f4  # RB warp 4 → 3F warp 8 (3, 11)
+tp_4                    spawn          9,3          libre     # arrivée sur la dalle (ne la déclenche pas) ; orientation conservée
+teleporteur_5           teleporteur    17,15        libre   vers=silph_co_5f:tp_5 paire=t5f5_9f5  # RB warp 5 → 5F warp 5 (9, 15)
+tp_5                    spawn          17,15        libre     # arrivée sur la dalle (ne la déclenche pas) ; orientation conservée
+porte_d1_a              porte_carte    3,8          bloque  id=d1 cle=card_key  # RB bloc (1, 4) fermé par $5f, EVENT_SILPH_CO_9_UNLOCKED_DOOR1
+porte_d1_b              porte_carte    3,9          bloque  id=d1 cle=card_key  # RB bloc (1, 4) fermé par $5f, EVENT_SILPH_CO_9_UNLOCKED_DOOR1
+porte_d2_a              porte_carte    18,4         bloque  id=d2 cle=card_key  # RB bloc (9, 2) fermé par $54, EVENT_SILPH_CO_9_UNLOCKED_DOOR2
+porte_d2_b              porte_carte    19,4         bloque  id=d2 cle=card_key  # RB bloc (9, 2) fermé par $54, EVENT_SILPH_CO_9_UNLOCKED_DOOR2
+porte_d3_a              porte_carte    18,10        bloque  id=d3 cle=card_key  # RB bloc (9, 5) fermé par $54, EVENT_SILPH_CO_9_UNLOCKED_DOOR3
+porte_d3_b              porte_carte    19,10        bloque  id=d3 cle=card_key  # RB bloc (9, 5) fermé par $54, EVENT_SILPH_CO_9_UNLOCKED_DOOR3
+porte_d4_a              porte_carte    11,12        bloque  id=d4 cle=card_key  # RB bloc (5, 6) fermé par $5f, EVENT_SILPH_CO_9_UNLOCKED_DOOR4
+porte_d4_b              porte_carte    11,13        bloque  id=d4 cle=card_key  # RB bloc (5, 6) fermé par $5f, EVENT_SILPH_CO_9_UNLOCKED_DOOR4
+infirmiere              pnj            3,14         bloque  role=silph_co_9f_nurse facing=down  # RB SPRITE_NURSE, STAY
+dresseur_1              dresseur       2,4          bloque  trainer=silph_co_9f_1 facing=up sight=4 classe=rocket  # RB objet 2 : OPP_ROCKET, 37
+dresseur_2              dresseur       21,13        bloque  trainer=silph_co_9f_2 facing=down sight=2 classe=scientifique  # RB objet 3 : OPP_SCIENTIST, 10
+dresseur_3              dresseur       13,16        bloque  trainer=silph_co_9f_3 facing=up sight=4 classe=rocket  # RB objet 4 : OPP_ROCKET, 38
+silph_co_9f_hidden_1    objet_cache    2,15         bloque  item=max_potion fallback=super_potion depuis=2,16 face=N  # RB hidden_event MAX_POTION
+FIN
