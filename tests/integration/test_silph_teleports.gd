@@ -138,7 +138,10 @@ func test_same_floor_teleporter_relocates_without_reloading() -> void:
 
 
 func test_other_floor_teleporter_changes_map_and_the_arrival_tile_stays_quiet() -> void:
-	await _play.start(START)
+	# Dresseurs des grilles battus (T11 : le Sbire 7F-4 voit la dalle d'arrivée (21, 15)).
+	await _play.start(START, func() -> void:
+		for trainer: StringName in _grid_trainers():
+			GameState.flags.set_flag(StringName("beaten_%s" % trainer)))
 	await SceneRouter.change_map(&"silph_co_5f", &"from_elevator", Vector2i.DOWN)
 	await wait_until(func() -> bool: return _play.boot.is_stable(), TIMEOUT)
 	var pad := _play.boot.get_map().get_warps().get_at(Vector2i(27, 3))
@@ -186,7 +189,8 @@ func test_climb_by_the_stairs_floor_by_floor_is_played() -> void:
 
 
 ## Joue [param hops] depuis l'entrée du 1F (Carte dans le Sac, portes ouvertes, Dresseurs des
-## grilles battus) ; s'arrête au premier écart.
+## grilles battus ; T11, T12 : rival n° 6 et Giovanni battus, leurs scènes ne se déclenchent
+## plus, test_silph_rival et test_silph_giovanni les jouent) ; s'arrête au premier écart.
 func _play_route(hops: Array[Dictionary]) -> void:
 	await _play.start(START, func() -> void:
 		GameState.bag.add(&"card_key")
@@ -196,7 +200,9 @@ func _play_route(hops: Array[Dictionary]) -> void:
 				GameState.flags.set_flag((door as KeyDoor).get_open_flag())
 			map.free()
 		for trainer: StringName in _grid_trainers():
-			GameState.flags.set_flag(StringName("beaten_%s" % trainer)))
+			GameState.flags.set_flag(StringName("beaten_%s" % trainer))
+		GameState.flags.set_flag(&"rival_silph_won")
+		GameState.flags.set_flag(&"silph_giovanni_defeated"))
 	assert_eq(_play.map_id(), ENTRY)
 	var floors_seen: Array[StringName] = [ENTRY]
 	for hop: Dictionary in hops:

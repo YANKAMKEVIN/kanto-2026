@@ -1,89 +1,100 @@
 [gd_scene format=3]
 
-[ext_resource type="Script" path="res://game/world/map.gd" id="1_p4tvi"]
-[ext_resource type="Texture2D" path="res://assets/world/interiors/placeholder/ph_silph_co_11f.png" id="2_hkhbv"]
-[ext_resource type="Script" path="res://game/world/key_door/key_door.gd" id="3_7smg8"]
-[ext_resource type="Texture2D" path="res://assets/world/interiors/placeholder/ph_silph_door_h.png" id="4_crqwm"]
-[ext_resource type="Script" path="res://game/world/warp_point.gd" id="5_3n52t"]
-[ext_resource type="Script" path="res://game/world/interactions/interact_point.gd" id="6_5rxte"]
+[ext_resource type="Script" path="res://game/world/map.gd" id="1_hkhbv"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/placeholder/ph_silph_co_11f.png" id="2_7smg8"]
+[ext_resource type="Script" path="res://game/world/key_door/key_door.gd" id="3_crqwm"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/placeholder/ph_silph_door_h.png" id="4_3n52t"]
+[ext_resource type="Script" path="res://game/world/warp_point.gd" id="5_5rxte"]
+[ext_resource type="Script" path="res://game/world/interactions/interact_point.gd" id="6_cw4co"]
+[ext_resource type="Script" path="res://game/world/triggers/event_trigger_point.gd" id="7_5kgt4"]
 
-[node name="SilphCo11F" type="Node2D" unique_id=980491648]
-script = ExtResource("1_p4tvi")
+[node name="SilphCo11F" type="Node2D" unique_id=1947385288]
+script = ExtResource("1_hkhbv")
 map_id = &"silph_co_11f"
 display_name = "Sylphe SARL"
 size = Vector2i(18, 18)
 blocked_cells = Array[Vector2i]([Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vector2i(4, 0), Vector2i(5, 0), Vector2i(6, 0), Vector2i(7, 0), Vector2i(8, 0), Vector2i(10, 0), Vector2i(11, 0), Vector2i(12, 0), Vector2i(14, 0), Vector2i(15, 0), Vector2i(16, 0), Vector2i(17, 0), Vector2i(0, 1), Vector2i(4, 1), Vector2i(16, 1), Vector2i(17, 1), Vector2i(0, 2), Vector2i(4, 2), Vector2i(16, 2), Vector2i(17, 2), Vector2i(0, 3), Vector2i(4, 3), Vector2i(5, 3), Vector2i(6, 3), Vector2i(7, 3), Vector2i(8, 3), Vector2i(9, 3), Vector2i(10, 3), Vector2i(11, 3), Vector2i(12, 3), Vector2i(13, 3), Vector2i(16, 3), Vector2i(17, 3), Vector2i(0, 4), Vector2i(4, 4), Vector2i(5, 4), Vector2i(6, 4), Vector2i(7, 4), Vector2i(8, 4), Vector2i(9, 4), Vector2i(10, 4), Vector2i(11, 4), Vector2i(12, 4), Vector2i(13, 4), Vector2i(16, 4), Vector2i(17, 4), Vector2i(0, 5), Vector2i(4, 5), Vector2i(13, 5), Vector2i(16, 5), Vector2i(17, 5), Vector2i(0, 6), Vector2i(4, 6), Vector2i(6, 6), Vector2i(7, 6), Vector2i(8, 6), Vector2i(9, 6), Vector2i(13, 6), Vector2i(16, 6), Vector2i(17, 6), Vector2i(0, 7), Vector2i(4, 7), Vector2i(6, 7), Vector2i(7, 7), Vector2i(8, 7), Vector2i(9, 7), Vector2i(13, 7), Vector2i(16, 7), Vector2i(17, 7), Vector2i(0, 8), Vector2i(4, 8), Vector2i(6, 8), Vector2i(7, 8), Vector2i(8, 8), Vector2i(9, 8), Vector2i(13, 8), Vector2i(16, 8), Vector2i(17, 8), Vector2i(0, 9), Vector2i(4, 9), Vector2i(13, 9), Vector2i(16, 9), Vector2i(17, 9), Vector2i(0, 10), Vector2i(4, 10), Vector2i(13, 10), Vector2i(16, 10), Vector2i(17, 10), Vector2i(0, 11), Vector2i(4, 11), Vector2i(13, 11), Vector2i(16, 11), Vector2i(17, 11), Vector2i(0, 12), Vector2i(4, 12), Vector2i(10, 12), Vector2i(11, 12), Vector2i(13, 12), Vector2i(16, 12), Vector2i(17, 12), Vector2i(0, 13), Vector2i(4, 13), Vector2i(5, 13), Vector2i(8, 13), Vector2i(13, 13), Vector2i(16, 13), Vector2i(17, 13), Vector2i(0, 14), Vector2i(8, 14), Vector2i(13, 14), Vector2i(16, 14), Vector2i(17, 14), Vector2i(0, 15), Vector2i(8, 15), Vector2i(13, 15), Vector2i(16, 15), Vector2i(17, 15), Vector2i(0, 16), Vector2i(8, 16), Vector2i(13, 16), Vector2i(16, 16), Vector2i(17, 16), Vector2i(0, 17), Vector2i(1, 17), Vector2i(2, 17), Vector2i(3, 17), Vector2i(4, 17), Vector2i(5, 17), Vector2i(6, 17), Vector2i(7, 17), Vector2i(8, 17), Vector2i(9, 17), Vector2i(10, 17), Vector2i(11, 17), Vector2i(12, 17), Vector2i(13, 17), Vector2i(14, 17), Vector2i(15, 17), Vector2i(16, 17), Vector2i(17, 17)])
 light_profile = &"office"
 
-[node name="Shell" type="Sprite2D" parent="." unique_id=596226294]
+[node name="Shell" type="Sprite2D" parent="." unique_id=1750373430]
 z_index = -3
-texture = ExtResource("2_hkhbv")
+texture = ExtResource("2_7smg8")
 centered = false
 
-[node name="Entities" type="Node2D" parent="." unique_id=261191288]
+[node name="Entities" type="Node2D" parent="." unique_id=1358262674]
 unique_name_in_owner = true
 y_sort_enabled = true
 
-[node name="KeyDoor_d1" type="Node2D" parent="Entities" unique_id=1014036171]
+[node name="KeyDoor_d1" type="Node2D" parent="Entities" unique_id=229534240]
 position = Vector2(576, 1248)
-script = ExtResource("3_7smg8")
+script = ExtResource("3_crqwm")
 door_id = &"d1"
 unless_flags = Array[StringName]([&"door_silph_co_11f_d1_open"])
 blocking_cells = Array[Vector2i]([Vector2i(6, 13), Vector2i(7, 13)])
 
-[node name="Panel" type="Sprite2D" parent="Entities/KeyDoor_d1" unique_id=2043912619]
+[node name="Panel" type="Sprite2D" parent="Entities/KeyDoor_d1" unique_id=668086985]
 z_index = -2
-texture = ExtResource("4_crqwm")
+texture = ExtResource("4_3n52t")
 centered = false
 
-[node name="Warps" type="Node2D" parent="." unique_id=816225847]
+[node name="Warps" type="Node2D" parent="." unique_id=606491337]
 
-[node name="ElevatorDoor" type="Marker2D" parent="Warps" unique_id=1378851309]
+[node name="ElevatorDoor" type="Marker2D" parent="Warps" unique_id=1717992880]
 position = Vector2(1296, 96)
-script = ExtResource("5_3n52t")
+script = ExtResource("5_5rxte")
 target_map = &"silph_co_elevator"
 target_spawn = &"entrance"
 arrival_facing = Vector2i(0, -1)
 
-[node name="Teleporter_4" type="Marker2D" parent="Warps" unique_id=587270922]
+[node name="Teleporter_4" type="Marker2D" parent="Warps" unique_id=1233718499]
 position = Vector2(336, 288)
-script = ExtResource("5_3n52t")
+script = ExtResource("5_5rxte")
 target_map = &"silph_co_7f"
 target_spawn = &"tp_4"
 style = 1
 
-[node name="Stairs_to_10f" type="Marker2D" parent="Warps" unique_id=1665279532]
+[node name="Stairs_to_10f" type="Marker2D" parent="Warps" unique_id=79339209]
 position = Vector2(912, 96)
-script = ExtResource("5_3n52t")
+script = ExtResource("5_5rxte")
 target_map = &"silph_co_10f"
 target_spawn = &"from_11f"
 arrival_facing = Vector2i(0, 1)
 
-[node name="Interactables" type="Node2D" parent="." unique_id=149236116]
+[node name="Interactables" type="Node2D" parent="." unique_id=1731059254]
 
-[node name="Open_d1_a" type="Marker2D" parent="Interactables" unique_id=268092201]
+[node name="Open_d1_a" type="Marker2D" parent="Interactables" unique_id=1985381629]
 position = Vector2(624, 1344)
-script = ExtResource("6_5rxte")
+script = ExtResource("6_cw4co")
 dialogue_id = &"key_door_locked"
 kind = 5
 unless_flags = Array[StringName]([&"door_silph_co_11f_d1_open"])
 
-[node name="Open_d1_b" type="Marker2D" parent="Interactables" unique_id=1668228572]
+[node name="Open_d1_b" type="Marker2D" parent="Interactables" unique_id=245108929]
 position = Vector2(720, 1344)
-script = ExtResource("6_5rxte")
+script = ExtResource("6_cw4co")
 dialogue_id = &"key_door_locked"
 kind = 5
 unless_flags = Array[StringName]([&"door_silph_co_11f_d1_open"])
 
-[node name="Spawns" type="Node2D" parent="." unique_id=1395153691]
+[node name="Spawns" type="Node2D" parent="." unique_id=1358715026]
 
-[node name="from_10f" type="Marker2D" parent="Spawns" unique_id=1499417809]
+[node name="from_10f" type="Marker2D" parent="Spawns" unique_id=888784196]
 position = Vector2(912, 192)
 
-[node name="from_elevator" type="Marker2D" parent="Spawns" unique_id=1794240789]
+[node name="from_elevator" type="Marker2D" parent="Spawns" unique_id=233397316]
 position = Vector2(1296, 192)
 
-[node name="tp_4" type="Marker2D" parent="Spawns" unique_id=2041180534]
+[node name="tp_4" type="Marker2D" parent="Spawns" unique_id=1104515413]
 position = Vector2(336, 288)
 
-[node name="Triggers" type="Node2D" parent="." unique_id=847613297]
+[node name="Triggers" type="Node2D" parent="." unique_id=1776911737]
+
+[node name="declencheur_giovanni_1" type="Marker2D" parent="Triggers" unique_id=444621108]
+position = Vector2(624, 1344)
+script = ExtResource("7_5kgt4")
+cutscene_id = &"silph_co_giovanni"
+
+[node name="declencheur_giovanni_2" type="Marker2D" parent="Triggers" unique_id=1076037944]
+position = Vector2(720, 1248)
+script = ExtResource("7_5kgt4")
+cutscene_id = &"silph_co_giovanni"

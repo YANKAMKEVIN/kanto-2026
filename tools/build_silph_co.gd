@@ -9,9 +9,11 @@ extends SceneTree
 ##   godot --headless --path . -s res://tools/build_silph_co.gd
 ##   godot --headless --path . --import
 ##
-## Géométrie et passages seulement : Dresseurs, PNJ, objets, rapports, objets cachés, rival,
-## Giovanni et leurs déclencheurs viennent au T9 (puis T11, T12) depuis les mêmes grilles ; leurs
-## cases restent praticables dans la scène.
+## Géométrie et passages seulement : Dresseurs, PNJ, objets, rapports, objets cachés, rival et
+## Giovanni sont des PNJ de données (`data/npcs/silph_co_<n>f.json`, T9, T11, T12) ; leurs cases
+## restent praticables dans la scène.
+## - `declencheur` (T11, T12 : rival du 7F, Giovanni du 11F) : [EventTriggerPoint] de `Triggers`
+##   au nom de la grille, scène `scene=` (les variantes de la scène décident).
 ##
 ## - **Image** : une enveloppe provisoire par carte (`Shell`, `ph_<carte>.png`).
 ## - **Collision** : `blocked_cells` = cases non praticables de la grille (`PRATICABLES`).
@@ -148,6 +150,13 @@ func _build(map_id: StringName) -> void:
 				for index: int in cells.size():
 					_warp("Exit%d" % index, cells[index], PUSH, Vector2i.DOWN, EXIT_MAP, EXIT_SPAWN,
 						Vector2i.DOWN)
+			"declencheur":
+				var trigger := Marker2D.new()
+				trigger.set_script(load("res://game/world/triggers/event_trigger_point.gd"))
+				trigger.name = id
+				trigger.position = _world(cell)
+				trigger.set(&"cutscene_id", StringName(plan.attr(id, "scene")))
+				_attach(_root.get_node(^"Triggers"), trigger)
 			"porte_carte":
 				var door_id := plan.attr(id, "id")
 				if not doors.has(door_id):
