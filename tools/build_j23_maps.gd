@@ -239,6 +239,12 @@ func _add_positions(spec: Dictionary, plan: Object, root: Node2D,
 					blocked.append(cell)
 				_interact(root, _node_name(id), cells[0], Vector2i.ZERO,
 					StringName("%s_%s" % [map_id, id]), [])
+				# Même image que les rochers de Force (passe systèmes 2, J24) : dessin seul.
+				var rock := Node2D.new()
+				rock.set_script(load("res://game/world/boulders/boulder.gd"))
+				rock.name = _node_name(id) + "Image"
+				rock.position = _world(cells[0])
+				_attach(root, root.get_node(^"Entities"), rock)
 			"declencheur":
 				# Comptoir de la Porte : deux déclencheurs, un par sens du pas (§2.1, §2.2).
 				_trigger(root, "CounterNorthbound", cells, Vector2i.UP,

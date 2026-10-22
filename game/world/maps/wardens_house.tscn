@@ -1,12 +1,13 @@
 [gd_scene format=4]
 
-[ext_resource type="Script" path="res://game/world/map.gd" id="1_5ybxr"]
-[ext_resource type="TileSet" path="res://assets/tiles/interior.tres" id="2_qkgq4"]
-[ext_resource type="Script" path="res://game/world/warp_point.gd" id="3_cfi60"]
-[ext_resource type="Script" path="res://game/world/interactions/interact_point.gd" id="4_nccdd"]
+[ext_resource type="Script" path="res://game/world/map.gd" id="1_qkgq4"]
+[ext_resource type="TileSet" path="res://assets/tiles/interior.tres" id="2_cfi60"]
+[ext_resource type="Script" path="res://game/world/boulders/boulder.gd" id="3_nccdd"]
+[ext_resource type="Script" path="res://game/world/warp_point.gd" id="4_yrfwx"]
+[ext_resource type="Script" path="res://game/world/interactions/interact_point.gd" id="5_tj2m4"]
 
-[node name="WardensHouse" type="Node2D" unique_id=7701213]
-script = ExtResource("1_5ybxr")
+[node name="WardensHouse" type="Node2D" unique_id=361928243]
+script = ExtResource("1_qkgq4")
 map_id = &"wardens_house"
 display_name = "Maison du Gardien"
 region = "Parmanie"
@@ -14,68 +15,77 @@ size = Vector2i(15, 10)
 blocked_cells = Array[Vector2i]([Vector2i(5, 2), Vector2i(6, 2), Vector2i(10, 2), Vector2i(11, 2), Vector2i(2, 3), Vector2i(11, 3)])
 interior = true
 
-[node name="Ground" type="TileMapLayer" parent="." unique_id=1585184566]
+[node name="Ground" type="TileMapLayer" parent="." unique_id=772661397]
 tile_map_data = PackedByteArray("AAAAAAAAAAAAAAIAAAABAAAAAAABAAIAAAACAAAAAAAAAAIAAAADAAAAAAABAAIAAAAEAAAAAAABAAIAAAAFAAAAAAABAAIAAAAGAAAAAAAAAAIAAAAHAAAAAAABAAIAAAAIAAAAAAABAAIAAAAJAAAAAAABAAIAAAAKAAAAAAAAAAIAAAALAAAAAAAAAAIAAAAMAAAAAAABAAIAAAANAAAAAAABAAIAAAAOAAAAAAAAAAIAAAAAAAEAAAABAAIAAAABAAEAAAABAAIAAAACAAEAAAAAAAIAAAADAAEAAAABAAIAAAAEAAEAAAABAAIAAAAFAAEAAAAAAAIAAAAGAAEAAAAAAAIAAAAHAAEAAAABAAIAAAAIAAEAAAAAAAIAAAAJAAEAAAAAAAIAAAAKAAEAAAAAAAIAAAALAAEAAAAAAAIAAAAMAAEAAAAAAAIAAAANAAEAAAABAAIAAAAOAAEAAAAAAAIAAAAAAAIAAAAAAAIAAAABAAIAAAAAAAIAAAACAAIAAAABAAAAAAADAAIAAAAAAAAAAAAEAAIAAAAAAAAAAAAFAAIAAAABAAcAAAAGAAIAAAABAAcAAAAHAAIAAAACAAAAAAAIAAIAAAACAAAAAAAJAAIAAAAAAAAAAAAKAAIAAAABAAcAAAALAAIAAAABAAcAAAAMAAIAAAABAAIAAAANAAIAAAAAAAIAAAAOAAIAAAABAAIAAAAAAAMAAAABAAIAAAABAAMAAAAAAAIAAAACAAMAAAAAAAcAAAADAAMAAAAAAAAAAAAEAAMAAAABAAAAAAAFAAMAAAACAAAAAAAGAAMAAAAAAAAAAAAHAAMAAAABAAAAAAAIAAMAAAACAAAAAAAJAAMAAAABAAAAAAAKAAMAAAAAAAAAAAALAAMAAAAAAAAAAAAMAAMAAAACAAAAAAANAAMAAAABAAIAAAAOAAMAAAAAAAIAAAAAAAQAAAABAAIAAAABAAQAAAABAAIAAAACAAQAAAACAAAAAAADAAQAAAABAAAAAAAEAAQAAAAAAAAAAAAFAAQAAAAAAAAAAAAGAAQAAAACAAAAAAAHAAQAAAAAAAAAAAAIAAQAAAABAAAAAAAJAAQAAAAAAAAAAAAKAAQAAAABAAAAAAALAAQAAAAAAAAAAAAMAAQAAAAAAAAAAAANAAQAAAAAAAIAAAAOAAQAAAAAAAIAAAAAAAUAAAAAAAIAAAABAAUAAAABAAIAAAACAAUAAAAAAAAAAAADAAUAAAACAAAAAAAEAAUAAAACAAAAAAAFAAUAAAAAAAAAAAAGAAUAAAACAAAAAAAHAAUAAAACAAAAAAAIAAUAAAAAAAAAAAAJAAUAAAABAAAAAAAKAAUAAAABAAAAAAALAAUAAAACAAAAAAAMAAUAAAACAAAAAAANAAUAAAABAAIAAAAOAAUAAAAAAAIAAAAAAAYAAAAAAAIAAAABAAYAAAAAAAIAAAACAAYAAAACAAAAAAADAAYAAAACAAAAAAAEAAYAAAAAAAAAAAAFAAYAAAABAAAAAAAGAAYAAAAAAAAAAAAHAAYAAAAAAAAAAAAIAAYAAAAAAAAAAAAJAAYAAAACAAAAAAAKAAYAAAACAAAAAAALAAYAAAACAAAAAAAMAAYAAAAAAAAAAAANAAYAAAABAAIAAAAOAAYAAAAAAAIAAAAAAAcAAAAAAAIAAAABAAcAAAABAAIAAAACAAcAAAABAAAAAAADAAcAAAAAAAAAAAAEAAcAAAABAAAAAAAFAAcAAAACAAAAAAAGAAcAAAACAAAAAAAHAAcAAAACAAAAAAAIAAcAAAABAAAAAAAJAAcAAAACAAAAAAAKAAcAAAABAAAAAAALAAcAAAABAAAAAAAMAAcAAAABAAAAAAANAAcAAAAAAAIAAAAOAAcAAAABAAIAAAAAAAgAAAABAAIAAAABAAgAAAABAAIAAAACAAgAAAAAAAIAAAADAAgAAAABAAIAAAAEAAgAAAABAAIAAAAFAAgAAAAAAAIAAAAGAAgAAAAAAAYAAAAHAAgAAAAAAAYAAAAIAAgAAAAAAAYAAAAJAAgAAAAAAAIAAAAKAAgAAAABAAIAAAALAAgAAAABAAIAAAAMAAgAAAABAAIAAAANAAgAAAAAAAIAAAAOAAgAAAAAAAIAAAAAAAkAAAABAAIAAAABAAkAAAABAAIAAAACAAkAAAABAAIAAAADAAkAAAABAAIAAAAEAAkAAAABAAIAAAAFAAkAAAAAAAIAAAAGAAkAAAAAAAIAAAAHAAkAAAAAAAIAAAAIAAkAAAAAAAIAAAAJAAkAAAAAAAIAAAAKAAkAAAAAAAIAAAALAAkAAAABAAIAAAAMAAkAAAAAAAIAAAANAAkAAAABAAIAAAAOAAkAAAAAAAIAAAA=")
-tile_set = ExtResource("2_qkgq4")
+tile_set = ExtResource("2_cfi60")
 
-[node name="Detail" type="TileMapLayer" parent="." unique_id=1094361033]
-tile_set = ExtResource("2_qkgq4")
+[node name="Detail" type="TileMapLayer" parent="." unique_id=1264592836]
+tile_set = ExtResource("2_cfi60")
 
-[node name="Obstacles" type="TileMapLayer" parent="." unique_id=1163837386]
-tile_set = ExtResource("2_qkgq4")
+[node name="Obstacles" type="TileMapLayer" parent="." unique_id=316362458]
+tile_set = ExtResource("2_cfi60")
 
-[node name="Entities" type="Node2D" parent="." unique_id=69152187]
+[node name="Entities" type="Node2D" parent="." unique_id=497493231]
 unique_name_in_owner = true
 y_sort_enabled = true
 
-[node name="Overhead" type="TileMapLayer" parent="." unique_id=972509684]
+[node name="RocherImage" type="Node2D" parent="Entities" unique_id=562846807]
+position = Vector2(1104, 384)
+script = ExtResource("3_nccdd")
+
+[node name="Overhead" type="TileMapLayer" parent="." unique_id=660156781]
 z_index = 10
-tile_set = ExtResource("2_qkgq4")
+tile_set = ExtResource("2_cfi60")
 
-[node name="Warps" type="Node2D" parent="." unique_id=833993527]
+[node name="Warps" type="Node2D" parent="." unique_id=390303828]
 
-[node name="Sortie_0" type="Marker2D" parent="Warps" unique_id=391002529]
+[node name="Sortie_0" type="Marker2D" parent="Warps" unique_id=327063230]
 position = Vector2(624, 864)
-script = ExtResource("3_cfi60")
+script = ExtResource("4_yrfwx")
 trigger = 1
 direction = Vector2i(0, 1)
 target_map = &"fuchsia_city"
 target_spawn = &"from_wardens_house"
 arrival_facing = Vector2i(0, 1)
 
-[node name="Sortie_1" type="Marker2D" parent="Warps" unique_id=1459221624]
+[node name="Sortie_1" type="Marker2D" parent="Warps" unique_id=45704327]
 position = Vector2(720, 864)
-script = ExtResource("3_cfi60")
+script = ExtResource("4_yrfwx")
 trigger = 1
 direction = Vector2i(0, 1)
 target_map = &"fuchsia_city"
 target_spawn = &"from_wardens_house"
 arrival_facing = Vector2i(0, 1)
 
-[node name="Sortie_2" type="Marker2D" parent="Warps" unique_id=523143431]
+[node name="Sortie_2" type="Marker2D" parent="Warps" unique_id=2087426958]
 position = Vector2(816, 864)
-script = ExtResource("3_cfi60")
+script = ExtResource("4_yrfwx")
 trigger = 1
 direction = Vector2i(0, 1)
 target_map = &"fuchsia_city"
 target_spawn = &"from_wardens_house"
 arrival_facing = Vector2i(0, 1)
 
-[node name="Interactables" type="Node2D" parent="." unique_id=1194006530]
+[node name="Interactables" type="Node2D" parent="." unique_id=2086983216]
 
-[node name="Vitrine" type="Marker2D" parent="Interactables" unique_id=402630473]
+[node name="Vitrine" type="Marker2D" parent="Interactables" unique_id=1023566844]
 position = Vector2(528, 288)
-script = ExtResource("4_nccdd")
+script = ExtResource("5_tj2m4")
 dialogue_id = &"wardens_house_vitrine"
 
-[node name="Rocher" type="Marker2D" parent="Interactables" unique_id=886761660]
+[node name="Vitrine_1" type="Marker2D" parent="Interactables" unique_id=1755549181]
+position = Vector2(624, 288)
+script = ExtResource("5_tj2m4")
+dialogue_id = &"wardens_house_vitrine_1"
+
+[node name="Rocher" type="Marker2D" parent="Interactables" unique_id=576749953]
 position = Vector2(1104, 384)
-script = ExtResource("4_nccdd")
+script = ExtResource("5_tj2m4")
 dialogue_id = &"wardens_house_rocher"
 
-[node name="Spawns" type="Node2D" parent="." unique_id=996479623]
+[node name="Spawns" type="Node2D" parent="." unique_id=1744918011]
 
-[node name="entree" type="Marker2D" parent="Spawns" unique_id=2067564570]
+[node name="entree" type="Marker2D" parent="Spawns" unique_id=531134808]
 position = Vector2(720, 768)
 
-[node name="Triggers" type="Node2D" parent="." unique_id=122717071]
+[node name="Triggers" type="Node2D" parent="." unique_id=1210967033]
