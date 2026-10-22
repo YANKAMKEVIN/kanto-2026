@@ -16,6 +16,8 @@ extends Node2D
 ## bas ([CyclingSlope]). En Surf, le pas qui monte sur l'eau ou descend sur la rive est un saut
 ## d'une case ([method MountRules.is_surf_hop]). La mise en scène (compagnon, refus, arrivée,
 ## montée et descente du Surf) est dans [MountDirector].
+## Moteur commun : sans animations montées, une **monture provisoire** ([MountPlaceholder]) montre
+## le Surf (dos de nageur dessiné, héros assis, à l'arrêt) et le Vélo (image du J22 si présente).
 
 signal moved(cell: Vector2i)
 ## Un pas commence (jalon 11, relais de [signal GridMover.step_started] pour le compagnon) :
@@ -80,6 +82,8 @@ var _grass_front_texture: Texture2D
 var _default_grass_front: Texture2D
 ## Monture (passe systèmes 2) : à pied par défaut.
 var _mount: Mount.Kind = Mount.Kind.NONE
+## Monture provisoire ([MountPlaceholder]), créée dans [method _ready].
+var _mount_placeholder: MountPlaceholder
 
 @onready var _sprite: AnimatedSprite2D = %Sprite
 @onready var _camera: Camera2D = %Camera
@@ -90,6 +94,9 @@ var _mount: Mount.Kind = Mount.Kind.NONE
 func _ready() -> void:
 	add_to_group(GROUP)
 	_apply_look()
+	_mount_placeholder = MountPlaceholder.new()
+	add_child(_mount_placeholder)
+	_mount_placeholder.attach(_sprite)
 	_default_grass_front = _grass_front.texture
 	_apply_grass_front()
 	get_viewport().size_changed.connect(_on_viewport_size_changed)
@@ -346,10 +353,15 @@ func _update_jump_and_grass() -> void:
 	if jumping:
 		var t := _mover.get_progress()
 		arc = 4.0 * JUMP_ARC_HEIGHT * t * (1.0 - t)
+	var seat := _mount_placeholder.seat_lift() if _mount_placeholder != null else 0.0
 	if _sprite != null:
-		_sprite.position.y = -arc - _react_lift
+		_sprite.position.y = -arc - _react_lift - seat
+	if _mount_placeholder != null:
+		_mount_placeholder.set_lift(arc + _react_lift)
 	if _shadow != null:
 		_shadow.position.y = SHADOW_REST_Y
+		# Sur le dos du nageur provisoire, pas d'ombre au sol.
+		_shadow.visible = seat == 0.0
 	if _grass_front != null:
 		_grass_front.visible = not jumping and _grid != null \
 			and _grid.is_tall_grass(_mover.get_target_cell())
@@ -399,9 +411,16 @@ func _update_animation(direction: Vector2i) -> void:
 		anim = anims[1]
 		speed = BUMP_ANIM_SPEED
 	anim = _mounted_animation(anim)
+	if _mount == Mount.Kind.SURF and not String(anim).begins_with("surf_"):
+		# Surf provisoire : assis sur le nageur, à l'arrêt (pas de jambes qui marchent).
+		anim = anims[0]
+		speed = 1.0
 	if _sprite.animation != anim or not _sprite.is_playing():
 		_sprite.play(anim)
 	_sprite.speed_scale = speed
+	if _mount_placeholder != null:
+		_mount_placeholder.refresh(_mount, anim, facing)
+		_update_jump_and_grass()
 
 
 func _on_viewport_size_changed() -> void:
@@ -437,6 +456,21 @@ func _mounted_animation(anim: StringName) -> StringName:
 	var base := String(anim).replace("run_", "walk_")
 	var mounted := StringName("%s_%s" % [Mount.to_name(_mount), base])
 	return mounted if _sprite.sprite_frames.has_animation(mounted) else anim
+
+
+## Vrai si la monture est dessinée : animation montée de l'apparence, ou monture provisoire
+## ([MountPlaceholder]). Faux à pied.
+func is_mount_drawn() -> bool:
+	if _mount == Mount.Kind.NONE:
+		return false
+	if _mount_placeholder != null and _mount_placeholder.is_drawn():
+		return true
+	return _sprite != null and String(_sprite.animation).begins_with(Mount.to_name(_mount) + "_")
+
+
+## Monture provisoire (tests, captures).
+func get_mount_placeholder() -> MountPlaceholder:
+	return _mount_placeholder
 
 
 ## Saut de montée en Surf ou de descente sur la rive ([method MountRules.is_surf_hop]) : lu par
