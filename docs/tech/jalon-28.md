@@ -257,3 +257,64 @@ remise de la CT, ni le guide après le départ du Champion. Propositions [D] ci-
 - **Q28-3 — Textes** : propositions [D]. Couverts par ta validation d'avance, ou à relire ?
 - **Q28-4 — Équipes des Dresseurs** : RB, mais niveaux à ajuster si la simulation montre un écart
   avec la courbe de la passe ? Défaut : RB tel quel.
+
+## 10. Réalisé (2026-10-22, branche `jalon-28` depuis `systemes-2` @ `8c2cb6ee`, worktree `~/dev/kanto-2026-wt-j28`)
+
+Session de nuit, sans Kevin. Textes T28-01 à T28-09 **validés par Kevin le 2026-10-21, validation
+d'avance (proposition du plan)** ; textes complémentaires du §3.1 **à relire**.
+
+### 10.1 Fait
+
+- **T1–T2** : `tools/art/viridian_gym_rb_decode.py` (lit un pokered local, `python3 -I`) ;
+  `tools/plans/jadielle_arene.txt` (RB 1:1, décalée de (+2, +2) [D] pour deux rangées / colonnes de
+  mur) ; `tools/art/plan_check_j28.py` : les 12 dalles RB, la règle du moteur du J20 redonne les 12
+  trajets exacts (un « o » sur chaque arrivée RB), aucune BLOCKED / LOOP / TOO_LONG, sortie
+  atteignable de partout, Giovanni atteignable ; 6 Dresseurs évitables, 2 inévitables
+  (`topdresseur_2` Florian, `karateka_3` Joël).
+- **Écart RB** : dans RB, une dalle pousse d'un **nombre fixe de pas** (table
+  `ViridianGymArrowTilePlayerMovement`), sans case d'arrêt ; la grille pose donc un `o` à chaque
+  arrivée. **Q28-2 sans objet** : aucune glissade RB ne bute contre un mur.
+- **T3** : Rhinoféros (`kanto_j28.json`, Rhinocorne → Rhinoféros N42, RB) ; **Machopeur et Tauros
+  copiés à l'identique** des J22 / J23 (`kanto_j28_emprunts.json`, fiches de Pokédex et sprites
+  provisoires repris de `origin/jalon-23`) : **à supprimer à la fusion** si J22 / J23 sont fusionnés
+  avant (sinon doublon) ; fiche de Pokédex de Rhinoféros [D] ; Abîme (`moves_j28.json`, effet
+  `ohko`) ; CT27 (`items_j28.json`) ; `tm_compatibility.json` régénéré (fichier généré).
+- **Dresseurs** (RB, Q28-4 : niveaux RB tels quels) : Topdresseur Yannick (Sablaireau, Triopikeur
+  39), Karatéka Bertrand (Machoc, Machopeur 40), Dompteur Lionel (Rhinocorne 43), Karatéka Didier
+  (Machopeur 43), Topdresseur Florian (Rhinocorne 43), Karatéka Joël (Machopeur, Machoc,
+  Machopeur 38), Dompteur Régis (Arbok, Tauros 39), Topdresseur Damien (Nidorino, Nidoking 39).
+  Prénoms vérifiés libres sur `main` et toutes les branches `origin/jalon-2x`, `j2x-*`. Sprites
+  provisoires : `camper` (Topdresseur), `hiker` et `rocker` (sprites RB des Karatékas et Dompteurs).
+  Prix RB (base × niveau). IA `smart` pour les Topdresseurs.
+- **Giovanni Champion** (`viridian_gym_giovanni`) : équipe verrouillée, Abîme sur Rhinoféros (RB :
+  `LoneMoves`), 4 950 ₽, carte « GIOVANNI — Champion d'Arène de Jadielle ». Scène sur le modèle
+  d'Erika ; rattrapage `viridian_gym_giovanni_tm_late`. **[D] Giovanni est retiré par
+  `tm27_received`** (posé à la fin de la remise) plutôt que par `badge_earth` : une coupure entre le
+  Badge et la CT ne fait pas perdre la CT. Le guide et le Rappel (RB) sont posés.
+- **T6, T9** : carte `viridian_gym` (`tools/build_viridian_gym.gd`, enveloppe provisoire
+  `tools/art/placeholders_j28.py`, nœud `SpinTiles`, aucune ligne du moteur des dalles) ; lumière
+  `interior_warm` ; zone Jadielle. **Porte** : nouveau champ `Warp.if_flags` / `WarpPoint.if_flags`
+  (lu par `SceneRouter._is_warp_enabled`) ; deux warps PUSH ↑ (9, 10), (10, 10) actifs avec
+  `silph_giovanni_defeated` ; l'examen « La porte est verrouillée. » porte le `unless` inverse ;
+  spawn `from_gym`. Scène de Jadielle modifiée à la main (comme les sorties nord), outil du J7 mis
+  à jour en conséquence. Guetteur à trois variantes.
+- **T10** : départs `viridian_gym`, `viridian_gym_giovanni`, `viridian_locked`.
+- Capture headless relue (`tools/capture_map.gd`) : Dresseurs, objet, dalles et arrêts lisibles.
+
+### 10.2 Reste
+
+- **T4** (simulation d'équilibrage) non faite : niveaux RB tels quels (défaut Q28-4), à juger en jeu.
+- **T5** (vue générale) et lot d'art (intérieur, Giovanni Champion, Rhinoféros, fond de combat) :
+  art provisoire seulement ; aucun fond de combat dédié (repli par défaut).
+- **T11** session téléphone, **T12** clôture et fusion **après le J26** (accord de Kevin).
+- À la fusion : retirer `kanto_j28_emprunts.json` (et les fiches de Pokédex / sprites en double) si
+  J22 / J23 sont déjà dans `main` ; régénérer `tm_compatibility.json` ; recaler les listes des
+  tests partagés (`test_dialogue_data`, `test_cutscene_data`, `test_pokemon_data`,
+  `test_item_library`) ; retirer `silph_giovanni_defeated` de `FUTURE_FLAGS` de
+  `test_dialogue_data` une fois le J26 fusionné.
+
+### 10.3 Pour Kevin
+
+- Relire les textes complémentaires du §3.1 (Dresseurs, défaite, CT, guide après le départ).
+- Q28-1 (condition d'ouverture) : le code suit la passe (drapeau de la Sylphe seul).
+- Q28-3 : réglée par la validation d'avance (T28-01 à T28-09).
