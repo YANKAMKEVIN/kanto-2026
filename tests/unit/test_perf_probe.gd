@@ -30,3 +30,14 @@ func test_known_steps() -> void:
 	for step: String in PerfProbe.STEPS:
 		assert_true(PerfProbe.is_known_step(step), step)
 	assert_false(PerfProbe.is_known_step("no_everything"))
+
+
+func test_always_step_and_layer_steps() -> void:
+	var probe: PerfProbe = autofree(PerfProbe.new())
+	probe.configure('{ "always": "no_grade" }')
+	assert_eq(probe.always, "no_grade")
+	probe.configure('{ "always": "inconnue" }')
+	assert_eq(probe.always, "no_grade", "étape inconnue ignorée")
+	assert_true(PerfProbe.is_known_step("no_layer_ExplorationHud"))
+	assert_true(PerfProbe.is_known_step("no_map_grade"))
+	assert_true(PerfProbe.is_known_step("no_map_process"))

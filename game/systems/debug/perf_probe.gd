@@ -15,7 +15,8 @@ extends Node
 ## [codeblock]
 ## adb shell "run-as dev.kevin.kanto2026 sh -c 'echo {} > files/perf_probe.json'"
 ## [/codeblock]
-## Contenu facultatif : { "hold": 8, "steps": ["base", "no_ground"] } (défauts :
+## Contenu facultatif : { "hold": 8, "steps": ["base", "no_ground"], "always": "no_grade" }
+## (défauts :
 ## [constant DEFAULT_HOLD], [constant STEPS]). Jamais lu sous GUT ni en release.
 
 const USER_PATH: String = "user://perf_probe.json"
@@ -26,7 +27,9 @@ const LAYER_STEP: String = "no_layer_"
 ## Étapes connues : « base » (rien de coupé), « no_<couche> » (nœud de la carte du même nom,
 ## voir [constant MAP_LAYERS]), « no_grade » (étalonnage d'écran), « no_shadows » (ombres
 ## portées et de contact), « no_map » (carte entière cachée), « no_layers » (tous les
-## `CanvasLayer` : HUD, combat, fondu… ; les calques cachés sont écrits dans le journal).
+## `CanvasLayer` : HUD, combat, fondu… ; les calques cachés sont écrits dans le journal),
+## « no_map_grade » (carte et étalonnage), « no_map_process » (scripts de la carte arrêtés,
+## dessin inchangé : coût du processeur).
 const STEPS: Array[String] = [
 	"base", "no_ground", "no_water", "no_forest_floor", "no_decals", "no_entities",
 	"no_overhead", "no_shadows", "no_grade", "no_map", "base",
@@ -43,6 +46,9 @@ const MAP_LAYERS: Dictionary[String, Array] = {
 
 var hold: float = DEFAULT_HOLD
 var steps: Array[String] = STEPS.duplicate()
+## Étape appliquée en plus pendant tout le cycle (« always » : par exemple « no_grade », pour
+## mesurer les couches de la carte sans l'étalonnage) ; vide = aucune.
+var always: String = ""
 
 var _lighting: WorldLighting
 var _index: int = -1
@@ -56,6 +62,8 @@ var _cpu_ms: float = 0.0
 var _script_ms: float = 0.0
 var _hidden: Array[CanvasItem] = []
 var _hidden_layers: Array[CanvasLayer] = []
+var _stopped: Node
+var _stopped_mode: Node.ProcessMode = Node.PROCESS_MODE_INHERIT
 
 
 ## Lit les réglages facultatifs de [param text] (JSON) ; étapes inconnues ignorées.
@@ -75,10 +83,13 @@ func configure(text: String) -> void:
 				chosen.append(step)
 		if not chosen.is_empty():
 			steps = chosen
+	if data.has("always") and data["always"] is String and is_known_step(data["always"]):
+		always = data["always"]
 
 
 static func is_known_step(step: String) -> bool:
-	return step in ["base", "no_grade", "no_shadows", "no_map", "no_layers"] \
+	return step in ["base", "no_grade", "no_shadows", "no_map", "no_layers", "no_map_process",
+			"no_map_grade"] \
 		or MAP_LAYERS.has(step) or step.begins_with(LAYER_STEP)
 
 
@@ -128,6 +139,8 @@ func _start(index: int) -> void:
 		print("%s fin" % PREFIX)
 		return
 	_apply(steps[_index])
+	if not always.is_empty() and always != steps[_index]:
+		_apply(always)
 
 
 func _report() -> void:
@@ -146,6 +159,18 @@ func _apply(step: String) -> void:
 		"no_map":
 			if map != null:
 				_hide(map)
+		"no_map_grade":
+			if map != null:
+				_hide(map)
+			if _lighting != null:
+				for child: Node in _lighting.get_children():
+					_hide(child as CanvasItem)
+		"no_map_process":
+			# Scripts de la carte arrêtés (PNJ, décors, compagnon…), dessin inchangé.
+			if map != null and map.process_mode != Node.PROCESS_MODE_DISABLED:
+				_stopped = map
+				_stopped_mode = map.process_mode
+				map.process_mode = Node.PROCESS_MODE_DISABLED
 		"no_grade":
 			if _lighting != null:
 				for child: Node in _lighting.get_children():
@@ -185,6 +210,9 @@ func _restore() -> void:
 		if is_instance_valid(layer):
 			layer.visible = true
 	_hidden_layers.clear()
+	if is_instance_valid(_stopped):
+		_stopped.process_mode = _stopped_mode
+	_stopped = null
 
 
 func _current_map() -> Node2D:
