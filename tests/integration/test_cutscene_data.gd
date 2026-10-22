@@ -84,6 +84,9 @@ const ROUTE22_FLAGS: Array[StringName] = [
 	&"got_oak_parcel", &"pokedex_activated",
 ]
 ## Jalon 10 (T8) : partie qui arrive à Argenta (fin du J9 : poison annoncé, Théo battu).
+const OFFER_WATER: StringName = &"saffron_gate_offer_water"
+const OFFER_SODA: StringName = &"saffron_gate_offer_soda"
+const OFFER_LEMONADE: StringName = &"saffron_gate_offer_lemonade"
 const PEWTER_FLAGS: Array[StringName] = [
 	&"oak_met", &"oak_lab_reunion", &"starter_offered", &"starter_chosen", &"rival_challenged",
 	&"rival_lab_won", &"rival_battle_done", &"rival_left_lab", &"viridian_arrived",
@@ -247,6 +250,15 @@ const VARIANT_FLAGS: Dictionary = {
 	# Jalon 20 (T25) : boisson donnée au garde d'un poste de Safrania (une fois).
 	&"saffron_gate_drink_water": [PEWTER_FLAGS], &"saffron_gate_drink_soda": [PEWTER_FLAGS],
 	&"saffron_gate_drink_lemonade": [PEWTER_FLAGS],
+	# Jalon 26 (T8) : suites des déclencheurs du J15 (boisson choisie par drapeau, sinon recul).
+	&"route_5_gate_after": [PEWTER_FLAGS + [OFFER_WATER], PEWTER_FLAGS + [OFFER_SODA],
+		PEWTER_FLAGS + [OFFER_LEMONADE], PEWTER_FLAGS],
+	&"route_6_gate_after_w": [PEWTER_FLAGS + [OFFER_WATER], PEWTER_FLAGS + [OFFER_SODA],
+		PEWTER_FLAGS + [OFFER_LEMONADE], PEWTER_FLAGS],
+	&"route_6_gate_after_e": [PEWTER_FLAGS + [OFFER_WATER], PEWTER_FLAGS + [OFFER_SODA],
+		PEWTER_FLAGS + [OFFER_LEMONADE], PEWTER_FLAGS],
+	&"route_6_gate_after_s": [PEWTER_FLAGS + [OFFER_WATER], PEWTER_FLAGS + [OFFER_SODA],
+		PEWTER_FLAGS + [OFFER_LEMONADE], PEWTER_FLAGS],
 	# Jalon 20 (T12) : don d'Évoli (une fois).
 	&"celadon_eevee_gift": [PEWTER_FLAGS],
 	# Jalon 20 (T17) : arrivées, objet et caches, Erika (scène et rattrapage de la CT21), fillette.
@@ -283,6 +295,9 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	# Jalon 20 (T25) : choix OUI du garde d'un poste de Safrania (« confirm_cutscene »).
 	&"saffron_gate_drink_water": &"route_8_gate", &"saffron_gate_drink_soda": &"route_8_gate",
 	&"saffron_gate_drink_lemonade": &"route_8_gate",
+	# Jalon 26 (T8) : suites des déclencheurs du J15 (`next`) et choix OUI du garde (PARLER).
+	&"route_5_gate_after": &"route_5_gate", &"route_6_gate_after_w": &"route_6",
+	&"route_6_gate_after_e": &"route_6", &"route_6_gate_after_s": &"route_6",
 	# Jalon 20 (T12) : choix OUI de la Poké Ball d'Évoli (PNJ `eevee_ball` de la maison du toit).
 	&"celadon_eevee_gift": &"celadon_mansion_roof_house",
 	# Jalon 20 (T17) : objets et caches (PNJ « objet » et points d'examen), Erika (son dialogue),
@@ -482,6 +497,9 @@ func test_library_loads_without_error() -> void:
 		&"route_24_rival", &"route_24_rocket", &"route_25_hidden_1", &"route_25_item_1",
 		&"route_25_item_2", &"route_25_item_3",
 		&"route_6_gate_rule_e", &"route_6_gate_rule_s", &"route_6_gate_rule_w",
+		# Jalon 26 (T8) : suites des déclencheurs du J15.
+		&"route_5_gate_after", &"route_6_gate_after_e", &"route_6_gate_after_s",
+		&"route_6_gate_after_w",
 		&"route_6_hidden_1", &"route_6_item_1", &"vermilion_arrival",
 		&"vermilion_gym_barrier_open", &"vermilion_gym_surge", &"vermilion_gym_surge_tm_late",
 		# Jalon 16 (T15) : départ du S.S. Anne, Coupe de l'arbuste de l'Arène.
