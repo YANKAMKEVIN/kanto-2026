@@ -318,3 +318,97 @@ victoire et de défaite des quatre membres suivent le même modèle (avant / vai
 - **Q30-5 — Au-delà de 50 victoires** : arrêter d'ajouter (défaut) ou effacer la plus ancienne ?
 - **Q30-6 — Confirmation à la porte** : la passe dit « entrée volontaire » ; RB n'a pas de question.
   Défaut : une question OUI / NON (T30-01), pour ne pas entrer par erreur au doigt.
+
+## 10. Avancement — nuit du 2026-10-21 au 2026-10-22 (branche `jalon-30`, worktree `~/dev/kanto-2026-wt-j30`)
+
+Base : `origin/systemes-2` @ `8c2cb6ee` (passe systèmes 2 comprise) + `origin/plans-j26-j30` (docs).
+Textes et prénoms : propositions du plan, **validés par Kevin le 2026-10-21, validation d'avance
+(proposition du plan)**. Défauts Q30-x du plan appliqués.
+
+### 10.1 Fait
+
+| Tâche | Livré |
+|---|---|
+| **T2** grilles | `tools/plans/ligue_olga.txt`, `ligue_aldo.txt`, `ligue_agatha.txt`, `ligue_peter.txt`, `ligue_champion.txt`, `pantheon.txt`, écrites par `tools/art/j30_rb_decode.py <pokered> --ecrire` (RB 1:1) ; contrôle `tools/art/plan_check_j30.py` (+ `--autotest`, 6 pièges) ; `tests/unit/test_league_plans.gd` |
+| **T3** données | `data/trainers/league.json` (Olga, Aldo, Agatha, Peter, `rival_champion` × 3 starters), vérifié contre pokered ; `tests/unit/test_league_data.gd` |
+| **T4** textes | `data/league/dialogues.json` (T30-01 à T30-17) ; `tests/unit/test_league_texts.gd` |
+| **T5** `LeagueAttempt` | `game/systems/league/league_attempt.gd` (pur, statique) ; `tests/unit/test_league_attempt.gd` |
+| **T6** `HallOfFame` | `game/systems/league/hall_of_fame.gd` (pur) ; `tests/unit/test_hall_of_fame.gd` |
+| **T7** (30A) champ de sauvegarde | `GameState.hall_of_fame`, champ facultatif `hall_of_fame` de la **v7** ; `tests/unit/test_save_v7_hall_of_fame.gd` |
+
+### 10.2 Valeurs et choix [D]
+
+- **Équipes** : pokered `parties.asm` (espèces, niveaux, ordre = la passe) ; capacités = celles
+  de RB au niveau (capacités de départ + apprentissage, la plus ancienne sort quand il y en a
+  quatre) ; **capacité d'équipe RB** (`special_moves.asm` : 3e capacité du 5e Pokémon) : Blizzard
+  (Lokhlass d'Olga), Abîme (Mackogneur d'Aldo), Toxik (Ectoplasma N60 d'Agatha), Bouclier
+  (Dracolosse de Peter) ; rival (`read_trainer_party.asm`) : Piqué au Roucarnage, Déflagration /
+  Blizzard / Méga-Sangsue au starter.
+- **Q30-3** (défaut du plan) : capacité sans effet codé (`pending_effects`) → la plus récente
+  capacité apprise avant elle, absente de l'équipe et codée :
+  Lippoutou Mania → Léchouille ; Onix ×2 Frénésie → Ligotage ; Tygnon Riposte → Poing de Feu ;
+  Kicklee Pied Sauté → Mawashi Geri et Pied Voltige → Méditation ; Roucarnage du rival Mimique →
+  Hâte ; Dracaufeu du rival Frénésie → Lance-Flammes. **Toxik gardé** (codé par le J23 ; en
+  attendant, simple poison).
+- **Argent** : 99 par niveau du dernier Pokémon (pokered `pic_money … 9900`).
+- **IA** : `smart` ; changement de Pokémon pour **Agatha** (pokered `AgathaAI`) et le **rival
+  Champion** (comme les rivaux) ; les objets de l'IA RB (Super Potion d'Olga, Défense Spé. d'Aldo,
+  Hyper Potion de Peter, Guérison totale du rival) ne sont pas joués (l'IA du projet n'en a pas).
+- **Cartes de présentation** : « OLGA », « ALDO », « AGATHA », « PETER », titre « Conseil des
+  Quatre » ; le rival n'en a pas (comme ses autres combats).
+- **Grilles** : portes `X` ; porte nord `si=league_stage_<k>_cleared`, porte sud
+  `unless=league_attempt_active` ; déclencheur d'appel `appel_<membre>` (RB : `EntranceCoords`,
+  marche forcée) au-dessus de l'entrée (couloir chez Peter, rangée 5 chez le Champion) ; vue 4 ;
+  le membre reste en place une fois battu ; tuile RB `$30` (passage fermé par script) = sol ;
+  pourtour et îlots inaccessibles → mur ; entrée de Peter sur (23, 16), porte sur la case
+  d'arrivée RB (24, 16) ; Chen (3, 7) chez le Champion `si=league_stage_4_cleared` ; Panthéon
+  **sans porte** (la cérémonie enchaîne).
+- **Panthéon** : entrée = { date, play_time, player, starter, team [{ species, nickname, level,
+  uid }] } ; 6 Pokémon au plus ; **Q30-5** : au-delà de 50 entrées, `add` rend `FULL` et
+  n'efface rien ; une entrée mal formée d'une sauvegarde est écartée (les autres gardées).
+- **`LeagueAttempt`** : l'étape courante est la première non gagnée (un drapeau plus loin, fichier
+  retouché, ne fait rien sauter) ; `start` pendant une tentative ne remet rien à zéro (reprise) ;
+  `complete` n'est vrai qu'une fois (l'appelant n'ajoute l'entrée du Panthéon que sur vrai, dans
+  la même écriture).
+- **Textes** rangés dans `data/league/` (pas `data/dialogues/`) : `test_dialogue_data` exige que
+  chaque dialogue de `data/dialogues/` soit utilisé ; le fichier y passera avec les cartes (T9).
+
+### 10.3 Espèces et capacités : dépendances des autres branches (à régler à la fusion)
+
+Convention des « reprises » (J29) : copies exactes des entrées d'une autre branche, **à retirer**
+du J30 quand cette branche est fusionnée avant lui (sinon « identifiant déjà défini »).
+
+| Fichier | Contenu | Origine |
+|---|---|---|
+| `data/pokemon/species/kanto_j30.json` | Lippoutou, Mackogneur, Ectoplasma, Draco (→ Dracolosse N55), Dracolosse | nouvelles (J30) |
+| `data/pokemon/species/kanto_j30_reprises.json` | Lamantine, Crustabri, Flagadoss (J24) ; Lokhlass, Alakazam (J26, `kanto_silph.json`) ; Ptéra (J25) ; Rhinoféros (J28) ; Noadkoko (J29) ; **Kicklee, Tygnon** (créés ici, le J27 les prévoit : retirer si le J27 les crée) | copies |
+| `data/pokemon/moves/j30.json` | Riposte, Pied Voltige, Pied Sauté (`pending_effects` : `counter`, `crash`), Poing Glace, Poing Éclair, Grobisou, Mawashi Geri | nouvelles |
+| `data/pokemon/moves/j30_reprises.json` | Amnésie, Bouclier (J21) ; Blizzard, Picanon (J24) ; Déflagration, Poing de Feu (J25) ; Abîme (J28) ; Ultimawashi, Piqué (J29) ; **Toxik** (J23, **simplifié** : sans `toxic: true`, `pending_effects: ["toxic"]`, la base ne connaît pas la clé) | copies |
+
+Statistiques des espèces nouvelles : valeurs modernes (comme le dépôt), `base_exp` de PokeAPI
+(`build/rb/pokeapi/pokemon.csv`) ; apprentissages RB complets. Pas de fiche de Pokédex pour les
+15 espèces (`NO_ENTRY_YET`, textes à écrire) ; pas de compatibilité de CT.
+Tests de décompte mis à jour (conflits attendus à la fusion, à résoudre en additionnant) :
+`test_pokemon_data` (104 espèces, 147 capacités, taux de capture, Draco), `test_mt_moon_data`,
+`test_pokedex_library`, `test_trainer_card` (Conseil des Quatre), `test_trainer_library`
+(changements : Agatha, rival Champion).
+
+### 10.4 Sous-jalon 30A : sauvegarde — **à valider SEUL par Kevin sur téléphone (règle 1)**
+
+- Champ **facultatif** `hall_of_fame` de la **v7**, comme `mount` (S2B) : **aucun changement de
+  version**, donc aucun conflit de numéro avec la **v8 du J23** (le champ reste facultatif dans
+  la v8). Écrit seulement si le Panthéon n'est pas vide ; absent ou illisible → Panthéon vide.
+- Tests : v7 sans le champ (partie réelle du S21) relue et **réécrite à l'identique** ; v6 migrée ;
+  dictionnaire « v8 » sans le champ ; aller-retour à l'identique ; entrée mal formée écartée et
+  signalée ; nouvelle partie = Panthéon vide.
+- La QA téléphone 30A (§7) attend les cartes (T9) et le directeur (T8) ; le champ seul peut être
+  validé avant (sauvegarde chargée puis réécrite sans différence).
+
+### 10.5 Restant
+
+- **T8** `LeagueDirector` dans `Boot` (après la fusion de la passe systèmes 2 dans `main` ; la
+  logique est prête) ; **T9** cartes (attend le J29 : hall `indigo_plateau_lobby`, son point
+  `from_league`, porte nord, `no_fly` / `no_teleport`), départs de débogage ; **T10** QA 30A ;
+  **T11–T14** combats et équilibrage ; **T15–T18** Panthéon (écran), générique
+  (`data/story/credits.json`, Q30-1), scène `league_victory`, QA finale.
+- Planche des grilles pour Kevin (sous-jalon 30.0) ; fiches de Pokédex des 15 espèces.
