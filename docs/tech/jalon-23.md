@@ -552,6 +552,99 @@ Gardien, Arène).
 
 ---
 
+## 7. Alignement (T9) et exécution — session de nuit du 2026-10-22
+
+Branche `jalon-23` (worktree `~/dev/kanto-2026-wt-j23`, branche locale `j23-nuit` poussée sur
+`origin/jalon-23`). Kevin a validé d'avance les textes recommandés (« je valide d'avance les textes
+recommandés ») : les textes manquants ajoutés cette nuit portent la mention **« validé par Kevin le
+2026-10-21, validation d'avance »** (§7.4).
+
+### 7.1 T9 — Alignement sur `origin/jalon-22` (= `systemes-2` + J22)
+
+Fusion de `origin/jalon-22` dans `jalon-23` (`aa9ac132`). Réponses du T9 :
+
+| Point | État réel | Décision |
+|---|---|---|
+| Surf, Force (capacités) | Livrés par la passe systèmes 2 (`moves_s2.json`) ; **Surf à 90** (RB : 95) | Doublons du J23 retirés ; la passe est propriétaire : Surf garde 90 [D], test aligné. |
+| CS03, CS04 (objets) | Livrés par la passe (`items_systemes2.json`), descriptions de la passe | Doublons retirés (`items_j23.json` garde CT32, CT37, CT40, Dents d'Or). Textes 56/57 du dossier : ceux de la passe restent (propriétaire). |
+| `field_moves.json` (`surf`, `strength`) | Posés par la passe aux valeurs du §2.10 | T16 **fait par la passe** (tests `test_field_moves_systemes2`). |
+| Danse-Lames, Écrasement | Au J22 et au J20 | Doublons retirés de `moves/j23.json`. |
+| Guillotine | K.O. en un coup codé par la passe (`ohko`) | Effet `ohko` posé, mention « Sans effet » retirée (A-33). |
+| Version de sauvegarde | v7 (passe et J22 n'y touchent pas) | **v8** au J23 (§2.15) ; champ `safari` écrit **seulement pendant une visite** (absent = aucune visite, comme `mount`) ; migration 7 → 8 sans rien transformer. |
+| Parmanie | `fuchsia_city` (J22), portes réservées `porte_safari` (28..29, 7), `porte_arene` (7..8, 40), `porte_gardien` (44, 40) | Ouvertes dans `parmanie.txt` (arrivées `from_safari`, `from_gym`, `from_wardens_house`) ; `plan_check_j22.py` les accepte ouvertes ; carte reconstruite par `build_j22_maps.gd --maps=fuchsia_city`. |
+| Pêche (N-6) | Livrée par la passe (`FishingDirector`, `fishable.json`, caractère « f » du J22) | Les grilles du Parc n'ont **aucune** case pêchable et les espèces de la pêche RB du Parc (Minidraco, Psykokwak, Ramoloss) n'existent pas : **T14 reporté** (§7.5). |
+| Vol, Téléport | Codés par la passe (`FlyRules`, `FieldTravelRules`) | `no_fly_maps` posé par Boot sur les cartes du Parc (Vol et Téléport refusés). |
+| Corde Sortie | Ne s'utilise qu'en grotte (`FieldItemRules.escape_target`) | Pas d'usage dans le Parc au J23 ; la règle générale « visite close si l'on arrive hors du Parc et hors de la Porte » couvrira la Corde quand elle s'y utilisera (§7.5). |
+| `tm_compatibility.json` | Conflit à la fusion | **Régénéré** (108 espèces) depuis les CSV de PokeAPI (`build/pokeapi_csv/`, hors dépôt). |
+| `test_dialogue_data` | Erreur d'analyse héritée de la fusion du J22 (`dossier_25` non déclaré) : le fichier entier était ignoré par GUT | Déclaration rétablie ; fichiers générés `j22_*` / `j23_*` écartés des grands registres (`J22Ids.generated_in_dir`), vérifiés par `test_j22_data` et `test_j23_data`. |
+
+### 7.2 Fait (session de nuit)
+
+- **T10** `tools/build_j23_maps.gd` : 11 cartes depuis les grilles (Porte, quatre zones, quatre
+  maisons de repos = une grille, une carte par zone d'origine, Maison Secrète, maison du Gardien),
+  tuiles provisoires ; raccords de bord (PUSH), portes (STEP_ON), sorties d'intérieur (PUSH ↓),
+  arrivées par case ; zone « Parc Safari » (`zones.json`, titre des intérieurs). Tests
+  `test_safari_maps` (carte = grille, herbes, warps, réciprocité, Parmanie, comptoir, rocher).
+- **T10 / T15 données** `tools/gen_j23_data.py` : PNJ, objets du §7 avec remplacements N-19
+  (CT40 Coud'Krâne ajoutée à `items_j23.json`), panneaux A-1 à A-14, textes 1 à 19 et 30 à 34,
+  scènes de la Porte, de la fin de visite, de la CS03 et de la CS04. Tests `test_j23_data`.
+- **T11** étape de scène `safari` (`enter`, `leave`, `clear`) ; `SafariDirector`
+  (`game/systems/safari/safari_director.gd`, enfant de Boot) : péage sans débit partiel, autosave,
+  pas comptés sur les cartes du Parc et dans les maisons (pas dans la Porte, pas les pas scriptés),
+  fin au pas suivant le zéro sans rencontre sur ce pas, fin par les Balls relevée au retour d'une
+  rencontre, annonce au retour au calme (haut-parleur, fondu vers `arrivee_fin`, texte 12),
+  sortie volontaire OUI / NON (recul d'un pas), visite close hors du Parc, renvoi à la Porte si une
+  partie est rechargée dans le Parc sans visite, drapeau miroir `safari_active`, réconciliation
+  CS03 / CS04 (objet ↔ drapeau). Sauvegarde v8. Tests `test_safari_director` (12),
+  `test_save_j23` (5), `test_j23_story` (6, vraie scène Boot).
+- **T12** pastille `SafariBadge` (HUD d'exploration, sous le titre de zone) : icônes chaussure et
+  Poké Ball du kit, deux nombres, visible seulement dans le Parc pendant une visite, masquée
+  pendant les scènes et les combats.
+- **T15** Maison Secrète (CS03 une fois), Gardien (Dents d'Or → CS04, reprise si interrompu,
+  OUI / NON sans effet sinon), vitrines A-13 / A-14, rocher fixe (11, 3) bloquant avec le texte 46
+  et **la même image que les rochers de Force** de la passe (`Boulder`, dessin seul).
+- **Objectifs** (dossier §8) : « rapporter ses dents au Gardien. » (Dents d'Or ramassées, pas
+  rendues) et « défier Koga. » (après la CS03 [D], jusqu'au Badge Âme), en tête.
+- **Départs de débogage** (§2.16, à retirer au T24) : `safari_qa` (Porte, 5 000 ₽, équipe de 6),
+  `safari_end_qa` (zone Est, visite à 3 pas et 2 Balls ; clé `safari` nouvelle de `DebugStart`),
+  `warden_qa` (Dents d'Or au Sac). Test `test_j23_qa_starts`.
+
+### 7.3 Valeurs par défaut de la nuit (règle 4)
+
+- Cartes : identifiants `safari_zone_gate`, `safari_zone_{center,east,north,west}`,
+  `safari_zone_rest_house_{center,east,north,west}`, `safari_zone_secret_house`, `wardens_house` ;
+  `safari.json` : arrivée de fin `arrivee_fin` (nom de la grille).
+- La maison de repos du Centre n'a que deux visiteurs (texte 17 : Est, Nord, Ouest, d'après la
+  grille) ; sprites provisoires : employés `clerk`, Pêcheur expert `haru`, Gardien `old_man`,
+  visiteurs `naturalist`, `hiker`, `traveler`.
+- Les quatre maisons de repos ont un titre de zone « MAISON DE REPOS » (titre des intérieurs de
+  la zone Parc Safari).
+- Pastille : capsule sombre translucide, 150 px sous le coin haut gauche (sous le titre de zone).
+- Le comptoir n'avance pas le joueur après le paiement (il marche lui-même vers le passage).
+- Drapeaux de passage du comptoir : `safari_gate_yes`, `safari_gate_leave_yes`,
+  `safari_pay_failed` (remis à faux à la fin de chaque scène).
+
+### 7.4 Textes ajoutés (validés par Kevin le 2026-10-21, validation d'avance)
+
+- Employé de l'entrée, hors visite, quand on lui parle : « Bienvenue au PARC SAFARI ! » / « Passe
+  au comptoir pour entrer. » ; pendant une visite : « Bonne chasse ! » (texte 9).
+- Partie rechargée dans le Parc sans visite (§2.15, message neutre) : « Ta visite du PARC SAFARI est
+  terminée. »
+- CT40 (Sac) : description de la capacité Coud'Krâne (« Rentre la tête au premier tour, ce qui
+  augmente sa Défense, puis charge au second. »).
+- Zone « Parc Safari » (Carte) : « Quatre zones d'herbes hautes au nord de Parmanie, où vivent des
+  Pokémon qu'on ne voit nulle part ailleurs. On y entre sans ses Pokémon : seulement des Safari
+  Balls, des appâts et des cailloux. »
+
+### 7.5 Reporté
+
+- **T14** pêche dans le Parc (aucune case pêchable dans les grilles, espèces absentes).
+- Corde Sortie dans le Parc (elle ne s'utilise qu'en grotte dans le moteur) ; « explorer le Parc
+  Safari. » (aucun drapeau d'arrivée à Parmanie au J22).
+- T7 / T8 art (vues peintes, kit, personnages, dos du joueur) : par lots, plus tard.
+- T21 équilibrage par simulation, T22 interruptions sur téléphone, T23 QA de bout en bout, T24
+  clôture.
+
 ## Annexe A — Textes complémentaires (T2, **validés par Kevin le 2026-10-19** : « annexe A ok »)
 
 > Complète le §8 du dossier 26 (textes 1 à 59, validés). Bulles de 2 lignes d'environ 40
