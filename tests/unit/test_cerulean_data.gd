@@ -241,7 +241,10 @@ func test_tm11_and_its_compatibilities() -> void:
 		&"jigglypuff", &"wigglytuff", &"meowth", &"persian", &"shellder", &"cubone",
 		&"marowak",
 		# Jalon 20 (T7) : Kangourex et Aquali.
-		&"kangaskhan", &"horsea", &"goldeen", &"staryu", &"starmie", &"gyarados", &"vaporeon",
+		&"kangaskhan", &"horsea", &"goldeen", &"staryu", &"starmie", &"gyarados",
+		# Jalon 26 (T3) : Lokhlass.
+		&"lapras",
+		&"vaporeon",
 		] as Array[StringName])
 	var squirtle := PokemonFactory.create(_data, &"squirtle", 20, GameRng.new(3))
 	assert_eq(TmTeach.check(squirtle, tm, _data), TmTeach.Check.COMPATIBLE)
