@@ -51,7 +51,7 @@ numéro ne garantit pas la compatibilité : les tests de sauvegarde restent obli
 | Arènes | J27/J28 | Badges, récompenses, accès |
 | Route 23 et Route Victoire | J29 | Contrôle des huit Badges ; puzzles de Force persistants |
 | Ligue et Panthéon | J30 | Cinq combats consécutifs sans Centre ; défaite : retour au Centre du Plateau ; historique conservé |
-| Grotte Inconnue | J31 | Accès après première victoire |
+| Grotte Azurée | J31 | Accès après première victoire |
 | Pokédex | J32 | Règles d'obtention cohérentes |
 | Sauvegardes | J33–J38 | Migrations, intégrité |
 

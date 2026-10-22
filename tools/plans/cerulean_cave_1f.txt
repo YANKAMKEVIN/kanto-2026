@@ -1,4 +1,4 @@
-# Grotte Inconnue 1F — grille fonctionnelle v1 (jalon 31, T3 ; passe `docs/design/passes/j31-v1-chatgpt.md`
+# Grotte Azurée 1F — grille fonctionnelle v1 (jalon 31, T3 ; passe `docs/design/passes/j31-v1-chatgpt.md`
 # §4 ; plan `docs/tech/jalon-31.md` §2.2). Relevé 1:1 de ROUGE/BLEU (pas de Rouge Feu/Vert Feuille),
 # décodé du désassemblage `pokered` par `tools/art/cerulean_cave_rb_decode.py` ; contrôle :
 # `tools/art/plan_check_cerulean_cave.py` (relie les trois étages par les échelles). La grille fait

@@ -169,7 +169,7 @@ func test_data_file_loads() -> void:
 	var tables := WaterRodTables.new()
 	assert_true(tables.load_file(), "water_rod.json valide")
 	assert_eq(tables.get_errors().size(), 0)
-	# Jalon 31 (T4) : Super Canne de la Grotte Inconnue (groupe 9 de RB).
+	# Jalon 31 (T4) : Super Canne de la Grotte Azurée (groupe 9 de RB).
 	assert_eq(tables.get_ids(), [&"good_rod_any", &"old_rod_any", &"super_rod_cerulean_cave",
 		&"super_rod_default", &"super_rod_fuchsia"] as Array[StringName])
 

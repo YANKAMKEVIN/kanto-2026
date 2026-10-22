@@ -1088,7 +1088,7 @@ Après la fusion de la passe, chaque jalon ne pose que des données et des carte
 | **J28** Arène de Jadielle | dalles (J20, lecteur généralisé) ; `ohko` (Abîme, CT27) | grille et graphe des dalles, Giovanni |
 | **J29** Route Victoire | Force, interrupteurs, barrières, anti-blocage, Surf (Route 23) ; [`StaticEncounter` : Sulfura] | trois étages, huit gardes (variantes `if_flags`), Sulfura |
 | **J30** Ligue | sauvegarde en arrière-plan ; [effets de combat si Q-7] ; Vol vers le Plateau Indigo ; `no_fly` dans la Ligue | tentative de Ligue, Panthéon, générique (siens) |
-| **J31** Grotte Inconnue | Surf ; [`StaticEncounter` : Mewtwo ; Soin si Q-7] | trois étages, Mewtwo |
+| **J31** Grotte Azurée | Surf ; [`StaticEncounter` : Mewtwo ; Soin si Q-7] | trois étages, Mewtwo |
 
 ## 8. Questions pour Kevin
 

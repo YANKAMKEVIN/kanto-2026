@@ -122,7 +122,7 @@ func test_real_tables_load_without_error() -> void:
 	assert_true(lib.load_dir(), "\n".join(lib.get_errors()))
 	# Jalon 17 (T8) : Route 11, Cave Taupiqueur ; jalon 18 (T16) : Route 9, Route 10, Grotte Sombre ;
 	# jalon 19 (T5) : Tour Pokémon ; passe systèmes 2 (S2C) : eau de la carte de QA `qa_sea` ;
-	# jalon 31 (T4) : sol des trois étages de la Grotte Inconnue.
+	# jalon 31 (T4) : sol des trois étages de la Grotte Azurée.
 	assert_eq(lib.get_ids(), [&"cerulean_cave_1f_floor", &"cerulean_cave_2f_floor",
 		&"cerulean_cave_b1f_floor", &"dark_cave_1f_rubble", &"dark_cave_b1f_rubble",
 		&"digletts_cave_rubble", &"mt_moon_1f_rubble",
@@ -206,10 +206,10 @@ func test_every_wild_species_has_battle_sprites() -> void:
 	# + 3 tables de la Tour Pokémon (J19) : hors de la boucle, car leurs rencontres sont des
 	# SPECTRES sans le Scope (dossier 22 §6) ; Osselait n'a pas de sprite avant le J20.
 	# + la table d'eau de la carte de QA `qa_sea` (S2C, retirée à S2Z).
-	# + les 3 tables de la Grotte Inconnue (J31) : leurs espèces empruntées aux J22–J28 et
+	# + les 3 tables de la Grotte Azurée (J31) : leurs espèces empruntées aux J22–J28 et
 	# Métamorph, Mewtwo n'ont pas encore de sprite de combat dans cette base (art du J31, T6).
 	assert_eq(lib.size(), 29,
-		"une table par couple ci-dessous, plus les 3 de la Tour, qa_sea et les 3 de la Grotte Inconnue")
+		"une table par couple ci-dessous, plus les 3 de la Tour, qa_sea et les 3 de la Grotte Azurée")
 	for pair: Array in [[&"route_1", &"grass"], [&"route_2", &"grass"],
 			[&"route_22", &"grass"], [&"viridian_forest", &"grass"], [&"route_2_north", &"grass"],
 			[&"route_3", &"grass"], [&"mt_moon_1f", &"rubble"], [&"mt_moon_b1f", &"rubble"],
@@ -331,5 +331,5 @@ func test_real_tables_carry_no_ghost_item_outside_the_tower() -> void:
 			continue
 		assert_true(table.ghost_unless_item.is_empty(), String(id))
 		if String(id).begins_with("cerulean_cave_"):
-			continue  # Jalon 31 : sol « floor » de la Grotte Inconnue (comme les Îles Écume du J24).
+			continue  # Jalon 31 : sol « floor » de la Grotte Azurée (comme les Îles Écume du J24).
 		assert_ne(table.terrain, &"floor", String(id))

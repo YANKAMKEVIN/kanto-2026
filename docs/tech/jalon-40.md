@@ -76,7 +76,7 @@ Pas de secret ni de donnée personnelle (la sauvegarde réelle de Kevin n'y entr
 ### T3 — Audit fonctionnel et parcours de bout en bout (40B, Kevin et Opus)
 Huit parcours : 1 nouvelle partie ; 2 villes et Arènes du début ; 3 Parmanie, Safari, Surf, Force ;
 4 Îles Écume, Cramois'Île, Manoir ; 5 Sylphe SARL, Safrania, Giovanni ; 6 huit Badges, Route 22,
-Route Victoire ; 7 Conseil des Quatre, Champion, Panthéon ; 8 Grotte Inconnue, Mewtwo, sauvegarde
+Route Victoire ; 7 Conseil des Quatre, Champion, Panthéon ; 8 Grotte Azurée, Mewtwo, sauvegarde
 finale. Variantes : trois starters ; choix exclusifs ; défaites ; interruptions. **Vraies
 sauvegardes** pour le parcours principal.
 Régressions obligatoires : défaite à la Ligue ; interruption pendant une sauvegarde ; capture

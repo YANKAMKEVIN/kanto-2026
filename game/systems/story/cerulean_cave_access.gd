@@ -1,6 +1,6 @@
 class_name CeruleanCaveAccess
 extends RefCounted
-## Accès à la Grotte Inconnue (jalon 31, T2 / T5 ; `docs/tech/jalon-31.md` §2.1, §2.4) : pur,
+## Accès à la Grotte Azurée (jalon 31, T2 / T5 ; `docs/tech/jalon-31.md` §2.1, §2.4) : pur,
 ## statique, sans scène.
 ##
 ## L'accès est **calculé**, jamais sauvegardé (pas de drapeau « cerulean_cave_unlocked ») : il est

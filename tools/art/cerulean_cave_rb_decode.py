@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Décodeur de la Grotte Inconnue de Rouge/Bleu (jalon 31, T3) : géométrie de référence des grilles.
+"""Décodeur de la Grotte Azurée de Rouge/Bleu (jalon 31, T3) : géométrie de référence des grilles.
 
 Même méthode que le décodeur des Îles Écume du J24 (`seafoam_rb_decode.py`, branche `jalon-24`) :
 **lit un désassemblage `pokered` local passé en argument** (jamais embarqué dans le dépôt) :
@@ -36,7 +36,7 @@ ETAGES = ["1F", "2F", "B1F"]
 NOM_CARTE = {"1F": "cerulean_cave_1f", "2F": "cerulean_cave_2f", "B1F": "cerulean_cave_b1f"}
 RB_BRUT = {0x20: ".", 0x21: "E", 0x05: ":", 0x14: "~", 0x15: "S", 0x18: "L", 0x1a: "L"}
 # Les autres tuiles passables de `Cavern_Coll` ($22 trou, $2a, $2d, $30) n'apparaissent pas dans
-# la Grotte Inconnue : le décodeur s'arrête si l'une d'elles y est.
+# la Grotte Azurée : le décodeur s'arrête si l'une d'elles y est.
 AUTRES_PASSABLES = {0x22, 0x2a, 0x2d, 0x30}
 VERS_PROJET = {".": ".", ":": ":", "~": "w", "S": "=", "L": "L", "E": "E", "#": "#"}
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Vérifie les grilles de la Grotte Inconnue (jalon 31, T3 ; plan `docs/tech/jalon-31.md` §2.2, §5).
+"""Vérifie les grilles de la Grotte Azurée (jalon 31, T3 ; plan `docs/tech/jalon-31.md` §2.2, §5).
 
 Grilles : `tools/plans/cerulean_cave_1f.txt`, `_2f.txt`, `_b1f.txt` (relevé 1:1 de Rouge/Bleu,
 `cerulean_cave_rb_decode.py`). Lecture par `plan_grille.lire`, sur un **graphe unique** d'états
@@ -323,9 +323,9 @@ def autotest() -> bool:
 
 def main(argv: list[str]) -> int:
 	if "--autotest" in argv:
-		print("== Autotest du contrôle de la Grotte Inconnue")
+		print("== Autotest du contrôle de la Grotte Azurée")
 		return 0 if autotest() else 1
-	print("== Grotte Inconnue (1F, 2F, B1F)")
+	print("== Grotte Azurée (1F, 2F, B1F)")
 	r = verifier()
 	for e in r.echecs:
 		print(f"   ÉCHEC : {e}")

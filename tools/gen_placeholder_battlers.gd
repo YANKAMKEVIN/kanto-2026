@@ -59,7 +59,7 @@ const SPECIES: Array[String] = [
 	"victreebel", "tangela", "vileplume", "rhyhorn", "kangaskhan",
 	# Jalon 19 (jalon-19.md §2.12) : Exorcistes et rival n° 5 (Caninos vient du J17). Ajouts en fin.
 	"gastly", "haunter", "exeggcute", "gyarados",
-	# Jalon 31 (jalon-31.md §10, T4) : Métamorph et Mewtwo (Grotte Inconnue). Les neuf autres
+	# Jalon 31 (jalon-31.md §10, T4) : Métamorph et Mewtwo (Grotte Azurée). Les neuf autres
 	# espèces de la grotte sont copiées à l'identique des J22–J28. Ajouts en fin.
 	"ditto", "mewtwo",
 ]

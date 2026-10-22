@@ -1,4 +1,4 @@
-# Grotte Inconnue 2F — grille fonctionnelle v1 (jalon 31, T3). Même légende et même source que
+# Grotte Azurée 2F — grille fonctionnelle v1 (jalon 31, T3). Même légende et même source que
 # cerulean_cave_1f.txt. Labyrinthe supérieur, tout en sol bas, sans eau : six échelles qui
 # redescendent au 1F (P1..P6), chacune vers une autre partie du 1F (les secteurs du 1F ne se
 # rejoignent qu'en passant par ici ou par le Surf).

@@ -275,7 +275,7 @@ const VARIANT_FLAGS: Dictionary = {
 	&"rocket_hideout_b4f_item_2": [PEWTER_FLAGS],
 	&"rocket_hideout_b4f_item_3": [PEWTER_FLAGS],
 	&"rocket_hideout_b4f_hidden_1": [PEWTER_FLAGS],
-	# Jalon 31 (T4) : objets de la Grotte Inconnue et Mewtwo (une variante, avant le drapeau).
+	# Jalon 31 (T4) : objets de la Grotte Azurée et Mewtwo (une variante, avant le drapeau).
 	&"cerulean_cave_1f_item_1": [[]],
 	&"cerulean_cave_1f_item_2": [[]],
 	&"cerulean_cave_1f_item_3": [[]],
@@ -409,7 +409,7 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 ## Scènes à déclencheur dont la carte n'est pas encore construite → leur carte (simulées sur les
 ## PNJ de son fichier). Vidée au T19 du jalon 9 (la forêt existe), puis au T11 du jalon 10 (les
 ## deux scènes d'Argenta ont leurs déclencheurs sur la carte).
-## Jalon 31 (T4) : la Grotte Inconnue n'a pas encore de cartes (T6, après la fusion du J24) ;
+## Jalon 31 (T4) : la Grotte Azurée n'a pas encore de cartes (T6, après la fusion du J24) ;
 ## ses scènes sont simulées sur les PNJ de ses fichiers `data/npcs/cerulean_cave_*.json`.
 const AWAITING_MAP: Dictionary[StringName, StringName] = {
 	&"cerulean_cave_1f_item_1": &"cerulean_cave_1f",
@@ -434,7 +434,7 @@ const J20_T21_IDS: Array[StringName] = [
 	&"rocket_hideout_b3f_hidden_1", &"rocket_hideout_b4f_item_1", &"rocket_hideout_b4f_item_2",
 	&"rocket_hideout_b4f_item_3", &"rocket_hideout_b4f_hidden_1",
 ]
-## Jalon 31 (T4) : objets de la Grotte Inconnue et Mewtwo.
+## Jalon 31 (T4) : objets de la Grotte Azurée et Mewtwo.
 const J31_IDS: Array[StringName] = [
 	&"cerulean_cave_1f_item_1",
 	&"cerulean_cave_1f_item_2",
@@ -668,7 +668,7 @@ func test_only_world_items_are_found_items() -> void:
 				if step.kind == CutsceneStep.Kind.GIVE and step.found:
 					found.append("%s:%s" % [id, step.item_id])
 	assert_eq(found, ["celadon_hidden_1:revive",
-		# Jalon 31 (T4) : objets de RB de la Grotte Inconnue.
+		# Jalon 31 (T4) : objets de RB de la Grotte Azurée.
 		"cerulean_cave_1f_hidden_1:rare_candy", "cerulean_cave_1f_item_1:full_restore", "cerulean_cave_1f_item_2:max_elixir", "cerulean_cave_1f_item_3:nugget", "cerulean_cave_2f_item_1:pp_up", "cerulean_cave_2f_item_2:ultra_ball", "cerulean_cave_2f_item_3:full_restore", "cerulean_cave_b1f_hidden_1:ultra_ball", "cerulean_cave_b1f_item_1:ultra_ball", "cerulean_cave_b1f_item_2:max_revive",
 		"dark_cave_1f_item_1:escape_rope", "dark_cave_1f_item_2:antidote",
 		"dark_cave_b1f_hidden_1:super_potion", "dark_cave_b1f_item_1:super_potion",

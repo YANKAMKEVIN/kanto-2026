@@ -1,4 +1,4 @@
-# Jalon 31 — La Grotte Inconnue et Mewtwo
+# Jalon 31 — La Grotte Azurée et Mewtwo
 
 > **PLAN — aucun code n'est écrit par ce document.** Source de vérité :
 > `docs/design/passes/j31-v1-chatgpt.md` (dossier V1, 7 arbitrages verrouillés). Les arbitrages et
@@ -6,7 +6,7 @@
 > des textes recommandés)**. Tout texte absent de la passe est une proposition marquée **[D]**.
 
 > Objectif jouable sur le téléphone : **après la Ligue, on retourne à Azuria, on entre dans la
-> Grotte Inconnue, on y explore trois niveaux, on affronte Mewtwo N70 et on tente de le capturer.**
+> Grotte Azurée, on y explore trois niveaux, on affronte Mewtwo N70 et on tente de le capturer.**
 > Aucune nouvelle fin imposée ; la partie continue librement.
 >
 > Mécaniques nouvelles : l'**accès post-Ligue** (calculé, jamais sauvegardé), la **rencontre
@@ -21,7 +21,7 @@
 | Point | Réel aujourd'hui | Conséquence |
 |---|---|---|
 | Espèce Mewtwo | Absente de `data/pokemon/species/` (les espèces arrivent jalon par jalon) | À créer (T4) |
-| Grotte Inconnue | Aucune carte ni grille dans `tools/plans/` | Les 3 grilles sont à relever (T3) |
+| Grotte Azurée | Aucune carte ni grille dans `tools/plans/` | Les 3 grilles sont à relever (T3) |
 | Entrée côté Azuria | Carte d'Azuria du J13 ; point d'entrée non vérifié | À vérifier en 31.0 (T1) |
 | Victoire à la Ligue | `league_first_clear_completed` n'existe pas encore (J30, conception seule) | Contrat à poser (T2), test avec drapeau simulé |
 | Surf, rochers, courants | Passe systèmes 2 (branches `s2c-surf`, `s2d-force`), pas encore dans `main` | Les cartes réelles attendent leur fusion |
@@ -57,7 +57,7 @@ sans Ligue ; Conseil des Quatre vaincu sans Champion ; accordé : Champion vainc
 enregistrée, y compris après rechargement.
 
 ### 2.2 Géographie
-Entrée au nord-ouest d'Azuria, par les berges. Surf selon le modèle hybride du J16 (CS possédée,
+Entrée sur l'**îlot de la baie est** d'Azuria, déjà peint dans la grille du J13 (D-12), accès **en Surf depuis le canal** (décision de Kevin, 2026-10-22 ; aucune refonte d'Azuria). Surf selon le modèle hybride du J16 (CS possédée,
 Pokémon compatible dans l'équipe, Badge Âme). **Tous les chemins sont atteignables avec les
 capacités déjà obtenues** (test d'atteignabilité sur la grille, T7).
 
@@ -140,7 +140,7 @@ Suite complète, QA téléphone (§6), mise à jour de `etat-projet.md` et de la
 Validés par Kevin le 2026-10-21 (validation d'avance des textes recommandés) : aucune cinématique
 explicative ; dialogues de deux lignes maximum, environ 40 caractères par ligne.
 Propositions **[D]** (la passe ne fournit aucun texte) :
-- Refus d'accès : « Les eaux sont trop agitées. Pas maintenant. » [D]
+- Refus d'accès : « Les eaux sont trop agitées. Pas maintenant. » — **validé par Kevin (2026-10-22)**
 - Première interaction avec Mewtwo : pas de dialogue, cri puis combat. [D]
 - Journaux du Manoir (J25) : inchangés ; la cohérence narrative est un contrôle, pas un texte neuf.
 
@@ -160,25 +160,28 @@ Observer : commandes tactiles du Surf, stabilité des transitions, reprise Andro
 Plan relevé sur la mauvaise version du jeu ; Mewtwo dupliqué par une écriture non atomique ;
 chemin inaccessible sans nouvelle CS ; collision avec le J30 sur le drapeau de victoire.
 
-## 8. Points ouverts pour Kevin
-1. Dresseurs dans la Grotte Inconnue : aucun (fidèle à Rouge/Bleu) ? [D : aucun] — **appliqué**
-2. Fuite devant Mewtwo : il reste (règle d'Artikodin) ? [D : oui] — **appliqué**
-3. Refus d'accès : message de §4 à valider, ou la grotte reste simplement non repérable ? —
-   **message appliqué** (`cerulean_cave_closed`)
-4. Mewtwo absent du Pokédex avant rencontre : voulu ? [D : oui, comme les autres] — **appliqué**
-5. **Géographie de l'entrée** (audit §9) : la grille validée d'Azuria (J13) montre la grotte sur
-   un îlot de la baie est, sans accès ; la passe J31 la veut au nord-ouest par les berges (RB).
-   [D proposé : garder l'îlot de la baie est déjà peint, accès en Surf depuis le canal : aucune
-   refonte d'Azuria ; à trancher avant 31A.]
-6. **Nom** : « Grotte Azurée » (J13) ou « Grotte Inconnue » (J31) ? [D : « Grotte Inconnue »
-   dans les textes du J31, à harmoniser.]
+## 8. Points ouverts pour Kevin — **tranchés par Kevin le 2026-10-22**
+1. Dresseurs dans la Grotte Azurée : **aucun** (fidèle à Rouge/Bleu) — **validé, appliqué**
+2. Fuite devant Mewtwo : **il reste** (règle d'Artikodin) — **validé, appliqué**
+3. Refus d'accès : « Les eaux sont trop agitées. Pas maintenant. » — **validé, appliqué**
+   (`cerulean_cave_closed`)
+4. Mewtwo absent du Pokédex avant rencontre : voulu — **appliqué**
+5. **Géographie de l'entrée** : **îlot de la baie est** déjà peint dans la grille d'Azuria (J13,
+   D-12), accès en Surf depuis le canal ; **pas de déplacement au nord-ouest** (la passe J31 §3,
+   « nord-ouest par les berges », est écartée sur ce point). Contradiction résolue (2026-10-22).
+6. **Nom** : « **Grotte Azurée** » (nom du J13), pas « Grotte Inconnue » ; tous les textes
+   visibles, noms de carte, dialogues et tests du J31 sont alignés. Les identifiants techniques
+   (`cerulean_cave_*`) sont inchangés ; aucun changement de format de sauvegarde.
 7. **Écarts de relevé** : 45 cases de sol sans accès dans RB changées en roche (§10) ; Guérison
    et Max Élixir du 1F ramassés depuis l'eau (comme RB). [D : conservés.]
-8. **Fiches de Pokédex** de Métamorph et Mewtwo [D, à valider] :
+8. **Fiches de Pokédex** de Métamorph et Mewtwo — **validées par Kevin (2026-10-22)** :
    - Métamorph (0,3 m ; 4,0 kg) : « Une masse molle qui prend la forme de ce qu'elle regarde.
      Elle a du mal à garder les yeux en place. »
    - Mewtwo (2,0 m ; 122,0 kg) : « Né d'expériences génétiques poussées trop loin. Il dort au
      fond d'une grotte où personne ne descend. »
+9. **Autres défauts validés par Kevin (2026-10-22)** : Abo et Sablaireau partagent un emplacement
+   de rencontre (en attendant le J32) ; Max Élixir, PP Plus et Morphing créés **sans effet** pour
+   l'instant ; aucun Dresseur, et Mewtwo reste si on fuit.
 
 ## 9. Audit 31.0 (2026-10-22, branche `jalon-31` depuis `systemes-2` à `8c2cb6ee`)
 
@@ -194,8 +197,8 @@ Classement : **I** implémenté et vérifié · **P** présent mais incomplet ·
 | Titre de Champion permanent | H : `league_champion_defeated` (`LeagueAttempt.CHAMPION_DEFEATED`), drapeaux de tentative temporaires | `origin/jalon-30:game/systems/league/league_attempt.gd` |
 | Master Ball | H (`catch_bonus` 1000) | `origin/jalon-26:data/items/items_j26.json` |
 | Journaux du Manoir (Mewtwo nommé) | H | `origin/jalon-25:data/dialogues/pokemon_mansion.json` |
-| Entrée côté Azuria | **Contradiction** : la grille validée d'Azuria (J13, D-12) pose la « Grotte Azurée » sur un îlot de la **baie EST** (51..54, 3..6), repère bloqué, aucune interaction avec l'eau ; la passe J31 §3 la veut au **nord-ouest**, par les berges (RB : (4, 11) d'Azuria) | `tools/plans/azuria.txt`, `docs/design/dossier-16-azuria.md` D-12 |
-| Nom du lieu | **Écart** : « Grotte Azurée » (J13) / « Grotte Inconnue » (J31) | idem |
+| Entrée côté Azuria | **Contradiction résolue (Kevin, 2026-10-22)** : la grille validée d'Azuria (J13, D-12) pose la « Grotte Azurée » sur un îlot de la **baie EST** (51..54, 3..6) ; on la **garde**, accès en Surf depuis le canal (la passe J31 §3 voulait le nord-ouest, écarté) | `tools/plans/azuria.txt`, `docs/design/dossier-16-azuria.md` D-12 |
+| Nom du lieu | **Résolu (Kevin, 2026-10-22)** : « Grotte Azurée » partout (J13) | idem |
 | Terrain de rencontre « floor » (toute case praticable) | I (J19) ; utilisé par les Îles Écume (J24) | `game/pokemon/encounters/encounter_director.gd` |
 | Tables de pêche | I, un seul fichier (`WaterRodTables` ne lit que `water_rod.json` + QA) | `game/world/fishing/water_rod_tables.gd` |
 | Mewtwo, Métamorph | A | — |
@@ -207,8 +210,8 @@ Classement : **I** implémenté et vérifié · **P** présent mais incomplet ·
 
 ## 10. Fait le 2026-10-22 (branche `jalon-31`, depuis `systemes-2` + `plans-j31-j40`)
 
-Seules les parties démarrables (§0.1) : T1 à T5. Défauts **[D]** appliqués (page d'arbitrages, en
-attente de Kevin) : **aucun Dresseur** dans la grotte (§8.1) ; **Mewtwo reste après une fuite**
+Seules les parties démarrables (§0.1) : T1 à T5. Défauts **[D]** appliqués (validés par Kevin
+le 2026-10-22) : **aucun Dresseur** dans la grotte (§8.1) ; **Mewtwo reste après une fuite**
 (§8.2, règle d'Artikodin) ; **refus d'accès par le message du §4** (§8.3) ; Mewtwo sans fiche de
 Pokédex avant rencontre (§8.4, comme les autres).
 
@@ -273,9 +276,8 @@ Pokédex avant rencontre (§8.4, comme les autres).
 
 ### 10.1 Reste à faire (attend d'autres branches ou Kevin)
 - **31A — entrée** (T5 en jeu) : bouche de la grotte sur la carte d'Azuria, eau surfable, warp
-  vers `cerulean_cave_1f:entree` qui interroge `CeruleanCaveAccess` : **après la décision de
-  Kevin sur la géographie** (îlot de la baie est du J13 ou berge nord-ouest de RB) et la fusion du
-  J30.
+  vers `cerulean_cave_1f:entree` qui interroge `CeruleanCaveAccess` : géographie
+  tranchée (îlot de la baie est du J13, Surf depuis le canal) ; après la fusion du J30.
 - **T6–T8 — cartes** : trois `tools/build_cerulean_cave_*.gd` d'après les grilles ; **après la
   fusion du J24** (exports des niveaux de sol dans `GameMap`, kit de grotte à niveaux) ; vue
   générale peinte à valider (T3, levier 4) ; `fishable_cells` ; voile : aucun (grotte éclairée,

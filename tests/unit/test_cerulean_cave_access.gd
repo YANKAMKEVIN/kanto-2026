@@ -1,6 +1,6 @@
 extends GutTest
 ## CeruleanCaveAccess (jalon 31, T2 / T5 ; `docs/tech/jalon-31.md` §2.1, §5 critère 1) : accès à
-## la Grotte Inconnue calculé depuis le titre de Champion du J30, jamais sauvegardé. Les cinq cas
+## la Grotte Azurée calculé depuis le titre de Champion du J30, jamais sauvegardé. Les cinq cas
 ## du §2.1, le rechargement, une nouvelle tentative de Ligue après le titre, le message de refus
 ## et le drapeau « grotte visitée ».
 

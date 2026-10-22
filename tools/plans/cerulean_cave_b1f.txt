@@ -1,4 +1,4 @@
-# Grotte Inconnue B1F — grille fonctionnelle v1 (jalon 31, T3). Même légende et même source que
+# Grotte Azurée B1F — grille fonctionnelle v1 (jalon 31, T3). Même légende et même source que
 # cerulean_cave_1f.txt. Parcours final : arrivée par l'échelle P7 (3, 6) au nord-ouest, plateformes
 # hautes, escaliers, puis Surf sur les bassins du sud-est jusqu'à la salle de Mewtwo (25..28,
 # 12..14), qu'on atteint par les escaliers (26..27, 15) depuis l'eau.

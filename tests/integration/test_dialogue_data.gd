@@ -69,7 +69,7 @@ const J17_TOKENS: Dictionary[String, Array] = {
 ## Jalon 20 (T17) : le panneau neutre de la cabine du T16 est remplacé par `elevator_panel` (T13).
 ## S2C (option A de Kevin, 2026-10-21) : question du choix « Pêcher / Surfer » [D], à valider.
 const UNVALIDATED: Array[StringName] = [&"water_choice"]
-## Jalon 31 (T4, T5) : dialogues de la Grotte Inconnue, joués quand ses cartes et la bouche
+## Jalon 31 (T4, T5) : dialogues de la Grotte Azurée, joués quand ses cartes et la bouche
 ## d'Azuria existeront (T6, 31A) ; textes [D] du plan §4 (cri de Mewtwo, refus d'accès).
 const IDS_J31: Array[StringName] = [
 	&"cerulean_cave_1f_item_1",
@@ -1087,7 +1087,7 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		&"saffron_gates_open",
 		# Jalon 20 (T12) : Évoli reçu (étape « gift_pokemon »).
 		&"eevee_received",
-		# Jalon 31 (T4) : objets de la Grotte Inconnue ; Mewtwo (rencontre fixe, « static »).
+		# Jalon 31 (T4) : objets de la Grotte Azurée ; Mewtwo (rencontre fixe, « static »).
 		&"got_cerulean_cave_1f_item_1",
 		&"got_cerulean_cave_1f_item_2",
 		&"got_cerulean_cave_1f_item_3",
@@ -1650,7 +1650,7 @@ func test_oak_parcel_lines() -> void:
 	# Jalon 18 (T16) : sept objets au sol (Route 9, Route 10, grotte) et la Super Potion cachée.
 	# Jalon 20 (T21) : onze objets au sol et trois caches du repaire, la Clé (chute et prise),
 	# Giovanni et le Scope Sylphe.
-	# Jalon 31 (T4) : huit objets au sol et deux cachés de la Grotte Inconnue, Mewtwo.
+	# Jalon 31 (T4) : huit objets au sol et deux cachés de la Grotte Azurée, Mewtwo.
 	assert_eq(launched, 114, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
 		+ "sa CT34, Ondine (pont, Arène et rattrapage), écran, module, console, objets de la "
 		+ "Route 25, le Rocket d'Azuria (2) et le barrage sud ; J15 : objets de la Route 5 ; "
@@ -1660,7 +1660,7 @@ func test_oak_parcel_lines() -> void:
 		+ "J20 (T17) : Super Potion de la Route 8, quatre caches (Route 8, souterrain ×2, "
 		+ "ville), Erika (2) ; "
 		+ "J20 (T21) : repaire (11 objets, 3 caches, Clé ×2, Giovanni, Scope) ; "
-		+ "J31 : Grotte Inconnue (8 objets, 2 caches, Mewtwo)")
+		+ "J31 : Grotte Azurée (8 objets, 2 caches, Mewtwo)")
 	# Le jeton n'apparaît que dans la réplique de l'espèce, « {pokemon} » dans les phrases du
 	# compagnon (J11), et ceux de la Pension dans ses répliques (J15).
 	for row: Array in _pages():
