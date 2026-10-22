@@ -81,6 +81,13 @@ const _NPC_SCENE: PackedScene = preload("res://game/world/npc/npc.tscn")
 @export var forced_surf_cells: Array[Vector2i] = []
 ## Cases d'eau où l'on peut pêcher (S2C-bis, [FishingSpot]). Vide : aucune.
 @export var fishable_cells: Array[Vector2i] = []
+## Niveaux de sol (jalon 29, Route Victoire ; collisions « par paires » de Rouge/Bleu) : on ne passe
+## du sol bas au sol haut que par un escalier, un rocher ne change jamais de niveau
+## ([method GridWorld.set_level], [method GridWorld.levels_compatible]). Les autres cases restent
+## de tout niveau ([constant GridWorld.Level.ANY]). Vides : carte sans niveaux.
+@export var low_cells: Array[Vector2i] = []
+@export var high_cells: Array[Vector2i] = []
+@export var stairs_cells: Array[Vector2i] = []
 
 var _grid: GridWorld
 var _warps: WarpTable
@@ -365,6 +372,12 @@ func _build_grid() -> void:
 		_grid.set_surfable(cell)
 	for cell: Vector2i in current_cells:
 		_grid.set_current(cell, current_cells[cell])
+	for cell: Vector2i in low_cells:
+		_grid.set_level(cell, GridWorld.Level.LOW)
+	for cell: Vector2i in high_cells:
+		_grid.set_level(cell, GridWorld.Level.HIGH)
+	for cell: Vector2i in stairs_cells:
+		_grid.set_level(cell, GridWorld.Level.STAIRS)
 	# Objets triés par les pieds (Entities) et relief peint posé au sol (GroundDecals :
 	# falaises, massif ; jalon-07.md §6.6).
 	for layer_path: NodePath in _PROP_LAYERS:

@@ -1,0 +1,993 @@
+{
+	"victory_road_1f_item_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_victory_road_1f_item_1"
+				],
+				"steps": [
+					{
+						"despawn": "victory_road_1f_item_1"
+					},
+					{
+						"give": "tm43",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_victory_road_1f_item_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"victory_road_1f_item_2": {
+		"variants": [
+			{
+				"unless": [
+					"got_victory_road_1f_item_2"
+				],
+				"steps": [
+					{
+						"despawn": "victory_road_1f_item_2"
+					},
+					{
+						"give": "rare_candy",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_victory_road_1f_item_2"
+						]
+					}
+				]
+			}
+		]
+	},
+	"victory_road_2f_item_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_victory_road_2f_item_1"
+				],
+				"steps": [
+					{
+						"despawn": "victory_road_2f_item_1"
+					},
+					{
+						"give": "tm17",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_victory_road_2f_item_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"victory_road_2f_item_2": {
+		"variants": [
+			{
+				"unless": [
+					"got_victory_road_2f_item_2"
+				],
+				"steps": [
+					{
+						"despawn": "victory_road_2f_item_2"
+					},
+					{
+						"give": "full_heal",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_victory_road_2f_item_2"
+						]
+					}
+				]
+			}
+		]
+	},
+	"victory_road_2f_item_3": {
+		"variants": [
+			{
+				"unless": [
+					"got_victory_road_2f_item_3"
+				],
+				"steps": [
+					{
+						"despawn": "victory_road_2f_item_3"
+					},
+					{
+						"give": "tm05",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_victory_road_2f_item_3"
+						]
+					}
+				]
+			}
+		]
+	},
+	"victory_road_2f_item_4": {
+		"variants": [
+			{
+				"unless": [
+					"got_victory_road_2f_item_4"
+				],
+				"steps": [
+					{
+						"despawn": "victory_road_2f_item_4"
+					},
+					{
+						"give": "guard_spec",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_victory_road_2f_item_4"
+						]
+					}
+				]
+			}
+		]
+	},
+	"victory_road_2f_hidden_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_victory_road_2f_hidden_1"
+				],
+				"steps": [
+					{
+						"give": "ultra_ball",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_victory_road_2f_hidden_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"victory_road_2f_hidden_2": {
+		"variants": [
+			{
+				"unless": [
+					"got_victory_road_2f_hidden_2"
+				],
+				"steps": [
+					{
+						"give": "full_restore",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_victory_road_2f_hidden_2"
+						]
+					}
+				]
+			}
+		]
+	},
+	"victory_road_3f_item_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_victory_road_3f_item_1"
+				],
+				"steps": [
+					{
+						"despawn": "victory_road_3f_item_1"
+					},
+					{
+						"give": "max_revive",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_victory_road_3f_item_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"victory_road_3f_item_2": {
+		"variants": [
+			{
+				"unless": [
+					"got_victory_road_3f_item_2"
+				],
+				"steps": [
+					{
+						"despawn": "victory_road_3f_item_2"
+					},
+					{
+						"give": "tm47",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_victory_road_3f_item_2"
+						]
+					}
+				]
+			}
+		]
+	},
+	"route_23_hidden_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_route_23_hidden_1"
+				],
+				"steps": [
+					{
+						"give": "full_restore",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_route_23_hidden_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"route_23_hidden_2": {
+		"variants": [
+			{
+				"unless": [
+					"got_route_23_hidden_2"
+				],
+				"steps": [
+					{
+						"give": "ultra_ball",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_route_23_hidden_2"
+						]
+					}
+				]
+			}
+		]
+	},
+	"route_23_hidden_3": {
+		"variants": [
+			{
+				"unless": [
+					"got_route_23_hidden_3"
+				],
+				"steps": [
+					{
+						"give": "max_ether",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_route_23_hidden_3"
+						]
+					}
+				]
+			}
+		]
+	},
+	"route_23_check_1": {
+		"variants": [
+			{
+				"unless": [
+					"badge_earth"
+				],
+				"steps": [
+					{
+						"face": "route_23_guard_1",
+						"to": "player"
+					},
+					{
+						"face": "player",
+						"to": "route_23_guard_1"
+					},
+					{
+						"dialogue": "guard_badge_earth_refuse"
+					},
+					{
+						"move": "player",
+						"path": [
+							"down"
+						],
+						"keep_facing": true
+					}
+				]
+			},
+			{
+				"if": [
+					"badge_earth"
+				],
+				"unless": [
+					"route_23_check_1_passed"
+				],
+				"steps": [
+					{
+						"face": "route_23_guard_1",
+						"to": "player"
+					},
+					{
+						"dialogue": "guard_badge_earth_pass"
+					},
+					{
+						"set": [
+							"route_23_check_1_passed"
+						]
+					}
+				]
+			}
+		]
+	},
+	"route_23_guard_1_talk": {
+		"variants": [
+			{
+				"if": [
+					"badge_earth"
+				],
+				"steps": [
+					{
+						"dialogue": "guard_badge_earth_pass"
+					}
+				]
+			},
+			{
+				"unless": [
+					"badge_earth"
+				],
+				"steps": [
+					{
+						"dialogue": "guard_badge_earth_refuse"
+					}
+				]
+			}
+		]
+	},
+	"route_23_check_2": {
+		"variants": [
+			{
+				"unless": [
+					"badge_volcano"
+				],
+				"steps": [
+					{
+						"face": "route_23_guard_2",
+						"to": "player"
+					},
+					{
+						"face": "player",
+						"to": "route_23_guard_2"
+					},
+					{
+						"dialogue": "guard_badge_volcano_refuse"
+					},
+					{
+						"move": "player",
+						"path": [
+							"down"
+						],
+						"keep_facing": true
+					}
+				]
+			},
+			{
+				"if": [
+					"badge_volcano"
+				],
+				"unless": [
+					"route_23_check_2_passed"
+				],
+				"steps": [
+					{
+						"face": "route_23_guard_2",
+						"to": "player"
+					},
+					{
+						"dialogue": "guard_badge_volcano_pass"
+					},
+					{
+						"set": [
+							"route_23_check_2_passed"
+						]
+					}
+				]
+			}
+		]
+	},
+	"route_23_guard_2_talk": {
+		"variants": [
+			{
+				"if": [
+					"badge_volcano"
+				],
+				"steps": [
+					{
+						"dialogue": "guard_badge_volcano_pass"
+					}
+				]
+			},
+			{
+				"unless": [
+					"badge_volcano"
+				],
+				"steps": [
+					{
+						"dialogue": "guard_badge_volcano_refuse"
+					}
+				]
+			}
+		]
+	},
+	"route_23_check_3": {
+		"variants": [
+			{
+				"unless": [
+					"badge_marsh"
+				],
+				"steps": [
+					{
+						"face": "route_23_guard_3",
+						"to": "player"
+					},
+					{
+						"face": "player",
+						"to": "route_23_guard_3"
+					},
+					{
+						"dialogue": "guard_badge_marsh_refuse"
+					},
+					{
+						"move": "player",
+						"path": [
+							"down"
+						],
+						"keep_facing": true
+					}
+				]
+			},
+			{
+				"if": [
+					"badge_marsh"
+				],
+				"unless": [
+					"route_23_check_3_passed"
+				],
+				"steps": [
+					{
+						"face": "route_23_guard_3",
+						"to": "player"
+					},
+					{
+						"dialogue": "guard_badge_marsh_pass"
+					},
+					{
+						"set": [
+							"route_23_check_3_passed"
+						]
+					}
+				]
+			}
+		]
+	},
+	"route_23_guard_3_talk": {
+		"variants": [
+			{
+				"if": [
+					"badge_marsh"
+				],
+				"steps": [
+					{
+						"dialogue": "guard_badge_marsh_pass"
+					}
+				]
+			},
+			{
+				"unless": [
+					"badge_marsh"
+				],
+				"steps": [
+					{
+						"dialogue": "guard_badge_marsh_refuse"
+					}
+				]
+			}
+		]
+	},
+	"route_23_check_4": {
+		"variants": [
+			{
+				"unless": [
+					"badge_soul"
+				],
+				"steps": [
+					{
+						"face": "route_23_guard_4",
+						"to": "player"
+					},
+					{
+						"face": "player",
+						"to": "route_23_guard_4"
+					},
+					{
+						"dialogue": "guard_badge_soul_refuse"
+					},
+					{
+						"move": "player",
+						"path": [
+							"down"
+						],
+						"keep_facing": true
+					}
+				]
+			},
+			{
+				"if": [
+					"badge_soul"
+				],
+				"unless": [
+					"route_23_check_4_passed"
+				],
+				"steps": [
+					{
+						"face": "route_23_guard_4",
+						"to": "player"
+					},
+					{
+						"dialogue": "guard_badge_soul_pass"
+					},
+					{
+						"set": [
+							"route_23_check_4_passed"
+						]
+					}
+				]
+			}
+		]
+	},
+	"route_23_guard_4_talk": {
+		"variants": [
+			{
+				"if": [
+					"badge_soul"
+				],
+				"steps": [
+					{
+						"dialogue": "guard_badge_soul_pass"
+					}
+				]
+			},
+			{
+				"unless": [
+					"badge_soul"
+				],
+				"steps": [
+					{
+						"dialogue": "guard_badge_soul_refuse"
+					}
+				]
+			}
+		]
+	},
+	"route_23_check_5": {
+		"variants": [
+			{
+				"unless": [
+					"badge_rainbow"
+				],
+				"steps": [
+					{
+						"face": "route_23_guard_5",
+						"to": "player"
+					},
+					{
+						"face": "player",
+						"to": "route_23_guard_5"
+					},
+					{
+						"dialogue": "guard_badge_rainbow_refuse"
+					},
+					{
+						"move": "player",
+						"path": [
+							"down"
+						],
+						"keep_facing": true
+					}
+				]
+			},
+			{
+				"if": [
+					"badge_rainbow"
+				],
+				"unless": [
+					"route_23_check_5_passed"
+				],
+				"steps": [
+					{
+						"face": "route_23_guard_5",
+						"to": "player"
+					},
+					{
+						"dialogue": "guard_badge_rainbow_pass"
+					},
+					{
+						"set": [
+							"route_23_check_5_passed"
+						]
+					}
+				]
+			}
+		]
+	},
+	"route_23_guard_5_talk": {
+		"variants": [
+			{
+				"if": [
+					"badge_rainbow"
+				],
+				"steps": [
+					{
+						"dialogue": "guard_badge_rainbow_pass"
+					}
+				]
+			},
+			{
+				"unless": [
+					"badge_rainbow"
+				],
+				"steps": [
+					{
+						"dialogue": "guard_badge_rainbow_refuse"
+					}
+				]
+			}
+		]
+	},
+	"route_23_check_6": {
+		"variants": [
+			{
+				"unless": [
+					"badge_thunder"
+				],
+				"steps": [
+					{
+						"face": "route_23_guard_6",
+						"to": "player"
+					},
+					{
+						"face": "player",
+						"to": "route_23_guard_6"
+					},
+					{
+						"dialogue": "guard_badge_thunder_refuse"
+					},
+					{
+						"move": "player",
+						"path": [
+							"down"
+						],
+						"keep_facing": true
+					}
+				]
+			},
+			{
+				"if": [
+					"badge_thunder"
+				],
+				"unless": [
+					"route_23_check_6_passed"
+				],
+				"steps": [
+					{
+						"face": "route_23_guard_6",
+						"to": "player"
+					},
+					{
+						"dialogue": "guard_badge_thunder_pass"
+					},
+					{
+						"set": [
+							"route_23_check_6_passed"
+						]
+					}
+				]
+			}
+		]
+	},
+	"route_23_guard_6_talk": {
+		"variants": [
+			{
+				"if": [
+					"badge_thunder"
+				],
+				"steps": [
+					{
+						"dialogue": "guard_badge_thunder_pass"
+					}
+				]
+			},
+			{
+				"unless": [
+					"badge_thunder"
+				],
+				"steps": [
+					{
+						"dialogue": "guard_badge_thunder_refuse"
+					}
+				]
+			}
+		]
+	},
+	"route_23_check_7": {
+		"variants": [
+			{
+				"unless": [
+					"badge_cascade"
+				],
+				"steps": [
+					{
+						"face": "route_23_guard_7",
+						"to": "player"
+					},
+					{
+						"face": "player",
+						"to": "route_23_guard_7"
+					},
+					{
+						"dialogue": "guard_badge_cascade_refuse"
+					},
+					{
+						"move": "player",
+						"path": [
+							"down"
+						],
+						"keep_facing": true
+					}
+				]
+			},
+			{
+				"if": [
+					"badge_cascade"
+				],
+				"unless": [
+					"route_23_check_7_passed"
+				],
+				"steps": [
+					{
+						"face": "route_23_guard_7",
+						"to": "player"
+					},
+					{
+						"dialogue": "guard_badge_cascade_pass"
+					},
+					{
+						"set": [
+							"route_23_check_7_passed"
+						]
+					}
+				]
+			}
+		]
+	},
+	"route_23_guard_7_talk": {
+		"variants": [
+			{
+				"if": [
+					"badge_cascade"
+				],
+				"steps": [
+					{
+						"dialogue": "guard_badge_cascade_pass"
+					}
+				]
+			},
+			{
+				"unless": [
+					"badge_cascade"
+				],
+				"steps": [
+					{
+						"dialogue": "guard_badge_cascade_refuse"
+					}
+				]
+			}
+		]
+	},
+	"route_22_gate_check": {
+		"variants": [
+			{
+				"unless": [
+					"badge_boulder"
+				],
+				"steps": [
+					{
+						"face": "route_22_gate_guard",
+						"to": "player"
+					},
+					{
+						"face": "player",
+						"to": "route_22_gate_guard"
+					},
+					{
+						"dialogue": "guard_badge_boulder_refuse"
+					},
+					{
+						"move": "player",
+						"path": [
+							"down"
+						],
+						"keep_facing": true
+					}
+				]
+			},
+			{
+				"if": [
+					"badge_boulder"
+				],
+				"unless": [
+					"route_22_gate_check_passed"
+				],
+				"steps": [
+					{
+						"face": "route_22_gate_guard",
+						"to": "player"
+					},
+					{
+						"dialogue": "guard_badge_boulder_pass"
+					},
+					{
+						"set": [
+							"route_22_gate_check_passed"
+						]
+					}
+				]
+			}
+		]
+	},
+	"route_22_gate_guard_talk": {
+		"variants": [
+			{
+				"if": [
+					"badge_boulder"
+				],
+				"steps": [
+					{
+						"dialogue": "guard_badge_boulder_pass"
+					}
+				]
+			},
+			{
+				"unless": [
+					"badge_boulder"
+				],
+				"steps": [
+					{
+						"dialogue": "guard_badge_boulder_refuse"
+					}
+				]
+			}
+		]
+	},
+	"rival_route22_final": {
+		"variants": [
+			{
+				"if": [
+					"badge_earth"
+				],
+				"unless": [
+					"rival_route22_final_won"
+				],
+				"steps": [
+					{
+						"face": "rival_final",
+						"to": "player"
+					},
+					{
+						"face": "player",
+						"to": "rival_final"
+					},
+					{
+						"dialogue": "rival_route22_final_greet"
+					},
+					{
+						"battle": "rival_route22_final",
+						"win": [
+							"rival_route22_final_won"
+						]
+					},
+					{
+						"wait": 0.4,
+						"if": [
+							"rival_route22_final_won"
+						]
+					},
+					{
+						"dialogue": "rival_route22_final_won",
+						"if": [
+							"rival_route22_final_won"
+						]
+					},
+					{
+						"despawn": "rival_final",
+						"if": [
+							"rival_route22_final_won"
+						]
+					},
+					{
+						"dialogue": "rival_route22_final_lost",
+						"unless": [
+							"rival_route22_final_won"
+						]
+					},
+					{
+						"wake_up": true,
+						"unless": [
+							"rival_route22_final_won"
+						]
+					}
+				]
+			}
+		]
+	},
+	"moltres": {
+		"variants": [
+			{
+				"unless": [
+					"moltres_done"
+				],
+				"steps": [
+					{
+						"dialogue": "moltres_presence"
+					},
+					{
+						"wild_battle": "moltres",
+						"level": 50,
+						"intro": "legendary",
+						"actor": "moltres",
+						"static": {
+							"done": "moltres_done",
+							"caught": "moltres_caught"
+						}
+					},
+					{
+						"dialogue": "moltres_flew_away",
+						"if": [
+							"moltres_done"
+						],
+						"unless": [
+							"moltres_caught"
+						]
+					}
+				]
+			}
+		]
+	}
+}

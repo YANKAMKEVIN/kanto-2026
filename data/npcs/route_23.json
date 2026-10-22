@@ -1,0 +1,67 @@
+{
+	"route_23_guard_1": {
+		"cell": [
+			4,
+			35
+		],
+		"facing": "down",
+		"sprite": "guard",
+		"dialogue": "route_23_guard_1"
+	},
+	"route_23_guard_2": {
+		"cell": [
+			10,
+			56
+		],
+		"facing": "down",
+		"sprite": "guard",
+		"dialogue": "route_23_guard_2"
+	},
+	"route_23_guard_3": {
+		"cell": [
+			8,
+			85
+		],
+		"facing": "down",
+		"sprite": "guard",
+		"dialogue": "route_23_guard_3",
+		"move_mode": "surf"
+	},
+	"route_23_guard_4": {
+		"cell": [
+			11,
+			96
+		],
+		"facing": "down",
+		"sprite": "guard",
+		"dialogue": "route_23_guard_4",
+		"move_mode": "surf"
+	},
+	"route_23_guard_5": {
+		"cell": [
+			12,
+			105
+		],
+		"facing": "down",
+		"sprite": "guard",
+		"dialogue": "route_23_guard_5"
+	},
+	"route_23_guard_6": {
+		"cell": [
+			8,
+			119
+		],
+		"facing": "down",
+		"sprite": "guard",
+		"dialogue": "route_23_guard_6"
+	},
+	"route_23_guard_7": {
+		"cell": [
+			8,
+			136
+		],
+		"facing": "down",
+		"sprite": "guard",
+		"dialogue": "route_23_guard_7"
+	}
+}

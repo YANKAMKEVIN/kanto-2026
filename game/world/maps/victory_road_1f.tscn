@@ -1,0 +1,427 @@
+[gd_scene format=4]
+
+[ext_resource type="Script" path="res://game/world/map.gd" id="1_4n6n0"]
+[ext_resource type="TileSet" path="res://assets/tiles/overworld.tres" id="2_8bnqj"]
+[ext_resource type="Script" path="res://game/world/flag_gate.gd" id="3_g3l57"]
+[ext_resource type="Script" path="res://game/world/warp_point.gd" id="4_35ro1"]
+[ext_resource type="Script" path="res://game/world/boulders/boulder_setup.gd" id="5_by53t"]
+
+[node name="VictoryRoad1F" type="Node2D" unique_id=1836768101]
+script = ExtResource("1_4n6n0")
+map_id = &"victory_road_1f"
+display_name = "Route Victoire"
+region = "Route 23"
+size = Vector2i(20, 18)
+light_profile = &"cave_1f"
+low_cells = Array[Vector2i]([Vector2i(11, 0), Vector2i(14, 0), Vector2i(15, 0), Vector2i(2, 1), Vector2i(3, 1), Vector2i(11, 1), Vector2i(15, 1), Vector2i(16, 1), Vector2i(2, 2), Vector2i(3, 2), Vector2i(9, 2), Vector2i(10, 2), Vector2i(11, 2), Vector2i(12, 2), Vector2i(13, 2), Vector2i(14, 2), Vector2i(15, 2), Vector2i(16, 2), Vector2i(17, 2), Vector2i(2, 3), Vector2i(3, 3), Vector2i(4, 3), Vector2i(11, 3), Vector2i(12, 3), Vector2i(14, 3), Vector2i(15, 3), Vector2i(16, 3), Vector2i(17, 3), Vector2i(18, 3), Vector2i(1, 4), Vector2i(2, 4), Vector2i(3, 4), Vector2i(18, 4), Vector2i(19, 4), Vector2i(1, 5), Vector2i(2, 5), Vector2i(3, 5), Vector2i(18, 5), Vector2i(19, 5), Vector2i(2, 6), Vector2i(3, 6), Vector2i(18, 6), Vector2i(19, 6), Vector2i(2, 7), Vector2i(3, 7), Vector2i(18, 7), Vector2i(19, 7), Vector2i(3, 8), Vector2i(4, 8), Vector2i(5, 8), Vector2i(6, 8), Vector2i(7, 8), Vector2i(8, 8), Vector2i(9, 8), Vector2i(15, 8), Vector2i(16, 8), Vector2i(17, 8), Vector2i(18, 8), Vector2i(19, 8), Vector2i(2, 9), Vector2i(3, 9), Vector2i(9, 9), Vector2i(16, 9), Vector2i(17, 9), Vector2i(18, 9), Vector2i(2, 10), Vector2i(2, 11), Vector2i(3, 11), Vector2i(15, 11), Vector2i(16, 11), Vector2i(17, 11), Vector2i(1, 12), Vector2i(2, 12), Vector2i(3, 12), Vector2i(14, 12), Vector2i(15, 12), Vector2i(16, 12), Vector2i(17, 12), Vector2i(0, 13), Vector2i(1, 13), Vector2i(2, 13), Vector2i(14, 13), Vector2i(16, 13), Vector2i(17, 13), Vector2i(0, 14), Vector2i(1, 14), Vector2i(4, 14), Vector2i(5, 14), Vector2i(8, 14), Vector2i(9, 14), Vector2i(10, 14), Vector2i(11, 14), Vector2i(12, 14), Vector2i(13, 14), Vector2i(14, 14), Vector2i(15, 14), Vector2i(16, 14), Vector2i(1, 15), Vector2i(2, 15), Vector2i(3, 15), Vector2i(4, 15), Vector2i(5, 15), Vector2i(7, 15), Vector2i(8, 15), Vector2i(9, 15), Vector2i(12, 15), Vector2i(13, 15), Vector2i(14, 15), Vector2i(15, 15), Vector2i(16, 15), Vector2i(2, 16), Vector2i(3, 16), Vector2i(4, 16), Vector2i(5, 16), Vector2i(6, 16), Vector2i(7, 16), Vector2i(8, 16), Vector2i(9, 16), Vector2i(12, 16), Vector2i(13, 16), Vector2i(6, 17), Vector2i(7, 17), Vector2i(8, 17), Vector2i(9, 17)])
+high_cells = Array[Vector2i]([Vector2i(5, 4), Vector2i(6, 4), Vector2i(7, 4), Vector2i(8, 4), Vector2i(9, 4), Vector2i(10, 4), Vector2i(11, 4), Vector2i(12, 4), Vector2i(13, 4), Vector2i(14, 4), Vector2i(15, 4), Vector2i(16, 4), Vector2i(5, 5), Vector2i(6, 5), Vector2i(7, 5), Vector2i(8, 5), Vector2i(9, 5), Vector2i(10, 5), Vector2i(11, 5), Vector2i(12, 5), Vector2i(13, 5), Vector2i(14, 5), Vector2i(15, 5), Vector2i(16, 5), Vector2i(5, 6), Vector2i(6, 6), Vector2i(7, 6), Vector2i(8, 6), Vector2i(9, 6), Vector2i(10, 6), Vector2i(11, 6), Vector2i(12, 6), Vector2i(13, 6), Vector2i(14, 6), Vector2i(15, 6), Vector2i(16, 6), Vector2i(11, 7), Vector2i(12, 7), Vector2i(11, 8), Vector2i(12, 8), Vector2i(5, 9), Vector2i(6, 9), Vector2i(7, 9), Vector2i(11, 9), Vector2i(12, 9), Vector2i(5, 10), Vector2i(6, 10), Vector2i(7, 10), Vector2i(11, 10), Vector2i(12, 10), Vector2i(5, 11), Vector2i(6, 11), Vector2i(7, 11), Vector2i(11, 11), Vector2i(12, 11), Vector2i(5, 12), Vector2i(6, 12), Vector2i(7, 12), Vector2i(8, 12), Vector2i(9, 12), Vector2i(10, 12), Vector2i(11, 12), Vector2i(12, 12)])
+stairs_cells = Array[Vector2i]([Vector2i(7, 7), Vector2i(15, 7), Vector2i(5, 13)])
+
+[node name="Ground" type="TileMapLayer" parent="." unique_id=113751905]
+tile_map_data = PackedByteArray("AAAAAAAAAAABAAcAAAABAAAAAAAAAAcAAAACAAAAAAABAAcAAAADAAAAAAAAAAcAAAAEAAAAAAAAAAcAAAAFAAAAAAABAAcAAAAGAAAAAAABAAcAAAAHAAAAAAAAAAcAAAAIAAAAAAABAAcAAAAJAAAAAAAAAAcAAAAKAAAAAAAAAAcAAAALAAAAAAABAA0AAAAMAAAAAAAAAAcAAAANAAAAAAABAAcAAAAOAAAAAAABAA0AAAAPAAAAAAABAA0AAAAQAAAAAAABAAcAAAARAAAAAAABAAcAAAASAAAAAAABAAcAAAATAAAAAAAAAAcAAAAAAAEAAAAAAAcAAAABAAEAAAAAAAIAAAACAAEAAAAAAA0AAAADAAEAAAABAA0AAAAEAAEAAAABAAcAAAAFAAEAAAABAAcAAAAGAAEAAAAAAAcAAAAHAAEAAAAAAAcAAAAIAAEAAAABAAcAAAAJAAEAAAABAAcAAAAKAAEAAAAAAAcAAAALAAEAAAABAA0AAAAMAAEAAAAAAAcAAAANAAEAAAABAAcAAAAOAAEAAAABAAcAAAAPAAEAAAABAA0AAAAQAAEAAAABAA0AAAARAAEAAAAAAAcAAAASAAEAAAABAAcAAAATAAEAAAABAAcAAAAAAAIAAAAAAAcAAAABAAIAAAAAAAcAAAACAAIAAAABAA0AAAADAAIAAAABAA0AAAAEAAIAAAABAAcAAAAFAAIAAAAAAAcAAAAGAAIAAAABAAcAAAAHAAIAAAAAAAcAAAAIAAIAAAAAAAcAAAAJAAIAAAAAAA0AAAAKAAIAAAABAA0AAAALAAIAAAABAA0AAAAMAAIAAAAAAA0AAAANAAIAAAAAAA0AAAAOAAIAAAAAAA0AAAAPAAIAAAABAA0AAAAQAAIAAAAAAA0AAAARAAIAAAABAA0AAAASAAIAAAAAAAcAAAATAAIAAAABAAcAAAAAAAMAAAABAAcAAAABAAMAAAABAAcAAAACAAMAAAABAA0AAAADAAMAAAAAAA0AAAAEAAMAAAAAAA0AAAAFAAMAAAABAAcAAAAGAAMAAAAAAAcAAAAHAAMAAAABAAcAAAAIAAMAAAAAAAcAAAAJAAMAAAABAAcAAAAKAAMAAAAAAAcAAAALAAMAAAAAAA0AAAAMAAMAAAAAAA0AAAANAAMAAAABAAcAAAAOAAMAAAABAA0AAAAPAAMAAAABAA0AAAAQAAMAAAAAAA0AAAARAAMAAAAAAA0AAAASAAMAAAAAAA0AAAATAAMAAAABAAcAAAAAAAQAAAABAAcAAAABAAQAAAAAAA0AAAACAAQAAAABAA0AAAADAAQAAAAAAA0AAAAEAAQAAAAAAAcAAAAFAAQAAAAAAA0AAAAGAAQAAAAAAA0AAAAHAAQAAAABAA0AAAAIAAQAAAABAA0AAAAJAAQAAAAAAA0AAAAKAAQAAAAAAA0AAAALAAQAAAABAA0AAAAMAAQAAAAAAA0AAAANAAQAAAAAAA0AAAAOAAQAAAAAAA0AAAAPAAQAAAABAA0AAAAQAAQAAAAAAA0AAAARAAQAAAAAAAcAAAASAAQAAAABAA0AAAATAAQAAAABAA0AAAAAAAUAAAAAAAcAAAABAAUAAAAAAA0AAAACAAUAAAAAAA0AAAADAAUAAAABAA0AAAAEAAUAAAABAAcAAAAFAAUAAAABAA0AAAAGAAUAAAABAA0AAAAHAAUAAAAAAA0AAAAIAAUAAAAAAA0AAAAJAAUAAAABAA0AAAAKAAUAAAAAAA0AAAALAAUAAAABAA0AAAAMAAUAAAABAA0AAAANAAUAAAABAA0AAAAOAAUAAAABAA0AAAAPAAUAAAABAA0AAAAQAAUAAAABAA0AAAARAAUAAAABAAcAAAASAAUAAAAAAA0AAAATAAUAAAAAAA0AAAAAAAYAAAAAAAcAAAABAAYAAAABAAcAAAACAAYAAAABAA0AAAADAAYAAAABAA0AAAAEAAYAAAAAAAcAAAAFAAYAAAABAA0AAAAGAAYAAAABAA0AAAAHAAYAAAAAAA0AAAAIAAYAAAABAA0AAAAJAAYAAAAAAA0AAAAKAAYAAAABAA0AAAALAAYAAAAAAA0AAAAMAAYAAAABAA0AAAANAAYAAAABAA0AAAAOAAYAAAAAAA0AAAAPAAYAAAAAAA0AAAAQAAYAAAABAA0AAAARAAYAAAAAAAcAAAASAAYAAAABAA0AAAATAAYAAAAAAA0AAAAAAAcAAAAAAAcAAAABAAcAAAAAAAcAAAACAAcAAAAAAA0AAAADAAcAAAAAAA0AAAAEAAcAAAABAAcAAAAFAAcAAAABAAcAAAAGAAcAAAABAAcAAAAHAAcAAAACAAIAAAAIAAcAAAABAAcAAAAJAAcAAAABAAcAAAAKAAcAAAAAAAcAAAALAAcAAAAAAA0AAAAMAAcAAAABAA0AAAANAAcAAAAAAAcAAAAOAAcAAAAAAAcAAAAPAAcAAAABAAIAAAAQAAcAAAABAAcAAAARAAcAAAABAAcAAAASAAcAAAAAAA0AAAATAAcAAAAAAA0AAAAAAAgAAAABAAcAAAABAAgAAAABAAcAAAACAAgAAAAAAAcAAAADAAgAAAAAAA0AAAAEAAgAAAABAA0AAAAFAAgAAAAAAA0AAAAGAAgAAAAAAA0AAAAHAAgAAAAAAA0AAAAIAAgAAAABAA0AAAAJAAgAAAABAA0AAAAKAAgAAAABAAcAAAALAAgAAAAAAA0AAAAMAAgAAAAAAA0AAAANAAgAAAABAAcAAAAOAAgAAAABAAcAAAAPAAgAAAABAA0AAAAQAAgAAAAAAA0AAAARAAgAAAABAA0AAAASAAgAAAAAAA0AAAATAAgAAAAAAA0AAAAAAAkAAAABAAcAAAABAAkAAAABAAcAAAACAAkAAAABAA0AAAADAAkAAAABAA0AAAAEAAkAAAABAAcAAAAFAAkAAAAAAA0AAAAGAAkAAAAAAA0AAAAHAAkAAAAAAA0AAAAIAAkAAAABAAcAAAAJAAkAAAABAA0AAAAKAAkAAAAAAAcAAAALAAkAAAAAAA0AAAAMAAkAAAABAA0AAAANAAkAAAABAAcAAAAOAAkAAAABAAcAAAAPAAkAAAABAAcAAAAQAAkAAAABAA0AAAARAAkAAAABAA0AAAASAAkAAAABAA0AAAATAAkAAAAAAAcAAAAAAAoAAAAAAAcAAAABAAoAAAAAAAcAAAACAAoAAAAAAA0AAAADAAoAAAAAAAcAAAAEAAoAAAABAAcAAAAFAAoAAAABAA0AAAAGAAoAAAAAAA0AAAAHAAoAAAABAA0AAAAIAAoAAAAAAAcAAAAJAAoAAAAAAAcAAAAKAAoAAAABAAcAAAALAAoAAAAAAA0AAAAMAAoAAAAAAA0AAAANAAoAAAABAAcAAAAOAAoAAAAAAAcAAAAPAAoAAAABAAcAAAAQAAoAAAABAAcAAAARAAoAAAABAAcAAAASAAoAAAABAAcAAAATAAoAAAAAAAcAAAAAAAsAAAAAAAcAAAABAAsAAAABAAcAAAACAAsAAAABAA0AAAADAAsAAAABAA0AAAAEAAsAAAAAAAcAAAAFAAsAAAABAA0AAAAGAAsAAAABAA0AAAAHAAsAAAABAA0AAAAIAAsAAAABAAcAAAAJAAsAAAAAAAcAAAAKAAsAAAABAAcAAAALAAsAAAABAA0AAAAMAAsAAAABAA0AAAANAAsAAAABAAcAAAAOAAsAAAABAAcAAAAPAAsAAAABAA0AAAAQAAsAAAAAAA0AAAARAAsAAAABAA0AAAASAAsAAAAAAAcAAAATAAsAAAAAAAcAAAAAAAwAAAAAAAcAAAABAAwAAAABAA0AAAACAAwAAAAAAA0AAAADAAwAAAAAAA0AAAAEAAwAAAAAAAcAAAAFAAwAAAABAA0AAAAGAAwAAAAAAA0AAAAHAAwAAAAAAA0AAAAIAAwAAAABAA0AAAAJAAwAAAAAAA0AAAAKAAwAAAAAAA0AAAALAAwAAAAAAA0AAAAMAAwAAAAAAA0AAAANAAwAAAABAAcAAAAOAAwAAAABAA0AAAAPAAwAAAABAA0AAAAQAAwAAAABAA0AAAARAAwAAAAAAA0AAAASAAwAAAAAAAcAAAATAAwAAAABAAcAAAAAAA0AAAABAA0AAAABAA0AAAABAA0AAAACAA0AAAAAAA0AAAADAA0AAAABAAcAAAAEAA0AAAAAAAcAAAAFAA0AAAACAAIAAAAGAA0AAAAAAAcAAAAHAA0AAAAAAAcAAAAIAA0AAAABAAcAAAAJAA0AAAAAAAcAAAAKAA0AAAABAAcAAAALAA0AAAABAAcAAAAMAA0AAAAAAAcAAAANAA0AAAABAAcAAAAOAA0AAAABAA0AAAAPAA0AAAAAAAcAAAAQAA0AAAABAA0AAAARAA0AAAABAA0AAAASAA0AAAABAAcAAAATAA0AAAABAAcAAAAAAA4AAAAAAA0AAAABAA4AAAAAAA0AAAACAA4AAAABAAcAAAADAA4AAAABAAcAAAAEAA4AAAAAAA0AAAAFAA4AAAAAAA0AAAAGAA4AAAABAAcAAAAHAA4AAAAAAAcAAAAIAA4AAAAAAA0AAAAJAA4AAAABAA0AAAAKAA4AAAAAAA0AAAALAA4AAAABAA0AAAAMAA4AAAABAA0AAAANAA4AAAABAA0AAAAOAA4AAAAAAA0AAAAPAA4AAAABAA0AAAAQAA4AAAABAA0AAAARAA4AAAAAAAcAAAASAA4AAAABAAcAAAATAA4AAAABAAcAAAAAAA8AAAABAAcAAAABAA8AAAABAA0AAAACAA8AAAABAA0AAAADAA8AAAABAA0AAAAEAA8AAAABAA0AAAAFAA8AAAABAA0AAAAGAA8AAAABAAcAAAAHAA8AAAABAA0AAAAIAA8AAAABAA0AAAAJAA8AAAAAAA0AAAAKAA8AAAAAAAcAAAALAA8AAAABAAcAAAAMAA8AAAABAA0AAAANAA8AAAABAA0AAAAOAA8AAAAAAA0AAAAPAA8AAAAAAA0AAAAQAA8AAAABAA0AAAARAA8AAAAAAAcAAAASAA8AAAABAAcAAAATAA8AAAAAAAcAAAAAABAAAAAAAAcAAAABABAAAAABAAcAAAACABAAAAABAA0AAAADABAAAAAAAA0AAAAEABAAAAABAA0AAAAFABAAAAABAA0AAAAGABAAAAAAAA0AAAAHABAAAAAAAA0AAAAIABAAAAABAA0AAAAJABAAAAAAAA0AAAAKABAAAAAAAAcAAAALABAAAAABAAcAAAAMABAAAAAAAA0AAAANABAAAAAAAA0AAAAOABAAAAAAAAcAAAAPABAAAAAAAAcAAAAQABAAAAABAAcAAAARABAAAAAAAAcAAAASABAAAAAAAAcAAAATABAAAAAAAAcAAAAAABEAAAAAAAcAAAABABEAAAABAAcAAAACABEAAAAAAAcAAAADABEAAAAAAAcAAAAEABEAAAABAAcAAAAFABEAAAAAAAcAAAAGABEAAAAAAA0AAAAHABEAAAABAA0AAAAIABEAAAACAAIAAAAJABEAAAACAAIAAAAKABEAAAAAAAcAAAALABEAAAAAAAcAAAAMABEAAAAAAAcAAAANABEAAAABAAcAAAAOABEAAAABAAcAAAAPABEAAAAAAAcAAAAQABEAAAABAAcAAAARABEAAAABAAcAAAASABEAAAABAAcAAAATABEAAAAAAAcAAAA=")
+tile_set = ExtResource("2_8bnqj")
+
+[node name="Detail" type="TileMapLayer" parent="." unique_id=154280929]
+tile_set = ExtResource("2_8bnqj")
+
+[node name="Obstacles" type="TileMapLayer" parent="." unique_id=700895054]
+tile_set = ExtResource("2_8bnqj")
+
+[node name="GroundDecals" type="Node2D" parent="." unique_id=1192331708]
+z_index = -1
+
+[node name="Dessin" type="Polygon2D" parent="GroundDecals" unique_id=921646072]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(480, 384, 576, 384, 576, 480, 480, 480)
+
+[node name="@Polygon2D@8" type="Polygon2D" parent="GroundDecals" unique_id=425309474]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(576, 384, 672, 384, 672, 480, 576, 480)
+
+[node name="@Polygon2D@9" type="Polygon2D" parent="GroundDecals" unique_id=1648740684]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(672, 384, 768, 384, 768, 480, 672, 480)
+
+[node name="@Polygon2D@10" type="Polygon2D" parent="GroundDecals" unique_id=1227661601]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(768, 384, 864, 384, 864, 480, 768, 480)
+
+[node name="@Polygon2D@11" type="Polygon2D" parent="GroundDecals" unique_id=658664562]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(864, 384, 960, 384, 960, 480, 864, 480)
+
+[node name="@Polygon2D@12" type="Polygon2D" parent="GroundDecals" unique_id=33341106]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(960, 384, 1056, 384, 1056, 480, 960, 480)
+
+[node name="@Polygon2D@13" type="Polygon2D" parent="GroundDecals" unique_id=1498794730]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(1056, 384, 1152, 384, 1152, 480, 1056, 480)
+
+[node name="@Polygon2D@14" type="Polygon2D" parent="GroundDecals" unique_id=37574147]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(1152, 384, 1248, 384, 1248, 480, 1152, 480)
+
+[node name="@Polygon2D@15" type="Polygon2D" parent="GroundDecals" unique_id=203911366]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(1248, 384, 1344, 384, 1344, 480, 1248, 480)
+
+[node name="@Polygon2D@16" type="Polygon2D" parent="GroundDecals" unique_id=534926075]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(1344, 384, 1440, 384, 1440, 480, 1344, 480)
+
+[node name="@Polygon2D@17" type="Polygon2D" parent="GroundDecals" unique_id=1438765052]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(1440, 384, 1536, 384, 1536, 480, 1440, 480)
+
+[node name="@Polygon2D@18" type="Polygon2D" parent="GroundDecals" unique_id=1862080484]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(1536, 384, 1632, 384, 1632, 480, 1536, 480)
+
+[node name="@Polygon2D@19" type="Polygon2D" parent="GroundDecals" unique_id=959618754]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(480, 480, 576, 480, 576, 576, 480, 576)
+
+[node name="@Polygon2D@20" type="Polygon2D" parent="GroundDecals" unique_id=291720997]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(576, 480, 672, 480, 672, 576, 576, 576)
+
+[node name="@Polygon2D@21" type="Polygon2D" parent="GroundDecals" unique_id=1640304604]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(672, 480, 768, 480, 768, 576, 672, 576)
+
+[node name="@Polygon2D@22" type="Polygon2D" parent="GroundDecals" unique_id=1563938353]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(768, 480, 864, 480, 864, 576, 768, 576)
+
+[node name="@Polygon2D@23" type="Polygon2D" parent="GroundDecals" unique_id=732893124]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(864, 480, 960, 480, 960, 576, 864, 576)
+
+[node name="@Polygon2D@24" type="Polygon2D" parent="GroundDecals" unique_id=2034068205]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(960, 480, 1056, 480, 1056, 576, 960, 576)
+
+[node name="@Polygon2D@25" type="Polygon2D" parent="GroundDecals" unique_id=2092799220]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(1056, 480, 1152, 480, 1152, 576, 1056, 576)
+
+[node name="@Polygon2D@26" type="Polygon2D" parent="GroundDecals" unique_id=528530256]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(1152, 480, 1248, 480, 1248, 576, 1152, 576)
+
+[node name="@Polygon2D@27" type="Polygon2D" parent="GroundDecals" unique_id=1382544678]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(1248, 480, 1344, 480, 1344, 576, 1248, 576)
+
+[node name="@Polygon2D@28" type="Polygon2D" parent="GroundDecals" unique_id=188513198]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(1344, 480, 1440, 480, 1440, 576, 1344, 576)
+
+[node name="@Polygon2D@29" type="Polygon2D" parent="GroundDecals" unique_id=1438939091]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(1440, 480, 1536, 480, 1536, 576, 1440, 576)
+
+[node name="@Polygon2D@30" type="Polygon2D" parent="GroundDecals" unique_id=1204177553]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(1536, 480, 1632, 480, 1632, 576, 1536, 576)
+
+[node name="@Polygon2D@31" type="Polygon2D" parent="GroundDecals" unique_id=217054701]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(480, 576, 576, 576, 576, 672, 480, 672)
+
+[node name="@Polygon2D@32" type="Polygon2D" parent="GroundDecals" unique_id=1231843691]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(576, 576, 672, 576, 672, 672, 576, 672)
+
+[node name="@Polygon2D@33" type="Polygon2D" parent="GroundDecals" unique_id=246579206]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(672, 576, 768, 576, 768, 672, 672, 672)
+
+[node name="@Polygon2D@34" type="Polygon2D" parent="GroundDecals" unique_id=230055673]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(768, 576, 864, 576, 864, 672, 768, 672)
+
+[node name="@Polygon2D@35" type="Polygon2D" parent="GroundDecals" unique_id=303765341]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(864, 576, 960, 576, 960, 672, 864, 672)
+
+[node name="@Polygon2D@36" type="Polygon2D" parent="GroundDecals" unique_id=374177590]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(960, 576, 1056, 576, 1056, 672, 960, 672)
+
+[node name="@Polygon2D@37" type="Polygon2D" parent="GroundDecals" unique_id=508524976]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(1056, 576, 1152, 576, 1152, 672, 1056, 672)
+
+[node name="@Polygon2D@38" type="Polygon2D" parent="GroundDecals" unique_id=51560645]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(1152, 576, 1248, 576, 1248, 672, 1152, 672)
+
+[node name="@Polygon2D@39" type="Polygon2D" parent="GroundDecals" unique_id=1590809720]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(1248, 576, 1344, 576, 1344, 672, 1248, 672)
+
+[node name="@Polygon2D@40" type="Polygon2D" parent="GroundDecals" unique_id=2062283809]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(1344, 576, 1440, 576, 1440, 672, 1344, 672)
+
+[node name="@Polygon2D@41" type="Polygon2D" parent="GroundDecals" unique_id=546228216]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(1440, 576, 1536, 576, 1536, 672, 1440, 672)
+
+[node name="@Polygon2D@42" type="Polygon2D" parent="GroundDecals" unique_id=582689914]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(1536, 576, 1632, 576, 1632, 672, 1536, 672)
+
+[node name="@Polygon2D@43" type="Polygon2D" parent="GroundDecals" unique_id=586680091]
+color = Color(0.55, 0.42, 0.28, 1)
+polygon = PackedVector2Array(682, 686, 758, 686, 758, 696, 682, 696)
+
+[node name="@Polygon2D@44" type="Polygon2D" parent="GroundDecals" unique_id=1607614804]
+color = Color(0.55, 0.42, 0.28, 1)
+polygon = PackedVector2Array(682, 714, 758, 714, 758, 724, 682, 724)
+
+[node name="@Polygon2D@45" type="Polygon2D" parent="GroundDecals" unique_id=108101798]
+color = Color(0.55, 0.42, 0.28, 1)
+polygon = PackedVector2Array(682, 742, 758, 742, 758, 752, 682, 752)
+
+[node name="@Polygon2D@46" type="Polygon2D" parent="GroundDecals" unique_id=17006540]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(1056, 672, 1152, 672, 1152, 768, 1056, 768)
+
+[node name="@Polygon2D@47" type="Polygon2D" parent="GroundDecals" unique_id=1594692815]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(1152, 672, 1248, 672, 1248, 768, 1152, 768)
+
+[node name="@Polygon2D@48" type="Polygon2D" parent="GroundDecals" unique_id=1673019617]
+color = Color(0.55, 0.42, 0.28, 1)
+polygon = PackedVector2Array(1450, 686, 1526, 686, 1526, 696, 1450, 696)
+
+[node name="@Polygon2D@49" type="Polygon2D" parent="GroundDecals" unique_id=492670924]
+color = Color(0.55, 0.42, 0.28, 1)
+polygon = PackedVector2Array(1450, 714, 1526, 714, 1526, 724, 1450, 724)
+
+[node name="@Polygon2D@50" type="Polygon2D" parent="GroundDecals" unique_id=99084326]
+color = Color(0.55, 0.42, 0.28, 1)
+polygon = PackedVector2Array(1450, 742, 1526, 742, 1526, 752, 1450, 752)
+
+[node name="@Polygon2D@51" type="Polygon2D" parent="GroundDecals" unique_id=469554355]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(1056, 768, 1152, 768, 1152, 864, 1056, 864)
+
+[node name="@Polygon2D@52" type="Polygon2D" parent="GroundDecals" unique_id=1005893629]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(1152, 768, 1248, 768, 1248, 864, 1152, 864)
+
+[node name="@Polygon2D@53" type="Polygon2D" parent="GroundDecals" unique_id=1620913452]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(480, 864, 576, 864, 576, 960, 480, 960)
+
+[node name="@Polygon2D@54" type="Polygon2D" parent="GroundDecals" unique_id=146491653]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(576, 864, 672, 864, 672, 960, 576, 960)
+
+[node name="@Polygon2D@55" type="Polygon2D" parent="GroundDecals" unique_id=1395137767]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(672, 864, 768, 864, 768, 960, 672, 960)
+
+[node name="@Polygon2D@56" type="Polygon2D" parent="GroundDecals" unique_id=1078023764]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(1056, 864, 1152, 864, 1152, 960, 1056, 960)
+
+[node name="@Polygon2D@57" type="Polygon2D" parent="GroundDecals" unique_id=1133544536]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(1152, 864, 1248, 864, 1248, 960, 1152, 960)
+
+[node name="@Polygon2D@58" type="Polygon2D" parent="GroundDecals" unique_id=767348461]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(480, 960, 576, 960, 576, 1056, 480, 1056)
+
+[node name="@Polygon2D@59" type="Polygon2D" parent="GroundDecals" unique_id=1594292703]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(576, 960, 672, 960, 672, 1056, 576, 1056)
+
+[node name="@Polygon2D@60" type="Polygon2D" parent="GroundDecals" unique_id=1503048421]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(672, 960, 768, 960, 768, 1056, 672, 1056)
+
+[node name="@Polygon2D@61" type="Polygon2D" parent="GroundDecals" unique_id=926648522]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(1056, 960, 1152, 960, 1152, 1056, 1056, 1056)
+
+[node name="@Polygon2D@62" type="Polygon2D" parent="GroundDecals" unique_id=206964351]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(1152, 960, 1248, 960, 1248, 1056, 1152, 1056)
+
+[node name="@Polygon2D@63" type="Polygon2D" parent="GroundDecals" unique_id=1742673128]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(480, 1056, 576, 1056, 576, 1152, 480, 1152)
+
+[node name="@Polygon2D@64" type="Polygon2D" parent="GroundDecals" unique_id=1345336722]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(576, 1056, 672, 1056, 672, 1152, 576, 1152)
+
+[node name="@Polygon2D@65" type="Polygon2D" parent="GroundDecals" unique_id=940499500]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(672, 1056, 768, 1056, 768, 1152, 672, 1152)
+
+[node name="@Polygon2D@66" type="Polygon2D" parent="GroundDecals" unique_id=1622435543]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(1056, 1056, 1152, 1056, 1152, 1152, 1056, 1152)
+
+[node name="@Polygon2D@67" type="Polygon2D" parent="GroundDecals" unique_id=2022721456]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(1152, 1056, 1248, 1056, 1248, 1152, 1152, 1152)
+
+[node name="@Polygon2D@68" type="Polygon2D" parent="GroundDecals" unique_id=890094293]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(480, 1152, 576, 1152, 576, 1248, 480, 1248)
+
+[node name="@Polygon2D@69" type="Polygon2D" parent="GroundDecals" unique_id=527265861]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(576, 1152, 672, 1152, 672, 1248, 576, 1248)
+
+[node name="@Polygon2D@70" type="Polygon2D" parent="GroundDecals" unique_id=221844709]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(672, 1152, 768, 1152, 768, 1248, 672, 1248)
+
+[node name="@Polygon2D@71" type="Polygon2D" parent="GroundDecals" unique_id=2123332655]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(768, 1152, 864, 1152, 864, 1248, 768, 1248)
+
+[node name="@Polygon2D@72" type="Polygon2D" parent="GroundDecals" unique_id=743416784]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(864, 1152, 960, 1152, 960, 1248, 864, 1248)
+
+[node name="@Polygon2D@73" type="Polygon2D" parent="GroundDecals" unique_id=2099276394]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(960, 1152, 1056, 1152, 1056, 1248, 960, 1248)
+
+[node name="@Polygon2D@74" type="Polygon2D" parent="GroundDecals" unique_id=1080776075]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(1056, 1152, 1152, 1152, 1152, 1248, 1056, 1248)
+
+[node name="@Polygon2D@75" type="Polygon2D" parent="GroundDecals" unique_id=1063759479]
+color = Color(1, 0.95, 0.85, 0.22)
+polygon = PackedVector2Array(1152, 1152, 1248, 1152, 1248, 1248, 1152, 1248)
+
+[node name="@Polygon2D@76" type="Polygon2D" parent="GroundDecals" unique_id=421667214]
+color = Color(0.55, 0.42, 0.28, 1)
+polygon = PackedVector2Array(490, 1262, 566, 1262, 566, 1272, 490, 1272)
+
+[node name="@Polygon2D@77" type="Polygon2D" parent="GroundDecals" unique_id=1518242656]
+color = Color(0.55, 0.42, 0.28, 1)
+polygon = PackedVector2Array(490, 1290, 566, 1290, 566, 1300, 490, 1300)
+
+[node name="@Polygon2D@78" type="Polygon2D" parent="GroundDecals" unique_id=1993029617]
+color = Color(0.55, 0.42, 0.28, 1)
+polygon = PackedVector2Array(490, 1318, 566, 1318, 566, 1328, 490, 1328)
+
+[node name="Entities" type="Node2D" parent="." unique_id=158305154]
+unique_name_in_owner = true
+y_sort_enabled = true
+
+[node name="Echelle1_1" type="Node2D" parent="Entities" unique_id=1599111985]
+position = Vector2(144, 192)
+script = ExtResource("3_g3l57")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Echelle1_1" unique_id=457739422]
+color = Color(0.55, 0.38, 0.2, 1)
+polygon = PackedVector2Array(-30, -88, 30, -88, 30, -8, -30, -8)
+
+[node name="@Polygon2D@5" type="Polygon2D" parent="Entities/Echelle1_1" unique_id=1372852136]
+color = Color(0.3, 0.2, 0.1, 1)
+polygon = PackedVector2Array(-22, -80, 22, -80, 22, -72, -22, -72)
+
+[node name="@Polygon2D@6" type="Polygon2D" parent="Entities/Echelle1_1" unique_id=727379195]
+color = Color(0.3, 0.2, 0.1, 1)
+polygon = PackedVector2Array(-22, -56, 22, -56, 22, -48, -22, -48)
+
+[node name="@Polygon2D@7" type="Polygon2D" parent="Entities/Echelle1_1" unique_id=1470320305]
+color = Color(0.3, 0.2, 0.1, 1)
+polygon = PackedVector2Array(-22, -32, 22, -32, 22, -24, -22, -24)
+
+[node name="InterrupteurReleve_interrupteur_1" type="Node2D" parent="Entities" unique_id=824296625]
+position = Vector2(1680, 1344)
+script = ExtResource("3_g3l57")
+unless_flags = Array[StringName]([&"victory_road_1f_switch_1"])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/InterrupteurReleve_interrupteur_1" unique_id=77024847]
+color = Color(0.85, 0.7, 0.2, 1)
+polygon = PackedVector2Array(-34, -82, 34, -82, 34, -14, -34, -14)
+
+[node name="InterrupteurEnfonce_interrupteur_1" type="Node2D" parent="Entities" unique_id=1893607479]
+position = Vector2(1680, 1344)
+script = ExtResource("3_g3l57")
+if_flags = Array[StringName]([&"victory_road_1f_switch_1"])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/InterrupteurEnfonce_interrupteur_1" unique_id=1014948212]
+color = Color(0.4, 0.34, 0.12, 1)
+polygon = PackedVector2Array(-34, -82, 34, -82, 34, -14, -34, -14)
+
+[node name="Barriere_barriere_1" type="Node2D" parent="Entities" unique_id=845822546]
+position = Vector2(912, 1248)
+script = ExtResource("3_g3l57")
+unless_flags = Array[StringName]([&"victory_road_1f_switch_1"])
+blocking_cells = Array[Vector2i]([Vector2i(9, 12)])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Barriere_barriere_1" unique_id=382323683]
+color = Color(0.55, 0.15, 0.15, 1)
+polygon = PackedVector2Array(-44, -88, 44, -88, 44, -8, -44, -8)
+
+[node name="@Polygon2D@79" type="Polygon2D" parent="Entities/Barriere_barriere_1" unique_id=293728763]
+color = Color(0.85, 0.75, 0.3, 1)
+polygon = PackedVector2Array(-30, -74, 30, -74, 30, -62, -30, -62)
+
+[node name="Overhead" type="TileMapLayer" parent="." unique_id=104544576]
+z_index = 10
+tile_set = ExtResource("2_8bnqj")
+
+[node name="Warps" type="Node2D" parent="." unique_id=1366391358]
+
+[node name="Entree0" type="Marker2D" parent="Warps" unique_id=987615628]
+position = Vector2(816, 1728)
+script = ExtResource("4_35ro1")
+trigger = 1
+direction = Vector2i(0, 1)
+target_map = &"route_23"
+target_spawn = &"from_victory_road_w"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Entree1" type="Marker2D" parent="Warps" unique_id=1092876627]
+position = Vector2(912, 1728)
+script = ExtResource("4_35ro1")
+trigger = 1
+direction = Vector2i(0, 1)
+target_map = &"route_23"
+target_spawn = &"from_victory_road_w"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Echelle2f0" type="Marker2D" parent="Warps" unique_id=426760518]
+position = Vector2(144, 192)
+script = ExtResource("4_35ro1")
+target_map = &"victory_road_2f"
+target_spawn = &"from_1f"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Interactables" type="Node2D" parent="." unique_id=1145771619]
+
+[node name="Spawns" type="Node2D" parent="." unique_id=653286704]
+
+[node name="from_route_23" type="Marker2D" parent="Spawns" unique_id=1864696323]
+position = Vector2(816, 1728)
+
+[node name="from_2f" type="Marker2D" parent="Spawns" unique_id=40110107]
+position = Vector2(240, 192)
+
+[node name="Triggers" type="Node2D" parent="." unique_id=329828526]
+
+[node name="Boulders" type="Node" parent="." unique_id=1233053914]
+script = ExtResource("5_by53t")
+boulder_cells = Array[Vector2i]([Vector2i(5, 15), Vector2i(14, 2), Vector2i(2, 10)])
+boulder_holes = Array[int]([0, 0, 0])
+boulder_requires = Array[StringName]([&"", &"", &""])
+switch_cells = Array[Vector2i]([Vector2i(17, 13)])
+switch_ids = Array[StringName]([&"interrupteur_1"])
+switch_flags = Array[StringName]([&"victory_road_1f_switch_1"])

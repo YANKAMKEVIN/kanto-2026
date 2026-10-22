@@ -1,0 +1,28 @@
+{
+	"nurse": {
+		"cell": [
+			7,
+			3
+		],
+		"facing": "down",
+		"sprite": "nurse"
+	},
+	"clerk": {
+		"cell": [
+			13,
+			5
+		],
+		"facing": "left",
+		"sprite": "clerk",
+		"dialogue": "clerk"
+	},
+	"host": {
+		"cell": [
+			3,
+			6
+		],
+		"facing": "right",
+		"sprite": "gym_guide",
+		"dialogue": "indigo_plateau_host"
+	}
+}

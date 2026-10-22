@@ -53,6 +53,7 @@ dompteur             pnj             19,8             bloque  role=D facing=down
 pokemaniac           pnj             4,2              bloque  role=D facing=down trainer=victory_road_2f_pokemaniac  # RB OPP_POKEMANIAC 6
 jongleur_2           pnj             26,3             bloque  role=D facing=left trainer=victory_road_2f_juggler_2  # RB OPP_JUGGLER 5
 sulfura              pnj             11,5             bloque  role=L facing=up  # Sulfura N50 (S2G), RB 11,5
+moltres_front        spawn           11,6             libre  # devant Sulfura (départ de débogage `moltres`)
 objet_1              objet_visible   27,5             bloque  objet=tm17  # CT17 Sacrifice
 objet_2              objet_visible   18,9             bloque  objet=full_heal  # Total Soin
 objet_3              objet_visible   9,11             bloque  objet=tm05  # CT05 Ultimapoing

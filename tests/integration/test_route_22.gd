@@ -1,6 +1,7 @@
 extends GutTest
 ## Carte route_22 (jalon 7, T22, dossier 09 §12–§13) : métadonnées et lumière, sortie est
-## (warps PUSH vers Jadielle, spawn d'arrivée), **aucun passage vers l'ouest**, falaise continue
+## (warps PUSH vers Jadielle, spawn d'arrivée), passage vers l'ouest (jalon 29 : partie ouest,
+## rival n° 7, poste de la Ligue ; avant : aucun), falaise continue
 ## dont l'escalier est le **seul** passage vers le niveau supérieur, trois champs de hautes
 ## herbes branchés sur la table `route_22`, habitants sur des cases libres.
 
@@ -60,7 +61,8 @@ func test_east_exit_is_a_push_warp_to_viridian() -> void:
 			assert_eq(warp.target_map, &"viridian_city")
 			assert_eq(warp.target_spawn, &"from_route_22")
 		assert_true(_grid.is_solid(cell + Vector2i.RIGHT), "bord est solide après %s" % cell)
-	assert_eq(_map.get_warps().size(), 3, "aucun autre passage")
+	# Jalon 29 : + les trois passages PUSH vers l'ouest (test_west_edge_opens_to_the_west_part).
+	assert_eq(_map.get_warps().size(), 6, "aucun autre passage")
 	# Raccord : si la carte de Jadielle existe, le spawn d'arrivée y existe aussi.
 	if MapCatalog.has_map(&"viridian_city"):
 		var viridian := (load(MapCatalog.scene_path(&"viridian_city")) as PackedScene) \
@@ -72,13 +74,25 @@ func test_east_exit_is_a_push_warp_to_viridian() -> void:
 		pending("viridian_city absente : raccord vérifié à la fusion de T4")
 
 
-func test_west_edge_is_closed() -> void:
+## Jalon 29 (T2, `jalon-29.md` §0.1) : la colonne 0 reste solide ; on passe à l'ouest en poussant
+## contre le bord depuis (1, 16..18) (warps PUSH vers `route_22_west`, comme la sortie est).
+func test_west_edge_opens_to_the_west_part() -> void:
 	for y: int in SIZE.y:
 		assert_true(_grid.is_solid(Vector2i(0, y)), "colonne 0 solide en %d" % y)
 	for cell: Vector2i in _reachable:
 		assert_gt(cell.x, 0, "rien d'atteignable sur le bord ouest : %s" % cell)
+	var west := 0
 	for warp: Warp in _map.get_warps().get_all():
-		assert_gt(warp.cell.x, SIZE.x / 2, "aucun passage à l'ouest : %s" % warp.cell)
+		if warp.cell.x < SIZE.x / 2:
+			west += 1
+			assert_eq(warp.cell.x, 1, "passage ouest sur la colonne 1 : %s" % warp.cell)
+			assert_true(warp.cell.y in [16, 17, 18], "rangées 16..18 : %s" % warp.cell)
+			assert_true(_reachable.has(warp.cell), "atteignable : %s" % warp.cell)
+			assert_eq(warp.trigger, Warp.Trigger.PUSH)
+			assert_eq(warp.direction, Vector2i.LEFT)
+			assert_eq([warp.target_map, warp.target_spawn], [&"route_22_west", &"from_route_22"])
+	assert_eq(west, 3, "trois passages vers l'ouest")
+	assert_eq(_map.get_spawn_cell(&"from_route_22_west"), Vector2i(1, 17))
 
 
 func test_stair_is_the_only_way_to_the_upper_level() -> void:
