@@ -315,11 +315,13 @@ def verifier_teleporteurs(chemins: list[Path], rapport: Rapport | None = None) -
 	r.ok(all(plans[k].of_kind("porte_carte") for k, _ in portes) or not portes,
 		"chaque carte à portes déclare ses « porte_carte »")
 
+	# Un objet au sol se ramasse depuis une case voisine puis disparaît : il ne bloque pas.
+	fixes_par_carte = {nom: _bloquees(plan, ("porte_carte",) + KINDS_CARTE) for nom, plan in plans.items()}
+
 	def voisins(etat):
 		carte, c, cle = etat
 		plan = plans[carte]
-		# Un objet au sol se ramasse depuis une case voisine puis disparaît : il ne bloque pas.
-		fixes = _bloquees(plan, ("porte_carte",) + KINDS_CARTE)
+		fixes = fixes_par_carte[carte]
 		for d in DIRECTIONS:
 			n = _plus(c, d)
 			if not _dans(plan, n) or n in fixes or plan.at(*n) not in plan.praticables:
@@ -358,10 +360,21 @@ def verifier_teleporteurs(chemins: list[Path], rapport: Rapport | None = None) -
 	if portes:
 		r.ok(any(e[2] for e in tout), "la carte magnétique est atteignable sans porte")
 		r.ok(not any((e[0], e[1]) in buts for e in sans_cle), "le but exige la carte (porte testée)")
-	retour_impossible = []
+	# Retour au départ : une exploration du graphe inverse depuis les états posés sur le départ
+	# (équivaut à explorer depuis chaque état, en temps linéaire).
+	inverse: dict = {}
 	for e in tout:
-		if not any((x[0], x[1]) == (d[0], d[1]) for x in explorer(e)):
-			retour_impossible.append(e)
+		for n in voisins(e):
+			inverse.setdefault(n, set()).add(e)
+	revient = {e for e in tout if (e[0], e[1]) == (d[0], d[1])}
+	file = deque(revient)
+	while file:
+		e = file.popleft()
+		for p in inverse.get(e, ()):
+			if p not in revient:
+				revient.add(p)
+				file.append(p)
+	retour_impossible = [e for e in tout if e not in revient]
 	r.ok(not retour_impossible, f"retour au départ toujours possible ({retour_impossible[:2]})")
 	r.note(f"{len(tout)} états (carte, case, carte magnétique) atteignables")
 	return r
