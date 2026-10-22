@@ -1,0 +1,36 @@
+# Plateau Indigo — grille fonctionnelle (jalon 29, §2.5), ÉCRITE par tools/art/j29_rb_decode.py
+# --ecrire depuis Rouge/Bleu (IndigoPlateau, 20 × 18, coordonnées RB 1:1). Contrôle : plan_check_j29.py.
+# Porte du hall (9..10, 5) → indigo_plateau_lobby ; sud (9..10, 17) → Route 23 (9..10, 0).
+#
+# Légende : # bâtiment, falaise · . sol
+
+PRATICABLES .hw
+
+GRILLE 20 18
+00 ####################
+01 ####################
+02 ####################
+03 ####################
+04 ......########......
+05 ......###..###......
+06 ........#..#........
+07 #.#.#...#..#...#.#.#
+08 #########..#########
+09 #########..#########
+10 ........#..#........
+11 #.#.#...#..#...#.#.#
+12 #########..#########
+13 #########..#########
+14 ........#..#........
+15 #.#.#...#..#...#.#.#
+16 #########..#########
+17 #########..#########
+FIN
+
+POSITIONS
+porte_hall           warp            9..10,5          libre   vers=indigo_plateau_lobby:entrance  # STEP_ON ↑
+from_lobby           spawn           9,6              libre  # tourné ↓
+from_center          spawn           10,6             libre  # Vol (fly_points.json), tourné ↓
+vers_route_23        warp            9..10,17         libre   vers=route_23:from_plateau  # PUSH ↓
+from_route_23        spawn           9,17             libre  # tourné ↑
+FIN

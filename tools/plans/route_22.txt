@@ -6,6 +6,11 @@
 # que la scène et la grille coïncident case par case. L'est, la falaise, le sentier haut et la
 # scène du rival n° 2 (déclencheur RivalVista, PNJ de data/npcs/route_22.json) sont inchangés.
 #
+# Prolongement du J29 (ouest) : trois warps PUSH ← en (1, 16..18) vers `route_22_west` (la partie
+# ouest de la route, le rival n° 7 et le poste de la Ligue, grille route_22_ouest.txt). La colonne 0
+# reste bloquée (comme la colonne 45 à l'est) : on pousse contre le bord pour passer. Aucune autre
+# case ne change (sol peint, arbres, falaise, sentier haut : Q29-4).
+#
 # Légende : # bloqué (forêt, falaise, arbre, rocher, bord) · . herbe rase · = chemin de terre
 #   h hautes herbes (table `route_22`)
 
@@ -45,7 +50,9 @@ POSITIONS
 from_viridian       spawn           44,18            libre   # bord est, arrivée de Jadielle
 vista               spawn           11,13            libre   # sentier du point de vue
 stair_foot          spawn           16,16            libre   # pied de l'escalier
+from_route_22_west  spawn           1,17             libre   # J29 : arrivée de l'ouest, tourné →
 sortie_est          warp            44,17..19        libre   vers=viridian_city:from_route_22  # PUSH →
+sortie_ouest        warp            1,16..18         libre   vers=route_22_west:from_route_22  # J29 : PUSH ←
 rival_vista         declencheur     14,12..13        libre   scene=rival_route22 direction=left  # rival n° 2 (J7, inchangé)
 escalier            escalier        15..16,14        libre   # seul passage vers le sentier haut
 FIN

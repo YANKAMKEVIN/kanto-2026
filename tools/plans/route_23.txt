@@ -1,0 +1,189 @@
+# Route 23 — grille fonctionnelle (jalon 29, §2.1, §2.2), ÉCRITE par tools/art/j29_rb_decode.py
+# --ecrire depuis Rouge/Bleu (Route23, 20 × 144, coordonnées RB 1:1). Contrôle : plan_check_j29.py.
+#
+# Du sud au nord : le poste de la Ligue (porte (7..8, 139)), sept contrôles de Badge (rangées RB du
+# script Route23 : 136 Cascade, 119 Foudre, 105 Prisme, 96 Âme, 85 Marais, 56 Volcan, 35 Terre, ce
+# dernier seulement à l'ouest de x 14), l'eau surfable (Surf : CS03 + Pokémon + Badge Âme), l'entrée
+# de la Route Victoire (4, 31), sa sortie (14, 31) et le Plateau Indigo au nord (9..10, 0). Rien ne
+# relie l'ouest (x < 14, rangées 32..71) au nord-est sans passer par la Route Victoire.
+# Chaque contrôle : déclencheur sur la rangée (pas vers le nord), garde à côté (positions `garde_N`).
+#
+# Légende : # falaise, rochers (bloqué) · . sol · h hautes herbes · w eau surfable
+
+PRATICABLES .hw
+
+GRILLE 20 144
+000 #########..#########
+001 #########..#########
+002 #########..#########
+003 #########..#########
+004 #########..#########
+005 #########..#########
+006 ####..#..#......####
+007 ####..#..#......####
+008 ####.#....#.#.#.####
+009 ####.#....#.#.#.####
+010 #####...#..#...#####
+011 #####...#..#...#####
+012 ####..#.#.#..#..####
+013 ####..#.#.#..#..####
+014 #####..#.#.#.#..####
+015 #####..#.#.#.#..####
+016 ####.#..#..#...#####
+017 ####.#..#..#...#####
+018 ....#.#.#..#.#.#....
+019 ....#.#.#..#.#.#....
+020 ....................
+021 ....................
+022 ....................
+023 #................#..
+024 ##################..
+025 ##################..
+026 ##################..
+027 ##################..
+028 ##################..
+029 ##################..
+030 ##################..
+031 ####.#########.###..
+032 ........######......
+033 ...#....######......
+034 ........######......
+035 ........######......
+036 ........######......
+037 ........######.....#
+038 ........############
+039 ........############
+040 ........############
+041 ........############
+042 #....#..############
+043 #....#..############
+044 ######..##hh........
+045 ######..##hh........
+046 ######...##.........
+047 ######...##...#....#
+048 ..............######
+049 ..............######
+050 #....#.....#..######
+051 #....#.....#..######
+052 ############..######
+053 ############..######
+054 ############..######
+055 ############..######
+056 ######hhhh....######
+057 ######hhhh....######
+058 ######hh##..#.######
+059 ######hh##..#.######
+060 #######..#hhhh######
+061 #######..#hhhh######
+062 #######..#.##.######
+063 #######..#.##.######
+064 ######hh##..#.######
+065 ######hh##..#.######
+066 #######.hh.#..######
+067 #######.hh.#..######
+068 ########......hhhhhh
+069 ########......hhhhhh
+070 ########......#....#
+071 ########......#....#
+072 ######wwwwwwww######
+073 ######wwwwwwww######
+074 ######wwwwwwww######
+075 ######wwwwwwww######
+076 wwwwwwwwwwwwwwwwwwww
+077 wwwwwwwwwwwwwwwwwwww
+078 wwwwwwwwwwwwwwwwwwww
+079 wwwwwwww#wwwww#wwww#
+080 wwwwwwww############
+081 wwwwwwww############
+082 wwwwwwww############
+083 #ww#wwww############
+084 ####wwwwwwwwww######
+085 ####wwwwwwwwww######
+086 ####wwwwwwwwww######
+087 ####wwwwwwwwww######
+088 ####wwwwwwwwww######
+089 ####wwwwwwwwww######
+090 ####wwww..#www######
+091 ####wwww..#www######
+092 wwwwwwwwwwwwww######
+093 wwwwwwwwwwwwww######
+094 wwwwwwwwwwwwww######
+095 #wwwwww#wwwwww######
+096 ########wwwwww######
+097 ########wwwwww######
+098 ########wwwwww######
+099 ########wwwwww######
+100 wwwwwwwwwwwwwwwwwwww
+101 wwwwwwwwwwwwwwwwwwww
+102 wwwwwwwwwwwwwwwwwwww
+103 #wwwwwwww#wwwwww#ww#
+104 ##########......####
+105 ##########......####
+106 ##########......####
+107 ##########......####
+108 ....................
+109 ....................
+110 ....................
+111 ..#......#..#......#
+112 ..########..########
+113 ..########..########
+114 ..########..########
+115 ..########..########
+116 ....................
+117 ....................
+118 ....................
+119 #......#..#....#...#
+120 ########..##########
+121 ########..##########
+122 ########..##########
+123 ########..##########
+124 ....................
+125 ....................
+126 ....................
+127 #...#....#...#..#..#
+128 ##############..####
+129 ##############..####
+130 ##############..####
+131 ##############..####
+132 ....................
+133 ....................
+134 ....................
+135 #....#....#........#
+136 ######....##########
+137 ######....##########
+138 ######....##########
+139 ######....##########
+140 ..############......
+141 ..############......
+142 ..############......
+143 ..############......
+FIN
+
+POSITIONS
+depuis_poste         warp            7..8,139         libre   vers=route_22_gate:from_route_23  # STEP_ON ↓ (porte nord du poste)
+from_gate            spawn           7,138            libre  # tourné ↑
+entree_victoire      warp            4,31             libre   vers=victory_road_1f:from_route_23  # STEP_ON ↑
+from_victory_road_w  spawn           4,32             libre  # tourné ↓
+sortie_victoire      warp            14,31            libre   vers=victory_road_2f:from_route_23  # STEP_ON ↑
+from_victory_road_e  spawn           14,32            libre  # tourné ↓
+vers_plateau         warp            9..10,0          libre   vers=indigo_plateau:from_route_23  # PUSH ↑
+from_plateau         spawn           9,0              libre  # tourné ↓
+panneau              panneau         3,33             bloque  texte=route_23_victory_road_sign  # T29-06
+garde_1              pnj             4,35             bloque  role=G badge=badge_earth facing=down  # rangée 35, x < 14
+controle_1           controle        0..3,35;5..7,35  libre   badge=badge_earth
+garde_2              pnj             10,56            bloque  role=G badge=badge_volcano facing=down
+controle_2           controle        6..9,56;11..13,56 libre   badge=badge_volcano
+garde_3              pnj             8,85             bloque  role=G badge=badge_marsh facing=down surf=oui  # sur l'eau (RB : Nageur)
+controle_3           controle        4..7,85;9..13,85 libre   badge=badge_marsh  # en Surf
+garde_4              pnj             11,96            bloque  role=G badge=badge_soul facing=down surf=oui  # sur l'eau (RB : Nageur)
+controle_4           controle        8..10,96;12..13,96 libre   badge=badge_soul  # en Surf
+garde_5              pnj             12,105           bloque  role=G badge=badge_rainbow facing=down
+controle_5           controle        10..11,105;13..15,105 libre   badge=badge_rainbow
+garde_6              pnj             8,119            bloque  role=G badge=badge_thunder facing=down
+controle_6           controle        1..6,119;9,119;11..14,119;16..18,119 libre   badge=badge_thunder
+garde_7              pnj             8,136            bloque  role=G badge=badge_cascade facing=down
+controle_7           controle        6..7,136;9,136   libre   badge=badge_cascade
+cache_1              objet_cache     9,44             libre   objet=full_restore  # RB caché
+cache_2              objet_cache     19,70            libre   objet=ultra_ball  # RB caché
+cache_3              objet_cache     8,90             libre   objet=max_ether  # RB caché
+FIN
