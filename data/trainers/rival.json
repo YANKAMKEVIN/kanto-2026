@@ -76,7 +76,7 @@
 		"name": "{rival}", "ai": "smart",
 		"can_lose": false, "heal_after": false, "gives_exp": true,
 		"prize_money": 0, "prize_per_level": 35,
-		"end_message": false, "start_message": true, "bag": true, "moment": "win", "switch": true,
+		"end_message": false, "start_message": true, "bag": true, "switch": true,
 		"team_by_starter": {
 			"bulbasaur": [
 				{ "species": "pidgeot", "level": 47 }, { "species": "rhyhorn", "level": 45 },

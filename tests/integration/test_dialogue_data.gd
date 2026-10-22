@@ -48,7 +48,36 @@ const GATE_GUARDS: Array[StringName] = [&"forest_gate_north_guard", &"forest_gat
 ## Jalon 18 (T16) : textes en données, points d'examen et déclencheurs posés par la vie des cartes
 ## (T18 Route 9 / 10, T20 grotte ; T24 : Lavanville et Tour posés, retirés de la liste) ; « Il fait très sombre ici… » (T-3) est
 ## celui du J17 (`dark_caves.json`, joué par FlashDirector : [constant PLAYED_BY_BOOT]).
-const UNUSED_YET: Array[StringName] = [
+## Jalon 29 (T4, données) : Dresseurs de la Route Victoire, rival n° 7, gardes, panneaux, Sulfura et
+## Plateau Indigo ; les cartes arrivent au J29-I (en attente : [constant UNUSED_YET]).
+const IDS_J29: Array[StringName] = [
+	&"victory_road_1f_cooltrainer_f_before", &"victory_road_1f_cooltrainer_f_defeated",
+	&"victory_road_1f_cooltrainer_f_after", &"victory_road_1f_cooltrainer_m_before",
+	&"victory_road_1f_cooltrainer_m_defeated", &"victory_road_1f_cooltrainer_m_after",
+	&"victory_road_2f_blackbelt_before", &"victory_road_2f_blackbelt_defeated",
+	&"victory_road_2f_blackbelt_after", &"victory_road_2f_juggler_1_before",
+	&"victory_road_2f_juggler_1_defeated", &"victory_road_2f_juggler_1_after",
+	&"victory_road_2f_tamer_before", &"victory_road_2f_tamer_defeated",
+	&"victory_road_2f_tamer_after", &"victory_road_2f_pokemaniac_before",
+	&"victory_road_2f_pokemaniac_defeated", &"victory_road_2f_pokemaniac_after",
+	&"victory_road_2f_juggler_2_before", &"victory_road_2f_juggler_2_defeated",
+	&"victory_road_2f_juggler_2_after", &"victory_road_3f_cooltrainer_m_1_before",
+	&"victory_road_3f_cooltrainer_m_1_defeated", &"victory_road_3f_cooltrainer_m_1_after",
+	&"victory_road_3f_cooltrainer_f_1_before", &"victory_road_3f_cooltrainer_f_1_defeated",
+	&"victory_road_3f_cooltrainer_f_1_after", &"victory_road_3f_cooltrainer_m_2_before",
+	&"victory_road_3f_cooltrainer_m_2_defeated", &"victory_road_3f_cooltrainer_m_2_after",
+	&"victory_road_3f_cooltrainer_f_2_before", &"victory_road_3f_cooltrainer_f_2_defeated",
+	&"victory_road_3f_cooltrainer_f_2_after", &"rival_route22_final_greet",
+	&"rival_route22_final_won", &"rival_route22_final_lost", &"guard_boulder_refuse",
+	&"guard_boulder_pass", &"guard_cascade_refuse", &"guard_cascade_pass",
+	&"guard_thunder_refuse", &"guard_thunder_pass", &"guard_rainbow_refuse",
+	&"guard_rainbow_pass", &"guard_soul_refuse", &"guard_soul_pass", &"guard_marsh_refuse",
+	&"guard_marsh_pass", &"guard_volcano_refuse", &"guard_volcano_pass", &"guard_earth_refuse",
+	&"guard_earth_pass", &"route_23_victory_road_sign", &"moltres_presence", &"moltres_flew_away",
+	&"indigo_plateau_host", &"indigo_league_door", &"route_22_league_sign"
+]
+const TEXTES_J29 := "res://docs/tech/jalon-29-textes.md"
+const UNUSED_YET: Array[StringName] = IDS_J29 + [
 	&"dark_cave_1f_sign", &"dark_cave_column", &"dark_cave_roots", &"dark_cave_crack",
 	&"dark_cave_b1f_hidden_1",
 	# Jalon 20 (T17) : la Poké Ball d'Évoli (maison du toit) et le panneau d'ascenseur (cabine du
@@ -844,7 +873,7 @@ func test_library_loads_without_error() -> void:
 	found.sort()
 	var expected := IDS + IDS_J14_BILL + IDS_J14_ROCKET + IDS_J15_ROUTE_5 + IDS_J16_GYM \
 		+ IDS_J16_SHIP + IDS_J16_RIVAL_CAPTAIN + IDS_J16_T15 + IDS_J17 + IDS_J18 + IDS_J19 + IDS_J20 \
-		+ IDS_J20_T17 + IDS_J20_T21 + IDS_S2B + S2_FIELD_TRAVEL
+		+ IDS_J20_T17 + IDS_J20_T21 + IDS_S2B + S2_FIELD_TRAVEL + IDS_J29
 	expected.append_array(TEXTS_S2C_FISH.keys())
 	expected.append_array(TEXTS_S2D_STRENGTH.keys())
 	expected.append_array(UNVALIDATED)
@@ -1317,6 +1346,7 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 	var dossier_22 := FileAccess.get_file_as_string(DOSSIER_22).replace("\n   ", " ") \
 		.replace("\n  ", " ")
 	var dossier_20 := FileAccess.get_file_as_string(DOSSIER_20).replace("**", "")
+	var textes_j29 := FileAccess.get_file_as_string(TEXTES_J29)
 	var annex_a_17 := AnnexATexts.annex_a(FileAccess.get_file_as_string(JALON_17))
 	var dossier_17 := FileAccess.get_file_as_string(DOSSIER_17) \
 		+ FileAccess.get_file_as_string(PLAN_J14).replace("\n  ", " ")
@@ -1394,7 +1424,9 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			or _each_line_quoted(dossier_23, text)
 			or _in_dossier_18(dossier_23, text) or _in_dossier_18(plan_j20, text)
 			# J20 (T12) : « {player} » écrit tel quel dans le dossier 23 (texte 29).
-			or _each_line_quoted(dossier_23, text.replace("{joueur}", "{player}")),
+			or _each_line_quoted(dossier_23, text.replace("{joueur}", "{player}"))
+			# J29 (T4) : lot de textes du J29 (`jalon-29-textes.md`), une citation par ligne.
+			or _each_line_quoted(textes_j29, text.replace("{joueur}", "{player}")),
 			"%s : « %s » dans un dossier de conception" % [row[0], text])
 
 
@@ -1642,6 +1674,7 @@ func test_oak_parcel_lines() -> void:
 				or (row[0] == &"rival_tower_intro" and row[1].contains("{player}")) \
 				or (String(row[0]).begins_with("saffron_gate_drink_") and row[1].contains("{player}")) \
 				or row[0] == &"celadon_eevee_received" or row[0] == &"fishing_cast" \
+				or (row[0] == &"rival_route22_final_greet" and row[1].contains("{player}")) \
 				or (row[0] in [&"rocket_hideout_b4f_lift_key_got",
 					&"rocket_hideout_b4f_silph_scope_got"] and row[1].contains("{player}")) \
 				or (String(row[0]).begins_with("celadon_gym_erika_") and row[1].contains("{player}")):

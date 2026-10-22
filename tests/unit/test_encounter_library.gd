@@ -126,10 +126,11 @@ func test_real_tables_load_without_error() -> void:
 		&"digletts_cave_rubble", &"mt_moon_1f_rubble",
 		&"mt_moon_b1f_rubble", &"mt_moon_b2f_rubble", &"pokemon_tower_high", &"pokemon_tower_low",
 		&"pokemon_tower_mid", &"qa_sea_water", &"route_10_grass", &"route_11_grass",
-		&"route_1_grass", &"route_22_grass", &"route_24_grass",
+		&"route_1_grass", &"route_22_grass", &"route_23_grass", &"route_24_grass",
 		&"route_25_grass", &"route_2_grass", &"route_2_north_grass", &"route_3_grass",
 		&"route_4_grass", &"route_5_grass", &"route_6_grass", &"route_7_grass",
-		&"route_8_grass", &"route_9_grass", &"viridian_forest_grass"]
+		&"route_8_grass", &"route_9_grass", &"victory_road_1f_rubble", &"victory_road_2f_rubble",
+		&"victory_road_3f_rubble", &"viridian_forest_grass"]
 		as Array[StringName])
 
 
@@ -204,7 +205,8 @@ func test_every_wild_species_has_battle_sprites() -> void:
 	# + 3 tables de la Tour Pokémon (J19) : hors de la boucle, car leurs rencontres sont des
 	# SPECTRES sans le Scope (dossier 22 §6) ; Osselait n'a pas de sprite avant le J20.
 	# + la table d'eau de la carte de QA `qa_sea` (S2C, retirée à S2Z).
-	assert_eq(lib.size(), 26, "une table par couple ci-dessous, plus les 3 de la Tour et qa_sea")
+	# + Route 23 et les 3 niveaux de la Route Victoire (J29 T4) : leurs cartes arrivent au J29-I.
+	assert_eq(lib.size(), 30, "une table par couple ci-dessous, plus les 3 de la Tour et qa_sea")
 	for pair: Array in [[&"route_1", &"grass"], [&"route_2", &"grass"],
 			[&"route_22", &"grass"], [&"viridian_forest", &"grass"], [&"route_2_north", &"grass"],
 			[&"route_3", &"grass"], [&"mt_moon_1f", &"rubble"], [&"mt_moon_b1f", &"rubble"],
