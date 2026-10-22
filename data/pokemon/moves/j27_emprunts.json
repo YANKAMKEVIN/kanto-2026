@@ -1,0 +1,70 @@
+{
+	"barrier": {
+		"name": "Bouclier",
+		"type": "psychic",
+		"category": "status",
+		"accuracy": 0,
+		"pp": 20,
+		"effects": [
+			{
+				"kind": "stat_stage",
+				"stat": "def",
+				"stages": 2,
+				"target": "self"
+			}
+		],
+		"description": "Le lanceur dresse un mur solide devant lui. Augmente beaucoup sa Défense."
+	},
+	"amnesia": {
+		"name": "Amnésie",
+		"type": "psychic",
+		"category": "status",
+		"accuracy": 0,
+		"pp": 20,
+		"effects": [
+			{
+				"kind": "stat_stage",
+				"stat": "spd",
+				"stages": 2,
+				"target": "self"
+			}
+		],
+		"description": "Le lanceur fait le vide dans sa tête. Augmente beaucoup sa Défense Spéciale."
+	},
+	"fire_punch": {
+		"name": "Poing de Feu",
+		"type": "fire",
+		"category": "physical",
+		"power": 75,
+		"accuracy": 100,
+		"pp": 15,
+		"effects": [
+			{
+				"kind": "status",
+				"status": "burn",
+				"chance": 10
+			}
+		],
+		"description": "Un coup de poing enflammé frappe la cible. Peut la brûler."
+	},
+	"mega_kick": {
+		"name": "Ultimawashi",
+		"type": "normal",
+		"category": "physical",
+		"power": 120,
+		"accuracy": 75,
+		"pp": 5,
+		"description": "Un coup de pied d'une puissance phénoménale."
+	},
+	"substitute": {
+		"name": "Clonage",
+		"type": "normal",
+		"category": "status",
+		"accuracy": 0,
+		"pp": 10,
+		"pending_effects": [
+			"substitute"
+		],
+		"description": "Le lanceur crée un clone en sacrifiant des PV. Sans effet dans le moteur actuel."
+	}
+}

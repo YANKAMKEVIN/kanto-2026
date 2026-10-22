@@ -76,31 +76,34 @@ func test_real_data_loads_without_error() -> void:
 		&"nidorina", &"nidoqueen", &"nidoran_m", &"nidorino", &"nidoking", &"clefairy",
 		&"clefable", &"vulpix", &"ninetales", &"jigglypuff", &"wigglytuff", &"zubat", &"golbat",
 		&"oddish", &"gloom", &"vileplume", &"paras", &"parasect",
+		# J27 : Aéromite (emprunt J22, kanto_j27_emprunts.json).
+		&"venomoth",
 		# Jalon 17 (T7) : Taupiqueur, Triopikeur ; plus loin Goupix, Caninos, Magnéti, Magnéton,
 		# Soporifik, Hypno (kanto_j17.json).
 		&"diglett", &"dugtrio",
 		# Jalon 15 (T12) : Miaouss et Persan (kanto_vermilion.json).
 		&"meowth", &"persian",
 		&"mankey", &"primeape", &"growlithe", &"arcanine", &"abra", &"kadabra", &"alakazam",
-		&"machop",
+		&"machop", &"machoke",
 		&"bellsprout", &"weepinbell", &"victreebel",
-		&"geodude", &"graveler", &"golem", &"magnemite", &"magneton", &"shellder",
+		&"geodude", &"graveler", &"golem", &"slowpoke", &"slowbro", &"magnemite", &"magneton", &"shellder",
 		# Jalon 19 (T3) : Fantominus, Spectrum, Noeunoeuf, Osselait, Ossatueur, Léviator
 		# (kanto_tower.json ; Caninos vient du J17).
 		&"gastly", &"haunter", &"onix",
-		&"drowzee", &"hypno", &"voltorb", &"exeggcute", &"cubone", &"marowak", &"koffing",
+		&"drowzee", &"hypno", &"voltorb", &"exeggcute", &"cubone", &"marowak", &"hitmonlee", &"hitmonchan", &"koffing",
 		&"rhyhorn", &"tangela", &"kangaskhan",
-		&"horsea", &"goldeen", &"staryu", &"starmie", &"gyarados",
+		&"horsea", &"goldeen", &"staryu", &"starmie", &"mr_mime", &"gyarados",
 		# Jalon 26 (T3) : Lokhlass, Alakazam (kanto_silph.json).
 		&"lapras",
 		&"eevee", &"vaporeon", &"jolteon", &"flareon"] as Array[StringName])
-	assert_eq(_data.get_move_ids().size(), 130,
+	assert_eq(_data.get_move_ids().size(), 143,
 		"47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10) + Patience (J11) "
 		+ "+ 21 du Mont Sélénite (jalon 12) + 8 du jalon 13 (les 5 du J12 qu'il reprenait : "
 		+ "entrées du J12) + 6 du Cap d'Azuria (jalon 14) + Jackpot (J15) "
 		+ "+ Coupe et Tonnerre (jalon 16) + 7 du jalon 17 + 8 de la Tour Pokémon (J19 ; "
 		+ "Hypnose, Hurlement et Bélier viennent du J17) + 7 du jalon 20 + Vol (passe systèmes 2, T25) "
-		+ "+ Surf (S2C) + Force (S2D)")
+		+ "+ Surf (S2C) + Force (S2D) "
+		+ "+ 13 (J27 : 8 propres, dont Vague Psy ; 5 empruntées à J22/J25/J29)")
 	assert_true(_data.has_move(&"struggle"))
 
 
@@ -194,6 +197,8 @@ func test_real_evolution_chains() -> void:
 		# Tour Pokémon (jalon 19, §2.12) : Rouge/Bleu. Spectrum (échange, Ectoplasma absent) et
 		# Noeunoeuf (Pierre Plante absente) n'en déclarent pas.
 		&"gastly": [&"haunter", 25], &"cubone": [&"marowak", 28],
+		# J27 : Ramoloss (emprunt à J24) évolue en Flagadoss.
+		&"slowpoke": [&"slowbro", 37],
 	}
 	var eevee := _data.get_species(&"eevee").evolutions
 	assert_eq(eevee.map(func(r: EvolutionRule) -> Array: return [r.into, r.method, r.item]), [
@@ -483,6 +488,9 @@ func test_real_catch_rates_are_the_official_ones() -> void:
 		&"marowak": 75, &"gyarados": 45,
 		# Jalon 26 (T3, Sylphe SARL).
 		&"lapras": 45, &"alakazam": 50,
+		# J27 : M. Mime, Kicklee, Tygnon + emprunts J22/J24 (Aéromite, Machopeur, Ramoloss, Flagadoss).
+		&"mr_mime": 45, &"hitmonlee": 45, &"hitmonchan": 45, &"venomoth": 75, &"machoke": 90,
+		&"slowpoke": 190, &"slowbro": 75,
 	}
 	assert_eq(_data.get_species_ids().size(), expected.size(), "toutes les espèces")
 	for id: StringName in _data.get_species_ids():

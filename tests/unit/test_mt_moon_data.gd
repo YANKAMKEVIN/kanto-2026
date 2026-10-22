@@ -85,9 +85,10 @@ func before_all() -> void:
 
 func test_species_values() -> void:
 	assert_eq(_data.get_errors().size(), 0, "\n".join(_data.get_errors()))
-	assert_eq(_data.get_species_ids().size(), 91,
+	assert_eq(_data.get_species_ids().size(), 98,
 		"38 + 12 + 9 (jalon 13) + 3 (jalon 14) + 2 (jalon 15) + 8 (jalon 17) + 6 (jalon 19) "
-		+ "+ 11 (jalon 20 : Caninos et Goupix sont ceux du J17) + 2 (jalon 26 : Lokhlass, Alakazam)")
+		+ "+ 11 (jalon 20 : Caninos et Goupix sont ceux du J17) + 2 (jalon 26 : Lokhlass, Alakazam) "
+		+ "+ 7 (J27 : M. Mime, Kicklee, Tygnon + 4 emprunts à J22/J24 : Aéromite, Machopeur, Ramoloss, Flagadoss)")
 	for id: StringName in SPECIES:
 		var v: Array = SPECIES[id]
 		var species := _data.get_species(id)

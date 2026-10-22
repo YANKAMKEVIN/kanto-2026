@@ -32,7 +32,7 @@ func test_real_data_loads_without_error() -> void:
 		&"lift_key", &"master_ball", &"moon_stone", &"nugget", &"oak_parcel", &"old_rod", &"paralyze_heal", &"poke_ball",
 		&"poke_doll", &"poke_flute", &"potion", &"rare_candy", &"revive", &"silph_scope", &"soda_pop",
 		&"ss_ticket", &"super_potion", &"super_rod", &"thunder_stone", &"tm01", &"tm11", &"tm13", &"tm19",
-		&"tm21", &"tm24", &"tm28", &"tm34", &"water_stone", &"x_accuracy", &"x_attack",
+		&"tm21", &"tm24", &"tm28", &"tm34", &"tm46", &"water_stone", &"x_accuracy", &"x_attack",
 		&"x_defend", &"x_special", &"x_speed"] as Array[StringName])
 	var ball := _library.get_item(&"poke_ball")
 	assert_eq(ball.name, "Poké Ball")
@@ -55,11 +55,11 @@ func test_real_data_loads_without_error() -> void:
 		&"x_defend", &"x_speed", &"x_special", &"x_accuracy", &"dire_hit", &"fire_stone",
 		&"water_stone",
 		&"thunder_stone", &"leaf_stone", &"fresh_water", &"soda_pop", &"lemonade", &"tm13",
-		&"tm21", &"lift_key", &"silph_scope", &"master_ball", &"poke_flute", &"bicycle", &"card_key", &"hm02", &"hm03", &"hm04",
+		&"tm21", &"lift_key", &"silph_scope", &"master_ball", &"tm46", &"poke_flute", &"bicycle", &"card_key", &"hm02", &"hm03", &"hm04",
 		&"old_rod", &"good_rod", &"super_rod", &"hm05", &"escape_rope", &"moon_stone", &"dome_fossil", &"helix_fossil", &"tm01", &"super_potion",
 		&"full_restore"] as Array[StringName],
 		"ordre alphabétique des fichiers (items, items_j14, items_j16, items_j20, "
-		+ "items_j26, items_systemes2, j17, mt_moon, vermilion)")
+		+ "items_j26, items_j27 (CT46), items_systemes2, j17, mt_moon, vermilion)")
 	assert_eq([ball.order, potion.order], [0, 1])
 
 

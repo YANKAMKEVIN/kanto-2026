@@ -1,0 +1,7 @@
+{
+	"tm46": {
+		"name": "CT46 — Vague Psy", "plural": "CT46 — Vague Psy", "feminine": true,
+		"category": "tm", "tm": 46, "teaches": "psywave",
+		"description": "Une onde psychique aux dégâts variables. Les dégâts dépendent du niveau du lanceur."
+	}
+}
