@@ -857,7 +857,7 @@ func test_upgrade_4_to_5_changes_nothing_but_the_version() -> void:
 	var bare := {"version": 4}
 	assert_eq(SaveSystem.upgrade(bare, 5), OK)
 	assert_eq(bare, {"version": 5}, "aucun champ inventé : les défauts viennent de load_dict")
-	assert_eq(SaveSystem.VERSION, 7, "v7 depuis le J15 (par-dessus la v6 du J11)")
+	assert_eq(SaveSystem.VERSION, 8, "v7 depuis le J15 (par-dessus la v6 du J11), v8 au J23")
 	assert_eq(SaveSystem.migration_note(4, 5), "sauvegarde v4 → v5")
 
 

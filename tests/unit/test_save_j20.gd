@@ -44,7 +44,7 @@ func before_all() -> void:
 
 
 func test_version_stays_seven() -> void:
-	assert_eq(SaveSystem.VERSION, 7, "le J20 n'ajoute aucune version")
+	assert_eq(SaveSystem.VERSION, 8, "le J20 n'ajoute aucune version (v8 : J23)")
 
 
 func test_gift_origin_round_trip_in_the_party_and_the_storage() -> void:
@@ -95,7 +95,7 @@ func test_flags_key_items_found_items_and_the_giovanni_moment_survive_a_save() -
 	var save := SaveSystem.new(MemoryFs.new(), PATH)
 	assert_eq(save.write(state.to_dict()), OK)
 	var content := save.read()
-	assert_eq(int(content["version"]), 7)
+	assert_eq(int(content["version"]), SaveSystem.VERSION)
 	var loaded: Node = autofree(GameStateScript.new())
 	assert_true(loaded.load_dict(content, _data), "chargée sans entrée écartée")
 	for flag: StringName in J20_FLAGS:
@@ -131,6 +131,7 @@ func test_a_v7_save_of_the_jalon_15_loads_and_rewrites_unchanged() -> void:
 	var loaded := _new_state()
 	assert_true(loaded.load_dict(content, _data), "chargée sans entrée écartée")
 	assert_eq(save.write(loaded.to_dict()), OK)
+	v7["version"] = SaveSystem.VERSION
 	assert_eq(JSON.parse_string(fs.files[PATH]), JSON.parse_string(JSON.stringify(v7)),
 		"réécrite à l'identique")
 	for flag: StringName in J20_FLAGS:

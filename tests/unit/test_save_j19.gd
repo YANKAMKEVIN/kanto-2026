@@ -100,7 +100,7 @@ func _fixture(path: String) -> Dictionary:
 # --- §2.13, points 1, 2, 3 et 5 ------------------------------------------------------------
 
 func test_the_jalon_19_adds_no_save_version() -> void:
-	assert_eq(SaveSystem.VERSION, 7, "aucune version du J19 : v7 depuis le J15 (Pension)")
+	assert_eq(SaveSystem.VERSION, 8, "aucune version du J19 : v7 depuis le J15 (Pension), v8 au J23")
 
 
 func test_every_flag_of_the_jalon_survives_a_save() -> void:
@@ -125,12 +125,13 @@ func test_a_v7_save_written_by_the_jalon_15_loads_unchanged() -> void:
 	var content := _save.read()
 	assert_eq(_save.last_status, OK, "acceptée")
 	assert_eq(_save.read_version, 7, "lue comme une v7")
-	assert_eq(SaveSystem.migration_note(_save.read_version, SaveSystem.VERSION), "",
-		"aucune migration")
+	assert_eq(SaveSystem.migration_note(_save.read_version, SaveSystem.VERSION),
+		"sauvegarde v7 → v8", "seule la v8 du J23 (Parc Safari, rien à transformer)")
 	var state := _state()
 	assert_true(state.load_dict(content, _data), "chargée sans entrée écartée")
 	assert_eq(_save.write(state.to_dict()), OK)
 	var written: Variant = JSON.parse_string(_fs.files[PATH])
+	v7["version"] = SaveSystem.VERSION
 	assert_eq(written, JSON.parse_string(JSON.stringify(v7)),
 		"réécrite à l'identique (équipe, uid, Sac, drapeaux, position, Pension…)")
 	for flag: StringName in J19_FLAGS:
@@ -258,7 +259,7 @@ func test_a_j19_save_with_the_scope_added_meets_named_wild_pokemon_but_the_6f_gh
 	await wait_until(func() -> bool:
 		return (_file(fs).get("flags", []) as Array).has("tower_stairs_open"), TIMEOUT)
 	var saved := _file(fs)
-	assert_eq(int(saved.get("version", 0)), 7, "toujours v7")
+	assert_eq(int(saved.get("version", 0)), SaveSystem.VERSION, "toujours la version courante")
 	assert_eq(saved.get("map"), String(MAP_6F), "sauvegardée au 6F")
 	for flag: StringName in J19_FLAGS:
 		if flag != &"rival_tower_won":
@@ -315,7 +316,7 @@ func test_a_j19_save_with_the_scope_added_meets_named_wild_pokemon_but_the_6f_gh
 		return (_file(fs).get("pokedex", {}) as Dictionary) != (JSON.parse_string(
 			before_battle_save) as Dictionary).get("pokedex", {}), TIMEOUT)
 	assert_ne(fs.files[BOOT_PATH], before_battle_save, "la demande est écrite au retour au calme")
-	assert_eq(int(_file(fs).get("version", 0)), 7)
+	assert_eq(int(_file(fs).get("version", 0)), SaveSystem.VERSION)
 	var items: Dictionary = (_file(fs)["bag"] as Dictionary)["items"]
 	assert_eq(int(items.get(String(SCOPE), 0)), 1, "le Scope reste dans le fichier")
 
