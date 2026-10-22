@@ -62,6 +62,8 @@ const SPECIES: Array[String] = [
 	# Jalon 26 (jalon-26.md §2.7, T3) : Lokhlass (cadeau du 7F) et Alakazam (équipes de la Sylphe,
 	# rival n° 6). Ajouts en fin ; rien d'autre ne change.
 	"alakazam", "lapras",
+	# Jalon 26 (T3) : Osselait et Ossatueur (équipes de la Sylphe SARL, jamais montrés au J19).
+	"cubone", "marowak",
 ]
 const OUTLINE := Color("#1c1c28")
 const EYE := Color("#1c1c28")
@@ -1941,6 +1943,39 @@ func _draw_lapras(img: Image, back: bool) -> void:
 	_e(img, 20, 20, 5, 3, belly)
 	_eye(img, 24, 14, Color("#2a2a3a"))
 	_r(img, 14, 10, 2, 3, skin.lightened(0.2))
+
+
+## Osselait : petit corps brun, crâne blanc en casque (deux orbites noires), queue courte.
+func _draw_cubone(img: Image, back: bool) -> void:
+	_draw_bone_keeper(img, back, false)
+
+
+## Ossatueur : même motif, plus grand, os tenu à droite.
+func _draw_marowak(img: Image, back: bool) -> void:
+	_draw_bone_keeper(img, back, true)
+
+
+func _draw_bone_keeper(img: Image, back: bool, evolved: bool) -> void:
+	var skin := Color("#a8784a")
+	var bone := Color("#ece4cc")
+	var body_y := 44 if not evolved else 40
+	var head_y := 24 if not evolved else 18
+	_line(img, Vector2(44, body_y + 8), Vector2(54, body_y - 2), skin.darkened(0.1), 3)
+	_r(img, 22, 54, 8, 7, skin.darkened(0.12))
+	_r(img, 34, 54, 8, 7, skin.darkened(0.12))
+	_e(img, 32, body_y, 12 if not evolved else 14, 12 if not evolved else 14, skin, true)
+	_e(img, 17, body_y - 2, 3, 6, skin, true)
+	_e(img, 47, body_y - 2, 3, 6, skin, true)
+	_e(img, 32, head_y, 12, 11, bone, true)
+	if evolved:
+		_line(img, Vector2(52, body_y + 4), Vector2(58, body_y - 18), bone, 3)
+		_e(img, 58, body_y - 20, 3, 3, bone, true)
+	if back:
+		_r(img, 26, head_y + 6, 12, 2, bone.darkened(0.2))
+		return
+	_r(img, 24, head_y - 1, 5, 5, Color("#2a2a3a"))
+	_r(img, 35, head_y - 1, 5, 5, Color("#2a2a3a"))
+	_e(img, 32, head_y + 8, 6, 3, skin.lightened(0.1))
 
 
 # --- Ombre ------------------------------------------------------------------------
