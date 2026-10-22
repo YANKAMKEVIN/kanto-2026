@@ -710,9 +710,11 @@ const SET_J14_BILL_CUTSCENES: Array[StringName] = [
 ## Jalon 16 (T12, T15) : `got_hm01` (lu par le marin de la passerelle et le départ du navire) est
 ## levé par la scène du capitaine (T13). Jalon 18 (T16) : `tower_stairs_open` (présence de
 ## l'Exorciste de la Tour) est levé au J19 (T16 : scène `tower_guardian`, dossier 22 K-3).
-## Jalon 28 : `silph_giovanni_defeated` est levé par le J26 (Sylphe SARL), fusionné avant le J28 ;
-## le J28 ne fait que le lire (porte de l'Arène de Jadielle, guetteur).
-const FUTURE_FLAGS: Array[StringName] = [&"ghost_marowak_calmed", &"silph_giovanni_defeated"]
+## Jalon 28 (Q28-1, 2026-10-22) : la porte de l'Arène de Jadielle et le guetteur lisent les 7
+## Badges (`badge_soul`, `badge_marsh`, `badge_volcano` : arènes futures) ; plus aucune lecture de
+## `silph_giovanni_defeated`.
+const FUTURE_FLAGS: Array[StringName] = [&"ghost_marowak_calmed", &"badge_soul", &"badge_marsh",
+	&"badge_volcano"]
 ## Jalon 28 (T7, T8) : dialogues de l'Arène de Jadielle.
 const IDS_J28: Array[StringName] = [
 	&"viridian_gym_blackbelt_bertrand_after", &"viridian_gym_blackbelt_bertrand_before",

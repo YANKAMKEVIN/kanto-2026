@@ -313,10 +313,13 @@ const WARPS: Array = [
 		Vector2i.LEFT],
 ]
 ## Jalon 28 (jalon-28.md §2.1) : porte de l'Arène, PUSH ↑ depuis les deux cases devant elle,
-## active seulement si `silph_giovanni_defeated` ([member WarpPoint.if_flags]) ; le point
+## active seulement avec les 7 Badges autres que celui de Giovanni ([member WarpPoint.if_flags],
+## condition de RB : `wObtainedBadges` = tous sauf la Terre ; décision de Kevin Q28-1, 2026-10-22,
+## indépendante de la Sylphe) ; le point
 ## d'examen « La porte est verrouillée. » porte le `unless` inverse. Posés à la main dans la
 ## scène (2026-10-22), comme les sorties nord : [nœud, case].
-const GYM_DOOR_FLAG: StringName = &"silph_giovanni_defeated"
+const GYM_DOOR_FLAGS: Array[StringName] = [&"badge_boulder", &"badge_cascade", &"badge_thunder",
+	&"badge_rainbow", &"badge_soul", &"badge_marsh", &"badge_volcano"]
 const GYM_DOOR_WARPS: Array = [
 	["GymDoorW", Vector2i(9, 10)],
 	["GymDoorE", Vector2i(10, 10)],
@@ -961,7 +964,7 @@ func _add_warps(root: Node) -> void:
 		point.set(&"target_map", &"viridian_gym")
 		point.set(&"target_spawn", &"entrance")
 		point.set(&"arrival_facing", Vector2i.UP)
-		var gate: Array[StringName] = [GYM_DOOR_FLAG]
+		var gate: Array[StringName] = GYM_DOOR_FLAGS.duplicate()
 		point.set(&"if_flags", gate)
 		_attach(root, root.get_node(^"Warps"), point)
 
@@ -977,8 +980,8 @@ func _add_interactables(root: Node) -> void:
 		point.set(&"facing", entry[3])
 		point.set(&"dialogue_id", entry[4])
 		if entry[4] == &"viridian_gym_door":
-			var locked: Array[StringName] = [GYM_DOOR_FLAG]
-			point.set(&"unless_flags", locked)
+			var locked: Array[StringName] = GYM_DOOR_FLAGS.duplicate()
+			point.set(&"unless_all_flags", locked)
 		_attach(root, root.get_node(^"Interactables"), point)
 	# Portes des maisons : fermées (« C'est fermé. »), examinées de face depuis l'allée.
 	for garden: Array in GARDENS:

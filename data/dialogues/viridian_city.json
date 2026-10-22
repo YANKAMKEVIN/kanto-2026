@@ -50,7 +50,7 @@
 		"speaker": "Habitant",
 		"variants": [
 			{ "if": ["badge_earth"], "pages": ["Le Champion est reparti. Personne ne sait où."] },
-			{ "if": ["silph_giovanni_defeated"], "pages": ["La porte de l'Arène est ouverte ! Le Champion serait revenu…"] },
+			{ "if": ["badge_boulder", "badge_cascade", "badge_thunder", "badge_rainbow", "badge_soul", "badge_marsh", "badge_volcano"], "pages": ["La porte de l'Arène est ouverte ! Le Champion serait revenu…"] },
 			{ "pages": ["Encore fermée… Je me demande où est passé le Champion."] }
 		]
 	},

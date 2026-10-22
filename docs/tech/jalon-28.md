@@ -22,8 +22,8 @@
 
 | Besoin | Où, état réel | Ce que fait le J28 |
 |---|---|---|
-| Jadielle, porte de l'Arène | `main` (J7) : `viridian_city`, dialogue `viridian_gym_door` (« La porte est verrouillée. »), guetteur `gym_watcher` (`viridian_gym_watcher`) ; service `gym` dans `zones.json` | Porte → warp vers `viridian_gym` **si** `silph_giovanni_defeated` ; sinon texte actuel. Guetteur à deux variantes |
-| Condition d'ouverture | J26 : **`silph_giovanni_defeated`** (plan `jalon-26.md` §0.2) | Seul drapeau lu. **Ni Badge Marais ni Badge Volcan** (arbitrage 2). Pas de `viridian_gym_unlocked` [D] |
+| Jadielle, porte de l'Arène | `main` (J7) : `viridian_city`, dialogue `viridian_gym_door` (« La porte est verrouillée. »), guetteur `gym_watcher` (`viridian_gym_watcher`) ; service `gym` dans `zones.json` | Porte → warp vers `viridian_gym` **si** les 7 Badges autres que la Terre sont levés (Q28-1, 2026-10-22) ; sinon texte actuel. Guetteur à trois variantes |
+| Condition d'ouverture | **Décision de Kevin Q28-1 (2026-10-22)** : comme Rouge/Bleu (`ViridianCityCheckGymOpenScript` : `wObtainedBadges` = tous les Badges sauf la Terre), la porte s'ouvre avec les **7 Badges** `badge_boulder`, `badge_cascade`, `badge_thunder`, `badge_rainbow`, `badge_soul`, `badge_marsh`, `badge_volcano`, **indépendamment de la Sylphe** (`silph_giovanni_defeated` n'est plus lu). Remplace l'arbitrage 2. Pas de `viridian_gym_unlocked` [D] |
 | Dalles directionnelles | `main` (J20) : `game/world/spin/` (`SpinTileRules` : flèches `< > ^ v`, arrêt `o`, erreurs BLOCKED / LOOP / TOO_LONG ; `SpinTileField`, `SpinTileDirector`) ; `systemes-2` (S2C, T15, validé) : `ForcedSlideDirector`, un seul lecteur pour les dalles et les courants | Pose un nœud `SpinTiles` depuis la grille (passation du J20 §10.3) ; aucun code |
 | K.O. en un coup | `systemes-2` (S2E, T29, validé) : `MoveEffect.Kind.OHKO`, règle moderne (Q-2 A) ; **`fissure` volontairement non créée** par la passe | Crée `fissure` (Abîme) avec `effects: [{ "kind": "ohko" }]` |
 | CT27 | `main` : `tm_compatibility.json` lie la CT27 à `fissure` (pas Séisme) | Crée l'objet `tm27` si absent ; ne pas reprendre la CT26 Séisme (passe §7) |
@@ -63,7 +63,7 @@ n'existe pas encore (une partie réelle ne peut pas poser le drapeau avant).
   en BLOCKED. Aucun code. Si le décodage RB montre une glissade qui bute contre un mur, on le signale
   (Q28-2).
 - La passe propose `viridian_gym_unlocked` et `giovanni_disbanded_rocket` : remplacés par
-  `silph_giovanni_defeated` (lu) et `badge_earth` (Giovanni absent si posé) [D]. Même sens.
+  les 7 Badges (lus, Q28-1) et `badge_earth` (Giovanni absent si posé) [D]. Même sens.
 
 ## 1. Découpage
 
@@ -113,7 +113,7 @@ poser le warp en données, selon ce que l'outil du J7 permet, vu au T1).
 
 | Drapeau | Rôle |
 |---|---|
-| `silph_giovanni_defeated` | lu (J26) : porte ouverte |
+| 7 Badges (`badge_boulder` … `badge_volcano`) | lus : porte ouverte (Q28-1) ; `silph_giovanni_defeated` n'est plus lu |
 | `giovanni_gym_met` | Introduction dite |
 | `badge_earth` | Badge ; Giovanni absent |
 | `tm27_received` | CT27 remise |
@@ -148,7 +148,7 @@ porte fermée reste celui du J7 (« La porte est verrouillée. »).
 | T28-09 [D] | Narration | « {player} reçoit le Badge Terre ! » (modèle des Badges existants, à vérifier) |
 
 
-### 3.1 Textes complémentaires (écrits au codage, 2026-10-22) — **à relire par Kevin**
+### 3.1 Textes complémentaires (écrits au codage, 2026-10-22) — **relus et validés par Kevin le 2026-10-22 (T28-10 à T28-36)**
 
 Le plan ne donnait pas de répliques aux huit Dresseurs, ni la défaite du joueur contre Giovanni, ni la
 remise de la CT, ni le guide après le départ du Champion. Propositions [D] ci-dessous, en place dans
@@ -208,8 +208,8 @@ remise de la CT, ni le guide après le départ du Champion. Propositions [D] ci-
 
 ## 5. Tests
 
-- `test_viridian_gym_door.gd` : sans `silph_giovanni_defeated` → fermée ; avec → ouverte, même sans
-  Badge Marais ni Volcan ; ouverte pour toujours.
+- `test_viridian_gym_door.gd` : 6 Badges (sans le Volcan) → fermée, même Sylphe libérée ; 7 Badges → ouverte, sans
+  `silph_giovanni_defeated` ; ouverte pour toujours.
 - `test_viridian_gym.gd` : grille = plan ; chaque dalle → trajet OK ; dalles successives
   déterministes ; aucune glissade ne déclenche un warp ni un dialogue ; entrée toujours atteignable.
 - `test_viridian_gym_save.gd` : sauvegarde demandée pendant une glissade → refusée ; arrêt simulé →
@@ -242,7 +242,7 @@ remise de la CT, ni le guide après le départ du Champion. Propositions [D] ci-
 
 ## 8. Valeurs par défaut [D]
 
-- Porte ouverte par `silph_giovanni_defeated` seulement ; pas de drapeau d'ouverture propre.
+- Porte ouverte par les 7 Badges (Q28-1) ; pas de drapeau d'ouverture propre.
 - Case d'arrêt explicite devant chaque obstacle ; aucun changement du moteur des dalles.
 - Giovanni retiré par `badge_earth` ; pas de `giovanni_disbanded_rocket`.
 - Textes T28-01 à T28-09.
@@ -295,10 +295,10 @@ d'avance (proposition du plan)** ; textes complémentaires du §3.1 **à relire*
   `tools/art/placeholders_j28.py`, nœud `SpinTiles`, aucune ligne du moteur des dalles) ; lumière
   `interior_warm` ; zone Jadielle. **Porte** : nouveau champ `Warp.if_flags` / `WarpPoint.if_flags`
   (lu par `SceneRouter._is_warp_enabled`) ; deux warps PUSH ↑ (9, 10), (10, 10) actifs avec
-  `silph_giovanni_defeated` ; l'examen « La porte est verrouillée. » porte le `unless` inverse ;
+  les 7 Badges ; l'examen « La porte est verrouillée. » porte le nouveau champ `unless_all_flags` (`InteractPoint` / `Interaction` : cible retirée quand tous sont levés) ;
   spawn `from_gym`. Scène de Jadielle modifiée à la main (comme les sorties nord), outil du J7 mis
   à jour en conséquence. Guetteur à trois variantes.
-- **T10** : départs `viridian_gym`, `viridian_gym_giovanni`, `viridian_locked` ; tests `test_viridian_gym` (9), `test_viridian_gym_door` (6), `test_giovanni_gym` (5), `test_fissure` (6). Suite complète 6 512 / 6 512, import sans erreur.
+- **T10** : départs `viridian_gym`, `viridian_gym_giovanni`, `viridian_locked` ; tests `test_viridian_gym` (9), `test_viridian_gym_door` (6), `test_giovanni_gym` (5), `test_fissure` (6). Suite complète 6 514 / 6 514, import sans erreur.
 - Capture headless relue (`tools/capture_map.gd`) : Dresseurs, objet, dalles et arrêts lisibles.
 
 ### 10.2 Reste
@@ -310,8 +310,8 @@ d'avance (proposition du plan)** ; textes complémentaires du §3.1 **à relire*
 - À la fusion : retirer `kanto_j28_emprunts.json` (et les fiches de Pokédex / sprites en double) si
   J22 / J23 sont déjà dans `main` ; régénérer `tm_compatibility.json` ; recaler les listes des
   tests partagés (`test_dialogue_data`, `test_cutscene_data`, `test_pokemon_data`,
-  `test_item_library`) ; retirer `silph_giovanni_defeated` de `FUTURE_FLAGS` de
-  `test_dialogue_data` une fois le J26 fusionné.
+  `test_item_library`) ; `FUTURE_FLAGS` de `test_dialogue_data` porte `badge_soul`, `badge_marsh`, `badge_volcano`
+  (à retirer quand leurs arènes existent).
 
 ### 10.3 Pour Kevin
 

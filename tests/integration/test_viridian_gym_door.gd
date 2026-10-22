@@ -1,10 +1,12 @@
 extends GutTest
 ## Porte de l'Arène de Jadielle (jalon 28, `docs/tech/jalon-28.md` §2.3, §5) avec la vraie scène
-## Boot, la vraie carte `viridian_city` et le vrai SceneRouter (fondus raccourcis) :
-## - sans `silph_giovanni_defeated` (tous les autres Badges sauf Marais et Volcan, qui n'existent
-##   pas encore) : pousser ↑ ne change pas de carte, l'examen donne « La porte est verrouillée. » ;
-## - avec le drapeau (sans `badge_soul`, `badge_marsh`, `badge_volcano`) : pousser ↑ mène à
-##   `viridian_gym` sur `entrance` ; sortir (PUSH ↓) ramène à `viridian_city` / `from_gym` ;
+## Boot, la vraie carte `viridian_city` et le vrai SceneRouter (fondus raccourcis). Condition de
+## RB (décision de Kevin Q28-1, 2026-10-22) : la porte s'ouvre avec les 7 autres Badges, comme
+## Rouge/Bleu, et pas avec `silph_giovanni_defeated` :
+## - à 6 Badges (il manque le Badge Volcan) : pousser ↑ ne change pas de carte, l'examen donne
+##   « La porte est verrouillée. » ; la Sylphe libérée n'y change rien ;
+## - à 7 Badges (sans `silph_giovanni_defeated`) : pousser ↑ mène à `viridian_gym` sur `entrance` ;
+##   sortir (PUSH ↓) ramène à `viridian_city` / `from_gym` ;
 ## - guetteur `gym_watcher` : trois textes selon les drapeaux (T28-01, T28-02, texte du J7).
 
 const MemoryFs := preload("res://tests/helpers/memory_file_system.gd")
@@ -18,12 +20,13 @@ const FADE := 0.05
 const TIMEOUT := 12.0
 const FROM_GYM := Vector2i(9, 10)
 const GYM_ENTRANCE := Vector2i(18, 20)
-const OPEN := &"silph_giovanni_defeated"
+const SILPH := &"silph_giovanni_defeated"
+const SEVEN: Array[StringName] = [&"badge_boulder", &"badge_cascade", &"badge_thunder",
+	&"badge_rainbow", &"badge_soul", &"badge_marsh", &"badge_volcano"]
 const LOCKED_TEXT := "La porte est verrouillée."
 const WATCHER_CLOSED := "Encore fermée… Je me demande où est passé le Champion."
 const WATCHER_OPEN := "La porte de l'Arène est ouverte ! Le Champion serait revenu…"
 const WATCHER_GONE := "Le Champion est reparti. Personne ne sait où."
-const MISSING_BADGES: Array[StringName] = [&"badge_soul", &"badge_marsh", &"badge_volcano"]
 
 var _fs: MemoryFs
 var _boot: Boot
@@ -47,9 +50,9 @@ func after_each() -> void:
 		Input.action_release(action)
 
 
-## Boot sur Jadielle, sur `from_gym` tourné ↑, partie de `viridian_locked` (Sylphe non libérée,
-## tous les autres Badges sauf Marais et Volcan) ; [param open] pose `silph_giovanni_defeated`.
-func _start(open: bool) -> void:
+## Boot sur Jadielle, sur `from_gym` tourné ↑, partie de `viridian_locked` (6 Badges, il manque
+## le Volcan) ; [param open] pose les 7 Badges. [param silph] pose `silph_giovanni_defeated`.
+func _start(open: bool, silph: bool = false) -> void:
 	_boot = BOOT_SCENE.instantiate() as Boot
 	_boot.save_system = SaveSystem.new(_fs, SAVE_PATH)
 	_boot.start_map = CITY
@@ -63,20 +66,21 @@ func _start(open: bool) -> void:
 		"\n".join(start.get_errors()))
 	start.apply(GameState, _boot.get_pokemon_data())
 	GameState.rng = GameRng.new(7)
-	for flag: StringName in MISSING_BADGES + [OPEN]:
-		GameState.flags.set_flag(flag, false)
+	GameState.flags.set_flag(&"badge_volcano", false)
+	GameState.flags.set_flag(SILPH, false)
 	if open:
-		GameState.flags.set_flag(OPEN)
+		GameState.flags.set_flag(&"badge_volcano")
+	if silph:
+		GameState.flags.set_flag(SILPH)
 	await wait_process_frames(2)
 	# Les passages et points d'examen sont posés selon les drapeaux au chargement : on recharge.
 	await SceneRouter.change_map(CITY, &"from_gym", Vector2i.UP)
 	await wait_process_frames(3)
 	assert_eq(_boot.get_map().map_id, CITY)
 	assert_eq(_player.get_cell(), FROM_GYM)
-	assert_eq(GameState.flags.has_flag(OPEN), open)
-	for flag: StringName in MISSING_BADGES:
-		assert_false(GameState.flags.has_flag(flag), "%s : n'existe pas encore" % flag)
-	assert_true(GameState.flags.has_flag(&"badge_rainbow"), "les autres Badges sont là")
+	assert_eq(GameState.flags.has_all(SEVEN), open)
+	assert_eq(GameState.flags.has_flag(SILPH), silph)
+	assert_false(GameState.flags.has_flag(&"badge_earth"))
 
 
 func _press(action: StringName, frames: int) -> void:
@@ -95,7 +99,7 @@ func _push_until(action: StringName, map: StringName, seconds: float) -> bool:
 	return _boot.get_map().map_id == map
 
 
-func test_the_door_is_closed_without_the_flag_and_answers_when_examined() -> void:
+func test_the_door_is_closed_with_six_badges_and_answers_when_examined() -> void:
 	await _start(false)
 	var changed := await _push_until(&"move_up", GYM, 1.5)
 	assert_false(changed, "la porte ne s'ouvre pas")
@@ -111,14 +115,21 @@ func test_the_door_is_closed_without_the_flag_and_answers_when_examined() -> voi
 	assert_push_error_count(0)
 
 
-func test_the_door_opens_with_the_flag_even_without_the_last_badges() -> void:
+func test_the_door_stays_closed_with_the_silph_freed_but_six_badges() -> void:
+	await _start(false, true)
+	var changed := await _push_until(&"move_up", GYM, 1.5)
+	assert_false(changed, "la Sylphe ne suffit plus")
+	assert_eq(_boot.get_map().map_id, CITY)
+	assert_push_error_count(0)
+
+
+func test_the_door_opens_with_seven_badges_without_the_silph() -> void:
 	await _start(true)
 	assert_true(await _push_until(&"move_up", GYM, TIMEOUT), "porte ouverte")
 	assert_eq(_boot.get_map().map_id, GYM)
 	assert_eq(_player.get_cell(), GYM_ENTRANCE, "sur « entrance »")
 	assert_eq(_player.get_facing(), Vector2i.UP)
-	for flag: StringName in MISSING_BADGES:
-		assert_false(GameState.flags.has_flag(flag), flag)
+	assert_false(GameState.flags.has_flag(SILPH), "indépendante de la Sylphe")
 	assert_push_error_count(0)
 
 
@@ -151,10 +162,15 @@ func test_the_watcher_has_three_texts_by_flags() -> void:
 	assert_not_null(dialogue)
 	assert_eq(dialogue.speaker, "Habitant")
 	assert_eq(dialogue.variants.size(), 3)
+	var six: Array[StringName] = SEVEN.slice(0, 6)
+	var seven_and_earth: Array[StringName] = SEVEN.duplicate()
+	seven_and_earth.append(&"badge_earth")
 	var cases: Array = [
 		[[] as Array[StringName], WATCHER_CLOSED],
-		[[OPEN] as Array[StringName], WATCHER_OPEN],
-		[[OPEN, &"badge_earth"] as Array[StringName], WATCHER_GONE],
+		[six, WATCHER_CLOSED],
+		[[SILPH] as Array[StringName], WATCHER_CLOSED],
+		[SEVEN, WATCHER_OPEN],
+		[seven_and_earth, WATCHER_GONE],
 		[[&"badge_earth"] as Array[StringName], WATCHER_GONE],
 	]
 	for entry: Array in cases:

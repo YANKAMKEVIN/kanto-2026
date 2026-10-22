@@ -44,9 +44,11 @@
 		"cut_celadon_gym_bush",
 		"cut_celadon_gym_inner_bush",
 		"badge_rainbow",
+		"badge_soul",
+		"badge_marsh",
+		"badge_volcano",
 		"erika_met",
 		"tm21_received",
-		"silph_giovanni_defeated",
 		"giovanni_gym_met"
 	],
 	"party": [

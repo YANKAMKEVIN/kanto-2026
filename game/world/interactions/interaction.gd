@@ -32,6 +32,9 @@ var source: Object = null
 ## Jalon 12 (jalon-12.md §2.8) : la cible disparaît dès qu'un de ces drapeaux est levé
 ## ([method is_available]) ; vide = toujours disponible. Recopié d'un [InteractPoint].
 var unless_flags: Array[StringName] = []
+## Jalon 28 : la cible disparaît quand **tous** ces drapeaux sont levés (porte de l'Arène de
+## Jadielle : verrouillée tant qu'il manque un des 7 Badges) ; vide = sans effet.
+var unless_all_flags: Array[StringName] = []
 ## Jalon 16 : objet à fouiller d'un puzzle d'interrupteurs (identifiant, place 1..n) ; &"" / 0 =
 ## interaction ordinaire. Recopié d'un [InteractPoint].
 var puzzle: StringName = &""
@@ -122,6 +125,8 @@ static func kind_from_name(value: String) -> int:
 ## dans [param flags] (null = nouvelle partie, aucun drapeau : toujours disponible). Aucune
 ## allocation : appelable à chaque image.
 func is_available(flags: StoryFlags) -> bool:
-	if unless_flags.is_empty() or flags == null:
+	if flags == null:
 		return true
-	return flags.has_none(unless_flags)
+	if not unless_all_flags.is_empty() and flags.has_all(unless_all_flags):
+		return false
+	return unless_flags.is_empty() or flags.has_none(unless_flags)
