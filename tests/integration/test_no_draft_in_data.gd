@@ -16,7 +16,8 @@ const DATA_DIR := "res://data"
 ## Jalon 19 (T3) : descriptions des capacités ajoutées pour les learnsets complets, hors du lot
 ## §15.7 du dossier 22 : validées par Kevin le 2026-10-15. Jalon 19 (effets de capacités) :
 ## messages d'Ultralaser et de Hurlement validés par Kevin le 2026-10-16.
-const PENDING_DRAFTS: Array[String] = []
+## Jalon 26 (T6) : description de Safrania sur la Carte [D], à relire par Kevin.
+const PENDING_DRAFTS: Array[String] = ["world/zones.json/zones/saffron_city"]
 
 
 func test_data_has_json_files() -> void:
