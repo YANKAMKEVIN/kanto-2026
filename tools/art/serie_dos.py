@@ -363,7 +363,10 @@ def generer(noms: list[str]) -> None:
 # --- Préparation ----------------------------------------------------------------------
 ## Essais retenus après relecture (Kevin, ou ma relecture de la nuit) : clé = identifiant, valeur = essai.
 ## Par défaut : le plus petit r disponible.
-RETENUS: dict[str, str] = {}  # remplis après relecture (révisions : voir REVISIONS)
+RETENUS: dict[str, str] = {  # relecture de la planche, 2026-10-22 (révisions r5 à r8)
+	"MIAOUSS": "DOS_MIAOUSS_r6", "KADABRA": "DOS_KADABRA_r7", "RACAILLOU": "DOS_RACAILLOU_r5",
+	"NIDORINA": "DOS_NIDORINA_r6",
+}
 
 
 def retenu(ident: str) -> Path | None:
