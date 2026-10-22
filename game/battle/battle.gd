@@ -717,7 +717,7 @@ func _drain_seed(side: BattleSide, events: Array[BattleEvent]) -> void:
 func _status_damage(side: BattleSide, events: Array[BattleEvent]) -> void:
 	var victim := side.active.pokemon
 	var amount := StatusRules.end_turn_damage(victim)
-	# Jalon 23 (T18) : poison grave, N/16 croissant ([ToxicRules]) ; soigné entre-temps → oublié.
+	# Jalon 23 (T18) : poison grave, N/16 croissant ([ToxicRules]) ; soigné → oublié.
 	var toxic := _toxic_tick(side.active)
 	if toxic > 0:
 		amount = toxic

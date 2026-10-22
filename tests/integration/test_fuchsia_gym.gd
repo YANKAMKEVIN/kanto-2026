@@ -1,6 +1,6 @@
 extends GutTest
-## Arène de Koga (fuchsia_gym, jalon 23 T17 à T19 ; `jalon-23.md` §2.13, dossier 26 §10, annexe A.3)
-## sur la vraie scène et les vraies données :
+## Arène de Koga (fuchsia_gym, jalon 23 T17 à T19 ; `jalon-23.md` §2.13, dossier 26 §10,
+## annexe A.3) sur la vraie scène et les vraies données :
 ## - **grille de la scène = grille fonctionnelle** `tools/plans/parmanie_arene.txt` (14 × 20) ;
 ##   36 murs invisibles bloquants, dessinés comme le parquet (variante de lame : indice au sol) ;
 ##   statues bloquantes avec le texte 35 ; sortie vers `fuchsia_city` / `from_gym` ;
@@ -31,8 +31,8 @@ const TRAINERS := {
 const TEXTS := {
 	&"fuchsia_gym_juggler_1": ["Mes balles volent, mon Hypnomade veille !",
 		"Raté… j'ai tout fait tomber.", "Koga voit tout. Même ce qu'on ne voit pas."],
-	&"fuchsia_gym_juggler_2": ["Un, deux, trois… à toi de jongler !", "Trop de balles en l'air !",
-		"Les murs ? Quels murs ? Moi, je ne vois rien."],
+	&"fuchsia_gym_juggler_2": ["Un, deux, trois… à toi de jongler !",
+		"Trop de balles en l'air !", "Les murs ? Quels murs ? Moi, je ne vois rien."],
 	&"fuchsia_gym_juggler_3": ["Tu cherches ton chemin ? Cherche-moi plutôt !", "Bien joué.",
 		"Avance à petits pas. Écoute le parquet."],
 	&"fuchsia_gym_tamer_1": ["Mes Pokémon obéissent au fouet… et au sifflet !",

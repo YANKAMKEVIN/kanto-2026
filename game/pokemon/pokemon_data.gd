@@ -672,7 +672,8 @@ func _parse_effect(value: Variant, where: String) -> MoveEffect:
 		# Jalon 23 (T18) : poison grave (Toxik), seulement avec « status » : « poison ».
 		if entry.has("toxic"):
 			if not entry["toxic"] is bool or effect.status != StatusRules.POISON:
-				ok = _fail("%s : « toxic » est un booléen, avec « status » : « poison »" % where)
+				ok = _fail("%s : « toxic » est un booléen, avec « status » : « poison »"
+					% where)
 			else:
 				effect.toxic = entry["toxic"]
 		if entry.has("chance"):

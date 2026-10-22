@@ -41,8 +41,8 @@ const SLEEP: StringName = &"sleep"
 const BURN: StringName = &"burn"
 const FREEZE: StringName = &"freeze"
 ## Jalon 23 (T18) : poison grave, **pour l'affichage seulement** (étiquette « PSN+ », messages
-## « status_inflicted_toxic ») : le Pokémon garde [constant POISON] ; la gravité et le compteur sont
-## sur son [Battler] ([ToxicRules]). Jamais dans [constant KNOWN] ni dans la sauvegarde.
+## « status_inflicted_toxic ») : le Pokémon garde [constant POISON] ; la gravité et le compteur
+## sont sur son [Battler] ([ToxicRules]). Jamais dans [constant KNOWN] ni dans la sauvegarde.
 const TOXIC: StringName = &"toxic"
 ## Statuts connus de cette build (sauvegarde, départs de débogage, effets de capacité, objets).
 const KNOWN: Array[StringName] = [POISON, PARALYSIS, SLEEP, BURN, FREEZE]
