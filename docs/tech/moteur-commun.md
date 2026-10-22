@@ -84,12 +84,16 @@ GPU mesuré s'étire jusqu'au budget, ≈ 15–16,5 ms quel que soit le contenu,
 Elles disparaissent quand la charge est faible (carte et étalonnage cachés : creux 60) ; arrêter
 les scripts de la carte ne change rien (pas un coût de script ni de ramasse-miettes).
 
-### 1.5 Réglage « Économie » (décision de Kevin, 2026-10-23)
+### 1.5 Réglage « Lumière d'ambiance » (clé `economy`) (décisions de Kevin, 2026-10-23)
 
-- Paramètres > GRAPHISMES : bascule **« Économie »** [D], aide « Coupe la lumière d'ambiance pour
-  plus de fluidité sur les petits téléphones. » [D] (libellé et aide à relire par Kevin). À ne pas
-  confondre avec la qualité « Économie » (30 i/s) du sélecteur « Qualité ».
-- **Désactivé par défaut** : rendu identique. Activé : `WorldLighting.set_economy(true)` cache le
+- Paramètres > GRAPHISMES : bascule **« Lumière d'ambiance »** [D], aide « Désactivez-la pour
+  plus de fluidité sur les petits téléphones. » [D]. Kevin a choisi l'option 2 le 2026-10-23 ;
+  d'abord nommée « Économie », renommée pour ne pas doubler la qualité « Économie » (30 i/s) du
+  sélecteur « Qualité ». **Activée = rendu normal** (`economy == false`) ; désactivée = passe
+  d'étalonnage coupée. L'interrupteur affiche le contraire du réglage
+  (`SettingControlView.inverted`) : la vue garde la valeur du réglage, l'écran émet toujours
+  son contraire, seuls la position et le texte « Activé / Désactivé » sont inversés.
+- **`economy` faux par défaut** (lumière activée) : rendu identique. `economy` vrai : `WorldLighting.set_economy(true)` cache le
   calque d'étalonnage plein écran (la passe qui recopie l'écran) ; l'étalonnage à plat (gain
   unique, presque gratuit) et les ombres restent. Appliqué par `SettingsApplier` à chaque
   changement : effet immédiat, sans redémarrer ni changer de carte.
@@ -98,9 +102,10 @@ les scripts de la carte ne change rien (pas un coût de script ni de ramasse-mie
   (lecture tolérante déjà en place). La sauvegarde de partie n'est pas touchée.
 - Tests : `test_game_settings` (défaut, bascule, aller-retour, ancien fichier, valeur mal
   formée), `test_world_lighting` (effet, maintien après changement de carte, étalonnage à plat
-  gardé), `test_settings_views`, `test_settings_apply` (effet immédiat dans Boot).
-- **Mesure A17** (Route 11, départ `route_11`, sonde `base`, 25 s, deux séries) : désactivé
-  48,7 et 48,9 i/s (GPU 16,4 ms) ; activé 53,2 et 52,8 i/s (GPU 14,7 ms). Gain ≈ 4 i/s, bien
+  gardé), `test_settings_views` (libellé, inversion, libellés uniques), `test_settings_screen`
+  (interrupteur allumé quand `economy` est faux), `test_settings_apply` (effet immédiat dans Boot).
+- **Mesure A17** (Route 11, départ `route_11`, sonde `base`, 25 s, deux séries) : `economy` faux (lumière activée)
+  48,7 et 48,9 i/s (GPU 16,4 ms) ; `economy` vrai (lumière coupée) 53,2 et 52,8 i/s (GPU 14,7 ms). Gain ≈ 4 i/s, bien
   moins que les ≈ 8 ms estimés sur la Route 12 (le GPU est régulé vers ≈ 15 ms). 60 i/s
   toujours pas atteint sur cette carte. Captures : `~/dev/qa-moteur/economie/route_11_desactivee.png`
   et `route_11_activee.png`, journaux `route_11_economie_*.log`.
