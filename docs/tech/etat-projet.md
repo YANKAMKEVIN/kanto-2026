@@ -10,7 +10,7 @@
   vérifiés ou réglés. Détail, valeurs par défaut, contrats J22 / Bourg Palette et liste de QA :
   `docs/tech/jalon-24.md` §0.5.
 - **Textes** : mises en page et répliques de don recommandées — validé par Kevin le 2026-10-21,
-  validation d'avance.
+  validation d'avance. Import headless sans erreur ; suite complète 6 543 / 6 543 (`c93422b9`).
 - **Attend Kevin** : QA téléphone (5 départs `j24_*`), accord pour la côte sud de Bourg Palette
   (T11) ; Parmanie et le rocher du Gardien attendent la fusion du J22.
 - **Reportés** : cartes en tuiles provisoires (vues peintes de la série 27 à poser) ; T-14 et
