@@ -1,0 +1,385 @@
+{
+	"version": 1,
+	"title": "Équilibrage de la Sylphe SARL : rival n° 6 et Giovanni (jalon 26 T14)",
+	"description": "Jalon 26 T14 (jalon-26.md §2.3). Information pour Kevin : aucune donnée de jeu n'est changée. Équipe de référence [D] : starter évolué N38, Roucarnage N36, Papilusion N32, Sablaireau N32, Pikachu N32 (équipes des départs de débogage silph_*), soignées. Rival n° 6 inévitable (7F), Centre, puis Giovanni (11F). Les Sbires (facultatifs pour la plupart) ne sont pas joués. Dresseurs recopiés de data/trainers/ (--donnees les relit).",
+	"seeds": 200,
+	"heal_at_start": true,
+	"teams": [
+		{
+			"name": "Dracaufeu 38, Roucarnage 36, Papilusion 32, Sablaireau 32, Pikachu 32",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charizard",
+					"level": 38
+				},
+				{
+					"species": "pidgeot",
+					"level": 36
+				},
+				{
+					"species": "butterfree",
+					"level": 32
+				},
+				{
+					"species": "sandslash",
+					"level": 32
+				},
+				{
+					"species": "pikachu",
+					"level": 32
+				}
+			]
+		},
+		{
+			"name": "Florizarre 38, Roucarnage 36, Papilusion 32, Sablaireau 32, Pikachu 32",
+			"starter": "bulbasaur",
+			"members": [
+				{
+					"species": "venusaur",
+					"level": 38
+				},
+				{
+					"species": "pidgeot",
+					"level": 36
+				},
+				{
+					"species": "butterfree",
+					"level": 32
+				},
+				{
+					"species": "sandslash",
+					"level": 32
+				},
+				{
+					"species": "pikachu",
+					"level": 32
+				}
+			]
+		},
+		{
+			"name": "Tortank 38, Roucarnage 36, Papilusion 32, Sablaireau 32, Pikachu 32",
+			"starter": "squirtle",
+			"members": [
+				{
+					"species": "blastoise",
+					"level": 38
+				},
+				{
+					"species": "pidgeot",
+					"level": 36
+				},
+				{
+					"species": "butterfree",
+					"level": 32
+				},
+				{
+					"species": "sandslash",
+					"level": 32
+				},
+				{
+					"species": "pikachu",
+					"level": 32
+				}
+			]
+		}
+	],
+	"tables": {},
+	"trainers": {
+		"rival_silph": {
+			"name": "{rival}",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 35,
+			"end_message": false,
+			"start_message": true,
+			"bag": true,
+			"moment": "win",
+			"switch": true,
+			"team_by_starter": {
+				"bulbasaur": [
+					{
+						"species": "pidgeot",
+						"level": 37,
+						"moves": [
+							"sand_attack",
+							"quick_attack",
+							"whirlwind",
+							"wing_attack"
+						]
+					},
+					{
+						"species": "exeggcute",
+						"level": 38,
+						"moves": [
+							"reflect",
+							"leech_seed",
+							"stun_spore",
+							"poison_powder"
+						]
+					},
+					{
+						"species": "sandslash",
+						"level": 35,
+						"moves": [
+							"scratch",
+							"sand_attack",
+							"slash",
+							"poison_sting"
+						]
+					},
+					{
+						"species": "alakazam",
+						"level": 35,
+						"moves": [
+							"confusion",
+							"disable",
+							"psybeam",
+							"recover"
+						]
+					},
+					{
+						"species": "charizard",
+						"level": 40,
+						"moves": [
+							"ember",
+							"leer",
+							"rage",
+							"slash"
+						]
+					}
+				],
+				"charmander": [
+					{
+						"species": "pidgeot",
+						"level": 37,
+						"moves": [
+							"sand_attack",
+							"quick_attack",
+							"whirlwind",
+							"wing_attack"
+						]
+					},
+					{
+						"species": "growlithe",
+						"level": 38,
+						"moves": [
+							"roar",
+							"ember",
+							"leer",
+							"take_down"
+						]
+					},
+					{
+						"species": "exeggcute",
+						"level": 35,
+						"moves": [
+							"hypnosis",
+							"reflect",
+							"leech_seed",
+							"stun_spore"
+						]
+					},
+					{
+						"species": "alakazam",
+						"level": 35,
+						"moves": [
+							"confusion",
+							"disable",
+							"psybeam",
+							"recover"
+						]
+					},
+					{
+						"species": "blastoise",
+						"level": 40,
+						"moves": [
+							"bubble",
+							"water_gun",
+							"bite",
+							"withdraw"
+						]
+					}
+				],
+				"squirtle": [
+					{
+						"species": "pidgeot",
+						"level": 37,
+						"moves": [
+							"sand_attack",
+							"quick_attack",
+							"whirlwind",
+							"wing_attack"
+						]
+					},
+					{
+						"species": "gyarados",
+						"level": 38,
+						"moves": [
+							"bite",
+							"dragon_rage",
+							"leer",
+							"hydro_pump"
+						]
+					},
+					{
+						"species": "growlithe",
+						"level": 35,
+						"moves": [
+							"roar",
+							"ember",
+							"leer",
+							"take_down"
+						]
+					},
+					{
+						"species": "alakazam",
+						"level": 35,
+						"moves": [
+							"confusion",
+							"disable",
+							"psybeam",
+							"recover"
+						]
+					},
+					{
+						"species": "venusaur",
+						"level": 40,
+						"moves": [
+							"leech_seed",
+							"vine_whip",
+							"poison_powder",
+							"razor_leaf"
+						]
+					}
+				]
+			}
+		},
+		"silph_co_giovanni": {
+			"name": "Giovanni",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 4059,
+			"start_message": false,
+			"end_message": true,
+			"bag": true,
+			"switch": true,
+			"card": {
+				"name": "GIOVANNI",
+				"title": "Chef de la Team Rocket"
+			},
+			"team": [
+				{
+					"species": "nidorino",
+					"level": 37,
+					"moves": [
+						"horn_attack",
+						"poison_sting",
+						"focus_energy",
+						"fury_attack"
+					]
+				},
+				{
+					"species": "kangaskhan",
+					"level": 35,
+					"moves": [
+						"comet_punch",
+						"rage",
+						"bite",
+						"tail_whip"
+					]
+				},
+				{
+					"species": "rhyhorn",
+					"level": 37,
+					"moves": [
+						"horn_attack",
+						"stomp",
+						"tail_whip"
+					]
+				},
+				{
+					"species": "nidoqueen",
+					"level": 41,
+					"moves": [
+						"scratch",
+						"tail_whip",
+						"body_slam",
+						"poison_sting"
+					]
+				}
+			]
+		}
+	},
+	"steps": [
+		{
+			"label": "Centre de Safrania (départ)",
+			"center": true
+		},
+		{
+			"label": "Rival n° 6 (7F, inévitable)",
+			"trainer": "rival_silph"
+		},
+		{
+			"label": "Centre de Safrania (après le rival)",
+			"center": true,
+			"optional": "retour_centre"
+		},
+		{
+			"label": "Giovanni (11F, inévitable)",
+			"trainer": "silph_co_giovanni"
+		}
+	],
+	"variants": [
+		{
+			"name": "directe, attentif, 5 Super Potions",
+			"player": "attentif",
+			"center": true,
+			"retries": 5,
+			"items": {
+				"super_potion": 5,
+				"antidote": 3,
+				"awakening": 2
+			},
+			"optional": []
+		},
+		{
+			"name": "Centre après le rival, attentif, 5 Super Potions",
+			"player": "attentif",
+			"center": true,
+			"retries": 5,
+			"items": {
+				"super_potion": 5,
+				"antidote": 3,
+				"awakening": 2
+			},
+			"optional": [
+				"retour_centre"
+			]
+		},
+		{
+			"name": "directe, expert, 5 Super Potions",
+			"player": "expert",
+			"center": true,
+			"retries": 5,
+			"items": {
+				"super_potion": 5,
+				"antidote": 3,
+				"awakening": 2
+			},
+			"optional": []
+		},
+		{
+			"name": "directe, naïf",
+			"player": "naif",
+			"center": true,
+			"retries": 5,
+			"optional": []
+		}
+	]
+}

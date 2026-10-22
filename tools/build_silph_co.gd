@@ -10,9 +10,10 @@ extends SceneTree
 ##   godot --headless --path . --import
 ##
 ## Géométrie et passages, plus (T9) les points EXAMINER des objets cachés (`objet_cache`) et des
-## rapports (`examen`) ; Dresseurs, PNJ et objets visibles sont des données (`data/npcs/`), rival,
-## Giovanni et leurs déclencheurs viennent aux T11 et T12 ; leurs cases restent praticables dans
-## la scène.
+## rapports (`examen`) ; Dresseurs, PNJ, objets visibles, rival et Giovanni sont des données
+## (`data/npcs/`) ; leurs cases restent praticables dans la scène.
+## - `declencheur` (T11, T12 : rival du 7F, Giovanni du 11F) : [EventTriggerPoint] de `Triggers`
+##   au nom de la grille, scène `scene=` (les variantes de la scène décident).
 ##
 ## - **Image** : une enveloppe provisoire par carte (`Shell`, `ph_<carte>.png`).
 ## - **Collision** : `blocked_cells` = cases non praticables de la grille (`PRATICABLES`).
@@ -149,6 +150,13 @@ func _build(map_id: StringName) -> void:
 				for index: int in cells.size():
 					_warp("Exit%d" % index, cells[index], PUSH, Vector2i.DOWN, EXIT_MAP, EXIT_SPAWN,
 						Vector2i.DOWN)
+			"declencheur":
+				var trigger := Marker2D.new()
+				trigger.set_script(load("res://game/world/triggers/event_trigger_point.gd"))
+				trigger.name = id
+				trigger.position = _world(cell)
+				trigger.set(&"cutscene_id", StringName(plan.attr(id, "scene")))
+				_attach(_root.get_node(^"Triggers"), trigger)
 			"objet_cache":
 				# Objet caché (T9) : EXAMINER depuis la case `depuis`, tourné vers `face`, tant que
 				# `got_<id>` est bas ; la scène de même nom (data/cutscenes/silph_co_life.json).

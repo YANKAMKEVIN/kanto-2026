@@ -229,6 +229,8 @@ const MAPS: Array[StringName] = [
 	&"saffron_copycat_house_1f", &"saffron_copycat_house_2f",
 	&"silph_co_1f", &"silph_co_2f", &"silph_co_3f", &"silph_co_4f", &"silph_co_5f", &"silph_co_6f",
 	&"silph_co_8f", &"silph_co_9f", &"silph_co_10f",
+	# Jalon 26 (T11, T12) : 7F (rival n° 6, Lokhlass) et 11F (Giovanni, président) de la Sylphe.
+	&"silph_co_7f", &"silph_co_11f",
 ]
 ## Lot de textes validé par Kevin le 2026-10-06 (anciens brouillons : panneau, observations,
 ## soin de Maman, terminal du Stockage, portes de Jadielle…) : source des textes hors dossiers.
@@ -507,6 +509,20 @@ const TEXTS_J26_T6: Dictionary[StringName, String] = {
 	&"saffron_city_sign": "SAFRANIA\nVille dorée, cœur commercial de Kanto.",
 	&"saffron_gym_sign": "ARÈNE DE SAFRANIA\nChampion : Morgane",
 }
+## Jalon 26 (T11, T12) : `data/dialogues/silph_co_story.json` (7F et 11F de la Sylphe SARL).
+## T26-07 à T26-18 de `jalon-26.md` §3, validés d'avance par Kevin le 2026-10-21 ; « LOKHLASS » et
+## « MASTER BALL » écrits « Lokhlass », « Master Ball » comme les dons existants [D] ; répliques des
+## employés, de la secrétaire et du président pendant l'occupation [D]. Aucun dossier ne les
+## contient : mot pour mot dans test_silph_story_data.
+const IDS_J26_STORY: Array[StringName] = [
+	&"rival_silph_intro", &"rival_silph_won", &"rival_silph_lost",
+	&"silph_co_7f_lapras_giver", &"silph_co_lapras_received", &"silph_co_lapras_stored",
+	&"silph_co_7f_lapras_care", &"silph_co_7f_worker_2", &"silph_co_7f_worker_3",
+	&"silph_co_7f_worker_4", &"silph_co_giovanni_intro", &"silph_co_giovanni_won",
+	&"silph_co_giovanni_lost", &"silph_co_president", &"silph_co_master_ball_got",
+	&"silph_co_president_after", &"silph_co_11f_secretary", &"silph_co_7f_item_10",
+	&"silph_co_7f_item_11",
+]
 const IDS_J20: Array[StringName] = [
 	&"route_7_sign", &"route_7_underground_sign", &"route_8_sign", &"route_8_underground_sign",
 	# T25 : garde des postes de Safrania et boisson donnée (annexe A.14 du plan, texte 12).
@@ -723,8 +739,8 @@ const SET_J14_BILL_CUTSCENES: Array[StringName] = [
 ## levé par la scène du capitaine (T13). Jalon 18 (T16) : `tower_stairs_open` (présence de
 ## l'Exorciste de la Tour) est levé au J19 (T16 : scène `tower_guardian`, dossier 22 K-3).
 ## Jalon 26 (T9) : `silph_giovanni_defeated` (libération) est lu par les PNJ de Safrania et de la
-## Sylphe, mais levé par la scène de Giovanni du 11F (T12) ; à retirer d'ici à ce moment-là.
-const FUTURE_FLAGS: Array[StringName] = [&"ghost_marowak_calmed", &"silph_giovanni_defeated"]
+## Sylphe, levé par la scène de Giovanni du 11F (T12) : retiré.
+const FUTURE_FLAGS: Array[StringName] = [&"ghost_marowak_calmed"]
 var _library: DialogueLibrary
 var _cutscenes: CutsceneLibrary
 var _offer: StarterOffer
@@ -862,7 +878,8 @@ func test_library_loads_without_error() -> void:
 	found.sort()
 	var expected := IDS + IDS_J14_BILL + IDS_J14_ROCKET + IDS_J15_ROUTE_5 + IDS_J16_GYM \
 		+ IDS_J16_SHIP + IDS_J16_RIVAL_CAPTAIN + IDS_J16_T15 + IDS_J17 + IDS_J18 + IDS_J19 + IDS_J20 \
-		+ IDS_J20_T17 + IDS_J20_T21 + IDS_S2B + S2_FIELD_TRAVEL + _silph_co_ids() + _j26_life_ids()
+		+ IDS_J20_T17 + IDS_J20_T21 + IDS_S2B + S2_FIELD_TRAVEL + _silph_co_ids() + _j26_life_ids() \
+		+ IDS_J26_STORY
 	expected.append_array(TEXTS_J26_T6.keys())
 	expected.append_array(TEXTS_S2C_FISH.keys())
 	expected.append_array(TEXTS_S2D_STRENGTH.keys())
@@ -957,7 +974,12 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		+ PLAYED_J15_ROUTE_5 + PLAYED_J16_GYM + PLAYED_J16_RIVAL_CAPTAIN
 		+ PLAYED_J16_T15
 		# Jalon 17 (T8) : remise de la CS05 par l'assistant (scène lancée par son dialogue).
-		+ [&"route_2_east_assistant_hm05_system", &"route_2_east_assistant_hm05_use"]))
+		+ [&"route_2_east_assistant_hm05_system", &"route_2_east_assistant_hm05_use"]
+		# Jalon 26 (T11, T12) : rival n° 6, Lokhlass, Giovanni et Master Ball de la Sylphe.
+		+ [&"rival_silph_intro", &"rival_silph_lost", &"rival_silph_won",
+		&"silph_co_7f_lapras_care", &"silph_co_giovanni_intro", &"silph_co_giovanni_lost",
+		&"silph_co_giovanni_won", &"silph_co_lapras_received", &"silph_co_lapras_stored",
+		&"silph_co_master_ball_got", &"silph_co_president_after"]))
 	for id: StringName in played:
 		assert_true(_library.has_dialogue(id), "dialogue « %s » défini" % id)
 		if UNUSED_YET.has(id):
@@ -1137,7 +1159,11 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		&"got_silph_co_4f_item_7", &"got_silph_co_5f_card_key", &"got_silph_co_5f_hidden_1",
 		&"got_silph_co_5f_item_6", &"got_silph_co_5f_item_7", &"got_silph_co_6f_item_9",
 		&"got_silph_co_6f_item_10", &"got_silph_co_9f_hidden_1", &"got_silph_co_10f_item_4",
-		&"got_silph_co_10f_item_5", &"got_silph_co_10f_item_6", &"got_saffron_copycat_hidden_1"]))
+		&"got_silph_co_10f_item_5", &"got_silph_co_10f_item_6", &"got_saffron_copycat_hidden_1"]
+		# Jalon 26 (T11, T12) : rival n° 6, Lokhlass, Giovanni, Master Ball, objets du 7F.
+		+ [&"rival_silph_won", &"rival_silph_lost_once", &"silph_lapras_received",
+		&"silph_giovanni_met", &"silph_giovanni_defeated", &"silph_master_ball_received",
+		&"got_silph_co_7f_item_10", &"got_silph_co_7f_item_11"]))
 	assert_eq(_used_on.get(&"oak_lab_reunion"), [&"oak_lab"], "joué au labo, après le fondu")
 	assert_eq(_used_on.get(&"oak_starter_offer"), [&"oak_lab"], "joué au labo")
 
@@ -1371,7 +1397,8 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 		# j26-v2 n'a pas de texte) ; copiées de data/dialogues/silph_co.json, vérifiées par
 		# test_silph_co_data.
 		if GATE_GUARDS.has(row[0]) or UNVALIDATED.has(row[0]) or S2_FIELD_TRAVEL.has(row[0]) \
-				or silph_texts.has(row[0]) or life_texts.has(row[0]) or (row[3] as DialogueVariant).draft:
+				or silph_texts.has(row[0]) or life_texts.has(row[0]) or IDS_J26_STORY.has(row[0]) \
+				or (row[3] as DialogueVariant).draft:
 			continue
 		if TEXTS_J26_T6.has(row[0]):
 			assert_eq(row[1], TEXTS_J26_T6[row[0]], String(row[0]))
@@ -1656,7 +1683,8 @@ func test_oak_parcel_lines() -> void:
 	# Giovanni et le Scope Sylphe.
 	# Jalon 26 (T9) : douze objets au sol (dont la Carte Magnétique) et deux cachés de la Sylphe,
 	# la Pépite cachée du Copieur.
-	assert_eq(launched, 118, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
+	# Jalon 26 (T11, T12) : l'employé du Lokhlass, le président et deux objets du 7F.
+	assert_eq(launched, 122, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
 		+ "sa CT34, Ondine (pont, Arène et rattrapage), écran, module, console, objets de la "
 		+ "Route 25, le Rocket d'Azuria (2) et le barrage sud ; J15 : objets de la Route 5 ; "
 		+ "J16 : Major Bob (2), neuf objets du S.S. Anne, le capitaine, le marin (2) ; "
@@ -1664,7 +1692,8 @@ func test_oak_parcel_lines() -> void:
 		+ "et la Corde Sortie de la Cave ; J18 : huit objets ; J19 : la gardienne de la Tour et six objets de la Tour (T18) ; "
 		+ "J20 (T17) : Super Potion de la Route 8, quatre caches (Route 8, souterrain ×2, "
 		+ "ville), Erika (2) ; "
-		+ "J20 (T21) : repaire (11 objets, 3 caches, Clé ×2, Giovanni, Scope)")
+		+ "J20 (T21) : repaire (11 objets, 3 caches, Clé ×2, Giovanni, Scope) ; "
+		+ "J26 : Lokhlass, Master Ball, deux objets du 7F")
 	# Le jeton n'apparaît que dans la réplique de l'espèce, « {pokemon} » dans les phrases du
 	# compagnon (J11), et ceux de la Pension dans ses répliques (J15).
 	for row: Array in _pages():
@@ -1689,6 +1718,8 @@ func test_oak_parcel_lines() -> void:
 				or (String(row[0]).begins_with("saffron_gate_drink_") and row[1].contains("{player}")) \
 				or row[0] == &"celadon_eevee_received" or row[0] == &"fishing_cast" \
 				or (_j26_life_ids().has(row[0]) and row[1].contains("{player}")) \
+				or (row[0] in [&"rival_silph_intro", &"silph_co_lapras_received",
+					&"silph_co_master_ball_got"] and row[1].contains("{player}")) \
 				or (row[0] in [&"rocket_hideout_b4f_lift_key_got",
 					&"rocket_hideout_b4f_silph_scope_got"] and row[1].contains("{player}")) \
 				or (String(row[0]).begins_with("celadon_gym_erika_") and row[1].contains("{player}")):

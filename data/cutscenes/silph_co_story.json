@@ -1,0 +1,97 @@
+{
+	"rival_silph": {
+		"variants": [
+			{
+				"unless": ["rival_silph_won"],
+				"steps": [
+					{ "emote": "rival_silph", "kind": "exclamation" },
+					{
+						"move": "rival_silph",
+						"to": { "near": "player", "offsets": [[0, 1], [1, 0], [-1, 0]] }
+					},
+					{ "face": "rival_silph", "to": "player" },
+					{ "face": "player", "to": "rival_silph" },
+					{ "dialogue": "rival_silph_intro" },
+					{
+						"battle": "rival_silph",
+						"win": ["rival_silph_won"],
+						"lose": ["rival_silph_lost_once"]
+					},
+					{ "wait": 0.6, "if": ["rival_silph_won"] },
+					{ "dialogue": "rival_silph_won", "if": ["rival_silph_won"] },
+					{ "move": "rival_silph", "to": [4, 7], "if": ["rival_silph_won"] },
+					{ "despawn": "rival_silph", "if": ["rival_silph_won"] },
+					{ "dialogue": "rival_silph_lost", "unless": ["rival_silph_won"] },
+					{ "wake_up": true, "unless": ["rival_silph_won"] }
+				]
+			}
+		]
+	},
+	"silph_co_lapras_gift": {
+		"unless": ["silph_lapras_received"],
+		"steps": [
+			{ "gift_pokemon": "lapras", "level": 15, "flag": "silph_lapras_received",
+				"say": "silph_co_lapras_received", "say_stored": "silph_co_lapras_stored" },
+			{ "dialogue": "silph_co_7f_lapras_care", "if": ["silph_lapras_received"] }
+		]
+	},
+	"silph_co_giovanni": {
+		"variants": [
+			{
+				"unless": ["silph_giovanni_defeated"],
+				"steps": [
+					{
+						"move": "giovanni",
+						"to": { "near": "player", "offsets": [[0, -1], [-1, 0], [1, 0]] }
+					},
+					{ "face": "giovanni", "to": "player" },
+					{ "face": "player", "to": "giovanni" },
+					{ "dialogue": "silph_co_giovanni_intro" },
+					{ "champion_card": "silph_co_giovanni", "unless": ["silph_giovanni_met"] },
+					{ "set": ["silph_giovanni_met"] },
+					{ "battle": "silph_co_giovanni", "win": ["silph_giovanni_defeated"] },
+					{ "wait": 0.6, "if": ["silph_giovanni_defeated"] },
+					{ "dialogue": "silph_co_giovanni_won", "if": ["silph_giovanni_defeated"] },
+					{ "wait": 0.4, "if": ["silph_giovanni_defeated"] },
+					{ "despawn": "giovanni", "if": ["silph_giovanni_defeated"] },
+					{ "dialogue": "silph_co_giovanni_lost", "unless": ["silph_giovanni_defeated"] },
+					{ "wake_up": true, "unless": ["silph_giovanni_defeated"] }
+				]
+			}
+		]
+	},
+	"silph_co_master_ball": {
+		"if": ["silph_giovanni_defeated"],
+		"unless": ["silph_master_ball_received"],
+		"steps": [
+			{ "dialogue": "silph_co_master_ball_got" },
+			{ "give": "master_ball", "count": 1 },
+			{ "set": ["silph_master_ball_received"] },
+			{ "dialogue": "silph_co_president_after" }
+		]
+	},
+	"silph_co_7f_item_10": {
+		"variants": [
+			{
+				"unless": ["got_silph_co_7f_item_10"],
+				"steps": [
+					{ "despawn": "silph_co_7f_item_10" },
+					{ "give": "rare_candy", "count": 1, "found": true },
+					{ "set": ["got_silph_co_7f_item_10"] }
+				]
+			}
+		]
+	},
+	"silph_co_7f_item_11": {
+		"variants": [
+			{
+				"unless": ["got_silph_co_7f_item_11"],
+				"steps": [
+					{ "despawn": "silph_co_7f_item_11" },
+					{ "give": "nugget", "count": 1, "found": true },
+					{ "set": ["got_silph_co_7f_item_11"] }
+				]
+			}
+		]
+	}
+}

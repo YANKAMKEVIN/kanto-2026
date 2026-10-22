@@ -70,6 +70,8 @@ const MAPS: Array[StringName] = [
 	&"celadon_city", &"celadon_gym",
 	# Jalon 20 (T17) : arrivées silencieuses (Route 8 est, Céladopole est).
 	&"route_8",
+	# Jalon 26 (T11, T12) : le rival n° 6 (7F) et Giovanni (11F) de la Sylphe SARL.
+	&"silph_co_7f", &"silph_co_11f",
 ]
 ## Jalon 7 (T18) : partie qui revient au labo avec le colis (rival parti après le combat).
 const PARCEL_FLAGS: Array[StringName] = [
@@ -303,6 +305,13 @@ const VARIANT_FLAGS: Dictionary = {
 	&"silph_co_10f_item_5": [PEWTER_FLAGS],
 	&"silph_co_10f_item_6": [PEWTER_FLAGS],
 	&"saffron_copycat_hidden_1": [PEWTER_FLAGS],
+	# Jalon 26 (T11, T12) : rival n° 6, Lokhlass, Giovanni, Master Ball, objets du 7F.
+	&"rival_silph": [[]],
+	&"silph_co_lapras_gift": [[&"rival_silph_won"]],
+	&"silph_co_giovanni": [[&"rival_silph_won"]],
+	&"silph_co_master_ball": [[&"silph_giovanni_defeated"]],
+	&"silph_co_7f_item_10": [[]],
+	&"silph_co_7f_item_11": [[]],
 }
 ## Scènes jouées par le code (pas de déclencheur) → carte où elles sont jouées.
 ## Jalon 7 (T18) : la scène du colis est lancée par la variante « cutscene » du dialogue de Chen.
@@ -440,6 +449,9 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"silph_co_10f_item_5": &"silph_co_10f",
 	&"silph_co_10f_item_6": &"silph_co_10f",
 	&"saffron_copycat_hidden_1": &"saffron_copycat_house_2f",
+	# Jalon 26 (T11, T12) : dialogues de l'employé du Lokhlass, du président et des objets du 7F.
+	&"silph_co_lapras_gift": &"silph_co_7f", &"silph_co_master_ball": &"silph_co_11f",
+	&"silph_co_7f_item_10": &"silph_co_7f", &"silph_co_7f_item_11": &"silph_co_7f",
 }
 ## Scènes à déclencheur dont la carte n'est pas encore construite → leur carte (simulées sur les
 ## PNJ de son fichier). Vidée au T19 du jalon 9 (la forêt existe), puis au T11 du jalon 10 (les
@@ -588,7 +600,10 @@ func test_library_loads_without_error() -> void:
 		&"route_8_reached", &"celadon_reached", &"route_8_item_1", &"route_8_hidden_1",
 		&"souterrain_hidden_1", &"souterrain_hidden_2", &"celadon_hidden_1",
 		&"celadon_gym_erika", &"celadon_gym_erika_tm_late", &"celadon_roof_trade"]
-		+ J18_IDS + J20_T21_IDS + J26_T9_ITEMS.keys()))
+		+ J18_IDS + J20_T21_IDS + J26_T9_ITEMS.keys()
+		# Jalon 26 (T11, T12) : rival n° 6, Lokhlass, Giovanni, Master Ball, objets du 7F.
+		+ [&"rival_silph", &"silph_co_lapras_gift", &"silph_co_giovanni", &"silph_co_master_ball",
+		&"silph_co_7f_item_10", &"silph_co_7f_item_11"]))
 
 
 func _sorted(values: Array) -> Array[StringName]:
@@ -665,7 +680,8 @@ func test_every_trainer_and_item_step_exists() -> void:
 ## l'étape « badge » d'une scène suit le combat qui lève déjà son drapeau (« win »).
 func test_every_champion_card_and_badge_step_exists() -> void:
 	assert_eq(_cutscenes.get_card_trainer_ids(), [&"celadon_gym_erika", &"cerulean_gym_misty",
-		&"giovanni_hideout", &"pewter_gym_brock", &"vermilion_gym_surge"] as Array[StringName])
+		&"giovanni_hideout", &"pewter_gym_brock", &"silph_co_giovanni", &"vermilion_gym_surge"]
+		as Array[StringName])
 	for id: StringName in _cutscenes.get_card_trainer_ids():
 		var trainer := _trainers.get_trainer(id)
 		assert_true(trainer != null and trainer.has_card(), "« %s » a une carte" % id)
@@ -723,6 +739,7 @@ func test_only_world_items_are_found_items() -> void:
 		"route_6_hidden_1:super_potion", "route_6_item_1:poke_ball",
 		"route_8_hidden_1:revive", "route_8_item_1:super_potion",
 		"route_9_item_1:super_potion", "route_9_item_2:antidote", "route_9_item_3:poke_ball",
+		"silph_co_7f_item_10:rare_candy", "silph_co_7f_item_11:nugget",
 		"souterrain_hidden_1:nugget", "souterrain_hidden_2:super_potion",
 		"ss_anne_hidden_1:awakening", "ss_anne_hidden_2:antidote", "ss_anne_hidden_3:potion",
 		"ss_anne_item_01:potion", "ss_anne_item_02:potion", "ss_anne_item_03:super_potion",
