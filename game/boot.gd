@@ -258,6 +258,12 @@ func _ready() -> void:
 	# Compteur de fps de QA (journal « [perf] »), seulement en build debug, Boot scène principale.
 	if PerfCounter.is_allowed(OS.is_debug_build(), get_tree().current_scene == self):
 		add_child(PerfCounter.new())
+		# Moteur commun : sonde par couches si user://perf_probe.json existe (PerfProbe).
+		if FileAccess.file_exists(PerfProbe.USER_PATH):
+			var probe := PerfProbe.new()
+			probe.configure(FileAccess.get_file_as_string(PerfProbe.USER_PATH))
+			probe.setup(_lighting)
+			add_child(probe)
 	_player = PLAYER_SCENE.instantiate() as Player
 	_darkness.setup(_world, _player)
 	_library.load_dir()
