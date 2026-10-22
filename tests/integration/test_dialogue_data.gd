@@ -844,7 +844,7 @@ func test_library_loads_without_error() -> void:
 	found.sort()
 	var expected := IDS + IDS_J14_BILL + IDS_J14_ROCKET + IDS_J15_ROUTE_5 + IDS_J16_GYM \
 		+ IDS_J16_SHIP + IDS_J16_RIVAL_CAPTAIN + IDS_J16_T15 + IDS_J17 + IDS_J18 + IDS_J19 + IDS_J20 \
-		+ IDS_J20_T17 + IDS_J20_T21 + IDS_S2B + S2_FIELD_TRAVEL
+		+ IDS_J20_T17 + IDS_J20_T21 + IDS_S2B + S2_FIELD_TRAVEL + _silph_co_ids()
 	expected.append_array(TEXTS_S2C_FISH.keys())
 	expected.append_array(TEXTS_S2D_STRENGTH.keys())
 	expected.append_array(UNVALIDATED)
@@ -863,7 +863,7 @@ func test_every_dialogue_is_used() -> void:
 	for id: StringName in _real_ids():
 		if UNUSED_YET.has(id) or PLAYED_BY_COMPANION.has(id) or PLAYED_BY_BOOT.has(id) \
 				or S2_FIELD_TRAVEL.has(id) or TEXTS_S2C_FISH.has(id) \
-				or TEXTS_S2D_STRENGTH.has(id):
+				or TEXTS_S2D_STRENGTH.has(id) or _silph_co_ids().has(id):
 			continue
 		assert_true(_used_on.has(id) or played.has(id),
 			"dialogue « %s » utilisé par un PNJ, un point ou une scène" % id)
@@ -1327,11 +1327,16 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 	dossier_15 += dossier_15.replace("[e]", "").replace("[se]", "") \
 		+ dossier_15.replace("{fossil}", "Fossile Dôme") \
 		+ dossier_15.replace("{fossil}", "Fossile Nautile")
+	var silph_texts := _silph_co_ids()
 	for row: Array in _pages():
 		# Une variante en brouillon (PENDING_DRAFT_VARIANTS) attend la relecture de Kevin : son
 		# texte n'est encore dans aucun dossier.
+		# J26 (T3) : répliques des Dresseurs de la Sylphe SARL, [D] proposées par le plan, validées
+		# d'avance par Kevin le 2026-10-21 : aucun dossier de conception ne les contient (la passe
+		# j26-v2 n'a pas de texte) ; copiées de data/dialogues/silph_co.json, vérifiées par
+		# test_silph_co_data.
 		if GATE_GUARDS.has(row[0]) or UNVALIDATED.has(row[0]) or S2_FIELD_TRAVEL.has(row[0]) \
-				or (row[3] as DialogueVariant).draft:
+				or silph_texts.has(row[0]) or (row[3] as DialogueVariant).draft:
 			continue
 		if TEXTS_S2B.has(row[0]):
 			assert_true(TEXTS_S2B[row[0]].has(row[1]), "%s : %s" % [row[0], row[1]])
@@ -1758,6 +1763,18 @@ func test_companion_lines_exist_as_narration() -> void:
 
 
 ## Dialogues sans ceux de la carte de QA (`qa_*`, jalon 13 T14, retirés au T22).
+## Jalon 26 (T3) : les 90 répliques des 30 Dresseurs de la Sylphe SARL (`silph_co_<n>f_<k>_before |
+## _defeated | _after`), en attente de leurs cartes (T9) ; posées, elles sortent de cette liste.
+func _silph_co_ids() -> Array[StringName]:
+	var floors := {2: 4, 3: 2, 4: 3, 5: 4, 6: 3, 7: 4, 8: 3, 9: 3, 10: 2, 11: 2}
+	var ids: Array[StringName] = []
+	for floor_number: int in floors:
+		for rank: int in range(1, int(floors[floor_number]) + 1):
+			for suffix: String in ["before", "defeated", "after"]:
+				ids.append(StringName("silph_co_%df_%d_%s" % [floor_number, rank, suffix]))
+	return ids
+
+
 func _real_ids() -> Array[StringName]:
 	return _without_qa(_library.get_ids())
 
