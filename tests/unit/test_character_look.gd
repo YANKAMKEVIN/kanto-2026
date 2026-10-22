@@ -129,11 +129,12 @@ func test_every_sheet_maps_to_generated_frames() -> void:
 		FileAccess.get_file_as_string("res://assets/world/catalogue.json"))
 	var idle_suffix: String = constants["IDLE_SUFFIX"]
 	var fixed_pokemon: Dictionary = constants["FIXED_POKEMON"]
+	var kneeling: Array = (constants["KNEELING"] as Dictionary).values()
 	for sheet: String in catalogue["personnages"]:
 		var idle_of := sheet.trim_suffix(idle_suffix)
 		var is_idle := idle_of != sheet and looks.has(idle_of)
 		assert_true(looks.has(sheet) or (constants["RUN_ONLY"] as Array).has(sheet) or is_idle
-			or fixed_pokemon.has(sheet), sheet)
+			or fixed_pokemon.has(sheet) or kneeling.has(sheet), sheet)
 	for sheet: String in looks:
 		var entry: Array = looks[sheet]
 		var path := String(entry[0]) + String(entry[1]) + "_frames.tres"

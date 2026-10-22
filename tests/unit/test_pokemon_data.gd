@@ -67,9 +67,10 @@ func test_real_data_loads_without_error() -> void:
 	assert_true(_data.load_dir())
 	assert_eq(_data.get_errors().size(), 0, _errors())
 	assert_eq(_data.get_type_chart().get_type_ids().size(), 18)
-	# Ordre du Pokédex ; jalon 20 (T7) : les 11 espèces de kanto_celadon.json. Jalon 30 (T3) :
-	# 15 espèces de la Ligue (kanto_j30.json : Lippoutou, Mackogneur, Ectoplasma, Draco,
-	# Dracolosse ; kanto_j30_reprises.json : Kicklee, Tygnon et 8 reprises des J24 à J29).
+	# Ordre du Pokédex ; jalon 20 (T7) : les 11 espèces de kanto_celadon.json. Jalon 21 (T5) :
+	# Ptitard, Tentacool, Ronflex (kanto_j21.json). Jalon 30 (T3) : 15 espèces de la Ligue
+	# (kanto_j30.json : Lippoutou, Mackogneur, Ectoplasma, Draco, Dracolosse ;
+	# kanto_j30_reprises.json : Kicklee, Tygnon et 8 reprises des J24 à J29).
 	assert_eq(_data.get_species_ids(), [
 		&"bulbasaur", &"ivysaur", &"venusaur", &"charmander", &"charmeleon", &"charizard",
 		&"squirtle", &"wartortle", &"blastoise", &"caterpie", &"metapod", &"butterfree",
@@ -79,21 +80,23 @@ func test_real_data_loads_without_error() -> void:
 		&"nidorino", &"nidoking", &"clefairy", &"clefable", &"vulpix", &"ninetales",
 		&"jigglypuff", &"wigglytuff", &"zubat", &"golbat", &"oddish", &"gloom", &"vileplume",
 		&"paras", &"parasect", &"diglett", &"dugtrio", &"meowth", &"persian", &"mankey",
-		&"primeape", &"growlithe", &"arcanine", &"abra", &"kadabra", &"alakazam", &"machop",
-		&"machamp", &"bellsprout", &"weepinbell", &"victreebel", &"geodude", &"graveler",
-		&"golem", &"slowbro", &"magnemite", &"magneton", &"dewgong", &"shellder", &"cloyster",
-		&"gastly", &"haunter", &"gengar", &"onix", &"drowzee", &"hypno", &"voltorb",
-		&"exeggcute", &"exeggutor", &"cubone", &"marowak", &"hitmonlee", &"hitmonchan",
-		&"koffing", &"rhyhorn", &"rhydon", &"tangela", &"kangaskhan", &"horsea", &"goldeen",
-		&"staryu", &"starmie", &"jynx", &"gyarados", &"lapras", &"eevee", &"vaporeon",
-		&"jolteon", &"flareon", &"aerodactyl", &"dragonair", &"dragonite"] as Array[StringName])
+		&"primeape", &"growlithe", &"arcanine", &"poliwag", &"abra", &"kadabra", &"alakazam",
+		&"machop", &"machamp", &"bellsprout", &"weepinbell", &"victreebel", &"tentacool",
+		&"geodude", &"graveler", &"golem", &"slowbro", &"magnemite", &"magneton", &"dewgong",
+		&"shellder", &"cloyster", &"gastly", &"haunter", &"gengar", &"onix", &"drowzee",
+		&"hypno", &"voltorb", &"exeggcute", &"exeggutor", &"cubone", &"marowak", &"hitmonlee",
+		&"hitmonchan", &"koffing", &"rhyhorn", &"rhydon", &"tangela", &"kangaskhan", &"horsea",
+		&"goldeen", &"staryu", &"starmie", &"jynx", &"gyarados", &"lapras", &"eevee",
+		&"vaporeon", &"jolteon", &"flareon", &"aerodactyl", &"snorlax", &"dragonair",
+		&"dragonite"] as Array[StringName])
 	assert_eq(_data.get_move_ids().size(), 147,
 		"47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10) + Patience (J11) "
 		+ "+ 21 du Mont Sélénite (jalon 12) + 8 du jalon 13 (les 5 du J12 qu'il reprenait : "
 		+ "entrées du J12) + 6 du Cap d'Azuria (jalon 14) + Jackpot (J15) "
 		+ "+ Coupe et Tonnerre (jalon 16) + 7 du jalon 17 + 8 de la Tour Pokémon (J19 ; "
 		+ "Hypnose, Hurlement et Bélier viennent du J17) + 7 du jalon 20 + Vol (passe systèmes 2, T25) "
-		+ "+ Surf (S2C) + Force (S2D) + 17 du jalon 30 (7 nouvelles, 10 reprises des J21 à J29)")
+		+ "+ Surf (S2C) + Force (S2D) + Amnésie, Bouclier (J21 ; Constriction vient du J20) "
+		+ "+ 15 du jalon 30 (7 nouvelles, 8 reprises des J23 à J29)")
 	assert_true(_data.has_move(&"struggle"))
 
 
@@ -475,6 +478,8 @@ func test_real_catch_rates_are_the_official_ones() -> void:
 		# Jalon 19 (T3, Tour Pokémon ; Caninos vient du J17).
 		&"gastly": 190, &"haunter": 90, &"exeggcute": 90, &"cubone": 190,
 		&"marowak": 75, &"gyarados": 45,
+		# Jalon 21 (T5).
+		&"poliwag": 255, &"tentacool": 190, &"snorlax": 25,
 		# Jalon 30 (T3, Ligue) : reprises des J24 à J29 et espèces nouvelles.
 		&"dewgong": 75, &"cloyster": 60, &"slowbro": 75, &"lapras": 45, &"alakazam": 50,
 		&"aerodactyl": 45, &"rhydon": 60, &"exeggutor": 45, &"hitmonlee": 45, &"hitmonchan": 45,

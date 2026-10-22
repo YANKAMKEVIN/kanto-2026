@@ -1,0 +1,46 @@
+{
+	"snorlax_route_12": {
+		"narration": true,
+		"variants": [
+			{
+				"if": ["snorlax_route_12_woken"],
+				"if_items": ["poke_flute"],
+				"pages": [
+					"Ronflex dort de nouveau.",
+					"Il ronfle comme si de rien n'était.",
+					"Jouer de la Poké Flûte ?"
+				],
+				"choice": { "confirm": "OUI", "cancel": "NON", "confirm_cutscene": "snorlax_route_12_wake" }
+			},
+			{
+				"if_items": ["poke_flute"],
+				"pages": ["Jouer de la Poké Flûte ?"],
+				"choice": { "confirm": "OUI", "cancel": "NON", "confirm_cutscene": "snorlax_route_12_wake" }
+			},
+			{
+				"unless": ["snorlax_route_12_seen"],
+				"set": ["snorlax_route_12_seen"],
+				"pages": ["Un énorme Pokémon dort au milieu du chemin.", "Il ne bouge pas d'un pouce."]
+			},
+			{
+				"pages": ["Il ronfle paisiblement.", "Rien ne semble pouvoir le réveiller."]
+			}
+		]
+	},
+	"snorlax_flute_played": {
+		"narration": true,
+		"pages": ["{player} joue de la Poké Flûte."]
+	},
+	"snorlax_wakes": {
+		"narration": true,
+		"pages": ["Ronflex se réveille !", "Il attaque, de très mauvaise humeur !"]
+	},
+	"snorlax_calms": {
+		"narration": true,
+		"pages": ["Ronflex se calme…", "Avec un grand bâillement, il retourne dans les montagnes."]
+	},
+	"snorlax_sleeps": {
+		"narration": true,
+		"pages": ["Ronflex bâille…", "et se rendort aussitôt."]
+	}
+}

@@ -65,7 +65,8 @@ FIN
 POSITIONS
 escalier_bas         escalier       18,9         libre   paire=T56 sens=descend vers=pokemon_tower_5f  # V, à droite
 arrivee_T56          spawn          17,9         libre   paire=T56 facing=left  # arrivée depuis le 5F
-escalier_7f          escalier       9,16         libre   paire=T67 sens=monte vers=pokemon_tower_7f  # U : le warp existe, jamais atteint au J19 (7F non construit, K-13)
+escalier_7f          escalier       9,16         libre   paire=T67 sens=monte vers=pokemon_tower_7f  # U : warp réel vers le 7F depuis le Jalon 21 (T12-T13) ; repli « à venir » au J19
+arrivee_T67          spawn          10,16        libre   paire=T67 facing=right  # Jalon 21 (T12) : arrivée depuis le 7F, voisine du U ; c'est aussi la case du déclencheur du SPECTRE (inactif une fois ghost_marowak_calmed posé)
 declencheur_spectre  declencheur    10,16        libre   role=S1 flag=ghost_marowak_calmed  # seule case d'accès à l'escalier ; actif tant que ghost_marowak_calmed n'est pas posé
 recul_spectre        recul          10,15        libre   role=S1  # case de recul après le combat scripté (le déclencheur se réarme)
 tower_channeler_8    dresseur       16,5         bloque  prenom=Paulette facing=left sight=3 inevitable=oui  # vue (15, 5), (14, 5) : sortie nord de la salle d'arrivée

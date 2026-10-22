@@ -30,11 +30,10 @@ const EVOLUTION_NOTES: Array[StringName] = [&"kadabra_bond"]
 ## Victor de la Route 11).
 const NAMED_SPECIES_OK: Dictionary[StringName, Array] = {&"magneton": [&"magnemite"]}
 ## Espèces des données sans fiche : jamais vues au J19 (SPECTRE) ; Osselait a la sienne depuis le
-## J20 (annexe A n° 204), Ossatueur l'aura au J21
-## (dossier 22 §12.1).
+## J20 (annexe A n° 204), Ossatueur a la sienne depuis le J21 (T5, dossier 24 §15.10).
 ## Jalon 30 (T3) : les 15 espèces de la Ligue n'ont pas encore de fiche (textes à valider ;
 ## les reprises recevront celles de leur jalon à la fusion).
-const NO_ENTRY_YET: Array[StringName] = [&"marowak",
+const NO_ENTRY_YET: Array[StringName] = [
 	&"dewgong", &"cloyster", &"slowbro", &"lapras", &"alakazam", &"aerodactyl", &"rhydon",
 	&"exeggutor", &"hitmonlee", &"hitmonchan", &"jynx", &"machamp", &"gengar", &"dragonair",
 	&"dragonite"]

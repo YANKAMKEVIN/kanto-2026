@@ -400,7 +400,7 @@ du J30 quand cette branche est fusionnée avant lui (sinon « identifiant déjà
 | `data/pokemon/species/kanto_j30_reprises.json` | Lamantine, Crustabri, Flagadoss (J24) ; Lokhlass, Alakazam (J26, `kanto_silph.json`) ; Ptéra (J25) ; Rhinoféros (J28) ; Noadkoko (J29) ; Kicklee, Tygnon (J27, `kanto_saffron.json`) | copies exactes |
 | `data/pokemon/moves/j30.json` | Grobisou (nouvelle) | nouvelle |
 | `data/pokemon/moves/j30_emprunts.json` | **J27** (`saffron.json`) : Riposte, Pied Sauté, Pied Voltige (`hi_jump_kick`, Riposte priorité −1), copiés à l'identique de `865c97e7^` (version « à faire », `pending_effects`, car ce moteur n'a pas les sortes `crash` / `counter`) ; Poing-Glace, Poing-Éclair, Mawashi Geri (identiques à `origin/jalon-27`). **À la fusion : supprimer ce fichier, la version du J27 (effets livrés) fait foi** | emprunts |
-| `data/pokemon/moves/j30_reprises.json` | Amnésie, Bouclier (J21) ; Blizzard, Picanon (J24) ; Déflagration, Poing de Feu (J25) ; Abîme (J28) ; Ultimawashi, Piqué (J29) ; **Toxik** (J23, **simplifié** : sans `toxic: true`, `pending_effects: ["toxic"]`, la base ne connaît pas la clé) | copies |
+| `data/pokemon/moves/j30_reprises.json` | Blizzard, Picanon (J24) ; Déflagration, Poing de Feu (J25) ; Abîme (J28) ; Ultimawashi, Piqué (J29) ; **Toxik** (J23, **simplifié** : sans `toxic: true`, `pending_effects: ["toxic"]`, la base ne connaît pas la clé) | copies (Amnésie et Bouclier retirées : celles du J21 fusionné font foi, `j21.json`) |
 
 Statistiques des espèces nouvelles : valeurs modernes (comme le dépôt), `base_exp` de PokeAPI
 (`build/rb/pokeapi/pokemon.csv`) ; apprentissages RB complets. Pas de fiche de Pokédex pour les
