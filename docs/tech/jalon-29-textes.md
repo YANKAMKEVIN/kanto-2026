@@ -167,3 +167,10 @@ Textes validés par Kevin le 2026-10-21, validation d'avance (proposition du pla
 
 - `strength_switch_pressed` (T29-09, narration, interrupteur enfoncé par un rocher)
   - « Clac ! Un mécanisme s'est enclenché quelque part. »
+
+## Fiches de Pokédex nouvelles [D] (jalon 29)
+
+- `exeggutor` : « Ses trois têtes pensent chacune de leur côté. Quand elles s'entendent, il devient redoutable. »
+- `lickitung` : « Sa langue fait deux fois sa taille. Il goûte tout ce qu'il rencontre, même les inconnus. »
+- `mr_mime` : « Il mime si bien qu'un mur invisible finit par exister. Il en fait des barrières pour se protéger. »
+- `moltres` : « Un oiseau légendaire. Chaque battement de ses ailes enflammées éclaire le ciel d'une lueur rouge. »
