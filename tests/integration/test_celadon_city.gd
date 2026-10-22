@@ -2,8 +2,8 @@ extends GutTest
 ## Carte celadon_city (Céladopole, jalon 20 T16, docs/tech/jalon-20.md §1.3, §2.1, §2.8, §2.15 ;
 ## dossier 23 §7, §19) sur la vraie scène : métadonnées et lumière, **grille de la scène = grille
 ## fonctionnelle** `tools/plans/celadopole.txt` case par case, eau solide, raccord est (Route 7),
-## portes des neuf bâtiments (arrivées `from_<lieu>_w|e`), sorties nord, sud et ouest fermées sans
-## warp, **Arène fermée sans Coupe et ville entière ouverte sans Coupe** (arbuste de l'enclos :
+## portes des neuf bâtiments (arrivées `from_<lieu>_w|e`), sorties nord et sud fermées sans
+## warp (ouest : raccord Route 16 depuis le jalon 21, T22), **Arène fermée sans Coupe et ville entière ouverte sans Coupe** (arbuste de l'enclos :
 ## [FlagGate] du J16), cases réservées aux 14 PNJ hors des cases de coupure et qui ne coupent rien,
 ## objets peints sur des cases bloquées, budget de nœuds.
 ## Vie (PNJ, Rocket en civil, objet caché, scènes) : T17, `test_celadon_life`.
@@ -189,32 +189,38 @@ func test_building_doors_lead_inside_with_two_arrivals() -> void:
 		if building != null:
 			assert_eq(building.scene_file_path.get_file().get_basename(), entry[2])
 	assert_eq(count, _plan.cells_of("D").size(), "toutes les portes de la grille")
-	assert_eq(_map.get_warps().size(), count + 3, "portes + raccord est, rien d'autre")
+	# Jalon 21 (T22) : + 3 cases de raccord ouest (Route 16).
+	assert_eq(_map.get_warps().size(), count + 6, "portes + raccord est + raccord ouest, rien d'autre")
 	# L'ancien Coin à lots : façade sans porte.
 	for cell: Vector2i in _plan.cells_at("facade_lots"):
 		assert_true(_grid.is_solid(cell), "façade des lots %s" % cell)
 		assert_null(_map.get_warps().find_on_step(cell, Vector2i.UP))
 
 
-func test_north_south_and_west_are_closed_without_warp() -> void:
+## Jalon 21 (T22) : la sortie ouest s'ouvre sur la Route 16 (elle était fermée au J20 : haie,
+## talus et examen « Des arbres serrés et un talus. On ne passe pas. », retirés).
+func test_north_and_south_are_closed_and_west_opens_on_route_16() -> void:
 	for warp: Warp in _map.get_warps().get_all():
-		assert_true(warp.cell.x == 69 or _plan.at(warp.cell) == "D",
-			"seuls l'est et les portes : %s" % warp.cell)
-	# Sortie ouest : haie d'arbres et talus, examen sans promesse (H-4).
-	var found: Dictionary = {}
+		assert_true(warp.cell.x == 69 or warp.cell.x == 0 or _plan.at(warp.cell) == "D",
+			"seuls l'est, l'ouest et les portes : %s" % warp.cell)
+	for y: int in [21, 22, 23]:
+		var warp := _map.get_warps().find_on_push(Vector2i(0, y), Vector2i.LEFT)
+		assert_not_null(warp, "warp_ouest (0, %d) PUSH ←" % y)
+		if warp != null:
+			assert_eq(warp.target_map, &"route_16")
+			assert_true(String(warp.target_spawn).begins_with("from_celadon"))
+		for x: int in range(0, 4):
+			assert_false(_grid.is_solid(Vector2i(x, y)), "chemin (%d, %d)" % [x, y])
+		assert_true(_map.has_spawn(&"from_route_16" if y == 22 else (
+			&"from_route_16_n" if y == 21 else &"from_route_16_s")))
+	assert_eq(_map.get_spawn_cell(&"from_route_16"), Vector2i(1, 22))
+	assert_true(_grid.is_solid(Vector2i(3, 20)) and _grid.is_solid(Vector2i(3, 24)),
+		"haie au nord et au sud du passage")
 	for point: Node in _map.get_node(^"Interactables").get_children():
-		found[(point as InteractPoint).dialogue_id] = point
-	var block := found.get(&"celadon_west_block") as InteractPoint
-	assert_not_null(block)
-	if block != null:
-		assert_eq(block.get_cell(), Vector2i(3, 22))
-		assert_eq(block.facing, Vector2i.LEFT, "lu depuis (4, 22) ←")
-	assert_true(_grid.is_solid(Vector2i(3, 22)))
-	assert_false(_grid.is_solid(Vector2i(4, 22)), "l'avenue s'arrête en (4, 22)")
+		assert_ne((point as InteractPoint).dialogue_id, &"celadon_west_block", "examen retiré")
 	var dialogues := DialogueLibrary.new()
 	assert_true(dialogues.load_dir())
-	assert_eq(dialogues.get_dialogue(&"celadon_west_block").variants[0].pages[0].text,
-		"Des arbres serrés et un talus. On ne passe pas.", "texte 21")
+	assert_false(dialogues.has_dialogue(&"celadon_west_block"), "texte 21 retiré")
 
 
 func test_signs_read_their_texts_from_the_planned_side() -> void:

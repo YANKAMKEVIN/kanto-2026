@@ -5,14 +5,14 @@
 # (marcher sur un téléporteur, OUVRIR, S'ENVOLER, OBSERVER) restent à faire à la main ou par
 # `adb shell input` ; le script attend Entrée entre deux départs.
 # Usage : ANDROID_SERIAL=RFCR40827ZZ tools/qa/s2efg_phone.sh [départ…]
-# Défaut : s2_teleport s2_fly s2_field_travel s2_legendary s2_legendary_weak
+# Défaut : s2_fly s2_field_travel (les départs des cartes et du PNJ de QA sont retirés en S2Z, T33)
 set -euo pipefail
 cd "$(dirname "$0")/../.."
 ADB="${ADB:-$HOME/Library/Android/sdk/platform-tools/adb}"
 OUT=build/qa_s2efg
 mkdir -p "$OUT"
 STARTS=("$@")
-[[ ${#STARTS[@]} -eq 0 ]] && STARTS=(s2_teleport s2_fly s2_field_travel s2_legendary s2_legendary_weak)
+[[ ${#STARTS[@]} -eq 0 ]] && STARTS=(s2_fly s2_field_travel)
 BUILD_FLAG=""
 for START in "${STARTS[@]}"; do
   echo "=== $START ==="

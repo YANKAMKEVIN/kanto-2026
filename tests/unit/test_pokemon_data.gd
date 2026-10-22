@@ -83,8 +83,8 @@ func test_real_data_loads_without_error() -> void:
 		&"meowth", &"persian",
 		# Jalon 24 (T4) : kanto_j24.json (Psykokwak, Akwakwak, Têtarte, Tartard, Tentacruel,
 		# Ramoloss, Flagadoss, Otaria, Lamantine, Crustabri, Krabby, Krabboss, Hypocéan,
-		# Poissoroy, Magicarpe, fossiles, Artikodin) et les reprises du J21 (kanto_j24_reprises.json :
-		# Ptitard, Tentacool) ; Saquedeneu et Léviator sont ceux des J20 et J19.
+		# Poissoroy, Magicarpe, fossiles, Artikodin) ; Saquedeneu et Léviator sont ceux des J20
+		# et J19. Jalon 21 (T5) : Ptitard, Tentacool, Ronflex (kanto_j21.json).
 		&"psyduck", &"golduck",
 		&"mankey", &"primeape", &"growlithe", &"arcanine",
 		&"poliwag", &"poliwhirl", &"poliwrath",
@@ -99,15 +99,15 @@ func test_real_data_loads_without_error() -> void:
 		&"marowak", &"koffing", &"rhyhorn", &"tangela", &"kangaskhan",
 		&"horsea", &"seadra", &"goldeen", &"seaking", &"staryu", &"starmie", &"magikarp",
 		&"gyarados", &"eevee", &"vaporeon", &"jolteon", &"flareon",
-		&"omanyte", &"omastar", &"kabuto", &"kabutops", &"articuno"] as Array[StringName])
+		&"omanyte", &"omastar", &"kabuto", &"kabutops", &"snorlax", &"articuno"] as Array[StringName])
 	assert_eq(_data.get_move_ids().size(), 138,
 		"47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10) + Patience (J11) "
 		+ "+ 21 du Mont Sélénite (jalon 12) + 8 du jalon 13 (les 5 du J12 qu'il reprenait : "
 		+ "entrées du J12) + 6 du Cap d'Azuria (jalon 14) + Jackpot (J15) "
 		+ "+ Coupe et Tonnerre (jalon 16) + 7 du jalon 17 + 8 de la Tour Pokémon (J19 ; "
 		+ "Hypnose, Hurlement et Bélier viennent du J17) + 7 du jalon 20 + Vol (passe systèmes 2, T25) "
-		+ "+ Surf (S2C) + Force (S2D) + 6 du J24 (j24.json) + Amnésie et Bouclier (reprises du J21, "
-		+ "j24_reprises.json)")
+		+ "+ Surf (S2C) + Force (S2D) + Amnésie, Bouclier (J21 ; Constriction vient du J20) "
+		+ "+ 6 du J24 (j24.json)")
 	assert_true(_data.has_move(&"struggle"))
 
 
@@ -199,9 +199,9 @@ func test_real_evolution_chains() -> void:
 		# Tour Pokémon (jalon 19, §2.12) : Rouge/Bleu. Spectrum (échange, Ectoplasma absent) et
 		# Noeunoeuf (Pierre Plante absente) n'en déclarent pas.
 		&"gastly": [&"haunter", 25], &"cubone": [&"marowak", 28],
-		# Jalon 24 (T4, dossier 27 §14.1) : Rouge/Bleu. Ptitard et Tentacool sont les reprises à
-		# l'identique du J21, sans évolution : Têtarte (N25) et Tentacruel (N30) s'ajoutent sur la
-		# branche du J21 (kanto_j21.json) à la fusion.
+		# Jalon 24 (T4, dossier 27 §14.1) : Rouge/Bleu. Ptitard → Têtarte (N25) et Tentacool →
+		# Tentacruel (N30) ajoutés dans kanto_j21.json à la fusion de `main` (accord J21 / J24).
+		&"poliwag": [&"poliwhirl", 25], &"tentacool": [&"tentacruel", 30],
 		&"psyduck": [&"golduck", 33], &"poliwhirl": [&"poliwrath", &"water_stone"],
 		&"slowpoke": [&"slowbro", 37], &"seel": [&"dewgong", 34],
 		&"shellder": [&"cloyster", &"water_stone"], &"krabby": [&"kingler", 28],
@@ -495,12 +495,14 @@ func test_real_catch_rates_are_the_official_ones() -> void:
 		# Jalon 19 (T3, Tour Pokémon ; Caninos vient du J17).
 		&"gastly": 190, &"haunter": 90, &"exeggcute": 90, &"cubone": 190,
 		&"marowak": 75, &"gyarados": 45,
-		# Jalon 24 (T4) ; Ptitard et Tentacool repris du J21.
-		&"psyduck": 190, &"golduck": 75, &"poliwag": 255, &"poliwhirl": 120, &"poliwrath": 45,
-		&"tentacool": 190, &"tentacruel": 60, &"slowpoke": 190, &"slowbro": 75, &"seel": 190,
+		# Jalon 24 (T4).
+		&"psyduck": 190, &"golduck": 75, &"poliwhirl": 120, &"poliwrath": 45,
+		&"tentacruel": 60, &"slowpoke": 190, &"slowbro": 75, &"seel": 190,
 		&"dewgong": 75, &"cloyster": 60, &"krabby": 225, &"kingler": 60,
 		&"seadra": 75, &"seaking": 60, &"magikarp": 255, &"omanyte": 45,
 		&"omastar": 45, &"kabuto": 45, &"kabutops": 45, &"articuno": 3,
+		# Jalon 21 (T5).
+		&"poliwag": 255, &"tentacool": 190, &"snorlax": 25,
 	}
 	assert_eq(_data.get_species_ids().size(), expected.size(), "toutes les espèces")
 	for id: StringName in _data.get_species_ids():

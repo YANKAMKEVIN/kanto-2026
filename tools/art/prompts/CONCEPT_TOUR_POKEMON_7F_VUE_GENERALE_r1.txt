@@ -1,0 +1,38 @@
+CONCEPT ART — VUE GÉNÉRALE DU 7e ÉTAGE DE LA TOUR DU SOUVENIR (Kanto 2026), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. Il montre UN SEUL étage, le plus haut de la tour : une NEF droite, étroite et symétrique, dans un grand bloc de maçonnerie ; le fond uni très sombre autour est du VIDE NEUTRE (garde-le sombre, simple et sans détail). La nef va du BAS de l'image (l'escalier) vers le HAUT (l'autel).
+Légende du plan :
+- violet-gris foncé = MURS ÉPAIS de pierre taillée, infranchissables (le dessus des murs est vu d'en haut) ;
+- gris violacé clair quadrillé = SOL DE DALLES de pierre, praticable, chaque carré du quadrillage étant une dalle ;
+- petites pierres tombales grises à sommet arrondi, avec un point de fleur au pied = TOMBES BASSES alignées : DEUX COLONNES de tombes serrées, une de chaque côté de l'allée centrale (deux tombes de large de chaque côté, huit rangées de haut), comme les bancs d'une nef ;
+- au centre, entre les deux colonnes de tombes : l'ALLÉE CENTRALE de dalles, large de quatre dalles ; elle se resserre à deux dalles au nord (l'alcôve de l'autel) et à deux dalles au sud (le couloir de l'escalier) ;
+- petits blocs violets portant un point orangé, entourés d'un halo beige sur le sol = STÈLES À BOUGIE : quatre au total au fond (l'alcôve) : deux côte à côte au fond au milieu (l'AUTEL, large de deux dalles) et une de chaque côté de l'alcôve, un peu plus bas ; chacune porte une bougie allumée et jette une petite flaque de lumière chaude sur les dalles ;
+- petit rectangle à quatre marches SOMBRES en bas à gauche du couloir sud = ESCALIER QUI DESCEND, encastré dans le mur.
+Respecte ce plan À LA LETTRE : forme de la nef, des deux colonnes de tombes, de l'allée, de l'alcôve du fond et du couloir du bas. Le plan ne donne que la composition : son style en aplats et son quadrillage ne doivent pas apparaître tels quels.
+
+RÈGLE ABSOLUE DES PASSAGES : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; l'allée et l'alcôve ont donc des bords qui suivent une grille : segments horizontaux et verticaux à angles droits, aucune courbe, aucune diagonale. Les murs sont de la maçonnerie régulière de pierre taillée, à arêtes droites.
+RELIEF : le sol est PLAT ; le seul escalier descend vers l'étage du dessous.
+
+IMAGE 2 : la vue générale des étages inférieurs de cette même tour (déjà validée). Respecte EXACTEMENT son style de rendu : même pinceau, même saturation, même pierre gris violacé, mêmes dalles, mêmes tombes basses arrondies avec leurs fleurs pâles, mêmes bougies dans leurs stèles et leur halo doré limité, même taille et même traitement des personnages. Ne reprends RIEN de sa composition, ni sa brume violette épaisse, ni son spectre : ici l'étage est CLAIR et APAISÉ.
+
+Format : PAYSAGE 1536 × 1024, vue plongeante sur l'étage seul, centré, avec une marge sombre autour.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus de trois quarts, projection oblique frontale, sans point de fuite. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud) ; le mur nord montre sa face de pierre appareillée.
+- Aucun trait noir : contours fins et doux. Ombres colorées bleu-violet froid, jamais grises ni noires.
+
+AMBIANCE — « le repos » : le sommet de la tour, calme, solennel, recueilli ; un peu plus sombre que les étages du dessous, mais lisible. Une BRUME TRÈS LÉGÈRE lilas, à peine un voile au ras du sol. Palette : pierre gris violacé, lumière douce et froide ; seules touches chaudes : les quatre bougies de l'alcôve et leur halo doré sur les dalles autour de l'autel. Pas de filtre uniforme.
+- LISIBILITÉ AVANT TOUT : le sol de dalles est nettement plus clair que les murs ; l'allée centrale se lit d'un coup d'œil du bas jusqu'à l'autel.
+- Décor de mémoire : deux colonnes de tombes basses de pierre claire, un bouquet de fleurs fraîches et fanées au pied de chacune (blanc, lilas, rose pâle), quelques pétales sur les dalles, un bol et un ruban en offrande devant l'autel. L'allée reste dégagée.
+
+VIE (très discrète, personnages petits à l'échelle de l'image 2 ; aucun ne ressemble au héros à casquette rouge et veste bleue) :
+- tout au fond, dans l'alcôve, juste devant l'autel : un VIEIL HOMME, M. FUJI, À GENOUX, de DOS, tourné vers l'autel (vers le haut de l'image), mains jointes devant lui, tête inclinée : crâne dégarni et cheveux blancs, petite barbe blanche, longue veste verte ou grise sobre sur un pantalon brun, un chapelet de bois autour du poignet ; silhouette douce, digne, vulnérable ;
+- TROIS SBIRES de la TEAM ROCKET, debout, adultes, UNIFORME NOIR complet (casquette noire, gants, bottes), aucun logo ni lettre lisible, qui montent la garde dans l'allée, chacun collé à un bord : le premier à gauche de l'allée, à la 2e rangée avant le bas du bloc de tombes, tourné vers la droite (vers l'est) ; le deuxième à droite de l'allée, plus haut, tourné vers la gauche (vers l'ouest) ; le troisième à gauche de l'allée, encore plus haut, juste sous l'alcôve, tourné vers la droite. Ils se répondent en zigzag et chacun surveille toute la largeur de l'allée à sa hauteur. Ils ne sont ni caricaturaux ni effrayants : de simples gardes sévères.
+- Aucune Exorciste, aucun spectre, aucune créature, aucun animal, aucun fantôme : le calme du lieu est celui d'un sanctuaire où une personne prie sous la menace de trois hommes.
+
+INTERDITS : texte, lettres, chiffres, étiquettes, panneaux lisibles, symboles, logo (y compris le « R » de la Team Rocket), signature, filigrane, cadre, interface ; sang, crânes, ossements, squelettes, zombies, cadavres, cercueils ouverts, tombes brisées, toiles d'araignée, chaînes, yeux luisants, visages dans la brume, ambiance d'horreur ; ciel, fenêtre sur l'extérieur, arbres, herbe, plantes vertes ; roche brute de grotte ; couloirs courbes ou en diagonale ; brouillard opaque qui cache le sol, flou de profondeur, vignettage noir ; pixel art, 3D.
+
+L'image doit raconter, sans texte : au sommet de la tour, trois hommes en noir barrent la nef, et au fond, devant l'autel aux quatre bougies, un vieil homme prie à genoux sans se retourner.

@@ -1,17 +1,32 @@
 extends GutTest
 ## Passe systèmes 2, S2E et S2F sur la vraie scène Boot (`systemes-2.md` §2.8 à §2.10) :
-## départ `s2_teleport` (téléporteur de la même carte, porte à carte refusée puis ouverte) et
-## départ `s2_fly` (bouton « S'ENVOLER » de la Carte, envol, arrivée devant le Centre).
+## téléporteur de la même carte et porte à carte refusée puis ouverte, et départ `s2_fly` (bouton
+## « S'ENVOLER » de la Carte, envol, arrivée devant le Centre).
+##
+## S2F : la carte de QA `qa_teleport` et le départ `s2_teleport` sont retirés en S2Z (T33). Le
+## téléporteur et la porte à carte sont posés **en mémoire** dans le vrai rez-de-chaussée du
+## Manoir de Céladopole (fabrique de [member SceneRouter.map_factory] qui charge la vraie scène
+## puis l'enrichit), avec un départ écrit sous `user://` ; rien n'est livré :
+## - téléporteur (13, 7) → point `essai_tp_arrivee` (3, 4), sur la même carte ;
+## - porte à carte `essai` en (5, 5) (OUVRIR, drapeau `door_celadon_mansion_1f_essai_open`).
 
 const MemoryFs := preload("res://tests/helpers/memory_file_system.gd")
 const FixedClock := preload("res://tests/helpers/fixed_clock.gd")
 const BOOT_SCENE := preload("res://game/boot.tscn")
-const START_TELEPORT := "res://tools/debug_start/s2_teleport.json"
+const START_TELEPORT := "user://test_s2ef_boot_start.json"
+const TELEPORT_MAP: StringName = &"celadon_mansion_1f"
+const TELEPORTER := Vector2i(13, 7)
+const TELEPORT_ARRIVAL := Vector2i(3, 4)
+## Départ (ancien `s2_teleport`) : sans drapeau ni Carte Magnétique.
+const TELEPORT_START := {
+	"map": "celadon_mansion_1f", "spawn": "essai_depart", "facing": "up", "flags": [],
+	"party": [{"species": "charmander", "level": 10}, {"species": "pidgey", "level": 9}],
+}
 const START_FLY := "res://tools/debug_start/s2_fly.json"
 const FADE := 0.05
 const TIMEOUT := 12.0
-const DOOR_AB := Vector2i(9, 3)
-const DOOR_FLAG: StringName = &"door_qa_teleport_ab_open"
+const DOOR_AB := Vector2i(5, 5)
+const DOOR_ID: StringName = &"essai"
 
 var _boot: Boot
 var _fades: Array[float] = []
@@ -26,6 +41,9 @@ func before_each() -> void:
 	SceneRouter.teleport_fade_duration = FADE
 	GameState.clock = FixedClock.new("2026-10-21T10:00:00")
 	_pages.clear()
+	var file := FileAccess.open(START_TELEPORT, FileAccess.WRITE)
+	file.store_string(JSON.stringify(TELEPORT_START))
+	file.close()
 
 
 func after_each() -> void:
@@ -37,6 +55,48 @@ func after_each() -> void:
 	SceneRouter.fade_in_duration = _fades[1]
 	SceneRouter.teleport_fade_duration = _fades[2]
 	GameState.clock = DeviceClock.new()
+	SceneRouter.map_factory = Callable()
+	if FileAccess.file_exists(START_TELEPORT):
+		DirAccess.remove_absolute(START_TELEPORT)
+
+
+## Vraie scène de [param map_id] ; le rez-de-chaussée du Manoir reçoit en plus le téléporteur,
+## son point d'arrivée, un point de départ et la porte à carte (en mémoire seulement).
+func _make_map(map_id: StringName) -> GameMap:
+	var map := (load(MapCatalog.scene_path(map_id)) as PackedScene).instantiate() as GameMap
+	if map_id != TELEPORT_MAP:
+		return map
+	for spawn: Array in [[&"essai_depart", Vector2i(4, 8)], [&"essai_tp_arrivee", TELEPORT_ARRIVAL]]:
+		var marker := Marker2D.new()
+		marker.name = spawn[0]
+		marker.position = Grid.cell_to_world(spawn[1])
+		map.get_node(^"Spawns").add_child(marker)
+	var teleporter := WarpPoint.new()
+	teleporter.name = "EssaiTeleporteur"
+	teleporter.position = Grid.cell_to_world(TELEPORTER)
+	teleporter.target_map = TELEPORT_MAP
+	teleporter.target_spawn = &"essai_tp_arrivee"
+	teleporter.style = Warp.Style.TELEPORT
+	map.get_node(^"Warps").add_child(teleporter)
+	var flag := KeyDoor.open_flag(TELEPORT_MAP, DOOR_ID)
+	var door := KeyDoor.new()
+	door.name = "EssaiPorte"
+	door.door_id = DOOR_ID
+	door.unless_flags = [flag]
+	door.blocking_cells = [DOOR_AB]
+	map.get_node(^"Entities").add_child(door)
+	var point := InteractPoint.new()
+	point.name = "EssaiOuvrir"
+	point.position = Grid.cell_to_world(DOOR_AB)
+	point.kind = Interaction.Kind.OPEN
+	point.dialogue_id = KeyDoor.LOCKED_DIALOGUE
+	point.unless_flags = [flag]
+	if not map.has_node(^"Interactables"):
+		var group := Node2D.new()
+		group.name = "Interactables"
+		map.add_child(group)
+	map.get_node(^"Interactables").add_child(point)
+	return map
 
 
 func _start(start_path: String) -> void:
@@ -92,33 +152,37 @@ func _press_interact() -> void:
 # --- S2F -------------------------------------------------------------------------------------
 
 func test_teleporter_on_the_same_map_keeps_the_map_and_frees_the_player() -> void:
+	SceneRouter.map_factory = _make_map
 	await _start(START_TELEPORT)
 	var map := _boot.get_map()
-	assert_eq(map.map_id, &"qa_teleport")
-	# Salle C : téléporteur (1, 7) → salle A, arrivée sur (1, 5).
-	await _place(Vector2i(1, 8), Vector2i.UP)
+	assert_eq(map.map_id, TELEPORT_MAP)
+	# Téléporteur (13, 7) → arrivée sur (3, 4), même carte.
+	await _place(TELEPORTER + Vector2i.DOWN, Vector2i.UP)
 	await _step(Vector2i.UP)
 	await wait_until(func() -> bool:
 		return not SceneRouter.is_transitioning() and _boot.is_stable(), TIMEOUT)
 	assert_eq(_boot.get_map(), map, "même carte, pas de rechargement")
-	assert_eq(_boot.get_player().get_cell(), Vector2i(1, 5))
+	assert_eq(_boot.get_player().get_cell(), TELEPORT_ARRIVAL)
 	assert_true(_boot.get_player().is_input_enabled())
 
 
 func test_key_door_refuses_without_the_card_then_opens_for_good() -> void:
+	SceneRouter.map_factory = _make_map
 	await _start(START_TELEPORT)
+	var door_flag := KeyDoor.open_flag(TELEPORT_MAP, DOOR_ID)
+	assert_eq(door_flag, &"door_celadon_mansion_1f_essai_open")
 	await _place(DOOR_AB + Vector2i.LEFT, Vector2i.RIGHT)
 	var grid := _boot.get_map().get_grid()
 	assert_false(grid.is_free(DOOR_AB), "porte fermée")
 	await _press_interact()
 	await _finish_dialogues()
 	assert_eq(_pages, ["Il faut une carte."] as Array[String])
-	assert_false(GameState.flags.has_flag(DOOR_FLAG))
+	assert_false(GameState.flags.has_flag(door_flag))
 	GameState.bag.add(&"card_key")
 	await _press_interact()
 	await wait_for_signal(_boot.get_key_door_director().door_opened, TIMEOUT)
 	await wait_process_frames(3)
-	assert_true(GameState.flags.has_flag(DOOR_FLAG))
+	assert_true(GameState.flags.has_flag(door_flag))
 	assert_true(grid.is_free(DOOR_AB), "porte ouverte")
 	await _step(Vector2i.RIGHT)
 	assert_eq(_boot.get_player().get_cell(), DOOR_AB, "on passe")

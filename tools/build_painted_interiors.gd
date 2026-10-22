@@ -144,6 +144,8 @@ const CELADON := [&"celadon_center", &"celadon_dept_gf", &"celadon_dept_2f", &"c
 	&"celadon_mansion_gf", &"celadon_mansion_1f", &"celadon_mansion_2f", &"celadon_mansion_3f",
 	&"celadon_mansion_roof", &"celadon_mansion_roof_house", &"celadon_restaurant",
 	&"celadon_chief_house", &"celadon_hotel"]
+## Jalon 21 (T21) : le poste traversant de la Route 12 et son étage (CT39) ; `--route12`.
+const ROUTE_12 := [&"route_12_gate", &"route_12_gate_2f"]
 const PLANS_DIR := "res://tools/plans/"
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 const LOGIC_DIR := "res://tests/fixtures/maps/"
@@ -177,6 +179,8 @@ func _init() -> void:
 	rooms.append_array(_celadon_rooms())
 	# Jalon 24 (T12) : Cramois'Île (Centre, Boutique, Labo en quatre pièces).
 	rooms.append_array(_cinnabar_rooms())
+	# Jalon 21 (T21) : le poste de la Route 12 (pièces en fin de liste).
+	rooms.append_array(_route_12_rooms())
 	for room: Dictionary in rooms:
 		if not wanted.is_empty() and not wanted.has(room["id"]):
 			continue
@@ -230,6 +234,8 @@ func _wanted_rooms() -> Array:
 			wanted.append_array(CELADON)
 		elif arg == "--cinnabar":
 			wanted.append_array(CINNABAR)
+		elif arg == "--route12":
+			wanted.append_array(ROUTE_12)
 		elif arg.begins_with("--rooms="):
 			for id: String in arg.trim_prefix("--rooms=").split(","):
 				wanted.append(StringName(id))
@@ -2011,6 +2017,13 @@ func _pokemon_house() -> Dictionary:
 		[&"int_panier_pokemon_01", Vector2i(3, 6), 6.85, "BasketB"],
 	]
 	room["rugs"] = [[&"int_tapis_plaid_01", Vector2(6.0, 6.2), "RugPlaid"]]
+	# Jalon 21 (T14, §2.9) : arrivée par la téléportation du 7F, devant M. Fuji ((7, 3) près de la
+	# fenêtre [D], tourné ↓) ; le joueur s'y tient tourné ↑ (le `facing` est celui du change_map).
+	(room["spawns"] as Dictionary)["devant_fuji"] = Vector2i(7, 4)
+	# Jalon 21 (T14) : déclencheur d'entrée `pokemon_house_flute` (sans direction) sur les trois
+	# cases du premier pas depuis le paillasson (6..8, 7) ; la scène ne joue que si la Flûte
+	# est due (sinon rien ne se passe).
+	room["triggers"] = [["FluteTrigger", Vector2i(6, 7), Vector2i(3, 1), &"pokemon_house_flute"]]
 	return room
 
 
@@ -2449,3 +2462,76 @@ func _cinnabar_rooms() -> Array[Dictionary]:
 			[&"cinnabar_island", &"from_boutique"]),
 		hall, meeting, rd, fossil,
 	]
+
+
+# --- Jalon 21 (T21) : poste de la Route 12 ------------------------------------------------------
+
+## Poste de la Route 12 (`jalon-21.md` §2.11 ; dossier 24 §10.1, §15.8 bis) : un 1F **traversant**
+## (modèle des postes de la Forêt de Jade : enveloppe `int_poste_foret_coque`, 10 × 8, ouvertures
+## nord (4..5, 1) et sud (4..5, 7)) et un 2F de maison [D : enveloppe `int_maison_argenta_coque`
+## réemployée]. Les portes extérieures font 3 cases (24..26) : chacune mène à `entrance_nord`
+## (4, 2) ou `entrance_sud` (4, 6) ; les ouvertures intérieures ramènent au spawn central
+## `from_poste_nord` / `from_poste_sud` de la Route 12 (`_w` et `_e` existent aussi, non utilisés).
+func _route_12_rooms() -> Array[Dictionary]:
+	return [_route_12_gate(), _route_12_gate_2f()]
+
+
+func _route_12_gate() -> Dictionary:
+	var room := {
+		"id": &"route_12_gate", "node": "Route12Gate", "size": Vector2i(10, 8),
+		"shell": "res://assets/world/interiors/int_poste_foret_coque.png",
+		"title": "Route 12", "light": &"interior_warm",
+		"floor": Rect2i(1, 2, 8, 5),
+		"doors": [Vector2i(4, 1), Vector2i(5, 1), Vector2i(4, 7), Vector2i(5, 7)],
+		"props": [
+			[&"int_meuble_bas_01", Vector2i(2, 2), 3.0, "LowCabinet"],
+			[&"int_plante", Vector2i(1, 6), 7.0, "PlantWest"],
+			[&"int_plante", Vector2i(8, 6), 7.0, "PlantEast"],
+			# Escalier vers le 2F : rangée du haut solide (7..8, 2), rangée du bas ouverte (7..8, 3).
+			[&"int_escalier_montant_01", Vector2i(8, 3), 4.0, "Stairs"],
+		],
+		"spawns": {"entrance_nord": Vector2i(4, 2), "entrance_sud": Vector2i(4, 6),
+			"from_2f": Vector2i(8, 4)},
+		"warps": [
+			["ToNorthW", Vector2i(4, 1), STEP_ON, Vector2i.UP, &"route_12", &"from_poste_nord",
+				Vector2i.UP],
+			["ToNorthE", Vector2i(5, 1), STEP_ON, Vector2i.UP, &"route_12", &"from_poste_nord",
+				Vector2i.UP],
+			["ToSouthW", Vector2i(4, 7), STEP_ON, Vector2i.DOWN, &"route_12", &"from_poste_sud",
+				Vector2i.DOWN],
+			["ToSouthE", Vector2i(5, 7), STEP_ON, Vector2i.DOWN, &"route_12", &"from_poste_sud",
+				Vector2i.DOWN],
+			["Stairs2FW", Vector2i(7, 3), STEP_ON, Vector2i.UP, &"route_12_gate_2f", &"from_1f",
+				Vector2i.DOWN],
+			["Stairs2FE", Vector2i(8, 3), STEP_ON, Vector2i.UP, &"route_12_gate_2f", &"from_1f",
+				Vector2i.DOWN],
+		],
+	}
+	return room
+
+
+## 2F : pièce de maison (15 × 10) [D] ; la jeune femme `tm39_girl` (9, 5) vient de
+## `data/npcs/route_12_gate_2f.json`. Escalier descendant (11..12, 3) vers le 1F.
+func _route_12_gate_2f() -> Dictionary:
+	return {
+		"id": &"route_12_gate_2f", "node": "Route12Gate2F", "size": Vector2i(15, 10),
+		"shell": "res://assets/world/interiors/int_maison_argenta_coque.png",
+		"title": "Route 12", "light": &"interior_warm",
+		"floor": Rect2i(1, 3, 13, 5),
+		"props": [
+			[&"int_grande_etagere_01", Vector2i(2, 3), 4.0, "BookshelfWest"],
+			[&"int_grande_etagere_01", Vector2i(4, 3), 4.0, "BookshelfCentre"],
+			[&"int_table_lecture_01", Vector2i(3, 7), 7.95, "ReadingTable"],
+			[&"int_carte_murale_01", Vector2i(7, 2), 2.7, "WallMap"],
+			[&"int_escalier_descendant_01", Vector2i(12, 3), 4.0, "StairsDown"],
+			[&"int_plante", Vector2i(1, 7), 8.0, "PlantWest"],
+			[&"int_plante", Vector2i(13, 7), 8.0, "PlantEast"],
+		],
+		"spawns": {"from_1f": Vector2i(11, 4)},
+		"warps": [
+			["StairsDownW", Vector2i(11, 3), STEP_ON, Vector2i.ZERO, &"route_12_gate", &"from_2f",
+				Vector2i.DOWN],
+			["StairsDownE", Vector2i(12, 3), STEP_ON, Vector2i.ZERO, &"route_12_gate", &"from_2f",
+				Vector2i.DOWN],
+		],
+	}

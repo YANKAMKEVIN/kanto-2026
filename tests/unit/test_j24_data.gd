@@ -54,14 +54,14 @@ const SPECIES := {
 }
 ## Reprises à l'identique de branches plus anciennes (règle d'ancienneté, jalon-24.md §0.1) :
 ## espèce → [fichier de reprise, branche d'origine].
-const SPECIES_REPRISES := {
-	&"poliwag": "j21-t5-donnees", &"tentacool": "j21-t5-donnees",
-}
-const MOVE_REPRISES := {
-	&"amnesia": "jalon-21", &"barrier": "j21-t5-donnees",
-}
-## Reprises retirées à la fusion de systemes-2 (2026-10-21) : leur jalon est dans `main`.
+## Reprises du J21 retirées à la fusion de `main` (2026-10-23) : Ptitard, Tentacool, Amnésie et
+## Bouclier sont ceux de `kanto_j21.json` / `moves/j21.json` (évolutions N25 et N30 ajoutées là).
+const J21_SPECIES: Array[StringName] = [&"poliwag", &"tentacool"]
 const MERGED_REPRISES := {
+	&"poliwag": "res://data/pokemon/species/kanto_j21.json",
+	&"tentacool": "res://data/pokemon/species/kanto_j21.json",
+	&"amnesia": "res://data/pokemon/moves/j21.json",
+	&"barrier": "res://data/pokemon/moves/j21.json",
 	&"tangela": "res://data/pokemon/species/kanto_celadon.json",
 	&"gyarados": "res://data/pokemon/species/kanto_tower.json",
 	&"dragon_rage": "res://data/pokemon/moves/tower.json",
@@ -116,10 +116,11 @@ const TRAINERS := {
 	&"route_21_fisher_yves": [21, "Pêcheur Yves", 35, 33, [&"seaking", &"goldeen"]],
 }
 ## Capacités dont l'effet manque au moteur (pending_effects) et que l'on rencontre au J24 : chez
-## les sauvages, elles restent (Guillotine de Krabby et Krabboss, Soin de Stari, Cyclone de
-## Roucoups, comme aux jalons précédents) ; chez les Dresseurs, remplacement explicite par les
-## capacités de Rouge/Bleu au niveau sans elles (règle de Major Bob, dossier 27 §14.2).
-const PENDING_MOVES: Array[StringName] = [&"guillotine", &"mirror_move", &"recover", &"whirlwind"]
+## les sauvages, elles restent (Soin de Stari, Cyclone de Roucoups, comme aux jalons précédents) ;
+## chez les Dresseurs, remplacement explicite par les capacités de Rouge/Bleu au niveau sans elles
+## (règle de Major Bob, dossier 27 §14.2). La Guillotine a l'effet `ohko` de la passe systèmes 2
+## depuis la fusion de `main` (2026-10-23).
+const PENDING_MOVES: Array[StringName] = [&"mirror_move", &"recover", &"whirlwind"]
 ## Tables des Îles Écume : union de Rouge et de Bleu ; poids = moyenne des deux tables sur 256
 ## (créneaux de Rouge/Bleu 51, 51, 39, 25, 25, 25, 13, 13, 11, 3 ; les demi-unités arrondies
 ## alternativement vers le haut et vers le bas) ; niveaux de Rouge/Bleu.
@@ -190,21 +191,17 @@ func test_new_species_values() -> void:
 
 
 func test_reprises_come_from_their_own_file() -> void:
-	for id: StringName in SPECIES_REPRISES:
-		var species := _data.get_species(id)
-		assert_not_null(species, String(id))
-		if species != null:
-			assert_eq(species.source, "res://data/pokemon/species/kanto_j24_reprises.json")
-	for id: StringName in MOVE_REPRISES:
-		var move := _data.get_move(id)
-		assert_not_null(move, String(id))
-		if move != null:
-			assert_eq(move.source, "res://data/pokemon/moves/j24_reprises.json")
 	for id: StringName in MERGED_REPRISES:
 		var source: String = _data.get_species(id).source if _data.has_species(id) \
 			else _data.get_move(id).source
 		assert_eq(source, MERGED_REPRISES[id], String(id))
 	assert_eq(_items.get_item(&"great_ball").source, "res://data/items/items_j20.json")
+	# Accord J21 / J24 (`jalon-24.md` §3.5) : Ptitard → Têtarte N25, Tentacool → Tentacruel N30.
+	for pair: Array in [[&"poliwag", &"poliwhirl", 25], [&"tentacool", &"tentacruel", 30]]:
+		var rules: Array = _data.get_species(pair[0]).evolutions
+		assert_eq(rules.size(), 1, String(pair[0]))
+		if rules.size() == 1:
+			assert_eq([rules[0].into, rules[0].level], [pair[1], pair[2]], String(pair[0]))
 
 
 func test_learnsets_are_red_blue() -> void:
@@ -240,7 +237,7 @@ func test_every_new_species_has_battle_sprites_and_a_pokedex_entry() -> void:
 	assert_true(dex.load_file(), "\n".join(dex.get_errors()))
 	var all: Array[StringName] = []
 	all.assign(SPECIES.keys())
-	all.append_array(SPECIES_REPRISES.keys())
+	all.append_array(J21_SPECIES)
 	for id: StringName in all:
 		for back: bool in [false, true]:
 			assert_true(ResourceLoader.exists(BattleArt.placeholder_path(id, back)), String(id))
@@ -268,7 +265,11 @@ func test_new_moves_values() -> void:
 		assert_eq([move.type, move.category, move.power, move.accuracy, move.pp,
 			move.crit_stage], expected[id], String(id))
 		assert_eq(move.source, "res://data/pokemon/moves/j24.json", String(id))
-	assert_eq(_data.get_move(&"guillotine").pending_effects, PackedStringArray(["ohko"]))
+	# Guillotine : effet `ohko` codé par la passe systèmes 2 (modèle d'Empal'Korne, test_ohko).
+	var guillotine := _data.get_move(&"guillotine")
+	assert_not_null(guillotine.effect_of(MoveEffect.Kind.OHKO))
+	assert_eq(guillotine.pending_effects.size(), 0)
+	assert_false(guillotine.description.contains("Sans effet"))
 	var cannon := _data.get_move(&"spike_cannon").effect_of(MoveEffect.Kind.HITS)
 	assert_eq([cannon.min_hits, cannon.max_hits], [2, 5])
 	var blizzard := _data.get_move(&"blizzard").effect_of(MoveEffect.Kind.STATUS)

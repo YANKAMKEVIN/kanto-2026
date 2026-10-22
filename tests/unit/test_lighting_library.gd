@@ -251,3 +251,43 @@ func test_maps_must_name_a_known_profile() -> void:
 	assert_string_contains(errors, "« maps » doit être un objet")
 	assert_string_contains(errors, "entrée invalide « x »")
 	assert_eq(_library.get_map_profile(&"cave"), &"")
+
+
+# --- J21 : étalonnage « à plat » (grade.flat), QA A17 ---------------------------------------
+
+func _flat(midtones: Array, flat: Variant) -> Dictionary:
+	return _profile({"grade": {"shadows": [0.9, 0.9, 0.9], "midtones": midtones,
+		"highlights": [1, 1, 1], "strength": 1, "flat": flat}})
+
+
+func test_flat_grade_is_read_and_optional() -> void:
+	var profile := _add(_flat([0.95, 0.93, 1.0], true))
+	assert_not_null(profile)
+	assert_true(profile.grade_flat)
+	assert_eq(profile.flat_grade_color(), Color(0.95, 0.93, 1.0))
+	assert_false(_add(_profile(), "q").grade_flat, "absent : étalonnage par zones")
+	assert_false(_add(_flat([0.95, 0.93, 1.0], false), "r").grade_flat)
+
+
+func test_flat_grade_is_dosed_by_strength() -> void:
+	var entry := _flat([0.8, 0.6, 1.0], true)
+	entry["grade"]["strength"] = 0.5
+	var color := _add(entry).flat_grade_color()
+	assert_almost_eq(color.r, 0.9, EPS)
+	assert_almost_eq(color.g, 0.8, EPS)
+	assert_almost_eq(color.b, 1.0, EPS)
+
+
+func test_invalid_flat_grade_is_refused() -> void:
+	assert_null(_add(_flat([0.95, 0.93, 1.0], "oui")), "booléen")
+	assert_null(_add(_flat([1.05, 0.93, 1.0], true), "b"), "un calque multiplicatif n'éclaire pas")
+	assert_push_error_count(2, "chaque erreur est signalée")
+
+
+func test_tower_uses_the_flat_grade_with_its_midtones() -> void:
+	assert_true(_library.load_file())
+	var tower := _library.get_profile(&"tower")
+	assert_true(tower.grade_flat, "Tour 2F-7F : étalonnage à plat (QA A17)")
+	assert_eq(tower.flat_grade_color(), Color(0.95, 0.93, 1.0))
+	assert_false(_library.get_profile(&"golden_hour").grade_flat, "extérieurs inchangés")
+	assert_false(_library.get_profile(&"tower_cold").grade_flat, "1F inchangé")

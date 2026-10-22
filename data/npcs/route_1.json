@@ -10,10 +10,5 @@
 	"route_rattata": {
 		"cell": [15, 27], "facing": "right", "sprite": "pokemon/rattata",
 		"shy": { "action": "flee", "radius": 2 }
-	},
-	"qa_s2_legendary": {
-		"cell": [23, 41], "facing": "down", "sprite": "pokemon/clefairy",
-		"dialogue": "qa_s2_legendary", "verb": "observe", "turn_to_player": false,
-		"if": ["qa_s2_legendary"], "unless": ["qa_s2_legendary_done"]
 	}
 }

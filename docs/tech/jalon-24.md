@@ -141,7 +141,8 @@ des textes et répliques de don « validées par Kevin le 2026-10-21, validation
 - **Bourg Palette (T11)** : Route 21 nord = « à venir » (BOURG PALETTE). À faire avec l'accord de
   Kevin : eau surfable (10..14, 32..33) de `pallet_town`, PUSH ↓ vers `route_21` /
   `from_pallet_town_<i>`, et l'inverse (T-70 de la mère, `mom_saw_surf`).
-- **J21** : poliwag / tentacool restent en reprise (`kanto_j24_reprises.json`).
+- **J21** : fusionné par `main` (2026-10-23) ; reprises `poliwag` / `tentacool` / `amnesia` /
+  `barrier` supprimées, évolutions N25 / N30 ajoutées dans `kanto_j21.json`.
 
 **Reste** : QA téléphone 24A–24D (Kevin), T16, côte de Bourg Palette, T19 (simulation
 d'équilibrage), art définitif des cartes (vues peintes de la série 27 non encore posées), T-14

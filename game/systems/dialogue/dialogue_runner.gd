@@ -298,12 +298,14 @@ func _begin_page() -> void:
 	if page.face_player and is_instance_valid(_npc) and _player != null:
 		_npc.face_toward(_player.get_cell())
 	if not page.react.is_empty():
-		var target: Npc = _map.get_npc(page.react) if is_instance_valid(_map) else null
-		if target == null:
+		var target: Node = _map.get_npc(page.react) if is_instance_valid(_map) else null
+		if target == null and is_instance_valid(_map):
+			target = _map.get_scene_prop(page.react) # Jalon 21 : acteur de décor
+		if target == null or not target.has_method(&"react"):
 			push_warning("DialogueRunner : « react » vers « %s » introuvable (%s)" % [
 				page.react, _dialogue.id])
 		else:
-			target.react()
+			target.call(&"react")
 	_refresh_box()
 	page_started.emit(_session.get_page_index())
 

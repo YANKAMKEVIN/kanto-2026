@@ -385,22 +385,6 @@
 				  "text": "Vu dans l'équipe d'un Montagnard. Il soulève des rochers comme des cailloux." }
 			]
 		},
-		"poliwag": {
-			"height": 0.6, "weight": 12.4,
-			"description": "Sa peau est si fine qu'on voit ses entrailles en spirale. Il marche mal sur ses jambes toutes neuves."
-		},
-		"tentacool": {
-			"height": 0.9, "weight": 45.5,
-			"description": "Il dérive près de la surface. Son corps presque transparent le rend difficile à voir dans l'eau."
-		},
-		"tangela": {
-			"height": 1.0, "weight": 35.0,
-			"description": "Ses lianes bleues s'agitent sans cesse et cachent tout son corps. Personne ne sait vraiment ce qu'il y a dessous."
-		},
-		"gyarados": {
-			"height": 6.5, "weight": 235.0,
-			"description": "Sa colère soulève les vagues. Peu de Dresseurs gardent son respect après l'avoir fait évoluer."
-		},
 		"psyduck": {
 			"height": 0.8, "weight": 19.6,
 			"description": "Il se tient toujours la tête, comme s'il avait mal. Quand la douleur devient trop forte, d'étranges pouvoirs s'échappent de lui."
@@ -584,6 +568,22 @@
 		"cubone": {
 			"height": 0.4, "weight": 6.5,
 			"description": "Il porte le crâne de sa mère comme un casque. Les nuits de lune, on l'entend pleurer doucement."
+		},
+		"poliwag": {
+			"height": 0.6, "weight": 12.4,
+			"description": "Sa peau est si fine qu'on voit ses entrailles en spirale. Il marche mal sur ses jambes toutes neuves."
+		},
+		"tentacool": {
+			"height": 0.9, "weight": 45.5,
+			"description": "Il dérive près de la surface. Son corps presque transparent le rend difficile à voir dans l'eau."
+		},
+		"marowak": {
+			"height": 1.0, "weight": 45.0,
+			"description": "Il manie l'os qu'il tient depuis l'enfance. Devenu fort, il protège farouchement les siens."
+		},
+		"snorlax": {
+			"height": 2.1, "weight": 460.0,
+			"description": "Il ne fait que manger et dormir. Quand il s'endort au milieu d'un chemin, plus personne ne passe."
 		}
 	}
 }

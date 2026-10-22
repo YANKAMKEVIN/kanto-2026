@@ -4,8 +4,8 @@ extends SceneTree
 ## espèces (`test_battle_art.gd` : chaque espèce des données a sa face et son dos).
 ## Fichier à part de `tools/gen_placeholder_battlers.gd` (que d'autres jalons modifient en
 ## parallèle) : mêmes règles (pixel art 64 × 64, contour sombre de 1 px, pieds à y = 61, lumière
-## en haut à gauche), mêmes primitives recopiées. Léviator (J19) et Saquedeneu (J20) ne sont pas
-## ici : leurs images sont reprises telles quelles de leurs branches. Le dos peint (rendu X/Y
+## en haut à gauche), mêmes primitives recopiées. Léviator (J19), Saquedeneu (J20), Ptitard et
+## Tentacool (J21) ne sont pas ici : leurs images sont celles de `main`. Le dos peint (rendu X/Y
 ## repeint) remplacera ces images au lot d'art (T5).
 ##
 ##   godot --headless --path . -s res://tools/gen_placeholder_battlers_j24.gd
@@ -14,7 +14,7 @@ extends SceneTree
 const DIR: String = "res://assets/sprites/pokemon/placeholder/"
 const SIZE: int = 64
 const SPECIES: Array[String] = [
-	"tentacool", "tentacruel", "poliwag", "poliwhirl", "poliwrath", "psyduck", "golduck",
+	"tentacruel", "poliwhirl", "poliwrath", "psyduck", "golduck",
 	"slowpoke", "slowbro", "seel", "dewgong", "cloyster", "krabby", "kingler", "seadra",
 	"seaking", "magikarp", "omanyte", "omastar", "kabuto", "kabutops", "articuno",
 ]
@@ -121,11 +121,7 @@ func _spiral(img: Image, cx: float, cy: float, r: float, a: Color, b: Color) -> 
 		i += 1
 
 
-# --- Tentacool, Tentacruel -----------------------------------------------------------
-
-func _draw_tentacool(img: Image, back: bool) -> void:
-	_draw_jelly(img, back, Color("#6ab8e8"), 2, 13.0)
-
+# --- Tentacruel (Tentacool : J21) -----------------------------------------------------------
 
 func _draw_tentacruel(img: Image, back: bool) -> void:
 	_draw_jelly(img, back, Color("#4a90d0"), 5, 17.0)
@@ -148,21 +144,7 @@ func _draw_jelly(img: Image, back: bool, body: Color, legs: int, size: float) ->
 		_r(img, 34, 38, 4, 2, EYE)
 
 
-# --- Ptitard, Têtarte, Tartard -------------------------------------------------------
-
-func _draw_poliwag(img: Image, back: bool) -> void:
-	var skin := Color("#6a8ad8")
-	_leaf(img, Vector2(32, 40), Vector2(32, 20) if back else Vector2(50, 22), 6, WHITE)
-	_e(img, 32, 44, 16, 15, skin, true)
-	_r(img, 22, 58, 6, 4, skin.darkened(0.2))
-	_r(img, 36, 58, 6, 4, skin.darkened(0.2))
-	if back:
-		return
-	_spiral(img, 32, 48, 8, WHITE, EYE)
-	_eye(img, 22, 33, Color("#2a2a30"))
-	_eye(img, 37, 33, Color("#2a2a30"))
-	_r(img, 30, 40, 4, 2, Color("#e05878"))
-
+# --- Têtarte, Tartard (Ptitard : J21) -------------------------------------------------------
 
 func _draw_poliwhirl(img: Image, back: bool) -> void:
 	_draw_frog(img, back, Color("#5a7ac8"), false)
