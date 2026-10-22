@@ -240,7 +240,10 @@
 		"ghost_spoke": { "text": "SPECTRE : Va-t'en… Va-t'en…" },
 		"ghost_ball_refused": {
 			"text": "Pas question de lancer une Ball sur… ça. Elle passerait au travers."
-		}
+		},
+		"ball_uncatchable": { "text": "Ce Pokémon ne peut pas être capturé." },
+		"ghost_revealed": { "text": "Le Scope Sylphe révèle l'identité du SPECTRE !" },
+		"ghost_revealed_species": { "text": "C'est un {pokemon} !" }
 	},
 	"stats": {
 		"atk": "L'Attaque", "def": "La Défense", "spa": "L'Attaque Spéciale",

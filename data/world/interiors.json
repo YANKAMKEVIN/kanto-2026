@@ -73,6 +73,8 @@
 		"celadon_chief_house",
 		"celadon_hotel",
 		"celadon_gym",
-		"celadon_game_corner"
+		"celadon_game_corner",
+		"route_12_gate",
+		"route_12_gate_2f"
 	]
 }

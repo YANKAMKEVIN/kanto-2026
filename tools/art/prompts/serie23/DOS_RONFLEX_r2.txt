@@ -1,0 +1,9 @@
+ILLUSTRATION DE JEU VIDÉO : une grosse créature de dessin animé vue de dos, pour l'écran d'un jeu de combat au tour par tour.
+
+IMAGE 1 jointe : la créature vue de face (artwork officiel) : couleurs, proportions et rendu ; IMAGE 2 jointe : une autre créature déjà vue de dos dans ce jeu : angle de vue, cadrage et style de contour.
+
+SUJET : un énorme ours-chat paresseux et rond, bleu-vert très sombre sur le dos et la tête, aux petites oreilles pointues, avec un gros ventre crème que l'on devine sur le côté, assis lourdement et tourné le DOS au spectateur. Vue de DOS, de trois quarts, légèrement par-dessus l'épaule gauche ; il regarde vers le haut à droite de l'image. Silhouette ramassée, plus large que haute, gros pieds crème.
+
+STYLE : le trait fin et doux, les aplats nuancés et la palette de l'artwork de face ; ni pixel art, ni 3D, ni photo. LUMIÈRE neutre, diffuse, légèrement du haut à gauche.
+CADRAGE : image CARRÉE 1024 × 1024, la créature ENTIÈRE, centrée, environ 85 % de la hauteur, son bas à environ 120 px du bord bas. FOND : PNG avec une vraie transparence (canal alpha), aucun damier, aucun sol, aucune ombre portée.
+INTERDITS : texte, lettres, chiffres, signature, cadre, décor, autre créature, personnage.

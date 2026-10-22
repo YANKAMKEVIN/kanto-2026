@@ -1,0 +1,36 @@
+CONCEPT ART — VUE GÉNÉRALE DE LA ROUTE 16 EST, LA ROUTE BOISÉE DE CÉLADOPOLE (Kanto 2026), image de référence de direction artistique.
+
+Trois images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. La route va de la droite (l'EST, où elle sort d'une ville) vers la gauche (l'OUEST, où elle finit contre une grande façade de bâtiment).
+Légende du plan :
+- vert très foncé = FORÊT DENSE infranchissable, qui couvre presque toute l'image (rideaux d'arbres au nord et au sud du chemin) ;
+- beige = CHEMIN DE TERRE battue, large de trois dalles, qui va de la droite de l'image jusqu'à la façade grise-bleue ; il se resserre à DEUX dalles au milieu (le GOULET) entre deux masses de rochers gris clair semées de cailloux blancs (une au nord, une au sud du chemin) ; puis il se rouvre en un petit parvis devant la façade ;
+- gris-bleu, grand rectangle à gauche (toit bleu-gris sur la moitié haute, façade claire en bas, deux petites portes brunes côte à côte au bas, au milieu) = LE POSTE de la piste cyclable, un grand bâtiment bas et long dont la porte est FERMÉE ;
+- rangée de petits poteaux bruns reliés = CLÔTURE BASSE de bois, tout le long du bord sud du chemin (interrompue par la masse de rochers du goulet) ;
+- jaune-vert olive = grande CLAIRIÈRE de hautes herbes en HAUTEUR, derrière le rideau d'arbres du nord, à droite : visible entre les troncs mais JAMAIS accessible (aucun accès) ; elle se prolonge par une étroite langue d'herbe vers le chemin, fermée par un seul GRAND ARBRE rond, plus gros que les autres, juste au nord du chemin à droite : cet arbre est dense et sain, comme les autres arbres, rien ne le distingue.
+Respecte ce plan À LA LETTRE : le chemin de trois dalles, le goulet de deux dalles entre les deux masses de rochers, la façade du poste avec son parvis, la clôture du sud, la clairière du nord-est avec son grand arbre. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+RÈGLE ABSOLUE DES CHEMINS : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; le chemin, le goulet et les bords des rochers suivent une grille : uniquement des segments horizontaux et verticaux à angles droits, AUCUN segment en diagonale ni courbe, aucun escalier. Le chemin est droit.
+RELIEF : tout est plat. Aucune falaise, aucune pente. La clairière haute est simplement derrière les arbres.
+
+IMAGE 2 : la vue générale de la Route 2 (forêt dense et chemin de terre), une autre route du même jeu. Respecte EXACTEMENT son style de rendu : même pinceau, mêmes arbres en masses arrondies serrées, même chemin de terre, même saturation, même façon de peindre la roche et les hautes herbes. Ne reprends PAS sa composition.
+
+IMAGE 3 : la vue générale de la Route 25, une autre route du même jeu : reprends sa façon de peindre les rochers clairs, son poste de bâtiment (toit d'ardoise bleu-gris) et sa lumière. Ne reprends PAS sa mer ni sa composition.
+
+Format : PAYSAGE 1536 × 1024, vue plongeante sur toute la route, comme le plan.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats. Le feuillage est peint en grandes masses douces.
+- Perspective : vue de dessus de trois quarts, projection oblique frontale, sans point de fuite. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud).
+- Aucun trait noir : contours fins et doux, plus sombres et plus saturés que la couleur locale. Ombres colorées bleu-vert ou violet froid, jamais grises.
+
+AMBIANCE — « la route boisée » : un chemin tranquille, serré entre deux murs de forêt, qui mène à un grand poste de piste cyclable. Lumière de fin d'après-midi douce, quelques rais de soleil entre les cimes, ombres bleutées. La forêt est dense, vivante, d'un vert sombre profond ; la clairière haute est plus claire et lumineuse.
+- Le POSTE est un long bâtiment bas, de pierre claire et de bois, toit d'ardoise bleu-gris, un panneau-enseigne vierge au-dessus de la porte (SANS TEXTE, sans symbole), une cheminée ; la porte brune à deux battants est fermée. Un petit parvis de terre devant.
+- Un RONFLEX géant endormi bloquera le goulet, mais il n'est PAS sur cette image : le goulet est VIDE.
+
+VIE : AUCUN personnage, AUCUN Pokémon, AUCUN animal (la route est déserte : le goulet entre les rochers est libre).
+
+INTERDITS : texte, lettres, chiffres, étiquettes, panneaux lisibles, logo, signature, filigrane, cadre, interface ; personnage, Pokémon, vélo, véhicule, route goudronnée ; autre bâtiment que le poste ; falaise, escalier, mer ; arbre à Couper particulier (le grand arbre est un arbre ordinaire) ; arbres orange ou automnaux ; palmiers ; neige ; brouillard, flou de profondeur, vignettage ; pixel art, 3D.
+
+L'image doit raconter, sans texte : un chemin de terre qui s'enfonce dans une forêt sombre, un goulet entre deux masses de rochers, et au bout une grande façade fermée ; derrière les arbres, on devine une clairière inaccessible.

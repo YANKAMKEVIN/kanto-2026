@@ -81,8 +81,11 @@ func test_real_data_loads_without_error() -> void:
 		&"diglett", &"dugtrio",
 		# Jalon 15 (T12) : Miaouss et Persan (kanto_vermilion.json).
 		&"meowth", &"persian",
-		&"mankey", &"primeape", &"growlithe", &"arcanine", &"abra", &"kadabra", &"machop",
-		&"bellsprout", &"weepinbell", &"victreebel",
+		&"mankey", &"primeape", &"growlithe", &"arcanine",
+		# Jalon 21 (T5) : Ptitard, Tentacool, Ronflex (kanto_j21.json).
+		&"poliwag",
+		&"abra", &"kadabra", &"machop",
+		&"bellsprout", &"weepinbell", &"victreebel", &"tentacool",
 		&"geodude", &"graveler", &"golem", &"magnemite", &"magneton", &"shellder",
 		# Jalon 19 (T3) : Fantominus, Spectrum, Noeunoeuf, Osselait, Ossatueur, Léviator
 		# (kanto_tower.json ; Caninos vient du J17).
@@ -90,14 +93,14 @@ func test_real_data_loads_without_error() -> void:
 		&"drowzee", &"hypno", &"voltorb", &"exeggcute", &"cubone", &"marowak", &"koffing",
 		&"rhyhorn", &"tangela", &"kangaskhan",
 		&"horsea", &"goldeen", &"staryu", &"starmie", &"gyarados",
-		&"eevee", &"vaporeon", &"jolteon", &"flareon"] as Array[StringName])
-	assert_eq(_data.get_move_ids().size(), 130,
+		&"eevee", &"vaporeon", &"jolteon", &"flareon", &"snorlax"] as Array[StringName])
+	assert_eq(_data.get_move_ids().size(), 132,
 		"47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10) + Patience (J11) "
 		+ "+ 21 du Mont Sélénite (jalon 12) + 8 du jalon 13 (les 5 du J12 qu'il reprenait : "
 		+ "entrées du J12) + 6 du Cap d'Azuria (jalon 14) + Jackpot (J15) "
 		+ "+ Coupe et Tonnerre (jalon 16) + 7 du jalon 17 + 8 de la Tour Pokémon (J19 ; "
 		+ "Hypnose, Hurlement et Bélier viennent du J17) + 7 du jalon 20 + Vol (passe systèmes 2, T25) "
-		+ "+ Surf (S2C) + Force (S2D)")
+		+ "+ Surf (S2C) + Force (S2D) + Amnésie, Bouclier (J21 ; Constriction vient du J20)")
 	assert_true(_data.has_move(&"struggle"))
 
 
@@ -476,6 +479,8 @@ func test_real_catch_rates_are_the_official_ones() -> void:
 		# Jalon 19 (T3, Tour Pokémon ; Caninos vient du J17).
 		&"gastly": 190, &"haunter": 90, &"exeggcute": 90, &"cubone": 190,
 		&"marowak": 75, &"gyarados": 45,
+		# Jalon 21 (T5).
+		&"poliwag": 255, &"tentacool": 190, &"snorlax": 25,
 	}
 	assert_eq(_data.get_species_ids().size(), expected.size(), "toutes les espèces")
 	for id: StringName in _data.get_species_ids():

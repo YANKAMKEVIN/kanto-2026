@@ -604,7 +604,7 @@ class Preparateur:
             self.catalogue["personnages"][e["id"]] = {
                 "fichier": self._res(e["sortie"]), "cellule": [largeur, hauteur],
                 "hauteur": marche["hauteur"], "colonnes": 4, "lignes": 1,
-                "ordre_colonnes": ["bas", "gauche", "droite", "haut"]}
+                "ordre_colonnes": e.get("ordre_colonnes", ["bas", "gauche", "droite", "haut"])}
 
     def pokemon_fixes(self) -> None:
         """Pokémon d'ambiance immobiles (série 11, jalon 9 §2.8.5) : une planche source = une ligne
@@ -647,7 +647,8 @@ class Preparateur:
         # posée au sol, `build_character_frames.gd`), mis à leur hauteur comme les images du héros.
         for e in self.m["heros_images"] + self.m.get("images_objets", []):
             image = _recadrer(Image.open(self.source / e["source"]).convert("RGBA"), e)
-            image = _silhouette(image)
+            if not e.get("sans_silhouette"):  # halo : fondu jusqu'au bord, rien à rogner
+                image = _silhouette(image)
             echelle = e["hauteur"] / image.height
             image = image.resize((round(image.width * echelle), e["hauteur"]), Image.LANCZOS)
             _ecrire(image, self._sortie(e["sortie"]))

@@ -1,0 +1,109 @@
+{
+	"tower_6f_marowak_held": {
+		"narration": true,
+		"pages": ["Quelque chose retient encore l'esprit…"]
+	},
+	"tower_6f_marowak_soul": {
+		"narration": true,
+		"pages": ["Le SPECTRE était l'âme de la mère d'Osselait…"]
+	},
+	"tower_6f_marowak_peace": {
+		"narration": true,
+		"pages": ["Son âme s'est apaisée.\nElle est partie en paix."]
+	},
+	"tower_rocket_1_before": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Qu'est-ce que tu fais là, toi ?"]
+	},
+	"tower_rocket_1_defeated": {
+		"speaker": "Sbire Rocket",
+		"pages": ["J'abandonne !"]
+	},
+	"tower_rocket_1_after": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Je ne vais pas oublier ta tête."]
+	},
+	"tower_rocket_2_before": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Ce vieux est venu nous faire la morale.\nComme si ces Pokémon valaient quelque chose."]
+	},
+	"tower_rocket_2_defeated": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Arrête ! Ça suffit !"]
+	},
+	"tower_rocket_2_after": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Les Pokémon, ça sert à faire de l'argent.\nLe reste, c'est du sentiment."]
+	},
+	"tower_rocket_3_before": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Le boss est parti, mais nous, on reste.\nTu ne sauveras personne, gamin !"]
+	},
+	"tower_rocket_3_defeated": {
+		"speaker": "Sbire Rocket",
+		"pages": ["On ne se mesure pas à la Team Rocket…"]
+	},
+	"tower_rocket_3_after": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Tu ne t'en tireras pas comme ça."]
+	},
+	"tower_7f_fuji": {
+		"speaker": "M. Fuji",
+		"variants": [
+			{
+				"if": ["beaten_tower_rocket_1", "beaten_tower_rocket_2", "beaten_tower_rocket_3"],
+				"cutscene": "tower_7f_fuji_rescue"
+			},
+			{
+				"pages": ["…"]
+			}
+		]
+	},
+	"tower_7f_fuji_thanks": {
+		"speaker": "M. Fuji",
+		"pages": [
+			"Oh… Tu es venu me chercher ?\nMerci, mon enfant.",
+			"Mais je suis monté ici de mon plein gré.\nJe voulais apaiser l'âme de la mère d'Osselait.",
+			"Ces hommes m'ont empêché de redescendre.\nIls disaient que je les gênais.",
+			"Je crois qu'elle a enfin trouvé la paix.\nC'est grâce à toi, n'est-ce pas ?",
+			"Viens chez moi, au pied de la Tour.\nJ'aimerais te remercier comme il se doit."
+		]
+	},
+	"fuji_flute_give": {
+		"speaker": "M. Fuji",
+		"pages": [
+			"{player}. Tes Pokémon te font confiance, ça se voit.",
+			"Un Pokédex se remplit avec des Pokémon.\nUne aventure, avec de l'affection.",
+			"Prends ceci. Elle t'aidera sur ton chemin."
+		]
+	},
+	"fuji_flute_received": {
+		"narration": true,
+		"pages": ["{player} reçoit la Poké Flûte !"]
+	},
+	"fuji_flute_explain": {
+		"speaker": "M. Fuji",
+		"pages": ["Sa mélodie réveille les Pokémon endormis.\nMême les plus gros dormeurs."]
+	},
+	"pokemon_house_fuji": {
+		"speaker": "M. Fuji",
+		"variants": [
+			{
+				"if": ["fuji_rescued"],
+				"unless_items": ["poke_flute"],
+				"cutscene": "pokemon_house_flute"
+			},
+			{
+				"if": ["snorlax_route_12_woken"],
+				"pages": ["Ronflex ? Ha ha…\nIl aura bien dormi, au moins."]
+			},
+			{
+				"if": ["snorlax_route_16_woken"],
+				"pages": ["Ronflex ? Ha ha…\nIl aura bien dormi, au moins."]
+			},
+			{
+				"pages": ["Ma Flûte t'a-t-elle été utile ?"]
+			}
+		]
+	}
+}

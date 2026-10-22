@@ -1,0 +1,5 @@
+FX_HALO_SPIRIT — NOUVELLE image d'effet de lumière pour le jeu Kanto 2026 : le HALO PÂLE d'un esprit apaisé (effet `SpiritLight`), pas une scène.
+
+IMAGE : un seul HALO circulaire, doux, qui sera ajouté en lumière (mode additif) sur un sol de pierre sombre : un cœur presque blanc légèrement lilas, qui s'estompe sans aucune limite visible vers un bord complètement transparent ; la couleur passe du blanc (centre) au lilas très pâle puis au bleu pâle, à peine saturée ; la brillance est LISSE et CONTINUE (un dégagement radial parfaitement doux, sans anneau, sans bande, sans palier, sans grain, sans étoile, sans rayon, sans motif) ; un voile très léger de brume pâle autour, jamais une forme. Parfaitement circulaire et centré.
+Format : PNG CARRÉ 1024 × 1024, fond TRANSPARENT (canal alpha) : l'opacité est maximale au centre (environ 90 %) et tombe à 0 avant le bord de l'image (rayon utile ≈ 480 px), aucune bordure nette ; aucun damier dessiné ; aucun personnage, aucun sol, aucun objet.
+Interdits : texte, lettres, chiffres, logo, étoile, croix, symbole, visage, silhouette, particule nette, pixel art, 3D.

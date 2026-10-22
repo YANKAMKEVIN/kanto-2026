@@ -1,0 +1,30 @@
+{
+	"tower_rocket_1": {
+		"cell": [9, 11], "facing": "right", "sprite": "rocket_grunt_m",
+		"dialogue": "tower_rocket_1_after", "unless": ["beaten_tower_rocket_1"],
+		"trainer": {
+			"id": "tower_rocket_1", "sight": 3, "before": "tower_rocket_1_before",
+			"defeated": "tower_rocket_1_defeated", "leave": []
+		}
+	},
+	"tower_rocket_2": {
+		"cell": [12, 9], "facing": "left", "sprite": "rocket_grunt_f",
+		"dialogue": "tower_rocket_2_after", "unless": ["beaten_tower_rocket_2"],
+		"trainer": {
+			"id": "tower_rocket_2", "sight": 3, "before": "tower_rocket_2_before",
+			"defeated": "tower_rocket_2_defeated", "leave": []
+		}
+	},
+	"tower_rocket_3": {
+		"cell": [9, 7], "facing": "right", "sprite": "rocket_grunt_m",
+		"dialogue": "tower_rocket_3_after", "unless": ["beaten_tower_rocket_3"],
+		"trainer": {
+			"id": "tower_rocket_3", "sight": 3, "before": "tower_rocket_3_before",
+			"defeated": "tower_rocket_3_defeated", "leave": []
+		}
+	},
+	"mr_fuji": {
+		"cell": [10, 3], "facing": "up", "sprite": "mr_fuji", "dialogue": "tower_7f_fuji",
+		"pose": "pray", "turn_to_player": false, "unless": ["fuji_rescued"]
+	}
+}

@@ -20,6 +20,8 @@ extends RefCounted
 ##   "maps": { "viridian_city": "golden_hour", "viridian_center": "interior_warm" }
 ## }
 ## [/codeblock]
+## « grade.flat » (facultatif, booléen) : étalonnage à plat, sans lecture de l'écran
+## ([member LightProfile.grade_flat] ; tons moyens ≤ 1).
 ## « grade » et « sun_direction » sont obligatoires ; « rim », « cast_shadow », « contact »
 ## et « wind » sont facultatifs (absents = aucun liseré, aucune ombre portée, aucune ombre de
 ## contact, arbres immobiles). Dans chaque bloc présent, toutes les clés sont obligatoires.
@@ -40,6 +42,8 @@ const _PROFILE_KEYS: Array[String] = [
 	"grade", "sun_direction", "rim", "cast_shadow", "contact", "wind",
 ]
 const _GRADE_KEYS: Array[String] = ["shadows", "midtones", "highlights", "strength"]
+## Clé facultative de « grade » : « flat » (booléen, [member LightProfile.grade_flat]).
+const _GRADE_OPTIONAL_KEYS: Array[String] = ["flat"]
 const _RIM_KEYS: Array[String] = ["color", "strength", "width"]
 const _CAST_KEYS: Array[String] = ["color", "alpha", "length", "skew_deg"]
 const _CONTACT_KEYS: Array[String] = ["color", "alpha"]
@@ -144,12 +148,22 @@ static func parse_profile(value: Variant, errors: PackedStringArray) -> LightPro
 	_check_keys(entry, _PROFILE_KEYS, "", errors)
 	if not entry.has("grade"):
 		errors.append("« grade » est obligatoire")
-	elif _block(entry["grade"], _GRADE_KEYS, "grade", errors):
+	elif _block(entry["grade"], _GRADE_KEYS, "grade", errors, _GRADE_OPTIONAL_KEYS):
 		var grade: Dictionary = entry["grade"]
 		profile.grade_shadows = _gains(grade, "shadows", errors)
 		profile.grade_midtones = _gains(grade, "midtones", errors)
 		profile.grade_highlights = _gains(grade, "highlights", errors)
 		profile.grade_strength = _number(grade, "strength", "grade", 0.0, 1.0, true, errors)
+		if grade.has("flat"):
+			if not grade["flat"] is bool:
+				errors.append("« grade.flat » doit être un booléen")
+			elif grade["flat"]:
+				# Le calque multiplie : il ne peut qu'assombrir (gains des tons moyens ≤ 1).
+				var mid := profile.grade_midtones
+				if mid.x > 1.0 or mid.y > 1.0 or mid.z > 1.0:
+					errors.append("« grade.flat » demande des tons moyens ≤ 1")
+				else:
+					profile.grade_flat = true
 	if not entry.has("sun_direction"):
 		errors.append("« sun_direction » est obligatoire")
 	else:
@@ -188,13 +202,15 @@ static func parse_profile(value: Variant, errors: PackedStringArray) -> LightPro
 ## Vrai si [param value] est un objet aux clés exactement [param keys] (toutes présentes,
 ## aucune autre). Les erreurs sont ajoutées.
 static func _block(value: Variant, keys: Array[String], name: String,
-		errors: PackedStringArray) -> bool:
+		errors: PackedStringArray, optional: Array[String] = []) -> bool:
 	if not value is Dictionary:
 		errors.append("« %s » doit être un objet { %s }" % [name, ", ".join(keys)])
 		return false
 	var block: Dictionary = value
 	var count := errors.size()
-	_check_keys(block, keys, name, errors)
+	var allowed: Array[String] = keys.duplicate()
+	allowed.append_array(optional)
+	_check_keys(block, allowed, name, errors)
 	for key: String in keys:
 		if not block.has(key):
 			errors.append("« %s.%s » est obligatoire" % [name, key])
