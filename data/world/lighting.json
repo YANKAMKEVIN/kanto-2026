@@ -178,6 +178,18 @@
 			"rim": { "color": "#c4b8e8", "strength": 0.08, "width": 3.0 },
 			"contact": { "color": "#0e0a18", "alpha": 0.55 },
 			"wind": 0.0
+		},
+		"office": {
+			"grade": {
+				"shadows": [0.98, 1.0, 1.03],
+				"midtones": [1.01, 1.02, 1.03],
+				"highlights": [1.03, 1.04, 1.05],
+				"strength": 1.0
+			},
+			"sun_direction": [-0.7, -0.7],
+			"rim": { "color": "#f0f6ff", "strength": 0.08, "width": 3.0 },
+			"contact": { "color": "#18202e", "alpha": 0.5 },
+			"wind": 0.0
 		}
 	},
 	"maps": {
@@ -296,6 +308,18 @@
 		"rocket_hideout_b2f": "hideout",
 		"rocket_hideout_b3f": "hideout",
 		"rocket_hideout_b4f": "hideout",
-		"rocket_hideout_elevator": "hideout"
+		"rocket_hideout_elevator": "hideout",
+		"silph_co_1f": "office",
+		"silph_co_2f": "office",
+		"silph_co_3f": "office",
+		"silph_co_4f": "office",
+		"silph_co_5f": "office",
+		"silph_co_6f": "office",
+		"silph_co_7f": "office",
+		"silph_co_8f": "office",
+		"silph_co_9f": "office",
+		"silph_co_10f": "office",
+		"silph_co_11f": "office",
+		"silph_co_elevator": "office"
 	}
 }

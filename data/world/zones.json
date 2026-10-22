@@ -137,7 +137,14 @@
 			"subtitle": "Route 7 — Route 8",
 			"description": "Un long couloir carrelé sous Safrania. Des néons froids, et presque personne."
 		},
-		"saffron_city": { "name": "Safrania", "kind": "town", "maps": [] },
+		"saffron_city": {
+			"name": "Safrania", "kind": "town",
+			"maps": [
+				"saffron_city", "silph_co_1f", "silph_co_2f", "silph_co_3f", "silph_co_4f", "silph_co_5f",
+				"silph_co_6f", "silph_co_7f", "silph_co_8f", "silph_co_9f", "silph_co_10f", "silph_co_11f",
+				"silph_co_elevator"
+			]
+		},
 		"route_7": {
 			"name": "Route 7", "kind": "route",
 			"maps": ["route_7", "route_7_gate", "route_7_underground_gate"],

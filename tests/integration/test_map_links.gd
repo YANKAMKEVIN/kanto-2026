@@ -62,6 +62,10 @@ const MAP_IDS: Array[StringName] = [
 	# Jalon 20 (T20) : le Casino, le repaire Rocket (B1F à B4F) et sa cabine d'ascenseur.
 	&"celadon_game_corner", &"rocket_hideout_b1f", &"rocket_hideout_b2f", &"rocket_hideout_b3f",
 	&"rocket_hideout_b4f", &"rocket_hideout_elevator",
+	# Jalon 26 (T7) : les 11 étages de la Sylphe SARL et sa cabine (téléporteurs compris).
+	&"silph_co_1f", &"silph_co_2f", &"silph_co_3f", &"silph_co_4f", &"silph_co_5f", &"silph_co_6f",
+	&"silph_co_7f", &"silph_co_8f", &"silph_co_9f", &"silph_co_10f", &"silph_co_11f",
+	&"silph_co_elevator",
 ]
 ## Cartes dont les passages « à venir » sont comptés dans leur propre test (jalon 18).
 const OWN_COMING_SOON_COUNT: Array[StringName] = [&"lavender_town", &"pokemon_tower_1f"]
@@ -75,6 +79,12 @@ const PENDING_RETURNS: Array = [
 	# Jalon 20 (T20) : la sortie de la cabine du repaire mène au B1F (réorientée par le moteur).
 	[&"rocket_hideout_b2f", &"rocket_hideout_elevator"],
 	[&"rocket_hideout_b4f", &"rocket_hideout_elevator"],
+	# Jalon 26 (T7) : la sortie de la cabine de la Sylphe mène au 1F (réorientée par le moteur).
+	[&"silph_co_2f", &"silph_co_elevator"], [&"silph_co_3f", &"silph_co_elevator"],
+	[&"silph_co_4f", &"silph_co_elevator"], [&"silph_co_5f", &"silph_co_elevator"],
+	[&"silph_co_6f", &"silph_co_elevator"], [&"silph_co_7f", &"silph_co_elevator"],
+	[&"silph_co_8f", &"silph_co_elevator"], [&"silph_co_9f", &"silph_co_elevator"],
+	[&"silph_co_10f", &"silph_co_elevator"], [&"silph_co_11f", &"silph_co_elevator"],
 ]
 ## Cartes construites par une autre tâche en parallèle (jalon 7 : la Route 22, T22 ; jalon 10 :
 ## Argenta, T11, pendant les intérieurs du T13) : un warp qui y mène est vérifié seulement si la
@@ -82,7 +92,8 @@ const PENDING_RETURNS: Array = [
 ## Jalon 12 : Route 3, sas (T8) et étages du Mont Sélénite (T9) sont tous construits.
 ## Jalon 15 : les bâtiments d'entrée du souterrain (T13, T14) sont intégrés.
 ## Jalon 17 : la Cave Taupiqueur (T15), la Route 11 (T16) et la Route 2 est (T19) sont intégrées.
-const PARALLEL_MAPS: Array[StringName] = [&"route_22"]
+## Jalon 26 (T7) : Safrania (T6, autre branche) ; la sortie du 1F de la Sylphe y mène.
+const PARALLEL_MAPS: Array[StringName] = [&"route_22", &"saffron_city"]
 const DIRECTIONS: Array[Vector2i] = [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]
 
 var _maps: Dictionary = {}

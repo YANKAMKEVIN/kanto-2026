@@ -5,7 +5,9 @@ const AREAS_PATH := "res://assets/ui/map/kanto_placeholder_areas.json"
 ## Cartes rangées dans une zone avant d'être construites (jalon 10, T8 : données prêtes) : la Route
 ## 2 nord et Argenta (T11) et les intérieurs (T13) sont construits : liste vide. À retirer
 ## quand leur tâche est fusionnée ; leur existence est vérifiée dès que la scène existe.
-const AWAITING_MAPS: Array[StringName] = []
+## Jalon 26 (T7) : Safrania est rangée en tête de sa zone avant d'être construite (T6, autre
+## branche) ; tant qu'elle manque, la zone n'est pas jouable (première carte absente).
+const AWAITING_MAPS: Array[StringName] = [&"saffron_city"]
 ## Étages de la Tour (titre « Tour Pokémon », dans la zone de Lavanville : aucune zone propre).
 const TOWER_FLOORS: Array[StringName] = [&"pokemon_tower_1f", &"pokemon_tower_2f",
 	&"pokemon_tower_3f", &"pokemon_tower_4f", &"pokemon_tower_5f", &"pokemon_tower_6f"]
@@ -90,6 +92,11 @@ func test_zone_names_match_the_map_titles() -> void:
 			assert_eq(_root_property(map_id, &"display_name"), "Tour Pokémon")
 			assert_eq(_zones.zone_of(map_id), &"lavender_town", String(map_id))
 			continue
+		if String(map_id).begins_with("silph_co_"):
+			# Jalon 26 (T7) : la Sylphe SARL garde son titre, dans la zone de Safrania.
+			assert_eq(_root_property(map_id, &"display_name"), "Sylphe SARL")
+			assert_eq(_zones.zone_of(map_id), &"saffron_city", String(map_id))
+			continue
 		assert_eq(_root_property(map_id, &"display_name"), _zones.zone_name_of(map_id),
 			"titre de « %s » = nom de sa zone" % map_id)
 
@@ -140,7 +147,8 @@ func test_built_zones_have_their_map_texts() -> void:
 	_zones.load_file()
 	for id: StringName in _zones.get_ids():
 		var zone := _zones.get_zone(id)
-		if not zone.maps.is_empty():
+		# Jalon 26 (T7) : zone « construite » = jouable (Safrania range la Sylphe avant d'exister).
+		if _zones.is_playable(id):
 			assert_false(zone.description.is_empty(), "%s : description" % id)
 			assert_eq(zone.draft, AWAITING_TEXTS.has(id), "%s : textes validé par Kevin" % id)
 		assert_false(zone.description.contains("???"), id)
