@@ -71,5 +71,34 @@
 				{ "species": "ivysaur", "level": 24, "moves": ["vine_whip", "tackle", "growl"] }
 			]
 		}
+	},
+	"rival_silph": {
+		"name": "{rival}", "ai": "smart",
+		"can_lose": false, "heal_after": false, "gives_exp": true,
+		"prize_money": 0, "prize_per_level": 35,
+		"end_message": false, "start_message": true, "bag": true, "moment": "win", "switch": true,
+		"team_by_starter": {
+			"bulbasaur": [
+				{ "species": "pidgeot", "level": 37, "moves": ["sand_attack", "quick_attack", "whirlwind", "wing_attack"] },
+				{ "species": "exeggcute", "level": 38, "moves": ["reflect", "leech_seed", "stun_spore", "poison_powder"] },
+				{ "species": "sandslash", "level": 35, "moves": ["scratch", "sand_attack", "slash", "poison_sting"] },
+				{ "species": "alakazam", "level": 35, "moves": ["confusion", "disable", "psybeam", "recover"] },
+				{ "species": "charizard", "level": 40, "moves": ["ember", "leer", "rage", "slash"] }
+			],
+			"charmander": [
+				{ "species": "pidgeot", "level": 37, "moves": ["sand_attack", "quick_attack", "whirlwind", "wing_attack"] },
+				{ "species": "growlithe", "level": 38, "moves": ["roar", "ember", "leer", "take_down"] },
+				{ "species": "exeggcute", "level": 35, "moves": ["hypnosis", "reflect", "leech_seed", "stun_spore"] },
+				{ "species": "alakazam", "level": 35, "moves": ["confusion", "disable", "psybeam", "recover"] },
+				{ "species": "blastoise", "level": 40, "moves": ["bubble", "water_gun", "bite", "withdraw"] }
+			],
+			"squirtle": [
+				{ "species": "pidgeot", "level": 37, "moves": ["sand_attack", "quick_attack", "whirlwind", "wing_attack"] },
+				{ "species": "gyarados", "level": 38, "moves": ["bite", "dragon_rage", "leer", "hydro_pump"] },
+				{ "species": "growlithe", "level": 35, "moves": ["roar", "ember", "leer", "take_down"] },
+				{ "species": "alakazam", "level": 35, "moves": ["confusion", "disable", "psybeam", "recover"] },
+				{ "species": "venusaur", "level": 40, "moves": ["leech_seed", "vine_whip", "poison_powder", "razor_leaf"] }
+			]
+		}
 	}
 }
