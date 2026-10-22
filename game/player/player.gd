@@ -51,6 +51,14 @@ const SHADOW_REST_Y: float = -6.0
 const REASON_TRANSITION: StringName = &"transition"
 ## Bas de la bande d'herbe devant les jambes, sous l'origine (pieds), en px monde.
 const GRASS_FRONT_BOTTOM: float = 2.0
+## Vélo provisoire (règle 3) : tant que l'apparence n'a pas d'animations `bike_*`, l'image du
+## vélo garé est dessinée sous le héros. Sans elle, rien ne montrait qu'il était en selle (QA de
+## nuit du J22 sur A17 : Piste « à pied », bouton grisé). Échelle et resserrement de face [D].
+const BIKE_PLACEHOLDER_PATH := "res://assets/world/props/prop_velo_01.png"
+const BIKE_PLACEHOLDER_SCALE: float = 0.6
+const BIKE_PLACEHOLDER_FRONT_WIDTH: float = 0.3
+## Bas des roues sous les pieds (px monde).
+const BIKE_PLACEHOLDER_BOTTOM: float = 2.0
 ## Animations par direction : [immobile, marche, course].
 const _ANIMS: Dictionary[Vector2i, Array] = {
 	Vector2i.DOWN: [&"idle_down", &"walk_down", &"run_down"],
@@ -80,6 +88,8 @@ var _grass_front_texture: Texture2D
 var _default_grass_front: Texture2D
 ## Monture (passe systèmes 2) : à pied par défaut.
 var _mount: Mount.Kind = Mount.Kind.NONE
+## Vélo provisoire ([constant BIKE_PLACEHOLDER_PATH]), créé dans [method _ready].
+var _bike_placeholder: Sprite2D
 
 @onready var _sprite: AnimatedSprite2D = %Sprite
 @onready var _camera: Camera2D = %Camera
@@ -90,6 +100,7 @@ var _mount: Mount.Kind = Mount.Kind.NONE
 func _ready() -> void:
 	add_to_group(GROUP)
 	_apply_look()
+	_make_bike_placeholder()
 	_default_grass_front = _grass_front.texture
 	_apply_grass_front()
 	get_viewport().size_changed.connect(_on_viewport_size_changed)
@@ -167,6 +178,15 @@ func get_mount() -> Mount.Kind:
 ## Vélo suit les règles de la marche, rebords compris).
 func get_move_mode() -> GridWorld.MoveMode:
 	return GridWorld.MoveMode.SURF if _mount == Mount.Kind.SURF else GridWorld.MoveMode.WALK
+
+
+## Vrai si le joueur est dessiné en selle : animation `bike_*` de l'apparence ou vélo provisoire.
+func is_bike_drawn() -> bool:
+	if _mount != Mount.Kind.BIKE:
+		return false
+	if _bike_placeholder != null and _bike_placeholder.visible:
+		return true
+	return _sprite != null and String(_sprite.animation).begins_with("bike_")
 
 
 ## Change de monture : durée des pas et animations ; [signal mount_changed] si elle change. Le
@@ -348,6 +368,8 @@ func _update_jump_and_grass() -> void:
 		arc = 4.0 * JUMP_ARC_HEIGHT * t * (1.0 - t)
 	if _sprite != null:
 		_sprite.position.y = -arc - _react_lift
+	if _bike_placeholder != null and _bike_placeholder.texture != null:
+		_bike_placeholder.position.y = _bike_rest_y() - arc - _react_lift
 	if _shadow != null:
 		_shadow.position.y = SHADOW_REST_Y
 	if _grass_front != null:
@@ -402,6 +424,7 @@ func _update_animation(direction: Vector2i) -> void:
 	if _sprite.animation != anim or not _sprite.is_playing():
 		_sprite.play(anim)
 	_sprite.speed_scale = speed
+	_update_bike_placeholder(anim, facing)
 
 
 func _on_viewport_size_changed() -> void:
@@ -437,6 +460,46 @@ func _mounted_animation(anim: StringName) -> StringName:
 	var base := String(anim).replace("run_", "walk_")
 	var mounted := StringName("%s_%s" % [Mount.to_name(_mount), base])
 	return mounted if _sprite.sprite_frames.has_animation(mounted) else anim
+
+
+func _make_bike_placeholder() -> void:
+	_bike_placeholder = Sprite2D.new()
+	_bike_placeholder.name = "BikePlaceholder"
+	_bike_placeholder.texture = load(BIKE_PLACEHOLDER_PATH) as Texture2D
+	_bike_placeholder.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	_bike_placeholder.visible = false
+	add_child(_bike_placeholder)
+	move_child(_bike_placeholder, _sprite.get_index())
+	_bike_placeholder.position.y = _bike_rest_y()
+
+
+func _bike_rest_y() -> float:
+	var texture := _bike_placeholder.texture
+	if texture == null:
+		return 0.0
+	return BIKE_PLACEHOLDER_BOTTOM - texture.get_height() * BIKE_PLACEHOLDER_SCALE / 2.0
+
+
+## Vélo provisoire visible en Vélo quand [param anim] n'est pas une animation `bike_*` : de profil
+## à gauche (le panier devant) et à droite (retourné), derrière le héros ; resserré et devant lui
+## de face et de dos.
+func _update_bike_placeholder(anim: StringName, facing: Vector2i) -> void:
+	if _bike_placeholder == null:
+		return
+	var shown := _mount == Mount.Kind.BIKE and _bike_placeholder.texture != null \
+		and not String(anim).begins_with("bike_")
+	_bike_placeholder.visible = shown
+	if not shown:
+		return
+	var side := facing.x != 0
+	_bike_placeholder.flip_h = facing == Vector2i.RIGHT
+	_bike_placeholder.scale = Vector2(
+		BIKE_PLACEHOLDER_SCALE * (1.0 if side else BIKE_PLACEHOLDER_FRONT_WIDTH),
+		BIKE_PLACEHOLDER_SCALE)
+	var in_front := not side
+	if in_front != (_bike_placeholder.get_index() > _sprite.get_index()):
+		# Échange de place avec le héros (devant ou derrière lui).
+		move_child(_bike_placeholder, _sprite.get_index())
 
 
 ## Saut de montée en Surf ou de descente sur la rive ([method MountRules.is_surf_hop]) : lu par
