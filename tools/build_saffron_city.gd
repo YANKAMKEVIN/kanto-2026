@@ -21,7 +21,7 @@ extends SceneTree
 ## - « À venir » : portes `a_venir=oui` (Dojo, Arène : J27) et toute porte dont la carte n'existe
 ##   pas encore (Sylphe SARL tant que `silph_co_1f` n'est pas construite : **relancer cet outil**
 ##   une fois la Sylphe construite) ; retour sur l'arrivée devant la porte, dos à elle.
-## - Panneaux lisibles : ville (T26-22) et Arène ; les autres poteaux sont décoratifs [D].
+## - Panneaux lisibles : ville (T26-22), Arène et, depuis le T9, les huit autres poteaux [D].
 
 const Kit := preload("res://tools/pewter_map_kit.gd")
 const PLAN_PATH: String = "res://tools/plans/safrania.txt"
@@ -75,6 +75,15 @@ const BLOCK_VARIANTS: Array[String] = ["bldg_immeuble_safrania_01", "bldg_immeub
 const SIGNS: Array = [
 	["panneau_ville", "SignCity", &"saffron_city_sign"],
 	["panneau_arene", "SignGym", &"saffron_gym_sign"],
+	# T9 : les huit poteaux décoratifs du T6 deviennent lisibles (courts, [D]).
+	["panneau_dojo", "SignDojo", &"saffron_dojo_sign"],
+	["panneau_boutique", "SignMart", &"saffron_mart_sign"],
+	["panneau_sylphe", "SignSilph", &"saffron_silph_sign"],
+	["panneau_centre", "SignCenter", &"saffron_center_sign"],
+	["panneau_psy", "SignPsychic", &"saffron_psychic_sign"],
+	["conseils_1", "SignTips1", &"saffron_tips_1"],
+	["conseils_2", "SignTips2", &"saffron_tips_2"],
+	["panneau_produit", "SignProduct", &"saffron_product_sign"],
 ]
 const BUSH_IDS: Array[String] = [
 	"prop_buisson_a_01_bourg", "prop_buisson_b_01_bourg", "prop_buisson_c_01_bourg",

@@ -287,6 +287,22 @@ const VARIANT_FLAGS: Dictionary = {
 	&"rocket_hideout_b4f_item_2": [PEWTER_FLAGS],
 	&"rocket_hideout_b4f_item_3": [PEWTER_FLAGS],
 	&"rocket_hideout_b4f_hidden_1": [PEWTER_FLAGS],
+	# Jalon 26 (T9) : objets au sol et cachés de Safrania et de la Sylphe (une fois chacun).
+	&"silph_co_3f_item_4": [PEWTER_FLAGS],
+	&"silph_co_4f_item_5": [PEWTER_FLAGS],
+	&"silph_co_4f_item_6": [PEWTER_FLAGS],
+	&"silph_co_4f_item_7": [PEWTER_FLAGS],
+	&"silph_co_5f_card_key": [PEWTER_FLAGS],
+	&"silph_co_5f_hidden_1": [PEWTER_FLAGS],
+	&"silph_co_5f_item_6": [PEWTER_FLAGS],
+	&"silph_co_5f_item_7": [PEWTER_FLAGS],
+	&"silph_co_6f_item_9": [PEWTER_FLAGS],
+	&"silph_co_6f_item_10": [PEWTER_FLAGS],
+	&"silph_co_9f_hidden_1": [PEWTER_FLAGS],
+	&"silph_co_10f_item_4": [PEWTER_FLAGS],
+	&"silph_co_10f_item_5": [PEWTER_FLAGS],
+	&"silph_co_10f_item_6": [PEWTER_FLAGS],
+	&"saffron_copycat_hidden_1": [PEWTER_FLAGS],
 }
 ## Scènes jouées par le code (pas de déclencheur) → carte où elles sont jouées.
 ## Jalon 7 (T18) : la scène du colis est lancée par la variante « cutscene » du dialogue de Chen.
@@ -408,6 +424,22 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"tower_3f_objet_1": &"pokemon_tower_3f", &"tower_4f_objet_1": &"pokemon_tower_4f",
 	&"tower_4f_objet_2": &"pokemon_tower_4f", &"tower_5f_objet_1": &"pokemon_tower_5f",
 	&"tower_5f_cache_1": &"pokemon_tower_5f", &"tower_6f_objet_1": &"pokemon_tower_6f",
+	# Jalon 26 (T9) : objets au sol (PNJ « objet ») et caches (points d'examen).
+	&"silph_co_3f_item_4": &"silph_co_3f",
+	&"silph_co_4f_item_5": &"silph_co_4f",
+	&"silph_co_4f_item_6": &"silph_co_4f",
+	&"silph_co_4f_item_7": &"silph_co_4f",
+	&"silph_co_5f_card_key": &"silph_co_5f",
+	&"silph_co_5f_hidden_1": &"silph_co_5f",
+	&"silph_co_5f_item_6": &"silph_co_5f",
+	&"silph_co_5f_item_7": &"silph_co_5f",
+	&"silph_co_6f_item_9": &"silph_co_6f",
+	&"silph_co_6f_item_10": &"silph_co_6f",
+	&"silph_co_9f_hidden_1": &"silph_co_9f",
+	&"silph_co_10f_item_4": &"silph_co_10f",
+	&"silph_co_10f_item_5": &"silph_co_10f",
+	&"silph_co_10f_item_6": &"silph_co_10f",
+	&"saffron_copycat_hidden_1": &"saffron_copycat_house_2f",
 }
 ## Scènes à déclencheur dont la carte n'est pas encore construite → leur carte (simulées sur les
 ## PNJ de son fichier). Vidée au T19 du jalon 9 (la forêt existe), puis au T11 du jalon 10 (les
@@ -423,6 +455,26 @@ const J20_T21_IDS: Array[StringName] = [
 	&"rocket_hideout_b3f_hidden_1", &"rocket_hideout_b4f_item_1", &"rocket_hideout_b4f_item_2",
 	&"rocket_hideout_b4f_item_3", &"rocket_hideout_b4f_hidden_1",
 ]
+## Jalon 26 (T9) : objets au sol et cachés de Safrania et de la Sylphe (`saffron_life.json`,
+## `silph_co_life.json`) : scène → [carte, objet donné]. Les objets absents du dépôt sont remplacés
+## [D] (fallback des grilles) : Corde/Hyper Potion → Super Potion, etc.
+const J26_T9_ITEMS: Dictionary[StringName, Array] = {
+	&"silph_co_3f_item_4": [&"silph_co_3f", &"super_potion"],
+	&"silph_co_4f_item_5": [&"silph_co_4f", &"super_potion"],
+	&"silph_co_4f_item_6": [&"silph_co_4f", &"revive"],
+	&"silph_co_4f_item_7": [&"silph_co_4f", &"escape_rope"],
+	&"silph_co_5f_card_key": [&"silph_co_5f", &"card_key"],
+	&"silph_co_5f_hidden_1": [&"silph_co_5f", &"revive"],
+	&"silph_co_5f_item_6": [&"silph_co_5f", &"nugget"],
+	&"silph_co_5f_item_7": [&"silph_co_5f", &"rare_candy"],
+	&"silph_co_6f_item_9": [&"silph_co_6f", &"rare_candy"],
+	&"silph_co_6f_item_10": [&"silph_co_6f", &"x_accuracy"],
+	&"silph_co_9f_hidden_1": [&"silph_co_9f", &"super_potion"],
+	&"silph_co_10f_item_4": [&"silph_co_10f", &"nugget"],
+	&"silph_co_10f_item_5": [&"silph_co_10f", &"rare_candy"],
+	&"silph_co_10f_item_6": [&"silph_co_10f", &"rare_candy"],
+	&"saffron_copycat_hidden_1": [&"saffron_copycat_house_2f", &"nugget"],
+}
 ## Jalon 18 (T16) : scènes de ses fichiers (objets, objectifs).
 const J18_IDS: Array[StringName] = [
 	&"dark_cave_1f_item_1", &"dark_cave_1f_item_2", &"dark_cave_b1f_hidden_1",
@@ -536,7 +588,7 @@ func test_library_loads_without_error() -> void:
 		&"route_8_reached", &"celadon_reached", &"route_8_item_1", &"route_8_hidden_1",
 		&"souterrain_hidden_1", &"souterrain_hidden_2", &"celadon_hidden_1",
 		&"celadon_gym_erika", &"celadon_gym_erika_tm_late", &"celadon_roof_trade"]
-		+ J18_IDS + J20_T21_IDS))
+		+ J18_IDS + J20_T21_IDS + J26_T9_ITEMS.keys()))
 
 
 func _sorted(values: Array) -> Array[StringName]:
@@ -645,7 +697,7 @@ func test_only_world_items_are_found_items() -> void:
 			for step: CutsceneStep in variant.steps:
 				if step.kind == CutsceneStep.Kind.GIVE and step.found:
 					found.append("%s:%s" % [id, step.item_id])
-	assert_eq(found, ["celadon_hidden_1:revive", "dark_cave_1f_item_1:escape_rope", "dark_cave_1f_item_2:antidote",
+	var expected: Array[String] = ["celadon_hidden_1:revive", "dark_cave_1f_item_1:escape_rope", "dark_cave_1f_item_2:antidote",
 		"dark_cave_b1f_hidden_1:super_potion", "dark_cave_b1f_item_1:super_potion",
 		"digletts_cave_item_1:escape_rope", "mt_moon_1f_hidden_1:awakening",
 		"mt_moon_1f_item_1:escape_rope", "mt_moon_b1f_item_1:moon_stone",
@@ -683,7 +735,12 @@ func test_only_world_items_are_found_items() -> void:
 		"viridian_forest_item_1:antidote", "viridian_forest_item_2:poke_ball",
 		"viridian_forest_item_3:potion", "viridian_forest_item_4:antidote",
 		"viridian_forest_item_5:poke_ball", "viridian_forest_item_6:potion"]
-		as Array[String])
+	# Jalon 26 (T9) : objets au sol et cachés de Safrania et de la Sylphe.
+	for id: StringName in J26_T9_ITEMS:
+		expected.append("%s:%s" % [id, J26_T9_ITEMS[id][1]])
+	expected.sort()
+	found.sort()
+	assert_eq(found, expected)
 
 
 ## Jalon 8 (jalon-08.md §2.3, §2.4) : un objet visible disparaît d'abord (son PNJ, retiré au

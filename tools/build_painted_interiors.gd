@@ -2407,7 +2407,8 @@ const HOUSE_SHELL := "res://assets/world/interiors/int_maison_argenta_coque.png"
 ## Boutique (définitions communes : infirmière, machine de soin, Stockage ; marchand → boutique de
 ## la carte, `data/shops/saffron_mart.json`), maison de M. Psy et maison du Roucool (mobilier de
 ## la maison du tailleur d'Argenta, comme Lavanville), maison du Copieur (rez-de-chaussée et étage,
-## escalier dans le mur du fond). Titre « Safrania ». **Sans PNJ, examens ni objet caché** (T9).
+## escalier dans le mur du fond). Titre « Safrania ». PNJ en données (`data/npcs/saffron_*.json`) ;
+## examens et Pépite cachée du Copieur : points EXAMINER posés ici (T9).
 func _saffron_rooms() -> Array[Dictionary]:
 	return [
 		_pokemon_center(&"saffron_center", "SaffronCenter", SAFFRON_TITLE,
@@ -2416,8 +2417,7 @@ func _saffron_rooms() -> Array[Dictionary]:
 			[&"saffron_city", &"from_mart"]),
 		_saffron_house(&"saffron_psychic_house", "SaffronPsychicHouse",
 			"safrania_maison_psy.txt", &"from_psychic_house", _mason_furniture()),
-		_saffron_house(&"saffron_pidgey_house", "SaffronPidgeyHouse",
-			"safrania_maison_roucool.txt", &"from_pidgey_house", _mason_furniture()),
+		_saffron_pidgey_house(),
 		_saffron_copycat_1f(), _saffron_copycat_2f(),
 	]
 
@@ -2429,12 +2429,21 @@ func _saffron_house(id: StringName, node: String, plan: String, spawn: StringNam
 	return {
 		"id": id, "node": node, "size": Vector2i(15, 10), "shell": HOUSE_SHELL,
 		"title": SAFFRON_TITLE, "light": &"interior_warm",
-		"plan": PLANS_DIR + plan, "walkable": ".XE",
+		"plan": PLANS_DIR + plan, "walkable": ".XE", "interactables": [],
 		"furniture": furniture,
 		"spawns": {"entrance": Vector2i(7, 8)},
 		"warps": _pewter_exits([Vector2i(6, 8), Vector2i(7, 8), Vector2i(8, 8)], spawn,
 			&"saffron_city"),
 	}
+
+
+## Maison du Roucool : la lettre posée sur la table (3, 5), lue depuis (3, 4) tournée vers le bas.
+func _saffron_pidgey_house() -> Dictionary:
+	var room := _saffron_house(&"saffron_pidgey_house", "SaffronPidgeyHouse",
+		"safrania_maison_roucool.txt", &"from_pidgey_house", _mason_furniture())
+	room["interactables"] = [["Letter", Vector2i(3, 5), Vector2i.ONE, &"saffron_pidgey_letter",
+		EXAMINE, Vector2i.DOWN]]
+	return room
 
 
 ## Escalier du Copieur (12..13, 2), dans le mur du fond : STEP_ON ↑ vers l'autre niveau, arrivée
@@ -2479,6 +2488,13 @@ func _saffron_copycat_2f() -> Dictionary:
 		])
 	room["spawns"] = {"from_1f": Vector2i(12, 3)}
 	room["warps"] = _copycat_stairs(&"saffron_copycat_house_1f", &"from_2f")
+	# T9 : ordinateur et console (lus par-dessous, tournés vers le haut) ; Pépite cachée (RB (1, 1)).
+	room["interactables"] = [
+		["Computer", Vector2i(1, 3), Vector2i.ONE, &"saffron_copycat_computer", EXAMINE, Vector2i.UP],
+		["Console", Vector2i(5, 5), Vector2i.ONE, &"saffron_copycat_console", EXAMINE, Vector2i.UP],
+		["HiddenNugget", Vector2i(2, 3), Vector2i.ONE, &"saffron_copycat_hidden_1", EXAMINE,
+			Vector2i.UP, [&"got_saffron_copycat_hidden_1"]],
+	]
 	room["rugs"] = [[&"int_escalier_descendant_01", Vector2(13.0, 3.0 - 86.0 / TILE),
 		"StairsDown"]]
 	return room

@@ -29,6 +29,14 @@ func after_each() -> void:
 	_play.teardown()
 
 
+## T9 : les Dresseurs posés par les données sont marqués battus (leur vision couperait la marche).
+func _beat_the_trainers() -> void:
+	var data: Dictionary = JSON.parse_string(
+		FileAccess.get_file_as_string("res://data/trainers/silph_co.json"))
+	for trainer: String in data:
+		GameState.flags.set_flag(StringName("beaten_%s" % trainer))
+
+
 func test_every_door_is_two_cells_one_flag_and_two_open_points() -> void:
 	var total := 0
 	for n: int in range(1, 12):
@@ -64,7 +72,7 @@ func test_every_door_is_two_cells_one_flag_and_two_open_points() -> void:
 
 
 func test_without_the_card_refused_with_it_open_for_good_even_after_a_restart() -> void:
-	await _play.start(START)
+	await _play.start(START, _beat_the_trainers)
 	assert_false(GameState.bag.has(&"card_key"), "départ sans Carte")
 	await SceneRouter.change_map(FLOOR, &"from_1f", Vector2i.DOWN)
 	await wait_until(func() -> bool: return _play.boot.is_stable(), TIMEOUT)
@@ -108,7 +116,9 @@ func test_without_the_card_refused_with_it_open_for_good_even_after_a_restart() 
 
 func test_opening_one_door_leaves_the_other_doors_shut() -> void:
 	# Chaque porte a son drapeau : ouvrir d2 avec la Carte ne touche pas d1.
-	await _play.start(START, func() -> void: GameState.bag.add(&"card_key"))
+	await _play.start(START, func() -> void:
+		_beat_the_trainers()
+		GameState.bag.add(&"card_key"))
 	await SceneRouter.change_map(FLOOR, &"from_1f", Vector2i.DOWN)
 	await wait_until(func() -> bool: return _play.boot.is_stable(), TIMEOUT)
 	await _play.walk_to(IN_FRONT)

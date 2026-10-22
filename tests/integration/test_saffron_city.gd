@@ -277,7 +277,12 @@ func test_a_save_on_each_arrival_resumes_on_the_same_cell() -> void:
 		assert_false(map.get_grid().is_solid(cell), "%s %s praticable" % [place[0], cell])
 		var resumed := map.find_standing_cell(cell)
 		if place[0] == &"saffron_city":
-			assert_eq(resumed, cell, "%s : reprise sur la case" % cell)
+			if map.get_grid().is_occupied(cell):
+				# T9 : un sbire de l'occupation se tient sur certaines cases d'arrivée (devant la
+				# maison du Copieur, du Roucool, l'Arène) : la reprise se fait à un pas.
+				assert_true(Grid.is_cardinal(resumed - cell), "%s : reprise à un pas" % cell)
+			else:
+				assert_eq(resumed, cell, "%s : reprise sur la case" % cell)
 		else:
 			# Arrivée dans un poste = case du garde quand les postes sont fermés (il s'écarte
 			# avec `saffron_gates_open`) : la reprise ne se fait jamais sur la case de départ d'un
@@ -318,15 +323,18 @@ func test_signs_read_their_texts_from_the_planned_side() -> void:
 		"ARÈNE DE SAFRANIA\nChampion : Morgane")
 
 
-func test_npc_cells_are_left_free_for_the_t9() -> void:
+func test_npc_cells_are_walkable_and_held_by_the_occupation_npcs() -> void:
+	# T9 : les PNJ de la grille sont posés ; en nouvelle partie (occupation) seuls ceux sans
+	# condition `if` sont là, les autres (libération) attendent le drapeau.
 	var count := 0
 	for id: String in _plan.positions:
 		if _plan.positions[id]["kind"] != "pnj":
 			continue
 		for cell: Vector2i in _plan.cells_at(id):
 			count += 1
-			assert_false(_grid.is_solid(cell), "%s %s libre" % [id, cell])
-			assert_false(_grid.is_occupied(cell), "%s %s : aucun PNJ au T6" % [id, cell])
+			assert_false(_grid.is_solid(cell), "%s %s praticable" % [id, cell])
+			if _plan.attr(id, "if").is_empty():
+				assert_true(_grid.is_occupied(cell), "%s %s : tenue par son PNJ" % [id, cell])
 	assert_gt(count, 10)
 
 

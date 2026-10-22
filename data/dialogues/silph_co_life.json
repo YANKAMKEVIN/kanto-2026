@@ -1,0 +1,298 @@
+{
+	"silph_co_1f_receptionist": {
+		"speaker": "Hôtesse",
+		"variants": [
+			{
+				"if": [
+					"silph_giovanni_defeated"
+				],
+				"pages": [
+					"Bienvenue à la Sylphe SARL ! Grâce à toi, tout est rentré dans l'ordre."
+				]
+			},
+			{
+				"pages": [
+					"Je… je ne peux rien dire. Ils sont partout dans les étages."
+				]
+			}
+		]
+	},
+	"silph_co_2f_worker_1": {
+		"speaker": "Employé",
+		"variants": [
+			{
+				"if": [
+					"silph_giovanni_defeated"
+				],
+				"pages": [
+					"Les bureaux rouvrent !\nMerci pour tout."
+				]
+			},
+			{
+				"pages": [
+					"Les Rocket ont pris la Sylphe SARL.\nJe n'ose plus bouger."
+				]
+			}
+		]
+	},
+	"silph_co_3f_worker_1": {
+		"speaker": "Employé",
+		"variants": [
+			{
+				"if": [
+					"silph_giovanni_defeated"
+				],
+				"pages": [
+					"Plus de Rocket ! Le travail reprend."
+				]
+			},
+			{
+				"pages": [
+					"Ils nous ont enfermés ici.\nMéfie-toi des téléporteurs."
+				]
+			}
+		]
+	},
+	"silph_co_4f_worker_1": {
+		"speaker": "Employé",
+		"variants": [
+			{
+				"if": [
+					"silph_giovanni_defeated"
+				],
+				"pages": [
+					"Ça respire enfin, ici."
+				]
+			},
+			{
+				"pages": [
+					"Les portes électroniques ne\ns'ouvrent qu'avec une Carte Magnétique.",
+					"Elle est restée au 5e étage, dit-on."
+				]
+			}
+		]
+	},
+	"silph_co_5f_worker_1": {
+		"speaker": "Employé",
+		"variants": [
+			{
+				"if": [
+					"silph_giovanni_defeated"
+				],
+				"pages": [
+					"Tout est calme. On range les dossiers."
+				]
+			},
+			{
+				"pages": [
+					"Une Carte Magnétique traîne sur cet étage.",
+					"Elle ouvre toutes les portes électroniques."
+				]
+			}
+		]
+	},
+	"silph_co_6f_worker_1": {
+		"speaker": "Employé",
+		"variants": [
+			{
+				"if": [
+					"silph_giovanni_defeated"
+				],
+				"pages": [
+					"Je suis enfin sorti de sous mon bureau."
+				]
+			},
+			{
+				"pages": [
+					"Je me suis caché sous mon bureau.\nIls ne m'ont pas vu."
+				]
+			}
+		]
+	},
+	"silph_co_6f_worker_2": {
+		"speaker": "Employé",
+		"variants": [
+			{
+				"if": [
+					"silph_giovanni_defeated"
+				],
+				"pages": [
+					"Les Rocket sont partis. Je respire."
+				]
+			},
+			{
+				"pages": [
+					"Ne dis rien aux Rocket, je t'en supplie."
+				]
+			}
+		]
+	},
+	"silph_co_6f_worker_3": {
+		"speaker": "Employée",
+		"variants": [
+			{
+				"if": [
+					"silph_giovanni_defeated"
+				],
+				"pages": [
+					"Le président est sain et sauf. Quel soulagement !"
+				]
+			},
+			{
+				"pages": [
+					"Ils ont emmené le président tout en haut."
+				]
+			}
+		]
+	},
+	"silph_co_6f_worker_4": {
+		"speaker": "Employée",
+		"variants": [
+			{
+				"if": [
+					"silph_giovanni_defeated"
+				],
+				"pages": [
+					"On a tous eu très peur."
+				]
+			},
+			{
+				"pages": [
+					"Les téléporteurs de cet étage\nmènent à des salles fermées."
+				]
+			}
+		]
+	},
+	"silph_co_6f_worker_5": {
+		"speaker": "Employé",
+		"variants": [
+			{
+				"if": [
+					"silph_giovanni_defeated"
+				],
+				"pages": [
+					"Un autre Dresseur est passé. Moins aimable que toi."
+				]
+			},
+			{
+				"pages": [
+					"Un autre Dresseur est passé par ici,\navant toi. Il avait l'air pressé."
+				]
+			}
+		]
+	},
+	"silph_co_8f_worker_1": {
+		"speaker": "Employé",
+		"variants": [
+			{
+				"if": [
+					"silph_giovanni_defeated"
+				],
+				"pages": [
+					"Les bureaux sont en désordre, mais nous sommes saufs."
+				]
+			},
+			{
+				"pages": [
+					"Ils ont fouillé tous les bureaux."
+				]
+			}
+		]
+	},
+	"silph_co_10f_worker_3": {
+		"speaker": "Employée",
+		"variants": [
+			{
+				"if": [
+					"silph_giovanni_defeated"
+				],
+				"pages": [
+					"Le président nous a dit que tu l'avais sauvé. Merci !"
+				]
+			},
+			{
+				"pages": [
+					"Le président est quelque part plus haut.\nDépêche-toi."
+				]
+			}
+		]
+	},
+	"silph_co_9f_nurse": {
+		"speaker": "Infirmière",
+		"variants": [
+			{
+				"heal": true,
+				"pages": [
+					"Tu as l'air fatigué !\nRepose-toi un instant.",
+					"Voilà, tes Pokémon sont en pleine forme."
+				]
+			}
+		]
+	},
+	"silph_co_5f_report_9": {
+		"narration": true,
+		"pages": [
+			"RAPPORT n° 9\nProjet BALL ULTIME : essais concluants.\nPrototype conservé au 11e étage."
+		]
+	},
+	"silph_co_5f_report_10": {
+		"narration": true,
+		"pages": [
+			"RAPPORT n° 10\nTéléporteurs : contrôle de sécurité à refaire.\nSigné : le service technique."
+		]
+	},
+	"silph_co_5f_report_11": {
+		"narration": true,
+		"pages": [
+			"RAPPORT n° 11\nCartes Magnétiques : une seule en circulation.\nÀ ne pas perdre !"
+		]
+	},
+	"silph_co_5f_card_key_got": {
+		"narration": true,
+		"pages": [
+			"{player} obtient la Carte Magnétique !"
+		]
+	},
+	"silph_co_3f_item_4": {
+		"cutscene": "silph_co_3f_item_4"
+	},
+	"silph_co_4f_item_5": {
+		"cutscene": "silph_co_4f_item_5"
+	},
+	"silph_co_4f_item_6": {
+		"cutscene": "silph_co_4f_item_6"
+	},
+	"silph_co_4f_item_7": {
+		"cutscene": "silph_co_4f_item_7"
+	},
+	"silph_co_5f_card_key": {
+		"cutscene": "silph_co_5f_card_key"
+	},
+	"silph_co_5f_hidden_1": {
+		"cutscene": "silph_co_5f_hidden_1"
+	},
+	"silph_co_5f_item_6": {
+		"cutscene": "silph_co_5f_item_6"
+	},
+	"silph_co_5f_item_7": {
+		"cutscene": "silph_co_5f_item_7"
+	},
+	"silph_co_6f_item_10": {
+		"cutscene": "silph_co_6f_item_10"
+	},
+	"silph_co_6f_item_9": {
+		"cutscene": "silph_co_6f_item_9"
+	},
+	"silph_co_9f_hidden_1": {
+		"cutscene": "silph_co_9f_hidden_1"
+	},
+	"silph_co_10f_item_4": {
+		"cutscene": "silph_co_10f_item_4"
+	},
+	"silph_co_10f_item_5": {
+		"cutscene": "silph_co_10f_item_5"
+	},
+	"silph_co_10f_item_6": {
+		"cutscene": "silph_co_10f_item_6"
+	}
+}
