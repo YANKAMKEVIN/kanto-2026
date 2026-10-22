@@ -64,6 +64,51 @@ j25-v2-alignement.md`, `j25-annexe-rb-cramois.md` (relevé RB), grilles `tools/p
 
 ---
 
+## 0.4 Nuit du 2026-10-21/22 : intégration sur le J24 (branche locale `j25-nuit`, poussée sur `jalon-25`)
+
+Worktree `~/dev/kanto-2026-wt-j25`. **Fusion de `origin/jalon-24`** (J24 + `systemes-2`) : le `Warp`
+FALL, `FossilLab`, le Labo en 4 pièces et Cramois'Île du J24 font foi, réutilisés tels quels.
+Textes recommandés « validés par Kevin le 2026-10-21, validation d'avance ».
+
+| Tâche | État |
+|---|---|
+| T2 interrupteur | fait : étape de scène `toggle` (et `unset`), statue OUI/NON → scène `mansion_switch` ; remise à ARRÊT par `MansionSwitchReset` posé **sur Cramois'Île** (on n'entre que par l'île : équivalent RB, rien aux escaliers, chutes ni au chargement dans le Manoir) |
+| T3 chute | fait : `Warp` FALL du J24, sans modification |
+| T4 quiz | fait en données : chaque machine = scène (intro, question OUI/NON, bonne réponse → herse ; mauvaise → le Dresseur lié marche jusqu'au joueur et combat ; victoire → herse). Herse ouverte par `cinnabar_gym_gate_N` **ou** `beaten_<Dresseur lié>` (lui parler directement ouvre aussi). `GymQuiz` reste la logique pure de contrôle |
+| T5 échange | fait : étape `trade`, `Origin.TRADE`, `TradeOverlay` (sélecteur de l'équipe, places de l'espèce demandée seules utilisables), compagnon rafraîchi, autosave |
+| T6–T9 données | faites (sous-agent) : 4 espèces, reprises J22 (Tadmorv, Grotadmorv, Smogogo, Électrode, à supprimer à la fusion du J22), Déflagration, Poing de Feu, 7 objets, 14 Dresseurs, 4 tables « floor », dialogues §16. Bélier : contrecoup déjà réel (E-3 sans objet) |
+| T10–T13 art | **non intégré** : aplats provisoires (`OverworldTiles`), décors de combat de la Tour et de l'Arène de Carmin [D] ; Pillard = `gambler`, Auguste = `gentleman` [D] |
+| T14 Manoir | fait : `tools/build_pokemon_mansion.gd` (grilles A/B, statues, pupitres, escaliers, trous, seuils, caches) ; Manoir = « grotte » (`caves.json` : Corde Sortie devant la porte) ; `tools/gen_j25_world_data.py` (PNJ, objets, scènes, depuis les grilles) |
+| T15 porte du Manoir | fait (X-25) : warp sur les cases X de Cramois'Île, T-43 retiré, `plan_check_j24_mer.py` aligné |
+| T17 échanges | faits sur Papy (Hector), Canon (Lina), scientifique des fossiles (Marc) ; T-52 à T-54 retirés. **Lina (Mimitoss) attend le J22** : sans l'espèce, l'offre répond « ce n'est pas un Mimitoss » |
+| T18 Vieil Ambre | fait : porte arrière du Musée (PUSH ← depuis (15, 34)), arbre à Couper, `tools/build_j25_rooms.gd` (réserve), ambre donné une fois, `old_amber` → Ptéra N30 dans `fossils.json` |
+| T20, T21 Arène | faits : carte, herses, machines, 7 Dresseurs, Auguste (carte, Badge Volcan, CT38 une fois, Dresseurs marqués battus), porte : avec la Clé textes 76–77 puis `cinnabar_gym_unlocked` ; Clé réparée au chargement (`key_item_repairs.json`) |
+| Tests | `test_j25_maps` (6), `test_j25_flow` (6, vraie Boot : statue, quiz, échange, Vieil Ambre, porte), `test_j25_data` (20), listes recalées |
+| T16, T19, T22 | **attendent Kevin** (QA téléphone, départs `j25_*`) |
+| T23 | partiel : rien à retirer (pas de carte de QA créée) |
+
+**Valeurs par défaut [D]** : vue 0 permise (`TrainerRules.SIGHT_MIN`) pour les Pillards et
+l'Arène ; libellé « Reçu en échange à » ; titre « Échanger un Pokémon », refus « Pas l'espèce
+demandée » ; lumière « tower » au Manoir ; arbre du Musée : texte sans CS « Un petit arbre pousse
+devant une porte. » ; prénoms déjà pris remplacés (Aurélien, Clothilde, Léopold, Octave) ; Rappel Max
+4 000 ₽ ; rencontres selon le relevé RB (le tableau §4.7 du 3F ne fait que 95 %) ; récompenses de
+l'Arène non recalculées après +4 niveaux.
+
+**Points pour Kevin** : Smogo n'évolue pas en Smogogo dans les données (au J22) ; E-2 (simulation
+d'Auguste avec de vraies équipes) reste à refaire ; panneau intérieur de l'Arène (texte 78) non posé
+(celui du J24 dehors suffit) ; `plan_check_j24_mer.py` signale un échec préexistant (`qa_sea`).
+
+**Liste de QA (départs `tools/debug_start/`)** :
+1. `j25_manoir` : entrer (interrupteur remis à ARRÊT), 1F → 2F → 3F, statue du 3F, trou → 1F,
+   escalier ↓ B1F, statues sud puis nord, Clé ; journaux ; Pillards (on leur parle) ; Corde Sortie.
+2. `j25_manoir_b1f` : statues du B1F, grilles A/B, Clé Secrète, objets.
+3. `j25_echanges` (Labo) : Hector (Raichu), Marc (Ponyta), Lina (refus) ; compagnon donné (Pikachu
+   n'est pas échangeable, Raichu oui si c'est lui) ; rechargement après chaque échange ; Vieil
+   Ambre au scientifique des fossiles, ressortir, revenir : Ptéra N30.
+4. `j25_argenta` : Coupe sur l'arbre derrière le Musée, porte arrière, comptoir OUI/NON, Vieil Ambre.
+5. `j25_arene` : porte avec la Clé (76–77), quiz bonnes et mauvaises réponses (combat), parler à un
+   Dresseur directement, Auguste, Badge Volcan, CT38, défaite (Centre, herses gardées).
+
 ## 0.3 État du lot 25.0 (2026-10-19)
 
 | Tâche | État |
