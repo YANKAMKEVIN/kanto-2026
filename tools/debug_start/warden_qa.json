@@ -1,0 +1,45 @@
+{
+	"map": "wardens_house",
+	"spawn": "entree",
+	"facing": "up",
+	"flags": [
+		"mom_greeted",
+		"rival_met",
+		"oak_met",
+		"oak_lab_reunion",
+		"starter_offered",
+		"starter_chosen",
+		"taken_charmander",
+		"taken_squirtle",
+		"rival_lab_won",
+		"rival_challenged",
+		"rival_battle_done",
+		"rival_left_lab",
+		"viridian_arrived",
+		"got_oak_parcel",
+		"pokedex_activated",
+		"poison_unlocked",
+		"badge_boulder",
+		"badge_cascade",
+		"badge_thunder",
+		"badge_rainbow",
+		"got_safari_zone_west_dents_or"
+	],
+	"party": [
+		{
+			"species": "machoke",
+			"level": 36
+		},
+		{
+			"species": "squirtle",
+			"level": 30
+		}
+	],
+	"companion": 0,
+	"bag": {
+		"gold_teeth": 1,
+		"hm03": 1,
+		"potion": 5
+	},
+	"money": 3000
+}

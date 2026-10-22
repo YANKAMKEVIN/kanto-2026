@@ -119,6 +119,9 @@ func set_map(map: GameMap) -> void:
 		visit_ended.emit(LEFT_PARK)
 	elif not visit.active and park and _pending.is_empty():
 		_pending = NO_VISIT
+	elif visit.active and park and _pending == NO_VISIT:
+		# Visite reprise entre-temps (chargement) : rien à renvoyer.
+		_pending = &""
 	_sync_flag()
 	_update_encounters()
 	_emit_changed()
@@ -178,6 +181,7 @@ func reconcile_key_items() -> void:
 
 
 func _process(_delta: float) -> void:
+	_sync_flag()
 	if not _pending.is_empty() and _is_calm():
 		_play_end(_pending)
 	_emit_changed()
