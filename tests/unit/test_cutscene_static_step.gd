@@ -96,3 +96,45 @@ func test_invalid_entries_are_rejected() -> void:
 		assert_false(library.has_cutscene(&"scene"), "refusée : %s" % entry)
 		assert_eq(library.get_errors().size(), 1, "une erreur : %s" % [library.get_errors()])
 	assert_push_error_count(bad.size(), "une erreur par entrée")
+
+
+## Scène complète d'une rencontre fixe et son Pokémon de carte (anciennes données de QA
+## `qa_s2_legendary` de la Route 1, retirées en S2Z avec leurs départs) : la scène se charge avec
+## de vraies espèces, et le Pokémon de la carte n'est présent qu'avec son drapeau d'apparition et
+## tant que la rencontre n'est pas consommée (`unless` sur le drapeau `done`).
+func test_a_full_static_scene_and_its_map_pokemon() -> void:
+	var library := CutsceneLibrary.new()
+	assert_true(library.add_from_dict({"essai_legendaire": {"variants": [{
+		"unless": ["essai_legendaire_done"],
+		"steps": [
+			{"dialogue": "essai_legendaire_cry"},
+			{"wild_battle": "clefairy", "level": 25, "intro": "legendary",
+				"actor": "essai_legendaire",
+				"static": {"done": "essai_legendaire_done", "caught": "essai_legendaire_caught"}},
+			{"dialogue": "essai_legendaire_after_ko", "if": ["essai_legendaire_done"],
+				"unless": ["essai_legendaire_caught"]},
+			{"dialogue": "essai_legendaire_after_catch", "if": ["essai_legendaire_caught"]},
+		]}]}}, "test"), str(library.get_errors()))
+	var data := PokemonData.new()
+	assert_true(data.load_dir())
+	assert_true(library.check_species(data), str(library.get_errors()))
+	var battle := library.get_cutscene(&"essai_legendaire").variants[0].steps[1]
+	assert_eq(battle.kind, CutsceneStep.Kind.WILD_BATTLE)
+	assert_eq(battle.intro, CutsceneStep.INTRO_LEGENDARY)
+	assert_eq(battle.actor, &"essai_legendaire")
+	assert_eq(battle.static_encounter.done_flag, &"essai_legendaire_done")
+	assert_eq(battle.static_encounter.caught_flag, &"essai_legendaire_caught")
+	var roster := NpcRoster.new()
+	assert_true(roster.add_from_dict({"essai_legendaire": {"cell": [23, 41], "facing": "down",
+		"sprite": "pokemon/clefairy", "dialogue": "essai_legendaire", "verb": "observe",
+		"turn_to_player": false, "if": ["essai_legendaire_shown"],
+		"unless": ["essai_legendaire_done"]}}), str(roster.get_errors()))
+	var present := func(flags: StoryFlags) -> bool:
+		return roster.get_present(flags).any(func(s: NpcSpec) -> bool:
+			return s.id == &"essai_legendaire")
+	assert_false(present.call(null), "absent d'une nouvelle partie")
+	var flags := StoryFlags.new()
+	flags.set_flag(&"essai_legendaire_shown")
+	assert_true(present.call(flags))
+	flags.set_flag(&"essai_legendaire_done")
+	assert_false(present.call(flags), "caché quand la rencontre est consommée")

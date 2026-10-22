@@ -1,9 +1,11 @@
 extends GutTest
-## Nageur de `qa_sea` (passe systèmes 2, T16, `systemes-2.md` §2.5.5) : PNJ `move_mode: surf`
-## (données), Dresseur qui voit le joueur en Surf sur l'eau, et nage vers lui ; à pied, la même
+## Nageur de la mer d'essai (passe systèmes 2, T16, `systemes-2.md` §2.5.5 ; la carte de QA est
+## retirée en S2Z, la mer est construite en mémoire par `tests/helpers/sea_rig.gd`) : PNJ
+## `move_mode: surf` (fiche `tests/fixtures/npcs_sea/essai_mer.json`), Dresseur qui voit le joueur en Surf sur l'eau, et nage vers lui ; à pied, la même
 ## ligne reste coupée par l'eau et un PNJ ordinaire n'entre pas dans l'eau.
 
 const FrameSim := preload("res://tests/helpers/frame_sim.gd")
+const SeaRig := preload("res://tests/helpers/sea_rig.gd")
 const SWIMMER_CELL := Vector2i(15, 13)
 
 var _map: GameMap
@@ -11,10 +13,10 @@ var _swimmer: Npc
 
 
 func before_each() -> void:
-	_map = (load(MapCatalog.scene_path(&"qa_sea")) as PackedScene).instantiate() as GameMap
+	_map = SeaRig.make_map(SeaRig.SEA, true)
 	add_child_autofree(_map)
 	for npc: Npc in _map.get_npcs():
-		if npc.get_spec().trainer_id == &"qa_sea_swimmer":
+		if npc.get_spec().trainer_id == &"essai_mer_swimmer":
 			_swimmer = npc
 
 
@@ -98,24 +100,6 @@ func test_the_swimmer_cannot_land_and_the_path_stays_on_water() -> void:
 	assert_true(grid.can_enter(Vector2i(14, 13), Vector2i.LEFT, _swimmer))
 	# Un PNJ à pied ne suit pas ce chemin.
 	assert_true(grid.find_path(SWIMMER_CELL, Vector2i(12, 13), null).is_empty())
-
-
-func test_the_trainer_and_dialogues_exist_in_the_data() -> void:
-	var data := PokemonData.new()
-	data.load_dir()
-	var library := TrainerLibrary.new(data)
-	assert_true(library.load_dir(), "\n".join(library.get_errors()))
-	var trainer := library.get_trainer(&"qa_sea_swimmer")
-	assert_not_null(trainer)
-	assert_eq(trainer.team.size(), 2)
-	for member in trainer.team:
-		assert_true(data.has_species(member.species), String(member.species))
-		assert_between(member.level, 18, 20)
-	var dialogues := DialogueLibrary.new()
-	assert_true(dialogues.load_dir(), "\n".join(dialogues.get_errors()))
-	var spec := _swimmer.get_spec()
-	for id: StringName in [spec.dialogue, spec.before_dialogue, spec.defeated_dialogue]:
-		assert_true(dialogues.has_dialogue(id), String(id))
 
 
 func test_the_swimmer_refuses_a_step_onto_land() -> void:
