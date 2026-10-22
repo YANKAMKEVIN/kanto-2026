@@ -53,7 +53,7 @@
 					"double_slap",
 					"ice_punch",
 					"body_slam",
-					"lick"
+					"thrash"
 				]
 			},
 			{
@@ -90,7 +90,7 @@
 				"level": 53,
 				"moves": [
 					"rock_throw",
-					"bind",
+					"rage",
 					"slam",
 					"harden"
 				]
@@ -102,16 +102,16 @@
 					"ice_punch",
 					"thunder_punch",
 					"mega_punch",
-					"fire_punch"
+					"counter"
 				]
 			},
 			{
 				"species": "hitmonlee",
 				"level": 55,
 				"moves": [
-					"rolling_kick",
+					"jump_kick",
 					"focus_energy",
-					"meditate",
+					"hi_jump_kick",
 					"mega_kick"
 				]
 			},
@@ -120,7 +120,7 @@
 				"level": 56,
 				"moves": [
 					"rock_throw",
-					"bind",
+					"rage",
 					"slam",
 					"harden"
 				]
@@ -296,7 +296,7 @@
 						"whirlwind",
 						"wing_attack",
 						"sky_attack",
-						"agility"
+						"mirror_move"
 					]
 				},
 				{
@@ -342,7 +342,7 @@
 					"species": "charizard",
 					"level": 65,
 					"moves": [
-						"flamethrower",
+						"rage",
 						"slash",
 						"fire_blast",
 						"fire_spin"
@@ -357,7 +357,7 @@
 						"whirlwind",
 						"wing_attack",
 						"sky_attack",
-						"agility"
+						"mirror_move"
 					]
 				},
 				{
@@ -418,7 +418,7 @@
 						"whirlwind",
 						"wing_attack",
 						"sky_attack",
-						"agility"
+						"mirror_move"
 					]
 				},
 				{

@@ -161,6 +161,8 @@ enum Outcome { NONE, WIN, LOSS, FLED, CAUGHT, FOE_FLED }
 const STRUGGLE_ID: StringName = &"struggle"
 ## Patience (CT34, jalon 11) : capacité dont la riposte est un DAMAGE de ce nom.
 const BIDE_ID: StringName = &"bide"
+## Mimique (jalon 30) : ne se copie pas elle-même.
+const MIRROR_MOVE_ID: StringName = &"mirror_move"
 ## Pas de capacité imposée ([method get_locked_move]).
 const NO_LOCK: int = -1
 ## Confusion (jalon 11, dossier 14 §3.2, défauts) : 1 à 4 tours, 33 % de se frapper.
@@ -397,6 +399,10 @@ func submit(action: BattleAction) -> Array[BattleEvent]:
 		return events
 	_turn += 1
 	_acted.clear()
+	# Riposte (jalon 30) : seuls les coups physiques de ce tour comptent.
+	for side: BattleSide in [_player, _foe]:
+		if side.active != null:
+			side.active.physical_damage_taken = 0
 	var started := BattleEvent.new(BattleEvent.Kind.TURN_STARTED, BattleEvent.SideId.PLAYER)
 	started.turn = _turn
 	events.append(started)
@@ -671,6 +677,7 @@ func _end_turn(events: Array[BattleEvent]) -> void:
 	_player.active.flinched = false
 	_foe.active.flinched = false
 	for side: BattleSide in [_player, _foe]:
+		_rampage_fatigue(side, events)
 		_drain_seed(side, events)
 		if _state == State.OVER:
 			return
@@ -782,6 +789,7 @@ func _execute(side: BattleSide, action: BattleAction, events: Array[BattleEvent]
 	if _recharge_turn(side, events):
 		return
 	if _blocked_by_disable(side, action, events):
+		user.clear_rampage()
 		return
 	# Patience : s'endormir ou geler la rompt, même si le Pokémon se réveille ou dégèle ici.
 	var status_before := user.pokemon.status
@@ -792,22 +800,36 @@ func _execute(side: BattleSide, action: BattleAction, events: Array[BattleEvent]
 	if not can_act or bide_frozen or charge_broken:
 		_break_bide(side, events)
 		_break_charge(side, events)
+		# Mania interrompue (jalon 30) : elle s'arrête, sans confusion [D].
+		user.clear_rampage()
 		return
 	if user.is_biding():
 		_continue_bide(side, target_side, events)
 		return
 	var released := _release_charge(side, events)
+	# Mania (jalon 30) : les tours imposés ne dépensent pas de PP.
+	var rampaging := user.is_rampaging()
 	var used := _event(BattleEvent.Kind.MOVE_USED, side)
 	used.move_id = move_id
 	if action.move_index == BattleAction.STRUGGLE:
 		used.pp = -1
 	else:
 		var slot := user.pokemon.moves[action.move_index]
-		if not released:
+		if not released and not rampaging:
 			slot.use()
 		used.pp = slot.pp
 	events.append(used)
 	user.last_move_slot = action.move_index
+	user.last_move_id = move_id
+	# Mimique (jalon 30) : la capacité devient celle que la cible a lancée en dernier.
+	if move.effect_of(MoveEffect.Kind.MIRROR) != null:
+		move = _mirrored_move(side, target_side, move, used, events)
+		if move == null:
+			user.raging = false
+			return
+		move_id = move.id
+	user.raging = move.effect_of(MoveEffect.Kind.RAGE) != null
+	_advance_rampage(side, action, move, rampaging)
 	if not released and _start_charge(side, action, move, events):
 		return
 	if _dodged(target_side, move, events):
@@ -817,6 +839,7 @@ func _execute(side: BattleSide, action: BattleAction, events: Array[BattleEvent]
 		return
 	if move.is_damaging():
 		if not _strike(side, target_side, move, events):
+			_crash(move, side, events)
 			_self_ko(move, side, target_side, events)
 			return
 	elif move.effect_of(MoveEffect.Kind.OHKO) != null:
@@ -902,7 +925,7 @@ func _continue_bide(side: BattleSide, target_side: BattleSide, events: Array[Bat
 	damage.amount = target.pokemon.take_damage(mini(2 * stock, target.pokemon.hp))
 	damage.hp = target.pokemon.hp
 	events.append(damage)
-	_record_hit(target_side, damage.amount)
+	_record_hit(target_side, damage.amount, events)
 	if target.pokemon.is_fainted():
 		_faint(target_side, events)
 	_check_end(events)
@@ -920,11 +943,13 @@ func _break_bide(side: BattleSide, events: Array[BattleEvent]) -> void:
 
 
 ## Coup direct d'une capacité adverse reçu par le Pokémon de [param target_side] : compté dans
-## sa Patience s'il en a une (poison, brûlure, graine, recul, confusion n'y passent pas).
-func _record_hit(target_side: BattleSide, amount: int) -> void:
+## sa Patience s'il en a une (poison, brûlure, graine, recul, confusion n'y passent pas), et
+## sa Frénésie (jalon 30).
+func _record_hit(target_side: BattleSide, amount: int, events: Array[BattleEvent]) -> void:
 	var target := target_side.active
 	if target != null and target.is_biding():
 		target.bide_stock += amount
+	_build_rage(target_side, amount, events)
 
 
 ## Les coups d'une capacité offensive (une capacité HITS en porte plusieurs : précision au
@@ -963,12 +988,15 @@ func _strike(side: BattleSide, target_side: BattleSide, move: MoveData,
 		damage.effectiveness = result.effectiveness
 		damage.critical = result.critical
 		events.append(damage)
-		_record_hit(target_side, damage.amount)
+		_record_hit(target_side, damage.amount, events)
 		_strike_damage += damage.amount
 		done += 1
 		_thaw_by_fire(move, target_side, events)
 		if target.pokemon.is_fainted():
 			break
+	# Riposte (jalon 30) : dégâts physiques portés par cette capacité, ce tour.
+	if move.category == MoveData.Category.PHYSICAL:
+		target.physical_damage_taken = _strike_damage
 	if hits_effect != null:
 		var multi := _event(BattleEvent.Kind.MULTI_HIT, target_side)
 		multi.move_id = move.id
@@ -1060,7 +1088,7 @@ func _ohko(move: MoveData, target_side: BattleSide, events: Array[BattleEvent]) 
 	damage.amount = target.pokemon.take_damage(target.pokemon.hp)
 	damage.hp = target.pokemon.hp
 	events.append(damage)
-	_record_hit(target_side, damage.amount)
+	_record_hit(target_side, damage.amount, events)
 	events.append(_event(BattleEvent.Kind.OHKO, target_side))
 
 
@@ -1154,7 +1182,7 @@ func _apply_effect(effect: MoveEffect, move: MoveData, side: BattleSide,
 			damage.amount = target.pokemon.take_damage(amount)
 			damage.hp = target.pokemon.hp
 			events.append(damage)
-			_record_hit(target_side, damage.amount)
+			_record_hit(target_side, damage.amount, events)
 		MoveEffect.Kind.HITS, MoveEffect.Kind.CHARGE:
 			pass
 		MoveEffect.Kind.BIDE:
@@ -1195,6 +1223,11 @@ func _apply_effect(effect: MoveEffect, move: MoveData, side: BattleSide,
 			_player.active.reset_stages()
 			_foe.active.reset_stages()
 			events.append(_event(BattleEvent.Kind.STATS_RESET, side))
+		MoveEffect.Kind.COUNTER:
+			_counter(move, side, target_side, events)
+		MoveEffect.Kind.RAGE, MoveEffect.Kind.RAMPAGE, MoveEffect.Kind.MIRROR, \
+				MoveEffect.Kind.CRASH:
+			pass
 
 
 ## Effet [code]confusion[/code] (jalon 11) sur le Pokémon de [param target_side] : comme un
@@ -1804,3 +1837,131 @@ func _ghost_scare(side: BattleSide, events: Array[BattleEvent]) -> void:
 			events.append(prevented)
 			return
 	events.append(_event(BattleEvent.Kind.GHOST_SCARED, side))
+
+
+# --- Jalon 30 : capacités de la Ligue (Q30-3, décision de Kevin du 2026-10-22) ----------------
+#
+# Règles [D] (`jalon-30.md` §10.6) :
+# - Frénésie (RAGE, règle de la 2e génération) : tant que le lanceur relance Frénésie, chaque coup
+#   direct reçu monte son Attaque d'un niveau (STAT_CHANGED) ; lancer autre chose y met fin. RB
+#   (bloqué sur Frénésie jusqu'à la fin du combat) n'est pas repris.
+# - Mania, Danse Fleur (RAMPAGE, RB) : 2 ou 3 tours d'affilée (range_int, tiré au premier),
+#   action imposée sans PP ; à la fin, le lanceur est confus de fatigue (CONFUSED, en fin de tour,
+#   1 à 4 tours) s'il ne l'est pas déjà. Interrompue (statut, apeurement, confusion, Entrave) :
+#   elle s'arrête, sans confusion.
+# - Mimique (MIRROR, RB) : MOVE_USED « Mimique », puis MOVE_USED de la capacité copiée (dernière
+#   lancée par la cible), jouée comme si le lanceur la connaissait (sans PP). Échec (FAILED) si la
+#   cible n'a rien lancé, a lancé Mimique, ou une capacité liée à son emplacement (charge,
+#   Patience, Mania, Ultralaser).
+# - Riposte (COUNTER, règle moderne) : le double des derniers dégâts **physiques** reçus ce tour
+#   (DAMAGE « counter ») ; FAILED sinon ; sans effet sur un type immunisé (Spectre).
+# - Pied Sauté, Pied Voltige (CRASH, règle moderne) : raté ou sans effet, le lanceur perd
+#   [member MoveEffect.fraction] de ses PV max (RECOIL).
+
+## Capacités que Mimique refuse de copier : liées à un emplacement du lanceur.
+const _MIRROR_EXCLUDED: Array[MoveEffect.Kind] = [MoveEffect.Kind.CHARGE, MoveEffect.Kind.BIDE,
+	MoveEffect.Kind.RAMPAGE, MoveEffect.Kind.RECHARGE, MoveEffect.Kind.MIRROR]
+
+
+## Mimique : la capacité copiée (MOVE_USED ajouté), ou null (FAILED ajouté).
+func _mirrored_move(side: BattleSide, target_side: BattleSide, mirror: MoveData,
+		used: BattleEvent, events: Array[BattleEvent]) -> MoveData:
+	var copied_id := target_side.active.last_move_id
+	var copied := _data.get_move(copied_id) if copied_id != &"" else null
+	var refused := copied == null or copied_id == STRUGGLE_ID
+	if not refused:
+		for kind: MoveEffect.Kind in _MIRROR_EXCLUDED:
+			if copied.effect_of(kind) != null:
+				refused = true
+	if refused:
+		_append_failed(side, mirror.id, events)
+		return null
+	var echo := _event(BattleEvent.Kind.MOVE_USED, side)
+	echo.move_id = copied.id
+	echo.pp = used.pp
+	events.append(echo)
+	return copied
+
+
+## Mania : premier tour → 2 ou 3 tours imposés ; tours suivants → décompte ; le dernier tour
+## marque la fatigue (confusion en fin de tour, [method _rampage_fatigue]).
+func _advance_rampage(side: BattleSide, action: BattleAction, move: MoveData,
+		rampaging: bool) -> void:
+	var user := side.active
+	if rampaging:
+		user.rampage_turns -= 1
+		if user.rampage_turns <= 0:
+			user.clear_rampage()
+			user.rampage_tired = true
+		return
+	if move.effect_of(MoveEffect.Kind.RAMPAGE) == null \
+			or action.move_index == BattleAction.STRUGGLE:
+		return
+	user.rampage_slot = action.move_index
+	user.rampage_turns = _rng.range_int(MoveEffect.RAMPAGE_MIN_TURNS,
+		MoveEffect.RAMPAGE_MAX_TURNS) - 1
+
+
+## Fin de tour : le Pokémon de [param side], fatigué par sa Mania, devient confus (CONFUSED).
+func _rampage_fatigue(side: BattleSide, events: Array[BattleEvent]) -> void:
+	var user := side.active
+	if user == null or not user.rampage_tired:
+		return
+	user.rampage_tired = false
+	if user.pokemon.is_fainted() or user.is_confused():
+		return
+	user.confusion_turns = _rng.range_int(CONFUSION_MIN_TURNS, CONFUSION_MAX_TURNS)
+	var confused := _event(BattleEvent.Kind.CONFUSED, side)
+	confused.move_id = user.pokemon.moves[user.last_move_slot].move_id \
+		if user.last_move_slot >= 0 else &""
+	events.append(confused)
+
+
+## Frénésie : un coup direct reçu par un Pokémon en Frénésie monte son Attaque d'un niveau.
+func _build_rage(target_side: BattleSide, amount: int, events: Array[BattleEvent]) -> void:
+	var target := target_side.active
+	if target == null or not target.raging or amount <= 0 or target.pokemon.is_fainted():
+		return
+	var applied := target.change_stage(&"atk", 1)
+	var changed := _event(BattleEvent.Kind.STAT_CHANGED if applied != 0
+		else BattleEvent.Kind.STAT_UNCHANGED, target_side)
+	changed.stat = &"atk"
+	changed.stages = applied if applied != 0 else 1
+	changed.stage = target.get_stage(&"atk")
+	events.append(changed)
+
+
+## Riposte : le double des dégâts physiques reçus ce tour, ou FAILED.
+func _counter(move: MoveData, side: BattleSide, target_side: BattleSide,
+		events: Array[BattleEvent]) -> void:
+	var taken := side.active.physical_damage_taken
+	var target := target_side.active
+	if taken <= 0 or target.pokemon.is_fainted():
+		_append_failed(side, move.id, events)
+		return
+	if not move.typeless and _data.get_type_chart().multiplier(move.type, target.types) == 0.0:
+		var immune := _event(BattleEvent.Kind.NO_EFFECT, target_side)
+		immune.move_id = move.id
+		events.append(immune)
+		return
+	var damage := _event(BattleEvent.Kind.DAMAGE, target_side)
+	damage.move_id = move.id
+	damage.amount = target.pokemon.take_damage(2 * taken)
+	damage.hp = target.pokemon.hp
+	events.append(damage)
+	_record_hit(target_side, damage.amount, events)
+
+
+## Pied Sauté, Pied Voltige : raté ou sans effet, le lanceur se blesse (RECOIL).
+func _crash(move: MoveData, side: BattleSide, events: Array[BattleEvent]) -> void:
+	var effect := move.effect_of(MoveEffect.Kind.CRASH)
+	var user := side.active.pokemon
+	if effect == null or user.is_fainted():
+		return
+	var recoil := _event(BattleEvent.Kind.RECOIL, side)
+	recoil.amount = user.take_damage(maxi(floori(user.max_hp() * effect.fraction), 1))
+	recoil.hp = user.hp
+	events.append(recoil)
+	if user.is_fainted():
+		_faint(side, events)
+		_check_end(events)

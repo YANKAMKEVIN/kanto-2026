@@ -54,6 +54,18 @@ var invulnerable: bool = false
 ## aucun repos). Action imposée comme une charge ; perdu au changement, au K.O. et à la fin du
 ## combat (un nouveau Battler à chaque envoi ; jamais sauvegardé).
 var recharge_slot: int = -1
+## Jalon 30 (Q30-3, capacités de la Ligue ; jamais sauvegardé, perdu au changement et au K.O.) :
+## Frénésie en cours (chaque coup direct reçu monte l'Attaque ; finit dès qu'il lance autre chose),
+## Mania / Danse Fleur (emplacement imposé et tours restants après celui-ci ; −1 = aucune),
+## dernière capacité lancée (Mimique de l'adversaire ; &"" = aucune) et derniers dégâts physiques
+## reçus ce tour (Riposte ; remis à 0 au début de chaque tour).
+var raging: bool = false
+var rampage_slot: int = -1
+var rampage_turns: int = 0
+## Mania finie à ce tour : confusion de fatigue en fin de tour ([Battle]).
+var rampage_tired: bool = false
+var last_move_id: StringName = &""
+var physical_damage_taken: int = 0
 var _stages: Dictionary[StringName, int] = {}
 
 @warning_ignore_start("integer_division")
@@ -122,7 +134,7 @@ func clear_charge() -> void:
 ## Vrai si l'action du Pokémon est imposée (Patience, charge du jalon 14, repos d'Ultralaser du
 ## jalon 19) : [method locked_slot] donne la capacité à soumettre.
 func is_action_locked() -> bool:
-	return is_biding() or is_charging() or is_recharging()
+	return is_biding() or is_charging() or is_recharging() or is_rampaging()
 
 
 ## Emplacement de la capacité imposée ([method is_action_locked]), ou −1.
@@ -131,6 +143,8 @@ func locked_slot() -> int:
 		return bide_slot
 	if is_recharging():
 		return recharge_slot
+	if is_rampaging():
+		return rampage_slot
 	return charge_slot
 
 
@@ -205,3 +219,14 @@ func clear_disable() -> void:
 ## Vrai si le Pokémon doit se reposer ce tour-ci (Ultralaser, jalon 19).
 func is_recharging() -> bool:
 	return recharge_slot >= 0
+
+
+## Vrai si le Pokémon est pris dans sa Mania ou sa Danse Fleur (jalon 30) : action imposée.
+func is_rampaging() -> bool:
+	return rampage_slot >= 0
+
+
+## Oublie la Mania en cours.
+func clear_rampage() -> void:
+	rampage_slot = -1
+	rampage_turns = 0

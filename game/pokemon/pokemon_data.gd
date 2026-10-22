@@ -71,6 +71,11 @@ const _EFFECT_KEYS: Dictionary[MoveEffect.Kind, Array] = {
 	MoveEffect.Kind.HEAL: ["kind", "fraction"],
 	MoveEffect.Kind.SCREEN: ["kind", "screen"],
 	MoveEffect.Kind.HAZE: ["kind"],
+	MoveEffect.Kind.RAGE: ["kind"],
+	MoveEffect.Kind.RAMPAGE: ["kind"],
+	MoveEffect.Kind.MIRROR: ["kind"],
+	MoveEffect.Kind.COUNTER: ["kind"],
+	MoveEffect.Kind.CRASH: ["kind", "fraction"],
 }
 ## Clés d'effet facultatives (toutes les autres de [constant _EFFECT_KEYS] sont obligatoires).
 ## « amount » : obligatoire pour FIXED_DAMAGE « value » seulement ([method _parse_effect]) ;
@@ -613,7 +618,9 @@ func _parse_effect(value: Variant, where: String) -> MoveEffect:
 	# Jalon 19 : seule RECOIL_DAMAGE a une valeur (« fraction », lue comme celle du drain).
 	if effect.kind in [MoveEffect.Kind.REQUIRES_SLEEP, MoveEffect.Kind.FORCE_SWITCH,
 			MoveEffect.Kind.RECOIL_DAMAGE, MoveEffect.Kind.RECHARGE, MoveEffect.Kind.OHKO,
-			MoveEffect.Kind.HEAL, MoveEffect.Kind.HAZE]:
+			MoveEffect.Kind.HEAL, MoveEffect.Kind.HAZE, MoveEffect.Kind.RAGE,
+			MoveEffect.Kind.RAMPAGE, MoveEffect.Kind.MIRROR, MoveEffect.Kind.COUNTER,
+			MoveEffect.Kind.CRASH]:
 		return effect if _read_effect_j12(entry, effect, where) and ok else null
 	if effect.kind == MoveEffect.Kind.SCREEN:
 		if entry.get("screen") is String and MoveEffect.SCREENS.has(StringName(entry["screen"])):

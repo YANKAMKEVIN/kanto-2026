@@ -2,7 +2,8 @@ extends SceneTree
 ## Sprites de combat provisoires des espèces nouvelles du jalon 30 (Ligue) : recoloration d'un
 ## sprite provisoire existant d'une forme proche (comme `gen_placeholder_battlers.gd` au J29),
 ## dans un script à part pour ne pas toucher le générateur commun (fusion avec les J21 à J29).
-## Le peint en combat pour tous viendra à la phase DA.
+## Kicklee et Tygnon : sprites du J27 repris à l'identique. Le peint en combat viendra à la
+## phase DA.
 ##
 ##   godot --headless --path . -s res://tools/gen_placeholder_battlers_j30.gd
 ##   godot --headless --path . --import
@@ -13,8 +14,6 @@ const RECOLORS := {
 	"gengar": ["haunter", -0.04, 1.1, 0.2],  # Ectoplasma : Spectrum plus sombre
 	"jynx": ["jigglypuff", 0.6, 1.2, 0.0],  # Lippoutou : Rondoudou violet
 	"machamp": ["machop", 0.08, 1.0, 0.25],  # Mackogneur : Machoc gris-bleu sombre
-	"hitmonlee": ["machop", 0.55, 0.6, 0.05],  # Kicklee : Machoc brun
-	"hitmonchan": ["machop", 0.5, 0.8, 0.1],  # Tygnon : Machoc beige
 	"dragonair": ["gyarados", 0.02, 0.6, 0.0],  # Draco : Léviator bleu pâle
 	"dragonite": ["charizard", 0.03, 0.8, 0.0],  # Dracolosse : Dracaufeu orangé
 }

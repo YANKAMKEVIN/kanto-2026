@@ -88,6 +88,17 @@ extends RefCounted
 ## Pokémon en jeu reviennent à 0 (Buée Noire). CHARGE [member stat_up] : +1 niveau de cette
 ## statistique au tour de charge (Coud'Krâne). FIXED_DAMAGE « psywave » : niveau × (50 à 150) %
 ## (Vague Psy), au moins 1.
+## Jalon 30 (`jalon-30.md` Q30-3, décision de Kevin du 2026-10-22 : coder les capacités de la
+## Ligue ; règles [D] dans [Battle]) :
+## [codeblock]
+## { "kind": "rage" }   { "kind": "rampage" }   { "kind": "mirror" }   { "kind": "counter" }
+## { "kind": "crash", "fraction": 0.5 }
+## [/codeblock]
+## RAGE : tant que le lanceur relance Frénésie, chaque coup direct reçu monte son Attaque d'un
+## niveau. RAMPAGE : 2 ou 3 tours d'affilée imposés, puis le lanceur est confus (Mania, Danse
+## Fleur). MIRROR : lance la dernière capacité de la cible (Mimique). COUNTER : renvoie le double
+## des derniers dégâts physiques reçus ce tour (Riposte). CRASH : raté ou sans effet, le lanceur
+## perd [member fraction] de ses PV max (Pied Sauté, Pied Voltige).
 
 enum Kind {
 	STAT_STAGE, RECOIL, SEED, STATUS, CONFUSION, HITS, FLINCH, CRIT_UP, FIXED_DAMAGE, BIDE,
@@ -97,6 +108,7 @@ enum Kind {
 	REQUIRES_SLEEP, FORCE_SWITCH, RECOIL_DAMAGE, RECHARGE,
 	OHKO,
 	HEAL, SCREEN, HAZE,
+	RAGE, RAMPAGE, MIRROR, COUNTER, CRASH,
 }
 enum Target { SELF, FOE }
 
@@ -114,7 +126,12 @@ const KIND_NAMES: Dictionary[String, Kind] = {
 	"recoil_damage": Kind.RECOIL_DAMAGE, "recharge": Kind.RECHARGE,
 	"ohko": Kind.OHKO,
 	"heal": Kind.HEAL, "screen": Kind.SCREEN, "haze": Kind.HAZE,
+	"rage": Kind.RAGE, "rampage": Kind.RAMPAGE, "mirror": Kind.MIRROR, "counter": Kind.COUNTER,
+	"crash": Kind.CRASH,
 }
+## RAMPAGE (jalon 30) : tours d'affilée, premier compris (Mania, Danse Fleur ; RB : 2 ou 3).
+const RAMPAGE_MIN_TURNS: int = 2
+const RAMPAGE_MAX_TURNS: int = 3
 ## Modes de FIXED_DAMAGE.
 const FIXED_MODES: Array[StringName] = [&"half_hp", &"level", &"value", &"psywave"]
 ## SCREEN : murs connus (l'identifiant est aussi celui de la capacité).

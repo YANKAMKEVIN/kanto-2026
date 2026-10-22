@@ -323,7 +323,18 @@ victoire et de défaite des quatre membres suivent le même modèle (avant / vai
 
 Base : `origin/systemes-2` @ `8c2cb6ee` (passe systèmes 2 comprise) + `origin/plans-j26-j30` (docs).
 Textes et prénoms : propositions du plan, **validés par Kevin le 2026-10-21, validation d'avance
-(proposition du plan)**. Défauts Q30-x du plan appliqués.
+(proposition du plan)**.
+
+**Décisions de Kevin du 2026-10-22** (relayées par la coordination, appliquées ici) :
+- **Q30-1** générique : défaut du plan (« Kanto 2026 — un remake personnel de Kevin », l'équipe du
+  joueur, « Merci d'avoir joué ») — à coder au T16 ;
+- **Q30-2** textes du plan : validés ;
+- **Q30-3** capacités de la Ligue sans effet : **les coder** (pas de remplacement) — fait (§10.6) ;
+- **Q30-4** Panthéon consultable depuis le **Menu Dresseur** (écran Dresseur, lecture seule) — T15 ;
+- **Q30-5** au-delà de 50 entrées : **arrêter d'ajouter** — fait (`HallOfFame.add` → `FULL`) ;
+- **Q30-6** question OUI / NON à la porte de la Ligue : **oui** (T30-01, `league_guard_door`) ;
+- **ordre des validations de sauvegarde** : le J23 (v8) d'abord, puis le J30 (`hall_of_fame`)
+  **séparément**.
 
 ### 10.1 Fait
 
@@ -344,12 +355,11 @@ Textes et prénoms : propositions du plan, **validés par Kevin le 2026-10-21, v
   (Lokhlass d'Olga), Abîme (Mackogneur d'Aldo), Toxik (Ectoplasma N60 d'Agatha), Bouclier
   (Dracolosse de Peter) ; rival (`read_trainer_party.asm`) : Piqué au Roucarnage, Déflagration /
   Blizzard / Méga-Sangsue au starter.
-- **Q30-3** (défaut du plan) : capacité sans effet codé (`pending_effects`) → la plus récente
-  capacité apprise avant elle, absente de l'équipe et codée :
-  Lippoutou Mania → Léchouille ; Onix ×2 Frénésie → Ligotage ; Tygnon Riposte → Poing de Feu ;
-  Kicklee Pied Sauté → Mawashi Geri et Pied Voltige → Méditation ; Roucarnage du rival Mimique →
-  Hâte ; Dracaufeu du rival Frénésie → Lance-Flammes. **Toxik gardé** (codé par le J23 ; en
-  attendant, simple poison).
+- **Q30-3** (décision de Kevin : coder) : les équipes gardent **toutes** leurs capacités RB
+  (Mania de Lippoutou, Frénésie des Onix et du Dracaufeu du rival, Riposte de Tygnon, Pied Sauté
+  et Pied Voltige de Kicklee, Mimique du Roucarnage du rival) ; les effets sont codés (§10.6).
+  **Toxik** (Ectoplasma N60 d'Agatha) : poison grave **déjà codé par le J23** (fusionné avant le
+  J30) ; ici, simple poison en attendant (`j30_reprises.json`, `pending_effects: ["toxic"]`).
 - **Argent** : 99 par niveau du dernier Pokémon (pokered `pic_money … 9900`).
 - **IA** : `smart` ; changement de Pokémon pour **Agatha** (pokered `AgathaAI`) et le **rival
   Champion** (comme les rivaux) ; les objets de l'IA RB (Super Potion d'Olga, Défense Spé. d'Aldo,
@@ -381,9 +391,9 @@ du J30 quand cette branche est fusionnée avant lui (sinon « identifiant déjà
 | Fichier | Contenu | Origine |
 |---|---|---|
 | `data/pokemon/species/kanto_j30.json` | Lippoutou, Mackogneur, Ectoplasma, Draco (→ Dracolosse N55), Dracolosse | nouvelles (J30) |
-| `data/pokemon/species/kanto_j30_reprises.json` | Lamantine, Crustabri, Flagadoss (J24) ; Lokhlass, Alakazam (J26, `kanto_silph.json`) ; Ptéra (J25) ; Rhinoféros (J28) ; Noadkoko (J29) ; **Kicklee, Tygnon** (créés ici, le J27 les prévoit : retirer si le J27 les crée) | copies |
-| `data/pokemon/moves/j30.json` | Riposte, Pied Voltige, Pied Sauté (`pending_effects` : `counter`, `crash`), Poing Glace, Poing Éclair, Grobisou, Mawashi Geri | nouvelles |
-| `data/pokemon/moves/j30_reprises.json` | Amnésie, Bouclier (J21) ; Blizzard, Picanon (J24) ; Déflagration, Poing de Feu (J25) ; Abîme (J28) ; Ultimawashi, Piqué (J29) ; **Toxik** (J23, **simplifié** : sans `toxic: true`, `pending_effects: ["toxic"]`, la base ne connaît pas la clé) | copies |
+| `data/pokemon/species/kanto_j30_reprises.json` | Lamantine, Crustabri, Flagadoss (J24) ; Lokhlass, Alakazam (J26, `kanto_silph.json`) ; Ptéra (J25) ; Rhinoféros (J28) ; Noadkoko (J29) ; Kicklee, Tygnon (J27, `kanto_saffron.json`) | copies exactes |
+| `data/pokemon/moves/j30.json` | Grobisou (nouvelle) ; **Riposte, Pied Sauté, Pied Voltige** (`hi_jump_kick`) : entrées du J27 **avec leurs effets codés** (`counter`, `crash`) — à la fusion du J27, **garder la version du J30** | nouvelles / codées |
+| `data/pokemon/moves/j30_reprises.json` | Amnésie, Bouclier (J21) ; Blizzard, Picanon (J24) ; Déflagration, Poing de Feu (J25) ; Abîme (J28) ; Ultimawashi, Piqué (J29) ; Poing-Glace, Poing-Éclair, Mawashi Geri (J27) ; **Toxik** (J23, **simplifié** : sans `toxic: true`, `pending_effects: ["toxic"]`, la base ne connaît pas la clé) | copies |
 
 Statistiques des espèces nouvelles : valeurs modernes (comme le dépôt), `base_exp` de PokeAPI
 (`build/rb/pokeapi/pokemon.csv`) ; apprentissages RB complets. Pas de fiche de Pokédex pour les
@@ -404,8 +414,33 @@ Tests de décompte mis à jour (conflits attendus à la fusion, à résoudre en 
 - La QA téléphone 30A (§7) attend les cartes (T9) et le directeur (T8) ; le champ seul peut être
   validé avant (sauvegarde chargée puis réécrite sans différence).
 
+### 10.6 Capacités codées (Q30-3, décision de Kevin du 2026-10-22)
+
+Aucune branche `origin/jalon-21` … `jalon-29` ne codait ces effets (le J24 code Métronome, le J23
+Toxik, autre chose) : code nouveau, dans `game/battle/battle.gd` (bloc « Jalon 30 » en fin de
+fichier), `battler.gd`, `battle_ai.gd`, `move_effect.gd` (sortes `rage`, `rampage`, `mirror`,
+`counter`, `crash`, ajoutées en fin d'enum : à fusionner avec `METRONOME` du J24), données
+`moves.json` (Frénésie, Mania, Danse Fleur, Mimique) ; tests `tests/unit/test_league_moves.gd`.
+Règles [D] :
+- **Frénésie** (2e génération) : tant que le lanceur relance Frénésie, chaque coup direct reçu
+  monte son Attaque d'un niveau ; lancer autre chose y met fin (RB : bloqué jusqu'à la fin du
+  combat, non repris) ;
+- **Mania, Danse Fleur** (RB) : 2 ou 3 tours d'affilée imposés, sans PP après le premier, puis
+  confusion de fatigue (en fin de tour, 1 à 4 tours) ; interrompue (statut, apeurement,
+  confusion, Entrave) : elle s'arrête sans confusion ;
+- **Mimique** (RB) : copie la dernière capacité lancée par la cible (MOVE_USED « Mimique » puis
+  MOVE_USED de la copie, sans PP) ; échoue si rien à copier, Mimique, Lutte, ou capacité liée à
+  un emplacement (charge, Patience, Mania, Ultralaser) ; IA : seulement s'il y a quelque chose à
+  copier ;
+- **Riposte** (moderne) : le double des derniers dégâts **physiques** reçus ce tour, priorité −1
+  (donnée du J27) ; échoue sinon ; sans effet sur un Spectre ;
+- **Pied Sauté, Pied Voltige** (moderne) : raté ou sans effet, le lanceur perd ½ de ses PV max
+  (message de contrecoup existant).
+
 ### 10.5 Restant
 
+- **Q30-4** : entrée « Panthéon » de l'écran Dresseur du Menu (lecture seule de
+  `GameState.hall_of_fame`), avec le T15.
 - **T8** `LeagueDirector` dans `Boot` (après la fusion de la passe systèmes 2 dans `main` ; la
   logique est prête) ; **T9** cartes (attend le J29 : hall `indigo_plateau_lobby`, son point
   `from_league`, porte nord, `no_fly` / `no_teleport`), départs de débogage ; **T10** QA 30A ;

@@ -707,7 +707,8 @@ func test_route_22_moves_values() -> void:
 	var pending := {
 		&"fury_attack": [], &"fury_swipes": [],
 		&"double_kick": [], &"poison_sting": [],
-		&"thrash": ["rampage"], &"body_slam": [],
+		# Jalon 30 (Q30-3) : Mania codée (effet « rampage »).
+		&"thrash": [], &"body_slam": [],
 		&"seismic_toss": [], &"horn_drill": [],
 	}
 	for id: StringName in pending:
@@ -821,12 +822,15 @@ func test_moves_without_effect_say_so() -> void:
 	# Jalon 11 : la mention part avec l'effet (Cage-Éclair, Para-Spore, Poudre Dodo au T4).
 	# Jalon 19 : Cyclone (changement forcé, décision de Kevin du 2026-10-16).
 	# Passe systèmes 2 : Empal'Korne (K.O. en un coup, test_ohko.gd).
+	# Jalon 30 (Q30-3) : Mimique, Frénésie, Mania, Danse Fleur codées (test_league_moves.gd).
 	_data.load_dir()
-	for id: StringName in [&"mirror_move"]:
+	for id: StringName in [&"metronome", &"mist"]:
 		assert_true(_data.get_move(id).description.ends_with(
 			" Sans effet dans le moteur actuel."), String(id))
 	for id: StringName in [&"thunder_wave", &"stun_spore", &"sleep_powder", &"supersonic",
-			&"focus_energy", &"super_fang", &"seismic_toss", &"whirlwind", &"horn_drill"]:
+			&"focus_energy", &"super_fang", &"seismic_toss", &"whirlwind", &"horn_drill",
+			&"mirror_move", &"rage", &"thrash", &"petal_dance", &"counter", &"jump_kick",
+			&"hi_jump_kick"]:
 		assert_false(_data.get_move(id).description.contains("Sans effet"), String(id))
 	assert_eq(_data.get_move(&"sleep_powder").description,
 		"Une poudre soporifique qui endort la cible.")

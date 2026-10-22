@@ -2,9 +2,10 @@ extends GutTest
 ## Données de la Ligue (jalon 30 T3 ; `jalon-30.md` §2.7, Q30-3) : Conseil des Quatre et rival
 ## Champion (`data/trainers/league.json`), vérifiés contre pokered (`parties.asm`,
 ## `special_moves.asm`, `read_trainer_party.asm` : capacité d'équipe du 5e Pokémon, Piqué et
-## capacité du starter du Champion). Capacités au niveau calculées comme RB ; une capacité dont
-## l'effet n'est pas codé (`pending_effects`) est remplacée par la plus récente capacité apprise
-## avant elle (Q30-3, défaut du plan) — sauf Toxik, codée par le J23 (attendue à la fusion).
+## capacité du starter du Champion). Capacités au niveau calculées comme RB, **sans
+## remplacement** : Q30-3, décision de Kevin du 2026-10-22, les effets manquants sont codés
+## (Frénésie, Mania, Mimique, Riposte, Pied Sauté, Pied Voltige : test_league_moves.gd) ; seul
+## Toxik attend le J23 (poison grave codé là-bas, fusionné avant le J30).
 
 const SOURCE := "res://data/trainers/league.json"
 const STARTERS: Array[StringName] = [&"bulbasaur", &"charmander", &"squirtle"]
@@ -17,14 +18,14 @@ const MEMBERS := {
 		[&"dewgong", 54, [&"growl", &"aurora_beam", &"rest", &"take_down"]],
 		[&"cloyster", 53, [&"supersonic", &"clamp", &"aurora_beam", &"spike_cannon"]],
 		[&"slowbro", 54, [&"growl", &"water_gun", &"withdraw", &"amnesia"]],
-		[&"jynx", 56, [&"double_slap", &"ice_punch", &"body_slam", &"lick"]],
+		[&"jynx", 56, [&"double_slap", &"ice_punch", &"body_slam", &"thrash"]],
 		[&"lapras", 56, [&"body_slam", &"confuse_ray", &"blizzard", &"hydro_pump"]],
 	]],
 	&"league_bruno": ["Aldo", [
-		[&"onix", 53, [&"rock_throw", &"bind", &"slam", &"harden"]],
-		[&"hitmonchan", 55, [&"ice_punch", &"thunder_punch", &"mega_punch", &"fire_punch"]],
-		[&"hitmonlee", 55, [&"rolling_kick", &"focus_energy", &"meditate", &"mega_kick"]],
-		[&"onix", 56, [&"rock_throw", &"bind", &"slam", &"harden"]],
+		[&"onix", 53, [&"rock_throw", &"rage", &"slam", &"harden"]],
+		[&"hitmonchan", 55, [&"ice_punch", &"thunder_punch", &"mega_punch", &"counter"]],
+		[&"hitmonlee", 55, [&"jump_kick", &"focus_energy", &"hi_jump_kick", &"mega_kick"]],
+		[&"onix", 56, [&"rock_throw", &"rage", &"slam", &"harden"]],
 		[&"machamp", 58, [&"leer", &"focus_energy", &"fissure", &"submission"]],
 	]],
 	&"league_agatha": ["Agatha", [
@@ -42,7 +43,7 @@ const MEMBERS := {
 		[&"dragonite", 62, [&"agility", &"slam", &"barrier", &"hyper_beam"]],
 	]],
 }
-const PIDGEOT := [&"pidgeot", 61, [&"whirlwind", &"wing_attack", &"sky_attack", &"agility"]]
+const PIDGEOT := [&"pidgeot", 61, [&"whirlwind", &"wing_attack", &"sky_attack", &"mirror_move"]]
 const ALAKAZAM := [&"alakazam", 59, [&"psybeam", &"recover", &"psychic", &"reflect"]]
 const RHYDON := [&"rhydon", 61, [&"tail_whip", &"fury_attack", &"horn_drill", &"leer"]]
 ## Rival Champion (passe §4 = pokered Rival3Data) : starter du joueur → équipe.
@@ -50,7 +51,7 @@ const RIVAL := {
 	&"bulbasaur": [PIDGEOT, ALAKAZAM, RHYDON,
 		[&"exeggutor", 61, [&"barrage", &"hypnosis", &"stomp"]],
 		[&"gyarados", 63, [&"dragon_rage", &"leer", &"hydro_pump", &"hyper_beam"]],
-		[&"charizard", 65, [&"flamethrower", &"slash", &"fire_blast", &"fire_spin"]]],
+		[&"charizard", 65, [&"rage", &"slash", &"fire_blast", &"fire_spin"]]],
 	&"charmander": [PIDGEOT, ALAKAZAM, RHYDON,
 		[&"arcanine", 61, [&"roar", &"ember", &"leer", &"take_down"]],
 		[&"exeggutor", 63, [&"barrage", &"hypnosis", &"stomp"]],
@@ -128,4 +129,4 @@ func test_no_move_without_coded_effect_except_known_dependencies() -> void:
 					continue
 				var move := _data.get_move(move_id)
 				assert_true(move != null and move.pending_effects.is_empty(),
-					"%s : %s sans effet codé (Q30-3)" % [slot.species, move_id])
+					"%s : %s sans effet codé (Q30-3 : à coder)" % [slot.species, move_id])
