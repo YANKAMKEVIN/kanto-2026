@@ -341,3 +341,11 @@ RB) : défauts du plan appliqués ; Q29-4 : tuiles provisoires, sol peint plus t
 - **T5** simulation d'équilibrage (non faite) ; **T6** vue générale de la Route Victoire (art) ;
   **lot d'art** (Q29-4) ; `tm_compatibility.json` des 14 nouvelles espèces (fichier généré).
 - **T16** session téléphone (§7) ; **T17** clôture, fusion après le J28 et accord de Kevin.
+
+## Décisions de Kevin (2026-10-22)
+
+Choix validés par Kevin sur la page d'arbitrages.
+
+- Q29-1 : le Badge Roche est posté comme RB.
+- Q29-2 : le rival n° 7 se bat avec le Badge Terre (RB).
+- Q29-4 : **repeindre le sol de la Route 22 étendue au J29** (tâche à faire, reste ouverte).
