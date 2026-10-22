@@ -252,6 +252,8 @@ Codé d'un trait la nuit du 2026-10-22 (Kevin absent, textes du plan **validés 
 2026-10-21, validation d'avance (proposition du plan)** ; défauts Q27-2 élèves non obligatoires,
 Q27-3 table des types moderne, Q27-4 pas de revanche avant le post-game).
 
+Suite complète **6 601 / 6 601** (609 scripts) le 2026-10-22, import sans erreur.
+
 Fait : **T1 à T4, T6 à T11**. Reste : **T5** (vue générale peinte de l'Arène ; le code ne
 l'attend pas), **T12** (QA téléphone, une session → Kevin), **T13** (clôture, fusion après accord).
 

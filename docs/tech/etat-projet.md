@@ -10,7 +10,7 @@ Mis à jour : 2026-10-22 (**J27 : T1 à T4, T6 à T11 faits sur `jalon-27`** —
 - Arène `saffron_gym` (RB à 1:1, 30 tapis, relocate) gardée par le sbire du J26
   `unless silph_giovanni_defeated` ; Dojo `fighting_dojo` libre ; choix Kicklee / Tygnon par
   `gift_pokemon` (drapeau `dojo_got_<espèce>` posé dans le même bloc que le don).
-- Suite complète : voir le dernier commit du jour (`jalon-27.md` §10).
+- Suite complète **6 601 / 6 601** (609 scripts), import sans erreur.
 - **Attend Kevin** : T12 (session téléphone 27 : départs `saffron_gym`, `sabrina`, `fighting_dojo`,
   `dojo_choice`), relecture des noms des capacités créées (Kinésie, Mawashi Geri, Pied Sauté, Pied
   Voltige, Poing-Glace, Poing-Éclair, Riposte), équilibrage de Morgane (12 à 36,5 % au premier essai).
