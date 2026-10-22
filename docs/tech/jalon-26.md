@@ -361,3 +361,38 @@ Rôles : **A** architecte-godot · **C** constructeur-monde · **U** ui-mobile �
   À préciser (lot de prix du Casino ?) ou à reporter.
 - **Q26-6 — Fusion avant les J21 à J25.** Le J26 ne dépend d'aucun d'eux : peut-il entrer en code
   dès que la passe systèmes 2 est dans `main`, avant eux (stratégie, levier 2 : 2 à 3 jalons en code) ?
+
+## 10. Avancement (2026-10-22, branche `jalon-26`)
+
+Suite complète **6 581 / 6 581** (605 scripts) le 2026-10-22, import sans erreur.
+
+Fait : **T1 à T4, T6 à T14** (T5, vue générale peinte, n'est pas faite : le code ne l'attend pas).
+Reste : **T15** (QA téléphone, une session → Kevin) et **T16** (clôture, fusion après accord).
+
+| Tâche | Commits / branche | Contenu |
+|---|---|---|
+| T1–T4 | `jalon-26` | Audit ; grilles des 11 étages, cabine, Safrania (`plan_check_j26.py` conforme) ; données (Lokhlass, Alakazam, 30 Dresseurs, Giovanni, rival, `master_ball` `catch_bonus` 1000) |
+| T6 | `4e6763cb`, `d14e9058` | Safrania (60 × 50) et six intérieurs, raccords des quatre postes, Centre (point de repos), Boutique ; zone jouable → les postes du J20 s'ouvrent |
+| T7 + T10 | `j26-sylphe` fusionnée (`4350c9b1`) | 11 étages + cabine, téléporteurs, portes à carte, ascenseur ; parcours 1F → 11F joué |
+| T8 | `j26-t8` fusionnée | Déclencheurs du J15 (Routes 5 et 6) : dialogue propre, remise de la boisson (215–219) |
+| T9 + T13 | `j26-t9` fusionnée | Safrania occupée puis libérée, Sylphe 1F–6F et 8F–10F, Carte Magnétique au 5F |
+| T11–T14 | `j26-t11` fusionnée | Rival n° 6 et Lokhlass (7F), Giovanni, président et Master Ball (11F), vie des deux étages, départs de débogage §2.6, simulation d'équilibrage |
+
+Défauts retenus (validation d'avance de Kevin) : Q26-1 textes T26-01 à T26-22 ; Q26-2 Lokhlass
+après la victoire contre le rival ; Q26-3 maisons habitées sans CT (seul don : Pépite cachée du
+Copieur) ; Q26-4 lignée du J19 pour le rival ; Q26-5 Porygon reporté ; objets RB absents remplacés
+par les `fallback` des grilles (`test_silph_co_data`).
+
+**Écarts et points ouverts** :
+- **Équilibrage** (`tools/sim/silph_scenario.json`, 200 graines, équipe de référence [D] : starter
+  évolué N38, Roucarnage N36, trois N32) : rival du 7F gagné du premier coup à 12,5 % (Dracaufeu),
+  0,5 % (Florizarre), 55,5 % (Tortank) ; Giovanni après un Centre 19 % / 51 %. Aucune donnée
+  changée : à resimuler sur les vraies sorties des J21 à J25 avant de retoucher les niveaux RB.
+- **T8** : un choix dans une scène ne lance pas d'autre scène ; contournement par données : OUI pose
+  `saffron_gate_offer_water|soda|lemonade`, la scène s'enchaîne (`next`) sur la remise. Ces trois
+  drapeaux restent dans la sauvegarde (aucune étape pour baisser un drapeau). T-15 et T-16 du J15 ne
+  sont plus joués (Safrania jouable).
+- **T26-05** (narration de porte fermée) non posé : `key_door_locked` est un dialogue partagé de S2F.
+- **Décors de combat « bureaux »** non faits (art ; repli existant). Aucun Grand moment de libération.
+- 5F : la Carte se rejoint par le téléporteur du 9F (RB) ; le départ `silph_5f` part de l'ascenseur [D].
+- Départs de débogage : starter non évolué en tête partout (sinon `starter_species` faux) [D].
