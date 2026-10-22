@@ -1,0 +1,134 @@
+# Arène de Safrania (saffron_gym) — grille fonctionnelle v1 (jalon 27, T2 ; préparée le 2026-10-22).
+# GÉOMÉTRIE ROUGE/BLEU CASE POUR CASE (énigme à 1:1, arbitrage 2 de la passe ; jalon-27.md §2.1).
+# Source : pret/pokered, maps/SaffronGym.blk (10 × 9 blocs = 20 × 18 cases), tileset FACILITY
+# (gfx/blocksets/facility.bst ; collision Facility_Coll), warps et objets de
+# data/maps/objects/SaffronGym.asm, portées de vue de scripts/SaffronGym.asm. Décodeur :
+# tools/art/saffron_gym_rb_decode.py (brut, --positions, --graphe). Contrôles :
+# tools/art/plan_check_teleports.py, tools/art/plan_check_j27.py, tools/art/plan_check.py --legende.
+#
+# 20 × 18 cases : neuf salles de 6 × 5 (trois colonnes, trois rangées) séparées par des cloisons ;
+# AUCUNE porte : on ne passe d'une salle à l'autre que par les tapis. Les marges de RB sont
+# conservées (les salles touchent le bord de la carte, qui est bloqué au-delà).
+#
+# Salles : NO (0..5, 1..5) · N (7..12, 1..5) · NE (14..19, 1..5)
+#          O  (0..5, 7..11) · centre = Morgane (7..12, 7..11) · E (14..19, 7..11)
+#          SO (0..5, 13..17) · S = entrée (7..12, 13..17) · SE (14..19, 13..17)
+# Graphe RB (chaque tapis mène au tapis réciproque ; tools/art/plan_check_teleports.py l'imprime) :
+#   entrée S (11,15) ↔ SE (19,17)          ·  centre (11,11) ↔ NO (1,5)
+#   NO (1,3) ↔ NE (15,5) · NO (5,3) ↔ N (11,3) · NO (5,5) ↔ O (1,11)
+#   O (1,9) ↔ E (19,11) · O (5,9) ↔ N (9,5) · O (5,11) ↔ SO (5,17)
+#   SO (1,15) ↔ NE (19,5) · SO (5,15) ↔ SE (15,17) · SO (1,17) ↔ N (11,5)
+#   N (9,3) ↔ E (15,11) · NE (15,3) ↔ E (15,9) · NE (19,3) ↔ SE (15,15) · E (19,9) ↔ SE (19,15)
+# Plus court chemin vers Morgane : S → SE → E → O → NO → centre (cinq tapis ; plan_check_j27.py).
+#
+# Dresseurs : trainer=saffron_gym_<rôle>, facing= et sight= de RB (en-têtes « trainer … , 3 ») ;
+# équipe RB en commentaire. Facultatifs selon le parcours (arbitrage 3 ; plan_check_j27.py).
+#
+# Légende (caractères propres à cette grille) :
+#   # cloison ou mur (bloqué)            . sol de l'Arène (praticable)
+#   T tapis de téléportation (praticable : un pas dessus transporte ; arriver dessus ne le
+#     déclenche pas) — position « teleporteur » (vers=saffron_gym:tp_<k>, paire=)
+#   E sortie vers Safrania (praticable, PUSH ↓)
+# Personnages et repères sont dans POSITIONS. 1 case = 1 tuile de 16 px de Rouge/Bleu ;
+# x = colonne, y = rangée, nord en haut.
+
+CARTE saffron_gym
+
+PRATICABLES .TE
+
+GRILLE 20 18
+00 ####################
+01 ......#......#......
+02 ......#......#......
+03 .T...T#..T.T.#.T...T
+04 ......#......#......
+05 .T...T#..T.T.#.T...T
+06 ####################
+07 ......#......#......
+08 ......#......#......
+09 .T...T#......#.T...T
+10 ......#......#......
+11 .T...T#....T.#.T...T
+12 ####################
+13 ......#......#......
+14 ......#..#...#......
+15 .T...T#..#.T.#.T...T
+16 ......#......#......
+17 .T...T#.EE...#.T...T
+FIN
+
+POSITIONS
+sortie_ville            warp           8..9,17      libre   vers=saffron_city:from_gym  # PUSH ↓ (RB warps 1 et 2 → Safrania warp 3, porte de l'Arène)
+entrance                spawn          8..9,16      libre   facing=up  # arrivée depuis Safrania, une case devant la sortie
+depart                  depart         8,16         libre     # repère du contrôle : entrée du joueur ; ignoré par la construction
+but                     but            9,9          libre     # repère du contrôle : case d'où l'on parle à Morgane ; ignoré par la construction
+teleporteur_3           teleporteur    1,3          libre   vers=saffron_gym:tp_23 paire=t3_23  # RB warp 3 (NO) → warp 23 (NE)
+tp_3                    spawn          1,3          libre     # arrivée sur le tapis (ne le déclenche pas) ; orientation conservée
+teleporteur_4           teleporteur    5,3          libre   vers=saffron_gym:tp_16 paire=t4_16  # RB warp 4 (NO) → warp 16 (N)
+tp_4                    spawn          5,3          libre     # arrivée sur le tapis (ne le déclenche pas) ; orientation conservée
+teleporteur_5           teleporteur    1,5          libre   vers=saffron_gym:tp_19 paire=t5_19  # RB warp 5 (NO) → warp 19 (centre (Morgane))
+tp_5                    spawn          1,5          libre     # arrivée sur le tapis (ne le déclenche pas) ; orientation conservée
+teleporteur_6           teleporteur    5,5          libre   vers=saffron_gym:tp_9 paire=t6_9  # RB warp 6 (NO) → warp 9 (O)
+tp_6                    spawn          5,5          libre     # arrivée sur le tapis (ne le déclenche pas) ; orientation conservée
+teleporteur_7           teleporteur    1,9          libre   vers=saffron_gym:tp_28 paire=t7_28  # RB warp 7 (O) → warp 28 (E)
+tp_7                    spawn          1,9          libre     # arrivée sur le tapis (ne le déclenche pas) ; orientation conservée
+teleporteur_8           teleporteur    5,9          libre   vers=saffron_gym:tp_17 paire=t8_17  # RB warp 8 (O) → warp 17 (N)
+tp_8                    spawn          5,9          libre     # arrivée sur le tapis (ne le déclenche pas) ; orientation conservée
+teleporteur_9           teleporteur    1,11         libre   vers=saffron_gym:tp_6 paire=t6_9  # RB warp 9 (O) → warp 6 (NO)
+tp_9                    spawn          1,11         libre     # arrivée sur le tapis (ne le déclenche pas) ; orientation conservée
+teleporteur_10          teleporteur    5,11         libre   vers=saffron_gym:tp_14 paire=t10_14  # RB warp 10 (O) → warp 14 (SO)
+tp_10                   spawn          5,11         libre     # arrivée sur le tapis (ne le déclenche pas) ; orientation conservée
+teleporteur_11          teleporteur    1,15         libre   vers=saffron_gym:tp_24 paire=t11_24  # RB warp 11 (SO) → warp 24 (NE)
+tp_11                   spawn          1,15         libre     # arrivée sur le tapis (ne le déclenche pas) ; orientation conservée
+teleporteur_12          teleporteur    5,15         libre   vers=saffron_gym:tp_31 paire=t12_31  # RB warp 12 (SO) → warp 31 (SE)
+tp_12                   spawn          5,15         libre     # arrivée sur le tapis (ne le déclenche pas) ; orientation conservée
+teleporteur_13          teleporteur    1,17         libre   vers=saffron_gym:tp_18 paire=t13_18  # RB warp 13 (SO) → warp 18 (N)
+tp_13                   spawn          1,17         libre     # arrivée sur le tapis (ne le déclenche pas) ; orientation conservée
+teleporteur_14          teleporteur    5,17         libre   vers=saffron_gym:tp_10 paire=t10_14  # RB warp 14 (SO) → warp 10 (O)
+tp_14                   spawn          5,17         libre     # arrivée sur le tapis (ne le déclenche pas) ; orientation conservée
+teleporteur_15          teleporteur    9,3          libre   vers=saffron_gym:tp_27 paire=t15_27  # RB warp 15 (N) → warp 27 (E)
+tp_15                   spawn          9,3          libre     # arrivée sur le tapis (ne le déclenche pas) ; orientation conservée
+teleporteur_16          teleporteur    11,3         libre   vers=saffron_gym:tp_4 paire=t4_16  # RB warp 16 (N) → warp 4 (NO)
+tp_16                   spawn          11,3         libre     # arrivée sur le tapis (ne le déclenche pas) ; orientation conservée
+teleporteur_17          teleporteur    9,5          libre   vers=saffron_gym:tp_8 paire=t8_17  # RB warp 17 (N) → warp 8 (O)
+tp_17                   spawn          9,5          libre     # arrivée sur le tapis (ne le déclenche pas) ; orientation conservée
+teleporteur_18          teleporteur    11,5         libre   vers=saffron_gym:tp_13 paire=t13_18  # RB warp 18 (N) → warp 13 (SO)
+tp_18                   spawn          11,5         libre     # arrivée sur le tapis (ne le déclenche pas) ; orientation conservée
+teleporteur_19          teleporteur    11,11        libre   vers=saffron_gym:tp_5 paire=t5_19  # RB warp 19 (centre (Morgane)) → warp 5 (NO)
+tp_19                   spawn          11,11        libre     # arrivée sur le tapis (ne le déclenche pas) ; orientation conservée
+teleporteur_20          teleporteur    11,15        libre   vers=saffron_gym:tp_32 paire=t20_32  # RB warp 20 (S (entrée)) → warp 32 (SE)
+tp_20                   spawn          11,15        libre     # arrivée sur le tapis (ne le déclenche pas) ; orientation conservée
+teleporteur_21          teleporteur    15,3         libre   vers=saffron_gym:tp_25 paire=t21_25  # RB warp 21 (NE) → warp 25 (E)
+tp_21                   spawn          15,3         libre     # arrivée sur le tapis (ne le déclenche pas) ; orientation conservée
+teleporteur_22          teleporteur    19,3         libre   vers=saffron_gym:tp_29 paire=t22_29  # RB warp 22 (NE) → warp 29 (SE)
+tp_22                   spawn          19,3         libre     # arrivée sur le tapis (ne le déclenche pas) ; orientation conservée
+teleporteur_23          teleporteur    15,5         libre   vers=saffron_gym:tp_3 paire=t3_23  # RB warp 23 (NE) → warp 3 (NO)
+tp_23                   spawn          15,5         libre     # arrivée sur le tapis (ne le déclenche pas) ; orientation conservée
+teleporteur_24          teleporteur    19,5         libre   vers=saffron_gym:tp_11 paire=t11_24  # RB warp 24 (NE) → warp 11 (SO)
+tp_24                   spawn          19,5         libre     # arrivée sur le tapis (ne le déclenche pas) ; orientation conservée
+teleporteur_25          teleporteur    15,9         libre   vers=saffron_gym:tp_21 paire=t21_25  # RB warp 25 (E) → warp 21 (NE)
+tp_25                   spawn          15,9         libre     # arrivée sur le tapis (ne le déclenche pas) ; orientation conservée
+teleporteur_26          teleporteur    19,9         libre   vers=saffron_gym:tp_30 paire=t26_30  # RB warp 26 (E) → warp 30 (SE)
+tp_26                   spawn          19,9         libre     # arrivée sur le tapis (ne le déclenche pas) ; orientation conservée
+teleporteur_27          teleporteur    15,11        libre   vers=saffron_gym:tp_15 paire=t15_27  # RB warp 27 (E) → warp 15 (N)
+tp_27                   spawn          15,11        libre     # arrivée sur le tapis (ne le déclenche pas) ; orientation conservée
+teleporteur_28          teleporteur    19,11        libre   vers=saffron_gym:tp_7 paire=t7_28  # RB warp 28 (E) → warp 7 (O)
+tp_28                   spawn          19,11        libre     # arrivée sur le tapis (ne le déclenche pas) ; orientation conservée
+teleporteur_29          teleporteur    15,15        libre   vers=saffron_gym:tp_22 paire=t22_29  # RB warp 29 (SE) → warp 22 (NE)
+tp_29                   spawn          15,15        libre     # arrivée sur le tapis (ne le déclenche pas) ; orientation conservée
+teleporteur_30          teleporteur    19,15        libre   vers=saffron_gym:tp_26 paire=t26_30  # RB warp 30 (SE) → warp 26 (E)
+tp_30                   spawn          19,15        libre     # arrivée sur le tapis (ne le déclenche pas) ; orientation conservée
+teleporteur_31          teleporteur    15,17        libre   vers=saffron_gym:tp_12 paire=t12_31  # RB warp 31 (SE) → warp 12 (SO)
+tp_31                   spawn          15,17        libre     # arrivée sur le tapis (ne le déclenche pas) ; orientation conservée
+teleporteur_32          teleporteur    19,17        libre   vers=saffron_gym:tp_20 paire=t20_32  # RB warp 32 (SE) → warp 20 (S (entrée))
+tp_32                   spawn          19,17        libre     # arrivée sur le tapis (ne le déclenche pas) ; orientation conservée
+morgane                 pnj            9,8          bloque  role=saffron_gym_sabrina facing=down  # RB objet 1 : OPP_SABRINA (scène de Champion, modèle d'Erika)
+guide                   pnj            10,15        bloque  role=saffron_gym_guide facing=down  # RB objet 9 : SPRITE_GYM_GUIDE
+dresseur_n              dresseur       10,1         bloque  trainer=saffron_gym_channeler_melusine facing=down sight=3 classe=exorciste  # RB objet 2 : OPP_CHANNELER, 22 (Fantominus, Spectrum N34)
+dresseur_ne             dresseur       17,1         bloque  trainer=saffron_gym_psychic_albin facing=down sight=3 classe=medium  # RB objet 3 : OPP_PSYCHIC_TR, 1 (Kadabra, Ramoloss, M. Mime, Kadabra N31)
+dresseur_o              dresseur       3,7          bloque  trainer=saffron_gym_channeler_ophelie facing=down sight=3 classe=exorciste  # RB objet 4 : OPP_CHANNELER, 23 (Spectrum N38)
+dresseur_e              dresseur       17,7         bloque  trainer=saffron_gym_psychic_nestor facing=down sight=3 classe=medium  # RB objet 5 : OPP_PSYCHIC_TR, 2 (M. Mime, Kadabra N34)
+dresseur_so             dresseur       3,13         bloque  trainer=saffron_gym_channeler_cassandre facing=down sight=3 classe=exorciste  # RB objet 6 : OPP_CHANNELER, 24 (Fantominus, Fantominus, Spectrum N33)
+dresseur_se             dresseur       17,13        bloque  trainer=saffron_gym_psychic_barnabe facing=down sight=3 classe=medium  # RB objet 7 : OPP_PSYCHIC_TR, 3 (Ramoloss, Ramoloss, Flagadoss N33)
+dresseur_no             dresseur       3,1          bloque  trainer=saffron_gym_psychic_leandre facing=down sight=3 classe=medium  # RB objet 8 : OPP_PSYCHIC_TR, 4 (Flagadoss N38)
+FIN
