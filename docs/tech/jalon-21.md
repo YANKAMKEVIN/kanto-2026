@@ -1301,3 +1301,61 @@ obtient la CT39 — Météores ! » (dossier §15.8 bis).
 |---|---|---|
 | Ptitard | 0,6 m · 12,4 kg | « Sa peau est si fine qu'on voit ses entrailles en spirale. Il marche mal sur ses jambes toutes neuves. » |
 | Tentacool | 0,9 m · 45,5 kg | « Il dérive près de la surface. Son corps presque transparent le rend difficile à voir dans l'eau. » |
+
+## QA de nuit sur A17 par adb (2026-10-22), non validée par Kevin
+
+Exécutée par un agent, seul, par adb, sur le **Galaxy A17** (série `R5GYB2R7W2Y`, Mali-G57 MC2,
+2340 × 1080) avec l'APK debug construit depuis `jalon-21` (`712dfddc`). Rien n'est validé : Kevin
+relit les captures et tranche. Captures et journaux : `~/dev/qa-nuit/J21/` (sur le Mac, hors dépôt).
+Les départs de débogage n'écrivent pas la sauvegarde : la vraie partie de Kevin n'a pas été touchée.
+
+### T16 (session 21A)
+
+| n° | Départ | Résultat | Notes |
+|---|---|---|---|
+| 1 | `tower_marowak_noscope` | OK | SPECTRE du J19, fuite, recul (`02`–`07`) |
+| 2 | `tower_marowak_qa` | OK | avertissement, silhouette, « Le Scope Sylphe révèle… », fondu, « C'est un Ossatueur ! » (`seq17`) |
+| 3 | (suite) | OK | « Ce Pokémon ne peut pas être capturé. », Poké Balls toujours à 10, retour au choix (`seq18`) |
+| 4 | (suite) | OK | fuite, recul, « Quelque chose retient encore l'esprit… » ; revenir : combat neuf, PV pleins (`16a`, `15_pre`) |
+| 5 | (suite) | OK | victoire (Tranche ×4) → âme, lumière, paix, brume plus légère ; Pokédex : Ossatueur vu (`seq22`, `26_dexvus`) |
+| 6 | `tower_marowak_weak` | OK en partie | défaite → Centre de Lavanville (`SceneRouter : lavender_center`) ; **retour à la Tour pour rejouer la scène : non fait** |
+| 7 | `tower_7f_qa` | OK | 3 Sbires inévitables, textes, puis Fuji, fondu, maison, Flûte, toast, explication (`f42`–`f48`, `seq49`) |
+| 8 | `fuji_flute_qa` | OK | remise une fois ; ressortir/rentrer puis reparler : réplique, aucune seconde Flûte (`seq51`, `56`) |
+| 9 | (suite) | OK en partie | enfant, homme, fille + Osselait (maison), gentleman (Centre) : variantes « après sauvetage » ; **gardienne (Tour 1F) non vue** |
+| 10 | (fps) | **défaut** | 6F ≈ 35–41 fps (creux 30), 7F ≈ 37–40 ; attendu ≥ 58 / creux ≥ 50 |
+
+### T24 (session 21B)
+
+| n° | Départ | Résultat | Notes |
+|---|---|---|---|
+| 1 | `poke_flute_qa` | OK | Sac → Flûte loin de Ronflex : notes, texte « ailleurs », bulle « ♪ » (`seq74`, `75`) |
+| 2 | (suite) | OK | rencontre (Piafabec, Route 11), Flûte sans dormeur : « Personne ne dort… », aucun tour pris (`seq85`) |
+| 3 | (suite) | OK | (Papilusion, Poudre Dodo, à la place de Paras absent de ce départ) Flûte → réveil des deux camps (Nidorino aussi), tour pris (`seq89`, `86`) |
+| 4 | (suite) | OK | NON : rien ; OUI : « Ronflex se réveille ! / Il attaque… », combat (`96`, `seq97`) |
+| 5 | (suite) | OK | fuite → « Ronflex bâille… et se rendort aussitôt. » ; examen : « Ronflex dort de nouveau… » + choix (`seq98`, `seq99`) |
+| 6 | (suite) | non testable en entier | Sac → Flûte à côté : OK (`seq112`, combat) ; **capture non obtenue** (≈ 20 Poké Balls sur deux essais, Ronflex endormi et entamé) |
+| 7 | `snorlax_16_qa` | OK | défaite → Centre de Céladopole ; retour : il dort ; victoire (Reptincel) → texte, passage libre vers la boutique de vélos (`f127`, `f135`, `136`) |
+| 8 | `route_12_qa` | OK en partie | Lavanville → ponton → poste → 2F CT39 (« Météores ») → 4 Pêcheurs (Ned inévitable) → Ronflex → Flûte : OK ; **fin de boucle vers Carmin non faite** : l'équipe du départ perd contre Ronflex N30 (`f184`, retour Centre de Lavanville). Le passage Route 12 → Route 11 a été vu avec `poke_flute_qa` |
+| 9 | `j21_full_qa` | non testé | pas de passage d'un seul tenant (temps) ; chaque morceau est couvert par les lignes T16 1–9 et T24 1–8 |
+| 10 | (suite) | non testable | les départs de débogage ne lisent ni n'écrivent la sauvegarde |
+| 11 | (fps) | **défaut** | Route 12 (eau) ≈ 23–27 fps (creux ≈ 20), 7F ≈ 37–40 ; attendu ≥ 58 / creux ≥ 50 |
+| 12 | vraie partie | non testé | volontairement : pas touché à la sauvegarde de Kevin |
+
+**Bilan** : 15 OK (dont 4 « en partie »), 2 défauts (fps), 5 non testés / non testables.
+
+### Défauts et remarques
+
+1. **fps sur A17 très en dessous de la cible** (moyennes des lignes `[perf]`) : Tour 6F/7F 35–41,
+   Route 12 23–27 (creux 20), Route 16 24–27, Route 11 ≈ 25, intérieurs 47–59. Aucun écran ne tient
+   58. L'A17 (Mali-G57 MC2) est bien plus faible que le S24 de référence : à décider si la cible
+   s'applique à lui.
+2. **Départs `route_12_qa` et `poke_flute_qa`** : Poké Flûte dans le Sac mais aucun drapeau
+   d'histoire (`ghost_marowak_calmed`, `fuji_rescued`, `got_poke_flute` absents) → le Menu affiche
+   « Objectif : retourner à la Tour Pokémon. ». Incohérence de départ, pas du jeu.
+3. **À regarder** : poste de la Route 12, 2F, juste après la CT39, le héros a disparu de l'écran
+   sur trois captures (`148`–`150`) alors qu'il était près de l'escalier, puis est réapparu sur la
+   case de l'escalier sans changement de carte ; reproduction non tentée.
+4. Choix « Jouer de la Poké Flûte ? » : un appui sur OUI pendant que la page s'écrit encore est
+   avalé (il faut réappuyer). Peut-être voulu (verrou d'appui).
+5. Journal Godot : **aucune erreur ni avertissement** sur toute la session ; changements de carte
+   26–270 ms.
