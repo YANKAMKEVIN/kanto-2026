@@ -14,7 +14,7 @@ Mis à jour : 2026-10-22 (**J26 : Q26-4, retour à la lignée RB du rival** — 
 - **Contrat de sortie** : `silph_giovanni_defeated` seul drapeau de libération ; sbire de la porte de l'Arène `unless` ; Dojo libre ; `master_ball` capture certaine.
 - **Défauts [D] retenus** (validation d'avance de Kevin) : textes T26-01 à T26-22 et répliques des Dresseurs ; Q26-2 Lokhlass après le rival ; Q26-3 maisons sans CT ; Q26-4 lignée du J19 (remplacé le 2026-10-22 : lignée RB) ; Q26-5 Porygon reporté ; objets RB absents → `fallback` des grilles ; tous les Dresseurs de la Sylphe partent à la libération ; employés avec réplique libérée ; placeholders de sprites (Leveinard → Mélofée, Doduo → Rapasdepic, etc.).
 - **Points ouverts pour Kevin** : équilibrage du rival n° 6 très dur sur une équipe de référence N38 (0,5 % à 55,5 % de victoires au premier essai ; à resimuler sur les vraies sorties des J21 à J25) ; T8 : trois drapeaux `saffron_gate_offer_*` restent dans la sauvegarde (contournement sans moteur) ; T26-05 non posé (dialogue partagé S2F) ; décors de combat « bureaux » et vue générale peinte (T5) à l'art.
-- Tests : suite complète **6 581 / 6 581** (605 scripts, 366 500 assertions) ; import sans erreur. Captures Mac de Safrania : `build/captures/jalon26_t6/`.
+- Tests : suite complète **6 581 / 6 581** (605 scripts, 366 481 assertions, relevé du journal `q26-4-suite-complete.log` après le retour à RB du rival) ; import sans erreur. Captures Mac de Safrania : `build/captures/jalon26_t6/`.
 - **Prochaine étape** : T15 (une session téléphone, scénarios `jalon-26.md` §7, départs de débogage), puis T16 (clôture, fusion après accord de Kevin).
 
 ## Plans J26 à J30 (2026-10-21, branche `plans-j26-j30`, depuis `main` @ `1796c9fa`, documents seuls)

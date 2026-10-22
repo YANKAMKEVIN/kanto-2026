@@ -444,6 +444,11 @@ sont inchangées. La lignée Sabelette n'existait que dans ces deux équipes.
   (avant : 41,5 · 68) ; expert 2 % · 14 %. Sous la règle de Kevin (40 à 60 %) : **point ouvert
   pour Kevin** (garder RB tel quel, ou adoucir capacités / niveaux contre Bulbizarre sans toucher
   à l'espèce). Salamèche et Carapuce inchangés. Rien n'est retouché ici.
+  **Décision de Kevin du 2026-10-22 : rival n° 5 de la Tour (variante Bulbizarre, Léviator) gardé
+  tel quel comme Rouge/Bleu, malgré la simulation (7 % / 29,5 % au premier essai) : pas
+  d'adoucissement.** Le code l'applique déjà.
+- **Suite complète après le retour à RB** (journal `build/logs/q26-4-suite-complete.log`, relevé le
+  2026-10-22) : **6 581 / 6 581** réussis, 605 scripts, 366 481 assertions.
 - **Sauvegarde** : format v7 inchangé. Les équipes des Dresseurs sont des données de combat lues
   par `TrainerLibrary` au lancement du combat ; la sauvegarde ne garde du rival que le moment
   `rival_battle` (`{trainer, outcome}`) et les drapeaux de victoire, jamais son équipe. Une partie
