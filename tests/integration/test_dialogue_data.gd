@@ -1008,9 +1008,6 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 	var read_flags := dialogues.get_condition_flags() + cutscenes.get_condition_flags()
 	for map_id: StringName in MAPS:
 		for spec: NpcSpec in NpcRoster.load_for_map(map_id).get_all():
-			# Passe systèmes 2 (T30) : PNJ de QA (`qa_*`) d'une vraie carte, drapeaux de QA.
-			if MapCatalog.is_qa_map(spec.id):
-				continue
 			read_flags.append_array(spec.if_flags + spec.unless_flags)
 			# Jalon 12 (T25) : `beaten_<id>` d'un Dresseur est levé par sa séquence (victoire).
 			if spec.is_trainer():
