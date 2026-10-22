@@ -292,3 +292,13 @@ NON puis OUI, Stockage + relance, arrêt avant l'écriture), `test_j27_debug_sta
 - Art provisoire : enveloppes générées, Morgane = `beauty`, Médiums = `youngster`, Karatékas =
   `hiker` (silhouette féminine), maître = `hiker` ; pas de fond de combat « Arène Psy » / « Dojo »
   (repli existant). Les bords est et ouest des salles touchent le bord de la carte (RB à 1:1).
+
+## Décisions de Kevin (2026-10-22)
+
+Choix validés par Kevin sur la page d'arbitrages.
+
+Kevin n'a pas répondu à ces trois points : les recommandations s'appliquent par défaut.
+
+- Morgane : à resimuler sur les vraies sorties des J21–J26, puis ajuster.
+- Effets de Pied Sauté, Pied Voltige et Riposte : à coder avant la fusion (à faire, reste ouvert).
+- Morgane et le maître changent de Pokémon en combat : gardé.
