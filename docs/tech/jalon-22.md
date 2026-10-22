@@ -880,3 +880,30 @@ Léonce, Capucine → Maëlle.
 | 9 | `fuchsia_qa` | Parmanie : Centre, Boutique, Salle de réunion, grand-père, Super Canne, étang ; portes Arène / Safari / Gardien / Route 19 | intérieurs, « À venir » en debug ; Poissoroy possible à la Méga Canne |
 | 10 | (Route 16 ouest, voie haute) | entrer dans la maison de Vol | CS02 reçue une fois |
 | 11 | partout | relancer l'appli | état gardé (v7) |
+
+## QA de nuit sur A17 par adb (2026-10-22), non validée par Kevin
+
+Exécutée par un agent, seul, par adb, sur le **Galaxy A17** (`R5GYB2R7W2Y`, Mali-G57 MC2, 2340 × 1080),
+APK debug construit depuis `jalon-22` (`c2473a0f`). Rien n'est validé : Kevin relit et tranche.
+Captures et journaux : `~/dev/qa-nuit/J22/` (sur le Mac, hors dépôt). Départs de débogage : la
+sauvegarde n'est ni lue ni écrite.
+
+| n° | Départ | Résultat | Notes |
+|---|---|---|---|
+| 1 | `fishing_qa` | OK | « Ah, te voilà ! … Voici ma vieille Canne. », toast CANNE ; quai de Carmin : PÊCHER, « Kevin lance sa ligne… », Magicarpe N5 (`04_*`, `06`, `08_*`) |
+| 2 | `route_12_south_qa` | OK | ponton descendu ; maison : Méga Canne reçue (`18_*`) ; pêche à la berge : Krabby N15, Tentacool N5 (table par défaut) ; ≈ 25 % de touches sur 12 lancers pour 75 % attendus, échantillon trop petit pour conclure |
+| 3 | `route_15_qa` | OK en partie | Route 15 seulement (13 et 14 non parcourues) : Motard Mike, Jeune Dresseuse Rose, Ornithologue Gustave, Jeune Dresseuse (Mélofée) l'ont arrêté, textes OK ; poste 15 : 2F assistant (« Ton Pokédex en est à 6 espèces »), jumelles (« Au loin, on voit Parmanie… ») ; **arrivée à Parmanie non faite** |
+| 4 | `bike_qa` | OK en partie | Président : NON → « Oh… Une autre fois, alors. » ; OUI → histoire, Bon de Commande, une seule fois (« Mon Ponyta te passe le bonjour ! ») ; **vendeur d'Azuria non testé** |
+| 5 | `cycling_road_nobike_qa` | OK | « Désolé ! La Piste Cyclable est rés… », recul d'une case |
+| 6 | `cycling_road_qa` | **défaut (à confirmer)** | salut du garde une fois : OK ; à la sortie sur la Piste, **le héros est dessiné à pied** (aucune bicyclette visible), bouton Vélo grisé ; l'appuyer donne « Pas de marche à pied sur la Piste Cyclable ! » — l'état semble « en selle » mais le sprite ne le montre pas (art des planches vélo peut-être pas encore branché). Même chose à Parmanie après appui sur le bouton Vélo (`64`–`70`, `82`) |
+| 7 | (suite) | non testé | pente / dérive et objets cachés non parcourus (temps) ; fps sur la Piste ≈ 58–60 |
+| 8 | (suite) | non testé | Route 18 → poste 18 → Parmanie |
+| 9 | `fuchsia_qa` | OK en partie | étang : Krabby N15, Poissirène N15 à la Méga Canne (Poissoroy non sorti en 6 lancers) ; Bicyclette : bouton actif dehors ; **intérieurs et portes « À venir » non visités** |
+| 10 | Route 16 ouest, voie haute | non testé | maison de Vol |
+| 11 | partout | non testable | départs de débogage sans sauvegarde |
+
+**Bilan** : 3 OK, 4 OK en partie, 1 défaut à confirmer, 3 non testés / non testables.
+
+**fps (moyennes `[perf]`)** : Route 12 sud 58, Route 15 55, Piste 58–60, Parmanie 58, intérieurs
+52–60 ; **Carmin (quai) 26–27** (creux 7 au chargement partout). Journal Godot : aucune erreur ni
+avertissement.
