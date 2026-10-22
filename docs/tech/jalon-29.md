@@ -339,7 +339,7 @@ RB) : défauts du plan appliqués ; Q29-4 : tuiles provisoires, sol peint plus t
 ### 10.3 Reste à faire
 
 - **T5** simulation d'équilibrage (non faite) ; **T6** vue générale de la Route Victoire (art) ;
-  **lot d'art** (Q29-4) ; `tm_compatibility.json` des 14 nouvelles espèces (fichier généré).
+  **lot d'art** (Q29-4 : sol de `route_22_west` fait, reste le bâtiment du poste et la Route 23) ; `tm_compatibility.json` des 14 nouvelles espèces (fichier généré).
 - **T16** session téléphone (§7) ; **T17** clôture, fusion après le J28 et accord de Kevin.
 
 ## Décisions de Kevin (2026-10-22)
@@ -348,4 +348,4 @@ Choix validés par Kevin sur la page d'arbitrages.
 
 - Q29-1 : le Badge Roche est posté comme RB.
 - Q29-2 : le rival n° 7 se bat avec le Badge Terre (RB).
-- Q29-4 : **repeindre le sol de la Route 22 étendue au J29** (tâche à faire, reste ouverte).
+- Q29-4 : **repeindre le sol de la Route 22 étendue au J29**. **Fait (2026-10-22)** : `route_22_west` a son sol peint (`tools/build_route_22_west.gd`, passe après `build_j29.gd` ; masque `assets/world/maps/route_22_west_ground.png`, `PaintedGround` aux textures communes d'herbe et de chemin = même palette et même échelle de 96 px que la partie J7, décalcomanies de bord, hautes herbes et forêt d'arbres peints ; couches de tuiles masquées). **Aucune image Codex** : le sol de la Route 22 du J7 n'est pas une image générée mais le mélange des textures communes par un masque, donc le raccord est exact par construction. Logique inchangée (grilles `dump_map_logic` avant/après identiques pour `route_22` et `route_22_west`). Reste provisoire : le bâtiment du poste (dessin de couleur), la Route 23 (hors décision). Planche : `build/art/J29_ROUTE22_SOL_CONTACT.png`.
