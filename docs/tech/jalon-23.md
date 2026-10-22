@@ -645,6 +645,50 @@ Fusion de `origin/jalon-22` dans `jalon-23` (`aa9ac132`). Réponses du T9 :
 - T21 équilibrage par simulation, T22 interruptions sur téléphone, T23 QA de bout en bout, T24
   clôture.
 
+### 7.6 Intégré cette nuit : 23B (rencontre Safari) et 23E (Koga)
+
+- **23B, T13** (branche `j23-safari-combat`) : moteur pur `game/battle/safari_battle.gd`
+  (action → fin de tour, textes 24/25 → fuite, texte 26 ; dernière Ball : texte 29, sans fuite) ;
+  `BattleRequest.safari`, `BattleRules.for_safari`, actions SAFARI_BALL / BAIT / ROCK, événements
+  SAFARI_* ; `BattleDirector._run_safari` (aucun Pokémon allié, image du lancer du héros à la
+  place) ; grille de quatre boutons (« SAFARI BALL ×n », « APPÂT », « CAILLOU », « FUIR ») ;
+  `EncounterDirector` : sur une carte de `safari.json` avec visite active, toute rencontre (herbe,
+  pêche) est Safari, aucune sans visite ; tables `data/encounters/safari.json` (poids RB partagés
+  Rouge/Bleu, taux 30, sans rampe, espèces existantes). Notes de Pokédex des quatre espèces [R] :
+  Leveinard « Au moindre bruit, il serre son œuf contre lui et détale dans les hautes herbes. »,
+  Insécateur « Un sifflement court dans l'herbe, puis plus rien : il est déjà passé. »,
+  Scarabrute « Il reste immobile des heures, cornes ouvertes, jusqu'à ce qu'une proie passe à
+  portée. », Tauros « Au moindre signal, tout le troupeau charge : mieux vaut s'écarter de son
+  chemin. » (validées par Kevin le 2026-10-21, validation d'avance). Tests `test_safari_battle`,
+  `test_safari_encounters`, `test_safari_encounter` (Boot).
+- **23E, T17–T19** (branche `j23-koga`) : `tools/build_fuchsia_gym.gd` → `fuchsia_gym` (36 murs
+  invisibles = cases bloquées, parquet en variante 1 dessous [D], statues : texte 35) ; indice au
+  contact `InvisibleWalls` (`Player.bumped`, vibration 20 ms, panneau translucide 0,4 s, rien sur un
+  mur ordinaire) ; six Dresseurs (A-15 à A-20 ; **prénoms renommés [D]** : Hugo → Nino, Max → Igor,
+  Sacha → Silvio, Bruno → Marius ; Edgar et Léon gardés ; sprites `gambler` / `docker`, Koga
+  `gentleman`) ; poison grave branché (`Battler.toxic`, N/16 via `ToxicRules`, oublié au
+  changement et en fin de combat, « PSN+ ») ; capacité `toxic`, CT06 ; Koga (équipe RB, IA
+  `smart`, 4 257 ₽, Badge Âme, CT06 avec rattrapage, défaite → Centre, rejouable) ; départ
+  `koga_qa`. Textes [R] : « Fwahahaha ! Tu reviens ? » (reprise), « Le poison a fait son œuvre. » /
+  « Reviens quand tu seras prêt. » (défaite), « {pokemon} est gravement empoisonné(e) ! ». Titre de
+  la carte = « Parmanie » (règle des titres de zone). Données renommées `j23_fuchsia_gym.json`.
+  Tests `test_toxic_battle`, `test_fuchsia_gym`, `test_koga_flow` (Boot).
+- **Suite complète** sur l'état intégré : **6 649 / 6 649** ; import sans erreur.
+
+### 7.7 QA téléphone à faire (Kevin)
+
+- **23A, validée SEULE (sauvegarde v8, règle 1)** — départs `safari_qa`, `safari_end_qa` : péage
+  (NON, refus sous 500 ₽, OUI), compteur et pastille, maisons, fin par les pas et par les Balls,
+  sortie volontaire ; **tuer l'application** juste après le péage, dans chaque zone, dans une
+  maison, puis relancer (visite reprise, rien de gagné au-delà de la dernière sauvegarde) ;
+  vieille sauvegarde v7 relue sans visite.
+- **23B** — `safari_qa` : menu lisible, ×n qui baisse, appât / caillou / fuite, capture avec équipe
+  pleine (Stockage), dernière Ball (avec et sans capture) puis annonce de fin, ni XP ni argent.
+- **23C+23D** — `warden_qa` et Maison Secrète : CS03 une fois, Gardien (OUI/NON sans dents, puis
+  CS04), rocher fixe (texte 46), vitrines.
+- **23E** — `koga_qa` : murs invisibles (indices), six Dresseurs, Koga, Toxik et « PSN+ », défaite
+  puis victoire, Badge Âme, CT06, Guide (texte 37), sortie vers Parmanie (`from_gym`).
+
 ## Annexe A — Textes complémentaires (T2, **validés par Kevin le 2026-10-19** : « annexe A ok »)
 
 > Complète le §8 du dossier 26 (textes 1 à 59, validés). Bulles de 2 lignes d'environ 40
