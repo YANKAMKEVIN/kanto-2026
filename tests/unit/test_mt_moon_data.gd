@@ -85,9 +85,10 @@ func before_all() -> void:
 
 func test_species_values() -> void:
 	assert_eq(_data.get_errors().size(), 0, "\n".join(_data.get_errors()))
-	assert_eq(_data.get_species_ids().size(), 103,
+	assert_eq(_data.get_species_ids().size(), 106,
 		"38 + 12 + 9 (jalon 13) + 3 (jalon 14) + 2 (jalon 15) + 8 (jalon 17) + 6 (jalon 19) "
-		+ "+ 11 (jalon 20 : Caninos et Goupix sont ceux du J17) + 14 (jalon 29)")
+		+ "+ 11 (jalon 20 : Caninos et Goupix sont ceux du J17) + 3 (jalon 21 : Ptitard, Tentacool, "
+		+ "Ronflex) + 14 (jalon 29)")
 	for id: StringName in SPECIES:
 		var v: Array = SPECIES[id]
 		var species := _data.get_species(id)

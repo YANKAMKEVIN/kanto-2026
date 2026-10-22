@@ -172,7 +172,8 @@
 				"shadows": [0.86, 0.82, 0.94],
 				"midtones": [0.95, 0.93, 1.0],
 				"highlights": [0.97, 0.96, 1.0],
-				"strength": 1.0
+				"strength": 1.0,
+				"flat": true
 			},
 			"sun_direction": [-0.7, -0.7],
 			"rim": { "color": "#c4b8e8", "strength": 0.08, "width": 3.0 },
@@ -273,6 +274,7 @@
 		"pokemon_tower_4f": "tower",
 		"pokemon_tower_5f": "tower",
 		"pokemon_tower_6f": "tower",
+		"pokemon_tower_7f": "tower",
 		"route_8": "golden_hour",
 		"route_8_gate": "interior_warm",
 		"route_8_underground_gate": "interior_warm",
@@ -304,6 +306,10 @@
 		"rocket_hideout_b2f": "hideout",
 		"rocket_hideout_b3f": "hideout",
 		"rocket_hideout_b4f": "hideout",
-		"rocket_hideout_elevator": "hideout"
+		"rocket_hideout_elevator": "hideout",
+		"route_16": "golden_hour",
+		"route_12": "golden_hour",
+		"route_12_gate": "interior_warm",
+		"route_12_gate_2f": "interior_warm"
 	}
 }

@@ -44,21 +44,5 @@
 			}
 		],
 		"description": "Projette des pointes acérées sur la cible, de deux à cinq fois d'affilée."
-	},
-	"barrier": {
-		"name": "Bouclier",
-		"type": "psychic",
-		"category": "status",
-		"accuracy": 0,
-		"pp": 20,
-		"effects": [
-			{
-				"kind": "stat_stage",
-				"stat": "def",
-				"stages": 2,
-				"target": "self"
-			}
-		],
-		"description": "Le lanceur dresse un mur solide devant lui. Augmente beaucoup sa Défense."
 	}
 }

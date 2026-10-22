@@ -69,7 +69,7 @@ func test_real_data_loads_without_error() -> void:
 	assert_eq(_data.get_type_chart().get_type_ids().size(), 18)
 	# Ordre du Pokédex ; jalon 20 (T7) : les 11 espèces de kanto_celadon.json.
 	# Jalon 29 (T4) : 14 espèces de plus (reprises J22/J23/J24/J26, Excelangue, M. Mime, Noadkoko,
-	# Sulfura) ; ordre du Pokédex.
+	# Sulfura) ; ordre du Pokédex. Jalon 21 (T5) : Ptitard, Tentacool, Ronflex (kanto_j21.json).
 	assert_eq(_data.get_species_ids(), [
 		&"bulbasaur", &"ivysaur", &"venusaur", &"charmander", &"charmeleon", &"charizard", &"squirtle",
 		&"wartortle", &"blastoise", &"caterpie", &"metapod", &"butterfree", &"weedle", &"kakuna",
@@ -78,20 +78,21 @@ func test_real_data_loads_without_error() -> void:
 		&"nidoqueen", &"nidoran_m", &"nidorino", &"nidoking", &"clefairy", &"clefable", &"vulpix",
 		&"ninetales", &"jigglypuff", &"wigglytuff", &"zubat", &"golbat", &"oddish", &"gloom",
 		&"vileplume", &"paras", &"parasect", &"venomoth", &"diglett", &"dugtrio", &"meowth", &"persian",
-		&"golduck", &"mankey", &"primeape", &"growlithe", &"arcanine", &"abra", &"kadabra", &"alakazam",
-		&"machop", &"machoke", &"bellsprout", &"weepinbell", &"victreebel", &"tentacruel", &"geodude",
+		&"golduck", &"mankey", &"primeape", &"growlithe", &"arcanine", &"poliwag", &"abra", &"kadabra", &"alakazam",
+		&"machop", &"machoke", &"bellsprout", &"weepinbell", &"victreebel", &"tentacool", &"tentacruel", &"geodude",
 		&"graveler", &"golem", &"magnemite", &"magneton", &"dewgong", &"shellder", &"cloyster",
 		&"gastly", &"haunter", &"onix", &"drowzee", &"hypno", &"kingler", &"voltorb", &"exeggcute",
 		&"exeggutor", &"cubone", &"marowak", &"lickitung", &"koffing", &"rhyhorn", &"chansey",
 		&"tangela", &"kangaskhan", &"horsea", &"goldeen", &"staryu", &"starmie", &"mr_mime", &"gyarados",
-		&"lapras", &"eevee", &"vaporeon", &"jolteon", &"flareon", &"moltres"] as Array[StringName])
-	assert_eq(_data.get_move_ids().size(), 138,
+		&"lapras", &"eevee", &"vaporeon", &"jolteon", &"flareon", &"snorlax", &"moltres"] as Array[StringName])
+	assert_eq(_data.get_move_ids().size(), 139,
 		"47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10) + Patience (J11) "
 		+ "+ 21 du Mont Sélénite (jalon 12) + 8 du jalon 13 (les 5 du J12 qu'il reprenait : "
 		+ "entrées du J12) + 6 du Cap d'Azuria (jalon 14) + Jackpot (J15) "
 		+ "+ Coupe et Tonnerre (jalon 16) + 7 du jalon 17 + 8 de la Tour Pokémon (J19 ; "
 		+ "Hypnose, Hurlement et Bélier viennent du J17) + 7 du jalon 20 + Vol (passe systèmes 2, T25) "
-		+ "+ Surf (S2C) + Force (S2D) + 8 du jalon 29 (5 reprises J24, Piqué, Ultimawashi, Clonage)")
+		+ "+ Surf (S2C) + Force (S2D) + Amnésie, Bouclier (J21 ; Constriction vient du J20) "
+		+ "+ 7 du jalon 29 (4 reprises J24, Piqué, Ultimawashi, Clonage ; Bouclier est celui du J21)")
 	assert_true(_data.has_move(&"struggle"))
 
 
@@ -474,6 +475,8 @@ func test_real_catch_rates_are_the_official_ones() -> void:
 		&"alakazam": 50, &"machoke": 90, &"venomoth": 75, &"chansey": 30, &"golduck": 75,
 		&"tentacruel": 60, &"dewgong": 75, &"cloyster": 60, &"kingler": 60, &"lapras": 45,
 		&"lickitung": 45, &"mr_mime": 45, &"exeggutor": 45, &"moltres": 3,
+		# Jalon 21 (T5).
+		&"poliwag": 255, &"tentacool": 190, &"snorlax": 25,
 	}
 	assert_eq(_data.get_species_ids().size(), expected.size(), "toutes les espèces")
 	for id: StringName in _data.get_species_ids():

@@ -1,0 +1,34 @@
+CONCEPT ART — VUE GÉNÉRALE DE LA ROUTE 16 EST, LA ROUTE BOISÉE DE CÉLADOPOLE (Kanto 2026), image de référence de direction artistique (2e essai).
+
+Cinq images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. La route va de la droite (l'EST, où elle sort d'une ville) vers la gauche (l'OUEST, où elle finit contre une grande façade de bâtiment).
+Légende du plan :
+- vert foncé (TOUT le reste de l'image, y compris le grand rectangle du haut à droite) = FORÊT DENSE infranchissable, faite d'arbres serrés, SANS AUCUNE HERBE, SANS CLAIRIÈRE, SANS CHAMP : même le rectangle du haut à droite n'est que de la forêt, la plus épaisse, rien d'autre ;
+- beige = CHEMIN DE TERRE battue, large de trois dalles, de la droite de l'image jusqu'à la façade ; il se resserre à DEUX dalles au milieu (le GOULET) entre deux masses de rochers gris clair (une au nord, une au sud) ; puis il se rouvre en un petit parvis devant la façade ;
+- DEUX CASES (2 × 2) d'un bleu-vert sombre avec un ventre crème, exactement DANS le goulet, entre les deux masses de rochers = RONFLEX ENDORMI, qui BOUCHE TOUT LE GOULET d'un bord à l'autre ;
+- gris-bleu, grand rectangle à gauche (toit sur la moitié haute, façade claire en bas, deux petites portes brunes côte à côte au milieu du bas) = LE POSTE de garde de route, porte FERMÉE ;
+- rangée de petits poteaux bruns reliés = CLÔTURE BASSE de bois, le long du bord sud du chemin (interrompue par la masse de rochers du goulet).
+Respecte ce plan À LA LETTRE. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+RÈGLE ABSOLUE DES CHEMINS : seulement des segments horizontaux et verticaux à angles droits, AUCUNE diagonale ni courbe, aucun escalier. Le chemin est droit. RELIEF : tout est plat.
+
+IMAGE 2 : la vue générale de la Route 2 (forêt dense, chemin de terre) : respecte EXACTEMENT son style de rendu (pinceau, arbres en masses arrondies serrées, saturation, chemin). Ne reprends PAS sa composition.
+IMAGE 3 : la vue générale de la Route 25 : sa façon de peindre les rochers clairs, sa lumière. Ne reprends PAS sa mer.
+IMAGE 4 : un poste de garde de route du jeu (façade de face) : c'est le MODÈLE du bâtiment : même pierre claire, même toit bas d'ardoises bleu-gris, même porte, même allure officielle. Reprends-le en LONG (12 cases de large, 8 de haut avec le toit, vu de dessus en trois quarts) : un bâtiment institutionnel de passage, symétrique, avec UNE PORTE DOUBLE brune au milieu de sa façade (fermée) et de petites fenêtres alignées régulièrement de part et d'autre, un auvent sobre au-dessus de la porte ; PAS une chaumière, PAS de jardinière, PAS de cheminée de maison ; l'enseigne reste vierge, sans texte.
+IMAGE 5 : le sprite d'un Ronflex endormi (feuille de poses) : couleurs et dessin du Pokémon, rendu à reprendre fidèlement (peint simplifié) ; mets-le à l'échelle du plan.
+
+Format : PAYSAGE 1536 × 1024, vue plongeante sur toute la route, comme le plan.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, « HD-2D peint » : formes simples, lisibles et arrondies. Ni pixel art, ni 3D, ni photo. Le feuillage est peint en grandes masses douces.
+- Perspective : vue de dessus de trois quarts, projection oblique frontale, sans point de fuite.
+- Aucun trait noir : contours fins et doux. Ombres colorées bleu-vert ou violet froid.
+- LUMIÈRE NEUTRE : lumière de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche ; aucune teinte dorée ou orangée, aucun liseré chaud, aucun rai de soleil.
+
+AMBIANCE : un chemin tranquille serré entre deux murs de forêt, qui mène à un grand poste fermé ; au milieu du goulet, un RONFLEX GÉANT dort en travers du chemin, assis, le menton sur le ventre, immense (2 cases sur 2), c'est le SUJET de l'image : il doit être très visible et occuper tout le goulet, les deux masses de rochers de part et d'autre.
+- Au NORD-EST, la forêt est simplement la plus dense et la plus haute : une masse continue de cimes, comme le reste, AUCUNE herbe, AUCUNE clairière, AUCUN champ jaune.
+
+VIE : AUCUN personnage ; le seul Pokémon est Ronflex endormi.
+
+INTERDITS : texte, lettres, chiffres, panneaux lisibles, logo, signature, cadre, interface ; personnage, vélo, véhicule, route goudronnée ; autre bâtiment que le poste ; HAUTES HERBES, champ, prairie, clairière, herbe jaune ; falaise, escalier, mer ; arbres orange ; neige ; brouillard, flou, vignettage ; pixel art, 3D.

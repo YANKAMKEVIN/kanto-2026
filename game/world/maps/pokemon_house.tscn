@@ -1,20 +1,21 @@
 [gd_scene format=3]
 
-[ext_resource type="Script" path="res://game/world/map.gd" id="1_lvb7a"]
-[ext_resource type="Texture2D" path="res://assets/world/interiors/int_maison_argenta_coque.png" id="2_5syoe"]
-[ext_resource type="PackedScene" path="res://game/world/props/painted/int_tapis_plaid_01.tscn" id="3_8fq03"]
-[ext_resource type="PackedScene" path="res://game/world/props/painted/int_panier_pokemon_01.tscn" id="4_0d4t5"]
-[ext_resource type="PackedScene" path="res://game/world/props/painted/int_frigo_01.tscn" id="5_p71s3"]
-[ext_resource type="PackedScene" path="res://game/world/props/painted/int_cuisine_01.tscn" id="6_ngbjp"]
-[ext_resource type="PackedScene" path="res://game/world/props/painted/int_cuisiniere_hotte_01.tscn" id="7_iuky7"]
-[ext_resource type="PackedScene" path="res://game/world/props/painted/int_canape_01.tscn" id="8_fh0ta"]
-[ext_resource type="PackedScene" path="res://game/world/props/painted/int_chevet_lampe_01.tscn" id="9_cj8mn"]
-[ext_resource type="PackedScene" path="res://game/world/props/painted/int_table_repas_01.tscn" id="10_j2uy7"]
-[ext_resource type="PackedScene" path="res://game/world/props/painted/int_plante.tscn" id="11_sef6k"]
-[ext_resource type="Script" path="res://game/world/warp_point.gd" id="12_3kdyi"]
+[ext_resource type="Script" path="res://game/world/map.gd" id="1_5syoe"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/int_maison_argenta_coque.png" id="2_8fq03"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_tapis_plaid_01.tscn" id="3_0d4t5"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_panier_pokemon_01.tscn" id="4_p71s3"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_frigo_01.tscn" id="5_ngbjp"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_cuisine_01.tscn" id="6_iuky7"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_cuisiniere_hotte_01.tscn" id="7_fh0ta"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_canape_01.tscn" id="8_cj8mn"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_chevet_lampe_01.tscn" id="9_j2uy7"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_table_repas_01.tscn" id="10_sef6k"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_plante.tscn" id="11_3kdyi"]
+[ext_resource type="Script" path="res://game/world/warp_point.gd" id="12_jnttg"]
+[ext_resource type="Script" path="res://game/world/triggers/event_trigger_point.gd" id="13_kwuer"]
 
-[node name="PokemonHouse" type="Node2D" unique_id=1630910413]
-script = ExtResource("1_lvb7a")
+[node name="PokemonHouse" type="Node2D" unique_id=48197523]
+script = ExtResource("1_5syoe")
 map_id = &"pokemon_house"
 display_name = "Lavanville"
 size = Vector2i(15, 10)
@@ -22,85 +23,94 @@ blocked_cells = Array[Vector2i]([Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0),
 interior = true
 light_profile = &"interior_warm"
 
-[node name="Shell" type="Sprite2D" parent="." unique_id=2068536755]
+[node name="Shell" type="Sprite2D" parent="." unique_id=654359055]
 z_index = -3
-texture = ExtResource("2_5syoe")
+texture = ExtResource("2_8fq03")
 centered = false
 
-[node name="GroundDecals" type="Node2D" parent="." unique_id=1218367825]
+[node name="GroundDecals" type="Node2D" parent="." unique_id=877659445]
 z_index = -1
 
-[node name="RugPlaid" parent="GroundDecals" unique_id=396669229 instance=ExtResource("3_8fq03")]
+[node name="RugPlaid" parent="GroundDecals" unique_id=396669229 instance=ExtResource("3_0d4t5")]
 position = Vector2(576, 772)
 
-[node name="Entities" type="Node2D" parent="." unique_id=1724729603]
+[node name="Entities" type="Node2D" parent="." unique_id=1185831060]
 unique_name_in_owner = true
 y_sort_enabled = true
 
-[node name="BasketA" parent="Entities" unique_id=1450350375 instance=ExtResource("4_0d4t5")]
+[node name="BasketA" parent="Entities" unique_id=1450350375 instance=ExtResource("4_p71s3")]
 position = Vector2(240, 562)
 
-[node name="BasketB" parent="Entities" unique_id=1475857503 instance=ExtResource("4_0d4t5")]
+[node name="BasketB" parent="Entities" unique_id=1095086259 instance=ExtResource("4_p71s3")]
 position = Vector2(336, 658)
 
-[node name="Fridge" parent="Entities" unique_id=494471310 instance=ExtResource("5_p71s3")]
+[node name="Fridge" parent="Entities" unique_id=494471310 instance=ExtResource("5_ngbjp")]
 position = Vector2(144, 384)
 
-[node name="Kitchen" parent="Entities" unique_id=332056923 instance=ExtResource("6_ngbjp")]
+[node name="Kitchen" parent="Entities" unique_id=332056923 instance=ExtResource("6_iuky7")]
 position = Vector2(336, 384)
 
-[node name="Stove" parent="Entities" unique_id=1520539083 instance=ExtResource("7_iuky7")]
+[node name="Stove" parent="Entities" unique_id=1520539083 instance=ExtResource("7_fh0ta")]
 position = Vector2(528, 384)
 
-[node name="Sofa" parent="Entities" unique_id=1822141563 instance=ExtResource("8_fh0ta")]
+[node name="Sofa" parent="Entities" unique_id=1822141563 instance=ExtResource("8_cj8mn")]
 position = Vector2(1104, 384)
 
-[node name="Lamp" parent="Entities" unique_id=1542184166 instance=ExtResource("9_cj8mn")]
+[node name="Lamp" parent="Entities" unique_id=1542184166 instance=ExtResource("9_j2uy7")]
 position = Vector2(1296, 384)
 
-[node name="DiningTable" parent="Entities" unique_id=1053635810 instance=ExtResource("10_j2uy7")]
+[node name="DiningTable" parent="Entities" unique_id=1053635810 instance=ExtResource("10_sef6k")]
 position = Vector2(1008, 672)
 
-[node name="PlantWest" parent="Entities" unique_id=1145806697 instance=ExtResource("11_sef6k")]
+[node name="PlantWest" parent="Entities" unique_id=1145806697 instance=ExtResource("11_3kdyi")]
 position = Vector2(144, 768)
 
-[node name="PlantEast" parent="Entities" unique_id=1249768010 instance=ExtResource("11_sef6k")]
+[node name="PlantEast" parent="Entities" unique_id=651533226 instance=ExtResource("11_3kdyi")]
 position = Vector2(1296, 768)
 
-[node name="Warps" type="Node2D" parent="." unique_id=1259981132]
+[node name="Warps" type="Node2D" parent="." unique_id=1231657027]
 
-[node name="Exit0" type="Marker2D" parent="Warps" unique_id=973047810]
+[node name="Exit0" type="Marker2D" parent="Warps" unique_id=120599214]
 position = Vector2(624, 864)
-script = ExtResource("12_3kdyi")
+script = ExtResource("12_jnttg")
 trigger = 1
 direction = Vector2i(0, 1)
 target_map = &"lavender_town"
 target_spawn = &"retour_fuji"
 arrival_facing = Vector2i(0, 1)
 
-[node name="Exit1" type="Marker2D" parent="Warps" unique_id=447476831]
+[node name="Exit1" type="Marker2D" parent="Warps" unique_id=1485394138]
 position = Vector2(720, 864)
-script = ExtResource("12_3kdyi")
+script = ExtResource("12_jnttg")
 trigger = 1
 direction = Vector2i(0, 1)
 target_map = &"lavender_town"
 target_spawn = &"retour_fuji"
 arrival_facing = Vector2i(0, 1)
 
-[node name="Exit2" type="Marker2D" parent="Warps" unique_id=1461069155]
+[node name="Exit2" type="Marker2D" parent="Warps" unique_id=1212347550]
 position = Vector2(816, 864)
-script = ExtResource("12_3kdyi")
+script = ExtResource("12_jnttg")
 trigger = 1
 direction = Vector2i(0, 1)
 target_map = &"lavender_town"
 target_spawn = &"retour_fuji"
 arrival_facing = Vector2i(0, 1)
 
-[node name="Interactables" type="Node2D" parent="." unique_id=759510265]
+[node name="Interactables" type="Node2D" parent="." unique_id=138642211]
 
-[node name="Spawns" type="Node2D" parent="." unique_id=884634769]
+[node name="Spawns" type="Node2D" parent="." unique_id=800460944]
 
-[node name="entrance" type="Marker2D" parent="Spawns" unique_id=1655327968]
+[node name="entrance" type="Marker2D" parent="Spawns" unique_id=933819529]
 position = Vector2(720, 864)
 
-[node name="Triggers" type="Node2D" parent="." unique_id=502510754]
+[node name="devant_fuji" type="Marker2D" parent="Spawns" unique_id=1552206236]
+position = Vector2(720, 480)
+
+[node name="Triggers" type="Node2D" parent="." unique_id=1664356229]
+
+[node name="FluteTrigger" type="Marker2D" parent="Triggers" unique_id=1458418426]
+position = Vector2(624, 768)
+script = ExtResource("13_kwuer")
+cutscene_id = &"pokemon_house_flute"
+size = Vector2i(3, 1)

@@ -74,9 +74,9 @@
 		"celadon_hotel",
 		"celadon_gym",
 		"celadon_game_corner",
+		"route_12_gate",
+		"route_12_gate_2f",
 		"route_22_gate",
-		"indigo_plateau_lobby",
-		"qa_teleport",
-		"qa_teleport_2"
+		"indigo_plateau_lobby"
 	]
 }

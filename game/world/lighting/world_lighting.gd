@@ -10,6 +10,12 @@ extends CanvasLayer
 ##   les ombres de contact (groupe [constant GROUP_CONTACT_SHADOWS]), cachées sans contact.
 ## **Profil vide (ou null) = aucun effet** : Bourg Palette, la Route 1 et les intérieurs
 ## existants restent tels quels (`GameMap.light_profile` vide).
+## **Étalonnage à plat** ([member LightProfile.grade_flat], J21, Tour Pokémon) : au lieu du
+## calque qui relit l'écran, un gain unique ([method LightProfile.flat_grade_color]) posé par un
+## `CanvasModulate` sur le canevas du monde (aucun calque de plus : sur le Mali-G57 de l'A17,
+## chaque calque plein écran coûtait plusieurs i/s). Le mélange étant linéaire, multiplier
+## chaque objet du monde revient à multiplier l'image. En combat ([method set_battle_active]),
+## BattleStage (son propre calque) reçoit le même gain par un calque multiplicatif.
 ## « Économie » ([method set_reduced_effects], 6F) coupe le vent et le liseré, garde
 ## l'étalonnage et les ombres (jalon-07.md §7).
 ##
@@ -55,6 +61,9 @@ var _profile: LightProfile = LightProfile.new()
 var _reduced: bool = false
 var _globals: Dictionary[StringName, Variant] = {}
 var _grade: ColorRect
+var _grade_flat: ColorRect
+var _world_modulate: CanvasModulate
+var _battle_active: bool = false
 
 
 func _init() -> void:
@@ -67,6 +76,26 @@ func _init() -> void:
 	_grade.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_grade.visible = false
 	add_child(_grade)
+	_grade_flat = ColorRect.new()
+	_grade_flat.name = "GradeFlat"
+	var multiply := CanvasItemMaterial.new()
+	multiply.blend_mode = CanvasItemMaterial.BLEND_MODE_MUL
+	_grade_flat.material = multiply
+	_grade_flat.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_grade_flat.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_grade_flat.visible = false
+	add_child(_grade_flat)
+	_world_modulate = CanvasModulate.new()
+	_world_modulate.name = "WorldGradeFlat"
+	_world_modulate.visible = false
+
+
+func _notification(what: int) -> void:
+	# Le CanvasModulate n'est pas un enfant de ce calque : posé par Boot dans le canevas du
+	# monde (qui le libère), libéré ici s'il n'a jamais été posé.
+	if what == NOTIFICATION_PREDELETE and is_instance_valid(_world_modulate) \
+			and _world_modulate.get_parent() == null:
+		_world_modulate.free()
 
 
 ## Pose [param profile] (null = profil vide : aucun effet) ; règle les ombres des objets
@@ -74,8 +103,24 @@ func _init() -> void:
 func apply(profile: LightProfile, map: Node = null) -> void:
 	_profile = profile if profile != null else LightProfile.new()
 	_push_globals()
-	_grade.visible = _profile.has_grade()
+	_grade.visible = _profile.has_grade() and not _profile.grade_flat
+	_grade_flat.color = _profile.flat_grade_color()
+	_world_modulate.color = _profile.flat_grade_color()
+	_update_flat()
 	apply_shadows(map)
+
+
+## Combat en cours (Boot, `battle_started` / `battle_finished`) : l'étalonnage à plat passe
+## aussi sur BattleStage par le calque multiplicatif.
+func set_battle_active(active: bool) -> void:
+	_battle_active = active
+	_update_flat()
+
+
+func _update_flat() -> void:
+	var flat := _profile.has_grade() and _profile.grade_flat
+	_world_modulate.visible = flat
+	_grade_flat.visible = flat and _battle_active
 
 
 ## Coupe (vrai) ou rend le vent et le liseré (« Économie », 6F).
@@ -100,9 +145,30 @@ func get_profile() -> LightProfile:
 	return _profile
 
 
-## Vrai si le calque d'étalonnage est affiché.
+## Vrai si un étalonnage est posé (calque par zones, ou étalonnage à plat).
 func is_grade_visible() -> bool:
-	return _grade.visible
+	return _grade.visible or _world_modulate.visible
+
+
+## Vrai si l'étalonnage posé est l'étalonnage à plat (CanvasModulate du monde).
+func is_grade_flat() -> bool:
+	return _world_modulate.visible
+
+
+## Vrai si le calque multiplicatif du combat est affiché (étalonnage à plat pendant un combat).
+func is_battle_grade_visible() -> bool:
+	return _grade_flat.visible
+
+
+## Gain de l'étalonnage à plat (tons moyens dosés par l'intensité).
+func get_flat_grade_color() -> Color:
+	return _world_modulate.color
+
+
+## Nœud `CanvasModulate` de l'étalonnage à plat, à poser **hors de tout CanvasLayer** (dans le
+## canevas du monde) par le propriétaire du calque (Boot), qui le libère ensuite.
+func get_world_modulate() -> CanvasModulate:
+	return _world_modulate
 
 
 ## Valeurs des « global uniform » posées au dernier [method apply] (tests, journal).
