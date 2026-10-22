@@ -488,6 +488,14 @@
 		"cubone": {
 			"height": 0.4, "weight": 6.5,
 			"description": "Il porte le crâne de sa mère comme un casque. Les nuits de lune, on l'entend pleurer doucement."
+		},
+		"lapras": {
+			"height": 2.5, "weight": 220.0,
+			"description": "Il traverse les mers en portant des passagers sur son dos. Sa voix douce se répand sur les flots, par nuit calme."
+		},
+		"alakazam": {
+			"height": 1.5, "weight": 48.0,
+			"description": "Son cerveau dépasse celui d'un ordinateur. Il se souvient de tout, depuis sa naissance, et ne s'en sert jamais pour rien."
 		}
 	}
 }

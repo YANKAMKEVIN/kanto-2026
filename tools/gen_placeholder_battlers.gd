@@ -59,6 +59,9 @@ const SPECIES: Array[String] = [
 	"victreebel", "tangela", "vileplume", "rhyhorn", "kangaskhan",
 	# Jalon 19 (jalon-19.md §2.12) : Exorcistes et rival n° 5 (Caninos vient du J17). Ajouts en fin.
 	"gastly", "haunter", "exeggcute", "gyarados",
+	# Jalon 26 (jalon-26.md §2.7, T3) : Lokhlass (cadeau du 7F) et Alakazam (équipes de la Sylphe,
+	# rival n° 6). Ajouts en fin ; rien d'autre ne change.
+	"alakazam", "lapras",
 ]
 const OUTLINE := Color("#1c1c28")
 const EYE := Color("#1c1c28")
@@ -1902,6 +1905,42 @@ func _draw_gyarados(img: Image, back: bool) -> void:
 	_r(img, 25, 21, 14, 3, Color("#2a2a4a"))
 	_line(img, Vector2(22, 20), Vector2(12, 26), WHITE, 1)
 	_line(img, Vector2(42, 20), Vector2(52, 26), WHITE, 1)
+
+
+# --- Alakazam, Lokhlass (jalon 26) ------------------------------------------------
+
+## Kadabra en plus massif : même silhouette, deuxième cuillère à gauche, moustache blanche.
+func _draw_alakazam(img: Image, back: bool) -> void:
+	_draw_psychic_fox(img, back, true)
+	_line(img, Vector2(12, 34), Vector2(6, 22), Color("#b8b8c4"), 2)
+	_e(img, 6, 20, 3, 4, Color("#d0d0dc"), true)
+	if not back:
+		_line(img, Vector2(26, 23), Vector2(16, 29), WHITE, 2)
+		_line(img, Vector2(38, 23), Vector2(48, 29), WHITE, 2)
+
+
+## Long cou et petite tête de face, carapace brun clair sur le dos, nageoires, corps bleu.
+func _draw_lapras(img: Image, back: bool) -> void:
+	var skin := Color("#4a90d8")
+	var belly := Color("#e8dca8")
+	var shell := Color("#9a9aa8")
+	_e(img, 32, 52, 24, 9, skin.darkened(0.08), true)
+	_e(img, 32, 46, 19, 10, skin, true)
+	_e(img, 44, 38, 8, 8, shell, true)
+	_r(img, 41, 33, 2, 3, shell.lightened(0.3))
+	_r(img, 46, 33, 2, 3, shell.lightened(0.3))
+	_r(img, 51, 38, 2, 3, shell.lightened(0.3))
+	_e(img, 20, 54, 7, 3, skin.darkened(0.15), true)
+	_e(img, 46, 56, 7, 3, skin.darkened(0.15), true)
+	_line(img, Vector2(26, 40), Vector2(22, 24), skin, 8)
+	_e(img, 22, 16, 9, 8, skin, true)
+	if back:
+		_r(img, 18, 11, 8, 2, skin.darkened(0.25))
+		return
+	_e(img, 32, 52, 14, 5, belly)
+	_e(img, 20, 20, 5, 3, belly)
+	_eye(img, 24, 14, Color("#2a2a3a"))
+	_r(img, 14, 10, 2, 3, skin.lightened(0.2))
 
 
 # --- Ombre ------------------------------------------------------------------------

@@ -81,7 +81,8 @@ func test_real_data_loads_without_error() -> void:
 		&"diglett", &"dugtrio",
 		# Jalon 15 (T12) : Miaouss et Persan (kanto_vermilion.json).
 		&"meowth", &"persian",
-		&"mankey", &"primeape", &"growlithe", &"arcanine", &"abra", &"kadabra", &"machop",
+		&"mankey", &"primeape", &"growlithe", &"arcanine", &"abra", &"kadabra", &"alakazam",
+		&"machop",
 		&"bellsprout", &"weepinbell", &"victreebel",
 		&"geodude", &"graveler", &"golem", &"magnemite", &"magneton", &"shellder",
 		# Jalon 19 (T3) : Fantominus, Spectrum, Noeunoeuf, Osselait, Ossatueur, Léviator
@@ -90,6 +91,8 @@ func test_real_data_loads_without_error() -> void:
 		&"drowzee", &"hypno", &"voltorb", &"exeggcute", &"cubone", &"marowak", &"koffing",
 		&"rhyhorn", &"tangela", &"kangaskhan",
 		&"horsea", &"goldeen", &"staryu", &"starmie", &"gyarados",
+		# Jalon 26 (T3) : Lokhlass, Alakazam (kanto_silph.json).
+		&"lapras",
 		&"eevee", &"vaporeon", &"jolteon", &"flareon"] as Array[StringName])
 	assert_eq(_data.get_move_ids().size(), 130,
 		"47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10) + Patience (J11) "
@@ -176,6 +179,8 @@ func test_real_evolution_chains() -> void:
 		# Cap d'Azuria (jalon 14, §2.13) : Kadabra (Cordon d'échange, sans source) et Machoc
 		# (Machopeur absent) n'en déclarent pas.
 		&"abra": [&"kadabra", 16],
+		# Sylphe SARL (jalon 26, T3) : Kadabra → Alakazam par échange, comme Gravalanch → Grolem.
+		&"kadabra": [&"alakazam", &""],
 		# Carmin-sur-Mer (jalon 15, §2.7.1) : Rouge/Bleu.
 		&"meowth": [&"persian", 28],
 		# Jalon 17 (§2.12.1) : Rouge/Bleu.
@@ -476,6 +481,8 @@ func test_real_catch_rates_are_the_official_ones() -> void:
 		# Jalon 19 (T3, Tour Pokémon ; Caninos vient du J17).
 		&"gastly": 190, &"haunter": 90, &"exeggcute": 90, &"cubone": 190,
 		&"marowak": 75, &"gyarados": 45,
+		# Jalon 26 (T3, Sylphe SARL).
+		&"lapras": 45, &"alakazam": 50,
 	}
 	assert_eq(_data.get_species_ids().size(), expected.size(), "toutes les espèces")
 	for id: StringName in _data.get_species_ids():
