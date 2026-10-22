@@ -256,6 +256,8 @@ const VARIANT_FLAGS: Dictionary = {
 	&"celadon_hidden_1": [PEWTER_FLAGS],
 	&"celadon_gym_erika": [PEWTER_FLAGS], &"celadon_gym_erika_tm_late": [PEWTER_FLAGS],
 	&"celadon_roof_trade": [PEWTER_FLAGS],
+	# Jalon 23 (T19) : Koga (scène et rattrapage de la CT06).
+	&"fuchsia_gym_koga": [PEWTER_FLAGS], &"fuchsia_gym_koga_tm_late": [PEWTER_FLAGS],
 	# Jalon 20 (T21) : interrupteur (une fois), chute et prise de la Clé, Giovanni, Scope, objets.
 	&"game_corner_switch": [PEWTER_FLAGS], &"rocket_hideout_key_drop": [PEWTER_FLAGS],
 	&"rocket_hideout_b4f_lift_key": [PEWTER_FLAGS + [&"rocket_dropped_lift_key"]],
@@ -291,6 +293,8 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"souterrain_hidden_1": &"underground_path_7_8", &"souterrain_hidden_2": &"underground_path_7_8",
 	&"celadon_hidden_1": &"celadon_city", &"celadon_gym_erika": &"celadon_gym",
 	&"celadon_gym_erika_tm_late": &"celadon_gym", &"celadon_roof_trade": &"celadon_dept_roof",
+	# Jalon 23 (T19) : Koga (son dialogue).
+	&"fuchsia_gym_koga": &"fuchsia_gym", &"fuchsia_gym_koga_tm_late": &"fuchsia_gym",
 	# Jalon 20 (T21) : choix OUI de l'affiche, dialogues du sbire à la Clé, de Giovanni et des
 	# Poké Balls, objets et caches du repaire.
 	&"game_corner_switch": &"celadon_game_corner", &"rocket_hideout_key_drop": &"rocket_hideout_b4f",
@@ -517,7 +521,9 @@ func test_library_loads_without_error() -> void:
 		# Jalon 20 (T17) : arrivées, objet et caches, Erika, échange de la fillette.
 		&"route_8_reached", &"celadon_reached", &"route_8_item_1", &"route_8_hidden_1",
 		&"souterrain_hidden_1", &"souterrain_hidden_2", &"celadon_hidden_1",
-		&"celadon_gym_erika", &"celadon_gym_erika_tm_late", &"celadon_roof_trade"]
+		&"celadon_gym_erika", &"celadon_gym_erika_tm_late", &"celadon_roof_trade",
+		# Jalon 23 (T19) : Koga.
+		&"fuchsia_gym_koga", &"fuchsia_gym_koga_tm_late"]
 		+ J18_IDS + J20_T21_IDS))
 
 
@@ -594,12 +600,13 @@ func test_every_trainer_and_item_step_exists() -> void:
 ## Jalon 10 (T9) : chaque Dresseur présenté par une carte en a une, chaque badge remis existe, et
 ## l'étape « badge » d'une scène suit le combat qui lève déjà son drapeau (« win »).
 func test_every_champion_card_and_badge_step_exists() -> void:
+	# Jalon 23 (T19) : Koga.
 	assert_eq(_cutscenes.get_card_trainer_ids(), [&"celadon_gym_erika", &"cerulean_gym_misty",
-		&"giovanni_hideout", &"pewter_gym_brock", &"vermilion_gym_surge"] as Array[StringName])
+		&"fuchsia_gym_koga", &"giovanni_hideout", &"pewter_gym_brock", &"vermilion_gym_surge"] as Array[StringName])
 	for id: StringName in _cutscenes.get_card_trainer_ids():
 		var trainer := _trainers.get_trainer(id)
 		assert_true(trainer != null and trainer.has_card(), "« %s » a une carte" % id)
-	assert_eq(_cutscenes.get_badge_ids(), [&"boulder", &"cascade", &"rainbow", &"thunder"]
+	assert_eq(_cutscenes.get_badge_ids(), [&"boulder", &"cascade", &"rainbow", &"soul", &"thunder"]
 		as Array[StringName])
 	for id: StringName in _cutscenes.get_badge_ids():
 		assert_true(_badges.has_badge(id), "badge « %s » connu" % id)

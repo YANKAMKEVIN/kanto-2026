@@ -157,11 +157,12 @@
 		"fuchsia_city": {
 			"name": "Parmanie", "kind": "town",
 			"maps": ["fuchsia_city", "fuchsia_center", "fuchsia_mart", "fuchsia_meeting_room",
-				"fuchsia_grandpa_house", "fuchsia_good_rod_house"],
+				"fuchsia_grandpa_house", "fuchsia_good_rod_house", "fuchsia_gym"],
 			"subtitle": "Route 15 — Route 18",
 			"services": [
 				{ "id": "pokemon_center", "found_on": "fuchsia_center" },
-				{ "id": "poke_mart", "found_on": "fuchsia_mart" }
+				{ "id": "poke_mart", "found_on": "fuchsia_mart" },
+				{ "id": "gym", "found_on": "fuchsia_gym" }
 			],
 			"description": "Une ville basse et verte, ouverte sur la mer. Au nord, le Parc Safari ; près des enclos, des Pokémon venus d'ailleurs."
 		},
