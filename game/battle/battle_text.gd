@@ -106,6 +106,14 @@ extends RefCounted
 ## Jackpot (jalon 15, `jalon-15.md` §2.7.3) : COINS_SCATTERED → « coins_scattered » ; à la fin
 ## du combat, « coins_collected » ({money}, [method coins_line]) après « prize_won ».
 ## Textes de l'annexe A de `jalon-15.md` (A.1), validés par Kevin le 2026-10-14 (Q-1).
+## J23 (rencontre Safari, dossier 26 §8, textes 20 à 29 validés le 2026-10-16) : SENT_OUT du
+## sauvage → « wild_appeared » (texte 20) ; SAFARI_BALL_THROWN → « safari_ball_thrown » (21) ;
+## BAIT_THROWN → « safari_bait » (22) ; ROCK_THROWN → « safari_rock » (23) ; SAFARI_EATING →
+## « safari_eating » (24) ; SAFARI_ANGRY → « safari_angry » (25) ; SAFARI_FLED → « safari_fled »
+## (26) ; SAFARI_LEFT → « safari_left » (27) ; capture : textes existants (28) ;
+## SAFARI_NO_BALLS → « safari_no_balls » (29). Libellés des quatre boutons, sans événement
+## ([method get_template], [method safari_ball_label]) : « safari_action_ball » ({amount} : Balls
+## restantes), « safari_action_bait », « safari_action_rock », « safari_action_run ».
 ## Nom du dresseur (OUV.2, dossier 13 §3.5) : il peut porter un jeton de [DialogueTokens]
 ## (`"name": "{rival}"`), résolu avec [member token_values] (posé par Boot) ; sans valeur, le nom
 ## reste tel quel.
@@ -161,6 +169,9 @@ const TEMPLATE_IDS: Array[StringName] = [
 	&"charge_skull_bash_start", &"charge_skull_bash_broken",
 	&"battle_item_used", &"item_escape", &"item_escape_2", &"revived",
 	&"flute_played", &"flute_all_woke", &"flute_no_effect", &"flute_no_effect_2",
+	&"safari_ball_thrown", &"safari_bait", &"safari_rock", &"safari_eating", &"safari_angry",
+	&"safari_fled", &"safari_left", &"safari_no_balls",
+	&"safari_action_ball", &"safari_action_bait", &"safari_action_rock", &"safari_action_run",
 ]
 ## Entre deux gains de statistiques du bilan (« PV +2 · Attaque +1 »).
 const SUMMARY_SEPARATOR: String = " · "
@@ -180,6 +191,17 @@ const _STATUS_PREFIXES: Dictionary[BattleEvent.Kind, String] = {
 	BattleEvent.Kind.STATUS_CURED: "status_cured",
 	BattleEvent.Kind.STATUS_PREVENTED: "status_prevented",
 	BattleEvent.Kind.STATUS_ENDED: "status_ended",
+}
+## J23 : modèle de chaque événement de la rencontre Safari.
+const _SAFARI_TEMPLATES: Dictionary[BattleEvent.Kind, StringName] = {
+	BattleEvent.Kind.SAFARI_BALL_THROWN: &"safari_ball_thrown",
+	BattleEvent.Kind.BAIT_THROWN: &"safari_bait",
+	BattleEvent.Kind.ROCK_THROWN: &"safari_rock",
+	BattleEvent.Kind.SAFARI_EATING: &"safari_eating",
+	BattleEvent.Kind.SAFARI_ANGRY: &"safari_angry",
+	BattleEvent.Kind.SAFARI_FLED: &"safari_fled",
+	BattleEvent.Kind.SAFARI_LEFT: &"safari_left",
+	BattleEvent.Kind.SAFARI_NO_BALLS: &"safari_no_balls",
 }
 const _VOWELS: String = "AEIOUYÀÂÄÉÈÊËÎÏÔÖÙÛÜaeiouyàâäéèêëîïôöùûü"
 
@@ -374,6 +396,11 @@ func lines(event: BattleEvent, data: PokemonData, trainer: TrainerData = null) \
 			result.append(_fill(&"flute_all_woke", event, data))
 		BattleEvent.Kind.FAILED:
 			result.append(_fill(&"move_failed", event, data))
+		BattleEvent.Kind.SAFARI_BALL_THROWN, BattleEvent.Kind.BAIT_THROWN, \
+				BattleEvent.Kind.ROCK_THROWN, BattleEvent.Kind.SAFARI_EATING, \
+				BattleEvent.Kind.SAFARI_ANGRY, BattleEvent.Kind.SAFARI_FLED, \
+				BattleEvent.Kind.SAFARI_LEFT, BattleEvent.Kind.SAFARI_NO_BALLS:
+			result.append(_fill(_SAFARI_TEMPLATES[event.kind], event, data))
 		BattleEvent.Kind.CONFUSED:
 			result.append(_fill(&"confusion_inflicted", event, data))
 		BattleEvent.Kind.CONFUSION_UNCHANGED:
@@ -480,6 +507,11 @@ func coins_line(amount: int) -> String:
 	if not _texts.has(&"coins_collected"):
 		return ""
 	return get_template(&"coins_collected").format({"money": MenuFormat.money(amount)})
+
+
+## J23 : libellé du bouton SAFARI BALL avec [param balls] Balls restantes.
+func safari_ball_label(balls: int) -> String:
+	return get_template(&"safari_action_ball").format({"amount": balls})
 
 
 ## « +11 XP » (bilan de fin de combat).

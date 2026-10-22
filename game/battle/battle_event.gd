@@ -161,6 +161,15 @@ extends RefCounted
 ## - FLUTE_WOKE : muet, un par Pokémon réveillé (son camp, sa place) ; [member on_field] : il
 ##   est en jeu (sa carte perd l'étiquette DOR) ;
 ## - ALL_WOKE : « Tous les Pokémon endormis se réveillent ! », puis l'adversaire joue.
+## J23 (rencontre Safari, [SafariBattle], dossier 26 §8 textes 20 à 29), tous sur le Pokémon
+## sauvage (camp FOE) :
+## - SAFARI_BALL_THROWN : « {player} lance une SAFARI BALL ! » ; [member amount] = Balls restantes
+##   après ce lancer ; suivent BALL_SHAKE, puis CAUGHT ou BROKE_FREE (comme une Ball du Sac) ;
+## - BAIT_THROWN / ROCK_THROWN : appât / caillou lancé ;
+## - SAFARI_EATING / SAFARI_ANGRY : fin de tour, le Pokémon mange / est en colère ;
+## - SAFARI_FLED : le Pokémon s'enfuit (test de fuite), puis BATTLE_ENDED (FOE_FLED) ;
+## - SAFARI_LEFT : FUIR, toujours réussi, puis BATTLE_ENDED (FLED) ;
+## - SAFARI_NO_BALLS : la dernière Ball est partie (capture ou non), puis BATTLE_ENDED.
 ## Tous les autres événements sur un Pokémon portent dans [member status] son statut au moment
 ## de l'événement (SENT_OUT : la carte de PV l'affiche dès l'entrée ; FAINTED : toujours vide,
 ## le K.O. efface le statut).
@@ -187,6 +196,8 @@ enum Kind {
 	HEALED, SCREEN_STARTED, SCREEN_ENDED, STATS_RESET,
 	ITEM_ESCAPE, REVIVED, BATTLE_ITEM_USED,
 	FLUTE_PLAYED, FLUTE_WOKE, ALL_WOKE,
+	SAFARI_BALL_THROWN, BAIT_THROWN, ROCK_THROWN, SAFARI_EATING, SAFARI_ANGRY, SAFARI_FLED,
+	SAFARI_LEFT, SAFARI_NO_BALLS,
 }
 enum SideId { PLAYER, FOE }
 

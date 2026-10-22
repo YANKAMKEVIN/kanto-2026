@@ -12,9 +12,11 @@ extends RefCounted
 ## Pokémon K.O.
 ## Passe systèmes 2 (`systemes-2.md` §2.4) : KEY_ITEM, jouer d'un objet clé (la Poké Flûte),
 ## sans cible et sans rien consommer ([method key_item]).
+## J23 (rencontre Safari, `jalon-23.md` §2.3) : SAFARI_BALL, BAIT (appât), ROCK (caillou), jouées
+## seulement par [SafariBattle] ; FUIR y reste RUN (toujours réussi).
 ## Chaque sorte s'ajoute en fin d'enum pour ne rien décaler.
 
-enum Kind { MOVE, RUN, ITEM, SWITCH, SPEAK, KEY_ITEM }
+enum Kind { MOVE, RUN, ITEM, SWITCH, SPEAK, KEY_ITEM, SAFARI_BALL, BAIT, ROCK }
 
 ## [member move_index] de Lutte (quand plus aucune capacité n'a de PP).
 const STRUGGLE: int = -1
@@ -98,6 +100,29 @@ static func key_item(id: StringName) -> BattleAction:
 	var action := BattleAction.new()
 	action.kind = Kind.KEY_ITEM
 	action.item_id = id
+	return action
+
+
+# --- J23 : rencontre Safari ([SafariBattle]) ---------------------------------------------
+
+## Action « lancer une Safari Ball » (rencontre Safari seulement).
+static func safari_ball() -> BattleAction:
+	var action := BattleAction.new()
+	action.kind = Kind.SAFARI_BALL
+	return action
+
+
+## Action « lancer un appât » (rencontre Safari seulement).
+static func bait() -> BattleAction:
+	var action := BattleAction.new()
+	action.kind = Kind.BAIT
+	return action
+
+
+## Action « lancer un caillou » (rencontre Safari seulement).
+static func rock() -> BattleAction:
+	var action := BattleAction.new()
+	action.kind = Kind.ROCK
 	return action
 
 
