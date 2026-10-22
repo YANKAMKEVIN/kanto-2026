@@ -61,6 +61,8 @@ var _map_id: StringName = &""
 ## Fin à annoncer au retour au calme (&"" : aucune).
 var _pending: StringName = &""
 var _shown: bool = false
+## Vrai si ce directeur a coupé les rencontres (compteur à 0, Parc sans visite).
+var _blocked_encounters: bool = false
 var _last_emit: Array = []
 
 
@@ -246,10 +248,15 @@ func _update_encounters() -> void:
 	if _encounters == null:
 		return
 	var visit := get_visit()
-	if is_park_map(_map_id):
-		_encounters.enabled = visit != null and visit.active and visit.steps_left > 0
-	else:
+	var block := is_park_map(_map_id) \
+		and not (visit != null and visit.active and visit.steps_left > 0)
+	# Le directeur ne rend que ce qu'il a lui-même coupé (outils et tests coupent aussi).
+	if block and _encounters.enabled:
+		_encounters.enabled = false
+		_blocked_encounters = true
+	elif not block and _blocked_encounters:
 		_encounters.enabled = true
+		_blocked_encounters = false
 
 
 func _sync_flag() -> void:

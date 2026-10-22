@@ -521,9 +521,8 @@ func test_library_loads_without_error() -> void:
 		# Jalon 20 (T17) : arrivées, objet et caches, Erika, échange de la fillette.
 		&"route_8_reached", &"celadon_reached", &"route_8_item_1", &"route_8_hidden_1",
 		&"souterrain_hidden_1", &"souterrain_hidden_2", &"celadon_hidden_1",
-		&"celadon_gym_erika", &"celadon_gym_erika_tm_late", &"celadon_roof_trade",
-		# Jalon 23 (T19) : Koga.
-		&"fuchsia_gym_koga", &"fuchsia_gym_koga_tm_late"]
+		&"celadon_gym_erika", &"celadon_gym_erika_tm_late", &"celadon_roof_trade"]
+		# Jalon 23 (T19) : Koga dans `j23_fuchsia_gym.json` (fichiers générés, test_j23_data).
 		+ J18_IDS + J20_T21_IDS))
 
 

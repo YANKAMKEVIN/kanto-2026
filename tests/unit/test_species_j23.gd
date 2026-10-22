@@ -108,7 +108,7 @@ func test_pokedex_entries_at_official_size() -> void:
 			continue
 		assert_almost_eq(info.height, float(DEX_SIZES[id][0]), 0.001, String(id))
 		assert_almost_eq(info.weight, float(DEX_SIZES[id][1]), 0.001, String(id))
-		assert_eq(info.notes.size(), 0, "%s : note avec la table du Parc (T13)" % id)
+		assert_eq(info.notes.size(), 1, "%s : une note avec la table du Parc (T13, Q-6)" % id)
 
 
 func test_tm_and_hm_compatibilities_are_generated() -> void:

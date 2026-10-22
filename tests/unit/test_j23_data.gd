@@ -10,10 +10,12 @@ const PLAN_J23: String = "res://docs/tech/jalon-23.md"
 const MAPS: Array[StringName] = [&"safari_zone_gate", &"safari_zone_center", &"safari_zone_east",
 	&"safari_zone_north", &"safari_zone_west", &"safari_zone_rest_house_center",
 	&"safari_zone_rest_house_east", &"safari_zone_rest_house_north",
-	&"safari_zone_rest_house_west", &"safari_zone_secret_house", &"wardens_house"]
+	&"safari_zone_rest_house_west", &"safari_zone_secret_house", &"wardens_house", &"fuchsia_gym"]
 ## Textes recommandés (« [R] ») et défauts du plan ([D]) : hors des documents validés.
 const RECOMMENDED: Array[String] = ["Passe au comptoir pour entrer.",
-	"Ta visite du PARC SAFARI est terminée."]
+	"Ta visite du PARC SAFARI est terminée.",
+	# Koga (T19, [R]) : reprise après une défaite, défaite.
+	"Fwahahaha ! Tu reviens ?", "Le poison a fait son œuvre.", "Reviens quand tu seras prêt."]
 ## Objets du dossier 26 §7 (remplacements N-19), par carte et position.
 const ITEMS: Dictionary = {
 	&"safari_zone_center_pepite": &"nugget", &"safari_zone_east_guerison": &"full_restore",

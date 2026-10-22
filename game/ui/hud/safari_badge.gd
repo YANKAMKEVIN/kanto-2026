@@ -21,7 +21,7 @@ func _init() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	visible = false
 	var style := StyleBoxFlat.new()
-	style.bg_color = Color(0.08, 0.1, 0.12, 0.55)
+	style.bg_color = UiTokens.PANEL_BG
 	style.set_corner_radius_all(28)
 	style.content_margin_left = 22
 	style.content_margin_right = 22
@@ -71,7 +71,7 @@ func _add_counter(row: HBoxContainer, icon: Texture2D) -> Label:
 	row.add_child(rect)
 	var label := Label.new()
 	label.add_theme_font_size_override(&"font_size", FONT_SIZE)
-	label.add_theme_color_override(&"font_color", Color.WHITE)
+	label.add_theme_color_override(&"font_color", UiTokens.TEXT)
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	row.add_child(label)
 	return label
