@@ -194,8 +194,9 @@ func test_every_coming_soon_warp_returns_to_a_walkable_spawn_of_its_own_map() ->
 	# Jalon 26 (T6) : les quatre postes mènent à Safrania ; restent dans la ville le Dojo (2 cases)
 	# et l'Arène (1) jusqu'au J27, la Sylphe SARL (2) jusqu'au T7.
 	# (relancer `tools/build_saffron_city.gd` une fois la Sylphe construite).
+	# Jalon 27 (T6) : le Dojo et l'Arène sont construits ; plus aucune porte « à venir » à Safrania.
 	var silph := 0 if MapCatalog.has_map(&"silph_co_1f") else 2
-	assert_eq(found, 3 + silph, "Dojo (2), Arène (1), Sylphe SARL (2 tant qu'elle manque)")
+	assert_eq(found, silph, "Sylphe SARL (2 tant qu'elle manque)")
 
 
 ## Warp de [param map] qui ramène à [param origin] depuis [param arrival] : sur la case

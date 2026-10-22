@@ -1,0 +1,125 @@
+{
+	"morgane": {
+		"cell": [
+			9,
+			8
+		],
+		"facing": "down",
+		"sprite": "beauty",
+		"dialogue": "saffron_gym_sabrina"
+	},
+	"guide": {
+		"cell": [
+			10,
+			15
+		],
+		"facing": "down",
+		"sprite": "gym_guide",
+		"dialogue": "saffron_gym_guide"
+	},
+	"melusine": {
+		"cell": [
+			10,
+			1
+		],
+		"facing": "down",
+		"sprite": "channeler",
+		"dialogue": "saffron_gym_channeler_melusine_after",
+		"trainer": {
+			"id": "saffron_gym_channeler_melusine",
+			"sight": 3,
+			"before": "saffron_gym_channeler_melusine_before",
+			"defeated": "saffron_gym_channeler_melusine_defeated"
+		}
+	},
+	"albin": {
+		"cell": [
+			17,
+			1
+		],
+		"facing": "down",
+		"sprite": "youngster",
+		"dialogue": "saffron_gym_psychic_albin_after",
+		"trainer": {
+			"id": "saffron_gym_psychic_albin",
+			"sight": 3,
+			"before": "saffron_gym_psychic_albin_before",
+			"defeated": "saffron_gym_psychic_albin_defeated"
+		}
+	},
+	"ophelie": {
+		"cell": [
+			3,
+			7
+		],
+		"facing": "down",
+		"sprite": "channeler",
+		"dialogue": "saffron_gym_channeler_ophelie_after",
+		"trainer": {
+			"id": "saffron_gym_channeler_ophelie",
+			"sight": 3,
+			"before": "saffron_gym_channeler_ophelie_before",
+			"defeated": "saffron_gym_channeler_ophelie_defeated"
+		}
+	},
+	"nestor": {
+		"cell": [
+			17,
+			7
+		],
+		"facing": "down",
+		"sprite": "youngster",
+		"dialogue": "saffron_gym_psychic_nestor_after",
+		"trainer": {
+			"id": "saffron_gym_psychic_nestor",
+			"sight": 3,
+			"before": "saffron_gym_psychic_nestor_before",
+			"defeated": "saffron_gym_psychic_nestor_defeated"
+		}
+	},
+	"cassandre": {
+		"cell": [
+			3,
+			13
+		],
+		"facing": "down",
+		"sprite": "channeler",
+		"dialogue": "saffron_gym_channeler_cassandre_after",
+		"trainer": {
+			"id": "saffron_gym_channeler_cassandre",
+			"sight": 3,
+			"before": "saffron_gym_channeler_cassandre_before",
+			"defeated": "saffron_gym_channeler_cassandre_defeated"
+		}
+	},
+	"barnabe": {
+		"cell": [
+			17,
+			13
+		],
+		"facing": "down",
+		"sprite": "youngster",
+		"dialogue": "saffron_gym_psychic_barnabe_after",
+		"trainer": {
+			"id": "saffron_gym_psychic_barnabe",
+			"sight": 3,
+			"before": "saffron_gym_psychic_barnabe_before",
+			"defeated": "saffron_gym_psychic_barnabe_defeated"
+		}
+	},
+	"leandre": {
+		"cell": [
+			3,
+			1
+		],
+		"facing": "down",
+		"sprite": "youngster",
+		"dialogue": "saffron_gym_psychic_leandre_after",
+		"trainer": {
+			"id": "saffron_gym_psychic_leandre",
+			"sight": 3,
+			"before": "saffron_gym_psychic_leandre_before",
+			"defeated": "saffron_gym_psychic_leandre_defeated"
+		}
+	}
+}

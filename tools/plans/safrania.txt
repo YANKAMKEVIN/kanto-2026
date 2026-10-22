@@ -42,8 +42,8 @@
 #   le T6 les corrige).
 #
 # PORTES (cases d'entrée ; chaque porte a sa case de sortie « from_* » juste devant, tournée ↓) :
-#   maison du Copieur (14, 9) · Dojo (37..38, 9) « À venir » (J27) · Arène (50, 9) « À venir »
-#   (J27), UNE case [D] pour que le sbire (50, 10) la ferme à lui seul · maison du Roucool (17, 19)
+#   maison du Copieur (14, 9) · Dojo (37..38, 9) · Arène (50, 9) (portes ouvertes au J27 ;
+#   l'Arène a UNE case [D] pour que le sbire (50, 10) la ferme à lui seul) · maison du Roucool (17, 19)
 #   · Boutique (41..42, 19) · SYLPHE (29..30, 29) · Centre (17..18, 39) · maison de M. Psy (40, 39).
 #   Le Vol arrive sur from_center (17..18, 40) (data/world/fly_points.json).
 #
@@ -67,7 +67,7 @@
 #
 # Positions : types de celadopole.txt (warp to= spawn=, spawn, pnj, panneau) ; en plus
 # `dir=` sur les portes (sens du pas qui entre), `unless=` / `if=` sur les PNJ conditionnels,
-# `mouvement=` (RB WALK), `a_venir=oui` sur les portes du J27, `debug=oui` sur les points d'apparition
+# `mouvement=` (RB WALK), `a_venir=oui` (plus aucune porte depuis le J27), `debug=oui` sur les points d'apparition
 # de débogage, `vol_arrivee` (légende commune).
 #
 # Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 60 caractères), puis POSITIONS.
@@ -140,9 +140,9 @@ porte_poste_r8       warp           57,25..26     libre   to=route_8_gate spawn=
 from_gate_r8         spawn          56,25..26     libre   facing=left  # arrivée depuis le poste de la Route 8
 porte_copieur        warp           14,9          libre   to=saffron_copycat_house_1f spawn=entrance dir=up  # STEP_ON ↑ → maison du Copieur (RB warp 1)
 from_copycat_house   spawn          14,10         libre   facing=down  # sortie de la maison du Copieur
-porte_dojo           warp           37..38,9      libre   to=fighting_dojo spawn=entrance dir=up a_venir=oui  # STEP_ON ↑ → Dojo (RB warp 2) : « À venir » jusqu'au J27 ; LIBRE pendant l'occupation
+porte_dojo           warp           37..38,9      libre   to=fighting_dojo spawn=entrance dir=up  # STEP_ON ↑ → Dojo (RB warp 2) : ouvert au J27 ; LIBRE pendant l'occupation
 from_dojo            spawn          37..38,10     libre   facing=down  # sortie du Dojo (J27)
-porte_arene          warp           50,9          libre   to=saffron_gym spawn=entrance dir=up a_venir=oui  # STEP_ON ↑ → Arène de Morgane (RB warp 3) : « À venir » jusqu'au J27 ; fermée par le sbire pendant l'occupation
+porte_arene          warp           50,9          libre   to=saffron_gym spawn=entrance dir=up  # STEP_ON ↑ → Arène de Morgane (RB warp 3) : ouverte au J27 ; fermée par le sbire pendant l'occupation
 from_gym             spawn          50,10         libre   facing=down  # sortie de l'Arène (J27)
 porte_roucool        warp           17,19         libre   to=saffron_pidgey_house spawn=entrance dir=up  # STEP_ON ↑ → maison du Roucool messager (RB warp 4)
 from_pidgey_house    spawn          17,20         libre   facing=down  # sortie de la maison du Roucool

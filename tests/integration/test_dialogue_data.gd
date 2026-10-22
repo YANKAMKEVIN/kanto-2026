@@ -230,7 +230,8 @@ const MAPS: Array[StringName] = [
 	&"silph_co_1f", &"silph_co_2f", &"silph_co_3f", &"silph_co_4f", &"silph_co_5f", &"silph_co_6f",
 	&"silph_co_8f", &"silph_co_9f", &"silph_co_10f",
 	# Jalon 26 (T11, T12) : 7F (rival n° 6, Lokhlass) et 11F (Giovanni, président) de la Sylphe.
-	&"silph_co_7f", &"silph_co_11f",
+	&"silph_co_7f", &"silph_co_11f",	# Jalon 27 (T8 à T10) : Arène de Morgane et Dojo de Combat.
+	&"saffron_gym", &"fighting_dojo",
 ]
 ## Lot de textes validé par Kevin le 2026-10-06 (anciens brouillons : panneau, observations,
 ## soin de Maman, terminal du Stockage, portes de Jadielle…) : source des textes hors dossiers.
@@ -879,7 +880,7 @@ func test_library_loads_without_error() -> void:
 	var expected := IDS + IDS_J14_BILL + IDS_J14_ROCKET + IDS_J15_ROUTE_5 + IDS_J16_GYM \
 		+ IDS_J16_SHIP + IDS_J16_RIVAL_CAPTAIN + IDS_J16_T15 + IDS_J17 + IDS_J18 + IDS_J19 + IDS_J20 \
 		+ IDS_J20_T17 + IDS_J20_T21 + IDS_S2B + S2_FIELD_TRAVEL + _silph_co_ids() + _j26_life_ids() \
-		+ IDS_J26_STORY
+		+ IDS_J26_STORY + _j27_ids()
 	expected.append_array(TEXTS_J26_T6.keys())
 	expected.append_array(TEXTS_S2C_FISH.keys())
 	expected.append_array(TEXTS_S2D_STRENGTH.keys())
@@ -979,7 +980,15 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		+ [&"rival_silph_intro", &"rival_silph_lost", &"rival_silph_won",
 		&"silph_co_7f_lapras_care", &"silph_co_giovanni_intro", &"silph_co_giovanni_lost",
 		&"silph_co_giovanni_won", &"silph_co_lapras_received", &"silph_co_lapras_stored",
-		&"silph_co_master_ball_got", &"silph_co_president_after"]))
+		&"silph_co_master_ball_got", &"silph_co_president_after"]
+		# Jalon 27 (T8 à T10) : Morgane (scène, rattrapage de la CT46), maître et choix du Dojo.
+		+ [&"saffron_gym_sabrina_intro", &"saffron_gym_sabrina_resume",
+		&"saffron_gym_sabrina_won", &"saffron_gym_sabrina_badge", &"saffron_gym_sabrina_tm",
+		&"saffron_gym_sabrina_tm_use", &"saffron_gym_sabrina_lost", &"saffron_gym_sabrina_tm_late",
+		&"fighting_dojo_master_intro", &"fighting_dojo_master_won", &"fighting_dojo_master_lost",
+		&"fighting_dojo_master_after", &"fighting_dojo_received_hitmonlee",
+		&"fighting_dojo_stored_hitmonlee", &"fighting_dojo_received_hitmonchan",
+		&"fighting_dojo_stored_hitmonchan"]))
 	for id: StringName in played:
 		assert_true(_library.has_dialogue(id), "dialogue « %s » défini" % id)
 		if UNUSED_YET.has(id):
@@ -1163,7 +1172,10 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		# Jalon 26 (T11, T12) : rival n° 6, Lokhlass, Giovanni, Master Ball, objets du 7F.
 		+ [&"rival_silph_won", &"rival_silph_lost_once", &"silph_lapras_received",
 		&"silph_giovanni_met", &"silph_giovanni_defeated", &"silph_master_ball_received",
-		&"got_silph_co_7f_item_10", &"got_silph_co_7f_item_11"]))
+		&"got_silph_co_7f_item_10", &"got_silph_co_7f_item_11"]
+		# Jalon 27 (T8 à T10) : Morgane, Badge Marais, CT46 ; maître du Dojo ; choix du Dojo.
+		+ [&"badge_marsh", &"sabrina_met", &"tm46_received", &"fighting_dojo_master_defeated",
+		&"dojo_got_hitmonlee", &"dojo_got_hitmonchan"]))
 	assert_eq(_used_on.get(&"oak_lab_reunion"), [&"oak_lab"], "joué au labo, après le fondu")
 	assert_eq(_used_on.get(&"oak_starter_offer"), [&"oak_lab"], "joué au labo")
 
@@ -1392,12 +1404,16 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 	for row: Array in _pages():
 		# Une variante en brouillon (PENDING_DRAFT_VARIANTS) attend la relecture de Kevin : son
 		# texte n'est encore dans aucun dossier.
+		# J27 : textes T27-01 à T27-13 (jalon-27.md §3) et répliques des Dresseurs [D], validés
+		# d'avance par Kevin le 2026-10-21 (proposition du plan), vérifiés par test_saffron_gym et
+		# test_fighting_dojo.
 		# J26 (T3) : répliques des Dresseurs de la Sylphe SARL, [D] proposées par le plan, validées
 		# d'avance par Kevin le 2026-10-21 : aucun dossier de conception ne les contient (la passe
 		# j26-v2 n'a pas de texte) ; copiées de data/dialogues/silph_co.json, vérifiées par
 		# test_silph_co_data.
 		if GATE_GUARDS.has(row[0]) or UNVALIDATED.has(row[0]) or S2_FIELD_TRAVEL.has(row[0]) \
 				or silph_texts.has(row[0]) or life_texts.has(row[0]) or IDS_J26_STORY.has(row[0]) \
+				or _j27_ids().has(row[0]) \
 				or (row[3] as DialogueVariant).draft:
 			continue
 		if TEXTS_J26_T6.has(row[0]):
@@ -1684,7 +1700,8 @@ func test_oak_parcel_lines() -> void:
 	# Jalon 26 (T9) : douze objets au sol (dont la Carte Magnétique) et deux cachés de la Sylphe,
 	# la Pépite cachée du Copieur.
 	# Jalon 26 (T11, T12) : l'employé du Lokhlass, le président et deux objets du 7F.
-	assert_eq(launched, 122, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
+	# Jalon 27 (T8 à T10) : Morgane, le maître du Dojo et les deux Poké Balls (« confirm_cutscene »).
+	assert_eq(launched, 125, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
 		+ "sa CT34, Ondine (pont, Arène et rattrapage), écran, module, console, objets de la "
 		+ "Route 25, le Rocket d'Azuria (2) et le barrage sud ; J15 : objets de la Route 5 ; "
 		+ "J16 : Major Bob (2), neuf objets du S.S. Anne, le capitaine, le marin (2) ; "
@@ -1693,7 +1710,7 @@ func test_oak_parcel_lines() -> void:
 		+ "J20 (T17) : Super Potion de la Route 8, quatre caches (Route 8, souterrain ×2, "
 		+ "ville), Erika (2) ; "
 		+ "J20 (T21) : repaire (11 objets, 3 caches, Clé ×2, Giovanni, Scope) ; "
-		+ "J26 : Lokhlass, Master Ball, deux objets du 7F")
+		+ "J26 : Lokhlass, Master Ball, deux objets du 7F ; J27 : Morgane, maître, deux Balls")
 	# Le jeton n'apparaît que dans la réplique de l'espèce, « {pokemon} » dans les phrases du
 	# compagnon (J11), et ceux de la Pension dans ses répliques (J15).
 	for row: Array in _pages():
@@ -1722,7 +1739,8 @@ func test_oak_parcel_lines() -> void:
 					&"silph_co_master_ball_got"] and row[1].contains("{player}")) \
 				or (row[0] in [&"rocket_hideout_b4f_lift_key_got",
 					&"rocket_hideout_b4f_silph_scope_got"] and row[1].contains("{player}")) \
-				or (String(row[0]).begins_with("celadon_gym_erika_") and row[1].contains("{player}")):
+				or (String(row[0]).begins_with("celadon_gym_erika_") and row[1].contains("{player}")) \
+				or (_j27_ids().has(row[0]) and row[1].contains("{player}")):
 			expected = [DialogueTokens.PLAYER]
 		elif J17_TOKENS.has(row[1]):
 			# Jalon 17 (T8) : compte d'espèces de l'assistant (T-1 à T-3), joueur de T-3.
@@ -1854,6 +1872,18 @@ func _j26_life_ids() -> Array[StringName]:
 	var ids: Array[StringName] = []
 	for path: String in ["res://data/dialogues/saffron_life.json",
 			"res://data/dialogues/silph_co_life.json"]:
+		var data: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(path))
+		for id: String in data:
+			ids.append(StringName(id))
+	return ids
+
+
+## Jalon 27 (T8 à T10) : textes de l'Arène de Morgane et du Dojo (T27-01 à T27-13 et répliques des
+## Dresseurs [D], validation d'avance de Kevin du 2026-10-21).
+func _j27_ids() -> Array[StringName]:
+	var ids: Array[StringName] = []
+	for path: String in ["res://data/dialogues/saffron_gym.json",
+			"res://data/dialogues/fighting_dojo.json"]:
 		var data: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(path))
 		for id: String in data:
 			ids.append(StringName(id))

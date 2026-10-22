@@ -1,0 +1,351 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/map.gd" id="1_wupwa"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/placeholder/ph_saffron_gym.png" id="2_lrap7"]
+[ext_resource type="Script" path="res://game/world/warp_point.gd" id="3_41c4n"]
+
+[node name="SaffronGym" type="Node2D" unique_id=1888644761]
+script = ExtResource("1_wupwa")
+map_id = &"saffron_gym"
+display_name = "Arène de Safrania"
+size = Vector2i(20, 18)
+blocked_cells = Array[Vector2i]([Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vector2i(4, 0), Vector2i(5, 0), Vector2i(6, 0), Vector2i(7, 0), Vector2i(8, 0), Vector2i(9, 0), Vector2i(10, 0), Vector2i(11, 0), Vector2i(12, 0), Vector2i(13, 0), Vector2i(14, 0), Vector2i(15, 0), Vector2i(16, 0), Vector2i(17, 0), Vector2i(18, 0), Vector2i(19, 0), Vector2i(6, 1), Vector2i(13, 1), Vector2i(6, 2), Vector2i(13, 2), Vector2i(6, 3), Vector2i(13, 3), Vector2i(6, 4), Vector2i(13, 4), Vector2i(6, 5), Vector2i(13, 5), Vector2i(0, 6), Vector2i(1, 6), Vector2i(2, 6), Vector2i(3, 6), Vector2i(4, 6), Vector2i(5, 6), Vector2i(6, 6), Vector2i(7, 6), Vector2i(8, 6), Vector2i(9, 6), Vector2i(10, 6), Vector2i(11, 6), Vector2i(12, 6), Vector2i(13, 6), Vector2i(14, 6), Vector2i(15, 6), Vector2i(16, 6), Vector2i(17, 6), Vector2i(18, 6), Vector2i(19, 6), Vector2i(6, 7), Vector2i(13, 7), Vector2i(6, 8), Vector2i(13, 8), Vector2i(6, 9), Vector2i(13, 9), Vector2i(6, 10), Vector2i(13, 10), Vector2i(6, 11), Vector2i(13, 11), Vector2i(0, 12), Vector2i(1, 12), Vector2i(2, 12), Vector2i(3, 12), Vector2i(4, 12), Vector2i(5, 12), Vector2i(6, 12), Vector2i(7, 12), Vector2i(8, 12), Vector2i(9, 12), Vector2i(10, 12), Vector2i(11, 12), Vector2i(12, 12), Vector2i(13, 12), Vector2i(14, 12), Vector2i(15, 12), Vector2i(16, 12), Vector2i(17, 12), Vector2i(18, 12), Vector2i(19, 12), Vector2i(6, 13), Vector2i(13, 13), Vector2i(6, 14), Vector2i(9, 14), Vector2i(13, 14), Vector2i(6, 15), Vector2i(9, 15), Vector2i(13, 15), Vector2i(6, 16), Vector2i(13, 16), Vector2i(6, 17), Vector2i(13, 17)])
+interior = true
+
+[node name="Shell" type="Sprite2D" parent="." unique_id=73811002]
+z_index = -3
+texture = ExtResource("2_lrap7")
+centered = false
+
+[node name="Entities" type="Node2D" parent="." unique_id=1052384773]
+unique_name_in_owner = true
+y_sort_enabled = true
+
+[node name="Warps" type="Node2D" parent="." unique_id=1417275587]
+
+[node name="Exit0" type="Marker2D" parent="Warps" unique_id=955163687]
+position = Vector2(816, 1728)
+script = ExtResource("3_41c4n")
+trigger = 1
+direction = Vector2i(0, 1)
+target_map = &"saffron_city"
+target_spawn = &"from_gym"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Exit1" type="Marker2D" parent="Warps" unique_id=1085423411]
+position = Vector2(912, 1728)
+script = ExtResource("3_41c4n")
+trigger = 1
+direction = Vector2i(0, 1)
+target_map = &"saffron_city"
+target_spawn = &"from_gym"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Teleporter_10" type="Marker2D" parent="Warps" unique_id=1615083009]
+position = Vector2(528, 1152)
+script = ExtResource("3_41c4n")
+target_map = &"saffron_gym"
+target_spawn = &"tp_14"
+style = 1
+
+[node name="Teleporter_11" type="Marker2D" parent="Warps" unique_id=865852920]
+position = Vector2(144, 1536)
+script = ExtResource("3_41c4n")
+target_map = &"saffron_gym"
+target_spawn = &"tp_24"
+style = 1
+
+[node name="Teleporter_12" type="Marker2D" parent="Warps" unique_id=2082628653]
+position = Vector2(528, 1536)
+script = ExtResource("3_41c4n")
+target_map = &"saffron_gym"
+target_spawn = &"tp_31"
+style = 1
+
+[node name="Teleporter_13" type="Marker2D" parent="Warps" unique_id=664655566]
+position = Vector2(144, 1728)
+script = ExtResource("3_41c4n")
+target_map = &"saffron_gym"
+target_spawn = &"tp_18"
+style = 1
+
+[node name="Teleporter_14" type="Marker2D" parent="Warps" unique_id=1785472582]
+position = Vector2(528, 1728)
+script = ExtResource("3_41c4n")
+target_map = &"saffron_gym"
+target_spawn = &"tp_10"
+style = 1
+
+[node name="Teleporter_15" type="Marker2D" parent="Warps" unique_id=312222061]
+position = Vector2(912, 384)
+script = ExtResource("3_41c4n")
+target_map = &"saffron_gym"
+target_spawn = &"tp_27"
+style = 1
+
+[node name="Teleporter_16" type="Marker2D" parent="Warps" unique_id=2071414976]
+position = Vector2(1104, 384)
+script = ExtResource("3_41c4n")
+target_map = &"saffron_gym"
+target_spawn = &"tp_4"
+style = 1
+
+[node name="Teleporter_17" type="Marker2D" parent="Warps" unique_id=1275790254]
+position = Vector2(912, 576)
+script = ExtResource("3_41c4n")
+target_map = &"saffron_gym"
+target_spawn = &"tp_8"
+style = 1
+
+[node name="Teleporter_18" type="Marker2D" parent="Warps" unique_id=2067039331]
+position = Vector2(1104, 576)
+script = ExtResource("3_41c4n")
+target_map = &"saffron_gym"
+target_spawn = &"tp_13"
+style = 1
+
+[node name="Teleporter_19" type="Marker2D" parent="Warps" unique_id=1842804322]
+position = Vector2(1104, 1152)
+script = ExtResource("3_41c4n")
+target_map = &"saffron_gym"
+target_spawn = &"tp_5"
+style = 1
+
+[node name="Teleporter_20" type="Marker2D" parent="Warps" unique_id=750645877]
+position = Vector2(1104, 1536)
+script = ExtResource("3_41c4n")
+target_map = &"saffron_gym"
+target_spawn = &"tp_32"
+style = 1
+
+[node name="Teleporter_21" type="Marker2D" parent="Warps" unique_id=1274255508]
+position = Vector2(1488, 384)
+script = ExtResource("3_41c4n")
+target_map = &"saffron_gym"
+target_spawn = &"tp_25"
+style = 1
+
+[node name="Teleporter_22" type="Marker2D" parent="Warps" unique_id=1547645427]
+position = Vector2(1872, 384)
+script = ExtResource("3_41c4n")
+target_map = &"saffron_gym"
+target_spawn = &"tp_29"
+style = 1
+
+[node name="Teleporter_23" type="Marker2D" parent="Warps" unique_id=925009375]
+position = Vector2(1488, 576)
+script = ExtResource("3_41c4n")
+target_map = &"saffron_gym"
+target_spawn = &"tp_3"
+style = 1
+
+[node name="Teleporter_24" type="Marker2D" parent="Warps" unique_id=1596212877]
+position = Vector2(1872, 576)
+script = ExtResource("3_41c4n")
+target_map = &"saffron_gym"
+target_spawn = &"tp_11"
+style = 1
+
+[node name="Teleporter_25" type="Marker2D" parent="Warps" unique_id=914740427]
+position = Vector2(1488, 960)
+script = ExtResource("3_41c4n")
+target_map = &"saffron_gym"
+target_spawn = &"tp_21"
+style = 1
+
+[node name="Teleporter_26" type="Marker2D" parent="Warps" unique_id=104578524]
+position = Vector2(1872, 960)
+script = ExtResource("3_41c4n")
+target_map = &"saffron_gym"
+target_spawn = &"tp_30"
+style = 1
+
+[node name="Teleporter_27" type="Marker2D" parent="Warps" unique_id=470860608]
+position = Vector2(1488, 1152)
+script = ExtResource("3_41c4n")
+target_map = &"saffron_gym"
+target_spawn = &"tp_15"
+style = 1
+
+[node name="Teleporter_28" type="Marker2D" parent="Warps" unique_id=796124017]
+position = Vector2(1872, 1152)
+script = ExtResource("3_41c4n")
+target_map = &"saffron_gym"
+target_spawn = &"tp_7"
+style = 1
+
+[node name="Teleporter_29" type="Marker2D" parent="Warps" unique_id=1409915736]
+position = Vector2(1488, 1536)
+script = ExtResource("3_41c4n")
+target_map = &"saffron_gym"
+target_spawn = &"tp_22"
+style = 1
+
+[node name="Teleporter_3" type="Marker2D" parent="Warps" unique_id=1405093133]
+position = Vector2(144, 384)
+script = ExtResource("3_41c4n")
+target_map = &"saffron_gym"
+target_spawn = &"tp_23"
+style = 1
+
+[node name="Teleporter_30" type="Marker2D" parent="Warps" unique_id=1163519738]
+position = Vector2(1872, 1536)
+script = ExtResource("3_41c4n")
+target_map = &"saffron_gym"
+target_spawn = &"tp_26"
+style = 1
+
+[node name="Teleporter_31" type="Marker2D" parent="Warps" unique_id=322854338]
+position = Vector2(1488, 1728)
+script = ExtResource("3_41c4n")
+target_map = &"saffron_gym"
+target_spawn = &"tp_12"
+style = 1
+
+[node name="Teleporter_32" type="Marker2D" parent="Warps" unique_id=1586109226]
+position = Vector2(1872, 1728)
+script = ExtResource("3_41c4n")
+target_map = &"saffron_gym"
+target_spawn = &"tp_20"
+style = 1
+
+[node name="Teleporter_4" type="Marker2D" parent="Warps" unique_id=1938812079]
+position = Vector2(528, 384)
+script = ExtResource("3_41c4n")
+target_map = &"saffron_gym"
+target_spawn = &"tp_16"
+style = 1
+
+[node name="Teleporter_5" type="Marker2D" parent="Warps" unique_id=146339013]
+position = Vector2(144, 576)
+script = ExtResource("3_41c4n")
+target_map = &"saffron_gym"
+target_spawn = &"tp_19"
+style = 1
+
+[node name="Teleporter_6" type="Marker2D" parent="Warps" unique_id=768652255]
+position = Vector2(528, 576)
+script = ExtResource("3_41c4n")
+target_map = &"saffron_gym"
+target_spawn = &"tp_9"
+style = 1
+
+[node name="Teleporter_7" type="Marker2D" parent="Warps" unique_id=185395640]
+position = Vector2(144, 960)
+script = ExtResource("3_41c4n")
+target_map = &"saffron_gym"
+target_spawn = &"tp_28"
+style = 1
+
+[node name="Teleporter_8" type="Marker2D" parent="Warps" unique_id=1011797875]
+position = Vector2(528, 960)
+script = ExtResource("3_41c4n")
+target_map = &"saffron_gym"
+target_spawn = &"tp_17"
+style = 1
+
+[node name="Teleporter_9" type="Marker2D" parent="Warps" unique_id=1077519994]
+position = Vector2(144, 1152)
+script = ExtResource("3_41c4n")
+target_map = &"saffron_gym"
+target_spawn = &"tp_6"
+style = 1
+
+[node name="Interactables" type="Node2D" parent="." unique_id=230670110]
+
+[node name="Spawns" type="Node2D" parent="." unique_id=781674454]
+
+[node name="entrance" type="Marker2D" parent="Spawns" unique_id=5632999]
+position = Vector2(816, 1632)
+
+[node name="tp_10" type="Marker2D" parent="Spawns" unique_id=1828635995]
+position = Vector2(528, 1152)
+
+[node name="tp_11" type="Marker2D" parent="Spawns" unique_id=400325876]
+position = Vector2(144, 1536)
+
+[node name="tp_12" type="Marker2D" parent="Spawns" unique_id=1377976896]
+position = Vector2(528, 1536)
+
+[node name="tp_13" type="Marker2D" parent="Spawns" unique_id=956472718]
+position = Vector2(144, 1728)
+
+[node name="tp_14" type="Marker2D" parent="Spawns" unique_id=1132897480]
+position = Vector2(528, 1728)
+
+[node name="tp_15" type="Marker2D" parent="Spawns" unique_id=30210927]
+position = Vector2(912, 384)
+
+[node name="tp_16" type="Marker2D" parent="Spawns" unique_id=203959136]
+position = Vector2(1104, 384)
+
+[node name="tp_17" type="Marker2D" parent="Spawns" unique_id=1699521998]
+position = Vector2(912, 576)
+
+[node name="tp_18" type="Marker2D" parent="Spawns" unique_id=668525144]
+position = Vector2(1104, 576)
+
+[node name="tp_19" type="Marker2D" parent="Spawns" unique_id=1290485194]
+position = Vector2(1104, 1152)
+
+[node name="tp_20" type="Marker2D" parent="Spawns" unique_id=1667374442]
+position = Vector2(1104, 1536)
+
+[node name="tp_21" type="Marker2D" parent="Spawns" unique_id=1048376148]
+position = Vector2(1488, 384)
+
+[node name="tp_22" type="Marker2D" parent="Spawns" unique_id=69967277]
+position = Vector2(1872, 384)
+
+[node name="tp_23" type="Marker2D" parent="Spawns" unique_id=837874024]
+position = Vector2(1488, 576)
+
+[node name="tp_24" type="Marker2D" parent="Spawns" unique_id=813538414]
+position = Vector2(1872, 576)
+
+[node name="tp_25" type="Marker2D" parent="Spawns" unique_id=732859624]
+position = Vector2(1488, 960)
+
+[node name="tp_26" type="Marker2D" parent="Spawns" unique_id=1769609722]
+position = Vector2(1872, 960)
+
+[node name="tp_27" type="Marker2D" parent="Spawns" unique_id=1270063040]
+position = Vector2(1488, 1152)
+
+[node name="tp_28" type="Marker2D" parent="Spawns" unique_id=1363926248]
+position = Vector2(1872, 1152)
+
+[node name="tp_29" type="Marker2D" parent="Spawns" unique_id=2061262600]
+position = Vector2(1488, 1536)
+
+[node name="tp_3" type="Marker2D" parent="Spawns" unique_id=1137287631]
+position = Vector2(144, 384)
+
+[node name="tp_30" type="Marker2D" parent="Spawns" unique_id=353914132]
+position = Vector2(1872, 1536)
+
+[node name="tp_31" type="Marker2D" parent="Spawns" unique_id=123403675]
+position = Vector2(1488, 1728)
+
+[node name="tp_32" type="Marker2D" parent="Spawns" unique_id=1071175984]
+position = Vector2(1872, 1728)
+
+[node name="tp_4" type="Marker2D" parent="Spawns" unique_id=1232031504]
+position = Vector2(528, 384)
+
+[node name="tp_5" type="Marker2D" parent="Spawns" unique_id=1453121488]
+position = Vector2(144, 576)
+
+[node name="tp_6" type="Marker2D" parent="Spawns" unique_id=1882160359]
+position = Vector2(528, 576)
+
+[node name="tp_7" type="Marker2D" parent="Spawns" unique_id=536941520]
+position = Vector2(144, 960)
+
+[node name="tp_8" type="Marker2D" parent="Spawns" unique_id=1895810922]
+position = Vector2(528, 960)
+
+[node name="tp_9" type="Marker2D" parent="Spawns" unique_id=130782242]
+position = Vector2(144, 1152)
+
+[node name="Triggers" type="Node2D" parent="." unique_id=372706761]

@@ -1,0 +1,130 @@
+{
+	"fighting_dojo_master": {
+		"variants": [
+			{
+				"unless": [
+					"fighting_dojo_master_defeated"
+				],
+				"steps": [
+					{
+						"face": "maitre",
+						"to": "player"
+					},
+					{
+						"dialogue": "fighting_dojo_master_intro"
+					},
+					{
+						"battle": "fighting_dojo_master",
+						"win": [
+							"fighting_dojo_master_defeated"
+						]
+					},
+					{
+						"wait": 0.6,
+						"if": [
+							"fighting_dojo_master_defeated"
+						]
+					},
+					{
+						"dialogue": "fighting_dojo_master_won",
+						"if": [
+							"fighting_dojo_master_defeated"
+						]
+					},
+					{
+						"dialogue": "fighting_dojo_master_lost",
+						"unless": [
+							"fighting_dojo_master_defeated"
+						]
+					},
+					{
+						"wake_up": true,
+						"unless": [
+							"fighting_dojo_master_defeated"
+						]
+					}
+				]
+			}
+		]
+	},
+	"fighting_dojo_take_hitmonlee": {
+		"unless": [
+			"dojo_got_hitmonlee",
+			"dojo_got_hitmonchan"
+		],
+		"steps": [
+			{
+				"gift_pokemon": "hitmonlee",
+				"level": 30,
+				"flag": "dojo_got_hitmonlee",
+				"say": "fighting_dojo_received_hitmonlee",
+				"say_stored": "fighting_dojo_stored_hitmonlee"
+			},
+			{
+				"despawn": "ball_hitmonlee",
+				"if": [
+					"dojo_got_hitmonlee"
+				]
+			},
+			{
+				"despawn": "ball_hitmonchan",
+				"if": [
+					"dojo_got_hitmonlee"
+				]
+			},
+			{
+				"face": "maitre",
+				"to": "player",
+				"if": [
+					"dojo_got_hitmonlee"
+				]
+			},
+			{
+				"dialogue": "fighting_dojo_master_after",
+				"if": [
+					"dojo_got_hitmonlee"
+				]
+			}
+		]
+	},
+	"fighting_dojo_take_hitmonchan": {
+		"unless": [
+			"dojo_got_hitmonlee",
+			"dojo_got_hitmonchan"
+		],
+		"steps": [
+			{
+				"gift_pokemon": "hitmonchan",
+				"level": 30,
+				"flag": "dojo_got_hitmonchan",
+				"say": "fighting_dojo_received_hitmonchan",
+				"say_stored": "fighting_dojo_stored_hitmonchan"
+			},
+			{
+				"despawn": "ball_hitmonlee",
+				"if": [
+					"dojo_got_hitmonchan"
+				]
+			},
+			{
+				"despawn": "ball_hitmonchan",
+				"if": [
+					"dojo_got_hitmonchan"
+				]
+			},
+			{
+				"face": "maitre",
+				"to": "player",
+				"if": [
+					"dojo_got_hitmonchan"
+				]
+			},
+			{
+				"dialogue": "fighting_dojo_master_after",
+				"if": [
+					"dojo_got_hitmonchan"
+				]
+			}
+		]
+	}
+}

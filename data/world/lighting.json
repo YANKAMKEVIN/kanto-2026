@@ -316,6 +316,8 @@
 		"saffron_pidgey_house": "interior_warm",
 		"saffron_copycat_house_1f": "interior_warm",
 		"saffron_copycat_house_2f": "interior_warm",
+		"saffron_gym": "interior_warm",
+		"fighting_dojo": "interior_warm",
 		"silph_co_1f": "office",
 		"silph_co_2f": "office",
 		"silph_co_3f": "office",

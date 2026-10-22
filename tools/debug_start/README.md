@@ -298,3 +298,14 @@ Drapeaux de base : `silph_1f` (J20 terminé) plus la Tour (`rival_tower_won`) et
 | `silph_7f_rival_bulbasaur.json`, `silph_7f_rival_charmander.json`, `silph_7f_rival_squirtle.json` | 7F, sur la dalle (5, 3) venue du 3F (spawn `tp_5`, tourné ←), Carte au Sac : deux pas vers l'ouest → le rival (trois équipes selon le starter en tête) ; après la victoire, l'employé (1, 5) donne Lokhlass |
 | `silph_11f.json` | 11F, sur la dalle (3, 2) venue du 7F (spawn `tp_4`), rival battu, porte du bureau ouverte, Sbire de l'ouest battu, équipe N42 : entrer dans le bureau → Giovanni ; puis le président (Master Ball) |
 | `saffron_free.json` | Safrania libérée (spawn `from_silph`), Lokhlass N15 dans l'équipe, Master Ball au Sac, point de repos `saffron_center` |
+
+## Jalon 27 (T11) : Arène de Morgane et Dojo de Combat (`docs/tech/jalon-27.md` §2.6)
+
+Base : `saffron_free.json` (Safrania libérée, équipe N42, Salamèche en tête) [D].
+
+| Fichier | Partie |
+|---|---|
+| `saffron_gym.json` | Arène de Safrania, à l'entrée (spawn `entrance`, tourné ↑), Safrania libérée : chercher Morgane par les tapis |
+| `sabrina.json` | Arène, sur le tapis du centre (11, 11) (spawn `tp_19`) : deux pas vers Morgane (9, 8), on lui parle depuis (9, 9) |
+| `fighting_dojo.json` | Dojo, à l'entrée, **Safrania occupée** (Sylphe non libérée, ni Carte ni Master Ball) : le Dojo est jouable avant la libération |
+| `dojo_choice.json` | Dojo, maître déjà battu (`fighting_dojo_master_defeated`), **équipe pleine** (6) : examiner une Ball, OUI → le Pokémon va au Stockage |

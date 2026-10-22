@@ -1,0 +1,230 @@
+{
+	"version": 1,
+	"title": "Équilibrage de Safrania : Morgane et le maître du Dojo (jalon 27 T4)",
+	"description": "Jalon 27 T4 (jalon-27.md §4.1). Information pour Kevin : aucune donnée de jeu n'est changée. Équipe de référence [D] : celle du J26 après la Sylphe, +4 niveaux (starter évolué N42, Roucarnage N40, trois N36), soignée. Deux étapes indépendantes : le maître du Dojo puis Morgane, chacune après un Centre. Dresseurs recopiés de data/trainers/ (--donnees les relit).",
+	"seeds": 200,
+	"heal_at_start": true,
+	"teams": [
+		{
+			"name": "charizard 42, pidgeot 40, butterfree 36, sandslash 36, pikachu 36",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charizard",
+					"level": 42
+				},
+				{
+					"species": "pidgeot",
+					"level": 40
+				},
+				{
+					"species": "butterfree",
+					"level": 36
+				},
+				{
+					"species": "sandslash",
+					"level": 36
+				},
+				{
+					"species": "pikachu",
+					"level": 36
+				}
+			]
+		},
+		{
+			"name": "venusaur 42, pidgeot 40, butterfree 36, sandslash 36, pikachu 36",
+			"starter": "bulbasaur",
+			"members": [
+				{
+					"species": "venusaur",
+					"level": 42
+				},
+				{
+					"species": "pidgeot",
+					"level": 40
+				},
+				{
+					"species": "butterfree",
+					"level": 36
+				},
+				{
+					"species": "sandslash",
+					"level": 36
+				},
+				{
+					"species": "pikachu",
+					"level": 36
+				}
+			]
+		},
+		{
+			"name": "blastoise 42, pidgeot 40, butterfree 36, sandslash 36, pikachu 36",
+			"starter": "squirtle",
+			"members": [
+				{
+					"species": "blastoise",
+					"level": 42
+				},
+				{
+					"species": "pidgeot",
+					"level": 40
+				},
+				{
+					"species": "butterfree",
+					"level": 36
+				},
+				{
+					"species": "sandslash",
+					"level": 36
+				},
+				{
+					"species": "pikachu",
+					"level": 36
+				}
+			]
+		}
+	],
+	"tables": {},
+	"trainers": {
+		"fighting_dojo_master": {
+			"name": "Maître du Dojo",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 925,
+			"switch": true,
+			"team": [
+				{
+					"species": "hitmonlee",
+					"level": 37
+				},
+				{
+					"species": "hitmonchan",
+					"level": 37
+				}
+			]
+		},
+		"saffron_gym_sabrina": {
+			"name": "Morgane",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 4257,
+			"start_message": false,
+			"end_message": true,
+			"bag": true,
+			"switch": true,
+			"card": {
+				"name": "MORGANE",
+				"title": "Championne d'Arène de Safrania"
+			},
+			"team": [
+				{
+					"species": "kadabra",
+					"level": 38,
+					"moves": [
+						"disable",
+						"psybeam",
+						"recover",
+						"psychic"
+					]
+				},
+				{
+					"species": "mr_mime",
+					"level": 37,
+					"moves": [
+						"confusion",
+						"barrier",
+						"light_screen",
+						"double_slap"
+					]
+				},
+				{
+					"species": "venomoth",
+					"level": 38,
+					"moves": [
+						"poison_powder",
+						"leech_life",
+						"stun_spore",
+						"psybeam"
+					]
+				},
+				{
+					"species": "alakazam",
+					"level": 43,
+					"moves": [
+						"psybeam",
+						"recover",
+						"psywave",
+						"reflect"
+					]
+				}
+			]
+		}
+	},
+	"steps": [
+		{
+			"label": "Centre de Safrania (départ)",
+			"center": true
+		},
+		{
+			"label": "Maître du Dojo",
+			"trainer": "fighting_dojo_master"
+		},
+		{
+			"label": "Centre de Safrania (avant l'Arène)",
+			"center": true
+		},
+		{
+			"label": "Morgane (Arène)",
+			"trainer": "saffron_gym_sabrina"
+		}
+	],
+	"variants": [
+		{
+			"name": "directe, attentif, 5 Super Potions",
+			"player": "attentif",
+			"center": true,
+			"retries": 5,
+			"items": {
+				"super_potion": 5,
+				"antidote": 3,
+				"awakening": 2
+			},
+			"optional": []
+		},
+		{
+			"name": "attentif, 5 Super Potions",
+			"player": "attentif",
+			"center": true,
+			"retries": 5,
+			"items": {
+				"super_potion": 5,
+				"antidote": 3,
+				"awakening": 2
+			},
+			"optional": []
+		},
+		{
+			"name": "directe, expert, 5 Super Potions",
+			"player": "expert",
+			"center": true,
+			"retries": 5,
+			"items": {
+				"super_potion": 5,
+				"antidote": 3,
+				"awakening": 2
+			},
+			"optional": []
+		},
+		{
+			"name": "directe, naïf",
+			"player": "naif",
+			"center": true,
+			"retries": 5,
+			"optional": []
+		}
+	]
+}
