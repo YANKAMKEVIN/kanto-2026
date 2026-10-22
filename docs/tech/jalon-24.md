@@ -542,3 +542,11 @@ RB et par les contrôles des grilles.
 5. Une sauvegarde ne dédouble jamais Artikodin, un fossile ni la CT35 (tests de fermeture
    simulée).
 6. Les quatre validations S24 du §1.1 sont faites.
+
+## Décisions de Kevin (2026-10-22)
+
+Choix validés par Kevin sur la page d'arbitrages.
+
+- Le J24 PEUT modifier la côte sud de Bourg Palette (Route 21 nord, réplique T-70 de la mère) : **à faire dans une prochaine session du J24** (reste ouvert).
+- Métronome sans capacités à plusieurs tours : d'accord.
+- Prénoms : acceptés.
