@@ -30,6 +30,8 @@ itinéraires, rebords, herbes obligatoires, objet caché « cache », durée de 
 `azuria_velos.txt`, `azuria_maison.txt` → `plan_check_azuria.py` (recouvrement exact du sas, raccords
 entre cartes, rebord unique, eau et ponts, Centre premier bâtiment, rival, Ondine, pont Pépite).
 
+**Jalon 26** (Safrania, Sylphe SARL) : `safrania*.txt`, `sylphe_*.txt` → `plan_check_j26.py`.
+
 **Jalon 20** (dossier 23 §12–§13) : `casino.txt`, `repaire_b1f.txt` … `repaire_b4f.txt`,
 `repaire_ascenseur.txt` → `plan_check_repaire.py` (dalles tournantes, raccords, atteignabilité en six
 états, deux moitiés disjointes du B4F ; les contrôles globaux sont lancés par `repaire_ascenseur`).
@@ -820,6 +822,11 @@ VERIFICATEURS.update({n: _profil("plan_check_routes_j20", n) for n in ("route_8"
 	"souterrain_7_8", "souterrain_entree", "poste_safrania")})
 VERIFICATEURS.update({p.stem: _profil("plan_check_celadopole", p.stem)
 	for p in sorted((RACINE / "tools/plans").glob("celadopole*.txt"))})
+# Jalon 26 : Safrania, ses intérieurs, les 11 étages de la Sylphe et la cabine (plan_check_j26.py ;
+# la cabine lance les contrôles de toute la Sylphe, la ville ceux des raccords).
+VERIFICATEURS.update({n: _profil("plan_check_j26", n) for n in ("safrania", "safrania_centre",
+	"safrania_boutique", "safrania_maison_psy", "safrania_maison_roucool", "safrania_maison_copieur_1f",
+	"safrania_maison_copieur_2f", *(f"sylphe_{k}f" for k in range(1, 12)), "sylphe_ascenseur")})
 
 
 def main() -> int:
