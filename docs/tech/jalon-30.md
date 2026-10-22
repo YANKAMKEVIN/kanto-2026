@@ -440,6 +440,11 @@ Règles [D] :
   copier ;
 - **Riposte, Pied Sauté, Pied Voltige** : règles RB du J27 (voir `jalon-27.md`).
 
+### 10.7 Vérification
+
+Import headless sans erreur ; **suite complète 6 539 / 6 539** (598 scripts), journaux dans
+`build/logs/` du worktree ; `python3 -I tools/art/plan_check_j30.py` (+ `--autotest`) OK.
+
 ### 10.5 Restant
 
 - **Q30-4** : entrée « Panthéon » de l'écran Dresseur du Menu (lecture seule de
