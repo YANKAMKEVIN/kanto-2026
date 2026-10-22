@@ -20,6 +20,11 @@ var grade_shadows: Vector3 = Vector3.ONE
 var grade_midtones: Vector3 = Vector3.ONE
 var grade_highlights: Vector3 = Vector3.ONE
 var grade_strength: float = 0.0
+## Étalonnage « à plat » (J21, A17) : un seul gain RVB (celui des tons moyens), posé par un
+## calque en mélange multiplicatif, **sans lecture de l'écran** (la copie de l'écran coûte
+## ≈ 6 i/s sur un Mali-G57). Réservé aux ambiances dont les trois gains sont proches et ≤ 1
+## (Tour Pokémon) : l'écart avec l'étalonnage par zones y reste sous 2 % de la luminance.
+var grade_flat: bool = false
 ## Liseré de soleil sur les bords des objets tournés vers la lumière ; [member rim_width] en
 ## pixels de texture ; [member rim_strength] 0 = aucun liseré.
 var rim_color: Color = Color.WHITE
@@ -42,6 +47,12 @@ var wind_strength: float = 0.0
 ## Vrai si l'étalonnage d'écran est visible (sinon le calque est caché : aucun coût).
 func has_grade() -> bool:
 	return grade_strength > 0.0
+
+
+## Gain unique de l'étalonnage à plat : tons moyens, dosés par [member grade_strength].
+func flat_grade_color() -> Color:
+	var gain := Vector3.ONE.lerp(grade_midtones, grade_strength)
+	return Color(gain.x, gain.y, gain.z, 1.0)
 
 
 func has_rim() -> bool:
