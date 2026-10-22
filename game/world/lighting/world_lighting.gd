@@ -59,6 +59,7 @@ const _GRADE_MATERIAL: Material = preload(
 
 var _profile: LightProfile = LightProfile.new()
 var _reduced: bool = false
+var _economy: bool = false
 var _globals: Dictionary[StringName, Variant] = {}
 var _grade: ColorRect
 var _grade_flat: ColorRect
@@ -103,7 +104,7 @@ func _notification(what: int) -> void:
 func apply(profile: LightProfile, map: Node = null) -> void:
 	_profile = profile if profile != null else LightProfile.new()
 	_push_globals()
-	_grade.visible = _profile.has_grade() and not _profile.grade_flat
+	_update_grade()
 	_grade_flat.color = _profile.flat_grade_color()
 	_world_modulate.color = _profile.flat_grade_color()
 	_update_flat()
@@ -115,6 +116,18 @@ func apply(profile: LightProfile, map: Node = null) -> void:
 func set_battle_active(active: bool) -> void:
 	_battle_active = active
 	_update_flat()
+
+
+## Réglage « Économie » (moteur commun) : coupe l'étalonnage plein écran qui recopie l'écran
+## (≈ 8 ms sur l'A17). L'étalonnage à plat (gain unique, presque gratuit) est gardé. Effet
+## immédiat, sans changer de carte.
+func set_economy(enabled: bool) -> void:
+	_economy = enabled
+	_update_grade()
+
+
+func _update_grade() -> void:
+	_grade.visible = _profile.has_grade() and not _profile.grade_flat and not _economy
 
 
 func _update_flat() -> void:

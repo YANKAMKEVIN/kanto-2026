@@ -136,3 +136,11 @@ func test_without_save_now_for_the_title() -> void:
 	assert_eq(keys.size(), GameSettings.KEYS.size(), "tous les réglages, rien d'autre")
 	assert_eq(view.categories.size(), _build().categories.size(), "mêmes catégories")
 	assert_false(view.category(SettingsViews.CATEGORY_GAME).controls.is_empty())
+
+
+func test_economy_toggle_is_in_graphics_with_its_help_text() -> void:
+	var view := _build().control(GameSettings.ECONOMY)
+	assert_eq(view.kind, SettingControlView.Kind.TOGGLE)
+	assert_eq(view.label, "Économie")
+	assert_eq(view.detail, "Coupe la lumière d'ambiance pour plus de fluidité sur les petits téléphones.")
+	assert_false(view.value)
