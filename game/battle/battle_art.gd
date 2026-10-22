@@ -6,7 +6,7 @@ extends RefCounted
 ## - Adversaire : **artwork officiel** (`assets/sprites/pokemon/official/NNN.png`, par numéro du
 ##   Pokédex), resserré sur son cadre utile par [PokedexArt] (chargement partagé avec le
 ##   Pokédex), filtre linéaire ; à défaut, le sprite provisoire de face.
-## - Ton Pokémon : sprite provisoire **de dos** (pixel art 64 px, NEAREST) jusqu'au premier lot
+## - Ton Pokémon : dos **peint** (`dos/dos_ia_NNN.png`, filtre linéaire) s'il existe, sinon sprite provisoire **de dos** (pixel art 64 px, NEAREST) jusqu'au premier lot
 ##   de dos peints (J11) ; à défaut (aucune espèce des données ne doit en manquer :
 ##   `test_battle_art.gd`), l'artwork officiel : jamais de côté vide.
 ## - Taille réelle (m) : données du Pokédex (`data/pokedex/kanto.json`) ; inconnue : la taille de
@@ -16,6 +16,11 @@ extends RefCounted
 
 ## Dossier des sprites provisoires (pixel art 64 px).
 const PLACEHOLDER_DIR: String = "res://assets/sprites/pokemon/placeholder/"
+
+## Dossier des dos de combat **peints** (1024 × 1024 RGBA, `dos_ia_NNN.png`, NNN = numéro du Pokédex) :
+## lot « série dos » (`tools/art/serie_dos.py`, `docs/design/inventaire-art.md` §2). Lus en priorité
+## pour le côté du joueur ; une espèce sans fichier garde son sprite provisoire.
+const PAINTED_BACK_DIR: String = "res://assets/sprites/pokemon/dos/"
 
 ## Boîtes visibles des images provisoires, par chemin (lues une fois).
 static var _boxes: Dictionary[String, Rect2] = {}
@@ -36,6 +41,11 @@ func setup(pokemon: PokemonData, dex: PokedexLibrary) -> void:
 ## de chemin des sprites provisoires de combat.
 static func placeholder_path(species: StringName, back: bool) -> String:
 	return PLACEHOLDER_DIR + "%s_%s.png" % [species, "back" if back else "front"]
+
+
+## Chemin du dos peint du numéro [param dex] du Pokédex (le fichier peut ne pas exister).
+static func painted_back_path(dex: int) -> String:
+	return PAINTED_BACK_DIR + "dos_ia_%03d.png" % dex
 
 
 ## Numéro du Pokédex de [param species] (0 si inconnu).
@@ -65,6 +75,11 @@ func image(species: StringName, back: bool) -> Dictionary:
 		var official := _official(species)
 		if not official.is_empty():
 			return official
+	if back:
+		var painted_path := painted_back_path(dex_number(species))
+		if ResourceLoader.exists(painted_path):
+			var painted := load(painted_path) as Texture2D
+			return {"texture": painted, "official": true, "box": visible_box(painted, painted_path)}
 	var path := placeholder_path(species, back)
 	if species.is_empty() or not ResourceLoader.exists(path):
 		# Repli (correctif QA 12A) : un dos manquant ne laisse jamais le côté du joueur vide ;

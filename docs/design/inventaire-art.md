@@ -57,10 +57,13 @@ dimensions, mêmes emprises), pas les cartes. Détail et cibles : fiche de la s�
     071, 072, 081, 092, 093, 095, 097, 104, 129, 133, 134 ;
   - « 3D » (`dos3d_NNN.png`, rendu X/Y) : 001, 004, 007, 012, 016, 025, 041, 050, 051, 072, 081,
     093, 095, 096, 109, 129 ;
-  - **Lot 2 (2026-10-21, branche `art-dos-combat`, planche à valider, non intégré)** : 55 nouveaux dos
-    IA générés (`tools/art/serie_dos.py`, `build/art/serie_dos/`, contact `build/art/SERIE_DOS_CONTACT.png`) ;
-    refusés par Codex : Tortank, Rondoudou, Staross, Léviator, Voltali ; non lancés : Ossatueur, Rhinocorne,
-    Saquedeneu, Kangourex. Pyroli obtenu.
+  - **Lot 2 (intégré le 2026-10-22, branche `art-dos-combat`)** : 54 dos IA peints dans
+    `assets/sprites/pokemon/dos/dos_ia_NNN.png` (1024², lus par `BattleArt.image(back)` en priorité, filtre
+    linéaire ; test `test_painted_backs.gd`). Planche de contact `build/art/SERIE_DOS_CONTACT.png`.
+    Chenipan refait (r8, fidèle). **6 à faire par Kevin avec ChatGPT** : Kadabra, Tortank, Rondoudou,
+    Staross, Léviator, Voltali (`fiches-assets/dos-a-faire-chatgpt.md`, commande
+    `serie_dos.py --ajouter IDENT fichier`). Non lancés : Ossatueur, Rhinocorne, Saquedeneu, Kangourex.
+    Les 23 `dos_ia` et 16 `dos3d` de `battle_proto/` restent non branchés (à décider).
   - méthode validée et passe Colab (reportée par Kevin le 2026-10-16) :
     `fiches-assets/serie-combat-dos-pilote.md` §7.
 - **Fonds CB.3 manquants** (`data/battle/decors.json`, repli = carte floutée) : `viridian_forest`,

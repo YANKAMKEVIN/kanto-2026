@@ -12,13 +12,15 @@ Règle de Kevin pour Codex : AVEC images jointes d'abord (2 essais), puis SANS (
   r1 : artwork officiel de face + dos de référence (angle) ;  r2 : artwork de face seul ;
   r3 : aucune image ;  r4 : aucune image, formulation « design original ».
 Une révision = un nouveau fichier `_r5`, `_r6` (jamais d'écrasement). Les refus sont consignés dans
-`$ART/refus_serie_dos.log`. RIEN n'est branché dans le jeu (ni BattleArt, ni manifeste) : Kevin valide
-d'abord la planche de contact.
+`$ART/refus_serie_dos.log`. Planche validée par Kevin le 2026-10-22 : les dos préparés sont intégrés (`--integrer`) et lus par
+`BattleArt` (`assets/sprites/pokemon/dos/`).
 
 Usage :
   tools/art/serie_dos.py --prompts              écrit les prompts versionnés (sans Codex)
   tools/art/serie_dos.py --commandes            liste les commandes generer.sh (sans Codex)
   tools/art/serie_dos.py --preparer             essais retenus -> $ART/serie_dos/dos_ia_NNN.png (sans Codex)
+  tools/art/serie_dos.py --integrer             dos préparés -> assets/sprites/pokemon/dos/ (lus par BattleArt)
+  tools/art/serie_dos.py --ajouter IDENT FICHIER  dos fait avec ChatGPT : dépose, prépare, intègre, planche
   tools/art/serie_dos.py --contact              planche de contact $ART/SERIE_DOS_CONTACT.png (sans Codex)
   tools/art/serie_dos.py --liste                liste des espèces et de l'état de chaque essai
   tools/art/serie_dos.py [IDENT ...]            génère avec Codex (3 à la fois), essais r1 à r4 dans l'ordre,
@@ -282,6 +284,10 @@ REVISIONS = {
 	"NIDORINA": ("petite créature quadrupède dodue BLEU PÂLE (bleu-gris clair) comme un gros lapin, de grandes oreilles "
 		"rondes à l'intérieur turquoise, dos tacheté de taches bleu plus foncé et orné de quelques petits PIQUANTS "
 		"crème, pattes courtes, queue fine"),
+	"CHENIPAN": ("petite chenille VERTE vif dodue, au corps courbé en C, dos vert uni orné de CERCLES crème (anneaux "
+		"clairs) disposés en rangée, ventre et petits pieds ronds jaune crème, grosse tête ronde verte portant sur le "
+		"dessus UNE ANTENNE ROUGE-ORANGE en forme de Y (une seule tige à deux branches), bout de la queue fin et "
+		"recourbé, terminé par une petite pointe ovale crème"),
 	"RACAILLOU": ("grosse BOULE de roche grise rugueuse, SANS AUCUNE JAMBE ni pied, flottant juste au-dessus du sol ; "
 		"seulement DEUX BRAS de pierre musclés, de part et d'autre de la boule, terminés par des poings de roche ; "
 		"de dos : la boule ronde au centre et les deux bras"),
@@ -365,11 +371,24 @@ def generer(noms: list[str]) -> None:
 ## Par défaut : le plus petit r disponible.
 RETENUS: dict[str, str] = {  # relecture de la planche, 2026-10-22 (révisions r5 à r8)
 	"MIAOUSS": "DOS_MIAOUSS_r6", "KADABRA": "DOS_KADABRA_r7", "RACAILLOU": "DOS_RACAILLOU_r5",
-	"NIDORINA": "DOS_NIDORINA_r6",
+	"NIDORINA": "DOS_NIDORINA_r6", "CHENIPAN": "DOS_CHENIPAN_r8",
 }
 
 
+## Dos refusés par Codex ou infidèles : faits par Kevin avec l'app ChatGPT (décision du 2026-10-22,
+## `docs/design/fiches-assets/dos-a-faire-chatgpt.md`). Tant que `DOS_<IDENT>_chatgpt.png` n'existe pas
+## dans $ART, ces espèces ne sont NI préparées NI intégrées.
+CHATGPT = ("KADABRA", "TORTANK", "RONDOUDOU", "STAROSS", "LEVIATOR", "VOLTALI")
+DEPOT = ART  # DOS_<IDENT>_chatgpt.png
+DOS_JEU = RACINE / "assets/sprites/pokemon/dos"
+
+
 def retenu(ident: str) -> Path | None:
+	chat = DEPOT / f"DOS_{ident}_chatgpt.png"
+	if chat.exists():
+		return chat
+	if ident in CHATGPT:
+		return None
 	if ident in RETENUS:
 		return ART / f"{RETENUS[ident]}.png"
 	for r in range(1, 12):
@@ -419,6 +438,34 @@ def preparer() -> None:
 	print(n, "dos préparés dans", SORTIE)
 
 
+def integrer() -> None:
+	"""Dos préparés -> assets/sprites/pokemon/dos/ (lus par `BattleArt`). Importer ensuite en headless
+	pour générer les `.import`."""
+	DOS_JEU.mkdir(parents=True, exist_ok=True)
+	n = 0
+	for ident, num, *_ in ESPECES:
+		src = SORTIE / f"dos_ia_{num:03d}.png"
+		if src.exists() and retenu(ident):
+			(DOS_JEU / src.name).write_bytes(src.read_bytes())
+			n += 1
+	print(n, "dos copiés dans", DOS_JEU)
+
+
+def ajouter(ident: str, fichier: str) -> None:
+	"""Dos fait avec ChatGPT : dépôt, préparation, intégration et planche."""
+	ident = ident.upper()
+	if ident not in CHATGPT:
+		sys.exit(f"{ident} : pas dans la liste ChatGPT {CHATGPT}")
+	src = Path(fichier).expanduser()
+	if not src.exists():
+		sys.exit(f"introuvable : {src}")
+	DEPOT.mkdir(parents=True, exist_ok=True)
+	(DEPOT / f"DOS_{ident}_chatgpt.png").write_bytes(src.read_bytes())
+	preparer()
+	integrer()
+	contact(ART / "SERIE_DOS_CONTACT.png")
+
+
 def liste() -> None:
 	for ident, num, fr, prio, _s in ESPECES:
 		etat = []
@@ -444,7 +491,7 @@ def contact(sortie: Path) -> None:
 	pl = Image.new("RGB", (col * (2 * cote + 12) + 12, lignes * (cote + texte + 12) + 60), (40, 44, 54))
 	d = ImageDraw.Draw(pl)
 	d.text((14, 12), "Série dos — dos de combat (Codex, provisoires peints) : face officielle | dos proposé. "
-		"Non intégré : à valider par Kevin.", fill=(230, 230, 190), font=_police(20))
+		"Intégré (sauf refusés).", fill=(230, 230, 190), font=_police(20))
 	for i, (ident, num, fr, prio, _s) in enumerate(ESPECES):
 		x, y = 12 + (i % col) * (2 * cote + 12), 60 + (i // col) * (cote + texte + 12)
 		d.rectangle((x, y, x + 2 * cote, y + cote + texte), fill=(58, 64, 78))
@@ -480,6 +527,10 @@ def main() -> None:
 		commandes()
 	elif args and args[0] == "--preparer":
 		preparer()
+	elif args and args[0] == "--integrer":
+		integrer()
+	elif args and args[0] == "--ajouter" and len(args) == 3:
+		ajouter(args[1], args[2])
 	elif args and args[0] == "--contact":
 		contact(ART / "SERIE_DOS_CONTACT.png")
 	elif args and args[0] == "--liste":

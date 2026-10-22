@@ -58,7 +58,7 @@ func test_a_missing_back_falls_back_to_the_official_artwork() -> void:
 	var file := FileAccess.open("res://data/pokemon/species/kanto.json", FileAccess.READ)
 	var entries: Dictionary = JSON.parse_string(file.get_as_text())
 	var data := PokemonData.new()
-	assert_true(data.add_species_from_dict({"zz_no_sprite": entries["charmeleon"]}))
+	assert_true(data.add_species_from_dict({"zz_no_sprite": entries["charmander"]}))
 	var art := BattleArt.new()
 	art.setup(data, null)
 	assert_false(ResourceLoader.exists(BattleArt.placeholder_path(&"zz_no_sprite", true)))
@@ -66,7 +66,7 @@ func test_a_missing_back_falls_back_to_the_official_artwork() -> void:
 	assert_not_null(image["texture"], "jamais vide")
 	assert_true(image["official"], "artwork officiel")
 	assert_string_ends_with(((image["texture"] as AtlasTexture).atlas).resource_path,
-		"official/005.png")
+		"official/004.png")
 
 
 func test_unknown_species_has_no_texture_and_reference_height() -> void:
