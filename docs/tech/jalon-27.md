@@ -282,7 +282,7 @@ NON puis OUI, Stockage + relance, arrêt avant l'écriture), `test_j27_debug_sta
   `jalon-22`, fire_punch de `jalon-25`, mega_kick, substitute de `jalon-29`) : copies identiques,
   sinon doublons d'identifiants au chargement. `tm_compatibility.json` : régénérer, ne pas fusionner
   à la main.
-- Capacités créées sans branche d'origine : noms français de mémoire (Kinésie, Mawashi Geri, Pied
+- Capacités créées sans branche d'origine : noms français confirmés par la coordination (Télékinésie, Mawashi Geri, Pied
   Sauté, Pied Voltige, Poing-Glace, Poing-Éclair, Riposte), puissances modernes ; `jump_kick`,
   `hi_jump_kick` (chute) et `counter` en `pending_effects`. Kicklee / Tygnon apprennent ces capacités.
 - Drapeau du maître : `fighting_dojo_master_defeated` posé par la victoire de sa scène (le maître

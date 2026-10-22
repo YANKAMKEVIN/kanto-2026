@@ -5,7 +5,7 @@
 		"description": "Une onde psychique aux effets variables. Les dégâts dépendent du niveau du lanceur."
 	},
 	"kinesis": {
-		"name": "Kinésie", "type": "psychic", "category": "status",
+		"name": "Télékinésie", "type": "psychic", "category": "status",
 		"accuracy": 80, "pp": 15,
 		"effects": [{ "kind": "stat_stage", "stat": "acc", "stages": -1, "target": "foe" }],
 		"description": "Le lanceur agite une cuillère hypnotique. Baisse la Précision de la cible."
