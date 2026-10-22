@@ -1,0 +1,61 @@
+{
+	"silph_co_3f_1": {
+		"cell": [
+			20,
+			7
+		],
+		"facing": "left",
+		"sprite": "rocket_grunt_m",
+		"dialogue": "silph_co_3f_1_after",
+		"unless": [
+			"silph_giovanni_defeated"
+		],
+		"trainer": {
+			"id": "silph_co_3f_1",
+			"sight": 2,
+			"before": "silph_co_3f_1_before",
+			"defeated": "silph_co_3f_1_defeated"
+		}
+	},
+	"silph_co_3f_2": {
+		"cell": [
+			7,
+			9
+		],
+		"facing": "down",
+		"sprite": "researcher",
+		"dialogue": "silph_co_3f_2_after",
+		"unless": [
+			"silph_giovanni_defeated"
+		],
+		"trainer": {
+			"id": "silph_co_3f_2",
+			"sight": 3,
+			"before": "silph_co_3f_2_before",
+			"defeated": "silph_co_3f_2_defeated"
+		}
+	},
+	"silph_co_3f_worker_1": {
+		"cell": [
+			24,
+			8
+		],
+		"facing": "down",
+		"sprite": "engineer",
+		"dialogue": "silph_co_3f_worker_1"
+	},
+	"silph_co_3f_item_4": {
+		"cell": [
+			8,
+			5
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "silph_co_3f_item_4",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_silph_co_3f_item_4"
+		]
+	}
+}

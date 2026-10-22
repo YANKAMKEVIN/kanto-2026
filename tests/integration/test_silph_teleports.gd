@@ -107,7 +107,7 @@ func test_graph_reaches_every_floor_and_giovanni_with_the_card_only() -> void:
 # --- Boot ------------------------------------------------------------------------------------
 
 func test_same_floor_teleporter_relocates_without_reloading() -> void:
-	await _play.start(START)
+	await _play.start(START, _beat_the_grid_trainers)
 	await SceneRouter.change_map(&"silph_co_8f", &"from_elevator", Vector2i.DOWN)
 	await wait_until(func() -> bool: return _play.boot.is_stable(), TIMEOUT)
 	var map := _play.boot.get_map()
@@ -138,7 +138,7 @@ func test_same_floor_teleporter_relocates_without_reloading() -> void:
 
 
 func test_other_floor_teleporter_changes_map_and_the_arrival_tile_stays_quiet() -> void:
-	await _play.start(START)
+	await _play.start(START, _beat_the_grid_trainers)
 	await SceneRouter.change_map(&"silph_co_5f", &"from_elevator", Vector2i.DOWN)
 	await wait_until(func() -> bool: return _play.boot.is_stable(), TIMEOUT)
 	var pad := _play.boot.get_map().get_warps().get_at(Vector2i(27, 3))
@@ -303,6 +303,13 @@ func _free_neighbour(map: GameMap, cell: Vector2i) -> Vector2i:
 
 
 ## Identifiants `trainer=` des grilles des 11 étages (rival et Giovanni compris).
+## T9 : les Dresseurs posés par les données sont marqués battus (leur vision ne coupe plus la
+## marche de ces tests).
+func _beat_the_grid_trainers() -> void:
+	for trainer: StringName in _grid_trainers():
+		GameState.flags.set_flag(StringName("beaten_%s" % trainer))
+
+
 static func _grid_trainers() -> Array[StringName]:
 	var ids: Array[StringName] = []
 	for n: int in range(1, 12):

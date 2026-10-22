@@ -115,9 +115,12 @@ func test_each_silph_trainer_has_its_three_lines_and_known_species() -> void:
 			assert_true(pages.size() >= 1 and pages.size() <= 3, String(key))
 			for page: DialoguePage in pages:
 				assert_false(page.text.strip_edges().is_empty(), String(key))
+	# T9 : les employés, rapports et objets de la Sylphe (`silph_co_life.json`) vivent à côté des
+	# répliques des Dresseurs : on ne compte que `silph_co_<n>f_<rang>_<avant | vaincu | après>`.
+	var trainer_lines := RegEx.create_from_string("^silph_co_\\d+f_\\d+_(before|defeated|after)$")
 	var silph_dialogues := 0
 	for id: StringName in _dialogues.get_ids():
-		if String(id).begins_with("silph_co_"):
+		if trainer_lines.search(String(id)) != null:
 			silph_dialogues += 1
 	assert_eq(silph_dialogues, 90, "3 répliques × 30 Dresseurs, aucune autre")
 
