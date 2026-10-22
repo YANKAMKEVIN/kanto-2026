@@ -767,3 +767,13 @@ CT06) restent ceux validés.
 Danse-Lames et Écrasement reprennent mot pour mot les textes du J22 (et du J20 pour Écrasement).
 Notes de Pokédex des quatre espèces : avec la table du Parc (T13), une par forme de base
 rencontrable (règle Q-6).
+
+## Décisions de Kevin (2026-10-22)
+
+Choix validés par Kevin sur la page d'arbitrages.
+
+- Prénoms renommés : acceptés.
+- Surf : puissance à 90.
+- Notes de Pokédex (Leveinard, Insécateur, Scarabrute, Tauros) : validées.
+- Rectangle « Parc Safari » sur la Carte : gardé.
+- Ordre des validations de sauvegarde : le J23 (v8) est validé seul en premier (règle 1).
