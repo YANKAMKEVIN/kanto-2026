@@ -35,7 +35,7 @@
 ### 0.2 Ce qui attend
 - Espèces des jalons non fusionnés (J21 à J31) : la matrice reste « à compléter ».
 - Écran du terminal et UX Pokédex/stockage (T5, T7) : après la clôture de la passe systèmes 2.
-- Solutions starters, fossiles, Dojo, Mew : **attendent les décisions de Kevin (§7)**.
+- Solutions starters, fossiles, Dojo, Mew : décisions de Kevin prises le 2026-10-22 (§7) ; reste à les concevoir en détail (T3).
 
 ## 1. Contrats
 
@@ -71,10 +71,22 @@ espèces manquantes listées, les espèces sans voie signalées.
 `CollectionRules` : pour chaque espèce, voies et conditions ; vérification « au moins une voie ».
 Tests : le test lit la matrice et échoue si une espèce **déclarée comme obtenable** n'a pas de voie.
 
-### T3 — Obstacles de collection (Opus, après décisions Kevin)
-Starters non choisis, second fossile, autre Pokémon du Dojo, exclusivités Rouge/Bleu, Mew. Une
-solution par cas, sans annuler la première récompense (J25, J27). **Aucune implémentation avant la
-réponse de Kevin** (§7).
+### T3 — Obstacles de collection (Opus)
+**Décision de Kevin (2026-10-22) : tout est obtenable dans une seule partie, sans échange avec un
+autre joueur.** Une solution par cas, sans annuler la première récompense (J25, J27) :
+- **Mew** : obtenable en solo par un événement narratif (voie dédiée, une seule fois, persistée) ;
+  la voie exacte est à fixer et à tester par T1/T2 (jamais d'objet ni de cadeau perdu en cas de
+  fuite ou de défaite).
+- **Starters non choisis** : voie post-game sans échange avec un joueur, par un échange PNJ
+  (Bourg Palette) ou un cadeau unique ; les deux Pokémon manquants sont tous les deux accessibles.
+- **Second fossile** : l'autre fossile se récupère après le premier choix (machine de
+  Cramois'Île, une seule fois), sans annuler la première remise du J25.
+- **Autre Pokémon du Dojo** : le second Pokémon du Dojo est accessible en récompense de revisite,
+  sans annuler le choix unique du J27.
+- **Exclusivités Rouge/Bleu** : chaque exclusivité de version est répartie dans le monde (capture
+  sauvage, échange PNJ, cadeau ou évolution) ; la liste vient de T1 et chaque entrée a une voie
+  testée de bout en bout.
+Chaque voie est ajoutée à la matrice de T1 et vérifiée par T2.
 
 ### T4 — Échange local, logique (Opus)
 `LocalTrade` : liste des Pokémon compatibles (Kadabra, Machopeur, Gravalanch, Spectrum), évolution
@@ -124,10 +136,14 @@ entre les deux).
 Duplication ou perte au transfert ; espèce déclarée mais inobtenable ; sauvegarde ancienne
 écrasée ; confusion entre les voies « sauvages » et les exclusivités.
 
-## 7. Points ouverts pour Kevin
-1. **Mew** : cadeau, événement narratif, ou absent du compte solo ? (décision dédiée avant tout code)
-2. **Starters non choisis** : voie post-game (échange PNJ, cadeau) ? [D : échange avec un PNJ de Bourg Palette]
-3. **Second fossile** : [D : machine de Cramois'Île, une seule fois]
-4. **Autre Pokémon du Dojo** : [D : récompense de revisite]
-5. **Exclusivités Rouge/Bleu** : répartition dans le monde (liste proposée par T1).
-6. Terminal d'échange : un Centre Pokémon précis ou tous ? [D : tous]
+## 7. Décisions de Kevin (2026-10-22)
+**Tout est obtenable dans une seule partie** (aucun échange avec un autre joueur) :
+1. **Mew** : obtenable en solo par un événement narratif (voie à fixer au T3).
+2. **Starters non choisis** : obtenus par une voie post-game (échange PNJ à Bourg Palette ou
+   cadeau), sans second appareil.
+3. **Second fossile** : machine de Cramois'Île, une seule fois.
+4. **Autre Pokémon du Dojo** : récompense de revisite.
+5. **Exclusivités Rouge/Bleu** : réparties dans le monde (liste proposée par T1), chacune avec une
+   voie testée.
+6. Terminal d'échange local : dans tous les Centres Pokémon (évolutions par échange seulement ;
+   il n'est jamais nécessaire pour compléter le Pokédex en dehors de ces 4 évolutions).

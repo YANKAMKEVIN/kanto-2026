@@ -77,6 +77,7 @@ corrompue ; build compromis ou secret exposé ; régression critique après mise
 recommander une rétrogradation qui rendrait les sauvegardes illisibles).
 
 ### T6 — Backlog et rapport de sortie (38F)
+Le backlog est celui des **tickets GitHub** (source unique, décision de Kevin du 2026-10-22).
 Catégories : fiabilité, ergonomie, technique, contenu (hors périmètre). Ordre de décision : P1
 fiabilité et données ; P2 compatibilité et performances ; P3 ergonomie étayée par les retours ;
 P4 nouvelles fonctionnalités, après arbitrage. Une idée au backlog ne vaut pas validation.
@@ -98,7 +99,8 @@ vérification que le comportement observable n'a pas changé après les refactor
 Refactorisation qui change un comportement ; CI qui épuise de nouveau le quota ; scan de secrets
 qui affiche une valeur ; documentation dupliquée dans deux arborescences.
 
-## 7. Points ouverts pour Kevin
+## 7. Décisions de Kevin (2026-10-22) et points ouverts
+0. **Backlog unique = tickets GitHub** (le « backlog priorisé » du T6 est un jeu d'étiquettes et de priorités sur les tickets, pas un fichier parallèle). Le projet reste personnel, sans diffusion.
 1. Budget de CI : limiter l'export aux tags et à `main` ? [D : oui]
 2. Un historique Git contenant d'anciens secrets est-il connu ? (le scan le dira)
-3. Faut-il un second dépôt privé pour l'archive des releases ? [D : non, release GitHub privée]
+3. Archive des releases : sur le Mac de Kevin avec sauvegarde (décision du J34), pas de second dépôt ni de publication.

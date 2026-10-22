@@ -1,14 +1,18 @@
-# Jalon 37 — Version 1.0, maintenance et support
+# Jalon 37 — Version 1.0 personnelle, maintenance et support
 
 > **PLAN — aucun code n'est écrit par ce document.** Source de vérité :
 > `docs/design/passes/j37-v1-chatgpt.md` (7 décisions verrouillées). Décisions et textes
 > recommandés **validés par Kevin le 2026-10-21 (validation d'avance des textes recommandés)**.
 > Texte manquant : proposition marquée **[D]**.
 
-> Objectif : **une version 1.0 identifiable, reproductible et maintenable**, sans nouveau contenu,
-> avec ses correctifs 1.0.x, son support et son archive. Deux décisions séparées : **Go technique**
-> et **Go de distribution**. Trois états à ne pas confondre : exploitation interne, diffusion
-> autorisée, publication publique (jamais automatique).
+> **Réécrit le 2026-10-22 : décision de Kevin, le projet reste personnel, pas de diffusion.** La
+> 1.0 est une **version personnelle** : identifiée, archivée et maintenue pour Kevin seul, sur ses
+> appareils. **Aucune publication** (ni publique, ni à un cercle). Plus de « Go de distribution » ni
+> de rapport de conformité de diffusion ; le support est celui d'un utilisateur unique.
+
+> Objectif : **une version 1.0 personnelle identifiable, reproductible et maintenable**, sans
+> nouveau contenu, avec ses correctifs 1.0.x, son suivi et son archive. Une seule décision écrite :
+> le **Go technique**.
 >
 > Pas de tag final « pour respecter le numéro du jalon » : la 1.0 dépend d'un Go réel au J36.
 
@@ -20,7 +24,7 @@
 | Version | Aucune dans `project.godot` ni dans `export_presets.cfg` | Posée au J34 (T1), reprise ici |
 | Schéma de sauvegarde | `SaveSystem.VERSION = 7`, distinct de la version de l'appli | Conforme au contrat du §5 de la passe |
 | CI | `godot-tests.yml` (GUT en 8 lots, Godot 4.7.2 vérifié par SHA-256, `contents: read`) | Base du pipeline de tag (J38) |
-| Suivi des anomalies | `etat-projet.md` ; dépôt GitHub privé `YANKAMKEVIN/kanto-2026` | Tickets GitHub possibles (T5) |
+| Suivi des anomalies | `etat-projet.md` ; dépôt GitHub privé `YANKAMKEVIN/kanto-2026` | Tickets GitHub retenus : backlog unique (T5) |
 | Dossier de release | N'existe pas | Voir §2.1 |
 
 ### 0.1 Ce qui peut commencer tout de suite
@@ -63,8 +67,8 @@ Pose du tag `v1.0.0` sur le commit du J36 accepté ; création de `release/1.0` 
 La passe décrit `releases/1.0.0/` (APK, `manifest.json`, `SHA256SUMS`, `release-notes.md`,
 `known-issues.md`, `qa-report.md`, `compatibility.md`, `migration-report.md`, `go-no-go.md`).
 **Proposition [D]** : les documents texte dans `docs/releases/1.0.0/` (suivis par Git) ; l'APK et
-`SHA256SUMS` hors dépôt (pièce jointe d'une release GitHub privée ou disque de Kevin), car un
-binaire n'a pas sa place dans l'historique. À valider (§6).
+`SHA256SUMS` hors dépôt, sur le Mac de Kevin avec sauvegarde (décision du J34), car un binaire
+n'a pas sa place dans l'historique. Aucune publication, y compris en release GitHub.
 
 ### T2 — Pipeline reproductible (37B, Opus)
 `tools/build_release.sh` [D] fondé sur `tools/build_rc.sh` du J34 : mêmes garde-fous, tag exigé,
@@ -72,7 +76,7 @@ journal complet. Seconde construction sur un autre environnement (Mac propre ou 
 
 ### T3 — Politique de correctifs 1.0.x (37C, Sonnet)
 Cycle : ticket reproductible → correction minimale → tests unitaires et ciblés → régression des
-dépendances → build signée → installation et migration → publication dans le canal autorisé. Une
+dépendances → build signée → installation et migration → installation sur les appareils de Kevin (aucune publication). Une
 correction de sauvegarde déclenche une régression plus large.
 
 ### T4 — Compatibilité des sauvegardes et récupération (37D, Opus — sauvegarde : validé seul)
@@ -81,14 +85,14 @@ de récupération (reconnaître une sauvegarde illisible, ce qu'il ne faut pas f
 chercher, quoi transmettre au support). Aucune promesse de récupération après désinstallation.
 
 ### T5 — Support, FAQ, suivi (37E, Sonnet)
-Ticket minimal (version et appareil, description, étapes, attendu/observé, fréquence, gravité) ;
-états Nouveau, À reproduire, Confirmé, En correction, À retester, Résolu, Reporté. FAQ : installer,
-mettre à jour, perdre sa sauvegarde ?, APK qui ne s'installe pas, après un crash, déclarer un bug,
-revenir à une ancienne version. **La FAQ n'affirme jamais qu'une restauration existe si elle n'est
+Suivi par tickets GitHub, ticket minimal (version et appareil, description, étapes, attendu/observé, fréquence, gravité) ;
+états Nouveau, À reproduire, Confirmé, En correction, À retester, Résolu, Reporté. FAQ personnelle (aide-mémoire
+de Kevin) : installer, mettre à jour, perdre sa sauvegarde ?, APK qui ne s'installe pas, après un
+crash, déclarer un bug, revenir à une ancienne version. **La FAQ n'affirme jamais qu'une restauration existe si elle n'est
 pas implémentée.**
 
 ### T6 — Dossier 1.0 et décisions finales (37F)
-Checklist ci-dessous ; **deux** décisions écrites, avec preuves et limites. Le dossier référence
+Checklist ci-dessous ; **une** décision écrite (Go technique), avec preuves et limites. Le dossier référence
 **une seule** version.
 
 ## 3. Textes
@@ -104,16 +108,16 @@ au T5 une fois les procédures réelles connues, pas avant).
 - [ ] Mises à jour et sauvegardes validées
 - [ ] Tests critiques exécutés sur le build final
 - [ ] Procédure de correctifs 1.0.x documentée
-- [ ] FAQ et canal de support opérationnels
-- [ ] Rapport de conformité et statut de diffusion disponibles
-- [ ] Décisions Go/No-Go finales enregistrées
+- [ ] FAQ personnelle et suivi par tickets GitHub opérationnels
+- [ ] Mention « usage personnel, aucune diffusion » inscrite dans le dossier
+- [ ] Décision Go technique enregistrée
 
 ## 5. QA téléphone
 Installation de la 1.0.0 ; mise à jour par-dessus avec une sauvegarde de partie avancée ;
 vérification du numéro de version affiché dans le jeu [D : dans le menu options].
 
-## 6. Points ouverts pour Kevin
-1. Emplacement de l'archive (proposition du §2.1).
-2. Canal de support : tickets GitHub (dépôt privé : seuls les invités les voient) ou autre ?
-3. **Go de distribution** : voir J34 ; trois niveaux possibles : usage interne, cercle autorisé, public.
-4. Qui conserve la clé de signature et sa sauvegarde ?
+## 6. Décisions de Kevin (2026-10-22)
+1. **Le projet reste personnel, pas de diffusion** : 1.0 = version personnelle, sans publication.
+2. Backlog et suivi : **tickets GitHub** (dépôt privé).
+3. Clé de signature et archive des versions : sur le Mac de Kevin, avec sauvegarde (voir J34).
+4. Emplacement de l'archive : proposition du §2.1 (documents suivis par Git, binaire sur le Mac).

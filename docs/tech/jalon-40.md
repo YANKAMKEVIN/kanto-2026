@@ -115,8 +115,9 @@ Le parcours 1 à 8 sur le S24 avec l'APK de la version auditée, appareil et ver
 Auditer trop tôt (rapport rempli d'« Absent » sans valeur) ; fabriquer un rapport si J35 à J37 n'ont
 pas eu lieu ; confondre « document validé » et « fonction livrée ».
 
-## 7. Points ouverts pour Kevin
+## 7. Décisions de Kevin (2026-10-22) et points ouverts
+0. **Backlog unique = tickets GitHub** : le registre d'écarts du T6 devient des tickets (étiquette `audit-j40`) ; le dossier de clôture y renvoie. Le projet reste personnel, sans diffusion : le statut de diffusion attendu est « usage personnel, aucune diffusion ».
 1. Date de lancement du 40.0 : après la fusion de J39 seulement, ou un audit partiel plus tôt ?
 2. Emplacement du dossier de clôture : `docs/tech/audit-j40/` ? [D : oui]
-3. Qui prend la décision finale Go de diffusion, et sur quel avis ? (voir J34)
+3. Go de diffusion : sans objet, le projet reste personnel (décision du 2026-10-22) ; seul le Go technique est pris, par Kevin.
 4. Suites possibles après un No-Go : plan correctif en jalons J41+ ? [D : oui, un jalon par lot d'écarts]

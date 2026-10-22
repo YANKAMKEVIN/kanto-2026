@@ -19,7 +19,7 @@
 |---|---|---|
 | Rapport bêta, builds, tickets | N'existent pas (J35 non exécuté) | T3 à T7 attendent |
 | Migrations | `SaveSystem.upgrade` : migrations incrémentales jusqu'à v7 ; tests `test_save_j11` … `test_save_j20`, `test_save_kevin_j12` (vraie sauvegarde de Kevin) | Modèle des tests de migration (T2) |
-| Vraies sauvegardes | Une copie de Kevin à la racine de son dossier personnel (`kanto_save_kevin_backup_s2a_*.json`) | À copier dans `tests/fixtures/` **après relecture** (données personnelles : nom, temps de jeu) |
+| Vraies sauvegardes | Une copie de Kevin à la racine de son dossier personnel (`kanto_save_kevin_backup_s2a_*.json`) | À copier dans `tests/fixtures/` **après relecture** (données personnelles : nom, temps de jeu) ; décision de Kevin du 2026-10-22 : oui, et la sauvegarde du S24 est déjà copiée dans `~/dev/qa-nuit/s2z/sauvegarde-s24-2026-10-22/` |
 | Régression | Suite GUT, départs de débogage, parcours scriptés du J33 | Réutilisés |
 | Mesures | `tools/measure_*.gd`, protocole du J33 | Comparaison avant/après |
 
@@ -97,7 +97,10 @@ migration (si reproductible) ; les parcours qui avaient échoué.
 Correctif qui casse un contrat plus ancien ; migration partielle ; P2 acceptés sans critère ; bêta
 trop petite pour représenter les appareils réels.
 
-## 7. Points ouverts pour Kevin
-1. Peut-on copier ta sauvegarde réelle dans `tests/fixtures/` (après retrait du superflu) ?
+## 7. Décisions de Kevin (2026-10-22) et points ouverts
+1. **Décision de Kevin (2026-10-22)** : sa vraie sauvegarde sera copiée dans `tests/fixtures/`
+   (après retrait du superflu : nom, temps de jeu). La copie de travail a déjà été faite le
+   2026-10-22 dans `~/dev/qa-nuit/s2z/sauvegarde-s24-2026-10-22/` (hors dépôt) ; la session du J36
+   la relit puis la place dans `tests/fixtures/`.
 2. Qui tranche les P2 : toi, ou le critère du §1 appliqué par la session ? [D : critère, toi en cas de doute]
 3. Date de gel : après combien de builds bêta ? [D : après la 3e]

@@ -105,9 +105,15 @@ puis déverrouillé ; appel entrant simulé si possible ; tuer l'appli pendant u
 Clé de signature perdue (plus de mise à jour) ; clé exposée ; liste d'appareils inventée ; une
 optimisation qui change les coordonnées ; diffusion présumée autorisée parce que gratuite.
 
-## 7. Points ouverts pour Kevin
-1. **Go juridique** : le projet est « un remake personnel » (`CLAUDE.md`). Toute diffusion, même
-   privée, relève de toi et d'un avis compétent. La bêta (J35) en dépend.
-2. Où garder le keystore et sa sauvegarde ? (gestionnaire de mots de passe, disque chiffré)
-3. Appareils réellement disponibles en plus du S24 ?
-4. Version minimale d'Android à annoncer : à mesurer, pas à supposer.
+## 7. Décisions de Kevin (2026-10-22)
+1. **Clé de signature et archive des versions : sur le Mac de Kevin, avec sauvegarde** (hors dépôt,
+   jamais dans Git ni dans un APK). La sauvegarde de la clé est une tâche à faire avant la première
+   RC signée : une clé perdue empêche toute mise à jour par-dessus.
+2. **Retours de test par tickets GitHub** (un ticket par problème, rattaché au build identifié).
+3. **Le projet reste personnel** (voir J35 et J37) : pas de diffusion ; le « Go juridique » se
+   réduit à l'inventaire des ressources (T6) et à la mention « usage personnel, droits non
+   déterminés » ; aucun testeur extérieur n'est requis.
+
+## 8. Points encore ouverts
+1. Appareils réellement disponibles en plus du S24 ?
+2. Version minimale d'Android à annoncer : à mesurer, pas à supposer.

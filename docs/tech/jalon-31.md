@@ -160,8 +160,8 @@ Observer : commandes tactiles du Surf, stabilité des transitions, reprise Andro
 Plan relevé sur la mauvaise version du jeu ; Mewtwo dupliqué par une écriture non atomique ;
 chemin inaccessible sans nouvelle CS ; collision avec le J30 sur le drapeau de victoire.
 
-## 8. Points ouverts pour Kevin
-1. Dresseurs dans la Grotte Inconnue : aucun (fidèle à Rouge/Bleu) ? [D : aucun]
-2. Fuite devant Mewtwo : il reste (règle d'Artikodin) ? [D : oui]
-3. Refus d'accès : message de §4 à valider, ou la grotte reste simplement non repérable ?
-4. Mewtwo absent du Pokédex avant rencontre : voulu ? [D : oui, comme les autres]
+## 8. Décisions de Kevin (2026-10-22)
+1. Dresseurs dans la Grotte Inconnue : **aucun** (validé).
+2. Fuite devant Mewtwo : **il reste** (règle d'Artikodin, validé).
+3. Refus d'accès : message de §4 validé (« Les eaux sont trop agitées. Pas maintenant. »).
+4. Mewtwo absent du Pokédex avant rencontre : oui, comme les autres [D, non contesté].

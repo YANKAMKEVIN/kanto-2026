@@ -1659,3 +1659,15 @@ APK final du J16 (`jalon-16` à `a01da28e`, 167 Mo) installé par-dessus (`adb i
 
 Reportés : mémoire de textures au-dessus du budget de 64 Mo (jusqu'à 121 Mo, Jadielle 90, Route 22 108) ; dos de Salamèche en combat encore une silhouette orange pixel (dos peints : chantier de Kevin) ; sur la carte, colonne « Services » de Jadielle rendue très étroite (texte vertical « Cent… »).
 
+
+## Plans J31–J40 : décisions de Kevin (2026-10-22, branche `plans-j31-j40`)
+
+Choix validés par Kevin sur la page d'arbitrages, inscrits dans les plans (documents seulement, aucun code) :
+- **J31** : grotte sans Dresseur, Mewtwo reste si on fuit, message de refus d'accès validé.
+- **J32** : **tout obtenable dans une seule partie** (Mew, starters non choisis, second fossile, Pokémon du Dojo, exclusivités Rouge/Bleu), sans échange avec un autre joueur ; T3 et §7 réécrits.
+- **J34** : clé de signature et archive des versions sur le Mac de Kevin, avec sauvegarde ; retours par tickets GitHub.
+- **J35 et J37** : **le projet reste personnel, pas de diffusion** ; J35 réécrit en bêta interne (Kevin seul, ses appareils), J37 en version 1.0 personnelle sans publication ; plus de Go de distribution.
+- **J36** : la vraie sauvegarde de Kevin sera copiée dans `tests/fixtures/` (copie déjà faite le 2026-10-22 dans `~/dev/qa-nuit/s2z/sauvegarde-s24-2026-10-22/`).
+- **J38 et J40** : backlog unique = tickets GitHub.
+
+Décisions inscrites aussi (sections « Décisions de Kevin (2026-10-22) ») dans les plans des branches `jalon-23`, `jalon-24`, `jalon-25`, `jalon-27` et `jalon-29`. Restent ouverts : voie narrative de Mew (J32 T3), repeinte du sol de la Route 22 étendue (J29), côte sud de Bourg Palette (J24), codage de Pied Sauté / Pied Voltige / Riposte avant la fusion (J27), resimulation d'Auguste après la fusion J21–J24 (J25).
