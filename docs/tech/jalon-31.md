@@ -284,3 +284,7 @@ Pokédex avant rencontre (§8.4, comme les autres).
 - **T10** : QA S24 (§6).
 - Fiches de Pokédex de Métamorph et Mewtwo : textes à écrire et valider (§4).
 - Morphing, Max Élixir, PP Plus : effets à coder (moteur de PP absent).
+
+Validation (2026-10-22) : import headless sans erreur ; suite complète **6 506 / 6 506** (593
+scripts) ; `plan_check_cerulean_cave.py` conforme, `--autotest` refuse ses 4 pièges ;
+`check_json_keys.py` sans doublon.
