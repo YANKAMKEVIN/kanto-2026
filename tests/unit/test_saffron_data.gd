@@ -18,7 +18,7 @@ func test_data_loads_without_error() -> void:
 
 func test_species_and_types() -> void:
 	var expected := {
-		&"mr_mime": [122, [&"psychic", &"fairy"]],
+		&"mr_mime": [122, [&"psychic"]], # repris du J29 (kanto_j29.json), psy seul comme en RB
 		&"hitmonlee": [106, [&"fighting"]],
 		&"hitmonchan": [107, [&"fighting"]],
 	}

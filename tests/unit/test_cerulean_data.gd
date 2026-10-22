@@ -238,7 +238,10 @@ func test_tm11_and_its_compatibilities() -> void:
 			compatible.append(id)
 	assert_eq(compatible, [&"squirtle", &"wartortle", &"blastoise", &"rattata", &"raticate",
 		&"nidorina", &"nidoqueen", &"nidorino", &"nidoking", &"clefairy", &"clefable",
-		&"jigglypuff", &"wigglytuff", &"meowth", &"persian", &"shellder", &"cubone",
+		&"jigglypuff", &"wigglytuff", &"meowth", &"persian",
+		# Jalon 27 (T3) : Ramoloss et Flagadoss (emprunts du J24).
+		&"slowpoke", &"slowbro",
+		&"shellder", &"cubone",
 		&"marowak",
 		# Jalon 20 (T7) : Kangourex et Aquali.
 		&"kangaskhan", &"horsea", &"goldeen", &"staryu", &"starmie", &"gyarados",

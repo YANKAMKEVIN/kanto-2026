@@ -14,8 +14,8 @@ Mis à jour : 2026-10-22 (**J27 : T1 à T4, T6 à T11 faits sur `jalon-27`** —
 - **Attend Kevin** : T12 (session téléphone 27 : départs `saffron_gym`, `sabrina`, `fighting_dojo`,
   `dojo_choice`), relecture des noms des capacités créées (Kinésie, Mawashi Geri, Pied Sauté, Pied
   Voltige, Poing-Glace, Poing-Éclair, Riposte), équilibrage de Morgane (12 à 36,5 % au premier essai).
-- **À la fusion** : supprimer `species/kanto_j27_emprunts.json` et `moves/j27_emprunts.json` quand
-  les J22, J24, J25, J29 sont dans la base ; régénérer `tm_compatibility.json`.
+- **À la fusion** : supprimer `species/kanto_j27_emprunts.json` (dont M. Mime, créé aussi par le J29)
+  et `moves/j27_emprunts.json` quand les J22, J24, J25, J29 sont dans la base ; régénérer `tm_compatibility.json`.
 - Reportés (rendu) : sprites provisoires (Karatékas en `hiker` féminin), bords est/ouest des salles
   de l'Arène sans mur peint, fonds de combat « Arène Psy » et « Dojo ».
 

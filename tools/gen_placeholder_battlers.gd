@@ -64,6 +64,10 @@ const SPECIES: Array[String] = [
 	"alakazam", "lapras",
 	# Jalon 26 (T3) : Osselait et Ossatueur (équipes de la Sylphe SARL, jamais montrés au J19).
 	"cubone", "marowak",
+	# Jalon 27 (jalon-27.md §2.4, T3) : Kicklee et Tygnon (Dojo de Combat). Ajouts en fin ; les
+	# autres espèces du J27 (Aéromite, Machopeur, Ramoloss, Flagadoss, M. Mime) ont leurs images
+	# copiées des branches qui les créent (J22, J24, J29).
+	"hitmonlee", "hitmonchan",
 ]
 const OUTLINE := Color("#1c1c28")
 const EYE := Color("#1c1c28")
@@ -1995,3 +1999,42 @@ func _write_shadow() -> void:
 	img.save_png(DIR + "battle_shadow.png")
 	_w = SIZE
 	_h = SIZE
+
+
+# --- Kicklee, Tygnon (jalon 27) ---------------------------------------------------
+
+## Corps brun sans cou, très longues jambes repliées, petits yeux ; bras fins.
+func _draw_hitmonlee(img: Image, back: bool) -> void:
+	var skin := Color("#b08a5a")
+	_line(img, Vector2(26, 38), Vector2(16, 52), skin.darkened(0.1), 5)
+	_line(img, Vector2(16, 52), Vector2(22, 61), skin.darkened(0.1), 5)
+	_line(img, Vector2(38, 38), Vector2(48, 52), skin.darkened(0.1), 5)
+	_line(img, Vector2(48, 52), Vector2(42, 61), skin.darkened(0.1), 5)
+	_e(img, 32, 28, 12, 14, skin, true)
+	_line(img, Vector2(21, 26), Vector2(12, 36), skin, 2)
+	_line(img, Vector2(43, 26), Vector2(52, 36), skin, 2)
+	if back:
+		_r(img, 27, 30, 10, 2, skin.darkened(0.25))
+		return
+	_r(img, 25, 20, 14, 4, skin.darkened(0.35))
+	_eye(img, 27, 21, Color("#f0e8d0"))
+	_eye(img, 35, 21, Color("#f0e8d0"))
+
+
+## Corps brun trapu, tunique violette, deux gros gants de boxe rouges.
+func _draw_hitmonchan(img: Image, back: bool) -> void:
+	var skin := Color("#b8946a")
+	var tunic := Color("#8a5aa8")
+	var glove := Color("#d83a3a")
+	_r(img, 24, 50, 7, 12, skin.darkened(0.12))
+	_r(img, 33, 50, 7, 12, skin.darkened(0.12))
+	_e(img, 32, 40, 13, 13, tunic, true)
+	_e(img, 32, 20, 11, 11, skin, true)
+	_e(img, 13, 34, 7, 7, glove, true)
+	_e(img, 51, 34, 7, 7, glove, true)
+	if back:
+		_r(img, 27, 36, 10, 2, tunic.darkened(0.3))
+		return
+	_eye(img, 27, 18, Color("#1c1c28"))
+	_eye(img, 36, 18, Color("#1c1c28"))
+	_r(img, 28, 25, 8, 2, skin.darkened(0.4))

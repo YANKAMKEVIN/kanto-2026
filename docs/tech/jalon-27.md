@@ -259,7 +259,7 @@ l'attend pas), **T12** (QA téléphone, une session → Kevin), **T13** (clôtur
 |---|---|
 | T1 | Branche `jalon-27` ; audit des espèces et capacités sur toutes les branches `origin/*` ; prénoms vérifiés libres partout (Mélusine, Ophélie, Cassandre, Albin, Nestor, Barnabé, Léandre, Hippolyte, Tancrède, Urbain, Wilfried) |
 | T2 | `tools/art/saffron_gym_rb_decode.py` (pokered local, jamais embarqué) ; grilles `safrania_arene.txt` (20 × 18, neuf salles, 30 tapis = 15 paires RB) et `safrania_dojo.txt` (10 × 12) ; `plan_check_teleports.py` et `plan_check_j27.py` conformes (un seul tapis vers Morgane, chaque Dresseur évitable, un parcours sans aucun combat) |
-| T3 | `kanto_saffron.json` (M. Mime, Kicklee, Tygnon), `moves/saffron.json` (**`psywave`** avec l'effet S2G, kinesis, rolling_kick, jump_kick, hi_jump_kick, ice_punch, thunder_punch, counter), `items_j27.json` (`tm46`), `tm_compatibility.json` régénéré ; 7 Dresseurs de l'Arène, Morgane (équipe verrouillée, capacités RB dont Vague Psy, Soin, Protection, Mur Lumière, Bouclier ; IA smart, carte), 4 élèves et le maître |
+| T3 | `kanto_saffron.json` (Kicklee, Tygnon ; fiches de Pokédex [D] et sprites provisoires générés), `moves/saffron.json` (**`psywave`** avec l'effet S2G, kinesis, rolling_kick, jump_kick, hi_jump_kick, ice_punch, thunder_punch, counter), `items_j27.json` (`tm46`), `tm_compatibility.json` régénéré ; 7 Dresseurs de l'Arène, Morgane (équipe verrouillée, capacités RB dont Vague Psy, Soin, Protection, Mur Lumière, Bouclier ; IA smart, carte), 4 élèves et le maître |
 | T4 | `tools/sim/saffron_gym_scenario.json` (200 graines, équipe J26 + 4 niveaux [D]) : maître 100 % ; **Morgane du premier coup** (attentif) : Dracaufeu 35 %, Florizarre 12 %, Tortank 36,5 % (expert 48 / 23,5 / 56,5 %). Aucune donnée changée (information pour Kevin) |
 | T6 | `tools/build_saffron_gym.gd` (enveloppes provisoires `placeholders_safrania_arene.py`) ; portes de Safrania ouvertes (`a_venir` retiré de `safrania.txt`, outil du J26 relancé : seules les deux portes changent) ; zone, lumière `interior_warm` [D], intérieurs, service « Arène » |
 | T7 | 30 tapis `Warp.Style.TELEPORT` sur la même carte (`relocate`) ; parcours en 4 tapis joué de l'entrée à Morgane (S → SE → NE → NO → centre) ; arriver sur un tapis ne le déclenche pas ; retour possible |
@@ -275,7 +275,8 @@ NON puis OUI, Stockage + relance, arrêt avant l'écriture), `test_j27_debug_sta
 
 **Écarts et points ouverts** :
 - **Emprunts à supprimer à la fusion** : `species/kanto_j27_emprunts.json` (venomoth, machoke de
-  `jalon-22` ; slowpoke, slowbro de `jalon-24`) et `moves/j27_emprunts.json` (barrier, amnesia de
+  `jalon-22` ; slowpoke, slowbro de `jalon-24` ; **mr_mime de `jalon-29`**, psy seul), leurs fiches
+  de Pokédex et sprites provisoires (copies identiques) et `moves/j27_emprunts.json` (barrier, amnesia de
   `jalon-22`, fire_punch de `jalon-25`, mega_kick, substitute de `jalon-29`) : copies identiques,
   sinon doublons d'identifiants au chargement. `tm_compatibility.json` : régénérer, ne pas fusionner
   à la main.
