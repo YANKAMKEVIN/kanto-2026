@@ -161,7 +161,126 @@ Plan relevé sur la mauvaise version du jeu ; Mewtwo dupliqué par une écriture
 chemin inaccessible sans nouvelle CS ; collision avec le J30 sur le drapeau de victoire.
 
 ## 8. Points ouverts pour Kevin
-1. Dresseurs dans la Grotte Inconnue : aucun (fidèle à Rouge/Bleu) ? [D : aucun]
-2. Fuite devant Mewtwo : il reste (règle d'Artikodin) ? [D : oui]
-3. Refus d'accès : message de §4 à valider, ou la grotte reste simplement non repérable ?
-4. Mewtwo absent du Pokédex avant rencontre : voulu ? [D : oui, comme les autres]
+1. Dresseurs dans la Grotte Inconnue : aucun (fidèle à Rouge/Bleu) ? [D : aucun] — **appliqué**
+2. Fuite devant Mewtwo : il reste (règle d'Artikodin) ? [D : oui] — **appliqué**
+3. Refus d'accès : message de §4 à valider, ou la grotte reste simplement non repérable ? —
+   **message appliqué** (`cerulean_cave_closed`)
+4. Mewtwo absent du Pokédex avant rencontre : voulu ? [D : oui, comme les autres] — **appliqué**
+5. **Géographie de l'entrée** (audit §9) : la grille validée d'Azuria (J13) montre la grotte sur
+   un îlot de la baie est, sans accès ; la passe J31 la veut au nord-ouest par les berges (RB).
+   [D proposé : garder l'îlot de la baie est déjà peint, accès en Surf depuis le canal : aucune
+   refonte d'Azuria ; à trancher avant 31A.]
+6. **Nom** : « Grotte Azurée » (J13) ou « Grotte Inconnue » (J31) ? [D : « Grotte Inconnue »
+   dans les textes du J31, à harmoniser.]
+7. **Écarts de relevé** : 45 cases de sol sans accès dans RB changées en roche (§10) ; Guérison
+   et Max Élixir du 1F ramassés depuis l'eau (comme RB). [D : conservés.]
+8. **Fiches de Pokédex** de Métamorph et Mewtwo [D, à valider] :
+   - Métamorph (0,3 m ; 4,0 kg) : « Une masse molle qui prend la forme de ce qu'elle regarde.
+     Elle a du mal à garder les yeux en place. »
+   - Mewtwo (2,0 m ; 122,0 kg) : « Né d'expériences génétiques poussées trop loin. Il dort au
+     fond d'une grotte où personne ne descend. »
+
+## 9. Audit 31.0 (2026-10-22, branche `jalon-31` depuis `systemes-2` à `8c2cb6ee`)
+
+Classement : **I** implémenté et vérifié · **P** présent mais incomplet · **S** seulement spécifié ·
+**A** absent · **H** hors de cette base (sur une autre branche, pas encore fusionné).
+
+| Point | État | Chemins réels |
+|---|---|---|
+| Surf hybride (CS03, Badge Âme, Pokémon compatible), courants, pêche | I (S2C, S2C-bis validés) | `game/world/surf/`, `data/world/field_moves.json`, `data/fishing/water_rod.json` |
+| Niveaux de sol (collisions par paires de RB : sol bas / sol haut / escalier) | P : `GridWorld.Level` existe (`set_level`, `levels_compatible`), mais `GameMap` ne l'expose pas encore (les exports viennent du J24) | `game/world/grid_world.gd` ; `origin/jalon-24` |
+| Rencontre légendaire unique (capture ou K.O. : consommée ; fuite ou défaite : rien ; sauvegarde forcée avant le premier texte) | I (S2 T30) : `StaticEncounter` + étape `wild_battle` clé `static` | `game/world/static_encounter/static_encounter.gd`, `game/systems/cutscene/cutscene_director.gd` (`_wild_battle`) |
+| Artikodin, Sulfura (mêmes clés `static`) | H | `origin/jalon-24:data/cutscenes/seafoam.json`, `origin/jalon-29:data/cutscenes/j29.json` |
+| Titre de Champion permanent | H : `league_champion_defeated` (`LeagueAttempt.CHAMPION_DEFEATED`), drapeaux de tentative temporaires | `origin/jalon-30:game/systems/league/league_attempt.gd` |
+| Master Ball | H (`catch_bonus` 1000) | `origin/jalon-26:data/items/items_j26.json` |
+| Journaux du Manoir (Mewtwo nommé) | H | `origin/jalon-25:data/dialogues/pokemon_mansion.json` |
+| Entrée côté Azuria | **Contradiction** : la grille validée d'Azuria (J13, D-12) pose la « Grotte Azurée » sur un îlot de la **baie EST** (51..54, 3..6), repère bloqué, aucune interaction avec l'eau ; la passe J31 §3 la veut au **nord-ouest**, par les berges (RB : (4, 11) d'Azuria) | `tools/plans/azuria.txt`, `docs/design/dossier-16-azuria.md` D-12 |
+| Nom du lieu | **Écart** : « Grotte Azurée » (J13) / « Grotte Inconnue » (J31) | idem |
+| Terrain de rencontre « floor » (toute case praticable) | I (J19) ; utilisé par les Îles Écume (J24) | `game/pokemon/encounters/encounter_director.gd` |
+| Tables de pêche | I, un seul fichier (`WaterRodTables` ne lit que `water_rod.json` + QA) | `game/world/fishing/water_rod_tables.gd` |
+| Mewtwo, Métamorph | A | — |
+| Espèces des rencontres | 10 présentes (Nosferalto, Hypno, Magnéton, Abo, Sablaireau, Kadabra, Parasect, Raichu, Ossatueur, Grodoudou) ; 9 sur d'autres branches (H) | voir §10 |
+| Capacités de Mewtwo à N70 (Psyko, Soin, Météores, Bouclier) | Psyko, Soin, Météores I ; Bouclier H (J21) | `data/pokemon/moves/` |
+| Objets de RB | Guérison, Pépite, Super Bonbon I ; Hyper Ball H (J22), Rappel Max H (J25) ; Max Élixir, PP Plus A (aucun moteur de PP : le Max Éther du J29 est « sans effet ») | `data/items/` |
+| Outils de grille | I : `plan_grille.py`, `tests/helpers/plan_grid.gd` ; décodeur RB du J24 (H) servi de modèle | `tools/art/` |
+| Format de sauvegarde | I : v7, drapeaux lus avec défaut ; **aucun incrément** au J31 | `game/systems/save/save_system.gd` |
+
+## 10. Fait le 2026-10-22 (branche `jalon-31`, depuis `systemes-2` + `plans-j31-j40`)
+
+Seules les parties démarrables (§0.1) : T1 à T5. Défauts **[D]** appliqués (page d'arbitrages, en
+attente de Kevin) : **aucun Dresseur** dans la grotte (§8.1) ; **Mewtwo reste après une fuite**
+(§8.2, règle d'Artikodin) ; **refus d'accès par le message du §4** (§8.3) ; Mewtwo sans fiche de
+Pokédex avant rencontre (§8.4, comme les autres).
+
+- **T3 — grilles** `tools/plans/cerulean_cave_1f.txt`, `_2f.txt`, `_b1f.txt` : relevé **1:1 de
+  Rouge/Bleu** (30 × 18 par étage), décodé de `pokered` par `tools/art/cerulean_cave_rb_decode.py`
+  (même méthode que les Îles Écume du J24 : tuile en bas à gauche, collisions par paires). Légende
+  du J24 : `.` sol bas, `:` sol haut, `=` escalier, `w` eau surfable, `U`/`V` échelles, `E`
+  bouche, `x` indice d'objet caché. 7 paires d'échelles (P1..P6 1F ↔ 2F, P7 1F ↔ B1F) ; arrivée
+  voisine de chaque échelle, du côté qui mène quelque part (P5 en (2, 3), sol bas).
+  **Écarts avec RB** : 45 cases de sol **sans accès dans RB** (poches décoratives, ni à pied ni en
+  Surf) → roche, comme au J24 (27 au 1F, 18 au B1F, liste en tête des grilles) ; objets cachés de
+  RB dans la roche → indice `x`, l'objet se prend depuis la case voisine.
+  **Contrôle** `tools/art/plan_check_cerulean_cave.py` (+ `--autotest`, 4 pièges refusés) : 7
+  paires réciproques ; toute case praticable atteinte (859, dont 156 d'eau) ; 8 objets visibles, 2
+  cachés et Mewtwo touchés ; **retour à la bouche possible depuis tout état** ; **sans Surf, le B1F
+  et Mewtwo sont inatteignables** (1F et 2F seulement, PP Plus seul objet) ; entrée → Mewtwo : 297
+  pas, 3 échelles (1F → 2F → 1F ouest → B1F), 68 cases en Surf. Constat pour T7 : la Guérison
+  (7, 13) et le Max Élixir (19, 3) du 1F ne se touchent **qu'en Surf**, face à l'objet (comme RB) :
+  l'interaction depuis l'eau doit marcher.
+- **T2 / T5 — accès** `game/systems/story/cerulean_cave_access.gd` (`CeruleanCaveAccess`, pur) :
+  ouvert si et seulement si `league_champion_defeated` (titre du J30, valeur recopiée de
+  `origin/jalon-30` ; un test vérifie l'égalité avec `LeagueAttempt.CHAMPION_DEFEATED` dès que la
+  classe existe) ; jamais sauvegardé ; `refusal_for` → `cerulean_cave_closed` ; `record_entry`
+  pose `cerulean_cave_discovered`. Tests `test_cerulean_cave_access` : 7 Badges, 8 sans Ligue,
+  Conseil des Quatre sans Champion (refusés), Champion (ouvert), rechargement, nouvelle tentative
+  et défaite après le titre (toujours ouvert), départs de débogage.
+- **Règle légendaire** : **aucune nouvelle classe** ; Mewtwo est une donnée de la règle unique déjà
+  codée (`StaticEncounter`, S2 T30) : scène `mewtwo` (`data/cutscenes/cerulean_cave.json`) : cri
+  « Mew ! » [D] puis `wild_battle` N70, intro « legendary », `static` = `mewtwo_encounter_resolved`
+  / `mewtwo_caught`. Écart avec le §2.4 : `mewtwo_caught` est posé **comme pour Artikodin et
+  Sulfura** (une seule règle) ; la possession reste lue dans l'équipe et le stockage. Tests
+  `test_j31_data` : capture / K.O. / fuite / fuite du sauvage / défaite, rechargement après
+  chaque cas, Mewtwo absent une fois résolu, **aucun doublon** quelle que soit la sauvegarde qui
+  survit (avant ou après la capture).
+- **T4 — données** : Mewtwo (n° 150, apprentissage RB : à N70 Météores, Psyko, Bouclier, Soin) et
+  Métamorph (`kanto_j31.json`) ; Morphing (`j31.json`) **sans effet** (`pending_effects`) ;
+  rencontres RB par étage (`data/encounters/cerulean_cave.json`, terrain `floor`, taux 10 / 15 /
+  25, poids des dix emplacements de RB ; **exclusivités Abo / Sablaireau partagées** comme au J24,
+  en attendant la décision du J32) ; Super Canne groupe 9 (`super_rod_cerulean_cave` dans
+  `water_rod.json`) ; 8 objets visibles et 2 cachés de RB (`data/npcs/cerulean_cave_*.json`,
+  scènes et dialogues) ; Max Élixir et PP Plus **sans effet** (`items_j31.json`, précédent du Max
+  Éther du J29) ; sprites provisoires de Métamorph et Mewtwo
+  (`tools/gen_placeholder_battlers.gd`, ajoutés en fin).
+- **Emprunts (copies identiques, à dédoublonner à la fusion)** :
+  - `data/pokemon/species/kanto_j31_emprunts.json` : Dodrio, Aéromite, Électrode, Poissoroy (J22),
+    Leveinard (J23), Flagadoss, Krabboss, Hypocéan (J24), Rhinoféros (J28) ; leurs fiches de
+    Pokédex (`data/pokedex/kanto.json`) et sprites provisoires (`assets/sprites/pokemon/placeholder/`)
+    copiés de la même branche ;
+  - `data/pokemon/moves/j31_emprunts.json` : Amnésie, Bouclier (J21), Pince-Masse, Force Poigne
+    (J22), Guillotine (J23 : version **avec** l'effet `ohko`, celle que le moteur de cette base
+    applique déjà à Empal'Korne ; les J24 et J29 l'ont en `pending_effects`) ;
+  - `data/items/items_j31_emprunts.json` : Hyper Ball (J22), Rappel Max (J25) ;
+  - **Divergences connues** entre branches (la plus ancienne est copiée) : sprites provisoires
+    d'Aéromite, Leveinard, Krabboss différents sur `jalon-29` ; Guillotine (ci-dessus).
+- **Départs de débogage** `tools/debug_start/cerulean_cave.json` (Champion, 8 Badges, CS03,
+  équipe N60–65, Hyper Balls, Super Canne) et `cerulean_cave_locked.json` (8 Badges, Conseil des
+  Quatre vaincu dans une tentative, pas de Champion) ; tous deux à Azuria (`from_center`) en
+  attendant les cartes.
+- Tests d'inventaire mis à jour (`test_pokemon_data`, `test_item_library`,
+  `test_encounter_library`, `test_pokedex_library` : Leveinard rencontrable avec sa note du J23,
+  Métamorph et Mewtwo sans fiche).
+
+### 10.1 Reste à faire (attend d'autres branches ou Kevin)
+- **31A — entrée** (T5 en jeu) : bouche de la grotte sur la carte d'Azuria, eau surfable, warp
+  vers `cerulean_cave_1f:entree` qui interroge `CeruleanCaveAccess` : **après la décision de
+  Kevin sur la géographie** (îlot de la baie est du J13 ou berge nord-ouest de RB) et la fusion du
+  J30.
+- **T6–T8 — cartes** : trois `tools/build_cerulean_cave_*.gd` d'après les grilles ; **après la
+  fusion du J24** (exports des niveaux de sol dans `GameMap`, kit de grotte à niveaux) ; vue
+  générale peinte à valider (T3, levier 4) ; `fishable_cells` ; voile : aucun (grotte éclairée,
+  RB).
+- **T9** : test de capture avec la Master Ball après le J26 ; QA de la capture en équipe pleine.
+- **T10** : QA S24 (§6).
+- Fiches de Pokédex de Métamorph et Mewtwo : textes à écrire et valider (§4).
+- Morphing, Max Élixir, PP Plus : effets à coder (moteur de PP absent).

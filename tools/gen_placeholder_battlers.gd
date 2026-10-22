@@ -59,6 +59,9 @@ const SPECIES: Array[String] = [
 	"victreebel", "tangela", "vileplume", "rhyhorn", "kangaskhan",
 	# Jalon 19 (jalon-19.md §2.12) : Exorcistes et rival n° 5 (Caninos vient du J17). Ajouts en fin.
 	"gastly", "haunter", "exeggcute", "gyarados",
+	# Jalon 31 (jalon-31.md §10, T4) : Métamorph et Mewtwo (Grotte Inconnue). Les neuf autres
+	# espèces de la grotte sont copiées à l'identique des J22–J28. Ajouts en fin.
+	"ditto", "mewtwo",
 ]
 const OUTLINE := Color("#1c1c28")
 const EYE := Color("#1c1c28")
@@ -1907,6 +1910,49 @@ func _draw_gyarados(img: Image, back: bool) -> void:
 # --- Ombre ------------------------------------------------------------------------
 
 ## Ombre ovale au sol, pixel art (bord en escalier), noir translucide.
+# --- Jalon 31 : Métamorph, Mewtwo -------------------------------------------------------
+
+func _draw_ditto(img: Image, back: bool) -> void:
+	var goo := Color("#b48ad8")
+	# Une flaque molle qui s'étale, deux bras courts ; de face, deux points et un trait de bouche.
+	_e(img, 32, 50, 24, 11, goo, true)
+	_e(img, 32, 40, 17, 13, goo, true)
+	_e(img, 14, 46, 5, 4, goo, true)
+	_e(img, 50, 46, 5, 4, goo, true)
+	_e(img, 26, 34, 5, 3, goo.lightened(0.22))
+	if back:
+		return
+	_r(img, 26, 39, 2, 2, EYE)
+	_r(img, 37, 39, 2, 2, EYE)
+	_line(img, Vector2(28, 46), Vector2(36, 46), EYE)
+
+
+func _draw_mewtwo(img: Image, back: bool) -> void:
+	var skin := Color("#c9c0d6")
+	var belly := Color("#9a66b8")
+	# Queue épaisse (à droite), jambes, torse, bras, tête au tube dorsal, cornes courtes.
+	_line(img, Vector2(42, 54), Vector2(58, 40), belly, 6)
+	_e(img, 58, 36, 4, 5, belly, true)
+	_r(img, 22, 50, 7, 12, skin.darkened(0.15))
+	_r(img, 35, 50, 7, 12, skin.darkened(0.15))
+	_e(img, 32, 38, 12, 16, skin, true)
+	if not back:
+		_e(img, 32, 44, 8, 9, belly, true)
+	_line(img, Vector2(21, 32), Vector2(13, 44), skin, 4)
+	_line(img, Vector2(43, 32), Vector2(51, 44), skin, 4)
+	_line(img, Vector2(32, 22), Vector2(32, 28), skin.darkened(0.2), 3)
+	_line(img, Vector2(25, 12), Vector2(22, 5), skin, 3)
+	_line(img, Vector2(39, 12), Vector2(42, 5), skin, 3)
+	_e(img, 32, 15, 9, 8, skin, true)
+	if back:
+		_line(img, Vector2(32, 22), Vector2(32, 34), belly.darkened(0.1), 2)
+		return
+	_r(img, 27, 14, 3, 3, Color("#7a3aa0"))
+	_r(img, 35, 14, 3, 3, Color("#7a3aa0"))
+	_r(img, 28, 14, 1, 1, WHITE)
+	_r(img, 36, 14, 1, 1, WHITE)
+
+
 func _write_shadow() -> void:
 	_w = SHADOW_SIZE.x
 	_h = SHADOW_SIZE.y
