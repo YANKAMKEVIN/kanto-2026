@@ -1,0 +1,22 @@
+{
+	"essai_mer_old_rod": {
+		"maps": ["essai_mer"], "terrain": "water_rod", "rod": "old_rod", "rate": 100,
+		"slots": [ { "species": "goldeen", "level": 5, "weight": 1 } ]
+	},
+	"essai_mer_good_rod": {
+		"maps": ["essai_mer"], "terrain": "water_rod", "rod": "good_rod", "rate": 50,
+		"slots": [
+			{ "species": "goldeen", "level": 10, "weight": 1 },
+			{ "species": "horsea", "level": 10, "weight": 1 }
+		]
+	},
+	"essai_mer_super_rod": {
+		"maps": ["essai_mer"], "terrain": "water_rod", "rod": "super_rod", "rate": 75,
+		"slots": [
+			{ "species": "goldeen", "level": 15, "weight": 1 },
+			{ "species": "horsea", "level": 15, "weight": 1 },
+			{ "species": "shellder", "level": 15, "weight": 1 },
+			{ "species": "staryu", "level": 15, "weight": 1 }
+		]
+	}
+}

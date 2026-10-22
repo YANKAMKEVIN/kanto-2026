@@ -1,0 +1,38 @@
+{
+	"snorlax_route_16_wake": {
+		"variants": [
+			{
+				"unless": ["snorlax_route_16_done"],
+				"steps": [
+					{ "flute": true },
+					{ "dialogue": "snorlax_flute_played" },
+					{ "react": "Snorlax" },
+					{ "emote": "Snorlax", "kind": "exclamation" },
+					{ "dialogue": "snorlax_wakes" },
+					{ "set": ["snorlax_route_16_awake", "snorlax_route_16_woken"] },
+					{
+						"wild_battle": "snorlax", "level": 30,
+						"win": ["snorlax_route_16_done"],
+						"catch": ["snorlax_route_16_done", "snorlax_route_16_caught"],
+						"clear": ["snorlax_route_16_awake"]
+					},
+					{
+						"dialogue": "snorlax_calms",
+						"if": ["snorlax_route_16_done"], "unless": ["snorlax_route_16_caught"]
+					},
+					{ "dialogue": "snorlax_sleeps", "unless": ["snorlax_route_16_done"] }
+				]
+			}
+		]
+	},
+	"route_16_visited": {
+		"variants": [
+			{
+				"unless": ["route_16_visited"],
+				"steps": [
+					{ "set": ["route_16_visited"] }
+				]
+			}
+		]
+	}
+}

@@ -29,7 +29,8 @@ escalier relie TOUTES les salles qui le bordent ; un objet au sol (`objet`, `obj
 ramasse depuis une case voisine et ne coupe pas une salle. La Carte Magnétique peut être un
 `objet_visible item=card_key`.
 
-Usage : python3 -I tools/art/plan_check_teleports.py [grille.txt ...]   (sans argument : qa_teleport*.txt)
+Usage : python3 -I tools/art/plan_check_teleports.py [grille.txt ...]   (sans argument : grilles d'essai
+        tests/fixtures/plans/essai_teleport*.txt, anciennes cartes de QA retirées en S2Z)
         python3 -I tools/art/plan_check_teleports.py --autotest        (le contrôle refuse des pièges connus)
 Code 1 si un critère échoue.
 """
@@ -295,11 +296,16 @@ def autotest() -> bool:
 	return ok
 
 
+# Grilles d'essai par défaut (anciennes cartes de QA de la passe, retirées en S2Z).
+ESSAIS = Path(__file__).resolve().parents[2] / "tests" / "fixtures" / "plans"
+
+
 def main() -> int:
 	args = [a for a in sys.argv[1:] if not a.startswith("--")]
 	if "--autotest" in sys.argv:
 		return 0 if autotest() else 1
-	chemins = [Path(a) for a in args] or [PLANS / "qa_teleport.txt", PLANS / "qa_teleport_2.txt"]
+	chemins = [Path(a) for a in args] or [ESSAIS / "essai_teleport.txt",
+		ESSAIS / "essai_teleport_2.txt"]
 	ok = verifier_teleports(chemins).imprimer()
 	print("TOUT EST CONFORME" if ok else "NON CONFORME")
 	return 0 if ok else 1

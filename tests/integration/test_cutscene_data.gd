@@ -72,6 +72,11 @@ const MAPS: Array[StringName] = [
 	&"route_8",
 	# Jalon 26 (T11, T12) : le rival n° 6 (7F) et Giovanni (11F) de la Sylphe SARL.
 	&"silph_co_7f", &"silph_co_11f",
+	# Jalon 21 (T21) : arrivée silencieuse sur la Route 12.
+	&"route_12",
+	# Jalon 21 (T14, T22) : entrée de la Maison des Pokémon (remise de la Flûte), arrivée
+	# silencieuse sur la Route 16.
+	&"pokemon_house", &"route_16",
 ]
 ## Jalon 7 (T18) : partie qui revient au labo avec le colis (rival parti après le combat).
 const PARCEL_FLAGS: Array[StringName] = [
@@ -239,8 +244,16 @@ const VARIANT_FLAGS: Dictionary = {
 	&"route_9_entered": [PEWTER_FLAGS], &"route_9_item_1": [PEWTER_FLAGS],
 	&"route_9_item_2": [PEWTER_FLAGS], &"route_9_item_3": [PEWTER_FLAGS],
 	&"route_10_reached": [PEWTER_FLAGS], &"dark_cave_crossed": [PEWTER_FLAGS],
-	&"tower_6f_ghost": [PEWTER_FLAGS], &"tower_guardian": [PEWTER_FLAGS],
+	# Jalon 21 (T12) : variante A du 6F (révélation, Scope dans le Sac : VARIANT_ITEMS) en tête.
+	&"tower_6f_ghost": [PEWTER_FLAGS, PEWTER_FLAGS], &"tower_guardian": [PEWTER_FLAGS],
 	&"tower_rival": [PEWTER_FLAGS],
+	# Jalon 21 (T21) : Route 12 (arrivée silencieuse, CT39 du poste, réveil de Ronflex).
+	&"route_12_visited": [PEWTER_FLAGS], &"route_12_gate_tm39": [PEWTER_FLAGS],
+	&"snorlax_route_12_wake": [PEWTER_FLAGS],
+	# Jalon 21 (T13, T14, T22) : sauvetage de Fuji, remise de la Flûte, Route 16.
+	&"tower_7f_fuji_rescue": [PEWTER_FLAGS],
+	&"pokemon_house_flute": [PEWTER_FLAGS + [&"fuji_rescued"]],
+	&"route_16_visited": [PEWTER_FLAGS], &"snorlax_route_16_wake": [PEWTER_FLAGS],
 	# Jalon 19 (T18) : zone purifiée et objets de la Tour.
 	&"tower_purified_zone": [PEWTER_FLAGS], &"tower_3f_objet_1": [PEWTER_FLAGS],
 	&"tower_4f_objet_1": [PEWTER_FLAGS], &"tower_4f_objet_2": [PEWTER_FLAGS],
@@ -460,6 +473,18 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"saffron_gym_sabrina": &"saffron_gym", &"saffron_gym_sabrina_tm_late": &"saffron_gym",
 	&"fighting_dojo_master": &"fighting_dojo", &"fighting_dojo_take_hitmonlee": &"fighting_dojo",
 	&"fighting_dojo_take_hitmonchan": &"fighting_dojo",
+	# Jalon 21 (T21) : CT39 (dialogue de la jeune femme du 2F) et réveil de Ronflex (choix OUI).
+	&"route_12_gate_tm39": &"route_12_gate_2f", &"snorlax_route_12_wake": &"route_12",
+	# Jalon 21 (T13, T22) : sauvetage de Fuji (dialogue de Fuji au 7F ; sa suite `next` est
+	# `pokemon_house_flute`, aussi lancée par le déclencheur d'entrée de la maison) et réveil du
+	# Ronflex 16 (« flute_cutscene » et choix OUI).
+	&"tower_7f_fuji_rescue": &"pokemon_tower_7f", &"snorlax_route_16_wake": &"route_16",
+}
+## Jalon 21 (T10, T12) : objets du Sac qui choisissent chaque variante (« if_items » /
+## « unless_items »), ligne par ligne comme VARIANT_FLAGS ; absent : Sac vide. La variante A du
+## 6F (révélation) demande le Scope Sylphe ; la variante B (SPECTRE du J19) s'applique sans.
+const VARIANT_ITEMS: Dictionary = {
+	&"tower_6f_ghost": [[&"silph_scope"], []],
 }
 ## Scènes à déclencheur dont la carte n'est pas encore construite → leur carte (simulées sur les
 ## PNJ de son fichier). Vidée au T19 du jalon 9 (la forêt existe), puis au T11 du jalon 10 (les
@@ -607,7 +632,12 @@ func test_library_loads_without_error() -> void:
 		# Jalon 20 (T17) : arrivées, objet et caches, Erika, échange de la fillette.
 		&"route_8_reached", &"celadon_reached", &"route_8_item_1", &"route_8_hidden_1",
 		&"souterrain_hidden_1", &"souterrain_hidden_2", &"celadon_hidden_1",
-		&"celadon_gym_erika", &"celadon_gym_erika_tm_late", &"celadon_roof_trade"]
+		&"celadon_gym_erika", &"celadon_gym_erika_tm_late", &"celadon_roof_trade",
+		# Jalon 21 (T21) : Route 12.
+		&"route_12_visited", &"route_12_gate_tm39", &"snorlax_route_12_wake",
+		# Jalon 21 (T13, T14, T22) : 7F, Maison des Pokémon, Route 16.
+		&"tower_7f_fuji_rescue", &"pokemon_house_flute", &"route_16_visited",
+		&"snorlax_route_16_wake"]
 		+ J18_IDS + J20_T21_IDS + J26_T9_ITEMS.keys()
 		# Jalon 26 (T11, T12) : rival n° 6, Lokhlass, Giovanni, Master Ball, objets du 7F.
 		+ [&"rival_silph", &"silph_co_lapras_gift", &"silph_co_giovanni", &"silph_co_master_ball",
@@ -828,7 +858,9 @@ func test_every_change_map_targets_an_existing_map_and_spawn() -> void:
 				as GameMap
 		assert_true(map.has_spawn(step.spawn), "%s : point « %s »" % [step.map_id, step.spawn])
 		map.free()
-	assert_eq(count, 2, "le retour au labo ; le quai de Carmin (départ du S.S. Anne, J16 T15)")
+	# Jalon 21 (T13) : + la téléportation du 7F vers la Maison des Pokémon.
+	assert_eq(count, 3, "le retour au labo ; le quai de Carmin (départ du S.S. Anne, J16 T15) ; "
+		+ "la Maison des Pokémon (sauvetage de Fuji, J21 T13)")
 
 
 func test_every_variant_is_chosen_by_its_flags() -> void:
@@ -837,9 +869,10 @@ func test_every_variant_is_chosen_by_its_flags() -> void:
 		var cutscene := _cutscenes.get_cutscene(id)
 		var rows: Array = VARIANT_FLAGS.get(id, [])
 		assert_eq(rows.size(), cutscene.variants.size())
+		var items: Array = VARIANT_ITEMS.get(id, [])
 		for i: int in mini(rows.size(), cutscene.variants.size()):
-			assert_same(cutscene.pick(_flags(rows[i])), cutscene.variants[i],
-				"%s : variante %d" % [id, i + 1])
+			assert_same(cutscene.pick(_flags(rows[i]), _bag(items[i] if i < items.size() else [])),
+				cutscene.variants[i], "%s : variante %d" % [id, i + 1])
 
 
 func test_static_simulation_of_every_variant() -> void:
@@ -1254,6 +1287,14 @@ func _present(map_id: StringName, flags: StoryFlags) -> Array[StringName]:
 	for spec: NpcSpec in NpcRoster.load_for_map(map_id).get_present(flags):
 		ids.append(spec.id)
 	return ids
+
+
+## Jalon 21 : Sac contenant un exemplaire de chaque objet de [param ids].
+func _bag(ids: Array) -> Bag:
+	var bag := Bag.new()
+	for id: StringName in ids:
+		bag.add(id)
+	return bag
 
 
 func _flags(names: Array) -> StoryFlags:

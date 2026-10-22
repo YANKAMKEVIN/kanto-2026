@@ -16,6 +16,9 @@ const DATA_DIR := "res://data"
 ## Jalon 19 (T3) : descriptions des capacités ajoutées pour les learnsets complets, hors du lot
 ## §15.7 du dossier 22 : validées par Kevin le 2026-10-15. Jalon 19 (effets de capacités) :
 ## messages d'Ultralaser et de Hurlement validés par Kevin le 2026-10-16.
+## Jalon 21 : Poké Flûte, CT39, Constriction, Bouclier et les fiches de Pokédex d'Ossatueur, de
+## Ronflex, de Ptitard et de Tentacool validés par Kevin le 2026-10-16 (dossier 24 §15), « draft »
+## retiré.
 ## Jalon 26 (T6) : description de Safrania sur la Carte [D], à relire par Kevin.
 const PENDING_DRAFTS: Array[String] = ["world/zones.json/zones/saffron_city"]
 

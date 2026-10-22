@@ -2,6 +2,32 @@
 	"tower_6f_ghost": {
 		"variants": [
 			{
+				"unless": ["ghost_marowak_calmed"],
+				"if_items": ["silph_scope"],
+				"steps": [
+					{ "react": "player" },
+					{ "wait": 0.6 },
+					{ "dialogue": "tower_6f_ghost_warning" },
+					{
+						"wild_battle": "marowak", "level": 30,
+						"reveal": true, "uncatchable": true,
+						"win": ["ghost_marowak_calmed"]
+					},
+					{
+						"move": "player", "path": ["up"], "keep_facing": true,
+						"unless": ["ghost_marowak_calmed"]
+					},
+					{ "dialogue": "tower_6f_marowak_held", "unless": ["ghost_marowak_calmed"] },
+					{ "dialogue": "tower_6f_marowak_soul", "if": ["ghost_marowak_calmed"] },
+					{
+						"animate": "SpiritLight", "offset": [0, -2], "duration": 2.0, "fade": true,
+						"skip_reduced": true, "if": ["ghost_marowak_calmed"]
+					},
+					{ "dialogue": "tower_6f_marowak_peace", "if": ["ghost_marowak_calmed"] },
+					{ "set": ["tower_6f_mist_lifted"], "if": ["ghost_marowak_calmed"] }
+				]
+			},
+			{
 				"unless": [
 					"ghost_marowak_calmed"
 				],

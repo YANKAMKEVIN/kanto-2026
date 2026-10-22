@@ -68,6 +68,10 @@ const SPECIES: Array[String] = [
 	# autres espèces du J27 (Aéromite, Machopeur, Ramoloss, Flagadoss, M. Mime) ont leurs images
 	# copiées des branches qui les créent (J22, J24, J29).
 	"hitmonlee", "hitmonchan",
+	# Jalon 21 (jalon-21.md §2.16) : Ptitard et Tentacool (Pêcheurs de la Route 12, provisoires
+	# acceptés [D]) et Ronflex (dos de combat ; le dos peint de la série 23 est le prototype
+	# battle_proto/dos_ia_143.png, comme les autres dos IA). Ajouts en fin.
+	"poliwag", "tentacool", "snorlax",
 ]
 const OUTLINE := Color("#1c1c28")
 const EYE := Color("#1c1c28")
@@ -1980,6 +1984,58 @@ func _draw_bone_keeper(img: Image, back: bool, evolved: bool) -> void:
 	_r(img, 24, head_y - 1, 5, 5, Color("#2a2a3a"))
 	_r(img, 35, head_y - 1, 5, 5, Color("#2a2a3a"))
 	_e(img, 32, head_y + 8, 6, 3, skin.lightened(0.1))
+
+
+# --- Jalon 21 : Route 12, Ronflex ---------------------------------------------------
+
+## Ptitard : corps rond bleu, spirale blanche sur le ventre, queue plate, petits pieds.
+func _draw_poliwag(img: Image, back: bool) -> void:
+	var skin := Color("#5a7ad8")
+	_e(img, 52, 36, 9, 5, Color(skin.lightened(0.35), 0.8))
+	_r(img, 22, 52, 7, 8, skin.darkened(0.15))
+	_r(img, 35, 52, 7, 8, skin.darkened(0.15))
+	_e(img, 32, 36, 19, 18, skin, true)
+	if back:
+		return
+	_e(img, 32, 42, 9, 9, WHITE)
+	_e(img, 32, 42, 5, 5, EYE)
+	_e(img, 32, 42, 2, 2, WHITE)
+	_eye(img, 24, 25, Color("#2a2a30"))
+	_eye(img, 36, 25, Color("#2a2a30"))
+
+
+## Tentacool : ombrelle bleue translucide, deux gemmes rouges, tentacules sous le corps.
+func _draw_tentacool(img: Image, back: bool) -> void:
+	var dome := Color("#7ab8e8")
+	for x: int in [22, 28, 36, 42]:
+		_line(img, Vector2(x, 38), Vector2(x + (x - 32) / 3, 60), Color("#c8c8d8"), 2)
+	_e(img, 32, 24, 18, 16, Color(dome, 0.9), true)
+	_e(img, 23, 31, 4, 4, Color("#d83a3a"), true)
+	_e(img, 41, 31, 4, 4, Color("#d83a3a"), true)
+	_r(img, 22, 36, 20, 4, Color("#c8c8d8"))
+	if back:
+		return
+	_r(img, 26, 37, 3, 2, EYE)
+	_r(img, 35, 37, 3, 2, EYE)
+
+
+## Ronflex : grand corps bleu-vert assis, ventre crème, petites oreilles, yeux fermés.
+func _draw_snorlax(img: Image, back: bool) -> void:
+	var skin := Color("#2e6a78")
+	var belly := Color("#efe2c0")
+	_e(img, 32, 40, 26, 21, skin, true)
+	_e(img, 32, 14, 15, 11, skin, true)
+	_r(img, 18, 2, 4, 6, skin.darkened(0.1))
+	_r(img, 42, 2, 4, 6, skin.darkened(0.1))
+	_e(img, 12, 56, 7, 5, belly)
+	_e(img, 52, 56, 7, 5, belly)
+	if back:
+		return
+	_e(img, 32, 44, 18, 15, belly, true)
+	_e(img, 32, 17, 10, 6, belly)
+	_r(img, 25, 13, 5, 1, EYE)
+	_r(img, 34, 13, 5, 1, EYE)
+	_r(img, 28, 20, 8, 1, EYE)
 
 
 # --- Ombre ------------------------------------------------------------------------

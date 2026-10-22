@@ -1018,6 +1018,20 @@ Danse Fleur, Frénésie, Mimique, Métronome (J24).
 
 #### T32 — Q : non-régression sur la vraie partie de Kevin (S21 ou S24 selon l'attribution des téléphones) ; sauvegarde v7 d'avant la passe rechargée sans perte
 
+**Fait le 2026-10-22** sur l'A17 (`R5GYB2R7W2Y`, seul téléphone libre, attribué par Kevin), APK de
+`integration-s2d` à `c2de5a26`. Sauvegarde : la vraie partie de Kevin tirée du S24 le matin même
+(`~/dev/qa-nuit/s2z/sauvegarde-s24-2026-10-22/save.json`, v7, Forêt de Jade, 24 h 19, Rattata N4,
+Salamèche N8, Roucool N3), posée dans `files/` de l'A17 (son `debug_start.json` mis de côté puis
+remis). Écran titre : CONTINUER « Kevin, Forêt de Jade, 24 h 19 » ; chargement à la case et à la
+direction enregistrées ; Menu, Équipe (PV, XP, statistiques) et Sac identiques au fichier. ≈ 12 min
+à pied : 80 déplacements dans la Forêt (herbes, clairière), aucune rencontre, aucun écran inattendu ;
+Antidote ramassé (drapeau `got_viridian_forest_item_1`, Sac, `found_items`) ; point de reprise
+écrit ; arrêt forcé puis relance : même case, même direction, Antidote gardé, objet absent de la
+carte. Différences du fichier avec l'original : uniquement `play_time`, `rng`, la position et
+l'objet ramassé. Journal sans erreur ; 25–28 i/s dans la Forêt sur l'A17 (comme ses QA de la nuit
+sur les cartes denses ; le S24 tenait 59 i/s sur la même partie le matin) — pas une régression de la
+passe. Captures et fichiers : `~/dev/qa-nuit/s2z/a17/`.
+
 #### T33 — A : suite complète, retrait des cartes et départs de QA, passation aux J21–J31 (§7), fusion dans `main` après accord de K
 
 ---
@@ -1165,3 +1179,32 @@ Total : **≈ 30 tâches, 7 à 8 sessions téléphone, ≈ 4 à 5 jours** de cal
 S2D et deux branches parallèles (S2E, S2F / S2G) ; ≈ 400 à 600 tests nouveaux. Pour comparaison, le
 J11 (grande passe de systèmes) a pris 3 jours (2026-10-10 → 10-13). Le chemin critique est la série
 S2B → S2C → S2D (tout passe par `Player`).
+
+## 10. Clôture et passation (S2Z, 2026-10-22)
+
+**Ce qui est livré** (dans `main` après la fusion de `integration-s2d`) : sauvegarde par points de
+reprise (`SaveCheckpoint`, écriture en arrière-plan), monture (`Mount`, `MountRules`, `MapTraits`),
+Vélo et Piste cyclable, pente, Poké Flûte (exploration et combat), Surf, eau et rencontres `water`,
+Nageurs, courants (`ForcedSlide`), pêche et PÊCHER / SURFER par appui long, Force (`BoulderField`,
+trous, `Warp.Trigger.FALL`, interrupteurs et barrières), Vol (`FlyRules`, `fly_points.json`,
+`no_fly`), téléporteurs et portes à carte (`KeyDoor`), K.O. en un coup, rencontre légendaire fixe,
+lot d'effets de combat S2G ; contrôles `tools/art/plan_check_systemes2.py` (dont l'anti-blocage
+des rochers, prévu au plan sous le nom `plan_check_boulders.py`), `tools/art/plan_check_teleports.py`,
+`plan_check.py --legende`.
+
+**Retiré à la clôture** (T33) : toutes les cartes, outils, données et départs de QA de la passe
+(`853b06d3`) ; départs gardés : `s2_save`, `s2_fly`, `s2_field_travel`. Les grilles de QA sont
+devenues fixtures d'essai des contrôles (`2f4c7be8`) ; les tests des systèmes tournent hors des
+cartes de QA (`d815b901`).
+
+**Pour les jalons J21–J31** : le tableau du §7 dit ce que chacun consomme. Règles communes :
+
+- Rebaser (ou fusionner `main`) **avant** d'ajouter du contenu : les J21–J31 qui ont repris du code
+  pur des J21, J22, J24 avant la passe (§0) doivent garder la version de `main` en cas de conflit
+  (la passe a adapté `Mount`, `MountRules`, `MapTraits`, `ON_SWITCH`).
+- Un jalon ne pose que des **données et des cartes** : traits de carte (`cycling_road`, `no_fly`,
+  `no_push`, eau), `field_moves.json`, entrées de `fly_points.json`, nœuds `Boulders`, graphes de
+  téléporteurs ; il fait passer `plan_check_systemes2.py` et, pour les téléporteurs,
+  `plan_check_teleports.py`.
+- Points ouverts transmis : Surf forcé après une chute (J24, aucune carte de QA ne l'avait) ; aucun
+  son (pas de système audio) ; questions Q-1 à Q-9 tranchées au §8.

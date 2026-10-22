@@ -36,4 +36,8 @@ enfant              pnj            7,6          bloque  facing=left  # T-25 remp
 nidoran_f           pnj            4,7          bloque  facing=up  # Pokémon d'ambiance (réservé)
 homme               pnj            11,7         bloque  facing=left  # J19 (T20, §15.6.2) : au sud de la table
 fille               pnj            3,5          bloque  facing=left  # J19 (T20, §15.6.3, Q-2 = A) : près du panier d'Osselait (sans Osselait visible)
+devant_fuji         spawn          7,4          libre   facing=up  # Jalon 21 (T14) : arrivée par la téléportation du 7F, devant Fuji
+mr_fuji             pnj            7,3          bloque  facing=down if=fuji_rescued  # Jalon 21 (T14) : M. Fuji près de la fenêtre [D]
+osselait            pnj            2,6          bloque  facing=up  # Jalon 21 (T14) : Osselait près de la fille [D], sans dialogue de don
+declencheur_flute   declencheur    6..8,7       libre   # Jalon 21 (T14) : déclencheur d'entrée -> pokemon_house_flute (premier pas depuis la porte)
 FIN
