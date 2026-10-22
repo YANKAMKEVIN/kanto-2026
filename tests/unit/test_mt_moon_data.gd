@@ -58,10 +58,10 @@ const MOVES := {
 	&"minimize": [&"normal", MoveData.Category.STATUS, 0, 0, 10, []],
 	&"mega_punch": [&"normal", MoveData.Category.PHYSICAL, 80, 85, 20, []],
 	&"sonic_boom": [&"normal", MoveData.Category.STATUS, 0, 90, 20, []],
-	&"metronome": [&"normal", MoveData.Category.STATUS, 0, 0, 10, ["metronome"]],
-	&"haze": [&"ice", MoveData.Category.STATUS, 0, 0, 30, ["haze"]],
-	&"light_screen": [&"psychic", MoveData.Category.STATUS, 0, 0, 30, ["light_screen"]],
-	&"double_edge": [&"normal", MoveData.Category.PHYSICAL, 120, 100, 15, ["recoil_damage"]],
+	&"metronome": [&"normal", MoveData.Category.STATUS, 0, 0, 10, []],
+	&"haze": [&"ice", MoveData.Category.STATUS, 0, 0, 30, []],
+	&"light_screen": [&"psychic", MoveData.Category.STATUS, 0, 0, 30, []],
+	&"double_edge": [&"normal", MoveData.Category.PHYSICAL, 120, 100, 15, []],
 }
 ## Descriptions du dossier 15 §20 (n° 41 à 45) ; les autres sont dans l'annexe A.2.
 const DOSSIER_DESCRIPTIONS := {
@@ -85,8 +85,10 @@ func before_all() -> void:
 
 func test_species_values() -> void:
 	assert_eq(_data.get_errors().size(), 0, "\n".join(_data.get_errors()))
-	assert_eq(_data.get_species_ids().size(), 72,
-		"38 + 12 + 9 (jalon 13) + 3 (jalon 14) + 2 (jalon 15) + 8 (jalon 17)")
+	assert_eq(_data.get_species_ids().size(), 111,
+		"38 + 12 + 9 (jalon 13) + 3 (jalon 14) + 2 (jalon 15) + 8 (jalon 17) + 6 (jalon 19) "
+		+ "+ 11 (jalon 20 : Caninos et Goupix sont ceux du J17) + 22 (jalon 24 : Saquedeneu et "
+		+ "Léviator sont ceux des J20 et J19)")
 	for id: StringName in SPECIES:
 		var v: Array = SPECIES[id]
 		var species := _data.get_species(id)
@@ -179,9 +181,16 @@ func test_moves_reuse_the_j11_effect_kinds() -> void:
 	assert_eq([smoke.stat, smoke.stages, smoke.target], [&"acc", -1, MoveEffect.Target.FOE])
 	var mini: MoveEffect = _data.get_move(&"minimize").effects[0]
 	assert_eq([mini.stat, mini.stages, mini.target], [&"eva", 1, MoveEffect.Target.SELF])
-	for id: StringName in [&"metronome", &"haze", &"light_screen", &"double_edge", &"pound",
-			&"mega_punch"]:
+	for id: StringName in [&"pound", &"mega_punch"]:
 		assert_eq(_data.get_move(id).effects.size(), 0, "%s : rien de codé" % id)
+	# Jalon 24 (T13) : Métronome (tests/unit/test_metronome.gd).
+	assert_eq(_data.get_move(&"metronome").effects[0].kind, MoveEffect.Kind.METRONOME)
+	# Passe systèmes 2 : Buée Noire et Mur Lumière (tests/unit/test_battle_lot_s2g.gd).
+	assert_eq(_data.get_move(&"haze").effects[0].kind, MoveEffect.Kind.HAZE)
+	assert_eq(_data.get_move(&"light_screen").effects[0].screen, &"light_screen")
+	# Damoclès : contrecoup joué depuis le jalon 19 (tests/unit/test_moves_j19_effects.gd).
+	var recoil := _data.get_move(&"double_edge").effect_of(MoveEffect.Kind.RECOIL_DAMAGE)
+	assert_not_null(recoil, "Damoclès : contrecoup")
 	# Activées au T13 (genres du J12) : un seul effet chacune, plus rien en attente.
 	var kinds := {&"leech_life": MoveEffect.Kind.DRAIN, &"wrap": MoveEffect.Kind.TRAP,
 		&"bind": MoveEffect.Kind.TRAP, &"fire_spin": MoveEffect.Kind.TRAP,
@@ -203,16 +212,18 @@ func test_move_texts_are_the_validated_ones() -> void:
 		if DOSSIER_DESCRIPTIONS.has(id):
 			assert_true(_dossier.contains("%s : « %s »" % [DOSSIER_DESCRIPTIONS[id],
 				move.description]), "%s : description (§20)" % id)
+		elif id in [&"double_edge", &"haze", &"light_screen", &"metronome"]:
+			# Jalon 19 : la mention « Sans effet » de l'annexe A.2 est retirée, le reste est le même.
+			assert_true(_plan.contains("%s « %s Sans effet dans le moteur actuel. »"
+				% [move.name, move.description]), "%s : description (annexe A.2)" % id)
 		else:
 			assert_true(_plan.contains("%s « %s »" % [move.name, move.description]),
 				"%s : nom et description (annexe A.2)" % id)
 	assert_true(_dossier.contains("45. Destruction : « %s »" % _data.get_move(
 		&"self_destruct").description), "Destruction : description remplacée (n° 45)")
-	# Reportés : la mention, seulement là où l'effet manque pour de bon au J12.
-	for id: StringName in [&"metronome", &"haze", &"light_screen", &"double_edge"]:
-		assert_true(_data.get_move(id).description.ends_with(
-			" Sans effet dans le moteur actuel."), String(id))
-	for id: StringName in [&"leech_life", &"wrap", &"disable", &"rest", &"sonic_boom"]:
+	# Jalon 24 (T13) : plus aucun report (Métronome codé).
+	for id: StringName in [&"leech_life", &"wrap", &"disable", &"rest", &"sonic_boom",
+			&"double_edge", &"haze", &"light_screen", &"metronome"]:
 		assert_false(_data.get_move(id).description.contains("Sans effet"), String(id))
 
 
@@ -238,7 +249,8 @@ func test_items() -> void:
 			"Fossile d'un Pokémon ancien à la carapace en dôme."],
 		&"helix_fossil": ["Fossile Nautile", "Fossiles Nautile", false, ItemData.Category.KEY, 0,
 			"Fossile d'un Pokémon ancien à la coquille en spirale."],
-		&"tm01": ["CT01 — Ultimapoing", "CT01 — Ultimapoing", true, ItemData.Category.TM, 0,
+		# Jalon 20 (T11) : prix RB, achetable une fois au grand magasin de Céladopole.
+		&"tm01": ["CT01 — Ultimapoing", "CT01 — Ultimapoing", true, ItemData.Category.TM, 3000,
 			"Un coup de poing d'une force incroyable."],
 	}
 	for id: StringName in expected:

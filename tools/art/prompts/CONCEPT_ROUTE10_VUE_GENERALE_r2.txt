@@ -1,0 +1,54 @@
+CONCEPT ART — VUE GÉNÉRALE DE LA ROUTE 10, DU CENTRE POKÉMON À LA TOUR LOINTAINE (Kanto 2026), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. La route 10 est UNE SEULE route, verticale, du NORD (haut) au SUD (bas) ; le joueur n'en parcourt que le secteur du haut et le secteur du bas, que la grande falaise du milieu sépare (elle n'est jamais franchie à pied : ce sont deux secteurs séparés).
+Légende du plan :
+- vert très foncé semé de taches rondes plus sombres = forêt et bosquets denses infranchissables (y compris les marges de l'image et toute la rive droite au-delà de la rivière) ;
+- vert moyen = herbe rase praticable ; petits points roses et blancs = fleurs ;
+- beige = SENTIER de terre battue ;
+- jaune-vert olive = HAUTES HERBES (touffues, plus hautes, où vivent les Pokémon sauvages) : une zone dans le secteur du haut, sous le sentier, à gauche ; une zone dans le secteur du bas, à gauche ;
+- gris-brun avec traits horizontaux, de plus en plus sombre loin des passages = la FALAISE ET LA MASSE ROCHEUSE : une bande tout en haut (avec le Centre Pokémon à sa gauche), une grande bande épaisse au milieu de l'image (de 40 % à 62 % de la hauteur) qui coupe toute la partie gauche, une petite falaise au bas à gauche de la terrasse rocheuse ; des strates brun sombre sous un bord clair = faces de falaise ;
+- gris clair semé de cailloux blancs = SOL ROCHEUX praticable : une petite terrasse dans le secteur du bas, à droite du sentier ;
+- disques gris clair = ROCHERS ET BLOCS isolés (un petit groupe dans la pelouse du haut près de la rivière ; une rangée au centre-bas, au-dessus de l'herbe) ;
+- BANDE BLEUE verticale, large, de haut en bas de l'image, à droite du sentier = la RIVIÈRE, qui coule du nord au sud sur toute la hauteur ; infranchissable ; son bord gauche longe le sentier du sud ;
+- sur la rive droite, en haut à droite, un petit bloc gris-bleu à toit gris foncé et fine cheminée sombre = la CENTRALE ÉLECTRIQUE, LOINTAINE, de l'autre côté de l'eau : on ne voit que son toit et sa cheminée, aucune porte, aucun chemin ne la relie ;
+- bloc rouge et blanc à porte brune, en haut à gauche = le CENTRE POKÉMON ; deux arches presque noires dans la paroi = les deux ENTRÉES de la GROTTE SOMBRE : une en haut au centre (au bout d'un court sentier qui monte vers le nord), une en bas de la grande falaise du milieu, à gauche ;
+- tout en bas, au centre gauche, un haut bloc gris-lilas à toit violet foncé qui sort du bord inférieur de l'image = la silhouette LOINTAINE de la TOUR POKÉMON ;
+- petit carré ocre = panneau en bois SANS TEXTE ; points rouge et blanc = Poké Balls posées au sol.
+Respecte ce plan À LA LETTRE : le sentier d'est en ouest depuis la gauche (le Centre juste au-dessus), qui tourne vers le nord jusqu'à l'entrée de la grotte, la pelouse en belvédère à droite qui s'arrête net sur la rivière ; la poche d'herbes sous le sentier ; la grande falaise du milieu ; dans le secteur du bas, la sortie de la grotte, la clairière, le sentier qui descend puis tourne à l'est vers la rivière et continue vers le sud, la terrasse rocheuse, la poche d'herbes et le sentier qui la rejoint. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+RÈGLE ABSOLUE DES CHEMINS : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; sentiers, berges, falaises, terrasses et bords des zones suivent une grille : uniquement des segments horizontaux et verticaux à angles droits, AUCUN segment en diagonale ni courbe, aucun escalier. La rivière a des berges DROITES (bord vertical net, pas de méandre). Les falaises sont rocheuses, droites, à faces verticales.
+
+IMAGE 2 : la vue générale de la Route 3, une route du même jeu, rocheuse elle aussi, avec son Centre Pokémon. Respecte EXACTEMENT son style de rendu : même pinceau, mêmes arbres en masses arrondies, mêmes hautes herbes jaune-vert, même sentier de terre, même sol rocheux, même saturation, même roche en strates gris-beige chaud, mêmes personnages ; le CENTRE POKÉMON est exactement le même bâtiment (toit rouge, emblème Poké Ball blanc, grande porte vitrée). Ne reprends PAS sa composition.
+
+Format : PORTRAIT 1024 × 1536, vue plongeante sur toute la route, comme le plan.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats. Le feuillage est peint en grandes masses douces.
+- Perspective : vue de dessus de trois quarts, projection oblique frontale, sans point de fuite. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud).
+- Aucun trait noir : contours fins et doux, plus sombres et plus saturés que la couleur locale. Ombres colorées bleu-vert ou violet froid, jamais grises.
+
+AMBIANCE — « la route avant la mélancolie » : la lumière PÂLIT du nord au sud.
+- Haut de l'image : fin d'après-midi dorée, chaude, comme la Route 3 ; le Centre Pokémon est accueillant, c'est le dernier avant le noir.
+- Milieu : la grande falaise, froide et brune, sépare les deux ambiances.
+- Bas de l'image : la lumière devient plus pâle, plus froide et plus douce ; les verts se désaturent légèrement vers un vert-gris, les ombres vont vers le gris-violet ; une BRUME TRÈS LÉGÈRE et claire flotte à ras du sol vers le bas (à peine perceptible, jamais épaisse, jamais violette). Rien d'effrayant : c'est calme, un peu silencieux.
+- La RIVIÈRE : eau bleu-vert pâle et claire, courant calme, quelques reflets doux, berges d'herbe et de roche, sans quai ni pont ; elle s'élargit visuellement comme une frontière qu'on regarde sans la franchir.
+- La CENTRALE : petite à cause de la distance, légèrement estompée, toit gris-bleuté et une cheminée, à moitié cachée par les arbres de la rive droite ; aucune porte, aucune fenêtre éclairée, aucune fumée épaisse, aucun fil électrique ni pylône.
+- La TOUR POKÉMON, tout en bas, au-dessus des arbres : une haute tour gris-lilas à toit violet sombre, étagée, digne et silencieuse, sortie à demi de la brume, avec une seule petite lueur chaude à une fenêtre ; elle sort du bord inférieur de l'image et domine les cimes. Ce n'est PAS une tour effrayante : c'est un repère calme et solennel.
+- Nature DENSE, objets RARES : forêt serrée tout autour des passages.
+
+VIE (très discrète, personnages petits, aucun ne ressemble au héros à casquette rouge et veste bleue). Positions approximatives en pourcentage de la largeur / de la hauteur depuis le coin haut gauche :
+- un RANDONNEUR (sac à dos, bonnet) devant l'entrée nord de la grotte, sur la pelouse (≈ 54 % / 17 %), tourné vers l'ouverture ;
+- un POKÉMANIAC (jeune adulte, lunettes rondes, chemise à carreaux, grand sac à dos, filet) dans la clairière du bas, près de la sortie de la grotte (≈ 47 % / 66 %), tourné vers l'ouest ;
+- un MONTAGNARD (barbe, gros sac, bâton) sur la terrasse rocheuse du bas (≈ 47 % / 77 %), tourné vers l'est.
+Pokémon : un VOLTORBE (petite boule rouge et blanche avec deux yeux ronds et une bouche, comme une Poké Ball vivante) dans les hautes herbes du secteur du haut ; un PIAFABEC (petit oiseau brun au bec court et pointu, crête rouge) posé sur un bloc de la pelouse en belvédère. Aucun autre Pokémon, aucun Pikachu, aucun animal (aucune faune non-Pokémon).
+
+INTERDITS : texte, lettres, chiffres, étiquettes, panneaux lisibles, logo (seul l'emblème Poké Ball sans texte du Centre est permis), signature, filigrane, cadre, interface ; tout bâtiment autre que le Centre, la centrale lointaine et la Tour ; maison, cabane, clôture, pont, passerelle, bac ; escaliers, falaises en diagonale ou en courbe ; route goudronnée, véhicule ; arbres orange ou automnaux ; neige ; fantômes, silhouettes, visages dans la brume, brume violette ou épaisse, flou de profondeur, vignettage ; pixel art.
+
+L'image doit raconter, sans texte : on quitte la dernière lumière dorée du Centre Pokémon, on entre dans la falaise ; de l'autre côté, la route continue plus pâle et plus calme, une rivière qu'on ne traverse pas à droite, et tout en bas, au-dessus des arbres, la silhouette d'une haute tour qui attend.
+
+CORRECTIONS (2e essai ; le 1er essai était bon sur la composition : sentiers, falaises, grotte, Centre, rivière, centrale, personnages ; garde-les à l'identique) :
+1. La TOUR POKÉMON doit être GRANDE et HAUTE, vraiment un repère : elle occupe le bas gauche de l'image (≈ 30 % à 50 % de la largeur), ses étages supérieurs sortent largement au-dessus des cimes (au moins 12 % de la hauteur de l'image visibles) ; quatre ou cinq étages en gradins, pierre gris-lilas, toit étagé violet sombre, fenêtres hautes et étroites, une seule petite fenêtre chaude allumée ; sa base est cachée par les arbres et la brume. Elle ne cache pas la poche d'herbes au-dessus d'elle.
+2. La lumière doit PÂLIR NETTEMENT du nord au sud : tiers du haut doré et chaud ; tiers du milieu neutre ; tiers du bas franchement plus pâle, plus froid et désaturé (vert-gris, ombres gris-lilas), avec de minces bandes de brume claire à ras du sol entre les arbres. Le contraste entre le haut et le bas doit se voir au premier coup d'œil.
+3. Le VOLTORBE dans les hautes herbes du secteur du haut doit se lire sans ambiguïté : boule rouge en haut, blanche en bas, deux yeux ronds et une petite bouche (ce n'est pas une Poké Ball). La seule Poké Ball du secteur du haut est… aucune : le plan n'en montre aucune au nord ; celle du bas à gauche (au-dessus de la Tour) est la Super Potion, une Poké Ball au sol.

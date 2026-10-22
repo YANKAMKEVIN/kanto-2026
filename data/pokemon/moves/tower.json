@@ -1,0 +1,45 @@
+{
+	"lick": {
+		"name": "Léchouille", "type": "ghost", "category": "physical",
+		"power": 30, "accuracy": 100, "pp": 30,
+		"effects": [{ "kind": "status", "status": "paralysis", "chance": 30 }],
+		"description": "Un coup de langue glacé. Peut paralyser la cible."
+	},
+	"night_shade": {
+		"name": "Ténèbres", "type": "ghost", "category": "status",
+		"accuracy": 100, "pp": 15, "effects": [{ "kind": "fixed_damage", "mode": "level" }],
+		"description": "Une vision effrayante. Inflige des dégâts égaux au niveau du lanceur."
+	},
+	"bone_club": {
+		"name": "Massd'Os", "type": "ground", "category": "physical",
+		"power": 65, "accuracy": 85, "pp": 20, "effects": [{ "kind": "flinch", "chance": 10 }],
+		"description": "Un coup d'os. Peut apeurer la cible."
+	},
+	"dragon_rage": {
+		"name": "Draco-Rage", "type": "dragon", "category": "status",
+		"accuracy": 100, "pp": 10,
+		"effects": [{ "kind": "fixed_damage", "mode": "value", "amount": 40 }],
+		"description": "Une onde de choc draconique. Inflige toujours 40 PV de dégâts."
+	},
+	"dream_eater": {
+		"name": "Dévorêve", "type": "psychic", "category": "special",
+		"power": 100, "accuracy": 100, "pp": 15,
+		"effects": [{ "kind": "requires_sleep" }, { "kind": "drain", "fraction": 0.5 }],
+		"description": "Dévore le rêve d'une cible endormie et rend au lanceur la moitié des dégâts."
+	},
+	"bonemerang": {
+		"name": "Osmerang", "type": "ground", "category": "physical",
+		"power": 50, "accuracy": 90, "pp": 10, "effects": [{ "kind": "hits", "min": 2, "max": 2 }],
+		"description": "Lance un os qui frappe la cible deux fois : à l'aller, puis au retour."
+	},
+	"barrage": {
+		"name": "Pilonnage", "type": "normal", "category": "physical",
+		"power": 15, "accuracy": 85, "pp": 20, "effects": [{ "kind": "hits", "min": 2, "max": 5 }],
+		"description": "Bombarde la cible de projectiles ronds, deux à cinq fois d'affilée."
+	},
+	"hyper_beam": {
+		"name": "Ultralaser", "type": "normal", "category": "special",
+		"power": 150, "accuracy": 90, "pp": 5, "effects": [{ "kind": "recharge" }],
+		"description": "Un rayon dévastateur. Le lanceur doit ensuite se reposer un tour."
+	}
+}

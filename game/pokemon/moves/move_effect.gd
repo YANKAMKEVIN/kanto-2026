@@ -61,12 +61,44 @@ extends RefCounted
 ## [/code]. COINS (Jackpot) : chaque utilisation réussie **du camp du joueur** éparpille
 ## [member per_level] × niveau du lanceur pièces ([PayDayPurse]), ramassées à la fin d'un combat
 ## gagné ou d'une capture ([BattleConclusion]) ; le Jackpot de l'adversaire ne rapporte rien.
+## Jalon 19 (Dévorêve, Hurlement, Bélier, Ultralaser ; règles de Rouge/Bleu, sauf deux décisions
+## de Kevin du 2026-10-16 « comme la 2e génération », voir [Battle]) :
+## [codeblock]
+## { "kind": "requires_sleep" }   { "kind": "force_switch" }
+## { "kind": "recoil_damage", "fraction": 0.25 }   { "kind": "recharge" }
+## [/codeblock]
+## REQUIRES_SLEEP : la capacité rate (MOVE_MISSED) si la cible ne dort pas (Dévorêve, avec un
+## DRAIN). FORCE_SWITCH : Hurlement, fin d'un combat sauvage ou changement forcé du Dresseur.
+## RECOIL_DAMAGE : le lanceur perd [member fraction] des dégâts infligés (au moins 1), même si
+## la cible tombe (Bélier ; distinct de RECOIL, part des PV max). RECHARGE : après un coup qui
+## touche, le lanceur se repose au tour suivant (Ultralaser).
+## Passe systèmes 2 (`systemes-2.md` §2.11, Q-2 : règle moderne) : [code]{ "kind": "ohko" }[/code].
+## OHKO : K.O. en un coup (Empal'Korne, Guillotine, Abîme) ; capacité de statut, la précision et
+## les refus sont ceux de [OhkoRules] (pas ceux de [method DamageCalc.accuracy_check]).
+## Passe systèmes 2, lot S2G (Q-7, règles modernes [D]) :
+## [codeblock]
+## { "kind": "heal", "fraction": 0.5 }   { "kind": "screen", "screen": "reflect" }   { "kind": "haze" }
+## { "kind": "charge", "texts": "skull_bash", "stat_up": "def" }
+## { "kind": "fixed_damage", "mode": "psywave" }
+## [/codeblock]
+## HEAL : le lanceur récupère [member fraction] de ses PV max (au moins 1) ; échoue à PV pleins
+## (Soin). SCREEN : [member screen] (« reflect » : dégâts physiques, « light_screen » : spéciaux)
+## protège le camp du lanceur [constant SCREEN_TURNS] tours : dégâts reçus ÷ 2, sauf coup
+## critique ; échoue s'il est déjà levé. HAZE : tous les niveaux de statistiques des deux
+## Pokémon en jeu reviennent à 0 (Buée Noire). CHARGE [member stat_up] : +1 niveau de cette
+## statistique au tour de charge (Coud'Krâne). FIXED_DAMAGE « psywave » : niveau × (50 à 150) %
+## (Vague Psy), au moins 1.
 
 enum Kind {
 	STAT_STAGE, RECOIL, SEED, STATUS, CONFUSION, HITS, FLINCH, CRIT_UP, FIXED_DAMAGE, BIDE,
 	DRAIN, TRAP, DISABLE, REST, SELF_KO,
 	CHARGE, TELEPORT,
 	COINS,
+	REQUIRES_SLEEP, FORCE_SWITCH, RECOIL_DAMAGE, RECHARGE,
+	OHKO,
+	HEAL, SCREEN, HAZE,
+	## Jalon 24 (T13, dossier 27 §10.6) : Métronome lance une capacité tirée au hasard.
+	METRONOME,
 }
 enum Target { SELF, FOE }
 
@@ -80,9 +112,18 @@ const KIND_NAMES: Dictionary[String, Kind] = {
 	"self_ko": Kind.SELF_KO,
 	"charge": Kind.CHARGE, "teleport": Kind.TELEPORT,
 	"coins": Kind.COINS,
+	"requires_sleep": Kind.REQUIRES_SLEEP, "force_switch": Kind.FORCE_SWITCH,
+	"recoil_damage": Kind.RECOIL_DAMAGE, "recharge": Kind.RECHARGE,
+	"ohko": Kind.OHKO,
+	"heal": Kind.HEAL, "screen": Kind.SCREEN, "haze": Kind.HAZE,
+	"metronome": Kind.METRONOME,
 }
 ## Modes de FIXED_DAMAGE.
-const FIXED_MODES: Array[StringName] = [&"half_hp", &"level", &"value"]
+const FIXED_MODES: Array[StringName] = [&"half_hp", &"level", &"value", &"psywave"]
+## SCREEN : murs connus (l'identifiant est aussi celui de la capacité).
+const SCREENS: Array[StringName] = [&"reflect", &"light_screen"]
+## SCREEN : durée en tours, tour du lancer compris [D, règle moderne].
+const SCREEN_TURNS: int = 5
 const TARGET_NAMES: Dictionary[String, Target] = {"self": Target.SELF, "foe": Target.FOE}
 ## Statistiques qui ont un niveau en combat (−6..+6) ; « acc » précision, « eva » esquive.
 const STAGE_STATS: Array[StringName] = [&"atk", &"def", &"spa", &"spd", &"spe", &"acc", &"eva"]
@@ -102,6 +143,7 @@ var target: Target = Target.FOE
 var chance: int = 100
 ## RECOIL : fraction des PV max du lanceur perdue après l'attaque (Lutte : 0,25).
 ## SEED : fraction des PV max de la cible drainée à chaque fin de tour (Vampigraine : ⅛).
+## RECOIL_DAMAGE : part des dégâts infligés perdue par le lanceur (Bélier : ¼, jalon 19).
 ## DRAIN : part des dégâts infligés rendue au lanceur (½) ; TRAP : part des PV max perdue par la
 ## cible à chaque fin de tour (⅛).
 var fraction: float = 0.0
@@ -125,5 +167,9 @@ var amount: int = 0
 var texts: StringName = &""
 ## CHARGE : le lanceur est invulnérable pendant la charge (Tunnel ; pas Lance-Soleil).
 var invulnerable: bool = false
+## CHARGE : statistique montée d'un niveau au tour de charge (Coud'Krâne : « def » ; vide sinon).
+var stat_up: StringName = &""
+## SCREEN : mur levé (une de [constant SCREENS]).
+var screen: StringName = &""
 ## COINS : pièces par niveau du lanceur (Rouge/Bleu : 2, [constant PayDayPurse.RB_PER_LEVEL]).
 var per_level: int = 0

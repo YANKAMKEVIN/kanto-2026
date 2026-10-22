@@ -156,3 +156,43 @@ func test_a_potion_does_not_cure_poison() -> void:
 	assert_eq(ItemUse.cure(_potion, _mon), StatusRules.NONE)
 	assert_eq(ItemUse.cure(_ball, _mon), StatusRules.NONE)
 	assert_eq(ItemUse.cure(null, _mon), StatusRules.NONE)
+
+
+# --- Rappel (jalon 20, §2.9.4) -----------------------------------------------------------
+
+func test_a_revive_only_raises_a_fainted_pokemon_to_half_hp() -> void:
+	var revive := _items.get_item(&"revive")
+	_bag.add(&"revive", 2)
+	assert_eq(ItemUse.check(_bag, revive, _mon, ItemData.CONTEXT_FIELD), C.NOT_FAINTED,
+		"debout : refusé")
+	_mon.hp = 0
+	_mon.status = StatusRules.NONE
+	for context: StringName in [ItemData.CONTEXT_FIELD, ItemData.CONTEXT_WILD_BATTLE,
+			ItemData.CONTEXT_TRAINER_BATTLE]:
+		assert_eq(ItemUse.check(_bag, revive, _mon, context), C.OK, String(context))
+	var result := ItemUse.apply(_bag, revive, _mon, ItemData.CONTEXT_FIELD)
+	assert_true(result.is_ok())
+	assert_true(result.revived)
+	assert_eq(_mon.hp, 9, "floor(18 × 0,5)")
+	assert_false(_mon.is_fainted())
+	assert_eq(_bag.count_of(&"revive"), 1, "un seul retiré")
+	assert_eq(BagQuery.result_text(result, "Salamèche"), "Salamèche reprend connaissance !")
+	assert_eq(ItemUse.check(_bag, revive, _mon, ItemData.CONTEXT_FIELD), C.NOT_FAINTED)
+	assert_eq(BagQuery.reason_text(C.NOT_FAINTED), "Pas K.O.")
+	assert_eq(BagQuery.refusal_text(C.NOT_FAINTED, "Salamèche"),
+		"Cela n'aurait aucun effet sur Salamèche.")
+
+
+func test_a_revive_gives_at_least_one_hp() -> void:
+	var item := ItemData.new()
+	item.category = ItemData.Category.HEAL
+	item.revive = 0.01
+	_mon.hp = 0
+	assert_eq(ItemUse.restore(item, _mon), 1)
+	assert_eq(_mon.hp, 1)
+	assert_eq(ItemUse.restore(item, _mon), 0, "debout : rien")
+
+
+func test_the_potion_still_refuses_a_fainted_pokemon() -> void:
+	_mon.hp = 0
+	assert_eq(ItemUse.check(_bag, _potion, _mon, ItemData.CONTEXT_FIELD), C.FAINTED)

@@ -1,0 +1,20 @@
+POKE_ARTIKODIN_MONDE — planche d'animation d'une créature du monde de Kanto 2026 : un grand oiseau de glace POSÉ au fond d'une grotte, qui attend le joueur.
+Images jointes : POKE_ARTIKODIN_MONDE_NE_r1 = le même oiseau (anatomie et couleurs seulement, PAS son rendu d'artwork ni sa pose de trois quarts) ; rapasdepic_sheet et roucoups_sheet = oiseaux Pokémon déjà peints pour le monde du jeu : même rendu peint simplifié, même contour fin coloré, même finesse, même angle de vue.
+Style : Pokémon peint simplifié comme les planches du jeu, contour fin coloré sans trait noir, volumes doux. Ni pixel art, ni 3D, ni anime aux contours noirs.
+LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche ; volumes conservés par un ombrage doux ; aucune teinte dorée ou orangée, aucun liseré chaud ; ombres propres neutres, légèrement bleutées.
+
+CRÉATURE (identique dans toutes les images) : un grand OISEAU DE GLACE de dessin animé, élégant et majestueux, au plumage BLEU GLACE, à la très longue QUEUE de plumes bleu pâle ondulées, à la crête de trois longues plumes pointues bleu sombre sur le front, aux yeux rouge sombre calmes, au bec gris-bleu fin, au ventre et au cou bleu très pâle, aux pattes grises fines ; jamais agressif.
+POSE : POSÉ au sol, debout sur ses deux pattes, de FACE (tourné vers le bas de l'écran), les AILES REPLIÉES le long du corps, la longue queue posée derrière lui et qui retombe sur le côté, la tête haute. Vue de dessus de trois quarts comme le jeu (caméra un peu au-dessus).
+
+PLANCHE D'ANIMATION : image paysage 1536 × 1024, fond avec une vraie transparence (canal alpha, aucun damier dessiné). UNE seule ligne de 4 images, de gauche à droite, chacune dans une colonne invisible de 384 px, à la MÊME échelle (environ 330 px de haut, crête comprise), les pattes de toutes les images sur une même ligne horizontale à 170 px du bas de l'image :
+- Image 1 : au repos.
+- Image 2 : il INSPIRE (la poitrine se gonfle un peu, la tête monte légèrement, les plumes de la crête bougent).
+- Image 3 : il EXPIRE un léger SOUFFLE FROID : une petite brume blanc-bleu pâle et quelques minuscules cristaux de givre sortent de son bec et descendent devant lui (discret, transparent sur les bords, jamais un rayon).
+- Image 4 : retour au repos, le souffle se dissipe (à peine visible).
+Aucune ombre portée, aucun sol, aucune glace sous ses pattes, aucun décor, aucun texte.
+Interdits de la série : texte, lettres, chiffres, logo, AUCUN emblème rond de type balle (ni cercle partagé en deux, ni médaillon à bande centrale) nulle part, animaux réels ou faune non-Pokémon (oiseaux, mouettes, poissons, dauphins, phoques, insectes), Pikachu et tout Pokémon non demandé, personnage qui ressemble au héros (casquette rouge, t-shirt blanc, sac à dos jaune) sauf quand le héros est demandé, élément effrayant.
+
+CORRECTIONS (2e essai : le 1er était fidèle mais rendu comme un artwork officiel, de trois quarts tourné vers la gauche) :
+1. STYLE DU MONDE, pas d'artwork : rendu PEINT SIMPLIFIÉ exactement comme les planches jointes rapasdepic_sheet et roucoups_sheet (formes rondes et douces, proportions un peu trapues, tête un peu plus grosse, peu de plumes détaillées, contour fin coloré), à la même main que le héros joint.
+2. Strictement DE FACE et SYMÉTRIQUE (tourné vers le bas de l'écran, vers le spectateur) : les deux yeux visibles, le bec au milieu, la crête droite, la longue queue qui part derrière lui et retombe sur un côté.
+3. Fond entièrement transparent, aucune lueur ni halo bleu autour de lui.

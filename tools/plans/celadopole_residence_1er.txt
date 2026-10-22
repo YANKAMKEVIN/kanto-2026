@@ -1,0 +1,35 @@
+# Résidence Céladon, 1er étage (celadon_mansion_1f) — grille fonctionnelle (jalon 20, dossier 23 §10 ;
+# préparée le 2026-10-14). Palier, 2 habitants.
+# 16 × 11 cases (enveloppe commune des 4 étages) ; sol y 3..8, x 1..14.
+#
+# Légende (intérieurs de la Résidence) :
+#   K mur (bloqué : fond sur 3 rangées, parois, bas sur 2 rangées)   . sol (praticable)
+#   S escalier montant (STEP_ON ↑)   Z escalier descendant (idem)   X sortie (PUSH ↓)
+#   c canapé   t table   p plante   n banc   f porte FERMÉE « BUREAU PRIVÉ » (bloquée)
+# Les escaliers PRINCIPAUX montent du RdC au 3e et NE vont PAS au toit : le toit n'est
+# atteignable que par l'ESCALIER DE SERVICE (porte (30..31, 4) de la ville, au nord).
+
+PRATICABLES .XSZ
+
+GRILLE 16 11
+00 KKKKKKKKKKKKKKKK
+01 KKKKKKKKKKKKKKKK
+02 KKSSZZKKKKKKKKKK
+03 K.......nnnn...K
+04 K..............K
+05 K..............K
+06 K..............K
+07 K..............K
+08 Kp............pK
+09 KKKKKKKKKKKKKKKK
+10 KKKKKKKKKKKKKKKK
+FIN
+
+POSITIONS
+escalier_haut        warp           2..3,2        libre   to=celadon_mansion_2f spawn=from_down  # STEP_ON ↑ → celadon_mansion_2f
+from_up              spawn          2..3,3        libre    # arrivée d'en haut (devant S), tournée ↓
+escalier_bas         warp           4..5,2        libre   to=celadon_mansion_gf spawn=from_up  # STEP_ON ↑ → celadon_mansion_gf
+from_down            spawn          4..5,3        libre    # arrivée d'en bas (devant Z), tournée ↓
+habitant_1           pnj            9,6           bloque  role=P1 facing=left  # habitant du palier
+habitant_2           pnj            12,7          bloque  role=P2 facing=up  # habitante du palier
+FIN

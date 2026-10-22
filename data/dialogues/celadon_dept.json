@@ -1,0 +1,201 @@
+{
+	"celadon_dept_2f_clerk": {
+		"speaker": "Marchand",
+		"pages": [
+			"Bonjour ! Qu'est-ce qu'il te faut aujourd'hui ?"
+		],
+		"action": "open_shop",
+		"shop": "celadon_dept_2f"
+	},
+	"celadon_dept_2f_clerk_tm": {
+		"speaker": "Marchand",
+		"pages": [
+			"Bonjour ! Qu'est-ce qu'il te faut aujourd'hui ?"
+		],
+		"action": "open_shop",
+		"shop": "celadon_dept_2f_tm"
+	},
+	"celadon_dept_4f_clerk": {
+		"speaker": "Marchand",
+		"pages": [
+			"Bonjour ! Qu'est-ce qu'il te faut aujourd'hui ?"
+		],
+		"action": "open_shop",
+		"shop": "celadon_dept_4f"
+	},
+	"celadon_dept_4f_clerk_stones": {
+		"speaker": "Marchand",
+		"pages": [
+			"Bonjour ! Qu'est-ce qu'il te faut aujourd'hui ?"
+		],
+		"action": "open_shop",
+		"shop": "celadon_dept_4f_stones"
+	},
+	"celadon_dept_5f_clerk": {
+		"speaker": "Marchand",
+		"pages": [
+			"Bonjour ! Qu'est-ce qu'il te faut aujourd'hui ?"
+		],
+		"action": "open_shop",
+		"shop": "celadon_dept_5f"
+	},
+	"celadon_dept_hostess": {
+		"speaker": "Hôtesse",
+		"pages": [
+			"Bienvenue au grand\nmagasin de Céladopole !",
+			"Le tableau des étages\nest juste derrière moi."
+		]
+	},
+	"celadon_dept_gf_customer_1": {
+		"speaker": "Client",
+		"pages": [
+			"Je cherche un cadeau.",
+			"Il paraît que le 4e est fait pour ça."
+		]
+	},
+	"celadon_dept_gf_customer_2": {
+		"speaker": "Client",
+		"pages": [
+			"L'ascenseur va plus vite.",
+			"Mais moi, je préfère les escaliers."
+		]
+	},
+	"celadon_dept_2f_customer_1": {
+		"speaker": "Client",
+		"pages": [
+			"Une Super Ball attrape\nmieux qu'une Poké Ball.",
+			"Elle vaut bien la différence de prix."
+		]
+	},
+	"celadon_dept_2f_customer_2": {
+		"speaker": "Client",
+		"pages": [
+			"Je fais toujours le plein de Rappels.",
+			"On ne sait jamais ce qui nous attend."
+		]
+	},
+	"celadon_dept_3f_player_1": {
+		"speaker": "Joueur",
+		"pages": [
+			"Encore une partie, et j'arrête."
+		]
+	},
+	"celadon_dept_3f_player_2": {
+		"speaker": "Joueur",
+		"pages": [
+			"Ce jeu est trop difficile.",
+			"… Ou alors c'est moi."
+		]
+	},
+	"celadon_dept_3f_gift_man": {
+		"speaker": "Homme",
+		"pages": [
+			"J'avais un cadeau pour un\nDresseur doué. Repasse plus tard."
+		]
+	},
+	"celadon_dept_4f_customer": {
+		"speaker": "Client",
+		"pages": [
+			"Une pierre d'évolution,\nc'est un beau cadeau.",
+			"Mais une fois utilisée, on\nne revient pas en arrière."
+		]
+	},
+	"celadon_dept_5f_lounge_1": {
+		"speaker": "Client",
+		"pages": [
+			"On se repose ici entre deux étages.",
+			"Mes pieds me remercient."
+		]
+	},
+	"celadon_dept_5f_lounge_2": {
+		"speaker": "Cliente",
+		"pages": [
+			"Les objets du 5e servent\nen plein combat.",
+			"Un seul combat, puis leur effet s'en va."
+		]
+	},
+	"celadon_dept_roof_water": {
+		"narration": true,
+		"pages": [
+			"Un distributeur de boissons fraîches."
+		],
+		"action": "open_shop",
+		"shop": "celadon_dept_roof_water"
+	},
+	"celadon_dept_roof_soda": {
+		"narration": true,
+		"pages": [
+			"Un distributeur de boissons fraîches."
+		],
+		"action": "open_shop",
+		"shop": "celadon_dept_roof_soda"
+	},
+	"celadon_dept_roof_lemonade": {
+		"narration": true,
+		"pages": [
+			"Un distributeur de boissons fraîches."
+		],
+		"action": "open_shop",
+		"shop": "celadon_dept_roof_lemonade"
+	},
+	"celadon_roof_girl": {
+		"speaker": "Fillette",
+		"variants": [
+			{
+				"if": [
+					"rooftop_tm13"
+				],
+				"pages": [
+					"Ça va mieux, merci.",
+					"Le toit, c'est joli,\nmais il y fait chaud."
+				]
+			},
+			{
+				"if_items": [
+					"fresh_water"
+				],
+				"pages": [
+					"J'ai tellement soif… Tu as\nquelque chose à boire ?",
+					"Lui donner une Eau Fraîche ?"
+				],
+				"choice": {
+					"confirm": "OUI",
+					"cancel": "NON",
+					"confirm_cutscene": "celadon_roof_trade",
+					"cancel_pages": [
+						"Tant pis… Je vais\nattendre encore un peu."
+					]
+				}
+			},
+			{
+				"if_items": [
+					"soda_pop"
+				],
+				"pages": [
+					"C'est trop sucré pour moi.",
+					"Je préfère l'eau."
+				]
+			},
+			{
+				"if_items": [
+					"lemonade"
+				],
+				"pages": [
+					"C'est trop sucré pour moi.",
+					"Je préfère l'eau."
+				]
+			},
+			{
+				"pages": [
+					"J'ai tellement soif… Tu as\nquelque chose à boire ?"
+				]
+			}
+		]
+	},
+	"celadon_roof_girl_thanks": {
+		"speaker": "Fillette",
+		"pages": [
+			"Merci ! Tiens, c'est pour toi."
+		]
+	}
+}

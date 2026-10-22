@@ -19,6 +19,9 @@ extends RefCounted
 ## - [method face] le fait pivoter sur place, à l'arrêt (même verrouillé) ;
 ## - [method start_step] lance un pas **scripté** (scènes, PNJ qui marchent), même
 ##   verrouillé ; [method update] le termine comme un pas normal.
+## - passe systèmes 2 (§2.5) : un pas pour lequel [member hop_rule] rend vrai est un **saut**
+##   (montée en Surf, descente sur la rive) : durée [member hop_duration], [method is_jumping]
+##   vrai, comme un saut de rebord mais d'une seule case.
 ## La scène lit [method get_world_position] et les signaux pour l'affichage.
 
 signal facing_changed(direction: Vector2i)
@@ -32,6 +35,10 @@ var walk_duration: float = Grid.WALK_STEP_DURATION
 var run_duration: float = Grid.RUN_STEP_DURATION
 var jump_duration: float = Grid.LEDGE_JUMP_DURATION
 var turn_hold_duration: float = Grid.TURN_HOLD_DURATION
+## Saut d'une case (passe systèmes 2) : `func(from: Vector2i, to: Vector2i) -> bool`, lu à chaque
+## pas ; non valide : aucun. Durée du saut : [member hop_duration].
+var hop_rule: Callable
+var hop_duration: float = Grid.LEDGE_JUMP_DURATION
 
 var _grid: GridWorld
 var _entity: Object
@@ -225,9 +232,12 @@ func _try_step(direction: Vector2i, run: bool, elapsed: float) -> bool:
 		_state = State.IDLE
 		_elapsed = 0.0
 		return false
-	_jumping = target != _cell + direction
+	var hop := hop_rule.is_valid() and bool(hop_rule.call(_cell, target))
+	_jumping = target != _cell + direction or hop
 	_running = run and not _jumping
-	if _jumping:
+	if hop:
+		_duration = hop_duration
+	elif _jumping:
 		_duration = jump_duration
 	elif _running:
 		_duration = run_duration

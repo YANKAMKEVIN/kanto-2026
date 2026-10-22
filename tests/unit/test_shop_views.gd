@@ -185,3 +185,20 @@ func test_no_pokedex_word_anywhere() -> void:
 			texts.append_array([entry.name, entry.description, entry.owned_text,
 				entry.price_text, entry.reason])
 		assert_false(" ".join(texts).to_lower().contains("pokédex"), String(mode))
+
+
+## Jalon 20 (§2.9.2, annexe A n° 160) : une CT déjà dans le Sac affiche « Déjà dans le Sac ».
+func test_an_owned_tm_shows_already_in_the_bag() -> void:
+	var shops := ShopLibrary.new()
+	shops.load_dir()
+	var shop := shops.get_shop(&"celadon_dept_2f_tm")
+	var view := ShopViews.build(_state, shop, _items)
+	assert_eq(view.entries.size(), 1)
+	assert_eq(view.entries[0].max_quantity, 1)
+	assert_eq(view.entries[0].price_text, _money("3 000"))
+	_state.bag.add(&"tm01")
+	view = ShopViews.build(_state, shop, _items)
+	assert_eq([view.entries[0].price_text, view.entries[0].reason, view.entries[0].max_quantity],
+		["Déjà dans le Sac", "Déjà dans le Sac", 0])
+	view = ShopViews.build(_state, shop, _items, ShopViews.MODE_SELL)
+	assert_false(_ids(view).has(&"tm01"), "une CT ne se revend pas")

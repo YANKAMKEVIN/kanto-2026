@@ -45,6 +45,7 @@ def main() -> None:
 	p.personnages()
 	p.attentes()
 	p.pokemon_fixes()
+	p.pokemon_boucles()
 	p.ecrire_catalogue()
 	preparer.reglages_import(partiel)
 

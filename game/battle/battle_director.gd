@@ -51,6 +51,12 @@ extends Node
 ## et la grille. K.O. du Pokémon du joueur avec d'autres valides
 ## ([method Battle.needs_replacement]) : le même panneau, sans « ‹ », fait choisir le suivant
 ## ([method Battle.replace]).
+##
+## Combat SPECTRE (jalon 19, `jalon-19.md` §2.3, dossier 22 §6.2) : le sauvage reçoit le surnom
+## « ghost_name » (« SPECTRE ») pour la durée du combat, donc tous les textes et la carte le
+## nomment ainsi ; le moteur masque le reste ([GhostDisguise]). Une Ball choisie dans le Sac est
+## refusée par « ghost_ball_refused » [b]avant[/b] d'être retirée du Sac, sans tour joué
+## ([method Battle.refuses_balls]) ; le choix reprend.
 
 ## Le combat commence (verrou posé, monde figé).
 signal battle_started(trainer_id: StringName)
@@ -201,6 +207,9 @@ func run_request(request: BattleRequest, map: GameMap) -> int:
 		return Battle.Outcome.NONE
 	var wild := request.is_wild()
 	var trainer := request.trainer
+	if request.rules != null and request.rules.ghost and _texts != null:
+		# SPECTRE : le seul nom que le combat connaîtra (textes, carte).
+		foe.nickname = _texts.get_template(&"ghost_name")
 	_running = true
 	_summary = ExpSummary.new()
 	_wild_foe = foe if wild else null
@@ -231,7 +240,8 @@ func run_request(request: BattleRequest, map: GameMap) -> int:
 		_stage.set_place(map.map_id, request.origin_cell if wild else _player.get_cell())
 		if wild:
 			var origin_world := Grid.cell_to_world(request.origin_cell)
-			await _stage.play_wild_intro(camera, foe_species, origin_world)
+			await _stage.play_wild_intro(camera, foe_species, origin_world,
+				BattleStage.LEGENDARY_INTRO_SLOWDOWN if request.legendary_intro else 1.0)
 			await _stage.play_partner_enter(player_species)
 		else:
 			var player_npc := _npc(map, request.world_actors.get(&"player", &""))
@@ -297,6 +307,18 @@ func run_request(request: BattleRequest, map: GameMap) -> int:
 		_player.set_input_enabled(true, REASON)
 	battle_finished.emit(_trainer_id, outcome)
 	return outcome
+
+
+## Coroutine : combat sauvage contre [param encounter] sur [param map], lancé hors des
+## herbes (étape de scène « combat sauvage », jalon 19) ; [param origin] : la case d'où part
+## l'intro. Combat SPECTRE si [member WildEncounter.ghost]. Renvoie une [enum Battle.Outcome]
+## (NONE si refusé). Le Pokédex, la défaite et le réveil restent à l'appelant.
+func run_wild(encounter: WildEncounter, map: GameMap, origin: Vector2i) -> int:
+	if encounter == null or _state == null:
+		push_error("BattleDirector.run_wild : rencontre ou état absent")
+		return Battle.Outcome.NONE
+	var request := BattleRequest.wild(encounter, _data, _state.rng as GameRng, origin, _items)
+	return await run_request(request, map)
 
 
 func is_running() -> bool:
@@ -381,9 +403,30 @@ func _choose_action(actions: Dictionary[StringName, bool], can_flee: bool) -> Ba
 				continue
 			return BattleAction.run()
 		if action == ActionGrid.BAG and actions.get(ActionGrid.BAG, false) \
-				and (_battle.can_use_balls() or _battle.can_use_heal_items()):
+				and (_battle.can_use_balls() or _battle.can_use_heal_items()
+					or _battle.can_use_key_items()):
 			var chosen := await _choose_item()
 			if chosen == null:
+				continue
+			if chosen.kind == BattleAction.Kind.KEY_ITEM and not _battle.flute_has_effect():
+				# Poké Flûte sans dormeur (dossier 24 §8, L-9) : aucun tour pris.
+				if _texts != null:
+					await _hud.show_message(_texts.get_template(&"flute_no_effect"))
+					await _hud.show_message(_texts.get_template(&"flute_no_effect_2"))
+				_show_own_card()
+				continue
+			if chosen.kind == BattleAction.Kind.KEY_ITEM:
+				# Le Sac a caché la carte du joueur ; aucun beat de la Flûte ne la ramène (QA S21).
+				_show_own_card()
+				return chosen
+			var chosen_item := _items.get_item(chosen.item_id) if _items != null else null
+			if chosen.kind == BattleAction.Kind.ITEM and not chosen.is_heal() \
+					and chosen_item != null and chosen_item.category == ItemData.Category.BALL \
+					and _battle.refuses_balls():
+				# SPECTRE (K-8) : refusée avant le lancer, rien n'est retiré, aucun tour joué.
+				await _hud.show_message(_texts.get_template(&"ghost_ball_refused")
+					if _texts != null else "")
+				_show_own_card()
 				continue
 			return chosen
 		if action == ActionGrid.TEAM and actions.get(ActionGrid.TEAM, false):
@@ -426,6 +469,10 @@ func _choose_item() -> BattleAction:
 			return null
 		var id := StringName(answer[1])
 		var item := _items.get_item(id) if _items != null else null
+		if item != null and item.has_battle_use():
+			return BattleAction.use_item(id)
+		if item != null and item.has_key_use():
+			return BattleAction.key_item(id)
 		if item == null or not item.targets_pokemon():
 			return BattleAction.ball(id)
 		var index := await _choose_target(item)

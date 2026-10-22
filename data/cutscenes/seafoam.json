@@ -1,0 +1,43 @@
+{
+	"seafoam_b2f_hidden_1": {
+		"variants": [
+			{
+				"unless": ["got_seafoam_b2f_hidden_1"],
+				"steps": [
+					{ "give": "nugget", "count": 1, "found": true },
+					{ "set": ["got_seafoam_b2f_hidden_1"] }
+				]
+			}
+		]
+	},
+	"seafoam_b4f_hidden_1": {
+		"variants": [
+			{
+				"unless": ["got_seafoam_b4f_hidden_1"],
+				"steps": [
+					{ "give": "ultra_ball", "count": 1, "found": true },
+					{ "set": ["got_seafoam_b4f_hidden_1"] }
+				]
+			}
+		]
+	},
+	"articuno": {
+		"variants": [
+			{
+				"unless": ["articuno_done"],
+				"steps": [
+					{ "dialogue": "articuno_cry" },
+					{
+						"wild_battle": "articuno", "level": 50, "intro": "legendary",
+						"actor": "articuno",
+						"static": { "done": "articuno_done", "caught": "articuno_caught" }
+					},
+					{
+						"dialogue": "articuno_flew_away",
+						"if": ["articuno_done"], "unless": ["articuno_caught"]
+					}
+				]
+			}
+		]
+	}
+}

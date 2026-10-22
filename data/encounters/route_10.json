@@ -1,0 +1,14 @@
+{
+	"route_10_grass": {
+		"maps": ["route_10"],
+		"terrain": "grass",
+		"rate": 25,
+		"ramp": { "from_step": 15, "max_steps": 20 },
+		"slots": [
+			{ "species": "voltorb", "levels": [14, 17], "weight": 30 },
+			{ "species": "spearow", "levels": [13, 17], "weight": 35 },
+			{ "species": "ekans", "levels": [11, 17], "weight": 18 },
+			{ "species": "sandshrew", "levels": [11, 17], "weight": 17 }
+		]
+	}
+}

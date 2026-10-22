@@ -733,3 +733,177 @@ func test_next_must_name_another_known_scene() -> void:
 func test_real_cutscenes_have_valid_next_references() -> void:
 	var library := CutsceneLibrary.new()
 	assert_true(library.load_dir(), "\n".join(library.get_errors()))
+
+
+# --- Jalon 19 (T13) : étape « wild_battle » ----------------------------------------------
+
+func test_wild_battle_step_reads_species_level_ghost_and_flags() -> void:
+	var step := _one_step({"wild_battle": "marowak", "level": 30, "ghost": "always",
+		"ghost_unless_item": "silph_scope", "win": ["won"], "lose": ["lost"]})
+	assert_not_null(step, str(_library.get_errors()))
+	if step == null:
+		return
+	assert_eq(step.kind, CutsceneStep.Kind.WILD_BATTLE)
+	assert_eq(step.species, &"marowak")
+	assert_eq(step.level, 30)
+	assert_eq(step.ghost_mode, GhostRule.ALWAYS)
+	assert_eq(step.ghost_unless_item, &"silph_scope")
+	assert_eq(step.win_flags, [&"won"] as Array[StringName])
+	assert_eq(step.lose_flags, [&"lost"] as Array[StringName])
+	assert_eq(_library.get_wild_species(), [&"marowak"] as Array[StringName])
+	assert_has(_library.get_set_flags(), &"won")
+	assert_has(_library.get_set_flags(), &"lost")
+	var copy := step.copy()
+	assert_eq([copy.species, copy.level, copy.ghost_mode, copy.ghost_unless_item],
+		[step.species, step.level, step.ghost_mode, step.ghost_unless_item], "copie complète")
+
+
+func test_wild_battle_minimal_step_has_no_ghost_rule_and_no_flags() -> void:
+	var step := _one_step({"wild_battle": "cubone", "level": 1})
+	assert_not_null(step, str(_library.get_errors()))
+	if step == null:
+		return
+	assert_eq(step.ghost_mode, &"")
+	assert_eq(step.ghost_unless_item, &"")
+	assert_true(step.win_flags.is_empty())
+	assert_true(step.lose_flags.is_empty())
+	assert_eq(step.level, 1)
+
+
+func test_wild_battle_kind_is_last_in_the_enum() -> void:
+	assert_eq(CutsceneStep.Kind.WILD_BATTLE, CutsceneStep.Kind.GIFT_POKEMON - 1,
+		"en fin d'enum avant le don du J20")
+	assert_eq(CutsceneStep.Kind.WILD_BATTLE, CutsceneStep.Kind.ANIMATE + 1)
+	assert_eq(CutsceneStep.TYPE_KEYS[CutsceneStep.Kind.WILD_BATTLE], "wild_battle")
+
+
+func test_invalid_wild_battle_steps_are_refused() -> void:
+	var bad: Array[Dictionary] = [
+		{"wild_battle": "", "level": 30},
+		{"wild_battle": 12, "level": 30},
+		{"wild_battle": "marowak"},
+		{"wild_battle": "marowak", "level": 0},
+		{"wild_battle": "marowak", "level": 101},
+		{"wild_battle": "marowak", "level": 30.5},
+		{"wild_battle": "marowak", "level": "30"},
+		{"wild_battle": "marowak", "level": 30, "ghost": "sometimes"},
+		{"wild_battle": "marowak", "level": 30, "ghost": ""},
+		{"wild_battle": "marowak", "level": 30, "ghost": true},
+		{"wild_battle": "marowak", "level": 30, "ghost_unless_item": ""},
+		{"wild_battle": "marowak", "level": 30, "win": []},
+		{"wild_battle": "marowak", "level": 30, "lose": "lost"},
+		{"wild_battle": "marowak", "level": 30, "trainer": "x"},
+	]
+	for i: int in bad.size():
+		assert_null(_one_step(bad[i], "bad_%d" % i), str(bad[i]))
+	assert_eq(_library.size(), 0, "toutes refusées")
+	assert_push_error_count(bad.size())
+
+
+func test_check_species_discards_scenes_with_unknown_species() -> void:
+	var data := PokemonData.new()
+	assert_true(data.load_dir(), "données Pokémon")
+	assert_true(_library.add_from_dict({
+		"known": {"steps": [{"wild_battle": "marowak", "level": 30}]},
+		"unknown": {"steps": [{"wait": 0}, {"wild_battle": "missingno", "level": 30}]},
+	}, "test"))
+	assert_false(_library.check_species(data))
+	assert_push_error_count(1)
+	assert_true(_library.has_cutscene(&"known"))
+	assert_false(_library.has_cutscene(&"unknown"), "scène écartée")
+	assert_string_contains("\n".join(_library.get_errors()), "« missingno »")
+
+
+func test_real_cutscenes_name_known_species() -> void:
+	var library := CutsceneLibrary.new()
+	assert_true(library.load_dir(), "\n".join(library.get_errors()))
+	var data := PokemonData.new()
+	assert_true(data.load_dir())
+	assert_true(library.check_species(data), "\n".join(library.get_errors()))
+
+
+# --- Jalon 20 (T12) : étape « gift_pokemon » ---------------------------------------------
+
+func test_gift_pokemon_step_reads_species_level_flag_and_dialogues() -> void:
+	var step := _one_step({"gift_pokemon": "eevee", "level": 25, "flag": "eevee_received",
+		"say": "received", "say_stored": "stored"})
+	assert_not_null(step, str(_library.get_errors()))
+	if step == null:
+		return
+	assert_eq(step.kind, CutsceneStep.Kind.GIFT_POKEMON)
+	assert_eq([step.species, step.level, step.gift_flag], [&"eevee", 25, &"eevee_received"])
+	assert_eq([step.dialogue_id, step.dialogue_stored], [&"received", &"stored"])
+	assert_has(_library.get_set_flags(), &"eevee_received", "le drapeau est levé par l'étape")
+	assert_eq(_library.get_dialogue_ids(), [&"received", &"stored"] as Array[StringName])
+	assert_eq(_library.get_wild_species(), [] as Array[StringName], "pas un combat sauvage")
+	var copy := step.copy()
+	assert_eq([copy.species, copy.level, copy.gift_flag, copy.dialogue_id, copy.dialogue_stored],
+		[step.species, step.level, step.gift_flag, step.dialogue_id, step.dialogue_stored],
+		"copie complète")
+
+
+func test_gift_pokemon_without_say_stored() -> void:
+	var step := _one_step({"gift_pokemon": "eevee", "level": 25, "flag": "f", "say": "d"})
+	assert_not_null(step, str(_library.get_errors()))
+	if step != null:
+		assert_eq(step.dialogue_stored, &"")
+
+
+func test_gift_pokemon_kind_is_last_in_the_enum() -> void:
+	assert_eq(CutsceneStep.Kind.GIFT_POKEMON, CutsceneStep.Kind.size() - 1, "en fin d'enum")
+	assert_eq(CutsceneStep.TYPE_KEYS[CutsceneStep.Kind.GIFT_POKEMON], "gift_pokemon")
+	assert_eq(CutsceneStep.TYPE_KEYS.size(), CutsceneStep.Kind.size())
+
+
+func test_invalid_gift_pokemon_steps_are_refused() -> void:
+	var ok := {"gift_pokemon": "eevee", "level": 25, "flag": "f", "say": "d"}
+	var bad: Array[Dictionary] = [
+		{"gift_pokemon": "", "level": 25, "flag": "f", "say": "d"},
+		{"gift_pokemon": 3, "level": 25, "flag": "f", "say": "d"},
+		{"gift_pokemon": "eevee", "flag": "f", "say": "d"},
+		{"gift_pokemon": "eevee", "level": 0, "flag": "f", "say": "d"},
+		{"gift_pokemon": "eevee", "level": 101, "flag": "f", "say": "d"},
+		{"gift_pokemon": "eevee", "level": 25.5, "flag": "f", "say": "d"},
+		{"gift_pokemon": "eevee", "level": 25, "say": "d"},
+		{"gift_pokemon": "eevee", "level": 25, "flag": "", "say": "d"},
+		{"gift_pokemon": "eevee", "level": 25, "flag": "f"},
+		{"gift_pokemon": "eevee", "level": 25, "flag": "f", "say": ""},
+		{"gift_pokemon": "eevee", "level": 25, "flag": "f", "say": "d", "say_stored": ""},
+		{"gift_pokemon": "eevee", "level": 25, "flag": "f", "say": "d", "count": 2},
+	]
+	for i: int in bad.size():
+		assert_null(_one_step(bad[i], "bad_%d" % i), str(bad[i]))
+	assert_eq(_library.size(), 0, "toutes refusées")
+	assert_push_error_count(bad.size())
+	assert_not_null(_one_step(ok, "fine"), "la forme minimale passe")
+
+
+func test_check_species_covers_gift_steps() -> void:
+	var data := PokemonData.new()
+	assert_true(data.load_dir(), "données Pokémon")
+	assert_true(_library.add_from_dict({
+		"known": {"steps": [{"gift_pokemon": "eevee", "level": 25, "flag": "f", "say": "d"}]},
+		"unknown": {"steps": [{"gift_pokemon": "missingno", "level": 5, "flag": "g",
+			"say": "d"}]},
+	}, "test"))
+	assert_false(_library.check_species(data))
+	assert_push_error_count(1)
+	assert_true(_library.has_cutscene(&"known"))
+	assert_false(_library.has_cutscene(&"unknown"), "scène écartée")
+
+
+func test_real_eevee_gift_scene() -> void:
+	var library := CutsceneLibrary.new()
+	assert_true(library.load_dir(), "\n".join(library.get_errors()))
+	var cutscene := library.get_cutscene(&"celadon_eevee_gift")
+	assert_not_null(cutscene, "scène du don d'Évoli")
+	if cutscene == null:
+		return
+	var steps := cutscene.pick(StoryFlags.new()).steps
+	assert_eq(steps[0].kind, CutsceneStep.Kind.GIFT_POKEMON)
+	assert_eq([steps[0].species, steps[0].level, steps[0].gift_flag],
+		[&"eevee", 25, &"eevee_received"], "Évoli N25, drapeau du dossier 23 §15")
+	assert_eq([steps[0].dialogue_id, steps[0].dialogue_stored],
+		[&"celadon_eevee_received", &"celadon_eevee_stored"], "T-29, T-30")
+	assert_eq([steps[1].kind, steps[1].actor], [CutsceneStep.Kind.DESPAWN, &"eevee_ball"],
+		"la Poké Ball disparaît")

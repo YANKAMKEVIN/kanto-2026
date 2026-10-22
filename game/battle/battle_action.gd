@@ -5,9 +5,16 @@ extends RefCounted
 ## MOVE au jalon 4 ; RUN (fuite) au jalon 5B (combat sauvage) ; ITEM (lancer une Ball) au
 ## jalon 5D, et donner un soin à un Pokémon de l'équipe au jalon 6 ([member target] ≥ 0) ;
 ## SWITCH (changer de Pokémon, ÉQUIPE) au jalon 7 ([member target] : le Pokémon envoyé).
+## SPEAK (jalon 19) : le SPECTRE parle, rien d'autre ; imposée par le moteur au camp adverse
+## d'un combat SPECTRE (ni IA ni tirage), jamais légale pour le joueur.
+## Jalon 20 : ITEM sans cible pour un objet COMBAT ([method use_item] : objets X, Muscle +,
+## Poupée Poké), joué sur le Pokémon actif ; le Rappel est un soin ([method heal]) donné à un
+## Pokémon K.O.
+## Passe systèmes 2 (`systemes-2.md` §2.4) : KEY_ITEM, jouer d'un objet clé (la Poké Flûte),
+## sans cible et sans rien consommer ([method key_item]).
 ## Chaque sorte s'ajoute en fin d'enum pour ne rien décaler.
 
-enum Kind { MOVE, RUN, ITEM, SWITCH }
+enum Kind { MOVE, RUN, ITEM, SWITCH, SPEAK, KEY_ITEM }
 
 ## [member move_index] de Lutte (quand plus aucune capacité n'a de PP).
 const STRUGGLE: int = -1
@@ -46,6 +53,16 @@ static func ball(id: StringName) -> BattleAction:
 	return action
 
 
+## Action « utiliser l'objet de combat [param id] » (jalon 20 : objet X, Muscle +, Poupée
+## Poké), comme une Ball : sans cible, joué avant les capacités. Légale seulement si
+## [method Battle.is_legal] l'accepte ; le Sac n'est pas vérifié ici.
+static func use_item(id: StringName) -> BattleAction:
+	var action := BattleAction.new()
+	action.kind = Kind.ITEM
+	action.item_id = id
+	return action
+
+
 ## Action « donner le soin [param id] au Pokémon [param party_index] de l'équipe » (jalon 6,
 ## Q-10 : n'importe quel membre, l'action prend le tour). Légale seulement si les règles
 ## permettent les soins et si [method ItemUse.check_target] l'accepte. Le Sac n'est pas vérifié
@@ -68,6 +85,22 @@ static func switch_to(party_index: int) -> BattleAction:
 	return action
 
 
-## Vrai pour une action de soin (ITEM avec une cible), faux pour une Ball.
+## Action « le SPECTRE parle » (combat SPECTRE, jalon 19) : imposée par le moteur.
+static func speak() -> BattleAction:
+	var action := BattleAction.new()
+	action.kind = Kind.SPEAK
+	return action
+
+
+## Action « jouer de l'objet clé [param id] » (passe systèmes 2 : la Poké Flûte). Légale
+## seulement si [method Battle.is_legal] l'accepte (un Pokémon dort) ; jamais retirée du Sac.
+static func key_item(id: StringName) -> BattleAction:
+	var action := BattleAction.new()
+	action.kind = Kind.KEY_ITEM
+	action.item_id = id
+	return action
+
+
+## Vrai pour une action de soin (ITEM avec une cible), faux pour une Ball ou un objet de combat.
 func is_heal() -> bool:
 	return kind == Kind.ITEM and target >= 0

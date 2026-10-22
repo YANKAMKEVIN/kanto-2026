@@ -93,22 +93,23 @@
 	},
 	"metronome": {
 		"name": "Métronome", "type": "normal", "category": "status",
-		"accuracy": 0, "pp": 10, "pending_effects": ["metronome"],
-		"description": "Agite un doigt pour utiliser une capacité au hasard. Sans effet dans le moteur actuel."
+		"accuracy": 0, "pp": 10, "effects": [{ "kind": "metronome" }],
+		"description": "Agite un doigt pour utiliser une capacité au hasard."
 	},
 	"haze": {
 		"name": "Buée Noire", "type": "ice", "category": "status",
-		"accuracy": 0, "pp": 30, "pending_effects": ["haze"],
-		"description": "Annule les changements de statistiques de tous les Pokémon. Sans effet dans le moteur actuel."
+		"accuracy": 0, "pp": 30, "effects": [{ "kind": "haze" }],
+		"description": "Annule les changements de statistiques de tous les Pokémon."
 	},
 	"light_screen": {
 		"name": "Mur Lumière", "type": "psychic", "category": "status",
-		"accuracy": 0, "pp": 30, "pending_effects": ["light_screen"],
-		"description": "Un mur de lumière qui réduit les dégâts spéciaux reçus. Sans effet dans le moteur actuel."
+		"accuracy": 0, "pp": 30, "effects": [{ "kind": "screen", "screen": "light_screen" }],
+		"description": "Un mur de lumière qui réduit les dégâts spéciaux reçus."
 	},
 	"double_edge": {
 		"name": "Damoclès", "type": "normal", "category": "physical",
-		"power": 120, "accuracy": 100, "pp": 15, "pending_effects": ["recoil_damage"],
-		"description": "Une charge téméraire qui blesse aussi le lanceur. Sans effet dans le moteur actuel."
+		"power": 120, "accuracy": 100, "pp": 15,
+		"effects": [{ "kind": "recoil_damage", "fraction": 0.3333333333333333 }],
+		"description": "Une charge téméraire qui blesse aussi le lanceur."
 	}
 }

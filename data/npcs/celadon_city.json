@@ -1,0 +1,128 @@
+{
+	"fisherman": {
+		"cell": [
+			44,
+			13
+		],
+		"facing": "up",
+		"sprite": "sailor",
+		"dialogue": "celadon_fisherman"
+	},
+	"old_man": {
+		"cell": [
+			52,
+			8
+		],
+		"facing": "left",
+		"sprite": "old_man",
+		"dialogue": "celadon_old_man"
+	},
+	"gardener_f": {
+		"cell": [
+			22,
+			38
+		],
+		"facing": "left",
+		"sprite": "passenger_f",
+		"dialogue": "celadon_gardener_f"
+	},
+	"casino_client": {
+		"cell": [
+			43,
+			35
+		],
+		"facing": "up",
+		"sprite": "gambler",
+		"dialogue": "celadon_casino_client"
+	},
+	"clerk": {
+		"cell": [
+			46,
+			18
+		],
+		"facing": "down",
+		"sprite": "gentleman",
+		"dialogue": "celadon_clerk"
+	},
+	"kid": {
+		"cell": [
+			27,
+			30
+		],
+		"facing": "right",
+		"sprite": "kid",
+		"dialogue": "celadon_kid"
+	},
+	"stroller": {
+		"cell": [
+			7,
+			17
+		],
+		"facing": "down",
+		"sprite": "traveler",
+		"dialogue": "celadon_stroller"
+	},
+	"shopper": {
+		"cell": [
+			14,
+			16
+		],
+		"facing": "up",
+		"sprite": "passenger_f",
+		"dialogue": "celadon_shopper"
+	},
+	"tourist": {
+		"cell": [
+			53,
+			44
+		],
+		"facing": "up",
+		"sprite": "traveler",
+		"dialogue": "celadon_tourist"
+	},
+	"gardener_m": {
+		"cell": [
+			31,
+			28
+		],
+		"facing": "down",
+		"sprite": "naturalist",
+		"dialogue": "celadon_gardener_m"
+	},
+	"youth": {
+		"cell": [
+			62,
+			30
+		],
+		"facing": "left",
+		"sprite": "youngster",
+		"dialogue": "celadon_youth"
+	},
+	"cook": {
+		"cell": [
+			43,
+			39
+		],
+		"facing": "left",
+		"sprite": "clerk",
+		"dialogue": "celadon_cook"
+	},
+	"rocket_1": {
+		"cell": [
+			37,
+			33
+		],
+		"facing": "down",
+		"sprite": "rocket_civilian",
+		"dialogue": "celadon_rocket_1"
+	},
+	"rocket_2": {
+		"cell": [
+			47,
+			30
+		],
+		"facing": "left",
+		"sprite": "rocket_civilian",
+		"dialogue": "celadon_rocket_2"
+	}
+}

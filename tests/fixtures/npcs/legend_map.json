@@ -1,0 +1,7 @@
+{
+	"legend": {
+		"cell": [5, 6], "facing": "down", "sprite": "pokemon/pidgey",
+		"dialogue": "legend_observe", "verb": "observe",
+		"unless": ["legend_done"]
+	}
+}

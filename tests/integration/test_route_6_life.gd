@@ -168,7 +168,7 @@ func test_people_say_their_validated_lines() -> void:
 		assert_eq(spec.facing, Grid.direction_from_name(_plan.attr(info[0], "facing")), key)
 		assert_eq([spec.sprite, spec.dialogue], [info[1], info[2]], key)
 		assert_true(Npc.has_frames(spec.sprite), "%s : planche" % key)
-	var guard := _dialogues.get_dialogue(&"route_6_guard").variants[0]
+	var guard := _dialogues.get_dialogue(&"route_6_guard").variants[-1]
 	assert_eq(guard.pages.size(), 2, "T-17 en deux bulles")
 	assert_eq(guard.pages[1].text, "Ordre de la ville.")
 	assert_true(_roster.get_spec(&"saffron_guard").keep_facing, "le garde regarde la route")

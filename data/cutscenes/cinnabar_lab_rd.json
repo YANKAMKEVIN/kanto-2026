@@ -1,0 +1,28 @@
+{
+	"cinnabar_lab_tm35": {
+		"variants": [
+			{
+				"unless": [
+					"got_tm35"
+				],
+				"steps": [
+					{
+						"dialogue": "cinnabar_lab_tm35_offer"
+					},
+					{
+						"give": "tm35",
+						"count": 1
+					},
+					{
+						"set": [
+							"got_tm35"
+						]
+					},
+					{
+						"save": "CT35"
+					}
+				]
+			}
+		]
+	}
+}

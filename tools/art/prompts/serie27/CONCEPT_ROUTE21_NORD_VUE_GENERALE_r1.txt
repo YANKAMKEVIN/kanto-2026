@@ -1,0 +1,34 @@
+CONCEPT ART — VUE GÉNÉRALE DE LA ROUTE 21 (MOITIÉ NORD), LA MER AU SUD DE BOURG PALETTE (Kanto 2026), image de référence de direction artistique.
+
+Deux images sont jointes.
+IMAGE 2 : la vue générale de la Route 25, une autre route côtière du même jeu. Respecte EXACTEMENT son style de rendu : même pinceau, même mer, mêmes rochers, même herbe, mêmes hautes herbes, mêmes arbres, même saturation, MÊME LUMIÈRE. Ne reprends PAS sa composition (ni maison, ni chemin, ni falaise).
+Format : PORTRAIT 1024 × 1536, vue plongeante, exactement comme le plan.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. Le haut de la carte touche la côte sud de Bourg Palette (hors de l'image) par un étroit CANAL d'eau en haut à gauche. Juste à droite du canal, une PRAIRIE d'herbe rase puis de HAUTES HERBES, bordée de récifs, qu'on n'atteint que par l'eau ; à gauche et à droite, des bois denses. Puis la MER, large, entre deux lignes de récifs ; un petit ÎLOT de sable vers le haut de la mer, à gauche (l'îlot d'un pêcheur).
+Légende du plan :
+- bleu = la MER (eau où l'on navigue en Surf) ; liseré blanc = écume le long des rivages ;
+- gris moucheté de cailloux clairs = RÉCIFS et rivage rocheux (gros rochers qui sortent de l'eau, infranchissables) ;
+- vert très foncé = forêt dense infranchissable ;
+- beige clair = SABLE (plages et îlots) ; traits beige foncé en travers d'une plage = petits REBORDS de sable (marches basses qu'on saute vers le sud) ;
+- vert moyen = herbe rase ; vert-jaune = HAUTES HERBES ;
+- blanc strié de gris-bleu = hautes FALAISES BLANCHES ; rectangle sombre au pied d'une falaise = ENTRÉE DE GROTTE ;
+- petits carrés ocre = panneaux en bois SANS TEXTE ; disque rouge et blanc = une Poké Ball posée au sol.
+Respecte ce plan À LA LETTRE : la forme et la place de chaque zone. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+RÈGLE ABSOLUE DES BORDS : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; rivages, plages, récifs, falaises et bords des zones suivent une grille : uniquement des segments horizontaux et verticaux à ANGLES DROITS, AUCUNE courbe, aucun segment en diagonale. Les rochers et l'écume peuvent être irréguliers EN SURFACE, mais chaque zone garde des bords droits et lisibles.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus, axes de l'image alignés sur la grille, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud).
+- Aucun trait noir : contours fins et doux, plus sombres et plus saturés que la couleur locale. Ombres colorées bleu-vert ou violet froid, jamais grises.
+- Pas de minimap, pas de flèche, pas de cadre, pas d'interface.
+
+AMBIANCE — « Kanto s'ouvre vers le large » : golden hour, lumière dorée rasante venant du haut à gauche, la mer scintille, embruns, vent.
+- Palette : MER turquoise près des rivages, bleu profond au large, reflets dorés ; écume blanche autour des récifs ; SABLE clair et chaud ; roches grises et beiges.
+- La prairie est un petit monde à part, sauvage, l'herbe haute ondule au vent ; l'îlot du pêcheur porte une canne à pêche plantée et un seau.
+
+VIE (très discrète, personnages petits) : un PÊCHEUR (chapeau de pêche, gilet) assis au bord de l'îlot, sa canne tendue vers l'eau ; deux NAGEURS dont on ne voit que la tête et les épaules dans la mer. Aucun Pokémon, aucun animal.
+
+INTERDITS : texte, lettres, chiffres, étiquettes, panneaux lisibles, logo, signature, filigrane, cadre, interface, minimap, flèche ; tout élément non prévu par le plan ; bords courbes ou en diagonale ; brouillard épais, flou de profondeur, vignettage ; pixel art ; vue isométrique. 
+
+L'image doit raconter, sans texte : au sud de Bourg Palette, un canal mène à une prairie sauvage, puis à la grande mer où un pêcheur attend sur son îlot.

@@ -114,6 +114,11 @@ const ROUND_BUTTON_ICON := 64
 ## Centre du bouton courir mesuré depuis le coin bas-droit de l'écran (position de la
 ## planche ; le coin est laissé au bouton contextuel).
 const RUN_BUTTON_CENTER_FROM_CORNER := Vector2(440, 220)
+## Bouton Vélo (passe systèmes 2, `systemes-2.md` §2.3) : à gauche du bouton courir, même hauteur
+## [D] ; au-dessus, il couvrait l'étiquette du bouton contextuel (QA S21, 2026-10-21).
+const BIKE_BUTTON_CENTER_FROM_CORNER := Vector2(620, 220)
+## Bouton Vélo grisé (intérieur, Piste) : opacité [D] ; le toucher dit le refus.
+const BIKE_BUTTON_DIMMED_ALPHA := 0.45
 
 ## Contextuel : un seul bouton en bas à droite, au-dessus et à droite du bouton courir
 ## (planche DA 2026 ; bible UI/UX §1). Centre mesuré depuis le coin bas-droit.
@@ -1826,3 +1831,28 @@ const FLASH_REDUCED_ALPHA := 0.35
 const FLASH_REDUCED_DURATION := 0.6
 ## Vibration légère au début de chaque éclair (si les vibrations sont permises).
 const HAPTIC_FLASH_MS := 25
+
+## Voix d'esprit (J19 T12, dossier 22 §11) : réplique d'un Exorciste possédé, italique, teinte
+## adoucie et froide (le texte reste lisible sur DIALOG_PANEL_BG).
+const DIALOG_SPIRIT := Color("#B7B4DA")
+## Valeurs de la clé de page « voice ».
+const VOICE_SPIRIT := &"spirit"
+
+# --- Panneau d'étages de l'ascenseur (J20 T14, jalon-20.md §2.3.4) -------------------------------
+## Voile derrière le panneau : le monde reste deviné, comme les cartes de choix.
+const ELEVATOR_SCRIM := CHOICE_SCRIM
+## Carte d'étage : large pour le pouce, 128 px de haut (cible tactile).
+const ELEVATOR_CARD_SIZE := Vector2(400, TOUCH_MIN)
+const ELEVATOR_CARD_GAP := 16
+## Au-delà de ce nombre d'étages, les cartes passent sur deux colonnes (6 étages du magasin).
+const ELEVATOR_SINGLE_COLUMN_MAX := 4
+const ELEVATOR_COLUMNS := 2
+const ELEVATOR_PAD := 32
+const ELEVATOR_TITLE_FONT := FONT_TITLE
+const ELEVATOR_CARD_FONT := FONT_BUTTON
+## Étage courant : fond atténué (carte inerte), libellé en TEXT_DISABLED.
+const ELEVATOR_HERE_BG := Color(1, 1, 1, 0.06)
+## Pastille d'accent à gauche du libellé de l'étage courant (repère « vous êtes ici »).
+const ELEVATOR_HERE_DOT := 16
+const ELEVATOR_SLIDE := PANEL_SLIDE
+const ELEVATOR_FADE := ANIM_PANEL

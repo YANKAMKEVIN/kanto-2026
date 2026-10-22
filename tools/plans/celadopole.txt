@@ -1,0 +1,170 @@
+# Céladopole — grille fonctionnelle (jalon 20, dossier 23 §7, §8, §21, §23 ; préparée le
+# 2026-10-14 pour la vue générale peinte). Source UNIQUE de la géométrie : plan en aplats
+# (tools/art/plan_aplats.py), vue générale peinte, puis outil de construction et tests du J20
+# (20A). Un changement de composition se fait ICI d'abord, puis plan, puis image. Contrôle :
+# python3 tools/art/plan_check_celadopole.py (profil celadopole ; pas encore branché sur plan_check.py).
+#
+# 70 × 46 cases (enveloppe du dossier §7.1 / §21) ; nord en haut ; x = colonne 0..69, y = rangée 0..45.
+#
+# RACCORD (imposé, partagé avec la session de la Route 7) :
+#   EST : Céladopole (69, 21..23) ↔ Route 7 (0, 10..12), mêmes trois rangées, aucun décalage
+#   (l'avenue fait 3 cases au raccord). Route 7 : bord OUEST, colonne 0, rangées 10..12.
+#   Aucun autre raccord de carte : nord, sud et ouest sont fermés. OUEST (Route 16) : l'avenue
+#   se termine en (4, 20..24) sur une haie d'arbres denses (x 2..3) et un talus (x 0..1),
+#   examen (3, 22) « Des arbres serrés et un talus. On ne passe pas. » ; aucun panneau, aucune
+#   promesse (H-4). Les rues du nord et du sud sont des culs-de-sac ou des boucles internes.
+#
+# PORTES (cases d'entrée, STEP_ON ↑ ; chaque porte a une case de sortie « from_* » juste devant) :
+#   grand magasin (10..11, 15) · Résidence (29..30, 14) · ESCALIER DE SERVICE (30..31, 4), au
+#   NORD du bâtiment, vers le toit de la Résidence · Centre (63..64, 17) · CASINO (39..40, 32),
+#   2 cases, rangée du bas de sa façade, sortie « from_casino » en (39..40, 33) · Arène
+#   (10..11, 34), derrière l'enclos et l'arbuste à Couper (19, 37) · maison du chef (27, 42) ·
+#   restaurant (37..38, 42) · hôtel (50..51, 42). La façade de l'ancien Coin à lots (48..55,
+#   26..32) n'a AUCUNE porte.
+#
+# Composition (§7.1, §7.2) :
+#   - GRANDE AVENUE est-ouest (y 20..24, 5 cases ; trottoir sud y 25) de la Route 7 au parc
+#     ouest ; elle se resserre à 3 cases (y 21..23) de x 62 au raccord. PROMENADE nord (y 14..19)
+#     au pied du grand magasin, de la Résidence, de l'étang et du Centre.
+#   - DEUX RUES NORD-SUD de 4 cases : rue A (x 20..23, de y 4 à y 44) entre le grand magasin et
+#     la Résidence puis à l'est de l'enclos de l'Arène ; rue B (x 56..59, de y 4 à y 44) entre
+#     l'étang et le Centre. Rue du sud (y 33..35) et ruelle de service du sud (y 43..44).
+#   - NORD-OUEST : grand magasin H (x 4..17, y 7..15), toit-terrasse ; parc ouest devant.
+#   - NORD : Résidence R (x 24..35, y 7..14) ; ruelle de service
+#     (y 5..6, x 20..35, cul-de-sac fermé par une haie en x 36)
+#     derrière elle, qui mène à l'ESCALIER DE SERVICE U (x 29..32, y 1..4), au nord du
+#     bâtiment : c'est la SEULE entrée du toit. On y arrive par la rue A.
+#   - CENTRE-NORD : étang (eau x 39..49, y 6..12, JAMAIS d'accès à l'eau), quai praticable de
+#     2 cases au nord, à l'ouest et à l'est (x 37..51, y 4..13), pêcheur sur le quai sud ; jardin à
+#     l'est (x 52..55) ; haie à l'ouest (x 36).
+#   - NORD-EST : Centre C (x 60..67, y 11..17), parvis y 18..19.
+#   - CENTRE-SUD : place de la fontaine (x 24..33, y 26..32) ; CASINO K (x 34..45, y 26..32,
+#     néons) ; ruelle sombre derrière lui (x 46..47, y 27..32, cul-de-sac fermé au nord par
+#     une haie) ; façade L de l'ancien Coin à lots (x 48..55, y 26..32), vitrine éteinte.
+#   - SUD-OUEST : Arène Z (x 5..16, y 28..34) dans un enclos de haies (x 3..19, y 26..40).
+#     L'enclos s'ouvre par UNE seule porte-haie, en (19, 37), fermée par un ARBUSTE À COUPER
+#     (W) : sans Coupe, l'enclos et l'Arène sont inaccessibles ; le reste de la ville est
+#     entièrement accessible sans Coupe (dossier 23 §19).
+#   - SUD : maison du chef M (x 24..30, y 37..42), restaurant Q (x 34..41, y 36..42), hôtel I
+#     (x 46..55, y 36..42), façades au sud, devant la ruelle y 43..44.
+#   - EST : pelouse (x 60..66, y 27..33) le long de la rue B ; arbres.
+# Emprises de bâtiments (comme Azuria) : toute l'image, bloquée ; Centre C = 8 × 7 (réutilisé :
+# l'INTÉRIEUR du Centre est l'intérieur existant, aucune grille) ; Arène Z = 12 × 7 ; Casino K
+# = 12 × 7 ; façade L = 8 × 7 ; grand magasin H = 14 × 9 ; Résidence R = 12 × 8 ; escalier de
+# service U = 4 × 4 ; restaurant Q = 8 × 7 ; hôtel I = 10 × 7 ; maison du chef M = 7 × 6
+# (porte = 4e colonne du bas). Portes de 2 cases = colonnes centrales du bas, sauf M (1 case).
+#
+# Légende (en plus de celle d'azuria.txt) :
+#   T arbres denses (bloqués)   . herbe rase   p pavé (praticable)   q quai de l'étang (praticable)
+#   w eau (JAMAIS praticable)   x haie (bloquée)   n banc   G arbre repère   j massif taillé
+#   F fontaine   s talus de l'ouest   W ARBUSTE À COUPER (bloqué sans Coupe ; case CONDITIONNELLE)
+#   H grand magasin   R Résidence   U escalier de service   C Centre   K Casino   L façade de
+#   l'ancien Coin à lots (sans porte)   Z Arène   M maison du chef   Q restaurant   I hôtel
+#   D porte d'un bâtiment (praticable, STEP_ON ↑)
+#
+# Habitants : 12 + 2 Rocket en civil (hypothèse : les deux Rocket NE comptent PAS dans les
+# 12). Aucun sur une case de passage obligée (le contrôle le vérifie case par case).
+# Identifiants de cartes (indicatifs) : celadon_city, celadon_center (intérieur existant),
+# celadon_dept_gf / _2f / _3f / _4f / _5f / _roof / _elevator, celadon_mansion_gf / _1f / _2f /
+# _3f / _roof / _roof_house, celadon_gym, celadon_restaurant, celadon_chief_house,
+# celadon_hotel, celadon_game_corner (autre session).
+#
+# Légende des POSITIONS : voir azuria.txt ; en plus, kind « coupe » (arbuste à Couper) et
+# attributs to=<carte> spawn=<point d'arrivée> sur les warps (lus par le contrôle).
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 70 caractères), puis POSITIONS.
+
+PRATICABLES .=pqD
+
+GRILLE 70 46
+00 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+01 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTUUUUTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+02 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTUUUUTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+03 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTUUUUTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+04 TTTTTTTTTTTTTTTTTTTTppppxxxxxUDDUxxxxqqqqqqqqqqqqqqqTTTTppppTTTTTTTTTT
+05 TTTTTTTTTTTTTTTTTTTTppppppppppppppppxqqqqqqqqqqqqqqq....ppppTTTTTTTTTT
+06 TTTTTTTTTTTTTTTTTTTTppppppppppppppppxqqwwwwwwwwwwwqq..G.ppppTTTTTTTTTT
+07 TTTTHHHHHHHHHHHHHHxxppppRRRRRRRRRRRRxqqwwwwwwwwwwwqq....ppppTTTTTTTTTT
+08 TTTTHHHHHHHHHHHHHHxxppppRRRRRRRRRRRRxqqwwwwwwwwwwwqq....ppppTTTTTTTTTT
+09 TTTTHHHHHHHHHHHHHHxxppppRRRRRRRRRRRRxqqwwwwwwwwwwwqq....ppppTTTTTTTTTT
+10 TTTTHHHHHHHHHHHHHHxxppppRRRRRRRRRRRRxqqwwwwwwwwwwwqq.n..ppppTTTTTTTTTT
+11 TTTTHHHHHHHHHHHHHHxxppppRRRRRRRRRRRRxqqwwwwwwwwwwwqq....ppppCCCCCCCCTT
+12 TTTTHHHHHHHHHHHHHHxxppppRRRRRRRRRRRRxqqwwwwwwwwwwwqq....ppppCCCCCCCCTT
+13 TTTTHHHHHHHHHHHHHHxxppppRRRRRRRRRRRRxqqqqqqqqqqqqqqq....ppppCCCCCCCCTT
+14 TTTTHHHHHHHHHHHHHHxxppppRRRRRDDRRRRRpppppppppppppppppGppppppCCCCCCCCTT
+15 TTTTHHHHHHDDHHHHHHxxppppppppppppppppppppppppppppppppppppppppCCCCCCCCTT
+16 ssTTjj....pp.....jjjppppppppppppppppppppppnpppnpppppppppppppCCCCCCCCTT
+17 ssTT......pp........ppppppppppppppppppjjjppppppjjjppGpppppppCCCDDCCCTT
+18 ssTT.jjjn.pp.njjjj..ppppjjjppppppjjjppjjjppppppjjjppppppppppppppppppTT
+19 ssTTGjjj..pp..jjjj.GppppjjjppppppjjjppjjjppppppjjjppppppppppppppppppTT
+20 ssTTppppppppppppppppppppppppppppppppppppppppppppppppppppppppppTTTTTTTT
+21 ssTTpppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp
+22 ssTTpppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp
+23 ssTTpppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp
+24 ssTT................ppppjjjppppjjjjjjjGjjjjjnjjjjGjjjjjnppppppTTTTTTTT
+25 ssTTxxxGxxxxxxGxxxxxppppjjjppppjjjjjjjjjjjjjjjjjjjjjjjjjppppTTTTTTTTTT
+26 TTTxxxxxxxxxxxxxxxxxppppjjjppppjjjKKKKKKKKKKKKxxLLLLLLLLppppTTTTTTTTTT
+27 TTTx...............xppppjjjppppjjjKKKKKKKKKKKKppLLLLLLLLpppp..G....TTT
+28 TTTx.ZZZZZZZZZZZZ..xppppppppppppppKKKKKKKKKKKKppLLLLLLLLpppp....n..TTT
+29 TTTx.ZZZZZZZZZZZZ..xppppppppFFppppKKKKKKKKKKKKppLLLLLLLLpppp.......TTT
+30 TTTx.ZZZZZZZZZZZZ..xppppppppFFppppKKKKKKKKKKKKppLLLLLLLLpppp.......TTT
+31 TTTx.ZZZZZZZZZZZZ..xppppjjppppppjjKKKKKKKKKKKKppLLLLLLLLpppp.......TTT
+32 TTTx.ZZZZZZZZZZZZ..xppppjjnppppnjjKKKKKDDKKKKKppLLLLLLLLpppp.......TTT
+33 TTTx.ZZZZZZZZZZZZ..xpppppppppppppppppppppppppppppppppppppppp......GTTT
+34 TTTx.ZZZZZDDZZZZZ..xppppppppppppppppppppppppppppppppppppppppTTTTTTTTTT
+35 TTTx......pp.......xppppjjGjjjnpppjjGjjjnjppppjGjjjnjjGjppppTTTTTTTTTT
+36 TTTx......pp.......xppppTTTTTTTpppQQQQQQQQppppIIIIIIIIIIppppTTTTTTTTTT
+37 TTTx...j..pp..j....WppppMMMMMMMpppQQQQQQQQppppIIIIIIIIIIppppTTTTTTTTTT
+38 TTTx......pp.......xppppMMMMMMMpppQQQQQQQQppppIIIIIIIIIIppppTTTTTTTTTT
+39 TTTxG.....pp......GxppppMMMMMMMpppQQQQQQQQppppIIIIIIIIIIppppTTTTTTTTTT
+40 TTTxxxxxxxxxxxxxxxxxppppMMMMMMMpppQQQQQQQQppppIIIIIIIIIIppppTTTTTTTTTT
+41 TTTTTTTTTTTTTTTTTTTTppppMMMMMMMpppQQQQQQQQppppIIIIIIIIIIppppTTTTTTTTTT
+42 TTTTTTTTTTTTTTTTTTTTppppMMMDMMMpppQQQDDQQQppppIIIIDDIIIIppppTTTTTTTTTT
+43 TTTTTTTTTTTTTTTTTTTTppppppppppppppppppppppppppppppppppppppppTTTTTTTTTT
+44 TTTTTTTTTTTTTTTTTTTTppppppppppppppppppppppppppppppppppppppppTTTTTTTTTT
+45 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+FIN
+
+POSITIONS
+warp_est             warp           69,21..23     libre   to=route_7 spawn=from_celadon  # PUSH → route_7, from_celadon (Route 7 (0, 10..12))
+from_route_7         spawn          69,21..23     libre    # arrivée de la Route 7, tournée ←
+arrivee_est          declencheur    68,21..23     libre    # déclencheur silencieux « celadon_arrival » (titre de zone, texte 13) : pas vers l'ouest sur la 2e colonne
+porte_magasin        warp           10..11,15     libre   to=celadon_dept_gf spawn=entrance  # STEP_ON ↑ → celadon_dept_gf : grand magasin
+from_dept            spawn          10..11,16     libre    # sortie du bâtiment, tournée ↓
+porte_residence      warp           29..30,14     libre   to=celadon_mansion_gf spawn=entrance  # STEP_ON ↑ → celadon_mansion_gf : Résidence (escalier PRINCIPAL)
+from_mansion         spawn          29..30,15     libre    # sortie du bâtiment, tournée ↓
+porte_service        warp           30..31,4      libre   to=celadon_mansion_roof spawn=from_service  # STEP_ON ↑ → celadon_mansion_roof : ESCALIER DE SERVICE, au nord de la Résidence : seule entrée du toit
+from_service         spawn          30..31,5      libre    # sortie du bâtiment, tournée ↓
+porte_centre         warp           63..64,17     libre   to=celadon_center spawn=entrance  # STEP_ON ↑ → celadon_center : Centre Pokémon (intérieur existant, aucune grille)
+from_center          spawn          63..64,18     libre    # sortie du bâtiment, tournée ↓
+porte_casino         warp           39..40,32     libre   to=celadon_game_corner spawn=entrance  # STEP_ON ↑ → celadon_game_corner : CASINO, 2 cases (intérieur : autre session, porte d'entrée en bas, 2 cases)
+from_casino          spawn          39..40,33     libre    # sortie du bâtiment, tournée ↓
+porte_arene          warp           10..11,34     libre   to=celadon_gym spawn=entrance  # STEP_ON ↑ → celadon_gym : Arène d'Erika (derrière l'enclos et l'arbuste à Couper)
+from_gym             spawn          10..11,35     libre    # sortie du bâtiment, tournée ↓
+porte_chef           warp           27,42         libre   to=celadon_chief_house spawn=entrance  # STEP_ON ↑ → celadon_chief_house : maison du chef
+from_chief           spawn          27,43         libre    # sortie du bâtiment, tournée ↓
+porte_restaurant     warp           37..38,42     libre   to=celadon_restaurant spawn=entrance  # STEP_ON ↑ → celadon_restaurant : restaurant
+from_restaurant      spawn          37..38,43     libre    # sortie du bâtiment, tournée ↓
+porte_hotel          warp           50..51,42     libre   to=celadon_hotel spawn=entrance  # STEP_ON ↑ → celadon_hotel : hôtel
+from_hotel           spawn          50..51,43     libre    # sortie du bâtiment, tournée ↓
+obstacle_ouest       examen         3,22          bloque   # haie d'arbres et talus (texte 21), lu depuis (4, 22) ← ; AUCUN warp, AUCUNE promesse (H-4)
+arbuste_enclos       coupe          19,37         bloque  condition=cut  # ARBUSTE À COUPER devant l'Arène (RB), lu depuis (20, 37) ← ; case CONDITIONNELLE ; message de Coupe du J16
+facade_lots          decor          48..55,26..32 bloque   # façade décorative de l'ancien Coin à lots : vitrine éteinte, SANS porte, sans un mot sur les jetons (H-6)
+celadon_hidden_1     cache          46,27         bloque  role=O1 item=revive indice=poubelle  # PP Plus en RB → Rappel si PP Plus n'existe pas (§7.1) ; au fond de la ruelle sombre, lu depuis (46, 28) ↑
+panneau_ville        panneau        61,24         bloque   # « CÉLADOPOLE » / « Ville des fleurs et du commerce » (texte 14), lu depuis (61, 23) ↓
+panneau_arene        panneau        20,35         bloque   # « ARÈNE DE CÉLADOPOLE » / « Champion : Erika — la beauté des plantes » (texte 31), lu depuis (21, 35) ←
+h1_pecheur           pnj            44,13         bloque  role=H1 facing=up  # pêcheur sans canne sur le quai sud de l'étang, avec son Tartard (PNJ) ; pas de Surf, pas de pêche
+h2_vieil_homme       pnj            52,8          bloque  role=H2 facing=left  # texte 17 (Lavanville, la Tour) ; près de l'étang, sur le jardin est
+h3_jardiniere        pnj            22,38         bloque  role=H3 facing=left  # texte 15 (Erika, l'arbuste) ; sur la rue A, face à l'enclos
+h4_client_casino     pnj            43,35         bloque  role=H4 facing=up  # texte 16 (« drôles d'amis ») ; sur la rue du sud, devant le Casino
+h5_employe           pnj            46,18         bloque  role=H5 facing=down  # texte 18 (Sylphe) ; sur la promenade, mallette
+h6_enfant            pnj            27,30         bloque  role=H6 facing=right  # enfant qui regarde la fontaine ; sur la place
+h7_homme_banc        pnj            7,17          bloque  role=H7 facing=down  # promeneur du parc ouest
+h8_cliente           pnj            14,16         bloque  role=H8 facing=up  # regarde les vitrines du grand magasin
+h9_touriste          pnj            53,44         bloque  role=H9 facing=up  # touriste devant l'hôtel (sur la ruelle y 43..44, une rangée libre)
+h10_jardinier        pnj            31,28         bloque  role=H10 facing=down  # jardinier de la place (massifs)
+h11_jeune            pnj            62,30         bloque  role=H11 facing=left  # jeune sur la pelouse de l'est
+h12_cuisinier        pnj            43,39         bloque  role=H12 facing=left  # cuisinier en pause, dans l'allée entre le restaurant et l'hôtel
+r1_rocket_civil      pnj            37,33         bloque  role=R1 facing=down  # Rocket en civil élégant (détail rouge), texte 19 ; près de la porte du Casino, sans combat
+r2_rocket_civil      pnj            47,30         bloque  role=R2 facing=left  # Rocket en civil, texte 20 ; immobile dans la ruelle sombre, sans combat
+FIN

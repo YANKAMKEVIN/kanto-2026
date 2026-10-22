@@ -1,0 +1,149 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/map.gd" id="1_gh5tj"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/int_celadon_gym_coque.png" id="2_3dw1v"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/prop_buis_taille_01.tscn" id="3_pr23x"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/prop_haie_taillee_01.tscn" id="4_ij5tn"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/prop_buis_taille_02.tscn" id="5_yww6p"]
+[ext_resource type="Script" path="res://game/world/flag_gate.gd" id="6_511kh"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/prop_jeune_arbre_arene_01.tscn" id="7_1ln73"]
+[ext_resource type="Script" path="res://game/world/warp_point.gd" id="8_0bhdt"]
+[ext_resource type="Script" path="res://game/world/interactions/interact_point.gd" id="9_luwqd"]
+
+[node name="CeladonGym" type="Node2D" unique_id=531265338]
+script = ExtResource("1_gh5tj")
+map_id = &"celadon_gym"
+display_name = "Céladopole"
+size = Vector2i(17, 16)
+blocked_cells = Array[Vector2i]([Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vector2i(4, 0), Vector2i(5, 0), Vector2i(6, 0), Vector2i(7, 0), Vector2i(8, 0), Vector2i(9, 0), Vector2i(10, 0), Vector2i(11, 0), Vector2i(12, 0), Vector2i(13, 0), Vector2i(14, 0), Vector2i(15, 0), Vector2i(16, 0), Vector2i(0, 1), Vector2i(1, 1), Vector2i(2, 1), Vector2i(3, 1), Vector2i(4, 1), Vector2i(5, 1), Vector2i(6, 1), Vector2i(7, 1), Vector2i(8, 1), Vector2i(9, 1), Vector2i(10, 1), Vector2i(11, 1), Vector2i(12, 1), Vector2i(13, 1), Vector2i(14, 1), Vector2i(15, 1), Vector2i(16, 1), Vector2i(0, 2), Vector2i(1, 2), Vector2i(2, 2), Vector2i(3, 2), Vector2i(4, 2), Vector2i(12, 2), Vector2i(13, 2), Vector2i(14, 2), Vector2i(15, 2), Vector2i(16, 2), Vector2i(0, 3), Vector2i(1, 3), Vector2i(2, 3), Vector2i(3, 3), Vector2i(4, 3), Vector2i(12, 3), Vector2i(13, 3), Vector2i(14, 3), Vector2i(15, 3), Vector2i(16, 3), Vector2i(0, 4), Vector2i(1, 4), Vector2i(15, 4), Vector2i(16, 4), Vector2i(0, 5), Vector2i(1, 5), Vector2i(15, 5), Vector2i(16, 5), Vector2i(0, 6), Vector2i(1, 6), Vector2i(15, 6), Vector2i(16, 6), Vector2i(0, 7), Vector2i(1, 7), Vector2i(15, 7), Vector2i(16, 7), Vector2i(0, 8), Vector2i(1, 8), Vector2i(15, 8), Vector2i(16, 8), Vector2i(0, 9), Vector2i(1, 9), Vector2i(15, 9), Vector2i(16, 9), Vector2i(0, 10), Vector2i(1, 10), Vector2i(15, 10), Vector2i(16, 10), Vector2i(0, 11), Vector2i(1, 11), Vector2i(15, 11), Vector2i(16, 11), Vector2i(0, 12), Vector2i(1, 12), Vector2i(2, 12), Vector2i(3, 12), Vector2i(15, 12), Vector2i(16, 12), Vector2i(0, 13), Vector2i(1, 13), Vector2i(2, 13), Vector2i(3, 13), Vector2i(15, 13), Vector2i(16, 13), Vector2i(0, 14), Vector2i(1, 14), Vector2i(2, 14), Vector2i(3, 14), Vector2i(4, 14), Vector2i(5, 14), Vector2i(6, 14), Vector2i(10, 14), Vector2i(11, 14), Vector2i(12, 14), Vector2i(13, 14), Vector2i(14, 14), Vector2i(15, 14), Vector2i(16, 14), Vector2i(0, 15), Vector2i(1, 15), Vector2i(2, 15), Vector2i(3, 15), Vector2i(4, 15), Vector2i(5, 15), Vector2i(6, 15), Vector2i(7, 15), Vector2i(8, 15), Vector2i(9, 15), Vector2i(10, 15), Vector2i(11, 15), Vector2i(12, 15), Vector2i(13, 15), Vector2i(14, 15), Vector2i(15, 15), Vector2i(16, 15)])
+interior = true
+light_profile = &"greenhouse"
+
+[node name="Shell" type="Sprite2D" parent="." unique_id=1160155071]
+z_index = -3
+texture = ExtResource("2_3dw1v")
+centered = false
+
+[node name="Entities" type="Node2D" parent="." unique_id=1065302626]
+unique_name_in_owner = true
+y_sort_enabled = true
+
+[node name="Hedge00" parent="Entities" unique_id=1887673067 instance=ExtResource("3_pr23x")]
+position = Vector2(528, 288)
+
+[node name="Hedge01" parent="Entities" unique_id=1085761021 instance=ExtResource("3_pr23x")]
+position = Vector2(1104, 288)
+
+[node name="Hedge02" parent="Entities" unique_id=1007148804 instance=ExtResource("3_pr23x")]
+position = Vector2(528, 384)
+
+[node name="Hedge03" parent="Entities" unique_id=2145376935 instance=ExtResource("3_pr23x")]
+position = Vector2(1104, 384)
+
+[node name="Hedge04" parent="Entities" unique_id=2104739684 instance=ExtResource("4_ij5tn")]
+position = Vector2(288, 480)
+
+[node name="Hedge05" parent="Entities" unique_id=17346242 instance=ExtResource("4_ij5tn")]
+position = Vector2(480, 480)
+
+[node name="Hedge06" parent="Entities" unique_id=1696856408 instance=ExtResource("4_ij5tn")]
+position = Vector2(672, 480)
+
+[node name="Hedge07" parent="Entities" unique_id=242032738 instance=ExtResource("4_ij5tn")]
+position = Vector2(960, 480)
+
+[node name="Hedge08" parent="Entities" unique_id=1622586591 instance=ExtResource("4_ij5tn")]
+position = Vector2(1152, 480)
+
+[node name="Hedge09" parent="Entities" unique_id=1913461582 instance=ExtResource("4_ij5tn")]
+position = Vector2(1344, 480)
+
+[node name="Hedge10" parent="Entities" unique_id=1221404516 instance=ExtResource("4_ij5tn")]
+position = Vector2(480, 768)
+
+[node name="Hedge11" parent="Entities" unique_id=1524117201 instance=ExtResource("4_ij5tn")]
+position = Vector2(672, 768)
+
+[node name="Hedge12" parent="Entities" unique_id=1076663045 instance=ExtResource("4_ij5tn")]
+position = Vector2(864, 768)
+
+[node name="Hedge13" parent="Entities" unique_id=922644900 instance=ExtResource("4_ij5tn")]
+position = Vector2(1056, 768)
+
+[node name="Hedge14" parent="Entities" unique_id=1643623527 instance=ExtResource("4_ij5tn")]
+position = Vector2(1248, 768)
+
+[node name="Hedge15" parent="Entities" unique_id=725536925 instance=ExtResource("3_pr23x")]
+position = Vector2(1392, 768)
+
+[node name="Hedge16" parent="Entities" unique_id=1657496765 instance=ExtResource("4_ij5tn")]
+position = Vector2(288, 1056)
+
+[node name="Hedge17" parent="Entities" unique_id=1553724998 instance=ExtResource("4_ij5tn")]
+position = Vector2(480, 1056)
+
+[node name="Hedge18" parent="Entities" unique_id=1894739523 instance=ExtResource("4_ij5tn")]
+position = Vector2(672, 1056)
+
+[node name="Hedge19" parent="Entities" unique_id=1246459185 instance=ExtResource("4_ij5tn")]
+position = Vector2(960, 1056)
+
+[node name="Hedge20" parent="Entities" unique_id=1338746147 instance=ExtResource("4_ij5tn")]
+position = Vector2(1152, 1056)
+
+[node name="Mass00" parent="Entities" unique_id=1354790778 instance=ExtResource("5_yww6p")]
+position = Vector2(240, 576)
+
+[node name="GymInnerBush" type="Node2D" parent="Entities" unique_id=565049884]
+position = Vector2(816, 1056)
+script = ExtResource("6_511kh")
+unless_flags = Array[StringName]([&"cut_celadon_gym_inner_bush"])
+blocking_cells = Array[Vector2i]([Vector2i(8, 10)])
+
+[node name="Bush" parent="Entities/GymInnerBush" unique_id=638788752 instance=ExtResource("7_1ln73")]
+scale = Vector2(0.7, 0.7)
+footprint = Array[Vector2i]([])
+
+[node name="Warps" type="Node2D" parent="." unique_id=1792145136]
+
+[node name="Exit0" type="Marker2D" parent="Warps" unique_id=839813839]
+position = Vector2(720, 1440)
+script = ExtResource("8_0bhdt")
+trigger = 1
+direction = Vector2i(0, 1)
+target_map = &"celadon_city"
+target_spawn = &"from_gym_w"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Exit1" type="Marker2D" parent="Warps" unique_id=1161297267]
+position = Vector2(816, 1440)
+script = ExtResource("8_0bhdt")
+trigger = 1
+direction = Vector2i(0, 1)
+target_map = &"celadon_city"
+target_spawn = &"from_gym_w"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Exit2" type="Marker2D" parent="Warps" unique_id=871044432]
+position = Vector2(912, 1440)
+script = ExtResource("8_0bhdt")
+trigger = 1
+direction = Vector2i(0, 1)
+target_map = &"celadon_city"
+target_spawn = &"from_gym_e"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Interactables" type="Node2D" parent="." unique_id=1190165300]
+
+[node name="GymInnerBushExamine" type="Marker2D" parent="Interactables" unique_id=590755417]
+position = Vector2(816, 1056)
+script = ExtResource("9_luwqd")
+dialogue_id = &"celadon_gym_inner_bush"
+unless_flags = Array[StringName]([&"cut_celadon_gym_inner_bush"])
+
+[node name="Spawns" type="Node2D" parent="." unique_id=895942493]
+
+[node name="entrance" type="Marker2D" parent="Spawns" unique_id=1473128455]
+position = Vector2(816, 1440)
+
+[node name="Triggers" type="Node2D" parent="." unique_id=85361150]

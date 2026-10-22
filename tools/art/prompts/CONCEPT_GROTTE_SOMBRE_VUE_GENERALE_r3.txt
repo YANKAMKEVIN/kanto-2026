@@ -1,0 +1,57 @@
+CONCEPT ART — VUE GÉNÉRALE DE LA GROTTE SOMBRE, LES DEUX NIVEAUX (Kanto 2026), image de référence de direction artistique du LIEU, en lumière de référence LISIBLE (ce n'est pas une image de nuit).
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. Il montre DEUX NIVEAUX d'une même grotte, empilés de haut en bas comme deux cartes séparées : en haut le NIVEAU 1 (grand, deux moitiés qui ne se touchent pas : une moitié nord et une moitié sud, séparées par une épaisse masse de roche pleine), en bas le NIVEAU -1 (le cœur de la grotte). La bande presque noire entre les deux niveaux est de la roche pleine qui les SÉPARE (ce n'est pas un passage). Le sol du niveau 1 est plus clair que celui du niveau -1.
+Légende du plan :
+- brun très foncé presque noir = ROCHE PLEINE et PAROIS infranchissables (tout ce qui entoure les galeries, y compris les marges et la grande masse pleine au milieu du niveau 1) ;
+- gris-beige sableux = SOL DE GROTTE praticable, calme, humide (galeries étroites de 2 à 4 cases, quelques salles) ;
+- brun-orangé moucheté de cailloux sombres = zones de GRAVATS (éboulis, sol accidenté : là vivent les Pokémon sauvages ; bords nets) ;
+- jaune pâle très clair = LUMIÈRE DU DEHORS : au niveau 1, en haut au centre, un rectangle clair qui sort du bord supérieur du niveau = l'ENTRÉE NORD de la grotte, et la salle éclairée juste en dessous ; en bas à gauche du niveau 1, un petit rectangle clair qui sort du bord inférieur = la SORTIE SUD ; au niveau -1, en haut au centre, un étroit filet clair le long de la paroi au-dessus d'une petite alcôve éclairée = un FILET DE JOUR qui tombe d'une fente de la paroi ;
+- points orange cerclés d'une lueur chaude qui teinte le sol = LAMPES de randonneurs posées au sol (trois : au niveau 1 dans la salle d'entrée en haut à gauche et dans la salle du bas à gauche ; au niveau -1 dans la grande salle du bas à droite de la flaque) ;
+- gros rectangle arrondi gris-brun au centre du niveau -1 (salle du haut) = la GRANDE COLONNE de roche qui monte jusqu'au plafond (repère : on la contourne) ;
+- rectangle bleu foncé dans la salle du bas du niveau -1 = une FLAQUE d'eau peu profonde, glacée, qu'on contourne ;
+- petits traits bruns verticaux sur la paroi, en bas à droite du niveau -1, juste avant l'échelle = des RACINES d'arbres qui percent le plafond ;
+- petits disques sombres cerclés = rochers isolés et stalagmites ;
+- petites échelles de bois sur un trou sombre = ÉCHELLES entre les niveaux : une en haut à droite du niveau 1 (au fond de la montée), une au milieu à droite du niveau 1 (moitié sud) ; au niveau -1, leurs deux jumelles exactement dessous (en haut à droite, et en bas à droite) ;
+- petit carré ocre = panneau en bois SANS TEXTE ; points rouge et blanc = Poké Balls posées au sol (objets à ramasser).
+Respecte ce plan À LA LETTRE : la forme de chaque galerie et de chaque salle, les embranchements, les couloirs de 1 à 4 cases de large (dont un PASSAGE ÉTROIT d'une case de large, long de six cases, juste avant l'échelle du bas du niveau -1), la place des gravats, des lampes, des colonnes, de la flaque, des racines, du filet de jour, des échelles. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+RÈGLE ABSOLUE DES PASSAGES : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; galeries et salles ont donc des bords qui suivent une grille : segments horizontaux et verticaux à angles droits, AUCUNE galerie en diagonale ni en courbe. Les parois peuvent être irrégulières et rocheuses EN SURFACE, mais le sol praticable garde des bords droits et lisibles.
+RELIEF : le sol de chaque niveau est PLAT ; on change de niveau seulement par les échelles.
+
+IMAGE 2 : la vue générale du Mont Sélénite, une autre grotte du même jeu. Respecte son STYLE DE RENDU (pinceau, finesse de détail, saturation, traitement des parois en blocs à arêtes adoucies, sol lisible, échelles, personnages) MAIS PAS SA PALETTE NI SES ÉLÉMENTS : la Grotte Sombre est un AUTRE lieu. Ne reprends rien de sa composition.
+
+Format : PORTRAIT 1024 × 1536, vue plongeante sur les deux niveaux, comme le plan.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus de trois quarts, projection oblique frontale, sans point de fuite. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud) ; les parois nord des galeries montrent leur face rocheuse.
+- Aucun trait noir : contours fins et doux. Ombres colorées chaudes-froides (brun-prune, bleu-violet profond), jamais grises ni noires.
+
+AMBIANCE — « la Grotte Sombre » : un long tunnel qu'on traverse à tâtons, humide, silencieux, ancien. Lisible AVANT TOUT : on voit l'image entière, chaque galerie, chaque salle, chaque repère, comme sous une lumière de référence douce ; c'est le LIEU qu'on montre, pas la nuit.
+- PALETTE bien DIFFÉRENTE du Mont Sélénite : roche BRUNE et OCRE SOMBRE, terre de Sienne brûlée, brun-prune, ocre humide, avec des reflets mouillés ; le sol praticable est un beige-gris sableux nettement plus clair que la roche ; pas d'ardoise bleutée, pas de cristaux bleu-blanc. Des mousses vert sombre très discrètes sur les parois humides.
+- Le niveau 1 est plus clair ; le niveau -1 plus sombre, plus brun-prune, mais toujours lisible.
+- La lumière vient de rares sources : le JOUR qui entre par l'entrée nord (en haut) et par la sortie sud, une lueur chaude et douce autour des trois lampes de randonneurs, et un mince FILET de jour dorée qui descend de la fente de la paroi au niveau -1 (il éclaire le sol de l'alcôve comme un trait vertical).
+- Humide : la flaque reflète doucement ; quelques gouttes brillantes sur les parois ; des RACINES brunes, épaisses, qui percent le plafond et pendent en haut de la paroi près de l'échelle du bas du niveau -1 (on est sous une forêt).
+- Les gravats sont des zones de sol encombré de cailloux et de petits éboulis brun-gris, bien délimitées.
+- La grande colonne est massive, striée, humide, et se perd vers le plafond.
+- Aucun indice humain autre que les lampes de randonneurs, les échelles de bois et un petit panneau muet à l'entrée du niveau 1.
+
+VIE (très discrète, personnages petits, aucun ne ressemble au héros à casquette rouge et veste bleue). Positions approximatives en pourcentage de la largeur / de la hauteur depuis le coin haut gauche :
+- un MONTAGNARD (barbe, gros sac, bâton) dans la niche à gauche du premier couloir du niveau 1 (≈ 44 % / 12 %) ; un POKÉMANIAC (jeune adulte, lunettes rondes, chemise à carreaux, grand sac à dos, filet) au fond de la galerie ouest du niveau 1 (≈ 27 % / 20 %), un second POKÉMANIAC au bout de la salle de l'est de la moitié sud (≈ 62 % / 47 %) ;
+- une JEUNE DRESSEUSE (jupe, sac) au bord gauche de la salle de la flaque, niveau -1 (≈ 34 % / 94 %) ; un MONTAGNARD dans le passage étroit du niveau -1 (≈ 73 % / 93 %).
+Pokémon : deux NOSFERAPTI (chauves-souris Pokémon bleues aux ailes violettes, sans yeux, grande bouche) en vol dans la grande salle du niveau 1 ; un RACAILLOU (rocher gris rond à deux bras musclés, sans jambes) sur des gravats du niveau 1 ; un ONIX (long serpent de roche gris, corps de gros blocs arrondis, enroulé et endormi) dans la grande salle de la colonne, à l'ouest, au niveau -1. Aucun autre Pokémon, aucun Pikachu, aucun animal (aucune faune non-Pokémon).
+
+INTERDITS : texte, lettres, chiffres, étiquettes, panneaux lisibles, logo, signature, filigrane, cadre, interface ; Team Rocket, caisses, tranchées, projecteurs, lampes de chantier, fossiles, éclats de Pierre Lune, cristaux, champignons géants, lave, décor féerique ; ciel, herbe verte, arbres entiers, bâtiment ; rivière, cascade (seule la petite flaque du niveau -1 est permise) ; galeries courbes ou en diagonale ; escaliers ; brouillard épais, flou de profondeur, vignettage noir ; ambiance d'horreur, yeux dans le noir ; pixel art.
+
+L'image doit raconter, sans texte : une longue grotte brune et humide qu'on traverse en deux niveaux, du jour d'en haut au jour d'en bas, par des galeries étroites, une colonne géante, une paroi fendue où tombe un filet de lumière, des racines, une flaque, un passage étroit, avec deux échelles pour changer de niveau.
+
+CORRECTIONS (2e essai ; le 1er essai était excellent sur la composition, la palette brune, la lumière et la lisibilité : garde-les à l'identique autant que possible) :
+1. La salle en haut à droite du niveau -1 (celle de l'échelle du haut) est VIDE de personnage : AUCUN personnage à casquette rouge ou à veste bleue dans l'image ; les seuls personnages à casquette sont des Dresseurs sobres (chapeau de feutre, bonnet, casquette grise).
+2. Ajoute les deux POKÉMANIACS manquants (jeune adulte, lunettes rondes, chemise à carreaux, grand sac à dos, filet) : l'un au fond de la galerie ouest du niveau 1 (≈ 27 % / 20 %), l'autre au bout de la salle de l'est de la moitié sud du niveau 1 (≈ 62 % / 47 %), tournés vers le couloir.
+3. Garde l'ONIX, les deux NOSFERAPTI, le RACAILLOU, le MONTAGNARD du passage étroit, la JEUNE DRESSEUSE de la flaque et le MONTAGNARD du premier couloir.
+
+CORRECTIONS (3e essai ; le 2e essai était excellent : composition, palette, personnages, Pokémon, lumière ; garde-le à l'identique autant que possible) :
+1. Les RACINES du plafond doivent être bien VISIBLES : plusieurs grosses racines brunes et tordues pendent de la paroi, juste au-dessus du passage étroit et de l'échelle du bas du niveau -1 (≈ 76 % à 88 % de la largeur, ≈ 86 % à 92 % de la hauteur), comme sur le 1er essai ; c'est le repère « on est sous une forêt ». Elles pendent, elles ne bloquent aucun sol.
+2. La FENTE de la paroi du niveau -1 (en haut au centre, ≈ 62 % / 52 %) laisse tomber un filet de jour bien lisible, doré, étroit et vertical, qui éclaire le sol de l'alcôve.

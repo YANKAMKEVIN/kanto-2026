@@ -49,7 +49,8 @@
 	},
 	"saffron_guard": {
 		"cell": [36, 8], "facing": "down", "sprite": "guard", "dialogue": "route_6_guard",
-		"keep_facing": true
+		"keep_facing": true,
+		"moved": { "if": ["saffron_gates_open"], "cell": [35, 8], "facing": "right" }
 	},
 	"pond_fisher": {
 		"cell": [22, 35], "facing": "left", "sprite": "old_man", "dialogue": "route_6_fisher"

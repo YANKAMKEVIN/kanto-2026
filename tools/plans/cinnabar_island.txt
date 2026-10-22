@@ -1,0 +1,89 @@
+# Cramois'Île — grille fonctionnelle v1 (jalon 24 T2, dossier 27 §10.1-§10.3, §4 ; passe
+# docs/design/passes/j24-v2-alignement.md §2.6). Source de la géométrie de la carte `cinnabar_island`
+# (T12). Faits RB : maps/CinnabarIsland.blk et objects (20 × 18), ×1,5 (P-5). Contrôle :
+# tools/art/plan_check_j24_mer.py.
+#
+# 34 × 27 cases ; nord en haut ; x = colonne 0..33, y = rangée 0..26. ÉCART avec ×1,5 (30 × 27) :
+# +4 colonnes, parce que le Centre et la Boutique gardent leurs gabarits existants (8 × 7 chacun,
+# comme Carmin et Azuria) au lieu des 6 × 6 du ×1,5 strict ; la colonne x de la Route 21 reste égale à
+# celle de la ville (décalage 0), les colonnes 30..33 du nord sont des récifs.
+#
+# Raccords :
+#   - NORD ↔ Route 21 (bord sud, décalage 0) : colonnes 2..5 eau jointe, colonnes 15..20 sable/chemin
+#     joint à pied. Les autres colonnes du bord sont bloquées (bâtiments, récifs).
+#   - EST ↔ Route 20 (bord ouest) : colonne 33, rangées 6..25, eau jointe. Le bord est est une bande
+#     d'eau surfable d'une case (RB : tuile « rive » 0x32 qui s'aborde en Surf, hypothèse H-1) ; on
+#     embarque depuis la grève (colonne 32, rangées 6..20) ou la plage sud (rangées 18..20).
+#
+# Bâtiments (RB (x, y) de la porte → ×1,5) :
+#   M Manoir 9 × 6 (6..14, 0..5), ENTRÉE EFFONDRÉE : gravats X à la place de la porte (9..10, 5), aucun warp
+#   Z Arène 9 × 6 (21..29, 0..5), porte D fermée à clé (25..26, 5) : texte et recul
+#   L Labo 9 × 6 (6..14, 9..14), porte (9..10, 14) → hall du Labo
+#   C Centre Pokémon 8 × 7 (16..23, 11..17), porte (19..20, 17), gabarit existant (bldg_centre)
+#   O Boutique 8 × 7 (25..32, 11..17), porte (28..29, 17), gabarit existant (bldg_boutique)
+#   Intérieurs du Centre et de la Boutique : AUCUNE grille ici (comme Carmin et Azuria, gabarits peints
+#   de tools/build_painted_interiors.gd). PNJ à poser au T12 : Centre : Topdresseuse T-46, Gentleman
+#   T-47 ; Boutique : employée Sylphe T-48, scientifique T-49.
+#
+# Légende :
+#   w eau SURFABLE (surfeur seulement)   R récifs, roche volcanique et rivage (bloqués)
+#   . sol volcanique (praticable)   y sable noir de la plage (praticable)
+#   X gravats (bloqués)   D porte (praticable, STEP_ON ↑, terminale)
+#   M Manoir   Z Arène   L Labo   C Centre   O Boutique (bloqués)
+#   (s « Surf forcé » : inutilisé ici)
+#
+# Positions : voir route_19.txt. move des PNJ : stay | walk_lr (zone entière bloquée au contrôle).
+
+PRATICABLES .ywD
+
+GRILLE 34 27
+00 RRwwwwMMMMMMMMM......ZZZZZZZZZRRRR
+01 RRwwwwMMMMMMMMM......ZZZZZZZZZRRRR
+02 RRwwwwMMMMMMMMM......ZZZZZZZZZRRRR
+03 RRwwwwMMMMMMMMM......ZZZZZZZZZRRRR
+04 RRwwwwMMMMMMMMM......ZZZZZZZZZRRRR
+05 RRwwwwMMMXXMMMM......ZZZZDDZZZRRRR
+06 RRwwww...........................w
+07 RRwwww...........................w
+08 RRwwww...........................w
+09 RRwwwwLLLLLLLLL..................w
+10 RRwwwwLLLLLLLLL..................w
+11 RRwwwwLLLLLLLLL.CCCCCCCC.OOOOOOOOw
+12 RRwwwwLLLLLLLLL.CCCCCCCC.OOOOOOOOw
+13 RRwwwwLLLLLLLLL.CCCCCCCC.OOOOOOOOw
+14 RRwwwwLLLDDLLLL.CCCCCCCC.OOOOOOOOw
+15 RRwwww..........CCCCCCCC.OOOOOOOOw
+16 RRwwww..........CCCCCCCC.OOOOOOOOw
+17 RRwwww..........CCCDDCCC.OOODDOOOw
+18 RRwwwwwwwyyyyyyyyyyyyyyyyyyyyyyyyw
+19 RRwwwwwwwyyyyyyyyyyyyyyyyyyyyyyyyw
+20 RRwwwwwwwyyyyyyyyyyyyyyyyyyyyyyyyw
+21 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+22 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+23 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+24 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+25 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+26 RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
+FIN
+
+POSITIONS
+warp_nord_eau              warp           2..5,0            libre   surf=1  # PUSH ↑ → route_21, bord sud (2..5, 134) ; eau jointe
+warp_nord_terre            warp           15..20,0          libre   # PUSH ↑ → route_21, bord sud (15..20, 134) ; pointe de sable, à pied
+from_route_21_eau          spawn          2..5,0            libre   surf=1  # arrivée de la Route 21 en Surf, tournée ↓
+from_route_21_terre        spawn          15..20,0          libre   # arrivée à pied de la Route 21, tournée ↓
+warp_est                   warp           33,6..25          libre   surf=1  # PUSH → → route_20, bord ouest (0, y) ; eau jointe ; on embarque depuis la grève (32, 6..20) en visant (33, y)
+from_route_20              spawn          33,6..25          libre   surf=1  # arrivée de la Route 20 en Surf, tournée ←
+porte_labo                 warp           9..10,14          libre   rb=6,9  # STEP_ON ↑ → cinnabar_labo_hall, from_cinnabar_island
+porte_centre               warp           19..20,17         libre   rb=11,11  # STEP_ON ↑ → centre Pokémon (gabarit existant), point de retour
+porte_boutique             warp           28..29,17         libre   rb=15,11  # STEP_ON ↑ → boutique (gabarit existant)
+from_labo                  spawn          9..10,15          libre   # sortie du Labo, tournée ↓
+from_centre                spawn          19..20,18         libre   # sortie du Centre, tournée ↓
+from_boutique              spawn          28..29,18         libre   # sortie de la Boutique, tournée ↓
+porte_arene                declencheur    25..26,5          libre   rb=18,3 action=texte_et_recul recul=25..26,6  # porte FERMÉE sans la Clé Secrète (P-20) : T-42, le joueur recule d'une case (RB) ; AUCUN warp
+recul_arene                repere         25..26,6          libre   # case de recul sous la porte de l'Arène
+examen_manoir              examen         9..10,5           bloque  rb=6,3 texte=T-43  # gravats à la place de la porte, EXAMINER depuis (9..10,6) tourné ↑ ; AUCUN warp (P-20)
+fille                      pnj            17..24,8          bloque  role=P1 facing=left move=walk_lr rb=12,5 texte=T-44  # marche de gauche à droite (RB WALK LEFT_RIGHT) ; zone entière réservée
+homme                      pnj            21,9              bloque  role=P2 facing=down move=stay rb=14,6 texte=T-45  # RB : immobile, sans direction (facing=down par défaut)
+panneau_ville              panneau        14,8              bloque  rb=9,5 texte=T-40  # lu depuis (14,9) tourné ↑
+panneau_arene              panneau        20,5              bloque  rb=13,3 texte=T-41  # lu depuis (20,6) tourné ↑ ou (19,5) tourné →
+FIN

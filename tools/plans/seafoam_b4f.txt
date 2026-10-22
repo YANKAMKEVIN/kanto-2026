@@ -1,0 +1,54 @@
+# Îles Écume B4F — grille fonctionnelle v1 (jalon 24, T2 ; dossier 27 §7.4, §8). Même légende que
+# seafoam_1f.txt. Deux mers séparées : la MER EST (arrivée du courant 1 en (20..21, 16) ; Hyper Ball
+# cachée contre x (25, 17), escalier (23, 5) vers la salle du nord-est) et la MER OUEST (courant 2 :
+# flèches de (4..5, 14) à (7, 12), fin sur l'escalier (7, 11) de la plateforme centrale ; l'eau n'est
+# praticable qu'une fois les deux trous du B3F bouchés ; escalier (7, 3) vers la salle d'Artikodin
+# (5..10, 0..2)). Panneaux (9, 15) T-12 et (23, 1) T-13.
+#
+# Écarts avec RB : (3, 16), (23, 16), (27, 16) (sol sans accès) → mur ; (4..5, 16..17), derrière les
+# deux points de chute, → eau décor (~) : toujours fermée par les rochers tombés ; (25, 17) (arête de
+# RB) → caillou x, l'Hyper Ball étant en (25, 16).
+#
+
+PRATICABLES .:=wBOFs^v<>UVE
+
+GRILLE 30 18
+00 ##ww#::::::#ww#::::::::::::###
+01 ##ww#::::::#ww#::::::::n:::###
+02 ##ww#::::::#ww#::::::::::::###
+03 ##ww###=####ww#::::::::::::###
+04 ##wwwwwwwwwwww#::::::::::U:###
+05 ##wwwwwwwwwwww#::######=######
+06 ##wwww#::::::::::#wwwwwwwwww##
+07 ##wwww#::::U:::::#wwwwwwwwww##
+08 ##wwww#::::::::::#wwwwwwwwww##
+09 ##wwww#::::::::###wwwwwwwwww##
+10 ##wwww#::::::::#wwwwwwwwwwww##
+11 ##wwww#=#####::#wwwwwwwwwwww##
+12 ##wwwww^wwww#::#wwwwwwwwwwww##
+13 ##ww>>>^wwww#::#wwwwwwwwwwww##
+14 ##ww^^#::::::::::::#wwwwwwww##
+15 ##wwFF#::n:::::::::#wwwwwwww##
+16 ####~~#::::::::::::#ss##|.####
+17 ####~~##############ww##|x####
+FIN
+
+POSITIONS
+echelle_p11          echelle        11,7         libre   paire=P11 sens=monte vers=seafoam_b3f
+arrivee_p11          spawn          11,8         libre   paire=P11
+echelle_p12          echelle        25,4         libre   paire=P12 sens=monte vers=seafoam_b3f
+arrivee_p12          spawn          25,3         libre   paire=P12
+passage_w2           passage        21,17        libre   paire=W2 sens=monte vers=seafoam_b3f
+arrivee_w2           spawn          21,16        libre   paire=W2  # arrivée depuis le B3F (chenal), en Surf (case s)
+arrivee_w1           spawn          20,16        libre   paire=W1  # arrivée de la fin du courant 1, en Surf (case s)
+chute_rocher_b4f_1   chute_rocher   4,15         libre   depuis=seafoam_b3f:1 sol=eau  # le rocher tombé coupe le courant 2
+chute_rocher_b4f_2   chute_rocher   5,15         libre   depuis=seafoam_b3f:2 sol=eau
+chute_joueur_b4f_1   chute_joueur   4,14         libre   depuis=seafoam_b3f:1 surf=oui
+chute_joueur_b4f_2   chute_joueur   5,14         libre   depuis=seafoam_b3f:2 surf=oui
+courant_2            courant        4,14;5,14    libre   id=2 actif=sauf_b3f_trous_1_et_2 fin=escalier:7,11  # flux jusqu'à la plateforme centrale
+surf_interdit_b4f    surf_interdit  7,11         libre   tant_que=courant_2  # T-14 : SURFER refusé depuis l'escalier tant que le courant 2 est actif
+artikodin            rencontre      6,1          bloque  espece=articuno observe=6,2 facing=down  # salle (5..10, 0..2), posé jusqu'à articuno_done
+panneau_b4f_rochers  panneau        9,15         bloque  texte=T-12
+panneau_b4f_danger   panneau        23,1         bloque  texte=T-13
+objet_b4f_cache      objet_cache    25,16        libre   role=C3 item=ultra_ball  # Hyper Ball (RB : en (25, 17), sous le caillou x) ; on la prend depuis (25, 16), débarqué de la mer est
+FIN

@@ -1,0 +1,140 @@
+# Route 19 (route marine) — grille fonctionnelle v1 (jalon 24 T2, dossier 27 §4, §5.2, §9.1, §9.4 ;
+# passe docs/design/passes/j24-v2-alignement.md §2.1). Source de la géométrie de la carte `route_19`
+# (T8). Faits RB : désassemblage pokered (maps/Route19.blk, objects, scripts), plan ×1,5 (P-5).
+# Contrôle : tools/art/plan_check_j24_mer.py.
+#
+# 30 × 81 cases (RB 20 × 54, ×1,5) ; nord en haut ; x = colonne 0..29, y = rangée 0..80.
+# Conversion : cellule RB (x, y) → case (⌈1,5 x⌉, ⌈1,5 y⌉) pour un personnage (attribut rb=), plage
+# [⌈1,5 x⌉, ⌈1,5 (x+1)⌉ - 1] pour un décor.
+#
+# Raccords (le contrôle les vérifie) :
+#   - NORD ↔ Parmanie (`fuchsia_city`, J22, qui n'existe pas encore). RB : Parmanie 40 × 36 cellules,
+#     colonne 0 de la Route 19 = colonne 10 de Parmanie, sortie 16..23 de la dernière rangée. ×1,5 :
+#     colonne Parmanie = colonne Route 19 + 15. ATTENDU côté Parmanie (60 × 54, dernière rangée y = 53) :
+#     praticables à pied les colonnes 24..32 (terrasse de sable à rebords) et 34..35 (couloir) ;
+#     la colonne 33 (poteau) et toutes les autres bloquées. Les cases (9..17, 0) et (19..20, 0) de la
+#     Route 19 sont les cases d'arrivée. La côte sud de Parmanie (eau surfable, P-3) rejoint la plage.
+#   - OUEST ↔ Route 20 (bord est, colonne 149) : Route 19 (0, y) ↔ Route 20 (149, y - 54), y = 60..79
+#     (RB : lignes 36..53 de la Route 19 = lignes 0..17 de la Route 20, soit 18 blocs de décalage ×1,5).
+#     Eau jointe : le Surf est gardé. Rangées 57..59 : récif des deux côtés (RB : mur de la Route 19).
+#
+# Plage (rangées 9..14) : deux Topdresseurs à pied qui s'échauffent. Terrasse du haut : trois rebords
+# de sable (RB : tuiles de rebord 0x36/0x37, on les saute vers le sud) ; le couloir (colonnes 19..20)
+# permet de remonter. 8 Nageurs dans la mer (RB : ordre et directions conservés).
+#
+# Légende :
+#   w eau SURFABLE (surfeur seulement ; la ligne PRATICABLES la contient, le contrôle impose le Surf)
+#   ~ eau décor (bloquée)      R récifs et rivage rocheux (bloqués)      T bois (bloqués)
+#   y sable (praticable)       v rebord de sable (sauté vers le sud)
+#   (s « Surf forcé » du plan §2.11 : inutilisé ici ; réservé aux arrivées dans l'eau du B3F et du B4F)
+#
+# Positions : identifiant type cases bloque|libre [cle=valeur ...] # commentaire. Dresseurs :
+# role (ordre RB), classe, mode (nageur sur w | pied), facing, sight (portée ×1,5 arrondie au
+# supérieur à .5 : 3 → 5, 4 → 6 ; justification : même fraction de la zone traversée qu'en RB),
+# rbsight (portée RB), rb (cellule RB), mer (est | plage : composante d'eau attendue).
+
+PRATICABLES yvw
+
+GRILLE 30 81
+00 TTTTTTTTTyyyyyyyyyTyyTTTTTTTTT
+01 TTTTTTTTTyyyyyyyyyTyyTTTTTTTTT
+02 TTTTTTTTTvvvvvvvvvTyyTTTTTTTTT
+03 TTTTTTTTTyyyyyyyyyTyyTTTTTTTTT
+04 TTTTTTTTTyyyyyyyyyTyyTTTTTTTTT
+05 TTTTTTTTTvvvvvvvvvTyyTTTTTTTTT
+06 TTTTTTTTTyyyyyyyyyTyyTTTTTTTTT
+07 TTTTTTTTTyyyyyyyyyTyyTTTTTTTTT
+08 TTTTTTTTTvvvvvvvvvTyyTTTTTTTTT
+09 ~~~~~RyyyyyyyyyyyyyyyRR~~~~~~~
+10 ~~~~~RyyyyyyyyyyyyyyyRR~~~~~~~
+11 ~~~~~RyyyyyyyyyyyyyyyRR~~~~~~~
+12 ~~~~~RyyyyyyyyyyyyyyyRR~~~~~~~
+13 ~~~~~RyyyyyyyyyyyyyyyRR~~~~~~~
+14 RRRRRRyyyyyyyyyyyyyyyRRRRRRRRR
+15 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+16 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+17 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+18 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+19 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+20 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+21 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+22 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+23 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+24 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+25 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+26 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+27 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+28 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+29 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+30 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+31 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+32 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+33 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+34 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+35 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+36 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+37 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+38 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+39 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+40 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+41 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+42 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+43 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+44 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+45 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+46 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+47 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+48 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+49 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+50 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+51 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+52 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+53 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+54 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+55 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+56 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+57 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+58 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+59 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+60 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+61 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+62 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+63 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+64 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+65 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+66 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+67 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+68 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+69 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+70 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+71 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+72 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+73 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+74 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+75 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+76 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+77 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+78 wwwwwwwwwwwwwwwwwwwwwwwwwwwRRR
+79 wwwwwwwwwwwwwwwwwwwwwwwwwwwRRR
+80 RRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
+FIN
+
+POSITIONS
+warp_nord_terrasse         warp           9..17,0           libre   # PUSH ↑ → fuchsia_city (Parmanie, J22), from_route_19 ; sens unique : la terrasse se descend par les rebords
+warp_nord_couloir          warp           19..20,0          libre   # PUSH ↑ → fuchsia_city, from_route_19 ; le couloir est le chemin du retour (RB x13)
+from_fuchsia_city          spawn          9..17,0;19..20,0  libre   # arrivée de Parmanie, tournée ↓
+warp_ouest                 warp           0,60..79          libre   surf=1  # PUSH ← → route_20, bord est (149, y - 54) ; mer jointe (Surf gardé)
+from_route_20              spawn          0,60..79          libre   surf=1  # arrivée de la Route 20 en Surf, tournée →
+raccord_parmanie           repere         9..17,0;19..20,0  libre   parmanie_colonnes=24..32;34..35 parmanie_rangee=53  # colonne Parmanie = colonne Route 19 + 15 (RB : colonne 0 de la Route 19 = colonne 10 de Parmanie, ×1,5)
+panneau_route              panneau        17,14             bloque  rb=11,9 texte=T-30  # « Route marine 19 », lu depuis (17,13) tourné ↓
+hugo                       dresseur       12,11             bloque  role=D1 classe=topdresseur mode=pied facing=left sight=6 rbsight=4 rb=8,7 mer=plage  # Hugo : Tentacool, Kokiyas N30
+malo                       dresseur       20,11             bloque  role=D2 classe=topdresseur mode=pied facing=left sight=5 rbsight=3 rb=13,7 mer=plage  # Malo : Poissirène, Hypotrempe, Stari N29
+yann                       dresseur       20,38             bloque  role=D3 classe=nageur mode=nageur facing=left sight=5 rbsight=3 rb=13,25 mer=est  # Yann : Ptitard, Têtarte N30
+erwan                      dresseur       6,41              bloque  role=D4 classe=nageur mode=nageur facing=right sight=6 rbsight=4 rb=4,27 mer=est  # Erwan : Hypotrempe, Tentacool ×2, Poissirène N27
+loic                       dresseur       24,47             bloque  role=D5 classe=nageur mode=nageur facing=up sight=6 rbsight=4 rb=16,31 mer=est  # Loïc : Poissirène, Kokiyas, Poissoroy N29
+tanguy                     dresseur       14,17             bloque  role=D6 classe=nageur mode=nageur facing=down sight=6 rbsight=4 rb=9,11 mer=est  # Tanguy : Hypotrempe ×2 N30
+gwen                       dresseur       14,63             bloque  role=D7 classe=nageur mode=nageur facing=up sight=6 rbsight=4 rb=9,42 mer=est  # Gwen : Tentacool ×2, Stari, Hypotrempe, Tentacruel N27
+maelle                     dresseur       12,65             bloque  role=D8 classe=nageuse mode=nageur facing=left sight=5 rbsight=3 rb=8,43 mer=est  # Maëlle : Ptitard, Poissirène, Poissoroy, Poissirène, Ptitard N27
+anais                      dresseur       17,65             bloque  role=D9 classe=nageuse mode=nageur facing=right sight=6 rbsight=4 rb=11,43 mer=est  # Anaïs : Poissirène, Poissoroy N30
+lena                       dresseur       15,66             bloque  role=D10 classe=nageuse mode=nageur facing=down sight=6 rbsight=4 rb=10,44 mer=est  # Léna : Stari ×3 N29
+FIN

@@ -9,11 +9,21 @@ extends Node2D
 ## [method set_input_enabled] bloque les entrées pour une raison (transition de carte,
 ## dialogue, plus tard scène scriptée) : le pas en cours se termine, aucun autre ne part. Le
 ## joueur est libre quand plus aucune raison n'est active (docs/tech/jalon-03.md §2.8).
+## Passe systèmes 2 (`systemes-2.md` §2.2, §2.3) : **monture** ([enum Mount.Kind], Vélo ou
+## Surf) : durée des pas ([method MountRules.step_duration], course ignorée), animations
+## `bike_*` / `surf_*` si l'apparence les a (sinon celles de la marche), mode d'accès de la grille
+## ([method get_move_mode]) ; en Vélo sur une pente de la Piste, sans appui, il dérive vers le
+## bas ([CyclingSlope]). En Surf, le pas qui monte sur l'eau ou descend sur la rive est un saut
+## d'une case ([method MountRules.is_surf_hop]). La mise en scène (compagnon, refus, arrivée,
+## montée et descente du Surf) est dans [MountDirector].
 
 signal moved(cell: Vector2i)
 ## Un pas commence (jalon 11, relais de [signal GridMover.step_started] pour le compagnon) :
 ## [param kind] = &"walk", &"run" ou &"jump" (saut de rebord, deux cases). Pas scriptés compris.
+## Monté (passe systèmes 2) : &"bike" ou &"surf" (saut de rebord compris).
 signal step_started(from_cell: Vector2i, to_cell: Vector2i, kind: StringName)
+## La monture a changé ([method set_mount]).
+signal mount_changed(kind: Mount.Kind)
 signal facing_changed(direction: Vector2i)
 signal bumped(direction: Vector2i)
 ## Petite réaction de surprise ([method react], scènes) : tests, futurs sons.
@@ -68,6 +78,8 @@ var _react_tween: Tween
 var _grass_front_texture: Texture2D
 ## Bande provisoire de la scène (pixel ×2, NEAREST), gardée pour les cartes non peintes.
 var _default_grass_front: Texture2D
+## Monture (passe systèmes 2) : à pied par défaut.
+var _mount: Mount.Kind = Mount.Kind.NONE
 
 @onready var _sprite: AnimatedSprite2D = %Sprite
 @onready var _camera: Camera2D = %Camera
@@ -97,7 +109,16 @@ func _process(delta: float) -> void:
 		Input.is_action_pressed(&"move_left"),
 		Input.is_action_pressed(&"move_right")
 	)
-	_mover.update(delta, direction, Input.is_action_pressed(&"run"))
+	var run := Input.is_action_pressed(&"run") and _mount == Mount.Kind.NONE
+	if direction == Vector2i.ZERO and _should_drift():
+		# Pente de la Piste : un pas vers le bas par le chemin normal (collisions, rebords et
+		# vue des Dresseurs inchangés) ; à l'arrêt, sans pivot préalable.
+		if _mover.is_moving():
+			_mover.update(delta, Vector2i.DOWN, false)
+		else:
+			_mover.start_step(Vector2i.DOWN)
+	else:
+		_mover.update(delta, direction, run)
 	position = _mover.get_world_position().round()
 	_update_animation(direction)
 	_update_jump_and_grass()
@@ -115,6 +136,9 @@ func enter_map(grid: GridWorld, cell: Vector2i, facing: Vector2i, bounds: Rect2i
 	_grid = grid
 	_mover = GridMover.new(grid, self)
 	_mover.set_locked(not is_input_enabled())
+	_apply_mount_speed()
+	_mover.hop_rule = _is_surf_hop
+	_mover.hop_duration = MountRules.SURF_HOP_DURATION
 	_mover.facing_changed.connect(_on_facing_changed)
 	_mover.step_finished.connect(_on_step_finished)
 	_mover.bumped.connect(_on_bumped)
@@ -132,6 +156,31 @@ func enter_map(grid: GridWorld, cell: Vector2i, facing: Vector2i, bounds: Rect2i
 		_update_jump_and_grass()
 		_camera.reset_smoothing()
 	facing_changed.emit(_mover.get_facing())
+
+
+## Monture courante (passe systèmes 2).
+func get_mount() -> Mount.Kind:
+	return _mount
+
+
+## Mode d'accès lu par la grille ([method GridWorld.move_mode_of]) : SURF en Surf, WALK sinon (le
+## Vélo suit les règles de la marche, rebords compris).
+func get_move_mode() -> GridWorld.MoveMode:
+	return GridWorld.MoveMode.SURF if _mount == Mount.Kind.SURF else GridWorld.MoveMode.WALK
+
+
+## Change de monture : durée des pas et animations ; [signal mount_changed] si elle change. Le
+## pas en cours finit à son ancienne durée. [param instant] : sans mise en scène (arrivée sur une
+## carte, chargement) — le joueur n'en a pas lui-même : la mise en scène (saut du Surf,
+## compagnon) est dans [MountDirector].
+func set_mount(kind: Mount.Kind, _instant: bool = false) -> void:
+	if kind == _mount:
+		return
+	_mount = kind
+	_apply_mount_speed()
+	if is_node_ready():
+		_update_animation(Vector2i.ZERO)
+	mount_changed.emit(kind)
 
 
 ## Bande d'herbe dessinée devant les jambes en hautes herbes : la moitié basse des touffes
@@ -243,6 +292,12 @@ func is_running() -> bool:
 	return _mover != null and _mover.is_running()
 
 
+## Direction contre laquelle le joueur pousse encore ([signal bumped], direction toujours tenue) ;
+## ZERO sinon. Passe systèmes 2 (§2.7.2) : [StrengthDirector] y lit l'appui tenu contre un rocher.
+func get_bump_direction() -> Vector2i:
+	return _bump_direction
+
+
 ## Rectangle du personnage affiché, en coordonnées globales.
 func get_body_rect() -> Rect2:
 	return Rect2(global_position - Vector2(_body_size.x / 2.0, _body_size.y), _body_size)
@@ -343,6 +398,7 @@ func _update_animation(direction: Vector2i) -> void:
 	elif _bump_direction != Vector2i.ZERO:
 		anim = anims[1]
 		speed = BUMP_ANIM_SPEED
+	anim = _mounted_animation(anim)
 	if _sprite.animation != anim or not _sprite.is_playing():
 		_sprite.play(anim)
 	_sprite.speed_scale = speed
@@ -360,7 +416,44 @@ func _on_facing_changed(direction: Vector2i) -> void:
 func _on_step_started(from_cell: Vector2i, to_cell: Vector2i, running: bool) -> void:
 	var distance := absi(to_cell.x - from_cell.x) + absi(to_cell.y - from_cell.y)
 	var kind := &"jump" if distance > 1 else (&"run" if running else &"walk")
+	if _mount != Mount.Kind.NONE:
+		kind = Mount.to_name(_mount)
 	step_started.emit(from_cell, to_cell, kind)
+
+
+## Durées des pas de la monture courante (la course n'existe qu'à pied).
+func _apply_mount_speed() -> void:
+	if _mover == null:
+		return
+	_mover.walk_duration = MountRules.step_duration(_mount, false)
+	_mover.run_duration = MountRules.step_duration(_mount, true)
+
+
+## Animation montée (`bike_walk_down`, `surf_idle_left`…) si l'apparence l'a, sinon
+## [param anim] (placeholder : l'art des montures n'est pas encore là, règle 3).
+func _mounted_animation(anim: StringName) -> StringName:
+	if _mount == Mount.Kind.NONE or _sprite == null or _sprite.sprite_frames == null:
+		return anim
+	var base := String(anim).replace("run_", "walk_")
+	var mounted := StringName("%s_%s" % [Mount.to_name(_mount), base])
+	return mounted if _sprite.sprite_frames.has_animation(mounted) else anim
+
+
+## Saut de montée en Surf ou de descente sur la rive ([method MountRules.is_surf_hop]) : lu par
+## [member GridMover.hop_rule] à chaque pas.
+func _is_surf_hop(from: Vector2i, to: Vector2i) -> bool:
+	return MountRules.is_surf_hop(_mount, _grid, from, to)
+
+
+## Dérive de la pente ([CyclingSlope]) : en Vélo, sur une case de pente, joueur libre. La vue
+## d'un Dresseur bloque le joueur dans le [signal moved] du pas qui l'y amène : « libre » la
+## couvre ([method is_input_enabled]).
+func _should_drift() -> bool:
+	if _mount != Mount.Kind.BIKE or _grid == null:
+		return false
+	var cell := _mover.get_target_cell() if _mover.is_moving() else _mover.get_cell()
+	return CyclingSlope.should_drift(Vector2i.ZERO, _grid.is_slope(cell), is_input_enabled(),
+		false)
 
 
 func _on_step_finished(cell: Vector2i) -> void:

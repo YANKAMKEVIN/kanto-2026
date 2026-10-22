@@ -112,14 +112,49 @@
 			],
 			"description": "Une ville tournée vers le large, où les grands navires font escale. La lumière dorée y danse sur l'eau des quais."
 		},
-		"lavender_town": { "name": "Lavanville", "kind": "town", "maps": [] },
-		"route_8": { "name": "Route 8", "kind": "route", "maps": [] },
+		"lavender_town": {
+			"name": "Lavanville", "kind": "town",
+			"maps": [
+				"lavender_town", "lavender_center", "lavender_mart", "pokemon_house",
+				"lavender_house_1", "lavender_house_2", "pokemon_tower_1f", "pokemon_tower_2f",
+				"pokemon_tower_3f", "pokemon_tower_4f", "pokemon_tower_5f", "pokemon_tower_6f"
+			],
+			"subtitle": "Route 10 — Route 8 — Route 12",
+			"services": [
+				{ "id": "pokemon_center", "found_on": "lavender_center" },
+				{ "id": "poke_mart", "found_on": "lavender_mart" }
+			],
+			"description": "Une petite ville silencieuse au pied de la Tour Pokémon. On y vient de loin pour se souvenir."
+		},
+		"route_8": {
+			"name": "Route 8", "kind": "route",
+			"maps": ["route_8", "route_8_gate", "route_8_underground_gate"],
+			"subtitle": "Lavanville — Safrania",
+			"description": "Une route de Dresseurs entre deux chemins. À l'ouest, le poste de Safrania et l'entrée du souterrain."
+		},
+		"underground_path_7_8": {
+			"name": "Passage souterrain", "kind": "place", "maps": ["underground_path_7_8"],
+			"subtitle": "Route 7 — Route 8",
+			"description": "Un long couloir carrelé sous Safrania. Des néons froids, et presque personne."
+		},
 		"saffron_city": { "name": "Safrania", "kind": "town", "maps": [] },
-		"route_7": { "name": "Route 7", "kind": "route", "maps": [] },
-		"celadon_city": { "name": "Céladopole", "kind": "town", "maps": [] },
+		"route_7": {
+			"name": "Route 7", "kind": "route",
+			"maps": ["route_7", "route_7_gate", "route_7_underground_gate"],
+			"subtitle": "Céladopole — Safrania",
+			"description": "Une courte route en pente douce. Les toits de Céladopole apparaissent entre les arbres."
+		},
+		"celadon_city": {
+			"name": "Céladopole", "kind": "town",
+			"maps": ["celadon_city", "celadon_center", "celadon_dept_gf", "celadon_dept_2f", "celadon_dept_3f", "celadon_dept_4f", "celadon_dept_5f", "celadon_dept_roof", "celadon_dept_elevator", "celadon_mansion_gf", "celadon_mansion_1f", "celadon_mansion_2f", "celadon_mansion_3f", "celadon_mansion_roof", "celadon_mansion_roof_house", "celadon_restaurant", "celadon_chief_house", "celadon_hotel", "celadon_gym", "celadon_game_corner", "rocket_hideout_b1f", "rocket_hideout_b2f", "rocket_hideout_b3f", "rocket_hideout_b4f", "rocket_hideout_elevator"],
+			"services": [
+				{ "id": "pokemon_center", "found_on": "celadon_center" },
+				{ "id": "poke_mart", "found_on": "celadon_dept_gf" },
+				{ "id": "gym", "found_on": "celadon_gym" }
+			],
+			"description": "Une ville prospère, verte et commerçante. Sous les néons du Casino, l'ambiance n'est plus la même."
+		},
 		"fuchsia_city": { "name": "Parmanie", "kind": "town", "maps": [] },
-		"route_21": { "name": "Route 21", "kind": "sea_route", "maps": [] },
-		"cinnabar_island": { "name": "Cramois'Île", "kind": "town", "maps": [] },
 		"route_23": { "name": "Route 23", "kind": "route", "maps": [] },
 		"indigo_plateau": { "name": "Plateau Indigo", "kind": "place", "maps": [] },
 		"route_25": {
@@ -162,6 +197,59 @@
 			"subtitle": "Le grand paquebot de Kanto",
 			"interior_title": true,
 			"description": "Un paquebot de croisière amarré au port de Carmin. Salons, cabines et ponts promenade : on s'y croirait déjà au large."
+		},
+		"route_9": {
+			"name": "Route 9", "kind": "route", "maps": ["route_9"],
+			"subtitle": "Azuria — Route 10",
+			"description": "Une route de roche et de terrasses à l'est d'Azuria. Le sentier grimpe, tourne, redescend : il faut garder le pas sûr."
+		},
+		"route_10": {
+			"name": "Route 10", "kind": "route", "maps": ["route_10", "route_10_center"],
+			"subtitle": "Route 9 — Lavanville",
+			"services": [
+				{ "id": "pokemon_center", "found_on": "route_10_center" }
+			],
+			"description": "Une route coupée en deux par la falaise et la rivière. On ne passe d'un côté à l'autre que par la Grotte Sombre."
+		},
+		"route_19": {
+			"name": "Route 19", "kind": "sea_route", "maps": ["route_19"],
+			"subtitle": "Parmanie — Route 20",
+			"description": "Une route marine qui part de la plage de Parmanie. Des nageurs y attendent au large, entre les vagues."
+		},
+		"route_20": {
+			"name": "Route 20", "kind": "sea_route", "maps": ["route_20"],
+			"subtitle": "Route 19 — Cramois'Île",
+			"description": "Une longue traversée vers l'ouest. Au milieu de la mer, les falaises blanches des Îles Écume."
+		},
+		"seafoam_islands": {
+			"name": "Îles Écume", "kind": "place",
+			"maps": ["seafoam_1f", "seafoam_b1f", "seafoam_b2f", "seafoam_b3f", "seafoam_b4f"],
+			"subtitle": "Route 20",
+			"description": "Des grottes de glace sous deux îlots jumeaux. Les rochers y changent le cours de l'eau."
+		},
+		"route_21": {
+			"name": "Route 21", "kind": "sea_route", "maps": ["route_21"],
+			"subtitle": "Bourg Palette — Cramois'Île",
+			"description": "Une route marine entre Bourg Palette et Cramois'Île, avec une prairie qu'on n'atteint qu'en Surf."
+		},
+		"cinnabar_island": {
+			"name": "Cramois'Île", "kind": "town",
+			"maps": [
+				"cinnabar_island", "cinnabar_center", "cinnabar_mart", "cinnabar_lab",
+				"cinnabar_lab_meeting", "cinnabar_lab_rd", "cinnabar_lab_fossil"
+			],
+			"subtitle": "Route 20 — Route 21",
+			"services": [
+				{ "id": "pokemon_center", "found_on": "cinnabar_center" },
+				{ "id": "poke_mart", "found_on": "cinnabar_mart" },
+				{ "id": "gym", "found_on": "cinnabar_island" }
+			],
+			"description": "Une île volcanique au sud-ouest de Kanto. On y vient pour son Labo, ses fossiles et son Arène."
+		},
+		"dark_cave": {
+			"name": "Grotte Sombre", "kind": "place", "maps": ["dark_cave_1f", "dark_cave_b1f"],
+			"subtitle": "Route 10",
+			"description": "Un tunnel sans lumière sous la montagne. On y avance de repère en repère, une colonne, une fente, une flaque."
 		}
 	}
 }

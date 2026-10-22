@@ -18,6 +18,18 @@
 		},
 		"vermilion_center": {
 			"spawn": "heal", "facing": "up", "wakeup_dialogue": "nurse_wakeup", "registers": true
+		},
+		"route_10_center": {
+			"spawn": "heal", "facing": "up", "wakeup_dialogue": "nurse_wakeup", "registers": true
+		},
+		"lavender_center": {
+			"spawn": "heal", "facing": "up", "wakeup_dialogue": "nurse_wakeup", "registers": true
+		},
+		"celadon_center": {
+			"spawn": "heal", "facing": "up", "wakeup_dialogue": "nurse_wakeup", "registers": true
+		},
+		"cinnabar_center": {
+			"spawn": "heal", "facing": "up", "wakeup_dialogue": "nurse_wakeup", "registers": true
 		}
 	}
 }

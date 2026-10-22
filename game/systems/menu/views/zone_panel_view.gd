@@ -31,3 +31,6 @@ var pokemon: Array[ZoneEntryView] = []
 var items: Array[ZoneEntryView] = []
 ## Services découverts (Centre, Boutique, Arène), dans l'ordre de `zones.json` ; aucun au J6.
 var services: Array[ZoneEntryView] = []
+## Passe systèmes 2 (§2.8, Q-4 : décision de Kevin, qui lève ici le « aucun bouton de
+## déplacement ») : bouton « S'ENVOLER » proposé (Vol permis d'ici vers cette ville ouverte).
+var fly_available: bool = false

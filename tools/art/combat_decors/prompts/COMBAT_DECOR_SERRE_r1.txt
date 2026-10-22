@@ -1,0 +1,26 @@
+DÉCOR DE COMBAT — ARÈNE DE CÉLADOPOLE, LA SERRE D'ERIKA (Kanto 2026). Image de PRODUCTION : le fond peint d'un écran de combat Pokémon sur smartphone en paysage. AUCUN Pokémon, AUCUN personnage, AUCUNE interface, AUCUN texte.
+
+Images jointes.
+IMAGE 1 : un écran de combat de référence. Reprends sa VUE (caméra à hauteur d'yeux, légèrement plongeante, grand sol dégagé au centre), sa profondeur et sa qualité de peinture. Ne reprends PAS : les Pokémon, les cartes, les boutons, la rivière, le pont, le coucher de soleil orange.
+IMAGE 2 : une planche d'intention de décors de combat (guide de facture).
+IMAGE 3 : un extrait de la vue de dessus de Céladopole (validée) : la serre de verre et d'acier blanc dans son enclos de haies (guide de matériaux et de palette, vu ici de l'INTÉRIEUR, à hauteur d'yeux).
+
+FORMAT : paysage très large, rapport 2,17 : 1 (comme 2340 × 1080), la plus grande résolution possible, OPAQUE, cadrage plein, sans bord.
+
+LIEU : l'intérieur d'une grande SERRE élégante, jardin botanique d'une Championne de type Plante : une VERRIÈRE de verre et de fines armatures de fer blanc en arcs, au-dessus et au fond ; des ALLÉES de dalles claires entre des HAIES TAILLÉES vert profond, des massifs de FLEURS PÂLES (blanc, rose pâle, lilas, jaune doux), quelques palmiers et fougères en pots ; au fond, un BASSIN calme à margelle de pierre claire, eau verte et nénuphars. Calme, élégant, paisible.
+
+COMPOSITION (fractions depuis le coin haut gauche) — à respecter précisément :
+- Fond (de 0 à 38 % de la hauteur) : la verrière en arcs et, à son pied, les haies et les massifs du fond ; le bassin au fond à DROITE (x 60 à 90 %), sa margelle vers 36 % de la hauteur.
+- De 42 % de la hauteur jusqu'en bas : GRAND SOL DÉGAGÉ et PLAT de dalles claires et d'herbe rase, bordé de haies basses seulement sur les côtés extrêmes.
+- Point A (x 67 %, y 52 %) : sol nu, plat et bien lisible, une créature y posera les pieds. Rien de haut dans un rayon de 12 % de la largeur autour.
+- Point B (x 31 %, y 97 %) : sol plat et nu, une grande créature vue de dos y sera au premier plan. Rien de haut autour.
+- ZONE CALME en HAUT À GAUCHE (de 0 à 50 % de la largeur, de 0 à 45 % de la hauteur) : peu de détails et peu de contraste, valeurs simples.
+- ZONE CALME en BAS À DROITE (de 50 à 100 % de la largeur, de 55 à 100 % de la hauteur) : sol simple, presque sans objet, valeurs moyennes, sans contraste fort.
+- Les deux coins du bas restent du SOL nu : pas de buisson ni de gros objet en gros plan.
+- Les 9 % de gauche et de droite de l'image ne contiennent rien d'important (ils seront rognés sur certains écrans).
+
+LUMIÈRE : lumière du jour FILTRÉE par la verrière, douce et VERDÂTRE, quelques rais de soleil pâle obliques venant du haut à gauche, sans éblouissement ; ombres vert froid douces, jamais noires ; aucun scintillement excessif.
+
+RENDU (ADN visuel Kanto 2026) : illustration 2D peinte numériquement, RPG Pokémon moderne « HD-2D peint », formes simples, lisibles et arrondies, grandes masses douces (jamais en petits points ni en pixels), aucun trait noir (contours fins et doux plus sombres que la couleur), couleurs riches sans être fluo. Netteté partout (aucun flou de profondeur, pas de vignettage). Perspective à hauteur d'yeux, un peu plongeante, le sol recule nettement vers le fond.
+
+INTERDITS : Pokémon, animal, personnage, silhouette, texte, lettres, chiffres, panneau, logo, signature, filigrane, cadre, interface, ciel ouvert sans vitrage, statue, pixel art, flou, vignettage.

@@ -1,0 +1,10 @@
+{
+	"elevator_panel": {
+		"narration": true,
+		"action": "open_elevator"
+	},
+	"elevator_locked": {
+		"narration": true,
+		"pages": ["Le panneau ne répond pas. Il faut une clé."]
+	}
+}

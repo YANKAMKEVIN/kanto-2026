@@ -1,0 +1,23 @@
+{
+	"ultra_ball": {
+		"name": "Hyper Ball", "plural": "Hyper Balls", "feminine": true,
+		"category": "ball", "catch_bonus": 2, "price": 1200,
+		"description": "Une Ball très performante. Elle capture mieux qu'une Super Ball."
+	},
+	"hyper_potion": {
+		"name": "Hyper Potion", "plural": "Hyper Potions", "feminine": true,
+		"category": "heal", "heal_amount": 200, "price": 1500,
+		"description": "Un spray de soin. Il restaure 200 PV d'un Pokémon."
+	},
+	"full_heal": {
+		"name": "Total Soin", "plural": "Total Soins", "feminine": false,
+		"category": "heal", "cures": ["poison", "paralysis", "sleep", "burn", "freeze"],
+		"price": 600,
+		"description": "Soigne tous les problèmes de statut d'un Pokémon."
+	},
+	"tm35": {
+		"name": "CT35 — Métronome", "plural": "CT35 — Métronome", "feminine": true,
+		"category": "tm", "tm": 35, "teaches": "metronome",
+		"description": "Agite un doigt pour utiliser une capacité au hasard."
+	}
+}

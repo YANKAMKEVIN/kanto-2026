@@ -39,12 +39,16 @@ signal shop_requested(shop_id: StringName)
 signal storage_requested
 ## Le gardien de la Pension ouvre la conversation de la Pension (J15).
 signal daycare_requested
+## J20 (T13) : le panneau d'une cabine d'ascenseur (`open_elevator`) ; Boot ouvre le panneau à la
+## fin du dialogue ([ElevatorDirector]).
+signal elevator_requested
 
 const ACTION_HEAL: StringName = &"heal"
 const ACTION_CENTER_HEAL: StringName = &"center_heal"
 const ACTION_OPEN_SHOP: StringName = &"open_shop"
 const ACTION_OPEN_STORAGE: StringName = &"open_storage"
 const ACTION_OPEN_DAYCARE: StringName = &"open_daycare"
+const ACTION_OPEN_ELEVATOR: StringName = &"open_elevator" # J20
 const HEAL_MACHINE: NodePath = ^"%HealMachine"
 
 ## « Réduire les animations » (GameSettings.reduce_motion) : rituel deux fois plus court. Posé par
@@ -86,18 +90,22 @@ func heal() -> void:
 
 
 ## = [member DialogueRunner.action_handler]. Coroutine. Action inconnue : push_error, rien.
-func run_action(action: StringName) -> void:
+## [param shop] (jalon 20) : la boutique de `open_shop` (clé « shop » du dialogue) ; &"" = celle
+## de la carte courante.
+func run_action(action: StringName, shop: StringName = &"") -> void:
 	match action:
 		ACTION_HEAL:
 			heal()
 		ACTION_CENTER_HEAL:
 			await _center_heal()
 		ACTION_OPEN_SHOP:
-			_open_shop()
+			_open_shop(shop)
 		ACTION_OPEN_STORAGE:
 			_open_storage()
 		ACTION_OPEN_DAYCARE:
 			daycare_requested.emit()
+		ACTION_OPEN_ELEVATOR:
+			elevator_requested.emit()
 		_:
 			push_error("ServiceDirector : action inconnue « %s »" % action)
 
@@ -139,12 +147,13 @@ func _center_heal() -> void:
 	center_healed.emit(map_id, registered)
 
 
-## Sans carte : push_error, rien (une boutique n'existe que sur sa carte).
-func _open_shop() -> void:
+## Boutique [param shop] si elle est donnée (jalon 20), sinon celle de la carte courante. Sans
+## carte : push_error, rien (une boutique n'existe que sur sa carte).
+func _open_shop(shop: StringName = &"") -> void:
 	if not is_instance_valid(_map):
 		push_error("ServiceDirector : open_shop sans carte courante")
 		return
-	shop_requested.emit(_map.map_id)
+	shop_requested.emit(shop if not shop.is_empty() else _map.map_id)
 
 
 ## Sans carte : push_error, rien (un terminal n'existe que sur sa carte).
