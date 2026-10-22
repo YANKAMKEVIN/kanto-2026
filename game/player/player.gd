@@ -310,6 +310,14 @@ func get_body_rect() -> Rect2:
 	return Rect2(global_position - Vector2(_body_size.x / 2.0, _body_size.y), _body_size)
 
 
+## Rectangle du personnage à l'écran (coordonnées de la vue, celles du HUD) : D5, boutons
+## transparents quand le joueur est dessous. Vide hors de l'arbre.
+func get_screen_body_rect() -> Rect2:
+	if not is_inside_tree():
+		return Rect2()
+	return get_viewport().get_canvas_transform() * get_body_rect()
+
+
 ## Apparence affichée (peinte ou provisoire).
 func get_look() -> CharacterLook:
 	return _look
