@@ -1,0 +1,72 @@
+{
+	"copieuse": {
+		"cell": [
+			6,
+			5
+		],
+		"facing": "down",
+		"sprite": "lass",
+		"dialogue": "saffron_copycat",
+		"look": {
+			"facings": [
+				"down",
+				"left",
+				"down",
+				"right"
+			],
+			"every": 4.0
+		}
+	},
+	"doduo": {
+		"cell": [
+			8,
+			6
+		],
+		"facing": "left",
+		"sprite": "pokemon/spearow",
+		"dialogue": "saffron_copycat_doduo",
+		"route": {
+			"cells": [
+				[
+					7,
+					6
+				],
+				[
+					8,
+					6
+				],
+				[
+					9,
+					6
+				],
+				[
+					8,
+					6
+				]
+			],
+			"pause": 2.0
+		}
+	},
+	"poupee_1": {
+		"cell": [
+			4,
+			3
+		],
+		"facing": "down",
+		"sprite": "pokemon/pikachu",
+		"dialogue": "saffron_copycat_doll_1",
+		"verb": "examine",
+		"turn_to_player": false
+	},
+	"poupee_2": {
+		"cell": [
+			1,
+			7
+		],
+		"facing": "right",
+		"sprite": "pokemon/clefairy",
+		"dialogue": "saffron_copycat_doll_2",
+		"verb": "examine",
+		"turn_to_player": false
+	}
+}
