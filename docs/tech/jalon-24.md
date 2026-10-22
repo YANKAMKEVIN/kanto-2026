@@ -160,6 +160,64 @@ ramène de toute façon), T-70.
    CT35 ; PC (T-58) ; porte de l'Arène (recul) ; Centre et Boutique (Rappel en vente) ; Route 21
    (prairie en Surf, Pêcheurs, îlots) et Route 20 vers les Îles Écume (entrée est).
 
+### 0.6 QA sur A17 par adb (2026-10-22), non validée par Kevin
+
+Passe automatique par adb sur le **Galaxy A17** (SM-A175F, Mali-G57 MC2, 2340 × 1080), APK debug
+construit depuis `9d6ad085`. Ce n'est **pas** la QA de Kevin (ni le S24, ni son ressenti) : elle
+dit seulement ce qui marche, ce qui casse et ce qui n'a pas pu être joué. Captures et journaux :
+`~/dev/qa-nuit/j24/` (dossier `files/` de l'appli sauvegardé avant installation dans
+`a17_backup/files.tar`). Aucune erreur ni avertissement Godot dans les 8 journaux.
+
+| # | Étape | Résultat |
+|---|---|---|
+| 1 | `j24_surf` : Topdresseur Hugo sur la plage (repère, combat, XP) | OK |
+| 1 | SURFER depuis la plage (verbe contextuel, montée) | OK |
+| 1 | Nageur Tanguy vient en Surf, combat sur l'eau, retour en Surf | OK |
+| 1 | Rencontres sauvages `water` en Surf, fuite | OK |
+| 1 | Bord ouest Route 19 → Route 20 (Surf gardé) | OK (76 ms) |
+| 1 | Route 20 : débarquer sur l'île, entrée ouest des Îles Écume → 1F | OK |
+| 2 | `j24_seafoam` : Force (choix UTILISER), pousser un rocher dans le trou (17, 6) | OK, sauvegarde forcée journalisée (`force`) |
+| 2 | Échelles 1F ↔ B1F (P1, P2) | OK (16–20 ms) |
+| 2 | Rocher tombé visible au B1F ; rochers remis en place après un changement d'étage (T-11) | non vérifié (pas de capture probante) |
+| 3 | `j24_seafoam_b3f` : courant 1 calme | non testé (bassin pas parcouru) |
+| 3 | Pousser les rochers du sud-ouest (un dans un trou, deux d'écart), sauter dans le trou (6, 16) → B4F | OK (sauvegarde `force` ; B4F en 28 ms) |
+| 4 | `j24_articuno` : SURFER depuis l'escalier (7, 11), mer ouest, escalier (7, 3), salle | OK |
+| 4 | OBSERVER, combat N50 (`intro: legendary`) | OK |
+| 4 | Fuite : réussie au 2e essai, Artikodin reste (OBSERVER de nouveau possible) | OK |
+| 4 | K.O. d'Artikodin (Akwakwak) | OK (sauvegarde `rencontre fixe : articuno`) ; réplique T-21 et disparition non vérifiées |
+| 4 | Capture | non testable : 10 Hyper Balls lancées vers 15 % de PV sans succès (taux RB 3), équipe K.O. |
+| 5 | `j24_cinnabar` : Labo, confier le Fossile Dôme (OUI), ressortir, revenir : Kabuto N30 dans l'équipe | OK |
+| 5 | CT35 (scientifique R&D) | OK côté logique (`got_tm35`, sauvegarde `CT35`) ; défaut D3 |
+| 5 | PC du Labo (T-58) | OK |
+| 5 | Gravats du Manoir (T-43) ; porte de l'Arène fermée et recul (T-42) | OK |
+| 5 | Centre (soins) ; Boutique (Rappel en vente, 1 500 ₽) | OK |
+| 5 | Route 21 : SURFER depuis la pointe de sable, Nageurs, Pêcheur Marcel (combat), débarquer et rembarquer sur l'îlot nord, prairie (Rattata), bord nord « BOURG PALETTE — À venir » | OK |
+| 5 | Bord est de Cramois'Île → Route 20 en Surf, Nageuses Nina et Lou, entrée est → 1F (26, 16) | OK |
+
+**Défauts relevés** (aucun bloquant) :
+- **D1 — le joueur en Surf est dessiné à pied sur l'eau** (ni monture ni buste) sur les Routes 19,
+  20, 21 et au B4F ; attendu : planches « Surf » de `CharacterLook` (§2.3). Sans doute l'art T5
+  pas encore posé. Captures `16.png`, `210.png`, `214.png`.
+- **D2 — Cramois'Île et les Routes en aplats de couleur** (bâtiments en rectangles unis) : connu,
+  tuiles provisoires (§0.5) ; noté pour mémoire.
+- **D3 — CT35 sans ligne de réception** : après « … à chaque fois ! » la scène rend la main sans
+  « Kevin reçoit la CT35 Métronome ! » (la résurrection affiche bien « Kevin reçoit Kabuto ! », les
+  Arènes ont leur ligne de CT) : `cinnabar_lab_tm35` fait un `give` sans page de réception.
+  Capture `mont_176.png`.
+- **D4 (mineur)** — bord est de Cramois'Île : SURFER depuis la grève pose le joueur sur la colonne
+  33 sans changer de carte ; il faut un pas de plus vers l'est (même logique PUSH que les autres
+  bords, mais surprenant juste après la montée). Captures `245.png`, `246.png`.
+- **D5 (mineur)** — en bord de carte la caméra est bornée et le joueur peut passer sous les
+  boutons (arrivée de l'entrée est au 1F : joueur collé au bouton Course). Capture `256.png`.
+- Observation texte : « Bien. Ça prend un peu de temps : » / « va faire un tour dehors ! » coupe la
+  phrase entre deux pages sur les deux-points (textes validés d'avance, à relire par Kevin).
+
+**fps** (`[perf]`, A17, moyenne / plus bas relevé sur 2 s ; combats compris) : Route 19 46 / 37 ;
+Route 20 45–48 / 37 ; Route 21 45 / 37 ; Îles Écume 1F 47–49 / 38, B1F 49 / 46, B3F 50 / 39,
+B4F 42–49 / 36 (combats d'Artikodin) ; Cramois'Île 50 / 46 ; Labo 49–52 / 32 (salle des fossiles,
+pic isolé) ; Centre 50 / 47 ; Boutique 46 / 34 ; combats ≈ 40. Chargements de cartes 16–220 ms
+(intérieurs peints 135–220 ms au premier passage). Plafond observé sur l'A17 : 50–55 fps.
+
 ## 1. Découpage
 
 ### 1.1 Sous-jalons et validations (dossier §17)

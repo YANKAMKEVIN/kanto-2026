@@ -11,6 +11,9 @@
   `docs/tech/jalon-24.md` §0.5.
 - **Textes** : mises en page et répliques de don recommandées — validé par Kevin le 2026-10-21,
   validation d'avance. Import headless sans erreur ; suite complète 6 543 / 6 543 (`c93422b9`).
+- **QA A17 par adb (2026-10-22, non validée par Kevin)** : 5 départs joués, aucun bloquant ;
+  défauts D1 (joueur en Surf sans monture), D3 (CT35 sans ligne de réception), D4–D5 mineurs ;
+  45–50 fps : `docs/tech/jalon-24.md` §0.6.
 - **Attend Kevin** : QA téléphone (5 départs `j24_*`), accord pour la côte sud de Bourg Palette
   (T11) ; Parmanie et le rocher du Gardien attendent la fusion du J22.
 - **Reportés** : cartes en tuiles provisoires (vues peintes de la série 27 à poser) ; T-14 et
