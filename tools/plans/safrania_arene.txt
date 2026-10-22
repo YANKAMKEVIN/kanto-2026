@@ -19,7 +19,7 @@
 #   O (1,9) ↔ E (19,11) · O (5,9) ↔ N (9,5) · O (5,11) ↔ SO (5,17)
 #   SO (1,15) ↔ NE (19,5) · SO (5,15) ↔ SE (15,17) · SO (1,17) ↔ N (11,5)
 #   N (9,3) ↔ E (15,11) · NE (15,3) ↔ E (15,9) · NE (19,3) ↔ SE (15,15) · E (19,9) ↔ SE (19,15)
-# Plus court chemin vers Morgane : S → SE → E → O → NO → centre (cinq tapis ; plan_check_j27.py).
+# Parcours le plus court en tapis : S → SE → NE → NO → centre (quatre tapis ; test_saffron_gym le joue).
 #
 # Dresseurs : trainer=saffron_gym_<rôle>, facing= et sight= de RB (en-têtes « trainer … , 3 ») ;
 # équipe RB en commentaire. Facultatifs selon le parcours (arbitrage 3 ; plan_check_j27.py).

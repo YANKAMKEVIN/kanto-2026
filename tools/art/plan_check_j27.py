@@ -114,7 +114,7 @@ def verifier_arene(r: Rapport) -> None:
 	r.ok(len(entrees) == 1, "un seul tapis mène dans la salle de Morgane : %s" % entrees)
 	court = _chemin(plan, set())
 	if r.ok(court is not None, "Morgane atteignable depuis l'entrée"):
-		print("         parcours le plus court : %d tapis %s" % (len(court), court))
+		print("         parcours le plus court (en pas) : %d tapis %s" % (len(court), court))
 		r.ok(court[-1] == entrees[0], "le parcours finit par le tapis du centre")
 	dresseurs = plan.of_kind("dresseur")
 	toutes: set[Case] = set()
