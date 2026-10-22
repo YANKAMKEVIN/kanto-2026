@@ -117,7 +117,8 @@
 			"maps": [
 				"lavender_town", "lavender_center", "lavender_mart", "pokemon_house",
 				"lavender_house_1", "lavender_house_2", "pokemon_tower_1f", "pokemon_tower_2f",
-				"pokemon_tower_3f", "pokemon_tower_4f", "pokemon_tower_5f", "pokemon_tower_6f"
+				"pokemon_tower_3f", "pokemon_tower_4f", "pokemon_tower_5f", "pokemon_tower_6f",
+				"pokemon_tower_7f"
 			],
 			"subtitle": "Route 10 — Route 8 — Route 12",
 			"services": [
@@ -229,6 +230,16 @@
 			"name": "Grotte Sombre", "kind": "place", "maps": ["dark_cave_1f", "dark_cave_b1f"],
 			"subtitle": "Route 10",
 			"description": "Un tunnel sans lumière sous la montagne. On y avance de repère en repère, une colonne, une fente, une flaque."
+		},
+		"route_16": {
+			"name": "Route 16", "kind": "route", "maps": ["route_16"],
+			"subtitle": "Céladopole",
+			"description": "Une route boisée à l'ouest de Céladopole."
+		},
+		"route_12": {
+			"name": "Route 12", "kind": "route", "maps": ["route_12", "route_12_gate", "route_12_gate_2f"],
+			"subtitle": "Lavanville — Route 11",
+			"description": "Une longue route au bord de l'eau, au sud de Lavanville."
 		}
 	}
 }

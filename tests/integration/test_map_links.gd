@@ -71,6 +71,10 @@ const MAP_IDS: Array[StringName] = [
 	&"silph_co_1f", &"silph_co_2f", &"silph_co_3f", &"silph_co_4f", &"silph_co_5f", &"silph_co_6f",
 	&"silph_co_7f", &"silph_co_8f", &"silph_co_9f", &"silph_co_10f", &"silph_co_11f",
 	&"silph_co_elevator",
+	# Jalon 21 (T22) : la Route 16 est (raccord réel avec Céladopole ; porte du poste « à venir »).
+	&"route_16",
+	# Jalon 21 (T21) : la Route 12 nord et son poste (1F traversant, 2F).
+	&"route_12", &"route_12_gate", &"route_12_gate_2f",
 ]
 ## Cartes dont les passages « à venir » sont comptés dans leur propre test (jalon 18).
 const OWN_COMING_SOON_COUNT: Array[StringName] = [&"lavender_town", &"pokemon_tower_1f"]
@@ -193,9 +197,12 @@ func test_every_coming_soon_warp_returns_to_a_walkable_spawn_of_its_own_map() ->
 	# Jalon 20 (T16) : le Casino de Céladopole (2 cases) restait « à venir » jusqu'au T20 (construit).
 	# Jalon 26 (T6) : les quatre postes mènent à Safrania ; restent dans la ville le Dojo (2 cases)
 	# et l'Arène (1) jusqu'au J27, la Sylphe SARL (2) jusqu'au T7.
+	# Jalon 21 (T21) : la Route 11 et Lavanville mènent à la vraie Route 12 ; reste son bord sud
+	# « Route 12 » (deux cases, J22). Jalon 21 (T22) : la porte du poste de la Route 16 (2 cases), J22.
 	# (relancer `tools/build_saffron_city.gd` une fois la Sylphe construite).
 	var silph := 0 if MapCatalog.has_map(&"silph_co_1f") else 2
-	assert_eq(found, 3 + silph, "Dojo (2), Arène (1), Sylphe SARL (2 tant qu'elle manque)")
+	assert_eq(found, 7 + silph, "Dojo (2), Arène (1), Route 12 sud (2), poste de la Route 16 (2), "
+		+ "Sylphe SARL (2 tant qu'elle manque)")
 
 
 ## Warp de [param map] qui ramène à [param origin] depuis [param arrival] : sur la case

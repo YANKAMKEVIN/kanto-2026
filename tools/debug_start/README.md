@@ -257,17 +257,18 @@ d'Évoli, l'ascenseur et les dalles tournantes sont éprouvés sur les vraies ca
 de la Résidence, grand magasin et repaire Rocket : `test_eevee_gift`, `test_elevator_flow`,
 `test_spin_slide`).
 
-## Passe systèmes 2 (T9) : cartes de QA de la monture
+## Passe systèmes 2 : cartes et départs de QA retirés (S2Z, T33)
 
-Cartes `qa_mount` (extérieur : rebord rangée 14, maison, dormeur 2 × 1 qui ferme le nord),
-`qa_mount_interieur` (refus du Vélo) et `qa_mount_piste` (`cycling_road`, pente, Dresseur de
-l'alcôve), construites par `tools/build_qa_mount.gd` d'après `tools/plans/qa_mount*.txt`. Aucun
-passage du jeu n'y mène. **Retirées à la clôture de la passe (S2Z)** avec leurs données `qa_mount*`.
-
-| Fichier | Partie |
-|---|---|
-| `s2_bike.json` | Pikachu N12 (compagnon) et Roucool N12 **endormi** (`status: sleep`), Bicyclette et Poké Flûte au Sac (+ 10 Poké Balls, 5 Potions), 3 000 ₽, sur `qa_mount` (spawn `depart`, tourné vers le haut). Vélo : bouton du HUD / Sac, saut du rebord, refus dans la maison ; entrées de la Piste à l'est (19, 8) et (19, 16) : monté d'office, descente refusée, dérive sur la pente, le Gamin QA (Soporifik N8, Hypnose) voit la pente depuis son alcôve ; Flûte : à côté du dormeur (10..11, 4) réveil et passage au nord, en combat contre le Gamin QA réveil des endormis |
-| `s2_surf.json` | Carapuce N20 (compatible CS03) et Pikachu N18 (compagnon 0), CS03 + 10 Poké Balls + 5 Potions au Sac, Badge Âme (`badge_soul`), sur `qa_sea` (spawn `depart` (2, 16), tourné vers le haut). Surf : montée depuis la plage, nage, descente sur l'îlot, rencontres `water`, courant (12..21, 4) puis (21, 4..9) jusqu'au passage (21, 10) → `qa_sea_2`, bord est (25, 11..14), Nageur QA (15, 13) (Poissirène N18, Kokiyas N20) qui voit vers l'ouest et nage vers le joueur |
+Les cartes de QA de la passe (monture, Surf, Force, téléporteurs : neuf cartes `qa_*`), leurs
+outils de construction, leurs données et le Mélofée de QA de la Route 1 ont été **retirés à la
+clôture (S2Z, T33)**, avec les départs qui les visaient : `s2_bike`, `s2_surf`, `s2_strength`,
+`s2_teleport`, `s2_legendary`, `s2_legendary_weak`. Les systèmes restent éprouvés par les tests,
+sur de vraies cartes modifiées en mémoire (Route 2 et Route 2 est en Piste Cyclable, Ronflex de la
+Route 11 avec la Flûte, Manoir de Céladopole avec un téléporteur et une porte à carte) et sur des
+cartes d'essai construites en code (`tests/helpers/sea_rig.gd`, `strength_rig.gd`) ; les grilles
+des contrôles Python sont devenues des fixtures (`tests/fixtures/plans/essai_*.txt`). Restent
+`s2_save` (plus haut, partie banale), `s2_field_travel` (ci-dessous) et `s2_fly` (Céladopole,
+villes découvertes), tous sur de vraies cartes.
 
 ## Passe systèmes 2 (`docs/tech/systemes-2.md`)
 
@@ -276,10 +277,22 @@ passage du jeu n'y mène. **Retirées à la clôture de la passe (S2Z)** avec le
 | `s2_field_travel.json` | T25b : **Mont Sélénite 1F** (spawn `from_route_3_w`, tourné ↑), Centre du Mont Sélénite **enregistré** (clé `rest_point`). Équipe : Reptincel N18 à 20 PV, **Abra N15 (Téléport)**, **Taupiqueur N18 (Griffe, Tunnel)**. Menu → Équipe → Abra → onglet Capacités → Téléport → UTILISER : « Abra utilise Téléport ! », retour dans le Centre (point de réveil), **sans soin** (Reptincel toujours à 20 PV). Taupiqueur → Tunnel → UTILISER : « Taupiqueur creuse un tunnel ! », Route 3 devant la grotte (destination de la Corde Sortie). Tunnel hors grotte (Route 3) ou Téléport dans le Centre : « Impossible de l'utiliser ici. » dans le bandeau de l'Équipe |
 ## Passe systèmes 2 — S2G (T30, rencontre légendaire fixe)
 
+Départs `s2_legendary` et `s2_legendary_weak` (Mélofée N25 de QA devant le joueur sur la Route 1)
+**retirés à la clôture (S2Z, T33)** avec le PNJ, la scène et les textes de QA ; la rencontre fixe
+reste éprouvée par `test_cutscene_static_encounter.gd` et `test_cutscene_static_step.gd`.
+
+## Jalon 21 (T12 à T14) : départs de la Tour résolue (QA 21A)
+
+Équipe de référence [D, `jalon-21.md` §2.15] : Reptincel N33, Roucarnage N30, Papilusion N28 (Poudre Dodo), Évoli N25, Nidorino N28 **endormi** (`status_turns` 3), Sabelette N26 **empoisonné** ; 10 Poké Balls, 10 Super Potions, 3 Réveils, 2 Cordes Sortie, Scope Sylphe ; 5 000 ₽ ; Badge Prisme et drapeaux des J18 à J20 jusqu'au Scope ; Centre de Lavanville enregistré (`rest_point`).
+
 | Fichier | Partie |
 |---|---|
-| `s2_legendary.json` | Route 1 (spawn `from_pallet_w`, tourné vers le nord), **Reptincel N36** et Roucool N10, 20 Super Balls, 10 Poké Balls, 5 Potions, drapeau de QA `qa_s2_legendary` : un **Mélofée N25 de QA** est juste devant le joueur (23, 41). OBSERVER → cri, combat à l'entrée « legendary » (1,5 × plus lente). **K.O.** ou **capture** → journal « [qa] point de sauvegarde sans écriture (écriture refusée pour la session) : rencontre fixe : qa_s2_legendary » **avant** le texte de QA qui suit, puis Mélofée quitte la carte (et n'y revient pas) ; **fuite** → rien, il reste. Relancer l'appli pour rejouer une autre issue |
-| `s2_legendary_weak.json` | Même départ, **Salamèche N5 seul** : **défaite** → réveil chez Maman, aucun drapeau, pas de sauvegarde forcée ; Mélofée est toujours sur la Route 1 |
+| `tower_marowak_qa.json` | 6F, `devant_spectre` (10, 14) tourné ↓, Exorcistes 8 et 9 et rival n° 5 battus, **Scope au Sac** : la scène d'Ossatueur (variante A, écrite après la fusion par la session parente) ; en attendant, le SPECTRE du J19 |
+| `tower_marowak_noscope.json` | idem **sans** Scope (ni objet ni drapeau) : le SPECTRE du J19, inchangé (non-régression) |
+| `tower_marowak_weak.json` | idem avec Salamèche N8 seul : défaite → Centre de Lavanville, déclencheur réarmé |
+| `tower_7f_qa.json` | 7F, `arrivee_T67` tourné →, `ghost_marowak_calmed` et `tower_6f_mist_lifted` levés, **Sbires non battus** : monter vers Fuji (10, 3) |
+| `fuji_flute_qa.json` | Maison des Pokémon, `devant_fuji` tourné ↑, `fuji_rescued` et Sbires battus, **sans Flûte** (cas « entre deux scènes ») : parler à Fuji, ou sortir et rentrer (déclencheur d'entrée) |
+| `j21_full_qa.json` | Lavanville devant la Tour (`retour_tour`), Scope, **rien du J21 ni de la Tour du J19** : parcours complet |
 
 Le PNJ de QA (`data/npcs/route_1.json`), la scène et les textes `qa_s2_legendary` sont retirés à
 la clôture de la passe (S2Z, T33).
@@ -298,3 +311,17 @@ Drapeaux de base : `silph_1f` (J20 terminé) plus la Tour (`rival_tower_won`) et
 | `silph_7f_rival_bulbasaur.json`, `silph_7f_rival_charmander.json`, `silph_7f_rival_squirtle.json` | 7F, sur la dalle (5, 3) venue du 3F (spawn `tp_5`, tourné ←), Carte au Sac : deux pas vers l'ouest → le rival (trois équipes selon le starter en tête) ; après la victoire, l'employé (1, 5) donne Lokhlass |
 | `silph_11f.json` | 11F, sur la dalle (3, 2) venue du 7F (spawn `tp_4`), rival battu, porte du bureau ouverte, Sbire de l'ouest battu, équipe N42 : entrer dans le bureau → Giovanni ; puis le président (Master Ball) |
 | `saffron_free.json` | Safrania libérée (spawn `from_silph`), Lokhlass N15 dans l'équipe, Master Ball au Sac, point de repos `saffron_center` |
+
+## Jalon 21 (T22) : Route 16 est
+
+| Fichier | Partie |
+|---|---|
+| `snorlax_16_qa.json` | Route 16, devant Ronflex (spawn `face_ronflex`, case (26, 22), tourné ←), **Poké Flûte** et **1 Poké Ball** au Sac, équipe de référence du J21 [D] (Reptincel N33, Roucarnage N30, Papilusion N28, Évoli N25, Nidorino N28 **endormi**, Sabelette N26 empoisonnée), Badges jusqu'au Prisme, Centre de Céladopole enregistré. Parler à Ronflex : « Jouer de la Poké Flûte ? » ; réveil, combat N30 ; **fuite** et **défaite** (une seule Ball) rejouables ; K.O. ou capture : le goulet s'ouvre sur la porte du poste (« Route 16 — à venir » en développement) ; `route_16_visited` : non posé par ce départ (il l'est en entrant par Céladopole) |
+
+## Jalon 21 (T21) : Route 12 nord
+
+| Fichier | Partie |
+|---|---|
+| `route_12_qa.json` | Lavanville, bord sud (spawn `from_route_12`, tourné ↓) : équipe de référence du J21 [D] (Reptincel N33, Roucarnage N30, Papilusion N28, Évoli N25, Nidorino N28 **endormi**, Abo N26 **empoisonné**), 10 Poké Balls, 10 Super Potions, 3 Réveils, Corde Sortie, Scope Sylphe et **Poké Flûte**, 5 000 ₽, Badges jusqu'au Prisme. Pêcheurs non battus, `got_tm39` absent : descendre le ponton (Pêcheur Ned inévitable), poste traversé (CT39 au 2F), Ronflex au croisement |
+
+| `poke_flute_qa.json` | J21 (T20) : Route 12, `from_route_11` (0, 93..94) tourné →, à 24 cases à l'ouest de Ronflex ; mêmes équipe et Sac que `route_12_qa` (Poké Flûte, Nidorino endormi) [D : sans table « Paras » forcée] |

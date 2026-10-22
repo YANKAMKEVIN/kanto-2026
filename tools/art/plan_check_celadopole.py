@@ -10,8 +10,8 @@ EXISTANT : aucune grille. Lecture par `plan_grille.lire` ; déplacements de
 
 Critères, par carte :
   Ville — 70 × 46 ; raccord EST imposé (69, 21..23) ↔ Route 7 (0, 10..12), déclaré dans l'en-tête
-    (et recoupé avec `route_7.txt` s'il existe) ; carte fermée partout ailleurs, sortie OUEST
-    fermée par une haie d'arbres et un talus (examen, aucun warp) ; toutes les portes atteignables
+    (et recoupé avec `route_7.txt` s'il existe) ; carte fermée partout ailleurs, sauf la sortie OUEST
+    (0, 21..23) ↔ Route 16 (jalon 21, T22 ; fermée par une haie au J20) ; toutes les portes atteignables
     depuis l'entrée est ; **Arène inaccessible sans l'arbuste à Couper** (case conditionnelle),
     **toute la ville accessible sans** ; Casino à 2 cases de porte, façade de l'ancien Coin à lots
     sans porte ; escalier de service au NORD de la Résidence ; emprises rectangulaires et portes
@@ -91,7 +91,7 @@ IDS = {
 }
 FICHIER = {v: k for k, v in IDS.items()}
 # Cartes d'une autre session ou existantes : on ne vérifie que la déclaration côté Céladopole.
-EXTERNES = {"route_7", "celadon_center", "celadon_game_corner"}
+EXTERNES = {"route_7", "route_16", "celadon_center", "celadon_game_corner"}  # J21 (T22) : route_16
 TAILLES = {
 	"celadopole_arene": (17, 16), "celadopole_magasin_ascenseur": (6, 6),
 	"celadopole_magasin_toit": (20, 11), "celadopole_residence_toit": (16, 10),
@@ -163,10 +163,12 @@ def verifier_celadopole(chemin: Path) -> bool:
 	warps_est = sorted(pos["warp_est"].cells)
 	spawns_est = sorted(pos["from_route_7"].cells)
 	bords = _libres_du_bord(carte)
-	r.critere(bords == est and warps_est == est and spawns_est == est
+	# Jalon 21 (T22) : le bord ouest (0, 21..23) s'ouvre aussi (Route 16) ; l'est est inchangé.
+	ouest_j21 = [(0, y) for y in range(ya, yb + 1)]
+	r.critere(sorted(bords) == sorted(ouest_j21 + est) and warps_est == est and spawns_est == est
 		and pos["warp_est"].attrs.get("to") == "route_7",
-		f"raccord est : bord praticable = warps = spawns = (69, {ya}..{yb}) ; aucun autre bord ouvert "
-		f"({len(bords)} case(s) libre(s) au bord)")
+		f"raccord est : bord praticable = warps = spawns = (69, {ya}..{yb}) ; seul autre bord ouvert : "
+		f"l'ouest J21 (0, {ya}..{yb}) ({len(bords)} case(s) libre(s) au bord)")
 	motif = rf"Route 7 \({col7}, {y7a}\.\.{y7b}\)"
 	r.critere(bool(re.search(motif, entete)) and f"({col}, {ya}..{yb})" in entete
 		and len(est) == 3,
@@ -185,18 +187,19 @@ def verifier_celadopole(chemin: Path) -> bool:
 		) and all(plan.at(x, y) not in plan.praticables for x in range(62, 70) for y in (20, 24))
 	r.critere(avenue_est, "l'avenue fait exactement 3 cases (y 21..23) de x 62 au raccord")
 
-	# 2. Sortie ouest fermée (H-4).
-	ouest_ok = all(plan.at(x, y) not in plan.praticables for x in range(0, 4) for y in range(plan.height))
-	haie = plan.at(2, 22) == "T" and plan.at(3, 22) == "T" and plan.at(0, 22) == "s"
-	examen = pos["obstacle_ouest"]
+	# 2. Sortie ouest (jalon 21, T22 : ouverte vers la Route 16 ; elle était fermée au J20, H-4).
+	bande = [(x, y) for x in range(4) for y in (21, 22, 23)]
 	w_ouest = [c for p in _warps(plan) for c in p.cells if c[0] <= 3]
-	r.critere(ouest_ok and haie and not w_ouest and examen.cells == [(3, 22)]
-		and carte.libre((4, 22)),
-		"sortie ouest fermée : haie d'arbres (x 2..3) + talus (x 0..1), examen (3, 22) lu depuis "
-		"(4, 22), aucun warp, aucun panneau")
+	r.critere(all(plan.at(x, y) == "p" for x, y in bande) and "obstacle_ouest" not in pos
+		and sorted(w_ouest) == [(0, 21), (0, 22), (0, 23)]
+		and pos["warp_ouest"].attrs.get("to") == "route_16"
+		and sorted(pos["from_route_16"].cells) == [(1, 21), (1, 22), (1, 23)]
+		and all(plan.at(x, y) in "sT" for x in range(4) for y in (20, 24)),
+		"sortie ouest J21 : (0..3, 21..23) en chemin, warp_ouest → route_16, from_route_16 (1, 21..23), "
+		"rangées 20 et 24 fermées, plus d'examen obstacle_ouest")
 	r.critere(not any(p.kind == "panneau" and p.cells[0][0] < 8 and 18 <= p.cells[0][1] <= 26
 			for p in plan.positions.values()),
-		"aucun panneau près de l'obstacle ouest : aucune promesse (modèle du Sentier d'Argenta)")
+		"aucun panneau près de la sortie ouest : aucune promesse (L-4, aucun texte sur le Vélo)")
 
 	# 3. Eau, étang, angles droits.
 	eau = set(plan.cells_of("w"))

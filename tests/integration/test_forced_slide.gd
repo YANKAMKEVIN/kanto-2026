@@ -12,8 +12,10 @@ extends GutTest
 ## - `loop` : courants (3, 1) → et (4, 1) ← (erreur de données).
 ## Le joueur part de (2, 1), en Surf, tourné → (spawn `start`) ; `on_current` est la case (3, 1).
 ##
-## Seconde partie : la vraie scène Boot sur `qa_mount`, courants posés dans la grille par le test
-## (partie pas stable pendant la glisse, contrôles cachés ; passage de bord en fin de courant).
+## Seconde partie : la vraie scène Boot sur la vraie Route 2 (la carte de QA `qa_mount` est retirée
+## en S2Z, T33), eau et courants posés en mémoire dans sa grille par le test, le long de la rangée
+## du passage de bord vers la Route 2 est (partie pas stable pendant la glisse, contrôles cachés ;
+## passage de bord en fin de courant).
 
 const ROUTER_SCRIPT := preload("res://game/autoload/scene_router.gd")
 const PLAYER_SCENE := preload("res://game/player/player.tscn")
@@ -173,9 +175,9 @@ func test_boot_is_not_stable_during_a_current_and_follows_an_edge_warp() -> void
 	GameState.clock = FixedClock.new("2026-10-21T15:00:00")
 	var boot := BOOT_SCENE.instantiate() as Boot
 	boot.save_system = SaveSystem.new(MemoryFs.new(), SAVE_PATH)
-	boot.start_map = &"qa_mount"
-	boot.start_spawn = &"depart"
-	boot.start_facing = Vector2i.UP
+	boot.start_map = &"route_2"
+	boot.start_spawn = &"from_route_2_east_n"
+	boot.start_facing = Vector2i.LEFT
 	add_child_autofree(boot)
 	await wait_process_frames(3)
 	await wait_until(func() -> bool: return boot.is_stable(), TIMEOUT)
@@ -183,14 +185,17 @@ func test_boot_is_not_stable_during_a_current_and_follows_an_edge_warp() -> void
 	assert_eq(boot.get_spin_director(), boot.get_forced_slide_director(), "ancien nom gardé")
 	var player := boot.get_player()
 	var director := boot.get_forced_slide_director()
-	# Rangée 8 : eau (14..19, 8), courant → en (15..18, 8) jusqu'à l'entrée de la Piste (19, 8),
-	# un warp de bord PUSH →.
+	# Rangée 43 : eau (36..41, 43), courant → en (37..40, 43) jusqu'au passage de bord (41, 43),
+	# un warp PUSH → vers la Route 2 est.
 	var grid := boot.get_map().get_grid()
-	for x: int in range(14, 20):
-		grid.set_surfable(Vector2i(x, 8))
-	for x: int in range(15, 19):
-		grid.set_current(Vector2i(x, 8), Vector2i.RIGHT)
-	boot.get_map().spawn_player_at(player, Vector2i(14, 8), Vector2i.RIGHT)
+	assert_eq(boot.get_map().get_warps().find_on_push(Vector2i(41, 43), Vector2i.RIGHT) \
+		.target_map, &"route_2_east", "passage de bord réel")
+	boot.get_map().spawn_player_at(player, Vector2i(36, 43), Vector2i.RIGHT)
+	for x: int in range(36, 42):
+		assert_true(grid.is_free(Vector2i(x, 43), player), "case libre (%d, 43)" % x)
+		grid.set_surfable(Vector2i(x, 43))
+	for x: int in range(37, 41):
+		grid.set_current(Vector2i(x, 43), Vector2i.RIGHT)
 	player.set_mount(Mount.Kind.SURF)
 	await wait_process_frames(2)
 	await wait_until(func() -> bool: return boot.is_stable(), TIMEOUT)
@@ -207,8 +212,8 @@ func test_boot_is_not_stable_during_a_current_and_follows_an_edge_warp() -> void
 	_sim.finish()
 	_sim = null
 	await wait_until(func() -> bool:
-		return boot.get_map().map_id == &"qa_mount_piste" and boot.is_stable(), TIMEOUT)
-	assert_eq(boot.get_map().map_id, &"qa_mount_piste", "warp de bord suivi en fin de courant")
+		return boot.get_map().map_id == &"route_2_east" and boot.is_stable(), TIMEOUT)
+	assert_eq(boot.get_map().map_id, &"route_2_east", "warp de bord suivi en fin de courant")
 	assert_true(player.is_input_enabled(), "joueur libre à l'arrivée")
 	assert_false(director.is_running())
 	SceneRouter.fade_out_duration = saved_router[0]

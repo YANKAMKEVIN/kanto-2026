@@ -11176,6 +11176,54 @@
     "droite",
     "haut"
    ]
+  },
+  "fuji": {
+   "fichier": "res://assets/sprites/characters/painted/fuji_sheet.png",
+   "cellule": [
+    68,
+    124
+   ],
+   "hauteur": 122,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "osselait": {
+   "fichier": "res://assets/sprites/pokemon/painted/osselait_sheet.png",
+   "cellule": [
+    44,
+    58
+   ],
+   "hauteur": 56,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "fuji_priere": {
+   "fichier": "res://assets/sprites/characters/painted/fuji_priere_sheet.png",
+   "cellule": [
+    68,
+    124
+   ],
+   "hauteur": 122,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "dos",
+    "dos_souffle",
+    "gauche",
+    "face"
+   ]
   }
  },
  "images": {
@@ -11954,6 +12002,41 @@
    "taille": [
     1920,
     1248
+   ]
+  },
+  "poke_flute_note_1": {
+   "fichier": "res://assets/sprites/effects/poke_flute_note_1.png",
+   "taille": [
+    89,
+    120
+   ]
+  },
+  "poke_flute_note_2": {
+   "fichier": "res://assets/sprites/effects/poke_flute_note_2.png",
+   "taille": [
+    118,
+    120
+   ]
+  },
+  "poke_flute_note_3": {
+   "fichier": "res://assets/sprites/effects/poke_flute_note_3.png",
+   "taille": [
+    56,
+    120
+   ]
+  },
+  "poke_flute_note_4": {
+   "fichier": "res://assets/sprites/effects/poke_flute_note_4.png",
+   "taille": [
+    105,
+    120
+   ]
+  },
+  "spirit_halo": {
+   "fichier": "res://assets/sprites/effects/spirit_halo.png",
+   "taille": [
+    192,
+    192
    ]
   }
  }

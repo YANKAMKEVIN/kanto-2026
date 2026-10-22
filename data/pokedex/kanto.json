@@ -496,6 +496,22 @@
 		"alakazam": {
 			"height": 1.5, "weight": 48.0,
 			"description": "Son cerveau dépasse celui d'un ordinateur. Il se souvient de tout, depuis sa naissance, et ne s'en sert jamais pour rien."
+		},
+		"poliwag": {
+			"height": 0.6, "weight": 12.4,
+			"description": "Sa peau est si fine qu'on voit ses entrailles en spirale. Il marche mal sur ses jambes toutes neuves."
+		},
+		"tentacool": {
+			"height": 0.9, "weight": 45.5,
+			"description": "Il dérive près de la surface. Son corps presque transparent le rend difficile à voir dans l'eau."
+		},
+		"marowak": {
+			"height": 1.0, "weight": 45.0,
+			"description": "Il manie l'os qu'il tient depuis l'enfance. Devenu fort, il protège farouchement les siens."
+		},
+		"snorlax": {
+			"height": 2.1, "weight": 460.0,
+			"description": "Il ne fait que manger et dormir. Quand il s'endort au milieu d'un chemin, plus personne ne passe."
 		}
 	}
 }

@@ -18,14 +18,15 @@ leurs propres grilles :
   courant se termine (eau calme, terre ou passage) sans boucle ni blocage ; un Nageur est sur l'eau.
 - **Monture** (`verifier_monture`, `verifier_liens_monture`) : pentes seulement sur la Piste, dérive de
   chaque case de pente jusqu'à un palier, Dresseur dont la vue coupe la pente, dormeur qui ferme une
-  zone, rebord, porte d'intérieur ; warps entre qa_mount, qa_mount_piste et qa_mount_interieur.
+  zone, rebord, porte d'intérieur ; warps entre essai_monture, essai_monture_piste et essai_monture_interieur.
 
 Caractères communs (légende de chaque grille, ligne `PRATICABLES`) : `w` eau surfable, `~` eau
 décor, `^ v < >` courant **sur l'eau** (grilles de mer) ou rebord `v` (grilles à terre : seul `v`),
 `B` rocher (origine), `O` trou, `F` point de chute d'un rocher, `S` interrupteur, `|` barrière,
 `T` téléporteur, `K` porte à carte, `/` pente, `s` Surf forcé, `E` entrée.
 
-Usage : python3 -I tools/art/plan_check_systemes2.py           (grilles de QA de la passe)
+Usage : python3 -I tools/art/plan_check_systemes2.py           (grilles d'essai tests/fixtures/plans/essai_*.txt :
+                                                                 anciennes cartes de QA, retirées en S2Z)
         python3 -I tools/art/plan_check_systemes2.py --autotest (le contrôle refuse des pièges connus)
 Code 1 si un critère échoue.
 """
@@ -43,6 +44,8 @@ from plan_grille import carte as carte_de  # noqa: E402
 
 RACINE = Path(__file__).resolve().parents[2]
 PLANS = RACINE / "tools" / "plans"
+# Grilles d'essai des contrôles (anciennes grilles des cartes de QA de la passe, retirées en S2Z).
+ESSAIS = RACINE / "tests" / "fixtures" / "plans"
 DIRECTIONS = [(0, -1), (0, 1), (-1, 0), (1, 0)]
 FLECHES = {"^": (0, -1), "v": (0, 1), "<": (-1, 0), ">": (1, 0)}
 SORTIES = ("warp", "echelle", "passage")
@@ -725,19 +728,19 @@ def main() -> int:
 	if "--autotest" in sys.argv:
 		return 0 if autotest() else 1
 	rapports = [
-		verifier_monture(PLANS / "qa_mount.txt"),
-		verifier_monture(PLANS / "qa_mount_piste.txt"),
-		verifier_monture(PLANS / "qa_mount_interieur.txt"),
-		verifier_liens_monture([PLANS / "qa_mount.txt", PLANS / "qa_mount_piste.txt",
-			PLANS / "qa_mount_interieur.txt"]),
-		verifier_mer(PLANS / "qa_sea.txt"),
-		verifier_mer(PLANS / "qa_sea_2.txt"),
-		verifier_force(PLANS / "qa_strength.txt"),
-		verifier_etage_inferieur(PLANS / "qa_strength_b1.txt", PLANS / "qa_strength.txt"),
-		verifier_teleporteurs([PLANS / "qa_teleport.txt", PLANS / "qa_teleport_2.txt"]),
+		verifier_monture(ESSAIS / "essai_monture.txt"),
+		verifier_monture(ESSAIS / "essai_monture_piste.txt"),
+		verifier_monture(ESSAIS / "essai_monture_interieur.txt"),
+		verifier_liens_monture([ESSAIS / "essai_monture.txt", ESSAIS / "essai_monture_piste.txt",
+			ESSAIS / "essai_monture_interieur.txt"]),
+		verifier_mer(ESSAIS / "essai_mer.txt"),
+		verifier_mer(ESSAIS / "essai_mer_2.txt"),
+		verifier_force(ESSAIS / "essai_force.txt"),
+		verifier_etage_inferieur(ESSAIS / "essai_force_b1.txt", ESSAIS / "essai_force.txt"),
+		verifier_teleporteurs([ESSAIS / "essai_teleport.txt", ESSAIS / "essai_teleport_2.txt"]),
 	]
 	ok = all([r.imprimer() for r in rapports])
-	legende = [e for f in sorted(PLANS.glob("qa_*.txt")) for e in verifier_legende(f)]
+	legende = [e for f in sorted(ESSAIS.glob("essai_*.txt")) for e in verifier_legende(f)]
 	for e in legende:
 		print(f"  [ÉCHEC] légende commune : {e}")
 	ok = ok and not legende

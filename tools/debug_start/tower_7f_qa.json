@@ -1,0 +1,115 @@
+{
+	"map": "pokemon_tower_7f",
+	"spawn": "arrivee_T67",
+	"facing": "right",
+	"flags": [
+		"mom_greeted",
+		"rival_met",
+		"oak_met",
+		"oak_lab_reunion",
+		"starter_offered",
+		"starter_chosen",
+		"taken_charmander",
+		"taken_squirtle",
+		"rival_lab_won",
+		"rival_challenged",
+		"rival_battle_done",
+		"rival_left_lab",
+		"viridian_arrived",
+		"got_oak_parcel",
+		"pokedex_activated",
+		"poison_unlocked",
+		"pewter_arrived",
+		"beaten_pewter_gym_liam",
+		"brock_met",
+		"badge_boulder",
+		"tm34_received",
+		"cerulean_reached",
+		"rival_cerulean_won",
+		"got_ss_ticket",
+		"badge_cascade",
+		"rival_ss_anne_won",
+		"got_hm01",
+		"ss_anne_departed",
+		"badge_thunder",
+		"surge_met",
+		"tm24_received",
+		"route_9_entered",
+		"route_10_reached",
+		"dark_cave_crossed",
+		"lavender_reached",
+		"tower_stairs_open",
+		"route_8_reached",
+		"celadon_reached",
+		"beaten_celadon_game_corner_rocket",
+		"game_corner_switch",
+		"beaten_rocket_hideout_b1f_1",
+		"beaten_rocket_hideout_b1f_2",
+		"beaten_rocket_hideout_b1f_3",
+		"beaten_rocket_hideout_b2f_1",
+		"beaten_rocket_hideout_b3f_1",
+		"beaten_rocket_hideout_b3f_2",
+		"beaten_rocket_hideout_b4f_key",
+		"rocket_dropped_lift_key",
+		"got_rocket_hideout_b4f_lift_key",
+		"beaten_rocket_hideout_b4f_guard_1",
+		"beaten_rocket_hideout_b4f_guard_2",
+		"rocket_hideout_b4f_door_open",
+		"giovanni_met",
+		"giovanni_hideout_won",
+		"got_rocket_hideout_b4f_silph_scope",
+		"badge_rainbow",
+		"erika_met",
+		"tm21_received",
+		"rival_tower_won",
+		"beaten_tower_channeler_8",
+		"beaten_tower_channeler_9",
+		"tower_ghost_met",
+		"ghost_marowak_calmed",
+		"tower_6f_mist_lifted"
+	],
+	"party": [
+		{
+			"species": "charmeleon",
+			"level": 33
+		},
+		{
+			"species": "pidgeotto",
+			"level": 30
+		},
+		{
+			"species": "butterfree",
+			"level": 28,
+			"moves": [
+				"confusion",
+				"sleep_powder",
+				"gust",
+				"supersonic"
+			]
+		},
+		{
+			"species": "eevee",
+			"level": 25
+		},
+		{
+			"species": "nidorino",
+			"level": 28,
+			"status": "sleep",
+			"status_turns": 3
+		},
+		{
+			"species": "sandshrew",
+			"level": 26,
+			"status": "poison"
+		}
+	],
+	"bag": {
+		"poke_ball": 10,
+		"super_potion": 10,
+		"awakening": 3,
+		"escape_rope": 2,
+		"silph_scope": 1
+	},
+	"money": 5000,
+	"rest_point": "lavender_center"
+}

@@ -9,7 +9,8 @@ const AREAS_PATH := "res://assets/ui/map/kanto_placeholder_areas.json"
 const AWAITING_MAPS: Array[StringName] = []
 ## Étages de la Tour (titre « Tour Pokémon », dans la zone de Lavanville : aucune zone propre).
 const TOWER_FLOORS: Array[StringName] = [&"pokemon_tower_1f", &"pokemon_tower_2f",
-	&"pokemon_tower_3f", &"pokemon_tower_4f", &"pokemon_tower_5f", &"pokemon_tower_6f"]
+	&"pokemon_tower_3f", &"pokemon_tower_4f", &"pokemon_tower_5f", &"pokemon_tower_6f",
+	&"pokemon_tower_7f"]
 
 var _zones: ZoneLibrary
 
@@ -50,7 +51,7 @@ func _root_property(map_id: StringName, property: StringName) -> Variant:
 func test_real_data_loads_without_error() -> void:
 	assert_true(_zones.load_file(), "\n".join(_zones.get_errors()))
 	assert_eq(_zones.get_errors().size(), 0)
-	assert_eq(_zones.size(), 35, "Route 24 (jalon 13), Route 25 et Cap d'Azuria (jalon 14), "
+	assert_eq(_zones.size(), 37, "Routes 12 et 16 (jalon 21), Route 24 (jalon 13), Route 25 et Cap d'Azuria (jalon 14), "
 		+ "passage souterrain (jalon 15 T18), Route 6 (jalon 15 T14), Route 5 (jalon 15 T13), "
 		+ "S.S. Anne (jalon 16 T11), Cave Taupiqueur (jalon 17 T15), Route 11 (jalon 17 T16), "
 		+ "Routes 9 et 10 (jalon 18 T12), Grotte Sombre (jalon 18 T13), souterrain des Routes 7 "
@@ -87,7 +88,7 @@ func test_zone_names_match_the_map_titles() -> void:
 		if TOWER_FLOORS.has(map_id):
 			# Jalon 18 T14 : le rez-de-chaussée de la Tour garde son titre (plan §4.1), dans la
 			# zone de Lavanville (aucune zone propre : la Carte n'a pas de rectangle pour elle) ;
-			# J19 T16 : les étages 2F à 6F de même.
+			# J19 T16 : les étages 2F à 6F de même ; J21 T13 : le 7F aussi.
 			assert_eq(_root_property(map_id, &"display_name"), "Tour Pokémon")
 			assert_eq(_zones.zone_of(map_id), &"lavender_town", String(map_id))
 			continue
@@ -121,7 +122,8 @@ func test_first_zones_of_the_journey() -> void:
 		&"route_22"] as Array[StringName], "ordre du fichier")
 	assert_eq(_zones.get_zone(&"viridian_city").maps, [&"viridian_city", &"viridian_center",
 		&"viridian_mart"] as Array[StringName], "jalon 7 T4 : la ville et ses deux intérieurs")
-	assert_false(_zones.has_zone(&"route_16"), "Route 16 retirée (décision de Kevin)")
+	# Jalon 21 (T22) : la vraie Route 16 est une zone (le rectangle retiré au J6 était la Route 22).
+	assert_true(_zones.has_zone(&"route_16"), "Route 16 (jalon 21)")
 
 
 ## Une seule source de vérité par fait : l'identité des zones dans zones.json, leur

@@ -1,7 +1,8 @@
 extends GutTest
 ## BoulderField (passe systèmes 2, `systemes-2.md` §2.7.2, §2.7.4) : rochers d'origine, trous et
-## interrupteurs par drapeaux, cases interdites ; puis les puzzles de la grille de QA
-## `tools/plans/qa_strength.txt` joués poussée par poussée.
+## interrupteurs par drapeaux, cases interdites ; puis les puzzles de la grille d'essai
+## `tests/fixtures/plans/essai_force.txt` (ancienne grille de la carte de QA de la Force, retirée en
+## S2Z) joués poussée par poussée.
 
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 const UP := Vector2i.UP
@@ -17,7 +18,7 @@ var _rocks: Dictionary[Object, Vector2i] = {}
 
 func before_each() -> void:
 	_plan = PlanGrid.new()
-	assert_true(_plan.load_file("res://tools/plans/qa_strength.txt"), _plan.error)
+	assert_true(_plan.load_file("res://tests/fixtures/plans/essai_force.txt"), _plan.error)
 	_field = BoulderField.from_positions(_plan.positions)
 	_flags = StoryFlags.new()
 	_load_map()
@@ -37,7 +38,7 @@ func _load_map() -> void:
 				"w":
 					_grid.set_surfable(cell)
 				"|":
-					_grid.set_solid(cell, not _flags.has_flag(&"qa_strength_switch_1"))
+					_grid.set_solid(cell, not _flags.has_flag(&"essai_force_switch_1"))
 	for cell: Vector2i in _field.boulders_at_load(_flags):
 		var rock := RefCounted.new()
 		_grid.occupy(cell, rock)
@@ -66,8 +67,8 @@ func test_built_from_the_grid_positions() -> void:
 	assert_eq(_field.boulders_at_load(_flags).size(), 4)
 	assert_eq(_field.open_holes(_flags), {Vector2i(4, 4): 1, Vector2i(8, 14): 2})
 	assert_eq(_field.switch_cells(), {Vector2i(19, 4): &"interrupteur_1"})
-	assert_eq(_field.hole_flag(1), &"qa_strength_hole_1_filled")
-	assert_eq(_field.switch_flag(&"interrupteur_1"), &"qa_strength_switch_1")
+	assert_eq(_field.hole_flag(1), &"essai_force_hole_1_filled")
+	assert_eq(_field.switch_flag(&"interrupteur_1"), &"essai_force_switch_1")
 
 
 func test_west_lane_rock_falls_into_its_hole_for_good() -> void:
@@ -76,7 +77,7 @@ func test_west_lane_rock_falls_into_its_hole_for_good() -> void:
 	var fell := _push(Vector2i(4, 5), UP)
 	assert_eq(fell.outcome, BoulderRules.Outcome.FELL)
 	assert_eq(fell.hole, 1)
-	assert_true(_flags.has_flag(&"qa_strength_hole_1_filled"), "drapeau du trou : sauvegarde forcée")
+	assert_true(_flags.has_flag(&"essai_force_hole_1_filled"), "drapeau du trou : sauvegarde forcée")
 	assert_false(_field.open_holes(_flags).has(Vector2i(4, 4)), "le trou bouché est du sol")
 	_load_map()
 	assert_false(_field.boulders_at_load(_flags).has(Vector2i(4, 8)),
@@ -89,7 +90,7 @@ func test_east_lane_rock_presses_the_switch_and_opens_the_barrier() -> void:
 		assert_eq(_push(Vector2i(19, 8 - i), UP).outcome, BoulderRules.Outcome.MOVED)
 	var on_switch := _push(Vector2i(19, 5), UP)
 	assert_eq(on_switch.outcome, BoulderRules.Outcome.ON_SWITCH)
-	assert_true(_flags.has_flag(&"qa_strength_switch_1"))
+	assert_true(_flags.has_flag(&"essai_force_switch_1"))
 	assert_true(_field.is_switch_pressed(Vector2i(19, 4), _flags))
 	assert_eq(_field.flag_to_set(on_switch, _flags), &"", "déjà posé : pas de seconde sauvegarde")
 	_load_map()

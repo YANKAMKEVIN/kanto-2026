@@ -1,0 +1,25 @@
+{
+	"route_12_visited": {
+		"variants": [
+			{
+				"unless": ["route_12_visited"],
+				"steps": [
+					{ "set": ["route_12_visited"] }
+				]
+			}
+		]
+	},
+	"route_12_gate_tm39": {
+		"variants": [
+			{
+				"unless": ["got_tm39"],
+				"steps": [
+					{ "dialogue": "route_12_gate_tm39_give" },
+					{ "give": "tm39", "count": 1 },
+					{ "set": ["got_tm39"] },
+					{ "dialogue": "route_12_gate_tm39_got" }
+				]
+			}
+		]
+	}
+}

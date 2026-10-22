@@ -17,7 +17,10 @@ func test_real_illustration_loads_without_error() -> void:
 	assert_eq(_art.get_image_size(), Vector2i(1586, 992))
 	assert_eq(_art.area_of(&"pallet_town"), Rect2i(715, 595, 200, 110))
 	assert_eq(_art.area_of(&"route_1"), Rect2i(775, 445, 50, 150))
-	assert_false(_art.has_area(&"route_16"), "Route 16 retirée (décision de Kevin)")
+	# Le rectangle « Route 16 » de l'illustration d'origine avait été retiré (décision de Kevin, J6 :
+	# c'était la Route 22). Jalon 21 (T22) : la vraie Route 16 a son rectangle, à l'ouest de
+	# Céladopole [D, illustration provisoire].
+	assert_true(_art.has_area(&"route_16"), "Route 16 (jalon 21)")
 	assert_eq(_art.area_of(&"nowhere"), Rect2i())
 
 
