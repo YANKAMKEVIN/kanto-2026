@@ -399,10 +399,6 @@ func submit(action: BattleAction) -> Array[BattleEvent]:
 		return events
 	_turn += 1
 	_acted.clear()
-	# Riposte (jalon 30) : seuls les coups physiques de ce tour comptent.
-	for side: BattleSide in [_player, _foe]:
-		if side.active != null:
-			side.active.physical_damage_taken = 0
 	var started := BattleEvent.new(BattleEvent.Kind.TURN_STARTED, BattleEvent.SideId.PLAYER)
 	started.turn = _turn
 	events.append(started)
@@ -839,7 +835,6 @@ func _execute(side: BattleSide, action: BattleAction, events: Array[BattleEvent]
 		return
 	if move.is_damaging():
 		if not _strike(side, target_side, move, events):
-			_crash(move, side, events)
 			_self_ko(move, side, target_side, events)
 			return
 	elif move.effect_of(MoveEffect.Kind.OHKO) != null:
@@ -994,9 +989,6 @@ func _strike(side: BattleSide, target_side: BattleSide, move: MoveData,
 		_thaw_by_fire(move, target_side, events)
 		if target.pokemon.is_fainted():
 			break
-	# Riposte (jalon 30) : dégâts physiques portés par cette capacité, ce tour.
-	if move.category == MoveData.Category.PHYSICAL:
-		target.physical_damage_taken = _strike_damage
 	if hits_effect != null:
 		var multi := _event(BattleEvent.Kind.MULTI_HIT, target_side)
 		multi.move_id = move.id
@@ -1223,10 +1215,7 @@ func _apply_effect(effect: MoveEffect, move: MoveData, side: BattleSide,
 			_player.active.reset_stages()
 			_foe.active.reset_stages()
 			events.append(_event(BattleEvent.Kind.STATS_RESET, side))
-		MoveEffect.Kind.COUNTER:
-			_counter(move, side, target_side, events)
-		MoveEffect.Kind.RAGE, MoveEffect.Kind.RAMPAGE, MoveEffect.Kind.MIRROR, \
-				MoveEffect.Kind.CRASH:
+		MoveEffect.Kind.RAGE, MoveEffect.Kind.RAMPAGE, MoveEffect.Kind.MIRROR:
 			pass
 
 
@@ -1853,10 +1842,7 @@ func _ghost_scare(side: BattleSide, events: Array[BattleEvent]) -> void:
 #   lancée par la cible), jouée comme si le lanceur la connaissait (sans PP). Échec (FAILED) si la
 #   cible n'a rien lancé, a lancé Mimique, ou une capacité liée à son emplacement (charge,
 #   Patience, Mania, Ultralaser).
-# - Riposte (COUNTER, règle moderne) : le double des derniers dégâts **physiques** reçus ce tour
-#   (DAMAGE « counter ») ; FAILED sinon ; sans effet sur un type immunisé (Spectre).
-# - Pied Sauté, Pied Voltige (CRASH, règle moderne) : raté ou sans effet, le lanceur perd
-#   [member MoveEffect.fraction] de ses PV max (RECOIL).
+# - Riposte, Pied Sauté, Pied Voltige : codés par le J27 (commit 865c97e7), pas ici.
 
 ## Capacités que Mimique refuse de copier : liées à un emplacement du lanceur.
 const _MIRROR_EXCLUDED: Array[MoveEffect.Kind] = [MoveEffect.Kind.CHARGE, MoveEffect.Kind.BIDE,
@@ -1929,39 +1915,3 @@ func _build_rage(target_side: BattleSide, amount: int, events: Array[BattleEvent
 	changed.stages = applied if applied != 0 else 1
 	changed.stage = target.get_stage(&"atk")
 	events.append(changed)
-
-
-## Riposte : le double des dégâts physiques reçus ce tour, ou FAILED.
-func _counter(move: MoveData, side: BattleSide, target_side: BattleSide,
-		events: Array[BattleEvent]) -> void:
-	var taken := side.active.physical_damage_taken
-	var target := target_side.active
-	if taken <= 0 or target.pokemon.is_fainted():
-		_append_failed(side, move.id, events)
-		return
-	if not move.typeless and _data.get_type_chart().multiplier(move.type, target.types) == 0.0:
-		var immune := _event(BattleEvent.Kind.NO_EFFECT, target_side)
-		immune.move_id = move.id
-		events.append(immune)
-		return
-	var damage := _event(BattleEvent.Kind.DAMAGE, target_side)
-	damage.move_id = move.id
-	damage.amount = target.pokemon.take_damage(2 * taken)
-	damage.hp = target.pokemon.hp
-	events.append(damage)
-	_record_hit(target_side, damage.amount, events)
-
-
-## Pied Sauté, Pied Voltige : raté ou sans effet, le lanceur se blesse (RECOIL).
-func _crash(move: MoveData, side: BattleSide, events: Array[BattleEvent]) -> void:
-	var effect := move.effect_of(MoveEffect.Kind.CRASH)
-	var user := side.active.pokemon
-	if effect == null or user.is_fainted():
-		return
-	var recoil := _event(BattleEvent.Kind.RECOIL, side)
-	recoil.amount = user.take_damage(maxi(floori(user.max_hp() * effect.fraction), 1))
-	recoil.hp = user.hp
-	events.append(recoil)
-	if user.is_fainted():
-		_faint(side, events)
-		_check_end(events)

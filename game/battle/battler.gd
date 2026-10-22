@@ -57,15 +57,13 @@ var recharge_slot: int = -1
 ## Jalon 30 (Q30-3, capacités de la Ligue ; jamais sauvegardé, perdu au changement et au K.O.) :
 ## Frénésie en cours (chaque coup direct reçu monte l'Attaque ; finit dès qu'il lance autre chose),
 ## Mania / Danse Fleur (emplacement imposé et tours restants après celui-ci ; −1 = aucune),
-## dernière capacité lancée (Mimique de l'adversaire ; &"" = aucune) et derniers dégâts physiques
-## reçus ce tour (Riposte ; remis à 0 au début de chaque tour).
+## et dernière capacité lancée (Mimique de l'adversaire ; &"" = aucune).
 var raging: bool = false
 var rampage_slot: int = -1
 var rampage_turns: int = 0
 ## Mania finie à ce tour : confusion de fatigue en fin de tour ([Battle]).
 var rampage_tired: bool = false
 var last_move_id: StringName = &""
-var physical_damage_taken: int = 0
 var _stages: Dictionary[StringName, int] = {}
 
 @warning_ignore_start("integer_division")

@@ -1,8 +1,8 @@
 extends GutTest
 ## Capacités de la Ligue dont l'effet manquait (jalon 30, Q30-3, décision de Kevin du
-## 2026-10-22 : les coder) : Frénésie (RAGE), Mania / Danse Fleur (RAMPAGE), Mimique (MIRROR),
-## Riposte (COUNTER), Pied Sauté / Pied Voltige (CRASH). Règles [D] : `jalon-30.md` §10.6 et
-## l'en-tête du bloc « Jalon 30 » de `battle.gd`.
+## 2026-10-22 : les coder) : Frénésie (RAGE), Mania / Danse Fleur (RAMPAGE), Mimique (MIRROR).
+## Riposte, Pied Sauté et Pied Voltige : codés par le J27 (test_battle_crash_counter.gd là-bas).
+## Règles [D] : `jalon-30.md` §10.6 et l'en-tête du bloc « Jalon 30 » de `battle.gd`.
 ##
 ## Combats sauvages ([code]battle_kit_j12.gd[/code]) avec un vrai [GameRng] à graine fixe : les
 ## assertions ne dépendent pas des tirages (précision 100, cibles solides).
@@ -39,8 +39,6 @@ func test_the_league_moves_carry_their_effects() -> void:
 	var expected := {
 		&"rage": MoveEffect.Kind.RAGE, &"thrash": MoveEffect.Kind.RAMPAGE,
 		&"petal_dance": MoveEffect.Kind.RAMPAGE, &"mirror_move": MoveEffect.Kind.MIRROR,
-		&"counter": MoveEffect.Kind.COUNTER, &"jump_kick": MoveEffect.Kind.CRASH,
-		&"hi_jump_kick": MoveEffect.Kind.CRASH,
 	}
 	for id: StringName in expected:
 		var move := _data.get_move(id)
@@ -50,15 +48,6 @@ func test_the_league_moves_carry_their_effects() -> void:
 		assert_not_null(move.effect_of(expected[id]), String(id))
 		assert_eq(move.pending_effects.size(), 0, String(id))
 		assert_false(move.description.contains("Sans effet"), String(id))
-	assert_eq(_data.get_move(&"jump_kick").effect_of(MoveEffect.Kind.CRASH).fraction, 0.5)
-
-
-func test_crash_needs_a_fraction() -> void:
-	var data := PokemonData.new()
-	assert_false(data.add_moves_from_dict({"x": {"name": "X", "type": "fighting",
-		"category": "physical", "power": 50, "accuracy": 100, "pp": 5, "description": "x",
-		"effects": [{"kind": "crash"}]}}, "test"))
-	assert_push_error("fraction")
 
 
 # --- Frénésie ---------------------------------------------------------------------------------
@@ -112,12 +101,14 @@ func test_an_interrupted_thrash_stops_without_confusion() -> void:
 		Kit.mon(_data, &"onix", 60, [&"harden"]))
 	var mine := battle.get_player_side().active
 	battle.submit(BattleAction.move(0))
-	mine.pokemon.status = StatusRules.FREEZE  # gelé : il ne peut plus agir
+	assert_true(mine.is_rampaging())
+	mine.flinched = true  # apeuré : il ne peut pas agir ce tour-ci
 	var events := battle.submit(BattleAction.move(0))
-	if Kit.find(events, K.STATUS_PREVENTED, P) != null:
-		assert_false(mine.is_rampaging(), "Mania rompue")
-		assert_null(Kit.find(events, K.CONFUSED, P))
-		assert_false(mine.is_confused())
+	assert_not_null(Kit.find(events, K.FLINCHED, P))
+	assert_false(mine.is_rampaging(), "Mania rompue")
+	assert_null(Kit.find(events, K.CONFUSED, P))
+	assert_false(mine.is_confused())
+	assert_eq(battle.get_locked_move(), Battle.NO_LOCK)
 
 
 # --- Mimique ----------------------------------------------------------------------------------
@@ -149,60 +140,3 @@ func test_mirror_move_refuses_a_charging_move() -> void:
 	battle.get_foe_side().active.last_move_id = &"dig"
 	var events := battle.submit(BattleAction.move(0))
 	assert_not_null(Kit.find(events, K.FAILED, P), "Tunnel ne se copie pas")
-
-
-# --- Riposte ----------------------------------------------------------------------------------
-
-func test_counter_returns_twice_the_physical_damage() -> void:
-	var battle := _battle(Kit.mon(_data, &"hitmonchan", 40, [&"counter"]),
-		Kit.mon(_data, &"onix", 40, [&"tackle"]))
-	var foe := battle.get_foe_side().active.pokemon
-	var hp_before := foe.hp
-	var events := battle.submit(BattleAction.move(0))
-	var taken := Kit.find(events, K.DAMAGE, P)
-	assert_not_null(taken, "Onix frappe d'abord (priorité de Riposte)")
-	var back := Kit.find(events, K.DAMAGE, F)
-	assert_not_null(back)
-	if taken != null and back != null:
-		assert_eq(back.move_id, &"counter")
-		assert_eq(back.amount, mini(2 * taken.amount, hp_before))
-
-
-func test_counter_fails_against_a_special_move() -> void:
-	var battle := _battle(Kit.mon(_data, &"hitmonchan", 40, [&"counter"]),
-		Kit.mon(_data, &"charmander", 40, [&"ember"]))
-	var events := battle.submit(BattleAction.move(0))
-	assert_not_null(Kit.find(events, K.DAMAGE, P), "Flammèche touche")
-	assert_not_null(Kit.find(events, K.FAILED, P), "Riposte échoue sur un coup spécial")
-	assert_null(Kit.find(events, K.DAMAGE, F))
-
-
-func test_counter_fails_when_not_hit() -> void:
-	var battle := _battle(Kit.mon(_data, &"hitmonchan", 40, [&"counter"]),
-		Kit.mon(_data, &"onix", 40, [&"harden"]))
-	var events := battle.submit(BattleAction.move(0))
-	assert_not_null(Kit.find(events, K.FAILED, P))
-
-
-# --- Pied Sauté, Pied Voltige -----------------------------------------------------------------
-
-func test_jump_kick_crashes_on_a_ghost() -> void:
-	for id: StringName in [&"jump_kick", &"hi_jump_kick"]:
-		var battle := _battle(Kit.mon(_data, &"hitmonlee", 40, [id]),
-			Kit.mon(_data, &"gastly", 40, [&"lick"]))
-		var mine := battle.get_player_side().active.pokemon
-		var events := battle.submit(BattleAction.move(0))
-		var immune := Kit.index_of(events, K.NO_EFFECT, F)
-		assert_gt(immune, -1, "%s : sans effet sur Fantominus" % id)
-		var crash := _after(events, K.RECOIL, P, immune)
-		assert_not_null(crash, "%s : le lanceur se blesse" % id)
-		if crash != null:
-			assert_eq(crash.amount, floori(mine.max_hp() * 0.5))
-
-
-func test_a_landed_jump_kick_does_not_crash() -> void:
-	var battle := _battle(Kit.mon(_data, &"hitmonlee", 40, [&"jump_kick"]),
-		Kit.mon(_data, &"onix", 60, [&"harden"]), 7)
-	var events := battle.submit(BattleAction.move(0))
-	if Kit.find(events, K.DAMAGE, F) != null:
-		assert_null(Kit.find(events, K.RECOIL, P))

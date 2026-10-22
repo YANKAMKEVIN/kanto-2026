@@ -149,52 +149,5 @@
 			"toxic"
 		],
 		"description": "Un poison qui s'aggrave à chaque tour. Aggravation sans effet dans le moteur actuel (codée par le J23)."
-	},
-	"ice_punch": {
-		"name": "Poing-Glace",
-		"type": "ice",
-		"category": "physical",
-		"power": 75,
-		"accuracy": 100,
-		"pp": 15,
-		"effects": [
-			{
-				"kind": "status",
-				"status": "freeze",
-				"chance": 10
-			}
-		],
-		"description": "Un coup de poing glacé frappe la cible. Peut la geler."
-	},
-	"thunder_punch": {
-		"name": "Poing-Éclair",
-		"type": "electric",
-		"category": "physical",
-		"power": 75,
-		"accuracy": 100,
-		"pp": 15,
-		"effects": [
-			{
-				"kind": "status",
-				"status": "paralysis",
-				"chance": 10
-			}
-		],
-		"description": "Un coup de poing électrique frappe la cible. Peut la paralyser."
-	},
-	"rolling_kick": {
-		"name": "Mawashi Geri",
-		"type": "fighting",
-		"category": "physical",
-		"power": 60,
-		"accuracy": 85,
-		"pp": 15,
-		"effects": [
-			{
-				"kind": "flinch",
-				"chance": 30
-			}
-		],
-		"description": "Un coup de pied circulaire. Peut apeurer la cible."
 	}
 }

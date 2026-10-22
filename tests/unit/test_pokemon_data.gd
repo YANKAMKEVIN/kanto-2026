@@ -829,8 +829,7 @@ func test_moves_without_effect_say_so() -> void:
 			" Sans effet dans le moteur actuel."), String(id))
 	for id: StringName in [&"thunder_wave", &"stun_spore", &"sleep_powder", &"supersonic",
 			&"focus_energy", &"super_fang", &"seismic_toss", &"whirlwind", &"horn_drill",
-			&"mirror_move", &"rage", &"thrash", &"petal_dance", &"counter", &"jump_kick",
-			&"hi_jump_kick"]:
+			&"mirror_move", &"rage", &"thrash", &"petal_dance"]:
 		assert_false(_data.get_move(id).description.contains("Sans effet"), String(id))
 	assert_eq(_data.get_move(&"sleep_powder").description,
 		"Une poudre soporifique qui endort la cible.")

@@ -4,13 +4,14 @@ extends GutTest
 ## `special_moves.asm`, `read_trainer_party.asm` : capacité d'équipe du 5e Pokémon, Piqué et
 ## capacité du starter du Champion). Capacités au niveau calculées comme RB, **sans
 ## remplacement** : Q30-3, décision de Kevin du 2026-10-22, les effets manquants sont codés
-## (Frénésie, Mania, Mimique, Riposte, Pied Sauté, Pied Voltige : test_league_moves.gd) ; seul
-## Toxik attend le J23 (poison grave codé là-bas, fusionné avant le J30).
+## ici (Frénésie, Mania, Mimique : test_league_moves.gd) ; Toxik attend le J23, Riposte, Pied
+## Sauté et Pied Voltige le J27 (effets codés là-bas, données empruntées à l'identique).
 
 const SOURCE := "res://data/trainers/league.json"
 const STARTERS: Array[StringName] = [&"bulbasaur", &"charmander", &"squirtle"]
 ## Capacités encore sans effet tolérées dans les équipes : codées par une autre branche.
-const PENDING_ALLOWED: Array[StringName] = [&"toxic"]
+## Toxik : J23 ; Riposte, Pied Sauté, Pied Voltige : effets livrés par le J27 (commit 865c97e7).
+const PENDING_ALLOWED: Array[StringName] = [&"toxic", &"counter", &"jump_kick", &"hi_jump_kick"]
 
 ## [espèce, niveau, capacités] par membre, dans l'ordre RB.
 const MEMBERS := {

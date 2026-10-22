@@ -329,7 +329,9 @@ Textes et prénoms : propositions du plan, **validés par Kevin le 2026-10-21, v
 - **Q30-1** générique : défaut du plan (« Kanto 2026 — un remake personnel de Kevin », l'équipe du
   joueur, « Merci d'avoir joué ») — à coder au T16 ;
 - **Q30-2** textes du plan : validés ;
-- **Q30-3** capacités de la Ligue sans effet : **les coder** (pas de remplacement) — fait (§10.6) ;
+- **Q30-3** capacités de la Ligue sans effet : **les coder** (pas de remplacement) — Frénésie,
+  Mania / Danse Fleur, Mimique codées ici (§10.6) ; Riposte, Pied Sauté, Pied Voltige **codés par
+  le J27** (commit `865c97e7`, consigne de la coordination : pas de double codage) ;
 - **Q30-4** Panthéon consultable depuis le **Menu Dresseur** (écran Dresseur, lecture seule) — T15 ;
 - **Q30-5** au-delà de 50 entrées : **arrêter d'ajouter** — fait (`HallOfFame.add` → `FULL`) ;
 - **Q30-6** question OUI / NON à la porte de la Ligue : **oui** (T30-01, `league_guard_door`) ;
@@ -357,7 +359,8 @@ Textes et prénoms : propositions du plan, **validés par Kevin le 2026-10-21, v
   Blizzard / Méga-Sangsue au starter.
 - **Q30-3** (décision de Kevin : coder) : les équipes gardent **toutes** leurs capacités RB
   (Mania de Lippoutou, Frénésie des Onix et du Dracaufeu du rival, Riposte de Tygnon, Pied Sauté
-  et Pied Voltige de Kicklee, Mimique du Roucarnage du rival) ; les effets sont codés (§10.6).
+  et Pied Voltige de Kicklee, Mimique du Roucarnage du rival) ; effets codés ici (§10.6), sauf
+  Riposte, Pied Sauté et Pied Voltige : **effets livrés par le J27** (ici encore « à faire »).
   **Toxik** (Ectoplasma N60 d'Agatha) : poison grave **déjà codé par le J23** (fusionné avant le
   J30) ; ici, simple poison en attendant (`j30_reprises.json`, `pending_effects: ["toxic"]`).
 - **Argent** : 99 par niveau du dernier Pokémon (pokered `pic_money … 9900`).
@@ -392,8 +395,9 @@ du J30 quand cette branche est fusionnée avant lui (sinon « identifiant déjà
 |---|---|---|
 | `data/pokemon/species/kanto_j30.json` | Lippoutou, Mackogneur, Ectoplasma, Draco (→ Dracolosse N55), Dracolosse | nouvelles (J30) |
 | `data/pokemon/species/kanto_j30_reprises.json` | Lamantine, Crustabri, Flagadoss (J24) ; Lokhlass, Alakazam (J26, `kanto_silph.json`) ; Ptéra (J25) ; Rhinoféros (J28) ; Noadkoko (J29) ; Kicklee, Tygnon (J27, `kanto_saffron.json`) | copies exactes |
-| `data/pokemon/moves/j30.json` | Grobisou (nouvelle) ; **Riposte, Pied Sauté, Pied Voltige** (`hi_jump_kick`) : entrées du J27 **avec leurs effets codés** (`counter`, `crash`) — à la fusion du J27, **garder la version du J30** | nouvelles / codées |
-| `data/pokemon/moves/j30_reprises.json` | Amnésie, Bouclier (J21) ; Blizzard, Picanon (J24) ; Déflagration, Poing de Feu (J25) ; Abîme (J28) ; Ultimawashi, Piqué (J29) ; Poing-Glace, Poing-Éclair, Mawashi Geri (J27) ; **Toxik** (J23, **simplifié** : sans `toxic: true`, `pending_effects: ["toxic"]`, la base ne connaît pas la clé) | copies |
+| `data/pokemon/moves/j30.json` | Grobisou (nouvelle) | nouvelle |
+| `data/pokemon/moves/j30_emprunts.json` | **J27** (`saffron.json`) : Riposte, Pied Sauté, Pied Voltige (`hi_jump_kick`, Riposte priorité −1), copiés à l'identique de `865c97e7^` (version « à faire », `pending_effects`, car ce moteur n'a pas les sortes `crash` / `counter`) ; Poing-Glace, Poing-Éclair, Mawashi Geri (identiques à `origin/jalon-27`). **À la fusion : supprimer ce fichier, la version du J27 (effets livrés) fait foi** | emprunts |
+| `data/pokemon/moves/j30_reprises.json` | Amnésie, Bouclier (J21) ; Blizzard, Picanon (J24) ; Déflagration, Poing de Feu (J25) ; Abîme (J28) ; Ultimawashi, Piqué (J29) ; **Toxik** (J23, **simplifié** : sans `toxic: true`, `pending_effects: ["toxic"]`, la base ne connaît pas la clé) | copies |
 
 Statistiques des espèces nouvelles : valeurs modernes (comme le dépôt), `base_exp` de PokeAPI
 (`build/rb/pokeapi/pokemon.csv`) ; apprentissages RB complets. Pas de fiche de Pokédex pour les
@@ -416,11 +420,13 @@ Tests de décompte mis à jour (conflits attendus à la fusion, à résoudre en 
 
 ### 10.6 Capacités codées (Q30-3, décision de Kevin du 2026-10-22)
 
-Aucune branche `origin/jalon-21` … `jalon-29` ne codait ces effets (le J24 code Métronome, le J23
-Toxik, autre chose) : code nouveau, dans `game/battle/battle.gd` (bloc « Jalon 30 » en fin de
-fichier), `battler.gd`, `battle_ai.gd`, `move_effect.gd` (sortes `rage`, `rampage`, `mirror`,
-`counter`, `crash`, ajoutées en fin d'enum : à fusionner avec `METRONOME` du J24), données
-`moves.json` (Frénésie, Mania, Danse Fleur, Mimique) ; tests `tests/unit/test_league_moves.gd`.
+Vérifié le 2026-10-22 : aucune branche `origin/jalon-21` … `jalon-29` ne codait Frénésie, Mania
+ni Mimique (le J24 code Métronome, le J23 Toxik ; le **J27 code Riposte, Pied Sauté et Pied
+Voltige**, commit `865c97e7` : non recodés ici). Code nouveau dans `game/battle/battle.gd` (bloc
+« Jalon 30 » en fin de fichier), `battler.gd`, `battle_ai.gd`, `move_effect.gd` (sortes `rage`,
+`rampage`, `mirror` ajoutées en fin d'enum : à fusionner avec `METRONOME` du J24 et `CRASH`,
+`COUNTER` du J27), données `moves.json` (Frénésie, Mania, Danse Fleur, Mimique) ; tests
+`tests/unit/test_league_moves.gd`.
 Règles [D] :
 - **Frénésie** (2e génération) : tant que le lanceur relance Frénésie, chaque coup direct reçu
   monte son Attaque d'un niveau ; lancer autre chose y met fin (RB : bloqué jusqu'à la fin du
@@ -432,10 +438,7 @@ Règles [D] :
   MOVE_USED de la copie, sans PP) ; échoue si rien à copier, Mimique, Lutte, ou capacité liée à
   un emplacement (charge, Patience, Mania, Ultralaser) ; IA : seulement s'il y a quelque chose à
   copier ;
-- **Riposte** (moderne) : le double des derniers dégâts **physiques** reçus ce tour, priorité −1
-  (donnée du J27) ; échoue sinon ; sans effet sur un Spectre ;
-- **Pied Sauté, Pied Voltige** (moderne) : raté ou sans effet, le lanceur perd ½ de ses PV max
-  (message de contrecoup existant).
+- **Riposte, Pied Sauté, Pied Voltige** : règles RB du J27 (voir `jalon-27.md`).
 
 ### 10.5 Restant
 

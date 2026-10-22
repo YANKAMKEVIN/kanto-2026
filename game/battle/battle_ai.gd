@@ -199,10 +199,6 @@ static func status_has_effect(move: MoveData, own: Battler, foe: Battler) -> boo
 				# Jalon 30 : Mimique seulement si la cible a déjà lancé une capacité copiable [D].
 				if foe.last_move_id != &"" and foe.last_move_id != Battle.MIRROR_MOVE_ID:
 					return true
-			MoveEffect.Kind.COUNTER:
-				# Jalon 30 : les coups du tour ne sont pas connus au choix ; borné par
-				# STATUS_MAX_USES [D].
-				return true
 	return false
 
 

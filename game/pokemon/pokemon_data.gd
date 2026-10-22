@@ -74,8 +74,6 @@ const _EFFECT_KEYS: Dictionary[MoveEffect.Kind, Array] = {
 	MoveEffect.Kind.RAGE: ["kind"],
 	MoveEffect.Kind.RAMPAGE: ["kind"],
 	MoveEffect.Kind.MIRROR: ["kind"],
-	MoveEffect.Kind.COUNTER: ["kind"],
-	MoveEffect.Kind.CRASH: ["kind", "fraction"],
 }
 ## Clés d'effet facultatives (toutes les autres de [constant _EFFECT_KEYS] sont obligatoires).
 ## « amount » : obligatoire pour FIXED_DAMAGE « value » seulement ([method _parse_effect]) ;
@@ -619,8 +617,7 @@ func _parse_effect(value: Variant, where: String) -> MoveEffect:
 	if effect.kind in [MoveEffect.Kind.REQUIRES_SLEEP, MoveEffect.Kind.FORCE_SWITCH,
 			MoveEffect.Kind.RECOIL_DAMAGE, MoveEffect.Kind.RECHARGE, MoveEffect.Kind.OHKO,
 			MoveEffect.Kind.HEAL, MoveEffect.Kind.HAZE, MoveEffect.Kind.RAGE,
-			MoveEffect.Kind.RAMPAGE, MoveEffect.Kind.MIRROR, MoveEffect.Kind.COUNTER,
-			MoveEffect.Kind.CRASH]:
+			MoveEffect.Kind.RAMPAGE, MoveEffect.Kind.MIRROR]:
 		return effect if _read_effect_j12(entry, effect, where) and ok else null
 	if effect.kind == MoveEffect.Kind.SCREEN:
 		if entry.get("screen") is String and MoveEffect.SCREENS.has(StringName(entry["screen"])):
