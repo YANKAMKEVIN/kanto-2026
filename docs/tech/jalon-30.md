@@ -337,6 +337,9 @@ Textes et prénoms : propositions du plan, **validés par Kevin le 2026-10-21, v
 - **Q30-6** question OUI / NON à la porte de la Ligue : **oui** (T30-01, `league_guard_door`) ;
 - **ordre des validations de sauvegarde** : le J23 (v8) d'abord, puis le J30 (`hall_of_fame`)
   **séparément**.
+- **défauts de la Ligue (§8) gardés** (décision de Kevin du 2026-10-22, le code les applique déjà) :
+  Frénésie selon la règle de 2e génération ; déclencheur à l'entrée de chaque salle ; Agatha et le
+  rival changent de Pokémon ; pas d'objets pour l'IA.
 
 ### 10.1 Fait
 
