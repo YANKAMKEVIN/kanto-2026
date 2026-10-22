@@ -1134,7 +1134,7 @@ preuves `21a_<n>.png`, rapport `build/qa/jalon21_t16/`.
   Ronflex sans défaite en simulation (`tools/simulate_mt_moon.gd -- --scenario=j21`, 100 parties)
   [D : aucun réglage attendu, L-7 et L-12].
 
-#### T24 — **À FAIRE (Kevin, téléphone)** — Q : **session 21B** et QA de bout en bout → K, fusion — après T23
+#### T24 — **FAIT (QA 21A et 21B validées par Kevin le 2026-10-22 ; J21 fusionné dans `main` le 2026-10-22)** — Q : **session 21B** et QA de bout en bout → K, fusion — après T23
 
 | n° | Départ | Geste | Attendu |
 |---|---|---|---|
