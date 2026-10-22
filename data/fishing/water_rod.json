@@ -27,5 +27,15 @@
 			{ "species": "goldeen", "level": 15, "weight": 1 },
 			{ "species": "magikarp", "level": 15, "weight": 1 }
 		]
+	},
+	"super_rod_cerulean_cave": {
+		"maps": ["cerulean_cave_1f", "cerulean_cave_2f", "cerulean_cave_b1f"],
+		"terrain": "water_rod", "rod": "super_rod", "rate": 75,
+		"slots": [
+			{ "species": "slowbro", "level": 23, "weight": 1 },
+			{ "species": "seaking", "level": 23, "weight": 1 },
+			{ "species": "kingler", "level": 23, "weight": 1 },
+			{ "species": "seadra", "level": 23, "weight": 1 }
+		]
 	}
 }

@@ -1,0 +1,260 @@
+{
+	"cerulean_cave_1f_item_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_cerulean_cave_1f_item_1"
+				],
+				"steps": [
+					{
+						"despawn": "cerulean_cave_1f_item_1"
+					},
+					{
+						"give": "full_restore",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_cerulean_cave_1f_item_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"cerulean_cave_1f_item_2": {
+		"variants": [
+			{
+				"unless": [
+					"got_cerulean_cave_1f_item_2"
+				],
+				"steps": [
+					{
+						"despawn": "cerulean_cave_1f_item_2"
+					},
+					{
+						"give": "max_elixir",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_cerulean_cave_1f_item_2"
+						]
+					}
+				]
+			}
+		]
+	},
+	"cerulean_cave_1f_item_3": {
+		"variants": [
+			{
+				"unless": [
+					"got_cerulean_cave_1f_item_3"
+				],
+				"steps": [
+					{
+						"despawn": "cerulean_cave_1f_item_3"
+					},
+					{
+						"give": "nugget",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_cerulean_cave_1f_item_3"
+						]
+					}
+				]
+			}
+		]
+	},
+	"cerulean_cave_1f_hidden_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_cerulean_cave_1f_hidden_1"
+				],
+				"steps": [
+					{
+						"give": "rare_candy",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_cerulean_cave_1f_hidden_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"cerulean_cave_2f_item_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_cerulean_cave_2f_item_1"
+				],
+				"steps": [
+					{
+						"despawn": "cerulean_cave_2f_item_1"
+					},
+					{
+						"give": "pp_up",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_cerulean_cave_2f_item_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"cerulean_cave_2f_item_2": {
+		"variants": [
+			{
+				"unless": [
+					"got_cerulean_cave_2f_item_2"
+				],
+				"steps": [
+					{
+						"despawn": "cerulean_cave_2f_item_2"
+					},
+					{
+						"give": "ultra_ball",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_cerulean_cave_2f_item_2"
+						]
+					}
+				]
+			}
+		]
+	},
+	"cerulean_cave_2f_item_3": {
+		"variants": [
+			{
+				"unless": [
+					"got_cerulean_cave_2f_item_3"
+				],
+				"steps": [
+					{
+						"despawn": "cerulean_cave_2f_item_3"
+					},
+					{
+						"give": "full_restore",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_cerulean_cave_2f_item_3"
+						]
+					}
+				]
+			}
+		]
+	},
+	"cerulean_cave_b1f_item_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_cerulean_cave_b1f_item_1"
+				],
+				"steps": [
+					{
+						"despawn": "cerulean_cave_b1f_item_1"
+					},
+					{
+						"give": "ultra_ball",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_cerulean_cave_b1f_item_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"cerulean_cave_b1f_item_2": {
+		"variants": [
+			{
+				"unless": [
+					"got_cerulean_cave_b1f_item_2"
+				],
+				"steps": [
+					{
+						"despawn": "cerulean_cave_b1f_item_2"
+					},
+					{
+						"give": "max_revive",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_cerulean_cave_b1f_item_2"
+						]
+					}
+				]
+			}
+		]
+	},
+	"cerulean_cave_b1f_hidden_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_cerulean_cave_b1f_hidden_1"
+				],
+				"steps": [
+					{
+						"give": "ultra_ball",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_cerulean_cave_b1f_hidden_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"mewtwo": {
+		"variants": [
+			{
+				"unless": [
+					"mewtwo_encounter_resolved"
+				],
+				"steps": [
+					{
+						"dialogue": "mewtwo_cry"
+					},
+					{
+						"wild_battle": "mewtwo",
+						"level": 70,
+						"intro": "legendary",
+						"actor": "mewtwo",
+						"static": {
+							"done": "mewtwo_encounter_resolved",
+							"caught": "mewtwo_caught"
+						}
+					}
+				]
+			}
+		]
+	}
+}

@@ -76,6 +76,10 @@ func test_real_data_loads_without_error() -> void:
 		&"nidorina", &"nidoqueen", &"nidoran_m", &"nidorino", &"nidoking", &"clefairy",
 		&"clefable", &"vulpix", &"ninetales", &"jigglypuff", &"wigglytuff", &"zubat", &"golbat",
 		&"oddish", &"gloom", &"vileplume", &"paras", &"parasect",
+		# Jalon 31 (T4, kanto_j31_emprunts.json, copies identiques des J22–J28) : Aéromite,
+		# Flagadoss, Dodrio, Krabboss, Électrode, Rhinoféros, Leveinard, Hypocéan, Poissoroy ;
+		# kanto_j31.json : Métamorph et Mewtwo.
+		&"venomoth",
 		# Jalon 17 (T7) : Taupiqueur, Triopikeur ; plus loin Goupix, Caninos, Magnéti, Magnéton,
 		# Soporifik, Hypno (kanto_j17.json).
 		&"diglett", &"dugtrio",
@@ -83,21 +87,22 @@ func test_real_data_loads_without_error() -> void:
 		&"meowth", &"persian",
 		&"mankey", &"primeape", &"growlithe", &"arcanine", &"abra", &"kadabra", &"machop",
 		&"bellsprout", &"weepinbell", &"victreebel",
-		&"geodude", &"graveler", &"golem", &"magnemite", &"magneton", &"shellder",
+		&"geodude", &"graveler", &"golem", &"slowbro", &"magnemite", &"magneton", &"dodrio",
+		&"shellder",
 		# Jalon 19 (T3) : Fantominus, Spectrum, Noeunoeuf, Osselait, Ossatueur, Léviator
 		# (kanto_tower.json ; Caninos vient du J17).
 		&"gastly", &"haunter", &"onix",
-		&"drowzee", &"hypno", &"voltorb", &"exeggcute", &"cubone", &"marowak", &"koffing",
-		&"rhyhorn", &"tangela", &"kangaskhan",
-		&"horsea", &"goldeen", &"staryu", &"starmie", &"gyarados",
-		&"eevee", &"vaporeon", &"jolteon", &"flareon"] as Array[StringName])
-	assert_eq(_data.get_move_ids().size(), 130,
+		&"drowzee", &"hypno", &"kingler", &"voltorb", &"electrode", &"exeggcute", &"cubone",
+		&"marowak", &"koffing", &"rhyhorn", &"rhydon", &"chansey", &"tangela", &"kangaskhan",
+		&"horsea", &"seadra", &"goldeen", &"seaking", &"staryu", &"starmie", &"gyarados", &"ditto",
+		&"eevee", &"vaporeon", &"jolteon", &"flareon", &"mewtwo"] as Array[StringName])
+	assert_eq(_data.get_move_ids().size(), 136,
 		"47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10) + Patience (J11) "
 		+ "+ 21 du Mont Sélénite (jalon 12) + 8 du jalon 13 (les 5 du J12 qu'il reprenait : "
 		+ "entrées du J12) + 6 du Cap d'Azuria (jalon 14) + Jackpot (J15) "
 		+ "+ Coupe et Tonnerre (jalon 16) + 7 du jalon 17 + 8 de la Tour Pokémon (J19 ; "
 		+ "Hypnose, Hurlement et Bélier viennent du J17) + 7 du jalon 20 + Vol (passe systèmes 2, T25) "
-		+ "+ Surf (S2C) + Force (S2D)")
+		+ "+ Surf (S2C) + Force (S2D) + 5 empruntées et Morphing (jalon 31)")
 	assert_true(_data.has_move(&"struggle"))
 
 
@@ -476,6 +481,9 @@ func test_real_catch_rates_are_the_official_ones() -> void:
 		# Jalon 19 (T3, Tour Pokémon ; Caninos vient du J17).
 		&"gastly": 190, &"haunter": 90, &"exeggcute": 90, &"cubone": 190,
 		&"marowak": 75, &"gyarados": 45,
+		# Jalon 31 (T4 ; espèces empruntées aux J22–J28, copies identiques).
+		&"venomoth": 75, &"slowbro": 75, &"dodrio": 45, &"kingler": 60, &"electrode": 60,
+		&"rhydon": 60, &"chansey": 30, &"seadra": 75, &"seaking": 60, &"ditto": 35, &"mewtwo": 3,
 	}
 	assert_eq(_data.get_species_ids().size(), expected.size(), "toutes les espèces")
 	for id: StringName in _data.get_species_ids():

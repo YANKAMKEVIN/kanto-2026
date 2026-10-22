@@ -32,7 +32,7 @@
 #     case de sol voisine donnée par sa position « objet_cache »
 # Rencontres : terrain « floor » (toute case praticable, comme les Îles Écume du J24), taux et
 # espèces de RB par étage (`data/encounters/cerulean_cave.json`) ; aucune sur l'eau (RB : taux 0),
-# Super Canne : groupe 9 de RB (`data/fishing/water_rod_cerulean_cave.json`).
+# Super Canne : groupe 9 de RB (`data/fishing/water_rod.json`, table `super_rod_cerulean_cave`).
 # Aucun Dresseur (§8.1 du plan, défaut [D] : fidèle à RB).
 #
 # Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 30 caractères), puis POSITIONS.
@@ -78,8 +78,8 @@ echelle_p6     echelle        3,11         libre   paire=P6 sens=monte vers=ceru
 arrivee_p6     spawn          3,12         libre   paire=P6
 echelle_p7     echelle        0,6          libre   paire=P7 sens=descend vers=cerulean_cave_b1f
 arrivee_p7     spawn          0,7          libre   paire=P7
-objet_1f_1    objet          7,13         bloque  item=full_restore
-objet_1f_2    objet          19,3          bloque  item=max_elixir
-objet_1f_3    objet          5,0          bloque  item=nugget
-cache_1f_1    objet_cache    14,12         libre   item=rare_candy  # RB : (14, 11), dans la roche (indice x) ; pris depuis (14, 12), tourné vers l'indice
+cerulean_cave_1f_item_1  objet          7,13         bloque  item=full_restore
+cerulean_cave_1f_item_2  objet          19,3          bloque  item=max_elixir
+cerulean_cave_1f_item_3  objet          5,0          bloque  item=nugget
+cerulean_cave_1f_hidden_1 objet_cache    14,12         libre   item=rare_candy  # RB : (14, 11), dans la roche (indice x) ; pris depuis (14, 12), tourné vers l'indice
 FIN

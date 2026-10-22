@@ -1,0 +1,55 @@
+{
+	"cerulean_cave_1f_floor": {
+		"maps": ["cerulean_cave_1f"],
+		"terrain": "floor",
+		"rate": 10,
+		"slots": [
+			{ "species": "golbat", "levels": [46, 46], "weight": 51 },
+			{ "species": "hypno", "levels": [46, 46], "weight": 51 },
+			{ "species": "magneton", "levels": [46, 46], "weight": 39 },
+			{ "species": "dodrio", "levels": [49, 49], "weight": 25 },
+			{ "species": "venomoth", "levels": [49, 49], "weight": 25 },
+			{ "species": "arbok", "levels": [52, 52], "weight": 13 },
+			{ "species": "sandslash", "levels": [52, 52], "weight": 12 },
+			{ "species": "kadabra", "levels": [49, 49], "weight": 13 },
+			{ "species": "parasect", "levels": [52, 52], "weight": 13 },
+			{ "species": "raichu", "levels": [53, 53], "weight": 11 },
+			{ "species": "ditto", "levels": [53, 53], "weight": 3 }
+		]
+	},
+	"cerulean_cave_2f_floor": {
+		"maps": ["cerulean_cave_2f"],
+		"terrain": "floor",
+		"rate": 15,
+		"slots": [
+			{ "species": "dodrio", "levels": [51, 51], "weight": 51 },
+			{ "species": "venomoth", "levels": [51, 51], "weight": 51 },
+			{ "species": "kadabra", "levels": [51, 51], "weight": 39 },
+			{ "species": "rhydon", "levels": [52, 52], "weight": 25 },
+			{ "species": "marowak", "levels": [52, 52], "weight": 25 },
+			{ "species": "electrode", "levels": [52, 52], "weight": 25 },
+			{ "species": "chansey", "levels": [56, 56], "weight": 13 },
+			{ "species": "wigglytuff", "levels": [54, 54], "weight": 13 },
+			{ "species": "ditto", "levels": [55, 55], "weight": 11 },
+			{ "species": "ditto", "levels": [60, 60], "weight": 3 }
+		]
+	},
+	"cerulean_cave_b1f_floor": {
+		"maps": ["cerulean_cave_b1f"],
+		"terrain": "floor",
+		"rate": 25,
+		"slots": [
+			{ "species": "rhydon", "levels": [55, 55], "weight": 51 },
+			{ "species": "marowak", "levels": [55, 55], "weight": 51 },
+			{ "species": "electrode", "levels": [55, 55], "weight": 39 },
+			{ "species": "chansey", "levels": [64, 64], "weight": 25 },
+			{ "species": "parasect", "levels": [64, 64], "weight": 25 },
+			{ "species": "raichu", "levels": [64, 64], "weight": 25 },
+			{ "species": "arbok", "levels": [57, 57], "weight": 7 },
+			{ "species": "sandslash", "levels": [57, 57], "weight": 6 },
+			{ "species": "ditto", "levels": [65, 65], "weight": 13 },
+			{ "species": "ditto", "levels": [63, 63], "weight": 11 },
+			{ "species": "ditto", "levels": [67, 67], "weight": 3 }
+		]
+	}
+}
