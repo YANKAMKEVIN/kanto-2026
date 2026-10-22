@@ -34,8 +34,8 @@ SHOTS=(
 	"maison_psy|40|--map=saffron_psychic_house --spawn=entrance --facing=up"
 	"copieur_rdc|40|--map=saffron_copycat_house_1f --spawn=entrance --facing=up"
 	"copieur_etage|40|--map=saffron_copycat_house_2f --spawn=from_1f --facing=down"
-	"poste_r8|40|--map=route_8_gate --spawn=from_saffron --facing=down"
-	"route_6_poste|40|--map=route_6 --spawn=from_saffron --facing=down"
+	"poste_r8|40|--map=route_8_gate --spawn=north_door --facing=up"
+	"route_6_poste|40|--map=route_6 --cell=36,10 --facing=up"
 	"perf_ville|300|$CITY --cell=30,31 --facing=left --perf"
 )
 : > "$OUT/perf.txt"

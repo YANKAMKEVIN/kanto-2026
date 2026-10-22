@@ -93,8 +93,12 @@ func test_metadata_light_and_zone() -> void:
 			&"saffron_pidgey_house", &"saffron_copycat_house_1f", &"saffron_copycat_house_2f"]:
 		assert_eq(zones.zone_of(map_id), &"saffron_city", String(map_id))
 		assert_true(MapCatalog.has_map(map_id), String(map_id))
-	for map_id: StringName in zones.get_zone(&"saffron_city").maps:
-		assert_false(String(map_id).begins_with("silph_co"), "la Sylphe est rangée par le T7")
+	# Fusion T6 + T7 : la ville, ses six intérieurs, puis les 12 cartes de la Sylphe.
+	var maps: Array[StringName] = zones.get_zone(&"saffron_city").maps
+	assert_eq(maps.size(), 19, "7 cartes du T6 + 12 de la Sylphe")
+	assert_eq(maps[0], &"saffron_city", "Safrania en tête (zone jouable)")
+	for map_id: StringName in maps.slice(7):
+		assert_true(String(map_id).begins_with("silph_co"), String(map_id))
 	for layer: Node in _map.find_children("*", "TileMapLayer", true, false):
 		assert_false((layer as TileMapLayer).visible, "%s invisible" % layer.name)
 
