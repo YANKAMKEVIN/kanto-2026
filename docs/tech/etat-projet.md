@@ -8,7 +8,7 @@ Planche validée par Kevin : **54 dos intégrés** dans `assets/sprites/pokemon/
 `BattleArt`, `test_painted_backs.gd`) ; Chenipan refait en r8 (fidèle). Restent **6 dos à faire par Kevin
 avec ChatGPT** (Kadabra, Tortank, Rondoudou, Staross, Léviator, Voltali) : prompts et commandes dans
 `docs/design/fiches-assets/dos-a-faire-chatgpt.md` (`tools/art/serie_dos.py --ajouter IDENT fichier`).
-Dos de `battle_proto/` toujours non branchés. Lot : 54 intégrés + 6 à faire (ChatGPT) = 60 espèces ; 4 conditionnelles non lancées.
+**Dos de `battle_proto/` branchés (2026-10-22, décision de Kevin)** : copiés dans `dos/` (23 `dos_ia_*` + 16 `dos3d_*`), `BattleArt.best_painted_back_path` : IA > 3D > provisoire ; 25 espèces de plus dans les données (21 IA + 4 en 3D seul : Taupiqueur, Triopikeur, Soporifik, Smogo ; 2 dos IA, Tentacool 72 et Magicarpe 129, attendent leur espèce ; 12 dos 3D doublés par l'IA restent en repli), soit **79 espèces** à dos peint sur 89 (54 + 21 + 4). Captures 2340×1080 relues (Salamèche, Pikachu, Bulbizarre, Taupiqueur, Soporifik, Smogo) : cadrage correct sans correction d'échelle (`tools/capture_dos_proto.gd`). Lot : 54 intégrés + 6 à faire (ChatGPT) = 60 espèces ; 4 conditionnelles non lancées.
 
 ## Art — lot 2 : dos de combat (2026-10-21, branche `art-dos-combat` depuis `main` @ `1796c9fa`, non fusionnée ; intégré le 2026-10-22, voir ci-dessus)
 - **Périmètre** : les 64 espèces de `data/pokemon/species/*.json` sans aucun dos peint (ni `battle_proto/dos_ia_NNN.png` ni `dos3d_NNN.png`), Voltali et Pyroli compris (Q-4). 60 lancées ; 4 **conditionnelles non lancées** : Ossatueur (105, absent du jeu avant le J21), Rhinocorne (111), Saquedeneu (114), Kangourex (115) (adversaires seulement).

@@ -175,7 +175,7 @@ func test_the_next_battle_sends_the_first_able_pokemon_of_the_new_order() -> voi
 	_menu.close()
 	GameState.party.get_at(0).hp = 0
 	await _walk_into_grass()
-	assert_eq(_lead_sprite_path(), BattleStage.sprite_path(&"pidgey", true),
+	assert_eq(_lead_sprite_path(), BattleArt.painted_back_path(16),  # Roucool : dos peint
 		"le premier K.O. est sauté : le suivant valide entre")
 
 

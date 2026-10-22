@@ -117,19 +117,17 @@ func test_enter_hides_world_pokemon_and_shows_battle_sprites_at_anchors() -> voi
 		assert_true(sprite.visible)
 		assert_eq(sprite.modulate, Color.WHITE)
 		assert_false(sprite.centered, "pieds sur l'origine (offset)")
-	assert_eq(mine.texture_filter, CanvasItem.TEXTURE_FILTER_NEAREST, "dos provisoire net")
+	assert_eq(mine.texture_filter, CanvasItem.TEXTURE_FILTER_LINEAR, "dos peint (Salamèche)")
 	assert_eq(foe.texture_filter, CanvasItem.TEXTURE_FILTER_LINEAR, "artwork officiel")
 	assert_not_null(foe.material, "artwork étalonné dans la lumière du lieu")
-	assert_null(mine.material)
 	assert_eq(mine.position, a["player_feet"])
 	assert_eq(foe.position, a["foe_feet"])
 	assert_eq(mine.scale, Vector2.ONE * _scale(&"charmander", true), "taille de BattleLayout")
-	assert_eq(mine.scale.x, floorf(mine.scale.x), "pixel art : échelle entière")
 	assert_eq(foe.scale, Vector2.ONE * _scale(&"squirtle", false))
-	assert_eq(mine.texture.resource_path, BattleStage.sprite_path(&"charmander", true))
-	assert_string_ends_with(mine.texture.resource_path, "charmander_back.png")
+	assert_eq(mine.texture.resource_path, BattleArt.painted_back_path(4))
+	assert_string_ends_with(mine.texture.resource_path, "dos_ia_004.png")
 	assert_string_ends_with(_art_path(foe), "official/007.png", "Carapuce n° 7")
-	assert_eq(mine.texture.get_size(), Vector2(64, 64))
+	assert_eq(mine.texture.get_size(), Vector2(1024, 1024))
 	_assert_framed(PLAYER_SIDE)
 	_assert_framed(FOE_SIDE)
 	assert_true((_stage.get_node(^"%PlayerShadow") as CanvasItem).visible, "ombre au sol")
@@ -209,7 +207,7 @@ func test_enter_during_a_battle_is_refused() -> void:
 	await _stage.enter(_camera, _foe, _mine, &"bulbasaur", &"bulbasaur")
 	assert_push_error("déjà affiché")
 	assert_string_ends_with(_stage.get_sprite(PLAYER_SIDE).texture.resource_path,
-		"charmander_back.png", "le combat affiché ne change pas")
+		"dos_ia_004.png", "le combat affiché ne change pas")
 	assert_eq(_camera.zoom, Vector2.ONE * BattleStage.ZOOM)
 
 
@@ -241,11 +239,12 @@ func test_real_transition_moves_camera_and_sprites_together() -> void:
 	var clock := TweenClock.new(get_tree())
 	var entered: Array[bool] = [false]
 	_stage.entered.connect(func() -> void: entered[0] = true, CONNECT_ONE_SHOT)
-	_stage.enter(_camera, _mine, _foe, &"charmander", &"squirtle", rival)
+	# Tortank : dos provisoire (pixel art), la taille intermédiaire suit l'échelle entière.
+	_stage.enter(_camera, _mine, _foe, &"blastoise", &"squirtle", rival)
 	clock.run_until(func() -> bool: return false, BattleStage.ENTER_DURATION * 0.45)
 	var mine := _stage.get_sprite(PLAYER_SIDE)
 	assert_between(_camera.zoom.x, 1.01, BattleStage.ZOOM - 0.01, "caméra en mouvement")
-	assert_between(mine.scale.x, 1.1, _scale(&"charmander", true) - 0.1, "taille intermédiaire")
+	assert_between(mine.scale.x, 1.1, _scale(&"blastoise", true) - 0.1, "taille intermédiaire")
 	assert_ne(mine.position, _anchors()["player_feet"], "en chemin")
 	assert_true(mine.visible)
 	assert_true((_stage.get_node(^"%Backdrop") as CanvasItem).visible)
@@ -306,7 +305,7 @@ func test_wild_intro_and_partner_enter_end_at_the_anchors() -> void:
 	assert_true(mine.visible)
 	assert_eq(mine.position, a["player_feet"], "à l'ancre du joueur")
 	assert_eq(mine.scale, Vector2.ONE * _scale(&"charmander", true))
-	assert_string_ends_with(mine.texture.resource_path, "charmander_back.png")
+	assert_string_ends_with(mine.texture.resource_path, "dos_ia_004.png")
 	_assert_framed(PLAYER_SIDE)
 	await _stage.exit()
 	assert_false(_stage.is_active())
@@ -521,6 +520,7 @@ func test_poison_veil_is_softer_when_flashes_are_reduced() -> void:
 	_stage.reduce_flashes = true
 	_stage.speed_scale = 1.0
 	var sprite := _stage.get_sprite(PLAYER_SIDE)
+	var base_material := sprite.material
 	var clock := TweenClock.new(get_tree())
 	var runner := func() -> void: await _stage.play_poison(PLAYER_SIDE)
 	runner.call()
@@ -531,7 +531,7 @@ func test_poison_veil_is_softer_when_flashes_are_reduced() -> void:
 	assert_lt(UiTokens.STATUS_VEIL_AMOUNT_REDUCED, UiTokens.STATUS_VEIL_AMOUNT)
 	clock.run_until(func() -> bool: return false, 0.5)
 	clock.release()
-	assert_null(sprite.material, "dos provisoire : voile retiré, aucun matériau")
+	assert_eq(sprite.material, base_material, "voile retiré, matériau d'origine rendu")
 	_stage.speed_scale = 0.0
 
 

@@ -52,7 +52,7 @@ dimensions, mêmes emprises), pas les cartes. Détail et cibles : fiche de la s�
 
 - **Dos** : `BattleArt.image()` lit `assets/sprites/pokemon/placeholder/<espèce>_back.png`, tous en
   pixel art 64 px (NEAREST). Des dos peints existent en prototype dans
-  `assets/sprites/pokemon/battle_proto/` et **ne sont branchés nulle part** :
+  `assets/sprites/pokemon/battle_proto/` (**branchés depuis le 2026-10-22**, voir ci-dessous) :
   - « IA » (`dos_ia_NNN.png`, Codex) : 001, 004, 007, 012, 016, 025, 037, 038, 041, 045, 058, 059,
     071, 072, 081, 092, 093, 095, 097, 104, 129, 133, 134 ;
   - « 3D » (`dos3d_NNN.png`, rendu X/Y) : 001, 004, 007, 012, 016, 025, 041, 050, 051, 072, 081,
@@ -63,7 +63,7 @@ dimensions, mêmes emprises), pas les cartes. Détail et cibles : fiche de la s�
     Chenipan refait (r8, fidèle). **6 à faire par Kevin avec ChatGPT** : Kadabra, Tortank, Rondoudou,
     Staross, Léviator, Voltali (`fiches-assets/dos-a-faire-chatgpt.md`, commande
     `serie_dos.py --ajouter IDENT fichier`). Non lancés : Ossatueur, Rhinocorne, Saquedeneu, Kangourex.
-    Les 23 `dos_ia` et 16 `dos3d` de `battle_proto/` restent non branchés (à décider).
+    Les 23 `dos_ia` et 16 `dos3d` de `battle_proto/` sont **branchés** (2026-10-22) : copiés dans `dos/`, priorité IA > 3D > provisoire (`BattleArt.best_painted_back_path`) ; 25 espèces gagnées dans les données (21 IA + 4 en 3D seul ; Tentacool et Magicarpe n'y sont pas encore), 79 espèces à dos peint sur 89.
   - méthode validée et passe Colab (reportée par Kevin le 2026-10-16) :
     `fiches-assets/serie-combat-dos-pilote.md` §7.
 - **Fonds CB.3 manquants** (`data/battle/decors.json`, repli = carte floutée) : `viridian_forest`,

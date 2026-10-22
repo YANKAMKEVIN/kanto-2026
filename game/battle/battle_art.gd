@@ -22,6 +22,10 @@ const PLACEHOLDER_DIR: String = "res://assets/sprites/pokemon/placeholder/"
 ## pour le côté du joueur ; une espèce sans fichier garde son sprite provisoire.
 const PAINTED_BACK_DIR: String = "res://assets/sprites/pokemon/dos/"
 
+## Dos 3D (`dos3d_NNN.png`, rendu X/Y, même format 1024²) : repli du dos IA pour une espèce qui n'a
+## pas de `dos_ia` (16 prototypes validés, dont 4 sans équivalent IA : 050, 051, 096, 109).
+## Priorité : dos IA > dos 3D > sprite provisoire.
+
 ## Boîtes visibles des images provisoires, par chemin (lues une fois).
 static var _boxes: Dictionary[String, Rect2] = {}
 static var _shared_pokemon: PokemonData
@@ -46,6 +50,19 @@ static func placeholder_path(species: StringName, back: bool) -> String:
 ## Chemin du dos peint du numéro [param dex] du Pokédex (le fichier peut ne pas exister).
 static func painted_back_path(dex: int) -> String:
 	return PAINTED_BACK_DIR + "dos_ia_%03d.png" % dex
+
+
+## Chemin du dos 3D du numéro [param dex] (repli du dos IA ; le fichier peut ne pas exister).
+static func painted_back_3d_path(dex: int) -> String:
+	return PAINTED_BACK_DIR + "dos3d_%03d.png" % dex
+
+
+## Chemin du dos peint à utiliser pour le numéro [param dex] : IA d'abord, puis 3D ; "" sinon.
+static func best_painted_back_path(dex: int) -> String:
+	for path: String in [painted_back_path(dex), painted_back_3d_path(dex)]:
+		if ResourceLoader.exists(path):
+			return path
+	return ""
 
 
 ## Numéro du Pokédex de [param species] (0 si inconnu).
@@ -76,8 +93,8 @@ func image(species: StringName, back: bool) -> Dictionary:
 		if not official.is_empty():
 			return official
 	if back:
-		var painted_path := painted_back_path(dex_number(species))
-		if ResourceLoader.exists(painted_path):
+		var painted_path := best_painted_back_path(dex_number(species))
+		if not painted_path.is_empty():
 			var painted := load(painted_path) as Texture2D
 			return {"texture": painted, "official": true, "box": visible_box(painted, painted_path)}
 	var path := placeholder_path(species, back)
