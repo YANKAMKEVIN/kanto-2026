@@ -289,3 +289,10 @@ distantes (règle d'ancienneté).
 | N° | Question | Où |
 |---|---|---|
 | — | Chute du joueur au J24 ? (lecture au T3) | §2.2 |
+
+## Décisions de Kevin (2026-10-22)
+
+Choix validés par Kevin sur la page d'arbitrages.
+
+- Équilibrage d'Auguste : à resimuler après la fusion des J21–J24.
+- Prénoms : acceptés.
