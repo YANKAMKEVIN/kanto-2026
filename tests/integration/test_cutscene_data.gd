@@ -275,6 +275,18 @@ const VARIANT_FLAGS: Dictionary = {
 	&"rocket_hideout_b4f_item_2": [PEWTER_FLAGS],
 	&"rocket_hideout_b4f_item_3": [PEWTER_FLAGS],
 	&"rocket_hideout_b4f_hidden_1": [PEWTER_FLAGS],
+	# Jalon 31 (T4) : objets de la Grotte Inconnue et Mewtwo (une variante, avant le drapeau).
+	&"cerulean_cave_1f_item_1": [[]],
+	&"cerulean_cave_1f_item_2": [[]],
+	&"cerulean_cave_1f_item_3": [[]],
+	&"cerulean_cave_1f_hidden_1": [[]],
+	&"cerulean_cave_2f_item_1": [[]],
+	&"cerulean_cave_2f_item_2": [[]],
+	&"cerulean_cave_2f_item_3": [[]],
+	&"cerulean_cave_b1f_item_1": [[]],
+	&"cerulean_cave_b1f_item_2": [[]],
+	&"cerulean_cave_b1f_hidden_1": [[]],
+	&"mewtwo": [[]],
 }
 ## Scènes jouées par le code (pas de déclencheur) → carte où elles sont jouées.
 ## Jalon 7 (T18) : la scène du colis est lancée par la variante « cutscene » du dialogue de Chen.
@@ -397,7 +409,21 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 ## Scènes à déclencheur dont la carte n'est pas encore construite → leur carte (simulées sur les
 ## PNJ de son fichier). Vidée au T19 du jalon 9 (la forêt existe), puis au T11 du jalon 10 (les
 ## deux scènes d'Argenta ont leurs déclencheurs sur la carte).
-const AWAITING_MAP: Dictionary[StringName, StringName] = {}
+## Jalon 31 (T4) : la Grotte Inconnue n'a pas encore de cartes (T6, après la fusion du J24) ;
+## ses scènes sont simulées sur les PNJ de ses fichiers `data/npcs/cerulean_cave_*.json`.
+const AWAITING_MAP: Dictionary[StringName, StringName] = {
+	&"cerulean_cave_1f_item_1": &"cerulean_cave_1f",
+	&"cerulean_cave_1f_item_2": &"cerulean_cave_1f",
+	&"cerulean_cave_1f_item_3": &"cerulean_cave_1f",
+	&"cerulean_cave_1f_hidden_1": &"cerulean_cave_1f",
+	&"cerulean_cave_2f_item_1": &"cerulean_cave_2f",
+	&"cerulean_cave_2f_item_2": &"cerulean_cave_2f",
+	&"cerulean_cave_2f_item_3": &"cerulean_cave_2f",
+	&"cerulean_cave_b1f_item_1": &"cerulean_cave_b1f",
+	&"cerulean_cave_b1f_item_2": &"cerulean_cave_b1f",
+	&"cerulean_cave_b1f_hidden_1": &"cerulean_cave_b1f",
+	&"mewtwo": &"cerulean_cave_b1f",
+}
 ## Jalon 20 (T21) : interrupteur du Casino, Clé, Giovanni, Scope, objets et caches du repaire.
 const J20_T21_IDS: Array[StringName] = [
 	&"game_corner_switch", &"rocket_hideout_key_drop", &"rocket_hideout_b4f_lift_key",
@@ -407,6 +433,20 @@ const J20_T21_IDS: Array[StringName] = [
 	&"rocket_hideout_b2f_item_4", &"rocket_hideout_b3f_item_1", &"rocket_hideout_b3f_item_2",
 	&"rocket_hideout_b3f_hidden_1", &"rocket_hideout_b4f_item_1", &"rocket_hideout_b4f_item_2",
 	&"rocket_hideout_b4f_item_3", &"rocket_hideout_b4f_hidden_1",
+]
+## Jalon 31 (T4) : objets de la Grotte Inconnue et Mewtwo.
+const J31_IDS: Array[StringName] = [
+	&"cerulean_cave_1f_item_1",
+	&"cerulean_cave_1f_item_2",
+	&"cerulean_cave_1f_item_3",
+	&"cerulean_cave_1f_hidden_1",
+	&"cerulean_cave_2f_item_1",
+	&"cerulean_cave_2f_item_2",
+	&"cerulean_cave_2f_item_3",
+	&"cerulean_cave_b1f_item_1",
+	&"cerulean_cave_b1f_item_2",
+	&"cerulean_cave_b1f_hidden_1",
+	&"mewtwo",
 ]
 ## Jalon 18 (T16) : scènes de ses fichiers (objets, objectifs).
 const J18_IDS: Array[StringName] = [
@@ -518,7 +558,7 @@ func test_library_loads_without_error() -> void:
 		&"route_8_reached", &"celadon_reached", &"route_8_item_1", &"route_8_hidden_1",
 		&"souterrain_hidden_1", &"souterrain_hidden_2", &"celadon_hidden_1",
 		&"celadon_gym_erika", &"celadon_gym_erika_tm_late", &"celadon_roof_trade"]
-		+ J18_IDS + J20_T21_IDS))
+		+ J18_IDS + J20_T21_IDS + J31_IDS))
 
 
 func _sorted(values: Array) -> Array[StringName]:
@@ -627,7 +667,10 @@ func test_only_world_items_are_found_items() -> void:
 			for step: CutsceneStep in variant.steps:
 				if step.kind == CutsceneStep.Kind.GIVE and step.found:
 					found.append("%s:%s" % [id, step.item_id])
-	assert_eq(found, ["celadon_hidden_1:revive", "dark_cave_1f_item_1:escape_rope", "dark_cave_1f_item_2:antidote",
+	assert_eq(found, ["celadon_hidden_1:revive",
+		# Jalon 31 (T4) : objets de RB de la Grotte Inconnue.
+		"cerulean_cave_1f_hidden_1:rare_candy", "cerulean_cave_1f_item_1:full_restore", "cerulean_cave_1f_item_2:max_elixir", "cerulean_cave_1f_item_3:nugget", "cerulean_cave_2f_item_1:pp_up", "cerulean_cave_2f_item_2:ultra_ball", "cerulean_cave_2f_item_3:full_restore", "cerulean_cave_b1f_hidden_1:ultra_ball", "cerulean_cave_b1f_item_1:ultra_ball", "cerulean_cave_b1f_item_2:max_revive",
+		"dark_cave_1f_item_1:escape_rope", "dark_cave_1f_item_2:antidote",
 		"dark_cave_b1f_hidden_1:super_potion", "dark_cave_b1f_item_1:super_potion",
 		"digletts_cave_item_1:escape_rope", "mt_moon_1f_hidden_1:awakening",
 		"mt_moon_1f_item_1:escape_rope", "mt_moon_b1f_item_1:moon_stone",

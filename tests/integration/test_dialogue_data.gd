@@ -69,6 +69,23 @@ const J17_TOKENS: Dictionary[String, Array] = {
 ## Jalon 20 (T17) : le panneau neutre de la cabine du T16 est remplacé par `elevator_panel` (T13).
 ## S2C (option A de Kevin, 2026-10-21) : question du choix « Pêcher / Surfer » [D], à valider.
 const UNVALIDATED: Array[StringName] = [&"water_choice"]
+## Jalon 31 (T4, T5) : dialogues de la Grotte Inconnue, joués quand ses cartes et la bouche
+## d'Azuria existeront (T6, 31A) ; textes [D] du plan §4 (cri de Mewtwo, refus d'accès).
+const IDS_J31: Array[StringName] = [
+	&"cerulean_cave_1f_item_1",
+	&"cerulean_cave_1f_item_2",
+	&"cerulean_cave_1f_item_3",
+	&"cerulean_cave_1f_hidden_1",
+	&"cerulean_cave_2f_item_1",
+	&"cerulean_cave_2f_item_2",
+	&"cerulean_cave_2f_item_3",
+	&"cerulean_cave_b1f_item_1",
+	&"cerulean_cave_b1f_item_2",
+	&"cerulean_cave_b1f_hidden_1",
+	&"mewtwo",
+	&"mewtwo_cry",
+	&"cerulean_cave_closed",
+]
 ## Passe systèmes 2 (T25b) : Téléport et Tunnel hors combat, joués par [FieldTravelDirector] ;
 ## textes provisoires du lot `systemes-2.md` §8.1 (pas encore dans un dossier).
 const S2_FIELD_TRAVEL: Array[StringName] = [&"dig_used", &"teleport_used", &"fly_takeoff",
@@ -118,6 +135,12 @@ const TEXTS_S2D_STRENGTH: Dictionary[StringName, Array] = {
 		"Il faut le Badge Prisme pour utiliser Force hors des combats."],
 	&"strength_used": ["{pokemon} utilise Force ! Les rochers peuvent être déplacés."],
 	&"strength_boulder_fell": ["Le rocher a dévalé dans le trou !"],
+}
+## Jalon 31 : textes proposés [D] du plan (`docs/tech/jalon-31.md` §4 ; la passe J31 n'en fournit
+## aucun), comparés mot pour mot en attendant la page d'arbitrages de Kevin.
+const TEXTS_J31_D: Dictionary[StringName, Array] = {
+	&"cerulean_cave_closed": ["Les eaux sont trop agitées. Pas maintenant."],
+	&"mewtwo_cry": ["Mew !"],
 }
 ## Jalon 10 : textes verrouillés du dossier 12 (même forme que le dossier 10) et lot de textes du
 ## J10 (panneaux, noms affichés), où un retour à la ligne est écrit « \n ».
@@ -844,7 +867,7 @@ func test_library_loads_without_error() -> void:
 	found.sort()
 	var expected := IDS + IDS_J14_BILL + IDS_J14_ROCKET + IDS_J15_ROUTE_5 + IDS_J16_GYM \
 		+ IDS_J16_SHIP + IDS_J16_RIVAL_CAPTAIN + IDS_J16_T15 + IDS_J17 + IDS_J18 + IDS_J19 + IDS_J20 \
-		+ IDS_J20_T17 + IDS_J20_T21 + IDS_S2B + S2_FIELD_TRAVEL
+		+ IDS_J20_T17 + IDS_J20_T21 + IDS_S2B + S2_FIELD_TRAVEL + IDS_J31
 	expected.append_array(TEXTS_S2C_FISH.keys())
 	expected.append_array(TEXTS_S2D_STRENGTH.keys())
 	expected.append_array(UNVALIDATED)
@@ -863,7 +886,7 @@ func test_every_dialogue_is_used() -> void:
 	for id: StringName in _real_ids():
 		if UNUSED_YET.has(id) or PLAYED_BY_COMPANION.has(id) or PLAYED_BY_BOOT.has(id) \
 				or S2_FIELD_TRAVEL.has(id) or TEXTS_S2C_FISH.has(id) \
-				or TEXTS_S2D_STRENGTH.has(id):
+				or TEXTS_S2D_STRENGTH.has(id) or IDS_J31.has(id):
 			continue
 		assert_true(_used_on.has(id) or played.has(id),
 			"dialogue « %s » utilisé par un PNJ, un point ou une scène" % id)
@@ -936,10 +959,12 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		+ PLAYED_J15_ROUTE_5 + PLAYED_J16_GYM + PLAYED_J16_RIVAL_CAPTAIN
 		+ PLAYED_J16_T15
 		# Jalon 17 (T8) : remise de la CS05 par l'assistant (scène lancée par son dialogue).
-		+ [&"route_2_east_assistant_hm05_system", &"route_2_east_assistant_hm05_use"]))
+		+ [&"route_2_east_assistant_hm05_system", &"route_2_east_assistant_hm05_use"]
+		# Jalon 31 (T4) : cri de Mewtwo avant le combat.
+		+ [&"mewtwo_cry"]))
 	for id: StringName in played:
 		assert_true(_library.has_dialogue(id), "dialogue « %s » défini" % id)
-		if UNUSED_YET.has(id):
+		if UNUSED_YET.has(id) or IDS_J31.has(id):
 			continue
 		assert_true(_used_on.has(id), "« %s » joué depuis un déclencheur ou par le code" % id)
 	for id: StringName in [&"oak_starter_reciprocal", &"rival_starter_pick",
@@ -1062,6 +1087,18 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		&"saffron_gates_open",
 		# Jalon 20 (T12) : Évoli reçu (étape « gift_pokemon »).
 		&"eevee_received",
+		# Jalon 31 (T4) : objets de la Grotte Inconnue ; Mewtwo (rencontre fixe, « static »).
+		&"got_cerulean_cave_1f_item_1",
+		&"got_cerulean_cave_1f_item_2",
+		&"got_cerulean_cave_1f_item_3",
+		&"got_cerulean_cave_1f_hidden_1",
+		&"got_cerulean_cave_2f_item_1",
+		&"got_cerulean_cave_2f_item_2",
+		&"got_cerulean_cave_2f_item_3",
+		&"got_cerulean_cave_b1f_item_1",
+		&"got_cerulean_cave_b1f_item_2",
+		&"got_cerulean_cave_b1f_hidden_1",
+		&"mewtwo_encounter_resolved", &"mewtwo_caught",
 		&"route_3_entered", &"route_3_guard_cleared", &"route_4_reached", &"route_5_entered",
 		&"starter_chosen",
 		&"starter_offered", &"tm11_received", &"tm34_received", &"viridian_arrived",
@@ -1342,6 +1379,9 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 		if TEXTS_S2D_STRENGTH.has(row[0]):
 			assert_true(TEXTS_S2D_STRENGTH[row[0]].has(row[1]), "%s : %s" % [row[0], row[1]])
 			continue
+		if TEXTS_J31_D.has(row[0]):
+			assert_true(TEXTS_J31_D[row[0]].has(row[1]), "%s : %s" % [row[0], row[1]])
+			continue
 		var text: String = row[1]
 		for token: String in _DOSSIER_TOKENS:
 			text = text.replace(token, _DOSSIER_TOKENS[token])
@@ -1610,7 +1650,8 @@ func test_oak_parcel_lines() -> void:
 	# Jalon 18 (T16) : sept objets au sol (Route 9, Route 10, grotte) et la Super Potion cachée.
 	# Jalon 20 (T21) : onze objets au sol et trois caches du repaire, la Clé (chute et prise),
 	# Giovanni et le Scope Sylphe.
-	assert_eq(launched, 103, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
+	# Jalon 31 (T4) : huit objets au sol et deux cachés de la Grotte Inconnue, Mewtwo.
+	assert_eq(launched, 114, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
 		+ "sa CT34, Ondine (pont, Arène et rattrapage), écran, module, console, objets de la "
 		+ "Route 25, le Rocket d'Azuria (2) et le barrage sud ; J15 : objets de la Route 5 ; "
 		+ "J16 : Major Bob (2), neuf objets du S.S. Anne, le capitaine, le marin (2) ; "
@@ -1618,7 +1659,8 @@ func test_oak_parcel_lines() -> void:
 		+ "et la Corde Sortie de la Cave ; J18 : huit objets ; J19 : la gardienne de la Tour et six objets de la Tour (T18) ; "
 		+ "J20 (T17) : Super Potion de la Route 8, quatre caches (Route 8, souterrain ×2, "
 		+ "ville), Erika (2) ; "
-		+ "J20 (T21) : repaire (11 objets, 3 caches, Clé ×2, Giovanni, Scope)")
+		+ "J20 (T21) : repaire (11 objets, 3 caches, Clé ×2, Giovanni, Scope) ; "
+		+ "J31 : Grotte Inconnue (8 objets, 2 caches, Mewtwo)")
 	# Le jeton n'apparaît que dans la réplique de l'espèce, « {pokemon} » dans les phrases du
 	# compagnon (J11), et ceux de la Pension dans ses répliques (J15).
 	for row: Array in _pages():
