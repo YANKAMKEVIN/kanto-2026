@@ -43,6 +43,10 @@ var style: Style
 ## Passe systèmes 2 (§2.7.3) : drapeaux qui **désactivent** le passage (un trou bouché ne fait
 ## plus tomber). Vide : toujours actif. Lu par le routeur, pas par [WarpTable].
 var unless_flags: Array[StringName] = []
+## Jalon 28 (porte de l'Arène de Jadielle) : drapeaux **tous exigés** pour que le passage soit
+## actif (une porte qui ne s'ouvre qu'après un événement). Vide : aucune condition. Lu par le
+## routeur, comme [member unless_flags].
+var if_flags: Array[StringName] = []
 
 
 func _init(

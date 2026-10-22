@@ -48,7 +48,11 @@
 	},
 	"viridian_gym_watcher": {
 		"speaker": "Habitant",
-		"pages": ["Encore fermée… Je me demande où est passé le Champion."]
+		"variants": [
+			{ "if": ["badge_earth"], "pages": ["Le Champion est reparti. Personne ne sait où."] },
+			{ "if": ["silph_giovanni_defeated"], "pages": ["La porte de l'Arène est ouverte ! Le Champion serait revenu…"] },
+			{ "pages": ["Encore fermée… Je me demande où est passé le Champion."] }
+		]
 	},
 	"viridian_gym_door": {
 		"narration": true,

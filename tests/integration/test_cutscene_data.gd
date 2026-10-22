@@ -275,6 +275,9 @@ const VARIANT_FLAGS: Dictionary = {
 	&"rocket_hideout_b4f_item_2": [PEWTER_FLAGS],
 	&"rocket_hideout_b4f_item_3": [PEWTER_FLAGS],
 	&"rocket_hideout_b4f_hidden_1": [PEWTER_FLAGS],
+	# Jalon 28 (T8) : Giovanni Champion (scène et rattrapage de la CT27), Rappel de l'Arène.
+	&"viridian_gym_giovanni": [PEWTER_FLAGS], &"viridian_gym_giovanni_tm_late": [PEWTER_FLAGS],
+	&"viridian_gym_item_1": [PEWTER_FLAGS],
 }
 ## Scènes jouées par le code (pas de déclencheur) → carte où elles sont jouées.
 ## Jalon 7 (T18) : la scène du colis est lancée par la variante « cutscene » du dialogue de Chen.
@@ -310,6 +313,9 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"rocket_hideout_b4f_item_2": &"rocket_hideout_b4f",
 	&"rocket_hideout_b4f_item_3": &"rocket_hideout_b4f",
 	&"rocket_hideout_b4f_hidden_1": &"rocket_hideout_b4f",
+	# Jalon 28 (T8) : Giovanni (son dialogue) et le Rappel (PNJ « objet ») de l'Arène de Jadielle.
+	&"viridian_gym_giovanni": &"viridian_gym", &"viridian_gym_giovanni_tm_late": &"viridian_gym",
+	&"viridian_gym_item_1": &"viridian_gym",
 	&"starter_chosen": &"oak_lab", &"oak_parcel": &"oak_lab",
 	&"route_2_item_1": &"route_2", &"route_2_item_2": &"route_2",
 	# Jalon 9 (T18) : objets visibles de la Forêt de Jade (PNJ « objet » de son fichier).
@@ -517,7 +523,9 @@ func test_library_loads_without_error() -> void:
 		# Jalon 20 (T17) : arrivées, objet et caches, Erika, échange de la fillette.
 		&"route_8_reached", &"celadon_reached", &"route_8_item_1", &"route_8_hidden_1",
 		&"souterrain_hidden_1", &"souterrain_hidden_2", &"celadon_hidden_1",
-		&"celadon_gym_erika", &"celadon_gym_erika_tm_late", &"celadon_roof_trade"]
+		&"celadon_gym_erika", &"celadon_gym_erika_tm_late", &"celadon_roof_trade",
+		# Jalon 28 (T8) : Giovanni Champion, rattrapage de la CT27, Rappel.
+		&"viridian_gym_giovanni", &"viridian_gym_giovanni_tm_late", &"viridian_gym_item_1"]
 		+ J18_IDS + J20_T21_IDS))
 
 
@@ -595,11 +603,13 @@ func test_every_trainer_and_item_step_exists() -> void:
 ## l'étape « badge » d'une scène suit le combat qui lève déjà son drapeau (« win »).
 func test_every_champion_card_and_badge_step_exists() -> void:
 	assert_eq(_cutscenes.get_card_trainer_ids(), [&"celadon_gym_erika", &"cerulean_gym_misty",
-		&"giovanni_hideout", &"pewter_gym_brock", &"vermilion_gym_surge"] as Array[StringName])
+		&"giovanni_hideout", &"pewter_gym_brock", &"vermilion_gym_surge",
+		&"viridian_gym_giovanni"] as Array[StringName])
 	for id: StringName in _cutscenes.get_card_trainer_ids():
 		var trainer := _trainers.get_trainer(id)
 		assert_true(trainer != null and trainer.has_card(), "« %s » a une carte" % id)
-	assert_eq(_cutscenes.get_badge_ids(), [&"boulder", &"cascade", &"rainbow", &"thunder"]
+	assert_eq(_cutscenes.get_badge_ids(), [&"boulder", &"cascade", &"earth", &"rainbow",
+		&"thunder"]
 		as Array[StringName])
 	for id: StringName in _cutscenes.get_badge_ids():
 		assert_true(_badges.has_badge(id), "badge « %s » connu" % id)
@@ -664,7 +674,8 @@ func test_only_world_items_are_found_items() -> void:
 		"underground_hidden_1:full_restore",
 		"viridian_forest_item_1:antidote", "viridian_forest_item_2:poke_ball",
 		"viridian_forest_item_3:potion", "viridian_forest_item_4:antidote",
-		"viridian_forest_item_5:poke_ball", "viridian_forest_item_6:potion"]
+		"viridian_forest_item_5:poke_ball", "viridian_forest_item_6:potion",
+		"viridian_gym_item_1:revive"]
 		as Array[String])
 
 

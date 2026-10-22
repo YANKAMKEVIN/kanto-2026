@@ -312,6 +312,15 @@ const WARPS: Array = [
 	["Route22S", Vector2i(0, 23), PUSH, Vector2i.LEFT, &"route_22", &"from_viridian",
 		Vector2i.LEFT],
 ]
+## Jalon 28 (jalon-28.md §2.1) : porte de l'Arène, PUSH ↑ depuis les deux cases devant elle,
+## active seulement si `silph_giovanni_defeated` ([member WarpPoint.if_flags]) ; le point
+## d'examen « La porte est verrouillée. » porte le `unless` inverse. Posés à la main dans la
+## scène (2026-10-22), comme les sorties nord : [nœud, case].
+const GYM_DOOR_FLAG: StringName = &"silph_giovanni_defeated"
+const GYM_DOOR_WARPS: Array = [
+	["GymDoorW", Vector2i(9, 10)],
+	["GymDoorE", Vector2i(10, 10)],
+]
 ## Sortie nord vers la Route 2 (jalon 8 T5, jalon-08.md §2.1 ; avant : « ROUTE 2 — À venir ») :
 ## [nœud, case, spawn de la Route 2]. PUSH ↑, arrivée tournée ↑ ; rangée 0 toujours bloquée.
 ## **Ne pas relancer l'outil pour ce seul changement** : la scène a été modifiée à la main sur
@@ -328,6 +337,8 @@ const SPAWNS: Dictionary = {
 	"from_center": Vector2i(21, 21),
 	"from_mart": Vector2i(36, 21),
 	"from_route_22": Vector2i(0, 22),
+	# Jalon 28 : retour de l'Arène, devant la porte.
+	"from_gym": Vector2i(9, 10),
 	# Arrivée depuis la Route 2 (jalon 8 T5) : sur les cases du passage, tournée vers le sud.
 	"from_route_2_w": Vector2i(27, 1),
 	"from_route_2_c": Vector2i(28, 1),
@@ -940,6 +951,19 @@ func _add_warps(root: Node) -> void:
 		point.set(&"target_spawn", entry[2])
 		point.set(&"arrival_facing", Vector2i.UP)
 		_attach(root, root.get_node(^"Warps"), point)
+	for entry: Array in GYM_DOOR_WARPS:
+		var point := Marker2D.new()
+		point.set_script(warp_script)
+		point.name = entry[0]
+		point.position = _world(entry[1])
+		point.set(&"trigger", PUSH)
+		point.set(&"direction", Vector2i.UP)
+		point.set(&"target_map", &"viridian_gym")
+		point.set(&"target_spawn", &"entrance")
+		point.set(&"arrival_facing", Vector2i.UP)
+		var gate: Array[StringName] = [GYM_DOOR_FLAG]
+		point.set(&"if_flags", gate)
+		_attach(root, root.get_node(^"Warps"), point)
 
 
 func _add_interactables(root: Node) -> void:
@@ -952,6 +976,9 @@ func _add_interactables(root: Node) -> void:
 		point.set(&"size", entry[2])
 		point.set(&"facing", entry[3])
 		point.set(&"dialogue_id", entry[4])
+		if entry[4] == &"viridian_gym_door":
+			var locked: Array[StringName] = [GYM_DOOR_FLAG]
+			point.set(&"unless_flags", locked)
 		_attach(root, root.get_node(^"Interactables"), point)
 	# Portes des maisons : fermées (« C'est fermé. »), examinées de face depuis l'allée.
 	for garden: Array in GARDENS:

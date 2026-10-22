@@ -132,7 +132,7 @@ Nidoking, Rhinoféros, fond de combat « Arène de Jadielle ».
 
 ## 3. Textes
 
-La passe ne propose aucun texte : tout ce qui suit est **[D] (défaut, à relire)**. Le texte de la
+La passe ne propose aucun texte : tout ce qui suit est **[D]**, **validé par Kevin le 2026-10-21, validation d'avance (proposition du plan)**. Le texte de la
 porte fermée reste celui du J7 (« La porte est verrouillée. »).
 
 | N° | Locuteur | Texte |
@@ -146,6 +146,44 @@ porte fermée reste celui du J7 (« La porte est verrouillée. »).
 | T28-07 [D] | Giovanni (CT) | « Prends aussi la CT27, Abîme. Une fissure dans le sol, et le combat est fini. » |
 | T28-08 [D] | Giovanni (départ) | « La Team Rocket, c'est terminé. Je pars m'entraîner seul. Un jour, peut-être, nos chemins se croiseront encore. » |
 | T28-09 [D] | Narration | « {player} reçoit le Badge Terre ! » (modèle des Badges existants, à vérifier) |
+
+
+### 3.1 Textes complémentaires (écrits au codage, 2026-10-22) — **à relire par Kevin**
+
+Le plan ne donnait pas de répliques aux huit Dresseurs, ni la défaite du joueur contre Giovanni, ni la
+remise de la CT, ni le guide après le départ du Champion. Propositions [D] ci-dessous, en place dans
+`data/dialogues/viridian_gym.json` ; **elles ne sont pas couvertes par la validation d'avance**
+(qui porte sur T28-01 à T28-09). « / » sépare deux bulles.
+
+| N° | Locuteur (dialogue) | Texte |
+|---|---|---|
+| T28-10 [D] | Topdresseur Yannick (`viridian_gym_cooltrainer_yannick_before`) | « Le sol de cette Arène ne pardonne aucune erreur. » |
+| T28-11 [D] | Topdresseur Yannick (`viridian_gym_cooltrainer_yannick_defeated`) | « J'ai glissé… au mauvais moment. » |
+| T28-12 [D] | Topdresseur Yannick (`viridian_gym_cooltrainer_yannick_after`) | « Ici, on apprend à lire les flèches avant de courir. » |
+| T28-13 [D] | Karatéka Bertrand (`viridian_gym_blackbelt_bertrand_before`) | « Hiyaa ! Mes poings sont prêts ! » |
+| T28-14 [D] | Karatéka Bertrand (`viridian_gym_blackbelt_bertrand_defeated`) | « Ouf… Tu frappes fort. » |
+| T28-15 [D] | Karatéka Bertrand (`viridian_gym_blackbelt_bertrand_after`) | « Le Champion nous apprend à tenir debout, même quand le sol bouge. » |
+| T28-16 [D] | Dompteur Lionel (`viridian_gym_tamer_lionel_before`) | « Mon Rhinocorne ne s'arrête jamais. Et toi ? » |
+| T28-17 [D] | Dompteur Lionel (`viridian_gym_tamer_lionel_defeated`) | « Il s'est arrêté, finalement… » |
+| T28-18 [D] | Dompteur Lionel (`viridian_gym_tamer_lionel_after`) | « Un Rhinocorne, ça se dresse avec patience. » |
+| T28-19 [D] | Karatéka Didier (`viridian_gym_blackbelt_didier_before`) | « Tu crois pouvoir passer sans te battre ? » |
+| T28-20 [D] | Karatéka Didier (`viridian_gym_blackbelt_didier_defeated`) | « Bien joué. Vraiment. » |
+| T28-21 [D] | Karatéka Didier (`viridian_gym_blackbelt_didier_after`) | « Je m'entraîne ici depuis des années. » / « Le Champion vient rarement. » |
+| T28-22 [D] | Topdresseur Florian (`viridian_gym_cooltrainer_florian_before`) | « Peu de Dresseurs arrivent jusqu'ici. » |
+| T28-23 [D] | Topdresseur Florian (`viridian_gym_cooltrainer_florian_defeated`) | « Tu mérites d'aller plus loin. » |
+| T28-24 [D] | Topdresseur Florian (`viridian_gym_cooltrainer_florian_after`) | « Le Champion n'est plus très loin. Prépare-toi bien. » |
+| T28-25 [D] | Karatéka Joël (`viridian_gym_blackbelt_joel_before`) | « Halte ! Personne ne passe sans m'affronter. » |
+| T28-26 [D] | Karatéka Joël (`viridian_gym_blackbelt_joel_defeated`) | « Mes Pokémon ont tout donné… » |
+| T28-27 [D] | Karatéka Joël (`viridian_gym_blackbelt_joel_after`) | « Va. Le Champion t'attend. » |
+| T28-28 [D] | Dompteur Régis (`viridian_gym_tamer_regis_before`) | « Mes Pokémon ont du caractère. Attention ! » |
+| T28-29 [D] | Dompteur Régis (`viridian_gym_tamer_regis_defeated`) | « Ils ne m'ont pas écouté, cette fois. » |
+| T28-30 [D] | Dompteur Régis (`viridian_gym_tamer_regis_after`) | « Un Tauros, ça ne se dompte pas en un jour. » |
+| T28-31 [D] | Topdresseur Damien (`viridian_gym_cooltrainer_damien_before`) | « Ce couloir est à moi. Recule ou combats ! » |
+| T28-32 [D] | Topdresseur Damien (`viridian_gym_cooltrainer_damien_defeated`) | « Tu as de bons réflexes. » |
+| T28-33 [D] | Topdresseur Damien (`viridian_gym_cooltrainer_damien_after`) | « Ce passage mène tout droit au Champion. » |
+| T28-34 [D] | Guide (`viridian_gym_guide`) | « Le Champion est parti… L'Arène semble bien vide sans lui. » |
+| T28-35 [D] | Giovanni (`viridian_gym_giovanni_lost`) | « Tu n'es pas encore à la hauteur. » / « Reviens quand tu le seras. » |
+| T28-36 [D] | Giovanni (`viridian_gym_giovanni_tm_got`) | « {player} reçoit la CT27 Abîme ! » |
 
 ## 4. Tâches
 

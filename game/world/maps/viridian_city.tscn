@@ -9354,6 +9354,26 @@ target_map = &"route_2"
 target_spawn = &"from_viridian_e"
 arrival_facing = Vector2i(0, -1)
 
+[node name="GymDoorW" type="Marker2D" parent="Warps" unique_id=1928374651]
+position = Vector2(912, 1056)
+script = ExtResource("57_cdjjy")
+trigger = 1
+direction = Vector2i(0, -1)
+target_map = &"viridian_gym"
+target_spawn = &"entrance"
+arrival_facing = Vector2i(0, -1)
+if_flags = Array[StringName]([&"silph_giovanni_defeated"])
+
+[node name="GymDoorE" type="Marker2D" parent="Warps" unique_id=1928374652]
+position = Vector2(1008, 1056)
+script = ExtResource("57_cdjjy")
+trigger = 1
+direction = Vector2i(0, -1)
+target_map = &"viridian_gym"
+target_spawn = &"entrance"
+arrival_facing = Vector2i(0, -1)
+if_flags = Array[StringName]([&"silph_giovanni_defeated"])
+
 [node name="Interactables" type="Node2D" parent="." unique_id=1486317497]
 
 [node name="GymDoor" type="Marker2D" parent="Interactables" unique_id=165017693]
@@ -9362,6 +9382,7 @@ script = ExtResource("58_1t4a5")
 dialogue_id = &"viridian_gym_door"
 size = Vector2i(2, 1)
 facing = Vector2i(0, -1)
+unless_flags = Array[StringName]([&"silph_giovanni_defeated"])
 
 [node name="HouseNorthWestDoor" type="Marker2D" parent="Interactables" unique_id=295640200]
 position = Vector2(1872, 672)
@@ -9424,6 +9445,9 @@ position = Vector2(2736, 192)
 
 [node name="from_route_2_e" type="Marker2D" parent="Spawns" unique_id=1441148827]
 position = Vector2(2832, 192)
+
+[node name="from_gym" type="Marker2D" parent="Spawns" unique_id=1928374653]
+position = Vector2(912, 1056)
 
 [node name="Triggers" type="Node2D" parent="." unique_id=896312990]
 

@@ -82,22 +82,25 @@ func test_real_data_loads_without_error() -> void:
 		# Jalon 15 (T12) : Miaouss et Persan (kanto_vermilion.json).
 		&"meowth", &"persian",
 		&"mankey", &"primeape", &"growlithe", &"arcanine", &"abra", &"kadabra", &"machop",
+		# Jalon 28 (T3) : Machopeur, Rhinoféros, Tauros (kanto_j28*.json ; Machopeur et Tauros
+		# copiés des J22 et J23).
+		&"machoke",
 		&"bellsprout", &"weepinbell", &"victreebel",
 		&"geodude", &"graveler", &"golem", &"magnemite", &"magneton", &"shellder",
 		# Jalon 19 (T3) : Fantominus, Spectrum, Noeunoeuf, Osselait, Ossatueur, Léviator
 		# (kanto_tower.json ; Caninos vient du J17).
 		&"gastly", &"haunter", &"onix",
 		&"drowzee", &"hypno", &"voltorb", &"exeggcute", &"cubone", &"marowak", &"koffing",
-		&"rhyhorn", &"tangela", &"kangaskhan",
-		&"horsea", &"goldeen", &"staryu", &"starmie", &"gyarados",
+		&"rhyhorn", &"rhydon", &"tangela", &"kangaskhan",
+		&"horsea", &"goldeen", &"staryu", &"starmie", &"tauros", &"gyarados",
 		&"eevee", &"vaporeon", &"jolteon", &"flareon"] as Array[StringName])
-	assert_eq(_data.get_move_ids().size(), 130,
+	assert_eq(_data.get_move_ids().size(), 131,
 		"47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10) + Patience (J11) "
 		+ "+ 21 du Mont Sélénite (jalon 12) + 8 du jalon 13 (les 5 du J12 qu'il reprenait : "
 		+ "entrées du J12) + 6 du Cap d'Azuria (jalon 14) + Jackpot (J15) "
 		+ "+ Coupe et Tonnerre (jalon 16) + 7 du jalon 17 + 8 de la Tour Pokémon (J19 ; "
 		+ "Hypnose, Hurlement et Bélier viennent du J17) + 7 du jalon 20 + Vol (passe systèmes 2, T25) "
-		+ "+ Surf (S2C) + Force (S2D)")
+		+ "+ Surf (S2C) + Force (S2D) + Abîme (J28)")
 	assert_true(_data.has_move(&"struggle"))
 
 
@@ -189,6 +192,8 @@ func test_real_evolution_chains() -> void:
 		# Tour Pokémon (jalon 19, §2.12) : Rouge/Bleu. Spectrum (échange, Ectoplasma absent) et
 		# Noeunoeuf (Pierre Plante absente) n'en déclarent pas.
 		&"gastly": [&"haunter", 25], &"cubone": [&"marowak", 28],
+		# Arène de Jadielle (jalon 28, T3) : Rouge/Bleu.
+		&"rhyhorn": [&"rhydon", 42],
 	}
 	var eevee := _data.get_species(&"eevee").evolutions
 	assert_eq(eevee.map(func(r: EvolutionRule) -> Array: return [r.into, r.method, r.item]), [
@@ -476,6 +481,8 @@ func test_real_catch_rates_are_the_official_ones() -> void:
 		# Jalon 19 (T3, Tour Pokémon ; Caninos vient du J17).
 		&"gastly": 190, &"haunter": 90, &"exeggcute": 90, &"cubone": 190,
 		&"marowak": 75, &"gyarados": 45,
+		# Jalon 28 (T3).
+		&"machoke": 90, &"rhydon": 60, &"tauros": 45,
 	}
 	assert_eq(_data.get_species_ids().size(), expected.size(), "toutes les espèces")
 	for id: StringName in _data.get_species_ids():

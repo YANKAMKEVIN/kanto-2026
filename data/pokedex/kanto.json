@@ -488,6 +488,18 @@
 		"cubone": {
 			"height": 0.4, "weight": 6.5,
 			"description": "Il porte le crâne de sa mère comme un casque. Les nuits de lune, on l'entend pleurer doucement."
+		},
+		"machoke": {
+			"height": 1.5, "weight": 70.5,
+			"description": "Ses muscles ne se fatiguent jamais. Il aide volontiers aux travaux lourds, fier de montrer sa force."
+		},
+		"tauros": {
+			"height": 1.4, "weight": 88.4,
+			"description": "Impétueux, il fonce tête baissée sur tout ce qui bouge. Il se fouette les flancs de ses trois queues pour se donner du courage."
+		},
+		"rhydon": {
+			"height": 1.9, "weight": 120.0,
+			"description": "Sa peau, dure comme une armure, supporte la chaleur de la lave. Sa corne peut briser le diamant."
 		}
 	}
 }
