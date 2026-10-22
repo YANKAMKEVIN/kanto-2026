@@ -1,20 +1,21 @@
 [gd_scene format=3]
 
-[ext_resource type="Script" path="res://game/world/map.gd" id="1_ajbom"]
-[ext_resource type="Texture2D" path="res://assets/world/interiors/int_maison_argenta_coque.png" id="2_25y6r"]
-[ext_resource type="PackedScene" path="res://game/world/props/painted/int_frigo_01.tscn" id="3_832f1"]
-[ext_resource type="PackedScene" path="res://game/world/props/painted/int_cuisine_01.tscn" id="4_4nxi5"]
-[ext_resource type="PackedScene" path="res://game/world/props/painted/int_cuisiniere_hotte_01.tscn" id="5_ian7n"]
-[ext_resource type="PackedScene" path="res://game/world/props/painted/int_table_repas_01.tscn" id="6_ob7l3"]
-[ext_resource type="PackedScene" path="res://game/world/props/painted/int_canape_01.tscn" id="7_reesu"]
-[ext_resource type="PackedScene" path="res://game/world/props/painted/int_chevet_lampe_01.tscn" id="8_merfs"]
-[ext_resource type="PackedScene" path="res://game/world/props/painted/int_table_basse_01.tscn" id="9_5xrtb"]
-[ext_resource type="PackedScene" path="res://game/world/props/painted/int_porte_manteau_01.tscn" id="10_4iu2a"]
-[ext_resource type="PackedScene" path="res://game/world/props/painted/int_plante.tscn" id="11_15kvj"]
-[ext_resource type="Script" path="res://game/world/warp_point.gd" id="12_75b2i"]
+[ext_resource type="Script" path="res://game/world/map.gd" id="1_25y6r"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/int_maison_argenta_coque.png" id="2_832f1"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_frigo_01.tscn" id="3_4nxi5"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_cuisine_01.tscn" id="4_ian7n"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_cuisiniere_hotte_01.tscn" id="5_ob7l3"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_table_repas_01.tscn" id="6_reesu"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_canape_01.tscn" id="7_merfs"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_chevet_lampe_01.tscn" id="8_5xrtb"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_table_basse_01.tscn" id="9_4iu2a"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_porte_manteau_01.tscn" id="10_15kvj"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_plante.tscn" id="11_75b2i"]
+[ext_resource type="Script" path="res://game/world/warp_point.gd" id="12_ailcl"]
+[ext_resource type="Script" path="res://game/world/interactions/interact_point.gd" id="13_tvt61"]
 
-[node name="SaffronPidgeyHouse" type="Node2D" unique_id=2036166842]
-script = ExtResource("1_ajbom")
+[node name="SaffronPidgeyHouse" type="Node2D" unique_id=1198212404]
+script = ExtResource("1_25y6r")
 map_id = &"saffron_pidgey_house"
 display_name = "Safrania"
 size = Vector2i(15, 10)
@@ -22,79 +23,85 @@ blocked_cells = Array[Vector2i]([Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0),
 interior = true
 light_profile = &"interior_warm"
 
-[node name="Shell" type="Sprite2D" parent="." unique_id=2100455737]
+[node name="Shell" type="Sprite2D" parent="." unique_id=1555302091]
 z_index = -3
-texture = ExtResource("2_25y6r")
+texture = ExtResource("2_832f1")
 centered = false
 
-[node name="Entities" type="Node2D" parent="." unique_id=1907922953]
+[node name="Entities" type="Node2D" parent="." unique_id=42060339]
 unique_name_in_owner = true
 y_sort_enabled = true
 
-[node name="Fridge" parent="Entities" unique_id=494471310 instance=ExtResource("3_832f1")]
+[node name="Fridge" parent="Entities" unique_id=494471310 instance=ExtResource("3_4nxi5")]
 position = Vector2(144, 384)
 
-[node name="Kitchen" parent="Entities" unique_id=332056923 instance=ExtResource("4_4nxi5")]
+[node name="Kitchen" parent="Entities" unique_id=332056923 instance=ExtResource("4_ian7n")]
 position = Vector2(336, 384)
 
-[node name="Stove" parent="Entities" unique_id=1520539083 instance=ExtResource("5_ian7n")]
+[node name="Stove" parent="Entities" unique_id=1520539083 instance=ExtResource("5_ob7l3")]
 position = Vector2(528, 384)
 
-[node name="DiningTable" parent="Entities" unique_id=1053635810 instance=ExtResource("6_ob7l3")]
+[node name="DiningTable" parent="Entities" unique_id=1053635810 instance=ExtResource("6_reesu")]
 position = Vector2(336, 672)
 
-[node name="Sofa" parent="Entities" unique_id=1822141563 instance=ExtResource("7_reesu")]
+[node name="Sofa" parent="Entities" unique_id=1822141563 instance=ExtResource("7_merfs")]
 position = Vector2(1104, 384)
 
-[node name="Lamp" parent="Entities" unique_id=1542184166 instance=ExtResource("8_merfs")]
+[node name="Lamp" parent="Entities" unique_id=1542184166 instance=ExtResource("8_5xrtb")]
 position = Vector2(1296, 384)
 
-[node name="CoffeeTable" parent="Entities" unique_id=833737908 instance=ExtResource("9_5xrtb")]
+[node name="CoffeeTable" parent="Entities" unique_id=833737908 instance=ExtResource("9_4iu2a")]
 position = Vector2(1056, 576)
 
-[node name="CoatRack" parent="Entities" unique_id=1746216360 instance=ExtResource("10_4iu2a")]
+[node name="CoatRack" parent="Entities" unique_id=1746216360 instance=ExtResource("10_15kvj")]
 position = Vector2(528, 768)
 
-[node name="PlantWest" parent="Entities" unique_id=1145806697 instance=ExtResource("11_15kvj")]
+[node name="PlantWest" parent="Entities" unique_id=1145806697 instance=ExtResource("11_75b2i")]
 position = Vector2(144, 768)
 
-[node name="PlantEast" parent="Entities" unique_id=363132428 instance=ExtResource("11_15kvj")]
+[node name="PlantEast" parent="Entities" unique_id=393755879 instance=ExtResource("11_75b2i")]
 position = Vector2(1296, 768)
 
-[node name="Warps" type="Node2D" parent="." unique_id=1425404623]
+[node name="Warps" type="Node2D" parent="." unique_id=2083864716]
 
-[node name="Exit0" type="Marker2D" parent="Warps" unique_id=1054418775]
+[node name="Exit0" type="Marker2D" parent="Warps" unique_id=1672668832]
 position = Vector2(624, 864)
-script = ExtResource("12_75b2i")
+script = ExtResource("12_ailcl")
 trigger = 1
 direction = Vector2i(0, 1)
 target_map = &"saffron_city"
 target_spawn = &"from_pidgey_house"
 arrival_facing = Vector2i(0, 1)
 
-[node name="Exit1" type="Marker2D" parent="Warps" unique_id=623632503]
+[node name="Exit1" type="Marker2D" parent="Warps" unique_id=1468287328]
 position = Vector2(720, 864)
-script = ExtResource("12_75b2i")
+script = ExtResource("12_ailcl")
 trigger = 1
 direction = Vector2i(0, 1)
 target_map = &"saffron_city"
 target_spawn = &"from_pidgey_house"
 arrival_facing = Vector2i(0, 1)
 
-[node name="Exit2" type="Marker2D" parent="Warps" unique_id=865263894]
+[node name="Exit2" type="Marker2D" parent="Warps" unique_id=1455997669]
 position = Vector2(816, 864)
-script = ExtResource("12_75b2i")
+script = ExtResource("12_ailcl")
 trigger = 1
 direction = Vector2i(0, 1)
 target_map = &"saffron_city"
 target_spawn = &"from_pidgey_house"
 arrival_facing = Vector2i(0, 1)
 
-[node name="Interactables" type="Node2D" parent="." unique_id=1198617256]
+[node name="Interactables" type="Node2D" parent="." unique_id=1242468990]
 
-[node name="Spawns" type="Node2D" parent="." unique_id=736555159]
+[node name="Letter" type="Marker2D" parent="Interactables" unique_id=181893061]
+position = Vector2(336, 576)
+script = ExtResource("13_tvt61")
+dialogue_id = &"saffron_pidgey_letter"
+facing = Vector2i(0, 1)
 
-[node name="entrance" type="Marker2D" parent="Spawns" unique_id=1065625134]
+[node name="Spawns" type="Node2D" parent="." unique_id=971992538]
+
+[node name="entrance" type="Marker2D" parent="Spawns" unique_id=885220898]
 position = Vector2(720, 864)
 
-[node name="Triggers" type="Node2D" parent="." unique_id=2092864987]
+[node name="Triggers" type="Node2D" parent="." unique_id=1413163669]

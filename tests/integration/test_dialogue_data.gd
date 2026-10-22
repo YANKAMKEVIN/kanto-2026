@@ -223,6 +223,12 @@ const MAPS: Array[StringName] = [
 	&"rocket_hideout_b1f", &"rocket_hideout_b2f", &"rocket_hideout_b3f", &"rocket_hideout_b4f",
 	# Jalon 26 (T6) : Safrania (géométrie ; panneaux de la ville et de l'Arène).
 	&"saffron_city",
+	# Jalon 26 (T9) : la vie de Safrania (intérieurs) et de la Sylphe (1F à 6F, 8F à 10F ; le 7F et
+	# le 11F viennent avec le rival et Giovanni).
+	&"saffron_center", &"saffron_mart", &"saffron_psychic_house", &"saffron_pidgey_house",
+	&"saffron_copycat_house_1f", &"saffron_copycat_house_2f",
+	&"silph_co_1f", &"silph_co_2f", &"silph_co_3f", &"silph_co_4f", &"silph_co_5f", &"silph_co_6f",
+	&"silph_co_8f", &"silph_co_9f", &"silph_co_10f",
 	# Jalon 26 (T11, T12) : 7F (rival n° 6, Lokhlass) et 11F (Giovanni, président) de la Sylphe.
 	&"silph_co_7f", &"silph_co_11f",
 ]
@@ -382,6 +388,7 @@ const IDS: Array[StringName] = [
 	&"route_25_youngster_yanis_defeated",
 	# Jalon 15 (T14) : Route 6 et Carmin-sur-Mer (dossier 18 §15, annexe A du plan).
 	&"route_6_sign", &"route_6_gate_sign", &"route_6_underground_gate_sign", &"route_6_guard",
+	&"route_6_gate_trigger",
 	&"route_6_fisher", &"route_6_walker", &"route_6_item_1", &"route_6_hidden_1",
 	&"vermilion_city_sign", &"vermilion_gym_sign", &"vermilion_dock_sign",
 	&"vermilion_sailor", &"vermilion_docker_1", &"vermilion_docker_2", &"vermilion_old_man",
@@ -428,7 +435,8 @@ const IDS_J14_ROCKET: Array[StringName] = [
 ]
 ## Jalon 15 (T13) : la Route 5 et ses intérieurs (dossier 18 §15.2, annexe A.3).
 const IDS_J15_ROUTE_5: Array[StringName] = [
-	&"route_5_crossroads_sign", &"route_5_daycare_sign", &"route_5_guard", &"route_5_hidden_1",
+	&"route_5_crossroads_sign", &"route_5_daycare_sign", &"route_5_gate_trigger",
+	&"route_5_guard", &"route_5_hidden_1",
 	&"route_5_item_1", &"route_5_sign", &"route_5_traveler", &"route_5_underground_sign",
 	&"route_5_walker",
 ]
@@ -691,8 +699,8 @@ const SET_J18_CUTSCENES: Array[StringName] = [
 	&"got_route_9_item_1", &"got_route_9_item_2", &"got_route_9_item_3", &"lavender_reached",
 	&"route_10_reached", &"route_9_entered",
 ]
-## Jalon 15 (T13) : la réplique du garde du poste nord, jouée aussi par la scène du recul.
-const PLAYED_J15_ROUTE_5: Array[StringName] = [&"route_5_guard"]
+## Jalon 15 (T13) : la réplique du déclencheur du poste nord (J26 T8 : dialogue propre, plus celle du garde).
+const PLAYED_J15_ROUTE_5: Array[StringName] = [&"route_5_gate_trigger"]
 ## Dialogues joués par les scènes du Rocket et du barrage.
 const PLAYED_J14_ROCKET: Array[StringName] = [
 	&"cerulean_rocket_beaten", &"cerulean_rocket_before", &"cerulean_rocket_leaving",
@@ -730,6 +738,8 @@ const SET_J14_BILL_CUTSCENES: Array[StringName] = [
 ## Jalon 16 (T12, T15) : `got_hm01` (lu par le marin de la passerelle et le départ du navire) est
 ## levé par la scène du capitaine (T13). Jalon 18 (T16) : `tower_stairs_open` (présence de
 ## l'Exorciste de la Tour) est levé au J19 (T16 : scène `tower_guardian`, dossier 22 K-3).
+## Jalon 26 (T9) : `silph_giovanni_defeated` (libération) est lu par les PNJ de Safrania et de la
+## Sylphe, levé par la scène de Giovanni du 11F (T12) : retiré.
 const FUTURE_FLAGS: Array[StringName] = [&"ghost_marowak_calmed"]
 var _library: DialogueLibrary
 var _cutscenes: CutsceneLibrary
@@ -868,7 +878,8 @@ func test_library_loads_without_error() -> void:
 	found.sort()
 	var expected := IDS + IDS_J14_BILL + IDS_J14_ROCKET + IDS_J15_ROUTE_5 + IDS_J16_GYM \
 		+ IDS_J16_SHIP + IDS_J16_RIVAL_CAPTAIN + IDS_J16_T15 + IDS_J17 + IDS_J18 + IDS_J19 + IDS_J20 \
-		+ IDS_J20_T17 + IDS_J20_T21 + IDS_S2B + S2_FIELD_TRAVEL + _silph_co_ids() + IDS_J26_STORY
+		+ IDS_J20_T17 + IDS_J20_T21 + IDS_S2B + S2_FIELD_TRAVEL + _silph_co_ids() + _j26_life_ids() \
+		+ IDS_J26_STORY
 	expected.append_array(TEXTS_J26_T6.keys())
 	expected.append_array(TEXTS_S2C_FISH.keys())
 	expected.append_array(TEXTS_S2D_STRENGTH.keys())
@@ -921,6 +932,8 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		&"rocket_hideout_b4f_lift_key_got", &"rocket_hideout_b4f_silph_scope_got",
 		# Jalon 19 (T16) : la gardienne du rez-de-chaussée.
 		&"tower_guardian_worried",
+		# Jalon 26 (T9) : la Carte Magnétique du 5F et la Pépite cachée du Copieur (narration).
+		&"silph_co_5f_card_key_got", &"saffron_copycat_hidden_1_text",
 		# Jalon 19 (T17) : le rival n° 5 (joué par sa scène).
 		&"rival_tower_intro", &"rival_tower_lost", &"rival_tower_resume", &"rival_tower_won",
 		# Jalon 19 (T18) : la zone purifiée du 5F.
@@ -948,8 +961,8 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		&"rival_cerulean_intro", &"rival_cerulean_lost", &"rival_cerulean_resume",
 		&"rival_cerulean_resume_again", &"rival_cerulean_won",
 		&"rival_challenge", &"rival_challenge_wait", &"rival_lab_lost", &"rival_lab_won",
-		# Jalon 15 (T14) : le garde de Safrania sur la Route 6 (recul).
-		&"route_6_guard",
+		# Jalon 26 (T8) : les déclencheurs de recul des Routes 5 et 6 (dialogue à eux).
+		&"route_6_gate_trigger",
 		&"rival_lab_won_leaving", &"rival_parcel_greet", &"rival_parcel_leaving",
 		&"rival_parcel_return", &"rival_starter_pick", &"rival_starter_smile",
 		&"route1_grass_thought", &"route22_rival_greet", &"route22_rival_hesitates",
@@ -1056,6 +1069,8 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		_sorted([&"blacked_out_before", &"cerulean_neighbor_talked", &"forest_hiker_talked", &"forest_naturalist_talked",
 			&"mom_greeted", &"nugget_rocket_yes", &"pewter_researcher_talked", &"poison_unlocked", &"rival_met",
 			&"route_5_gate_warned",
+			# Jalon 26 (T8) : la boisson choisie au OUI du garde (lue par la scène qui la prend).
+			&"saffron_gate_offer_lemonade", &"saffron_gate_offer_soda", &"saffron_gate_offer_water",
 			&"route_2_hiker_talked", &"route_2_youngster_talked", &"storage_terminal_seen",
 			&"viridian_old_man_talked",
 			# Jalon 16 (T15) : PARTIR (confirmation du départ du S.S. Anne) ; TXT-03 entendu
@@ -1139,6 +1154,12 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		&"got_rocket_hideout_b3f_item_2", &"got_rocket_hideout_b3f_hidden_1",
 		&"got_rocket_hideout_b4f_item_1", &"got_rocket_hideout_b4f_item_2",
 		&"got_rocket_hideout_b4f_item_3", &"got_rocket_hideout_b4f_hidden_1"]
+		# Jalon 26 (T9) : objets au sol et cachés de la Sylphe SARL et de Safrania (dont la Carte).
+		+ [&"got_silph_co_3f_item_4", &"got_silph_co_4f_item_5", &"got_silph_co_4f_item_6",
+		&"got_silph_co_4f_item_7", &"got_silph_co_5f_card_key", &"got_silph_co_5f_hidden_1",
+		&"got_silph_co_5f_item_6", &"got_silph_co_5f_item_7", &"got_silph_co_6f_item_9",
+		&"got_silph_co_6f_item_10", &"got_silph_co_9f_hidden_1", &"got_silph_co_10f_item_4",
+		&"got_silph_co_10f_item_5", &"got_silph_co_10f_item_6", &"got_saffron_copycat_hidden_1"]
 		# Jalon 26 (T11, T12) : rival n° 6, Lokhlass, Giovanni, Master Ball, objets du 7F.
 		+ [&"rival_silph_won", &"rival_silph_lost_once", &"silph_lapras_received",
 		&"silph_giovanni_met", &"silph_giovanni_defeated", &"silph_master_ball_received",
@@ -1319,7 +1340,10 @@ func test_mom_heal_variant() -> void:
 		for variant: DialogueVariant in _library.get_dialogue(id).variants:
 			# J19 (T18) : la zone purifiée du 5F soigne à la fin de sa première page (§2.8).
 			var zone_heal := id == &"tower_purified_zone_heal"
-			assert_eq(variant.action == &"heal", variant == heal or zone_heal, "%s : « heal »" % id)
+			# J26 (T9) : l'infirmière du 9F de la Sylphe soigne (RB) à chaque visite.
+			var silph_nurse := id == &"silph_co_9f_nurse"
+			assert_eq(variant.action == &"heal", variant == heal or zone_heal or silph_nurse,
+				"%s : « heal »" % id)
 
 
 func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
@@ -1362,6 +1386,9 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 		+ dossier_15.replace("{fossil}", "Fossile Dôme") \
 		+ dossier_15.replace("{fossil}", "Fossile Nautile")
 	var silph_texts := _silph_co_ids()
+	# J26 (T9) : vie de Safrania et de la Sylphe, [D] validés d'avance (2026-10-21), textes vérifiés
+	# par test_saffron_life et test_silph_co_life.
+	var life_texts := _j26_life_ids()
 	for row: Array in _pages():
 		# Une variante en brouillon (PENDING_DRAFT_VARIANTS) attend la relecture de Kevin : son
 		# texte n'est encore dans aucun dossier.
@@ -1370,7 +1397,7 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 		# j26-v2 n'a pas de texte) ; copiées de data/dialogues/silph_co.json, vérifiées par
 		# test_silph_co_data.
 		if GATE_GUARDS.has(row[0]) or UNVALIDATED.has(row[0]) or S2_FIELD_TRAVEL.has(row[0]) \
-				or silph_texts.has(row[0]) or IDS_J26_STORY.has(row[0]) \
+				or silph_texts.has(row[0]) or life_texts.has(row[0]) or IDS_J26_STORY.has(row[0]) \
 				or (row[3] as DialogueVariant).draft:
 			continue
 		if TEXTS_J26_T6.has(row[0]):
@@ -1536,6 +1563,7 @@ func test_speakers_and_narration() -> void:
 		# Jalon 15 (T14) : panneaux sans locuteur, l'arbre de l'Arène en narration.
 		&"route_6_sign": ["", false], &"vermilion_city_sign": ["", false],
 		&"cut_tree": ["", true], &"route_6_guard": ["Garde", false],
+		&"route_6_gate_trigger": ["Garde", false],
 		&"vermilion_sailor": ["Marin", false],
 		# Jalon 17 (T23) : l'arbuste du couloir en narration, comme celui de l'Arène.
 		&"route_2_east_bush": ["", true],
@@ -1653,8 +1681,10 @@ func test_oak_parcel_lines() -> void:
 	# Jalon 18 (T16) : sept objets au sol (Route 9, Route 10, grotte) et la Super Potion cachée.
 	# Jalon 20 (T21) : onze objets au sol et trois caches du repaire, la Clé (chute et prise),
 	# Giovanni et le Scope Sylphe.
+	# Jalon 26 (T9) : douze objets au sol (dont la Carte Magnétique) et deux cachés de la Sylphe,
+	# la Pépite cachée du Copieur.
 	# Jalon 26 (T11, T12) : l'employé du Lokhlass, le président et deux objets du 7F.
-	assert_eq(launched, 107, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
+	assert_eq(launched, 122, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
 		+ "sa CT34, Ondine (pont, Arène et rattrapage), écran, module, console, objets de la "
 		+ "Route 25, le Rocket d'Azuria (2) et le barrage sud ; J15 : objets de la Route 5 ; "
 		+ "J16 : Major Bob (2), neuf objets du S.S. Anne, le capitaine, le marin (2) ; "
@@ -1687,6 +1717,7 @@ func test_oak_parcel_lines() -> void:
 				or (row[0] == &"rival_tower_intro" and row[1].contains("{player}")) \
 				or (String(row[0]).begins_with("saffron_gate_drink_") and row[1].contains("{player}")) \
 				or row[0] == &"celadon_eevee_received" or row[0] == &"fishing_cast" \
+				or (_j26_life_ids().has(row[0]) and row[1].contains("{player}")) \
 				or (row[0] in [&"rival_silph_intro", &"silph_co_lapras_received",
 					&"silph_co_master_ball_got"] and row[1].contains("{player}")) \
 				or (row[0] in [&"rocket_hideout_b4f_lift_key_got",
@@ -1814,6 +1845,18 @@ func _silph_co_ids() -> Array[StringName]:
 		for rank: int in range(1, int(floors[floor_number]) + 1):
 			for suffix: String in ["before", "defeated", "after"]:
 				ids.append(StringName("silph_co_%df_%d_%s" % [floor_number, rank, suffix]))
+	return ids
+
+
+## Jalon 26 (T9) : dialogues de la vie de Safrania et de la Sylphe (`saffron_life.json`,
+## `silph_co_life.json`), dont les textes sont vérifiés mot pour mot par leurs tests dédiés.
+func _j26_life_ids() -> Array[StringName]:
+	var ids: Array[StringName] = []
+	for path: String in ["res://data/dialogues/saffron_life.json",
+			"res://data/dialogues/silph_co_life.json"]:
+		var data: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(path))
+		for id: String in data:
+			ids.append(StringName(id))
 	return ids
 
 

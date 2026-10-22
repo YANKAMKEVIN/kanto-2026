@@ -86,6 +86,9 @@ const ROUTE22_FLAGS: Array[StringName] = [
 	&"got_oak_parcel", &"pokedex_activated",
 ]
 ## Jalon 10 (T8) : partie qui arrive à Argenta (fin du J9 : poison annoncé, Théo battu).
+const OFFER_WATER: StringName = &"saffron_gate_offer_water"
+const OFFER_SODA: StringName = &"saffron_gate_offer_soda"
+const OFFER_LEMONADE: StringName = &"saffron_gate_offer_lemonade"
 const PEWTER_FLAGS: Array[StringName] = [
 	&"oak_met", &"oak_lab_reunion", &"starter_offered", &"starter_chosen", &"rival_challenged",
 	&"rival_lab_won", &"rival_battle_done", &"rival_left_lab", &"viridian_arrived",
@@ -249,6 +252,15 @@ const VARIANT_FLAGS: Dictionary = {
 	# Jalon 20 (T25) : boisson donnée au garde d'un poste de Safrania (une fois).
 	&"saffron_gate_drink_water": [PEWTER_FLAGS], &"saffron_gate_drink_soda": [PEWTER_FLAGS],
 	&"saffron_gate_drink_lemonade": [PEWTER_FLAGS],
+	# Jalon 26 (T8) : suites des déclencheurs du J15 (boisson choisie par drapeau, sinon recul).
+	&"route_5_gate_after": [PEWTER_FLAGS + [OFFER_WATER], PEWTER_FLAGS + [OFFER_SODA],
+		PEWTER_FLAGS + [OFFER_LEMONADE], PEWTER_FLAGS],
+	&"route_6_gate_after_w": [PEWTER_FLAGS + [OFFER_WATER], PEWTER_FLAGS + [OFFER_SODA],
+		PEWTER_FLAGS + [OFFER_LEMONADE], PEWTER_FLAGS],
+	&"route_6_gate_after_e": [PEWTER_FLAGS + [OFFER_WATER], PEWTER_FLAGS + [OFFER_SODA],
+		PEWTER_FLAGS + [OFFER_LEMONADE], PEWTER_FLAGS],
+	&"route_6_gate_after_s": [PEWTER_FLAGS + [OFFER_WATER], PEWTER_FLAGS + [OFFER_SODA],
+		PEWTER_FLAGS + [OFFER_LEMONADE], PEWTER_FLAGS],
 	# Jalon 20 (T12) : don d'Évoli (une fois).
 	&"celadon_eevee_gift": [PEWTER_FLAGS],
 	# Jalon 20 (T17) : arrivées, objet et caches, Erika (scène et rattrapage de la CT21), fillette.
@@ -277,6 +289,22 @@ const VARIANT_FLAGS: Dictionary = {
 	&"rocket_hideout_b4f_item_2": [PEWTER_FLAGS],
 	&"rocket_hideout_b4f_item_3": [PEWTER_FLAGS],
 	&"rocket_hideout_b4f_hidden_1": [PEWTER_FLAGS],
+	# Jalon 26 (T9) : objets au sol et cachés de Safrania et de la Sylphe (une fois chacun).
+	&"silph_co_3f_item_4": [PEWTER_FLAGS],
+	&"silph_co_4f_item_5": [PEWTER_FLAGS],
+	&"silph_co_4f_item_6": [PEWTER_FLAGS],
+	&"silph_co_4f_item_7": [PEWTER_FLAGS],
+	&"silph_co_5f_card_key": [PEWTER_FLAGS],
+	&"silph_co_5f_hidden_1": [PEWTER_FLAGS],
+	&"silph_co_5f_item_6": [PEWTER_FLAGS],
+	&"silph_co_5f_item_7": [PEWTER_FLAGS],
+	&"silph_co_6f_item_9": [PEWTER_FLAGS],
+	&"silph_co_6f_item_10": [PEWTER_FLAGS],
+	&"silph_co_9f_hidden_1": [PEWTER_FLAGS],
+	&"silph_co_10f_item_4": [PEWTER_FLAGS],
+	&"silph_co_10f_item_5": [PEWTER_FLAGS],
+	&"silph_co_10f_item_6": [PEWTER_FLAGS],
+	&"saffron_copycat_hidden_1": [PEWTER_FLAGS],
 	# Jalon 26 (T11, T12) : rival n° 6, Lokhlass, Giovanni, Master Ball, objets du 7F.
 	&"rival_silph": [[]],
 	&"silph_co_lapras_gift": [[&"rival_silph_won"]],
@@ -292,6 +320,9 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	# Jalon 20 (T25) : choix OUI du garde d'un poste de Safrania (« confirm_cutscene »).
 	&"saffron_gate_drink_water": &"route_8_gate", &"saffron_gate_drink_soda": &"route_8_gate",
 	&"saffron_gate_drink_lemonade": &"route_8_gate",
+	# Jalon 26 (T8) : suites des déclencheurs du J15 (`next`) et choix OUI du garde (PARLER).
+	&"route_5_gate_after": &"route_5_gate", &"route_6_gate_after_w": &"route_6",
+	&"route_6_gate_after_e": &"route_6", &"route_6_gate_after_s": &"route_6",
 	# Jalon 20 (T12) : choix OUI de la Poké Ball d'Évoli (PNJ `eevee_ball` de la maison du toit).
 	&"celadon_eevee_gift": &"celadon_mansion_roof_house",
 	# Jalon 20 (T17) : objets et caches (PNJ « objet » et points d'examen), Erika (son dialogue),
@@ -402,6 +433,22 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"tower_3f_objet_1": &"pokemon_tower_3f", &"tower_4f_objet_1": &"pokemon_tower_4f",
 	&"tower_4f_objet_2": &"pokemon_tower_4f", &"tower_5f_objet_1": &"pokemon_tower_5f",
 	&"tower_5f_cache_1": &"pokemon_tower_5f", &"tower_6f_objet_1": &"pokemon_tower_6f",
+	# Jalon 26 (T9) : objets au sol (PNJ « objet ») et caches (points d'examen).
+	&"silph_co_3f_item_4": &"silph_co_3f",
+	&"silph_co_4f_item_5": &"silph_co_4f",
+	&"silph_co_4f_item_6": &"silph_co_4f",
+	&"silph_co_4f_item_7": &"silph_co_4f",
+	&"silph_co_5f_card_key": &"silph_co_5f",
+	&"silph_co_5f_hidden_1": &"silph_co_5f",
+	&"silph_co_5f_item_6": &"silph_co_5f",
+	&"silph_co_5f_item_7": &"silph_co_5f",
+	&"silph_co_6f_item_9": &"silph_co_6f",
+	&"silph_co_6f_item_10": &"silph_co_6f",
+	&"silph_co_9f_hidden_1": &"silph_co_9f",
+	&"silph_co_10f_item_4": &"silph_co_10f",
+	&"silph_co_10f_item_5": &"silph_co_10f",
+	&"silph_co_10f_item_6": &"silph_co_10f",
+	&"saffron_copycat_hidden_1": &"saffron_copycat_house_2f",
 	# Jalon 26 (T11, T12) : dialogues de l'employé du Lokhlass, du président et des objets du 7F.
 	&"silph_co_lapras_gift": &"silph_co_7f", &"silph_co_master_ball": &"silph_co_11f",
 	&"silph_co_7f_item_10": &"silph_co_7f", &"silph_co_7f_item_11": &"silph_co_7f",
@@ -420,6 +467,26 @@ const J20_T21_IDS: Array[StringName] = [
 	&"rocket_hideout_b3f_hidden_1", &"rocket_hideout_b4f_item_1", &"rocket_hideout_b4f_item_2",
 	&"rocket_hideout_b4f_item_3", &"rocket_hideout_b4f_hidden_1",
 ]
+## Jalon 26 (T9) : objets au sol et cachés de Safrania et de la Sylphe (`saffron_life.json`,
+## `silph_co_life.json`) : scène → [carte, objet donné]. Les objets absents du dépôt sont remplacés
+## [D] (fallback des grilles) : Corde/Hyper Potion → Super Potion, etc.
+const J26_T9_ITEMS: Dictionary[StringName, Array] = {
+	&"silph_co_3f_item_4": [&"silph_co_3f", &"super_potion"],
+	&"silph_co_4f_item_5": [&"silph_co_4f", &"super_potion"],
+	&"silph_co_4f_item_6": [&"silph_co_4f", &"revive"],
+	&"silph_co_4f_item_7": [&"silph_co_4f", &"escape_rope"],
+	&"silph_co_5f_card_key": [&"silph_co_5f", &"card_key"],
+	&"silph_co_5f_hidden_1": [&"silph_co_5f", &"revive"],
+	&"silph_co_5f_item_6": [&"silph_co_5f", &"nugget"],
+	&"silph_co_5f_item_7": [&"silph_co_5f", &"rare_candy"],
+	&"silph_co_6f_item_9": [&"silph_co_6f", &"rare_candy"],
+	&"silph_co_6f_item_10": [&"silph_co_6f", &"x_accuracy"],
+	&"silph_co_9f_hidden_1": [&"silph_co_9f", &"super_potion"],
+	&"silph_co_10f_item_4": [&"silph_co_10f", &"nugget"],
+	&"silph_co_10f_item_5": [&"silph_co_10f", &"rare_candy"],
+	&"silph_co_10f_item_6": [&"silph_co_10f", &"rare_candy"],
+	&"saffron_copycat_hidden_1": [&"saffron_copycat_house_2f", &"nugget"],
+}
 ## Jalon 18 (T16) : scènes de ses fichiers (objets, objectifs).
 const J18_IDS: Array[StringName] = [
 	&"dark_cave_1f_item_1", &"dark_cave_1f_item_2", &"dark_cave_b1f_hidden_1",
@@ -494,6 +561,9 @@ func test_library_loads_without_error() -> void:
 		&"route_24_rival", &"route_24_rocket", &"route_25_hidden_1", &"route_25_item_1",
 		&"route_25_item_2", &"route_25_item_3",
 		&"route_6_gate_rule_e", &"route_6_gate_rule_s", &"route_6_gate_rule_w",
+		# Jalon 26 (T8) : suites des déclencheurs du J15.
+		&"route_5_gate_after", &"route_6_gate_after_e", &"route_6_gate_after_s",
+		&"route_6_gate_after_w",
 		&"route_6_hidden_1", &"route_6_item_1", &"vermilion_arrival",
 		&"vermilion_gym_barrier_open", &"vermilion_gym_surge", &"vermilion_gym_surge_tm_late",
 		# Jalon 16 (T15) : départ du S.S. Anne, Coupe de l'arbuste de l'Arène.
@@ -530,7 +600,7 @@ func test_library_loads_without_error() -> void:
 		&"route_8_reached", &"celadon_reached", &"route_8_item_1", &"route_8_hidden_1",
 		&"souterrain_hidden_1", &"souterrain_hidden_2", &"celadon_hidden_1",
 		&"celadon_gym_erika", &"celadon_gym_erika_tm_late", &"celadon_roof_trade"]
-		+ J18_IDS + J20_T21_IDS
+		+ J18_IDS + J20_T21_IDS + J26_T9_ITEMS.keys()
 		# Jalon 26 (T11, T12) : rival n° 6, Lokhlass, Giovanni, Master Ball, objets du 7F.
 		+ [&"rival_silph", &"silph_co_lapras_gift", &"silph_co_giovanni", &"silph_co_master_ball",
 		&"silph_co_7f_item_10", &"silph_co_7f_item_11"]))
@@ -643,7 +713,7 @@ func test_only_world_items_are_found_items() -> void:
 			for step: CutsceneStep in variant.steps:
 				if step.kind == CutsceneStep.Kind.GIVE and step.found:
 					found.append("%s:%s" % [id, step.item_id])
-	assert_eq(found, ["celadon_hidden_1:revive", "dark_cave_1f_item_1:escape_rope", "dark_cave_1f_item_2:antidote",
+	var expected: Array[String] = ["celadon_hidden_1:revive", "dark_cave_1f_item_1:escape_rope", "dark_cave_1f_item_2:antidote",
 		"dark_cave_b1f_hidden_1:super_potion", "dark_cave_b1f_item_1:super_potion",
 		"digletts_cave_item_1:escape_rope", "mt_moon_1f_hidden_1:awakening",
 		"mt_moon_1f_item_1:escape_rope", "mt_moon_b1f_item_1:moon_stone",
@@ -682,7 +752,12 @@ func test_only_world_items_are_found_items() -> void:
 		"viridian_forest_item_1:antidote", "viridian_forest_item_2:poke_ball",
 		"viridian_forest_item_3:potion", "viridian_forest_item_4:antidote",
 		"viridian_forest_item_5:poke_ball", "viridian_forest_item_6:potion"]
-		as Array[String])
+	# Jalon 26 (T9) : objets au sol et cachés de Safrania et de la Sylphe.
+	for id: StringName in J26_T9_ITEMS:
+		expected.append("%s:%s" % [id, J26_T9_ITEMS[id][1]])
+	expected.sort()
+	found.sort()
+	assert_eq(found, expected)
 
 
 ## Jalon 8 (jalon-08.md §2.3, §2.4) : un objet visible disparaît d'abord (son PNJ, retiré au

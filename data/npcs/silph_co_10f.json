@@ -1,0 +1,98 @@
+{
+	"silph_co_10f_1": {
+		"cell": [
+			1,
+			9
+		],
+		"facing": "right",
+		"sprite": "rocket_grunt_m",
+		"dialogue": "silph_co_10f_1_after",
+		"unless": [
+			"silph_giovanni_defeated"
+		],
+		"trainer": {
+			"id": "silph_co_10f_1",
+			"sight": 3,
+			"before": "silph_co_10f_1_before",
+			"defeated": "silph_co_10f_1_defeated"
+		}
+	},
+	"silph_co_10f_2": {
+		"cell": [
+			10,
+			2
+		],
+		"facing": "left",
+		"sprite": "researcher",
+		"dialogue": "silph_co_10f_2_after",
+		"unless": [
+			"silph_giovanni_defeated"
+		],
+		"trainer": {
+			"id": "silph_co_10f_2",
+			"sight": 4,
+			"before": "silph_co_10f_2_before",
+			"defeated": "silph_co_10f_2_defeated"
+		}
+	},
+	"silph_co_10f_worker_3": {
+		"cell": [
+			9,
+			15
+		],
+		"facing": "down",
+		"sprite": "cooltrainer_f",
+		"dialogue": "silph_co_10f_worker_3",
+		"look": {
+			"facings": [
+				"down",
+				"left",
+				"down",
+				"right"
+			],
+			"every": 3.5
+		}
+	},
+	"silph_co_10f_item_4": {
+		"cell": [
+			2,
+			12
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "silph_co_10f_item_4",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_silph_co_10f_item_4"
+		]
+	},
+	"silph_co_10f_item_5": {
+		"cell": [
+			4,
+			14
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "silph_co_10f_item_5",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_silph_co_10f_item_5"
+		]
+	},
+	"silph_co_10f_item_6": {
+		"cell": [
+			5,
+			11
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "silph_co_10f_item_6",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_silph_co_10f_item_6"
+		]
+	}
+}

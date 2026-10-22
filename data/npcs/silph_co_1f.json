@@ -1,0 +1,11 @@
+{
+	"silph_co_1f_receptionist": {
+		"cell": [
+			4,
+			2
+		],
+		"facing": "down",
+		"sprite": "hostess",
+		"dialogue": "silph_co_1f_receptionist"
+	}
+}
