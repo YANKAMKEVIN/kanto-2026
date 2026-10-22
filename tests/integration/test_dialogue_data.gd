@@ -380,6 +380,7 @@ const IDS: Array[StringName] = [
 	&"route_25_youngster_yanis_defeated",
 	# Jalon 15 (T14) : Route 6 et Carmin-sur-Mer (dossier 18 §15, annexe A du plan).
 	&"route_6_sign", &"route_6_gate_sign", &"route_6_underground_gate_sign", &"route_6_guard",
+	&"route_6_gate_trigger",
 	&"route_6_fisher", &"route_6_walker", &"route_6_item_1", &"route_6_hidden_1",
 	&"vermilion_city_sign", &"vermilion_gym_sign", &"vermilion_dock_sign",
 	&"vermilion_sailor", &"vermilion_docker_1", &"vermilion_docker_2", &"vermilion_old_man",
@@ -426,7 +427,8 @@ const IDS_J14_ROCKET: Array[StringName] = [
 ]
 ## Jalon 15 (T13) : la Route 5 et ses intérieurs (dossier 18 §15.2, annexe A.3).
 const IDS_J15_ROUTE_5: Array[StringName] = [
-	&"route_5_crossroads_sign", &"route_5_daycare_sign", &"route_5_guard", &"route_5_hidden_1",
+	&"route_5_crossroads_sign", &"route_5_daycare_sign", &"route_5_gate_trigger",
+	&"route_5_guard", &"route_5_hidden_1",
 	&"route_5_item_1", &"route_5_sign", &"route_5_traveler", &"route_5_underground_sign",
 	&"route_5_walker",
 ]
@@ -675,8 +677,8 @@ const SET_J18_CUTSCENES: Array[StringName] = [
 	&"got_route_9_item_1", &"got_route_9_item_2", &"got_route_9_item_3", &"lavender_reached",
 	&"route_10_reached", &"route_9_entered",
 ]
-## Jalon 15 (T13) : la réplique du garde du poste nord, jouée aussi par la scène du recul.
-const PLAYED_J15_ROUTE_5: Array[StringName] = [&"route_5_guard"]
+## Jalon 15 (T13) : la réplique du déclencheur du poste nord (J26 T8 : dialogue propre, plus celle du garde).
+const PLAYED_J15_ROUTE_5: Array[StringName] = [&"route_5_gate_trigger"]
 ## Dialogues joués par les scènes du Rocket et du barrage.
 const PLAYED_J14_ROCKET: Array[StringName] = [
 	&"cerulean_rocket_beaten", &"cerulean_rocket_before", &"cerulean_rocket_leaving",
@@ -932,8 +934,8 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		&"rival_cerulean_intro", &"rival_cerulean_lost", &"rival_cerulean_resume",
 		&"rival_cerulean_resume_again", &"rival_cerulean_won",
 		&"rival_challenge", &"rival_challenge_wait", &"rival_lab_lost", &"rival_lab_won",
-		# Jalon 15 (T14) : le garde de Safrania sur la Route 6 (recul).
-		&"route_6_guard",
+		# Jalon 26 (T8) : les déclencheurs de recul des Routes 5 et 6 (dialogue à eux).
+		&"route_6_gate_trigger",
 		&"rival_lab_won_leaving", &"rival_parcel_greet", &"rival_parcel_leaving",
 		&"rival_parcel_return", &"rival_starter_pick", &"rival_starter_smile",
 		&"route1_grass_thought", &"route22_rival_greet", &"route22_rival_hesitates",
@@ -1035,6 +1037,8 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		_sorted([&"blacked_out_before", &"cerulean_neighbor_talked", &"forest_hiker_talked", &"forest_naturalist_talked",
 			&"mom_greeted", &"nugget_rocket_yes", &"pewter_researcher_talked", &"poison_unlocked", &"rival_met",
 			&"route_5_gate_warned",
+			# Jalon 26 (T8) : la boisson choisie au OUI du garde (lue par la scène qui la prend).
+			&"saffron_gate_offer_lemonade", &"saffron_gate_offer_soda", &"saffron_gate_offer_water",
 			&"route_2_hiker_talked", &"route_2_youngster_talked", &"storage_terminal_seen",
 			&"viridian_old_man_talked",
 			# Jalon 16 (T15) : PARTIR (confirmation du départ du S.S. Anne) ; TXT-03 entendu
@@ -1510,6 +1514,7 @@ func test_speakers_and_narration() -> void:
 		# Jalon 15 (T14) : panneaux sans locuteur, l'arbre de l'Arène en narration.
 		&"route_6_sign": ["", false], &"vermilion_city_sign": ["", false],
 		&"cut_tree": ["", true], &"route_6_guard": ["Garde", false],
+		&"route_6_gate_trigger": ["Garde", false],
 		&"vermilion_sailor": ["Marin", false],
 		# Jalon 17 (T23) : l'arbuste du couloir en narration, comme celui de l'Arène.
 		&"route_2_east_bush": ["", true],

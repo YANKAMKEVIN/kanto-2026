@@ -28,12 +28,186 @@
 		"speaker": "Garde",
 		"variants": [
 			{
-				"if": ["saffron_gates_open"],
-				"pages": ["Merci encore pour la boisson.", "Allez-y, Safrania vous attend."]
+				"if": [
+					"saffron_gates_open"
+				],
+				"pages": [
+					"Merci encore pour la boisson.",
+					"Allez-y, Safrania vous attend."
+				]
 			},
 			{
-				"unless": ["route_5_gate_warned"],
-				"set": ["route_5_gate_warned"],
+				"if_zone": "saffron_city",
+				"if_items": [
+					"fresh_water"
+				],
+				"pages": [
+					"Je monte la garde depuis ce matin,\nsous ce soleil…",
+					"J'ai une de ces soifs.",
+					"Lui donner une boisson ?"
+				],
+				"choice": {
+					"confirm": "OUI",
+					"cancel": "NON",
+					"confirm_set": [
+						"saffron_gate_offer_water"
+					],
+					"confirm_cutscene": "route_5_gate_after",
+					"cancel_pages": [
+						"Tant pis… Je tiendrai bien encore un peu."
+					]
+				}
+			},
+			{
+				"if_zone": "saffron_city",
+				"if_items": [
+					"soda_pop"
+				],
+				"pages": [
+					"Je monte la garde depuis ce matin,\nsous ce soleil…",
+					"J'ai une de ces soifs.",
+					"Lui donner une boisson ?"
+				],
+				"choice": {
+					"confirm": "OUI",
+					"cancel": "NON",
+					"confirm_set": [
+						"saffron_gate_offer_soda"
+					],
+					"confirm_cutscene": "route_5_gate_after",
+					"cancel_pages": [
+						"Tant pis… Je tiendrai bien encore un peu."
+					]
+				}
+			},
+			{
+				"if_zone": "saffron_city",
+				"if_items": [
+					"lemonade"
+				],
+				"pages": [
+					"Je monte la garde depuis ce matin,\nsous ce soleil…",
+					"J'ai une de ces soifs.",
+					"Lui donner une boisson ?"
+				],
+				"choice": {
+					"confirm": "OUI",
+					"cancel": "NON",
+					"confirm_set": [
+						"saffron_gate_offer_lemonade"
+					],
+					"confirm_cutscene": "route_5_gate_after",
+					"cancel_pages": [
+						"Tant pis… Je tiendrai bien encore un peu."
+					]
+				}
+			},
+			{
+				"if_zone": "saffron_city",
+				"pages": [
+					"Je monte la garde depuis ce matin,\nsous ce soleil…",
+					"J'ai une de ces soifs."
+				]
+			},
+			{
+				"unless": [
+					"route_5_gate_warned"
+				],
+				"set": [
+					"route_5_gate_warned"
+				],
+				"pages": [
+					"Halte ! La route de Safrania est fermée.",
+					"Ordre de la ville. Je n'en sais pas plus, désolé."
+				]
+			},
+			{
+				"pages": [
+					"Toujours fermé. Si tu vas vers Carmin-sur-Mer, prends le passage souterrain."
+				]
+			}
+		]
+	},
+	"route_5_gate_trigger": {
+		"speaker": "Garde",
+		"variants": [
+			{
+				"if_zone": "saffron_city",
+				"if_items": [
+					"fresh_water"
+				],
+				"pages": [
+					"Je monte la garde depuis ce matin,\nsous ce soleil…",
+					"J'ai une de ces soifs.",
+					"Lui donner une boisson ?"
+				],
+				"choice": {
+					"confirm": "OUI",
+					"cancel": "NON",
+					"confirm_set": [
+						"saffron_gate_offer_water"
+					],
+					"cancel_pages": [
+						"Tant pis… Je tiendrai bien encore un peu."
+					]
+				}
+			},
+			{
+				"if_zone": "saffron_city",
+				"if_items": [
+					"soda_pop"
+				],
+				"pages": [
+					"Je monte la garde depuis ce matin,\nsous ce soleil…",
+					"J'ai une de ces soifs.",
+					"Lui donner une boisson ?"
+				],
+				"choice": {
+					"confirm": "OUI",
+					"cancel": "NON",
+					"confirm_set": [
+						"saffron_gate_offer_soda"
+					],
+					"cancel_pages": [
+						"Tant pis… Je tiendrai bien encore un peu."
+					]
+				}
+			},
+			{
+				"if_zone": "saffron_city",
+				"if_items": [
+					"lemonade"
+				],
+				"pages": [
+					"Je monte la garde depuis ce matin,\nsous ce soleil…",
+					"J'ai une de ces soifs.",
+					"Lui donner une boisson ?"
+				],
+				"choice": {
+					"confirm": "OUI",
+					"cancel": "NON",
+					"confirm_set": [
+						"saffron_gate_offer_lemonade"
+					],
+					"cancel_pages": [
+						"Tant pis… Je tiendrai bien encore un peu."
+					]
+				}
+			},
+			{
+				"if_zone": "saffron_city",
+				"pages": [
+					"Je monte la garde depuis ce matin,\nsous ce soleil…",
+					"J'ai une de ces soifs."
+				]
+			},
+			{
+				"unless": [
+					"route_5_gate_warned"
+				],
+				"set": [
+					"route_5_gate_warned"
+				],
 				"pages": [
 					"Halte ! La route de Safrania est fermée.",
 					"Ordre de la ville. Je n'en sais pas plus, désolé."
