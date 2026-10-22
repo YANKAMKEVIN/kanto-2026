@@ -1,13 +1,15 @@
 extends GutTest
 ## Rencontres « water » (passe systèmes 2, T16, `systemes-2.md` §2.5.6) : terrain connu des tables,
-## table de `qa_sea` (données réelles), `EncounterDirector.terrain_at` rend « water » sur une case
+## table d'eau lue d'un fichier (copie d'essai, sous `tests/fixtures/encounters_water/`, de la table
+## de la carte de QA retirée en S2Z, T33), `EncounterDirector.terrain_at` rend « water » sur une case
 ## surfable (rien ailleurs : sable, eau décor, herbes inchangées), et un pas en Surf lance le
 ## combat de la table.
 
 const PLAYER_SCENE := "res://game/player/player.tscn"
 const ScriptedRng := preload("res://tests/helpers/scripted_rng.gd")
 const GameStateScript := preload("res://game/autoload/game_state.gd")
-const MAP_ID := &"qa_sea"
+const MAP_ID := &"essai_mer"
+const WATER_FIXTURES := "res://tests/fixtures/encounters_water"
 const WATER_CELL := Vector2i(5, 5)
 const DECOR_WATER := Vector2i(8, 5)
 const SAND_CELL := Vector2i(4, 5)
@@ -87,11 +89,13 @@ func before_each() -> void:
 	await wait_process_frames(2)
 
 
-func test_water_is_a_known_terrain_and_the_qa_table_loads() -> void:
+func test_water_is_a_known_terrain_and_a_water_table_loads() -> void:
 	assert_true(&"water" in EncounterTable.TERRAINS)
 	assert_eq(EncounterTable.TERRAINS.back(), &"water", "ajouté en fin")
+	var game := EncounterLibrary.new(_data)
+	assert_true(game.load_dir(), "\n".join(game.get_errors()))
 	var library := EncounterLibrary.new(_data)
-	assert_true(library.load_dir(), "\n".join(library.get_errors()))
+	assert_true(library.load_dir(WATER_FIXTURES), "\n".join(library.get_errors()))
 	assert_true(library.has_table(MAP_ID, &"water"))
 	assert_false(library.has_table(MAP_ID, &"grass"))
 	var table := library.get_table(MAP_ID, &"water")
