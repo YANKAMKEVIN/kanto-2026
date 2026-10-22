@@ -23,7 +23,9 @@ Hypothèses du contrôle : le joueur a Surf et Force (modèle hybride du J16 : C
 Badges Âme et Prisme) ; le rival n° 7 est battu (il bloque la porte du poste tant qu'il ne l'est
 pas) ; les Dresseurs, Sulfura et les gardes occupent leur case pour toujours (prudent).
 
-Usage : python3 -I tools/art/plan_check_j29.py            (contrôle complet)
+Usage : python3 -I tools/art/plan_check_j29.py            (contrôle, visites bornées à
+                                                           MAX_ETATS_VISITE états, signalées)
+        python3 -I tools/art/plan_check_j29.py --complet  (sans borne : plusieurs heures)
         python3 -I tools/art/plan_check_j29.py --autotest (le contrôle refuse des pièges connus)
 Code 1 si un critère échoue.
 """
@@ -40,7 +42,10 @@ RACINE = Path(__file__).resolve().parents[2]
 PLANS = RACINE / "tools" / "plans"
 Case = tuple[int, int]
 DIRECTIONS = [(0, -1), (0, 1), (-1, 0), (1, 0)]
-MAX_ETATS = 2_000_000
+# États explorés au plus par visite (carte, région de départ, drapeaux) ; au-delà, la visite est
+# « partielle » (signalée) : ses états explorés sont contrôlés, les autres non. `--complet` lève la
+# limite (plusieurs heures : le 3F a des millions d'états, ses rochers n° 1 et 2 parcourant 159 cases).
+MAX_ETATS_VISITE = 150_000
 
 # Carte du jeu → grille.
 GRILLES = {
@@ -173,6 +178,8 @@ class Explorateur:
 		# l'exploration d'une visite n'est faite qu'une fois.
 		self._memo: dict[tuple, tuple] = {}
 		self.drapeaux_vus: set[str] = set()
+		# Visites dont l'exploration a atteint MAX_ETATS_VISITE : (carte, entrée, drapeaux, reste).
+		self.partielles: list[tuple] = []
 
 	def rochers_entree(self, carte: Carte, drapeaux: frozenset[str]) -> frozenset[Case]:
 		pres = set()
@@ -281,38 +288,54 @@ class Explorateur:
 		return region, sorties
 
 	def visiter(self, ident: str, entree: Case, drapeaux0: frozenset[str]):
-		"""Tous les états d'une visite de la carte : liste (état, sorties) ; drapeaux atteints."""
+		"""Tous les états d'une visite de la carte : liste (état, sorties), successeurs de chaque
+		état par une poussée, et états « incomplets » (exploration bornée : successeurs inconnus)."""
 		carte = self.cartes[ident]
 		if not hasattr(carte, "plein"):
 			carte.masques()
 		etats = []
-		vus = set()
-		file = deque([(entree, self.rochers_entree(carte, drapeaux0), drapeaux0)])
+		succ: list[set[int]] = []
+		index: dict[tuple, int] = {}
+		incomplets: set[int] = set()
+		vus_joueur: dict[tuple, int] = {}
+		file = deque([(entree, self.rochers_entree(carte, drapeaux0), drapeaux0, -1)])
 		while file:
-			joueur, rochers, drapeaux = file.popleft()
-			if (joueur, rochers, drapeaux) in vus:
-				continue
-			region, sorties = self.zone_bits(carte, joueur, rochers, drapeaux)
-			cle = (region, rochers, drapeaux)
-			vus.add((joueur, rochers, drapeaux))
-			if cle in vus:
-				continue
-			vus.add(cle)
-			self.etats += 1
-			if self.etats > MAX_ETATS:
-				raise RuntimeError("trop d'états")
-			etats.append((cle, sorties))
-			for r in rochers:
-				for d in DIRECTIONS:
-					pousseur = (r[0] - d[0], r[1] - d[1])
-					if not carte.dans(pousseur) or not region & carte.bit(pousseur):
-						continue
-					if not Carte.compatibles(carte.niveau(pousseur), carte.niveau(r)):
-						continue
-					res = self.pousser(carte, r, d, rochers, drapeaux)
-					if res is not None:
-						file.append((r, res[0], res[1]))
-		return etats
+			joueur, rochers, drapeaux, parent = file.popleft()
+			cle_j = (joueur, rochers, drapeaux)
+			if cle_j in vus_joueur:
+				k = vus_joueur[cle_j]
+			else:
+				region, sorties = self.zone_bits(carte, joueur, rochers, drapeaux)
+				cle = (region, rochers, drapeaux)
+				if cle in index:
+					k = index[cle]
+				else:
+					k = len(etats)
+					index[cle] = k
+					etats.append((cle, sorties))
+					succ.append(set())
+					self.etats += 1
+					if MAX_ETATS_VISITE and len(etats) >= MAX_ETATS_VISITE:
+						self.partielles.append((ident, entree, sorted(drapeaux0), len(file)))
+						incomplets.add(k)
+						incomplets.update(p for *_, p in file if p >= 0)
+						if parent >= 0:
+							succ[parent].add(k)
+						break
+					for r in rochers:
+						for d in DIRECTIONS:
+							pousseur = (r[0] - d[0], r[1] - d[1])
+							if not carte.dans(pousseur) or not region & carte.bit(pousseur):
+								continue
+							if not Carte.compatibles(carte.niveau(pousseur), carte.niveau(r)):
+								continue
+							res = self.pousser(carte, r, d, rochers, drapeaux)
+							if res is not None:
+								file.append((r, res[0], res[1], k))
+				vus_joueur[cle_j] = k
+			if parent >= 0:
+				succ[parent].add(k)
+		return etats, succ, incomplets
 
 	def visiter_memo(self, ident: str, entree: Case, drapeaux: frozenset[str]):
 		"""[visiter] avec les seuls drapeaux pertinents de la carte, mémorisé ; les sorties portent
@@ -327,10 +350,24 @@ class Explorateur:
 		if cle not in self._memo:
 			# Seuls comptent, pour la suite, les jeux de sorties distincts des états de la visite
 			# (un état = une région du joueur, des rochers, des drapeaux) et les drapeaux posés.
-			jeux = set()
+			etats, succ, incomplets = self.visiter(ident, entree, rel)
+			# Sorties atteignables depuis chaque état, poussées comprises (point fixe : une
+			# poussée peut rouvrir un chemin) ; un état incomplet (exploration bornée) n'est
+			# jamais déclaré bloqué.
+			atteintes = [frozenset(s) for _, s in etats]
+			change = True
+			while change:
+				change = False
+				for k in range(len(etats) - 1, -1, -1):
+					union = atteintes[k]
+					for n in succ[k]:
+						union = union | atteintes[n]
+					if union != atteintes[k]:
+						atteintes[k] = union
+						change = True
+			jeux = {a for k, a in enumerate(atteintes) if k not in incomplets}
 			poses: set[str] = set()
-			for (_, _, dr), sorties in self.visiter(ident, entree, rel):
-				jeux.add(frozenset(sorties))
+			for (_, _, dr), _ in etats:
 				poses |= dr
 			self._memo[cle] = (jeux, frozenset(poses))
 		jeux, poses = self._memo[cle]
@@ -402,7 +439,10 @@ def verifier(dossier: Path = PLANS) -> list[str]:
 	v0, visites = ex.explorer(DEPART)
 	bons = _bons(visites, BUT_CARTE)
 	retour = _bons(visites, "viridian_city")
-	notes.append(f"huit Badges : {len(visites)} visites, {ex.etats} états")
+	notes.append(f"huit Badges : {len(visites)} visites, {ex.etats} états explorés")
+	for carte, entree, dr, reste in ex.partielles:
+		notes.append(f"exploration PARTIELLE ({MAX_ETATS_VISITE} états, {reste} en file) : "
+			f"{carte} depuis {entree}, drapeaux {dr}")
 	if v0 not in bons:
 		echecs.append("huit Badges : le Plateau Indigo n'est pas atteignable")
 	cartes_vues = {v[0] for v in visites}
@@ -487,6 +527,9 @@ def autotest() -> list[str]:
 
 
 def main(argv: list[str]) -> int:
+	global MAX_ETATS_VISITE
+	if "--complet" in argv:
+		MAX_ETATS_VISITE = 0
 	print("== Jalon 29 : Routes 22 et 23, Route Victoire, Plateau Indigo")
 	echecs = autotest() if "--autotest" in argv else verifier()
 	for e in echecs:
