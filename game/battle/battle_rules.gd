@@ -31,6 +31,9 @@ var items: ItemLibrary = null
 var ghost: bool = false
 ## La fuite réussit toujours, sans tirage ([FleeCalc] n'est pas consulté) ; combat SPECTRE.
 var flee_always: bool = false
+## J23 : rencontre Safari ([SafariBattle] au lieu de [Battle] ; `jalon-23.md` §2.3) : aucun
+## Pokémon du joueur en scène, ni Sac, ni changement, ni XP, ni argent.
+var safari: bool = false
 
 
 ## Règles d'un combat sauvage : fuite permise, XP ×1, Balls et soins permis (bonus et soins
@@ -72,4 +75,20 @@ static func for_trainer(trainer: TrainerData = null,
 	rules.allow_balls = false
 	rules.allow_heal_items = true
 	rules.items = item_library
+	return rules
+
+
+## J23 : règles d'une rencontre Safari (`jalon-23.md` §2.3) : sauvage, FUIR toujours réussi,
+## aucune XP, ni Sac (ni Balls du Sac, ni soins), ni changement de Pokémon.
+static func for_safari() -> BattleRules:
+	var rules := BattleRules.new()
+	rules.wild = true
+	rules.safari = true
+	rules.can_flee = true
+	rules.flee_always = true
+	rules.gives_exp = false
+	rules.exp_multiplier = 0.0
+	rules.allow_balls = false
+	rules.allow_heal_items = false
+	rules.items = null
 	return rules

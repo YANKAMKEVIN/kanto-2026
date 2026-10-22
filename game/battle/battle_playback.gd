@@ -59,6 +59,9 @@ extends RefCounted
 ## (le message, puis WITHDRAW) ; RECHARGING : le message seulement.
 ## Jalon 20 : BATTLE_ITEM_USED → le message, puis HEAL (la carte du joueur revient après le Sac ;
 ## la barre ne bouge pas) ; ITEM_ESCAPE, REVIVED : les messages seulement.
+## J23 (rencontre Safari) : SAFARI_BALL_THROWN comme BALL_THROWN (message, puis THROW) ;
+## SAFARI_FLED comme SCARED_AWAY (VANISH puis le message) ; les autres événements Safari : le
+## message seulement.
 ## Passe systèmes 2 : FLUTE_WOKE (muet) → STATUS_TAG si le Pokémon réveillé est en jeu ;
 ## FLUTE_PLAYED, ALL_WOKE : les messages seulement.
 ## Les phrases viennent de [BattleText] : rien n'est écrit ici.
@@ -155,7 +158,12 @@ static func beats(event: BattleEvent, texts: BattleText, data: PokemonData,
 		BattleEvent.Kind.CHARGE_BROKEN:
 			result.append(BattleBeat.new(BattleBeat.Kind.SURFACE, event))
 			result.append_array(messages)
-		BattleEvent.Kind.TELEPORTED, BattleEvent.Kind.SCARED_AWAY:
+		BattleEvent.Kind.SAFARI_BALL_THROWN:
+			# J23 : comme une Ball du Sac, la phrase puis le lancer.
+			result.append_array(messages)
+			result.append(BattleBeat.new(BattleBeat.Kind.THROW, event))
+		BattleEvent.Kind.TELEPORTED, BattleEvent.Kind.SCARED_AWAY, \
+				BattleEvent.Kind.SAFARI_FLED:
 			result.append(BattleBeat.new(BattleBeat.Kind.VANISH, event))
 			result.append_array(messages)
 		BattleEvent.Kind.WITHDRAWN, BattleEvent.Kind.FORCED_OUT:

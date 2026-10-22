@@ -240,7 +240,19 @@
 		"ghost_spoke": { "text": "SPECTRE : Va-t'en… Va-t'en…" },
 		"ghost_ball_refused": {
 			"text": "Pas question de lancer une Ball sur… ça. Elle passerait au travers."
-		}
+		},
+		"safari_ball_thrown": { "text": "{player} lance une SAFARI BALL !" },
+		"safari_bait": { "text": "{player} lance un appât." },
+		"safari_rock": { "text": "{player} lance un caillou." },
+		"safari_eating": { "text": "{pokemon} mange !" },
+		"safari_angry": { "text": "{pokemon} est en colère !" },
+		"safari_fled": { "text": "{pokemon} s'enfuit !" },
+		"safari_left": { "text": "Tu t'éloignes doucement." },
+		"safari_no_balls": { "text": "Ding-dong ! Tu n'as plus de SAFARI BALLS !" },
+		"safari_action_ball": { "text": "SAFARI BALL ×{amount}" },
+		"safari_action_bait": { "text": "APPÂT" },
+		"safari_action_rock": { "text": "CAILLOU" },
+		"safari_action_run": { "text": "FUIR" }
 	},
 	"stats": {
 		"atk": "L'Attaque", "def": "La Défense", "spa": "L'Attaque Spéciale",
