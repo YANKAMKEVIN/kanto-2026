@@ -1,5 +1,7 @@
+# Grille d'essai (fixture de test, jamais livrée) : ancienne grille de carte de QA de la passe systèmes 2,
+# carte retirée en S2Z (T33). Lue par tools/art/plan_check_systemes2.py et plan_check_teleports.py.
 # Carte de QA « Surf », suite — passe systèmes 2 (§2.5). Arrivées en Surf forcé « s » : (5, 3) depuis le
-# courant de qa_sea ; (0, 12) depuis le bord est de qa_sea. Bord ouest (0, 11..14) → qa_sea en Surf.
+# courant de essai_mer ; (0, 12) depuis le bord est de essai_mer. Bord ouest (0, 11..14) → essai_mer en Surf.
 # Rive est (9..10) : descente.
 #
 # Légende : # falaise · . terre · w eau surfable · s arrivée en Surf forcé
@@ -31,5 +33,5 @@ POSITIONS
 depart             depart           0,12         libre
 from_current       spawn            5,3          libre   surf=oui
 from_west          spawn            0,12         libre   surf=oui
-bord_ouest         warp             0,11..14     libre   vers=qa_sea:from_east  # PUSH ←, en Surf
+bord_ouest         warp             0,11..14     libre   vers=essai_mer:from_east  # PUSH ←, en Surf
 FIN

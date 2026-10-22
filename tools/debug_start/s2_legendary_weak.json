@@ -1,9 +1,0 @@
-{
-	"map": "route_1", "spawn": "from_pallet_w", "facing": "up",
-	"flags": [
-		"mom_greeted", "rival_met", "oak_met", "oak_lab_reunion", "starter_offered",
-		"starter_chosen", "rival_challenged", "rival_battle_done", "rival_left_lab",
-		"pokedex_activated", "qa_s2_legendary"
-	],
-	"party": [{ "species": "charmander", "level": 5 }]
-}

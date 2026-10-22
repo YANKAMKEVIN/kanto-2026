@@ -1,17 +1,19 @@
+# Grille d'essai (fixture de test, jamais livrée) : ancienne grille de carte de QA de la passe systèmes 2,
+# carte retirée en S2Z (T33). Lue par tools/art/plan_check_systemes2.py et plan_check_teleports.py.
 # Carte de QA « monture » — passe systèmes 2 (docs/tech/systemes-2.md §2.2–§2.4, §2.14 ; T3c, T9).
 # Retirée à la clôture (S2Z). Aucune carte réelle : kit existant et placeholders.
 #
 # Écart décidé [D] (T9) : `GameMap.cycling_road` est un booléen PAR CARTE (comme la Route 17 de RB).
-# La Piste Cyclable (pente, paliers, Dresseur) est donc une carte séparée, `qa_mount_piste`
-# (tools/plans/qa_mount_piste.txt) ; ici reste la partie ouest, l'intérieur et le dormeur.
+# La Piste Cyclable (pente, paliers, Dresseur) est donc une carte séparée, `essai_monture_piste`
+# (tools/plans/essai_monture_piste.txt) ; ici reste la partie ouest, l'intérieur et le dormeur.
 #
 # Ce qu'on y teste : monter / descendre du Vélo (bouton du HUD et Sac), vitesse, saut du rebord
-# (rangée 14) à Vélo, refus en intérieur (maison, porte D (5, 10) → qa_mount_interieur : on y entre
+# (rangée 14) à Vélo, refus en intérieur (maison, porte D (5, 10) → essai_monture_interieur : on y entre
 # à pied), compagnon rentré puis ressorti ; ENTRÉES DE LA PISTE « = » (19, 8) et (19, 16), warps de
-# bord (PUSH →) vers qa_mount_piste (monture transmise, montée d'office avec la Bicyclette) ; retours
+# bord (PUSH →) vers essai_monture_piste (monture transmise, montée d'office avec la Bicyclette) ; retours
 # aux spawns from_piste_n / from_piste_s. POKÉ FLÛTE : un dormeur 2 × 1 (10..11, 4) ferme le nord
-# (1..18, 1..3) ; réveillé (scène qa_mount_sleeper, drapeau qa_mount_sleeper_woken), il libère le
-# passage. Sorties sud : supprimées [D] (qa_sea n'est pas construite) — mur.
+# (1..18, 1..3) ; réveillé (scène essai_monture_sleeper, drapeau essai_monture_sleeper_woken), il libère le
+# passage. Sorties sud : supprimées [D] (essai_mer n'est pas construite) — mur.
 # Contrôle : tools/art/plan_check_systemes2.py.
 #
 # Légende :
@@ -46,12 +48,12 @@ FIN
 
 POSITIONS
 depart             depart           9,18         libre
-porte_maison       warp             5,10         libre   vers=qa_mount_interieur:entree interieur=oui
+porte_maison       warp             5,10         libre   vers=essai_monture_interieur:entree interieur=oui
 from_interieur     spawn            5,11         libre
-entree_piste_n     warp             19,8         libre   vers=qa_mount_piste:from_mount_n  # PUSH →
-entree_piste_s     warp             19,16        libre   vers=qa_mount_piste:from_mount_s  # PUSH →
+entree_piste_n     warp             19,8         libre   vers=essai_monture_piste:from_mount_n  # PUSH →
+entree_piste_s     warp             19,16        libre   vers=essai_monture_piste:from_mount_s  # PUSH →
 from_piste_n       spawn            19,8         libre   # retour de la Piste (rangée 8)
 from_piste_s       spawn            19,16        libre   # retour de la Piste (rangée 16)
-dormeur            dormeur          10..11,4     bloque  drapeau=qa_mount_sleeper_woken scene=qa_mount_sleeper
+dormeur            dormeur          10..11,4     bloque  drapeau=essai_monture_sleeper_woken scene=essai_monture_sleeper
 derriere           derriere_dormeur 5,2          libre
 FIN

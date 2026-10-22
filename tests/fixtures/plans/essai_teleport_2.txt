@@ -1,5 +1,7 @@
+# Grille d'essai (fixture de test, jamais livrée) : ancienne grille de carte de QA de la passe systèmes 2,
+# carte retirée en S2Z (T33). Lue par tools/art/plan_check_systemes2.py et plan_check_teleports.py.
 # Carte de QA « téléporteurs », annexe — passe systèmes 2 (§2.9). Une salle sans autre issue que le
-# téléporteur (1, 1) → qa_teleport (8, 7). Carte Magnétique au sol (7, 5).
+# téléporteur (1, 1) → essai_teleport (8, 7). Carte Magnétique au sol (7, 5).
 #
 # Légende : # mur · . sol · T téléporteur · o objet au sol (bloqué)
 
@@ -17,7 +19,7 @@ GRILLE 10 8
 FIN
 
 POSITIONS
-tp_retour          teleporteur      1,1          libre   vers=qa_teleport:arr_c_est
+tp_retour          teleporteur      1,1          libre   vers=essai_teleport:arr_c_est
 arr_salle          spawn            1,1          libre
 carte_magnetique   objet            7,5          bloque  item=card_key
 FIN

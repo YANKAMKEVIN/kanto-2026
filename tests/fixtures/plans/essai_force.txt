@@ -1,3 +1,5 @@
+# Grille d'essai (fixture de test, jamais livrée) : ancienne grille de carte de QA de la passe systèmes 2,
+# carte retirée en S2Z (T33). Lue par tools/art/plan_check_systemes2.py et plan_check_teleports.py.
 # Carte de QA « Force » — passe systèmes 2 (docs/tech/systemes-2.md §2.7, §2.14 ; T3c). Retirée à la
 # clôture (S2Z). Aucune carte réelle : kit existant et placeholders.
 #
@@ -8,7 +10,7 @@
 # - salle du centre (10..13, 4..9) : rocher libre (12, 8), case interdite aux rochers (11, 6) (refus
 #   NO_PUSH), refus contre la barrière ; il peut descendre dans le hall et boucher le trou (8, 14) ;
 # - alcôve (1..5, 12) : le rocher (4, 12), poussé vers l'ouest, est refusé contre l'eau (2, 12) ;
-# - trou du hall (8, 14) : le JOUEUR y tombe tant qu'il est ouvert (Warp FALL → qa_strength_b1).
+# - trou du hall (8, 14) : le JOUEUR y tombe tant qu'il est ouvert (Warp FALL → essai_force_b1).
 # Contrôle : tools/art/plan_check_systemes2.py (anti-blocage exhaustif).
 #
 # Légende :
@@ -40,18 +42,18 @@ FIN
 
 POSITIONS
 depart             depart           11,14        libre
-sortie_o           warp             11,15        libre   vers=qa_mount:depart  # PUSH ↓
-sortie_e           warp             12,15        libre   vers=qa_mount:depart
+sortie_o           warp             11,15        libre   vers=essai_monture:depart  # PUSH ↓
+sortie_e           warp             12,15        libre   vers=essai_monture:depart
 from_b1            spawn            4,9          libre   # retour par l'échelle du B1
-trou_1             trou             4,4          libre   n=1 drapeau=qa_strength_hole_1_filled chute=qa_strength_b1
-trou_2             trou             8,14         libre   n=2 drapeau=qa_strength_hole_2_filled chute=qa_strength_b1
+trou_1             trou             4,4          libre   n=1 drapeau=essai_force_hole_1_filled chute=essai_force_b1
+trou_2             trou             8,14         libre   n=2 drapeau=essai_force_hole_2_filled chute=essai_force_b1
 rocher_1           rocher           4,8          bloque  ordre=1 trou=1
 rocher_2           rocher           19,8         bloque  ordre=2
 rocher_3           rocher           12,8         bloque  ordre=3 trou=2
 rocher_4           rocher           4,12         bloque  ordre=4  # refus contre l'eau
-interrupteur_1     interrupteur     19,4         libre   drapeau=qa_strength_switch_1
-barriere_1         barriere         10..13,3     bloque  ouverte_si=qa_strength_switch_1
+interrupteur_1     interrupteur     19,4         libre   drapeau=essai_force_switch_1
+barriere_1         barriere         10..13,3     bloque  ouverte_si=essai_force_switch_1
 interdit_1         interdit_rocher  11,6         libre   # case d'objet caché : refus NO_PUSH
 but                but              11,1         libre
-panneau            panneau          16,13        bloque  texte=qa_strength_sign
+panneau            panneau          16,13        bloque  texte=essai_force_sign
 FIN

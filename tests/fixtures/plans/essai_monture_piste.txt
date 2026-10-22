@@ -1,10 +1,12 @@
+# Grille d'essai (fixture de test, jamais livrée) : ancienne grille de carte de QA de la passe systèmes 2,
+# carte retirée en S2Z (T33). Lue par tools/art/plan_check_systemes2.py et plan_check_teleports.py.
 # Piste de QA « monture » — passe systèmes 2 (§2.3 ; T3c, T9). Retirée à la clôture (S2Z).
 # Tronçon de Piste Cyclable : carte à part car `GameMap.cycling_road` est un booléen par carte [D].
-# Reprend les colonnes 20..27 (+ alcôve 28) de l'ancienne grille qa_mount, décalées de 19 vers
+# Reprend les colonnes 20..27 (+ alcôve 28) de l'ancienne grille essai_monture, décalées de 19 vers
 # l'ouest : x(ici) = x(ancien) - 19.
 #
 # Ce qu'on y teste : arrivée d'office à Vélo avec la Bicyclette (entrées « = » (0, 8) et (0, 16),
-# warps de bord PUSH ← vers qa_mount), descente refusée ; PENTE « / » (rangées 3..7 et 9..13) :
+# warps de bord PUSH ← vers essai_monture), descente refusée ; PENTE « / » (rangées 3..7 et 9..13) :
 # dérive vers le bas sans appui, paliers sans marque aux rangées 1..2, 8 et 14..18 ; Dresseur dans
 # l'alcôve (9, 11), vue vers l'ouest sur la pente (sight 8) : la dérive s'arrête quand il voit le
 # joueur. Contrôle : tools/art/plan_check_systemes2.py.
@@ -39,10 +41,10 @@ GRILLE 11 20
 FIN
 
 POSITIONS
-from_mount_n       spawn            0,8          libre   # arrivée de qa_mount (19, 8)
-from_mount_s       spawn            0,16         libre   # arrivée de qa_mount (19, 16)
-sortie_n           warp             0,8          libre   vers=qa_mount:from_piste_n  # PUSH ←
-sortie_s           warp             0,16         libre   vers=qa_mount:from_piste_s  # PUSH ←
+from_mount_n       spawn            0,8          libre   # arrivée de essai_monture (19, 8)
+from_mount_s       spawn            0,16         libre   # arrivée de essai_monture (19, 16)
+sortie_n           warp             0,8          libre   vers=essai_monture:from_piste_n  # PUSH ←
+sortie_s           warp             0,16         libre   vers=essai_monture:from_piste_s  # PUSH ←
 piste              piste            1..8,1..18   libre   # GameMap.cycling_road (tronçon de QA)
 piste_entrees      piste            0,8;0,16     libre
 dresseur_pente     dresseur         9,11         bloque  facing=left sight=8
