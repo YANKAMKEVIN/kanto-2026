@@ -28,14 +28,14 @@ func test_real_data_loads_without_error() -> void:
 	# Jalon 22 (T4) : Bon de Commande, Hyper Potion, Hyper Ball (ultra_ball) ; T10 : CT09 Bélier
 	# à la place de la CT20 (Frénésie sans effet dans le moteur) (items_j22.json).
 	# Jalon 23 (T6) : CT32, CT37, Dents d'Or (items_j23.json ; CS03 et CS04 sont celles de la passe
-	# systèmes 2).
+	# systèmes 2). Jalon 23 (T18) : CT06 Toxik (tm06, items_j23.json).
 	assert_eq(_library.get_ids(), [&"antidote", &"awakening", &"bicycle", &"bike_voucher", &"burn_heal",
 		&"card_key", &"dire_hit",
 		&"dome_fossil", &"escape_rope", &"fire_stone", &"fresh_water", &"full_restore",
 		&"gold_teeth", &"good_rod", &"great_ball", &"helix_fossil", &"hm01", &"hm02", &"hm03", &"hm04", &"hm05", &"hyper_potion", &"ice_heal", &"leaf_stone", &"lemonade",
 		&"lift_key", &"moon_stone", &"nugget", &"oak_parcel", &"old_rod", &"paralyze_heal", &"poke_ball",
 		&"poke_doll", &"poke_flute", &"potion", &"rare_candy", &"revive", &"silph_scope", &"soda_pop",
-		&"ss_ticket", &"super_potion", &"super_rod", &"thunder_stone", &"tm01", &"tm09", &"tm11", &"tm13", &"tm19",
+		&"ss_ticket", &"super_potion", &"super_rod", &"thunder_stone", &"tm01", &"tm06", &"tm09", &"tm11", &"tm13", &"tm19",
 		&"tm21", &"tm24", &"tm28", &"tm32", &"tm34", &"tm37", &"ultra_ball", &"water_stone", &"x_accuracy", &"x_attack",
 		&"x_defend", &"x_special", &"x_speed"] as Array[StringName])
 	var ball := _library.get_item(&"poke_ball")
@@ -60,7 +60,7 @@ func test_real_data_loads_without_error() -> void:
 		&"water_stone",
 		&"thunder_stone", &"leaf_stone", &"fresh_water", &"soda_pop", &"lemonade", &"tm13",
 		&"tm21", &"lift_key", &"silph_scope", &"bike_voucher", &"hyper_potion",
-		&"ultra_ball", &"tm09", &"tm32", &"tm37", &"gold_teeth",
+		&"ultra_ball", &"tm09", &"tm32", &"tm37", &"gold_teeth", &"tm06",
 		&"poke_flute", &"bicycle", &"card_key", &"hm02", &"hm03", &"hm04",
 		&"old_rod", &"good_rod", &"super_rod", &"hm05", &"escape_rope", &"moon_stone", &"dome_fossil", &"helix_fossil", &"tm01", &"super_potion",
 		&"full_restore"] as Array[StringName],

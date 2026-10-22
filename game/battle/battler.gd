@@ -54,6 +54,11 @@ var invulnerable: bool = false
 ## aucun repos). Action imposée comme une charge ; perdu au changement, au K.O. et à la fin du
 ## combat (un nouveau Battler à chaque envoi ; jamais sauvegardé).
 var recharge_slot: int = -1
+## Jalon 23 (T18) : poison grave de Toxik ([ToxicRules]) : vrai si le statut POISON du Pokémon est
+## grave, et compteur N (dégâts N/16 en fin de tour). Perdus au changement et à la fin du combat
+## (un nouveau Battler à chaque envoi ; jamais sauvegardés) : le Pokémon garde un poison simple.
+var toxic: bool = false
+var toxic_counter: int = ToxicRules.OFF
 var _stages: Dictionary[StringName, int] = {}
 
 @warning_ignore_start("integer_division")

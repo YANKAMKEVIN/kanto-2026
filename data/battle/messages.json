@@ -83,6 +83,11 @@
 			"text_f": "{pokemon} est déjà empoisonnée !"
 		},
 		"status_damaged_poison": { "text": "{pokemon} souffre du poison !" },
+		"status_inflicted_toxic": {
+			"text": "{pokemon} est gravement empoisonné !",
+			"text_f": "{pokemon} est gravement empoisonnée !"
+		},
+		"status_damaged_toxic": { "text": "{pokemon} souffre du poison !" },
 		"status_cured_poison": {
 			"text": "{pokemon} n'est plus empoisonné.",
 			"text_f": "{pokemon} n'est plus empoisonnée."

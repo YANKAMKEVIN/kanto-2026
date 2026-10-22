@@ -99,7 +99,8 @@ func test_real_data_loads_without_error() -> void:
 		&"chansey", &"tangela", &"kangaskhan",
 		&"horsea", &"goldeen", &"seaking", &"staryu", &"starmie", &"scyther", &"pinsir", &"tauros", &"magikarp", &"gyarados",
 		&"eevee", &"vaporeon", &"jolteon", &"flareon"] as Array[StringName])
-	assert_eq(_data.get_move_ids().size(), 141,
+	# Jalon 23 (T18) : + Toxik (j23.json).
+	assert_eq(_data.get_move_ids().size(), 142,
 		"47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10) + Patience (J11) "
 		+ "+ 21 du Mont Sélénite (jalon 12) + 8 du jalon 13 (les 5 du J12 qu'il reprenait : "
 		+ "entrées du J12) + 6 du Cap d'Azuria (jalon 14) + Jackpot (J15) "
@@ -107,7 +108,7 @@ func test_real_data_loads_without_error() -> void:
 		+ "Hypnose, Hurlement et Bélier viennent du J17) + 7 du jalon 20 + Vol (passe systèmes 2, T25) "
 		+ "+ Surf (S2C) + Force (S2D) + 5 du jalon 22 (Écrasement vient du J20) + Amnésie et Bouclier (copie du J21) "
 		+ "+ Bomb'Œuf, Reflet, Force Poigne, Guillotine (jalon 23 ; Surf et Force sont ceux de la "
-		+ "passe systèmes 2, Danse-Lames du J22, Écrasement du J20)")
+		+ "passe systèmes 2, Danse-Lames du J22, Écrasement du J20) + Toxik (jalon 23, T18)")
 	assert_true(_data.has_move(&"struggle"))
 
 
