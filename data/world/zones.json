@@ -117,7 +117,8 @@
 			"maps": [
 				"lavender_town", "lavender_center", "lavender_mart", "pokemon_house",
 				"lavender_house_1", "lavender_house_2", "pokemon_tower_1f", "pokemon_tower_2f",
-				"pokemon_tower_3f", "pokemon_tower_4f", "pokemon_tower_5f", "pokemon_tower_6f"
+				"pokemon_tower_3f", "pokemon_tower_4f", "pokemon_tower_5f", "pokemon_tower_6f",
+				"pokemon_tower_7f"
 			],
 			"subtitle": "Route 10 — Route 8 — Route 12",
 			"services": [
@@ -199,11 +200,6 @@
 			"subtitle": "Carmin-sur-Mer — Route 12",
 			"description": "Une route côtière entre les prairies et la mer, à l'est de Carmin."
 		},
-		"route_12": {
-			"name": "Route 12", "kind": "route", "maps": ["route_12_south", "route_12_rod_house"],
-			"subtitle": "Lavanville — Parmanie",
-			"description": "Au sud du croisement, un long ponton de pêcheurs longe le lac, puis le chemin s'enfonce dans les herbes."
-		},
 		"route_13": {
 			"name": "Route 13", "kind": "route", "maps": ["route_13"],
 			"subtitle": "Route 12 — Route 14",
@@ -218,11 +214,6 @@
 			"name": "Route 15", "kind": "route", "maps": ["route_15", "route_15_gate", "route_15_gate_2f"],
 			"subtitle": "Route 14 — Parmanie",
 			"description": "Une route de prairies qui mène à Parmanie. Un poste de garde la coupe en deux."
-		},
-		"route_16": {
-			"name": "Route 16", "kind": "route", "maps": ["route_16_west", "route_16_gate", "route_16_fly_house"],
-			"subtitle": "Céladopole — Piste Cyclable",
-			"description": "À l'ouest de Céladopole, le poste de garde ouvre la Piste Cyclable. Plus haut, une voie tranquille à pied."
 		},
 		"route_17": {
 			"name": "Route 17", "kind": "route", "maps": ["route_17"],
@@ -262,6 +253,16 @@
 			"name": "Grotte Sombre", "kind": "place", "maps": ["dark_cave_1f", "dark_cave_b1f"],
 			"subtitle": "Route 10",
 			"description": "Un tunnel sans lumière sous la montagne. On y avance de repère en repère, une colonne, une fente, une flaque."
+		},
+		"route_16": {
+			"name": "Route 16", "kind": "route", "maps": ["route_16", "route_16_west", "route_16_gate", "route_16_fly_house"],
+			"subtitle": "Céladopole",
+			"description": "Une route boisée à l'ouest de Céladopole."
+		},
+		"route_12": {
+			"name": "Route 12", "kind": "route", "maps": ["route_12", "route_12_gate", "route_12_gate_2f", "route_12_south", "route_12_rod_house"],
+			"subtitle": "Lavanville — Route 11",
+			"description": "Une longue route au bord de l'eau, au sud de Lavanville."
 		}
 	}
 }

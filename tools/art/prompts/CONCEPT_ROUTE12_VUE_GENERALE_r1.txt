@@ -1,0 +1,40 @@
+CONCEPT ART — VUE GÉNÉRALE DE LA ROUTE 12 NORD, LA ROUTE DU PONTON (Kanto 2026), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. Format PORTRAIT : la route descend du NORD (haut de l'image, au milieu droit, où elle sort d'une ville) vers le SUD (bas de l'image) ; elle est très LONGUE et ÉTROITE : tout le tableau est une longue bande verticale au centre de l'image, entre deux masses de forêt.
+Légende du plan :
+- vert très foncé (tout le côté gauche et le côté droit) = FORÊT DENSE infranchissable ;
+- bande gris clair semé de cailloux sur tout le bord gauche de la bande d'eau = RIVE ROCHEUSE infranchissable (une rangée de rochers au ras de l'eau) ;
+- bleu (clair près des bords, plus profond au centre des grandes surfaces) = L'EAU : un grand lac calme qui occupe toute la bande ; traits blancs = petite écume au pied du ponton ;
+- brun clair rayé = PONTON de planches, large de trois dalles, qui serpente sur l'eau en lacets à angles droits : un long tronc droit vers le sud depuis le haut, un palier en croix avec deux ÉPERONS en impasse (un court vers l'ouest, un vers l'est avec un panneau en bois), puis un bâtiment au milieu de l'eau, puis une succession de lacets, de coudes et de petites impasses de planches ;
+- beige = TERRE BATTUE : le chemin de terre en haut (la berge d'où part le ponton), de petites placettes carrées aux carrefours du ponton, et, tout en bas à gauche, une chaussée de terre qui arrive de la forêt de l'OUEST (bord gauche de l'image) et rejoint le ponton ;
+- GRAND RECTANGLE bleu-gris à toit sombre posé sur l'eau, au tiers haut, traversé par le ponton = LE POSTE DE GARDE (un bâtiment de garde-route de 9 cases de large) ; deux rangées de trois petites portes brunes, une au nord et une au sud : le ponton entre par la porte nord et ressort par la porte sud ;
+- petit rectangle de planches isolé au milieu de l'eau, à droite = UN ÎLOT DE PLANCHES que rien ne relie (inaccessible, vide) ;
+- petits carrés ocre = panneaux en bois SANS TEXTE.
+Respecte ce plan À LA LETTRE : les lacets du ponton, les placettes, les deux éperons et leur panneau, le poste au milieu du lac, l'îlot isolé, le raccord de la chaussée de terre de l'ouest au bas. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+RÈGLE ABSOLUE DES CHEMINS : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; le ponton, les placettes et les rives suivent une grille : uniquement des segments horizontaux et verticaux à angles droits, AUCUN segment en diagonale ni courbe, aucun escalier. Le ponton fait toujours trois dalles de large.
+RELIEF : tout est plat ; aucune falaise ; l'eau n'est jamais praticable.
+
+IMAGE 2 : la vue générale du port de Carmin, une autre carte du même jeu. Respecte EXACTEMENT son style de rendu pour le PONTON de planches (même bois, mêmes planches, mêmes pilotis dans l'eau, mêmes bittes d'amarrage), l'EAU (même bleu, même scintillement), les ARBRES (mêmes masses rondes) et la lumière. Ne reprends PAS sa composition : ni ville, ni maison, ni navire, ni caisses.
+
+Format : PORTRAIT 1024 × 1536, vue plongeante sur toute la route, comme le plan.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats. Le feuillage est peint en grandes masses douces.
+- Perspective : vue de dessus de trois quarts, projection oblique frontale, sans point de fuite. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud).
+- Aucun trait noir : contours fins et doux, plus sombres et plus saturés que la couleur locale. Ombres colorées bleu-vert ou violet froid, jamais grises.
+
+AMBIANCE — « le long ponton » : une route sur l'eau, calme, un peu mélancolique, au crépuscule qui approche ; un lac turquoise près des planches et bleu profond au large, des reflets doux. Le ponton est vieux, bien entretenu, avec quelques bittes d'amarrage et des planches patinées. La forêt, de chaque côté, est dense et sombre. Lumière de fin d'après-midi douce.
+- Le POSTE DE GARDE est un petit bâtiment de pierre claire grise et de bois, toit d'ardoise bleu-gris à large avant-toit, une cheminée ; deux grandes portes de bois (nord et sud) alignées sur le ponton ; une petite fenêtre éclairée. Accueillant et fonctionnel.
+- Les placettes de terre aux carrefours sont de petites plates-formes de terre battue bordées de planches, avec une lanterne de bois par placette.
+- L'ÎLOT isolé : de simples planches sur pilotis, VIDE, sans objet.
+
+VIE (très discrète, personnages petits, aucun ne ressemble au héros à casquette rouge et veste bleue) :
+- QUATRE PÊCHEURS, chacun debout au bout ou sur le bord d'un lacet du ponton, canne baissée tenue des deux mains vers l'eau (chapeau de paille, gilet à poches, bottes) : un au bout du premier lacet de l'est (vers le haut du tracé, au bout de la branche est), tourné vers l'ouest, vers le ponton ; un au milieu de la partie ouest, tourné vers le haut ; un sur le milieu de la partie est, tourné vers la gauche ; un plus bas, sur un lacet de l'est, tourné vers la droite ;
+- aucun autre personnage, aucun Pokémon, aucun animal (ni mouette, ni poisson visible, ni oiseau).
+
+INTERDITS : texte, lettres, chiffres, étiquettes, panneaux lisibles, logo, signature, filigrane, cadre, interface ; ville, maison autre que le poste de garde, phare, bateau, barque, navire ; pont suspendu, passerelle courbe ; falaise, escalier, herbe haute, route goudronnée, véhicule ; arbres orange ou automnaux ; palmiers ; neige ; brouillard, flou de profondeur, vignettage ; pixel art, 3D.
+
+L'image doit raconter, sans texte : une très longue route de planches qui traverse un grand lac entre deux forêts, un poste de garde au milieu, des pêcheurs patients au bout de chaque lacet, et au bas, une chaussée de terre qui vient de la forêt.

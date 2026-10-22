@@ -27,7 +27,7 @@ extends SceneTree
 ## - Passages : est (69, 21..23) PUSH → `route_7` / `from_celadon_n|c|s` (arrivées ici
 ##   `from_route_7_n|c|s`, tournées ←) ; portes STEP_ON ↑ des neuf bâtiments ouverts, arrivées
 ##   `from_<lieu>_w|e` devant chaque porte à deux cases (`from_chief` : porte d'une case).
-##   Nord, sud et ouest : fermés **sans warp** (la sortie ouest : examen « arbres serrés »).
+##   Nord et sud : fermés **sans warp**. Ouest (jalon 21, T22) : voir le bloc « Jalon 21 » ci-dessous.
 ##   Le Casino (T20) reste « à venir » tant que `celadon_game_corner` n'existe pas.
 
 const Kit := preload("res://tools/cerulean_map_kit.gd")
@@ -53,6 +53,14 @@ const CLIFF_MARKS: String = "s"
 
 const EAST_MAP: StringName = &"route_7"
 const EAST_SUFFIXES: Array[String] = ["n", "c", "s"]
+# --- Jalon 21 (T22) : raccord ouest vers la Route 16 (dossier 24 §10.2, jalon-21.md §2.12) ---------
+## Bande ouest (0..3, 21..23) en chemin ; `warp_ouest` (0, 21..23) PUSH ← → `route_16` ; arrivées
+## `from_route_16` (1, 21..23) tournées →. La grille donne un seul nom d'arrivée : la rangée du milieu
+## le garde, les rangées nord et sud ajoutent le suffixe `_n` / `_s` pour garder la rangée de
+## sortie [D] (même principe que la Route 7). Tant que `route_16` n'est pas construite : « à venir ».
+const WEST_MAP: StringName = &"route_16"
+const WEST_SUFFIXES: Array[String] = ["_n", "", "_s"]
+const WEST_COMING_SOON: String = "Route 16"
 const INTERIOR_SPAWN: StringName = &"entrance"
 ## Bâtiments : [objet, nœud, position des portes, intérieur, base du nom des arrivées, libellé
 ## « à venir », (arrivée dans l'intérieur : `entrance` par défaut)]. Ancre = la porte la plus à l'est (portes à deux cases : décalages −1 et 0).
@@ -89,7 +97,7 @@ const SIGNS: Array = [
 	["panneau_ville", "SignCity", &"celadon_city_sign", Vector2i.DOWN],
 	["panneau_arene", "SignGym", &"celadon_gym_sign", Vector2i.LEFT],
 ]
-const EXAMS: Array = [["obstacle_ouest", "WestBlock", &"celadon_west_block", Vector2i.LEFT]]
+## Jalon 21 (T22) : l'examen `obstacle_ouest` (haie et talus, H-4 du J20) et son texte 21 sont retirés.
 ## Objet caché : case bloquée décorée (poubelle) ; point EXAMINER de tous côtés (T17) qui
 ## disparaît quand `got_<id>` est levé.
 const HIDDEN: Array = [["celadon_hidden_1", "HiddenClue", "int_poubelle_arene_01"]]
@@ -229,6 +237,7 @@ func _add_passages() -> void:
 			_kit.call(&"add_warp", "Route7" + suffix.to_upper(), east[i], Kit.PUSH,
 				Vector2i.RIGHT, &"", StringName("from_route_7_" + suffix), Vector2i.LEFT,
 				"Route 7")
+	_add_west_passages()
 	for entry: Array in BUILDINGS:
 		var doors: Array[Vector2i] = _plan().call(&"cells_at", entry[2])
 		var interior: StringName = entry[3]
@@ -248,6 +257,22 @@ func _add_passages() -> void:
 		_kit.call(&"add_spawn", entry[0], entry[1])
 
 
+## Jalon 21 (T22) : sortie ouest, trois cases PUSH ← vers la Route 16 (`from_celadon[_n|_s]`).
+func _add_west_passages() -> void:
+	var west: Array[Vector2i] = _plan().call(&"cells_at", "warp_ouest")
+	var road := _built(WEST_MAP)
+	for i: int in west.size():
+		var suffix: String = WEST_SUFFIXES[i]
+		var here := StringName("from_route_16" + suffix)
+		_kit.call(&"add_spawn", here, (_plan().call(&"cells_at", "from_route_16") as Array)[i])
+		if road:
+			_kit.call(&"add_warp", "Route16" + ["N", "C", "S"][i], west[i], Kit.PUSH,
+				Vector2i.LEFT, WEST_MAP, StringName("from_celadon" + suffix), Vector2i.LEFT)
+		else:
+			_kit.call(&"add_warp", "Route16" + ["N", "C", "S"][i], west[i], Kit.PUSH,
+				Vector2i.LEFT, &"", here, Vector2i.RIGHT, WEST_COMING_SOON)
+
+
 ## `from_dept_w` / `from_dept_e` pour une porte à deux cases, `from_chief` pour une seule.
 static func _arrival_name(base: String, index: int, count: int) -> String:
 	if count == 1:
@@ -258,9 +283,6 @@ static func _arrival_name(base: String, index: int, count: int) -> String:
 ## Panneaux et examens, point de l'arbuste de l'enclos.
 func _add_life() -> void:
 	for entry: Array in SIGNS:
-		_kit.call(&"add_interactable", entry[1], _cell(entry[0]), Vector2i.ONE, entry[3],
-			entry[2])
-	for entry: Array in EXAMS:
 		_kit.call(&"add_interactable", entry[1], _cell(entry[0]), Vector2i.ONE, entry[3],
 			entry[2])
 	var cell := _cell("arbuste_enclos")

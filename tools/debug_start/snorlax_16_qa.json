@@ -1,0 +1,105 @@
+{
+	"map": "route_16",
+	"spawn": "face_ronflex",
+	"facing": "left",
+	"flags": [
+		"mom_greeted",
+		"rival_met",
+		"oak_met",
+		"oak_lab_reunion",
+		"starter_offered",
+		"starter_chosen",
+		"taken_charmander",
+		"taken_squirtle",
+		"rival_lab_won",
+		"rival_challenged",
+		"rival_battle_done",
+		"rival_left_lab",
+		"viridian_arrived",
+		"got_oak_parcel",
+		"pokedex_activated",
+		"poison_unlocked",
+		"pewter_arrived",
+		"beaten_pewter_gym_liam",
+		"brock_met",
+		"badge_boulder",
+		"tm34_received",
+		"cerulean_reached",
+		"rival_cerulean_won",
+		"got_ss_ticket",
+		"badge_cascade",
+		"rival_ss_anne_won",
+		"got_hm01",
+		"ss_anne_departed",
+		"badge_thunder",
+		"surge_met",
+		"tm24_received",
+		"route_9_entered",
+		"route_10_reached",
+		"dark_cave_crossed",
+		"lavender_reached",
+		"tower_stairs_open",
+		"route_8_reached",
+		"celadon_reached",
+		"beaten_celadon_game_corner_rocket",
+		"game_corner_switch",
+		"beaten_rocket_hideout_b1f_1",
+		"beaten_rocket_hideout_b1f_2",
+		"beaten_rocket_hideout_b1f_3",
+		"beaten_rocket_hideout_b2f_1",
+		"beaten_rocket_hideout_b3f_1",
+		"beaten_rocket_hideout_b3f_2",
+		"beaten_rocket_hideout_b4f_key",
+		"rocket_dropped_lift_key",
+		"got_rocket_hideout_b4f_lift_key",
+		"beaten_rocket_hideout_b4f_guard_1",
+		"beaten_rocket_hideout_b4f_guard_2",
+		"rocket_hideout_b4f_door_open",
+		"giovanni_met",
+		"giovanni_hideout_won",
+		"got_rocket_hideout_b4f_silph_scope",
+		"badge_rainbow",
+		"ghost_marowak_calmed",
+		"tower_6f_mist_lifted",
+		"beaten_tower_rocket_1",
+		"beaten_tower_rocket_2",
+		"beaten_tower_rocket_3",
+		"fuji_rescued",
+		"got_poke_flute"
+	],
+	"party": [
+		{
+			"species": "charmeleon",
+			"level": 33
+		},
+		{
+			"species": "pidgeot",
+			"level": 30
+		},
+		{
+			"species": "butterfree",
+			"level": 28
+		},
+		{
+			"species": "eevee",
+			"level": 25
+		},
+		{
+			"species": "nidorino",
+			"level": 28,
+			"status": "sleep",
+			"status_turns": 3
+		},
+		{
+			"species": "sandshrew",
+			"level": 26,
+			"status": "poison"
+		}
+	],
+	"bag": {
+		"poke_flute": 1,
+		"poke_ball": 1
+	},
+	"money": 5000,
+	"rest_point": "celadon_center"
+}

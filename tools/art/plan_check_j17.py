@@ -57,6 +57,10 @@ TAILLE_R11 = (76, 36)
 TAILLE_CAVE = (34, 80)
 TAILLE_R2E = (16, 48)
 TAILLE_POSTE = (15, 10)
+# Décision M-3 (Kevin, 2026-10-16 ; J21 T9a) : Ronflex quitte la Route 11 (position `ronflex` retirée
+# de route_11.txt). Ses anciennes cases restent le goulet de l'est, contrôlé ici comme le seul passage
+# vers le bord est, devenu « ROUTE 12 — À venir » (warp coming_soon=route_12, retour from_route_12).
+GOULET_EST = [(66, 14), (67, 14), (66, 15), (67, 15)]
 CARMIN_EST = (11, 12, 13)          # vermilion_city.txt : warp_est (63, 11..13), si le fichier existe
 SOL = set(".=oq")                  # sol où poser personnages, objets et points d'apparition
 DETECTION_MIN = 3                  # première case vue à ≥ 3 cases
@@ -196,10 +200,12 @@ def verifier_route_11() -> bool:
 	r.critere((plan.width, plan.height) == TAILLE_R11,
 		f"taille {plan.width} × {plan.height} (attendu {TAILLE_R11[0]} × {TAILLE_R11[1]})")
 	mouth = plan.cells_of("Q")
-	ronflex = pos["ronflex"]
+	m3 = "ronflex" not in pos           # J21 T9a : Ronflex retiré (décision M-3)
+	ronflex = pos.get("ronflex")
+	cellules = GOULET_EST if m3 else ronflex.cells
 	terminales = set(mouth)
 	carte = Carte(plan, portes=terminales, liberees=())
-	sans_ronflex = carte.avec(ronflex.cells)
+	sans_ronflex = carte.avec(cellules)
 
 	# 1. Raccord ouest sur Carmin ; carte fermée ailleurs ; bord est non relié.
 	rangees = _rangees_carmin()
@@ -213,9 +219,19 @@ def verifier_route_11() -> bool:
 		"mêmes rangées, aucun décalage")
 	est = pos["raccord_est"].cells
 	bords = _bord(plan, carte)
-	r.critere(sorted(bords) == sorted(entree + est) and all(c[0] == plan.width - 1 for c in est)
-		and not any(p.kind in ("warp", "spawn") and set(p.cells) & set(est) for p in pos.values()),
-		f"carte fermée : seuls le raccord ouest et le bord est {est} (sans warp) touchent le bord")
+	if m3:
+		retour_est = _cases(plan, "from_route_12")
+		r.critere(sorted(bords) == sorted(entree + est) and all(c[0] == plan.width - 1 for c in est)
+			and pos["raccord_est"].kind == "warp"
+			and pos["raccord_est"].attrs.get("coming_soon") == "route_12"
+			and sorted(retour_est) == sorted((x - 1, y) for x, y in est),
+			f"carte fermée : seuls le raccord ouest et le bord est {est} touchent le bord ; bord est = "
+			f"warp « ROUTE 12 — À venir » (M-3), retour {sorted(retour_est)} juste à l'ouest")
+	else:
+		r.critere(sorted(bords) == sorted(entree + est) and all(c[0] == plan.width - 1 for c in est)
+			and not any(p.kind in ("warp", "spawn") and set(p.cells) & set(est)
+				for p in pos.values()),
+			f"carte fermée : seuls le raccord ouest et le bord est {est} (sans warp) touchent le bord")
 
 	# 2. Bouche de la Cave.
 	nord_ouest = all(x < plan.width / 2 and y < plan.height / 3 for x, y in mouth)
@@ -230,37 +246,51 @@ def verifier_route_11() -> bool:
 	# 3. Chemin principal et Ronflex.
 	distances = carte.distances(entree)
 	vers_cave = min(distances.get(c, INF) for c in mouth)
-	xs = sorted({x for x, _ in ronflex.cells})
-	ys = sorted({y for _, y in ronflex.cells})
+	xs = sorted({x for x, _ in cellules})
+	ys = sorted({y for _, y in cellules})
 	devant = [(xs[0] - 1, y) for y in ys]            # cases juste à l'ouest de Ronflex
 	derriere = [(xs[-1] + 1, y) for y in ys]
 	jusqu_a_ronflex = min(distances.get(c, INF) for c in devant)
 	r.critere(vers_cave < INF and jusqu_a_ronflex < INF,
-		f"entrée ouest → bouche de la Cave : {vers_cave} pas ; → devant Ronflex {devant} : "
+		f"entrée ouest → bouche de la Cave : {vers_cave} pas ; → devant "
+		f"{'le goulet' if m3 else 'Ronflex'} {devant} : "
 		f"{jusqu_a_ronflex} pas")
 	if vers_cave >= INF or jusqu_a_ronflex >= INF:
 		return r.ok
-	r.critere(len(ronflex.cells) == 4 and len(xs) == 2 and len(ys) == 2
-		and ronflex.bloque and all(plan.at(*c) == "=" for c in ronflex.cells),
-		f"Ronflex {ronflex.cells} : 2 × 2 cases bloquées, sur le chemin de terre")
-	goulet = all(sorted(y for y in range(plan.height) if sans_ronflex.libre((x, y)) and
-		abs(y - ys[0]) <= 8) == ys for x in xs)
-	r.critere(goulet, f"goulet : sur les colonnes {xs} de Ronflex, seules les rangées {ys} sont "
-		"praticables (cases voisines bloquées, aucune case contournable)")
-	apres = carte.distances(entree)
-	derriere_ok = any(c in apres for c in derriere) or any(c in apres for c in est)
-	d_sans = sans_ronflex.distances(entree)
-	r.critere(not derriere_ok and all(c in d_sans for c in est),
-		f"Ronflex est le SEUL passage : avec lui, ni l'est du goulet ni le bord est {est} ne sont "
-		"atteignables ; sans lui, le bord est l'est")
-	est_zone = {(x, y) for y in range(plan.height) for x in range(plan.width)
-		if x > xs[-1] and sans_ronflex.libre((x, y))}
-	r.critere(est_zone and not (est_zone & set(apres)),
-		f"aucune case du secteur est ({len(est_zone)} cases libres au-delà de x = {xs[-1]}) n'est "
-		"atteignable avec Ronflex ; il ferme la route")
+	if m3:
+		r.critere(all(plan.at(*c) == "=" for c in cellules) and all(carte.libre(c) for c in cellules),
+			f"M-3 : plus de Ronflex ; ses cases {cellules} sont du chemin de terre libre")
+		goulet = all(sorted(y for y in range(plan.height) if carte.libre((x, y)) and
+			abs(y - ys[0]) <= 8) == ys for x in xs)
+		r.critere(goulet, f"goulet de l'est : sur les colonnes {xs}, seules les rangées {ys} sont "
+			"praticables")
+		ferme = carte.sans(cellules).distances(entree)
+		r.critere(all(c in distances for c in est) and not any(c in ferme for c in est),
+			f"le bord est {est} est atteint depuis Carmin en {min(distances[c] for c in est)} pas, "
+			"par le seul goulet de l'est")
+	else:
+		r.critere(len(ronflex.cells) == 4 and len(xs) == 2 and len(ys) == 2
+			and ronflex.bloque and all(plan.at(*c) == "=" for c in ronflex.cells),
+			f"Ronflex {ronflex.cells} : 2 × 2 cases bloquées, sur le chemin de terre")
+		goulet = all(sorted(y for y in range(plan.height) if sans_ronflex.libre((x, y)) and
+			abs(y - ys[0]) <= 8) == ys for x in xs)
+		r.critere(goulet, f"goulet : sur les colonnes {xs} de Ronflex, seules les rangées {ys} sont "
+			"praticables (cases voisines bloquées, aucune case contournable)")
+		apres = carte.distances(entree)
+		derriere_ok = any(c in apres for c in derriere) or any(c in apres for c in est)
+		d_sans = sans_ronflex.distances(entree)
+		r.critere(not derriere_ok and all(c in d_sans for c in est),
+			f"Ronflex est le SEUL passage : avec lui, ni l'est du goulet ni le bord est {est} ne sont "
+			"atteignables ; sans lui, le bord est l'est")
+		est_zone = {(x, y) for y in range(plan.height) for x in range(plan.width)
+			if x > xs[-1] and sans_ronflex.libre((x, y))}
+		r.critere(est_zone and not (est_zone & set(apres)),
+			f"aucune case du secteur est ({len(est_zone)} cases libres au-delà de x = {xs[-1]}) n'est "
+			"atteignable avec Ronflex ; il ferme la route")
 	ligne = [(x, ys[0]) for x in range(xs[0] - 20, xs[0])]
 	r.critere(all(plan.at(*c) == "=" for c in ligne),
-		f"Ronflex se voit de loin : 20 cases de chemin droit dégagé à l'ouest (x {ligne[0][0]}.."
+		f"{'le goulet' if m3 else 'Ronflex'} se voit de loin : 20 cases de chemin droit dégagé à "
+		f"l'ouest (x {ligne[0][0]}.."
 		f"{ligne[-1][0]})")
 	retour = carte.distances(list(_cases(plan, "from_cave")))
 	r.critere(min(retour.get(c, INF) for c in entree) < INF,
@@ -278,7 +308,7 @@ def verifier_route_11() -> bool:
 	g_min = min(carte.herbes_min(entree, lambda c: c in toutes).get(c, INF) for c in devant)
 	g_cave = min(carte.herbes_min(entree, lambda c: c in toutes).get(c, INF) for c in mouth)
 	r.critere(g_min == 0 and g_cave == 0,
-		f"aucune herbe obligatoire : jusqu'à Ronflex {g_min}, jusqu'à la Cave {g_cave} (le chemin "
+		f"aucune herbe obligatoire : jusqu'au goulet de l'est {g_min}, jusqu'à la Cave {g_cave} (le chemin "
 		"principal et les clôtures n'en traversent pas)")
 
 	# 5. Dresseurs.
@@ -296,7 +326,7 @@ def verifier_route_11() -> bool:
 		r.critere(vision == DRESSEURS[role] and len(vue) == vision and plan.at(*p.cells[0]) in SOL,
 			f"{role} {p.ident} {p.cells[0]} tourné {p.attrs['facing']} : vision {len(vue)}/{vision} "
 			f"cases dégagées ({''.join(plan.at(*c) for c in vue)})")
-	cibles = {"la Cave": mouth, "Ronflex": devant}
+	cibles = {"la Cave": mouth, ("le goulet de l'est" if m3 else "Ronflex"): devant}
 	for nom, cib in cibles.items():
 		bloque = set(vues[INEVITABLE])
 		sans = _dist(carte.sans(bloque), entree, cib)

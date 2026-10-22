@@ -85,6 +85,22 @@ func test_j14_tms() -> void:
 		TmTeach.Check.INCOMPATIBLE)
 
 
+
+## Jalon 21 (T4, jalon-21.md §2.1) : CT39 Météores (poste de la Route 12) ; compatibilités de
+## Rouge/Bleu déjà dans tm_compatibility.json.
+func test_j21_tm39_teaches_swift_to_compatible_species() -> void:
+	var tm := _items.get_item(&"tm39")
+	assert_not_null(tm)
+	assert_eq(_data.tm_move(39), &"swift", "même capacité que Rouge/Bleu")
+	assert_eq(tm.teaches, &"swift")
+	assert_true(_items.check_moves(_data))
+	for species: StringName in [&"pidgey", &"pikachu", &"rattata", &"zubat", &"staryu"]:
+		assert_true(_data.can_learn_tm(species, 39), String(species))
+	for species: StringName in [&"caterpie", &"onix", &"machop", &"geodude"]:
+		assert_false(_data.can_learn_tm(species, 39), String(species))
+	assert_eq(TmTeach.check(_mon(&"pikachu", 15), tm, _data), TmTeach.Check.COMPATIBLE)
+	assert_eq(TmTeach.check(_mon(&"onix", 15), tm, _data), TmTeach.Check.INCOMPATIBLE)
+
 func test_check_and_teach() -> void:
 	var tm := _items.get_item(&"tm34")
 	var charmander := _mon(&"charmander")

@@ -16,18 +16,19 @@ var variants: Array[CutsceneVariant] = []
 var next: StringName = &""
 
 
-## Première variante qui s'applique à [param flags], ou null si aucune.
-func pick(flags: StoryFlags) -> CutsceneVariant:
+## Première variante qui s'applique à [param flags], ou null si aucune. [param bag] : le Sac
+## des variantes « if_items » / « unless_items » (jalon 21 ; null = aucun Sac).
+func pick(flags: StoryFlags, bag: Bag = null) -> CutsceneVariant:
 	for variant: CutsceneVariant in variants:
-		if variant.matches(flags):
+		if variant.matches(flags, bag):
 			return variant
 	return null
 
 
 ## Capacité de terrain (« cut ») par laquelle commence la variante jouée pour [param flags]
 ## (jalon 16 : le compagnon qui coupe reste dehors) ; &"" si elle commence autrement.
-func leading_field_move(flags: StoryFlags) -> StringName:
-	var variant := pick(flags)
+func leading_field_move(flags: StoryFlags, bag: Bag = null) -> StringName:
+	var variant := pick(flags, bag)
 	if variant == null:
 		return &""
 	for step: CutsceneStep in variant.steps:
@@ -36,9 +37,9 @@ func leading_field_move(flags: StoryFlags) -> StringName:
 	return &""
 
 
-## Vrai si une variante s'applique à [param flags].
-func matches(flags: StoryFlags) -> bool:
-	return pick(flags) != null
+## Vrai si une variante s'applique à [param flags] (et au Sac [param bag], jalon 21).
+func matches(flags: StoryFlags, bag: Bag = null) -> bool:
+	return pick(flags, bag) != null
 
 
 ## Alias d'acteurs utilisés par toutes les variantes (sans « $ », triés) : ceux que le code

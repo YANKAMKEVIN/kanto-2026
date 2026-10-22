@@ -14,6 +14,7 @@ const PLAYER_CELL := Vector2i(3, 3)
 const WATER := Vector2i(3, 2)
 const PLAIN_WATER := Vector2i(4, 2)
 const FADE := 0.05
+const MAP_TABLES := "res://tests/fixtures/fishing/water_rod_essai.json"
 const TIMEOUT := 12.0
 
 
@@ -288,18 +289,22 @@ func test_fishing_texts_exist() -> void:
 		assert_true(dialogues.has_dialogue(id), String(id))
 
 
-func test_qa_sea_tables_use_existing_species_for_every_rod() -> void:
+## Tables propres à une carte, une par canne (copie d'essai des tables de la carte de QA S2C-bis,
+## retirée en S2Z, T33) : espèces connues, chance de touche de la canne, et la table propre prime
+## sur la table globale chargée avec les tables du jeu.
+func test_map_tables_use_existing_species_for_every_rod() -> void:
 	var data := PokemonData.new()
 	assert_true(data.load_dir())
 	var tables := WaterRodTables.new(data)
-	assert_true(tables.load_file(WaterRodTables.QA_DATA_PATH), "espèces connues")
+	assert_true(tables.load_file(MAP_TABLES), "espèces connues")
 	for rod: StringName in FishingRules.RODS:
-		var table := tables.get_table(rod, &"qa_sea")
+		var table := tables.get_table(rod, &"essai_mer")
 		assert_not_null(table, String(rod))
 		assert_eq(tables.bite_percent_of(table.id), FishingRules.bite_chance(rod))
 	var all := WaterRodTables.new()
-	assert_true(all.load_game_files(), "tables globales et de QA ensemble")
-	assert_eq(all.get_table(&"old_rod", &"qa_sea").id, &"qa_sea_old_rod")
+	assert_true(all.load_game_files(), "tables du jeu")
+	assert_true(all.load_file(MAP_TABLES), "tables globales et propres ensemble")
+	assert_eq(all.get_table(&"old_rod", &"essai_mer").id, &"essai_mer_old_rod")
 	assert_eq(all.get_table(&"old_rod", &"route_6").id, &"old_rod_any")
 
 

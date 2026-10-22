@@ -85,7 +85,7 @@ func test_real_data_loads_without_error() -> void:
 		# Jalon 15 (T12) : Miaouss et Persan (kanto_vermilion.json).
 		&"meowth", &"persian",
 		&"mankey", &"primeape", &"growlithe", &"arcanine",
-		# Ptitard et Tentacool : copie du J21 (kanto_j22_j21.json), retirée à la fusion du J21.
+		# Jalon 21 (T5) : Ptitard, Tentacool, Ronflex (kanto_j21.json).
 		&"poliwag", &"abra", &"kadabra", &"machop", &"machoke",
 		&"bellsprout", &"weepinbell", &"victreebel", &"tentacool",
 		&"geodude", &"graveler", &"golem", &"magnemite", &"magneton", &"farfetchd", &"doduo",
@@ -96,14 +96,15 @@ func test_real_data_loads_without_error() -> void:
 		&"drowzee", &"hypno", &"krabby", &"voltorb", &"electrode", &"exeggcute", &"cubone", &"marowak", &"koffing", &"weezing",
 		&"rhyhorn", &"tangela", &"kangaskhan",
 		&"horsea", &"goldeen", &"seaking", &"staryu", &"starmie", &"magikarp", &"gyarados",
-		&"eevee", &"vaporeon", &"jolteon", &"flareon"] as Array[StringName])
-	assert_eq(_data.get_move_ids().size(), 137,
+		&"eevee", &"vaporeon", &"jolteon", &"flareon", &"snorlax"] as Array[StringName])
+	assert_eq(_data.get_move_ids().size(), 135,
 		"47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10) + Patience (J11) "
 		+ "+ 21 du Mont Sélénite (jalon 12) + 8 du jalon 13 (les 5 du J12 qu'il reprenait : "
 		+ "entrées du J12) + 6 du Cap d'Azuria (jalon 14) + Jackpot (J15) "
 		+ "+ Coupe et Tonnerre (jalon 16) + 7 du jalon 17 + 8 de la Tour Pokémon (J19 ; "
 		+ "Hypnose, Hurlement et Bélier viennent du J17) + 7 du jalon 20 + Vol (passe systèmes 2, T25) "
-		+ "+ Surf (S2C) + Force (S2D) + 5 du jalon 22 (Écrasement vient du J20) + Amnésie et Bouclier (copie du J21)")
+		+ "+ Surf (S2C) + Force (S2D) + Amnésie, Bouclier (J21 ; Constriction vient du J20) "
+		+ "+ 5 du jalon 22 (Écrasement vient du J20)")
 	assert_true(_data.has_move(&"struggle"))
 
 
@@ -490,8 +491,8 @@ func test_real_catch_rates_are_the_official_ones() -> void:
 		&"venonat": 190, &"venomoth": 75, &"machoke": 90, &"farfetchd": 45, &"doduo": 190,
 		&"dodrio": 45, &"grimer": 190, &"muk": 75, &"krabby": 225, &"electrode": 60,
 		&"weezing": 60, &"seaking": 60, &"magikarp": 255,
-		# Copie du J21 (retirée à sa fusion).
-		&"poliwag": 255, &"tentacool": 190,
+		# Jalon 21 (T5).
+		&"poliwag": 255, &"tentacool": 190, &"snorlax": 25,
 	}
 	assert_eq(_data.get_species_ids().size(), expected.size(), "toutes les espèces")
 	for id: StringName in _data.get_species_ids():
