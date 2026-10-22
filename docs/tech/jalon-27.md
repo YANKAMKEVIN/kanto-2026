@@ -252,7 +252,8 @@ Codé d'un trait la nuit du 2026-10-22 (Kevin absent, textes du plan **validés 
 2026-10-21, validation d'avance (proposition du plan)** ; défauts Q27-2 élèves non obligatoires,
 Q27-3 table des types moderne, Q27-4 pas de revanche avant le post-game).
 
-Suite complète **6 601 / 6 601** (609 scripts) le 2026-10-22, import sans erreur.
+Suite complète **6 615 / 6 615** (610 scripts, 371 141 assertions) le 2026-10-22 après les effets de
+Pied Sauté, Pied Voltige et Riposte, import sans erreur.
 
 Fait : **T1 à T4, T6 à T11**. Reste : **T5** (vue générale peinte de l'Arène ; le code ne
 l'attend pas), **T12** (QA téléphone, une session → Kevin), **T13** (clôture, fusion après accord).
@@ -283,8 +284,11 @@ NON puis OUI, Stockage + relance, arrêt avant l'écriture), `test_j27_debug_sta
   sinon doublons d'identifiants au chargement. `tm_compatibility.json` : régénérer, ne pas fusionner
   à la main.
 - Capacités créées sans branche d'origine : noms français confirmés par la coordination (Télékinésie, Mawashi Geri, Pied
-  Sauté, Pied Voltige, Poing-Glace, Poing-Éclair, Riposte), puissances modernes ; `jump_kick`,
-  `hi_jump_kick` (chute) et `counter` en `pending_effects`. Kicklee / Tygnon apprennent ces capacités.
+  Sauté, Pied Voltige, Poing-Glace, Poing-Éclair, Riposte), puissances modernes. Kicklee / Tygnon
+  apprennent ces capacités. Effets codés le 2026-10-22 (voir « Décisions de Kevin ») ; **à la fusion
+  avec le J30** : `origin/jalon-30` crée aussi `jump_kick`, `counter` (priorité −5) et
+  **`high_jump_kick`** (identifiant différent de notre `hi_jump_kick`) en `pending_effects` ; garder
+  une seule définition, avec les effets du J27.
 - Drapeau du maître : `fighting_dojo_master_defeated` posé par la victoire de sa scène (le maître
   n'est pas un Dresseur à vision, comme en RB) ; pas de `sabrina_defeated` (`badge_marsh` suffit).
 - **Équilibrage** : Morgane est rude pour Florizarre (12 % au premier essai) ; à resimuler sur les
@@ -300,5 +304,19 @@ Choix validés par Kevin sur la page d'arbitrages.
 Kevin n'a pas répondu à ces trois points : les recommandations s'appliquent par défaut.
 
 - Morgane : à resimuler sur les vraies sorties des J21–J26, puis ajuster.
-- Effets de Pied Sauté, Pied Voltige et Riposte : à coder avant la fusion (à faire, reste ouvert).
+- Effets de Pied Sauté, Pied Voltige et Riposte : à coder avant la fusion → **fait le 2026-10-22**,
+  règles de Rouge/Bleu vérifiées dans le pokered local (`build/rb/pokered` du worktree J28,
+  `PrintMoveFailureText`, `HandleCounterMove`). Aucune branche `origin/*` ne les codait (le J30 les a
+  aussi en `pending_effects`).
+  - `crash` (`{ "kind": "crash", "amount": 1 }`) : raté, esquive (Tunnel) ou immunité (Spectre) →
+    CRASHED, le lanceur perd 1 PV (RB : `wDamage` vaut 0, donc toujours 1 PV), K.O. possible ;
+    texte provisoire [D] « {pokemon} s'écrase au sol ! » (clé `crash`, à valider en lot).
+  - `counter` (priorité −1) : 2 × les dégâts du dernier coup reçu de la capacité adverse la plus
+    récente si elle est **de type** Normal ou Combat (RB regarde le type, pas la catégorie : Météores
+    se riposte, Pistolet à O non) ; sinon raté sans tirage ; précision ordinaire ; dégâts sans type
+    (touche un Spectre, comme RB) ; Riposte contre Riposte rate. IA : Riposte seulement juste après un
+    coup Normal ou Combat reçu [D].
+  - Tests : `tests/unit/test_battle_crash_counter.gd` (14 : données, touche, rate, immunité,
+    esquive, chute mortelle, Riposte après coup physique, sur Spectre, après coup spécial Eau,
+    Normal spéciale, sans dégât reçu, attaque adverse ratée, seule la dernière capacité compte).
 - Morgane et le maître changent de Pokémon en combat : gardé.

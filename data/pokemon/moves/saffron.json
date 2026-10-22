@@ -17,12 +17,12 @@
 	},
 	"jump_kick": {
 		"name": "Pied Sauté", "type": "fighting", "category": "physical",
-		"power": 100, "accuracy": 95, "pp": 10, "pending_effects": ["crash"],
+		"power": 100, "accuracy": 95, "pp": 10, "effects": [{ "kind": "crash", "amount": 1 }],
 		"description": "Un coup de pied sauté. Si l'attaque échoue, le lanceur se blesse."
 	},
 	"hi_jump_kick": {
 		"name": "Pied Voltige", "type": "fighting", "category": "physical",
-		"power": 130, "accuracy": 90, "pp": 10, "pending_effects": ["crash"],
+		"power": 130, "accuracy": 90, "pp": 10, "effects": [{ "kind": "crash", "amount": 1 }],
 		"description": "Un genou lancé avec force. Si l'attaque échoue, le lanceur se blesse."
 	},
 	"ice_punch": {
@@ -37,7 +37,7 @@
 	},
 	"counter": {
 		"name": "Riposte", "type": "fighting", "category": "status",
-		"accuracy": 100, "pp": 20, "priority": -1, "pending_effects": ["counter"],
-		"description": "Renvoie le double des dégâts physiques reçus. Sans effet dans le moteur actuel."
+		"accuracy": 100, "pp": 20, "priority": -1, "effects": [{ "kind": "counter" }],
+		"description": "Renvoie le double des dégâts reçus d'une attaque Normal ou Combat."
 	}
 }

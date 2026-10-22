@@ -85,7 +85,8 @@ static func beats(event: BattleEvent, texts: BattleText, data: PokemonData,
 			if move_data != null:
 				move.category = move_data.category
 			result.append(move)
-		BattleEvent.Kind.DAMAGE, BattleEvent.Kind.RECOIL, BattleEvent.Kind.HURT_ITSELF:
+		BattleEvent.Kind.DAMAGE, BattleEvent.Kind.RECOIL, BattleEvent.Kind.HURT_ITSELF, \
+				BattleEvent.Kind.CRASHED:
 			result.append(BattleBeat.new(BattleBeat.Kind.DAMAGE, event))
 			result.append_array(messages)
 		BattleEvent.Kind.STAT_CHANGED:

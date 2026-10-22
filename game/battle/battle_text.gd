@@ -159,6 +159,7 @@ const TEMPLATE_IDS: Array[StringName] = [
 	&"charge_skull_bash_start", &"charge_skull_bash_broken",
 	&"battle_item_used", &"item_escape", &"item_escape_2", &"revived",
 	&"flute_played", &"flute_all_woke", &"flute_no_effect", &"flute_no_effect_2",
+	&"crash",
 ]
 ## Entre deux gains de statistiques du bilan (« PV +2 · Attaque +1 »).
 const SUMMARY_SEPARATOR: String = " · "
@@ -334,6 +335,8 @@ func lines(event: BattleEvent, data: PokemonData, trainer: TrainerData = null) \
 				event, data))
 		BattleEvent.Kind.RECOIL:
 			result.append(_fill(&"recoil", event, data))
+		BattleEvent.Kind.CRASHED:
+			result.append(_fill(&"crash", event, data))
 		BattleEvent.Kind.FAINTED:
 			result.append(_fill(&"fainted", event, data))
 		BattleEvent.Kind.FLED:
