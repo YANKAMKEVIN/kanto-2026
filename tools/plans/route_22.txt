@@ -1,0 +1,51 @@
+# Route 22 — RELEVÉ de la carte du jalon 7 (jalon 29, T2 ; docs/tech/jalon-29.md §0.1, §2.1).
+# La carte `route_22` (tools/build_route_22.gd, dossier 09 §12–§13) n'avait pas de grille : celle-ci
+# est sa géométrie logique telle que le jeu la lit (Ground, arbres et rochers peints, bords bloqués),
+# relevée par tools/dump_map_logic.gd le 2026-10-22, plus le chemin de terre de l'outil (« = »).
+# **La carte fait foi pour l'art ; cette grille fige sa logique** : test_route_22_plan vérifie
+# que la scène et la grille coïncident case par case. L'est, la falaise, le sentier haut et la
+# scène du rival n° 2 (déclencheur RivalVista, PNJ de data/npcs/route_22.json) sont inchangés.
+#
+# Légende : # bloqué (forêt, falaise, arbre, rocher, bord) · . herbe rase · = chemin de terre
+#   h hautes herbes (table `route_22`)
+
+PRATICABLES .=h
+
+GRILLE 46 27
+00 ##############################################
+01 ##############################################
+02 ##############################################
+03 ##############################################
+04 ##############################################
+05 ##############################################
+06 ##############################################
+07 ##############################################
+08 ##############################...............#
+09 ##############################.............#.#
+10 ##############################..hhhhhhh...#..#
+11 ##############################..hhhhhhh......#
+12 #.===============#############..hhhhhhh.....##
+13 #.===============#############..hhhhhhh......#
+14 ###############==#############..........##.#.#
+15 #..............==........................#..##
+16 #..............==............................#
+17 #.............===============================#
+18 #.#...........===============================#
+19 #.............===============================#
+20 #....hhhhhh.........hhhhhhhh.................#
+21 ##...hhhhhh...#.....hhhhhhhh.##..#...#.#.....#
+22 #....hhhhhh.........hhhhhhhh..............#.##
+23 #.#..hhhhhh##...#...hhhhhhhh....#............#
+24 ##............#...............#.....#...#...##
+25 ##############################################
+26 ##############################################
+FIN
+
+POSITIONS
+from_viridian       spawn           44,18            libre   # bord est, arrivée de Jadielle
+vista               spawn           11,13            libre   # sentier du point de vue
+stair_foot          spawn           16,16            libre   # pied de l'escalier
+sortie_est          warp            44,17..19        libre   vers=viridian_city:from_route_22  # PUSH →
+rival_vista         declencheur     14,12..13        libre   scene=rival_route22 direction=left  # rival n° 2 (J7, inchangé)
+escalier            escalier        15..16,14        libre   # seul passage vers le sentier haut
+FIN
