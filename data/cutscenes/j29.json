@@ -130,7 +130,7 @@
 						"despawn": "victory_road_2f_item_4"
 					},
 					{
-						"give": "guard_spec",
+						"give": "rare_candy",
 						"count": 1,
 						"found": true
 					},
@@ -283,7 +283,7 @@
 				],
 				"steps": [
 					{
-						"give": "max_ether",
+						"give": "max_potion",
 						"count": 1,
 						"found": true
 					},
@@ -312,7 +312,7 @@
 						"to": "route_23_guard_1"
 					},
 					{
-						"dialogue": "guard_badge_earth_refuse"
+						"dialogue": "guard_earth_refuse"
 					},
 					{
 						"move": "player",
@@ -336,7 +336,7 @@
 						"to": "player"
 					},
 					{
-						"dialogue": "guard_badge_earth_pass"
+						"dialogue": "guard_earth_pass"
 					},
 					{
 						"set": [
@@ -355,7 +355,7 @@
 				],
 				"steps": [
 					{
-						"dialogue": "guard_badge_earth_pass"
+						"dialogue": "guard_earth_pass"
 					}
 				]
 			},
@@ -365,7 +365,7 @@
 				],
 				"steps": [
 					{
-						"dialogue": "guard_badge_earth_refuse"
+						"dialogue": "guard_earth_refuse"
 					}
 				]
 			}
@@ -387,7 +387,7 @@
 						"to": "route_23_guard_2"
 					},
 					{
-						"dialogue": "guard_badge_volcano_refuse"
+						"dialogue": "guard_volcano_refuse"
 					},
 					{
 						"move": "player",
@@ -411,7 +411,7 @@
 						"to": "player"
 					},
 					{
-						"dialogue": "guard_badge_volcano_pass"
+						"dialogue": "guard_volcano_pass"
 					},
 					{
 						"set": [
@@ -430,7 +430,7 @@
 				],
 				"steps": [
 					{
-						"dialogue": "guard_badge_volcano_pass"
+						"dialogue": "guard_volcano_pass"
 					}
 				]
 			},
@@ -440,7 +440,7 @@
 				],
 				"steps": [
 					{
-						"dialogue": "guard_badge_volcano_refuse"
+						"dialogue": "guard_volcano_refuse"
 					}
 				]
 			}
@@ -462,7 +462,7 @@
 						"to": "route_23_guard_3"
 					},
 					{
-						"dialogue": "guard_badge_marsh_refuse"
+						"dialogue": "guard_marsh_refuse"
 					},
 					{
 						"move": "player",
@@ -486,7 +486,7 @@
 						"to": "player"
 					},
 					{
-						"dialogue": "guard_badge_marsh_pass"
+						"dialogue": "guard_marsh_pass"
 					},
 					{
 						"set": [
@@ -505,7 +505,7 @@
 				],
 				"steps": [
 					{
-						"dialogue": "guard_badge_marsh_pass"
+						"dialogue": "guard_marsh_pass"
 					}
 				]
 			},
@@ -515,7 +515,7 @@
 				],
 				"steps": [
 					{
-						"dialogue": "guard_badge_marsh_refuse"
+						"dialogue": "guard_marsh_refuse"
 					}
 				]
 			}
@@ -537,7 +537,7 @@
 						"to": "route_23_guard_4"
 					},
 					{
-						"dialogue": "guard_badge_soul_refuse"
+						"dialogue": "guard_soul_refuse"
 					},
 					{
 						"move": "player",
@@ -561,7 +561,7 @@
 						"to": "player"
 					},
 					{
-						"dialogue": "guard_badge_soul_pass"
+						"dialogue": "guard_soul_pass"
 					},
 					{
 						"set": [
@@ -580,7 +580,7 @@
 				],
 				"steps": [
 					{
-						"dialogue": "guard_badge_soul_pass"
+						"dialogue": "guard_soul_pass"
 					}
 				]
 			},
@@ -590,7 +590,7 @@
 				],
 				"steps": [
 					{
-						"dialogue": "guard_badge_soul_refuse"
+						"dialogue": "guard_soul_refuse"
 					}
 				]
 			}
@@ -612,7 +612,7 @@
 						"to": "route_23_guard_5"
 					},
 					{
-						"dialogue": "guard_badge_rainbow_refuse"
+						"dialogue": "guard_rainbow_refuse"
 					},
 					{
 						"move": "player",
@@ -636,7 +636,7 @@
 						"to": "player"
 					},
 					{
-						"dialogue": "guard_badge_rainbow_pass"
+						"dialogue": "guard_rainbow_pass"
 					},
 					{
 						"set": [
@@ -655,7 +655,7 @@
 				],
 				"steps": [
 					{
-						"dialogue": "guard_badge_rainbow_pass"
+						"dialogue": "guard_rainbow_pass"
 					}
 				]
 			},
@@ -665,7 +665,7 @@
 				],
 				"steps": [
 					{
-						"dialogue": "guard_badge_rainbow_refuse"
+						"dialogue": "guard_rainbow_refuse"
 					}
 				]
 			}
@@ -687,7 +687,7 @@
 						"to": "route_23_guard_6"
 					},
 					{
-						"dialogue": "guard_badge_thunder_refuse"
+						"dialogue": "guard_thunder_refuse"
 					},
 					{
 						"move": "player",
@@ -711,7 +711,7 @@
 						"to": "player"
 					},
 					{
-						"dialogue": "guard_badge_thunder_pass"
+						"dialogue": "guard_thunder_pass"
 					},
 					{
 						"set": [
@@ -730,7 +730,7 @@
 				],
 				"steps": [
 					{
-						"dialogue": "guard_badge_thunder_pass"
+						"dialogue": "guard_thunder_pass"
 					}
 				]
 			},
@@ -740,7 +740,7 @@
 				],
 				"steps": [
 					{
-						"dialogue": "guard_badge_thunder_refuse"
+						"dialogue": "guard_thunder_refuse"
 					}
 				]
 			}
@@ -762,7 +762,7 @@
 						"to": "route_23_guard_7"
 					},
 					{
-						"dialogue": "guard_badge_cascade_refuse"
+						"dialogue": "guard_cascade_refuse"
 					},
 					{
 						"move": "player",
@@ -786,7 +786,7 @@
 						"to": "player"
 					},
 					{
-						"dialogue": "guard_badge_cascade_pass"
+						"dialogue": "guard_cascade_pass"
 					},
 					{
 						"set": [
@@ -805,7 +805,7 @@
 				],
 				"steps": [
 					{
-						"dialogue": "guard_badge_cascade_pass"
+						"dialogue": "guard_cascade_pass"
 					}
 				]
 			},
@@ -815,7 +815,7 @@
 				],
 				"steps": [
 					{
-						"dialogue": "guard_badge_cascade_refuse"
+						"dialogue": "guard_cascade_refuse"
 					}
 				]
 			}
@@ -837,7 +837,7 @@
 						"to": "route_22_gate_guard"
 					},
 					{
-						"dialogue": "guard_badge_boulder_refuse"
+						"dialogue": "guard_boulder_refuse"
 					},
 					{
 						"move": "player",
@@ -861,7 +861,7 @@
 						"to": "player"
 					},
 					{
-						"dialogue": "guard_badge_boulder_pass"
+						"dialogue": "guard_boulder_pass"
 					},
 					{
 						"set": [
@@ -880,7 +880,7 @@
 				],
 				"steps": [
 					{
-						"dialogue": "guard_badge_boulder_pass"
+						"dialogue": "guard_boulder_pass"
 					}
 				]
 			},
@@ -890,7 +890,7 @@
 				],
 				"steps": [
 					{
-						"dialogue": "guard_badge_boulder_refuse"
+						"dialogue": "guard_boulder_refuse"
 					}
 				]
 			}

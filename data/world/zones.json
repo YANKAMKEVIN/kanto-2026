@@ -158,7 +158,8 @@
 		"route_21": { "name": "Route 21", "kind": "sea_route", "maps": [] },
 		"cinnabar_island": { "name": "Cramois'Île", "kind": "town", "maps": [] },
 		"route_23": {
-			"name": "Route 23", "kind": "route", "maps": ["route_23"],
+			"name": "Route 23", "kind": "route",
+			"maps": ["route_23", "victory_road_1f", "victory_road_2f", "victory_road_3f"],
 			"subtitle": "Route 22 — Plateau Indigo",
 			"description": "Huit gardes, huit Badges. Au-delà de l'eau, la Route Victoire monte vers le Plateau Indigo."
 		},
@@ -221,12 +222,6 @@
 				{ "id": "pokemon_center", "found_on": "route_10_center" }
 			],
 			"description": "Une route coupée en deux par la falaise et la rivière. On ne passe d'un côté à l'autre que par la Grotte Sombre."
-		},
-		"victory_road": {
-			"name": "Route Victoire", "kind": "place",
-			"maps": ["victory_road_1f", "victory_road_2f", "victory_road_3f"],
-			"subtitle": "Route 23",
-			"description": "Une grotte à trois niveaux, barrée de rochers. Seuls les Dresseurs qui savent les déplacer arrivent au bout."
 		},
 		"dark_cave": {
 			"name": "Grotte Sombre", "kind": "place", "maps": ["dark_cave_1f", "dark_cave_b1f"],

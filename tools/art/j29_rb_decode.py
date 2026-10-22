@@ -322,7 +322,7 @@ POSITIONS = {
 		("objet_1", "objet_visible", "27,5", "bloque", "objet=tm17", "CT17 Sacrifice"),
 		("objet_2", "objet_visible", "18,9", "bloque", "objet=full_heal", "Total Soin"),
 		("objet_3", "objet_visible", "9,11", "bloque", "objet=tm05", "CT05 Ultimapoing"),
-		("objet_4", "objet_visible", "11,0", "bloque", "objet=guard_spec", "Défense Spéc."),
+		("objet_4", "objet_visible", "11,0", "bloque", "objet=rare_candy", "RB : Défense Spéc. (pas d effet au moteur) → Super Bonbon [D]"),
 		("cache_1", "objet_cache", "5,2", "libre", "objet=ultra_ball", "RB caché"),
 		("cache_2", "objet_cache", "26,7", "libre", "objet=full_restore", "RB caché"),
 		("rocher_1", "rocher", "4,14", "bloque", "ordre=1", ""),
@@ -382,7 +382,7 @@ POSITIONS = {
 		("controle_7", "controle", "6..7,136;9,136", "libre", "badge=badge_cascade", ""),
 		("cache_1", "objet_cache", "9,44", "libre", "objet=full_restore", "RB caché"),
 		("cache_2", "objet_cache", "19,70", "libre", "objet=ultra_ball", "RB caché"),
-		("cache_3", "objet_cache", "8,90", "libre", "objet=max_ether", "RB caché"),
+		("cache_3", "objet_cache", "8,90", "libre", "objet=max_potion", "RB : Huile Max (pas de PP au moteur) → Potion Max [D]"),
 	],
 	"indigo_plateau": [
 		("porte_hall", "warp", "9..10,5", "libre", "vers=indigo_plateau_lobby:entrance", "STEP_ON ↑"),

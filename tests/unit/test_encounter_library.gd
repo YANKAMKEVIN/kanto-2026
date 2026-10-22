@@ -146,7 +146,8 @@ func test_route_22_table_is_red_blue_with_both_nidoran_and_mankey() -> void:
 	assert_not_null(table)
 	if table == null:
 		return
-	assert_eq(table.maps, [&"route_22"] as Array[StringName])
+	# J29 : les herbes de la partie ouest (route_22_west) suivent la même table.
+	assert_eq(table.maps, [&"route_22", &"route_22_west"] as Array[StringName])
 	assert_eq(table.rate, 25)
 	assert_eq([table.ramp_from, table.ramp_max], [15, 20])
 	assert_eq(table.total_weight(), 100)

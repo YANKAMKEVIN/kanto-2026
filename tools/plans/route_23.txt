@@ -185,5 +185,5 @@ garde_7              pnj             8,136            bloque  role=G badge=badge
 controle_7           controle        6..7,136;9,136   libre   badge=badge_cascade
 cache_1              objet_cache     9,44             libre   objet=full_restore  # RB caché
 cache_2              objet_cache     19,70            libre   objet=ultra_ball  # RB caché
-cache_3              objet_cache     8,90             libre   objet=max_ether  # RB caché
+cache_3              objet_cache     8,90             libre   objet=max_potion  # RB : Huile Max (pas de PP au moteur) → Potion Max [D]
 FIN

@@ -283,3 +283,10 @@ passage du jeu n'y mène. **Retirées à la clôture de la passe (S2Z)** avec le
 
 Le PNJ de QA (`data/npcs/route_1.json`), la scène et les textes `qa_s2_legendary` sont retirés à
 la clôture de la passe (S2Z, T33).
+| `route_22_final_bulbasaur`, `_charmander`, `_squirtle` | J29 (T15) : fin de partie à huit Badges (starter de base N55 en tête — la clé du rival est le starter du joueur —, Nidoking, Léviator, Staross, Kangourex), CS03 et CS04, Jadielle en point de repos, à l'est de la partie ouest de la Route 22 (spawn `from_route_22`) : le rival n° 7 attend devant le poste (dans la bonne variante) |
+| `route_22_final_weak` | J29 : même départ, Salamèche N10 seul : perdre contre le rival n° 7 (réveil au Centre de Jadielle, le rival reste là) |
+| `route_23_seven` | J29 : sept Badges (sans le Badge Terre), rival n° 7 battu, dans le poste de la Ligue côté Route 23 : arrêté au contrôle de la rangée 35 (Badge Terre), retour libre |
+| `route_23_all` | J29 : huit Badges, CS03 et CS04, rival battu, même endroit : Route 23 entière, Surf, Route Victoire |
+| `victory_road_1f`, `_2f`, `_3f` | J29 : huit Badges, à l'entrée de chaque étage de la Route Victoire (interrupteurs des étages précédents posés) |
+| `moltres` | J29 : 2F de la Route Victoire, devant Sulfura (spawn `moltres_front`, tourné vers le haut), Hyper Balls (pas de Master Ball avant le J26) |
+| `indigo_plateau` | J29 : huit Badges, au sud du Plateau Indigo (spawn `from_route_23`) : hall, soin, Boutique, porte « Ligue Pokémon — À venir » ; Plateau, Jadielle et Bourg Palette découverts (Vol) |

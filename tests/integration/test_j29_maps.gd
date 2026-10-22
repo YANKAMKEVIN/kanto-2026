@@ -203,8 +203,9 @@ func test_route_23_controls_are_row_triggers_going_north() -> void:
 func test_declared_in_zones_caves_lighting_interiors() -> void:
 	var zones := ZoneLibrary.new()
 	zones.load_file()
-	var expected := {&"route_22": [&"route_22_west", &"route_22_gate"], &"route_23": [&"route_23"],
-		&"victory_road": [&"victory_road_1f", &"victory_road_2f", &"victory_road_3f"],
+	# La Route Victoire est dans la zone de la Route 23 (aucune zone de plus sur la carte de Kanto).
+	var expected := {&"route_22": [&"route_22_west", &"route_22_gate"],
+		&"route_23": [&"route_23", &"victory_road_1f", &"victory_road_2f", &"victory_road_3f"],
 		&"indigo_plateau": [&"indigo_plateau", &"indigo_plateau_lobby"]}
 	for zone: StringName in expected:
 		assert_true(zones.has_zone(zone), String(zone))

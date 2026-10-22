@@ -49,7 +49,7 @@ const GATE_GUARDS: Array[StringName] = [&"forest_gate_north_guard", &"forest_gat
 ## (T18 Route 9 / 10, T20 grotte ; T24 : Lavanville et Tour posés, retirés de la liste) ; « Il fait très sombre ici… » (T-3) est
 ## celui du J17 (`dark_caves.json`, joué par FlashDirector : [constant PLAYED_BY_BOOT]).
 ## Jalon 29 (T4, données) : Dresseurs de la Route Victoire, rival n° 7, gardes, panneaux, Sulfura et
-## Plateau Indigo ; les cartes arrivent au J29-I (en attente : [constant UNUSED_YET]).
+## Plateau Indigo ; cartes construites au J29 (seule `indigo_league_door` attend le J30).
 const IDS_J29: Array[StringName] = [
 	&"victory_road_1f_cooltrainer_f_before", &"victory_road_1f_cooltrainer_f_defeated",
 	&"victory_road_1f_cooltrainer_f_after", &"victory_road_1f_cooltrainer_m_before",
@@ -77,7 +77,19 @@ const IDS_J29: Array[StringName] = [
 	&"indigo_plateau_host", &"indigo_league_door", &"route_22_league_sign"
 ]
 const TEXTES_J29 := "res://docs/tech/jalon-29-textes.md"
-const UNUSED_YET: Array[StringName] = IDS_J29 + [
+## J29 : renvois vers les scènes (objets, cachés, gardes, rival n° 7, Sulfura ; data/dialogues/
+## j29_monde.json), sans page.
+const IDS_J29_MONDE: Array[StringName] = [
+	&"victory_road_1f_item_1", &"victory_road_1f_item_2", &"victory_road_2f_item_1",
+	&"victory_road_2f_item_2", &"victory_road_2f_item_3", &"victory_road_2f_item_4",
+	&"victory_road_2f_hidden_1", &"victory_road_2f_hidden_2", &"victory_road_3f_item_1",
+	&"victory_road_3f_item_2", &"route_23_hidden_1", &"route_23_hidden_2", &"route_23_hidden_3",
+	&"route_23_guard_1", &"route_23_guard_2", &"route_23_guard_3", &"route_23_guard_4",
+	&"route_23_guard_5", &"route_23_guard_6", &"route_23_guard_7", &"route_22_gate_guard",
+	&"rival_route22_final", &"moltres",
+]
+## J29 : la porte de la Ligue est un passage « À venir » (libellé du warp) ; ce texte attend le J30.
+const UNUSED_YET: Array[StringName] = [&"indigo_league_door",
 	&"dark_cave_1f_sign", &"dark_cave_column", &"dark_cave_roots", &"dark_cave_crack",
 	&"dark_cave_b1f_hidden_1",
 	# Jalon 20 (T17) : la Poké Ball d'Évoli (maison du toit) et le panneau d'ascenseur (cabine du
@@ -147,6 +159,8 @@ const TEXTS_S2D_STRENGTH: Dictionary[StringName, Array] = {
 		"Il faut le Badge Prisme pour utiliser Force hors des combats."],
 	&"strength_used": ["{pokemon} utilise Force ! Les rochers peuvent être déplacés."],
 	&"strength_boulder_fell": ["Le rocher a dévalé dans le trou !"],
+	# Jalon 29 (T29-09) : un rocher enfonce un interrupteur (texte dans jalon-29-textes.md).
+	&"strength_switch_pressed": ["Clac ! Un mécanisme s'est enclenché quelque part."],
 }
 ## Jalon 10 : textes verrouillés du dossier 12 (même forme que le dossier 10) et lot de textes du
 ## J10 (panneaux, noms affichés), où un retour à la ligne est écrit « \n ».
@@ -184,6 +198,9 @@ const JALON_17 := "res://docs/tech/jalon-17.md"
 const _DOSSIER_TOKENS: Dictionary[String, String] = {"{first_wild_species}": "{espèce}",
 	"{player}": "{joueur}"}
 const MAPS: Array[StringName] = [
+	# Jalon 29 : Route 22 ouest, poste, Route 23, Route Victoire, Plateau Indigo.
+	&"route_22_west", &"route_22_gate", &"route_23", &"victory_road_1f", &"victory_road_2f",
+	&"victory_road_3f", &"indigo_plateau", &"indigo_plateau_lobby",
 	&"player_house_2f", &"player_house_1f", &"rival_house", &"oak_lab", &"pallet_town",
 	&"route_1", &"route_22", &"viridian_city", &"viridian_center", &"viridian_mart",
 	&"route_2",
@@ -735,7 +752,30 @@ const SET_J14_BILL_CUTSCENES: Array[StringName] = [
 ## Jalon 16 (T12, T15) : `got_hm01` (lu par le marin de la passerelle et le départ du navire) est
 ## levé par la scène du capitaine (T13). Jalon 18 (T16) : `tower_stairs_open` (présence de
 ## l'Exorciste de la Tour) est levé au J19 (T16 : scène `tower_guardian`, dossier 22 K-3).
-const FUTURE_FLAGS: Array[StringName] = [&"ghost_marowak_calmed"]
+## J29 : les Badges Âme, Marais, Volcan et Terre sont levés par les J23, J27, J25 et J28 (les gardes
+## de la Route 23 et le rival n° 7 les lisent déjà).
+## J29 : dialogues joués par les scènes du jalon (data/cutscenes/j29.json).
+const PLAYED_J29: Array[StringName] = [
+	&"guard_boulder_pass", &"guard_boulder_refuse", &"guard_cascade_pass",
+	&"guard_cascade_refuse", &"guard_earth_pass", &"guard_earth_refuse", &"guard_marsh_pass",
+	&"guard_marsh_refuse", &"guard_rainbow_pass", &"guard_rainbow_refuse", &"guard_soul_pass",
+	&"guard_soul_refuse", &"guard_thunder_pass", &"guard_thunder_refuse", &"guard_volcano_pass",
+	&"guard_volcano_refuse", &"moltres_flew_away", &"moltres_presence",
+	&"rival_route22_final_greet", &"rival_route22_final_lost", &"rival_route22_final_won"
+]
+## J29 : drapeaux posés par ces scènes (objets, cachés, contrôles franchis, rival n° 7, Sulfura).
+const SET_J29: Array[StringName] = [
+	&"rival_route22_final_won", &"moltres_done", &"moltres_caught",
+	&"got_route_23_hidden_1", &"got_route_23_hidden_2", &"got_route_23_hidden_3",
+	&"got_victory_road_1f_item_1", &"got_victory_road_1f_item_2", &"got_victory_road_2f_hidden_1",
+	&"got_victory_road_2f_hidden_2", &"got_victory_road_2f_item_1", &"got_victory_road_2f_item_2",
+	&"got_victory_road_2f_item_3", &"got_victory_road_2f_item_4", &"got_victory_road_3f_item_1",
+	&"got_victory_road_3f_item_2", &"route_22_gate_check_passed", &"route_23_check_1_passed",
+	&"route_23_check_2_passed", &"route_23_check_3_passed", &"route_23_check_4_passed",
+	&"route_23_check_5_passed", &"route_23_check_6_passed", &"route_23_check_7_passed"
+]
+const FUTURE_FLAGS: Array[StringName] = [&"ghost_marowak_calmed", &"badge_soul", &"badge_marsh",
+	&"badge_volcano", &"badge_earth"]
 var _library: DialogueLibrary
 var _cutscenes: CutsceneLibrary
 var _offer: StarterOffer
@@ -873,7 +913,7 @@ func test_library_loads_without_error() -> void:
 	found.sort()
 	var expected := IDS + IDS_J14_BILL + IDS_J14_ROCKET + IDS_J15_ROUTE_5 + IDS_J16_GYM \
 		+ IDS_J16_SHIP + IDS_J16_RIVAL_CAPTAIN + IDS_J16_T15 + IDS_J17 + IDS_J18 + IDS_J19 + IDS_J20 \
-		+ IDS_J20_T17 + IDS_J20_T21 + IDS_S2B + S2_FIELD_TRAVEL + IDS_J29
+		+ IDS_J20_T17 + IDS_J20_T21 + IDS_S2B + S2_FIELD_TRAVEL + IDS_J29 + IDS_J29_MONDE
 	expected.append_array(TEXTS_S2C_FISH.keys())
 	expected.append_array(TEXTS_S2D_STRENGTH.keys())
 	expected.append_array(UNVALIDATED)
@@ -901,7 +941,7 @@ func test_every_dialogue_is_used() -> void:
 func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 	assert_eq(_cutscenes.get_errors().size(), 0, str(_cutscenes.get_errors()))
 	var played := _without_qa(_cutscenes.get_dialogue_ids())
-	assert_eq(played, _sorted([
+	assert_eq(played, _sorted(PLAYED_J29 + [
 		# Jalon 13 (T19) : Ondine à l'Arène.
 		&"cerulean_gym_misty_badge", &"cerulean_gym_misty_intro", &"cerulean_gym_misty_lost",
 		&"cerulean_gym_misty_resume", &"cerulean_gym_misty_tm", &"cerulean_gym_misty_tm_late",
@@ -1066,7 +1106,7 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 			+ SET_J18_DIALOGUES
 			# Jalon 20 (T21) : porte du bureau ouverte par le second garde battu (§2.7.3).
 			+ [&"rocket_hideout_b4f_door_open"]))
-	assert_eq(cutscenes.get_set_flags(), _sorted([&"badge_boulder", &"badge_cascade",
+	assert_eq(cutscenes.get_set_flags(), _sorted(SET_J29 + [&"badge_boulder", &"badge_cascade",
 		&"beaten_mt_moon_researcher", &"beaten_nugget_rocket", &"brock_met", &"cerulean_reached", &"got_mt_moon_1f_hidden_1",
 		&"got_mt_moon_1f_item_1", &"got_mt_moon_b1f_item_1", &"got_mt_moon_b1f_item_2",
 		&"got_mt_moon_b2f_hidden_1", &"got_mt_moon_b2f_item_1", &"got_nugget", &"got_oak_parcel",
@@ -1642,7 +1682,8 @@ func test_oak_parcel_lines() -> void:
 	# Jalon 18 (T16) : sept objets au sol (Route 9, Route 10, grotte) et la Super Potion cachée.
 	# Jalon 20 (T21) : onze objets au sol et trois caches du repaire, la Clé (chute et prise),
 	# Giovanni et le Scope Sylphe.
-	assert_eq(launched, 103, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
+	# Jalon 29 : dix objets au sol, cinq cachés, huit gardes, le rival n° 7 et Sulfura.
+	assert_eq(launched, 126, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
 		+ "sa CT34, Ondine (pont, Arène et rattrapage), écran, module, console, objets de la "
 		+ "Route 25, le Rocket d'Azuria (2) et le barrage sud ; J15 : objets de la Route 5 ; "
 		+ "J16 : Major Bob (2), neuf objets du S.S. Anne, le capitaine, le marin (2) ; "

@@ -90,6 +90,12 @@ func test_zone_names_match_the_map_titles() -> void:
 			assert_eq(_root_property(map_id, &"display_name"), "Tour Pokémon")
 			assert_eq(_zones.zone_of(map_id), &"lavender_town", String(map_id))
 			continue
+		if String(map_id).begins_with("victory_road_"):
+			# Jalon 29 : la Route Victoire garde son titre, dans la zone de la Route 23 (même
+			# raison que la Tour : aucun rectangle de plus sur la Carte).
+			assert_eq(_root_property(map_id, &"display_name"), "Route Victoire")
+			assert_eq(_zones.zone_of(map_id), &"route_23", String(map_id))
+			continue
 		assert_eq(_root_property(map_id, &"display_name"), _zones.zone_name_of(map_id),
 			"titre de « %s » = nom de sa zone" % map_id)
 
@@ -197,7 +203,8 @@ func test_service_catalog_and_the_services_of_viridian() -> void:
 	# Jalon 13 T7 : Azuria. Jalon 15 T14 : Carmin-sur-Mer (test_vermilion_city).
 	for id: StringName in _zones.get_ids():
 		if not id in [&"viridian_city", &"pewter_city", &"mt_moon", &"cerulean_city",
-				&"vermilion_city", &"route_5", &"route_10", &"lavender_town", &"celadon_city"]:
+				&"vermilion_city", &"route_5", &"route_10", &"lavender_town", &"celadon_city",
+				&"indigo_plateau"]:
 			assert_true(_zones.get_zone(id).services.is_empty(), "%s : aucun service" % id)
 	var mt_moon := _zones.get_zone(&"mt_moon").services
 	assert_eq(mt_moon.size(), 1, "Mont Sélénite : le Centre seul (sans Boutique)")

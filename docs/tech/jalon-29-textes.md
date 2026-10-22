@@ -164,3 +164,6 @@ Textes validés par Kevin le 2026-10-21, validation d'avance (proposition du pla
 - `route_22_league_sign`
   - « LIGUE POKÉMON »
   - « Entrée »
+
+- `strength_switch_pressed` (T29-09, narration, interrupteur enfoncé par un rocher)
+  - « Clac ! Un mécanisme s'est enclenché quelque part. »

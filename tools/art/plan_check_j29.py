@@ -317,8 +317,13 @@ class Explorateur:
 	def visiter_memo(self, ident: str, entree: Case, drapeaux: frozenset[str]):
 		"""[visiter] avec les seuls drapeaux pertinents de la carte, mémorisé ; les sorties portent
 		tous les drapeaux (ceux d'avant la visite et ceux posés pendant)."""
-		rel = drapeaux & self.cartes[ident].pertinents
-		cle = (ident, entree, rel)
+		carte = self.cartes[ident]
+		if not hasattr(carte, "plein"):
+			carte.masques()
+		rel = drapeaux & carte.pertinents
+		# Deux entrées dans la même région de départ (rochers à l'origine) ont la même visite.
+		depart, _ = self.zone_bits(carte, entree, self.rochers_entree(carte, rel), rel)
+		cle = (ident, depart, rel)
 		if cle not in self._memo:
 			# Seuls comptent, pour la suite, les jeux de sorties distincts des états de la visite
 			# (un état = une région du joueur, des rochers, des drapeaux) et les drapeaux posés.
