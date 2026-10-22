@@ -296,6 +296,13 @@
 		"rocket_hideout_b2f": "hideout",
 		"rocket_hideout_b3f": "hideout",
 		"rocket_hideout_b4f": "hideout",
-		"rocket_hideout_elevator": "hideout"
+		"rocket_hideout_elevator": "hideout",
+		"saffron_city": "golden_hour",
+		"saffron_center": "interior_warm",
+		"saffron_mart": "interior_warm",
+		"saffron_psychic_house": "interior_warm",
+		"saffron_pidgey_house": "interior_warm",
+		"saffron_copycat_house_1f": "interior_warm",
+		"saffron_copycat_house_2f": "interior_warm"
 	}
 }

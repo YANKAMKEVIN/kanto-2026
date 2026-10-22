@@ -64,10 +64,12 @@ PROFILS: dict[str, tuple[str, int, int]] = {
 }
 INTERIEURS = [s for s in PROFILS if s.startswith("safrania_")]
 # Postes de Safrania : porte de la ville → (carte, point d'apparition visé, arrivée dans la ville).
-POSTES = {"porte_poste_r5": ("route_5_gate", "north_door", "from_gate_r5"),
+# J26 T6 [D] : arrivée `from_saffron` (4, 2) dans les trois postes intérieurs, juste devant leur
+# porte nord (un pas pour revenir en ville), au lieu de `north_door` (4, 3), place du J15.
+POSTES = {"porte_poste_r5": ("route_5_gate", "from_saffron", "from_gate_r5"),
 	"porte_poste_r6": ("route_6", "from_saffron", "from_gate_r6"),
-	"porte_poste_r7": ("route_7_gate", "north_door", "from_gate_r7"),
-	"porte_poste_r8": ("route_8_gate", "north_door", "from_gate_r8")}
+	"porte_poste_r7": ("route_7_gate", "from_saffron", "from_gate_r7"),
+	"porte_poste_r8": ("route_8_gate", "from_saffron", "from_gate_r8")}
 FERMEES_OCCUPATION = {"porte_copieur", "porte_roucool", "porte_arene"}
 LIBERATION = "silph_giovanni_defeated"
 
@@ -382,9 +384,11 @@ def verifier_safrania(r: Rapport) -> None:
 		r.ok((p.attrs.get("to"), p.attrs.get("spawn")) == (carte, spawn),
 			f"safrania/{ident} : vers {p.attrs.get('to')}:{p.attrs.get('spawn')} au lieu de {carte}:{spawn}")
 		r.ok(arrivee in pos and pos[arrivee].kind == "spawn", f"safrania : arrivée {arrivee} absente")
-	r.ok(re.search(r'func _route_5_gate\(\).*?"north_door"', gd, re.S) is not None,
-		"build_painted_interiors.gd : route_5_gate sans point d'apparition north_door")
-	r.ok(re.search(r'func _saffron_gate\(.*?"north_door".*?&"saffron_city", StringName\("from_gate_r%d"',
+	r5 = re.search(r'func _route_5_gate\(\).*?\n\n\n', gd, re.S)
+	r.ok(r5 is not None and '"from_saffron"' in r5.group(0) and '&"saffron_city"' in r5.group(0)
+		and '&"from_gate_r5"' in r5.group(0),
+		"build_painted_interiors.gd : route_5_gate sans from_saffron ni saffron_city:from_gate_r5")
+	r.ok(re.search(r'func _saffron_gate\(.*?"from_saffron".*?&"saffron_city", StringName\("from_gate_r%d"',
 		gd, re.S) is not None, "build_painted_interiors.gd : _saffron_gate ne vise pas saffron_city:from_gate_r<n>")
 	r6 = lire(PLANS / "route_6.txt")
 	porte6 = r6.positions.get("porte_safrania")

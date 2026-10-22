@@ -1,0 +1,9 @@
+{
+	"saffron_mart": {
+		"stock": [
+			{ "item": "great_ball" },
+			{ "item": "escape_rope" },
+			{ "item": "revive" }
+		]
+	}
+}

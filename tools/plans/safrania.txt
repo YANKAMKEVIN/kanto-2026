@@ -22,18 +22,19 @@
 #     Centre, immeuble, square, maison de M. Psy, immeuble), rangée E (dos d'immeubles au sud).
 #
 # RACCORDS (les quatre postes ; portes de 2 cases ; « from_* » = arrivée, une case devant) :
-#   NORD  porte (29..30, 2) STEP_ON ↑ → route_5_gate:north_door (poste J15, intérieur ; l'ouverture
-#         nord (4..5, 1) du poste mènera à saffron_city:from_gate_r5 au T6) ; arrivée from_gate_r5
+#   NORD  porte (29..30, 2) STEP_ON ↑ → route_5_gate:from_saffron (poste J15, intérieur : arrivée
+#         (4, 2) devant son ouverture nord (4..5, 1), tournée ↓, ajoutée au T6 [D] ; l'ouverture
+#         mène à saffron_city:from_gate_r5) ; arrivée from_gate_r5
 #         (29..30, 3), tournée ↓.
 #   SUD   porte (29..30, 47) STEP_ON ↓ → route_6:from_saffron (Route 6 : le « poste » est la porte
 #         porte_safrania (36, 7) de route_6.txt, STEP_ON ↑ ; le T6 lui donne la cible
 #         saffron_city:from_gate_r6 et ajoute l'arrivée from_saffron en (36, 8), tournée ↓, case
 #         libérée par le garde qui s'écarte en (35, 8) quand les postes s'ouvrent) ; arrivée
 #         from_gate_r6 (29..30, 46), tournée ↑.
-#   OUEST porte (2, 25..26) STEP_ON ← → route_7_gate:north_door (poste du J20, grille
+#   OUEST porte (2, 25..26) STEP_ON ← → route_7_gate:from_saffron (poste du J20, grille
 #         poste_safrania.txt ; build_painted_interiors.gd _saffron_gate vise déjà
 #         saffron_city:from_gate_r7) ; arrivée from_gate_r7 (3, 25..26), tournée →.
-#   EST   porte (57, 25..26) STEP_ON → → route_8_gate:north_door ; arrivée from_gate_r8
+#   EST   porte (57, 25..26) STEP_ON → → route_8_gate:from_saffron ; arrivée from_gate_r8
 #         (56, 25..26), tournée ←.
 #   [D] Les postes sont dessinés côté ville comme de petites façades « P » au bord (4 × 3 au nord
 #   et au sud, 3 × 5 à l'ouest et à l'est), porte tournée vers la ville. L'orientation à l'arrivée
@@ -129,13 +130,13 @@ GRILLE 60 50
 FIN
 
 POSITIONS
-porte_poste_r5       warp           29..30,2      libre   to=route_5_gate spawn=north_door dir=up  # STEP_ON ↑ → poste de la Route 5 (intérieur du J15), arrivée devant son ouverture nord
+porte_poste_r5       warp           29..30,2      libre   to=route_5_gate spawn=from_saffron dir=up  # STEP_ON ↑ → poste de la Route 5 (intérieur du J15), arrivée devant son ouverture nord
 from_gate_r5         spawn          29..30,3      libre   facing=down  # arrivée depuis le poste de la Route 5
 porte_poste_r6       warp           29..30,47     libre   to=route_6 spawn=from_saffron dir=down  # STEP_ON ↓ → Route 6, devant porte_safrania (36, 7) ; from_saffron (36, 8) à créer au T6
 from_gate_r6         spawn          29..30,46     libre   facing=up  # arrivée depuis la Route 6 (porte_safrania)
-porte_poste_r7       warp           2,25..26      libre   to=route_7_gate spawn=north_door dir=left  # STEP_ON ← → poste de la Route 7 (J20)
+porte_poste_r7       warp           2,25..26      libre   to=route_7_gate spawn=from_saffron dir=left  # STEP_ON ← → poste de la Route 7 (J20)
 from_gate_r7         spawn          3,25..26      libre   facing=right  # arrivée depuis le poste de la Route 7
-porte_poste_r8       warp           57,25..26     libre   to=route_8_gate spawn=north_door dir=right  # STEP_ON → → poste de la Route 8 (J20)
+porte_poste_r8       warp           57,25..26     libre   to=route_8_gate spawn=from_saffron dir=right  # STEP_ON → → poste de la Route 8 (J20)
 from_gate_r8         spawn          56,25..26     libre   facing=left  # arrivée depuis le poste de la Route 8
 porte_copieur        warp           14,9          libre   to=saffron_copycat_house_1f spawn=entrance dir=up  # STEP_ON ↑ → maison du Copieur (RB warp 1)
 from_copycat_house   spawn          14,10         libre   facing=down  # sortie de la maison du Copieur

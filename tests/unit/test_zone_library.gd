@@ -17,9 +17,9 @@ func before_each() -> void:
 	_zones = ZoneLibrary.new()
 
 
-## Zones construites dont la description de la Carte attend la validation de Kevin. Vide depuis le
-## 2026-10-16 : description du S.S. Anne validée par Kevin (jalon 16, annexe A du plan, T3).
-const AWAITING_TEXTS: Array[StringName] = []
+## Zones construites dont la description de la Carte attend la validation de Kevin. Vide du
+## 2026-10-16 (description du S.S. Anne validée, jalon 16) au J26 T6 : description de Safrania [D].
+const AWAITING_TEXTS: Array[StringName] = [&"saffron_city"]
 const SS_ANNE_DESCRIPTION := "Un paquebot de croisière amarré au port de Carmin. Salons, " \
 	+ "cabines et ponts promenade : on s'y croirait déjà au large."
 
@@ -197,7 +197,8 @@ func test_service_catalog_and_the_services_of_viridian() -> void:
 	# Jalon 13 T7 : Azuria. Jalon 15 T14 : Carmin-sur-Mer (test_vermilion_city).
 	for id: StringName in _zones.get_ids():
 		if not id in [&"viridian_city", &"pewter_city", &"mt_moon", &"cerulean_city",
-				&"vermilion_city", &"route_5", &"route_10", &"lavender_town", &"celadon_city"]:
+				&"vermilion_city", &"route_5", &"route_10", &"lavender_town", &"celadon_city",
+				&"saffron_city"]:
 			assert_true(_zones.get_zone(id).services.is_empty(), "%s : aucun service" % id)
 	var mt_moon := _zones.get_zone(&"mt_moon").services
 	assert_eq(mt_moon.size(), 1, "Mont Sélénite : le Centre seul (sans Boutique)")
@@ -207,6 +208,11 @@ func test_service_catalog_and_the_services_of_viridian() -> void:
 	assert_eq(route_5.size(), 1, "Route 5 : la Pension seule")
 	if route_5.size() == 1:
 		assert_eq([route_5[0].id, route_5[0].found_on], [&"daycare", &"route_5_daycare"])
+	# Jalon 26 (T6) : Safrania, le Centre et la Boutique (l'Arène viendra avec sa carte, J27).
+	var saffron: Dictionary = {}
+	for service: ZoneService in _zones.get_zone(&"saffron_city").services:
+		saffron[service.id] = service.found_on
+	assert_eq(saffron, {&"pokemon_center": &"saffron_center", &"poke_mart": &"saffron_mart"})
 	var found: Dictionary = {}
 	for service: ZoneService in _zones.get_zone(&"viridian_city").services:
 		found[service.id] = service.found_on

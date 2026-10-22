@@ -62,6 +62,11 @@ const MAP_IDS: Array[StringName] = [
 	# Jalon 20 (T20) : le Casino, le repaire Rocket (B1F à B4F) et sa cabine d'ascenseur.
 	&"celadon_game_corner", &"rocket_hideout_b1f", &"rocket_hideout_b2f", &"rocket_hideout_b3f",
 	&"rocket_hideout_b4f", &"rocket_hideout_elevator",
+	# Jalon 26 (T6) : Safrania, ses six intérieurs et les postes des Routes 7 et 8 (raccords des
+	# quatre postes vérifiés dans les deux sens ; Route 5 et Route 6 déjà listées).
+	&"saffron_city", &"saffron_center", &"saffron_mart", &"saffron_psychic_house",
+	&"saffron_pidgey_house", &"saffron_copycat_house_1f", &"saffron_copycat_house_2f",
+	&"route_7_gate", &"route_8_gate",
 ]
 ## Cartes dont les passages « à venir » sont comptés dans leur propre test (jalon 18).
 const OWN_COMING_SOON_COUNT: Array[StringName] = [&"lavender_town", &"pokemon_tower_1f"]
@@ -175,7 +180,11 @@ func test_every_coming_soon_warp_returns_to_a_walkable_spawn_of_its_own_map() ->
 	# J16) ; la Grotte Sombre et Lavanville sont reliées à la Route 10, et les passages de
 	# Lavanville et de la Tour sont comptés dans leurs propres tests.
 	# Jalon 20 (T16) : le Casino de Céladopole (2 cases) restait « à venir » jusqu'au T20 (construit).
-	assert_eq(found, 3, "« SAFRANIA » (2), Safrania (1)")
+	# Jalon 26 (T6) : les quatre postes mènent à Safrania ; restent dans la ville le Dojo (2 cases)
+	# et l'Arène (1) jusqu'au J27, la Sylphe SARL (2) jusqu'au T7.
+	# (relancer `tools/build_saffron_city.gd` une fois la Sylphe construite).
+	var silph := 0 if MapCatalog.has_map(&"silph_co_1f") else 2
+	assert_eq(found, 3 + silph, "Dojo (2), Arène (1), Sylphe SARL (2 tant qu'elle manque)")
 
 
 ## Warp de [param map] qui ramène à [param origin] depuis [param arrival] : sur la case

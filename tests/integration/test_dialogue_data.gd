@@ -221,6 +221,8 @@ const MAPS: Array[StringName] = [
 	&"celadon_restaurant", &"celadon_chief_house", &"celadon_hotel",
 	# Jalon 20 (T21) : la vie du 20-II (Casino déjà listé ; repaire Rocket B1F à B4F).
 	&"rocket_hideout_b1f", &"rocket_hideout_b2f", &"rocket_hideout_b3f", &"rocket_hideout_b4f",
+	# Jalon 26 (T6) : Safrania (géométrie ; panneaux de la ville et de l'Arène).
+	&"saffron_city",
 ]
 ## Lot de textes validé par Kevin le 2026-10-06 (anciens brouillons : panneau, observations,
 ## soin de Maman, terminal du Stockage, portes de Jadielle…) : source des textes hors dossiers.
@@ -491,6 +493,12 @@ const DOSSIER_19 := "res://docs/design/dossier-19-ss-anne-major-bob.md"
 ## Jalon 18 (T16) : Route 9, Route 10, Grotte Sombre, Lavanville, Tour (dossier 21 §15, annexe A
 ## du plan ; mot pour mot : test_j18_data, test_trainers_j18).
 ## Jalon 20 (T15) : panneaux des Routes 7 et 8 (dossier 23 §20, textes 1, 2, 11).
+## Jalon 26 (T6) : panneaux de Safrania, textes validés par Kevin le 2026-10-21 (validation
+## d'avance : T26-22 de `jalon-26.md` §3 et panneau de l'Arène), mot pour mot.
+const TEXTS_J26_T6: Dictionary[StringName, String] = {
+	&"saffron_city_sign": "SAFRANIA\nVille dorée, cœur commercial de Kanto.",
+	&"saffron_gym_sign": "ARÈNE DE SAFRANIA\nChampion : Morgane",
+}
 const IDS_J20: Array[StringName] = [
 	&"route_7_sign", &"route_7_underground_sign", &"route_8_sign", &"route_8_underground_sign",
 	# T25 : garde des postes de Safrania et boisson donnée (annexe A.14 du plan, texte 12).
@@ -845,6 +853,7 @@ func test_library_loads_without_error() -> void:
 	var expected := IDS + IDS_J14_BILL + IDS_J14_ROCKET + IDS_J15_ROUTE_5 + IDS_J16_GYM \
 		+ IDS_J16_SHIP + IDS_J16_RIVAL_CAPTAIN + IDS_J16_T15 + IDS_J17 + IDS_J18 + IDS_J19 + IDS_J20 \
 		+ IDS_J20_T17 + IDS_J20_T21 + IDS_S2B + S2_FIELD_TRAVEL + _silph_co_ids()
+	expected.append_array(TEXTS_J26_T6.keys())
 	expected.append_array(TEXTS_S2C_FISH.keys())
 	expected.append_array(TEXTS_S2D_STRENGTH.keys())
 	expected.append_array(UNVALIDATED)
@@ -1337,6 +1346,9 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 		# test_silph_co_data.
 		if GATE_GUARDS.has(row[0]) or UNVALIDATED.has(row[0]) or S2_FIELD_TRAVEL.has(row[0]) \
 				or silph_texts.has(row[0]) or (row[3] as DialogueVariant).draft:
+			continue
+		if TEXTS_J26_T6.has(row[0]):
+			assert_eq(row[1], TEXTS_J26_T6[row[0]], String(row[0]))
 			continue
 		if TEXTS_S2B.has(row[0]):
 			assert_true(TEXTS_S2B[row[0]].has(row[1]), "%s : %s" % [row[0], row[1]])
