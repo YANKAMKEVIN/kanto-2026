@@ -552,6 +552,18 @@ func _sorted(values: Array) -> Array[StringName]:
 	return result
 
 
+## Jalon 24 (D3 de la QA A17) : la CT35 a sa ligne de réception, comme les CT des Arènes.
+func test_tm35_gift_is_followed_by_its_reception_line() -> void:
+	var steps := _cutscenes.get_cutscene(&"cinnabar_lab_tm35").variants[0].steps
+	assert_eq(steps[0].dialogue_id, &"cinnabar_lab_tm35_offer")
+	assert_eq(steps[1].kind, CutsceneStep.Kind.GIVE)
+	assert_eq(steps[1].item_id, &"tm35")
+	assert_eq(steps[2].kind, CutsceneStep.Kind.DIALOGUE)
+	assert_eq(steps[2].dialogue_id, &"cinnabar_lab_tm35_use")
+	assert_eq(steps[3].kind, CutsceneStep.Kind.SET_FLAGS)
+	assert_eq(steps[3].flags, [&"got_tm35"] as Array[StringName])
+
+
 func test_route1_grass_ends_with_the_starter_offer() -> void:
 	var steps := _cutscenes.get_cutscene(&"route1_grass").variants[0].steps
 	assert_gt(steps.size(), 4)

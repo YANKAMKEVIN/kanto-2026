@@ -24,6 +24,12 @@
 			"à chaque fois !"
 		]
 	},
+	"cinnabar_lab_tm35_use": {
+		"speaker": "Scientifique",
+		"pages": [
+			"{player} reçoit la CT35 Métronome !"
+		]
+	},
 	"cinnabar_lab_eevee": {
 		"speaker": "Scientifique",
 		"pages": [

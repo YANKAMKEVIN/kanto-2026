@@ -200,16 +200,16 @@ dit seulement ce qui marche, ce qui casse et ce qui n'a pas pu être joué. Capt
   pas encore posé. Captures `16.png`, `210.png`, `214.png`.
 - **D2 — Cramois'Île et les Routes en aplats de couleur** (bâtiments en rectangles unis) : connu,
   tuiles provisoires (§0.5) ; noté pour mémoire.
-- **D3 — CT35 sans ligne de réception** : après « … à chaque fois ! » la scène rend la main sans
+- **D3 — CT35 sans ligne de réception** (**corrigé le 2026-10-22** : dialogue `cinnabar_lab_tm35_use`, « {player} reçoit la CT35 Métronome ! », après le `give`) : après « … à chaque fois ! » la scène rend la main sans
   « Kevin reçoit la CT35 Métronome ! » (la résurrection affiche bien « Kevin reçoit Kabuto ! », les
   Arènes ont leur ligne de CT) : `cinnabar_lab_tm35` fait un `give` sans page de réception.
   Capture `mont_176.png`.
-- **D4 (mineur)** — bord est de Cramois'Île : SURFER depuis la grève pose le joueur sur la colonne
+- **D4 (mineur, corrigé le 2026-10-22 : la mise à l'eau est un saut scripté qui ne déclenchait aucun passage ; `MountDirector` suit désormais le passage PUSH de la case d'arrivée, après T-3 la première fois ; test `test_j24_cinnabar_edge.gd`)** — bord est de Cramois'Île : SURFER depuis la grève pose le joueur sur la colonne
   33 sans changer de carte ; il faut un pas de plus vers l'est (même logique PUSH que les autres
   bords, mais surprenant juste après la montée). Captures `245.png`, `246.png`.
 - **D5 (mineur)** — en bord de carte la caméra est bornée et le joueur peut passer sous les
   boutons (arrivée de l'entrée est au 1F : joueur collé au bouton Course). Capture `256.png`.
-- Observation texte : « Bien. Ça prend un peu de temps : » / « va faire un tour dehors ! » coupe la
+- Observation texte (**corrigée le 2026-10-22** : une seule page, deux lignes, mots inchangés) : « Bien. Ça prend un peu de temps : » / « va faire un tour dehors ! » coupe la
   phrase entre deux pages sur les deux-points (textes validés d'avance, à relire par Kevin).
 
 **fps** (`[perf]`, A17, moyenne / plus bas relevé sur 2 s ; combats compris) : Route 19 46 / 37 ;

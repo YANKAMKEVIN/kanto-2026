@@ -126,6 +126,8 @@ const TEXTS_S2D_STRENGTH: Dictionary[StringName, Array] = {
 const TEXTS_J24: Dictionary[StringName, Array] = {
 	&"cinnabar_fossil_ready_kabuto": ["Te voilà ! Ton fossile\nétait un Kabuto !"],
 	&"cinnabar_fossil_ready_omanyte": ["Te voilà ! Ton fossile\nétait un Amonita !"],
+	&"cinnabar_lab_tm35_use": ["{player} reçoit la CT35 Métronome !"],
+	&"cinnabar_fossil_taken": ["Bien. Ça prend un peu de temps :\nva faire un tour dehors !"],
 	&"cinnabar_fossil_received_kabuto": ["{player} reçoit Kabuto !"],
 	&"cinnabar_fossil_received_omanyte": ["{player} reçoit Amonita !"],
 	&"cinnabar_fossil_stored_kabuto": ["Kabuto a été envoyé au stockage."],
@@ -460,7 +462,7 @@ const IDS_J24: Array[StringName] = [
 	&"cinnabar_gym_locked", &"cinnabar_gym_sign", &"cinnabar_lab_eevee", &"cinnabar_lab_expert",
 	&"cinnabar_lab_meeting_canon", &"cinnabar_lab_meeting_gramps", &"cinnabar_lab_pc",
 	&"cinnabar_lab_photo", &"cinnabar_lab_seel", &"cinnabar_lab_tm35", &"cinnabar_lab_tm35_offer",
-	&"cinnabar_man", &"cinnabar_mansion_rubble", &"cinnabar_mart_scientist",
+	&"cinnabar_lab_tm35_use", &"cinnabar_man", &"cinnabar_mansion_rubble", &"cinnabar_mart_scientist",
 	&"cinnabar_mart_silph_worker", &"cinnabar_sign", &"route_19_sign", &"route_20_item_1",
 	&"route_20_sign", &"route_21_item_1", &"seafoam_b2f_hidden_1", &"seafoam_b4f_hidden_1",
 	&"seafoam_sign_boulders", &"seafoam_sign_currents", &"seafoam_sign_danger"
@@ -964,7 +966,7 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 	assert_eq(played, _sorted([
 		# Jalon 24 : Artikodin, porte de l'Arène, CT35, fossiles.
 		&"articuno_cry", &"articuno_flew_away", &"cinnabar_gym_locked", &"cinnabar_lab_tm35_offer",
-		&"cinnabar_fossil_taken", &"cinnabar_fossil_ready_kabuto", &"cinnabar_fossil_ready_omanyte",
+		&"cinnabar_lab_tm35_use", &"cinnabar_fossil_taken", &"cinnabar_fossil_ready_kabuto", &"cinnabar_fossil_ready_omanyte",
 		&"cinnabar_fossil_received_kabuto", &"cinnabar_fossil_received_omanyte",
 		&"cinnabar_fossil_stored_kabuto", &"cinnabar_fossil_stored_omanyte",
 		# Jalon 13 (T19) : Ondine à l'Arène.
@@ -1754,6 +1756,7 @@ func test_oak_parcel_lines() -> void:
 				or (String(row[0]).begins_with("saffron_gate_drink_") and row[1].contains("{player}")) \
 				or row[0] == &"celadon_eevee_received" or row[0] == &"fishing_cast" \
 				or String(row[0]).begins_with("cinnabar_fossil_received_") \
+				or row[0] == &"cinnabar_lab_tm35_use" \
 				or (row[0] in [&"rocket_hideout_b4f_lift_key_got",
 					&"rocket_hideout_b4f_silph_scope_got"] and row[1].contains("{player}")) \
 				or (String(row[0]).begins_with("celadon_gym_erika_") and row[1].contains("{player}")):

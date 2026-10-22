@@ -14,6 +14,7 @@
 - **QA A17 par adb (2026-10-22, non validée par Kevin)** : 5 départs joués, aucun bloquant ;
   défauts D1 (joueur en Surf sans monture), D3 (CT35 sans ligne de réception), D4–D5 mineurs ;
   45–50 fps : `docs/tech/jalon-24.md` §0.6.
+- **Corrections QA A17 (2026-10-22)** : D3 (CT35 : ligne « reçoit la CT35 Métronome ! »), D4 (mise à l'eau sur la colonne 33 de Cramois'Île enchaîne sur la Route 20), coupure de page du scientifique des fossiles (une page, mots inchangés). D1 (dessin du Surf, au niveau du moteur), D2 (art), D5 (interface commune) non touchés. Import headless sans erreur ; suite complète 6 546 / 6 546.
 - **Attend Kevin** : QA téléphone (5 départs `j24_*`), accord pour la côte sud de Bourg Palette
   (T11) ; Parmanie et le rocher du Gardien attendent la fusion du J22.
 - **Reportés** : cartes en tuiles provisoires (vues peintes de la série 27 à poser) ; T-14 et

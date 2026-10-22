@@ -283,14 +283,36 @@ func _on_player_moved(cell: Vector2i) -> void:
 	if _mounting and _player.get_mount() == Mount.Kind.SURF:
 		_mounting = false
 		surf_mounted.emit()
-		_play_first_ride()
+		var played := _play_first_ride()
+		_follow_edge_after_mount(cell, played)
 
 
 ## T-3 « {pokemon} vous porte sur l'eau ! », la première fois seulement.
-func _play_first_ride() -> void:
+## Rend vrai si le texte a été lancé.
+func _play_first_ride() -> bool:
 	var flags: StoryFlags = _state.get(&"flags") as StoryFlags if _state != null else null
 	if flags == null or flags.has_flag(SURF_FIRST_FLAG):
-		return
+		return false
 	flags.set_flag(SURF_FIRST_FLAG)
 	if _runner != null:
 		_runner.play(SURF_FIRST_DIALOGUE, null, _map)
+		return true
+	return false
+
+
+## Mise à l'eau sur la dernière case d'un bord (ex. Cramois'Île, colonne 33) : le saut est un pas
+## scripté, qui ne déclenche aucun passage (`SceneRouter._on_player_moved`) ; sans ce relais le
+## joueur resterait collé au bord jusqu'à une poussée de plus. Si la case porte un passage PUSH
+## dans le sens du saut, on le suit comme une poussée (après T-3 quand il vient d'être lancé).
+func _follow_edge_after_mount(cell: Vector2i, wait_for_text: bool) -> void:
+	if not is_instance_valid(_map) or not is_instance_valid(_player):
+		return
+	var facing := _player.get_facing()
+	if _map.get_warps().find_on_push(cell, facing) == null:
+		return
+	if wait_for_text and _runner != null:
+		await _runner.dialogue_finished
+	if not is_instance_valid(_player) or _player.get_mount() != Mount.Kind.SURF \
+			or _player.get_cell() != cell:
+		return
+	SceneRouter.follow_warp_at.call_deferred(cell, facing)
