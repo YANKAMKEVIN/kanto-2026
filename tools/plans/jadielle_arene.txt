@@ -1,0 +1,81 @@
+# Arène de Jadielle (viridian_gym) — grille fonctionnelle (jalon 28, docs/tech/jalon-28.md §2.1 ;
+# 2026-10-22). GÉOMÉTRIE ROUGE/BLEU CASE POUR CASE (dalles comprises). Source : pret/pokered,
+# maps/ViridianGym.blk (10 × 9 blocs = 20 × 18 cases), tileset Gym (Gym_Coll),
+# data/maps/objects/ViridianGym.asm, scripts/ViridianGym.asm (12 dalles), décodée par
+# tools/art/viridian_gym_rb_decode.py. Vérifiée par tools/art/plan_check_j28.py.
+#
+# 24 × 22 cases = la carte RB décalée de (+2, +2) [D] : deux rangées et deux colonnes de mur tout
+# autour (convention des intérieurs ; RB n'a pas de bord, le bord de la carte y fait mur). Une
+# case RB (x, y) est ici (x + 2, y + 2). Sortie : RB (16, 17)–(17, 17) ; ici l'ouverture (18, 20)–
+# (19, 20) dans le mur du bas (PUSH ↓), la case RB de la sortie (18, 19)–(19, 19) restant du sol.
+#
+# Dalles : dans RB, chaque dalle de départ pousse le joueur d'un NOMBRE FIXE de pas en ligne
+# droite (table ViridianGymArrowTilePlayerMovement) ; le moteur du J20 glisse jusqu'à la première
+# case d'arrêt « o ». La grille pose donc un « o » sur la case d'arrivée RB de chaque dalle ; le
+# contrôle prouve que la règle du moteur redonne exactement les 12 trajets RB (aucune flèche ni
+# arrêt au milieu d'un trajet, aucun mur). Aucune glissade RB ne bute contre un mur : la question
+# Q28-2 (arrêt avant l'obstacle) ne se pose pas sur ce plan.
+#
+# Légende :
+#   K mur ou décor (bloqué)          . sol (praticable)
+#   < > ^ v dalle de départ (praticable : glisse dans la direction)
+#   o case d'arrêt (praticable)      X sortie (praticable : ouverture du mur du bas, PUSH ↓)
+# Personnages, objet, raccords, dalles (trajets RB) sont dans POSITIONS, pas dans la grille.
+# Dresseurs : 8 (RB) ; 6 évitables, 2 inévitables (topdresseur_2, karateka_3), calculé par le
+# contrôle (lignes de vue aux cases où le joueur s'arrête).
+
+PRATICABLES .<>^voX
+
+GRILLE 24 22
+00 KKKKKKKKKKKKKKKKKKKKKKKK
+01 KKKKKKKKKKKKKKKKKKKKKKKK
+02 KKKKKKKKKKKKKKKKKKKKKKKK
+03 KKK....K.....o.......<KK
+04 KKK....K.....>.....ovoKK
+05 KKK....KK.KK.KKKKKKK..KK
+06 KKK.......K..K.....K..KK
+07 KKKKKKKK.K.K.......K..KK
+08 KK....vK.K.KKKKKK..K..KK
+09 KKo....K.K.........K..KK
+10 KK..KK.K.K......KK.K..KK
+11 KK.oKK.K.K.......K.K..KK
+12 KK..KK.K.K.......KvK..KK
+13 KK..KK...K.......K.Ko^KK
+14 KK..KK.KKKKKKKKK..o...KK
+15 KK..KKo>.......o......KK
+16 KK..KK>........o.K..K.KK
+17 KK^^KKKKKKKKKKKK.K..K.KK
+18 KK.......o.....<......KK
+19 KK.o...........<......KK
+20 KKKKKKKKKKKKKKKKKKXXKKKK
+21 KKKKKKKKKKKKKKKKKKKKKKKK
+FIN
+
+POSITIONS
+sortie               warp           18..19,20     libre   to=viridian_city spawn=from_gym  # PUSH ↓ → viridian_city, from_gym
+entree               spawn          18,20         libre    # spawn « entrance » (sur l'ouverture), tourné ↑
+giovanni             pnj            4,3           bloque  role=GIOVANNI facing=down  # RB (2, 1) ; scène viridian_gym_giovanni
+parler_giovanni      repere         4,4           libre    # on lui parle d'ici, tourné ↑
+guide                pnj            18,17         bloque  role=GUIDE facing=down  # RB (16, 15), guide de l'Arène (T28-03)
+rappel               objet          18,11         bloque  item=revive  # RB (16, 9), Rappel (REVIVE)
+topdresseur_1        dresseur       14,9          bloque  facing=down sight=4 trainer=viridian_gym_cooltrainer_yannick  # RB (12, 7), Topdresseur, Sablaireau + Triopikeur 39
+karateka_1           dresseur       13,13         bloque  facing=up sight=4 trainer=viridian_gym_blackbelt_bertrand  # RB (11, 11), Karatéka, Machoc + Machopeur 40
+dompteur_1           dresseur       12,9          bloque  facing=down sight=4 trainer=viridian_gym_tamer_lionel  # RB (10, 7), Dompteur, Rhinocorne 43
+karateka_2           dresseur       5,9           bloque  facing=left sight=2 trainer=viridian_gym_blackbelt_didier  # RB (3, 7), Karatéka, Machopeur 43
+topdresseur_2        dresseur       15,7          bloque  facing=right sight=3 trainer=viridian_gym_cooltrainer_florian mandatory=1  # RB (13, 5), Topdresseur, Rhinocorne 43 ; INÉVITABLE (contrôle)
+karateka_3           dresseur       12,3          bloque  facing=down sight=4 trainer=viridian_gym_blackbelt_joel mandatory=1  # RB (10, 1), Karatéka, Machopeur + Machoc + Machopeur 38 ; INÉVITABLE : sa ligne couvre (12, 4)..(12, 7), passage du centre vers le haut
+dompteur_2           dresseur       4,18          bloque  facing=right sight=3 trainer=viridian_gym_tamer_regis  # RB (2, 16), Dompteur, Arbok + Tauros 39
+topdresseur_3        dresseur       8,7           bloque  facing=down sight=4 trainer=viridian_gym_cooltrainer_damien  # RB (6, 5), Topdresseur, Nidorino + Nidoking 39 ; dans le couloir ouest (une case de large)
+dalle_01             dalle          21,13       libre   dir=N trajet=N9 arret=21,4  # RB ViridianGymArrowMovement1 (19, 11)
+dalle_02             dalle          21,3        libre   dir=O trajet=O8 arret=13,3  # RB ViridianGymArrowMovement2 (19, 1)
+dalle_03             dalle          20,4        libre   dir=S trajet=S9 arret=20,13  # RB ViridianGymArrowMovement3 (18, 2)
+dalle_04             dalle          13,4        libre   dir=E trajet=E6 arret=19,4  # RB ViridianGymArrowMovement4 (11, 2)
+dalle_05             dalle          18,12       libre   dir=S trajet=S2 arret=18,14  # RB ViridianGymArrowMovement5 (16, 10)
+dalle_06             dalle          6,8         libre   dir=S trajet=S7 arret=6,15  # RB ViridianGymArrowMovement6 (4, 6)
+dalle_07             dalle          7,15        libre   dir=E trajet=E8 arret=15,15  # RB ViridianGymArrowMovement7 (5, 13)
+dalle_08             dalle          6,16        libre   dir=E trajet=E9 arret=15,16  # RB ViridianGymArrowMovement8 (4, 14)
+dalle_09             dalle          2,17        libre   dir=N trajet=N8 arret=2,9  # RB ViridianGymArrowMovement9 (0, 15)
+dalle_10             dalle          3,17        libre   dir=N trajet=N6 arret=3,11  # RB ViridianGymArrowMovement10 (1, 15)
+dalle_11             dalle          15,18       libre   dir=O trajet=O6 arret=9,18  # RB ViridianGymArrowMovement11 (13, 16)
+dalle_12             dalle          15,19       libre   dir=O trajet=O12 arret=3,19  # RB ViridianGymArrowMovement12 (13, 17)
+FIN
