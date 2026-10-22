@@ -298,7 +298,7 @@ d'avance (proposition du plan)** ; textes complémentaires du §3.1 **à relire*
   `silph_giovanni_defeated` ; l'examen « La porte est verrouillée. » porte le `unless` inverse ;
   spawn `from_gym`. Scène de Jadielle modifiée à la main (comme les sorties nord), outil du J7 mis
   à jour en conséquence. Guetteur à trois variantes.
-- **T10** : départs `viridian_gym`, `viridian_gym_giovanni`, `viridian_locked`.
+- **T10** : départs `viridian_gym`, `viridian_gym_giovanni`, `viridian_locked` ; tests `test_viridian_gym` (9), `test_viridian_gym_door` (6), `test_giovanni_gym` (5), `test_fissure` (6). Suite complète 6 512 / 6 512, import sans erreur.
 - Capture headless relue (`tools/capture_map.gd`) : Dresseurs, objet, dalles et arrêts lisibles.
 
 ### 10.2 Reste

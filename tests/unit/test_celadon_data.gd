@@ -243,8 +243,10 @@ func test_stone_evolutions() -> void:
 		StoneUse.Check.INCOMPATIBLE)
 	# Les évolutions finales n'évoluent plus ; Mystherbe, Chétiflor : par niveau seulement.
 	for id: StringName in [&"arcanine", &"ninetales", &"vaporeon", &"jolteon", &"flareon",
-			&"victreebel", &"vileplume", &"tangela", &"rhyhorn", &"kangaskhan"]:
+			&"victreebel", &"vileplume", &"tangela", &"kangaskhan"]:
 		assert_eq(_data.get_species(id).evolutions.size(), 0, String(id))
+	# Jalon 28 (T3) : Rhinocorne évolue en Rhinoféros au N42 (Rouge/Bleu).
+	assert_eq(_data.get_species(&"rhyhorn").evolutions.size(), 1, "rhyhorn → rhydon")
 	for id: StringName in [&"oddish", &"bellsprout"]:
 		assert_eq(StoneUse.check(_mon(id), &"leaf_stone", _data), StoneUse.Check.INCOMPATIBLE)
 

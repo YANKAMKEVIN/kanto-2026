@@ -240,6 +240,8 @@ func test_tm11_and_its_compatibilities() -> void:
 		&"nidorina", &"nidoqueen", &"nidorino", &"nidoking", &"clefairy", &"clefable",
 		&"jigglypuff", &"wigglytuff", &"meowth", &"persian", &"shellder", &"cubone",
 		&"marowak",
+		# Jalon 28 (T3) : Rhinoféros.
+		&"rhydon",
 		# Jalon 20 (T7) : Kangourex et Aquali.
 		&"kangaskhan", &"horsea", &"goldeen", &"staryu", &"starmie", &"gyarados", &"vaporeon",
 		] as Array[StringName])
