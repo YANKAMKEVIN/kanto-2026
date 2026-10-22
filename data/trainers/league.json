@@ -1,0 +1,477 @@
+{
+	"league_lorelei": {
+		"name": "Olga",
+		"ai": "smart",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 99,
+		"start_message": false,
+		"end_message": true,
+		"bag": true,
+		"switch": false,
+		"card": {
+			"name": "OLGA",
+			"title": "Conseil des Quatre"
+		},
+		"team": [
+			{
+				"species": "dewgong",
+				"level": 54,
+				"moves": [
+					"growl",
+					"aurora_beam",
+					"rest",
+					"take_down"
+				]
+			},
+			{
+				"species": "cloyster",
+				"level": 53,
+				"moves": [
+					"supersonic",
+					"clamp",
+					"aurora_beam",
+					"spike_cannon"
+				]
+			},
+			{
+				"species": "slowbro",
+				"level": 54,
+				"moves": [
+					"growl",
+					"water_gun",
+					"withdraw",
+					"amnesia"
+				]
+			},
+			{
+				"species": "jynx",
+				"level": 56,
+				"moves": [
+					"double_slap",
+					"ice_punch",
+					"body_slam",
+					"lick"
+				]
+			},
+			{
+				"species": "lapras",
+				"level": 56,
+				"moves": [
+					"body_slam",
+					"confuse_ray",
+					"blizzard",
+					"hydro_pump"
+				]
+			}
+		]
+	},
+	"league_bruno": {
+		"name": "Aldo",
+		"ai": "smart",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 99,
+		"start_message": false,
+		"end_message": true,
+		"bag": true,
+		"switch": false,
+		"card": {
+			"name": "ALDO",
+			"title": "Conseil des Quatre"
+		},
+		"team": [
+			{
+				"species": "onix",
+				"level": 53,
+				"moves": [
+					"rock_throw",
+					"bind",
+					"slam",
+					"harden"
+				]
+			},
+			{
+				"species": "hitmonchan",
+				"level": 55,
+				"moves": [
+					"ice_punch",
+					"thunder_punch",
+					"mega_punch",
+					"fire_punch"
+				]
+			},
+			{
+				"species": "hitmonlee",
+				"level": 55,
+				"moves": [
+					"rolling_kick",
+					"focus_energy",
+					"meditate",
+					"mega_kick"
+				]
+			},
+			{
+				"species": "onix",
+				"level": 56,
+				"moves": [
+					"rock_throw",
+					"bind",
+					"slam",
+					"harden"
+				]
+			},
+			{
+				"species": "machamp",
+				"level": 58,
+				"moves": [
+					"leer",
+					"focus_energy",
+					"fissure",
+					"submission"
+				]
+			}
+		]
+	},
+	"league_agatha": {
+		"name": "Agatha",
+		"ai": "smart",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 99,
+		"start_message": false,
+		"end_message": true,
+		"bag": true,
+		"switch": true,
+		"card": {
+			"name": "AGATHA",
+			"title": "Conseil des Quatre"
+		},
+		"team": [
+			{
+				"species": "gengar",
+				"level": 56,
+				"moves": [
+					"confuse_ray",
+					"night_shade",
+					"hypnosis",
+					"dream_eater"
+				]
+			},
+			{
+				"species": "golbat",
+				"level": 56,
+				"moves": [
+					"supersonic",
+					"confuse_ray",
+					"wing_attack",
+					"haze"
+				]
+			},
+			{
+				"species": "haunter",
+				"level": 55,
+				"moves": [
+					"confuse_ray",
+					"night_shade",
+					"hypnosis",
+					"dream_eater"
+				]
+			},
+			{
+				"species": "arbok",
+				"level": 58,
+				"moves": [
+					"bite",
+					"glare",
+					"screech",
+					"acid"
+				]
+			},
+			{
+				"species": "gengar",
+				"level": 60,
+				"moves": [
+					"confuse_ray",
+					"night_shade",
+					"toxic",
+					"dream_eater"
+				]
+			}
+		]
+	},
+	"league_lance": {
+		"name": "Peter",
+		"ai": "smart",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 99,
+		"start_message": false,
+		"end_message": true,
+		"bag": true,
+		"switch": false,
+		"card": {
+			"name": "PETER",
+			"title": "Conseil des Quatre"
+		},
+		"team": [
+			{
+				"species": "gyarados",
+				"level": 58,
+				"moves": [
+					"dragon_rage",
+					"leer",
+					"hydro_pump",
+					"hyper_beam"
+				]
+			},
+			{
+				"species": "dragonair",
+				"level": 56,
+				"moves": [
+					"agility",
+					"slam",
+					"dragon_rage",
+					"hyper_beam"
+				]
+			},
+			{
+				"species": "dragonair",
+				"level": 56,
+				"moves": [
+					"agility",
+					"slam",
+					"dragon_rage",
+					"hyper_beam"
+				]
+			},
+			{
+				"species": "aerodactyl",
+				"level": 60,
+				"moves": [
+					"supersonic",
+					"bite",
+					"take_down",
+					"hyper_beam"
+				]
+			},
+			{
+				"species": "dragonite",
+				"level": 62,
+				"moves": [
+					"agility",
+					"slam",
+					"barrier",
+					"hyper_beam"
+				]
+			}
+		]
+	},
+	"rival_champion": {
+		"name": "{rival}",
+		"ai": "smart",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 99,
+		"start_message": false,
+		"end_message": false,
+		"bag": true,
+		"switch": true,
+		"team_by_starter": {
+			"bulbasaur": [
+				{
+					"species": "pidgeot",
+					"level": 61,
+					"moves": [
+						"whirlwind",
+						"wing_attack",
+						"sky_attack",
+						"agility"
+					]
+				},
+				{
+					"species": "alakazam",
+					"level": 59,
+					"moves": [
+						"psybeam",
+						"recover",
+						"psychic",
+						"reflect"
+					]
+				},
+				{
+					"species": "rhydon",
+					"level": 61,
+					"moves": [
+						"tail_whip",
+						"fury_attack",
+						"horn_drill",
+						"leer"
+					]
+				},
+				{
+					"species": "exeggutor",
+					"level": 61,
+					"moves": [
+						"barrage",
+						"hypnosis",
+						"stomp"
+					]
+				},
+				{
+					"species": "gyarados",
+					"level": 63,
+					"moves": [
+						"dragon_rage",
+						"leer",
+						"hydro_pump",
+						"hyper_beam"
+					]
+				},
+				{
+					"species": "charizard",
+					"level": 65,
+					"moves": [
+						"flamethrower",
+						"slash",
+						"fire_blast",
+						"fire_spin"
+					]
+				}
+			],
+			"charmander": [
+				{
+					"species": "pidgeot",
+					"level": 61,
+					"moves": [
+						"whirlwind",
+						"wing_attack",
+						"sky_attack",
+						"agility"
+					]
+				},
+				{
+					"species": "alakazam",
+					"level": 59,
+					"moves": [
+						"psybeam",
+						"recover",
+						"psychic",
+						"reflect"
+					]
+				},
+				{
+					"species": "rhydon",
+					"level": 61,
+					"moves": [
+						"tail_whip",
+						"fury_attack",
+						"horn_drill",
+						"leer"
+					]
+				},
+				{
+					"species": "arcanine",
+					"level": 61,
+					"moves": [
+						"roar",
+						"ember",
+						"leer",
+						"take_down"
+					]
+				},
+				{
+					"species": "exeggutor",
+					"level": 63,
+					"moves": [
+						"barrage",
+						"hypnosis",
+						"stomp"
+					]
+				},
+				{
+					"species": "blastoise",
+					"level": 65,
+					"moves": [
+						"bite",
+						"withdraw",
+						"blizzard",
+						"hydro_pump"
+					]
+				}
+			],
+			"squirtle": [
+				{
+					"species": "pidgeot",
+					"level": 61,
+					"moves": [
+						"whirlwind",
+						"wing_attack",
+						"sky_attack",
+						"agility"
+					]
+				},
+				{
+					"species": "alakazam",
+					"level": 59,
+					"moves": [
+						"psybeam",
+						"recover",
+						"psychic",
+						"reflect"
+					]
+				},
+				{
+					"species": "rhydon",
+					"level": 61,
+					"moves": [
+						"tail_whip",
+						"fury_attack",
+						"horn_drill",
+						"leer"
+					]
+				},
+				{
+					"species": "gyarados",
+					"level": 61,
+					"moves": [
+						"dragon_rage",
+						"leer",
+						"hydro_pump",
+						"hyper_beam"
+					]
+				},
+				{
+					"species": "arcanine",
+					"level": 63,
+					"moves": [
+						"roar",
+						"ember",
+						"leer",
+						"take_down"
+					]
+				},
+				{
+					"species": "venusaur",
+					"level": 65,
+					"moves": [
+						"razor_leaf",
+						"growth",
+						"mega_drain",
+						"solar_beam"
+					]
+				}
+			]
+		}
+	}
+}

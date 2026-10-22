@@ -32,7 +32,12 @@ const NAMED_SPECIES_OK: Dictionary[StringName, Array] = {&"magneton": [&"magnemi
 ## Espèces des données sans fiche : jamais vues au J19 (SPECTRE) ; Osselait a la sienne depuis le
 ## J20 (annexe A n° 204), Ossatueur l'aura au J21
 ## (dossier 22 §12.1).
-const NO_ENTRY_YET: Array[StringName] = [&"marowak"]
+## Jalon 30 (T3) : les 15 espèces de la Ligue n'ont pas encore de fiche (textes à valider ;
+## les reprises recevront celles de leur jalon à la fusion).
+const NO_ENTRY_YET: Array[StringName] = [&"marowak",
+	&"dewgong", &"cloyster", &"slowbro", &"lapras", &"alakazam", &"aerodactyl", &"rhydon",
+	&"exeggutor", &"hitmonlee", &"hitmonchan", &"jynx", &"machamp", &"gengar", &"dragonair",
+	&"dragonite"]
 ## Descriptions validées par Kevin qui parlent d'évolution (exception à « jamais de
 ## divulgation ») : Léviator (dossier 22 §15.7, validé le 2026-10-15).
 const EVOLUTION_DESCRIPTIONS: Array[StringName] = [&"gyarados"]

@@ -1,0 +1,511 @@
+{
+	"dewgong": {
+		"dex": 87,
+		"name": "Lamantine",
+		"types": [
+			"water",
+			"ice"
+		],
+		"base_stats": {
+			"hp": 90,
+			"atk": 70,
+			"def": 80,
+			"spa": 70,
+			"spd": 95,
+			"spe": 70
+		},
+		"male_ratio": 0.5,
+		"growth_rate": "medium_fast",
+		"base_exp": 166,
+		"catch_rate": 75,
+		"learnset": [
+			[
+				1,
+				"headbutt"
+			],
+			[
+				1,
+				"growl"
+			],
+			[
+				1,
+				"aurora_beam"
+			],
+			[
+				30,
+				"growl"
+			],
+			[
+				35,
+				"aurora_beam"
+			],
+			[
+				44,
+				"rest"
+			],
+			[
+				50,
+				"take_down"
+			],
+			[
+				56,
+				"ice_beam"
+			]
+		]
+	},
+	"cloyster": {
+		"dex": 91,
+		"name": "Crustabri",
+		"types": [
+			"water",
+			"ice"
+		],
+		"base_stats": {
+			"hp": 50,
+			"atk": 95,
+			"def": 180,
+			"spa": 85,
+			"spd": 45,
+			"spe": 70
+		},
+		"male_ratio": 0.5,
+		"growth_rate": "slow",
+		"base_exp": 184,
+		"catch_rate": 60,
+		"learnset": [
+			[
+				1,
+				"withdraw"
+			],
+			[
+				1,
+				"supersonic"
+			],
+			[
+				1,
+				"clamp"
+			],
+			[
+				1,
+				"aurora_beam"
+			],
+			[
+				50,
+				"spike_cannon"
+			]
+		]
+	},
+	"slowbro": {
+		"dex": 80,
+		"name": "Flagadoss",
+		"types": [
+			"water",
+			"psychic"
+		],
+		"base_stats": {
+			"hp": 95,
+			"atk": 75,
+			"def": 110,
+			"spa": 100,
+			"spd": 80,
+			"spe": 30
+		},
+		"male_ratio": 0.5,
+		"growth_rate": "medium_fast",
+		"base_exp": 172,
+		"catch_rate": 75,
+		"learnset": [
+			[
+				1,
+				"confusion"
+			],
+			[
+				1,
+				"disable"
+			],
+			[
+				1,
+				"headbutt"
+			],
+			[
+				18,
+				"disable"
+			],
+			[
+				22,
+				"headbutt"
+			],
+			[
+				27,
+				"growl"
+			],
+			[
+				33,
+				"water_gun"
+			],
+			[
+				37,
+				"withdraw"
+			],
+			[
+				44,
+				"amnesia"
+			],
+			[
+				55,
+				"psychic"
+			]
+		]
+	},
+	"lapras": {
+		"dex": 131,
+		"name": "Lokhlass",
+		"types": [
+			"water",
+			"ice"
+		],
+		"base_stats": {
+			"hp": 130,
+			"atk": 85,
+			"def": 80,
+			"spa": 85,
+			"spd": 95,
+			"spe": 60
+		},
+		"male_ratio": 0.5,
+		"growth_rate": "slow",
+		"base_exp": 187,
+		"catch_rate": 45,
+		"learnset": [
+			[
+				1,
+				"water_gun"
+			],
+			[
+				1,
+				"growl"
+			],
+			[
+				16,
+				"sing"
+			],
+			[
+				20,
+				"mist"
+			],
+			[
+				25,
+				"body_slam"
+			],
+			[
+				31,
+				"confuse_ray"
+			],
+			[
+				38,
+				"ice_beam"
+			],
+			[
+				46,
+				"hydro_pump"
+			]
+		]
+	},
+	"alakazam": {
+		"dex": 65,
+		"name": "Alakazam",
+		"types": [
+			"psychic"
+		],
+		"base_stats": {
+			"hp": 55,
+			"atk": 50,
+			"def": 45,
+			"spa": 135,
+			"spd": 95,
+			"spe": 120
+		},
+		"male_ratio": 0.75,
+		"growth_rate": "medium_slow",
+		"base_exp": 225,
+		"catch_rate": 50,
+		"learnset": [
+			[
+				1,
+				"teleport"
+			],
+			[
+				1,
+				"confusion"
+			],
+			[
+				1,
+				"disable"
+			],
+			[
+				16,
+				"confusion"
+			],
+			[
+				20,
+				"disable"
+			],
+			[
+				27,
+				"psybeam"
+			],
+			[
+				31,
+				"recover"
+			],
+			[
+				38,
+				"psychic"
+			],
+			[
+				42,
+				"reflect"
+			]
+		]
+	},
+	"aerodactyl": {
+		"dex": 142,
+		"name": "Ptéra",
+		"types": [
+			"rock",
+			"flying"
+		],
+		"base_stats": {
+			"hp": 80,
+			"atk": 105,
+			"def": 65,
+			"spa": 60,
+			"spd": 75,
+			"spe": 130
+		},
+		"male_ratio": 0.875,
+		"growth_rate": "slow",
+		"base_exp": 180,
+		"catch_rate": 45,
+		"learnset": [
+			[
+				1,
+				"wing_attack"
+			],
+			[
+				1,
+				"agility"
+			],
+			[
+				33,
+				"supersonic"
+			],
+			[
+				38,
+				"bite"
+			],
+			[
+				45,
+				"take_down"
+			],
+			[
+				54,
+				"hyper_beam"
+			]
+		]
+	},
+	"rhydon": {
+		"dex": 112,
+		"name": "Rhinoféros",
+		"types": [
+			"ground",
+			"rock"
+		],
+		"base_stats": {
+			"hp": 105,
+			"atk": 130,
+			"def": 120,
+			"spa": 45,
+			"spd": 45,
+			"spe": 40
+		},
+		"male_ratio": 0.5,
+		"growth_rate": "slow",
+		"base_exp": 204,
+		"catch_rate": 60,
+		"learnset": [
+			[
+				1,
+				"horn_attack"
+			],
+			[
+				1,
+				"stomp"
+			],
+			[
+				1,
+				"tail_whip"
+			],
+			[
+				1,
+				"fury_attack"
+			],
+			[
+				30,
+				"stomp"
+			],
+			[
+				35,
+				"tail_whip"
+			],
+			[
+				40,
+				"fury_attack"
+			],
+			[
+				48,
+				"horn_drill"
+			],
+			[
+				55,
+				"leer"
+			],
+			[
+				64,
+				"take_down"
+			]
+		]
+	},
+	"exeggutor": {
+		"dex": 103,
+		"name": "Noadkoko",
+		"types": [
+			"grass",
+			"psychic"
+		],
+		"base_stats": {
+			"hp": 95,
+			"atk": 95,
+			"def": 85,
+			"spa": 125,
+			"spd": 65,
+			"spe": 55
+		},
+		"male_ratio": 0.5,
+		"growth_rate": "slow",
+		"base_exp": 186,
+		"catch_rate": 45,
+		"learnset": [
+			[
+				1,
+				"barrage"
+			],
+			[
+				1,
+				"hypnosis"
+			],
+			[
+				28,
+				"stomp"
+			]
+		]
+	},
+	"hitmonlee": {
+		"dex": 106,
+		"name": "Kicklee",
+		"types": [
+			"fighting"
+		],
+		"base_stats": {
+			"hp": 50,
+			"atk": 120,
+			"def": 53,
+			"spa": 35,
+			"spd": 110,
+			"spe": 87
+		},
+		"male_ratio": 1.0,
+		"growth_rate": "medium_fast",
+		"base_exp": 159,
+		"catch_rate": 45,
+		"learnset": [
+			[
+				1,
+				"double_kick"
+			],
+			[
+				1,
+				"meditate"
+			],
+			[
+				33,
+				"rolling_kick"
+			],
+			[
+				38,
+				"jump_kick"
+			],
+			[
+				43,
+				"focus_energy"
+			],
+			[
+				48,
+				"high_jump_kick"
+			],
+			[
+				53,
+				"mega_kick"
+			]
+		]
+	},
+	"hitmonchan": {
+		"dex": 107,
+		"name": "Tygnon",
+		"types": [
+			"fighting"
+		],
+		"base_stats": {
+			"hp": 50,
+			"atk": 105,
+			"def": 79,
+			"spa": 35,
+			"spd": 110,
+			"spe": 76
+		},
+		"male_ratio": 1.0,
+		"growth_rate": "medium_fast",
+		"base_exp": 159,
+		"catch_rate": 45,
+		"learnset": [
+			[
+				1,
+				"comet_punch"
+			],
+			[
+				1,
+				"agility"
+			],
+			[
+				33,
+				"fire_punch"
+			],
+			[
+				38,
+				"ice_punch"
+			],
+			[
+				43,
+				"thunder_punch"
+			],
+			[
+				48,
+				"mega_punch"
+			],
+			[
+				53,
+				"counter"
+			]
+		]
+	}
+}

@@ -1,0 +1,153 @@
+{
+	"amnesia": {
+		"name": "Amnésie",
+		"type": "psychic",
+		"category": "status",
+		"accuracy": 0,
+		"pp": 20,
+		"effects": [
+			{
+				"kind": "stat_stage",
+				"stat": "spd",
+				"stages": 2,
+				"target": "self"
+			}
+		],
+		"description": "Le lanceur fait le vide dans sa tête. Augmente beaucoup sa Défense Spéciale."
+	},
+	"barrier": {
+		"name": "Bouclier",
+		"type": "psychic",
+		"category": "status",
+		"accuracy": 0,
+		"pp": 20,
+		"effects": [
+			{
+				"kind": "stat_stage",
+				"stat": "def",
+				"stages": 2,
+				"target": "self"
+			}
+		],
+		"description": "Le lanceur dresse un mur solide devant lui. Augmente beaucoup sa Défense."
+	},
+	"blizzard": {
+		"name": "Blizzard",
+		"type": "ice",
+		"category": "special",
+		"power": 110,
+		"accuracy": 70,
+		"pp": 5,
+		"effects": [
+			{
+				"kind": "status",
+				"status": "freeze",
+				"chance": 10
+			}
+		],
+		"description": "Une violente tempête de neige frappe la cible. Peut la geler."
+	},
+	"spike_cannon": {
+		"name": "Picanon",
+		"type": "normal",
+		"category": "physical",
+		"power": 20,
+		"accuracy": 100,
+		"pp": 15,
+		"effects": [
+			{
+				"kind": "hits",
+				"min": 2,
+				"max": 5
+			}
+		],
+		"description": "Projette des pointes acérées sur la cible, de deux à cinq fois d'affilée."
+	},
+	"fire_blast": {
+		"name": "Déflagration",
+		"type": "fire",
+		"category": "special",
+		"power": 110,
+		"accuracy": 85,
+		"pp": 5,
+		"effects": [
+			{
+				"kind": "status",
+				"status": "burn",
+				"chance": 10
+			}
+		],
+		"description": "Un déluge de flammes en forme d'étoile s'abat sur la cible. Peut la brûler."
+	},
+	"fire_punch": {
+		"name": "Poing de Feu",
+		"type": "fire",
+		"category": "physical",
+		"power": 75,
+		"accuracy": 100,
+		"pp": 15,
+		"effects": [
+			{
+				"kind": "status",
+				"status": "burn",
+				"chance": 10
+			}
+		],
+		"description": "Un coup de poing enflammé frappe la cible. Peut la brûler."
+	},
+	"fissure": {
+		"name": "Abîme",
+		"type": "ground",
+		"category": "status",
+		"accuracy": 30,
+		"pp": 5,
+		"effects": [
+			{
+				"kind": "ohko"
+			}
+		],
+		"description": "Le lanceur fait s'ouvrir une faille sous la cible. Met K.O. d'un coup."
+	},
+	"mega_kick": {
+		"name": "Ultimawashi",
+		"type": "normal",
+		"category": "physical",
+		"power": 120,
+		"accuracy": 75,
+		"pp": 5,
+		"description": "Un coup de pied d'une puissance phénoménale."
+	},
+	"sky_attack": {
+		"name": "Piqué",
+		"type": "flying",
+		"category": "physical",
+		"power": 140,
+		"accuracy": 90,
+		"pp": 5,
+		"crit_stage": 1,
+		"effects": [
+			{
+				"kind": "charge",
+				"texts": "sky_attack"
+			}
+		],
+		"description": "Le lanceur s'entoure d'une lueur au premier tour, puis fond sur la cible au second. Taux de critique élevé."
+	},
+	"toxic": {
+		"name": "Toxik",
+		"type": "poison",
+		"category": "status",
+		"accuracy": 85,
+		"pp": 10,
+		"effects": [
+			{
+				"kind": "status",
+				"status": "poison"
+			}
+		],
+		"pending_effects": [
+			"toxic"
+		],
+		"description": "Un poison qui s'aggrave à chaque tour. Aggravation sans effet dans le moteur actuel (codée par le J23)."
+	}
+}
