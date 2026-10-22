@@ -24,7 +24,12 @@ extends SceneTree
 ##   clôtures de bois, buissons, hautes herbes, rochers dans l'eau, panneaux.
 ## - Passages : raccord ouest (0, 11..13) PUSH ← → `vermilion_city` / `from_route_11_n|c|s` ;
 ##   bouche de la Cave (15..16, 7) STEP_ON ↑ → `digletts_cave` / `from_route_11_w|e` (T15).
-##   Spawns `from_vermilion_n|c|s` et `from_cave_w|e`. Bord est (75, 14..15) : aucun warp.
+##   Spawns `from_vermilion_n|c|s` et `from_cave_w|e`. Bord est (75, 14..15) : PUSH → « ROUTE 12 —
+##   À venir » (`coming_soon`, build de développement), retour `from_route_12_n|s` (74, 14..15)
+##   tourné ← (J21 T9a ; T21 en fera le warp réel → `route_12` / `from_route_11`).
+## - Ronflex : retiré (J21 T9a, décision M-3 de Kevin du 2026-10-16, dossier 24 §10.3). Il dort
+##   désormais au croisement de la Route 12 ; le dialogue `route_11_snorlax` (T-6, T-7) reste dans
+##   les données, repris par le Ronflex de la Route 12.
 
 const Kit := preload("res://tools/coast_map_kit.gd")
 const PLAN_PATH: String = "res://tools/plans/route_11.txt"
@@ -51,6 +56,12 @@ const WEST_EXITS: Array = [
 	["VermilionS", Vector2i(0, 13), &"from_route_11_s", "from_vermilion_s"],
 ]
 const WEST_MAP: StringName = &"vermilion_city"
+## Bord est (J21 T9a, M-3) : [nœud, case, spawn de retour (tourné ←)]. « ROUTE 12 — À venir ».
+const EAST_EXITS: Array = [
+	["Route12N", Vector2i(75, 14), "from_route_12_n"],
+	["Route12S", Vector2i(75, 15), "from_route_12_s"],
+]
+const EAST_MAP: StringName = &"route_12"
 ## Bouche de la Cave (STEP_ON ↑) : [nœud, case, spawn de la Cave, spawn d'ici (devant, tourné ↓)].
 const MOUTH: Array = [
 	["CaveW", Vector2i(15, 7), &"from_route_11_w", "from_cave_w"],
@@ -89,10 +100,6 @@ const SEA_ROCKS: Array[Vector2i] = [
 	Vector2i(12, 27), Vector2i(26, 26), Vector2i(41, 28), Vector2i(53, 26), Vector2i(66, 28),
 	Vector2i(8, 30), Vector2i(33, 31), Vector2i(58, 32), Vector2i(21, 33), Vector2i(70, 25),
 ]
-## Ronflex endormi : drapeau du réveil (jamais posé au J17), apparence peinte.
-const SNORLAX_FLAG: StringName = &"snorlax_route_11_awake"
-const SNORLAX_FRAMES: String = "res://assets/sprites/pokemon/painted/snorlax_frames.tres"
-const SHADOW_TEXTURE: String = "res://assets/sprites/characters/placeholder/shadow.png"
 const PEBBLES_ID: String = "prop_pierres_01"
 const HIDDEN_ITEM: String = "route_11_hidden_1"
 const HIDDEN_CLUE_ID: String = "prop_indice_caillou_01"
@@ -150,7 +157,6 @@ func _init() -> void:
 	_place_fences(entities)
 	_place_bushes(entities)
 	_place_sea_rocks(entities)
-	_add_life(entities)
 	_kit.call(&"place_tall_grass")
 	var feet: Array[Vector2] = []
 	var forest: Vector2i = _kit.call(&"place_forest", FOREST_SEED, feet, {})
@@ -241,7 +247,7 @@ func _make_pillars() -> void:
 	for component: Array in _kit.call(&"pillar_components"):
 		# Un module de paroi dépasse d'une rangée au-dessus de son pied : la rangée du haut d'un
 		# gros pilier dont le voisin du nord est praticable (goulets) reste sans module, sinon
-		# le sommet de la roche recouvrirait le chemin (Ronflex, Arthur).
+		# le sommet de la roche recouvrirait le chemin (goulet de l'est, Arthur).
 		var top := 1 << 20
 		for cell: Vector2i in component:
 			top = mini(top, cell.y)
@@ -287,6 +293,11 @@ func _add_passages() -> void:
 		_kit.call(&"add_spawn", entry[3], (entry[1] as Vector2i) + Vector2i.DOWN)
 		_kit.call(&"add_warp", entry[0], entry[1], Kit.STEP_ON, Vector2i.UP, CAVE_MAP,
 			entry[2], Vector2i.UP)
+	# Jalon 21 (T21) : bord est → `route_12` / `from_route_11_n|s` (retours `from_route_12_n|s` gardés).
+	for entry: Array in EAST_EXITS:
+		_kit.call(&"add_spawn", entry[2], (entry[1] as Vector2i) + Vector2i.LEFT)
+		_kit.call(&"add_warp", entry[0], entry[1], Kit.PUSH, Vector2i.RIGHT, EAST_MAP,
+			StringName("from_route_11_" + String(entry[2]).right(1)), Vector2i.RIGHT)
 
 
 ## Points d'examen : panneaux (lus de face depuis le sud, tournés ↑) et pierre-indice (de tous
@@ -300,58 +311,6 @@ func _add_examine_points() -> void:
 		Vector2i.ZERO, StringName(HIDDEN_ITEM))
 	var point: Node = _kit.get(&"root").get_node(^"Interactables").get_child(-1)
 	var unless: Array[StringName] = [StringName("got_" + HIDDEN_ITEM)]
-	point.set(&"unless_flags", unless)
-
-
-## Vie de la carte : Ronflex endormi (T17). Les Dresseurs, Pokémon d'ambiance et objets viennent
-## de `data/npcs/route_11.json`. Pas de déclencheur : le titre d'arrivée suit la zone.
-func _add_life(entities: Node2D) -> void:
-	var cells: Array[Vector2i] = _plan().call(&"cells_at", "ronflex")
-	var gate := Node2D.new()
-	gate.set_script(load("res://game/world/flag_gate.gd"))
-	gate.name = "Snorlax"
-	# Pieds au milieu du bas du bloc 2 × 2 (bord entre les colonnes 66 et 67, bas de la rangée 15).
-	gate.position = Vector2(float(cells[-1].x * Kit.TILE), float((cells[-1].y + 1) * Kit.TILE))
-	var unless: Array[StringName] = [SNORLAX_FLAG]
-	gate.set(&"unless_flags", unless)
-	var blocking: Array[Vector2i] = []
-	blocking.assign(cells)
-	gate.set(&"blocking_cells", blocking)
-	_kit.call(&"attach", entities, gate)
-	var shadow := Sprite2D.new()
-	shadow.name = "Shadow"
-	shadow.texture = load(SHADOW_TEXTURE)
-	shadow.position = Vector2(0.0, -8.0)
-	shadow.scale = Vector2(3.4, 2.6)
-	_kit.call(&"attach", gate, shadow)
-	var frames := load(SNORLAX_FRAMES) as SpriteFrames
-	var sprite := AnimatedSprite2D.new()
-	sprite.name = "Sprite"
-	sprite.sprite_frames = frames
-	sprite.animation = &"idle_down"
-	sprite.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
-	sprite.offset = Vector2(0.0, -frames.get_frame_texture(&"idle_down", 0).get_size().y / 2.0)
-	_kit.call(&"attach", gate, sprite)
-	# Respiration lente : une pose, le sprite gonfle de 3 % de sa hauteur toutes les 4 s.
-	var breath := Animation.new()
-	breath.length = 4.0
-	breath.loop_mode = Animation.LOOP_LINEAR
-	var track := breath.add_track(Animation.TYPE_VALUE)
-	breath.track_set_path(track, NodePath("Sprite:scale"))
-	breath.track_insert_key(track, 0.0, Vector2.ONE)
-	breath.track_insert_key(track, 2.0, Vector2(1.012, 1.03))
-	breath.track_insert_key(track, 4.0, Vector2.ONE)
-	var library := AnimationLibrary.new()
-	library.add_animation(&"breathe", breath)
-	var player := AnimationPlayer.new()
-	player.name = "Breath"
-	player.add_animation_library(&"", library)
-	player.autoplay = &"breathe"
-	_kit.call(&"attach", gate, player)
-	# EXAMINER depuis les deux cases du goulet : texte T-6 puis T-7 (`route_11_snorlax`).
-	_kit.call(&"add_interactable", "SnorlaxPoint", cells[-2], Vector2i(2, 2), Vector2i.ZERO,
-		&"route_11_snorlax")
-	var point: Node = _kit.get(&"root").get_node(^"Interactables").get_child(-1)
 	point.set(&"unless_flags", unless)
 
 

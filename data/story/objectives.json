@@ -1,8 +1,21 @@
 [
 	{
+		"id": "visit_fuji",
+		"text": "rendre visite à M. Fuji.",
+		"if": ["fuji_rescued"],
+		"unless": ["got_poke_flute"]
+	},
+	{
+		"id": "find_fuji",
+		"text": "trouver M. Fuji, au sommet de la Tour.",
+		"if": ["ghost_marowak_calmed"],
+		"unless": ["fuji_rescued"]
+	},
+	{
 		"id": "back_to_tower",
 		"text": "retourner à la Tour Pokémon.",
-		"if": ["got_rocket_hideout_b4f_silph_scope"]
+		"if": ["got_rocket_hideout_b4f_silph_scope"],
+		"unless": ["ghost_marowak_calmed"]
 	},
 	{
 		"id": "search_game_corner",

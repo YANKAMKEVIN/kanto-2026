@@ -7,8 +7,11 @@
 # 76 × 36 cases (enveloppe du dossier, §3.2) ; nord en haut ; x = colonne 0..75, y = rangée 0..35.
 # Raccord OUEST : (0, 11..13) ↔ Carmin (63, 11..13) : MÊMES rangées 11, 12, 13, aucun décalage vertical
 # (warp PUSH ← vers vermilion_city, spawn from_route_11 réservé par le J15). Carte fermée partout
-# ailleurs ; le bord est (75, 14..15) est dessiné praticable mais INATTEIGNABLE : Ronflex bouche le seul
-# passage (aucun warp au J17 ; le raccord de la Route 12 viendra avec le jalon de la Poké Flûte).
+# ailleurs ; le bord est (75, 14..15) est le raccord de la Route 12. J17 : INATTEIGNABLE (Ronflex
+# bouchait le seul passage). J21 T9a (décision M-3 de Kevin, 2026-10-16, dossier 24 §10.3) : Ronflex
+# quitte la Route 11 pour le croisement de la Route 12 ; ses cases redeviennent du chemin, le bord est
+# devient un passage « ROUTE 12 — À venir » (warp PUSH → coming_soon, retour from_route_12 tourné ←)
+# jusqu'à ce que la Route 12 existe (J21 T21 : warp réel vers route_12 / from_route_11).
 # Bouche de la Cave Taupiqueur : (15..16, 7), dans un talus rocheux (K) au nord-ouest, STEP_ON ↑ →
 # digletts_cave (bouche sud, alignée sur x 15..16), arrivée from_cave (15..16, 8) tournée ↓.
 #
@@ -28,9 +31,9 @@
 #                             entrées par les colonnes x 30..31 et x 58..59.
 #      Les trois coupes (positions itineraire, x = 38) sont chacune suffisantes ; couper les trois
 #      ferme la route (contrôle).
-#   ③ x 58..75 — LE GOULET DE RONFLEX : prairie, puis ligne droite de 20 cases (x 46..65) vue de loin,
-#      goulet de 2 cases entre affleurements (x 64..69), Ronflex 2 × 2 en (66..67, 14..15) (PNJ bloqué,
-#      occupe la largeur entière du goulet). Derrière lui : la rive est (x 70..75), non reliée.
+#   ③ x 58..75 — LE GOULET DE L'EST : prairie, puis ligne droite de 20 cases (x 46..65) vue de loin,
+#      goulet de 2 cases entre affleurements (x 64..69) ; au J17, Ronflex 2 × 2 y dormait en (66..67,
+#      14..15) ; retiré par M-3 (J21) : le goulet mène à la rive est (x 70..75) et au bord est.
 # Objets (§7) : O1 Super Potion visible dans une niche du bosquet central (40, 13), O2 Réveil visible
 # dans la poche du rivage au bout de la digue (47, 25), O3 Poké Ball CACHÉE (62, 9) au coin nord-est
 # de la prairie, signalée par un caillou (indice). Panneaux : T-12 (3, 10) à l'entrée ouest, T-10
@@ -49,7 +52,7 @@
 # la bouche « à l'ouest » : elle reste visible depuis l'entrée, bord haut de l'écran) ; tronçon
 # central à 4 cases (y 17..20) pour que D7 laisse un côté libre ; mer sur 9 rangées (y 27..35) avec un
 # rivage de 2 rangées ; hautes herbes H1, H2, H3 = 35, 36, 30 cases ; sight des Dresseurs 3 sauf D1 (5)
-# et D2 (4) ; Ronflex tourné vers le sud (endormi).
+# et D2 (4).
 #
 # Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 76 caractères), puis POSITIONS.
 
@@ -99,8 +102,8 @@ warp_ouest          warp           0,11..13     libre   # PUSH ← → vermilion
 from_vermilion      spawn          0,11..13     libre   # arrivée de Carmin, tournée →
 entree_cave         warp           15..16,7     libre   # STEP_ON ↑ → digletts_cave, from_route_11
 from_cave           spawn          15..16,8     libre   # sortie de la Cave, tournée ↓
-raccord_est         repere         75,14..15    libre   role=route_12  # bord est : aucun warp, non relié (Route 12 : jalon de la Poké Flûte)
-ronflex             pnj            66..67,14..15  bloque role=R1 facing=down  # Ronflex endormi (T-6, T-7), ≈ 2 × 2 cases, occupe tout le goulet ; snorlax_route_11_awake jamais posé au J17
+raccord_est         warp           75,14..15    libre   role=route_12 coming_soon=route_12  # PUSH → « ROUTE 12 — À venir » (J21 T9a, M-3) ; T21 : warp réel → route_12 / from_route_11
+from_route_12       spawn          74,14..15    libre   # retour de l'écran « À venir » (puis arrivée de la Route 12), tourné ←
 arthur              dresseur       11,9         bloque  role=D2 facing=down sight=4 trainer=route_11_youngster_arthur  # Gamin Arthur, Sabelette 19 + Nosferapti 19, 285 ₽ ; INÉVITABLE (goulet du chemin principal, alcôve au nord)
 lucas               dresseur       21,10        bloque  role=D1 facing=left sight=5 trainer=route_11_youngster_lucas  # Gamin Lucas, Abo 21, 315 ₽ ; garde la clairière de la Cave, évitable par x 14..15
 louis               dresseur       31,7         bloque  role=D3 facing=down sight=3 trainer=route_11_youngster_louis  # Gamin Louis, Rattata 17 ×2 + Rattatac 17, 255 ₽ ; parcours nord, avant H2
@@ -108,7 +111,7 @@ raphael             dresseur       43,10        bloque  role=D4 facing=up sight=
 marcel              dresseur       38,22        bloque  role=D5 facing=right sight=3 trainer=route_11_gambler_marcel  # Joueur Marcel, Voltorbe 18 + Magnéti 18, 1 260 ₽ ; digue, rangée nord (on passe par la rangée sud)
 roger               dresseur       52,23        bloque  role=D6 facing=left sight=3 trainer=route_11_gambler_roger  # Joueur Roger, Caninos 18 + Goupix 18, 1 260 ₽ ; digue, rangée sud (on passe par la rangée nord)
 bruno               dresseur       39,16        bloque  role=D7 facing=down sight=3 trainer=route_11_engineer_bruno  # Ingénieur Bruno, Magnéti 21, 1 050 ₽ ; tronçon de 4 cases du chemin principal, sur la bande nord, laisse la rangée sud
-victor              dresseur       54,12        bloque  role=D8 facing=down sight=3 trainer=route_11_engineer_victor  # Ingénieur Victor, Magnéti 18 ×2 + Magnéton 18, 900 ₽ ; ligne droite vers Ronflex, laisse la prairie au nord
+victor              dresseur       54,12        bloque  role=D8 facing=down sight=3 trainer=route_11_engineer_victor  # Ingénieur Victor, Magnéti 18 ×2 + Magnéton 18, 900 ₽ ; ligne droite vers le goulet de l'est, laisse la prairie au nord
 route_11_item_1     objet_visible  40,13        bloque  role=O1 item=super_potion  # Super Potion : niche du bosquet central, ouverte au nord
 route_11_item_2     objet_visible  47,25        bloque  role=O2 item=awakening  # Réveil : poche du rivage, au bout de la digue
 route_11_hidden_1   cache          62,9         bloque  role=O3 item=poke_ball indice=caillou  # Poké Ball cachée : caillou d'une autre teinte, coin nord-est de la prairie

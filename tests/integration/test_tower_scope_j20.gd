@@ -48,11 +48,24 @@ func test_tower_tables_read_the_bag_and_the_6f_ghost_stays_a_ghost() -> void:
 	var cutscenes := CutsceneLibrary.new()
 	assert_true(cutscenes.load_dir())
 	var wild := 0
-	for variant: CutsceneVariant in cutscenes.get_cutscene(&"tower_6f_ghost").variants:
+	var scene := cutscenes.get_cutscene(&"tower_6f_ghost")
+	for variant: CutsceneVariant in scene.variants:
 		for step: CutsceneStep in variant.steps:
-			if step.kind == CutsceneStep.Kind.WILD_BATTLE:
-				wild += 1
-				assert_eq(step.ghost_mode, GhostRule.ALWAYS, "6F : SPECTRE même avec le Scope")
+			if step.kind != CutsceneStep.Kind.WILD_BATTLE:
+				continue
+			if variant.if_items.has(SCOPE):
+				# Jalon 21 (T12, `jalon-21.md` §2.7) : la variante A, en tête, ouvre le 6F avec le
+				# Scope (révélation, Ossatueur non capturable) ; la variante du J19 est inchangée.
+				assert_true(step.reveal and step.uncatchable, "6F du J21 : révélation")
+				continue
+			wild += 1
+			assert_eq(step.ghost_mode, GhostRule.ALWAYS, "6F : SPECTRE même avec le Scope")
+	var bag_scope := Bag.new()
+	bag_scope.add(SCOPE)
+	assert_true(scene.pick(StoryFlags.new(), bag_scope).if_items.has(SCOPE),
+		"avec le Scope : la variante du J21")
+	assert_same(scene.pick(StoryFlags.new(), Bag.new()), scene.variants[-1],
+		"sans le Scope : la variante du J19")
 	assert_gt(wild, 0, "le SPECTRE du 6F existe")
 
 

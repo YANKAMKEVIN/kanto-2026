@@ -121,13 +121,13 @@ func test_real_tables_load_without_error() -> void:
 	var lib := _lib()
 	assert_true(lib.load_dir(), "\n".join(lib.get_errors()))
 	# Jalon 17 (T8) : Route 11, Cave Taupiqueur ; jalon 18 (T16) : Route 9, Route 10, Grotte Sombre ;
-	# jalon 19 (T5) : Tour Pokémon ; passe systèmes 2 (S2C) : eau de la carte de QA `qa_sea` ;
-	# jalon 31 (T4) : sol des trois étages de la Grotte Azurée.
+	# jalon 19 (T5) : Tour Pokémon (la table d'eau de la carte de QA S2C est retirée en S2Z) ;
+	# Jalon 21 (T5) : sommet de la Tour (7F) ; jalon 31 (T4) : sol des trois étages de la Grotte Azurée.
 	assert_eq(lib.get_ids(), [&"cerulean_cave_1f_floor", &"cerulean_cave_2f_floor",
 		&"cerulean_cave_b1f_floor", &"dark_cave_1f_rubble", &"dark_cave_b1f_rubble",
 		&"digletts_cave_rubble", &"mt_moon_1f_rubble",
 		&"mt_moon_b1f_rubble", &"mt_moon_b2f_rubble", &"pokemon_tower_high", &"pokemon_tower_low",
-		&"pokemon_tower_mid", &"qa_sea_water", &"route_10_grass", &"route_11_grass",
+		&"pokemon_tower_mid", &"pokemon_tower_top", &"route_10_grass", &"route_11_grass",
 		&"route_1_grass", &"route_22_grass", &"route_24_grass",
 		&"route_25_grass", &"route_2_grass", &"route_2_north_grass", &"route_3_grass",
 		&"route_4_grass", &"route_5_grass", &"route_6_grass", &"route_7_grass",
@@ -205,11 +205,13 @@ func test_every_wild_species_has_battle_sprites() -> void:
 	lib.load_dir()
 	# + 3 tables de la Tour Pokémon (J19) : hors de la boucle, car leurs rencontres sont des
 	# SPECTRES sans le Scope (dossier 22 §6) ; Osselait n'a pas de sprite avant le J20.
-	# + la table d'eau de la carte de QA `qa_sea` (S2C, retirée à S2Z).
+	# (La table d'eau de la carte de QA S2C est retirée en S2Z.)
+	# Jalon 21 (T5) : + la table du 7F (`pokemon_tower_top`), hors de la boucle comme les
+	# autres tables de la Tour (SPECTRES sans le Scope).
 	# + les 3 tables de la Grotte Azurée (J31) : leurs espèces empruntées aux J22–J28 et
 	# Métamorph, Mewtwo n'ont pas encore de sprite de combat dans cette base (art du J31, T6).
 	assert_eq(lib.size(), 29,
-		"une table par couple ci-dessous, plus les 3 de la Tour, qa_sea et les 3 de la Grotte Azurée")
+		"une table par couple ci-dessous, plus les 4 de la Tour (J19, J21) et les 3 de la Grotte Azurée")
 	for pair: Array in [[&"route_1", &"grass"], [&"route_2", &"grass"],
 			[&"route_22", &"grass"], [&"viridian_forest", &"grass"], [&"route_2_north", &"grass"],
 			[&"route_3", &"grass"], [&"mt_moon_1f", &"rubble"], [&"mt_moon_b1f", &"rubble"],

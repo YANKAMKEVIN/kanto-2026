@@ -1,0 +1,23 @@
+# Grille d'essai (fixture de test, jamais livrée) : ancienne grille de carte de QA de la passe systèmes 2,
+# carte retirée en S2Z (T33). Lue par tools/art/plan_check_systemes2.py et plan_check_teleports.py.
+# Intérieur de QA « monture » — passe systèmes 2 (§2.3). Intérieur : le Vélo est refusé, on y entre à
+# pied ; tapis de sortie (3..4, 5) → essai_monture, from_interieur.
+#
+# Légende : # mur · . sol · E tapis de sortie (warp PUSH ↓)
+
+PRATICABLES .E
+
+GRILLE 8 6
+00 ########
+01 #......#
+02 #......#
+03 #......#
+04 #......#
+05 ###EE###
+FIN
+
+POSITIONS
+entree             spawn            3,4          libre
+sortie_o           warp             3,5          libre   vers=essai_monture:from_interieur
+sortie_e           warp             4,5          libre   vers=essai_monture:from_interieur
+FIN

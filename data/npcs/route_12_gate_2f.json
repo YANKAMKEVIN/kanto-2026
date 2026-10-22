@@ -1,0 +1,6 @@
+{
+	"tm39_girl": {
+		"cell": [9, 5], "facing": "left", "sprite": "lass",
+		"dialogue": "route_12_gate_tm39"
+	}
+}

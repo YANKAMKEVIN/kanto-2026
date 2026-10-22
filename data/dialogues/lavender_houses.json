@@ -3,37 +3,65 @@
 		"speaker": "Enfant",
 		"variants": [
 			{
-				"unless": ["pokemon_house_kid_talked"], "set": ["pokemon_house_kid_talked"],
-				"pages": [
-					"Papy Fuji est monté à la Tour…",
-					"Il n'est pas redescendu.\nIl revient toujours, d'habitude."
-				]
+				"if": ["fuji_rescued"],
+				"pages": ["Papy Fuji est rentré !\nIl dit que c'est grâce à toi."]
 			},
 			{
-				"pages": ["Ces Pokémon n'avaient plus de Dresseur.\nMaintenant, ils nous ont nous."]
-			}
-		]
+				"unless": ["pokemon_house_kid_talked"], "set": ["pokemon_house_kid_talked"],
+				"pages": [
+							"Papy Fuji est monté à la Tour…",
+							"Il n'est pas redescendu.\nIl revient toujours, d'habitude."
+						]
+					},
+					{
+						"pages": ["Ces Pokémon n'avaient plus de Dresseur.\nMaintenant, ils nous ont nous."]
+					}
+				]
 	},
 	"pokemon_house_man": {
 		"speaker": "Homme",
-		"pages": [
-			"M. Fuji m'a dit avoir vu des gens\nmonter à la Tour, la nuit.",
-			"Pas des visiteurs. Il est allé voir.\nDepuis…"
+		"variants": [
+			{
+				"if": ["fuji_rescued"],
+				"pages": ["Ces gens en noir ont quitté la Tour.\nBon débarras."]
+			},
+			{
+				"pages": [
+					"M. Fuji m'a dit avoir vu des gens\nmonter à la Tour, la nuit.",
+					"Pas des visiteurs. Il est allé voir.\nDepuis…"
+				]
+			}
 		]
 	},
 	"pokemon_house_girl": {
 		"speaker": "Fillette",
-		"pages": [
-			"Osselait attend sa maman.",
-			"On dit qu'elle s'est fait attraper\nen protégeant son petit…",
-			"par des gens qui ne venaient pas\nprier."
+		"variants": [
+			{
+				"if": ["fuji_rescued"],
+				"pages": ["Osselait ne pleure plus la nuit.\nJe crois qu'il sait, pour sa maman."]
+			},
+			{
+				"pages": [
+					"Osselait attend sa maman.",
+					"On dit qu'elle s'est fait attraper\nen protégeant son petit…",
+					"par des gens qui ne venaient pas\nprier."
+				]
+			}
 		]
 	},
 	"lavender_center_gentleman": {
 		"speaker": "Gentleman",
-		"pages": [
-			"Des hommes en noir, j'en ai vu traîner\nautour du Casino de Céladopole.",
-			"Toujours là où il y a de l'argent,\nces gens-là."
+		"variants": [
+			{
+				"if": ["fuji_rescued"],
+				"pages": ["Le spectre de la Tour a disparu, paraît-il.\nQuelqu'un a apaisé son âme."]
+			},
+			{
+				"pages": [
+					"Des hommes en noir, j'en ai vu traîner\nautour du Casino de Céladopole.",
+					"Toujours là où il y a de l'argent,\nces gens-là."
+				]
+			}
 		]
 	},
 	"lavender_house_1_old_lady": {
