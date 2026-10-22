@@ -81,7 +81,7 @@
 			"bulbasaur": [
 				{ "species": "pidgeot", "level": 37, "moves": ["sand_attack", "quick_attack", "whirlwind", "wing_attack"] },
 				{ "species": "exeggcute", "level": 38, "moves": ["reflect", "leech_seed", "stun_spore", "poison_powder"] },
-				{ "species": "sandslash", "level": 35, "moves": ["scratch", "sand_attack", "slash", "poison_sting"] },
+				{ "species": "gyarados", "level": 35, "moves": ["bite", "dragon_rage", "leer", "hydro_pump"] },
 				{ "species": "alakazam", "level": 35, "moves": ["confusion", "disable", "psybeam", "recover"] },
 				{ "species": "charizard", "level": 40, "moves": ["ember", "leer", "rage", "slash"] }
 			],

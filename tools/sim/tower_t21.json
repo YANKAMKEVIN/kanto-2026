@@ -129,7 +129,11 @@
 						"moves": ["sand_attack", "quick_attack"]
 					},
 					{ "species": "exeggcute", "level": 20 },
-					{ "species": "sandshrew", "level": 20 },
+					{
+						"species": "gyarados",
+						"level": 20,
+						"moves": ["bite", "dragon_rage", "leer"]
+					},
 					{
 						"species": "kadabra",
 						"level": 17,
@@ -206,7 +210,11 @@
 						"moves": ["sand_attack", "quick_attack"]
 					},
 					{ "species": "exeggcute", "level": 20 },
-					{ "species": "sandshrew", "level": 20 },
+					{
+						"species": "gyarados",
+						"level": 20,
+						"moves": ["bite", "dragon_rage", "leer"]
+					},
 					{
 						"species": "kadabra",
 						"level": 17,
@@ -287,7 +295,11 @@
 						"moves": ["sand_attack", "quick_attack"]
 					},
 					{ "species": "exeggcute", "level": 20 },
-					{ "species": "sandshrew", "level": 20 },
+					{
+						"species": "gyarados",
+						"level": 20,
+						"moves": ["bite", "dragon_rage", "leer"]
+					},
 					{
 						"species": "kadabra",
 						"level": 17,
@@ -368,7 +380,11 @@
 						"moves": ["sand_attack", "quick_attack"]
 					},
 					{ "species": "exeggcute", "level": 20 },
-					{ "species": "sandshrew", "level": 20 },
+					{
+						"species": "gyarados",
+						"level": 20,
+						"moves": ["bite", "dragon_rage", "leer"]
+					},
 					{
 						"species": "kadabra",
 						"level": 17,
@@ -441,7 +457,11 @@
 						"moves": ["sand_attack", "quick_attack"]
 					},
 					{ "species": "exeggcute", "level": 20 },
-					{ "species": "sandshrew", "level": 20 },
+					{
+						"species": "gyarados",
+						"level": 20,
+						"moves": ["bite", "dragon_rage", "leer"]
+					},
 					{
 						"species": "kadabra",
 						"level": 17,
@@ -518,7 +538,11 @@
 						"moves": ["sand_attack", "quick_attack"]
 					},
 					{ "species": "exeggcute", "level": 20 },
-					{ "species": "sandshrew", "level": 20 },
+					{
+						"species": "gyarados",
+						"level": 20,
+						"moves": ["bite", "dragon_rage", "leer"]
+					},
 					{
 						"species": "kadabra",
 						"level": 17,
@@ -927,7 +951,11 @@
 						"moves": ["sand_attack", "quick_attack"]
 					},
 					{ "species": "exeggcute", "level": 20 },
-					{ "species": "sandshrew", "level": 20 },
+					{
+						"species": "gyarados",
+						"level": 20,
+						"moves": ["bite", "dragon_rage", "leer"]
+					},
 					{
 						"species": "kadabra",
 						"level": 17,
@@ -1008,7 +1036,11 @@
 						"moves": ["sand_attack", "quick_attack"]
 					},
 					{ "species": "exeggcute", "level": 20 },
-					{ "species": "sandshrew", "level": 20 },
+					{
+						"species": "gyarados",
+						"level": 20,
+						"moves": ["bite", "dragon_rage", "leer"]
+					},
 					{
 						"species": "kadabra",
 						"level": 17,
@@ -1421,7 +1453,11 @@
 						"moves": ["sand_attack", "quick_attack"]
 					},
 					{ "species": "exeggcute", "level": 20 },
-					{ "species": "sandshrew", "level": 20 },
+					{
+						"species": "gyarados",
+						"level": 20,
+						"moves": ["bite", "dragon_rage", "leer"]
+					},
 					{
 						"species": "kadabra",
 						"level": 17,
@@ -1502,7 +1538,11 @@
 						"moves": ["sand_attack", "quick_attack"]
 					},
 					{ "species": "exeggcute", "level": 20 },
-					{ "species": "sandshrew", "level": 20 },
+					{
+						"species": "gyarados",
+						"level": 20,
+						"moves": ["bite", "dragon_rage", "leer"]
+					},
 					{
 						"species": "kadabra",
 						"level": 17,
@@ -1583,7 +1623,11 @@
 						"moves": ["sand_attack", "quick_attack"]
 					},
 					{ "species": "exeggcute", "level": 20 },
-					{ "species": "sandshrew", "level": 20 },
+					{
+						"species": "gyarados",
+						"level": 20,
+						"moves": ["bite", "dragon_rage", "leer"]
+					},
 					{
 						"species": "kadabra",
 						"level": 17,
@@ -1741,7 +1785,11 @@
 						"moves": ["sand_attack", "quick_attack"]
 					},
 					{ "species": "exeggcute", "level": 20 },
-					{ "species": "sandshrew", "level": 20 },
+					{
+						"species": "gyarados",
+						"level": 20,
+						"moves": ["bite", "dragon_rage", "leer"]
+					},
 					{
 						"species": "kadabra",
 						"level": 17,
@@ -1818,7 +1866,11 @@
 						"moves": ["sand_attack", "quick_attack"]
 					},
 					{ "species": "exeggcute", "level": 20 },
-					{ "species": "sandshrew", "level": 20 },
+					{
+						"species": "gyarados",
+						"level": 20,
+						"moves": ["bite", "dragon_rage", "leer"]
+					},
 					{
 						"species": "kadabra",
 						"level": 17,
@@ -1895,7 +1947,11 @@
 						"moves": ["sand_attack", "quick_attack"]
 					},
 					{ "species": "exeggcute", "level": 20 },
-					{ "species": "sandshrew", "level": 20 },
+					{
+						"species": "gyarados",
+						"level": 20,
+						"moves": ["bite", "dragon_rage", "leer"]
+					},
 					{
 						"species": "kadabra",
 						"level": 17,
@@ -1972,7 +2028,11 @@
 						"moves": ["sand_attack", "quick_attack"]
 					},
 					{ "species": "exeggcute", "level": 20 },
-					{ "species": "sandshrew", "level": 20 },
+					{
+						"species": "gyarados",
+						"level": 20,
+						"moves": ["bite", "dragon_rage", "leer"]
+					},
 					{
 						"species": "kadabra",
 						"level": 17,
@@ -2049,7 +2109,11 @@
 						"moves": ["sand_attack", "quick_attack"]
 					},
 					{ "species": "exeggcute", "level": 20 },
-					{ "species": "sandshrew", "level": 20 },
+					{
+						"species": "gyarados",
+						"level": 20,
+						"moves": ["bite", "dragon_rage", "leer"]
+					},
 					{
 						"species": "kadabra",
 						"level": 17,
@@ -2126,7 +2190,11 @@
 						"moves": ["sand_attack", "quick_attack"]
 					},
 					{ "species": "exeggcute", "level": 20 },
-					{ "species": "sandshrew", "level": 20 },
+					{
+						"species": "gyarados",
+						"level": 20,
+						"moves": ["bite", "dragon_rage", "leer"]
+					},
 					{
 						"species": "kadabra",
 						"level": 17,

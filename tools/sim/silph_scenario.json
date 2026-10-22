@@ -122,13 +122,13 @@
 						]
 					},
 					{
-						"species": "sandslash",
+						"species": "gyarados",
 						"level": 35,
 						"moves": [
-							"scratch",
-							"sand_attack",
-							"slash",
-							"poison_sting"
+							"bite",
+							"dragon_rage",
+							"leer",
+							"hydro_pump"
 						]
 					},
 					{

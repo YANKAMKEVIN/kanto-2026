@@ -19,10 +19,10 @@ const PAD_FROM_3F := Vector2i(5, 3)
 const PAD_TO_11F := Vector2i(5, 7)
 const TRIGGERS: Array[Vector2i] = [Vector2i(3, 2), Vector2i(3, 3)]
 const RIVAL_CELL := Vector2i(3, 7)
-## Équipes RB de Rival2Data (Sylphe 7F), [D] Q26-4 : Sablaireau au lieu de Léviator contre
-## Bulbizarre (lignée du rival_tower).
+## Équipes RB de Rival2Data (Sylphe 7F) ; Q26-4 (Kevin, 2026-10-22) : lignée RB, Léviator contre
+## Bulbizarre comme à la Tour.
 const TEAMS := {
-	&"bulbasaur": [[&"pidgeot", 37], [&"exeggcute", 38], [&"sandslash", 35], [&"alakazam", 35],
+	&"bulbasaur": [[&"pidgeot", 37], [&"exeggcute", 38], [&"gyarados", 35], [&"alakazam", 35],
 		[&"charizard", 40]],
 	&"charmander": [[&"pidgeot", 37], [&"growlithe", 38], [&"exeggcute", 35], [&"alakazam", 35],
 		[&"blastoise", 40]],

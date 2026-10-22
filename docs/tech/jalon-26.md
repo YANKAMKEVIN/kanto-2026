@@ -147,8 +147,9 @@ Aucun fichier de `game/` n'est modifié, sauf peut-être la Master Ball (T4, une
   | Salamèche | Roucarnage 37, Caninos 38, Noeunoeuf 35, Alakazam 35, Tortank 40 |
   | Carapuce | Roucarnage 37, Léviator 38, Caninos 35, Alakazam 35, Florizarre 40 |
 
-  Le `rival_tower` du J19 a adapté la variante Bulbizarre (Sabelette au lieu de Léviator) : voir
-  Q26-4. Obligatoire : le rival se tient sur le passage du 7F vers le 11F (grille) ; défaite →
+  Audit pokered fait (`Rival2Data`, clé du script = starter **du rival**) : table conforme. Q26-4
+  tranché le 2026-10-22 : **lignée RB** (Léviator), la Sabelette du J19 est retirée (§10.2).
+  Obligatoire : le rival se tient sur le passage du 7F vers le 11F (grille) ; défaite →
   réveil habituel, combat rejouable.
 - **Giovanni, 11F** (`silph_co_giovanni`) : Nidorino 37, Kangourex 35, Rhinocorne 37, Nidoqueen 41
   (arbitrage verrouillé). Capacités RB auditées ; IA `smart`. Scène sur le modèle d'Erika : intro,
@@ -357,6 +358,7 @@ Rôles : **A** architecte-godot · **C** constructeur-monde · **U** ui-mobile �
   habitées, **sans** remise de CT (reportées), ou bien porte « À venir ». À trancher.
 - **Q26-4 — Rival, variante Bulbizarre.** Le `rival_tower` du J19 a remplacé un Pokémon RB par
   Sabelette. Faut-il garder cette lignée (Sablaireau au 7F) ou revenir à l'équipe RB ?
+  → **Tranché le 2026-10-22 : retour à RB** (§10.2).
 - **Q26-5 — Porygon (Casino).** La passation du J20 range « Porygon (Casino) » au J26 sans détail.
   À préciser (lot de prix du Casino ?) ou à reporter.
 - **Q26-6 — Fusion avant les J21 à J25.** Le J26 ne dépend d'aucun d'eux : peut-il entrer en code
@@ -380,8 +382,9 @@ Reste : **T15** (QA téléphone, une session → Kevin) et **T16** (clôture, fu
 
 Défauts retenus (validation d'avance de Kevin) : Q26-1 textes T26-01 à T26-22 ; Q26-2 Lokhlass
 après la victoire contre le rival ; Q26-3 maisons habitées sans CT (seul don : Pépite cachée du
-Copieur) ; Q26-4 lignée du J19 pour le rival ; Q26-5 Porygon reporté ; objets RB absents remplacés
-par les `fallback` des grilles (`test_silph_co_data`).
+Copieur) ; ~~Q26-4 lignée du J19 pour le rival~~ (remplacé le 2026-10-22 par la lignée RB, §10.2) ;
+Q26-5 Porygon reporté ; objets RB absents remplacés par les `fallback` des grilles
+(`test_silph_co_data`). Décisions confirmées par Kevin le 2026-10-22 : §10.1.
 
 **Écarts et points ouverts** :
 - **Équilibrage** (`tools/sim/silph_scenario.json`, 200 graines, équipe de référence [D] : starter
@@ -396,3 +399,64 @@ par les `fallback` des grilles (`test_silph_co_data`).
 - **Décors de combat « bureaux »** non faits (art ; repli existant). Aucun Grand moment de libération.
 - 5F : la Carte se rejoint par le téléporteur du 9F (RB) ; le départ `silph_5f` part de l'ascenseur [D].
 - Départs de débogage : starter non évolué en tête partout (sinon `starter_species` faux) [D].
+
+### 10.1 Décisions de Kevin (2026-10-22)
+
+| Point | Décision |
+|---|---|
+| Q26-1 | Textes du plan (T26-01 à T26-22) **validés** |
+| Q26-2 | Lokhlass **après la victoire** contre le rival (comme codé) |
+| Q26-3 | Maisons de Safrania **sans CT pour l'instant** (comme codé) |
+| Q26-4 | **Retour à Rouge/Bleu pour la lignée du rival** (fait, §10.2) |
+| Q26-5 | Porygon **reporté** |
+| T8 | Contournement des postes (drapeaux `saffron_gate_offer_*`, enchaînement `next`) **accepté** |
+| Équilibrage | Rival n° 6 **à resimuler sur les vraies sorties des J21 à J25, puis ajuster — pas maintenant** |
+
+### 10.2 Q26-4 : retour à la lignée Rouge/Bleu du rival (2026-10-22)
+
+Audit sur pokered (`~/dev/kanto-2026-wt-j28/build/rb/pokered/data/trainers/parties.asm`,
+`Rival1Data` / `Rival2Data` ; les scripts choisissent l'équipe par le starter **du rival** :
+STARTER1 Salamèche, STARTER2 Carapuce, STARTER3 Bulbizarre ; nos clés = starter **du joueur**).
+Tous les combats du rival de la branche (six, trois variantes chacun, soit 18 équipes) :
+
+| Combat (fichier) | Jalon | Écart d'espèce avec RB | Sabelette ? | Changé |
+|---|---|---|---|---|
+| `rival_lab` (`rival.json`) | J3 | aucun | non | non |
+| `rival_route22` (`rival.json`) | J7 | aucun (niveaux 7/8 au lieu de 9/8 : réglage antérieur) | non | non |
+| `rival_cerulean` (`rival.json`) | J13 | pas d'Abra ; contre Bulbizarre Roucool au lieu de Roucoups (réglage J13, antérieur, sans lien avec Sabelette) | non | non |
+| `rival_ss_anne` (`rival.json`) | J16 | aucun (niveaux réglés au J16) | non | non |
+| `rival_tower` (`pokemon_tower.json`) | J19 | contre Bulbizarre : **Sabelette N20 au lieu de Léviator** | **oui** | **oui** |
+| `rival_silph` (`rival.json`) | J26 | contre Bulbizarre : **Sablaireau N35 au lieu de Léviator N35** | **oui** | **oui** |
+
+Total : **2 combats modifiés, 2 équipes (variante Bulbizarre), 2 Pokémon** ; les 16 autres équipes
+sont inchangées. La lignée Sabelette n'existait que dans ces deux équipes.
+
+- **`rival_silph`, Bulbizarre** : Sablaireau 35 → **Léviator 35** (Morsure, Draco-Rage, Groz'Yeux,
+  Hydrocanon = capacités RB au niveau, comme la variante Carapuce). Équipe = RB exacte.
+- **`rival_tower`, Bulbizarre** : Sabelette 20 → **Léviator 20** (Morsure, Draco-Rage, Groz'Yeux :
+  mêmes capacités choisies au J19 pour le Léviator de la variante Carapuce, sans Hydrocanon) [D].
+  Niveaux du J19 gardés (RB : Léviator 22) : seule l'espèce revient à RB.
+- Espèce `gyarados` déjà présente (`kanto_tower.json`, J19) : **aucune copie** d'une autre branche.
+- Équilibrage : le J19 avait mis Sabelette parce que Léviator rendait le rival n° 5 imbattable
+  contre Bulbizarre (Q-T21-1, `jalon-19-equilibrage.md` §5). Mesure du « retenu » après retour à RB
+  (`tower_t21.json --variante retenu`, journal `build/logs/q26-4-sim-tour-retenu.log`) : rival n° 5
+  contre Bulbizarre, joueur attentif, **7 % (sortie J16) · 29,5 % (sortie J17)**, moyenne 18 %
+  (avant : 41,5 · 68) ; expert 2 % · 14 %. Sous la règle de Kevin (40 à 60 %) : **point ouvert
+  pour Kevin** (garder RB tel quel, ou adoucir capacités / niveaux contre Bulbizarre sans toucher
+  à l'espèce). Salamèche et Carapuce inchangés. Rien n'est retouché ici.
+- **Sauvegarde** : format v7 inchangé. Les équipes des Dresseurs sont des données de combat lues
+  par `TrainerLibrary` au lancement du combat ; la sauvegarde ne garde du rival que le moment
+  `rival_battle` (`{trainer, outcome}`) et les drapeaux de victoire, jamais son équipe. Une partie
+  en cours (avant ou après la Tour ou la Sylphe) reste valable : le prochain combat prend la
+  nouvelle équipe. Seule trace possible : Sabelette déjà « vue » au Pokédex (espèce sauvage
+  ordinaire, sans conséquence).
+
+**Pour la fusion dans `main`** (hors J26) : `data/trainers/pokemon_tower.json` (`rival_tower`,
+variante `bulbasaur`, 3e Pokémon `sandshrew` N20 → `gyarados` N20 avec capacités), le test
+`tests/unit/test_trainers_j19.gd` (constante `RIVAL`) et le scénario régénéré
+`tools/sim/tower_t21.json` (`gen_tower_t21.py`, sa partie « retenu »). Note de renvoi dans
+`jalon-19-equilibrage.md`. Le reste (`rival_silph`, `test_silph_co_data.gd`,
+`test_silph_rival.gd`, `silph_scenario.json`) est propre au J26. **`origin/jalon-27`** porte une
+copie de `rival_silph` avec Sablaireau : à aligner à sa fusion (prendre celle du J26). Le
+`rival_route22_final` de `origin/jalon-29` est déjà RB (Léviator 47).
+

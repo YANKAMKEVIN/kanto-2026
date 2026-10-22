@@ -216,7 +216,7 @@ func test_rival_silph_has_the_three_starter_variants() -> void:
 	assert_eq(rival.team_by_starter.keys().size(), 3)
 	# Clé = starter du JOUEUR ; le rival a le starter qui l'avantage (comme rival_tower).
 	var expected := {
-		&"bulbasaur": [[&"pidgeot", 37], [&"exeggcute", 38], [&"sandslash", 35], [&"alakazam", 35],
+		&"bulbasaur": [[&"pidgeot", 37], [&"exeggcute", 38], [&"gyarados", 35], [&"alakazam", 35],
 			[&"charizard", 40]],
 		&"charmander": [[&"pidgeot", 37], [&"growlithe", 38], [&"exeggcute", 35],
 			[&"alakazam", 35], [&"blastoise", 40]],
@@ -234,9 +234,9 @@ func test_rival_silph_has_the_three_starter_variants() -> void:
 			var listed := team[i].moves.duplicate()
 			listed.sort()
 			assert_eq(listed, known, "%s #%d : capacités RB au niveau" % [starter, i])
-	# Q26-4 [D] : la lignée du rival_tower (Sablaireau au lieu de Léviator, N35 = niveau RB).
-	assert_eq(tower.team_for(&"bulbasaur")[2].species, &"sandshrew", "lignée du J19")
-	assert_eq(rival.team_for(&"bulbasaur")[2].species, &"sandslash")
+	# Q26-4 (Kevin, 2026-10-22) : lignée RB, Léviator à la 3e place à la Tour comme à la Sylphe.
+	assert_eq(tower.team_for(&"bulbasaur")[2].species, &"gyarados", "lignée RB (Q26-4)")
+	assert_eq(rival.team_for(&"bulbasaur")[2].species, &"gyarados")
 
 
 func test_lapras_and_alakazam_of_the_silph_file() -> void:
