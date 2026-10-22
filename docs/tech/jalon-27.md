@@ -301,7 +301,8 @@ NON puis OUI, Stockage + relance, arrêt avant l'écriture), `test_j27_debug_sta
 
 Choix validés par Kevin sur la page d'arbitrages.
 
-Kevin n'a pas répondu à ces trois points : les recommandations s'appliquent par défaut.
+Décisions de Kevin du 2026-10-22 : elles **remplacent les « recommandations appliquées par
+défaut »** notées plus tôt. Le code les applique déjà.
 
 - Morgane : à resimuler sur les vraies sorties des J21–J26, puis ajuster.
 - Effets de Pied Sauté, Pied Voltige et Riposte : à coder avant la fusion → **fait le 2026-10-22**,
@@ -310,7 +311,7 @@ Kevin n'a pas répondu à ces trois points : les recommandations s'appliquent pa
   aussi en `pending_effects`).
   - `crash` (`{ "kind": "crash", "amount": 1 }`) : raté, esquive (Tunnel) ou immunité (Spectre) →
     CRASHED, le lanceur perd 1 PV (RB : `wDamage` vaut 0, donc toujours 1 PV), K.O. possible ;
-    texte provisoire [D] « {pokemon} s'écrase au sol ! » (clé `crash`, à valider en lot).
+    texte « {pokemon} s'écrase au sol ! » (clé `crash`) **validé par Kevin le 2026-10-22**.
   - `counter` (priorité −1) : 2 × les dégâts du dernier coup reçu de la capacité adverse la plus
     récente si elle est **de type** Normal ou Combat (RB regarde le type, pas la catégorie : Météores
     se riposte, Pistolet à O non) ; sinon raté sans tirage ; précision ordinaire ; dégâts sans type
@@ -319,4 +320,6 @@ Kevin n'a pas répondu à ces trois points : les recommandations s'appliquent pa
   - Tests : `tests/unit/test_battle_crash_counter.gd` (14 : données, touche, rate, immunité,
     esquive, chute mortelle, Riposte après coup physique, sur Spectre, après coup spécial Eau,
     Normal spéciale, sans dégât reçu, attaque adverse ratée, seule la dernière capacité compte).
-- Morgane et le maître changent de Pokémon en combat : gardé.
+- Riposte comme Rouge/Bleu : capacité de type Normal ou Combat, même spéciale (c'est le type qui
+  compte, pas la catégorie) : **décidé, déjà codé**.
+- Morgane et le maître changent de Pokémon en combat : gardé. **Décidé, déjà codé.**
