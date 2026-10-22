@@ -58,11 +58,15 @@
 		"giovanni_met",
 		"giovanni_hideout_won",
 		"got_rocket_hideout_b4f_silph_scope",
+		"rival_tower_won",
+		"badge_rainbow",
+		"erika_met",
+		"tm21_received",
 		"saffron_gates_open"
 	],
 	"party": [
 		{
-			"species": "charizard",
+			"species": "charmander",
 			"level": 38
 		},
 		{

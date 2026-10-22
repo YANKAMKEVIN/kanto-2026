@@ -283,3 +283,18 @@ passage du jeu n'y mène. **Retirées à la clôture de la passe (S2Z)** avec le
 
 Le PNJ de QA (`data/npcs/route_1.json`), la scène et les textes `qa_s2_legendary` sont retirés à
 la clôture de la passe (S2Z, T33).
+
+## Jalon 26 (T14) : Safrania et la Sylphe SARL (`docs/tech/jalon-26.md` §2.6)
+
+Le **starter** de la partie est le premier de l'équipe (`DebugStart`) : le rival n° 6 (`rival_silph`)
+lit `starter_species`, d'où le starter **non évolué** en tête de chaque départ (N38 ou N42) [D].
+Drapeaux de base : `silph_1f` (J20 terminé) plus la Tour (`rival_tower_won`) et Erika.
+
+| Fichier | Partie |
+|---|---|
+| `saffron_gate.json` | Poste de la Route 8 (spawn `entrance`, tourné ↑), postes **fermés**, une **Eau Fraîche** au Sac, équipe N38 : la donner au garde, entrer dans Safrania occupée |
+| `silph_1f.json` | Sylphe 1F (spawn `from_city`), Safrania occupée, sans Carte, équipe N38 (Salamèche en tête) |
+| `silph_5f.json` | 5F, sortie de l'ascenseur (spawn `from_elevator`), sans Carte : la Carte Magnétique est en (21, 16) |
+| `silph_7f_rival_bulbasaur.json`, `silph_7f_rival_charmander.json`, `silph_7f_rival_squirtle.json` | 7F, sur la dalle (5, 3) venue du 3F (spawn `tp_5`, tourné ←), Carte au Sac : deux pas vers l'ouest → le rival (trois équipes selon le starter en tête) ; après la victoire, l'employé (1, 5) donne Lokhlass |
+| `silph_11f.json` | 11F, sur la dalle (3, 2) venue du 7F (spawn `tp_4`), rival battu, porte du bureau ouverte, Sbire de l'ouest battu, équipe N42 : entrer dans le bureau → Giovanni ; puis le président (Master Ball) |
+| `saffron_free.json` | Safrania libérée (spawn `from_silph`), Lokhlass N15 dans l'équipe, Master Ball au Sac, point de repos `saffron_center` |
