@@ -136,3 +136,28 @@ func test_without_save_now_for_the_title() -> void:
 	assert_eq(keys.size(), GameSettings.KEYS.size(), "tous les réglages, rien d'autre")
 	assert_eq(view.categories.size(), _build().categories.size(), "mêmes catégories")
 	assert_false(view.category(SettingsViews.CATEGORY_GAME).controls.is_empty())
+
+
+func test_economy_toggle_is_in_graphics_with_its_help_text() -> void:
+	var view := _build().control(GameSettings.ECONOMY)
+	assert_eq(view.kind, SettingControlView.Kind.TOGGLE)
+	assert_eq(view.label, "Lumière d'ambiance", "pas de doublon avec la qualité « Économie »")
+	assert_eq(view.detail, "Désactivez-la pour plus de fluidité sur les petits téléphones.")
+	assert_false(view.value, "valeur du réglage economy")
+	assert_true(view.inverted)
+	assert_eq(view.value_text, SettingsViews.ON_TEXT, "rendu normal : lumière activée")
+
+
+func test_ambient_light_toggle_shows_the_opposite_of_economy() -> void:
+	var settings := GameSettings.new()
+	settings.economy = true
+	var view := _build(settings).control(GameSettings.ECONOMY)
+	assert_true(view.value)
+	assert_eq(view.value_text, SettingsViews.OFF_TEXT, "economy vrai : lumière désactivée")
+
+
+func test_graphics_labels_are_unique() -> void:
+	var labels: Array[String] = []
+	for item: SettingControlView in _build().category(SettingsViews.CATEGORY_GRAPHICS).controls:
+		assert_false(labels.has(item.label), "doublon " + item.label)
+		labels.append(item.label)

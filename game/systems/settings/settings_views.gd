@@ -20,6 +20,11 @@ const SAVE_FAILED_TEXT: String = "La sauvegarde n'a pas pu être écrite."
 const SAVE_DISABLED_TEXT: String = "Sauvegarde désactivée pour cette session."
 const SAVE_DETAIL_TEXT: String = "La partie se sauvegarde aussi toute seule."
 ## Sous-titres des sections (MM.3, repris de la maquette ; à relire par Kevin).
+## Moteur commun [D] : libellé et aide de la bascule du réglage `economy` (décision de Kevin du
+## 2026-10-23 : nommée « Lumière d'ambiance » pour ne pas doubler la qualité « Économie »).
+## Activée = rendu normal (`economy` faux) ; désactivée = étalonnage plein écran coupé.
+const ECONOMY_LABEL: String = "Lumière d'ambiance"
+const ECONOMY_DETAIL: String = "Désactivez-la pour plus de fluidité sur les petits téléphones."
 const SUBTITLE_GAME: String = "Paramètres principaux du jeu."
 const SUBTITLE_CONTROLS: String = "Personnalise tes contrôles."
 const SUBTITLE_ACCESSIBILITY: String = "Rends le jeu accessible à tous."
@@ -97,6 +102,8 @@ static func build(settings: GameSettings, device_quality: GameSettings.Graphics,
 	if settings.graphics == GameSettings.Graphics.AUTO:
 		quality.value_text = "Auto (%s)" % quality_name(device_quality)
 	graphics.controls.append(quality)
+	graphics.controls.append(_toggle(GameSettings.ECONOMY, ECONOMY_LABEL, ECONOMY_DETAIL,
+		settings.economy, true))
 	view.categories.append(graphics)
 	return view
 
@@ -129,15 +136,18 @@ static func save_result_text(error: Error, time: Dictionary) -> String:
 	return "%s — %d h %02d" % [SAVE_DONE_TEXT, hour, minute]
 
 
+## [param inverted] : l'interrupteur affiche le contraire du réglage
+## ([member SettingControlView.inverted]).
 static func _toggle(key: StringName, label: String, detail: String,
-		value: bool) -> SettingControlView:
+		value: bool, inverted: bool = false) -> SettingControlView:
 	var item := SettingControlView.new()
 	item.key = key
 	item.kind = SettingControlView.Kind.TOGGLE
 	item.label = label
 	item.detail = detail
 	item.value = value
-	item.value_text = ON_TEXT if value else OFF_TEXT
+	item.inverted = inverted
+	item.value_text = ON_TEXT if value != inverted else OFF_TEXT
 	return item
 
 

@@ -30,6 +30,10 @@ var options: Array[SettingOptionView] = []
 var min_value: float = 0.0
 var max_value: float = 1.0
 var step: float = 0.1
+## TOGGLE : vrai si l'interrupteur affiche le **contraire** du réglage (« Lumière d'ambiance »
+## activée = `economy` faux). [member value] reste la valeur du réglage, l'écran émet toujours
+## son contraire ; seuls la position de l'interrupteur et [member value_text] sont inversés.
+var inverted: bool = false
 ## Faux : le contrôle est visible mais ne se touche pas (ex. « Sauvegarder maintenant » d'une
 ## session de débogage) ; [member detail] dit pourquoi.
 var enabled: bool = true
