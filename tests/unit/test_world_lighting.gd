@@ -120,6 +120,30 @@ func test_reduced_effects_cut_wind_and_rim_but_keep_grade_and_shadows() -> void:
 	assert_eq(lighting.get_applied_globals()[WorldLighting.WIND], 5.0)
 
 
+func test_economy_cuts_the_screen_grade_at_once_and_restores_it() -> void:
+	var lighting := _lighting()
+	lighting.apply(_golden)
+	assert_true(lighting.is_grade_visible(), "par défaut : étalonnage posé")
+	lighting.set_economy(true)
+	assert_false(lighting.is_grade_visible(), "Économie : passe plein écran coupée")
+	lighting.apply(_golden)
+	assert_false(lighting.is_grade_visible(), "reste coupée au changement de carte")
+	assert_gt((lighting.get_applied_globals()[WorldLighting.CAST_SHADOW_COLOR] as Color).a, 0.0,
+		"les ombres restent")
+	lighting.set_economy(false)
+	assert_true(lighting.is_grade_visible(), "désactivée : rendu d'avant")
+
+
+func test_economy_keeps_the_flat_grade() -> void:
+	var lighting := _lighting()
+	var modulate := lighting.get_world_modulate()
+	add_child(modulate)
+	lighting.apply(_library.get_profile(&"tower"))
+	lighting.set_economy(true)
+	assert_true(lighting.is_grade_flat(), "gain unique gardé")
+	assert_true(lighting.is_grade_visible())
+
+
 func test_golden_hour_keeps_the_baked_shadow() -> void:
 	var basis := WorldLighting.shadow_transform(_golden)
 	assert_almost_eq(basis.x, Vector2(2, 0), Vector2.ONE * 0.0001)
