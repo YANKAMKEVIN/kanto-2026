@@ -1,0 +1,34 @@
+{
+	"fisher_ned": {
+		"cell": [30, 47], "facing": "left", "sprite": "haru",
+		"dialogue": "route_12_fisher_1_after",
+		"trainer": {
+			"id": "route_12_fisher_1", "sight": 6,
+			"before": "route_12_fisher_1_before", "defeated": "route_12_fisher_1_defeated"
+		}
+	},
+	"fisher_elton": {
+		"cell": [17, 59], "facing": "up", "sprite": "haru",
+		"dialogue": "route_12_fisher_2_after",
+		"trainer": {
+			"id": "route_12_fisher_2", "sight": 6,
+			"before": "route_12_fisher_2_before", "defeated": "route_12_fisher_2_defeated"
+		}
+	},
+	"fisher_bastien": {
+		"cell": [27, 60], "facing": "left", "sprite": "haru",
+		"dialogue": "route_12_fisher_3_after",
+		"trainer": {
+			"id": "route_12_fisher_3", "sight": 6,
+			"before": "route_12_fisher_3_before", "defeated": "route_12_fisher_3_defeated"
+		}
+	},
+	"fisher_herve": {
+		"cell": [23, 78], "facing": "right", "sprite": "haru",
+		"dialogue": "route_12_fisher_4_after",
+		"trainer": {
+			"id": "route_12_fisher_4", "sight": 6,
+			"before": "route_12_fisher_4_before", "defeated": "route_12_fisher_4_defeated"
+		}
+	}
+}

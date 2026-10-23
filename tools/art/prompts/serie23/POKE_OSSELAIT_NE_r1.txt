@@ -1,0 +1,17 @@
+POKE_OSSELAIT — planche d'animation d'un Pokémon du monde (Pokémon d'ambiance, qui attend dans une maison).
+Style : exactement le rendu de la première planche jointe (le héros du jeu) : Pokémon peint simplifié, même finesse, même contour fin coloré sans trait noir, même manière de peindre les volumes. Ni pixel art, ni 3D, ni anime aux contours noirs.
+LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche ; volumes conservés par un ombrage doux ; aucune teinte dorée ou orangée, aucun liseré chaud ; ombres propres neutres, légèrement bleutées.
+
+POKÉMON (identique dans toutes les images) : OSSELAIT (Cubone, n° 104 de la première génération), fidèle à son design officiel (voir l'artwork joint) : un tout petit Pokémon brun clair au corps rond et trapu, bipède, qui porte sur la tête un CRÂNE BLANC cassé de Pokémon (casque d'os crème, deux orbites sombres) dont on ne voit que la partie supérieure du visage : deux petits yeux noirs et brillants dans les trous du crâne, un petit museau brun ; une courte queue brune ; il tient devant lui, des deux mains, un petit OS crème (massue). Air triste, doux et solitaire, JAMAIS agressif ni effrayant ; le crâne est un casque, pas un visage fantomatique.
+
+PLANCHE D'ANIMATION (spritesheet) : image portrait 1024 × 1536, fond avec une vraie transparence (canal alpha, aucun damier dessiné). Grille invisible de 4 colonnes × 4 lignes ; chaque cellule fait 256 × 384 px et contient UNE pose du Pokémon, entier, centré horizontalement, les pieds posés sur la même ligne horizontale à 60 px du bas de la cellule (environ 160 px de haut, un peu plus grand que le repère Rattata qui est l'autre image jointe). Aucune pose ne déborde de sa cellule.
+- Ligne 1 : de face (vers le bas de l'écran).
+- Ligne 2 : de profil, vers la gauche.
+- Ligne 3 : de profil, vers la droite.
+- Ligne 4 : de dos (vers le haut de l'écran).
+- Colonnes : marche lente en 4 images, petits pas trottinés, la queue et l'os qui balancent un peu ; aux images 1 et 3, pieds joints (passage).
+Vue : la même vue de dessus de trois quarts que le jeu (caméra un peu au-dessus, on voit un peu le dessus du crâne). Pas de perspective, pas d'ombre au sol, pas de sol, pas de texte, pas de numéros, pas de cadres autour des cellules.
+Les couleurs, les proportions et la tête doivent être EXACTEMENT les mêmes dans les 16 poses.
+
+La deuxième image jointe (POKE_RATTATA_P2_r1) est un autre Pokémon du jeu, déjà validé : même rendu, même finesse, même gabarit de planche ; garde ses proportions comme repère de style (Osselait est un peu plus grand et bipède : environ 56 px de haut dans le jeu contre 40 px). La troisième image jointe est l'artwork officiel d'Osselait : anatomie, couleurs et proportions seulement (pas son rendu).
+Interdits de la série : texte, lettres, chiffres, logo, AUCUN emblème rond de type balle (ni cercle partagé en deux, ni médaillon à bande centrale) nulle part, animaux réels ou faune non-Pokémon (oiseaux, mouettes, poissons, insectes, chauves-souris), Pikachu et tout Pokémon non demandé, personnage qui ressemble au héros (casquette rouge, t-shirt blanc, sac à dos jaune), élément effrayant.

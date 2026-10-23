@@ -352,11 +352,11 @@ func can_use_balls() -> bool:
 		and _rules.items != null
 
 
-## Vrai si les Balls sont refusées dans ce combat (combat SPECTRE, jalon 19) : le Sac s'ouvre
-## ([method can_use_balls]), mais aucune Ball n'est légale ; le directeur l'annonce sans rien
-## retirer du Sac ni jouer de tour.
+## Vrai si les Balls sont refusées dans ce combat (combat SPECTRE, jalon 19 ; sauvage
+## « uncatchable », jalon 21) : le Sac s'ouvre ([method can_use_balls]), mais aucune Ball n'est
+## légale ; le directeur l'annonce sans rien retirer du Sac ni jouer de tour.
 func refuses_balls() -> bool:
-	return _rules != null and _rules.ghost
+	return _rules != null and (_rules.ghost or _rules.uncatchable)
 
 
 ## Vrai si le joueur peut donner un soin maintenant (règles, objets connus). Ni le Sac ni la

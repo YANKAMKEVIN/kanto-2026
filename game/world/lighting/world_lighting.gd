@@ -118,8 +118,8 @@ func set_battle_active(active: bool) -> void:
 	_update_flat()
 
 
-## Réglage « Économie » (moteur commun) : coupe l'étalonnage plein écran qui recopie l'écran
-## (≈ 8 ms sur l'A17). L'étalonnage à plat (gain unique, presque gratuit) est gardé. Effet
+## Réglage `economy` (« Lumière d'ambiance » désactivée, moteur commun) : coupe l'étalonnage
+## plein écran qui recopie l'écran (≈ 8 ms sur l'A17). L'étalonnage à plat (gain unique, presque gratuit) est gardé. Effet
 ## immédiat, sans changer de carte.
 func set_economy(enabled: bool) -> void:
 	_economy = enabled

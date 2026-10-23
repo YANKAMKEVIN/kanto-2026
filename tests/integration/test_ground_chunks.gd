@@ -131,3 +131,21 @@ func test_land_is_baked_without_water_and_water_stays_live_on_water_cells() -> v
 func test_map_without_shore_and_small_still_uses_the_single_bake() -> void:
 	var ground := _map("pokemon_tower_6f").get_node(^"PaintedGround") as PaintedGround
 	assert_true(ground.can_bake(), "cuisson d'un bloc du J21 inchangée")
+
+
+## Fusion de `main` (J21) : les Routes 12 et 16 du J21 prennent la cuisson par morceaux, la Tour
+## 6F/7F garde la cuisson d'un bloc (avec la brume et les couches de grotte).
+func test_j21_routes_12_and_16_take_the_chunked_path() -> void:
+	for map_id: String in ["route_12", "route_16"]:
+		var ground := _map(map_id).get_node(^"PaintedGround") as PaintedGround
+		assert_false(ground.can_bake(), map_id + " : pas de cuisson d'un bloc")
+		assert_true(ground.can_bake_chunks(), map_id)
+		ground.bake_chunks()
+		assert_true(ground.is_chunked(), map_id + " : cuit par morceaux")
+
+
+func test_j21_tower_6f_and_7f_take_the_single_bake() -> void:
+	for map_id: String in ["pokemon_tower_6f", "pokemon_tower_7f"]:
+		var ground := _map(map_id).get_node(^"PaintedGround") as PaintedGround
+		assert_true(ground.can_bake(), map_id + " : cuisson d'un bloc")
+		assert_false(ground.stack_layers().is_empty(), map_id + " : couches de grotte cuites")

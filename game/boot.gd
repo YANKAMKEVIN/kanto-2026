@@ -750,7 +750,8 @@ func _field_move_user(move: StringName) -> Pokemon:
 ## utilise lui-même (jalon 16) : il reste alors dehors pour couper.
 func _companion_cuts(cutscene_id: StringName) -> bool:
 	var cutscene := _cutscenes.get_cutscene(cutscene_id)
-	var move := cutscene.leading_field_move(GameState.flags) if cutscene != null else &""
+	var move := cutscene.leading_field_move(GameState.flags, GameState.bag) \
+		if cutscene != null else &""
 	if move.is_empty():
 		return false
 	var chosen := _companion.get_chosen()

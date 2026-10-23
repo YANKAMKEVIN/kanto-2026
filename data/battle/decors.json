@@ -269,6 +269,9 @@
 		"pokemon_tower_6f": [
 			{ "decor": "tour_pokemon" }
 		],
+		"pokemon_tower_7f": [
+			{ "decor": "tour_pokemon" }
+		],
 		"route_7": [
 			{ "decor": "route_7_8_urbaine" }
 		],
@@ -292,6 +295,12 @@
 		],
 		"rocket_hideout_b4f": [
 			{ "decor": "rocket_hideout_repaire" }
+		],
+		"route_16": [
+			{ "decor": "route_5_6_prairie" }
+		],
+		"route_12": [
+			{ "decor": "route_24_pont" }
 		]
 	}
 }

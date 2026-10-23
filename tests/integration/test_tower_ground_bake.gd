@@ -1,9 +1,9 @@
 extends GutTest
-## Moteur commun (reprise du J21, `d19a1d98`, Tour 2F-6F de `main`) : sur l'A17 (QA de nuit du
-## J21 : 35-41 i/s, cause = calques plein écran), le sol peint et les couches immobiles au-dessus (rebords, escaliers, ombrage, lumière de sol) sont cuits
+## Tour 2F-7F sur A17 (J21, QA de nuit : 35-41 i/s, cause = calques plein écran) : le sol peint
+## et les couches immobiles au-dessus (rebords, escaliers, ombrage, lumière de sol) sont cuits
 ## une fois ; la brume est dessinée dans la passe du sol ; l'étalonnage de la Tour est à plat.
 
-const FLOORS := [2, 3, 4, 5, 6]
+const FLOORS := [2, 3, 4, 5, 6, 7]
 
 
 func after_each() -> void:
@@ -41,22 +41,26 @@ func test_bake_hides_the_baked_layers_and_keeps_the_rest() -> void:
 	assert_eq(ground.material.shader, PaintedGround.SHADER, "matériau source inchangé")
 
 
-func test_6f_mist_is_drawn_by_the_ground() -> void:
+func test_6f_mist_is_drawn_by_the_ground_and_follows_its_gate() -> void:
 	var ground: PaintedGround = await _baked_ground(6)
 	var map := ground.get_parent()
-	var mist := map.get_node(^"Mist") as MistLayer
-	assert_true(mist.is_merged())
-	assert_true(mist.is_misting(), "toujours l'autorité logique")
-	assert_almost_eq(ground.get_merged_mist_alpha(), mist.alpha, 0.0001, "alpha de la brume")
-	mist.visible = false
-	assert_eq(ground.get_merged_mist_alpha(), 0.0, "brume cachée : le sol seul")
-	mist.visible = true
+	var dense := map.get_node(^"MistDenseGate/Mist") as MistLayer
+	var light := map.get_node(^"MistLightGate/MistLight") as MistLayer
+	assert_true(dense.is_merged())
+	assert_true(light.is_merged())
+	assert_true(dense.is_misting(), "toujours l'autorité logique")
+	(map.get_node(^"MistLightGate") as CanvasItem).visible = false
+	ground.refresh_mist()
+	assert_almost_eq(ground.get_merged_mist_alpha(), 0.18, 0.0001, "brume dense")
+	(map.get_node(^"MistDenseGate") as CanvasItem).visible = false
+	(map.get_node(^"MistLightGate") as CanvasItem).visible = true
+	assert_almost_eq(ground.get_merged_mist_alpha(), 0.072, 0.0001, "brume levée, plus légère")
 	MistLayer.set_reduce_motion(true)
 	assert_eq(ground.get_merged_mist_alpha(), 0.0, "Réduire les animations : aucune brume")
 
 
 func test_unbaked_ground_leaves_the_mist_layer_drawing_itself() -> void:
-	var map := _floor(5)
+	var map := _floor(7)
 	var mist: MistLayer = map.find_children("*", "Sprite2D", true, false).filter(
 		func(n: Node) -> bool: return n is MistLayer)[0]
 	assert_false((map.get_node(^"PaintedGround") as PaintedGround).is_baked())

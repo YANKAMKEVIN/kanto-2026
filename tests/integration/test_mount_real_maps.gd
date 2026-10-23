@@ -2,7 +2,8 @@ extends GutTest
 ## Monture sur de vraies cartes (passe systèmes 2, §2.2–§2.4). Les cartes de QA `qa_mount`,
 ## `qa_mount_interieur`, `qa_mount_piste` et le départ `s2_bike` sont retirés en S2Z (T33) ; ce qui
 ## y éprouvait un système est rejoué ici, sans rien livrer :
-## - dormeur de la Poké Flûte : le vrai Ronflex de la Route 11, dont le point d'examen reçoit **en
+## - dormeur de la Poké Flûte : le vrai Ronflex de la Route 12 (celui de la Route 11 y est déplacé
+##   au J21, arbitrage M-3), dont le point d'examen reçoit **en
 ##   mémoire** une `flute_cutscene` d'essai ([method GameMap.flute_targets], [PokeFluteRules],
 ##   [FlagGate] qui libère ses cases avec le drapeau) ;
 ## - dans le vrai Boot : départ écrit sous `user://` sur la Route 2, à pied, Bicyclette au Sac ;
@@ -14,7 +15,7 @@ const MemoryFs := preload("res://tests/helpers/memory_file_system.gd")
 const FixedClock := preload("res://tests/helpers/fixed_clock.gd")
 const FADE := 0.05
 const TIMEOUT := 12.0
-const SNORLAX_FLAG: StringName = &"snorlax_route_11_awake"
+const SNORLAX_FLAG: StringName = &"snorlax_route_12_done"
 const FLUTE_SCENE: StringName = &"essai_reveil"
 const PISTE: StringName = &"route_2_east"
 const START_PATH := "user://test_mount_real_maps_start.json"
@@ -51,10 +52,10 @@ func after_each() -> void:
 		DirAccess.remove_absolute(START_PATH)
 
 
-# --- Poké Flûte : le Ronflex de la Route 11 ------------------------------------------------------
+# --- Poké Flûte : le Ronflex de la Route 12 ------------------------------------------------------
 
-func _route_11_with_flute() -> GameMap:
-	var map := (load(MapCatalog.scene_path(&"route_11")) as PackedScene).instantiate() as GameMap
+func _route_12_with_flute() -> GameMap:
+	var map := (load(MapCatalog.scene_path(&"route_12")) as PackedScene).instantiate() as GameMap
 	var point := map.get_node(^"Interactables/SnorlaxPoint") as InteractPoint
 	point.flute_cutscene = FLUTE_SCENE
 	add_child_autofree(map)
@@ -62,7 +63,7 @@ func _route_11_with_flute() -> GameMap:
 
 
 func test_the_sleeper_blocks_until_its_flag_and_is_the_flute_target_next_to_it() -> void:
-	var map := _route_11_with_flute()
+	var map := _route_12_with_flute()
 	var grid := map.get_grid()
 	var targets := map.flute_targets()
 	assert_eq(targets.size(), 1, "un dormeur")

@@ -38,6 +38,8 @@ const SIZE := Vector2i(20, 18)
 const DISPLAY_NAME: String = "Tour Pokémon"
 const TILE: int = 96
 const WALKABLE: String = ".ZUV"
+## Jalon 21 : la grille du 7F n'a ni zone `Z` ni escalier `U` (légende « PRATICABLES .V »).
+const WALKABLE_7F: String = ".V"
 const WALL_MARK: String = "#"
 const TOMB_MARK: String = "T"
 const STELE_MARK: String = "S"
@@ -52,9 +54,12 @@ const FLOORS: Dictionary = {
 	"4f": [&"pokemon_tower_4f", "PokemonTower4F", 1921, 1922, 1923, 0.92],
 	"5f": [&"pokemon_tower_5f", "PokemonTower5F", 1931, 1932, 1933, 0.90],
 	"6f": [&"pokemon_tower_6f", "PokemonTower6F", 1941, 1942, 1943, 0.88],
+	# Jalon 21 (T13) : le 7F (voile un peu plus sombre [D] : ambient 0,86 après le 6F à 0,88).
+	"7f": [&"pokemon_tower_7f", "PokemonTower7F", 1951, 1952, 1953, 0.86],
 }
 ## Opacité de la brume par étage (≤ `MistLayer.ALPHA_MAX`) : 2F le plus clair, 6F le plus brumeux.
-const MIST_ALPHA: Dictionary = {"2f": 0.08, "3f": 0.10, "4f": 0.12, "5f": 0.14, "6f": 0.18}
+const MIST_ALPHA: Dictionary = {"2f": 0.08, "3f": 0.10, "4f": 0.12, "5f": 0.14, "6f": 0.18,
+	"7f": 0.2}
 const PLAN_PATH: String = "res://tools/plans/pokemon_tower_%s.txt"
 
 ## Sols provisoires (souterrain, J15).
@@ -102,8 +107,9 @@ const SHADE_WALL_FOLLOW: float = 0.7
 const STELE_LIGHT_HEIGHT: float = 80.0
 
 ## Replis « à venir » (étages hors J19).
+## Jalon 21 (T12, T13) : le 7F existe, la paire T67 est réelle (plus de repli « à venir »).
 const COMING_SOON: String = "Tour Pokémon"
-const SOON_PAIRS: Array[String] = ["T67"]
+const SOON_PAIRS: Array[String] = []
 ## Rez-de-chaussée (J18, construit par `build_pokemon_tower.gd`, T16 du J19) : paire T12 → spawn
 ## `from_pokemon_tower_2f` (case d'accès (17, 3)), tourné vers le bas.
 const GROUND_FLOOR_MAP: StringName = &"pokemon_tower_1f"
@@ -114,6 +120,14 @@ const TRIGGER_SCENES: Dictionary = {
 	"S1": &"tower_6f_ghost",
 }
 const ZONE_SCENE: StringName = &"tower_purified_zone"
+## Jalon 21 (T12) : brume légère du 6F (drapeau `tower_6f_mist_lifted`), opacité × 0,4 [D].
+const MIST_LIFTED_FLAG: StringName = &"tower_6f_mist_lifted"
+const MIST_LIFTED_FACTOR: float = 0.4
+## Jalon 21 (T12) : halo « esprit » du 6F, caché, posé sur (10, 17) [D : sous l'escalier, d'où
+## l'esprit se tenait] ; groupe `scene_props` (cible de l'étape `animate`, nom `SpiritLight`).
+const SPIRIT_HALO: String = "res://assets/sprites/effects/spirit_halo.png"
+const SPIRIT_CELL := Vector2i(10, 17)
+const SPIRIT_GROUP: StringName = &"scene_props"
 const STEPS: Array[Vector2i] = [Vector2i.RIGHT, Vector2i.LEFT, Vector2i.UP, Vector2i.DOWN]
 ## Points d'apparition de QA [D] : étage → [nom, case].
 const QA_SPAWNS: Dictionary = {
@@ -147,7 +161,8 @@ func _build(key: String) -> int:
 	_key = key
 	var spec: Array = FLOORS[key]
 	var map_id: StringName = spec[0]
-	_kit = Kit.new(PLAN_PATH % key, SIZE, spec[2], spec[3], WALKABLE)
+	_kit = Kit.new(PLAN_PATH % key, SIZE, spec[2], spec[3],
+		WALKABLE_7F if key == "7f" else WALKABLE)
 	_kit.set(&"floor_texture_path", GROUND_DALLES)
 	_kit.set(&"rubble_texture_path", GROUND_TRACES)
 	_kit.set(&"mass_texture_path", GROUND_ROCK)
@@ -215,12 +230,49 @@ func _fail(message: String) -> void:
 ## Brume lente (T19) : un `MistLayer` à la taille de la carte, posé après le voile (sous
 ## `Entities`), sans `Light2D` ni particule.
 func _place_mist(key: String) -> void:
+	if key != "6f":
+		_kit.call(&"attach", _kit.get(&"root"), _new_mist("Mist", MIST_ALPHA[key]))
+		return
+	# Jalon 21 (T12, §2.7) : au 6F, la brume du J19 passe dans une FlagGate `unless
+	# [tower_6f_mist_lifted]` ; une seconde, plus légère (alpha × 0,4 [D]), dans une FlagGate
+	# `if [tower_6f_mist_lifted]`. Même profil `tower`, aucun changement de LightingLibrary.
+	_add_mist_gate("MistDenseGate", "Mist", MIST_ALPHA[key], [], [MIST_LIFTED_FLAG])
+	_add_mist_gate("MistLightGate", "MistLight", MIST_ALPHA[key] * MIST_LIFTED_FACTOR,
+		[MIST_LIFTED_FLAG], [])
+	_place_spirit_light()
+
+
+func _new_mist(node_name: String, alpha: float) -> Sprite2D:
 	var mist := Sprite2D.new()
 	mist.set_script(load("res://game/world/lighting/mist_layer.gd"))
-	mist.name = "Mist"
+	mist.name = node_name
 	mist.set(&"area", SIZE * TILE)
-	mist.set(&"alpha", MIST_ALPHA[key])
-	_kit.call(&"attach", _kit.get(&"root"), mist)
+	mist.set(&"alpha", alpha)
+	return mist
+
+
+func _add_mist_gate(gate_name: String, mist_name: String, alpha: float,
+		if_flags: Array[StringName], unless_flags: Array[StringName]) -> void:
+	var gate := Node2D.new()
+	gate.set_script(load("res://game/world/flag_gate.gd"))
+	gate.name = gate_name
+	gate.set(&"if_flags", if_flags)
+	gate.set(&"unless_flags", unless_flags)
+	_kit.call(&"attach", _kit.get(&"root"), gate)
+	_kit.call(&"attach", gate, _new_mist(mist_name, alpha))
+
+
+## Halo peint de l'esprit (6F, Jalon 21) : enfant direct de la carte (`animate SpiritLight`
+## le trouve par son chemin), caché, au-dessus des personnages, groupe `scene_props`.
+func _place_spirit_light() -> void:
+	var halo := Sprite2D.new()
+	halo.name = "SpiritLight"
+	halo.texture = load(SPIRIT_HALO)
+	halo.position = Vector2((SPIRIT_CELL.x + 0.5) * TILE, (SPIRIT_CELL.y + 0.5) * TILE)
+	halo.z_index = 20
+	halo.visible = false
+	halo.add_to_group(SPIRIT_GROUP, true)
+	_kit.call(&"attach", _kit.get(&"root"), halo)
 
 
 # --- Cases calmes (§2.2) -------------------------------------------------------------------
