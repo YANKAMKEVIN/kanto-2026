@@ -258,6 +258,12 @@ func _ready() -> void:
 	# Compteur de fps de QA (journal « [perf] »), seulement en build debug, Boot scène principale.
 	if PerfCounter.is_allowed(OS.is_debug_build(), get_tree().current_scene == self):
 		add_child(PerfCounter.new())
+		# Moteur commun : sonde par couches si user://perf_probe.json existe (PerfProbe).
+		if FileAccess.file_exists(PerfProbe.USER_PATH):
+			var probe := PerfProbe.new()
+			probe.configure(FileAccess.get_file_as_string(PerfProbe.USER_PATH))
+			probe.setup(_lighting)
+			add_child(probe)
 	_player = PLAYER_SCENE.instantiate() as Player
 	_darkness.setup(_world, _player)
 	_library.load_dir()
@@ -551,6 +557,8 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	GameState.add_play_time(_lifecycle.play_time_step(delta, _is_opening_active()))
 	_watch_save_checkpoint(delta)
+	# Moteur commun (D5) : boutons transparents quand le joueur est dessous.
+	_hud.set_player_screen_rect(_player.get_screen_body_rect())
 	_save_coordinator.process(delta)
 	if not _dex_toasts.is_empty():
 		_show_next_dex_toast()

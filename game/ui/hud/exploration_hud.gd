@@ -21,6 +21,11 @@ extends CanvasLayer
 ## Passe systèmes 2 (`systemes-2.md` §2.3) : bouton rond Vélo au-dessus du bouton courir
 ## ([method set_bike_button] : visible avec la Bicyclette, grisé là où il refuse ; le toucher
 ## émet [signal bike_requested], même grisé, pour dire le refus).
+## Moteur commun (défaut D5 de la QA du J24) : [method set_player_screen_rect] (Boot, à chaque
+## image) — le groupe de boutons du coin bas (courir, contextuel, Vélo) ou le bouton Menu que le
+## joueur touche à l'écran passe à [constant UiTokens.BUTTONS_UNDER_PLAYER_ALPHA] : le joueur
+## se voit à travers, les boutons restent actifs. [D] : plutôt que décaler la caméra (qui
+## montrerait le vide au-delà de la carte) ou rétrécir les boutons.
 
 ## Le titre de zone vient de disparaître (fin de son maintien ou hide_zone_title()).
 signal title_hidden
@@ -52,6 +57,8 @@ var _run_tween: Tween
 ## Bouton Vélo demandé ([method set_bike_button]) ; affiché si les contrôles le sont.
 var _bike_shown: bool = false
 var _bike_dimmed: bool = false
+## Rectangle du joueur à l'écran (vide = inconnu : boutons opaques).
+var _player_rect: Rect2 = Rect2()
 
 @onready var _run_button: TouchScreenButton = %RunButton
 @onready var _interact_button: InteractButton = %InteractButton
@@ -62,6 +69,7 @@ var _bike_dimmed: bool = false
 
 func _ready() -> void:
 	layer = UiTokens.LAYER_HUD
+	set_process(false)
 	_place_corner_buttons()
 	_menu_button.position = Vector2(-UiTokens.MENU_BUTTON_CENTER_FROM_CORNER.x,
 		UiTokens.MENU_BUTTON_CENTER_FROM_CORNER.y)
@@ -286,6 +294,58 @@ func get_button_rects() -> Dictionary[StringName, Rect2]:
 		var center := button.get_global_transform_with_canvas().origin
 		rects[entry[0]] = Rect2(center - Vector2.ONE * radius, Vector2.ONE * radius * 2.0)
 	return rects
+
+
+## Rectangle du joueur à l'écran (coordonnées de la vue, comme [method get_button_rects]) ;
+## vide = aucun joueur. Les boutons qu'il touche deviennent transparents (fondu court).
+func set_player_screen_rect(rect: Rect2) -> void:
+	_player_rect = rect
+	set_process(true)
+
+
+## Vrai si le groupe de boutons [param group] (&"corner" ou &"menu") est rendu transparent parce
+## que le joueur est dessous.
+func is_group_under_player(group: StringName) -> bool:
+	return _under_player(group)
+
+
+## Opacité courante du groupe [param group] (&"corner" ou &"menu").
+func get_group_alpha(group: StringName) -> float:
+	return _group_node(group).modulate.a
+
+
+func _process(delta: float) -> void:
+	var step := delta * (1.0 - UiTokens.BUTTONS_UNDER_PLAYER_ALPHA) / UiTokens.ANIM_MICRO
+	var settled := true
+	for group: StringName in [&"corner", &"menu"]:
+		var node := _group_node(group)
+		var target := UiTokens.BUTTONS_UNDER_PLAYER_ALPHA if _under_player(group) else 1.0
+		node.modulate.a = move_toward(node.modulate.a, target, step)
+		settled = settled and is_equal_approx(node.modulate.a, target)
+	if settled and not _player_rect.has_area():
+		set_process(false)
+
+
+func _group_node(group: StringName) -> CanvasItem:
+	return _corner if group == &"corner" else _menu_button.get_parent() as CanvasItem
+
+
+func _under_player(group: StringName) -> bool:
+	if not _player_rect.has_area() or not _controls_visible:
+		return false
+	var rects := get_button_rects()
+	var names: Array[StringName] = [&"menu"]
+	if group == &"corner":
+		names = [&"run", &"interact"]
+	if group == &"corner" and _bike_button.visible:
+		var radius := UiTokens.ROUND_BUTTON * 0.5 * _bike_button.scale.x
+		var center := _bike_button.get_global_transform_with_canvas().origin
+		rects[&"bike"] = Rect2(center - Vector2.ONE * radius, Vector2.ONE * radius * 2.0)
+		names.append(&"bike")
+	for button: StringName in names:
+		if rects[button].grow(UiTokens.BUTTONS_UNDER_PLAYER_MARGIN).intersects(_player_rect):
+			return true
+	return false
 
 
 ## Courir et contextuel dans le coin bas-droit, ou bas-gauche en mode gaucher.

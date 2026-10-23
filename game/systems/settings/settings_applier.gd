@@ -54,6 +54,7 @@ func apply(s: GameSettings, device: Dictionary, evolution_screen: EvolutionScree
 		menu_screen.call(&"set_backdrop_blur", profile.menu_blur)
 	battle_stage.backdrop_blur = not profile.reduced_effects
 	lighting.set_reduced_effects(profile.reduced_effects)
+	lighting.set_economy(s.economy)
 	# Écran titre (OUV.1) : main du joueur, flou des Paramètres, dérive du décor.
 	if opening != null:
 		opening.apply_settings(s, profile.menu_blur)

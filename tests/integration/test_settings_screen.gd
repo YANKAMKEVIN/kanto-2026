@@ -117,6 +117,18 @@ func test_toggle_on_emits_false() -> void:
 	assert_eq(_changes, [[GameSettings.HAPTICS, false]])
 
 
+## Moteur commun : « Lumière d'ambiance » affiche le contraire du réglage `economy`.
+func test_ambient_light_toggle_is_on_when_economy_is_off_and_turns_economy_on() -> void:
+	var screen := await _screen_in()
+	await _open(screen, SettingsViews.CATEGORY_GRAPHICS)
+	var row := screen.get_row(GameSettings.ECONOMY) as SettingToggle
+	assert_eq(row.get_label_text(), "Lumière d'ambiance")
+	assert_eq(row.get_value_text(), "Activé", "rendu normal")
+	assert_true(row.get_switch().is_on(), "interrupteur allumé")
+	row.pressed.emit()
+	assert_eq(_changes, [[GameSettings.ECONOMY, true]], "la couper active economy")
+
+
 func test_choice_emits_option_value_not_rank() -> void:
 	var screen := await _screen_in()
 	var row := screen.get_row(GameSettings.TEXT_SPEED) as SettingChoice
