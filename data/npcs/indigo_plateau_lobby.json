@@ -19,7 +19,7 @@
 	"host": {
 		"cell": [
 			3,
-			6
+			5
 		],
 		"facing": "right",
 		"sprite": "gym_guide",

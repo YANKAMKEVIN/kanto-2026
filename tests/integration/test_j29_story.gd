@@ -171,3 +171,26 @@ func test_debug_starts_load_and_stand_on_their_spawn() -> void:
 				as GameMap
 			add_child_autofree(map)
 			assert_true(map.has_spawn(start.spawn), "%s : %s" % [name, start.spawn])
+
+
+## QA A17 du 2026-10-23 : l'hôte du hall (T29-10) était posé en (3, 6), juste derrière la
+## banquette ouest (cellule (3, 7)) : on ne voyait que le haut de sa tête. Aucun PNJ du hall ne se
+## tient sur la rangée d'une banquette ni juste au-dessus, à moins d'une case de son centre.
+func test_indigo_plateau_lobby_npcs_not_hidden_by_benches() -> void:
+	var lobby := (load(MapCatalog.scene_path(&"indigo_plateau_lobby")) as PackedScene) \
+		.instantiate() as GameMap
+	add_child_autofree(lobby)
+	var benches: Array[Vector2i] = []
+	for name: String in ["BenchWest", "BenchEast"]:
+		var bench := lobby.find_child(name, true, false) as Node2D
+		assert_not_null(bench, name)
+		if bench != null:
+			benches.append(Vector2i(floori(bench.position.x / 96.0), floori(bench.position.y / 96.0)))
+	var file := FileAccess.open("res://data/npcs/indigo_plateau_lobby.json", FileAccess.READ)
+	var npcs: Dictionary = JSON.parse_string(file.get_as_text())
+	for id: String in npcs:
+		var raw: Array = npcs[id]["cell"]
+		var cell := Vector2i(int(raw[0]), int(raw[1]))
+		for bench: Vector2i in benches:
+			var hidden := absi(cell.x - bench.x) <= 1 and cell.y >= bench.y - 1 and cell.y <= bench.y
+			assert_false(hidden, "%s en %s caché par la banquette %s" % [id, cell, bench])

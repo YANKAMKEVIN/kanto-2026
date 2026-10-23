@@ -349,3 +349,16 @@ Choix validés par Kevin sur la page d'arbitrages.
 - Q29-1 : le Badge Roche est posté comme RB.
 - Q29-2 : le rival n° 7 se bat avec le Badge Terre (RB).
 - Q29-4 : **repeindre le sol de la Route 22 étendue au J29**. **Fait (2026-10-22)** : `route_22_west` a son sol peint (`tools/build_route_22_west.gd`, passe après `build_j29.gd` ; masque `assets/world/maps/route_22_west_ground.png`, `PaintedGround` aux textures communes d'herbe et de chemin = même palette et même échelle de 96 px que la partie J7, décalcomanies de bord, hautes herbes et forêt d'arbres peints ; couches de tuiles masquées). **Aucune image Codex** : le sol de la Route 22 du J7 n'est pas une image générée mais le mélange des textures communes par un masque, donc le raccord est exact par construction. Logique inchangée (grilles `dump_map_logic` avant/après identiques pour `route_22` et `route_22_west`). Reste provisoire : le bâtiment du poste (dessin de couleur), la Route 23 (hors décision). Planche : `build/art/J29_ROUTE22_SOL_CONTACT.png`.
+
+## QA A17 du 2026-10-23
+
+Session de nuit sur le Galaxy A17 (APK debug, départs de débogage ; captures et notes :
+`~/dev/qa-nuit2/j29/`). **OK** : rival n° 7 variante Carapuce (équipe RB, défaite → réveil, victoire
+→ il disparaît) ; garde de la Route 23 sans Badge Cascade (refus, recul, retour libre) ; Sulfura
+(fuite → reste ; K.O. → consommé) ; Plateau, hôte, porte « LIGUE POKÉMON — À venir ».
+**Corrigé** : l'hôte du hall était caché derrière la banquette ouest → (3, 5)
+(`data/npcs/indigo_plateau_lobby.json`, test `test_indigo_plateau_lobby_npcs_not_hidden_by_benches`).
+**Ouvert** : le départ `moltres` n'a pas de Master Ball (objet du J26, absent de la branche) : à
+ajouter à la fusion ; icône d'Hyper Ball absente ; porte de la Ligue non dessinée sur le mur du hall.
+Non joué : Route Victoire (rochers, interrupteurs), Surf, appel pendant Sulfura, capture de Sulfura
+(8 Hyper Balls ratées).
