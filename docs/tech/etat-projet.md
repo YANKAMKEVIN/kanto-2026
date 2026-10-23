@@ -12,6 +12,7 @@ Mis à jour : 2026-10-23 (**`main` (J21) fusionné dans `moteur-commun`**, même
 - **Lumière d'ambiance** : la bascule du réglage `economy` s'appelle « Lumière d'ambiance » (activée = rendu normal), aide [D] « Désactivez-la pour plus de fluidité sur les petits téléphones. » ; `moteur-commun.md` §1.5.
 - **A17 après fusion** : Route 12 nord 49,5–53,2 i/s (creux 31–33) ; Tour 7F 59,8–60 ; `~/dev/qa-moteur/fusion/`.
 - **Suite complète** : 6 662 / 6 662 (614 scripts) sur la fusion `a0195d16` (journal `build/logs/suite_complete_fusion.log`).
+- **2026-10-23 : `test_dark_cave_flash`** : départ écrit sous `user://test_dark_cave_flash_start_<pid>.json` (un nom par processus : `user://` est commun à toutes les copies, deux suites en parallèle s'écrasaient) ; suite verte. Même défaut, non corrigé : `test_mount_real_maps`. **Question ouverte** : la Grotte Sombre sans Flash est-elle assez sombre (voile hors du halo 0,38, sol hors du halo 0,12–0,15 contre 0,15–0,17 avec Flash ; Flash agrandit surtout le halo, de 2,5 à 7 cases) ? Proposition : voile sans Flash ≈ 0,6–0,7 propre aux grottes obscures, captures à faire.
 
 ## Jalon 21 — perf de la Tour sur A17 et prière de Fuji (2026-10-22, `jalon-21`, copie `~/dev/kanto-2026-wt-j21`)
 
