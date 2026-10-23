@@ -25,7 +25,7 @@ const TABLE := {
 ## Capacités du J12 (21) : genre attendu, ou rien (dégâts seuls) ; les 3 reportées gardent leur
 ## mention et leur effet en attente (Damoclès : contrecoup joué depuis le jalon 19 ; Buée Noire
 ## et Mur Lumière joués depuis la passe systèmes 2).
-const POSTPONED := [&"metronome"]
+const POSTPONED := []  # Jalon 24 (T13) : Métronome codé ; plus rien en attente.
 
 var _data: PokemonData
 var _texts: BattleText

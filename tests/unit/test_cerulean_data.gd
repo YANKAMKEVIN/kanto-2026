@@ -111,7 +111,9 @@ func test_evolutions_by_level_only() -> void:
 		assert_eq(rules.size(), 1, String(pair[0]))
 		assert_eq([rules[0].into, rules[0].method, rules[0].level],
 			[pair[1], EvolutionRule.Method.LEVEL, 21], String(pair[0]))
-	for id: StringName in [&"starmie", &"horsea", &"shellder", &"goldeen"]:
+	# Jalon 24 (T4) : Hypotrempe → Hypocéan (N32), Poissirène → Poissoroy (N33) et Kokiyas →
+	# Crustabri (Pierre Eau) évoluent désormais (test_pokemon_data).
+	for id: StringName in [&"starmie"]:
 		assert_eq(_data.get_species(id).evolutions.size(), 0, String(id))
 	# Jalon 20 (T7) : les pierres existent ; Ortide, Boustiflor et Stari évoluent par pierre
 	# seulement (jalon-20.md §2.10.1).
@@ -239,11 +241,15 @@ func test_tm11_and_its_compatibilities() -> void:
 	assert_eq(compatible, [&"squirtle", &"wartortle", &"blastoise", &"rattata", &"raticate",
 		&"nidorina", &"nidoqueen", &"nidorino", &"nidoking", &"clefairy", &"clefable",
 		&"jigglypuff", &"wigglytuff", &"meowth", &"persian",
-		# Jalon 22 : Ptitard et Tentacool (copie du J21), Krabby, Poissoroy.
-		&"poliwag", &"tentacool", &"shellder", &"krabby", &"cubone", &"marowak",
+		# Jalon 24 (T4) : espèces des Routes 19 à 21, des Îles Écume et des fossiles.
+		&"psyduck", &"golduck", &"poliwag", &"poliwhirl", &"poliwrath", &"tentacool",
+		&"tentacruel", &"slowpoke", &"slowbro", &"seel", &"dewgong", &"shellder", &"cloyster",
+		&"krabby", &"kingler", &"cubone", &"marowak",
 		# Jalon 20 (T7) : Kangourex et Aquali.
-		&"kangaskhan", &"horsea", &"goldeen", &"seaking", &"staryu", &"starmie", &"gyarados",
-		&"vaporeon",
+		&"kangaskhan", &"horsea", &"seadra", &"goldeen", &"seaking", &"staryu", &"starmie",
+		&"gyarados", &"vaporeon", &"omanyte", &"omastar", &"kabuto", &"kabutops",
+		# Ronflex (J21) : entré dans la table régénérée à la fusion du J24 dans `main`.
+		&"snorlax", &"articuno",
 		] as Array[StringName])
 	var squirtle := PokemonFactory.create(_data, &"squirtle", 20, GameRng.new(3))
 	assert_eq(TmTeach.check(squirtle, tm, _data), TmTeach.Check.COMPATIBLE)

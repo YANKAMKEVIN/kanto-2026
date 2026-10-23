@@ -10,7 +10,7 @@ Critères :
   - raccords entre cartes : chaque warp `to=` vise une carte et un point d'arrivée qui existent ; les bords
     jumeaux ont le même nombre de cases (et les mêmes colonnes pour un bord nord-sud) ; Route 12 sud
     (25..26, 0) ↔ Route 12 du J21 (25..26, 101) (grille relue sur origin/jalon-21) ;
-  - Parmanie : rangée 53, praticables EXACTEMENT 24..32 et 34..35, bord coming_soon=route_19 ; recoupé avec
+  - Parmanie : rangée 53, praticables EXACTEMENT 24..32 et 34..35, bord to=route_19 (joint au J24) ; recoupé avec
     la grille route_19.txt du J24 (colonne + 15) si elle est lisible ;
   - Parmanie atteignable par CHAQUE chemin : est (Route 12 sud → 13 → 14 → 15, sans aucune case de Piste) et
     ouest (poste 16 → Route 16 ouest → 17 → 18, à vélo) ; sans Bicyclette, le garde des postes 16 et 18
@@ -67,7 +67,9 @@ CARTES = {
 EXTERNES = {"route_12", "route_16", "route_12_rod_house", "fuchsia_center", "fuchsia_mart",
 	"fuchsia_meeting_room", "fuchsia_grandpa_house", "fuchsia_good_rod_house",
 	# Maison de Vol : ouverte par le J22 (Q-9 de la passe systèmes 2, 2026-10-21).
-	"route_16_fly_house"}
+	"route_16_fly_house",
+	# Route 19 du J24 (fusion du J24 dans `main`, 2026-10-23) : raccord vérifié plus bas.
+	"route_19"}
 
 # Dossier §9 : id → (carte, portée RB). Portée du projet = RB × 1,5 arrondie au-dessus.
 DRESSEURS = {
@@ -324,9 +326,15 @@ def verifier_raccords(r: Rapport, cartes: dict[str, Carte]) -> None:
 	prat = [x for x in range(parm.plan.width) if parm.plan.at(x, bas) in parm.plan.praticables]
 	attendu = list(range(24, 33)) + [34, 35]
 	w = parm.plan.positions["warp_sud"]
-	r.critere(prat == attendu and sorted(x for x, _ in w.cells) == attendu and w.attrs.get("coming_soon") == "route_19",
-		f"Parmanie, rangée {bas} : praticables {prat[0]}..{prat[8]} et {prat[9]}..{prat[10]} ; warp_sud coming_soon=route_19")
-	r19 = _voisine("route_19.txt", ["origin/jalon-24", "jalon-24"])
+	# Raccord joint à la fusion du J24 dans `main` (2026-10-23) : bord vers la Route 19, arrivées
+	# from_fuchsia_city de même rang.
+	r.critere(prat == attendu and sorted(x for x, _ in w.cells) == attendu
+		and "coming_soon" not in w.attrs and w.attrs.get("to") == "route_19"
+		and w.attrs.get("spawn") == "from_fuchsia_city",
+		f"Parmanie, rangée {bas} : praticables {prat[0]}..{prat[8]} et {prat[9]}..{prat[10]} ; "
+		"warp_sud to=route_19 spawn=from_fuchsia_city")
+	local19 = RACINE / "tools/plans/route_19.txt"
+	r19 = lire(local19) if local19.exists() else _voisine("route_19.txt", ["origin/jalon-24", "jalon-24"])
 	if r19 is not None:
 		haut = [x + 15 for x in range(r19.width) if r19.at(x, 0) in r19.praticables]
 		r.critere(haut == attendu, f"Route 19 (J24), rangée 0 : colonnes + 15 = {haut[0]}..{haut[8]}, {haut[9]}..{haut[10]} (identiques)")

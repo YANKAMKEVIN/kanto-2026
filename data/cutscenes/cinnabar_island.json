@@ -1,0 +1,24 @@
+{
+	"cinnabar_gym_locked": {
+		"variants": [
+			{
+				"steps": [
+					{
+						"face": "player",
+						"to": "up"
+					},
+					{
+						"dialogue": "cinnabar_gym_locked"
+					},
+					{
+						"move": "player",
+						"path": [
+							"down"
+						],
+						"keep_facing": true
+					}
+				]
+			}
+		]
+	}
+}

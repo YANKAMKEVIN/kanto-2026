@@ -1,0 +1,63 @@
+{
+	"route_21_fisher_gilles": {
+		"name": "Pêcheur Gilles", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 980,
+		"team": [
+			{ "species": "seaking", "level": 28 }, { "species": "goldeen", "level": 28 },
+			{ "species": "seaking", "level": 28 }, { "species": "seaking", "level": 28 }
+		]
+	},
+	"route_21_fisher_marcel": {
+		"name": "Pêcheur Marcel", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 945,
+		"team": [
+			{ "species": "magikarp", "level": 27 }, { "species": "magikarp", "level": 27 },
+			{ "species": "magikarp", "level": 27 }, { "species": "magikarp", "level": 27 },
+			{ "species": "magikarp", "level": 27 }, { "species": "magikarp", "level": 27 }
+		]
+	},
+	"route_21_swimmer_thibault": {
+		"name": "Nageur Thibault", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 165,
+		"team": [{ "species": "seadra", "level": 33 }, { "species": "tentacruel", "level": 33 }]
+	},
+	"route_21_swimmer_dylan": {
+		"name": "Nageur Dylan", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 775,
+		"team": [
+			{ "species": "tentacool", "level": 31 }, { "species": "tentacool", "level": 31 },
+			{ "species": "tentacruel", "level": 31 }
+		]
+	},
+	"route_21_swimmer_simon": {
+		"name": "Nageur Simon", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 185,
+		"team": [{ "species": "starmie", "level": 37 }]
+	},
+	"route_21_swimmer_arthur": {
+		"name": "Nageur Arthur", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 165,
+		"team": [
+			{ "species": "staryu", "level": 33, "moves": ["tackle", "water_gun", "harden", "swift"] },
+			{ "species": "wartortle", "level": 33 }
+		]
+	},
+	"route_21_swimmer_noe": {
+		"name": "Nageur Noé", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 160,
+		"team": [
+			{ "species": "poliwhirl", "level": 32 }, { "species": "tentacool", "level": 32 },
+			{ "species": "seadra", "level": 32 }
+		]
+	},
+	"route_21_fisher_rene": {
+		"name": "Pêcheur Rémi", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 1085,
+		"team": [{ "species": "shellder", "level": 31 }, { "species": "cloyster", "level": 31 }]
+	},
+	"route_21_fisher_yves": {
+		"name": "Pêcheur Yves", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 1155,
+		"team": [{ "species": "seaking", "level": 33 }, { "species": "goldeen", "level": 33 }]
+	}
+}

@@ -1,0 +1,39 @@
+{
+	"cinnabar_sign": {
+		"pages": [
+			"CRAMOIS'ÎLE\nL'île au cœur de feu"
+		]
+	},
+	"cinnabar_gym_sign": {
+		"pages": [
+			"ARÈNE DE CRAMOIS'ÎLE\nChampion : Auguste,",
+			"le maître du feu\net des énigmes"
+		]
+	},
+	"cinnabar_gym_locked": {
+		"narration": true,
+		"pages": [
+			"La porte est fermée à clé…"
+		]
+	},
+	"cinnabar_mansion_rubble": {
+		"narration": true,
+		"pages": [
+			"L'entrée s'est effondrée.\nPersonne ne peut entrer."
+		]
+	},
+	"cinnabar_girl": {
+		"speaker": "Fille",
+		"pages": [
+			"Auguste vit sur l'île depuis\ndes dizaines d'années.",
+			"Un drôle de bonhomme !"
+		]
+	},
+	"cinnabar_man": {
+		"speaker": "Homme",
+		"pages": [
+			"Ce vieux manoir a brûlé\nil y a longtemps.",
+			"Plus personne n'y va."
+		]
+	}
+}

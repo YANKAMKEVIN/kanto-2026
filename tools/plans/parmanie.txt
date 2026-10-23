@@ -5,7 +5,7 @@
 #
 # RACCORDS :
 #   OUEST (0, 23..25) ↔ Route 18 (74, 11..13) ; EST (59, 23..25) ↔ Route 15 (0, 11..13).
-#   SUD (rangée 53) : bord « À venir » réservé à la Route 19 du J24 (coming_soon=route_19) : praticables
+#   SUD (rangée 53) ↔ Route 19 du J24 (bord joint à la fusion du J24 dans `main`, 2026-10-23) : praticables
 #     EXACTEMENT les colonnes 24..32 (terrasse de sable) et 34..35 (couloir) ; colonne 33 = poteau (R) ;
 #     colonne Parmanie = colonne Route 19 + 15 (grille route_19.txt du J24 : (9..17, 0) et (19..20, 0)).
 #   NORD : porte du Parc Safari (28..29, 7), réservée au J23.
@@ -118,8 +118,8 @@ warp_ouest             warp           0,23..25       libre   to=route_18 spawn=f
 from_route_18          spawn          0,23..25       libre   facing=right  # arrivée de la Route 18, tournée →
 warp_est               warp           59,23..25      libre   to=route_15 spawn=from_fuchsia  # PUSH → → Route 15 (0, 11..13)
 from_route_15          spawn          59,23..25      libre   facing=left  # arrivée de la Route 15, tournée ←
-warp_sud               warp           24..32,53;34..35,53 libre   coming_soon=route_19  # bord « ROUTE 19 — À venir » (J24) : terrasse de sable 24..32 et couloir 34..35 ; colonne 33 = poteau
-from_route_19          spawn          24..32,53;34..35,53 libre   facing=up  # réservé au J24 (arrivée de la Route 19), tournée ↑
+warp_sud               warp           24..32,53;34..35,53 libre   to=route_19 spawn=from_fuchsia_city  # PUSH ↓ → Route 19 (J24) (9..17, 0) et (19..20, 0), même rang : terrasse de sable 24..32 et couloir 34..35 ; colonne 33 = poteau
+from_route_19          spawn          24..32,53;34..35,53 libre   facing=up  # arrivée de la Route 19 (J24), tournée ↑
 porte_centre           warp           34..35,40      libre   to=fuchsia_center spawn=entrance  # Centre Pokémon (modèle existant)
 porte_boutique         warp           7..8,19        libre   to=fuchsia_mart spawn=entrance  # Boutique (modèle existant)
 porte_salle_reunion    warp           18..19,18      libre   to=fuchsia_meeting_room spawn=entrance  # Salle de réunion du club du Safari (modèle carmin_fan_club.txt)

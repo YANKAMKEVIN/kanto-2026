@@ -385,6 +385,74 @@
 				  "text": "Vu dans l'équipe d'un Montagnard. Il soulève des rochers comme des cailloux." }
 			]
 		},
+		"psyduck": {
+			"height": 0.8, "weight": 19.6,
+			"description": "Il se tient toujours la tête, comme s'il avait mal. Quand la douleur devient trop forte, d'étranges pouvoirs s'échappent de lui."
+		},
+		"golduck": {
+			"height": 1.7, "weight": 76.6,
+			"description": "Il nage plus vite que n'importe quel nageur. On le voit parfois glisser au ras de l'eau, au lever du jour."
+		},
+		"poliwhirl": {
+			"height": 1.0, "weight": 20.0,
+			"description": "La spirale de son ventre semble tourner quand on la fixe. Il vit aussi bien dans l'eau que sur la berge."
+		},
+		"poliwrath": {
+			"height": 1.3, "weight": 54.0,
+			"description": "Ses bras puissants lui permettent de traverser un lac d'une traite. Il ne craint ni le courant ni la fatigue."
+		},
+		"tentacruel": {
+			"height": 1.6, "weight": 55.0,
+			"description": "Ses longs tentacules s'étendent sous la surface comme un filet. Les nageurs prudents s'éloignent quand l'eau rougit."
+		},
+		"slowpoke": {
+			"height": 1.2, "weight": 36.0,
+			"description": "Il passe ses journées assis au bord de l'eau, la queue plongée dedans. Il met longtemps à remarquer quoi que ce soit."
+		},
+		"slowbro": {
+			"height": 1.6, "weight": 78.5,
+			"description": "Un coquillage s'est refermé sur sa queue. Depuis, il marche debout, toujours aussi lentement."
+		},
+		"seel": {
+			"height": 1.1, "weight": 90.0,
+			"description": "Il adore l'eau glacée et nage sous la banquise. La corne de sa tête lui sert à briser la glace."
+		},
+		"dewgong": {
+			"height": 1.7, "weight": 120.0,
+			"description": "Son pelage blanc le cache dans la neige. Il dort sur les plages gelées, bercé par le bruit des vagues."
+		},
+		"cloyster": {
+			"height": 1.5, "weight": 132.5,
+			"description": "Sa coquille est plus dure que le diamant. Personne n'a jamais vu ce qu'elle abrite."
+		},
+		"kingler": {
+			"height": 1.3, "weight": 60.0,
+			"description": "Sa grosse pince est d'une force incroyable, mais elle pèse si lourd qu'il a du mal à viser."
+		},
+		"seadra": {
+			"height": 1.2, "weight": 25.0,
+			"description": "Les épines de ses nageoires piquent qui s'approche trop près. Il dort enroulé dans les algues."
+		},
+		"omanyte": {
+			"height": 0.4, "weight": 7.5,
+			"description": "Un Pokémon des mers anciennes, ramené à la vie par la science. Il nage en agitant ses tentacules."
+		},
+		"omastar": {
+			"height": 1.0, "weight": 35.0,
+			"description": "Sa coquille est devenue trop lourde pour qu'il nage vite. Il attrape sa nourriture avec ses tentacules."
+		},
+		"kabuto": {
+			"height": 0.5, "weight": 11.5,
+			"description": "On le croyait disparu depuis des millénaires. Ses yeux brillent sous sa carapace, dans le noir."
+		},
+		"kabutops": {
+			"height": 1.3, "weight": 40.5,
+			"description": "Ses bras tranchants fendent l'eau. Il sortait autrefois de la mer pour chasser sur le rivage."
+		},
+		"articuno": {
+			"height": 1.7, "weight": 55.4,
+			"description": "Un oiseau légendaire qui vit dans les montagnes glacées. Il apparaît, dit-on, à ceux qui se sont perdus dans la neige."
+		},
 		"vulpix": {
 			"height": 0.6, "weight": 9.9,
 			"description": "À sa naissance, il n'a qu'une seule queue, toute blanche. Elle se divise et se colore à mesure qu'il grandit."

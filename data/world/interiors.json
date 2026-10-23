@@ -85,6 +85,12 @@
 		"fuchsia_meeting_room",
 		"fuchsia_grandpa_house",
 		"fuchsia_good_rod_house",
+		"cinnabar_center",
+		"cinnabar_mart",
+		"cinnabar_lab",
+		"cinnabar_lab_meeting",
+		"cinnabar_lab_rd",
+		"cinnabar_lab_fossil",
 		"route_12_gate",
 		"route_12_gate_2f"
 	]

@@ -120,6 +120,26 @@ const TEXTS_S2D_STRENGTH: Dictionary[StringName, Array] = {
 	&"strength_used": ["{pokemon} utilise Force ! Les rochers peuvent être déplacés."],
 	&"strength_boulder_fell": ["Le rocher a dévalé dans le trou !"],
 }
+## Jalon 24 : textes du dossier 27 §15 (validés le 2026-10-16) mis en page dans la bulle (retours
+## à la ligne, panneaux « TITRE / texte », T-60 et T-62 écrits par fossile) et répliques de don
+## (« reçoit », « au stockage », modèle du J20) : recommandés, validés d'avance par Kevin le
+## 2026-10-21. Chaque page doit être l'une de celles-ci.
+const TEXTS_J24: Dictionary[StringName, Array] = {
+	&"cinnabar_fossil_ready_kabuto": ["Te voilà ! Ton fossile\nétait un Kabuto !"],
+	&"cinnabar_fossil_ready_omanyte": ["Te voilà ! Ton fossile\nétait un Amonita !"],
+	&"cinnabar_lab_tm35_use": ["{player} reçoit la CT35 Métronome !"],
+	&"cinnabar_fossil_taken": ["Bien. Ça prend un peu de temps :\nva faire un tour dehors !"],
+	&"cinnabar_fossil_received_kabuto": ["{player} reçoit Kabuto !"],
+	&"cinnabar_fossil_received_omanyte": ["{player} reçoit Amonita !"],
+	&"cinnabar_fossil_stored_kabuto": ["Kabuto a été envoyé au stockage."],
+	&"cinnabar_fossil_stored_omanyte": ["Amonita a été envoyé au stockage."],
+	&"cinnabar_fossil_scientist": ["Patience !\nVa faire un tour.", "Je recrée des Pokémon\nà partir de fossiles.", "Tu en as un ?", "Le Fossile Dôme ?\nJe te le prends ?", "Le Fossile Nautile ?\nJe te le prends ?", "Sans fossile, je n'ai rien\nà recréer.", "Il paraît qu'on en trouve\nau Mont Sélénite."],
+	&"cinnabar_gym_sign": ["ARÈNE DE CRAMOIS'ÎLE\nChampion : Auguste,", "le maître du feu\net des énigmes"],
+	&"cinnabar_sign": ["CRAMOIS'ÎLE\nL'île au cœur de feu"],
+	&"cinnabar_lab_pc": ["Un courriel : « Trois Pokémon\noiseaux légendaires", "vivraient à Kanto.", "On parle de l'un d'eux\nprès des Îles Écume… »"],
+	&"route_19_sign": ["ROUTE MARINE 19\nParmanie ↑ · Îles Écume ←"],
+	&"route_20_sign": ["ÎLES ÉCUME\nGrottes glaciales, accès par la mer"],
+}
 ## Jalon 10 : textes verrouillés du dossier 12 (même forme que le dossier 10) et lot de textes du
 ## J10 (panneaux, noms affichés), où un retour à la ligne est écrit « \n ».
 const DOSSIER_12 := "res://docs/design/dossier-12-argenta.md"
@@ -132,6 +152,8 @@ const DOSSIER_17 := "res://docs/design/dossier-17-cap-azuria.md"
 const PLAN_J14 := "res://docs/tech/jalon-14.md"
 ## Jalon 15 : textes validés du §15 (« … » par page ; jetons écrits tels quels).
 const DOSSIER_18 := "res://docs/design/dossier-18-carmin-sur-mer.md"
+## Jalon 24 (T4) : répliques des Dresseurs des Routes 19 à 21 (§15.4, validé le 2026-10-16).
+const DOSSIER_27 := "res://docs/design/dossier-27-iles-ecume.md"
 ## Jalon 18 (T16) : lot validé du dossier 21 §15 et annexe A du plan (une bulle = un morceau d'une
 ## citation ; retour à la ligne = espace, ou « / » d'un panneau à titre).
 const DOSSIER_21 := "res://docs/design/dossier-21-grotte-sombre-lavanville.md"
@@ -224,6 +246,10 @@ const MAPS: Array[StringName] = [
 	&"celadon_restaurant", &"celadon_chief_house", &"celadon_hotel",
 	# Jalon 20 (T21) : la vie du 20-II (Casino déjà listé ; repaire Rocket B1F à B4F).
 	&"rocket_hideout_b1f", &"rocket_hideout_b2f", &"rocket_hideout_b3f", &"rocket_hideout_b4f",
+	# Jalon 24 : la mer, les Îles Écume, Cramois'Île et son Labo.
+	&"route_19", &"route_20", &"route_21", &"seafoam_1f", &"seafoam_b1f", &"seafoam_b2f",
+	&"seafoam_b3f", &"seafoam_b4f", &"cinnabar_island", &"cinnabar_center", &"cinnabar_mart",
+	&"cinnabar_lab", &"cinnabar_lab_meeting", &"cinnabar_lab_rd", &"cinnabar_lab_fossil",
 	# Jalon 21 (T13) : le 7F (Sbires, M. Fuji).
 	&"pokemon_tower_7f",
 	# Jalon 21 (T22) : la Route 16 est (Ronflex ; aucun autre texte).
@@ -442,6 +468,71 @@ const IDS_J14_ROCKET: Array[StringName] = [
 	&"cerulean_rocket_before", &"cerulean_rocket_leaving", &"cerulean_rocket_resume",
 	&"cerulean_rocket_spotted", &"cerulean_rocket_tm", &"cerulean_south_guard",
 	&"cerulean_south_guard_leaving", &"cerulean_victim",
+]
+## Jalon 24 (T4) : répliques des 29 Dresseurs des Routes 19 à 21 (dossier 27 §15.4), en
+## attente de leurs cartes (T8, T11) : exemptées de « utilisé par un PNJ » jusque-là.
+## Jalon 24 (T8, T11 à T15, T18) : panneaux, PNJ et scènes de la mer, des Îles Écume et de
+## Cramois'Île (textes du dossier 27 §15, validés par Kevin le 2026-10-16 ; adaptations de mise en
+## page et répliques de don, recommandées, validées d'avance le 2026-10-21).
+const IDS_J24: Array[StringName] = [
+	&"articuno", &"articuno_cry", &"articuno_flew_away", &"cinnabar_center_cooltrainer",
+	&"cinnabar_center_gentleman", &"cinnabar_fossil_ready_kabuto", &"cinnabar_fossil_ready_omanyte",
+	&"cinnabar_fossil_received_kabuto", &"cinnabar_fossil_received_omanyte",
+	&"cinnabar_fossil_scientist", &"cinnabar_fossil_stored_kabuto",
+	&"cinnabar_fossil_stored_omanyte", &"cinnabar_fossil_taken", &"cinnabar_girl",
+	&"cinnabar_gym_locked", &"cinnabar_gym_sign", &"cinnabar_lab_eevee", &"cinnabar_lab_expert",
+	&"cinnabar_lab_meeting_canon", &"cinnabar_lab_meeting_gramps", &"cinnabar_lab_pc",
+	&"cinnabar_lab_photo", &"cinnabar_lab_seel", &"cinnabar_lab_tm35", &"cinnabar_lab_tm35_offer",
+	&"cinnabar_lab_tm35_use", &"cinnabar_man", &"cinnabar_mansion_rubble", &"cinnabar_mart_scientist",
+	&"cinnabar_mart_silph_worker", &"cinnabar_sign", &"route_19_sign", &"route_20_item_1",
+	&"route_20_sign", &"route_21_item_1", &"seafoam_b2f_hidden_1", &"seafoam_b4f_hidden_1",
+	&"seafoam_sign_boulders", &"seafoam_sign_currents", &"seafoam_sign_danger"
+]
+const IDS_J24_TRAINERS: Array[StringName] = [
+	&"route_19_cooltrainer_hugo_after", &"route_19_cooltrainer_hugo_before",
+	&"route_19_cooltrainer_hugo_defeated", &"route_19_cooltrainer_malo_after",
+	&"route_19_cooltrainer_malo_before", &"route_19_cooltrainer_malo_defeated",
+	&"route_19_swimmer_anais_after", &"route_19_swimmer_anais_before",
+	&"route_19_swimmer_anais_defeated", &"route_19_swimmer_erwan_after",
+	&"route_19_swimmer_erwan_before", &"route_19_swimmer_erwan_defeated",
+	&"route_19_swimmer_gwen_after", &"route_19_swimmer_gwen_before",
+	&"route_19_swimmer_gwen_defeated", &"route_19_swimmer_lena_after",
+	&"route_19_swimmer_lena_before", &"route_19_swimmer_lena_defeated",
+	&"route_19_swimmer_loic_after", &"route_19_swimmer_loic_before",
+	&"route_19_swimmer_loic_defeated", &"route_19_swimmer_maelle_after",
+	&"route_19_swimmer_maelle_before", &"route_19_swimmer_maelle_defeated",
+	&"route_19_swimmer_tanguy_after", &"route_19_swimmer_tanguy_before",
+	&"route_19_swimmer_tanguy_defeated", &"route_19_swimmer_yann_after",
+	&"route_19_swimmer_yann_before", &"route_19_swimmer_yann_defeated",
+	&"route_20_bird_keeper_bastien_after", &"route_20_bird_keeper_bastien_before",
+	&"route_20_bird_keeper_bastien_defeated", &"route_20_swimmer_clara_after",
+	&"route_20_swimmer_clara_before", &"route_20_swimmer_clara_defeated",
+	&"route_20_swimmer_elsa_after", &"route_20_swimmer_elsa_before",
+	&"route_20_swimmer_elsa_defeated", &"route_20_swimmer_iris_after",
+	&"route_20_swimmer_iris_before", &"route_20_swimmer_iris_defeated",
+	&"route_20_swimmer_kilian_after", &"route_20_swimmer_kilian_before",
+	&"route_20_swimmer_kilian_defeated", &"route_20_swimmer_lou_after",
+	&"route_20_swimmer_lou_before", &"route_20_swimmer_lou_defeated",
+	&"route_20_swimmer_mathis_after", &"route_20_swimmer_mathis_before",
+	&"route_20_swimmer_mathis_defeated", &"route_20_swimmer_nina_after",
+	&"route_20_swimmer_nina_before", &"route_20_swimmer_nina_defeated",
+	&"route_20_swimmer_ronan_after", &"route_20_swimmer_ronan_before",
+	&"route_20_swimmer_ronan_defeated", &"route_20_swimmer_solene_after",
+	&"route_20_swimmer_solene_before", &"route_20_swimmer_solene_defeated",
+	&"route_21_fisher_gilles_after", &"route_21_fisher_gilles_before",
+	&"route_21_fisher_gilles_defeated", &"route_21_fisher_marcel_after",
+	&"route_21_fisher_marcel_before", &"route_21_fisher_marcel_defeated",
+	&"route_21_fisher_rene_after", &"route_21_fisher_rene_before",
+	&"route_21_fisher_rene_defeated", &"route_21_fisher_yves_after",
+	&"route_21_fisher_yves_before", &"route_21_fisher_yves_defeated",
+	&"route_21_swimmer_arthur_after", &"route_21_swimmer_arthur_before",
+	&"route_21_swimmer_arthur_defeated", &"route_21_swimmer_dylan_after",
+	&"route_21_swimmer_dylan_before", &"route_21_swimmer_dylan_defeated",
+	&"route_21_swimmer_noe_after", &"route_21_swimmer_noe_before",
+	&"route_21_swimmer_noe_defeated", &"route_21_swimmer_simon_after",
+	&"route_21_swimmer_simon_before", &"route_21_swimmer_simon_defeated",
+	&"route_21_swimmer_thibault_after", &"route_21_swimmer_thibault_before",
+	&"route_21_swimmer_thibault_defeated",
 ]
 ## Jalon 15 (T13) : la Route 5 et ses intérieurs (dossier 18 §15.2, annexe A.3).
 const IDS_J15_ROUTE_5: Array[StringName] = [
@@ -893,7 +984,8 @@ func test_library_loads_without_error() -> void:
 	found.sort()
 	var expected := IDS + IDS_J14_BILL + IDS_J14_ROCKET + IDS_J15_ROUTE_5 + IDS_J16_GYM \
 		+ IDS_J16_SHIP + IDS_J16_RIVAL_CAPTAIN + IDS_J16_T15 + IDS_J17 + IDS_J18 + IDS_J19 + IDS_J20 \
-		+ IDS_J20_T17 + IDS_J20_T21 + IDS_J21 + IDS_J21_T21 + IDS_S2B + S2_FIELD_TRAVEL + IDS_J21_T22
+		+ IDS_J20_T17 + IDS_J20_T21 + IDS_J21 + IDS_J21_T21 + IDS_S2B + S2_FIELD_TRAVEL + IDS_J21_T22 \
+		+ IDS_J24_TRAINERS + IDS_J24
 	expected.append_array(TEXTS_S2C_FISH.keys())
 	expected.append_array(TEXTS_S2D_STRENGTH.keys())
 	expected.append_array(UNVALIDATED)
@@ -922,6 +1014,11 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 	assert_eq(_cutscenes.get_errors().size(), 0, str(_cutscenes.get_errors()))
 	var played := _without_qa(_cutscenes.get_dialogue_ids())
 	assert_eq(played, _sorted([
+		# Jalon 24 : Artikodin, porte de l'Arène, CT35, fossiles.
+		&"articuno_cry", &"articuno_flew_away", &"cinnabar_gym_locked", &"cinnabar_lab_tm35_offer",
+		&"cinnabar_lab_tm35_use", &"cinnabar_fossil_taken", &"cinnabar_fossil_ready_kabuto", &"cinnabar_fossil_ready_omanyte",
+		&"cinnabar_fossil_received_kabuto", &"cinnabar_fossil_received_omanyte",
+		&"cinnabar_fossil_stored_kabuto", &"cinnabar_fossil_stored_omanyte",
 		# Jalon 13 (T19) : Ondine à l'Arène.
 		&"cerulean_gym_misty_badge", &"cerulean_gym_misty_intro", &"cerulean_gym_misty_lost",
 		&"cerulean_gym_misty_resume", &"cerulean_gym_misty_tm", &"cerulean_gym_misty_tm_late",
@@ -1066,6 +1163,9 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 				assert_true(pair[0].load_file((pair[1] as String).path_join(file)), file)
 	var set_flags := dialogues.get_set_flags() + cutscenes.get_set_flags() \
 		+ StarterChoice.get_set_flags(_offer)
+	# Jalon 24 (T13) : « fossile prêt », posé par le code à l'arrivée sur Cramois'Île
+	# ([FossilReadyGate]).
+	set_flags.append(&"fossil_ready")
 	var read_flags := dialogues.get_condition_flags() + cutscenes.get_condition_flags()
 	for map_id: StringName in MAPS:
 		for spec: NpcSpec in NpcRoster.load_for_map(map_id).get_all():
@@ -1128,6 +1228,11 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		&"saffron_gates_open",
 		# Jalon 20 (T12) : Évoli reçu (étape « gift_pokemon »).
 		&"eevee_received",
+		# Jalon 24 : objets et caches, Artikodin (rencontre fixe), CT35, fossiles confiés et reçus.
+		&"got_route_20_item_1", &"got_route_21_item_1", &"got_seafoam_b2f_hidden_1",
+		&"got_seafoam_b4f_hidden_1", &"articuno_done", &"articuno_caught", &"got_tm35",
+		&"fossil_reviving_kabuto", &"fossil_reviving_omanyte", &"fossil_revived_kabuto",
+		&"fossil_revived_omanyte",
 		&"route_3_entered", &"route_3_guard_cleared", &"route_4_reached", &"route_5_entered",
 		&"starter_chosen",
 		&"starter_offered", &"tm11_received", &"tm34_received", &"viridian_arrived",
@@ -1377,6 +1482,7 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 	var lot_j10 := FileAccess.get_file_as_string(LOT_J10)
 	var dossier_14 := FileAccess.get_file_as_string(DOSSIER_14)
 	var dossier_18 := FileAccess.get_file_as_string(DOSSIER_18)
+	var dossier_27 := FileAccess.get_file_as_string(DOSSIER_27)
 	var dossier_19 := FileAccess.get_file_as_string(DOSSIER_19)
 	var annex_a_15 := AnnexATexts.annex_a(FileAccess.get_file_as_string(JALON_15))
 	var dossier_16 := FileAccess.get_file_as_string(DOSSIER_16).replace("\n    ", " ") \
@@ -1427,6 +1533,9 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 		if TEXTS_S2D_STRENGTH.has(row[0]):
 			assert_true(TEXTS_S2D_STRENGTH[row[0]].has(row[1]), "%s : %s" % [row[0], row[1]])
 			continue
+		if TEXTS_J24.has(row[0]):
+			assert_true(TEXTS_J24[row[0]].has(row[1]), "%s : %s" % [row[0], row[1]])
+			continue
 		var text: String = row[1]
 		for token: String in _DOSSIER_TOKENS:
 			text = text.replace(token, _DOSSIER_TOKENS[token])
@@ -1444,6 +1553,9 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			or _each_line_quoted(dossier_14, text)
 			or _in_dossier_18(dossier_18, text)
 			or _in_dossier_18(annex_a_15, text)
+			# J24 (T4) : Dresseurs des Routes 19 à 21 (dossier 27 §15.4 ; test_j24_data vérifie
+			# chaque réplique entière).
+			or _in_dossier_18(dossier_27, text)
 			# J15 (T13) : panneaux « TITRE — texte » (§15.2, T-1) écrits sur deux lignes ; le
 			# carrefour de l'annexe A.3 (« … → · … ← ») aussi.
 			or dossier_18.contains("« %s »" % text.replace("\n", " — "))
@@ -1704,7 +1816,8 @@ func test_oak_parcel_lines() -> void:
 	# Giovanni et le Scope Sylphe.
 	# Jalon 22 (T13, T17) : la Canne du pêcheur de Carmin, l'échange du Bon à Azuria (les données
 	# des fichiers j22_*.json sont vérifiées par test_j22_data).
-	assert_eq(launched, 108, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
+	# Jalon 24 : deux objets au sol, deux caches, Artikodin, la CT35, deux dons de fossile.
+	assert_eq(launched, 116, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
 		+ "sa CT34, Ondine (pont, Arène et rattrapage), écran, module, console, objets de la "
 		+ "Route 25, le Rocket d'Azuria (2) et le barrage sud ; J15 : objets de la Route 5 ; "
 		+ "J16 : Major Bob (2), neuf objets du S.S. Anne, le capitaine, le marin (2) ; "
@@ -1713,7 +1826,8 @@ func test_oak_parcel_lines() -> void:
 		+ "J20 (T17) : Super Potion de la Route 8, quatre caches (Route 8, souterrain ×2, "
 		+ "ville), Erika (2) ; "
 		+ "J20 (T21) : repaire (11 objets, 3 caches, Clé ×2, Giovanni, Scope) ; "
-		+ "J21 (T13, T14) : M. Fuji au 7F et dans sa maison ; J22 : la Canne, la Bicyclette")
+		+ "J21 (T13, T14) : M. Fuji au 7F et dans sa maison ; J22 : la Canne, la Bicyclette ; "
+		+ "J24 : objets (2), caches (2), Artikodin, CT35, fossiles (2)")
 	# Le jeton n'apparaît que dans la réplique de l'espèce, « {pokemon} » dans les phrases du
 	# compagnon (J11), et ceux de la Pension dans ses répliques (J15).
 	for row: Array in _pages():
@@ -1739,6 +1853,8 @@ func test_oak_parcel_lines() -> void:
 				or (row[0] == &"rival_tower_intro" and row[1].contains("{player}")) \
 				or (String(row[0]).begins_with("saffron_gate_drink_") and row[1].contains("{player}")) \
 				or row[0] == &"celadon_eevee_received" or row[0] == &"fishing_cast" \
+				or String(row[0]).begins_with("cinnabar_fossil_received_") \
+				or row[0] == &"cinnabar_lab_tm35_use" \
 				or (row[0] in [&"route_12_gate_tm39_got", &"snorlax_flute_played"] \
 					and row[1].contains("{player}")) \
 				or (row[0] in [&"rocket_hideout_b4f_lift_key_got",

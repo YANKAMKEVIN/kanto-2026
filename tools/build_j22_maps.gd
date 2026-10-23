@@ -16,7 +16,8 @@ extends SceneTree
 ## arrivées (une par case, `<nom>`, `<nom>_1`…), panneaux et objets cachés (`InteractPoint`),
 ## Pokémon du décor sans planche (examen), déclencheurs des gardes de la Piste.
 ## Une destination dont la scène n'existe pas encore (Route 12 et Route 16 du J21) devient
-## « À venir » ; relancer l'outil quand elle existe.
+## « À venir » ; relancer l'outil quand elle existe. Bord sud de Parmanie ↔ Route 19 (J24,
+## `tools/build_j24_sea.gd`) : une arrivée par case, lues dans la scène de la Route 19.
 
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 
@@ -276,6 +277,8 @@ func _add_warp(spec: Dictionary, root: Node2D, id: String, cells: Array[Vector2i
 	var spawn: String = attrs.get("spawn", "")
 	var exists: bool = _built.has(target) or ResourceLoader.exists(MAPS_DIR + "%s.tscn" % target)
 	var target_cells: Array = (_spawns.get(target, {}) as Dictionary).get(spawn, [])
+	if exists and not _spawns.has(target):
+		target_cells = _foreign_spawns(target, spawn)
 	for i: int in cells.size():
 		var name := "%s_%d" % [_node_name(id), i]
 		if not exists:
@@ -288,6 +291,21 @@ func _add_warp(spec: Dictionary, root: Node2D, id: String, cells: Array[Vector2i
 			arrival = "%s_%d" % [spawn, i]
 		_warp(root, name, cells[i], trigger, direction, target, StringName(arrival),
 			_arrival_facing(target, spawn, direction), "")
+
+
+## Arrivées [param spawn], [param spawn]`_1`… d'une carte construite par un autre outil (Route 19
+## du J24 : une arrivée par case du bord) ; seule leur quantité compte (même rang des deux côtés).
+func _foreign_spawns(target: StringName, spawn: String) -> Array:
+	var scene := load(MAPS_DIR + "%s.tscn" % target) as PackedScene
+	var root := scene.instantiate()
+	var spawns := root.get_node_or_null(^"Spawns")
+	var out: Array = []
+	if spawns != null and spawns.has_node(NodePath(spawn)):
+		out.append(spawn)
+		while spawns.has_node(NodePath("%s_%d" % [spawn, out.size()])):
+			out.append("%s_%d" % [spawn, out.size()])
+	root.free()
+	return out
 
 
 ## Arrivée « tournée » de la carte cible (attribut facing de sa grille), sinon la direction du

@@ -1,0 +1,10 @@
+{
+	"route_20_item_1": {
+		"cutscene": "route_20_item_1"
+	},
+	"route_20_sign": {
+		"pages": [
+			"ÎLES ÉCUME\nGrottes glaciales, accès par la mer"
+		]
+	}
+}
