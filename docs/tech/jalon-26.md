@@ -465,3 +465,18 @@ variante `bulbasaur`, 3e Pokémon `sandshrew` N20 → `gyarados` N20 avec capaci
 copie de `rival_silph` avec Sablaireau : à aligner à sa fusion (prendre celle du J26). Le
 `rival_route22_final` de `origin/jalon-29` est déjà RB (Léviator 47).
 
+
+## QA A17 du 2026-10-23
+
+Session de nuit sur le Galaxy A17 (APK debug, départs de débogage et variantes locales à équipe
+forte ; captures et notes : `~/dev/qa-nuit2/j26/`). **OK** : `saffron_gate` (Eau Fraîche, garde
+écarté, ville occupée) ; sbire de l'Arène (« Ordre du patron »), Dojo « À venir » ; téléporteurs
+2F ↔ 8F (arrivée exacte, pas de boucle) ; porte à carte refusée sans Carte, ouverte avec (OUVRIR
+disparaît) ; rival n° 6 variantes Salamèche (défaite → réveil) et Carapuce (victoire, équipe RB) ;
+Lokhlass envoyé au Stockage avec équipe pleine, pas de second don ; Giovanni 11F, Master Ball, pas de
+seconde Master Ball ; `saffron_free` (sbire de l'Arène parti). **Perf A17** (Mali-G57) : Safrania
+26–30 i/s (draw ≈ 205), étages 45–56 i/s : le « 60 i/s sur un grand étage » est à juger sur le S24.
+**Ouvert, mineur** : au poste de Safrania (J20, `routes_7_8.json`), la narration « Kevin donne une
+Eau Fraîche au garde. » s'affiche sous le nom « Garde » ; au 11F le sbire (15, 9) reste après la
+défaite de Giovanni (à confirmer contre RB). Non joué : variante Bulbizarre, défaite contre Giovanni,
+appel pendant son combat (un départ de débogage n'écrit pas la sauvegarde).
