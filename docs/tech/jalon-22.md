@@ -158,8 +158,8 @@ Fusion de `origin/systemes-2` dans `jalon-22` (`5ee69e45`). Réponses aux points
 | Mode Vélo, bouton HUD, Piste, pente | Livrés (`Mount`, `MountRules`, `MountDirector`, `BikeButton`, `GameMap.cycling_road`, `slope_cells`) | T14, T15, T16 **faits par la passe**. Écart [D] du J22 : `GameMap.cycling_road_cells` (Piste sur une partie de carte : Route 16 ouest voie basse, Route 18 ouest) ; `MountDirector` et `FishingDirector` lisent la case du joueur. |
 | Pêche | Livrée (S2C-bis : `FishingDirector`, PÊCHER, tables `data/fishing/water_rod.json`) | T13 (système) **fait par la passe** ; le J22 branche `data/world/fishable.json` dans `GameMap.fishable_set` (cartes livrées) et marque ses cartes (« f »). |
 | `if_items`, étape de retrait | `if_items` / `unless_items` sur les dialogues (J20) ; étape `take` (J20) | Échange du Bon : variante `if_items [bike_voucher]` + scène avec `take`. Les scènes n'ont pas de condition d'objet : les gardes de la Piste lisent `got_bicycle` (posé seulement par l'échange). |
-| `full_heal` (Total Soin) | Absent | Antidote à la Boutique de Parmanie (dossier §10.2). |
-| CT20 Frénésie | `rage` en `pending_effects` (aucun effet) | **CT09 Bélier** à sa place [D] (Bélier existe, recul codé, jamais distribuée) ; texte §16.8.12. À confirmer par Kevin. |
+| `full_heal` (Total Soin) | Absent | ~~Antidote à la Boutique de Parmanie (dossier §10.2).~~ **Créé le 2026-10-22** (décision de Kevin, §9) : copie à l'identique du J24 et du J29, Boutique de Parmanie = liste RB. |
+| CT20 Frénésie | `rage` en `pending_effects` (aucun effet) | **CT09 Bélier** à sa place (Bélier existe, recul codé, jamais distribuée) ; texte §16.8.12. **Validé par Kevin le 2026-10-22** (§9). |
 | Grottes `interior` | Mont Sélénite, Cave Taupiqueur, Grotte Sombre : extérieures | Vélo permis (MapTraits). |
 | Routes 12 et 16 du J21 | Pas encore construites (`origin/jalon-21` à `3fbca1ff` : grilles seulement) | Passages vers elles « À venir » ; contrat ci-dessous. |
 | Ptitard, Tentacool | Au J21 seulement (`kanto_j21.json`, Amnésie et Bouclier dans `moves/j21.json`) | **Copie à l'identique** (`species/kanto_j22_j21.json`, `moves/j22_j21.json`, Pokédex) ; **à retirer à la fusion du J21** (doublons d'identifiants). Dos provisoires repris du J24 (mêmes fichiers). |
@@ -880,3 +880,81 @@ Léonce, Capucine → Maëlle.
 | 9 | `fuchsia_qa` | Parmanie : Centre, Boutique, Salle de réunion, grand-père, Super Canne, étang ; portes Arène / Safari / Gardien / Route 19 | intérieurs, « À venir » en debug ; Poissoroy possible à la Méga Canne |
 | 10 | (Route 16 ouest, voie haute) | entrer dans la maison de Vol | CS02 reçue une fois |
 | 11 | partout | relancer l'appli | état gardé (v7) |
+
+## QA de nuit sur A17 par adb (2026-10-22), non validée par Kevin
+
+Exécutée par un agent, seul, par adb, sur le **Galaxy A17** (`R5GYB2R7W2Y`, Mali-G57 MC2, 2340 × 1080),
+APK debug construit depuis `jalon-22` (`c2473a0f`). Rien n'est validé : Kevin relit et tranche.
+Captures et journaux : `~/dev/qa-nuit/J22/` (sur le Mac, hors dépôt). Départs de débogage : la
+sauvegarde n'est ni lue ni écrite.
+
+| n° | Départ | Résultat | Notes |
+|---|---|---|---|
+| 1 | `fishing_qa` | OK | « Ah, te voilà ! … Voici ma vieille Canne. », toast CANNE ; quai de Carmin : PÊCHER, « Kevin lance sa ligne… », Magicarpe N5 (`04_*`, `06`, `08_*`) |
+| 2 | `route_12_south_qa` | OK | ponton descendu ; maison : Méga Canne reçue (`18_*`) ; pêche à la berge : Krabby N15, Tentacool N5 (table par défaut) ; ≈ 25 % de touches sur 12 lancers pour 75 % attendus, échantillon trop petit pour conclure |
+| 3 | `route_15_qa` | OK en partie | Route 15 seulement (13 et 14 non parcourues) : Motard Mike, Jeune Dresseuse Rose, Ornithologue Gustave, Jeune Dresseuse (Mélofée) l'ont arrêté, textes OK ; poste 15 : 2F assistant (« Ton Pokédex en est à 6 espèces »), jumelles (« Au loin, on voit Parmanie… ») ; **arrivée à Parmanie non faite** |
+| 4 | `bike_qa` | OK en partie | Président : NON → « Oh… Une autre fois, alors. » ; OUI → histoire, Bon de Commande, une seule fois (« Mon Ponyta te passe le bonjour ! ») ; **vendeur d'Azuria non testé** |
+| 5 | `cycling_road_nobike_qa` | OK | « Désolé ! La Piste Cyclable est rés… », recul d'une case |
+| 6 | `cycling_road_qa` | **défaut, corrigé le 2026-10-22 (§9)** | salut du garde une fois : OK ; à la sortie sur la Piste, **le héros est dessiné à pied** (aucune bicyclette visible), bouton Vélo grisé ; l'appuyer donne « Pas de marche à pied sur la Piste Cyclable ! » — l'état semble « en selle » mais le sprite ne le montre pas (art des planches vélo peut-être pas encore branché). Même chose à Parmanie après appui sur le bouton Vélo (`64`–`70`, `82`) |
+| 7 | (suite) | non testé | pente / dérive et objets cachés non parcourus (temps) ; fps sur la Piste ≈ 58–60 |
+| 8 | (suite) | non testé | Route 18 → poste 18 → Parmanie |
+| 9 | `fuchsia_qa` | OK en partie | étang : Krabby N15, Poissirène N15 à la Méga Canne (Poissoroy non sorti en 6 lancers) ; Bicyclette : bouton actif dehors ; **intérieurs et portes « À venir » non visités** |
+| 10 | Route 16 ouest, voie haute | non testé | maison de Vol |
+| 11 | partout | non testable | départs de débogage sans sauvegarde |
+
+**Bilan** : 3 OK, 4 OK en partie, 1 défaut à confirmer, 3 non testés / non testables.
+
+**fps (moyennes `[perf]`)** : Route 12 sud 58, Route 15 55, Piste 58–60, Parmanie 58, intérieurs
+52–60 ; **Carmin (quai) 26–27** (creux 7 au chargement partout). Journal Godot : aucune erreur ni
+avertissement.
+
+## 9. Décisions de Kevin et corrections (2026-10-22)
+
+**Validé par Kevin le 2026-10-22** :
+- **CT09 Bélier** retenue à la place de la CT20 Frénésie (§0.5, objet de la Route 15).
+- **Prénoms renommés** acceptés (Lou → Lison, Firmin → Ferdinand, Anatole → Léonce, Capucine →
+  Maëlle, §8.1).
+- **Textes** du J22 validés (dossier 25 §16 et §16.8).
+
+**Total Soin créé** (`full_heal`, décision de Kevin : « on va créer Total Soin si dans l'histoire
+en principe à ce moment Total Soin existe »).
+- **Vérifié dans pokered** (`data/items/marts.asm`) : la Boutique de Parmanie (`FuchsiaMart`) vend
+  Hyper Ball, Super Ball, Super Potion, Rappel, **Total Soin**, Super Repousse. C'est la
+  **première boutique** du jeu qui le vend (le Grand Magasin de Céladopole, 2F, n'a que les
+  remèdes séparés ; ensuite Safrania, Cramois'Île, Plateau Indigo). Il existe donc bien à ce
+  moment de l'histoire.
+- **Donnée** : copie à l'identique de `origin/jalon-24` (`items_j24.json`) et `origin/jalon-29`
+  (`items_j29_reprises.json`) dans `data/items/items_j22.json` : soigne poison, paralysie,
+  sommeil, brûlure, gel ; **600 ₽** (prix RB). **À la fusion** du J24 ou du J29 : garder une seule
+  définition (doublon d'identifiant). Les autres branches (`jalon-21`, 23, 25 à 28, 30) ne le
+  définissent pas (`jalon-25` porte celle du J24).
+- **Boutique de Parmanie** (`data/shops/fuchsia_mart.json`) = liste RB : Hyper Ball, Super Ball,
+  Super Potion, **Rappel**, **Total Soin**. Retirés : l'Antidote provisoire et l'**Hyper Potion**
+  (pas vendue à Parmanie dans RB ; elle reste un objet trouvé des Routes 12, 13, 16). **Super
+  Repousse** absente du jeu (aucune Repousse définie) : non vendue [D].
+- **Icône** : pas nécessaire (le Sac et la Boutique gardent l'icône générique quand
+  `assets/ui/items/<id>.webp` manque, comme l'Hyper Potion) ; à peindre avec la série 25.
+- Test : `test_j22_data.test_fuchsia_mart_sells_full_heal_like_red_blue`.
+
+**Défaut n° 6 de la QA de nuit corrigé** (Piste « à pied » à la sortie du poste 16).
+- **Reproduit** sur la vraie Boot avec le départ du téléphone (`cycling_road_qa.json`) :
+  `test_j22_cycling_road_qa`.
+- **Cause** : ni l'ordre entre la monture d'arrivée et `map_changed`, ni `cycling_road_cells` :
+  l'état était juste (`Player.get_mount()` = BIKE, `GameState.player_mount` = BIKE dès l'arrivée).
+  Le joueur n'a **aucune animation `bike_*`** (planches vélo de la série 25 pas livrées) et
+  `Player._mounted_animation` retombait sans signe sur la marche : en selle, mais dessiné à pied.
+  Le bouton grisé et « Pas de marche à pied… » sont **voulus** sur la Piste (descente refusée,
+  dossier 25 §16.1.4) : ils confirmaient qu'il était en selle. Même cause à Parmanie après appui.
+- **Correction** (`game/player/player.gd`) : **vélo provisoire** (image du vélo garé
+  `prop_velo_01.png`, échelle 0,6 [D]) dessiné sous le héros tant que l'apparence n'a pas
+  d'animations `bike_*` : de profil à gauche et à droite (derrière lui), resserré à 30 % [D] et
+  devant lui de face et de dos ; suit le saut de rebord. `Player.is_bike_drawn()` pour les tests.
+  Disparaît seul quand l'art `bike_*` arrivera. Le Surf a le même trou (pas d'art) : hors J22.
+- Captures Mac relues (Parmanie, 4 directions, 2340 × 1080).
+
+**Test masqué remis en route** : `test_dialogue_data.gd` ne se chargeait plus depuis le J22
+(`dossier_25` non déclaré, erreur d'analyse) : la suite complète l'ignorait. Déclaration ajoutée ;
+la liste des drapeaux posés par les scènes reçoit ceux du J22 (Bon, Bicyclette, cannes, CS02,
+saluts des gardes, objets des Routes 12 à 17).
+
+Suite complète après ces corrections (2026-10-22) : **6 522 / 6 522** (597 scripts), import sans erreur.

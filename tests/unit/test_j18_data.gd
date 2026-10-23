@@ -53,7 +53,8 @@ const TEXTS := {
 ## Textes dits en deux temps (première fois, puis ensuite) : [dialogue, variante].
 const TWO_STEP := {
 	# J19 (T20) : T-25 est remplacé par §15.6.1 (`test_lavender_j19`) ; T-26 garde sa place.
-	"T-26": [&"pokemon_house_kid", 1],
+	# J21 (T14) : variante « Papy Fuji est rentré » en tête (`if [fuji_rescued]`) : T-26 passe en 2.
+	"T-26": [&"pokemon_house_kid", 2],
 }
 ## J19 (T16) : T-34 et T-35 (Exorciste) sont remplacés par la scène `tower_guardian` et le
 ## texte §15.1.5 du dossier 22 (`test_pokemon_tower_1f_j19`, `test_tower_texts`).
@@ -201,11 +202,13 @@ func test_texts_said_in_two_steps() -> void:
 		var variant: DialogueVariant = dialogue.variants[TWO_STEP[tag][1]]
 		assert_eq(_text_of(variant, "speech"), " ".join(_quotes(_dossier, tag)), tag)
 	# J19 (T16) : l'Exorciste ne pose plus `tower_medium_talked` (variantes du dossier 22 §15.1).
+	# J21 (T14) : variante §15.5.1 en tête (`if [fuji_rescued]`) ; celles du J19 suivent, inchangées.
 	var exorcist := _dialogues.get_dialogue(&"pokemon_tower_exorcist")
-	assert_eq(exorcist.variants.size(), 2)
-	assert_eq(exorcist.variants[0].if_flags, [&"tower_stairs_open"] as Array[StringName])
-	assert_eq(exorcist.variants[1].unless_flags, [&"tower_stairs_open"] as Array[StringName])
-	assert_eq(exorcist.variants[1].cutscene, &"tower_guardian")
+	assert_eq(exorcist.variants.size(), 3)
+	assert_eq(exorcist.variants[0].if_flags, [&"fuji_rescued"] as Array[StringName])
+	assert_eq(exorcist.variants[1].if_flags, [&"tower_stairs_open"] as Array[StringName])
+	assert_eq(exorcist.variants[2].unless_flags, [&"tower_stairs_open"] as Array[StringName])
+	assert_eq(exorcist.variants[2].cutscene, &"tower_guardian")
 
 
 func test_the_couple_says_the_same_text() -> void:
@@ -274,7 +277,8 @@ func test_coming_soon_labels_are_t29() -> void:
 	map.free()
 	labels.sort()
 	# Jalon 20 (T15) : le bord ouest mène à la vraie Route 8 ; reste la Route 12.
-	assert_eq(labels, ["ROUTE 12 — À venir"] as Array[String])
+	# Jalon 21 (T21) : le bord sud mène à la vraie Route 12 : plus rien « à venir ».
+	assert_eq(labels, [] as Array[String])
 
 
 func test_objectives_are_t56_in_lower_case_and_in_order() -> void:
@@ -286,7 +290,10 @@ func test_objectives_are_t56_in_lower_case_and_in_order() -> void:
 	# Les objectifs du J20 (T17), puis ceux du J19 (clôture T24) passent devant : ceux du J18
 	# suivent, groupés.
 	var first := ids.find(OBJECTIVES[0][0])
-	assert_eq(ids.slice(0, first), [&"return_gold_teeth", &"challenge_koga", &"back_to_tower", &"search_game_corner", &"explore_celadon",
+	# Jalon 21 (T14) : `visit_fuji` et `find_fuji` en tête (ordre « plus avancé d'abord ») ;
+	# jalon 23 (dossier 26 §8) : Dents d'Or, puis Koga, devant eux.
+	assert_eq(ids.slice(0, first), [&"return_gold_teeth", &"challenge_koga", &"visit_fuji",
+		&"find_fuji", &"back_to_tower", &"search_game_corner", &"explore_celadon",
 		&"go_celadon", &"see_the_ghosts", &"climb_tower"] as Array[StringName])
 	for i: int in OBJECTIVES.size():
 		assert_eq(ids[first + i], OBJECTIVES[i][0], "objectifs du J18 groupés (§4.13)")

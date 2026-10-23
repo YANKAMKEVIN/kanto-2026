@@ -1,0 +1,19 @@
+{
+	"seafoam_b2f_floor": {
+		"maps": ["seafoam_b2f"],
+		"terrain": "floor",
+		"rate": 10,
+		"slots": [
+			{ "species": "seel", "levels": [30, 32], "weight": 90 },
+			{ "species": "slowpoke", "levels": [30, 32], "weight": 38 },
+			{ "species": "psyduck", "levels": [30, 32], "weight": 38 },
+			{ "species": "horsea", "levels": [28, 30], "weight": 19 },
+			{ "species": "staryu", "levels": [28, 30], "weight": 19 },
+			{ "species": "shellder", "levels": [28, 30], "weight": 19 },
+			{ "species": "krabby", "levels": [28, 30], "weight": 19 },
+			{ "species": "golbat", "levels": [30, 30], "weight": 11 },
+			{ "species": "slowbro", "levels": [37, 37], "weight": 2 },
+			{ "species": "golduck", "levels": [37, 37], "weight": 1 }
+		]
+	}
+}

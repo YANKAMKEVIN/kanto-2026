@@ -8,6 +8,11 @@ extends GutTest
 ## - **aucun drapeau du J20** (dossier 23 §17, `origin/jalon-20`) n'y est posé ni lu ;
 ## - le mode spectre lit le Sac (`ghost_unless_item`), jamais un drapeau ; le SPECTRE du 6F est
 ##   `ghost: always`.
+## Jalon 21 (T15, `jalon-21.md` §2.7, §2.9, §2.13) : le J21 ajoute des **blocs** dans des
+## fichiers du J19 (variante A du 6F en tête de `tower_6f_ghost`, variantes `if [fuji_rescued]` en
+## tête des dialogues de Lavanville, M. Fuji `if [fuji_rescued]` dans la Maison des Pokémon). Ils
+## sont retirés ici avant le contrôle ([method _strip_j21_blocks], liste fermée) : ce contrat porte
+## sur la donnée du J19, inchangée ; les blocs du J21 sont contrôlés par `test_j21_flags_contract`.
 
 ## Fichiers JSON créés ou modifiés par le J19.
 const J19_JSON: Array[String] = [
@@ -51,6 +56,17 @@ const J21_FLAGS: Array[String] = ["ghost_marowak_calmed", "fuji_rescued", "got_p
 const J21_PREFIX: String = "beaten_tower_rocket_"
 ## Seule lecture permise d'un drapeau du J21 : la variante du SPECTRE du 6F.
 const ALLOWED_J21_READ: String = "ghost_marowak_calmed"
+## Jalon 21 : blocs du J21 attendus dans les fichiers du J19 (« fichier/identifiant » → nombre de
+## variantes ou d'entrées retirées).
+const J21_BLOCKS: Dictionary[String, int] = {
+	"pokemon_tower_floors.json/tower_6f_ghost": 1,
+	"pokemon_tower.json/pokemon_tower_exorcist": 1,
+	"lavender_houses.json/pokemon_house_kid": 1,
+	"lavender_houses.json/pokemon_house_man": 1,
+	"lavender_houses.json/pokemon_house_girl": 1,
+	"lavender_houses.json/lavender_center_gentleman": 1,
+	"pokemon_house.json/mr_fuji": 1,
+}
 ## Drapeaux du J20 (dossier 23 §17 sur `origin/jalon-20`, 2026-10-19) et Dresseurs du J20
 ## (`data/trainers/route_8.json`, `celadon_gym.json`, `rocket_hideout.json` de cette branche).
 const J20_FLAGS: Array[String] = [
@@ -79,6 +95,47 @@ func before_all() -> void:
 		var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(path))
 		assert_not_null(parsed, "lisible : %s" % path)
 		_json[path] = parsed
+	_strip_j21_blocks()
+
+
+## Jalon 21 : retire les blocs du J21 des fichiers du J19 (variante avec `if_items` en tête d'une
+## scène, variante ou PNJ dont le `if` nomme un drapeau du J21) ; ils doivent être exactement
+## ceux de [constant J21_BLOCKS].
+func _strip_j21_blocks() -> void:
+	var stripped: Dictionary[String, int] = {}
+	for path: String in _json:
+		var root: Variant = _json[path]
+		if not root is Dictionary:
+			continue
+		for id: Variant in (root as Dictionary).keys():
+			var entry: Variant = root[id]
+			if not entry is Dictionary:
+				continue
+			var key := "%s/%s" % [path.get_file(), id]
+			if _is_j21_block(entry):
+				(root as Dictionary).erase(id)
+				stripped[key] = stripped.get(key, 0) + 1
+				continue
+			var variants: Variant = (entry as Dictionary).get("variants")
+			if not variants is Array:
+				continue
+			var kept: Array = []
+			for variant: Variant in variants:
+				if variant is Dictionary and _is_j21_block(variant):
+					stripped[key] = stripped.get(key, 0) + 1
+				else:
+					kept.append(variant)
+			(entry as Dictionary)["variants"] = kept
+	assert_eq(stripped, J21_BLOCKS, "blocs du J21 dans les fichiers du J19")
+
+
+func _is_j21_block(entry: Dictionary) -> bool:
+	if entry.has("if_items"):
+		return true
+	for flag: String in _strings(entry.get("if")):
+		if _is_j21(flag):
+			return true
+	return false
 
 
 ## Drapeaux du J19 (§2.13).

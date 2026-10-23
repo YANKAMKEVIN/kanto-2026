@@ -1,0 +1,13 @@
+{
+	"pokemon_tower_top": {
+		"maps": ["pokemon_tower_7f"],
+		"terrain": "floor",
+		"rate": 15,
+		"ghost_unless_item": "silph_scope",
+		"slots": [
+			{ "species": "gastly", "levels": [20, 24], "weight": 191 },
+			{ "species": "haunter", "levels": [28, 30], "weight": 39 },
+			{ "species": "cubone", "levels": [22, 24], "weight": 26 }
+		]
+	}
+}

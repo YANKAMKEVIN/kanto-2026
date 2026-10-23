@@ -10,16 +10,6 @@
 		"effects": [{ "kind": "stat_stage", "stat": "eva", "stages": 1, "target": "self" }],
 		"description": "Le lanceur se démultiplie par des mouvements rapides. Augmente son esquive."
 	},
-	"vice_grip": {
-		"name": "Force Poigne", "type": "normal", "category": "physical",
-		"power": 55, "accuracy": 100, "pp": 30,
-		"description": "Le lanceur saisit la cible entre ses pinces et la serre très fort."
-	},
-	"guillotine": {
-		"name": "Guillotine", "type": "normal", "category": "status",
-		"accuracy": 30, "pp": 5, "effects": [{ "kind": "ohko" }],
-		"description": "Une pince géante qui met K.O. d'un coup."
-	},
 	"toxic": {
 		"name": "Toxik", "type": "poison", "category": "status",
 		"accuracy": 85, "pp": 10,

@@ -1,0 +1,49 @@
+# Grille d'essai (fixture de test, jamais livrée) : ancienne grille de carte de QA de la passe systèmes 2,
+# carte retirée en S2Z (T33). Lue par tools/art/plan_check_systemes2.py et plan_check_teleports.py.
+# Carte de QA « Surf » — passe systèmes 2 (docs/tech/systemes-2.md §2.5, §2.6, §2.14 ; T3c). Retirée à
+# la clôture (S2Z).
+#
+# Ce qu'on y teste : montée depuis la plage (x 1..6), nage, descente sur l'îlot (16..18, 8..9),
+# rencontres « water », Nageur (15, 13) qui voit vers l'ouest, eau décor (rangées 0..1 et colonne
+# 25 hors de la bande de sortie) jamais atteinte ; COURANT : flèches > (12..20, 4) puis v (21, 4..9)
+# jusqu'au passage (21, 10) → essai_mer_2 ; bord est en mer (25, 11..14) → essai_mer_2 (monture transmise) ;
+# arrivée en Surf forcé « s » (24, 12) depuis essai_mer_2. Pêche (S2C-bis) depuis la plage, rangées 2..9 ; SURFER depuis les rangées 10..16.
+# Contrôle : tools/art/plan_check_systemes2.py.
+#
+# Légende :
+#   # falaise (bloquée)   . sable (terre)   w eau surfable   ~ eau décor (non surfable)
+#   > v courant (sur l'eau, sens du flux)    s arrivée en Surf forcé    E entrée (warp PUSH ↓)
+
+PRATICABLES .wE><vs^
+
+GRILLE 26 18
+00 ~~~~~~~~~~~~~~~~~~~~~~~~~~
+01 ~~~~~~~~~~~~~~~~~~~~~~~~~~
+02 #......wwwwwwwwwwwwwwwwww~
+03 #......wwwwwwwwwwwwwwwwww~
+04 #......wwwww>>>>>>>>>vwww~
+05 #......wwwwwwwwwwwwwwvwww~
+06 #......wwwwwwwwwwwwwwvwww~
+07 #......wwwwwwwwwwwwwwvwww~
+08 #......wwwwwwwww...wwvwww~
+09 #......wwwwwwwww...wwvwww~
+10 #......wwwwwwwwwwwwwwwwww~
+11 #......wwwwwwwwwwwwwwwwwww
+12 #......wwwwwwwwwwwwwwwwwsw
+13 #......wwwwwwwwwwwwwwwwwww
+14 #......wwwwwwwwwwwwwwwwwww
+15 #......wwwwwwwwwwwwwwwwww~
+16 #......wwwwwwwwwwwwwwwwww~
+17 ##EE######################
+FIN
+
+POSITIONS
+depart             depart           2,16         libre
+sortie_o           warp             2,17         libre   vers=essai_monture:depart
+sortie_e           warp             3,17         libre   vers=essai_monture:depart
+passage_courant    passage          21,10        libre   vers=essai_mer_2:from_current  # fin du courant
+bord_est           warp             25,11..14    libre   vers=essai_mer_2:from_west  # PUSH →, en Surf
+from_east          spawn            24,12        libre   surf=oui
+nageur             pnj              15,13        bloque  move_mode=surf facing=left sight=4 role=dresseur
+peche              repere           6,9          libre   # case de pêche (S2C-bis) : face à l'est
+FIN

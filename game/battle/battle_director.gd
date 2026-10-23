@@ -57,6 +57,11 @@ extends Node
 ## nomment ainsi ; le moteur masque le reste ([GhostDisguise]). Une Ball choisie dans le Sac est
 ## refusée par « ghost_ball_refused » [b]avant[/b] d'être retirée du Sac, sans tour joué
 ## ([method Battle.refuses_balls]) ; le choix reprend.
+##
+## Jalon 21 (`jalon-21.md` §2.5, §2.6) : [member BattleRequest.reveal] → la silhouette du SPECTRE
+## à l'entrée, « ghost_revealed », [method BattleStage.dissolve_foe], puis « C'est un {pokemon} ! »
+## (SENT_OUT [member BattleEvent.revealed]) ; rien n'est masqué. Sauvage « uncatchable » : une Ball
+## est refusée de la même façon, par « ball_uncatchable ».
 
 ## Le combat commence (verrou posé, monde figé).
 signal battle_started(trainer_id: StringName)
@@ -236,6 +241,12 @@ func run_request(request: BattleRequest, map: GameMap) -> int:
 	var opening := _battle.start()
 	var player_species := _sent_out_species(opening, BattleEvent.SideId.PLAYER)
 	var foe_species := _sent_out_species(opening, BattleEvent.SideId.FOE)
+	# Jalon 21 (§2.5) : révélation du Scope Sylphe (sauvage seulement, jamais en SPECTRE).
+	var reveal := wild and request.reveal
+	if reveal:
+		for event: BattleEvent in opening:
+			if event.kind == BattleEvent.Kind.SENT_OUT and event.side == BattleEvent.SideId.FOE:
+				event.revealed = true
 	# Entrée (~1 s, jamais d'écran noir) : intro sauvage dans le décor (herbe, partenaire qui
 	# entre en courant) ou entrée du dresseur (PNJ Pokémon du monde cachés, sprites de combat).
 	var camera := _player.get_camera() if is_instance_valid(_player) else null
@@ -245,13 +256,19 @@ func run_request(request: BattleRequest, map: GameMap) -> int:
 		_stage.set_place(map.map_id, request.origin_cell if wild else _player.get_cell())
 		if wild:
 			var origin_world := Grid.cell_to_world(request.origin_cell)
-			await _stage.play_wild_intro(camera, foe_species, origin_world,
+			# Jalon 21 : la silhouette du SPECTRE d'abord, puis la révélation.
+			await _stage.play_wild_intro(camera,
+				GhostDisguise.SPECIES if reveal else foe_species, origin_world,
 				BattleStage.LEGENDARY_INTRO_SLOWDOWN if request.legendary_intro else 1.0)
+			if reveal:
+				await _play_reveal(foe_species)
 			await _stage.play_partner_enter(player_species)
 		else:
 			var player_npc := _npc(map, request.world_actors.get(&"player", &""))
 			var foe_npc := _npc(map, request.world_actors.get(&"foe", &""))
 			await _stage.enter(camera, player_npc, foe_npc, player_species, foe_species)
+	elif reveal:
+		await _play_reveal(foe_species)
 	if is_instance_valid(_hud):
 		_hud.set_party(party.size())
 	# Déroulé du moteur : présentation des camps, puis la boucle de tours.
@@ -312,6 +329,16 @@ func run_request(request: BattleRequest, map: GameMap) -> int:
 		_player.set_input_enabled(true, REASON)
 	battle_finished.emit(_trainer_id, outcome)
 	return outcome
+
+
+## Coroutine (jalon 21, `jalon-21.md` §2.5) : « Le Scope Sylphe révèle l'identité du SPECTRE ! »
+## sur la silhouette, puis le fondu vers [param species] ([method BattleStage.dissolve_foe]).
+## « C'est un {pokemon} ! » vient ensuite, par le SENT_OUT marqué [member BattleEvent.revealed].
+func _play_reveal(species: StringName) -> void:
+	if is_instance_valid(_hud) and _texts != null:
+		await _hud.show_message(_texts.get_template(&"ghost_revealed"))
+	if is_instance_valid(_stage) and _stage.is_active():
+		await _stage.dissolve_foe(species)
 
 
 ## Coroutine : combat sauvage contre [param encounter] sur [param map], lancé hors des
@@ -429,8 +456,11 @@ func _choose_action(actions: Dictionary[StringName, bool], can_flee: bool) -> Ba
 					and chosen_item != null and chosen_item.category == ItemData.Category.BALL \
 					and _battle.refuses_balls():
 				# SPECTRE (K-8) : refusée avant le lancer, rien n'est retiré, aucun tour joué.
-				await _hud.show_message(_texts.get_template(&"ghost_ball_refused")
-					if _texts != null else "")
+				# Jalon 21 : même refus pour un sauvage « uncatchable » (Ossatueur), son texte.
+				var rules := _battle.get_rules()
+				var refusal := &"ghost_ball_refused" if rules != null and rules.ghost \
+					else &"ball_uncatchable"
+				await _hud.show_message(_texts.get_template(refusal) if _texts != null else "")
 				_show_own_card()
 				continue
 			return chosen

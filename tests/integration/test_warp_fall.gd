@@ -84,6 +84,23 @@ func test_every_direction_falls() -> void:
 	assert_eq(_rig.map().map_id, &"d")
 
 
+## Étage du dessous (ancien `qa_strength_b1`, retiré en S2Z) : le rocher tombé n'apparaît et ne
+## bloque sa case (occupée, pas un mur) qu'une fois le trou bouché ; le point de chute reste libre.
+func test_the_fallen_boulder_below_appears_once_the_hole_is_plugged() -> void:
+	var map := _rig.make_map(&"d")
+	add_child_autofree(map)
+	var gate := map.get_node(^"Entities/FallenBoulder") as FlagGate
+	map.apply_flag_gates(_rig.flags)
+	assert_false(map.get_grid().is_occupied(StrengthRig.FALLEN), "trou ouvert : pas de rocher")
+	assert_false(gate.visible)
+	_rig.flags.set_flag(StrengthRig.HOLE_FLAG)
+	map.apply_flag_gates(_rig.flags)
+	assert_true(gate.visible, "rocher tombé dessiné")
+	assert_true(map.get_grid().is_occupied(StrengthRig.FALLEN), "il bloque sa case")
+	assert_false(map.get_grid().is_solid(StrengthRig.FALLEN), "ce n'est pas un mur")
+	assert_false(map.get_grid().is_occupied(StrengthRig.LANDING), "le point de chute reste libre")
+
+
 func test_a_plugged_hole_does_not_fall() -> void:
 	_rig.flags.set_flag(StrengthRig.HOLE_FLAG)
 	_rig.start()

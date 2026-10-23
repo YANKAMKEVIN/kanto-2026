@@ -162,6 +162,19 @@ const LOOKS: Dictionary = {
 	"intello": [CHARACTERS_DIR, "nerd", ""],
 	"beaute": [CHARACTERS_DIR, "beauty", ""],
 	"topdresseuse": [CHARACTERS_DIR, "cooltrainer_f", ""],
+	# J24 (série 27, T5) : Topdresseur (la Topdresseuse est celle du J20) (128 px, sans planche d'attente → colonne 0 de la marche),
+	# Nageur et Nageuse dans l'eau (tête et épaules, échelle de la marche), héros en Surf et monture
+	# seule (planches 4 × 4 ; le mode « Surf » de `CharacterLook` les branchera au T7).
+	"topdresseur": [CHARACTERS_DIR, "cooltrainer_m", ""],
+	"nageur_eau": [CHARACTERS_DIR, "swimmer_water", ""],
+	"nageuse_eau": [CHARACTERS_DIR, "swimmer_f_water", ""],
+	"heros_surf": [CHARACTERS_DIR, "player_surf", ""],
+	"surf_monture": [CHARACTERS_DIR, "surf_mount", ""],
+	# J21 T7 (série 23, Repos des esprits) : M. Fuji (128 → 122 px, avec ses poses de prière,
+	# [constant KNEELING]) et Osselait du monde (Maison des Pokémon, 56 px, sans attente : colonne
+	# 0 de la marche).
+	"fuji": [CHARACTERS_DIR, "mr_fuji", ""],
+	"osselait": [POKEMON_DIR, "cubone", ""],
 }
 ## Attentes en plusieurs images (planche d'attente plus large que 4 colonnes) : planche →
 ## direction → [colonnes, images par seconde]. Le capitaine malade respire, penché sur son lavabo
@@ -169,6 +182,13 @@ const LOOKS: Dictionary = {
 const IDLE_EXTRA: Dictionary = {
 	"capitaine_malade": {"up": [[3, 4], 1.2]},
 }
+## Poses à genoux (planche d'une ligne × 4 colonnes, calée sur la marche) d'un personnage :
+## planche de marche → planche de poses. Colonnes : 0 dos, 1 dos au souffle, 2 profil gauche,
+## 3 face. Animations ajoutées : `pray` (colonnes 0 et 1, boucle lente), `pray_left` (2) et
+## `pray_front` (3), une image chacune [D : noms du plan, « pray » seul, §2.16 / T7].
+const KNEELING: Dictionary = {"fuji": "fuji_priere"}
+## Vitesse de `pray` : une image toutes les 1,6 s (respiration).
+const PRAY_SPEED := 1.0 / 1.6
 ## Pokémon fixes (genre « Pokémon fixe », jalon 9 §2.8.5) : feuille 6 × 1 du catalogue
 ## (« personnages ») → identifiant de données. Ils ne marchent jamais.
 const FIXED_POKEMON: Dictionary = {
@@ -182,6 +202,14 @@ const FIXED_POKEMON: Dictionary = {
 	"taupiqueur": "diglett",
 	"ronflex": "snorlax",
 }
+## Pokémon d'ambiance **animés en boucle** (feuille N × 1 du catalogue, une seule direction) →
+## identifiant de données. J24 (série 27) : Artikodin, 4 images (repos, inspire, souffle, repos).
+const LOOPING_POKEMON: Dictionary = {
+	"artikodin": "articuno",
+}
+## Durées relatives de chaque image de la boucle (vitesse 1 : secondes) : une respiration lente,
+## le souffle de givre (image 3) plus bref. Défauts [D] du J24.
+const LOOP_DURATIONS: Array[float] = [1.6, 1.0, 0.7, 1.2]
 ## Colonnes de la feuille 6 × 1 : repos et réaction de chaque direction (droite = miroir).
 const FIXED_COLUMNS := {
 	"down": [0, 1], "up": [0, 1], "left": [2, 3], "right": [4, 5],
@@ -234,8 +262,10 @@ func _init() -> void:
 		var idle_of := sheet_id.trim_suffix(IDLE_SUFFIX)
 		if idle_of != sheet_id and LOOKS.has(idle_of):
 			continue
+		if KNEELING.values().has(sheet_id):
+			continue
 		if not LOOKS.has(sheet_id) and not RUN_ONLY.has(sheet_id) \
-				and not FIXED_POKEMON.has(sheet_id):
+				and not FIXED_POKEMON.has(sheet_id) and not LOOPING_POKEMON.has(sheet_id):
 			push_error("build_character_frames : planche « %s » sans correspondance" % sheet_id)
 			_errors += 1
 	for sheet_id: String in LOOKS:
@@ -248,7 +278,8 @@ func _init() -> void:
 		var run: Dictionary = sheets.get(run_id, {}) if not run_id.is_empty() else {}
 		var idle: Dictionary = sheets.get(sheet_id + IDLE_SUFFIX, {})
 		_build(sheets[sheet_id], run, idle, String(look[0]) + String(look[1]) + "_frames.tres",
-			IDLE_FROM_WALK.get(sheet_id, {}), IDLE_EXTRA.get(sheet_id, {}))
+			IDLE_FROM_WALK.get(sheet_id, {}), IDLE_EXTRA.get(sheet_id, {}),
+			sheets.get(String(KNEELING.get(sheet_id, "")), {}))
 	var fixed := 0
 	for sheet_id: String in FIXED_POKEMON:
 		if not sheets.has(sheet_id):
@@ -258,6 +289,15 @@ func _init() -> void:
 		_build_fixed_pokemon(sheets[sheet_id], POKEMON_DIR + String(FIXED_POKEMON[sheet_id])
 			+ "_frames.tres")
 		fixed += 1
+	var looping := 0
+	for sheet_id: String in LOOPING_POKEMON:
+		if not sheets.has(sheet_id):
+			print("build_character_frames : Pokémon animé « %s » pas encore préparé (sauté)"
+				% sheet_id)
+			continue
+		_build_looping_pokemon(sheets[sheet_id], POKEMON_DIR + String(LOOPING_POKEMON[sheet_id])
+			+ "_frames.tres")
+		looping += 1
 	var images: Dictionary = catalogue.get("images", {})
 	var objects := 0
 	for image_id: String in FIXED_OBJECTS:
@@ -267,13 +307,14 @@ func _init() -> void:
 		_build_fixed_object(images[image_id], OBJECTS_DIR + String(FIXED_OBJECTS[image_id])
 			+ "_frames.tres")
 		objects += 1
-	print("build_character_frames : %d apparences, %d Pokémon fixe(s), %d objet(s) fixe(s), "
-		% [LOOKS.size(), fixed, objects] + "%d erreur(s)" % _errors)
+	print("build_character_frames : %d apparences, %d Pokémon fixe(s), %d animé(s), "
+		% [LOOKS.size(), fixed, looping] + "%d objet(s) fixe(s), %d erreur(s)" % [objects, _errors])
 	quit(1 if _errors > 0 else 0)
 
 
 func _build(walk_sheet: Dictionary, run_sheet: Dictionary, idle_sheet: Dictionary,
-		path: String, idle_from_walk: Dictionary = {}, idle_extra: Dictionary = {}) -> void:
+		path: String, idle_from_walk: Dictionary = {}, idle_extra: Dictionary = {},
+		kneel_sheet: Dictionary = {}) -> void:
 	var frames := SpriteFrames.new()
 	frames.remove_animation(&"default")
 	var walk_texture := load(walk_sheet["fichier"]) as Texture2D
@@ -313,9 +354,29 @@ func _build(walk_sheet: Dictionary, run_sheet: Dictionary, idle_sheet: Dictionar
 		if run_texture != null:
 			_add_cycle(frames, StringName("run_" + dir), run_texture, run_cell, row,
 				4.0 / (2.0 * RUN_STEP))
-	_save(frames, path, "%s (%d × %d%s%s)" % [path, walk_cell.x, walk_cell.y,
+	if not kneel_sheet.is_empty():
+		_add_kneeling(frames, kneel_sheet)
+	_save(frames, path, "%s (%d × %d%s%s%s)" % [path, walk_cell.x, walk_cell.y,
 		", course" if not run_sheet.is_empty() else "",
-		", attente" if not idle_sheet.is_empty() else ""])
+		", attente" if not idle_sheet.is_empty() else "",
+		", prière" if not kneel_sheet.is_empty() else ""])
+
+
+## Poses à genoux : `pray` (dos, deux images, boucle lente), `pray_left`, `pray_front`.
+func _add_kneeling(frames: SpriteFrames, sheet: Dictionary) -> void:
+	var texture := load(sheet["fichier"]) as Texture2D
+	var cell := Vector2(sheet["cellule"][0], sheet["cellule"][1])
+	frames.add_animation(&"pray")
+	frames.set_animation_loop(&"pray", true)
+	frames.set_animation_speed(&"pray", PRAY_SPEED)
+	frames.add_frame(&"pray", _atlas(texture, cell, 0, 0))
+	frames.add_frame(&"pray", _atlas(texture, cell, 1, 0))
+	for pose: Array in [[&"pray_left", 2], [&"pray_front", 3]]:
+		var anim: StringName = pose[0]
+		frames.add_animation(anim)
+		frames.set_animation_loop(anim, true)
+		frames.set_animation_speed(anim, 1.0)
+		frames.add_frame(anim, _atlas(texture, cell, pose[1], 0))
 
 
 ## Pokémon fixe : `idle_<dir>` (repos), `react_<dir>` non bouclée (repos, réaction, repos) ;
@@ -340,6 +401,28 @@ func _build_fixed_pokemon(sheet: Dictionary, path: String) -> void:
 		frames.add_frame(react, _atlas(texture, cell, columns[1], 0), REACT_DURATIONS[1])
 		frames.add_frame(react, _atlas(texture, cell, columns[0], 0), REACT_DURATIONS[2])
 	_save(frames, path, "%s (Pokémon fixe, %d × %d)" % [path, cell.x, cell.y])
+
+
+## Pokémon animé en boucle : `idle` et `idle_<dir>` (les quatre directions montrent la même
+## boucle : une seule direction peinte) = toutes les colonnes de la feuille, durées [constant
+## LOOP_DURATIONS] ; ni marche ni course.
+func _build_looping_pokemon(sheet: Dictionary, path: String) -> void:
+	var frames := SpriteFrames.new()
+	frames.remove_animation(&"default")
+	var texture := load(sheet["fichier"]) as Texture2D
+	var cell := Vector2(sheet["cellule"][0], sheet["cellule"][1])
+	var names: Array[StringName] = [&"idle"]
+	for dir: String in ROWS:
+		names.append(StringName("idle_" + dir))
+	for anim: StringName in names:
+		frames.add_animation(anim)
+		frames.set_animation_loop(anim, true)
+		frames.set_animation_speed(anim, 1.0)
+		for column: int in int(sheet["colonnes"]):
+			frames.add_frame(anim, _atlas(texture, cell, column, 0),
+				LOOP_DURATIONS[column % LOOP_DURATIONS.size()])
+	_save(frames, path, "%s (Pokémon animé, %d × %d, %d images)" % [path, cell.x, cell.y,
+		int(sheet["colonnes"])])
 
 
 ## Objet fixe : la même image entière pour les quatre orientations d'attente.

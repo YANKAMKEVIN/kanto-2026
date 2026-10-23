@@ -213,11 +213,19 @@ func _add_passages() -> void:
 	# Sud : « ROUTE 12 — À venir » ; retour une case au nord, tourné vers le haut.
 	var south: Array[Vector2i] = _plan().call(&"cells_at", "warp_sud")
 	var south_back: Array[Vector2i] = _plan().call(&"cells_at", "from_route_12")
+	# Jalon 21 (T21) : la Route 12 (`route_12` / `from_lavender_w|c|e`) dès que sa carte existe.
+	var south_built := ResourceLoader.exists("res://game/world/maps/route_12.tscn")
 	for i: int in south.size():
 		var name := "from_route_12_" + SUFFIXES_H[i]
 		_kit.call(&"add_spawn", name, south_back[i])
-		_kit.call(&"add_warp", "Route12" + SUFFIXES_H[i].to_upper(), south[i], Kit.PUSH,
-			Vector2i.DOWN, &"", StringName(name), Vector2i.UP, "Route 12")
+		if south_built:
+			_kit.call(&"add_warp", "Route12" + SUFFIXES_H[i].to_upper(), south[i], Kit.PUSH,
+				Vector2i.DOWN, &"route_12", StringName("from_lavender_" + SUFFIXES_H[i]),
+				Vector2i.DOWN)
+		else:
+			_kit.call(&"add_warp", "Route12" + SUFFIXES_H[i].to_upper(), south[i], Kit.PUSH,
+				Vector2i.DOWN, &"", StringName(name), Vector2i.UP, "Route 12")
+	_kit.call(&"add_spawn", "from_route_12", south_back[1])
 	for entry: Array in BUILDINGS:
 		var doors: Array = _plan().call(&"cells_at", entry[3])
 		var front: Vector2i = (doors[-1] as Vector2i) + Vector2i.DOWN

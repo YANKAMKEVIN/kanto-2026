@@ -12,7 +12,9 @@ extends RefCounted
 ##   `blocking_cells`, sauf ce drapeau) ;
 ## - porte (10, 1) vers « d » / `chute_joueur`, sauf [constant DOOR_FLAG] (`unless_flags` d'un
 ##   passage ordinaire).
-## Carte « d » (6 × 5) : `chute_joueur` (2, 2).
+## Carte « d » (6 × 5) : `chute_joueur` (2, 2) ; rocher tombé du trou n° 1 en (2, 1) ([FlagGate]
+## bloquant **si** [constant HOLE_FLAG] : il n'apparaît qu'une fois le trou bouché ; ancien étage
+## `qa_strength_b1` de la carte de QA retirée en S2Z).
 
 const ROUTER_SCRIPT := preload("res://game/autoload/scene_router.gd")
 const PLAYER_SCENE := preload("res://game/player/player.tscn")
@@ -32,6 +34,7 @@ const SWITCH := Vector2i(3, 6)
 const BARRIER := Vector2i(5, 6)
 const DOOR := Vector2i(10, 1)
 const LANDING := Vector2i(2, 2)
+const FALLEN := Vector2i(2, 1)
 const HOLE_FLAG: StringName = &"test_s2d_hole_1"
 const SWITCH_FLAG: StringName = &"test_s2d_switch_1"
 const DOOR_FLAG: StringName = &"test_s2d_door_closed"
@@ -129,6 +132,7 @@ func make_map(map_id: StringName) -> GameMap:
 		&"d":
 			var map := _base_map(map_id, Vector2i(6, 5))
 			_spawn(map, &"chute_joueur", LANDING)
+			_gate(map, "FallenBoulder", [HOLE_FLAG], [], [FALLEN])
 			return map
 	return null
 

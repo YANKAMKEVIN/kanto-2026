@@ -28,6 +28,9 @@ var origin_cell: Vector2i = Vector2i.ZERO
 ## Entrée sauvage « légendaire », plus lente (passe systèmes 2, T30 ;
 ## [member WildEncounter.legendary_intro]).
 var legendary_intro: bool = false
+## Jalon 21 (`jalon-21.md` §2.5) : intro « révélation » (silhouette du SPECTRE, « Le Scope Sylphe
+## révèle… », fondu vers l'espèce) ; jamais vraie pour un combat SPECTRE.
+var reveal: bool = false
 ## J23 : visite du Parc Safari de la rencontre Safari ([member GameState.safari] ; null sinon) :
 ## chaque Safari Ball lancée appelle [method SafariVisit.on_ball_thrown].
 var safari_visit: SafariVisit = null
@@ -52,6 +55,9 @@ static func wild(encounter: WildEncounter, data: PokemonData, rng: GameRng,
 		else BattleRules.for_wild(items)
 	request.origin_cell = cell
 	request.legendary_intro = encounter.legendary_intro
+	# Jalon 21 : révélation (pas en SPECTRE) et sauvage impossible à capturer.
+	request.reveal = encounter.reveal and not encounter.ghost
+	request.rules.uncatchable = encounter.uncatchable
 	return request
 
 

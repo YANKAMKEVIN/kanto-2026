@@ -170,6 +170,7 @@ J17 Route 11 + Cave Taupiqueur + Route 2 est + CS05 Flash (dossier 20)   ✅
 J18 Route 9 + Route 10 + Grotte Sombre + Lavanville, Tour au rez-de-chaussée (dossier 21)   ✅
 J19 Tour Pokémon, étages 2F–6F, rival n° 5 (dossier 22)   ✅
 J20 Route 8 + Route 7 + Céladopole + Erika + repaire Rocket + Giovanni + Scope (dossier 23)   ✅
+S2  Passe systèmes 2 : sauvegarde par points de reprise, Vélo, Flûte, Surf, pêche, Force, Vol, téléporteurs, K.O. en un coup (systemes-2.md)   ✅
 J21+ Suite de Kanto → Ligue → post-game   ← ICI
 ```
 

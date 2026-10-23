@@ -65,9 +65,9 @@ func test_learnsets_follow_red_blue() -> void:
 	assert_eq(_data.get_species(&"scyther").moves_at(28),
 		[&"quick_attack", &"leer", &"focus_energy", &"double_team"] as Array[StringName])
 	assert_eq(_data.get_species(&"pinsir").moves_at(23),
-		[&"vice_grip"] as Array[StringName])
+		[&"vise_grip"] as Array[StringName])
 	assert_eq(_data.get_species(&"pinsir").moves_at(28),
-		[&"vice_grip", &"seismic_toss"] as Array[StringName])
+		[&"vise_grip", &"seismic_toss"] as Array[StringName])
 	assert_eq(_data.get_species(&"tauros").moves_at(28),
 		[&"tackle", &"stomp", &"tail_whip"] as Array[StringName])
 
@@ -82,7 +82,7 @@ func test_every_move_known_in_the_park_exists() -> void:
 
 
 func test_new_moves_follow_red_blue() -> void:
-	var vice := _data.get_move(&"vice_grip")
+	var vice := _data.get_move(&"vise_grip") # Force Poigne du J22
 	assert_eq([vice.type, vice.power, vice.accuracy, vice.pp], [&"normal", 55, 100, 30])
 	var stomp := _data.get_move(&"stomp")
 	assert_eq([stomp.type, stomp.power, stomp.accuracy, stomp.pp], [&"normal", 65, 100, 20])

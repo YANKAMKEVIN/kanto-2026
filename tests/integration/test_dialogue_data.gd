@@ -49,6 +49,7 @@ const GATE_GUARDS: Array[StringName] = [&"forest_gate_north_guard", &"forest_gat
 ## (T18 Route 9 / 10, T20 grotte ; T24 : Lavanville et Tour posés, retirés de la liste) ; « Il fait très sombre ici… » (T-3) est
 ## celui du J17 (`dark_caves.json`, joué par FlashDirector : [constant PLAYED_BY_BOOT]).
 const UNUSED_YET: Array[StringName] = [
+	# Jalon 21 (T21) : `route_11_snorlax` repris par `snorlax_route_12` (retiré de la liste).
 	&"dark_cave_1f_sign", &"dark_cave_column", &"dark_cave_roots", &"dark_cave_crack",
 	&"dark_cave_b1f_hidden_1",
 	# Jalon 20 (T17) : la Poké Ball d'Évoli (maison du toit) et le panneau d'ascenseur (cabine du
@@ -119,6 +120,26 @@ const TEXTS_S2D_STRENGTH: Dictionary[StringName, Array] = {
 	&"strength_used": ["{pokemon} utilise Force ! Les rochers peuvent être déplacés."],
 	&"strength_boulder_fell": ["Le rocher a dévalé dans le trou !"],
 }
+## Jalon 24 : textes du dossier 27 §15 (validés le 2026-10-16) mis en page dans la bulle (retours
+## à la ligne, panneaux « TITRE / texte », T-60 et T-62 écrits par fossile) et répliques de don
+## (« reçoit », « au stockage », modèle du J20) : recommandés, validés d'avance par Kevin le
+## 2026-10-21. Chaque page doit être l'une de celles-ci.
+const TEXTS_J24: Dictionary[StringName, Array] = {
+	&"cinnabar_fossil_ready_kabuto": ["Te voilà ! Ton fossile\nétait un Kabuto !"],
+	&"cinnabar_fossil_ready_omanyte": ["Te voilà ! Ton fossile\nétait un Amonita !"],
+	&"cinnabar_lab_tm35_use": ["{player} reçoit la CT35 Métronome !"],
+	&"cinnabar_fossil_taken": ["Bien. Ça prend un peu de temps :\nva faire un tour dehors !"],
+	&"cinnabar_fossil_received_kabuto": ["{player} reçoit Kabuto !"],
+	&"cinnabar_fossil_received_omanyte": ["{player} reçoit Amonita !"],
+	&"cinnabar_fossil_stored_kabuto": ["Kabuto a été envoyé au stockage."],
+	&"cinnabar_fossil_stored_omanyte": ["Amonita a été envoyé au stockage."],
+	&"cinnabar_fossil_scientist": ["Patience !\nVa faire un tour.", "Je recrée des Pokémon\nà partir de fossiles.", "Tu en as un ?", "Le Fossile Dôme ?\nJe te le prends ?", "Le Fossile Nautile ?\nJe te le prends ?", "Sans fossile, je n'ai rien\nà recréer.", "Il paraît qu'on en trouve\nau Mont Sélénite."],
+	&"cinnabar_gym_sign": ["ARÈNE DE CRAMOIS'ÎLE\nChampion : Auguste,", "le maître du feu\net des énigmes"],
+	&"cinnabar_sign": ["CRAMOIS'ÎLE\nL'île au cœur de feu"],
+	&"cinnabar_lab_pc": ["Un courriel : « Trois Pokémon\noiseaux légendaires", "vivraient à Kanto.", "On parle de l'un d'eux\nprès des Îles Écume… »"],
+	&"route_19_sign": ["ROUTE MARINE 19\nParmanie ↑ · Îles Écume ←"],
+	&"route_20_sign": ["ÎLES ÉCUME\nGrottes glaciales, accès par la mer"],
+}
 ## Jalon 10 : textes verrouillés du dossier 12 (même forme que le dossier 10) et lot de textes du
 ## J10 (panneaux, noms affichés), où un retour à la ligne est écrit « \n ».
 const DOSSIER_12 := "res://docs/design/dossier-12-argenta.md"
@@ -131,6 +152,8 @@ const DOSSIER_17 := "res://docs/design/dossier-17-cap-azuria.md"
 const PLAN_J14 := "res://docs/tech/jalon-14.md"
 ## Jalon 15 : textes validés du §15 (« … » par page ; jetons écrits tels quels).
 const DOSSIER_18 := "res://docs/design/dossier-18-carmin-sur-mer.md"
+## Jalon 24 (T4) : répliques des Dresseurs des Routes 19 à 21 (§15.4, validé le 2026-10-16).
+const DOSSIER_27 := "res://docs/design/dossier-27-iles-ecume.md"
 ## Jalon 18 (T16) : lot validé du dossier 21 §15 et annexe A du plan (une bulle = un morceau d'une
 ## citation ; retour à la ligne = espace, ou « / » d'un panneau à titre).
 const DOSSIER_21 := "res://docs/design/dossier-21-grotte-sombre-lavanville.md"
@@ -150,6 +173,8 @@ const DOSSIER_11 := "res://docs/design/dossier-11-route-2.md"
 ## titre d'un panneau ; jetons {n}, {reste}) et annexe A de son plan (accord à 1 espèce, Q-2).
 ## Jalon 19 (T14) : lot de textes du dossier 22 §15 (Exorcistes §15.4, SPECTRE §15.3, §15.7).
 const DOSSIER_22 := "res://docs/design/dossier-22-tour-pokemon.md"
+## Jalon 21 (T12 à T14) : textes du dossier 24 §15 (Tour résolue, Fuji, Lavanville après le sauvetage).
+const DOSSIER_24 := "res://docs/design/dossier-24-repos-des-esprits.md"
 const DOSSIER_20 := "res://docs/design/dossier-20-chemins-retrouves.md"
 const JALON_17 := "res://docs/tech/jalon-17.md"
 const _DOSSIER_TOKENS: Dictionary[String, String] = {"{first_wild_species}": "{espèce}",
@@ -221,7 +246,29 @@ const MAPS: Array[StringName] = [
 	&"celadon_restaurant", &"celadon_chief_house", &"celadon_hotel",
 	# Jalon 20 (T21) : la vie du 20-II (Casino déjà listé ; repaire Rocket B1F à B4F).
 	&"rocket_hideout_b1f", &"rocket_hideout_b2f", &"rocket_hideout_b3f", &"rocket_hideout_b4f",
+	# Jalon 24 : la mer, les Îles Écume, Cramois'Île et son Labo.
+	&"route_19", &"route_20", &"route_21", &"seafoam_1f", &"seafoam_b1f", &"seafoam_b2f",
+	&"seafoam_b3f", &"seafoam_b4f", &"cinnabar_island", &"cinnabar_center", &"cinnabar_mart",
+	&"cinnabar_lab", &"cinnabar_lab_meeting", &"cinnabar_lab_rd", &"cinnabar_lab_fossil",
+	# Jalon 21 (T13) : le 7F (Sbires, M. Fuji).
+	&"pokemon_tower_7f",
+	# Jalon 21 (T22) : la Route 16 est (Ronflex ; aucun autre texte).
+	&"route_16",
+	# Jalon 21 (T21) : la Route 12 (panneaux, Pêcheurs, Ronflex) et le 2F du poste (CT39).
+	&"route_12", &"route_12_gate_2f",
 ]
+## Jalon 21 (T22) : dialogues de Ronflex de la Route 16 (`j21_snorlax_16.json`, dossier 24 §15.6-§15.7).
+## Les répliques communes (flûte jouée, réveil, calme, rendormi) sont celles de `j21_snorlax.json`.
+const IDS_J21_T22: Array[StringName] = [&"snorlax_route_16"]
+## Jalon 21 (T22) : textes validés (dossier 24 §15.6.3, §15.7 ; T-6 et T-7 du J17), page par page.
+const TEXTS_J21_T22: Dictionary[StringName, Array] = {
+	&"snorlax_route_16": ["Ronflex dort de nouveau.", "Il ronfle comme si de rien n'était.",
+		"Jouer de la Poké Flûte ?", "Un énorme Pokémon dort au milieu du chemin.",
+		"Il ne bouge pas d'un pouce.", "Il ronfle paisiblement.",
+		"Rien ne semble pouvoir le réveiller."],
+}
+## Jalon 21 (T22) : jouées par la scène `snorlax_route_16_wake` (le premier est lu par le point).
+const PLAYED_J21_T22: Array[StringName] = []
 ## Lot de textes validé par Kevin le 2026-10-06 (anciens brouillons : panneau, observations,
 ## soin de Maman, terminal du Stockage, portes de Jadielle…) : source des textes hors dossiers.
 const TEXTES_VALIDES := "res://docs/design/textes/textes-brouillon-j7.md"
@@ -389,7 +436,7 @@ const IDS: Array[StringName] = [
 ## de l'est (route_2.json) ; T24 : avertissement sans Flash (dark_caves.json).
 const IDS_J17: Array[StringName] = [
 	&"dark_cave_too_dark",
-	&"route_11_sign", &"route_11_cave_sign", &"route_11_snorlax",
+	&"route_11_sign", &"route_11_cave_sign",
 	&"route_11_youngster_lucas_before", &"route_11_youngster_lucas_defeated",
 	&"route_11_youngster_lucas_after", &"route_11_youngster_arthur_before",
 	&"route_11_youngster_arthur_defeated", &"route_11_youngster_arthur_after",
@@ -421,6 +468,71 @@ const IDS_J14_ROCKET: Array[StringName] = [
 	&"cerulean_rocket_before", &"cerulean_rocket_leaving", &"cerulean_rocket_resume",
 	&"cerulean_rocket_spotted", &"cerulean_rocket_tm", &"cerulean_south_guard",
 	&"cerulean_south_guard_leaving", &"cerulean_victim",
+]
+## Jalon 24 (T4) : répliques des 29 Dresseurs des Routes 19 à 21 (dossier 27 §15.4), en
+## attente de leurs cartes (T8, T11) : exemptées de « utilisé par un PNJ » jusque-là.
+## Jalon 24 (T8, T11 à T15, T18) : panneaux, PNJ et scènes de la mer, des Îles Écume et de
+## Cramois'Île (textes du dossier 27 §15, validés par Kevin le 2026-10-16 ; adaptations de mise en
+## page et répliques de don, recommandées, validées d'avance le 2026-10-21).
+const IDS_J24: Array[StringName] = [
+	&"articuno", &"articuno_cry", &"articuno_flew_away", &"cinnabar_center_cooltrainer",
+	&"cinnabar_center_gentleman", &"cinnabar_fossil_ready_kabuto", &"cinnabar_fossil_ready_omanyte",
+	&"cinnabar_fossil_received_kabuto", &"cinnabar_fossil_received_omanyte",
+	&"cinnabar_fossil_scientist", &"cinnabar_fossil_stored_kabuto",
+	&"cinnabar_fossil_stored_omanyte", &"cinnabar_fossil_taken", &"cinnabar_girl",
+	&"cinnabar_gym_locked", &"cinnabar_gym_sign", &"cinnabar_lab_eevee", &"cinnabar_lab_expert",
+	&"cinnabar_lab_meeting_canon", &"cinnabar_lab_meeting_gramps", &"cinnabar_lab_pc",
+	&"cinnabar_lab_photo", &"cinnabar_lab_seel", &"cinnabar_lab_tm35", &"cinnabar_lab_tm35_offer",
+	&"cinnabar_lab_tm35_use", &"cinnabar_man", &"cinnabar_mansion_rubble", &"cinnabar_mart_scientist",
+	&"cinnabar_mart_silph_worker", &"cinnabar_sign", &"route_19_sign", &"route_20_item_1",
+	&"route_20_sign", &"route_21_item_1", &"seafoam_b2f_hidden_1", &"seafoam_b4f_hidden_1",
+	&"seafoam_sign_boulders", &"seafoam_sign_currents", &"seafoam_sign_danger"
+]
+const IDS_J24_TRAINERS: Array[StringName] = [
+	&"route_19_cooltrainer_hugo_after", &"route_19_cooltrainer_hugo_before",
+	&"route_19_cooltrainer_hugo_defeated", &"route_19_cooltrainer_malo_after",
+	&"route_19_cooltrainer_malo_before", &"route_19_cooltrainer_malo_defeated",
+	&"route_19_swimmer_anais_after", &"route_19_swimmer_anais_before",
+	&"route_19_swimmer_anais_defeated", &"route_19_swimmer_erwan_after",
+	&"route_19_swimmer_erwan_before", &"route_19_swimmer_erwan_defeated",
+	&"route_19_swimmer_gwen_after", &"route_19_swimmer_gwen_before",
+	&"route_19_swimmer_gwen_defeated", &"route_19_swimmer_lena_after",
+	&"route_19_swimmer_lena_before", &"route_19_swimmer_lena_defeated",
+	&"route_19_swimmer_loic_after", &"route_19_swimmer_loic_before",
+	&"route_19_swimmer_loic_defeated", &"route_19_swimmer_maelle_after",
+	&"route_19_swimmer_maelle_before", &"route_19_swimmer_maelle_defeated",
+	&"route_19_swimmer_tanguy_after", &"route_19_swimmer_tanguy_before",
+	&"route_19_swimmer_tanguy_defeated", &"route_19_swimmer_yann_after",
+	&"route_19_swimmer_yann_before", &"route_19_swimmer_yann_defeated",
+	&"route_20_bird_keeper_bastien_after", &"route_20_bird_keeper_bastien_before",
+	&"route_20_bird_keeper_bastien_defeated", &"route_20_swimmer_clara_after",
+	&"route_20_swimmer_clara_before", &"route_20_swimmer_clara_defeated",
+	&"route_20_swimmer_elsa_after", &"route_20_swimmer_elsa_before",
+	&"route_20_swimmer_elsa_defeated", &"route_20_swimmer_iris_after",
+	&"route_20_swimmer_iris_before", &"route_20_swimmer_iris_defeated",
+	&"route_20_swimmer_kilian_after", &"route_20_swimmer_kilian_before",
+	&"route_20_swimmer_kilian_defeated", &"route_20_swimmer_lou_after",
+	&"route_20_swimmer_lou_before", &"route_20_swimmer_lou_defeated",
+	&"route_20_swimmer_mathis_after", &"route_20_swimmer_mathis_before",
+	&"route_20_swimmer_mathis_defeated", &"route_20_swimmer_nina_after",
+	&"route_20_swimmer_nina_before", &"route_20_swimmer_nina_defeated",
+	&"route_20_swimmer_ronan_after", &"route_20_swimmer_ronan_before",
+	&"route_20_swimmer_ronan_defeated", &"route_20_swimmer_solene_after",
+	&"route_20_swimmer_solene_before", &"route_20_swimmer_solene_defeated",
+	&"route_21_fisher_gilles_after", &"route_21_fisher_gilles_before",
+	&"route_21_fisher_gilles_defeated", &"route_21_fisher_marcel_after",
+	&"route_21_fisher_marcel_before", &"route_21_fisher_marcel_defeated",
+	&"route_21_fisher_rene_after", &"route_21_fisher_rene_before",
+	&"route_21_fisher_rene_defeated", &"route_21_fisher_yves_after",
+	&"route_21_fisher_yves_before", &"route_21_fisher_yves_defeated",
+	&"route_21_swimmer_arthur_after", &"route_21_swimmer_arthur_before",
+	&"route_21_swimmer_arthur_defeated", &"route_21_swimmer_dylan_after",
+	&"route_21_swimmer_dylan_before", &"route_21_swimmer_dylan_defeated",
+	&"route_21_swimmer_noe_after", &"route_21_swimmer_noe_before",
+	&"route_21_swimmer_noe_defeated", &"route_21_swimmer_simon_after",
+	&"route_21_swimmer_simon_before", &"route_21_swimmer_simon_defeated",
+	&"route_21_swimmer_thibault_after", &"route_21_swimmer_thibault_before",
+	&"route_21_swimmer_thibault_defeated",
 ]
 ## Jalon 15 (T13) : la Route 5 et ses intérieurs (dossier 18 §15.2, annexe A.3).
 const IDS_J15_ROUTE_5: Array[StringName] = [
@@ -501,7 +613,7 @@ const IDS_J20: Array[StringName] = [
 	# T13 : panneau d'ascenseur (sans page) et refus sans la Clé (texte 50).
 	&"elevator_panel", &"elevator_locked",
 	# T16 : Céladopole (panneaux, examens, arbustes de Coupe, tableau et panneau d'ascenseur).
-	&"celadon_city_sign", &"celadon_gym_sign", &"celadon_west_block", &"celadon_dept_board",
+	&"celadon_city_sign", &"celadon_gym_sign", &"celadon_dept_board",
 	&"celadon_mansion_office_door", &"celadon_gym_bush",
 	&"celadon_gym_inner_bush",
 	# T20 : machines du Casino (texte 39).
@@ -546,6 +658,17 @@ const IDS_J20_T17: Array[StringName] = [
 	&"route_8_nerd_firmin_defeated", &"souterrain_hidden_1", &"souterrain_hidden_2",
 	&"underground_7_8_resident",
 ]
+## Jalon 21 (T21) : Route 12 (dossier 24 §15.7, §15.8, §15.8 bis, annexe A) et Ronflex.
+const IDS_J21_T21: Array[StringName] = [
+	&"route_12_sign", &"route_12_pier_sign",
+	&"route_12_fisher_1_before", &"route_12_fisher_1_defeated", &"route_12_fisher_1_after",
+	&"route_12_fisher_2_before", &"route_12_fisher_2_defeated", &"route_12_fisher_2_after",
+	&"route_12_fisher_3_before", &"route_12_fisher_3_defeated", &"route_12_fisher_3_after",
+	&"route_12_fisher_4_before", &"route_12_fisher_4_defeated", &"route_12_fisher_4_after",
+	&"route_12_gate_tm39", &"route_12_gate_tm39_give", &"route_12_gate_tm39_got",
+	&"snorlax_route_12", &"snorlax_flute_played", &"snorlax_wakes", &"snorlax_calms",
+	&"snorlax_sleeps",
+]
 ## Jalon 20 (T21) : la vie du 20-II (dossier 23 §20.6, §20.7 et annexe A.5, A.8 du plan, textes
 ## 39 à 55, 95 à 100, 130 à 156) ; un identifiant par dialogue des données.
 const IDS_J20_T21: Array[StringName] = [
@@ -581,6 +704,15 @@ const IDS_J20_T21: Array[StringName] = [
 const DOSSIER_23 := "res://docs/design/dossier-23-celadopole.md"
 ## Jalon 20 (T25) : annexe A.14 du plan (postes de Safrania, textes 215 à 219).
 const PLAN_J20 := "res://docs/tech/jalon-20.md"
+## Jalon 21 (T12 à T14) : `data/dialogues/j21_tower.json`.
+const IDS_J21: Array[StringName] = [
+	&"tower_6f_marowak_held", &"tower_6f_marowak_soul", &"tower_6f_marowak_peace",
+	&"tower_rocket_1_before", &"tower_rocket_1_defeated", &"tower_rocket_1_after",
+	&"tower_rocket_2_before", &"tower_rocket_2_defeated", &"tower_rocket_2_after",
+	&"tower_rocket_3_before", &"tower_rocket_3_defeated", &"tower_rocket_3_after",
+	&"tower_7f_fuji", &"tower_7f_fuji_thanks", &"fuji_flute_give", &"fuji_flute_received",
+	&"fuji_flute_explain", &"pokemon_house_fuji",
+]
 const IDS_J19: Array[StringName] = [
 	&"tower_channeler_1_after",
 	&"tower_channeler_1_before",
@@ -706,7 +838,9 @@ const SET_J14_BILL_CUTSCENES: Array[StringName] = [
 ## Jalon 16 (T12, T15) : `got_hm01` (lu par le marin de la passerelle et le départ du navire) est
 ## levé par la scène du capitaine (T13). Jalon 18 (T16) : `tower_stairs_open` (présence de
 ## l'Exorciste de la Tour) est levé au J19 (T16 : scène `tower_guardian`, dossier 22 K-3).
-const FUTURE_FLAGS: Array[StringName] = [&"ghost_marowak_calmed"]
+## Jalon 21 : `ghost_marowak_calmed` (6F) et `snorlax_route_*_woken` (Ronflex) sont levés par leurs
+## scènes : plus aucun drapeau futur.
+const FUTURE_FLAGS: Array[StringName] = []
 var _library: DialogueLibrary
 var _cutscenes: CutsceneLibrary
 var _offer: StarterOffer
@@ -714,6 +848,8 @@ var _offer: StarterOffer
 var _used_on: Dictionary[StringName, Array] = {}
 ## Carte → identifiants de PNJ.
 var _npc_ids: Dictionary[StringName, Array] = {}
+## Jalon 21 : carte → acteurs de décor déclarés (nœuds du groupe « scene_props », [PropActor]).
+var _prop_ids: Dictionary[StringName, Array] = {}
 ## Dialogue joué par une scène → PNJ créés (« spawn ») par cette scène.
 var _spawned_for: Dictionary[StringName, Array] = {}
 
@@ -754,6 +890,10 @@ func before_all() -> void:
 				if spec.has_rematch():
 					_use(spec.rematch_dialogue, map_id)
 		var map := (load(MapCatalog.scene_path(map_id)) as PackedScene).instantiate()
+		_prop_ids[map_id] = []
+		for node: Node in map.find_children("*", "", true, false):
+			if node.is_in_group(PropActor.GROUP):
+				(_prop_ids[map_id] as Array).append(StringName(node.name))
 		for point: Node in map.get_node(^"Interactables").get_children():
 			_use((point as InteractPoint).dialogue_id, map_id)
 			# Jalon 16 (T11) : objet à fouiller d'un puzzle : Boot joue les textes du puzzle et
@@ -844,7 +984,8 @@ func test_library_loads_without_error() -> void:
 	found.sort()
 	var expected := IDS + IDS_J14_BILL + IDS_J14_ROCKET + IDS_J15_ROUTE_5 + IDS_J16_GYM \
 		+ IDS_J16_SHIP + IDS_J16_RIVAL_CAPTAIN + IDS_J16_T15 + IDS_J17 + IDS_J18 + IDS_J19 + IDS_J20 \
-		+ IDS_J20_T17 + IDS_J20_T21 + IDS_S2B + S2_FIELD_TRAVEL
+		+ IDS_J20_T17 + IDS_J20_T21 + IDS_J21 + IDS_J21_T21 + IDS_S2B + S2_FIELD_TRAVEL + IDS_J21_T22 \
+		+ IDS_J24_TRAINERS + IDS_J24
 	expected.append_array(TEXTS_S2C_FISH.keys())
 	expected.append_array(TEXTS_S2D_STRENGTH.keys())
 	expected.append_array(UNVALIDATED)
@@ -873,6 +1014,11 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 	assert_eq(_cutscenes.get_errors().size(), 0, str(_cutscenes.get_errors()))
 	var played := _without_qa(_cutscenes.get_dialogue_ids())
 	assert_eq(played, _sorted([
+		# Jalon 24 : Artikodin, porte de l'Arène, CT35, fossiles.
+		&"articuno_cry", &"articuno_flew_away", &"cinnabar_gym_locked", &"cinnabar_lab_tm35_offer",
+		&"cinnabar_lab_tm35_use", &"cinnabar_fossil_taken", &"cinnabar_fossil_ready_kabuto", &"cinnabar_fossil_ready_omanyte",
+		&"cinnabar_fossil_received_kabuto", &"cinnabar_fossil_received_omanyte",
+		&"cinnabar_fossil_stored_kabuto", &"cinnabar_fossil_stored_omanyte",
 		# Jalon 13 (T19) : Ondine à l'Arène.
 		&"cerulean_gym_misty_badge", &"cerulean_gym_misty_intro", &"cerulean_gym_misty_lost",
 		&"cerulean_gym_misty_resume", &"cerulean_gym_misty_tm", &"cerulean_gym_misty_tm_late",
@@ -884,6 +1030,9 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		&"tower_6f_ghost_after", &"tower_6f_ghost_warning",
 		# Jalon 20 (T25) : la boisson donnée au garde d'un poste de Safrania.
 		&"saffron_gate_drink_lemonade", &"saffron_gate_drink_soda", &"saffron_gate_drink_water",
+		# Jalon 21 (T21) : CT39 du poste et réveil de Ronflex.
+		&"route_12_gate_tm39_give", &"route_12_gate_tm39_got", &"snorlax_flute_played",
+		&"snorlax_wakes", &"snorlax_calms", &"snorlax_sleeps",
 		# Jalon 20 (T12) : le don d'Évoli.
 		&"celadon_eevee_received", &"celadon_eevee_stored",
 		# Jalon 20 (T17) : Erika (scène de l'Arène et rattrapage de la CT21) et la fillette du toit.
@@ -896,6 +1045,11 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		&"rocket_hideout_b4f_lift_key_got", &"rocket_hideout_b4f_silph_scope_got",
 		# Jalon 19 (T16) : la gardienne du rez-de-chaussée.
 		&"tower_guardian_worried",
+		# Jalon 21 (T13, T14) : Fuji remercie au 7F, remise de la Poké Flûte à la maison.
+		&"tower_7f_fuji_thanks", &"fuji_flute_give", &"fuji_flute_received",
+		&"fuji_flute_explain",
+		# Jalon 21 (T12) : la variante A du 6F (Ossatueur retenu, son âme, la paix).
+		&"tower_6f_marowak_held", &"tower_6f_marowak_soul", &"tower_6f_marowak_peace",
 		# Jalon 19 (T17) : le rival n° 5 (joué par sa scène).
 		&"rival_tower_intro", &"rival_tower_lost", &"rival_tower_resume", &"rival_tower_won",
 		# Jalon 19 (T18) : la zone purifiée du 5F.
@@ -936,7 +1090,9 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		+ PLAYED_J15_ROUTE_5 + PLAYED_J16_GYM + PLAYED_J16_RIVAL_CAPTAIN
 		+ PLAYED_J16_T15
 		# Jalon 17 (T8) : remise de la CS05 par l'assistant (scène lancée par son dialogue).
-		+ [&"route_2_east_assistant_hm05_system", &"route_2_east_assistant_hm05_use"]))
+		+ [&"route_2_east_assistant_hm05_system", &"route_2_east_assistant_hm05_use"]
+		# Jalon 21 (T22) : le réveil de Ronflex (Route 16).
+		+ PLAYED_J21_T22))
 	for id: StringName in played:
 		assert_true(_library.has_dialogue(id), "dialogue « %s » défini" % id)
 		if UNUSED_YET.has(id):
@@ -961,7 +1117,9 @@ func test_every_react_targets_an_npc_of_the_map_where_it_is_used() -> void:
 		var maps: Array = _used_on.get(row[0], [])
 		assert_false(maps.is_empty(), "%s utilisé" % row[0])
 		for map_id: StringName in maps:
-			assert_true((_npc_ids[map_id] as Array).has(page.react),
+			# Jalon 21 : un acteur de décor déclaré sur la carte vaut un PNJ.
+			assert_true((_npc_ids[map_id] as Array).has(page.react)
+				or (_prop_ids.get(map_id, []) as Array).has(page.react),
 				"%s : « react » %s sur %s" % [row[0], page.react, map_id])
 
 
@@ -999,8 +1157,8 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 	# retirées au T20).
 	var dialogues := DialogueLibrary.new()
 	var cutscenes := CutsceneLibrary.new()
-	# J22 et J23 : fichiers générés (`j22_*`, `j23_*`), vérifiés par `test_j22_data.gd` et
-	# `test_j23_data.gd` ; ici, seulement les drapeaux qu'ils lèvent (lus ailleurs).
+	# J23 : fichiers générés (`j23_*`), vérifiés par `test_j23_data.gd` ; ici, seulement les
+	# drapeaux qu'ils lèvent (lus ailleurs). Ceux du J22 (`j22_*`) sont lus comme dans `main`.
 	var generated_dialogues := DialogueLibrary.new()
 	var generated_cutscenes := CutsceneLibrary.new()
 	for pair: Array in [[dialogues, "res://data/dialogues/", generated_dialogues],
@@ -1008,18 +1166,17 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		for file: String in DirAccess.get_files_at(pair[1]):
 			if file.get_extension() != "json" or MapCatalog.is_qa_map(StringName(file)):
 				continue
-			var library: Variant = pair[2] if file.begins_with("j22_") \
-				or file.begins_with("j23_") else pair[0]
+			var library: Variant = pair[2] if file.begins_with("j23_") else pair[0]
 			assert_true(library.load_file((pair[1] as String).path_join(file)), file)
 	var set_flags := dialogues.get_set_flags() + cutscenes.get_set_flags() \
 		+ StarterChoice.get_set_flags(_offer) + generated_dialogues.get_set_flags() \
 		+ generated_cutscenes.get_set_flags()
+	# Jalon 24 (T13) : « fossile prêt », posé par le code à l'arrivée sur Cramois'Île
+	# ([FossilReadyGate]).
+	set_flags.append(&"fossil_ready")
 	var read_flags := dialogues.get_condition_flags() + cutscenes.get_condition_flags()
 	for map_id: StringName in MAPS:
 		for spec: NpcSpec in NpcRoster.load_for_map(map_id).get_all():
-			# Passe systèmes 2 (T30) : PNJ de QA (`qa_*`) d'une vraie carte, drapeaux de QA.
-			if MapCatalog.is_qa_map(spec.id):
-				continue
 			read_flags.append_array(spec.if_flags + spec.unless_flags)
 			# Jalon 12 (T25) : `beaten_<id>` d'un Dresseur est levé par sa séquence (victoire).
 			if spec.is_trainer():
@@ -1042,11 +1199,15 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 			&"ss_anne_departure_chosen", &"ss_anne_exit_told"]
 			+ SET_J14_BILL_DIALOGUES + SET_J14_ROCKET_DIALOGUES
 			# Jalon 17 (T8) : Ronflex vu, assistant rencontré, barrière de FUTUR B ouverte.
-			+ [&"hm05_assistant_met", &"route_2_east_gate_open", &"snorlax_route_11_seen"]
+			+ [&"hm05_assistant_met", &"route_2_east_gate_open", &"snorlax_route_12_seen"]
 			+ SET_J18_DIALOGUES
 			# Jalon 20 (T21) : porte du bureau ouverte par le second garde battu (§2.7.3).
-			+ [&"rocket_hideout_b4f_door_open"]))
-	assert_eq(cutscenes.get_set_flags(), _sorted([&"badge_boulder", &"badge_cascade",
+			+ [&"rocket_hideout_b4f_door_open"]
+			# Jalon 21 (T22) : Ronflex de la Route 16 vu (T-6, T-7 repris).
+			+ [&"snorlax_route_16_seen"]))
+	assert_eq(cutscenes.get_set_flags(), _sorted([&"got_tm39", &"route_12_visited",
+		&"snorlax_route_12_awake", &"snorlax_route_12_caught", &"snorlax_route_12_done",
+		&"snorlax_route_12_woken", &"badge_boulder", &"badge_cascade",
 		&"beaten_mt_moon_researcher", &"beaten_nugget_rocket", &"brock_met", &"cerulean_reached", &"got_mt_moon_1f_hidden_1",
 		&"got_mt_moon_1f_item_1", &"got_mt_moon_b1f_item_1", &"got_mt_moon_b1f_item_2",
 		&"got_mt_moon_b2f_hidden_1", &"got_mt_moon_b2f_item_1", &"got_nugget", &"got_oak_parcel",
@@ -1067,10 +1228,19 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		&"rival_tower_lost_once", &"rival_tower_retried", &"rival_tower_won",
 		# Jalon 19 (T24) : première rencontre du SPECTRE du 6F (dossier 22 §13).
 		&"tower_ghost_met",
+		# Jalon 21 (T13, T14) : Fuji sauvé, Poké Flûte reçue.
+		&"fuji_rescued", &"got_poke_flute",
+		# Jalon 21 (T12) : Ossatueur apaisé (victoire de la variante A du 6F), brume levée.
+		&"ghost_marowak_calmed", &"tower_6f_mist_lifted",
 		# Jalon 20 (T25) : boisson donnée, les quatre postes de Safrania s'ouvrent.
 		&"saffron_gates_open",
 		# Jalon 20 (T12) : Évoli reçu (étape « gift_pokemon »).
 		&"eevee_received",
+		# Jalon 24 : objets et caches, Artikodin (rencontre fixe), CT35, fossiles confiés et reçus.
+		&"got_route_20_item_1", &"got_route_21_item_1", &"got_seafoam_b2f_hidden_1",
+		&"got_seafoam_b4f_hidden_1", &"articuno_done", &"articuno_caught", &"got_tm35",
+		&"fossil_reviving_kabuto", &"fossil_reviving_omanyte", &"fossil_revived_kabuto",
+		&"fossil_revived_omanyte",
 		&"route_3_entered", &"route_3_guard_cleared", &"route_4_reached", &"route_5_entered",
 		&"starter_chosen",
 		&"starter_offered", &"tm11_received", &"tm34_received", &"viridian_arrived",
@@ -1103,6 +1273,13 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		&"got_celadon_hidden_1", &"got_souterrain_hidden_1", &"got_souterrain_hidden_2",
 		&"erika_met", &"badge_rainbow", &"tm21_received", &"rooftop_tm13"]
 		+ SET_J14_BILL_CUTSCENES + SET_J14_ROCKET_CUTSCENES + SET_J18_CUTSCENES
+		# Jalon 22 : Bon, Bicyclette, cannes, CS02, saluts des gardes de la Piste, objets.
+		+ [&"got_bike_voucher", &"got_bicycle", &"got_old_rod", &"got_good_rod",
+		&"got_super_rod", &"got_hm02", &"cycling_gate_16_greeted", &"cycling_gate_18_greeted",
+		&"got_route_12_item_1", &"got_route_12_hidden_1", &"got_route_13_hidden_1",
+		&"got_route_13_hidden_2", &"got_route_15_item_1", &"got_route_16_hidden_1",
+		&"got_route_17_hidden_1", &"got_route_17_hidden_2", &"got_route_17_hidden_3",
+		&"got_route_17_hidden_4", &"got_route_17_hidden_5"]
 		# Jalon 19 (T16) : la gardienne de la Tour s'écarte.
 		+ [&"tower_stairs_open"]
 		# Jalon 19 (T18) : objets de la Tour (cinq visibles, un caché).
@@ -1117,7 +1294,10 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		&"got_rocket_hideout_b2f_item_4", &"got_rocket_hideout_b3f_item_1",
 		&"got_rocket_hideout_b3f_item_2", &"got_rocket_hideout_b3f_hidden_1",
 		&"got_rocket_hideout_b4f_item_1", &"got_rocket_hideout_b4f_item_2",
-		&"got_rocket_hideout_b4f_item_3", &"got_rocket_hideout_b4f_hidden_1"]))
+		&"got_rocket_hideout_b4f_item_3", &"got_rocket_hideout_b4f_hidden_1"]
+		# Jalon 21 (T22) : titre de zone de la Route 16, réveil de Ronflex 16 (`_awake` jamais sur disque).
+		+ [&"route_16_visited", &"snorlax_route_16_awake", &"snorlax_route_16_woken",
+		&"snorlax_route_16_done", &"snorlax_route_16_caught"]))
 	assert_eq(_used_on.get(&"oak_lab_reunion"), [&"oak_lab"], "joué au labo, après le fondu")
 	assert_eq(_used_on.get(&"oak_starter_offer"), [&"oak_lab"], "joué au labo")
 
@@ -1310,6 +1490,7 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 	var lot_j10 := FileAccess.get_file_as_string(LOT_J10)
 	var dossier_14 := FileAccess.get_file_as_string(DOSSIER_14)
 	var dossier_18 := FileAccess.get_file_as_string(DOSSIER_18)
+	var dossier_27 := FileAccess.get_file_as_string(DOSSIER_27)
 	var dossier_19 := FileAccess.get_file_as_string(DOSSIER_19)
 	var annex_a_15 := AnnexATexts.annex_a(FileAccess.get_file_as_string(JALON_15))
 	var dossier_16 := FileAccess.get_file_as_string(DOSSIER_16).replace("\n    ", " ") \
@@ -1318,18 +1499,21 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 	var dossier_21 := FileAccess.get_file_as_string(DOSSIER_21) \
 		+ FileAccess.get_file_as_string(PLAN_J18)
 	var dossier_23 := FileAccess.get_file_as_string(DOSSIER_23).replace("\n    ", " ")
-	# J22 (T13, T17) : dossier 25, à plat (déclaration manquante à la fusion du J22, rétablie au J23).
-	var dossier_25 := J22Ids.flat_text(FileAccess.get_file_as_string(
-		"res://docs/design/dossier-25-deux-chemins-parmanie.md"))
+	# J22 : dossier 25 à plat (déclaration oubliée au J22 : ce script ne se chargeait plus).
+	var dossier_25 := J22Ids.flat_text(FileAccess.get_file_as_string(J22Ids.DOSSIER_25))
 	# T25 (n° 219) : « [Joueur] donne un(e) [boisson] au garde. », écrit pour chaque boisson.
 	var plan_j20 := FileAccess.get_file_as_string(PLAN_J20).replace("\n     ", " ") \
 		.replace("\n    ", " ")
 	for drink: String in ["une Eau Fraîche", "un Soda Cool", "une Limonade"]:
 		plan_j20 += plan_j20.replace("[Joueur] donne un(e) [boisson]", "{joueur} donne " + drink)
+	var dossier_24 := FileAccess.get_file_as_string(DOSSIER_24)
 	var dossier_22 := FileAccess.get_file_as_string(DOSSIER_22).replace("\n   ", " ") \
 		.replace("\n  ", " ")
 	var dossier_20 := FileAccess.get_file_as_string(DOSSIER_20).replace("**", "")
 	var annex_a_17 := AnnexATexts.annex_a(FileAccess.get_file_as_string(JALON_17))
+	# Jalon 21 (T21) : textes validés du dossier 24 (§15) et de l'annexe A du plan.
+	var j21_texts := FileAccess.get_file_as_string("res://docs/design/dossier-24-repos-des-esprits.md") \
+		+ FileAccess.get_file_as_string("res://docs/tech/jalon-21.md")
 	var dossier_17 := FileAccess.get_file_as_string(DOSSIER_17) \
 		+ FileAccess.get_file_as_string(PLAN_J14).replace("\n  ", " ")
 	# Formes accordées « fatigué[e] » (n° 55) : masculin et féminin.
@@ -1345,6 +1529,9 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 		if GATE_GUARDS.has(row[0]) or UNVALIDATED.has(row[0]) or S2_FIELD_TRAVEL.has(row[0]) \
 				or (row[3] as DialogueVariant).draft:
 			continue
+		if TEXTS_J21_T22.has(row[0]):
+			assert_true(TEXTS_J21_T22[row[0]].has(text_t22(row[1])), "%s : %s" % [row[0], row[1]])
+			continue
 		if TEXTS_S2B.has(row[0]):
 			assert_true(TEXTS_S2B[row[0]].has(row[1]), "%s : %s" % [row[0], row[1]])
 			continue
@@ -1353,6 +1540,9 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			continue
 		if TEXTS_S2D_STRENGTH.has(row[0]):
 			assert_true(TEXTS_S2D_STRENGTH[row[0]].has(row[1]), "%s : %s" % [row[0], row[1]])
+			continue
+		if TEXTS_J24.has(row[0]):
+			assert_true(TEXTS_J24[row[0]].has(row[1]), "%s : %s" % [row[0], row[1]])
 			continue
 		var text: String = row[1]
 		for token: String in _DOSSIER_TOKENS:
@@ -1371,6 +1561,9 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			or _each_line_quoted(dossier_14, text)
 			or _in_dossier_18(dossier_18, text)
 			or _in_dossier_18(annex_a_15, text)
+			# J24 (T4) : Dresseurs des Routes 19 à 21 (dossier 27 §15.4 ; test_j24_data vérifie
+			# chaque réplique entière).
+			or _in_dossier_18(dossier_27, text)
 			# J15 (T13) : panneaux « TITRE — texte » (§15.2, T-1) écrits sur deux lignes ; le
 			# carrefour de l'annexe A.3 (« … → · … ← ») aussi.
 			or dossier_18.contains("« %s »" % text.replace("\n", " — "))
@@ -1383,6 +1576,9 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			# J12 (T18) : une réplique du §20 coupée en deux lignes dans sa bulle (retour à la
 			# ligne de mise en page) : la bulle entière est une citation du dossier.
 			or dossier_15.contains("« %s »" % text.replace("\n", " "))
+			# J21 (T21) : dossier 24 §15 et annexe A du plan (bulles « / », panneaux sur deux lignes).
+			or j21_texts.contains(text.replace("{joueur}", "{player}"))
+			or j21_texts.contains(text.replace("{joueur}", "{player}").replace("\n", " / "))
 			# J14 (T17) : dossier 17 §15 et annexe A du plan.
 			or dossier_17.contains("« %s »" % text.replace("{player}", "{joueur}"))
 			or dossier_17.contains(text.replace("\n", " "))
@@ -1402,6 +1598,8 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			or _in_dossier_18(dossier_22, text.replace("{joueur}", "{player}"))
 			# J19 (T17) : citation du §15 repliée sur deux lignes du dossier.
 			or _in_dossier_18(_flat_lines(dossier_22), text)
+			# J21 (T12 à T14) : dossier 24 §15, « / » entre les deux lignes d'une bulle.
+			or _in_dossier_18(dossier_24, text.replace("{joueur}", "{player}").replace("\n", " / "))
 			# J20 (T15) : dossier 23 §20, un panneau sur deux lignes, une citation par ligne.
 			or _each_line_quoted(dossier_23, text)
 			or _in_dossier_18(dossier_23, text) or _in_dossier_18(plan_j20, text)
@@ -1626,7 +1824,8 @@ func test_oak_parcel_lines() -> void:
 	# Giovanni et le Scope Sylphe.
 	# Jalon 22 (T13, T17) : la Canne du pêcheur de Carmin, l'échange du Bon à Azuria (les données
 	# des fichiers j22_*.json sont vérifiées par test_j22_data).
-	assert_eq(launched, 105, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
+	# Jalon 24 : deux objets au sol, deux caches, Artikodin, la CT35, deux dons de fossile.
+	assert_eq(launched, 116, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
 		+ "sa CT34, Ondine (pont, Arène et rattrapage), écran, module, console, objets de la "
 		+ "Route 25, le Rocket d'Azuria (2) et le barrage sud ; J15 : objets de la Route 5 ; "
 		+ "J16 : Major Bob (2), neuf objets du S.S. Anne, le capitaine, le marin (2) ; "
@@ -1635,7 +1834,8 @@ func test_oak_parcel_lines() -> void:
 		+ "J20 (T17) : Super Potion de la Route 8, quatre caches (Route 8, souterrain ×2, "
 		+ "ville), Erika (2) ; "
 		+ "J20 (T21) : repaire (11 objets, 3 caches, Clé ×2, Giovanni, Scope) ; "
-		+ "J22 : la Canne, la Bicyclette")
+		+ "J21 (T13, T14) : M. Fuji au 7F et dans sa maison ; J22 : la Canne, la Bicyclette ; "
+		+ "J24 : objets (2), caches (2), Artikodin, CT35, fossiles (2)")
 	# Le jeton n'apparaît que dans la réplique de l'espèce, « {pokemon} » dans les phrases du
 	# compagnon (J11), et ceux de la Pension dans ses répliques (J15).
 	for row: Array in _pages():
@@ -1644,6 +1844,8 @@ func test_oak_parcel_lines() -> void:
 			continue
 		if IDS_J14_BILL.has(row[0]):
 			continue # {player} de Léo (dossier 17 §15) : testé dans test_bill_house
+		if row[0] in [&"fuji_flute_give", &"fuji_flute_received"]:
+			continue # Jalon 21 (T14) : {player} de la remise de la Flûte (§15.4), test_pokemon_house_fuji
 		var tokens := DialogueTokens.tokens_in(row[1])
 		if String(row[0]).begins_with("daycare_"):
 			for token: StringName in tokens:
@@ -1659,6 +1861,10 @@ func test_oak_parcel_lines() -> void:
 				or (row[0] == &"rival_tower_intro" and row[1].contains("{player}")) \
 				or (String(row[0]).begins_with("saffron_gate_drink_") and row[1].contains("{player}")) \
 				or row[0] == &"celadon_eevee_received" or row[0] == &"fishing_cast" \
+				or String(row[0]).begins_with("cinnabar_fossil_received_") \
+				or row[0] == &"cinnabar_lab_tm35_use" \
+				or (row[0] in [&"route_12_gate_tm39_got", &"snorlax_flute_played"] \
+					and row[1].contains("{player}")) \
 				or (row[0] in [&"rocket_hideout_b4f_lift_key_got",
 					&"rocket_hideout_b4f_silph_scope_got"] and row[1].contains("{player}")) \
 				or (String(row[0]).begins_with("celadon_gym_erika_") and row[1].contains("{player}")):
@@ -1671,6 +1877,11 @@ func test_oak_parcel_lines() -> void:
 			expected = [DialogueTokens.POKEMON]
 		assert_eq(tokens, expected, "%s : jeton" % row[0])
 
+
+
+## Jalon 21 (T22) : le jeton « {player} » s'écrit « {joueur} » dans les textes validés.
+static func text_t22(text: String) -> String:
+	return text.replace("{player}", "{joueur}")
 
 
 ## Forme d'une réplique dans le dossier 10 : « ligne » ou « ligne 1 » / « ligne 2 ».

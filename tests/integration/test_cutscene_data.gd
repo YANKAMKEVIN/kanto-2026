@@ -70,6 +70,13 @@ const MAPS: Array[StringName] = [
 	&"celadon_city", &"celadon_gym",
 	# Jalon 20 (T17) : arrivées silencieuses (Route 8 est, Céladopole est).
 	&"route_8",
+	# Jalon 24 (T12) : la porte fermée de l'Arène de Cramois'Île (T-42 et recul).
+	&"cinnabar_island",
+	# Jalon 21 (T21) : arrivée silencieuse sur la Route 12.
+	&"route_12",
+	# Jalon 21 (T14, T22) : entrée de la Maison des Pokémon (remise de la Flûte), arrivée
+	# silencieuse sur la Route 16.
+	&"pokemon_house", &"route_16",
 ]
 ## Jalon 7 (T18) : partie qui revient au labo avec le colis (rival parti après le combat).
 const PARCEL_FLAGS: Array[StringName] = [
@@ -234,8 +241,16 @@ const VARIANT_FLAGS: Dictionary = {
 	&"route_9_entered": [PEWTER_FLAGS], &"route_9_item_1": [PEWTER_FLAGS],
 	&"route_9_item_2": [PEWTER_FLAGS], &"route_9_item_3": [PEWTER_FLAGS],
 	&"route_10_reached": [PEWTER_FLAGS], &"dark_cave_crossed": [PEWTER_FLAGS],
-	&"tower_6f_ghost": [PEWTER_FLAGS], &"tower_guardian": [PEWTER_FLAGS],
+	# Jalon 21 (T12) : variante A du 6F (révélation, Scope dans le Sac : VARIANT_ITEMS) en tête.
+	&"tower_6f_ghost": [PEWTER_FLAGS, PEWTER_FLAGS], &"tower_guardian": [PEWTER_FLAGS],
 	&"tower_rival": [PEWTER_FLAGS],
+	# Jalon 21 (T21) : Route 12 (arrivée silencieuse, CT39 du poste, réveil de Ronflex).
+	&"route_12_visited": [PEWTER_FLAGS], &"route_12_gate_tm39": [PEWTER_FLAGS],
+	&"snorlax_route_12_wake": [PEWTER_FLAGS],
+	# Jalon 21 (T13, T14, T22) : sauvetage de Fuji, remise de la Flûte, Route 16.
+	&"tower_7f_fuji_rescue": [PEWTER_FLAGS],
+	&"pokemon_house_flute": [PEWTER_FLAGS + [&"fuji_rescued"]],
+	&"route_16_visited": [PEWTER_FLAGS], &"snorlax_route_16_wake": [PEWTER_FLAGS],
 	# Jalon 19 (T18) : zone purifiée et objets de la Tour.
 	&"tower_purified_zone": [PEWTER_FLAGS], &"tower_3f_objet_1": [PEWTER_FLAGS],
 	&"tower_4f_objet_1": [PEWTER_FLAGS], &"tower_4f_objet_2": [PEWTER_FLAGS],
@@ -258,6 +273,14 @@ const VARIANT_FLAGS: Dictionary = {
 	&"celadon_roof_trade": [PEWTER_FLAGS],
 	# Jalon 23 (T19) : Koga (scène et rattrapage de la CT06).
 	&"fuchsia_gym_koga": [PEWTER_FLAGS], &"fuchsia_gym_koga_tm_late": [PEWTER_FLAGS],
+	# Jalon 24 : objets, caches, Artikodin, porte de l'Arène, CT35, fossiles.
+	&"route_20_item_1": [PEWTER_FLAGS], &"route_21_item_1": [PEWTER_FLAGS],
+	&"seafoam_b2f_hidden_1": [PEWTER_FLAGS], &"seafoam_b4f_hidden_1": [PEWTER_FLAGS],
+	&"articuno": [PEWTER_FLAGS], &"cinnabar_gym_locked": [PEWTER_FLAGS],
+	&"cinnabar_lab_tm35": [PEWTER_FLAGS],
+	&"cinnabar_fossil_take_kabuto": [PEWTER_FLAGS], &"cinnabar_fossil_take_omanyte": [PEWTER_FLAGS],
+	&"cinnabar_fossil_give_kabuto": [PEWTER_FLAGS + [&"fossil_reviving_kabuto", &"fossil_ready"]],
+	&"cinnabar_fossil_give_omanyte": [PEWTER_FLAGS + [&"fossil_reviving_omanyte", &"fossil_ready"]],
 	# Jalon 20 (T21) : interrupteur (une fois), chute et prise de la Clé, Giovanni, Scope, objets.
 	&"game_corner_switch": [PEWTER_FLAGS], &"rocket_hideout_key_drop": [PEWTER_FLAGS],
 	&"rocket_hideout_b4f_lift_key": [PEWTER_FLAGS + [&"rocket_dropped_lift_key"]],
@@ -397,6 +420,27 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"tower_3f_objet_1": &"pokemon_tower_3f", &"tower_4f_objet_1": &"pokemon_tower_4f",
 	&"tower_4f_objet_2": &"pokemon_tower_4f", &"tower_5f_objet_1": &"pokemon_tower_5f",
 	&"tower_5f_cache_1": &"pokemon_tower_5f", &"tower_6f_objet_1": &"pokemon_tower_6f",
+	# Jalon 24 : objets (PNJ « objet »), caches (points d'examen), Artikodin (son PNJ), CT35 et
+	# fossiles (dialogues des scientifiques, « cutscene » ou « confirm_cutscene »).
+	&"route_20_item_1": &"route_20", &"route_21_item_1": &"route_21",
+	&"seafoam_b2f_hidden_1": &"seafoam_b2f", &"seafoam_b4f_hidden_1": &"seafoam_b4f",
+	&"articuno": &"seafoam_b4f", &"cinnabar_lab_tm35": &"cinnabar_lab_rd",
+	&"cinnabar_fossil_take_kabuto": &"cinnabar_lab_fossil",
+	&"cinnabar_fossil_take_omanyte": &"cinnabar_lab_fossil",
+	&"cinnabar_fossil_give_kabuto": &"cinnabar_lab_fossil",
+	&"cinnabar_fossil_give_omanyte": &"cinnabar_lab_fossil",
+	# Jalon 21 (T21) : CT39 (dialogue de la jeune femme du 2F) et réveil de Ronflex (choix OUI).
+	&"route_12_gate_tm39": &"route_12_gate_2f", &"snorlax_route_12_wake": &"route_12",
+	# Jalon 21 (T13, T22) : sauvetage de Fuji (dialogue de Fuji au 7F ; sa suite `next` est
+	# `pokemon_house_flute`, aussi lancée par le déclencheur d'entrée de la maison) et réveil du
+	# Ronflex 16 (« flute_cutscene » et choix OUI).
+	&"tower_7f_fuji_rescue": &"pokemon_tower_7f", &"snorlax_route_16_wake": &"route_16",
+}
+## Jalon 21 (T10, T12) : objets du Sac qui choisissent chaque variante (« if_items » /
+## « unless_items »), ligne par ligne comme VARIANT_FLAGS ; absent : Sac vide. La variante A du
+## 6F (révélation) demande le Scope Sylphe ; la variante B (SPECTRE du J19) s'applique sans.
+const VARIANT_ITEMS: Dictionary = {
+	&"tower_6f_ghost": [[&"silph_scope"], []],
 }
 ## Scènes à déclencheur dont la carte n'est pas encore construite → leur carte (simulées sur les
 ## PNJ de son fichier). Vidée au T19 du jalon 9 (la forêt existe), puis au T11 du jalon 10 (les
@@ -521,7 +565,17 @@ func test_library_loads_without_error() -> void:
 		# Jalon 20 (T17) : arrivées, objet et caches, Erika, échange de la fillette.
 		&"route_8_reached", &"celadon_reached", &"route_8_item_1", &"route_8_hidden_1",
 		&"souterrain_hidden_1", &"souterrain_hidden_2", &"celadon_hidden_1",
-		&"celadon_gym_erika", &"celadon_gym_erika_tm_late", &"celadon_roof_trade"]
+		&"celadon_gym_erika", &"celadon_gym_erika_tm_late", &"celadon_roof_trade",
+		# Jalon 24.
+		&"route_20_item_1", &"route_21_item_1", &"seafoam_b2f_hidden_1", &"seafoam_b4f_hidden_1",
+		&"articuno", &"cinnabar_gym_locked", &"cinnabar_lab_tm35", &"cinnabar_fossil_take_kabuto",
+		&"cinnabar_fossil_take_omanyte", &"cinnabar_fossil_give_kabuto",
+		&"cinnabar_fossil_give_omanyte",
+		# Jalon 21 (T21) : Route 12.
+		&"route_12_visited", &"route_12_gate_tm39", &"snorlax_route_12_wake",
+		# Jalon 21 (T13, T14, T22) : 7F, Maison des Pokémon, Route 16.
+		&"tower_7f_fuji_rescue", &"pokemon_house_flute", &"route_16_visited",
+		&"snorlax_route_16_wake"]
 		# Jalon 23 (T19) : Koga dans `j23_fuchsia_gym.json` (fichiers générés, test_j23_data).
 		+ J18_IDS + J20_T21_IDS))
 
@@ -531,6 +585,18 @@ func _sorted(values: Array) -> Array[StringName]:
 	result.assign(values)
 	result.sort_custom(func(a: StringName, b: StringName) -> bool: return String(a) < String(b))
 	return result
+
+
+## Jalon 24 (D3 de la QA A17) : la CT35 a sa ligne de réception, comme les CT des Arènes.
+func test_tm35_gift_is_followed_by_its_reception_line() -> void:
+	var steps := _cutscenes.get_cutscene(&"cinnabar_lab_tm35").variants[0].steps
+	assert_eq(steps[0].dialogue_id, &"cinnabar_lab_tm35_offer")
+	assert_eq(steps[1].kind, CutsceneStep.Kind.GIVE)
+	assert_eq(steps[1].item_id, &"tm35")
+	assert_eq(steps[2].kind, CutsceneStep.Kind.DIALOGUE)
+	assert_eq(steps[2].dialogue_id, &"cinnabar_lab_tm35_use")
+	assert_eq(steps[3].kind, CutsceneStep.Kind.SET_FLAGS)
+	assert_eq(steps[3].flags, [&"got_tm35"] as Array[StringName])
 
 
 func test_route1_grass_ends_with_the_starter_offer() -> void:
@@ -649,6 +715,7 @@ func test_only_world_items_are_found_items() -> void:
 		"rocket_hideout_b4f_lift_key:lift_key", "rocket_hideout_b4f_silph_scope:silph_scope",
 		"route_10_item_1:super_potion", "route_11_hidden_1:poke_ball",
 		"route_11_item_1:super_potion", "route_11_item_2:awakening", "route_1_potion:potion",
+		"route_20_item_1:great_ball", "route_21_item_1:hyper_potion",
 		"route_24_antidote:antidote", "route_24_item_1:potion", "route_25_hidden_1:potion",
 		"route_25_item_1:tm19", "route_25_item_2:potion", "route_25_item_3:poke_ball",
 		"route_2_east_item_1:moon_stone", "route_2_east_item_2:rare_candy",
@@ -660,6 +727,7 @@ func test_only_world_items_are_found_items() -> void:
 		"route_6_hidden_1:super_potion", "route_6_item_1:poke_ball",
 		"route_8_hidden_1:revive", "route_8_item_1:super_potion",
 		"route_9_item_1:super_potion", "route_9_item_2:antidote", "route_9_item_3:poke_ball",
+		"seafoam_b2f_hidden_1:nugget", "seafoam_b4f_hidden_1:ultra_ball",
 		"souterrain_hidden_1:nugget", "souterrain_hidden_2:super_potion",
 		"ss_anne_hidden_1:awakening", "ss_anne_hidden_2:antidote", "ss_anne_hidden_3:potion",
 		"ss_anne_item_01:potion", "ss_anne_item_02:potion", "ss_anne_item_03:super_potion",
@@ -731,7 +799,9 @@ func test_every_change_map_targets_an_existing_map_and_spawn() -> void:
 				as GameMap
 		assert_true(map.has_spawn(step.spawn), "%s : point « %s »" % [step.map_id, step.spawn])
 		map.free()
-	assert_eq(count, 2, "le retour au labo ; le quai de Carmin (départ du S.S. Anne, J16 T15)")
+	# Jalon 21 (T13) : + la téléportation du 7F vers la Maison des Pokémon.
+	assert_eq(count, 3, "le retour au labo ; le quai de Carmin (départ du S.S. Anne, J16 T15) ; "
+		+ "la Maison des Pokémon (sauvetage de Fuji, J21 T13)")
 
 
 func test_every_variant_is_chosen_by_its_flags() -> void:
@@ -740,9 +810,10 @@ func test_every_variant_is_chosen_by_its_flags() -> void:
 		var cutscene := _cutscenes.get_cutscene(id)
 		var rows: Array = VARIANT_FLAGS.get(id, [])
 		assert_eq(rows.size(), cutscene.variants.size())
+		var items: Array = VARIANT_ITEMS.get(id, [])
 		for i: int in mini(rows.size(), cutscene.variants.size()):
-			assert_same(cutscene.pick(_flags(rows[i])), cutscene.variants[i],
-				"%s : variante %d" % [id, i + 1])
+			assert_same(cutscene.pick(_flags(rows[i]), _bag(items[i] if i < items.size() else [])),
+				cutscene.variants[i], "%s : variante %d" % [id, i + 1])
 
 
 func test_static_simulation_of_every_variant() -> void:
@@ -1157,6 +1228,14 @@ func _present(map_id: StringName, flags: StoryFlags) -> Array[StringName]:
 	for spec: NpcSpec in NpcRoster.load_for_map(map_id).get_present(flags):
 		ids.append(spec.id)
 	return ids
+
+
+## Jalon 21 : Sac contenant un exemplaire de chaque objet de [param ids].
+func _bag(ids: Array) -> Bag:
+	var bag := Bag.new()
+	for id: StringName in ids:
+		bag.add(id)
+	return bag
 
 
 func _flags(names: Array) -> StoryFlags:

@@ -1,0 +1,399 @@
+{
+	"_doc": "Îles Écume (jalon 24, dossier 27 §7, jalon-24.md §2.6) : fichier GÉNÉRÉ par tools/gen_seafoam_data.py depuis les grilles tools/plans/seafoam_*.txt (ne pas éditer à la main ; en cas de conflit, régénérer). Lu par SeafoamState. Cases [x, y] de la grille (30 × 18, 1:1). hole des rochers et des points de chute : trou de l'étage qui les retire quand il est bouché (« rocher désigné », §7.3 ; 0 : aucun). Un courant est actif tant que ses drapeaux stopped_by ne sont pas TOUS posés. forced_surf : arrivées dans l'eau (cases s, atterrissages dans l'eau). surf_forbidden : SURFER refusé (T-14) tant que le courant est actif.",
+	"hole_flags": [
+		"seafoam_1f_hole_1_filled",
+		"seafoam_1f_hole_2_filled",
+		"seafoam_b1f_hole_1_filled",
+		"seafoam_b1f_hole_2_filled",
+		"seafoam_b2f_hole_1_filled",
+		"seafoam_b2f_hole_2_filled",
+		"seafoam_b3f_hole_1_filled",
+		"seafoam_b3f_hole_2_filled"
+	],
+	"floors": {
+		"seafoam_1f": {
+			"map": "seafoam_1f",
+			"holes": [
+				{
+					"n": 1,
+					"cell": [17, 6],
+					"flag": "seafoam_1f_hole_1_filled",
+					"falls_to": "seafoam_b1f"
+				},
+				{
+					"n": 2,
+					"cell": [24, 6],
+					"flag": "seafoam_1f_hole_2_filled",
+					"falls_to": "seafoam_b1f"
+				}
+			],
+			"fall_points": [],
+			"landings": [],
+			"boulders": [
+				{
+					"cell": [18, 10],
+					"hole": 1
+				},
+				{
+					"cell": [26, 7],
+					"hole": 2
+				}
+			],
+			"currents": [],
+			"forced_surf": [],
+			"surf_forbidden": []
+		},
+		"seafoam_b1f": {
+			"map": "seafoam_b1f",
+			"holes": [
+				{
+					"n": 1,
+					"cell": [18, 6],
+					"flag": "seafoam_b1f_hole_1_filled",
+					"falls_to": "seafoam_b2f"
+				},
+				{
+					"n": 2,
+					"cell": [23, 6],
+					"flag": "seafoam_b1f_hole_2_filled",
+					"falls_to": "seafoam_b2f"
+				}
+			],
+			"fall_points": [
+				{
+					"from_flag": "seafoam_1f_hole_1_filled",
+					"cell": [17, 6],
+					"water": false,
+					"hole": 1
+				},
+				{
+					"from_flag": "seafoam_1f_hole_2_filled",
+					"cell": [22, 6],
+					"water": false,
+					"hole": 2
+				}
+			],
+			"landings": [
+				{
+					"from_flag": "seafoam_1f_hole_1_filled",
+					"cell": [17, 6],
+					"surf": false
+				},
+				{
+					"from_flag": "seafoam_1f_hole_2_filled",
+					"cell": [22, 6],
+					"surf": false
+				}
+			],
+			"boulders": [],
+			"currents": [],
+			"forced_surf": [],
+			"surf_forbidden": []
+		},
+		"seafoam_b2f": {
+			"map": "seafoam_b2f",
+			"holes": [
+				{
+					"n": 1,
+					"cell": [19, 6],
+					"flag": "seafoam_b2f_hole_1_filled",
+					"falls_to": "seafoam_b3f"
+				},
+				{
+					"n": 2,
+					"cell": [22, 6],
+					"flag": "seafoam_b2f_hole_2_filled",
+					"falls_to": "seafoam_b3f"
+				}
+			],
+			"fall_points": [
+				{
+					"from_flag": "seafoam_b1f_hole_1_filled",
+					"cell": [18, 6],
+					"water": false,
+					"hole": 1
+				},
+				{
+					"from_flag": "seafoam_b1f_hole_2_filled",
+					"cell": [23, 6],
+					"water": false,
+					"hole": 2
+				}
+			],
+			"landings": [
+				{
+					"from_flag": "seafoam_b1f_hole_1_filled",
+					"cell": [18, 6],
+					"surf": false
+				},
+				{
+					"from_flag": "seafoam_b1f_hole_2_filled",
+					"cell": [23, 6],
+					"surf": false
+				}
+			],
+			"boulders": [],
+			"currents": [],
+			"forced_surf": [],
+			"surf_forbidden": []
+		},
+		"seafoam_b3f": {
+			"map": "seafoam_b3f",
+			"holes": [
+				{
+					"n": 1,
+					"cell": [3, 16],
+					"flag": "seafoam_b3f_hole_1_filled",
+					"falls_to": "seafoam_b4f"
+				},
+				{
+					"n": 2,
+					"cell": [6, 16],
+					"flag": "seafoam_b3f_hole_2_filled",
+					"falls_to": "seafoam_b4f"
+				}
+			],
+			"fall_points": [
+				{
+					"from_flag": "seafoam_b2f_hole_1_filled",
+					"cell": [18, 6],
+					"water": true,
+					"hole": 0
+				},
+				{
+					"from_flag": "seafoam_b2f_hole_2_filled",
+					"cell": [19, 6],
+					"water": true,
+					"hole": 0
+				}
+			],
+			"landings": [
+				{
+					"from_flag": "seafoam_b2f_hole_1_filled",
+					"cell": [18, 7],
+					"surf": true
+				},
+				{
+					"from_flag": "seafoam_b2f_hole_2_filled",
+					"cell": [19, 7],
+					"surf": true
+				}
+			],
+			"boulders": [
+				{
+					"cell": [5, 14],
+					"hole": 0
+				},
+				{
+					"cell": [3, 15],
+					"hole": 1
+				},
+				{
+					"cell": [8, 14],
+					"hole": 2
+				},
+				{
+					"cell": [9, 14],
+					"hole": 0
+				}
+			],
+			"currents": [
+				{
+					"id": 1,
+					"cells": [
+						{
+							"cell": [18, 7],
+							"dir": "down"
+						},
+						{
+							"cell": [19, 7],
+							"dir": "left"
+						},
+						{
+							"cell": [15, 8],
+							"dir": "down"
+						},
+						{
+							"cell": [18, 8],
+							"dir": "down"
+						},
+						{
+							"cell": [15, 9],
+							"dir": "down"
+						},
+						{
+							"cell": [18, 9],
+							"dir": "down"
+						},
+						{
+							"cell": [15, 10],
+							"dir": "down"
+						},
+						{
+							"cell": [18, 10],
+							"dir": "down"
+						},
+						{
+							"cell": [15, 11],
+							"dir": "right"
+						},
+						{
+							"cell": [16, 11],
+							"dir": "right"
+						},
+						{
+							"cell": [17, 11],
+							"dir": "right"
+						},
+						{
+							"cell": [18, 11],
+							"dir": "right"
+						},
+						{
+							"cell": [19, 11],
+							"dir": "right"
+						},
+						{
+							"cell": [20, 11],
+							"dir": "down"
+						},
+						{
+							"cell": [20, 12],
+							"dir": "down"
+						},
+						{
+							"cell": [20, 13],
+							"dir": "down"
+						},
+						{
+							"cell": [20, 14],
+							"dir": "down"
+						},
+						{
+							"cell": [20, 15],
+							"dir": "down"
+						},
+						{
+							"cell": [20, 16],
+							"dir": "down"
+						},
+						{
+							"cell": [20, 17],
+							"dir": "down"
+						}
+					],
+					"sources": [
+						[15, 8],
+						[18, 7],
+						[19, 7]
+					],
+					"stopped_by": [
+						"seafoam_b2f_hole_1_filled",
+						"seafoam_b2f_hole_2_filled"
+					],
+					"end": {
+						"kind": "warp",
+						"cell": [20, 17],
+						"pair": "W1"
+					}
+				}
+			],
+			"forced_surf": [
+				[18, 7],
+				[19, 7],
+				[21, 16]
+			],
+			"surf_forbidden": []
+		},
+		"seafoam_b4f": {
+			"map": "seafoam_b4f",
+			"holes": [],
+			"fall_points": [
+				{
+					"from_flag": "seafoam_b3f_hole_1_filled",
+					"cell": [4, 15],
+					"water": true,
+					"hole": 0
+				},
+				{
+					"from_flag": "seafoam_b3f_hole_2_filled",
+					"cell": [5, 15],
+					"water": true,
+					"hole": 0
+				}
+			],
+			"landings": [
+				{
+					"from_flag": "seafoam_b3f_hole_1_filled",
+					"cell": [4, 14],
+					"surf": true
+				},
+				{
+					"from_flag": "seafoam_b3f_hole_2_filled",
+					"cell": [5, 14],
+					"surf": true
+				}
+			],
+			"boulders": [],
+			"currents": [
+				{
+					"id": 2,
+					"cells": [
+						{
+							"cell": [7, 12],
+							"dir": "up"
+						},
+						{
+							"cell": [4, 13],
+							"dir": "right"
+						},
+						{
+							"cell": [5, 13],
+							"dir": "right"
+						},
+						{
+							"cell": [6, 13],
+							"dir": "right"
+						},
+						{
+							"cell": [7, 13],
+							"dir": "up"
+						},
+						{
+							"cell": [4, 14],
+							"dir": "up"
+						},
+						{
+							"cell": [5, 14],
+							"dir": "up"
+						}
+					],
+					"sources": [
+						[4, 14],
+						[5, 14]
+					],
+					"stopped_by": [
+						"seafoam_b3f_hole_1_filled",
+						"seafoam_b3f_hole_2_filled"
+					],
+					"end": {
+						"kind": "land",
+						"cell": [7, 11]
+					}
+				}
+			],
+			"forced_surf": [
+				[4, 14],
+				[5, 14],
+				[20, 16],
+				[21, 16]
+			],
+			"surf_forbidden": [
+				{
+					"cell": [7, 11],
+					"while_current": 2
+				}
+			]
+		}
+	}
+}

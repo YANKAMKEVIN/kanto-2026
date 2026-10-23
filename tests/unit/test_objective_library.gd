@@ -20,8 +20,10 @@ func test_real_data_loads_without_error() -> void:
 	# (test_j18_data) ; derrière eux, ceux du jalon 16 (T13, T14 : Arène de Carmin, R-9).
 	# Jalon 19 (clôture T24, dossier 22 §15.7) : ses deux objectifs devant ceux du J18.
 	# Jalon 20 (T17, jalon-20.md §2.11) : ses quatre objectifs en tête, le plus avancé d'abord.
-	# Jalon 23 (dossier 26 §8) : Dents d'Or, puis Koga, en tête.
-	assert_eq(library.get_ids(), [&"return_gold_teeth", &"challenge_koga", &"back_to_tower", &"search_game_corner", &"explore_celadon",
+	# Jalon 21 (T14, jalon-21.md §2.13) : « rendre visite à M. Fuji. » et « trouver M. Fuji… » en tête.
+	# Jalon 23 (dossier 26 §8) : Dents d'Or, puis Koga, devant eux.
+	assert_eq(library.get_ids(), [&"return_gold_teeth", &"challenge_koga", &"visit_fuji",
+		&"find_fuji", &"back_to_tower", &"search_game_corner", &"explore_celadon",
 		&"go_celadon", &"see_the_ghosts", &"climb_tower", &"tower_later", &"visit_tower", &"reach_lavender",
 		&"cross_dark_cave", &"cross_route_9", &"face_surge", &"open_surge_barrier",
 		&"go_vermilion_gym", &"hm01_cascade_badge", &"help_captain",
@@ -380,3 +382,26 @@ func test_j20_celadon_objectives_in_order() -> void:
 	for id: StringName in [&"back_to_tower", &"search_game_corner", &"explore_celadon",
 			&"go_celadon"]:
 		assert_false(library.is_draft(id), "texte validé (dossier 23 §20.8)")
+
+
+## Jalon 21 (T14, jalon-21.md §2.13, dossier 24 §12 et §15.9) : de la Tour au Sauveur, quatre états.
+func test_j21_fuji_objectives_in_order() -> void:
+	var library := ObjectiveLibrary.new()
+	library.load_file()
+	var flags := StoryFlags.new()
+	for flag: StringName in [&"badge_boulder", &"cerulean_reached", &"badge_cascade",
+			&"lavender_reached", &"tower_stairs_open", &"tower_ghost_met", &"route_8_reached",
+			&"celadon_reached", &"game_corner_switch", &"got_rocket_hideout_b4f_silph_scope"]:
+		flags.set_flag(flag)
+	assert_eq(library.current_id(flags), &"back_to_tower", "Scope en poche : retourner à la Tour")
+	flags.set_flag(&"ghost_marowak_calmed")
+	assert_eq(library.current_id(flags), &"find_fuji")
+	assert_eq(library.current(flags), "trouver M. Fuji, au sommet de la Tour.", "§15.9 n° 1")
+	flags.set_flag(&"fuji_rescued")
+	assert_eq(library.current_id(flags), &"visit_fuji")
+	assert_eq(library.current(flags), "rendre visite à M. Fuji.", "§15.9 n° 2")
+	flags.set_flag(&"got_poke_flute")
+	for id: StringName in [&"visit_fuji", &"find_fuji", &"back_to_tower"]:
+		assert_ne(library.current_id(flags), id, "aucun objectif du J21 après la Flûte")
+	for id: StringName in [&"visit_fuji", &"find_fuji"]:
+		assert_false(library.is_draft(id), "texte validé (dossier 24 §15.9)")

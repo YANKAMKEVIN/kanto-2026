@@ -15,7 +15,8 @@ extends RefCounted
 ## Clés : cell (obligatoire), sprite (obligatoire), facing (down), dialogue (aucun),
 ## verb (talk | observe | take | examine ; take = objet visible au sol, jalon 8 ; examine = objet
 ## fixe qu'on examine, jalon 12 : les fossiles de la dalle), turn_to_player (true),
-## keep_facing (false), lift (0 pixel),
+## keep_facing (false), lift (0 pixel), pose (animation d'attente jouée dans l'orientation de
+## repos à la place de idle_<dir>, J21 : « pray » de M. Fuji ; aucune par défaut),
 ## hop_style (calm | eager | playful : style de saut, jalon 4 ; aucun par défaut),
 ## shy ({ action: fly | flee | notice | hide, radius: 1..4 } : réaction d'ambiance, jalon 5 ;
 ## notice et hide au jalon 9 ; interdit sur un PNJ interactif),
@@ -59,7 +60,7 @@ const KEYS: Array[String] = [
 	"cell", "facing", "sprite", "dialogue", "verb", "turn_to_player", "keep_facing", "lift",
 	"hop_style", "shy", "route", "if", "unless", "species", "idle_react", "look",
 	"trainer",
-	"moved", "move_mode",
+	"moved", "move_mode", "pose",
 ]
 ## Clés du bloc « trainer » ([method _read_trainer]).
 const TRAINER_KEYS: Array[String] = ["id", "sight", "before", "defeated", "rematch", "leave"]
@@ -202,6 +203,11 @@ static func parse_entry(value: Variant, errors: PackedStringArray) -> NpcSpec:
 				errors.append("« %s » vaut true ou false" % key)
 			else:
 				spec.set(key, entry[key])
+	if entry.has("pose"):
+		if not entry["pose"] is String or (entry["pose"] as String).is_empty():
+			errors.append("« pose » doit être un nom d'animation")
+		else:
+			spec.pose = StringName(entry["pose"])
 	if entry.has("lift"):
 		var lift: Variant = entry["lift"]
 		if not (lift is float or lift is int) or float(lift) != floorf(float(lift)) \

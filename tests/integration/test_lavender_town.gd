@@ -169,21 +169,20 @@ func test_west_edge_leads_to_route_8_row_by_row() -> void:
 			Vector2i(1, 10 + i))
 
 
-func test_south_edge_is_coming_soon_and_reachable() -> void:
+## Jalon 21 (T21) : le bord sud mène à la Route 12 (`route_12` / `from_lavender_w|c|e`).
+func test_south_edge_leads_to_route_12() -> void:
 	var dist := _reach()
-	for entry: Array in [[Vector2i(21, 35), Vector2i.DOWN, "Route 12", "from_route_12_"]]:
-		for i: int in 3:
-			var cell: Vector2i = entry[0] + (Vector2i(0, i) if entry[1] == Vector2i.LEFT
-				else Vector2i(i, 0))
-			var warp := _map.get_warps().find_on_push(cell, entry[1])
-			assert_not_null(warp, "raccord %s" % cell)
-			if warp != null:
-				assert_true(warp.is_coming_soon())
-				assert_eq(warp.coming_soon, entry[2])
-				var back := _map.get_spawn_cell(warp.target_spawn)
-				assert_false(_grid.is_solid(back), "retour praticable")
-				assert_ne(warp.facing, Vector2i.ZERO)
-			assert_true(dist.has(cell), "bord %s atteignable" % cell)
+	for i: int in 3:
+		var cell := Vector2i(21 + i, 35)
+		var warp := _map.get_warps().find_on_push(cell, Vector2i.DOWN)
+		assert_not_null(warp, "raccord %s" % cell)
+		if warp != null:
+			assert_false(warp.is_coming_soon())
+			assert_eq([warp.target_map, warp.target_spawn],
+				[&"route_12", StringName("from_lavender_" + ["w", "c", "e"][i])])
+		assert_true(dist.has(cell), "bord %s atteignable" % cell)
+		assert_false(_grid.is_solid(_map.get_spawn_cell(StringName(
+			"from_route_12_" + ["w", "c", "e"][i]))))
 
 
 func test_doors_lead_into_the_interiors_and_back() -> void:

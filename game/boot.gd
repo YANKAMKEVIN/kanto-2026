@@ -238,6 +238,9 @@ func _ready() -> void:
 	_lighting = WorldLighting.new()
 	_lighting.process_mode = Node.PROCESS_MODE_PAUSABLE
 	add_child(_lighting)
+	# J21 : étalonnage à plat de la Tour, dans le canevas du monde (hors CanvasLayer).
+	_lighting.get_world_modulate().process_mode = Node.PROCESS_MODE_PAUSABLE
+	add_child(_lighting.get_world_modulate())
 	_wire_settings_applier()
 	_light_profiles.load_file()
 	_darkness = DarknessController.new()
@@ -255,6 +258,12 @@ func _ready() -> void:
 	# Compteur de fps de QA (journal « [perf] »), seulement en build debug, Boot scène principale.
 	if PerfCounter.is_allowed(OS.is_debug_build(), get_tree().current_scene == self):
 		add_child(PerfCounter.new())
+		# Moteur commun : sonde par couches si user://perf_probe.json existe (PerfProbe).
+		if FileAccess.file_exists(PerfProbe.USER_PATH):
+			var probe := PerfProbe.new()
+			probe.configure(FileAccess.get_file_as_string(PerfProbe.USER_PATH))
+			probe.setup(_lighting)
+			add_child(probe)
 	_player = PLAYER_SCENE.instantiate() as Player
 	_darkness.setup(_world, _player)
 	_library.load_dir()
@@ -376,6 +385,9 @@ func _ready() -> void:
 	# peut survenir dans les secondes qui suivent l'arrivée dans la zone.
 	_battle_director.battle_started.connect(_hud.hide_zone_title.unbind(1))
 	_battle_director.battle_finished.connect(_on_battle_state_changed.unbind(2))
+	# J21 : l'étalonnage à plat (Tour) passe sur BattleStage pendant le combat.
+	_battle_director.battle_started.connect(_lighting.set_battle_active.bind(true).unbind(1))
+	_battle_director.battle_finished.connect(_lighting.set_battle_active.bind(false).unbind(2))
 	_battle_director.battle_finished.connect(_on_battle_finished)
 	# Pokédex (jalon 5, décision Kevin 2026-09-29) : le starter est « capturé » à son entrée
 	# dans l'équipe ; tout Pokémon adverse envoyé au combat est « vu » (le Pokémon du rival au
@@ -546,6 +558,8 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	GameState.add_play_time(_lifecycle.play_time_step(delta, _is_opening_active()))
 	_watch_save_checkpoint(delta)
+	# Moteur commun (D5) : boutons transparents quand le joueur est dessous.
+	_hud.set_player_screen_rect(_player.get_screen_body_rect())
 	_save_coordinator.process(delta)
 	if not _dex_toasts.is_empty():
 		_show_next_dex_toast()
@@ -737,7 +751,8 @@ func _field_move_user(move: StringName) -> Pokemon:
 ## utilise lui-même (jalon 16) : il reste alors dehors pour couper.
 func _companion_cuts(cutscene_id: StringName) -> bool:
 	var cutscene := _cutscenes.get_cutscene(cutscene_id)
-	var move := cutscene.leading_field_move(GameState.flags) if cutscene != null else &""
+	var move := cutscene.leading_field_move(GameState.flags, GameState.bag) \
+		if cutscene != null else &""
 	if move.is_empty():
 		return false
 	var chosen := _companion.get_chosen()

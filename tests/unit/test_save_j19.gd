@@ -320,7 +320,10 @@ func test_a_j19_save_with_the_scope_added_meets_named_wild_pokemon_but_the_6f_gh
 	var items: Dictionary = (_file(fs)["bag"] as Dictionary)["items"]
 	assert_eq(int(items.get(String(SCOPE), 0)), 1, "le Scope reste dans le fichier")
 
-	# Le SPECTRE du 6F reste un SPECTRE (`ghost: always`), même Scope en poche.
+	# Jalon 21 (T12, dossier 24 §5) : Scope en poche, le SPECTRE du 6F est RÉVÉLÉ (variante A) :
+	# Ossatueur nommé, vu, non capturable ; fuite → recul (10, 15), aucun drapeau du J21. Le
+	# SPECTRE du J19 sans Scope reste vérifié par `test_tower_6f_marowak` (sans Scope : J19 mot pour
+	# mot) et `test_save_j21`.
 	_shown_lines.clear()
 	watch_signals(GameState.pokedex)
 	var player := _boot.get_player()
@@ -331,17 +334,18 @@ func test_a_j19_save_with_the_scope_added_meets_named_wild_pokemon_but_the_6f_gh
 	Input.action_press(&"move_down")
 	await wait_until(func() -> bool: return cutscenes.is_running(), TIMEOUT)
 	Input.action_release(&"move_down")
-	assert_eq(cutscenes.get_cutscene_id(), &"tower_6f_ghost", "la scène du SPECTRE")
+	assert_eq(cutscenes.get_cutscene_id(), &"tower_6f_ghost", "la scène du 6F")
 	_boot.request_autosave("T22 : pendant la scène")
 	var ghost: Array = await _flee_everything()
 	assert_eq(ghost[0], Battle.Outcome.FLED, "la fuite réussit")
 	var rules := ghost[1] as BattleRules
 	assert_not_null(rules)
 	if rules != null:
-		assert_true(rules.ghost, "SPECTRE malgré le Scope")
-	assert_has(_shown_lines, GHOST_LINE)
-	assert_false(GameState.pokedex.is_seen(&"marowak"), "Ossatueur jamais vu")
-	assert_signal_not_emitted(GameState.pokedex, "recorded", "rien au Pokédex")
+		assert_false(rules.ghost, "révélé par le Scope (J21)")
+		assert_true(rules.uncatchable, "Ossatueur non capturable (J21)")
+	assert_false(_shown_lines.has(GHOST_LINE), "aucun « SPECTRE apparaît » (J21)")
+	assert_has(_shown_lines, "Le Scope Sylphe révèle l'identité du SPECTRE !")
+	assert_true(GameState.pokedex.is_seen(&"marowak"), "Ossatueur vu (J21)")
 	assert_eq(player.get_cell(), BEFORE_TRIGGER, "repoussé en (10, 15)")
 	assert_eq(GameState.bag.count_of(SCOPE), 1, "Scope toujours là")
 	assert_false(GameState.flags.has_flag(&"ghost_marowak_calmed"), "drapeau du J21 jamais posé")

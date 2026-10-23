@@ -352,11 +352,11 @@ func can_use_balls() -> bool:
 		and _rules.items != null
 
 
-## Vrai si les Balls sont refusées dans ce combat (combat SPECTRE, jalon 19) : le Sac s'ouvre
-## ([method can_use_balls]), mais aucune Ball n'est légale ; le directeur l'annonce sans rien
-## retirer du Sac ni jouer de tour.
+## Vrai si les Balls sont refusées dans ce combat (combat SPECTRE, jalon 19 ; sauvage
+## « uncatchable », jalon 21) : le Sac s'ouvre ([method can_use_balls]), mais aucune Ball n'est
+## légale ; le directeur l'annonce sans rien retirer du Sac ni jouer de tour.
 func refuses_balls() -> bool:
-	return _rules != null and _rules.ghost
+	return _rules != null and (_rules.ghost or _rules.uncatchable)
 
 
 ## Vrai si le joueur peut donner un soin maintenant (règles, objets connus). Ni le Sac ni la
@@ -827,6 +827,18 @@ func _execute(side: BattleSide, action: BattleAction, events: Array[BattleEvent]
 		used.pp = slot.pp
 	events.append(used)
 	user.last_move_slot = action.move_index
+	# Jalon 24 (T13) : Métronome lance une capacité tirée au hasard, comme si le Pokémon la
+	# connaissait (les PP de Métronome sont dépensés, pas ceux de la capacité tirée).
+	if move.effect_of(MoveEffect.Kind.METRONOME) != null:
+		move = MetronomeRules.pick(_data, _rng)
+		if move == null:
+			_append_failed(side, move_id, events)
+			return
+		move_id = move.id
+		var called := _event(BattleEvent.Kind.MOVE_USED, side)
+		called.move_id = move_id
+		called.pp = -1
+		events.append(called)
 	if not released and _start_charge(side, action, move, events):
 		return
 	if _dodged(target_side, move, events):

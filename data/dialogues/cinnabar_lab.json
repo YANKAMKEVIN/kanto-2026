@@ -1,0 +1,15 @@
+{
+	"cinnabar_lab_expert": {
+		"speaker": "Pêcheur expert",
+		"pages": [
+			"Ici, on étudie les Pokémon rares.",
+			"Des chercheurs du monde entier\nviennent travailler sur l'île."
+		]
+	},
+	"cinnabar_lab_photo": {
+		"narration": true,
+		"pages": [
+			"Le fondateur du Labo :\nle Dr Fuji."
+		]
+	}
+}

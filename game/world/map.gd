@@ -228,6 +228,19 @@ func apply_flag_gates(flags: StoryFlags) -> void:
 			(node as FlagGate).apply_to_grid(_grid)
 
 
+## Acteur de décor [param id] (jalon 21, `jalon-21.md` §2.3) : nœud de la carte du groupe
+## [constant PropActor.GROUP] nommé [param id] (le sprite de Ronflex) ; null sinon ou hors de
+## l'arbre. Les étapes « react » / « emote » et la page « react » d'un dialogue s'en servent
+## quand [param id] n'est pas un PNJ.
+func get_scene_prop(id: StringName) -> Node:
+	if not is_inside_tree() or id.is_empty():
+		return null
+	for node: Node in get_tree().get_nodes_in_group(PropActor.GROUP):
+		if node.name == id and is_ancestor_of(node):
+			return node
+	return null
+
+
 ## PNJ d'identifiant [param id], ou null.
 func get_npc(id: StringName) -> Npc:
 	for npc: Npc in _npcs:

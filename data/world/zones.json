@@ -117,7 +117,8 @@
 			"maps": [
 				"lavender_town", "lavender_center", "lavender_mart", "pokemon_house",
 				"lavender_house_1", "lavender_house_2", "pokemon_tower_1f", "pokemon_tower_2f",
-				"pokemon_tower_3f", "pokemon_tower_4f", "pokemon_tower_5f", "pokemon_tower_6f"
+				"pokemon_tower_3f", "pokemon_tower_4f", "pokemon_tower_5f", "pokemon_tower_6f",
+				"pokemon_tower_7f"
 			],
 			"subtitle": "Route 10 — Route 8 — Route 12",
 			"services": [
@@ -176,8 +177,6 @@
 			"interior_title": true,
 			"description": "Quatre zones d'herbes hautes au nord de Parmanie, où vivent des Pokémon qu'on ne voit nulle part ailleurs. On y entre sans ses Pokémon : seulement des Safari Balls, des appâts et des cailloux."
 		},
-		"route_21": { "name": "Route 21", "kind": "sea_route", "maps": [] },
-		"cinnabar_island": { "name": "Cramois'Île", "kind": "town", "maps": [] },
 		"route_23": { "name": "Route 23", "kind": "route", "maps": [] },
 		"indigo_plateau": { "name": "Plateau Indigo", "kind": "place", "maps": [] },
 		"route_25": {
@@ -210,11 +209,6 @@
 			"subtitle": "Carmin-sur-Mer — Route 12",
 			"description": "Une route côtière entre les prairies et la mer, à l'est de Carmin."
 		},
-		"route_12": {
-			"name": "Route 12", "kind": "route", "maps": ["route_12_south", "route_12_rod_house"],
-			"subtitle": "Lavanville — Parmanie",
-			"description": "Au sud du croisement, un long ponton de pêcheurs longe le lac, puis le chemin s'enfonce dans les herbes."
-		},
 		"route_13": {
 			"name": "Route 13", "kind": "route", "maps": ["route_13"],
 			"subtitle": "Route 12 — Route 14",
@@ -229,11 +223,6 @@
 			"name": "Route 15", "kind": "route", "maps": ["route_15", "route_15_gate", "route_15_gate_2f"],
 			"subtitle": "Route 14 — Parmanie",
 			"description": "Une route de prairies qui mène à Parmanie. Un poste de garde la coupe en deux."
-		},
-		"route_16": {
-			"name": "Route 16", "kind": "route", "maps": ["route_16_west", "route_16_gate", "route_16_fly_house"],
-			"subtitle": "Céladopole — Piste Cyclable",
-			"description": "À l'ouest de Céladopole, le poste de garde ouvre la Piste Cyclable. Plus haut, une voie tranquille à pied."
 		},
 		"route_17": {
 			"name": "Route 17", "kind": "route", "maps": ["route_17"],
@@ -269,10 +258,55 @@
 			],
 			"description": "Une route coupée en deux par la falaise et la rivière. On ne passe d'un côté à l'autre que par la Grotte Sombre."
 		},
+		"route_19": {
+			"name": "Route 19", "kind": "sea_route", "maps": ["route_19"],
+			"subtitle": "Parmanie — Route 20",
+			"description": "Une route marine qui part de la plage de Parmanie. Des nageurs y attendent au large, entre les vagues."
+		},
+		"route_20": {
+			"name": "Route 20", "kind": "sea_route", "maps": ["route_20"],
+			"subtitle": "Route 19 — Cramois'Île",
+			"description": "Une longue traversée vers l'ouest. Au milieu de la mer, les falaises blanches des Îles Écume."
+		},
+		"seafoam_islands": {
+			"name": "Îles Écume", "kind": "place",
+			"maps": ["seafoam_1f", "seafoam_b1f", "seafoam_b2f", "seafoam_b3f", "seafoam_b4f"],
+			"subtitle": "Route 20",
+			"description": "Des grottes de glace sous deux îlots jumeaux. Les rochers y changent le cours de l'eau."
+		},
+		"route_21": {
+			"name": "Route 21", "kind": "sea_route", "maps": ["route_21"],
+			"subtitle": "Bourg Palette — Cramois'Île",
+			"description": "Une route marine entre Bourg Palette et Cramois'Île, avec une prairie qu'on n'atteint qu'en Surf."
+		},
+		"cinnabar_island": {
+			"name": "Cramois'Île", "kind": "town",
+			"maps": [
+				"cinnabar_island", "cinnabar_center", "cinnabar_mart", "cinnabar_lab",
+				"cinnabar_lab_meeting", "cinnabar_lab_rd", "cinnabar_lab_fossil"
+			],
+			"subtitle": "Route 20 — Route 21",
+			"services": [
+				{ "id": "pokemon_center", "found_on": "cinnabar_center" },
+				{ "id": "poke_mart", "found_on": "cinnabar_mart" },
+				{ "id": "gym", "found_on": "cinnabar_island" }
+			],
+			"description": "Une île volcanique au sud-ouest de Kanto. On y vient pour son Labo, ses fossiles et son Arène."
+		},
 		"dark_cave": {
 			"name": "Grotte Sombre", "kind": "place", "maps": ["dark_cave_1f", "dark_cave_b1f"],
 			"subtitle": "Route 10",
 			"description": "Un tunnel sans lumière sous la montagne. On y avance de repère en repère, une colonne, une fente, une flaque."
+		},
+		"route_16": {
+			"name": "Route 16", "kind": "route", "maps": ["route_16", "route_16_west", "route_16_gate", "route_16_fly_house"],
+			"subtitle": "Céladopole",
+			"description": "Une route boisée à l'ouest de Céladopole."
+		},
+		"route_12": {
+			"name": "Route 12", "kind": "route", "maps": ["route_12", "route_12_gate", "route_12_gate_2f", "route_12_south", "route_12_rod_house"],
+			"subtitle": "Lavanville — Route 11",
+			"description": "Une longue route au bord de l'eau, au sud de Lavanville."
 		}
 	}
 }

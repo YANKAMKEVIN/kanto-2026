@@ -1,0 +1,16 @@
+{
+	"cinnabar_center_cooltrainer": {
+		"speaker": "Topdresseuse",
+		"pages": [
+			"Tu peux empêcher un Pokémon\nd'évoluer en appuyant",
+			"sur ARRÊTER pendant\nl'évolution."
+		]
+	},
+	"cinnabar_center_gentleman": {
+		"speaker": "Gentleman",
+		"pages": [
+			"On vient de loin pour le Labo.",
+			"Moi, je viens pour la vue."
+		]
+	}
+}

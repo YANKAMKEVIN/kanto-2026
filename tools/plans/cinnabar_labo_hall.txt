@@ -1,0 +1,44 @@
+# Labo Pokémon de Cramois'Île, hall (cinnabar_lab) — grille fonctionnelle v1 (jalon 24 T2, dossier 27
+# §10.4 ; RB CinnabarLab 18 × 8 cellules, ×1,5 = 27 × 12). Trois portes dans le mur du fond mènent
+# aux trois salles (RB : (8,4) réunion, (12,4) R&D, (16,4) fossiles, ×1,5 = 12, 18, 24).
+# Contrôle : tools/art/plan_check_j24_mer.py. Convention des intérieurs de
+# tools/build_painted_interiors.gd (mur du fond sur 4 rangées ici, dernière rangée, paillasson en
+# avant-dernière rangée).
+#
+# Légende :
+#   K mur (bloqué)   . sol (praticable)
+#   X sortie vers Cramois'Île (praticable : paillasson, PUSH ↓)
+#   D porte d'une salle (praticable, STEP_ON ↑, terminale)   P photo du fondateur (bloquée)
+#   x plante (1,4) (25,4) (1,9) (25,9)   T table centrale (12..14, 7..8)
+#
+# Format : section GRILLE (« NN » + espace + 27 caractères par rangée), puis POSITIONS.
+
+PRATICABLES .XD
+
+GRILLE 27 12
+00 KKKKKKKKKKKKKKKKKKKKKKKKKKK
+01 KKKKKKKKKKKKKKKKKKKKKKKKKKK
+02 KKKKKKKKKKKKKKKKKKKKKKKKKKK
+03 KKKKPPKKKKKKDDKKKKDDKKKKDDK
+04 Kx.......................xK
+05 K.........................K
+06 K.........................K
+07 K...........TTT...........K
+08 K...........TTT...........K
+09 Kx.......................xK
+10 KKKXXXKKKKKKKKKKKKKKKKKKKKK
+11 KKKKKKKKKKKKKKKKKKKKKKKKKKK
+FIN
+
+POSITIONS
+sortie                     warp           3..5,10           libre   # PUSH ↓ → cinnabar_island, from_labo
+entree                     spawn          4,10              libre   # spawn « entrance », tourné ↑
+porte_reunion              warp           12..13,3          libre   rb=8,4  # STEP_ON ↑ → cinnabar_labo_reunion, from_hall
+porte_rd                   warp           18..19,3          libre   rb=12,4  # STEP_ON ↑ → cinnabar_labo_rd, from_hall
+porte_fossiles             warp           24..25,3          libre   rb=16,4  # STEP_ON ↑ → cinnabar_labo_fossiles, from_hall
+from_reunion               spawn          12..13,4          libre   # retour de la salle de réunion, tourné ↓
+from_rd                    spawn          18..19,4          libre   # retour de la salle R&D, tourné ↓
+from_fossiles              spawn          24..25,4          libre   # retour de la salle des fossiles, tourné ↓
+pecheur_expert             pnj            2,6               bloque  role=P1 facing=right rb=1,3 texte=T-50  # Pêcheur expert
+photo_fondateur            examen         4..5,3            bloque  rb=3,2 texte=T-51  # photo du fondateur, EXAMINER depuis (4..5,4) tourné ↑
+FIN

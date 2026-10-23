@@ -257,7 +257,10 @@
 		"safari_action_ball": { "text": "SAFARI BALL ×{amount}" },
 		"safari_action_bait": { "text": "APPÂT" },
 		"safari_action_rock": { "text": "CAILLOU" },
-		"safari_action_run": { "text": "FUIR" }
+		"safari_action_run": { "text": "FUIR" },
+		"ball_uncatchable": { "text": "Ce Pokémon ne peut pas être capturé." },
+		"ghost_revealed": { "text": "Le Scope Sylphe révèle l'identité du SPECTRE !" },
+		"ghost_revealed_species": { "text": "C'est un {pokemon} !" }
 	},
 	"stats": {
 		"atk": "L'Attaque", "def": "La Défense", "spa": "L'Attaque Spéciale",

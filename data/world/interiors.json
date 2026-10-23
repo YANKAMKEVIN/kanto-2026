@@ -74,8 +74,6 @@
 		"celadon_hotel",
 		"celadon_gym",
 		"celadon_game_corner",
-		"qa_teleport",
-		"qa_teleport_2",
 		"route_15_gate",
 		"route_15_gate_2f",
 		"route_16_gate",
@@ -94,6 +92,14 @@
 		"safari_zone_rest_house_north",
 		"safari_zone_rest_house_west",
 		"safari_zone_secret_house",
-		"wardens_house"
+		"wardens_house",
+		"cinnabar_center",
+		"cinnabar_mart",
+		"cinnabar_lab",
+		"cinnabar_lab_meeting",
+		"cinnabar_lab_rd",
+		"cinnabar_lab_fossil",
+		"route_12_gate",
+		"route_12_gate_2f"
 	]
 }

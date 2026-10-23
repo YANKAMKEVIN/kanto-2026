@@ -13,5 +13,12 @@
 	},
 	"fille": {
 		"cell": [3, 5], "facing": "left", "sprite": "lass_young", "dialogue": "pokemon_house_girl"
+	},
+	"mr_fuji": {
+		"cell": [7, 3], "facing": "down", "sprite": "mr_fuji", "dialogue": "pokemon_house_fuji",
+		"if": ["fuji_rescued"]
+	},
+	"osselait": {
+		"cell": [2, 6], "facing": "up", "sprite": "pokemon/cubone"
 	}
 }

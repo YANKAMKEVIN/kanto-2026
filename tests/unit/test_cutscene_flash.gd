@@ -43,5 +43,5 @@ func test_flash_comes_before_the_j16_kinds() -> void:
 	assert_eq(CutsceneStep.TYPE_KEYS[CutsceneStep.Kind.FLASH], "flash")
 	assert_eq(CutsceneStep.Kind.FIELD_MOVE, CutsceneStep.Kind.FLASH + 1)
 	assert_eq(CutsceneStep.TYPE_KEYS.slice(CutsceneStep.Kind.FLASH + 1),
-		["field_move", "save", "animate", "wild_battle", "gift_pokemon", "safari"] as Array[String],
-		"J19 puis J20 (T12) en fin d'enum")
+		["field_move", "save", "animate", "wild_battle", "gift_pokemon", "flute", "safari"]
+		as Array[String], "J19, J20 (T12), J21 (flute) puis J23 (safari) en fin d'enum")

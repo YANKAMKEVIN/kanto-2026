@@ -133,6 +133,23 @@ func test_items_once_and_found() -> void:
 		assert_null(cutscene.pick(flags), "%s : une fois" % id)
 
 
+## Décision de Kevin (2026-10-22) : Total Soin créé (copie du J24), Boutique de Parmanie = liste
+## de Rouge/Bleu (FuchsiaMart de pokered) moins la Super Repousse, absente du jeu.
+func test_fuchsia_mart_sells_full_heal_like_red_blue() -> void:
+	var full := _items.get_item(&"full_heal")
+	assert_not_null(full)
+	if full == null:
+		return
+	assert_eq(full.name, "Total Soin")
+	assert_eq(full.price, 600)
+	for status: StringName in [&"poison", &"paralysis", &"sleep", &"burn", &"freeze"]:
+		assert_true(full.cures_status(status), String(status))
+	var shops := ShopLibrary.new()
+	shops.load_dir()
+	assert_eq(shops.get_shop(&"fuchsia_mart").item_ids(), [&"ultra_ball", &"great_ball",
+		&"super_potion", &"revive", &"full_heal"] as Array[StringName])
+
+
 func test_forty_trainers_with_known_species_on_the_maps() -> void:
 	var trainers := TrainerLibrary.new(_pokemon)
 	assert_true(trainers.load_dir(), "\n".join(trainers.get_errors()))

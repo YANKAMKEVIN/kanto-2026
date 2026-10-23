@@ -121,21 +121,24 @@ func test_real_tables_load_without_error() -> void:
 	var lib := _lib()
 	assert_true(lib.load_dir(), "\n".join(lib.get_errors()))
 	# Jalon 17 (T8) : Route 11, Cave Taupiqueur ; jalon 18 (T16) : Route 9, Route 10, Grotte Sombre ;
-	# jalon 19 (T5) : Tour Pokémon ; passe systèmes 2 (S2C) : eau de la carte de QA `qa_sea`.
-	assert_eq(lib.get_ids(), [&"dark_cave_1f_rubble", &"dark_cave_b1f_rubble",
-		&"digletts_cave_rubble", &"mt_moon_1f_rubble",
+	# jalon 19 (T5) : Tour Pokémon (la table d'eau de la carte de QA S2C est retirée en S2Z) ;
+	# Jalon 21 (T5) : sommet de la Tour (7F) ; jalon 24 (T4) : eau des Routes 19 à 21 et de
+	# Cramois'Île, herbe de la Route 21, sol des Îles Écume (test_j24_data).
+	assert_eq(lib.get_ids(), [&"cinnabar_island_water", &"dark_cave_1f_rubble",
+		&"dark_cave_b1f_rubble", &"digletts_cave_rubble", &"mt_moon_1f_rubble",
 		&"mt_moon_b1f_rubble", &"mt_moon_b2f_rubble", &"pokemon_tower_high", &"pokemon_tower_low",
-		&"pokemon_tower_mid", &"qa_sea_water", &"route_10_grass", &"route_11_grass",
+		&"pokemon_tower_mid", &"pokemon_tower_top", &"route_10_grass", &"route_11_grass",
 		&"route_12_south_grass", &"route_13_grass", &"route_14_grass", &"route_15_grass",
-		&"route_16_west_grass", &"route_17_grass", &"route_18_grass",
-		&"route_1_grass", &"route_22_grass", &"route_24_grass",
-		&"route_25_grass", &"route_2_grass", &"route_2_north_grass", &"route_3_grass",
-		&"route_4_grass", &"route_5_grass", &"route_6_grass", &"route_7_grass",
-		&"route_8_grass", &"route_9_grass",
+		&"route_16_west_grass", &"route_17_grass", &"route_18_grass", &"route_19_water",
+		&"route_1_grass", &"route_20_water", &"route_21_grass", &"route_21_water",
+		&"route_22_grass", &"route_24_grass", &"route_25_grass", &"route_2_grass",
+		&"route_2_north_grass", &"route_3_grass", &"route_4_grass", &"route_5_grass",
+		&"route_6_grass", &"route_7_grass", &"route_8_grass", &"route_9_grass",
 		# Jalon 23 (T13) : Parc Safari.
 		&"safari_zone_center_grass", &"safari_zone_east_grass", &"safari_zone_north_grass",
-		&"safari_zone_west_grass", &"viridian_forest_grass"]
-		as Array[StringName])
+		&"safari_zone_west_grass",
+		&"seafoam_1f_floor", &"seafoam_b1f_floor", &"seafoam_b2f_floor", &"seafoam_b3f_floor",
+		&"seafoam_b4f_floor", &"viridian_forest_grass"] as Array[StringName])
 
 
 func test_route_22_table_is_red_blue_with_both_nidoran_and_mankey() -> void:
@@ -208,8 +211,10 @@ func test_every_wild_species_has_battle_sprites() -> void:
 	lib.load_dir()
 	# + 3 tables de la Tour Pokémon (J19) : hors de la boucle, car leurs rencontres sont des
 	# SPECTRES sans le Scope (dossier 22 §6) ; Osselait n'a pas de sprite avant le J20.
-	# + la table d'eau de la carte de QA `qa_sea` (S2C, retirée à S2Z).
-	assert_eq(lib.size(), 37, "une table par couple ci-dessous, plus les 3 de la Tour et qa_sea")
+	# (La table d'eau de la carte de QA S2C est retirée en S2Z.)
+	# Jalon 21 (T5) : + la table du 7F (`pokemon_tower_top`), hors de la boucle comme les
+	# autres tables de la Tour (SPECTRES sans le Scope). Jalon 23 (T13) : + 4 du Parc Safari.
+	assert_eq(lib.size(), 47, "une table par couple ci-dessous, plus les 4 de la Tour (J19, J21)")
 	for pair: Array in [[&"route_1", &"grass"], [&"route_2", &"grass"],
 			[&"route_22", &"grass"], [&"viridian_forest", &"grass"], [&"route_2_north", &"grass"],
 			[&"route_3", &"grass"], [&"mt_moon_1f", &"rubble"], [&"mt_moon_b1f", &"rubble"],
@@ -226,6 +231,11 @@ func test_every_wild_species_has_battle_sprites() -> void:
 			[&"route_12_south", &"grass"], [&"route_13", &"grass"], [&"route_14", &"grass"],
 			[&"route_15", &"grass"], [&"route_16_west", &"grass"], [&"route_17", &"grass"],
 			[&"route_18", &"grass"],
+			# Jalon 24 (T4).
+			[&"route_19", &"water"], [&"route_20", &"water"], [&"route_21", &"water"],
+			[&"route_21", &"grass"], [&"cinnabar_island", &"water"],
+			[&"seafoam_1f", &"floor"], [&"seafoam_b1f", &"floor"], [&"seafoam_b2f", &"floor"],
+			[&"seafoam_b3f", &"floor"], [&"seafoam_b4f", &"floor"],
 			# Jalon 23 (T13) : Parc Safari.
 			[&"safari_zone_center", &"grass"], [&"safari_zone_east", &"grass"],
 			[&"safari_zone_north", &"grass"], [&"safari_zone_west", &"grass"]]:
@@ -337,4 +347,6 @@ func test_real_tables_carry_no_ghost_item_outside_the_tower() -> void:
 		if String(id).begins_with("pokemon_tower_"):
 			continue
 		assert_true(table.ghost_unless_item.is_empty(), String(id))
-		assert_ne(table.terrain, &"floor", String(id))
+		# Jalon 24 (T4) : le sol des Îles Écume est aussi un terrain « floor », sans SPECTRE.
+		if not String(id).begins_with("seafoam_"):
+			assert_ne(table.terrain, &"floor", String(id))

@@ -249,6 +249,9 @@ var status: StringName = StatusRules.NONE
 var disguised: bool = false
 ## FLUTE_WOKE (passe systèmes 2) : le Pokémon réveillé est en jeu (sinon sur le banc).
 var on_field: bool = false
+## Jalon 21 (`jalon-21.md` §2.5) : SENT_OUT du sauvage d'une intro « révélation », posé par le
+## [BattleDirector] : « C'est un {pokemon} ! » remplace le texte d'apparition. Jamais masqué.
+var revealed: bool = false
 
 
 func _init(event_kind: Kind = Kind.BATTLE_STARTED, event_side: SideId = SideId.PLAYER) -> void:

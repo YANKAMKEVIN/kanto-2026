@@ -1,0 +1,135 @@
+{
+	"cinnabar_fossil_scientist": {
+		"speaker": "Scientifique",
+		"variants": [
+			{
+				"if": [
+					"fossil_reviving_kabuto",
+					"fossil_ready"
+				],
+				"unless": [
+					"fossil_revived_kabuto"
+				],
+				"cutscene": "cinnabar_fossil_give_kabuto"
+			},
+			{
+				"if": [
+					"fossil_reviving_omanyte",
+					"fossil_ready"
+				],
+				"unless": [
+					"fossil_revived_omanyte"
+				],
+				"cutscene": "cinnabar_fossil_give_omanyte"
+			},
+			{
+				"if": [
+					"fossil_reviving_kabuto"
+				],
+				"unless": [
+					"fossil_revived_kabuto"
+				],
+				"pages": [
+					"Patience !\nVa faire un tour."
+				]
+			},
+			{
+				"if": [
+					"fossil_reviving_omanyte"
+				],
+				"unless": [
+					"fossil_revived_omanyte"
+				],
+				"pages": [
+					"Patience !\nVa faire un tour."
+				]
+			},
+			{
+				"if_items": [
+					"dome_fossil"
+				],
+				"pages": [
+					"Je recrée des Pokémon\nà partir de fossiles.",
+					"Tu en as un ?",
+					"Le Fossile Dôme ?\nJe te le prends ?"
+				],
+				"choice": {
+					"confirm": "OUI",
+					"cancel": "NON",
+					"confirm_cutscene": "cinnabar_fossil_take_kabuto",
+					"cancel_pages": []
+				}
+			},
+			{
+				"if_items": [
+					"helix_fossil"
+				],
+				"pages": [
+					"Je recrée des Pokémon\nà partir de fossiles.",
+					"Tu en as un ?",
+					"Le Fossile Nautile ?\nJe te le prends ?"
+				],
+				"choice": {
+					"confirm": "OUI",
+					"cancel": "NON",
+					"confirm_cutscene": "cinnabar_fossil_take_omanyte",
+					"cancel_pages": []
+				}
+			},
+			{
+				"pages": [
+					"Sans fossile, je n'ai rien\nà recréer.",
+					"Il paraît qu'on en trouve\nau Mont Sélénite."
+				]
+			}
+		]
+	},
+	"cinnabar_fossil_taken": {
+		"speaker": "Scientifique",
+		"pages": [
+			"Bien. Ça prend un peu de temps :\nva faire un tour dehors !"
+		]
+	},
+	"cinnabar_lab_seel": {
+		"speaker": "Scientifique",
+		"pages": [
+			"Otaria adore l'eau froide\ndes Îles Écume."
+		]
+	},
+	"cinnabar_fossil_ready_kabuto": {
+		"speaker": "Scientifique",
+		"pages": [
+			"Te voilà ! Ton fossile\nétait un Kabuto !"
+		]
+	},
+	"cinnabar_fossil_received_kabuto": {
+		"narration": true,
+		"pages": [
+			"{player} reçoit Kabuto !"
+		]
+	},
+	"cinnabar_fossil_stored_kabuto": {
+		"narration": true,
+		"pages": [
+			"Kabuto a été envoyé au stockage."
+		]
+	},
+	"cinnabar_fossil_ready_omanyte": {
+		"speaker": "Scientifique",
+		"pages": [
+			"Te voilà ! Ton fossile\nétait un Amonita !"
+		]
+	},
+	"cinnabar_fossil_received_omanyte": {
+		"narration": true,
+		"pages": [
+			"{player} reçoit Amonita !"
+		]
+	},
+	"cinnabar_fossil_stored_omanyte": {
+		"narration": true,
+		"pages": [
+			"Amonita a été envoyé au stockage."
+		]
+	}
+}

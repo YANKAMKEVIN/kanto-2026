@@ -66,6 +66,10 @@ extends RefCounted
 ## « wild_appeared ») ; GHOST_SCARED → « ghost_scared » ; GHOST_SPOKE → « ghost_spoke ». Sans
 ## événement ([method get_template]) : « ghost_name » (nom affiché du SPECTRE, posé par le
 ## directeur) et « ghost_ball_refused » (Ball refusée avant le lancer). La fuite garde « fled ».
+## Jalon 21 (dossier 24 §15.1, validé) : SENT_OUT adverse [member BattleEvent.revealed] →
+## « ghost_revealed_species » (« C'est un {pokemon} ! ») au lieu de « wild_appeared ». Sans
+## événement : « ghost_revealed » (intro « révélation ») et « ball_uncatchable » (Ball refusée,
+## sauvage « uncatchable »).
 ## Changement de Pokémon (jalon 7) : WITHDRAWN → « withdrawn » (« Reviens, Salamèche ! ») ; le
 ## Pokémon envoyé reprend « sent_out_player ». Côté adverse (jalon 13, IA qui change, §21 n° 60) :
 ## « withdrawn_foe » (« {trainer} rappelle {pokemon} ! »), puis « sent_out_foe ». Le panneau ÉQUIPE lit, sans événement
@@ -169,6 +173,7 @@ const TEMPLATE_IDS: Array[StringName] = [
 	&"charge_skull_bash_start", &"charge_skull_bash_broken",
 	&"battle_item_used", &"item_escape", &"item_escape_2", &"revived",
 	&"flute_played", &"flute_all_woke", &"flute_no_effect", &"flute_no_effect_2",
+	&"ball_uncatchable", &"ghost_revealed", &"ghost_revealed_species", # Jalon 21
 	&"safari_ball_thrown", &"safari_bait", &"safari_rock", &"safari_eating", &"safari_angry",
 	&"safari_fled", &"safari_left", &"safari_no_balls",
 	&"safari_action_ball", &"safari_action_bait", &"safari_action_rock", &"safari_action_run",
@@ -333,6 +338,8 @@ func lines(event: BattleEvent, data: PokemonData, trainer: TrainerData = null) \
 				result.append(_fill(&"ghost_unidentified", event, data))
 			elif not event.trainer_name.is_empty():
 				result.append(_fill(&"sent_out_foe", event, data))
+			elif event.revealed: # Jalon 21 : après la révélation du Scope Sylphe
+				result.append(_fill(&"ghost_revealed_species", event, data))
 			else:
 				result.append(_fill(&"wild_appeared", event, data))
 		BattleEvent.Kind.MOVE_USED:

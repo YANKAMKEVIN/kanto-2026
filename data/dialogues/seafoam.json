@@ -1,0 +1,28 @@
+{
+	"seafoam_sign_boulders": {
+		"pages": ["Les rochers déplacés reprennent leur place\nquand on quitte la grotte."]
+	},
+	"seafoam_sign_currents": {
+		"pages": ["Les rochers peuvent changer\nle cours de l'eau !"]
+	},
+	"seafoam_sign_danger": {
+		"pages": ["DANGER !\nCourant rapide !"]
+	},
+	"seafoam_b2f_hidden_1": {
+		"cutscene": "seafoam_b2f_hidden_1"
+	},
+	"seafoam_b4f_hidden_1": {
+		"cutscene": "seafoam_b4f_hidden_1"
+	},
+	"articuno": {
+		"cutscene": "articuno"
+	},
+	"articuno_cry": {
+		"speaker": "Artikodin",
+		"pages": ["Gyaoo !"]
+	},
+	"articuno_flew_away": {
+		"narration": true,
+		"pages": ["Artikodin s'est envolé vers le large…"]
+	}
+}
