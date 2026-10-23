@@ -323,3 +323,15 @@ défaut »** notées plus tôt. Le code les applique déjà.
 - Riposte comme Rouge/Bleu : capacité de type Normal ou Combat, même spéciale (c'est le type qui
   compte, pas la catégorie) : **décidé, déjà codé**.
 - Morgane et le maître changent de Pokémon en combat : gardé. **Décidé, déjà codé.**
+
+## QA A17 du 2026-10-23
+
+Session de nuit sur le Galaxy A17 (APK debug ; captures et notes : `~/dev/qa-nuit2/j27/`). **OK** :
+Arène, parcours entrée → SE → NE → NO → Morgane par quatre tapis (arrivées exactes, aucune boucle,
+orientation gardée) ; Médiums Barnabé, Albin, Nestor ; Morgane (intro, combat, victoire, 5e Badge,
+CT46 au Sac) ; Dojo jouable Safrania occupée (sortie, retour) ; `dojo_choice` : fiche Kicklee, NON
+→ rien ; Tygnon OUI → « envoyé au stockage », les deux Balls disparaissent. **Perf A17** : Arène et
+Dojo 60 i/s. **Ouvert (art)** : CT46 sans icône (`assets/ui/items/tm46.webp` absente → icône
+générique). Le Salamèche N42 du départ `saffron_gym` perd contre le Médium Nestor (M. Mime, Kadabra
+34) : Arène rude, cohérent avec la simulation. Non joué : défaite contre Morgane, arrêt forcé après
+OUI (un départ de débogage n'écrit pas la sauvegarde).
