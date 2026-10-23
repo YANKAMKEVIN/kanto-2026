@@ -133,12 +133,20 @@ joueur à l'écran (`Player.get_screen_body_rect()` → `ExplorationHud.set_play
 rétrécir ou déplacer les boutons (planche validée). Couvert par `test_hud_under_player` ; pas vu
 sur téléphone (aucun départ ne pose le joueur au bord bas-droit).
 
-## 4. Pour les jalons à leur fusion de `main`
+## 4. Fusions
 
-- **J21** (`jalon-21-nuit`) : conflit attendu dans `game/world/ground/painted_ground.gd` (prendre
-  la version de `main`, qui contient celle du J21) ; `test_world_lighting.gd` /
-  `test_lighting_library.gd` : mêmes ajouts des deux côtés, prendre `main` en cas de conflit.
-  `test_tower_ground_bake` (J21, 2F–7F) et `test_ground_bake_tower` (moteur, 2F–6F) coexistent.
+- **`main` fusionné dans `moteur-commun` le 2026-10-23** (`main` à `d40f40fe` : J21 `a735bdbb`,
+  `76b788ff`, `d40f40fe`). `painted_ground.gd` : version générique du moteur commun gardée (sur-
+  ensemble de celle du J21 : cuisson d'un bloc, brume portée par le sol, couches de grotte, plus
+  morceaux et eau vivante) ; `world_lighting.gd` : `_update_grade()` (réglage `economy`) gardé.
+  `test_ground_bake_tower` (moteur, 2F–6F) retiré : sous-ensemble de `test_tower_ground_bake`
+  (J21, 2F–7F). Les Routes 12 et 16 du J21 prennent la cuisson par morceaux, la Tour 6F/7F la
+  cuisson d'un bloc (`test_ground_chunks`). Le même commit est poussé sur `systemes-2`.
+- **Il ne reste qu'une avance rapide de `main` vers `systemes-2`** (décision de Kevin) : `main`
+  est un ancêtre de `systemes-2`, aucune fusion à refaire.
+- **A17 après fusion** (APK de la fusion, sonde `base` × 3, 10 s) : Route 12 nord (`from_lavender`)
+  49,5 / 52,5 / 53,2 i/s (creux 31–33, GPU 16 ms) ; Tour 7F (`tower_7f_qa`) 60,0 / 59,8 / 60,0
+  (GPU 13 ms). Captures et journaux : `~/dev/qa-moteur/fusion/`.
 - **J22** : garder `MountPlaceholder` et retirer `_bike_placeholder` / `_make_bike_placeholder` /
   `_update_bike_placeholder` de `player.gd` (même rendu) ; `is_bike_drawn()` peut devenir
   `return get_mount() == Mount.Kind.BIKE and is_mount_drawn()`.
@@ -148,8 +156,9 @@ sur téléphone (aucun départ ne pose le joueur au bord bas-droit).
 ## 5. Tests
 
 `test_ground_chunks` (règles des morceaux et des rectangles d'eau, Route 11 cuite par morceaux,
-vue qui saute, eau exactement sur les cases d'eau), `test_ground_bake_tower` (cuisson du J21 sur
-les étages de `main`), `test_mount_placeholder`, `test_hud_under_player`, `test_perf_probe`,
+vue qui saute, eau exactement sur les cases d'eau, Routes 12/16 par morceaux, Tour 6F/7F d'un
+bloc), `test_tower_ground_bake` (J21, 2F–7F), `test_mount_placeholder`, `test_hud_under_player`, `test_perf_probe`,
 ajouts de `test_world_lighting` / `test_lighting_library` (J21).
 
-Suite complète : **6 485 / 6 485** sur `59f07817` (2026-10-22).
+Suite complète : **6 662 / 6 662** (614 scripts) sur la fusion `a0195d16` (2026-10-23,
+`build/logs/suite_complete_fusion.log`) ; avant : 6 485 / 6 485 sur `59f07817`.
