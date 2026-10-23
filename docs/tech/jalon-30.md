@@ -538,7 +538,9 @@ charmander,squirtle}`, `league_weak` (`tools/debug_start/README.md`).
 `test_league_defeat.gd` (2), `test_league_save.gd` (3 : reprise dans la salle d'Agatha, arrêt
 pendant le combat → entrée de la salle, appel rejoué ; arrêt après le Champion → Chen, pas de
 titre), `test_league_resources.gd` (4). `test_dialogue_data`, `test_cutscene_data`,
-`test_league_texts` mis à jour (listes du J30). Captures (Mac) :
+`test_league_texts`, `test_rival_name_layers` mis à jour (listes du J30). **Vérification** : import
+headless sans erreur ; suite complète **6 739 / 6 739** (627 scripts, 362 126 assertions),
+`build/logs/j30_t8t9_suite2.log` ; `plan_check_j30.py` (+ `--autotest`) OK. Captures (Mac) :
 `build/captures/jalon30_ligue/` (`tools/capture_j30_league.gd`).
 - Planche des grilles pour Kevin (sous-jalon 30.0) ; fiches de Pokédex des 15 espèces.
 
