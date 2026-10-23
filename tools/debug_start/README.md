@@ -307,3 +307,23 @@ reste éprouvée par `test_cutscene_static_encounter.gd` et `test_cutscene_stati
 | `route_12_qa.json` | Lavanville, bord sud (spawn `from_route_12`, tourné ↓) : équipe de référence du J21 [D] (Reptincel N33, Roucarnage N30, Papilusion N28, Évoli N25, Nidorino N28 **endormi**, Abo N26 **empoisonné**), 10 Poké Balls, 10 Super Potions, 3 Réveils, Corde Sortie, Scope Sylphe et **Poké Flûte**, 5 000 ₽, Badges jusqu'au Prisme. Pêcheurs non battus, `got_tm39` absent : descendre le ponton (Pêcheur Ned inévitable), poste traversé (CT39 au 2F), Ronflex au croisement |
 
 | `poke_flute_qa.json` | J21 (T20) : Route 12, `from_route_11` (0, 93..94) tourné →, à 24 cases à l'ouest de Ronflex ; mêmes équipe et Sac que `route_12_qa` (Poké Flûte, Nidorino endormi) [D : sans table « Paras » forcée] |
+
+## Jalon 30 (T9) : la Ligue Pokémon
+
+Départs qui commencent **dans** la Ligue (salles en tuiles provisoires, `tools/build_j30_league.gd`).
+Point de repos de départ : **Centre de Jadielle** (`rest_point`) ; le `LeagueDirector` le remplace par
+le Centre du Plateau (`indigo_plateau_lobby`, `heal`) **dès que le hall du J29 existe** (avant la
+fusion du J29 : réveil à Jadielle). Équipe : starter **de base** N60 en tête (la clé du rival
+Champion est le starter choisi, comme au J29), Nidoking, Léviator, Staross, Kangourex, Voltali N60 ;
+**10 Guérisons** (`full_restore`) à la place des 10 Hyper Potions du plan (§2.8) : l'Hyper Potion
+n'existe pas encore sur cette base (elle vient du J22).
+
+| Fichier | Partie |
+|---|---|
+| `league_lorelei` | Début de tentative : salle d'Olga, à l'arrivée par la porte du hall (spawn `from_lobby`). L'arrivée ouvre la tentative (`league_attempt_active`) ; un pas vers le nord : appel d'Olga (marche forcée, réplique, carte « OLGA — Conseil des Quatre », combat). Porte sud fermée derrière le joueur |
+| `league_agatha` | Tentative en cours, Olga et Aldo battus (`league_stage_0/1_cleared`, `beaten_*`), salle d'Agatha (spawn `from_south`). Équipe abîmée : Salamèche 60 PV, Nidoking K.O., Léviator empoisonné, Kangourex 40 PV ; 6 Guérisons. Départ de la QA 30A (§7) |
+| `league_champion_bulbasaur`, `_charmander`, `_squirtle` | Tentative en cours, les quatre membres battus, salle du Champion (spawn `from_south`) : un pas vers le nord, le rival Champion (variante du starter) |
+| `league_weak` | Salamèche N10 seul, sans Sac, salle d'Olga : perdre → drapeaux de tentative effacés, réveil au point de repos (Jadielle avant le J29, Plateau ensuite) ; revenir chez Olga recommence tout |
+
+La victoire contre le Champion pose `league_stage_4_cleared` et **s'arrête là** (Chen paraît dans
+la salle ; la porte nord mène au Panthéon, sans sortie tant que la cérémonie du T17 n'existe pas).

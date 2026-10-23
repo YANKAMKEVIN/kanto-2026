@@ -1,0 +1,16 @@
+{
+	"aldo": {
+		"cell": [
+			5,
+			2
+		],
+		"facing": "down",
+		"sprite": "docker",
+		"dialogue": "league_bruno_defeated",
+		"trainer": {
+			"id": "league_bruno",
+			"sight": 4,
+			"before": "league_bruno_before"
+		}
+	}
+}

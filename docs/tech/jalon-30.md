@@ -452,11 +452,94 @@ Import headless sans erreur ; **suite complète 6 539 / 6 539** (598 scripts), j
 
 - **Q30-4** : entrée « Panthéon » de l'écran Dresseur du Menu (lecture seule de
   `GameState.hall_of_fame`), avec le T15.
-- **T8** `LeagueDirector` dans `Boot` (après la fusion de la passe systèmes 2 dans `main` ; la
-  logique est prête) ; **T9** cartes (attend le J29 : hall `indigo_plateau_lobby`, son point
-  `from_league`, porte nord, `no_fly` / `no_teleport`), départs de débogage ; **T10** QA 30A ;
+- **À la fusion du J29** (§10.8) ; **T10** QA 30A (téléphone, seule) ;
   **T11–T14** combats et équilibrage ; **T15–T18** Panthéon (écran), générique
   (`data/story/credits.json`, Q30-1), scène `league_victory`, QA finale.
+
+### 10.8 T8 et T9 — 2026-10-23 (branche `jalon-30`, sans fusion du J29)
+
+**T8 — `LeagueDirector`** (`game/systems/league/league_director.gd`, bloc `_setup_league()` en fin
+de `game/boot.gd`, modèle `_setup_strength`) : relais de `SceneRouter.map_changed` (branché avant
+celui de Boot : drapeaux à jour avant la présence des PNJ) et de `BattleDirector.battle_finished`.
+- **Entrée** : arrivée dans `league_lorelei` hors tentative → `LeagueAttempt.start`, `beaten_*` des
+  cinq Dresseurs de la Ligue effacés, point de repos = `indigo_plateau_lobby` / `heal` ; toute
+  salle pendant la tentative (re)force ce point (départs de débogage).
+- **Victoire** contre le membre de l'étape courante → `league_stage_<k>_cleared` (+ `beaten_<id>`
+  posé par la scène d'appel) ; PNJ rafraîchis (Chen chez le Champion paraît aussitôt).
+- **Défaite** → drapeaux de tentative et `beaten_*` de la Ligue effacés **avant** l'étape
+  `wake_up` (réveil soigné, sauvegarde écrite au réveil par Boot).
+- **Portes** (aucun code de warp nouveau) : porte sud = warp `unless league_attempt_active` +
+  `FlagGate` bloquante `if league_attempt_active` ; porte nord = warp derrière une `FlagGate`
+  bloquante `unless league_stage_<k>_cleared` (le relais des drapeaux de Boot ouvre le battant).
+- **`no_fly` / `no_teleport`** : deux `@export` nouveaux de `GameMap` (après `battle_arena`, pour
+  ne pas toucher la zone modifiée par le J29), lus par `FlyDirector` et `FieldTravelDirector`
+  dans leurs `MapTraits`. Les salles sont aussi des intérieurs (Vol et Téléport déjà refusés).
+- **Champion** : la victoire pose `league_stage_4_cleared` et **s'arrête là** (pas de titre, pas de
+  Panthéon, pas de générique : T15–T17). La porte nord mène au Panthéon (Chen y attend, réplique
+  T30-15) **sans sortie** tant que la cérémonie n'existe pas : fin provisoire, connue.
+
+**T9 — cartes** : `tools/build_j30_league.gd` (modèle `tools/build_j29.gd` de `origin/jalon-29`,
+tuiles provisoires d'intérieur `InteriorTiles` : sol de labo, murs de labo, tapis sur les portes,
+battants dessinés) → `game/world/maps/league_{lorelei,bruno,agatha,lance,champion}.tscn`,
+`hall_of_fame.tscn` ; intérieurs, `no_fly`, `no_teleport`, lumière `interior_warm`, nom « Plateau
+Indigo » (zone `indigo_plateau`). PNJ : `data/npcs/<salle>.json` (membres en Dresseurs, vue 4, `heal_after:
+false` / IA `smart` / défaite = réveil par `league.json`) ; Chen `if league_stage_4_cleared` chez le
+Champion, Chen au Panthéon. Scènes d'appel `data/cutscenes/league.json` (`<dresseur>_call`, une
+variante `unless league_stage_<k>_cleared`) : marche forcée devant le membre, réplique, carte de
+présentation (pas pour le rival), combat (`win: beaten_<id>`), réplique « vaincu », sinon
+`rival_champion_won` (rival) puis `wake_up`. Textes : `data/league/dialogues.json` →
+`data/dialogues/league.json` ; en attente (`UNUSED_YET` de `test_dialogue_data`) :
+`league_guard_door` (hall du J29), `league_oak_to_rival`, `league_hall_welcome`, `league_ending`
+(T17).
+
+**Valeurs [D] choisies** :
+- sprites provisoires : Olga `cooltrainer_f`, Aldo `docker`, Agatha `channeler`, Peter `traveler`,
+  rival `rival`, Chen `oak` ;
+- Chen chez le Champion en **(3, 6)** au lieu de (3, 7) (grille et décodeur retouchés) : un PNJ ne
+  peut pas tenir sur la case d'un battant fermé ;
+- salle d'Olga : point d'arrivée **`from_lobby`** (même case que `from_south`, 4, 10) ; porte sud →
+  `indigo_plateau_lobby:league_door` (point du hall du J29 ; `from_league` n'existe pas) ;
+- déclencheurs d'appel sur toutes les directions de pas ; la scène d'appel ne lit que le drapeau
+  d'étape (`unless league_stage_<k>_cleared`) ;
+- départs : **10 Guérisons** à la place des 10 Hyper Potions (absente : elle vient du J22) ;
+  starter **de base** N60 en tête (clé du rival, convention du J29) ; point de repos de départ =
+  Jadielle (`league_*` : `rest_point: viridian_center`), remplacé par le Plateau dès que le hall
+  existe.
+
+**Écarts (J29 non fusionné)** :
+- le hall `indigo_plateau_lobby` et son point de repos `heal` n'existent pas ici : le directeur ne
+  change alors pas le point de repos (défaite → Jadielle dans les départs) ; les tests attendent
+  le Plateau **si** la carte existe, Jadielle sinon (aucune copie de la carte) ;
+- la porte sud d'Olga vise une carte absente (`indigo_plateau_lobby`) : sans effet, elle est
+  fermée pendant toute tentative et la tentative s'ouvre à l'arrivée ;
+- `zones.json` : la zone `indigo_plateau` reçoit les six salles, avec le sous-titre et la
+  description **du J29** (copie exacte) : conflit attendu sur ces lignes, à résoudre en
+  additionnant les cartes (`indigo_plateau`, `indigo_plateau_lobby` + les six salles) et les
+  services du J29. `interiors.json`, `lighting.json` : ajouts en fin de liste (conflits additifs).
+
+**À faire à la fusion du J29** :
+1. `tools/build_painted_interiors.gd`, `_indigo_plateau_lobby()` : warp `ToLeague` (12, 3), cible
+   vide aujourd'hui → `target_map = league_lorelei`, `target_spawn = from_lobby` (orientation
+   ↑) ; reconstruire le hall ;
+2. question **T30-01** (`league_guard_door`, OUI / NON, Q30-6) devant la porte : garde du hall (ou
+   déclencheur) dont le OUI ouvre le passage (le NON garde le joueur dans le hall) ; retirer
+   `league_guard_door` de `UNUSED_YET` et la porte « À venir » du J29 (`indigo_league_door`) ;
+3. vérifier `league_door` du hall (arrivée par la porte sud d'Olga hors tentative) et le point
+   `heal` (réveil) ; les tests `test_league_defeat` / `test_league_doors` passent alors sur le
+   Plateau sans changement ;
+4. retirer « Jadielle » des départs `league_*` si l'on veut (`rest_point: indigo_plateau_lobby`).
+
+**Départs de débogage** : `league_lorelei`, `league_agatha`, `league_champion_{bulbasaur,
+charmander,squirtle}`, `league_weak` (`tools/debug_start/README.md`).
+
+**Tests** : `tests/unit/test_league_director.gd` (8), `tests/unit/test_rival_champion.gd` (3),
+`tests/integration/test_league_doors.gd` (4 : scènes, battants contre `LeagueAttempt` à chaque
+étape, vraie partie : porte refermée, Vol refusé, victoire contre Olga → salle d'Aldo),
+`test_league_defeat.gd` (2), `test_league_save.gd` (3 : reprise dans la salle d'Agatha, arrêt
+pendant le combat → entrée de la salle, appel rejoué ; arrêt après le Champion → Chen, pas de
+titre), `test_league_resources.gd` (4). `test_dialogue_data`, `test_cutscene_data`,
+`test_league_texts` mis à jour (listes du J30). Captures (Mac) :
+`build/captures/jalon30_ligue/` (`tools/capture_j30_league.gd`).
 - Planche des grilles pour Kevin (sous-jalon 30.0) ; fiches de Pokédex des 15 espèces.
 
 ## QA A17 du 2026-10-23

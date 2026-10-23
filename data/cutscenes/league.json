@@ -1,0 +1,310 @@
+{
+	"league_lorelei_call": {
+		"variants": [
+			{
+				"unless": [
+					"league_stage_0_cleared"
+				],
+				"steps": [
+					{
+						"move": "player",
+						"to": {
+							"near": "olga",
+							"offsets": [
+								[
+									0,
+									1
+								]
+							]
+						}
+					},
+					{
+						"face": "player",
+						"to": "olga"
+					},
+					{
+						"face": "olga",
+						"to": "player"
+					},
+					{
+						"dialogue": "league_lorelei_before"
+					},
+					{
+						"champion_card": "league_lorelei"
+					},
+					{
+						"battle": "league_lorelei",
+						"win": [
+							"beaten_league_lorelei"
+						]
+					},
+					{
+						"wait": 0.4,
+						"if": [
+							"beaten_league_lorelei"
+						]
+					},
+					{
+						"dialogue": "league_lorelei_defeated",
+						"if": [
+							"beaten_league_lorelei"
+						]
+					},
+					{
+						"wake_up": true,
+						"unless": [
+							"beaten_league_lorelei"
+						]
+					}
+				]
+			}
+		]
+	},
+	"league_bruno_call": {
+		"variants": [
+			{
+				"unless": [
+					"league_stage_1_cleared"
+				],
+				"steps": [
+					{
+						"move": "player",
+						"to": {
+							"near": "aldo",
+							"offsets": [
+								[
+									0,
+									1
+								]
+							]
+						}
+					},
+					{
+						"face": "player",
+						"to": "aldo"
+					},
+					{
+						"face": "aldo",
+						"to": "player"
+					},
+					{
+						"dialogue": "league_bruno_before"
+					},
+					{
+						"champion_card": "league_bruno"
+					},
+					{
+						"battle": "league_bruno",
+						"win": [
+							"beaten_league_bruno"
+						]
+					},
+					{
+						"wait": 0.4,
+						"if": [
+							"beaten_league_bruno"
+						]
+					},
+					{
+						"dialogue": "league_bruno_defeated",
+						"if": [
+							"beaten_league_bruno"
+						]
+					},
+					{
+						"wake_up": true,
+						"unless": [
+							"beaten_league_bruno"
+						]
+					}
+				]
+			}
+		]
+	},
+	"league_agatha_call": {
+		"variants": [
+			{
+				"unless": [
+					"league_stage_2_cleared"
+				],
+				"steps": [
+					{
+						"move": "player",
+						"to": {
+							"near": "agatha",
+							"offsets": [
+								[
+									0,
+									1
+								]
+							]
+						}
+					},
+					{
+						"face": "player",
+						"to": "agatha"
+					},
+					{
+						"face": "agatha",
+						"to": "player"
+					},
+					{
+						"dialogue": "league_agatha_before"
+					},
+					{
+						"champion_card": "league_agatha"
+					},
+					{
+						"battle": "league_agatha",
+						"win": [
+							"beaten_league_agatha"
+						]
+					},
+					{
+						"wait": 0.4,
+						"if": [
+							"beaten_league_agatha"
+						]
+					},
+					{
+						"dialogue": "league_agatha_defeated",
+						"if": [
+							"beaten_league_agatha"
+						]
+					},
+					{
+						"wake_up": true,
+						"unless": [
+							"beaten_league_agatha"
+						]
+					}
+				]
+			}
+		]
+	},
+	"league_lance_call": {
+		"variants": [
+			{
+				"unless": [
+					"league_stage_3_cleared"
+				],
+				"steps": [
+					{
+						"move": "player",
+						"to": {
+							"near": "peter",
+							"offsets": [
+								[
+									0,
+									1
+								]
+							]
+						}
+					},
+					{
+						"face": "player",
+						"to": "peter"
+					},
+					{
+						"face": "peter",
+						"to": "player"
+					},
+					{
+						"dialogue": "league_lance_before"
+					},
+					{
+						"champion_card": "league_lance"
+					},
+					{
+						"battle": "league_lance",
+						"win": [
+							"beaten_league_lance"
+						]
+					},
+					{
+						"wait": 0.4,
+						"if": [
+							"beaten_league_lance"
+						]
+					},
+					{
+						"dialogue": "league_lance_defeated",
+						"if": [
+							"beaten_league_lance"
+						]
+					},
+					{
+						"wake_up": true,
+						"unless": [
+							"beaten_league_lance"
+						]
+					}
+				]
+			}
+		]
+	},
+	"rival_champion_call": {
+		"variants": [
+			{
+				"unless": [
+					"league_stage_4_cleared"
+				],
+				"steps": [
+					{
+						"move": "player",
+						"to": {
+							"near": "rival",
+							"offsets": [
+								[
+									0,
+									1
+								]
+							]
+						}
+					},
+					{
+						"face": "player",
+						"to": "rival"
+					},
+					{
+						"face": "rival",
+						"to": "player"
+					},
+					{
+						"dialogue": "rival_champion_before"
+					},
+					{
+						"battle": "rival_champion",
+						"win": [
+							"beaten_rival_champion"
+						]
+					},
+					{
+						"wait": 0.4,
+						"if": [
+							"beaten_rival_champion"
+						]
+					},
+					{
+						"dialogue": "rival_champion_defeated",
+						"if": [
+							"beaten_rival_champion"
+						]
+					},
+					{
+						"dialogue": "rival_champion_won",
+						"unless": [
+							"beaten_rival_champion"
+						]
+					},
+					{
+						"wake_up": true,
+						"unless": [
+							"beaten_rival_champion"
+						]
+					}
+				]
+			}
+		]
+	}
+}

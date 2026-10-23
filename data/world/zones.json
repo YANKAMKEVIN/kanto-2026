@@ -159,7 +159,13 @@
 		"route_21": { "name": "Route 21", "kind": "sea_route", "maps": [] },
 		"cinnabar_island": { "name": "Cramois'Île", "kind": "town", "maps": [] },
 		"route_23": { "name": "Route 23", "kind": "route", "maps": [] },
-		"indigo_plateau": { "name": "Plateau Indigo", "kind": "place", "maps": [] },
+		"indigo_plateau": {
+			"name": "Plateau Indigo", "kind": "place",
+			"subtitle": "Route 23",
+			"description": "Le sommet de la Route 23. Derrière les portes du hall, la Ligue Pokémon attend les meilleurs Dresseurs.",
+			"maps": ["league_lorelei", "league_bruno", "league_agatha", "league_lance",
+				"league_champion", "hall_of_fame"]
+		},
 		"route_25": {
 			"name": "Route 25", "kind": "route", "maps": ["route_25"],
 			"subtitle": "Azuria — Cap d'Azuria",

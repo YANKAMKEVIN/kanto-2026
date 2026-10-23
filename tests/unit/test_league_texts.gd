@@ -1,11 +1,11 @@
 extends GutTest
 ## Textes de la Ligue (jalon 30 T4 ; `jalon-30.md` §3, T30-01 à T30-17) : propositions du plan,
-## validées par Kevin le 2026-10-21 (validation d'avance, proposition du plan). Rangées dans
-## `data/league/dialogues.json` tant qu'aucune carte ne les utilise (test_dialogue_data exige
-## qu'un dialogue de `data/dialogues/` soit utilisé) : le fichier passe dans `data/dialogues/`
-## avec les cartes (T9, après le J29). Il se charge sans erreur, à côté des autres dialogues.
+## validées par Kevin le 2026-10-21 (validation d'avance, proposition du plan). T9 : le fichier
+## passe de `data/league/` à `data/dialogues/league.json` avec les cartes (membres, rival, Chen) ;
+## ceux qui attendent encore (porte du hall au J29, cérémonie au T17) sont dans
+## `UNUSED_YET` de test_dialogue_data. Chargé avec les autres dialogues, sans doublon.
 
-const SOURCE := "res://data/league/dialogues.json"
+const SOURCE := "res://data/dialogues/league.json"
 const IDS: Array[StringName] = [
 	&"league_guard_door",
 	&"league_lorelei_before", &"league_lorelei_defeated",
@@ -21,7 +21,7 @@ const IDS: Array[StringName] = [
 func test_the_league_texts_load_with_all_dialogues() -> void:
 	var library := DialogueLibrary.new()
 	assert_true(library.load_dir(), "\n".join(library.get_errors()))
-	assert_true(library.load_file(SOURCE), "aucun identifiant en double avec les dialogues")
+	assert_true(library.has_dialogue(&"league_guard_door"), "chargé avec les autres dialogues")
 	for id: StringName in IDS:
 		assert_true(library.has_dialogue(id), String(id))
 

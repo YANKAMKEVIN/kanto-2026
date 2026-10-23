@@ -27,5 +27,5 @@ porte_nord           warp           3..4,0       libre   vers=hall_of_fame:from_
 from_north           spawn          3,1          libre   # tourné ↓ (hors tentative : retour depuis la salle suivante)
 rival                dresseur       4,2          bloque  facing=down sight=4 trainer=rival_champion  # vaincu : reste en place, réplique « vaincu »
 appel_rival          declencheur    1..6,5       libre   combat=rival_champion unless=league_stage_4_cleared  # RB : EntranceCoords, le joueur est amené devant le membre
-chen                 pnj            3,7          bloque  facing=up si=league_stage_4_cleared  # arrive pour la cérémonie (league_victory)
+chen                 pnj            3,6          bloque  facing=up si=league_stage_4_cleared  # arrive pour la cérémonie (league_victory)
 FIN

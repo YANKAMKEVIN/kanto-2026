@@ -25,8 +25,9 @@ GRILLE 10 12
 FIN
 
 POSITIONS
-porte_sud            warp           4..5,11      libre   vers=indigo_plateau_lobby:from_league unless=league_attempt_active  # fermée pendant la tentative
+porte_sud            warp           4..5,11      libre   vers=indigo_plateau_lobby:league_door unless=league_attempt_active  # fermée pendant la tentative
 from_south           spawn          4,10         libre   # tourné ↑
+from_lobby           spawn          4,10         libre   # tourné ↑ ; arrivée par la porte du hall (J29 : warp ToLeague)
 porte_nord           warp           4..5,0       libre   vers=league_bruno:from_south si=league_stage_0_cleared  # ouverte après la victoire
 from_north           spawn          4,1          libre   # tourné ↓ (hors tentative : retour depuis la salle suivante)
 olga                 dresseur       5,2          bloque  facing=down sight=4 trainer=league_lorelei  # vaincu : reste en place, réplique « vaincu »

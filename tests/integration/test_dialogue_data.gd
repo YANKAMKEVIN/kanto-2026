@@ -48,7 +48,35 @@ const GATE_GUARDS: Array[StringName] = [&"forest_gate_north_guard", &"forest_gat
 ## Jalon 18 (T16) : textes en données, points d'examen et déclencheurs posés par la vie des cartes
 ## (T18 Route 9 / 10, T20 grotte ; T24 : Lavanville et Tour posés, retirés de la liste) ; « Il fait très sombre ici… » (T-3) est
 ## celui du J17 (`dark_caves.json`, joué par FlashDirector : [constant PLAYED_BY_BOOT]).
+## Jalon 30 (T9) : textes de la Ligue (`data/dialogues/league.json`, plan §3, T30-01 à T30-17).
+const IDS_J30: Array[StringName] = [
+	&"league_guard_door",
+	&"league_lorelei_before", &"league_lorelei_defeated",
+	&"league_bruno_before", &"league_bruno_defeated",
+	&"league_agatha_before", &"league_agatha_defeated",
+	&"league_lance_before", &"league_lance_defeated",
+	&"rival_champion_before", &"rival_champion_defeated", &"rival_champion_won",
+	&"league_oak_congrats", &"league_oak_to_rival", &"league_oak_hall",
+	&"league_hall_welcome", &"league_ending",
+]
+## Jalon 30 (T9) : textes validés du plan (§3, une réplique « … » par texte).
+const PLAN_J30 := "res://docs/tech/jalon-30.md"
+## Jalon 30 (T9) : dialogues joués par les scènes d'appel des membres (`data/cutscenes/league.json`).
+const PLAYED_J30: Array[StringName] = [
+	&"league_lorelei_before", &"league_lorelei_defeated",
+	&"league_bruno_before", &"league_bruno_defeated",
+	&"league_agatha_before", &"league_agatha_defeated",
+	&"league_lance_before", &"league_lance_defeated",
+	&"rival_champion_before", &"rival_champion_defeated", &"rival_champion_won",
+]
+## Jalon 30 (T9) : `beaten_<membre>` levés par les scènes d'appel (victoire).
+const SET_J30: Array[StringName] = [
+	&"beaten_league_lorelei", &"beaten_league_bruno", &"beaten_league_agatha",
+	&"beaten_league_lance", &"beaten_rival_champion",
+]
 const UNUSED_YET: Array[StringName] = [
+	# Jalon 30 (T9) : la porte du hall (J29, `indigo_plateau_lobby`) et la cérémonie (T17).
+	&"league_guard_door", &"league_oak_to_rival", &"league_hall_welcome", &"league_ending",
 	# Jalon 21 (T21) : `route_11_snorlax` repris par `snorlax_route_12` (retiré de la liste).
 	&"dark_cave_1f_sign", &"dark_cave_column", &"dark_cave_roots", &"dark_cave_crack",
 	&"dark_cave_b1f_hidden_1",
@@ -158,6 +186,9 @@ const JALON_17 := "res://docs/tech/jalon-17.md"
 const _DOSSIER_TOKENS: Dictionary[String, String] = {"{first_wild_species}": "{espèce}",
 	"{player}": "{joueur}"}
 const MAPS: Array[StringName] = [
+	# Jalon 30 (T9) : les cinq salles de la Ligue et le Panthéon.
+	&"league_lorelei", &"league_bruno", &"league_agatha", &"league_lance", &"league_champion",
+	&"hall_of_fame",
 	&"player_house_2f", &"player_house_1f", &"rival_house", &"oak_lab", &"pallet_town",
 	&"route_1", &"route_22", &"viridian_city", &"viridian_center", &"viridian_mart",
 	&"route_2",
@@ -893,7 +924,8 @@ func test_library_loads_without_error() -> void:
 	found.sort()
 	var expected := IDS + IDS_J14_BILL + IDS_J14_ROCKET + IDS_J15_ROUTE_5 + IDS_J16_GYM \
 		+ IDS_J16_SHIP + IDS_J16_RIVAL_CAPTAIN + IDS_J16_T15 + IDS_J17 + IDS_J18 + IDS_J19 + IDS_J20 \
-		+ IDS_J20_T17 + IDS_J20_T21 + IDS_J21 + IDS_J21_T21 + IDS_S2B + S2_FIELD_TRAVEL + IDS_J21_T22
+		+ IDS_J20_T17 + IDS_J20_T21 + IDS_J21 + IDS_J21_T21 + IDS_S2B + S2_FIELD_TRAVEL + IDS_J21_T22 \
+		+ IDS_J30
 	expected.append_array(TEXTS_S2C_FISH.keys())
 	expected.append_array(TEXTS_S2D_STRENGTH.keys())
 	expected.append_array(UNVALIDATED)
@@ -921,7 +953,7 @@ func test_every_dialogue_is_used() -> void:
 func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 	assert_eq(_cutscenes.get_errors().size(), 0, str(_cutscenes.get_errors()))
 	var played := _without_qa(_cutscenes.get_dialogue_ids())
-	assert_eq(played, _sorted([
+	assert_eq(played, _sorted(PLAYED_J30 + [
 		# Jalon 13 (T19) : Ondine à l'Arène.
 		&"cerulean_gym_misty_badge", &"cerulean_gym_misty_intro", &"cerulean_gym_misty_lost",
 		&"cerulean_gym_misty_resume", &"cerulean_gym_misty_tm", &"cerulean_gym_misty_tm_late",
@@ -1066,6 +1098,8 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 				assert_true(pair[0].load_file((pair[1] as String).path_join(file)), file)
 	var set_flags := dialogues.get_set_flags() + cutscenes.get_set_flags() \
 		+ StarterChoice.get_set_flags(_offer)
+	# Jalon 30 (T8) : drapeaux de la tentative de Ligue, levés par le code (LeagueDirector).
+	set_flags.append_array(LeagueAttempt.temporary_flags())
 	var read_flags := dialogues.get_condition_flags() + cutscenes.get_condition_flags()
 	for map_id: StringName in MAPS:
 		for spec: NpcSpec in NpcRoster.load_for_map(map_id).get_all():
@@ -1097,7 +1131,7 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 			+ [&"rocket_hideout_b4f_door_open"]
 			# Jalon 21 (T22) : Ronflex de la Route 16 vu (T-6, T-7 repris).
 			+ [&"snorlax_route_16_seen"]))
-	assert_eq(cutscenes.get_set_flags(), _sorted([&"got_tm39", &"route_12_visited",
+	assert_eq(cutscenes.get_set_flags(), _sorted(SET_J30 + [&"got_tm39", &"route_12_visited",
 		&"snorlax_route_12_awake", &"snorlax_route_12_caught", &"snorlax_route_12_done",
 		&"snorlax_route_12_woken", &"badge_boulder", &"badge_cascade",
 		&"beaten_mt_moon_researcher", &"beaten_nugget_rocket", &"brock_met", &"cerulean_reached", &"got_mt_moon_1f_hidden_1",
@@ -1387,6 +1421,7 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 	var dossier_22 := FileAccess.get_file_as_string(DOSSIER_22).replace("\n   ", " ") \
 		.replace("\n  ", " ")
 	var dossier_20 := FileAccess.get_file_as_string(DOSSIER_20).replace("**", "")
+	var plan_j30 := FileAccess.get_file_as_string(PLAN_J30)
 	var annex_a_17 := AnnexATexts.annex_a(FileAccess.get_file_as_string(JALON_17))
 	# Jalon 21 (T21) : textes validés du dossier 24 (§15) et de l'annexe A du plan.
 	var j21_texts := FileAccess.get_file_as_string("res://docs/design/dossier-24-repos-des-esprits.md") \
@@ -1475,7 +1510,9 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			or _each_line_quoted(dossier_23, text)
 			or _in_dossier_18(dossier_23, text) or _in_dossier_18(plan_j20, text)
 			# J20 (T12) : « {player} » écrit tel quel dans le dossier 23 (texte 29).
-			or _each_line_quoted(dossier_23, text.replace("{joueur}", "{player}")),
+			or _each_line_quoted(dossier_23, text.replace("{joueur}", "{player}"))
+			# Jalon 30 (T9) : textes du plan (§3), une réplique « … » pouvant tenir sur deux pages.
+			or _in_dossier_18(plan_j30, text.replace("{joueur}", "{player}")),
 			"%s : « %s » dans un dossier de conception" % [row[0], text])
 
 
@@ -1711,6 +1748,8 @@ func test_oak_parcel_lines() -> void:
 			continue # {player} de Léo (dossier 17 §15) : testé dans test_bill_house
 		if row[0] in [&"fuji_flute_give", &"fuji_flute_received"]:
 			continue # Jalon 21 (T14) : {player} de la remise de la Flûte (§15.4), test_pokemon_house_fuji
+		if IDS_J30.has(row[0]):
+			continue # Jalon 30 : {player} / {rival} des textes de la Ligue (plan §3), test_league_texts
 		var tokens := DialogueTokens.tokens_in(row[1])
 		if String(row[0]).begins_with("daycare_"):
 			for token: StringName in tokens:

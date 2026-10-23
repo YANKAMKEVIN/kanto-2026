@@ -16,7 +16,12 @@ const SPEAKERS_BY_FILE: Dictionary[String, int] = {
 	"ss_anne_captain_corridor.json": 4,
 	# Jalon 19 (T17) : le rival n° 5 (introduction, reprise, victoire, défaite).
 	"pokemon_tower_floors.json": 4,
+	# Jalon 30 (T4, T9) : le rival Champion (avant, vaincu, victoire du rival).
+	"league.json": 3,
 }
+## Jalon 30 : répliques qui nomment le rival dans leur texte (T30-14, Chen au rival, texte validé du
+## plan `jalon-30.md` §3), par fichier.
+const TEXT_TOKENS_BY_FILE: Dictionary[String, int] = {"league.json": 1}
 const RIVAL_TRAINERS: Array[String] = ["rival_lab", "rival_route22"]
 
 
@@ -42,8 +47,9 @@ func test_the_closed_list_of_speakers_uses_the_rival_token() -> void:
 		var count := _values_of(_read(DIALOGUES_DIR + file), "speaker").count(RIVAL_TOKEN)
 		assert_eq(count, SPEAKERS_BY_FILE.get(file, 0), "%s : locuteurs {rival}" % file)
 		total += count
-	assert_eq(total, 32, "19 étiquettes du rival (§3.5) + 5 du rival n° 3 (J13 T19) + 4 du "
-		+ "rival n° 4 (J16 T13) + 4 du rival n° 5 (J19 T17), pas une de plus")
+	assert_eq(total, 35, "19 étiquettes du rival (§3.5) + 5 du rival n° 3 (J13 T19) + 4 du "
+		+ "rival n° 4 (J16 T13) + 4 du rival n° 5 (J19 T17) + 3 du rival Champion (J30), "
+		+ "pas une de plus")
 
 
 func test_the_rival_trainers_are_named_by_the_token() -> void:
@@ -57,7 +63,8 @@ func test_no_other_text_carries_the_rival_token() -> void:
 	for file: String in _json_files(DIALOGUES_DIR):
 		var text := FileAccess.get_file_as_string(DIALOGUES_DIR + file)
 		var speakers := _values_of(_read(DIALOGUES_DIR + file), "speaker").count(RIVAL_TOKEN)
-		assert_eq(text.count(RIVAL_TOKEN), speakers, "%s : {rival} hors locuteur" % file)
+		assert_eq(text.count(RIVAL_TOKEN), speakers + TEXT_TOKENS_BY_FILE.get(file, 0),
+			"%s : {rival} hors locuteur" % file)
 
 
 func test_technical_identifiers_are_unchanged() -> void:

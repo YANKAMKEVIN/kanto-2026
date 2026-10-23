@@ -69,7 +69,8 @@ CONCEPTION: dict[str, dict] = {
 	"league_lorelei": {
 		"sud": [(4, 11), (5, 11)], "nord": [(4, 0), (5, 0)], "entree": (4, 10),
 		"membre": ("olga", (5, 2), "league_lorelei"), "declencheur": [(4, 9), (5, 9)],
-		"depuis": ("indigo_plateau_lobby", "from_league"),
+		# Hall du J29 : point `league_door` devant la porte (warp `ToLeague` du hall → `from_lobby`).
+		"depuis": ("indigo_plateau_lobby", "league_door"),
 	},
 	"league_bruno": {
 		"sud": [(4, 11), (5, 11)], "nord": [(4, 0), (5, 0)], "entree": (4, 10),
@@ -89,7 +90,9 @@ CONCEPTION: dict[str, dict] = {
 		"sud": [(3, 7), (4, 7)], "nord": [(3, 0), (4, 0)], "entree": (4, 6),
 		"membre": ("rival", (4, 2), "rival_champion"),
 		"declencheur": [(x, 5) for x in range(1, 7)],
-		"chen": (3, 7),
+		# [D] (T9) : une case dans la salle (RB : il entre par la porte sud, fermée pendant la
+		# tentative ; un PNJ ne peut pas tenir sur la case d'un battant).
+		"chen": (3, 6),
 	},
 	"hall_of_fame": {
 		"sud": [], "nord": [], "entree": (4, 6), "chen": (5, 2),
@@ -174,6 +177,9 @@ def positions(ident: str) -> list[str]:
 			f"vers={carte}:{spawn} unless=league_attempt_active  # fermée pendant la tentative")
 	sens = "←" if ident == "league_lance" else "↑"
 	lignes.append(f"{'from_south':<20} {'spawn':<14} {f'{ex},{ey}':<12} libre   # tourné {sens}")
+	if i == 0:
+		lignes.append(f"{'from_lobby':<20} {'spawn':<14} {f'{ex},{ey}':<12} libre   "
+			f"# tourné {sens} ; arrivée par la porte du hall (J29 : warp ToLeague)")
 	if conc["nord"]:
 		suivante = ORDRE[i + 1]
 		nx = min(c[0] for c in conc["nord"])

@@ -28,6 +28,8 @@ extends GutTest
 ## simulation vérifie le Dresseur et sa carte, le badge et son drapeau).
 
 const MAPS: Array[StringName] = [
+	# Jalon 30 (T9) : déclencheurs d'appel des membres de la Ligue.
+	&"league_lorelei", &"league_bruno", &"league_agatha", &"league_lance", &"league_champion",
 	&"player_house_2f", &"player_house_1f", &"rival_house", &"oak_lab", &"pallet_town",
 	&"route_1", &"viridian_city", &"route_22", &"viridian_mart", &"route_2",
 	# Jalon 9 (T19) : déclencheurs des objets cachés de la forêt.
@@ -288,6 +290,15 @@ const VARIANT_FLAGS: Dictionary = {
 	&"rocket_hideout_b4f_item_2": [PEWTER_FLAGS],
 	&"rocket_hideout_b4f_item_3": [PEWTER_FLAGS],
 	&"rocket_hideout_b4f_hidden_1": [PEWTER_FLAGS],
+	# Jalon 30 (T9) : appel de chaque membre (une variante, tant que son étape n'est pas gagnée).
+	&"league_lorelei_call": [[&"league_attempt_active"]],
+	&"league_bruno_call": [[&"league_attempt_active", &"league_stage_0_cleared"]],
+	&"league_agatha_call": [[&"league_attempt_active", &"league_stage_0_cleared",
+		&"league_stage_1_cleared"]],
+	&"league_lance_call": [[&"league_attempt_active", &"league_stage_0_cleared",
+		&"league_stage_1_cleared", &"league_stage_2_cleared"]],
+	&"rival_champion_call": [[&"league_attempt_active", &"league_stage_0_cleared",
+		&"league_stage_1_cleared", &"league_stage_2_cleared", &"league_stage_3_cleared"]],
 }
 ## Scènes jouées par le code (pas de déclencheur) → carte où elles sont jouées.
 ## Jalon 7 (T18) : la scène du colis est lancée par la variante « cutscene » du dialogue de Chen.
@@ -496,6 +507,9 @@ func test_library_loads_without_error() -> void:
 	assert_true(library.load_dir(), "data/cutscenes/ se charge")
 	assert_eq(library.get_errors().size(), 0, str(library.get_errors()))
 	assert_eq(_without_qa(library.get_ids()), _sorted([&"bill_house_enter", &"bill_machine", &"bill_module",
+		# Jalon 30 (T9) : appel des cinq combats de la Ligue.
+		&"league_lorelei_call", &"league_bruno_call", &"league_agatha_call", &"league_lance_call",
+		&"rival_champion_call",
 		&"bill_screen", &"cerulean_arrival", &"cerulean_gym_misty",
 		&"cerulean_rocket_chase", &"cerulean_rocket_fight", &"cerulean_south_guard",
 		&"cerulean_gym_misty_tm_late", &"mart_parcel", &"mt_moon_1f_hidden_1", &"mt_moon_1f_item_1",
@@ -624,8 +638,10 @@ func test_every_trainer_and_item_step_exists() -> void:
 ## Jalon 10 (T9) : chaque Dresseur présenté par une carte en a une, chaque badge remis existe, et
 ## l'étape « badge » d'une scène suit le combat qui lève déjà son drapeau (« win »).
 func test_every_champion_card_and_badge_step_exists() -> void:
+	# Jalon 30 (T9) : les cartes « Conseil des Quatre » des quatre membres (pas le rival).
 	assert_eq(_cutscenes.get_card_trainer_ids(), [&"celadon_gym_erika", &"cerulean_gym_misty",
-		&"giovanni_hideout", &"pewter_gym_brock", &"vermilion_gym_surge"] as Array[StringName])
+		&"giovanni_hideout", &"league_agatha", &"league_bruno", &"league_lance",
+		&"league_lorelei", &"pewter_gym_brock", &"vermilion_gym_surge"] as Array[StringName])
 	for id: StringName in _cutscenes.get_card_trainer_ids():
 		var trainer := _trainers.get_trainer(id)
 		assert_true(trainer != null and trainer.has_card(), "« %s » a une carte" % id)
