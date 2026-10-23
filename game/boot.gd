@@ -457,6 +457,7 @@ func _ready() -> void:
 	_setup_fishing()
 	_setup_strength()
 	_setup_evolution_items()
+	_setup_league()
 	# L'écran (jalon-06.md §6.6) : ouverture et vue dans la même frame, sans await (un fondu
 	# coupé laisse une coroutine non reprise).
 	_menu.menu_opened.connect(_menu_screen.open_animated)
@@ -2443,3 +2444,29 @@ func _setup_strength() -> void:
 
 func get_strength_director() -> StrengthDirector:
 	return _strength
+
+
+# --- Jalon 30 (T8) : tentative de Ligue (`jalon-30.md` §2.2, §2.3) ------------------------------
+
+var _league: LeagueDirector
+
+
+## [LeagueDirector] : entrée dans la salle d'Olga, victoires, défaite (drapeaux effacés avant le
+## réveil). Relais de carte branché avant celui de Boot (drapeaux à jour avant la présence des
+## PNJ et les portes de drapeaux) ; fin de combat après l'autosave demandé par Boot (écrit une fois
+## la partie stable, drapeaux de la Ligue compris).
+func _setup_league() -> void:
+	_league = LeagueDirector.new()
+	_league.name = "LeagueDirector"
+	_league.process_mode = Node.PROCESS_MODE_PAUSABLE
+	add_child(_league)
+	_league.setup(GameState)
+	SceneRouter.map_changed.connect(_league.on_map_changed)
+	_league.tree_exiting.connect(func() -> void:
+		if SceneRouter.map_changed.is_connected(_league.on_map_changed):
+			SceneRouter.map_changed.disconnect(_league.on_map_changed))
+	_battle_director.battle_finished.connect(_league.on_battle_finished)
+
+
+func get_league_director() -> LeagueDirector:
+	return _league

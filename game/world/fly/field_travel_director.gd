@@ -65,6 +65,7 @@ func check(move: StringName) -> FieldTravelRules.Check:
 	var state := _field_state(move)
 	if move == FieldTravelRules.TELEPORT:
 		var traits := MapTraits.new(map.interior)
+		traits.no_teleport = map.no_teleport  # Jalon 30 (T8) : salles de la Ligue
 		var target := _teleport_point()
 		return FieldTravelRules.check_teleport(state, traits,
 			target.map if target != null else &"", _travelling)
