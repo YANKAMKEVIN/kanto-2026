@@ -18,7 +18,9 @@ const TIMEOUT := 12.0
 const SNORLAX_FLAG: StringName = &"snorlax_route_12_done"
 const FLUTE_SCENE: StringName = &"essai_reveil"
 const PISTE: StringName = &"route_2_east"
-const START_PATH := "user://test_mount_real_maps_start.json"
+## `user://` est partagé par toutes les copies du dépôt : un nom par processus évite qu'une suite
+## lancée en parallèle écrase ou efface le départ d'une autre.
+var _start_path := "user://test_mount_real_maps_start_%d.json" % OS.get_process_id()
 const GATE_DOOR := Vector2i(20, 8)
 const EAST_EDGE := Vector2i(41, 43)
 ## Départ (ancien `s2_bike`) : Pikachu, Roucool endormi, Bicyclette et Poké Flûte.
@@ -48,8 +50,8 @@ func after_each() -> void:
 		_fades.clear()
 		GameState.clock = DeviceClock.new()
 	SceneRouter.map_factory = Callable()
-	if FileAccess.file_exists(START_PATH):
-		DirAccess.remove_absolute(START_PATH)
+	if FileAccess.file_exists(_start_path):
+		DirAccess.remove_absolute(_start_path)
 
 
 # --- Poké Flûte : le Ronflex de la Route 12 ------------------------------------------------------
@@ -105,13 +107,13 @@ func _boot_on_route_2() -> void:
 	SceneRouter.fade_in_duration = FADE
 	SceneRouter.map_factory = _make_map
 	GameState.clock = FixedClock.new("2026-10-20T10:00:00")
-	var file := FileAccess.open(START_PATH, FileAccess.WRITE)
+	var file := FileAccess.open(_start_path, FileAccess.WRITE)
 	file.store_string(JSON.stringify(START))
 	file.close()
 	_boot = (load("res://game/boot.tscn") as PackedScene).instantiate() as Boot
 	_boot.save_system = SaveSystem.new(MemoryFs.new(), "user://test_mount_real_maps_save.json")
 	_boot.force_debug_start = true
-	_boot.debug_start_path = START_PATH
+	_boot.debug_start_path = _start_path
 	add_child_autofree(_boot)
 	await wait_process_frames(3)
 	await wait_until(func() -> bool: return _boot.is_stable(), TIMEOUT)
