@@ -33,10 +33,12 @@ const HIGH_CONTRAST: StringName = &"high_contrast"
 const REDUCE_MOTION: StringName = &"reduce_motion"
 const REDUCE_FLASHES: StringName = &"reduce_flashes"
 const GRAPHICS: StringName = &"graphics"
+## Moteur commun : coupe l'étalonnage plein écran (passe qui recopie l'écran) des extérieurs.
+const ECONOMY: StringName = &"economy"
 ## Tous les réglages, dans l'ordre du fichier.
 const KEYS: Array[StringName] = [TEXT_SPEED, CONFIRM_ACTIONS, JOYSTICK_SCALE, JOYSTICK_OPACITY,
 	BUTTON_SCALE, HAPTICS, LEFT_HANDED, TEXT_SIZE, HIGH_CONTRAST, REDUCE_MOTION, REDUCE_FLASHES,
-	GRAPHICS]
+	GRAPHICS, ECONOMY]
 
 ## Noms écrits dans le JSON pour les enums (un rang changerait si l'enum était réordonnée).
 const TEXT_SPEED_NAMES: Array[String] = ["slow", "normal", "fast", "instant"]
@@ -75,6 +77,8 @@ var high_contrast: bool = false
 var reduce_motion: bool = false
 var reduce_flashes: bool = false
 var graphics: Graphics = Graphics.AUTO
+## Désactivé par défaut (rendu inchangé) ; absent d'un ancien fichier = désactivé.
+var economy: bool = false
 
 
 ## Réglages lus de [param dict] ; tout champ absent, mal formé ou hors bornes garde sa valeur
@@ -106,6 +110,7 @@ func to_dict() -> Dictionary:
 		String(REDUCE_MOTION): reduce_motion,
 		String(REDUCE_FLASHES): reduce_flashes,
 		String(GRAPHICS): GRAPHICS_NAMES[graphics],
+		String(ECONOMY): economy,
 	}
 
 
@@ -134,7 +139,7 @@ static func is_valid(key: StringName, value: Variant) -> bool:
 			return _is_index(value, TEXT_SIZE_NAMES.size())
 		GRAPHICS:
 			return _is_index(value, GRAPHICS_NAMES.size())
-		CONFIRM_ACTIONS, HAPTICS, LEFT_HANDED, HIGH_CONTRAST, REDUCE_MOTION, REDUCE_FLASHES:
+		CONFIRM_ACTIONS, HAPTICS, LEFT_HANDED, HIGH_CONTRAST, REDUCE_MOTION, REDUCE_FLASHES, ECONOMY:
 			return value is bool
 		JOYSTICK_SCALE:
 			return _is_number(value) and _find_step(JOYSTICK_SCALES, float(value)) >= 0

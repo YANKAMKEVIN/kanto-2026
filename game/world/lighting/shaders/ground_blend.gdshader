@@ -12,6 +12,10 @@
 // Bourg Palette) ; rivage à angles droits (square_shore : l'eau couvre exactement ses cases, sans
 // bruit ni frange ; canaux d'Azuria, dont les bords sont des quais posés par-dessus).
 // Défauts = rendu d'avant le J13.
+// Passes (moteur commun, perf A17) : pass_mode 0 = tout (défaut, rendu d'avant) ; 1 = la terre
+// seule (sol cuit par morceaux, GroundChunks : tout sauf l'eau, qui dépend du temps) ; 2 = l'eau
+// seule (calque animé GroundWater, posé sur la terre cuite) : eau et écume avec un alpha tel que
+// le mélange normal sur la terre redonne exactement le mix() de la passe 0.
 shader_type canvas_item;
 
 uniform sampler2D grass_texture : repeat_enable, filter_linear_mipmap;
@@ -33,6 +37,7 @@ uniform vec4 foam_color : source_color = vec4(0.95, 0.97, 0.98, 1.0);
 uniform float water_texture_size = 384.0;
 uniform float foam_strength = 0.8;
 uniform bool square_shore = false;
+uniform int pass_mode = 0;
 
 varying vec2 world;
 
@@ -57,37 +62,79 @@ void vertex() {
 	world = (MODEL_MATRIX * vec4(VERTEX, 0.0, 1.0)).xy;
 }
 
-void fragment() {
-	vec2 cells = vec2(textureSize(ground_mask, 0));
-	vec2 m = texture(ground_mask, world / tile_size / cells).rg;
-	float n = (noise(world * 0.02) - 0.5) * 0.30 + (noise(world * 0.09) - 0.5) * 0.14;
+// Eau et écume au-dessus de la terre (passe 2), en couleur et alpha pour un mélange normal :
+// terre × (1 − a) + eau × a puis écume par-dessus, comme les deux mix() de la passe 0.
+vec4 water_layer(vec2 cells, vec2 p, float time) {
+	vec2 s = texture(shore_mask, p / tile_size / cells).rg;
+	float v_water;
+	if (square_shore) {
+		ivec2 cell = clamp(ivec2(floor(p / tile_size)), ivec2(0), ivec2(cells) - 1);
+		v_water = texelFetch(shore_mask, cell, 0).g;
+	} else if (s.g >= 0.78) {
+		// Le bruit déplace v_water d'au plus ± 0,15 : au large, ni frange ni écume.
+		v_water = 1.0;
+	} else if (s.g <= 0.27) {
+		// Sur la terre : ni eau ni écume.
+		return vec4(0.0);
+	} else {
+		float n = (noise(p * 0.02) - 0.5) * 0.30 + (noise(p * 0.09) - 0.5) * 0.14;
+		v_water = s.g + n * 0.5 + (noise(p * 0.03 + vec2(time * 0.15, 0.0)) - 0.5) * 0.08;
+	}
+	float a_water = smoothstep(0.5, 0.56, v_water);
+	float foam = smoothstep(0.42, 0.5, v_water) * (1.0 - smoothstep(0.5, 0.62, v_water));
+	float a_foam = foam * foam_strength;
+	float alpha = 1.0 - (1.0 - a_water) * (1.0 - a_foam);
+	if (alpha <= 0.0) {
+		return vec4(0.0);
+	}
+	vec2 swell = vec2(sin(time * 0.4 + p.y * 0.01), cos(time * 0.3 + p.x * 0.008)) * 6.0;
+	vec3 water = texture(water_texture, (p + swell) / (water_texture_size * 1.5)).rgb;
+	vec3 premultiplied = water * a_water * (1.0 - a_foam) + foam_color.rgb * a_foam;
+	return vec4(premultiplied / alpha, alpha);
+}
+
+// Sol de la passe 0 (eau comprise) ou de la passe 1 (sans l'eau ni l'écume).
+vec3 ground_color(vec2 cells, vec2 p, float time) {
+	vec2 m = texture(ground_mask, p / tile_size / cells).rg;
+	float n = (noise(p * 0.02) - 0.5) * 0.30 + (noise(p * 0.09) - 0.5) * 0.14;
 	float v_paving = m.r + n;
 	float v_path = m.g + n;
 	float paving = smoothstep(0.49, 0.53, v_paving);
 	float path = smoothstep(0.49, 0.53, v_path);
 	float band = max(earth_band(v_paving), earth_band(v_path));
-	vec3 c = texture(grass_texture, world / texture_size).rgb;
-	c = mix(c, texture(path_texture, world / (texture_size * path_scale)).rgb, path);
-	c = mix(c, texture(paving_texture, world / (texture_size * paving_scale)).rgb, paving);
-	vec3 earth = earth_color.rgb * (0.85 + 0.3 * noise(world * 0.25));
+	vec3 c = texture(grass_texture, p / texture_size).rgb;
+	c = mix(c, texture(path_texture, p / (texture_size * path_scale)).rgb, path);
+	c = mix(c, texture(paving_texture, p / (texture_size * paving_scale)).rgb, paving);
+	vec3 earth = earth_color.rgb * (0.85 + 0.3 * noise(p * 0.25));
 	c = mix(c, earth, band * 0.75);
 	if (has_shore) {
-		vec2 s = texture(shore_mask, world / tile_size / cells).rg;
+		vec2 s = texture(shore_mask, p / tile_size / cells).rg;
 		float v_sand = s.r + n * 0.6;
-		c = mix(c, texture(sand_texture, world / texture_size).rgb, smoothstep(0.45, 0.55, v_sand));
-		float v_water = s.g + n * 0.5
-			+ (noise(world * 0.03 + vec2(TIME * 0.15, 0.0)) - 0.5) * 0.08;
-		if (square_shore) {
-			ivec2 cell = clamp(ivec2(floor(world / tile_size)), ivec2(0), ivec2(cells) - 1);
-			v_water = texelFetch(shore_mask, cell, 0).g;
+		c = mix(c, texture(sand_texture, p / texture_size).rgb, smoothstep(0.45, 0.55, v_sand));
+		if (pass_mode == 0) {
+			float v_water = s.g + n * 0.5
+				+ (noise(p * 0.03 + vec2(time * 0.15, 0.0)) - 0.5) * 0.08;
+			if (square_shore) {
+				ivec2 cell = clamp(ivec2(floor(p / tile_size)), ivec2(0), ivec2(cells) - 1);
+				v_water = texelFetch(shore_mask, cell, 0).g;
+			}
+			vec2 swell = vec2(sin(time * 0.4 + p.y * 0.01), cos(time * 0.3 + p.x * 0.008))
+				* 6.0;
+			// Période de l'eau = sa propre taille × 1,5 (mer de 384 px : 576, comme avant le J13).
+			vec3 water = texture(water_texture, (p + swell) / (water_texture_size * 1.5)).rgb;
+			float foam = smoothstep(0.42, 0.5, v_water) * (1.0 - smoothstep(0.5, 0.62, v_water));
+			c = mix(c, water, smoothstep(0.5, 0.56, v_water));
+			c = mix(c, foam_color.rgb, foam * foam_strength);
 		}
-		vec2 swell = vec2(sin(TIME * 0.4 + world.y * 0.01), cos(TIME * 0.3 + world.x * 0.008))
-			* 6.0;
-		// Période de l'eau = sa propre taille × 1,5 (mer de 384 px : 576, comme avant le J13).
-		vec3 water = texture(water_texture, (world + swell) / (water_texture_size * 1.5)).rgb;
-		float foam = smoothstep(0.42, 0.5, v_water) * (1.0 - smoothstep(0.5, 0.62, v_water));
-		c = mix(c, water, smoothstep(0.5, 0.56, v_water));
-		c = mix(c, foam_color.rgb, foam * foam_strength);
 	}
-	COLOR = vec4(c, 1.0);
+	return c;
+}
+
+void fragment() {
+	vec2 cells = vec2(textureSize(ground_mask, 0));
+	if (pass_mode == 2) {
+		COLOR = water_layer(cells, world, TIME);
+	} else {
+		COLOR = vec4(ground_color(cells, world, TIME), 1.0);
+	}
 }
