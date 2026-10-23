@@ -163,3 +163,28 @@ func test_duplicate_is_independent() -> void:
 	copy.haptics = false
 	assert_true(settings.haptics)
 	assert_false(settings.equals(copy))
+
+
+# --- Économie (moteur commun) ---------------------------------------------------------------
+
+func test_economy_off_by_default() -> void:
+	assert_false(GameSettings.new().economy, "désactivé : rendu inchangé")
+	assert_false(GameSettings.new().to_dict()[String(GameSettings.ECONOMY)])
+
+
+func test_economy_toggle_and_round_trip() -> void:
+	var settings := GameSettings.new()
+	assert_true(settings.set_value(GameSettings.ECONOMY, true))
+	assert_false(settings.set_value(GameSettings.ECONOMY, true), "déjà activé")
+	assert_false(settings.set_value(GameSettings.ECONOMY, 1), "booléen seulement")
+	assert_true(GameSettings.from_dict(JSON.parse_string(JSON.stringify(settings.to_dict()))).economy)
+	assert_true(settings.set_value(GameSettings.ECONOMY, false))
+
+
+func test_old_settings_file_without_the_economy_key_reads_as_off() -> void:
+	var old: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(FIXTURE))
+	assert_false(old.has("economy"), "ancien fichier : pas de clé")
+	var settings := GameSettings.from_dict(old)
+	assert_false(settings.economy)
+	assert_true(settings.reduce_motion, "le reste est lu normalement")
+	assert_false(GameSettings.from_dict({"economy": "oui"}).economy, "mal formé : défaut")

@@ -25,6 +25,12 @@ extends Node2D
 ## rectangle du shader reste dessiné (aucune image vide). Le rivage (eau qui ondule) et les
 ## sols plus grands que [constant BAKE_MAX_PIXELS] ne sont pas cuits. Les nœuds de la cuisson
 ## n'ont pas de propriétaire : jamais enregistrés dans la scène de la carte.
+## **Cuisson par morceaux** (moteur commun, QA A17 : Routes 11, 12, 16 à 23-27 i/s) : un sol que
+## [method bake] refuse (rivage, ou trop grand) est cuit par morceaux de la taille de la vue
+## ([method bake_chunks], [GroundChunks]) : la terre (sable compris) et le sous-bois
+## ([ForestFloor]) une fois, l'eau animée seule redessinée à chaque image et seulement sur les
+## cases d'eau ([GroundWater]). Les deux cuissons emportent le sous-bois d'une carte extérieure
+## ([method stack_layers]).
 
 const SHADER: Shader = preload("res://game/world/lighting/shaders/ground_blend.gdshader")
 ## Sol cuit, qui porte aussi la brume de la Tour ([method refresh_mist]).
@@ -38,6 +44,8 @@ const WATER_TEXTURE: String = "res://assets/world/ground/ground_eau_01.png"
 ## Force de l'écume par défaut (celle de la mer de Bourg Palette ; défaut de l'uniform
 ## `foam_strength` du shader).
 const DEFAULT_FOAM_STRENGTH: float = 0.8
+## Passe « terre » du shader du sol (tout sauf l'eau), cuite par [method bake_chunks].
+const PASS_LAND: int = 1
 ## Plus grand sol cuit, en pixels du monde (≈ 16 Mo de mémoire vidéo en RGBA8) ; au-delà, le
 ## shader dessine le sol à chaque image. Côté maximal : [constant BAKE_MAX_SIDE].
 const BAKE_MAX_PIXELS: int = 2048 * 2048
@@ -53,6 +61,8 @@ var _bake_viewport: SubViewport
 var _baked_sprite: Sprite2D
 var _baked: bool = false
 var _baked_layers: Array[CanvasItem] = []
+var _chunks: GroundChunks
+var _water: GroundWater
 
 ## Taille en cases (celle de la carte).
 @export var size: Vector2i = Vector2i(16, 16):
@@ -110,12 +120,15 @@ func _init() -> void:
 
 
 func _ready() -> void:
-	if auto_bake and DisplayServer.get_name() != "headless" and can_bake():
-		bake()
+	if auto_bake and DisplayServer.get_name() != "headless":
+		if can_bake():
+			bake()
+		elif can_bake_chunks():
+			bake_chunks()
 
 
 func _draw() -> void:
-	if not _baked:
+	if not _baked and _chunks == null:
 		draw_rect(Rect2(Vector2.ZERO, Vector2(size * Grid.TILE_SIZE)), Color.WHITE)
 
 
@@ -161,8 +174,7 @@ func bake() -> void:
 	stage.add_child(source)
 	var layers := stack_layers()
 	for layer: CanvasItem in layers:
-		# Sans script : une copie qui ne fait que se dessiner.
-		stage.add_child(layer.duplicate(0))
+		stage.add_child(_bake_copy(layer))
 	_bake_viewport.add_child(stage)
 	_baked_sprite = Sprite2D.new()
 	_baked_sprite.name = "GroundBaked"
@@ -224,15 +236,17 @@ func get_merged_mist_alpha() -> float:
 	return float((_baked_sprite.material as ShaderMaterial).get_shader_parameter(&"mist_alpha"))
 
 
-## Couches cuites avec le sol : seulement sur une carte de grotte (frère `CaveShade`, kit des
-## grottes et de la Tour), les frères qui suivent le sol dans l'arbre, sous les personnages
-## (z < 0) et immobiles ([method is_static_layer]), jusqu'au premier qui ne l'est pas (l'ordre
-## de dessin est gardé).
+## Couches cuites avec le sol : sur une carte de grotte (frère `CaveShade`, kit des grottes et
+## de la Tour), les frères qui suivent le sol dans l'arbre, sous les personnages (z < 0) et
+## immobiles ([method is_static_layer]), jusqu'au premier qui ne l'est pas (l'ordre de dessin
+## est gardé). Ailleurs (moteur commun) : le sous-bois ([method forest_layers]).
 func stack_layers() -> Array[CanvasItem]:
 	var layers: Array[CanvasItem] = []
 	var parent_node := get_parent()
-	if parent_node == null or parent_node.get_node_or_null(^"CaveShade") == null:
+	if parent_node == null:
 		return layers
+	if parent_node.get_node_or_null(^"CaveShade") == null:
+		return forest_layers()
 	for index: int in range(get_index() + 1, parent_node.get_child_count()):
 		var sibling := parent_node.get_child(index) as CanvasItem
 		if sibling == null or sibling.z_index >= 0 or not is_static_layer(sibling):
@@ -256,6 +270,97 @@ static func is_static_layer(node: Node) -> bool:
 		if not is_static_layer(child):
 			return false
 	return true
+
+
+## Sous-bois cuit avec le sol (moteur commun) : les [ForestFloor] visibles qui suivent le sol
+## dans l'arbre, au même z, sans autre couche entre eux (l'ordre de dessin est gardé).
+func forest_layers() -> Array[CanvasItem]:
+	var layers: Array[CanvasItem] = []
+	var parent_node := get_parent()
+	if parent_node == null:
+		return layers
+	for index: int in range(get_index() + 1, parent_node.get_child_count()):
+		var forest := parent_node.get_child(index) as ForestFloor
+		if forest == null or not forest.visible or forest.z_index != z_index \
+				or forest.get_child_count() > 0 or forest.get_shader_material() == null:
+			break
+		layers.append(forest)
+	return layers
+
+
+## Copie d'une couche à cuire : le rectangle du shader pour un [ForestFloor], sinon une copie
+## sans script, qui ne fait que se dessiner.
+func _bake_copy(layer: CanvasItem) -> Node:
+	var forest := layer as ForestFloor
+	if forest == null:
+		return layer.duplicate(0)
+	var source := BakeSource.new()
+	source.rect = Rect2(Vector2.ZERO, Vector2(forest.size * Grid.TILE_SIZE))
+	source.material = forest.material
+	source.transform = forest.transform
+	source.z_index = forest.z_index
+	return source
+
+
+## Vrai si le sol peut être cuit par morceaux ([method bake_chunks]) : avec un matériau et une
+## taille. Toujours essayé après [method can_bake].
+func can_bake_chunks() -> bool:
+	return get_shader_material() != null and size.x > 0 and size.y > 0
+
+
+## Cuisson par morceaux (moteur commun, voir l'en-tête) : la terre et le sous-bois
+## ([method forest_layers]) dans [GroundChunks], l'eau du rivage dans [GroundWater] au-dessus.
+## Le sous-bois est caché tout de suite (ses morceaux pas encore rendus sont dessinés en repli
+## par [GroundChunks]). Sans effet si une cuisson est déjà en place ou hors de l'arbre.
+func bake_chunks() -> void:
+	if _chunks != null or _bake_viewport != null or not is_inside_tree() \
+			or not can_bake_chunks():
+		return
+	var land := get_shader_material()
+	if shore_mask != null:
+		land = land.duplicate() as ShaderMaterial
+		land.set_shader_parameter(&"pass_mode", PASS_LAND)
+	var sources: Array[Dictionary] = [{
+		"material": land, "transform": Transform2D(),
+		"rect": Rect2(Vector2.ZERO, Vector2(size * Grid.TILE_SIZE)),
+	}]
+	var layers := forest_layers()
+	for layer: CanvasItem in layers:
+		var forest := layer as ForestFloor
+		sources.append({
+			"material": forest.material,
+			"transform": transform.affine_inverse() * forest.transform,
+			"rect": Rect2(Vector2.ZERO, Vector2(forest.size * Grid.TILE_SIZE)),
+		})
+	_chunks = GroundChunks.new()
+	add_child(_chunks)
+	_chunks.setup(size * Grid.TILE_SIZE, sources)
+	if shore_mask != null:
+		_water = GroundWater.new()
+		add_child(_water)
+		var to_forest: Array[Transform2D] = []
+		for layer: CanvasItem in layers:
+			to_forest.append(transform.affine_inverse() * (layer as Node2D).transform)
+		_water.setup(get_shader_material(), shore_mask, square_shore, layers, to_forest)
+	for layer: CanvasItem in layers:
+		layer.visible = false
+	_baked_layers = layers
+	queue_redraw()
+
+
+## Vrai si le sol est cuit par morceaux ([method bake_chunks]).
+func is_chunked() -> bool:
+	return _chunks != null
+
+
+## Morceaux cuits (null sans [method bake_chunks]).
+func get_chunks() -> GroundChunks:
+	return _chunks
+
+
+## Eau animée au-dessus des morceaux (null sans rivage ou sans [method bake_chunks]).
+func get_water() -> GroundWater:
+	return _water
 
 
 ## Couches cachées après la cuisson (dessinées dans la texture du sol).
