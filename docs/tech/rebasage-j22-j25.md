@@ -107,6 +107,33 @@ locale `f0bbe0ec`) contenue dans `j25-nuit`, obsolète. Les branches distantes s
 - `kanto_j25_reprises.json` (Tadmorv, Grotadmorv, Smogogo, Électrode) deviendra un doublon à
   l'entrée du J22 dans `main`.
 
+## Fusions préparées (2026-10-23, locales, NON poussées)
+
+Branches **locales** du dépôt principal (copies dans le scratchpad de la session de coordination) ;
+`jalon-22`, `jalon-24` et leurs copies `wt-j22`, `wt-j24` n'ont pas bougé.
+
+- **`prep/main-dans-jalon-22`** (`adeb1f5f`, sur `origin/jalon-22` `1a86a4f5`) : suite complète
+  **6 662 / 6 662**, import sans erreur, `plan_check_systemes2`, `--legende`, `plan_check_j21`,
+  `plan_check_j22` conformes. Retirés : `moves/j22_j21.json` (identique), `kanto_j22_j21.json`
+  (sous-ensemble strict de `kanto_j21.json`, sans Ronflex — à confirmer), doublons du Pokédex.
+  `zones.json` et rectangles de la Carte : une entrée `route_12` / `route_16`, `maps` en union,
+  textes et rectangles du J21 [D] → la Route 12 sud et la Route 16 ouest sortent du rectangle de la
+  Carte (à revoir avec l'illustration). Tests adaptés : `test_route_16` (Route 16 ouest a ses
+  herbes), `test_j21_flags_contract` (7 départs du J22 posent les drapeaux de Ronflex). **Non
+  fait, laissé à la session du J22** : raccords Route 12 sud et poste de la Route 16 (§0.5),
+  pêche au ponton de la Route 12 nord [D].
+- **`prep/main-dans-jalon-24`** (`abd847b2`, sur `origin/jalon-24` `d6f91495`) : suite complète
+  **6 686 / 6 686**, import sans erreur. Retirés : `kanto_j24_reprises.json`, `moves/j24_reprises.json`
+  (identiques), doublons du Pokédex (`poliwag`, `tentacool`, `tangela`, `gyarados`) ; évolutions
+  Ptitard N25 et Tentacool N30 ajoutées à `kanto_j21.json` (accord J21/J24) ; Guillotine passée
+  en effet `ohko`. Grilles de mer du J24 laissées à `plan_check_j24_mer.py` [D] ;
+  `tm_compatibility.json` non regénéré (Ronflex sans CT, CSV absents).
+- **Question d'équilibrage** (J24) : maintenant que Guillotine marche, la rendre aux Krabby des
+  Dresseurs comme dans RB ? (Ils l'ont perdue par la règle de Major Bob.)
+
+Pour pousser après validation : `git push origin prep/main-dans-jalon-22:jalon-22` (avance rapide),
+idem pour le J24 ; les sessions des jalons font ensuite un `pull` dans `wt-j22` / `wt-j24`.
+
 ## Ce qui attend Kevin
 
 1. **Valider les QA du J22 et du J24** (préalable à leur entrée dans `main`).
