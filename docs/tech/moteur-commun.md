@@ -135,7 +135,7 @@ sur téléphone (aucun départ ne pose le joueur au bord bas-droit).
 
 ## 4. Fusions
 
-- **`main` fusionné dans `moteur-commun` le 2026-10-23** (`main` à `d40f40fe` : J21 `a735bdbb`,
+- **`main` fusionné dans `moteur-commun` le 2026-10-23** (`main` à `d40f40fe` puis `d0392e93`, doc : J21 `a735bdbb`,
   `76b788ff`, `d40f40fe`). `painted_ground.gd` : version générique du moteur commun gardée (sur-
   ensemble de celle du J21 : cuisson d'un bloc, brume portée par le sol, couches de grotte, plus
   morceaux et eau vivante) ; `world_lighting.gd` : `_update_grade()` (réglage `economy`) gardé.
