@@ -145,7 +145,15 @@ Kevin, puis refusionné dans les deux branches :
 - **J24** (`1117c8ac`) : seul `etat-projet.md` en conflit ; D1 et D5 traités par le moteur commun
   (à revoir à la QA). Import sans erreur, suite complète **6 722 / 6 722**.
 
-## Ce qui attend Kevin
+## Suite (2026-10-23)
+
+QA du J22 et du J24 **validées par Kevin** ; **J22 (`e8b2b09d`) et J24 (`0c55dcf3`) fusionnés dans
+`main`** (suite complète 6 759 / 6 759 ; doublons Krabby, Poissoroy, Magicarpe, Force Poigne,
+Pince-Masse, Trempette, Hyper Ball, Hyper Potion, Total Soin retirés du J24 ; Guillotine N25 et
+Krabby → Krabboss N28 dans `kanto_j22.json` ; raccord Parmanie ↔ Route 19 fait). Surf : 90 gardé.
+Reste : `main` → J23 et J25 ; raccords Route 12 sud et poste de la Route 16 (J21 ↔ J22, `jalon-22.md` §0.5).
+
+## Ce qui attendait Kevin (réglé)
 
 1. **Valider les QA du J22 et du J24** (préalable à leur entrée dans `main`).
 2. Après validation : J22 et J24 dans `main` (`main` y est déjà fusionné) ; ensuite `main` dans
