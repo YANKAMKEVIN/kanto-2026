@@ -2507,8 +2507,9 @@ func _route_22_gate() -> Dictionary:
 
 ## Hall du Plateau Indigo (jalon 29, `jalon-29.md` §2.5) : le Centre Pokémon (même enseigne
 ## partout) avec, en plus, le marchand (13, 5) tourné vers l'ouest (Boutique `indigo_plateau_lobby`,
-## RB), l'hôte (3, 6) (T29-10) et, au nord-est, la porte de la Ligue (12, 3) : « Ligue Pokémon —
-## À venir » jusqu'au J30 (il en change la cible). Aucun dialogue ni soin ne lance la Ligue.
+## RB), l'hôte (3, 5) (T29-10) et, au nord-est, la porte de la Ligue (12, 3), dessinée dans le
+## mur (`int_porte_ligue_01`, à la place de la plante nord-est) : « Ligue Pokémon — À venir »
+## jusqu'au J30 (il en change la cible). Aucun dialogue ni soin ne lance la Ligue.
 ## Point de repos `indigo_plateau_lobby` (`data/world/rest_points.json`).
 func _indigo_plateau_lobby() -> Dictionary:
 	var room := _pokemon_center(&"indigo_plateau_lobby", "IndigoPlateauLobby", "Plateau Indigo",
@@ -2517,6 +2518,9 @@ func _indigo_plateau_lobby() -> Dictionary:
 	for prop: Array in room["props"]:
 		if prop[3] != "PlantNorthEast":
 			props.append(prop)
+	# Porte de la Ligue (fiche `j29-porte-ligue.md`, QA A17) posée dans le mur du fond, pied au
+	# bas des lambris peints, au-dessus du warp (12, 3) ; sans emprise : le mur est déjà bloqué.
+	props.append([&"int_porte_ligue_01", Vector2i(12, 2), 2.3, "LeagueDoor"])
 	room["props"] = props
 	room["warps"] = [["ToLeague", Vector2i(12, 3), STEP_ON, Vector2i.UP, &"", &"league_door",
 		Vector2i.DOWN, "Ligue Pokémon"]]

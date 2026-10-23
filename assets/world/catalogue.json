@@ -8312,6 +8312,25 @@
      11
     ]
    }
+  },
+  "int_porte_ligue_01": {
+   "fichier": "res://assets/world/interiors/int_porte_ligue_01.png",
+   "taille": [
+    154,
+    169
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_porte_ligue_01_contact.png",
+    "decalage": [
+     -85,
+     -16
+    ],
+    "echelle": 2,
+    "taille": [
+     85,
+     27
+    ]
+   }
   }
  },
  "personnages": {

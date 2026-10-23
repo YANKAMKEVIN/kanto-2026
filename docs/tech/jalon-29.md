@@ -359,6 +359,11 @@ Session de nuit sur le Galaxy A17 (APK debug, départs de débogage ; captures e
 **Corrigé** : l'hôte du hall était caché derrière la banquette ouest → (3, 5)
 (`data/npcs/indigo_plateau_lobby.json`, test `test_indigo_plateau_lobby_npcs_not_hidden_by_benches`).
 **Ouvert** : le départ `moltres` n'a pas de Master Ball (objet du J26, absent de la branche) : à
-ajouter à la fusion ; icône d'Hyper Ball absente ; porte de la Ligue non dessinée sur le mur du hall.
+ajouter à la fusion ; icône d'Hyper Ball absente ; ~~porte de la Ligue non dessinée sur le mur du hall~~
+**fait (2026-10-23)** : `int_porte_ligue_01` (Codex, r3 retenu ; fiche
+`docs/design/fiches-assets/j29-porte-ligue.md`, outil `tools/art/j29_porte_ligue.py`) posée dans le
+mur du fond au-dessus du warp (12, 3), sans emprise, à la place de la plante nord-est ; test
+`test_indigo_plateau_lobby_league_door_is_drawn_above_its_warp` ; capture Mac
+`build/cap/j29_hall_porte_ligue.png` (non versionnée). À revoir sur le téléphone.
 Non joué : Route Victoire (rochers, interrupteurs), Surf, appel pendant Sulfura, capture de Sulfura
 (8 Hyper Balls ratées).

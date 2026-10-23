@@ -226,3 +226,48 @@ func test_npc_rosters_load_and_stand_on_walkable_cells() -> void:
 	for map_id: StringName in ALL_MAPS:
 		var roster := NpcRoster.load_for_map(map_id)
 		assert_eq(roster.get_errors().size(), 0, "%s : %s" % [map_id, roster.get_errors()])
+
+
+## QA A17 du 2026-10-23 : le warp `ToLeague` (12, 3) du hall donnait sur le mur du fond nu de la
+## coque du Centre. La porte de la Ligue (`int_porte_ligue_01`, fiche `j29-porte-ligue.md`) est
+## posée dans le mur au-dessus de (12, 3), sans emprise ; le warp reste atteignable depuis
+## l'entrée et la case d'arrivée (12, 4) reste libre (ni mur, ni PNJ).
+func test_indigo_plateau_lobby_league_door_is_drawn_above_its_warp() -> void:
+	const GridPaths := preload("res://tests/helpers/grid_paths.gd")
+	var lobby := _map(&"indigo_plateau_lobby")
+	var door := lobby.find_child("LeagueDoor", true, false) as Node2D
+	assert_not_null(door, "porte de la Ligue dessinée")
+	if door == null:
+		return
+	assert_eq(door.scene_file_path, "res://game/world/props/painted/int_porte_ligue_01.tscn")
+	assert_true(PaintedPropRules.is_traversable(&"int_porte_ligue_01"), "sans emprise")
+	assert_eq(door.position.x, 12 * 96.0 + 48.0, "centrée sur la colonne 12")
+	assert_eq(floori(door.position.y / 96.0), 2, "pied dans le mur, juste au-dessus de (12, 3)")
+	var sprite := door.get_node(^"%Sprite") as Sprite2D
+	var left := door.position.x + sprite.offset.x
+	var right := left + sprite.texture.get_width()
+	assert_true(left >= 11 * 96.0 and right <= 14 * 96.0, "pas plus large que les cases 11 à 13")
+	var warp: Warp = null
+	for candidate: Warp in lobby.get_warps().get_all():
+		if candidate.target_map.is_empty():
+			warp = candidate
+	assert_not_null(warp, "warp ToLeague")
+	if warp == null:
+		return
+	assert_eq(warp.cell, Vector2i(12, 3))
+	assert_eq(lobby.get_spawn_cell(&"league_door"), Vector2i(12, 4))
+	var size := Vector2i(15, 10)
+	var grid := GridPaths.relief(lobby.get_grid(), size)
+	var roster := NpcRoster.load_for_map(&"indigo_plateau_lobby")
+	var npc_cells: Array[Vector2i] = []
+	for spec: NpcSpec in roster.get_all():
+		npc_cells.append(spec.cell)
+		grid.set_solid(spec.cell)
+	assert_false(npc_cells.has(Vector2i(12, 4)), "aucun PNJ sur l'arrivée (12, 4)")
+	assert_false(grid.is_solid(Vector2i(12, 4)), "(12, 4) praticable")
+	var stops := {}
+	for candidate: Warp in lobby.get_warps().get_all():
+		stops[candidate.cell] = true
+	var dist := GridPaths.distances(grid, [lobby.get_spawn_cell(&"entrance")], stops)
+	assert_true(dist.has(Vector2i(12, 4)), "(12, 4) atteinte depuis l'entrée")
+	assert_true(dist.has(Vector2i(12, 3)), "warp de la Ligue atteint depuis l'entrée")
