@@ -177,6 +177,16 @@ Fusion de `origin/systemes-2` dans `jalon-22` (`5ee69e45`). Réponses aux points
   (cases notées en tête de `route_16_gate.txt`) ; arbre (38..39, 19..20) coupable
   (`cut_route_16_tree`), bloc « J22 » de `build_route_16.gd` (T19) : **à faire à la fusion du J21**.
 - Après la fusion : relancer `tools/build_j22_maps.gd` (les « À venir » deviennent des passages).
+- **Fait le 2026-10-23** (branche `raccords-j21-j22` sur `main` à `903501e3`) : Route 12 `warp_sud`
+  → `route_12_south` / `from_route_12[_1]`, arrivées `from_route_12_sud[_1]` (l'ancien
+  `from_route_12_sud_e` est renommé) ; Route 16 : porte basse → `entrance_bas_est[_1]`, arrivées
+  `from_poste[_1]` (anciens `from_poste_w|e`) ; voie haute ouverte **sans herbes ni rencontres**
+  [D] et prolongée en (18..25, 11..12) ; porte haute (19..20, 13) → `entrance_haut_est[_1]`,
+  arrivées `from_poste_haut[_1]` ; arbre 2 × 2 : une `FlagGate` `CutTree` (4 cases) et **un seul**
+  `InteractPoint` 2 × 2 `route_16_tree` (textes de Coupe de la Route 2 est), COUPER →
+  `cut_tree_route_16` (`data/*/cut_tree.json`) [D] ; départ de débogage `face_arbre` (38, 21).
+  `build_j22_maps.gd -- --maps=route_12_south,route_16_gate` relancé (seules ces deux cartes
+  visent le J21). Tests : `test_j21_j22_links.gd` (case pour case, vraie Boot : Coupe, portes).
 
 ---
 

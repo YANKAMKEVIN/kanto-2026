@@ -10,8 +10,8 @@
 #   Les portes du haut se prennent en montant (PUSH ↑), celles du bas en descendant (PUSH ↓) : la façade de
 #   chaque carte porte ses portes au nord (voie haute) et au sud (voie basse).
 #
-# MODIFICATION FUTURE de route_16.txt (J21) — NON faite ici (fichier d'un autre jalon), à reporter à T19
-# (bloc « J22 » de build_route_16.gd) : pour que la voie haute est rejoigne la porte haute du poste,
+# MODIFICATION de route_16.txt (J21) — FAITE le 2026-10-23 (raccords J21 ↔ J22, bloc « J22 » de
+# build_route_16.gd ; la grille route_16.txt fait foi) : pour que la voie haute est rejoigne la porte haute,
 #   - ouvrir la voie haute « Y » en sol praticable (herbes) et la prolonger vers l'ouest le long de la
 #     façade nord du poste : cases (18..25, 11..12) ;
 #   - porte haute du poste : (19..20, 13) dans la rangée du haut de son emprise, STEP_ON ↓ →
@@ -44,7 +44,7 @@ FIN
 POSITIONS
 sortie_haut_ouest      warp           2..3,1         libre   to=route_16_west spawn=from_poste_haut  # PUSH ↑ → Route 16 ouest, voie haute (porte nord du poste (35..36, 9))
 entrance_haut_ouest    spawn          2..3,2         libre   facing=down  # arrivée de la voie haute ouest, tournée ↓
-sortie_haut_est        warp           10..11,1       libre   to=route_16 spawn=from_poste_haut  # PUSH ↑ → Route 16 est, voie haute : porte haute À CRÉER par T19 dans route_16.txt (voir en-tête)
+sortie_haut_est        warp           10..11,1       libre   to=route_16 spawn=from_poste_haut  # PUSH ↑ → Route 16 est, voie haute : porte haute (19..20, 13) de route_16.txt
 entrance_haut_est      spawn          10..11,2       libre   facing=down  # arrivée de la voie haute est, tournée ↓
 sortie_bas_ouest       warp           2..3,8         libre   to=route_16_west spawn=from_poste_bas  # PUSH ↓ → Route 16 ouest, Piste (porte sud du poste (35..36, 15)) : sortie en selle
 entrance_bas_ouest     spawn          2..3,7         libre   facing=up  # arrivée de la Piste, tournée ↑

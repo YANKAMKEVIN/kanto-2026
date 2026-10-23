@@ -16,15 +16,16 @@ Critères :
     chemin de l'arrivée à Fuji hors de leur vue, et ils se rencontrent dans l'ordre 1, 2, 3 ; Fuji
     atteignable ; aucun objet ; rien ne couvre l'arrivée ; tout le sol atteignable.
   Route 12 (39 × 102) : bords fermés sauf trois raccords (nord (21..23, 0) ↔ Lavanville (21..23, 35),
-    ouest (0, 93..94) ↔ Route 11 (75, 14..15), sud fermé « À venir ») ; le poste est un passage
+    ouest (0, 93..94) ↔ Route 11 (75, 14..15), sud (25..26, 101) ↔ Route 12 sud (25..26, 0), J22) ; le poste est un passage
     obligatoire (sans lui, le sud est inatteignable) ; 4 Pêcheurs, vues, inévitabilité (1 oui, 2 à 4
     non) ; tout le ponton atteignable ; aucune herbe ; Ronflex 2 × 2 au CROISEMENT (décision M-3,
     2026-10-16) : avec lui, Lavanville n'atteint ni le raccord ouest ni le bord sud, la Route 11 ni
     Lavanville ni le sud ; sans lui, tout est relié ; chaque repère face_ronflex touche Ronflex.
   Route 16 (44 × 28) : bords fermés sauf (43, 21..23) ↔ Céladopole (0, 21..23) ; Ronflex 2 × 2 sans
-    contournement (avec lui, ni goulet ni porte ; sans lui, tout est atteignable) ; porte du poste
-    fermée (coming_soon) ; voie haute et arbre à Couper infranchissables ; ni herbe, ni Dresseur, ni
-    objet, ni panneau.
+    contournement (avec lui, ni goulet ni porte basse, même l'arbre coupé ; sans lui, tout est
+    atteignable une fois l'arbre coupé) ; raccords J22 (2026-10-23) : porte basse (15..16, 20) et porte
+    haute (19..20, 13) vers `route_16_gate`, voie haute ouverte sans herbes, arbre à Couper 2 × 2 qui
+    seul l'ouvre ; ni herbe, ni Dresseur, ni objet, ni panneau.
 
 Usage : python3 tools/art/plan_check_j21.py [pokemon_tower_7f|route_12|route_16 ...] [--sans-voisines]
         [--apercu]    (sans nom : les quatre ; code 1 si un critère échoue)
@@ -125,7 +126,8 @@ class Carte:
 		return {c for c in self.cases("DV")}
 
 	def distances(self, departs: list[Case], interdites: set[Case] = frozenset(),
-			occupees: set[Case] | None = None, portails: bool = True) -> dict[Case, int]:
+			occupees: set[Case] | None = None, portails: bool = True,
+			en_plus: set[Case] = frozenset()) -> dict[Case, int]:
 		"""BFS ; une case D / V est atteinte mais jamais traversée, sauf une porte à `lie=` (poste
 		de la Route 12) : y entrer ressort de l'autre porte, sur sa case de sortie (+ 1 pas)."""
 		term = self.terminales()
@@ -145,7 +147,10 @@ class Carte:
 				continue
 			for dx, dy in DIRS:
 				n = (c[0] + dx, c[1] + dy)
-				if n in dist or n in interdites or not self.libre(n, occupees):
+				if n in dist or n in interdites:
+					continue
+				if not self.libre(n, occupees) and not (n in en_plus and n not in
+						(self.occupees if occupees is None else occupees)):
 					continue
 				dist[n] = dist[c] + 1
 				file.append(n)
@@ -402,8 +407,22 @@ def verifier_route_12(r: Rapport, apercu: bool) -> None:
 	r.critere(wo.cells == [(0, 93), (0, 94)] and pos["from_route_11"].cells == wo.cells
 		and pos["from_route_11"].attrs.get("facing") == "right",
 		"ouest : warp et arrivée (0, 93..94), tournée →")
-	r.critere(wsud.cells == [(25, 101), (26, 101)] and wsud.attrs.get("coming_soon")
-		== "route_12_sud", "sud : bord fermé coming_soon=route_12_sud, tronc de 2 cases (25..26)")
+	r.critere(wsud.cells == [(25, 101), (26, 101)] and wsud.attrs.get("to") == "route_12_south"
+		and wsud.attrs.get("spawn") == "from_route_12" and "coming_soon" not in wsud.attrs,
+		"sud : bord (25..26, 101) → route_12_south / from_route_12 (+ _1), raccord J22, tronc de 2 cases")
+	r.critere(pos["from_route_12_sud"].cells == [(25, 100), (26, 100)]
+		and pos["from_route_12_sud"].attrs.get("facing") == "up",
+		"sud : arrivées from_route_12_sud (+ _1) (25..26, 100), tournées ↑")
+	sud12, src12 = voisine("route_12_sud")
+	if sud12 is None:
+		r.critere(SANS_VOISINES, "Route 12 sud introuvable (--sans-voisines pour passer)")
+	else:
+		S = Carte("route_12_sud", sud12)
+		wn12, fr12 = S.pos.get("warp_nord"), S.pos.get("from_route_12")
+		r.critere(wn12 is not None and wn12.cells == [(25, 0), (26, 0)] and wn12.attrs.get("to")
+			== "route_12" and wn12.attrs.get("spawn") == "from_route_12_sud" and fr12 is not None
+			and fr12.cells == [(25, 0), (26, 0)],
+			f"Route 12 sud ({src12}) : warp_nord (25..26, 0) → route_12 / from_route_12_sud, mêmes colonnes")
 	lav, src = voisine("lavanville")
 	if lav is None:
 		r.critere(SANS_VOISINES, "Lavanville introuvable (--sans-voisines pour passer)")
@@ -561,16 +580,17 @@ def verifier_route_16(r: Rapport, apercu: bool) -> None:
 	k = Carte("route_16")
 	pos = k.pos
 	r.titre("1. Dimensions, légende, bords")
-	dims_et_legende(r, k, 44, 28, "TcRYWP=D", "=D")
+	dims_et_legende(r, k, 44, 28, "TcRYWP=D", "=DY")
 	b = k.bord()
 	est = [(43, 21), (43, 22), (43, 23)]
 	r.critere(b["est"] == est and not b["nord"] and not b["sud"] and not b["ouest"],
 		f"seul bord praticable : l'est {b['est']} (raccord Céladopole)")
-	natures(r, k, {"warp": "=D", "spawn": "=", "pnj": "=", "repere": "=", "decor": "PYW"})
+	natures(r, k, {"warp": "=D", "spawn": "=Y", "pnj": "=", "repere": "=Y", "decor": "P",
+		"arbuste": "W"})
 	interdits = [q.ident for q in pos.values() if q.kind in ("dresseur", "objet_visible", "cache",
 		"panneau", "herbes", "examen")]
 	r.critere(not interdits and not k.plan.cells_of("h"),
-		f"aucun Dresseur, objet, panneau, examen ni herbe (RB : voie haute seule) {interdits or ''}")
+		f"aucun Dresseur, objet, panneau, examen ni herbe (voie haute sans herbes [D]) {interdits or ''}")
 	r.critere(pos["warp_est"].cells == est and pos["from_celadon"].cells == est
 		and pos["from_celadon"].attrs.get("facing") == "left",
 		"warp et arrivée (43, 21..23), tournée ←")
@@ -601,9 +621,11 @@ def verifier_route_16(r: Rapport, apercu: bool) -> None:
 		r.critere(C.car((4, 20)) == "p" and C.car((4, 24)) == ".",
 			"Céladopole : l'avenue fait 5 rangées (20..24) en x 4 et se resserre à 3 au passage, comme à l'est")
 
-	r.titre("3. Ronflex : goulet sans contournement")
+	r.titre("3. Ronflex : goulet sans contournement (arbre coupé ou non)")
 	ron = pos["ronflex_16"]
 	cases = set(ron.cells)
+	arbre = set(pos["arbre_coupe"].cells)
+	coupe = k.occupees - arbre
 	r.critere(cases == {(24, 22), (25, 22), (24, 23), (25, 23)} and ron.kind == "pnj" and ron.bloque
 		and ron.attrs.get("unless") == "snorlax_route_16_done" and ron.attrs.get("role") == "R1",
 		"ronflex_16 : pnj 2 × 2 en (24..25, 22..23), unless=snorlax_route_16_done (dossier §9.4)")
@@ -612,47 +634,67 @@ def verifier_route_16(r: Rapport, apercu: bool) -> None:
 		r.critere(col == [22, 23], f"colonne x = {x} : seules cases praticables {col} = les 2 rangées de Ronflex "
 			"(goulet 2 cases, il le ferme en entier)")
 	depart = pos["from_celadon"].cells[0]
-	d = k.distances([depart])
 	porte = pos["poste_route_16"]
-	r.critere(not any(c in d for c in porte.cells) and (23, 22) not in d,
-		"avec Ronflex : la porte du poste et le goulet derrière lui sont INATTEIGNABLES (aucun contournement)")
+	haute = pos["poste_haut"]
+	parvis = pos["from_poste"].cells
+	for nom, occ in (("arbre en place", None), ("arbre coupé", coupe)):
+		d = k.distances([depart], occupees=occ, en_plus=arbre if occ is not None else set())
+		r.critere(not any(c in d for c in porte.cells + parvis) and (23, 22) not in d,
+			f"avec Ronflex, {nom} : la porte basse, le parvis et le goulet derrière lui sont "
+			"INATTEIGNABLES (aucun contournement, ni par la voie haute)")
+	d = k.distances([depart])
 	faces = pos["face_ronflex"].cells
 	r.critere(all(c in d for c in faces) and faces == [(26, 22), (26, 23)],
 		f"face_ronflex {faces} atteint depuis le raccord ({d.get((26, 22))} pas)")
 	libre = k.distances([depart], occupees=k.occupees - cases)
-	sol = k.cases("=D")
-	manque = [c for c in sol if c not in libre and c not in k.occupees]
-	r.critere(not manque, f"Ronflex parti : tout le chemin atteignable ({len(sol)} cases) {manque or ''}")
-	r.critere(all(c in libre for c in porte.cells), "Ronflex parti : la porte du poste est atteinte "
+	r.critere(all(c in libre for c in porte.cells), "Ronflex parti : la porte basse est atteinte "
 		f"({libre[porte.cells[0]]} pas)")
+	r.critere(not any(c in libre for c in k.cases("Y") + haute.cells),
+		"arbre en place : la voie haute et la porte haute ne sont jamais atteintes")
+	tout = k.distances([depart], occupees=k.occupees - cases - arbre, en_plus=arbre)
+	sol = k.cases("=DYW")
+	manque = [c for c in sol if c not in tout and c not in (k.occupees - arbre)]
+	r.critere(not manque, f"Ronflex parti, arbre coupé : tout le sol atteignable ({len(sol)} cases) "
+		f"{manque or ''}")
 	r.critere(len(d) < len(libre) and max(d, key=d.get)[0] >= 26, "Ronflex coupe la voie en deux : "
 		f"{len(d)} cases avant lui, {len(libre) - len(d)} après")
 
-	r.titre("4. Façade du poste, voie haute, arbre à Couper")
-	r.critere(porte.kind == "warp" and porte.attrs.get("coming_soon") == "route_16_poste"
+	r.titre("4. Poste (portes basse et haute), voie haute, arbre à Couper")
+	r.critere(porte.kind == "warp" and porte.attrs.get("to") == "route_16_gate"
+		and porte.attrs.get("spawn") == "entrance_bas_est" and "coming_soon" not in porte.attrs
 		and porte.cells == [(15, 20), (16, 20)] and all(k.car(c) == "D" for c in porte.cells),
-		"porte du poste (15..16, 20) : D × 2, coming_soon=route_16_poste (« À venir »), repère poste_route_16")
-	parvis = pos["parvis_poste"].cells
-	r.critere(parvis == [(15, 21), (16, 21)] and all(c in libre for c in parvis),
-		"parvis (15..16, 21) : case de lecture de la porte, atteinte")
-	r.critere(len(k.cases("D")) == 2, "une seule porte dans la carte")
-	façade = [(x, y) for x in range(10, 22) for y in range(13, 20)]
-	r.critere(all(k.car(c) == "P" for c in façade) and k.car((10, 20)) == "P" and k.car((21, 20)) == "P",
-		"façade P : emprise 12 × 8 (x 10..21, y 13..20), porte dans la rangée du bas")
+		"porte basse (15..16, 20) : D × 2 → route_16_gate / entrance_bas_est (+ _1), plus de coming_soon")
+	r.critere(parvis == [(15, 21), (16, 21)] and pos["from_poste"].attrs.get("facing") == "down"
+		and all(c in libre for c in parvis), "from_poste (15..16, 21) : parvis, tournée ↓, atteint")
+	r.critere(haute.kind == "warp" and haute.attrs.get("to") == "route_16_gate"
+		and haute.attrs.get("spawn") == "entrance_haut_est" and "coming_soon" not in haute.attrs
+		and haute.cells == [(19, 13), (20, 13)] and all(k.car(c) == "D" for c in haute.cells),
+		"porte haute (19..20, 13) : D × 2, rangée du haut du poste → route_16_gate / entrance_haut_est (+ _1)")
+	fh = pos["from_poste_haut"]
+	r.critere(fh.cells == [(19, 12), (20, 12)] and fh.attrs.get("facing") == "up"
+		and all(k.car(c) == "Y" for c in fh.cells), "from_poste_haut (19..20, 12) : voie haute, tournée ↑")
+	r.critere(len(k.cases("D")) == 4, "deux portes de 2 cases dans la carte")
+	façade = [(x, y) for x in range(10, 22) for y in range(13, 21)]
+	r.critere(all(k.car(c) == "P" for c in façade if c not in porte.cells + haute.cells),
+		"façade P : emprise 12 × 8 (x 10..21, y 13..20), porte basse au bas, porte haute au haut")
 	haut = set(pos["voie_haute"].cells)
-	r.critere(haut == {c for c in k.cases("Y")} - {(38, 17), (39, 17), (38, 18), (39, 18)}
-		and not any(k.car(c) in "=D" for c in haut), "voie haute (26..42, 9..16) : décor, aucune case praticable")
-	w = set(pos["arbre_coupe_decor"].cells)
-	r.critere(w == set(k.cases("W")) == {(38, 19), (39, 19), (38, 20), (39, 20)} and k.car((38, 21)) == "="
-		and not any(q.kind == "examen" or q.attrs.get("condition") for q in pos.values()),
-		"arbre à Couper (38..39, 19..20) : 2 × 2 en décor, ni examen ni condition de Coupe (CS Vol hors jalon)")
-	atteintes = set(libre)
-	r.critere(not any(c in atteintes for c in k.cases("Y") + k.cases("W")),
-		"jamais d'accès à la voie haute ni à l'arbre")
+	r.critere(haut == set(k.cases("Y")) and {(x, y) for x in range(18, 26) for y in (11, 12)} <= haut,
+		"voie haute (26..42, 9..16), prolongée en (18..25, 11..12), reliée à l'arbre par (38..39, 17..18)")
+	w = pos["arbre_coupe"]
+	r.critere(arbre == set(k.cases("W")) == {(38, 19), (39, 19), (38, 20), (39, 20)} and w.bloque
+		and w.attrs.get("flag") == "cut_route_16_tree" and k.car((38, 21)) == "=" and k.car((38, 18)) == "Y",
+		"arbre à Couper (38..39, 19..20) : arbuste 2 × 2, flag=cut_route_16_tree, entre la route et la voie haute")
+	d_arbre = k.distances([depart], occupees=coupe, en_plus=arbre)
+	r.critere(all(c in d_arbre for c in haute.cells), "avec Ronflex, arbre coupé : porte haute atteinte "
+		f"({d_arbre.get(haute.cells[0])} pas ; RB : la maison de Vol avant Ronflex)")
+	d_haut = k.distances(fh.cells)
+	r.critere(all(c in d_haut for c in [(38, 18), (39, 18)]) and not any(c in d_haut for c in parvis + est),
+		"depuis la porte haute, arbre en place : l'arbre se lit depuis (38..39, 18) ; ni parvis ni Céladopole")
 
 	r.titre("5. Durée de traversée (information)")
-	r.info(f"raccord → Ronflex {d[(26, 22)]} pas ; raccord → porte du poste {libre[porte.cells[0]]} pas "
-		f"≈ {libre[porte.cells[0]] * S_PAR_PAS:.0f} s de marche")
+	r.info(f"raccord → Ronflex {d[(26, 22)]} pas ; raccord → porte basse {libre[porte.cells[0]]} pas "
+		f"≈ {libre[porte.cells[0]] * S_PAR_PAS:.0f} s de marche ; raccord → porte haute (arbre coupé) "
+		f"{d_arbre.get(haute.cells[0])} pas")
 	if apercu:
 		apercu_carte(k, {})
 

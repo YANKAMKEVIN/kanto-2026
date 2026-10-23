@@ -455,6 +455,8 @@ const IDS_J17: Array[StringName] = [
 	&"route_2_east_item_1", &"route_2_east_item_2", &"route_2_item_5", &"digletts_cave_item_1",
 	# T23 : examen de l'arbuste du couloir (Coupe du J16).
 	&"route_2_east_bush",
+	# Raccords J21 ↔ J22 (2026-10-23) : examen de l'arbre de la Route 16 (mêmes textes).
+	&"route_16_tree",
 ]
 ## Jalon 14 (T17, dossier 17 §15 n° 1 à 27) : dialogues de la maison de Léo, ajoutés aux autres.
 const IDS_J14_BILL: Array[StringName] = [
@@ -1259,6 +1261,8 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		&"cut_cerulean_east_tree",
 		# Jalon 20 (T16) : les deux arbustes de l'Arène d'Erika.
 		&"cut_celadon_gym_bush", &"cut_celadon_gym_inner_bush",
+		# Raccords J21 ↔ J22 (2026-10-23) : l'arbre de la Route 16.
+		&"cut_route_16_tree",
 		# Jalon 20 (T17) : arrivées (Route 8, Céladopole), objet et caches, Erika (badge, CT21),
 		# CT13 de la fillette du toit.
 		&"route_8_reached", &"celadon_reached", &"got_route_8_item_1", &"got_route_8_hidden_1",
@@ -1700,6 +1704,8 @@ func test_speakers_and_narration() -> void:
 		&"vermilion_sailor": ["Marin", false],
 		# Jalon 17 (T23) : l'arbuste du couloir en narration, comme celui de l'Arène.
 		&"route_2_east_bush": ["", true],
+		# Raccords J21 ↔ J22 (2026-10-23) : l'arbre de la Route 16, en narration.
+		&"route_16_tree": ["", true],
 	}
 	for id: StringName in expected:
 		var dialogue := _library.get_dialogue(id)
