@@ -1,0 +1,95 @@
+{
+	"route_18_grass": {
+		"maps": [
+			"route_18"
+		],
+		"terrain": "grass",
+		"rate": 25,
+		"ramp": {
+			"from_step": 15,
+			"max_steps": 20
+		},
+		"slots": [
+			{
+				"species": "spearow",
+				"levels": [
+					20,
+					20
+				],
+				"weight": 51
+			},
+			{
+				"species": "spearow",
+				"levels": [
+					22,
+					22
+				],
+				"weight": 51
+			},
+			{
+				"species": "raticate",
+				"levels": [
+					25,
+					25
+				],
+				"weight": 39
+			},
+			{
+				"species": "doduo",
+				"levels": [
+					24,
+					24
+				],
+				"weight": 25
+			},
+			{
+				"species": "fearow",
+				"levels": [
+					25,
+					25
+				],
+				"weight": 25
+			},
+			{
+				"species": "doduo",
+				"levels": [
+					26,
+					26
+				],
+				"weight": 25
+			},
+			{
+				"species": "doduo",
+				"levels": [
+					28,
+					28
+				],
+				"weight": 13
+			},
+			{
+				"species": "raticate",
+				"levels": [
+					29,
+					29
+				],
+				"weight": 13
+			},
+			{
+				"species": "fearow",
+				"levels": [
+					27,
+					27
+				],
+				"weight": 11
+			},
+			{
+				"species": "fearow",
+				"levels": [
+					29,
+					29
+				],
+				"weight": 3
+			}
+		]
+	}
+}

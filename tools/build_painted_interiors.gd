@@ -141,6 +141,9 @@ const CELADON := [&"celadon_center", &"celadon_dept_gf", &"celadon_dept_2f", &"c
 	&"celadon_mansion_gf", &"celadon_mansion_1f", &"celadon_mansion_2f", &"celadon_mansion_3f",
 	&"celadon_mansion_roof", &"celadon_mansion_roof_house", &"celadon_restaurant",
 	&"celadon_chief_house", &"celadon_hotel"]
+## Jalon 22 (T12, T24) : maison de la Méga Canne (Route 12 sud) et intérieurs de Parmanie.
+const J22 := [&"route_12_rod_house", &"route_16_fly_house", &"fuchsia_center", &"fuchsia_mart", &"fuchsia_meeting_room",
+	&"fuchsia_grandpa_house", &"fuchsia_good_rod_house"]
 ## Jalon 21 (T21) : le poste traversant de la Route 12 et son étage (CT39) ; `--route12`.
 const ROUTE_12 := [&"route_12_gate", &"route_12_gate_2f"]
 const PLANS_DIR := "res://tools/plans/"
@@ -174,6 +177,7 @@ func _init() -> void:
 	rooms.append_array(_lavender_rooms())
 	rooms.append_array(_routes_7_8_rooms())
 	rooms.append_array(_celadon_rooms())
+	rooms.append_array(_j22_rooms())
 	# Jalon 21 (T21) : le poste de la Route 12 (pièces en fin de liste).
 	rooms.append_array(_route_12_rooms())
 	for room: Dictionary in rooms:
@@ -227,6 +231,8 @@ func _wanted_rooms() -> Array:
 			wanted.append_array(ROUTES_7_8)
 		elif arg == "--celadon":
 			wanted.append_array(CELADON)
+		elif arg == "--j22":
+			wanted.append_array(J22)
 		elif arg == "--route12":
 			wanted.append_array(ROUTE_12)
 		elif arg.begins_with("--rooms="):
@@ -2385,6 +2391,44 @@ func _celadon_small_room(id: StringName, node: String, plan: String, base: Strin
 	return room
 
 
+# --- Jalon 22 (T12, T24) : maison de la Méga Canne, Parmanie --------------------------------------
+
+## Intérieurs du J22 sur les enveloppes existantes [D] (dossier 25 §10.2 ; grilles des modèles
+## citées par `parmanie.txt` et `route_12_sud.txt`) : maisons des cannes = maison du Pêcheur de
+## Carmin ; Salle de réunion = Fan Club ; maison du grand-père = maison d'Azuria ; Centre et
+## Boutique = modèles communs. PNJ : `data/npcs/<pièce>.json`.
+func _j22_rooms() -> Array[Dictionary]:
+	var rod_house := _vermilion_fisher_house()
+	_retarget(rod_house, &"route_12_rod_house", "Route12RodHouse", "Route 12", &"route_12_south",
+		&"from_rod_house")
+	var good_rod_house := _vermilion_fisher_house()
+	_retarget(good_rod_house, &"fuchsia_good_rod_house", "FuchsiaGoodRodHouse", "Parmanie",
+		&"fuchsia_city", &"from_good_rod_house")
+	var meeting_room := _vermilion_fan_club()
+	_retarget(meeting_room, &"fuchsia_meeting_room", "FuchsiaMeetingRoom", "Parmanie",
+		&"fuchsia_city", &"from_meeting_room")
+	var fly_house := _vermilion_house_1()
+	_retarget(fly_house, &"route_16_fly_house", "Route16FlyHouse", "Route 16", &"route_16_west",
+		&"from_fly_house")
+	var grandpa := _cerulean_house()
+	_retarget(grandpa, &"fuchsia_grandpa_house", "FuchsiaGrandpaHouse", "Parmanie",
+		&"fuchsia_city", &"from_grandpa_house")
+	return [
+		rod_house, fly_house,
+		_pokemon_center(&"fuchsia_center", "FuchsiaCenter", "Parmanie",
+			[&"fuchsia_city", &"from_center"]),
+		_poke_mart(&"fuchsia_mart", "FuchsiaMart", "Parmanie", [&"fuchsia_city", &"from_mart"]),
+		meeting_room, grandpa, good_rod_house,
+	]
+
+
+## Même pièce sous un autre identifiant : sorties vers [param map] / [param spawn].
+func _retarget(room: Dictionary, id: StringName, node: String, title: String, map: StringName,
+		spawn: StringName) -> void:
+	room["id"] = id
+	room["node"] = node
+	room["title"] = title
+	room["warps"] = _pewter_exits([Vector2i(6, 8), Vector2i(7, 8), Vector2i(8, 8)], spawn, map)
 # --- Jalon 21 (T21) : poste de la Route 12 ------------------------------------------------------
 
 ## Poste de la Route 12 (`jalon-21.md` §2.11 ; dossier 24 §10.1, §15.8 bis) : un 1F **traversant**

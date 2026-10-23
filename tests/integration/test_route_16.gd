@@ -273,6 +273,9 @@ func test_no_grass_no_encounter_no_trainer_no_item() -> void:
 		if file.get_extension() != "json":
 			continue
 		var text := FileAccess.get_file_as_string("res://data/encounters/" + file)
+		# Jalon 22 : la Route 16 ouest (`route_16_west`, autre carte) a ses herbes ; la carte du
+		# J21 (`route_16`) n'en a aucune.
+		text = text.replace("route_16_west", "")
 		assert_false(text.contains("route_16"), "%s : aucune rencontre sur la Route 16" % file)
 	assert_eq(_map.get_npcs().size(), 0, "aucun PNJ ni Dresseur")
 	assert_eq(_map.get_triggers().get_all().size(), 3, "seule la scène silencieuse du titre de zone (2e colonne)")

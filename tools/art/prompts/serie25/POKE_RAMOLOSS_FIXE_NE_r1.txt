@@ -1,0 +1,14 @@
+POKE_RAMOLOSS_FIXE — planche d'un Pokémon d'ambiance IMMOBILE (il ne marche jamais) : 4 poses.
+Images jointes : PERSO_P2_PEINT_r1 (le héros validé) et POKE_RATTATA_P2_r1 (un petit Pokémon validé) = ancres de style.
+Style : exactement le rendu des ancres : Pokémon peint simplifié, même finesse, même contour fin coloré sans trait noir. Ni pixel art, ni 3D, ni anime aux contours noirs. Formes simples et lisibles pour rester net une fois réduit à environ 64 px de haut.
+LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche ; volumes conservés par un ombrage doux ; aucune teinte dorée ou orangée, aucun liseré chaud ; ombres propres neutres, légèrement bleutées.
+
+POKÉMON (identique dans les poses de repos, le SEUL Pokémon de l'image) : Ramoloss, de Pokémon Rouge/Bleu, fidèle à son design officiel : Pokémon quadrupède ROSE pâle, gros corps rond et mou, grosse tête ronde, museau CRÈME arrondi, deux petites oreilles rondes, grands yeux ronds au regard vide et paisible, longue queue rose au bout blanc, pattes courtes. Allure lente et rêveuse. Petit Pokémon : environ la moitié de la hauteur du héros joint.
+
+PLANCHE : image paysage 1536 × 1024, fond avec une vraie transparence (canal alpha, aucun damier dessiné). UNE seule ligne de 4 poses, de gauche à droite, chaque pose dans une colonne invisible de 384 px de large, bien séparées par du vide, l'ensemble entier dans chaque colonne, à la MÊME ÉCHELLE dans les 4 poses (environ 170 px de haut au repos), la base des 4 poses sur une même ligne horizontale.
+- Pose 1 : au repos, vu de face (tourné vers le bas de l'écran) : ASSIS par terre, la queue étendue derrière lui, le regard perdu dans le vide.
+- Pose 2 : même vue de face, RÉACTION : il penche lentement la tête sur le côté et BÂILLE, la bouche ouverte, les yeux mi-clos (même silhouette, différence douce).
+- Pose 3 : au repos, de profil, tourné vers la GAUCHE : ASSIS par terre, la queue étendue derrière lui, le regard perdu dans le vide.
+- Pose 4 : même profil gauche, RÉACTION : il penche lentement la tête sur le côté et BÂILLE, la bouche ouverte, les yeux mi-clos (même silhouette, différence douce).
+Vue : la même vue de dessus de trois quarts que le jeu (caméra un peu au-dessus). Pas de sol, pas d'outil, pas de personnage, pas d'ombre au sol, pas de texte, pas de numéros, pas de cadres. Les couleurs, les proportions et le visage doivent être EXACTEMENT les mêmes dans les poses de repos ; seule la posture change entre repos et réaction.
+Interdits de la série : texte, lettres, chiffres, logo, AUCUN emblème rond de type balle (ni cercle partagé en deux, ni médaillon à bande centrale) nulle part, animaux réels ou faune non-Pokémon (oiseaux, mouettes, poissons, insectes, chauves-souris), Pikachu et tout Pokémon non demandé, personnage qui ressemble au héros (casquette rouge, t-shirt blanc, sac à dos jaune), élément effrayant.

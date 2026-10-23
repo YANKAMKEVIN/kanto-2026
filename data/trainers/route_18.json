@@ -1,0 +1,63 @@
+{
+	"route_18_bird_1": {
+		"name": "Ornithologue Albert",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 25,
+		"team": [
+			{
+				"species": "spearow",
+				"level": 29
+			},
+			{
+				"species": "fearow",
+				"level": 29
+			}
+		]
+	},
+	"route_18_bird_2": {
+		"name": "Ornithologue Edmond",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 25,
+		"team": [
+			{
+				"species": "dodrio",
+				"level": 34
+			}
+		]
+	},
+	"route_18_bird_3": {
+		"name": "Ornithologue Ernest",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 25,
+		"team": [
+			{
+				"species": "spearow",
+				"level": 26
+			},
+			{
+				"species": "spearow",
+				"level": 26
+			},
+			{
+				"species": "fearow",
+				"level": 26
+			},
+			{
+				"species": "spearow",
+				"level": 26
+			}
+		]
+	}
+}

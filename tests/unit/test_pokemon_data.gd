@@ -76,6 +76,9 @@ func test_real_data_loads_without_error() -> void:
 		&"nidorina", &"nidoqueen", &"nidoran_m", &"nidorino", &"nidoking", &"clefairy",
 		&"clefable", &"vulpix", &"ninetales", &"jigglypuff", &"wigglytuff", &"zubat", &"golbat",
 		&"oddish", &"gloom", &"vileplume", &"paras", &"parasect",
+		# Jalon 22 (T4) : Mimitoss, Aéromite, Machopeur, Canarticho, Doduo, Dodrio, Tadmorv,
+		# Grotadmorv, Krabby, Électrode, Smogogo, Poissoroy, Magicarpe (kanto_j22.json).
+		&"venonat", &"venomoth",
 		# Jalon 17 (T7) : Taupiqueur, Triopikeur ; plus loin Goupix, Caninos, Magnéti, Magnéton,
 		# Soporifik, Hypno (kanto_j17.json).
 		&"diglett", &"dugtrio",
@@ -83,24 +86,25 @@ func test_real_data_loads_without_error() -> void:
 		&"meowth", &"persian",
 		&"mankey", &"primeape", &"growlithe", &"arcanine",
 		# Jalon 21 (T5) : Ptitard, Tentacool, Ronflex (kanto_j21.json).
-		&"poliwag",
-		&"abra", &"kadabra", &"machop",
+		&"poliwag", &"abra", &"kadabra", &"machop", &"machoke",
 		&"bellsprout", &"weepinbell", &"victreebel", &"tentacool",
-		&"geodude", &"graveler", &"golem", &"magnemite", &"magneton", &"shellder",
+		&"geodude", &"graveler", &"golem", &"magnemite", &"magneton", &"farfetchd", &"doduo",
+		&"dodrio", &"grimer", &"muk", &"shellder",
 		# Jalon 19 (T3) : Fantominus, Spectrum, Noeunoeuf, Osselait, Ossatueur, Léviator
 		# (kanto_tower.json ; Caninos vient du J17).
 		&"gastly", &"haunter", &"onix",
-		&"drowzee", &"hypno", &"voltorb", &"exeggcute", &"cubone", &"marowak", &"koffing",
+		&"drowzee", &"hypno", &"krabby", &"voltorb", &"electrode", &"exeggcute", &"cubone", &"marowak", &"koffing", &"weezing",
 		&"rhyhorn", &"tangela", &"kangaskhan",
-		&"horsea", &"goldeen", &"staryu", &"starmie", &"gyarados",
+		&"horsea", &"goldeen", &"seaking", &"staryu", &"starmie", &"magikarp", &"gyarados",
 		&"eevee", &"vaporeon", &"jolteon", &"flareon", &"snorlax"] as Array[StringName])
-	assert_eq(_data.get_move_ids().size(), 132,
+	assert_eq(_data.get_move_ids().size(), 137,
 		"47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10) + Patience (J11) "
 		+ "+ 21 du Mont Sélénite (jalon 12) + 8 du jalon 13 (les 5 du J12 qu'il reprenait : "
 		+ "entrées du J12) + 6 du Cap d'Azuria (jalon 14) + Jackpot (J15) "
 		+ "+ Coupe et Tonnerre (jalon 16) + 7 du jalon 17 + 8 de la Tour Pokémon (J19 ; "
 		+ "Hypnose, Hurlement et Bélier viennent du J17) + 7 du jalon 20 + Vol (passe systèmes 2, T25) "
-		+ "+ Surf (S2C) + Force (S2D) + Amnésie, Bouclier (J21 ; Constriction vient du J20)")
+		+ "+ Surf (S2C) + Force (S2D) + Amnésie, Bouclier (J21 ; Constriction vient du J20) "
+		+ "+ 5 du jalon 22 (Écrasement vient du J20)")
 	assert_true(_data.has_move(&"struggle"))
 
 
@@ -192,6 +196,10 @@ func test_real_evolution_chains() -> void:
 		# Tour Pokémon (jalon 19, §2.12) : Rouge/Bleu. Spectrum (échange, Ectoplasma absent) et
 		# Noeunoeuf (Pierre Plante absente) n'en déclarent pas.
 		&"gastly": [&"haunter", 25], &"cubone": [&"marowak", 28],
+		# Jalon 22 (§2.12) : Rouge/Bleu entre espèces présentes ; Krabby (Krabboss, coupé [D]) et
+		# Machopeur (Mackogneur absent) n'en déclarent pas ; Magicarpe → Léviator (J19) au N20.
+		&"venonat": [&"venomoth", 31], &"doduo": [&"dodrio", 31], &"grimer": [&"muk", 38],
+		&"magikarp": [&"gyarados", 20],
 	}
 	var eevee := _data.get_species(&"eevee").evolutions
 	assert_eq(eevee.map(func(r: EvolutionRule) -> Array: return [r.into, r.method, r.item]), [
@@ -479,6 +487,10 @@ func test_real_catch_rates_are_the_official_ones() -> void:
 		# Jalon 19 (T3, Tour Pokémon ; Caninos vient du J17).
 		&"gastly": 190, &"haunter": 90, &"exeggcute": 90, &"cubone": 190,
 		&"marowak": 75, &"gyarados": 45,
+		# Jalon 22 (T4).
+		&"venonat": 190, &"venomoth": 75, &"machoke": 90, &"farfetchd": 45, &"doduo": 190,
+		&"dodrio": 45, &"grimer": 190, &"muk": 75, &"krabby": 225, &"electrode": 60,
+		&"weezing": 60, &"seaking": 60, &"magikarp": 255,
 		# Jalon 21 (T5).
 		&"poliwag": 255, &"tentacool": 190, &"snorlax": 25,
 	}

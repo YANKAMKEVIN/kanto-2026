@@ -127,6 +127,8 @@ func test_real_tables_load_without_error() -> void:
 		&"digletts_cave_rubble", &"mt_moon_1f_rubble",
 		&"mt_moon_b1f_rubble", &"mt_moon_b2f_rubble", &"pokemon_tower_high", &"pokemon_tower_low",
 		&"pokemon_tower_mid", &"pokemon_tower_top", &"route_10_grass", &"route_11_grass",
+		&"route_12_south_grass", &"route_13_grass", &"route_14_grass", &"route_15_grass",
+		&"route_16_west_grass", &"route_17_grass", &"route_18_grass",
 		&"route_1_grass", &"route_22_grass", &"route_24_grass",
 		&"route_25_grass", &"route_2_grass", &"route_2_north_grass", &"route_3_grass",
 		&"route_4_grass", &"route_5_grass", &"route_6_grass", &"route_7_grass",
@@ -207,7 +209,7 @@ func test_every_wild_species_has_battle_sprites() -> void:
 	# (La table d'eau de la carte de QA S2C est retirée en S2Z.)
 	# Jalon 21 (T5) : + la table du 7F (`pokemon_tower_top`), hors de la boucle comme les
 	# autres tables de la Tour (SPECTRES sans le Scope).
-	assert_eq(lib.size(), 26, "une table par couple ci-dessous, plus les 4 de la Tour (J19, J21)")
+	assert_eq(lib.size(), 33, "une table par couple ci-dessous, plus les 4 de la Tour (J19, J21)")
 	for pair: Array in [[&"route_1", &"grass"], [&"route_2", &"grass"],
 			[&"route_22", &"grass"], [&"viridian_forest", &"grass"], [&"route_2_north", &"grass"],
 			[&"route_3", &"grass"], [&"mt_moon_1f", &"rubble"], [&"mt_moon_b1f", &"rubble"],
@@ -219,7 +221,11 @@ func test_every_wild_species_has_battle_sprites() -> void:
 			[&"route_9", &"grass"], [&"route_10", &"grass"], [&"dark_cave_1f", &"rubble"],
 			[&"dark_cave_b1f", &"rubble"],
 			# Jalon 20 (T7) : Routes 8 et 7.
-			[&"route_8", &"grass"], [&"route_7", &"grass"]]:
+			[&"route_8", &"grass"], [&"route_7", &"grass"],
+			# Jalon 22 : Routes 12 sud à 18.
+			[&"route_12_south", &"grass"], [&"route_13", &"grass"], [&"route_14", &"grass"],
+			[&"route_15", &"grass"], [&"route_16_west", &"grass"], [&"route_17", &"grass"],
+			[&"route_18", &"grass"]]:
 		for slot: EncounterSlot in lib.get_table(pair[0], pair[1]).slots:
 			for view: String in ["front", "back"]:
 				var path := "res://assets/sprites/pokemon/placeholder/%s_%s.png" % [

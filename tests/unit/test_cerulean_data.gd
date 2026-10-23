@@ -238,10 +238,12 @@ func test_tm11_and_its_compatibilities() -> void:
 			compatible.append(id)
 	assert_eq(compatible, [&"squirtle", &"wartortle", &"blastoise", &"rattata", &"raticate",
 		&"nidorina", &"nidoqueen", &"nidorino", &"nidoking", &"clefairy", &"clefable",
-		&"jigglypuff", &"wigglytuff", &"meowth", &"persian", &"shellder", &"cubone",
-		&"marowak",
+		&"jigglypuff", &"wigglytuff", &"meowth", &"persian",
+		# Jalon 22 : Ptitard et Tentacool (copie du J21), Krabby, Poissoroy.
+		&"poliwag", &"tentacool", &"shellder", &"krabby", &"cubone", &"marowak",
 		# Jalon 20 (T7) : Kangourex et Aquali.
-		&"kangaskhan", &"horsea", &"goldeen", &"staryu", &"starmie", &"gyarados", &"vaporeon",
+		&"kangaskhan", &"horsea", &"goldeen", &"seaking", &"staryu", &"starmie", &"gyarados",
+		&"vaporeon",
 		] as Array[StringName])
 	var squirtle := PokemonFactory.create(_data, &"squirtle", 20, GameRng.new(3))
 	assert_eq(TmTeach.check(squirtle, tm, _data), TmTeach.Check.COMPATIBLE)
