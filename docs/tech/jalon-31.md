@@ -290,3 +290,9 @@ Pokédex avant rencontre (§8.4, comme les autres).
 Validation (2026-10-22) : import headless sans erreur ; suite complète **6 506 / 6 506** (593
 scripts) ; `plan_check_cerulean_cave.py` conforme, `--autotest` refuse ses 4 pièges ;
 `check_json_keys.py` sans doublon.
+
+## QA A17 du 2026-10-23
+
+Pas de grotte jouable (cartes T6–T8 et entrée 31A à venir). Contrôle minimal sur le Galaxy A17 :
+le départ `cerulean_cave` se charge à Azuria (équipe N60–65, Hyper Balls au Sac). **Ouvert (art)** :
+l'Hyper Ball (emprunt du J22) n'a pas d'icône (icône générique). La QA du §6 reste à faire.
