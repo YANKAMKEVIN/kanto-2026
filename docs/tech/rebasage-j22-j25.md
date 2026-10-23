@@ -151,7 +151,34 @@ QA du J22 et du J24 **validées par Kevin** ; **J22 (`e8b2b09d`) et J24 (`0c55dc
 `main`** (suite complète 6 759 / 6 759 ; doublons Krabby, Poissoroy, Magicarpe, Force Poigne,
 Pince-Masse, Trempette, Hyper Ball, Hyper Potion, Total Soin retirés du J24 ; Guillotine N25 et
 Krabby → Krabboss N28 dans `kanto_j22.json` ; raccord Parmanie ↔ Route 19 fait). Surf : 90 gardé.
-Reste : `main` → J23 et J25 ; raccords Route 12 sud et poste de la Route 16 (J21 ↔ J22, `jalon-22.md` §0.5).
+Reste : raccords Route 12 sud et poste de la Route 16 (J21 ↔ J22, `jalon-22.md` §0.5).
+
+## Fusions de `main` dans le J23 et le J25 (2026-10-23, poussées)
+
+Accord de Kevin du 2026-10-23 ; `main` `f9ad3a05` fusionné (merge) dans des copies dédiées
+(`prep/main-dans-jalon-23` / `-25`), poussé en avance rapide. Les copies `wt-j23` / `wt-j25`
+(`j23-nuit` / `j25-nuit`) n'ont pas bougé : leurs sessions font un `pull` avant de reprendre.
+
+- **`jalon-23` `cb0000a2`** : 29 conflits ; suite complète **6 889 / 6 889**, import sans erreur,
+  `plan_check_*` conformes. `Kind` : `… GIFT_POKEMON, FLUTE, SAFARI` (même ordre dans `TYPE_KEYS`
+  et `_EXTRA_KEYS`). Sauvegarde v8 gardée (`main` était en v7 ; `test_save_j21` aligné).
+  Doublons retirés : `vice_grip` (Scarabrute → `vise_grip` de `main`), `guillotine` (identique au
+  J24), fiche `cubone`. `zones.json` : entrées vides `route_21` / `cinnabar_island` du J23 retirées
+  (celles du J24 font foi). `fuchsia_city.tscn` reconstruite (`build_j22_maps.gd`) : raccord Route 19
+  + portes du Parc, de l'Arène et du Gardien ; seconde case des portes doubles → `entree_1` (à revoir
+  en QA). `test_j21_flags_contract` : `koga_qa.json` peut poser les drapeaux de Ronflex.
+  `tm_compatibility.json` non regénéré [D] (CSV absents ; toutes les espèces y sont).
+- **`jalon-25` `fafaf226`** : 19 conflits ; suite complète **6 807 / 6 807**, import sans erreur.
+  `Kind` : `… FLUTE, UNSET_FLAGS, TOGGLE_FLAGS, TRADE`. `kanto_j25_reprises.json` supprimé
+  (identique à `kanto_j22.json`). `tm_compatibility.json` en union (126 espèces, aucune valeur
+  divergente). Quatre répliques du J24 retirées par le J25 (rencontre du Labo, Otaria, décombres du
+  Manoir) sorties de `test_dialogue_data`. `plan_check_argenta` échoue sur `porte_reserve` (déjà
+  avant la fusion ; contrôle du J10 qui ignore Coupe) : à adapter côté J25. Échange de Lina
+  (Mimitoss) jouable depuis le J22 : note « attend le J22 » à revoir en QA.
+- Contrôle de doublons silencieux (clés JSON répétées, identifiants dans deux fichiers, Pokédex,
+  zones, intérieurs, zones provisoires) : rien sur les deux branches.
+- **À concilier** à l'entrée des deux dans `main` : le J23 porte la sauvegarde v8, le J25 reste en
+  v7 ; `Kind` aura `FLUTE, SAFARI` puis les trois étapes du J25 (ou l'inverse) selon l'ordre d'entrée.
 
 ## Ce qui attendait Kevin (réglé)
 
