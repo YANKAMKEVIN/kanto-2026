@@ -119,6 +119,11 @@ const RUN_BUTTON_CENTER_FROM_CORNER := Vector2(440, 220)
 const BIKE_BUTTON_CENTER_FROM_CORNER := Vector2(620, 220)
 ## Bouton Vélo grisé (intérieur, Piste) : opacité [D] ; le toucher dit le refus.
 const BIKE_BUTTON_DIMMED_ALPHA := 0.45
+## Boutons d'exploration sous le joueur (moteur commun, défaut D5 de la QA du J24 : au bord de la
+## carte, la caméra est bornée et le joueur peut passer sous les boutons) : le groupe de boutons
+## qu'il touche devient transparent [D] (il reste actif) ; marge autour des boutons (px) [D].
+const BUTTONS_UNDER_PLAYER_ALPHA := 0.3
+const BUTTONS_UNDER_PLAYER_MARGIN := 12.0
 
 ## Contextuel : un seul bouton en bas à droite, au-dessus et à droite du bouton courir
 ## (planche DA 2026 ; bible UI/UX §1). Centre mesuré depuis le coin bas-droit.

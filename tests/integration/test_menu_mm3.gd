@@ -232,7 +232,7 @@ func test_a_short_section_does_not_stretch_and_a_long_one_fills_the_height() -> 
 	await _open(screen, SettingsViews.CATEGORY_GRAPHICS)
 	await wait_process_frames(2)
 	var body := section.get_parent() as Control
-	assert_lt(section.size.y, body.size.y * 0.5, "Graphismes : une ligne, section courte")
+	assert_lt(section.size.y, body.size.y * 0.6, "Graphismes : deux lignes, section courte")
 	var scroll := screen.get_scroll()
 	assert_almost_eq(scroll.size.y, scroll.get_child(0).get_combined_minimum_size().y, 1.0,
 		"la liste entière, sans vide dessous")
