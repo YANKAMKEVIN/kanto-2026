@@ -188,10 +188,17 @@ func _block_of(plan: Object, c: String) -> Rect2i:
 
 func _paint(root: Node, plan: Object) -> void:
 	var ground := root.get_node(^"Ground") as TileMapLayer
+	# J25 (X-25) : la porte du Manoir garde les « X » de la grille du J24 mais doit être praticable,
+	# sinon son warp STEP_ON n'est jamais atteint (QA 25A, 2026-10-23).
+	var mansion_door: Array[Vector2i] = []
+	if plan.positions.has("porte_manoir"):
+		mansion_door = plan.cells_at("porte_manoir")
 	for y: int in plan.height:
 		for x: int in plan.width:
 			var cell := Vector2i(x, y)
 			var kind: int = _over.Kind[KINDS.get(plan.at(cell), "SAND")]
+			if cell in mansion_door:
+				kind = _over.Kind["DIRT"]
 			var variant := _rng.randi_range(0, _over.variant_count(kind) - 1)
 			ground.set_cell(cell, _over.SOURCE_ID, _over.atlas_coords(kind, variant))
 

@@ -115,6 +115,8 @@ func test_cinnabar_island_opens_the_mansion_and_resets_the_switch() -> void:
 	for cell: Vector2i in plan.cells_at("porte_manoir"):
 		var found: Array[Warp] = island.get_warps().get_at(cell)
 		assert_eq(found.size(), 1, "porte du Manoir %s" % cell)
+		# QA 25A (2026-10-23) : la porte était posée sur des « X » solides, warp jamais atteint.
+		assert_false(_blocked(island, cell), "porte du Manoir praticable %s" % cell)
 		if found.size() == 1:
 			assert_eq([found[0].target_map, found[0].target_spawn],
 				[&"pokemon_mansion_1f", &"depuis_ile"])
