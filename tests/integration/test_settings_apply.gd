@@ -142,6 +142,16 @@ func test_eco_limits_fps_and_cuts_the_blur_and_high_restores_them() -> void:
 	assert_true(_boot.get_graphics_profile().menu_blur)
 
 
+func test_economy_applies_at_once_without_restart() -> void:
+	await _start(null)
+	var lighting: WorldLighting = _boot.find_child("WorldLighting", true, false)
+	assert_not_null(lighting)
+	_menu.change_setting(GameSettings.ECONOMY, true)
+	assert_false(lighting.is_grade_visible())
+	_menu.change_setting(GameSettings.ECONOMY, false)
+	assert_false(_boot.get_graphics_profile() == null)
+
+
 func test_auto_follows_the_device() -> void:
 	_boot = BOOT_SCENE.instantiate() as Boot
 	_boot.device = {"processors": 4, "memory_mb": 3000}
