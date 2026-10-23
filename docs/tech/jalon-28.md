@@ -318,3 +318,15 @@ d'avance (proposition du plan)** ; textes complémentaires du §3.1 **à relire*
 - Relire les textes complémentaires du §3.1 (Dresseurs, défaite, CT, guide après le départ).
 - Q28-1 (condition d'ouverture) : le code suit la passe (drapeau de la Sylphe seul).
 - Q28-3 : réglée par la validation d'avance (T28-01 à T28-09).
+
+## QA A17 du 2026-10-23
+
+Session de nuit sur le Galaxy A17 (APK debug ; captures et notes : `~/dev/qa-nuit2/j28/`). **OK** :
+`viridian_locked` (porte inerte, « La porte est verrouillée. ») ; guide ; dalles 12 et 10 (glissade,
+arrêt net, aucune interaction involontaire) ; Karatéka Didier vu à l'arrêt ; Giovanni : défaite →
+réveil au Centre de Jadielle, victoire → Badge Terre, CT27, départ, Giovanni absent ensuite. **Perf
+A17** : Arène 49–55 i/s, Jadielle 39–41 i/s. **À relire** : §10.3 dit « Q28-1 : le code suit la passe
+(drapeau de la Sylphe seul) » alors que le code, §2.4 et le départ `viridian_locked` ouvrent la porte
+avec les 7 Badges. Les lignes « Kevin reçoit le Badge Terre / la CT27 » s'affichent sous le nom
+« Giovanni » (même convention que les autres Champions). Non vu : Abîme lancé par Rhinoféros, appel
+pendant une glissade.
