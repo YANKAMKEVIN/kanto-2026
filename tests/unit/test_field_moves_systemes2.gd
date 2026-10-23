@@ -37,3 +37,27 @@ func test_badge_of_each_move_is_checked() -> void:
 			assert_eq(r.state, FieldMoves.State.NO_HM, "%s : CS pas encore en données" % move)
 		else:
 			assert_eq(r.state, FieldMoves.State.NO_BADGE, "%s : badge exigé" % move)
+
+
+## Surf et Force prêts avec la CS, le badge et un Pokémon compatible (anciens départs de QA
+## `s2_surf` et `s2_strength`, retirés en S2Z : Carapuce, compatible CS03 et CS04).
+func test_surf_and_strength_are_ready_with_hm_badge_and_a_compatible_pokemon() -> void:
+	var data := PokemonData.new()
+	assert_true(data.load_dir(), "\n".join(data.get_errors()))
+	var items := ItemLibrary.new()
+	assert_true(items.load_dir(), "\n".join(items.get_errors()))
+	var party := Party.new()
+	party.add(PokemonFactory.create(data, &"squirtle", 20, GameRng.new(5)))
+	party.add(PokemonFactory.create(data, &"pikachu", 18, GameRng.new(5)))
+	for pair: Array in [[&"surf", &"badge_soul", &"water"], [&"strength", &"badge_rainbow",
+			&"normal"]]:
+		var move: StringName = pair[0]
+		assert_true(data.has_move(move), String(move))
+		assert_eq(data.get_move(move).type, pair[2])
+		var bag := Bag.new()
+		bag.add(_rules.hm_of(move))
+		var flags := StoryFlags.new()
+		flags.set_flag(pair[1])
+		var result := _rules.check(move, party, bag, flags, items, data)
+		assert_eq(result.state, FieldMoves.State.READY, String(move))
+		assert_eq(result.pokemon_index, 0, "%s : Carapuce" % move)

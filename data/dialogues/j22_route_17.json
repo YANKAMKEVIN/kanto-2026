@@ -1,0 +1,186 @@
+{
+	"route_17_cueball_1_before": {
+		"speaker": "Loubard Kader",
+		"pages": [
+			"Tu cherches la bagarre ?\nTu l'as trouvée !"
+		]
+	},
+	"route_17_cueball_1_defeated": {
+		"speaker": "Loubard Kader",
+		"pages": [
+			"Aïe… Ça cogne !"
+		]
+	},
+	"route_17_cueball_1_after": {
+		"speaker": "Loubard Kader",
+		"pages": [
+			"Toi, t'as de la poigne."
+		]
+	},
+	"route_17_cueball_2_before": {
+		"speaker": "Loubard Samy",
+		"pages": [
+			"Tu cherches la bagarre ?\nTu l'as trouvée !"
+		]
+	},
+	"route_17_cueball_2_defeated": {
+		"speaker": "Loubard Samy",
+		"pages": [
+			"Aïe… Ça cogne !"
+		]
+	},
+	"route_17_cueball_2_after": {
+		"speaker": "Loubard Samy",
+		"pages": [
+			"Toi, t'as de la poigne."
+		]
+	},
+	"route_17_biker_1_before": {
+		"speaker": "Motard Eddy",
+		"pages": [
+			"T'as vu cette descente ?\nOn la dévale tous les jours !"
+		]
+	},
+	"route_17_biker_1_defeated": {
+		"speaker": "Motard Eddy",
+		"pages": [
+			"Sortie de route !"
+		]
+	},
+	"route_17_biker_1_after": {
+		"speaker": "Motard Eddy",
+		"pages": [
+			"Fais gaffe dans les virages."
+		]
+	},
+	"route_17_biker_2_before": {
+		"speaker": "Motard Jordan",
+		"pages": [
+			"T'as vu cette descente ?\nOn la dévale tous les jours !"
+		]
+	},
+	"route_17_biker_2_defeated": {
+		"speaker": "Motard Jordan",
+		"pages": [
+			"Sortie de route !"
+		]
+	},
+	"route_17_biker_2_after": {
+		"speaker": "Motard Jordan",
+		"pages": [
+			"Fais gaffe dans les virages."
+		]
+	},
+	"route_17_biker_3_before": {
+		"speaker": "Motard Teddy",
+		"pages": [
+			"T'as vu cette descente ?\nOn la dévale tous les jours !"
+		]
+	},
+	"route_17_biker_3_defeated": {
+		"speaker": "Motard Teddy",
+		"pages": [
+			"Sortie de route !"
+		]
+	},
+	"route_17_biker_3_after": {
+		"speaker": "Motard Teddy",
+		"pages": [
+			"Fais gaffe dans les virages."
+		]
+	},
+	"route_17_cueball_3_before": {
+		"speaker": "Loubard Max",
+		"pages": [
+			"Tu cherches la bagarre ?\nTu l'as trouvée !"
+		]
+	},
+	"route_17_cueball_3_defeated": {
+		"speaker": "Loubard Max",
+		"pages": [
+			"Aïe… Ça cogne !"
+		]
+	},
+	"route_17_cueball_3_after": {
+		"speaker": "Loubard Max",
+		"pages": [
+			"Toi, t'as de la poigne."
+		]
+	},
+	"route_17_biker_4_before": {
+		"speaker": "Motard Franck",
+		"pages": [
+			"T'as vu cette descente ?\nOn la dévale tous les jours !"
+		]
+	},
+	"route_17_biker_4_defeated": {
+		"speaker": "Motard Franck",
+		"pages": [
+			"Sortie de route !"
+		]
+	},
+	"route_17_biker_4_after": {
+		"speaker": "Motard Franck",
+		"pages": [
+			"Fais gaffe dans les virages."
+		]
+	},
+	"route_17_cueball_4_before": {
+		"speaker": "Loubard Willy",
+		"pages": [
+			"Tu cherches la bagarre ?\nTu l'as trouvée !"
+		]
+	},
+	"route_17_cueball_4_defeated": {
+		"speaker": "Loubard Willy",
+		"pages": [
+			"Aïe… Ça cogne !"
+		]
+	},
+	"route_17_cueball_4_after": {
+		"speaker": "Loubard Willy",
+		"pages": [
+			"Toi, t'as de la poigne."
+		]
+	},
+	"route_17_hidden_1": {
+		"cutscene": "route_17_hidden_1"
+	},
+	"route_17_hidden_2": {
+		"cutscene": "route_17_hidden_2"
+	},
+	"route_17_hidden_3": {
+		"cutscene": "route_17_hidden_3"
+	},
+	"route_17_hidden_4": {
+		"cutscene": "route_17_hidden_4"
+	},
+	"route_17_hidden_5": {
+		"cutscene": "route_17_hidden_5"
+	},
+	"route_17_panneau_depart": {
+		"pages": [
+			"PISTE CYCLABLE\nCéladopole ↕ Parmanie"
+		]
+	},
+	"route_17_panneau_palier_1": {
+		"pages": [
+			"Halte ! Reprends ton souffle.\nLa descente continue plus bas."
+		]
+	},
+	"route_17_panneau_palier_2": {
+		"pages": [
+			"Halte ! Reprends ton souffle.\nLa descente continue plus bas."
+		]
+	},
+	"route_17_panneau_palier_3": {
+		"pages": [
+			"Halte ! Reprends ton souffle.\nLa descente continue plus bas."
+		]
+	},
+	"route_17_panneau_fin": {
+		"pages": [
+			"FIN DE LA PISTE CYCLABLE\nParmanie : Route 18, à l'est"
+		]
+	}
+}

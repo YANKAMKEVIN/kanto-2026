@@ -14,8 +14,8 @@ const SPECIES := {
 	&"aerodactyl": [142, "Ptéra", [&"rock", &"flying"], 80, 105, 65, 60, 75, 130, 180, 45,
 		0.875, ExpCurve.Rate.SLOW],
 }
-## Reprises à l'identique de `origin/jalon-22` (non fusionné) : à supprimer avec
-## `kanto_j25_reprises.json` quand le J22 sera fusionné.
+## Espèces du J22 utilisées par le J25 (Manoir) : les reprises de `kanto_j25_reprises.json`,
+## identiques, ont été retirées à la fusion de `main` (J22 dans `main`).
 const REPRISES := {
 	&"grimer": [88, "Tadmorv", 190], &"muk": [89, "Grotadmorv", 75],
 	&"weezing": [110, "Smogogo", 60], &"electrode": [101, "Électrode", 60],
@@ -102,7 +102,7 @@ func test_evolutions_and_learnsets_are_red_blue() -> void:
 		&"fire_spin", &"take_down"] as Array[StringName])
 
 
-func test_reprises_of_jalon_22_are_identical_and_in_their_own_file() -> void:
+func test_species_of_jalon_22_used_by_jalon_25_come_from_its_file() -> void:
 	for id: StringName in REPRISES:
 		var v: Array = REPRISES[id]
 		var species := _data.get_species(id)
@@ -110,9 +110,7 @@ func test_reprises_of_jalon_22_are_identical_and_in_their_own_file() -> void:
 		if species == null:
 			continue
 		assert_eq([species.dex, species.name, species.catch_rate], v, String(id))
-		assert_eq(species.source, "res://data/pokemon/species/kanto_j25_reprises.json")
-	# Venonat n'est pas repris : il évolue en Aéromite, absent.
-	assert_false(_data.has_species(&"venonat"))
+		assert_eq(species.source, "res://data/pokemon/species/kanto_j22.json")
 
 
 func test_every_new_species_has_battle_sprites_and_a_pokedex_entry() -> void:

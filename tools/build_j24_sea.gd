@@ -10,8 +10,11 @@ extends SceneTree
 ##   provisoire par-dessus).
 ## - Bords de carte : un [WarpPoint] PUSH par case, vers le spawn de même rang de la carte voisine
 ##   (`<spawn>_<i>`, i = rang dans la liste de cases de la grille ; `<spawn>` seul = première case).
-##   Parmanie (`fuchsia_city`, J22) et la côte sud de Bourg Palette ne sont pas encore jointes :
-##   « à venir », retour sur la case voisine (contrat dans `docs/tech/jalon-24.md`).
+##   Bord nord de la Route 19 ↔ bord sud de Parmanie (`fuchsia_city`, J22, `tools/build_j22_maps.gd`) :
+##   ses arrivées suivent la règle du J22 (`from_route_19`, puis `from_route_19_1`… dans l'ordre de
+##   sa grille : terrasse puis couloir), d'où le rang de départ du couloir (5e élément du bord).
+##   La côte sud de Bourg Palette n'est pas encore jointe : « à venir », retour sur la case voisine
+##   (contrat dans `docs/tech/jalon-24.md`).
 ## - Portes : STEP_ON ↑ (grottes des Îles Écume, Labo, Centre, Boutique de Cramois'Île).
 ## - Panneaux, gravats du Manoir (EXAMINER), porte fermée de l'Arène (déclencheur : T-42 et recul).
 ## Les PNJ, Dresseurs et objets visibles sont dans `data/npcs/<carte>.json`.
@@ -35,14 +38,17 @@ const BUILDINGS: Dictionary = {"M": Color(0.32, 0.24, 0.22), "Z": Color(0.72, 0.
 	"L": Color(0.86, 0.88, 0.9), "C": Color(0.85, 0.32, 0.3), "O": Color(0.3, 0.45, 0.8)}
 
 ## Cartes : identifiant → [nom affiché, noeud racine, bords, portes, panneaux].
-## Bord : [position de la grille, carte cible, spawn cible, direction] ; carte cible "" : « à venir »
-## (libellé dans le spawn cible, retour sur la case du dessous ou du dessus).
+## Bord : [position de la grille, carte cible, spawn cible, direction] ; spawn cible `<spawn>_<i>`.
+## 5e élément facultatif (cartes construites par le J22) : rang de la première case dans les
+## arrivées de la carte cible, nommées `<spawn>` (rang 0) puis `<spawn>_<rang>`.
+## « À venir » : [position, libellé, direction], retour sur la case du dessous ou du dessus.
 const MAPS: Dictionary = {
 	"route_19": {
 		"name": "Route 19", "node": "Route19",
-		"edges": [["warp_ouest", "route_20", "from_route_19", Vector2i.LEFT]],
-		"coming_soon": [["warp_nord_terrasse", "PARMANIE", Vector2i.UP],
-			["warp_nord_couloir", "PARMANIE", Vector2i.UP]],
+		"edges": [["warp_ouest", "route_20", "from_route_19", Vector2i.LEFT],
+			["warp_nord_terrasse", "fuchsia_city", "from_route_19", Vector2i.UP, 0],
+			["warp_nord_couloir", "fuchsia_city", "from_route_19", Vector2i.UP, 9]],
+		"coming_soon": [],
 		"doors": [],
 		"signs": {"panneau_route": &"route_19_sign"},
 	},
@@ -111,8 +117,12 @@ func _build(map_id: String) -> void:
 	for edge: Array in spec["edges"]:
 		var cells: Array[Vector2i] = plan.cells_at(edge[0])
 		for i: int in cells.size():
+			var arrival := "%s_%d" % [edge[2], i]
+			if edge.size() > 4:
+				var rank: int = edge[4] + i
+				arrival = edge[2] if rank == 0 else "%s_%d" % [edge[2], rank]
 			_warp(root, "%s_%d" % [String(edge[0]).capitalize().replace(" ", ""), i], cells[i],
-				PUSH, edge[3], StringName(edge[1]), StringName("%s_%d" % [edge[2], i]), edge[3])
+				PUSH, edge[3], StringName(edge[1]), StringName(arrival), edge[3])
 	for entry: Array in spec["coming_soon"]:
 		var cells: Array[Vector2i] = plan.cells_at(entry[0])
 		var back: Vector2i = -(entry[2] as Vector2i)

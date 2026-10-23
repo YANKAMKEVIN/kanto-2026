@@ -385,22 +385,6 @@
 				  "text": "Vu dans l'équipe d'un Montagnard. Il soulève des rochers comme des cailloux." }
 			]
 		},
-		"poliwag": {
-			"height": 0.6, "weight": 12.4,
-			"description": "Sa peau est si fine qu'on voit ses entrailles en spirale. Il marche mal sur ses jambes toutes neuves."
-		},
-		"tentacool": {
-			"height": 0.9, "weight": 45.5,
-			"description": "Il dérive près de la surface. Son corps presque transparent le rend difficile à voir dans l'eau."
-		},
-		"tangela": {
-			"height": 1.0, "weight": 35.0,
-			"description": "Ses lianes bleues s'agitent sans cesse et cachent tout son corps. Personne ne sait vraiment ce qu'il y a dessous."
-		},
-		"gyarados": {
-			"height": 6.5, "weight": 235.0,
-			"description": "Sa colère soulève les vagues. Peu de Dresseurs gardent son respect après l'avoir fait évoluer."
-		},
 		"psyduck": {
 			"height": 0.8, "weight": 19.6,
 			"description": "Il se tient toujours la tête, comme s'il avait mal. Quand la douleur devient trop forte, d'étranges pouvoirs s'échappent de lui."
@@ -441,10 +425,6 @@
 			"height": 1.5, "weight": 132.5,
 			"description": "Sa coquille est plus dure que le diamant. Personne n'a jamais vu ce qu'elle abrite."
 		},
-		"krabby": {
-			"height": 0.4, "weight": 6.5,
-			"description": "Il creuse son terrier dans le sable des plages. Ses pinces repoussent quand il les perd."
-		},
 		"kingler": {
 			"height": 1.3, "weight": 60.0,
 			"description": "Sa grosse pince est d'une force incroyable, mais elle pèse si lourd qu'il a du mal à viser."
@@ -452,14 +432,6 @@
 		"seadra": {
 			"height": 1.2, "weight": 25.0,
 			"description": "Les épines de ses nageoires piquent qui s'approche trop près. Il dort enroulé dans les algues."
-		},
-		"seaking": {
-			"height": 1.3, "weight": 39.0,
-			"description": "À l'automne, il remonte les rivières en bancs. Sa corne lui sert à creuser son nid dans les rochers."
-		},
-		"magikarp": {
-			"height": 0.9, "weight": 10.0,
-			"description": "Il frétille, saute et éclabousse. On le trouve partout où il y a de l'eau, même dans les flaques."
 		},
 		"omanyte": {
 			"height": 0.4, "weight": 7.5,
@@ -520,6 +492,58 @@
 		"hypno": {
 			"height": 1.6, "weight": 75.6,
 			"description": "Il balance un pendule sans le quitter des yeux. Ceux qui en suivent le mouvement s'endorment sans s'en rendre compte."
+		},
+		"magikarp": {
+			"height": 0.9, "weight": 10.0,
+			"description": "Il frétille, saute et éclabousse. On le trouve partout où il y a de l'eau, même dans les flaques."
+		},
+		"krabby": {
+			"height": 0.4, "weight": 6.5,
+			"description": "Il creuse son terrier dans le sable des plages. Ses pinces repoussent quand il les perd."
+		},
+		"seaking": {
+			"height": 1.3, "weight": 39.0,
+			"description": "À l'automne, il remonte les rivières en bancs. Sa corne lui sert à creuser son nid dans les rochers."
+		},
+		"venonat": {
+			"height": 1.0, "weight": 30.0,
+			"description": "Ses grands yeux voient dans le noir. Couvert de poils fins, il se cache le jour sous les feuilles et sort à la nuit."
+		},
+		"venomoth": {
+			"height": 1.5, "weight": 12.5,
+			"description": "Il ne sort qu'à la nuit tombée, attiré par les lumières. La poussière de ses ailes pique la peau."
+		},
+		"doduo": {
+			"height": 1.4, "weight": 39.2,
+			"description": "Ses deux têtes ne pensent jamais tout à fait la même chose. Il court si vite qu'il laisse des traces profondes dans la terre."
+		},
+		"dodrio": {
+			"height": 1.8, "weight": 85.2,
+			"description": "Trois têtes qui veillent chacune de leur côté. Quand l'une dort, les deux autres guettent."
+		},
+		"farfetchd": {
+			"height": 0.8, "weight": 15.0,
+			"description": "Il ne se sépare jamais de sa tige de poireau. Il la brandit comme une épée et défend son coin d'herbe avec fierté."
+		},
+		"grimer": {
+			"height": 0.9, "weight": 30.0,
+			"description": "Une boue vivante qui glisse là où l'eau est sale. Elle se faufile par les grilles et les tuyaux."
+		},
+		"muk": {
+			"height": 1.2, "weight": 30.0,
+			"description": "Son odeur fait faner l'herbe sur son passage. Ce qu'il touche reste collant pendant des jours."
+		},
+		"weezing": {
+			"height": 1.2, "weight": 9.5,
+			"description": "Deux sphères gonflées de gaz qui flottent ensemble. Elles se regonflent l'une l'autre en respirant l'air vicié."
+		},
+		"electrode": {
+			"height": 1.2, "weight": 66.6,
+			"description": "Gorgé d'électricité, il roule à toute allure. Au moindre choc, il éclate dans un grand fracas."
+		},
+		"machoke": {
+			"height": 1.5, "weight": 70.5,
+			"description": "Ses muscles ne se fatiguent jamais. Il aide volontiers aux travaux lourds, fier de montrer sa force."
 		},
 		"arcanine": {
 			"height": 1.9, "weight": 155.0,
@@ -609,21 +633,21 @@
 			"height": 1.8, "weight": 59.0,
 			"description": "Un Pokémon des temps anciens, ramené à la vie depuis un morceau d'ambre. Il fend l'air en poussant des cris aigus."
 		},
-		"grimer": {
-			"height": 0.9, "weight": 30.0,
-			"description": "Une boue vivante qui glisse là où l'eau est sale. Elle se faufile par les grilles et les tuyaux."
+		"poliwag": {
+			"height": 0.6, "weight": 12.4,
+			"description": "Sa peau est si fine qu'on voit ses entrailles en spirale. Il marche mal sur ses jambes toutes neuves."
 		},
-		"muk": {
-			"height": 1.2, "weight": 30.0,
-			"description": "Son odeur fait faner l'herbe sur son passage. Ce qu'il touche reste collant pendant des jours."
+		"tentacool": {
+			"height": 0.9, "weight": 45.5,
+			"description": "Il dérive près de la surface. Son corps presque transparent le rend difficile à voir dans l'eau."
 		},
-		"weezing": {
-			"height": 1.2, "weight": 9.5,
-			"description": "Deux sphères gonflées de gaz qui flottent ensemble. Elles se regonflent l'une l'autre en respirant l'air vicié."
+		"marowak": {
+			"height": 1.0, "weight": 45.0,
+			"description": "Il manie l'os qu'il tient depuis l'enfance. Devenu fort, il protège farouchement les siens."
 		},
-		"electrode": {
-			"height": 1.2, "weight": 66.6,
-			"description": "Gorgé d'électricité, il roule à toute allure. Au moindre choc, il éclate dans un grand fracas."
+		"snorlax": {
+			"height": 2.1, "weight": 460.0,
+			"description": "Il ne fait que manger et dormir. Quand il s'endort au milieu d'un chemin, plus personne ne passe."
 		}
 	}
 }

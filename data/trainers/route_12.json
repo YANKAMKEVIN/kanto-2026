@@ -1,0 +1,32 @@
+{
+	"route_12_fisher_1": {
+		"name": "Pêcheur Ned", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true,
+		"prize_money": 0, "prize_per_level": 35,
+		"team": [
+			{ "species": "goldeen", "level": 22 }, { "species": "poliwag", "level": 22 },
+			{ "species": "goldeen", "level": 22 }
+		]
+	},
+	"route_12_fisher_2": {
+		"name": "Pêcheur Elton", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true,
+		"prize_money": 0, "prize_per_level": 35,
+		"team": [{ "species": "tentacool", "level": 24 }, { "species": "goldeen", "level": 24 }]
+	},
+	"route_12_fisher_3": {
+		"name": "Pêcheur Bastien", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true,
+		"prize_money": 0, "prize_per_level": 35,
+		"team": [{ "species": "goldeen", "level": 27 }]
+	},
+	"route_12_fisher_4": {
+		"name": "Pêcheur Hervé", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true,
+		"prize_money": 0, "prize_per_level": 35,
+		"team": [
+			{ "species": "poliwag", "level": 21 }, { "species": "shellder", "level": 21 },
+			{ "species": "goldeen", "level": 21 }, { "species": "horsea", "level": 21 }
+		]
+	}
+}

@@ -121,18 +121,21 @@ func test_real_tables_load_without_error() -> void:
 	var lib := _lib()
 	assert_true(lib.load_dir(), "\n".join(lib.get_errors()))
 	# Jalon 17 (T8) : Route 11, Cave Taupiqueur ; jalon 18 (T16) : Route 9, Route 10, Grotte Sombre ;
-	# jalon 19 (T5) : Tour Pokémon ; passe systèmes 2 (S2C) : eau de la carte de QA `qa_sea` ;
-	# jalon 24 (T4) : eau des Routes 19 à 21 et de Cramois'Île, herbe de la Route 21, sol des
-	# Îles Écume (test_j24_data).
+	# jalon 19 (T5) : Tour Pokémon (la table d'eau de la carte de QA S2C est retirée en S2Z) ;
+	# Jalon 21 (T5) : sommet de la Tour (7F) ; jalon 24 (T4) : eau des Routes 19 à 21 et de
+	# Cramois'Île, herbe de la Route 21, sol des Îles Écume (test_j24_data).
 	assert_eq(lib.get_ids(), [&"cinnabar_island_water", &"dark_cave_1f_rubble",
 		&"dark_cave_b1f_rubble", &"digletts_cave_rubble", &"mt_moon_1f_rubble",
 		&"mt_moon_b1f_rubble", &"mt_moon_b2f_rubble", &"pokemon_mansion_1f_floor",
 		&"pokemon_mansion_2f_floor", &"pokemon_mansion_3f_floor", &"pokemon_mansion_b1f_floor",
-		&"pokemon_tower_high", &"pokemon_tower_low", &"pokemon_tower_mid", &"qa_sea_water", &"route_10_grass", &"route_11_grass",
-		&"route_19_water", &"route_1_grass", &"route_20_water", &"route_21_grass",
-		&"route_21_water", &"route_22_grass", &"route_24_grass", &"route_25_grass",
-		&"route_2_grass", &"route_2_north_grass", &"route_3_grass", &"route_4_grass",
-		&"route_5_grass", &"route_6_grass", &"route_7_grass", &"route_8_grass", &"route_9_grass",
+		&"pokemon_tower_high", &"pokemon_tower_low",
+		&"pokemon_tower_mid", &"pokemon_tower_top", &"route_10_grass", &"route_11_grass",
+		&"route_12_south_grass", &"route_13_grass", &"route_14_grass", &"route_15_grass",
+		&"route_16_west_grass", &"route_17_grass", &"route_18_grass", &"route_19_water",
+		&"route_1_grass", &"route_20_water", &"route_21_grass", &"route_21_water",
+		&"route_22_grass", &"route_24_grass", &"route_25_grass", &"route_2_grass",
+		&"route_2_north_grass", &"route_3_grass", &"route_4_grass", &"route_5_grass",
+		&"route_6_grass", &"route_7_grass", &"route_8_grass", &"route_9_grass",
 		&"seafoam_1f_floor", &"seafoam_b1f_floor", &"seafoam_b2f_floor", &"seafoam_b3f_floor",
 		&"seafoam_b4f_floor", &"viridian_forest_grass"] as Array[StringName])
 
@@ -207,8 +210,10 @@ func test_every_wild_species_has_battle_sprites() -> void:
 	lib.load_dir()
 	# + 3 tables de la Tour Pokémon (J19) : hors de la boucle, car leurs rencontres sont des
 	# SPECTRES sans le Scope (dossier 22 §6) ; Osselait n'a pas de sprite avant le J20.
-	# + la table d'eau de la carte de QA `qa_sea` (S2C, retirée à S2Z).
-	assert_eq(lib.size(), 40, "une table par couple ci-dessous, plus les 3 de la Tour et qa_sea (dont les 4 du Manoir, J25)")
+	# (La table d'eau de la carte de QA S2C est retirée en S2Z.)
+	# Jalon 21 (T5) : + la table du 7F (`pokemon_tower_top`), hors de la boucle comme les
+	# autres tables de la Tour (SPECTRES sans le Scope).
+	assert_eq(lib.size(), 47, "une table par couple ci-dessous, plus les 4 de la Tour (J19, J21) (dont les 4 du Manoir, J25)")
 	for pair: Array in [[&"route_1", &"grass"], [&"route_2", &"grass"],
 			[&"route_22", &"grass"], [&"viridian_forest", &"grass"], [&"route_2_north", &"grass"],
 			[&"route_3", &"grass"], [&"mt_moon_1f", &"rubble"], [&"mt_moon_b1f", &"rubble"],
@@ -221,6 +226,10 @@ func test_every_wild_species_has_battle_sprites() -> void:
 			[&"dark_cave_b1f", &"rubble"],
 			# Jalon 20 (T7) : Routes 8 et 7.
 			[&"route_8", &"grass"], [&"route_7", &"grass"],
+			# Jalon 22 : Routes 12 sud à 18.
+			[&"route_12_south", &"grass"], [&"route_13", &"grass"], [&"route_14", &"grass"],
+			[&"route_15", &"grass"], [&"route_16_west", &"grass"], [&"route_17", &"grass"],
+			[&"route_18", &"grass"],
 			# Jalon 24 (T4).
 			[&"route_19", &"water"], [&"route_20", &"water"], [&"route_21", &"water"],
 			[&"route_21", &"grass"], [&"cinnabar_island", &"water"],

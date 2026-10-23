@@ -52,6 +52,11 @@ extends Node
 ## **force une sauvegarde** ([member save_handler], comme l'étape « save ») à la sortie du combat,
 ## avant le premier texte qui suit, puis retire le Pokémon de la carte (clé « actor ») ; drapeaux
 ## « catch » d'une capture ; entrée « legendary » plus lente ([member WildEncounter.legendary_intro]).
+## Jalon 21 (`jalon-21.md` §2.3) : variantes choisies avec le Sac ([method Cutscene.pick]) ;
+## « wild_battle » : « clear » effacés après le combat (avant les drapeaux de l'issue et le
+## réveil), « flee », « reveal » (ignorée en SPECTRE), « uncatchable » ; « give » + « set » ;
+## « animate » + « skip_reduced » ; étape « flute » ([method play_flute_notes]) ; « react » /
+## « emote » sur un acteur de décor ([method GameMap.get_scene_prop]).
 
 signal cutscene_started(cutscene_id: StringName)
 ## Début d'une étape (tests, outils de capture).
@@ -290,7 +295,7 @@ func play(cutscene_id: StringName, aliases: Dictionary[StringName, StringName] =
 	if cutscene == null:
 		push_error("CutsceneDirector : scène inconnue « %s »" % cutscene_id)
 		return false
-	var variant := cutscene.pick(_flags)
+	var variant := cutscene.pick(_flags, _bag) # Jalon 21 : variantes selon le Sac
 	if variant == null:
 		if OS.is_debug_build():
 			print("[qa] scène « %s » ignorée (aucune variante pour les drapeaux)" % cutscene_id)
@@ -439,6 +444,8 @@ func _play_step(source_step: CutsceneStep) -> bool:
 			await _gift_pokemon(step)
 		CutsceneStep.Kind.TRADE:
 			await _trade(step)
+		CutsceneStep.Kind.FLUTE: # Jalon 21
+			await play_flute_notes()
 		_:
 			_step_error("étape « %s » inconnue" % CutsceneStep.kind_name(step.kind))
 	return true
@@ -640,12 +647,18 @@ func _wild_battle(step: CutsceneStep) -> bool:
 	var encounter := WildEncounter.new(step.species, step.level, WILD_BATTLE_TABLE)
 	encounter.ghost = GhostRule.is_ghost_for(step.ghost_mode, step.ghost_unless_item, _bag)
 	encounter.legendary_intro = step.intro == CutsceneStep.INTRO_LEGENDARY
+	# Jalon 21 : « reveal » ignorée si le combat est un SPECTRE ; « uncatchable » indépendante.
+	encounter.reveal = step.reveal and not encounter.ghost
+	encounter.uncatchable = step.uncatchable
 	var origin := _wild_origin()
 	var outcome: int = await _battle_runner.run_wild(encounter, _map, origin)
 	if outcome == Battle.Outcome.NONE:
 		_step_error("combat sauvage « %s » refusé" % step.species)
 		return true
 	if _flags != null:
+		# Jalon 21 : « clear » d'abord, quelle que soit l'issue (avant le réveil d'une défaite).
+		for flag: StringName in step.clear_flags:
+			_flags.set_flag(flag, false)
 		for flag: StringName in step.outcome_flags(outcome):
 			_flags.set_flag(flag)
 	var fixed := step.static_encounter
@@ -739,6 +752,10 @@ func _give(step: CutsceneStep) -> void:
 		_step_error("objet inconnu « %s »" % step.item_id)
 		return
 	if _bag.add(step.item_id, step.count):
+		# Jalon 21 : « set » levé dans la même étape, seulement si l'objet est entré au Sac.
+		if _flags != null:
+			for flag: StringName in step.flags:
+				_flags.set_flag(flag)
 		item_given.emit(step.item_id, step.count)
 		if step.found:
 			item_found.emit(step.item_id, step.count)
@@ -838,6 +855,8 @@ func _field_move(step: CutsceneStep) -> void:
 ## push_error, étape sautée. Le nœud est **réaffiché** au début : une [FlagGate] (le navire,
 ## `unless: [ss_anne_departed]`) que l'étape « set » précédente vient de masquer joue son départ.
 func _animate(step: CutsceneStep) -> void:
+	if step.skip_reduced and reduce_motion: # Jalon 21 : étape sautée
+		return
 	var node := _map.get_node_or_null(NodePath(String(step.target))) as Node2D \
 		if is_instance_valid(_map) else null
 	if node == null:
@@ -1060,10 +1079,15 @@ func _await_background(actor_id: StringName) -> void:
 		await get_tree().process_frame
 
 
-## Étape « react » : petite réaction de surprise du joueur ou d'un PNJ, sans attendre.
+## Étape « react » : petite réaction de surprise du joueur ou d'un PNJ, sans attendre. Jalon 21 :
+## sinon un acteur de décor de la carte ([method GameMap.get_scene_prop]).
 func _react(step: CutsceneStep) -> void:
 	var actor := _find_actor(step.actor)
 	if actor == null:
+		var prop := _find_prop(step.actor, &"react")
+		if prop != null:
+			prop.call(&"react")
+			return
 		_step_error("acteur « %s » introuvable" % step.actor)
 		return
 	if actor is Player:
@@ -1077,6 +1101,14 @@ func _react(step: CutsceneStep) -> void:
 func _emote(step: CutsceneStep) -> void:
 	var npc := _find_actor(step.actor) as Npc
 	if npc == null:
+		var prop := _find_prop(step.actor, &"show_emote")
+		if prop != null:
+			# Jalon 21 : acteur de décor ; attend sa bulle s'il dit quand elle finit.
+			prop.call(&"show_emote", step.emote)
+			while is_instance_valid(prop) and prop.has_method(&"is_emoting") \
+					and bool(prop.call(&"is_emoting")):
+				await get_tree().process_frame
+			return
 		_step_error("PNJ « %s » introuvable" % step.actor)
 		return
 	npc.show_emote(step.emote)
@@ -1181,6 +1213,26 @@ static func _is_actor_moving(actor: Node2D) -> bool:
 func _step_error(message: String) -> void:
 	push_error("CutsceneDirector : %s (%s, étape %d)" % [message, _cutscene_id,
 		_step_index + 1])
+
+
+## Acteur de décor [param prop_id] de la carte courante (jalon 21, [method
+## GameMap.get_scene_prop]) qui sait faire [param method] ; null sinon.
+func _find_prop(prop_id: StringName, method: StringName) -> Node:
+	if not is_instance_valid(_map):
+		return null
+	var prop := _map.get_scene_prop(prop_id)
+	return prop if prop != null and prop.has_method(method) else null
+
+
+## Coroutine (jalon 21, étape « flute », et la Flûte jouée « ailleurs » par [KeyItemDirector]) :
+## notes de la Poké Flûte au-dessus du joueur ([FluteNotes], ≈ 1,5 s), puis retour. « Réduire
+## les animations » ou pas de joueur : aucune note, retour tout de suite.
+func play_flute_notes() -> void:
+	if reduce_motion or not is_instance_valid(_player) or not _player.is_inside_tree():
+		return
+	var notes := FluteNotes.spawn_over(_player)
+	if notes != null:
+		await notes.play()
 
 
 ## Joueur (« player ») ou PNJ de la carte courante, résolu à chaque étape ; null sinon.

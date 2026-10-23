@@ -1,0 +1,99 @@
+# Route 15 (`route_15`) — grille fonctionnelle (jalon 22, lot 22.0, T6 ; dossier 25 §4, §8.4, §9.4, §11).
+#
+# 90 × 27 cases (RB 60 × 18, × 1,5) ; nord en haut ; x = 0..89, y = 0..26.
+#
+# RACCORDS : EST (89, 11..13) ↔ Route 14 (0, 66..68) ; OUEST (0, 11..13) ↔ Parmanie (59, 23..25)
+# (RB : Parmanie ↔ Route 15, décalage de 4 blocs → 12 cases).
+#
+# Composition, d'est en ouest :
+#   ① x 57..89 — LA PLAINE EST : route de 3 cases, plaine ouverte (on contourne les Dresseurs par le
+#      nord ou le sud), deux carrés d'herbes.
+#   ② x 41..56 — LE POSTE (8 × 9, « au milieu », dossier §8.4) qui TRAVERSE la route : porte est (48, 11..12),
+#      porte ouest (41, 11..12), à pied ; seul passage. Devant lui, un goulet de 2 cases gardé par
+#      l'Ornithologue (I). Intérieur : route_15_gate.txt (1F + 2F, assistant sans cadeau, jumelles).
+#   ③ x 0..40 — LA PLAINE OUEST : route vers Parmanie ; détour nord jusqu'à la CT20 (11, 3) ; trois
+#      Dresseuses et Beauté contournables par les plaines nord et sud.
+#
+# LÉGENDE COMMUNE DU J22 (chaque grille la reprend ; caractères NOUVEAUX marqués ★) :
+#   T arbres, forêt serrée (bloqués)     . herbe rase (praticable)     = chemin de terre (praticable)
+#   h hautes herbes (praticable, rencontres)   q ponton, planches (praticable)   y sable (praticable)
+#   w eau (bloquée, NON pêchable)        ★ f eau PÊCHABLE (bloquée ; on pêche depuis une case praticable
+#     voisine, face à elle ; jamais au contact d'une case de Piste)   ~ mer de décor (bloquée)
+#   R rochers, rive rocheuse, falaise (bloqués)   c clôture basse (bloquée)   x buissons (bloqués)
+#   n banc (bloqué)   P poste (bâtiment, bloqué)   m maison (bloquée)   D porte (praticable, terminale)
+#   ★ k tronçon de PISTE CYCLABLE, plat (praticable ; à vélo seulement, on ne peut pas descendre)
+#   ★ s PISTE en PENTE (praticable ; sans appui, dérive d'une case vers le sud ; Route 17 seulement)
+#   b barrière basse de la Piste (bloquée ; arrête la vue des Dresseurs)
+# Une case de Piste est une case « k » ou « s » ; un PALIER est une bande de rangées de la Route 17 sans
+# « s » entre deux tronçons de pente. Les Dresseurs de la Piste sont EN RETRAIT : sur une case « . »
+# (alcôve) hors des voies, tournés vers elles.
+#
+# POSITIONS : types warp, spawn, dresseur, objet_visible, cache, panneau, pnj, pokemon, herbes, repere,
+# decor. Dresseurs : trainer= (id du dossier §9), facing=, sight= (portée RB × 1,5, arrondie au-dessus :
+# 1 → 2, 2 → 3, 3 → 5, 4 → 6), rbsight=, inevitable=oui|non. Objets : item=, drapeau= (dossier §11).
+# Warps : to= (carte) spawn= (point d'arrivée) ; coming_soon= pour une porte ou un bord « À venir » ;
+# lie= relie les deux portes d'un poste traversant. Le contrôle : tools/art/plan_check_j22.py
+# (python3 -I tools/art/plan_check_j22.py) ; le rendu : tools/art/plan_aplats_j22.py.
+#
+# DÉFAUTS : poste « au milieu » (RB : près de l'ouest) ; PORTES LATÉRALES du poste (on y entre en
+# marchant ← ou →, comme les postes de RB ; les postes du projet ont des portes au sud : à valider) ;
+# CT20 au nord-ouest (RB (18, 5)).
+
+PRATICABLES .=hD
+
+GRILLE 90 27
+00 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+01 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+02 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+03 TTTTTTTTTT....TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+04 TTTT..........TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT.TTTTT.........hhhhhhhhhhhhh..TTT
+05 TTTTTTTTT.......hhhhhhhhhhh..........TTTTTTTTTTTTTTTTTTTT.TTTTT.........hhhhhhhhhhhhh..TTT
+06 TTTTTTTTT.......hhhhhhhhhhh.TTTTTT...TTTTTTTTTTTTTTTTTTTT.TTTTT.........hhhhhhhhhhhhh..TTT
+07 TTTTTTTTT.......hhhhhhhhhhh.TTTTTT...TTTTTTTTTTTTTTTTTTTT.TTTTT.........hhhhhhhhhhhhh..TTT
+08 TTTTTTTTT.......hhhhhhhhhhh.TTTTTT...TTTTPPPPPPPPTTTTTTTT...............hhhhhhhhhhhhh..TTT
+09 TTTT............hhhhhhhhhhh..........TTTTPPPPPPPPTTTTTTTT..............................TTT
+10 TTTT.................................TTTTPPPPPPPPTTT.TTTT..............................TTT
+11 =========================================DPPPPPPD=========================================
+12 =========================================DPPPPPPD=========================================
+13 =====================================TTTTPPPPPPPPTTTTTTTT=================================
+14 TTTT.................................TTTTPPPPPPPPTTTTTTTT..............................TTT
+15 TTTT.................................TTTTPPPPPPPPTTTTTTTT...hhhhhhhhhhh................TTT
+16 TTTThhhhhh..............hhhhhhhhhhh..TTTTPPPPPPPPTTTTTTTT...hhhhhhhhhhh................TTT
+17 TTTThhhhhh...TTTTTT.....hhhhhhhhhhh..TTTTTTTTTTTTTTTTTTTT...hhhhhhhhhhh.......TTTTTTTTTTTT
+18 TTTThhhhhh...TTTTTT.....hhhhhhhhhhh..TTTTTTTTTTTTTTTTTTTT...hhhhhhhhhhh.......TTTTTTTTTTTT
+19 TTTThhhhhh...TTTTTT.....hhhhhhhhhhh..TTTTTTTTTTTTTTTTTTTT...hhhhhhhhhhh.......TTTTTTTTTTTT
+20 TTTThhhhhh...TTTTTT.....hhhhhhhhhhh..TTTTTTTTTTTTTTTTTTTT...hhhhhhhhhhh.......TTTTTTTTTTTT
+21 TTTThhhhhh...TTTTTT..................TTTTTTTTTTTTTTTTTTTT.....................TTTTTTTTTTTT
+22 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+23 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+24 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+25 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+26 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+FIN
+
+# POSITIONS — identifiant  type  cases  bloque|libre  [cle=valeur ...]  # commentaire
+POSITIONS
+warp_est               warp           89,11..13      libre   to=route_14 spawn=from_route_15  # PUSH → → Route 14 (0, 66..68)
+from_route_14          spawn          89,11..13      libre   facing=left  # arrivée de la Route 14, tournée ←
+warp_ouest             warp           0,11..13       libre   to=fuchsia_city spawn=from_route_15  # PUSH ← → Parmanie (59, 23..25)
+from_fuchsia           spawn          0,11..13       libre   facing=right  # arrivée de Parmanie, tournée →
+porte_poste_est        warp           48,11..12      libre   to=route_15_gate spawn=entrance_est lie=porte_poste_ouest  # STEP_ON ← → poste, porte est
+from_poste_est         spawn          49,11..12      libre   facing=right  # sortie du poste côté est, tournée →
+porte_poste_ouest      warp           41,11..12      libre   to=route_15_gate spawn=entrance_ouest lie=porte_poste_est  # STEP_ON → → poste, porte ouest
+from_poste_ouest       spawn          40,11..12      libre   facing=left  # sortie du poste côté ouest, tournée ←
+facade_poste           decor          41..48,8..10;41..48,13..16;42..47,11..12 bloque  role=poste  # poste 8 × 9 qui TRAVERSE la route (RB : Route15Gate) ; seul passage
+route_15_lass_1        dresseur       64,13          bloque  role=D1 trainer=route_15_lass_1 facing=up sight=3 rbsight=2 inevitable=non rb=41,11  # Jeune Dresseuse, Boustiflor / Mystherbe ×2 28 ; sur la route, vue (64, 10..12) : passer au sud (rangée 14)
+route_15_biker         dresseur       75,10          bloque  role=D2 trainer=route_15_biker facing=down sight=5 rbsight=3 inevitable=non rb=46,10  # Motard, Smogo / Tadmorv / Smogogo 28 ; vue (75, 11..15) : contourner par le nord (rangées 4..9)
+route_15_beauty_2      dresseur       82,16          bloque  role=D3 trainer=route_15_beauty_2 facing=left sight=3 rbsight=2 inevitable=non rb=53,11  # Beauté, Roucoups 29 + Grodoudou 29 ; plaine sud-est, vue (79..81, 16)
+route_15_bird          dresseur       52,10          bloque  role=D4 trainer=route_15_bird facing=down sight=5 rbsight=3 inevitable=oui rb=35,13  # Ornithologue, Dodrio 28 + Doduo 28 ×2 (I) ; alcôve du goulet du poste, vue (52, 11..12) : tout le goulet
+route_15_lass_2        dresseur       30,10          bloque  role=D5 trainer=route_15_lass_2 facing=down sight=5 rbsight=3 inevitable=non rb=37,5  # Jeune Dresseuse, Mélofée 33 ; vue (30, 11..15) : contourner par la plaine nord
+route_15_lass_3        dresseur       20,14          bloque  role=D6 trainer=route_15_lass_3 facing=up sight=5 rbsight=3 inevitable=non rb=18,13  # Jeune Dresseuse, Chétiflor / Mystherbe / Saquedeneu 29 ; vue (20, 9..13) : contourner par la plaine sud
+route_15_beauty_1      dresseur       10,16          bloque  role=D7 trainer=route_15_beauty_1 facing=right sight=5 rbsight=3 inevitable=non rb=41,10  # Beauté, Bulbizarre 29 + Herbizarre 29 ; plaine sud-ouest, vue (11..15, 16)
+route_15_item_1        objet_visible  11,3           bloque  role=O1 item=tm20 drapeau=got_route_15_item_1  # CT20 (Frénésie, ou CT de repli choisie en 22.0) au bout du détour nord (x 10..13, y 3..4)
+panneau_route_15       panneau        86,10          bloque  role=T-route  # « ROUTE 15 » ; lu depuis (86, 11) ↑
+herbes_h1              herbes         60..70,15..20  libre   role=H1
+herbes_h2              herbes         72..84,4..8    libre   role=H2
+herbes_h3              herbes         16..26,5..9    libre   role=H3
+herbes_h4              herbes         4..9,16..21    libre   role=H4
+herbes_h5              herbes         24..34,16..20  libre   role=H5
+FIN

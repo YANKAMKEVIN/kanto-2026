@@ -155,7 +155,8 @@ func test_the_texts_are_the_dossier_texts() -> void:
 	assert_eq(said[0], WORRIED[0])
 	assert_eq(" ".join(said).replace("\n", " "), " ".join(quotes.slice(0, 4)),
 		"§15.1.1 à 4, mot pour mot")
-	var after := dialogues.get_dialogue(&"pokemon_tower_exorcist").variants[0]
+	# Jalon 21 : la variante `if [fuji_rescued]` (§15.5.1) passe en tête ; la réplique du J19 est la suivante.
+	var after := dialogues.get_dialogue(&"pokemon_tower_exorcist").variants[1]
 	assert_eq(after.pages[0].text.replace("\n", " "), quotes[4], "§15.1.5")
 
 

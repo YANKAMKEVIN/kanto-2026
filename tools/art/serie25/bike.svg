@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- Bouton rond « Vélo » du HUD (série 25, J22) : même famille que run_shoe.svg (blanc plein,
+       64 × 64, formes épaisses lisibles à 72 px dans un bouton de 128 px). -->
+  <g fill="none" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="14" cy="42" r="10.5" stroke-width="5"/>
+    <circle cx="50" cy="42" r="10.5" stroke-width="5"/>
+    <path d="M14 42 L25 23 L44 23 L50 42" stroke-width="4.5"/>
+    <path d="M25 23 L33 42 L44 23" stroke-width="4.5"/>
+    <path d="M22 17 L30 17" stroke-width="5"/>
+    <path d="M42 15 L44 23" stroke-width="4.5"/>
+    <path d="M39 14 L47 13" stroke-width="5"/>
+  </g>
+  <circle cx="33" cy="42" r="3.5" fill="#FFFFFF"/>
+</svg>

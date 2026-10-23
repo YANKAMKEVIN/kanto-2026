@@ -44,6 +44,31 @@ func test_sea_maps_surfable_water_is_the_grid_w() -> void:
 	assert_push_error_count(0)
 
 
+## Fusion du J24 dans `main` (2026-10-23) : bord nord de la Route 19 ↔ bord sud de Parmanie
+## (J22), case pour case (colonne Parmanie = colonne Route 19 + 15), dans les deux sens.
+func test_route_19_and_fuchsia_city_are_joined_cell_for_cell() -> void:
+	var route := _map(&"route_19")
+	var town := _map(&"fuchsia_city")
+	var ways := [[route, town, Vector2i.UP, 15, town.size.y - 1],
+		[town, route, Vector2i.DOWN, -15, 0]]
+	for way: Array in ways:
+		var from: GameMap = way[0]
+		var to: GameMap = way[1]
+		var count := 0
+		for warp: Warp in from.get_warps().get_all():
+			if warp.target_map != to.map_id:
+				continue
+			count += 1
+			assert_false(warp.is_coming_soon(), "%s %s" % [from.map_id, warp.cell])
+			assert_eq(warp.direction, way[2] as Vector2i, "%s %s" % [from.map_id, warp.cell])
+			assert_true(to.has_spawn(warp.target_spawn), "%s" % warp.target_spawn)
+			assert_eq(to.get_spawn_cell(warp.target_spawn),
+				Vector2i(warp.cell.x + (way[3] as int), way[4] as int),
+				"%s %s → %s" % [from.map_id, warp.cell, warp.target_spawn])
+		assert_eq(count, 11, "%s → %s : terrasse (9 cases) et couloir (2)" % [from.map_id,
+			to.map_id])
+
+
 func test_seafoam_levels_and_water_follow_the_grid() -> void:
 	for map_id: StringName in FLOORS:
 		var map := _map(map_id)

@@ -1,0 +1,53 @@
+{
+	"route_17_cueball_1": {
+		"name": "Loubard Kader", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true,
+		"prize_money": 0, "prize_per_level": 25,
+		"team": [{ "species": "mankey", "level": 29 }, { "species": "primeape", "level": 29 }]
+	},
+	"route_17_cueball_2": {
+		"name": "Loubard Samy", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true,
+		"prize_money": 0, "prize_per_level": 25,
+		"team": [{ "species": "machop", "level": 29 }, { "species": "machoke", "level": 29 }]
+	},
+	"route_17_biker_1": {
+		"name": "Motard Eddy", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true,
+		"prize_money": 0, "prize_per_level": 20,
+		"team": [
+			{ "species": "weezing", "level": 28 }, { "species": "koffing", "level": 28 },
+			{ "species": "weezing", "level": 28 }
+		]
+	},
+	"route_17_biker_2": {
+		"name": "Motard Jordan", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true,
+		"prize_money": 0, "prize_per_level": 20,
+		"team": [{ "species": "muk", "level": 33 }]
+	},
+	"route_17_biker_3": {
+		"name": "Motard Teddy", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true,
+		"prize_money": 0, "prize_per_level": 20,
+		"team": [{ "species": "voltorb", "level": 29 }, { "species": "voltorb", "level": 29 }]
+	},
+	"route_17_cueball_3": {
+		"name": "Loubard Max", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true,
+		"prize_money": 0, "prize_per_level": 25,
+		"team": [{ "species": "machoke", "level": 33 }]
+	},
+	"route_17_biker_4": {
+		"name": "Motard Franck", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true,
+		"prize_money": 0, "prize_per_level": 20,
+		"team": [{ "species": "weezing", "level": 29 }, { "species": "muk", "level": 29 }]
+	},
+	"route_17_cueball_4": {
+		"name": "Loubard Willy", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true,
+		"prize_money": 0, "prize_per_level": 25,
+		"team": [{ "species": "primeape", "level": 29 }, { "species": "machoke", "level": 29 }]
+	}
+}

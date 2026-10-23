@@ -134,14 +134,19 @@ des textes et répliques de don « validées par Kevin le 2026-10-21, validation
 (`TEXTS_J24` dans `test_dialogue_data`).
 
 **Contrats laissés aux autres jalons** :
-- **J22 (Parmanie)** : Route 19 nord = « à venir » (PARMANIE), retour sur la case du dessous. À la
+- **J22 (Parmanie)** — **fait à la fusion du J24 dans `main` (2026-10-23)** : bords joints case pour
+  case (`build_j24_sea.gd` : arrivées `from_route_19`, `from_route_19_1`… ; `build_j22_maps.gd` lit
+  les arrivées `from_fuchsia_city_<i>` dans la scène de la Route 19), test
+  `test_route_19_and_fuchsia_city_are_joined_cell_for_cell`. Reste : côte sud surfable de Parmanie
+  et rocher du Gardien (T11, T16, accord de Kevin). Contrat d'origine : Route 19 nord = « à venir » (PARMANIE), retour sur la case du dessous. À la
   fusion du J22 : remplacer par des PUSH ↑ vers `fuchsia_city` (spawns `from_route_19_<i>`,
   colonnes Parmanie = colonnes Route 19 + 15, rangée 53) et, côté Parmanie, PUSH ↓ vers
   `route_19` / `from_fuchsia_city_<i>` (spawns déjà posés). Le rocher du Gardien (T16) attend aussi.
 - **Bourg Palette (T11)** : Route 21 nord = « à venir » (BOURG PALETTE). À faire avec l'accord de
   Kevin : eau surfable (10..14, 32..33) de `pallet_town`, PUSH ↓ vers `route_21` /
   `from_pallet_town_<i>`, et l'inverse (T-70 de la mère, `mom_saw_surf`).
-- **J21** : poliwag / tentacool restent en reprise (`kanto_j24_reprises.json`).
+- **J21** : fusionné par `main` (2026-10-23) ; reprises `poliwag` / `tentacool` / `amnesia` /
+  `barrier` supprimées, évolutions N25 / N30 ajoutées dans `kanto_j21.json`.
 
 **Reste** : QA téléphone 24A–24D (Kevin), T16, côte de Bourg Palette, T19 (simulation
 d'équilibrage), art définitif des cartes (vues peintes de la série 27 non encore posées), T-14
@@ -159,6 +164,64 @@ ramène de toute façon), T-70.
 5. `j24_cinnabar` (Fossile Dôme) : Labo — confier le fossile, ressortir, revenir : Kabuto N30 ;
    CT35 ; PC (T-58) ; porte de l'Arène (recul) ; Centre et Boutique (Rappel en vente) ; Route 21
    (prairie en Surf, Pêcheurs, îlots) et Route 20 vers les Îles Écume (entrée est).
+
+### 0.6 QA sur A17 par adb (2026-10-22), non validée par Kevin
+
+Passe automatique par adb sur le **Galaxy A17** (SM-A175F, Mali-G57 MC2, 2340 × 1080), APK debug
+construit depuis `9d6ad085`. Ce n'est **pas** la QA de Kevin (ni le S24, ni son ressenti) : elle
+dit seulement ce qui marche, ce qui casse et ce qui n'a pas pu être joué. Captures et journaux :
+`~/dev/qa-nuit/j24/` (dossier `files/` de l'appli sauvegardé avant installation dans
+`a17_backup/files.tar`). Aucune erreur ni avertissement Godot dans les 8 journaux.
+
+| # | Étape | Résultat |
+|---|---|---|
+| 1 | `j24_surf` : Topdresseur Hugo sur la plage (repère, combat, XP) | OK |
+| 1 | SURFER depuis la plage (verbe contextuel, montée) | OK |
+| 1 | Nageur Tanguy vient en Surf, combat sur l'eau, retour en Surf | OK |
+| 1 | Rencontres sauvages `water` en Surf, fuite | OK |
+| 1 | Bord ouest Route 19 → Route 20 (Surf gardé) | OK (76 ms) |
+| 1 | Route 20 : débarquer sur l'île, entrée ouest des Îles Écume → 1F | OK |
+| 2 | `j24_seafoam` : Force (choix UTILISER), pousser un rocher dans le trou (17, 6) | OK, sauvegarde forcée journalisée (`force`) |
+| 2 | Échelles 1F ↔ B1F (P1, P2) | OK (16–20 ms) |
+| 2 | Rocher tombé visible au B1F ; rochers remis en place après un changement d'étage (T-11) | non vérifié (pas de capture probante) |
+| 3 | `j24_seafoam_b3f` : courant 1 calme | non testé (bassin pas parcouru) |
+| 3 | Pousser les rochers du sud-ouest (un dans un trou, deux d'écart), sauter dans le trou (6, 16) → B4F | OK (sauvegarde `force` ; B4F en 28 ms) |
+| 4 | `j24_articuno` : SURFER depuis l'escalier (7, 11), mer ouest, escalier (7, 3), salle | OK |
+| 4 | OBSERVER, combat N50 (`intro: legendary`) | OK |
+| 4 | Fuite : réussie au 2e essai, Artikodin reste (OBSERVER de nouveau possible) | OK |
+| 4 | K.O. d'Artikodin (Akwakwak) | OK (sauvegarde `rencontre fixe : articuno`) ; réplique T-21 et disparition non vérifiées |
+| 4 | Capture | non testable : 10 Hyper Balls lancées vers 15 % de PV sans succès (taux RB 3), équipe K.O. |
+| 5 | `j24_cinnabar` : Labo, confier le Fossile Dôme (OUI), ressortir, revenir : Kabuto N30 dans l'équipe | OK |
+| 5 | CT35 (scientifique R&D) | OK côté logique (`got_tm35`, sauvegarde `CT35`) ; défaut D3 |
+| 5 | PC du Labo (T-58) | OK |
+| 5 | Gravats du Manoir (T-43) ; porte de l'Arène fermée et recul (T-42) | OK |
+| 5 | Centre (soins) ; Boutique (Rappel en vente, 1 500 ₽) | OK |
+| 5 | Route 21 : SURFER depuis la pointe de sable, Nageurs, Pêcheur Marcel (combat), débarquer et rembarquer sur l'îlot nord, prairie (Rattata), bord nord « BOURG PALETTE — À venir » | OK |
+| 5 | Bord est de Cramois'Île → Route 20 en Surf, Nageuses Nina et Lou, entrée est → 1F (26, 16) | OK |
+
+**Défauts relevés** (aucun bloquant) :
+- **D1 — le joueur en Surf est dessiné à pied sur l'eau** (ni monture ni buste) sur les Routes 19,
+  20, 21 et au B4F ; attendu : planches « Surf » de `CharacterLook` (§2.3). Sans doute l'art T5
+  pas encore posé. Captures `16.png`, `210.png`, `214.png`.
+- **D2 — Cramois'Île et les Routes en aplats de couleur** (bâtiments en rectangles unis) : connu,
+  tuiles provisoires (§0.5) ; noté pour mémoire.
+- **D3 — CT35 sans ligne de réception** (**corrigé le 2026-10-22** : dialogue `cinnabar_lab_tm35_use`, « {player} reçoit la CT35 Métronome ! », après le `give`) : après « … à chaque fois ! » la scène rend la main sans
+  « Kevin reçoit la CT35 Métronome ! » (la résurrection affiche bien « Kevin reçoit Kabuto ! », les
+  Arènes ont leur ligne de CT) : `cinnabar_lab_tm35` fait un `give` sans page de réception.
+  Capture `mont_176.png`.
+- **D4 (mineur, corrigé le 2026-10-22 : la mise à l'eau est un saut scripté qui ne déclenchait aucun passage ; `MountDirector` suit désormais le passage PUSH de la case d'arrivée, après T-3 la première fois ; test `test_j24_cinnabar_edge.gd`)** — bord est de Cramois'Île : SURFER depuis la grève pose le joueur sur la colonne
+  33 sans changer de carte ; il faut un pas de plus vers l'est (même logique PUSH que les autres
+  bords, mais surprenant juste après la montée). Captures `245.png`, `246.png`.
+- **D5 (mineur)** — en bord de carte la caméra est bornée et le joueur peut passer sous les
+  boutons (arrivée de l'entrée est au 1F : joueur collé au bouton Course). Capture `256.png`.
+- Observation texte (**corrigée le 2026-10-22** : une seule page, deux lignes, mots inchangés) : « Bien. Ça prend un peu de temps : » / « va faire un tour dehors ! » coupe la
+  phrase entre deux pages sur les deux-points (textes validés d'avance, à relire par Kevin).
+
+**fps** (`[perf]`, A17, moyenne / plus bas relevé sur 2 s ; combats compris) : Route 19 46 / 37 ;
+Route 20 45–48 / 37 ; Route 21 45 / 37 ; Îles Écume 1F 47–49 / 38, B1F 49 / 46, B3F 50 / 39,
+B4F 42–49 / 36 (combats d'Artikodin) ; Cramois'Île 50 / 46 ; Labo 49–52 / 32 (salle des fossiles,
+pic isolé) ; Centre 50 / 47 ; Boutique 46 / 34 ; combats ≈ 40. Chargements de cartes 16–220 ms
+(intérieurs peints 135–220 ms au premier passage). Plafond observé sur l'A17 : 50–55 fps.
 
 ## 1. Découpage
 
@@ -523,6 +586,10 @@ RB et par les contrôles des grilles.
     textes validés du dossier 25 §16.7 ;
   - à rétablir ensuite dans le J24 : la Guillotine de Krabby (N25), les évolutions Krabby → Krabboss et
     Magicarpe → Léviator (absentes sur `jalon-22` faute des espèces cibles).
+  - **fait à la fusion du J24 dans `main` (2026-10-23)** : copies du J24 retirées (Krabby, Poissoroy,
+    Magicarpe, Force Poigne, Pince-Masse, Trempette, Hyper Ball, Hyper Potion, Total Soin, 3 fiches du
+    Pokédex ; valeurs identiques sauf Krabby) ; Guillotine N25 et Krabby → Krabboss N28 ajoutés dans
+    `kanto_j22.json` ; Magicarpe → Léviator N20 y était déjà.
 - **J25** (dossier 28 §0, X-25 à X-30, validés par Kevin le 2026-10-19), après la fusion du J24 :
   - le J25 remplace l'entrée effondrée du Manoir (T-43) par une porte ;
   - il ajoute les échanges sur les 3 PNJ du Labo ; ses répliques remplacent T-52 à T-54 ;
@@ -542,3 +609,11 @@ RB et par les contrôles des grilles.
 5. Une sauvegarde ne dédouble jamais Artikodin, un fossile ni la CT35 (tests de fermeture
    simulée).
 6. Les quatre validations S24 du §1.1 sont faites.
+
+## Décisions de Kevin (2026-10-22)
+
+Choix validés par Kevin sur la page d'arbitrages.
+
+- Le J24 PEUT modifier la côte sud de Bourg Palette (Route 21 nord, réplique T-70 de la mère) : **à faire dans une prochaine session du J24** (reste ouvert).
+- Métronome sans capacités à plusieurs tours : d'accord.
+- Prénoms : acceptés.

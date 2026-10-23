@@ -120,6 +120,30 @@ func test_reduced_effects_cut_wind_and_rim_but_keep_grade_and_shadows() -> void:
 	assert_eq(lighting.get_applied_globals()[WorldLighting.WIND], 5.0)
 
 
+func test_economy_cuts_the_screen_grade_at_once_and_restores_it() -> void:
+	var lighting := _lighting()
+	lighting.apply(_golden)
+	assert_true(lighting.is_grade_visible(), "par défaut : étalonnage posé")
+	lighting.set_economy(true)
+	assert_false(lighting.is_grade_visible(), "Économie : passe plein écran coupée")
+	lighting.apply(_golden)
+	assert_false(lighting.is_grade_visible(), "reste coupée au changement de carte")
+	assert_gt((lighting.get_applied_globals()[WorldLighting.CAST_SHADOW_COLOR] as Color).a, 0.0,
+		"les ombres restent")
+	lighting.set_economy(false)
+	assert_true(lighting.is_grade_visible(), "désactivée : rendu d'avant")
+
+
+func test_economy_keeps_the_flat_grade() -> void:
+	var lighting := _lighting()
+	var modulate := lighting.get_world_modulate()
+	add_child(modulate)
+	lighting.apply(_library.get_profile(&"tower"))
+	lighting.set_economy(true)
+	assert_true(lighting.is_grade_flat(), "gain unique gardé")
+	assert_true(lighting.is_grade_visible())
+
+
 func test_golden_hour_keeps_the_baked_shadow() -> void:
 	var basis := WorldLighting.shadow_transform(_golden)
 	assert_almost_eq(basis.x, Vector2(2, 0), Vector2.ONE * 0.0001)
@@ -248,3 +272,31 @@ func test_border_decals_follow_the_paving_edge_with_a_fixed_seed() -> void:
 	# Une case pavée au bord de la carte n'a pas de décor côté extérieur.
 	var edge := BorderDecals.plan({Vector2i(0, 0): true}, Vector2i(1, 1), 1)
 	assert_true(edge.is_empty())
+
+
+# --- J21 : étalonnage « à plat » (CanvasModulate du monde), QA A17 ---------------------------
+
+func test_flat_grade_uses_a_world_canvas_modulate_without_screen_copy() -> void:
+	var tower := _library.get_profile(&"tower")
+	var lighting := _lighting()
+	var modulate := lighting.get_world_modulate()
+	assert_null(modulate.get_parent(), "posé par Boot dans le canevas du monde, hors du calque")
+	add_child(modulate)
+	lighting.apply(tower)
+	assert_true(lighting.is_grade_visible())
+	assert_true(lighting.is_grade_flat())
+	assert_false((lighting.get_node(^"Grade") as CanvasItem).visible, "pas de copie de l'écran")
+	assert_true(modulate.visible)
+	assert_eq(modulate.color, Color(0.95, 0.93, 1.0))
+	assert_false(lighting.is_battle_grade_visible(), "hors combat : aucun calque")
+	lighting.set_battle_active(true)
+	assert_true(lighting.is_battle_grade_visible(), "combat : BattleStage reçoit le gain")
+	lighting.set_battle_active(false)
+	assert_false(lighting.is_battle_grade_visible())
+	lighting.apply(_golden)
+	assert_false(lighting.is_grade_flat())
+	assert_false(modulate.visible, "ailleurs : CanvasModulate caché, étalonnage par zones")
+	assert_true((lighting.get_node(^"Grade") as CanvasItem).visible)
+	lighting.set_battle_active(true)
+	assert_false(lighting.is_battle_grade_visible())
+	remove_child(modulate)

@@ -35,9 +35,8 @@ const EVOLUTION_DESCRIPTIONS: Array[StringName] = [&"gyarados"]
 ## Victor de la Route 11).
 const NAMED_SPECIES_OK: Dictionary[StringName, Array] = {&"magneton": [&"magnemite"]}
 ## Espèces des données sans fiche : jamais vues au J19 (SPECTRE) ; Osselait a la sienne depuis le
-## J20 (annexe A n° 204), Ossatueur l'aura au J21
-## (dossier 22 §12.1).
-const NO_ENTRY_YET: Array[StringName] = [&"marowak"]
+## J20 (annexe A n° 204), Ossatueur a la sienne depuis le J21 (T5, dossier 24 §15.10) : liste vide.
+const NO_ENTRY_YET: Array[StringName] = []
 
 var _data: PokemonData
 var _lib: PokedexLibrary

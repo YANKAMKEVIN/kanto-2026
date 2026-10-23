@@ -16,6 +16,8 @@ const FLOORS: Dictionary = {
 	&"pokemon_tower_4f": "res://tools/plans/pokemon_tower_4f.txt",
 	&"pokemon_tower_5f": "res://tools/plans/pokemon_tower_5f.txt",
 	&"pokemon_tower_6f": "res://tools/plans/pokemon_tower_6f.txt",
+	# Jalon 21 (T13) : le 7F, ses détails dans `test_pokemon_tower_7f.gd`.
+	&"pokemon_tower_7f": "res://tools/plans/pokemon_tower_7f.txt",
 }
 ## Déclencheurs à direction de la zone purifiée (jalon-19.md §2.8) : case → pas qui y entre.
 const ZONE_TRIGGERS: Dictionary = {
@@ -156,8 +158,8 @@ func test_stairs_pair_up_both_ways() -> void:
 			assert_true(Grid.is_cardinal(home - plan.cell_of(id)), "%s : retour à côté" % id)
 
 
-## T16 : le 2F rejoint le rez-de-chaussée (spawn `from_pokemon_tower_2f`) ; seul le 6F → 7F reste
-## un repli (hors J19).
+## T16 : le 2F rejoint le rez-de-chaussée (spawn `from_pokemon_tower_2f`). Jalon 21 : le 6F → 7F
+## n'est plus un repli « à venir » (warp réel, T12 et T13).
 func test_stairs_to_floors_outside_j19_are_coming_soon() -> void:
 	var down := _warp_at(_maps.get(&"pokemon_tower_2f"), Vector2i(18, 9))
 	assert_not_null(down, "2F → 1F")
@@ -165,19 +167,12 @@ func test_stairs_to_floors_outside_j19_are_coming_soon() -> void:
 		assert_false(down.is_coming_soon(), "le 1F existe (T16)")
 		assert_eq(down.target_map, &"pokemon_tower_1f")
 		assert_eq(down.target_spawn, &"from_pokemon_tower_2f")
-	for entry: Array in [[&"pokemon_tower_6f", Vector2i(9, 16), &"arrivee_T56"]]:
-		var map: GameMap = _maps.get(entry[0])
-		if map == null:
-			fail_test("%s absente" % entry[0])
-			continue
-		var warp := _warp_at(map, entry[1])
-		assert_not_null(warp, "%s %s" % [entry[0], entry[1]])
-		if warp == null:
-			continue
-		assert_true(warp.is_coming_soon(), "%s : repli « à venir »" % entry[0])
-		assert_eq(warp.coming_soon, "Tour Pokémon")
-		assert_eq(warp.target_spawn, entry[2])
-		assert_true(map.has_spawn(warp.target_spawn))
+	var seventh := _warp_at(_maps.get(&"pokemon_tower_6f"), Vector2i(9, 16))
+	assert_not_null(seventh, "6F → 7F")
+	if seventh != null:
+		assert_false(seventh.is_coming_soon(), "Jalon 21 : plus de repli « à venir »")
+		assert_eq(seventh.target_map, &"pokemon_tower_7f")
+		assert_eq(seventh.target_spawn, &"arrivee_T67")
 
 
 func test_spawns_match_the_plan_and_qa_spawns() -> void:
@@ -305,15 +300,23 @@ func test_candle_and_purified_halos_and_one_mist_per_floor() -> void:
 		assert_eq(purified.size(), 1 if map_id == &"pokemon_tower_5f" else 0, String(map_id))
 		var mists: Array[Node] = []
 		_find_all(map, mists, func(n: Node) -> bool: return n is MistLayer)
-		assert_eq(mists.size(), 1, "%s : une brume" % map_id)
+		# Jalon 21 (T12) : le 6F a deux brumes (dense `unless`, légère `if` `tower_6f_mist_lifted`).
+		assert_eq(mists.size(), 2 if map_id == &"pokemon_tower_6f" else 1,
+			"%s : brumes" % map_id)
 		var mist := mists[0] as MistLayer
+		for other: Node in mists:
+			if (other as MistLayer).alpha > mist.alpha:
+				mist = other as MistLayer
 		assert_eq(mist.area, SIZE * 96, "%s : brume à la taille de la carte" % map_id)
 		assert_lte(mist.alpha, MistLayer.ALPHA_MAX)
 		assert_gt(mist.alpha, previous_alpha, "%s : plus brumeux que l'étage du dessous" % map_id)
 		previous_alpha = mist.alpha
 		assert_lt(mist.z_index, 0, "sous les personnages")
-	assert_eq((_maps[&"pokemon_tower_6f"] as GameMap).get_node("Mist").get(&"alpha"),
-		previous_alpha, "le 6F est le plus brumeux")
+	assert_gte((_maps[&"pokemon_tower_7f"] as GameMap).get_node("Mist").get(&"alpha"),
+		(_maps[&"pokemon_tower_6f"] as GameMap).get_node("MistDenseGate/Mist").get(&"alpha"),
+		"Jalon 21 : le 7F est le plus brumeux")
+	assert_eq(previous_alpha, (_maps[&"pokemon_tower_7f"] as GameMap).get_node("Mist").get(
+		&"alpha"))
 
 
 func test_node_budget() -> void:
@@ -347,7 +350,8 @@ func test_shade_gets_darker_floor_by_floor() -> void:
 		var mean := total / maxf(count, 1)
 		gut.p("%s : voile moyen %.3f" % [map_id, mean])
 		# Le 5F est relevé par la lumière de la dalle purifiée : exempté de la comparaison.
-		if map_id != &"pokemon_tower_5f":
+		# Jalon 21 : le 7F (nef étroite, bougies de l'autel) est lui aussi relevé : exempté.
+		if map_id != &"pokemon_tower_5f" and map_id != &"pokemon_tower_7f":
 			assert_lt(mean, previous, "%s plus sombre que l'étage du dessous" % map_id)
 			previous = mean
 

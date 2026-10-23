@@ -8,7 +8,7 @@
 # [⌈1,5 x⌉, ⌈1,5 (x+1)⌉ - 1] pour un décor.
 #
 # Raccords (le contrôle les vérifie) :
-#   - NORD ↔ Parmanie (`fuchsia_city`, J22, qui n'existe pas encore). RB : Parmanie 40 × 36 cellules,
+#   - NORD ↔ Parmanie (`fuchsia_city`, J22 ; joint à la fusion du J24 dans `main`, 2026-10-23). RB : Parmanie 40 × 36 cellules,
 #     colonne 0 de la Route 19 = colonne 10 de Parmanie, sortie 16..23 de la dernière rangée. ×1,5 :
 #     colonne Parmanie = colonne Route 19 + 15. ATTENDU côté Parmanie (60 × 54, dernière rangée y = 53) :
 #     praticables à pied les colonnes 24..32 (terrasse de sable à rebords) et 34..35 (couloir) ;
@@ -120,8 +120,8 @@ GRILLE 30 81
 FIN
 
 POSITIONS
-warp_nord_terrasse         warp           9..17,0           libre   # PUSH ↑ → fuchsia_city (Parmanie, J22), from_route_19 ; sens unique : la terrasse se descend par les rebords
-warp_nord_couloir          warp           19..20,0          libre   # PUSH ↑ → fuchsia_city, from_route_19 ; le couloir est le chemin du retour (RB x13)
+warp_nord_terrasse         warp           9..17,0           libre   # PUSH ↑ → fuchsia_city (Parmanie, J22), from_route_19 (rangs 0..8) ; sens unique : la terrasse se descend par les rebords
+warp_nord_couloir          warp           19..20,0          libre   # PUSH ↑ → fuchsia_city, from_route_19 (rangs 9..10) ; le couloir est le chemin du retour (RB x13)
 from_fuchsia_city          spawn          9..17,0;19..20,0  libre   # arrivée de Parmanie, tournée ↓
 warp_ouest                 warp           0,60..79          libre   surf=1  # PUSH ← → route_20, bord est (149, y - 54) ; mer jointe (Surf gardé)
 from_route_20              spawn          0,60..79          libre   surf=1  # arrivée de la Route 20 en Surf, tournée →

@@ -1,0 +1,11 @@
+{
+	"fisher": {
+		"cell": [
+			10,
+			5
+		],
+		"facing": "down",
+		"sprite": "haru",
+		"dialogue": "j22_super_rod_brother"
+	}
+}

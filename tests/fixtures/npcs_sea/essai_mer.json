@@ -1,0 +1,15 @@
+{
+	"swimmer_nageur": {
+		"cell": [15, 13],
+		"facing": "left",
+		"sprite": "swimmer",
+		"move_mode": "surf",
+		"dialogue": "essai_mer_swimmer_after",
+		"trainer": {
+			"id": "essai_mer_swimmer",
+			"sight": 4,
+			"before": "essai_mer_swimmer_before",
+			"defeated": "essai_mer_swimmer_defeated"
+		}
+	}
+}

@@ -247,7 +247,9 @@ func test_tm11_and_its_compatibilities() -> void:
 		&"krabby", &"kingler", &"cubone", &"marowak",
 		# Jalon 20 (T7) : Kangourex et Aquali.
 		&"kangaskhan", &"horsea", &"seadra", &"goldeen", &"seaking", &"staryu", &"starmie",
-		&"gyarados", &"vaporeon", &"omanyte", &"omastar", &"kabuto", &"kabutops", &"articuno",
+		&"gyarados", &"vaporeon", &"omanyte", &"omastar", &"kabuto", &"kabutops",
+		# Ronflex (J21) : entré dans la table régénérée à la fusion du J24 dans `main`.
+		&"snorlax", &"articuno",
 		] as Array[StringName])
 	var squirtle := PokemonFactory.create(_data, &"squirtle", 20, GameRng.new(3))
 	assert_eq(TmTeach.check(squirtle, tm, _data), TmTeach.Check.COMPATIBLE)

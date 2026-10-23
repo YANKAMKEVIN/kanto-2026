@@ -1,0 +1,87 @@
+{
+	"route_13_grass": {
+		"maps": [
+			"route_13"
+		],
+		"terrain": "grass",
+		"rate": 20,
+		"ramp": {
+			"from_step": 15,
+			"max_steps": 20
+		},
+		"slots": [
+			{
+				"species": "oddish",
+				"levels": [
+					24,
+					24
+				],
+				"weight": 51
+			},
+			{
+				"species": "pidgey",
+				"levels": [
+					25,
+					25
+				],
+				"weight": 64
+			},
+			{
+				"species": "pidgey",
+				"levels": [
+					27,
+					27
+				],
+				"weight": 39
+			},
+			{
+				"species": "venonat",
+				"levels": [
+					24,
+					24
+				],
+				"weight": 25
+			},
+			{
+				"species": "oddish",
+				"levels": [
+					22,
+					22
+				],
+				"weight": 25
+			},
+			{
+				"species": "venonat",
+				"levels": [
+					26,
+					26
+				],
+				"weight": 25
+			},
+			{
+				"species": "oddish",
+				"levels": [
+					26,
+					26
+				],
+				"weight": 13
+			},
+			{
+				"species": "gloom",
+				"levels": [
+					28,
+					28
+				],
+				"weight": 11
+			},
+			{
+				"species": "gloom",
+				"levels": [
+					30,
+					30
+				],
+				"weight": 3
+			}
+		]
+	}
+}

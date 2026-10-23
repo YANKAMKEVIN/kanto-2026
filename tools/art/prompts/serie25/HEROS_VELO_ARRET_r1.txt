@@ -1,0 +1,14 @@
+HEROS_VELO_ARRET — POSE D'ARRÊT EN SELLE du même héros et du même vélo que la planche jointe HEROS_VELO_NE_r1 (sa planche de pédalage 4 × 4) : mêmes couleurs, même échelle, même vélo.
+Style : exactement le rendu de la planche jointe PERSO_P2_PEINT_r1 (le héros validé) : personnage peint simplifié, contour fin et doux d'une teinte sombre et colorée, aucun trait noir. Ni pixel art, ni 3D, ni anime aux contours noirs.
+LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche ; volumes conservés par un ombrage doux ; aucune teinte dorée ou orangée, aucun liseré chaud ; ombres propres neutres, légèrement bleutées.
+
+PERSONNAGE : le HÉROS du jeu, EXACTEMENT celui de la planche jointe PERSO_P2_PEINT_r1 (même visage, même casquette rouge à visière blanche, mêmes cheveux bruns, même t-shirt blanc, mêmes bretelles noires, même sac à dos jaune et bleu marine, même jean bleu, mêmes baskets rouges), mêmes proportions chibi d'environ 3 têtes, même main peinte, même finesse, sur une BICYCLETTE pliante de ville simple et lisible [D] : cadre ROUGE vif un peu bas, garde-boue blancs, pneus gris foncé, jantes argentées, selle noire, guidon droit à poignées blanches, petit phare rond blanc à l'avant, sans panier ni porte-bagages, sans logo.
+
+PLANCHE : image paysage 1536 × 1024, fond avec une vraie transparence (canal alpha, aucun damier dessiné). UNE seule ligne de 4 poses, de gauche à droite, chacune dans une colonne invisible de 384 px, bien séparées par du vide, entières, à la même taille que dans la planche jointe (environ 280 px du haut de la casquette au bas des roues), le bas des roues sur une même ligne horizontale.
+- Pose 1 : de face, comme la ligne 1 de HEROS_VELO_NE_r1.
+- Pose 2 : de profil vers la GAUCHE, comme la ligne 2.
+- Pose 3 : de profil vers la DROITE, comme la ligne 3.
+- Pose 4 : de dos, comme la ligne 4.
+POSE : le vélo est À L'ARRÊT, bien droit ; le héros reste assis sur la selle, les mains sur le guidon, le pied GAUCHE posé à plat au sol à côté du vélo, le pied droit sur la pédale haute, le buste droit, détendu.
+Vue : la même vue de dessus de trois quarts que le jeu (caméra un peu au-dessus). Pas de perspective, pas d'ombre au sol, pas de sol, pas de texte, pas de numéros, pas de cadres.
+Interdits de la série : texte, lettres, chiffres, logo, animaux réels ou faune non-Pokémon (oiseaux réels, poissons, insectes), Pikachu et tout Pokémon non demandé, élément effrayant. Aucun autre personnage, aucun Pokémon, aucune eau, aucun sol peint.

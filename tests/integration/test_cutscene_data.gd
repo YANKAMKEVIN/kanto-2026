@@ -72,6 +72,11 @@ const MAPS: Array[StringName] = [
 	&"route_8",
 	# Jalon 24 (T12) : la porte fermée de l'Arène de Cramois'Île (T-42 et recul).
 	&"cinnabar_island",
+	# Jalon 21 (T21) : arrivée silencieuse sur la Route 12.
+	&"route_12",
+	# Jalon 21 (T14, T22) : entrée de la Maison des Pokémon (remise de la Flûte), arrivée
+	# silencieuse sur la Route 16.
+	&"pokemon_house", &"route_16",
 ]
 ## Jalon 7 (T18) : partie qui revient au labo avec le colis (rival parti après le combat).
 const PARCEL_FLAGS: Array[StringName] = [
@@ -236,8 +241,16 @@ const VARIANT_FLAGS: Dictionary = {
 	&"route_9_entered": [PEWTER_FLAGS], &"route_9_item_1": [PEWTER_FLAGS],
 	&"route_9_item_2": [PEWTER_FLAGS], &"route_9_item_3": [PEWTER_FLAGS],
 	&"route_10_reached": [PEWTER_FLAGS], &"dark_cave_crossed": [PEWTER_FLAGS],
-	&"tower_6f_ghost": [PEWTER_FLAGS], &"tower_guardian": [PEWTER_FLAGS],
+	# Jalon 21 (T12) : variante A du 6F (révélation, Scope dans le Sac : VARIANT_ITEMS) en tête.
+	&"tower_6f_ghost": [PEWTER_FLAGS, PEWTER_FLAGS], &"tower_guardian": [PEWTER_FLAGS],
 	&"tower_rival": [PEWTER_FLAGS],
+	# Jalon 21 (T21) : Route 12 (arrivée silencieuse, CT39 du poste, réveil de Ronflex).
+	&"route_12_visited": [PEWTER_FLAGS], &"route_12_gate_tm39": [PEWTER_FLAGS],
+	&"snorlax_route_12_wake": [PEWTER_FLAGS],
+	# Jalon 21 (T13, T14, T22) : sauvetage de Fuji, remise de la Flûte, Route 16.
+	&"tower_7f_fuji_rescue": [PEWTER_FLAGS],
+	&"pokemon_house_flute": [PEWTER_FLAGS + [&"fuji_rescued"]],
+	&"route_16_visited": [PEWTER_FLAGS], &"snorlax_route_16_wake": [PEWTER_FLAGS],
 	# Jalon 19 (T18) : zone purifiée et objets de la Tour.
 	&"tower_purified_zone": [PEWTER_FLAGS], &"tower_3f_objet_1": [PEWTER_FLAGS],
 	&"tower_4f_objet_1": [PEWTER_FLAGS], &"tower_4f_objet_2": [PEWTER_FLAGS],
@@ -476,6 +489,18 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"pokemon_mansion_b1f_item_3": &"pokemon_mansion_b1f",
 	&"pokemon_mansion_b1f_item_4": &"pokemon_mansion_b1f",
 	&"pokemon_mansion_b1f_item_5": &"pokemon_mansion_b1f",
+	# Jalon 21 (T21) : CT39 (dialogue de la jeune femme du 2F) et réveil de Ronflex (choix OUI).
+	&"route_12_gate_tm39": &"route_12_gate_2f", &"snorlax_route_12_wake": &"route_12",
+	# Jalon 21 (T13, T22) : sauvetage de Fuji (dialogue de Fuji au 7F ; sa suite `next` est
+	# `pokemon_house_flute`, aussi lancée par le déclencheur d'entrée de la maison) et réveil du
+	# Ronflex 16 (« flute_cutscene » et choix OUI).
+	&"tower_7f_fuji_rescue": &"pokemon_tower_7f", &"snorlax_route_16_wake": &"route_16",
+}
+## Jalon 21 (T10, T12) : objets du Sac qui choisissent chaque variante (« if_items » /
+## « unless_items »), ligne par ligne comme VARIANT_FLAGS ; absent : Sac vide. La variante A du
+## 6F (révélation) demande le Scope Sylphe ; la variante B (SPECTRE du J19) s'applique sans.
+const VARIANT_ITEMS: Dictionary = {
+	&"tower_6f_ghost": [[&"silph_scope"], []],
 }
 ## Scènes à déclencheur dont la carte n'est pas encore construite → leur carte (simulées sur les
 ## PNJ de son fichier). Vidée au T19 du jalon 9 (la forêt existe), puis au T11 du jalon 10 (les
@@ -635,7 +660,12 @@ func test_library_loads_without_error() -> void:
 		&"articuno", &"cinnabar_gym_locked", &"cinnabar_lab_tm35", &"cinnabar_fossil_take_kabuto",
 		&"cinnabar_fossil_take_omanyte", &"cinnabar_fossil_give_kabuto",
 		&"cinnabar_fossil_give_omanyte", &"cinnabar_fossil_take_aerodactyl",
-		&"cinnabar_fossil_give_aerodactyl"]
+		&"cinnabar_fossil_give_aerodactyl",
+		# Jalon 21 (T21) : Route 12.
+		&"route_12_visited", &"route_12_gate_tm39", &"snorlax_route_12_wake",
+		# Jalon 21 (T13, T14, T22) : 7F, Maison des Pokémon, Route 16.
+		&"tower_7f_fuji_rescue", &"pokemon_house_flute", &"route_16_visited",
+		&"snorlax_route_16_wake"]
 		+ J18_IDS + J20_T21_IDS + J25_IDS))
 
 
@@ -644,6 +674,18 @@ func _sorted(values: Array) -> Array[StringName]:
 	result.assign(values)
 	result.sort_custom(func(a: StringName, b: StringName) -> bool: return String(a) < String(b))
 	return result
+
+
+## Jalon 24 (D3 de la QA A17) : la CT35 a sa ligne de réception, comme les CT des Arènes.
+func test_tm35_gift_is_followed_by_its_reception_line() -> void:
+	var steps := _cutscenes.get_cutscene(&"cinnabar_lab_tm35").variants[0].steps
+	assert_eq(steps[0].dialogue_id, &"cinnabar_lab_tm35_offer")
+	assert_eq(steps[1].kind, CutsceneStep.Kind.GIVE)
+	assert_eq(steps[1].item_id, &"tm35")
+	assert_eq(steps[2].kind, CutsceneStep.Kind.DIALOGUE)
+	assert_eq(steps[2].dialogue_id, &"cinnabar_lab_tm35_use")
+	assert_eq(steps[3].kind, CutsceneStep.Kind.SET_FLAGS)
+	assert_eq(steps[3].flags, [&"got_tm35"] as Array[StringName])
 
 
 func test_route1_grass_ends_with_the_starter_offer() -> void:
@@ -848,7 +890,9 @@ func test_every_change_map_targets_an_existing_map_and_spawn() -> void:
 				as GameMap
 		assert_true(map.has_spawn(step.spawn), "%s : point « %s »" % [step.map_id, step.spawn])
 		map.free()
-	assert_eq(count, 4, "le retour au labo ; le quai de Carmin (départ du S.S. Anne, J16 T15) ; "
+	# Jalon 21 (T13) : + la téléportation du 7F vers la Maison des Pokémon.
+	assert_eq(count, 5, "le retour au labo ; le quai de Carmin (départ du S.S. Anne, J16 T15) ; "
+		+ "la Maison des Pokémon (sauvetage de Fuji, J21 T13) ; "
 		+ "la porte de l'Arène de Cramois'Île déverrouillée (J25, deux variantes)")
 
 
@@ -858,9 +902,10 @@ func test_every_variant_is_chosen_by_its_flags() -> void:
 		var cutscene := _cutscenes.get_cutscene(id)
 		var rows: Array = VARIANT_FLAGS.get(id, [])
 		assert_eq(rows.size(), cutscene.variants.size())
+		var items: Array = VARIANT_ITEMS.get(id, [])
 		for i: int in mini(rows.size(), cutscene.variants.size()):
-			assert_same(cutscene.pick(_flags(rows[i])), cutscene.variants[i],
-				"%s : variante %d" % [id, i + 1])
+			assert_same(cutscene.pick(_flags(rows[i]), _bag(items[i] if i < items.size() else [])),
+				cutscene.variants[i], "%s : variante %d" % [id, i + 1])
 
 
 func test_static_simulation_of_every_variant() -> void:
@@ -1277,6 +1322,14 @@ func _present(map_id: StringName, flags: StoryFlags) -> Array[StringName]:
 	return ids
 
 
+## Jalon 21 : Sac contenant un exemplaire de chaque objet de [param ids].
+func _bag(ids: Array) -> Bag:
+	var bag := Bag.new()
+	for id: StringName in ids:
+		bag.add(id)
+	return bag
+
+
 func _flags(names: Array) -> StoryFlags:
 	var flags := StoryFlags.new()
 	for flag: StringName in names:
@@ -1290,9 +1343,15 @@ func _real_ids() -> Array[StringName]:
 	return _without_qa(_cutscenes.get_ids())
 
 
+## Sans les cartes de QA ni les données du jalon 22 (fichiers `j22_*.json`, vérifiés par
+## `test_j22_data.gd`).
 func _without_qa(ids: Array[StringName]) -> Array[StringName]:
+	var j22 := J22Ids.in_dir("res://data/cutscenes/")
 	var result: Array[StringName] = []
 	for id: StringName in ids:
-		if not MapCatalog.is_qa_map(id):
+		if not MapCatalog.is_qa_map(id) and not j22.has(id):
 			result.append(id)
 	return result
+
+
+const J22Ids := preload("res://tests/helpers/j22_ids.gd")

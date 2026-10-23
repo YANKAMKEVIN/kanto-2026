@@ -850,8 +850,10 @@ func test_gift_pokemon_without_say_stored() -> void:
 
 
 func test_gift_pokemon_kind_is_last_in_the_enum() -> void:
-	# J25 : « unset », « toggle », « trade » ajoutés après lui.
-	assert_eq(CutsceneStep.Kind.GIFT_POKEMON, CutsceneStep.Kind.size() - 4, "en fin d'enum")
+	# Jalon 21 : FLUTE vient après ; puis J25 : « unset », « toggle », « trade », en fin d'enum.
+	assert_eq(CutsceneStep.Kind.GIFT_POKEMON, CutsceneStep.Kind.FLUTE - 1, "en fin d'enum")
+	assert_eq(CutsceneStep.Kind.FLUTE, CutsceneStep.Kind.size() - 4, "flute avant les étapes du J25")
+	assert_eq(CutsceneStep.Kind.TRADE, CutsceneStep.Kind.size() - 1, "trade en fin d'enum")
 	assert_eq(CutsceneStep.TYPE_KEYS[CutsceneStep.Kind.GIFT_POKEMON], "gift_pokemon")
 	assert_eq(CutsceneStep.TYPE_KEYS.size(), CutsceneStep.Kind.size())
 

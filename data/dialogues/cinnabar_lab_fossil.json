@@ -124,8 +124,7 @@
 	"cinnabar_fossil_taken": {
 		"speaker": "Scientifique",
 		"pages": [
-			"Bien. Ça prend un peu de temps :",
-			"va faire un tour dehors !"
+			"Bien. Ça prend un peu de temps :\nva faire un tour dehors !"
 		]
 	},
 	"cinnabar_fossil_ready_kabuto": {
