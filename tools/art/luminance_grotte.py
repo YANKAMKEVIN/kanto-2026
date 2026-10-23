@@ -36,7 +36,8 @@ Option `--halo` (J17 T25, voile d'obscurité) : mesure les captures de `tools/ca
 (voile posé sur une grotte de `PLANS` ; la carte de QA `qa_flash` est retirée au J17 T28 ;
 J18 : Grotte Sombre, `tools/capture_dark_cave_voile.sh` ; nom
 `<sans_voile|dark|lit>_<lieu>.png` + `_vide`) : contraste du héros ≥ 3,0 dans le halo (héros
-contre le sol qu'il recouvre) et **sol hors du halo ≥ 0,10** (cases praticables entièrement à
+contre le sol qu'il recouvre) et **sol hors du halo ≥ 0,10 avec Flash, ≥ 0,04 sans** (2026-10-23 :
+voile sans Flash 0,38 → 0,65 pour qu'on sente Flash ; on devine encore le sol, jamais de noir) (cases praticables entièrement à
 l'écran, plus loin du joueur que la fin du fondu : 4 cases sans Flash, 9 avec ;
 non mesuré sans voile ni si aucune case n'est assez loin).
 """
@@ -70,7 +71,7 @@ SEUIL_ECART = 1.25
 # Cartes sans voile de pénombre (Cave Taupiqueur, J17 T15 : lumière naturelle, aucun voile) : l'écart
 # centre / pourtour est donné pour information, il n'y a pas de pénombre à mesurer.
 SANS_VOILE = {"digletts_cave"}
-SEUIL_HORS_HALO = 0.10
+SEUIL_HORS_HALO = {"dark": 0.04, "lit": 0.10}
 FONDU = {"dark": 4.0, "lit": 9.0}  # fin du fondu du halo (cases), data/world/darkness.json
 REPERES = set("LjUVE*")
 RAYON_JOUEUR = 2.5
@@ -273,7 +274,7 @@ def mesurer_halo(png: Path, fiche: dict) -> dict | None:
 			resultat["cases_hors_halo"] = len(valeurs)
 	ok = resultat["contraste_heros"] is not None and resultat["contraste_heros"] >= SEUIL_HEROS
 	if resultat["hors_halo"] is not None:
-		ok = ok and resultat["hors_halo"] >= SEUIL_HORS_HALO
+		ok = ok and resultat["hors_halo"] >= SEUIL_HORS_HALO[etat]
 	# Sans voile : vue de référence (aucun halo), donnée pour information.
 	resultat["ok"] = ok or etat not in FONDU
 	return resultat
@@ -295,7 +296,8 @@ def main_halo(args) -> int:
 		print(f"{r['vue']:20} {h if h is not None else '—':>6} "
 			f"{f'{o:9.3f}' if o is not None else '        —'} {r['cases_hors_halo']:5d} "
 			f"{'OK' if r['ok'] else 'ÉCHEC'}")
-	print(f"seuils : héros ≥ {SEUIL_HEROS} (dans le halo), sol hors du halo ≥ {SEUIL_HORS_HALO}")
+	print(f"seuils : héros ≥ {SEUIL_HEROS} (dans le halo), sol hors du halo ≥ "
+		f"{SEUIL_HORS_HALO['lit']} avec Flash, ≥ {SEUIL_HORS_HALO['dark']} sans")
 	if args.json:
 		args.json.write_text(json.dumps(resultats, indent="\t", ensure_ascii=False))
 	return 1 if not resultats or any(not r["ok"] for r in resultats) else 0
