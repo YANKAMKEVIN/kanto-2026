@@ -131,6 +131,12 @@ Branches **locales** du dépôt principal (copies dans le scratchpad de la sessi
 - **Question d'équilibrage** (J24) : maintenant que Guillotine marche, la rendre aux Krabby des
   Dresseurs comme dans RB ? (Ils l'ont perdue par la règle de Major Bob.)
 
+**À savoir** : `origin/systemes-2` (`8d21766a`) = `main` `d0392e93` + `moteur-commun` (sol cuit
+générique, `MountPlaceholder`, D5, réglage « Lumière d'ambiance », suite 6 662 / 6 662), proposé à
+Kevin en avance rapide de `main`. S'il est accepté avant ces poussées, refusionner `main` dans les
+deux branches préparées ; pour le J22, retirer `_bike_placeholder` (`player.gd`) au profit de
+`MountPlaceholder` (`moteur-commun.md` §4).
+
 Pour pousser après validation : `git push origin prep/main-dans-jalon-22:jalon-22` (avance rapide),
 idem pour le J24 ; les sessions des jalons font ensuite un `pull` dans `wt-j22` / `wt-j24`.
 
