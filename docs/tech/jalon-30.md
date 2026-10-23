@@ -458,3 +458,9 @@ Import headless sans erreur ; **suite complète 6 539 / 6 539** (598 scripts), j
   **T11–T14** combats et équilibrage ; **T15–T18** Panthéon (écran), générique
   (`data/story/credits.json`, Q30-1), scène `league_victory`, QA finale.
 - Planche des grilles pour Kevin (sous-jalon 30.0) ; fiches de Pokédex des 15 espèces.
+
+## QA A17 du 2026-10-23
+
+Pas de session téléphone : rien de la Ligue n'est encore jouable dans l'APK (cartes T9,
+`LeagueDirector` T8 et départs `league_*` à venir ; seules les parties pures T2–T7 existent). À
+reprendre avec la session 30A.
