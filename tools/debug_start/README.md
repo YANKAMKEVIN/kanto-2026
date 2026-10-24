@@ -312,3 +312,17 @@ reste éprouvée par `test_cutscene_static_encounter.gd` et `test_cutscene_stati
 | `cerulean_cave_locked.json` | J31 (T5) : même partie, 8 Badges et Conseil des Quatre vaincu dans une tentative, **sans** titre de Champion : la bouche est fermée (case occupée ; EXAMINER face à elle → « Les eaux sont trop agitées. Pas maintenant. ») |
 | `cerulean_cave_1f.json` | J31 (T6–T8) : partie de `cerulean_cave`, `cerulean_cave_discovered` posé, **dans la grotte** à l'entrée du 1F (spawn `entree` (24, 16), tourné ↑) : sol haut et escaliers, Surf sur le lac, échelles P1–P7, objets (Guérison et Max Élixir à prendre **depuis l'eau**), Super Bonbon caché (indice (14, 11), depuis (14, 12)), rencontres, Super Canne ; bouche (24..25, 17) → Azuria |
 | `cerulean_cave_mewtwo.json` | J31 (T9) : même partie, au B1F **devant Mewtwo** (spawn de débogage `mewtwo_front` (27, 12), tourné ↓) : cri puis combat N70 ; fuite → il reste ; capture ou K.O. → absent (Hyper Balls : pas de Master Ball avant le J26) |
+
+## Jalon 25 : Manoir, échanges du Labo, Vieil Ambre, Arène d'Auguste (QA 25A–25C)
+
+Équipe [D] (sauf mention) : Tortank N46 (Surf, Force, Morsure, Pistolet à O), Raichu N42, Akwakwak N42 ; CS01,
+CS03, CS04, 10 Hyper Balls, 10 Hyper Potions, 5 Total Soin, 3 Cordes Sortie ; 20 000 ₽ ; Badges
+jusqu'à l'Âme. Aucune carte de QA (`qa_manoir`, `qa_cramois` du plan jamais créées).
+
+| Fichier | Partie |
+|---|---|
+| `j25_manoir.json` | Cramois'Île devant le Manoir (`from_manoir`, ↑) : interrupteur remis à ARRÊT en entrant, 1F → 3F, chute, B1F, Clé Secrète, Pillards, Corde Sortie |
+| `j25_manoir_b1f.json` | B1F du Manoir (`arrivee_s`, ↓) : statues, grilles A/B, Clé Secrète, objets |
+| `j25_echanges.json` | Cramois'Île devant le Labo (`from_labo`, ↑), Tortank, Raichu N42 **compagnon**, Ponyta N30, Pikachu N25, Vieil Ambre au Sac : échanges d'Hector (Raichu), Marc (Ponyta), Lina (refus sans Mimitoss), Ptéra N30 |
+| `j25_argenta.json` | Argenta devant le Musée (`from_museum`, ↓), Tortank N46 et Herbizarre N30 (Coupe) : arbre à Couper, porte arrière, comptoir, Vieil Ambre |
+| `j25_arene.json` | Cramois'Île devant l'Arène (`from_arene`, ↑), **Clé Secrète** et `got_pokemon_mansion_b1f_item_5` : porte (76–77), quiz, Dresseurs, Auguste, Badge Volcan, CT38 ; perdu au premier essai sur le S24 (`jalon-25-equilibrage.md` §5) |

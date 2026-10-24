@@ -128,7 +128,9 @@ func test_real_tables_load_without_error() -> void:
 	assert_eq(lib.get_ids(), [&"cerulean_cave_1f_floor", &"cerulean_cave_2f_floor",
 		&"cerulean_cave_b1f_floor", &"cinnabar_island_water", &"dark_cave_1f_rubble",
 		&"dark_cave_b1f_rubble", &"digletts_cave_rubble", &"mt_moon_1f_rubble",
-		&"mt_moon_b1f_rubble", &"mt_moon_b2f_rubble", &"pokemon_tower_high", &"pokemon_tower_low",
+		&"mt_moon_b1f_rubble", &"mt_moon_b2f_rubble", &"pokemon_mansion_1f_floor",
+		&"pokemon_mansion_2f_floor", &"pokemon_mansion_3f_floor", &"pokemon_mansion_b1f_floor",
+		&"pokemon_tower_high", &"pokemon_tower_low",
 		&"pokemon_tower_mid", &"pokemon_tower_top", &"route_10_grass", &"route_11_grass",
 		&"route_12_south_grass", &"route_13_grass", &"route_14_grass", &"route_15_grass",
 		&"route_16_west_grass", &"route_17_grass", &"route_18_grass", &"route_19_water",
@@ -215,8 +217,8 @@ func test_every_wild_species_has_battle_sprites() -> void:
 	# autres tables de la Tour (SPECTRES sans le Scope).
 	# + les 3 tables de la Grotte Azurée (J31) : leurs espèces (Leveinard et Rhinoféros empruntés
 	# aux J23 et J28, Métamorph, Mewtwo) n'ont pas toutes un sprite de combat dans cette base.
-	assert_eq(lib.size(), 46,
-		"une table par couple ci-dessous, plus les 4 de la Tour (J19, J21) et les 3 de la Grotte Azurée")
+	assert_eq(lib.size(), 50, "une table par couple ci-dessous, plus les 4 de la Tour (J19, J21) "
+		+ "(dont les 4 du Manoir, J25) et les 3 de la Grotte Azurée")
 	for pair: Array in [[&"route_1", &"grass"], [&"route_2", &"grass"],
 			[&"route_22", &"grass"], [&"viridian_forest", &"grass"], [&"route_2_north", &"grass"],
 			[&"route_3", &"grass"], [&"mt_moon_1f", &"rubble"], [&"mt_moon_b1f", &"rubble"],
@@ -237,7 +239,10 @@ func test_every_wild_species_has_battle_sprites() -> void:
 			[&"route_19", &"water"], [&"route_20", &"water"], [&"route_21", &"water"],
 			[&"route_21", &"grass"], [&"cinnabar_island", &"water"],
 			[&"seafoam_1f", &"floor"], [&"seafoam_b1f", &"floor"], [&"seafoam_b2f", &"floor"],
-			[&"seafoam_b3f", &"floor"], [&"seafoam_b4f", &"floor"]]:
+			[&"seafoam_b3f", &"floor"], [&"seafoam_b4f", &"floor"],
+			# Jalon 25 (T9) : Manoir Pokémon.
+			[&"pokemon_mansion_1f", &"floor"], [&"pokemon_mansion_2f", &"floor"],
+			[&"pokemon_mansion_3f", &"floor"], [&"pokemon_mansion_b1f", &"floor"]]:
 		for slot: EncounterSlot in lib.get_table(pair[0], pair[1]).slots:
 			for view: String in ["front", "back"]:
 				var path := "res://assets/sprites/pokemon/placeholder/%s_%s.png" % [
@@ -346,7 +351,8 @@ func test_real_tables_carry_no_ghost_item_outside_the_tower() -> void:
 		if String(id).begins_with("pokemon_tower_"):
 			continue
 		assert_true(table.ghost_unless_item.is_empty(), String(id))
-		# Jalon 24 (T4) : le sol des Îles Écume est aussi un terrain « floor », sans SPECTRE ;
+		# Jalon 24 (T4) : le sol des Îles Écume est aussi un terrain « floor », sans SPECTRE ; J25 : Manoir ;
 		# jalon 31 : celui de la Grotte Azurée aussi.
-		if not String(id).begins_with("seafoam_") and not String(id).begins_with("cerulean_cave_"):
+		if not (String(id).begins_with("seafoam_") or String(id).begins_with("pokemon_mansion_")
+				or String(id).begins_with("cerulean_cave_")):
 			assert_ne(table.terrain, &"floor", String(id))

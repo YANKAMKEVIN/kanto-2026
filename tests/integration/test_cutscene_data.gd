@@ -276,11 +276,17 @@ const VARIANT_FLAGS: Dictionary = {
 	# Jalon 24 : objets, caches, Artikodin, porte de l'Arène, CT35, fossiles.
 	&"route_20_item_1": [PEWTER_FLAGS], &"route_21_item_1": [PEWTER_FLAGS],
 	&"seafoam_b2f_hidden_1": [PEWTER_FLAGS], &"seafoam_b4f_hidden_1": [PEWTER_FLAGS],
-	&"articuno": [PEWTER_FLAGS], &"cinnabar_gym_locked": [PEWTER_FLAGS],
+	&"articuno": [PEWTER_FLAGS],
+	# J25 : déverrouillée (entrée directe), Clé ramassée (textes 76–77), fermée (T-42).
+	&"cinnabar_gym_locked": [PEWTER_FLAGS + [&"cinnabar_gym_unlocked"],
+		PEWTER_FLAGS + [&"got_pokemon_mansion_b1f_item_5"], PEWTER_FLAGS],
 	&"cinnabar_lab_tm35": [PEWTER_FLAGS],
 	&"cinnabar_fossil_take_kabuto": [PEWTER_FLAGS], &"cinnabar_fossil_take_omanyte": [PEWTER_FLAGS],
 	&"cinnabar_fossil_give_kabuto": [PEWTER_FLAGS + [&"fossil_reviving_kabuto", &"fossil_ready"]],
 	&"cinnabar_fossil_give_omanyte": [PEWTER_FLAGS + [&"fossil_reviving_omanyte", &"fossil_ready"]],
+	# Jalon 25 : Vieil Ambre → Ptéra (calque des fossiles du J24).
+	&"cinnabar_fossil_take_aerodactyl": [PEWTER_FLAGS],
+	&"cinnabar_fossil_give_aerodactyl": [PEWTER_FLAGS + [&"fossil_reviving_aerodactyl", &"fossil_ready"]],
 	# Jalon 20 (T21) : interrupteur (une fois), chute et prise de la Clé, Giovanni, Scope, objets.
 	&"game_corner_switch": [PEWTER_FLAGS], &"rocket_hideout_key_drop": [PEWTER_FLAGS],
 	&"rocket_hideout_b4f_lift_key": [PEWTER_FLAGS + [&"rocket_dropped_lift_key"]],
@@ -300,6 +306,34 @@ const VARIANT_FLAGS: Dictionary = {
 	&"rocket_hideout_b4f_item_2": [PEWTER_FLAGS],
 	&"rocket_hideout_b4f_item_3": [PEWTER_FLAGS],
 	&"rocket_hideout_b4f_hidden_1": [PEWTER_FLAGS],
+	# Jalon 25 : Manoir (objets, caches, interrupteur), Arène (quiz, Auguste), réserve du Musée,
+	# arbre à Couper d'Argenta, échanges du Labo.
+	&"cinnabar_gym_blaine": [PEWTER_FLAGS + [&"badge_volcano"], PEWTER_FLAGS],
+	&"cinnabar_gym_quiz_1": [PEWTER_FLAGS],
+	&"cinnabar_gym_quiz_2": [PEWTER_FLAGS],
+	&"cinnabar_gym_quiz_3": [PEWTER_FLAGS],
+	&"cinnabar_gym_quiz_4": [PEWTER_FLAGS],
+	&"cinnabar_gym_quiz_5": [PEWTER_FLAGS],
+	&"cinnabar_gym_quiz_6": [PEWTER_FLAGS],
+	&"cinnabar_trade_hector": [PEWTER_FLAGS + [&"cinnabar_trade_electrode_done"], PEWTER_FLAGS],
+	&"cinnabar_trade_lina": [PEWTER_FLAGS + [&"cinnabar_trade_tangela_done"], PEWTER_FLAGS],
+	&"cinnabar_trade_marc": [PEWTER_FLAGS + [&"cinnabar_trade_seel_done"], PEWTER_FLAGS],
+	&"cut_tree_pewter_museum": [PEWTER_FLAGS],
+	&"mansion_switch": [PEWTER_FLAGS],
+	&"pewter_museum_old_amber": [PEWTER_FLAGS],
+	&"pokemon_mansion_1f_hidden_1": [PEWTER_FLAGS],
+	&"pokemon_mansion_1f_item_1": [PEWTER_FLAGS],
+	&"pokemon_mansion_1f_item_2": [PEWTER_FLAGS],
+	&"pokemon_mansion_2f_item_1": [PEWTER_FLAGS],
+	&"pokemon_mansion_3f_hidden_1": [PEWTER_FLAGS],
+	&"pokemon_mansion_3f_item_1": [PEWTER_FLAGS],
+	&"pokemon_mansion_3f_item_2": [PEWTER_FLAGS],
+	&"pokemon_mansion_b1f_hidden_1": [PEWTER_FLAGS],
+	&"pokemon_mansion_b1f_item_1": [PEWTER_FLAGS],
+	&"pokemon_mansion_b1f_item_2": [PEWTER_FLAGS],
+	&"pokemon_mansion_b1f_item_3": [PEWTER_FLAGS],
+	&"pokemon_mansion_b1f_item_4": [PEWTER_FLAGS],
+	&"pokemon_mansion_b1f_item_5": [PEWTER_FLAGS],
 	# Jalon 31 (T4) : objets de la Grotte Azurée et Mewtwo (une variante, avant le drapeau).
 	&"cerulean_cave_1f_item_1": [[]],
 	&"cerulean_cave_1f_item_2": [[]],
@@ -441,6 +475,36 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"cinnabar_fossil_take_omanyte": &"cinnabar_lab_fossil",
 	&"cinnabar_fossil_give_kabuto": &"cinnabar_lab_fossil",
 	&"cinnabar_fossil_give_omanyte": &"cinnabar_lab_fossil",
+	&"cinnabar_fossil_take_aerodactyl": &"cinnabar_lab_fossil",
+	&"cinnabar_fossil_give_aerodactyl": &"cinnabar_lab_fossil",
+	# Jalon 25 : PNJ « objet », points d'examen, statues, machines, Auguste, PNJ des échanges,
+	# scientifique de l'ambre, arbre à Couper (« cutscene » ou « confirm_cutscene »).
+	&"cinnabar_gym_blaine": &"cinnabar_gym",
+	&"cinnabar_gym_quiz_1": &"cinnabar_gym",
+	&"cinnabar_gym_quiz_2": &"cinnabar_gym",
+	&"cinnabar_gym_quiz_3": &"cinnabar_gym",
+	&"cinnabar_gym_quiz_4": &"cinnabar_gym",
+	&"cinnabar_gym_quiz_5": &"cinnabar_gym",
+	&"cinnabar_gym_quiz_6": &"cinnabar_gym",
+	&"cinnabar_trade_hector": &"cinnabar_lab_meeting",
+	&"cinnabar_trade_lina": &"cinnabar_lab_meeting",
+	&"cinnabar_trade_marc": &"cinnabar_lab_fossil",
+	&"cut_tree_pewter_museum": &"pewter_city",
+	&"mansion_switch": &"pokemon_mansion_1f",
+	&"pewter_museum_old_amber": &"pewter_museum_reserve",
+	&"pokemon_mansion_1f_hidden_1": &"pokemon_mansion_1f",
+	&"pokemon_mansion_1f_item_1": &"pokemon_mansion_1f",
+	&"pokemon_mansion_1f_item_2": &"pokemon_mansion_1f",
+	&"pokemon_mansion_2f_item_1": &"pokemon_mansion_2f",
+	&"pokemon_mansion_3f_hidden_1": &"pokemon_mansion_3f",
+	&"pokemon_mansion_3f_item_1": &"pokemon_mansion_3f",
+	&"pokemon_mansion_3f_item_2": &"pokemon_mansion_3f",
+	&"pokemon_mansion_b1f_hidden_1": &"pokemon_mansion_b1f",
+	&"pokemon_mansion_b1f_item_1": &"pokemon_mansion_b1f",
+	&"pokemon_mansion_b1f_item_2": &"pokemon_mansion_b1f",
+	&"pokemon_mansion_b1f_item_3": &"pokemon_mansion_b1f",
+	&"pokemon_mansion_b1f_item_4": &"pokemon_mansion_b1f",
+	&"pokemon_mansion_b1f_item_5": &"pokemon_mansion_b1f",
 	# Jalon 21 (T21) : CT39 (dialogue de la jeune femme du 2F) et réveil de Ronflex (choix OUI).
 	&"route_12_gate_tm39": &"route_12_gate_2f", &"snorlax_route_12_wake": &"route_12",
 	# Jalon 21 (T13, T22) : sauvetage de Fuji (dialogue de Fuji au 7F ; sa suite `next` est
@@ -482,6 +546,34 @@ const J20_T21_IDS: Array[StringName] = [
 	&"rocket_hideout_b3f_hidden_1", &"rocket_hideout_b4f_item_1", &"rocket_hideout_b4f_item_2",
 	&"rocket_hideout_b4f_item_3", &"rocket_hideout_b4f_hidden_1",
 ]
+## Jalon 25 : scènes du Manoir, de l'Arène, de la réserve du Musée et des échanges.
+const J25_IDS: Array[StringName] = [
+	&"cinnabar_gym_blaine",
+	&"cinnabar_gym_quiz_1",
+	&"cinnabar_gym_quiz_2",
+	&"cinnabar_gym_quiz_3",
+	&"cinnabar_gym_quiz_4",
+	&"cinnabar_gym_quiz_5",
+	&"cinnabar_gym_quiz_6",
+	&"cinnabar_trade_hector",
+	&"cinnabar_trade_lina",
+	&"cinnabar_trade_marc",
+	&"cut_tree_pewter_museum",
+	&"mansion_switch",
+	&"pewter_museum_old_amber",
+	&"pokemon_mansion_1f_hidden_1",
+	&"pokemon_mansion_1f_item_1",
+	&"pokemon_mansion_1f_item_2",
+	&"pokemon_mansion_2f_item_1",
+	&"pokemon_mansion_3f_hidden_1",
+	&"pokemon_mansion_3f_item_1",
+	&"pokemon_mansion_3f_item_2",
+	&"pokemon_mansion_b1f_hidden_1",
+	&"pokemon_mansion_b1f_item_1",
+	&"pokemon_mansion_b1f_item_2",
+	&"pokemon_mansion_b1f_item_3",
+	&"pokemon_mansion_b1f_item_4",
+	&"pokemon_mansion_b1f_item_5",
 ## Jalon 31 (T4) : objets de la Grotte Azurée et Mewtwo.
 const J31_IDS: Array[StringName] = [
 	&"cerulean_cave_1f_item_1",
@@ -610,13 +702,14 @@ func test_library_loads_without_error() -> void:
 		&"route_20_item_1", &"route_21_item_1", &"seafoam_b2f_hidden_1", &"seafoam_b4f_hidden_1",
 		&"articuno", &"cinnabar_gym_locked", &"cinnabar_lab_tm35", &"cinnabar_fossil_take_kabuto",
 		&"cinnabar_fossil_take_omanyte", &"cinnabar_fossil_give_kabuto",
-		&"cinnabar_fossil_give_omanyte",
+		&"cinnabar_fossil_give_omanyte", &"cinnabar_fossil_take_aerodactyl",
+		&"cinnabar_fossil_give_aerodactyl",
 		# Jalon 21 (T21) : Route 12.
 		&"route_12_visited", &"route_12_gate_tm39", &"snorlax_route_12_wake",
 		# Jalon 21 (T13, T14, T22) : 7F, Maison des Pokémon, Route 16.
 		&"tower_7f_fuji_rescue", &"pokemon_house_flute", &"route_16_visited",
 		&"snorlax_route_16_wake"]
-		+ J18_IDS + J20_T21_IDS + J31_IDS))
+		+ J18_IDS + J20_T21_IDS + J25_IDS + J31_IDS))
 
 
 func _sorted(values: Array) -> Array[StringName]:
@@ -705,11 +798,12 @@ func test_every_trainer_and_item_step_exists() -> void:
 ## l'étape « badge » d'une scène suit le combat qui lève déjà son drapeau (« win »).
 func test_every_champion_card_and_badge_step_exists() -> void:
 	assert_eq(_cutscenes.get_card_trainer_ids(), [&"celadon_gym_erika", &"cerulean_gym_misty",
-		&"giovanni_hideout", &"pewter_gym_brock", &"vermilion_gym_surge"] as Array[StringName])
+		&"cinnabar_gym_blaine", &"giovanni_hideout", &"pewter_gym_brock", &"vermilion_gym_surge"] as Array[StringName])
 	for id: StringName in _cutscenes.get_card_trainer_ids():
 		var trainer := _trainers.get_trainer(id)
 		assert_true(trainer != null and trainer.has_card(), "« %s » a une carte" % id)
-	assert_eq(_cutscenes.get_badge_ids(), [&"boulder", &"cascade", &"rainbow", &"thunder"]
+	assert_eq(_cutscenes.get_badge_ids(), [&"boulder", &"cascade", &"rainbow", &"thunder",
+		&"volcano"]
 		as Array[StringName])
 	for id: StringName in _cutscenes.get_badge_ids():
 		assert_true(_badges.has_badge(id), "badge « %s » connu" % id)
@@ -740,46 +834,49 @@ func test_only_world_items_are_found_items() -> void:
 	assert_eq(found, ["celadon_hidden_1:revive",
 		# Jalon 31 (T4) : objets de RB de la Grotte Azurée.
 		"cerulean_cave_1f_hidden_1:rare_candy", "cerulean_cave_1f_item_1:full_restore", "cerulean_cave_1f_item_2:max_elixir", "cerulean_cave_1f_item_3:nugget", "cerulean_cave_2f_item_1:pp_up", "cerulean_cave_2f_item_2:ultra_ball", "cerulean_cave_2f_item_3:full_restore", "cerulean_cave_b1f_hidden_1:ultra_ball", "cerulean_cave_b1f_item_1:ultra_ball", "cerulean_cave_b1f_item_2:max_revive",
-		"dark_cave_1f_item_1:escape_rope", "dark_cave_1f_item_2:antidote",
-		"dark_cave_b1f_hidden_1:super_potion", "dark_cave_b1f_item_1:super_potion",
-		"digletts_cave_item_1:escape_rope", "mt_moon_1f_hidden_1:awakening",
-		"mt_moon_1f_item_1:escape_rope", "mt_moon_b1f_item_1:moon_stone",
-		"mt_moon_b1f_item_2:potion", "mt_moon_b2f_hidden_1:moon_stone", "mt_moon_b2f_item_1:tm01",
-		"rocket_hideout_b1f_hidden_1:revive", "rocket_hideout_b1f_item_1:escape_rope",
-		"rocket_hideout_b1f_item_2:super_potion", "rocket_hideout_b2f_item_1:moon_stone",
-		"rocket_hideout_b2f_item_2:nugget", "rocket_hideout_b2f_item_3:super_potion",
-		"rocket_hideout_b2f_item_4:super_potion", "rocket_hideout_b3f_hidden_1:nugget",
-		"rocket_hideout_b3f_item_1:super_potion", "rocket_hideout_b3f_item_2:rare_candy",
-		"rocket_hideout_b4f_hidden_1:super_potion", "rocket_hideout_b4f_item_1:super_potion",
-		"rocket_hideout_b4f_item_2:revive", "rocket_hideout_b4f_item_3:super_potion",
-		"rocket_hideout_b4f_lift_key:lift_key", "rocket_hideout_b4f_silph_scope:silph_scope",
-		"route_10_item_1:super_potion", "route_11_hidden_1:poke_ball",
-		"route_11_item_1:super_potion", "route_11_item_2:awakening", "route_1_potion:potion",
-		"route_20_item_1:great_ball", "route_21_item_1:hyper_potion",
+		"dark_cave_1f_item_1:escape_rope",
+		"dark_cave_1f_item_2:antidote", "dark_cave_b1f_hidden_1:super_potion",
+		"dark_cave_b1f_item_1:super_potion", "digletts_cave_item_1:escape_rope",
+		"mt_moon_1f_hidden_1:awakening", "mt_moon_1f_item_1:escape_rope",
+		"mt_moon_b1f_item_1:moon_stone", "mt_moon_b1f_item_2:potion",
+		"mt_moon_b2f_hidden_1:moon_stone", "mt_moon_b2f_item_1:tm01",
+		"pokemon_mansion_1f_hidden_1:moon_stone", "pokemon_mansion_1f_item_1:escape_rope",
+		"pokemon_mansion_1f_item_2:nugget", "pokemon_mansion_2f_item_1:rare_candy",
+		"pokemon_mansion_3f_hidden_1:max_revive", "pokemon_mansion_3f_item_1:max_potion",
+		"pokemon_mansion_3f_item_2:nugget", "pokemon_mansion_b1f_hidden_1:rare_candy",
+		"pokemon_mansion_b1f_item_1:rare_candy", "pokemon_mansion_b1f_item_2:full_restore",
+		"pokemon_mansion_b1f_item_3:tm14", "pokemon_mansion_b1f_item_4:tm22",
+		"pokemon_mansion_b1f_item_5:secret_key", "rocket_hideout_b1f_hidden_1:revive",
+		"rocket_hideout_b1f_item_1:escape_rope", "rocket_hideout_b1f_item_2:super_potion",
+		"rocket_hideout_b2f_item_1:moon_stone", "rocket_hideout_b2f_item_2:nugget",
+		"rocket_hideout_b2f_item_3:super_potion", "rocket_hideout_b2f_item_4:super_potion",
+		"rocket_hideout_b3f_hidden_1:nugget", "rocket_hideout_b3f_item_1:super_potion",
+		"rocket_hideout_b3f_item_2:rare_candy", "rocket_hideout_b4f_hidden_1:super_potion",
+		"rocket_hideout_b4f_item_1:super_potion", "rocket_hideout_b4f_item_2:revive",
+		"rocket_hideout_b4f_item_3:super_potion", "rocket_hideout_b4f_lift_key:lift_key",
+		"rocket_hideout_b4f_silph_scope:silph_scope", "route_10_item_1:super_potion",
+		"route_11_hidden_1:poke_ball", "route_11_item_1:super_potion", "route_11_item_2:awakening",
+		"route_1_potion:potion", "route_20_item_1:great_ball", "route_21_item_1:hyper_potion",
 		"route_24_antidote:antidote", "route_24_item_1:potion", "route_25_hidden_1:potion",
 		"route_25_item_1:tm19", "route_25_item_2:potion", "route_25_item_3:poke_ball",
-		"route_2_east_item_1:moon_stone", "route_2_east_item_2:rare_candy",
-		"route_2_item_1:poke_ball", "route_2_item_2:potion", "route_2_item_3:poke_ball",
-		"route_2_item_4:potion", "route_2_item_5:super_potion", "route_2_north_item_1:potion",
-		"route_3_hidden_1:awakening", "route_3_item_1:poke_ball", "route_3_item_2:potion",
-		"route_3_item_3:paralyze_heal", "route_4_item_1:poke_ball",
-		"route_5_hidden_1:antidote", "route_5_item_1:super_potion",
-		"route_6_hidden_1:super_potion", "route_6_item_1:poke_ball",
-		"route_8_hidden_1:revive", "route_8_item_1:super_potion",
-		"route_9_item_1:super_potion", "route_9_item_2:antidote", "route_9_item_3:poke_ball",
-		"seafoam_b2f_hidden_1:nugget", "seafoam_b4f_hidden_1:ultra_ball",
-		"souterrain_hidden_1:nugget", "souterrain_hidden_2:super_potion",
-		"ss_anne_hidden_1:awakening", "ss_anne_hidden_2:antidote", "ss_anne_hidden_3:potion",
-		"ss_anne_item_01:potion", "ss_anne_item_02:potion", "ss_anne_item_03:super_potion",
-		"ss_anne_item_04:super_potion", "ss_anne_item_05:super_potion",
-		"ss_anne_item_06:paralyze_heal",
-		"tower_3f_objet_1:escape_rope", "tower_4f_objet_1:awakening",
-		"tower_4f_objet_2:super_potion", "tower_5f_cache_1:super_potion",
-		"tower_5f_objet_1:nugget", "tower_6f_objet_1:super_potion",
-		"underground_hidden_1:full_restore",
-		"viridian_forest_item_1:antidote", "viridian_forest_item_2:poke_ball",
-		"viridian_forest_item_3:potion", "viridian_forest_item_4:antidote",
-		"viridian_forest_item_5:poke_ball", "viridian_forest_item_6:potion"]
+		"route_2_east_item_1:moon_stone", "route_2_east_item_2:rare_candy", "route_2_item_1:poke_ball",
+		"route_2_item_2:potion", "route_2_item_3:poke_ball", "route_2_item_4:potion",
+		"route_2_item_5:super_potion", "route_2_north_item_1:potion", "route_3_hidden_1:awakening",
+		"route_3_item_1:poke_ball", "route_3_item_2:potion", "route_3_item_3:paralyze_heal",
+		"route_4_item_1:poke_ball", "route_5_hidden_1:antidote", "route_5_item_1:super_potion",
+		"route_6_hidden_1:super_potion", "route_6_item_1:poke_ball", "route_8_hidden_1:revive",
+		"route_8_item_1:super_potion", "route_9_item_1:super_potion", "route_9_item_2:antidote",
+		"route_9_item_3:poke_ball", "seafoam_b2f_hidden_1:nugget", "seafoam_b4f_hidden_1:ultra_ball",
+		"souterrain_hidden_1:nugget", "souterrain_hidden_2:super_potion", "ss_anne_hidden_1:awakening",
+		"ss_anne_hidden_2:antidote", "ss_anne_hidden_3:potion", "ss_anne_item_01:potion",
+		"ss_anne_item_02:potion", "ss_anne_item_03:super_potion", "ss_anne_item_04:super_potion",
+		"ss_anne_item_05:super_potion", "ss_anne_item_06:paralyze_heal",
+		"tower_3f_objet_1:escape_rope", "tower_4f_objet_1:awakening", "tower_4f_objet_2:super_potion",
+		"tower_5f_cache_1:super_potion", "tower_5f_objet_1:nugget", "tower_6f_objet_1:super_potion",
+		"underground_hidden_1:full_restore", "viridian_forest_item_1:antidote",
+		"viridian_forest_item_2:poke_ball", "viridian_forest_item_3:potion",
+		"viridian_forest_item_4:antidote", "viridian_forest_item_5:poke_ball",
+		"viridian_forest_item_6:potion"]
 		as Array[String])
 
 
@@ -840,8 +937,9 @@ func test_every_change_map_targets_an_existing_map_and_spawn() -> void:
 		assert_true(map.has_spawn(step.spawn), "%s : point « %s »" % [step.map_id, step.spawn])
 		map.free()
 	# Jalon 21 (T13) : + la téléportation du 7F vers la Maison des Pokémon.
-	assert_eq(count, 3, "le retour au labo ; le quai de Carmin (départ du S.S. Anne, J16 T15) ; "
-		+ "la Maison des Pokémon (sauvetage de Fuji, J21 T13)")
+	assert_eq(count, 5, "le retour au labo ; le quai de Carmin (départ du S.S. Anne, J16 T15) ; "
+		+ "la Maison des Pokémon (sauvetage de Fuji, J21 T13) ; "
+		+ "la porte de l'Arène de Cramois'Île déverrouillée (J25, deux variantes)")
 
 
 func test_every_variant_is_chosen_by_its_flags() -> void:

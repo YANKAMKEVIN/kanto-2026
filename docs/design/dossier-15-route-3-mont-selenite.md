@@ -89,7 +89,7 @@ bleuté et éclats minéraux de la montagne.
 
 | Dedans | Réservé au J13 et après | Reporté sans date |
 |---|---|---|
-| Route 3 (≈ 82 × 38), Centre Pokémon du pied de la montagne, Mont Sélénite 1F / B1F / B2F, sas extérieur de la Route 4 (raccord « AZURIA — À venir ») ; 12 espèces nouvelles (§16) ; rencontres de grotte ; Corde Sortie ; objets cachés ; Pierre Lune et évolutions par pierre ; Team Rocket (3 combats) ; chercheur et fossiles ; capacités nouvelles (§16.2) | le reste de la Route 4 (rebords, Dresseurs, rencontres, objets), Azuria, Pont Pépite, **rival n° 3**, toute nouvelle apparition Rocket | Repousse ; vendeur de Magicarpe ; résurrection des fossiles (Amonita, Kabuto) ; Ambre Vieille ; Métronome (§16.2) ; Flash et toute capacité d'exploration |
+| Route 3 (≈ 82 × 38), Centre Pokémon du pied de la montagne, Mont Sélénite 1F / B1F / B2F, sas extérieur de la Route 4 (raccord « AZURIA — À venir ») ; 12 espèces nouvelles (§16) ; rencontres de grotte ; Corde Sortie ; objets cachés ; Pierre Lune et évolutions par pierre ; Team Rocket (3 combats) ; chercheur et fossiles ; capacités nouvelles (§16.2) | le reste de la Route 4 (rebords, Dresseurs, rencontres, objets), Azuria, Pont Pépite, **rival n° 3**, toute nouvelle apparition Rocket | Repousse ; vendeur de Magicarpe ; résurrection des fossiles (Amonita, Kabuto) ; Vieil Ambre (J25, dossier 28) ; Métronome (§16.2) ; Flash et toute capacité d'exploration |
 
 Contraintes [V] : aucun puzzle qui demande une capacité d'exploration ; pas de quête secondaire sur
 la Route 3 ; ni Giovanni, ni Mewtwo, ni chef Rocket ; pas de rival.

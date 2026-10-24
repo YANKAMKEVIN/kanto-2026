@@ -1,0 +1,52 @@
+{
+	"pewter_museum_reserve_counter": {
+		"speaker": "Scientifique",
+		"variants": [
+			{
+				"pages": [
+					"On n'entre pas par-derrière !\nBon, tant pis. Tu sais ce qu'est l'ambre ?"
+				],
+				"choice": {
+					"confirm": "OUI",
+					"cancel": "NON",
+					"confirm_pages": [
+						"Il paraît qu'un labo essaie de\nfaire revivre des Pokémon avec."
+					],
+					"cancel_pages": [
+						"C'est de la sève d'arbre fossilisée."
+					]
+				}
+			}
+		]
+	},
+	"pewter_museum_reserve_amber": {
+		"speaker": "Scientifique",
+		"variants": [
+			{
+				"if": [
+					"pewter_museum_got_old_amber"
+				],
+				"pages": [
+					"Chut ! Fais examiner le Vieil Ambre !"
+				]
+			},
+			{
+				"cutscene": "pewter_museum_old_amber"
+			}
+		]
+	},
+	"pewter_museum_reserve_showcase": {
+		"narration": true,
+		"pages": [
+			"L'ambre est clair et doré."
+		]
+	},
+	"pewter_museum_reserve_amber_give": {
+		"speaker": "Scientifique",
+		"pages": [
+			"Chut ! Je crois que cet ambre\ncontient l'ADN d'un Pokémon !",
+			"Ce serait formidable de le ramener\nà la vie ! Mais mes collègues…",
+			"Tiens, prends-le. Fais-le examiner."
+		]
+	}
+}

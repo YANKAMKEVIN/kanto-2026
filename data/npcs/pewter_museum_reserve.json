@@ -1,0 +1,20 @@
+{
+	"scientifique_comptoir": {
+		"cell": [
+			5,
+			4
+		],
+		"facing": "down",
+		"sprite": "researcher",
+		"dialogue": "pewter_museum_reserve_counter"
+	},
+	"scientifique_ambre": {
+		"cell": [
+			12,
+			4
+		],
+		"facing": "left",
+		"sprite": "fossil_researcher",
+		"dialogue": "pewter_museum_reserve_amber"
+	}
+}

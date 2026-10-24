@@ -1,0 +1,12 @@
+{
+	"_comment": "Quiz de l'Arène de Cramois'Île (jalon 25, dossier 28 §8.2, textes 81 à 86 validés le 2026-10-16). Sens et réponses de Rouge/Bleu ; gate = herse ouverte par une bonne réponse ou par la victoire contre le Dresseur lié.",
+	"intro": "cinnabar_gym_quiz_intro",
+	"questions": [
+		{ "id": 1, "text": "Chenipan finit par devenir Papilusion ?", "answer": "yes", "gate": "cinnabar_gym_gate_1", "trainer": "cinnabar_gym_2" },
+		{ "id": 2, "text": "La Ligue délivre-t-elle 9 Badges ?", "answer": "no", "gate": "cinnabar_gym_gate_2", "trainer": "cinnabar_gym_3" },
+		{ "id": 3, "text": "Ptitard évolue-t-il trois fois ?", "answer": "no", "gate": "cinnabar_gym_gate_3", "trainer": "cinnabar_gym_4" },
+		{ "id": 4, "text": "L'Électrik touche-t-il le type Sol ?", "answer": "no", "gate": "cinnabar_gym_gate_4", "trainer": "cinnabar_gym_5" },
+		{ "id": 5, "text": "Deux Pokémon de même espèce et même\nniveau peuvent-ils être différents ?", "answer": "yes", "gate": "cinnabar_gym_gate_5", "trainer": "cinnabar_gym_6" },
+		{ "id": 6, "text": "La CT28 contient-elle Fosse ?", "answer": "no", "gate": "cinnabar_gym_gate_6", "trainer": "cinnabar_gym_7" }
+	]
+}

@@ -81,7 +81,9 @@ from_centre                spawn          19..20,18         libre   # sortie du 
 from_boutique              spawn          28..29,18         libre   # sortie de la Boutique, tournée ↓
 porte_arene                declencheur    25..26,5          libre   rb=18,3 action=texte_et_recul recul=25..26,6  # porte FERMÉE sans la Clé Secrète (P-20) : T-42, le joueur recule d'une case (RB) ; AUCUN warp
 recul_arene                repere         25..26,6          libre   # case de recul sous la porte de l'Arène
-examen_manoir              examen         9..10,5           bloque  rb=6,3 texte=T-43  # gravats à la place de la porte, EXAMINER depuis (9..10,6) tourné ↑ ; AUCUN warp (P-20)
+from_arene                 spawn          25..26,6          libre   # sortie de l'Arène, tournée ↓ (J25)
+porte_manoir               warp           9..10,5           libre   rb=6,3 vers=pokemon_mansion_1f  # STEP_ON ↑ → Manoir 1F, depuis_ile (J25, X-25 : la porte remplace les gravats et T-43)
+from_manoir                spawn          9..10,6           libre   # sortie du Manoir, tournée ↓ (J25)
 fille                      pnj            17..24,8          bloque  role=P1 facing=left move=walk_lr rb=12,5 texte=T-44  # marche de gauche à droite (RB WALK LEFT_RIGHT) ; zone entière réservée
 homme                      pnj            21,9              bloque  role=P2 facing=down move=stay rb=14,6 texte=T-45  # RB : immobile, sans direction (facing=down par défaut)
 panneau_ville              panneau        14,8              bloque  rb=9,5 texte=T-40  # lu depuis (14,9) tourné ↑

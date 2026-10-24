@@ -1,0 +1,60 @@
+{
+	"mansion_burglar_2": {
+		"cell": [
+			5,
+			11
+		],
+		"facing": "down",
+		"sprite": "gambler",
+		"dialogue": "mansion_burglar_2_after",
+		"trainer": {
+			"id": "mansion_burglar_2",
+			"sight": 0,
+			"before": "mansion_burglar_2_before",
+			"defeated": "mansion_burglar_2_defeated"
+		}
+	},
+	"mansion_scientist_2": {
+		"cell": [
+			20,
+			11
+		],
+		"facing": "left",
+		"sprite": "researcher",
+		"dialogue": "mansion_scientist_2_after",
+		"trainer": {
+			"id": "mansion_scientist_2",
+			"sight": 2,
+			"before": "mansion_scientist_2_before",
+			"defeated": "mansion_scientist_2_defeated"
+		}
+	},
+	"pokemon_mansion_3f_item_1": {
+		"cell": [
+			1,
+			16
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "pokemon_mansion_3f_item_1",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_pokemon_mansion_3f_item_1"
+		]
+	},
+	"pokemon_mansion_3f_item_2": {
+		"cell": [
+			25,
+			5
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "pokemon_mansion_3f_item_2",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_pokemon_mansion_3f_item_2"
+		]
+	}
+}

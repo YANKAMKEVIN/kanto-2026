@@ -166,6 +166,8 @@ var _companion := CompanionController.new()
 var _field_presenter := FieldMovePresenter.new()
 ## Écran de la Pension (J15 T5) : choix du dépôt, bandeau et hôte des capacités du retrait.
 var _daycare_overlay: DaycareOverlay
+## J25 : choix du Pokémon d'un échange fixe.
+var _trade_overlay: TradeOverlay
 ## Coordination locale : aucun nouvel autoload, dépendances câblées dans _ready.
 var _save_coordinator := SaveCoordinator.new()
 var _lifecycle := SessionLifecycle.new()
@@ -323,6 +325,13 @@ func _ready() -> void:
 	# GameState.pokedex.recorded (toasts existants).
 	_cutscenes_node.set_pokemon_data(_pokemon)
 	_cutscenes_node.pokemon_gifted.connect(_on_pokemon_gifted)
+	# J25 (§2.5) : échanges fixes du Labo (étape « trade ») : choix sur le sélecteur de l'équipe.
+	_trade_overlay = TradeOverlay.new()
+	_trade_overlay.name = "TradeOverlay"
+	_trade_overlay.process_mode = Node.PROCESS_MODE_PAUSABLE
+	add_child(_trade_overlay)
+	_cutscenes_node.trade_pick_handler = _on_trade_pick_requested
+	_cutscenes_node.pokemon_traded.connect(_on_pokemon_traded)
 	_evolutions = EvolutionDirector.new()
 	_evolutions.name = "EvolutionDirector"
 	_evolutions.process_mode = Node.PROCESS_MODE_PAUSABLE
@@ -709,6 +718,11 @@ func get_daycare_overlay() -> DaycareOverlay:
 	return _daycare_overlay
 
 
+## J25 : choix du Pokémon d'un échange fixe (tests).
+func get_trade_overlay() -> TradeOverlay:
+	return _trade_overlay
+
+
 func get_daycare_director() -> DaycareDirector:
 	return _daycare
 
@@ -881,6 +895,9 @@ func _on_go_back() -> void:
 		return
 	# Pension (J15) : écran du dépôt = ANNULER ; le reste de la conversation avale le geste.
 	if _daycare.handle_back():
+		return
+	# J25 : choix du Pokémon d'un échange = ANNULER.
+	if _trade_overlay != null and _trade_overlay.handle_back():
 		return
 	# J20 (T13) : panneau d'étages = FERMER ; pendant un trajet, avalé.
 	if _elevator.handle_back():
@@ -1659,6 +1676,18 @@ func _on_checkpoint_save_failed(_reason: String, _error: Error) -> void:
 func _on_pokemon_caught() -> void:
 	_companion.note_joy()
 	request_autosave("capture")
+
+
+## J25 (§2.5) : choix du Pokémon d'un échange fixe (places de l'espèce demandée) ; −1 = renonce.
+func _on_trade_pick_requested(_trade_id: StringName, accepted: Array[int]) -> int:
+	return await _trade_overlay.pick(InGameTrade.picker_view(GameState.party, accepted, _pokemon))
+
+
+## J25 (§2.5) : échange fait d'un seul bloc : compagnon à jour (le Pokémon donné a pu l'être,
+## choix effacé en silence), autosave demandé (écrit à la fin de la scène).
+func _on_pokemon_traded(_given: Pokemon, _received: Pokemon) -> void:
+	_companion.refresh()
+	request_autosave("échange")
 
 
 ## J20 (§2.5.2, T12) : Pokémon donné (équipe ou Stockage, drapeau levé d'un seul bloc) :

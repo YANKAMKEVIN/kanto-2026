@@ -166,7 +166,8 @@ func test_building_doors_lead_inside_or_to_coming_soon() -> void:
 		if building != null:
 			assert_eq(building.scene_file_path.get_file().get_basename(), entry[2])
 	assert_eq(count, _plan.cells_of("D").size(), "toutes les portes de la grille")
-	assert_eq(_map.get_warps().size(), count + 6, "portes, raccord sud, sortie est")
+	assert_eq(_map.get_warps().size(), count + 7,
+		"portes, raccord sud, sortie est, porte arrière du Musée (J25)")
 
 
 func test_arrival_and_guard_triggers() -> void:

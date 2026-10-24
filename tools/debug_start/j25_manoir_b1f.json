@@ -1,0 +1,59 @@
+{
+	"map": "pokemon_mansion_b1f",
+	"spawn": "arrivee_s",
+	"facing": "down",
+	"flags": [
+		"mom_greeted",
+		"rival_met",
+		"oak_met",
+		"oak_lab_reunion",
+		"starter_offered",
+		"starter_chosen",
+		"taken_charmander",
+		"taken_squirtle",
+		"rival_lab_won",
+		"rival_challenged",
+		"rival_battle_done",
+		"rival_left_lab",
+		"viridian_arrived",
+		"got_oak_parcel",
+		"pokedex_activated",
+		"poison_unlocked",
+		"badge_boulder",
+		"badge_cascade",
+		"badge_thunder",
+		"badge_rainbow",
+		"badge_soul"
+	],
+	"party": [
+		{
+			"species": "blastoise",
+			"level": 46,
+			"moves": [
+				"surf",
+				"strength",
+				"bite",
+				"water_gun"
+			]
+		},
+		{
+			"species": "raichu",
+			"level": 42
+		},
+		{
+			"species": "golduck",
+			"level": 42
+		}
+	],
+	"companion": 0,
+	"bag": {
+		"hm01": 1,
+		"hm03": 1,
+		"hm04": 1,
+		"ultra_ball": 10,
+		"hyper_potion": 10,
+		"full_heal": 5,
+		"escape_rope": 3
+	},
+	"money": 20000
+}

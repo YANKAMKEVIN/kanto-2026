@@ -103,4 +103,6 @@ employe_musee       pnj            10..11,40    bloque  # courte routine devant 
 panneau_ville       panneau        16,42        bloque  # « ARGENTA », sur l'herbe, lu depuis l'avenue (17, 42) ←
 panneau_arene       panneau        39,12        bloque
 panneau_musee       panneau        15,38        bloque
+porte_reserve       warp           15,34        libre   # J25 (dossier 28 §7) : porte arrière sur la façade est du Musée (14, 34) : PUSH ← depuis (15, 34) → pewter_museum_reserve
+arbre_reserve       arbuste        15,34        bloque  # J25 : arbre à Couper devant la porte arrière (cut_pewter_museum_tree)
 FIN

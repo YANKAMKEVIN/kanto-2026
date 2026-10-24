@@ -90,6 +90,8 @@ func test_species_values() -> void:
 		+ "+ 11 (jalon 20 : Caninos et Goupix sont ceux du J17) + 3 (jalon 21 : Ptitard, Tentacool, "
 		+ "Ronflex) + 13 (jalon 22) + 17 (jalon 24 : Saquedeneu et Léviator sont ceux des J20 et "
 		+ "J19, Ptitard et Tentacool ceux du J21, Krabby, Poissoroy et Magicarpe ceux du J22) "
+		+ "+ 4 (jalon 25 : Ponyta, Galopa, Magmar, Ptéra ; Tadmorv, Grotadmorv, Smogogo et Électrode "
+		+ "sont ceux du J22) "
 		+ "+ 4 (jalon 31 : Leveinard et Rhinoféros empruntés aux J23 et J28, Métamorph, Mewtwo)")
 	for id: StringName in SPECIES:
 		var v: Array = SPECIES[id]

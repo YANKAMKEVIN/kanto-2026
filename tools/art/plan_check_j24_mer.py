@@ -742,16 +742,19 @@ def verifier() -> bool:
 	critere(not pc.cells_of("D") or all(
 		c not in {cc for q in pos_par_kind(pc, "warp") for cc in q.cells}
 		for c in pc.positions["porte_arene"].cells), "Arène : la porte n'est pas un warp")
+	# J25 (X-25, dossier 28 §0) : la porte du Manoir remplace les gravats : un seul warp, sur les
+	# cases X (9..10, 5), vers pokemon_mansion_1f ; aucune autre entrée.
 	manoir_cases = set(pc.cells_of("M")) | set(pc.cells_of("X"))
 	warps_manoir = [q.ident for q in pos_par_kind(pc, "warp")
 		if any(c in manoir_cases or (c[0], c[1] - 1) in manoir_cases for c in q.cells)]
-	critere(not warps_manoir and not any(
+	critere(warps_manoir == ["porte_manoir"] and not any(
 		pc.at(c[0] + dx, c[1] + dy) == "D" for c in manoir_cases for dx, dy in DIRS
 		if monde.dans("cinnabar_island", (c[0] + dx, c[1] + dy))),
-		"Manoir : aucune porte ni warp (entrée effondrée, gravats X), P-20")
+		"Manoir : une seule porte (porte_manoir, J25 X-25)")
 	g = sorted(pc.cells_of("X"))
-	critere(g == [(9, 5), (10, 5)] and set(g) == set(pc.positions["examen_manoir"].cells),
-		"gravats = case d'examen du Manoir (T-43)")
+	critere(g == [(9, 5), (10, 5)] and set(g) == set(pc.positions["porte_manoir"].cells)
+		and pc.positions["porte_manoir"].attrs.get("vers") == "pokemon_mansion_1f",
+		"porte du Manoir = cases X (9..10, 5) → pokemon_mansion_1f")
 	porte = pc.positions["porte_arene"]
 	recul = pc.positions["recul_arene"]
 	critere(porte.kind == "declencheur" and all(pc.at(*c) == "D" for c in porte.cells)

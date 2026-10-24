@@ -45,7 +45,8 @@
 			"name": "Argenta", "kind": "town",
 			"maps": [
 				"pewter_city", "pewter_center", "pewter_mart", "pewter_museum",
-				"pewter_museum_science", "pewter_gym", "pewter_house_mason", "pewter_house_researcher"
+				"pewter_museum_science", "pewter_gym", "pewter_house_mason", "pewter_house_researcher",
+				"pewter_museum_reserve"
 			],
 			"services": [
 				{ "id": "pokemon_center", "found_on": "pewter_center" },
@@ -278,13 +279,15 @@
 			"name": "Cramois'Île", "kind": "town",
 			"maps": [
 				"cinnabar_island", "cinnabar_center", "cinnabar_mart", "cinnabar_lab",
-				"cinnabar_lab_meeting", "cinnabar_lab_rd", "cinnabar_lab_fossil"
+				"cinnabar_lab_meeting", "cinnabar_lab_rd", "cinnabar_lab_fossil",
+				"pokemon_mansion_1f", "pokemon_mansion_2f", "pokemon_mansion_3f", "pokemon_mansion_b1f",
+				"cinnabar_gym"
 			],
 			"subtitle": "Route 20 — Route 21",
 			"services": [
 				{ "id": "pokemon_center", "found_on": "cinnabar_center" },
 				{ "id": "poke_mart", "found_on": "cinnabar_mart" },
-				{ "id": "gym", "found_on": "cinnabar_island" }
+				{ "id": "gym", "found_on": "cinnabar_gym" }
 			],
 			"description": "Une île volcanique au sud-ouest de Kanto. On y vient pour son Labo, ses fossiles et son Arène."
 		},
