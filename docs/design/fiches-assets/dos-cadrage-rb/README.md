@@ -27,6 +27,15 @@ Constats : aucun conflit avec l'interface (carte en haut à gauche, commandes en
 le feuillage flou du premier plan du décor passe devant le bas du Pokémon en B (à trancher :
 dos devant ou derrière ce feuillage) ; l'ombre au sol n'a plus de sens en B.
 
+### Taille de l'adversaire en B
+
+En B, l'adversaire paraît petit par contraste (sa taille n'a pas changé). `taille-adversaire-b.webp` :
+`FOE_PRESENCE` 0,27 (actuel) / 0,34 / 0,40 (`KANTO_FOE_PRESENCE`, boîte maximale doublée
+pour l'essai) sur Roucool, Rattata et Dracaufeu. À 0,40, Dracaufeu touche presque le haut de
+l'écran et descend sur ta carte. **Proposition : 0,34**, boîte maximale de l'adversaire
+inchangée (elle protège l'interface). Ne pas déplacer `FOE_FEET` : l'échelle du décor peint
+en dépend (`BattleDecor.fit`).
+
 ## Test Codex (prompts `tools/art/prompts/dos_rb/`, sorties `build/art/DOS_RB_*.png`, 1254 px RGBA)
 
 | Espèce | Avec artwork joint (r1) | Sans image (r2) |
