@@ -64,6 +64,9 @@ var _shown: bool = false
 ## Vrai si ce directeur a coupé les rencontres (compteur à 0, Parc sans visite).
 var _blocked_encounters: bool = false
 var _last_emit: Array = []
+## Vrai pendant une rencontre : le drapeau garde l'état d'avant, car la dernière Ball finit la visite
+## en plein combat et [method _on_encounter_finished] doit encore voir la visite active (QA 23B).
+var _in_encounter: bool = false
 
 
 ## Branche le directeur. [param state] : GameState (ou une instance de test) ; [param autosave] :
@@ -84,6 +87,9 @@ func setup(state: Node, config: SafariConfig, player: Player, router: Node,
 	if _encounters != null and not _encounters.encounter_finished.is_connected(
 			_on_encounter_finished):
 		_encounters.encounter_finished.connect(_on_encounter_finished)
+	if _encounters != null and not _encounters.encounter_started.is_connected(
+			_on_encounter_started):
+		_encounters.encounter_started.connect(_on_encounter_started)
 	if _cutscenes != null:
 		_cutscenes.safari_handler = handle
 	_sync_flag()
@@ -183,7 +189,8 @@ func reconcile_key_items() -> void:
 
 
 func _process(_delta: float) -> void:
-	_sync_flag()
+	if not _in_encounter:
+		_sync_flag()
 	if not _pending.is_empty() and _is_calm():
 		_play_end(_pending)
 	_emit_changed()
@@ -205,8 +212,13 @@ func _on_player_moved(_cell: Vector2i) -> void:
 	_emit_changed()
 
 
+func _on_encounter_started(_species_id: StringName, _level: int) -> void:
+	_in_encounter = true
+
+
 ## Retour d'une rencontre : la dernière Safari Ball a fini la visite (§2.3).
 func _on_encounter_finished(_outcome: int) -> void:
+	_in_encounter = false
 	var visit := get_visit()
 	if visit == null or not is_park_map(_map_id):
 		return

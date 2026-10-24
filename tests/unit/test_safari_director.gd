@@ -95,6 +95,20 @@ func test_last_ball_ends_the_visit_on_return_from_the_encounter() -> void:
 	assert_false(_state.flags.has_flag(&"safari_active"))
 
 
+## QA 23B (S24) : le directeur tourne pendant le combat ; la dernière Ball ne doit pas effacer le
+## drapeau avant le retour de la rencontre, sinon la fin n'est jamais annoncée.
+func test_last_ball_still_ends_the_visit_when_frames_run_during_the_encounter() -> void:
+	_pay(500)
+	_enter_map(&"safari_zone_west")
+	_state.safari.balls_left = 1
+	_director._on_encounter_started(&"venonat", 22)
+	assert_eq(_state.safari.on_ball_thrown(), SafariVisit.OUT_OF_BALLS)
+	_director._process(0.0)
+	_director._process(0.0)
+	_director._on_encounter_finished(Battle.Outcome.NONE)
+	assert_eq(_director.get_pending_end(), SafariVisit.OUT_OF_BALLS)
+	assert_false(_state.flags.has_flag(&"safari_active"))
+
 func test_leaving_at_the_gate_ends_the_visit() -> void:
 	_pay(500)
 	_enter_map(&"safari_zone_gate")
