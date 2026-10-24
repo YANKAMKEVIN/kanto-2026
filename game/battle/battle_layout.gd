@@ -84,6 +84,9 @@ static func sprite_scale(box: Vector2, height_m: float, is_player: bool, view_he
 	var limit := (PLAYER_MAX_BOX if is_player else FOE_MAX_BOX) * view_height
 	if not is_player and OS.has_environment("KANTO_FOE_BIGBOX"):
 		limit *= float(OS.get_environment("KANTO_FOE_BIGBOX"))
+	if not is_player and OS.has_environment("KANTO_FOE_BOX"):
+		var parts := OS.get_environment("KANTO_FOE_BOX").split(",")
+		limit = Vector2(float(parts[0]), float(parts[1])) * view_height
 	var largest := minf(limit.x / box.x, limit.y / box.y)
 	var scale := minf(presence(height_m, is_player, view_height) / sqrt(box.x * box.y), largest)
 	if whole:
