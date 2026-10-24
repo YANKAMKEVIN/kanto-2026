@@ -46,6 +46,11 @@ change rien pour eux : c'est la boîte qui les plafonne (Léviator très petit).
 pieds sont à 0,50, la boîte monte à 0,53). **Proposition** : présence 0,34 et boîte
 0,70 × 0,46 (largeur × 1,4, hauteur plafonnée sous le haut de l'écran).
 
+Capture de la proposition (`grands-adversaires-b-v2.webp`, `KANTO_FOE_BOX=0.70,0.46`) :
+Onix ne touche plus le haut ; tous un peu plus grands qu'aujourd'hui, mais moins qu'avec × 1,4.
+Léviator et Onix, hauts, restent plafonnés par la hauteur (pieds de l'adversaire à 0,50) :
+les agrandir davantage demanderait de descendre `FOE_FEET`, donc de recaler les décors.
+
 ## Test Codex (prompts `tools/art/prompts/dos_rb/`, sorties `build/art/DOS_RB_*.png`, 1254 px RGBA)
 
 | Espèce | Avec artwork joint (r1) | Sans image (r2) |
