@@ -47,7 +47,7 @@ géométrie, 4F du magasin recoloré, façades en lumière neutre).
 | **Façades en aplats générés** | 17 façades de Safrania (`placeholders_safrania.py`, J26 et J27) | `jalon-26`, `jalon-27` | toute la fin du jeu (ville centrale) |
 | **Intérieurs en aplats** | 7 de Sylphe SARL (`placeholders_sylphe.py`), 2 de l'Arène de Morgane (`placeholders_safrania_arene.py`), 1 du J28 (`placeholders_j28.py`) | `jalon-26` à `jalon-28` | scénario principal |
 | **Kits en placeholder** | dalles et cases d'arrêt de l'Arène de Jadielle (celles du repaire), grotte de la Route Victoire (kit grotte existant), cinq salles de la Ligue, Grotte Azurée : chaque plan dit « lot d'art ensuite » | plans J28 à J31 | fin du jeu |
-| **Séries validées non intégrées** | série 23 (Repos des esprits, « sans intégration ») et série 25 (deux chemins, « rien n'est intégré avant validation ») : **à vérifier** contre `main` (DAF.0) | J21, J22 | milieu du jeu |
+| **Séries validées non intégrées** | série 23 **intégrée** (T7 du J21, vérifié par DAF.0) ; série 25 (deux chemins) **non intégrée** sauf `bike.svg` : originaux hors dépôt | J22 | milieu du jeu |
 | **Reliquats** | `breakfast` et `bed_items` en pixel (Bourg Palette) ; pont extérieur du S.S. Anne à vérifier ; Chenipan d'ambiance de la Forêt de Jade (prompt prêt) | `inventaire-art.md` §4 | début du jeu |
 | **Reportés de rendu** (`etat-projet.md`, « Reportés ») | Forêt de Jade à assombrir hors des clairières ; intérieurs « vraie DA » (lumière chaude, décor riche) ; Mont Sélénite (masse d'ardoise, bouche du sas) ; raccord J21/J22 de la Route 16 ; écran de démarrage « GODOT » et icône de l'appli ; Pokémon qui coupent sans planche d'exploration ; sauts, recul du starter et orientations des cinématiques ; détails de combat du J9 (voile du poison, bouton ARRÊTER, icône de l'Antidote…) | transverse | variable |
 
@@ -55,16 +55,19 @@ Hors périmètre de ce cadrage : **audio** (musique et ambiances provisoires, pl
 
 ### 1.3 Chiffrage
 
-En **nombre d'images à produire** (ordre de grandeur, à confirmer par DAF.0) :
+En **nombre d'images à produire**. **Mis à jour le 2026-10-24 par DAF.0** (mesure sur `main`
+@ `91770ba0` et les branches, voir `inventaire-art.md`) ; les valeurs de la première rédaction sont
+entre parenthèses.
 
 | Bloc | Images | Remarque |
 |---|---|---|
-| Dos de combat restants | ≈ 35 à 50 | 151 − 79, moins les espèces dont le dos 3D ou IA est déjà accepté ; dont ≈ 10 par ChatGPT (refus) |
-| Fonds de combat | ≈ 6 à 15 | 6 connus + zones J26–J31 |
-| Safrania et Sylphe (façades + intérieurs) | ≈ 26 + modules | modèle de la série 22 bis (44 images) |
-| Kits de fin de jeu (J28 à J31) | ≈ 40 à 60 | modules et coques, comme les séries 27 et 28 |
+| Dos de combat restants | **≈ 70** (était 35 à 50) | 151 − 81 espèces à dos peint sur `art-dos-combat` (et non 79) ; dont ≈ 26 sans aucun dos pixel sur `main` (J23 à J32), 6 refus Codex, 4 conditionnels, Ptéra, Magmar |
+| Fonds de combat | **≈ 6 + 8 à 10 décors** (était 6 à 15) | 6 connus à produire ; 6 autres cartes (Routes 19 à 21, Îles Écume) se règlent par câblage de `sea_open` et `seafoam_ice` déjà existants ; ≈ 30 cartes ajoutées par les J23 à J31, regroupables en 8 à 10 décors |
+| Safrania et Sylphe (façades + intérieurs) | **≈ 32 + modules** (était ≈ 26) | **15** façades (17 identifiants dont 2 réutilisés), **14** intérieurs de Sylphe (11 étages, cabine, 2 battants), Arène de Safrania, Dojo ; modèle : série 22 bis (44 images) |
+| Kits de fin de jeu (J28 à J31) | ≈ 40 à 60 (inchangé) | Arène de Jadielle (1 intérieur), Route Victoire (3 niveaux + Routes 22 ouest/23), Ligue (6 salles), Grotte Azurée (3 niveaux) : aucune image peinte à ce jour |
+| Séries en attente | **≈ 30** (nouveau) | série 25 non intégrée et originaux hors dépôt (18 images à retrouver ou régénérer) ; icônes du Sac manquantes ≈ 23 (le cadrage les croyait faites) |
 | Reliquats et reportés à image | ≈ 10 | objets, Chenipan, icône, splash |
-| **Total** | **≈ 120 à 160 images** | à comparer : séries 22 bis + lot 2 ≈ 100 images en 2 jours |
+| **Total** | **≈ 170 à 220 images** (était 120 à 160) | écart surtout dû aux dos (+25), à la série 25 et aux icônes (+30 à 40) ; à comparer : séries 22 bis + lot 2 ≈ 100 images en 2 jours |
 
 Le reste des reportés est du **travail Godot** (lumière, profils, shaders, animations), sans image.
 
