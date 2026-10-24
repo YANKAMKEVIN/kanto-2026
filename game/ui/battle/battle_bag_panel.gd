@@ -103,9 +103,10 @@ func _ready() -> void:
 	_detail_row.add_theme_constant_override(&"separation", UiTokens.BAG_DETAIL_GAP)
 	_name_row.add_theme_constant_override(&"separation", UiTokens.BAG_TAB_GAP)
 	_detail_icon.custom_minimum_size = Vector2.ONE * UiTokens.BAG_DETAIL_ICON
-	# Trois lignes : la description de la Guérison (51 caractères) en demande trois à cette
-	# largeur ; à deux, « Pokémon. » était coupé sans signe (QA A17 du J30).
-	_detail_text.max_lines_visible = 3
+	# Quatre lignes : à côté du bouton d'action, la Guérison (51 caractères) en demande trois et
+	# l'Hyper Ball (66) quatre ; à moins, la fin était coupée sans signe (QA A17 des J30 et J31).
+	# Le cadre est ancré en bas et grandit vers le haut : le bouton retour n'est pas couvert.
+	_detail_text.max_lines_visible = 4
 	# Rangées : l'illustration, le nom et la quantité sont déjà dans la rangée choisie.
 	_detail_icon.visible = false
 	_name_row.visible = false
