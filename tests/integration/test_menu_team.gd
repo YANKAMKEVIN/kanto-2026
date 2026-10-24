@@ -161,7 +161,9 @@ func test_reordering_then_closing_saves_and_the_next_battle_sends_the_new_lead()
 	assert_eq(order, ["rattata", "pidgey", "charmander"] as Array[String], "sauvegarde")
 	await _walk_into_grass()
 	assert_eq(GameState.party.get_lead().species_id, &"rattata")
-	assert_eq(_lead_sprite_path(), BattleStage.sprite_path(&"rattata", true),
+	var painted := BattleArt.painted_back_path(19)  # Rattata : dos peint (série dos)
+	assert_eq(_lead_sprite_path(),
+		painted if ResourceLoader.exists(painted) else BattleStage.sprite_path(&"rattata", true),
 		"l'animation d'entrée montre le nouveau premier")
 
 
@@ -173,7 +175,7 @@ func test_the_next_battle_sends_the_first_able_pokemon_of_the_new_order() -> voi
 	_menu.close()
 	GameState.party.get_at(0).hp = 0
 	await _walk_into_grass()
-	assert_eq(_lead_sprite_path(), BattleStage.sprite_path(&"pidgey", true),
+	assert_eq(_lead_sprite_path(), BattleArt.painted_back_path(16),  # Roucool : dos peint
 		"le premier K.O. est sauté : le suivant valide entre")
 
 
