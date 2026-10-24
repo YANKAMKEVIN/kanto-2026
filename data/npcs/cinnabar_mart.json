@@ -1,0 +1,19 @@
+{
+	"clerk": {
+		"cell": [7, 3],
+		"facing": "down",
+		"sprite": "clerk"
+	},
+	"silph_worker": {
+		"cell": [3, 5],
+		"facing": "right",
+		"sprite": "hostess",
+		"dialogue": "cinnabar_mart_silph_worker"
+	},
+	"scientist": {
+		"cell": [11, 5],
+		"facing": "left",
+		"sprite": "researcher",
+		"dialogue": "cinnabar_mart_scientist"
+	}
+}

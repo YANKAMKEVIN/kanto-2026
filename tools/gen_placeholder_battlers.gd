@@ -63,8 +63,9 @@ const SPECIES: Array[String] = [
 	# acceptés [D]) et Ronflex (dos de combat ; le dos peint de la série 23 est le prototype
 	# battle_proto/dos_ia_143.png, comme les autres dos IA). Ajouts en fin.
 	"poliwag", "tentacool", "snorlax",
-	# Jalon 31 (jalon-31.md §10, T4) : Métamorph et Mewtwo (Grotte Azurée). Les neuf autres
-	# espèces de la grotte sont copiées à l'identique des J22–J28. Ajouts en fin.
+	# Jalon 31 (jalon-31.md §10, T4) : Métamorph et Mewtwo (Grotte Azurée). Les autres espèces
+	# de la grotte viennent des J22 et J24 ; Leveinard et Rhinoféros sont copiés à l'identique des
+	# J23 et J28. Ajouts en fin.
 	"ditto", "mewtwo",
 ]
 const OUTLINE := Color("#1c1c28")

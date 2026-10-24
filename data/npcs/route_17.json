@@ -1,0 +1,122 @@
+{
+	"route_17_cueball_1": {
+		"cell": [
+			8,
+			16
+		],
+		"facing": "right",
+		"sprite": "docker",
+		"dialogue": "route_17_cueball_1_after",
+		"trainer": {
+			"id": "route_17_cueball_1",
+			"sight": 5,
+			"before": "route_17_cueball_1_before",
+			"defeated": "route_17_cueball_1_defeated"
+		}
+	},
+	"route_17_cueball_2": {
+		"cell": [
+			18,
+			28
+		],
+		"facing": "left",
+		"sprite": "docker",
+		"dialogue": "route_17_cueball_2_after",
+		"trainer": {
+			"id": "route_17_cueball_2",
+			"sight": 6,
+			"before": "route_17_cueball_2_before",
+			"defeated": "route_17_cueball_2_defeated"
+		}
+	},
+	"route_17_biker_1": {
+		"cell": [
+			8,
+			52
+		],
+		"facing": "right",
+		"sprite": "rocker",
+		"dialogue": "route_17_biker_1_after",
+		"trainer": {
+			"id": "route_17_biker_1",
+			"sight": 6,
+			"before": "route_17_biker_1_before",
+			"defeated": "route_17_biker_1_defeated"
+		}
+	},
+	"route_17_biker_3": {
+		"cell": [
+			18,
+			64
+		],
+		"facing": "left",
+		"sprite": "rocker",
+		"dialogue": "route_17_biker_3_after",
+		"trainer": {
+			"id": "route_17_biker_3",
+			"sight": 5,
+			"before": "route_17_biker_3_before",
+			"defeated": "route_17_biker_3_defeated"
+		}
+	},
+	"route_17_biker_2": {
+		"cell": [
+			15,
+			93
+		],
+		"facing": "left",
+		"sprite": "rocker",
+		"dialogue": "route_17_biker_2_after",
+		"trainer": {
+			"id": "route_17_biker_2",
+			"sight": 6,
+			"before": "route_17_biker_2_before",
+			"defeated": "route_17_biker_2_defeated"
+		}
+	},
+	"route_17_cueball_3": {
+		"cell": [
+			18,
+			100
+		],
+		"facing": "left",
+		"sprite": "docker",
+		"dialogue": "route_17_cueball_3_after",
+		"trainer": {
+			"id": "route_17_cueball_3",
+			"sight": 3,
+			"before": "route_17_cueball_3_before",
+			"defeated": "route_17_cueball_3_defeated"
+		}
+	},
+	"route_17_biker_4": {
+		"cell": [
+			8,
+			122
+		],
+		"facing": "right",
+		"sprite": "rocker",
+		"dialogue": "route_17_biker_4_after",
+		"trainer": {
+			"id": "route_17_biker_4",
+			"sight": 5,
+			"before": "route_17_biker_4_before",
+			"defeated": "route_17_biker_4_defeated"
+		}
+	},
+	"route_17_cueball_4": {
+		"cell": [
+			18,
+			134
+		],
+		"facing": "left",
+		"sprite": "docker",
+		"dialogue": "route_17_cueball_4_after",
+		"trainer": {
+			"id": "route_17_cueball_4",
+			"sight": 3,
+			"before": "route_17_cueball_4_before",
+			"defeated": "route_17_cueball_4_defeated"
+		}
+	}
+}

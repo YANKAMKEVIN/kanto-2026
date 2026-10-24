@@ -122,17 +122,22 @@ func test_real_tables_load_without_error() -> void:
 	assert_true(lib.load_dir(), "\n".join(lib.get_errors()))
 	# Jalon 17 (T8) : Route 11, Cave Taupiqueur ; jalon 18 (T16) : Route 9, Route 10, Grotte Sombre ;
 	# jalon 19 (T5) : Tour Pokémon (la table d'eau de la carte de QA S2C est retirée en S2Z) ;
-	# Jalon 21 (T5) : sommet de la Tour (7F) ; jalon 31 (T4) : sol des trois étages de la Grotte Azurée.
+	# Jalon 21 (T5) : sommet de la Tour (7F) ; jalon 24 (T4) : eau des Routes 19 à 21 et de
+	# Cramois'Île, herbe de la Route 21, sol des Îles Écume (test_j24_data) ; jalon 31 (T4) : sol
+	# des trois étages de la Grotte Azurée.
 	assert_eq(lib.get_ids(), [&"cerulean_cave_1f_floor", &"cerulean_cave_2f_floor",
-		&"cerulean_cave_b1f_floor", &"dark_cave_1f_rubble", &"dark_cave_b1f_rubble",
-		&"digletts_cave_rubble", &"mt_moon_1f_rubble",
+		&"cerulean_cave_b1f_floor", &"cinnabar_island_water", &"dark_cave_1f_rubble",
+		&"dark_cave_b1f_rubble", &"digletts_cave_rubble", &"mt_moon_1f_rubble",
 		&"mt_moon_b1f_rubble", &"mt_moon_b2f_rubble", &"pokemon_tower_high", &"pokemon_tower_low",
 		&"pokemon_tower_mid", &"pokemon_tower_top", &"route_10_grass", &"route_11_grass",
-		&"route_1_grass", &"route_22_grass", &"route_24_grass",
-		&"route_25_grass", &"route_2_grass", &"route_2_north_grass", &"route_3_grass",
-		&"route_4_grass", &"route_5_grass", &"route_6_grass", &"route_7_grass",
-		&"route_8_grass", &"route_9_grass", &"viridian_forest_grass"]
-		as Array[StringName])
+		&"route_12_south_grass", &"route_13_grass", &"route_14_grass", &"route_15_grass",
+		&"route_16_west_grass", &"route_17_grass", &"route_18_grass", &"route_19_water",
+		&"route_1_grass", &"route_20_water", &"route_21_grass", &"route_21_water",
+		&"route_22_grass", &"route_24_grass", &"route_25_grass", &"route_2_grass",
+		&"route_2_north_grass", &"route_3_grass", &"route_4_grass", &"route_5_grass",
+		&"route_6_grass", &"route_7_grass", &"route_8_grass", &"route_9_grass",
+		&"seafoam_1f_floor", &"seafoam_b1f_floor", &"seafoam_b2f_floor", &"seafoam_b3f_floor",
+		&"seafoam_b4f_floor", &"viridian_forest_grass"] as Array[StringName])
 
 
 func test_route_22_table_is_red_blue_with_both_nidoran_and_mankey() -> void:
@@ -208,9 +213,9 @@ func test_every_wild_species_has_battle_sprites() -> void:
 	# (La table d'eau de la carte de QA S2C est retirée en S2Z.)
 	# Jalon 21 (T5) : + la table du 7F (`pokemon_tower_top`), hors de la boucle comme les
 	# autres tables de la Tour (SPECTRES sans le Scope).
-	# + les 3 tables de la Grotte Azurée (J31) : leurs espèces empruntées aux J22–J28 et
-	# Métamorph, Mewtwo n'ont pas encore de sprite de combat dans cette base (art du J31, T6).
-	assert_eq(lib.size(), 29,
+	# + les 3 tables de la Grotte Azurée (J31) : leurs espèces (Leveinard et Rhinoféros empruntés
+	# aux J23 et J28, Métamorph, Mewtwo) n'ont pas toutes un sprite de combat dans cette base.
+	assert_eq(lib.size(), 46,
 		"une table par couple ci-dessous, plus les 4 de la Tour (J19, J21) et les 3 de la Grotte Azurée")
 	for pair: Array in [[&"route_1", &"grass"], [&"route_2", &"grass"],
 			[&"route_22", &"grass"], [&"viridian_forest", &"grass"], [&"route_2_north", &"grass"],
@@ -223,7 +228,16 @@ func test_every_wild_species_has_battle_sprites() -> void:
 			[&"route_9", &"grass"], [&"route_10", &"grass"], [&"dark_cave_1f", &"rubble"],
 			[&"dark_cave_b1f", &"rubble"],
 			# Jalon 20 (T7) : Routes 8 et 7.
-			[&"route_8", &"grass"], [&"route_7", &"grass"]]:
+			[&"route_8", &"grass"], [&"route_7", &"grass"],
+			# Jalon 22 : Routes 12 sud à 18.
+			[&"route_12_south", &"grass"], [&"route_13", &"grass"], [&"route_14", &"grass"],
+			[&"route_15", &"grass"], [&"route_16_west", &"grass"], [&"route_17", &"grass"],
+			[&"route_18", &"grass"],
+			# Jalon 24 (T4).
+			[&"route_19", &"water"], [&"route_20", &"water"], [&"route_21", &"water"],
+			[&"route_21", &"grass"], [&"cinnabar_island", &"water"],
+			[&"seafoam_1f", &"floor"], [&"seafoam_b1f", &"floor"], [&"seafoam_b2f", &"floor"],
+			[&"seafoam_b3f", &"floor"], [&"seafoam_b4f", &"floor"]]:
 		for slot: EncounterSlot in lib.get_table(pair[0], pair[1]).slots:
 			for view: String in ["front", "back"]:
 				var path := "res://assets/sprites/pokemon/placeholder/%s_%s.png" % [
@@ -332,6 +346,7 @@ func test_real_tables_carry_no_ghost_item_outside_the_tower() -> void:
 		if String(id).begins_with("pokemon_tower_"):
 			continue
 		assert_true(table.ghost_unless_item.is_empty(), String(id))
-		if String(id).begins_with("cerulean_cave_"):
-			continue  # Jalon 31 : sol « floor » de la Grotte Azurée (comme les Îles Écume du J24).
-		assert_ne(table.terrain, &"floor", String(id))
+		# Jalon 24 (T4) : le sol des Îles Écume est aussi un terrain « floor », sans SPECTRE ;
+		# jalon 31 : celui de la Grotte Azurée aussi.
+		if not String(id).begins_with("seafoam_") and not String(id).begins_with("cerulean_cave_"):
+			assert_ne(table.terrain, &"floor", String(id))

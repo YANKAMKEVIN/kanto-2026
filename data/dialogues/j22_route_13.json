@@ -1,0 +1,145 @@
+{
+	"route_13_bird_1_before": {
+		"speaker": "Ornithologue Félix",
+		"pages": [
+			"Mes oiseaux connaissent le vent\nmieux que personne !"
+		]
+	},
+	"route_13_bird_1_defeated": {
+		"speaker": "Ornithologue Félix",
+		"pages": [
+			"Ils ont perdu le cap…"
+		]
+	},
+	"route_13_bird_1_after": {
+		"speaker": "Ornithologue Félix",
+		"pages": [
+			"Les oiseaux reviennent toujours."
+		]
+	},
+	"route_13_lass_1_before": {
+		"speaker": "Jeune Dresseuse Julie",
+		"pages": [
+			"Mes Ptitard adorent nager.\nEt se battre !"
+		]
+	},
+	"route_13_lass_1_defeated": {
+		"speaker": "Jeune Dresseuse Julie",
+		"pages": [
+			"Ils sont tout mouillés…"
+		]
+	},
+	"route_13_lass_1_after": {
+		"speaker": "Jeune Dresseuse Julie",
+		"pages": [
+			"Je vais les sécher au soleil."
+		]
+	},
+	"route_13_lass_2_before": {
+		"speaker": "Jeune Dresseuse Camille",
+		"pages": [
+			"Tu tournes en rond dans ces clôtures ?\nMoi aussi ! Combattons !"
+		]
+	},
+	"route_13_lass_2_defeated": {
+		"speaker": "Jeune Dresseuse Camille",
+		"pages": [
+			"Je suis encore plus perdue…"
+		]
+	},
+	"route_13_lass_2_after": {
+		"speaker": "Jeune Dresseuse Camille",
+		"pages": [
+			"La sortie ? Par là, je crois…"
+		]
+	},
+	"route_13_lass_3_before": {
+		"speaker": "Jeune Dresseuse Océane",
+		"pages": [
+			"Tous mes Pokémon viennent de l'eau.\nTu sauras t'y prendre ?"
+		]
+	},
+	"route_13_lass_3_defeated": {
+		"speaker": "Jeune Dresseuse Océane",
+		"pages": [
+			"Tu t'y prends très bien."
+		]
+	},
+	"route_13_lass_3_after": {
+		"speaker": "Jeune Dresseuse Océane",
+		"pages": [
+			"Je retourne au bord de l'eau."
+		]
+	},
+	"route_13_beauty_before": {
+		"speaker": "Beauté Margaux",
+		"pages": [
+			"Un combat ? Volontiers.\nMais sans abîmer mes Pokémon !"
+		]
+	},
+	"route_13_beauty_defeated": {
+		"speaker": "Beauté Margaux",
+		"pages": [
+			"Oh ! Quelle force !"
+		]
+	},
+	"route_13_beauty_after": {
+		"speaker": "Beauté Margaux",
+		"pages": [
+			"Il faudra que je m'entraîne aussi."
+		]
+	},
+	"route_13_biker_before": {
+		"speaker": "Motard Steve",
+		"pages": [
+			"Hé, toi ! T'as rien à faire\nsur notre route !"
+		]
+	},
+	"route_13_biker_defeated": {
+		"speaker": "Motard Steve",
+		"pages": [
+			"Ouais, bon… T'es pas mauvais."
+		]
+	},
+	"route_13_biker_after": {
+		"speaker": "Motard Steve",
+		"pages": [
+			"Va voir sur la Piste si on y est."
+		]
+	},
+	"route_13_bird_2_before": {
+		"speaker": "Ornithologue Simon",
+		"pages": [
+			"Quatre oiseaux, quatre vents !"
+		]
+	},
+	"route_13_bird_2_defeated": {
+		"speaker": "Ornithologue Simon",
+		"pages": [
+			"Tous au tapis…"
+		]
+	},
+	"route_13_bird_2_after": {
+		"speaker": "Ornithologue Simon",
+		"pages": [
+			"Je vais devoir les reposer."
+		]
+	},
+	"route_13_hidden_1": {
+		"cutscene": "route_13_hidden_1"
+	},
+	"route_13_hidden_2": {
+		"cutscene": "route_13_hidden_2"
+	},
+	"route_13_panneau_route_13": {
+		"pages": [
+			"ROUTE 13\nAttention aux clôtures !"
+		]
+	},
+	"route_13_panneau_conseil": {
+		"pages": [
+			"CONSEIL DU DRESSEUR\nUn Dresseur attend parfois",
+			"derrière une clôture.\nRegarde bien autour de toi !"
+		]
+	}
+}

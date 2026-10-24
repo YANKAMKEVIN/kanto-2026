@@ -1,13 +1,4 @@
 {
-	"ultra_ball": {
-		"name": "Hyper Ball",
-		"plural": "Hyper Balls",
-		"feminine": true,
-		"category": "ball",
-		"catch_bonus": 2,
-		"price": 1200,
-		"description": "Une Ball très performante. Elle capture mieux qu'une Super Ball."
-	},
 	"max_revive": {
 		"name": "Rappel Max",
 		"plural": "Rappels Max",

@@ -27,6 +27,9 @@ const ENCOUNTERABLE: Array[StringName] = [
 ## Notes validées par Kevin qui parlent de l'évolution (exception à « jamais de divulgation ») :
 ## celle de Kadabra (dossier 17 §15, n° 64) cite son origine, Abra, déjà vue pour l'avoir.
 const EVOLUTION_NOTES: Array[StringName] = [&"kadabra_bond"]
+## Descriptions validées par Kevin qui parlent d'évolution (exception à « jamais de
+## divulgation ») : Léviator (dossier 22 §15.7, validé le 2026-10-15).
+const EVOLUTION_DESCRIPTIONS: Array[StringName] = [&"gyarados"]
 ## Fiches autorisées à nommer une espèce que le joueur connaît forcément avant : Magnéton (« Trois
 ## Magnéti liés… », texte validé par Kevin le 2026-10-16 ; Magnéti se voit avant, chez l'Ingénieur
 ## Victor de la Route 11).
@@ -36,9 +39,6 @@ const NAMED_SPECIES_OK: Dictionary[StringName, Array] = {&"magneton": [&"magnemi
 ## Jalon 31 : Métamorph et Mewtwo, fiches en attente des textes de Kevin (proposés [D] dans
 ## `docs/tech/jalon-31.md` §4).
 const NO_ENTRY_YET: Array[StringName] = [&"ditto", &"mewtwo"]
-## Descriptions validées par Kevin qui parlent d'évolution (exception à « jamais de
-## divulgation ») : Léviator (dossier 22 §15.7, validé le 2026-10-15).
-const EVOLUTION_DESCRIPTIONS: Array[StringName] = [&"gyarados"]
 
 var _data: PokemonData
 var _lib: PokedexLibrary

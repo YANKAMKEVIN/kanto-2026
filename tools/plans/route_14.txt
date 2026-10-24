@@ -1,0 +1,137 @@
+# Route 14 (`route_14`) — grille fonctionnelle (jalon 22, lot 22.0, T6 ; dossier 25 §4, §8.3, §9.3).
+#
+# 30 × 81 cases (RB 20 × 54, × 1,5) ; nord en haut ; x = 0..29, y = 0..80.
+#
+# RACCORDS : EST (29, 8..10) ↔ Route 13 (0, 8..10) ; OUEST (0, 66..68) ↔ Route 15 (89, 11..13).
+#
+# Composition : COULOIR NORD-SUD bordé d'arbres. Deux voies de 3 cases (ouest x 5..7, est x 18..20) de part
+# et d'autre d'un long carré d'herbes (x 9..16), reliées par une traverse au nord, quatre passages
+# (rangées 20..21, 32..33, 44..45, 53..54) et une bande au sud (rangées 63..68). Ornithologues et
+# Motards dans des alcôves de la forêt, chacun tourné vers UNE voie : on passe par l'autre. À la sortie
+# ouest (rangées 66..68), l'Ornithologue (I) garde le seul passage.
+#
+# LÉGENDE COMMUNE DU J22 (chaque grille la reprend ; caractères NOUVEAUX marqués ★) :
+#   T arbres, forêt serrée (bloqués)     . herbe rase (praticable)     = chemin de terre (praticable)
+#   h hautes herbes (praticable, rencontres)   q ponton, planches (praticable)   y sable (praticable)
+#   w eau (bloquée, NON pêchable)        ★ f eau PÊCHABLE (bloquée ; on pêche depuis une case praticable
+#     voisine, face à elle ; jamais au contact d'une case de Piste)   ~ mer de décor (bloquée)
+#   R rochers, rive rocheuse, falaise (bloqués)   c clôture basse (bloquée)   x buissons (bloqués)
+#   n banc (bloqué)   P poste (bâtiment, bloqué)   m maison (bloquée)   D porte (praticable, terminale)
+#   ★ k tronçon de PISTE CYCLABLE, plat (praticable ; à vélo seulement, on ne peut pas descendre)
+#   ★ s PISTE en PENTE (praticable ; sans appui, dérive d'une case vers le sud ; Route 17 seulement)
+#   b barrière basse de la Piste (bloquée ; arrête la vue des Dresseurs)
+# Une case de Piste est une case « k » ou « s » ; un PALIER est une bande de rangées de la Route 17 sans
+# « s » entre deux tronçons de pente. Les Dresseurs de la Piste sont EN RETRAIT : sur une case « . »
+# (alcôve) hors des voies, tournés vers elles.
+#
+# POSITIONS : types warp, spawn, dresseur, objet_visible, cache, panneau, pnj, pokemon, herbes, repere,
+# decor. Dresseurs : trainer= (id du dossier §9), facing=, sight= (portée RB × 1,5, arrondie au-dessus :
+# 1 → 2, 2 → 3, 3 → 5, 4 → 6), rbsight=, inevitable=oui|non. Objets : item=, drapeau= (dossier §11).
+# Warps : to= (carte) spawn= (point d'arrivée) ; coming_soon= pour une porte ou un bord « À venir » ;
+# lie= relie les deux portes d'un poste traversant. Le contrôle : tools/art/plan_check_j22.py
+# (python3 -I tools/art/plan_check_j22.py) ; le rendu : tools/art/plan_aplats_j22.py.
+#
+# DÉFAUTS : voies parallèles (RB : clôtures et herbes) ; aucun objet (dossier §11) ; un panneau.
+
+PRATICABLES .=hD
+
+GRILLE 30 81
+00 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+01 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+02 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+03 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+04 TTTTT================TTTTTTTTT
+05 TTTTT================TTTTTTTTT
+06 TTTTT================TTTTTTTTT
+07 TTTTT===..........===TTT.TTTTT
+08 TTTTT===.........T============
+09 TTTTT===.........T============
+10 TTTTT===.........T============
+11 TTTTT===.........T===TTTTTTTTT
+12 TTTTT===ThhhhhhhhT===TTTTTTTTT
+13 TTTTT===ThhhhhhhhT===TTTTTTTTT
+14 TTTTT===ThhhhhhhhT===TTTTTTTTT
+15 TTTT.===ThhhhhhhhT===TTTTTTTTT
+16 TTTTT===ThhhhhhhhT===TTTTTTTTT
+17 TTTTT===ThhhhhhhhT===TTTTTTTTT
+18 TTTTT===ThhhhhhhhT===TTTTTTTTT
+19 TTTTT===ThhhhhhhhT===TTTTTTTTT
+20 TTTTT===.hhhhhhhh.===TTTTTTTTT
+21 TTTTT===.hhhhhhhh.===TTTTTTTTT
+22 TTTTT===ThhhhhhhhT===TTTTTTTTT
+23 TTTTT===ThhhhhhhhT===TTTTTTTTT
+24 TTTTT===ThhhhhhhhT===TTTTTTTTT
+25 TTTTT===ThhhhhhhhT===.TTTTTTTT
+26 TTTTT===ThhTTThhhT===TTTTTTTTT
+27 TTTTT===ThhTTThhhT===TTTTTTTTT
+28 TTTTT===ThhTTThhhT===TTTTTTTTT
+29 TTTTT===ThhhhhhhhT===TTTTTTTTT
+30 TTTTT===ThhhhhhhhT===TTTTTTTTT
+31 TTTTT===ThhhhhhhhT===TTTTTTTTT
+32 TTTTT===.hhhhhhhh.===TTTTTTTTT
+33 TTTTT===.hhhhhhhh.===TTTTTTTTT
+34 TTTTT===ThhhhhhhhT===TTTTTTTTT
+35 TTTTT===ThhhhhhhhT===TTTTTTTTT
+36 TTTTT===ThhhhhhhhT===TTTTTTTTT
+37 TTTTT===ThhhhhhhhT===TTTTTTTTT
+38 TTTTT===ThhhhhTThT===TTTTTTTTT
+39 TTTTT===ThhhhhTThT===TTTTTTTTT
+40 TTTT.===ThhhhhTThT===TTTTTTTTT
+41 TTTTT===ThhhhhhhhT===TTTTTTTTT
+42 TTTTT===ThhhhhhhhT===TTTTTTTTT
+43 TTTTT===ThhhhhhhhT===TTTTTTTTT
+44 TTTTT===.hhhhhhhh.===TTTTTTTTT
+45 TTTTT===.hhhhhhhh.===TTTTTTTTT
+46 TTTTT===ThhhhhhhhT===TTTTTTTTT
+47 TTTTT===ThTTThhhhT===TTTTTTTTT
+48 TTTTT===ThTTThhhhT===.TTTTTTTT
+49 TTTTT===ThTTThhhhT===TTTTTTTTT
+50 TTTTT===ThhhhhhhhT===TTTTTTTTT
+51 TTTTT===ThhhhhhhhT===TTTTTTTTT
+52 TTTTT===ThhhhhhhhT===TTTTTTTTT
+53 TTTTT===.hhhhhhhh.===TTTTTTTTT
+54 TTTTT===.hhhhhhhh.===TTTTTTTTT
+55 TTTTT===ThhhhhhhhT===TTTTTTTTT
+56 TTTTT===ThhhhhhhhT===TTTTTTTTT
+57 TTTTT===ThhhhhhhhT===TTTTTTTTT
+58 TTTT.===ThhhhhhhhT===TTTTTTTTT
+59 TTTTT===TTTTTTTTTT===TTTTTTTTT
+60 TTTTT===TTTTTTTTTT===TTTTTTTTT
+61 TTTTT===TTTTTTTTTT===TTTTTTTTT
+62 TTTTT===TTTTTTTTTT===TTTTTTTTT
+63 TTTTT================TTTTTTTTT
+64 TTTTT================TTTTTTTTT
+65 TT.TT================TTTTTTTTT
+66 =====================TTTTTTTTT
+67 =====================TTTTTTTTT
+68 =====================TTTTTTTTT
+69 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+70 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+71 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+72 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+73 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+74 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+75 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+76 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+77 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+78 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+79 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+80 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+FIN
+
+# POSITIONS — identifiant  type  cases  bloque|libre  [cle=valeur ...]  # commentaire
+POSITIONS
+warp_est               warp           29,8..10       libre   to=route_13 spawn=from_route_14  # PUSH → → Route 13 (0, 8..10)
+from_route_13          spawn          29,8..10       libre   facing=left  # arrivée de la Route 13, tournée ←
+warp_ouest             warp           0,66..68       libre   to=route_15 spawn=from_route_14  # PUSH ← → Route 15 (89, 11..13)
+from_route_15          spawn          0,66..68       libre   facing=right  # arrivée de la Route 15, tournée →
+route_14_bird_1        dresseur       4,15           bloque  role=D1 trainer=route_14_bird_1 facing=right sight=5 rbsight=3 inevitable=non rb=15,31  # Ornithologue, Canarticho 33 ; alcôve ouest, vue (5..7, 15) : voie ouest → prendre la voie est
+route_14_biker_1       dresseur       21,25          bloque  role=D2 trainer=route_14_biker_1 facing=left sight=6 rbsight=4 inevitable=non rb=4,31  # Motard, Smogo 29 + Tadmorv 29 ; alcôve est, vue (18..20, 25) : voie est → passer à l'ouest (passage 20..21)
+route_14_biker_3       dresseur       12,30          bloque  role=D3 trainer=route_14_biker_3 facing=down sight=6 rbsight=4 inevitable=non rb=4,30  # Motard, Tadmorv 28 ×2 + Smogo 28 ; dans les herbes du milieu, vue (12, 31..36)
+route_14_bird_2        dresseur       4,40           bloque  role=D4 trainer=route_14_bird_2 facing=right sight=6 rbsight=4 inevitable=non rb=6,49  # Ornithologue, Piafabec 29 + Rapasdepic 29 ; alcôve ouest, vue (5..7, 40) : prendre la voie est (passage 32..33)
+route_14_biker_2       dresseur       21,48          bloque  role=D5 trainer=route_14_biker_2 facing=left sight=5 rbsight=3 inevitable=non rb=15,30  # Motard, Smogo 29 + Grotadmorv 29 ; alcôve est, vue (18..20, 48) : voie ouest (passage 44..45)
+route_14_bird_4        dresseur       4,58           bloque  role=D6 trainer=route_14_bird_4 facing=right sight=6 rbsight=4 inevitable=non rb=12,11  # Ornithologue, Roucoups 29 + Rapasdepic 29 ; alcôve ouest, vue (5..7, 58) : voie est (passage 53..54)
+route_14_bird_3        dresseur       2,65           bloque  role=D7 trainer=route_14_bird_3 facing=down sight=3 rbsight=2 inevitable=oui rb=4,4  # Ornithologue, Roucool / Doduo / Roucoups 28 (I) ; alcôve au-dessus de la sortie, vue (2, 66..68) : toute la sortie
+panneau_route_14       panneau        24,7           bloque  role=T-route  # « ROUTE 14 » ; lu depuis (24, 8) ↑
+herbes_h1              herbes         9..16,12..58   libre   role=H1  # herbes du milieu, entre les deux voies (évitables)
+FIN

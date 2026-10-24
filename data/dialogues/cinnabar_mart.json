@@ -1,0 +1,15 @@
+{
+	"cinnabar_mart_silph_worker": {
+		"speaker": "Employée Sylphe",
+		"pages": [
+			"Je suis en vacances.",
+			"Mais je regarde quand même\nles rayons."
+		]
+	},
+	"cinnabar_mart_scientist": {
+		"speaker": "Scientifique",
+		"pages": [
+			"Des objets en plus, ça ne fait\njamais de mal !"
+		]
+	}
+}

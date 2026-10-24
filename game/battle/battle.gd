@@ -808,6 +808,18 @@ func _execute(side: BattleSide, action: BattleAction, events: Array[BattleEvent]
 		used.pp = slot.pp
 	events.append(used)
 	user.last_move_slot = action.move_index
+	# Jalon 24 (T13) : Métronome lance une capacité tirée au hasard, comme si le Pokémon la
+	# connaissait (les PP de Métronome sont dépensés, pas ceux de la capacité tirée).
+	if move.effect_of(MoveEffect.Kind.METRONOME) != null:
+		move = MetronomeRules.pick(_data, _rng)
+		if move == null:
+			_append_failed(side, move_id, events)
+			return
+		move_id = move.id
+		var called := _event(BattleEvent.Kind.MOVE_USED, side)
+		called.move_id = move_id
+		called.pp = -1
+		events.append(called)
 	if not released and _start_charge(side, action, move, events):
 		return
 	if _dodged(target_side, move, events):

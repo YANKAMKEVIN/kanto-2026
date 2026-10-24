@@ -136,11 +136,17 @@ const LAVANVILLE := [&"lavender_center", &"lavender_mart", &"pokemon_house",
 const ROUTES_7_8 := [&"route_7_gate", &"route_8_gate", &"route_7_underground_gate",
 	&"route_8_underground_gate"]
 ## Jalon 20 (T16) : Céladopole (hors Arène, `tools/build_celadon_gym.gd`).
+## Jalon 24 (T12) : Cramois'Île.
+const CINNABAR := [&"cinnabar_center", &"cinnabar_mart", &"cinnabar_lab", &"cinnabar_lab_meeting",
+	&"cinnabar_lab_rd", &"cinnabar_lab_fossil"]
 const CELADON := [&"celadon_center", &"celadon_dept_gf", &"celadon_dept_2f", &"celadon_dept_3f",
 	&"celadon_dept_4f", &"celadon_dept_5f", &"celadon_dept_roof", &"celadon_dept_elevator",
 	&"celadon_mansion_gf", &"celadon_mansion_1f", &"celadon_mansion_2f", &"celadon_mansion_3f",
 	&"celadon_mansion_roof", &"celadon_mansion_roof_house", &"celadon_restaurant",
 	&"celadon_chief_house", &"celadon_hotel"]
+## Jalon 22 (T12, T24) : maison de la Méga Canne (Route 12 sud) et intérieurs de Parmanie.
+const J22 := [&"route_12_rod_house", &"route_16_fly_house", &"fuchsia_center", &"fuchsia_mart", &"fuchsia_meeting_room",
+	&"fuchsia_grandpa_house", &"fuchsia_good_rod_house"]
 ## Jalon 21 (T21) : le poste traversant de la Route 12 et son étage (CT39) ; `--route12`.
 const ROUTE_12 := [&"route_12_gate", &"route_12_gate_2f"]
 const PLANS_DIR := "res://tools/plans/"
@@ -174,6 +180,9 @@ func _init() -> void:
 	rooms.append_array(_lavender_rooms())
 	rooms.append_array(_routes_7_8_rooms())
 	rooms.append_array(_celadon_rooms())
+	rooms.append_array(_j22_rooms())
+	# Jalon 24 (T12) : Cramois'Île (Centre, Boutique, Labo en quatre pièces).
+	rooms.append_array(_cinnabar_rooms())
 	# Jalon 21 (T21) : le poste de la Route 12 (pièces en fin de liste).
 	rooms.append_array(_route_12_rooms())
 	for room: Dictionary in rooms:
@@ -227,6 +236,10 @@ func _wanted_rooms() -> Array:
 			wanted.append_array(ROUTES_7_8)
 		elif arg == "--celadon":
 			wanted.append_array(CELADON)
+		elif arg == "--j22":
+			wanted.append_array(J22)
+		elif arg == "--cinnabar":
+			wanted.append_array(CINNABAR)
 		elif arg == "--route12":
 			wanted.append_array(ROUTE_12)
 		elif arg.begins_with("--rooms="):
@@ -2383,6 +2396,118 @@ func _celadon_small_room(id: StringName, node: String, plan: String, base: Strin
 	else:
 		(room["warps"] as Array).append_array(_celadon_exit_warps(cells, base))
 	return room
+
+
+# --- Jalon 22 (T12, T24) : maison de la Méga Canne, Parmanie --------------------------------------
+
+## Intérieurs du J22 sur les enveloppes existantes [D] (dossier 25 §10.2 ; grilles des modèles
+## citées par `parmanie.txt` et `route_12_sud.txt`) : maisons des cannes = maison du Pêcheur de
+## Carmin ; Salle de réunion = Fan Club ; maison du grand-père = maison d'Azuria ; Centre et
+## Boutique = modèles communs. PNJ : `data/npcs/<pièce>.json`.
+func _j22_rooms() -> Array[Dictionary]:
+	var rod_house := _vermilion_fisher_house()
+	_retarget(rod_house, &"route_12_rod_house", "Route12RodHouse", "Route 12", &"route_12_south",
+		&"from_rod_house")
+	var good_rod_house := _vermilion_fisher_house()
+	_retarget(good_rod_house, &"fuchsia_good_rod_house", "FuchsiaGoodRodHouse", "Parmanie",
+		&"fuchsia_city", &"from_good_rod_house")
+	var meeting_room := _vermilion_fan_club()
+	_retarget(meeting_room, &"fuchsia_meeting_room", "FuchsiaMeetingRoom", "Parmanie",
+		&"fuchsia_city", &"from_meeting_room")
+	var fly_house := _vermilion_house_1()
+	_retarget(fly_house, &"route_16_fly_house", "Route16FlyHouse", "Route 16", &"route_16_west",
+		&"from_fly_house")
+	var grandpa := _cerulean_house()
+	_retarget(grandpa, &"fuchsia_grandpa_house", "FuchsiaGrandpaHouse", "Parmanie",
+		&"fuchsia_city", &"from_grandpa_house")
+	return [
+		rod_house, fly_house,
+		_pokemon_center(&"fuchsia_center", "FuchsiaCenter", "Parmanie",
+			[&"fuchsia_city", &"from_center"]),
+		_poke_mart(&"fuchsia_mart", "FuchsiaMart", "Parmanie", [&"fuchsia_city", &"from_mart"]),
+		meeting_room, grandpa, good_rod_house,
+	]
+
+
+## Même pièce sous un autre identifiant : sorties vers [param map] / [param spawn].
+func _retarget(room: Dictionary, id: StringName, node: String, title: String, map: StringName,
+		spawn: StringName) -> void:
+	room["id"] = id
+	room["node"] = node
+	room["title"] = title
+	room["warps"] = _pewter_exits([Vector2i(6, 8), Vector2i(7, 8), Vector2i(8, 8)], spawn, map)
+
+
+# --- Cramois'Île (jalon 24 T12, `jalon-24.md` §3.3, dossier 27 §10.2-§10.4) -------------------
+
+
+## Centre et Boutique : définitions communes ; Labo : quatre pièces relues sur leur grille
+## (`tools/plans/cinnabar_labo_*.txt`), enveloppes de la série 27 (`int_labo_cramois_*_coque`),
+## sans meubles posés (provisoire : la grille bloque les cases des meubles peints).
+func _cinnabar_rooms() -> Array[Dictionary]:
+	var lab_exit := func(spawn: StringName) -> Array:
+		var warps: Array = []
+		var index := 0
+		for cell: Vector2i in [Vector2i(6, 8), Vector2i(7, 8), Vector2i(8, 8)]:
+			warps.append(["Exit%d" % index, cell, PUSH, Vector2i.DOWN, &"cinnabar_lab", spawn,
+				Vector2i.DOWN])
+			index += 1
+		return warps
+	var hall_warps: Array = []
+	var index := 0
+	for cell: Vector2i in [Vector2i(3, 10), Vector2i(4, 10), Vector2i(5, 10)]:
+		hall_warps.append(["Exit%d" % index, cell, PUSH, Vector2i.DOWN, &"cinnabar_island",
+			&"from_labo", Vector2i.DOWN])
+		index += 1
+	for door: Array in [["Meeting", 12, &"cinnabar_lab_meeting"], ["Rd", 18, &"cinnabar_lab_rd"],
+			["Fossil", 24, &"cinnabar_lab_fossil"]]:
+		for dx: int in 2:
+			hall_warps.append(["Door%s%d" % [door[0], dx], Vector2i(door[1] + dx, 3), STEP_ON,
+				Vector2i.UP, door[2], &"entrance", Vector2i.UP])
+	var hall := {
+		"id": &"cinnabar_lab", "node": "CinnabarLab", "size": Vector2i(27, 12),
+		"shell": "res://assets/world/interiors/int_labo_cramois_hall_coque.png",
+		"title": "Cramois'Île", "light": &"interior_warm",
+		"plan": PLANS_DIR + "cinnabar_labo_hall.txt", "walkable": ".XD",
+		"spawns": {"entrance": Vector2i(4, 10), "from_meeting": Vector2i(12, 4),
+			"from_rd": Vector2i(18, 4), "from_fossil": Vector2i(24, 4)},
+		"warps": hall_warps,
+		"interactables": [["FounderPhoto", Vector2i(4, 3), Vector2i(2, 1),
+			&"cinnabar_lab_photo", EXAMINE, Vector2i.UP]],
+	}
+	var meeting := {
+		"id": &"cinnabar_lab_meeting", "node": "CinnabarLabMeeting", "size": Vector2i(15, 10),
+		"shell": "res://assets/world/interiors/int_labo_cramois_reunion_coque.png",
+		"title": "Cramois'Île", "light": &"interior_warm",
+		"plan": PLANS_DIR + "cinnabar_labo_reunion.txt", "walkable": ".X",
+		"spawns": {"entrance": Vector2i(7, 8)},
+		"warps": lab_exit.call(&"from_meeting"),
+	}
+	var rd := {
+		"id": &"cinnabar_lab_rd", "node": "CinnabarLabRd", "size": Vector2i(15, 10),
+		"shell": "res://assets/world/interiors/int_labo_cramois_rd_coque.png",
+		"title": "Cramois'Île", "light": &"interior_warm",
+		"plan": PLANS_DIR + "cinnabar_labo_rd.txt", "walkable": ".X",
+		"spawns": {"entrance": Vector2i(7, 8)},
+		"warps": lab_exit.call(&"from_rd"),
+		"interactables": [["Computer", Vector2i(1, 3), Vector2i(3, 1), &"cinnabar_lab_pc",
+			EXAMINE, Vector2i.UP]],
+	}
+	var fossil := {
+		"id": &"cinnabar_lab_fossil", "node": "CinnabarLabFossil", "size": Vector2i(15, 10),
+		"shell": "res://assets/world/interiors/int_labo_cramois_fossiles_coque.png",
+		"title": "Cramois'Île", "light": &"interior_warm",
+		"plan": PLANS_DIR + "cinnabar_labo_fossiles.txt", "walkable": ".X",
+		"spawns": {"entrance": Vector2i(7, 8)},
+		"warps": lab_exit.call(&"from_fossil"),
+	}
+	return [
+		_pokemon_center(&"cinnabar_center", "CinnabarCenter", "Cramois'Île",
+			[&"cinnabar_island", &"from_centre"]),
+		_poke_mart(&"cinnabar_mart", "CinnabarMart", "Cramois'Île",
+			[&"cinnabar_island", &"from_boutique"]),
+		hall, meeting, rd, fossil,
+	]
 
 
 # --- Jalon 21 (T21) : poste de la Route 12 ------------------------------------------------------

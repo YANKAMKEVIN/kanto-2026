@@ -137,6 +137,24 @@
 			"player_feet": [716, 972],
 			"horizon": 440
 		},
+		"sea_open": {
+			"zone": "sea",
+			"variant": "open",
+			"back": "res://assets/battle/decors/sea_open_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 540],
+			"player_feet": [716, 972],
+			"horizon": 332
+		},
+		"seafoam_ice": {
+			"zone": "seafoam",
+			"variant": "ice",
+			"back": "res://assets/battle/decors/seafoam_ice_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 540],
+			"player_feet": [716, 972],
+			"horizon": 387
+		},
 		"tour_pokemon": {
 			"zone": "pokemon_tower",
 			"variant": "salle",
@@ -295,6 +313,30 @@
 		],
 		"rocket_hideout_b4f": [
 			{ "decor": "rocket_hideout_repaire" }
+		],
+		"route_12_south": [
+			{ "decor": "route_11_coast" }
+		],
+		"route_13": [
+			{ "decor": "route_5_6_prairie" }
+		],
+		"route_14": [
+			{ "decor": "route_5_6_prairie" }
+		],
+		"route_15": [
+			{ "decor": "route_5_6_prairie" }
+		],
+		"route_16_west": [
+			{ "decor": "route_7_8_urbaine" }
+		],
+		"route_17": [
+			{ "decor": "route_7_8_urbaine" }
+		],
+		"route_18": [
+			{ "decor": "route_7_8_urbaine" }
+		],
+		"fuchsia_city": [
+			{ "decor": "route_5_6_prairie" }
 		],
 		"route_16": [
 			{ "decor": "route_5_6_prairie" }

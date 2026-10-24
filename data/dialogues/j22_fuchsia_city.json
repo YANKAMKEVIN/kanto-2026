@@ -1,0 +1,86 @@
+{
+	"fuchsia_city_kangourex": {
+		"pages": [
+			"Kangourex garde son petit bien au chaud."
+		]
+	},
+	"fuchsia_city_ramoloss": {
+		"pages": [
+			"Ramoloss bâille… et oublie pourquoi."
+		]
+	},
+	"fuchsia_city_panneau_fossile": {
+		"pages": [
+			"FOSSILE\nUn Pokémon d'avant l'histoire."
+		]
+	},
+	"fuchsia_city_panneau_leveinard": {
+		"pages": [
+			"LEVEINARD\nUn Pokémon rare, très doux."
+		]
+	},
+	"fuchsia_city_panneau_kangourex": {
+		"pages": [
+			"Kangourex garde son petit bien au chaud."
+		]
+	},
+	"fuchsia_city_panneau_ramoloss": {
+		"pages": [
+			"Ramoloss bâille… et oublie pourquoi."
+		]
+	},
+	"fuchsia_city_panneau_lokhlass": {
+		"pages": [
+			"LOKHLASS\nIl aime transporter les gens sur l'eau."
+		]
+	},
+	"fuchsia_city_panneau_voltorbe": {
+		"pages": [
+			"VOLTORBE\nNe pas confondre avec une Poké Ball !"
+		]
+	},
+	"fuchsia_city_panneau_arene": {
+		"pages": [
+			"ARÈNE DE PARMANIE\nChampion : Koga"
+		]
+	},
+	"fuchsia_city_panneau_safari": {
+		"pages": [
+			"PARC SAFARI\nDes Pokémon rares vous attendent !"
+		]
+	},
+	"fuchsia_city_panneau_ouest": {
+		"pages": [
+			"PARMANIE\nVille ouverte sur la nature"
+		]
+	},
+	"fuchsia_city_panneau_est": {
+		"pages": [
+			"PARMANIE\nVille ouverte sur la nature"
+		]
+	},
+	"fuchsia_city_garcon_safari": {
+		"speaker": "Garçon",
+		"pages": [
+			"Le Parc Safari, c'est au nord.\nIl paraît qu'on y voit des Pokémon rares !"
+		]
+	},
+	"fuchsia_city_joueur": {
+		"speaker": "Joueur",
+		"pages": [
+			"Koga ? Un vrai ninja, à ce qu'on dit.\nPersonne ne le voit venir."
+		]
+	},
+	"fuchsia_city_pecheur_assis": {
+		"speaker": "Pêcheur",
+		"pages": [
+			"L'étang est calme aujourd'hui."
+		]
+	},
+	"fuchsia_city_femme_enclos": {
+		"speaker": "Femme",
+		"pages": [
+			"Ces Pokémon viennent du Parc Safari.\nOn les montre aux visiteurs."
+		]
+	}
+}

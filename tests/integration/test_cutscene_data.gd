@@ -70,6 +70,8 @@ const MAPS: Array[StringName] = [
 	&"celadon_city", &"celadon_gym",
 	# Jalon 20 (T17) : arrivées silencieuses (Route 8 est, Céladopole est).
 	&"route_8",
+	# Jalon 24 (T12) : la porte fermée de l'Arène de Cramois'Île (T-42 et recul).
+	&"cinnabar_island",
 	# Jalon 21 (T21) : arrivée silencieuse sur la Route 12.
 	&"route_12",
 	# Jalon 21 (T14, T22) : entrée de la Maison des Pokémon (remise de la Flûte), arrivée
@@ -233,6 +235,8 @@ const VARIANT_FLAGS: Dictionary = {
 	&"cut_tree_route_2_east_bush": [PEWTER_FLAGS], &"cut_tree_route_2_futur_a": [PEWTER_FLAGS],
 	# Jalon 18 (T15) : Coupe de l'arbre de la sortie est d'Azuria.
 	&"cut_tree_cerulean_east": [PEWTER_FLAGS],
+	# Raccords J21 ↔ J22 (2026-10-23) : Coupe de l'arbre de la Route 16.
+	&"cut_tree_route_16": [PEWTER_FLAGS],
 	# Jalon 20 (T16) : Coupe des deux arbustes de l'Arène d'Erika.
 	&"cut_tree_celadon_gym_bush": [PEWTER_FLAGS], &"cut_tree_celadon_gym_inner_bush": [PEWTER_FLAGS],
 	# Jalon 18 (T16) : objets et déclencheurs silencieux des objectifs (une variante chacun).
@@ -269,6 +273,14 @@ const VARIANT_FLAGS: Dictionary = {
 	&"celadon_hidden_1": [PEWTER_FLAGS],
 	&"celadon_gym_erika": [PEWTER_FLAGS], &"celadon_gym_erika_tm_late": [PEWTER_FLAGS],
 	&"celadon_roof_trade": [PEWTER_FLAGS],
+	# Jalon 24 : objets, caches, Artikodin, porte de l'Arène, CT35, fossiles.
+	&"route_20_item_1": [PEWTER_FLAGS], &"route_21_item_1": [PEWTER_FLAGS],
+	&"seafoam_b2f_hidden_1": [PEWTER_FLAGS], &"seafoam_b4f_hidden_1": [PEWTER_FLAGS],
+	&"articuno": [PEWTER_FLAGS], &"cinnabar_gym_locked": [PEWTER_FLAGS],
+	&"cinnabar_lab_tm35": [PEWTER_FLAGS],
+	&"cinnabar_fossil_take_kabuto": [PEWTER_FLAGS], &"cinnabar_fossil_take_omanyte": [PEWTER_FLAGS],
+	&"cinnabar_fossil_give_kabuto": [PEWTER_FLAGS + [&"fossil_reviving_kabuto", &"fossil_ready"]],
+	&"cinnabar_fossil_give_omanyte": [PEWTER_FLAGS + [&"fossil_reviving_omanyte", &"fossil_ready"]],
 	# Jalon 20 (T21) : interrupteur (une fois), chute et prise de la Clé, Giovanni, Scope, objets.
 	&"game_corner_switch": [PEWTER_FLAGS], &"rocket_hideout_key_drop": [PEWTER_FLAGS],
 	&"rocket_hideout_b4f_lift_key": [PEWTER_FLAGS + [&"rocket_dropped_lift_key"]],
@@ -370,6 +382,8 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"cut_tree_route_2_east_bush": &"route_2_east", &"cut_tree_route_2_futur_a": &"route_2",
 	# Jalon 18 (T15) : COUPER sur l'arbre de la sortie est d'Azuria.
 	&"cut_tree_cerulean_east": &"cerulean_city",
+	# Raccords J21 ↔ J22 (2026-10-23) : COUPER sur l'arbre de la Route 16.
+	&"cut_tree_route_16": &"route_16",
 	# Jalon 20 (T16) : COUPER sur les arbustes de l'Arène d'Erika.
 	&"cut_tree_celadon_gym_bush": &"celadon_city", &"cut_tree_celadon_gym_inner_bush": &"celadon_gym",
 	# Jalon 16 : embarquement, par le dialogue du marin (TXT-01).
@@ -418,6 +432,15 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"tower_3f_objet_1": &"pokemon_tower_3f", &"tower_4f_objet_1": &"pokemon_tower_4f",
 	&"tower_4f_objet_2": &"pokemon_tower_4f", &"tower_5f_objet_1": &"pokemon_tower_5f",
 	&"tower_5f_cache_1": &"pokemon_tower_5f", &"tower_6f_objet_1": &"pokemon_tower_6f",
+	# Jalon 24 : objets (PNJ « objet »), caches (points d'examen), Artikodin (son PNJ), CT35 et
+	# fossiles (dialogues des scientifiques, « cutscene » ou « confirm_cutscene »).
+	&"route_20_item_1": &"route_20", &"route_21_item_1": &"route_21",
+	&"seafoam_b2f_hidden_1": &"seafoam_b2f", &"seafoam_b4f_hidden_1": &"seafoam_b4f",
+	&"articuno": &"seafoam_b4f", &"cinnabar_lab_tm35": &"cinnabar_lab_rd",
+	&"cinnabar_fossil_take_kabuto": &"cinnabar_lab_fossil",
+	&"cinnabar_fossil_take_omanyte": &"cinnabar_lab_fossil",
+	&"cinnabar_fossil_give_kabuto": &"cinnabar_lab_fossil",
+	&"cinnabar_fossil_give_omanyte": &"cinnabar_lab_fossil",
 	# Jalon 21 (T21) : CT39 (dialogue de la jeune femme du 2F) et réveil de Ronflex (choix OUI).
 	&"route_12_gate_tm39": &"route_12_gate_2f", &"snorlax_route_12_wake": &"route_12",
 	# Jalon 21 (T13, T22) : sauvetage de Fuji (dialogue de Fuji au 7F ; sa suite `next` est
@@ -570,7 +593,7 @@ func test_library_loads_without_error() -> void:
 		# Jalon 17 (T23) : Coupe des deux arbustes.
 		&"cut_tree_route_2_east_bush", &"cut_tree_route_2_futur_a",
 		# Jalon 18 (T15) : l'arbre de la sortie est d'Azuria.
-		&"cut_tree_cerulean_east", &"cut_tree_celadon_gym_bush",
+		&"cut_tree_cerulean_east", &"cut_tree_route_16", &"cut_tree_celadon_gym_bush",
 		&"cut_tree_celadon_gym_inner_bush", &"tower_6f_ghost", &"tower_guardian",
 		&"tower_rival",
 		# Jalon 19 (T18) : zone purifiée, objets de la Tour (cinq visibles, un caché).
@@ -583,6 +606,11 @@ func test_library_loads_without_error() -> void:
 		&"route_8_reached", &"celadon_reached", &"route_8_item_1", &"route_8_hidden_1",
 		&"souterrain_hidden_1", &"souterrain_hidden_2", &"celadon_hidden_1",
 		&"celadon_gym_erika", &"celadon_gym_erika_tm_late", &"celadon_roof_trade",
+		# Jalon 24.
+		&"route_20_item_1", &"route_21_item_1", &"seafoam_b2f_hidden_1", &"seafoam_b4f_hidden_1",
+		&"articuno", &"cinnabar_gym_locked", &"cinnabar_lab_tm35", &"cinnabar_fossil_take_kabuto",
+		&"cinnabar_fossil_take_omanyte", &"cinnabar_fossil_give_kabuto",
+		&"cinnabar_fossil_give_omanyte",
 		# Jalon 21 (T21) : Route 12.
 		&"route_12_visited", &"route_12_gate_tm39", &"snorlax_route_12_wake",
 		# Jalon 21 (T13, T14, T22) : 7F, Maison des Pokémon, Route 16.
@@ -596,6 +624,18 @@ func _sorted(values: Array) -> Array[StringName]:
 	result.assign(values)
 	result.sort_custom(func(a: StringName, b: StringName) -> bool: return String(a) < String(b))
 	return result
+
+
+## Jalon 24 (D3 de la QA A17) : la CT35 a sa ligne de réception, comme les CT des Arènes.
+func test_tm35_gift_is_followed_by_its_reception_line() -> void:
+	var steps := _cutscenes.get_cutscene(&"cinnabar_lab_tm35").variants[0].steps
+	assert_eq(steps[0].dialogue_id, &"cinnabar_lab_tm35_offer")
+	assert_eq(steps[1].kind, CutsceneStep.Kind.GIVE)
+	assert_eq(steps[1].item_id, &"tm35")
+	assert_eq(steps[2].kind, CutsceneStep.Kind.DIALOGUE)
+	assert_eq(steps[2].dialogue_id, &"cinnabar_lab_tm35_use")
+	assert_eq(steps[3].kind, CutsceneStep.Kind.SET_FLAGS)
+	assert_eq(steps[3].flags, [&"got_tm35"] as Array[StringName])
 
 
 func test_route1_grass_ends_with_the_starter_offer() -> void:
@@ -715,6 +755,7 @@ func test_only_world_items_are_found_items() -> void:
 		"rocket_hideout_b4f_lift_key:lift_key", "rocket_hideout_b4f_silph_scope:silph_scope",
 		"route_10_item_1:super_potion", "route_11_hidden_1:poke_ball",
 		"route_11_item_1:super_potion", "route_11_item_2:awakening", "route_1_potion:potion",
+		"route_20_item_1:great_ball", "route_21_item_1:hyper_potion",
 		"route_24_antidote:antidote", "route_24_item_1:potion", "route_25_hidden_1:potion",
 		"route_25_item_1:tm19", "route_25_item_2:potion", "route_25_item_3:poke_ball",
 		"route_2_east_item_1:moon_stone", "route_2_east_item_2:rare_candy",
@@ -726,6 +767,7 @@ func test_only_world_items_are_found_items() -> void:
 		"route_6_hidden_1:super_potion", "route_6_item_1:poke_ball",
 		"route_8_hidden_1:revive", "route_8_item_1:super_potion",
 		"route_9_item_1:super_potion", "route_9_item_2:antidote", "route_9_item_3:poke_ball",
+		"seafoam_b2f_hidden_1:nugget", "seafoam_b4f_hidden_1:ultra_ball",
 		"souterrain_hidden_1:nugget", "souterrain_hidden_2:super_potion",
 		"ss_anne_hidden_1:awakening", "ss_anne_hidden_2:antidote", "ss_anne_hidden_3:potion",
 		"ss_anne_item_01:potion", "ss_anne_item_02:potion", "ss_anne_item_03:super_potion",
@@ -1249,9 +1291,15 @@ func _real_ids() -> Array[StringName]:
 	return _without_qa(_cutscenes.get_ids())
 
 
+## Sans les cartes de QA ni les données du jalon 22 (fichiers `j22_*.json`, vérifiés par
+## `test_j22_data.gd`).
 func _without_qa(ids: Array[StringName]) -> Array[StringName]:
+	var j22 := J22Ids.in_dir("res://data/cutscenes/")
 	var result: Array[StringName] = []
 	for id: StringName in ids:
-		if not MapCatalog.is_qa_map(id):
+		if not MapCatalog.is_qa_map(id) and not j22.has(id):
 			result.append(id)
 	return result
+
+
+const J22Ids := preload("res://tests/helpers/j22_ids.gd")

@@ -1,0 +1,11 @@
+{
+	"girl": {
+		"cell": [
+			12,
+			6
+		],
+		"facing": "left",
+		"sprite": "lass_young",
+		"dialogue": "j22_fly_house_girl"
+	}
+}
