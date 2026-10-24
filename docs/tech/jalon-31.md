@@ -377,16 +377,28 @@ Captures dans `build/qa_j31/` (non versionnées). Journal Godot : aucune erreur 
   vérifiées**.
 - Adversaires (Mewtwo, Magnéton, Hypno) face au joueur. Cadence : 48–52 i/s dans la grotte,
   47–53 à Azuria, 38–40 en combat.
-- **Défauts ouverts** : Mewtwo dessiné sur la carte comme un PNJ humain générique (sprite de
-  carte manquant) ; Poké Ball juste au-dessus du héros en Surf cachée par son sprite ;
-  description de l'Hyper Ball tronquée dans le Sac de combat (comme la Guérison au J30 §10.9) ;
-  dos des Pokémon du joueur en pixel art basse résolution à côté des artworks de face.
+- **Défauts trouvés** :
+  - Mewtwo dessiné sur la carte comme un PNJ humain générique → **corrigé** (accord de Kevin
+    pour un provisoire) : `tools/art/placeholder_mewtwo_carte.py` réduit l'artwork n° 150 à
+    190 px de haut [D] (Artikodin : 171 px pour 1,7 m), image fixe pour les quatre directions
+    (`pokemon/painted/mewtwo_provisoire.png`, `mewtwo_frames.tres`) ; à remplacer par une
+    planche du catalogue (`build_character_frames.gd`). `test_j31_data` le vérifie. Vu sur l'A17.
+  - Description de l'Hyper Ball coupée à « Elle » dans le Sac de combat → **corrigé** sur la
+    branche moteur `correctif-orientation-adversaires` (`b5dab5eb` : quatre lignes, cadre ancré
+    en bas qui grandit vers le haut) et repris ici par cherry-pick avec le correctif des trois
+    lignes du J30 (`b14fb0ae`) ; test `test_ultra_ball_description_is_shown_in_full`. Vu sur l'A17.
+  - Poké Ball juste au-dessus du héros en Surf cachée par sa tête : **non corrigé**, tri normal
+    d'une vue de dessus (à pied, le héros couvre aussi le haut de la case au-dessus) ; à
+    trancher par Kevin s'il veut une règle différente pour les objets.
+  Suite complète après ces correctifs : **6 798 / 6 798**.
+  - Dos des Pokémon du joueur en pixel art basse résolution à côté des artworks de face : art,
+    non traité ici.
 - Non couvert : échelle P7 (1F↔B1F), capture et K.O. de Mewtwo, reprise d'une vraie sauvegarde.
 
 ### 11.1 Reste à faire
 - **T9** : capture avec la Master Ball après le J26 ; capture en équipe pleine (QA).
 - **T10** : QA A17 du §6 faite (§11.0) ; reste capture de Mewtwo (l'affaiblir d'abord), échelle
-  P7, et les défauts ouverts du §11.0. Suite complète après le correctif : **6 796 / 6 796**.
+  P7. Suite complète après le correctif : **6 796 / 6 796**.
 - À la fusion du J30 : `test_cerulean_cave_access` vérifie l'égalité du drapeau de Champion.
 - À la fusion des J23, J25, J28 : retirer Leveinard, Rappel Max, Rhinoféros des emprunts.
 - Max Élixir caché du B3F des Îles Écume (J24) : à poser maintenant que l'objet existe.
