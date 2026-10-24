@@ -1,6 +1,8 @@
 # J32 — Un Kanto complet et vivant : arbitrages de collection pour Kevin
 
-> **À VALIDER PAR KEVIN.** Claude, 2026-10-24. **Documentation seule : aucune ligne de code.**
+> **VALIDÉ PAR KEVIN le 2026-10-24 : N-1 à N-16, toutes les recommandations ; textes du §5 validés.**
+>
+> Claude, 2026-10-24. **Documentation seule : aucune ligne de code.**
 > Prépare le §7 du plan `docs/tech/jalon-32.md` (branche `jalon-31`) et la tâche T3 « Obstacles de
 > collection », qui attend ces réponses. Relu contre `vision.md` (constitution, dossier 04 §17
 > « Mew »), `roadmap.md` (Phase 9 : « puis le mystère Mew »), la passe `j32-v1-chatgpt.md` (ses
@@ -176,7 +178,7 @@ Raichu) · **B** un mini-jalon après le J32 · **C** Électhor ailleurs, sans C
   les deux Nidoran coûtent une ligne de données chacun). Surnoms VF de RB à relever (Poképédia) ;
   présence des maisons à vérifier par T1/T6.
 
-## 5. Textes proposés — **à valider en un seul lot**
+## 5. Textes — **VALIDÉS par Kevin le 2026-10-24**
 
 Deux lignes de 40 caractères au plus par page. Tous [D].
 
@@ -243,7 +245,7 @@ Deux lignes de 40 caractères au plus par page. Tous [D].
 | **N-13** | Porygon | A Sylphe après Giovanni (H-6) · B post-game seulement | **A** |
 | **N-14** | Échanges PNJ RB | A les six · B les quatre nécessaires | **A** |
 | **N-15** | Terminal d'échange local | Tous les Centres (le [D] du plan §7.6) | **oui** |
-| **N-16** | Textes §5 | Lot unique, 16 répliques | **à valider** |
+| **N-16** | Textes §5 | Lot unique, 16 répliques | **validés** |
 
 ## 8. Suite
 Après tes réponses : report dans `docs/tech/jalon-32.md` §7 et T3 (par la session du J32, pas sur
