@@ -1,8 +1,9 @@
 extends GutTest
 ## BattleLayout (cadrage du pilote, CB.1 : docs/tech/combat-maquettes.md) : ancres à 1920 × 1080
 ## et 2340 × 1080, loi de taille (taille réelle comprimée et bornée, Salamèche = référence),
-## boîtes maximales dans l'écran et hors des zones de l'interface (contrat CB.1 / CB.2 : quart
-## haut gauche, bas droit) ; cadrage des 3 placements réels du labo (§14.1).
+## boîtes maximales dans l'écran et hors des zones de l'interface (contrat CB.1 / CB.2 : haut
+## gauche, bas droit) ; cadrage B du dos (2026-10-25) ; cadrage des 3 placements réels du labo
+## (§14.1).
 
 const VIEWS: Array[Vector2] = [Vector2(1920, 1080), Vector2(2340, 1080)]
 ## Boîte visible du dos provisoire de Salamèche et de l'artwork officiel de Roucool (px).
@@ -43,7 +44,12 @@ func test_max_boxes_inside_screen_apart_and_off_the_hud_zones() -> void:
 		var screen := Rect2(Vector2.ZERO, view)
 		var mine := BattleLayout.max_rect(true, view)
 		var foe := BattleLayout.max_rect(false, view)
-		assert_true(screen.encloses(mine), "%s : joueur dans l'écran" % view)
+		# Cadrage B : le dos part du bas de l'écran ; en 16:9, il peut déborder à gauche (≤ 0,2).
+		assert_eq(mine.end.y, view.y, "%s : dos posé sur le bas de l'écran" % view)
+		assert_true(screen.grow_individual(0.2 * view.y, 0.0, 0.0, 0.0).encloses(mine),
+			"%s : joueur dans l'écran" % view)
+		if view.x / view.y >= 2.0:
+			assert_true(screen.encloses(mine), "%s : entier sur le téléphone" % view)
 		assert_true(screen.encloses(foe), "%s : adversaire dans l'écran" % view)
 		assert_false(mine.intersects(foe), "%s : jamais l'un sur l'autre" % view)
 		for zone: Rect2 in BattleLayout.hud_zones(view):
@@ -51,9 +57,11 @@ func test_max_boxes_inside_screen_apart_and_off_the_hud_zones() -> void:
 			assert_false(foe.intersects(zone), "%s : adversaire hors de %s" % [view, zone])
 
 
-func test_hud_zones_are_top_left_quarter_and_bottom_right() -> void:
+func test_hud_zones_are_top_left_band_and_bottom_right() -> void:
 	var zones := BattleLayout.hud_zones(Vector2(2340, 1080))
-	assert_eq(zones[0], Rect2(0, 0, 1170, 540))
+	assert_eq(zones[0], Rect2(0, 0, 1170, 216))
+	var card := BattleHudLayout.rect(BattleHudLayout.Slot.FOE_CARD, Vector2(2340, 1080))
+	assert_true(zones[0].encloses(card), "la carte adverse dans sa zone")
 	assert_eq(zones[1], Rect2(1170, 540, 1170, 540))
 
 
@@ -66,15 +74,32 @@ func test_size_ratio_reference_compressed_and_bounded() -> void:
 	assert_eq(BattleLayout.size_ratio(0.01), BattleLayout.MIN_RATIO, "minuscule borné")
 
 
-## Référence du pilote : Salamèche de dos ≈ 60 % du premier essai (0,56 → ≈ 0,336 de haut),
-## Roucool de face ≈ 0,21 de haut.
-func test_pilot_reference_sizes() -> void:
+## Cadrage B (décision de Kevin, 2026-10-25) : Carapuce (0,5 m) de dos ≈ 0,58 de haut visible
+## (essai), Onix borné sous la carte adverse ; Roucool de face ≈ 0,26 de haut (présence 0,34).
+func test_back_and_foe_reference_sizes() -> void:
 	var h := 1080.0
+	var box := Vector2(400, 800)
+	var shown := box.y * (1.0 - BattleLayout.BACK_CUT)
+	var squirtle := BattleLayout.sprite_scale(box, 0.5, true, h)
+	assert_almost_eq(shown * squirtle / h, 0.58, 0.01, "Carapuce comme l'essai")
+	var onix := BattleLayout.sprite_scale(box, 8.8, true, h)
+	assert_almost_eq(shown * onix / h, BattleLayout.BACK_MAX_BOX.y, 0.001, "Onix borné")
 	var mine := BattleLayout.sprite_scale(CHARMANDER_BACK, 0.6, true, h, true)
-	assert_eq(mine, 6.0, "pixel art net : échelle entière")
-	assert_almost_eq(CHARMANDER_BACK.y * mine / h, 0.336, 0.03)
+	assert_eq(mine, floorf(mine), "pixel art net : échelle entière")
+	assert_almost_eq(CHARMANDER_BACK.y * (1.0 - BattleLayout.BACK_CUT) * mine / h, 0.62, 0.03)
 	var foe := BattleLayout.sprite_scale(PIDGEY_ARTWORK, 0.3, false, h)
-	assert_almost_eq(PIDGEY_ARTWORK.y * foe / h, 0.21, 0.01)
+	assert_almost_eq(PIDGEY_ARTWORK.y * foe / h, 0.26, 0.01)
+
+
+## Le dos est coupé par le bas de l'écran : [constant BattleLayout.BACK_CUT] de sa boîte
+## dessous, centré à 0,58 hauteur d'écran à gauche du centre.
+func test_back_feet_below_the_bottom_edge() -> void:
+	for view: Vector2 in VIEWS:
+		var feet := BattleLayout.back_feet(view, 800.0)
+		assert_eq(feet, Vector2(view.x / 2.0 - 0.58 * view.y, view.y + 0.25 * 800.0).round())
+		var rect := BattleLayout.sprite_rect(feet, 1.0, Vector2(400, 800))
+		assert_almost_eq(rect.end.y - view.y, 200.0, 0.5, "%s : un quart sous l'écran" % view)
+		assert_lt(rect.position.y, view.y, "%s : le haut se voit" % view)
 
 
 func test_scale_follows_real_size_and_respects_max_boxes() -> void:
@@ -85,10 +110,11 @@ func test_scale_follows_real_size_and_respects_max_boxes() -> void:
 	var onix := BattleLayout.sprite_scale(Vector2(411, 431), 8.8, false, h)
 	assert_lte(431 * onix, BattleLayout.FOE_MAX_BOX.y * h + 0.01, "Onix tient dans sa boîte")
 	var wide := BattleLayout.sprite_scale(Vector2(800, 100), 0.6, true, h)
-	assert_lte(800 * wide, BattleLayout.PLAYER_MAX_BOX.x * h + 0.01, "largeur bornée")
+	assert_lte(800 * wide, BattleLayout.BACK_MAX_BOX.x * h + 0.01, "largeur bornée")
 	var whole := BattleLayout.sprite_scale(Vector2(60, 64), 8.8, true, h, true)
 	assert_eq(whole, floorf(whole), "entière")
-	assert_lte(64 * whole, BattleLayout.PLAYER_MAX_BOX.y * h, "entière sans dépasser la boîte")
+	assert_lte(64 * (1.0 - BattleLayout.BACK_CUT) * whole, BattleLayout.BACK_MAX_BOX.y * h,
+		"entière sans dépasser la boîte")
 	assert_eq(BattleLayout.sprite_scale(Vector2.ZERO, 0.6, true, h), 1.0, "boîte vide")
 
 

@@ -93,6 +93,9 @@ func _art_path(sprite: Sprite2D) -> String:
 ## n'a pas le format du téléphone).
 func _assert_framed(side: BattleEvent.SideId) -> void:
 	var rect := _stage.get_sprite_rect(side)
+	if side == PLAYER_SIDE:
+		# Cadrage B : seule compte la part au-dessus du bas de l'écran.
+		rect = rect.intersection(Rect2(Vector2.ZERO, _view()))
 	var limit := BattleLayout.max_rect(side == PLAYER_SIDE, _view()).grow(0.5)
 	assert_true(limit.encloses(rect), "%s dans %s" % [rect, limit])
 
@@ -120,7 +123,7 @@ func test_enter_hides_world_pokemon_and_shows_battle_sprites_at_anchors() -> voi
 	assert_eq(mine.texture_filter, CanvasItem.TEXTURE_FILTER_LINEAR, "dos peint (Salamèche)")
 	assert_eq(foe.texture_filter, CanvasItem.TEXTURE_FILTER_LINEAR, "artwork officiel")
 	assert_not_null(foe.material, "artwork étalonné dans la lumière du lieu")
-	assert_eq(mine.position, a["player_feet"])
+	assert_eq(mine.position, _stage.get_rest_feet(PLAYER_SIDE))
 	assert_eq(foe.position, a["foe_feet"])
 	assert_eq(mine.scale, Vector2.ONE * _scale(&"charmander", true), "taille de BattleLayout")
 	assert_eq(foe.scale, Vector2.ONE * _scale(&"squirtle", false))
@@ -130,7 +133,12 @@ func test_enter_hides_world_pokemon_and_shows_battle_sprites_at_anchors() -> voi
 	assert_eq(mine.texture.get_size(), Vector2(1024, 1024))
 	_assert_framed(PLAYER_SIDE)
 	_assert_framed(FOE_SIDE)
-	assert_true((_stage.get_node(^"%PlayerShadow") as CanvasItem).visible, "ombre au sol")
+	assert_true((_stage.get_node(^"%FoeShadow") as CanvasItem).visible, "ombre au sol")
+	assert_null((_stage.get_node(^"%PlayerShadow") as Sprite2D).texture,
+		"cadrage B : pas d'ombre sous ton Pokémon")
+	var mine_rect := _stage.get_sprite_rect(PLAYER_SIDE)
+	assert_almost_eq(mine_rect.end.y - _view().y, mine_rect.size.y * BattleLayout.BACK_CUT, 1.0,
+		"cadrage B : coupé par le bas de l'écran")
 	assert_true((_stage.get_node(^"%Backdrop") as CanvasItem).visible, "voile posé")
 
 
@@ -154,7 +162,7 @@ func test_moves_hits_stats_and_faint_finish_and_come_back_to_the_anchor() -> voi
 	await _stage.play_hit(PLAYER_SIDE, true)
 	await _stage.play_stat(PLAYER_SIDE, true)
 	await _stage.play_stat(FOE_SIDE, false)
-	assert_eq(_stage.get_sprite(PLAYER_SIDE).position, a["player_feet"])
+	assert_eq(_stage.get_sprite(PLAYER_SIDE).position, _stage.get_rest_feet(PLAYER_SIDE))
 	assert_eq(_stage.get_sprite(FOE_SIDE).position, a["foe_feet"])
 	assert_eq(_stage.get_sprite(FOE_SIDE).modulate, Color.WHITE)
 	assert_eq(_camera.offset, Vector2.ZERO, "retour immédiat au cadrage")
@@ -245,13 +253,13 @@ func test_real_transition_moves_camera_and_sprites_together() -> void:
 	var mine := _stage.get_sprite(PLAYER_SIDE)
 	assert_between(_camera.zoom.x, 1.01, BattleStage.ZOOM - 0.01, "caméra en mouvement")
 	assert_between(mine.scale.x, 1.1, _scale(&"blastoise", true) - 0.1, "taille intermédiaire")
-	assert_ne(mine.position, _anchors()["player_feet"], "en chemin")
+	assert_ne(mine.position, _stage.get_rest_feet(PLAYER_SIDE), "en chemin")
 	assert_true(mine.visible)
 	assert_true((_stage.get_node(^"%Backdrop") as CanvasItem).visible)
 	clock.run_until(func() -> bool: return entered[0], 2.0)
 	clock.release()
 	assert_true(entered[0], "entrée terminée")
-	assert_eq(mine.position, _anchors()["player_feet"])
+	assert_eq(mine.position, _stage.get_rest_feet(PLAYER_SIDE))
 	_stage.exit()
 	await wait_for_signal(_stage.exited, 2.0)
 	assert_true(_mine.visible)
@@ -303,7 +311,7 @@ func test_wild_intro_and_partner_enter_end_at_the_anchors() -> void:
 	await _stage.play_partner_enter(&"charmander")
 	var mine := _stage.get_sprite(PLAYER_SIDE)
 	assert_true(mine.visible)
-	assert_eq(mine.position, a["player_feet"], "à l'ancre du joueur")
+	assert_eq(mine.position, _stage.get_rest_feet(PLAYER_SIDE), "à l'ancre du joueur")
 	assert_eq(mine.scale, Vector2.ONE * _scale(&"charmander", true))
 	assert_string_ends_with(mine.texture.resource_path, "dos_ia_004.png")
 	_assert_framed(PLAYER_SIDE)
@@ -550,9 +558,13 @@ func test_status_effects_sit_above_the_sprite_without_touching_it() -> void:
 		assert_gt(aura.get_index(), sprite.get_index(), "dessiné après le sprite : au-dessus")
 		var rect := aura.get_target_rect()
 		var expected := _stage.get_sprite_rect(side)
+		if side == PLAYER_SIDE:
+			# Cadrage B : l'effet suit la part du dos au-dessus du bas de l'écran (la vue
+			# carrée de GUT le laisse aussi déborder à gauche).
+			expected.size.y = _view().y - expected.position.y
 		assert_lt(rect.position.distance_to(expected.position), 8.0,
 			"l'effet suit la boîte visible du sprite (offset arrondi)")
-		assert_lt(rect.size.distance_to(expected.size), 1.0)
+		assert_lt(rect.size.distance_to(expected.size), 2.0)
 		for status: StringName in StatusRules.KNOWN:
 			_stage.set_status(side, status)
 			await wait_process_frames(1)

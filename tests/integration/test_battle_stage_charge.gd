@@ -134,8 +134,7 @@ func test_reduced_motion_surface_does_not_move() -> void:
 	clock.step()
 	assert_true(sprite.visible)
 	assert_eq(sprite.position, _stage.get_sprite(PLAYER_SIDE).position)
-	assert_eq(sprite.position.y, BattleLayout.anchors(
-		_stage.get_viewport().get_visible_rect().size)["player_feet"].y, "à l'ancre dès le début")
+	assert_eq(sprite.position.y, _stage.get_rest_feet(PLAYER_SIDE).y, "à l'ancre dès le début")
 	clock.run_until(func() -> bool: return sprite.modulate.a >= 1.0, 2.0)
 	clock.release()
 

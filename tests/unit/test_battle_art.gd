@@ -106,11 +106,14 @@ func test_every_species_fits_the_framing() -> void:
 			var image := _art.image(species, back)
 			var box: Rect2 = image["box"]
 			for view: Vector2 in VIEWS:
-				var key := "player_feet" if back else "foe_feet"
-				var feet: Vector2 = BattleLayout.anchors(view)[key]
 				var scale := BattleLayout.sprite_scale(box.size, _art.height_m(species), back,
 					view.y, not image["official"])
+				var feet: Vector2 = BattleLayout.back_feet(view, box.size.y * scale) if back \
+					else BattleLayout.anchors(view)["foe_feet"]
 				var rect := BattleLayout.sprite_rect(feet, scale, box.size)
+				if back:
+					# Cadrage B : seule compte la part au-dessus du bas de l'écran.
+					rect = rect.intersection(Rect2(Vector2.ZERO, view))
 				var where := "%s %s %s" % [species, "dos" if back else "face", view]
 				assert_true(BattleLayout.max_rect(back, view).grow(0.5).encloses(rect), where)
 				for zone: Rect2 in BattleLayout.hud_zones(view):

@@ -87,3 +87,19 @@ affichés en cadrage B par le code (agrandis, coupés par le bas de l'écran) ; 
 Cadrage A (actuel) ou B (façon RB). B toucherait `BattleLayout` (ancre et coupe du dos) et
 la production des dos restants (session DAF.1, branche `art-dos-combat-maj`), voire la reprise
 des 81 dos existants : à lui transmettre une fois la décision prise.
+
+## Code du cadrage B (2026-10-25, branche `claude/cadrage-b-dos-792bde`)
+
+`BattleLayout` : dos centré à `BACK_X` = −0,58 hauteur d'écran du centre ; part visible haute de
+`BACK_HEIGHT` = 0,62 × loi de taille (Carapuce ≈ 0,58), plafonnée par `BACK_MAX_BOX` 1,00 × 0,80
+(le haut reste sous la carte adverse) ; `BACK_CUT` = 0,25 : un quart de la boîte de l'image sous
+le bas de l'écran (recadrage à l'affichage, aucun fichier d'art modifié). Adversaire : présence
+0,34, boîte 0,70 × 0,46. Valeurs par défaut : ton Pokémon devant le feuillage flou du premier
+plan, pas d'ombre au sol sous lui. Captures du vrai combat (2340 × 1080) :
+
+- `code-b-combat-route-1.webp` : Salamèche contre Roucool (actions, capacités, coup, Sac),
+  Dracaufeu, Ball au sol.
+- `code-b-dos-especes.webp` : Carapuce, Onix, Pikachu (dos peints), Osselait (repli : artwork
+  officiel), Tortank, Ronflex, Léviator (pixel art provisoire), Racaillou, Abo.
+- `code-b-grands-adversaires.webp` : passe `--pass=foes` (Onix, Léviator, Ronflex, Florizarre,
+  Arcanin, Ptéra, Artikodin, Grolem).

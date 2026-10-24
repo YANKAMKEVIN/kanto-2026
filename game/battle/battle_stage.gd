@@ -1055,10 +1055,15 @@ func get_sprite(side: BattleEvent.SideId) -> Sprite2D:
 
 
 ## Rectangle écran de la boîte visible du Pokémon de [param side] à sa place courante (tests,
-## captures).
+## captures). Le dos (cadrage B) déborde sous le bas de l'écran.
 func get_sprite_rect(side: BattleEvent.SideId) -> Rect2:
 	return BattleLayout.sprite_rect(_sprites[side].position, _anchor_scale(side),
 		_box(side).size)
+
+
+## Pieds de repos du Pokémon de [param side] (tests, captures).
+func get_rest_feet(side: BattleEvent.SideId) -> Vector2:
+	return _anchor(side)
 
 
 ## Centre monde du cadrage de combat (tests, captures).
@@ -1299,7 +1304,11 @@ func _set_texture(side: BattleEvent.SideId) -> void:
 	if official:
 		_artwork_material.set_shader_parameter(&"texels_per_pixel", 1.0 / scale)
 	if _auras.has(side):
-		_auras[side].set_box(box)
+		# Dos (cadrage B) : l'effet suit la part visible, au-dessus du bas de l'écran.
+		var shown := box
+		if back:
+			shown.size.y *= 1.0 - BattleLayout.BACK_CUT
+		_auras[side].set_box(shown)
 
 
 ## Boîte visible de l'image de [param side] (px de la texture).
@@ -1327,9 +1336,12 @@ func _rest(side: BattleEvent.SideId) -> void:
 	_sprites[side].modulate = Color(1, 1, 1, alpha)
 
 
+## Pieds de repos de [param side] : ceux de l'adversaire, ou ceux du dos en cadrage B (sous le
+## bas de l'écran, selon la hauteur affichée de son image).
 func _anchor(side: BattleEvent.SideId) -> Vector2:
-	var key := "player_feet" if side == BattleEvent.SideId.PLAYER else "foe_feet"
-	return _anchors.get(key, Vector2.ZERO)
+	if side == BattleEvent.SideId.PLAYER:
+		return BattleLayout.back_feet(_view_size(), _box(side).size.y * _anchor_scale(side))
+	return _anchors.get("foe_feet", Vector2.ZERO)
 
 
 func _anchor_scale(side: BattleEvent.SideId) -> float:
@@ -1376,13 +1388,14 @@ func _play(tween: Tween) -> void:
 # --- Décor peint (CB.3) ----------------------------------------------------------------
 
 ## Calques du décor peint (aucun dans la scène .tscn) : le fond juste au-dessus du flou du
-## monde, sous les ombres ; le premier plan devant le Pokémon du joueur (sous les accessoires
-## de la capture et l'éclair).
+## monde, sous les ombres ; le premier plan devant l'adversaire, derrière ton Pokémon (cadrage
+## B) et sous les accessoires de la capture et l'éclair.
 func _build_decor() -> void:
 	_decor_back = _make_decor_layer(&"DecorBack")
 	move_child(_decor_back, _backdrop.get_index() + 1)
 	_decor_front = _make_decor_layer(&"DecorFront")
-	move_child(_decor_front, _sprites[BattleEvent.SideId.PLAYER].get_index() + 1)
+	# Cadrage B (valeur par défaut, 2026-10-25) : ton Pokémon passe devant le feuillage flou.
+	move_child(_decor_front, _sprites[BattleEvent.SideId.PLAYER].get_index())
 
 
 func _make_decor_layer(layer_name: StringName) -> Sprite2D:
@@ -1513,7 +1526,8 @@ func _build_shadows() -> void:
 	var material := ShaderMaterial.new()
 	material.shader = SHADOW_SHADER
 	for side: BattleEvent.SideId in _shadows:
-		_shadows[side].texture = _shadow_texture
+		# Cadrage B : pas d'ombre au sol sous ton Pokémon, coupé par le bas de l'écran.
+		_shadows[side].texture = null if side == BattleEvent.SideId.PLAYER else _shadow_texture
 		_shadows[side].texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 		_shadows[side].material = material
 

@@ -5,10 +5,14 @@ extends RefCounted
 ##
 ## Composition du pilote validée (fiche `serie-combat-dos-pilote.md` §1, 2026-10-05 ; reprise
 ## au CB.1, `docs/tech/combat-maquettes.md`) : lieu réel resserré, ton Pokémon **de dos** au
-## premier plan en bas à gauche (pieds sur le sol visible, au-dessus du feuillage flou de premier
-## plan du décor peint), l'adversaire nettement plus loin en haut à droite. L'interface occupe l'autre diagonale : carte adverse dans le quart
-## haut gauche, ta carte et les commandes dans le bas droit ([method hud_zones]) ; aucun
-## Pokémon n'y entre, quelle que soit sa taille (boîtes maximales).
+## premier plan en bas à gauche, l'adversaire nettement plus loin en haut à droite.
+## **Cadrage B** (décision de Kevin, 2026-10-25, fiche `fiches-assets/dos-cadrage-rb/`) : ton
+## Pokémon est grand, de trois quarts arrière et **coupé par le bas de l'écran** comme dans
+## Rouge/Bleu ([method back_feet]) ; [constant PLAYER_FEET] ne place plus son sprite, il reste
+## la ligne de sol du premier plan qui cale le décor peint ([method BattleDecor.fit]) et l'arène.
+## L'interface occupe l'autre diagonale : carte adverse en haut à gauche, ta carte et les
+## commandes dans le bas droit ([method hud_zones]) ; aucun Pokémon n'y entre, quelle que soit
+## sa taille (boîtes maximales).
 ##
 ## Les ancres sont en **hauteurs d'écran** depuis le centre horizontal (x) et depuis le haut
 ## (y) : même composition de 1920 à 2340 de large. Taille : la **présence** d'un Pokémon
@@ -16,27 +20,41 @@ extends RefCounted
 ## ([constant SIZE_EXPONENT]) et bornée, à partir de Salamèche (référence de gabarit, ≈ 60 %
 ## du premier essai du pilote).
 
-## Pieds du Pokémon du joueur et de l'adversaire (prototype `duel_qa.gd`, cadrage « combat »).
-## Correctif QA S24 (2026-10-07) : pieds du joueur remontés de 0,97 à 0,90 (à 0,97 la base
-## touchait le bord bas et passait derrière le feuillage de premier plan du décor peint).
+## Sol du premier plan (côté du joueur) et pieds de l'adversaire (prototype `duel_qa.gd`,
+## cadrage « combat »). Correctif QA S24 (2026-10-07) : sol du joueur remonté de 0,97 à 0,90.
+## Ne pas déplacer : l'échelle des décors peints en dépend ([method BattleDecor.fit]).
 const PLAYER_FEET := Vector2(-0.42, 0.90)
 const FOE_FEET := Vector2(0.36, 0.50)
 ## Taille réelle (m) de référence : Salamèche.
 const REFERENCE_HEIGHT_M: float = 0.6
-## Présence (hauteurs d'écran) d'un Pokémon de la taille de référence : de dos (le tien,
-## Salamèche ≈ 0,336 de haut = 60 % de 0,56) et de face (l'adversaire : Roucool, 0,3 m, ≈ 0,21
-## de haut au pilote, ramené à 0,6 m par la loi de taille).
-const PLAYER_PRESENCE: float = 0.31
-const FOE_PRESENCE: float = 0.27
+## Présence (hauteurs d'écran) de l'adversaire de la taille de référence : 0,34 en cadrage B
+## (décision de Kevin, 2026-10-25 ; 0,27 avant : il paraissait petit face au dos agrandi).
+const FOE_PRESENCE: float = 0.34
 ## Compression de l'écart de taille réel (0 : tous pareils, 1 : proportionnel) et bornes du
 ## rapport à la référence (Rattata reste lisible, Onix ne mange pas l'écran).
 const SIZE_EXPONENT: float = 0.4
 const MIN_RATIO: float = 0.73
 const MAX_RATIO: float = 1.73
-## Boîtes maximales (largeur, hauteur en hauteurs d'écran) : protègent l'interface. La hauteur
-## du joueur suit ses pieds (0,90 − 0,40 = 0,50 : jamais dans le quart haut gauche).
-const PLAYER_MAX_BOX := Vector2(0.80, 0.40)
-const FOE_MAX_BOX := Vector2(0.50, 0.38)
+## Boîte maximale de l'adversaire (largeur, hauteur en hauteurs d'écran) : protège
+## l'interface ; 0,70 × 0,46 en cadrage B (décision de Kevin, 2026-10-25 ; ses pieds à 0,50,
+## il ne touche jamais le haut de l'écran).
+const FOE_MAX_BOX := Vector2(0.70, 0.46)
+## Cadrage B du dos (valeurs en hauteurs d'écran) : centre de l'image à [constant BACK_X] du
+## centre de l'écran ; part **visible** (au-dessus du bas de l'écran) haute de
+## [constant BACK_HEIGHT] pour un Pokémon de la taille de référence, suivie par la loi de taille
+## ([method size_ratio] : Carapuce ≈ 0,58, comme l'essai) ; [constant BACK_CUT] : part de la
+## boîte de l'image sous le bas de l'écran (valeur par défaut, 2026-10-25 : on garde la tête et
+## le haut du corps, les pieds sortent du cadre). [constant BACK_MAX_BOX] (largeur, hauteur de
+## la part visible) borne les grands : le haut ne monte jamais dans la carte adverse
+## ([method hud_zones]), le bord droit reste loin du bas droit (commandes). Sur un écran 16:9
+## (1920 de large), un dos très large peut aussi déborder un peu du bord gauche (≤ 0,2).
+const BACK_X: float = -0.58
+const BACK_HEIGHT: float = 0.62
+const BACK_CUT: float = 0.25
+const BACK_MAX_BOX := Vector2(1.00, 0.80)
+## Haut de l'écran réservé à la carte adverse, à gauche (carte : 56 + 112 px ≈ 0,16, plus une
+## marge).
+const FOE_CARD_ZONE: float = 0.20
 ## Taille native des sprites provisoires (pixel art) : dos du joueur, adversaire sans artwork.
 const NATIVE := Vector2i(64, 64)
 ## Point de l'écran où tombe le centre de l'arène : de l'adversaire (0) vers le Pokémon du
@@ -65,23 +83,36 @@ static func size_ratio(height_m: float) -> float:
 	return clampf(pow(ratio, SIZE_EXPONENT), MIN_RATIO, MAX_RATIO)
 
 
-## Présence voulue (px) d'un Pokémon de [param height_m] mètres sur une vue de
+## Présence voulue (px) de l'adversaire de [param height_m] mètres sur une vue de
 ## [param view_height] px de haut.
-static func presence(height_m: float, is_player: bool, view_height: float) -> float:
-	var base := PLAYER_PRESENCE if is_player else FOE_PRESENCE
-	return base * size_ratio(height_m) * view_height
+static func presence(height_m: float, view_height: float) -> float:
+	return FOE_PRESENCE * size_ratio(height_m) * view_height
+
+
+## Hauteur voulue (px) de la part visible du dos d'un Pokémon de [param height_m] mètres.
+static func back_height(height_m: float, view_height: float) -> float:
+	return BACK_HEIGHT * size_ratio(height_m) * view_height
 
 
 ## Échelle d'une image dont la boîte visible mesure [param box] px (dans la texture), pour un
-## Pokémon de [param height_m] mètres. [param whole] : pixel art net, échelle entière (≥ 1,
-## jamais au-delà de la boîte maximale si possible).
+## Pokémon de [param height_m] mètres : l'adversaire par sa présence, ton Pokémon (de dos) par
+## la hauteur de sa part visible ([constant BACK_CUT] de la boîte sous l'écran). [param whole] :
+## pixel art net, échelle entière (≥ 1, jamais au-delà de la boîte maximale si possible).
 static func sprite_scale(box: Vector2, height_m: float, is_player: bool, view_height: float,
 		whole: bool = false) -> float:
 	if box.x <= 0.0 or box.y <= 0.0:
 		return 1.0
-	var limit := (PLAYER_MAX_BOX if is_player else FOE_MAX_BOX) * view_height
-	var largest := minf(limit.x / box.x, limit.y / box.y)
-	var scale := minf(presence(height_m, is_player, view_height) / sqrt(box.x * box.y), largest)
+	var largest: float
+	var scale: float
+	if is_player:
+		var shown := box.y * (1.0 - BACK_CUT)
+		var limit := BACK_MAX_BOX * view_height
+		largest = minf(limit.x / box.x, limit.y / shown)
+		scale = minf(back_height(height_m, view_height) / shown, largest)
+	else:
+		var limit := FOE_MAX_BOX * view_height
+		largest = minf(limit.x / box.x, limit.y / box.y)
+		scale = minf(presence(height_m, view_height) / sqrt(box.x * box.y), largest)
 	if whole:
 		scale = roundf(scale)
 		if scale > largest:
@@ -97,18 +128,29 @@ static func sprite_rect(feet: Vector2, scale: float, box_size: Vector2) -> Rect2
 	return Rect2(feet - Vector2(size.x / 2.0, size.y), size)
 
 
-## Zone que le Pokémon d'un camp ne quitte jamais (boîte maximale posée sur ses pieds).
+## Pieds écran (bas-centre de la boîte de l'image) du dos de ton Pokémon, affiché haut de
+## [param shown_height] px en tout : sous le bas de l'écran de [constant BACK_CUT] de sa hauteur.
+static func back_feet(view_size: Vector2, shown_height: float) -> Vector2:
+	return Vector2(view_size.x / 2.0 + BACK_X * view_size.y,
+		view_size.y + BACK_CUT * shown_height).round()
+
+
+## Zone **à l'écran** que le Pokémon d'un camp ne quitte jamais : boîte maximale posée sur les
+## pieds de l'adversaire, ou part visible maximale du dos posée sur le bas de l'écran.
 static func max_rect(is_player: bool, view_size: Vector2) -> Rect2:
-	var a := anchors(view_size)
-	var box := (PLAYER_MAX_BOX if is_player else FOE_MAX_BOX) * view_size.y
-	return sprite_rect(a["player_feet" if is_player else "foe_feet"], 1.0, box)
+	if is_player:
+		var size := BACK_MAX_BOX * view_size.y
+		var bottom := Vector2(view_size.x / 2.0 + BACK_X * view_size.y, view_size.y)
+		return sprite_rect(bottom, 1.0, size)
+	return sprite_rect(anchors(view_size)["foe_feet"], 1.0, FOE_MAX_BOX * view_size.y)
 
 
-## Zones réservées à l'interface (contrat CB.1 / CB.2) : le quart haut gauche (carte adverse)
-## et le bas droit (ta carte, tes pastilles, les commandes : moitié basse, moitié droite).
+## Zones réservées à l'interface (contrat CB.1 / CB.2, resserré au cadrage B) : le haut de la
+## moitié gauche (carte adverse, [constant FOE_CARD_ZONE]) et le bas droit (ta carte, tes
+## pastilles, les commandes : moitié basse, moitié droite).
 static func hud_zones(view_size: Vector2) -> Array[Rect2]:
 	var half := view_size / 2.0
-	return [Rect2(Vector2.ZERO, half), Rect2(half, half)]
+	return [Rect2(0.0, 0.0, half.x, FOE_CARD_ZONE * view_size.y), Rect2(half, half)]
 
 
 ## Centre monde du cadrage quand la carte a une **arène** ([param arena], rectangle monde :

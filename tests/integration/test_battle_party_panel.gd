@@ -301,5 +301,8 @@ func test_panel_leaves_the_foe_visible() -> void:
 		_set_screen(width)
 		await _open(_team())
 		var foe := BattleLayout.max_rect(false, _screen.size)
-		assert_false(_panel.get_frame_rect().intersects(foe),
+		# Cadrage B (boîte 0,70 de large) : en 16:9, le bord gauche de la boîte maximale peut
+		# passer sous le panneau ; ses trois cinquièmes centraux restent toujours visibles.
+		var middle := foe.grow_individual(-foe.size.x * 0.2, 0.0, -foe.size.x * 0.2, 0.0)
+		assert_false(_panel.get_frame_rect().intersects(middle),
 			"%s : l'adversaire reste visible" % width)
