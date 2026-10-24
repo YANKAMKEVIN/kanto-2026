@@ -3,6 +3,7 @@ extends SceneTree
 ## override.cfg temporaire) : une capture par espèce du joueur (IA : Salamèche, Pikachu ; 3D seul :
 ## Taupiqueur, Soporifik, Smogo ; IA sur 3D : Bulbizarre).
 ##   godot --path . --fixed-fps 30 --quit-after 9000 -s res://tools/capture_dos_proto.gd -- --out=build/captures/dos_proto
+## `--species=a,b,c` remplace la liste des espèces du joueur.
 
 const BOOT_SCENE: String = "res://game/boot.tscn"
 const PLAYER := 0
@@ -15,6 +16,8 @@ var _stage: CanvasLayer
 var _camera: Camera2D
 var _out_dir: String = "build/captures/dos_proto"
 var _place: StringName = &"route_1"
+var _species: Array[StringName] = [&"charmander", &"pikachu", &"bulbasaur", &"diglett", &"drowzee",
+	&"koffing"]
 
 
 func _init() -> void:
@@ -25,6 +28,10 @@ func _init() -> void:
 			_out_dir = arg.trim_prefix("--out=")
 		elif arg.begins_with("--place="):
 			_place = StringName(arg.trim_prefix("--place="))
+		elif arg.begins_with("--species="):
+			_species.clear()
+			for id: String in arg.trim_prefix("--species=").split(","):
+				_species.append(StringName(id))
 	process_frame.connect(_start, CONNECT_ONE_SHOT)
 
 
@@ -49,7 +56,7 @@ func _start() -> void:
 
 func _start_shots() -> void:
 	var first := true
-	for mine: StringName in [&"charmander", &"pikachu", &"bulbasaur", &"diglett", &"drowzee", &"koffing"]:
+	for mine: StringName in _species:
 		if not first:
 			await _exit()
 		first = false
