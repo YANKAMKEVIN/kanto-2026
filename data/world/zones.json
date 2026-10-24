@@ -263,6 +263,12 @@
 			"subtitle": "Route 20",
 			"description": "Des grottes de glace sous deux îlots jumeaux. Les rochers y changent le cours de l'eau."
 		},
+		"cerulean_cave": {
+			"name": "Grotte Azurée", "kind": "place",
+			"maps": ["cerulean_cave_1f", "cerulean_cave_2f", "cerulean_cave_b1f"],
+			"subtitle": "Azuria",
+			"description": "Une grotte sur l'îlot de la baie d'Azuria. Ses eaux sombres abritent des Pokémon d'une force rare."
+		},
 		"route_21": {
 			"name": "Route 21", "kind": "sea_route", "maps": ["route_21"],
 			"subtitle": "Bourg Palette — Cramois'Île",

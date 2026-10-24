@@ -296,3 +296,66 @@ scripts) ; `plan_check_cerulean_cave.py` conforme, `--autotest` refuse ses 4 pi�
 Pas de grotte jouable (cartes T6–T8 et entrée 31A à venir). Contrôle minimal sur le Galaxy A17 :
 le départ `cerulean_cave` se charge à Azuria (équipe N60–65, Hyper Balls au Sac). **Ouvert (art)** :
 l'Hyper Ball (emprunt du J22) n'a pas d'icône (icône générique). La QA du §6 reste à faire.
+
+## 11. Fait le 2026-10-24 (branche `jalon-31`) : fusion de `main`, cartes T6–T8, entrée 31A
+
+- **Fusion de `origin/main`** (`38d8e446` : J22, J24, moteur commun) dans `jalon-31` (`1b5e3694`).
+  Conflits : `etat-projet.md` (deux historiques gardés) et tests d'inventaire (deux côtés
+  additionnés). **Emprunts dédoublonnés** (version de `main` gardée, toutes identiques) : Dodrio,
+  Aéromite, Électrode, Poissoroy (J22), Flagadoss, Krabboss, Hypocéan (J24), leurs fiches de
+  Pokédex ; Pince-Masse, Force Poigne (J22), **Guillotine** (J24 : même version, avec `ohko`) →
+  `data/pokemon/moves/j31_emprunts.json` retiré ; Hyper Ball (J22). **Restent empruntés** (branches
+  pas encore dans `main`, vérifié par `git merge-base --is-ancestor`) : Leveinard (J23) et
+  Rhinoféros (J28) dans `kanto_j31_emprunts.json` (fiches et sprites provisoires), Rappel Max
+  (J25) dans `items_j31_emprunts.json`. L'icône `ultra_ball.webp` n'est pas dans `main` : gardée.
+- **T6–T8 — cartes** : `tools/build_cerulean_cave.gd` (**un** script pour les trois étages, comme
+  `build_j24_seafoam.gd`, au lieu des trois scripts annoncés au §3) génère
+  `game/world/maps/cerulean_cave_1f.tscn`, `_2f`, `_b1f` d'après les grilles (tuiles provisoires
+  `OverworldTiles` : roche `# x` en falaise, sol bas en terre, sol haut `:` en pavé, escalier `=` en
+  planches, eau `w`). Niveaux de sol : nouvelle `CaveLevelGate` (`game/world/caves/`, FlagGate sans
+  dessin) qui reprend la seule partie « niveaux » de `SeafoamFloorGate` (pas de courants) ; le
+  J24 n'est pas modifié. Eau : `surf_cells` = `fishable_cells` = toutes les cases `w` (Super Canne
+  groupe 9, déjà en données). Échelles : 7 paires STEP_ON vers `arrivee_pN` (échelles dessinées
+  comme aux Îles Écume). Objets visibles et Mewtwo : PNJ des `data/npcs/cerulean_cave_*.json`
+  (inchangés) ; objets cachés : point d'examen sur l'indice `x` voisin de la case `objet_cache`
+  (caillou clair dessiné), retiré par `got_<id>`. Lumière : `cave_1f` (1F, 2F), `cave_b1f` (B1F)
+  dans `lighting.json` [D] ; aucun voile ; zone « Grotte Azurée » (`cerulean_cave`, sous-titre
+  « Azuria ») dans `zones.json` et rectangle de la Carte `[1165, 138, 40, 30]` (au nord-est
+  d'Azuria) [D].
+- **31A — entrée** (faisable sans le J30 : le titre est une simple valeur) :
+  `tools/build_cerulean_city.gd` relancé ; eau surfable d'Azuria = cases `w` du canal à l'est du
+  pont de l'Arène et de la baie (x 42..55, y 0..18) [D], plus la bouche `A` (52..53, 6) de l'îlot
+  (le reste du canal reste du décor) ; bouche = passage STEP_ON vers `cerulean_cave_1f:entree` ;
+  retour `from_cerulean_cave` (52, 7) dans l'eau (en Surf). **Fermée** sans
+  `league_champion_defeated` : une FlagGate occupe la bouche et EXAMINER face à elle donne
+  `cerulean_cave_closed` (texte validé) [D : refus à l'examen, pas de recul automatique].
+  `Boot._on_map_entered` appelle `CeruleanCaveAccess.record_entry` (pose
+  `cerulean_cave_discovered` à la première entrée, avant l'autosave). Corde Sortie : la grotte
+  n'est pas dans `caves.json` (comme les Îles Écume du J24) [D].
+- **Tests** `test_j31_maps` (9) : grille → niveaux, eau, roche, pêche ; 14 échelles appariées dans
+  les deux sens, arrivée praticable hors passage ; bouche du 1F ↔ îlot d'Azuria ; bouche fermée
+  puis ouverte selon le titre, eau surfable limitée à la baie ; objets et Mewtwo présents puis
+  absents (Mewtwo reste avec le seul `mewtwo_caught`, retiré par la résolution) ; objets cachés
+  visés depuis leur case ; **Guérison (7, 13) et Max Élixir (19, 3) pris depuis l'eau** (aucun sol
+  voisin) ; zone, lumière, tables de rencontres ; départs de débogage. Tests d'Azuria (J13, J14)
+  recomptés (+2 warps, +2 examens, +1 FlagGate), zones 46.
+- **Départs de débogage** (QA A17) : `cerulean_cave` (Azuria, devant le Centre : chemin complet
+  par le canal), `cerulean_cave_locked` (bouche fermée), **`cerulean_cave_1f`** (dans la grotte,
+  `entree`), **`cerulean_cave_mewtwo`** (B1F, spawn de débogage `mewtwo_front` (27, 12), tourné
+  ↓) ; décrits dans `tools/debug_start/README.md`.
+- **Écarts** : un seul script de construction (§3 en annonçait trois) ; capture headless non
+  faite (la fenêtre de Movie Maker ne s'ouvre pas dans le bac à sable de l'agent) : vue à faire
+  sur le téléphone ; vue générale peinte (T3, levier 4) toujours à faire.
+
+### 11.1 Reste à faire
+- **T9** : capture avec la Master Ball après le J26 ; capture en équipe pleine (QA).
+- **T10** : QA S24/A17 du §6 avec les départs ci-dessus (Surf depuis le quai est, échelles,
+  objets depuis l'eau, fuite puis capture de Mewtwo, retour à Azuria).
+- À la fusion du J30 : `test_cerulean_cave_access` vérifie l'égalité du drapeau de Champion.
+- À la fusion des J23, J25, J28 : retirer Leveinard, Rappel Max, Rhinoféros des emprunts.
+- Fiches de Pokédex de Métamorph et Mewtwo (textes validés au §8, à poser) ; effets de Morphing,
+  Max Élixir, PP Plus (moteur de PP absent) ; art définitif de la grotte.
+- **[D] à relire par Kevin** : eau surfable d'Azuria limitée à l'est du pont de l'Arène ; refus à
+  l'examen de la bouche ; lumière par étage ; description de la zone (« Une grotte sur l'îlot de
+  la baie d'Azuria. Ses eaux sombres abritent des Pokémon d'une force rare. ») ; rectangle de la
+  Carte ; pas de Corde Sortie.

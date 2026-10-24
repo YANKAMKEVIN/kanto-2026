@@ -213,8 +213,9 @@ func test_building_doors_lead_inside() -> void:
 		assert_eq([burgled.target_map, burgled.target_spawn],
 			[&"cerulean_burgled_house", &"entrance"])
 	assert_eq(_map.get_spawn_cell(&"from_burgled_house"), Vector2i(10, 10))
-	assert_eq(_map.get_warps().size(), count + 1 + 6 + 3 + 3,
-		"portes + porte cambriolée + raccords ouest, nord, sud et est, rien d'autre")
+	# Jalon 31 (31A) : les deux cases de la bouche de la Grotte Azurée (test_j31_maps).
+	assert_eq(_map.get_warps().size(), count + 1 + 6 + 3 + 3 + 2,
+		"portes + porte cambriolée + raccords ouest, nord, sud et est, bouche de la grotte")
 
 
 ## Jalon 15 T21 : le sud mène à la vraie Route 5 (`from_cerulean_w|c|e`, arrivée tournée ↓).
@@ -259,9 +260,10 @@ func test_east_leads_to_route_9_past_the_tree_and_the_south_to_route_5() -> void
 		assert_true(warp.cell.x < SIZE.x - 1 or warp.cell in EAST,
 			"aucun autre warp à l'est (%s)" % warp.cell)
 	# Déclencheurs : arrivée (3 + 3), poursuite (2), combat (2), barrage sud (3) ; points :
-	# deux panneaux, clôture arrachée, trou (n° 29), arbre à couper (J18).
+	# deux panneaux, clôture arrachée, trou (n° 29), arbre à couper (J18), bouche fermée de la
+	# Grotte Azurée (J31, deux cases, test_j31_maps).
 	assert_eq(_map.get_triggers().size(), 6 + 2 + 2 + 3, "arrivée, poursuite, combat, barrage")
-	assert_eq(_map.get_interactions().size(), 2 + 1 + 1 + 1, "panneaux et examens")
+	assert_eq(_map.get_interactions().size(), 2 + 1 + 1 + 1 + 2, "panneaux et examens")
 
 
 func test_reserved_cells_are_free_or_blocked_as_planned() -> void:

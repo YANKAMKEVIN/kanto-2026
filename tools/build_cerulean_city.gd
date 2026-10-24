@@ -45,6 +45,14 @@ extends SceneTree
 ## (contrat des arbustes du J16 / J17 : objet peint sans emprise, `blocking_cells` sur sa case) ;
 ## son examen `cerulean_closed_exit` donne le texte 17 sans la CS01, sinon les textes de Coupe
 ## du J16, et lance `cut_tree_cerulean_east` (`data/cutscenes/cut_tree.json`).
+##
+## **Jalon 31 (31A, `docs/tech/jalon-31.md` §2.2, décision de Kevin du 2026-10-22)** : l'entrée de
+## la Grotte Azurée est la bouche `A` de l'îlot de la baie est, atteinte **en Surf depuis le
+## canal** (aucune refonte d'Azuria). Eau surfable : les cases `w` du canal à l'est du pont de
+## l'Arène et de la baie ([constant CAVE_SURF_AREA]) et la bouche ; la bouche est un passage
+## STEP_ON vers `cerulean_cave_1f` / `entree`, arrivée ici `from_cerulean_cave` dans l'eau devant
+## elle (en Surf). Tant que le titre de Champion n'est pas enregistré ([CeruleanCaveAccess]), une
+## [FlagGate] occupe la bouche et son examen donne `cerulean_cave_closed`.
 
 const Kit := preload("res://tools/cerulean_map_kit.gd")
 const PLAN_PATH: String = "res://tools/plans/azuria.txt"
@@ -113,6 +121,12 @@ const DEBUG_EAST_TREE := Vector2i(52, 23)
 const IMPASSE_TREE_ID: String = "tree_foret_03"
 ## Îlot de la Grotte Azurée : ancre du pied (bord bas, entre les colonnes 52 et 53).
 const ISLET_ANCHOR := Vector2i(53, 6)
+## Jalon 31 (31A) : eau surfable de la baie et du canal à l'est du pont de l'Arène (x 42..55,
+## y 0..18) [D] ; passage de la bouche et arrivée depuis la grotte.
+const CAVE_SURF_AREA := Rect2i(42, 0, 14, 19)
+const CAVE_MAP: StringName = &"cerulean_cave_1f"
+const CAVE_ENTRY_SPAWN: StringName = &"entree"
+const CAVE_EXIT_SPAWN: String = "from_cerulean_cave"
 ## Escalier de quai posé à la main sur la rive nord du canal horizontal (module 192 × 101).
 const QUAY_STAIRS := Vector2(36.0, 15.0)
 
@@ -327,12 +341,45 @@ func _add_life() -> void:
 		var box := _box(entry[0])
 		_kit.call(&"add_interactable", entry[1], box[0], box[1], entry[3], entry[2])
 	_add_east_tree_examine()
+	_add_cave_mouth()
 	for entry: Array in ARRIVALS:
 		var box := _box(entry[0])
 		_kit.call(&"add_trigger", entry[1], box[0], box[1], entry[2], &"cerulean_arrival")
 	for entry: Array in SCENE_TRIGGERS:
 		var box := _box(entry[0])
 		_kit.call(&"add_trigger", entry[1], box[0], box[1], entry[2], entry[3])
+
+
+## Jalon 31 (31A) : eau surfable, bouche de la Grotte Azurée, arrivée devant elle, fermeture tant
+## que l'accès est refusé ([CeruleanCaveAccess] : FlagGate qui occupe la bouche, examen).
+func _add_cave_mouth() -> void:
+	var root: Node = _kit.get(&"root")
+	var mouth: Array = _plan().call(&"cells_of", "A")
+	var surf: Array[Vector2i] = []
+	for cell: Vector2i in _plan().call(&"cells_of", "w"):
+		if CAVE_SURF_AREA.has_point(cell):
+			surf.append(cell)
+	surf.append_array(mouth)
+	root.set(&"surf_cells", surf)
+	var closed: Array[StringName] = [CeruleanCaveAccess.CHAMPION_FLAG]
+	var index := 0
+	for cell: Vector2i in mouth:
+		index += 1
+		_kit.call(&"add_warp", "CeruleanCave%d" % index, cell, Kit.STEP_ON, Vector2i.ZERO, CAVE_MAP,
+			CAVE_ENTRY_SPAWN, Vector2i.UP)
+		_kit.call(&"add_interactable", "CeruleanCaveClosed%d" % index, cell, Vector2i.ONE,
+			Vector2i.ZERO, CeruleanCaveAccess.REFUSAL_DIALOGUE)
+		root.get_node(^"Interactables").get_child(-1).set(&"unless_flags", closed)
+	_kit.call(&"add_spawn", CAVE_EXIT_SPAWN, (mouth[0] as Vector2i) + Vector2i.DOWN)
+	var gate := Node2D.new()
+	gate.set_script(load("res://game/world/flag_gate.gd"))
+	gate.name = "CeruleanCaveClosedGate"
+	gate.position = _kit.call(&"world", mouth[0])
+	gate.set(&"unless_flags", closed)
+	var blocking: Array[Vector2i] = []
+	blocking.assign(mouth)
+	gate.set(&"blocking_cells", blocking)
+	_kit.call(&"attach", _kit.get(&"entities"), gate)
 
 
 ## Rectangle d'une position de la grille : [ancre (bas-gauche), taille].

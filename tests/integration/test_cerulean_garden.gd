@@ -186,6 +186,6 @@ func test_the_scene_matches_the_variant_for_the_new_cells() -> void:
 			assert_eq((node as FlagGate).if_flags.size() + (node as FlagGate).unless_flags.size(),
 				1, "%s : un drapeau" % node.name)
 	# J18 (T15) : la scène est construite sur la variante J18 (cumulative sur J14) : l'arbre à
-	# couper de la sortie est s'ajoute.
-	assert_eq(gates, 3, "planche clouée, porte condamnée, arbre à couper")
+	# couper de la sortie est s'ajoute ; J31 (31A) : la bouche fermée de la Grotte Azurée.
+	assert_eq(gates, 4, "planche clouée, porte condamnée, arbre à couper, bouche de la grotte")
 	map.free()

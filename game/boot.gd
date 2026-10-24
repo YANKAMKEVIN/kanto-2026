@@ -1400,6 +1400,8 @@ func _on_map_entered(map: GameMap) -> void:
 	_arrival_from = &""
 	_active_puzzles.clear()
 	GameState.discover_map(map.map_id)
+	# J31 (T5) : première entrée dans la Grotte Azurée (drapeau d'histoire, avant l'autosave).
+	CeruleanCaveAccess.record_entry(GameState.flags, map.map_id)
 	_companion.on_map_entered(map)
 	# Passe systèmes 2 (T15) : arrivée en Surf sur un courant (reprise) → la glissade part ici ;
 	# l'autosave d'arrivée attend sa fin (partie pas stable).
