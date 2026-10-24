@@ -161,6 +161,13 @@ func test_mewtwo_is_a_static_legendary_encounter_at_70() -> void:
 	if spec != null:
 		assert_eq(spec.cell, plan.cell_of("mewtwo"), "case de RB (27, 13)")
 		assert_eq(spec.unless_flags, [DONE] as Array[StringName], "absent une fois résolu")
+		# QA A17 du 2026-10-24 : sans planche, il avait l'apparence générique (un PNJ humain).
+		# Apparence provisoire tirée de l'artwork (`tools/art/placeholder_mewtwo_carte.py`).
+		var look := CharacterLook.resolve(spec.sprite)
+		assert_true(look.painted, "Mewtwo dessiné en Pokémon, pas en PNJ générique")
+		var frames := load(look.frames_path) as SpriteFrames
+		for dir: String in ["down", "up", "left", "right"]:
+			assert_true(frames.has_animation(StringName("idle_" + dir)), dir)
 
 
 func test_outcomes_follow_the_articuno_policy_and_survive_a_reload() -> void:

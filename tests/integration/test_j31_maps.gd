@@ -142,6 +142,10 @@ func test_mouth_is_closed_until_the_champion_title() -> void:
 	city.apply_flag_gates(_flags([CHAMPION]))
 	for cell: Vector2i in MOUTH:
 		assert_false(grid.is_occupied(cell), "%s ouverte" % cell)
+		# QA A17 du 2026-10-24 : la bouche était peinte en paroi (solide), donc refusée au Surf.
+		assert_false(grid.is_solid(cell), "%s : de l'eau, pas une paroi" % cell)
+		assert_true(grid.can_enter_as(cell, Vector2i.UP, GridWorld.MoveMode.SURF),
+			"%s : on y entre en Surf depuis la baie" % cell)
 	# Le canal à l'est du pont de l'Arène et la baie se surfent ; le canal ouest reste du décor.
 	assert_true(grid.is_surfable(Vector2i(49, 7)), "baie, au pied du quai est")
 	assert_true(grid.is_surfable(Vector2i(42, 15)), "canal, à l'est du pont de l'Arène")
@@ -246,7 +250,7 @@ func test_debug_starts_are_valid() -> void:
 	var items := ItemLibrary.new()
 	items.load_dir()
 	for name: String in ["cerulean_cave", "cerulean_cave_locked", "cerulean_cave_1f",
-			"cerulean_cave_mewtwo"]:
+			"cerulean_cave_mewtwo", "cerulean_cave_mewtwo_capture", "cerulean_cave_p7"]:
 		var start := DebugStart.new()
 		assert_true(start.load_file("res://tools/debug_start/%s.json" % name, data, items),
 			"%s : %s" % [name, "\n".join(start.get_errors())])
