@@ -66,7 +66,16 @@ connues ; il ne les aggrave pas non plus. Les deux images acceptées sont propre
 plongée, coupe nette en bas) et, en situation, nettement plus lisibles qu'en corps entier ;
 Onix gagne sa taille (tête et blocs qui sortent par le bas).
 
-## Décision attendue de Kevin
+## Décision de Kevin (2026-10-25)
+
+**Cadrage B façon Rouge/Bleu retenu**, avec l'adversaire à présence **0,34** et une boîte
+maximale de l'adversaire de **0,70 × 0,46** (hauteurs d'écran). `FOE_FEET` inchangé.
+Restent à trancher en défaut pendant le code : le dos devant ou derrière le feuillage flou du
+premier plan, l'ombre au sol du dos (à retirer en B), la hauteur à l'écran par espèce (0,58
+pour Carapuce, 0,86 pour Onix dans l'essai), et la production des dos (recadrage des 81
+existants ou nouveaux dos en plongée : rendu Blender caméra haute puis Colab, ou Codex).
+
+## Avant la décision
 
 Cadrage A (actuel) ou B (façon RB). B toucherait `BattleLayout` (ancre et coupe du dos) et
 la production des dos restants (session DAF.1, branche `art-dos-combat-maj`), voire la reprise
