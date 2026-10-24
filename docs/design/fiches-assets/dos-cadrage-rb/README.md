@@ -15,6 +15,18 @@ par le bas de l'écran), et des dos demandés ainsi à Codex seraient-ils moins 
   agrandis et coupés par le bas) dans le décor de la Route 1, Rattata en face. Sans HUD.
 - `test-dos-rb-codex.webp` : Carapuce et Onix, dos actuel contre nouveau dos Codex en cadrage RB.
 
+## Captures du vrai jeu avec l'interface (2026-10-25)
+
+`combat-hud-a-b.webp` : vrai combat sauvage de la Route 1 (`tools/capture_combat_cb3.gd`),
+Carapuce et Onix N9 contre Roucool, A à gauche, B à droite (menu, capacités, message).
+Prototype sur la branche locale `proto/dos-cadrage-rb` (worktree `~/dev/kanto-2026-wt-dos-rb`,
+**à ne pas fusionner**) : `KANTO_DOS_DIR=<dossier>` lit `<espèce>.png` comme dos peint,
+`KANTO_DOS_RB=<hauteur en fraction d'écran>` (Carapuce 0,58, Onix 0,86) pose le bas de l'image
+au bas de l'écran, à 0,58 hauteur d'écran à gauche du centre.
+Constats : aucun conflit avec l'interface (carte en haut à gauche, commandes en bas à droite) ;
+le feuillage flou du premier plan du décor passe devant le bas du Pokémon en B (à trancher :
+dos devant ou derrière ce feuillage) ; l'ombre au sol n'a plus de sens en B.
+
 ## Test Codex (prompts `tools/art/prompts/dos_rb/`, sorties `build/art/DOS_RB_*.png`, 1254 px RGBA)
 
 | Espèce | Avec artwork joint (r1) | Sans image (r2) |
