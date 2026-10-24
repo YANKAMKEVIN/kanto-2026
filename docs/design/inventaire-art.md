@@ -16,7 +16,7 @@ cible reste celle du cahier d'art : 2D HD peinte, « ni pixel art ».
 |---|---|---|---|
 | Façades de bâtiments | 44 (dont les 10 de Céladopole et la fontaine, série 22 bis) | 0 | — |
 | Intérieurs (enveloppes de carte) | toutes les cartes jusqu'au J19, 17 de Céladopole (série 22 bis), Casino et repaire en modules peints (série 22 bis, Q-2) | 0 | — |
-| Dos de combat (ton Pokémon) | **0** | **88 / 88** en pixel art 64 px | 2 |
+| Dos de combat (ton Pokémon) | **81 / 126** espèces (93 fichiers dans `dos/`, `main` 2026-10-24) | **45 / 126** en pixel art 64 px (+ 25 espèces à venir au J32) | 2 (DAF.1) |
 | Faces de combat (adversaire) | artwork officiel pour toutes les espèces | 3 en pixel (Saquedeneu, Rhinocorne, Kangourex) | 2 |
 | Fonds de combat (CB.3) | 35 lieux | **6** lieux | 3 |
 | Icônes du Sac | 45 (série 22 bis : 29 ajoutées) | 0 | — |
@@ -50,20 +50,29 @@ dimensions, mêmes emprises), pas les cartes. Détail et cibles : fiche de la s�
 
 ## 2. Combat
 
-- **Dos** : `BattleArt.image()` lit `assets/sprites/pokemon/placeholder/<espèce>_back.png`, tous en
-  pixel art 64 px (NEAREST). Des dos peints existent en prototype dans
-  `assets/sprites/pokemon/battle_proto/` (**branchés depuis le 2026-10-22**, voir ci-dessous) :
-  - « IA » (`dos_ia_NNN.png`, Codex) : 001, 004, 007, 012, 016, 025, 037, 038, 041, 045, 058, 059,
-    071, 072, 081, 092, 093, 095, 097, 104, 129, 133, 134 ;
-  - « 3D » (`dos3d_NNN.png`, rendu X/Y) : 001, 004, 007, 012, 016, 025, 041, 050, 051, 072, 081,
-    093, 095, 096, 109, 129 ;
-  - **Lot 2 (intégré le 2026-10-22, branche `art-dos-combat`)** : 54 dos IA peints dans
-    `assets/sprites/pokemon/dos/dos_ia_NNN.png` (1024², lus par `BattleArt.image(back)` en priorité, filtre
-    linéaire ; test `test_painted_backs.gd`). Planche de contact `build/art/SERIE_DOS_CONTACT.png`.
-    Chenipan refait (r8, fidèle). **6 à faire par Kevin avec ChatGPT** : Kadabra, Tortank, Rondoudou,
-    Staross, Léviator, Voltali (`fiches-assets/dos-a-faire-chatgpt.md`, commande
-    `serie_dos.py --ajouter IDENT fichier`). Non lancés : Ossatueur, Rhinocorne, Saquedeneu, Kangourex.
-    Les 23 `dos_ia` et 16 `dos3d` de `battle_proto/` sont **branchés** (2026-10-22) : copiés dans `dos/`, priorité IA > 3D > provisoire (`BattleArt.best_painted_back_path`) ; 25 espèces gagnées dans les données (21 IA + 4 en 3D seul ; Tentacool et Magicarpe n'y sont pas encore), 79 espèces à dos peint sur 89.
+- **Dos (fusionnés dans `main` le 2026-10-24, DAF.1 partie 1)** : `BattleArt.image(back)` lit d'abord
+  `assets/sprites/pokemon/dos/` (1024², filtre linéaire ; priorité IA `dos_ia_NNN.png` > 3D
+  `dos3d_NNN.png` > provisoire `placeholder/<espèce>_back.png` en pixel art 64 px, NEAREST ;
+  `BattleArt.best_painted_back_path`, tests `test_painted_backs.gd`, `test_battle_art.gd`).
+  **77 dos IA + 16 dos 3D** (93 fichiers) : 54 du lot 2 (`tools/art/serie_dos.py`, Chenipan refait en r8)
+  + 23 IA et 16 3D venus de `battle_proto/`. **81 espèces sur 126 ont un dos peint** (Tentacool et
+  Magicarpe, entrés dans les données depuis, le reçoivent). Planche de contact (hors dépôt)
+  `build/art/SERIE_DOS_CONTACT.png`. Vérification : `tools/capture_dos_proto.gd -- --species=a,b`.
+  **Restent 45 espèces en provisoire** (+ 25 numéros absents des données jusqu'au J32, 151 au total) :
+  - **8 à faire par Kevin avec ChatGPT** : les 6 refusés par Codex, Kadabra (64), Tortank (9),
+    Rondoudou (39), Staross (121), Léviator (130), Voltali (135), plus Ptéra (142) et Magmar (126)
+    (`fiches-assets/dos-a-faire-chatgpt.md`, `serie_dos.py --ajouter IDENT fichier`) ;
+  - **4 conditionnels non lancés** (adversaires surtout) : Ossatueur (105, jamais montré, repli
+    artwork officiel), Rhinocorne (111), Saquedeneu (114), Kangourex (115) ;
+  - **33 espèces ajoutées depuis le lot 2** (J21 à J25 et passe systèmes 2) : Mimitoss (48),
+    Aéromite (49), Psykokwak (54), Akwakwak (55), Ptitard (60), Têtarte (61), Tartard (62),
+    Machopeur (67), Tentacruel (73), Ponyta (77), Galopa (78), Ramoloss (79), Flagadoss (80),
+    Canarticho (83), Doduo (84), Dodrio (85), Otaria (86), Lamantine (87), Tadmorv (88),
+    Grotadmorv (89), Crustabri (91), Krabby (98), Krabboss (99), Électrode (101), Smogogo (110),
+    Hypocéan (117), Poissoroy (119), Amonita (138), Amonistar (139), Kabuto (140), Kabutops (141),
+    Ronflex (143), Artikodin (144) ;
+  - **25 numéros pas encore dans les données** (J26 à J32) : 65, 68, 94, 103, 106 à 108, 112, 113,
+    122 à 125, 127, 128, 131, 132, 137, 145 à 151.
   - méthode validée et passe Colab (reportée par Kevin le 2026-10-16) :
     `fiches-assets/serie-combat-dos-pilote.md` §7.
 - **Fonds CB.3 manquants** (`data/battle/decors.json`, repli = carte floutée) : `viridian_forest`,
