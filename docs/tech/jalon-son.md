@@ -465,7 +465,7 @@ contrôle par agent.
 | **T5** | `GameSettings` + catégorie SON (Paramètres du menu et de l'écran titre) | Sonnet (ui-mobile) | ancien `settings.json` relu ; capture des Paramètres relue |
 | **T6** | `AudioBridge` : changement de carte, combat, jingles (soin, objet, Badge, capture, évolution), étape de cinématique `music` (clé facultative sur n'importe quelle étape, **sans nouvelle sorte** de `CutsceneStep.Kind`), Surf / Vélo | Opus | tests d'intégration ; rien ne change sans fichier son |
 | **T7** | Android : arrière-plan, bandeau d'appel, retour ; démarrage après le premier rendu | Sonnet | test `SessionLifecycle` étendu ; vérification S24 (T10) |
-| **T8** | Lot musique : obtenir les fichiers (SON-3), couper les boucles, normaliser, convertir en OGG q3, mesurer | Kevin + Sonnet | `measure_audio.py` : boucles sans clic, −16 LUFS ±1, poids dans le budget |
+| **T8** | Lot musique : partir des fichiers fournis par Kevin dans `~/Music/kanto-lets-go/` (SON-3 révisé : KHInsider), faire correspondre leurs noms à la table §2, couper les boucles, normaliser, convertir en OGG q3, mesurer | Kevin + Sonnet | `measure_audio.py` : boucles sans clic, −16 LUFS ±1, poids dans le budget |
 | **T9** | Intégration du lot musique (`tracks.json` passe de « attendu » à « présent ») | Sonnet | suite complète verte ; APK mesuré |
 | **T10** | **QA SonA sur S24** (agent, 30–45 min) : Bourg Palette → Route 1 → Jadielle (même morceau en intérieur, fondu au raccord), combat sauvage et Dresseur, victoire, reprise, Centre, objet, évolution (départ de débogage), Surf, Paramètres, arrière-plan, appel simulé | qa-mobile | rapport, aucun clic de boucle, aucun trou de son > 0,5 s, 60 i/s tenus |
 | — | **Validation SonA par Kevin sur S24** | Kevin | |
@@ -510,6 +510,15 @@ Musique dynamique par couches (exploration / danger), réverbération par lieu, 
 (les PNJ ne « sonnent » pas selon la distance), voix, synthèse d'une piste manquante, sons de la
 Pension ou des échanges en ligne, adaptation au casque. Le **volume relatif final** (mixage fin)
 est une remarque de rendu : notée dans « Reportés », corrigée en lot.
+
+## 5 bis. Décision de Kevin — source des morceaux (2026-10-25, révise SON-3)
+
+Mot pour mot : « je prendrai toutes les bandes son de let's go sur KHInsider ». SON-3 ne passe
+plus par l'achat de l'album : **Kevin télécharge lui-même** tout l'album Let's Go (FLAC si possible,
+sinon MP3 en meilleure qualité) dans `~/Music/kanto-lets-go/`, **sans renommer les fichiers**.
+Claude ne télécharge rien. T8 part de ce dossier : correspondance des noms avec la table §2,
+découpe des boucles, normalisation à −16 LUFS, conversion en OGG q3, mesure. Licences (J34 T6,
+lignes audio) : source « **KHInsider (fichiers fournis par Kevin)** », jeu privé, cercle restreint.
 
 ## 6. Questions ouvertes
 

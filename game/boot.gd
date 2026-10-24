@@ -172,6 +172,8 @@ var _trade_overlay: TradeOverlay
 var _save_coordinator := SaveCoordinator.new()
 var _lifecycle := SessionLifecycle.new()
 var _settings_applier := SettingsApplier.new()
+## Jalon Son (T6) : relais vers l'autoload « Audio » ([method _setup_audio]).
+var _audio_bridge := AudioBridge.new()
 ## Ouverture (OUV.1) : null hors scène principale ou avec un départ de débogage.
 var _opening: OpeningDirector = null
 ## Bourg Palette en mode décor derrière le titre (libéré en quittant le titre).
@@ -466,6 +468,7 @@ func _ready() -> void:
 	_setup_fishing()
 	_setup_strength()
 	_setup_evolution_items()
+	_setup_audio()
 	# L'écran (jalon-06.md §6.6) : ouverture et vue dans la même frame, sans await (un fondu
 	# coupé laisse une coroutine non reprise).
 	_menu.menu_opened.connect(_menu_screen.open_animated)
@@ -605,6 +608,9 @@ func _exit_tree() -> void:
 	# Statiques : un test ne doit jamais hériter des réglages du précédent.
 	Haptics.reset()
 	UiPrefs.reset()
+	# Jalon Son : l'autoload survit à Boot (tests) ; il repart muet.
+	Audio.stop_music()
+	Audio.set_ambience(&"")
 	Engine.max_fps = 0
 	var links: Array[Array] = [
 		[SceneRouter.transition_started, _on_transition_started],
@@ -1028,7 +1034,11 @@ func _start_opening() -> void:
 	_opening.new_game_entered.connect(_on_opening_new_game)
 	_opening.settings_changed.connect(_on_settings_changed)
 	_opening.apply_settings(_settings, _profile.menu_blur)
+	_opening.intro_opened.connect(_audio_bridge.on_intro_opened)
+	_opening.intro_closed.connect(_audio_bridge.on_intro_closed)
 	_opening.run()
+	# Jalon Son (§1.10) : la musique du titre part après le premier rendu de l'écran titre.
+	get_tree().process_frame.connect(_audio_bridge.play_title, CONNECT_ONE_SHOT)
 
 
 ## Vrai tant que l'écran titre occupe le jeu (avant la reprise ou la chambre).
@@ -1338,6 +1348,8 @@ func _on_map_changed(map: GameMap) -> void:
 	_field_presenter.set_map(map)
 	# Décor de combat de la carte chargé en tâche de fond (correctif QA S24 du CB.3).
 	_battle_stage.prepare_place(map.map_id)
+	# Jalon Son (T6) : musique de la zone et ambiance (écran encore noir : le fondu s'y cale).
+	_audio_bridge.on_map_changed(map)
 
 
 ## Compagnon (jalon 11, 11D ; `docs/tech/jalon-11-compagnon.md`) : espèces éligibles (Équipe :
@@ -1833,6 +1845,7 @@ func _wire_settings_applier() -> void:
 	_settings_applier.cutscenes = _cutscenes_node
 	_settings_applier.menu_screen = _menu_screen
 	_settings_applier.lighting = _lighting
+	_settings_applier.audio = Audio
 
 
 ## Lit les réglages (fichier de l'appareil, indépendant de la sauvegarde et du départ de
@@ -1973,6 +1986,39 @@ func get_key_item_director() -> KeyItemDirector:
 
 ## Sac → pierre → UTILISER → Pokémon COMPATIBLE ([signal MenuDirector.evolution_item_requested]) ;
 ## la pierre est retirée à [signal EvolutionDirector.evolution_applied].
+## Jalon Son (T6, `docs/tech/jalon-son.md` §1.4–§1.8) : [AudioBridge] relaie au son les cartes,
+## la monture (Surf, Vélo), le « ! » des Dresseurs, les combats, les jingles (soin, objets,
+## capture, Badge, évolution, Poké Flûte) et la clé « music » des cinématiques. Sans fichier son,
+## rien ne s'entend et rien ne change.
+func _setup_audio() -> void:
+	_audio_bridge.setup(Audio, _zones)
+	_audio_bridge.current_mount = _player.get_mount
+	_audio_bridge.has_flag = func(flag: StringName) -> bool: return GameState.flags.has_flag(flag)
+	_audio_bridge.trainer_name = func(id: StringName) -> String:
+		var trainer := _trainers.get_trainer(id) if _trainers != null else null
+		return trainer.name if trainer != null else ""
+	_audio_bridge.caught_count = func() -> int: return GameState.pokedex.caught_count()
+	_audio_bridge.items = _items
+	_player.mount_changed.connect(_audio_bridge.on_mount_changed)
+	_trainer_watcher.trainer_spotted.connect(_audio_bridge.on_trainer_spotted)
+	_battle_director.battle_started.connect(_audio_bridge.on_battle_started)
+	_battle_director.event_played.connect(_audio_bridge.on_battle_event)
+	_battle_director.battle_finished.connect(_audio_bridge.on_battle_finished)
+	_battle_director.pokemon_caught.connect(_audio_bridge.on_pokemon_caught.unbind(2))
+	_services.center_healed.connect(_audio_bridge.on_center_healed)
+	_cutscenes_node.item_given.connect(_audio_bridge.on_item_given)
+	_cutscenes_node.item_found.connect(_audio_bridge.on_item_found)
+	_cutscenes_node.step_played.connect(_audio_bridge.on_cutscene_step)
+	_cutscenes_node.cutscene_finished.connect(_audio_bridge.on_cutscene_finished)
+	_evolutions.evolution_started.connect(_audio_bridge.on_evolution_started)
+	_evolutions.evolution_finished.connect(_audio_bridge.on_evolution_finished)
+
+
+## Accès au relais du son (tests).
+func get_audio_bridge() -> AudioBridge:
+	return _audio_bridge
+
+
 func _setup_evolution_items() -> void:
 	_menu.evolution_item_requested.connect(_on_evolution_item_requested)
 	_menu.rare_candy_requested.connect(_on_rare_candy_requested)

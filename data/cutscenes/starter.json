@@ -33,7 +33,7 @@
 			{ "face": "$rival_starter", "to": "rival" },
 			{ "wait": 0.3 },
 			{ "face": "rival", "to": "player" },
-			{ "dialogue": "rival_challenge_wait" },
+			{ "dialogue": "rival_challenge_wait", "music": "rival" },
 			{ "face": "rival", "to": "$rival_starter" },
 			{ "wait": 0.6 },
 			{ "face": "rival", "to": "$player_starter" },

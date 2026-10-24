@@ -17,7 +17,7 @@
 			{
 				"unless": ["rival_cerulean_won"],
 				"steps": [
-					{ "emote": "rival_cerulean", "kind": "exclamation" },
+					{ "emote": "rival_cerulean", "kind": "exclamation", "music": "rival" },
 					{ "move": "player", "to": [32, 55] },
 					{
 						"move": "rival_cerulean",

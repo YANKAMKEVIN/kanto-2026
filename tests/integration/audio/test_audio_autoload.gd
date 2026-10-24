@@ -27,6 +27,8 @@ func _music_orders() -> Array[Dictionary]:
 
 
 func after_each() -> void:
+	AudioServer.set_bus_mute(0, false)
+	AudioServer.set_bus_volume_db(0, 0.0)
 	for bus: StringName in AudioScript.BUSES:
 		var index := AudioServer.get_bus_index(bus)
 		AudioServer.set_bus_mute(index, false)
@@ -171,3 +173,34 @@ func test_settings_defaults_applied_to_the_buses() -> void:
 	assert_almost_eq(AudioServer.get_bus_volume_db(music), VolumeMath.to_db(0.7), 0.01)
 	var sfx := AudioServer.get_bus_index(AudioScript.BUS_SFX)
 	assert_almost_eq(AudioServer.get_bus_volume_db(sfx), VolumeMath.to_db(0.8), 0.01)
+
+
+func test_background_mutes_master_and_resume_fades_it_back() -> void:
+	# Jalon Son, T7 (§1.10) : APPLICATION_PAUSED → Master coupé ; RESUMED → fondu de 0,5 s.
+	var audio := _audio()
+	var clock := TweenClock.new(get_tree())
+	audio.notification(Node.NOTIFICATION_APPLICATION_PAUSED)
+	assert_true(audio.is_backgrounded())
+	assert_true(AudioServer.is_bus_mute(0), "Master coupé tout de suite")
+	audio.notification(Node.NOTIFICATION_APPLICATION_RESUMED)
+	assert_false(audio.is_backgrounded())
+	assert_false(AudioServer.is_bus_mute(0))
+	assert_lt(AudioServer.get_bus_volume_db(0), -40.0, "le fondu commence en bas")
+	clock.run_until(func() -> bool: return false, AudioScript.RESUME_FADE + 0.05)
+	assert_almost_eq(AudioServer.get_bus_volume_db(0), 0.0, 0.01, "rétabli")
+	clock.release()
+
+
+func test_call_banner_ducks_music_and_ambience_only() -> void:
+	var audio := _audio()
+	audio.apply_volumes(1.0, 1.0, 1.0)
+	audio.notification(Node.NOTIFICATION_APPLICATION_FOCUS_OUT)
+	assert_true(audio.is_focus_ducked())
+	var music := AudioServer.get_bus_index(AudioScript.BUS_MUSIC)
+	var sfx := AudioServer.get_bus_index(AudioScript.BUS_SFX)
+	assert_almost_eq(AudioServer.get_bus_volume_db(music), AudioScript.FOCUS_DUCK_DB, 0.01)
+	assert_almost_eq(AudioServer.get_bus_volume_db(sfx), 0.0, 0.01, "les effets ne bougent pas")
+	assert_false(AudioServer.is_bus_mute(0), "pas coupé : seulement atténué")
+	audio.notification(Node.NOTIFICATION_APPLICATION_FOCUS_IN)
+	assert_false(audio.is_focus_ducked())
+	assert_almost_eq(AudioServer.get_bus_volume_db(music), 0.0, 0.01)

@@ -35,6 +35,10 @@ const FADE_IN: float = 0.6
 const RESUME_FADE_IN: float = 1.0
 ## Changement d'ambiance [D].
 const AMBIENCE_FADE: float = 1.0
+## Android (T7, §1.10) [D] : retour au premier plan en 0,5 s ; musique et ambiance à −20 dB
+## pendant un bandeau d'appel (focus perdu sans pause).
+const RESUME_FADE: float = 0.5
+const FOCUS_DUCK_DB: float = -20.0
 
 ## Reçoit chaque ordre à la place des lecteurs (tests) ; vide en jeu.
 var sink: Callable = Callable()
@@ -61,6 +65,12 @@ var _cache: Dictionary[String, AudioStream] = {}
 ## Fichiers absents déjà signalés.
 var _warned: Dictionary[String, bool] = {}
 var _rng := RandomNumberGenerator.new()
+## Volumes des curseurs (0 à 1) par bus ; 1 tant que les Paramètres ne sont pas appliqués.
+var _volumes: Dictionary[StringName, float] = {}
+## Android : en arrière-plan (Master coupé), focus perdu (musique et ambiance atténuées).
+var _backgrounded: bool = false
+var _focus_ducked: bool = false
+var _master_fade: Tween
 
 
 func _ready() -> void:
@@ -213,6 +223,63 @@ func set_ambience(id: StringName) -> void:
 
 func current_ambience() -> StringName:
 	return _ambience_id
+
+
+# --- Android (T7) -------------------------------------------------------------------
+
+## Les notifications d'application arrivent à tous les nœuds : l'autoload les suit seul.
+func _notification(what: int) -> void:
+	handle_app_change(SessionLifecycle.audio_change(what))
+
+
+## Arrière-plan : Master coupé tout de suite ; bandeau d'appel : musique et ambiance à −20 dB ;
+## retour : tout rétabli, Master en fondu de 0,5 s s'il était coupé.
+func handle_app_change(change: SessionLifecycle.AudioChange) -> void:
+	match change:
+		SessionLifecycle.AudioChange.MUTE:
+			_backgrounded = true
+			_kill_master_fade()
+			_set_master_db(VolumeMath.MUTED_DB)
+			AudioServer.set_bus_mute(0, true)
+		SessionLifecycle.AudioChange.DUCK:
+			_set_focus_ducked(true)
+		SessionLifecycle.AudioChange.RESTORE:
+			_set_focus_ducked(false)
+			if _backgrounded:
+				_backgrounded = false
+				AudioServer.set_bus_mute(0, false)
+				_kill_master_fade()
+				_master_fade = create_tween()
+				_master_fade.tween_method(_set_master_db, VolumeMath.MUTED_DB, 0.0, RESUME_FADE)
+		_:
+			return
+	_emit({ "type": &"app", "change": change })
+
+
+func is_backgrounded() -> bool:
+	return _backgrounded
+
+
+func is_focus_ducked() -> bool:
+	return _focus_ducked
+
+
+func _set_focus_ducked(ducked: bool) -> void:
+	if _focus_ducked == ducked:
+		return
+	_focus_ducked = ducked
+	_set_bus_volume(BUS_MUSIC, _volumes.get(BUS_MUSIC, 1.0))
+	_set_bus_volume(BUS_AMBIENCE, _volumes.get(BUS_AMBIENCE, 1.0))
+
+
+func _set_master_db(volume_db: float) -> void:
+	AudioServer.set_bus_volume_db(0, volume_db)
+
+
+func _kill_master_fade() -> void:
+	if _master_fade != null and _master_fade.is_valid():
+		_master_fade.kill()
+	_master_fade = null
 
 
 # --- Volumes ---------------------------------------------------------------------------
@@ -387,5 +454,8 @@ func _set_bus_volume(bus: StringName, volume: float) -> void:
 	var index := AudioServer.get_bus_index(bus)
 	if index < 0:
 		return
+	_volumes[bus] = volume
+	var duck := FOCUS_DUCK_DB if _focus_ducked and bus in [BUS_MUSIC, BUS_AMBIENCE] else 0.0
 	AudioServer.set_bus_mute(index, VolumeMath.is_muted(volume))
-	AudioServer.set_bus_volume_db(index, VolumeMath.to_db(volume))
+	AudioServer.set_bus_volume_db(index, maxf(VolumeMath.to_db(volume) + duck,
+		VolumeMath.MUTED_DB))
