@@ -1,0 +1,11 @@
+{
+	"grandpa": {
+		"cell": [
+			4,
+			5
+		],
+		"facing": "right",
+		"sprite": "old_man",
+		"dialogue": "fuchsia_grandpa"
+	}
+}

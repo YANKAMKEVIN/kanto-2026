@@ -79,7 +79,9 @@ const _NPC_SCENE: PackedScene = preload("res://game/world/npc/npc.tscn")
 @export var current_cells: Dictionary[Vector2i, Vector2i] = {}
 ## Cases où l'on arrive en Surf même par un warp à pied (§2.5, « Surf forcé »).
 @export var forced_surf_cells: Array[Vector2i] = []
-## Cases d'eau où l'on peut pêcher (S2C-bis, [FishingSpot]). Vide : aucune.
+## Cases d'eau où l'on peut pêcher (S2C-bis, [FishingSpot]). Vide : aucune. Jalon 22 (T12) :
+## [method fishable_set] y ajoute les rectangles de [constant FISHABLE_PATH] pour cette carte
+## (cartes livrées avant le J22, dont on ne réécrit pas les grilles).
 @export var fishable_cells: Array[Vector2i] = []
 ## Niveaux de sol (jalon 29, Route Victoire ; collisions « par paires » de Rouge/Bleu) : on ne passe
 ## du sol bas au sol haut que par un escalier, un rocher ne change jamais de niveau
@@ -88,6 +90,15 @@ const _NPC_SCENE: PackedScene = preload("res://game/world/npc/npc.tscn")
 @export var low_cells: Array[Vector2i] = []
 @export var high_cells: Array[Vector2i] = []
 @export var stairs_cells: Array[Vector2i] = []
+## Jalon 22 (T16 [D]) : cases de Piste Cyclable d'une carte qui n'est Piste qu'en partie (Route 16
+## ouest, voie basse ; Route 18, partie ouest). [member cycling_road] vrai = toute la carte.
+@export var cycling_road_cells: Array[Vector2i] = []
+
+## Cases pêchables des cartes déjà livrées (jalon 22 §0.4 n° 2) : « maps » → carte →
+## rectangles [x, y, largeur, hauteur].
+const FISHABLE_PATH: String = "res://data/world/fishable.json"
+static var _fishable_rects: Dictionary = {}
+static var _fishable_loaded: bool = false
 
 var _grid: GridWorld
 var _warps: WarpTable
@@ -306,12 +317,46 @@ func mount_traits() -> MapTraits:
 	return traits
 
 
-## Cases pêchables de la carte, en ensemble ([method FishingSpot.in_front]).
+## Cases pêchables de la carte, en ensemble ([method FishingSpot.in_front]) : celles de la
+## scène et celles de [constant FISHABLE_PATH] pour [member map_id] (jalon 22, T12).
 func fishable_set() -> Dictionary[Vector2i, bool]:
 	var cells: Dictionary[Vector2i, bool] = {}
 	for cell: Vector2i in fishable_cells:
 		cells[cell] = true
+	for rect: Rect2i in fishable_rects_for(map_id):
+		for y: int in range(rect.position.y, rect.end.y):
+			for x: int in range(rect.position.x, rect.end.x):
+				cells[Vector2i(x, y)] = true
 	return cells
+
+
+## Rectangles pêchables de [constant FISHABLE_PATH] pour [param id] (vide si aucun).
+static func fishable_rects_for(id: StringName) -> Array[Rect2i]:
+	if not _fishable_loaded:
+		_fishable_loaded = true
+		var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(FISHABLE_PATH))
+		if parsed is Dictionary and (parsed as Dictionary).get("maps") is Dictionary:
+			_fishable_rects = (parsed as Dictionary)["maps"]
+		else:
+			push_error("GameMap : %s illisible" % FISHABLE_PATH)
+	var rects: Array[Rect2i] = []
+	for entry: Variant in _fishable_rects.get(String(id), []):
+		var r: Array = entry
+		rects.append(Rect2i(int(r[0]), int(r[1]), int(r[2]), int(r[3])))
+	return rects
+
+
+## Vrai si [param cell] est sur la Piste Cyclable (toute la carte, ou une case de
+## [member cycling_road_cells]).
+func is_cycling_road_at(cell: Vector2i) -> bool:
+	return cycling_road or cycling_road_cells.has(cell)
+
+
+## [method mount_traits] vus depuis [param cell] (Piste en partie, jalon 22).
+func mount_traits_at(cell: Vector2i) -> MapTraits:
+	var traits := mount_traits()
+	traits.cycling_road = is_cycling_road_at(cell)
+	return traits
 
 
 ## Ajoute le joueur à `Entities` et le place sur le spawn.

@@ -1,0 +1,158 @@
+{
+	"cinnabar_fossil_take_kabuto": {
+		"variants": [
+			{
+				"unless": [
+					"fossil_reviving_kabuto"
+				],
+				"steps": [
+					{
+						"take": "dome_fossil"
+					},
+					{
+						"set": [
+							"fossil_reviving_kabuto"
+						]
+					},
+					{
+						"dialogue": "cinnabar_fossil_taken"
+					},
+					{
+						"save": "fossile confié"
+					}
+				]
+			}
+		]
+	},
+	"cinnabar_fossil_give_kabuto": {
+		"variants": [
+			{
+				"unless": [
+					"fossil_revived_kabuto"
+				],
+				"steps": [
+					{
+						"dialogue": "cinnabar_fossil_ready_kabuto"
+					},
+					{
+						"gift_pokemon": "kabuto",
+						"level": 30,
+						"flag": "fossil_revived_kabuto",
+						"say": "cinnabar_fossil_received_kabuto",
+						"say_stored": "cinnabar_fossil_stored_kabuto"
+					},
+					{
+						"save": "fossile ressuscité",
+						"if": [
+							"fossil_revived_kabuto"
+						]
+					}
+				]
+			}
+		]
+	},
+	"cinnabar_fossil_take_omanyte": {
+		"variants": [
+			{
+				"unless": [
+					"fossil_reviving_omanyte"
+				],
+				"steps": [
+					{
+						"take": "helix_fossil"
+					},
+					{
+						"set": [
+							"fossil_reviving_omanyte"
+						]
+					},
+					{
+						"dialogue": "cinnabar_fossil_taken"
+					},
+					{
+						"save": "fossile confié"
+					}
+				]
+			}
+		]
+	},
+	"cinnabar_fossil_give_omanyte": {
+		"variants": [
+			{
+				"unless": [
+					"fossil_revived_omanyte"
+				],
+				"steps": [
+					{
+						"dialogue": "cinnabar_fossil_ready_omanyte"
+					},
+					{
+						"gift_pokemon": "omanyte",
+						"level": 30,
+						"flag": "fossil_revived_omanyte",
+						"say": "cinnabar_fossil_received_omanyte",
+						"say_stored": "cinnabar_fossil_stored_omanyte"
+					},
+					{
+						"save": "fossile ressuscité",
+						"if": [
+							"fossil_revived_omanyte"
+						]
+					}
+				]
+			}
+		]
+	},
+	"cinnabar_fossil_take_aerodactyl": {
+		"variants": [
+			{
+				"unless": [
+					"fossil_reviving_aerodactyl"
+				],
+				"steps": [
+					{
+						"take": "old_amber"
+					},
+					{
+						"set": [
+							"fossil_reviving_aerodactyl"
+						]
+					},
+					{
+						"dialogue": "cinnabar_fossil_taken"
+					},
+					{
+						"save": "fossile confié"
+					}
+				]
+			}
+		]
+	},
+	"cinnabar_fossil_give_aerodactyl": {
+		"variants": [
+			{
+				"unless": [
+					"fossil_revived_aerodactyl"
+				],
+				"steps": [
+					{
+						"dialogue": "cinnabar_fossil_ready_aerodactyl"
+					},
+					{
+						"gift_pokemon": "aerodactyl",
+						"level": 30,
+						"flag": "fossil_revived_aerodactyl",
+						"say": "cinnabar_fossil_received_aerodactyl",
+						"say_stored": "cinnabar_fossil_stored_aerodactyl"
+					},
+					{
+						"save": "fossile ressuscité",
+						"if": [
+							"fossil_revived_aerodactyl"
+						]
+					}
+				]
+			}
+		]
+	}
+}

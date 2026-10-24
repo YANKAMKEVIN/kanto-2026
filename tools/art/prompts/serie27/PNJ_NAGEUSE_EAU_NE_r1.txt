@@ -1,0 +1,16 @@
+PNJ_NAGEUSE_EAU — planche d'animation d'un Dresseur de Kanto 2026 qui NAGE dans la mer : la NAGEUSE déjà validé(e) dans le jeu, cette fois dans l'eau.
+Style : exactement le rendu des planches jointes (PERSO_P2_PEINT_r1, le héros validé, et nageuse_sheet, ce même personnage à terre) : personnage peint simplifié, chibi d'environ 3 têtes, même finesse, même contour fin coloré sans trait noir. Ni pixel art, ni 3D, ni anime aux contours noirs.
+LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche ; volumes conservés par un ombrage doux ; aucune teinte dorée ou orangée, aucun liseré chaud ; ombres propres neutres, légèrement bleutées.
+
+PERSONNAGE (identique dans toutes les images) : EXACTEMENT la Nageuse de la planche jointe nageuse_sheet (même visage, même chignon brun, mêmes lunettes de natation bleues remontées sur le front, même maillot turquoise, mêmes couleurs), mais sans serviette ni paréo (elle est dans l'eau). Il / elle nage la brasse, le corps dans l'eau : on ne voit QUE la tête, le cou et le haut des épaules au-dessus de la surface, et par moments les mains qui écartent l'eau devant lui / elle. La tête a EXACTEMENT la même taille que dans la planche jointe à terre.
+
+PLANCHE D'ANIMATION (spritesheet) : image portrait 1024 × 1536, fond avec une vraie transparence (canal alpha, aucun damier dessiné). Grille invisible de 4 colonnes × 4 lignes ; chaque cellule fait 256 × 384 px et contient UNE pose, centrée horizontalement, la ligne de flottaison sur la même ligne horizontale à 120 px du bas de la cellule, à la même taille dans toutes les cellules. Aucune pose ne déborde de sa cellule.
+- Ligne 1 : de face (il / elle nage vers le bas de l'écran).
+- Ligne 2 : de profil, vers la gauche.
+- Ligne 3 : de profil, vers la droite.
+- Ligne 4 : de dos (vers le haut de l'écran : l'arrière de la tête et des épaules).
+- Colonnes : brasse en 4 images : 1 = mains jointes devant le menton ; 2 = mains qui s'écartent à la surface, la tête monte un peu ; 3 = bras ouverts, la tête redescend ; 4 = mains qui reviennent. De petites rides et un peu d'écume autour des épaules et des mains.
+L'eau elle-même n'est PAS dessinée (le jeu la peint dessous) : seulement ce qui dépasse de la surface, et un fin anneau d'écume blanche et de petites rides claires autour, à la ligne de flottaison ; tout le reste de la cellule est transparent.
+Vue : la même vue de dessus de trois quarts que le jeu (caméra un peu au-dessus, on voit le dessus de la tête). Pas de perspective, pas d'ombre portée, pas de texte, pas de numéros, pas de cadres autour des cellules, aucun Pokémon, aucune bouée.
+Le visage, les couleurs et les proportions doivent être EXACTEMENT les mêmes dans les 16 poses.
+Interdits de la série : texte, lettres, chiffres, logo, AUCUN emblème rond de type balle (ni cercle partagé en deux, ni médaillon à bande centrale) nulle part, animaux réels ou faune non-Pokémon (oiseaux, mouettes, poissons, dauphins, phoques, insectes), Pikachu et tout Pokémon non demandé, personnage qui ressemble au héros (casquette rouge, t-shirt blanc, sac à dos jaune) sauf quand le héros est demandé, élément effrayant.

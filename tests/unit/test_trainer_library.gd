@@ -390,7 +390,7 @@ func test_only_misty_surge_and_the_rivals_switch() -> void:
 	# Jalon 20 (T7, dossier 23 §11.3, §13.5) : Erika et Giovanni.
 	var switching: Array[StringName] = [&"cerulean_gym_misty", &"rival_cerulean",
 		&"rival_ss_anne", &"vermilion_gym_surge", &"rival_tower", &"celadon_gym_erika",
-		&"giovanni_hideout", &"rival_route22_final"]
+		&"giovanni_hideout", &"cinnabar_gym_blaine", &"rival_route22_final"]
 	# Jalon 29 (T4, plan §2.3) : le rival n° 7 change de Pokémon (IA smart), moment à chaque issue.
 	for id: StringName in library.get_ids():
 		if not String(id).begins_with("qa_"):

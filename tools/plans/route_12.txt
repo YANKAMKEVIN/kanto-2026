@@ -25,8 +25,9 @@
 #     joueur venant de la Route 11 débouche sur la chaussée de terre (x 0..24, rangées 93..94) et la suit
 #     jusqu'au CROISEMENT, où Ronflex l'attend (contre lui, x 24). Route 11 : from_route_12
 #     attendu en (74, 14..15), tournée ←. RB : connection west, Route11, décalage 27 blocs.
-#   SUD : bord (25..26, 101) FERMÉ « ROUTE 12 — À venir » (coming_soon=route_12_sud, mécanisme existant
-#     des bords) ; en release, bloqué.
+#   SUD : Route 12 (25..26, 101) ↔ Route 12 sud (25..26, 0) (J22, `route_12_sud.txt`), mêmes colonnes,
+#     case pour case : (25) → from_route_12, (26) → from_route_12_1 ; retour sur from_route_12_sud et
+#     from_route_12_sud_1 (25..26, 100). Raccord fait le 2026-10-23 (contrat jalon-22.md §0.5).
 #
 # RONFLEX (décision M-3 de Kevin, 2026-10-16 ; remplace la décision L-2) : il est ICI, AU CROISEMENT, comme
 #   Rouge/Bleu (Route12.asm : Snorlax en (10, 62) ; le raccord de la Route 11 arrive à sa hauteur). Il
@@ -204,8 +205,8 @@ warp_nord            warp           21..23,0     libre   to=lavender_town spawn=
 from_lavender        spawn          21..23,0     libre   facing=down  # arrivée de Lavanville, tournée ↓
 warp_ouest           warp           0,93..94     libre   to=route_11 spawn=from_route_12  # PUSH ← → route_11, from_route_12 (Route 11 (74, 14..15), à créer ; raccord_est (75, 14..15) du J17)
 from_route_11        spawn          0,93..94     libre   facing=right  # arrivée de la Route 11, tournée → ; à 24 cases de Ronflex (25..26, 93..94), en vue tout du long
-warp_sud             warp           25..26,101   libre   coming_soon=route_12_sud  # « ROUTE 12 — À venir » (développement) ; en release, bord bloqué ; J22
-from_route_12_sud    spawn          25..26,100   libre   facing=up  # retour futur (Route 12 sud), tournée ↑ ; non utilisé au J21
+warp_sud             warp           25..26,101   libre   to=route_12_south spawn=from_route_12  # PUSH ↓ → route_12_south, from_route_12 (+ _1 pour la case 26) ; raccord J22
+from_route_12_sud    spawn          25..26,100   libre   facing=up  # arrivée de la Route 12 sud (+ _1 pour la case 26), tournée ↑
 porte_poste_nord     warp           24..26,24    libre   to=route_12_gate spawn=entrance_nord lie=porte_poste_sud  # STEP_ON ↓ (on descend vers le sud) → intérieur du poste, porte nord
 from_poste_nord      spawn          24..26,23    libre   facing=up  # sortie du poste par la porte NORD (on revient vers Lavanville), tournée ↑
 porte_poste_sud      warp           24..26,32    libre   to=route_12_gate spawn=entrance_sud lie=porte_poste_nord  # STEP_ON ↑ (on monte vers le nord) → intérieur du poste, porte sud

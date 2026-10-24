@@ -3,7 +3,8 @@ extends GutTest
 ## dossier 24 §9, §10.2, §15.7, §15.8) sur la vraie scène `route_16` : **grille de la scène = grille
 ## fonctionnelle** `tools/plans/route_16.txt` case par case, raccord de Céladopole aller-retour
 ## (`obstacle_ouest` retiré), Ronflex 2 × 2 sans contournement (recherche de chemin), cases libres
-## après `snorlax_route_16_done`, porte du poste « à venir », aucune herbe ni rencontre, aucun texte
+## après `snorlax_route_16_done`, portes du poste vers `route_16_gate` (raccords J21 ↔ J22 du
+## 2026-10-23, détail dans `test_j21_j22_links.gd`), arbre à Couper, aucune herbe ni rencontre, aucun texte
 ## sur le Vélo (L-4), indépendance des drapeaux (aucune donnée du Ronflex 16 ne cite
 ## `snorlax_route_12_*`), dialogue et scène du réveil, métadonnées (lumière, zone, fond de combat),
 ## budgets (nœuds, halos), départ `snorlax_16_qa`.
@@ -14,7 +15,7 @@ const MAP_PATH := "res://game/world/maps/route_16.tscn"
 const CITY_PATH := "res://game/world/maps/celadon_city.tscn"
 const PLAN_PATH := "res://tools/plans/route_16.txt"
 const SIZE := Vector2i(44, 28)
-const WALKABLE := "=D"
+const WALKABLE := "=DY"
 const NODE_BUDGET := 3000
 const HALO_BUDGET := 16
 const DONE := &"snorlax_route_16_done"
@@ -24,6 +25,8 @@ const SNORLAX: Array[Vector2i] = [Vector2i(24, 22), Vector2i(24, 23), Vector2i(2
 	Vector2i(25, 23)]
 const FACE: Array[Vector2i] = [Vector2i(26, 22), Vector2i(26, 23)]
 const DOOR: Array[Vector2i] = [Vector2i(15, 20), Vector2i(16, 20)]
+const HIGH_DOOR: Array[Vector2i] = [Vector2i(19, 13), Vector2i(20, 13)]
+const TREE_FLAG := &"cut_route_16_tree"
 ## Fichiers de données du Ronflex 16 (dialogues et scènes).
 const DATA_FILES: Array[String] = [
 	"res://data/dialogues/j21_snorlax_16.json", "res://data/cutscenes/j21_snorlax_16.json",
@@ -88,10 +91,15 @@ func test_metadata_light_zone_and_battle_decor() -> void:
 
 func test_scene_grid_is_the_functional_grid() -> void:
 	var mismatches := 0
+	# L'arbre à Couper `W` : praticable dans `Ground`, fermé par sa FlagGate (occupé).
+	var tree := _plan.cells_of("W")
+	_asleep()
+	for cell: Vector2i in tree:
+		assert_true(_grid.is_occupied(cell), "arbre debout %s" % cell)
 	for y: int in SIZE.y:
 		for x: int in SIZE.x:
 			var cell := Vector2i(x, y)
-			var solid := not _plan.is_walkable(cell)
+			var solid := not _plan.is_walkable(cell) and not tree.has(cell)
 			if _grid.is_solid(cell) != solid or _grid.is_tall_grass(cell):
 				mismatches += 1
 				if mismatches <= 10:
@@ -136,7 +144,7 @@ func test_east_link_with_celadon_round_trip() -> void:
 		for y: int in [21, 22, 23]:
 			assert_false(city.get_grid().is_solid(Vector2i(x, y)), "chemin (%d, %d)" % [x, y])
 	city.free()
-	assert_eq(_map.get_warps().size(), 5, "3 cases de raccord + 2 de porte, rien d'autre")
+	assert_eq(_map.get_warps().size(), 7, "3 cases de raccord + 2 × 2 de portes, rien d'autre")
 
 
 func test_snorlax_blocks_the_bottleneck_without_detour() -> void:
@@ -150,11 +158,18 @@ func test_snorlax_blocks_the_bottleneck_without_detour() -> void:
 	for cell: Vector2i in DOOR + [Vector2i(15, 21), Vector2i(23, 22), Vector2i(23, 23),
 			Vector2i(22, 22)]:
 		assert_false(reached.has(cell), "%s inatteignable tant qu'il dort (aucun contournement)" % cell)
-	# La voie haute et l'arbre en décor ne sont jamais atteints, avec ou sans Ronflex.
+	# Arbre debout : la voie haute n'est jamais atteinte, avec ou sans Ronflex ; la façade jamais.
 	_done()
 	var open := _grid.find_reachable(start)
 	for cell: Vector2i in _plan.cells_of("Y") + _plan.cells_of("W") + _plan.cells_of("P"):
-		assert_false(open.has(cell), "décor infranchissable %s" % cell)
+		assert_false(open.has(cell), "fermé tant que l'arbre est debout %s" % cell)
+	# Arbre coupé, Ronflex endormi : la voie haute, oui ; le parvis, jamais (aucun contournement).
+	_map.apply_flag_gates(_flags([TREE_FLAG]))
+	var high := _grid.find_reachable(start)
+	for cell: Vector2i in HIGH_DOOR + _plan.cells_of("Y"):
+		assert_true(high.has(cell), "voie haute atteinte, arbre coupé %s" % cell)
+	for cell: Vector2i in DOOR + [Vector2i(15, 21), Vector2i(23, 22)]:
+		assert_false(high.has(cell), "%s : Ronflex reste la seule fermeture" % cell)
 	_asleep()
 	# Même résultat sur le relief seul : Ronflex est bien la seule fermeture.
 	var bare := GridPaths.relief(_grid, SIZE)
@@ -164,14 +179,14 @@ func test_snorlax_blocks_the_bottleneck_without_detour() -> void:
 
 func test_cells_are_free_after_snorlax_is_done() -> void:
 	var start := _map.get_spawn_cell(&"from_celadon")
-	_done()
+	_map.apply_flag_gates(_flags([DONE, TREE_FLAG]))
 	for cell: Vector2i in SNORLAX:
 		assert_false(_grid.is_occupied(cell), "libre : %s" % cell)
 		assert_true(_grid.is_free(cell), "praticable : %s" % cell)
 	var reached := _grid.find_reachable(start)
 	for cell: Vector2i in DOOR + [Vector2i(15, 21), Vector2i(23, 22), Vector2i(11, 22)]:
 		assert_true(reached.has(cell), "%s atteint après _done" % cell)
-	assert_eq(GridPaths.cut_off(_grid, start).size(), 0, "tout le chemin est relié")
+	assert_eq(GridPaths.cut_off(_grid, start).size(), 0, "tout le chemin est relié (arbre coupé)")
 	var gate := _map.find_child("Ronflex", true, false) as FlagGate
 	assert_not_null(gate)
 	if gate != null:
@@ -225,9 +240,14 @@ func test_snorlax_node_gate_and_point() -> void:
 			assert_true(props.is_in_group(&"scene_props"), "groupe scene_props")
 			assert_not_null(props.get_node_or_null(^"Sprite"))
 	var points: Array[InteractPoint] = []
+	var others: Array[StringName] = []
 	for node: Node in _map.get_node(^"Interactables").get_children():
-		points.append(node as InteractPoint)
-	assert_eq(points.size(), 1, "AUCUN examen : le seul point est celui de Ronflex")
+		if (node as InteractPoint).dialogue_id == &"snorlax_route_16":
+			points.append(node as InteractPoint)
+		else:
+			others.append((node as InteractPoint).dialogue_id)
+	assert_eq(points.size(), 1, "un point pour Ronflex")
+	assert_eq(others, [&"route_16_tree"] as Array[StringName], "seul autre examen : l'arbre (J22)")
 	var point := points[0]
 	assert_eq(point.dialogue_id, &"snorlax_route_16")
 	assert_eq(point.size, Vector2i(2, 2))
@@ -250,19 +270,25 @@ func test_snorlax_node_gate_and_point() -> void:
 	assert_eq(faces, FACE, "repères face_ronflex")
 
 
-func test_poste_door_is_coming_soon_without_text_about_the_bike() -> void:
-	for cell: Vector2i in DOOR:
-		var warp := _map.get_warps().find_on_step(cell, Vector2i.UP)
-		assert_not_null(warp, "porte du poste %s" % cell)
-		if warp == null:
-			continue
-		assert_true(warp.is_coming_soon(), "« à venir »")
-		assert_eq(warp.coming_soon, "Route 16")
-		assert_true(_map.has_spawn(warp.target_spawn))
-		var back := _map.get_spawn_cell(warp.target_spawn)
-		assert_false(_grid.is_solid(back))
-		assert_eq(back.y, 21, "retour sur le parvis")
-		assert_ne(warp.facing, Vector2i.ZERO)
+## Raccords J21 ↔ J22 (2026-10-23) : les deux portes mènent au poste (aller-retour case pour
+## case : `test_j21_j22_links.gd`).
+func test_poste_doors_lead_to_the_gate() -> void:
+	for entry: Array in [[DOOR, Vector2i.UP, "entrance_bas_est", "from_poste", 21],
+			[HIGH_DOOR, Vector2i.DOWN, "entrance_haut_est", "from_poste_haut", 12]]:
+		var cells: Array[Vector2i] = entry[0]
+		for i: int in cells.size():
+			var warp := _map.get_warps().find_on_step(cells[i], entry[1])
+			assert_not_null(warp, "porte du poste %s" % cells[i])
+			if warp == null:
+				continue
+			assert_false(warp.is_coming_soon(), "plus « à venir »")
+			var suffix: String = ["", "_1"][i]
+			assert_eq([warp.target_map, warp.target_spawn],
+				[&"route_16_gate", StringName(entry[2] + suffix)])
+			var back := StringName(entry[3] + suffix)
+			assert_true(_map.has_spawn(back))
+			assert_false(_grid.is_solid(_map.get_spawn_cell(back)))
+			assert_eq(_map.get_spawn_cell(back), Vector2i(cells[i].x, entry[4]))
 
 
 func test_no_grass_no_encounter_no_trainer_no_item() -> void:
@@ -273,6 +299,9 @@ func test_no_grass_no_encounter_no_trainer_no_item() -> void:
 		if file.get_extension() != "json":
 			continue
 		var text := FileAccess.get_file_as_string("res://data/encounters/" + file)
+		# Jalon 22 : la Route 16 ouest (`route_16_west`, autre carte) a ses herbes ; la carte du
+		# J21 (`route_16`) n'en a aucune.
+		text = text.replace("route_16_west", "")
 		assert_false(text.contains("route_16"), "%s : aucune rencontre sur la Route 16" % file)
 	assert_eq(_map.get_npcs().size(), 0, "aucun PNJ ni Dresseur")
 	assert_eq(_map.get_triggers().get_all().size(), 3, "seule la scène silencieuse du titre de zone (2e colonne)")
@@ -326,7 +355,9 @@ func test_snorlax_16_data_never_cites_the_route_12_flags() -> void:
 	var gate := _map.find_child("Ronflex", true, false) as FlagGate
 	cited.append_array(gate.unless_flags)
 	for point: Node in _map.get_node(^"Interactables").get_children():
-		cited.append_array((point as InteractPoint).unless_flags)
+		# L'arbre à Couper (J22) a son propre drapeau, `cut_route_16_tree`.
+		if (point as InteractPoint).dialogue_id == &"snorlax_route_16":
+			cited.append_array((point as InteractPoint).unless_flags)
 	assert_gt(cited.size(), 8)
 	for flag: StringName in cited:
 		assert_true(String(flag).begins_with("snorlax_route_16_"), String(flag))

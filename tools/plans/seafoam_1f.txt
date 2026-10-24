@@ -1,0 +1,72 @@
+# Îles Écume 1F — grille fonctionnelle v1 (jalon 24, T2 ; dossier 27 §7, plan jalon-24 §2.6, §2.11).
+# Source de la géométrie : décodage de RB (tools/art/seafoam_rb_decode.py), puzzles à l'échelle 1:1
+# (dossier §4). Contrôle des CINQ étages : tools/art/plan_check_j24_seafoam.py.
+#
+# Deux entrées sur le bord sud : OUEST (4..5, 17), qui donne sur la mer est (côté Route 19) et d'où
+# tout le donjon est accessible ; EST (26..27, 17), qui donne sur la mer ouest (côté Cramois'Île) et
+# ne mène qu'à l'échelle (23, 15). Deux rochers (18, 10) et (26, 7), deux trous (17, 6) et (24, 6)
+# qui font apparaître un rocher au B1F (points de chute 17,6 et 22,6) ; le rocher (18, 10) est celui
+# du trou (17, 6), le rocher (26, 7) celui du trou (24, 6) (de part et d'autre de l'arête x = 20).
+# Écart avec RB : un panneau T-11 en (3, 15) ; rien d'autre (la géométrie est celle de RB).
+#
+# Légende (les cinq grilles des Îles Écume, communes ; caractères nouveaux du jalon 24, plan §2.11) :
+#   # paroi rocheuse (bloquée)             | arête entre deux niveaux (bloquée, tuile $1c de RB)
+#   . sol BAS de la grotte                 : sol HAUT de la grotte
+#     (collision par paires de RB : on ne passe du bas au haut, et inversement, que par un escalier ;
+#      l'eau ne touche pas le sol haut : on monte en Surf et on en descend sur sol bas ou escalier)
+#   = escalier entre niveaux de sol (praticable des deux côtés ; un rocher ne s'y pousse pas)
+#   w eau SURFABLE                         ~ eau décor (non surfable, jamais atteinte)
+#   ^ v < > courant sur eau (sens du flux ; actif ou calme selon les drapeaux, voir plan_check)
+#   s case SURF FORCÉ : arrivée dans l'eau par un passage (le joueur y arrive monté)
+#   B rocher de Force, position d'ORIGINE (sol bas)    O trou (sol bas ; un rocher qui y tombe le bouche)
+#   F point de chute d'un rocher venu de l'étage du dessus (sol bas, ou eau au B3F et au B4F)
+#   U échelle qui monte    V échelle qui descend    E entrée depuis la Route 20 (1F)
+#   o petit rocher fixe (décor, bloqué)    n panneau (bloqué ; lu depuis la case voisine)
+#   x indice d'objet caché : caillou clair, RB y cache l'objet (bloqué ; l'objet est sur la case voisine)
+# Coordonnées = celles de RB (annexe A de passes/j24-v2-alignement.md) : 30 × 18, 1:1, sans marge.
+# Le bord de la carte est la limite du monde (rien au-delà) : des cases de sol ou d'eau le touchent
+# (B3F et B4F, comme dans RB) ; seules les cases E sont des sorties.
+# Personnages, objets, échelles, trous, rochers, courants, panneaux : section POSITIONS (attributs
+# paire=, sens=, vers=, n=, drapeau=, depuis=, sol=, surf=, ordre=, trou=, texte=…), pas la grille.
+#
+
+PRATICABLES .:=wBOFs^v<>UVE
+
+GRILLE 30 18
+00 ##############################
+01 ##############################
+02 ###::::::::::::::::::::#....##
+03 ###::::::::::::::::::::#.V..##
+04 ###::::::::::::::::::::#....##
+05 ###::::V:::##########=##....##
+06 ###::::::::#.....O..|...O...##
+07 ###::::::::#........|.....B.##
+08 ###::::::::#........|.......##
+09 ###::::::::#........|.......##
+10 ###::::::::#......B.|.......##
+11 ######==####........||||||||##
+12 ##..................|.......##
+13 ##..................|.......##
+14 ##..................|.......##
+15 ##.n................|..V....##
+16 ####..####################..##
+17 ####EE####################EE##
+FIN
+
+POSITIONS
+entree_ouest         entree         4,17;5,17    libre   cote=ouest mer=est vers=route_20 paire=EO  # sortie vers la mer est (Route 19)
+arrivee_entree_ouest spawn          4,16         libre   paire=EO  # arrivée depuis la Route 20, tourné ↑
+entree_est           entree         26,17;27,17  libre   cote=est mer=ouest vers=route_20 paire=EE  # sortie vers la mer ouest (Cramois'Île)
+arrivee_entree_est   spawn          26,16        libre   paire=EE
+echelle_p1           echelle        7,5          libre   paire=P1 sens=descend vers=seafoam_b1f
+arrivee_p1           spawn          7,6          libre   paire=P1
+echelle_p2           echelle        25,3         libre   paire=P2 sens=descend vers=seafoam_b1f
+arrivee_p2           spawn          25,4         libre   paire=P2
+echelle_p3           echelle        23,15        libre   paire=P3 sens=descend vers=seafoam_b1f
+arrivee_p3           spawn          23,14        libre   paire=P3
+trou_1f_1            trou           17,6         libre   n=1 drapeau=seafoam_1f_hole_1_filled chute=seafoam_b1f
+trou_1f_2            trou           24,6         libre   n=2 drapeau=seafoam_1f_hole_2_filled chute=seafoam_b1f
+rocher_1f_1          rocher         18,10        bloque  ordre=1 trou=1  # origine RB ; remplit le trou (17, 6)
+rocher_1f_2          rocher         26,7         bloque  ordre=2 trou=2  # origine RB ; remplit le trou (24, 6)
+panneau_rochers_1f   panneau        3,15         bloque  texte=T-11  # près de l'entrée ouest
+FIN

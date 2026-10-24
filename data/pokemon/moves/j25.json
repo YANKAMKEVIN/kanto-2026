@@ -1,0 +1,14 @@
+{
+	"fire_blast": {
+		"name": "Déflagration", "type": "fire", "category": "special",
+		"power": 110, "accuracy": 85, "pp": 5,
+		"effects": [{ "kind": "status", "status": "burn", "chance": 10 }],
+		"description": "Un déluge de flammes en forme d'étoile s'abat sur la cible. Peut la brûler."
+	},
+	"fire_punch": {
+		"name": "Poing de Feu", "type": "fire", "category": "physical",
+		"power": 75, "accuracy": 100, "pp": 15,
+		"effects": [{ "kind": "status", "status": "burn", "chance": 10 }],
+		"description": "Un coup de poing enflammé frappe la cible. Peut la brûler."
+	}
+}

@@ -1,0 +1,92 @@
+# Route 18 (`route_18`) — grille fonctionnelle (jalon 22, lot 22.0, T6 ; dossier 25 §4, §6.4, §8.7, §9.7).
+#
+# 75 × 27 cases (RB 50 × 18, × 1,5) ; nord en haut ; x = 0..74, y = 0..26.
+#
+# RACCORDS : NORD (12..14, 0) ↔ Route 17 (12..14, 149) ; EST (74, 11..13) ↔ Parmanie (0, 23..25)
+# (RB : décalage de 4 blocs → 12 cases).
+#
+# Composition :
+#   OUEST = PISTE (cases k, en selle) : arrivée de la Route 17, deux voies de 3 cases (nord 7..9, sud
+#     11..13) séparées par une barrière basse (10) percée de deux passages, puis un goulet de 2 cases vers
+#     le poste, gardé par l'Ornithologue (I). Trois Ornithologues en alcôve (dossier §9.7).
+#   POSTE 18 (8 × 9, x 45..52) : portes latérales ouest (Piste) et est (ville) ; à pied dedans ; le garde
+#     vérifie la Bicyclette côté Piste (route_18_gate.txt).
+#   EST (à pied) : route de 3 cases jusqu'à Parmanie, herbes au nord, ÉTANG au sud dont la berge est
+#     pêchable ; aucune case de Piste ne touche l'eau.
+#
+# LÉGENDE COMMUNE DU J22 (chaque grille la reprend ; caractères NOUVEAUX marqués ★) :
+#   T arbres, forêt serrée (bloqués)     . herbe rase (praticable)     = chemin de terre (praticable)
+#   h hautes herbes (praticable, rencontres)   q ponton, planches (praticable)   y sable (praticable)
+#   w eau (bloquée, NON pêchable)        ★ f eau PÊCHABLE (bloquée ; on pêche depuis une case praticable
+#     voisine, face à elle ; jamais au contact d'une case de Piste)   ~ mer de décor (bloquée)
+#   R rochers, rive rocheuse, falaise (bloqués)   c clôture basse (bloquée)   x buissons (bloqués)
+#   n banc (bloqué)   P poste (bâtiment, bloqué)   m maison (bloquée)   D porte (praticable, terminale)
+#   ★ k tronçon de PISTE CYCLABLE, plat (praticable ; à vélo seulement, on ne peut pas descendre)
+#   ★ s PISTE en PENTE (praticable ; sans appui, dérive d'une case vers le sud ; Route 17 seulement)
+#   b barrière basse de la Piste (bloquée ; arrête la vue des Dresseurs)
+# Une case de Piste est une case « k » ou « s » ; un PALIER est une bande de rangées de la Route 17 sans
+# « s » entre deux tronçons de pente. Les Dresseurs de la Piste sont EN RETRAIT : sur une case « . »
+# (alcôve) hors des voies, tournés vers elles.
+#
+# POSITIONS : types warp, spawn, dresseur, objet_visible, cache, panneau, pnj, pokemon, herbes, repere,
+# decor. Dresseurs : trainer= (id du dossier §9), facing=, sight= (portée RB × 1,5, arrondie au-dessus :
+# 1 → 2, 2 → 3, 3 → 5, 4 → 6), rbsight=, inevitable=oui|non. Objets : item=, drapeau= (dossier §11).
+# Warps : to= (carte) spawn= (point d'arrivée) ; coming_soon= pour une porte ou un bord « À venir » ;
+# lie= relie les deux portes d'un poste traversant. Le contrôle : tools/art/plan_check_j22.py
+# (python3 -I tools/art/plan_check_j22.py) ; le rendu : tools/art/plan_aplats_j22.py.
+#
+# DÉFAUTS : Ornithologues côté Piste (dossier §8.7 et §9.7 ; RB : côté est) ; étang (dossier : « berge
+# pêchable [D : depuis la partie est seulement] ») ; portes latérales du poste.
+
+PRATICABLES .=hkD
+
+GRILLE 75 27
+00 TTTTTTTTTTTTkkkTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+01 TTTTTTTTTTTTkkkTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+02 TTTTTTTTTTTTkkkTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+03 TTTTTTTTTTTTkkkTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+04 TTTTTTTTTTTTkkkTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT..hhhhhhhhhhh.TTTTT
+05 TTTTTTTTTTTTkkkTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT..hhhhhhhhhhh.TTTTT
+06 TTTTTTTTTTT.kkkTTTTTTTTTT.TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT..hhhhhhhhhhh.TTTTT
+07 TTTTTTTTTTkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkTTTTPPPPPPPP.....hhhhhhhhhhh.TTTTT
+08 TTTTTTTTTTkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkTTTTPPPPPPPP.....hhhhhhhhhhh.TTTTT
+09 TTTTTTTTTTkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkTTTTPPPPPPPP....................TT
+10 TTTTTTTTTTkkbbbbbbbbkkbbbbbbbbkkbbbbbbbkkT.TTPPPPPPPP....................TT
+11 TTTTTTTTTTkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkDPPPPPPD======================
+12 TTTTTTTTTTkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkDPPPPPPD======================
+13 TTTTTTTTTTkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkTTTTPPPPPPPP======================
+14 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT.TTTTTTTTTPPPPPPPP....................TT
+15 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTPPPPPPPP....................TT
+16 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT....................TT
+17 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT....ffffffffffffffTTTT
+18 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT....fwwwwwwwwwwwwwTTTT
+19 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT....fwwwwwwwwwwwwwTTTT
+20 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT....fwwwwwwwwwwwwwTTTT
+21 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT....fwwwwwwwwwwwwwTTTT
+22 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT....fwwwwwwwwwwwwwTTTT
+23 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+24 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+25 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+26 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+FIN
+
+# POSITIONS — identifiant  type  cases  bloque|libre  [cle=valeur ...]  # commentaire
+POSITIONS
+warp_nord              warp           12..14,0       libre   to=route_17 spawn=from_route_18  # PUSH ↑ → Route 17 (12..14, 149)
+from_route_17          spawn          12..14,0       libre   facing=down  # arrivée de la Route 17, tournée ↓ (en selle)
+warp_est               warp           74,11..13      libre   to=fuchsia_city spawn=from_route_18  # PUSH → → Parmanie (0, 23..25)
+from_fuchsia           spawn          74,11..13      libre   facing=left  # arrivée de Parmanie, tournée ←
+porte_poste_ouest      warp           45,11..12      libre   to=route_18_gate spawn=entrance_ouest lie=porte_poste_est  # STEP_ON → → poste 18 (côté Piste)
+from_poste_ouest       spawn          44,11..12      libre   facing=left  # sortie côté Piste, tournée ←, EN SELLE
+porte_poste_est        warp           52,11..12      libre   to=route_18_gate spawn=entrance_est lie=porte_poste_ouest  # STEP_ON ← → poste 18 (côté Parmanie)
+from_poste_est         spawn          53,11..12      libre   facing=right  # sortie côté Parmanie, tournée →, à pied
+facade_poste           decor          45..52,7..10;45..52,13..15;46..51,11..12 bloque  role=poste  # poste 18 (8 × 9), traversant, au milieu
+route_18_bird_1        dresseur       25,6           bloque  role=D1 trainer=route_18_bird_1 facing=down sight=5 rbsight=3 inevitable=non rb=36,11  # Ornithologue, Piafabec 29 + Rapasdepic 29 ; alcôve nord, vue (25, 7..9) : voie sud
+route_18_bird_3        dresseur       35,14          bloque  role=D2 trainer=route_18_bird_3 facing=up sight=6 rbsight=4 inevitable=non rb=42,13  # Ornithologue, Piafabec ×3 + Rapasdepic 26 ; alcôve sud, vue (35, 11..13) : voie nord (passage 30..31)
+route_18_bird_2        dresseur       42,10          bloque  role=D3 trainer=route_18_bird_2 facing=down sight=5 rbsight=3 inevitable=oui rb=40,15  # Ornithologue, Dodrio 34 (I) ; alcôve du goulet du poste, vue (42, 11..12) : tout le goulet
+panneau_piste          panneau        11,6           bloque  role=T-piste  # « PISTE CYCLABLE » ; lu depuis (11, 7) ↑
+panneau_route_18       panneau        56,10          bloque  role=T-route  # « ROUTE 18 » ; lu depuis (56, 11) ↑
+herbes_h1              herbes         58..68,4..8    libre   role=H1  # herbes de la partie est (à pied)
+berge_peche            repere         56..71,16..22  libre   role=peche  # étang : eau pêchable depuis la partie est seulement
+piste                  repere         10..44,0..14   libre   role=piste  # partie ouest = Piste (cases k) jusqu'au poste
+FIN

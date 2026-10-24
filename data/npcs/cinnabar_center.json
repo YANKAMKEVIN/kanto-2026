@@ -1,0 +1,19 @@
+{
+	"nurse": {
+		"cell": [7, 3],
+		"facing": "down",
+		"sprite": "nurse"
+	},
+	"cooltrainer": {
+		"cell": [3, 5],
+		"facing": "right",
+		"sprite": "cooltrainer_f",
+		"dialogue": "cinnabar_center_cooltrainer"
+	},
+	"gentleman": {
+		"cell": [11, 5],
+		"facing": "left",
+		"sprite": "gentleman",
+		"dialogue": "cinnabar_center_gentleman"
+	}
+}

@@ -1,0 +1,11 @@
+{
+	"garde_piste": {
+		"cell": [
+			6,
+			5
+		],
+		"facing": "down",
+		"sprite": "guard",
+		"dialogue": "j22_cycling_guard"
+	}
+}

@@ -1,0 +1,61 @@
+{
+	"route_12_fisher_5": {
+		"cell": [
+			19,
+			8
+		],
+		"facing": "right",
+		"sprite": "haru",
+		"dialogue": "route_12_fisher_5_after",
+		"trainer": {
+			"id": "route_12_fisher_5",
+			"sight": 2,
+			"before": "route_12_fisher_5_before",
+			"defeated": "route_12_fisher_5_defeated"
+		}
+	},
+	"route_12_youngster": {
+		"cell": [
+			27,
+			32
+		],
+		"facing": "left",
+		"sprite": "youngster",
+		"dialogue": "route_12_youngster_after",
+		"trainer": {
+			"id": "route_12_youngster",
+			"sight": 6,
+			"before": "route_12_youngster_before",
+			"defeated": "route_12_youngster_defeated"
+		}
+	},
+	"route_12_rocker": {
+		"cell": [
+			12,
+			60
+		],
+		"facing": "down",
+		"sprite": "rocker",
+		"dialogue": "route_12_rocker_after",
+		"trainer": {
+			"id": "route_12_rocker",
+			"sight": 6,
+			"before": "route_12_rocker_before",
+			"defeated": "route_12_rocker_defeated"
+		}
+	},
+	"route_12_item_1": {
+		"cell": [
+			14,
+			33
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "route_12_item_1",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_route_12_item_1"
+		]
+	}
+}

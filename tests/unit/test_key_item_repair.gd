@@ -11,7 +11,10 @@ func _repair() -> KeyItemRepair:
 
 func test_real_rules_link_hm01_to_its_flag_and_the_item_exists() -> void:
 	var repair := _repair()
-	assert_eq(repair.rules, [{"item": &"hm01", "flag": &"got_hm01"}] as Array[Dictionary])
+	# J25 (§2.4) : la Clé Secrète ramassée au B1F du Manoir ; le Vieil Ambre, lui, est confié au
+	# Labo (consommé) : aucune réparation.
+	assert_eq(repair.rules, [{"item": &"hm01", "flag": &"got_hm01"},
+		{"item": &"secret_key", "flag": &"got_pokemon_mansion_b1f_item_5"}] as Array[Dictionary])
 	var items := ItemLibrary.new()
 	assert_true(items.load_dir())
 	for rule: Dictionary in repair.rules:

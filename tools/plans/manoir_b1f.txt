@@ -1,0 +1,65 @@
+# Manoir Pokémon B1F (pokemon_mansion_b1f) — grille fonctionnelle v1 (jalon 25, dossier 28 §4). Tirée des blocs RB
+# (pret/pokered, annexe j25-annexe-rb-cramois.md §1.9), échelle 1 case = 1 pas (X-4). Contrôle :
+# tools/art/plan_check_manoir.py (relie les quatre étages, les escaliers, les trous et l'interrupteur).
+# Le mobilier n'est pas encore dessiné : il viendra avec la vue générale peinte, contrôle relancé.
+#
+# 30 × 28 cases ; nord en haut. Sous-sol : laboratoire secret, deux statues. Seul accès : l'escalier depuis le 1F.
+# Journal n° 4 (1er septembre). Clé Secrète dans la salle ouest (5, 13).
+#
+# Légende (commune aux quatre étages) :
+#   # mur, mobilier lourd (bloqué)      . plancher (praticable, rencontres)
+#   a porte de grille du jeu A : FERMÉE quand l'interrupteur est sur ARRÊT, ouverte sur MARCHE
+#   b porte de grille du jeu B : FERMÉE sur MARCHE, ouverte sur ARRÊT
+#   U escalier qui monte   V escalier qui descend (paire= ; arrivée = spawn de même paire)
+#   O trou dans le plancher (3F ; praticable, déclenche la chute)   E seuil de sortie (1F)
+#   T statue à interrupteur (bloquée)   P pupitre et journal (bloqué)
+# Personnages, objets, statues, journaux, trous et escaliers : section POSITIONS.
+
+PRATICABLES .abUVOE
+
+GRILLE 30 28
+00 ##############################
+01 ########.###########.........#
+02 ##.......#........###.#.#.#..#
+03 ##.......#........##T.#.#.#..#
+04 #...#....#.........#.........#
+05 #...##...###..##########..####
+06 #.......aa...................#
+07 #.......aa...................#
+08 ####..####################...#
+09 #........#...............#...#
+10 #.##..##.#...............#...#
+11 #.##..##.#...............#...#
+12 #........#...............#...#
+13 #........#...............#...#
+14 #.##..##.#...............#...#
+15 #.##..##.#...............#...#
+16 #........#...###aa###....#bb.#
+17 ##########...###aa###....#bb##
+18 #............#......#........#
+19 #............#......#........#
+20 #............#..P#..#........#
+21 #............#..##..#........#
+22 #...........bb......#..U.....#
+23 #...........bb......#........#
+24 #............#....#.#........#
+25 #............#....T.#........#
+26 #............#......#........#
+27 ##############################
+FIN
+
+POSITIONS
+escalier_s                   escalier       23,22        libre   paire=S sens=monte vers=pokemon_mansion_1f
+arrivee_s                    spawn          23,23        libre   paire=S  # arrivée depuis l'autre étage
+statue_1                     statue         20,3         bloque  facing=up  # interrupteur secret (textes 9–11), actionné depuis la case du dessous
+statue_2                     statue         18,25        bloque  facing=up  # interrupteur secret (textes 9–11), actionné depuis la case du dessous
+journal_4                    journal        16,20        bloque  # carnet sur pupitre, textes 7–8
+mansion_burglar_3            dresseur       16,23        bloque  facing=down sight=0  # Pillard : Caninos 34, Ponyta 34 ; on lui parle
+mansion_scientist_3          dresseur       27,11        bloque  facing=down sight=3  # Scientifique : Magnéti 34, Électrode 34
+pokemon_mansion_b1f_item_1   objet_visible  10,2         bloque  item=rare_candy  # Super Bonbon
+pokemon_mansion_b1f_item_2   objet_visible  1,22         bloque  item=full_restore  # Guérison
+pokemon_mansion_b1f_item_3   objet_visible  19,25        bloque  item=tm14  # CT14 Blizzard (ou remplacement, dossier 28 §4.8)
+pokemon_mansion_b1f_item_4   objet_visible  5,4          bloque  item=tm22  # CT22 Lance-Soleil (ou remplacement)
+pokemon_mansion_b1f_item_5   objet_visible  5,13         bloque  item=secret_key  # CLÉ SECRÈTE
+pokemon_mansion_b1f_hidden_1 objet_cache    1,9          libre   item=rare_candy  # Super Bonbon
+FIN

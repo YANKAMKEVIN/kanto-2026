@@ -1,0 +1,28 @@
+{
+	"bike_voucher": {
+		"name": "Bon de Commande", "plural": "Bons de Commande", "feminine": false,
+		"category": "key",
+		"description": "Un bon à échanger contre une Bicyclette à la boutique d'Azuria."
+	},
+	"hyper_potion": {
+		"name": "Hyper Potion", "plural": "Hyper Potions", "feminine": true,
+		"category": "heal", "heal_amount": 200, "price": 1500,
+		"description": "Un spray de soin. Il restaure 200 PV d'un Pokémon."
+	},
+	"ultra_ball": {
+		"name": "Hyper Ball", "plural": "Hyper Balls", "feminine": true,
+		"category": "ball", "catch_bonus": 2, "price": 1200,
+		"description": "Une Ball très performante. Elle capture mieux qu'une Super Ball."
+	},
+	"full_heal": {
+		"name": "Total Soin", "plural": "Total Soins", "feminine": false,
+		"category": "heal", "cures": ["poison", "paralysis", "sleep", "burn", "freeze"],
+		"price": 600,
+		"description": "Soigne tous les problèmes de statut d'un Pokémon."
+	},
+	"tm09": {
+		"name": "CT09 — Bélier", "plural": "CT09 — Bélier", "feminine": true,
+		"category": "tm", "tm": 9, "teaches": "take_down",
+		"description": "Une charge violente. Le lanceur subit une partie des dégâts infligés."
+	}
+}
