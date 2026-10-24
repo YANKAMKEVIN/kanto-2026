@@ -75,6 +75,13 @@ premier plan, l'ombre au sol du dos (à retirer en B), la hauteur à l'écran pa
 pour Carapuce, 0,86 pour Onix dans l'essai), et la production des dos (recadrage des 81
 existants ou nouveaux dos en plongée : rendu Blender caméra haute puis Colab, ou Codex).
 
+### Production des dos (décision de Kevin, 2026-10-25)
+
+Mot pour mot : « Recadrer d'abord les 81 dos existants en cadrage B, puis refaire en plongée
+seulement ceux qui rendent mal, au fil des lots. » Les 81 dos peints de `main` sont donc
+affichés en cadrage B par le code (agrandis, coupés par le bas de l'écran) ; les nouveaux dos
+(70 restants de DAF.1) sont produits en plongée avec les prompts de `tools/art/prompts/dos_rb/`.
+
 ## Avant la décision
 
 Cadrage A (actuel) ou B (façon RB). B toucherait `BattleLayout` (ancre et coupe du dos) et
