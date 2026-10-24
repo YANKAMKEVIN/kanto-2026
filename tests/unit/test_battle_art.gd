@@ -23,6 +23,25 @@ func test_foe_is_the_official_artwork_by_dex_number() -> void:
 	assert_gt(box.size.y, 300.0, "artwork HD")
 
 
+## Correctif QA A17 du J30 : Roucarnage (artwork tourné vers la droite) tournait le dos au
+## Pokémon du joueur. Les artworks de FACING_RIGHT sont retournés, boîte en miroir ; les autres
+## et le dos du joueur ne le sont jamais.
+func test_right_facing_artwork_is_flipped_toward_the_player() -> void:
+	var plain := _art.image(&"pidgey", false)
+	assert_false(plain.get("flip", false), "Roucool regarde déjà à gauche")
+	var image := _art.image(&"pidgeot", false)
+	assert_true(image["flip"])
+	var width: float = (image["texture"] as Texture2D).get_size().x
+	var unflipped: Rect2 = _art._official(&"pidgeot")["box"]
+	var box: Rect2 = image["box"]
+	assert_eq(box.size, unflipped.size)
+	assert_almost_eq(box.position.x, width - unflipped.end.x, 0.01, "boîte en miroir")
+	assert_eq(box.position.y, unflipped.position.y)
+	assert_false(_art.image(&"pidgeot", true).get("flip", false), "dos : jamais retourné")
+	for number: int in BattleArt.FACING_RIGHT:
+		assert_between(number, 1, 151)
+
+
 func test_player_side_keeps_the_placeholder_back() -> void:
 	var image := _art.image(&"charmander", true)
 	assert_false(image["official"])
