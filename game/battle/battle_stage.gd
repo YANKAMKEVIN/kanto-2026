@@ -1271,8 +1271,8 @@ func _prepare_sprite(side: BattleEvent.SideId) -> void:
 	_shadows[side].visible = false
 
 
-## Image de [param side] (BattleArt) : artwork officiel de l'adversaire (linéaire, étalonné)
-## ou sprite provisoire (NEAREST, échelle entière) ; pieds (bas-centre de la boîte visible) à
+## Image de [param side] (BattleArt) : artwork officiel de l'adversaire (linéaire, étalonné,
+## retourné s'il regarde à droite) ou sprite provisoire (NEAREST, échelle entière) ; pieds (bas-centre de la boîte visible) à
 ## l'origine du sprite ; échelle normalisée par la taille réelle (BattleLayout).
 func _set_texture(side: BattleEvent.SideId) -> void:
 	var species: StringName = _species.get(side, &"")
@@ -1286,6 +1286,7 @@ func _set_texture(side: BattleEvent.SideId) -> void:
 			" (repli : artwork officiel)" if texture != null else ""])
 	var sprite := _sprites[side]
 	sprite.texture = texture
+	sprite.flip_h = image.get("flip", false)
 	sprite.centered = false
 	sprite.offset = -Vector2(box.get_center().x, box.end.y).round()
 	sprite.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR if official \
