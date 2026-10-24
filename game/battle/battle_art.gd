@@ -22,6 +22,10 @@ const PLACEHOLDER_DIR: String = "res://assets/sprites/pokemon/placeholder/"
 ## pour le côté du joueur ; une espèce sans fichier garde son sprite provisoire.
 const PAINTED_BACK_DIR: String = "res://assets/sprites/pokemon/dos/"
 
+## Dos peint **en plongée** pour le cadrage B (`dos_rb_NNN.png`, déjà coupé par le bas : posé
+## sur le bord de l'écran, [constant BattleLayout.BACK_CROP] ne s'applique pas). Priorité : dos RB
+## > dos IA > dos 3D > sprite provisoire.
+
 ## Dos 3D (`dos3d_NNN.png`, rendu X/Y, même format 1024²) : repli du dos IA pour une espèce qui n'a
 ## pas de `dos_ia` (16 prototypes validés, dont 4 sans équivalent IA : 050, 051, 096, 109).
 ## Priorité : dos IA > dos 3D > sprite provisoire.
@@ -57,9 +61,15 @@ static func painted_back_3d_path(dex: int) -> String:
 	return PAINTED_BACK_DIR + "dos3d_%03d.png" % dex
 
 
-## Chemin du dos peint à utiliser pour le numéro [param dex] : IA d'abord, puis 3D ; "" sinon.
+## Chemin du dos en plongée (cadrage B) du numéro [param dex] (le fichier peut ne pas exister).
+static func painted_back_rb_path(dex: int) -> String:
+	return PAINTED_BACK_DIR + "dos_rb_%03d.png" % dex
+
+
+## Chemin du dos peint à utiliser pour le numéro [param dex] : plongée, puis IA, puis 3D ; "" sinon.
 static func best_painted_back_path(dex: int) -> String:
-	for path: String in [painted_back_path(dex), painted_back_3d_path(dex)]:
+	for path: String in [painted_back_rb_path(dex), painted_back_path(dex),
+			painted_back_3d_path(dex)]:
 		if ResourceLoader.exists(path):
 			return path
 	return ""
@@ -84,8 +94,18 @@ func height_m(species: StringName) -> float:
 
 ## Image de combat de [param species] : { texture (Texture2D ou null), box (Rect2 : boîte
 ## visible dans la texture, pieds au bas-centre), official (bool : artwork HD, filtre
-## linéaire ; sinon pixel art provisoire, NEAREST, échelle entière) }.
+## linéaire ; sinon pixel art provisoire, NEAREST, échelle entière), crop (float, dos
+## seulement : part de la boîte sous le bord bas en cadrage B, 0 pour un dos en plongée) }.
 func image(species: StringName, back: bool) -> Dictionary:
+	var result := _image(species, back)
+	if back:
+		var texture: Texture2D = result["texture"]
+		var rb := texture != null and texture.resource_path.get_file().begins_with("dos_rb_")
+		result["crop"] = 0.0 if rb else BattleLayout.BACK_CROP
+	return result
+
+
+func _image(species: StringName, back: bool) -> Dictionary:
 	if species == GhostDisguise.SPECIES:
 		return _ghost_image(back)
 	if not back:

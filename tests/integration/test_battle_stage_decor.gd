@@ -61,10 +61,12 @@ func test_wild_battle_on_the_painted_decor() -> void:
 	assert_eq(back.texture_filter, CanvasItem.TEXTURE_FILTER_LINEAR)
 	assert_false(_backdrop().visible, "flou du monde coupé sous le décor opaque")
 	assert_almost_eq(_camera.zoom.x, BattleStage.PAINTED_ZOOM, 0.001, "la caméra avance à peine")
-	# Ordre de dessin : fond < ombres < Pokémon < premier plan < éclair.
+	# Ordre de dessin : fond < ombres < adversaire < premier plan < ton Pokémon (cadrage B : le
+	# dos agrandi passe devant le feuillage flou) < éclair.
 	var mine := _stage.get_sprite(PLAYER_SIDE)
 	assert_lt(back.get_index(), _stage.get_node(^"%FoeShadow").get_index())
-	assert_gt(front.get_index(), mine.get_index(), "premier plan devant ton Pokémon")
+	assert_gt(front.get_index(), _stage.get_sprite(FOE_SIDE).get_index(), "premier plan devant l'adversaire")
+	assert_lt(front.get_index(), mine.get_index(), "ton Pokémon devant le premier plan")
 	assert_lt(front.get_index(), _stage.get_node(^"%Flash").get_index())
 	# Pieds sur la ligne de sol du décor.
 	var decor := _stage.get_decor()
@@ -73,7 +75,8 @@ func test_wild_battle_on_the_painted_decor() -> void:
 	var foe_ground := rect.position.round() + decor.foe_feet * scale
 	var mine_ground := rect.position.round() + decor.player_feet * scale
 	assert_almost_eq(_stage.get_sprite(FOE_SIDE).position.distance_to(foe_ground), 0.0, 3.0)
-	assert_almost_eq(mine.position.distance_to(mine_ground), 0.0, 3.0)
+	# Ton Pokémon (cadrage B) ne se pose plus sur le sol du décor : il est coupé par le bord bas.
+	assert_gt(mine.position.y, mine_ground.y, "dos sous la ligne de sol, coupé par le bord")
 	assert_eq((_stage.get_node(^"%FoeShadow") as Node2D).position,
 		_stage.get_sprite(FOE_SIDE).position, "ombre sous les pieds")
 	assert_eq(back.position, rect.position.round())
