@@ -33,6 +33,7 @@ var _director: Node
 var _stage: CanvasLayer
 var _encounters: Node
 var _starter: StringName = STARTER
+var _foes: Array[StringName] = []
 var _pass: String = "full"
 var _starters: Array[StringName] = [&"rattata", &"charmander", &"charmander@2.0", &"venusaur"]
 var _preload: bool = true
@@ -54,6 +55,9 @@ func _init() -> void:
 			_starters.clear()
 			for id: String in arg.trim_prefix("--starters=").split(","):
 				_starters.append(StringName(id))
+		elif arg.begins_with("--foes="):
+			for id: String in arg.trim_prefix("--foes=").split(","):
+				_foes.append(StringName(id))
 		elif arg.begins_with("--starter="):
 			_starter = StringName(arg.trim_prefix("--starter="))
 		elif arg.begins_with("--decor="):
@@ -86,6 +90,13 @@ func _start() -> void:
 		await _poses()
 	elif _pass == "evolution":
 		await _evolution()
+	elif _pass == "foes":
+		for foe: StringName in _foes:
+			_encounter(foe, 5)
+			await _wait_zone(1)
+			await _frames(12)
+			await _shot("foe_%s" % foe)
+			await _flee("")
 	elif _place == &"route_1":
 		await _route_1()
 	else:
