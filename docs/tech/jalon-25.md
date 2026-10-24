@@ -60,7 +60,7 @@ j25-v2-alignement.md`, `j25-annexe-rb-cramois.md` (relevé RB), grilles `tools/p
 |---|---|---|---|
 | **J24** | Cramois'Île (carte, Centre), Labo et ses PNJ, `FossilLab`, Kabuto, Amonita, `porte_arene`, gravats du Manoir, Surf | dossier et plan validés, **code en cours** | T15, T17, T18, T19, sessions 25A à 25C |
 | J20 | `PokemonGift`, Arcanin, Feunard, Saquedeneu, Écrasement, Rappel | codé, **non fusionné** | T6, T17, T18 |
-| J22 / J23 | Mimitoss (échange de Lina) | conception seulement | aucune : l'offre attend le joueur |
+| J22 / J23 | Mimitoss (échange de Lina) | conception seulement (2026-10-19) ; **dans `main` depuis le J22** | aucune : l'échange de Lina marche (QA 25B) |
 
 ---
 
@@ -80,12 +80,12 @@ Textes recommandés « validés par Kevin le 2026-10-21, validation d'avance ».
 | T10–T13 art | **non intégré** : aplats provisoires (`OverworldTiles`), décors de combat de la Tour et de l'Arène de Carmin [D] ; Pillard = `gambler`, Auguste = `gentleman` [D] |
 | T14 Manoir | fait : `tools/build_pokemon_mansion.gd` (grilles A/B, statues, pupitres, escaliers, trous, seuils, caches) ; Manoir = « grotte » (`caves.json` : Corde Sortie devant la porte) ; `tools/gen_j25_world_data.py` (PNJ, objets, scènes, depuis les grilles) |
 | T15 porte du Manoir | fait (X-25) : warp sur les cases X de Cramois'Île, T-43 retiré, `plan_check_j24_mer.py` aligné |
-| T17 échanges | faits sur Papy (Hector), Canon (Lina), scientifique des fossiles (Marc) ; T-52 à T-54 retirés. **Lina (Mimitoss) attend le J22** : sans l'espèce, l'offre répond « ce n'est pas un Mimitoss » |
+| T17 échanges | faits sur Papy (Hector), Canon (Lina), scientifique des fossiles (Marc) ; T-52 à T-54 retirés. Lina (Mimitoss) : l'espèce vient du J22 (fusionné le 2026-10-23), échange testé en QA 25B ; sans Mimitoss dans l'équipe, l'offre répond « ce n'est pas un Mimitoss » |
 | T18 Vieil Ambre | fait : porte arrière du Musée (PUSH ← depuis (15, 34)), arbre à Couper, `tools/build_j25_rooms.gd` (réserve), ambre donné une fois, `old_amber` → Ptéra N30 dans `fossils.json` |
 | T20, T21 Arène | faits : carte, herses, machines, 7 Dresseurs, Auguste (carte, Badge Volcan, CT38 une fois, Dresseurs marqués battus), porte : avec la Clé textes 76–77 puis `cinnabar_gym_unlocked` ; Clé réparée au chargement (`key_item_repairs.json`) |
 | Tests | `test_j25_maps` (6), `test_j25_flow` (6, vraie Boot : statue, quiz, échange, Vieil Ambre, porte), `test_j25_data` (20), listes recalées |
-| T16, T19, T22 | **attendent Kevin** (QA téléphone, départs `j25_*`) |
-| T23 | partiel : rien à retirer (pas de carte de QA créée) |
+| T16, T19, T22 | **faits** : QA S24 25A (2026-10-23, bloquant de la porte du Manoir corrigé en `2dacecb3`), 25B, 25C (2026-10-23/24) ; **validés par Kevin** (§9) |
+| T23 | **fait** (2026-10-24, §9) |
 
 **Valeurs par défaut [D]** : vue 0 permise (`TrainerRules.SIGHT_MIN`) pour les Pillards et
 l'Arène ; libellé « Reçu en échange à » ; titre « Échanger un Pokémon », refus « Pas l'espèce
@@ -163,7 +163,8 @@ d'Auguste avec de vraies équipes) reste à refaire ; panneau intérieur de l'Ar
 | T23 Clôture | architecte | fin | — | docs, retrait des cartes de QA |
 
 Cartes de QA [D] : `qa_manoir` (départ au 1F avec Clé ou sans, interrupteur au choix),
-`qa_cramois` (équipe avec Raichu, Ponyta, Vieil Ambre, Clé). Retirées au T23.
+`qa_cramois` (équipe avec Raichu, Ponyta, Vieil Ambre, Clé). Retirées au T23. *(Jamais créées :
+remplacées par les départs `j25_*` de `tools/debug_start/`, vérifié au T23.)*
 
 ---
 
@@ -288,7 +289,8 @@ distantes (règle d'ancienneté).
 
 | N° | Question | Où |
 |---|---|---|
-| — | Chute du joueur au J24 ? (lecture au T3) | §2.2 |
+| — | ~~Chute du joueur au J24 ? (lecture au T3)~~ résolu : `Warp` FALL du J24 (§0.4) | §2.2 |
+| E-4 | Niveaux d'Auguste après la nouvelle simulation | `jalon-25-equilibrage.md` §5.3 |
 
 ## Décisions de Kevin (2026-10-22)
 
@@ -296,3 +298,69 @@ Choix validés par Kevin sur la page d'arbitrages.
 
 - Équilibrage d'Auguste : à resimuler après la fusion des J21–J24.
 - Prénoms : acceptés.
+
+## 9. Clôture (T23, 2026-10-24)
+
+Clôture accordée par Kevin le 2026-10-24, sur `fix/j25-porte-manoir` (depuis `jalon-25`
+`2dacecb3`) ; fusion dans `main` par la session de coordination.
+
+### 9.1 Validé
+
+| Lot | QA S24 (agent) | Validation de Kevin |
+|---|---|---|
+| **25A** Manoir | 1re passe : porte du Manoir infranchissable (cases `X` en falaise) → corrigé (`2dacecb3`) ; 2e passe : entrée et sortie, interrupteur remis à ARRÊT, chute 3F → 1F, herses, B1F, Clé Secrète, CT22, Corde Sortie : OK | 2026-10-23 |
+| **25B** Échanges, Vieil Ambre | Hector (Raichu → Électrode « Kourjus »), Marc (Ponyta → Otaria « Bibi »), Lina (Mimitoss → Saquedeneu « Bigoudi »), refus, « déjà fait », onglet Histoire ; Coupe derrière le Musée, porte arrière, Vieil Ambre une fois, Ptéra N30 une fois : OK | 2026-10-24 |
+| **25C** Arène | porte sans et avec la Clé, quiz raté → Dresseur puis herse, Dresseur abordé directement, herses non contournables, Auguste, Badge Volcan et CT38 une fois, défaite : OK | 2026-10-24 |
+
+Non couvert par la QA (départs de débogage) : sauvegarde et rechargement en vraie partie, statue sud
+et journal du B1F, compagnon pendant la chute, bonne réponse au quiz à l'écran, icône du Badge.
+
+### 9.2 Fait au T23
+
+- `tools/art/plan_check_argenta.py` (J10) : la porte arrière du Musée (`porte_reserve`, warp PUSH,
+  pas une case `D`) est contrôlée à part (`PORTES_COUPE`) : fermée par `arbre_reserve`, atteignable
+  une fois l'arbre coupé (11 pas de l'entrée sud), poussée vers le Musée ; tous les autres critères
+  du J10 inchangés. Contrôles verts : `plan_check_argenta`, `_manoir`, `_cramois`, `_j24_mer` (plus d'échec `qa_sea`),
+  `_j24_seafoam`.
+- Cartes de QA : aucune à retirer (`qa_manoir`, `qa_cramois` jamais créées) ; les départs `j25_*`
+  restent (documentés dans `tools/debug_start/README.md`).
+- `tools/plans/cramois_arene.txt` : commentaires de niveaux des Dresseurs alignés sur les données
+  (N38–45, E-1).
+- Mentions « Lina attend le J22 » mises à jour (ce plan §0.2, §0.4 ; dossier 28 §6.2, note).
+- Équilibrage d'Auguste resimulé avec des équipes réalistes : `jalon-25-equilibrage.md` §5,
+  scénario `tools/sim/cinnabar_j25_realiste.json` ; **question E-4 pour Kevin**, rien changé.
+- Import sans erreur ; suite complète **6 807 / 6 807**.
+
+### 9.3 Valeurs par défaut [D] du jalon
+
+Celles du §0.4 (vue 0 des Pillards et de l'Arène, libellés de l'échange, lumière « tower » du
+Manoir, texte de l'arbre du Musée sans CS, prénoms Aurélien, Clothilde, Léopold, Octave, Rappel Max
+4 000 ₽, rencontres du relevé RB, récompenses de l'Arène non recalculées après +4 niveaux,
+Pillard = `gambler`, Auguste = `gentleman`, aplats provisoires) ; Dresseurs de l'Arène +4 (E-1).
+
+### 9.4 Points ouverts pour Kevin
+
+- **E-4** : niveaux d'Auguste (recommandation : garder RB, `jalon-25-equilibrage.md` §5.3).
+- Smogo n'évolue pas en Smogogo dans les données (J22) ; panneau intérieur de l'Arène (texte 78)
+  non posé ; art définitif (T10–T13) non intégré.
+- **Textes** (relevés en QA, non corrigés) :
+  1. Point de vue des répliques « après » : Hector « Ton Raichu se porte à merveille ! » (texte 42,
+     parle du Pokémon reçu comme s'il était au joueur) contre Lina « Comment va mon ancien
+     Saquedeneu ? » (texte 47, parle du Pokémon donné) et Marc « Mon ancien Otaria est génial,
+     hein ? » (texte 52). Textes validés du dossier 28 §16 ; à harmoniser ? Fichier :
+     `data/dialogues/cinnabar_trades.json` (`cinnabar_trade_*_after`).
+  2. « Une Tadmorv sauvage apparaît ! » : l'accord suit le **sexe** du Pokémon rencontré, pas le
+     nom de l'espèce (décision n° 15 du J4 : `text_f` employé quand le Pokémon est une femelle ;
+     `game/battle/battle_text.gd`, `event.gender == FEMALE` ; phrase dans
+     `data/battle/messages.json`, `wild_appeared` → `text_f`). Même effet : « Arcanin est blessée
+     par le contrecoup ». Aucun genre grammatical par espèce n'existe dans les données ; le
+     corriger voudrait soit retirer les `text_f` de ces phrases, soit un genre par espèce
+     (`data/pokemon/species/`) lu par `BattleText` : décision de Kevin.
+  3. Scientifique du comptoir de la réserve (Argenta) : une seule variante, la question OUI/NON
+     revient à chaque fois (`data/dialogues/pewter_museum_reserve.json`,
+     `pewter_museum_reserve_counter`) ; comme dans RB ; ajouter une réplique « après » ?
+  4. Rencontres au Manoir « très fréquentes » : taux **10 / 256 par pas** (≈ 3,9 %, une rencontre
+     tous les ≈ 26 pas en moyenne, sans montée), sur **toutes** les cases praticables (terrain
+     `floor`, hors seuils, trous, warps) des 4 étages (`data/encounters/pokemon_mansion_*.json`) ;
+     valeur RB (même taux que les Îles Écume et la Tour). La densité vient de ce que tout le sol
+     compte ; baisser le taux ou réserver des zones calmes : décision de Kevin.

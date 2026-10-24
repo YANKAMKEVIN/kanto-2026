@@ -318,6 +318,8 @@ sans statut ; IV tirés normalement ; surnom fixe ; dresseur d'origine = prénom
 échangé (la taille de l'équipe ne change pas).
 
 Mimitoss n'existe pas encore : l'offre de Lina reste en attente tant que le joueur n'en a pas.
+*(Clôture du J25, 2026-10-24 : Mimitoss existe depuis le J22 (`kanto_j22.json`) ; l'échange de
+Lina a été testé sur le S24 le 2026-10-23.)*
 
 ### 6.3 Résurrection des fossiles (X-16)
 

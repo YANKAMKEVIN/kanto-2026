@@ -54,11 +54,11 @@ machine_3            quiz       9,7          bloque  facing=up herse=3 dresseur=
 machine_4            quiz       9,13         bloque  facing=up herse=4 dresseur=cinnabar_gym_5 reponse=non  # question 84 ; Action depuis (9, 14)
 machine_5            quiz       1,13         bloque  facing=up herse=5 dresseur=cinnabar_gym_6 reponse=oui  # question 85 ; Action depuis (1, 14)
 machine_6            quiz       1,7          bloque  facing=up herse=6 dresseur=cinnabar_gym_7 reponse=non  # question 86 ; Action depuis (1, 8)
-cinnabar_gym_1       dresseur   17,2         bloque  facing=down sight=0  # Intello : Goupix 36, Goupix 36, Feunard 36 ; aucune machine (facultatif)
-cinnabar_gym_2       dresseur   17,8         bloque  facing=down sight=0  # Pillard : Caninos 36, Goupix 36, Feunard 36
-cinnabar_gym_3       dresseur   11,4         bloque  facing=down sight=0  # Intello : Ponyta 34, Salamèche 34, Goupix 34, Caninos 34
-cinnabar_gym_4       dresseur   11,8         bloque  facing=down sight=0  # Pillard : Ponyta 41
-cinnabar_gym_5       dresseur   11,14        bloque  facing=down sight=0  # Intello : Galopa 41
-cinnabar_gym_6       dresseur   3,14         bloque  facing=down sight=0  # Pillard : Goupix 37, Caninos 37
-cinnabar_gym_7       dresseur   3,8          bloque  facing=down sight=0  # Intello : Caninos 37, Goupix 37
+cinnabar_gym_1       dresseur   17,2         bloque  facing=down sight=0  # Intello : Goupix 40, Goupix 40, Feunard 40 ; aucune machine (facultatif)
+cinnabar_gym_2       dresseur   17,8         bloque  facing=down sight=0  # Pillard : Caninos 40, Goupix 40, Feunard 40
+cinnabar_gym_3       dresseur   11,4         bloque  facing=down sight=0  # Intello : Ponyta 38, Salamèche 38, Goupix 38, Caninos 38
+cinnabar_gym_4       dresseur   11,8         bloque  facing=down sight=0  # Pillard : Ponyta 45
+cinnabar_gym_5       dresseur   11,14        bloque  facing=down sight=0  # Intello : Galopa 45
+cinnabar_gym_6       dresseur   3,14         bloque  facing=down sight=0  # Pillard : Goupix 41, Caninos 41
+cinnabar_gym_7       dresseur   3,8          bloque  facing=down sight=0  # Intello : Caninos 41, Goupix 41
 FIN
