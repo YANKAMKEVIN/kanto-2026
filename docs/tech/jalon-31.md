@@ -308,6 +308,11 @@ l'Hyper Ball (emprunt du J22) n'a pas d'icône (icône générique). La QA du §
   pas encore dans `main`, vérifié par `git merge-base --is-ancestor`) : Leveinard (J23) et
   Rhinoféros (J28) dans `kanto_j31_emprunts.json` (fiches et sprites provisoires), Rappel Max
   (J25) dans `items_j31_emprunts.json`. L'icône `ultra_ball.webp` n'est pas dans `main` : gardée.
+  **Max Élixir** : le J24 le gardait hors des bibliothèques (`data/j24_pending/items.json`), le
+  J31 l'a créé sans effet (validé par Kevin, §8.9) : retiré de `j24_pending`, une seule
+  définition (`items_j31.json`) ; `test_j24_data` ajusté. Le Max Élixir caché du B3F des Îles
+  Écume (« pas de point tant qu'il n'existe pas », `build_j24_seafoam.gd`) peut maintenant être
+  posé : laissé au J24 (non fait ici).
 - **T6–T8 — cartes** : `tools/build_cerulean_cave.gd` (**un** script pour les trois étages, comme
   `build_j24_seafoam.gd`, au lieu des trois scripts annoncés au §3) génère
   `game/world/maps/cerulean_cave_1f.tscn`, `_2f`, `_b1f` d'après les grilles (tuiles provisoires
@@ -353,6 +358,7 @@ l'Hyper Ball (emprunt du J22) n'a pas d'icône (icône générique). La QA du §
   objets depuis l'eau, fuite puis capture de Mewtwo, retour à Azuria).
 - À la fusion du J30 : `test_cerulean_cave_access` vérifie l'égalité du drapeau de Champion.
 - À la fusion des J23, J25, J28 : retirer Leveinard, Rappel Max, Rhinoféros des emprunts.
+- Max Élixir caché du B3F des Îles Écume (J24) : à poser maintenant que l'objet existe.
 - Fiches de Pokédex de Métamorph et Mewtwo (textes validés au §8, à poser) ; effets de Morphing,
   Max Élixir, PP Plus (moteur de PP absent) ; art définitif de la grotte.
 - **[D] à relire par Kevin** : eau surfable d'Azuria limitée à l'est du pont de l'Arène ; refus à

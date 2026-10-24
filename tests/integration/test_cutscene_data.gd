@@ -447,19 +447,8 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	# `pokemon_house_flute`, aussi lancée par le déclencheur d'entrée de la maison) et réveil du
 	# Ronflex 16 (« flute_cutscene » et choix OUI).
 	&"tower_7f_fuji_rescue": &"pokemon_tower_7f", &"snorlax_route_16_wake": &"route_16",
-}
-## Jalon 21 (T10, T12) : objets du Sac qui choisissent chaque variante (« if_items » /
-## « unless_items »), ligne par ligne comme VARIANT_FLAGS ; absent : Sac vide. La variante A du
-## 6F (révélation) demande le Scope Sylphe ; la variante B (SPECTRE du J19) s'applique sans.
-const VARIANT_ITEMS: Dictionary = {
-	&"tower_6f_ghost": [[&"silph_scope"], []],
-}
-## Scènes à déclencheur dont la carte n'est pas encore construite → leur carte (simulées sur les
-## PNJ de son fichier). Vidée au T19 du jalon 9 (la forêt existe), puis au T11 du jalon 10 (les
-## deux scènes d'Argenta ont leurs déclencheurs sur la carte).
-## Jalon 31 (T4) : la Grotte Azurée n'a pas encore de cartes (T6, après la fusion du J24) ;
-## ses scènes sont simulées sur les PNJ de ses fichiers `data/npcs/cerulean_cave_*.json`.
-const AWAITING_MAP: Dictionary[StringName, StringName] = {
+	# Jalon 31 (T6) : objets de la Grotte Azurée (PNJ « objet »), caches (points d'examen sur
+	# l'indice), Mewtwo (son PNJ).
 	&"cerulean_cave_1f_item_1": &"cerulean_cave_1f",
 	&"cerulean_cave_1f_item_2": &"cerulean_cave_1f",
 	&"cerulean_cave_1f_item_3": &"cerulean_cave_1f",
@@ -472,6 +461,17 @@ const AWAITING_MAP: Dictionary[StringName, StringName] = {
 	&"cerulean_cave_b1f_hidden_1": &"cerulean_cave_b1f",
 	&"mewtwo": &"cerulean_cave_b1f",
 }
+## Jalon 21 (T10, T12) : objets du Sac qui choisissent chaque variante (« if_items » /
+## « unless_items »), ligne par ligne comme VARIANT_FLAGS ; absent : Sac vide. La variante A du
+## 6F (révélation) demande le Scope Sylphe ; la variante B (SPECTRE du J19) s'applique sans.
+const VARIANT_ITEMS: Dictionary = {
+	&"tower_6f_ghost": [[&"silph_scope"], []],
+}
+## Scènes à déclencheur dont la carte n'est pas encore construite → leur carte (simulées sur les
+## PNJ de son fichier). Vidée au T19 du jalon 9 (la forêt existe), puis au T11 du jalon 10 (les
+## deux scènes d'Argenta ont leurs déclencheurs sur la carte).
+## Jalon 31 (T6) : vidée, les cartes de la Grotte Azurée existent (ses scènes sont dans CODE_PLAYED).
+const AWAITING_MAP: Dictionary[StringName, StringName] = {}
 ## Jalon 20 (T21) : interrupteur du Casino, Clé, Giovanni, Scope, objets et caches du repaire.
 const J20_T21_IDS: Array[StringName] = [
 	&"game_corner_switch", &"rocket_hideout_key_drop", &"rocket_hideout_b4f_lift_key",
