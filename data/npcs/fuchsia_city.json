@@ -1,0 +1,38 @@
+{
+	"garcon_safari": {
+		"cell": [
+			31,
+			9
+		],
+		"facing": "left",
+		"sprite": "kid",
+		"dialogue": "fuchsia_city_garcon_safari"
+	},
+	"joueur": {
+		"cell": [
+			20,
+			27
+		],
+		"facing": "down",
+		"sprite": "gambler",
+		"dialogue": "fuchsia_city_joueur"
+	},
+	"pecheur_assis": {
+		"cell": [
+			43,
+			29
+		],
+		"facing": "right",
+		"sprite": "haru",
+		"dialogue": "fuchsia_city_pecheur_assis"
+	},
+	"femme_enclos": {
+		"cell": [
+			45,
+			11
+		],
+		"facing": "up",
+		"sprite": "beauty",
+		"dialogue": "fuchsia_city_femme_enclos"
+	}
+}

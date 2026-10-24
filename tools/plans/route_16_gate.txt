@@ -1,0 +1,55 @@
+# Poste de la Route 16 (`route_16_gate`) — grille fonctionnelle (jalon 22, lot 22.0, T6 ; plan jalon-22.md
+# §0.4 n° 6, §2.10 ; dossier 25 §6.4, §8.5 ; RB : Route16Gate1F 8 × 14, deux voies).
+#
+# 14 × 10 cases, DEUX COULOIRS séparés par un mur (rangée 4) : on ne passe pas de l'un à l'autre.
+#   COULOIR HAUT (rangées 2..3, à pied, sans garde) : porte nord-ouest (2..3, 1) ↔ Route 16 ouest, voie
+#     haute ; porte nord-est (10..11, 1) ↔ Route 16 est, voie haute (derrière l'arbre à Couper).
+#   COULOIR BAS (rangées 5..7) : porte sud-est (10..11, 8) ↔ Route 16 est (15..16, 20) (la porte du J21) ;
+#     porte sud-ouest (2..3, 8) ↔ Route 16 ouest, Piste. Garde en (6, 5) entre deux comptoirs ;
+#     déclencheur (6, 6..7) : on le franchit en allant ← (vers la Piste) ; sans Bicyclette, T-1 et recul.
+#   Les portes du haut se prennent en montant (PUSH ↑), celles du bas en descendant (PUSH ↓) : la façade de
+#   chaque carte porte ses portes au nord (voie haute) et au sud (voie basse).
+#
+# MODIFICATION de route_16.txt (J21) — FAITE le 2026-10-23 (raccords J21 ↔ J22, bloc « J22 » de
+# build_route_16.gd ; la grille route_16.txt fait foi) : pour que la voie haute est rejoigne la porte haute,
+#   - ouvrir la voie haute « Y » en sol praticable (herbes) et la prolonger vers l'ouest le long de la
+#     façade nord du poste : cases (18..25, 11..12) ;
+#   - porte haute du poste : (19..20, 13) dans la rangée du haut de son emprise, STEP_ON ↓ →
+#     route_16_gate / entrance_haut_est ; arrivée from_poste_haut en (19..20, 12), tournée ↑ ;
+#   - l'arbre (38..39, 19..20) devient coupable (cut_route_16_tree) et relie la route à la voie haute
+#     par (38..39, 17..18) ; la porte (15..16, 20) perd son coming_soon (to=route_16_gate,
+#     spawn=entrance_bas_est) ; arrivée from_poste en (15..16, 21), tournée ↓.
+#
+# Légende : K mur (bloqué)   . sol   X porte (praticable, terminale)   N comptoir (bloqué)   x plante
+#
+# DÉFAUTS : couloirs séparés (RB : une seule salle) pour qu'aucun piéton n'atteigne la Piste par le haut ;
+# déclencheur devant le garde (plan §2.10 : « devant la porte côté Piste ») ; pas de 2F.
+
+PRATICABLES .X
+
+GRILLE 14 10
+00 KKKKKKKKKKKKKK
+01 KKXXKKKKKKXXKK
+02 K............K
+03 Kx..........xK
+04 KKKKKKKKKKKKKK
+05 K....N.N.....K
+06 K............K
+07 K............K
+08 KKXXKKKKKKXXKK
+09 KKKKKKKKKKKKKK
+FIN
+
+# POSITIONS — identifiant  type  cases  bloque|libre  [cle=valeur ...]  # commentaire
+POSITIONS
+sortie_haut_ouest      warp           2..3,1         libre   to=route_16_west spawn=from_poste_haut  # PUSH ↑ → Route 16 ouest, voie haute (porte nord du poste (35..36, 9))
+entrance_haut_ouest    spawn          2..3,2         libre   facing=down  # arrivée de la voie haute ouest, tournée ↓
+sortie_haut_est        warp           10..11,1       libre   to=route_16 spawn=from_poste_haut  # PUSH ↑ → Route 16 est, voie haute : porte haute (19..20, 13) de route_16.txt
+entrance_haut_est      spawn          10..11,2       libre   facing=down  # arrivée de la voie haute est, tournée ↓
+sortie_bas_ouest       warp           2..3,8         libre   to=route_16_west spawn=from_poste_bas  # PUSH ↓ → Route 16 ouest, Piste (porte sud du poste (35..36, 15)) : sortie en selle
+entrance_bas_ouest     spawn          2..3,7         libre   facing=up  # arrivée de la Piste, tournée ↑
+sortie_bas_est         warp           10..11,8       libre   to=route_16 spawn=from_poste  # PUSH ↓ → Route 16 est (J21), porte (15..16, 20) ; sortie à pied
+entrance_bas_est       spawn          10..11,7       libre   facing=up  # arrivée de la Route 16 est, tournée ↑
+garde_piste            pnj            6,5            bloque  role=P1 facing=down  # garde de la Piste (T-1, T-2), entre ses deux comptoirs
+regle_piste            repere         6,6..7         libre   role=regle_piste sens=left scene=j22_cycling_gate_rule_16  # déclencheur : entrer en allant ← sans Bicyclette → T-1 et recul d'une case ; avec → T-2 une fois
+FIN

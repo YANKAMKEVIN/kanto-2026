@@ -1,0 +1,26 @@
+WORLD_PROP_FORCE_PLANCHE — NOUVELLE image : planche de 4 accessoires de jeu (les rochers de Force et les trous des Îles Écume), pas une scène.
+Images jointes : prop_rocher_grotte_01, prop_rocher_01 et prop_rocher_mer_01 = rochers DÉCOR déjà présents dans le jeu (rendu peint, finesse, angle de vue, lumière neutre) ; le rocher de Force doit s'en DISTINGUER au premier coup d'œil. ground_grotte_01 = sol de grotte du jeu (matière autour d'un trou).
+
+ADN VISUEL KANTO 2026 — v1 (à respecter strictement)
+- Rendu : illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus de trois quarts, en projection oblique frontale, sans aucun point de fuite. Les verticales restent strictement verticales et les horizontales strictement horizontales. On voit le dessus des objets et leur face avant (côté sud), jamais leurs côtés. Pas de vue isométrique, pas de rotation. Le sol est vu à plat, comme sur un plan.
+- Proportions : légèrement stylisées, trapues et rassurantes. Échelle commune : 1 case de jeu = 1 mètre environ ; un adulte mesure 1,33 case ; une porte simple mesure 1 case de large et 1,5 case de haut.
+- Contours : aucun trait noir. Contour fin et doux, d'une teinte plus sombre et plus saturée que la couleur locale, qui s'efface presque du côté éclairé.
+- Volumes : trois valeurs nettes par matériau (lumière, ombre propre, reflet ambiant), transitions douces, petits accents de lumière sur les arêtes.
+- Matériaux : reconnaissables (bois, pierre, tuile, feuillage, verre) à leur forme et à quelques touches de texture, jamais à une texture photographique.
+- Couleurs : chaudes, lumineuses et saturées sans être fluo. Verts allant du vert-jaune ensoleillé au vert sapin. Ombres colorées tirant vers le bleu-vert ou le violet froid, jamais grises ni noires. Couleurs franches pour les toits.
+- Texture : pinceau net et propre, légère granularité picturale ; pas de bruit, pas de flou, pas de netteté artificielle.
+- Lumière : une seule source, le soleil, en haut à gauche de l'image (la fiche précise la variante).
+- Ombres : aucune ombre portée au sol (le jeu l'ajoute lui-même). Les ombres propres et internes (sous le feuillage, sous un avant-toit) sont peintes.
+- Isolement : un seul objet, entier, centré, sur fond transparent ; rien autour : ni sol, ni herbe, ni décor, ni personnage.
+- Interdits partout : texte, lettres, chiffres, logo (sauf l'emblème demandé), signature, filigrane, cadre, personnage, Pokémon, ombre portée, sol sous l'objet, flou de profondeur, vignettage.
+
+LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche ; volumes conservés par un ombrage doux ; aucune teinte dorée ou orangée, aucun liseré chaud ; ombres propres neutres, légèrement bleutées.
+
+PLANCHE : image paysage 1536 × 1024, fond avec une vraie transparence (canal alpha, aucun damier dessiné), divisée en quatre colonnes invisibles de 384 px ; UN élément CENTRÉ dans chaque colonne, avec au moins 50 px de marge vide de chaque côté, les quatre à la MÊME échelle (1 case de jeu ≈ 220 px sur cette planche).
+1 : le ROCHER DE FORCE (poussable) : un gros rocher ARRONDI, presque en boule un peu aplatie, d'environ 1 case de large et 1,1 case de haut ; pierre GRIS CLAIR un peu chaude (plus claire que tous les rochers décor joints), surface lisse et polie par l'eau, UNE grande FISSURE nette en éclair qui le traverse en diagonale sur sa face avant, deux ou trois petits éclats ; posé sur une base plate (ligne de sol droite et horizontale), rien sous cette ligne. Il doit paraître lourd mais déplaçable, et se lire comme « un rocher qu'on peut pousser ».
+2 : le MÊME rocher de Force TOMBÉ DANS L'EAU : seule sa moitié haute dépasse de la surface (même pierre, même fissure, un peu mouillée et plus sombre en bas), entourée d'un anneau d'écume blanche et de petites rides claires ; l'eau elle-même n'est pas dessinée (transparente autour de l'anneau).
+3 : un TROU dans le sol de la grotte, vu strictement de dessus : une ouverture ronde d'environ 0,9 case, noire et bleu nuit au fond, au bord de pierre bleutée un peu givrée (fins cristaux de glace sur le rebord) ; seul le rebord et le trou sont dessinés, rien autour (transparent hors du rebord).
+4 : le MÊME TROU BOUCHÉ : le rocher de Force est tombé dedans et le remplit au ras du sol : on voit le dessus arrondi et fissuré du rocher, enchâssé dans le rebord givré, un peu de poussière et de gravier clair autour ; plat, on peut marcher dessus.
+Aucune ombre portée, aucun sol autour (sauf le rebord des trous), aucun personnage.
+Interdits de la série : texte, lettres, chiffres, logo, AUCUN emblème rond de type balle (ni cercle partagé en deux, ni médaillon à bande centrale) nulle part, animaux réels ou faune non-Pokémon (oiseaux, mouettes, poissons, dauphins, phoques, insectes), Pikachu et tout Pokémon non demandé, personnage qui ressemble au héros (casquette rouge, t-shirt blanc, sac à dos jaune) sauf quand le héros est demandé, élément effrayant.

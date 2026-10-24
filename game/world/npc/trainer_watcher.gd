@@ -74,7 +74,7 @@ func check_at(cell: Vector2i) -> bool:
 			continue
 		var spec := npc.get_spec()
 		var distance := TrainerRules.sight_distance(grid, npc.get_cell(), spec.facing,
-			spec.sight, cell)
+			spec.sight, cell, spec.move_mode)
 		if distance >= 1:
 			return _play(npc, distance)
 	return false

@@ -22,6 +22,10 @@ signal coming_soon_shown(label: String)
 ## Ferme la transition ouverte par [signal transition_started] (aucun [signal map_entered] ne
 ## suit : ceux qui se cachent au début d'une transition réapparaissent ici, comme le compagnon).
 signal coming_soon_finished(map: GameMap)
+## Passe systèmes 2 (§2.9) : joueur replacé sur la **même** carte par un téléporteur
+## ([method relocate]), rideau levé, joueur libre. Ferme la transition ouverte par
+## [signal transition_started] ; ni [signal map_changed] ni [signal map_entered] ne suivent.
+signal relocated(map: GameMap)
 
 ## Images pendant lesquelles un préchargement devenu inutile est encore retenu ([member _retired]).
 const RETIRE_FRAMES: int = 2
@@ -33,6 +37,8 @@ var map_factory: Callable = Callable()
 ## Durées du fondu (secondes) ; les tests les raccourcissent.
 var fade_out_duration: float = UiTokens.ANIM_FADE_OUT
 var fade_in_duration: float = UiTokens.ANIM_FADE_IN
+## Passe systèmes 2 (§2.9) : fondu d'un téléporteur, à l'aller comme au retour (secondes) [D].
+var teleport_fade_duration: float = 0.25
 ## Destinations « à venir » ([member Warp.coming_soon]) actives : build de développement
 ## seulement (dossier-07 §12). En release, ces passages sont inertes (le bord reste bloqué).
 var coming_soon_enabled: bool = OS.is_debug_build()
@@ -56,6 +62,10 @@ var last_change_ms: float = 0.0
 ## Lectures de cartes demandées au disque depuis la création du routeur (chargement direct ou
 ## en arrière-plan) : mesure et tests du cache borné (jalon 9 T18).
 var disk_loads: int = 0
+## Passe systèmes 2 (S2C, §2.5) : case de reprise propre à la monture, lue par [method start_at] :
+## `func(map: GameMap, cell: Vector2i) -> Vector2i` ; (-1, -1) = la règle habituelle
+## ([method GameMap.find_standing_cell]). Posé par [MountDirector] (reprise en Surf sur l'eau).
+var arrival_resolver: Callable
 
 var _world: Node2D
 var _player: Player
@@ -139,7 +149,11 @@ func start_at(map_id: StringName, cell: Vector2i, facing: Vector2i) -> GameMap:
 	var old: GameMap = _current_map if is_instance_valid(_current_map) else null
 	_world.add_child(map)
 	_apply_arrival_flags(map)
-	var target := map.find_standing_cell(cell, _player)
+	var target := Vector2i(-1, -1)
+	if arrival_resolver.is_valid():
+		target = arrival_resolver.call(map, cell)
+	if target == Vector2i(-1, -1):
+		target = map.find_standing_cell(cell, _player)
 	if target == Vector2i(-1, -1):
 		push_warning("SceneRouter : reprise impossible, aucune case libre sur %s" % map_id)
 		_world.remove_child(map)
@@ -156,6 +170,42 @@ func start_at(map_id: StringName, cell: Vector2i, facing: Vector2i) -> GameMap:
 ## branché). [param facing] ZERO = garder l'orientation du joueur. Ignoré si une
 ## transition est déjà en cours. En cas d'échec, le joueur reste sur la carte courante.
 func change_map(map_id: StringName, spawn: StringName, facing: Vector2i = Vector2i.ZERO) -> void:
+	await _change_map(map_id, spawn, facing, fade_out_duration, fade_in_duration)
+
+
+## Téléporteur (passe systèmes 2, §2.9) : replace le joueur sur [param spawn] de la carte
+## **courante**, sans la recharger (coroutine, fondu court [member teleport_fade_duration]).
+## [param facing] ZERO = garder l'orientation. Transition comme un changement de carte
+## ([signal transition_started], entrées bloquées, rien n'est sauvegardé pendant), fermée par
+## [signal relocated]. Ignoré pendant une transition ; spawn inconnu : erreur, joueur laissé
+## où il est.
+func relocate(spawn: StringName, facing: Vector2i = Vector2i.ZERO) -> void:
+	if _busy or _player == null or not is_instance_valid(_current_map):
+		return
+	var session := _session
+	_busy = true
+	_player.set_input_enabled(false)
+	transition_started.emit(_current_map.map_id)
+	if _fade != null:
+		await _fade.fade_out(teleport_fade_duration)
+		if session != _session:
+			return
+	if _current_map.has_spawn(spawn):
+		_current_map.spawn_player(_player, spawn,
+			facing if facing != Vector2i.ZERO else _player.get_facing())
+	else:
+		push_error("SceneRouter : spawn inconnu « %s » sur %s" % [spawn, _current_map.map_id])
+	if _fade != null:
+		await _fade.fade_in(teleport_fade_duration)
+		if session != _session:
+			return
+	_player.set_input_enabled(true)
+	_busy = false
+	relocated.emit(_current_map)
+
+
+func _change_map(map_id: StringName, spawn: StringName, facing: Vector2i, out_seconds: float,
+		in_seconds: float) -> void:
 	if _busy or _player == null:
 		return
 	var session := _session
@@ -165,14 +215,14 @@ func change_map(map_id: StringName, spawn: StringName, facing: Vector2i = Vector
 	_player.set_input_enabled(false)
 	transition_started.emit(map_id)
 	if _fade != null:
-		await _fade.fade_out(fade_out_duration)
+		await _fade.fade_out(out_seconds)
 		if session != _session:
 			return
 	var arrived := _swap_map(map_id, spawn, facing)
 	if arrived:
 		map_changed.emit(_current_map)
 	if _fade != null:
-		await _fade.fade_in(fade_in_duration)
+		await _fade.fade_in(in_seconds)
 		if session != _session:
 			return
 	_player.set_input_enabled(true)
@@ -404,12 +454,31 @@ func _disconnect_player() -> void:
 		_player.bumped.disconnect(_on_player_bumped)
 
 
+## Suit le passage de [param cell] comme un pas libre fini vers [param direction] (warp
+## STEP_ON), sinon comme une poussée vers [param direction] (warp PUSH de bord). Sert à la fin
+## d'une glissade forcée (courant, passe systèmes 2 T15) : ses pas scriptés ne déclenchent aucun
+## passage ([method _on_player_moved]). Le joueur doit être libre. Vrai si un passage est suivi.
+func follow_warp_at(cell: Vector2i, direction: Vector2i) -> bool:
+	if _busy or not is_instance_valid(_current_map) or _player == null:
+		return false
+	var warps := _current_map.get_warps()
+	var warp := warps.find_on_step(cell, direction)
+	if warp == null:
+		warp = warps.find_on_push(cell, direction)
+	if warp == null:
+		return false
+	_follow(warp)
+	return true
+
+
 func _on_player_moved(cell: Vector2i) -> void:
 	if _busy or not is_instance_valid(_current_map):
 		return
 	if not _player.is_input_enabled():
 		return  # pas scripté (scène) : jamais une porte (jalon-03b.md §2.4)
-	_follow(_current_map.get_warps().find_on_step(cell, _player.get_facing()))
+	var warps := _current_map.get_warps()
+	var warp := warps.find_on_step(cell, _player.get_facing())
+	_follow(warp if warp != null else _find_fall(warps, cell))
 
 
 func _on_player_bumped(direction: Vector2i) -> void:
@@ -418,12 +487,39 @@ func _on_player_bumped(direction: Vector2i) -> void:
 	_follow(_current_map.get_warps().find_on_push(_player.get_cell(), direction))
 
 
+## Passe systèmes 2 (§2.7.3) : trou ([constant Warp.Trigger.FALL]) de [param cell] encore ouvert
+## (aucun drapeau de [member Warp.unless_flags] posé), ou null. Le joueur y tombe à la fin d'un pas
+## libre, dans toutes les directions ; un trou bouché par un rocher est un sol ordinaire.
+func _find_fall(warps: WarpTable, cell: Vector2i) -> Warp:
+	for warp: Warp in warps.get_at(cell):
+		if warp.trigger == Warp.Trigger.FALL and _is_warp_enabled(warp):
+			return warp
+	return null
+
+
+## Faux si un drapeau de [member Warp.unless_flags] est posé (drapeaux de [member arrival_flags] ;
+## sans source : aucun drapeau).
+func _is_warp_enabled(warp: Warp) -> bool:
+	if warp.unless_flags.is_empty() or not arrival_flags.is_valid():
+		return true
+	var flags := arrival_flags.call() as StoryFlags
+	return flags == null or flags.has_none(warp.unless_flags)
+
+
 func _follow(warp: Warp) -> void:
-	if warp == null:
+	if warp == null or not _is_warp_enabled(warp):
 		return
-	if warp.is_coming_soon():
-		show_coming_soon(warp.coming_soon, warp.target_spawn,
-			warp.get_arrival_facing(_player.get_facing()))
+	var arrival_facing := warp.get_arrival_facing(_player.get_facing())
+	if warp.trigger == Warp.Trigger.FALL:
+		# Chute : fondu court (celui des téléporteurs) [D], arrivée à l'étage du dessous.
+		_change_map(warp.target_map, warp.target_spawn, arrival_facing,
+			teleport_fade_duration, teleport_fade_duration)
+	elif warp.is_coming_soon():
+		show_coming_soon(warp.coming_soon, warp.target_spawn, arrival_facing)
+	elif warp.is_teleport() and warp.target_map == _current_map.map_id:
+		relocate(warp.target_spawn, arrival_facing)
+	elif warp.is_teleport():
+		_change_map(warp.target_map, warp.target_spawn, arrival_facing,
+			teleport_fade_duration, teleport_fade_duration)
 	else:
-		change_map(warp.target_map, warp.target_spawn,
-			warp.get_arrival_facing(_player.get_facing()))
+		change_map(warp.target_map, warp.target_spawn, arrival_facing)

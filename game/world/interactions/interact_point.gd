@@ -24,6 +24,10 @@ extends Marker2D
 ## (1..n, ligne par ligne). &"" / 0 = point ordinaire. Recopiés dans chaque [Interaction].
 @export var puzzle: StringName = &""
 @export var puzzle_slot: int = 0
+## Passe systèmes 2 (`systemes-2.md` §2.4, plan du J21 §2.2) : dormeur réveillé à la Poké Flûte
+## (Ronflex) — scène jouée quand la Flûte retentit sur une case voisine ; &"" = aucun. Lu par
+## [method GameMap.flute_targets].
+@export var flute_cutscene: StringName = &""
 
 
 ## Case d'ancrage (bas-gauche), déduite de la position.

@@ -1,0 +1,30 @@
+# Grille d'essai (fixture de test, jamais livrée) : ancienne grille de carte de QA de la passe systèmes 2,
+# carte retirée en S2Z (T33). Lue par tools/art/plan_check_systemes2.py et plan_check_teleports.py.
+# Carte de QA « Force », étage inférieur — passe systèmes 2 (§2.7.3). Arrivée des chutes depuis les trous
+# de essai_force : trou 1 (4, 4) → rocher tombé en F (4, 2), joueur en (4, 3) ; trou 2 (8, 14) → rocher
+# tombé en F (8, 3), joueur en (8, 4). Les rochers tombés n'apparaissent qu'une fois le trou bouché.
+# Échelle U (9, 5) → essai_force, from_b1.
+#
+# Légende : # mur · . sol · F point de chute d'un rocher · U échelle qui monte
+
+PRATICABLES .FU
+
+GRILLE 12 8
+00 ############
+01 #..........#
+02 #...F......#
+03 #.......F..#
+04 #..........#
+05 #........U.#
+06 #..........#
+07 ############
+FIN
+
+POSITIONS
+chute_rocher_1     chute_rocher     4,2          bloque  depuis=essai_force:1
+chute_joueur_1     chute_joueur     4,3          libre   depuis=essai_force:1
+chute_rocher_2     chute_rocher     8,3          bloque  depuis=essai_force:2
+chute_joueur_2     chute_joueur     8,4          libre   depuis=essai_force:2
+echelle_haut       echelle          9,5          libre   vers=essai_force:from_b1
+from_strength      spawn            9,4          libre
+FIN

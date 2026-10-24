@@ -13,6 +13,10 @@ extends PanelContainer
 
 ## Un Pokémon observé touché : un seul lien vers sa fiche du Pokédex.
 signal route_requested(route: MenuRoute)
+## Passe systèmes 2 (§2.8, T24) : « S'ENVOLER » touché pour la zone affichée.
+signal fly_requested(zone: StringName)
+
+const FLY_TEXT := "S'ENVOLER"
 
 ## « Tu es ici » sur l'image du lieu courant (MM.2, texte à relire par Kevin).
 const HERE_TEXT := "Tu es ici"
@@ -103,6 +107,8 @@ func _rebuild(view: ZonePanelView, illustration: Texture2D, area: Rect2) -> void
 		var flow := _section(ZonePanelView.SERVICES_TITLE)
 		for entry: ZoneEntryView in view.services:
 			flow.add_child(_service_chip(entry))
+	if view.fly_available:
+		_column.add_child(_fly_button(view.zone_id))
 
 
 ## Grande image, nom écrit dessus en bas à gauche, « Tu es ici » en haut à gauche.
@@ -270,7 +276,11 @@ func _service_chip(entry: ZoneEntryView) -> PanelContainer:
 	var chip := PanelContainer.new()
 	chip.theme_type_variation = &"MapChip"
 	chip.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_add_label(chip, entry.name, &"MapEntryText")
+	# Une ligne : dans la rangée qui coule, un libellé qui passe à la ligne tombait à une largeur
+	# nulle et s'écrivait lettre par lettre (QA S2E sur S21, « Centre » d'Argenta).
+	var label := _add_label(chip, entry.name, &"MapEntryText")
+	if label != null:
+		label.autowrap_mode = TextServer.AUTOWRAP_OFF
 	return chip
 
 
@@ -302,3 +312,20 @@ func _kill_tween() -> void:
 func _on_pokemon_pressed(species: StringName) -> void:
 	Haptics.vibrate(UiTokens.HAPTIC_TICK_MS)
 	route_requested.emit(MenuRoute.pokedex(MenuRoute.DEX_FILTER_ALL, species))
+
+
+## Bouton « S'ENVOLER » (T24) : une seule intention, le directeur décide.
+func _fly_button(zone: StringName) -> Button:
+	var button := Button.new()
+	button.name = "FlyButton"
+	button.theme_type_variation = &"AccentButton"
+	button.text = FLY_TEXT
+	button.focus_mode = Control.FOCUS_NONE
+	button.custom_minimum_size.y = UiTokens.TOUCH_MIN
+	button.pressed.connect(func() -> void: fly_requested.emit(zone))
+	return button
+
+
+## Bouton « S'ENVOLER » affiché, ou null (tests).
+func get_fly_button() -> Button:
+	return _column.get_node_or_null(^"FlyButton") as Button

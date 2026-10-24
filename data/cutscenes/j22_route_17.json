@@ -1,0 +1,107 @@
+{
+	"route_17_hidden_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_route_17_hidden_1"
+				],
+				"steps": [
+					{
+						"give": "rare_candy",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_route_17_hidden_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"route_17_hidden_2": {
+		"variants": [
+			{
+				"unless": [
+					"got_route_17_hidden_2"
+				],
+				"steps": [
+					{
+						"give": "full_restore",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_route_17_hidden_2"
+						]
+					}
+				]
+			}
+		]
+	},
+	"route_17_hidden_3": {
+		"variants": [
+			{
+				"unless": [
+					"got_route_17_hidden_3"
+				],
+				"steps": [
+					{
+						"give": "nugget",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_route_17_hidden_3"
+						]
+					}
+				]
+			}
+		]
+	},
+	"route_17_hidden_4": {
+		"variants": [
+			{
+				"unless": [
+					"got_route_17_hidden_4"
+				],
+				"steps": [
+					{
+						"give": "full_restore",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_route_17_hidden_4"
+						]
+					}
+				]
+			}
+		]
+	},
+	"route_17_hidden_5": {
+		"variants": [
+			{
+				"unless": [
+					"got_route_17_hidden_5"
+				],
+				"steps": [
+					{
+						"give": "nugget",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_route_17_hidden_5"
+						]
+					}
+				]
+			}
+		]
+	}
+}

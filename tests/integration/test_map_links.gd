@@ -62,6 +62,12 @@ const MAP_IDS: Array[StringName] = [
 	# Jalon 20 (T20) : le Casino, le repaire Rocket (B1F à B4F) et sa cabine d'ascenseur.
 	&"celadon_game_corner", &"rocket_hideout_b1f", &"rocket_hideout_b2f", &"rocket_hideout_b3f",
 	&"rocket_hideout_b4f", &"rocket_hideout_elevator",
+	# Jalon 21 (T22) : la Route 16 est (raccord réel avec Céladopole ; portes du poste : J22).
+	&"route_16",
+	# Jalon 21 (T21) : la Route 12 nord et son poste (1F traversant, 2F).
+	&"route_12", &"route_12_gate", &"route_12_gate_2f",
+	# Raccords J21 ↔ J22 (2026-10-23) : la Route 12 sud et le poste de la Route 16.
+	&"route_12_south", &"route_16_gate",
 ]
 ## Cartes dont les passages « à venir » sont comptés dans leur propre test (jalon 18).
 const OWN_COMING_SOON_COUNT: Array[StringName] = [&"lavender_town", &"pokemon_tower_1f"]
@@ -175,6 +181,9 @@ func test_every_coming_soon_warp_returns_to_a_walkable_spawn_of_its_own_map() ->
 	# J16) ; la Grotte Sombre et Lavanville sont reliées à la Route 10, et les passages de
 	# Lavanville et de la Tour sont comptés dans leurs propres tests.
 	# Jalon 20 (T16) : le Casino de Céladopole (2 cases) restait « à venir » jusqu'au T20 (construit).
+	# Jalon 21 (T21) : la Route 11 et Lavanville mènent à la vraie Route 12 ; reste son bord sud
+	# « Route 12 » (deux cases, J22). Jalon 21 (T22) : la porte du poste de la Route 16 (2 cases), J22.
+	# Raccords J21 ↔ J22 (2026-10-23) : la Route 12 sud et le poste de la Route 16 sont branchés.
 	assert_eq(found, 3, "« SAFRANIA » (2), Safrania (1)")
 
 

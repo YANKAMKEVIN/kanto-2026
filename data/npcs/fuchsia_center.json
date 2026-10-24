@@ -1,0 +1,19 @@
+{
+	"nurse": {
+		"cell": [
+			7,
+			3
+		],
+		"facing": "down",
+		"sprite": "nurse"
+	},
+	"visitor": {
+		"cell": [
+			11,
+			5
+		],
+		"facing": "left",
+		"sprite": "camper",
+		"dialogue": "fuchsia_center_visitor"
+	}
+}

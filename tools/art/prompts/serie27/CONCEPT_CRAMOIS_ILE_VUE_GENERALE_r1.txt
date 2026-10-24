@@ -1,0 +1,36 @@
+CONCEPT ART — VUE GÉNÉRALE DE CRAMOIS'ÎLE, L'ÎLE VOLCANIQUE ET SAVANTE (Kanto 2026), image de référence de direction artistique.
+
+Deux images sont jointes.
+IMAGE 2 : la vue générale de Carmin-sur-Mer, une ville portuaire du même jeu. Respecte EXACTEMENT son style de rendu : même pinceau, même mer, même saturation, MÊME LUMIÈRE, même échelle des bâtiments ; le CENTRE POKÉMON et la BOUTIQUE sont EXACTEMENT les mêmes bâtiments (identiques dans toutes les villes : Centre au toit rouge avec l'emblème Poké Ball blanc et la grande porte vitrée ; Boutique au toit bleu, même emblème, même porte vitrée). Ne reprends PAS sa composition (ni quai, ni paquebot, ni place pavée).
+Format : PAYSAGE 1536 × 1024, vue plongeante, exactement comme le plan.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. Une petite ÎLE au milieu de la mer : la ville occupe un plateau de SOL VOLCANIQUE brun-gris ; de la mer tout autour (bande d'eau à gauche, grande mer en bas, mince bande d'eau à droite) ; une PLAGE DE SABLE NOIR (bande gris anthracite) au sud de la ville ; des RÉCIFS de roche volcanique sombre à gauche, en bas et en haut à droite. Cinq bâtiments : en haut à gauche le MANOIR POKÉMON (grand bâtiment incendié, toit noirci et éventré, gravats devant la porte) ; en haut à droite l'ARÈNE (toit rouge brique, porte double) ; au milieu à gauche le LABO POKÉMON (bâtiment blanc et moderne, toit gris bleuté) ; en bas au centre le CENTRE POKÉMON (toit rouge) ; en bas à droite la BOUTIQUE (toit bleu). Une large allée de sol volcanique monte vers le nord entre le Manoir et l'Arène (vers la Route 21).
+Légende du plan :
+- bleu = la MER ; liseré blanc = écume le long des rivages ;
+- brun-gris moucheté de cailloux = RÉCIFS et rochers de roche volcanique sombre (infranchissables) ;
+- brun-gris clair = SOL VOLCANIQUE de la ville (terre et roche tassées, praticable) ;
+- gris anthracite = PLAGE DE SABLE NOIR volcanique ;
+- grand bloc au toit noir troué en haut à gauche = le MANOIR incendié ; petits cailloux sombres devant sa façade = GRAVATS qui bouchent son entrée ;
+- toit rouge brique en haut à droite = l'ARÈNE ; toit gris bleuté et façade blanche = le LABO ; toit rouge et façade blanche = le CENTRE POKÉMON ; toit bleu et façade blanche = la BOUTIQUE ; rectangles bruns = portes ;
+- petits carrés ocre = panneaux en bois SANS TEXTE.
+Respecte ce plan À LA LETTRE : la forme et la place de chaque zone. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+RÈGLE ABSOLUE DES BORDS : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; rivages, plages, récifs, falaises et bords des zones suivent une grille : uniquement des segments horizontaux et verticaux à ANGLES DROITS, AUCUNE courbe, aucun segment en diagonale. Les rochers et l'écume peuvent être irréguliers EN SURFACE, mais chaque zone garde des bords droits et lisibles.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus, axes de l'image alignés sur la grille, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud).
+- Aucun trait noir : contours fins et doux, plus sombres et plus saturés que la couleur locale. Ombres colorées bleu-vert ou violet froid, jamais grises.
+- Pas de minimap, pas de flèche, pas de cadre, pas d'interface.
+
+AMBIANCE — « l'île volcanique et savante » : golden hour, lumière dorée rasante du haut à gauche, la mer scintille.
+- Palette : ROCHE VOLCANIQUE sombre (brun-noir, gris anthracite), sol de terre brun-gris, sable NOIR scintillant ; touches de vert sombre très rares (quelques arbustes rustiques dans les marges, pas de forêt) ; le LABO blanc éclatant tranche sur la roche.
+- Légères FUMEROLLES blanches qui s'élèvent de fissures dans les rochers en haut à droite, derrière l'Arène (le volcan est au fond, hors de l'image).
+- Le MANOIR est une ruine : murs noircis par un vieil incendie, toit effondré par endroits, poutres calcinées, entrée bouchée par des gravats ; triste, jamais effrayant.
+- Le LABO est moderne et propre : façade blanche, grandes vitres, antennes sur le toit.
+
+VIE (très discrète, personnages petits, aucun ne ressemble au héros à casquette rouge) : une FILLE qui marche sur l'allée centrale, un HOMME immobile près de l'Arène. Aucun Pokémon, aucun animal.
+
+INTERDITS : texte, lettres, chiffres, étiquettes, panneaux lisibles, logo, signature, filigrane, cadre, interface, minimap, flèche ; tout élément non prévu par le plan ; bords courbes ou en diagonale ; brouillard épais, flou de profondeur, vignettage ; pixel art ; vue isométrique. Aucune lave, aucun volcan en éruption, aucun palmier, aucune route goudronnée ni véhicule.
+
+L'image doit raconter, sans texte : une petite île volcanique où se dressent un laboratoire blanc, un manoir en ruine, une Arène, un Centre et une Boutique, au milieu de la mer.

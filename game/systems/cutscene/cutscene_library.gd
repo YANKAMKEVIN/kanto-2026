@@ -102,10 +102,27 @@ extends RefCounted
 ##   (identifiant d'objet) et « win » / « lose » facultatifs (comme « battle »). L'espèce est
 ##   vérifiée contre les données Pokémon par [method check_species] (appelée par Boot une fois
 ##   les espèces chargées) : une scène qui nomme une espèce inconnue est écartée.
+##   Passe systèmes 2 (T30) : « catch » facultatif (liste non vide : drapeaux d'une capture) ;
+##   « static » facultatif (rencontre fixe, [StaticEncounter]) : { "done": drapeau posé par une
+##   capture ou un K.O., "caught": drapeau posé en plus par une capture } (deux drapeaux
+##   distincts, obligatoires) ; « actor » facultatif, avec « static » seulement : le Pokémon de la
+##   carte (PNJ ou alias, jamais « player ») retiré quand la rencontre est consommée ; « intro »
+##   facultatif : [constant CutsceneStep.INTRO_LEGENDARY].
 ## Jalon 20 (`jalon-20.md` §2.5.2, T12) :
 ## - gift_pokemon : identifiant d'espèce donné au joueur, avec « level » (entier 1..100),
 ##   « flag » (drapeau du don) et « say » (dialogue « reçoit ») obligatoires, « say_stored »
 ##   facultatif (dialogue joué si l'équipe est pleine). Espèce vérifiée comme pour wild_battle.
+## Jalon 21 (`jalon-21.md` §2.3) :
+## - variantes : « if_items » / « unless_items » facultatifs (listes non vides d'identifiants
+##   d'objets, non vérifiés contre les objets connus) : objets tous dans le Sac / aucun dans le
+##   Sac ([method CutsceneVariant.matches]) ;
+## - wild_battle : « flee » (liste non vide : drapeaux d'une fuite), « clear » (liste non vide :
+##   drapeaux effacés à la fin du combat, quelle que soit l'issue), « reveal » (booléen,
+##   interdit avec « ghost »: « always ») et « uncatchable » (booléen) facultatifs ;
+## - give : « set » facultatif (liste non vide : drapeaux levés si l'objet est entré au Sac ;
+##   ici « set » n'est pas un second type d'étape) ;
+## - animate : « skip_reduced » facultatif (booléen) ;
+## - flute : true (aucun autre paramètre).
 ## Acteur = « player », identifiant d'un PNJ de la carte courante, ou **alias** « $nom »
 ## (forme $[a-z_]+, [method CutsceneStep.is_alias]) : PNJ choisi par le code qui lance la
 ## scène (CutsceneDirector.play(id, alias)), résolu au début de chaque étape. Les alias
@@ -118,18 +135,21 @@ extends RefCounted
 const DATA_DIR: String = "res://data/cutscenes/"
 
 const _SCENE_KEYS: Array[String] = ["variants", "next"]
-const _VARIANT_KEYS: Array[String] = ["if", "unless", "steps"]
+const _VARIANT_KEYS: Array[String] = ["if", "unless", "steps", "if_items", "unless_items"]
 ## Clés permises en plus de la clé de type, par type (ordre de CutsceneStep.Kind).
 const _EXTRA_KEYS: Array[Array] = [
 	[], [], ["to"], [], [],
 	["path", "to", "run", "follower", "keep_facing", "optional", "background"],
 	["at", "facing"], ["to"],
-	["to"], [], ["player_pokemon", "foe_pokemon", "win", "lose"], ["count", "found"],
+	["to"], [], ["player_pokemon", "foe_pokemon", "win", "lose"], ["count", "found", "set"],
 	[], ["count"], [], [], [], ["kind"], [], [], ["details"],
 	[],
-	["on"], [], ["offset", "duration", "fade"],
-	["level", "ghost", "ghost_unless_item", "win", "lose"],
+	["on"], [], ["offset", "duration", "fade", "skip_reduced"],
+	["level", "ghost", "ghost_unless_item", "win", "lose", "catch", "static", "actor", "intro",
+		"flee", "clear", "reveal", "uncatchable"],
 	["level", "flag", "say", "say_stored"],
+	[], # Jalon 21 : flute
+	[], [], ["wrong", "refuse", "say"],
 ]
 ## Conditions permises sur toute étape sauf spawn.
 const _CONDITION_KEYS: Array[String] = ["if", "unless"]
@@ -268,11 +288,20 @@ func get_set_flags() -> Array[StringName]:
 		var raised: Array[StringName] = []
 		if step.kind == CutsceneStep.Kind.SET_FLAGS:
 			raised = step.flags
-		elif step.kind == CutsceneStep.Kind.BATTLE \
-				or step.kind == CutsceneStep.Kind.WILD_BATTLE:
+		elif step.kind == CutsceneStep.Kind.BATTLE:
 			raised = step.win_flags + step.lose_flags
+		elif step.kind == CutsceneStep.Kind.WILD_BATTLE: # T30 : capture et rencontre fixe aussi
+			raised = step.win_flags + step.lose_flags + step.catch_flags + step.flee_flags
+			if step.static_encounter != null:
+				raised += step.static_encounter.flags_for(Battle.Outcome.CAUGHT)
 		elif step.kind == CutsceneStep.Kind.GIFT_POKEMON: # J20
 			raised = [step.gift_flag]
+		elif step.kind == CutsceneStep.Kind.TOGGLE_FLAGS: # J25 : l'interrupteur se lève aussi
+			raised = step.flags
+		elif step.kind == CutsceneStep.Kind.TRADE: # J25
+			raised = [InGameTrade.done_flag(step.trade_id)]
+		elif step.kind == CutsceneStep.Kind.GIVE: # Jalon 21 : « set » d'un « give »
+			raised = step.flags
 		for flag: StringName in raised:
 			found[flag] = true
 	return _sorted_keys(found)
@@ -342,6 +371,9 @@ func get_dialogue_ids() -> Array[StringName]:
 			found[step.dialogue_id] = true
 			if not step.dialogue_stored.is_empty():
 				found[step.dialogue_stored] = true
+		elif step.kind == CutsceneStep.Kind.TRADE: # J25
+			for id: StringName in [step.dialogue_id, step.dialogue_stored] + step.say:
+				found[id] = true
 	return _sorted_keys(found)
 
 
@@ -408,6 +440,14 @@ func _parse_variant(value: Variant, where: String) -> CutsceneVariant:
 	var ok := _check_keys(entry, _VARIANT_KEYS, where)
 	ok = _read_flags(entry, "if", variant.if_flags, where) and ok
 	ok = _read_flags(entry, "unless", variant.unless_flags, where) and ok
+	# Jalon 21 : conditions sur le Sac (listes non vides).
+	for key: String in ["if_items", "unless_items"]:
+		if entry.has(key):
+			if not entry[key] is Array or (entry[key] as Array).is_empty():
+				ok = _fail("%s : « %s » doit être une liste non vide d'objets" % [where, key])
+			else:
+				ok = _read_flags(entry, key, variant.if_items if key == "if_items"
+					else variant.unless_items, where) and ok
 	if not entry.get("steps") is Array or (entry.get("steps") as Array).is_empty():
 		return _null_fail("%s : « steps » doit être une liste non vide" % where)
 	var steps: Array = entry["steps"]
@@ -428,6 +468,9 @@ func _parse_step(value: Variant, where: String) -> CutsceneStep:
 	for i: int in CutsceneStep.TYPE_KEYS.size():
 		# Dans une étape « spawn », « dialogue » est la clé du PNJ créé, pas un type.
 		if i == CutsceneStep.Kind.DIALOGUE and entry.has("spawn"):
+			continue
+		# Jalon 21 : dans une étape « give », « set » est la clé de ses drapeaux.
+		if i == CutsceneStep.Kind.SET_FLAGS and entry.has("give"):
 			continue
 		if entry.has(CutsceneStep.TYPE_KEYS[i]):
 			kinds.append(i)
@@ -466,6 +509,11 @@ func _parse_step(value: Variant, where: String) -> CutsceneStep:
 				ok = _fail("%s : « set » doit être une liste non vide de drapeaux" % where)
 			else:
 				ok = _read_flags(entry, "set", step.flags, where) and ok
+		CutsceneStep.Kind.UNSET_FLAGS, CutsceneStep.Kind.TOGGLE_FLAGS: # J25
+			if not main is Array or (main as Array).is_empty():
+				ok = _fail("%s : « %s » doit être une liste non vide de drapeaux" % [where, type_key])
+			else:
+				ok = _read_flags(entry, type_key, step.flags, where) and ok
 		CutsceneStep.Kind.SPAWN:
 			ok = _parse_spawn(entry, step, where) and ok
 		CutsceneStep.Kind.MOVE:
@@ -509,6 +557,11 @@ func _parse_step(value: Variant, where: String) -> CutsceneStep:
 					step.found = entry["found"]
 				else:
 					ok = _fail("%s : « found » doit être un booléen" % where)
+			if entry.has("set"): # Jalon 21
+				if not entry["set"] is Array or (entry["set"] as Array).is_empty():
+					ok = _fail("%s : « set » doit être une liste non vide de drapeaux" % where)
+				else:
+					ok = _read_flags(entry, "set", step.flags, where) and ok
 		CutsceneStep.Kind.CAPTION:
 			if not main is String or (main as String).strip_edges().is_empty():
 				ok = _fail("%s : « caption » doit être un texte non vide" % where)
@@ -562,7 +615,29 @@ func _parse_step(value: Variant, where: String) -> CutsceneStep:
 			ok = _parse_wild_battle(entry, step, where) and ok
 		CutsceneStep.Kind.GIFT_POKEMON:
 			ok = _parse_gift_pokemon(entry, step, where) and ok
+		CutsceneStep.Kind.TRADE:
+			ok = _parse_trade(entry, step, where) and ok
+		CutsceneStep.Kind.FLUTE: # Jalon 21
+			if not main is bool or not main:
+				ok = _fail("%s : « flute » vaut true" % where)
 	return step if ok else null
+
+
+## trade (jalon 25, §2.5) : identifiant d'échange, dialogues « wrong », « refuse », « say » (liste).
+func _parse_trade(entry: Dictionary, step: CutsceneStep, where: String) -> bool:
+	var ok := _read_id(entry["trade"], where + " trade", func(v: StringName) -> void:
+		step.trade_id = v)
+	ok = _read_id(entry.get("wrong"), where + " wrong", func(v: StringName) -> void:
+		step.dialogue_id = v) and ok
+	ok = _read_id(entry.get("refuse"), where + " refuse", func(v: StringName) -> void:
+		step.dialogue_stored = v) and ok
+	var said: Variant = entry.get("say", [])
+	if not said is Array:
+		return _fail("%s : « say » doit être une liste de dialogues" % where)
+	for value: Variant in said:
+		ok = _read_id(value, where + " say", func(v: StringName) -> void:
+			step.say.append(v)) and ok
+	return ok
 
 
 ## gift_pokemon (jalon 20, §2.5.2) : espèce, niveau 1..100, drapeau, dialogue(s).
@@ -603,7 +678,74 @@ func _parse_wild_battle(entry: Dictionary, step: CutsceneStep, where: String) ->
 	if entry.has("ghost_unless_item"):
 		ok = _read_id(entry["ghost_unless_item"], where + " ghost_unless_item",
 			func(v: StringName) -> void: step.ghost_unless_item = v) and ok
+	ok = _parse_static_encounter(entry, step, where) and ok
+	ok = _parse_wild_battle_j21(entry, step, where) and ok
 	return _read_outcome_flags(entry, step, where) and ok
+
+
+## Clés du jalon 21 (§2.3) d'une étape « wild_battle » : « flee », « clear » (listes non
+## vides), « reveal » (booléen, interdit avec « ghost »: « always »), « uncatchable » (booléen).
+func _parse_wild_battle_j21(entry: Dictionary, step: CutsceneStep, where: String) -> bool:
+	var ok := true
+	for key: String in ["flee", "clear"]:
+		if not entry.has(key):
+			continue
+		if not entry[key] is Array or (entry[key] as Array).is_empty():
+			ok = _fail("%s : « %s » doit être une liste non vide de drapeaux" % [where, key])
+		else:
+			ok = _read_flags(entry, key, step.flee_flags if key == "flee" else step.clear_flags,
+				where) and ok
+	for key: String in ["reveal", "uncatchable"]:
+		if not entry.has(key):
+			continue
+		if not entry[key] is bool:
+			ok = _fail("%s : « %s » doit être un booléen" % [where, key])
+		elif key == "reveal":
+			step.reveal = entry[key]
+		else:
+			step.uncatchable = entry[key]
+	if step.reveal and step.ghost_mode == GhostRule.ALWAYS:
+		ok = _fail("%s : « reveal » est interdit avec « ghost »: « %s »" % [where,
+			GhostRule.ALWAYS])
+	return ok
+
+
+## Clés de la passe systèmes 2 (T30) d'une étape « wild_battle » : « catch », « intro »,
+## « actor », « static » (la [StaticEncounter] est créée avec l'espèce et le niveau déjà lus).
+func _parse_static_encounter(entry: Dictionary, step: CutsceneStep, where: String) -> bool:
+	var ok := true
+	if entry.has("catch"):
+		if not entry["catch"] is Array or (entry["catch"] as Array).is_empty():
+			ok = _fail("%s : « catch » doit être une liste non vide de drapeaux" % where)
+		else:
+			ok = _read_flags(entry, "catch", step.catch_flags, where) and ok
+	if entry.has("intro"):
+		var mode: Variant = entry["intro"]
+		if not mode is String or not CutsceneStep.INTROS.has(StringName(mode)):
+			ok = _fail("%s : « intro » vaut %s" % [where, CutsceneStep.INTROS])
+		else:
+			step.intro = StringName(mode)
+	if entry.has("actor"):
+		if not entry.has("static"):
+			ok = _fail("%s : « actor » exige « static »" % where)
+		ok = _read_npc_actor(entry["actor"], where + " actor", step) and ok
+	if not entry.has("static"):
+		return ok
+	var fixed: Variant = entry["static"]
+	if not fixed is Dictionary:
+		return _fail("%s : « static » vaut { \"done\": …, \"caught\": … }" % where)
+	var keys_ok := _check_keys(fixed, ["done", "caught"], where + " static")
+	var names: Dictionary[String, StringName] = {}
+	for key: String in ["done", "caught"]:
+		keys_ok = _read_id((fixed as Dictionary).get(key), "%s static.%s" % [where, key],
+			func(v: StringName) -> void: names[key] = v) and keys_ok
+	if keys_ok and names["done"] == names["caught"]:
+		keys_ok = _fail("%s : « done » et « caught » sont le même drapeau" % where)
+	if keys_ok:
+		var id := step.actor if not step.actor.is_empty() else step.species
+		step.static_encounter = StaticEncounter.new(id, step.species, step.level,
+			names["done"], names["caught"])
+	return keys_ok and ok
 
 
 ## Étape « animate » (jalon 16) : nœud de la carte, « offset » [dx, dy] en cases (entiers),
@@ -626,6 +768,11 @@ func _parse_animate(entry: Dictionary, main: Variant, step: CutsceneStep, where:
 			step.fade = entry["fade"]
 		else:
 			ok = _fail("%s : « fade » doit être un booléen" % where)
+	if entry.has("skip_reduced"): # Jalon 21
+		if entry["skip_reduced"] is bool:
+			step.skip_reduced = entry["skip_reduced"]
+		else:
+			ok = _fail("%s : « skip_reduced » doit être un booléen" % where)
 	return ok
 
 

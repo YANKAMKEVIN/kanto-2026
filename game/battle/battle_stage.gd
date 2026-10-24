@@ -78,6 +78,11 @@ const APPEAR_DROP: float = 24.0
 const WILD_CAMERA_DURATION: float = 0.30
 const WILD_APPEAR_DURATION: float = 0.30
 const WILD_APPEAR_DROP: float = 40.0
+## Entrée « légendaire » d'une rencontre fixe (passe systèmes 2, T30 ; `jalon-24.md` §2.7 :
+## ≈ 1,5 × plus lente [D]) : facteur des durées de [method play_wild_intro].
+const LEGENDARY_INTRO_SLOWDOWN: float = 1.5
+## Jalon 21 (`jalon-21.md` §2.5) : fondu croisé silhouette du SPECTRE → espèce révélée (s) [D].
+const REVEAL_DISSOLVE_DURATION: float = 1.0
 const PARTNER_ENTER_DURATION: float = 0.32
 ## Animations des temps (dossier 05 §4, §9) : élan physique, pulsation spéciale, bond de
 ## statut, coup (clignotement + tremblement), K.O. (chute + fondu).
@@ -257,6 +262,8 @@ var _decor_front: Sprite2D
 var _decor_cache := BattleDecorCache.new()
 ## Effets de statut au-dessus de chaque sprite (jalon 11, T7).
 var _auras: Dictionary[BattleEvent.SideId, StatusAura] = {}
+## Jalon 21 : copie de la silhouette pendant le fondu de [method dissolve_foe] (null sinon).
+var _reveal_overlay: Sprite2D
 
 @onready var _backdrop: ColorRect = %Backdrop
 @onready var _flash: ColorRect = %Flash
@@ -458,7 +465,10 @@ func show_pokemon(side: BattleEvent.SideId, species: StringName) -> void:
 ## puis le sauvage [param foe_species] apparaît à sa place de combat (bond depuis le bas +
 ## fondu). Le cadrage vise [param origin_world] (l'herbe qui bouge) et le joueur. Le partenaire
 ## entre ensuite par [method play_partner_enter]. Refusé (erreur) si un combat est déjà affiché.
-func play_wild_intro(camera: Camera2D, foe_species: StringName, origin_world: Vector2) -> void:
+## [param slowdown] (T30) multiplie les durées du recadrage et de l'apparition
+## ([constant LEGENDARY_INTRO_SLOWDOWN] pour une rencontre légendaire).
+func play_wild_intro(camera: Camera2D, foe_species: StringName, origin_world: Vector2,
+		slowdown: float = 1.0) -> void:
 	if _active:
 		push_error("BattleStage : un combat est déjà affiché")
 		return
@@ -488,10 +498,61 @@ func play_wild_intro(camera: Camera2D, foe_species: StringName, origin_world: Ve
 	# le monde se floute et se fond dans le décor.
 	var tween := _new_tween()
 	tween.tween_method(_set_recompose, 0.0, 1.0,
-		WILD_DECOR_DURATION if _decor != null else WILD_CAMERA_DURATION)
+		(WILD_DECOR_DURATION if _decor != null else WILD_CAMERA_DURATION) * slowdown)
 	await _play(tween)
 	if _active:
-		await _appear(BattleEvent.SideId.FOE, WILD_APPEAR_DROP, WILD_APPEAR_DURATION)
+		await _appear(BattleEvent.SideId.FOE, WILD_APPEAR_DROP, WILD_APPEAR_DURATION * slowdown)
+
+
+## Coroutine (jalon 21, `jalon-21.md` §2.5) : l'image affichée de l'adversaire (la silhouette du
+## SPECTRE) se dissout en [param species] par un fondu croisé de
+## [constant REVEAL_DISSOLVE_DURATION] s (un [Tween]) ; « Réduire les animations » : remplacement
+## immédiat. Sans combat affiché : rien.
+func dissolve_foe(species: StringName) -> void:
+	if not _active:
+		return
+	var side := BattleEvent.SideId.FOE
+	var sprite := _sprites[side]
+	_species[side] = species
+	if reduce_motion or not sprite.visible:
+		_set_texture(side)
+		if sprite.visible:
+			_place(side, _anchor(side), _anchor_scale(side))
+		return
+	_clear_reveal_overlay()
+	_reveal_overlay = Sprite2D.new()
+	_reveal_overlay.name = "RevealOverlay"
+	_reveal_overlay.texture = sprite.texture
+	_reveal_overlay.centered = sprite.centered
+	_reveal_overlay.offset = sprite.offset
+	_reveal_overlay.texture_filter = sprite.texture_filter
+	_reveal_overlay.material = sprite.material.duplicate() if sprite.material != null else null
+	_reveal_overlay.position = sprite.position
+	_reveal_overlay.scale = sprite.scale
+	_reveal_overlay.modulate = sprite.modulate
+	# Juste après le sprite : la silhouette s'efface par-dessus l'espèce qui apparaît.
+	sprite.add_sibling(_reveal_overlay)
+	_set_texture(side)
+	_place(side, _anchor(side), _anchor_scale(side))
+	sprite.modulate = Color(1, 1, 1, 0)
+	var tween := _new_tween()
+	tween.set_parallel(true)
+	tween.tween_property(sprite, ^"modulate:a", 1.0, REVEAL_DISSOLVE_DURATION)
+	tween.tween_property(_reveal_overlay, ^"modulate:a", 0.0, REVEAL_DISSOLVE_DURATION)
+	await _play(tween)
+	sprite.modulate.a = 1.0
+	_clear_reveal_overlay()
+
+
+## Silhouette en cours de dissolution ([method dissolve_foe]) ; null hors du fondu (tests).
+func get_reveal_overlay() -> Sprite2D:
+	return _reveal_overlay if is_instance_valid(_reveal_overlay) else null
+
+
+func _clear_reveal_overlay() -> void:
+	if is_instance_valid(_reveal_overlay):
+		_reveal_overlay.free() # tween fini ou tué : libéré tout de suite (aucun orphelin)
+	_reveal_overlay = null
 
 
 ## Coroutine (~0,3 s) : le partenaire [param player_species] entre en courant depuis le bord
@@ -1166,6 +1227,7 @@ func _apply_reset() -> void:
 		if tween.is_valid():
 			tween.kill()
 	_tweens.clear()
+	_clear_reveal_overlay() # Jalon 21
 	if _active:
 		_restore_camera()
 	for side: BattleEvent.SideId in _world:

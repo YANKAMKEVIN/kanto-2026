@@ -1,0 +1,126 @@
+{
+	"route_21_item_1": {
+		"cell": [24, 85],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "route_21_item_1",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_route_21_item_1"
+		]
+	},
+	"gilles": {
+		"cell": [6, 36],
+		"facing": "left",
+		"sprite": "sailor",
+		"dialogue": "route_21_fisher_gilles_after",
+		"trainer": {
+			"id": "route_21_fisher_gilles",
+			"sight": 1,
+			"before": "route_21_fisher_gilles_before",
+			"defeated": "route_21_fisher_gilles_defeated"
+		}
+	},
+	"marcel": {
+		"cell": [9, 38],
+		"facing": "down",
+		"sprite": "sailor",
+		"dialogue": "route_21_fisher_marcel_after",
+		"trainer": {
+			"id": "route_21_fisher_marcel",
+			"sight": 1,
+			"before": "route_21_fisher_marcel_before",
+			"defeated": "route_21_fisher_marcel_defeated"
+		}
+	},
+	"thibault": {
+		"cell": [15, 47],
+		"facing": "up",
+		"sprite": "swimmer_water",
+		"dialogue": "route_21_swimmer_thibault_after",
+		"move_mode": "surf",
+		"trainer": {
+			"id": "route_21_swimmer_thibault",
+			"sight": 6,
+			"before": "route_21_swimmer_thibault_before",
+			"defeated": "route_21_swimmer_thibault_defeated"
+		}
+	},
+	"dylan": {
+		"cell": [18, 45],
+		"facing": "right",
+		"sprite": "swimmer_water",
+		"dialogue": "route_21_swimmer_dylan_after",
+		"move_mode": "surf",
+		"trainer": {
+			"id": "route_21_swimmer_dylan",
+			"sight": 6,
+			"before": "route_21_swimmer_dylan_before",
+			"defeated": "route_21_swimmer_dylan_defeated"
+		}
+	},
+	"simon": {
+		"cell": [24, 95],
+		"facing": "down",
+		"sprite": "swimmer_water",
+		"dialogue": "route_21_swimmer_simon_after",
+		"move_mode": "surf",
+		"trainer": {
+			"id": "route_21_swimmer_simon",
+			"sight": 6,
+			"before": "route_21_swimmer_simon_before",
+			"defeated": "route_21_swimmer_simon_defeated"
+		}
+	},
+	"arthur": {
+		"cell": [8, 107],
+		"facing": "right",
+		"sprite": "swimmer_water",
+		"dialogue": "route_21_swimmer_arthur_after",
+		"move_mode": "surf",
+		"trainer": {
+			"id": "route_21_swimmer_arthur",
+			"sight": 6,
+			"before": "route_21_swimmer_arthur_before",
+			"defeated": "route_21_swimmer_arthur_defeated"
+		}
+	},
+	"noe": {
+		"cell": [23, 107],
+		"facing": "left",
+		"sprite": "swimmer_water",
+		"dialogue": "route_21_swimmer_noe_after",
+		"move_mode": "surf",
+		"trainer": {
+			"id": "route_21_swimmer_noe",
+			"sight": 5,
+			"before": "route_21_swimmer_noe_before",
+			"defeated": "route_21_swimmer_noe_defeated"
+		}
+	},
+	"rene": {
+		"cell": [21, 84],
+		"facing": "left",
+		"sprite": "sailor",
+		"dialogue": "route_21_fisher_rene_after",
+		"trainer": {
+			"id": "route_21_fisher_rene",
+			"sight": 1,
+			"before": "route_21_fisher_rene_before",
+			"defeated": "route_21_fisher_rene_defeated"
+		}
+	},
+	"yves": {
+		"cell": [26, 86],
+		"facing": "right",
+		"sprite": "sailor",
+		"dialogue": "route_21_fisher_yves_after",
+		"trainer": {
+			"id": "route_21_fisher_yves",
+			"sight": 1,
+			"before": "route_21_fisher_yves_before",
+			"defeated": "route_21_fisher_yves_defeated"
+		}
+	}
+}

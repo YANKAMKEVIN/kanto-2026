@@ -23,6 +23,10 @@
 		"speaker": "Exorciste",
 		"variants": [
 			{
+				"if": ["fuji_rescued"],
+				"pages": ["Les esprits se sont calmés.\nOn peut de nouveau prier en paix."]
+			},
+			{
 				"if": ["tower_stairs_open"],
 				"pages": ["Je prie pour ceux qui reposent ici…\net pour ceux qui sont montés."]
 			},

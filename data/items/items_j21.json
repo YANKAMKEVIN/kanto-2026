@@ -1,0 +1,7 @@
+{
+	"tm39": {
+		"name": "CT39 — Météores", "plural": "CT39 — Météores", "feminine": true,
+		"category": "tm", "tm": 39, "teaches": "swift",
+		"description": "Météores ne rate jamais sa cible."
+	}
+}

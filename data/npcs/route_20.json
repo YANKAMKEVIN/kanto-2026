@@ -1,0 +1,142 @@
+{
+	"route_20_item_1": {
+		"cell": [53, 12],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "route_20_item_1",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_route_20_item_1"
+		]
+	},
+	"ronan": {
+		"cell": [131, 12],
+		"facing": "up",
+		"sprite": "swimmer_water",
+		"dialogue": "route_20_swimmer_ronan_after",
+		"move_mode": "surf",
+		"trainer": {
+			"id": "route_20_swimmer_ronan",
+			"sight": 6,
+			"before": "route_20_swimmer_ronan_before",
+			"defeated": "route_20_swimmer_ronan_defeated"
+		}
+	},
+	"solene": {
+		"cell": [102, 17],
+		"facing": "up",
+		"sprite": "swimmer_f_water",
+		"dialogue": "route_20_swimmer_solene_after",
+		"move_mode": "surf",
+		"trainer": {
+			"id": "route_20_swimmer_solene",
+			"sight": 6,
+			"before": "route_20_swimmer_solene_before",
+			"defeated": "route_20_swimmer_solene_defeated"
+		}
+	},
+	"iris": {
+		"cell": [68, 15],
+		"facing": "down",
+		"sprite": "swimmer_f_water",
+		"dialogue": "route_20_swimmer_iris_after",
+		"move_mode": "surf",
+		"trainer": {
+			"id": "route_20_swimmer_iris",
+			"sight": 3,
+			"before": "route_20_swimmer_iris_before",
+			"defeated": "route_20_swimmer_iris_defeated"
+		}
+	},
+	"lou": {
+		"cell": [83, 21],
+		"facing": "right",
+		"sprite": "swimmer_f_water",
+		"dialogue": "route_20_swimmer_lou_after",
+		"move_mode": "surf",
+		"trainer": {
+			"id": "route_20_swimmer_lou",
+			"sight": 6,
+			"before": "route_20_swimmer_lou_before",
+			"defeated": "route_20_swimmer_lou_defeated"
+		}
+	},
+	"mathis": {
+		"cell": [57, 20],
+		"facing": "down",
+		"sprite": "swimmer_water",
+		"dialogue": "route_20_swimmer_mathis_after",
+		"move_mode": "surf",
+		"trainer": {
+			"id": "route_20_swimmer_mathis",
+			"sight": 5,
+			"before": "route_20_swimmer_mathis_before",
+			"defeated": "route_20_swimmer_mathis_defeated"
+		}
+	},
+	"kilian": {
+		"cell": [131, 20],
+		"facing": "up",
+		"sprite": "swimmer_water",
+		"dialogue": "route_20_swimmer_kilian_after",
+		"move_mode": "surf",
+		"trainer": {
+			"id": "route_20_swimmer_kilian",
+			"sight": 6,
+			"before": "route_20_swimmer_kilian_before",
+			"defeated": "route_20_swimmer_kilian_defeated"
+		}
+	},
+	"bastien": {
+		"cell": [51, 14],
+		"facing": "up",
+		"sprite": "naturalist",
+		"dialogue": "route_20_bird_keeper_bastien_after",
+		"trainer": {
+			"id": "route_20_bird_keeper_bastien",
+			"sight": 3,
+			"before": "route_20_bird_keeper_bastien_before",
+			"defeated": "route_20_bird_keeper_bastien_defeated"
+		}
+	},
+	"clara": {
+		"cell": [38, 11],
+		"facing": "up",
+		"sprite": "swimmer_f_water",
+		"dialogue": "route_20_swimmer_clara_after",
+		"move_mode": "surf",
+		"trainer": {
+			"id": "route_20_swimmer_clara",
+			"sight": 6,
+			"before": "route_20_swimmer_clara_before",
+			"defeated": "route_20_swimmer_clara_defeated"
+		}
+	},
+	"nina": {
+		"cell": [36, 18],
+		"facing": "down",
+		"sprite": "swimmer_f_water",
+		"dialogue": "route_20_swimmer_nina_after",
+		"move_mode": "surf",
+		"trainer": {
+			"id": "route_20_swimmer_nina",
+			"sight": 5,
+			"before": "route_20_swimmer_nina_before",
+			"defeated": "route_20_swimmer_nina_defeated"
+		}
+	},
+	"elsa": {
+		"cell": [23, 12],
+		"facing": "up",
+		"sprite": "swimmer_f_water",
+		"dialogue": "route_20_swimmer_elsa_after",
+		"move_mode": "surf",
+		"trainer": {
+			"id": "route_20_swimmer_elsa",
+			"sight": 6,
+			"before": "route_20_swimmer_elsa_before",
+			"defeated": "route_20_swimmer_elsa_defeated"
+		}
+	}
+}

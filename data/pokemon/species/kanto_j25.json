@@ -1,0 +1,39 @@
+{
+	"ponyta": {
+		"dex": 77, "name": "Ponyta", "types": ["fire"],
+		"base_stats": { "hp": 50, "atk": 85, "def": 55, "spa": 65, "spd": 65, "spe": 90 },
+		"male_ratio": 0.5, "growth_rate": "medium_fast", "base_exp": 82, "catch_rate": 190,
+		"learnset": [
+			[1, "ember"], [30, "tail_whip"], [32, "stomp"], [35, "growl"], [39, "fire_spin"],
+			[43, "take_down"], [48, "agility"]
+		],
+		"evolutions": [{ "into": "rapidash", "method": "level", "level": 40 }]
+	},
+	"rapidash": {
+		"dex": 78, "name": "Galopa", "types": ["fire"],
+		"base_stats": { "hp": 65, "atk": 100, "def": 70, "spa": 80, "spd": 80, "spe": 105 },
+		"male_ratio": 0.5, "growth_rate": "medium_fast", "base_exp": 175, "catch_rate": 60,
+		"learnset": [
+			[1, "ember"], [1, "tail_whip"], [1, "stomp"], [1, "growl"], [30, "tail_whip"],
+			[32, "stomp"], [35, "growl"], [39, "fire_spin"], [47, "take_down"], [55, "agility"]
+		]
+	},
+	"magmar": {
+		"dex": 126, "name": "Magmar", "types": ["fire"],
+		"base_stats": { "hp": 65, "atk": 95, "def": 57, "spa": 100, "spd": 85, "spe": 93 },
+		"male_ratio": 0.75, "growth_rate": "medium_fast", "base_exp": 167, "catch_rate": 45,
+		"learnset": [
+			[1, "ember"], [36, "leer"], [39, "confuse_ray"], [43, "fire_punch"], [48, "smokescreen"],
+			[52, "smog"], [55, "flamethrower"]
+		]
+	},
+	"aerodactyl": {
+		"dex": 142, "name": "Ptéra", "types": ["rock", "flying"],
+		"base_stats": { "hp": 80, "atk": 105, "def": 65, "spa": 60, "spd": 75, "spe": 130 },
+		"male_ratio": 0.875, "growth_rate": "slow", "base_exp": 180, "catch_rate": 45,
+		"learnset": [
+			[1, "wing_attack"], [1, "agility"], [33, "supersonic"], [38, "bite"], [45, "take_down"],
+			[54, "hyper_beam"]
+		]
+	}
+}

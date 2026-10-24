@@ -45,7 +45,8 @@
 			"name": "Argenta", "kind": "town",
 			"maps": [
 				"pewter_city", "pewter_center", "pewter_mart", "pewter_museum",
-				"pewter_museum_science", "pewter_gym", "pewter_house_mason", "pewter_house_researcher"
+				"pewter_museum_science", "pewter_gym", "pewter_house_mason", "pewter_house_researcher",
+				"pewter_museum_reserve"
 			],
 			"services": [
 				{ "id": "pokemon_center", "found_on": "pewter_center" },
@@ -117,7 +118,8 @@
 			"maps": [
 				"lavender_town", "lavender_center", "lavender_mart", "pokemon_house",
 				"lavender_house_1", "lavender_house_2", "pokemon_tower_1f", "pokemon_tower_2f",
-				"pokemon_tower_3f", "pokemon_tower_4f", "pokemon_tower_5f", "pokemon_tower_6f"
+				"pokemon_tower_3f", "pokemon_tower_4f", "pokemon_tower_5f", "pokemon_tower_6f",
+				"pokemon_tower_7f"
 			],
 			"subtitle": "Route 10 — Route 8 — Route 12",
 			"services": [
@@ -154,9 +156,17 @@
 			],
 			"description": "Une ville prospère, verte et commerçante. Sous les néons du Casino, l'ambiance n'est plus la même."
 		},
-		"fuchsia_city": { "name": "Parmanie", "kind": "town", "maps": [] },
-		"route_21": { "name": "Route 21", "kind": "sea_route", "maps": [] },
-		"cinnabar_island": { "name": "Cramois'Île", "kind": "town", "maps": [] },
+		"fuchsia_city": {
+			"name": "Parmanie", "kind": "town",
+			"maps": ["fuchsia_city", "fuchsia_center", "fuchsia_mart", "fuchsia_meeting_room",
+				"fuchsia_grandpa_house", "fuchsia_good_rod_house"],
+			"subtitle": "Route 15 — Route 18",
+			"services": [
+				{ "id": "pokemon_center", "found_on": "fuchsia_center" },
+				{ "id": "poke_mart", "found_on": "fuchsia_mart" }
+			],
+			"description": "Une ville basse et verte, ouverte sur la mer. Au nord, le Parc Safari ; près des enclos, des Pokémon venus d'ailleurs."
+		},
 		"route_23": { "name": "Route 23", "kind": "route", "maps": [] },
 		"indigo_plateau": { "name": "Plateau Indigo", "kind": "place", "maps": [] },
 		"route_25": {
@@ -189,6 +199,31 @@
 			"subtitle": "Carmin-sur-Mer — Route 12",
 			"description": "Une route côtière entre les prairies et la mer, à l'est de Carmin."
 		},
+		"route_13": {
+			"name": "Route 13", "kind": "route", "maps": ["route_13"],
+			"subtitle": "Route 12 — Route 14",
+			"description": "Un dédale de clôtures au bord de l'eau. Les Dresseurs y attendent derrière chaque barrière."
+		},
+		"route_14": {
+			"name": "Route 14", "kind": "route", "maps": ["route_14"],
+			"subtitle": "Route 13 — Route 15",
+			"description": "Deux chemins descendent vers le sud, de part et d'autre de grandes herbes."
+		},
+		"route_15": {
+			"name": "Route 15", "kind": "route", "maps": ["route_15", "route_15_gate", "route_15_gate_2f"],
+			"subtitle": "Route 14 — Parmanie",
+			"description": "Une route de prairies qui mène à Parmanie. Un poste de garde la coupe en deux."
+		},
+		"route_17": {
+			"name": "Route 17", "kind": "route", "maps": ["route_17"],
+			"subtitle": "La Piste Cyclable",
+			"description": "Une longue descente au bord de la mer, réservée aux vélos. On s'y laisse glisser jusqu'à Parmanie."
+		},
+		"route_18": {
+			"name": "Route 18", "kind": "route", "maps": ["route_18", "route_18_gate"],
+			"subtitle": "Piste Cyclable — Parmanie",
+			"description": "La fin de la Piste Cyclable. Après le poste, un chemin à pied longe un étang jusqu'à Parmanie."
+		},
 		"ss_anne": {
 			"name": "S.S. Anne", "kind": "place",
 			"maps": [
@@ -213,10 +248,57 @@
 			],
 			"description": "Une route coupée en deux par la falaise et la rivière. On ne passe d'un côté à l'autre que par la Grotte Sombre."
 		},
+		"route_19": {
+			"name": "Route 19", "kind": "sea_route", "maps": ["route_19"],
+			"subtitle": "Parmanie — Route 20",
+			"description": "Une route marine qui part de la plage de Parmanie. Des nageurs y attendent au large, entre les vagues."
+		},
+		"route_20": {
+			"name": "Route 20", "kind": "sea_route", "maps": ["route_20"],
+			"subtitle": "Route 19 — Cramois'Île",
+			"description": "Une longue traversée vers l'ouest. Au milieu de la mer, les falaises blanches des Îles Écume."
+		},
+		"seafoam_islands": {
+			"name": "Îles Écume", "kind": "place",
+			"maps": ["seafoam_1f", "seafoam_b1f", "seafoam_b2f", "seafoam_b3f", "seafoam_b4f"],
+			"subtitle": "Route 20",
+			"description": "Des grottes de glace sous deux îlots jumeaux. Les rochers y changent le cours de l'eau."
+		},
+		"route_21": {
+			"name": "Route 21", "kind": "sea_route", "maps": ["route_21"],
+			"subtitle": "Bourg Palette — Cramois'Île",
+			"description": "Une route marine entre Bourg Palette et Cramois'Île, avec une prairie qu'on n'atteint qu'en Surf."
+		},
+		"cinnabar_island": {
+			"name": "Cramois'Île", "kind": "town",
+			"maps": [
+				"cinnabar_island", "cinnabar_center", "cinnabar_mart", "cinnabar_lab",
+				"cinnabar_lab_meeting", "cinnabar_lab_rd", "cinnabar_lab_fossil",
+				"pokemon_mansion_1f", "pokemon_mansion_2f", "pokemon_mansion_3f", "pokemon_mansion_b1f",
+				"cinnabar_gym"
+			],
+			"subtitle": "Route 20 — Route 21",
+			"services": [
+				{ "id": "pokemon_center", "found_on": "cinnabar_center" },
+				{ "id": "poke_mart", "found_on": "cinnabar_mart" },
+				{ "id": "gym", "found_on": "cinnabar_gym" }
+			],
+			"description": "Une île volcanique au sud-ouest de Kanto. On y vient pour son Labo, ses fossiles et son Arène."
+		},
 		"dark_cave": {
 			"name": "Grotte Sombre", "kind": "place", "maps": ["dark_cave_1f", "dark_cave_b1f"],
 			"subtitle": "Route 10",
 			"description": "Un tunnel sans lumière sous la montagne. On y avance de repère en repère, une colonne, une fente, une flaque."
+		},
+		"route_16": {
+			"name": "Route 16", "kind": "route", "maps": ["route_16", "route_16_west", "route_16_gate", "route_16_fly_house"],
+			"subtitle": "Céladopole",
+			"description": "Une route boisée à l'ouest de Céladopole."
+		},
+		"route_12": {
+			"name": "Route 12", "kind": "route", "maps": ["route_12", "route_12_gate", "route_12_gate_2f", "route_12_south", "route_12_rod_house"],
+			"subtitle": "Lavanville — Route 11",
+			"description": "Une longue route au bord de l'eau, au sud de Lavanville."
 		}
 	}
 }

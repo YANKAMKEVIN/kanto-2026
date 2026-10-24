@@ -10,7 +10,9 @@ extends GutTest
 const MemoryFs := preload("res://tests/helpers/memory_file_system.gd")
 const FixedClock := preload("res://tests/helpers/fixed_clock.gd")
 const BASE_START := "res://tools/debug_start/dark_cave_1f_flash.json"
-const START_PATH := "user://test_dark_cave_flash_start.json"
+## `user://` est partagé par toutes les copies du dépôt : un nom par processus évite qu'une suite
+## lancée en parallèle écrase ou efface le départ d'une autre.
+var _start_path := "user://test_dark_cave_flash_start_%d.json" % OS.get_process_id()
 const FADE := 0.05
 const TIMEOUT := 12.0
 const ROPE := &"escape_rope"
@@ -35,8 +37,8 @@ func after_each() -> void:
 	SceneRouter.fade_out_duration = _fades[0]
 	SceneRouter.fade_in_duration = _fades[1]
 	GameState.clock = DeviceClock.new()
-	if FileAccess.file_exists(START_PATH):
-		DirAccess.remove_absolute(START_PATH)
+	if FileAccess.file_exists(_start_path):
+		DirAccess.remove_absolute(_start_path)
 
 
 ## Départ de débogage sur [param spawn] de [param map_id] ; [param with_hm05] faux : sans CS05.
@@ -48,13 +50,13 @@ func _start(map_id: String, spawn: String, facing: String, with_hm05: bool) -> v
 	if not with_hm05:
 		(start["flags"] as Array).erase("got_hm05")
 		(start["bag"] as Dictionary).erase("hm05")
-	var file := FileAccess.open(START_PATH, FileAccess.WRITE)
+	var file := FileAccess.open(_start_path, FileAccess.WRITE)
 	file.store_string(JSON.stringify(start))
 	file.close()
 	_boot = (load("res://game/boot.tscn") as PackedScene).instantiate() as Boot
 	_boot.save_system = SaveSystem.new(MemoryFs.new(), "user://test_dark_cave_flash_save.json")
 	_boot.force_debug_start = true
-	_boot.debug_start_path = START_PATH
+	_boot.debug_start_path = _start_path
 	add_child_autofree(_boot)
 	_boot.get_dialogue_runner().chars_per_second = 0.0
 	_boot.get_dialogue_runner().dialogue_started.connect(_dialogues.append)

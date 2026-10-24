@@ -15,7 +15,8 @@ extends RefCounted
 ## Clés : cell (obligatoire), sprite (obligatoire), facing (down), dialogue (aucun),
 ## verb (talk | observe | take | examine ; take = objet visible au sol, jalon 8 ; examine = objet
 ## fixe qu'on examine, jalon 12 : les fossiles de la dalle), turn_to_player (true),
-## keep_facing (false), lift (0 pixel),
+## keep_facing (false), lift (0 pixel), pose (animation d'attente jouée dans l'orientation de
+## repos à la place de idle_<dir>, J21 : « pray » de M. Fuji ; aucune par défaut),
 ## hop_style (calm | eager | playful : style de saut, jalon 4 ; aucun par défaut),
 ## shy ({ action: fly | flee | notice | hide, radius: 1..4 } : réaction d'ambiance, jalon 5 ;
 ## notice et hide au jalon 9 ; interdit sur un PNJ interactif),
@@ -31,7 +32,7 @@ extends RefCounted
 ## route (routine de marche, jalon 5, étendue au jalon 7 :
 ## { "cells": [[x, y], …], "pause": 1.2, "start": 1, "enter": { "cell": [x, y], "seconds": 8 } },
 ## voir [method _read_route]).
-## trainer (jalon 9, jalon-09.md §2.4.1) : { "id": dresseur de data/trainers/, "sight": 1..8,
+## trainer (jalon 9, jalon-09.md §2.4.1) : { "id": dresseur de data/trainers/, "sight": 0..8 (J25 : 0 = on lui parle),
 ## "before": dialogue avant le combat, "defeated": réplique dite une fois après la victoire du
 ## joueur, facultative (jalon 10, jalon-10.md §2.5), "rematch": réplique de reprise après une
 ## défaite du joueur, "leave": [[dx, dy], …] départ après sa défaite (jalon 12, jalon-12.md §2.11,
@@ -43,6 +44,8 @@ extends RefCounted
 ## « facing » facultatif, celle de l'entrée par défaut) ; refusée avec « trainer » (sa vision
 ## lit l'orientation de l'entrée) et « route » (la boucle part de « cell »), voir
 ## [method _read_moved].
+## move_mode (passe systèmes 2, S2C) : « walk » (défaut) ou « surf » (Nageur : il se déplace sur
+## l'eau surfable, y compris pour rejoindre le joueur).
 ## Le verbe « meet » (Rencontrer) est refusé : il est posé par le code (jalon 4 §3.5).
 ## Toute autre clé est une erreur. Pas de fichier = aucun PNJ sur la carte (sans erreur).
 ## L'identifiant « player » est réservé au joueur.
@@ -57,7 +60,7 @@ const KEYS: Array[String] = [
 	"cell", "facing", "sprite", "dialogue", "verb", "turn_to_player", "keep_facing", "lift",
 	"hop_style", "shy", "route", "if", "unless", "species", "idle_react", "look",
 	"trainer",
-	"moved",
+	"moved", "move_mode", "pose",
 ]
 ## Clés du bloc « trainer » ([method _read_trainer]).
 const TRAINER_KEYS: Array[String] = ["id", "sight", "before", "defeated", "rematch", "leave"]
@@ -200,6 +203,11 @@ static func parse_entry(value: Variant, errors: PackedStringArray) -> NpcSpec:
 				errors.append("« %s » vaut true ou false" % key)
 			else:
 				spec.set(key, entry[key])
+	if entry.has("pose"):
+		if not entry["pose"] is String or (entry["pose"] as String).is_empty():
+			errors.append("« pose » doit être un nom d'animation")
+		else:
+			spec.pose = StringName(entry["pose"])
 	if entry.has("lift"):
 		var lift: Variant = entry["lift"]
 		if not (lift is float or lift is int) or float(lift) != floorf(float(lift)) \
@@ -232,6 +240,14 @@ static func parse_entry(value: Variant, errors: PackedStringArray) -> NpcSpec:
 			spec.idle_react_every = float(every)
 	if entry.has("look"):
 		_read_look(entry["look"], spec, errors)
+	if entry.has("move_mode"):
+		match str(entry["move_mode"]):
+			"walk":
+				spec.move_mode = GridWorld.MoveMode.WALK
+			"surf":
+				spec.move_mode = GridWorld.MoveMode.SURF
+			_:
+				errors.append("« move_mode » vaut walk ou surf")
 	if entry.has("species"):
 		if not entry["species"] is String or (entry["species"] as String).is_empty():
 			errors.append("« species » doit être un identifiant d'espèce")

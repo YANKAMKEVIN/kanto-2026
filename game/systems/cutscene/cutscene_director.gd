@@ -46,6 +46,17 @@ extends Node
 ## Jalon 20 (`jalon-20.md` §2.5.2, T12) : étape « gift_pokemon » ([method PokemonGift.give] sur
 ## l'état de [method set_badges] et les espèces de [method set_pokemon_data], d'un seul bloc ;
 ## dialogue « reçoit », puis « au Stockage » si l'équipe est pleine ; [signal pokemon_gifted]).
+## Passe systèmes 2 (`systemes-2.md` §3.8, T30 ; politique d'Artikodin, `jalon-24.md` §2.7) : étape
+## « wild_battle » avec une rencontre fixe ([StaticEncounter], clé « static ») : capture →
+## `done` + `caught`, K.O. → `done`, fuite ou défaite → rien ; une issue qui consomme la rencontre
+## **force une sauvegarde** ([member save_handler], comme l'étape « save ») à la sortie du combat,
+## avant le premier texte qui suit, puis retire le Pokémon de la carte (clé « actor ») ; drapeaux
+## « catch » d'une capture ; entrée « legendary » plus lente ([member WildEncounter.legendary_intro]).
+## Jalon 21 (`jalon-21.md` §2.3) : variantes choisies avec le Sac ([method Cutscene.pick]) ;
+## « wild_battle » : « clear » effacés après le combat (avant les drapeaux de l'issue et le
+## réveil), « flee », « reveal » (ignorée en SPECTRE), « uncatchable » ; « give » + « set » ;
+## « animate » + « skip_reduced » ; étape « flute » ([method play_flute_notes]) ; « react » /
+## « emote » sur un acteur de décor ([method GameMap.get_scene_prop]).
 
 signal cutscene_started(cutscene_id: StringName)
 ## Début d'une étape (tests, outils de capture).
@@ -67,6 +78,9 @@ signal save_requested(reason: String)
 ## Stockage. Émis juste après le don (drapeau déjà levé), avant ses dialogues : Boot demande
 ## l'autosave et rafraîchit le compagnon.
 signal pokemon_gifted(pokemon: Pokemon, stored: bool)
+## J25 (§2.5) : échange fixe fait (étape « trade »), d'un seul bloc : Boot rafraîchit le
+## compagnon (le Pokémon donné a pu l'être) et demande l'autosave.
+signal pokemon_traded(given: Pokemon, received: Pokemon)
 ## Le point de sauvegarde a échoué : scène et contrôles restent bloqués jusqu'à la réussite.
 signal save_failed(reason: String, error: Error)
 ## Fin d'une étape « wait » (interne).
@@ -87,7 +101,15 @@ const DESPAWN_FADE: float = 0.2
 const ANIMATE_REDUCED_FADE: float = 0.5
 ## Table d'origine d'une rencontre lancée par une étape « wild_battle » (traçabilité).
 const WILD_BATTLE_TABLE: StringName = &"cutscene"
+## Raison de la sauvegarde forcée d'une rencontre fixe consommée (T30) : « %s » = son identifiant.
+const STATIC_SAVE_REASON: String = "rencontre fixe : %s"
 const _ROUTER_SCRIPT := preload("res://game/autoload/scene_router.gd")
+## J25 : choix du Pokémon à échanger (Boot : le sélecteur de l'équipe) ; appelé avec
+## (identifiant d'échange, places acceptées), rend la place choisie ou −1 (renonce). Peut être
+## une coroutine. Sans lui : la première place acceptée (tests).
+var trade_pick_handler: Callable
+## J25 : échanges fixes (`data/trades/`), chargés à la première étape « trade ».
+var _trades: InGameTrade
 ## Étapes qui agissent sur leur acteur : elles attendent d'abord la fin de sa marche en
 ## arrière-plan.
 const _JOINING_KINDS: Array[CutsceneStep.Kind] = [
@@ -273,7 +295,7 @@ func play(cutscene_id: StringName, aliases: Dictionary[StringName, StringName] =
 	if cutscene == null:
 		push_error("CutsceneDirector : scène inconnue « %s »" % cutscene_id)
 		return false
-	var variant := cutscene.pick(_flags)
+	var variant := cutscene.pick(_flags, _bag) # Jalon 21 : variantes selon le Sac
 	if variant == null:
 		if OS.is_debug_build():
 			print("[qa] scène « %s » ignorée (aucune variante pour les drapeaux)" % cutscene_id)
@@ -362,6 +384,14 @@ func _play_step(source_step: CutsceneStep) -> bool:
 			if _flags != null:
 				for flag: StringName in step.flags:
 					_flags.set_flag(flag)
+		CutsceneStep.Kind.UNSET_FLAGS:
+			if _flags != null:
+				for flag: StringName in step.flags:
+					_flags.set_flag(flag, false)
+		CutsceneStep.Kind.TOGGLE_FLAGS:
+			if _flags != null:
+				for flag: StringName in step.flags:
+					_flags.set_flag(flag, not _flags.has_flag(flag))
 		CutsceneStep.Kind.CAPTION:
 			await _caption(step)
 		CutsceneStep.Kind.TAKE:
@@ -412,6 +442,10 @@ func _play_step(source_step: CutsceneStep) -> bool:
 			return await _wild_battle(step)
 		CutsceneStep.Kind.GIFT_POKEMON:
 			await _gift_pokemon(step)
+		CutsceneStep.Kind.TRADE:
+			await _trade(step)
+		CutsceneStep.Kind.FLUTE: # Jalon 21
+			await play_flute_notes()
 		_:
 			_step_error("étape « %s » inconnue" % CutsceneStep.kind_name(step.kind))
 	return true
@@ -612,14 +646,28 @@ func _wild_battle(step: CutsceneStep) -> bool:
 		return true
 	var encounter := WildEncounter.new(step.species, step.level, WILD_BATTLE_TABLE)
 	encounter.ghost = GhostRule.is_ghost_for(step.ghost_mode, step.ghost_unless_item, _bag)
+	encounter.legendary_intro = step.intro == CutsceneStep.INTRO_LEGENDARY
+	# Jalon 21 : « reveal » ignorée si le combat est un SPECTRE ; « uncatchable » indépendante.
+	encounter.reveal = step.reveal and not encounter.ghost
+	encounter.uncatchable = step.uncatchable
 	var origin := _wild_origin()
 	var outcome: int = await _battle_runner.run_wild(encounter, _map, origin)
 	if outcome == Battle.Outcome.NONE:
 		_step_error("combat sauvage « %s » refusé" % step.species)
 		return true
 	if _flags != null:
+		# Jalon 21 : « clear » d'abord, quelle que soit l'issue (avant le réveil d'une défaite).
+		for flag: StringName in step.clear_flags:
+			_flags.set_flag(flag, false)
 		for flag: StringName in step.outcome_flags(outcome):
 			_flags.set_flag(flag)
+	var fixed := step.static_encounter
+	if fixed != null and fixed.needs_forced_save(outcome):
+		# Rencontre consommée (T30) : écrite avant tout autre texte, puis le Pokémon quitte la carte.
+		if not await _save_checkpoint(STATIC_SAVE_REASON % fixed.id):
+			return false
+		if not step.actor.is_empty():
+			await _despawn(step)
 	if outcome != Battle.Outcome.LOSS:
 		return true
 	await _wake_up()
@@ -647,6 +695,44 @@ func _gift_pokemon(step: CutsceneStep) -> void:
 		await _play_dialogue(step.dialogue_stored)
 
 
+## Étape « trade » (jalon 25, `jalon-25.md` §2.5) : échange fixe [member CutsceneStep.trade_id].
+## Déjà fait : rien. Aucun Pokémon de l'espèce demandée : dialogue « wrong ». Sinon le joueur
+## choisit ([member trade_pick_handler]) ; il renonce : dialogue « refuse ». L'échange se fait
+## d'un seul bloc ([method InGameTrade.execute]), puis [signal pokemon_traded] et les dialogues
+## « say ».
+func _trade(step: CutsceneStep) -> void:
+	if _state == null or _pokemon_data == null or _flags == null:
+		_step_error("pas d'état de partie pour l'échange « %s »" % step.trade_id)
+		return
+	if _trades == null:
+		_trades = InGameTrade.load_default()
+	if _trades.get_trade(step.trade_id).is_empty():
+		_step_error("échange inconnu « %s »" % step.trade_id)
+		return
+	if _trades.is_done(step.trade_id, _flags):
+		return
+	var party: Party = _state.party
+	var candidates := _trades.candidates(step.trade_id, party)
+	if candidates.is_empty():
+		await _play_dialogue(step.dialogue_id)
+		return
+	var index: int = candidates[0]
+	if trade_pick_handler.is_valid():
+		index = await trade_pick_handler.call(step.trade_id, candidates)
+	if not index in candidates:
+		await _play_dialogue(step.dialogue_stored)
+		return
+	var map_id: StringName = _map.map_id if is_instance_valid(_map) else &""
+	var result := _trades.execute(step.trade_id, index, party, _state.pokedex as Pokedex,
+		_flags, _pokemon_data, _state.rng as GameRng, map_id, _state.now())
+	if result["status"] != InGameTrade.Status.DONE:
+		_step_error("échange « %s » refusé (statut %d)" % [step.trade_id, result["status"]])
+		return
+	pokemon_traded.emit(result["given"], result["received"])
+	for dialogue_id: StringName in step.say:
+		await _play_dialogue(dialogue_id)
+
+
 ## Case d'où part l'intro d'un combat sauvage scripté : celle devant le joueur (sa case s'il
 ## n'y a pas de joueur).
 func _wild_origin() -> Vector2i:
@@ -666,6 +752,10 @@ func _give(step: CutsceneStep) -> void:
 		_step_error("objet inconnu « %s »" % step.item_id)
 		return
 	if _bag.add(step.item_id, step.count):
+		# Jalon 21 : « set » levé dans la même étape, seulement si l'objet est entré au Sac.
+		if _flags != null:
+			for flag: StringName in step.flags:
+				_flags.set_flag(flag)
 		item_given.emit(step.item_id, step.count)
 		if step.found:
 			item_found.emit(step.item_id, step.count)
@@ -765,6 +855,8 @@ func _field_move(step: CutsceneStep) -> void:
 ## push_error, étape sautée. Le nœud est **réaffiché** au début : une [FlagGate] (le navire,
 ## `unless: [ss_anne_departed]`) que l'étape « set » précédente vient de masquer joue son départ.
 func _animate(step: CutsceneStep) -> void:
+	if step.skip_reduced and reduce_motion: # Jalon 21 : étape sautée
+		return
 	var node := _map.get_node_or_null(NodePath(String(step.target))) as Node2D \
 		if is_instance_valid(_map) else null
 	if node == null:
@@ -987,10 +1079,15 @@ func _await_background(actor_id: StringName) -> void:
 		await get_tree().process_frame
 
 
-## Étape « react » : petite réaction de surprise du joueur ou d'un PNJ, sans attendre.
+## Étape « react » : petite réaction de surprise du joueur ou d'un PNJ, sans attendre. Jalon 21 :
+## sinon un acteur de décor de la carte ([method GameMap.get_scene_prop]).
 func _react(step: CutsceneStep) -> void:
 	var actor := _find_actor(step.actor)
 	if actor == null:
+		var prop := _find_prop(step.actor, &"react")
+		if prop != null:
+			prop.call(&"react")
+			return
 		_step_error("acteur « %s » introuvable" % step.actor)
 		return
 	if actor is Player:
@@ -1004,6 +1101,14 @@ func _react(step: CutsceneStep) -> void:
 func _emote(step: CutsceneStep) -> void:
 	var npc := _find_actor(step.actor) as Npc
 	if npc == null:
+		var prop := _find_prop(step.actor, &"show_emote")
+		if prop != null:
+			# Jalon 21 : acteur de décor ; attend sa bulle s'il dit quand elle finit.
+			prop.call(&"show_emote", step.emote)
+			while is_instance_valid(prop) and prop.has_method(&"is_emoting") \
+					and bool(prop.call(&"is_emoting")):
+				await get_tree().process_frame
+			return
 		_step_error("PNJ « %s » introuvable" % step.actor)
 		return
 	npc.show_emote(step.emote)
@@ -1108,6 +1213,26 @@ static func _is_actor_moving(actor: Node2D) -> bool:
 func _step_error(message: String) -> void:
 	push_error("CutsceneDirector : %s (%s, étape %d)" % [message, _cutscene_id,
 		_step_index + 1])
+
+
+## Acteur de décor [param prop_id] de la carte courante (jalon 21, [method
+## GameMap.get_scene_prop]) qui sait faire [param method] ; null sinon.
+func _find_prop(prop_id: StringName, method: StringName) -> Node:
+	if not is_instance_valid(_map):
+		return null
+	var prop := _map.get_scene_prop(prop_id)
+	return prop if prop != null and prop.has_method(method) else null
+
+
+## Coroutine (jalon 21, étape « flute », et la Flûte jouée « ailleurs » par [KeyItemDirector]) :
+## notes de la Poké Flûte au-dessus du joueur ([FluteNotes], ≈ 1,5 s), puis retour. « Réduire
+## les animations » ou pas de joueur : aucune note, retour tout de suite.
+func play_flute_notes() -> void:
+	if reduce_motion or not is_instance_valid(_player) or not _player.is_inside_tree():
+		return
+	var notes := FluteNotes.spawn_over(_player)
+	if notes != null:
+		await notes.play()
 
 
 ## Joueur (« player ») ou PNJ de la carte courante, résolu à chaque étape ; null sinon.

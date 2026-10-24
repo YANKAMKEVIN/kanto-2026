@@ -1,5 +1,10 @@
 {
-	"_doc": "Capacités de terrain (jalon 16, dossier 19 §7, jalon-16.md §2.2) : capacité → CS qui la débloque (identifiant d'objet) et drapeau de badge exigé (\"\" = aucun). Lu par FieldMoves. Coupe : CS01 et Badge Cascade (G-3 retranché par Kevin le 2026-10-14). Jalon 17 (dossier 20 H-6, jalon-17.md §2.8) : Flash, CS05, sans badge ; « cue » (T24, facultatif) : texte de la mise en scène (T-17, jeton {pokemon}). Les autres CS arrivent avec leurs jalons.",
+	"_doc": "Capacités de terrain (jalon 16, dossier 19 §7, jalon-16.md §2.2) : capacité → CS qui la débloque (identifiant d'objet) et drapeau de badge exigé (\"\" = aucun). Lu par FieldMoves. Coupe : CS01 et Badge Cascade (G-3 retranché par Kevin le 2026-10-14). Jalon 17 (dossier 20 H-6, jalon-17.md §2.8) : Flash, CS05, sans badge ; « cue » (T24, facultatif) : texte de la mise en scène (T-17, jeton {pokemon}). Passe systèmes 2 (systemes-2.md §2.5, §2.8) : Surf (CS03, Badge Âme) et Force (CS04, Badge Prisme) aux valeurs du plan du J23 §2.10, qui les reprend ; Vol (CS02, Badge Foudre, Q-3). T25b : Téléport et Tunnel hors combat, sans CS ni badge (\"hm\": \"\" : le Pokémon doit connaître la capacité). Les autres CS arrivent avec leurs jalons.",
 	"cut": { "hm": "hm01", "badge": "badge_cascade" },
-	"flash": { "hm": "hm05", "badge": "", "cue": "{pokemon} utilise Flash !" }
+	"flash": { "hm": "hm05", "badge": "", "cue": "{pokemon} utilise Flash !" },
+	"surf": { "hm": "hm03", "badge": "badge_soul" },
+	"strength": { "hm": "hm04", "badge": "badge_rainbow" },
+	"fly": { "hm": "hm02", "badge": "badge_thunder" },
+	"teleport": { "hm": "", "badge": "" },
+	"dig": { "hm": "", "badge": "" }
 }

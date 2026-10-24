@@ -5,6 +5,8 @@ extends GutTest
 ## **une seule fois** ; le choix du Pokémon du Rappel n'accepte que les K.O. (« Pas K.O. » sur
 ## les autres). Contre un Dresseur, la Poupée n'est pas proposée : le Sac
 ## de combat ne montre que les objets utilisables ; rien n'est retiré, aucun tour joué.
+## Passe systèmes 2 (S2B, T11) : la Poké Flûte depuis le Sac de combat (jamais retirée ; sans
+## dormeur, « Personne ne dort. », aucun tour joué).
 
 const PLAYER_SCENE := preload("res://game/player/player.tscn")
 const STAGE_SCENE := preload("res://game/battle/battle_stage.tscn")
@@ -86,10 +88,11 @@ func _trainer() -> BattleRequest:
 ## Joue [param request] : à chaque choix, l'étape suivante de [param plan] — un tableau
 ## [onglet, objet, cible] (SAC, onglet, objet, UTILISER, puis la cible si ≥ 0) ou &"attack" ;
 ## plan épuisé : ATTAQUER (1re capacité). Un Sac sans objet utilisable : « ‹ » (noté dans
-## « empty_bag »). Renvoie { outcome, events, picker, empty_bag }.
+## « empty_bag »). Renvoie { outcome, events, picker, empty_bag, card_missing } ; card_missing :
+## la carte du joueur absente à un retour au menu des actions.
 func _play(request: BattleRequest, plan: Array) -> Dictionary:
 	var report := {"outcome": Battle.Outcome.NONE, "events": [], "picker": null,
-		"empty_bag": false}
+		"empty_bag": false, "card_missing": false}
 	_director.event_played.connect(func(e: BattleEvent) -> void: report["events"].append(e))
 	var done: Array[bool] = [false]
 	var runner := func() -> void:
@@ -118,6 +121,8 @@ func _play(request: BattleRequest, plan: Array) -> Dictionary:
 			panel.get_action_button().pressed.emit()
 		elif battle != null and battle.get_state() == Battle.State.CHOOSING \
 				and _hud.get_zone() == BattleHud.Zone.ACTIONS:
+			if not _hud.get_card(BattleHud.Side.PLAYER).is_shown():
+				report["card_missing"] = true
 			step = plan.pop_front() if not plan.is_empty() else &"attack"
 			picked = false
 			_hud.action_selected.emit(ActionGrid.BAG if step is Array else ActionGrid.ATTACK)
@@ -197,5 +202,35 @@ func test_an_x_item_against_a_trainer_then_the_battle_goes_on() -> void:
 	var report := await _play(_trainer(), [[&"battle", &"x_defend", -1]])
 	assert_eq(_state.bag.count_of(&"x_defend"), 0)
 	assert_true(_kinds(report).has(BattleEvent.Kind.BATTLE_ITEM_USED))
+	assert_eq(report["outcome"], Battle.Outcome.WIN)
+	assert_push_error_count(0)
+
+
+func test_the_flute_wakes_the_sleeper_and_stays_in_the_bag() -> void:
+	var mine: Pokemon = (_state.party as Party).get_at(0)
+	mine.status = StatusRules.SLEEP
+	mine.status_turns = 5
+	_state.bag.add(&"poke_flute", 1)
+	var report := await _play(_wild(), [[&"key", &"poke_flute", -1]])
+	var kinds := _kinds(report)
+	assert_true(kinds.has(BattleEvent.Kind.FLUTE_PLAYED))
+	assert_lt(kinds.find(BattleEvent.Kind.FLUTE_WOKE), kinds.find(BattleEvent.Kind.ALL_WOKE))
+	assert_true(_state.bag.has(&"poke_flute"), "un objet clé n'est jamais retiré")
+	assert_false(report["card_missing"], "la carte du joueur revient après la Flûte (QA S21)")
+	assert_eq(report["outcome"], Battle.Outcome.WIN)
+	assert_push_error_count(0)
+
+
+func test_without_a_sleeper_the_flute_takes_no_turn() -> void:
+	_state.bag.add(&"poke_flute", 1)
+	var report := await _play(_wild(), [[&"key", &"poke_flute", -1]])
+	var kinds := _kinds(report)
+	assert_false(kinds.has(BattleEvent.Kind.FLUTE_PLAYED), "rien n'est soumis")
+	var first_turn := kinds.find(BattleEvent.Kind.TURN_STARTED)
+	assert_gt(first_turn, -1)
+	var first: BattleEvent = report["events"][first_turn]
+	assert_eq(first.turn, 1, "le tour suivant est le premier : aucun tour pris")
+	assert_true(_state.bag.has(&"poke_flute"))
+	assert_false(report["card_missing"], "la carte du joueur revient")
 	assert_eq(report["outcome"], Battle.Outcome.WIN)
 	assert_push_error_count(0)

@@ -1,0 +1,10 @@
+{
+	"cinnabar_island_water": {
+		"maps": ["cinnabar_island"],
+		"terrain": "water",
+		"rate": 5,
+		"slots": [
+			{ "species": "tentacool", "levels": [25, 35], "weight": 256 }
+		]
+	}
+}

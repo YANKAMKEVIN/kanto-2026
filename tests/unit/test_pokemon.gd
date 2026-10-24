@@ -89,11 +89,11 @@ func test_fifth_move_needs_a_choice_and_changes_nothing() -> void:
 
 func test_invalid_learning_is_refused() -> void:
 	var charmander := _create(&"charmander", 5)
-	assert_eq(charmander.learn_move(&"splash", _data), Pokemon.LearnResult.INVALID)
+	assert_eq(charmander.learn_move(&"zz_unknown_move", _data), Pokemon.LearnResult.INVALID)
 	assert_push_error("capacité inconnue")
 	assert_false(charmander.replace_move(5, &"ember", _data), "emplacement absent")
 	assert_false(charmander.replace_move(0, &"growl", _data), "déjà connue")
-	assert_false(charmander.replace_move(0, &"splash", _data), "inconnue")
+	assert_false(charmander.replace_move(0, &"zz_unknown_move", _data), "inconnue")
 	assert_push_error_count(4)
 	assert_eq(_ids(charmander), [&"scratch", &"growl"] as Array[StringName])
 
@@ -232,7 +232,7 @@ func test_missing_or_unknown_meeting_data_falls_back_to_defaults() -> void:
 	assert_not_null(copy, "une sauvegarde d'avant le 5C.5 se charge")
 	assert_eq(copy.origin, Pokemon.Origin.UNKNOWN)
 	assert_eq(copy.met_map, &"")
-	dict["met"] = {"origin": "trade", "level": 999, "map": 3}
+	dict["met"] = {"origin": "swap", "level": 999, "map": 3} # J25 : « trade » est connu
 	copy = Pokemon.from_dict(dict, _data)
 	assert_eq(copy.origin, Pokemon.Origin.UNKNOWN, "manière inconnue → inconnue")
 	assert_eq(copy.met_level, 100, "niveau borné")
@@ -335,6 +335,6 @@ func test_from_dict_rejects_invalid_content() -> void:
 	bad["ivs"]["hp"] = 32
 	assert_null(Pokemon.from_dict(bad, _data))
 	bad = dict.duplicate(true)
-	bad["moves"][0]["id"] = "splash"
+	bad["moves"][0]["id"] = "zz_unknown_move"
 	assert_null(Pokemon.from_dict(bad, _data))
 	assert_push_error_count(5)

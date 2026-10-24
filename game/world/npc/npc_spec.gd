@@ -58,6 +58,10 @@ var verb: Interaction.Kind = Interaction.Kind.TALK
 var turn_to_player: bool = true
 ## Garde l'orientation prise pendant le dialogue au lieu de reprendre [member facing].
 var keep_facing: bool = false
+## Pose d'attente (J21 : la prière de M. Fuji au 7F) : animation de l'apparence jouée **à la
+## place de** `idle_<dir>` tant qu'il regarde dans son orientation de repos ([member facing]) ;
+## tourné ailleurs (scène « face », interaction), il reprend l'attente debout. Vide = aucune.
+var pose: StringName = &""
 ## Élévation du sprite en pixels (Pokémon posé sur une table) ; la case et le tri en
 ## profondeur ne changent pas.
 var lift: int = 0
@@ -69,6 +73,9 @@ var hop_style: StringName = &""
 var shy_action: StringName = &""
 ## Rayon de déclenchement de [member shy_action], en cases (distance de Manhattan).
 var shy_radius: int = SHY_RADIUS_DEFAULT
+## Mode de déplacement (passe systèmes 2, S2C, §2.5.5) : [constant GridWorld.MoveMode.SURF] pour un
+## Nageur (données « move_mode »: « surf »), qui n'avance que sur l'eau surfable ; à pied sinon.
+var move_mode: GridWorld.MoveMode = GridWorld.MoveMode.WALK
 ## Routine de marche (jalon 5, dossier 07 §5 : le Voyageur) : liste de cases **voisines**
 ## parcourues en boucle (aller-retour = inclure le retour), pause à chaque case. Vide =
 ## PNJ immobile. Le PNJ ne quitte jamais ces cases ; à définir hors des hautes herbes et

@@ -1,0 +1,6 @@
+{
+	"key_door_locked": {
+		"narration": true,
+		"pages": ["Il faut une carte."]
+	}
+}

@@ -288,6 +288,8 @@ func is_legal(action: BattleAction) -> bool:
 		return _is_legal_heal(action)
 	if action.kind == BattleAction.Kind.SWITCH:
 		return check_switch(action.target) == SwitchCheck.OK
+	if action.kind == BattleAction.Kind.KEY_ITEM:
+		return _is_flute(action.item_id) and flute_has_effect()
 	if action.kind == BattleAction.Kind.ITEM:
 		var battle_item := _battle_item(action)
 		if battle_item != null:
@@ -350,11 +352,11 @@ func can_use_balls() -> bool:
 		and _rules.items != null
 
 
-## Vrai si les Balls sont refusées dans ce combat (combat SPECTRE, jalon 19) : le Sac s'ouvre
-## ([method can_use_balls]), mais aucune Ball n'est légale ; le directeur l'annonce sans rien
-## retirer du Sac ni jouer de tour.
+## Vrai si les Balls sont refusées dans ce combat (combat SPECTRE, jalon 19 ; sauvage
+## « uncatchable », jalon 21) : le Sac s'ouvre ([method can_use_balls]), mais aucune Ball n'est
+## légale ; le directeur l'annonce sans rien retirer du Sac ni jouer de tour.
 func refuses_balls() -> bool:
-	return _rules != null and _rules.ghost
+	return _rules != null and (_rules.ghost or _rules.uncatchable)
 
 
 ## Vrai si le joueur peut donner un soin maintenant (règles, objets connus). Ni le Sac ni la
@@ -362,6 +364,19 @@ func refuses_balls() -> bool:
 func can_use_heal_items() -> bool:
 	return _state == State.CHOOSING and _rules != null and _rules.allow_heal_items \
 		and _rules.items != null
+
+
+## Vrai si le joueur peut jouer d'un objet clé maintenant (passe systèmes 2 : la Poké Flûte ;
+## objets connus). Ni le Sac ni l'effet ne sont consultés ([method flute_has_effect]).
+func can_use_key_items() -> bool:
+	return _state == State.CHOOSING and _rules != null and _rules.items != null
+
+
+## Vrai si la Flûte réveillerait quelqu'un : un Pokémon endormi non K.O. dans l'une des deux
+## équipes ([method PokeFluteRules.sleepers]). Sans effet, elle ne prend pas le tour (le
+## directeur le dit sans rien soumettre).
+func flute_has_effect() -> bool:
+	return not PokeFluteRules.sleepers(_player.party, _foe.party).is_empty()
 
 
 ## Contexte d'usage des objets de ce combat ([constant ItemData.CONTEXT_WILD_BATTLE] ou
@@ -400,6 +415,9 @@ func submit(action: BattleAction) -> Array[BattleEvent]:
 			_use_battle_item(battle_item, events)
 		else:
 			_throw_ball(action.item_id, events)
+		return events
+	if action.kind == BattleAction.Kind.KEY_ITEM:
+		_play_flute(events)
 		return events
 	var foe_action := _foe_action()
 	if foe_action.kind == BattleAction.Kind.SWITCH:
@@ -553,6 +571,31 @@ func _use_battle_item(item: ItemData, events: Array[BattleEvent]) -> void:
 	_foe_turn_alone(events)
 
 
+## Poké Flûte (passe systèmes 2, dossier 24 §8 ; jouée avant les capacités, aucun tirage
+## propre) : FLUTE_PLAYED, un FLUTE_WOKE par Pokémon réveillé (joueur, puis adversaire),
+## ALL_WOKE, puis l'adversaire joue. Le tour est pris.
+func _play_flute(events: Array[BattleEvent]) -> void:
+	events.append(_event(BattleEvent.Kind.FLUTE_PLAYED, _player))
+	var sleepers := PokeFluteRules.sleepers(_player.party, _foe.party)
+	for pokemon: Pokemon in PokeFluteRules.wake_all(sleepers):
+		var mine := _player.party.index_of(pokemon) >= 0
+		var side := _player if mine else _foe
+		var woke := _pokemon_event(BattleEvent.Kind.FLUTE_WOKE,
+			BattleEvent.SideId.PLAYER if mine else BattleEvent.SideId.FOE, pokemon)
+		woke.on_field = side.active != null and side.active.pokemon == pokemon
+		events.append(woke)
+	events.append(_event(BattleEvent.Kind.ALL_WOKE, _player))
+	_foe_turn_alone(events)
+
+
+## Vrai si [param item_id] est la Poké Flûte des objets du combat.
+func _is_flute(item_id: StringName) -> bool:
+	if _rules == null or _rules.items == null:
+		return false
+	var item := _rules.items.get_item(item_id)
+	return item != null and item.key_use == ItemData.KEY_USE_POKE_FLUTE
+
+
 func _is_legal_heal(action: BattleAction) -> bool:
 	if not can_use_heal_items():
 		return false
@@ -638,6 +681,7 @@ func _end_turn(events: Array[BattleEvent]) -> void:
 		if _state == State.OVER:
 			return
 		_disable_countdown(side, events)
+		_screen_countdown(side, events)
 	if _foe.active.pokemon.is_fainted():
 		_send_out(_foe, events)
 	if _player.active.pokemon.is_fainted():
@@ -764,6 +808,18 @@ func _execute(side: BattleSide, action: BattleAction, events: Array[BattleEvent]
 		used.pp = slot.pp
 	events.append(used)
 	user.last_move_slot = action.move_index
+	# Jalon 24 (T13) : Métronome lance une capacité tirée au hasard, comme si le Pokémon la
+	# connaissait (les PP de Métronome sont dépensés, pas ceux de la capacité tirée).
+	if move.effect_of(MoveEffect.Kind.METRONOME) != null:
+		move = MetronomeRules.pick(_data, _rng)
+		if move == null:
+			_append_failed(side, move_id, events)
+			return
+		move_id = move.id
+		var called := _event(BattleEvent.Kind.MOVE_USED, side)
+		called.move_id = move_id
+		called.pp = -1
+		events.append(called)
 	if not released and _start_charge(side, action, move, events):
 		return
 	if _dodged(target_side, move, events):
@@ -774,6 +830,9 @@ func _execute(side: BattleSide, action: BattleAction, events: Array[BattleEvent]
 	if move.is_damaging():
 		if not _strike(side, target_side, move, events):
 			_self_ko(move, side, target_side, events)
+			return
+	elif move.effect_of(MoveEffect.Kind.OHKO) != null:
+		if not _ohko_lands(side, target_side, move, events):
 			return
 	elif not DamageCalc.accuracy_check(user, target, move, _rng):
 		_append_missed(side, move_id, events)
@@ -905,9 +964,13 @@ func _strike(side: BattleSide, target_side: BattleSide, move: MoveData,
 				return false
 			if hits_effect != null:
 				hits = _hit_count(hits_effect)
+		var amount := result.amount
+		# Protection, Mur Lumière (passe systèmes 2) : dégâts ÷ 2, sauf coup critique.
+		if not result.critical and target_side.is_screened_from(move):
+			amount = maxi(amount / 2, 1)
 		var damage := _event(BattleEvent.Kind.DAMAGE, target_side)
 		damage.move_id = move.id
-		damage.amount = target.pokemon.take_damage(result.amount)
+		damage.amount = target.pokemon.take_damage(amount)
 		damage.hp = target.pokemon.hp
 		damage.effectiveness = result.effectiveness
 		damage.critical = result.critical
@@ -937,6 +1000,80 @@ func _hit_count(effect: MoveEffect) -> int:
 	if draw <= 6:
 		return 3
 	return 4 if draw == 7 else 5
+
+
+## K.O. en un coup (passe systèmes 2, [OhkoRules]) : la capacité touche-t-elle ? Sinon l'annonce :
+## type sans effet (NO_EFFECT), niveau inférieur (FAILED), tirage raté (MOVE_MISSED).
+func _ohko_lands(side: BattleSide, target_side: BattleSide, move: MoveData,
+		events: Array[BattleEvent]) -> bool:
+	var target := target_side.active
+	if not move.typeless and _data.get_type_chart().multiplier(move.type, target.types) == 0.0:
+		var immune := _event(BattleEvent.Kind.NO_EFFECT, target_side)
+		immune.move_id = move.id
+		events.append(immune)
+		return false
+	var user_level := side.active.pokemon.level
+	var target_level := target.pokemon.level
+	if not OhkoRules.level_allows(user_level, target_level):
+		_append_failed(side, move.id, events)
+		return false
+	if _rng.roll(100) > OhkoRules.accuracy(move.accuracy, user_level, target_level):
+		_append_missed(side, move.id, events)
+		return false
+	return true
+
+
+## Soin (passe systèmes 2) : le lanceur récupère [member MoveEffect.fraction] de ses PV max (au
+## moins 1) ; à PV pleins, la capacité échoue.
+func _heal(effect: MoveEffect, move: MoveData, side: BattleSide,
+		events: Array[BattleEvent]) -> void:
+	var user := side.active.pokemon
+	if user.hp >= user.max_hp():
+		_append_failed(side, move.id, events)
+		return
+	var before := user.hp
+	user.hp = mini(user.hp + maxi(floori(user.max_hp() * effect.fraction), 1), user.max_hp())
+	var healed := _event(BattleEvent.Kind.HEALED, side)
+	healed.amount = user.hp - before
+	events.append(healed)
+
+
+## Protection, Mur Lumière (passe systèmes 2) : le mur protège le camp du lanceur
+## [constant MoveEffect.SCREEN_TURNS] tours ; déjà levé → la capacité échoue.
+func _raise_screen(effect: MoveEffect, move: MoveData, side: BattleSide,
+		events: Array[BattleEvent]) -> void:
+	if side.screen_turns(effect.screen) > 0:
+		_append_failed(side, move.id, events)
+		return
+	side.screens[effect.screen] = MoveEffect.SCREEN_TURNS
+	var started := _event(BattleEvent.Kind.SCREEN_STARTED, side)
+	started.move_id = effect.screen
+	events.append(started)
+
+
+## Fin de tour : chaque mur du camp perd un tour ; à 0, SCREEN_ENDED.
+func _screen_countdown(side: BattleSide, events: Array[BattleEvent]) -> void:
+	for screen: StringName in side.screens.keys():
+		side.screens[screen] -= 1
+		if side.screens[screen] <= 0:
+			side.screens.erase(screen)
+			var ended := _event(BattleEvent.Kind.SCREEN_ENDED, side)
+			ended.move_id = screen
+			events.append(ended)
+
+
+## K.O. en un coup qui a touché : dégâts = PV restants de la cible, puis OHKO.
+func _ohko(move: MoveData, target_side: BattleSide, events: Array[BattleEvent]) -> void:
+	var target := target_side.active
+	if target.pokemon.is_fainted():
+		return
+	var damage := _event(BattleEvent.Kind.DAMAGE, target_side)
+	damage.move_id = move.id
+	damage.amount = target.pokemon.take_damage(target.pokemon.hp)
+	damage.hp = target.pokemon.hp
+	events.append(damage)
+	_record_hit(target_side, damage.amount)
+	events.append(_event(BattleEvent.Kind.OHKO, target_side))
 
 
 ## Une capacité Feu qui touche un Pokémon gelé le dégèle (STATUS_ENDED ; jalon 11).
@@ -1022,6 +1159,8 @@ func _apply_effect(effect: MoveEffect, move: MoveData, side: BattleSide,
 				else maxi(floori(target.pokemon.hp / 2.0), 1)
 			if effect.mode == &"value":
 				amount = effect.amount
+			elif effect.mode == &"psywave":
+				amount = maxi(side.active.pokemon.level * _rng.range_int(50, 150) / 100, 1)
 			var damage := _event(BattleEvent.Kind.DAMAGE, target_side)
 			damage.move_id = move_id
 			damage.amount = target.pokemon.take_damage(amount)
@@ -1058,6 +1197,16 @@ func _apply_effect(effect: MoveEffect, move: MoveData, side: BattleSide,
 			_recoil_from_damage(effect, side, events)
 		MoveEffect.Kind.RECHARGE:
 			_start_recharge(side)
+		MoveEffect.Kind.OHKO:
+			_ohko(move, target_side, events)
+		MoveEffect.Kind.HEAL:
+			_heal(effect, move, side, events)
+		MoveEffect.Kind.SCREEN:
+			_raise_screen(effect, move, side, events)
+		MoveEffect.Kind.HAZE:
+			_player.active.reset_stages()
+			_foe.active.reset_stages()
+			events.append(_event(BattleEvent.Kind.STATS_RESET, side))
 
 
 ## Effet [code]confusion[/code] (jalon 11) sur le Pokémon de [param target_side] : comme un
@@ -1463,6 +1612,15 @@ func _start_charge(side: BattleSide, action: BattleAction, move: MoveData,
 	var started := _event(BattleEvent.Kind.CHARGE_STARTED, side)
 	started.move_id = move.id
 	events.append(started)
+	if effect.stat_up != &"":
+		# Coud'Krâne (passe systèmes 2) : +1 niveau au tour de charge.
+		var applied := side.active.change_stage(effect.stat_up, 1)
+		var changed := _event(BattleEvent.Kind.STAT_CHANGED if applied != 0
+			else BattleEvent.Kind.STAT_UNCHANGED, side)
+		changed.stat = effect.stat_up
+		changed.stages = applied if applied != 0 else 1
+		changed.stage = side.active.get_stage(effect.stat_up)
+		events.append(changed)
 	return true
 
 

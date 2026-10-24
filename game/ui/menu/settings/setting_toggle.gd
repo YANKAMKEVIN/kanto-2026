@@ -63,7 +63,7 @@ func setup(view: SettingControlView, animate: bool = false) -> void:
 	_detail.text = view.detail
 	_detail.visible = not view.detail.is_empty()
 	_value_label.text = view.value_text
-	_switch.set_on(_value, animate)
+	_switch.set_on(_value != view.inverted, animate)
 	disabled = not view.enabled
 	modulate.a = 1.0 if view.enabled else 0.5
 

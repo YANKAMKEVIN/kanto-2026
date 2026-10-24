@@ -1,0 +1,32 @@
+{
+	"snorlax_route_16": {
+		"narration": true,
+		"variants": [
+			{
+				"if_items": ["poke_flute"],
+				"if": ["snorlax_route_16_woken"],
+				"pages": ["Ronflex dort de nouveau.", "Il ronfle comme si de rien n'était.", "Jouer de la Poké Flûte ?"],
+				"choice": {
+					"confirm": "OUI", "cancel": "NON", "confirm_cutscene": "snorlax_route_16_wake",
+					"cancel_pages": []
+				}
+			},
+			{
+				"if_items": ["poke_flute"],
+				"pages": ["Jouer de la Poké Flûte ?"],
+				"choice": {
+					"confirm": "OUI", "cancel": "NON", "confirm_cutscene": "snorlax_route_16_wake",
+					"cancel_pages": []
+				}
+			},
+			{
+				"unless": ["snorlax_route_16_seen"],
+				"set": ["snorlax_route_16_seen"],
+				"pages": ["Un énorme Pokémon dort au milieu du chemin.", "Il ne bouge pas d'un pouce."]
+			},
+			{
+				"pages": ["Il ronfle paisiblement.", "Rien ne semble pouvoir le réveiller."]
+			}
+		]
+	}
+}

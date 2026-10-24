@@ -5,6 +5,10 @@ extends RefCounted
 
 const MAX_PLAY_TIME_STEP: float = 0.5
 
+## Changement de focus pour le délai de garde de la sauvegarde (passe systèmes 2, S2A,
+## [SaveCheckpoint]) : `FOCUS_OUT` sans `PAUSED` (bandeau d'appel, rideau de notifications).
+enum Focus { NONE, LOST, REGAINED }
+
 var in_foreground: bool = true
 
 
@@ -21,6 +25,16 @@ func handle_notification(what: int) -> bool:
 		Node.NOTIFICATION_APPLICATION_FOCUS_OUT:
 			in_foreground = false
 	return false
+
+
+## `FOCUS_OUT` → [constant Focus.LOST] ; `FOCUS_IN` ou `RESUMED` → [constant Focus.REGAINED].
+static func focus_change(what: int) -> Focus:
+	match what:
+		Node.NOTIFICATION_APPLICATION_FOCUS_OUT:
+			return Focus.LOST
+		Node.NOTIFICATION_APPLICATION_FOCUS_IN, Node.NOTIFICATION_APPLICATION_RESUMED:
+			return Focus.REGAINED
+	return Focus.NONE
 
 
 func play_time_step(delta: float, opening_active: bool) -> float:

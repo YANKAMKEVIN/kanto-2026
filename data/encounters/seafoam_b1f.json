@@ -1,0 +1,19 @@
+{
+	"seafoam_b1f_floor": {
+		"maps": ["seafoam_b1f"],
+		"terrain": "floor",
+		"rate": 10,
+		"slots": [
+			{ "species": "staryu", "levels": [30, 32], "weight": 45 },
+			{ "species": "shellder", "levels": [30, 32], "weight": 45 },
+			{ "species": "horsea", "levels": [30, 32], "weight": 38 },
+			{ "species": "seel", "levels": [28, 30], "weight": 38 },
+			{ "species": "krabby", "levels": [30, 32], "weight": 38 },
+			{ "species": "slowpoke", "levels": [28, 30], "weight": 19 },
+			{ "species": "psyduck", "levels": [28, 30], "weight": 19 },
+			{ "species": "dewgong", "levels": [38, 38], "weight": 11 },
+			{ "species": "seadra", "levels": [37, 37], "weight": 2 },
+			{ "species": "kingler", "levels": [37, 37], "weight": 1 }
+		]
+	}
+}

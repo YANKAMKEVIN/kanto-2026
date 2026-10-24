@@ -1,0 +1,97 @@
+# Route 16 ouest (`route_16_west`) — grille fonctionnelle (jalon 22, lot 22.0, T6 ; plan jalon-22.md §0.4
+# n° 7, §2.11 ; dossier 25 §6.4, §8.5, §9.5, §11 ; RB : Route 16, moitié ouest x 0..16).
+#
+# 40 × 27 cases ; nord en haut ; x = 0..39, y = 0..26. Carte séparée qui prolonge la Route 16 du J21 à
+# l'ouest du poste (aucun raccord direct de bord avec elle : on passe par l'intérieur du poste).
+#
+# RACCORDS :
+#   EST : façade ouest du poste 16 (8 × 7, x 32..39, y 9..15) : porte NORD (35..36, 9) ↔ couloir haut
+#     (route_16_gate (2..3, 1)) ; porte SUD (35..36, 15) ↔ couloir bas (route_16_gate (2..3, 8)).
+#   SUD : (12..14, 26) ↔ Route 17 (12..14, 0) (RB : Route 16 ↔ Route 17 sans décalage).
+#
+# Composition :
+#   VOIE HAUTE (rangées 1..8, à pied) : pré, herbes (seules rencontres de la carte), maison de Vol (porte
+#     réservée au J23), Hyper Potion cachée, panneau ; au sud, la FALAISE (rangées 9..16) : on voit la
+#     Piste en contrebas, on n'y descend pas.
+#   VOIE BASSE = PISTE (cases k) : parvis du poste, place est, DEUX VOIES de 2 cases (nord 17..18, sud
+#     21..22) séparées par une barrière basse (19..20) percée de deux passages (21..22 et 27..28), place
+#     ouest, sortie de 3 cases vers la Route 17 gardée par le Motard (I). Les Dresseurs sont en alcôve
+#     dans la falaise (nord) ou la forêt (sud), chacun tourné vers UNE voie.
+#
+# LÉGENDE COMMUNE DU J22 (chaque grille la reprend ; caractères NOUVEAUX marqués ★) :
+#   T arbres, forêt serrée (bloqués)     . herbe rase (praticable)     = chemin de terre (praticable)
+#   h hautes herbes (praticable, rencontres)   q ponton, planches (praticable)   y sable (praticable)
+#   w eau (bloquée, NON pêchable)        ★ f eau PÊCHABLE (bloquée ; on pêche depuis une case praticable
+#     voisine, face à elle ; jamais au contact d'une case de Piste)   ~ mer de décor (bloquée)
+#   R rochers, rive rocheuse, falaise (bloqués)   c clôture basse (bloquée)   x buissons (bloqués)
+#   n banc (bloqué)   P poste (bâtiment, bloqué)   m maison (bloquée)   D porte (praticable, terminale)
+#   ★ k tronçon de PISTE CYCLABLE, plat (praticable ; à vélo seulement, on ne peut pas descendre)
+#   ★ s PISTE en PENTE (praticable ; sans appui, dérive d'une case vers le sud ; Route 17 seulement)
+#   b barrière basse de la Piste (bloquée ; arrête la vue des Dresseurs)
+# Une case de Piste est une case « k » ou « s » ; un PALIER est une bande de rangées de la Route 17 sans
+# « s » entre deux tronçons de pente. Les Dresseurs de la Piste sont EN RETRAIT : sur une case « . »
+# (alcôve) hors des voies, tournés vers elles.
+#
+# POSITIONS : types warp, spawn, dresseur, objet_visible, cache, panneau, pnj, pokemon, herbes, repere,
+# decor. Dresseurs : trainer= (id du dossier §9), facing=, sight= (portée RB × 1,5, arrondie au-dessus :
+# 1 → 2, 2 → 3, 3 → 5, 4 → 6), rbsight=, inevitable=oui|non. Objets : item=, drapeau= (dossier §11).
+# Warps : to= (carte) spawn= (point d'arrivée) ; coming_soon= pour une porte ou un bord « À venir » ;
+# lie= relie les deux portes d'un poste traversant. Le contrôle : tools/art/plan_check_j22.py
+# (python3 -I tools/art/plan_check_j22.py) ; le rendu : tools/art/plan_aplats_j22.py.
+#
+# DÉFAUTS : 40 × 27 (le dossier disait « 60 × 27 au total » avec les 44 colonnes du J21 ; la Piste a besoin
+# de place pour 5 Dresseurs évitables) ; voies de 2 cases ; aucune herbe sur la Piste.
+
+PRATICABLES .=hkD
+
+GRILLE 40 27
+00 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+01 TTTTmmmmmmmTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+02 TTTTmmmmmmm............................T
+03 TTTTmmmmmmm...hhhhhhhhhhhhh............T
+04 TTTTmmmmmmm...hhhhhhhhhhhhh............T
+05 TT..mmmmmmm...hhhhhhhhhhhhh.TTT........T
+06 TT..mmmDmmm...hhhhhhhhhhhhh.TTT........T
+07 TT............hhhhhhhhhhhhh.TTT........T
+08 TT.....................................T
+09 RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRPPPDDPPP
+10 RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRPPPPPPPP
+11 RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRPPPPPPPP
+12 RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRPPPPPPPP
+13 RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRPPPPPPPP
+14 RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRPPPPPPPP
+15 RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRPPPDDPPP
+16 RRRRRRRRR.RRRRRRRR.RRRRRRRRRRR.RkkkkkkkT
+17 TTTTTTkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkT
+18 TTTTTTkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkT
+19 TTTTTTkkkbbbbbbbbbbbbkkbbbbkkbbbkkkkkkkT
+20 TTTTTTkkkbbbbbbbbbbbbkkbbbbkkbbbkkkkkkkT
+21 TTTTTTkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkT
+22 TTTTTTkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkT
+23 TTTTTTTTTTTTkkkTTTTTTTTT.TTTTTTTTTTTT.TT
+24 TTTTTTTTTTT.kkkTTTTTTTTTTTTTTTTTTTTTTTTT
+25 TTTTTTTTTTTTkkkTTTTTTTTTTTTTTTTTTTTTTTTT
+26 TTTTTTTTTTTTkkkTTTTTTTTTTTTTTTTTTTTTTTTT
+FIN
+
+# POSITIONS — identifiant  type  cases  bloque|libre  [cle=valeur ...]  # commentaire
+POSITIONS
+porte_poste_haut       warp           35..36,9       libre   to=route_16_gate spawn=entrance_haut_ouest  # STEP_ON ↓ → poste 16, couloir haut
+from_poste_haut        spawn          35..36,8       libre   facing=up  # sortie du couloir haut, tournée ↑ (à pied)
+porte_poste_bas        warp           35..36,15      libre   to=route_16_gate spawn=entrance_bas_ouest  # STEP_ON ↑ → poste 16, couloir bas (garde)
+from_poste_bas         spawn          35..36,16      libre   facing=down  # sortie du couloir bas sur la Piste, tournée ↓, EN SELLE
+warp_sud               warp           12..14,26      libre   to=route_17 spawn=from_route_16  # PUSH ↓ → Route 17 (12..14, 0)
+from_route_17          spawn          12..14,26      libre   facing=up  # arrivée de la Route 17, tournée ↑
+porte_maison_vol       warp           7,6            libre   to=route_16_fly_house spawn=entrance  # STEP_ON ↑ → maison de Vol (Q-9 de la passe systèmes 2 : le J22 pose la maison et la CS02, en données)
+from_fly_house         spawn          7,7            libre   facing=down  # sortie de la maison de Vol, tournée ↓
+route_16_biker_1       dresseur       30,16          bloque  role=D1 trainer=route_16_biker_1 facing=down sight=5 rbsight=3 inevitable=non rb=17,12  # Motard, Tadmorv 29 + Smogo 29 ; alcôve nord, vue (30, 17..18) : voie nord → prendre la voie sud
+route_16_cueball_1     dresseur       24,23          bloque  role=D2 trainer=route_16_cueball_1 facing=up sight=3 rbsight=2 inevitable=non rb=14,13  # Loubard, Machoc / Férosinge / Machoc 28 ; alcôve sud, vue (24, 21..22) : passer au nord (passage 27..28)
+route_16_cueball_2     dresseur       18,16          bloque  role=D3 trainer=route_16_cueball_2 facing=down sight=3 rbsight=2 inevitable=non rb=11,12  # Loubard, Férosinge 29 + Machoc 29 ; alcôve nord, vue (18, 17..18) : passer au sud (passage 21..22)
+route_16_cueball_3     dresseur       9,16           bloque  role=D4 trainer=route_16_cueball_3 facing=down sight=3 rbsight=2 inevitable=non rb=6,10  # Loubard, Machoc 33 ; alcôve nord-ouest, vue (9, 17..18) : la voie sud mène à la sortie sans le croiser
+route_16_biker_2       dresseur       11,24          bloque  role=D5 trainer=route_16_biker_2 facing=right sight=3 rbsight=2 inevitable=oui rb=9,11  # Motard, Smogogo 33 (I) ; alcôve de la sortie, vue (12..14, 24) : toute la sortie vers la Route 17
+route_16_hidden_1      cache          38,2           libre   role=O1 item=hyper_potion drapeau=got_route_16_hidden_1  # Hyper Potion cachée (dossier §11), coin nord-est de la voie haute
+panneau_piste          panneau        37,23          bloque  role=T-piste  # « PISTE CYCLABLE » ; lu depuis (37, 22) ↓
+panneau_route_16       panneau        31,4           bloque  role=T-route  # « ROUTE 16 » (voie haute) ; lu depuis (31, 5) ↑
+herbes_h1              herbes         14..26,3..7    libre   role=H1  # herbes de la voie haute (seules herbes de la carte)
+piste                  repere         6..39,16..26   libre   role=piste  # VOIE BASSE = PISTE (cases k) ; voie haute à pied
+FIN

@@ -55,6 +55,9 @@ extends RefCounted
 ## TELEPORTED → « teleported » ; NOTHING_HAPPENED → « nothing_happened ». Super Bonbon (T18b,
 ## n° 62) : « rare_candy_level » ({level} : le niveau atteint), sans événement du moteur (le voile
 ## du Sac le demande à [method line_for]).
+## Passe systèmes 2 : OHKO → « ohko » (K.O. en un coup) ; HEALED → « heal » ; SCREEN_STARTED /
+## SCREEN_ENDED → « screen_started_<camp> » / « screen_ended_<camp> » ({move} : le mur) ;
+## STATS_RESET → « haze ».
 ## Jalon 19 : RECHARGING → « recharging » (Ultralaser) ; SCARED_AWAY → « scared_away »
 ## (Hurlement, combat sauvage) ; FORCED_OUT → « forced_out » (Hurlement contre un Dresseur, puis
 ## « sent_out_player » ou « sent_out_foe » du remplaçant).
@@ -63,6 +66,10 @@ extends RefCounted
 ## « wild_appeared ») ; GHOST_SCARED → « ghost_scared » ; GHOST_SPOKE → « ghost_spoke ». Sans
 ## événement ([method get_template]) : « ghost_name » (nom affiché du SPECTRE, posé par le
 ## directeur) et « ghost_ball_refused » (Ball refusée avant le lancer). La fuite garde « fled ».
+## Jalon 21 (dossier 24 §15.1, validé) : SENT_OUT adverse [member BattleEvent.revealed] →
+## « ghost_revealed_species » (« C'est un {pokemon} ! ») au lieu de « wild_appeared ». Sans
+## événement : « ghost_revealed » (intro « révélation ») et « ball_uncatchable » (Ball refusée,
+## sauvage « uncatchable »).
 ## Changement de Pokémon (jalon 7) : WITHDRAWN → « withdrawn » (« Reviens, Salamèche ! ») ; le
 ## Pokémon envoyé reprend « sent_out_player ». Côté adverse (jalon 13, IA qui change, §21 n° 60) :
 ## « withdrawn_foe » (« {trainer} rappelle {pokemon} ! »), puis « sent_out_foe ». Le panneau ÉQUIPE lit, sans événement
@@ -143,13 +150,20 @@ const TEMPLATE_IDS: Array[StringName] = [
 	&"trap_clamp_started", &"trap_clamp_damaged", &"trap_ended",
 	&"move_disabled", &"disable_ended", &"rested", &"switch_reason_trapped",
 	&"move_disabled_label",
-	&"charge_dig_start", &"charge_dig_broken", &"dodged", &"ball_blocked", &"teleported",
+	&"charge_dig_start", &"charge_dig_broken", &"charge_fly_start", &"charge_fly_broken", &"dodged", &"ball_blocked", &"teleported",
 	&"nothing_happened", &"rare_candy_level",
 	&"coins_scattered", &"coins_collected",
 	&"recharging", &"scared_away", &"forced_out",
 	&"ghost_name", &"ghost_appeared", &"ghost_unidentified", &"ghost_scared", &"ghost_spoke",
 	&"ghost_ball_refused",
+	&"ohko",
+	&"heal", &"screen_started_player", &"screen_started_foe", &"screen_ended_player",
+	&"screen_ended_foe", &"haze",
+	&"charge_solar_beam_start", &"charge_solar_beam_broken",
+	&"charge_skull_bash_start", &"charge_skull_bash_broken",
 	&"battle_item_used", &"item_escape", &"item_escape_2", &"revived",
+	&"flute_played", &"flute_all_woke", &"flute_no_effect", &"flute_no_effect_2",
+	&"ball_uncatchable", &"ghost_revealed", &"ghost_revealed_species", # Jalon 21
 ]
 ## Entre deux gains de statistiques du bilan (« PV +2 · Attaque +1 »).
 const SUMMARY_SEPARATOR: String = " · "
@@ -300,6 +314,8 @@ func lines(event: BattleEvent, data: PokemonData, trainer: TrainerData = null) \
 				result.append(_fill(&"ghost_unidentified", event, data))
 			elif not event.trainer_name.is_empty():
 				result.append(_fill(&"sent_out_foe", event, data))
+			elif event.revealed: # Jalon 21 : après la révélation du Scope Sylphe
+				result.append(_fill(&"ghost_revealed_species", event, data))
 			else:
 				result.append(_fill(&"wild_appeared", event, data))
 		BattleEvent.Kind.MOVE_USED:
@@ -357,6 +373,10 @@ func lines(event: BattleEvent, data: PokemonData, trainer: TrainerData = null) \
 			result.append(_fill(&"item_escape_2", event, data))
 		BattleEvent.Kind.REVIVED:
 			result.append(_fill(&"revived", event, data))
+		BattleEvent.Kind.FLUTE_PLAYED:
+			result.append(_fill(&"flute_played", event, data))
+		BattleEvent.Kind.ALL_WOKE:
+			result.append(_fill(&"flute_all_woke", event, data))
 		BattleEvent.Kind.FAILED:
 			result.append(_fill(&"move_failed", event, data))
 		BattleEvent.Kind.CONFUSED:
@@ -413,6 +433,16 @@ func lines(event: BattleEvent, data: PokemonData, trainer: TrainerData = null) \
 			result.append(_fill(&"ghost_scared", event, data))
 		BattleEvent.Kind.GHOST_SPOKE:
 			result.append(_fill(&"ghost_spoke", event, data))
+		BattleEvent.Kind.OHKO:
+			result.append(_fill(&"ohko", event, data))
+		BattleEvent.Kind.HEALED:
+			result.append(_fill(&"heal", event, data))
+		BattleEvent.Kind.SCREEN_STARTED, BattleEvent.Kind.SCREEN_ENDED:
+			var started := event.kind == BattleEvent.Kind.SCREEN_STARTED
+			result.append(_fill(StringName("screen_%s_%s" % ["started" if started else "ended",
+				"foe" if event.side == BattleEvent.SideId.FOE else "player"]), event, data))
+		BattleEvent.Kind.STATS_RESET:
+			result.append(_fill(&"haze", event, data))
 		BattleEvent.Kind.STATUS_INFLICTED, BattleEvent.Kind.STATUS_UNCHANGED, \
 				BattleEvent.Kind.STATUS_DAMAGED, BattleEvent.Kind.STATUS_CURED, \
 				BattleEvent.Kind.STATUS_PREVENTED, BattleEvent.Kind.STATUS_ENDED:

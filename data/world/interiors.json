@@ -73,6 +73,27 @@
 		"celadon_chief_house",
 		"celadon_hotel",
 		"celadon_gym",
-		"celadon_game_corner"
+		"celadon_game_corner",
+		"route_15_gate",
+		"route_15_gate_2f",
+		"route_16_gate",
+		"route_18_gate",
+		"route_12_rod_house",
+		"route_16_fly_house",
+		"fuchsia_center",
+		"fuchsia_mart",
+		"fuchsia_meeting_room",
+		"fuchsia_grandpa_house",
+		"fuchsia_good_rod_house",
+		"cinnabar_center",
+		"cinnabar_mart",
+		"cinnabar_lab",
+		"cinnabar_lab_meeting",
+		"cinnabar_lab_rd",
+		"cinnabar_lab_fossil",
+		"cinnabar_gym",
+		"pewter_museum_reserve",
+		"route_12_gate",
+		"route_12_gate_2f"
 	]
 }

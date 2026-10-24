@@ -1,0 +1,35 @@
+CONCEPT ART — VUE GÉNÉRALE DE PARMANIE, LA VILLE OUVERTE SUR LA NATURE (Kanto 2026), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre.
+Légende du plan :
+- vert foncé à cercles = FORÊT DENSE infranchissable (marges, et quelques bosquets carrés dans la ville) ;
+- vert clair = PELOUSES d'herbe rase, très présentes ; petits disques vert sombre groupés = BUISSONS taillés ;
+- beige = ALLÉES de terre battue claire : une grande AVENUE est-ouest qui traverse toute la ville d'un bord à l'autre, une AVENUE nord-sud au centre, et la PROMENADE est-ouest au sud, le long de la plage ;
+- en HAUT au centre, toit vert olive sur façade crème, porte double = le BÂTIMENT D'ENTRÉE DU PARC SAFARI, au bout de l'avenue nord-sud : une grande maison d'accueil rustique et accueillante, toit de bois ou de tuiles vert mousse, poutres de bois, allure de pavillon de parc naturel ;
+- rectangles beiges entourés de traits blancs = ENCLOS clôturés de barrières de bois blanches : deux en haut à gauche, deux en haut à droite, un en dessous à droite ; le sol des enclos est de la terre et de l'herbe rase, avec un petit abri ou un abreuvoir, un rocher, un tronc couché, des touffes ; le rectangle BLEU clôturé à droite = un BASSIN (enclos d'eau). Les enclos sont VIDES : aucun animal, aucun Pokémon dedans ; petits carrés ocre devant chaque enclos = panneaux de bois SANS TEXTE ;
+- à gauche, toit BLEU et façade blanche = la BOUTIQUE ; toit vert-bleu = la SALLE DE RÉUNION, une maison plus grande et soignée ;
+- à droite au milieu, bleu = un ÉTANG aux bords droits, avec une rive d'herbe, quelques nénuphars et joncs ;
+- en BAS, une rangée de bâtiments face à la promenade, de gauche à droite : grand bâtiment au toit VIOLET = l'ARÈNE (la plus grande construction de la ville, sobre et mystérieuse : toit violet sombre, murs gris clair, porte double fermée, un jardin japonais de pierres et de petits pins taillés autour suggère le ninja, SANS symbole) ; une MAISON au toit brun-rouge ; toit ROUGE et façade blanche = le CENTRE POKÉMON ; deux MAISONS au toit brun-rouge à droite ;
+- jaune pâle = PLAGE de sable sur toute la largeur ; bleu en bas = la MER ; au milieu de la plage, une large TERRASSE de sable avance dans la mer, et à sa droite un étroit COULOIR de terre battue bordé d'un muret de pierre grise part vers le sud par le bas de l'image.
+Respecte ce plan À LA LETTRE : la place de chaque bâtiment, de chaque enclos, des allées, de l'étang, de la plage. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+RÈGLE ABSOLUE DES CHEMINS : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; chemins, pistes, barrières, rives et bords des zones suivent une grille : uniquement des segments horizontaux et verticaux à ANGLES DROITS, AUCUNE courbe, aucun segment en diagonale.
+RELIEF : la ville est BASSE et PLATE ; la plage descend doucement vers la mer, sans falaise ni escalier.
+
+IMAGE 2 : la vue générale de Carmin-sur-Mer, une autre ville du même jeu. Respecte EXACTEMENT son style de rendu : même pinceau, mêmes arbres en masses arrondies, même chemin de terre, même saturation, même échelle des bâtiments ; le CENTRE POKÉMON et la BOUTIQUE sont les mêmes bâtiments que dans toutes les villes (Centre au toit rouge et grande porte vitrée ; Boutique au toit bleu et porte vitrée), mais ICI SANS AUCUN EMBLÈME : leurs toits sont unis, sans disque ni ballon ni symbole. Ne reprends PAS sa composition (ni port, ni paquebot) ni sa lumière dorée : ici la lumière est NEUTRE.
+
+Format : CARRÉ 1024 × 1024, vue plongeante sur toute la ville, comme le plan.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats. Le feuillage est peint en grandes masses douces.
+- Perspective : vue de dessus, axes de l'image alignés sur la grille, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud).
+- Aucun trait noir : contours fins et doux, plus sombres et plus saturés que la couleur locale. Ombres colorées bleu-vert ou violet froid, jamais grises.
+- LUMIÈRE NEUTRE : lumière de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche ; aucune teinte dorée ou orangée, aucun liseré chaud, aucun rai de soleil, aucune ombre portée longue.
+
+AMBIANCE — « la ville ouverte » : une ville basse, verte et aérée, beaucoup d'herbe et d'arbres, des allées larges, des barrières de bois blanches autour des enclos, l'appel du grand parc naturel au nord, et au sud une plage claire et la mer calme.
+
+PERSONNE : aucun personnage, aucun Pokémon, aucun animal, aucun vélo, aucun véhicule.
+
+INTERDITS : texte, lettres, chiffres, étiquettes, panneaux lisibles, logo, emblème, signature, filigrane, cadre, interface ; arbres orange ou automnaux ; neige ; brouillard, flou de profondeur, vignettage ; pixel art, 3D ; emblème de ballon ou de Poké Ball sur le Centre, la Boutique ou l'Arène ; tout bâtiment non prévu par le plan ; animal ou Pokémon dans les enclos ; route goudronnée, véhicule ; ponton, port, bateau ; rues courbes ou en diagonale.

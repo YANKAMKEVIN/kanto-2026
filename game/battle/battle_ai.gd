@@ -121,6 +121,11 @@ static func score_move(move: MoveData, own: Battler, foe: Battler, chart: TypeCh
 		return move.power * stab * effectiveness * accuracy * charge
 	if is_low(own) or times_used >= STATUS_MAX_USES or not status_has_effect(move, own, foe):
 		return 0.0
+	if move.effect_of(MoveEffect.Kind.OHKO) != null:
+		# K.O. en un coup : immunité de type, précision selon les niveaux ([OhkoRules]).
+		if effectiveness_of(move, foe, chart) == 0.0:
+			return 0.0
+		accuracy = OhkoRules.accuracy(move.accuracy, own.pokemon.level, foe.pokemon.level) / 100.0
 	return STATUS_SCORE * accuracy
 
 
@@ -164,6 +169,21 @@ static func status_has_effect(move: MoveData, own: Battler, foe: Battler) -> boo
 					return true
 			MoveEffect.Kind.FIXED_DAMAGE:
 				return true
+			MoveEffect.Kind.HEAL:
+				# Passe systèmes 2 : Soin seulement s'il manque des PV.
+				if own.pokemon.hp < own.pokemon.max_hp():
+					return true
+			MoveEffect.Kind.SCREEN:
+				# Le camp n'est pas connu ici : un mur déjà levé échoue, l'usage reste borné par
+				# STATUS_MAX_USES [D].
+				return true
+			MoveEffect.Kind.HAZE:
+				for stat: StringName in MoveEffect.STAGE_STATS:
+					if own.get_stage(stat) < 0 or foe.get_stage(stat) > 0:
+						return true
+			MoveEffect.Kind.OHKO:
+				# Passe systèmes 2 : jamais si elle échoue d'avance (niveau inférieur) [D].
+				return OhkoRules.level_allows(own.pokemon.level, foe.pokemon.level)
 			MoveEffect.Kind.FORCE_SWITCH:
 				# Hurlement (jalon 19) : la réserve de la cible n'est pas connue ici [D].
 				return true

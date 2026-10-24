@@ -76,28 +76,61 @@ func test_real_data_loads_without_error() -> void:
 		&"nidorina", &"nidoqueen", &"nidoran_m", &"nidorino", &"nidoking", &"clefairy",
 		&"clefable", &"vulpix", &"ninetales", &"jigglypuff", &"wigglytuff", &"zubat", &"golbat",
 		&"oddish", &"gloom", &"vileplume", &"paras", &"parasect",
+		# Jalon 22 (T4) : Mimitoss, Aéromite, Machopeur, Canarticho, Doduo, Dodrio, Tadmorv,
+		# Grotadmorv, Krabby, Électrode, Smogogo, Poissoroy, Magicarpe (kanto_j22.json).
+		&"venonat", &"venomoth",
 		# Jalon 17 (T7) : Taupiqueur, Triopikeur ; plus loin Goupix, Caninos, Magnéti, Magnéton,
 		# Soporifik, Hypno (kanto_j17.json).
 		&"diglett", &"dugtrio",
 		# Jalon 15 (T12) : Miaouss et Persan (kanto_vermilion.json).
 		&"meowth", &"persian",
-		&"mankey", &"primeape", &"growlithe", &"arcanine", &"abra", &"kadabra", &"machop",
-		&"bellsprout", &"weepinbell", &"victreebel",
-		&"geodude", &"graveler", &"golem", &"magnemite", &"magneton", &"shellder",
+		# Jalon 24 (T4) : kanto_j24.json (Psykokwak, Akwakwak, Têtarte, Tartard, Tentacruel,
+		# Ramoloss, Flagadoss, Otaria, Lamantine, Crustabri, Krabby, Krabboss, Hypocéan,
+		# Poissoroy, Magicarpe, fossiles, Artikodin) ; Saquedeneu et Léviator sont ceux des J20
+		# et J19. Jalon 21 (T5) : Ptitard, Tentacool, Ronflex (kanto_j21.json).
+		&"psyduck", &"golduck",
+		&"mankey", &"primeape", &"growlithe", &"arcanine",
+		&"poliwag", &"poliwhirl", &"poliwrath",
+		&"abra", &"kadabra", &"machop", &"machoke",
+		&"bellsprout", &"weepinbell", &"victreebel", &"tentacool", &"tentacruel",
+		&"geodude", &"graveler", &"golem", &"ponyta", &"rapidash", &"slowpoke", &"slowbro", &"magnemite", &"magneton",
+		&"farfetchd", &"doduo", &"dodrio", &"seel", &"dewgong", &"grimer", &"muk", &"shellder",
+		&"cloyster",
 		# Jalon 19 (T3) : Fantominus, Spectrum, Noeunoeuf, Osselait, Ossatueur, Léviator
 		# (kanto_tower.json ; Caninos vient du J17).
 		&"gastly", &"haunter", &"onix",
-		&"drowzee", &"hypno", &"voltorb", &"exeggcute", &"cubone", &"marowak", &"koffing",
-		&"rhyhorn", &"tangela", &"kangaskhan",
-		&"horsea", &"goldeen", &"staryu", &"starmie", &"gyarados",
-		&"eevee", &"vaporeon", &"jolteon", &"flareon"] as Array[StringName])
-	assert_eq(_data.get_move_ids().size(), 127,
+		&"drowzee", &"hypno", &"krabby", &"kingler", &"voltorb", &"electrode", &"exeggcute",
+		&"cubone", &"marowak", &"koffing", &"weezing", &"rhyhorn", &"tangela", &"kangaskhan",
+		&"horsea", &"seadra", &"goldeen", &"seaking", &"staryu", &"starmie", &"magmar", &"magikarp",
+		&"gyarados", &"eevee", &"vaporeon", &"jolteon", &"flareon",
+		&"omanyte", &"omastar", &"kabuto", &"kabutops", &"aerodactyl", &"snorlax", &"articuno"] as Array[StringName])
+	# Jalon 25 (T7) : kanto_j25.json (Ponyta, Galopa, Magmar, Ptéra) ; Tadmorv, Grotadmorv,
+	# Smogogo et Électrode sont ceux du J22 (kanto_j25_reprises.json retiré à la fusion de main).
+	assert_eq(_data.get_move_ids().size(), 142,
 		"47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10) + Patience (J11) "
 		+ "+ 21 du Mont Sélénite (jalon 12) + 8 du jalon 13 (les 5 du J12 qu'il reprenait : "
 		+ "entrées du J12) + 6 du Cap d'Azuria (jalon 14) + Jackpot (J15) "
 		+ "+ Coupe et Tonnerre (jalon 16) + 7 du jalon 17 + 8 de la Tour Pokémon (J19 ; "
-		+ "Hypnose, Hurlement et Bélier viennent du J17) + 7 du jalon 20")
+		+ "Hypnose, Hurlement et Bélier viennent du J17) + 7 du jalon 20 + Vol (passe systèmes 2, T25) "
+		+ "+ Surf (S2C) + Force (S2D) + Amnésie, Bouclier (J21 ; Constriction vient du J20) "
+		+ "+ 5 du jalon 22 (Écrasement vient du J20) + 3 du J24 (j24.json : Force Poigne, "
+		+ "Pince-Masse et Trempette sont ceux du J22) "
+		+ "+ Déflagration et Poing de Feu (J25, j25.json)")
 	assert_true(_data.has_move(&"struggle"))
+
+
+func test_fly_move_data() -> void:
+	_data.load_dir()
+	var fly := _data.get_move(&"fly")
+	assert_not_null(fly)
+	if fly == null:
+		return
+	assert_eq([fly.name, fly.type, fly.category, fly.power, fly.accuracy, fly.pp],
+		["Vol", &"flying", MoveData.Category.PHYSICAL, 90, 95, 15])
+	assert_eq([fly.effects.size(), fly.effects[0].kind, fly.effects[0].texts,
+		fly.effects[0].invulnerable], [1, MoveEffect.Kind.CHARGE, &"fly", true],
+		"Vol : effet « charge » comme Tunnel (T25)")
+	assert_eq(fly.pending_effects.size(), 0)
 
 
 func test_real_species_values() -> void:
@@ -174,6 +207,21 @@ func test_real_evolution_chains() -> void:
 		# Tour Pokémon (jalon 19, §2.12) : Rouge/Bleu. Spectrum (échange, Ectoplasma absent) et
 		# Noeunoeuf (Pierre Plante absente) n'en déclarent pas.
 		&"gastly": [&"haunter", 25], &"cubone": [&"marowak", 28],
+		# Jalon 22 (§2.12) : Rouge/Bleu entre espèces présentes ; Machopeur (Mackogneur absent)
+		# n'en déclare pas ; Magicarpe → Léviator (J19) au N20.
+		&"venonat": [&"venomoth", 31], &"doduo": [&"dodrio", 31], &"grimer": [&"muk", 38],
+		&"magikarp": [&"gyarados", 20],
+		# Jalon 24 (T4, dossier 27 §14.1) : Rouge/Bleu. Ptitard → Têtarte (N25) et Tentacool →
+		# Tentacruel (N30) ajoutés dans kanto_j21.json à la fusion de `main` (accord J21 / J24) ;
+		# Krabby → Krabboss (N28) rétabli dans kanto_j22.json à la fusion du J24 dans `main`.
+		&"poliwag": [&"poliwhirl", 25], &"tentacool": [&"tentacruel", 30],
+		&"psyduck": [&"golduck", 33], &"poliwhirl": [&"poliwrath", &"water_stone"],
+		&"slowpoke": [&"slowbro", 37], &"seel": [&"dewgong", 34],
+		&"shellder": [&"cloyster", &"water_stone"], &"krabby": [&"kingler", 28],
+		&"horsea": [&"seadra", 32], &"goldeen": [&"seaking", 33],
+		&"omanyte": [&"omastar", 40], &"kabuto": [&"kabutops", 40],
+		# Jalon 25 (T7) : Ponyta (Rouge/Bleu) ; Tadmorv → Grotadmorv est celui du J22.
+		&"ponyta": [&"rapidash", 40],
 	}
 	var eevee := _data.get_species(&"eevee").evolutions
 	assert_eq(eevee.map(func(r: EvolutionRule) -> Array: return [r.into, r.method, r.item]), [
@@ -461,6 +509,20 @@ func test_real_catch_rates_are_the_official_ones() -> void:
 		# Jalon 19 (T3, Tour Pokémon ; Caninos vient du J17).
 		&"gastly": 190, &"haunter": 90, &"exeggcute": 90, &"cubone": 190,
 		&"marowak": 75, &"gyarados": 45,
+		# Jalon 22 (T4).
+		&"venonat": 190, &"venomoth": 75, &"machoke": 90, &"farfetchd": 45, &"doduo": 190,
+		&"dodrio": 45, &"grimer": 190, &"muk": 75, &"krabby": 225, &"electrode": 60,
+		&"weezing": 60, &"seaking": 60, &"magikarp": 255,
+		# Jalon 24 (T4 ; Krabby, Poissoroy et Magicarpe sont ceux du J22).
+		&"psyduck": 190, &"golduck": 75, &"poliwhirl": 120, &"poliwrath": 45,
+		&"tentacruel": 60, &"slowpoke": 190, &"slowbro": 75, &"seel": 190,
+		&"dewgong": 75, &"cloyster": 60, &"kingler": 60,
+		&"seadra": 75, &"omanyte": 45,
+		&"omastar": 45, &"kabuto": 45, &"kabutops": 45, &"articuno": 3,
+		# Jalon 21 (T5).
+		&"poliwag": 255, &"tentacool": 190, &"snorlax": 25,
+		# Jalon 25 (T7) ; Tadmorv, Grotadmorv, Smogogo et Électrode sont ceux du J22.
+		&"ponyta": 190, &"rapidash": 60, &"magmar": 45, &"aerodactyl": 45,
 	}
 	assert_eq(_data.get_species_ids().size(), expected.size(), "toutes les espèces")
 	for id: StringName in _data.get_species_ids():
@@ -690,7 +752,7 @@ func test_route_22_moves_values() -> void:
 		&"fury_attack": [], &"fury_swipes": [],
 		&"double_kick": [], &"poison_sting": [],
 		&"thrash": ["rampage"], &"body_slam": [],
-		&"seismic_toss": [], &"horn_drill": ["ohko"],
+		&"seismic_toss": [], &"horn_drill": [],
 	}
 	for id: StringName in pending:
 		assert_eq(_data.get_move(id).pending_effects, PackedStringArray(pending[id]),
@@ -802,12 +864,13 @@ func test_moves_without_effect_say_so() -> void:
 	# l'effet n'est pas joué porte « Sans effet dans le moteur actuel. », Poudre Dodo comprise.
 	# Jalon 11 : la mention part avec l'effet (Cage-Éclair, Para-Spore, Poudre Dodo au T4).
 	# Jalon 19 : Cyclone (changement forcé, décision de Kevin du 2026-10-16).
+	# Passe systèmes 2 : Empal'Korne (K.O. en un coup, test_ohko.gd).
 	_data.load_dir()
-	for id: StringName in [&"mirror_move", &"horn_drill"]:
+	for id: StringName in [&"mirror_move"]:
 		assert_true(_data.get_move(id).description.ends_with(
 			" Sans effet dans le moteur actuel."), String(id))
 	for id: StringName in [&"thunder_wave", &"stun_spore", &"sleep_powder", &"supersonic",
-			&"focus_energy", &"super_fang", &"seismic_toss", &"whirlwind"]:
+			&"focus_energy", &"super_fang", &"seismic_toss", &"whirlwind", &"horn_drill"]:
 		assert_false(_data.get_move(id).description.contains("Sans effet"), String(id))
 	assert_eq(_data.get_move(&"sleep_powder").description,
 		"Une poudre soporifique qui endort la cible.")
@@ -899,7 +962,7 @@ func test_j14_moves() -> void:
 		&"low_kick": ["Balayage", &"fighting", MoveData.Category.PHYSICAL, 50, 90, 20, []],
 		&"submission": ["Sacrifice", &"fighting", MoveData.Category.PHYSICAL, 80, 80, 25, []],
 		&"psychic": ["Psyko", &"psychic", MoveData.Category.SPECIAL, 90, 100, 10, []],
-		&"reflect": ["Protection", &"psychic", MoveData.Category.STATUS, 0, 0, 20, ["reflect"]],
+		&"reflect": ["Protection", &"psychic", MoveData.Category.STATUS, 0, 0, 20, []],
 	}
 	for id: StringName in rows:
 		var row: Array = rows[id]

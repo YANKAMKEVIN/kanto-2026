@@ -1,0 +1,85 @@
+# Route 20 (route marine) — grille fonctionnelle v1 (jalon 24 T2, dossier 27 §4, §5.2, §9.2, §9.4, §9.5 ;
+# passe docs/design/passes/j24-v2-alignement.md §2.1 et §2.2). Source de la géométrie de la carte
+# `route_20` (T8). Faits RB : maps/Route20.blk décodé tuile par tuile, ×1,5 (P-5).
+# Contrôle : tools/art/plan_check_j24_mer.py.
+#
+# 150 × 27 cases (RB 100 × 18, ×1,5) ; nord en haut ; x = colonne 0..149, y = rangée 0..26.
+#
+# LES DEUX MERS NE COMMUNIQUENT PAS (RB, P-6, passe §2.2) :
+#   - MER EST (côté Route 19, colonnes >= 95) : touche la rive est de l'île (colonnes 93..94,
+#     rangées 3..14), donc l'entrée OUEST (72..73, 8) ; de la rive ouest de l'île on embarque dans la
+#     POCHE FERMÉE (colonnes 66..68, rangées 3..19 ; Iris, N35), fermée par un récif à l'ouest et au sud ;
+#   - MER OUEST (côté Cramois'Île, colonnes <= 92) : touche seulement l'entrée EST (87..88, 14), par la
+#     petite grève (84..92, 15..17), et l'îlot de l'Ornithologue ; elle est fermée à l'est par le récif
+#     de la colonne 93..94 (rangées 15..25).
+#   Ils se rejoignent par les Îles Écume (entrée ouest → … → entrée est) ou par Bourg Palette → Route 21.
+#   Hypothèse H-1 : la rive est de l'île (RB colonne 62, tuile 0x32 « rive ») s'aborde en Surf, comme la
+#   rive ouest de la poche ; la passe l'a déduit de la collision, à confirmer sur émulateur (24.0).
+#
+# Raccords : OUEST ↔ Cramois'Île (bord est, colonne 33) rangées 6..25, eau jointe ; EST ↔ Route 19
+# (bord ouest, colonne 0) : Route 20 (149, y) ↔ Route 19 (0, y + 54), y = 6..25 ; récif en face des
+# rangées 3..5 des deux bords. Rangées 0..1 : mer décor (hors jeu), rangées 2 et 26 : récifs.
+#
+# Légende :
+#   w eau SURFABLE (surfeur seulement)   ~ eau décor (bloquée)   R récifs, rivage rocheux (bloqués)
+#   K falaises blanches de l'île (bloquées)   y sol de l'île, grèves et îlot (praticable)
+#   D entrée de grotte (2 cases, praticable : STEP_ON ↑, terminale)
+#   (s « Surf forcé » : inutilisé ici)
+#
+# Positions : voir route_19.txt ; mer = est | ouest | poche (composante d'eau attendue par le contrôle).
+
+PRATICABLES ywD
+
+GRILLE 150 27
+00 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+01 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+02 RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
+03 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwRwwwKKKKKKKKKyyyyyyyyyyyyyyywwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwRR
+04 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwRwwwKKKKKKKKKyyyyyyyyyyyyyyywwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwRR
+05 RRwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwRwwwKKKKKKKKKyyyyyyyyyyyyyyywwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwRR
+06 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwRwwwKKKKKKKKKyyyyyyyyyyyyyyywwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+07 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwRwwwKKKKKKKKKyyyyyyyyyyyyyyywwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+08 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwRwwwKKKDDKKKKyyyyyyyyyyyyyyywwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+09 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwRwwwyyyyyyyyyyyyyyyKKKKKKKKKwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+10 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwRwwwyyyyyyyyyyyyyyyKKKKKKKKKwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+11 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwRwwwyyyyyyyyyyyyyyyKKKKKKKKKwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+12 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwyyyyyywwwwwwwwwwwRwwwyyyyyyyyyyyyyyyKKKKKKKKKwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+13 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwyyyyyywwwwwwwwwwwRwwwyyyyyyyyyyyyyyyKKKKKKKKKwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+14 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwyyyyyywwwwwwwwwwwRwwwyyyyyyyyyyyyyyyKKKDDKKKKwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+15 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwRwwwwwwwwwwwwwwwwwRyyyyyyyyyRRwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+16 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwRwwwwwwwwwwwwwwwwwRyyyyyyyyyRRwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+17 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwRwwwwwwwwwwwwwwwwwRyyyyyyyyyRRwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+18 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwRwwwwwwwwwwwwwwwwwRwwwwwwwwwRRwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+19 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwRwwwwwwwwwwwwwwwwwRwwwwwwwwwRRwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+20 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwRRRRRRRRRRRRRRRRRRRwwwwwwwwwRRwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+21 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwRRwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+22 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwRRwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+23 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwRRwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+24 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwRRwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+25 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwRRwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+26 RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
+FIN
+
+POSITIONS
+warp_ouest                 warp           0,6..25           libre   surf=1  # PUSH ← → cinnabar_island, bord est (33, y) ; eau jointe (Surf gardé)
+from_cinnabar_island       spawn          0,6..25           libre   surf=1  # arrivée de Cramois'Île en Surf, tournée →
+warp_est                   warp           149,6..25         libre   surf=1  # PUSH → → route_19, bord ouest (0, y + 54) ; eau jointe (Surf gardé)
+from_route_19              spawn          149,6..25         libre   surf=1  # arrivée de la Route 19 en Surf, tournée ←
+porte_ouest                warp           72..73,8          libre   rb=48,5  # STEP_ON ↑ → seafoam_1f, entrée OUEST (RB (48,5)) ; touche la MER EST seulement (rive est de l'île, colonnes 93..94)
+porte_est                  warp           87..88,14         libre   rb=58,9  # STEP_ON ↑ → seafoam_1f, entrée EST (RB (58,9)) ; touche la MER OUEST seulement ; cul-de-sac (échelle)
+from_seafoam_1f_ouest      spawn          72..73,9          libre   # sortie de l'entrée ouest, tournée ↓
+from_seafoam_1f_est        spawn          87..88,15         libre   # sortie de l'entrée est, tournée ↓
+panneau_ouest              panneau        77,11             bloque  rb=51,7 texte=T-31  # « Îles Écume » devant l'entrée ouest, lu depuis (77,12) tourné ↑
+panneau_est                panneau        86,17             bloque  rb=57,11 texte=T-31  # « Îles Écume » devant l'entrée est, lu depuis (86,16) tourné ↓
+ilot_super_balls           objet_visible  53,12             bloque  role=O1 item=super_ball qty=3  # dossier §9.5 : îlot de l'Ornithologue, Super Ball ×3
+ronan                      dresseur       131,12            bloque  role=D1 classe=nageur mode=nageur facing=up sight=6 rbsight=4 rb=87,8 mer=est  # Ronan : Kokiyas, Crustabri N31
+solene                     dresseur       102,17            bloque  role=D2 classe=nageuse mode=nageur facing=up sight=6 rbsight=4 rb=68,11 mer=est  # Solène : Hypocéan, Hypotrempe, Hypocéan N30
+iris                       dresseur       68,15             bloque  role=D3 classe=nageuse mode=nageur facing=down sight=3 rbsight=2 rb=45,10 mer=poche  # Iris : Poissoroy N35, poche fermée
+lou                        dresseur       83,21             bloque  role=D4 classe=nageuse mode=nageur facing=right sight=6 rbsight=4 rb=55,14 mer=ouest  # Lou : Tentacool, Hypotrempe, Otaria N30
+mathis                     dresseur       57,20             bloque  role=D5 classe=nageur mode=nageur facing=down sight=5 rbsight=3 rb=38,13 mer=ouest  # Mathis : Stari N35
+kilian                     dresseur       131,20            bloque  role=D6 classe=nageur mode=nageur facing=up sight=6 rbsight=4 rb=87,13 mer=est  # Kilian : Hypotrempe ×3, Hypocéan N28
+bastien                    dresseur       51,14             bloque  role=D7 classe=ornithologue mode=pied facing=up sight=3 rbsight=2 rb=34,9 mer=ouest  # Bastien : Rapasdepic ×2, Roucoups N30 ; îlot de l'Ornithologue
+clara                      dresseur       38,11             bloque  role=D8 classe=nageuse mode=nageur facing=up sight=6 rbsight=4 rb=25,7 mer=ouest  # Clara : Kokiyas ×2, Crustabri N30
+nina                       dresseur       36,18             bloque  role=D9 classe=nageuse mode=nageur facing=down sight=5 rbsight=3 rb=24,12 mer=ouest  # Nina : Poissirène, Poissoroy N31
+elsa                       dresseur       23,12             bloque  role=D10 classe=nageuse mode=nageur facing=up sight=6 rbsight=4 rb=15,8 mer=ouest  # Elsa : Ptitard, Poissoroy N31
+FIN

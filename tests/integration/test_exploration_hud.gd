@@ -758,3 +758,42 @@ func test_zone_title_follows_large_text_and_contrast() -> void:
 	UiPrefs.reset()
 	_hud.show_zone_title("Bourg Palette", "Kanto")
 	assert_eq(name_label.get_theme_font_size(&"font_size"), UiTokens.FONT_TITLE)
+
+
+# S2C, option A de Kevin : PÊCHER face à une eau où l'on peut aussi surfer.
+func test_hold_choice_shows_the_hint_and_defers_the_tap() -> void:
+	var button := _hud.get_interact_button()
+	_hud.show_interact(&"fish", true)
+	assert_true(button.has_hold_choice())
+	assert_eq(button.action, "", "plus d'« interact » à l'appui")
+	assert_true(button.get_node(^"HoldHint").visible, "point doré [D]")
+	_hud.show_interact(&"surf")
+	assert_false(button.has_hold_choice(), "SURFER seul : bouton ordinaire")
+	assert_eq(button.action, "interact")
+	assert_false(button.get_node(^"HoldHint").visible)
+
+
+func test_a_held_press_emits_long_press_once() -> void:
+	var button := _hud.get_interact_button()
+	_hud.show_interact(&"fish", true)
+	watch_signals(_hud)
+	button.pressed.emit()
+	await wait_seconds(UiTokens.LONG_PRESS + 0.15)
+	button.released.emit()
+	assert_signal_emit_count(_hud, "interact_long_pressed", 1)
+	assert_false(Input.is_action_pressed(&"interact"), "appui long : pas d'« interact »")
+
+
+func test_a_short_press_in_hold_mode_presses_interact() -> void:
+	var button := _hud.get_interact_button()
+	_hud.show_interact(&"fish", true)
+	watch_signals(_hud)
+	button.pressed.emit()
+	await wait_process_frames(2)
+	button.released.emit()
+	assert_true(Input.is_action_pressed(&"interact"), "appui court : « interact »")
+	await wait_process_frames(2)
+	assert_false(Input.is_action_pressed(&"interact"))
+	assert_signal_emit_count(_hud, "interact_long_pressed", 0)
+	_hud.hide_interact()
+	assert_false(button.has_hold_choice())

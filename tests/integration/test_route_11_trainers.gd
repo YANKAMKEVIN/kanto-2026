@@ -58,10 +58,8 @@ func before_all() -> void:
 	_trainers.load_dir()
 	_map = (load(MAP_PATH) as PackedScene).instantiate() as GameMap
 	add_child(_map)
+	# J21 T9a (M-3) : plus de Ronflex sur la Route 11 (il fermait la route au J17).
 	_terrain = GridPaths.relief(_map.get_grid(), SIZE)
-	# Ronflex ferme la route : ses cases sont solides pour les chemins.
-	for cell: Vector2i in _plan.cells_at("ronflex"):
-		_terrain.set_solid(cell)
 
 
 func after_all() -> void:
@@ -109,7 +107,7 @@ func test_roster_loads_without_error_and_holds_the_placed_people() -> void:
 		&"route_11_item_1", &"route_11_item_2"]
 	expected.append_array(TRAINERS.keys())
 	expected.sort()
-	assert_eq(keys, expected, "8 Dresseurs, 3 Pokémon d'ambiance, 2 objets (Ronflex : décor)")
+	assert_eq(keys, expected, "8 Dresseurs, 3 Pokémon d'ambiance, 2 objets")
 
 
 func test_trainers_follow_the_grid_and_the_dossier() -> void:

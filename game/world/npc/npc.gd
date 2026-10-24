@@ -297,6 +297,11 @@ func get_cell() -> Vector2i:
 	return _mover.get_cell() if _mover != null else _cell
 
 
+## Mode de déplacement lu par [method GridWorld.move_mode_of] : SURF pour un Nageur (S2C).
+func get_move_mode() -> GridWorld.MoveMode:
+	return _spec.move_mode
+
+
 func get_facing() -> Vector2i:
 	return _facing
 
@@ -357,7 +362,14 @@ func leave_grid() -> void:
 func step(direction: Vector2i, run: bool = false) -> bool:
 	if _mover == null or _hopping or not Grid.is_cardinal(direction):
 		return false
-	var started := _mover.start_step(direction, run and can_run())
+	# Un Nageur reste sur l'eau surfable : la grille en SURF accepte aussi la terre (c'est la règle
+	# du joueur qui descend), pas lui.
+	var started := false
+	if _spec.move_mode != GridWorld.MoveMode.SURF \
+			or _grid.is_surfable(_mover.get_cell() + direction):
+		started = _mover.start_step(direction, run and can_run())
+	else:
+		_mover.face(direction)
 	_facing = _mover.get_facing()
 	if not started:
 		_play_idle()
@@ -819,6 +831,11 @@ func _shadow_rest_y() -> float:
 
 func _play_idle() -> void:
 	if _sprite == null or _sprite.sprite_frames == null:
+		return
+	# Pose d'attente (J21, prière de Fuji) : seulement dans l'orientation de repos.
+	if not _spec.pose.is_empty() and _facing == _spec.facing \
+			and _sprite.sprite_frames.has_animation(_spec.pose):
+		_sprite.play(_spec.pose)
 		return
 	var anim: StringName = _IDLE_ANIMS.get(_facing, &"idle_down")
 	if _sprite.sprite_frames.has_animation(anim):

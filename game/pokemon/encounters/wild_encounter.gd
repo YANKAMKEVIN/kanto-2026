@@ -15,6 +15,14 @@ var table_id: StringName = &""
 ## jamais par la table seule. Faux par défaut. L'espèce réelle reste dans [member species] :
 ## elle n'est jamais montrée (masque [GhostDisguise]).
 var ghost: bool = false
+## Entrée en scène « légendaire » (passe systèmes 2, T30 : clé « intro » de l'étape de scène
+## « wild_battle ») : plus lente ([constant BattleStage.LEGENDARY_INTRO_SLOWDOWN]). Faux par défaut.
+var legendary_intro: bool = false
+## Jalon 21 (`jalon-21.md` §2.5, §2.6), clés « reveal » / « uncatchable » de l'étape de scène
+## « wild_battle » : intro « révélation » du Scope Sylphe (ignorée en SPECTRE) et Ball refusée
+## avant le lancer. Faux par défaut.
+var reveal: bool = false
+var uncatchable: bool = false
 
 
 func _init(encounter_species: StringName = &"", encounter_level: int = 1,

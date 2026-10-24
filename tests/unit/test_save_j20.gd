@@ -76,7 +76,7 @@ func test_gift_origin_round_trip_in_the_party_and_the_storage() -> void:
 func test_unknown_origin_text_reads_as_unknown() -> void:
 	var pokemon := PokemonFactory.create(_data, &"eevee", 25, GameRng.new(1))
 	var dict := pokemon.to_dict()
-	(dict["met"] as Dictionary)["origin"] = "trade"
+	(dict["met"] as Dictionary)["origin"] = "swap" # J25 : « trade » est désormais connu
 	var back := Pokemon.from_dict(dict, _data)
 	assert_not_null(back)
 	if back != null:

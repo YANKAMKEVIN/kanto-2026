@@ -850,7 +850,10 @@ func test_gift_pokemon_without_say_stored() -> void:
 
 
 func test_gift_pokemon_kind_is_last_in_the_enum() -> void:
-	assert_eq(CutsceneStep.Kind.GIFT_POKEMON, CutsceneStep.Kind.size() - 1, "en fin d'enum")
+	# Jalon 21 : FLUTE vient après ; puis J25 : « unset », « toggle », « trade », en fin d'enum.
+	assert_eq(CutsceneStep.Kind.GIFT_POKEMON, CutsceneStep.Kind.FLUTE - 1, "en fin d'enum")
+	assert_eq(CutsceneStep.Kind.FLUTE, CutsceneStep.Kind.size() - 4, "flute avant les étapes du J25")
+	assert_eq(CutsceneStep.Kind.TRADE, CutsceneStep.Kind.size() - 1, "trade en fin d'enum")
 	assert_eq(CutsceneStep.TYPE_KEYS[CutsceneStep.Kind.GIFT_POKEMON], "gift_pokemon")
 	assert_eq(CutsceneStep.TYPE_KEYS.size(), CutsceneStep.Kind.size())
 
@@ -907,3 +910,55 @@ func test_real_eevee_gift_scene() -> void:
 		[&"celadon_eevee_received", &"celadon_eevee_stored"], "T-29, T-30")
 	assert_eq([steps[1].kind, steps[1].actor], [CutsceneStep.Kind.DESPAWN, &"eevee_ball"],
 		"la Poké Ball disparaît")
+
+
+# --- Jalon 25 : étapes « unset », « toggle », « trade » ----------------------------------
+
+func test_j25_kinds_are_last_in_the_enum() -> void:
+	assert_eq(CutsceneStep.Kind.TRADE, CutsceneStep.Kind.size() - 1, "en fin d'enum")
+	assert_eq(CutsceneStep.TYPE_KEYS.slice(-3), ["unset", "toggle", "trade"])
+	assert_eq(CutsceneStep.TYPE_KEYS.size(), CutsceneStep.Kind.size())
+
+
+func test_unset_and_toggle_read_their_flags() -> void:
+	var unset := _one_step({"unset": ["a", "b"]})
+	assert_not_null(unset, str(_library.get_errors()))
+	if unset != null:
+		assert_eq(unset.kind, CutsceneStep.Kind.UNSET_FLAGS)
+		assert_eq(unset.flags, [&"a", &"b"] as Array[StringName])
+	var toggle := _one_step({"toggle": ["mansion_switch_on"], "if": ["x"]}, "t")
+	assert_not_null(toggle, str(_library.get_errors()))
+	if toggle != null:
+		assert_eq(toggle.kind, CutsceneStep.Kind.TOGGLE_FLAGS)
+		assert_eq(toggle.flags, [&"mansion_switch_on"] as Array[StringName])
+		assert_eq(toggle.if_flags, [&"x"] as Array[StringName])
+		assert_has(_library.get_set_flags(), &"mansion_switch_on", "« toggle » peut lever")
+
+
+func test_trade_step_reads_its_dialogues() -> void:
+	var step := _one_step({"trade": "cinnabar_trade_seel", "wrong": "w", "refuse": "r",
+		"say": ["a", "b"]})
+	assert_not_null(step, str(_library.get_errors()))
+	if step == null:
+		return
+	assert_eq(step.kind, CutsceneStep.Kind.TRADE)
+	assert_eq([step.trade_id, step.dialogue_id, step.dialogue_stored],
+		[&"cinnabar_trade_seel", &"w", &"r"])
+	assert_eq(step.say, [&"a", &"b"] as Array[StringName])
+	assert_has(_library.get_set_flags(), &"cinnabar_trade_seel_done")
+	assert_eq(_library.get_dialogue_ids(), [&"a", &"b", &"r", &"w"] as Array[StringName])
+	var copy := step.copy()
+	assert_eq([copy.trade_id, copy.say], [step.trade_id, step.say], "copie complète")
+
+
+func test_invalid_j25_steps_are_refused() -> void:
+	var bad: Array[Dictionary] = [
+		{"unset": []}, {"unset": "a"}, {"toggle": []}, {"toggle": [""]},
+		{"trade": "t", "refuse": "r"}, {"trade": "t", "wrong": "w"},
+		{"trade": "", "wrong": "w", "refuse": "r"}, {"trade": "t", "wrong": "w", "refuse": "r",
+			"say": "a"},
+	]
+	for i: int in bad.size():
+		assert_null(_one_step(bad[i], "bad_%d" % i), str(bad[i]))
+	assert_eq(_library.size(), 0, "toutes refusées")
+	assert_push_error_count(bad.size())

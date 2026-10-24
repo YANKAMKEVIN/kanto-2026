@@ -49,6 +49,7 @@ const GATE_GUARDS: Array[StringName] = [&"forest_gate_north_guard", &"forest_gat
 ## (T18 Route 9 / 10, T20 grotte ; T24 : Lavanville et Tour posés, retirés de la liste) ; « Il fait très sombre ici… » (T-3) est
 ## celui du J17 (`dark_caves.json`, joué par FlashDirector : [constant PLAYED_BY_BOOT]).
 const UNUSED_YET: Array[StringName] = [
+	# Jalon 21 (T21) : `route_11_snorlax` repris par `snorlax_route_12` (retiré de la liste).
 	&"dark_cave_1f_sign", &"dark_cave_column", &"dark_cave_roots", &"dark_cave_crack",
 	&"dark_cave_b1f_hidden_1",
 	# Jalon 20 (T17) : la Poké Ball d'Évoli (maison du toit) et le panneau d'ascenseur (cabine du
@@ -61,11 +62,18 @@ const J17_TOKENS: Dictionary[String, Array] = {
 	"Ton Pokédex compte {caught} espèces capturées.": [&"caught"],
 	"Encore {caught_missing}, et c'est à toi.": [&"caught_missing"],
 	"{player} reçoit la CS05 — Flash !": [&"player"],
+	# Passe systèmes 2 (S2B) : la Poké Flûte jouée « ailleurs ».
+	"{player} joue de la Poké Flûte…": [&"player"],
 }
 ## Textes pas encore validés, exemptés du contrôle « mot pour mot » (jalon 14 T16 : ceux du
 ## coquillage de la Route 25, validés depuis : dossier 17 §15 n° 71 ; le n° 72 est retiré le 2026-10-14).
 ## Jalon 20 (T17) : le panneau neutre de la cabine du T16 est remplacé par `elevator_panel` (T13).
-const UNVALIDATED: Array[StringName] = []
+## S2C (option A de Kevin, 2026-10-21) : question du choix « Pêcher / Surfer » [D], à valider.
+const UNVALIDATED: Array[StringName] = [&"water_choice"]
+## Passe systèmes 2 (T25b) : Téléport et Tunnel hors combat, joués par [FieldTravelDirector] ;
+## textes provisoires du lot `systemes-2.md` §8.1 (pas encore dans un dossier).
+const S2_FIELD_TRAVEL: Array[StringName] = [&"dig_used", &"teleport_used", &"fly_takeoff",
+	&"fly_landing", &"key_door_locked"]
 ## Jalon 11 (T20c) : phrases jouées par le contrôleur du compagnon (ni PNJ, ni point, ni scène).
 const PLAYED_BY_COMPANION: Array[StringName] = [
 	&"companion_cave", &"companion_city", &"companion_forest", &"companion_happy",
@@ -76,8 +84,275 @@ const PLAYED_BY_COMPANION: Array[StringName] = [
 ## ([constant Boot.ESCAPE_ROPE_DIALOGUE], dossier 15 §20 n° 33).
 ## Jalon 17 (T24) : avertissement sans Flash, joué par FlashDirector (dossier 21 T-3).
 ## Jalon 20 (T13) : refus du panneau sans la Clé (T-50), joué par ElevatorDirector.
+## Passe systèmes 2 (S2B) : refus du Vélo (MountDirector) et Flûte « ailleurs » (KeyItemDirector).
 const PLAYED_BY_BOOT: Array[StringName] = [&"escape_rope_used", &"dark_cave_too_dark",
-	&"elevator_locked"]
+	&"elevator_locked", &"bike_indoors", &"bike_cycling_road_walk", &"poke_flute_played",
+	&"surf_water", &"surf_first_ride", &"surf_current_too_strong", &"water_choice"]
+## Passe systèmes 2 (S2B) : textes validés des dossiers 25 (§16.1.3, §16.1.4) et 24 (§15.6.6),
+## qui vivent encore sur les branches de conception du J21 et du J22 (pas dans `main`) : comparés
+## ici mot pour mot, page par page.
+## S2C : textes du Surf, dossier 27 T-1, T-2, T-3, T-14 (branche du J24).
+const IDS_S2B: Array[StringName] = [&"bike_cycling_road_walk", &"bike_indoors",
+	&"poke_flute_played", &"surf_water", &"surf_first_ride", &"surf_current_too_strong"]
+const TEXTS_S2B: Dictionary[StringName, Array] = {
+	&"bike_indoors": ["Ce n'est pas le moment de pédaler !"],
+	&"bike_cycling_road_walk": ["Pas de marche à pied", "sur la Piste Cyclable !"],
+	&"poke_flute_played": ["{player} joue de la Poké Flûte…", "Quel air entraînant !"],
+	&"surf_water": ["L'eau est profonde. Un Pokémon pourrait vous porter.",
+		"Il faut le Badge Âme pour utiliser Surf hors des combats."],
+	&"surf_first_ride": ["{pokemon} vous porte sur l'eau !"],
+	&"surf_current_too_strong": ["Le courant est beaucoup trop fort !"],
+}
+## Passe systèmes 2 (S2C-bis) : textes de la pêche, joués par [FishingDirector] ; validés au
+## dossier 25 §16.2.8 à §16.2.11 (branche de conception du J22, pas dans `main`).
+const TEXTS_S2C_FISH: Dictionary[StringName, Array] = {
+	&"fishing_cast": ["{player} lance sa ligne…"],
+	&"fishing_bite": ["Oh ! Ça mord !"],
+	&"fishing_nothing": ["Rien ne mord…"],
+	&"fishing_no_water": ["On ne peut pas pêcher ici."],
+}
+## Passe systèmes 2 (S2D) : textes de Force, joués par [StrengthDirector] (EXAMINER d'un rocher,
+## activation, chute) ; validés au dossier 27 T-5, T-6, T-7, T-15 (branche de conception du J24,
+## pas dans `main`) : comparés ici mot pour mot.
+const TEXTS_S2D_STRENGTH: Dictionary[StringName, Array] = {
+	&"strength_boulder": ["Un gros rocher. Il pourrait être déplacé.",
+		"Il faut le Badge Prisme pour utiliser Force hors des combats."],
+	&"strength_used": ["{pokemon} utilise Force ! Les rochers peuvent être déplacés."],
+	&"strength_boulder_fell": ["Le rocher a dévalé dans le trou !"],
+}
+## Jalon 24 : textes du dossier 27 §15 (validés le 2026-10-16) mis en page dans la bulle (retours
+## à la ligne, panneaux « TITRE / texte », T-60 et T-62 écrits par fossile) et répliques de don
+## (« reçoit », « au stockage », modèle du J20) : recommandés, validés d'avance par Kevin le
+## 2026-10-21. Chaque page doit être l'une de celles-ci.
+const TEXTS_J24: Dictionary[StringName, Array] = {
+	&"cinnabar_fossil_ready_kabuto": ["Te voilà ! Ton fossile\nétait un Kabuto !"],
+	&"cinnabar_fossil_ready_omanyte": ["Te voilà ! Ton fossile\nétait un Amonita !"],
+	&"cinnabar_lab_tm35_use": ["{player} reçoit la CT35 Métronome !"],
+	&"cinnabar_fossil_taken": ["Bien. Ça prend un peu de temps :\nva faire un tour dehors !"],
+	&"cinnabar_fossil_received_kabuto": ["{player} reçoit Kabuto !"],
+	&"cinnabar_fossil_received_omanyte": ["{player} reçoit Amonita !"],
+	&"cinnabar_fossil_stored_kabuto": ["Kabuto a été envoyé au stockage."],
+	&"cinnabar_fossil_stored_omanyte": ["Amonita a été envoyé au stockage."],
+	&"cinnabar_fossil_scientist": ["Patience !\nVa faire un tour.", "Je recrée des Pokémon\nà partir de fossiles.", "Tu en as un ?", "Le Fossile Dôme ?\nJe te le prends ?", "Le Fossile Nautile ?\nJe te le prends ?", "Le Vieil Ambre ?\nJe te le prends ?", "Sans fossile, je n'ai rien\nà recréer.", "Il paraît qu'on en trouve\nau Mont Sélénite."],
+	&"cinnabar_gym_sign": ["ARÈNE DE CRAMOIS'ÎLE\nChampion : Auguste,", "le maître du feu\net des énigmes"],
+	&"cinnabar_sign": ["CRAMOIS'ÎLE\nL'île au cœur de feu"],
+	&"cinnabar_lab_pc": ["Un courriel : « Trois Pokémon\noiseaux légendaires", "vivraient à Kanto.", "On parle de l'un d'eux\nprès des Îles Écume… »"],
+	&"route_19_sign": ["ROUTE MARINE 19\nParmanie ↑ · Îles Écume ←"],
+	&"route_20_sign": ["ÎLES ÉCUME\nGrottes glaciales, accès par la mer"],
+}
+## Jalon 25 (T9) : Manoir Pokémon, Arène de Cramois'Île, échanges du Labo, réserve du Musée, Ptéra
+## (dossier 28 §16, validés par Kevin le 2026-10-16 ; répliques « draft » des Dresseurs et mise en
+## page, recommandées, validées d'avance par Kevin le 2026-10-21). Pas encore posés par des cartes :
+## [constant UNUSED_YET] (T14, T17, T18, T20, T21).
+const IDS_J25: Array[StringName] = [
+	&"cinnabar_blaine",
+	&"cinnabar_blaine_after",
+	&"cinnabar_blaine_badge",
+	&"cinnabar_blaine_before",
+	&"cinnabar_blaine_defeated",
+	&"cinnabar_blaine_tm38",
+	&"cinnabar_fossil_ready_aerodactyl",
+	&"cinnabar_fossil_received_aerodactyl",
+	&"cinnabar_fossil_stored_aerodactyl",
+	&"cinnabar_gym_1_after",
+	&"cinnabar_gym_1_before",
+	&"cinnabar_gym_1_defeated",
+	&"cinnabar_gym_2_after",
+	&"cinnabar_gym_2_before",
+	&"cinnabar_gym_2_defeated",
+	&"cinnabar_gym_3_after",
+	&"cinnabar_gym_3_before",
+	&"cinnabar_gym_3_defeated",
+	&"cinnabar_gym_4_after",
+	&"cinnabar_gym_4_before",
+	&"cinnabar_gym_4_defeated",
+	&"cinnabar_gym_5_after",
+	&"cinnabar_gym_5_before",
+	&"cinnabar_gym_5_defeated",
+	&"cinnabar_gym_6_after",
+	&"cinnabar_gym_6_before",
+	&"cinnabar_gym_6_defeated",
+	&"cinnabar_gym_7_after",
+	&"cinnabar_gym_7_before",
+	&"cinnabar_gym_7_defeated",
+	&"cinnabar_gym_door_unlock",
+	&"cinnabar_gym_guide",
+	&"cinnabar_gym_quiz_1",
+	&"cinnabar_gym_quiz_1_question",
+	&"cinnabar_gym_quiz_2",
+	&"cinnabar_gym_quiz_2_question",
+	&"cinnabar_gym_quiz_3",
+	&"cinnabar_gym_quiz_3_question",
+	&"cinnabar_gym_quiz_4",
+	&"cinnabar_gym_quiz_4_question",
+	&"cinnabar_gym_quiz_5",
+	&"cinnabar_gym_quiz_5_question",
+	&"cinnabar_gym_quiz_6",
+	&"cinnabar_gym_quiz_6_question",
+	&"cinnabar_gym_quiz_intro",
+	&"cinnabar_gym_quiz_right",
+	&"cinnabar_gym_quiz_wrong",
+	&"cinnabar_trade_cable",
+	&"cinnabar_trade_hector",
+	&"cinnabar_trade_hector_after",
+	&"cinnabar_trade_hector_done",
+	&"cinnabar_trade_hector_offer",
+	&"cinnabar_trade_hector_refuse",
+	&"cinnabar_trade_hector_thanks",
+	&"cinnabar_trade_hector_wrong",
+	&"cinnabar_trade_lina",
+	&"cinnabar_trade_lina_after",
+	&"cinnabar_trade_lina_done",
+	&"cinnabar_trade_lina_offer",
+	&"cinnabar_trade_lina_refuse",
+	&"cinnabar_trade_lina_thanks",
+	&"cinnabar_trade_lina_wrong",
+	&"cinnabar_trade_marc",
+	&"cinnabar_trade_marc_after",
+	&"cinnabar_trade_marc_done",
+	&"cinnabar_trade_marc_offer",
+	&"cinnabar_trade_marc_refuse",
+	&"cinnabar_trade_marc_thanks",
+	&"cinnabar_trade_marc_wrong",
+	&"mansion_burglar_1_after",
+	&"mansion_burglar_1_before",
+	&"mansion_burglar_1_defeated",
+	&"mansion_burglar_2_after",
+	&"mansion_burglar_2_before",
+	&"mansion_burglar_2_defeated",
+	&"mansion_burglar_3_after",
+	&"mansion_burglar_3_before",
+	&"mansion_burglar_3_defeated",
+	&"mansion_journal_1",
+	&"mansion_journal_2",
+	&"mansion_journal_3",
+	&"mansion_journal_4",
+	&"mansion_scientist_1_after",
+	&"mansion_scientist_1_before",
+	&"mansion_scientist_1_defeated",
+	&"mansion_scientist_2_after",
+	&"mansion_scientist_2_before",
+	&"mansion_scientist_2_defeated",
+	&"mansion_scientist_3_after",
+	&"mansion_scientist_3_before",
+	&"mansion_scientist_3_defeated",
+	&"mansion_statue",
+	&"mansion_statue_yes",
+	&"pewter_museum_reserve_amber",
+	&"pewter_museum_reserve_amber_give",
+	&"pewter_museum_reserve_counter",
+	&"pewter_museum_reserve_showcase",
+	&"pewter_museum_tree",
+	&"pokemon_mansion_1f_hidden_1",
+	&"pokemon_mansion_1f_item_1",
+	&"pokemon_mansion_1f_item_2",
+	&"pokemon_mansion_2f_item_1",
+	&"pokemon_mansion_3f_hidden_1",
+	&"pokemon_mansion_3f_item_1",
+	&"pokemon_mansion_3f_item_2",
+	&"pokemon_mansion_b1f_hidden_1",
+	&"pokemon_mansion_b1f_item_1",
+	&"pokemon_mansion_b1f_item_2",
+	&"pokemon_mansion_b1f_item_3",
+	&"pokemon_mansion_b1f_item_4",
+	&"pokemon_mansion_b1f_item_5"
+]
+const TEXTS_J25: Dictionary[StringName, Array] = {
+	&"cinnabar_blaine_after": ["Déflagration, c'est le Feu à son sommet !\nNe la gâche pas sur un Pokémon Eau !"],
+	&"cinnabar_blaine_badge": ["Ha ! Ce Badge prouve ta valeur.\nPrends ceci aussi !"],
+	&"cinnabar_blaine_before": ["Ha ! Je suis Auguste, Champion de\nCramois'Île !", "Mes Pokémon Feu vont tout réduire\nen cendres ! Tu as de l'Antibrûle ?"],
+	&"cinnabar_blaine_defeated": ["J'ai brûlé tout mon feu !\nTu as gagné le Badge Volcan !"],
+	&"cinnabar_blaine_tm38": ["La CT38 contient Déflagration !\nApprends-la à un Pokémon Feu !"],
+	&"cinnabar_fossil_ready_aerodactyl": ["Te voilà ! Ton fossile\nétait un Ptéra !"],
+	&"cinnabar_fossil_received_aerodactyl": ["{player} reçoit Ptéra !"],
+	&"cinnabar_fossil_stored_aerodactyl": ["Ptéra a été envoyé au stockage."],
+	&"cinnabar_gym_1_after": ["Tu sais à quelle température monte\nle souffle d'un Pokémon Feu ?"],
+	&"cinnabar_gym_1_before": ["Tu sais à quelle température monte\nle souffle d'un Pokémon Feu ?"],
+	&"cinnabar_gym_1_defeated": ["Trop chaud pour moi !"],
+	&"cinnabar_gym_2_after": ["J'étais voleur. Grâce aux Pokémon,\nje suis devenu honnête !"],
+	&"cinnabar_gym_2_before": ["J'étais voleur. Grâce aux Pokémon,\nje suis devenu honnête !"],
+	&"cinnabar_gym_2_defeated": ["Trop chaud pour moi !"],
+	&"cinnabar_gym_3_after": ["Tu ne gagneras pas !\nJ'ai tout étudié sur les Pokémon !"],
+	&"cinnabar_gym_3_before": ["Tu ne gagneras pas !\nJ'ai tout étudié sur les Pokémon !"],
+	&"cinnabar_gym_3_defeated": ["Trop chaud pour moi !"],
+	&"cinnabar_gym_4_after": ["J'aime juste les Pokémon Feu !"],
+	&"cinnabar_gym_4_before": ["J'aime juste les Pokémon Feu !"],
+	&"cinnabar_gym_4_defeated": ["Trop chaud pour moi !"],
+	&"cinnabar_gym_5_after": ["Un jour, il s'est perdu en montagne.\nUn oiseau de feu est apparu…", "Sa lumière l'a guidé jusqu'en bas."],
+	&"cinnabar_gym_5_before": ["Je sais pourquoi Auguste est devenu Dresseur !"],
+	&"cinnabar_gym_5_defeated": ["Trop chaud pour moi !"],
+	&"cinnabar_gym_6_after": ["J'ai visité beaucoup d'Arènes,\nmais celle-ci est ma préférée !"],
+	&"cinnabar_gym_6_before": ["J'ai visité beaucoup d'Arènes,\nmais celle-ci est ma préférée !"],
+	&"cinnabar_gym_6_defeated": ["Trop chaud pour moi !"],
+	&"cinnabar_gym_7_after": ["Le Feu craint l'eau !"],
+	&"cinnabar_gym_7_before": ["Le Feu craint l'eau !"],
+	&"cinnabar_gym_7_defeated": ["Trop chaud pour moi !"],
+	&"cinnabar_gym_door_unlock": ["La Clé Secrète tourne dans la serrure.", "La porte de l'Arène est ouverte !"],
+	&"cinnabar_gym_guide": ["{player} ! Tu as éteint ce volcan !", "Salut, futur Champion ! Auguste est\nun expert du Feu. Mise sur l'Eau !", "Et prends quelques Antibrûle !"],
+	&"cinnabar_gym_quiz_1": ["Porte ouverte.", "Porte ouverte."],
+	&"cinnabar_gym_quiz_1_question": ["Chenipan finit par devenir Papilusion ?"],
+	&"cinnabar_gym_quiz_2": ["Porte ouverte.", "Porte ouverte."],
+	&"cinnabar_gym_quiz_2_question": ["La Ligue délivre-t-elle 9 Badges ?"],
+	&"cinnabar_gym_quiz_3": ["Porte ouverte.", "Porte ouverte."],
+	&"cinnabar_gym_quiz_3_question": ["Ptitard évolue-t-il trois fois ?"],
+	&"cinnabar_gym_quiz_4": ["Porte ouverte.", "Porte ouverte."],
+	&"cinnabar_gym_quiz_4_question": ["L'Électrik touche-t-il le type Sol ?"],
+	&"cinnabar_gym_quiz_5": ["Porte ouverte.", "Porte ouverte."],
+	&"cinnabar_gym_quiz_5_question": ["Deux Pokémon de même espèce et même\nniveau peuvent-ils être différents ?"],
+	&"cinnabar_gym_quiz_6": ["Porte ouverte.", "Porte ouverte."],
+	&"cinnabar_gym_quiz_6_question": ["La CT28 contient-elle Fosse ?"],
+	&"cinnabar_gym_quiz_intro": ["Quiz Pokémon ! Bonne réponse : la porte\ns'ouvre. Mauvaise : un Dresseur t'attaque !", "Garde tes forces pour le Champion :\nréponds juste !"],
+	&"cinnabar_gym_quiz_right": ["Exact ! Tu peux passer !"],
+	&"cinnabar_gym_quiz_wrong": ["Raté ! Mauvaise réponse !"],
+	&"cinnabar_trade_cable": ["Branchez le câble comme ça !"],
+	&"cinnabar_trade_hector_after": ["Ton Raichu se porte à merveille !"],
+	&"cinnabar_trade_hector_done": ["{player} a échangé Raichu contre Kourjus !"],
+	&"cinnabar_trade_hector_offer": ["Bonjour ! Tu veux échanger ton Raichu\ncontre mon Électrode ?"],
+	&"cinnabar_trade_hector_refuse": ["Bon, si tu ne veux pas…"],
+	&"cinnabar_trade_hector_thanks": ["Merci !"],
+	&"cinnabar_trade_hector_wrong": ["Hmm ? Ce n'est pas un Raichu.\nPense à moi si tu en as un."],
+	&"cinnabar_trade_lina_after": ["Comment va mon ancien Saquedeneu ?"],
+	&"cinnabar_trade_lina_done": ["{player} a échangé Mimitoss contre Bigoudi !"],
+	&"cinnabar_trade_lina_offer": ["Salut ! Tu as un Mimitoss ?\nTu l'échangerais contre un Saquedeneu ?"],
+	&"cinnabar_trade_lina_refuse": ["Dommage."],
+	&"cinnabar_trade_lina_thanks": ["Merci beaucoup !"],
+	&"cinnabar_trade_lina_wrong": ["Ce n'est pas un Mimitoss…\nSi tu en trouves un, reviens me voir !"],
+	&"cinnabar_trade_marc_after": ["Mon ancien Otaria est génial, hein ?"],
+	&"cinnabar_trade_marc_done": ["{player} a échangé Ponyta contre Bibi !"],
+	&"cinnabar_trade_marc_offer": ["Je cherche un Ponyta !\nJe te l'échange contre un Otaria ?"],
+	&"cinnabar_trade_marc_refuse": ["Oh… tant pis."],
+	&"cinnabar_trade_marc_thanks": ["Super, merci !"],
+	&"cinnabar_trade_marc_wrong": ["Quoi ? Ce n'est pas un Ponyta !\nReviens quand tu en auras un !"],
+	&"mansion_burglar_1_after": ["Les statues ouvrent et ferment les\ngrilles, chacune son tour !"],
+	&"mansion_burglar_1_before": ["Je n'arrive pas à sortir !\nCe manoir est un vrai casse-tête !"],
+	&"mansion_burglar_1_defeated": ["Bon, bon… J'abandonne."],
+	&"mansion_burglar_2_after": ["Je me demande où est passé mon associé."],
+	&"mansion_burglar_2_before": ["Cet endroit est immense !"],
+	&"mansion_burglar_2_defeated": ["Perdu, en plus de ça…"],
+	&"mansion_burglar_3_after": ["On trouve des trucs par terre, ici."],
+	&"mansion_burglar_3_before": ["Oh oh. Où suis-je ?"],
+	&"mansion_burglar_3_defeated": ["Aïe. Encore raté."],
+	&"mansion_journal_1": ["Journal — 5 juillet.\nExpédition au cœur d'une jungle lointaine.", "Un Pokémon inconnu a été découvert."],
+	&"mansion_journal_2": ["Journal — 10 juillet.\nNous avons baptisé le nouveau Pokémon :", "Mew."],
+	&"mansion_journal_3": ["Journal — 6 février.\nMew a donné naissance.", "Nous avons appelé le petit Mewtwo."],
+	&"mansion_journal_4": ["Journal — 1ᵉʳ septembre.\nMewtwo est bien trop puissant.", "Nous n'arrivons plus à maîtriser\nsa violence…"],
+	&"mansion_scientist_1_after": ["Ce manoir a brûlé il y a longtemps.\nLes notes, elles, sont restées."],
+	&"mansion_scientist_1_before": ["Qui êtes-vous ?\nPersonne ne devrait être ici."],
+	&"mansion_scientist_1_defeated": ["Une clé ?\nJe ne vois pas de quoi tu parles."],
+	&"mansion_scientist_2_after": ["Coincé ? Essaie de sauter par là-bas !"],
+	&"mansion_scientist_2_before": ["Mon mentor vivait ici."],
+	&"mansion_scientist_2_defeated": ["Je n'étais pas prête."],
+	&"mansion_scientist_3_after": ["Je me plais ici.\nOn y étudie au calme."],
+	&"mansion_scientist_3_before": ["Cet endroit est idéal pour un labo."],
+	&"mansion_scientist_3_defeated": ["Mes calculs étaient faux."],
+	&"mansion_statue": ["Un interrupteur secret !\nL'actionner ?", "Pas encore."],
+	&"mansion_statue_yes": ["Qui ne le ferait pas ?"],
+	&"pewter_museum_reserve_amber": ["Chut ! Fais examiner le Vieil Ambre !"],
+	&"pewter_museum_reserve_amber_give": ["Chut ! Je crois que cet ambre\ncontient l'ADN d'un Pokémon !", "Ce serait formidable de le ramener\nà la vie ! Mais mes collègues…", "Tiens, prends-le. Fais-le examiner."],
+	&"pewter_museum_reserve_counter": ["On n'entre pas par-derrière !\nBon, tant pis. Tu sais ce qu'est l'ambre ?", "Il paraît qu'un labo essaie de\nfaire revivre des Pokémon avec.", "C'est de la sève d'arbre fossilisée."],
+	&"pewter_museum_reserve_showcase": ["L'ambre est clair et doré."],
+	&"pewter_museum_tree": ["Un petit arbre pousse devant une porte.", "Sans le Badge Cascade, {pokemon}\nn'ose pas couper cet arbuste.", "Aucun Pokémon de l'équipe\nne peut couper cet arbuste.", "{pokemon} peut couper cet arbuste.", "Utiliser Coupe ?"],
+}
 ## Jalon 10 : textes verrouillés du dossier 12 (même forme que le dossier 10) et lot de textes du
 ## J10 (panneaux, noms affichés), où un retour à la ligne est écrit « \n ».
 const DOSSIER_12 := "res://docs/design/dossier-12-argenta.md"
@@ -90,6 +365,8 @@ const DOSSIER_17 := "res://docs/design/dossier-17-cap-azuria.md"
 const PLAN_J14 := "res://docs/tech/jalon-14.md"
 ## Jalon 15 : textes validés du §15 (« … » par page ; jetons écrits tels quels).
 const DOSSIER_18 := "res://docs/design/dossier-18-carmin-sur-mer.md"
+## Jalon 24 (T4) : répliques des Dresseurs des Routes 19 à 21 (§15.4, validé le 2026-10-16).
+const DOSSIER_27 := "res://docs/design/dossier-27-iles-ecume.md"
 ## Jalon 18 (T16) : lot validé du dossier 21 §15 et annexe A du plan (une bulle = un morceau d'une
 ## citation ; retour à la ligne = espace, ou « / » d'un panneau à titre).
 const DOSSIER_21 := "res://docs/design/dossier-21-grotte-sombre-lavanville.md"
@@ -109,6 +386,8 @@ const DOSSIER_11 := "res://docs/design/dossier-11-route-2.md"
 ## titre d'un panneau ; jetons {n}, {reste}) et annexe A de son plan (accord à 1 espèce, Q-2).
 ## Jalon 19 (T14) : lot de textes du dossier 22 §15 (Exorcistes §15.4, SPECTRE §15.3, §15.7).
 const DOSSIER_22 := "res://docs/design/dossier-22-tour-pokemon.md"
+## Jalon 21 (T12 à T14) : textes du dossier 24 §15 (Tour résolue, Fuji, Lavanville après le sauvetage).
+const DOSSIER_24 := "res://docs/design/dossier-24-repos-des-esprits.md"
 const DOSSIER_20 := "res://docs/design/dossier-20-chemins-retrouves.md"
 const JALON_17 := "res://docs/tech/jalon-17.md"
 const _DOSSIER_TOKENS: Dictionary[String, String] = {"{first_wild_species}": "{espèce}",
@@ -180,7 +459,32 @@ const MAPS: Array[StringName] = [
 	&"celadon_restaurant", &"celadon_chief_house", &"celadon_hotel",
 	# Jalon 20 (T21) : la vie du 20-II (Casino déjà listé ; repaire Rocket B1F à B4F).
 	&"rocket_hideout_b1f", &"rocket_hideout_b2f", &"rocket_hideout_b3f", &"rocket_hideout_b4f",
+	# Jalon 24 : la mer, les Îles Écume, Cramois'Île et son Labo.
+	&"route_19", &"route_20", &"route_21", &"seafoam_1f", &"seafoam_b1f", &"seafoam_b2f",
+	&"seafoam_b3f", &"seafoam_b4f", &"cinnabar_island", &"cinnabar_center", &"cinnabar_mart",
+	&"cinnabar_lab", &"cinnabar_lab_meeting", &"cinnabar_lab_rd", &"cinnabar_lab_fossil",
+	# Jalon 25 : Manoir, Arène, réserve du Musée.
+	&"pokemon_mansion_1f", &"pokemon_mansion_2f", &"pokemon_mansion_3f", &"pokemon_mansion_b1f",
+	&"cinnabar_gym", &"pewter_museum_reserve",
+	# Jalon 21 (T13) : le 7F (Sbires, M. Fuji).
+	&"pokemon_tower_7f",
+	# Jalon 21 (T22) : la Route 16 est (Ronflex ; aucun autre texte).
+	&"route_16",
+	# Jalon 21 (T21) : la Route 12 (panneaux, Pêcheurs, Ronflex) et le 2F du poste (CT39).
+	&"route_12", &"route_12_gate_2f",
 ]
+## Jalon 21 (T22) : dialogues de Ronflex de la Route 16 (`j21_snorlax_16.json`, dossier 24 §15.6-§15.7).
+## Les répliques communes (flûte jouée, réveil, calme, rendormi) sont celles de `j21_snorlax.json`.
+const IDS_J21_T22: Array[StringName] = [&"snorlax_route_16"]
+## Jalon 21 (T22) : textes validés (dossier 24 §15.6.3, §15.7 ; T-6 et T-7 du J17), page par page.
+const TEXTS_J21_T22: Dictionary[StringName, Array] = {
+	&"snorlax_route_16": ["Ronflex dort de nouveau.", "Il ronfle comme si de rien n'était.",
+		"Jouer de la Poké Flûte ?", "Un énorme Pokémon dort au milieu du chemin.",
+		"Il ne bouge pas d'un pouce.", "Il ronfle paisiblement.",
+		"Rien ne semble pouvoir le réveiller."],
+}
+## Jalon 21 (T22) : jouées par la scène `snorlax_route_16_wake` (le premier est lu par le point).
+const PLAYED_J21_T22: Array[StringName] = []
 ## Lot de textes validé par Kevin le 2026-10-06 (anciens brouillons : panneau, observations,
 ## soin de Maman, terminal du Stockage, portes de Jadielle…) : source des textes hors dossiers.
 const TEXTES_VALIDES := "res://docs/design/textes/textes-brouillon-j7.md"
@@ -348,7 +652,7 @@ const IDS: Array[StringName] = [
 ## de l'est (route_2.json) ; T24 : avertissement sans Flash (dark_caves.json).
 const IDS_J17: Array[StringName] = [
 	&"dark_cave_too_dark",
-	&"route_11_sign", &"route_11_cave_sign", &"route_11_snorlax",
+	&"route_11_sign", &"route_11_cave_sign",
 	&"route_11_youngster_lucas_before", &"route_11_youngster_lucas_defeated",
 	&"route_11_youngster_lucas_after", &"route_11_youngster_arthur_before",
 	&"route_11_youngster_arthur_defeated", &"route_11_youngster_arthur_after",
@@ -367,6 +671,8 @@ const IDS_J17: Array[StringName] = [
 	&"route_2_east_item_1", &"route_2_east_item_2", &"route_2_item_5", &"digletts_cave_item_1",
 	# T23 : examen de l'arbuste du couloir (Coupe du J16).
 	&"route_2_east_bush",
+	# Raccords J21 ↔ J22 (2026-10-23) : examen de l'arbre de la Route 16 (mêmes textes).
+	&"route_16_tree",
 ]
 ## Jalon 14 (T17, dossier 17 §15 n° 1 à 27) : dialogues de la maison de Léo, ajoutés aux autres.
 const IDS_J14_BILL: Array[StringName] = [
@@ -380,6 +686,73 @@ const IDS_J14_ROCKET: Array[StringName] = [
 	&"cerulean_rocket_before", &"cerulean_rocket_leaving", &"cerulean_rocket_resume",
 	&"cerulean_rocket_spotted", &"cerulean_rocket_tm", &"cerulean_south_guard",
 	&"cerulean_south_guard_leaving", &"cerulean_victim",
+]
+## Jalon 24 (T4) : répliques des 29 Dresseurs des Routes 19 à 21 (dossier 27 §15.4), en
+## attente de leurs cartes (T8, T11) : exemptées de « utilisé par un PNJ » jusque-là.
+## Jalon 24 (T8, T11 à T15, T18) : panneaux, PNJ et scènes de la mer, des Îles Écume et de
+## Cramois'Île (textes du dossier 27 §15, validés par Kevin le 2026-10-16 ; adaptations de mise en
+## page et répliques de don, recommandées, validées d'avance le 2026-10-21).
+const IDS_J24: Array[StringName] = [
+	&"articuno", &"articuno_cry", &"articuno_flew_away", &"cinnabar_center_cooltrainer",
+	&"cinnabar_center_gentleman", &"cinnabar_fossil_ready_kabuto", &"cinnabar_fossil_ready_omanyte",
+	&"cinnabar_fossil_received_kabuto", &"cinnabar_fossil_received_omanyte",
+	&"cinnabar_fossil_scientist", &"cinnabar_fossil_stored_kabuto",
+	&"cinnabar_fossil_stored_omanyte", &"cinnabar_fossil_taken", &"cinnabar_girl",
+	&"cinnabar_gym_locked", &"cinnabar_gym_sign", &"cinnabar_lab_eevee", &"cinnabar_lab_expert",
+	# J25 : les répliques du Labo (canon, gramps, seel) et l'éboulis du Manoir sont remplacées par
+	# les échanges et la porte du Manoir.
+	&"cinnabar_lab_pc",
+	&"cinnabar_lab_photo", &"cinnabar_lab_tm35", &"cinnabar_lab_tm35_offer",
+	&"cinnabar_lab_tm35_use", &"cinnabar_man", &"cinnabar_mart_scientist",
+	&"cinnabar_mart_silph_worker", &"cinnabar_sign", &"route_19_sign", &"route_20_item_1",
+	&"route_20_sign", &"route_21_item_1", &"seafoam_b2f_hidden_1", &"seafoam_b4f_hidden_1",
+	&"seafoam_sign_boulders", &"seafoam_sign_currents", &"seafoam_sign_danger"
+]
+const IDS_J24_TRAINERS: Array[StringName] = [
+	&"route_19_cooltrainer_hugo_after", &"route_19_cooltrainer_hugo_before",
+	&"route_19_cooltrainer_hugo_defeated", &"route_19_cooltrainer_malo_after",
+	&"route_19_cooltrainer_malo_before", &"route_19_cooltrainer_malo_defeated",
+	&"route_19_swimmer_anais_after", &"route_19_swimmer_anais_before",
+	&"route_19_swimmer_anais_defeated", &"route_19_swimmer_erwan_after",
+	&"route_19_swimmer_erwan_before", &"route_19_swimmer_erwan_defeated",
+	&"route_19_swimmer_gwen_after", &"route_19_swimmer_gwen_before",
+	&"route_19_swimmer_gwen_defeated", &"route_19_swimmer_lena_after",
+	&"route_19_swimmer_lena_before", &"route_19_swimmer_lena_defeated",
+	&"route_19_swimmer_loic_after", &"route_19_swimmer_loic_before",
+	&"route_19_swimmer_loic_defeated", &"route_19_swimmer_maelle_after",
+	&"route_19_swimmer_maelle_before", &"route_19_swimmer_maelle_defeated",
+	&"route_19_swimmer_tanguy_after", &"route_19_swimmer_tanguy_before",
+	&"route_19_swimmer_tanguy_defeated", &"route_19_swimmer_yann_after",
+	&"route_19_swimmer_yann_before", &"route_19_swimmer_yann_defeated",
+	&"route_20_bird_keeper_bastien_after", &"route_20_bird_keeper_bastien_before",
+	&"route_20_bird_keeper_bastien_defeated", &"route_20_swimmer_clara_after",
+	&"route_20_swimmer_clara_before", &"route_20_swimmer_clara_defeated",
+	&"route_20_swimmer_elsa_after", &"route_20_swimmer_elsa_before",
+	&"route_20_swimmer_elsa_defeated", &"route_20_swimmer_iris_after",
+	&"route_20_swimmer_iris_before", &"route_20_swimmer_iris_defeated",
+	&"route_20_swimmer_kilian_after", &"route_20_swimmer_kilian_before",
+	&"route_20_swimmer_kilian_defeated", &"route_20_swimmer_lou_after",
+	&"route_20_swimmer_lou_before", &"route_20_swimmer_lou_defeated",
+	&"route_20_swimmer_mathis_after", &"route_20_swimmer_mathis_before",
+	&"route_20_swimmer_mathis_defeated", &"route_20_swimmer_nina_after",
+	&"route_20_swimmer_nina_before", &"route_20_swimmer_nina_defeated",
+	&"route_20_swimmer_ronan_after", &"route_20_swimmer_ronan_before",
+	&"route_20_swimmer_ronan_defeated", &"route_20_swimmer_solene_after",
+	&"route_20_swimmer_solene_before", &"route_20_swimmer_solene_defeated",
+	&"route_21_fisher_gilles_after", &"route_21_fisher_gilles_before",
+	&"route_21_fisher_gilles_defeated", &"route_21_fisher_marcel_after",
+	&"route_21_fisher_marcel_before", &"route_21_fisher_marcel_defeated",
+	&"route_21_fisher_rene_after", &"route_21_fisher_rene_before",
+	&"route_21_fisher_rene_defeated", &"route_21_fisher_yves_after",
+	&"route_21_fisher_yves_before", &"route_21_fisher_yves_defeated",
+	&"route_21_swimmer_arthur_after", &"route_21_swimmer_arthur_before",
+	&"route_21_swimmer_arthur_defeated", &"route_21_swimmer_dylan_after",
+	&"route_21_swimmer_dylan_before", &"route_21_swimmer_dylan_defeated",
+	&"route_21_swimmer_noe_after", &"route_21_swimmer_noe_before",
+	&"route_21_swimmer_noe_defeated", &"route_21_swimmer_simon_after",
+	&"route_21_swimmer_simon_before", &"route_21_swimmer_simon_defeated",
+	&"route_21_swimmer_thibault_after", &"route_21_swimmer_thibault_before",
+	&"route_21_swimmer_thibault_defeated",
 ]
 ## Jalon 15 (T13) : la Route 5 et ses intérieurs (dossier 18 §15.2, annexe A.3).
 const IDS_J15_ROUTE_5: Array[StringName] = [
@@ -460,7 +833,7 @@ const IDS_J20: Array[StringName] = [
 	# T13 : panneau d'ascenseur (sans page) et refus sans la Clé (texte 50).
 	&"elevator_panel", &"elevator_locked",
 	# T16 : Céladopole (panneaux, examens, arbustes de Coupe, tableau et panneau d'ascenseur).
-	&"celadon_city_sign", &"celadon_gym_sign", &"celadon_west_block", &"celadon_dept_board",
+	&"celadon_city_sign", &"celadon_gym_sign", &"celadon_dept_board",
 	&"celadon_mansion_office_door", &"celadon_gym_bush",
 	&"celadon_gym_inner_bush",
 	# T20 : machines du Casino (texte 39).
@@ -505,6 +878,17 @@ const IDS_J20_T17: Array[StringName] = [
 	&"route_8_nerd_firmin_defeated", &"souterrain_hidden_1", &"souterrain_hidden_2",
 	&"underground_7_8_resident",
 ]
+## Jalon 21 (T21) : Route 12 (dossier 24 §15.7, §15.8, §15.8 bis, annexe A) et Ronflex.
+const IDS_J21_T21: Array[StringName] = [
+	&"route_12_sign", &"route_12_pier_sign",
+	&"route_12_fisher_1_before", &"route_12_fisher_1_defeated", &"route_12_fisher_1_after",
+	&"route_12_fisher_2_before", &"route_12_fisher_2_defeated", &"route_12_fisher_2_after",
+	&"route_12_fisher_3_before", &"route_12_fisher_3_defeated", &"route_12_fisher_3_after",
+	&"route_12_fisher_4_before", &"route_12_fisher_4_defeated", &"route_12_fisher_4_after",
+	&"route_12_gate_tm39", &"route_12_gate_tm39_give", &"route_12_gate_tm39_got",
+	&"snorlax_route_12", &"snorlax_flute_played", &"snorlax_wakes", &"snorlax_calms",
+	&"snorlax_sleeps",
+]
 ## Jalon 20 (T21) : la vie du 20-II (dossier 23 §20.6, §20.7 et annexe A.5, A.8 du plan, textes
 ## 39 à 55, 95 à 100, 130 à 156) ; un identifiant par dialogue des données.
 const IDS_J20_T21: Array[StringName] = [
@@ -540,6 +924,15 @@ const IDS_J20_T21: Array[StringName] = [
 const DOSSIER_23 := "res://docs/design/dossier-23-celadopole.md"
 ## Jalon 20 (T25) : annexe A.14 du plan (postes de Safrania, textes 215 à 219).
 const PLAN_J20 := "res://docs/tech/jalon-20.md"
+## Jalon 21 (T12 à T14) : `data/dialogues/j21_tower.json`.
+const IDS_J21: Array[StringName] = [
+	&"tower_6f_marowak_held", &"tower_6f_marowak_soul", &"tower_6f_marowak_peace",
+	&"tower_rocket_1_before", &"tower_rocket_1_defeated", &"tower_rocket_1_after",
+	&"tower_rocket_2_before", &"tower_rocket_2_defeated", &"tower_rocket_2_after",
+	&"tower_rocket_3_before", &"tower_rocket_3_defeated", &"tower_rocket_3_after",
+	&"tower_7f_fuji", &"tower_7f_fuji_thanks", &"fuji_flute_give", &"fuji_flute_received",
+	&"fuji_flute_explain", &"pokemon_house_fuji",
+]
 const IDS_J19: Array[StringName] = [
 	&"tower_channeler_1_after",
 	&"tower_channeler_1_before",
@@ -665,7 +1058,9 @@ const SET_J14_BILL_CUTSCENES: Array[StringName] = [
 ## Jalon 16 (T12, T15) : `got_hm01` (lu par le marin de la passerelle et le départ du navire) est
 ## levé par la scène du capitaine (T13). Jalon 18 (T16) : `tower_stairs_open` (présence de
 ## l'Exorciste de la Tour) est levé au J19 (T16 : scène `tower_guardian`, dossier 22 K-3).
-const FUTURE_FLAGS: Array[StringName] = [&"ghost_marowak_calmed"]
+## Jalon 21 : `ghost_marowak_calmed` (6F) et `snorlax_route_*_woken` (Ronflex) sont levés par leurs
+## scènes : plus aucun drapeau futur.
+const FUTURE_FLAGS: Array[StringName] = []
 var _library: DialogueLibrary
 var _cutscenes: CutsceneLibrary
 var _offer: StarterOffer
@@ -673,6 +1068,8 @@ var _offer: StarterOffer
 var _used_on: Dictionary[StringName, Array] = {}
 ## Carte → identifiants de PNJ.
 var _npc_ids: Dictionary[StringName, Array] = {}
+## Jalon 21 : carte → acteurs de décor déclarés (nœuds du groupe « scene_props », [PropActor]).
+var _prop_ids: Dictionary[StringName, Array] = {}
 ## Dialogue joué par une scène → PNJ créés (« spawn ») par cette scène.
 var _spawned_for: Dictionary[StringName, Array] = {}
 
@@ -713,6 +1110,10 @@ func before_all() -> void:
 				if spec.has_rematch():
 					_use(spec.rematch_dialogue, map_id)
 		var map := (load(MapCatalog.scene_path(map_id)) as PackedScene).instantiate()
+		_prop_ids[map_id] = []
+		for node: Node in map.find_children("*", "", true, false):
+			if node.is_in_group(PropActor.GROUP):
+				(_prop_ids[map_id] as Array).append(StringName(node.name))
 		for point: Node in map.get_node(^"Interactables").get_children():
 			_use((point as InteractPoint).dialogue_id, map_id)
 			# Jalon 16 (T11) : objet à fouiller d'un puzzle : Boot joue les textes du puzzle et
@@ -760,6 +1161,10 @@ func _use_cutscene(cutscene_id: StringName, trigger_map: StringName) -> void:
 				for said: StringName in [step.dialogue_id, step.dialogue_stored]:
 					if not said.is_empty():
 						_use(said, map_id)
+			if step.kind == CutsceneStep.Kind.TRADE:
+				# Jalon 25 : « wrong », « refuse » et « say » de l'échange.
+				for said: StringName in [step.dialogue_id, step.dialogue_stored] + step.say:
+					_use(said, map_id)
 			if step.kind == CutsceneStep.Kind.DIALOGUE:
 				_use(step.dialogue_id, map_id)
 				if not _spawned_for.has(step.dialogue_id):
@@ -803,7 +1208,11 @@ func test_library_loads_without_error() -> void:
 	found.sort()
 	var expected := IDS + IDS_J14_BILL + IDS_J14_ROCKET + IDS_J15_ROUTE_5 + IDS_J16_GYM \
 		+ IDS_J16_SHIP + IDS_J16_RIVAL_CAPTAIN + IDS_J16_T15 + IDS_J17 + IDS_J18 + IDS_J19 + IDS_J20 \
-		+ IDS_J20_T17 + IDS_J20_T21
+		+ IDS_J20_T17 + IDS_J20_T21 + IDS_J21 + IDS_J21_T21 + IDS_S2B + S2_FIELD_TRAVEL + IDS_J21_T22 \
+		+ IDS_J24_TRAINERS + IDS_J24 + IDS_J25
+	expected.append_array(TEXTS_S2C_FISH.keys())
+	expected.append_array(TEXTS_S2D_STRENGTH.keys())
+	expected.append_array(UNVALIDATED)
 	expected.sort()
 	assert_eq(found, expected)
 
@@ -817,7 +1226,9 @@ func test_every_used_dialogue_exists() -> void:
 func test_every_dialogue_is_used() -> void:
 	var played := _cutscenes.get_dialogue_ids()
 	for id: StringName in _real_ids():
-		if UNUSED_YET.has(id) or PLAYED_BY_COMPANION.has(id) or PLAYED_BY_BOOT.has(id):
+		if UNUSED_YET.has(id) or PLAYED_BY_COMPANION.has(id) or PLAYED_BY_BOOT.has(id) \
+				or S2_FIELD_TRAVEL.has(id) or TEXTS_S2C_FISH.has(id) \
+				or TEXTS_S2D_STRENGTH.has(id):
 			continue
 		assert_true(_used_on.has(id) or played.has(id),
 			"dialogue « %s » utilisé par un PNJ, un point ou une scène" % id)
@@ -827,6 +1238,14 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 	assert_eq(_cutscenes.get_errors().size(), 0, str(_cutscenes.get_errors()))
 	var played := _without_qa(_cutscenes.get_dialogue_ids())
 	assert_eq(played, _sorted([
+		# Jalon 24 : Artikodin, porte de l'Arène, CT35, fossiles.
+		&"articuno_cry", &"articuno_flew_away", &"cinnabar_gym_locked", &"cinnabar_lab_tm35_offer",
+		&"cinnabar_lab_tm35_use", &"cinnabar_fossil_taken", &"cinnabar_fossil_ready_kabuto", &"cinnabar_fossil_ready_omanyte",
+		&"cinnabar_fossil_received_kabuto", &"cinnabar_fossil_received_omanyte",
+		&"cinnabar_fossil_stored_kabuto", &"cinnabar_fossil_stored_omanyte",
+		# Jalon 25 : Ptéra (Vieil Ambre), calque des fossiles du J24.
+		&"cinnabar_fossil_ready_aerodactyl", &"cinnabar_fossil_received_aerodactyl",
+		&"cinnabar_fossil_stored_aerodactyl",
 		# Jalon 13 (T19) : Ondine à l'Arène.
 		&"cerulean_gym_misty_badge", &"cerulean_gym_misty_intro", &"cerulean_gym_misty_lost",
 		&"cerulean_gym_misty_resume", &"cerulean_gym_misty_tm", &"cerulean_gym_misty_tm_late",
@@ -838,6 +1257,9 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		&"tower_6f_ghost_after", &"tower_6f_ghost_warning",
 		# Jalon 20 (T25) : la boisson donnée au garde d'un poste de Safrania.
 		&"saffron_gate_drink_lemonade", &"saffron_gate_drink_soda", &"saffron_gate_drink_water",
+		# Jalon 21 (T21) : CT39 du poste et réveil de Ronflex.
+		&"route_12_gate_tm39_give", &"route_12_gate_tm39_got", &"snorlax_flute_played",
+		&"snorlax_wakes", &"snorlax_calms", &"snorlax_sleeps",
 		# Jalon 20 (T12) : le don d'Évoli.
 		&"celadon_eevee_received", &"celadon_eevee_stored",
 		# Jalon 20 (T17) : Erika (scène de l'Arène et rattrapage de la CT21) et la fillette du toit.
@@ -850,6 +1272,11 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		&"rocket_hideout_b4f_lift_key_got", &"rocket_hideout_b4f_silph_scope_got",
 		# Jalon 19 (T16) : la gardienne du rez-de-chaussée.
 		&"tower_guardian_worried",
+		# Jalon 21 (T13, T14) : Fuji remercie au 7F, remise de la Poké Flûte à la maison.
+		&"tower_7f_fuji_thanks", &"fuji_flute_give", &"fuji_flute_received",
+		&"fuji_flute_explain",
+		# Jalon 21 (T12) : la variante A du 6F (Ossatueur retenu, son âme, la paix).
+		&"tower_6f_marowak_held", &"tower_6f_marowak_soul", &"tower_6f_marowak_peace",
 		# Jalon 19 (T17) : le rival n° 5 (joué par sa scène).
 		&"rival_tower_intro", &"rival_tower_lost", &"rival_tower_resume", &"rival_tower_won",
 		# Jalon 19 (T18) : la zone purifiée du 5F.
@@ -890,7 +1317,27 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		+ PLAYED_J15_ROUTE_5 + PLAYED_J16_GYM + PLAYED_J16_RIVAL_CAPTAIN
 		+ PLAYED_J16_T15
 		# Jalon 17 (T8) : remise de la CS05 par l'assistant (scène lancée par son dialogue).
-		+ [&"route_2_east_assistant_hm05_system", &"route_2_east_assistant_hm05_use"]))
+		+ [&"route_2_east_assistant_hm05_system", &"route_2_east_assistant_hm05_use"]
+		# Jalon 25 : Manoir, Arène, réserve du Musée, échanges, porte de l'Arène.
+		+ [&"cinnabar_gym_door_unlock", &"cinnabar_blaine_after", &"cinnabar_blaine_badge",
+			&"cinnabar_blaine_before", &"cinnabar_blaine_defeated", &"cinnabar_blaine_tm38",
+			&"cinnabar_gym_2_before", &"cinnabar_gym_2_defeated", &"cinnabar_gym_3_before",
+			&"cinnabar_gym_3_defeated", &"cinnabar_gym_4_before", &"cinnabar_gym_4_defeated",
+			&"cinnabar_gym_5_before", &"cinnabar_gym_5_defeated", &"cinnabar_gym_6_before",
+			&"cinnabar_gym_6_defeated", &"cinnabar_gym_7_before", &"cinnabar_gym_7_defeated",
+			&"cinnabar_gym_quiz_1_question", &"cinnabar_gym_quiz_2_question",
+			&"cinnabar_gym_quiz_3_question", &"cinnabar_gym_quiz_4_question",
+			&"cinnabar_gym_quiz_5_question", &"cinnabar_gym_quiz_6_question", &"cinnabar_gym_quiz_intro",
+			&"cinnabar_gym_quiz_right", &"cinnabar_gym_quiz_wrong", &"cinnabar_trade_cable",
+			&"cinnabar_trade_hector_after", &"cinnabar_trade_hector_done", &"cinnabar_trade_hector_offer",
+			&"cinnabar_trade_hector_refuse", &"cinnabar_trade_hector_thanks",
+			&"cinnabar_trade_hector_wrong", &"cinnabar_trade_lina_after", &"cinnabar_trade_lina_done",
+			&"cinnabar_trade_lina_offer", &"cinnabar_trade_lina_refuse", &"cinnabar_trade_lina_thanks",
+			&"cinnabar_trade_lina_wrong", &"cinnabar_trade_marc_after", &"cinnabar_trade_marc_done",
+			&"cinnabar_trade_marc_offer", &"cinnabar_trade_marc_refuse", &"cinnabar_trade_marc_thanks",
+			&"cinnabar_trade_marc_wrong", &"mansion_statue_yes", &"pewter_museum_reserve_amber_give"]
+		# Jalon 21 (T22) : le réveil de Ronflex (Route 16).
+		+ PLAYED_J21_T22))
 	for id: StringName in played:
 		assert_true(_library.has_dialogue(id), "dialogue « %s » défini" % id)
 		if UNUSED_YET.has(id):
@@ -915,7 +1362,9 @@ func test_every_react_targets_an_npc_of_the_map_where_it_is_used() -> void:
 		var maps: Array = _used_on.get(row[0], [])
 		assert_false(maps.is_empty(), "%s utilisé" % row[0])
 		for map_id: StringName in maps:
-			assert_true((_npc_ids[map_id] as Array).has(page.react),
+			# Jalon 21 : un acteur de décor déclaré sur la carte vaut un PNJ.
+			assert_true((_npc_ids[map_id] as Array).has(page.react)
+				or (_prop_ids.get(map_id, []) as Array).has(page.react),
 				"%s : « react » %s sur %s" % [row[0], page.react, map_id])
 
 
@@ -959,6 +1408,9 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 				assert_true(pair[0].load_file((pair[1] as String).path_join(file)), file)
 	var set_flags := dialogues.get_set_flags() + cutscenes.get_set_flags() \
 		+ StarterChoice.get_set_flags(_offer)
+	# Jalon 24 (T13) : « fossile prêt », posé par le code à l'arrivée sur Cramois'Île
+	# ([FossilReadyGate]).
+	set_flags.append(&"fossil_ready")
 	var read_flags := dialogues.get_condition_flags() + cutscenes.get_condition_flags()
 	for map_id: StringName in MAPS:
 		for spec: NpcSpec in NpcRoster.load_for_map(map_id).get_all():
@@ -984,11 +1436,18 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 			&"ss_anne_departure_chosen", &"ss_anne_exit_told"]
 			+ SET_J14_BILL_DIALOGUES + SET_J14_ROCKET_DIALOGUES
 			# Jalon 17 (T8) : Ronflex vu, assistant rencontré, barrière de FUTUR B ouverte.
-			+ [&"hm05_assistant_met", &"route_2_east_gate_open", &"snorlax_route_11_seen"]
+			+ [&"hm05_assistant_met", &"route_2_east_gate_open", &"snorlax_route_12_seen"]
 			+ SET_J18_DIALOGUES
 			# Jalon 20 (T21) : porte du bureau ouverte par le second garde battu (§2.7.3).
-			+ [&"rocket_hideout_b4f_door_open"]))
-	assert_eq(cutscenes.get_set_flags(), _sorted([&"badge_boulder", &"badge_cascade",
+			+ [&"rocket_hideout_b4f_door_open"]
+			# Jalon 21 (T22) : Ronflex de la Route 16 vu (T-6, T-7 repris).
+			+ [&"snorlax_route_16_seen"]
+			# Jalon 25 : réponses du quiz, offre d'échange acceptée ou refusée (choix OUI / NON).
+			+ [&"cinnabar_gym_quiz_no", &"cinnabar_gym_quiz_yes", &"cinnabar_trade_offer_accepted",
+				&"cinnabar_trade_offer_declined"]))
+	assert_eq(cutscenes.get_set_flags(), _sorted([&"got_tm39", &"route_12_visited",
+		&"snorlax_route_12_awake", &"snorlax_route_12_caught", &"snorlax_route_12_done",
+		&"snorlax_route_12_woken", &"badge_boulder", &"badge_cascade",
 		&"beaten_mt_moon_researcher", &"beaten_nugget_rocket", &"brock_met", &"cerulean_reached", &"got_mt_moon_1f_hidden_1",
 		&"got_mt_moon_1f_item_1", &"got_mt_moon_b1f_item_1", &"got_mt_moon_b1f_item_2",
 		&"got_mt_moon_b2f_hidden_1", &"got_mt_moon_b2f_item_1", &"got_nugget", &"got_oak_parcel",
@@ -1009,10 +1468,36 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		&"rival_tower_lost_once", &"rival_tower_retried", &"rival_tower_won",
 		# Jalon 19 (T24) : première rencontre du SPECTRE du 6F (dossier 22 §13).
 		&"tower_ghost_met",
+		# Jalon 21 (T13, T14) : Fuji sauvé, Poké Flûte reçue.
+		&"fuji_rescued", &"got_poke_flute",
+		# Jalon 21 (T12) : Ossatueur apaisé (victoire de la variante A du 6F), brume levée.
+		&"ghost_marowak_calmed", &"tower_6f_mist_lifted",
 		# Jalon 20 (T25) : boisson donnée, les quatre postes de Safrania s'ouvrent.
 		&"saffron_gates_open",
 		# Jalon 20 (T12) : Évoli reçu (étape « gift_pokemon »).
 		&"eevee_received",
+		# Jalon 24 : objets et caches, Artikodin (rencontre fixe), CT35, fossiles confiés et reçus.
+		&"got_route_20_item_1", &"got_route_21_item_1", &"got_seafoam_b2f_hidden_1",
+		&"got_seafoam_b4f_hidden_1", &"articuno_done", &"articuno_caught", &"got_tm35",
+		&"fossil_reviving_kabuto", &"fossil_reviving_omanyte", &"fossil_revived_kabuto",
+		&"fossil_revived_omanyte", &"fossil_reviving_aerodactyl", &"fossil_revived_aerodactyl",
+		# Jalon 25 : Manoir (objets, caches, interrupteur), Arène (herses, Dresseurs, Auguste, CT38,
+		# porte), Vieil Ambre, arbre du Musée, échanges.
+		&"badge_volcano", &"beaten_cinnabar_gym_1", &"beaten_cinnabar_gym_2",
+		&"beaten_cinnabar_gym_3", &"beaten_cinnabar_gym_4", &"beaten_cinnabar_gym_5",
+		&"beaten_cinnabar_gym_6", &"beaten_cinnabar_gym_7", &"blaine_met", &"cinnabar_gym_gate_1",
+		&"cinnabar_gym_gate_2", &"cinnabar_gym_gate_3", &"cinnabar_gym_gate_4",
+		&"cinnabar_gym_gate_5", &"cinnabar_gym_gate_6", &"cinnabar_gym_unlocked",
+		&"cinnabar_trade_electrode_done", &"cinnabar_trade_seel_done",
+		&"cinnabar_trade_tangela_done", &"cut_pewter_museum_tree",
+		&"got_pokemon_mansion_1f_hidden_1", &"got_pokemon_mansion_1f_item_1",
+		&"got_pokemon_mansion_1f_item_2", &"got_pokemon_mansion_2f_item_1",
+		&"got_pokemon_mansion_3f_hidden_1", &"got_pokemon_mansion_3f_item_1",
+		&"got_pokemon_mansion_3f_item_2", &"got_pokemon_mansion_b1f_hidden_1",
+		&"got_pokemon_mansion_b1f_item_1", &"got_pokemon_mansion_b1f_item_2",
+		&"got_pokemon_mansion_b1f_item_3", &"got_pokemon_mansion_b1f_item_4",
+		&"got_pokemon_mansion_b1f_item_5", &"mansion_switch_on", &"pewter_museum_got_old_amber",
+		&"tm38_received",
 		&"route_3_entered", &"route_3_guard_cleared", &"route_4_reached", &"route_5_entered",
 		&"starter_chosen",
 		&"starter_offered", &"tm11_received", &"tm34_received", &"viridian_arrived",
@@ -1039,12 +1524,21 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		&"cut_cerulean_east_tree",
 		# Jalon 20 (T16) : les deux arbustes de l'Arène d'Erika.
 		&"cut_celadon_gym_bush", &"cut_celadon_gym_inner_bush",
+		# Raccords J21 ↔ J22 (2026-10-23) : l'arbre de la Route 16.
+		&"cut_route_16_tree",
 		# Jalon 20 (T17) : arrivées (Route 8, Céladopole), objet et caches, Erika (badge, CT21),
 		# CT13 de la fillette du toit.
 		&"route_8_reached", &"celadon_reached", &"got_route_8_item_1", &"got_route_8_hidden_1",
 		&"got_celadon_hidden_1", &"got_souterrain_hidden_1", &"got_souterrain_hidden_2",
 		&"erika_met", &"badge_rainbow", &"tm21_received", &"rooftop_tm13"]
 		+ SET_J14_BILL_CUTSCENES + SET_J14_ROCKET_CUTSCENES + SET_J18_CUTSCENES
+		# Jalon 22 : Bon, Bicyclette, cannes, CS02, saluts des gardes de la Piste, objets.
+		+ [&"got_bike_voucher", &"got_bicycle", &"got_old_rod", &"got_good_rod",
+		&"got_super_rod", &"got_hm02", &"cycling_gate_16_greeted", &"cycling_gate_18_greeted",
+		&"got_route_12_item_1", &"got_route_12_hidden_1", &"got_route_13_hidden_1",
+		&"got_route_13_hidden_2", &"got_route_15_item_1", &"got_route_16_hidden_1",
+		&"got_route_17_hidden_1", &"got_route_17_hidden_2", &"got_route_17_hidden_3",
+		&"got_route_17_hidden_4", &"got_route_17_hidden_5"]
 		# Jalon 19 (T16) : la gardienne de la Tour s'écarte.
 		+ [&"tower_stairs_open"]
 		# Jalon 19 (T18) : objets de la Tour (cinq visibles, un caché).
@@ -1059,7 +1553,10 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		&"got_rocket_hideout_b2f_item_4", &"got_rocket_hideout_b3f_item_1",
 		&"got_rocket_hideout_b3f_item_2", &"got_rocket_hideout_b3f_hidden_1",
 		&"got_rocket_hideout_b4f_item_1", &"got_rocket_hideout_b4f_item_2",
-		&"got_rocket_hideout_b4f_item_3", &"got_rocket_hideout_b4f_hidden_1"]))
+		&"got_rocket_hideout_b4f_item_3", &"got_rocket_hideout_b4f_hidden_1"]
+		# Jalon 21 (T22) : titre de zone de la Route 16, réveil de Ronflex 16 (`_awake` jamais sur disque).
+		+ [&"route_16_visited", &"snorlax_route_16_awake", &"snorlax_route_16_woken",
+		&"snorlax_route_16_done", &"snorlax_route_16_caught"]))
 	assert_eq(_used_on.get(&"oak_lab_reunion"), [&"oak_lab"], "joué au labo, après le fondu")
 	assert_eq(_used_on.get(&"oak_starter_offer"), [&"oak_lab"], "joué au labo")
 
@@ -1252,6 +1749,7 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 	var lot_j10 := FileAccess.get_file_as_string(LOT_J10)
 	var dossier_14 := FileAccess.get_file_as_string(DOSSIER_14)
 	var dossier_18 := FileAccess.get_file_as_string(DOSSIER_18)
+	var dossier_27 := FileAccess.get_file_as_string(DOSSIER_27)
 	var dossier_19 := FileAccess.get_file_as_string(DOSSIER_19)
 	var annex_a_15 := AnnexATexts.annex_a(FileAccess.get_file_as_string(JALON_15))
 	var dossier_16 := FileAccess.get_file_as_string(DOSSIER_16).replace("\n    ", " ") \
@@ -1260,15 +1758,21 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 	var dossier_21 := FileAccess.get_file_as_string(DOSSIER_21) \
 		+ FileAccess.get_file_as_string(PLAN_J18)
 	var dossier_23 := FileAccess.get_file_as_string(DOSSIER_23).replace("\n    ", " ")
+	# J22 : dossier 25 à plat (déclaration oubliée au J22 : ce script ne se chargeait plus).
+	var dossier_25 := J22Ids.flat_text(FileAccess.get_file_as_string(J22Ids.DOSSIER_25))
 	# T25 (n° 219) : « [Joueur] donne un(e) [boisson] au garde. », écrit pour chaque boisson.
 	var plan_j20 := FileAccess.get_file_as_string(PLAN_J20).replace("\n     ", " ") \
 		.replace("\n    ", " ")
 	for drink: String in ["une Eau Fraîche", "un Soda Cool", "une Limonade"]:
 		plan_j20 += plan_j20.replace("[Joueur] donne un(e) [boisson]", "{joueur} donne " + drink)
+	var dossier_24 := FileAccess.get_file_as_string(DOSSIER_24)
 	var dossier_22 := FileAccess.get_file_as_string(DOSSIER_22).replace("\n   ", " ") \
 		.replace("\n  ", " ")
 	var dossier_20 := FileAccess.get_file_as_string(DOSSIER_20).replace("**", "")
 	var annex_a_17 := AnnexATexts.annex_a(FileAccess.get_file_as_string(JALON_17))
+	# Jalon 21 (T21) : textes validés du dossier 24 (§15) et de l'annexe A du plan.
+	var j21_texts := FileAccess.get_file_as_string("res://docs/design/dossier-24-repos-des-esprits.md") \
+		+ FileAccess.get_file_as_string("res://docs/tech/jalon-21.md")
 	var dossier_17 := FileAccess.get_file_as_string(DOSSIER_17) \
 		+ FileAccess.get_file_as_string(PLAN_J14).replace("\n  ", " ")
 	# Formes accordées « fatigué[e] » (n° 55) : masculin et féminin.
@@ -1281,7 +1785,26 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 	for row: Array in _pages():
 		# Une variante en brouillon (PENDING_DRAFT_VARIANTS) attend la relecture de Kevin : son
 		# texte n'est encore dans aucun dossier.
-		if GATE_GUARDS.has(row[0]) or UNVALIDATED.has(row[0]) or (row[3] as DialogueVariant).draft:
+		if GATE_GUARDS.has(row[0]) or UNVALIDATED.has(row[0]) or S2_FIELD_TRAVEL.has(row[0]) \
+				or (row[3] as DialogueVariant).draft:
+			continue
+		if TEXTS_J21_T22.has(row[0]):
+			assert_true(TEXTS_J21_T22[row[0]].has(text_t22(row[1])), "%s : %s" % [row[0], row[1]])
+			continue
+		if TEXTS_S2B.has(row[0]):
+			assert_true(TEXTS_S2B[row[0]].has(row[1]), "%s : %s" % [row[0], row[1]])
+			continue
+		if TEXTS_S2C_FISH.has(row[0]):
+			assert_true(TEXTS_S2C_FISH[row[0]].has(row[1]), "%s : %s" % [row[0], row[1]])
+			continue
+		if TEXTS_S2D_STRENGTH.has(row[0]):
+			assert_true(TEXTS_S2D_STRENGTH[row[0]].has(row[1]), "%s : %s" % [row[0], row[1]])
+			continue
+		if TEXTS_J24.has(row[0]):
+			assert_true(TEXTS_J24[row[0]].has(row[1]), "%s : %s" % [row[0], row[1]])
+			continue
+		if TEXTS_J25.has(row[0]):
+			assert_true(TEXTS_J25[row[0]].has(row[1]), "%s : %s" % [row[0], row[1]])
 			continue
 		var text: String = row[1]
 		for token: String in _DOSSIER_TOKENS:
@@ -1300,6 +1823,9 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			or _each_line_quoted(dossier_14, text)
 			or _in_dossier_18(dossier_18, text)
 			or _in_dossier_18(annex_a_15, text)
+			# J24 (T4) : Dresseurs des Routes 19 à 21 (dossier 27 §15.4 ; test_j24_data vérifie
+			# chaque réplique entière).
+			or _in_dossier_18(dossier_27, text)
 			# J15 (T13) : panneaux « TITRE — texte » (§15.2, T-1) écrits sur deux lignes ; le
 			# carrefour de l'annexe A.3 (« … → · … ← ») aussi.
 			or dossier_18.contains("« %s »" % text.replace("\n", " — "))
@@ -1312,6 +1838,9 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			# J12 (T18) : une réplique du §20 coupée en deux lignes dans sa bulle (retour à la
 			# ligne de mise en page) : la bulle entière est une citation du dossier.
 			or dossier_15.contains("« %s »" % text.replace("\n", " "))
+			# J21 (T21) : dossier 24 §15 et annexe A du plan (bulles « / », panneaux sur deux lignes).
+			or j21_texts.contains(text.replace("{joueur}", "{player}"))
+			or j21_texts.contains(text.replace("{joueur}", "{player}").replace("\n", " / "))
 			# J14 (T17) : dossier 17 §15 et annexe A du plan.
 			or dossier_17.contains("« %s »" % text.replace("{player}", "{joueur}"))
 			or dossier_17.contains(text.replace("\n", " "))
@@ -1331,11 +1860,15 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			or _in_dossier_18(dossier_22, text.replace("{joueur}", "{player}"))
 			# J19 (T17) : citation du §15 repliée sur deux lignes du dossier.
 			or _in_dossier_18(_flat_lines(dossier_22), text)
+			# J21 (T12 à T14) : dossier 24 §15, « / » entre les deux lignes d'une bulle.
+			or _in_dossier_18(dossier_24, text.replace("{joueur}", "{player}").replace("\n", " / "))
 			# J20 (T15) : dossier 23 §20, un panneau sur deux lignes, une citation par ligne.
 			or _each_line_quoted(dossier_23, text)
 			or _in_dossier_18(dossier_23, text) or _in_dossier_18(plan_j20, text)
 			# J20 (T12) : « {player} » écrit tel quel dans le dossier 23 (texte 29).
-			or _each_line_quoted(dossier_23, text.replace("{joueur}", "{player}")),
+			or _each_line_quoted(dossier_23, text.replace("{joueur}", "{player}"))
+			# J22 (T13, T17) : dossier 25 §16, bulles « / » et lignes à plat.
+			or dossier_25.contains(J22Ids.flat_text(row[1])),
 			"%s : « %s » dans un dossier de conception" % [row[0], text])
 
 
@@ -1437,6 +1970,8 @@ func test_speakers_and_narration() -> void:
 		&"vermilion_sailor": ["Marin", false],
 		# Jalon 17 (T23) : l'arbuste du couloir en narration, comme celui de l'Arène.
 		&"route_2_east_bush": ["", true],
+		# Raccords J21 ↔ J22 (2026-10-23) : l'arbre de la Route 16, en narration.
+		&"route_16_tree": ["", true],
 	}
 	for id: StringName in expected:
 		var dialogue := _library.get_dialogue(id)
@@ -1551,7 +2086,12 @@ func test_oak_parcel_lines() -> void:
 	# Jalon 18 (T16) : sept objets au sol (Route 9, Route 10, grotte) et la Super Potion cachée.
 	# Jalon 20 (T21) : onze objets au sol et trois caches du repaire, la Clé (chute et prise),
 	# Giovanni et le Scope Sylphe.
-	assert_eq(launched, 103, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
+	# Jalon 22 (T13, T17) : la Canne du pêcheur de Carmin, l'échange du Bon à Azuria (les données
+	# des fichiers j22_*.json sont vérifiées par test_j22_data).
+	# Jalon 24 : deux objets au sol, deux caches, Artikodin, la CT35, deux dons de fossile.
+	# Jalon 25 : objets et caches du Manoir (13), statue, six machines, Auguste, trois échanges,
+	# Vieil Ambre, arbre du Musée.
+	assert_eq(launched, 141, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
 		+ "sa CT34, Ondine (pont, Arène et rattrapage), écran, module, console, objets de la "
 		+ "Route 25, le Rocket d'Azuria (2) et le barrage sud ; J15 : objets de la Route 5 ; "
 		+ "J16 : Major Bob (2), neuf objets du S.S. Anne, le capitaine, le marin (2) ; "
@@ -1559,7 +2099,9 @@ func test_oak_parcel_lines() -> void:
 		+ "et la Corde Sortie de la Cave ; J18 : huit objets ; J19 : la gardienne de la Tour et six objets de la Tour (T18) ; "
 		+ "J20 (T17) : Super Potion de la Route 8, quatre caches (Route 8, souterrain ×2, "
 		+ "ville), Erika (2) ; "
-		+ "J20 (T21) : repaire (11 objets, 3 caches, Clé ×2, Giovanni, Scope)")
+		+ "J20 (T21) : repaire (11 objets, 3 caches, Clé ×2, Giovanni, Scope) ; "
+		+ "J21 (T13, T14) : M. Fuji au 7F et dans sa maison ; J22 : la Canne, la Bicyclette ; "
+		+ "J24 : objets (2), caches (2), Artikodin, CT35, fossiles (2) ; J25 : Ptéra (1)")
 	# Le jeton n'apparaît que dans la réplique de l'espèce, « {pokemon} » dans les phrases du
 	# compagnon (J11), et ceux de la Pension dans ses répliques (J15).
 	for row: Array in _pages():
@@ -1568,6 +2110,8 @@ func test_oak_parcel_lines() -> void:
 			continue
 		if IDS_J14_BILL.has(row[0]):
 			continue # {player} de Léo (dossier 17 §15) : testé dans test_bill_house
+		if row[0] in [&"fuji_flute_give", &"fuji_flute_received"]:
+			continue # Jalon 21 (T14) : {player} de la remise de la Flûte (§15.4), test_pokemon_house_fuji
 		var tokens := DialogueTokens.tokens_in(row[1])
 		if String(row[0]).begins_with("daycare_"):
 			for token: StringName in tokens:
@@ -1582,7 +2126,13 @@ func test_oak_parcel_lines() -> void:
 		elif row[0] == &"nugget_rocket_given" \
 				or (row[0] == &"rival_tower_intro" and row[1].contains("{player}")) \
 				or (String(row[0]).begins_with("saffron_gate_drink_") and row[1].contains("{player}")) \
-				or row[0] == &"celadon_eevee_received" \
+				or row[0] == &"celadon_eevee_received" or row[0] == &"fishing_cast" \
+				or String(row[0]).begins_with("cinnabar_fossil_received_") \
+				or (String(row[0]).begins_with("cinnabar_trade_") and row[1].contains("{player}")) \
+				or (row[0] == &"cinnabar_gym_guide" and row[1].contains("{player}")) \
+				or row[0] == &"cinnabar_lab_tm35_use" \
+				or (row[0] in [&"route_12_gate_tm39_got", &"snorlax_flute_played"] \
+					and row[1].contains("{player}")) \
 				or (row[0] in [&"rocket_hideout_b4f_lift_key_got",
 					&"rocket_hideout_b4f_silph_scope_got"] and row[1].contains("{player}")) \
 				or (String(row[0]).begins_with("celadon_gym_erika_") and row[1].contains("{player}")):
@@ -1595,6 +2145,11 @@ func test_oak_parcel_lines() -> void:
 			expected = [DialogueTokens.POKEMON]
 		assert_eq(tokens, expected, "%s : jeton" % row[0])
 
+
+
+## Jalon 21 (T22) : le jeton « {player} » s'écrit « {joueur} » dans les textes validés.
+static func text_t22(text: String) -> String:
+	return text.replace("{player}", "{joueur}")
 
 
 ## Forme d'une réplique dans le dossier 10 : « ligne » ou « ligne 1 » / « ligne 2 ».
@@ -1703,9 +2258,15 @@ func _real_ids() -> Array[StringName]:
 	return _without_qa(_library.get_ids())
 
 
+## Sans les cartes de QA ni les données du jalon 22 (fichiers `j22_*.json`, vérifiés par
+## `test_j22_data.gd`).
 func _without_qa(ids: Array[StringName]) -> Array[StringName]:
+	var j22 := J22Ids.in_dir("res://data/dialogues/")
 	var result: Array[StringName] = []
 	for id: StringName in ids:
-		if not MapCatalog.is_qa_map(id):
+		if not MapCatalog.is_qa_map(id) and not j22.has(id):
 			result.append(id)
 	return result
+
+
+const J22Ids := preload("res://tests/helpers/j22_ids.gd")

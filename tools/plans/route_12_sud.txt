@@ -1,0 +1,137 @@
+# Route 12 sud (`route_12_south`) — grille fonctionnelle (jalon 22, lot 22.0, T6 ; dossier 25 §4, §5, §8.1,
+# §9.1, §11). Source UNIQUE de la géométrie : contrôle, plan en aplats, vue peinte, puis outil de construction.
+#
+# 30 × 70 cases ; nord en haut ; x = 0..29, y = 0..69. Suite de la Route 12 du J21 (39 × 102) au sud du
+# croisement de Ronflex (RB : Route 12, rangées 63..107, × 1,5).
+#
+# RACCORDS (même nombre de cases, mêmes colonnes) :
+#   NORD : (25..26, 0) ↔ Route 12 (25..26, 101), le warp_sud du J21 (2 cases, ponton x 25..26).
+#   OUEST : (0, 61..63) ↔ Route 13 (89, 15..17). (RB : sortie sud vers la Route 13 ; ici le virage vers
+#   l'ouest du dossier §8.1, « virage vers la Route 13 ».)
+#
+# Composition, du nord au sud :
+#   ① y 0..13 — LE PONTON : planches (x 25..26) sur le lac ; petit ponton de pêche (x 19..24, y 7..8) où
+#      se tient le Pêcheur ; toute l'eau qui touche les planches ou la berge est pêchable (f).
+#   ② y 14..24 — LA BERGE ET LA MAISON DE LA MÉGA CANNE (7 × 6, porte (15, 21)) ; panneau.
+#   ③ y 25..42 — LE CHEMIN DES PÊCHEURS : chemin de 3 cases (x 24..26) ; Jeune Dresseur dans une alcôve
+#      à l'est ; sentier de contournement à l'ouest (x 19..21) avec la Pépite au bout d'un éperon.
+#   ④ y 43..60 — LES HERBES (RB) : grand carré d'herbes à l'ouest, 4 rangées sur le chemin ; clairière
+#      de l'Hyper Potion cachée.
+#   ⑤ y 61..63 — LE VIRAGE vers la Route 13, gardé par le Rockeur (I) depuis une alcôve.
+#
+# LÉGENDE COMMUNE DU J22 (chaque grille la reprend ; caractères NOUVEAUX marqués ★) :
+#   T arbres, forêt serrée (bloqués)     . herbe rase (praticable)     = chemin de terre (praticable)
+#   h hautes herbes (praticable, rencontres)   q ponton, planches (praticable)   y sable (praticable)
+#   w eau (bloquée, NON pêchable)        ★ f eau PÊCHABLE (bloquée ; on pêche depuis une case praticable
+#     voisine, face à elle ; jamais au contact d'une case de Piste)   ~ mer de décor (bloquée)
+#   R rochers, rive rocheuse, falaise (bloqués)   c clôture basse (bloquée)   x buissons (bloqués)
+#   n banc (bloqué)   P poste (bâtiment, bloqué)   m maison (bloquée)   D porte (praticable, terminale)
+#   ★ k tronçon de PISTE CYCLABLE, plat (praticable ; à vélo seulement, on ne peut pas descendre)
+#   ★ s PISTE en PENTE (praticable ; sans appui, dérive d'une case vers le sud ; Route 17 seulement)
+#   b barrière basse de la Piste (bloquée ; arrête la vue des Dresseurs)
+# Une case de Piste est une case « k » ou « s » ; un PALIER est une bande de rangées de la Route 17 sans
+# « s » entre deux tronçons de pente. Les Dresseurs de la Piste sont EN RETRAIT : sur une case « . »
+# (alcôve) hors des voies, tournés vers elles.
+#
+# POSITIONS : types warp, spawn, dresseur, objet_visible, cache, panneau, pnj, pokemon, herbes, repere,
+# decor. Dresseurs : trainer= (id du dossier §9), facing=, sight= (portée RB × 1,5, arrondie au-dessus :
+# 1 → 2, 2 → 3, 3 → 5, 4 → 6), rbsight=, inevitable=oui|non. Objets : item=, drapeau= (dossier §11).
+# Warps : to= (carte) spawn= (point d'arrivée) ; coming_soon= pour une porte ou un bord « À venir » ;
+# lie= relie les deux portes d'un poste traversant. Le contrôle : tools/art/plan_check_j22.py
+# (python3 -I tools/art/plan_check_j22.py) ; le rendu : tools/art/plan_aplats_j22.py.
+#
+# DÉFAUTS (règle 4, à relire) : virage à l'ouest (le dossier hésite : « S/O ») ; Pêcheur sur un petit ponton
+# (RB : sur la berge) ; 4 rangées d'herbes obligatoires ; Pépite visible, Hyper Potion cachée.
+
+PRATICABLES .=qhD
+
+GRILLE 30 70
+00 TTTTTTTTTRRwwwwwwwwwwwwwfqqfTT
+01 TTTTTTTTTRRwwwwwwwwwwwwwfqqfTT
+02 TTTTTTTTTRRwwwwwwwwwwwwwfqqfTT
+03 TTTTTTTTTRRwwwwwwwwwwwwwfqqfTT
+04 TTTTTTTTTRRwwwwwwwwwwwwwfqqfTT
+05 TTTTTTTTTRRwwwwwwwwwwwwwfqqfTT
+06 TTTTTTTTTRRwwwwwwwwffffffqqfTT
+07 TTTTTTTTTRRwwwwwwwfqqqqqqqqfTT
+08 TTTTTTTTTRRwwwwwwwfqqqqqqqqfTT
+09 TTTTTTTTTRRwwwwwwwwffffffqqfTT
+10 TTTTTTTTTRRwwwwwwwwwwwwwfqqfTT
+11 TTTTTTTTTRRwwwwwwwwwwwwwfqqfTT
+12 TTTTTTTTTRRwwwwwwwwwwwwwfqqfTT
+13 TTTTTTTTTRRffffffffffffffqqfTT
+14 TTTTTTTTTTT.............===.TT
+15 TTTTTTTTTTT.............===.TT
+16 TTTTTTTTTTT.mmmmmmm.....===TTT
+17 TTTTTTTTTTT.mmmmmmm.....===TTT
+18 TTTTTTTTTTT.mmmmmmm.....===TTT
+19 TTTTTTTTTTT.mmmmmmm.....===TTT
+20 TTTTTTTTTTT.mmmmmmm.....===TTT
+21 TTTTTTTTTTT.mmmDmmm.....===TTT
+22 TTTTTTTTTTT.............===TTT
+23 TTTTTTTTTTT.............===TTT
+24 TTTTTTTTTTT.............===TTT
+25 TTTTTTTTTTTTTTTTTTT...TT===TTT
+26 TTTTTTTTTTTTTTTTTTT...TT===TTT
+27 TTTTTTTTTTTTTTTTTTT...TT===TTT
+28 TTTTTTTTTTTTTTTTTTT...TT===TTT
+29 TTTTTTTTTTTTTTTTTTT...TT===TTT
+30 TTTTTTTTTTTTTTTTTTT...TT===TTT
+31 TTTTTTTTTTTTTTTTTTT...TT===TTT
+32 TTTTTTTTTTTTTTTTTTT...TT===.TT
+33 TTTTTTTTTTTTTT........TT===TTT
+34 TTTTTTTTTTTTTT........TT===TTT
+35 TTTTTTTTTTTTTTTTTTT...TT===TTT
+36 TTTTTTTTTTTTTTTTTTT...TT===TTT
+37 TTTTTTTTTTTTTTTTTTT...TT===TTT
+38 TTTTTTTTTTTTTTTTTTT.....===TTT
+39 TTTTTTTTTTTTTTTTTTT.....===TTT
+40 TTTTTTTTTTTTTTTTTTTTTTTT===TTT
+41 TTTTTTTTTTTTTTTTTTTTTTTT===TTT
+42 TTTTTTTTTTTTTTTTTTTTTTTT===TTT
+43 TTTTTTTTTThhhhhhhhhhhhhh===TTT
+44 TTTTTT....hhhhhhhhhhhhhh===TTT
+45 TTTTTT....hhhhhhhhhhhhhh===TTT
+46 TTTTTT....hhhhhhhhhhhhhh===TTT
+47 TTTTTTTTTThhhhhhhhhhhhhh===TTT
+48 TTTTTTTTTThhhhhhhhhhhhhh===TTT
+49 TTTTTTTTTThhhhhhhhhhhhhh===TTT
+50 TTTTTTTTTThhhhhhhhhhhhhh===TTT
+51 TTTTTTTTTThhhhhhhhhhhhhh===TTT
+52 TTTTTTTTTThhhhhhhhhhhhhhhhhTTT
+53 TTTTTTTTTThhhhhhhhhhhhhhhhhTTT
+54 TTTTTTTTTThhhhhhhhhhhhhhhhhTTT
+55 TTTTTTTTTThhhhhhhhhhhhhhhhhTTT
+56 TTTTTTTTTThhhhhhhhhhhhhh===TTT
+57 TTTTTTTTTTTTTTTTTTTTTTTT===TTT
+58 TTTTTTTTTTTTTTTTTTTTTTTT===TTT
+59 TTTTTTTTTTTTTTTTTTTTTTTT===TTT
+60 TTTTTTTTTTTT.TTTTTTTTTTT===TTT
+61 ===========================TTT
+62 ===========================TTT
+63 ===========================TTT
+64 TTTTTTTTTTTTTTxxxxxxxTTTTTTTTT
+65 TTTTTTTTTTTTTTxxxxxxxTTTTTTTTT
+66 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+67 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+68 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+69 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+FIN
+
+# POSITIONS — identifiant  type  cases  bloque|libre  [cle=valeur ...]  # commentaire
+POSITIONS
+warp_nord              warp           25..26,0       libre   to=route_12 spawn=from_route_12_sud  # PUSH ↑ → Route 12 (J21) ; son warp_sud (25..26, 101) perd son coming_soon (T12)
+from_route_12          spawn          25..26,0       libre   facing=down  # arrivée du croisement (Ronflex), tournée ↓
+warp_ouest             warp           0,61..63       libre   to=route_13 spawn=from_route_12_sud  # PUSH ← → Route 13 (89, 15..17)
+from_route_13          spawn          0,61..63       libre   facing=right  # arrivée de la Route 13, tournée →
+porte_mega_canne       warp           15,21          libre   to=route_12_rod_house spawn=entrance  # STEP_ON ↑ → maison de la Méga Canne (modèle carmin_pecheur.txt)
+from_rod_house         spawn          15,22          libre   facing=down  # sortie de la maison, tournée ↓
+route_12_fisher_5      dresseur       19,8           bloque  role=D1 trainer=route_12_fisher_5 facing=right sight=2 rbsight=1 inevitable=non rb=6,87  # Pêcheur, Magicarpe 24 ×2 ; au bout du petit ponton de pêche, vue (20..21, 8) : on passe par la rangée 7
+route_12_youngster     dresseur       27,32          bloque  role=D2 trainer=route_12_youngster facing=left sight=6 rbsight=4 inevitable=non rb=11,92  # Jeune Dresseur, Nidoran♂ 29 + Nidorino 29 ; alcôve est, vue (24..26, 32) : évité par le sentier x 19..21
+route_12_rocker        dresseur       12,60          bloque  role=D3 trainer=route_12_rocker facing=down sight=6 rbsight=4 inevitable=oui rb=14,76  # Rockeur, Voltorbe 29 + Électrode 29 (I) ; alcôve au-dessus du virage, vue (12, 61..63) : tout le virage
+route_12_item_1        objet_visible  14,33          bloque  role=O1 item=nugget drapeau=got_route_12_item_1  # Pépite (Fer de RB, M-16), au bout de l'éperon du sentier ouest
+route_12_hidden_1      cache          6,44           libre   role=O2 item=hyper_potion drapeau=got_route_12_hidden_1  # Hyper Potion cachée, coin de la clairière à l'ouest des herbes
+panneau_route_12_sud   panneau        23,16          bloque  role=T-route  # « ROUTE 12 / Lavanville — Parmanie » ; lu depuis (23, 17) ↑
+herbes_h1              herbes         10..26,43..56  libre   role=H1  # herbes du sud ; 4 rangées obligatoires sur le chemin (52..55)
+ponton_peche           repere         19..26,0..13   libre   role=peche  # ponton et petit ponton : eau pêchable (f) des deux côtés
+FIN

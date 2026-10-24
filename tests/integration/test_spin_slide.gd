@@ -52,7 +52,7 @@ const TIMEOUT := 12.0
 
 var _boot: Boot
 var _player: Player
-var _spin: SpinTileDirector
+var _spin: ForcedSlideDirector
 var _fs: MemoryFs
 var _saved_router: Array = []
 ## Cases des `moved` du joueur, et l'image simulée de chacun.
@@ -95,7 +95,7 @@ func test_the_slide_plays_step_by_step_at_running_speed() -> void:
 	assert_eq(_spin.get_field(), _boot.get_map().get_node(^"SpinTiles"), "SpinTiles trouvé")
 	await _walk_onto_the_arrow()
 	assert_true(_spin.is_running(), "la glisse part dans le pas qui pose sur la dalle")
-	assert_true(_player.is_blocked_by(SpinTileDirector.LOCK_REASON), "verrou « spin »")
+	assert_true(_player.is_blocked_by(ForcedSlideDirector.LOCK_REASON), "verrou « spin »")
 	assert_false(_boot.is_stable(), "partie pas stable pendant la glisse")
 	assert_false(_boot.get_hud().are_controls_visible(), "contrôles cachés")
 	assert_true(_player.is_running(), "pas de course")
@@ -229,7 +229,7 @@ func test_an_app_killed_mid_slide_resumes_on_the_last_stable_save() -> void:
 	assert_true(_spin.is_running(), "en pleine glisse")
 	assert_ne(_player.get_cell(), ARROW, "déjà parti de la dalle")
 	_boot._notification(Node.NOTIFICATION_APPLICATION_PAUSED)
-	assert_eq(_saved_cell(), START, "rien d'écrit à l'arrière-plan")
+	assert_eq(_saved_cell(), START, "arrière-plan : case d'avant la glisse (point de reprise S2A)")
 	_sim.finish()
 	_sim = null
 	_boot.queue_free()

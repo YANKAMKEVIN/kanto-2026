@@ -91,7 +91,9 @@ func test_eligibility_and_visibility_table() -> void:
 	input.chosen = charmander
 	input.placed = true
 	assert_true(CompanionRules.is_visible(input, _catalog), "extérieur, rien en cours")
-	for field: String in ["map_interior", "in_cutscene", "in_battle", "in_transition"]:
+	# Passe systèmes 2 : « mounted » (Vélo, Surf).
+	for field: String in ["map_interior", "in_cutscene", "in_battle", "in_transition",
+			"mounted"]:
 		input.set(field, true)
 		assert_false(CompanionRules.is_visible(input, _catalog), field)
 		input.set(field, false)

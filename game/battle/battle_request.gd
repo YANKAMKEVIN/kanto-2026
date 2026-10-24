@@ -25,6 +25,12 @@ var rules: BattleRules = null
 var world_actors: Dictionary[StringName, StringName] = {}
 ## Case de l'herbe qui bouge (point d'origine de l'intro sauvage, §3.7).
 var origin_cell: Vector2i = Vector2i.ZERO
+## Entrée sauvage « légendaire », plus lente (passe systèmes 2, T30 ;
+## [member WildEncounter.legendary_intro]).
+var legendary_intro: bool = false
+## Jalon 21 (`jalon-21.md` §2.5) : intro « révélation » (silhouette du SPECTRE, « Le Scope Sylphe
+## révèle… », fondu vers l'espèce) ; jamais vraie pour un combat SPECTRE.
+var reveal: bool = false
 
 
 ## Requête d'un combat sauvage : le sauvage est créé par [method PokemonFactory.create] à
@@ -43,6 +49,10 @@ static func wild(encounter: WildEncounter, data: PokemonData, rng: GameRng,
 	request.rules = BattleRules.for_ghost(items) if encounter.ghost \
 		else BattleRules.for_wild(items)
 	request.origin_cell = cell
+	request.legendary_intro = encounter.legendary_intro
+	# Jalon 21 : révélation (pas en SPECTRE) et sauvage impossible à capturer.
+	request.reveal = encounter.reveal and not encounter.ghost
+	request.rules.uncatchable = encounter.uncatchable
 	return request
 
 

@@ -1,0 +1,35 @@
+CONCEPT ART — VUE GÉNÉRALE DE LA ROUTE 14, LE COULOIR DES ARBRES (Kanto 2026), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. Format PORTRAIT ; la carte est une BANDE VERTICALE au milieu de l'image ; tout autour, de la FORÊT DENSE (vert très foncé). La route arrive de l'EST en haut (bord droit) et sort vers l'OUEST en bas (bord gauche).
+Légende du plan :
+- vert très foncé = FORÊT DENSE et serrée, infranchissable ; une étroite RANGÉE D'ARBRES de part et d'autre de la grande bande d'herbes, percée de quelques trouées ; trois petits bosquets carrés dans les herbes ;
+- beige = CHEMIN DE TERRE BATTUE : deux longues VOIES PARALLÈLES nord-sud (une à l'ouest, une à l'est) reliées en haut et en bas par une voie horizontale ; tout l'ensemble forme un grand anneau rectangulaire ;
+- jaune-vert olive = HAUTES HERBES (touffues, plus hautes, où vivent les Pokémon sauvages) : une longue bande au centre, entre les deux voies ;
+- vert moyen = herbe rase praticable (une petite pelouse en haut de la bande d'herbes, les trouées de la rangée d'arbres) ;
+- petit carré ocre en haut à droite = un panneau en bois SANS TEXTE.
+Respecte ce plan À LA LETTRE : les deux voies parallèles, l'anneau, la bande d'herbes au centre, les rangées d'arbres et leurs trouées, les bosquets, l'entrée en haut à droite et la sortie en bas à gauche. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+IMAGE 2 : la vue générale de la Route 6, une autre route du même jeu. Respecte EXACTEMENT son style de rendu : même pinceau, mêmes arbres en masses arrondies, mêmes hautes herbes, même chemin de terre, même saturation. Ne reprends PAS sa composition (ni étang, ni bâtiment, ni port) NI SA LUMIÈRE DORÉE.
+
+Format : PORTRAIT 1024 × 1536, vue plongeante sur toute la route, comme le plan.
+
+AMBIANCE — « le couloir des arbres » : une longue route nord-sud ombragée, bordée de grands arbres serrés, une prairie d'herbes hautes au milieu ; calme, un peu solennel, comme une allée de parc.
+
+RÈGLE ABSOLUE DES CHEMINS : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; chemins, berges, clôtures et bords des zones suivent une grille : uniquement des segments horizontaux et verticaux à ANGLES DROITS, AUCUN segment en diagonale ni courbe, aucun escalier.
+RELIEF : le sol est lisible et plat ; aucun rebord, aucune falaise, aucune terrasse.
+NATURE DENSE, OBJETS RARES : la forêt est serrée, en grandes masses ; les zones praticables restent dégagées ; aucun objet décoratif ajouté hors de ceux du plan.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats. Le feuillage est peint en grandes masses douces.
+- Perspective : vue de dessus orthogonale, axes de l'image alignés sur la grille, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud).
+- Aucun trait noir : contours fins et doux, plus sombres et plus saturés que la couleur locale. Ombres propres colorées, légèrement bleutées, jamais grises ni noires. Aucune ombre portée allongée.
+- LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche ; volumes conservés par un ombrage doux ; aucune teinte dorée ou orangée, aucun liseré chaud ; ombres propres neutres, légèrement bleutées. NE REPRENDS PAS la lumière dorée de l'image de référence : le jeu ajoute lui-même l'éclairage.
+
+PERSONNE : aucun personnage, aucun Pokémon, aucun animal. Le lieu est VIDE.
+
+INTERDITS : texte, lettres, chiffres, étiquettes, panneaux lisibles, logo, signature, filigrane, cadre, interface, Poké Ball ; route goudronnée, véhicule ; arbres orange ou automnaux ; neige ; brouillard, flou de profondeur, vignettage ; pixel art, 3D.
+- Interdits propres à cette vue : tout bâtiment ; eau ; clôture ; pont.
+
+L'image doit raconter, sans texte : une longue allée bordée d'arbres, en deux voies parallèles autour d'une prairie d'herbes hautes, qui descend du nord-est vers le sud-ouest.

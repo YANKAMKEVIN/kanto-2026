@@ -1,0 +1,20 @@
+{
+	"canon": {
+		"cell": [
+			7,
+			4
+		],
+		"facing": "down",
+		"sprite": "nerd",
+		"dialogue": "cinnabar_trade_lina"
+	},
+	"papy": {
+		"cell": [
+			2,
+			5
+		],
+		"facing": "right",
+		"sprite": "old_man",
+		"dialogue": "cinnabar_trade_hector"
+	}
+}

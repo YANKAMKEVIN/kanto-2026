@@ -1,0 +1,25 @@
+CONCEPT ART — INTÉRIEUR DU POSTE DE LA ROUTE 18 (Kanto 2026), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre.
+- brun-gris = MURS (un mur du fond épais) ; beige = SOL praticable ; rectangles brun foncé = PORTES, une au milieu du mur OUEST (gauche) et une au milieu du mur EST (droite), avec un tapis de seuil : c'est une salle TRAVERSANTE ;
+- rectangle brun clair à gauche = un COMPTOIR de bois (la place, vide, du garde) ; rectangle brun foncé contre le mur du fond = une BIBLIOTHÈQUE basse ; disques verts = PLANTES en pot dans deux coins à droite.
+Respecte ce plan À LA LETTRE. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+IMAGE 2 : l'intérieur d'une maison du même jeu. Respecte EXACTEMENT son style de rendu (pinceau, parquet, murs, meubles, épaisseur des murs coupés, fond noir autour de la pièce) ; ne reprends PAS son mobilier, ni sa fenêtre, ni sa lumière dorée : ici la lumière est NEUTRE.
+
+Format : PAYSAGE 1536 × 1024, vue plongeante sur toute la pièce, comme le plan.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats. 
+- Perspective : vue de dessus, axes de l'image alignés sur la grille, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud).
+- Aucun trait noir : contours fins et doux, plus sombres et plus saturés que la couleur locale. Ombres colorées bleu-vert ou violet froid, jamais grises.
+- LUMIÈRE NEUTRE : lumière de milieu de journée, diffuse et blanche, venant du plafond, égale dans toute la pièce ; aucune teinte dorée ou orangée, aucun liseré chaud, aucun rai de soleil, aucune ombre portée longue.
+- Les murs sont coupés à hauteur d'homme pour qu'on voie l'intérieur ; on voit le mur du fond (nord) de face ; autour de la pièce, fond noir uni.
+
+AMBIANCE — un poste de garde de route : sobre, propre, officiel, un peu administratif ; sol de grandes dalles claires ou parquet clair, murs crème et soubassement de bois, comptoir de bois verni, une ou deux plantes vertes en pot, un tableau d'affichage vierge, des tapis de seuil devant les portes.
+
+LIEU VIDE : aucun personnage, aucun Pokémon, aucun animal ; personne derrière le comptoir.
+
+INTERDITS : texte, lettres, chiffres, étiquettes, panneaux lisibles, logo, emblème, signature, filigrane, cadre, interface ; arbres orange ou automnaux ; neige ; brouillard, flou de profondeur, vignettage ; pixel art, 3D ; affiche ou écran avec du texte ; fenêtre ouverte sur un paysage ; escalier ; meubles non prévus par le plan en grand nombre.
