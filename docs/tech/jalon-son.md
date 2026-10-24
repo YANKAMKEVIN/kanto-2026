@@ -2,8 +2,8 @@
 
 > **PLAN — aucun code n'est écrit par ce document, aucun fichier son n'est téléchargé.**
 > Claude, 2026-10-24. Arbitrages pour Kevin : `docs/design/passes/son-arbitrages-kevin.md`
-> (**SON-1 à SON-17**, en attente). Rien de ce plan n'entre en code avant ses réponses ; le
-> sous-jalon Son.0 (logique pure, sans aucun fichier son) peut démarrer dès la réponse.
+> (**SON-1 à SON-17 validés par Kevin le 2026-10-24, toutes les recommandations**). Le
+> sous-jalon Son.0 (logique pure, sans aucun fichier son) peut démarrer.
 >
 > Sources : `etat-projet.md` « Décision de Kevin — son (2026-10-24) » ; `vision.md` (principe 6 :
 > « Chaque ville a une identité visuelle et sonore reconnaissable » ; phase 10 « Ambiance ») ;
@@ -513,4 +513,7 @@ est une remarque de rendu : notée dans « Reportés », corrigée en lot.
 
 ## 6. Questions ouvertes
 
-Voir `docs/design/passes/son-arbitrages-kevin.md` (SON-1 à SON-17).
+Aucune : SON-1 à SON-17 **validés par Kevin le 2026-10-24** (toutes les recommandations ;
+`docs/design/passes/son-arbitrages-kevin.md`). Restent les vérifications à l'écoute de T1
+(« The Final Road », « Guide », « Pokémon Road », « We're Back », morceaux du jeu absents de
+l'album), qui ferment SON-5, SON-13 et SON-14 selon leurs recommandations conditionnelles.

@@ -1,6 +1,8 @@
 # Jalon « Son » — arbitrages pour Kevin
 
-> **EN ATTENTE DE KEVIN.** Claude, 2026-10-24. **Documentation seule : aucune ligne de code,
+> **VALIDÉ PAR KEVIN le 2026-10-24 : SON-1 à SON-17, toutes les recommandations.**
+>
+> Claude, 2026-10-24. **Documentation seule : aucune ligne de code,
 > aucun fichier son téléchargé.**
 > Prépare le plan `docs/tech/jalon-son.md` (moteur §1, table des morceaux §2, bruitages §3,
 > découpage §4). Décisions déjà prises, non rouvertes : **musiques = bande-son de Let's Go
