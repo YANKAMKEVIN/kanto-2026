@@ -352,6 +352,10 @@ l'Hyper Ball (emprunt du J22) n'a pas d'icône (icône générique). La QA du §
   faite (la fenêtre de Movie Maker ne s'ouvre pas dans le bac à sable de l'agent) : vue à faire
   sur le téléphone ; vue générale peinte (T3, levier 4) toujours à faire.
 
+Validation (2026-10-24) : import headless sans erreur ; suite complète **6 796 / 6 796** (633
+scripts) ; `plan_check_cerulean_cave.py` et `plan_check_azuria.py` conformes ; `check_json_keys.py`
+sans doublon.
+
 ### 11.1 Reste à faire
 - **T9** : capture avec la Master Ball après le J26 ; capture en équipe pleine (QA).
 - **T10** : QA S24/A17 du §6 avec les départs ci-dessus (Surf depuis le quai est, échelles,
