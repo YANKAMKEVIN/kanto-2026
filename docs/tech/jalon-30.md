@@ -549,3 +549,25 @@ headless sans erreur ; suite complète **6 739 / 6 739** (627 scripts, 362 126 a
 Pas de session téléphone : rien de la Ligue n'est encore jouable dans l'APK (cartes T9,
 `LeagueDirector` T8 et départs `league_*` à venir ; seules les parties pures T2–T7 existent). À
 reprendre avec la session 30A.
+
+### 10.9 QA A17 du départ `league_lorelei` — 2026-10-24 (branche `jalon-30` `0123cd10`)
+
+Une passe d'agent par adb sur l'A17 (`ANDROID_SERIAL=R5GYB2R7W2Y`, `deploy_s24.sh --debug-start
+league_lorelei`), gestes par `adb shell input swipe` (glisser tenu = marche ; les touches
+`DPAD_*` ne font rien). Captures dans `build/qa_j30/` (non versionnées).
+- **Salle d'Olga** : arrivée `from_lobby`, porte nord fermée ; un pas vers le nord déclenche
+  `league_lorelei_call` : marche forcée devant Olga, réplique, carte « OLGA — Conseil des
+  Quatre », combat (Lamantine N54 en tête, Fuite grisée). Victoire → battants nord ouverts,
+  réplique « vaincu » au PARLER (« Tu as du talent… Va. Les autres t'attendent. ») ;
+  scène d'appel **ignorée** ensuite (aucune variante pour les drapeaux) : **OK**.
+- **Porte sud** pendant la tentative : joueur poussé contre elle, aucun warp : **OK**.
+- **Passage nord** → `league_bruno` (44,5 ms), `league_bruno_call` jouée aussitôt : **OK**.
+- **Défaite contre Aldo** (équipe perdue exprès) → réveil au Centre de Jadielle
+  (`viridian_center`, 143,9 ms ; attendu sans le hall du J29), équipe soignée (Salamèche
+  116 / 116) : **OK**.
+- Journal Godot : **aucune erreur ni avertissement**. Cadence : ≈ 49–50 i/s dans les salles,
+  **≈ 40 i/s en combat** (salles d'Olga et d'Aldo).
+- Non couvert : salles d'Agatha, Peter et du Champion, Chen, Panthéon ; rechargement d'une
+  sauvegarde (le départ ne lit ni n'écrit la sauvegarde) ; Sac (Guérisons) en combat.
+- Remarque : l'objectif du Menu Dresseur affiche « traverser le Pont Pépite » (drapeaux du départ
+  de débogage, sans effet sur une vraie partie).
