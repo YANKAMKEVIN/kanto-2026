@@ -361,6 +361,12 @@ func _add_cave_mouth() -> void:
 			surf.append(cell)
 	surf.append_array(mouth)
 	root.set(&"surf_cells", surf)
+	# La bouche n'est ni praticable ni `w` dans la grille : la boîte la classe en paroi (solide),
+	# ce qui refuse aussi le Surf. Elle est dans l'eau : tuile d'eau dans la couche logique.
+	var tiles: GDScript = _kit.get(&"tiles")
+	var ground := root.get_node(^"Ground") as TileMapLayer
+	for cell: Vector2i in mouth:
+		ground.set_cell(cell, tiles.SOURCE_ID, tiles.call(&"atlas_coords", tiles.Kind.WATER, 0))
 	var closed: Array[StringName] = [CeruleanCaveAccess.CHAMPION_FLAG]
 	var index := 0
 	for cell: Vector2i in mouth:

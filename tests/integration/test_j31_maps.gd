@@ -142,6 +142,10 @@ func test_mouth_is_closed_until_the_champion_title() -> void:
 	city.apply_flag_gates(_flags([CHAMPION]))
 	for cell: Vector2i in MOUTH:
 		assert_false(grid.is_occupied(cell), "%s ouverte" % cell)
+		# QA A17 du 2026-10-24 : la bouche était peinte en paroi (solide), donc refusée au Surf.
+		assert_false(grid.is_solid(cell), "%s : de l'eau, pas une paroi" % cell)
+		assert_true(grid.can_enter_as(cell, Vector2i.UP, GridWorld.MoveMode.SURF),
+			"%s : on y entre en Surf depuis la baie" % cell)
 	# Le canal à l'est du pont de l'Arène et la baie se surfent ; le canal ouest reste du décor.
 	assert_true(grid.is_surfable(Vector2i(49, 7)), "baie, au pied du quai est")
 	assert_true(grid.is_surfable(Vector2i(42, 15)), "canal, à l'est du pont de l'Arène")

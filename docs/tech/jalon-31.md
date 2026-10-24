@@ -356,10 +356,37 @@ Validation (2026-10-24) : import headless sans erreur ; suite complète **6 796 
 scripts) ; `plan_check_cerulean_cave.py` et `plan_check_azuria.py` conformes ; `check_json_keys.py`
 sans doublon.
 
+### 11.0 QA A17 du §6 — 2026-10-24 (`84060036`, A17 en Wi-Fi, passe d'agent par adb)
+
+Captures dans `build/qa_j31/` (non versionnées). Journal Godot : aucune erreur ni avertissement.
+- **`cerulean_cave_locked`** : Surf jusqu'à l'îlot, examen → « Les eaux sont trop agitées. Pas
+  maintenant. », pas d'entrée : **OK**.
+- **`cerulean_cave`** : **défaut bloquant, corrigé**. La bouche `A` (52..53, 6) n'est ni praticable
+  ni `w` dans la grille ; `cerulean_map_kit` la peignait en paroi (tuile solide), et `can_enter_as`
+  refuse le solide même en Surf : impossible d'entrer, même Champion. Correctif : tuile d'eau
+  sur la bouche dans la couche logique (`_add_cave_mouth`), carte reconstruite ;
+  `test_j31_maps` vérifie maintenant `can_enter_as(SURF)` (le test ne regardait que
+  `is_surfable` et `is_occupied`) ; `test_cerulean_city` : `A` n'est plus solide. **Vu sur l'A17** :
+  sortie de la grotte puis pas vers le haut en Surf → `cerulean_cave_1f` (20,7 ms).
+- **`cerulean_cave_1f`** : sol haut, escaliers, Surf sur le lac (montée et descente), échelle P2
+  1F↔2F aller-retour (14,4 / 14,5 ms), Max Élixir et Guérison pris depuis l'eau, Super Bonbon
+  caché depuis (14, 12), 3 combats sauvages (Magnéton ×2, Hypno), sortie vers Azuria (213 ms) :
+  **OK**. Appli tuée et relancée : redémarre au départ (attendu pour un départ de débogage).
+- **`cerulean_cave_mewtwo`** : cri « Mew ! », combat N70, fuite → il reste, nouveau combat :
+  **OK**. 10 Hyper Balls sans capture (Mewtwo à PV pleins) : capture puis absence **non
+  vérifiées**.
+- Adversaires (Mewtwo, Magnéton, Hypno) face au joueur. Cadence : 48–52 i/s dans la grotte,
+  47–53 à Azuria, 38–40 en combat.
+- **Défauts ouverts** : Mewtwo dessiné sur la carte comme un PNJ humain générique (sprite de
+  carte manquant) ; Poké Ball juste au-dessus du héros en Surf cachée par son sprite ;
+  description de l'Hyper Ball tronquée dans le Sac de combat (comme la Guérison au J30 §10.9) ;
+  dos des Pokémon du joueur en pixel art basse résolution à côté des artworks de face.
+- Non couvert : échelle P7 (1F↔B1F), capture et K.O. de Mewtwo, reprise d'une vraie sauvegarde.
+
 ### 11.1 Reste à faire
 - **T9** : capture avec la Master Ball après le J26 ; capture en équipe pleine (QA).
-- **T10** : QA S24/A17 du §6 avec les départs ci-dessus (Surf depuis le quai est, échelles,
-  objets depuis l'eau, fuite puis capture de Mewtwo, retour à Azuria).
+- **T10** : QA A17 du §6 faite (§11.0) ; reste capture de Mewtwo (l'affaiblir d'abord), échelle
+  P7, et les défauts ouverts du §11.0. Suite complète après le correctif : **6 796 / 6 796**.
 - À la fusion du J30 : `test_cerulean_cave_access` vérifie l'égalité du drapeau de Champion.
 - À la fusion des J23, J25, J28 : retirer Leveinard, Rappel Max, Rhinoféros des emprunts.
 - Max Élixir caché du B3F des Îles Écume (J24) : à poser maintenant que l'objet existe.

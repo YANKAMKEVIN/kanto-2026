@@ -118,8 +118,9 @@ func test_scene_grid_is_the_functional_grid() -> void:
 	for y: int in SIZE.y:
 		for x: int in SIZE.x:
 			var cell := Vector2i(x, y)
-			# L'eau n'est pas « solide » : `is_water` (test suivant), jamais praticable.
-			var solid := (not _plan.is_walkable(cell) and _plan.at(cell) != "w") \
+			# L'eau n'est pas « solide » : `is_water` (test suivant), jamais praticable. La bouche
+			# `A` de la Grotte Azurée (J31) est dans l'eau : elle se prend en Surf.
+			var solid := (not _plan.is_walkable(cell) and not _plan.at(cell) in ["w", "A"]) \
 				or _signs.has(cell)
 			if _grid.is_solid(cell) != solid or _grid.is_tall_grass(cell):
 				mismatches += 1
