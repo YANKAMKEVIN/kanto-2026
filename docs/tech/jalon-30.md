@@ -567,7 +567,30 @@ league_lorelei`), gestes par `adb shell input swipe` (glisser tenu = marche ; le
   116 / 116) : **OK**.
 - Journal Godot : **aucune erreur ni avertissement**. Cadence : ≈ 49–50 i/s dans les salles,
   **≈ 40 i/s en combat** (salles d'Olga et d'Aldo).
-- Non couvert : salles d'Agatha, Peter et du Champion, Chen, Panthéon ; rechargement d'une
-  sauvegarde (le départ ne lit ni n'écrit la sauvegarde) ; Sac (Guérisons) en combat.
+- **Suite (même jour), départs `league_agatha`, `league_champion_*` et un départ temporaire
+  N100 (supprimé)** :
+  - Agatha : appel, carte, combat ; **Sac en combat** : Guérison ×6, cibles correctes (K.O. et
+    PV pleins grisés), Léviator 90 → 202 PV et poison soigné, une Guérison consommée ; victoire
+    → battants nord ouverts → `league_lance` (45,8 ms) : **OK** ;
+  - Peter : salle à l'entrée **par l'est** (fidèle à RB, `ligue_peter.txt`), couloir ouest,
+    appel, combat ; poison de Voltali gardé d'un combat à l'autre ; **défaite** → Jadielle
+    (128 ms) : **OK** ;
+  - Champion, trois variantes : appel de Régis, Roucarnage N61 en tête, Fuite grisée : **OK** ;
+    départ N100 : victoire → battants nord ouverts, Chen paraît en (3, 6) (« Kevin !
+    Félicitations… »), porte nord → `hall_of_fame` (6,2 ms), Chen (« Viens. Ton équipe mérite
+    d'entrer au Panthéon. »), Panthéon sans sortie (fin provisoire connue) : **OK** ;
+  - journal : aucune erreur ni avertissement.
+- **Deux défauts trouvés et corrigés** (branche `correctif-orientation-adversaires` depuis
+  `origin/main`, reprise ici par cherry-pick, `main` non touché) :
+  1. **Roucarnage tournait le dos au joueur** (remarque de Kevin) : l'artwork officiel de
+     l'adversaire était affiché tel quel, or 17 artworks regardent à droite. `BattleArt.
+     FACING_RIGHT` (2, 9, 10, 18, 21, 28, 30, 38, 53, 55, 58, 78, 83, 106, 118, 146, 147, relevés
+     sur planche des 151) → `"flip"` + boîte en miroir, `flip_h` dans `BattleStage` ; vu sur
+     l'A17 (Roucarnage, Tortank) ;
+  2. **Description de la Guérison coupée** à « d'un » dans le Sac de combat
+     (`max_lines_visible = 2`) → trois lignes ; vu sur l'A17.
+- Non couvert : rechargement d'une sauvegarde (les départs ne lisent ni n'écrivent la
+  sauvegarde ; QA 30A réservée à Kevin) ; hall du J29 (fusion à venir).
+- Suite complète après les deux correctifs : **6 741 / 6 741** (627 scripts).
 - Remarque : l'objectif du Menu Dresseur affiche « traverser le Pont Pépite » (drapeaux du départ
   de débogage, sans effet sur une vraie partie).
