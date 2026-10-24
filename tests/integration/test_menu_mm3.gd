@@ -9,8 +9,9 @@ const MENU_SCENE := "res://game/ui/menu/trainer_menu.tscn"
 const WIDTHS: Array[int] = [1920, 2340]
 const HEIGHT := 1080
 ## Textes de la maquette hors champ (dossier 08 §7 « exclus », plan MM.3).
+## « musique » n'en fait plus partie : catégorie SON du jalon Son (SON-7).
 const OUT_OF_SCOPE: Array[String] = ["difficult", "cloud", "hdr", "langue", "compte",
-	"daltonien", "aperçu", "audio", "musique", "caméra", "manette", "voix", "crédits",
+	"daltonien", "aperçu", "audio", "caméra", "manette", "voix", "crédits",
 	"automatique", "restaurer", "supprimer"]
 
 var _menu: TrainerMenu
@@ -75,7 +76,7 @@ func test_categories_are_glass_rows_with_icons_in_sentence_case() -> void:
 		assert_not_null(button.icon, String(id))
 		assert_eq(button.theme_type_variation, &"SettingsCategory")
 		titles.append(button.text)
-	assert_eq(titles, ["Jeu", "Commandes", "Accessibilité", "Graphismes"] as Array[String])
+	assert_eq(titles, ["Jeu", "Son", "Commandes", "Accessibilité", "Graphismes"] as Array[String])
 	var panel := screen.get_category_buttons()[SettingsViews.CATEGORY_GAME].get_parent() \
 		.get_parent() as PanelContainer
 	assert_eq(panel.theme_type_variation, &"MenuGlass")
