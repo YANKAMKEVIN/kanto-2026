@@ -577,7 +577,12 @@ func test_save_step_only_in_the_departure() -> void:
 				if step.kind == CutsceneStep.Kind.SAVE and not found.has(id):
 					found.append(id)
 	found.sort_custom(func(a: StringName, b: StringName) -> bool: return String(a) < String(b))
-	assert_eq(found, [&"ss_anne_departure"] as Array[StringName])
+	# Jalon 24 : sauvegardes forcées du dossier 27 §13.3 (CT35, fossile confié, don).
+	# Jalon 25 : le Vieil Ambre (calque des fossiles).
+	assert_eq(found, [&"cinnabar_fossil_give_aerodactyl", &"cinnabar_fossil_give_kabuto",
+		&"cinnabar_fossil_give_omanyte", &"cinnabar_fossil_take_aerodactyl",
+		&"cinnabar_fossil_take_kabuto", &"cinnabar_fossil_take_omanyte", &"cinnabar_lab_tm35",
+		&"ss_anne_departure"] as Array[StringName])
 
 
 func test_departure_data_order_and_texts() -> void:

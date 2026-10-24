@@ -1,0 +1,20 @@
+{
+	"president": {
+		"cell": [
+			6,
+			4
+		],
+		"facing": "down",
+		"sprite": "gentleman",
+		"dialogue": "fuchsia_meeting_president"
+	},
+	"member": {
+		"cell": [
+			2,
+			6
+		],
+		"facing": "right",
+		"sprite": "traveler",
+		"dialogue": "fuchsia_meeting_member"
+	}
+}

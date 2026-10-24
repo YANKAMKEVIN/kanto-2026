@@ -65,7 +65,7 @@ func _ball_only() -> Array[BagEntryView]:
 
 
 func _three_balls() -> Array[BagEntryView]:
-	return [_ball(12), _super_ball(), BagEntryView.new(&"hyper_ball", "Hyper Ball", 1,
+	return [_ball(12), _super_ball(), BagEntryView.new(&"ultra_ball", "Hyper Ball", 1,
 		"Très efficace.", &"ball")] as Array[BagEntryView]
 
 

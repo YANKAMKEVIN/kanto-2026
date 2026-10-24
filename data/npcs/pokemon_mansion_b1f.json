@@ -1,0 +1,102 @@
+{
+	"mansion_burglar_3": {
+		"cell": [
+			16,
+			23
+		],
+		"facing": "down",
+		"sprite": "gambler",
+		"dialogue": "mansion_burglar_3_after",
+		"trainer": {
+			"id": "mansion_burglar_3",
+			"sight": 0,
+			"before": "mansion_burglar_3_before",
+			"defeated": "mansion_burglar_3_defeated"
+		}
+	},
+	"mansion_scientist_3": {
+		"cell": [
+			27,
+			11
+		],
+		"facing": "down",
+		"sprite": "researcher",
+		"dialogue": "mansion_scientist_3_after",
+		"trainer": {
+			"id": "mansion_scientist_3",
+			"sight": 3,
+			"before": "mansion_scientist_3_before",
+			"defeated": "mansion_scientist_3_defeated"
+		}
+	},
+	"pokemon_mansion_b1f_item_1": {
+		"cell": [
+			10,
+			2
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "pokemon_mansion_b1f_item_1",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_pokemon_mansion_b1f_item_1"
+		]
+	},
+	"pokemon_mansion_b1f_item_2": {
+		"cell": [
+			1,
+			22
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "pokemon_mansion_b1f_item_2",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_pokemon_mansion_b1f_item_2"
+		]
+	},
+	"pokemon_mansion_b1f_item_3": {
+		"cell": [
+			19,
+			25
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "pokemon_mansion_b1f_item_3",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_pokemon_mansion_b1f_item_3"
+		]
+	},
+	"pokemon_mansion_b1f_item_4": {
+		"cell": [
+			5,
+			4
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "pokemon_mansion_b1f_item_4",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_pokemon_mansion_b1f_item_4"
+		]
+	},
+	"pokemon_mansion_b1f_item_5": {
+		"cell": [
+			5,
+			13
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "pokemon_mansion_b1f_item_5",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_pokemon_mansion_b1f_item_5"
+		]
+	}
+}

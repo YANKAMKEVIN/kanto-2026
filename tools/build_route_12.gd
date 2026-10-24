@@ -20,8 +20,9 @@ extends SceneTree
 ##   quai en rectangles répétés (un `Sprite2D` par rectangle, comme le platelage de Carmin),
 ##   poste (image du poste de la Forêt de Jade agrandie à 9 cases [D]), panneaux, Ronflex endormi.
 ## - Passages : nord (21..23, 0) PUSH ↑ → `lavender_town` / `from_route_12_w|c|e` ; ouest
-##   (0, 93..94) PUSH ← → `route_11` / `from_route_12_n|s` ; sud (25..26, 101) PUSH ↓ « ROUTE 12 —
-##   À venir » (`coming_soon`, le J22 le remplacera ; arrivées `from_route_12_sud`) ; portes du
+##   (0, 93..94) PUSH ← → `route_11` / `from_route_12_n|s` ; sud (25..26, 101) PUSH ↓ →
+##   `route_12_south` / `from_route_12` (case 25), `from_route_12_1` (case 26) (raccord J21 ↔ J22,
+##   `jalon-22.md` §0.5 ; arrivées ici `from_route_12_sud` et `from_route_12_sud_1`) ; portes du
 ##   poste (24..26, 24) et (24..26, 32) STEP_ON → `route_12_gate` / `entrance_nord|sud`.
 ## - Ronflex : `FlagGate` « Ronflex » (`unless snorlax_route_12_done`, bloque ses 2 × 2 cases) qui
 ##   porte le nœud `Snorlax` (groupe `scene_props`) ; `InteractPoint` 2 × 2 `snorlax_route_12`,
@@ -55,7 +56,9 @@ const WEST_EXITS: Array = [
 	["Route11S", Vector2i(0, 94), &"from_route_12_s", "from_route_11_s"],
 ]
 const WEST_MAP: StringName = &"route_11"
-const SOUTH_COMING_SOON: String = "Route 12"
+## Raccord sud (J22) : Route 12 sud, une arrivée par case (`from_route_12`, `from_route_12_1`).
+const SOUTH_MAP: StringName = &"route_12_south"
+const SOUTH_SPAWN: String = "from_route_12"
 ## Portes du poste : [préfixe de nœud, rangée, direction du pas, spawn intérieur, rangée de sortie,
 ## préfixe des spawns de sortie].
 const POST_DOORS: Array = [
@@ -210,14 +213,14 @@ func _add_passages() -> void:
 		_kit.call(&"add_warp", entry[0], entry[1], Kit.PUSH, Vector2i.LEFT, WEST_MAP, entry[2],
 			Vector2i.RIGHT)
 	_kit.call(&"add_spawn", "from_route_11", WEST_EXITS[0][1])
-	# Sud : « ROUTE 12 — À venir » ; retour une case au nord, tourné ↑ (J22 : warp réel).
+	# Sud (J22) : la Route 12 sud, case pour case ; arrivées d'ici une case au nord, tournées ↑.
 	var south: Array[Vector2i] = _plan().call(&"cells_at", "warp_sud")
 	var south_back: Array[Vector2i] = _plan().call(&"cells_at", "from_route_12_sud")
 	for i: int in south.size():
-		var name := "from_route_12_sud" + ("" if i == 0 else "_e")
-		_kit.call(&"add_spawn", name, south_back[i])
-		_kit.call(&"add_warp", "South%d" % i, south[i], Kit.PUSH, Vector2i.DOWN, &"",
-			StringName(name), Vector2i.UP, SOUTH_COMING_SOON)
+		var suffix := "" if i == 0 else "_%d" % i
+		_kit.call(&"add_spawn", "from_route_12_sud" + suffix, south_back[i])
+		_kit.call(&"add_warp", "South%d" % i, south[i], Kit.PUSH, Vector2i.DOWN, SOUTH_MAP,
+			StringName(SOUTH_SPAWN + suffix), Vector2i.DOWN)
 	# Poste : trois cases de porte par côté (STEP_ON) ; sorties `from_poste_*` (centre sans suffixe).
 	for door: Array in POST_DOORS:
 		var row: int = door[1]

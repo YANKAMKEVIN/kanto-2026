@@ -1,0 +1,41 @@
+CONCEPT ART — VUE GÉNÉRALE DE LA ROUTE 12 SUD, LE CHEMIN DES PÊCHEURS (Kanto 2026), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. Format PORTRAIT. La route arrive du NORD (en haut à droite, sur un ponton de planches qui vient d'un grand lac) et descend vers le SUD, puis tourne à angle droit vers l'OUEST tout en bas (sortie par le bord gauche de l'image).
+Légende du plan :
+- vert très foncé (toutes les marges et les grands blocs) = FORÊT DENSE et serrée, infranchissable ;
+- bleu = un LAC calme en haut ; la bande bleu un peu plus clair au bord des planches et de la berge = eau peu profonde du bord, où l'on pêche (même eau, simplement plus claire et plus turquoise près des bords) ;
+- bande gris clair semée de cailloux sur le bord gauche du lac = RIVE ROCHEUSE (une rangée de rochers au ras de l'eau) ;
+- brun rayé = PONTON de planches sur pilotis : un tronc droit de deux dalles de large qui descend du bord haut, et un petit PONTON DE PÊCHE perpendiculaire vers l'ouest, au tiers haut du lac ;
+- vert moyen = herbe rase praticable : la BERGE sous le lac, puis un sentier qui descend en lacets à angles droits à l'ouest du chemin, avec un petit éperon vers l'ouest au milieu ;
+- grand rectangle à toit rouge = LA MAISON DE LA MÉGA CANNE : une maison de pêcheur de 7 cases sur 6, murs de bois clair, toit rouge, une porte au milieu de la façade sud, une petite fenêtre de chaque côté ;
+- beige = CHEMIN DE TERRE BATTUE de trois cases de large qui descend tout droit le long du côté est, puis le VIRAGE vers l'ouest tout en bas ;
+- jaune-vert olive = HAUTES HERBES (touffues, plus hautes, où vivent les Pokémon sauvages), un grand bloc carré au sud-ouest qui coupe aussi le chemin sur quatre rangées ;
+- petit rectangle vert moyen à gauche du bloc d'herbes = une petite clairière cachée dans la forêt ;
+- petits disques vert sombre en bas = une haie de buissons bas sous le virage ;
+- petit carré ocre près du chemin, sous le lac = un panneau en bois SANS TEXTE.
+Respecte ce plan À LA LETTRE : le ponton qui sort du lac, le petit ponton de pêche, la rive rocheuse, la berge et la maison, le chemin de l'est, le sentier en lacets de l'ouest, le grand carré d'herbes hautes, le virage vers l'ouest. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+IMAGE 2 : la vue générale de la Route 12 NORD, la partie de la même route juste au-dessus (le long ponton sur le lac). Cette vue-ci la PROLONGE vers le sud : respecte EXACTEMENT son style de rendu (même ponton, mêmes planches et pilotis, même eau turquoise près des bords et bleu profond au large, même rive rocheuse, mêmes arbres en masses rondes, même saturation). Ne reprends PAS sa composition, ni son poste de garde, ni ses lanternes, ni ses personnages, ni son Pokémon endormi, ni sa lumière dorée.
+
+Format : PORTRAIT 1024 × 1536, vue plongeante sur toute la route, comme le plan.
+
+AMBIANCE — « le chemin des pêcheurs » : on quitte le lac pour une campagne paisible. Une berge herbeuse, une petite maison de pêcheur bien tenue (quelques nasses et une canne posées contre le mur, très discrètes), puis un long chemin tranquille entre deux forêts, et une grande prairie d'herbes hautes avant le virage.
+
+RÈGLE ABSOLUE DES CHEMINS : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; chemins, berges, clôtures et bords des zones suivent une grille : uniquement des segments horizontaux et verticaux à ANGLES DROITS, AUCUN segment en diagonale ni courbe, aucun escalier.
+RELIEF : le sol est lisible et plat ; aucun rebord, aucune falaise, aucune terrasse.
+NATURE DENSE, OBJETS RARES : la forêt est serrée, en grandes masses ; les zones praticables restent dégagées ; aucun objet décoratif ajouté hors de ceux du plan.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats. Le feuillage est peint en grandes masses douces.
+- Perspective : vue de dessus orthogonale, axes de l'image alignés sur la grille, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud).
+- Aucun trait noir : contours fins et doux, plus sombres et plus saturés que la couleur locale. Ombres propres colorées, légèrement bleutées, jamais grises ni noires. Aucune ombre portée allongée.
+- LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche ; volumes conservés par un ombrage doux ; aucune teinte dorée ou orangée, aucun liseré chaud ; ombres propres neutres, légèrement bleutées. NE REPRENDS PAS la lumière dorée de l'image de référence : le jeu ajoute lui-même l'éclairage.
+
+PERSONNE : aucun personnage, aucun Pokémon, aucun animal. Le lieu est VIDE.
+
+INTERDITS : texte, lettres, chiffres, étiquettes, panneaux lisibles, logo, signature, filigrane, cadre, interface, Poké Ball ; route goudronnée, véhicule ; arbres orange ou automnaux ; neige ; brouillard, flou de profondeur, vignettage ; pixel art, 3D.
+- Interdits propres à cette vue : tout bâtiment autre que la maison de pêcheur ; barque, bateau ; poste de garde ; lanterne ; pont.
+
+L'image doit raconter, sans texte : on descend d'un ponton de pêche, on passe devant une maison de pêcheur au bord du lac, puis un chemin calme longe la forêt jusqu'à une prairie d'herbes hautes et tourne vers l'ouest.

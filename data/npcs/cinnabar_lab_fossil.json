@@ -1,0 +1,20 @@
+{
+	"fossil_scientist": {
+		"cell": [
+			4,
+			4
+		],
+		"facing": "up",
+		"sprite": "researcher",
+		"dialogue": "cinnabar_fossil_scientist"
+	},
+	"seel_scientist": {
+		"cell": [
+			11,
+			7
+		],
+		"facing": "up",
+		"sprite": "fossil_researcher",
+		"dialogue": "cinnabar_trade_marc"
+	}
+}

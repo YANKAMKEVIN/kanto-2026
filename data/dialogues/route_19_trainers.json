@@ -1,0 +1,122 @@
+{
+	"route_19_cooltrainer_hugo_before": {
+		"speaker": "Topdresseur Hugo",
+		"pages": ["On s'échauffe avant la baignade !"]
+	},
+	"route_19_cooltrainer_hugo_defeated": {
+		"speaker": "Topdresseur Hugo",
+		"pages": ["J'ai pris froid avant d'entrer\ndans l'eau…"]
+	},
+	"route_19_cooltrainer_hugo_after": {
+		"speaker": "Topdresseur Hugo",
+		"pages": ["Toujours s'échauffer. Toujours."]
+	},
+	"route_19_cooltrainer_malo_before": {
+		"speaker": "Topdresseur Malo",
+		"pages": ["Tu viens nager ?\nUn combat d'abord !"]
+	},
+	"route_19_cooltrainer_malo_defeated": {
+		"speaker": "Topdresseur Malo",
+		"pages": ["Bon. J'y vais seul."]
+	},
+	"route_19_cooltrainer_malo_after": {
+		"speaker": "Topdresseur Malo",
+		"pages": ["L'eau est plus froide qu'elle n'en\na l'air."]
+	},
+	"route_19_swimmer_yann_before": {
+		"speaker": "Nageur Yann",
+		"pages": ["L'eau est glacée par ici !"]
+	},
+	"route_19_swimmer_yann_defeated": {
+		"speaker": "Nageur Yann",
+		"pages": ["Brrr…"]
+	},
+	"route_19_swimmer_yann_after": {
+		"speaker": "Nageur Yann",
+		"pages": ["On dit que le froid vient des\nîles."]
+	},
+	"route_19_swimmer_erwan_before": {
+		"speaker": "Nageur Erwan",
+		"pages": ["Attention aux Tentacool !"]
+	},
+	"route_19_swimmer_erwan_defeated": {
+		"speaker": "Nageur Erwan",
+		"pages": ["Piqué au vif !"]
+	},
+	"route_19_swimmer_erwan_after": {
+		"speaker": "Nageur Erwan",
+		"pages": ["Les Tentacool adorent ces eaux."]
+	},
+	"route_19_swimmer_loic_before": {
+		"speaker": "Nageur Loïc",
+		"pages": ["Tu vois les îles, là-bas ?"]
+	},
+	"route_19_swimmer_loic_defeated": {
+		"speaker": "Nageur Loïc",
+		"pages": ["Je n'ai plus d'élan…"]
+	},
+	"route_19_swimmer_loic_after": {
+		"speaker": "Nageur Loïc",
+		"pages": ["Les Îles Écume sont plus loin\nqu'on croit."]
+	},
+	"route_19_swimmer_tanguy_before": {
+		"speaker": "Nageur Tanguy",
+		"pages": ["Nager ou combattre, il faut\nchoisir !"]
+	},
+	"route_19_swimmer_tanguy_defeated": {
+		"speaker": "Nageur Tanguy",
+		"pages": ["J'aurais dû nager."]
+	},
+	"route_19_swimmer_tanguy_after": {
+		"speaker": "Nageur Tanguy",
+		"pages": ["Garde des forces pour le retour."]
+	},
+	"route_19_swimmer_maelle_before": {
+		"speaker": "Nageuse Maëlle",
+		"pages": ["Mes Pokémon nagent mieux que moi !"]
+	},
+	"route_19_swimmer_maelle_defeated": {
+		"speaker": "Nageuse Maëlle",
+		"pages": ["Ils ont fait de leur mieux."]
+	},
+	"route_19_swimmer_maelle_after": {
+		"speaker": "Nageuse Maëlle",
+		"pages": ["Pour trouver d'autres Pokémon\nmarins, il faut pêcher."]
+	},
+	"route_19_swimmer_anais_before": {
+		"speaker": "Nageuse Anaïs",
+		"pages": ["Pas d'éclaboussures, s'il te\nplaît !"]
+	},
+	"route_19_swimmer_anais_defeated": {
+		"speaker": "Nageuse Anaïs",
+		"pages": ["Trop tard."]
+	},
+	"route_19_swimmer_anais_after": {
+		"speaker": "Nageuse Anaïs",
+		"pages": ["Bon, je retourne à la plage."]
+	},
+	"route_19_swimmer_gwen_before": {
+		"speaker": "Nageur Gwen",
+		"pages": ["Personne ne passe sans un combat !"]
+	},
+	"route_19_swimmer_gwen_defeated": {
+		"speaker": "Nageur Gwen",
+		"pages": ["Bon, passe."]
+	},
+	"route_19_swimmer_gwen_after": {
+		"speaker": "Nageur Gwen",
+		"pages": ["Les îles sont encore loin.\nCourage !"]
+	},
+	"route_19_swimmer_lena_before": {
+		"speaker": "Nageuse Léna",
+		"pages": ["Trois Stari, trois fois plus\nd'étoiles !"]
+	},
+	"route_19_swimmer_lena_defeated": {
+		"speaker": "Nageuse Léna",
+		"pages": ["Elles ont filé…"]
+	},
+	"route_19_swimmer_lena_after": {
+		"speaker": "Nageuse Léna",
+		"pages": ["La nuit, la mer brille par ici."]
+	}
+}

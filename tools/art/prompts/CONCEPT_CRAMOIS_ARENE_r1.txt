@@ -1,0 +1,41 @@
+CONCEPT ART — VUE GÉNÉRALE DE L'ARÈNE DE CRAMOIS'ÎLE (Kanto 2026), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre : l'intérieur d'une arène creusée dans la roche d'une île volcanique, divisée en SIX SALLES par d'épais murs de roche, reliées en serpentin. On entre en bas à droite (bande beige = le seuil d'entrée) et l'on progresse de salle en salle jusqu'à la salle du haut à gauche, celle du Champion.
+Légende du plan :
+- brun très sombre = MURS ÉPAIS de roche volcanique, infranchissables (on voit leur dessus) ;
+- brun moyen quadrillé = SOL de dalles de pierre volcanique, praticable ;
+- barreaux verticaux sur deux cases × deux cases, en travers d'un passage = HERSE de métal sombre, fermée, qui barre le passage d'une salle à la suivante (six herses) ;
+- petit bloc bleu à écran clair, contre le mur du haut d'une salle = MACHINE DE QUIZ : un pupitre de métal avec un écran lumineux bleu pâle (six machines) ;
+- bande beige en bas à droite = seuil d'entrée.
+Respecte ce plan À LA LETTRE : forme et place des six salles, des murs, des herses, des machines et de l'entrée. Le plan ne donne que la composition : son style en aplats et son quadrillage ne doivent pas apparaître tels quels.
+
+RÈGLE ABSOLUE DES PASSAGES : salles et couloirs à angles droits, AUCUN passage en diagonale ni en courbe. Le sol est PLAT.
+
+IMAGE 2 : la vue générale d'un autre intérieur du même jeu. Respecte EXACTEMENT son style de rendu : même pinceau, même saturation, même finesse de détail, même lisibilité des sols clairs entourés de murs sombres, même taille et même traitement des personnages. Ne reprends RIEN de sa composition ni de sa matière.
+
+Format : CARRÉ 1024 × 1024, vue plongeante.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus de trois quarts, projection oblique frontale, sans point de fuite. Les verticales restent verticales ; les murs nord de chaque salle montrent leur face de roche.
+- Aucun trait noir : contours fins et doux. Ombres colorées bleu-violet, jamais grises ni noires.
+
+AMBIANCE — « la chaleur » : une arène de feu, chaude et vivante, jamais infernale.
+- Roche volcanique sombre et poreuse aux arêtes nettes ; dalles de pierre brun chaud au sol, bien plus claires que les murs.
+- Le long du bas des murs, de fines RIGOLES DE BRAISES rougeoyantes jettent une lueur orangée sur les dalles proches ; l'air ondule légèrement près des herses ; quelques braseros de pierre dans les angles.
+- Les herses sont du métal sombre chauffé, au bas légèrement rougeoyant.
+- Les machines de quiz sont propres et modernes, petit écran bleu pâle qui contraste avec l'orange : elles se repèrent tout de suite.
+- La salle du Champion (en haut à gauche) est la plus chaude et la plus lumineuse : un grand motif de flamme gravé dans les dalles au centre.
+- LISIBILITÉ AVANT TOUT : on distingue chaque salle, chaque herse et chaque machine sans effort.
+
+VIE (personnages petits, à l'échelle de l'image 2 ; aucun ne ressemble au héros à casquette rouge et veste bleue) :
+- dans chacune des six salles, un DRESSEUR debout au milieu de la salle, un peu sous la machine (alternativement un Intello : chemise, grosses lunettes, cheveux en bataille ; et un Pillard : bonnet sombre, foulard, sac) ; un septième Dresseur (Intello) dans la salle du haut à droite ;
+- dans la salle du haut à gauche : le CHAMPION, AUGUSTE, un vieil homme chauve à grosse moustache blanche, lunettes de soleil, veste claire, debout au centre, face au bas de l'image ;
+- près de l'entrée, en bas à droite : un GUIDE (jeune homme en tenue claire) à côté d'une STATUE sur socle.
+- Aucune créature visible.
+
+INTERDITS : texte, lettres, chiffres, étiquettes, panneaux lisibles, symboles, logo, signature, filigrane, cadre, interface ; lave à l'air libre dans les salles, flammes géantes, fumée épaisse, ambiance d'enfer ou de danger ; ciel, végétation ; couloirs courbes ou en diagonale ; flou de profondeur, vignettage noir ; pixel art, 3D.
+
+L'image doit raconter, sans texte : une arène de feu où l'on gagne chaque salle en répondant à une machine ou en battant un Dresseur, jusqu'au vieux Champion qui attend tout au fond.

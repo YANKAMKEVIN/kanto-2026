@@ -816,6 +816,19 @@ func _execute(side: BattleSide, action: BattleAction, events: Array[BattleEvent]
 		used.pp = slot.pp
 	events.append(used)
 	user.last_move_slot = action.move_index
+	# Jalon 24 (T13) : Métronome lance une capacité tirée au hasard, comme si le Pokémon la
+	# connaissait (les PP de Métronome sont dépensés, pas ceux de la capacité tirée).
+	if move.effect_of(MoveEffect.Kind.METRONOME) != null:
+		move = MetronomeRules.pick(_data, _rng)
+		if move == null:
+			user.raging = false
+			_append_failed(side, move_id, events)
+			return
+		move_id = move.id
+		var called := _event(BattleEvent.Kind.MOVE_USED, side)
+		called.move_id = move_id
+		called.pp = -1
+		events.append(called)
 	user.last_move_id = move_id
 	# Mimique (jalon 30) : la capacité devient celle que la cible a lancée en dernier.
 	if move.effect_of(MoveEffect.Kind.MIRROR) != null:

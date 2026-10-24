@@ -1,0 +1,144 @@
+[gd_scene format=4]
+
+[ext_resource type="Script" path="res://game/world/map.gd" id="1_dc5ob"]
+[ext_resource type="TileSet" path="res://assets/tiles/interior.tres" id="2_gmwcy"]
+[ext_resource type="Script" path="res://game/world/warp_point.gd" id="3_y7mcs"]
+[ext_resource type="Script" path="res://game/world/triggers/event_trigger_point.gd" id="4_otntv"]
+
+[node name="Route16Gate" type="Node2D" unique_id=1412317311]
+script = ExtResource("1_dc5ob")
+map_id = &"route_16_gate"
+display_name = "Route 16"
+region = "Route 16"
+size = Vector2i(14, 10)
+blocked_cells = Array[Vector2i]([Vector2i(1, 3), Vector2i(12, 3), Vector2i(5, 5), Vector2i(7, 5)])
+interior = true
+
+[node name="Ground" type="TileMapLayer" parent="." unique_id=1997808017]
+tile_map_data = PackedByteArray("AAAAAAAAAAAAAAIAAAABAAAAAAABAAIAAAACAAAAAAABAAIAAAADAAAAAAABAAIAAAAEAAAAAAABAAIAAAAFAAAAAAABAAIAAAAGAAAAAAAAAAIAAAAHAAAAAAABAAIAAAAIAAAAAAAAAAIAAAAJAAAAAAABAAIAAAAKAAAAAAAAAAIAAAALAAAAAAAAAAIAAAAMAAAAAAAAAAIAAAANAAAAAAAAAAIAAAAAAAEAAAABAAIAAAABAAEAAAABAAIAAAACAAEAAAAAAAYAAAADAAEAAAAAAAYAAAAEAAEAAAAAAAIAAAAFAAEAAAABAAIAAAAGAAEAAAAAAAIAAAAHAAEAAAABAAIAAAAIAAEAAAAAAAIAAAAJAAEAAAAAAAIAAAAKAAEAAAAAAAYAAAALAAEAAAAAAAYAAAAMAAEAAAABAAIAAAANAAEAAAABAAIAAAAAAAIAAAAAAAIAAAABAAIAAAACAAAAAAACAAIAAAAAAAAAAAADAAIAAAABAAAAAAAEAAIAAAACAAAAAAAFAAIAAAABAAAAAAAGAAIAAAABAAAAAAAHAAIAAAACAAAAAAAIAAIAAAACAAAAAAAJAAIAAAAAAAAAAAAKAAIAAAACAAAAAAALAAIAAAACAAAAAAAMAAIAAAABAAAAAAANAAIAAAABAAIAAAAAAAMAAAABAAIAAAABAAMAAAABAAcAAAACAAMAAAACAAAAAAADAAMAAAABAAAAAAAEAAMAAAACAAAAAAAFAAMAAAACAAAAAAAGAAMAAAABAAAAAAAHAAMAAAACAAAAAAAIAAMAAAAAAAAAAAAJAAMAAAABAAAAAAAKAAMAAAABAAAAAAALAAMAAAACAAAAAAAMAAMAAAABAAcAAAANAAMAAAAAAAIAAAAAAAQAAAABAAIAAAABAAQAAAABAAIAAAACAAQAAAABAAIAAAADAAQAAAABAAIAAAAEAAQAAAAAAAIAAAAFAAQAAAAAAAIAAAAGAAQAAAABAAIAAAAHAAQAAAABAAIAAAAIAAQAAAABAAIAAAAJAAQAAAAAAAIAAAAKAAQAAAABAAIAAAALAAQAAAAAAAIAAAAMAAQAAAAAAAIAAAANAAQAAAABAAIAAAAAAAUAAAABAAIAAAABAAUAAAABAAAAAAACAAUAAAACAAAAAAADAAUAAAABAAAAAAAEAAUAAAABAAAAAAAFAAUAAAAAAAcAAAAGAAUAAAAAAAAAAAAHAAUAAAABAAcAAAAIAAUAAAABAAAAAAAJAAUAAAACAAAAAAAKAAUAAAAAAAAAAAALAAUAAAACAAAAAAAMAAUAAAAAAAAAAAANAAUAAAABAAIAAAAAAAYAAAAAAAIAAAABAAYAAAABAAAAAAACAAYAAAACAAAAAAADAAYAAAAAAAAAAAAEAAYAAAACAAAAAAAFAAYAAAAAAAAAAAAGAAYAAAABAAAAAAAHAAYAAAACAAAAAAAIAAYAAAABAAAAAAAJAAYAAAACAAAAAAAKAAYAAAABAAAAAAALAAYAAAAAAAAAAAAMAAYAAAABAAAAAAANAAYAAAAAAAIAAAAAAAcAAAAAAAIAAAABAAcAAAAAAAAAAAACAAcAAAACAAAAAAADAAcAAAABAAAAAAAEAAcAAAAAAAAAAAAFAAcAAAAAAAAAAAAGAAcAAAABAAAAAAAHAAcAAAABAAAAAAAIAAcAAAAAAAAAAAAJAAcAAAAAAAAAAAAKAAcAAAABAAAAAAALAAcAAAABAAAAAAAMAAcAAAACAAAAAAANAAcAAAAAAAIAAAAAAAgAAAAAAAIAAAABAAgAAAABAAIAAAACAAgAAAAAAAYAAAADAAgAAAAAAAYAAAAEAAgAAAABAAIAAAAFAAgAAAAAAAIAAAAGAAgAAAAAAAIAAAAHAAgAAAABAAIAAAAIAAgAAAAAAAIAAAAJAAgAAAABAAIAAAAKAAgAAAAAAAYAAAALAAgAAAAAAAYAAAAMAAgAAAABAAIAAAANAAgAAAABAAIAAAAAAAkAAAAAAAIAAAABAAkAAAAAAAIAAAACAAkAAAAAAAIAAAADAAkAAAAAAAIAAAAEAAkAAAAAAAIAAAAFAAkAAAAAAAIAAAAGAAkAAAAAAAIAAAAHAAkAAAAAAAIAAAAIAAkAAAAAAAIAAAAJAAkAAAABAAIAAAAKAAkAAAAAAAIAAAALAAkAAAAAAAIAAAAMAAkAAAABAAIAAAANAAkAAAAAAAIAAAA=")
+tile_set = ExtResource("2_gmwcy")
+
+[node name="Detail" type="TileMapLayer" parent="." unique_id=1901960399]
+tile_set = ExtResource("2_gmwcy")
+
+[node name="Obstacles" type="TileMapLayer" parent="." unique_id=185731853]
+tile_set = ExtResource("2_gmwcy")
+
+[node name="Entities" type="Node2D" parent="." unique_id=1697802730]
+unique_name_in_owner = true
+y_sort_enabled = true
+
+[node name="Overhead" type="TileMapLayer" parent="." unique_id=82621196]
+z_index = 10
+tile_set = ExtResource("2_gmwcy")
+
+[node name="Warps" type="Node2D" parent="." unique_id=42311487]
+
+[node name="SortieHautOuest_0" type="Marker2D" parent="Warps" unique_id=856966724]
+position = Vector2(240, 192)
+script = ExtResource("3_y7mcs")
+trigger = 1
+direction = Vector2i(0, -1)
+target_map = &"route_16_west"
+target_spawn = &"from_poste_haut"
+arrival_facing = Vector2i(0, -1)
+
+[node name="SortieHautOuest_1" type="Marker2D" parent="Warps" unique_id=208953552]
+position = Vector2(336, 192)
+script = ExtResource("3_y7mcs")
+trigger = 1
+direction = Vector2i(0, -1)
+target_map = &"route_16_west"
+target_spawn = &"from_poste_haut_1"
+arrival_facing = Vector2i(0, -1)
+
+[node name="SortieHautEst_0" type="Marker2D" parent="Warps" unique_id=1245171546]
+position = Vector2(1008, 192)
+script = ExtResource("3_y7mcs")
+trigger = 1
+direction = Vector2i(0, -1)
+target_map = &"route_16"
+target_spawn = &"from_poste_haut"
+arrival_facing = Vector2i(0, -1)
+
+[node name="SortieHautEst_1" type="Marker2D" parent="Warps" unique_id=1118216776]
+position = Vector2(1104, 192)
+script = ExtResource("3_y7mcs")
+trigger = 1
+direction = Vector2i(0, -1)
+target_map = &"route_16"
+target_spawn = &"from_poste_haut_1"
+arrival_facing = Vector2i(0, -1)
+
+[node name="SortieBasOuest_0" type="Marker2D" parent="Warps" unique_id=1609263962]
+position = Vector2(240, 864)
+script = ExtResource("3_y7mcs")
+trigger = 1
+direction = Vector2i(0, 1)
+target_map = &"route_16_west"
+target_spawn = &"from_poste_bas"
+arrival_facing = Vector2i(0, 1)
+
+[node name="SortieBasOuest_1" type="Marker2D" parent="Warps" unique_id=1307052524]
+position = Vector2(336, 864)
+script = ExtResource("3_y7mcs")
+trigger = 1
+direction = Vector2i(0, 1)
+target_map = &"route_16_west"
+target_spawn = &"from_poste_bas_1"
+arrival_facing = Vector2i(0, 1)
+
+[node name="SortieBasEst_0" type="Marker2D" parent="Warps" unique_id=1883885675]
+position = Vector2(1008, 864)
+script = ExtResource("3_y7mcs")
+trigger = 1
+direction = Vector2i(0, 1)
+target_map = &"route_16"
+target_spawn = &"from_poste"
+arrival_facing = Vector2i(0, 1)
+
+[node name="SortieBasEst_1" type="Marker2D" parent="Warps" unique_id=1768895536]
+position = Vector2(1104, 864)
+script = ExtResource("3_y7mcs")
+trigger = 1
+direction = Vector2i(0, 1)
+target_map = &"route_16"
+target_spawn = &"from_poste_1"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Interactables" type="Node2D" parent="." unique_id=864337130]
+
+[node name="Spawns" type="Node2D" parent="." unique_id=765118452]
+
+[node name="entrance_haut_ouest" type="Marker2D" parent="Spawns" unique_id=1160166261]
+position = Vector2(240, 288)
+
+[node name="entrance_haut_ouest_1" type="Marker2D" parent="Spawns" unique_id=1042795282]
+position = Vector2(336, 288)
+
+[node name="entrance_haut_est" type="Marker2D" parent="Spawns" unique_id=1704878312]
+position = Vector2(1008, 288)
+
+[node name="entrance_haut_est_1" type="Marker2D" parent="Spawns" unique_id=678698241]
+position = Vector2(1104, 288)
+
+[node name="entrance_bas_ouest" type="Marker2D" parent="Spawns" unique_id=997395221]
+position = Vector2(240, 768)
+
+[node name="entrance_bas_ouest_1" type="Marker2D" parent="Spawns" unique_id=1280726610]
+position = Vector2(336, 768)
+
+[node name="entrance_bas_est" type="Marker2D" parent="Spawns" unique_id=1647325591]
+position = Vector2(1008, 768)
+
+[node name="entrance_bas_est_1" type="Marker2D" parent="Spawns" unique_id=1318484562]
+position = Vector2(1104, 768)
+
+[node name="Triggers" type="Node2D" parent="." unique_id=2059048397]
+
+[node name="ReglePiste" type="Marker2D" parent="Triggers" unique_id=1335048996]
+position = Vector2(624, 768)
+script = ExtResource("4_otntv")
+cutscene_id = &"j22_cycling_gate_rule_16"
+size = Vector2i(1, 2)
+direction = Vector2i(-1, 0)

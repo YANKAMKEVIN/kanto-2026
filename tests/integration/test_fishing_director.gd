@@ -205,11 +205,20 @@ func test_player_is_blocked_during_the_wait() -> void:
 	assert_true(_player.is_blocked_by(FishingDirector.INPUT_REASON))
 
 
+## Tables dont la Canne cite une espèce absente des données (les tables du jeu n'en ont plus
+## depuis le J22 : Magicarpe existe).
+func _unknown_species_tables() -> WaterRodTables:
+	var tables := WaterRodTables.new()
+	assert_true(tables.add_from_dict({"old_rod_unknown": {"maps": ["*"], "terrain": "water_rod",
+		"rod": "old_rod", "rate": 100,
+		"slots": [{"species": "missingno", "level": 5, "weight": 1}]}}))
+	return tables
+
+
 func test_unknown_species_bites_nothing() -> void:
 	var data := PokemonData.new()
 	assert_true(data.load_dir())
-	var tables := WaterRodTables.new()
-	assert_true(tables.load_file(WaterRodTables.DATA_PATH), "tables globales du J22")
+	var tables := _unknown_species_tables()
 	_director.setup(_state, tables, data, _player, _runner, _encounters, null)
 	_state.bag.add(&"old_rod")
 	_fish_until(&"old_rod", func() -> bool: return not _director.is_running())
@@ -338,6 +347,7 @@ func test_boot_offers_fish_and_is_unstable_while_fishing() -> void:
 	map.fishable_cells = [water]
 	var fishing := boot.get_fishing_director()
 	fishing.set_map(map)
+	fishing._tables = _unknown_species_tables()  # rien ne mord : pas de combat sans équipe
 	await wait_process_frames(2)
 	var before := boot.get_interaction_controller().get_target()
 	assert_true(before == null or before.kind != Interaction.Kind.FISH, "sans canne : pas PÊCHER")
@@ -356,7 +366,7 @@ func test_boot_offers_fish_and_is_unstable_while_fishing() -> void:
 		return boot.get_dialogue_runner().is_running() or not fishing.is_running(), TIMEOUT)
 	await _finish_dialogues(boot)
 	await wait_until(func() -> bool: return not fishing.is_running(), TIMEOUT)
-	# La Canne de la table globale cite Magicarpe (J22) : rien ne mord, sans planter.
+	# La Canne cite une espèce absente : rien ne mord, sans planter.
 	assert_push_error("espèce inconnue")
 	assert_false(fishing.is_running())
 	await wait_until(func() -> bool: return boot.is_stable(), TIMEOUT)

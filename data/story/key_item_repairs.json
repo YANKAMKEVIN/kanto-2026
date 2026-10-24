@@ -1,3 +1,4 @@
 [
-	{ "item": "hm01", "flag": "got_hm01" }
+	{ "item": "hm01", "flag": "got_hm01" },
+	{ "item": "secret_key", "flag": "got_pokemon_mansion_b1f_item_5" }
 ]

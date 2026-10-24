@@ -67,36 +67,59 @@ func test_real_data_loads_without_error() -> void:
 	assert_true(_data.load_dir())
 	assert_eq(_data.get_errors().size(), 0, _errors())
 	assert_eq(_data.get_type_chart().get_type_ids().size(), 18)
-	# Ordre du Pokédex ; jalon 20 (T7) : les 11 espèces de kanto_celadon.json. Jalon 21 (T5) :
-	# Ptitard, Tentacool, Ronflex (kanto_j21.json). Jalon 30 (T3) : 15 espèces de la Ligue
-	# (kanto_j30.json : Lippoutou, Mackogneur, Ectoplasma, Draco, Dracolosse ;
-	# kanto_j30_reprises.json : Kicklee, Tygnon et 8 reprises des J24 à J29).
-	assert_eq(_data.get_species_ids(), [
-		&"bulbasaur", &"ivysaur", &"venusaur", &"charmander", &"charmeleon", &"charizard",
-		&"squirtle", &"wartortle", &"blastoise", &"caterpie", &"metapod", &"butterfree",
-		&"weedle", &"kakuna", &"beedrill", &"pidgey", &"pidgeotto", &"pidgeot", &"rattata",
-		&"raticate", &"spearow", &"fearow", &"ekans", &"arbok", &"pikachu", &"raichu",
-		&"sandshrew", &"sandslash", &"nidoran_f", &"nidorina", &"nidoqueen", &"nidoran_m",
-		&"nidorino", &"nidoking", &"clefairy", &"clefable", &"vulpix", &"ninetales",
-		&"jigglypuff", &"wigglytuff", &"zubat", &"golbat", &"oddish", &"gloom", &"vileplume",
-		&"paras", &"parasect", &"diglett", &"dugtrio", &"meowth", &"persian", &"mankey",
-		&"primeape", &"growlithe", &"arcanine", &"poliwag", &"abra", &"kadabra", &"alakazam",
-		&"machop", &"machamp", &"bellsprout", &"weepinbell", &"victreebel", &"tentacool",
-		&"geodude", &"graveler", &"golem", &"slowbro", &"magnemite", &"magneton", &"dewgong",
-		&"shellder", &"cloyster", &"gastly", &"haunter", &"gengar", &"onix", &"drowzee",
-		&"hypno", &"voltorb", &"exeggcute", &"exeggutor", &"cubone", &"marowak", &"hitmonlee",
-		&"hitmonchan", &"koffing", &"rhyhorn", &"rhydon", &"tangela", &"kangaskhan", &"horsea",
-		&"goldeen", &"staryu", &"starmie", &"jynx", &"gyarados", &"lapras", &"eevee",
-		&"vaporeon", &"jolteon", &"flareon", &"aerodactyl", &"snorlax", &"dragonair",
-		&"dragonite"] as Array[StringName])
-	assert_eq(_data.get_move_ids().size(), 147,
+	# Ordre du Pokédex ; jalon 20 (T7) : les 11 espèces de kanto_celadon.json.
+	assert_eq(_data.get_species_ids(), [&"bulbasaur", &"ivysaur", &"venusaur", &"charmander",
+		&"charmeleon", &"charizard", &"squirtle", &"wartortle", &"blastoise",
+		&"caterpie", &"metapod", &"butterfree", &"weedle", &"kakuna", &"beedrill",
+		&"pidgey", &"pidgeotto", &"pidgeot", &"rattata", &"raticate", &"spearow", &"fearow",
+		&"ekans", &"arbok", &"pikachu", &"raichu", &"sandshrew", &"sandslash", &"nidoran_f",
+		&"nidorina", &"nidoqueen", &"nidoran_m", &"nidorino", &"nidoking", &"clefairy",
+		&"clefable", &"vulpix", &"ninetales", &"jigglypuff", &"wigglytuff", &"zubat", &"golbat",
+		&"oddish", &"gloom", &"vileplume", &"paras", &"parasect",
+		# Jalon 22 (T4) : Mimitoss, Aéromite, Machopeur, Canarticho, Doduo, Dodrio, Tadmorv,
+		# Grotadmorv, Krabby, Électrode, Smogogo, Poissoroy, Magicarpe (kanto_j22.json).
+		&"venonat", &"venomoth",
+		# Jalon 17 (T7) : Taupiqueur, Triopikeur ; plus loin Goupix, Caninos, Magnéti, Magnéton,
+		# Soporifik, Hypno (kanto_j17.json).
+		&"diglett", &"dugtrio",
+		# Jalon 15 (T12) : Miaouss et Persan (kanto_vermilion.json).
+		&"meowth", &"persian",
+		# Jalon 24 (T4) : kanto_j24.json (Psykokwak, Akwakwak, Têtarte, Tartard, Tentacruel,
+		# Ramoloss, Flagadoss, Otaria, Lamantine, Crustabri, Krabby, Krabboss, Hypocéan,
+		# Poissoroy, Magicarpe, fossiles, Artikodin) ; Saquedeneu et Léviator sont ceux des J20
+		# et J19. Jalon 21 (T5) : Ptitard, Tentacool, Ronflex (kanto_j21.json).
+		&"psyduck", &"golduck",
+		&"mankey", &"primeape", &"growlithe", &"arcanine",
+		&"poliwag", &"poliwhirl", &"poliwrath",
+		&"abra", &"kadabra", &"alakazam", &"machop", &"machoke", &"machamp",
+		&"bellsprout", &"weepinbell", &"victreebel", &"tentacool", &"tentacruel",
+		&"geodude", &"graveler", &"golem", &"ponyta", &"rapidash", &"slowpoke", &"slowbro", &"magnemite", &"magneton",
+		&"farfetchd", &"doduo", &"dodrio", &"seel", &"dewgong", &"grimer", &"muk", &"shellder",
+		&"cloyster",
+		# Jalon 19 (T3) : Fantominus, Spectrum, Noeunoeuf, Osselait, Ossatueur, Léviator
+		# (kanto_tower.json ; Caninos vient du J17).
+		&"gastly", &"haunter", &"gengar", &"onix",
+		&"drowzee", &"hypno", &"krabby", &"kingler", &"voltorb", &"electrode", &"exeggcute", &"exeggutor",
+		&"cubone", &"marowak", &"hitmonlee", &"hitmonchan", &"koffing", &"weezing", &"rhyhorn", &"rhydon", &"tangela", &"kangaskhan",
+		&"horsea", &"seadra", &"goldeen", &"seaking", &"staryu", &"starmie", &"jynx", &"magmar", &"magikarp",
+		&"gyarados", &"lapras", &"eevee", &"vaporeon", &"jolteon", &"flareon",
+		&"omanyte", &"omastar", &"kabuto", &"kabutops", &"aerodactyl", &"snorlax", &"articuno", &"dragonair", &"dragonite"] as Array[StringName])
+	# Jalon 25 (T7) : kanto_j25.json (Ponyta, Galopa, Magmar, Ptéra) ; Tadmorv, Grotadmorv,
+	# Smogogo et Électrode sont ceux du J22 (kanto_j25_reprises.json retiré à la fusion de main).
+	# Jalon 30 (T3) : espèces de la Ligue (kanto_j30.json : Lippoutou, Mackogneur, Ectoplasma,
+	# Draco, Dracolosse ; kanto_j30_reprises.json : Kicklee, Tygnon, Lokhlass, Alakazam,
+	# Rhinoféros, Noadkoko ; les reprises des J24 et J25 retirées à la fusion de main).
+	assert_eq(_data.get_move_ids().size(), 153,
 		"47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10) + Patience (J11) "
 		+ "+ 21 du Mont Sélénite (jalon 12) + 8 du jalon 13 (les 5 du J12 qu'il reprenait : "
 		+ "entrées du J12) + 6 du Cap d'Azuria (jalon 14) + Jackpot (J15) "
 		+ "+ Coupe et Tonnerre (jalon 16) + 7 du jalon 17 + 8 de la Tour Pokémon (J19 ; "
 		+ "Hypnose, Hurlement et Bélier viennent du J17) + 7 du jalon 20 + Vol (passe systèmes 2, T25) "
 		+ "+ Surf (S2C) + Force (S2D) + Amnésie, Bouclier (J21 ; Constriction vient du J20) "
-		+ "+ 15 du jalon 30 (7 nouvelles, 8 reprises des J23 à J29)")
+		+ "+ 5 du jalon 22 (Écrasement vient du J20) + 3 du J24 (j24.json : Force Poigne, "
+		+ "Pince-Masse et Trempette sont ceux du J22) "
+		+ "+ Déflagration et Poing de Feu (J25, j25.json) "
+		+ "+ 11 du jalon 30 (Blizzard, Picanon, Déflagration et Poing de Feu sont ceux des J24 et J25)")
 	assert_true(_data.has_move(&"struggle"))
 
 
@@ -188,6 +211,21 @@ func test_real_evolution_chains() -> void:
 		# Tour Pokémon (jalon 19, §2.12) : Rouge/Bleu. Spectrum (échange, Ectoplasma absent) et
 		# Noeunoeuf (Pierre Plante absente) n'en déclarent pas.
 		&"gastly": [&"haunter", 25], &"cubone": [&"marowak", 28],
+		# Jalon 22 (§2.12) : Rouge/Bleu entre espèces présentes ; Machopeur (Mackogneur absent)
+		# n'en déclare pas ; Magicarpe → Léviator (J19) au N20.
+		&"venonat": [&"venomoth", 31], &"doduo": [&"dodrio", 31], &"grimer": [&"muk", 38],
+		&"magikarp": [&"gyarados", 20],
+		# Jalon 24 (T4, dossier 27 §14.1) : Rouge/Bleu. Ptitard → Têtarte (N25) et Tentacool →
+		# Tentacruel (N30) ajoutés dans kanto_j21.json à la fusion de `main` (accord J21 / J24) ;
+		# Krabby → Krabboss (N28) rétabli dans kanto_j22.json à la fusion du J24 dans `main`.
+		&"poliwag": [&"poliwhirl", 25], &"tentacool": [&"tentacruel", 30],
+		&"psyduck": [&"golduck", 33], &"poliwhirl": [&"poliwrath", &"water_stone"],
+		&"slowpoke": [&"slowbro", 37], &"seel": [&"dewgong", 34],
+		&"shellder": [&"cloyster", &"water_stone"], &"krabby": [&"kingler", 28],
+		&"horsea": [&"seadra", 32], &"goldeen": [&"seaking", 33],
+		&"omanyte": [&"omastar", 40], &"kabuto": [&"kabutops", 40],
+		# Jalon 25 (T7) : Ponyta (Rouge/Bleu) ; Tadmorv → Grotadmorv est celui du J22.
+		&"ponyta": [&"rapidash", 40],
 		# Ligue (jalon 30, T3) : Rouge/Bleu ; Spectrum → Ectoplasma (échange) n'est pas déclaré
 		# (Spectrum vient du J19).
 		&"dragonair": [&"dragonite", 55],
@@ -478,11 +516,24 @@ func test_real_catch_rates_are_the_official_ones() -> void:
 		# Jalon 19 (T3, Tour Pokémon ; Caninos vient du J17).
 		&"gastly": 190, &"haunter": 90, &"exeggcute": 90, &"cubone": 190,
 		&"marowak": 75, &"gyarados": 45,
+		# Jalon 22 (T4).
+		&"venonat": 190, &"venomoth": 75, &"machoke": 90, &"farfetchd": 45, &"doduo": 190,
+		&"dodrio": 45, &"grimer": 190, &"muk": 75, &"krabby": 225, &"electrode": 60,
+		&"weezing": 60, &"seaking": 60, &"magikarp": 255,
+		# Jalon 24 (T4 ; Krabby, Poissoroy et Magicarpe sont ceux du J22).
+		&"psyduck": 190, &"golduck": 75, &"poliwhirl": 120, &"poliwrath": 45,
+		&"tentacruel": 60, &"slowpoke": 190, &"slowbro": 75, &"seel": 190,
+		&"dewgong": 75, &"cloyster": 60, &"kingler": 60,
+		&"seadra": 75, &"omanyte": 45,
+		&"omastar": 45, &"kabuto": 45, &"kabutops": 45, &"articuno": 3,
 		# Jalon 21 (T5).
 		&"poliwag": 255, &"tentacool": 190, &"snorlax": 25,
-		# Jalon 30 (T3, Ligue) : reprises des J24 à J29 et espèces nouvelles.
-		&"dewgong": 75, &"cloyster": 60, &"slowbro": 75, &"lapras": 45, &"alakazam": 50,
-		&"aerodactyl": 45, &"rhydon": 60, &"exeggutor": 45, &"hitmonlee": 45, &"hitmonchan": 45,
+		# Jalon 25 (T7) ; Tadmorv, Grotadmorv, Smogogo et Électrode sont ceux du J22.
+		&"ponyta": 190, &"rapidash": 60, &"magmar": 45, &"aerodactyl": 45,
+		# Jalon 30 (T3, Ligue) : reprises des J26 à J29 et espèces nouvelles (Lamantine,
+		# Crustabri, Flagadoss : J24 ; Ptéra : J25).
+		&"lapras": 45, &"alakazam": 50,
+		&"rhydon": 60, &"exeggutor": 45, &"hitmonlee": 45, &"hitmonchan": 45,
 		&"jynx": 45, &"machamp": 45, &"gengar": 45, &"dragonair": 45, &"dragonite": 45,
 	}
 	assert_eq(_data.get_species_ids().size(), expected.size(), "toutes les espèces")
@@ -828,13 +879,14 @@ func test_moves_without_effect_say_so() -> void:
 	# Jalon 19 : Cyclone (changement forcé, décision de Kevin du 2026-10-16).
 	# Passe systèmes 2 : Empal'Korne (K.O. en un coup, test_ohko.gd).
 	# Jalon 30 (Q30-3) : Mimique, Frénésie, Mania, Danse Fleur codées (test_league_moves.gd).
+	# Jalon 24 (T13) : Métronome codé (MetronomeRules).
 	_data.load_dir()
-	for id: StringName in [&"metronome", &"mist"]:
+	for id: StringName in [&"mist"]:
 		assert_true(_data.get_move(id).description.ends_with(
 			" Sans effet dans le moteur actuel."), String(id))
 	for id: StringName in [&"thunder_wave", &"stun_spore", &"sleep_powder", &"supersonic",
 			&"focus_energy", &"super_fang", &"seismic_toss", &"whirlwind", &"horn_drill",
-			&"mirror_move", &"rage", &"thrash", &"petal_dance"]:
+			&"mirror_move", &"rage", &"thrash", &"petal_dance", &"metronome"]:
 		assert_false(_data.get_move(id).description.contains("Sans effet"), String(id))
 	assert_eq(_data.get_move(&"sleep_powder").description,
 		"Une poudre soporifique qui endort la cible.")

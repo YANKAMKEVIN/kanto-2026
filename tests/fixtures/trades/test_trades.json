@@ -1,0 +1,7 @@
+{
+	"_comment": "Échanges de test (jalon 25) : espèces présentes dans main, indépendantes des espèces des autres jalons.",
+	"trades": {
+		"test_trade_rattata": { "npc": "papy", "trainer_name": "Hector", "wants": "raichu", "gives": "rattata", "nickname": "Kourjus", "lines": "hector" },
+		"test_trade_unknown": { "npc": "canon", "trainer_name": "Lina", "wants": "rattata", "gives": "pas_une_espece", "nickname": "X", "lines": "lina" }
+	}
+}

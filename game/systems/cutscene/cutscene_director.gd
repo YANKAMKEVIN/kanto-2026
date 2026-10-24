@@ -78,6 +78,9 @@ signal save_requested(reason: String)
 ## Stockage. Émis juste après le don (drapeau déjà levé), avant ses dialogues : Boot demande
 ## l'autosave et rafraîchit le compagnon.
 signal pokemon_gifted(pokemon: Pokemon, stored: bool)
+## J25 (§2.5) : échange fixe fait (étape « trade »), d'un seul bloc : Boot rafraîchit le
+## compagnon (le Pokémon donné a pu l'être) et demande l'autosave.
+signal pokemon_traded(given: Pokemon, received: Pokemon)
 ## Le point de sauvegarde a échoué : scène et contrôles restent bloqués jusqu'à la réussite.
 signal save_failed(reason: String, error: Error)
 ## Fin d'une étape « wait » (interne).
@@ -101,6 +104,12 @@ const WILD_BATTLE_TABLE: StringName = &"cutscene"
 ## Raison de la sauvegarde forcée d'une rencontre fixe consommée (T30) : « %s » = son identifiant.
 const STATIC_SAVE_REASON: String = "rencontre fixe : %s"
 const _ROUTER_SCRIPT := preload("res://game/autoload/scene_router.gd")
+## J25 : choix du Pokémon à échanger (Boot : le sélecteur de l'équipe) ; appelé avec
+## (identifiant d'échange, places acceptées), rend la place choisie ou −1 (renonce). Peut être
+## une coroutine. Sans lui : la première place acceptée (tests).
+var trade_pick_handler: Callable
+## J25 : échanges fixes (`data/trades/`), chargés à la première étape « trade ».
+var _trades: InGameTrade
 ## Étapes qui agissent sur leur acteur : elles attendent d'abord la fin de sa marche en
 ## arrière-plan.
 const _JOINING_KINDS: Array[CutsceneStep.Kind] = [
@@ -375,6 +384,14 @@ func _play_step(source_step: CutsceneStep) -> bool:
 			if _flags != null:
 				for flag: StringName in step.flags:
 					_flags.set_flag(flag)
+		CutsceneStep.Kind.UNSET_FLAGS:
+			if _flags != null:
+				for flag: StringName in step.flags:
+					_flags.set_flag(flag, false)
+		CutsceneStep.Kind.TOGGLE_FLAGS:
+			if _flags != null:
+				for flag: StringName in step.flags:
+					_flags.set_flag(flag, not _flags.has_flag(flag))
 		CutsceneStep.Kind.CAPTION:
 			await _caption(step)
 		CutsceneStep.Kind.TAKE:
@@ -425,6 +442,8 @@ func _play_step(source_step: CutsceneStep) -> bool:
 			return await _wild_battle(step)
 		CutsceneStep.Kind.GIFT_POKEMON:
 			await _gift_pokemon(step)
+		CutsceneStep.Kind.TRADE:
+			await _trade(step)
 		CutsceneStep.Kind.FLUTE: # Jalon 21
 			await play_flute_notes()
 		_:
@@ -674,6 +693,44 @@ func _gift_pokemon(step: CutsceneStep) -> void:
 	await _play_dialogue(step.dialogue_id)
 	if result.is_stored() and not step.dialogue_stored.is_empty():
 		await _play_dialogue(step.dialogue_stored)
+
+
+## Étape « trade » (jalon 25, `jalon-25.md` §2.5) : échange fixe [member CutsceneStep.trade_id].
+## Déjà fait : rien. Aucun Pokémon de l'espèce demandée : dialogue « wrong ». Sinon le joueur
+## choisit ([member trade_pick_handler]) ; il renonce : dialogue « refuse ». L'échange se fait
+## d'un seul bloc ([method InGameTrade.execute]), puis [signal pokemon_traded] et les dialogues
+## « say ».
+func _trade(step: CutsceneStep) -> void:
+	if _state == null or _pokemon_data == null or _flags == null:
+		_step_error("pas d'état de partie pour l'échange « %s »" % step.trade_id)
+		return
+	if _trades == null:
+		_trades = InGameTrade.load_default()
+	if _trades.get_trade(step.trade_id).is_empty():
+		_step_error("échange inconnu « %s »" % step.trade_id)
+		return
+	if _trades.is_done(step.trade_id, _flags):
+		return
+	var party: Party = _state.party
+	var candidates := _trades.candidates(step.trade_id, party)
+	if candidates.is_empty():
+		await _play_dialogue(step.dialogue_id)
+		return
+	var index: int = candidates[0]
+	if trade_pick_handler.is_valid():
+		index = await trade_pick_handler.call(step.trade_id, candidates)
+	if not index in candidates:
+		await _play_dialogue(step.dialogue_stored)
+		return
+	var map_id: StringName = _map.map_id if is_instance_valid(_map) else &""
+	var result := _trades.execute(step.trade_id, index, party, _state.pokedex as Pokedex,
+		_flags, _pokemon_data, _state.rng as GameRng, map_id, _state.now())
+	if result["status"] != InGameTrade.Status.DONE:
+		_step_error("échange « %s » refusé (statut %d)" % [step.trade_id, result["status"]])
+		return
+	pokemon_traded.emit(result["given"], result["received"])
+	for dialogue_id: StringName in step.say:
+		await _play_dialogue(dialogue_id)
 
 
 ## Case d'où part l'intro d'un combat sauvage scripté : celle devant le joueur (sa case s'il

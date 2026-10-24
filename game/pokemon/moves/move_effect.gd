@@ -107,6 +107,8 @@ enum Kind {
 	OHKO,
 	HEAL, SCREEN, HAZE,
 	RAGE, RAMPAGE, MIRROR,
+	## Jalon 24 (T13, dossier 27 §10.6) : Métronome lance une capacité tirée au hasard.
+	METRONOME,
 }
 enum Target { SELF, FOE }
 
@@ -125,6 +127,7 @@ const KIND_NAMES: Dictionary[String, Kind] = {
 	"ohko": Kind.OHKO,
 	"heal": Kind.HEAL, "screen": Kind.SCREEN, "haze": Kind.HAZE,
 	"rage": Kind.RAGE, "rampage": Kind.RAMPAGE, "mirror": Kind.MIRROR,
+	"metronome": Kind.METRONOME,
 }
 ## RAMPAGE (jalon 30) : tours d'affilée, premier compris (Mania, Danse Fleur ; RB : 2 ou 3).
 const RAMPAGE_MIN_TURNS: int = 2

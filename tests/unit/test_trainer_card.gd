@@ -71,8 +71,8 @@ func test_real_brock_card() -> void:
 	for id: StringName in trainers.get_ids():
 		if trainers.get_trainer(id).has_card():
 			with_card.append(id)
-	assert_eq(with_card, [&"celadon_gym_erika", &"cerulean_gym_misty", &"giovanni_hideout",
+	assert_eq(with_card, [&"celadon_gym_erika", &"cerulean_gym_misty", &"cinnabar_gym_blaine", &"giovanni_hideout",
 		&"league_agatha", &"league_bruno", &"league_lance", &"league_lorelei",
 		&"pewter_gym_brock", &"vermilion_gym_surge"] as Array[StringName],
-		"les Champions (Ondine au jalon 13, Major Bob au jalon 16 ; Erika et Giovanni au jalon 20) "
+		"les Champions (Ondine au jalon 13, Major Bob au jalon 16 ; Erika et Giovanni au jalon 20, Auguste au jalon 25) "
 		+ "et le Conseil des Quatre (jalon 30)")

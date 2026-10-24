@@ -1,0 +1,48 @@
+{
+	"cinnabar_lab_tm35": {
+		"speaker": "Scientifique",
+		"variants": [
+			{
+				"unless": [
+					"got_tm35"
+				],
+				"cutscene": "cinnabar_lab_tm35"
+			},
+			{
+				"pages": [
+					"Avec Métronome, même moi,\nje ne sais jamais",
+					"ce qui va arriver."
+				]
+			}
+		]
+	},
+	"cinnabar_lab_tm35_offer": {
+		"speaker": "Scientifique",
+		"pages": [
+			"Tu aimes les surprises ?",
+			"Cette CT apprend Métronome :\nune capacité au hasard,",
+			"à chaque fois !"
+		]
+	},
+	"cinnabar_lab_tm35_use": {
+		"speaker": "Scientifique",
+		"pages": [
+			"{player} reçoit la CT35 Métronome !"
+		]
+	},
+	"cinnabar_lab_eevee": {
+		"speaker": "Scientifique",
+		"pages": [
+			"Évoli peut évoluer de trois\nfaçons différentes.",
+			"Fascinant !"
+		]
+	},
+	"cinnabar_lab_pc": {
+		"narration": true,
+		"pages": [
+			"Un courriel : « Trois Pokémon\noiseaux légendaires",
+			"vivraient à Kanto.",
+			"On parle de l'un d'eux\nprès des Îles Écume… »"
+		]
+	}
+}

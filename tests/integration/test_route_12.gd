@@ -136,13 +136,17 @@ func test_north_west_and_south_edges() -> void:
 			assert_eq([warp.target_map, warp.target_spawn],
 				[&"route_11", StringName("from_route_12_" + ["n", "s"][i])])
 		assert_eq(_map.get_spawn_cell(StringName("from_route_11_" + ["n", "s"][i])), WEST[i])
-	for cell: Vector2i in SOUTH:
-		var warp := _map.get_warps().find_on_push(cell, Vector2i.DOWN)
+	# Raccord J21 ↔ J22 (2026-10-23) : la Route 12 sud, case pour case (test_j21_j22_links).
+	for i: int in SOUTH.size():
+		var warp := _map.get_warps().find_on_push(SOUTH[i], Vector2i.DOWN)
 		assert_not_null(warp)
 		if warp != null:
-			assert_true(warp.is_coming_soon(), "bord sud à venir")
-			assert_eq(warp.coming_soon, "Route 12")
-			assert_false(_grid.is_solid(_map.get_spawn_cell(warp.target_spawn)))
+			assert_false(warp.is_coming_soon(), "bord sud branché")
+			assert_eq([warp.target_map, warp.target_spawn],
+				[&"route_12_south", StringName("from_route_12" + ["", "_1"][i])])
+		var back := StringName("from_route_12_sud" + ["", "_1"][i])
+		assert_eq(_map.get_spawn_cell(back), SOUTH[i] + Vector2i.UP)
+		assert_false(_grid.is_solid(_map.get_spawn_cell(back)))
 
 
 func test_round_trips_with_lavender_and_route_11() -> void:

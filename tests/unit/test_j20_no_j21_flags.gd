@@ -29,8 +29,8 @@ const J20_FILES: Array[String] = [
 const J21_FILES: Array[String] = ["j21_tower.json", "tower_marowak_qa.json",
 	"tower_marowak_noscope.json", "tower_marowak_weak.json", "tower_7f_qa.json",
 	"fuji_flute_qa.json", "j21_full_qa.json",
-	# Jalon 21 (T21, T22) : départs de la Route 12 et du Ronflex 16.
-	"route_12_qa.json", "snorlax_16_qa.json"]
+	# Jalon 21 (T21, T22) : départs de la Route 12 et du Ronflex 16 ; raccords J21 ↔ J22 (arbre 16).
+	"route_12_qa.json", "snorlax_16_qa.json", "route_16_tree_qa.json"]
 ## Jalon 21 (T12, `jalon-21.md` §2.7) : seule exception dans un fichier du J19, la variante A de
 ## `tower_6f_ghost` (révélation, `if_items`), ajoutée en tête de `pokemon_tower_floors.json`.
 const J21_VARIANT_FILE: String = "pokemon_tower_floors.json"
