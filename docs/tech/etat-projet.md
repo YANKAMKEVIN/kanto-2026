@@ -11,6 +11,7 @@ Mis à jour : 2026-10-24 (**Phase DA cadrée** : `docs/design/phase-da-cadrage.m
 ## Décision de Kevin — diffusion du jeu (2026-10-24, session de coordination)
 - **Le jeu reste privé** : pour Kevin et, au plus, un **cercle restreint** de proches qu'il invite. **Jamais de diffusion publique** (pas de Play Store, pas de lien ouvert ni de page publique ; le dépôt reste privé).
 - Répond aux questions des plans `jalon-34.md` (Go juridique, §questions n° 1), `jalon-35.md` (testeurs de la bêta = proches invités par Kevin) et `jalon-37.md` (Go de distribution : niveau « cercle autorisé » au plus). Ces plans sont sur la branche `jalon-31` ; à reporter dedans quand ils seront repris.
+- **J32 — arbitrages de collection préparés (2026-10-24)** : `docs/design/passes/j32-arbitrages-kevin.md`, **N-1 à N-16 à valider par Kevin** (Mew, starters, second fossile, Dojo, Évoli, exclusivités, Centrale et Électhor, Minidraco, Porygon, échanges PNJ RB, textes) ; trous de collection trouvés hors du plan J32 : Centrale/Électhor/Élektek, Minidraco, Porygon, 4 échanges RB, Évoli.
 - Restent ouvertes pour le J32 : Mew, starters et fossiles non choisis, exclusivités ; pour le J34 : emplacement de la clé de signature et de l'archive, canal de retours.
 ## J22 — décisions de Kevin et corrections avant la fusion (2026-10-22, branche `jalon-22`, worktree `~/dev/kanto-2026-wt-j22`)
 
