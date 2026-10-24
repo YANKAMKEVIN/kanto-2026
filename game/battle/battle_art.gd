@@ -6,7 +6,7 @@ extends RefCounted
 ## - Adversaire : **artwork officiel** (`assets/sprites/pokemon/official/NNN.png`, par numéro du
 ##   Pokédex), resserré sur son cadre utile par [PokedexArt] (chargement partagé avec le
 ##   Pokédex), filtre linéaire ; à défaut, le sprite provisoire de face.
-## - Ton Pokémon : sprite provisoire **de dos** (pixel art 64 px, NEAREST) jusqu'au premier lot
+## - Ton Pokémon : dos **peint** (`dos/dos_ia_NNN.png`, filtre linéaire) s'il existe, sinon sprite provisoire **de dos** (pixel art 64 px, NEAREST) jusqu'au premier lot
 ##   de dos peints (J11) ; à défaut (aucune espèce des données ne doit en manquer :
 ##   `test_battle_art.gd`), l'artwork officiel : jamais de côté vide.
 ## - Taille réelle (m) : données du Pokédex (`data/pokedex/kanto.json`) ; inconnue : la taille de
@@ -23,6 +23,14 @@ const PLACEHOLDER_DIR: String = "res://assets/sprites/pokemon/placeholder/"
 ## QA A17 du J30 : Roucarnage du rival tournait le dos) : retournés côté adversaire.
 const FACING_RIGHT: Array[int] = [2, 9, 10, 18, 21, 28, 30, 38, 53, 55, 58, 78, 83, 106, 118,
 	146, 147]
+## Dossier des dos de combat **peints** (1024 × 1024 RGBA, `dos_ia_NNN.png`, NNN = numéro du Pokédex) :
+## lot « série dos » (`tools/art/serie_dos.py`, `docs/design/inventaire-art.md` §2). Lus en priorité
+## pour le côté du joueur ; une espèce sans fichier garde son sprite provisoire.
+const PAINTED_BACK_DIR: String = "res://assets/sprites/pokemon/dos/"
+
+## Dos 3D (`dos3d_NNN.png`, rendu X/Y, même format 1024²) : repli du dos IA pour une espèce qui n'a
+## pas de `dos_ia` (16 prototypes validés, dont 4 sans équivalent IA : 050, 051, 096, 109).
+## Priorité : dos IA > dos 3D > sprite provisoire.
 
 ## Boîtes visibles des images provisoires, par chemin (lues une fois).
 static var _boxes: Dictionary[String, Rect2] = {}
@@ -43,6 +51,24 @@ func setup(pokemon: PokemonData, dex: PokedexLibrary) -> void:
 ## de chemin des sprites provisoires de combat.
 static func placeholder_path(species: StringName, back: bool) -> String:
 	return PLACEHOLDER_DIR + "%s_%s.png" % [species, "back" if back else "front"]
+
+
+## Chemin du dos peint du numéro [param dex] du Pokédex (le fichier peut ne pas exister).
+static func painted_back_path(dex: int) -> String:
+	return PAINTED_BACK_DIR + "dos_ia_%03d.png" % dex
+
+
+## Chemin du dos 3D du numéro [param dex] (repli du dos IA ; le fichier peut ne pas exister).
+static func painted_back_3d_path(dex: int) -> String:
+	return PAINTED_BACK_DIR + "dos3d_%03d.png" % dex
+
+
+## Chemin du dos peint à utiliser pour le numéro [param dex] : IA d'abord, puis 3D ; "" sinon.
+static func best_painted_back_path(dex: int) -> String:
+	for path: String in [painted_back_path(dex), painted_back_3d_path(dex)]:
+		if ResourceLoader.exists(path):
+			return path
+	return ""
 
 
 ## Numéro du Pokédex de [param species] (0 si inconnu).
@@ -72,6 +98,11 @@ func image(species: StringName, back: bool) -> Dictionary:
 		var official := _official(species)
 		if not official.is_empty():
 			return _facing_left(official, dex_number(species))
+	if back:
+		var painted_path := best_painted_back_path(dex_number(species))
+		if not painted_path.is_empty():
+			var painted := load(painted_path) as Texture2D
+			return {"texture": painted, "official": true, "box": visible_box(painted, painted_path)}
 	var path := placeholder_path(species, back)
 	if species.is_empty() or not ResourceLoader.exists(path):
 		# Repli (correctif QA 12A) : un dos manquant ne laisse jamais le côté du joueur vide ;

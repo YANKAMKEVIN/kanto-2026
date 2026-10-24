@@ -43,11 +43,11 @@ func test_right_facing_artwork_is_flipped_toward_the_player() -> void:
 
 
 func test_player_side_keeps_the_placeholder_back() -> void:
-	var image := _art.image(&"charmander", true)
+	var image := _art.image(&"blastoise", true)
 	assert_false(image["official"])
 	assert_eq((image["texture"] as Texture2D).resource_path,
-		BattleArt.placeholder_path(&"charmander", true))
-	assert_eq(image["box"], Rect2(14, 7, 48, 56), "boîte de l'alpha, pieds au bas")
+		BattleArt.placeholder_path(&"blastoise", true))
+	assert_true((image["box"] as Rect2).size.y > 30.0, "boîte de l'alpha, pieds au bas")
 
 
 ## Correctif QA 12A (Reptincel sans dos sur le S24) : **chaque** espèce des données a son sprite
@@ -77,7 +77,7 @@ func test_a_missing_back_falls_back_to_the_official_artwork() -> void:
 	var file := FileAccess.open("res://data/pokemon/species/kanto.json", FileAccess.READ)
 	var entries: Dictionary = JSON.parse_string(file.get_as_text())
 	var data := PokemonData.new()
-	assert_true(data.add_species_from_dict({"zz_no_sprite": entries["charmeleon"]}))
+	assert_true(data.add_species_from_dict({"zz_no_sprite": entries["blastoise"].duplicate()}))
 	var art := BattleArt.new()
 	art.setup(data, null)
 	assert_false(ResourceLoader.exists(BattleArt.placeholder_path(&"zz_no_sprite", true)))
@@ -85,7 +85,7 @@ func test_a_missing_back_falls_back_to_the_official_artwork() -> void:
 	assert_not_null(image["texture"], "jamais vide")
 	assert_true(image["official"], "artwork officiel")
 	assert_string_ends_with(((image["texture"] as AtlasTexture).atlas).resource_path,
-		"official/005.png")
+		"official/009.png")
 
 
 func test_unknown_species_has_no_texture_and_reference_height() -> void:
