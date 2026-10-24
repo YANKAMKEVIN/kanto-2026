@@ -16,12 +16,6 @@
 			"La porte est fermée à clé…"
 		]
 	},
-	"cinnabar_mansion_rubble": {
-		"narration": true,
-		"pages": [
-			"L'entrée s'est effondrée.\nPersonne ne peut entrer."
-		]
-	},
 	"cinnabar_girl": {
 		"speaker": "Fille",
 		"pages": [

@@ -1,0 +1,45 @@
+{
+	"mansion_scientist_1": {
+		"cell": [
+			17,
+			17
+		],
+		"facing": "left",
+		"sprite": "researcher",
+		"dialogue": "mansion_scientist_1_after",
+		"trainer": {
+			"id": "mansion_scientist_1",
+			"sight": 3,
+			"before": "mansion_scientist_1_before",
+			"defeated": "mansion_scientist_1_defeated"
+		}
+	},
+	"pokemon_mansion_1f_item_1": {
+		"cell": [
+			14,
+			3
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "pokemon_mansion_1f_item_1",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_pokemon_mansion_1f_item_1"
+		]
+	},
+	"pokemon_mansion_1f_item_2": {
+		"cell": [
+			18,
+			21
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "pokemon_mansion_1f_item_2",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_pokemon_mansion_1f_item_2"
+		]
+	}
+}

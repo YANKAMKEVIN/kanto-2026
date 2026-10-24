@@ -579,7 +579,7 @@ func test_trainer_sight_bounds() -> void:
 		var entry := _THEO.duplicate(true)
 		entry["trainer"]["sight"] = sight
 		assert_not_null(NpcRoster.parse_entry(entry, errors), "vision %d" % sight)
-	assert_eq([TrainerRules.SIGHT_MIN, TrainerRules.SIGHT_MAX], [1, 8])
+	assert_eq([TrainerRules.SIGHT_MIN, TrainerRules.SIGHT_MAX], [0, 8], "J25 : 0 = on lui parle")
 
 
 func test_invalid_trainer_blocks_are_rejected() -> void:
@@ -589,7 +589,7 @@ func test_invalid_trainer_blocks_are_rejected() -> void:
 		{"id": "forest_scout_theo", "sight": 4},
 		{"id": "", "sight": 4, "before": "b"},
 		{"sight": 4, "before": "b"},
-		{"id": "t", "sight": 0, "before": "b"},
+		{"id": "t", "sight": -1, "before": "b"},
 		{"id": "t", "sight": 9, "before": "b"},
 		{"id": "t", "sight": 2.5, "before": "b"},
 		{"id": "t", "sight": "4", "before": "b"},

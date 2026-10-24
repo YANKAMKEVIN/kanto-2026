@@ -232,7 +232,7 @@ func test_missing_or_unknown_meeting_data_falls_back_to_defaults() -> void:
 	assert_not_null(copy, "une sauvegarde d'avant le 5C.5 se charge")
 	assert_eq(copy.origin, Pokemon.Origin.UNKNOWN)
 	assert_eq(copy.met_map, &"")
-	dict["met"] = {"origin": "trade", "level": 999, "map": 3}
+	dict["met"] = {"origin": "swap", "level": 999, "map": 3} # J25 : « trade » est connu
 	copy = Pokemon.from_dict(dict, _data)
 	assert_eq(copy.origin, Pokemon.Origin.UNKNOWN, "manière inconnue → inconnue")
 	assert_eq(copy.met_level, 100, "niveau borné")

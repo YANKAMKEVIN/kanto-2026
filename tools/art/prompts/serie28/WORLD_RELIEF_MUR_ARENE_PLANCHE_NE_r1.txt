@@ -1,0 +1,30 @@
+WORLD_RELIEF_MUR_ARENE_PLANCHE — NOUVELLE image : une planche d'éléments de jeu, pas une scène.
+Images jointes : REF_A_SALLE = forme, matériaux et couleurs, extraits des vues d'ensemble VALIDÉES (petites, éclairées d'une lumière d'ambiance dorée ou orangée : n'en copie NI la lumière NI le flou ; redessine plus net, en lumière neutre) ; WORLD_PROP_SOUCHE_01_NE_r1 et WORLD_TREE_A_01_NE_r1 = ancres de style (rendu peint, finesse, lumière neutre).
+
+ADN VISUEL KANTO 2026 — v1 (à respecter strictement)
+- Rendu : illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus de trois quarts, en projection oblique frontale, sans aucun point de fuite. Les verticales restent strictement verticales et les horizontales strictement horizontales. On voit le dessus des objets et leur face avant (côté sud), jamais leurs côtés. Pas de vue isométrique, pas de rotation. Le sol est vu à plat, comme sur un plan.
+- Proportions : légèrement stylisées, trapues et rassurantes. Échelle commune : 1 case de jeu = 1 mètre environ ; un adulte mesure 1,33 case ; une porte simple mesure 1 case de large et 1,5 case de haut.
+- Contours : aucun trait noir. Contour fin et doux, d'une teinte plus sombre et plus saturée que la couleur locale, qui s'efface presque du côté éclairé.
+- Volumes : trois valeurs nettes par matériau (lumière, ombre propre, reflet ambiant), transitions douces, petits accents de lumière sur les arêtes.
+- Matériaux : reconnaissables (bois, pierre, tuile, feuillage, verre) à leur forme et à quelques touches de texture, jamais à une texture photographique.
+- Couleurs : chaudes, lumineuses et saturées sans être fluo. Verts allant du vert-jaune ensoleillé au vert sapin. Ombres colorées tirant vers le bleu-vert ou le violet froid, jamais grises ni noires. Couleurs franches pour les toits.
+- Texture : pinceau net et propre, légère granularité picturale ; pas de bruit, pas de flou, pas de netteté artificielle.
+- Lumière : une seule source, le soleil, en haut à gauche de l'image (la fiche précise la variante).
+- Ombres : aucune ombre portée au sol (le jeu l'ajoute lui-même). Les ombres propres et internes (sous le feuillage, sous un avant-toit) sont peintes.
+- Isolement : un seul objet, entier, centré, sur fond transparent ; rien autour : ni sol, ni herbe, ni décor, ni personnage.
+- Interdits partout : texte, lettres, chiffres, logo (sauf l'emblème demandé), signature, filigrane, cadre, personnage, Pokémon, ombre portée, sol sous l'objet, flou de profondeur, vignettage.
+
+LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche ; volumes conservés par un ombrage doux ; aucune teinte dorée ou orangée, aucun liseré chaud ; ombres propres neutres, légèrement bleutées. Intérieur : les fenêtres montrent un ciel de jour pâle et neutre ; les flammes de bougie et de braise sont peintes petites, SANS halo ni rayon ; aucun faisceau, aucune flaque de lumière dorée au sol (le jeu ajoute lui-même l'éclairage : doré de fin d'après-midi dans le Manoir, braises rougeoyantes dans l'Arène).
+
+EXCEPTION à la règle « Isolement » de l'ADN : plusieurs éléments séparés sur une même planche, chacun entier dans sa cellule, sans cadre ni séparation.
+PLANCHE dans une image 1536 × 1024 : grille invisible de 3 colonnes × 2 lignes (cellules de 512 × 512), un élément par cellule, centré, sa base sur une même ligne horizontale à 30 px du bas de sa cellule, à une échelle COMMUNE de 1 case = 160 px. Vue de dessus de trois quarts, en projection oblique frontale : on voit le dessus et la face avant (sud), jamais les côtés. Fond transparent.
+SUJET : le KIT DES MURS de l'ARÈNE de Cramois'Île (champion de type Feu) : gros blocs de roche volcanique violet-brun sombre taillés, joints nets, dessus plus clair, un fin liseré de braise orange au pied. Six éléments du MÊME mur :
+1 (ligne 1, à gauche) FACE_01 : FACE AVANT (sud) d'un pan de mur, vue de face : deux assises de blocs de basalte taillés ; 2 cases de large (≈ 320 px) × 1 case de haut (≈ 160 px), bords gauche et droit COUPÉS NET (juxtaposable), bas droit ; un liseré orange très fin de braise au pied.
+2 (ligne 1, au milieu) FACE_02 : même gabarit (2 × 1), blocs un peu plus clairs et fissurés ; 3 (ligne 1, à droite) FACE_03 : même gabarit (2 × 1), avec une RIGOLE de braise : une fente étroite au pied du mur où couve une braise orange (petite, sans halo) ;
+4 (ligne 2, à gauche) FACE_04 : même gabarit (2 × 1), blocs sombres unis, sans braise ;
+5 (ligne 2, au milieu) CAP : COURONNEMENT vu de dessus : arête de blocs plus clairs, 2 cases de large (≈ 320 px) × 0,4 case de haut (≈ 64 px), bords coupés net, juxtaposable ;
+6 (ligne 2, à droite) SIDE : FLANC vu de dessus : 0,35 case de large (≈ 56 px) × 3 cases de haut (≈ 480 px), blocs de basalte, coupé net en haut et en bas, juxtaposable verticalement.
+Aucune porte, aucune herse, aucune machine, aucune lumière peinte.
+FOND : PNG avec une vraie transparence (canal alpha), aucun damier dessiné, aucun fond coloré, aucun sol, aucune ombre portée.
+Interdits de la série : texte, lettres, chiffres, logo, signature, AUCUN emblème rond de type balle (ni cercle partagé en deux, ni médaillon à bande centrale) nulle part, Pikachu et tout Pokémon non demandé, AUCUNE créature (ni silhouette, ni ombre de créature, ni forme dans un bocal, un tube ou une vitrine), personnage non demandé, élément gore ou effrayant (ni sang, ni squelette, ni crâne, ni toile d'araignée envahissante), pixel art, 3D, vue isométrique, halo, rayon ou faisceau de lumière, flaque de lumière.

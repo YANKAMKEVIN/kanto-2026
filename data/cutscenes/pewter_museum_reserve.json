@@ -1,0 +1,48 @@
+{
+	"pewter_museum_old_amber": {
+		"variants": [
+			{
+				"unless": [
+					"pewter_museum_got_old_amber"
+				],
+				"steps": [
+					{
+						"dialogue": "pewter_museum_reserve_amber_give"
+					},
+					{
+						"give": "old_amber",
+						"count": 1
+					},
+					{
+						"set": [
+							"pewter_museum_got_old_amber"
+						]
+					}
+				]
+			}
+		]
+	},
+	"cut_tree_pewter_museum": {
+		"variants": [
+			{
+				"unless": [
+					"cut_pewter_museum_tree"
+				],
+				"steps": [
+					{
+						"field_move": "cut",
+						"on": "Entities/MuseumTree"
+					},
+					{
+						"set": [
+							"cut_pewter_museum_tree"
+						]
+					},
+					{
+						"dialogue": "cut_tree_used"
+					}
+				]
+			}
+		]
+	}
+}

@@ -1,0 +1,922 @@
+{
+	"cinnabar_gym_quiz_1": {
+		"variants": [
+			{
+				"steps": [
+					{
+						"unset": [
+							"cinnabar_gym_quiz_yes",
+							"cinnabar_gym_quiz_no"
+						]
+					},
+					{
+						"dialogue": "cinnabar_gym_quiz_intro"
+					},
+					{
+						"dialogue": "cinnabar_gym_quiz_1_question"
+					},
+					{
+						"set": [
+							"cinnabar_gym_gate_1"
+						],
+						"if": [
+							"cinnabar_gym_quiz_yes"
+						]
+					},
+					{
+						"dialogue": "cinnabar_gym_quiz_right",
+						"if": [
+							"cinnabar_gym_quiz_yes"
+						]
+					},
+					{
+						"dialogue": "cinnabar_gym_quiz_wrong",
+						"if": [
+							"cinnabar_gym_quiz_no"
+						]
+					},
+					{
+						"move": "cinnabar_gym_2",
+						"to": {
+							"near": "player",
+							"offsets": [
+								[
+									0,
+									-1
+								],
+								[
+									1,
+									0
+								],
+								[
+									-1,
+									0
+								],
+								[
+									0,
+									1
+								]
+							]
+						},
+						"optional": true,
+						"if": [
+							"cinnabar_gym_quiz_no"
+						],
+						"unless": [
+							"beaten_cinnabar_gym_2"
+						]
+					},
+					{
+						"face": "player",
+						"to": "cinnabar_gym_2",
+						"if": [
+							"cinnabar_gym_quiz_no"
+						],
+						"unless": [
+							"beaten_cinnabar_gym_2"
+						]
+					},
+					{
+						"face": "cinnabar_gym_2",
+						"to": "player",
+						"if": [
+							"cinnabar_gym_quiz_no"
+						],
+						"unless": [
+							"beaten_cinnabar_gym_2"
+						]
+					},
+					{
+						"dialogue": "cinnabar_gym_2_before",
+						"if": [
+							"cinnabar_gym_quiz_no"
+						],
+						"unless": [
+							"beaten_cinnabar_gym_2"
+						]
+					},
+					{
+						"battle": "cinnabar_gym_2",
+						"win": [
+							"beaten_cinnabar_gym_2",
+							"cinnabar_gym_gate_1"
+						],
+						"if": [
+							"cinnabar_gym_quiz_no"
+						],
+						"unless": [
+							"beaten_cinnabar_gym_2"
+						]
+					},
+					{
+						"dialogue": "cinnabar_gym_2_defeated",
+						"if": [
+							"cinnabar_gym_quiz_no",
+							"beaten_cinnabar_gym_2"
+						]
+					},
+					{
+						"wake_up": true,
+						"if": [
+							"cinnabar_gym_quiz_no"
+						],
+						"unless": [
+							"beaten_cinnabar_gym_2"
+						]
+					},
+					{
+						"unset": [
+							"cinnabar_gym_quiz_yes",
+							"cinnabar_gym_quiz_no"
+						]
+					}
+				]
+			}
+		]
+	},
+	"cinnabar_gym_quiz_2": {
+		"variants": [
+			{
+				"steps": [
+					{
+						"unset": [
+							"cinnabar_gym_quiz_yes",
+							"cinnabar_gym_quiz_no"
+						]
+					},
+					{
+						"dialogue": "cinnabar_gym_quiz_intro"
+					},
+					{
+						"dialogue": "cinnabar_gym_quiz_2_question"
+					},
+					{
+						"set": [
+							"cinnabar_gym_gate_2"
+						],
+						"if": [
+							"cinnabar_gym_quiz_no"
+						]
+					},
+					{
+						"dialogue": "cinnabar_gym_quiz_right",
+						"if": [
+							"cinnabar_gym_quiz_no"
+						]
+					},
+					{
+						"dialogue": "cinnabar_gym_quiz_wrong",
+						"if": [
+							"cinnabar_gym_quiz_yes"
+						]
+					},
+					{
+						"move": "cinnabar_gym_3",
+						"to": {
+							"near": "player",
+							"offsets": [
+								[
+									0,
+									-1
+								],
+								[
+									1,
+									0
+								],
+								[
+									-1,
+									0
+								],
+								[
+									0,
+									1
+								]
+							]
+						},
+						"optional": true,
+						"if": [
+							"cinnabar_gym_quiz_yes"
+						],
+						"unless": [
+							"beaten_cinnabar_gym_3"
+						]
+					},
+					{
+						"face": "player",
+						"to": "cinnabar_gym_3",
+						"if": [
+							"cinnabar_gym_quiz_yes"
+						],
+						"unless": [
+							"beaten_cinnabar_gym_3"
+						]
+					},
+					{
+						"face": "cinnabar_gym_3",
+						"to": "player",
+						"if": [
+							"cinnabar_gym_quiz_yes"
+						],
+						"unless": [
+							"beaten_cinnabar_gym_3"
+						]
+					},
+					{
+						"dialogue": "cinnabar_gym_3_before",
+						"if": [
+							"cinnabar_gym_quiz_yes"
+						],
+						"unless": [
+							"beaten_cinnabar_gym_3"
+						]
+					},
+					{
+						"battle": "cinnabar_gym_3",
+						"win": [
+							"beaten_cinnabar_gym_3",
+							"cinnabar_gym_gate_2"
+						],
+						"if": [
+							"cinnabar_gym_quiz_yes"
+						],
+						"unless": [
+							"beaten_cinnabar_gym_3"
+						]
+					},
+					{
+						"dialogue": "cinnabar_gym_3_defeated",
+						"if": [
+							"cinnabar_gym_quiz_yes",
+							"beaten_cinnabar_gym_3"
+						]
+					},
+					{
+						"wake_up": true,
+						"if": [
+							"cinnabar_gym_quiz_yes"
+						],
+						"unless": [
+							"beaten_cinnabar_gym_3"
+						]
+					},
+					{
+						"unset": [
+							"cinnabar_gym_quiz_yes",
+							"cinnabar_gym_quiz_no"
+						]
+					}
+				]
+			}
+		]
+	},
+	"cinnabar_gym_quiz_3": {
+		"variants": [
+			{
+				"steps": [
+					{
+						"unset": [
+							"cinnabar_gym_quiz_yes",
+							"cinnabar_gym_quiz_no"
+						]
+					},
+					{
+						"dialogue": "cinnabar_gym_quiz_intro"
+					},
+					{
+						"dialogue": "cinnabar_gym_quiz_3_question"
+					},
+					{
+						"set": [
+							"cinnabar_gym_gate_3"
+						],
+						"if": [
+							"cinnabar_gym_quiz_no"
+						]
+					},
+					{
+						"dialogue": "cinnabar_gym_quiz_right",
+						"if": [
+							"cinnabar_gym_quiz_no"
+						]
+					},
+					{
+						"dialogue": "cinnabar_gym_quiz_wrong",
+						"if": [
+							"cinnabar_gym_quiz_yes"
+						]
+					},
+					{
+						"move": "cinnabar_gym_4",
+						"to": {
+							"near": "player",
+							"offsets": [
+								[
+									0,
+									-1
+								],
+								[
+									1,
+									0
+								],
+								[
+									-1,
+									0
+								],
+								[
+									0,
+									1
+								]
+							]
+						},
+						"optional": true,
+						"if": [
+							"cinnabar_gym_quiz_yes"
+						],
+						"unless": [
+							"beaten_cinnabar_gym_4"
+						]
+					},
+					{
+						"face": "player",
+						"to": "cinnabar_gym_4",
+						"if": [
+							"cinnabar_gym_quiz_yes"
+						],
+						"unless": [
+							"beaten_cinnabar_gym_4"
+						]
+					},
+					{
+						"face": "cinnabar_gym_4",
+						"to": "player",
+						"if": [
+							"cinnabar_gym_quiz_yes"
+						],
+						"unless": [
+							"beaten_cinnabar_gym_4"
+						]
+					},
+					{
+						"dialogue": "cinnabar_gym_4_before",
+						"if": [
+							"cinnabar_gym_quiz_yes"
+						],
+						"unless": [
+							"beaten_cinnabar_gym_4"
+						]
+					},
+					{
+						"battle": "cinnabar_gym_4",
+						"win": [
+							"beaten_cinnabar_gym_4",
+							"cinnabar_gym_gate_3"
+						],
+						"if": [
+							"cinnabar_gym_quiz_yes"
+						],
+						"unless": [
+							"beaten_cinnabar_gym_4"
+						]
+					},
+					{
+						"dialogue": "cinnabar_gym_4_defeated",
+						"if": [
+							"cinnabar_gym_quiz_yes",
+							"beaten_cinnabar_gym_4"
+						]
+					},
+					{
+						"wake_up": true,
+						"if": [
+							"cinnabar_gym_quiz_yes"
+						],
+						"unless": [
+							"beaten_cinnabar_gym_4"
+						]
+					},
+					{
+						"unset": [
+							"cinnabar_gym_quiz_yes",
+							"cinnabar_gym_quiz_no"
+						]
+					}
+				]
+			}
+		]
+	},
+	"cinnabar_gym_quiz_4": {
+		"variants": [
+			{
+				"steps": [
+					{
+						"unset": [
+							"cinnabar_gym_quiz_yes",
+							"cinnabar_gym_quiz_no"
+						]
+					},
+					{
+						"dialogue": "cinnabar_gym_quiz_intro"
+					},
+					{
+						"dialogue": "cinnabar_gym_quiz_4_question"
+					},
+					{
+						"set": [
+							"cinnabar_gym_gate_4"
+						],
+						"if": [
+							"cinnabar_gym_quiz_no"
+						]
+					},
+					{
+						"dialogue": "cinnabar_gym_quiz_right",
+						"if": [
+							"cinnabar_gym_quiz_no"
+						]
+					},
+					{
+						"dialogue": "cinnabar_gym_quiz_wrong",
+						"if": [
+							"cinnabar_gym_quiz_yes"
+						]
+					},
+					{
+						"move": "cinnabar_gym_5",
+						"to": {
+							"near": "player",
+							"offsets": [
+								[
+									0,
+									-1
+								],
+								[
+									1,
+									0
+								],
+								[
+									-1,
+									0
+								],
+								[
+									0,
+									1
+								]
+							]
+						},
+						"optional": true,
+						"if": [
+							"cinnabar_gym_quiz_yes"
+						],
+						"unless": [
+							"beaten_cinnabar_gym_5"
+						]
+					},
+					{
+						"face": "player",
+						"to": "cinnabar_gym_5",
+						"if": [
+							"cinnabar_gym_quiz_yes"
+						],
+						"unless": [
+							"beaten_cinnabar_gym_5"
+						]
+					},
+					{
+						"face": "cinnabar_gym_5",
+						"to": "player",
+						"if": [
+							"cinnabar_gym_quiz_yes"
+						],
+						"unless": [
+							"beaten_cinnabar_gym_5"
+						]
+					},
+					{
+						"dialogue": "cinnabar_gym_5_before",
+						"if": [
+							"cinnabar_gym_quiz_yes"
+						],
+						"unless": [
+							"beaten_cinnabar_gym_5"
+						]
+					},
+					{
+						"battle": "cinnabar_gym_5",
+						"win": [
+							"beaten_cinnabar_gym_5",
+							"cinnabar_gym_gate_4"
+						],
+						"if": [
+							"cinnabar_gym_quiz_yes"
+						],
+						"unless": [
+							"beaten_cinnabar_gym_5"
+						]
+					},
+					{
+						"dialogue": "cinnabar_gym_5_defeated",
+						"if": [
+							"cinnabar_gym_quiz_yes",
+							"beaten_cinnabar_gym_5"
+						]
+					},
+					{
+						"wake_up": true,
+						"if": [
+							"cinnabar_gym_quiz_yes"
+						],
+						"unless": [
+							"beaten_cinnabar_gym_5"
+						]
+					},
+					{
+						"unset": [
+							"cinnabar_gym_quiz_yes",
+							"cinnabar_gym_quiz_no"
+						]
+					}
+				]
+			}
+		]
+	},
+	"cinnabar_gym_quiz_5": {
+		"variants": [
+			{
+				"steps": [
+					{
+						"unset": [
+							"cinnabar_gym_quiz_yes",
+							"cinnabar_gym_quiz_no"
+						]
+					},
+					{
+						"dialogue": "cinnabar_gym_quiz_intro"
+					},
+					{
+						"dialogue": "cinnabar_gym_quiz_5_question"
+					},
+					{
+						"set": [
+							"cinnabar_gym_gate_5"
+						],
+						"if": [
+							"cinnabar_gym_quiz_yes"
+						]
+					},
+					{
+						"dialogue": "cinnabar_gym_quiz_right",
+						"if": [
+							"cinnabar_gym_quiz_yes"
+						]
+					},
+					{
+						"dialogue": "cinnabar_gym_quiz_wrong",
+						"if": [
+							"cinnabar_gym_quiz_no"
+						]
+					},
+					{
+						"move": "cinnabar_gym_6",
+						"to": {
+							"near": "player",
+							"offsets": [
+								[
+									0,
+									-1
+								],
+								[
+									1,
+									0
+								],
+								[
+									-1,
+									0
+								],
+								[
+									0,
+									1
+								]
+							]
+						},
+						"optional": true,
+						"if": [
+							"cinnabar_gym_quiz_no"
+						],
+						"unless": [
+							"beaten_cinnabar_gym_6"
+						]
+					},
+					{
+						"face": "player",
+						"to": "cinnabar_gym_6",
+						"if": [
+							"cinnabar_gym_quiz_no"
+						],
+						"unless": [
+							"beaten_cinnabar_gym_6"
+						]
+					},
+					{
+						"face": "cinnabar_gym_6",
+						"to": "player",
+						"if": [
+							"cinnabar_gym_quiz_no"
+						],
+						"unless": [
+							"beaten_cinnabar_gym_6"
+						]
+					},
+					{
+						"dialogue": "cinnabar_gym_6_before",
+						"if": [
+							"cinnabar_gym_quiz_no"
+						],
+						"unless": [
+							"beaten_cinnabar_gym_6"
+						]
+					},
+					{
+						"battle": "cinnabar_gym_6",
+						"win": [
+							"beaten_cinnabar_gym_6",
+							"cinnabar_gym_gate_5"
+						],
+						"if": [
+							"cinnabar_gym_quiz_no"
+						],
+						"unless": [
+							"beaten_cinnabar_gym_6"
+						]
+					},
+					{
+						"dialogue": "cinnabar_gym_6_defeated",
+						"if": [
+							"cinnabar_gym_quiz_no",
+							"beaten_cinnabar_gym_6"
+						]
+					},
+					{
+						"wake_up": true,
+						"if": [
+							"cinnabar_gym_quiz_no"
+						],
+						"unless": [
+							"beaten_cinnabar_gym_6"
+						]
+					},
+					{
+						"unset": [
+							"cinnabar_gym_quiz_yes",
+							"cinnabar_gym_quiz_no"
+						]
+					}
+				]
+			}
+		]
+	},
+	"cinnabar_gym_quiz_6": {
+		"variants": [
+			{
+				"steps": [
+					{
+						"unset": [
+							"cinnabar_gym_quiz_yes",
+							"cinnabar_gym_quiz_no"
+						]
+					},
+					{
+						"dialogue": "cinnabar_gym_quiz_intro"
+					},
+					{
+						"dialogue": "cinnabar_gym_quiz_6_question"
+					},
+					{
+						"set": [
+							"cinnabar_gym_gate_6"
+						],
+						"if": [
+							"cinnabar_gym_quiz_no"
+						]
+					},
+					{
+						"dialogue": "cinnabar_gym_quiz_right",
+						"if": [
+							"cinnabar_gym_quiz_no"
+						]
+					},
+					{
+						"dialogue": "cinnabar_gym_quiz_wrong",
+						"if": [
+							"cinnabar_gym_quiz_yes"
+						]
+					},
+					{
+						"move": "cinnabar_gym_7",
+						"to": {
+							"near": "player",
+							"offsets": [
+								[
+									0,
+									-1
+								],
+								[
+									1,
+									0
+								],
+								[
+									-1,
+									0
+								],
+								[
+									0,
+									1
+								]
+							]
+						},
+						"optional": true,
+						"if": [
+							"cinnabar_gym_quiz_yes"
+						],
+						"unless": [
+							"beaten_cinnabar_gym_7"
+						]
+					},
+					{
+						"face": "player",
+						"to": "cinnabar_gym_7",
+						"if": [
+							"cinnabar_gym_quiz_yes"
+						],
+						"unless": [
+							"beaten_cinnabar_gym_7"
+						]
+					},
+					{
+						"face": "cinnabar_gym_7",
+						"to": "player",
+						"if": [
+							"cinnabar_gym_quiz_yes"
+						],
+						"unless": [
+							"beaten_cinnabar_gym_7"
+						]
+					},
+					{
+						"dialogue": "cinnabar_gym_7_before",
+						"if": [
+							"cinnabar_gym_quiz_yes"
+						],
+						"unless": [
+							"beaten_cinnabar_gym_7"
+						]
+					},
+					{
+						"battle": "cinnabar_gym_7",
+						"win": [
+							"beaten_cinnabar_gym_7",
+							"cinnabar_gym_gate_6"
+						],
+						"if": [
+							"cinnabar_gym_quiz_yes"
+						],
+						"unless": [
+							"beaten_cinnabar_gym_7"
+						]
+					},
+					{
+						"dialogue": "cinnabar_gym_7_defeated",
+						"if": [
+							"cinnabar_gym_quiz_yes",
+							"beaten_cinnabar_gym_7"
+						]
+					},
+					{
+						"wake_up": true,
+						"if": [
+							"cinnabar_gym_quiz_yes"
+						],
+						"unless": [
+							"beaten_cinnabar_gym_7"
+						]
+					},
+					{
+						"unset": [
+							"cinnabar_gym_quiz_yes",
+							"cinnabar_gym_quiz_no"
+						]
+					}
+				]
+			}
+		]
+	},
+	"cinnabar_gym_blaine": {
+		"variants": [
+			{
+				"if": [
+					"badge_volcano"
+				],
+				"steps": [
+					{
+						"face": "auguste",
+						"to": "player"
+					},
+					{
+						"dialogue": "cinnabar_blaine_after"
+					}
+				]
+			},
+			{
+				"steps": [
+					{
+						"face": "auguste",
+						"to": "player"
+					},
+					{
+						"dialogue": "cinnabar_blaine_before"
+					},
+					{
+						"champion_card": "cinnabar_gym_blaine",
+						"unless": [
+							"blaine_met"
+						]
+					},
+					{
+						"set": [
+							"blaine_met"
+						]
+					},
+					{
+						"battle": "cinnabar_gym_blaine",
+						"win": [
+							"badge_volcano"
+						]
+					},
+					{
+						"wait": 0.6,
+						"if": [
+							"badge_volcano"
+						]
+					},
+					{
+						"dialogue": "cinnabar_blaine_defeated",
+						"if": [
+							"badge_volcano"
+						]
+					},
+					{
+						"badge": "volcano",
+						"if": [
+							"badge_volcano"
+						]
+					},
+					{
+						"dialogue": "cinnabar_blaine_badge",
+						"if": [
+							"badge_volcano"
+						]
+					},
+					{
+						"dialogue": "cinnabar_blaine_tm38",
+						"if": [
+							"badge_volcano"
+						],
+						"unless": [
+							"tm38_received"
+						]
+					},
+					{
+						"give": "tm38",
+						"count": 1,
+						"if": [
+							"badge_volcano"
+						],
+						"unless": [
+							"tm38_received"
+						]
+					},
+					{
+						"set": [
+							"tm38_received",
+							"beaten_cinnabar_gym_1",
+							"beaten_cinnabar_gym_2",
+							"beaten_cinnabar_gym_3",
+							"beaten_cinnabar_gym_4",
+							"beaten_cinnabar_gym_5",
+							"beaten_cinnabar_gym_6",
+							"beaten_cinnabar_gym_7"
+						],
+						"if": [
+							"badge_volcano"
+						]
+					},
+					{
+						"wake_up": true,
+						"unless": [
+							"badge_volcano"
+						]
+					}
+				]
+			}
+		]
+	}
+}
