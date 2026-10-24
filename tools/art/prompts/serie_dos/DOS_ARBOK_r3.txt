@@ -1,0 +1,13 @@
+POKÉMON DE DOS POUR UN ÉCRAN DE COMBAT (Kanto 2026, projet personnel). La créature est un animal fantastique de jeu vidéo.
+
+Aucune image jointe.
+
+SUJET : grand cobra VIOLET dressé, large CAPUCHON déployé derrière la tête marqué d'un dessin en losange pâle et sombre, ventre jaune crème, queue enroulée à la base.
+
+VUE : de DOS, de trois quarts, légèrement par-dessus l'épaule gauche ; la créature regarde vers le HAUT À DROITE de l'image (son adversaire est loin devant elle). On voit surtout son dos, sa nuque, l'arrière de la tête et la queue ; le visage est tourné vers l'avant, hors de vue (au plus, le bord d'une joue ou d'un œil de profil).
+
+STYLE : celui des artworks officiels de face (même trait fin et doux, même ombrage en aplats nuancés, même palette) : le dos et l'adversaire en face doivent paraître venir du même jeu. Pas de pixel art, pas de 3D, pas de rendu photo.
+LUMIÈRE : neutre (milieu de journée, diffuse, légèrement du haut à gauche) ; le jeu ajoute l'ambiance.
+CADRAGE : image CARRÉE 1024 × 1024, la créature ENTIÈRE (queues, oreilles et pattes comprises), centrée, qui occupe environ 80 % de la hauteur ; rien n'est coupé par les bords. Une seule image fixe, une seule créature.
+FOND : PNG avec une vraie transparence (canal alpha), aucun damier dessiné, aucun fond coloré, aucun sol, aucune ombre portée.
+INTERDITS : texte, lettres, chiffres, signature, cadre, sol, décor, ombre portée, autre créature, personnage.
