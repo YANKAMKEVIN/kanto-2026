@@ -69,6 +69,8 @@ static func size_ratio(height_m: float) -> float:
 ## [param view_height] px de haut.
 static func presence(height_m: float, is_player: bool, view_height: float) -> float:
 	var base := PLAYER_PRESENCE if is_player else FOE_PRESENCE
+	if not is_player and OS.has_environment("KANTO_FOE_PRESENCE"):
+		base = float(OS.get_environment("KANTO_FOE_PRESENCE"))
 	return base * size_ratio(height_m) * view_height
 
 
@@ -80,6 +82,8 @@ static func sprite_scale(box: Vector2, height_m: float, is_player: bool, view_he
 	if box.x <= 0.0 or box.y <= 0.0:
 		return 1.0
 	var limit := (PLAYER_MAX_BOX if is_player else FOE_MAX_BOX) * view_height
+	if not is_player and OS.has_environment("KANTO_FOE_PRESENCE"):
+		limit *= 2.0
 	var largest := minf(limit.x / box.x, limit.y / box.y)
 	var scale := minf(presence(height_m, is_player, view_height) / sqrt(box.x * box.y), largest)
 	if whole:
