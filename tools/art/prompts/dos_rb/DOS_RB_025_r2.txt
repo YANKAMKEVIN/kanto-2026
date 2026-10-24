@@ -1,0 +1,13 @@
+POKÉMON DE DOS POUR UN ÉCRAN DE COMBAT (Kanto 2026, projet personnel, non distribué).
+
+Aucune image jointe.
+
+SUJET : la petite souris électrique jaune ; vu de dos on voit l'arrière de la tête et les deux longues oreilles pointues à bout noir, DEUX BANDES BRUNES horizontales sur le haut du dos, et la queue en éclair (jaune, base brune) qui se dresse sur le côté (la queue reste dans l'image).
+
+VUE : de DOS, de trois quarts, en LÉGÈRE PLONGÉE : la caméra est juste derrière et un peu au-dessus de l'épaule gauche du Pokémon, comme le dresseur qui se tient derrière lui. Le Pokémon regarde vers le HAUT À DROITE de l'image (son adversaire est loin devant). Aucun œil, aucune bouche, aucun visage dessiné sur le dos ou la nuque : le visage est tourné vers l'avant, hors de vue (au plus, le bout du museau ou la joue en profil perdu).
+
+STYLE : celui des artworks officiels de face (même trait fin et doux, même ombrage en aplats nuancés, même palette) : le dos et l'adversaire de face doivent paraître venir du même jeu. Pas de pixel art, pas de 3D, pas de rendu photo.
+LUMIÈRE : neutre (milieu de journée, diffuse, légèrement du haut à gauche) ; le jeu ajoute l'ambiance.
+FOND : PNG avec une vraie transparence (canal alpha), aucun damier dessiné, aucun fond coloré, aucun sol, aucune ombre portée.
+INTERDITS : texte, lettres, chiffres, signature, cadre, sol, décor, ombre portée, autre créature, personnage.
+CADRAGE : image CARRÉE 1024 × 1024, cadrage SERRÉ comme dans les jeux de combat des années 90 vus de dos : on voit la tête et le haut du corps, GRANDS ; le bas du corps est franchement COUPÉ par le bord BAS de l'image (environ le tiers inférieur hors champ, la coupe est nette, sans fondu). Rien n'est coupé en haut, à gauche ni à droite. Une seule image fixe.
