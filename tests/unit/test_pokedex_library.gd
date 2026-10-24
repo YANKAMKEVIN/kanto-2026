@@ -36,9 +36,9 @@ const EVOLUTION_DESCRIPTIONS: Array[StringName] = [&"gyarados"]
 const NAMED_SPECIES_OK: Dictionary[StringName, Array] = {&"magneton": [&"magnemite"]}
 ## Espèces des données sans fiche : jamais vues au J19 (SPECTRE) ; Osselait a la sienne depuis le
 ## J20 (annexe A n° 204), Ossatueur a la sienne depuis le J21 (T5, dossier 24 §15.10).
-## Jalon 31 : Métamorph et Mewtwo, fiches en attente des textes de Kevin (proposés [D] dans
-## `docs/tech/jalon-31.md` §4).
-const NO_ENTRY_YET: Array[StringName] = [&"ditto", &"mewtwo"]
+## Jalon 31 : Métamorph et Mewtwo ont la leur (`docs/tech/jalon-31.md` §8.8, validées par Kevin
+## le 2026-10-22).
+const NO_ENTRY_YET: Array[StringName] = []
 
 var _data: PokemonData
 var _lib: PokedexLibrary
@@ -107,6 +107,8 @@ func test_real_heights_and_weights_are_the_official_ones() -> void:
 		# Jalon 19 (dossier 22 §15.7 ; Caninos vient du J17).
 		&"gastly": [1.3, 0.1], &"haunter": [1.6, 0.1],
 		&"exeggcute": [0.4, 2.5], &"gyarados": [6.5, 235.0],
+		# Jalon 31 (§8.8).
+		&"ditto": [0.3, 4.0], &"mewtwo": [2.0, 122.0],
 	}
 	for id: StringName in official:
 		assert_almost_eq(_lib.get_species(id).height, float(official[id][0]), 0.001, id)

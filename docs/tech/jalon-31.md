@@ -363,7 +363,8 @@ sans doublon.
 - À la fusion du J30 : `test_cerulean_cave_access` vérifie l'égalité du drapeau de Champion.
 - À la fusion des J23, J25, J28 : retirer Leveinard, Rappel Max, Rhinoféros des emprunts.
 - Max Élixir caché du B3F des Îles Écume (J24) : à poser maintenant que l'objet existe.
-- Fiches de Pokédex de Métamorph et Mewtwo (textes validés au §8, à poser) ; effets de Morphing,
+- ~~Fiches de Pokédex de Métamorph et Mewtwo~~ : **posées le 2026-10-24** (`data/pokedex/kanto.json`,
+  textes et mesures du §8.8 ; `test_pokedex_library` : plus aucune espèce sans fiche) ; effets de Morphing,
   Max Élixir, PP Plus (moteur de PP absent) ; art définitif de la grotte.
 - **[D] à relire par Kevin** : eau surfable d'Azuria limitée à l'est du pont de l'Arène ; refus à
   l'examen de la bouche ; lumière par étage ; description de la zone (« Une grotte sur l'îlot de
