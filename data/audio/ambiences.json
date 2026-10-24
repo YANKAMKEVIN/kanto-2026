@@ -1,0 +1,110 @@
+{
+	"_doc": "Boucles d'ambiance (docs/tech/jalon-son.md §1.6, §3.4), −18 dB sous la musique. Ordre : maps (« none » = rien) → zones → rien ; les intérieurs n'ont rien sauf exception. weather : météo → ambiance (prime sur la carte).",
+	"version": 1,
+	"ambiences": {
+		"sea": {
+			"file": "res://assets/audio/ambience/sea.ogg",
+			"volume_db": -18.0,
+			"expected": true
+		},
+		"wind": {
+			"file": "res://assets/audio/ambience/wind.ogg",
+			"volume_db": -18.0,
+			"expected": true
+		},
+		"forest": {
+			"file": "res://assets/audio/ambience/forest.ogg",
+			"volume_db": -18.0,
+			"expected": true
+		},
+		"cave": {
+			"file": "res://assets/audio/ambience/cave.ogg",
+			"volume_db": -18.0,
+			"expected": true
+		},
+		"city": {
+			"file": "res://assets/audio/ambience/city.ogg",
+			"volume_db": -18.0,
+			"expected": true
+		},
+		"casino": {
+			"file": "res://assets/audio/ambience/casino.ogg",
+			"volume_db": -18.0,
+			"expected": true
+		},
+		"ship": {
+			"file": "res://assets/audio/ambience/ship.ogg",
+			"volume_db": -18.0,
+			"expected": true
+		},
+		"building": {
+			"file": "res://assets/audio/ambience/building.ogg",
+			"volume_db": -18.0,
+			"expected": true
+		},
+		"rain": {
+			"file": "res://assets/audio/ambience/rain.ogg",
+			"volume_db": -18.0,
+			"expected": true
+		},
+		"cold_wind": {
+			"file": "res://assets/audio/ambience/cold_wind.ogg",
+			"volume_db": -18.0,
+			"expected": true
+		}
+	},
+	"zones": {
+		"celadon_city": "city",
+		"cerulean_cave": "cave",
+		"cinnabar_island": "sea",
+		"dark_cave": "cave",
+		"digletts_cave": "cave",
+		"mt_moon": "cave",
+		"route_1": "wind",
+		"route_10": "wind",
+		"route_19": "sea",
+		"route_2": "forest",
+		"route_20": "sea",
+		"route_21": "sea",
+		"route_22": "wind",
+		"route_23": "wind",
+		"route_24": "wind",
+		"route_25": "wind",
+		"route_3": "wind",
+		"route_4": "wind",
+		"route_9": "wind",
+		"saffron_city": "city",
+		"seafoam_islands": "cold_wind",
+		"ss_anne": "ship",
+		"vermilion_city": "sea",
+		"viridian_forest": "forest"
+	},
+	"maps": {
+		"celadon_game_corner": "casino",
+		"cinnabar_lab": "building",
+		"cinnabar_lab_fossil": "building",
+		"cinnabar_lab_meeting": "building",
+		"cinnabar_lab_rd": "building",
+		"mt_moon_center": "none",
+		"oak_lab": "building",
+		"pallet_town": "sea",
+		"route_10_center": "none",
+		"silph_co_10f": "building",
+		"silph_co_11f": "building",
+		"silph_co_1f": "building",
+		"silph_co_2f": "building",
+		"silph_co_3f": "building",
+		"silph_co_4f": "building",
+		"silph_co_5f": "building",
+		"silph_co_6f": "building",
+		"silph_co_7f": "building",
+		"silph_co_8f": "building",
+		"silph_co_9f": "building",
+		"victory_road_1f": "cave",
+		"victory_road_2f": "cave",
+		"victory_road_3f": "cave"
+	},
+	"weather": {
+		"rain": "rain"
+	}
+}

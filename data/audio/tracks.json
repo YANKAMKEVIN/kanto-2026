@@ -1,0 +1,529 @@
+{
+	"_doc": "Morceaux (docs/tech/jalon-son.md §2). expected = fichier attendu (SonA), le jeu reste muet tant qu'il manque ; confirm = titre à confirmer à l'écoute (T1). « silence » est réservé (pas de morceau). events : moment du jeu → morceau.",
+	"version": 1,
+	"tracks": {
+		"title_screen": {
+			"title": "Title Screen",
+			"file": "res://assets/audio/music/title_screen.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true
+		},
+		"guide": {
+			"title": "Guide",
+			"file": "res://assets/audio/music/guide.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true,
+			"confirm": true
+		},
+		"professor_oak": {
+			"title": "Professor Oak",
+			"file": "res://assets/audio/music/professor_oak.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true
+		},
+		"pallet_town": {
+			"title": "Pallet Town Theme",
+			"file": "res://assets/audio/music/pallet_town.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true
+		},
+		"oaks_lab": {
+			"title": "Professor Oak's Laboratory",
+			"file": "res://assets/audio/music/oaks_lab.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true
+		},
+		"road_to_viridian": {
+			"title": "Road to Viridian City: Leaving Pallet Town",
+			"file": "res://assets/audio/music/road_to_viridian.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true
+		},
+		"pewter_city": {
+			"title": "Pewter City Theme",
+			"file": "res://assets/audio/music/pewter_city.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true
+		},
+		"viridian_forest": {
+			"title": "Viridian Forest",
+			"file": "res://assets/audio/music/viridian_forest.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true
+		},
+		"pokemon_center": {
+			"title": "Pokémon Center",
+			"file": "res://assets/audio/music/pokemon_center.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true
+		},
+		"pokemon_gym": {
+			"title": "Pokémon Gym",
+			"file": "res://assets/audio/music/pokemon_gym.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true
+		},
+		"road_to_cerulean": {
+			"title": "Road to Cerulean City: Leaving Mt. Moon",
+			"file": "res://assets/audio/music/road_to_cerulean.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true
+		},
+		"mt_moon": {
+			"title": "Caves of Mt. Moon",
+			"file": "res://assets/audio/music/mt_moon.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true
+		},
+		"cerulean_city": {
+			"title": "Cerulean City Theme",
+			"file": "res://assets/audio/music/cerulean_city.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true
+		},
+		"to_bill": {
+			"title": "To Bill: Leaving Cerulean City",
+			"file": "res://assets/audio/music/to_bill.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true
+		},
+		"vermilion_city": {
+			"title": "Vermilion City Theme",
+			"file": "res://assets/audio/music/vermilion_city.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true
+		},
+		"ss_anne": {
+			"title": "The S.S. Anne",
+			"file": "res://assets/audio/music/ss_anne.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true
+		},
+		"road_to_lavender": {
+			"title": "Road to Lavender Town: Leaving Vermilion City",
+			"file": "res://assets/audio/music/road_to_lavender.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true
+		},
+		"lavender_town": {
+			"title": "Lavender Town Theme",
+			"file": "res://assets/audio/music/lavender_town.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true
+		},
+		"pokemon_tower": {
+			"title": "Pokémon Tower",
+			"file": "res://assets/audio/music/pokemon_tower.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true
+		},
+		"celadon_city": {
+			"title": "Celadon City Theme",
+			"file": "res://assets/audio/music/celadon_city.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true
+		},
+		"game_corner": {
+			"title": "Game Corner",
+			"file": "res://assets/audio/music/game_corner.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true
+		},
+		"rocket_hideout": {
+			"title": "Rocket Hideout",
+			"file": "res://assets/audio/music/rocket_hideout.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true
+		},
+		"silph_co": {
+			"title": "Silph Co.",
+			"file": "res://assets/audio/music/silph_co.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true
+		},
+		"cinnabar_island": {
+			"title": "Cinnabar Island Theme",
+			"file": "res://assets/audio/music/cinnabar_island.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true
+		},
+		"pokemon_mansion": {
+			"title": "Pokémon Mansion",
+			"file": "res://assets/audio/music/pokemon_mansion.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true
+		},
+		"final_road": {
+			"title": "The Final Road",
+			"file": "res://assets/audio/music/final_road.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true,
+			"confirm": true
+		},
+		"the_sea": {
+			"title": "The Sea",
+			"file": "res://assets/audio/music/the_sea.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true
+		},
+		"pokemon_road": {
+			"title": "Pokémon Road",
+			"file": "res://assets/audio/music/pokemon_road.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true,
+			"confirm": true
+		},
+		"go_park": {
+			"title": "GO Park",
+			"file": "res://assets/audio/music/go_park.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true
+		},
+		"blue_theme": {
+			"title": "Blue's Theme",
+			"file": "res://assets/audio/music/blue_theme.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true
+		},
+		"trainer_appears_boy": {
+			"title": "A Trainer Appears (Boy Version)",
+			"file": "res://assets/audio/music/trainer_appears_boy.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true
+		},
+		"trainer_appears_girl": {
+			"title": "A Trainer Appears (Girl Version)",
+			"file": "res://assets/audio/music/trainer_appears_girl.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true
+		},
+		"trainer_appears_bad_guy": {
+			"title": "A Trainer Appears (Bad Guy Version)",
+			"file": "res://assets/audio/music/trainer_appears_bad_guy.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true
+		},
+		"cubone_mother": {
+			"title": "Cubone's Mother",
+			"file": "res://assets/audio/music/cubone_mother.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true
+		},
+		"battle_wild": {
+			"title": "Battle! (Wild Pokémon)",
+			"file": "res://assets/audio/music/battle_wild.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true
+		},
+		"battle_trainer": {
+			"title": "Battle! (Trainer Battle)",
+			"file": "res://assets/audio/music/battle_trainer.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true
+		},
+		"battle_gym_leader": {
+			"title": "Battle! (Gym Leader Battle)",
+			"file": "res://assets/audio/music/battle_gym_leader.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true
+		},
+		"final_battle_rival": {
+			"title": "Final Battle! (Rival)",
+			"file": "res://assets/audio/music/final_battle_rival.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true
+		},
+		"victory_trainer": {
+			"title": "Victory! (Trainer Battle)",
+			"file": "res://assets/audio/music/victory_trainer.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true
+		},
+		"victory_wild": {
+			"title": "Victory! (Trainer Battle)",
+			"file": "res://assets/audio/music/victory_trainer.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true,
+			"fade_out_after": 4.0
+		},
+		"victory_gym_leader": {
+			"title": "Victory! (Gym Leader Battle)",
+			"file": "res://assets/audio/music/victory_gym_leader.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true
+		},
+		"hall_of_fame": {
+			"title": "Hall of Fame",
+			"file": "res://assets/audio/music/hall_of_fame.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true
+		},
+		"ending_theme": {
+			"title": "Ending Theme",
+			"file": "res://assets/audio/music/ending_theme.ogg",
+			"kind": "music",
+			"loop": false,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true
+		},
+		"congratulations": {
+			"title": "Congratulations!",
+			"file": "res://assets/audio/music/congratulations.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true
+		},
+		"evolution": {
+			"title": "Evolution",
+			"file": "res://assets/audio/music/evolution.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true
+		},
+		"were_back": {
+			"title": "We're Back",
+			"file": "res://assets/audio/music/were_back.ogg",
+			"kind": "jingle",
+			"loop": false,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true,
+			"confirm": true
+		},
+		"poke_flute": {
+			"title": "The Poké Flute",
+			"file": "res://assets/audio/music/poke_flute.ogg",
+			"kind": "jingle",
+			"loop": false,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true
+		},
+		"obtained_badge": {
+			"title": "Obtained a Gym Badge!",
+			"file": "res://assets/audio/music/obtained_badge.ogg",
+			"kind": "jingle",
+			"loop": false,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true
+		},
+		"caught_pokemon": {
+			"title": "Caught a Pokémon!",
+			"file": "res://assets/audio/music/caught_pokemon.ogg",
+			"kind": "jingle",
+			"loop": false,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true
+		},
+		"caught_pokemon_short": {
+			"title": "Caught a Pokémon! (short version)",
+			"file": "res://assets/audio/music/caught_pokemon_short.ogg",
+			"kind": "jingle",
+			"loop": false,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true
+		},
+		"picked_up_item": {
+			"title": "Picked Up an Item!",
+			"file": "res://assets/audio/music/picked_up_item.ogg",
+			"kind": "jingle",
+			"loop": false,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true
+		},
+		"obtained_key_item": {
+			"title": "Obtained a Key Item!",
+			"file": "res://assets/audio/music/obtained_key_item.ogg",
+			"kind": "jingle",
+			"loop": false,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true
+		},
+		"pokemon_healed": {
+			"title": "Pokémon Healed",
+			"file": "res://assets/audio/music/pokemon_healed.ogg",
+			"kind": "jingle",
+			"loop": false,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true
+		},
+		"level_up": {
+			"title": "Level Up!",
+			"file": "res://assets/audio/music/level_up.ogg",
+			"kind": "jingle",
+			"loop": false,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true
+		},
+		"evolved": {
+			"title": "Congratulations! Your Pokémon Evolved!",
+			"file": "res://assets/audio/music/evolved.ogg",
+			"kind": "jingle",
+			"loop": false,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": true
+		}
+	},
+	"events": {
+		"splash": "silence",
+		"title": "title_screen",
+		"oak_intro": "guide",
+		"oak": "professor_oak",
+		"rival": "blue_theme",
+		"rocket": "trainer_appears_bad_guy",
+		"hall_of_fame": "hall_of_fame",
+		"ending": "ending_theme",
+		"ending_after": "congratulations",
+		"were_back": "were_back",
+		"heal": "pokemon_healed",
+		"item": "picked_up_item",
+		"key_item": "obtained_key_item",
+		"badge": "obtained_badge",
+		"catch": "caught_pokemon_short",
+		"first_catch": "caught_pokemon",
+		"level_up": "level_up",
+		"evolution": "evolution",
+		"evolved": "evolved",
+		"cubone_mother": "cubone_mother",
+		"poke_flute": "poke_flute"
+	}
+}
