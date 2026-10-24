@@ -3,7 +3,8 @@
 > Rédigé le 2026-10-24 par une session de coordination, **documents seuls** (aucun code, aucun art).
 > Mesuré sur `origin/main` @ `af0e84ef` et sur les branches `art-dos-combat`, `jalon-23`,
 > `jalon-26` à `jalon-31` (plans J32 à J40 lus sur `origin/jalon-31`).
-> **À valider par Kevin** : recommandation (§2) et arbitrages DA-1 à DA-9 (§4).
+> **Validé par Kevin le 2026-10-24** : recommandation (§2, option B) et arbitrages DA-1 à DA-9
+> (§4), tous selon les recommandations (« Oui à tes recommandations pour DA-1 à DA-9 »).
 
 ## 0. Pourquoi ce document
 
@@ -168,6 +169,11 @@ animations fines, DAF.8) passe en 1.0.x, sans retarder la RC.
 8. **Fusion dans `main`**, un lot à la fois.
 
 ## 4. Ce que Kevin doit décider
+
+**Tranché le 2026-10-24 : toutes les recommandations sont retenues** (B ; DAF.0–DAF.7 avant le gel,
+DAF.8 en 1.0.x ; artwork officiel gardé ; ChatGPT puis Colab ; `art-dos-combat` en premier ;
+planche par lot + contrôle S24 par agent ; gel à l'entrée du J34 ; audio à part ; retouches
+seulement sur signalement de la grille du J33).
 
 - **DA-1 — Placement.** A (jalon dédié avant la RC), **B (lots en parallèle des J32–J33, gel de
   l'art à l'entrée du J34)** ou C (vagues jusqu'après la 1.0) ? *Recommandation : B.*
