@@ -54,6 +54,8 @@ func _init() -> void:
 			_starters.clear()
 			for id: String in arg.trim_prefix("--starters=").split(","):
 				_starters.append(StringName(id))
+		elif arg.begins_with("--starter="):
+			_starter = StringName(arg.trim_prefix("--starter="))
 		elif arg.begins_with("--decor="):
 			_decor_id = StringName(arg.trim_prefix("--decor="))
 		elif arg == "--no-preload":

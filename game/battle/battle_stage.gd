@@ -1293,6 +1293,8 @@ func _set_texture(side: BattleEvent.SideId) -> void:
 	sprite.material = _artwork_material if official else null
 	var scale := BattleLayout.sprite_scale(box.size, _art.height_m(species), back,
 		_view_size().y, not official)
+	if back and OS.has_environment("KANTO_DOS_RB"):
+		scale = float(OS.get_environment("KANTO_DOS_RB")) * _view_size().y / box.size.y
 	_boxes[side] = box
 	_scales[side] = scale
 	if official:
@@ -1327,6 +1329,9 @@ func _rest(side: BattleEvent.SideId) -> void:
 
 
 func _anchor(side: BattleEvent.SideId) -> Vector2:
+	if side == BattleEvent.SideId.PLAYER and OS.has_environment("KANTO_DOS_RB"):
+		var view := _view_size()
+		return Vector2(view.x / 2.0 - 0.58 * view.y, view.y + 2.0)
 	var key := "player_feet" if side == BattleEvent.SideId.PLAYER else "foe_feet"
 	return _anchors.get(key, Vector2.ZERO)
 

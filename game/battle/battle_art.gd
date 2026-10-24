@@ -61,6 +61,11 @@ func height_m(species: StringName) -> float:
 func image(species: StringName, back: bool) -> Dictionary:
 	if species == GhostDisguise.SPECIES:
 		return _ghost_image(back)
+	if back and OS.has_environment("KANTO_DOS_DIR"):
+		var file := OS.get_environment("KANTO_DOS_DIR").path_join("%s.png" % species)
+		if FileAccess.file_exists(file):
+			var tex := ImageTexture.create_from_image(Image.load_from_file(file))
+			return {"texture": tex, "official": true, "box": visible_box(tex, file)}
 	if not back:
 		var official := _official(species)
 		if not official.is_empty():
