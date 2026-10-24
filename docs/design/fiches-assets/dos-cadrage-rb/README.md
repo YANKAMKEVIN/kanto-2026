@@ -36,6 +36,16 @@ l'écran et descend sur ta carte. **Proposition : 0,34**, boîte maximale de l'a
 inchangée (elle protège l'interface). Ne pas déplacer `FOE_FEET` : l'échelle du décor peint
 en dépend (`BattleDecor.fit`).
 
+### Grands adversaires en B
+
+`grands-adversaires-b.webp` (passe `--pass=foes` du prototype) : Onix, Léviator, Ronflex,
+Florizarre, Arcanin, Ptéra, Artikodin, Grolem contre Carapuce de dos. Avec la vraie boîte
+maximale de l'adversaire (`FOE_MAX_BOX` 0,50 × 0,38), passer la présence de 0,27 à 0,34 ne
+change rien pour eux : c'est la boîte qui les plafonne (Léviator très petit). Boîte × 1,4
+(`KANTO_FOE_BIGBOX=1.4`) : tous gagnent nettement, mais Onix touche le haut de l'écran (ses
+pieds sont à 0,50, la boîte monte à 0,53). **Proposition** : présence 0,34 et boîte
+0,70 × 0,46 (largeur × 1,4, hauteur plafonnée sous le haut de l'écran).
+
 ## Test Codex (prompts `tools/art/prompts/dos_rb/`, sorties `build/art/DOS_RB_*.png`, 1254 px RGBA)
 
 | Espèce | Avec artwork joint (r1) | Sans image (r2) |
