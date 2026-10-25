@@ -589,19 +589,19 @@ const J20_T21_IDS: Array[StringName] = [
 ]
 ## Jalon 26 (T9) : objets au sol et cachés de Safrania et de la Sylphe (`saffron_life.json`,
 ## `silph_co_life.json`) : scène → [carte, objet donné]. Les objets absents du dépôt sont remplacés
-## [D] (fallback des grilles) : Corde/Hyper Potion → Super Potion, etc.
+## [D] (fallback des grilles) ; depuis la fusion de `main` (J22 à J25), les objets RB existent tous.
 const J26_T9_ITEMS: Dictionary[StringName, Array] = {
-	&"silph_co_3f_item_4": [&"silph_co_3f", &"super_potion"],
-	&"silph_co_4f_item_5": [&"silph_co_4f", &"super_potion"],
-	&"silph_co_4f_item_6": [&"silph_co_4f", &"revive"],
+	&"silph_co_3f_item_4": [&"silph_co_3f", &"hyper_potion"],
+	&"silph_co_4f_item_5": [&"silph_co_4f", &"full_heal"],
+	&"silph_co_4f_item_6": [&"silph_co_4f", &"max_revive"],
 	&"silph_co_4f_item_7": [&"silph_co_4f", &"escape_rope"],
 	&"silph_co_5f_card_key": [&"silph_co_5f", &"card_key"],
 	&"silph_co_5f_hidden_1": [&"silph_co_5f", &"revive"],
-	&"silph_co_5f_item_6": [&"silph_co_5f", &"nugget"],
+	&"silph_co_5f_item_6": [&"silph_co_5f", &"tm09"],
 	&"silph_co_5f_item_7": [&"silph_co_5f", &"rare_candy"],
 	&"silph_co_6f_item_9": [&"silph_co_6f", &"rare_candy"],
 	&"silph_co_6f_item_10": [&"silph_co_6f", &"x_accuracy"],
-	&"silph_co_9f_hidden_1": [&"silph_co_9f", &"super_potion"],
+	&"silph_co_9f_hidden_1": [&"silph_co_9f", &"max_potion"],
 	&"silph_co_10f_item_4": [&"silph_co_10f", &"nugget"],
 	&"silph_co_10f_item_5": [&"silph_co_10f", &"rare_candy"],
 	&"silph_co_10f_item_6": [&"silph_co_10f", &"rare_candy"],

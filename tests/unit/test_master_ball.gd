@@ -62,8 +62,9 @@ func test_throw_at_rate_3_full_hp_catches_without_any_draw() -> void:
 
 
 func test_wild_battle_catches_a_rate_3_pokemon_at_full_hp() -> void:
+	# Espèce de test au numéro 9999 : le 144 est celui d'Artikodin depuis la fusion de `main` (J24).
 	assert_true(_data.add_species_from_dict({"zz_legend": {
-		"dex": 144, "name": "Zz", "types": ["ice", "flying"],
+		"dex": 9999, "name": "Zz", "types": ["ice", "flying"],
 		"base_stats": { "hp": 90, "atk": 85, "def": 100, "spa": 95, "spd": 125, "spe": 85 },
 		"male_ratio": -1, "growth_rate": "slow", "base_exp": 261, "catch_rate": 3,
 		"learnset": [[1, "gust"]]}}))
