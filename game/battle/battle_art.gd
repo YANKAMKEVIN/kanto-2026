@@ -6,7 +6,7 @@ extends RefCounted
 ## - Adversaire : **artwork officiel** (`assets/sprites/pokemon/official/NNN.png`, par numéro du
 ##   Pokédex), resserré sur son cadre utile par [PokedexArt] (chargement partagé avec le
 ##   Pokédex), filtre linéaire ; à défaut, le sprite provisoire de face.
-## - Ton Pokémon : sprite provisoire **de dos** (pixel art 64 px, NEAREST) jusqu'au premier lot
+## - Ton Pokémon : dos **peint** (`dos/dos_ia_NNN.png`, filtre linéaire) s'il existe, sinon sprite provisoire **de dos** (pixel art 64 px, NEAREST) jusqu'au premier lot
 ##   de dos peints (J11) ; à défaut (aucune espèce des données ne doit en manquer :
 ##   `test_battle_art.gd`), l'artwork officiel : jamais de côté vide.
 ## - Taille réelle (m) : données du Pokédex (`data/pokedex/kanto.json`) ; inconnue : la taille de
@@ -16,6 +16,19 @@ extends RefCounted
 
 ## Dossier des sprites provisoires (pixel art 64 px).
 const PLACEHOLDER_DIR: String = "res://assets/sprites/pokemon/placeholder/"
+
+## Dossier des dos de combat **peints** (1024 × 1024 RGBA, `dos_ia_NNN.png`, NNN = numéro du Pokédex) :
+## lot « série dos » (`tools/art/serie_dos.py`, `docs/design/inventaire-art.md` §2). Lus en priorité
+## pour le côté du joueur ; une espèce sans fichier garde son sprite provisoire.
+const PAINTED_BACK_DIR: String = "res://assets/sprites/pokemon/dos/"
+
+## Dos peint **en plongée** pour le cadrage B (`dos_rb_NNN.png`, déjà coupé par le bas : posé
+## sur le bord de l'écran, [constant BattleLayout.BACK_CROP] ne s'applique pas). Priorité : dos RB
+## > dos IA > dos 3D > sprite provisoire.
+
+## Dos 3D (`dos3d_NNN.png`, rendu X/Y, même format 1024²) : repli du dos IA pour une espèce qui n'a
+## pas de `dos_ia` (16 prototypes validés, dont 4 sans équivalent IA : 050, 051, 096, 109).
+## Priorité : dos IA > dos 3D > sprite provisoire.
 
 ## Boîtes visibles des images provisoires, par chemin (lues une fois).
 static var _boxes: Dictionary[String, Rect2] = {}
@@ -38,6 +51,30 @@ static func placeholder_path(species: StringName, back: bool) -> String:
 	return PLACEHOLDER_DIR + "%s_%s.png" % [species, "back" if back else "front"]
 
 
+## Chemin du dos peint du numéro [param dex] du Pokédex (le fichier peut ne pas exister).
+static func painted_back_path(dex: int) -> String:
+	return PAINTED_BACK_DIR + "dos_ia_%03d.png" % dex
+
+
+## Chemin du dos 3D du numéro [param dex] (repli du dos IA ; le fichier peut ne pas exister).
+static func painted_back_3d_path(dex: int) -> String:
+	return PAINTED_BACK_DIR + "dos3d_%03d.png" % dex
+
+
+## Chemin du dos en plongée (cadrage B) du numéro [param dex] (le fichier peut ne pas exister).
+static func painted_back_rb_path(dex: int) -> String:
+	return PAINTED_BACK_DIR + "dos_rb_%03d.png" % dex
+
+
+## Chemin du dos peint à utiliser pour le numéro [param dex] : plongée, puis IA, puis 3D ; "" sinon.
+static func best_painted_back_path(dex: int) -> String:
+	for path: String in [painted_back_rb_path(dex), painted_back_path(dex),
+			painted_back_3d_path(dex)]:
+		if ResourceLoader.exists(path):
+			return path
+	return ""
+
+
 ## Numéro du Pokédex de [param species] (0 si inconnu).
 func dex_number(species: StringName) -> int:
 	var data := _species_data()
@@ -57,14 +94,29 @@ func height_m(species: StringName) -> float:
 
 ## Image de combat de [param species] : { texture (Texture2D ou null), box (Rect2 : boîte
 ## visible dans la texture, pieds au bas-centre), official (bool : artwork HD, filtre
-## linéaire ; sinon pixel art provisoire, NEAREST, échelle entière) }.
+## linéaire ; sinon pixel art provisoire, NEAREST, échelle entière), crop (float, dos
+## seulement : part de la boîte sous le bord bas en cadrage B, 0 pour un dos en plongée) }.
 func image(species: StringName, back: bool) -> Dictionary:
+	var result := _image(species, back)
+	if back:
+		var texture: Texture2D = result["texture"]
+		var rb := texture != null and texture.resource_path.get_file().begins_with("dos_rb_")
+		result["crop"] = 0.0 if rb else BattleLayout.BACK_CROP
+	return result
+
+
+func _image(species: StringName, back: bool) -> Dictionary:
 	if species == GhostDisguise.SPECIES:
 		return _ghost_image(back)
 	if not back:
 		var official := _official(species)
 		if not official.is_empty():
 			return official
+	if back:
+		var painted_path := best_painted_back_path(dex_number(species))
+		if not painted_path.is_empty():
+			var painted := load(painted_path) as Texture2D
+			return {"texture": painted, "official": true, "box": visible_box(painted, painted_path)}
 	var path := placeholder_path(species, back)
 	if species.is_empty() or not ResourceLoader.exists(path):
 		# Repli (correctif QA 12A) : un dos manquant ne laisse jamais le côté du joueur vide ;

@@ -17,7 +17,7 @@ pixel art ». Phase DA : `phase-da-cadrage.md` (option B, lots DAF.0 à DAF.8, g
 |---|---|---|
 | Façades | 43 `bldg_*.png` distinctes (dont Céladopole, série 22 bis) | **0** (aucune vignette < 900 couleurs, 211 fichiers testés) |
 | Intérieurs (enveloppes) | toutes les cartes de `main` (coques peintes ou modules) | **0** ; `interiors/placeholder/` ne contient plus que 17 `ph_celadon_*` (références de taille de `serie22bis.py`, non utilisées) |
-| Dos de combat | **0** sur `main` ; 81 sur `art-dos-combat` (§3) | **125 / 125** en pixel art 64 × 64 (`placeholder/<espèce>_back.png`) |
+| Dos de combat | **81 / 126** espèces peintes sur `main` depuis le 2026-10-25 (DAF.1 partie 1, §3) | **45 / 126** en pixel art 64 × 64 (`placeholder/<espèce>_back.png`), + 25 espèces à venir |
 | Fonds de combat | 50 cartes à combats sur 66 ont un fond (23 décors, 22 images `.webp`) | **16 cartes sans fond** (§2) |
 | Icônes du Sac | 45 | **≈ 23 objets sans icône** (§4) |
 | Séries 23 et 25 | **23 intégrée** ; **25 non intégrée** sauf `bike.svg` (§5) | — |
@@ -53,9 +53,22 @@ Jadielle, Route 22/23, Route Victoire, salles de la Ligue, Grotte Azurée, Safar
 
 | Source | Dos | Remarque |
 |---|---|---|
-| `main` | **125** pixel 64 px (`assets/sprites/pokemon/placeholder/`) ; 125 espèces sur 151 | seul état lu en jeu |
-| `art-dos-combat` @ `6632ad41` (non fusionnée, 6 commits, **313 commits de retard** sur `main`) | **81 espèces à dos peint** dans `assets/sprites/pokemon/dos/` (93 fichiers : 77 `dos_ia_NNN` + 16 `dos3d_NNN`) ; il reste **88 pixel** | `BattleArt.best_painted_back_path` : IA > 3D > provisoire |
-| Manquants sur `art-dos-combat` | **70 espèces** sans dos peint (n° 9, 39, 48, 49, 54, 55, 60 à 62, 64, 65, 67, 68, 73, 77 à 80, 83 à 89, 91, 94, 98, 99, 101, 103, 105 à 108, 110 à 115, 117, 119, 121 à 128, 130 à 132, 135, 137 à 151) | dont 6 refusés par Codex (Kadabra 64, Tortank 9, Rondoudou 39, Staross 121, Léviator 130, Voltali 135), 4 conditionnels (Ossatueur 105, Rhinocorne 111, Saquedeneu 114, Kangourex 115), Ptéra 142 et Magmar 126 à refaire |
+| `main` (depuis le 2026-10-25, fusion de `art-dos-combat` mise à jour, DAF.1 partie 1) | **81 espèces à dos peint sur 126** dans `assets/sprites/pokemon/dos/` (93 fichiers : 77 `dos_ia_NNN` + 16 `dos3d_NNN` ; Tentacool et Magicarpe en profitent depuis leur entrée dans les données) ; **45 en pixel** 64 px (`placeholder/`) | `BattleArt.best_painted_back_path` : IA > 3D > provisoire ; tests `test_painted_backs.gd` ; contrôle visuel `tools/capture_dos_proto.gd -- --species=a,b` |
+| Manquants | **70 espèces** sans dos peint : 45 dans les données + 25 pas encore (n° 65, 68, 94, 103, 106 à 108, 112, 113, 122 à 125, 127, 128, 131, 132, 137, 145 à 151) | voir le détail ci-dessous |
+
+Détail des **45 espèces des données** sans dos peint (DAF.1, reste à produire ; cadrage A ou B en attente de Kevin, `fiches-assets/dos-cadrage-rb/README.md`) :
+- **8 par Kevin dans ChatGPT** : les 6 refusés par Codex, Kadabra (64), Tortank (9), Rondoudou (39),
+  Staross (121), Léviator (130), Voltali (135) (`fiches-assets/dos-a-faire-chatgpt.md`), plus Ptéra
+  (142) et Magmar (126) (pas encore dans la fiche) ;
+- **4 conditionnels** non lancés : Ossatueur (105, jamais montré : repli artwork officiel),
+  Rhinocorne (111), Saquedeneu (114), Kangourex (115) ;
+- **33 ajoutées depuis le lot 2** (Codex, `serie_dos.py`) : Mimitoss (48), Aéromite (49),
+  Psykokwak (54), Akwakwak (55), Ptitard (60), Têtarte (61), Tartard (62), Machopeur (67),
+  Tentacruel (73), Ponyta (77), Galopa (78), Ramoloss (79), Flagadoss (80), Canarticho (83),
+  Doduo (84), Dodrio (85), Otaria (86), Lamantine (87), Tadmorv (88), Grotadmorv (89),
+  Crustabri (91), Krabby (98), Krabboss (99), Électrode (101), Smogogo (110), Hypocéan (117),
+  Poissoroy (119), Amonita (138), Amonistar (139), Kabuto (140), Kabutops (141), Ronflex (143),
+  Artikodin (144).
 
 **Espèces sans dos pixel sur `main`** : 151 − 125 = 26. **22** ont un dos pixel sur une branche
 (union des `placeholder/*_back.png` : 147 espèces) ; **4** (J32) n'en ont nulle part. Par branche :
