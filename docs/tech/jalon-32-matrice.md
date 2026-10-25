@@ -19,11 +19,12 @@
 
 - **main** (119)
 - **J26, J27** (2) : Alakazam, Lokhlass
-- **J29** (2) : Machopeur, Sulfura
+- **J29, HEAD** (1) : Machopeur
 - **J31** (4) : Magnéton, Rhinoféros, Métamorph, Mewtwo
 - **J23** (6) : Noeunoeuf, Rhinocorne, Kangourex, Insécateur, Scarabrute, Tauros
 - **J27** (2) : Kicklee, Tygnon
 - **J23, J31** (1) : Leveinard
+- **J29** (1) : Sulfura
 
 ### Sans voie
 
@@ -47,12 +48,9 @@
 
 ### Évolutions de Rouge/Bleu absentes des données
 
-- machop → machoke (level)
 - machoke → machamp (trade)
 - haunter → gengar (trade)
-- voltorb → electrode (level)
 - exeggcute → exeggutor (leaf_stone)
-- koffing → weezing (level)
 - dratini → dragonair (level)
 
 ### Pierres d'évolution
@@ -135,7 +133,7 @@ Boutiques et dons uniques des scènes (union des branches, maximum par branche),
 | 064 | Kadabra (`kadabra`) | psychic | Abra (niveau 16) | sauvage : cerulean_cave_1f (floor) [J31]<br>sauvage : cerulean_cave_2f (floor) [J31] | main | obtenable | — |
 | 065 | Alakazam (`alakazam`) | psychic | Kadabra (trade) | — | J26, J27 | échange local | N-15 / T4 : terminal d'échange local dans tous les Centres |
 | 066 | Machoc (`machop`) | fighting | — | sauvage : dark_cave_1f (rubble) [main, J23, J26, J27, J28, J29, J30, J31, HEAD]<br>sauvage : dark_cave_b1f (rubble) [main, J23, J26, J27, J28, J29, J30, J31, HEAD]<br>sauvage : victory_road_1f (rubble) [J29]<br>sauvage : victory_road_2f (rubble) [J29]<br>sauvage : victory_road_3f (rubble) [J29] | main | obtenable | — |
-| 067 | Machopeur (`machoke`) | fighting | — ; absente des données : machop → machoke (level) | sauvage : victory_road_1f (rubble) [J29]<br>sauvage : victory_road_2f (rubble) [J29]<br>sauvage : victory_road_3f (rubble) [J29] | J29 | obtenable | — |
+| 067 | Machopeur (`machoke`) | fighting | Machoc (niveau 28) | sauvage : victory_road_1f (rubble) [J29]<br>sauvage : victory_road_2f (rubble) [J29]<br>sauvage : victory_road_3f (rubble) [J29] | J29, HEAD | obtenable | — |
 | 068 | Mackogneur (`machamp`) | fighting | — ; absente des données : machoke → machamp (trade) | — | — | manque | données : évolution absente de `species/` (machoke → machamp (trade)), puis N-15 / T4 |
 | 069 | Chétiflor (`bellsprout`) | grass/poison | — | sauvage : route_24 (grass) [main, J23, J26, J27, J28, J29, J30, J31, HEAD]<br>sauvage : route_25 (grass) [main, J23, J26, J27, J28, J29, J30, J31, HEAD]<br>sauvage : route_5 (grass) [main, J23, J26, J27, J28, J29, J30, J31, HEAD]<br>sauvage : route_6 (grass) [main, J23, J26, J27, J28, J29, J30, J31, HEAD]<br>sauvage : route_7 (grass) [main, J23, J26, J27, J28, J29, J30, J31, HEAD] | main | obtenable | — |
 | 070 | Boustiflor (`weepinbell`) | grass/poison | Chétiflor (niveau 21) | — | main | obtenable | — |
@@ -169,7 +167,7 @@ Boutiques et dons uniques des scènes (union des branches, maximum par branche),
 | 098 | Krabby (`krabby`) | water | — | sauvage : seafoam_1f (floor) [main, J23, J29, J30, J31, HEAD]<br>sauvage : seafoam_b1f (floor) [main, J23, J29, J30, J31, HEAD]<br>sauvage : seafoam_b2f (floor) [main, J23, J29, J30, J31, HEAD]<br>sauvage : seafoam_b3f (floor) [main, J23, J29, J30, J31, HEAD]<br>sauvage : seafoam_b4f (floor) [main, J23, J29, J30, J31, HEAD]<br>sauvage : * (super_rod) [main, J23, J26, J27, J28, J29, J30, J31, HEAD]<br>sauvage : fuchsia_city (super_rod) [main, J23, J26, J27, J28, J29, J30, J31, HEAD] | main | obtenable | — |
 | 099 | Krabboss (`kingler`) | water | Krabby (niveau 28) | sauvage : seafoam_b1f (floor) [main, J23, J29, J30, J31, HEAD]<br>sauvage : seafoam_b3f (floor) [main, J23, J29, J30, J31, HEAD]<br>sauvage : cerulean_cave_1f, cerulean_cave_2f, cerulean_cave_b1f (super_rod) [J31] | main | obtenable | — |
 | 100 | Voltorbe (`voltorb`) | electric | — | sauvage : route_10 (grass) [main, J23, J26, J27, J28, J29, J30, J31, HEAD] | main | obtenable | — |
-| 101 | Électrode (`electrode`) | electric | — ; absente des données : voltorb → electrode (level) | échange PNJ : cinnabar_trade_electrode (contre raichu) [main, J29, J30, J31, HEAD]<br>sauvage : cerulean_cave_2f (floor) [J31]<br>sauvage : cerulean_cave_b1f (floor) [J31] | main | obtenable | — |
+| 101 | Électrode (`electrode`) | electric | Voltorbe (niveau 30) | échange PNJ : cinnabar_trade_electrode (contre raichu) [main, J29, J30, J31, HEAD]<br>sauvage : cerulean_cave_2f (floor) [J31]<br>sauvage : cerulean_cave_b1f (floor) [J31] | main | obtenable | — |
 | 102 | Noeunoeuf (`exeggcute`) | grass/psychic | — | sauvage : safari_zone_center (grass) [J23]<br>sauvage : safari_zone_east (grass) [J23]<br>sauvage : safari_zone_north (grass) [J23]<br>sauvage : safari_zone_west (grass) [J23] | J23 | obtenable | — |
 | 103 | Noadkoko (`exeggutor`) | grass/psychic | — ; absente des données : exeggcute → exeggutor (leaf_stone) | — | — | manque | données : évolution absente de `species/` (exeggcute → exeggutor (leaf_stone)) |
 | 104 | Osselait (`cubone`) | ground | — | sauvage : pokemon_tower_3f (floor) [main, J23, J26, J27, J28, J29, J30, J31, HEAD]<br>sauvage : pokemon_tower_4f, pokemon_tower_5f (floor) [main, J23, J26, J27, J28, J29, J30, J31, HEAD]<br>sauvage : pokemon_tower_6f (floor) [main, J23, J26, J27, J28, J29, J30, J31, HEAD]<br>sauvage : pokemon_tower_7f (floor) [main, J23, J26, J27, J28, J29, J30, J31, HEAD] | main | obtenable | — |
@@ -178,7 +176,7 @@ Boutiques et dons uniques des scènes (union des branches, maximum par branche),
 | 107 | Tygnon (`hitmonchan`) | fighting | — | don : fighting_dojo (N30) [J27] | J27 | choix unique | N-8 : le Maître du Dojo offre l'autre Poké Ball après la Ligue |
 | 108 | Excelangue (`lickitung`) | normal | — | — | — | manque | N-14 : échange PNJ Flagadoss → Excelangue (Route 18) |
 | 109 | Smogo (`koffing`) | poison | — | sauvage : pokemon_mansion_1f (floor) [main, J29, J30, J31, HEAD]<br>sauvage : pokemon_mansion_2f (floor) [main, J29, J30, J31, HEAD]<br>sauvage : pokemon_mansion_3f (floor) [main, J29, J30, J31, HEAD]<br>sauvage : pokemon_mansion_b1f (floor) [main, J29, J30, J31, HEAD] | main | obtenable | — |
-| 110 | Smogogo (`weezing`) | poison | — ; absente des données : koffing → weezing (level) | sauvage : pokemon_mansion_1f (floor) [main, J29, J30, J31, HEAD]<br>sauvage : pokemon_mansion_2f (floor) [main, J29, J30, J31, HEAD]<br>sauvage : pokemon_mansion_3f (floor) [main, J29, J30, J31, HEAD]<br>sauvage : pokemon_mansion_b1f (floor) [main, J29, J30, J31, HEAD] | main | obtenable | — |
+| 110 | Smogogo (`weezing`) | poison | Smogo (niveau 35) | sauvage : pokemon_mansion_1f (floor) [main, J29, J30, J31, HEAD]<br>sauvage : pokemon_mansion_2f (floor) [main, J29, J30, J31, HEAD]<br>sauvage : pokemon_mansion_3f (floor) [main, J29, J30, J31, HEAD]<br>sauvage : pokemon_mansion_b1f (floor) [main, J29, J30, J31, HEAD] | main | obtenable | — |
 | 111 | Rhinocorne (`rhyhorn`) | ground/rock | — | sauvage : safari_zone_center (grass) [J23]<br>sauvage : safari_zone_north (grass) [J23] | J23 | obtenable | — |
 | 112 | Rhinoféros (`rhydon`) | ground/rock | Rhinocorne (niveau 42) | sauvage : cerulean_cave_2f (floor) [J31]<br>sauvage : cerulean_cave_b1f (floor) [J31] | J31 | obtenable | — |
 | 113 | Leveinard (`chansey`) | normal | — | sauvage : safari_zone_center (grass) [J23]<br>sauvage : safari_zone_north (grass) [J23]<br>sauvage : cerulean_cave_2f (floor) [J31]<br>sauvage : cerulean_cave_b1f (floor) [J31] | J23, J31 | obtenable | — |
