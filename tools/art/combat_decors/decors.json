@@ -190,5 +190,23 @@
 		],
 		"taille": [2340, 1080],
 		"qualite": 90
+	},
+	"viridian_forest_clairiere": {
+		"composition": "COMBAT_DECOR_FORET_JADE_r1.png",
+		"tuiles": [
+			{ "image": "COMBAT_DECOR_FORET_JADE_r1_TL.png", "portion": [0, 0, 1002, 851] },
+			{ "image": "COMBAT_DECOR_FORET_JADE_r1_TR.png", "portion": [847, 0, 1849, 851] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"pewter_gym_roche": {
+		"composition": "COMBAT_DECOR_ARENE_ARGENTA_r2.png",
+		"tuiles": [
+			{ "image": "COMBAT_DECOR_ARENE_ARGENTA_r2_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "COMBAT_DECOR_ARENE_ARGENTA_r2_TR.png", "portion": [846, 0, 1846, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
 	}
 }
