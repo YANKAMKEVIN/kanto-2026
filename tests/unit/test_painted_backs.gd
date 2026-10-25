@@ -78,3 +78,16 @@ func test_every_3d_file_is_used_only_without_ia() -> void:
 				else BattleArt.painted_back_3d_path(number)
 			assert_eq(BattleArt.best_painted_back_path(number), want, f)
 	assert_eq(n, 16, "16 dos 3D")
+
+
+## Cadrage B (2026-10-25) : un dos en plongée (`dos_rb_NNN.png`) prime sur le dos IA, le 3D et le
+## provisoire, et se pose sur le bord bas (aucun enfoncement).
+func test_rb_back_wins_and_is_not_sunk() -> void:
+	assert_true(ResourceLoader.exists(BattleArt.painted_back_rb_path(143)), "Ronflex a un dos RB")
+	assert_eq(BattleArt.best_painted_back_path(143), BattleArt.painted_back_rb_path(143))
+	var image := _art.image(&"snorlax", true)
+	assert_eq((image["texture"] as Texture2D).resource_path, BattleArt.painted_back_rb_path(143))
+	assert_eq(image["crop"], 0.0, "dos en plongée posé sur le bord")
+	assert_eq(_art.image(&"charmander", true)["crop"], BattleLayout.BACK_CROP, "corps entier enfoncé")
+	var box: Rect2 = image["box"]
+	assert_almost_eq(box.end.y, 1024.0, 1.0, "coupe sur le bord bas de l'image")
