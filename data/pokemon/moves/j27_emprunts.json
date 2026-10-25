@@ -1,20 +1,4 @@
 {
-	"fire_punch": {
-		"name": "Poing de Feu",
-		"type": "fire",
-		"category": "physical",
-		"power": 75,
-		"accuracy": 100,
-		"pp": 15,
-		"effects": [
-			{
-				"kind": "status",
-				"status": "burn",
-				"chance": 10
-			}
-		],
-		"description": "Un coup de poing enflammé frappe la cible. Peut la brûler."
-	},
 	"mega_kick": {
 		"name": "Ultimawashi",
 		"type": "normal",

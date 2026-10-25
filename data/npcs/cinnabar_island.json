@@ -1,0 +1,33 @@
+{
+	"fille": {
+		"cell": [17, 8],
+		"facing": "left",
+		"sprite": "lass",
+		"dialogue": "cinnabar_girl",
+		"route": {
+			"cells": [
+				[17, 8],
+				[18, 8],
+				[19, 8],
+				[20, 8],
+				[21, 8],
+				[22, 8],
+				[23, 8],
+				[24, 8],
+				[23, 8],
+				[22, 8],
+				[21, 8],
+				[20, 8],
+				[19, 8],
+				[18, 8]
+			],
+			"pause": 1.5
+		}
+	},
+	"homme": {
+		"cell": [21, 9],
+		"facing": "down",
+		"sprite": "old_man",
+		"dialogue": "cinnabar_man"
+	}
+}

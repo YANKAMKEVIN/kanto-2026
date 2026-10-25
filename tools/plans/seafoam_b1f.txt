@@ -1,0 +1,53 @@
+# Îles Écume B1F — grille fonctionnelle v1 (jalon 24, T2 ; dossier 27 §7). Même légende et mêmes
+# conventions que seafoam_1f.txt. Les deux rochers sont ceux tombés du 1F (points de chute F,
+# 17,6 et 22,6) ; deux trous (18, 6) et (23, 6) font apparaître un rocher au B2F.
+# Écart avec RB : un panneau T-11 en (8, 6) ; rien d'autre. Un rocher poussé en (17, 4) ferme
+# l'escalier (17, 3) de la salle des trous (ouest), mais le joueur peut le repousser : pas d'impasse.
+#
+
+PRATICABLES .:=wBOFs^v<>UVE
+
+GRILLE 30 18
+00 ###########::::::::###########
+01 ###########::::::::###########
+02 ##..V.....#::::::::#........##
+03 ##........#::::##=##.....U..##
+04 ##..#::::##::::#....|.......##
+05 ##..#::U:##::::#....|.......##
+06 ##..#:::n##::::#.FO.|.FO....##
+07 ##..#::####::V:#....|.......##
+08 ##..#::##::::::#....|.......##
+09 ##..#=###::::::#....||||||||##
+10 ##......#::::::::::#........##
+11 ##......#::::::::::#.....V..##
+12 ##......#::::::::::#........##
+13 ##......#=#######=##........##
+14 ##..........|.......|.......##
+15 ##..........|......V|..U....##
+16 ##############################
+17 ##############################
+FIN
+
+POSITIONS
+echelle_p4           echelle        4,2          libre   paire=P4 sens=descend vers=seafoam_b2f
+arrivee_p4           spawn          4,3          libre   paire=P4
+echelle_p1           echelle        7,5          libre   paire=P1 sens=monte vers=seafoam_1f
+arrivee_p1           spawn          7,6          libre   paire=P1
+echelle_p5           echelle        13,7         libre   paire=P5 sens=descend vers=seafoam_b2f
+arrivee_p5           spawn          13,8         libre   paire=P5
+echelle_p6           echelle        19,15        libre   paire=P6 sens=descend vers=seafoam_b2f
+arrivee_p6           spawn          19,14        libre   paire=P6
+echelle_p3           echelle        23,15        libre   paire=P3 sens=monte vers=seafoam_1f
+arrivee_p3           spawn          23,14        libre   paire=P3
+echelle_p7           echelle        25,11        libre   paire=P7 sens=descend vers=seafoam_b2f
+arrivee_p7           spawn          25,12        libre   paire=P7
+echelle_p2           echelle        25,3         libre   paire=P2 sens=monte vers=seafoam_1f
+arrivee_p2           spawn          25,4         libre   paire=P2
+trou_b1f_1           trou           18,6         libre   n=1 drapeau=seafoam_b1f_hole_1_filled chute=seafoam_b2f
+trou_b1f_2           trou           23,6         libre   n=2 drapeau=seafoam_b1f_hole_2_filled chute=seafoam_b2f
+chute_rocher_b1f_1   chute_rocher   17,6         libre   depuis=seafoam_1f:1 sol=bas
+chute_rocher_b1f_2   chute_rocher   22,6         libre   depuis=seafoam_1f:2 sol=bas
+chute_joueur_b1f_1   chute_joueur   17,6         libre   depuis=seafoam_1f:1 surf=non
+chute_joueur_b1f_2   chute_joueur   22,6         libre   depuis=seafoam_1f:2 surf=non
+panneau_rochers_b1f  panneau        8,6          bloque  texte=T-11  # dans la poche de l'échelle (7, 5)
+FIN

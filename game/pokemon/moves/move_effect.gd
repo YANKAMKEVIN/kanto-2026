@@ -107,6 +107,8 @@ enum Kind {
 	OHKO,
 	HEAL, SCREEN, HAZE,
 	CRASH, COUNTER,
+	## Jalon 24 (T13, dossier 27 §10.6) : Métronome lance une capacité tirée au hasard.
+	METRONOME,
 }
 enum Target { SELF, FOE }
 
@@ -125,6 +127,7 @@ const KIND_NAMES: Dictionary[String, Kind] = {
 	"ohko": Kind.OHKO,
 	"heal": Kind.HEAL, "screen": Kind.SCREEN, "haze": Kind.HAZE,
 	"crash": Kind.CRASH, "counter": Kind.COUNTER,
+	"metronome": Kind.METRONOME,
 }
 ## Modes de FIXED_DAMAGE.
 const FIXED_MODES: Array[StringName] = [&"half_hp", &"level", &"value", &"psywave"]

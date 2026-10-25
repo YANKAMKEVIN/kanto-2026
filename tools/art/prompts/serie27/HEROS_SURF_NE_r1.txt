@@ -1,0 +1,16 @@
+HEROS_SURF — planche d'animation du HÉROS EN SURF pour Kanto 2026 : le héros de la planche jointe PERSO_P2_PEINT_r1, assis sur la monture de la planche jointe SURF_MONTURE_NE_r1, traverse la mer.
+Style : exactement le rendu des deux planches jointes : personnage et créature peints simplifiés, chibi d'environ 3 têtes pour le héros, même finesse, même contour fin coloré sans trait noir. Ni pixel art, ni 3D, ni anime aux contours noirs.
+LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche ; volumes conservés par un ombrage doux ; aucune teinte dorée ou orangée, aucun liseré chaud ; ombres propres neutres, légèrement bleutées.
+
+PERSONNAGE : EXACTEMENT le héros joint (même visage, même casquette, mêmes cheveux, mêmes vêtements, mêmes couleurs, même sac), à la MÊME ÉCHELLE que dans sa planche (sa tête a la même taille). Il est ASSIS À CALIFOURCHON sur le dos de la monture, le buste droit, les mains posées devant lui sur le dos de la monture ; ses jambes repliées se devinent le long des flancs. On voit tout son buste, ses bras et sa tête.
+MONTURE : EXACTEMENT celle de la planche jointe SURF_MONTURE_NE_r1 (même forme, mêmes couleurs, même taille relative), à moitié immergée.
+
+PLANCHE D'ANIMATION (spritesheet) : image portrait 1024 × 1536, fond avec une vraie transparence (canal alpha, aucun damier dessiné). Grille invisible de 4 colonnes × 4 lignes ; chaque cellule fait 256 × 384 px et contient UNE pose (le héros ET sa monture), entière, centrée horizontalement, la ligne de flottaison de la monture sur la même ligne horizontale à 70 px du bas de la cellule, à la même taille dans toutes les cellules. Aucune pose ne déborde de sa cellule.
+- Ligne 1 : de face (ils avancent vers le bas de l'écran ; la tête de la monture devant le héros).
+- Ligne 2 : de profil, vers la gauche.
+- Ligne 3 : de profil, vers la droite.
+- Ligne 4 : de dos (ils avancent vers le haut de l'écran ; on voit le dos du héros et son sac).
+- Colonnes : 1 = à l'arrêt ; 2 = légère ondulation (l'ensemble monte un peu) ; 3 = à l'arrêt ; 4 = ondulation inverse (l'ensemble descend un peu). Aux colonnes 2 et 4, un petit SILLAGE d'écume blanche en V derrière la monture. Le héros garde la même pose, il suit seulement le mouvement.
+L'eau elle-même n'est PAS dessinée (le jeu la peint dessous) : seulement ce qui dépasse de la surface, et un fin anneau d'écume blanche et de petites rides claires autour, à la ligne de flottaison ; tout le reste de la cellule est transparent.
+Vue : la même vue de dessus de trois quarts que le jeu. Pas de perspective, pas d'ombre portée, pas de texte, pas de numéros, pas de cadres autour des cellules, aucun autre personnage, aucun Pokémon.
+Le visage, les couleurs, les proportions et les vêtements doivent être EXACTEMENT les mêmes dans les 16 poses.

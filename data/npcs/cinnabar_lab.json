@@ -1,0 +1,8 @@
+{
+	"expert": {
+		"cell": [2, 6],
+		"facing": "right",
+		"sprite": "sailor",
+		"dialogue": "cinnabar_lab_expert"
+	}
+}

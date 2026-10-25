@@ -6,7 +6,8 @@
 		"learnset": [
 			[1, "bubble"], [16, "hypnosis"], [19, "water_gun"], [25, "double_slap"],
 			[31, "body_slam"], [38, "amnesia"], [45, "hydro_pump"]
-		]
+		],
+		"evolutions": [{ "into": "poliwhirl", "method": "level", "level": 25 }]
 	},
 	"tentacool": {
 		"dex": 72, "name": "Tentacool", "types": ["water", "poison"],
@@ -15,7 +16,8 @@
 		"learnset": [
 			[1, "acid"], [7, "supersonic"], [13, "wrap"], [18, "poison_sting"], [22, "water_gun"],
 			[27, "constrict"], [33, "barrier"], [40, "screech"], [48, "hydro_pump"]
-		]
+		],
+		"evolutions": [{ "into": "tentacruel", "method": "level", "level": 30 }]
 	},
 	"snorlax": {
 		"dex": 143, "name": "Ronflex", "types": ["normal"],

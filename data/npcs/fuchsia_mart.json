@@ -1,0 +1,19 @@
+{
+	"clerk": {
+		"cell": [
+			7,
+			3
+		],
+		"facing": "down",
+		"sprite": "clerk"
+	},
+	"customer": {
+		"cell": [
+			10,
+			5
+		],
+		"facing": "left",
+		"sprite": "lass",
+		"dialogue": "fuchsia_mart_customer"
+	}
+}

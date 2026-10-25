@@ -70,5 +70,17 @@
 				]
 			}
 		]
+	},
+	"cut_tree_route_16": {
+		"variants": [
+			{
+				"unless": ["cut_route_16_tree"],
+				"steps": [
+					{ "field_move": "cut", "on": "Entities/CutTree" },
+					{ "set": ["cut_route_16_tree"] },
+					{ "dialogue": "cut_tree_used" }
+				]
+			}
+		]
 	}
 }

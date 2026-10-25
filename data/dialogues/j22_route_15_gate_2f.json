@@ -1,0 +1,19 @@
+{
+	"route_15_gate_2f_assistant": {
+		"speaker": "Assistant",
+		"pages": [
+			"Je travaille pour le Prof. Chen.\nTon Pokédex en est à {caught} espèces !",
+			"Continue ! Chaque Pokémon\na quelque chose à t'apprendre."
+		]
+	},
+	"route_15_gate_2f_jumelles_ouest": {
+		"pages": [
+			"Au loin, on voit Parmanie\net la mer qui scintille."
+		]
+	},
+	"route_15_gate_2f_jumelles_est": {
+		"pages": [
+			"Au loin, on voit Parmanie\net la mer qui scintille."
+		]
+	}
+}

@@ -12,22 +12,26 @@ extends SceneTree
 ## `docs/design/reference/route-16-vue-generale-v1.png` et les façades de la série 23 viendront avec
 ## le lot d'art). Même méthode que `build_route_7.gd` (kit `pewter_map_kit.gd`, forêt serrée).
 ##
-## - `Ground` (invisible) = source logique : `=` `D` chemin ; **tout le reste est solide** : forêt
-##   `T`, clôtures `c`, affleurements `R`, voie haute `Y`, arbre à Couper en décor `W`, façade `P`.
-##   Aucune herbe, aucune rencontre, aucun Dresseur, aucun objet, aucun panneau, **aucun examen**
-##   (L-4 : aucun texte sur le Vélo).
+## - `Ground` (invisible) = source logique : `=` `D` chemin, `Y` voie haute (herbe rase), `W` arbre à
+##   Couper (praticable dans `Ground`, occupé par sa [FlagGate]) ; **tout le reste est solide** :
+##   forêt `T`, clôtures `c`, affleurements `R`, façade `P`. Aucune herbe haute, aucune rencontre,
+##   aucun Dresseur, aucun objet, aucun panneau (L-4 : aucun texte sur le Vélo).
 ## - Passages : bord est (43, 21..23) PUSH → `celadon_city` / `from_route_16[_n|_s]` (arrivées ici
-##   `from_celadon[_n|_s]`, mêmes cases, tournées ←) ; porte du poste (15..16, 20) STEP_ON ↑,
-##   `coming_soon` « Route 16 » (retour `from_poste_w|e` sur le parvis (15..16, 21), tourné ↓).
+##   `from_celadon[_n|_s]`, mêmes cases, tournées ←) ; portes du poste (bloc « J22 » ci-dessous).
 ## - Ronflex (§2.10) : [FlagGate] « Ronflex » `unless [snorlax_route_16_done]` (bloque ses 2 × 2
 ##   cases) dont l'enfant `Snorlax` (groupe `scene_props`) porte le sprite endormi ;
 ##   [InteractPoint] 2 × 2 `unless_flags [snorlax_route_16_done]`, dialogue `snorlax_route_16`,
 ##   `flute_cutscene` `snorlax_route_16_wake`.
 ## - Titre de zone : drapeau `route_16_visited` par une scène silencieuse sur la 2e colonne du
 ##   raccord (comme `celadon_reached`).
-## - **Prolongement (jalon 22)** : la carte se prolongera vers l'ouest (Route 16 ouest, Piste
-##   Cyclable) : seuls le bloc « poste » (porte `coming_soon`, façade) et la fermeture ouest
-##   (forêt, colonnes 0..9) changeront ; le reste de l'outil ne dépend pas de la partie ouest.
+## - **Bloc « J22 »** (raccords J21 ↔ J22, 2026-10-23, `jalon-22.md` §0.5) : la Route 16 ouest est
+##   une carte à part (`route_16_west`), jointe par le poste `route_16_gate` (deux couloirs séparés) :
+##   porte basse (15..16, 20) STEP_ON ↑ → `entrance_bas_est[_1]` (arrivées ici `from_poste[_1]`,
+##   parvis (15..16, 21), tournées ↓) ; porte haute (19..20, 13) STEP_ON ↓ → `entrance_haut_est[_1]`
+##   (arrivées `from_poste_haut[_1]` (19..20, 12), tournées ↑) ; voie haute ouverte sans herbes [D] ;
+##   arbre à Couper 2 × 2 : [FlagGate] `CutTree` `unless cut_route_16_tree` sur ses 4 cases et un
+##   [InteractPoint] 2 × 2 `route_16_tree` (COUPER → `cut_tree_route_16`, `cut_tree.json`).
+##   Relancer ensuite `build_j22_maps.gd` (le poste lit les arrivées d'ici).
 
 const Kit := preload("res://tools/pewter_map_kit.gd")
 const PLAN_PATH: String = "res://tools/plans/route_16.txt"
@@ -43,10 +47,11 @@ const FOREST_SEED: int = 1603
 const MAP_ID: StringName = &"route_16"
 const DISPLAY_NAME: String = "Route 16"
 const REGION: String = "Céladopole"
-const WALKABLE: String = "=D"
-## Cases solides que la forêt serrée remplit (voie haute, arbre à Couper en décor, façade hors du
-## bâtiment) ; les clôtures `c` et les affleurements `R` ont leurs propres objets.
-const FOREST_EXTRA: String = "YWP"
+## `W` (arbre à Couper) est praticable dans `Ground` : sa [FlagGate] ferme ses cases.
+const WALKABLE: String = "=DYW"
+## Cases solides que la forêt serrée remplit (façade hors du bâtiment) ; les clôtures `c` et les
+## affleurements `R` ont leurs propres objets.
+const FOREST_EXTRA: String = "P"
 
 const EAST_MAP: StringName = &"celadon_city"
 ## Raccord est : [nœud, arrivée ici, arrivée de Céladopole] (rangées 21, 22, 23 ; [D] : rangée du
@@ -57,15 +62,29 @@ const EAST_EXITS: Array = [
 	["CeladonS", &"from_celadon_s", &"from_route_16_s"],
 ]
 const EAST_COMING_SOON: String = "Céladopole"
-## Porte du poste : [nœud, indice dans la grille, arrivée sur le parvis].
-const POSTE_COMING_SOON: String = "Route 16"
-const POSTE_DOORS: Array = [["DoorPosteW", 0, &"from_poste_w"], ["DoorPosteE", 1, &"from_poste_e"]]
+## Poste de la Route 16 (J22) : [position de la porte, position des arrivées ici, préfixe de nœud,
+## pas, arrivée dans le poste, tournée là-bas, tournée ici]. Une arrivée par case (`<nom>`,
+## `<nom>_1`), même rang des deux côtés (`build_j22_maps.gd` lit celles d'ici).
+const POSTE_MAP: StringName = &"route_16_gate"
+const POSTE_DOORS: Array = [
+	["poste_route_16", "from_poste", "DoorPoste", Vector2i.UP, "entrance_bas_est", Vector2i.UP],
+	["poste_haut", "from_poste_haut", "DoorPosteHaut", Vector2i.DOWN, "entrance_haut_est",
+		Vector2i.DOWN],
+]
+## Arbre à Couper (J22) : [FlagGate] au pied de l'objet, son décor en enfant (sans emprise).
+const TREE_FLAG: StringName = &"cut_route_16_tree"
+const TREE_ID: String = "prop_jeune_arbre_arene_01"
+const TREE_NODE: String = "CutTree"
+const TREE_DIALOGUE: StringName = &"route_16_tree"
+## Échelle du jeune arbre (2 cases de large) pour qu'il couvre son bloc de 2 × 2 [D].
+const TREE_SCALE: float = 1.15
 ## Façade du poste : `bldg_velos_01` (8 × 7, porte de 2 cases) provisoire, ancre = case de la porte
 ## de droite ; remplacée par la façade de la série 23 [D].
 const POSTE_FACADE: String = "bldg_velos_01"
 const POSTE_NODE: String = "PostFacade"
 ## Départ de débogage `snorlax_16_qa` : devant Ronflex, tourné ←.
-const DEBUG_SPAWNS: Array = [["face_ronflex", Vector2i(26, 22)]]
+## `face_arbre` : sous l'arbre à Couper, tourné ↑ (QA de la Coupe).
+const DEBUG_SPAWNS: Array = [["face_ronflex", Vector2i(26, 22)], ["face_arbre", Vector2i(38, 21)]]
 ## Titre de zone (drapeau `route_16_visited`) : scène silencieuse sur la 2e colonne du raccord.
 const VISITED_CUTSCENE: StringName = &"route_16_visited"
 const VISITED_ANCHOR := Vector2i(42, 23)
@@ -117,10 +136,12 @@ func _init() -> void:
 	var decals: Node2D = _kit.get(&"decals")
 	_add_passages()
 	_add_snorlax(entities)
+	_add_tree_examine()
 	_add_arrival_trigger()
 
 	_kit.call(&"place_border_decals", SEED)
 	var taken := _place_facade(entities)
+	_place_tree(entities)
 	_place_fences(entities)
 	var rocks := _place_boulders(entities)
 	var feet: Array[Vector2] = []
@@ -186,13 +207,15 @@ func _add_passages() -> void:
 		else:
 			_kit.call(&"add_warp", entry[0], east[i], Kit.PUSH, Vector2i.RIGHT, &"", entry[1],
 				Vector2i.LEFT, EAST_COMING_SOON)
-	# Porte du poste : « à venir » en développement, bloquée en release (aucun texte sur le Vélo).
-	var doors: Array[Vector2i] = _plan().call(&"cells_at", "poste_route_16")
-	var forecourt: Array[Vector2i] = _plan().call(&"cells_at", "parvis_poste")
+	# Bloc « J22 » : portes basse et haute du poste, case pour case (aucun texte sur le Vélo).
 	for entry: Array in POSTE_DOORS:
-		_kit.call(&"add_spawn", entry[2], forecourt[entry[1]])
-		_kit.call(&"add_warp", entry[0], doors[entry[1]], Kit.STEP_ON, Vector2i.UP, &"", entry[2],
-			Vector2i.DOWN, POSTE_COMING_SOON)
+		var doors: Array[Vector2i] = _plan().call(&"cells_at", entry[0])
+		var backs: Array[Vector2i] = _plan().call(&"cells_at", entry[1])
+		for i: int in doors.size():
+			var suffix := "" if i == 0 else "_%d" % i
+			_kit.call(&"add_spawn", entry[1] + suffix, backs[i])
+			_kit.call(&"add_warp", "%s%d" % [entry[2], i], doors[i], Kit.STEP_ON, entry[3],
+				POSTE_MAP, StringName(entry[4] + suffix), entry[5])
 	for entry: Array in DEBUG_SPAWNS:
 		_kit.call(&"add_spawn", entry[0], entry[1])
 
@@ -201,6 +224,17 @@ func _add_passages() -> void:
 func _add_arrival_trigger() -> void:
 	_kit.call(&"add_trigger", "Arrival", VISITED_ANCHOR, VISITED_SIZE, Vector2i.LEFT,
 		VISITED_CUTSCENE)
+
+
+## Examen de l'arbre à Couper (J22) : un point 2 × 2, lu depuis la route comme depuis la voie
+## haute, retiré avec lui (`unless cut_route_16_tree`).
+func _add_tree_examine() -> void:
+	var cells: Array[Vector2i] = _plan().call(&"cells_at", "arbre_coupe")
+	_kit.call(&"add_interactable", "CutTreeExamine", cells[-2], Vector2i(2, 2), Vector2i.ZERO,
+		TREE_DIALOGUE)
+	var point: Node = _kit.get(&"root").get_node(^"Interactables").get_child(-1)
+	var unless: Array[StringName] = [TREE_FLAG]
+	point.set(&"unless_flags", unless)
 
 
 # --- Ronflex ------------------------------------------------------------------------------
@@ -280,6 +314,28 @@ func _place_facade(entities: Node2D) -> Dictionary:
 	for offset: Vector2i in rules.call(&"footprint", StringName(POSTE_FACADE)):
 		taken[anchor + offset] = true
 	return taken
+
+
+## Arbre à Couper (J22) : une [FlagGate] `unless cut_route_16_tree` dont `blocking_cells` ferment
+## ses 2 × 2 cases et dont le décor est le jeune arbre peint (sans emprise), pied au milieu du bas
+## du bloc (contrat du J16, comme l'arbre de la sortie est d'Azuria).
+func _place_tree(entities: Node2D) -> void:
+	var cells: Array[Vector2i] = _plan().call(&"cells_at", "arbre_coupe")
+	var rules: GDScript = _kit.get(&"rules")
+	var gate := Node2D.new()
+	gate.set_script(load("res://game/world/flag_gate.gd"))
+	gate.name = TREE_NODE
+	gate.position = (rules.call(&"foot_position", StringName(TREE_ID), cells[-1]) as Vector2) \
+		.round()
+	var unless: Array[StringName] = [TREE_FLAG]
+	gate.set(&"unless_flags", unless)
+	var blocking: Array[Vector2i] = []
+	blocking.assign(cells)
+	gate.set(&"blocking_cells", blocking)
+	_kit.call(&"attach", entities, gate)
+	var tree: Node2D = _kit.call(&"add_prop", gate, TREE_ID, Vector2.ZERO, "Tree")
+	_kit.call(&"clear_footprint", tree)
+	tree.scale = Vector2(TREE_SCALE, TREE_SCALE)
 
 
 ## Clôtures de bois (rangée 24) : modules de 4 cases bout à bout (le dernier recouvre le précédent).

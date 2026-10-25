@@ -22,11 +22,13 @@ func test_real_data_loads_without_error() -> void:
 	assert_eq(_library.get_ids(),
 		[&"celadon_dept_2f", &"celadon_dept_2f_tm", &"celadon_dept_4f", &"celadon_dept_4f_stones",
 		&"celadon_dept_5f", &"celadon_dept_roof_lemonade", &"celadon_dept_roof_soda",
-		&"celadon_dept_roof_water", &"cerulean_mart", &"lavender_mart", &"pewter_mart",
+		&"celadon_dept_roof_water", &"cerulean_mart", &"cinnabar_mart", &"fuchsia_mart",
+		&"lavender_mart", &"pewter_mart",
 		&"saffron_mart", &"vermilion_mart", &"viridian_mart"]
 		as Array[StringName], "jalon 10 : Argenta (test_pewter_data) ; jalon 13 : Azuria ;"
 		+ " jalon 15 : Carmin (test_vermilion_data) ; jalon 20 : grand magasin"
-		+ " (test_celadon_data) ; jalon 26 : Safrania (test_saffron_city)")
+		+ " (test_celadon_data) ; jalon 22 : Parmanie ; jalon 24 : Cramois'Île (test_j24_data) ;"
+		+ " jalon 26 : Safrania (test_saffron_city)")
 	var mart := _library.get_shop(&"viridian_mart")
 	assert_eq(mart.id, &"viridian_mart")
 	assert_eq(mart.source, "res://data/shops/viridian_mart.json")

@@ -1,0 +1,130 @@
+{
+	"hugo": {
+		"cell": [12, 11],
+		"facing": "left",
+		"sprite": "cooltrainer_m",
+		"dialogue": "route_19_cooltrainer_hugo_after",
+		"trainer": {
+			"id": "route_19_cooltrainer_hugo",
+			"sight": 6,
+			"before": "route_19_cooltrainer_hugo_before",
+			"defeated": "route_19_cooltrainer_hugo_defeated"
+		}
+	},
+	"malo": {
+		"cell": [20, 11],
+		"facing": "left",
+		"sprite": "cooltrainer_m",
+		"dialogue": "route_19_cooltrainer_malo_after",
+		"trainer": {
+			"id": "route_19_cooltrainer_malo",
+			"sight": 5,
+			"before": "route_19_cooltrainer_malo_before",
+			"defeated": "route_19_cooltrainer_malo_defeated"
+		}
+	},
+	"yann": {
+		"cell": [20, 38],
+		"facing": "left",
+		"sprite": "swimmer_water",
+		"dialogue": "route_19_swimmer_yann_after",
+		"move_mode": "surf",
+		"trainer": {
+			"id": "route_19_swimmer_yann",
+			"sight": 5,
+			"before": "route_19_swimmer_yann_before",
+			"defeated": "route_19_swimmer_yann_defeated"
+		}
+	},
+	"erwan": {
+		"cell": [6, 41],
+		"facing": "right",
+		"sprite": "swimmer_water",
+		"dialogue": "route_19_swimmer_erwan_after",
+		"move_mode": "surf",
+		"trainer": {
+			"id": "route_19_swimmer_erwan",
+			"sight": 6,
+			"before": "route_19_swimmer_erwan_before",
+			"defeated": "route_19_swimmer_erwan_defeated"
+		}
+	},
+	"loic": {
+		"cell": [24, 47],
+		"facing": "up",
+		"sprite": "swimmer_water",
+		"dialogue": "route_19_swimmer_loic_after",
+		"move_mode": "surf",
+		"trainer": {
+			"id": "route_19_swimmer_loic",
+			"sight": 6,
+			"before": "route_19_swimmer_loic_before",
+			"defeated": "route_19_swimmer_loic_defeated"
+		}
+	},
+	"tanguy": {
+		"cell": [14, 17],
+		"facing": "down",
+		"sprite": "swimmer_water",
+		"dialogue": "route_19_swimmer_tanguy_after",
+		"move_mode": "surf",
+		"trainer": {
+			"id": "route_19_swimmer_tanguy",
+			"sight": 6,
+			"before": "route_19_swimmer_tanguy_before",
+			"defeated": "route_19_swimmer_tanguy_defeated"
+		}
+	},
+	"gwen": {
+		"cell": [14, 63],
+		"facing": "up",
+		"sprite": "swimmer_water",
+		"dialogue": "route_19_swimmer_gwen_after",
+		"move_mode": "surf",
+		"trainer": {
+			"id": "route_19_swimmer_gwen",
+			"sight": 6,
+			"before": "route_19_swimmer_gwen_before",
+			"defeated": "route_19_swimmer_gwen_defeated"
+		}
+	},
+	"maelle": {
+		"cell": [12, 65],
+		"facing": "left",
+		"sprite": "swimmer_f_water",
+		"dialogue": "route_19_swimmer_maelle_after",
+		"move_mode": "surf",
+		"trainer": {
+			"id": "route_19_swimmer_maelle",
+			"sight": 5,
+			"before": "route_19_swimmer_maelle_before",
+			"defeated": "route_19_swimmer_maelle_defeated"
+		}
+	},
+	"anais": {
+		"cell": [17, 65],
+		"facing": "right",
+		"sprite": "swimmer_f_water",
+		"dialogue": "route_19_swimmer_anais_after",
+		"move_mode": "surf",
+		"trainer": {
+			"id": "route_19_swimmer_anais",
+			"sight": 6,
+			"before": "route_19_swimmer_anais_before",
+			"defeated": "route_19_swimmer_anais_defeated"
+		}
+	},
+	"lena": {
+		"cell": [15, 66],
+		"facing": "down",
+		"sprite": "swimmer_f_water",
+		"dialogue": "route_19_swimmer_lena_after",
+		"move_mode": "surf",
+		"trainer": {
+			"id": "route_19_swimmer_lena",
+			"sight": 6,
+			"before": "route_19_swimmer_lena_before",
+			"defeated": "route_19_swimmer_lena_defeated"
+		}
+	}
+}

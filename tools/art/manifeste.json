@@ -2009,6 +2009,48 @@
    ]
   },
   {
+   "id": "int_labo_cramois_hall_coque",
+   "source": "INT_LABO_CRAMOIS_HALL_COQUE_NE_r1.png",
+   "sortie": "assets/world/interiors/int_labo_cramois_hall_coque.png",
+   "cases": [
+    27,
+    12
+   ],
+   "boite": [
+    10,
+    116,
+    1530,
+    890
+   ]
+  },
+  {
+   "id": "int_labo_cramois_rd_coque",
+   "source": "INT_LABO_CRAMOIS_RD_COQUE_NE_r1.png",
+   "sortie": "assets/world/interiors/int_labo_cramois_rd_coque.png",
+   "cases": [
+    15,
+    10
+   ]
+  },
+  {
+   "id": "int_labo_cramois_fossiles_coque",
+   "source": "INT_LABO_CRAMOIS_FOSSILES_COQUE_NE_r1.png",
+   "sortie": "assets/world/interiors/int_labo_cramois_fossiles_coque.png",
+   "cases": [
+    15,
+    10
+   ]
+  },
+  {
+   "id": "int_labo_cramois_reunion_coque",
+   "source": "INT_LABO_CRAMOIS_REUNION_COQUE_NE_r1.png",
+   "sortie": "assets/world/interiors/int_labo_cramois_reunion_coque.png",
+   "cases": [
+    15,
+    10
+   ]
+  },
+  {
    "id": "int_celadon_dept_gf_coque",
    "source": "INT_CELADON_DEPT_GF_COQUE_NE_r1.png",
    "sortie": "assets/world/interiors/int_celadon_dept_gf_coque.png",
@@ -2361,6 +2403,33 @@
    "id": "ground_dalles_tour_01",
    "source": "WORLD_GROUND_DALLES_TOUR_01_NE_r1.png",
    "sortie": "assets/world/ground/ground_dalles_tour_01.png",
+   "taille": 384,
+   "contraste": 0.8,
+   "couleur": 1.0,
+   "raccord": 24
+  },
+  {
+   "id": "ground_courant_01",
+   "source": "WORLD_GROUND_COURANT_01_NE_r1.png",
+   "sortie": "assets/world/ground/ground_courant_01.png",
+   "taille": 384,
+   "contraste": 1.0,
+   "couleur": 1.0,
+   "raccord": 24
+  },
+  {
+   "id": "ground_eau_grotte_01",
+   "source": "WORLD_GROUND_EAU_GROTTE_01_NE_r1.png",
+   "sortie": "assets/world/ground/ground_eau_grotte_01.png",
+   "taille": 384,
+   "contraste": 1.0,
+   "couleur": 1.0,
+   "raccord": 24
+  },
+  {
+   "id": "ground_glace_01",
+   "source": "WORLD_GROUND_GLACE_01_NE_r1.png",
+   "sortie": "assets/world/ground/ground_glace_01.png",
    "taille": 384,
    "contraste": 0.8,
    "couleur": 1.0,
@@ -2975,6 +3044,46 @@
    "source": "PNJ_EXORCISTE_NE_r1.png",
    "sortie": "assets/sprites/characters/painted/exorciste_sheet.png",
    "hauteur": 128
+  },
+  {
+   "id": "topdresseur",
+   "source": "PNJ_TOPDRESSEUR_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/topdresseur_sheet.png",
+   "hauteur": 128,
+   "nettoyer": true,
+   "note": "série 27 (J24) ; Route 19 : Hugo, Malo ; look cooltrainer_m"
+  },
+  {
+   "id": "nageur_eau",
+   "source": "PNJ_NAGEUR_EAU_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/nageur_eau_sheet.png",
+   "hauteur": 89,
+   "nettoyer": true,
+   "note": "série 27 : le Nageur du J13 dans l'eau, échelle de la marche (0,4) ; swimmer_water"
+  },
+  {
+   "id": "nageuse_eau",
+   "source": "PNJ_NAGEUSE_EAU_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/nageuse_eau_sheet.png",
+   "hauteur": 88,
+   "nettoyer": true,
+   "note": "série 27 : la Nageuse dans l'eau, tête égalisée sur celle du Nageur (× 0,956) ; swimmer_f_water"
+  },
+  {
+   "id": "heros_surf",
+   "source": "HEROS_SURF_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/heros_surf_sheet.png",
+   "hauteur": 134,
+   "nettoyer": true,
+   "note": "série 27 : le héros assis sur la monture, échelle de la marche (0,4) ; player_surf ; découpé par détection du sujet (casquette de la ligne 4)"
+  },
+  {
+   "id": "surf_monture",
+   "source": "SURF_MONTURE_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/surf_monture_sheet.png",
+   "hauteur": 76,
+   "nettoyer": true,
+   "note": "série 27 : monture de Surf seule (apparition, saut), profil ≈ 104 px ; surf_mount"
   },
   {
    "id": "erika",
@@ -4784,6 +4893,91 @@
    ],
    "echelle": 0.6,
    "nettoyer": true
+  },
+  {
+   "source": "WORLD_PROP_FORCE_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/props/",
+   "ids": [
+    "prop_rocher_force_01"
+   ],
+   "boites": [
+    [
+     28,
+     332,
+     384,
+     664
+    ]
+   ],
+   "echelle": 0.27,
+   "nettoyer": true
+  },
+  {
+   "source": "WORLD_PROP_FORCE_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/props/",
+   "ids": [
+    "prop_rocher_force_eau_01"
+   ],
+   "boites": [
+    [
+     404,
+     404,
+     788,
+     668
+    ]
+   ],
+   "echelle": 0.27,
+   "nettoyer": true
+  },
+  {
+   "source": "WORLD_PROP_FORCE_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/ground/decals/",
+   "ids": [
+    "decal_trou_force_01"
+   ],
+   "boites": [
+    [
+     804,
+     344,
+     1128,
+     668
+    ]
+   ],
+   "echelle": 0.2963,
+   "nettoyer": true
+  },
+  {
+   "source": "WORLD_PROP_FORCE_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/ground/decals/",
+   "ids": [
+    "decal_trou_force_bouche_01"
+   ],
+   "boites": [
+    [
+     1168,
+     336,
+     1512,
+     676
+    ]
+   ],
+   "echelle": 0.2791,
+   "nettoyer": true
+  }
+ ],
+ "pokemon_boucles": [
+  {
+   "id": "artikodin",
+   "source": "POKE_ARTIKODIN_MONDE_NE_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/artikodin_sheet.png",
+   "hauteur": 163,
+   "colonnes": 4,
+   "seuil_alpha": 24,
+   "ordre_colonnes": [
+    "repos",
+    "inspire",
+    "souffle",
+    "repos_2"
+   ],
+   "note": "série 27 : Artikodin r1 (Kevin, 2026-10-19), une direction, 4 images en boucle"
   }
  ]
 }

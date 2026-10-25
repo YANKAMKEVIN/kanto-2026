@@ -76,37 +76,54 @@ func test_real_data_loads_without_error() -> void:
 		&"nidorina", &"nidoqueen", &"nidoran_m", &"nidorino", &"nidoking", &"clefairy",
 		&"clefable", &"vulpix", &"ninetales", &"jigglypuff", &"wigglytuff", &"zubat", &"golbat",
 		&"oddish", &"gloom", &"vileplume", &"paras", &"parasect",
-		# J27 : Aéromite (emprunt J22, kanto_j27_emprunts.json).
-		&"venomoth",
+		# Jalon 22 (T4) : Mimitoss, Aéromite, Machopeur, Canarticho, Doduo, Dodrio, Tadmorv,
+		# Grotadmorv, Krabby, Électrode, Smogogo, Poissoroy, Magicarpe (kanto_j22.json).
+		&"venonat", &"venomoth",
 		# Jalon 17 (T7) : Taupiqueur, Triopikeur ; plus loin Goupix, Caninos, Magnéti, Magnéton,
 		# Soporifik, Hypno (kanto_j17.json).
 		&"diglett", &"dugtrio",
 		# Jalon 15 (T12) : Miaouss et Persan (kanto_vermilion.json).
 		&"meowth", &"persian",
+		# Jalon 24 (T4) : kanto_j24.json (Psykokwak, Akwakwak, Têtarte, Tartard, Tentacruel,
+		# Ramoloss, Flagadoss, Otaria, Lamantine, Crustabri, Krabby, Krabboss, Hypocéan,
+		# Poissoroy, Magicarpe, fossiles, Artikodin) ; Saquedeneu et Léviator sont ceux des J20
+		# et J19. Jalon 21 (T5) : Ptitard, Tentacool, Ronflex (kanto_j21.json).
+		&"psyduck", &"golduck",
 		&"mankey", &"primeape", &"growlithe", &"arcanine",
-		# Jalon 21 (T5) : Ptitard, Tentacool, Ronflex (kanto_j21.json).
-		&"poliwag",
+		&"poliwag", &"poliwhirl", &"poliwrath",
 		&"abra", &"kadabra", &"alakazam",
 		&"machop", &"machoke",
-		&"bellsprout", &"weepinbell", &"victreebel", &"tentacool",
-		&"geodude", &"graveler", &"golem", &"slowpoke", &"slowbro", &"magnemite", &"magneton", &"shellder",
+		&"bellsprout", &"weepinbell", &"victreebel", &"tentacool", &"tentacruel",
+		&"geodude", &"graveler", &"golem", &"ponyta", &"rapidash", &"slowpoke", &"slowbro", &"magnemite", &"magneton",
+		&"farfetchd", &"doduo", &"dodrio", &"seel", &"dewgong", &"grimer", &"muk", &"shellder",
+		&"cloyster",
 		# Jalon 19 (T3) : Fantominus, Spectrum, Noeunoeuf, Osselait, Ossatueur, Léviator
 		# (kanto_tower.json ; Caninos vient du J17).
 		&"gastly", &"haunter", &"onix",
-		&"drowzee", &"hypno", &"voltorb", &"exeggcute", &"cubone", &"marowak", &"hitmonlee", &"hitmonchan", &"koffing",
-		&"rhyhorn", &"tangela", &"kangaskhan",
-		&"horsea", &"goldeen", &"staryu", &"starmie", &"mr_mime", &"gyarados",
+		&"drowzee", &"hypno", &"krabby", &"kingler", &"voltorb", &"electrode", &"exeggcute",
+		&"cubone", &"marowak", &"hitmonlee", &"hitmonchan", &"koffing", &"weezing", &"rhyhorn",
+		&"tangela", &"kangaskhan",
+		&"horsea", &"seadra", &"goldeen", &"seaking", &"staryu", &"starmie", &"mr_mime", &"magmar",
+		&"magikarp", &"gyarados",
 		# Jalon 26 (T3) : Lokhlass, Alakazam (kanto_silph.json).
 		&"lapras",
-		&"eevee", &"vaporeon", &"jolteon", &"flareon", &"snorlax"] as Array[StringName])
-	assert_eq(_data.get_move_ids().size(), 143,
+		&"eevee", &"vaporeon", &"jolteon", &"flareon",
+		&"omanyte", &"omastar", &"kabuto", &"kabutops", &"aerodactyl", &"snorlax", &"articuno"] as Array[StringName])
+	# Jalon 25 (T7) : kanto_j25.json (Ponyta, Galopa, Magmar, Ptéra) ; Tadmorv, Grotadmorv,
+	# Smogogo et Électrode sont ceux du J22 (kanto_j25_reprises.json retiré à la fusion de main).
+	# Jalon 27 (T3) : 8 capacités propres (dont Vague Psy) + Ultimawashi et Clonage empruntées au
+	# J29 (Poing de Feu : celui du J25, retiré de j27_emprunts.json à la fusion de main).
+	assert_eq(_data.get_move_ids().size(), 152,
 		"47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10) + Patience (J11) "
 		+ "+ 21 du Mont Sélénite (jalon 12) + 8 du jalon 13 (les 5 du J12 qu'il reprenait : "
 		+ "entrées du J12) + 6 du Cap d'Azuria (jalon 14) + Jackpot (J15) "
 		+ "+ Coupe et Tonnerre (jalon 16) + 7 du jalon 17 + 8 de la Tour Pokémon (J19 ; "
 		+ "Hypnose, Hurlement et Bélier viennent du J17) + 7 du jalon 20 + Vol (passe systèmes 2, T25) "
 		+ "+ Surf (S2C) + Force (S2D) + Amnésie, Bouclier (J21 ; Constriction vient du J20) "
-		+ "+ 11 (J27 : 8 propres, dont Vague Psy ; 3 empruntées à J25/J29)")
+		+ "+ 5 du jalon 22 (Écrasement vient du J20) + 3 du J24 (j24.json : Force Poigne, "
+		+ "Pince-Masse et Trempette sont ceux du J22) "
+		+ "+ Déflagration et Poing de Feu (J25, j25.json) "
+		+ "+ 10 (J27 : 8 propres, dont Vague Psy ; 2 empruntées au J29)")
 	assert_true(_data.has_move(&"struggle"))
 
 
@@ -200,8 +217,21 @@ func test_real_evolution_chains() -> void:
 		# Tour Pokémon (jalon 19, §2.12) : Rouge/Bleu. Spectrum (échange, Ectoplasma absent) et
 		# Noeunoeuf (Pierre Plante absente) n'en déclarent pas.
 		&"gastly": [&"haunter", 25], &"cubone": [&"marowak", 28],
-		# J27 : Ramoloss (emprunt à J24) évolue en Flagadoss.
-		&"slowpoke": [&"slowbro", 37],
+		# Jalon 22 (§2.12) : Rouge/Bleu entre espèces présentes ; Machopeur (Mackogneur absent)
+		# n'en déclare pas ; Magicarpe → Léviator (J19) au N20.
+		&"venonat": [&"venomoth", 31], &"doduo": [&"dodrio", 31], &"grimer": [&"muk", 38],
+		&"magikarp": [&"gyarados", 20],
+		# Jalon 24 (T4, dossier 27 §14.1) : Rouge/Bleu. Ptitard → Têtarte (N25) et Tentacool →
+		# Tentacruel (N30) ajoutés dans kanto_j21.json à la fusion de `main` (accord J21 / J24) ;
+		# Krabby → Krabboss (N28) rétabli dans kanto_j22.json à la fusion du J24 dans `main`.
+		&"poliwag": [&"poliwhirl", 25], &"tentacool": [&"tentacruel", 30],
+		&"psyduck": [&"golduck", 33], &"poliwhirl": [&"poliwrath", &"water_stone"],
+		&"slowpoke": [&"slowbro", 37], &"seel": [&"dewgong", 34],
+		&"shellder": [&"cloyster", &"water_stone"], &"krabby": [&"kingler", 28],
+		&"horsea": [&"seadra", 32], &"goldeen": [&"seaking", 33],
+		&"omanyte": [&"omastar", 40], &"kabuto": [&"kabutops", 40],
+		# Jalon 25 (T7) : Ponyta (Rouge/Bleu) ; Tadmorv → Grotadmorv est celui du J22.
+		&"ponyta": [&"rapidash", 40],
 	}
 	var eevee := _data.get_species(&"eevee").evolutions
 	assert_eq(eevee.map(func(r: EvolutionRule) -> Array: return [r.into, r.method, r.item]), [
@@ -489,13 +519,24 @@ func test_real_catch_rates_are_the_official_ones() -> void:
 		# Jalon 19 (T3, Tour Pokémon ; Caninos vient du J17).
 		&"gastly": 190, &"haunter": 90, &"exeggcute": 90, &"cubone": 190,
 		&"marowak": 75, &"gyarados": 45,
+		# Jalon 22 (T4).
+		&"venonat": 190, &"venomoth": 75, &"machoke": 90, &"farfetchd": 45, &"doduo": 190,
+		&"dodrio": 45, &"grimer": 190, &"muk": 75, &"krabby": 225, &"electrode": 60,
+		&"weezing": 60, &"seaking": 60, &"magikarp": 255,
+		# Jalon 24 (T4 ; Krabby, Poissoroy et Magicarpe sont ceux du J22).
+		&"psyduck": 190, &"golduck": 75, &"poliwhirl": 120, &"poliwrath": 45,
+		&"tentacruel": 60, &"slowpoke": 190, &"slowbro": 75, &"seel": 190,
+		&"dewgong": 75, &"cloyster": 60, &"kingler": 60,
+		&"seadra": 75, &"omanyte": 45,
+		&"omastar": 45, &"kabuto": 45, &"kabutops": 45, &"articuno": 3,
 		# Jalon 21 (T5).
 		&"poliwag": 255, &"tentacool": 190, &"snorlax": 25,
+		# Jalon 25 (T7) ; Tadmorv, Grotadmorv, Smogogo et Électrode sont ceux du J22.
+		&"ponyta": 190, &"rapidash": 60, &"magmar": 45, &"aerodactyl": 45,
 		# Jalon 26 (T3, Sylphe SARL).
 		&"lapras": 45, &"alakazam": 50,
-		# J27 : M. Mime, Kicklee, Tygnon + emprunts J22/J24 (Aéromite, Machopeur, Ramoloss, Flagadoss).
-		&"mr_mime": 45, &"hitmonlee": 45, &"hitmonchan": 45, &"venomoth": 75, &"machoke": 90,
-		&"slowpoke": 190, &"slowbro": 75,
+		# J27 : M. Mime, Kicklee, Tygnon (ses emprunts aux J22 et J24 sont ceux de `main`).
+		&"mr_mime": 45, &"hitmonlee": 45, &"hitmonchan": 45,
 	}
 	assert_eq(_data.get_species_ids().size(), expected.size(), "toutes les espèces")
 	for id: StringName in _data.get_species_ids():

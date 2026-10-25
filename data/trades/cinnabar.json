@@ -1,0 +1,8 @@
+{
+	"_comment": "Échanges fixes du Labo de Cramois'Île (jalon 25, dossier 28 §6.2, X-15, X-26). PNJ du J24 (identifiants de grille papy, canon, scientifique_otaria) ; prénoms Hector, Lina, Marc [D] ; surnoms VF de Rouge/Bleu. Le Pokémon reçu prend le niveau du Pokémon donné.",
+	"trades": {
+		"cinnabar_trade_electrode": { "npc": "papy", "trainer_name": "Hector", "wants": "raichu", "gives": "electrode", "nickname": "Kourjus", "lines": "hector" },
+		"cinnabar_trade_tangela": { "npc": "canon", "trainer_name": "Lina", "wants": "venonat", "gives": "tangela", "nickname": "Bigoudi", "lines": "lina" },
+		"cinnabar_trade_seel": { "npc": "scientifique_otaria", "trainer_name": "Marc", "wants": "ponyta", "gives": "seel", "nickname": "Bibi", "lines": "marc" }
+	}
+}

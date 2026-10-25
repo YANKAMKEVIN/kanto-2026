@@ -390,7 +390,7 @@ func test_only_misty_surge_and_the_rivals_switch() -> void:
 	# Jalon 20 (T7, dossier 23 §11.3, §13.5) : Erika et Giovanni.
 	var switching: Array[StringName] = [&"cerulean_gym_misty", &"rival_cerulean",
 		&"rival_ss_anne", &"vermilion_gym_surge", &"rival_tower", &"celadon_gym_erika",
-		&"giovanni_hideout", &"rival_silph", &"silph_co_giovanni",
+		&"giovanni_hideout", &"rival_silph", &"silph_co_giovanni", &"cinnabar_gym_blaine",
 		# Jalon 27 (T3) : Morgane et le maître du Dojo [D].
 		&"saffron_gym_sabrina", &"fighting_dojo_master"]
 	for id: StringName in library.get_ids():

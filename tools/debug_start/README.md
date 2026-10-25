@@ -299,6 +299,7 @@ reste éprouvée par `test_cutscene_static_encounter.gd` et `test_cutscene_stati
 | Fichier | Partie |
 |---|---|
 | `snorlax_16_qa.json` | Route 16, devant Ronflex (spawn `face_ronflex`, case (26, 22), tourné ←), **Poké Flûte** et **1 Poké Ball** au Sac, équipe de référence du J21 [D] (Reptincel N33, Roucarnage N30, Papilusion N28, Évoli N25, Nidorino N28 **endormi**, Sabelette N26 empoisonnée), Badges jusqu'au Prisme, Centre de Céladopole enregistré. Parler à Ronflex : « Jouer de la Poké Flûte ? » ; réveil, combat N30 ; **fuite** et **défaite** (une seule Ball) rejouables ; K.O. ou capture : le goulet s'ouvre sur la porte du poste (« Route 16 — à venir » en développement) ; `route_16_visited` : non posé par ce départ (il l'est en entrant par Céladopole) |
+| `route_16_tree_qa.json` | Raccords J21 ↔ J22 (2026-10-23) : Route 16, spawn `face_arbre` (38, 21) tourné ↑, devant l'arbre à Couper ; Ronflex parti (`snorlax_route_16_woken`, `_done`), **CS01** au Sac (Reptincel peut Couper), même équipe que `snorlax_16_qa` en bonne santé. Couper l'arbre → voie haute → porte haute du poste ; porte basse par le goulet libre |
 
 ## Jalon 21 (T21) : Route 12 nord
 
@@ -333,3 +334,17 @@ Base : `saffron_free.json` (Safrania libérée, équipe N42, Salamèche en tête
 | `sabrina.json` | Arène, sur le tapis du centre (11, 11) (spawn `tp_19`) : deux pas vers Morgane (9, 8), on lui parle depuis (9, 9) |
 | `fighting_dojo.json` | Dojo, à l'entrée, **Safrania occupée** (Sylphe non libérée, ni Carte ni Master Ball) : le Dojo est jouable avant la libération |
 | `dojo_choice.json` | Dojo, maître déjà battu (`fighting_dojo_master_defeated`), **équipe pleine** (6) : examiner une Ball, OUI → le Pokémon va au Stockage |
+
+## Jalon 25 : Manoir, échanges du Labo, Vieil Ambre, Arène d'Auguste (QA 25A–25C)
+
+Équipe [D] (sauf mention) : Tortank N46 (Surf, Force, Morsure, Pistolet à O), Raichu N42, Akwakwak N42 ; CS01,
+CS03, CS04, 10 Hyper Balls, 10 Hyper Potions, 5 Total Soin, 3 Cordes Sortie ; 20 000 ₽ ; Badges
+jusqu'à l'Âme. Aucune carte de QA (`qa_manoir`, `qa_cramois` du plan jamais créées).
+
+| Fichier | Partie |
+|---|---|
+| `j25_manoir.json` | Cramois'Île devant le Manoir (`from_manoir`, ↑) : interrupteur remis à ARRÊT en entrant, 1F → 3F, chute, B1F, Clé Secrète, Pillards, Corde Sortie |
+| `j25_manoir_b1f.json` | B1F du Manoir (`arrivee_s`, ↓) : statues, grilles A/B, Clé Secrète, objets |
+| `j25_echanges.json` | Cramois'Île devant le Labo (`from_labo`, ↑), Tortank, Raichu N42 **compagnon**, Ponyta N30, Pikachu N25, Vieil Ambre au Sac : échanges d'Hector (Raichu), Marc (Ponyta), Lina (refus sans Mimitoss), Ptéra N30 |
+| `j25_argenta.json` | Argenta devant le Musée (`from_museum`, ↓), Tortank N46 et Herbizarre N30 (Coupe) : arbre à Couper, porte arrière, comptoir, Vieil Ambre |
+| `j25_arene.json` | Cramois'Île devant l'Arène (`from_arene`, ↑), **Clé Secrète** et `got_pokemon_mansion_b1f_item_5` : porte (76–77), quiz, Dresseurs, Auguste, Badge Volcan, CT38 ; perdu au premier essai sur le S24 (`jalon-25-equilibrage.md` §5) |

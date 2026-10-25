@@ -1,0 +1,58 @@
+# Manoir Pokémon 3F (pokemon_mansion_3f) — grille fonctionnelle v1 (jalon 25, dossier 28 §4). Tirée des blocs RB
+# (pret/pokered, annexe j25-annexe-rb-cramois.md §1.9), échelle 1 case = 1 pas (X-4). Contrôle :
+# tools/art/plan_check_manoir.py (relie les quatre étages, les escaliers, les trous et l'interrupteur).
+# Le mobilier n'est pas encore dessiné : il viendra avec la vue générale peinte, contrôle relancé.
+#
+# 30 × 18 cases ; nord en haut. Deuxième étage (sous les combles) : plancher effondré au sud (trous O). Trois escaliers ↓ 2F.
+# Journal n° 3 (6 février). Le Scientifique indique les trous.
+#
+# Légende (commune aux quatre étages) :
+#   # mur, mobilier lourd (bloqué)      . plancher (praticable, rencontres)
+#   a porte de grille du jeu A : FERMÉE quand l'interrupteur est sur ARRÊT, ouverte sur MARCHE
+#   b porte de grille du jeu B : FERMÉE sur MARCHE, ouverte sur ARRÊT
+#   U escalier qui monte   V escalier qui descend (paire= ; arrivée = spawn de même paire)
+#   O trou dans le plancher (3F ; praticable, déclenche la chute)   E seuil de sortie (1F)
+#   T statue à interrupteur (bloquée)   P pupitre et journal (bloqué)
+# Personnages, objets, statues, journaux, trous et escaliers : section POSITIONS.
+
+PRATICABLES .abUVOE
+
+GRILLE 30 18
+00 ##############################
+01 #.....V...####.########.######
+02 #...........##.#......#...####
+03 #...........##.#......#...####
+04 ###......##...bb..##.......###
+05 ###......#T...bb..##.......###
+06 ##########.....#.....##......#
+07 ##########.....#.....##......#
+08 #####...#####..#..######.....#
+09 #.###.....###..###############
+10 #.##...V..###.aa##....#......#
+11 #.##......###.aa......#......#
+12 #.##..P#.###..##..#..........#
+13 #.....##.#######..#.###.######
+14 ####....####....OO.O..#..V...#
+15 ####....####..........#......#
+16 #.....######..........#......#
+17 ############..........########
+FIN
+
+POSITIONS
+escalier_b                   escalier       7,10         libre   paire=B sens=descend vers=pokemon_mansion_2f
+arrivee_b                    spawn          7,11         libre   paire=B  # arrivée depuis l'autre étage
+escalier_c                   escalier       6,1          libre   paire=C sens=descend vers=pokemon_mansion_2f
+arrivee_c                    spawn          6,2          libre   paire=C  # arrivée depuis l'autre étage
+escalier_d                   escalier       25,14        libre   paire=D sens=descend vers=pokemon_mansion_2f
+arrivee_d                    spawn          25,15        libre   paire=D  # arrivée depuis l'autre étage
+trou_1                       trou           16,14        libre   vers=pokemon_mansion_1f arrivee=chute  # plancher effondré peint
+trou_2                       trou           17,14        libre   vers=pokemon_mansion_1f arrivee=chute  # plancher effondré peint
+trou_3                       trou           19,14        libre   vers=pokemon_mansion_2f arrivee=chute  # plancher effondré peint
+statue_1                     statue         10,5         bloque  facing=up  # interrupteur secret (textes 9–11), actionné depuis la case du dessous
+journal_3                    journal        6,12         bloque  # carnet sur pupitre, textes 5–6
+mansion_burglar_2            dresseur       5,11         bloque  facing=down sight=0  # Pillard : Feunard 38 ; on lui parle
+mansion_scientist_2          dresseur       20,11        bloque  facing=left sight=2  # Scientifique : Magnéti 33, Magnéton 33, Voltorbe 33
+pokemon_mansion_3f_item_1    objet_visible  1,16         bloque  item=max_potion  # Potion Max
+pokemon_mansion_3f_item_2    objet_visible  25,5         bloque  item=nugget  # Pépite (RB : Fer)
+pokemon_mansion_3f_hidden_1  objet_cache    1,9          libre   item=max_revive  # Rappel Max
+FIN

@@ -1,0 +1,40 @@
+CONCEPT ART — VUE GÉNÉRALE DES ÎLES ÉCUME, ÉTAGE B2F (grotte de glace) (Kanto 2026), image de référence de direction artistique.
+
+Deux images sont jointes.
+IMAGE 2 : la vue générale du Mont Sélénite, une autre grotte du même jeu. Respecte EXACTEMENT son style de rendu : même pinceau, même saturation, même finesse de détail, même traitement de la ROCHE et des parois, même lisibilité du sol. Ne reprends RIEN de sa composition ni de ses couleurs chaudes : ici, tout est GLACE et EAU (ni lampes, ni caisses, ni échelles de chantier en dehors de celles du plan, ni fossiles).
+Format : PAYSAGE 1536 × 1024, vue plongeante, exactement comme le plan.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. Un étage d'une grotte de glace, vu du dessus. Grands plateaux de SOL HAUT au milieu et à droite, SOL BAS en haut et en bas ; au centre-haut, deux TROUS de part et d'autre d'une double arête (aucun rocher dessiné) ; échelles.
+Légende du plan :
+- bleu ardoise foncé = ROCHE ET PAROIS infranchissables ; bande plus claire au bas d'une paroi = sa face rocheuse visible ;
+- gris-bleu clair = SOL BAS de la grotte (roche bleutée givrée) ; gris-bleu presque blanc = SOL HAUT (plateaux de glace et de neige tassée, un niveau plus haut, bordés de petites falaises de glace) ;
+- bande gris-bleu moyen = ARÊTE (rebord de glace entre le sol bas et le sol haut, infranchissable) ;
+- gris clair rayé de traits horizontaux = ESCALIERS taillés dans la glace entre les deux niveaux ;
+- bleu = EAU calme d'un bassin souterrain ; bleu plus sombre = eau profonde hors d'atteinte ;
+- chevrons blancs sur l'eau = COURANT violent (écume orientée dans le sens des chevrons, petites vagues) ;
+- gros disque gris clair fendu = ROCHER DE FORCE (rocher rond et clair, fissuré, qu'on peut pousser) ;
+- ovale noir cerclé de bleu = TROU dans le sol, vers l'étage du dessous ;
+- petite échelle brune = ÉCHELLE qui monte ; échelle sur un disque noir = ÉCHELLE qui descend par un trou ;
+- rectangle beige très clair au bord de l'image = ENTRÉE de la grotte, lumière du dehors ;
+- petits disques ardoise = petits rochers fixes ; minuscule caillou blanc = un caillou clair ; petit carré ocre = panneau SANS TEXTE.
+Respecte ce plan À LA LETTRE : la forme et la place de chaque zone. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+RÈGLE ABSOLUE DES PASSAGES : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; galeries, salles, bassins et bords suivent une grille : segments horizontaux et verticaux à ANGLES DROITS, AUCUNE galerie en diagonale ni en courbe. Les parois peuvent être irrégulières EN SURFACE, mais le sol praticable et l'eau gardent des bords droits et lisibles.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus, axes de l'image alignés sur la grille, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud).
+- Aucun trait noir : contours fins et doux, plus sombres et plus saturés que la couleur locale. Ombres colorées bleu-vert ou violet froid, jamais grises.
+- Pas de minimap, pas de flèche, pas de cadre, pas d'interface.
+
+AMBIANCE — « deux îles de glace et d'écume » : un donjon froid au milieu de la mer, glace bleutée, écume, vent, gouttes. Mystérieux, beau et silencieux, JAMAIS effrayant ni illisible.
+- Palette : BLEU GLACE, gris-bleu, turquoise de l'eau, blanc de l'écume et du givre ; ombres bleu nuit et violet froid ; pas de filtre uniforme.
+- LISIBILITÉ AVANT TOUT : le sol praticable est nettement plus clair que la roche ; le sol haut se distingue du sol bas par sa couleur plus blanche et par la petite falaise de glace qui le borde ; l'eau se lit d'un coup d'œil.
+- Stalactites et stalagmites de glace discrètes contre les parois, givre sur les rochers, gouttes ; quelques reflets de lumière dans la glace.
+- La lumière BAISSE à chaque étage. Ici : le deuxième sous-sol : encore plus sombre, bleu froid ; la glace luit doucement d'elle-même, embruns qui montent d'en dessous.
+
+PERSONNE : aucun personnage, aucun Pokémon, aucun animal (les rochers de Force sont des rochers ronds clairs et fendus, pas des créatures).
+
+INTERDITS : texte, lettres, chiffres, étiquettes, panneaux lisibles, logo, signature, filigrane, cadre, interface, minimap, flèche ; tout élément non prévu par le plan ; bords courbes ou en diagonale ; brouillard épais, flou de profondeur, vignettage ; pixel art ; vue isométrique. Ni lave, ni lampe, ni caisse, ni champignon lumineux, ni cristaux géants, ni ciel.
+
+L'image doit raconter, sans texte : un étage d'un donjon de glace et d'eau (B2F), où l'on pousse des rochers dans des trous pour calmer les courants.

@@ -1,0 +1,125 @@
+{
+	"route_20_swimmer_ronan_before": {
+		"speaker": "Nageur Ronan",
+		"pages": ["Sous l'île, il y a une immense\ncaverne."]
+	},
+	"route_20_swimmer_ronan_defeated": {
+		"speaker": "Nageur Ronan",
+		"pages": ["Tu nages vite !"]
+	},
+	"route_20_swimmer_ronan_after": {
+		"speaker": "Nageur Ronan",
+		"pages": ["Ses grottes sont pleines de glace."]
+	},
+	"route_20_swimmer_solene_before": {
+		"speaker": "Nageuse Solène",
+		"pages": ["Mes Hypocéan sont prêts !"]
+	},
+	"route_20_swimmer_solene_defeated": {
+		"speaker": "Nageuse Solène",
+		"pages": ["Ils se sont cachés…"]
+	},
+	"route_20_swimmer_solene_after": {
+		"speaker": "Nageuse Solène",
+		"pages": ["Le courant tire vers les grottes,\nfais attention."]
+	},
+	"route_20_swimmer_iris_before": {
+		"speaker": "Nageuse Inès",
+		"pages": ["Tu m'as trouvée ?\nPersonne ne vient jamais ici."]
+	},
+	"route_20_swimmer_iris_defeated": {
+		"speaker": "Nageuse Inès",
+		"pages": ["Tu méritais d'arriver jusqu'ici."]
+	},
+	"route_20_swimmer_iris_after": {
+		"speaker": "Nageuse Inès",
+		"pages": ["C'est mon coin secret.\nGarde-le pour toi."]
+	},
+	"route_20_swimmer_lou_before": {
+		"speaker": "Nageuse Lou",
+		"pages": ["On dit que ces îles n'en formaient\nqu'une, autrefois."]
+	},
+	"route_20_swimmer_lou_defeated": {
+		"speaker": "Nageuse Lou",
+		"pages": ["Je perds le fil…"]
+	},
+	"route_20_swimmer_lou_after": {
+		"speaker": "Nageuse Lou",
+		"pages": ["La mer a dû les séparer."]
+	},
+	"route_20_swimmer_mathis_before": {
+		"speaker": "Nageur Mathis",
+		"pages": ["Une seule étoile, mais elle brille\nfort !"]
+	},
+	"route_20_swimmer_mathis_defeated": {
+		"speaker": "Nageur Mathis",
+		"pages": ["Éteinte…"]
+	},
+	"route_20_swimmer_mathis_after": {
+		"speaker": "Nageur Mathis",
+		"pages": ["Mon Stari, c'est ma boussole."]
+	},
+	"route_20_swimmer_kilian_before": {
+		"speaker": "Nageur Kilian",
+		"pages": ["Les Hypotrempe, c'est ma passion !"]
+	},
+	"route_20_swimmer_kilian_defeated": {
+		"speaker": "Nageur Kilian",
+		"pages": ["Ma passion a coulé."]
+	},
+	"route_20_swimmer_kilian_after": {
+		"speaker": "Nageur Kilian",
+		"pages": ["Ils nagent en se tenant droits.\nFascinant."]
+	},
+	"route_20_bird_keeper_bastien_before": {
+		"speaker": "Ornithologue Bastien",
+		"pages": ["Mes oiseaux ne peuvent pas me\nramener. Alors combattons !"]
+	},
+	"route_20_bird_keeper_bastien_defeated": {
+		"speaker": "Ornithologue Bastien",
+		"pages": ["Pas de vent pour moi aujourd'hui."]
+	},
+	"route_20_bird_keeper_bastien_after": {
+		"speaker": "Ornithologue Bastien",
+		"pages": [
+			"Je suis coincé sur ce rocher.",
+			"Ils ne savent pas encore voler\nassez loin."
+		]
+	},
+	"route_20_swimmer_clara_before": {
+		"speaker": "Nageuse Clara",
+		"pages": ["Mes Kokiyas sont durs comme la\npierre !"]
+	},
+	"route_20_swimmer_clara_defeated": {
+		"speaker": "Nageuse Clara",
+		"pages": ["Ils se sont refermés…"]
+	},
+	"route_20_swimmer_clara_after": {
+		"speaker": "Nageuse Clara",
+		"pages": ["On trouve des Kokiyas partout dans\nces eaux."]
+	},
+	"route_20_swimmer_nina_before": {
+		"speaker": "Nageuse Noémie",
+		"pages": ["Cramois'Île ?\nTout droit vers l'ouest."]
+	},
+	"route_20_swimmer_nina_defeated": {
+		"speaker": "Nageuse Noémie",
+		"pages": ["Je me suis trompée de direction…"]
+	},
+	"route_20_swimmer_nina_after": {
+		"speaker": "Nageuse Noémie",
+		"pages": ["Il y a un Labo célèbre là-bas."]
+	},
+	"route_20_swimmer_elsa_before": {
+		"speaker": "Nageuse Elsa",
+		"pages": ["On dit qu'un manoir abandonné se\ncache sur Cramois'Île."]
+	},
+	"route_20_swimmer_elsa_defeated": {
+		"speaker": "Nageuse Elsa",
+		"pages": ["Ça me donne des frissons."]
+	},
+	"route_20_swimmer_elsa_after": {
+		"speaker": "Nageuse Elsa",
+		"pages": ["Je n'irais pas là-bas seule."]
+	}
+}

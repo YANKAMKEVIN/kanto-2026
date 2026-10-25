@@ -1,0 +1,15 @@
+PNJ_PECHEUR_PARMANIE — planche d'animation de marche d'un PNJ de Kanto 2026.
+Style : exactement le rendu de la planche jointe PERSO_P2_PEINT_r1 (le héros validé) ; PNJ_PECHEUR_NE_r1 = même main et même finesse pour un adulte (à NE PAS copier : autre visage, autre tenue, sauf ce que la description demande de garder) : personnage peint simplifié, chibi d'environ 3 têtes, même finesse, même contour fin coloré sans trait noir, mêmes proportions, même manière de peindre le visage et les vêtements. Ni pixel art, ni 3D, ni anime aux contours noirs. Le personnage ne ressemble PAS au héros joint (autre visage, autres couleurs, autre tenue).
+LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche ; volumes conservés par un ombrage doux ; aucune teinte dorée ou orangée, aucun liseré chaud ; ombres propres neutres, légèrement bleutées.
+
+PERSONNAGE (identique dans toutes les images) : le FRÈRE CADET du pêcheur joint PNJ_PECHEUR_NE_r1 : MÊME FAMILLE (même visage rond, même nez, même barbe courte mais BRUN-ROUX au lieu de grise, cheveux brun-roux), environ 45 ans, même gabarit, même main peinte. Tenue de la même famille, d'autres couleurs : BOB VERT OLIVE à bord court, chemise à carreaux ROUGES et crème manches retroussées, GILET DE PÊCHE BLEU MARINE multipoches, pantalon beige, bottes en caoutchouc BRUNES ; une épuisette courte à la main (pas de canne). Aucun texte.
+
+PLANCHE D'ANIMATION (spritesheet) : image portrait 1024 × 1536, fond avec une vraie transparence (canal alpha, aucun damier dessiné). Grille invisible de 4 colonnes × 4 lignes ; chaque cellule fait 256 × 384 px et contient UNE pose du personnage, entier, centré horizontalement, les pieds posés sur la même ligne horizontale à 30 px du bas de la cellule, à la même taille dans toutes les cellules (environ 320 px de haut). Aucune pose ne déborde de sa cellule.
+- Ligne 1 : de face (marche vers le bas de l'écran).
+- Ligne 2 : de profil, marche vers la gauche.
+- Ligne 3 : de profil, marche vers la droite.
+- Ligne 4 : de dos (marche vers le haut de l'écran).
+- Colonnes : cycle de marche en 4 images : 1 = pieds joints (passage), 2 = pas avec le pied gauche en avant, 3 = pieds joints (passage), 4 = pas avec le pied droit en avant. Bras qui balancent à l'opposé des jambes ; tête et buste qui montent très légèrement aux images 1 et 3.
+Vue : la même vue de dessus de trois quarts que le jeu (caméra un peu au-dessus, on voit un peu le dessus de la tête). Pas de perspective, pas d'ombre au sol, pas de sol, pas de texte, pas de numéros, pas de cadres autour des cellules, aucun Pokémon.
+Le visage, les couleurs, les proportions et les vêtements doivent être EXACTEMENT les mêmes dans les 16 poses.
+Interdits de la série : texte, lettres, chiffres, logo, animaux réels ou faune non-Pokémon (oiseaux réels, poissons, insectes), Pikachu et tout Pokémon non demandé, élément effrayant. Le personnage ne ressemble PAS au héros (ni casquette rouge, ni t-shirt blanc, ni sac à dos jaune).

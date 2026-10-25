@@ -1,0 +1,147 @@
+{
+	"route_15_lass_1": {
+		"name": "Jeune Dresseuse Rose",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 20,
+		"team": [
+			{
+				"species": "gloom",
+				"level": 28
+			},
+			{
+				"species": "oddish",
+				"level": 28
+			},
+			{
+				"species": "oddish",
+				"level": 28
+			}
+		]
+	},
+	"route_15_lass_2": {
+		"name": "Jeune Dresseuse Lison",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 20,
+		"team": [
+			{
+				"species": "clefairy",
+				"level": 33
+			}
+		]
+	},
+	"route_15_lass_3": {
+		"name": "Jeune Dresseuse Maëlle",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 20,
+		"team": [
+			{
+				"species": "bellsprout",
+				"level": 29
+			},
+			{
+				"species": "oddish",
+				"level": 29
+			},
+			{
+				"species": "tangela",
+				"level": 29
+			}
+		]
+	},
+	"route_15_beauty_1": {
+		"name": "Beauté Victoire",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 70,
+		"team": [
+			{
+				"species": "bulbasaur",
+				"level": 29
+			},
+			{
+				"species": "ivysaur",
+				"level": 29
+			}
+		]
+	},
+	"route_15_beauty_2": {
+		"name": "Beauté Hélène",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 70,
+		"team": [
+			{
+				"species": "pidgeotto",
+				"level": 29
+			},
+			{
+				"species": "wigglytuff",
+				"level": 29
+			}
+		]
+	},
+	"route_15_bird": {
+		"name": "Ornithologue Gustave",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 25,
+		"team": [
+			{
+				"species": "dodrio",
+				"level": 28
+			},
+			{
+				"species": "doduo",
+				"level": 28
+			},
+			{
+				"species": "doduo",
+				"level": 28
+			}
+		]
+	},
+	"route_15_biker": {
+		"name": "Motard Mike",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 20,
+		"team": [
+			{
+				"species": "koffing",
+				"level": 28
+			},
+			{
+				"species": "grimer",
+				"level": 28
+			},
+			{
+				"species": "weezing",
+				"level": 28
+			}
+		]
+	}
+}
