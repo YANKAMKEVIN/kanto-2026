@@ -19,9 +19,9 @@ pixel art ». Phase DA : `phase-da-cadrage.md` (option B, lots DAF.0 à DAF.8, g
 | Intérieurs (enveloppes) | toutes les cartes de `main` (coques peintes ou modules) | **0** ; `interiors/placeholder/` ne contient plus que 17 `ph_celadon_*` (références de taille de `serie22bis.py`, non utilisées) |
 | Dos de combat | **81 / 126** espèces peintes sur `main` depuis le 2026-10-25 (DAF.1 partie 1, §3) | **45 / 126** en pixel art 64 × 64 (`placeholder/<espèce>_back.png`), + 25 espèces à venir |
 | Fonds de combat | 50 cartes à combats sur 66 ont un fond (23 décors, 22 images `.webp`) | **16 cartes sans fond** (§2) |
-| Icônes du Sac | 45 | **≈ 23 objets sans icône** (§4) |
+| Icônes du Sac | 45 (+ 23 sur `daf-5-icones`, DAF.5) | **≈ 23 objets sans icône** (§4) ; 0 après fusion du DAF.5 |
 | Séries 23 et 25 | **23 intégrée** ; **25 non intégrée** sauf `bike.svg` (§5) | — |
-| Objets de décor | tous sauf 2 | `breakfast` (`player_house_1f`), `bed_items` (`rival_house`) en pixel |
+| Objets de décor | tous sauf 2 (peints sur `daf-5-icones`) | `breakfast` (`player_house_1f`), `bed_items` (`rival_house`) en pixel jusqu'à la fusion du DAF.5 |
 | Personnages, compagnons | ≈ 100 apparences, 27 compagnons | aucun visible |
 
 ## 2. Fonds de combat (`data/battle/decors.json`, clé `places` par `map_id`)
