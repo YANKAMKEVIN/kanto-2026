@@ -1,0 +1,162 @@
+{
+	"mansion_journal_1": {
+		"narration": true,
+		"pages": [
+			"Journal — 5 juillet.\nExpédition au cœur d'une jungle lointaine.",
+			"Un Pokémon inconnu a été découvert."
+		]
+	},
+	"mansion_journal_2": {
+		"narration": true,
+		"pages": [
+			"Journal — 10 juillet.\nNous avons baptisé le nouveau Pokémon :",
+			"Mew."
+		]
+	},
+	"mansion_journal_3": {
+		"narration": true,
+		"pages": [
+			"Journal — 6 février.\nMew a donné naissance.",
+			"Nous avons appelé le petit Mewtwo."
+		]
+	},
+	"mansion_journal_4": {
+		"narration": true,
+		"pages": [
+			"Journal — 1ᵉʳ septembre.\nMewtwo est bien trop puissant.",
+			"Nous n'arrivons plus à maîtriser\nsa violence…"
+		]
+	},
+	"mansion_statue": {
+		"narration": true,
+		"variants": [
+			{
+				"pages": [
+					"Un interrupteur secret !\nL'actionner ?"
+				],
+				"choice": {
+					"confirm": "OUI",
+					"cancel": "NON",
+					"confirm_cutscene": "mansion_switch",
+					"cancel_pages": [
+						"Pas encore."
+					]
+				}
+			}
+		]
+	},
+	"mansion_statue_yes": {
+		"narration": true,
+		"pages": [
+			"Qui ne le ferait pas ?"
+		]
+	},
+	"mansion_scientist_1_before": {
+		"speaker": "Scientifique Aurélien",
+		"pages": [
+			"Qui êtes-vous ?\nPersonne ne devrait être ici."
+		]
+	},
+	"mansion_scientist_1_defeated": {
+		"speaker": "Scientifique Aurélien",
+		"pages": [
+			"Une clé ?\nJe ne vois pas de quoi tu parles."
+		]
+	},
+	"mansion_scientist_1_after": {
+		"speaker": "Scientifique Aurélien",
+		"pages": [
+			"Ce manoir a brûlé il y a longtemps.\nLes notes, elles, sont restées."
+		]
+	},
+	"mansion_burglar_1_before": {
+		"speaker": "Pillard Gégé",
+		"pages": [
+			"Je n'arrive pas à sortir !\nCe manoir est un vrai casse-tête !"
+		]
+	},
+	"mansion_burglar_1_defeated": {
+		"speaker": "Pillard Gégé",
+		"pages": [
+			"Bon, bon… J'abandonne."
+		]
+	},
+	"mansion_burglar_1_after": {
+		"speaker": "Pillard Gégé",
+		"pages": [
+			"Les statues ouvrent et ferment les\ngrilles, chacune son tour !"
+		]
+	},
+	"mansion_burglar_2_before": {
+		"speaker": "Pillard Lulu",
+		"pages": [
+			"Cet endroit est immense !"
+		]
+	},
+	"mansion_burglar_2_defeated": {
+		"speaker": "Pillard Lulu",
+		"pages": [
+			"Perdu, en plus de ça…"
+		]
+	},
+	"mansion_burglar_2_after": {
+		"speaker": "Pillard Lulu",
+		"pages": [
+			"Je me demande où est passé mon associé."
+		]
+	},
+	"mansion_scientist_2_before": {
+		"speaker": "Scientifique Clothilde",
+		"pages": [
+			"Mon mentor vivait ici."
+		]
+	},
+	"mansion_scientist_2_defeated": {
+		"speaker": "Scientifique Clothilde",
+		"pages": [
+			"Je n'étais pas prête."
+		]
+	},
+	"mansion_scientist_2_after": {
+		"speaker": "Scientifique Clothilde",
+		"pages": [
+			"Coincé ? Essaie de sauter par là-bas !"
+		]
+	},
+	"mansion_burglar_3_before": {
+		"speaker": "Pillard Tito",
+		"pages": [
+			"Oh oh. Où suis-je ?"
+		]
+	},
+	"mansion_burglar_3_defeated": {
+		"speaker": "Pillard Tito",
+		"pages": [
+			"Aïe. Encore raté."
+		]
+	},
+	"mansion_burglar_3_after": {
+		"speaker": "Pillard Tito",
+		"pages": [
+			"On trouve des trucs par terre, ici."
+		]
+	},
+	"mansion_scientist_3_before": {
+		"speaker": "Scientifique Prosper",
+		"pages": [
+			"Cet endroit est idéal pour un labo."
+		]
+	},
+	"mansion_scientist_3_defeated": {
+		"speaker": "Scientifique Prosper",
+		"pages": [
+			"Mes calculs étaient faux."
+		]
+	},
+	"mansion_scientist_3_after": {
+		"speaker": "Scientifique Prosper",
+		"pages": [
+			"Je me plais ici.\nOn y étudie au calme."
+		]
+	}
+}

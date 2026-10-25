@@ -63,10 +63,19 @@
 	},
 	"vermilion_fan_club_chairman": {
 		"speaker": "Président du Fan Club",
-		"pages": [
-			"Tu aimes les Pokémon ? Alors écoute-moi\nparler de mon Ponyta !",
-			"Sa crinière, sa démarche…\nun champion !",
-			"Reviens quand tu veux, j'ai toujours\nune histoire à raconter !"
+		"variants": [
+			{
+				"unless": ["got_bike_voucher"],
+				"pages": ["Tu es venu écouter l'histoire\nde mon Ponyta ?"],
+				"choice": {
+					"confirm": "OUI", "cancel": "NON",
+					"confirm_cutscene": "j22_fan_club_voucher",
+					"cancel_pages": ["Oh… Une autre fois, alors."]
+				}
+			},
+			{
+				"pages": ["Mon Ponyta te passe le bonjour !"]
+			}
 		]
 	},
 	"vermilion_fan_club_member": {
@@ -81,9 +90,15 @@
 	},
 	"vermilion_fisher": {
 		"speaker": "Pêcheur",
-		"pages": [
-			"Je suis le meilleur pêcheur\nde Carmin !",
-			"La mer est pleine de Pokémon.\nUn jour, je t'apprendrai."
+		"variants": [
+			{
+				"unless": ["got_old_rod"],
+				"pages": ["Ah, te voilà ! J'avais promis.\nVoici ma vieille Canne."],
+				"cutscene": "j22_old_rod"
+			},
+			{
+				"pages": ["Alors, ça mord ?"]
+			}
 		]
 	},
 	"vermilion_house_1_resident": {

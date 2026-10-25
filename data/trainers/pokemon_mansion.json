@@ -1,0 +1,50 @@
+{
+	"mansion_scientist_1": {
+		"name": "Scientifique Aurélien", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 1450,
+		"team": [
+			{ "species": "electrode", "level": 29 },
+			{ "species": "weezing", "level": 29 }
+		]
+	},
+	"mansion_burglar_1": {
+		"name": "Pillard Gégé", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 3060,
+		"team": [
+			{ "species": "charmander", "level": 34, "moves": ["growl", "ember", "leer", "slash"] },
+			{ "species": "charmeleon", "level": 34, "moves": ["growl", "ember", "leer", "slash"] }
+		]
+	},
+	"mansion_burglar_2": {
+		"name": "Pillard Lulu", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 3420,
+		"team": [
+			{ "species": "ninetales", "level": 38 }
+		]
+	},
+	"mansion_scientist_2": {
+		"name": "Scientifique Clothilde", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 1650,
+		"team": [
+			{ "species": "magnemite", "level": 33 },
+			{ "species": "magneton", "level": 33 },
+			{ "species": "voltorb", "level": 33 }
+		]
+	},
+	"mansion_burglar_3": {
+		"name": "Pillard Tito", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 3060,
+		"team": [
+			{ "species": "growlithe", "level": 34 },
+			{ "species": "ponyta", "level": 34 }
+		]
+	},
+	"mansion_scientist_3": {
+		"name": "Scientifique Prosper", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 1700,
+		"team": [
+			{ "species": "magnemite", "level": 34 },
+			{ "species": "electrode", "level": 34 }
+		]
+	}
+}

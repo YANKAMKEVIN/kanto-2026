@@ -1,49 +1,4 @@
 {
-	"machoke": {
-		"dex": 67,
-		"name": "Machopeur",
-		"types": [
-			"fighting"
-		],
-		"base_stats": {
-			"hp": 80,
-			"atk": 100,
-			"def": 70,
-			"spa": 50,
-			"spd": 60,
-			"spe": 45
-		},
-		"male_ratio": 0.75,
-		"growth_rate": "medium_slow",
-		"base_exp": 142,
-		"catch_rate": 90,
-		"learnset": [
-			[
-				1,
-				"karate_chop"
-			],
-			[
-				1,
-				"low_kick"
-			],
-			[
-				1,
-				"leer"
-			],
-			[
-				20,
-				"low_kick"
-			],
-			[
-				25,
-				"leer"
-			],
-			[
-				36,
-				"focus_energy"
-			]
-		]
-	},
 	"tauros": {
 		"dex": 128,
 		"name": "Tauros",

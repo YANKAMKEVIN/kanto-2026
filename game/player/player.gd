@@ -176,6 +176,11 @@ func get_move_mode() -> GridWorld.MoveMode:
 	return GridWorld.MoveMode.SURF if _mount == Mount.Kind.SURF else GridWorld.MoveMode.WALK
 
 
+## Vrai si le joueur est dessiné en selle : animation `bike_*` de l'apparence ou vélo provisoire.
+func is_bike_drawn() -> bool:
+	return _mount == Mount.Kind.BIKE and is_mount_drawn()
+
+
 ## Change de monture : durée des pas et animations ; [signal mount_changed] si elle change. Le
 ## pas en cours finit à son ancienne durée. [param instant] : sans mise en scène (arrivée sur une
 ## carte, chargement) — le joueur n'en a pas lui-même : la mise en scène (saut du Surf,

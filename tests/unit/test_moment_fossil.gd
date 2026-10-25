@@ -99,7 +99,7 @@ func test_without_items_or_unknown_item_the_moment_is_skipped() -> void:
 	_state.record_moment(MomentLibrary.FOSSIL, &"mt_moon_b2f", {"item": "dome_fossil"})
 	assert_eq(_view(null).size(), 0, "sans objets : ignoré")
 	_state.moments.clear()
-	_state.record_moment(MomentLibrary.FOSSIL, &"mt_moon_b2f", {"item": "old_amber"})
+	_state.record_moment(MomentLibrary.FOSSIL, &"mt_moon_b2f", {"item": "objet_inconnu"})
 	assert_eq(_view(_items).size(), 0, "objet inconnu : ignoré")
 	_state.moments.clear()
 	_state.record_moment(MomentLibrary.FOSSIL, &"mt_moon_b2f", {})

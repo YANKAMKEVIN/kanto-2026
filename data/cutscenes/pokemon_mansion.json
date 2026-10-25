@@ -1,0 +1,321 @@
+{
+	"pokemon_mansion_1f_item_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_pokemon_mansion_1f_item_1"
+				],
+				"steps": [
+					{
+						"despawn": "pokemon_mansion_1f_item_1"
+					},
+					{
+						"give": "escape_rope",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_pokemon_mansion_1f_item_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"pokemon_mansion_1f_item_2": {
+		"variants": [
+			{
+				"unless": [
+					"got_pokemon_mansion_1f_item_2"
+				],
+				"steps": [
+					{
+						"despawn": "pokemon_mansion_1f_item_2"
+					},
+					{
+						"give": "nugget",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_pokemon_mansion_1f_item_2"
+						]
+					}
+				]
+			}
+		]
+	},
+	"pokemon_mansion_1f_hidden_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_pokemon_mansion_1f_hidden_1"
+				],
+				"steps": [
+					{
+						"give": "moon_stone",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_pokemon_mansion_1f_hidden_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"pokemon_mansion_2f_item_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_pokemon_mansion_2f_item_1"
+				],
+				"steps": [
+					{
+						"despawn": "pokemon_mansion_2f_item_1"
+					},
+					{
+						"give": "rare_candy",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_pokemon_mansion_2f_item_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"pokemon_mansion_3f_item_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_pokemon_mansion_3f_item_1"
+				],
+				"steps": [
+					{
+						"despawn": "pokemon_mansion_3f_item_1"
+					},
+					{
+						"give": "max_potion",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_pokemon_mansion_3f_item_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"pokemon_mansion_3f_item_2": {
+		"variants": [
+			{
+				"unless": [
+					"got_pokemon_mansion_3f_item_2"
+				],
+				"steps": [
+					{
+						"despawn": "pokemon_mansion_3f_item_2"
+					},
+					{
+						"give": "nugget",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_pokemon_mansion_3f_item_2"
+						]
+					}
+				]
+			}
+		]
+	},
+	"pokemon_mansion_3f_hidden_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_pokemon_mansion_3f_hidden_1"
+				],
+				"steps": [
+					{
+						"give": "max_revive",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_pokemon_mansion_3f_hidden_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"pokemon_mansion_b1f_item_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_pokemon_mansion_b1f_item_1"
+				],
+				"steps": [
+					{
+						"despawn": "pokemon_mansion_b1f_item_1"
+					},
+					{
+						"give": "rare_candy",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_pokemon_mansion_b1f_item_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"pokemon_mansion_b1f_item_2": {
+		"variants": [
+			{
+				"unless": [
+					"got_pokemon_mansion_b1f_item_2"
+				],
+				"steps": [
+					{
+						"despawn": "pokemon_mansion_b1f_item_2"
+					},
+					{
+						"give": "full_restore",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_pokemon_mansion_b1f_item_2"
+						]
+					}
+				]
+			}
+		]
+	},
+	"pokemon_mansion_b1f_item_3": {
+		"variants": [
+			{
+				"unless": [
+					"got_pokemon_mansion_b1f_item_3"
+				],
+				"steps": [
+					{
+						"despawn": "pokemon_mansion_b1f_item_3"
+					},
+					{
+						"give": "tm14",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_pokemon_mansion_b1f_item_3"
+						]
+					}
+				]
+			}
+		]
+	},
+	"pokemon_mansion_b1f_item_4": {
+		"variants": [
+			{
+				"unless": [
+					"got_pokemon_mansion_b1f_item_4"
+				],
+				"steps": [
+					{
+						"despawn": "pokemon_mansion_b1f_item_4"
+					},
+					{
+						"give": "tm22",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_pokemon_mansion_b1f_item_4"
+						]
+					}
+				]
+			}
+		]
+	},
+	"pokemon_mansion_b1f_item_5": {
+		"variants": [
+			{
+				"unless": [
+					"got_pokemon_mansion_b1f_item_5"
+				],
+				"steps": [
+					{
+						"despawn": "pokemon_mansion_b1f_item_5"
+					},
+					{
+						"give": "secret_key",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_pokemon_mansion_b1f_item_5"
+						]
+					}
+				]
+			}
+		]
+	},
+	"pokemon_mansion_b1f_hidden_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_pokemon_mansion_b1f_hidden_1"
+				],
+				"steps": [
+					{
+						"give": "rare_candy",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_pokemon_mansion_b1f_hidden_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"mansion_switch": {
+		"variants": [
+			{
+				"steps": [
+					{
+						"toggle": [
+							"mansion_switch_on"
+						]
+					},
+					{
+						"dialogue": "mansion_statue_yes"
+					}
+				]
+			}
+		]
+	}
+}

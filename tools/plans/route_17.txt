@@ -1,0 +1,228 @@
+# Route 17 — la Piste Cyclable (`route_17`) — grille fonctionnelle (jalon 22, lot 22.0, T6 ; dossier 25
+# §4, §6.4, §8.6, §9.6, §11 ; RB : Route 17, 20 × 144, raccourcie).
+#
+# 30 × 150 cases ; nord en haut ; x = 0..29, y = 0..149. TOUTE LA CARTE EST PISTE (cycling_road) : on y
+# roule, on n'en descend pas ; aucune case pêchable (la mer à l'ouest est un décor « ~ »).
+#
+# RACCORDS : NORD (12..14, 0) ↔ Route 16 ouest (12..14, 26) ; SUD (12..14, 149) ↔ Route 18 (12..14, 0).
+#
+# Composition, du nord au sud : entrée de 3 cases, place du départ (plate, panneau), puis DEUX VOIES DE
+# PENTE de 4 cases (ouest x 9..12, est x 14..17) séparées par une barrière basse (x 13) percée de trois
+# passages (rangées 21..22, 58..59, 128..129) ; TROIS PALIERS plats (rangées 38..43, 74..79, 110..115) où
+# la barrière s'ouvre, avec banc, panneau et poche d'herbes à l'est ; un GOULET de 3 cases (rangées
+# 92..95) gardé par le Motard (I) ; place d'arrivée (plate) puis sortie de 3 cases. Les Dresseurs sont en
+# alcôve (x 8 dans la rive, x 18 dans la forêt), chacun tourné vers UNE voie ; la barrière arrête leur vue.
+# Sans appui, le joueur dérive d'une case vers le sud sur « s » ; il s'arrête sur un palier (« k »), quand
+# un Dresseur le voit, ou contre un obstacle. Gauche, droite et remonter restent libres.
+#
+# LÉGENDE COMMUNE DU J22 (chaque grille la reprend ; caractères NOUVEAUX marqués ★) :
+#   T arbres, forêt serrée (bloqués)     . herbe rase (praticable)     = chemin de terre (praticable)
+#   h hautes herbes (praticable, rencontres)   q ponton, planches (praticable)   y sable (praticable)
+#   w eau (bloquée, NON pêchable)        ★ f eau PÊCHABLE (bloquée ; on pêche depuis une case praticable
+#     voisine, face à elle ; jamais au contact d'une case de Piste)   ~ mer de décor (bloquée)
+#   R rochers, rive rocheuse, falaise (bloqués)   c clôture basse (bloquée)   x buissons (bloqués)
+#   n banc (bloqué)   P poste (bâtiment, bloqué)   m maison (bloquée)   D porte (praticable, terminale)
+#   ★ k tronçon de PISTE CYCLABLE, plat (praticable ; à vélo seulement, on ne peut pas descendre)
+#   ★ s PISTE en PENTE (praticable ; sans appui, dérive d'une case vers le sud ; Route 17 seulement)
+#   b barrière basse de la Piste (bloquée ; arrête la vue des Dresseurs)
+# Une case de Piste est une case « k » ou « s » ; un PALIER est une bande de rangées de la Route 17 sans
+# « s » entre deux tronçons de pente. Les Dresseurs de la Piste sont EN RETRAIT : sur une case « . »
+# (alcôve) hors des voies, tournés vers elles.
+#
+# POSITIONS : types warp, spawn, dresseur, objet_visible, cache, panneau, pnj, pokemon, herbes, repere,
+# decor. Dresseurs : trainer= (id du dossier §9), facing=, sight= (portée RB × 1,5, arrondie au-dessus :
+# 1 → 2, 2 → 3, 3 → 5, 4 → 6), rbsight=, inevitable=oui|non. Objets : item=, drapeau= (dossier §11).
+# Warps : to= (carte) spawn= (point d'arrivée) ; coming_soon= pour une porte ou un bord « À venir » ;
+# lie= relie les deux portes d'un poste traversant. Le contrôle : tools/art/plan_check_j22.py
+# (python3 -I tools/art/plan_check_j22.py) ; le rendu : tools/art/plan_aplats_j22.py.
+#
+# DÉFAUTS : 3 paliers de 6 rangées ; 150 rangées (RB 216 à l'échelle) ; 5 objets cachés sur la Piste
+# (dossier §11) ; panneaux de RB réduits à 5.
+
+PRATICABLES .khs
+
+GRILLE 30 150
+00 ~~~~~~RRTTTTkkkTTTTTTTTTTTTTTT
+01 ~~~~~~RRTTTTkkkTTTTTTTTTTTTTTT
+02 ~~~~~~RRTTTTkkkTTTTTTTTTTTTTTT
+03 ~~~~~~RRTTTTkkkTTTTTTTTTTTTTTT
+04 ~~~~~~RRTkkkkkkkkkTTTTTTTTTTTT
+05 ~~~~~~RRTkkkkkkkkkTTTTTTTTTTTT
+06 ~~~~~~RRTkkkkkkkkkTTTTTTTTTTTT
+07 ~~~~~~RRTkkkkkkkkkTTTTTTTTTTTT
+08 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+09 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+10 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+11 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+12 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+13 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+14 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+15 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+16 ~~~~~~RR.ssssbssssTTTTTTTTTTTT
+17 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+18 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+19 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+20 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+21 ~~~~~~RRTsssssssssTTTTTTTTTTTT
+22 ~~~~~~RRTsssssssssTTTTTTTTTTTT
+23 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+24 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+25 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+26 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+27 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+28 ~~~~~~RRTssssbssss.TTTTTTTTTTT
+29 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+30 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+31 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+32 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+33 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+34 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+35 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+36 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+37 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+38 ~~~~~~RRkkkkkkkkkkknnkTTTTTTTT
+39 ~~~~~~RRkkkkkkkkkkhhhhTTTTTTTT
+40 ~~~~~~RRTkkkkkkkkkhhhhTTTTTTTT
+41 ~~~~~~RRkkkkkkkkkkhhhhTTTTTTTT
+42 ~~~~~~RRkkkkkkkkkkhhhhTTTTTTTT
+43 ~~~~~~RRkkkkkkkkkkkkkkTTTTTTTT
+44 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+45 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+46 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+47 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+48 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+49 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+50 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+51 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+52 ~~~~~~RR.ssssbssssTTTTTTTTTTTT
+53 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+54 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+55 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+56 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+57 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+58 ~~~~~~RRTsssssssssTTTTTTTTTTTT
+59 ~~~~~~RRTsssssssssTTTTTTTTTTTT
+60 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+61 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+62 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+63 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+64 ~~~~~~RRTssssbssss.TTTTTTTTTTT
+65 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+66 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+67 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+68 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+69 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+70 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+71 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+72 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+73 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+74 ~~~~~~RRkkkkkkkkkkknnkTTTTTTTT
+75 ~~~~~~RRkkkkkkkkkkhhhhTTTTTTTT
+76 ~~~~~~RRTkkkkkkkkkhhhhTTTTTTTT
+77 ~~~~~~RRkkkkkkkkkkhhhhTTTTTTTT
+78 ~~~~~~RRkkkkkkkkkkhhhhTTTTTTTT
+79 ~~~~~~RRkkkkkkkkkkkkkkTTTTTTTT
+80 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+81 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+82 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+83 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+84 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+85 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+86 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+87 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+88 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+89 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+90 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+91 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+92 ~~~~~~RRTTTTsssTTTTTTTTTTTTTTT
+93 ~~~~~~RRTTTTsss.TTTTTTTTTTTTTT
+94 ~~~~~~RRTTTTsssTTTTTTTTTTTTTTT
+95 ~~~~~~RRTTTTsssTTTTTTTTTTTTTTT
+96 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+97 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+98 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+99 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+100 ~~~~~~RRTssssbssss.TTTTTTTTTTT
+101 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+102 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+103 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+104 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+105 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+106 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+107 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+108 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+109 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+110 ~~~~~~RRkkkkkkkkkkknnkTTTTTTTT
+111 ~~~~~~RRkkkkkkkkkkhhhhTTTTTTTT
+112 ~~~~~~RRTkkkkkkkkkhhhhTTTTTTTT
+113 ~~~~~~RRkkkkkkkkkkhhhhTTTTTTTT
+114 ~~~~~~RRkkkkkkkkkkhhhhTTTTTTTT
+115 ~~~~~~RRkkkkkkkkkkkkkkTTTTTTTT
+116 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+117 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+118 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+119 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+120 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+121 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+122 ~~~~~~RR.ssssbssssTTTTTTTTTTTT
+123 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+124 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+125 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+126 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+127 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+128 ~~~~~~RRTsssssssssTTTTTTTTTTTT
+129 ~~~~~~RRTsssssssssTTTTTTTTTTTT
+130 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+131 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+132 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+133 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+134 ~~~~~~RRTssssbssss.TTTTTTTTTTT
+135 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+136 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+137 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+138 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+139 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+140 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+141 ~~~~~~RRTssssbssssTTTTTTTTTTTT
+142 ~~~~~~RRTkkkkkkkkkTTTTTTTTTTTT
+143 ~~~~~~RRTkkkkkkkkkTTTTTTTTTTTT
+144 ~~~~~~RRTkkkkkkkkkTTTTTTTTTTTT
+145 ~~~~~~RRTkkkkkkkkkTTTTTTTTTTTT
+146 ~~~~~~RRTTTTkkkTTTTTTTTTTTTTTT
+147 ~~~~~~RRTTTTkkkTTTTTTTTTTTTTTT
+148 ~~~~~~RRTTTTkkkTTTTTTTTTTTTTTT
+149 ~~~~~~RRTTTTkkkTTTTTTTTTTTTTTT
+FIN
+
+# POSITIONS — identifiant  type  cases  bloque|libre  [cle=valeur ...]  # commentaire
+POSITIONS
+warp_nord              warp           12..14,0       libre   to=route_16_west spawn=from_route_17  # PUSH ↑ → Route 16 ouest (12..14, 26)
+from_route_16          spawn          12..14,0       libre   facing=down  # arrivée de la Route 16 ouest, tournée ↓
+warp_sud               warp           12..14,149     libre   to=route_18 spawn=from_route_17  # PUSH ↓ → Route 18 (12..14, 0)
+from_route_18          spawn          12..14,149     libre   facing=up  # arrivée de la Route 18, tournée ↑
+route_17_cueball_1     dresseur       8,16           bloque  role=D1 trainer=route_17_cueball_1 facing=right sight=5 rbsight=3 inevitable=non rb=12,19  # Loubard, Férosinge 29 + Colossinge 29 ; vue (9..12, 16) : voie ouest → voie est
+route_17_cueball_2     dresseur       18,28          bloque  role=D2 trainer=route_17_cueball_2 facing=left sight=6 rbsight=4 inevitable=non rb=11,16  # Loubard, Machoc 29 + Machopeur 29 ; vue (14..17, 28) : voie est → voie ouest (passage 21..22)
+route_17_biker_1       dresseur       8,52           bloque  role=D3 trainer=route_17_biker_1 facing=right sight=6 rbsight=4 inevitable=non rb=4,18  # Motard, Smogogo / Smogo / Smogogo 28 ; vue (9..12, 52) : voie est
+route_17_biker_3       dresseur       18,64          bloque  role=D4 trainer=route_17_biker_3 facing=left sight=5 rbsight=3 inevitable=non rb=14,34  # Motard, Voltorbe 29 ×2 ; vue (14..17, 64) : voie ouest (passage 58..59)
+route_17_biker_2       dresseur       15,93          bloque  role=D5 trainer=route_17_biker_2 facing=left sight=6 rbsight=4 inevitable=oui rb=7,32  # Motard, Grotadmorv 33 (I) ; alcôve du GOULET (12..14, 92..95), vue (12..14, 93) : tout le goulet
+route_17_cueball_3     dresseur       18,100         bloque  role=D6 trainer=route_17_cueball_3 facing=left sight=3 rbsight=2 inevitable=non rb=17,58  # Loubard, Machopeur 33 ; vue (15..17, 100) : x 14 libre, ou la voie ouest
+route_17_biker_4       dresseur       8,122          bloque  role=D7 trainer=route_17_biker_4 facing=right sight=5 rbsight=3 inevitable=non rb=5,98  # Motard, Smogogo 29 + Grotadmorv 29 ; vue (9..12, 122) : voie est
+route_17_cueball_4     dresseur       18,134         bloque  role=D8 trainer=route_17_cueball_4 facing=left sight=3 rbsight=2 inevitable=non rb=14,98  # Loubard, Colossinge 29 + Machopeur 29 ; vue (15..17, 134) : x 14 libre, ou la voie ouest
+route_17_hidden_1      cache          9,39           libre   role=O1 item=rare_candy drapeau=got_route_17_hidden_1  # Super Bonbon caché ; ramassé à vélo (Action face à la case)
+route_17_hidden_2      cache          17,76          libre   role=O2 item=full_restore drapeau=got_route_17_hidden_2  # Guérison caché ; ramassé à vélo (Action face à la case)
+route_17_hidden_3      cache          11,88          libre   role=O3 item=nugget drapeau=got_route_17_hidden_3  # Pépite (PP Plus de RB) caché ; ramassé à vélo (Action face à la case)
+route_17_hidden_4      cache          10,113         libre   role=O4 item=full_restore drapeau=got_route_17_hidden_4  # Guérison (Rappel Max de RB) caché ; ramassé à vélo (Action face à la case)
+route_17_hidden_5      cache          16,143         libre   role=O5 item=nugget drapeau=got_route_17_hidden_5  # Pépite (Max Élixir de RB) caché ; ramassé à vélo (Action face à la case)
+panneau_depart         panneau        8,5            bloque  role=T-piste  # « PISTE CYCLABLE » ; lu depuis (9, 5) ←
+panneau_palier_1       panneau        8,41           bloque  role=T-palier1  # panneau du palier 1 (RB : conseils) ; lu depuis (9, 41) ←
+panneau_palier_2       panneau        8,77           bloque  role=T-palier2  # panneau du palier 2 (RB : conseils) ; lu depuis (9, 77) ←
+panneau_palier_3       panneau        8,113          bloque  role=T-palier3  # panneau du palier 3 (RB : conseils) ; lu depuis (9, 113) ←
+panneau_fin            panneau        8,143          bloque  role=T-fin  # « FIN DE LA PISTE » ; lu depuis (9, 143) ←
+palier_1               repere         8..21,38..43   libre   role=palier  # PALIER 1 : bande plate (6 rangées), bancs, herbes, panneau ; barrière ouverte
+herbes_h1              herbes         18..21,39..42  libre   role=H1
+palier_2               repere         8..21,74..79   libre   role=palier  # PALIER 2 : bande plate (6 rangées), bancs, herbes, panneau ; barrière ouverte
+herbes_h2              herbes         18..21,75..78  libre   role=H2
+palier_3               repere         8..21,110..115 libre   role=palier  # PALIER 3 : bande plate (6 rangées), bancs, herbes, panneau ; barrière ouverte
+herbes_h3              herbes         18..21,111..114 libre   role=H3
+piste                  repere         8..21,0..149   libre   role=piste  # toute la carte est Piste (cycling_road)
+FIN

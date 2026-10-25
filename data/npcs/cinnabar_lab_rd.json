@@ -1,0 +1,27 @@
+{
+	"tm35_scientist": {
+		"cell": [10, 4],
+		"facing": "down",
+		"sprite": "researcher",
+		"dialogue": "cinnabar_lab_tm35"
+	},
+	"eevee_scientist": {
+		"cell": [3, 5],
+		"facing": "right",
+		"sprite": "fossil_researcher",
+		"dialogue": "cinnabar_lab_eevee",
+		"route": {
+			"cells": [
+				[3, 5],
+				[4, 5],
+				[5, 5],
+				[6, 5],
+				[7, 5],
+				[6, 5],
+				[5, 5],
+				[4, 5]
+			],
+			"pause": 1.5
+		}
+	}
+}

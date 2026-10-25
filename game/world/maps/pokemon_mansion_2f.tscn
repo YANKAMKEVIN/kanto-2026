@@ -1,0 +1,658 @@
+[gd_scene format=4]
+
+[ext_resource type="Script" path="res://game/world/map.gd" id="1_a6120"]
+[ext_resource type="TileSet" path="res://assets/tiles/overworld.tres" id="2_37ep6"]
+[ext_resource type="Script" path="res://game/world/flag_gate.gd" id="3_aaymg"]
+[ext_resource type="Script" path="res://game/world/warp_point.gd" id="4_054r7"]
+[ext_resource type="Script" path="res://game/world/interactions/interact_point.gd" id="5_n6dhb"]
+
+[node name="PokemonMansion2F" type="Node2D" unique_id=511649544]
+script = ExtResource("1_a6120")
+map_id = &"pokemon_mansion_2f"
+display_name = "Manoir Pokémon"
+size = Vector2i(30, 28)
+light_profile = &"tower"
+
+[node name="Ground" type="TileMapLayer" parent="." unique_id=106099149]
+tile_map_data = PackedByteArray("AAAAAAAAAAAAAAcAAAABAAAAAAABAAcAAAACAAAAAAABAAcAAAADAAAAAAAAAAcAAAAEAAAAAAABAAcAAAAFAAAAAAABAAcAAAAGAAAAAAAAAAcAAAAHAAAAAAABAAcAAAAIAAAAAAABAAcAAAAJAAAAAAAAAAcAAAAKAAAAAAABAAcAAAALAAAAAAABAAcAAAAMAAAAAAABAAcAAAANAAAAAAABAAcAAAAOAAAAAAABAAcAAAAPAAAAAAAAAAcAAAAQAAAAAAABAAcAAAARAAAAAAABAAcAAAASAAAAAAABAAcAAAATAAAAAAAAAAcAAAAUAAAAAAAAAAcAAAAVAAAAAAABAAcAAAAWAAAAAAABAAcAAAAXAAAAAAABAAcAAAAYAAAAAAAAAAcAAAAZAAAAAAABAAcAAAAaAAAAAAABAAcAAAAbAAAAAAABAAcAAAAcAAAAAAAAAAcAAAAdAAAAAAABAAcAAAAAAAEAAAABAAcAAAABAAEAAAAAAAcAAAACAAEAAAAAAAcAAAADAAEAAAABAAcAAAAEAAEAAAAAAAcAAAAFAAEAAAAAAAcAAAAGAAEAAAABAAUAAAAHAAEAAAABAAUAAAAIAAEAAAAAAAUAAAAJAAEAAAAAAAcAAAAKAAEAAAABAAUAAAALAAEAAAABAAUAAAAMAAEAAAAAAAUAAAANAAEAAAAAAAUAAAAOAAEAAAAAAAUAAAAPAAEAAAAAAAcAAAAQAAEAAAAAAAUAAAARAAEAAAABAAUAAAASAAEAAAAAAAUAAAATAAEAAAAAAAUAAAAUAAEAAAAAAAUAAAAVAAEAAAAAAAUAAAAWAAEAAAAAAAcAAAAXAAEAAAAAAAUAAAAYAAEAAAABAAcAAAAZAAEAAAAAAAcAAAAaAAEAAAAAAAcAAAAbAAEAAAABAAcAAAAcAAEAAAABAAcAAAAdAAEAAAABAAcAAAAAAAIAAAAAAAcAAAABAAIAAAABAAcAAAACAAIAAAAAAAcAAAADAAIAAAAAAAcAAAAEAAIAAAAAAAUAAAAFAAIAAAABAAUAAAAGAAIAAAABAAUAAAAHAAIAAAAAAAUAAAAIAAIAAAAAAAUAAAAJAAIAAAAAAAcAAAAKAAIAAAABAAUAAAALAAIAAAAAAAUAAAAMAAIAAAABAAUAAAANAAIAAAABAAUAAAAOAAIAAAAAAAUAAAAPAAIAAAAAAAcAAAAQAAIAAAABAAUAAAARAAIAAAAAAAUAAAASAAIAAAABAAcAAAATAAIAAAABAAcAAAAUAAIAAAAAAAUAAAAVAAIAAAAAAAUAAAAWAAIAAAABAAcAAAAXAAIAAAAAAAUAAAAYAAIAAAABAAUAAAAZAAIAAAAAAAUAAAAaAAIAAAAAAAcAAAAbAAIAAAABAAcAAAAcAAIAAAAAAAcAAAAdAAIAAAAAAAcAAAAAAAMAAAAAAAcAAAABAAMAAAABAAcAAAACAAMAAAABAAcAAAADAAMAAAABAAcAAAAEAAMAAAABAAUAAAAFAAMAAAAAAAUAAAAGAAMAAAABAAUAAAAHAAMAAAABAAUAAAAIAAMAAAAAAAUAAAAJAAMAAAABAAcAAAAKAAMAAAAAAAUAAAALAAMAAAABAAUAAAAMAAMAAAAAAAUAAAANAAMAAAAAAAUAAAAOAAMAAAABAAUAAAAPAAMAAAAAAAcAAAAQAAMAAAABAAUAAAARAAMAAAABAAUAAAASAAMAAAABAAcAAAATAAMAAAABAAcAAAAUAAMAAAAAAAUAAAAVAAMAAAAAAAUAAAAWAAMAAAAAAAUAAAAXAAMAAAAAAAUAAAAYAAMAAAABAAUAAAAZAAMAAAAAAAUAAAAaAAMAAAAAAAUAAAAbAAMAAAABAAUAAAAcAAMAAAAAAAcAAAAdAAMAAAAAAAcAAAAAAAQAAAAAAAcAAAABAAQAAAAAAAcAAAACAAQAAAAAAAUAAAADAAQAAAAAAAUAAAAEAAQAAAABAAUAAAAFAAQAAAAAAAUAAAAGAAQAAAABAAUAAAAHAAQAAAAAAAUAAAAIAAQAAAAAAAUAAAAJAAQAAAABAAUAAAAKAAQAAAAAAAUAAAALAAQAAAAAAAUAAAAMAAQAAAAAAAUAAAANAAQAAAABAAUAAAAOAAQAAAABAAUAAAAPAAQAAAABAAcAAAAQAAQAAAAAAAUAAAARAAQAAAABAAUAAAASAAQAAAABAAUAAAATAAQAAAABAAUAAAAUAAQAAAABAAUAAAAVAAQAAAAAAAUAAAAWAAQAAAABAAcAAAAXAAQAAAAAAAcAAAAYAAQAAAAAAAcAAAAZAAQAAAABAAUAAAAaAAQAAAABAAUAAAAbAAQAAAABAAUAAAAcAAQAAAABAAUAAAAdAAQAAAABAAcAAAAAAAUAAAAAAAcAAAABAAUAAAABAAcAAAACAAUAAAABAAUAAAADAAUAAAAAAAUAAAAEAAUAAAAAAAUAAAAFAAUAAAAAAAUAAAAGAAUAAAABAAUAAAAHAAUAAAAAAAUAAAAIAAUAAAAAAAUAAAAJAAUAAAAAAAUAAAAKAAUAAAABAAUAAAALAAUAAAAAAAUAAAAMAAUAAAAAAAUAAAANAAUAAAAAAAUAAAAOAAUAAAAAAAUAAAAPAAUAAAAAAAcAAAAQAAUAAAABAAcAAAARAAUAAAAAAAcAAAASAAUAAAABAAUAAAATAAUAAAAAAAUAAAAUAAUAAAAAAAcAAAAVAAUAAAABAAcAAAAWAAUAAAAAAAcAAAAXAAUAAAAAAAcAAAAYAAUAAAABAAcAAAAZAAUAAAABAAUAAAAaAAUAAAABAAUAAAAbAAUAAAABAAUAAAAcAAUAAAAAAAUAAAAdAAUAAAABAAcAAAAAAAYAAAABAAcAAAABAAYAAAABAAUAAAACAAYAAAAAAAUAAAADAAYAAAAAAAUAAAAEAAYAAAAAAAcAAAAFAAYAAAAAAAUAAAAGAAYAAAABAAcAAAAHAAYAAAABAAUAAAAIAAYAAAAAAAUAAAAJAAYAAAAAAAcAAAAKAAYAAAABAAUAAAALAAYAAAABAAUAAAAMAAYAAAABAAUAAAANAAYAAAABAAUAAAAOAAYAAAABAAUAAAAPAAYAAAAAAAUAAAAQAAYAAAAAAAUAAAARAAYAAAAAAAUAAAASAAYAAAAAAAUAAAATAAYAAAABAAUAAAAUAAYAAAABAAUAAAAVAAYAAAAAAAUAAAAWAAYAAAABAAUAAAAXAAYAAAAAAAcAAAAYAAYAAAAAAAcAAAAZAAYAAAAAAAcAAAAaAAYAAAAAAAcAAAAbAAYAAAAAAAcAAAAcAAYAAAABAAUAAAAdAAYAAAAAAAcAAAAAAAcAAAAAAAcAAAABAAcAAAABAAUAAAACAAcAAAAAAAUAAAADAAcAAAAAAAUAAAAEAAcAAAABAAcAAAAFAAcAAAAAAAUAAAAGAAcAAAABAAcAAAAHAAcAAAAAAAUAAAAIAAcAAAAAAAUAAAAJAAcAAAABAAcAAAAKAAcAAAAAAAUAAAALAAcAAAAAAAUAAAAMAAcAAAAAAAUAAAANAAcAAAABAAUAAAAOAAcAAAAAAAUAAAAPAAcAAAABAAUAAAAQAAcAAAABAAUAAAARAAcAAAAAAAUAAAASAAcAAAABAAUAAAATAAcAAAAAAAUAAAAUAAcAAAABAAUAAAAVAAcAAAABAAUAAAAWAAcAAAAAAAUAAAAXAAcAAAAAAAcAAAAYAAcAAAABAAcAAAAZAAcAAAABAAcAAAAaAAcAAAABAAcAAAAbAAcAAAABAAcAAAAcAAcAAAAAAAUAAAAdAAcAAAAAAAcAAAAAAAgAAAABAAcAAAABAAgAAAAAAAUAAAACAAgAAAABAAUAAAADAAgAAAABAAUAAAAEAAgAAAAAAAUAAAAFAAgAAAABAAUAAAAGAAgAAAABAAUAAAAHAAgAAAABAAUAAAAIAAgAAAABAAUAAAAJAAgAAAAAAAcAAAAKAAgAAAAAAAUAAAALAAgAAAAAAAUAAAAMAAgAAAABAAUAAAANAAgAAAAAAAcAAAAOAAgAAAAAAAcAAAAPAAgAAAABAAcAAAAQAAgAAAABAAcAAAARAAgAAAAAAAcAAAASAAgAAAAAAAUAAAATAAgAAAAAAAUAAAAUAAgAAAAAAAcAAAAVAAgAAAAAAAcAAAAWAAgAAAABAAcAAAAXAAgAAAAAAAcAAAAYAAgAAAAAAAcAAAAZAAgAAAAAAAcAAAAaAAgAAAAAAAcAAAAbAAgAAAAAAAcAAAAcAAgAAAABAAcAAAAdAAgAAAAAAAcAAAAAAAkAAAAAAAcAAAABAAkAAAAAAAcAAAACAAkAAAAAAAcAAAADAAkAAAAAAAcAAAAEAAkAAAAAAAcAAAAFAAkAAAABAAcAAAAGAAkAAAABAAcAAAAHAAkAAAAAAAcAAAAIAAkAAAABAAcAAAAJAAkAAAABAAcAAAAKAAkAAAAAAAUAAAALAAkAAAABAAUAAAAMAAkAAAAAAAUAAAANAAkAAAAAAAcAAAAOAAkAAAAAAAcAAAAPAAkAAAABAAcAAAAQAAkAAAAAAAUAAAARAAkAAAABAAUAAAASAAkAAAABAAUAAAATAAkAAAAAAAUAAAAUAAkAAAAAAAUAAAAVAAkAAAAAAAUAAAAWAAkAAAAAAAcAAAAXAAkAAAABAAcAAAAYAAkAAAAAAAUAAAAZAAkAAAABAAUAAAAaAAkAAAAAAAcAAAAbAAkAAAAAAAcAAAAcAAkAAAABAAcAAAAdAAkAAAABAAcAAAAAAAoAAAABAAcAAAABAAoAAAABAAUAAAACAAoAAAABAAcAAAADAAoAAAAAAAUAAAAEAAoAAAAAAAUAAAAFAAoAAAABAAUAAAAGAAoAAAABAAUAAAAHAAoAAAABAAUAAAAIAAoAAAABAAUAAAAJAAoAAAABAAUAAAAKAAoAAAABAAUAAAALAAoAAAABAAUAAAAMAAoAAAABAAUAAAANAAoAAAAAAAcAAAAOAAoAAAAAAAcAAAAPAAoAAAAAAAcAAAAQAAoAAAAAAAUAAAARAAoAAAAAAAUAAAASAAoAAAAAAAUAAAATAAoAAAABAAUAAAAUAAoAAAABAAUAAAAVAAoAAAABAAUAAAAWAAoAAAAAAAcAAAAXAAoAAAABAAUAAAAYAAoAAAABAAUAAAAZAAoAAAABAAUAAAAaAAoAAAAAAAUAAAAbAAoAAAAAAAUAAAAcAAoAAAABAAUAAAAdAAoAAAABAAcAAAAAAAsAAAAAAAcAAAABAAsAAAABAAUAAAACAAsAAAABAAcAAAADAAsAAAABAAUAAAAEAAsAAAAAAAUAAAAFAAsAAAABAAUAAAAGAAsAAAAAAAUAAAAHAAsAAAAAAAUAAAAIAAsAAAAAAAUAAAAJAAsAAAAAAAUAAAAKAAsAAAABAAUAAAALAAsAAAABAAUAAAAMAAsAAAABAAUAAAANAAsAAAAAAAcAAAAOAAsAAAAAAAcAAAAPAAsAAAABAAcAAAAQAAsAAAAAAAUAAAARAAsAAAAAAAUAAAASAAsAAAABAAUAAAATAAsAAAABAAUAAAAUAAsAAAABAAUAAAAVAAsAAAAAAAUAAAAWAAsAAAABAAcAAAAXAAsAAAABAAUAAAAYAAsAAAABAAUAAAAZAAsAAAAAAAUAAAAaAAsAAAABAAUAAAAbAAsAAAABAAUAAAAcAAsAAAAAAAUAAAAdAAsAAAABAAcAAAAAAAwAAAABAAcAAAABAAwAAAABAAUAAAACAAwAAAABAAUAAAADAAwAAAABAAUAAAAEAAwAAAAAAAUAAAAFAAwAAAABAAUAAAAGAAwAAAAAAAUAAAAHAAwAAAABAAcAAAAIAAwAAAAAAAcAAAAJAAwAAAABAAUAAAAKAAwAAAABAAUAAAALAAwAAAAAAAUAAAAMAAwAAAAAAAUAAAANAAwAAAAAAAUAAAAOAAwAAAABAAcAAAAPAAwAAAAAAAcAAAAQAAwAAAABAAcAAAARAAwAAAABAAcAAAASAAwAAAAAAAUAAAATAAwAAAAAAAUAAAAUAAwAAAAAAAUAAAAVAAwAAAAAAAUAAAAWAAwAAAABAAcAAAAXAAwAAAABAAUAAAAYAAwAAAABAAUAAAAZAAwAAAAAAAUAAAAaAAwAAAABAAUAAAAbAAwAAAABAAUAAAAcAAwAAAABAAUAAAAdAAwAAAAAAAcAAAAAAA0AAAAAAAcAAAABAA0AAAAAAAUAAAACAA0AAAAAAAUAAAADAA0AAAAAAAUAAAAEAA0AAAABAAUAAAAFAA0AAAAAAAUAAAAGAA0AAAAAAAUAAAAHAA0AAAABAAcAAAAIAA0AAAABAAcAAAAJAA0AAAABAAUAAAAKAA0AAAAAAAUAAAALAA0AAAABAAcAAAAMAA0AAAABAAcAAAANAA0AAAAAAAcAAAAOAA0AAAAAAAcAAAAPAA0AAAAAAAcAAAAQAA0AAAABAAcAAAARAA0AAAABAAcAAAASAA0AAAABAAcAAAATAA0AAAABAAcAAAAUAA0AAAABAAUAAAAVAA0AAAAAAAUAAAAWAA0AAAABAAcAAAAXAA0AAAAAAAUAAAAYAA0AAAABAAUAAAAZAA0AAAABAAUAAAAaAA0AAAAAAAcAAAAbAA0AAAAAAAcAAAAcAA0AAAABAAcAAAAdAA0AAAAAAAcAAAAAAA4AAAAAAAcAAAABAA4AAAAAAAcAAAACAA4AAAABAAcAAAADAA4AAAABAAcAAAAEAA4AAAABAAcAAAAFAA4AAAABAAUAAAAGAA4AAAAAAAcAAAAHAA4AAAAAAAcAAAAIAA4AAAAAAAcAAAAJAA4AAAAAAAUAAAAKAA4AAAAAAAUAAAALAA4AAAABAAcAAAAMAA4AAAABAAcAAAANAA4AAAABAAcAAAAOAA4AAAABAAcAAAAPAA4AAAABAAcAAAAQAA4AAAAAAAcAAAARAA4AAAAAAAcAAAASAA4AAAAAAAUAAAATAA4AAAABAAUAAAAUAA4AAAAAAAUAAAAVAA4AAAAAAAUAAAAWAA4AAAAAAAcAAAAXAA4AAAABAAcAAAAYAA4AAAABAAUAAAAZAA4AAAAAAAUAAAAaAA4AAAABAAUAAAAbAA4AAAAAAAUAAAAcAA4AAAABAAUAAAAdAA4AAAABAAcAAAAAAA8AAAAAAAcAAAABAA8AAAAAAAcAAAACAA8AAAAAAAcAAAADAA8AAAABAAcAAAAEAA8AAAABAAUAAAAFAA8AAAAAAAUAAAAGAA8AAAAAAAcAAAAHAA8AAAAAAAcAAAAIAA8AAAABAAcAAAAJAA8AAAAAAAUAAAAKAA8AAAAAAAUAAAALAA8AAAABAAcAAAAMAA8AAAABAAcAAAANAA8AAAABAAcAAAAOAA8AAAAAAAcAAAAPAA8AAAAAAAcAAAAQAA8AAAAAAAcAAAARAA8AAAABAAcAAAASAA8AAAAAAAUAAAATAA8AAAAAAAUAAAAUAA8AAAAAAAUAAAAVAA8AAAABAAUAAAAWAA8AAAAAAAcAAAAXAA8AAAABAAcAAAAYAA8AAAAAAAUAAAAZAA8AAAAAAAUAAAAaAA8AAAABAAUAAAAbAA8AAAABAAUAAAAcAA8AAAABAAUAAAAdAA8AAAABAAcAAAAAABAAAAABAAcAAAABABAAAAABAAUAAAACABAAAAABAAUAAAADABAAAAABAAUAAAAEABAAAAAAAAUAAAAFABAAAAAAAAcAAAAGABAAAAABAAcAAAAHABAAAAAAAAcAAAAIABAAAAABAAcAAAAJABAAAAABAAcAAAAKABAAAAABAAUAAAALABAAAAAAAAcAAAAMABAAAAABAAUAAAANABAAAAAAAAUAAAAOABAAAAAAAAcAAAAPABAAAAABAAcAAAAQABAAAAABAAcAAAARABAAAAAAAAcAAAASABAAAAABAAcAAAATABAAAAABAAcAAAAUABAAAAAAAAcAAAAVABAAAAAAAAcAAAAWABAAAAABAAcAAAAXABAAAAAAAAcAAAAYABAAAAABAAcAAAAZABAAAAAAAAcAAAAaABAAAAABAAcAAAAbABAAAAABAAcAAAAcABAAAAAAAAcAAAAdABAAAAABAAcAAAAAABEAAAABAAcAAAABABEAAAAAAAUAAAACABEAAAAAAAUAAAADABEAAAABAAUAAAAEABEAAAAAAAUAAAAFABEAAAAAAAcAAAAGABEAAAAAAAcAAAAHABEAAAAAAAcAAAAIABEAAAABAAcAAAAJABEAAAABAAcAAAAKABEAAAAAAAUAAAALABEAAAABAAcAAAAMABEAAAABAAUAAAANABEAAAABAAUAAAAOABEAAAABAAcAAAAPABEAAAABAAcAAAAQABEAAAAAAAcAAAARABEAAAAAAAcAAAASABEAAAAAAAcAAAATABEAAAAAAAcAAAAUABEAAAAAAAcAAAAVABEAAAABAAcAAAAWABEAAAAAAAcAAAAXABEAAAAAAAcAAAAYABEAAAABAAcAAAAZABEAAAABAAcAAAAaABEAAAABAAcAAAAbABEAAAABAAcAAAAcABEAAAABAAcAAAAdABEAAAAAAAcAAAAAABIAAAAAAAcAAAABABIAAAABAAcAAAACABIAAAAAAAcAAAADABIAAAABAAcAAAAEABIAAAABAAcAAAAFABIAAAAAAAcAAAAGABIAAAAAAAcAAAAHABIAAAAAAAcAAAAIABIAAAABAAUAAAAJABIAAAABAAUAAAAKABIAAAABAAUAAAALABIAAAAAAAcAAAAMABIAAAABAAUAAAANABIAAAABAAUAAAAOABIAAAAAAAcAAAAPABIAAAAAAAcAAAAQABIAAAABAAcAAAARABIAAAABAAcAAAASABIAAAAAAAcAAAATABIAAAAAAAcAAAAUABIAAAAAAAcAAAAVABIAAAABAAcAAAAWABIAAAAAAAcAAAAXABIAAAABAAcAAAAYABIAAAABAAcAAAAZABIAAAABAAcAAAAaABIAAAAAAAcAAAAbABIAAAAAAAcAAAAcABIAAAABAAcAAAAdABIAAAABAAcAAAAAABMAAAABAAcAAAABABMAAAAAAAcAAAACABMAAAABAAcAAAADABMAAAAAAAcAAAAEABMAAAAAAAcAAAAFABMAAAAAAAcAAAAGABMAAAAAAAUAAAAHABMAAAAAAAcAAAAIABMAAAAAAAUAAAAJABMAAAABAAUAAAAKABMAAAAAAAUAAAALABMAAAABAAcAAAAMABMAAAAAAAUAAAANABMAAAAAAAUAAAAOABMAAAAAAAcAAAAPABMAAAAAAAcAAAAQABMAAAAAAAcAAAARABMAAAABAAcAAAASABMAAAAAAAcAAAATABMAAAAAAAcAAAAUABMAAAABAAcAAAAVABMAAAAAAAcAAAAWABMAAAABAAcAAAAXABMAAAABAAcAAAAYABMAAAABAAcAAAAZABMAAAAAAAcAAAAaABMAAAABAAcAAAAbABMAAAAAAAcAAAAcABMAAAAAAAcAAAAdABMAAAABAAcAAAAAABQAAAAAAAcAAAABABQAAAABAAUAAAACABQAAAABAAUAAAADABQAAAAAAAUAAAAEABQAAAAAAAUAAAAFABQAAAABAAUAAAAGABQAAAAAAAUAAAAHABQAAAABAAcAAAAIABQAAAAAAAUAAAAJABQAAAABAAUAAAAKABQAAAABAAUAAAALABQAAAAAAAcAAAAMABQAAAABAAUAAAANABQAAAABAAUAAAAOABQAAAAAAAcAAAAPABQAAAAAAAcAAAAQABQAAAAAAAcAAAARABQAAAAAAAcAAAASABQAAAAAAAcAAAATABQAAAABAAcAAAAUABQAAAABAAcAAAAVABQAAAABAAcAAAAWABQAAAAAAAcAAAAXABQAAAABAAcAAAAYABQAAAAAAAcAAAAZABQAAAABAAcAAAAaABQAAAAAAAcAAAAbABQAAAAAAAcAAAAcABQAAAABAAcAAAAdABQAAAABAAcAAAAAABUAAAABAAcAAAABABUAAAABAAUAAAACABUAAAABAAUAAAADABUAAAABAAUAAAAEABUAAAAAAAUAAAAFABUAAAAAAAUAAAAGABUAAAABAAUAAAAHABUAAAAAAAcAAAAIABUAAAAAAAUAAAAJABUAAAAAAAUAAAAKABUAAAABAAUAAAALABUAAAABAAcAAAAMABUAAAAAAAUAAAANABUAAAABAAUAAAAOABUAAAAAAAcAAAAPABUAAAAAAAcAAAAQABUAAAABAAcAAAARABUAAAAAAAcAAAASABUAAAABAAcAAAATABUAAAAAAAcAAAAUABUAAAABAAcAAAAVABUAAAAAAAcAAAAWABUAAAAAAAcAAAAXABUAAAABAAcAAAAYABUAAAAAAAcAAAAZABUAAAABAAcAAAAaABUAAAABAAcAAAAbABUAAAABAAcAAAAcABUAAAAAAAcAAAAdABUAAAAAAAcAAAAAABYAAAABAAcAAAABABYAAAABAAUAAAACABYAAAABAAcAAAADABYAAAABAAcAAAAEABYAAAABAAcAAAAFABYAAAAAAAcAAAAGABYAAAAAAAUAAAAHABYAAAABAAUAAAAIABYAAAABAAUAAAAJABYAAAAAAAUAAAAKABYAAAAAAAUAAAALABYAAAABAAUAAAAMABYAAAABAAUAAAANABYAAAABAAUAAAAOABYAAAAAAAcAAAAPABYAAAAAAAcAAAAQABYAAAABAAcAAAARABYAAAAAAAcAAAASABYAAAAAAAcAAAATABYAAAAAAAcAAAAUABYAAAABAAcAAAAVABYAAAABAAcAAAAWABYAAAAAAAcAAAAXABYAAAABAAcAAAAYABYAAAAAAAcAAAAZABYAAAAAAAcAAAAaABYAAAABAAcAAAAbABYAAAABAAcAAAAcABYAAAAAAAcAAAAdABYAAAABAAcAAAAAABcAAAABAAcAAAABABcAAAABAAUAAAACABcAAAABAAcAAAADABcAAAABAAcAAAAEABcAAAAAAAcAAAAFABcAAAABAAcAAAAGABcAAAAAAAUAAAAHABcAAAABAAUAAAAIABcAAAAAAAUAAAAJABcAAAABAAUAAAAKABcAAAABAAUAAAALABcAAAAAAAcAAAAMABcAAAAAAAUAAAANABcAAAAAAAUAAAAOABcAAAAAAAcAAAAPABcAAAABAAcAAAAQABcAAAAAAAcAAAARABcAAAAAAAcAAAASABcAAAABAAcAAAATABcAAAAAAAcAAAAUABcAAAABAAcAAAAVABcAAAABAAcAAAAWABcAAAAAAAcAAAAXABcAAAABAAcAAAAYABcAAAAAAAcAAAAZABcAAAAAAAcAAAAaABcAAAAAAAcAAAAbABcAAAAAAAcAAAAcABcAAAABAAcAAAAdABcAAAABAAcAAAAAABgAAAABAAcAAAABABgAAAAAAAUAAAACABgAAAAAAAUAAAADABgAAAABAAUAAAAEABgAAAAAAAUAAAAFABgAAAABAAUAAAAGABgAAAAAAAUAAAAHABgAAAABAAcAAAAIABgAAAAAAAUAAAAJABgAAAABAAUAAAAKABgAAAAAAAUAAAALABgAAAAAAAcAAAAMABgAAAAAAAUAAAANABgAAAABAAUAAAAOABgAAAABAAcAAAAPABgAAAAAAAcAAAAQABgAAAABAAcAAAARABgAAAABAAcAAAASABgAAAABAAcAAAATABgAAAABAAcAAAAUABgAAAABAAcAAAAVABgAAAABAAcAAAAWABgAAAAAAAcAAAAXABgAAAAAAAcAAAAYABgAAAABAAcAAAAZABgAAAABAAcAAAAaABgAAAABAAcAAAAbABgAAAABAAcAAAAcABgAAAABAAcAAAAdABgAAAABAAcAAAAAABkAAAAAAAcAAAABABkAAAAAAAUAAAACABkAAAAAAAUAAAADABkAAAABAAUAAAAEABkAAAAAAAUAAAAFABkAAAABAAUAAAAGABkAAAAAAAUAAAAHABkAAAABAAcAAAAIABkAAAAAAAUAAAAJABkAAAABAAUAAAAKABkAAAAAAAUAAAALABkAAAABAAcAAAAMABkAAAABAAUAAAANABkAAAAAAAUAAAAOABkAAAAAAAcAAAAPABkAAAAAAAcAAAAQABkAAAABAAcAAAARABkAAAAAAAcAAAASABkAAAABAAcAAAATABkAAAAAAAcAAAAUABkAAAABAAcAAAAVABkAAAAAAAcAAAAWABkAAAAAAAcAAAAXABkAAAABAAcAAAAYABkAAAABAAcAAAAZABkAAAAAAAcAAAAaABkAAAAAAAcAAAAbABkAAAAAAAcAAAAcABkAAAABAAcAAAAdABkAAAABAAcAAAAAABoAAAABAAcAAAABABoAAAAAAAUAAAACABoAAAAAAAUAAAADABoAAAAAAAUAAAAEABoAAAAAAAUAAAAFABoAAAABAAUAAAAGABoAAAAAAAUAAAAHABoAAAABAAcAAAAIABoAAAAAAAUAAAAJABoAAAAAAAUAAAAKABoAAAAAAAUAAAALABoAAAABAAcAAAAMABoAAAABAAcAAAANABoAAAABAAcAAAAOABoAAAABAAcAAAAPABoAAAABAAcAAAAQABoAAAABAAcAAAARABoAAAABAAcAAAASABoAAAABAAcAAAATABoAAAAAAAcAAAAUABoAAAABAAcAAAAVABoAAAAAAAcAAAAWABoAAAAAAAcAAAAXABoAAAAAAAcAAAAYABoAAAAAAAcAAAAZABoAAAABAAcAAAAaABoAAAAAAAcAAAAbABoAAAAAAAcAAAAcABoAAAABAAcAAAAdABoAAAAAAAcAAAAAABsAAAABAAcAAAABABsAAAAAAAcAAAACABsAAAABAAcAAAADABsAAAAAAAcAAAAEABsAAAABAAcAAAAFABsAAAABAAcAAAAGABsAAAAAAAcAAAAHABsAAAABAAcAAAAIABsAAAAAAAcAAAAJABsAAAAAAAcAAAAKABsAAAAAAAcAAAALABsAAAABAAcAAAAMABsAAAABAAcAAAANABsAAAABAAcAAAAOABsAAAABAAcAAAAPABsAAAAAAAcAAAAQABsAAAABAAcAAAARABsAAAABAAcAAAASABsAAAABAAcAAAATABsAAAAAAAcAAAAUABsAAAABAAcAAAAVABsAAAAAAAcAAAAWABsAAAAAAAcAAAAXABsAAAABAAcAAAAYABsAAAAAAAcAAAAZABsAAAAAAAcAAAAaABsAAAABAAcAAAAbABsAAAAAAAcAAAAcABsAAAABAAcAAAAdABsAAAABAAcAAAA=")
+tile_set = ExtResource("2_37ep6")
+
+[node name="Detail" type="TileMapLayer" parent="." unique_id=739624650]
+tile_set = ExtResource("2_37ep6")
+
+[node name="Obstacles" type="TileMapLayer" parent="." unique_id=521082817]
+tile_set = ExtResource("2_37ep6")
+
+[node name="Entities" type="Node2D" parent="." unique_id=16515612]
+unique_name_in_owner = true
+y_sort_enabled = true
+
+[node name="GrilleA_18_8" type="Node2D" parent="Entities" unique_id=1213941915]
+position = Vector2(1776, 864)
+script = ExtResource("3_aaymg")
+unless_flags = Array[StringName]([&"mansion_switch_on"])
+blocking_cells = Array[Vector2i]([Vector2i(18, 8)])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/GrilleA_18_8" unique_id=1480374354]
+color = Color(0.2, 0.2, 0.24, 1)
+polygon = PackedVector2Array(-46, -100, 46, -100, 46, -90, -46, -90)
+
+[node name="@Polygon2D@68" type="Polygon2D" parent="Entities/GrilleA_18_8" unique_id=2021772461]
+color = Color(0.55, 0.56, 0.6, 1)
+polygon = PackedVector2Array(-38, -96, -28, -96, -28, -4, -38, -4)
+
+[node name="@Polygon2D@69" type="Polygon2D" parent="Entities/GrilleA_18_8" unique_id=58308646]
+color = Color(0.55, 0.56, 0.6, 1)
+polygon = PackedVector2Array(-18, -96, -8, -96, -8, -4, -18, -4)
+
+[node name="@Polygon2D@70" type="Polygon2D" parent="Entities/GrilleA_18_8" unique_id=1976420112]
+color = Color(0.55, 0.56, 0.6, 1)
+polygon = PackedVector2Array(2, -96, 12, -96, 12, -4, 2, -4)
+
+[node name="@Polygon2D@71" type="Polygon2D" parent="Entities/GrilleA_18_8" unique_id=55361794]
+color = Color(0.55, 0.56, 0.6, 1)
+polygon = PackedVector2Array(22, -96, 32, -96, 32, -4, 22, -4)
+
+[node name="RailA_18_8" type="Node2D" parent="Entities" unique_id=206066499]
+position = Vector2(1776, 864)
+script = ExtResource("3_aaymg")
+if_flags = Array[StringName]([&"mansion_switch_on"])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/RailA_18_8" unique_id=895868025]
+color = Color(0.3, 0.28, 0.26, 1)
+polygon = PackedVector2Array(-46, -10, 46, -10, 46, -4, -46, -4)
+
+[node name="GrilleA_19_8" type="Node2D" parent="Entities" unique_id=927349788]
+position = Vector2(1872, 864)
+script = ExtResource("3_aaymg")
+unless_flags = Array[StringName]([&"mansion_switch_on"])
+blocking_cells = Array[Vector2i]([Vector2i(19, 8)])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/GrilleA_19_8" unique_id=1056580300]
+color = Color(0.2, 0.2, 0.24, 1)
+polygon = PackedVector2Array(-46, -100, 46, -100, 46, -90, -46, -90)
+
+[node name="@Polygon2D@72" type="Polygon2D" parent="Entities/GrilleA_19_8" unique_id=495488708]
+color = Color(0.55, 0.56, 0.6, 1)
+polygon = PackedVector2Array(-38, -96, -28, -96, -28, -4, -38, -4)
+
+[node name="@Polygon2D@73" type="Polygon2D" parent="Entities/GrilleA_19_8" unique_id=2041650205]
+color = Color(0.55, 0.56, 0.6, 1)
+polygon = PackedVector2Array(-18, -96, -8, -96, -8, -4, -18, -4)
+
+[node name="@Polygon2D@74" type="Polygon2D" parent="Entities/GrilleA_19_8" unique_id=977458285]
+color = Color(0.55, 0.56, 0.6, 1)
+polygon = PackedVector2Array(2, -96, 12, -96, 12, -4, 2, -4)
+
+[node name="@Polygon2D@75" type="Polygon2D" parent="Entities/GrilleA_19_8" unique_id=460481626]
+color = Color(0.55, 0.56, 0.6, 1)
+polygon = PackedVector2Array(22, -96, 32, -96, 32, -4, 22, -4)
+
+[node name="RailA_19_8" type="Node2D" parent="Entities" unique_id=1672900707]
+position = Vector2(1872, 864)
+script = ExtResource("3_aaymg")
+if_flags = Array[StringName]([&"mansion_switch_on"])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/RailA_19_8" unique_id=564968509]
+color = Color(0.3, 0.28, 0.26, 1)
+polygon = PackedVector2Array(-46, -10, 46, -10, 46, -4, -46, -4)
+
+[node name="GrilleA_18_9" type="Node2D" parent="Entities" unique_id=2071921813]
+position = Vector2(1776, 960)
+script = ExtResource("3_aaymg")
+unless_flags = Array[StringName]([&"mansion_switch_on"])
+blocking_cells = Array[Vector2i]([Vector2i(18, 9)])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/GrilleA_18_9" unique_id=1352507165]
+color = Color(0.2, 0.2, 0.24, 1)
+polygon = PackedVector2Array(-46, -100, 46, -100, 46, -90, -46, -90)
+
+[node name="@Polygon2D@76" type="Polygon2D" parent="Entities/GrilleA_18_9" unique_id=2007737542]
+color = Color(0.55, 0.56, 0.6, 1)
+polygon = PackedVector2Array(-38, -96, -28, -96, -28, -4, -38, -4)
+
+[node name="@Polygon2D@77" type="Polygon2D" parent="Entities/GrilleA_18_9" unique_id=701823549]
+color = Color(0.55, 0.56, 0.6, 1)
+polygon = PackedVector2Array(-18, -96, -8, -96, -8, -4, -18, -4)
+
+[node name="@Polygon2D@78" type="Polygon2D" parent="Entities/GrilleA_18_9" unique_id=510575016]
+color = Color(0.55, 0.56, 0.6, 1)
+polygon = PackedVector2Array(2, -96, 12, -96, 12, -4, 2, -4)
+
+[node name="@Polygon2D@79" type="Polygon2D" parent="Entities/GrilleA_18_9" unique_id=1592948907]
+color = Color(0.55, 0.56, 0.6, 1)
+polygon = PackedVector2Array(22, -96, 32, -96, 32, -4, 22, -4)
+
+[node name="RailA_18_9" type="Node2D" parent="Entities" unique_id=1499747635]
+position = Vector2(1776, 960)
+script = ExtResource("3_aaymg")
+if_flags = Array[StringName]([&"mansion_switch_on"])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/RailA_18_9" unique_id=1862853185]
+color = Color(0.3, 0.28, 0.26, 1)
+polygon = PackedVector2Array(-46, -10, 46, -10, 46, -4, -46, -4)
+
+[node name="GrilleA_19_9" type="Node2D" parent="Entities" unique_id=1260253600]
+position = Vector2(1872, 960)
+script = ExtResource("3_aaymg")
+unless_flags = Array[StringName]([&"mansion_switch_on"])
+blocking_cells = Array[Vector2i]([Vector2i(19, 9)])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/GrilleA_19_9" unique_id=446890518]
+color = Color(0.2, 0.2, 0.24, 1)
+polygon = PackedVector2Array(-46, -100, 46, -100, 46, -90, -46, -90)
+
+[node name="@Polygon2D@80" type="Polygon2D" parent="Entities/GrilleA_19_9" unique_id=854247870]
+color = Color(0.55, 0.56, 0.6, 1)
+polygon = PackedVector2Array(-38, -96, -28, -96, -28, -4, -38, -4)
+
+[node name="@Polygon2D@81" type="Polygon2D" parent="Entities/GrilleA_19_9" unique_id=1514651536]
+color = Color(0.55, 0.56, 0.6, 1)
+polygon = PackedVector2Array(-18, -96, -8, -96, -8, -4, -18, -4)
+
+[node name="@Polygon2D@82" type="Polygon2D" parent="Entities/GrilleA_19_9" unique_id=310048156]
+color = Color(0.55, 0.56, 0.6, 1)
+polygon = PackedVector2Array(2, -96, 12, -96, 12, -4, 2, -4)
+
+[node name="@Polygon2D@83" type="Polygon2D" parent="Entities/GrilleA_19_9" unique_id=1354782099]
+color = Color(0.55, 0.56, 0.6, 1)
+polygon = PackedVector2Array(22, -96, 32, -96, 32, -4, 22, -4)
+
+[node name="RailA_19_9" type="Node2D" parent="Entities" unique_id=1306475647]
+position = Vector2(1872, 960)
+script = ExtResource("3_aaymg")
+if_flags = Array[StringName]([&"mansion_switch_on"])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/RailA_19_9" unique_id=1692758176]
+color = Color(0.3, 0.28, 0.26, 1)
+polygon = PackedVector2Array(-46, -10, 46, -10, 46, -4, -46, -4)
+
+[node name="GrilleA_6_22" type="Node2D" parent="Entities" unique_id=1641173676]
+position = Vector2(624, 2208)
+script = ExtResource("3_aaymg")
+unless_flags = Array[StringName]([&"mansion_switch_on"])
+blocking_cells = Array[Vector2i]([Vector2i(6, 22)])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/GrilleA_6_22" unique_id=1307946339]
+color = Color(0.2, 0.2, 0.24, 1)
+polygon = PackedVector2Array(-46, -100, 46, -100, 46, -90, -46, -90)
+
+[node name="@Polygon2D@84" type="Polygon2D" parent="Entities/GrilleA_6_22" unique_id=1971170723]
+color = Color(0.55, 0.56, 0.6, 1)
+polygon = PackedVector2Array(-38, -96, -28, -96, -28, -4, -38, -4)
+
+[node name="@Polygon2D@85" type="Polygon2D" parent="Entities/GrilleA_6_22" unique_id=2109389382]
+color = Color(0.55, 0.56, 0.6, 1)
+polygon = PackedVector2Array(-18, -96, -8, -96, -8, -4, -18, -4)
+
+[node name="@Polygon2D@86" type="Polygon2D" parent="Entities/GrilleA_6_22" unique_id=275182283]
+color = Color(0.55, 0.56, 0.6, 1)
+polygon = PackedVector2Array(2, -96, 12, -96, 12, -4, 2, -4)
+
+[node name="@Polygon2D@87" type="Polygon2D" parent="Entities/GrilleA_6_22" unique_id=835172066]
+color = Color(0.55, 0.56, 0.6, 1)
+polygon = PackedVector2Array(22, -96, 32, -96, 32, -4, 22, -4)
+
+[node name="RailA_6_22" type="Node2D" parent="Entities" unique_id=2017983268]
+position = Vector2(624, 2208)
+script = ExtResource("3_aaymg")
+if_flags = Array[StringName]([&"mansion_switch_on"])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/RailA_6_22" unique_id=1599008327]
+color = Color(0.3, 0.28, 0.26, 1)
+polygon = PackedVector2Array(-46, -10, 46, -10, 46, -4, -46, -4)
+
+[node name="GrilleA_7_22" type="Node2D" parent="Entities" unique_id=1543750562]
+position = Vector2(720, 2208)
+script = ExtResource("3_aaymg")
+unless_flags = Array[StringName]([&"mansion_switch_on"])
+blocking_cells = Array[Vector2i]([Vector2i(7, 22)])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/GrilleA_7_22" unique_id=670357100]
+color = Color(0.2, 0.2, 0.24, 1)
+polygon = PackedVector2Array(-46, -100, 46, -100, 46, -90, -46, -90)
+
+[node name="@Polygon2D@88" type="Polygon2D" parent="Entities/GrilleA_7_22" unique_id=457169620]
+color = Color(0.55, 0.56, 0.6, 1)
+polygon = PackedVector2Array(-38, -96, -28, -96, -28, -4, -38, -4)
+
+[node name="@Polygon2D@89" type="Polygon2D" parent="Entities/GrilleA_7_22" unique_id=104570662]
+color = Color(0.55, 0.56, 0.6, 1)
+polygon = PackedVector2Array(-18, -96, -8, -96, -8, -4, -18, -4)
+
+[node name="@Polygon2D@90" type="Polygon2D" parent="Entities/GrilleA_7_22" unique_id=621086283]
+color = Color(0.55, 0.56, 0.6, 1)
+polygon = PackedVector2Array(2, -96, 12, -96, 12, -4, 2, -4)
+
+[node name="@Polygon2D@91" type="Polygon2D" parent="Entities/GrilleA_7_22" unique_id=203338501]
+color = Color(0.55, 0.56, 0.6, 1)
+polygon = PackedVector2Array(22, -96, 32, -96, 32, -4, 22, -4)
+
+[node name="RailA_7_22" type="Node2D" parent="Entities" unique_id=665354052]
+position = Vector2(720, 2208)
+script = ExtResource("3_aaymg")
+if_flags = Array[StringName]([&"mansion_switch_on"])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/RailA_7_22" unique_id=1304028957]
+color = Color(0.3, 0.28, 0.26, 1)
+polygon = PackedVector2Array(-46, -10, 46, -10, 46, -4, -46, -4)
+
+[node name="GrilleA_6_23" type="Node2D" parent="Entities" unique_id=1080260930]
+position = Vector2(624, 2304)
+script = ExtResource("3_aaymg")
+unless_flags = Array[StringName]([&"mansion_switch_on"])
+blocking_cells = Array[Vector2i]([Vector2i(6, 23)])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/GrilleA_6_23" unique_id=413873310]
+color = Color(0.2, 0.2, 0.24, 1)
+polygon = PackedVector2Array(-46, -100, 46, -100, 46, -90, -46, -90)
+
+[node name="@Polygon2D@92" type="Polygon2D" parent="Entities/GrilleA_6_23" unique_id=248551202]
+color = Color(0.55, 0.56, 0.6, 1)
+polygon = PackedVector2Array(-38, -96, -28, -96, -28, -4, -38, -4)
+
+[node name="@Polygon2D@93" type="Polygon2D" parent="Entities/GrilleA_6_23" unique_id=615157352]
+color = Color(0.55, 0.56, 0.6, 1)
+polygon = PackedVector2Array(-18, -96, -8, -96, -8, -4, -18, -4)
+
+[node name="@Polygon2D@94" type="Polygon2D" parent="Entities/GrilleA_6_23" unique_id=1960212952]
+color = Color(0.55, 0.56, 0.6, 1)
+polygon = PackedVector2Array(2, -96, 12, -96, 12, -4, 2, -4)
+
+[node name="@Polygon2D@95" type="Polygon2D" parent="Entities/GrilleA_6_23" unique_id=1615286046]
+color = Color(0.55, 0.56, 0.6, 1)
+polygon = PackedVector2Array(22, -96, 32, -96, 32, -4, 22, -4)
+
+[node name="RailA_6_23" type="Node2D" parent="Entities" unique_id=609642444]
+position = Vector2(624, 2304)
+script = ExtResource("3_aaymg")
+if_flags = Array[StringName]([&"mansion_switch_on"])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/RailA_6_23" unique_id=625993016]
+color = Color(0.3, 0.28, 0.26, 1)
+polygon = PackedVector2Array(-46, -10, 46, -10, 46, -4, -46, -4)
+
+[node name="GrilleA_7_23" type="Node2D" parent="Entities" unique_id=1986665006]
+position = Vector2(720, 2304)
+script = ExtResource("3_aaymg")
+unless_flags = Array[StringName]([&"mansion_switch_on"])
+blocking_cells = Array[Vector2i]([Vector2i(7, 23)])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/GrilleA_7_23" unique_id=948445576]
+color = Color(0.2, 0.2, 0.24, 1)
+polygon = PackedVector2Array(-46, -100, 46, -100, 46, -90, -46, -90)
+
+[node name="@Polygon2D@96" type="Polygon2D" parent="Entities/GrilleA_7_23" unique_id=2071335057]
+color = Color(0.55, 0.56, 0.6, 1)
+polygon = PackedVector2Array(-38, -96, -28, -96, -28, -4, -38, -4)
+
+[node name="@Polygon2D@97" type="Polygon2D" parent="Entities/GrilleA_7_23" unique_id=1753710580]
+color = Color(0.55, 0.56, 0.6, 1)
+polygon = PackedVector2Array(-18, -96, -8, -96, -8, -4, -18, -4)
+
+[node name="@Polygon2D@98" type="Polygon2D" parent="Entities/GrilleA_7_23" unique_id=1379116324]
+color = Color(0.55, 0.56, 0.6, 1)
+polygon = PackedVector2Array(2, -96, 12, -96, 12, -4, 2, -4)
+
+[node name="@Polygon2D@99" type="Polygon2D" parent="Entities/GrilleA_7_23" unique_id=37946593]
+color = Color(0.55, 0.56, 0.6, 1)
+polygon = PackedVector2Array(22, -96, 32, -96, 32, -4, 22, -4)
+
+[node name="RailA_7_23" type="Node2D" parent="Entities" unique_id=514797812]
+position = Vector2(720, 2304)
+script = ExtResource("3_aaymg")
+if_flags = Array[StringName]([&"mansion_switch_on"])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/RailA_7_23" unique_id=589030169]
+color = Color(0.3, 0.28, 0.26, 1)
+polygon = PackedVector2Array(-46, -10, 46, -10, 46, -4, -46, -4)
+
+[node name="GrilleB_8_4" type="Node2D" parent="Entities" unique_id=1344841426]
+position = Vector2(816, 480)
+script = ExtResource("3_aaymg")
+if_flags = Array[StringName]([&"mansion_switch_on"])
+blocking_cells = Array[Vector2i]([Vector2i(8, 4)])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/GrilleB_8_4" unique_id=367616391]
+color = Color(0.2, 0.2, 0.24, 1)
+polygon = PackedVector2Array(-46, -100, 46, -100, 46, -90, -46, -90)
+
+[node name="@Polygon2D@100" type="Polygon2D" parent="Entities/GrilleB_8_4" unique_id=940480111]
+color = Color(0.55, 0.56, 0.6, 1)
+polygon = PackedVector2Array(-38, -96, -28, -96, -28, -4, -38, -4)
+
+[node name="@Polygon2D@101" type="Polygon2D" parent="Entities/GrilleB_8_4" unique_id=1756134]
+color = Color(0.55, 0.56, 0.6, 1)
+polygon = PackedVector2Array(-18, -96, -8, -96, -8, -4, -18, -4)
+
+[node name="@Polygon2D@102" type="Polygon2D" parent="Entities/GrilleB_8_4" unique_id=1729964155]
+color = Color(0.55, 0.56, 0.6, 1)
+polygon = PackedVector2Array(2, -96, 12, -96, 12, -4, 2, -4)
+
+[node name="@Polygon2D@103" type="Polygon2D" parent="Entities/GrilleB_8_4" unique_id=2072478410]
+color = Color(0.55, 0.56, 0.6, 1)
+polygon = PackedVector2Array(22, -96, 32, -96, 32, -4, 22, -4)
+
+[node name="RailB_8_4" type="Node2D" parent="Entities" unique_id=289369420]
+position = Vector2(816, 480)
+script = ExtResource("3_aaymg")
+unless_flags = Array[StringName]([&"mansion_switch_on"])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/RailB_8_4" unique_id=988144641]
+color = Color(0.3, 0.28, 0.26, 1)
+polygon = PackedVector2Array(-46, -10, 46, -10, 46, -4, -46, -4)
+
+[node name="GrilleB_9_4" type="Node2D" parent="Entities" unique_id=1760573684]
+position = Vector2(912, 480)
+script = ExtResource("3_aaymg")
+if_flags = Array[StringName]([&"mansion_switch_on"])
+blocking_cells = Array[Vector2i]([Vector2i(9, 4)])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/GrilleB_9_4" unique_id=280356077]
+color = Color(0.2, 0.2, 0.24, 1)
+polygon = PackedVector2Array(-46, -100, 46, -100, 46, -90, -46, -90)
+
+[node name="@Polygon2D@104" type="Polygon2D" parent="Entities/GrilleB_9_4" unique_id=1741766482]
+color = Color(0.55, 0.56, 0.6, 1)
+polygon = PackedVector2Array(-38, -96, -28, -96, -28, -4, -38, -4)
+
+[node name="@Polygon2D@105" type="Polygon2D" parent="Entities/GrilleB_9_4" unique_id=1342987161]
+color = Color(0.55, 0.56, 0.6, 1)
+polygon = PackedVector2Array(-18, -96, -8, -96, -8, -4, -18, -4)
+
+[node name="@Polygon2D@106" type="Polygon2D" parent="Entities/GrilleB_9_4" unique_id=557320292]
+color = Color(0.55, 0.56, 0.6, 1)
+polygon = PackedVector2Array(2, -96, 12, -96, 12, -4, 2, -4)
+
+[node name="@Polygon2D@107" type="Polygon2D" parent="Entities/GrilleB_9_4" unique_id=714580256]
+color = Color(0.55, 0.56, 0.6, 1)
+polygon = PackedVector2Array(22, -96, 32, -96, 32, -4, 22, -4)
+
+[node name="RailB_9_4" type="Node2D" parent="Entities" unique_id=649109421]
+position = Vector2(912, 480)
+script = ExtResource("3_aaymg")
+unless_flags = Array[StringName]([&"mansion_switch_on"])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/RailB_9_4" unique_id=1520283536]
+color = Color(0.3, 0.28, 0.26, 1)
+polygon = PackedVector2Array(-46, -10, 46, -10, 46, -4, -46, -4)
+
+[node name="GrilleB_8_5" type="Node2D" parent="Entities" unique_id=1203158976]
+position = Vector2(816, 576)
+script = ExtResource("3_aaymg")
+if_flags = Array[StringName]([&"mansion_switch_on"])
+blocking_cells = Array[Vector2i]([Vector2i(8, 5)])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/GrilleB_8_5" unique_id=90502328]
+color = Color(0.2, 0.2, 0.24, 1)
+polygon = PackedVector2Array(-46, -100, 46, -100, 46, -90, -46, -90)
+
+[node name="@Polygon2D@108" type="Polygon2D" parent="Entities/GrilleB_8_5" unique_id=1452961038]
+color = Color(0.55, 0.56, 0.6, 1)
+polygon = PackedVector2Array(-38, -96, -28, -96, -28, -4, -38, -4)
+
+[node name="@Polygon2D@109" type="Polygon2D" parent="Entities/GrilleB_8_5" unique_id=1729821096]
+color = Color(0.55, 0.56, 0.6, 1)
+polygon = PackedVector2Array(-18, -96, -8, -96, -8, -4, -18, -4)
+
+[node name="@Polygon2D@110" type="Polygon2D" parent="Entities/GrilleB_8_5" unique_id=178129614]
+color = Color(0.55, 0.56, 0.6, 1)
+polygon = PackedVector2Array(2, -96, 12, -96, 12, -4, 2, -4)
+
+[node name="@Polygon2D@111" type="Polygon2D" parent="Entities/GrilleB_8_5" unique_id=1332154247]
+color = Color(0.55, 0.56, 0.6, 1)
+polygon = PackedVector2Array(22, -96, 32, -96, 32, -4, 22, -4)
+
+[node name="RailB_8_5" type="Node2D" parent="Entities" unique_id=999990473]
+position = Vector2(816, 576)
+script = ExtResource("3_aaymg")
+unless_flags = Array[StringName]([&"mansion_switch_on"])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/RailB_8_5" unique_id=1363756610]
+color = Color(0.3, 0.28, 0.26, 1)
+polygon = PackedVector2Array(-46, -10, 46, -10, 46, -4, -46, -4)
+
+[node name="GrilleB_9_5" type="Node2D" parent="Entities" unique_id=226326203]
+position = Vector2(912, 576)
+script = ExtResource("3_aaymg")
+if_flags = Array[StringName]([&"mansion_switch_on"])
+blocking_cells = Array[Vector2i]([Vector2i(9, 5)])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/GrilleB_9_5" unique_id=1001242753]
+color = Color(0.2, 0.2, 0.24, 1)
+polygon = PackedVector2Array(-46, -100, 46, -100, 46, -90, -46, -90)
+
+[node name="@Polygon2D@112" type="Polygon2D" parent="Entities/GrilleB_9_5" unique_id=1118304546]
+color = Color(0.55, 0.56, 0.6, 1)
+polygon = PackedVector2Array(-38, -96, -28, -96, -28, -4, -38, -4)
+
+[node name="@Polygon2D@113" type="Polygon2D" parent="Entities/GrilleB_9_5" unique_id=7263512]
+color = Color(0.55, 0.56, 0.6, 1)
+polygon = PackedVector2Array(-18, -96, -8, -96, -8, -4, -18, -4)
+
+[node name="@Polygon2D@114" type="Polygon2D" parent="Entities/GrilleB_9_5" unique_id=2081751196]
+color = Color(0.55, 0.56, 0.6, 1)
+polygon = PackedVector2Array(2, -96, 12, -96, 12, -4, 2, -4)
+
+[node name="@Polygon2D@115" type="Polygon2D" parent="Entities/GrilleB_9_5" unique_id=1396697932]
+color = Color(0.55, 0.56, 0.6, 1)
+polygon = PackedVector2Array(22, -96, 32, -96, 32, -4, 22, -4)
+
+[node name="RailB_9_5" type="Node2D" parent="Entities" unique_id=409817719]
+position = Vector2(912, 576)
+script = ExtResource("3_aaymg")
+unless_flags = Array[StringName]([&"mansion_switch_on"])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/RailB_9_5" unique_id=778890576]
+color = Color(0.3, 0.28, 0.26, 1)
+polygon = PackedVector2Array(-46, -10, 46, -10, 46, -4, -46, -4)
+
+[node name="EscalierDessin_5_10" type="Node2D" parent="Entities" unique_id=140532825]
+position = Vector2(528, 1056)
+script = ExtResource("3_aaymg")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/EscalierDessin_5_10" unique_id=457771082]
+color = Color(0.3, 0.2, 0.12, 1)
+polygon = PackedVector2Array(-44, -92, 44, -92, 44, -6, -44, -6)
+
+[node name="@Polygon2D@116" type="Polygon2D" parent="Entities/EscalierDessin_5_10" unique_id=1641803951]
+color = Color(0.18, 0.120000005, 0.072000004, 1)
+polygon = PackedVector2Array(-44, -80, 44, -80, 44, -74, -44, -74)
+
+[node name="@Polygon2D@117" type="Polygon2D" parent="Entities/EscalierDessin_5_10" unique_id=1280914339]
+color = Color(0.18, 0.120000005, 0.072000004, 1)
+polygon = PackedVector2Array(-44, -60, 44, -60, 44, -54, -44, -54)
+
+[node name="@Polygon2D@118" type="Polygon2D" parent="Entities/EscalierDessin_5_10" unique_id=1731130848]
+color = Color(0.18, 0.120000005, 0.072000004, 1)
+polygon = PackedVector2Array(-44, -40, 44, -40, 44, -34, -44, -34)
+
+[node name="@Polygon2D@119" type="Polygon2D" parent="Entities/EscalierDessin_5_10" unique_id=1371526085]
+color = Color(0.18, 0.120000005, 0.072000004, 1)
+polygon = PackedVector2Array(-44, -20, 44, -20, 44, -14, -44, -14)
+
+[node name="EscalierDessin_7_10" type="Node2D" parent="Entities" unique_id=825547230]
+position = Vector2(720, 1056)
+script = ExtResource("3_aaymg")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/EscalierDessin_7_10" unique_id=660940700]
+color = Color(0.66, 0.5, 0.3, 1)
+polygon = PackedVector2Array(-44, -92, 44, -92, 44, -6, -44, -6)
+
+[node name="@Polygon2D@120" type="Polygon2D" parent="Entities/EscalierDessin_7_10" unique_id=581798076]
+color = Color(0.39600003, 0.3, 0.18, 1)
+polygon = PackedVector2Array(-44, -80, 44, -80, 44, -74, -44, -74)
+
+[node name="@Polygon2D@121" type="Polygon2D" parent="Entities/EscalierDessin_7_10" unique_id=751928782]
+color = Color(0.39600003, 0.3, 0.18, 1)
+polygon = PackedVector2Array(-44, -60, 44, -60, 44, -54, -44, -54)
+
+[node name="@Polygon2D@122" type="Polygon2D" parent="Entities/EscalierDessin_7_10" unique_id=1715521784]
+color = Color(0.39600003, 0.3, 0.18, 1)
+polygon = PackedVector2Array(-44, -40, 44, -40, 44, -34, -44, -34)
+
+[node name="@Polygon2D@123" type="Polygon2D" parent="Entities/EscalierDessin_7_10" unique_id=959148149]
+color = Color(0.39600003, 0.3, 0.18, 1)
+polygon = PackedVector2Array(-44, -20, 44, -20, 44, -14, -44, -14)
+
+[node name="EscalierDessin_6_1" type="Node2D" parent="Entities" unique_id=365321449]
+position = Vector2(624, 192)
+script = ExtResource("3_aaymg")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/EscalierDessin_6_1" unique_id=666523649]
+color = Color(0.66, 0.5, 0.3, 1)
+polygon = PackedVector2Array(-44, -92, 44, -92, 44, -6, -44, -6)
+
+[node name="@Polygon2D@124" type="Polygon2D" parent="Entities/EscalierDessin_6_1" unique_id=1707484799]
+color = Color(0.39600003, 0.3, 0.18, 1)
+polygon = PackedVector2Array(-44, -80, 44, -80, 44, -74, -44, -74)
+
+[node name="@Polygon2D@125" type="Polygon2D" parent="Entities/EscalierDessin_6_1" unique_id=200090383]
+color = Color(0.39600003, 0.3, 0.18, 1)
+polygon = PackedVector2Array(-44, -60, 44, -60, 44, -54, -44, -54)
+
+[node name="@Polygon2D@126" type="Polygon2D" parent="Entities/EscalierDessin_6_1" unique_id=1798887866]
+color = Color(0.39600003, 0.3, 0.18, 1)
+polygon = PackedVector2Array(-44, -40, 44, -40, 44, -34, -44, -34)
+
+[node name="@Polygon2D@127" type="Polygon2D" parent="Entities/EscalierDessin_6_1" unique_id=1950869955]
+color = Color(0.39600003, 0.3, 0.18, 1)
+polygon = PackedVector2Array(-44, -20, 44, -20, 44, -14, -44, -14)
+
+[node name="EscalierDessin_25_14" type="Node2D" parent="Entities" unique_id=278779260]
+position = Vector2(2448, 1440)
+script = ExtResource("3_aaymg")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/EscalierDessin_25_14" unique_id=1221358138]
+color = Color(0.66, 0.5, 0.3, 1)
+polygon = PackedVector2Array(-44, -92, 44, -92, 44, -6, -44, -6)
+
+[node name="@Polygon2D@128" type="Polygon2D" parent="Entities/EscalierDessin_25_14" unique_id=1646223964]
+color = Color(0.39600003, 0.3, 0.18, 1)
+polygon = PackedVector2Array(-44, -80, 44, -80, 44, -74, -44, -74)
+
+[node name="@Polygon2D@129" type="Polygon2D" parent="Entities/EscalierDessin_25_14" unique_id=1405517325]
+color = Color(0.39600003, 0.3, 0.18, 1)
+polygon = PackedVector2Array(-44, -60, 44, -60, 44, -54, -44, -54)
+
+[node name="@Polygon2D@130" type="Polygon2D" parent="Entities/EscalierDessin_25_14" unique_id=930714811]
+color = Color(0.39600003, 0.3, 0.18, 1)
+polygon = PackedVector2Array(-44, -40, 44, -40, 44, -34, -44, -34)
+
+[node name="@Polygon2D@131" type="Polygon2D" parent="Entities/EscalierDessin_25_14" unique_id=735166894]
+color = Color(0.39600003, 0.3, 0.18, 1)
+polygon = PackedVector2Array(-44, -20, 44, -20, 44, -14, -44, -14)
+
+[node name="Statue_2_11" type="Node2D" parent="Entities" unique_id=271110841]
+position = Vector2(240, 1152)
+script = ExtResource("3_aaymg")
+blocking_cells = Array[Vector2i]([Vector2i(2, 11)])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Statue_2_11" unique_id=707668563]
+color = Color(0.5, 0.5, 0.52, 1)
+polygon = PackedVector2Array(-36, -30, 36, -30, 36, -4, -36, -4)
+
+[node name="@Polygon2D@132" type="Polygon2D" parent="Entities/Statue_2_11" unique_id=2095354102]
+color = Color(0.86, 0.86, 0.84, 1)
+polygon = PackedVector2Array(-24, -100, 24, -100, 24, -28, -24, -28)
+
+[node name="@Polygon2D@133" type="Polygon2D" parent="Entities/Statue_2_11" unique_id=615654696]
+color = Color(0.86, 0.86, 0.84, 1)
+polygon = PackedVector2Array(-14, -116, 14, -116, 14, -96, -14, -96)
+
+[node name="Pupitre_18_2" type="Node2D" parent="Entities" unique_id=160350477]
+position = Vector2(1776, 288)
+script = ExtResource("3_aaymg")
+blocking_cells = Array[Vector2i]([Vector2i(18, 2)])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Pupitre_18_2" unique_id=626802677]
+color = Color(0.36, 0.22, 0.12, 1)
+polygon = PackedVector2Array(-30, -60, 30, -60, 30, -4, -30, -4)
+
+[node name="@Polygon2D@134" type="Polygon2D" parent="Entities/Pupitre_18_2" unique_id=469038751]
+color = Color(0.9, 0.86, 0.72, 1)
+polygon = PackedVector2Array(-26, -74, 26, -74, 26, -56, -26, -56)
+
+[node name="Pupitre_3_22" type="Node2D" parent="Entities" unique_id=108949263]
+position = Vector2(336, 2208)
+script = ExtResource("3_aaymg")
+blocking_cells = Array[Vector2i]([Vector2i(3, 22)])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Pupitre_3_22" unique_id=2043506161]
+color = Color(0.36, 0.22, 0.12, 1)
+polygon = PackedVector2Array(-30, -60, 30, -60, 30, -4, -30, -4)
+
+[node name="@Polygon2D@135" type="Polygon2D" parent="Entities/Pupitre_3_22" unique_id=792211399]
+color = Color(0.9, 0.86, 0.72, 1)
+polygon = PackedVector2Array(-26, -74, 26, -74, 26, -56, -26, -56)
+
+[node name="Overhead" type="TileMapLayer" parent="." unique_id=1339419142]
+z_index = 10
+tile_set = ExtResource("2_37ep6")
+
+[node name="Warps" type="Node2D" parent="." unique_id=31053666]
+
+[node name="Escalier_a" type="Marker2D" parent="Warps" unique_id=698748084]
+position = Vector2(528, 1056)
+script = ExtResource("4_054r7")
+target_map = &"pokemon_mansion_1f"
+target_spawn = &"arrivee_a"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Escalier_b" type="Marker2D" parent="Warps" unique_id=1772026247]
+position = Vector2(720, 1056)
+script = ExtResource("4_054r7")
+target_map = &"pokemon_mansion_3f"
+target_spawn = &"arrivee_b"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Escalier_c" type="Marker2D" parent="Warps" unique_id=407697147]
+position = Vector2(624, 192)
+script = ExtResource("4_054r7")
+target_map = &"pokemon_mansion_3f"
+target_spawn = &"arrivee_c"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Escalier_d" type="Marker2D" parent="Warps" unique_id=1665131265]
+position = Vector2(2448, 1440)
+script = ExtResource("4_054r7")
+target_map = &"pokemon_mansion_3f"
+target_spawn = &"arrivee_d"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Interactables" type="Node2D" parent="." unique_id=2132895717]
+
+[node name="StatuePoint_2_11" type="Marker2D" parent="Interactables" unique_id=73953498]
+position = Vector2(240, 1152)
+script = ExtResource("5_n6dhb")
+dialogue_id = &"mansion_statue"
+facing = Vector2i(0, -1)
+
+[node name="PupitrePoint_18_2" type="Marker2D" parent="Interactables" unique_id=111790377]
+position = Vector2(1776, 288)
+script = ExtResource("5_n6dhb")
+dialogue_id = &"mansion_journal_1"
+
+[node name="PupitrePoint_3_22" type="Marker2D" parent="Interactables" unique_id=1549415917]
+position = Vector2(336, 2208)
+script = ExtResource("5_n6dhb")
+dialogue_id = &"mansion_journal_2"
+
+[node name="Spawns" type="Node2D" parent="." unique_id=654408471]
+
+[node name="arrivee_a" type="Marker2D" parent="Spawns" unique_id=1015499767]
+position = Vector2(528, 1152)
+
+[node name="arrivee_b" type="Marker2D" parent="Spawns" unique_id=268696704]
+position = Vector2(720, 1152)
+
+[node name="arrivee_c" type="Marker2D" parent="Spawns" unique_id=1929577322]
+position = Vector2(624, 288)
+
+[node name="arrivee_d" type="Marker2D" parent="Spawns" unique_id=1384908502]
+position = Vector2(2448, 1536)
+
+[node name="chute" type="Marker2D" parent="Spawns" unique_id=839739077]
+position = Vector2(1776, 1440)
+
+[node name="Triggers" type="Node2D" parent="." unique_id=940973620]

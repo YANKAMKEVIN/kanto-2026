@@ -1,0 +1,7 @@
+{
+	"tm35": {
+		"name": "CT35 — Métronome", "plural": "CT35 — Métronome", "feminine": true,
+		"category": "tm", "tm": 35, "teaches": "metronome",
+		"description": "Agite un doigt pour utiliser une capacité au hasard."
+	}
+}

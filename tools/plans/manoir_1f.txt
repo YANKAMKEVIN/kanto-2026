@@ -1,0 +1,66 @@
+# Manoir Pokémon 1F (pokemon_mansion_1f) — grille fonctionnelle v1 (jalon 25, dossier 28 §4). Tirée des blocs RB
+# (pret/pokered, annexe j25-annexe-rb-cramois.md §1.9), échelle 1 case = 1 pas (X-4). Contrôle :
+# tools/art/plan_check_manoir.py (relie les quatre étages, les escaliers, les trous et l'interrupteur).
+# Le mobilier n'est pas encore dessiné : il viendra avec la vue générale peinte, contrôle relancé.
+#
+# 30 × 28 cases ; nord en haut. Rez-de-chaussée : hall d'entrée brûlé, aile ouest des chambres, couloir est. Escalier ↑ 2F à l'ouest ;
+# escalier ↓ B1F dans l'aile sud-est, qu'on n'atteint qu'en tombant du 3F (ou par la porte b ouverte).
+# Deux sorties sud : porte principale (4..7, 27) et petite porte sud-est (26..27, 27) derrière une porte a.
+#
+# Légende (commune aux quatre étages) :
+#   # mur, mobilier lourd (bloqué)      . plancher (praticable, rencontres)
+#   a porte de grille du jeu A : FERMÉE quand l'interrupteur est sur ARRÊT, ouverte sur MARCHE
+#   b porte de grille du jeu B : FERMÉE sur MARCHE, ouverte sur ARRÊT
+#   U escalier qui monte   V escalier qui descend (paire= ; arrivée = spawn de même paire)
+#   O trou dans le plancher (3F ; praticable, déclenche la chute)   E seuil de sortie (1F)
+#   T statue à interrupteur (bloquée)   P pupitre et journal (bloqué)
+# Personnages, objets, statues, journaux, trous et escaliers : section POSITIONS.
+
+PRATICABLES .abUVOE
+
+GRILLE 30 28
+00 ##############################
+01 #............................#
+02 ####.........#.#.#.#.#......##
+03 ####.....#..................##
+04 ###...##.#............####..##
+05 ##T...##.#............#.....##
+06 #...#....#......aa....#......#
+07 #...#....#...###aa#####......#
+08 #.......####.#......###.##..##
+09 ##########...#......###.##..##
+10 #..#.U..#....#..#.#..##....###
+11 #............#..#.#..##....###
+12 #..#....#....#........##bb...#
+13 #..........#############bb####
+14 #..#....#..#......####......##
+15 #..........#......##........##
+16 #..#.......#......#.aa.......#
+17 #..........#......##aa##..####
+18 #..#....#..#..######..##..####
+19 #..........#..######..###...##
+20 #..#....#..#............#....#
+21 #..........#............#....#
+22 #..#....#..#..######....#....#
+23 #..........#..######.V..#....#
+24 #..#....#..#............##...#
+25 #..........#............##...#
+26 #..........#............##aa##
+27 ####EEEE##################EE##
+FIN
+
+POSITIONS
+porte_principale             warp           4..7,27      libre   vers=cinnabar_island  # PUSH ↓ → Cramois'Île ; remet l'interrupteur à ARRÊT en entrant
+depuis_ile                   spawn          5,26         libre  # arrivée par la porte principale, tourné ↑
+porte_sud_est                warp           26..27,27    libre   vers=cinnabar_island  # PUSH ↓ → Cramois'Île, devant la porte principale (RB : sortie seulement, l'île n'a qu'une porte de Manoir) ; derrière la porte a (26..27, 26)
+escalier_a                   escalier       5,10         libre   paire=A sens=monte vers=pokemon_mansion_2f
+arrivee_a                    spawn          5,11         libre   paire=A  # arrivée depuis l'autre étage
+escalier_s                   escalier       21,23        libre   paire=S sens=descend vers=pokemon_mansion_b1f
+arrivee_s                    spawn          21,24        libre   paire=S  # arrivée depuis l'autre étage
+chute                        spawn          16,14        libre   role=chute  # arrivée des trous trou_1 et trou_2 du 3F
+statue_1                     statue         2,5          bloque  facing=up  # interrupteur secret (textes 9–11), actionné depuis la case du dessous
+mansion_scientist_1          dresseur       17,17        bloque  facing=left sight=3  # Scientifique : Électrode 29, Smogogo 29
+pokemon_mansion_1f_item_1    objet_visible  14,3         bloque  item=escape_rope  # Corde Sortie
+pokemon_mansion_1f_item_2    objet_visible  18,21        bloque  item=nugget  # Pépite (RB : Carbone)
+pokemon_mansion_1f_hidden_1  objet_cache    8,16         libre   item=moon_stone  # Pierre Lune
+FIN

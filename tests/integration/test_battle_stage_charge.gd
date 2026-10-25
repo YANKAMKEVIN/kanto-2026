@@ -134,8 +134,15 @@ func test_reduced_motion_surface_does_not_move() -> void:
 	clock.step()
 	assert_true(sprite.visible)
 	assert_eq(sprite.position, _stage.get_sprite(PLAYER_SIDE).position)
-	assert_eq(sprite.position.y, BattleLayout.anchors(
-		_stage.get_viewport().get_visible_rect().size)["player_feet"].y, "à l'ancre dès le début")
+	# Cadrage B : pieds du dos de Salamèche au bord bas, enfoncés de la part coupée.
+	var view := _stage.get_viewport().get_visible_rect().size
+	var image := BattleArt.new().image(&"charmander", true)
+	var box: Rect2 = image["box"]
+	var scale := BattleLayout.back_scale(box.size, BattleArt.new().height_m(&"charmander"), view.y,
+		image["crop"])
+	var rest_y: float = BattleLayout.anchors(view)["player_back"].y \
+		+ BattleLayout.back_sink(box.size, scale, image["crop"])
+	assert_eq(sprite.position.y, rest_y, "à l'ancre dès le début")
 	clock.run_until(func() -> bool: return sprite.modulate.a >= 1.0, 2.0)
 	clock.release()
 

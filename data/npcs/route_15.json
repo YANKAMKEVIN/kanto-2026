@@ -1,0 +1,121 @@
+{
+	"route_15_lass_1": {
+		"cell": [
+			64,
+			13
+		],
+		"facing": "up",
+		"sprite": "lass",
+		"dialogue": "route_15_lass_1_after",
+		"trainer": {
+			"id": "route_15_lass_1",
+			"sight": 3,
+			"before": "route_15_lass_1_before",
+			"defeated": "route_15_lass_1_defeated"
+		}
+	},
+	"route_15_biker": {
+		"cell": [
+			75,
+			10
+		],
+		"facing": "down",
+		"sprite": "rocker",
+		"dialogue": "route_15_biker_after",
+		"trainer": {
+			"id": "route_15_biker",
+			"sight": 5,
+			"before": "route_15_biker_before",
+			"defeated": "route_15_biker_defeated"
+		}
+	},
+	"route_15_beauty_2": {
+		"cell": [
+			82,
+			16
+		],
+		"facing": "left",
+		"sprite": "beauty",
+		"dialogue": "route_15_beauty_2_after",
+		"trainer": {
+			"id": "route_15_beauty_2",
+			"sight": 3,
+			"before": "route_15_beauty_2_before",
+			"defeated": "route_15_beauty_2_defeated"
+		}
+	},
+	"route_15_bird": {
+		"cell": [
+			52,
+			10
+		],
+		"facing": "down",
+		"sprite": "naturalist",
+		"dialogue": "route_15_bird_after",
+		"trainer": {
+			"id": "route_15_bird",
+			"sight": 5,
+			"before": "route_15_bird_before",
+			"defeated": "route_15_bird_defeated"
+		}
+	},
+	"route_15_lass_2": {
+		"cell": [
+			30,
+			10
+		],
+		"facing": "down",
+		"sprite": "lass",
+		"dialogue": "route_15_lass_2_after",
+		"trainer": {
+			"id": "route_15_lass_2",
+			"sight": 5,
+			"before": "route_15_lass_2_before",
+			"defeated": "route_15_lass_2_defeated"
+		}
+	},
+	"route_15_lass_3": {
+		"cell": [
+			20,
+			14
+		],
+		"facing": "up",
+		"sprite": "lass",
+		"dialogue": "route_15_lass_3_after",
+		"trainer": {
+			"id": "route_15_lass_3",
+			"sight": 5,
+			"before": "route_15_lass_3_before",
+			"defeated": "route_15_lass_3_defeated"
+		}
+	},
+	"route_15_beauty_1": {
+		"cell": [
+			10,
+			16
+		],
+		"facing": "right",
+		"sprite": "beauty",
+		"dialogue": "route_15_beauty_1_after",
+		"trainer": {
+			"id": "route_15_beauty_1",
+			"sight": 5,
+			"before": "route_15_beauty_1_before",
+			"defeated": "route_15_beauty_1_defeated"
+		}
+	},
+	"route_15_item_1": {
+		"cell": [
+			11,
+			3
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "route_15_item_1",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_route_15_item_1"
+		]
+	}
+}

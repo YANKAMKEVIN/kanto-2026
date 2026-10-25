@@ -1,0 +1,76 @@
+{
+	"route_19_cooltrainer_hugo": {
+		"name": "Topdresseur Hugo", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 150,
+		"team": [{ "species": "tentacool", "level": 30 }, { "species": "shellder", "level": 30 }]
+	},
+	"route_19_cooltrainer_malo": {
+		"name": "Topdresseur Malo", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 145,
+		"team": [
+			{ "species": "goldeen", "level": 29 },
+			{ "species": "horsea", "level": 29 },
+			{ "species": "staryu", "level": 29, "moves": ["tackle", "water_gun", "harden"] }
+		]
+	},
+	"route_19_swimmer_yann": {
+		"name": "Nageur Yann", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 150,
+		"team": [{ "species": "poliwag", "level": 30 }, { "species": "poliwhirl", "level": 30 }]
+	},
+	"route_19_swimmer_erwan": {
+		"name": "Nageur Erwan", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 135,
+		"team": [
+			{ "species": "horsea", "level": 27 }, { "species": "tentacool", "level": 27 },
+			{ "species": "tentacool", "level": 27 }, { "species": "goldeen", "level": 27 }
+		]
+	},
+	"route_19_swimmer_loic": {
+		"name": "Nageur Loïc", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 145,
+		"team": [
+			{ "species": "goldeen", "level": 29 }, { "species": "shellder", "level": 29 },
+			{ "species": "seaking", "level": 29 }
+		]
+	},
+	"route_19_swimmer_tanguy": {
+		"name": "Nageur Tanguy", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 150,
+		"team": [{ "species": "horsea", "level": 30 }, { "species": "horsea", "level": 30 }]
+	},
+	"route_19_swimmer_maelle": {
+		"name": "Nageuse Maëlle", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 1890,
+		"team": [
+			{ "species": "poliwag", "level": 27 }, { "species": "goldeen", "level": 27 },
+			{ "species": "seaking", "level": 27 }, { "species": "goldeen", "level": 27 },
+			{ "species": "poliwag", "level": 27 }
+		]
+	},
+	"route_19_swimmer_anais": {
+		"name": "Nageuse Anaïs", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 2100,
+		"team": [{ "species": "goldeen", "level": 30 }, { "species": "seaking", "level": 30 }]
+	},
+	"route_19_swimmer_gwen": {
+		"name": "Nageur Gwen", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 135,
+		"team": [
+			{ "species": "tentacool", "level": 27 },
+			{ "species": "tentacool", "level": 27 },
+			{ "species": "staryu", "level": 27, "moves": ["tackle", "water_gun", "harden"] },
+			{ "species": "horsea", "level": 27 },
+			{ "species": "tentacruel", "level": 27 }
+		]
+	},
+	"route_19_swimmer_lena": {
+		"name": "Nageuse Léna", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 2030,
+		"team": [
+			{ "species": "staryu", "level": 29, "moves": ["tackle", "water_gun", "harden"] },
+			{ "species": "staryu", "level": 29, "moves": ["tackle", "water_gun", "harden"] },
+			{ "species": "staryu", "level": 29, "moves": ["tackle", "water_gun", "harden"] }
+		]
+	}
+}

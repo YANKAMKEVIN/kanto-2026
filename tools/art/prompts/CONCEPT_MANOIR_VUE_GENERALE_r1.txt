@@ -1,0 +1,46 @@
+CONCEPT ART — VUE GÉNÉRALE DU MANOIR POKÉMON, QUATRE NIVEAUX (Kanto 2026), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. Il montre QUATRE NIVEAUX d'un même grand manoir de chercheurs, abandonné après un incendie, posés comme quatre cartes séparées : en haut à gauche le PREMIER ÉTAGE, en haut à droite le DEUXIÈME ÉTAGE (sous les combles, moins haut), en bas à gauche le REZ-DE-CHAUSSÉE, en bas à droite le SOUS-SOL. Le fond presque noir autour et entre les blocs est du VIDE NEUTRE qui sépare les niveaux (ce ne sont pas des passages : garde-le sombre, simple et sans détail).
+Légende du plan :
+- brun foncé = MURS ÉPAIS du manoir, infranchissables (on voit le dessus des murs) ;
+- brun clair rayé = PARQUET de lattes de bois, praticable ; au sous-sol, gris-brun rayé = vieux CARRELAGE de laboratoire ;
+- petits blocs brun sombre arrondis posés sur le sol = MOBILIER LOURD (tables, bureaux, armoires, piliers brisés, grands pots de plantes séchées) ;
+- barreaux gris foncé sur deux cases = GRILLE DE FER FERMÉE en travers d'un passage ; trait gris fin en travers d'un passage = rail au sol d'une grille ouverte (le passage est libre) ;
+- petite forme claire arrondie sur un socle sombre, contre un mur = STATUE de pierre sur socle (une créature assise, stylisée, de la taille d'un enfant) ;
+- petit rectangle brun avec une page blanche = PUPITRE portant un CARNET OUVERT ;
+- disques noirs à bord brun (deuxième étage, en bas au milieu) = TROUS dans le plancher effondré, aux bords de lattes cassées, on devine l'étage du dessous dans l'ombre ;
+- petits rectangles à quatre marches claires = ESCALIERS QUI MONTENT ; à quatre marches sombres = ESCALIERS QUI DESCENDENT ; volées de marches en bois encastrées dans le sol ;
+- bandes beige clair en bas du rez-de-chaussée = les deux SORTIES (grande porte d'entrée à gauche, petite porte à droite) ;
+- points rouge et blanc = petites sphères d'objet posées au sol ; le point jaune et blanc du sous-sol (salle de gauche, entre quatre groupes de meubles) = une sphère dorée, l'objet important.
+Respecte ce plan À LA LETTRE : forme de chaque pièce et de chaque couloir, place des murs, des meubles, des grilles, des statues, des pupitres, des trous, des escaliers et des objets. Le plan ne donne que la composition : son style en aplats et ses rayures ne doivent pas apparaître tels quels.
+
+RÈGLE ABSOLUE DES PASSAGES : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; pièces et couloirs ont des bords à angles droits, AUCUN couloir en diagonale ni en courbe. RELIEF : le sol de chaque niveau est PLAT ; on change de niveau par les escaliers (ou en tombant dans un trou).
+
+IMAGE 2 : la vue générale d'une tour du même jeu, à cinq étages. Respecte EXACTEMENT son style de rendu : même pinceau, même saturation, même finesse de détail, même lisibilité des sols clairs entourés de murs sombres, même taille et même traitement des personnages, même façon de séparer les niveaux par du vide sombre. Ne reprends RIEN de sa composition ni de sa matière : ici ce n'est PAS de la pierre funéraire, c'est un MANOIR de bois et de plâtre brûlé.
+
+Format : PAYSAGE 1536 × 1024, vue plongeante sur les quatre niveaux, disposés comme le plan.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus de trois quarts, projection oblique frontale, sans point de fuite. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud) ; les murs nord de chaque pièce montrent leur face (papier peint décollé, lambris noircis).
+- Aucun trait noir : contours fins et doux. Ombres colorées bleu-violet, jamais grises ni noires.
+
+AMBIANCE — « le secret » : une grande demeure de savants, abandonnée depuis longtemps après un incendie. Silence, poussière, mystère ; JAMAIS d'horreur.
+- Murs de plâtre et lambris noircis par endroits, papiers peints qui se décollent, parquet aux lattes sombres et brûlées par plaques, quelques lattes manquantes, poutres tombées dans les coins, feuilles de papier éparses, fioles et livres renversés, rideaux déchirés. Rien d'encombrant au milieu des passages : les couloirs restent dégagés et lisibles.
+- Lumière : fin d'après-midi. Des RAIS DE LUMIÈRE DORÉE entrent par des fenêtres crevées le long des murs du haut et tombent en longues bandes chaudes sur le parquet ; les fonds de pièce restent dans une pénombre douce bleu-violet. Le deuxième étage (sous les combles) est le plus lumineux (trous dans le toit) ; le rez-de-chaussée est chaud ; le SOUS-SOL est le plus sombre et le plus froid (lumière bleutée de vieilles lampes de laboratoire, aucun ciel), mais toujours lisible.
+- LISIBILITÉ AVANT TOUT : le sol est nettement plus clair que les murs ; on distingue chaque pièce et chaque couloir sans effort ; les grilles de fer fermées se lisent comme des barrières.
+- Statues : pierre claire, un peu de suie, posées contre un mur sur un socle, toutes identiques.
+- Carnets : un livre ouvert sur un pupitre de bois, pages jaunies et bords brûlés, une petite lueur dorée autour.
+
+VIE (très discrète, personnages petits à l'échelle de l'image 2 ; aucun ne ressemble au héros à casquette rouge et veste bleue ; AUCUN personnage en uniforme noir) :
+- rez-de-chaussée : un SCIENTIFIQUE (blouse blanche, lunettes) dans le couloir du centre, un peu au-dessus de l'escalier qui descend ;
+- premier étage : un PILLARD (homme maigre, bonnet sombre, foulard sur le bas du visage, sac sur l'épaule, l'air perdu) dans la pièce de gauche, au milieu de la hauteur ;
+- deuxième étage : un Pillard dans la pièce de gauche, près du carnet ; un Scientifique à droite des trous, tourné vers la gauche ;
+- sous-sol : un Pillard dans la salle du bas au centre, près du carnet ; un Scientifique dans le long couloir vertical de droite.
+- AUCUNE créature visible, aucun animal, aucune silhouette mystérieuse, aucun monstre : le manoir est vide de toute présence surnaturelle.
+
+INTERDITS : texte, lettres, chiffres, étiquettes, panneaux lisibles, symboles, logo, signature, filigrane, cadre, interface ; sang, crânes, ossements, squelettes, cadavres, toiles d'araignée géantes, yeux luisants, visages dans l'ombre, ambiance d'horreur ou de jumpscare ; flammes actives ou feu en cours ; créature dans un tube, éprouvette géante, cuve ou silhouette de créature ; ciel visible ailleurs qu'à travers les trous du toit du deuxième étage ; arbres, herbe, végétation extérieure ; couloirs courbes ou en diagonale ; brouillard opaque, flou de profondeur, vignettage noir ; pixel art, 3D.
+
+L'image doit raconter, sans texte : une demeure de savants brûlée et abandonnée, qu'on explore étage par étage en ouvrant des grilles, où des carnets attendent sur des pupitres, et dont le secret se cache au sous-sol.

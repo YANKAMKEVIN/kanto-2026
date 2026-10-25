@@ -390,7 +390,7 @@ func test_only_misty_surge_and_the_rivals_switch() -> void:
 	# Jalon 20 (T7, dossier 23 §11.3, §13.5) : Erika et Giovanni.
 	var switching: Array[StringName] = [&"cerulean_gym_misty", &"rival_cerulean",
 		&"rival_ss_anne", &"vermilion_gym_surge", &"rival_tower", &"celadon_gym_erika",
-		&"giovanni_hideout",
+		&"giovanni_hideout", &"cinnabar_gym_blaine",
 		# Jalon 28 (T8) : Giovanni Champion.
 		&"viridian_gym_giovanni"]
 	for id: StringName in library.get_ids():

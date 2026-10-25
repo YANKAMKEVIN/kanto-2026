@@ -1,0 +1,56 @@
+# Îles Écume B2F — grille fonctionnelle v1 (jalon 24, T2 ; dossier 27 §7). Même légende que
+# seafoam_1f.txt. Rochers tombés du B1F aux points de chute F (18, 6) et (23, 6) ; trous (19, 6) et
+# (22, 6) qui font apparaître un rocher au B3F, DANS L'EAU, en travers du courant 1. La Pépite est
+# cachée contre le caillou x (15, 15). Le rocher (23, 6) n'est accessible que par le côté est
+# (22..27, 6..9), que l'on atteint par l'escalier (25, 5) depuis l'échelle (25, 3), donc depuis le B3F
+# puis le B4F : on y revient après avoir traversé le courant (RB).
+# Écarts avec RB : un panneau T-11 en (6, 4) ; le petit rocher (15, 15) est le caillou x de l'objet.
+#
+
+PRATICABLES .:=wBOFs^v<>UVE
+
+GRILLE 30 18
+00 ##############################
+01 ##############################
+02 ##....................#::::###
+03 ##...U................#::V:###
+04 ##....n...#::::#......#::::###
+05 ##........#::::#......###=####
+06 ##........#::::#..FO||OF....##
+07 ##........#::U:#....||......##
+08 ###::::::::::::::::::#......##
+09 ###::::::::::::::::::#......##
+10 ###::::::::::::::::::##::::###
+11 ######==#######::::::##::U:###
+12 ##............#::::::##::::###
+13 ##...V........###=#####::::###
+14 ##....................#::V:###
+15 ##.............x...U..########
+16 ##############################
+17 ##############################
+FIN
+
+POSITIONS
+echelle_p4           echelle        5,3          libre   paire=P4 sens=monte vers=seafoam_b1f
+arrivee_p4           spawn          5,4          libre   paire=P4
+echelle_p5           echelle        13,7         libre   paire=P5 sens=monte vers=seafoam_b1f
+arrivee_p5           spawn          13,8         libre   paire=P5
+echelle_p6           echelle        19,15        libre   paire=P6 sens=monte vers=seafoam_b1f
+arrivee_p6           spawn          19,14        libre   paire=P6
+echelle_p7           echelle        25,11        libre   paire=P7 sens=monte vers=seafoam_b1f
+arrivee_p7           spawn          25,12        libre   paire=P7
+echelle_p8           echelle        5,13         libre   paire=P8 sens=descend vers=seafoam_b3f
+arrivee_p8           spawn          5,14         libre   paire=P8
+echelle_p9           echelle        25,3         libre   paire=P9 sens=descend vers=seafoam_b3f
+arrivee_p9           spawn          25,4         libre   paire=P9
+echelle_p10          echelle        25,14        libre   paire=P10 sens=descend vers=seafoam_b3f
+arrivee_p10          spawn          25,13        libre   paire=P10
+trou_b2f_1           trou           19,6         libre   n=1 drapeau=seafoam_b2f_hole_1_filled chute=seafoam_b3f
+trou_b2f_2           trou           22,6         libre   n=2 drapeau=seafoam_b2f_hole_2_filled chute=seafoam_b3f
+chute_rocher_b2f_1   chute_rocher   18,6         libre   depuis=seafoam_b1f:1 sol=bas
+chute_rocher_b2f_2   chute_rocher   23,6         libre   depuis=seafoam_b1f:2 sol=bas
+chute_joueur_b2f_1   chute_joueur   18,6         libre   depuis=seafoam_b1f:1 surf=non
+chute_joueur_b2f_2   chute_joueur   23,6         libre   depuis=seafoam_b1f:2 surf=non
+objet_b2f_cache      objet_cache    15,14        libre   role=C1 item=nugget  # Pépite (RB : en (15, 15), sous le caillou x) ; on la prend depuis (15, 14)
+panneau_rochers_b2f  panneau        6,4          bloque  texte=T-11  # près de l'échelle d'arrivée (5, 3)
+FIN

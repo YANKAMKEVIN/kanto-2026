@@ -29,6 +29,7 @@ import importlib.util
 import json
 import math
 import re
+import tempfile
 from pathlib import Path
 
 import numpy as np
@@ -578,9 +579,21 @@ class Preparateur:
             for e in self.m[groupe]:
                 sortie = self._sortie(e["sortie"])
                 sortie.parent.mkdir(parents=True, exist_ok=True)
-                largeur, hauteur = decoupeur.decouper(
-                    str(self.source / e["source"]), str(sortie), e["hauteur"],
-                    rebond_passage=e.get("rebond_passage"))
+                source = str(self.source / e["source"])
+                nettoye = None
+                if e.get("nettoyer"):
+                    # Halo alpha de certains générateurs (série 27) : coupé avant la découpe
+                    # (le découpeur suit le sujet, jamais une grille).
+                    nettoye = tempfile.NamedTemporaryFile(suffix=".png", delete=False)
+                    nettoyer_halos(Image.open(source).convert("RGBA")).save(nettoye.name)
+                    source = nettoye.name
+                try:
+                    largeur, hauteur = decoupeur.decouper(
+                        source, str(sortie), e["hauteur"],
+                        rebond_passage=e.get("rebond_passage"))
+                finally:
+                    if nettoye is not None:
+                        Path(nettoye.name).unlink(missing_ok=True)
                 profil = e.get("profil_course")
                 if profil:  # rangées de profil remplacées (cycle de course lisible)
                     largeur, hauteur = _profil_course().remplacer(
@@ -640,6 +653,51 @@ class Preparateur:
                 "hauteur": e["hauteur"], "colonnes": 6, "lignes": 1,
                 "ordre_colonnes": ["bas", "bas_reaction", "gauche", "gauche_reaction",
                                    "droite", "droite_reaction"]}
+            print(f"{e['id']} : cellule {largeur} × {hauteur}")
+
+    def pokemon_boucles(self) -> None:
+        """Pokémon d'ambiance à image animée en boucle (série 27 : Artikodin) : une planche source
+        = une ligne de `colonnes` poses de **la même direction** (repos, inspire, souffle, repos).
+        Une seule échelle (`hauteur` = la première pose), pieds alignés sur le bas de la cellule et
+        sur la même colonne (centre de la part basse de chaque pose : un souffle peint devant le
+        bec ne décale pas l'oiseau). `seuil_alpha` : alpha plus faible effacé. Feuille de jeu
+        `colonnes` × 1."""
+        for e in self.m.get("pokemon_boucles", []):
+            source = self.source / e["source"]
+            if not source.exists():
+                print(f"{e['id']} : source absente ({e['source']}), sautée")
+                continue
+            image = Image.open(source).convert("RGBA")
+            seuil = e.get("seuil_alpha", 0)
+            if seuil:
+                alpha = image.getchannel("A").point(lambda a: 0 if a < seuil else a)
+                image.putalpha(alpha)
+            attente = _attente()
+            attente.COLONNES = e["colonnes"]
+            poses = attente._poses_bande(image)
+            echelle = e["hauteur"] / poses[0].height
+            reduites = [p.resize((max(1, round(p.width * echelle)),
+                                  max(1, round(p.height * echelle))), Image.LANCZOS)
+                        for p in poses]
+            centres = []
+            for p in reduites:
+                bas = p.crop((0, int(p.height * 0.88), p.width, p.height))
+                boite = bas.getchannel("A").point(lambda a: 255 if a > 96 else 0).getbbox()
+                centres.append((boite[0] + boite[2]) / 2.0 if boite else p.width / 2.0)
+            demi = max(max(c, p.width - c) for c, p in zip(centres, reduites))
+            largeur = 2 * int(demi + 1.999) + 2
+            hauteur = max(p.height for p in reduites) + 2
+            feuille = Image.new("RGBA", (largeur * len(reduites), hauteur), (0, 0, 0, 0))
+            for colonne, (pose, centre) in enumerate(zip(reduites, centres)):
+                feuille.alpha_composite(
+                    pose, (colonne * largeur + round(largeur / 2 - centre), hauteur - pose.height))
+            sortie = self._sortie(e["sortie"])
+            sortie.parent.mkdir(parents=True, exist_ok=True)
+            feuille.save(sortie, optimize=True)
+            self.catalogue["personnages"][e["id"]] = {
+                "fichier": self._res(e["sortie"]), "cellule": [largeur, hauteur],
+                "hauteur": e["hauteur"], "colonnes": len(reduites), "lignes": 1,
+                "ordre_colonnes": e["ordre_colonnes"]}
             print(f"{e['id']} : cellule {largeur} × {hauteur}")
 
     def heros_images(self) -> None:
@@ -714,6 +772,7 @@ def main() -> None:
         p.personnages()
         p.attentes()
         p.pokemon_fixes()
+        p.pokemon_boucles()
         p.ecrire_catalogue()
         return
     p.objets()
@@ -729,6 +788,7 @@ def main() -> None:
     p.personnages()
     p.attentes()
     p.pokemon_fixes()
+    p.pokemon_boucles()
     p.heros_images()
     p.ecrire_catalogue()
     reglages_import(manifeste)

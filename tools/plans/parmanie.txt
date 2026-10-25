@@ -1,0 +1,154 @@
+# Parmanie (`fuchsia_city`) — grille fonctionnelle (jalon 22, lot 22.0, T6 ; dossier 25 §4, §10, M-19, M-20 ;
+# RB : Fuchsia City, 40 × 36, × 1,5).
+#
+# 60 × 54 cases ; nord en haut ; x = 0..59, y = 0..53.
+#
+# RACCORDS :
+#   OUEST (0, 23..25) ↔ Route 18 (74, 11..13) ; EST (59, 23..25) ↔ Route 15 (0, 11..13).
+#   SUD (rangée 53) ↔ Route 19 du J24 (bord joint à la fusion du J24 dans `main`, 2026-10-23) : praticables
+#     EXACTEMENT les colonnes 24..32 (terrasse de sable) et 34..35 (couloir) ; colonne 33 = poteau (R) ;
+#     colonne Parmanie = colonne Route 19 + 15 (grille route_19.txt du J24 : (9..17, 0) et (19..20, 0)).
+#   NORD : porte du Parc Safari (28..29, 7), réservée au J23.
+#
+# Composition (ville basse, verte et ouverte) :
+#   NORD : bâtiment d'entrée du Parc Safari (10 × 6) au bout de l'avenue nord-sud ; enclos clôturés :
+#     Fossile, Leveinard (nord-ouest), Kangourex et Ramoloss (nord-est, Pokémon peints), bassin de Lokhlass
+#     et enclos de Voltorbe (est) : un panneau devant chacun.
+#   CENTRE : avenue est-ouest (rangées 23..25) d'une entrée à l'autre ; Boutique et Salle de réunion à
+#     l'ouest de l'avenue nord-sud ; ÉTANG pêchable à l'est (pêcheur assis).
+#   SUD : rangée de bâtiments face à la promenade (rangées 41..43) : Arène (sud-ouest, J23), maison du
+#     grand-père, Centre Pokémon, maison du Gardien (J23), maison de la Super Canne ; plage, puis la mer
+#     (bord fermé) ; terrasse de sable et couloir vers la Route 19 (J24).
+#
+# Légende de la ville (en plus de la légende commune) :
+#   S Parc Safari (bloqué)   O Boutique (8 × 7)   C Centre (8 × 7)   F Salle de réunion (8 × 6)
+#   Z Arène (12 × 7)   m maison (7 × 6)   c clôture d'enclos   g sol d'enclos (bloqué pour le joueur ;
+#   les Pokémon peints s'y promènent)
+#
+# LÉGENDE COMMUNE DU J22 (chaque grille la reprend ; caractères NOUVEAUX marqués ★) :
+#   T arbres, forêt serrée (bloqués)     . herbe rase (praticable)     = chemin de terre (praticable)
+#   h hautes herbes (praticable, rencontres)   q ponton, planches (praticable)   y sable (praticable)
+#   w eau (bloquée, NON pêchable)        ★ f eau PÊCHABLE (bloquée ; on pêche depuis une case praticable
+#     voisine, face à elle ; jamais au contact d'une case de Piste)   ~ mer de décor (bloquée)
+#   R rochers, rive rocheuse, falaise (bloqués)   c clôture basse (bloquée)   x buissons (bloqués)
+#   n banc (bloqué)   P poste (bâtiment, bloqué)   m maison (bloquée)   D porte (praticable, terminale)
+#   ★ k tronçon de PISTE CYCLABLE, plat (praticable ; à vélo seulement, on ne peut pas descendre)
+#   ★ s PISTE en PENTE (praticable ; sans appui, dérive d'une case vers le sud ; Route 17 seulement)
+#   b barrière basse de la Piste (bloquée ; arrête la vue des Dresseurs)
+# Une case de Piste est une case « k » ou « s » ; un PALIER est une bande de rangées de la Route 17 sans
+# « s » entre deux tronçons de pente. Les Dresseurs de la Piste sont EN RETRAIT : sur une case « . »
+# (alcôve) hors des voies, tournés vers elles.
+#
+# POSITIONS : types warp, spawn, dresseur, objet_visible, cache, panneau, pnj, pokemon, herbes, repere,
+# decor. Dresseurs : trainer= (id du dossier §9), facing=, sight= (portée RB × 1,5, arrondie au-dessus :
+# 1 → 2, 2 → 3, 3 → 5, 4 → 6), rbsight=, inevitable=oui|non. Objets : item=, drapeau= (dossier §11).
+# Warps : to= (carte) spawn= (point d'arrivée) ; coming_soon= pour une porte ou un bord « À venir » ;
+# lie= relie les deux portes d'un poste traversant. Le contrôle : tools/art/plan_check_j22.py
+# (python3 -I tools/art/plan_check_j22.py) ; le rendu : tools/art/plan_aplats_j22.py.
+#
+# INTÉRIEURS : pas de grille nouvelle ; MODÈLES EXISTANTS réutilisés (Centre et Boutique : modèles des
+# villes ; Super Canne et Méga Canne : tools/plans/carmin_pecheur.txt ; grand-père : azuria_maison.txt ;
+# Salle de réunion : carmin_fan_club.txt).
+#
+# DÉFAUTS : enclos (6) et panneaux ; étang à l'est ; plage pêchable (la mer deviendra surfable au J24) ;
+# bassin de Lokhlass non pêchable (clôturé).
+
+PRATICABLES .=yD
+
+GRILLE 60 54
+00 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+01 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+02 TT.cccccccc.cccccccc....SSSSSSSSSS..ccccccccc.cccccccccc..TT
+03 TT.cggggggc.cggggggc....SSSSSSSSSS..cgggggggc.cggggggggc..TT
+04 TT.cggggggc.cggggggc....SSSSSSSSSS..cgggggggc.cggggggggc..TT
+05 TT.cggggggc.cggggggc....SSSSSSSSSS..cgggggggc.cggggggggc..TT
+06 TT.cggggggc.cggggggc....SSSSSSSSSS..cgggggggc.cggggggggc..TT
+07 TT.cggggggc.cggggggc....SSSSDDSSSS..cgggggggc.cggggggggc..TT
+08 TT.cggggggc.cggggggc........==......cgggggggc.cggggggggc..TT
+09 TT.cccccccc.cccccccc........==......ccccccccc.cccccccccc..TT
+10 TTTT...................xxx..==.xxx......................TTTT
+11 TTTT...................xxx..==.xxx......................TTTT
+12 TTTT...................xxx..==.xxx......................TTTT
+13 TT..OOOOOOOO...FFFFFFFF.....==......ccccccccc.cccccccccc..TT
+14 TT..OOOOOOOO...FFFFFFFF.....==......cwwwwwwwc.cggggggggc..TT
+15 TT..OOOOOOOO...FFFFFFFF.....==......cwwwwwwwc.cggggggggc..TT
+16 TT..OOOOOOOO...FFFFFFFF.....==......cwwwwwwwc.cggggggggc..TT
+17 TT..OOOOOOOO...FFFFFFFF.....==......cwwwwwwwc.cggggggggc..TT
+18 TT..OOOOOOOO...FFFDDFFF.....==......ccccccccc.cccccccccc..TT
+19 TT..OOODDOOO................==............................TT
+20 TT..........................==.........xxx........xxx.....TT
+21 TT..........................==.........xxx........xxx.....TT
+22 TT..........................==............................TT
+23 ============================================================
+24 ============================================================
+25 ============================================================
+26 TTTTT.......................==............................TT
+27 TTTTT......TTTT.......TTTT..==..............ffffffffffffTTTT
+28 TTTTT.xxx..TTTT.......TTTT..==..............fwwwwwwwwwwwTTTT
+29 TTTTT.xxx..TTTT.......TTTT..==..............fwwwwwwwwwwwTTTT
+30 TTTTT.xxx..TTTT.......TTTT..==..............fwwwwwwwwwwwTTTT
+31 TTTTT.................TTTT..==..............ffffffffffffTTTT
+32 TTTTT.......................==..........................TTTT
+33 TT..........................==..........................TTTT
+34 TTZZZZZZZZZZZZ..............==.CCCCCCCC...................TT
+35 TTZZZZZZZZZZZZ..mmmmmmm.....==.CCCCCCCC..mmmmmmm..mmmmmmm.TT
+36 TTZZZZZZZZZZZZ..mmmmmmm.....==.CCCCCCCC..mmmmmmm..mmmmmmm.TT
+37 TTZZZZZZZZZZZZ..mmmmmmm.....==.CCCCCCCC..mmmmmmm..mmmmmmm.TT
+38 TTZZZZZZZZZZZZ..mmmmmmm.....==.CCCCCCCC..mmmmmmm..mmmmmmm.TT
+39 TTZZZZZZZZZZZZ..mmmmmmm.....==.CCCCCCCC..mmmmmmm..mmmmmmm.TT
+40 TTZZZZZDDZZZZZ..mmmDmmm.....==.CCCDDCCC..mmmDmmm..mmmDmmm.TT
+41 TT========================================================TT
+42 TT========================================================TT
+43 TT========================================================TT
+44 TTyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyTT
+45 TTyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyTT
+46 TTffffffffffffffffffffffyyyyyyyyyR==ffffffffffffffffffffffTT
+47 TTwwwwwwwwwwwwwwwwwwwwwfyyyyyyyyyR==fwwwwwwwwwwwwwwwwwwwwwTT
+48 TTwwwwwwwwwwwwwwwwwwwwwfyyyyyyyyyR==fwwwwwwwwwwwwwwwwwwwwwTT
+49 TTwwwwwwwwwwwwwwwwwwwwwfyyyyyyyyyR==fwwwwwwwwwwwwwwwwwwwwwTT
+50 TTwwwwwwwwwwwwwwwwwwwwwfyyyyyyyyyR==fwwwwwwwwwwwwwwwwwwwwwTT
+51 TTwwwwwwwwwwwwwwwwwwwwwfyyyyyyyyyR==fwwwwwwwwwwwwwwwwwwwwwTT
+52 TTwwwwwwwwwwwwwwwwwwwwwfyyyyyyyyyR==fwwwwwwwwwwwwwwwwwwwwwTT
+53 TTwwwwwwwwwwwwwwwwwwwwwfyyyyyyyyyR==fwwwwwwwwwwwwwwwwwwwwwTT
+FIN
+
+# POSITIONS — identifiant  type  cases  bloque|libre  [cle=valeur ...]  # commentaire
+POSITIONS
+warp_ouest             warp           0,23..25       libre   to=route_18 spawn=from_fuchsia  # PUSH ← → Route 18 (74, 11..13)
+from_route_18          spawn          0,23..25       libre   facing=right  # arrivée de la Route 18, tournée →
+warp_est               warp           59,23..25      libre   to=route_15 spawn=from_fuchsia  # PUSH → → Route 15 (0, 11..13)
+from_route_15          spawn          59,23..25      libre   facing=left  # arrivée de la Route 15, tournée ←
+warp_sud               warp           24..32,53;34..35,53 libre   to=route_19 spawn=from_fuchsia_city  # PUSH ↓ → Route 19 (J24) (9..17, 0) et (19..20, 0), même rang : terrasse de sable 24..32 et couloir 34..35 ; colonne 33 = poteau
+from_route_19          spawn          24..32,53;34..35,53 libre   facing=up  # arrivée de la Route 19 (J24), tournée ↑
+porte_centre           warp           34..35,40      libre   to=fuchsia_center spawn=entrance  # Centre Pokémon (modèle existant)
+porte_boutique         warp           7..8,19        libre   to=fuchsia_mart spawn=entrance  # Boutique (modèle existant)
+porte_salle_reunion    warp           18..19,18      libre   to=fuchsia_meeting_room spawn=entrance  # Salle de réunion du club du Safari (modèle carmin_fan_club.txt)
+porte_grand_pere       warp           19,40          libre   to=fuchsia_grandpa_house spawn=entrance  # maison du grand-père (modèle azuria_maison.txt)
+porte_super_canne      warp           53,40          libre   to=fuchsia_good_rod_house spawn=entrance  # maison de la Super Canne (modèle carmin_pecheur.txt)
+porte_arene            warp           7..8,40        libre   coming_soon=fuchsia_gym  # Arène de Koga : RÉSERVÉE au J23
+porte_safari           warp           28..29,7       libre   coming_soon=safari_zone_gate  # Parc Safari : RÉSERVÉ au J23
+porte_gardien          warp           44,40          libre   coming_soon=wardens_house  # Maison du Gardien : RÉSERVÉE au J23 (M-19)
+from_center            spawn          34..35,41      libre   facing=down  # sortie, tournée ↓
+from_mart              spawn          7..8,20        libre   facing=down  # sortie, tournée ↓
+from_meeting_room      spawn          18..19,19      libre   facing=down  # sortie, tournée ↓
+from_grandpa_house     spawn          19,41          libre   facing=down  # sortie, tournée ↓
+from_good_rod_house    spawn          53,41          libre   facing=down  # sortie, tournée ↓
+kangourex              pokemon        40,5           bloque  role=E1 species=kangaskhan routine=wander  # Kangourex peint (M-20), enclos (37..43, 3..8) ; examen T-61 ; décor : ni combat, ni Pokédex
+ramoloss               pokemon        50,5           bloque  role=E2 species=slowpoke routine=wander  # Ramoloss peint (M-20), enclos (47..54, 3..8) ; examen T-62
+panneau_fossile        panneau        6,10           bloque  role=T-66  # enclos fossile ; lu depuis (6, 11) ↑
+panneau_leveinard      panneau        15,10          bloque  role=T-63  # enclos Leveinard ; lu depuis (15, 11) ↑
+panneau_kangourex      panneau        40,10          bloque  role=T-61  # enclos Kangourex ; lu depuis (40, 11) ↑
+panneau_ramoloss       panneau        50,10          bloque  role=T-62  # enclos Ramoloss ; lu depuis (50, 11) ↑
+panneau_lokhlass       panneau        40,19          bloque  role=T-64  # enclos Lokhlass ; lu depuis (40, 20) ↑
+panneau_voltorbe       panneau        50,19          bloque  role=T-65  # enclos Voltorbe ; lu depuis (50, 20) ↑
+panneau_arene          panneau        14,40          bloque  role=T-55  # « ARÈNE DE PARMANIE » ; lu depuis (14, 41) ↑
+panneau_safari         panneau        26,8           bloque  role=T-56  # « PARC SAFARI » ; lu depuis (26, 9) ↑
+panneau_ouest          panneau        3,22           bloque  role=T-ville  # « PARMANIE » (entrée ouest) ; lu depuis (3, 23) ↑
+panneau_est            panneau        56,22          bloque  role=T-ville  # « PARMANIE » (entrée est) ; lu depuis (56, 23) ↑
+garcon_safari          pnj            31,9           bloque  role=N1 facing=left  # garçon qui parle du Safari (T-57)
+joueur                 pnj            20,27          bloque  role=N2 facing=down routine=wander  # joueur (T-58)
+pecheur_assis          pnj            43,29          bloque  role=N3 facing=right  # pêcheur assis au bord de l'étang (T-59)
+femme_enclos           pnj            45,11          bloque  role=N4 facing=up  # femme près des enclos (T-60)
+etang_peche            repere         43..56,26..32  libre   role=peche  # étang : eau pêchable sur tout le tour (table Méga Canne de Parmanie)
+mer_peche              repere         2..57,44..53   libre   role=peche  # bord de mer pêchable depuis la plage (côte sud : Surf au J24)
+FIN
