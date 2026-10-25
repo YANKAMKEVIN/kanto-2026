@@ -343,6 +343,10 @@ const VARIANT_FLAGS: Dictionary = {
 	&"silph_co_master_ball": [[&"silph_giovanni_defeated"]],
 	&"silph_co_7f_item_10": [[]],
 	&"silph_co_7f_item_11": [[]],
+	# Jalon 27 (T8 à T10) : Morgane (scène et rattrapage de la CT46), maître du Dojo, choix.
+	&"saffron_gym_sabrina": [PEWTER_FLAGS], &"saffron_gym_sabrina_tm_late": [PEWTER_FLAGS],
+	&"fighting_dojo_master": [PEWTER_FLAGS],
+	&"fighting_dojo_take_hitmonlee": [PEWTER_FLAGS], &"fighting_dojo_take_hitmonchan": [PEWTER_FLAGS],
 	# Jalon 25 : Manoir (objets, caches, interrupteur), Arène (quiz, Auguste), réserve du Musée,
 	# arbre à Couper d'Argenta, échanges du Labo.
 	&"cinnabar_gym_blaine": [PEWTER_FLAGS + [&"badge_volcano"], PEWTER_FLAGS],
@@ -513,6 +517,10 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	# Jalon 26 (T11, T12) : dialogues de l'employé du Lokhlass, du président et des objets du 7F.
 	&"silph_co_lapras_gift": &"silph_co_7f", &"silph_co_master_ball": &"silph_co_11f",
 	&"silph_co_7f_item_10": &"silph_co_7f", &"silph_co_7f_item_11": &"silph_co_7f",
+	# Jalon 27 (T8 à T10) : dialogues de Morgane et du maître, choix OUI des deux Poké Balls.
+	&"saffron_gym_sabrina": &"saffron_gym", &"saffron_gym_sabrina_tm_late": &"saffron_gym",
+	&"fighting_dojo_master": &"fighting_dojo", &"fighting_dojo_take_hitmonlee": &"fighting_dojo",
+	&"fighting_dojo_take_hitmonchan": &"fighting_dojo",
 	# Jalon 24 : objets (PNJ « objet »), caches (points d'examen), Artikodin (son PNJ), CT35 et
 	# fossiles (dialogues des scientifiques, « cutscene » ou « confirm_cutscene »).
 	&"route_20_item_1": &"route_20", &"route_21_item_1": &"route_21",
@@ -755,7 +763,10 @@ func test_library_loads_without_error() -> void:
 		+ J18_IDS + J20_T21_IDS + J25_IDS + J26_T9_ITEMS.keys()
 		# Jalon 26 (T11, T12) : rival n° 6, Lokhlass, Giovanni, Master Ball, objets du 7F.
 		+ [&"rival_silph", &"silph_co_lapras_gift", &"silph_co_giovanni", &"silph_co_master_ball",
-		&"silph_co_7f_item_10", &"silph_co_7f_item_11"]))
+		&"silph_co_7f_item_10", &"silph_co_7f_item_11"]
+		# Jalon 27 (T8 à T10) : Morgane, maître du Dojo, choix Kicklee / Tygnon.
+		+ [&"saffron_gym_sabrina", &"saffron_gym_sabrina_tm_late", &"fighting_dojo_master",
+		&"fighting_dojo_take_hitmonlee", &"fighting_dojo_take_hitmonchan"]))
 
 
 func _sorted(values: Array) -> Array[StringName]:
@@ -844,14 +855,13 @@ func test_every_trainer_and_item_step_exists() -> void:
 ## l'étape « badge » d'une scène suit le combat qui lève déjà son drapeau (« win »).
 func test_every_champion_card_and_badge_step_exists() -> void:
 	assert_eq(_cutscenes.get_card_trainer_ids(), [&"celadon_gym_erika", &"cerulean_gym_misty",
-		&"cinnabar_gym_blaine", &"giovanni_hideout", &"pewter_gym_brock", &"silph_co_giovanni",
-		&"vermilion_gym_surge"] as Array[StringName])
+		&"cinnabar_gym_blaine", &"giovanni_hideout", &"pewter_gym_brock", &"saffron_gym_sabrina",
+		&"silph_co_giovanni", &"vermilion_gym_surge"] as Array[StringName])
 	for id: StringName in _cutscenes.get_card_trainer_ids():
 		var trainer := _trainers.get_trainer(id)
 		assert_true(trainer != null and trainer.has_card(), "« %s » a une carte" % id)
-	assert_eq(_cutscenes.get_badge_ids(), [&"boulder", &"cascade", &"rainbow", &"thunder",
-		&"volcano"]
-		as Array[StringName])
+	assert_eq(_cutscenes.get_badge_ids(), [&"boulder", &"cascade", &"marsh", &"rainbow",
+		&"thunder", &"volcano"] as Array[StringName])
 	for id: StringName in _cutscenes.get_badge_ids():
 		assert_true(_badges.has_badge(id), "badge « %s » connu" % id)
 	for id: StringName in _real_ids():

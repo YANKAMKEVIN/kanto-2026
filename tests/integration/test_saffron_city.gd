@@ -5,7 +5,7 @@ extends GutTest
 ## porte) ; **quatre postes ↔ ville dans les deux sens** (Routes 5, 7, 8 : intérieurs du J15 / J20 ;
 ## Route 6 : porte du poste) ; zone jouable → le garde du J20 demande une boisson ; sauvegarde sur
 ## chaque case d'arrivée de la ville → reprise sur la case (dans les postes : à un pas, la case
-## d'arrivée étant celle du garde quand les postes sont fermés) ; Arène et Dojo « À venir » (J27), **Dojo jamais
+## d'arrivée étant celle du garde quand les postes sont fermés) ; Arène et Dojo ouverts au J27, **Dojo jamais
 ## conditionné par un drapeau** ; panneaux ; objets peints sur des cases bloquées.
 ## Vie (sbires, habitants, libération) : T9 ; Sylphe : T7.
 
@@ -95,9 +95,11 @@ func test_metadata_light_and_zone() -> void:
 		assert_true(MapCatalog.has_map(map_id), String(map_id))
 	# Fusion T6 + T7 : la ville, ses six intérieurs, puis les 12 cartes de la Sylphe.
 	var maps: Array[StringName] = zones.get_zone(&"saffron_city").maps
-	assert_eq(maps.size(), 19, "7 cartes du T6 + 12 de la Sylphe")
+	# J27 (T6) : l'Arène et le Dojo à la fin.
+	assert_eq(maps.size(), 21, "7 cartes du T6 + 12 de la Sylphe + Arène et Dojo (J27)")
 	assert_eq(maps[0], &"saffron_city", "Safrania en tête (zone jouable)")
-	for map_id: StringName in maps.slice(7):
+	assert_eq(maps.slice(19), [&"saffron_gym", &"fighting_dojo"] as Array[StringName], "J27")
+	for map_id: StringName in maps.slice(7, 19):
 		assert_true(String(map_id).begins_with("silph_co"), String(map_id))
 	for layer: Node in _map.find_children("*", "TileMapLayer", true, false):
 		assert_false((layer as TileMapLayer).visible, "%s invisible" % layer.name)
@@ -155,14 +157,17 @@ func test_every_planned_door_has_its_warp_and_arrival() -> void:
 			assert_eq(building.scene_file_path.get_file().get_basename(), entry[3])
 
 
-func test_gym_and_dojo_are_coming_soon_and_the_dojo_never_needs_a_flag() -> void:
-	for id: String in ["porte_dojo", "porte_arene"]:
-		for cell: Vector2i in _plan.cells_at(id):
+## J27 (T6) : les deux portes mènent à leurs cartes ; aucune ne porte de drapeau (l'Arène n'est
+## fermée que par le sbire `unless silph_giovanni_defeated`, le Dojo jamais).
+func test_gym_and_dojo_open_to_their_maps_and_the_dojo_never_needs_a_flag() -> void:
+	for entry: Array in [["porte_dojo", &"fighting_dojo"], ["porte_arene", &"saffron_gym"]]:
+		for cell: Vector2i in _plan.cells_at(entry[0]):
 			var warp := _map.get_warps().find_on_step(cell, Vector2i.UP)
-			assert_not_null(warp, id)
+			assert_not_null(warp, entry[0])
 			if warp != null:
-				assert_true(warp.is_coming_soon(), "%s : « À venir » (J27)" % id)
-				assert_true(warp.unless_flags.is_empty(), "%s : aucun drapeau" % id)
+				assert_false(warp.is_coming_soon(), "%s : ouverte (J27)" % entry[0])
+				assert_eq([warp.target_map, warp.target_spawn], [entry[1], &"entrance"], entry[0])
+				assert_true(warp.unless_flags.is_empty(), "%s : aucun drapeau" % entry[0])
 	assert_eq(_map.find_children("*", "FlagGate", true, false).size(), 0,
 		"aucun décor conditionnel dans la ville (T6)")
 	var dojo_front := _plan.cells_at("from_dojo")

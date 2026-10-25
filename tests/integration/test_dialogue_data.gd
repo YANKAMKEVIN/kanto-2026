@@ -459,16 +459,6 @@ const MAPS: Array[StringName] = [
 	&"celadon_restaurant", &"celadon_chief_house", &"celadon_hotel",
 	# Jalon 20 (T21) : la vie du 20-II (Casino déjà listé ; repaire Rocket B1F à B4F).
 	&"rocket_hideout_b1f", &"rocket_hideout_b2f", &"rocket_hideout_b3f", &"rocket_hideout_b4f",
-	# Jalon 26 (T6) : Safrania (géométrie ; panneaux de la ville et de l'Arène).
-	&"saffron_city",
-	# Jalon 26 (T9) : la vie de Safrania (intérieurs) et de la Sylphe (1F à 6F, 8F à 10F ; le 7F et
-	# le 11F viennent avec le rival et Giovanni).
-	&"saffron_center", &"saffron_mart", &"saffron_psychic_house", &"saffron_pidgey_house",
-	&"saffron_copycat_house_1f", &"saffron_copycat_house_2f",
-	&"silph_co_1f", &"silph_co_2f", &"silph_co_3f", &"silph_co_4f", &"silph_co_5f", &"silph_co_6f",
-	&"silph_co_8f", &"silph_co_9f", &"silph_co_10f",
-	# Jalon 26 (T11, T12) : 7F (rival n° 6, Lokhlass) et 11F (Giovanni, président) de la Sylphe.
-	&"silph_co_7f", &"silph_co_11f",
 	# Jalon 24 : la mer, les Îles Écume, Cramois'Île et son Labo.
 	&"route_19", &"route_20", &"route_21", &"seafoam_1f", &"seafoam_b1f", &"seafoam_b2f",
 	&"seafoam_b3f", &"seafoam_b4f", &"cinnabar_island", &"cinnabar_center", &"cinnabar_mart",
@@ -482,6 +472,18 @@ const MAPS: Array[StringName] = [
 	&"route_16",
 	# Jalon 21 (T21) : la Route 12 (panneaux, Pêcheurs, Ronflex) et le 2F du poste (CT39).
 	&"route_12", &"route_12_gate_2f",
+	# Jalon 26 (T6) : Safrania (géométrie ; panneaux de la ville et de l'Arène).
+	&"saffron_city",
+	# Jalon 26 (T9) : la vie de Safrania (intérieurs) et de la Sylphe (1F à 6F, 8F à 10F ; le 7F et
+	# le 11F viennent avec le rival et Giovanni).
+	&"saffron_center", &"saffron_mart", &"saffron_psychic_house", &"saffron_pidgey_house",
+	&"saffron_copycat_house_1f", &"saffron_copycat_house_2f",
+	&"silph_co_1f", &"silph_co_2f", &"silph_co_3f", &"silph_co_4f", &"silph_co_5f", &"silph_co_6f",
+	&"silph_co_8f", &"silph_co_9f", &"silph_co_10f",
+	# Jalon 26 (T11, T12) : 7F (rival n° 6, Lokhlass) et 11F (Giovanni, président) de la Sylphe.
+	&"silph_co_7f", &"silph_co_11f",
+	# Jalon 27 (T8 à T10) : Arène de Morgane et Dojo de Combat.
+	&"saffron_gym", &"fighting_dojo",
 ]
 ## Jalon 21 (T22) : dialogues de Ronflex de la Route 16 (`j21_snorlax_16.json`, dossier 24 §15.6-§15.7).
 ## Les répliques communes (flûte jouée, réveil, calme, rendormi) sont celles de `j21_snorlax.json`.
@@ -1244,7 +1246,7 @@ func test_library_loads_without_error() -> void:
 		+ IDS_J16_SHIP + IDS_J16_RIVAL_CAPTAIN + IDS_J16_T15 + IDS_J17 + IDS_J18 + IDS_J19 + IDS_J20 \
 		+ IDS_J20_T17 + IDS_J20_T21 + IDS_J21 + IDS_J21_T21 + IDS_S2B + S2_FIELD_TRAVEL + IDS_J21_T22 \
 		+ IDS_J24_TRAINERS + IDS_J24 + IDS_J25 \
-		+ _silph_co_ids() + _j26_life_ids() + IDS_J26_STORY
+		+ _silph_co_ids() + _j26_life_ids() + IDS_J26_STORY + _j27_ids()
 	expected.append_array(TEXTS_J26_T6.keys())
 	expected.append_array(TEXTS_S2C_FISH.keys())
 	expected.append_array(TEXTS_S2D_STRENGTH.keys())
@@ -1356,11 +1358,6 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		+ PLAYED_J16_T15
 		# Jalon 17 (T8) : remise de la CS05 par l'assistant (scène lancée par son dialogue).
 		+ [&"route_2_east_assistant_hm05_system", &"route_2_east_assistant_hm05_use"]
-		# Jalon 26 (T11, T12) : rival n° 6, Lokhlass, Giovanni et Master Ball de la Sylphe.
-		+ [&"rival_silph_intro", &"rival_silph_lost", &"rival_silph_won",
-		&"silph_co_7f_lapras_care", &"silph_co_giovanni_intro", &"silph_co_giovanni_lost",
-		&"silph_co_giovanni_won", &"silph_co_lapras_received", &"silph_co_lapras_stored",
-		&"silph_co_master_ball_got", &"silph_co_president_after"]
 		# Jalon 25 : Manoir, Arène, réserve du Musée, échanges, porte de l'Arène.
 		+ [&"cinnabar_gym_door_unlock", &"cinnabar_blaine_after", &"cinnabar_blaine_badge",
 			&"cinnabar_blaine_before", &"cinnabar_blaine_defeated", &"cinnabar_blaine_tm38",
@@ -1380,7 +1377,20 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 			&"cinnabar_trade_marc_offer", &"cinnabar_trade_marc_refuse", &"cinnabar_trade_marc_thanks",
 			&"cinnabar_trade_marc_wrong", &"mansion_statue_yes", &"pewter_museum_reserve_amber_give"]
 		# Jalon 21 (T22) : le réveil de Ronflex (Route 16).
-		+ PLAYED_J21_T22))
+		+ PLAYED_J21_T22
+		# Jalon 26 (T11, T12) : rival n° 6, Lokhlass, Giovanni et Master Ball de la Sylphe.
+		+ [&"rival_silph_intro", &"rival_silph_lost", &"rival_silph_won",
+		&"silph_co_7f_lapras_care", &"silph_co_giovanni_intro", &"silph_co_giovanni_lost",
+		&"silph_co_giovanni_won", &"silph_co_lapras_received", &"silph_co_lapras_stored",
+		&"silph_co_master_ball_got", &"silph_co_president_after"]
+		# Jalon 27 (T8 à T10) : Morgane (scène, rattrapage de la CT46), maître et choix du Dojo.
+		+ [&"saffron_gym_sabrina_intro", &"saffron_gym_sabrina_resume",
+		&"saffron_gym_sabrina_won", &"saffron_gym_sabrina_badge", &"saffron_gym_sabrina_tm",
+		&"saffron_gym_sabrina_tm_use", &"saffron_gym_sabrina_lost", &"saffron_gym_sabrina_tm_late",
+		&"fighting_dojo_master_intro", &"fighting_dojo_master_won", &"fighting_dojo_master_lost",
+		&"fighting_dojo_master_after", &"fighting_dojo_received_hitmonlee",
+		&"fighting_dojo_stored_hitmonlee", &"fighting_dojo_received_hitmonchan",
+		&"fighting_dojo_stored_hitmonchan"]))
 	for id: StringName in played:
 		assert_true(_library.has_dialogue(id), "dialogue « %s » défini" % id)
 		if UNUSED_YET.has(id):
@@ -1599,6 +1609,9 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		&"got_rocket_hideout_b3f_item_2", &"got_rocket_hideout_b3f_hidden_1",
 		&"got_rocket_hideout_b4f_item_1", &"got_rocket_hideout_b4f_item_2",
 		&"got_rocket_hideout_b4f_item_3", &"got_rocket_hideout_b4f_hidden_1"]
+		# Jalon 21 (T22) : titre de zone de la Route 16, réveil de Ronflex 16 (`_awake` jamais sur disque).
+		+ [&"route_16_visited", &"snorlax_route_16_awake", &"snorlax_route_16_woken",
+		&"snorlax_route_16_done", &"snorlax_route_16_caught"]
 		# Jalon 26 (T9) : objets au sol et cachés de la Sylphe SARL et de Safrania (dont la Carte).
 		+ [&"got_silph_co_3f_item_4", &"got_silph_co_4f_item_5", &"got_silph_co_4f_item_6",
 		&"got_silph_co_4f_item_7", &"got_silph_co_5f_card_key", &"got_silph_co_5f_hidden_1",
@@ -1609,9 +1622,9 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		+ [&"rival_silph_won", &"rival_silph_lost_once", &"silph_lapras_received",
 		&"silph_giovanni_met", &"silph_giovanni_defeated", &"silph_master_ball_received",
 		&"got_silph_co_7f_item_10", &"got_silph_co_7f_item_11"]
-		# Jalon 21 (T22) : titre de zone de la Route 16, réveil de Ronflex 16 (`_awake` jamais sur disque).
-		+ [&"route_16_visited", &"snorlax_route_16_awake", &"snorlax_route_16_woken",
-		&"snorlax_route_16_done", &"snorlax_route_16_caught"]))
+		# Jalon 27 (T8 à T10) : Morgane, Badge Marais, CT46 ; maître du Dojo ; choix du Dojo.
+		+ [&"badge_marsh", &"sabrina_met", &"tm46_received", &"fighting_dojo_master_defeated",
+		&"dojo_got_hitmonlee", &"dojo_got_hitmonchan"]))
 	assert_eq(_used_on.get(&"oak_lab_reunion"), [&"oak_lab"], "joué au labo, après le fondu")
 	assert_eq(_used_on.get(&"oak_starter_offer"), [&"oak_lab"], "joué au labo")
 
@@ -1847,12 +1860,16 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 	for row: Array in _pages():
 		# Une variante en brouillon (PENDING_DRAFT_VARIANTS) attend la relecture de Kevin : son
 		# texte n'est encore dans aucun dossier.
+		# J27 : textes T27-01 à T27-13 (jalon-27.md §3) et répliques des Dresseurs [D], validés
+		# d'avance par Kevin le 2026-10-21 (proposition du plan), vérifiés par test_saffron_gym et
+		# test_fighting_dojo.
 		# J26 (T3) : répliques des Dresseurs de la Sylphe SARL, [D] proposées par le plan, validées
 		# d'avance par Kevin le 2026-10-21 : aucun dossier de conception ne les contient (la passe
 		# j26-v2 n'a pas de texte) ; copiées de data/dialogues/silph_co.json, vérifiées par
 		# test_silph_co_data.
 		if GATE_GUARDS.has(row[0]) or UNVALIDATED.has(row[0]) or S2_FIELD_TRAVEL.has(row[0]) \
 				or silph_texts.has(row[0]) or life_texts.has(row[0]) or IDS_J26_STORY.has(row[0]) \
+				or _j27_ids().has(row[0]) \
 				or (row[3] as DialogueVariant).draft:
 			continue
 		if TEXTS_J26_T6.has(row[0]):
@@ -2157,6 +2174,7 @@ func test_oak_parcel_lines() -> void:
 	# Jalon 18 (T16) : sept objets au sol (Route 9, Route 10, grotte) et la Super Potion cachée.
 	# Jalon 20 (T21) : onze objets au sol et trois caches du repaire, la Clé (chute et prise),
 	# Giovanni et le Scope Sylphe.
+	# Jalon 21 (T13, T14) : M. Fuji au 7F et dans sa maison (3).
 	# Jalon 22 (T13, T17) : la Canne du pêcheur de Carmin, l'échange du Bon à Azuria (les données
 	# des fichiers j22_*.json sont vérifiées par test_j22_data).
 	# Jalon 24 : deux objets au sol, deux caches, Artikodin, la CT35, deux dons de fossile.
@@ -2165,7 +2183,8 @@ func test_oak_parcel_lines() -> void:
 	# Jalon 26 (T9) : douze objets au sol (dont la Carte Magnétique) et deux cachés de la Sylphe,
 	# la Pépite cachée du Copieur.
 	# Jalon 26 (T11, T12) : l'employé du Lokhlass, le président et deux objets du 7F.
-	assert_eq(launched, 160, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
+	# Jalon 27 (T8 à T10) : Morgane, le maître du Dojo et les deux Poké Balls (« confirm_cutscene »).
+	assert_eq(launched, 163, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
 		+ "sa CT34, Ondine (pont, Arène et rattrapage), écran, module, console, objets de la "
 		+ "Route 25, le Rocket d'Azuria (2) et le barrage sud ; J15 : objets de la Route 5 ; "
 		+ "J16 : Major Bob (2), neuf objets du S.S. Anne, le capitaine, le marin (2) ; "
@@ -2176,7 +2195,7 @@ func test_oak_parcel_lines() -> void:
 		+ "J20 (T21) : repaire (11 objets, 3 caches, Clé ×2, Giovanni, Scope) ; "
 		+ "J21 (T13, T14) : M. Fuji au 7F et dans sa maison ; J22 : la Canne, la Bicyclette ; "
 		+ "J24 : objets (2), caches (2), Artikodin, CT35, fossiles (2) ; J25 : Ptéra (1) ; "
-		+ "J26 : Lokhlass, Master Ball, deux objets du 7F")
+		+ "J26 : Lokhlass, Master Ball, deux objets du 7F ; J27 : Morgane, maître, deux Balls")
 	# Le jeton n'apparaît que dans la réplique de l'espèce, « {pokemon} » dans les phrases du
 	# compagnon (J11), et ceux de la Pension dans ses répliques (J15).
 	for row: Array in _pages():
@@ -2202,18 +2221,19 @@ func test_oak_parcel_lines() -> void:
 				or (row[0] == &"rival_tower_intro" and row[1].contains("{player}")) \
 				or (String(row[0]).begins_with("saffron_gate_drink_") and row[1].contains("{player}")) \
 				or row[0] == &"celadon_eevee_received" or row[0] == &"fishing_cast" \
-				or (_j26_life_ids().has(row[0]) and row[1].contains("{player}")) \
-				or (row[0] in [&"rival_silph_intro", &"silph_co_lapras_received",
-					&"silph_co_master_ball_got"] and row[1].contains("{player}")) \
 				or String(row[0]).begins_with("cinnabar_fossil_received_") \
 				or (String(row[0]).begins_with("cinnabar_trade_") and row[1].contains("{player}")) \
 				or (row[0] == &"cinnabar_gym_guide" and row[1].contains("{player}")) \
 				or row[0] == &"cinnabar_lab_tm35_use" \
 				or (row[0] in [&"route_12_gate_tm39_got", &"snorlax_flute_played"] \
 					and row[1].contains("{player}")) \
+				or (_j26_life_ids().has(row[0]) and row[1].contains("{player}")) \
+				or (row[0] in [&"rival_silph_intro", &"silph_co_lapras_received",
+					&"silph_co_master_ball_got"] and row[1].contains("{player}")) \
 				or (row[0] in [&"rocket_hideout_b4f_lift_key_got",
 					&"rocket_hideout_b4f_silph_scope_got"] and row[1].contains("{player}")) \
-				or (String(row[0]).begins_with("celadon_gym_erika_") and row[1].contains("{player}")):
+				or (String(row[0]).begins_with("celadon_gym_erika_") and row[1].contains("{player}")) \
+				or (_j27_ids().has(row[0]) and row[1].contains("{player}")):
 			expected = [DialogueTokens.PLAYER]
 		elif J17_TOKENS.has(row[1]):
 			# Jalon 17 (T8) : compte d'espèces de l'assistant (T-1 à T-3), joueur de T-3.
@@ -2350,6 +2370,18 @@ func _j26_life_ids() -> Array[StringName]:
 	var ids: Array[StringName] = []
 	for path: String in ["res://data/dialogues/saffron_life.json",
 			"res://data/dialogues/silph_co_life.json"]:
+		var data: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(path))
+		for id: String in data:
+			ids.append(StringName(id))
+	return ids
+
+
+## Jalon 27 (T8 à T10) : textes de l'Arène de Morgane et du Dojo (T27-01 à T27-13 et répliques des
+## Dresseurs [D], validation d'avance de Kevin du 2026-10-21).
+func _j27_ids() -> Array[StringName]:
+	var ids: Array[StringName] = []
+	for path: String in ["res://data/dialogues/saffron_gym.json",
+			"res://data/dialogues/fighting_dojo.json"]:
 		var data: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(path))
 		for id: String in data:
 			ids.append(StringName(id))

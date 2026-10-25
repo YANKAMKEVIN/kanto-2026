@@ -241,7 +241,8 @@ func test_tm11_and_its_compatibilities() -> void:
 	assert_eq(compatible, [&"squirtle", &"wartortle", &"blastoise", &"rattata", &"raticate",
 		&"nidorina", &"nidoqueen", &"nidorino", &"nidoking", &"clefairy", &"clefable",
 		&"jigglypuff", &"wigglytuff", &"meowth", &"persian",
-		# Jalon 24 (T4) : espèces des Routes 19 à 21, des Îles Écume et des fossiles.
+		# Jalon 24 (T4) : espèces des Routes 19 à 21, des Îles Écume et des fossiles (Ramoloss et
+		# Flagadoss : les emprunts du J27 au J24 retirés à la fusion de main).
 		&"psyduck", &"golduck", &"poliwag", &"poliwhirl", &"poliwrath", &"tentacool",
 		&"tentacruel", &"slowpoke", &"slowbro", &"seel", &"dewgong", &"shellder", &"cloyster",
 		&"krabby", &"kingler", &"cubone", &"marowak",

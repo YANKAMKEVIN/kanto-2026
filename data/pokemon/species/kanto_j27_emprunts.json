@@ -1,0 +1,47 @@
+{
+	"mr_mime": {
+		"dex": 122,
+		"name": "M. Mime",
+		"types": [
+			"psychic"
+		],
+		"base_stats": {
+			"hp": 40,
+			"atk": 45,
+			"def": 65,
+			"spa": 100,
+			"spd": 120,
+			"spe": 90
+		},
+		"male_ratio": 0.5,
+		"growth_rate": "medium_fast",
+		"base_exp": 161,
+		"catch_rate": 45,
+		"learnset": [
+			[
+				1,
+				"confusion"
+			],
+			[
+				1,
+				"barrier"
+			],
+			[
+				15,
+				"light_screen"
+			],
+			[
+				23,
+				"double_slap"
+			],
+			[
+				31,
+				"meditate"
+			],
+			[
+				39,
+				"substitute"
+			]
+		]
+	}
+}
