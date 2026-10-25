@@ -1,5 +1,6 @@
 # Jalon Son — T1 : pistes à faire écouter à Kevin
 
+> **VALIDÉ PAR KEVIN le 2026-10-25 : « Oui » — toutes les valeurs par défaut de la dernière colonne sont retenues.**
 > Claude, 2026-10-25. Fichiers de Kevin dans `~/Music/kanto-lets-go/` (noms d'origine).
 > Une réponse courte par ligne suffit (« oui », « non », ou le morceau à mettre à la place).
 > Rien n'est bloqué en attendant : chaque ligne a déjà une valeur par défaut dans les données.

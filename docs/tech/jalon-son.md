@@ -551,9 +551,39 @@ Restent sans fichier (silence) : `city` et `casino` (pas de boucle CC0 convenabl
 les « park ambiences » font 74 à 99 Mo en WAV) et `rain` (aucune météo dans le jeu pour
 l'instant). `sea` boucle sur une seule vague de 3 s : à écouter.
 
+## 5 quinquies. Validations de Kevin (2026-10-25)
+
+- **Écoute de SonA, SonB et SonC sur l'A17 : « Je valide ».**
+- **T1** (`docs/design/passes/son-t1-ecoute.md`) : « Oui » aux 8 pistes, valeurs par défaut retenues :
+  « Guide » pour l'introduction de Chen ; « The Final Road » pour la Route 23 et le Plateau ;
+  « Pokémon Road » pour le Vélo (**SON-5 B**) ; « We're Back » en jingle ; « Blue's Theme » pour
+  le rival ; « Theme of Jessie and James » non utilisé ; victoire sauvage = « Victory! (Trainer
+  Battle) » coupé à 4 s (**SON-14 A**) ; « Cubone's Mother » en boucle entière. Légendaires :
+  musique des sauvages (**SON-13 A**). SON-5, SON-13 et SON-14 sont fermés.
+
+## 5 sexies. SonD — clôture (2026-10-25)
+
+**Lignes audio pour l'inventaire des licences du J34 (T6)** — à recopier telles quelles :
+
+| Contenu | Fichiers du jeu | Source | Licence / statut |
+|---|---|---|---|
+| Musique (54 morceaux, bande-son de Pokémon Let's Go Pikachu / Évoli) | `assets/audio/music/*.ogg` (34,4 Mo) | KHInsider, fichiers fournis par Kevin (`~/Music/kanto-lets-go/`, album « Super Music Collection ») ; découpe, normalisation et encodage par `tools/audio/prepare_music.py` | © The Pokémon Company / Nintendo / Game Freak ; jeu privé, cercle restreint, jamais public |
+| Cris des 151 Pokémon | `assets/audio/cries/1..151.ogg` (2,0 Mo) | PokeAPI, dépôt `PokeAPI/cries`, `cries/pokemon/latest/` | © The Pokémon Company ; même statut que la musique |
+| Bruitages (69) | `assets/audio/sfx/*.ogg` (696 Ko) | Kenney (kenney.nl) : Interface Sounds, UI Audio, Impact Sounds, RPG Audio | CC0 |
+| Ambiances (7 boucles) | `assets/audio/ambience/*.ogg` (816 Ko) | OpenGameArt : beach-ocean-waves (qubodup), wind (ignasd), ambient-bird-sounds (isaiah658), loopable-dungeon-ambience (jaggedstone), underwater-or-space-engine-rumble (gmason) — détail §5 quater | CC0 |
+
+**Volumes relatifs** (mesurés ; validés à l'écoute par Kevin le 2026-10-25, « Je valide ») :
+musique et jingles à −16 LUFS (boucles mesurées sur la partie qui boucle) ; ambiances à
+−16 LUFS jouées −18 dB plus bas (≈ −34 LUFS) ; cris à −3 dBFS de crête ; bruitages à −6 dBFS
+(combat), −8 (monde), −12 (interface), −14 (pas) ; curseurs par défaut Musique 70 %, Effets
+80 %, Cris 80 %. Aucun réglage fin demandé ; le mixage fin reste une remarque de rendu (§5).
+
+**Restes connus** (hors fusion, lots possibles jusqu'au gel de l'entrée du J34, SON-16) : 38
+bruitages sans fichier (liste dans `etat-projet.md`) ; ambiances `city`, `casino`, `rain` ;
+atténuation dans la zone purifiée de la Tour ; « ducking » pendant les cris ; musiques de scène
+des cinématiques des branches (après leur fusion).
+
 ## 6. Questions ouvertes
 
-Aucune : SON-1 à SON-17 **validés par Kevin le 2026-10-24** (toutes les recommandations ;
-`docs/design/passes/son-arbitrages-kevin.md`). Restent les vérifications à l'écoute de T1
-(« The Final Road », « Guide », « Pokémon Road », « We're Back », morceaux du jeu absents de
-l'album), qui ferment SON-5, SON-13 et SON-14 selon leurs recommandations conditionnelles.
+Aucune : SON-1 à SON-17 validés par Kevin le 2026-10-24 ; écoute T1 et écoute des trois
+sous-jalons validées le 2026-10-25 (§5 quinquies).

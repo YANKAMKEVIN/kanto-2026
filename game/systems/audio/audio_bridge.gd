@@ -56,6 +56,9 @@ var _map_override: StringName = &""
 ## Vrai tant que la couche SCENE porte le thème du « ! » (retiré à la fin du combat).
 var _encounter_theme: bool = false
 var _trainer_id: StringName = &""
+## Espèce qui vient de crier à son apparition (herbe, gravats) : son cri d'entrée en combat
+## n'est pas rejoué [D] (QA T14 : deux cris de suite).
+var _encounter_cry: StringName = &""
 ## Nœud dont les boutons restent muets (HUD d'exploration : joystick, boutons d'action).
 var _ui_excluded: Node
 
@@ -123,7 +126,10 @@ func on_battle_event(event: BattleEvent) -> void:
 	_battle_sfx(event)
 	match event.kind:
 		BattleEvent.Kind.SENT_OUT:
-			play_species_cry(event.species_id)
+			if event.side == BattleEvent.SideId.FOE and event.species_id == _encounter_cry:
+				_encounter_cry = &""
+			else:
+				play_species_cry(event.species_id)
 		BattleEvent.Kind.FAINTED:
 			play_species_cry(event.species_id, true)
 		BattleEvent.Kind.BATTLE_ENDED:
@@ -136,6 +142,7 @@ func on_battle_event(event: BattleEvent) -> void:
 ## Fin du combat : la zone (ou la scène) reprend là où elle était (SON-6).
 func on_battle_finished(_trainer_id_end: StringName, _outcome: int) -> void:
 	_trainer_id = &""
+	_encounter_cry = &""
 	audio.call(&"clear_music", L.BATTLE)
 	if _encounter_theme:
 		_encounter_theme = false
@@ -181,6 +188,13 @@ func play_species_cry(species_id: StringName, fainted: bool = false) -> void:
 	var dex := int(species_dex.call(species_id)) if species_dex.is_valid() else 0
 	if dex > 0:
 		audio.call(&"play_cry", dex, fainted)
+
+
+## Cri d'un sauvage à son apparition (`EncounterDirector.cry_requested` : herbe qui bouge,
+## gravats) ; retenu pour ne pas le rejouer à son entrée en combat.
+func on_encounter_cry(species_id: StringName) -> void:
+	_encounter_cry = species_id
+	play_species_cry(species_id)
 
 
 ## Bouton « Cri » du Pokédex (espèce capturée, SON-12).

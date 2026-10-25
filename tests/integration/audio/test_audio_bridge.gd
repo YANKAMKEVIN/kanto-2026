@@ -388,3 +388,19 @@ func test_real_boot_wires_every_game_signal_to_the_bridge() -> void:
 	battle.battle_finished.emit(&"", Battle.Outcome.WIN)
 	assert_eq(global.current_track(), &"road_to_viridian", "reprise de la route")
 	boot.free()
+
+
+func test_wild_cry_at_appearance_is_not_repeated_at_send_out() -> void:
+	# [D] (QA T14) : le sauvage crie dans l'herbe ; pas un second cri à son entrée en combat.
+	_bridge.on_encounter_cry(&"pidgey")
+	_bridge.on_battle_started(&"")
+	var foe := _event(BattleEvent.Kind.SENT_OUT)
+	foe.side = BattleEvent.SideId.FOE
+	foe.species_id = &"pidgey"
+	_bridge.on_battle_event(foe)
+	var mine := _event(BattleEvent.Kind.SENT_OUT)
+	mine.species_id = &"bulbasaur"
+	_bridge.on_battle_event(mine)
+	_bridge.on_battle_event(foe)
+	var dex: Array = _cries().map(func(o: Dictionary) -> int: return o["dex"])
+	assert_eq(dex, [16, 1, 16], "apparition, envoi du joueur, puis un second envoi crie")

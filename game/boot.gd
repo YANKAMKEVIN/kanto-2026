@@ -2024,7 +2024,7 @@ func _setup_audio() -> void:
 	_cutscenes_node.cutscene_finished.connect(_audio_bridge.on_cutscene_finished)
 	_evolutions.evolution_started.connect(_audio_bridge.on_evolution_started)
 	_evolutions.evolution_finished.connect(_audio_bridge.on_evolution_finished)
-	_encounters.cry_requested.connect(_audio_bridge.play_species_cry)
+	_encounters.cry_requested.connect(_audio_bridge.on_encounter_cry)
 	_companion.line_requested.connect(_audio_bridge.on_companion_line)
 	if _menu_screen.has_signal(&"pokedex_cry_requested"):
 		_menu_screen.pokedex_cry_requested.connect(_audio_bridge.on_pokedex_cry)

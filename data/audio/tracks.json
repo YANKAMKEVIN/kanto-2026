@@ -1,5 +1,5 @@
 {
-	"_doc": "Morceaux (docs/tech/jalon-son.md §2). expected = fichier attendu (SonA), le jeu reste muet tant qu'il manque ; confirm = titre à confirmer à l'écoute (T1). « silence » est réservé (pas de morceau). events : moment du jeu → morceau.",
+	"_doc": "Morceaux (docs/tech/jalon-son.md §2). expected = fichier attendu (SonA), le jeu reste muet tant qu'il manque. « silence » est réservé (pas de morceau). events : moment du jeu → morceau. Titres confirmés à l'écoute par Kevin le 2026-10-25 (T1).",
 	"version": 1,
 	"tracks": {
 		"title_screen": {
@@ -18,8 +18,7 @@
 			"loop": true,
 			"loop_offset": 12.25,
 			"volume_db": 0.0,
-			"expected": false,
-			"confirm": true
+			"expected": false
 		},
 		"professor_oak": {
 			"title": "Professor Oak",
@@ -235,8 +234,7 @@
 			"loop": true,
 			"loop_offset": 24.25,
 			"volume_db": 0.0,
-			"expected": false,
-			"confirm": true
+			"expected": false
 		},
 		"the_sea": {
 			"title": "The Sea",
@@ -254,8 +252,7 @@
 			"loop": true,
 			"loop_offset": 3.0,
 			"volume_db": 0.0,
-			"expected": false,
-			"confirm": true
+			"expected": false
 		},
 		"go_park": {
 			"title": "GO Park",
@@ -418,8 +415,7 @@
 			"loop": false,
 			"loop_offset": 0.0,
 			"volume_db": 0.0,
-			"expected": false,
-			"confirm": true
+			"expected": false
 		},
 		"poke_flute": {
 			"title": "The Poké Flute",

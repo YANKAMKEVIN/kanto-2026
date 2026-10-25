@@ -1,6 +1,7 @@
 # Jalon « Son » — arbitrages pour Kevin
 
 > **VALIDÉ PAR KEVIN le 2026-10-24 : SON-1 à SON-17, toutes les recommandations.**
+> **Écoute T1 validée par Kevin le 2026-10-25** (« Oui » aux 8 pistes de `son-t1-ecoute.md`) : SON-5 fermé (Vélo → « Pokémon Road », SON-5 B ; Safari → « GO Park »), SON-13 fermé en A (musique des sauvages pour les légendaires), SON-14 fermé en A (« Victory! (Trainer Battle) » coupé à 4 s).
 >
 > Claude, 2026-10-24. **Documentation seule : aucune ligne de code,
 > aucun fichier son téléchargé.**
