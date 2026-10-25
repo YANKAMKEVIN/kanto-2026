@@ -208,6 +208,24 @@
 			"foe_feet": [1559, 540],
 			"player_feet": [716, 972],
 			"horizon": 380
+		},
+		"viridian_forest_clairiere": {
+			"zone": "viridian_forest",
+			"variant": "clairiere",
+			"back": "res://assets/battle/decors/viridian_forest_clairiere_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 540],
+			"player_feet": [716, 972],
+			"horizon": 455
+		},
+		"pewter_gym_roche": {
+			"zone": "pewter_gym",
+			"variant": "roche",
+			"back": "res://assets/battle/decors/pewter_gym_roche_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 540],
+			"player_feet": [716, 972],
+			"horizon": 460
 		}
 	},
 	"places": {
@@ -376,6 +394,54 @@
 		],
 		"route_12": [
 			{ "decor": "route_24_pont" }
+		],
+		"pallet_town": [
+			{ "decor": "route_1_chemin" }
+		],
+		"route_2": [
+			{ "decor": "route_1_chemin" }
+		],
+		"route_2_north": [
+			{ "decor": "route_1_chemin" }
+		],
+		"route_22": [
+			{ "decor": "route_5_6_prairie" }
+		],
+		"route_25": [
+			{ "decor": "route_11_coast" }
+		],
+		"route_19": [
+			{ "decor": "sea_open" }
+		],
+		"route_20": [
+			{ "decor": "sea_open" }
+		],
+		"route_21": [
+			{ "decor": "sea_open" }
+		],
+		"cinnabar_island": [
+			{ "decor": "sea_open" }
+		],
+		"seafoam_1f": [
+			{ "decor": "seafoam_ice" }
+		],
+		"seafoam_b1f": [
+			{ "decor": "seafoam_ice" }
+		],
+		"seafoam_b2f": [
+			{ "decor": "seafoam_ice" }
+		],
+		"seafoam_b3f": [
+			{ "decor": "seafoam_ice" }
+		],
+		"seafoam_b4f": [
+			{ "decor": "seafoam_ice" }
+		],
+		"viridian_forest": [
+			{ "decor": "viridian_forest_clairiere" }
+		],
+		"pewter_gym": [
+			{ "decor": "pewter_gym_roche" }
 		]
 	}
 }

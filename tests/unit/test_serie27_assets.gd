@@ -116,17 +116,20 @@ func test_labo_shells_match_their_grid() -> void:
 		assert_eq(Vector2i(int(size[0]), int(size[1])), SHELLS[id] * TILE, id)
 
 
-func test_combat_backs_exist_but_are_not_placed() -> void:
+## DAF.2 : les deux fonds de la série 27, livrés sans carte, sont rattachés (mer ouverte :
+## Routes 19 à 21 et Cramois'Île ; grotte glacée : les 5 niveaux des Îles Écume).
+func test_combat_backs_exist_and_are_placed() -> void:
 	var catalog := BattleDecorCatalog.load_file()
 	for id: StringName in [&"sea_open", &"seafoam_ice"]:
 		assert_has(catalog.get_ids(), id)
 		var decor := catalog.get_decor(id)
 		assert_true(decor.is_valid(), String(id))
 		assert_eq((load(decor.back_path) as Texture2D).get_size(), Vector2(2340, 1080), String(id))
-	for map_id: StringName in catalog.get_maps():
-		for id: StringName in [&"sea_open", &"seafoam_ice"]:
-			assert_ne(catalog.default_for(map_id).id if catalog.default_for(map_id) != null
-				else &"", id, "%s : pas encore associé à une carte" % map_id)
+	for map_id: StringName in [&"route_19", &"route_20", &"route_21", &"cinnabar_island"]:
+		assert_eq(catalog.default_for(map_id).id, &"sea_open", String(map_id))
+	for map_id: StringName in [&"seafoam_1f", &"seafoam_b1f", &"seafoam_b2f", &"seafoam_b3f",
+			&"seafoam_b4f"]:
+		assert_eq(catalog.default_for(map_id).id, &"seafoam_ice", String(map_id))
 
 
 func test_provisional_backs_for_144_140_138() -> void:
