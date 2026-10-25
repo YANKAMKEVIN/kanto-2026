@@ -10953,6 +10953,118 @@
     "haut"
    ]
   },
+  "topdresseur": {
+   "fichier": "res://assets/sprites/characters/painted/topdresseur_sheet.png",
+   "cellule": [
+    65,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "topdresseuse": {
+   "fichier": "res://assets/sprites/characters/painted/topdresseuse_sheet.png",
+   "cellule": [
+    85,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "nageur_eau": {
+   "fichier": "res://assets/sprites/characters/painted/nageur_eau_sheet.png",
+   "cellule": [
+    117,
+    91
+   ],
+   "hauteur": 89,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "nageuse_eau": {
+   "fichier": "res://assets/sprites/characters/painted/nageuse_eau_sheet.png",
+   "cellule": [
+    108,
+    90
+   ],
+   "hauteur": 88,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "heros_surf": {
+   "fichier": "res://assets/sprites/characters/painted/heros_surf_sheet.png",
+   "cellule": [
+    106,
+    136
+   ],
+   "hauteur": 134,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "surf_monture": {
+   "fichier": "res://assets/sprites/characters/painted/surf_monture_sheet.png",
+   "cellule": [
+    115,
+    78
+   ],
+   "hauteur": 76,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "artikodin": {
+   "fichier": "res://assets/sprites/pokemon/painted/artikodin_sheet.png",
+   "cellule": [
+    138,
+    171
+   ],
+   "hauteur": 163,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "repos",
+    "inspire",
+    "souffle",
+    "repos_2"
+   ]
+  },
   "erika": {
    "fichier": "res://assets/sprites/characters/painted/erika_sheet.png",
    "cellule": [
@@ -11019,22 +11131,6 @@
   },
   "beaute": {
    "fichier": "res://assets/sprites/characters/painted/beaute_sheet.png",
-   "cellule": [
-    85,
-    130
-   ],
-   "hauteur": 128,
-   "colonnes": 4,
-   "lignes": 4,
-   "ordre_lignes": [
-    "bas",
-    "gauche",
-    "droite",
-    "haut"
-   ]
-  },
-  "topdresseuse": {
-   "fichier": "res://assets/sprites/characters/painted/topdresseuse_sheet.png",
    "cellule": [
     85,
     130
@@ -11859,6 +11955,83 @@
   },
   "ground_dalles_tour_01": {
    "fichier": "res://assets/world/ground/ground_dalles_tour_01.png",
+   "taille": [
+    384,
+    384
+   ]
+  },
+  "prop_rocher_force_01": {
+   "fichier": "res://assets/world/props/prop_rocher_force_01.png",
+   "taille": [
+    96,
+    90
+   ]
+  },
+  "prop_rocher_force_eau_01": {
+   "fichier": "res://assets/world/props/prop_rocher_force_eau_01.png",
+   "taille": [
+    104,
+    72
+   ]
+  },
+  "decal_trou_force_01": {
+   "fichier": "res://assets/world/ground/decals/decal_trou_force_01.png",
+   "taille": [
+    96,
+    96
+   ]
+  },
+  "decal_trou_force_bouche_01": {
+   "fichier": "res://assets/world/ground/decals/decal_trou_force_bouche_01.png",
+   "taille": [
+    96,
+    96
+   ]
+  },
+  "int_labo_cramois_hall_coque": {
+   "fichier": "res://assets/world/interiors/int_labo_cramois_hall_coque.png",
+   "taille": [
+    2592,
+    1152
+   ]
+  },
+  "int_labo_cramois_rd_coque": {
+   "fichier": "res://assets/world/interiors/int_labo_cramois_rd_coque.png",
+   "taille": [
+    1440,
+    960
+   ]
+  },
+  "int_labo_cramois_fossiles_coque": {
+   "fichier": "res://assets/world/interiors/int_labo_cramois_fossiles_coque.png",
+   "taille": [
+    1440,
+    960
+   ]
+  },
+  "int_labo_cramois_reunion_coque": {
+   "fichier": "res://assets/world/interiors/int_labo_cramois_reunion_coque.png",
+   "taille": [
+    1440,
+    960
+   ]
+  },
+  "ground_courant_01": {
+   "fichier": "res://assets/world/ground/ground_courant_01.png",
+   "taille": [
+    384,
+    384
+   ]
+  },
+  "ground_eau_grotte_01": {
+   "fichier": "res://assets/world/ground/ground_eau_grotte_01.png",
+   "taille": [
+    384,
+    384
+   ]
+  },
+  "ground_glace_01": {
+   "fichier": "res://assets/world/ground/ground_glace_01.png",
    "taille": [
     384,
     384

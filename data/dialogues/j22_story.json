@@ -1,0 +1,170 @@
+{
+	"j22_cycling_guard": {
+		"speaker": "Garde",
+		"variants": [
+			{
+				"unless_items": [
+					"bicycle"
+				],
+				"pages": [
+					"Désolé ! La Piste Cyclable\nest réservée aux vélos."
+				]
+			},
+			{
+				"pages": [
+					"La Piste descend jusqu'à Parmanie.\nBonne route, et gare aux Motards !"
+				]
+			}
+		]
+	},
+	"j22_cycling_gate_refuse": {
+		"speaker": "Garde",
+		"pages": [
+			"Désolé ! La Piste Cyclable\nest réservée aux vélos."
+		]
+	},
+	"j22_cycling_gate_greet": {
+		"speaker": "Garde",
+		"pages": [
+			"La Piste descend jusqu'à Parmanie.\nBonne route, et gare aux Motards !"
+		]
+	},
+	"j22_fan_club_story": {
+		"speaker": "Président du Fan Club",
+		"pages": [
+			"Il galopait plus vite que le vent !\nEt sa crinière, quelle merveille…",
+			"Ah, tu m'as fait plaisir !\nTiens, prends ça. Je n'en ai pas l'usage."
+		]
+	},
+	"j22_got_bike_voucher": {
+		"narration": true,
+		"pages": [
+			"{player} reçoit un Bon de Commande !"
+		]
+	},
+	"j22_got_bicycle": {
+		"narration": true,
+		"pages": [
+			"{player} échange le Bon contre une Bicyclette !"
+		]
+	},
+	"j22_got_old_rod": {
+		"narration": true,
+		"pages": [
+			"{player} reçoit la Canne !"
+		]
+	},
+	"j22_old_rod_after": {
+		"speaker": "Pêcheur",
+		"pages": [
+			"La pêche, c'est de la patience.\nEt un peu de chance !"
+		]
+	},
+	"j22_super_rod_brother": {
+		"speaker": "Pêcheur",
+		"variants": [
+			{
+				"unless": [
+					"got_super_rod"
+				],
+				"pages": [
+					"Je suis le cadet d'une famille\nde pêcheurs. Tu pêches, toi ?",
+					"Prends ma Méga Canne.\nElle fait mordre les plus rares."
+				],
+				"cutscene": "j22_super_rod"
+			},
+			{
+				"pages": [
+					"Mes frères pêchent à Carmin\net à Parmanie. Tu les as vus ?"
+				]
+			}
+		]
+	},
+	"j22_got_super_rod": {
+		"narration": true,
+		"pages": [
+			"{player} reçoit la Méga Canne !"
+		]
+	},
+	"j22_good_rod_brother": {
+		"speaker": "Pêcheur",
+		"variants": [
+			{
+				"unless": [
+					"got_good_rod"
+				],
+				"pages": [
+					"Mon frère de Carmin t'a appris ?\nAlors prends ma Super Canne !"
+				],
+				"cutscene": "j22_good_rod"
+			},
+			{
+				"pages": [
+					"Ici, on pêche même dans l'étang.\nEssaie, tu verras !"
+				]
+			}
+		]
+	},
+	"j22_got_good_rod": {
+		"narration": true,
+		"pages": [
+			"{player} reçoit la Super Canne !"
+		]
+	},
+	"fuchsia_center_visitor": {
+		"speaker": "Dresseur",
+		"pages": [
+			"Les Dresseurs viennent de loin\npour le Parc Safari."
+		]
+	},
+	"fuchsia_mart_customer": {
+		"speaker": "Cliente",
+		"pages": [
+			"Les Hyper Balls, c'est cher.\nMais ça vaut le coup !"
+		]
+	},
+	"fuchsia_meeting_president": {
+		"speaker": "Président du club",
+		"pages": [
+			"Bienvenue au club du Parc Safari !\nNous aimons les Pokémon rares."
+		]
+	},
+	"fuchsia_meeting_member": {
+		"speaker": "Membre du club",
+		"pages": [
+			"Au Safari, on ne combat pas.\nOn attrape, et c'est tout !"
+		]
+	},
+	"fuchsia_grandpa": {
+		"speaker": "Vieil homme",
+		"pages": [
+			"J'ai pêché dans toutes les eaux\nde Kanto. La mer, ici, est la plus belle."
+		]
+	},
+	"j22_fly_house_girl": {
+		"speaker": "Fillette",
+		"variants": [
+			{
+				"unless": [
+					"got_hm02"
+				],
+				"pages": [
+					"Oh ! Tu as trouvé ma cachette secrète !",
+					"Ne le dis à personne…\nTiens, prends ça."
+				],
+				"cutscene": "j22_hm02"
+			},
+			{
+				"pages": [
+					"Avec le Badge Foudre, ton Pokémon\nt'emmène dans les villes déjà visitées."
+				]
+			}
+		]
+	},
+	"j22_got_hm02": {
+		"narration": true,
+		"pages": [
+			"{player} reçoit la CS02 — Vol !"
+		]
+	}
+}

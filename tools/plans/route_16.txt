@@ -12,7 +12,21 @@
 # RACCORD (imposé par le dossier §10.2, partagé avec Céladopole) :
 #   EST : Route 16 (43, 21..23) ↔ Céladopole (0, 21..23), mêmes trois rangées, aucun décalage (la sortie
 #   de Céladopole est la grande avenue, resserrée à 3 cases comme à l'est vers la Route 7). Aucun
-#   autre raccord : nord, sud et ouest fermés. RB : Route 16 ↔ Céladopole avec un décalage de 4 cases
+#   autre bord : nord, sud et ouest fermés ; l'ouest passe par le POSTE (carte `route_16_gate`, J22).
+#
+# RACCORDS J21 ↔ J22 (faits le 2026-10-23, contrat jalon-22.md §0.5 et en-tête de route_16_gate.txt) :
+#   PORTE BASSE (15..16, 20) STEP_ON ↑ → route_16_gate / entrance_bas_est (+ _1) ; arrivée from_poste
+#     (+ _1) sur le parvis (15..16, 21), tournée ↓. Couloir bas du poste → Route 16 ouest, Piste.
+#   PORTE HAUTE (19..20, 13), rangée du haut de l'emprise du poste, STEP_ON ↓ → route_16_gate /
+#     entrance_haut_est (+ _1) ; arrivée from_poste_haut (+ _1) en (19..20, 12), tournée ↑. Couloir haut
+#     du poste → Route 16 ouest, voie haute (maison de Vol). Les deux couloirs du poste sont séparés :
+#     aucun contournement de Ronflex par le poste.
+#   VOIE HAUTE « Y » ouverte (sol praticable, SANS herbes ni rencontres [D] : aucune table de rencontres
+#     pour cette carte ; seule la voie haute ouest du J22 a des herbes), prolongée vers l'ouest le long de
+#     la façade nord du poste (18..25, 11..12) ; elle ne touche ni le parvis ni le goulet (façade, forêt).
+#   ARBRE À COUPER (38..39, 19..20) : coupable (`cut_route_16_tree`, définitif) ; relie la voie basse
+#     (rangée 21) à la voie haute par (38..39, 17..18). Il se coupe depuis la route (38..39, 21) ou depuis
+#     la voie haute (38..39, 18). RB : Route 16 ↔ Céladopole avec un décalage de 4 cases
 #   (CeladonCity : connection west, Route16, 4) ; ici le décalage est supprimé, comme à la Route 7.
 #
 # MODIFICATION FUTURE de la grille du J20 (celadopole.txt ; NON faite ici, à reporter au lot 21.A) :
@@ -29,34 +43,33 @@
 # une clôture, Ronflex colle presque à la porte du poste) :
 #   ① x 28..43 — LA VOIE BASSE : chemin de terre de 3 cases (rangées 21..23) entre un rideau d'arbres
 #      (rangées 17..20) et une rangée de clôtures basses (rangée 24, puis forêt). À x 38..39, l'ARBRE À
-#      COUPER de RB (en 34, 9) est dessiné en DÉCOR (« W », 2 × 2, rangées 19..20) : il ne se coupe pas
-#      (la CS Vol de la maison derrière est hors jalon, dossier §10.2) ; il n'a ni examen ni drapeau.
+#      COUPER de RB (en 34, 9) (« W », 2 × 2, rangées 19..20) : décor au J21, COUPABLE depuis le J22
+#      (`cut_route_16_tree`, raccords ci-dessus) ; il ouvre la voie haute.
 #   ② x 22..27 — LE GOULET : deux affleurements (« R ») ferment les rangées 21 et 24, le chemin tombe à
 #      2 cases (rangées 22..23) ; RONFLEX 2 × 2 en (24..25, 22..23) occupe toute la largeur du goulet.
 #      Aucun contournement (forêt dense, affleurements) ; cases en face de lui : (26, 22..23) ; derrière
 #      lui, le goulet reprend en (22..23, 22..23).
 #   ③ x 11..21 — LE PARVIS ET LA FAÇADE DU POSTE : le chemin se rouvre à 3 cases et longe la façade du
-#      poste de la Piste Cyclable (emprise 12 × 8, x 10..21, y 13..20, « P ») ; PORTE de 2 cases (« D »,
-#      (15..16, 20)) FERMÉE : `coming_soon=route_16_poste`, « À venir » en développement, simplement
-#      bloquée en release (mécanisme existant des bords). Le chemin finit en cul-de-sac en x 11.
-#   VOIE HAUTE (« Y », x 26..42, y 9..16) : la clairière de RB (herbes hautes, accès par l'arbre à
-#   Couper) reste visible derrière le rideau d'arbres, JAMAIS accessible : décor, aucune herbe jouable.
+#      poste de la Piste Cyclable (emprise 12 × 8, x 10..21, y 13..20, « P ») ; PORTE BASSE de 2 cases
+#      (« D », (15..16, 20)) vers le couloir bas du poste (J22). Le chemin finit en cul-de-sac en x 11.
+#   VOIE HAUTE (« Y », x 26..42, y 9..16, plus (38..39, 17..18) et (18..25, 11..12)) : la clairière de RB,
+#   derrière le rideau d'arbres, atteinte par l'arbre à Couper ; PORTE HAUTE du poste (« D », (19..20, 13)).
 #
-# Rencontres : AUCUNE (RB : les herbes hautes de la Route 16 est sont sur la voie haute, ici décor ; la
-#   voie basse n'a pas d'herbe). Pas de table de rencontres pour cette carte [D]. Aucun Dresseur (les
+# Rencontres : AUCUNE (RB : les herbes hautes de la Route 16 est sont sur la voie haute ; ici, au J22, la
+#   voie haute est ouverte SANS herbes [D] ; la voie basse n'a pas d'herbe). Pas de table de rencontres pour cette carte [D]. Aucun Dresseur (les
 #   Motards sont derrière le poste dans RB), AUCUN objet (RB : aucun), aucun panneau, AUCUN TEXTE SUR LE
 #   VÉLO (L-4 : pas de promesse). Seule description de zone : « Une route boisée à l'ouest de Céladopole. »
 #
 # Légende :
 #   T arbres denses (bloqués)   = chemin de terre (praticable)   c clôture basse (bloquée)
-#   R affleurements (bloqués ; ferment le goulet)   Y voie haute (clairière visible, bloquée)
-#   W arbre à Couper en DÉCOR (bloqué en toute circonstance, aucune condition)
-#   P poste de la Piste Cyclable (façade, bloquée)   D porte du poste (praticable, terminale, STEP_ON ↑,
-#   FERMÉE : « À venir »)
+#   R affleurements (bloqués ; ferment le goulet)   Y voie haute (clairière, praticable, sans herbes)
+#   W arbre à Couper (bloqué ; libre une fois `cut_route_16_tree` posé : définitif)
+#   P poste de la Piste Cyclable (façade, bloquée)   D portes du poste (praticables, terminales : basse
+#   (15..16, 20) STEP_ON ↑, haute (19..20, 13) STEP_ON ↓)
 #
 # Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 44 caractères), puis POSITIONS.
 
-PRATICABLES =D
+PRATICABLES =DY
 
 GRILLE 44 28
 00 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
@@ -70,9 +83,9 @@ GRILLE 44 28
 08 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 09 TTTTTTTTTTTTTTTTTTTTTTTTTTYYYYYYYYYYYYYYYYYT
 10 TTTTTTTTTTTTTTTTTTTTTTTTTTYYYYYYYYYYYYYYYYYT
-11 TTTTTTTTTTTTTTTTTTTTTTTTTTYYYYYYYYYYYYYYYYYT
-12 TTTTTTTTTTTTTTTTTTTTTTTTTTYYYYYYYYYYYYYYYYYT
-13 TTTTTTTTTTPPPPPPPPPPPPTTTTYYYYYYYYYYYYYYYYYT
+11 TTTTTTTTTTTTTTTTTTYYYYYYYYYYYYYYYYYYYYYYYYYT
+12 TTTTTTTTTTTTTTTTTTYYYYYYYYYYYYYYYYYYYYYYYYYT
+13 TTTTTTTTTTPPPPPPPPPDDPTTTTYYYYYYYYYYYYYYYYYT
 14 TTTTTTTTTTPPPPPPPPPPPPTTTTYYYYYYYYYYYYYYYYYT
 15 TTTTTTTTTTPPPPPPPPPPPPTTTTYYYYYYYYYYYYYYYYYT
 16 TTTTTTTTTTPPPPPPPPPPPPTTTTYYYYYYYYYYYYYYYYYT
@@ -96,9 +109,11 @@ warp_est             warp           43,21..23    libre   to=celadon_city spawn=f
 from_celadon         spawn          43,21..23    libre   facing=left  # arrivée de Céladopole, tournée ←
 ronflex_16           pnj            24..25,22..23 bloque role=R1 facing=down unless=snorlax_route_16_done  # Ronflex endormi 2 × 2 (RB (26, 10)), occupe tout le goulet ; FlagGate sur snorlax_route_16_done (dossier §9.4 : un Ronflex rendormi bloque toujours) — la consigne du lot disait `unless snorlax_route_16_awake` : ÉCART signalé ; lu depuis (26, 22..23) ←
 face_ronflex         repere         26,22..23    libre   role=face_ronflex  # cases d'où on lui parle / joue la Poké Flûte (côté est, seul côté atteignable tant qu'il dort)
-poste_route_16       warp           15..16,20    libre   coming_soon=route_16_poste  # porte du poste, FERMÉE : « ROUTE 16 — À venir » (développement), bloquée en release ; aucun texte sur le Vélo (L-4)
-parvis_poste         repere         15..16,21    libre   role=parvis  # cases d'où l'on lit la porte (STEP_ON ↑)
-facade_poste         decor          10..21,13..19 bloque role=facade  # façade du poste (emprise 12 × 8 avec la rangée de la porte)
-voie_haute           decor          26..42,9..16 bloque role=voie_haute  # clairière et herbes hautes visibles derrière les arbres, inaccessibles
-arbre_coupe_decor    decor          38..39,19..20 bloque role=arbre_coupe_decor  # arbre à Couper de RB en décor dense, 2 × 2 ; ni examen ni drapeau
+poste_route_16       warp           15..16,20    libre   to=route_16_gate spawn=entrance_bas_est  # porte basse, STEP_ON ↑ → couloir bas du poste (+ _1 pour la case 16) ; aucun texte sur le Vélo (L-4)
+from_poste           spawn          15..16,21    libre   facing=down  # arrivée du couloir bas du poste (+ _1 pour la case 16), sur le parvis, tournée ↓
+poste_haut           warp           19..20,13    libre   to=route_16_gate spawn=entrance_haut_est  # porte haute, STEP_ON ↓ → couloir haut du poste (+ _1 pour la case 20)
+from_poste_haut      spawn          19..20,12    libre   facing=up  # arrivée du couloir haut du poste (+ _1 pour la case 20), tournée ↑
+facade_poste         decor          10..21,14..19 bloque role=facade  # façade du poste (emprise 12 × 8 avec les rangées des portes 13 et 20)
+voie_haute           repere         26..42,9..16;18..25,11..12;38..39,17..18 libre role=voie_haute  # clairière de RB, praticable, sans herbes [D] ; prolongée le long de la façade nord du poste et reliée à l'arbre
+arbre_coupe          arbuste        38..39,19..20 bloque flag=cut_route_16_tree  # arbre à Couper 2 × 2 (Coupe du J16 : CS01 et Badge Cascade) ; examiné depuis (38..39, 21) ou (38..39, 18) ; définitif
 FIN

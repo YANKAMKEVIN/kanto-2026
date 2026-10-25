@@ -1109,7 +1109,7 @@ func test_a_fainted_lead_is_not_the_pokemon_shown() -> void:
 				card.get_hp_text()])
 			assert_eq(e.party_index, 1, "SENT_OUT : le moteur envoie le second"))
 	await _play_with_offers(request, [0] as Array[int])
-	assert_eq(at_start, [BattleStage.sprite_path(&"bulbasaur", true)] as Array[String],
+	assert_eq(at_start, [BattleArt.painted_back_path(1)] as Array[String],
 		"entrée en scène : le sprite de Bulbizarre, pas celui de Salamèche K.O.")
 	assert_eq(cards.size(), 1, "un seul envoi du joueur")
 	assert_true(cards[0].begins_with("BULBIZARRE|Nv. 12|"), "carte : %s" % cards[0])

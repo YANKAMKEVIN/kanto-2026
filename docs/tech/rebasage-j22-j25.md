@@ -107,10 +107,13 @@ locale `f0bbe0ec`) contenue dans `j25-nuit`, obsolète. Les branches distantes s
 - `kanto_j25_reprises.json` (Tadmorv, Grotadmorv, Smogogo, Électrode) deviendra un doublon à
   l'entrée du J22 dans `main`.
 
-## Fusions préparées (2026-10-23, locales, NON poussées)
+## Fusions de `main` dans le J22 et le J24 (2026-10-23, poussées)
 
-Branches **locales** du dépôt principal (copies dans le scratchpad de la session de coordination) ;
-`jalon-22`, `jalon-24` et leurs copies `wt-j22`, `wt-j24` n'ont pas bougé.
+Préparées sur `prep/main-dans-jalon-22` / `-24`, poussées avec l'accord de Kevin (`jalon-22`
+`adeb1f5f`, `jalon-24` `abd847b2`), puis seconde fusion après l'avance rapide de `main` sur
+`moteur-commun` (voir « À savoir ») : **`jalon-22` `cadd419a`, `jalon-24` `1117c8ac`, poussés**.
+Les copies `wt-j22` / `wt-j24` (branches `j22-nuit` / `j24-nuit`) n'ont pas bougé : leurs
+sessions font un `pull` avant de reprendre.
 
 - **`prep/main-dans-jalon-22`** (`adeb1f5f`, sur `origin/jalon-22` `1a86a4f5`) : suite complète
   **6 662 / 6 662**, import sans erreur, `plan_check_systemes2`, `--legende`, `plan_check_j21`,
@@ -131,18 +134,55 @@ Branches **locales** du dépôt principal (copies dans le scratchpad de la sessi
 - **Question d'équilibrage** (J24) : maintenant que Guillotine marche, la rendre aux Krabby des
   Dresseurs comme dans RB ? (Ils l'ont perdue par la règle de Major Bob.)
 
-**À savoir** : `origin/systemes-2` (`8d21766a`) = `main` `d0392e93` + `moteur-commun` (sol cuit
-générique, `MountPlaceholder`, D5, réglage « Lumière d'ambiance », suite 6 662 / 6 662), proposé à
-Kevin en avance rapide de `main`. S'il est accepté avant ces poussées, refusionner `main` dans les
-deux branches préparées ; pour le J22, retirer `_bike_placeholder` (`player.gd`) au profit de
-`MountPlaceholder` (`moteur-commun.md` §4).
+**À savoir** : `main` a été avancé sur `systemes-2` (`8f495035`, `moteur-commun` : sol cuit
+générique, `MountPlaceholder`, D5, réglage « Lumière d'ambiance ») le 2026-10-23 avec l'accord de
+Kevin, puis refusionné dans les deux branches :
 
-Pour pousser après validation : `git push origin prep/main-dans-jalon-22:jalon-22` (avance rapide),
-idem pour le J24 ; les sessions des jalons font ensuite un `pull` dans `wt-j22` / `wt-j24`.
+- **J22** (`cadd419a`) : vélo provisoire du J22 (`_bike_placeholder`, `_make_bike_placeholder`,
+  `_update_bike_placeholder`, constantes `BIKE_PLACEHOLDER_*`) retiré de `player.gd` au profit de
+  `MountPlaceholder` (même image `prop_velo_01`) ; `is_bike_drawn()` gardé en une ligne
+  (`moteur-commun.md` §4). Import sans erreur, suite complète **6 698 / 6 698**.
+- **J24** (`1117c8ac`) : seul `etat-projet.md` en conflit ; D1 et D5 traités par le moteur commun
+  (à revoir à la QA). Import sans erreur, suite complète **6 722 / 6 722**.
 
-## Ce qui attend Kevin
+## Suite (2026-10-23)
+
+QA du J22 et du J24 **validées par Kevin** ; **J22 (`e8b2b09d`) et J24 (`0c55dcf3`) fusionnés dans
+`main`** (suite complète 6 759 / 6 759 ; doublons Krabby, Poissoroy, Magicarpe, Force Poigne,
+Pince-Masse, Trempette, Hyper Ball, Hyper Potion, Total Soin retirés du J24 ; Guillotine N25 et
+Krabby → Krabboss N28 dans `kanto_j22.json` ; raccord Parmanie ↔ Route 19 fait). Surf : 90 gardé.
+Reste : raccords Route 12 sud et poste de la Route 16 (J21 ↔ J22, `jalon-22.md` §0.5).
+
+## Fusions de `main` dans le J23 et le J25 (2026-10-23, poussées)
+
+Accord de Kevin du 2026-10-23 ; `main` `f9ad3a05` fusionné (merge) dans des copies dédiées
+(`prep/main-dans-jalon-23` / `-25`), poussé en avance rapide. Les copies `wt-j23` / `wt-j25`
+(`j23-nuit` / `j25-nuit`) n'ont pas bougé : leurs sessions font un `pull` avant de reprendre.
+
+- **`jalon-23` `cb0000a2`** : 29 conflits ; suite complète **6 889 / 6 889**, import sans erreur,
+  `plan_check_*` conformes. `Kind` : `… GIFT_POKEMON, FLUTE, SAFARI` (même ordre dans `TYPE_KEYS`
+  et `_EXTRA_KEYS`). Sauvegarde v8 gardée (`main` était en v7 ; `test_save_j21` aligné).
+  Doublons retirés : `vice_grip` (Scarabrute → `vise_grip` de `main`), `guillotine` (identique au
+  J24), fiche `cubone`. `zones.json` : entrées vides `route_21` / `cinnabar_island` du J23 retirées
+  (celles du J24 font foi). `fuchsia_city.tscn` reconstruite (`build_j22_maps.gd`) : raccord Route 19
+  + portes du Parc, de l'Arène et du Gardien ; seconde case des portes doubles → `entree_1` (à revoir
+  en QA). `test_j21_flags_contract` : `koga_qa.json` peut poser les drapeaux de Ronflex.
+  `tm_compatibility.json` non regénéré [D] (CSV absents ; toutes les espèces y sont).
+- **`jalon-25` `fafaf226`** : 19 conflits ; suite complète **6 807 / 6 807**, import sans erreur.
+  `Kind` : `… FLUTE, UNSET_FLAGS, TOGGLE_FLAGS, TRADE`. `kanto_j25_reprises.json` supprimé
+  (identique à `kanto_j22.json`). `tm_compatibility.json` en union (126 espèces, aucune valeur
+  divergente). Quatre répliques du J24 retirées par le J25 (rencontre du Labo, Otaria, décombres du
+  Manoir) sorties de `test_dialogue_data`. `plan_check_argenta` échoue sur `porte_reserve` (déjà
+  avant la fusion ; contrôle du J10 qui ignore Coupe) : à adapter côté J25. Échange de Lina
+  (Mimitoss) jouable depuis le J22 : note « attend le J22 » à revoir en QA.
+- Contrôle de doublons silencieux (clés JSON répétées, identifiants dans deux fichiers, Pokédex,
+  zones, intérieurs, zones provisoires) : rien sur les deux branches.
+- **À concilier** à l'entrée des deux dans `main` : le J23 porte la sauvegarde v8, le J25 reste en
+  v7 ; `Kind` aura `FLUTE, SAFARI` puis les trois étapes du J25 (ou l'inverse) selon l'ordre d'entrée.
+
+## Ce qui attendait Kevin (réglé)
 
 1. **Valider les QA du J22 et du J24** (préalable à leur entrée dans `main`).
-2. Feu vert pour fusionner `main` dans `jalon-22` et `jalon-24` (préparé, voir ci-dessous) puis,
-   après validation, J22 et J24 dans `main` ; ensuite `main` dans J23 et J25.
+2. Après validation : J22 et J24 dans `main` (`main` y est déjà fusionné) ; ensuite `main` dans
+   J23 et J25.
 3. Confirmer Surf à 90 (valeur de la passe) ; le reste est en valeurs par défaut [D].

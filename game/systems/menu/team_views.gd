@@ -17,6 +17,7 @@ const PLACE_LABELS: Dictionary[Pokemon.Origin, String] = {
 	Pokemon.Origin.CAPTURE: "Capturé à",
 	Pokemon.Origin.UNKNOWN: "Rencontré à",
 	Pokemon.Origin.GIFT: "Reçu à", # J20 : Pokémon donné (texte du starter)
+	Pokemon.Origin.TRADE: "Reçu en échange à", # J25 : échange fixe [D]
 }
 ## Phrase d'attachement du starter (onglet Histoire).
 const STARTER_NOTE: String = "Ton premier Pokémon"

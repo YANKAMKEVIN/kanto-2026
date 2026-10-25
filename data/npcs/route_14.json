@@ -1,0 +1,107 @@
+{
+	"route_14_bird_1": {
+		"cell": [
+			4,
+			15
+		],
+		"facing": "right",
+		"sprite": "naturalist",
+		"dialogue": "route_14_bird_1_after",
+		"trainer": {
+			"id": "route_14_bird_1",
+			"sight": 5,
+			"before": "route_14_bird_1_before",
+			"defeated": "route_14_bird_1_defeated"
+		}
+	},
+	"route_14_biker_1": {
+		"cell": [
+			21,
+			25
+		],
+		"facing": "left",
+		"sprite": "rocker",
+		"dialogue": "route_14_biker_1_after",
+		"trainer": {
+			"id": "route_14_biker_1",
+			"sight": 6,
+			"before": "route_14_biker_1_before",
+			"defeated": "route_14_biker_1_defeated"
+		}
+	},
+	"route_14_biker_3": {
+		"cell": [
+			12,
+			30
+		],
+		"facing": "down",
+		"sprite": "rocker",
+		"dialogue": "route_14_biker_3_after",
+		"trainer": {
+			"id": "route_14_biker_3",
+			"sight": 6,
+			"before": "route_14_biker_3_before",
+			"defeated": "route_14_biker_3_defeated"
+		}
+	},
+	"route_14_bird_2": {
+		"cell": [
+			4,
+			40
+		],
+		"facing": "right",
+		"sprite": "naturalist",
+		"dialogue": "route_14_bird_2_after",
+		"trainer": {
+			"id": "route_14_bird_2",
+			"sight": 6,
+			"before": "route_14_bird_2_before",
+			"defeated": "route_14_bird_2_defeated"
+		}
+	},
+	"route_14_biker_2": {
+		"cell": [
+			21,
+			48
+		],
+		"facing": "left",
+		"sprite": "rocker",
+		"dialogue": "route_14_biker_2_after",
+		"trainer": {
+			"id": "route_14_biker_2",
+			"sight": 5,
+			"before": "route_14_biker_2_before",
+			"defeated": "route_14_biker_2_defeated"
+		}
+	},
+	"route_14_bird_4": {
+		"cell": [
+			4,
+			58
+		],
+		"facing": "right",
+		"sprite": "naturalist",
+		"dialogue": "route_14_bird_4_after",
+		"trainer": {
+			"id": "route_14_bird_4",
+			"sight": 6,
+			"before": "route_14_bird_4_before",
+			"defeated": "route_14_bird_4_defeated"
+		}
+	},
+	"route_14_bird_3": {
+		"cell": [
+			2,
+			65
+		],
+		"facing": "down",
+		"sprite": "naturalist",
+		"dialogue": "route_14_bird_3_after",
+		"trainer": {
+			"id": "route_14_bird_3",
+			"sight": 3,
+			"before": "route_14_bird_3_before",
+			"defeated": "route_14_bird_3_defeated"
+		}
+	}
+}

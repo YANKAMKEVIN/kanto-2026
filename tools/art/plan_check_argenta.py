@@ -16,6 +16,9 @@ Critères (repris par les tests des cartes, T11, T13, T17) :
     emprises des bâtiments = EMPRISES (portes comprises) ; le Musée dans le cadre de la caméra
     au point d'arrivée ; le passage est (48, 25..27) seul accès à la sortie est ; aucune routine
     sur une porte, devant une porte ni sur un panneau ; panneaux hors de la rue.
+    J25 (dossier 28 §7) : la porte arrière du Musée (`porte_reserve`) n'est pas une case `D` mais
+    un warp PUSH derrière un arbre à Couper (`arbre_reserve`) : fermée tant que l'arbre est là,
+    atteignable une fois l'arbre coupé (ses cases deviennent praticables), poussée vers le Musée.
   Arène — caméra immobile (Pierre visible depuis l'entrée) ; Pierre atteignable ; la vision de
     Liam couvre toute la largeur du passage central ; chemin direct dans sa vision, détour hors
     de sa vision ; son approche ne ferme aucun passage.
@@ -62,6 +65,10 @@ EMPRISES = {
 	},
 }
 ## Liam : case, direction du regard, portée (bloc `trainer` du J9, `sight`).
+## J25 : portes PUSH derrière un arbre à Couper (warp → arbuste, direction de la poussée). Ces
+## portes ne sont pas des cases `D` ; l'arbre coupé (drapeau `cut_pewter_museum_tree`) libère ses
+## cases, comme les arbustes du J17 (`plan_check.py`, cases libérées par un drapeau).
+PORTES_COUPE = {"porte_reserve": ("arbre_reserve", (-1, 0))}
 LIAM_SIGHT = 5
 LIAM_REGARD = (1, 0)
 
@@ -270,11 +277,12 @@ def argenta(r: Rapport, plan: Plan) -> None:
 	batiments = _emprises(r, plan, "argenta")
 	dist = carte.distances(sud)
 	portes = set(plan.cells_of(PORTE))
-	warps_portes = {c for p in plan.of_kind("warp") if p.ident.startswith("porte_") for c in p.cells}
+	warps_portes = {c for p in plan.of_kind("warp") if p.ident.startswith("porte_")
+		and p.ident not in PORTES_COUPE for c in p.cells}
 	r.critere(warps_portes == portes, f"positions porte_* = cases D ({len(portes)} cases)")
 	manquantes = []
 	for p in plan.of_kind("warp"):
-		if not p.ident.startswith("porte_"):
+		if not p.ident.startswith("porte_") or p.ident in PORTES_COUPE:
 			continue
 		devant = [(x, y + 1) for x, y in p.cells]
 		if not all(c in dist for c in p.cells) or not all(c in dist for c in devant):
@@ -282,6 +290,21 @@ def argenta(r: Rapport, plan: Plan) -> None:
 		r.info(f"{p.ident:18} {p.cells[0]} : {min(dist.get(c, INF) for c in p.cells)} pas de l'entrée")
 	r.critere(not manquantes, "toutes les portes atteignables depuis l'entrée sud (STEP_ON ↑ "
 		"depuis la case du dessous)" + (f" — manquantes : {manquantes}" if manquantes else ""))
+	for ident, (arbre, (dx, dy)) in PORTES_COUPE.items():
+		cases = _cellules(plan, ident)
+		arbre_cases = _cellules(plan, arbre)
+		coupe = Carte(plan, "".join(carte.praticables))
+		coupe.bloquees -= set(arbre_cases)  # arbre coupé : ses cases redeviennent praticables
+		dist_coupe = coupe.distances(sud)
+		poussee = [(x + dx, y + dy) for x, y in cases]
+		r.critere(plan.positions[arbre].kind == "arbuste" and plan.positions[arbre].bloque
+			and not any(c in dist for c in cases) and all(c in dist_coupe for c in cases)
+			and _acces(carte, dist, arbre_cases[0]) is not None
+			and all(plan.at(*c) == "M" for c in poussee),
+			f"{ident} {cases[0]} (J25) : fermée par {arbre} (examiné depuis "
+			f"{_acces(carte, dist, arbre_cases[0])}), atteignable une fois l'arbre coupé "
+			f"({min(dist_coupe.get(c, INF) for c in cases)} pas de l'entrée), poussée ({dx}, {dy}) "
+			f"vers « {plan.at(*poussee[0])} » en {poussee[0]}")
 
 	# Le Musée dans le cadre de la caméra au point d'arrivée (caméra bornée à la carte).
 	musee = batiments["M"][0]

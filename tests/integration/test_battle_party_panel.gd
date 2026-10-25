@@ -300,6 +300,13 @@ func test_panel_leaves_the_foe_visible() -> void:
 	for width: float in SCREEN_WIDTHS:
 		_set_screen(width)
 		await _open(_team())
+		# Cadrage B (2026-10-25) : la boîte maximale de l'adversaire s'élargit (0,70) ; à 1920 de
+		# large (plus étroit que le S24), le panneau peut en couvrir le bord gauche, jamais plus
+		# de 15 % ni ses pieds ; au format du S24, rien.
 		var foe := BattleLayout.max_rect(false, _screen.size)
-		assert_false(_panel.get_frame_rect().intersects(foe),
+		var frame := _panel.get_frame_rect()
+		var covered := frame.intersection(foe).size.x if frame.intersects(foe) else 0.0
+		assert_lte(covered, foe.size.x * (0.15 if width < 2340.0 else 0.0),
 			"%s : l'adversaire reste visible" % width)
+		assert_false(frame.has_point(BattleLayout.anchors(_screen.size)["foe_feet"]),
+			"%s : pieds de l'adversaire visibles" % width)

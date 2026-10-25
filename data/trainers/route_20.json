@@ -1,0 +1,70 @@
+{
+	"route_20_swimmer_ronan": {
+		"name": "Nageur Ronan", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 155,
+		"team": [{ "species": "shellder", "level": 31 }, { "species": "cloyster", "level": 31 }]
+	},
+	"route_20_swimmer_solene": {
+		"name": "Nageuse Solène", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 2100,
+		"team": [
+			{ "species": "seadra", "level": 30 }, { "species": "horsea", "level": 30 },
+			{ "species": "seadra", "level": 30 }
+		]
+	},
+	"route_20_swimmer_iris": {
+		"name": "Nageuse Inès", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 2450,
+		"team": [{ "species": "seaking", "level": 35 }]
+	},
+	"route_20_swimmer_lou": {
+		"name": "Nageuse Lou", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 600,
+		"team": [
+			{ "species": "tentacool", "level": 30 }, { "species": "horsea", "level": 30 },
+			{ "species": "seel", "level": 30 }
+		]
+	},
+	"route_20_swimmer_mathis": {
+		"name": "Nageur Mathis", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 175,
+		"team": [
+			{ "species": "staryu", "level": 35, "moves": ["tackle", "water_gun", "harden", "swift"] }
+		]
+	},
+	"route_20_swimmer_kilian": {
+		"name": "Nageur Kilian", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 140,
+		"team": [
+			{ "species": "horsea", "level": 28 }, { "species": "horsea", "level": 28 },
+			{ "species": "seadra", "level": 28 }, { "species": "horsea", "level": 28 }
+		]
+	},
+	"route_20_bird_keeper_bastien": {
+		"name": "Ornithologue Bastien", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 750,
+		"team": [
+			{ "species": "fearow", "level": 30, "moves": ["peck", "growl", "leer", "fury_attack"] },
+			{ "species": "fearow", "level": 30, "moves": ["peck", "growl", "leer", "fury_attack"] },
+			{ "species": "pidgeotto", "level": 30, "moves": ["gust", "sand_attack", "quick_attack"] }
+		]
+	},
+	"route_20_swimmer_clara": {
+		"name": "Nageuse Clara", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 2100,
+		"team": [
+			{ "species": "shellder", "level": 30 }, { "species": "shellder", "level": 30 },
+			{ "species": "cloyster", "level": 30 }
+		]
+	},
+	"route_20_swimmer_nina": {
+		"name": "Nageuse Noémie", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 620,
+		"team": [{ "species": "goldeen", "level": 31 }, { "species": "seaking", "level": 31 }]
+	},
+	"route_20_swimmer_elsa": {
+		"name": "Nageuse Elsa", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 2170,
+		"team": [{ "species": "poliwag", "level": 31 }, { "species": "seaking", "level": 31 }]
+	}
+}

@@ -1,0 +1,36 @@
+# Poste de la Route 18 (`route_18_gate`) — grille fonctionnelle (jalon 22, lot 22.0, T6 ; plan §2.10 ;
+# dossier 25 §6.4, §8.7 ; RB : Route18Gate1F 8 × 10).
+#
+# 12 × 10 cases, une salle traversante : porte ouest (0, 5..6) ↔ Route 18, Piste ; porte est (11, 5..6) ↔
+# Route 18, partie est. Garde en (3, 3) derrière son comptoir (2..4, 4) ; le déclencheur (3, 5..7) couvre
+# toute la largeur de la salle : on le franchit en allant ← (vers la Piste) ; sans Bicyclette, T-1 et
+# recul d'une case ; avec, T-2 la première fois.
+#
+# Légende : K mur   . sol   X porte (praticable, terminale)   N comptoir   B bibliothèque   x plante
+#
+# DÉFAUTS : pas de 2F (RB : 2F avec un assistant ; le dossier n'en parle pas).
+
+PRATICABLES .X
+
+GRILLE 12 10
+00 KKKKKKKKKKKK
+01 KKKKKKKKKKKK
+02 KKKKKKKKKKKK
+03 K......BB.xK
+04 K.NNN......K
+05 X..........X
+06 X..........X
+07 K.........xK
+08 KKKKKKKKKKKK
+09 KKKKKKKKKKKK
+FIN
+
+# POSITIONS — identifiant  type  cases  bloque|libre  [cle=valeur ...]  # commentaire
+POSITIONS
+sortie_ouest           warp           0,5..6         libre   to=route_18 spawn=from_poste_ouest  # PUSH ← → Route 18, côté Piste (sortie en selle)
+entrance_ouest         spawn          1,5..6         libre   facing=right  # arrivée côté Piste, tournée →
+sortie_est             warp           11,5..6        libre   to=route_18 spawn=from_poste_est  # PUSH → → Route 18, côté Parmanie (à pied)
+entrance_est           spawn          10,5..6        libre   facing=left  # arrivée côté Parmanie, tournée ←
+garde_piste            pnj            3,3            bloque  role=P1 facing=down  # garde de la Piste derrière son comptoir (2..4, 4)
+regle_piste            repere         3,5..7         libre   role=regle_piste sens=left scene=j22_cycling_gate_rule_18  # déclencheur : entrer en allant ← sans Bicyclette → T-1 et recul ; avec → T-2 une fois
+FIN

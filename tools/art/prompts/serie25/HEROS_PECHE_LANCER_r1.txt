@@ -1,0 +1,14 @@
+HEROS_PECHE_LANCER — planche de 4 poses : le héros qui pêche.
+Style : exactement le rendu de la planche jointe PERSO_P2_PEINT_r1 (le héros validé) : personnage peint simplifié, contour fin et doux d'une teinte sombre et colorée, aucun trait noir. Ni pixel art, ni 3D, ni anime aux contours noirs.
+LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche ; volumes conservés par un ombrage doux ; aucune teinte dorée ou orangée, aucun liseré chaud ; ombres propres neutres, légèrement bleutées.
+
+PERSONNAGE (identique dans les 4 poses) : le HÉROS du jeu, EXACTEMENT celui de la planche jointe PERSO_P2_PEINT_r1 (même visage, même casquette rouge à visière blanche, mêmes cheveux bruns, même t-shirt blanc, mêmes bretelles noires, même sac à dos jaune et bleu marine, même jean bleu, mêmes baskets rouges), mêmes proportions chibi d'environ 3 têtes, même main peinte, même finesse, debout, qui tient à deux mains une CANNE À PÊCHE simple [D] : scion fin gris-bleu, poignée de liège, petit moulinet argenté, un fil fin blanc.
+
+PLANCHE : image paysage 1536 × 1024, fond avec une vraie transparence (canal alpha, aucun damier dessiné). UNE seule ligne de 4 poses, de gauche à droite, chacune dans une colonne invisible de 384 px, bien séparées par du vide. Le héros a EXACTEMENT la même taille que dans la planche jointe PERSO_P2_PEINT_r1 (environ 280 px de haut), les PIEDS des 4 poses sur une même ligne horizontale à 600 px du haut de l'image ; la canne peut descendre sous les pieds (pose 1), monter au-dessus de la tête (pose 4) ou partir sur le côté (poses 2 et 3), mais elle reste ENTIÈRE dans la colonne de sa pose.
+- Pose 1 : tourné vers le BAS (de face) : la canne pointe vers le bas de l'image, devant lui.
+- Pose 2 : tourné vers la GAUCHE (de profil) : la canne pointe vers la gauche.
+- Pose 3 : tourné vers la DROITE (de profil) : la canne pointe vers la droite.
+- Pose 4 : tourné vers le HAUT (de dos) : la canne pointe vers le haut de l'image, devant lui.
+POSE : LANCER : les deux bras tendus vers l'avant, la canne allongée devant lui dans la direction où il regarde, un peu au-dessus de l'horizontale, le fil qui part en arc fin depuis le bout de la canne (sans hameçon visible), une jambe légèrement en avant, élan dynamique mais lisible.
+Vue : la même vue de dessus de trois quarts que le jeu (caméra un peu au-dessus). Pas de perspective, pas d'ombre au sol, pas de sol, pas de texte, pas de numéros, pas de cadres. Aucune eau, aucun bouchon dans l'eau, aucun poisson : le jeu ajoute l'eau.
+Interdits de la série : texte, lettres, chiffres, logo, animaux réels ou faune non-Pokémon (oiseaux réels, poissons, insectes), Pikachu et tout Pokémon non demandé, élément effrayant. Aucun autre personnage, aucun Pokémon, aucune eau, aucun sol peint.

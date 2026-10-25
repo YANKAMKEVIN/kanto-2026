@@ -1,0 +1,37 @@
+CONCEPT ART — VUE GÉNÉRALE DE LA ROUTE 17, LA PISTE CYCLABLE, TRONÇON 2 SUR 3 (Kanto 2026), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. C'est un TRONÇON d'une très longue route qui descend du NORD (haut de l'image) vers le SUD (bas) : la Piste Cyclable, qui longe la mer.
+Légende du plan :
+- bleu à gauche, sur toute la hauteur = la MER, bleu profond (décor) ;
+- bande brun-gris entre la mer et la route = une RIVE ROCHEUSE de gros rochers clairs, droite, qui borde la mer ;
+- vert foncé à cercles = FORÊT DENSE infranchissable à l'est ;
+- gris clair à chevrons = la PISTE en PENTE douce vers le sud (les chevrons ne sont qu'une indication du plan : ne les peins PAS ; la pente se lit par de légères ombres transversales et des joints) ; DEUX VOIES parallèles de quatre cases chacune ;
+- trait blanc vertical au milieu de la Piste = la BARRIÈRE BASSE qui sépare les deux voies, percée de courtes ouvertures ;
+- gris uni = des sections PLATES de la Piste (PALIERS) où la barrière s'interrompt ;
+- vert rayé = petite poche de HAUTES HERBES à l'est d'un palier ; petits traits bruns = BANCS de bois au bord du palier ; petit carré ocre = panneau de bois SANS TEXTE ;
+- petits carrés vert clair = de petites ALCÔVES d'herbe au bord de la Piste (dans la rive ou dans la forêt).
+CE TRONÇON (le MILIEU) : les deux voies en pente, le DEUXIÈME PALIER plat au milieu avec bancs, panneau et herbes, puis plus bas un GOULET : la Piste se resserre à trois cases entre deux avancées de la forêt, sans barrière, avant de se rouvrir en deux voies.
+Respecte ce plan À LA LETTRE. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+RÈGLE ABSOLUE DES CHEMINS : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; chemins, pistes, barrières, rives et bords des zones suivent une grille : uniquement des segments horizontaux et verticaux à ANGLES DROITS, AUCUNE courbe, aucun segment en diagonale.
+RELIEF : la Piste descend doucement vers le sud, sans marche ni escalier ; la rive rocheuse domine la mer d'une petite hauteur.
+
+La PISTE CYCLABLE est une chaussée lisse et claire en BÉTON GRIS CLAIR légèrement bleuté, aux bords nets soulignés d'une fine bordure de pierre claire, avec de discrets joints de dilatation transversaux ; ce n'est PAS une route goudronnée noire, il n'y a ni marquage peint, ni ligne blanche, ni flèche, ni voiture. Les BARRIÈRES BASSES de la Piste sont des glissières basses (à hauteur de genou) en poteaux de bois clair et lisses de métal blanc, continues, droites.
+
+IMAGE 2 : la vue générale de la Route 6, une route du même jeu. Respecte EXACTEMENT son style de rendu : même pinceau, mêmes arbres en masses arrondies, même herbe, même saturation, même échelle. Ne reprends PAS sa composition ni sa lumière dorée : ici la lumière est NEUTRE.
+
+Format : PORTRAIT 1024 × 1536, vue plongeante sur le tronçon, comme le plan.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats. Le feuillage est peint en grandes masses douces.
+- Perspective : vue de dessus, axes de l'image alignés sur la grille, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud).
+- Aucun trait noir : contours fins et doux, plus sombres et plus saturés que la couleur locale. Ombres colorées bleu-vert ou violet froid, jamais grises.
+- LUMIÈRE NEUTRE : lumière de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche ; aucune teinte dorée ou orangée, aucun liseré chaud, aucun rai de soleil, aucune ombre portée longue.
+
+AMBIANCE — « la descente » : une longue piste lisse et dégagée, rythmée par ses barrières basses, entre une forêt serrée à l'est et la mer ouverte à l'ouest ; vent du large, écume blanche au pied des rochers, la mer occupe toute la gauche jusqu'au bord de l'image.
+
+PERSONNE : aucun personnage, aucun Pokémon, aucun animal, aucun vélo, aucun véhicule.
+
+INTERDITS : texte, lettres, chiffres, étiquettes, panneaux lisibles, logo, emblème, signature, filigrane, cadre, interface ; arbres orange ou automnaux ; neige ; brouillard, flou de profondeur, vignettage ; pixel art, 3D ; tout bâtiment ; voiture, route goudronnée noire, marquage routier, flèche peinte ; pont, port, bateau, plage de sable ; escaliers ; lampadaires en série.

@@ -159,7 +159,8 @@ func fish(rod: StringName, cell: Vector2i) -> void:
 func _spot(cell: Vector2i, facing: Vector2i) -> Vector2i:
 	if not is_instance_valid(_map):
 		return FishingSpot.NONE
-	return FishingSpot.in_front(_map.get_grid(), cell, facing, _map.cycling_road, _fishable)
+	return FishingSpot.in_front(_map.get_grid(), cell, facing, _map.is_cycling_road_at(cell),
+		_fishable)
 
 
 func _bag() -> Bag:

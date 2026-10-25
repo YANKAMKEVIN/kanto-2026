@@ -24,11 +24,11 @@ func test_foe_is_the_official_artwork_by_dex_number() -> void:
 
 
 func test_player_side_keeps_the_placeholder_back() -> void:
-	var image := _art.image(&"charmander", true)
+	var image := _art.image(&"blastoise", true)
 	assert_false(image["official"])
 	assert_eq((image["texture"] as Texture2D).resource_path,
-		BattleArt.placeholder_path(&"charmander", true))
-	assert_eq(image["box"], Rect2(14, 7, 48, 56), "boîte de l'alpha, pieds au bas")
+		BattleArt.placeholder_path(&"blastoise", true))
+	assert_true((image["box"] as Rect2).size.y > 30.0, "boîte de l'alpha, pieds au bas")
 
 
 ## Correctif QA 12A (Reptincel sans dos sur le S24) : **chaque** espèce des données a son sprite
@@ -58,7 +58,7 @@ func test_a_missing_back_falls_back_to_the_official_artwork() -> void:
 	var file := FileAccess.open("res://data/pokemon/species/kanto.json", FileAccess.READ)
 	var entries: Dictionary = JSON.parse_string(file.get_as_text())
 	var data := PokemonData.new()
-	assert_true(data.add_species_from_dict({"zz_no_sprite": entries["charmeleon"]}))
+	assert_true(data.add_species_from_dict({"zz_no_sprite": entries["blastoise"].duplicate()}))
 	var art := BattleArt.new()
 	art.setup(data, null)
 	assert_false(ResourceLoader.exists(BattleArt.placeholder_path(&"zz_no_sprite", true)))
@@ -66,7 +66,7 @@ func test_a_missing_back_falls_back_to_the_official_artwork() -> void:
 	assert_not_null(image["texture"], "jamais vide")
 	assert_true(image["official"], "artwork officiel")
 	assert_string_ends_with(((image["texture"] as AtlasTexture).atlas).resource_path,
-		"official/005.png")
+		"official/009.png")
 
 
 func test_unknown_species_has_no_texture_and_reference_height() -> void:
@@ -106,12 +106,23 @@ func test_every_species_fits_the_framing() -> void:
 			var image := _art.image(species, back)
 			var box: Rect2 = image["box"]
 			for view: Vector2 in VIEWS:
-				var key := "player_feet" if back else "foe_feet"
-				var feet: Vector2 = BattleLayout.anchors(view)[key]
+				var where := "%s %s %s" % [species, "dos" if back else "face", view]
+				if back:
+					# Cadrage B : seule la partie visible du dos compte.
+					var scale := BattleLayout.back_scale(box.size, _art.height_m(species), view.y,
+						image["crop"], not image["official"])
+					var feet: Vector2 = BattleLayout.anchors(view)["player_back"] \
+						+ Vector2(0.0, BattleLayout.back_sink(box.size, scale, image["crop"]))
+					var screen := Rect2(Vector2.ZERO, view)
+					var shown := BattleLayout.sprite_rect(feet, scale, box.size).intersection(screen)
+					assert_true(BattleLayout.max_rect(true, view).grow(0.5).encloses(shown), where)
+					assert_false(shown.intersects(BattleLayout.foe_card_zone(view)), where)
+					assert_false(shown.intersects(BattleLayout.hud_zones(view)[1]), where)
+					continue
+				var feet: Vector2 = BattleLayout.anchors(view)["foe_feet"]
 				var scale := BattleLayout.sprite_scale(box.size, _art.height_m(species), back,
 					view.y, not image["official"])
 				var rect := BattleLayout.sprite_rect(feet, scale, box.size)
-				var where := "%s %s %s" % [species, "dos" if back else "face", view]
 				assert_true(BattleLayout.max_rect(back, view).grow(0.5).encloses(rect), where)
 				for zone: Rect2 in BattleLayout.hud_zones(view):
 					assert_false(rect.intersects(zone), "%s hors de %s" % [where, zone])

@@ -128,10 +128,26 @@
 	},
 	"cerulean_bike_clerk": {
 		"speaker": "Vendeur",
-		"pages": [
-			"Bienvenue ! Les meilleurs vélos de Kanto.",
-			"Celui-ci ? 1 000 000 ₽.",
-			"…Reviens quand tu veux. Pour regarder."
+		"variants": [
+			{
+				"if": ["got_bicycle"],
+				"pages": ["Alors, cette Bicyclette ?\nElle roule bien, hein ?"]
+			},
+			{
+				"if_items": ["bike_voucher"],
+				"pages": [
+					"Oh ! Un Bon de Commande !\nIl vient du président du Fan Club ?",
+					"Alors elle est à toi.\nPrends-en soin !"
+				],
+				"cutscene": "j22_bike_exchange"
+			},
+			{
+				"pages": [
+					"Bienvenue ! Les meilleurs vélos de Kanto.",
+					"Celui-ci ? 1 000 000 ₽.",
+					"…Reviens quand tu veux. Pour regarder."
+				]
+			}
 		]
 	},
 	"cerulean_gym_guide": {

@@ -1,0 +1,125 @@
+{
+	"cinnabar_gym_1": {
+		"cell": [
+			17,
+			2
+		],
+		"facing": "down",
+		"sprite": "nerd",
+		"dialogue": "cinnabar_gym_1_after",
+		"trainer": {
+			"id": "cinnabar_gym_1",
+			"sight": 0,
+			"before": "cinnabar_gym_1_before",
+			"defeated": "cinnabar_gym_1_defeated"
+		}
+	},
+	"cinnabar_gym_2": {
+		"cell": [
+			17,
+			8
+		],
+		"facing": "down",
+		"sprite": "gambler",
+		"dialogue": "cinnabar_gym_2_after",
+		"trainer": {
+			"id": "cinnabar_gym_2",
+			"sight": 0,
+			"before": "cinnabar_gym_2_before",
+			"defeated": "cinnabar_gym_2_defeated"
+		}
+	},
+	"cinnabar_gym_3": {
+		"cell": [
+			11,
+			4
+		],
+		"facing": "down",
+		"sprite": "nerd",
+		"dialogue": "cinnabar_gym_3_after",
+		"trainer": {
+			"id": "cinnabar_gym_3",
+			"sight": 0,
+			"before": "cinnabar_gym_3_before",
+			"defeated": "cinnabar_gym_3_defeated"
+		}
+	},
+	"cinnabar_gym_4": {
+		"cell": [
+			11,
+			8
+		],
+		"facing": "down",
+		"sprite": "gambler",
+		"dialogue": "cinnabar_gym_4_after",
+		"trainer": {
+			"id": "cinnabar_gym_4",
+			"sight": 0,
+			"before": "cinnabar_gym_4_before",
+			"defeated": "cinnabar_gym_4_defeated"
+		}
+	},
+	"cinnabar_gym_5": {
+		"cell": [
+			11,
+			14
+		],
+		"facing": "down",
+		"sprite": "nerd",
+		"dialogue": "cinnabar_gym_5_after",
+		"trainer": {
+			"id": "cinnabar_gym_5",
+			"sight": 0,
+			"before": "cinnabar_gym_5_before",
+			"defeated": "cinnabar_gym_5_defeated"
+		}
+	},
+	"cinnabar_gym_6": {
+		"cell": [
+			3,
+			14
+		],
+		"facing": "down",
+		"sprite": "gambler",
+		"dialogue": "cinnabar_gym_6_after",
+		"trainer": {
+			"id": "cinnabar_gym_6",
+			"sight": 0,
+			"before": "cinnabar_gym_6_before",
+			"defeated": "cinnabar_gym_6_defeated"
+		}
+	},
+	"cinnabar_gym_7": {
+		"cell": [
+			3,
+			8
+		],
+		"facing": "down",
+		"sprite": "nerd",
+		"dialogue": "cinnabar_gym_7_after",
+		"trainer": {
+			"id": "cinnabar_gym_7",
+			"sight": 0,
+			"before": "cinnabar_gym_7_before",
+			"defeated": "cinnabar_gym_7_defeated"
+		}
+	},
+	"auguste": {
+		"cell": [
+			3,
+			3
+		],
+		"facing": "down",
+		"sprite": "gentleman",
+		"dialogue": "cinnabar_blaine"
+	},
+	"guide": {
+		"cell": [
+			16,
+			13
+		],
+		"facing": "down",
+		"sprite": "gym_guide",
+		"dialogue": "cinnabar_gym_guide"
+	}
+}

@@ -42,6 +42,14 @@ const J21_FILES: Array[String] = [
 	"res://tools/debug_start/fuji_flute_qa.json", "res://tools/debug_start/j21_full_qa.json",
 	"res://tools/debug_start/route_12_qa.json", "res://tools/debug_start/snorlax_16_qa.json",
 ]
+## Départs de débogage du J22 (Routes 12 sud à 18, Parmanie) : ils supposent le J21 joué et posent
+## donc ses drapeaux de Ronflex (fusion de `main` dans `jalon-22`, 2026-10-23).
+const J22_STARTS: Array[String] = [
+	"res://tools/debug_start/bike_qa.json", "res://tools/debug_start/cycling_road_nobike_qa.json",
+	"res://tools/debug_start/cycling_road_qa.json", "res://tools/debug_start/fishing_qa.json",
+	"res://tools/debug_start/fuchsia_qa.json", "res://tools/debug_start/j22_full_qa.json",
+	"res://tools/debug_start/route_15_qa.json",
+]
 ## Préfixes de fichiers du J21 (Route 12 et son poste, Route 16 : cartes nouvelles du J21).
 const J21_PREFIXES: Array[String] = ["route_12", "route_16"]
 ## Le seul bloc du J21 permis dans un fichier plus ancien.
@@ -114,7 +122,7 @@ func _collect(value: Variant, path: String, out: Array[String]) -> void:
 
 
 func _is_j21_file(path: String) -> bool:
-	if J21_FILES.has(path):
+	if J21_FILES.has(path) or J22_STARTS.has(path):
 		return true
 	var file := path.get_file()
 	for prefix: String in J21_PREFIXES:
