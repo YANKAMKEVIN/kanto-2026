@@ -393,12 +393,25 @@ Captures dans `build/qa_j31/` (non versionnées). Journal Godot : aucune erreur 
   Suite complète après ces correctifs : **6 798 / 6 798**.
   - Dos des Pokémon du joueur en pixel art basse résolution à côté des artworks de face : art,
     non traité ici.
-- Non couvert : échelle P7 (1F↔B1F), capture et K.O. de Mewtwo, reprise d'une vraie sauvegarde.
+- Non couvert : K.O. de Mewtwo, reprise d'une vraie sauvegarde.
+- **Suite du 2026-10-25** (`ca840322`, A17 en USB, nouveaux départs `cerulean_cave_p7` et
+  `cerulean_cave_mewtwo_capture`) :
+  - **Échelle P7** : 1F (0, 7) → B1F (2, 6) en 19,8 ms ; échelle (3, 6) → 1F (0, 7) en 11,9 ms : **OK**.
+  - **Capture de Mewtwo** : Cage-Éclair (PAR), Croc Fatal (moitié des PV), Raichu puis Tortank
+    K.O. ; Mewtwo s'est soigné (Soin) avant les balls ; capturé à PV pleins et paralysé à la
+    14e Hyper Ball environ, **équipe pleine → stockage** (« 7 vus · 7 capturés ») ; retour sur
+    la carte, **Mewtwo absent** ; point de sauvegarde « rencontre fixe : mewtwo » journalisé.
+    Journal : aucune erreur. Couvre aussi la capture en équipe pleine du T9.
+  - Difficulté voulue (RB) : taux 3, Soin ; à PV pleins et paralysé, ~1,2 % par Hyper Ball
+    (`CaptureCalc`). La Master Ball (J26) reste l'issue normale.
+  - Description de l'Hyper Ball en entier dans le Sac de combat : vue.
+  - Le Mewtwo de carte (190 px) recouvre le bas du héros quand celui-ci est juste au-dessus :
+    tri normal, à revoir avec la planche définitive.
 
 ### 11.1 Reste à faire
-- **T9** : capture avec la Master Ball après le J26 ; capture en équipe pleine (QA).
-- **T10** : QA A17 du §6 faite (§11.0) ; reste capture de Mewtwo (l'affaiblir d'abord), échelle
-  P7. Suite complète après le correctif : **6 796 / 6 796**.
+- **T9** : capture avec la Master Ball après le J26 (capture en équipe pleine vue sur l'A17, §11.0).
+- **T10** : QA A17 du §6 **faite** (§11.0, échelle P7 et capture de Mewtwo le 2026-10-25) ;
+  reste K.O. de Mewtwo et reprise d'une vraie sauvegarde.
 - À la fusion du J30 : `test_cerulean_cave_access` vérifie l'égalité du drapeau de Champion.
 - À la fusion des J23, J25, J28 : retirer Leveinard, Rappel Max, Rhinoféros des emprunts.
 - Max Élixir caché du B3F des Îles Écume (J24) : à poser maintenant que l'objet existe.
