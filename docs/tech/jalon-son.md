@@ -572,6 +572,8 @@ l'instant). `sea` boucle sur une seule vague de 3 s : à écouter.
 | Bruitages (69) | `assets/audio/sfx/*.ogg` (696 Ko) | Kenney (kenney.nl) : Interface Sounds, UI Audio, Impact Sounds, RPG Audio | CC0 |
 | Ambiances (7 boucles) | `assets/audio/ambience/*.ogg` (816 Ko) | OpenGameArt : beach-ocean-waves (qubodup), wind (ignasd), ambient-bird-sounds (isaiah658), loopable-dungeon-ambience (jaggedstone), underwater-or-space-engine-rumble (gmason) — détail §5 quater | CC0 |
 
+**Poids final** (APK debug du 2026-10-25, `main` fusionné dans `jalon-son`) : **352 Mo**, dont **38,6 Mo d'audio** (296 fichiers importés : 54 morceaux, 151 cris, 84 bruitages, 7 ambiances) ; le budget estimé au §1.11 était de 70 à 100 Mo. Suite complète sur l'état fusionné : 6 928 / 6 928.
+
 **Volumes relatifs** (mesurés ; validés à l'écoute par Kevin le 2026-10-25, « Je valide ») :
 musique et jingles à −16 LUFS (boucles mesurées sur la partie qui boucle) ; ambiances à
 −16 LUFS jouées −18 dB plus bas (≈ −34 LUFS) ; cris à −3 dBFS de crête ; bruitages à −6 dBFS
