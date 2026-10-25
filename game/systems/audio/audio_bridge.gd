@@ -12,6 +12,9 @@ extends RefCounted
 ##   Chen ; elle se retire à la fin de la cinématique ;
 ## - BATTLE : musique du combat, puis de la victoire (`BATTLE_ENDED` gagné) ;
 ## - JINGLE : soin, objet, objet clé, Badge, capture, montée de niveau, évolution, Poké Flûte.
+## Cris (SonB, §1.8) : envoi au combat (les deux camps), K.O. (plus grave), rencontre et Pokémon
+## d'ambiance (`cry_requested`), bouton « Cri » du Pokédex, compagnon à qui l'on parle, écran
+## d'évolution (ancienne forme au début, nouvelle à la fin).
 
 ## Valeur de la clé « music » d'une étape qui arrête la musique de scène.
 const STOP: StringName = &"stop"
@@ -31,6 +34,12 @@ var trainer_name: Callable = Callable()
 var caught_count: Callable = Callable()
 ## Objets (catégorie objet clé / CT pour le jingle « Obtained a Key Item! »).
 var items: ItemLibrary
+## (species_id: StringName) -> int : numéro national (0 si inconnu), pour les cris.
+var species_dex: Callable = Callable()
+## (party_index: int) -> StringName : espèce d'un membre de l'équipe (évolution).
+var party_species: Callable = Callable()
+## () -> StringName : espèce du compagnon sorti ("" si aucun).
+var companion_species: Callable = Callable()
 
 var _library: AudioLibrary
 var _zones: ZoneLibrary
@@ -99,6 +108,10 @@ func on_battle_started(trainer_id: StringName) -> void:
 ## niveau → jingle.
 func on_battle_event(event: BattleEvent) -> void:
 	match event.kind:
+		BattleEvent.Kind.SENT_OUT:
+			play_species_cry(event.species_id)
+		BattleEvent.Kind.FAINTED:
+			play_species_cry(event.species_id, true)
 		BattleEvent.Kind.BATTLE_ENDED:
 			if event.outcome == Battle.Outcome.WIN:
 				audio.call(&"set_music", L.BATTLE, selector.victory_track(_trainer_id))
@@ -133,17 +146,38 @@ func on_item_found(item_id: StringName, _count: int = 1) -> void:
 	_jingle(&"key_item" if _is_key_item(item_id) else &"item")
 
 
-func on_evolution_started(_party_index: int = 0, _into: StringName = &"") -> void:
+func on_evolution_started(party_index: int = 0, _into: StringName = &"") -> void:
 	audio.call(&"set_music", L.JINGLE, selector.event_track(&"evolution"))
+	if party_species.is_valid():
+		play_species_cry(StringName(str(party_species.call(party_index))))
 
 
 ## Évolution finie : « Congratulations! » puis retour ; annulée : retour direct.
-func on_evolution_finished(_party_index: int = 0, _into: StringName = &"",
+func on_evolution_finished(_party_index: int = 0, into: StringName = &"",
 		cancelled: bool = false) -> void:
 	if cancelled:
 		audio.call(&"clear_music", L.JINGLE)
 	else:
 		audio.call(&"set_music", L.JINGLE, selector.event_track(&"evolved"))
+		play_species_cry(into)
+
+
+## Cri d'une espèce (rencontre, Pokémon d'ambiance : `EncounterDirector.cry_requested`).
+func play_species_cry(species_id: StringName, fainted: bool = false) -> void:
+	var dex := int(species_dex.call(species_id)) if species_dex.is_valid() else 0
+	if dex > 0:
+		audio.call(&"play_cry", dex, fainted)
+
+
+## Bouton « Cri » du Pokédex (espèce capturée, SON-12).
+func on_pokedex_cry(number: int) -> void:
+	audio.call(&"play_cry", number, false)
+
+
+## Le joueur parle à son compagnon : son cri (jamais en boucle automatique).
+func on_companion_line(_dialogue_id: StringName = &"") -> void:
+	if companion_species.is_valid():
+		play_species_cry(StringName(str(companion_species.call())))
 
 
 ## Étape de cinématique jouée : clé « music », Badge, Poké Flûte.

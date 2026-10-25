@@ -100,7 +100,9 @@ func test_151_cries_by_national_number() -> void:
 	assert_eq(paths.size(), 151, "un fichier par espèce")
 	assert_eq(cries.path_for(0), "")
 	assert_eq(cries.path_for(152), "")
-	assert_true(cries.is_expected(), "SonB")
+	assert_false(cries.is_expected(), "SonB : fichiers présents")
+	for dex: int in range(1, 152):
+		assert_true(ResourceLoader.exists(cries.path_for(dex)), "cri %d" % dex)
 
 
 func test_every_species_has_a_cry() -> void:

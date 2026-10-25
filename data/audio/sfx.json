@@ -1070,6 +1070,6 @@
 		"bus": "Cries",
 		"volume_db": 0.0,
 		"faint_pitch": 0.8,
-		"expected": true
+		"expected": false
 	}
 }

@@ -47,6 +47,8 @@ signal bag_repeat_requested
 ## (case connue touchée). Le lien Habitat → Carte passe par [signal route_requested].
 signal pokedex_filter_changed(filter: int, zone: StringName, type: StringName, text: String)
 signal pokedex_species_opened(species: StringName)
+## Jalon Son (SonB) : « Cri » d'une espèce capturée au Pokédex (numéro national).
+signal pokedex_cry_requested(number: int)
 ## Relais de l'écran Carte (6D) : zone découverte touchée. Le lien Pokémon observé → Pokédex
 ## passe par [signal route_requested].
 signal map_zone_touched(zone: StringName)
@@ -320,6 +322,7 @@ func show_pokedex(view: PokedexGridView) -> void:
 		_pokedex.route_requested.connect(route_requested.emit)
 		_pokedex.filter_changed.connect(pokedex_filter_changed.emit)
 		_pokedex.species_opened.connect(pokedex_species_opened.emit)
+		_pokedex.cry_requested.connect(pokedex_cry_requested.emit)
 		_host.add_child(_pokedex)
 		_pokedex.hide_now()
 	_pokedex.show_grid(view)

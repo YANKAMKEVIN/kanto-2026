@@ -1999,6 +1999,20 @@ func _setup_audio() -> void:
 		return trainer.name if trainer != null else ""
 	_audio_bridge.caught_count = func() -> int: return GameState.pokedex.caught_count()
 	_audio_bridge.items = _items
+	# SonB : cris (numéro national par l'espèce).
+	_audio_bridge.species_dex = func(species: StringName) -> int:
+		var data := _pokemon.get_species(species)
+		return data.dex if data != null else 0
+	_audio_bridge.party_species = func(index: int) -> StringName:
+		var member := GameState.party.get_at(index)
+		return member.species_id if member != null else &""
+	_audio_bridge.companion_species = func() -> StringName:
+		var chosen := _companion.get_chosen()
+		return chosen.species_id if chosen != null else &""
+	_encounters.cry_requested.connect(_audio_bridge.play_species_cry)
+	_companion.line_requested.connect(_audio_bridge.on_companion_line)
+	if _menu_screen.has_signal(&"pokedex_cry_requested"):
+		_menu_screen.pokedex_cry_requested.connect(_audio_bridge.on_pokedex_cry)
 	_player.mount_changed.connect(_audio_bridge.on_mount_changed)
 	_trainer_watcher.trainer_spotted.connect(_audio_bridge.on_trainer_spotted)
 	_battle_director.battle_started.connect(_audio_bridge.on_battle_started)

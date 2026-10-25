@@ -33,6 +33,10 @@ func before_each() -> void:
 	var items := ItemLibrary.new()
 	items.load_dir()
 	_bridge.items = items
+	_bridge.species_dex = func(species: StringName) -> int:
+		return { &"pikachu": 25, &"bulbasaur": 1, &"ivysaur": 2, &"pidgey": 16 }.get(species, 0)
+	_bridge.party_species = func(_index: int) -> StringName: return &"bulbasaur"
+	_bridge.companion_species = func() -> StringName: return &"pikachu"
 
 
 func _map(map_id: StringName, music: StringName = &"") -> GameMap:
@@ -218,3 +222,37 @@ func test_real_boot_plays_the_start_map_music_and_resets_on_exit() -> void:
 	assert_not_null(boot.get_audio_bridge())
 	boot.free()
 	assert_eq(global.current_track(), AudioLibrary.SILENCE, "Boot quitté : l'autoload repart muet")
+
+
+func _cries() -> Array:
+	return _orders.filter(func(o: Dictionary) -> bool: return o["type"] == &"cry")
+
+
+func test_cries_on_send_out_and_lower_on_faint() -> void:
+	var sent := _event(BattleEvent.Kind.SENT_OUT)
+	sent.species_id = &"pidgey"
+	_bridge.on_battle_event(sent)
+	var fainted := _event(BattleEvent.Kind.FAINTED)
+	fainted.species_id = &"pidgey"
+	_bridge.on_battle_event(fainted)
+	var cries := _cries()
+	assert_eq(cries.size(), 2)
+	assert_eq(cries[0]["dex"], 16)
+	assert_eq(cries[0]["pitch"], 1.0)
+	assert_almost_eq(float(cries[1]["pitch"]), 0.8, 0.001, "K.O. : plus grave (RB)")
+
+
+func test_encounter_pokedex_and_companion_cries() -> void:
+	_bridge.play_species_cry(&"pikachu")
+	_bridge.on_pokedex_cry(151)
+	_bridge.on_companion_line(&"companion_talk")
+	_bridge.play_species_cry(&"missingno")
+	var dex: Array = _cries().map(func(o: Dictionary) -> int: return o["dex"])
+	assert_eq(dex, [25, 151, 25], "espèce inconnue : aucun cri")
+
+
+func test_evolution_cries_old_then_new() -> void:
+	_bridge.on_evolution_started(0, &"ivysaur")
+	_bridge.on_evolution_finished(0, &"ivysaur", false)
+	var dex: Array = _cries().map(func(o: Dictionary) -> int: return o["dex"])
+	assert_eq(dex, [1, 2], "ancienne forme au début, nouvelle à la fin")
