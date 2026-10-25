@@ -82,6 +82,13 @@ const SOUTH_EXITS: Array = [
 	["LavenderC", Vector2i(22, 75), "from_lavender_c", &"from_route_10_c"],
 	["LavenderE", Vector2i(23, 75), "from_lavender_e", &"from_route_10_e"],
 ]
+## Jalon 32, N-18 : Ronflex d'après la Ligue (drapeaux de [StaticRespawn]).
+const SNORLAX_PRESENT: StringName = &"snorlax_post_league_present"
+const SNORLAX_DONE: StringName = &"snorlax_post_league_done"
+const SNORLAX_DIALOGUE: StringName = &"snorlax_post_league"
+const SNORLAX_WAKE: StringName = &"snorlax_post_league_wake"
+const SNORLAX_FRAMES: String = "res://assets/sprites/pokemon/painted/snorlax_frames.tres"
+const SNORLAX_SHADOW: String = "res://assets/sprites/characters/placeholder/shadow.png"
 const RESERVED_KINDS: Array[String] = ["dresseur", "pnj", "pokemon", "objet_visible", "cache"]
 const BALL_KINDS: Array[String] = ["objet_visible", "cache"]
 const SIGNS: Array = [["panneau_grotte", "SignCave"], ["panneau_centre", "SignCenter"]]
@@ -95,6 +102,75 @@ const SIGN_CENTER_READ: Array = ["SignCenterRead", &"route_10_center_sign"]
 const REACHED_ANCHOR := Vector2i(1, 14)
 const REACHED_SIZE := Vector2i(1, 3)
 const REACHED_CUTSCENE: StringName = &"route_10_reached"
+
+## Jalon 32, N-18 (validé par Kevin le 2026-10-25) : Ronflex d'après la Ligue, au bout du
+## belvédère [D] (impasse du secteur nord, hors de tout chemin ; « il retourne dans les
+## montagnes »). Même montage que le Ronflex de la Route 12 (`build_route_12.gd`,
+## `_add_snorlax`) : `FlagGate` « Ronflex » (si `snorlax_post_league_present`, sauf
+## `snorlax_post_league_done` ; bloque ses 2 × 2 cases), `PropActor` « Snorlax » (groupe
+## `scene_props`), `InteractPoint` 2 × 2 avec la scène de Flûte. Drapeaux levés par
+## [method StaticRespawn.apply_snorlax_rule] à la victoire à la Ligue.
+func _add_post_league_snorlax() -> void:
+	var cells: Array[Vector2i] = _plan().call(&"cells_at", "ronflex_ligue")
+	var anchor := Vector2i(cells[0].x, cells[0].y)
+	var bottom := 0
+	for cell: Vector2i in cells:
+		anchor.x = mini(anchor.x, cell.x)
+		bottom = maxi(bottom, cell.y)
+	anchor.y = bottom
+	var if_flags: Array[StringName] = [SNORLAX_PRESENT]
+	var unless: Array[StringName] = [SNORLAX_DONE]
+	var gate := Node2D.new()
+	gate.set_script(load("res://game/world/flag_gate.gd"))
+	gate.name = "Ronflex"
+	gate.position = Vector2(float((anchor.x + 1) * Kit.TILE), float((bottom + 1) * Kit.TILE))
+	gate.set(&"if_flags", if_flags)
+	gate.set(&"unless_flags", unless)
+	var blocking: Array[Vector2i] = []
+	blocking.assign(cells)
+	gate.set(&"blocking_cells", blocking)
+	_kit.call(&"attach", _kit.get(&"entities"), gate)
+	var body := Node2D.new()
+	body.set_script(load("res://game/world/prop_actor.gd"))
+	body.name = "Snorlax"
+	body.add_to_group(&"scene_props", true)
+	_kit.call(&"attach", gate, body)
+	var shadow := Sprite2D.new()
+	shadow.name = "Shadow"
+	shadow.texture = load(SNORLAX_SHADOW)
+	shadow.position = Vector2(0.0, -8.0)
+	shadow.scale = Vector2(3.4, 2.6)
+	_kit.call(&"attach", body, shadow)
+	var frames := load(SNORLAX_FRAMES) as SpriteFrames
+	var sprite := AnimatedSprite2D.new()
+	sprite.name = "Sprite"
+	sprite.sprite_frames = frames
+	sprite.animation = &"idle_down"
+	sprite.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	sprite.offset = Vector2(0.0, -frames.get_frame_texture(&"idle_down", 0).get_size().y / 2.0)
+	_kit.call(&"attach", body, sprite)
+	var breath := Animation.new()
+	breath.length = 4.0
+	breath.loop_mode = Animation.LOOP_LINEAR
+	var track := breath.add_track(Animation.TYPE_VALUE)
+	breath.track_set_path(track, NodePath("Sprite:scale"))
+	breath.track_insert_key(track, 0.0, Vector2.ONE)
+	breath.track_insert_key(track, 2.0, Vector2(1.012, 1.03))
+	breath.track_insert_key(track, 4.0, Vector2.ONE)
+	var library := AnimationLibrary.new()
+	library.add_animation(&"breathe", breath)
+	var player := AnimationPlayer.new()
+	player.name = "Breath"
+	player.add_animation_library(&"", library)
+	player.autoplay = &"breathe"
+	_kit.call(&"attach", body, player)
+	_kit.call(&"add_interactable", "SnorlaxPoint", anchor, Vector2i(2, 2), Vector2i.ZERO,
+		SNORLAX_DIALOGUE)
+	var point: Node = _kit.get(&"root").get_node(^"Interactables").get_child(-1)
+	point.set(&"if_flags", if_flags)
+	point.set(&"unless_flags", unless)
+	point.set(&"flute_cutscene", SNORLAX_WAKE)
+
 
 ## Secteur sud (T24) : sortie de la grotte, rangée où le joueur doit passer pour descendre vers
 ## Lavanville (largeur de la clairière, x 3..15) ; scène silencieuse `dark_cave_crossed`.
@@ -461,6 +537,7 @@ func _style_rock(rock: Node2D, decor: RandomNumberGenerator, scale: float) -> vo
 ## Vie du secteur nord (T18) : point d'examen du panneau de la grotte et déclencheur silencieux de
 ## l'objectif. Le secteur sud (Dresseurs, objet, `dark_cave_crossed`) est celui du T24.
 func _add_life_north() -> void:
+	_add_post_league_snorlax()
 	_kit.call(&"add_interactable", SIGN_READ[0], _cell("panneau_grotte"), Vector2i.ONE,
 		Vector2i.UP, SIGN_READ[1])
 	_kit.call(&"add_interactable", SIGN_CENTER_READ[0], _cell("panneau_centre"), Vector2i.ONE,

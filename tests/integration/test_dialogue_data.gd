@@ -476,11 +476,17 @@ const MAPS: Array[StringName] = [
 ## Jalon 21 (T22) : dialogues de Ronflex de la Route 16 (`j21_snorlax_16.json`, dossier 24 §15.6-§15.7).
 ## Les répliques communes (flûte jouée, réveil, calme, rendormi) sont celles de `j21_snorlax.json`.
 const IDS_J21_T22: Array[StringName] = [&"snorlax_route_16"]
+## Jalon 32 (N-18) : Ronflex d'après la Ligue (Route 10), textes du J21 repris tels quels.
+const IDS_J32: Array[StringName] = [&"snorlax_post_league"]
 ## Jalon 21 (T22) : textes validés (dossier 24 §15.6.3, §15.7 ; T-6 et T-7 du J17), page par page.
 const TEXTS_J21_T22: Dictionary[StringName, Array] = {
 	&"snorlax_route_16": ["Ronflex dort de nouveau.", "Il ronfle comme si de rien n'était.",
 		"Jouer de la Poké Flûte ?", "Un énorme Pokémon dort au milieu du chemin.",
 		"Il ne bouge pas d'un pouce.", "Il ronfle paisiblement.",
+		"Rien ne semble pouvoir le réveiller."],
+	# Jalon 32 (N-18) : mêmes pages (sans la première rencontre « au milieu du chemin »).
+	&"snorlax_post_league": ["Ronflex dort de nouveau.", "Il ronfle comme si de rien n'était.",
+		"Jouer de la Poké Flûte ?", "Il ronfle paisiblement.",
 		"Rien ne semble pouvoir le réveiller."],
 }
 ## Jalon 21 (T22) : jouées par la scène `snorlax_route_16_wake` (le premier est lu par le point).
@@ -1209,7 +1215,7 @@ func test_library_loads_without_error() -> void:
 	var expected := IDS + IDS_J14_BILL + IDS_J14_ROCKET + IDS_J15_ROUTE_5 + IDS_J16_GYM \
 		+ IDS_J16_SHIP + IDS_J16_RIVAL_CAPTAIN + IDS_J16_T15 + IDS_J17 + IDS_J18 + IDS_J19 + IDS_J20 \
 		+ IDS_J20_T17 + IDS_J20_T21 + IDS_J21 + IDS_J21_T21 + IDS_S2B + S2_FIELD_TRAVEL + IDS_J21_T22 \
-		+ IDS_J24_TRAINERS + IDS_J24 + IDS_J25
+		+ IDS_J24_TRAINERS + IDS_J24 + IDS_J25 + IDS_J32
 	expected.append_array(TEXTS_S2C_FISH.keys())
 	expected.append_array(TEXTS_S2D_STRENGTH.keys())
 	expected.append_array(UNVALIDATED)
@@ -1411,6 +1417,9 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 	# Jalon 24 (T13) : « fossile prêt », posé par le code à l'arrivée sur Cramois'Île
 	# ([FossilReadyGate]).
 	set_flags.append(&"fossil_ready")
+	# Jalon 32 (N-18) : Ronflex d'après la Ligue, levé par le code à la victoire à la Ligue
+	# ([method StaticRespawn.apply_snorlax_rule]).
+	set_flags.append(StaticRespawn.SNORLAX_EXTRA_PRESENT)
 	var read_flags := dialogues.get_condition_flags() + cutscenes.get_condition_flags()
 	for map_id: StringName in MAPS:
 		for spec: NpcSpec in NpcRoster.load_for_map(map_id).get_all():
@@ -1448,6 +1457,9 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 	assert_eq(cutscenes.get_set_flags(), _sorted([&"got_tm39", &"route_12_visited",
 		&"snorlax_route_12_awake", &"snorlax_route_12_caught", &"snorlax_route_12_done",
 		&"snorlax_route_12_woken", &"badge_boulder", &"badge_cascade",
+		# Jalon 32 (N-18) : Ronflex d'après la Ligue.
+		&"snorlax_post_league_awake", &"snorlax_post_league_caught", &"snorlax_post_league_done",
+		&"snorlax_post_league_woken",
 		&"beaten_mt_moon_researcher", &"beaten_nugget_rocket", &"brock_met", &"cerulean_reached", &"got_mt_moon_1f_hidden_1",
 		&"got_mt_moon_1f_item_1", &"got_mt_moon_b1f_item_1", &"got_mt_moon_b1f_item_2",
 		&"got_mt_moon_b2f_hidden_1", &"got_mt_moon_b2f_item_1", &"got_nugget", &"got_oak_parcel",

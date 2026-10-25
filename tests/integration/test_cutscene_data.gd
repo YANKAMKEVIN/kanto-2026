@@ -253,6 +253,8 @@ const VARIANT_FLAGS: Dictionary = {
 	&"tower_7f_fuji_rescue": [PEWTER_FLAGS],
 	&"pokemon_house_flute": [PEWTER_FLAGS + [&"fuji_rescued"]],
 	&"route_16_visited": [PEWTER_FLAGS], &"snorlax_route_16_wake": [PEWTER_FLAGS],
+	# Jalon 32 (N-18) : Ronflex d'après la Ligue, présent seulement après la règle de la Ligue.
+	&"snorlax_post_league_wake": [PEWTER_FLAGS + [&"snorlax_post_league_present"]],
 	# Jalon 19 (T18) : zone purifiée et objets de la Tour.
 	&"tower_purified_zone": [PEWTER_FLAGS], &"tower_3f_objet_1": [PEWTER_FLAGS],
 	&"tower_4f_objet_1": [PEWTER_FLAGS], &"tower_4f_objet_2": [PEWTER_FLAGS],
@@ -499,6 +501,8 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	# `pokemon_house_flute`, aussi lancée par le déclencheur d'entrée de la maison) et réveil du
 	# Ronflex 16 (« flute_cutscene » et choix OUI).
 	&"tower_7f_fuji_rescue": &"pokemon_tower_7f", &"snorlax_route_16_wake": &"route_16",
+	# Jalon 32 (N-18) : Ronflex du belvédère de la Route 10 (« flute_cutscene » et choix OUI).
+	&"snorlax_post_league_wake": &"route_10",
 }
 ## Jalon 21 (T10, T12) : objets du Sac qui choisissent chaque variante (« if_items » /
 ## « unless_items »), ligne par ligne comme VARIANT_FLAGS ; absent : Sac vide. La variante A du
@@ -669,7 +673,9 @@ func test_library_loads_without_error() -> void:
 		&"route_12_visited", &"route_12_gate_tm39", &"snorlax_route_12_wake",
 		# Jalon 21 (T13, T14, T22) : 7F, Maison des Pokémon, Route 16.
 		&"tower_7f_fuji_rescue", &"pokemon_house_flute", &"route_16_visited",
-		&"snorlax_route_16_wake"]
+		&"snorlax_route_16_wake",
+		# Jalon 32 (N-18).
+		&"snorlax_post_league_wake"]
 		+ J18_IDS + J20_T21_IDS + J25_IDS))
 
 

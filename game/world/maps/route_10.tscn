@@ -55,6 +55,10 @@
 [ext_resource type="Script" path="res://game/world/warp_point.gd" id="53_lgkk4"]
 [ext_resource type="Script" path="res://game/world/interactions/interact_point.gd" id="54_2xup3"]
 [ext_resource type="Script" path="res://game/world/triggers/event_trigger_point.gd" id="55_415lq"]
+[ext_resource type="Script" path="res://game/world/flag_gate.gd" id="j32_flag_gate"]
+[ext_resource type="Script" path="res://game/world/prop_actor.gd" id="j32_prop_actor"]
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/placeholder/shadow.png" id="j32_shadow"]
+[ext_resource type="SpriteFrames" path="res://assets/sprites/pokemon/painted/snorlax_frames.tres" id="j32_snorlax_frames"]
 
 [sub_resource type="Image" id="Image_rbr6y"]
 data = {
@@ -106,6 +110,27 @@ shader_parameter/forest_mask = SubResource("ImageTexture_euxfy")
 shader_parameter/tile_size = 96.0
 shader_parameter/dark_color = null
 shader_parameter/light_color = null
+
+[sub_resource type="Animation" id="Animation_j32_breathe"]
+length = 4.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2, 4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.012, 1.03), Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_j32_breathe"]
+_data = {
+&"breathe": SubResource("Animation_j32_breathe")
+}
 
 [node name="Route10" type="Node2D" unique_id=1037998990]
 script = ExtResource("1_gin77")
@@ -9898,7 +9923,41 @@ target_map = &"lavender_town"
 target_spawn = &"from_route_10_e"
 arrival_facing = Vector2i(0, 1)
 
+[node name="Ronflex" type="Node2D" parent="Entities" unique_id=1106207591]
+position = Vector2(2112, 2016)
+script = ExtResource("j32_flag_gate")
+if_flags = Array[StringName]([&"snorlax_post_league_present"])
+unless_flags = Array[StringName]([&"snorlax_post_league_done"])
+blocking_cells = Array[Vector2i]([Vector2i(21, 19), Vector2i(22, 19), Vector2i(21, 20), Vector2i(22, 20)])
+
+[node name="Snorlax" type="Node2D" parent="Entities/Ronflex" unique_id=1548419685]
+script = ExtResource("j32_prop_actor")
+
+[node name="Shadow" type="Sprite2D" parent="Entities/Ronflex/Snorlax" unique_id=1602073983]
+position = Vector2(0, -8)
+scale = Vector2(3.4, 2.6)
+texture = ExtResource("j32_shadow")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="Entities/Ronflex/Snorlax" unique_id=1712314981]
+texture_filter = 2
+sprite_frames = ExtResource("j32_snorlax_frames")
+animation = &"idle_down"
+offset = Vector2(0, -91)
+
+[node name="Breath" type="AnimationPlayer" parent="Entities/Ronflex/Snorlax" unique_id=272599258]
+libraries/ = SubResource("AnimationLibrary_j32_breathe")
+autoplay = &"breathe"
+
 [node name="Interactables" type="Node2D" parent="." unique_id=2023627190]
+
+[node name="SnorlaxPoint" type="Marker2D" parent="Interactables" unique_id=526747396]
+position = Vector2(2064, 2016)
+script = ExtResource("54_2xup3")
+dialogue_id = &"snorlax_post_league"
+size = Vector2i(2, 2)
+unless_flags = Array[StringName]([&"snorlax_post_league_done"])
+if_flags = Array[StringName]([&"snorlax_post_league_present"])
+flute_cutscene = &"snorlax_post_league_wake"
 
 [node name="SignCaveRead" type="Marker2D" parent="Interactables" unique_id=1516643699]
 position = Vector2(1392, 1056)

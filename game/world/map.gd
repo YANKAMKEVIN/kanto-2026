@@ -297,6 +297,7 @@ func flute_targets() -> Array[FluteTarget]:
 		var target := FluteTarget.new()
 		target.cells = point.get_cells()
 		target.unless_flags = point.unless_flags.duplicate()
+		target.if_flags = point.if_flags.duplicate()
 		target.cutscene_id = point.flute_cutscene
 		targets.append(target)
 	return targets
