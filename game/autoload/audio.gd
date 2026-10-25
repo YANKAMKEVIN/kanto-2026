@@ -210,6 +210,7 @@ func set_ambience(id: StringName) -> void:
 		if id == _ambience_id:
 			return
 	_ambience_id = id
+	_log("ambiance : %s" % (id if not id.is_empty() else "aucune"))
 	if _emit({ "type": &"ambience", "id": id }):
 		return
 	if _ambience_fade != null and _ambience_fade.is_valid():
@@ -308,6 +309,12 @@ func _new_player(player_name: String, bus: StringName) -> AudioStreamPlayer:
 
 
 ## Passe [param order] à l'espion ; vrai s'il y en a un (rien ne doit alors être joué).
+## Trace des ordres en build debug (QA sur téléphone par logcat) ; rien sous l'espion.
+func _log(text: String) -> void:
+	if OS.is_debug_build() and not sink.is_valid():
+		print("[audio] " + text)
+
+
 func _emit(order: Dictionary) -> bool:
 	if not sink.is_valid():
 		return false
@@ -329,6 +336,8 @@ func _apply(change: MusicStack.Change) -> void:
 	elif jingle:
 		fade_in = 0.0
 	var playing := _crossfade(change.track, change.position, fade_out, fade_in, spied)
+	_log("musique : %s (couche %d%s, %.1f s)%s" % [change.track, change.layer,
+		", reprise" if change.resumed else "", change.position, "" if playing else ", muet"])
 	music_changed.emit(change.track)
 	if jingle and not playing and _stack.track_of(MusicStack.Layer.JINGLE) == change.track:
 		# Muet tolérant : un jingle sans fichier se termine tout de suite.
