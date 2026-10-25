@@ -1,0 +1,16 @@
+{
+	"version": 1,
+	"text_speed": "normal",
+	"confirm_actions": false,
+	"joystick_scale": 1.0,
+	"joystick_opacity": 0.8,
+	"button_scale": 1.0,
+	"haptics": true,
+	"left_handed": false,
+	"text_size": "normal",
+	"high_contrast": false,
+	"reduce_motion": false,
+	"reduce_flashes": false,
+	"graphics": "auto",
+	"economy": true
+}
