@@ -412,6 +412,17 @@ Captures dans `build/qa_j31/` (non versionnées). Journal Godot : aucune erreur 
 - **T9** : capture avec la Master Ball après le J26 (capture en équipe pleine vue sur l'A17, §11.0).
 - **T10** : QA A17 du §6 **faite** (§11.0, échelle P7 et capture de Mewtwo le 2026-10-25) ;
   reste K.O. de Mewtwo et reprise d'une vraie sauvegarde.
+  Le 2026-10-25 (après-midi) : A17 injoignable (ni USB ni débogage sans fil ; seul le S24, exclu,
+  est visible) → K.O. non vu sur le téléphone. Logique couverte par `test_j31_data`
+  (`test_outcomes_follow_the_articuno_policy_and_survive_a_reload`, `test_no_duplicate_…`).
+- **Objectif « traverser le Pont Pépite. » après la Ligue** : **artefact du départ de débogage**
+  (`cerulean_cave_mewtwo` a `badge_cascade` sans `beaten_nugget_rocket` ni drapeaux des J14–J21,
+  donc `cross_nugget_bridge` est la première entrée valide). **Mais vrai défaut transversal** :
+  `objectives.json` (identique dans `main` et les J26–J30) s'arrête au J21 ; dans une vraie partie
+  après la Ligue, la première entrée valide est `tower_later` (`if [tower_medium_talked]`, sans
+  `unless`) → « revenir plus tard à la Tour Pokémon. ». Il manque les objectifs des J22–J31 et
+  un `unless` à `tower_later` / `explore_vermilion` / `explore_cerulean` ; textes à valider par
+  Kevin (dont celui d'après la Ligue) : **non corrigé ici**.
 - À la fusion du J30 : `test_cerulean_cave_access` vérifie l'égalité du drapeau de Champion.
 - À la fusion des J23, J25, J28 : retirer Leveinard, Rappel Max, Rhinoféros des emprunts.
 - Max Élixir caché du B3F des Îles Écume (J24) : à poser maintenant que l'objet existe.
