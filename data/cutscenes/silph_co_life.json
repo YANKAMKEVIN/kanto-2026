@@ -10,7 +10,7 @@
 						"despawn": "silph_co_3f_item_4"
 					},
 					{
-						"give": "super_potion",
+						"give": "hyper_potion",
 						"count": 1,
 						"found": true
 					},
@@ -34,7 +34,7 @@
 						"despawn": "silph_co_4f_item_5"
 					},
 					{
-						"give": "super_potion",
+						"give": "full_heal",
 						"count": 1,
 						"found": true
 					},
@@ -58,7 +58,7 @@
 						"despawn": "silph_co_4f_item_6"
 					},
 					{
-						"give": "revive",
+						"give": "max_revive",
 						"count": 1,
 						"found": true
 					},
@@ -154,7 +154,7 @@
 						"despawn": "silph_co_5f_item_6"
 					},
 					{
-						"give": "nugget",
+						"give": "tm09",
 						"count": 1,
 						"found": true
 					},
@@ -247,7 +247,7 @@
 				],
 				"steps": [
 					{
-						"give": "super_potion",
+						"give": "max_potion",
 						"count": 1,
 						"found": true
 					},

@@ -1,14 +1,14 @@
 {
 	"silph_co_2f_1_before": {
-		"speaker": "Scientifique Aurélien",
+		"speaker": "Scientifique Barnabé",
 		"pages": ["Cette société travaille\ndésormais pour nous.", "Les expériences continuent,\navec ou sans toi."]
 	},
 	"silph_co_2f_1_defeated": {
-		"speaker": "Scientifique Aurélien",
+		"speaker": "Scientifique Barnabé",
 		"pages": ["Mes calculs étaient justes…\nsauf toi."]
 	},
 	"silph_co_2f_1_after": {
-		"speaker": "Scientifique Aurélien",
+		"speaker": "Scientifique Barnabé",
 		"pages": ["Je note l'incident\ndans mon rapport."]
 	},
 	"silph_co_2f_2_before": {
