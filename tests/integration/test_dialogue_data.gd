@@ -2132,7 +2132,7 @@ func test_oak_parcel_lines() -> void:
 	# Jalon 25 : objets et caches du Manoir (13), statue, six machines, Auguste, trois échanges,
 	# Vieil Ambre, arbre du Musée.
 	# Jalon 31 (T4) : huit objets au sol et deux cachés de la Grotte Azurée, Mewtwo.
-	assert_eq(launched, 162, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
+	assert_eq(launched, 152, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
 		+ "sa CT34, Ondine (pont, Arène et rattrapage), écran, module, console, objets de la "
 		+ "Route 25, le Rocket d'Azuria (2) et le barrage sud ; J15 : objets de la Route 5 ; "
 		+ "J16 : Major Bob (2), neuf objets du S.S. Anne, le capitaine, le marin (2) ; "

@@ -574,6 +574,7 @@ const J25_IDS: Array[StringName] = [
 	&"pokemon_mansion_b1f_item_3",
 	&"pokemon_mansion_b1f_item_4",
 	&"pokemon_mansion_b1f_item_5",
+]
 ## Jalon 31 (T4) : objets de la Grotte Azurée et Mewtwo.
 const J31_IDS: Array[StringName] = [
 	&"cerulean_cave_1f_item_1",
