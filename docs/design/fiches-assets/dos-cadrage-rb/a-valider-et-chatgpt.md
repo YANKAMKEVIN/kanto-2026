@@ -1,11 +1,15 @@
-# Dos en plongée (cadrage B) : planche à valider et 8 dos à faire avec ChatGPT
+# Dos en plongée (cadrage B) : planche validée et 8 dos à faire avec ChatGPT
 
 > 2026-10-25, DAF.1. Outil `tools/art/serie_dos_rb.py`, prompts `tools/art/prompts/serie_dos_rb/`.
 > Branche `art-dos-rb` : les 62 dos sont intégrés (`assets/sprites/pokemon/dos/dos_rb_NNN.png`) et
 > lus par le jeu, tests ciblés verts ; **pas encore dans `main`** (attend la validation de la planche,
 > arbitrage DA-6).
 
-## 1. Planche à valider
+## 1. Planche
+
+**Validée par Kevin le 2026-10-25** : « Je valide la planche ; refais Porygon et M. Mime, garde
+Ronflex ». Porygon refait en r5 (blocs lisses, sans éclats), M. Mime en r7 (2e révision : r4 à r6
+refusés) ; planche mise à jour.
 
 `planche-dos-rb-62.webp` (face officielle | dos en plongée) ; captures en jeu (2340 × 1080) de
 Machopeur, Ronflex, Krabby, Léviator, Artikodin et Tentacruel relues : coupe nette au bord bas,
