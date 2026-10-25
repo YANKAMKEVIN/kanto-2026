@@ -1009,7 +1009,10 @@ func _start_opening() -> void:
 	_title_backdrop.name = "TitleBackdrop"
 	_world.add_child(_title_backdrop)
 	_title_backdrop.set_reduce_motion(_settings.reduce_motion)
-	_title_backdrop.show_map()
+	# DAF.7b : le décor du titre prend le profil de lumière de sa carte (Bourg Palette :
+	# « golden_hour », dossier 13 : le titre est à l'heure dorée), comme le décor de l'introduction.
+	if _title_backdrop.show_map():
+		_apply_lighting(_title_backdrop.get_map())
 	_opening = OpeningDirector.new()
 	_opening.name = "OpeningDirector"
 	_opening.process_mode = Node.PROCESS_MODE_PAUSABLE
