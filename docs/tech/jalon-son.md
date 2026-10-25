@@ -528,6 +528,29 @@ l'échantillon près, jointure fondue 20 ms, −16 LUFS, crête ≤ −1 dBTP) e
 `tools/audio/measure_audio.py` (poids, durée, LUFS, crête, contrôle des jointures). 51 boucles
 exactes sur 52 ; « Cubone's Mother » ne se répète pas sur l'album (piste entière, T1 n° 8).
 
+## 5 quater. Lots de fichiers téléchargés (accord de Kevin du 2026-10-25 : « Oui, cris + bruitages »)
+
+| Lot | Source | Taille téléchargée | Dans le jeu | Licence |
+|---|---|---|---|---|
+| Cris (T11) | `raw.githubusercontent.com/PokeAPI/cries`, `cries/pokemon/latest/1..151.ogg` | 2,3 Mo (151 fichiers) | `assets/audio/cries/`, 2,0 Mo (OGG mono q4) | jeu privé, cercle restreint (comme la musique) |
+| Bruitages n° 1 (T12) | kenney.nl : Interface Sounds (834 Ko), UI Audio (412 Ko), Impact Sounds (801 Ko), RPG Audio (965 Ko) | 3,0 Mo (334 OGG) | `assets/audio/sfx/`, 84 fichiers, 696 Ko (69 identifiants sur 107) | CC0 |
+| Ambiances (T12, option A de Kevin : « OpenGameArt CC0 ») | voir le détail ci-dessous | 4,1 Mo (6 fichiers) | `assets/audio/ambience/`, 7 boucles, 816 Ko (OGG mono q3, −16 LUFS, jointure fondue) | CC0 (vérifiée sur chaque page) |
+
+Détail des ambiances (OpenGameArt, licence affichée sur la page : CC0 seule) :
+
+| Boucle | Page source | Fichier téléchargé | Taille |
+|---|---|---|---|
+| `sea` | opengameart.org/content/beach-ocean-waves (qubodup) | `wave_01_cc0-18363__jasinski__alkaibeach.flac` | 626 Ko |
+| `wind`, `cold_wind` | opengameart.org/content/wind (ignasd) | `wind.zip` (`Wind.ogg`, `Wind2.ogg`) | 264 Ko |
+| `forest` | opengameart.org/content/ambient-bird-sounds (isaiah658) | `birds-isaiah658_0.ogg` | 545 Ko |
+| `cave` | opengameart.org/content/loopable-dungeon-ambience (jaggedstone) | `dungeon_ambient_1_0.ogg` | 1,6 Mo |
+| `ship` | opengameart.org/content/underwater-or-space-engine-rumble (gmason) | `underwater_or_space_engine_0.ogg` | 512 Ko |
+| `building` | même page (gmason) | `deep_rumble.ogg` | 554 Ko |
+
+Restent sans fichier (silence) : `city` et `casino` (pas de boucle CC0 convenable sans compte ;
+les « park ambiences » font 74 à 99 Mo en WAV) et `rain` (aucune météo dans le jeu pour
+l'instant). `sea` boucle sur une seule vague de 3 s : à écouter.
+
 ## 6. Questions ouvertes
 
 Aucune : SON-1 à SON-17 **validés par Kevin le 2026-10-24** (toutes les recommandations ;

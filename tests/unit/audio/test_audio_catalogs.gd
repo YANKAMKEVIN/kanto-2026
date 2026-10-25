@@ -61,7 +61,8 @@ func test_sfx_polyphony_limit() -> void:
 func test_sfx_bus_and_expected() -> void:
 	var sfx := SfxCatalog.new(_library)
 	assert_eq(sfx.bus(&"ui_confirm"), &"Sfx")
-	assert_true(sfx.is_expected(&"ui_confirm"))
+	assert_false(sfx.is_expected(&"ui_confirm"), "SonC : fichier Kenney présent")
+	assert_true(sfx.is_expected(&"surf_in"), "manque du lot 1 : attendu")
 
 
 func test_move_sound_families() -> void:

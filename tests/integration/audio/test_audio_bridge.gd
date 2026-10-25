@@ -37,6 +37,11 @@ func before_each() -> void:
 		return { &"pikachu": 25, &"bulbasaur": 1, &"ivysaur": 2, &"pidgey": 16 }.get(species, 0)
 	_bridge.party_species = func(_index: int) -> StringName: return &"bulbasaur"
 	_bridge.companion_species = func() -> StringName: return &"pikachu"
+	_bridge.move_info = func(move_id: StringName) -> Array:
+		return { &"ember": [&"fire", &"special"], &"tackle": [&"normal", &"physical"],
+			&"growl": [&"normal", &"status"] }.get(move_id, [])
+	_bridge.ground_at = func(cell: Vector2i) -> StringName:
+		return &"grass" if cell.x > 0 else &"indoor"
 
 
 func _map(map_id: StringName, music: StringName = &"") -> GameMap:
@@ -256,3 +261,96 @@ func test_evolution_cries_old_then_new() -> void:
 	_bridge.on_evolution_finished(0, &"ivysaur", false)
 	var dex: Array = _cries().map(func(o: Dictionary) -> int: return o["dex"])
 	assert_eq(dex, [1, 2], "ancienne forme au début, nouvelle à la fin")
+
+
+func _sfx_ids() -> Array:
+	return _orders.filter(func(o: Dictionary) -> bool: return o["type"] == &"sfx") \
+		.map(func(o: Dictionary) -> StringName: return o["id"])
+
+
+func test_every_sonorous_battle_event_kind_plays_its_sfx() -> void:
+	# Critère T13 : chaque sorte de BattleEvent de la table joue son identifiant.
+	var table: Dictionary = JSON.parse_string(
+		FileAccess.get_file_as_string("res://data/audio/sfx.json"))["battle_events"]
+	for kind_name: String in table:
+		_orders.clear()
+		var event := _event(BattleEvent.Kind[kind_name])
+		event.species_id = &"pidgey"
+		_bridge.on_battle_event(event)
+		assert_true(_sfx_ids().has(StringName(table[kind_name])), kind_name)
+
+
+func test_damage_effectiveness_critical_stats_and_status() -> void:
+	for case: Array in [[1.0, false, &"hit_normal"], [2.0, false, &"hit_super"],
+			[0.5, false, &"hit_weak"], [1.0, true, &"critical"]]:
+		_orders.clear()
+		var hit := _event(BattleEvent.Kind.DAMAGE)
+		hit.effectiveness = case[0]
+		hit.critical = case[1]
+		_bridge.on_battle_event(hit)
+		assert_eq(_sfx_ids(), [case[2]], str(case))
+	_orders.clear()
+	var up := _event(BattleEvent.Kind.STAT_CHANGED)
+	up.stages = 1
+	_bridge.on_battle_event(up)
+	var down := _event(BattleEvent.Kind.STAT_CHANGED)
+	down.stages = -2
+	_bridge.on_battle_event(down)
+	var burn := _event(BattleEvent.Kind.STATUS_INFLICTED)
+	burn.status = &"burn"
+	_bridge.on_battle_event(burn)
+	assert_eq(_sfx_ids(), [&"stat_up", &"stat_down", &"status_burn"])
+
+
+func test_move_used_plays_its_family() -> void:
+	for case: Array in [[&"ember", &"move_fire"], [&"tackle", &"move_hit"],
+			[&"growl", &"move_sound"]]:
+		_orders.clear()
+		var used := _event(BattleEvent.Kind.MOVE_USED)
+		used.move_id = case[0]
+		_bridge.on_battle_event(used)
+		assert_eq(_sfx_ids(), [case[1]], String(case[0]))
+
+
+func test_steps_by_ground_ledge_and_mounts() -> void:
+	_bridge.on_player_step(Vector2i.ZERO, Vector2i(3, 0), &"walk")
+	_bridge.on_player_step(Vector2i.ZERO, Vector2i(-3, 0), &"run")
+	_bridge.on_player_step(Vector2i.ZERO, Vector2i(3, 2), &"jump")
+	_bridge.on_player_step(Vector2i.ZERO, Vector2i(3, 0), &"bike")
+	_bridge.on_player_step(Vector2i.ZERO, Vector2i(3, 0), &"surf")
+	var ids := _sfx_ids()
+	assert_eq(ids.size(), 3, "rien à Vélo ni en Surf")
+	assert_eq(ids, [&"step_grass", &"step_indoor", &"ledge_jump"])
+
+
+func test_world_and_interface_sounds() -> void:
+	_bridge.on_bumped(Vector2i.UP)
+	_bridge.on_transition_started(&"route_1")
+	_bridge.on_menu_opened()
+	_bridge.on_menu_closed(false)
+	_bridge.on_dialogue_page(0)
+	_bridge.on_dialogue_page(1)
+	assert_eq(_sfx_ids(), [&"bump", &"door", &"ui_menu_open", &"ui_menu_close",
+		&"ui_dialog_next"], "pas de son à la première page")
+
+
+func test_one_hook_for_every_button_except_the_exploration_hud() -> void:
+	var screen := Control.new()
+	var hud := Control.new()
+	add_child_autofree(screen)
+	add_child_autofree(hud)
+	var existing := Button.new()
+	screen.add_child(existing)
+	_bridge.watch_ui(screen, hud)
+	var later := Button.new()
+	screen.add_child(later)
+	var joystick := Button.new()
+	hud.add_child(joystick)
+	existing.pressed.emit()
+	later.pressed.emit()
+	joystick.pressed.emit()
+	_bridge.unwatch_ui(get_tree())
+	var after := Button.new()
+	screen.add_child(after)
+	after.pressed.emit()
+	assert_eq(_sfx_ids(), [&"ui_confirm", &"ui_confirm"], "HUD muet ; plus rien après unwatch")

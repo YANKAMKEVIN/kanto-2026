@@ -611,6 +611,7 @@ func _exit_tree() -> void:
 	# Jalon Son : l'autoload survit à Boot (tests) ; il repart muet.
 	Audio.stop_music()
 	Audio.set_ambience(&"")
+	_audio_bridge.unwatch_ui(get_tree())
 	Engine.max_fps = 0
 	var links: Array[Array] = [
 		[SceneRouter.transition_started, _on_transition_started],
@@ -619,6 +620,7 @@ func _exit_tree() -> void:
 		[SceneRouter.map_entered, _interactions.on_map_entered],
 		[SceneRouter.map_entered, _starter_choice.on_map_entered],
 		[SceneRouter.coming_soon_finished, _on_coming_soon_finished],
+		[SceneRouter.transition_started, _audio_bridge.on_transition_started],
 	]
 	for link: Array in links:
 		var sig: Signal = link[0]
@@ -2013,6 +2015,38 @@ func _setup_audio() -> void:
 	_companion.line_requested.connect(_audio_bridge.on_companion_line)
 	if _menu_screen.has_signal(&"pokedex_cry_requested"):
 		_menu_screen.pokedex_cry_requested.connect(_audio_bridge.on_pokedex_cry)
+	# SonC (T13) : bruitages du combat, des pas, du monde et de l'interface.
+	_audio_bridge.move_info = func(move_id: StringName) -> Array:
+		var move := _pokemon.get_move(move_id)
+		if move == null:
+			return []
+		return [move.type, StringName(String(MoveData.Category.find_key(move.category)).to_lower())]
+	_audio_bridge.ground_at = _ground_at
+	_player.step_started.connect(_audio_bridge.on_player_step)
+	_player.bumped.connect(_audio_bridge.on_bumped)
+	SceneRouter.transition_started.connect(_audio_bridge.on_transition_started)
+	_menu.menu_opened.connect(_audio_bridge.on_menu_opened)
+	_menu.menu_closed.connect(_audio_bridge.on_menu_closed)
+	_runner.page_started.connect(_audio_bridge.on_dialogue_page)
+	# Une seule accroche pour tous les boutons ; le HUD d'exploration (joystick, actions) reste
+	# muet.
+	_audio_bridge.watch_ui(self, _hud)
+
+
+## Sol d'une case pour le bruit de pas [D] : intérieur ; herbes hautes ; neige aux Îles Écume ;
+## sinon sol dur.
+func _ground_at(cell: Vector2i) -> StringName:
+	var map := get_map()
+	if map == null:
+		return &"hard"
+	if map.interior:
+		return &"indoor"
+	var grid := map.get_grid()
+	if grid != null and grid.is_tall_grass(cell):
+		return &"grass"
+	if _zones.zone_of(map.map_id) == &"seafoam_islands":
+		return &"snow"
+	return &"hard"
 	_player.mount_changed.connect(_audio_bridge.on_mount_changed)
 	_trainer_watcher.trainer_spotted.connect(_audio_bridge.on_trainer_spotted)
 	_battle_director.battle_started.connect(_audio_bridge.on_battle_started)

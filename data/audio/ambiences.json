@@ -5,22 +5,22 @@
 		"sea": {
 			"file": "res://assets/audio/ambience/sea.ogg",
 			"volume_db": -18.0,
-			"expected": true
+			"expected": false
 		},
 		"wind": {
 			"file": "res://assets/audio/ambience/wind.ogg",
 			"volume_db": -18.0,
-			"expected": true
+			"expected": false
 		},
 		"forest": {
 			"file": "res://assets/audio/ambience/forest.ogg",
 			"volume_db": -18.0,
-			"expected": true
+			"expected": false
 		},
 		"cave": {
 			"file": "res://assets/audio/ambience/cave.ogg",
 			"volume_db": -18.0,
-			"expected": true
+			"expected": false
 		},
 		"city": {
 			"file": "res://assets/audio/ambience/city.ogg",
@@ -35,12 +35,12 @@
 		"ship": {
 			"file": "res://assets/audio/ambience/ship.ogg",
 			"volume_db": -18.0,
-			"expected": true
+			"expected": false
 		},
 		"building": {
 			"file": "res://assets/audio/ambience/building.ogg",
 			"volume_db": -18.0,
-			"expected": true
+			"expected": false
 		},
 		"rain": {
 			"file": "res://assets/audio/ambience/rain.ogg",
@@ -50,7 +50,7 @@
 		"cold_wind": {
 			"file": "res://assets/audio/ambience/cold_wind.ogg",
 			"volume_db": -18.0,
-			"expected": true
+			"expected": false
 		}
 	},
 	"zones": {

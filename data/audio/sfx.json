@@ -1,5 +1,5 @@
 {
-	"_doc": "Bruitages (docs/tech/jalon-son.md §1.7, §3). files : variantes tirées au hasard ; max_polyphony : nombre de lectures simultanées d'un même identifiant. move_sounds : famille d'une attaque (SON-11) : moves (exception) → by_type[type][catégorie] → by_category[catégorie]. cries : cri d'une espèce par son numéro national (SON-1 latest, SonB).",
+	"_doc": "Bruitages (docs/tech/jalon-son.md §1.7, §3). files : variantes tirées au hasard ; max_polyphony : nombre de lectures simultanées d'un même identifiant. move_sounds : famille d'une attaque (SON-11) : moves (exception) → by_type[type][catégorie] → by_category[catégorie]. cries : cri d'une espèce par son numéro national (SON-1 latest, SonB). battle_events : sorte d'événement de combat (BattleEvent.Kind) → bruitage ; statuses : statut infligé → bruitage ; DAMAGE choisit hit_super / hit_weak / critical / hit_normal, MOVE_USED la famille de l'attaque (T13).",
 	"version": 1,
 	"sfx": {
 		"ui_confirm": {
@@ -9,7 +9,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"ui_back": {
 			"files": [
@@ -18,7 +18,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"ui_move": {
 			"files": [
@@ -27,7 +27,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"ui_refuse": {
 			"files": [
@@ -36,7 +36,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"ui_menu_open": {
 			"files": [
@@ -45,7 +45,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"ui_menu_close": {
 			"files": [
@@ -54,7 +54,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"ui_dialog_next": {
 			"files": [
@@ -63,7 +63,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"ui_yes_no": {
 			"files": [
@@ -72,7 +72,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"ui_saved": {
 			"files": [
@@ -81,7 +81,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"ui_cash": {
 			"files": [
@@ -90,7 +90,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"ui_pc_on": {
 			"files": [
@@ -99,7 +99,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"ui_pc_off": {
 			"files": [
@@ -108,7 +108,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"ui_pc_move": {
 			"files": [
@@ -117,7 +117,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"ui_favorite": {
 			"files": [
@@ -126,7 +126,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"ui_toast": {
 			"files": [
@@ -135,7 +135,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"ui_map_open": {
 			"files": [
@@ -144,7 +144,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"ui_fly_out": {
 			"files": [
@@ -171,7 +171,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"step_grass": {
 			"files": [
@@ -183,7 +183,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 2,
-			"expected": true
+			"expected": false
 		},
 		"step_hard": {
 			"files": [
@@ -195,7 +195,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 2,
-			"expected": true
+			"expected": false
 		},
 		"step_indoor": {
 			"files": [
@@ -207,7 +207,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 2,
-			"expected": true
+			"expected": false
 		},
 		"step_sand": {
 			"files": [
@@ -219,7 +219,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 2,
-			"expected": true
+			"expected": false
 		},
 		"step_shallow_water": {
 			"files": [
@@ -243,7 +243,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 2,
-			"expected": true
+			"expected": false
 		},
 		"bump": {
 			"files": [
@@ -252,7 +252,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"ledge_jump": {
 			"files": [
@@ -261,7 +261,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"door": {
 			"files": [
@@ -270,7 +270,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"stairs": {
 			"files": [
@@ -288,7 +288,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"warp": {
 			"files": [
@@ -333,7 +333,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"bike_bell": {
 			"files": [
@@ -342,7 +342,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"cut": {
 			"files": [
@@ -351,7 +351,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"strength_push": {
 			"files": [
@@ -360,7 +360,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"strength_drop": {
 			"files": [
@@ -369,7 +369,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"flash": {
 			"files": [
@@ -396,7 +396,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"elevator_stop": {
 			"files": [
@@ -405,7 +405,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"elevator_ding": {
 			"files": [
@@ -414,7 +414,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"switch": {
 			"files": [
@@ -423,7 +423,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"gate": {
 			"files": [
@@ -432,7 +432,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"item_found": {
 			"files": [
@@ -450,7 +450,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"ball_drop": {
 			"files": [
@@ -459,7 +459,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"rod_cast": {
 			"files": [
@@ -486,7 +486,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"bill_machine": {
 			"files": [
@@ -495,7 +495,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"rocks_fall": {
 			"files": [
@@ -504,7 +504,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"door_slam": {
 			"files": [
@@ -513,7 +513,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"trainer_spotted": {
 			"files": [
@@ -522,7 +522,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"battle_intro": {
 			"files": [
@@ -540,7 +540,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"recall": {
 			"files": [
@@ -549,7 +549,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"hit_normal": {
 			"files": [
@@ -558,7 +558,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"hit_super": {
 			"files": [
@@ -567,7 +567,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"hit_weak": {
 			"files": [
@@ -576,7 +576,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"no_effect": {
 			"files": [
@@ -585,7 +585,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"miss": {
 			"files": [
@@ -603,7 +603,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"faint": {
 			"files": [
@@ -612,7 +612,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"stat_up": {
 			"files": [
@@ -621,7 +621,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"stat_down": {
 			"files": [
@@ -630,7 +630,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"status_poison": {
 			"files": [
@@ -693,7 +693,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"item_use": {
 			"files": [
@@ -702,7 +702,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"ball_throw": {
 			"files": [
@@ -720,7 +720,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"ball_close": {
 			"files": [
@@ -729,7 +729,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"ball_shake": {
 			"files": [
@@ -738,7 +738,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"ball_caught": {
 			"files": [
@@ -747,7 +747,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"ball_escape": {
 			"files": [
@@ -756,7 +756,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"flee": {
 			"files": [
@@ -774,7 +774,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"pay_day": {
 			"files": [
@@ -783,7 +783,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"ghost_voice": {
 			"files": [
@@ -811,7 +811,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"move_beam": {
 			"files": [
@@ -838,7 +838,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"move_sound": {
 			"files": [
@@ -856,7 +856,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"move_fire": {
 			"files": [
@@ -901,7 +901,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"move_fighting": {
 			"files": [
@@ -910,7 +910,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"move_poison": {
 			"files": [
@@ -928,7 +928,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"move_flying": {
 			"files": [
@@ -964,7 +964,7 @@
 			"bus": "Sfx",
 			"volume_db": 0.0,
 			"max_polyphony": 1,
-			"expected": true
+			"expected": false
 		},
 		"move_ghost": {
 			"files": [
@@ -1071,5 +1071,56 @@
 		"volume_db": 0.0,
 		"faint_pitch": 0.8,
 		"expected": false
+	},
+	"battle_events": {
+		"SENT_OUT": "send_out",
+		"WITHDRAWN": "recall",
+		"MOVE_MISSED": "miss",
+		"NO_EFFECT": "no_effect",
+		"FAINTED": "faint",
+		"FLED": "flee",
+		"BALL_THROWN": "ball_throw",
+		"BALL_SHAKE": "ball_shake",
+		"CAUGHT": "ball_caught",
+		"BROKE_FREE": "ball_escape",
+		"ITEM_USED": "item_use",
+		"HEALED": "heal_hp",
+		"DRAINED_HP": "heal_hp",
+		"EXP_GAINED": "exp_fill",
+		"COINS_SCATTERED": "pay_day",
+		"GHOST_SPOKE": "ghost_voice",
+		"CONFUSED": "status_confusion",
+		"BATTLE_STARTED": "battle_intro"
+	},
+	"stat_changes": {
+		"up": "stat_up",
+		"down": "stat_down"
+	},
+	"statuses": {
+		"poison": "status_poison",
+		"burn": "status_burn",
+		"paralysis": "status_paralysis",
+		"sleep": "status_sleep",
+		"freeze": "status_freeze"
+	},
+	"grounds": {
+		"grass": "step_grass",
+		"hard": "step_hard",
+		"indoor": "step_indoor",
+		"sand": "step_sand",
+		"water": "step_shallow_water",
+		"snow": "step_snow"
+	},
+	"world": {
+		"bump": "bump",
+		"ledge": "ledge_jump",
+		"door": "door",
+		"bike_bell": "bike_bell",
+		"ui_click": "ui_confirm",
+		"menu_open": "ui_menu_open",
+		"menu_close": "ui_menu_close",
+		"dialog_next": "ui_dialog_next",
+		"trainer_spotted": "trainer_spotted",
+		"bike_mount": "bike_mount"
 	}
 }

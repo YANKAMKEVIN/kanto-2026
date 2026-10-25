@@ -15,6 +15,10 @@ extends RefCounted
 ## Cris (SonB, §1.8) : envoi au combat (les deux camps), K.O. (plus grave), rencontre et Pokémon
 ## d'ambiance (`cry_requested`), bouton « Cri » du Pokédex, compagnon à qui l'on parle, écran
 ## d'évolution (ancienne forme au début, nouvelle à la fin).
+## Bruitages (SonC, §1.7, T13) : événements de combat (`sfx.json` battle_events, statuts, stats,
+## coups selon l'efficacité, famille de l'attaque), pas selon le sol à chaque case, mur, rebord,
+## porte, Vélo, « ! », et interface (boutons des menus, ouverture / fermeture du menu, page de
+## dialogue suivante). Une seule accroche pour tous les boutons ([method watch_ui]).
 
 ## Valeur de la clé « music » d'une étape qui arrête la musique de scène.
 const STOP: StringName = &"stop"
@@ -40,6 +44,10 @@ var species_dex: Callable = Callable()
 var party_species: Callable = Callable()
 ## () -> StringName : espèce du compagnon sorti ("" si aucun).
 var companion_species: Callable = Callable()
+## (move_id: StringName) -> Array [type: StringName, catégorie: StringName] (vide si inconnue).
+var move_info: Callable = Callable()
+## (cell: Vector2i) -> StringName : sol de la case (« grass », « hard », « indoor »…).
+var ground_at: Callable = Callable()
 
 var _library: AudioLibrary
 var _zones: ZoneLibrary
@@ -48,6 +56,8 @@ var _map_override: StringName = &""
 ## Vrai tant que la couche SCENE porte le thème du « ! » (retiré à la fin du combat).
 var _encounter_theme: bool = false
 var _trainer_id: StringName = &""
+## Nœud dont les boutons restent muets (HUD d'exploration : joystick, boutons d'action).
+var _ui_excluded: Node
 
 
 func setup(audio_node: Node, zones: ZoneLibrary) -> void:
@@ -79,8 +89,10 @@ func on_map_changed(map: GameMap) -> void:
 	audio.call(&"set_ambience", _library.ambience_for(_map_id, _zones.zone_of(_map_id)))
 
 
-func on_mount_changed(_kind: Mount.Kind) -> void:
+func on_mount_changed(kind: Mount.Kind) -> void:
 	refresh_zone()
+	if kind == Mount.Kind.BIKE:
+		_sfx(&"world", &"bike_mount")
 
 
 ## Recalcule la musique de la carte (même morceau : il continue sans coupure).
@@ -96,6 +108,7 @@ func on_trainer_spotted(_npc_id: StringName, trainer_id: StringName) -> void:
 	if track.is_empty():
 		return
 	_encounter_theme = true
+	_sfx(&"world", &"trainer_spotted")
 	audio.call(&"set_music", L.SCENE, track)
 
 
@@ -107,6 +120,7 @@ func on_battle_started(trainer_id: StringName) -> void:
 ## Événement de combat : victoire (`BATTLE_ENDED` gagné) → musique de victoire ; montée de
 ## niveau → jingle.
 func on_battle_event(event: BattleEvent) -> void:
+	_battle_sfx(event)
 	match event.kind:
 		BattleEvent.Kind.SENT_OUT:
 			play_species_cry(event.species_id)
@@ -201,6 +215,109 @@ func on_cutscene_step(step: CutsceneStep) -> void:
 func on_cutscene_finished(_cutscene_id: StringName = &"") -> void:
 	if not _encounter_theme:
 		audio.call(&"clear_music", L.SCENE)
+
+
+## Un pas commence : le sol de la case d'arrivée (à pied ou en courant), le rebord (saut) ;
+## rien à Vélo ni en Surf.
+func on_player_step(_from_cell: Vector2i, to_cell: Vector2i, kind: StringName) -> void:
+	if kind == &"jump":
+		_sfx(&"world", &"ledge")
+	elif (kind == &"walk" or kind == &"run") and ground_at.is_valid():
+		_sfx(&"grounds", StringName(str(ground_at.call(to_cell))))
+
+
+func on_bumped(_direction: Vector2i = Vector2i.ZERO) -> void:
+	_sfx(&"world", &"bump")
+
+
+## Changement de carte (porte, tapis, escalier) : un seul bruit de porte [D].
+func on_transition_started(_target_map: StringName = &"") -> void:
+	_sfx(&"world", &"door")
+
+
+func on_menu_opened() -> void:
+	_sfx(&"world", &"menu_open")
+
+
+func on_menu_closed(_arg: Variant = null) -> void:
+	_sfx(&"world", &"menu_close")
+
+
+## Page de dialogue suivante (pas la première).
+func on_dialogue_page(index: int) -> void:
+	if index > 0:
+		_sfx(&"world", &"dialog_next")
+
+
+## Accroche unique de l'interface : tout bouton (existant sous [param root] ou ajouté ensuite à
+## l'arbre) joue le clic quand on l'appuie, sauf sous [param excluded].
+func watch_ui(root: Node, excluded: Node = null) -> void:
+	_ui_excluded = excluded
+	var tree := root.get_tree()
+	if not tree.node_added.is_connected(_on_node_added):
+		tree.node_added.connect(_on_node_added)
+	_hook_buttons(root)
+
+
+func unwatch_ui(tree: SceneTree) -> void:
+	if tree != null and tree.node_added.is_connected(_on_node_added):
+		tree.node_added.disconnect(_on_node_added)
+
+
+func _on_node_added(node: Node) -> void:
+	if node is BaseButton:
+		_hook_button(node as BaseButton)
+
+
+func _hook_buttons(node: Node) -> void:
+	if node is BaseButton:
+		_hook_button(node as BaseButton)
+	for child: Node in node.get_children():
+		_hook_buttons(child)
+
+
+func _hook_button(button: BaseButton) -> void:
+	if not button.pressed.is_connected(_on_ui_pressed):
+		button.pressed.connect(_on_ui_pressed.bind(button))
+
+
+func _on_ui_pressed(button: BaseButton) -> void:
+	if _ui_excluded != null and is_instance_valid(_ui_excluded) \
+			and _ui_excluded.is_ancestor_of(button):
+		return
+	_sfx(&"world", &"ui_click")
+
+
+func _battle_sfx(event: BattleEvent) -> void:
+	var id: StringName = &""
+	match event.kind:
+		BattleEvent.Kind.DAMAGE:
+			if event.critical:
+				id = &"critical"
+			elif event.effectiveness > 1.0:
+				id = &"hit_super"
+			elif event.effectiveness < 1.0:
+				id = &"hit_weak"
+			else:
+				id = &"hit_normal"
+		BattleEvent.Kind.MOVE_USED:
+			var info: Array = move_info.call(event.move_id) if move_info.is_valid() else []
+			if info.size() == 2:
+				id = _library.move_sfx(event.move_id, info[0], info[1])
+		BattleEvent.Kind.STAT_CHANGED:
+			id = _library.sfx_for(&"stat_changes", &"up" if event.stages > 0 else &"down")
+		BattleEvent.Kind.STATUS_INFLICTED:
+			id = _library.sfx_for(&"statuses", event.status)
+		_:
+			id = _library.sfx_for(&"battle_events", BattleEvent.Kind.find_key(event.kind))
+	if not id.is_empty():
+		audio.call(&"play_sfx", id)
+
+
+func _sfx(table: StringName, key: StringName) -> void:
+	var id := _library.sfx_for(table, key)
+	if not id.is_empty():
+		audio.call(&"play_sfx", id)
 
 
 func _jingle(event: StringName) -> void:

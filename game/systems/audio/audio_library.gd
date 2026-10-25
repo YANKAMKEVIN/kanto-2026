@@ -26,6 +26,9 @@ const MOVEMENT_BIKE: StringName = &"bike"
 const BATTLE_WILD: StringName = &"wild"
 const BATTLE_LEGENDARY: StringName = &"legendary"
 const MOVE_CATEGORIES: Array[StringName] = [&"physical", &"special", &"status"]
+## Tables « clé → bruitage » facultatives de `sfx.json`.
+const SFX_TABLES: Array[String] = ["battle_events", "stat_changes", "statuses", "grounds",
+	"world"]
 
 const _TRACK_KEYS: Array[String] = ["title", "file", "kind", "loop", "loop_offset", "volume_db",
 	"expected", "confirm", "fade_out_after"]
@@ -58,6 +61,9 @@ var _move_overrides: Dictionary[StringName, StringName] = {}
 var _move_by_type: Dictionary[StringName, Dictionary] = {}
 var _move_by_category: Dictionary[StringName, StringName] = {}
 var _cries: Dictionary = {}
+## Tables « clé → bruitage » de `sfx.json` (T13) : battle_events, stat_changes, statuses, grounds,
+## world.
+var _sfx_tables: Dictionary[StringName, Dictionary] = {}
 var _ambiences: Dictionary[StringName, Dictionary] = {}
 var _ambience_zones: Dictionary[StringName, StringName] = {}
 var _ambience_maps: Dictionary[StringName, StringName] = {}
@@ -244,6 +250,14 @@ func add_sfx(data: Dictionary, source: String = "") -> bool:
 		ok = _add_sfx_table(entry if entry is Dictionary else {}, table,
 			"%s move_sounds.by_type.%s" % [source, raw]) and ok
 		_move_by_type[StringName(str(raw))] = table
+	for table_name: String in SFX_TABLES:
+		var table: Dictionary[StringName, StringName] = {}
+		ok = _add_sfx_table(JsonFields.get_dict(data, table_name), table,
+			"%s %s" % [source, table_name]) and ok
+		_sfx_tables[StringName(table_name)] = table
+	for kind: Variant in _sfx_tables.get(&"battle_events", {}):
+		if not BattleEvent.Kind.has(String(kind)):
+			ok = _fail("%s battle_events : sorte inconnue « %s »" % [source, kind])
 	_cries = JsonFields.get_dict(data, "cries")
 	if not JsonFields.get_string(_cries, "path_format").contains("%d"):
 		ok = _fail("%s cries : « path_format » avec %%d attendu" % source)
@@ -400,6 +414,12 @@ func move_sfx(move_id: StringName, type: StringName, category: StringName) -> St
 	if by_category.has(category):
 		return by_category[category]
 	return _move_by_category.get(category, _move_by_category.get(&"physical", &""))
+
+
+## Bruitage de [param key] dans la table [param table] (`battle_events` par nom de
+## `BattleEvent.Kind`, `statuses`, `grounds`, `world`, `stat_changes`) ; "" si aucun.
+func sfx_for(table: StringName, key: StringName) -> StringName:
+	return (_sfx_tables.get(table, {}) as Dictionary).get(key, &"")
 
 
 ## Réglages des cris : { path_format, count, bus, volume_db, faint_pitch, expected }.
