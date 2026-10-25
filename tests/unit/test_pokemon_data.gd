@@ -222,6 +222,8 @@ func test_real_evolution_chains() -> void:
 		&"omanyte": [&"omastar", 40], &"kabuto": [&"kabutops", 40],
 		# Jalon 25 (T7) : Ponyta (Rouge/Bleu) ; Tadmorv → Grotadmorv est celui du J22.
 		&"ponyta": [&"rapidash", 40],
+		# Jalon 32 (lot 32K, `jalon-32.md` T3) : Rouge/Bleu entre espèces présentes.
+		&"machop": [&"machoke", 28], &"voltorb": [&"electrode", 30], &"koffing": [&"weezing", 35],
 	}
 	var eevee := _data.get_species(&"eevee").evolutions
 	assert_eq(eevee.map(func(r: EvolutionRule) -> Array: return [r.into, r.method, r.item]), [

@@ -122,12 +122,16 @@ fusion** des jalons qui portent les cartes touchées.
 | 32H | N-13 | Porygon confié par un employé de Sylphe SARL **après Giovanni** [D], une fois | Sylphe SARL (J26) |
 | 32I | N-14 | Les six échanges PNJ de RB sur le modèle `InGameTrade` : Abra → M. Mime (Route 2), Têtarte → Lippoutou (Azuria), Piafabec → Canarticho (Carmin), Flagadoss → Excelangue (Route 18), Nidoran ♂ → Nidoran ♀ (souterrain Route 5), Nidorino → Nidorina (Route 11) ; surnoms VF RB à relever ; présence des maisons à vérifier (T6) | Routes 2, 5, 11, 18, Azuria, Carmin |
 | 32J | N-1 à N-5 | Mew : rumeur d'un PNJ du port (présent dès le J15), camion du quai de Carmin, condition **150 autres espèces capturées**, rencontre unique **N30** [D], politique de Mewtwo (J31) pour fuite et K.O., « vu » à la rencontre ; Diplôme : porte « Bureau privé » ouverte après la Ligue, Diplôme à 150 (ne dit rien de Mew) ; drapeaux `mew_appeared`, `mew_resolved`, `diploma_received` [D] | Carmin, Résidence de Céladopole |
-| 32K | données | Évolutions RB absentes de `species/` (§0.0) : Machopeur → Mackogneur et Spectrum → Ectoplasma (échange), Noeunoeuf → Noadkoko (Pierre Plante), Machoc, Voltorbe, Smogo | `data/pokemon/species/` |
+| 32K | données | Évolutions RB absentes de `species/` (§0.0). **Fait le 2026-10-25** : Machoc → Machopeur (N28), Voltorbe → Électrode (N30), Smogo → Smogogo (N35). **Reste**, impossible avant la fusion des J29/J30 (espèces cibles absentes de `main`, une évolution vers une espèce inconnue est une erreur de données) : Machopeur → Mackogneur et Spectrum → Ectoplasma (échange), Noeunoeuf → Noadkoko (Pierre Plante). Garde-fou : `tests/unit/test_j32_data.gd` échoue dès que les deux espèces d'une paire RB existent sans l'évolution | `data/pokemon/species/` |
+| 32L | N-17 | Réapparition après la Ligue : `StaticRespawn.on_league_won` baisse le drapeau `done` des rencontres fixes (clé « static ») mises K.O. sans capture ; `CutsceneLibrary.get_static_encounters`. **Fait le 2026-10-25** (logique, tests). Aucun champ de sauvegarde. **Reste** : l'appel à la victoire contre le Maître (J30, `LeagueAttempt`) à l'intégration. Hors périmètre [D] : Ronflex (pas de clé « static » ; revenir refermerait la route) | — |
 
 Le test de complétion (T2, T9) relit `tools/audit_pokedex.py` : après les lots 32A à 32K, aucune
 espèce ne doit rester « manque » ni « choix unique ».
 
-### T4 — Échange local, logique (Opus)
+### T4 — Échange local, logique (Opus) — **fait le 2026-10-25** (`game/systems/trade/local_trade.gd`, `tests/unit/test_local_trade.gd`)
+Remplace le « Cordon d'échange » [D] du J14 (dossier 17 E-3, jamais codé, sans source) : le plan
+J32 et N-15 priment. Sur `main`, seul Gravalanch → Grolem est déclaré ; Kadabra → Alakazam arrive
+avec J26/J27, Machopeur → Mackogneur et Spectrum → Ectoplasma avec le reste du lot 32K.
 `LocalTrade` : liste des Pokémon compatibles (Kadabra, Machopeur, Gravalanch, Spectrum), évolution
 via `EvolutionRule` méthode `TRADE`, opération atomique (copie de travail validée, puis remplacement).
 Tests : individu identique (surnom, IV, EV, PP, statut) ; équipe pleine sans perte ; interruption
@@ -202,6 +206,7 @@ Source : `docs/design/passes/j32-arbitrages-kevin.md` (toutes les recommandation
 | N-14 | Échanges PNJ RB | Les six |
 | N-15 | Terminal d'échange local | Dans **tous** les Centres Pokémon |
 | N-16 | Textes | Lot de 16 répliques validé (§3) |
+| **N-17** | Pokémon unique mis K.O. (validé par Kevin le **2026-10-25**) | **Réapparaît après la Ligue** : Artikodin, Sulfura, Électhor, Mewtwo, Mew reviennent à leur place à chaque victoire à la Ligue s'ils ont été mis K.O. sans être capturés ; le Pokédex reste toujours complétable. Logique : `StaticRespawn` (fait, §T3 lot 32L) |
 
 Anciens points ouverts : 1 → N-1 à N-5 ; 2 → N-6 (le [D] « échange PNJ » est écarté) ; 3 → N-7 (la
 « machine » est écartée) ; 4 → N-8 ; 5 → N-10 et N-11 ; 6 → N-15.

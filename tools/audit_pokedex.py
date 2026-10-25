@@ -38,7 +38,7 @@ from dataclasses import dataclass, field
 
 DEFAULT_REFS = [
     "origin/main", "origin/jalon-23", "origin/jalon-26", "origin/jalon-27", "origin/jalon-28",
-    "origin/jalon-29", "origin/jalon-30", "origin/jalon-31",
+    "origin/jalon-29", "origin/jalon-30", "origin/jalon-31", "HEAD",
 ]
 
 # Les 151 espèces de Kanto : identifiant du projet, nom français (repli si aucune donnée).

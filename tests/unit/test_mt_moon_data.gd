@@ -121,8 +121,8 @@ func test_evolutions() -> void:
 		var rule: EvolutionRule = _data.get_species(pair[0]).evolutions[0]
 		assert_eq([rule.method, rule.into, rule.item],
 			[EvolutionRule.Method.ITEM, pair[1], &"moon_stone"], String(pair[0]))
-	for id: StringName in [&"arbok", &"golbat", &"parasect", &"clefable", &"wigglytuff",
-			&"voltorb", &"koffing"]:
+	# Voltorbe et Smogo : Électrode (N30) et Smogogo (N35) ajoutés au J32 (lot 32K).
+	for id: StringName in [&"arbok", &"golbat", &"parasect", &"clefable", &"wigglytuff"]:
 		assert_eq(_data.get_species(id).evolutions.size(), 0, "%s : pas d'évolution" % id)
 
 
