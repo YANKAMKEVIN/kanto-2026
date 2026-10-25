@@ -1128,9 +1128,9 @@ const SET_J29: Array[StringName] = [
 ]
 ## Jalon 21 : `ghost_marowak_calmed` (6F) et `snorlax_route_*_woken` (Ronflex) sont levés par leurs
 ## scènes : plus aucun drapeau futur du J21.
-## J29 : restent les Badges Âme, Marais, Volcan et Terre (J23, J27, J25, J28).
-const FUTURE_FLAGS: Array[StringName] = [&"badge_soul", &"badge_marsh", &"badge_volcano",
-	&"badge_earth"]
+## J29 : restent les Badges Âme, Marais et Terre (J23, J27, J28) ; le Badge Volcan est levé
+## par la scène d'Auguste depuis la fusion du J25.
+const FUTURE_FLAGS: Array[StringName] = [&"badge_soul", &"badge_marsh", &"badge_earth"]
 var _library: DialogueLibrary
 var _cutscenes: CutsceneLibrary
 var _offer: StarterOffer
@@ -1939,7 +1939,7 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			# J20 (T12) : « {player} » écrit tel quel dans le dossier 23 (texte 29).
 			or _each_line_quoted(dossier_23, text.replace("{joueur}", "{player}"))
 			# J29 (T4) : lot de textes du J29 (`jalon-29-textes.md`), une citation par ligne.
-			or _each_line_quoted(textes_j29, text.replace("{joueur}", "{player}")),
+			or _each_line_quoted(textes_j29, text.replace("{joueur}", "{player}"))
 			# J22 (T13, T17) : dossier 25 §16, bulles « / » et lignes à plat.
 			or dossier_25.contains(J22Ids.flat_text(row[1])),
 			"%s : « %s » dans un dossier de conception" % [row[0], text])
