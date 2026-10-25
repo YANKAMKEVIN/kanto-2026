@@ -689,6 +689,96 @@ Fusion de `origin/jalon-22` dans `jalon-23` (`aa9ac132`). Réponses du T9 :
 - **23E** — `koga_qa` : murs invisibles (indices), six Dresseurs, Koga, Toxik et « PSN+ », défaite
   puis victoire, Badge Âme, CT06, Guide (texte 37), sortie vers Parmanie (`from_gym`).
 
+## 9. Clôture (T24, préparée le 2026-10-25 sur `fix/j23-fin-par-les-balls`)
+
+**État** : 23.0 à 23E faits sur `jalon-23` (`dd420e14`). **23A** (sauvegarde v8, validée seule),
+**23B** et **23C+23D** validés par Kevin sur le S24 (2026-10-24 et 2026-10-25) ; **23E** passé en
+QA S24 par l'agent le 2026-10-25 (aucun bloquant), **validation de Kevin attendue**. Bloquant de la
+QA 23B (la dernière Safari Ball ne finissait pas la visite) corrigé dans `dd420e14`. Fusion dans
+`main` : par la session de coordination, après l'accord de Kevin (ce T24 ne fusionne pas).
+
+### 9.1 Corrigé à la clôture
+
+- **Nom tronqué « HYPNO »** (QA 23E) : ce n'était pas une troncature, la donnée était fausse.
+  `kanto_j17.json` nommait l'espèce 97 « Hypno » (nom anglais) ; nom français **Hypnomade**
+  (dossier 26 §10.2, texte A-15 du Jongleur). `test_j17_species` aligné.
+- **Cartes de combat et noms longs** : le nom n'était jamais rogné, mais la carte s'élargissait
+  au-delà de `BATTLE_CARD_WIDTH` (480 px) dès qu'un statut s'ajoutait (jusqu'à 582 px pour
+  « GROTADMORV ♀ PSN+ Nv. 100 » ; la carte du joueur, calée à droite, débordait vers le bord de
+  l'écran). Désormais, si l'en-tête ne tient pas, `BattleInfoCard` retire d'abord l'icône de la
+  pastille de statut (le texte « PSN+ » reste, dossier 08 §2), puis réduit la police du nom
+  jusqu'à ce qu'il tienne (`BATTLE_CARD_NAME_FONT` 32 → plancher `BATTLE_CARD_NAME_FONT_MIN` 22
+  [D] ; pire cas réel : 23 px). Un nom court garde 32 px et l'icône. Capture Mac relue (six
+  cartes, toutes dans les 480 px). Test : `test_battle_card_long_names` (les 126 espèces, cartes adverse et
+  joueur, pire cas ♀ + « PSN+ » + Nv. 100 + PV chiffrés : largeur ≤ 480, nom entier, jamais
+  rogné). **Non vu sur téléphone.**
+
+### 9.2 Points non vus sur le téléphone au 23E : couverts par des tests
+
+- **Toxik et « PSN+ »** : `test_battle_director` (`test_toxic_puts_psn_plus_on_the_card_and_the_damage_grows`,
+  vrai directeur et vraie HUD) : « PSN+ » posé avec l'empoisonnement grave, gardé à chaque dégât,
+  dégâts de 1/16, 2/16, 3/16… ; moteur déjà couvert par `test_toxic_battle` (changement, fin de
+  combat). **Constat** (`test_kogas_weezing_prefers_sludge_over_toxic`) : avec l'IA « smart », le
+  Smogogo de Koga (Purédpois, Détritus, Toxik, Destruction) **choisit toujours Détritus** (note
+  65 × 1,5 = 97,5 contre 40 × 85 % = 34 pour Toxik), cible saine ou non ; Toxik ne sort que
+  Détritus épuisé. Sur une cible déjà empoisonnée ou de type Poison, Toxik vaut 0 (jamais choisi :
+  attendu). Ce n'est pas un défaut de code (règle « la meilleure note l'emporte » du J7), mais en
+  pratique **Koga ne lance jamais Toxik** → question pour Kevin (§9.5).
+- **Koga après une défaite** : `test_koga_flow` (`test_defeat_wakes_at_the_center_and_koga_can_be_fought_again`)
+  vérifiait déjà le réveil au Centre de Parmanie, sans badge, sans CT, sans argent perdu, les six
+  Dresseurs gardés battus et Koga rejouable (reprise courte, sans carte) ; ajouté : au retour,
+  la marche jusqu'à Koga (qui croise les vues des Dresseurs J2 et J4, inévitables) ne déclenche
+  qu'un combat, celui de Koga.
+- **Surf depuis la rive** : `test_j23_surf_after_koga` (vraie Boot, vrai `FieldMoves`, départ
+  `koga_qa`) : sur la rive de la Route 19 (J24), le bouton d'action propose EXAMINER sans le Badge
+  Âme et **SURFER** avec lui ; pousser vers l'eau ne fait jamais surfer (le Surf passe par le
+  bouton, passe systèmes 2). **Explication du « aucune réaction en poussant »** : c'est voulu, et
+  ni Parmanie ni les quatre zones du Parc n'ont de case surfable (leur eau est du décor, §2.10 ;
+  vérifié par le même test) : la première eau surfable depuis Parmanie est celle de la Route 19.
+
+### 9.3 Décisions [D] (réponses de Kevin relayées par la session de coordination, 2026-10-25 ; à confirmer par Kevin)
+
+- **Parcours vers Koga gardé tel quel** (fidèle à Rouge/Bleu : ~70 cases, 3 impasses, ~9 chocs,
+  Koga visible à 6 cases de l'entrée) malgré le risque « murs frustrants » du §5.
+- **Indice de contact gardé tel qu'il est codé** (panneau translucide qui frémit et vibration
+  courte à chaque poussée contre un mur invisible, visible tant qu'on pousse) : plus appuyé que le
+  « frémissement 0,4 s » du dossier 26 §10.1 ; **écart assumé au dossier**.
+
+### 9.4 Départs de débogage (§2.16)
+
+- **Retirés** : `safari_qa`, `safari_end_qa`, `warden_qa` et leur test `test_j23_qa_starts`. La
+  clé `safari` de `DebugStart` (visite en cours) reste éprouvée par
+  `test_debug_start` (`test_safari_key_starts_a_visit_in_progress`).
+- **Gardé** : `koga_qa`. Raisons : `test_koga_flow` (victoire, défaite, rattrapage) et
+  `test_j23_surf_after_koga` partent de ce départ, `test_j21_flags_contract` le liste, et la
+  validation de Kevin du 23E (`koga_qa`, §7.7) est encore attendue.
+- **Aucune carte de QA** : aucun fichier `qa_*` dans `game/`, `data/`, `assets/`.
+- `tools/debug_start/README.md` : section « Jalon 23 » ajoutée.
+
+### 9.5 Non fait, non couvert, points ouverts
+
+- **T21 (équilibrage par simulation) non fait** : Koga (bande 35–60 %) et les six Dresseurs
+  (≤ 80 %) ne sont pas simulés. À faire avant ou après la fusion, au choix de Kevin ; le constat sur
+  Toxik ci-dessus rend Koga plus facile que prévu.
+- **T22** : la suite complète passe ; les interruptions (sauvegarde, rechargement) ont été vues en
+  QA 23A ; pas de nouvelle passe.
+- **T23 (QA de bout en bout) non faite** : Parmanie → Parc → Gardien → Koga → exploration libre.
+- **Questions pour Kevin** :
+  1. **Toxik de Koga** : le garder inutilisé (IA actuelle) ou le faire sortir (par exemple une
+     première fois sur une cible saine) ? Changer l'IA touche tous les Dresseurs « smart ».
+  2. **Rencontres Safari** jugées peu fréquentes en QA 23B (taux de la grille RB).
+  3. **Rhinocorne qui fuit au premier caillou** (comportement RB, QA 23B) : garder ?
+  4. **Textures ≈ 75 Mo** dans la Maison Secrète et la maison du Gardien (QA 23C+23D), au-dessus
+     du budget de 64 Mo par carte (skill `android-deploy`) : à traiter à la phase DA ?
+  5. **« le rocher, là-bas »** du Gardien (texte validé) alors que le rocher de sa maison est fixe
+     (texte 46) : le texte désigne-t-il un autre rocher (Force au J24), ou faut-il le reformuler ?
+  6. Le renvoi à la Porte « sans visite » réutilise « Ta visite du PARC SAFARI est terminée. »
+     (QA 23A) : message neutre à écrire ?
+- **Non couvert sur le téléphone** : les deux cartes de combat après le correctif des noms longs ;
+  les autres vitrines ; la ligne de réception de la CS03 ; zones Nord et Ouest à pied, maisons
+  Nord/Ouest/Est (QA 23A).
+
+
 ## Annexe A — Textes complémentaires (T2, **validés par Kevin le 2026-10-19** : « annexe A ok »)
 
 > Complète le §8 du dossier 26 (textes 1 à 59, validés). Bulles de 2 lignes d'environ 40

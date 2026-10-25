@@ -199,3 +199,39 @@ func test_smart_ai_skips_toxic_on_poisoned_or_poison_targets() -> void:
 	var koffing := Kit.mon(_data, &"koffing", 37, [&"tackle"])
 	var poison_type := Battler.new(koffing, _data.get_species(&"koffing").types)
 	assert_eq(BattleAI.score_move(toxic, own, poison_type, chart, 0), 0.0, "type Poison")
+
+
+## Clôture du J23 (QA 23E : « Smogogo a préféré Détritus ») : le vrai Smogogo de Koga (données de
+## l'Arène : Purédpois, Détritus, Toxik, Destruction) sous l'IA « smart ». Constat documenté,
+## comportement voulu par les règles de l'IA (note la plus haute) : Détritus (65 × 1,5 STAB)
+## l'emporte toujours sur Toxik (40 × 85 %), cible saine ou déjà empoisonnée ; Toxik ne serait
+## choisi que Détritus épuisé (Purédpois vaut 31,5, Destruction 0 au-dessus d'¼ des PV). Sur
+## une cible déjà empoisonnée ou de type Poison, Toxik vaut 0 (jamais choisi).
+func test_kogas_weezing_prefers_sludge_over_toxic() -> void:
+	var trainers := TrainerLibrary.new(_data)
+	trainers.load_dir()
+	var team := trainers.build_team(&"fuchsia_gym_koga", &"charmander", GameRng.new(1))
+	var weezing := team.get_at(3)
+	assert_eq(weezing.species_id, &"weezing")
+	assert_eq(weezing.level, 43)
+	var ids: Array[StringName] = []
+	for slot: MoveSlot in weezing.moves:
+		ids.append(slot.move_id)
+	assert_eq(ids, [&"smog", &"sludge", &"toxic", &"self_destruct"] as Array[StringName])
+	var ai := trainers.get_trainer(&"fuchsia_gym_koga").make_ai()
+	assert_eq(ai.kind, BattleAI.SMART)
+	var own := BattleSide.new(team, false, "Koga", ai)
+	own.send_out(weezing, _data)
+	var rattata := _rattata()
+	var foe_party := Party.new()
+	foe_party.add(rattata)
+	var foe := BattleSide.new(foe_party, true)
+	foe.send_out(rattata, _data)
+	var rng := Kit.ScriptedRng.new()
+	assert_eq(ai.choose(own, foe, rng, _data).move_index, 1, "cible saine : Détritus")
+	rattata.status = StatusRules.POISON
+	assert_eq(ai.choose(own, foe, rng, _data).move_index, 1, "déjà empoisonnée : Détritus")
+	rattata.status = StatusRules.NONE
+	weezing.moves[1].pp = 0
+	assert_eq(ai.choose(own, foe, rng, _data).move_index, 2, "Détritus épuisé : Toxik")
+	assert_eq(rng.remaining(), 0, "aucun tirage : une seule meilleure note")

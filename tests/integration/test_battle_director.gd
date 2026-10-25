@@ -1876,6 +1876,57 @@ func test_poison_powder_puts_psn_on_the_foe_card_and_the_bar_follows_the_damage(
 	assert_push_error_count(0)
 
 
+## Clôture du J23 (non vu sur le S24 au 23E) : Toxik joué en combat pose « PSN+ » sur la carte
+## avec la phrase, l'étiquette reste « PSN+ » à chaque dégât, et les dégâts de fin de tour
+## croissent de 1/16 en 1/16 (N = 1, 2, 3…), la barre suivant chaque événement.
+func test_toxic_puts_psn_plus_on_the_card_and_the_damage_grows() -> void:
+	var moves: Array[StringName] = [&"toxic", &"growl"]
+	var party_fn := func() -> Party: return _xp_party(&"charmander", 12, 0, moves)
+	var wanted := func(events: Array) -> bool:
+		var damaged := events.filter(func(e: BattleEvent) -> bool:
+			return e.kind == BattleEvent.Kind.STATUS_DAMAGED \
+				and e.side == BattleEvent.SideId.FOE)
+		return events.size() > 0 and damaged.size() >= 3 \
+			and events.any(func(e: BattleEvent) -> bool:
+				return e.kind == BattleEvent.Kind.STATUS_INFLICTED \
+					and e.status == StatusRules.TOXIC)
+	var seed := _xp_seed(party_fn, &"rattata", 5, [0, 1] as Array[int], wanted)
+	assert_gt(seed, -1, "un combat où Toxik ronge l'adversaire trois tours au moins")
+	if seed < 0:
+		return
+	var request := _xp_request(party_fn.call(), &"rattata", 5, seed)
+	var tags: Array[String] = []
+	var amounts: Array[int] = []
+	var bars: Array[bool] = []
+	_director.event_played.connect(func(e: BattleEvent) -> void:
+		if e.side != BattleEvent.SideId.FOE:
+			return
+		var card := _hud.get_card(BattleHud.Side.FOE)
+		if e.kind == BattleEvent.Kind.STATUS_INFLICTED:
+			tags.append(card.get_status_text())
+		elif e.kind == BattleEvent.Kind.STATUS_DAMAGED:
+			amounts.append(e.amount)
+			bars.append(card.get_hp_bar().get_shown_hp() == e.hp
+				and card.get_status_text() == "PSN+"))
+	var played := await _play_with_offers(request, [0, 1] as Array[int])
+	assert_eq(played[0], Battle.Outcome.WIN)
+	assert_eq(tags, ["PSN+"] as Array[String], "« PSN+ » posé avec l'empoisonnement grave")
+	assert_gt(amounts.size(), 2)
+	assert_false(bars.has(false), "« PSN+ » reste et la barre suit chaque dégât")
+	var foe_max := 0
+	for e: BattleEvent in played[1]:
+		if e.kind == BattleEvent.Kind.SENT_OUT and e.side == BattleEvent.SideId.FOE:
+			foe_max = e.max_hp
+	for i: int in amounts.size():
+		var expected := maxi(floori(foe_max * (i + 1) / 16.0), 1)
+		# Le dernier dégât est borné aux PV restants.
+		if i < amounts.size() - 1:
+			assert_eq(amounts[i], expected, "tour %d : %d/16" % [i + 1, i + 1])
+		if i > 0 and i < amounts.size() - 1:
+			assert_true(amounts[i] >= amounts[i - 1], "dégâts croissants")
+	assert_push_error_count(0)
+
+
 ## Le poison reçu par le Pokémon du joueur : sa carte porte « PSN » dès l'empoisonnement
 ## (Dard-Venin d'Aspicot), la barre suit les dégâts de fin de tour.
 func test_the_players_card_takes_psn_and_the_bar_follows_the_poison() -> void:

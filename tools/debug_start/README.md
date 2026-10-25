@@ -307,3 +307,13 @@ reste éprouvée par `test_cutscene_static_encounter.gd` et `test_cutscene_stati
 | `route_12_qa.json` | Lavanville, bord sud (spawn `from_route_12`, tourné ↓) : équipe de référence du J21 [D] (Reptincel N33, Roucarnage N30, Papilusion N28, Évoli N25, Nidorino N28 **endormi**, Abo N26 **empoisonné**), 10 Poké Balls, 10 Super Potions, 3 Réveils, Corde Sortie, Scope Sylphe et **Poké Flûte**, 5 000 ₽, Badges jusqu'au Prisme. Pêcheurs non battus, `got_tm39` absent : descendre le ponton (Pêcheur Ned inévitable), poste traversé (CT39 au 2F), Ronflex au croisement |
 
 | `poke_flute_qa.json` | J21 (T20) : Route 12, `from_route_11` (0, 93..94) tourné →, à 24 cases à l'ouest de Ronflex ; mêmes équipe et Sac que `route_12_qa` (Poké Flûte, Nidorino endormi) [D : sans table « Paras » forcée] |
+
+## Jalon 23 (Parc Safari, CS03, CS04, Koga)
+
+| Fichier | Partie |
+|---|---|
+| `koga_qa.json` | Entrée de l'Arène de Parmanie (spawn `entree`, tourné ↑), équipe d'environ N40 (Dracaufeu, Kadabra, Voltali, Aquali, Nidoking, Roucarnage), CS01 et **CS03** au Sac, Badges jusqu'au Prisme (pas le Badge Âme). Murs invisibles, six Dresseurs, Koga (défaite → Centre de Parmanie), Badge Âme et CT06 ; ensuite, Surf au bouton d'action sur la rive de la Route 19. Sert à `test_koga_flow` et `test_j23_surf_after_koga` : **gardé à la clôture** |
+
+Départs `safari_qa`, `safari_end_qa` et `warden_qa` (et leur test `test_j23_qa_starts`)
+**retirés à la clôture (T24)** ; la clé `safari` (visite en cours : `steps_left`, `balls_left`)
+reste éprouvée par `test_debug_start`.

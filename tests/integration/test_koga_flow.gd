@@ -336,6 +336,9 @@ func test_defeat_wakes_at_the_center_and_koga_can_be_fought_again() -> void:
 	_events.clear()
 	await _walk_to_koga()
 	assert_true(await _talk_to_koga(), "second combat")
+	# Clôture du J23 : retour dans l'Arène après la défaite, la marche jusqu'à Koga croise les
+	# vues des Dresseurs : battus, ils ne défient plus (un seul combat, celui de Koga).
+	assert_eq(_events.count("battle"), 1, "les Dresseurs battus restent battus")
 	pages = _pages()
 	assert_eq(_index("page:" + RESUME), 0, "reprise courte")
 	assert_false(pages.has(INTRO[0]), "pas d'introduction")

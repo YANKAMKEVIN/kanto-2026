@@ -316,6 +316,10 @@ const BATTLE_CARD_ROW_GAP := 4
 ## Écart entre le nom et le symbole du sexe, et entre « Nv. » et le niveau.
 const BATTLE_CARD_NAME_GAP := 10
 const BATTLE_CARD_NAME_FONT := FONT_BODY
+## Taille plancher du nom : un nom long (« GROTADMORV ») rétrécit jusqu'ici pour tenir en entier
+## dans BATTLE_CARD_WIDTH avec ♀, statut et « Nv. 100 » (QA 23E), jamais rogné. 22 et non 24 :
+## le pire cas des données (« DARDARGNAN ♀ BRÛ Nv. 100 ») descend à 23 (défaut, règle 4).
+const BATTLE_CARD_NAME_FONT_MIN := 22
 const BATTLE_CARD_LEVEL_FONT := FONT_CAPTION
 const BATTLE_CARD_LEVEL_VALUE_FONT := FONT_BODY
 const BATTLE_HP_NUMBERS_FONT := 28
