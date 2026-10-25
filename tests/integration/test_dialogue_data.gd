@@ -1902,7 +1902,7 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			# J20 (T12) : « {player} » écrit tel quel dans le dossier 23 (texte 29).
 			or _each_line_quoted(dossier_23, text.replace("{joueur}", "{player}"))
 			# Jalon 30 (T9) : textes du plan (§3), une réplique « … » pouvant tenir sur deux pages.
-			or _in_dossier_18(plan_j30, text.replace("{joueur}", "{player}")),
+			or _in_dossier_18(plan_j30, text.replace("{joueur}", "{player}"))
 			# J22 (T13, T17) : dossier 25 §16, bulles « / » et lignes à plat.
 			or dossier_25.contains(J22Ids.flat_text(row[1])),
 			"%s : « %s » dans un dossier de conception" % [row[0], text])
