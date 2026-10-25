@@ -35,6 +35,7 @@ const TITLE_ICON: Texture2D = preload("res://assets/ui/icons/menu/settings.svg")
 const SAVE_ICON: Texture2D = preload("res://assets/ui/icons/settings/save.svg")
 const CATEGORY_ICONS: Dictionary[StringName, Texture2D] = {
 	SettingsViews.CATEGORY_GAME: preload("res://assets/ui/icons/settings/game.svg"),
+	SettingsViews.CATEGORY_SOUND: preload("res://assets/ui/icons/settings/sound.svg"),
 	SettingsViews.CATEGORY_CONTROLS: preload("res://assets/ui/icons/settings/controls.svg"),
 	SettingsViews.CATEGORY_ACCESSIBILITY:
 		preload("res://assets/ui/icons/settings/accessibility.svg"),
