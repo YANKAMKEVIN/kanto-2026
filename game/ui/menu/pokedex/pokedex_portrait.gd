@@ -17,6 +17,11 @@ extends PanelContainer
 ## - Espèce seulement vue : ni types, ni carte Capturé, ni description, ni Taille / Poids ; un
 ##   mot d'encouragement.
 
+## Jalon Son (SonB, SON-12) : bouton « Cri » à côté du nom, espèces **capturées** seulement.
+signal cry_requested(number: int)
+
+const CRY_TEXT := "Cri"
+const CRY_ICON: Texture2D = preload("res://assets/ui/icons/settings/sound.svg")
 const SEEN_CAPTION := "Vu"
 const CAUGHT_CAPTION := "Capturé"
 const SIZE_CAPTION := "Taille"
@@ -47,6 +52,7 @@ var _stage: Control
 var _titles: VBoxContainer
 var _number: Label
 var _name: Label
+var _cry: Button
 var _type_row: HBoxContainer
 var _halo: TextureRect
 var _shadow: TextureRect
@@ -91,6 +97,7 @@ func show_species(view: PokedexSheetView, empty_text: String = "") -> void:
 	var changed := view.number != _shown_number
 	_number.text = view.number_text
 	_name.text = view.name
+	_cry.visible = view.caught
 	_fill_types(view)
 	_seen_value.text = view.seen_times_text
 	_seen_card.visible = not view.seen_times_text.is_empty()
@@ -122,6 +129,11 @@ func get_view() -> PokedexSheetView:
 
 func get_number_label() -> Label:
 	return _number
+
+
+## Bouton « Cri » (tests).
+func get_cry_button() -> Button:
+	return _cry
 
 
 func get_name_label() -> Label:
@@ -385,7 +397,24 @@ func _build() -> void:
 	_name.theme_type_variation = &"DexSceneName"
 	_name.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_name.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-	_titles.add_child(_name)
+	_name.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	var name_row := HBoxContainer.new()
+	name_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	name_row.add_theme_constant_override(&"separation", UiTokens.TYPE_BADGE_GAP)
+	_titles.add_child(name_row)
+	name_row.add_child(_name)
+	_cry = Button.new()
+	_cry.text = CRY_TEXT
+	_cry.icon = CRY_ICON
+	_cry.expand_icon = false
+	_cry.focus_mode = Control.FOCUS_NONE
+	_cry.custom_minimum_size = Vector2(UiTokens.TOUCH_MIN, UiTokens.TOUCH_MIN)
+	_cry.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	_cry.visible = false
+	_cry.pressed.connect(func() -> void:
+		if _view != null and _view.caught:
+			cry_requested.emit(_view.number))
+	name_row.add_child(_cry)
 	_type_row = HBoxContainer.new()
 	_type_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_type_row.add_theme_constant_override(&"separation", UiTokens.TYPE_BADGE_GAP)

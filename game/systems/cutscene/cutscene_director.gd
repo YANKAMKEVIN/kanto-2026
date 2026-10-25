@@ -61,6 +61,9 @@ extends Node
 signal cutscene_started(cutscene_id: StringName)
 ## Début d'une étape (tests, outils de capture).
 signal step_started(index: int)
+## Jalon Son (T6) : étape qui va être jouée (conditions remplies, alias résolus) ; le son
+## ([AudioBridge]) y lit sa clé « music », le Badge et la Poké Flûte.
+signal step_played(step: CutsceneStep)
 signal cutscene_finished(cutscene_id: StringName)
 ## [param count] objets [param item_id] viennent d'être ajoutés au Sac (étape « give ») :
 ## Boot en fait une toast (jalon-04.md §14.6).
@@ -371,6 +374,7 @@ func _play_step(source_step: CutsceneStep) -> bool:
 	var step := _resolve_aliases(source_step)
 	if step == null:
 		return true
+	step_played.emit(step)
 	if _JOINING_KINDS.has(step.kind):
 		await _await_background(step.actor)
 	match step.kind:

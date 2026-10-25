@@ -13,7 +13,9 @@ extends RefCounted
 ## échangée avec l'écran est **celle du réglage** (booléen, entier d'enum, flottant), jamais un
 ## rang dans une liste.
 ##
-## Pas de « sauvegarde automatique » : elle est permanente (dossier 08 §7). Pas d'AUDIO (Q-17).
+## Pas de « sauvegarde automatique » : elle est permanente (dossier 08 §7). Volumes du jalon Son
+## (Son.0, SON-7) : Musique, Effets, Cris ; un ancien fichier sans eux les lit à leurs défauts
+## (pas de changement de version).
 
 enum TextSpeed { SLOW, NORMAL, FAST, INSTANT }
 enum TextSize { NORMAL, LARGE }
@@ -35,10 +37,14 @@ const REDUCE_FLASHES: StringName = &"reduce_flashes"
 const GRAPHICS: StringName = &"graphics"
 ## Moteur commun : coupe l'étalonnage plein écran (passe qui recopie l'écran) des extérieurs.
 const ECONOMY: StringName = &"economy"
+## Jalon Son (SON-7) : volumes de 0 à 1 par crans de 0,1 ; 0 coupe le bus.
+const MUSIC_VOLUME: StringName = &"music_volume"
+const SFX_VOLUME: StringName = &"sfx_volume"
+const CRY_VOLUME: StringName = &"cry_volume"
 ## Tous les réglages, dans l'ordre du fichier.
 const KEYS: Array[StringName] = [TEXT_SPEED, CONFIRM_ACTIONS, JOYSTICK_SCALE, JOYSTICK_OPACITY,
 	BUTTON_SCALE, HAPTICS, LEFT_HANDED, TEXT_SIZE, HIGH_CONTRAST, REDUCE_MOTION, REDUCE_FLASHES,
-	GRAPHICS, ECONOMY]
+	GRAPHICS, ECONOMY, MUSIC_VOLUME, SFX_VOLUME, CRY_VOLUME]
 
 ## Noms écrits dans le JSON pour les enums (un rang changerait si l'enum était réordonnée).
 const TEXT_SPEED_NAMES: Array[String] = ["slow", "normal", "fast", "instant"]
@@ -54,6 +60,12 @@ const JOYSTICK_SCALES: Array[float] = [0.8, 1.0, 1.2]
 const JOYSTICK_OPACITY_MIN: float = 0.3
 const JOYSTICK_OPACITY_MAX: float = 1.0
 const JOYSTICK_OPACITY_STEP: float = 0.1
+## Volumes (jalon Son) : de 0 à 100 %, par pas de 10 %.
+const VOLUME_STEP: float = 0.1
+## Défauts [D] (SON-7) : Musique 70 %, Effets 80 %, Cris 80 %.
+const DEFAULT_MUSIC_VOLUME: float = 0.7
+const DEFAULT_SFX_VOLUME: float = 0.8
+const DEFAULT_CRY_VOLUME: float = 0.8
 ## Tailles permises des boutons ronds d'exploration (§13).
 const BUTTON_SCALES: Array[float] = [1.0, 1.2]
 ## Réduction des animations (§13) : facteur des durées en combat et dans le menu. La tenue des
@@ -79,6 +91,10 @@ var reduce_flashes: bool = false
 var graphics: Graphics = Graphics.AUTO
 ## Désactivé par défaut (rendu inchangé) ; absent d'un ancien fichier = désactivé.
 var economy: bool = false
+var music_volume: float = DEFAULT_MUSIC_VOLUME
+## Effets : interface, déplacement, combat et ambiances.
+var sfx_volume: float = DEFAULT_SFX_VOLUME
+var cry_volume: float = DEFAULT_CRY_VOLUME
 
 
 ## Réglages lus de [param dict] ; tout champ absent, mal formé ou hors bornes garde sa valeur
@@ -111,6 +127,9 @@ func to_dict() -> Dictionary:
 		String(REDUCE_FLASHES): reduce_flashes,
 		String(GRAPHICS): GRAPHICS_NAMES[graphics],
 		String(ECONOMY): economy,
+		String(MUSIC_VOLUME): music_volume,
+		String(SFX_VOLUME): sfx_volume,
+		String(CRY_VOLUME): cry_volume,
 	}
 
 
@@ -147,6 +166,8 @@ static func is_valid(key: StringName, value: Variant) -> bool:
 			return _is_number(value) and _find_step(BUTTON_SCALES, float(value)) >= 0
 		JOYSTICK_OPACITY:
 			return _is_number(value) and _opacity_step(float(value)) >= 0
+		MUSIC_VOLUME, SFX_VOLUME, CRY_VOLUME:
+			return _is_number(value) and _volume_step(float(value)) >= 0
 	return false
 
 
@@ -211,6 +232,8 @@ static func _normalize(key: StringName, value: Variant) -> Variant:
 			var percent := roundi(JOYSTICK_OPACITY_MIN * 100.0) \
 				+ _opacity_step(float(value)) * roundi(JOYSTICK_OPACITY_STEP * 100.0)
 			return percent / 100.0
+		MUSIC_VOLUME, SFX_VOLUME, CRY_VOLUME:
+			return _volume_step(float(value)) * roundi(VOLUME_STEP * 100.0) / 100.0
 	return value
 
 
@@ -234,6 +257,16 @@ static func _opacity_step(value: float) -> int:
 	if value < JOYSTICK_OPACITY_MIN - EPSILON or value > JOYSTICK_OPACITY_MAX + EPSILON:
 		return -1
 	var steps := (value - JOYSTICK_OPACITY_MIN) / JOYSTICK_OPACITY_STEP
+	if absf(steps - roundf(steps)) > EPSILON * 10.0:
+		return -1
+	return roundi(steps)
+
+
+## Rang du cran de volume (0 = coupé, 10 = 100 %), ou -1 hors bornes ou entre deux crans.
+static func _volume_step(value: float) -> int:
+	if value < -EPSILON or value > 1.0 + EPSILON:
+		return -1
+	var steps := value / VOLUME_STEP
 	if absf(steps - roundf(steps)) > EPSILON * 10.0:
 		return -1
 	return roundi(steps)
