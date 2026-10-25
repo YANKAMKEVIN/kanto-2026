@@ -166,6 +166,7 @@ func play_sfx(id: StringName, pitch: float = 1.0) -> bool:
 	if _emit({ "type": &"sfx", "id": id, "file": file, "pitch": pitch }):
 		return true
 	var stream := _cached_stream(file, _sfx.is_expected(id))
+	_log("bruitage : %s%s" % [id, "" if stream != null else ", muet"])
 	if stream == null:
 		return true
 	var slot := _pool_ids.find(&"")
@@ -192,6 +193,7 @@ func play_cry(dex: int, fainted: bool = false) -> bool:
 	if _emit({ "type": &"cry", "dex": dex, "file": file, "pitch": pitch }):
 		return true
 	var stream := _cached_stream(file, _cries.is_expected())
+	_log("cri : %d%s%s" % [dex, ", K.O." if fainted else "", "" if stream != null else ", muet"])
 	if stream != null:
 		_cry.stream = stream
 		_cry.bus = _cries.bus()

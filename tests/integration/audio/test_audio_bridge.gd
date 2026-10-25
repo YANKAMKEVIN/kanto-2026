@@ -354,3 +354,37 @@ func test_one_hook_for_every_button_except_the_exploration_hud() -> void:
 	screen.add_child(after)
 	after.pressed.emit()
 	assert_eq(_sfx_ids(), [&"ui_confirm", &"ui_confirm"], "HUD muet ; plus rien après unwatch")
+
+
+func test_real_boot_wires_every_game_signal_to_the_bridge() -> void:
+	# Garde-fou (QA T14) : chaque signal du jeu relayé au son est bien branché par Boot.
+	var boot := (load("res://game/boot.tscn") as PackedScene).instantiate() as Boot
+	boot.start_map = &"route_1"
+	add_child(boot)
+	var bridge := boot.get_audio_bridge()
+	var battle := boot.get_battle_director()
+	var cutscenes := boot.get_cutscene_director()
+	var links: Array = [
+		[boot.get_player().mount_changed, bridge.on_mount_changed],
+		[boot.get_player().step_started, bridge.on_player_step],
+		[boot.get_player().bumped, bridge.on_bumped],
+		[boot.get_trainer_watcher().trainer_spotted, bridge.on_trainer_spotted],
+		[battle.battle_started, bridge.on_battle_started],
+		[battle.event_played, bridge.on_battle_event],
+		[battle.battle_finished, bridge.on_battle_finished],
+		[cutscenes.item_given, bridge.on_item_given],
+		[cutscenes.item_found, bridge.on_item_found],
+		[cutscenes.step_played, bridge.on_cutscene_step],
+		[cutscenes.cutscene_finished, bridge.on_cutscene_finished],
+		[boot.get_evolution_director().evolution_started, bridge.on_evolution_started],
+		[boot.get_evolution_director().evolution_finished, bridge.on_evolution_finished],
+		[SceneRouter.transition_started, bridge.on_transition_started],
+	]
+	for link: Array in links:
+		assert_true((link[0] as Signal).is_connected(link[1]), str(link[0]))
+	var global := get_tree().root.get_node(^"Audio")
+	battle.battle_started.emit(&"")
+	assert_eq(global.current_track(), &"battle_wild", "vrai Boot : musique de combat")
+	battle.battle_finished.emit(&"", Battle.Outcome.WIN)
+	assert_eq(global.current_track(), &"road_to_viridian", "reprise de la route")
+	boot.free()

@@ -2011,6 +2011,19 @@ func _setup_audio() -> void:
 	_audio_bridge.companion_species = func() -> StringName:
 		var chosen := _companion.get_chosen()
 		return chosen.species_id if chosen != null else &""
+	_player.mount_changed.connect(_audio_bridge.on_mount_changed)
+	_trainer_watcher.trainer_spotted.connect(_audio_bridge.on_trainer_spotted)
+	_battle_director.battle_started.connect(_audio_bridge.on_battle_started)
+	_battle_director.event_played.connect(_audio_bridge.on_battle_event)
+	_battle_director.battle_finished.connect(_audio_bridge.on_battle_finished)
+	_battle_director.pokemon_caught.connect(_audio_bridge.on_pokemon_caught.unbind(2))
+	_services.center_healed.connect(_audio_bridge.on_center_healed)
+	_cutscenes_node.item_given.connect(_audio_bridge.on_item_given)
+	_cutscenes_node.item_found.connect(_audio_bridge.on_item_found)
+	_cutscenes_node.step_played.connect(_audio_bridge.on_cutscene_step)
+	_cutscenes_node.cutscene_finished.connect(_audio_bridge.on_cutscene_finished)
+	_evolutions.evolution_started.connect(_audio_bridge.on_evolution_started)
+	_evolutions.evolution_finished.connect(_audio_bridge.on_evolution_finished)
 	_encounters.cry_requested.connect(_audio_bridge.play_species_cry)
 	_companion.line_requested.connect(_audio_bridge.on_companion_line)
 	if _menu_screen.has_signal(&"pokedex_cry_requested"):
