@@ -43,9 +43,15 @@ func test_every_missing_file_is_declared_expected() -> void:
 			assert_true(ResourceLoader.exists(file) or sfx["expected"], String(id))
 
 
-func test_son_0_ships_no_sound_file() -> void:
+func test_every_music_file_is_present_with_its_loop() -> void:
+	# SonA, T9 : les 54 fichiers de musique sont là ; une boucle part avant la fin du fichier.
 	for id: StringName in _library.track_ids():
-		assert_true(_library.track(id)["expected"], "Son.0 : %s attendu" % id)
+		var track := _library.track(id)
+		assert_false(track["expected"], "T9 : %s présent" % id)
+		var stream := load(track["file"]) as AudioStreamOggVorbis
+		assert_not_null(stream, String(id))
+		if stream != null and track["loop"]:
+			assert_lt(track["loop_offset"], stream.get_length() - 1.0, String(id))
 
 
 func test_tracks_carry_kind_loop_and_file() -> void:

@@ -520,6 +520,14 @@ Claude ne télécharge rien. T8 part de ce dossier : correspondance des noms ave
 découpe des boucles, normalisation à −16 LUFS, conversion en OGG q3, mesure. Licences (J34 T6,
 lignes audio) : source « **KHInsider (fichiers fournis par Kevin)** », jeu privé, cercle restreint.
 
+## 5 ter. Lot musique fait (T8–T9, 2026-10-25)
+
+54 OGG q3 (`oggenc`, vorbis-tools installé avec l'accord de Kevin) dans `assets/audio/music/`,
+**34,4 Mo**. Outils : `tools/audio/prepare_music.py` (correspondance des titres, boucle à
+l'échantillon près, jointure fondue 20 ms, −16 LUFS, crête ≤ −1 dBTP) et
+`tools/audio/measure_audio.py` (poids, durée, LUFS, crête, contrôle des jointures). 51 boucles
+exactes sur 52 ; « Cubone's Mother » ne se répète pas sur l'album (piste entière, T1 n° 8).
+
 ## 6. Questions ouvertes
 
 Aucune : SON-1 à SON-17 **validés par Kevin le 2026-10-24** (toutes les recommandations ;

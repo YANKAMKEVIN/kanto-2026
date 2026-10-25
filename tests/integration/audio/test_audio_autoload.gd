@@ -98,19 +98,46 @@ func test_music_changed_signal() -> void:
 
 
 func test_without_sink_missing_files_stay_silent_without_errors() -> void:
-	var audio := _audio(false)
-	audio.set_music(L.ZONE, &"pallet_town")
-	audio.play_jingle(&"obtained_badge")
-	assert_true(audio.play_sfx(&"ui_confirm"), "accepté, même sans fichier")
-	assert_true(audio.play_cry(25))
+	# Muet tolérant : un morceau et un jingle déclarés mais sans fichier.
+	var library := AudioLibrary.new()
+	library.load_dir()
+	library.add_tracks({ "tracks": {
+		"ghost_zone": { "file": "res://assets/audio/music/absent.ogg", "kind": "music",
+			"expected": true },
+		"ghost_jingle": { "file": "res://assets/audio/music/absent_j.ogg", "kind": "jingle",
+			"loop": false, "expected": true } } })
+	_orders.clear()
+	var audio: Node = AudioScript.new()
+	audio.library = library
+	add_child_autofree(audio)
+	audio.set_music(L.ZONE, &"ghost_zone")
+	audio.play_jingle(&"ghost_jingle")
+	assert_true(audio.play_sfx(&"ui_confirm"), "accepté, même sans fichier (SonC)")
+	assert_true(audio.play_cry(25), "accepté, même sans fichier (SonB)")
 	audio.set_ambience(&"sea")
-	assert_eq(audio.current_track(), &"pallet_town", "le jingle muet s'est terminé")
+	assert_eq(audio.current_track(), &"ghost_zone", "le jingle muet s'est terminé")
 	for player: AudioStreamPlayer in audio.get_music_players():
 		assert_false(player.playing, "aucun fichier : rien ne joue")
 
 
+func test_a_real_music_file_plays_and_loops_from_its_offset() -> void:
+	# SonA, T9 : le fichier existe ; il joue, boucle, et repart de « loop_offset ».
+	var audio := _audio(false)
+	audio.set_music(L.ZONE, &"pallet_town")
+	var player: AudioStreamPlayer = audio.get_music_player()
+	assert_true(player.playing)
+	var stream := player.stream as AudioStreamOggVorbis
+	assert_not_null(stream)
+	assert_true(stream.loop)
+	assert_almost_eq(stream.loop_offset, float(audio.library.track(&"pallet_town")["loop_offset"]),
+		0.001)
+	audio.play_jingle(&"pokemon_healed")
+	assert_eq(audio.current_track(), &"pokemon_healed", "un vrai jingle attend sa fin")
+	assert_false((audio.get_music_player().stream as AudioStreamOggVorbis).loop)
+
+
 func test_crossfade_fades_the_old_player_out() -> void:
-	# Sans fichier, les lecteurs ne jouent pas : le fondu se vérifie sur le volume posé.
+	# Le fondu se vérifie sur le volume des lecteurs (temps simulé).
 	var audio := _audio(false)
 	var clock := TweenClock.new(get_tree())
 	audio.set_music(L.ZONE, &"pallet_town")
