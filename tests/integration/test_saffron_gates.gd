@@ -2,8 +2,9 @@ extends GutTest
 ## Postes de Safrania (jalon 20 T25, docs/tech/jalon-20.md §2.16 ; décision de Kevin du
 ## 2026-10-19, Q-4 : A) : une boisson donnée au garde ouvre les quatre postes.
 ##
-## - Tant que la zone `saffron_city` n'est pas jouable (aujourd'hui : `maps: []`), le garde ne
-##   demande rien : texte 12, porte fermée, aucune variante « soif » (vraie donnée).
+## - Tant que la zone `saffron_city` n'est pas jouable (`maps: []` jusqu'au J26 T6 ; jouable
+##   depuis), le garde ne demande rien : texte 12, porte fermée, aucune variante « soif » (zone
+##   fermée simulée).
 ## - Zone déclarée jouable (source de zones du lecteur remplacée, vraie scène Boot sur
 ##   `route_8_gate`) : sans boisson → soif (216) ; avec chacune des trois → choix (217), OUI →
 ##   boisson retirée, `saffron_gates_open`, texte 219, le garde s'écarte en (3, 2) ; deux
@@ -55,10 +56,12 @@ func after_each() -> void:
 
 # --- Données : la zone n'est pas jouable --------------------------------------------------------
 
-func test_saffron_is_not_playable_yet() -> void:
+## Jalon 26 (T6) : la carte de Safrania est déclarée (`zones.json`) et construite : la zone est
+## jouable, les postes s'ouvrent avec une boisson (sans une ligne de code nouvelle).
+func test_saffron_is_playable_since_j26() -> void:
 	var zones := ZoneLibrary.new()
 	assert_true(zones.load_file())
-	assert_false(zones.is_playable(&"saffron_city"), "Safrania : maps vide jusqu'au J26")
+	assert_true(zones.is_playable(&"saffron_city"), "Safrania : cartes du J26 T6")
 	assert_true(zones.is_playable(&"route_8"))
 	assert_false(zones.is_playable(&"unknown_zone"))
 

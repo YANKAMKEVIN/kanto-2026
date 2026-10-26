@@ -23,7 +23,7 @@ func test_real_data_loads_without_error() -> void:
 	# Guérison (data/items/vermilion.json) ; jalon 16 : items_j16.json (CS01, CT24 ; la Super
 	# Potion du J16 est celle du J15) ; jalon 17 (T7) : CS05 (data/items/j17.json).
 	# Jalon 20 (T7) : items_j20.json (Super Ball, pierres, boissons, CT13, CT21, Clé Ascenseur,
-	# Scope Sylphe) ; jalon 20 (T11) : Rappel, Poupée Poké, objets X, Muscle +.
+	# Scope Sylphe) ; jalon 26 (T4) : items_j26.json (Master Ball) ; jalon 20 (T11) : Rappel, Poupée Poké, objets X, Muscle +.
 	# Passe systèmes 2 (S2B) : items_systemes2.json (Poké Flûte, Bicyclette) ; S2C : CS03 (hm03) ; S2D : CS04 (hm04) ; S2C-bis : cannes.
 	# Jalon 24 (T4) : items_j24.json (CT35 ; Hyper Ball, Hyper Potion et Total Soin sont ceux du J22).
 	# Jalon 21 (T4) : CT39 (data/items/items_j21.json ; la Poké Flûte est celle de la passe systèmes 2).
@@ -35,11 +35,11 @@ func test_real_data_loads_without_error() -> void:
 		&"card_key", &"dire_hit",
 		&"dome_fossil", &"escape_rope", &"fire_stone", &"fresh_water", &"full_heal", &"full_restore",
 		&"good_rod", &"great_ball", &"helix_fossil", &"hm01", &"hm02", &"hm03", &"hm04", &"hm05", &"hyper_potion", &"ice_heal", &"leaf_stone", &"lemonade",
-		&"lift_key", &"max_potion", &"max_revive", &"moon_stone", &"nugget", &"oak_parcel",
+		&"lift_key", &"master_ball", &"max_potion", &"max_revive", &"moon_stone", &"nugget", &"oak_parcel",
 		&"old_amber", &"old_rod", &"paralyze_heal", &"poke_ball",
 		&"poke_doll", &"poke_flute", &"potion", &"rare_candy", &"revive", &"secret_key", &"silph_scope", &"soda_pop",
 		&"ss_ticket", &"super_potion", &"super_rod", &"thunder_stone", &"tm01", &"tm09", &"tm11", &"tm13", &"tm14", &"tm19",
-		&"tm21", &"tm22", &"tm24", &"tm28", &"tm34", &"tm35", &"tm38", &"tm39", &"ultra_ball", &"water_stone", &"x_accuracy",
+		&"tm21", &"tm22", &"tm24", &"tm28", &"tm34", &"tm35", &"tm38", &"tm39", &"tm46", &"ultra_ball", &"water_stone", &"x_accuracy",
 		&"x_attack", &"x_defend", &"x_special", &"x_speed"] as Array[StringName])
 	var ball := _library.get_item(&"poke_ball")
 	assert_eq(ball.name, "Poké Ball")
@@ -65,11 +65,12 @@ func test_real_data_loads_without_error() -> void:
 		&"tm21", &"lift_key", &"silph_scope", &"tm39", &"bike_voucher", &"hyper_potion",
 		&"ultra_ball", &"full_heal", &"tm09", &"tm35",
 		&"secret_key", &"old_amber", &"tm38", &"max_potion", &"max_revive", &"tm14", &"tm22",
+		&"master_ball", &"tm46",
 		&"poke_flute", &"bicycle", &"card_key", &"hm02", &"hm03", &"hm04",
 		&"old_rod", &"good_rod", &"super_rod", &"hm05", &"escape_rope", &"moon_stone", &"dome_fossil", &"helix_fossil", &"tm01", &"super_potion",
 		&"full_restore"] as Array[StringName],
 		"ordre alphabétique des fichiers (items, items_j14, items_j16, items_j20, "
-		+ "items_j21, items_j22, items_j24, items_j25, items_systemes2, j17, mt_moon, vermilion)")
+		+ "items_j21, items_j22, items_j24, items_j25, items_j26, items_j27 (CT46), items_systemes2, j17, mt_moon, vermilion)")
 	assert_eq([ball.order, potion.order], [0, 1])
 
 

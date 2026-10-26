@@ -1,5 +1,5 @@
 {
-	"_doc": "Ascenseurs (jalon 20, dossier 23 §9, §13.4 ; docs/tech/jalon-20.md §2.3, lu par ElevatorLibrary). « car » : carte de la cabine. « key » : objet exigé (\"\" = aucun). « floors » : étages proposés au panneau, dans l'ordre affiché ; « map » / « spawn » : où mène la sortie de la cabine. Le toit du grand magasin n'est pas desservi (escalier du 5e) ; le repaire ne propose que B1F, B2F et B4F.",
+	"_doc": "Ascenseurs (jalon 20, dossier 23 §9, §13.4 ; docs/tech/jalon-20.md §2.3, lu par ElevatorLibrary). « car » : carte de la cabine. « key » : objet exigé (\"\" = aucun). « floors » : étages proposés au panneau, dans l'ordre affiché ; « map » / « spawn » : où mène la sortie de la cabine. Le toit du grand magasin n'est pas desservi (escalier du 5e) ; le repaire ne propose que B1F, B2F et B4F. La Sylphe SARL (jalon 26 T7) dessert ses 11 étages, sans clé (RB).",
 	"elevators": {
 		"celadon_dept": {
 			"car": "celadon_dept_elevator", "key": "",
@@ -17,6 +17,22 @@
 				{ "id": "b1f", "label": "B1F", "map": "rocket_hideout_b1f", "spawn": "from_elevator" },
 				{ "id": "b2f", "label": "B2F", "map": "rocket_hideout_b2f", "spawn": "from_elevator" },
 				{ "id": "b4f", "label": "B4F", "map": "rocket_hideout_b4f", "spawn": "from_elevator" }
+			]
+		},
+		"silph_co": {
+			"car": "silph_co_elevator", "key": "",
+			"floors": [
+				{ "id": "1f", "label": "1F", "map": "silph_co_1f", "spawn": "from_elevator" },
+				{ "id": "2f", "label": "2F", "map": "silph_co_2f", "spawn": "from_elevator" },
+				{ "id": "3f", "label": "3F", "map": "silph_co_3f", "spawn": "from_elevator" },
+				{ "id": "4f", "label": "4F", "map": "silph_co_4f", "spawn": "from_elevator" },
+				{ "id": "5f", "label": "5F", "map": "silph_co_5f", "spawn": "from_elevator" },
+				{ "id": "6f", "label": "6F", "map": "silph_co_6f", "spawn": "from_elevator" },
+				{ "id": "7f", "label": "7F", "map": "silph_co_7f", "spawn": "from_elevator" },
+				{ "id": "8f", "label": "8F", "map": "silph_co_8f", "spawn": "from_elevator" },
+				{ "id": "9f", "label": "9F", "map": "silph_co_9f", "spawn": "from_elevator" },
+				{ "id": "10f", "label": "10F", "map": "silph_co_10f", "spawn": "from_elevator" },
+				{ "id": "11f", "label": "11F", "map": "silph_co_11f", "spawn": "from_elevator" }
 			]
 		}
 	}

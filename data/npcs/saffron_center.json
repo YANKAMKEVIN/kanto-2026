@@ -1,0 +1,28 @@
+{
+	"nurse": {
+		"cell": [
+			7,
+			3
+		],
+		"facing": "down",
+		"sprite": "nurse"
+	},
+	"beaute": {
+		"cell": [
+			4,
+			6
+		],
+		"facing": "down",
+		"sprite": "beauty",
+		"dialogue": "saffron_center_beauty"
+	},
+	"gentleman": {
+		"cell": [
+			10,
+			5
+		],
+		"facing": "left",
+		"sprite": "gentleman",
+		"dialogue": "saffron_center_gentleman"
+	}
+}

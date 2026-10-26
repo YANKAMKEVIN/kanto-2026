@@ -161,6 +161,9 @@ extends RefCounted
 ## - FLUTE_WOKE : muet, un par Pokémon réveillé (son camp, sa place) ; [member on_field] : il
 ##   est en jeu (sa carte perd l'étiquette DOR) ;
 ## - ALL_WOKE : « Tous les Pokémon endormis se réveillent ! », puis l'adversaire joue.
+## Jalon 27 (Pied Sauté, Pied Voltige) :
+## - CRASHED : le lanceur s'écrase après un raté, une esquive ou une immunité ([member move_id],
+##   [member amount] PV perdus, [member hp], [member max_hp]) ; joué comme un contrecoup.
 ## Tous les autres événements sur un Pokémon portent dans [member status] son statut au moment
 ## de l'événement (SENT_OUT : la carte de PV l'affiche dès l'entrée ; FAINTED : toujours vide,
 ## le K.O. efface le statut).
@@ -187,6 +190,7 @@ enum Kind {
 	HEALED, SCREEN_STARTED, SCREEN_ENDED, STATS_RESET,
 	ITEM_ESCAPE, REVIVED, BATTLE_ITEM_USED,
 	FLUTE_PLAYED, FLUTE_WOKE, ALL_WOKE,
+	CRASHED,
 }
 enum SideId { PLAYER, FOE }
 

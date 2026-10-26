@@ -1,0 +1,39 @@
+# Boutique de Safrania (saffron_mart) — grille fonctionnelle v1 (jalon 26, T2 ; 2026-10-22).
+# COQUE CONNUE DU PROJET, recopiée telle quelle : tools/build_painted_interiors.gd `_poke_mart`
+# (15 × 10, enveloppe int_boutique_coque.png, mur du fond sur 3 rangées, caisse, deux rayons
+# muraux, deux présentoirs, plante ; sortie (6..8, 8)). Le T6 construit la carte par
+# `_poke_mart(&"saffron_mart", "SaffronMart", "Safrania", [&"saffron_city", &"from_mart"])` : cette
+# grille ne fait que DOCUMENTER la coque (emprises approchées) et porter les PNJ.
+# Source RB : pret/pokered data/maps/objects/SaffronMart.asm (vendeur, super nerd (4, 2),
+# dresseuse (6, 5), WALK) ; inventaire RB (Super Ball, Hyper Potion, Max Repousse, Corde Sortie,
+# Total Soin, Rappel) : données du T3, avec les objets qui existent.
+#
+# Légende : K mur (bloqué) · . sol · X sortie (praticable, PUSH ↓) · r rayon mural (2, 3), (12, 3) ·
+# b arrière-caisse (5..6, 3), (8..9, 3) · c caisse (6..8, 4) · q présentoir (3, 7), (11, 7) ·
+# x plante (bloqués). Le vendeur se tient en (7, 3), derrière la caisse.
+
+CARTE saffron_mart
+
+PRATICABLES .X
+
+GRILLE 15 10
+00 KKKKKKKKKKKKKKK
+01 KKKKKKKKKKKKKKK
+02 KKKKKKKKKKKKKKK
+03 K.r..bb.bb..r.K
+04 K.....ccc.....K
+05 K.............K
+06 K.............K
+07 K..q.......q..K
+08 K.....XXX....xK
+09 KKKKKKKKKKKKKKK
+FIN
+
+POSITIONS
+sortie              warp           6..8,8       libre   to=saffron_city spawn=from_mart  # PUSH ↓ → saffron_city, from_mart
+entrance            spawn          7,8          libre   facing=up  # arrivée depuis Safrania (sur le paillasson)
+counter             spawn          7,5          libre   facing=up  # devant la caisse
+vendeur             pnj            7,3          bloque  role=clerk facing=down shop=saffron_mart  # derrière la caisse ; on lui parle depuis (6..8, 5)
+super_nerd          pnj            4,5          bloque  role=saffron_mart_super_nerd facing=down  # RB (4, 2)
+dresseuse           pnj            10,6         bloque  role=saffron_mart_cooltrainer facing=left mouvement=libre  # RB (6, 5), WALK ANY_DIR
+FIN

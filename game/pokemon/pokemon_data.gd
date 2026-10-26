@@ -71,6 +71,8 @@ const _EFFECT_KEYS: Dictionary[MoveEffect.Kind, Array] = {
 	MoveEffect.Kind.HEAL: ["kind", "fraction"],
 	MoveEffect.Kind.SCREEN: ["kind", "screen"],
 	MoveEffect.Kind.HAZE: ["kind"],
+	MoveEffect.Kind.CRASH: ["kind", "amount"],
+	MoveEffect.Kind.COUNTER: ["kind"],
 	MoveEffect.Kind.METRONOME: ["kind"],
 }
 ## Clés d'effet facultatives (toutes les autres de [constant _EFFECT_KEYS] sont obligatoires).
@@ -616,6 +618,17 @@ func _parse_effect(value: Variant, where: String) -> MoveEffect:
 			MoveEffect.Kind.RECOIL_DAMAGE, MoveEffect.Kind.RECHARGE, MoveEffect.Kind.OHKO,
 			MoveEffect.Kind.HEAL, MoveEffect.Kind.HAZE, MoveEffect.Kind.METRONOME]:
 		return effect if _read_effect_j12(entry, effect, where) and ok else null
+	# Jalon 27 : Pied Sauté, Pied Voltige (« amount » facultatif, 1 PV par défaut), Riposte.
+	if effect.kind == MoveEffect.Kind.CRASH:
+		effect.amount = MoveEffect.CRASH_RB_AMOUNT
+		if entry.has("amount"):
+			if _read_int(entry["amount"], 1, _FIXED_VALUE_MAX, where + " amount"):
+				effect.amount = int(entry["amount"])
+			else:
+				ok = false
+		return effect if ok else null
+	if effect.kind == MoveEffect.Kind.COUNTER:
+		return effect if ok else null
 	if effect.kind == MoveEffect.Kind.SCREEN:
 		if entry.get("screen") is String and MoveEffect.SCREENS.has(StringName(entry["screen"])):
 			effect.screen = StringName(entry["screen"])

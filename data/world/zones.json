@@ -139,7 +139,19 @@
 			"subtitle": "Route 7 — Route 8",
 			"description": "Un long couloir carrelé sous Safrania. Des néons froids, et presque personne."
 		},
-		"saffron_city": { "name": "Safrania", "kind": "town", "maps": [] },
+		"saffron_city": {
+			"name": "Safrania", "kind": "town",
+			"maps": [
+				"saffron_city", "saffron_center", "saffron_mart", "saffron_psychic_house", "saffron_pidgey_house",
+				"saffron_copycat_house_1f", "saffron_copycat_house_2f",
+				"silph_co_1f", "silph_co_2f", "silph_co_3f", "silph_co_4f", "silph_co_5f",
+				"silph_co_6f", "silph_co_7f", "silph_co_8f", "silph_co_9f", "silph_co_10f", "silph_co_11f",
+				"silph_co_elevator", "saffron_gym", "fighting_dojo"
+			],
+			"services": [{ "id": "pokemon_center", "found_on": "saffron_center" }, { "id": "poke_mart", "found_on": "saffron_mart" }, { "id": "gym", "found_on": "saffron_gym" }],
+			"description": "Une grande ville affairée, cœur commercial de Kanto. La Sylphe SARL y a son siège.",
+			"draft": true
+		},
 		"route_7": {
 			"name": "Route 7", "kind": "route",
 			"maps": ["route_7", "route_7_gate", "route_7_underground_gate"],

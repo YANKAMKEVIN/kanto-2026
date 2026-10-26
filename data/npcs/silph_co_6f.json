@@ -1,0 +1,129 @@
+{
+	"silph_co_6f_1": {
+		"cell": [
+			17,
+			3
+		],
+		"facing": "right",
+		"sprite": "rocket_grunt_m",
+		"dialogue": "silph_co_6f_1_after",
+		"unless": [
+			"silph_giovanni_defeated"
+		],
+		"trainer": {
+			"id": "silph_co_6f_1",
+			"sight": 2,
+			"before": "silph_co_6f_1_before",
+			"defeated": "silph_co_6f_1_defeated"
+		}
+	},
+	"silph_co_6f_2": {
+		"cell": [
+			7,
+			8
+		],
+		"facing": "down",
+		"sprite": "researcher",
+		"dialogue": "silph_co_6f_2_after",
+		"unless": [
+			"silph_giovanni_defeated"
+		],
+		"trainer": {
+			"id": "silph_co_6f_2",
+			"sight": 3,
+			"before": "silph_co_6f_2_before",
+			"defeated": "silph_co_6f_2_defeated"
+		}
+	},
+	"silph_co_6f_3": {
+		"cell": [
+			14,
+			15
+		],
+		"facing": "left",
+		"sprite": "rocket_grunt_f",
+		"dialogue": "silph_co_6f_3_after",
+		"unless": [
+			"silph_giovanni_defeated"
+		],
+		"trainer": {
+			"id": "silph_co_6f_3",
+			"sight": 2,
+			"before": "silph_co_6f_3_before",
+			"defeated": "silph_co_6f_3_defeated"
+		}
+	},
+	"silph_co_6f_worker_1": {
+		"cell": [
+			10,
+			6
+		],
+		"facing": "down",
+		"sprite": "engineer",
+		"dialogue": "silph_co_6f_worker_1"
+	},
+	"silph_co_6f_worker_2": {
+		"cell": [
+			20,
+			6
+		],
+		"facing": "down",
+		"sprite": "engineer",
+		"dialogue": "silph_co_6f_worker_2"
+	},
+	"silph_co_6f_worker_3": {
+		"cell": [
+			21,
+			6
+		],
+		"facing": "down",
+		"sprite": "cooltrainer_f",
+		"dialogue": "silph_co_6f_worker_3"
+	},
+	"silph_co_6f_worker_4": {
+		"cell": [
+			11,
+			10
+		],
+		"facing": "right",
+		"sprite": "cooltrainer_f",
+		"dialogue": "silph_co_6f_worker_4"
+	},
+	"silph_co_6f_worker_5": {
+		"cell": [
+			18,
+			13
+		],
+		"facing": "up",
+		"sprite": "engineer",
+		"dialogue": "silph_co_6f_worker_5"
+	},
+	"silph_co_6f_item_10": {
+		"cell": [
+			2,
+			15
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "silph_co_6f_item_10",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_silph_co_6f_item_10"
+		]
+	},
+	"silph_co_6f_item_9": {
+		"cell": [
+			3,
+			12
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "silph_co_6f_item_9",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_silph_co_6f_item_9"
+		]
+	}
+}

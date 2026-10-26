@@ -1,0 +1,42 @@
+# Maison du Copieur, étage, Safrania (saffron_copycat_house_2f) — grille fonctionnelle v1 (jalon 26,
+# T2 ; 2026-10-22). Chambre de la Copieuse : enveloppe des maisons du projet (15 × 10) SANS sortie,
+# escalier descendant dans le mur du fond (12..13, 2), au-dessus de celui du rez-de-chaussée.
+# Source RB : pret/pokered data/maps/objects/CopycatsHouse2F.asm (Copieuse (4, 3) WALK ANY_DIR,
+# Doduo (4, 6) WALK LEFT_RIGHT, poupées (5, 1), (2, 0), (1, 6), console (3, 5), ordinateur (0, 1)),
+# objet caché RB : Pépite en (1, 1) (data/events/hidden_events.asm). Q26-3 : SANS remise de CT (RB :
+# la Poupée donne la CT31 Copie, reportée) [D].
+#
+# Légende :
+#   K mur (bloqué)          . sol (praticable)
+#   E escalier vers le rez-de-chaussée (praticable, STEP_ON ↑ ; arrivée une case devant, tournée ↓)
+#   P ordinateur (1, 3)   B bibliothèque (2, 3) (Pépite cachée)   L lit (10..11, 3..4)
+#   v console de jeu (5, 5)   t coin des poupées (1..2, 7) (bloqués)
+
+CARTE saffron_copycat_house_2f
+
+PRATICABLES .E
+
+GRILLE 15 10
+00 KKKKKKKKKKKKKKK
+01 KKKKKKKKKKKKKKK
+02 KKKKKKKKKKKKEEK
+03 KPB.......LL..K
+04 K..........LL.K
+05 K....v........K
+06 K.............K
+07 Ktt...........K
+08 KKKKKKKKKKKKKKK
+09 KKKKKKKKKKKKKKK
+FIN
+
+POSITIONS
+vers_1f             escalier       12..13,2     libre   vers=saffron_copycat_house_1f:from_2f paire=copieur sens=descend  # STEP_ON ↑ → rez-de-chaussée (RB warp 1)
+from_1f             spawn          12..13,3     libre   paire=copieur facing=down  # arrivée depuis le rez-de-chaussée, une case devant l'escalier
+copieuse            pnj            6,5          bloque  role=saffron_copycat facing=down mouvement=libre  # RB Copieuse (4, 3), WALK ANY_DIR ; imite le joueur
+doduo               pnj            8,6          bloque  role=saffron_copycat_doduo facing=left mouvement=gauche_droite  # RB Doduo (4, 6), WALK LEFT_RIGHT
+poupee_1            pnj            4,3          bloque  role=saffron_copycat_doll facing=down  # RB poupée (5, 1) ; décor
+poupee_2            pnj            1,7          bloque  role=saffron_copycat_doll facing=right  # RB poupée Mélofée (1, 6) ; sur le tapis
+ordinateur          examen         1,3          bloque  depuis=1,4 face=N  # RB ordinateur (0, 1)
+console             examen         5,5          bloque  depuis=5,6 face=N  # RB console de jeu (3, 5)
+copycat_hidden_1    objet_cache    2,3          bloque  item=nugget depuis=2,4 face=N  # RB hidden_event NUGGET (1, 1), Pépite
+FIN

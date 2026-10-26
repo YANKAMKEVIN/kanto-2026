@@ -13,7 +13,8 @@
 		"learnset": [
 			[1, "teleport"], [1, "confusion"], [1, "disable"], [16, "confusion"], [20, "disable"],
 			[27, "psybeam"], [31, "recover"], [38, "psychic"], [42, "reflect"]
-		]
+		],
+		"evolutions": [{ "into": "alakazam", "method": "trade" }]
 	},
 	"machop": {
 		"dex": 66, "name": "Machoc", "types": ["fighting"],

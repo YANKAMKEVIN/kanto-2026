@@ -1,0 +1,148 @@
+{
+	"saffron_gym_sabrina": {
+		"variants": [
+			{
+				"unless": [
+					"badge_marsh"
+				],
+				"steps": [
+					{
+						"face": "morgane",
+						"to": "player"
+					},
+					{
+						"dialogue": "saffron_gym_sabrina_intro",
+						"unless": [
+							"sabrina_met"
+						]
+					},
+					{
+						"dialogue": "saffron_gym_sabrina_resume",
+						"if": [
+							"sabrina_met"
+						]
+					},
+					{
+						"champion_card": "saffron_gym_sabrina",
+						"unless": [
+							"sabrina_met"
+						]
+					},
+					{
+						"set": [
+							"sabrina_met"
+						]
+					},
+					{
+						"battle": "saffron_gym_sabrina",
+						"win": [
+							"badge_marsh"
+						]
+					},
+					{
+						"wait": 0.6,
+						"if": [
+							"badge_marsh"
+						]
+					},
+					{
+						"dialogue": "saffron_gym_sabrina_won",
+						"if": [
+							"badge_marsh"
+						]
+					},
+					{
+						"badge": "marsh",
+						"if": [
+							"badge_marsh"
+						]
+					},
+					{
+						"dialogue": "saffron_gym_sabrina_badge",
+						"if": [
+							"badge_marsh"
+						]
+					},
+					{
+						"dialogue": "saffron_gym_sabrina_tm",
+						"if": [
+							"badge_marsh"
+						],
+						"unless": [
+							"tm46_received"
+						]
+					},
+					{
+						"give": "tm46",
+						"count": 1,
+						"if": [
+							"badge_marsh"
+						],
+						"unless": [
+							"tm46_received"
+						]
+					},
+					{
+						"dialogue": "saffron_gym_sabrina_tm_use",
+						"if": [
+							"badge_marsh"
+						],
+						"unless": [
+							"tm46_received"
+						]
+					},
+					{
+						"set": [
+							"tm46_received"
+						],
+						"if": [
+							"badge_marsh"
+						]
+					},
+					{
+						"dialogue": "saffron_gym_sabrina_lost",
+						"unless": [
+							"badge_marsh"
+						]
+					},
+					{
+						"wake_up": true,
+						"unless": [
+							"badge_marsh"
+						]
+					}
+				]
+			}
+		]
+	},
+	"saffron_gym_sabrina_tm_late": {
+		"variants": [
+			{
+				"steps": [
+					{
+						"face": "morgane",
+						"to": "player"
+					},
+					{
+						"dialogue": "saffron_gym_sabrina_tm_late"
+					},
+					{
+						"dialogue": "saffron_gym_sabrina_tm"
+					},
+					{
+						"give": "tm46",
+						"count": 1
+					},
+					{
+						"dialogue": "saffron_gym_sabrina_tm_use"
+					},
+					{
+						"set": [
+							"tm46_received"
+						]
+					}
+				]
+			}
+		]
+	}
+}

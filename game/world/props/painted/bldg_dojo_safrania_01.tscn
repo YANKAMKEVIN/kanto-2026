@@ -1,0 +1,39 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_rmm1q"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_jxg3q"]
+[ext_resource type="Texture2D" path="res://assets/world/buildings/bldg_dojo_safrania_01.png" id="3_l6hoq"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/cast_shadow.tres" id="4_qyo6m"]
+[ext_resource type="Texture2D" path="res://assets/world/buildings/bldg_dojo_safrania_01_shadow.png" id="5_g6gds"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/contact_shadow.tres" id="6_wwwc7"]
+[ext_resource type="Texture2D" path="res://assets/world/buildings/bldg_dojo_safrania_01_contact.png" id="7_2tm6m"]
+
+[node name="BldgDojoSafrania01" type="Node2D" unique_id=282691792]
+script = ExtResource("1_rmm1q")
+footprint = Array[Vector2i]([Vector2i(-5, -6), Vector2i(-4, -6), Vector2i(-3, -6), Vector2i(-2, -6), Vector2i(-1, -6), Vector2i(0, -6), Vector2i(1, -6), Vector2i(2, -6), Vector2i(3, -6), Vector2i(4, -6), Vector2i(-5, -5), Vector2i(-4, -5), Vector2i(-3, -5), Vector2i(-2, -5), Vector2i(-1, -5), Vector2i(0, -5), Vector2i(1, -5), Vector2i(2, -5), Vector2i(3, -5), Vector2i(4, -5), Vector2i(-5, -4), Vector2i(-4, -4), Vector2i(-3, -4), Vector2i(-2, -4), Vector2i(-1, -4), Vector2i(0, -4), Vector2i(1, -4), Vector2i(2, -4), Vector2i(3, -4), Vector2i(4, -4), Vector2i(-5, -3), Vector2i(-4, -3), Vector2i(-3, -3), Vector2i(-2, -3), Vector2i(-1, -3), Vector2i(0, -3), Vector2i(1, -3), Vector2i(2, -3), Vector2i(3, -3), Vector2i(4, -3), Vector2i(-5, -2), Vector2i(-4, -2), Vector2i(-3, -2), Vector2i(-2, -2), Vector2i(-1, -2), Vector2i(0, -2), Vector2i(1, -2), Vector2i(2, -2), Vector2i(3, -2), Vector2i(4, -2), Vector2i(-5, -1), Vector2i(-4, -1), Vector2i(-3, -1), Vector2i(-2, -1), Vector2i(-1, -1), Vector2i(0, -1), Vector2i(1, -1), Vector2i(2, -1), Vector2i(3, -1), Vector2i(4, -1), Vector2i(-5, 0), Vector2i(-4, 0), Vector2i(-3, 0), Vector2i(-2, 0), Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vector2i(4, 0)])
+fade_when_covering = true
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=2014408823]
+unique_name_in_owner = true
+material = ExtResource("2_jxg3q")
+texture = ExtResource("3_l6hoq")
+centered = false
+offset = Vector2(-480, -696)
+
+[node name="CastShadow" type="Sprite2D" parent="." unique_id=1182252951 groups=["cast_shadows"]]
+z_index = -2
+z_as_relative = false
+material = ExtResource("4_qyo6m")
+scale = Vector2(2, 2)
+texture = ExtResource("5_g6gds")
+centered = false
+offset = Vector2(-252.5, -2)
+
+[node name="ContactShadow" type="Sprite2D" parent="." unique_id=49201941 groups=["contact_shadows"]]
+z_index = -2
+z_as_relative = false
+material = ExtResource("6_wwwc7")
+scale = Vector2(2, 2)
+texture = ExtResource("7_2tm6m")
+centered = false
+offset = Vector2(-244, -33)

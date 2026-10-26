@@ -1,0 +1,37 @@
+{
+	"clerk": {
+		"cell": [
+			7,
+			3
+		],
+		"facing": "down",
+		"sprite": "clerk"
+	},
+	"super_nerd": {
+		"cell": [
+			4,
+			5
+		],
+		"facing": "down",
+		"sprite": "nerd",
+		"dialogue": "saffron_mart_super_nerd"
+	},
+	"dresseuse": {
+		"cell": [
+			10,
+			6
+		],
+		"facing": "left",
+		"sprite": "cooltrainer_f",
+		"dialogue": "saffron_mart_cooltrainer",
+		"look": {
+			"facings": [
+				"down",
+				"left",
+				"down",
+				"right"
+			],
+			"every": 4.0
+		}
+	}
+}

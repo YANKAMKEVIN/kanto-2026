@@ -1,0 +1,65 @@
+{
+	"silph_co_9f_1": {
+		"cell": [
+			2,
+			4
+		],
+		"facing": "up",
+		"sprite": "rocket_grunt_m",
+		"dialogue": "silph_co_9f_1_after",
+		"unless": [
+			"silph_giovanni_defeated"
+		],
+		"trainer": {
+			"id": "silph_co_9f_1",
+			"sight": 4,
+			"before": "silph_co_9f_1_before",
+			"defeated": "silph_co_9f_1_defeated"
+		}
+	},
+	"silph_co_9f_2": {
+		"cell": [
+			21,
+			13
+		],
+		"facing": "down",
+		"sprite": "researcher",
+		"dialogue": "silph_co_9f_2_after",
+		"unless": [
+			"silph_giovanni_defeated"
+		],
+		"trainer": {
+			"id": "silph_co_9f_2",
+			"sight": 2,
+			"before": "silph_co_9f_2_before",
+			"defeated": "silph_co_9f_2_defeated"
+		}
+	},
+	"silph_co_9f_3": {
+		"cell": [
+			13,
+			16
+		],
+		"facing": "up",
+		"sprite": "rocket_grunt_f",
+		"dialogue": "silph_co_9f_3_after",
+		"unless": [
+			"silph_giovanni_defeated"
+		],
+		"trainer": {
+			"id": "silph_co_9f_3",
+			"sight": 4,
+			"before": "silph_co_9f_3_before",
+			"defeated": "silph_co_9f_3_defeated"
+		}
+	},
+	"silph_co_9f_nurse": {
+		"cell": [
+			3,
+			14
+		],
+		"facing": "down",
+		"sprite": "nurse",
+		"dialogue": "silph_co_9f_nurse"
+	}
+}
