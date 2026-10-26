@@ -194,6 +194,7 @@ func test_contact_dash_reaches_toward_target() -> void:
 
 func test_bolt_shown_during_travel_with_fixed_ends() -> void:
 	var plan := _plan(&"thunder_shock")
+	plan.art.clear() # formes en code (repli sans art)
 	var stage := _stage()
 	_player.play(plan, stage)
 	var impact := plan.phase(MoveFxPlan.IMPACT)
@@ -207,6 +208,7 @@ func test_bolt_shown_during_travel_with_fixed_ends() -> void:
 
 func test_projectile_travels_for_fire() -> void:
 	var plan := _plan(&"ember")
+	plan.art.clear() # formes en code (repli sans art)
 	var stage := _stage()
 	_player.play(plan, stage)
 	var travel := plan.phase(MoveFxPlan.TRAVEL)
@@ -218,6 +220,57 @@ func test_projectile_travels_for_fire() -> void:
 	assert_gt(projectile.position.distance_to(from), 1.0, "a quitté l'origine")
 	assert_gt(projectile.position.distance_to(to), 1.0, "n'est pas encore arrivé")
 	_player.stop()
+
+
+func test_painted_bolt_stretches_from_origin_to_target_then_star_on_impact() -> void:
+	# T7 : Éclair en art peint (arc tendu de l'origine à la cible, décharge en étoile à l'impact).
+	var plan := _plan(&"thunder_shock")
+	assert_eq(plan.art.get(&"bolt"), &"arc_electrique_a")
+	assert_eq(plan.art.get(&"cheeks"), &"arc_electrique_b", "signature Éclair : les joues")
+	var stage := _stage()
+	_player.play(plan, stage)
+	var impact := plan.phase(MoveFxPlan.IMPACT)
+	_player.pose(impact.start + 0.01)
+	var arc := _player.get_art(MoveFxPlayer.Flip.TRAVEL)
+	assert_true(arc.visible, "l'arc peint est là à l'impact")
+	assert_false(_player.get_bolt().visible, "l'art remplace la forme en code")
+	assert_eq(arc.position, stage.origin(), "part de l'origine")
+	var frame := arc.texture.get_width() / float(arc.hframes)
+	assert_almost_eq(arc.scale.x * frame, stage.origin().distance_to(stage.impact_point()), 0.5,
+		"arrive sur la cible")
+	assert_true(_player.get_art(MoveFxPlayer.Flip.IMPACT).visible, "décharge en étoile")
+	_player.stop()
+	assert_false(arc.visible, "rangé à la fin")
+
+
+func test_painted_fireball_travels_and_contact_stamps_its_variant() -> void:
+	var plan := _plan(&"ember")
+	var stage := _stage()
+	_player.play(plan, stage)
+	var travel := plan.phase(MoveFxPlan.TRAVEL)
+	_player.pose(travel.start + travel.duration * 0.5)
+	var ball := _player.get_art(MoveFxPlayer.Flip.TRAVEL)
+	assert_true(ball.visible, "la boule de feu peinte part")
+	assert_gt(ball.position.distance_to(stage.origin()), 1.0)
+	assert_gt(ball.position.distance_to(stage.impact_point()), 1.0)
+	_player.stop()
+	for case: Array in [[&"scratch", &"griffes"], [&"bite", &"machoires"], [&"tackle", &"lueur_douce"]]:
+		var contact := _plan(case[0])
+		assert_eq(contact.art.get(&"stamp"), case[1], String(case[0]))
+		_player.play(contact, stage)
+		var hit := contact.phase(MoveFxPlan.IMPACT)
+		_player.pose(hit.start + hit.duration * 0.2)
+		assert_true(_player.get_art(MoveFxPlayer.Flip.IMPACT).visible, "marque peinte")
+		_player.stop()
+
+
+func test_every_art_id_of_the_data_exists() -> void:
+	for move_id: StringName in _catalog.move_ids():
+		if _data.get_move(move_id) == null:
+			continue # attaque pas encore en données (annexe A)
+		var plan := _plan(move_id)
+		for role: StringName in plan.art:
+			assert_true(FxArt.has(plan.art[role]), "%s : %s" % [move_id, plan.art[role]])
 
 
 func test_miss_overshoots_target() -> void:

@@ -359,3 +359,5 @@ jusqu'à l'Âme. Aucune carte de QA (`qa_manoir`, `qa_cramois` du plan jamais cr
 | `j25_echanges.json` | Cramois'Île devant le Labo (`from_labo`, ↑), Tortank, Raichu N42 **compagnon**, Ponyta N30, Pikachu N25, Vieil Ambre au Sac : échanges d'Hector (Raichu), Marc (Ponyta), Lina (refus sans Mimitoss), Ptéra N30 |
 | `j25_argenta.json` | Argenta devant le Musée (`from_museum`, ↓), Tortank N46 et Herbizarre N30 (Coupe) : arbre à Couper, porte arrière, comptoir, Vieil Ambre |
 | `j25_arene.json` | Cramois'Île devant l'Arène (`from_arene`, ↑), **Clé Secrète** et `got_pokemon_mansion_b1f_item_5` : porte (76–77), quiz, Dresseurs, Auguste, Badge Volcan, CT38 ; perdu au premier essai sur le S24 (`jalon-25-equilibrage.md` §5) |
+| `fx_gallery.json` | Combat vivant (CV.0, T8) : **galerie d'effets** à la place de la partie (clé `fx_gallery`) : une attaque par famille en boucle sur le décor de la Route 1, en Complètes ; le journal écrit `[galerie] <attaque> fps=… min=…` puis `[galerie] cycle …` à chaque tour (mesure du §2.8) |
+| `fx_gallery_fast.json` | Même galerie en mode Rapides |

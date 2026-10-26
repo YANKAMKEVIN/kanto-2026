@@ -176,6 +176,11 @@ func has_impact(id: StringName) -> bool:
 	return _impacts.has(id)
 
 
+## Variante d'impact [param id] du Contact (vide si inconnue).
+func impact(id: StringName) -> Dictionary:
+	return _impacts.get(id, {})
+
+
 func modifier(id: StringName) -> Dictionary:
 	return _modifiers.get(id, {})
 

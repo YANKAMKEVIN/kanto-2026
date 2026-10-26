@@ -479,7 +479,9 @@ enchaîne les attaques sans avoir à jouer, plus un vrai combat.
 > branchement fait le même jour** : `MoveFxPlayer`, `MoveFxStage`, `BattleCamera`, `FxParticlePool`,
 > `FxWorldLight`, galerie autonome `game/battle/fx/fx_gallery.tscn`. **Branchement de T3 et T4 faits
 > le 2026-10-27** (après la fusion du J23) : le temps MOVE joue le plan jusqu'au premier impact, le
-> DAMAGE descend la barre pendant l'impact ; sons aux repères `launch` / `impact`. Reste T7, T8.
+> DAMAGE descend la barre pendant l'impact ; sons aux repères `launch` / `impact`. **T7 fait** (art de
+> la vague 1 par les données : `fx.art`, `impacts.*.art`, `signatures.eclair.art`) ; **T8** : départ
+> `fx_gallery` fait, reste la mesure sur S24 et A17.
 
 | Tâche | Contenu | Critère d'acceptation |
 |---|---|---|

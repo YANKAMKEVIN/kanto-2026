@@ -60,6 +60,20 @@ const CORE_WIDTH: float = 0.4
 const HALO_SIZE: float = 2.4
 const HALO_ALPHA: float = 0.55
 const MARK_LENGTH: float = 0.55
+## Art peint (CV.1, [FxArt]) [D] : cadence des flipbooks, tailles en hauteurs d'écran (projectile,
+## épaisseur de l'arc, étincelles des joues), en hauteurs de la cible (impact, marque du Contact).
+const FLIP_FPS: float = 24.0
+const ART_PROJECTILE: float = 0.45
+const ART_BOLT_HEIGHT: float = 0.32
+const ART_CHEEKS: float = 0.10
+const ART_IMPACT: float = 1.7
+const ART_STAMP: float = 0.8
+const ART_PARTICLE: float = 0.05
+## Art de lumière (mélange additif) : un corps en mélange normal dessous (l'alpha de l'image suit
+## sa luminance), sans quoi il disparaît sur un décor de plein jour (vu en capture) ; opacité [D].
+const ART_BODY_ALPHA: float = 0.85
+## Rôles des sprites d'art : le trajet (projectile, arc), l'impact, deux étincelles de joues.
+enum Flip { TRAVEL, IMPACT, EXTRA_A, EXTRA_B }
 
 var speed_scale: float = 1.0
 var camera: BattleCamera = BattleCamera.new()
@@ -70,6 +84,10 @@ var _projectile: Sprite2D
 var _bolt: Line2D
 var _beam: Line2D
 var _marks: Array[Line2D] = []
+var _flips: Array[Sprite2D] = []
+var _flip_additive: CanvasItemMaterial
+## Instant de la pose en cours (cadence des flipbooks).
+var _t: float = 0.0
 var _tween: Tween
 var _plan: MoveFxPlan
 var _stage: MoveFxStage
@@ -178,6 +196,11 @@ func get_beam() -> Line2D:
 	return _beam
 
 
+## Sprite d'art peint du rôle [param role] (tests, galerie).
+func get_art(role: Flip) -> Sprite2D:
+	return _flips[role]
+
+
 ## Pose de la scène à l'instant [param t] (s) de l'attaque en cours (galerie, figé image par
 ## image).
 func pose(t: float) -> void:
@@ -187,6 +210,7 @@ func pose(t: float) -> void:
 	if phase == null:
 		return
 	var k := clampf((t - phase.start) / phase.duration, 0.0, 1.0) if phase.duration > 0.0 else 1.0
+	_t = t
 	_hide_shapes()
 	_pose_user(phase, k)
 	_pose_effect(phase, k)
@@ -214,8 +238,11 @@ func _start_phase(phase: MoveFxPlan.Phase) -> void:
 	match phase.name:
 		MoveFxPlan.ANTICIPATION, MoveFxPlan.CHARGE:
 			if not _is_contact():
-				_pool.burst(_stage.origin(), roundi(_plan.particles / 3.0), palette,
-					FxParticlePool.Shape.GATHER, 24.0, 0.12 * height, phase.duration)
+				var points := _stage.origins if not _stage.origins.is_empty() \
+					else PackedVector2Array([_stage.origin()])
+				for point: Vector2 in points:
+					_art_burst(&"charge", point, roundi(_plan.particles / 3.0 / points.size()),
+						FxParticlePool.Shape.GATHER, 24.0, 0.12 * height, phase.duration)
 		MoveFxPlan.IMPACT:
 			_impact_burst(phase)
 		MoveFxPlan.MISS:
@@ -235,25 +262,48 @@ func _impact_burst(phase: MoveFxPlan.Phase) -> void:
 	var reach := 0.16 * height
 	match _plan.bricks.get("impact", ""):
 		"rising_aura", "rising_sparkles":
-			_pool.burst(at, _plan.particles, palette, FxParticlePool.Shape.RISE, 26.0, reach, life)
+			_art_burst(&"particle", at, _plan.particles, FxParticlePool.Shape.RISE, 26.0, reach, life)
 		"falling_aura", "poison_drops", "leaf_fall":
-			_pool.burst(at, _plan.particles, palette, FxParticlePool.Shape.FALL, 26.0, reach * 0.6,
-				life)
+			_art_burst(&"particle", at, _plan.particles, FxParticlePool.Shape.FALL, 26.0,
+				reach * 0.6, life)
 		"splash":
-			_pool.burst(at, _plan.particles, palette, FxParticlePool.Shape.FALL, 24.0, reach, life)
+			_art_burst(&"particle", at, _plan.particles, FxParticlePool.Shape.FALL, 24.0, reach, life)
 		"debris":
-			_pool.burst(at, _plan.particles, palette, FxParticlePool.Shape.FALL, 34.0, reach, life)
+			_art_burst(&"particle", at, _plan.particles, FxParticlePool.Shape.FALL, 34.0, reach, life)
 		"ember_burst":
-			_pool.burst(at, _plan.particles, palette, FxParticlePool.Shape.BURST, 30.0, reach, life)
-			_pool.burst(at, roundi(_plan.particles / 3.0), palette, FxParticlePool.Shape.RISE, 22.0,
+			_art_burst(&"particle", at, _plan.particles, FxParticlePool.Shape.BURST, 30.0, reach, life)
+			_art_burst(&"rise", at, roundi(_plan.particles / 3.0), FxParticlePool.Shape.RISE, 22.0,
 				reach * 0.8, life * 1.4, true)
 		_:
-			_pool.burst(at, _plan.particles, palette, FxParticlePool.Shape.BURST, 30.0, reach, life)
+			_art_burst(&"particle", at, _plan.particles, FxParticlePool.Shape.BURST, 30.0, reach, life)
+	if _plan.art.has(&"fallout"):
+		# Retombée (couche 8 du §2.9) : un peu de fumée qui monte de la cible.
+		_art_burst(&"fallout", at, roundi(_plan.particles / 6.0), FxParticlePool.Shape.RISE, 40.0,
+			reach * 0.5, life * 1.8)
+	if _plan.art.has(&"feathers") and _plan.target_types.has(&"flying"):
+		# Éclair sur un Pokémon Vol : des plumes tombent (dossier 05 §10).
+		_art_burst(&"feathers", at, 8, FxParticlePool.Shape.FALL, 40.0, reach * 0.5, 1.0)
 	if _plan.world.has(&"dust"):
 		var feet := Vector2(_stage.target_rect.get_center().x, _stage.target_rect.end.y)
 		_pool.burst(feet, roundi(_plan.particles / 2.0),
 			PackedColorArray([Color("#E8DCC4"), Color("#A89478")]), FxParticlePool.Shape.RISE,
-			26.0, 0.06 * height, 0.6, false)
+			26.0, 0.06 * height, 0.6, false, _art_texture(&"dust"))
+
+
+## Éclat de particules du rôle [param role] du plan : particule peinte s'il y en a une (taille
+## [constant ART_PARTICLE] au moins, son mélange), sinon le point doux teinté par la palette.
+func _art_burst(role: StringName, at: Vector2, amount: int, shape: FxParticlePool.Shape,
+		size: float, reach: float, lifetime: float, additive: bool = false) -> void:
+	var info := FxArt.particle(_plan.art.get(role, &""))
+	if info.is_empty():
+		_pool.burst(at, amount, _plan.palette, shape, size, reach, lifetime, additive)
+		return
+	_pool.burst(at, amount, _plan.palette, shape, maxf(size * 1.6,
+		ART_PARTICLE * _stage.view_size.y), reach, lifetime, info["additive"], info["texture"])
+
+
+func _art_texture(role: StringName) -> Texture2D:
+	return FxArt.particle(_plan.art.get(role, &"")).get("texture", null)
 
 
 # --- Lanceur ---------------------------------------------------------------------------
@@ -334,8 +384,10 @@ func _pose_target(phase: MoveFxPlan.Phase, elapsed: float) -> void:
 
 func _pose_effect(phase: MoveFxPlan.Phase, k: float) -> void:
 	if _is_contact():
-		if phase.name == MoveFxPlan.IMPACT:
+		if phase.name == MoveFxPlan.IMPACT and not _pose_stamp(k):
 			_pose_marks(k)
+		return
+	if _pose_art(phase, k):
 		return
 	if _plan.on_self:
 		return
@@ -371,6 +423,151 @@ func _pose_effect(phase: MoveFxPlan.Phase, k: float) -> void:
 						_show_projectile(past, PROJECTILE_FAR, fade)
 					elif phase.name == MoveFxPlan.NO_EFFECT:
 						_show_projectile(to, lerpf(0.8, 0.2, k), fade)
+
+
+## Effet en art peint (CV.1) : flipbooks du trajet (`travel` : projectile ; `bolt` : arc tendu
+## du lanceur à la cible), de l'impact (`impact`) et des joues (`cheeks`, Éclair). Faux si le plan
+## n'a pas d'art pour son trajet : les formes en code prennent le relais.
+func _pose_art(phase: MoveFxPlan.Phase, k: float) -> bool:
+	var bolt := _plan.art.get(&"bolt", &"") as StringName
+	var travel := _plan.art.get(&"travel", &"") as StringName
+	if bolt.is_empty() and travel.is_empty():
+		return false
+	var height := _stage.view_size.y
+	var from := _stage.origin()
+	var to := _stage.impact_point()
+	var missed := _plan.phase(MoveFxPlan.MISS, phase.hit) != null
+	if missed:
+		to = _miss_point()
+	var angle := (to - from).angle()
+	var depth_far := PROJECTILE_FAR if _stage.user_is_player else PROJECTILE_NEAR
+	match phase.name:
+		MoveFxPlan.ANTICIPATION, MoveFxPlan.CHARGE:
+			var e := _ease_out(k)
+			if _plan.art.has(&"cheeks"):
+				_pose_cheeks(e)
+			elif not travel.is_empty():
+				_show_flip(Flip.TRAVEL, travel, from, Vector2.ONE * ART_PROJECTILE * height * 0.5 * e,
+					angle, 1.0)
+		MoveFxPlan.TRAVEL:
+			if not bolt.is_empty():
+				var reach := from.distance_to(to) * _ease_out(k)
+				_show_flip(Flip.TRAVEL, bolt, from, Vector2(reach, ART_BOLT_HEIGHT * height), angle,
+					1.0, true)
+				if _plan.art.has(&"cheeks"):
+					_pose_cheeks(1.0 - k)
+			else:
+				var s := k * k * (3.0 - 2.0 * k)
+				var size := ART_PROJECTILE * height * lerpf(1.0, depth_far, k)
+				_show_flip(Flip.TRAVEL, travel, from.lerp(to, s), Vector2.ONE * size, angle, 1.0)
+		MoveFxPlan.IMPACT, MoveFxPlan.MISS, MoveFxPlan.NO_EFFECT:
+			var fade := 1.0 - _ease_in(k)
+			if not bolt.is_empty():
+				_show_flip(Flip.TRAVEL, bolt, from, Vector2(from.distance_to(to),
+					ART_BOLT_HEIGHT * height), angle, fade * (1.0 if phase.name == MoveFxPlan.IMPACT
+					else 0.6), true)
+			elif phase.name == MoveFxPlan.MISS:
+				var past := to + (to - from) * MISS_OVERSHOOT * k
+				_show_flip(Flip.TRAVEL, travel, past, Vector2.ONE * ART_PROJECTILE * height
+					* depth_far, angle, fade)
+			elif phase.name == MoveFxPlan.NO_EFFECT:
+				_show_flip(Flip.TRAVEL, travel, to, Vector2.ONE * ART_PROJECTILE * height
+					* lerpf(0.8, 0.2, k), angle, fade)
+	# L'impact peint se joue une fois (il naît, grandit, s'éteint), de l'impact à la fin du coup.
+	var strike := _plan.phase(MoveFxPlan.IMPACT, phase.hit)
+	if strike != null and _t >= strike.start and _plan.art.has(&"impact"):
+		var hit_end := strike.end() + (_plan.phase(MoveFxPlan.RETURN, phase.hit).duration
+			if _plan.phase(MoveFxPlan.RETURN, phase.hit) != null else 0.0)
+		var once := clampf((_t - strike.start) / maxf(hit_end - strike.start, 0.001), 0.0, 1.0)
+		var size := _stage.target_rect.size.y * ART_IMPACT
+		_show_flip(Flip.IMPACT, _plan.art[&"impact"], _stage.impact_point(), Vector2.ONE * size,
+			0.0, 1.0, false, once)
+	return true
+
+
+## Étincelles des joues (Éclair) : un petit arc peint sur chaque point d'origine.
+func _pose_cheeks(amount: float) -> void:
+	var points := _stage.origins
+	if points.is_empty() or amount <= 0.0:
+		return
+	var size := Vector2.ONE * ART_CHEEKS * _stage.view_size.y * lerpf(0.6, 1.0, amount)
+	for i: int in mini(points.size(), 2):
+		_show_flip(Flip.EXTRA_A + i, _plan.art[&"cheeks"], points[i], size, PI * 0.5 * i, amount)
+
+
+## Marque d'impact peinte du Contact (`stamp`) : surgit, se pose, s'efface ; les mâchoires se
+## ferment, l'onde du coup de corps s'élargit. Faux sans art.
+func _pose_stamp(k: float) -> bool:
+	var stamp := _plan.art.get(&"stamp", &"") as StringName
+	if stamp.is_empty():
+		return false
+	var rect := _stage.target_rect
+	var base := ART_STAMP * minf(rect.size.x, rect.size.y)
+	var pop := _ease_out(clampf(k * 3.0, 0.0, 1.0))
+	var alpha := 1.0 - clampf((k - 0.5) * 2.0, 0.0, 1.0)
+	var size := Vector2.ONE * base * lerpf(1.35, 1.0, pop)
+	var angle := 0.0
+	match _plan.impact:
+		&"crocs":
+			size.y *= lerpf(1.4, 0.8, pop)
+		&"corps":
+			size = Vector2.ONE * base * lerpf(0.5, 1.6, _ease_out(k))
+			alpha = 1.0 - k
+		&"percant":
+			angle = (_stage.target_rest - _stage.user_rest).angle()
+	_show_flip(Flip.IMPACT, stamp, rect.get_center(), size, angle, alpha)
+	return true
+
+
+## Sprite d'art [param index] : flipbook ou particule [param id] centré en [param at] (ou, avec
+## [param from_left], tendu depuis [param at] vers [param angle]), affiché en [param size] px ;
+## [param once] : avancée d'un flipbook joué une seule fois (-1 : en boucle).
+func _show_flip(index: int, id: StringName, at: Vector2, size: Vector2, angle: float,
+		alpha: float, from_left: bool = false, once: float = -1.0) -> void:
+	if alpha <= 0.0 or size.x <= 0.0 or size.y <= 0.0:
+		return
+	var info := FxArt.flipbook(id)
+	var frames := 1
+	var columns := 1
+	var frame_size := 0.0
+	if info.is_empty():
+		info = FxArt.particle(id)
+		if info.is_empty():
+			return
+		frame_size = (info["texture"] as Texture2D).get_width()
+	else:
+		frames = info["frames"]
+		columns = info["columns"]
+		frame_size = info["size"]
+	var sprite := _flips[index]
+	sprite.visible = true
+	sprite.texture = info["texture"]
+	sprite.hframes = columns
+	sprite.vframes = ceili(float(frames) / columns)
+	# [param once] ≥ 0 : une seule fois, de la première image (0) à la dernière (1) ; sinon en
+	# boucle à [constant FLIP_FPS].
+	sprite.frame = mini(floori(once * frames), frames - 1) if once >= 0.0 \
+		else floori(_t * FLIP_FPS) % frames
+	sprite.material = _flip_additive if info["additive"] else null
+	var body := sprite.get_child(0) as Sprite2D
+	body.visible = info["additive"]
+	body.texture = sprite.texture
+	body.hframes = sprite.hframes
+	body.vframes = sprite.vframes
+	body.frame = sprite.frame
+	body.centered = not from_left
+	body.offset = Vector2(0.0, -frame_size * 0.5) if from_left else Vector2.ZERO
+	body.flip_v = cos(angle) < 0.0
+	body.self_modulate = Color(1, 1, 1, ART_BODY_ALPHA)
+	sprite.centered = not from_left
+	sprite.offset = Vector2(0.0, -frame_size * 0.5) if from_left else Vector2.ZERO
+	sprite.position = at
+	sprite.rotation = angle
+	# L'art part vers la droite : retourné verticalement quand il part vers la gauche, pour garder
+	# le haut de la flamme ou de l'arc en haut.
+	sprite.flip_v = cos(angle) < 0.0
+	sprite.scale = size / frame_size
+	sprite.modulate = Color(1, 1, 1, alpha)
 
 
 func _show_projectile(at: Vector2, size_k: float, alpha: float) -> void:
@@ -558,6 +755,8 @@ func _end() -> void:
 
 
 func _hide_shapes() -> void:
+	for flip: Sprite2D in _flips:
+		flip.visible = false
 	_projectile.visible = false
 	_bolt.visible = false
 	_beam.visible = false
@@ -590,6 +789,14 @@ func _build() -> void:
 	_beam = _make_line(&"Beam", BEAM_WIDTH)
 	for i: int in 3:
 		_marks.append(_make_line(&"Mark%d" % i, MARK_WIDTH))
+	_flip_additive = additive
+	for role: String in Flip.keys():
+		var flip := _make_sprite(StringName("Art" + role.to_pascal_case()), null, null)
+		var body := _make_sprite(&"Body", null, null)
+		body.show_behind_parent = true
+		flip.add_child(body)
+		add_child(flip)
+		_flips.append(flip)
 	_hide_shapes()
 
 
@@ -624,6 +831,10 @@ static func _new_line(line_name: StringName, width: float) -> Line2D:
 	taper.add_point(Vector2(1.0, 0.5))
 	line.width_curve = taper
 	return line
+
+
+static func _ease_in(k: float) -> float:
+	return k * k
 
 
 static func _ease_out(k: float) -> float:

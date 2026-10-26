@@ -115,6 +115,12 @@ var bricks: Dictionary = {}
 ## Réactions du monde autres que la lumière (Complètes seulement) : `dust`, `droplets`,
 ## `foliage`, `darken`.
 var world: Array[StringName] = []
+## Art peint (CV.1, [FxArt]) par rôle : `charge`, `travel`, `bolt`, `impact`, `particle`, `rise`,
+## `fallout`, `dust`, `stamp` (marque d'impact du Contact), `cheeks`, `feathers` (Éclair) ; la
+## famille, puis la variante d'impact, puis la signature. Rôle absent : forme dessinée en code.
+var art: Dictionary[StringName, StringName] = {}
+## Types de la cible (Éclair : plumes sur un Pokémon Vol) ; rempli par la scène, vide sinon.
+var target_types: Array[StringName] = []
 ## Issue lue dans le journal (null : un coup qui porte) ; le son du coup en dépend (T4).
 var outcome: MoveFxOutcome
 
@@ -236,6 +242,17 @@ func _setup(catalog: MoveFxCatalog, entry: MoveFxEntry, plan_mode: Mode) -> void
 	for color: Variant in JsonFields.get_array(fx, "palette"):
 		if color is String:
 			palette.append(Color.from_string(color, Color.WHITE))
+	_read_art(JsonFields.get_dict(fx, "art"))
+	var stamp := JsonFields.get_id(catalog.impact(impact), "art")
+	if not stamp.is_empty():
+		art[&"stamp"] = stamp
+	_read_art(JsonFields.get_dict(catalog.signature(signature), "art"))
+
+
+func _read_art(raw: Dictionary) -> void:
+	for role: String in raw:
+		if raw[role] is String:
+			art[StringName(role)] = StringName(raw[role])
 
 
 func _layout_charge(catalog: MoveFxCatalog) -> void:
@@ -343,12 +360,15 @@ func _light(catalog: MoveFxCatalog, family_data: Dictionary, result: MoveFxOutco
 	var data := JsonFields.get_dict(family_data, "world")
 	light_color = Color.from_string(JsonFields.get_string(data, "light", "#FFFFFF"), Color.WHITE)
 	light_peak = JsonFields.get_float(data, "light_peak")
+	var own := catalog.signature(signature)
+	light_peak = JsonFields.get_float(own, "light_peak", light_peak)
 	if palette.is_empty():
 		palette = PackedColorArray([Color.WHITE, light_color, light_color.darkened(0.5)])
 	if reduce_flashes:
 		light_peak = minf(light_peak, JsonFields.get_float(limits, "reduced_flash_peak", 0.35))
 	var lands := result == MoveFxOutcome.Result.HIT or result == MoveFxOutcome.Result.AFFECTED
-	flashes = JsonFields.get_int(data, "flashes") * hits if lands and light_peak > 0.0 else 0
+	flashes = JsonFields.get_int(own, "flashes", JsonFields.get_int(data, "flashes")) * hits \
+		if lands and light_peak > 0.0 else 0
 	var per_second := JsonFields.get_float(limits, "flashes_per_second", 3.0)
 	flashes = mini(flashes, floori(per_second * duration + EPSILON))
 	if mode == Mode.FULL and lands:

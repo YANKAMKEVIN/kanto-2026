@@ -1,6 +1,6 @@
 {
 	"version": 1,
-	"_doc": "Familles d'effets de combat (docs/tech/combat-vivant.md §2.2, §2.6, §3). Les attaques sont dans les autres fichiers du dossier (plancher.json, puis un fichier par lot). Valeurs [D] (règle 4), réglées sur S24. phases : parts de la durée (anticipation, trajet, impact, retour ; somme 1) ; world.light_peak : lumière simulée du décor (0..1) ; world.flashes : éclats de lumière par attaque ; camera : zoom et tremblement (px) au plafond de limits ; fx.palette : dégradé des effets (cœur presque blanc, couleur de l'élément, bord sombre, §2.9) ; fx.particles : particules d'un éclat d'impact (avant le facteur des Réduites ; ≤ 64, un émetteur).",
+	"_doc": "Familles d'effets de combat (docs/tech/combat-vivant.md §2.2, §2.6, §3). Les attaques sont dans les autres fichiers du dossier (plancher.json, puis un fichier par lot). Valeurs [D] (règle 4), réglées sur S24. phases : parts de la durée (anticipation, trajet, impact, retour ; somme 1) ; world.light_peak : lumière simulée du décor (0..1) ; world.flashes : éclats de lumière par attaque ; camera : zoom et tremblement (px) au plafond de limits ; fx.palette : dégradé des effets (cœur presque blanc, couleur de l'élément, bord sombre, §2.9) ; fx.particles : particules d'un éclat d'impact (avant le facteur des Réduites ; ≤ 64, un émetteur) ; fx.art : art peint de la famille (identifiants de assets/sprites/battle_fx/manifeste_vague1.json : charge, travel, bolt, impact, particle, rise, fallout, dust), complété par impacts.*.art (Contact) et signatures.*.art ; sans art, formes dessinées en code (échafaudage de CV.0).",
 	"durations": {
 		"_doc": "CV-2 (décision de Kevin du 2026-10-26) : durée en Complètes selon la puissance ; la durée suit la puissance dans la ligne (power_min → min, power_max → max). Coups multiples : chaque coup prend la première ligne. Ligne 3 aussi pour K.O. en un coup, Explosion / Destruction et les légendaires.",
 		"bands": [
@@ -40,7 +40,7 @@
 			"phases": {"anticipation": 0.25, "travel": 0.25, "impact": 0.3, "return": 0.2},
 			"world": {"light": "#FFFFFF", "light_peak": 0.0, "flashes": 0, "dust": true},
 			"camera": {"zoom": 1.03, "shake": 3.0},
-			"fx": {"palette": ["#FFFFFF", "#F2E6D0", "#8A7A66"], "particles": 18}
+			"fx": {"palette": ["#FFFFFF", "#F2E6D0", "#8A7A66"], "particles": 18, "art": {"dust": "poussiere"}}
 		},
 		"feu": {
 			"name": "Feu", "target": "foe",
@@ -48,7 +48,7 @@
 			"phases": {"anticipation": 0.2, "travel": 0.35, "impact": 0.3, "return": 0.15},
 			"world": {"light": "#FF9A3C", "light_peak": 0.45, "flashes": 1},
 			"camera": {"zoom": 1.03, "shake": 2.0},
-			"fx": {"palette": ["#FFF1B0", "#FF8A3C", "#8A1E0A"], "particles": 36}
+			"fx": {"palette": ["#FFF1B0", "#FF8A3C", "#8A1E0A"], "particles": 36, "art": {"charge": "braise", "travel": "boule_feu", "impact": "gerbe_braises", "particle": "braise", "rise": "flamme", "fallout": "fumee"}}
 		},
 		"eau": {
 			"name": "Eau", "target": "foe",
@@ -64,7 +64,7 @@
 			"phases": {"anticipation": 0.25, "travel": 0.3, "impact": 0.3, "return": 0.15},
 			"world": {"light": "#FFF3A0", "light_peak": 0.55, "flashes": 2},
 			"camera": {"zoom": 1.04, "shake": 3.0},
-			"fx": {"palette": ["#FFFFF0", "#F7D02C", "#8A6A00"], "particles": 28}
+			"fx": {"palette": ["#FFFFF0", "#F7D02C", "#8A6A00"], "particles": 28, "art": {"charge": "etincelle", "bolt": "arc_electrique_a", "impact": "decharge_etoile", "particle": "etincelle"}}
 		},
 		"plante": {
 			"name": "Plante", "target": "foe",
@@ -173,11 +173,11 @@
 	},
 	"impacts": {
 		"_doc": "Variantes d'impact de la famille Contact (§3.2).",
-		"coup": {"name": "Coup", "brick": "impact_star"},
-		"griffe": {"name": "Griffe", "brick": "claw_slashes"},
-		"crocs": {"name": "Crocs", "brick": "jaws"},
-		"percant": {"name": "Perçant", "brick": "pierce_flash"},
-		"corps": {"name": "Corps", "brick": "shockwave"}
+		"coup": {"name": "Coup", "brick": "impact_star", "art": "etoile_impact"},
+		"griffe": {"name": "Griffe", "brick": "claw_slashes", "art": "griffes"},
+		"crocs": {"name": "Crocs", "brick": "jaws", "art": "machoires"},
+		"percant": {"name": "Perçant", "brick": "pierce_flash", "art": "aiguille"},
+		"corps": {"name": "Corps", "brick": "shockwave", "art": "lueur_douce"}
 	},
 	"modifiers": {
 		"_doc": "Morceaux communs ajoutés à la famille (§3.2). band_max : l'attaque prend la dernière ligne de durée de CV-2.",
@@ -193,7 +193,7 @@
 	},
 	"signatures": {
 		"_doc": "Attaques qui demandent une brique neuve (§3.3). Priorité A : CV.0 à CV.2 ; B ensuite.",
-		"eclair": {"base": "electrique", "priority": "A", "origin": "joues"},
+		"eclair": {"base": "electrique", "priority": "A", "origin": "joues", "art": {"cheeks": "arc_electrique_b", "bolt": "arc_electrique_a", "impact": "decharge_etoile", "feathers": "plume"}, "light_peak": 0.85, "flashes": 2},
 		"tonnerre": {"base": "electrique", "priority": "A", "origin": "joues"},
 		"fatal_foudre": {"base": "electrique", "priority": "A", "origin": "centre"},
 		"lance_flammes": {"base": "feu", "priority": "A", "origin": "bouche"},

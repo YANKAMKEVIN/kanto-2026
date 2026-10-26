@@ -278,6 +278,8 @@ var _fx: MoveFxPlayer
 var _fx_light: Node2D
 var _fx_target: BattleEvent.SideId = BattleEvent.SideId.FOE
 static var _fx_anchors: FxAnchors
+## Espèces (types de la cible pour les chorégraphies) ; null : pas de types.
+var _fx_pokemon: PokemonData
 
 @onready var _backdrop: ColorRect = %Backdrop
 @onready var _flash: ColorRect = %Flash
@@ -331,6 +333,7 @@ static func sprite_path(species: StringName, back: bool) -> String:
 ## tailles de combat (Boot) ; sans appel, BattleArt les lit une fois.
 func set_species_source(pokemon: PokemonData, dex: PokedexLibrary) -> void:
 	_art.setup(pokemon, dex)
+	_fx_pokemon = pokemon
 
 
 ## Cadrage du prochain combat (à appeler avant [method enter]) : [param arena], sol dégagé à
@@ -711,6 +714,10 @@ func play_move_fx(side: BattleEvent.SideId, plan: MoveFxPlan) -> void:
 	# Les durées du plan suivent déjà le mode (Rapides, Réduites) : pas de second facteur.
 	_fx.speed_scale = 0.0 if speed_scale <= 0.0 else 1.0
 	var impact := plan.cue_time(MoveFxPlan.CUE_IMPACT)
+	var species := _fx_pokemon.get_species(_species.get(_fx_target, &"")) \
+		if _fx_pokemon != null else null
+	if species != null:
+		plan.target_types = species.types.duplicate()
 	_fx.play(plan, _fx_stage(side, plan))
 	if impact < 0.0:
 		await finish_move_fx()
@@ -769,6 +776,7 @@ func _build_fx() -> void:
 	add_child(_fx)
 	move_child(_fx, _flash.get_index())
 	_fx.setup(self, _fx_light)
+	FxArt.preload_all()
 	_fx.fx_cue.connect(func(cue: StringName, _move_id: StringName) -> void:
 		move_fx_cue.emit(cue, _fx.get_plan()))
 

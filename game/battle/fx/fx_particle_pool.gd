@@ -7,8 +7,8 @@ extends Node2D
 ## Budget : ≤ [constant MAX_PER_EMITTER] particules par émetteur, ≤ [constant MAX_ON_SCREEN] à
 ## l'écran (un éclat qui dépasserait le budget est réduit). Graines fixes : le rendu est le même à
 ## chaque fois, et l'aléatoire du combat n'est pas touché.
-## Texture : un point doux dessiné en code (échafaudage de CV.0, remplacé par l'atlas
-## `assets/sprites/battle_fx/` au lot d'art, §3.4).
+## Texture : une particule peinte de `assets/sprites/battle_fx/` ([FxArt]) quand l'éclat en donne
+## une, sinon un point doux dessiné en code teinté par la palette.
 
 const SIZE: int = 12
 const MAX_PER_EMITTER: int = 64
@@ -79,7 +79,7 @@ func build() -> void:
 ## Rend l'émetteur utilisé (null si [param amount] ≤ 0 ou si le budget est plein).
 func burst(at: Vector2, amount: int, palette: PackedColorArray, shape: Shape = Shape.BURST,
 		size: float = 28.0, reach: float = 160.0, lifetime: float = 0.5,
-		additive: bool = false) -> CPUParticles2D:
+		additive: bool = false, texture: Texture2D = null) -> CPUParticles2D:
 	build()
 	var count := mini(mini(amount, MAX_PER_EMITTER), MAX_ON_SCREEN - _busy_particles())
 	if count <= 0:
@@ -91,9 +91,13 @@ func burst(at: Vector2, amount: int, palette: PackedColorArray, shape: Shape = S
 	emitter.lifetime = maxf(lifetime, 0.05)
 	emitter.position = at
 	emitter.material = _additive if additive else _normal
-	emitter.color_ramp = ramp(palette)
-	emitter.scale_amount_min = size / TEXTURE_SIZE * 0.6
-	emitter.scale_amount_max = size / TEXTURE_SIZE
+	# Particule peinte (CV.1) : ses couleurs telles quelles, fondu à la fin ; sinon le point doux
+	# teinté par la palette.
+	emitter.texture = texture if texture != null else _texture
+	emitter.color_ramp = ramp(PackedColorArray([Color.WHITE]) if texture != null else palette)
+	var width := float(texture.get_width()) if texture != null else float(TEXTURE_SIZE)
+	emitter.scale_amount_min = size / width * 0.6
+	emitter.scale_amount_max = size / width
 	emitter.scale_amount_curve = _size_curve
 	_shape(emitter, shape, reach, lifetime)
 	emitter.speed_scale = maxf(speed_scale, 0.0)
