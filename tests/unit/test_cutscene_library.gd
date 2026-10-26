@@ -852,8 +852,8 @@ func test_gift_pokemon_without_say_stored() -> void:
 func test_gift_pokemon_kind_is_last_in_the_enum() -> void:
 	# Jalon 21 : FLUTE vient après ; puis J25 : « unset », « toggle », « trade », en fin d'enum.
 	assert_eq(CutsceneStep.Kind.GIFT_POKEMON, CutsceneStep.Kind.FLUTE - 1, "en fin d'enum")
-	assert_eq(CutsceneStep.Kind.FLUTE, CutsceneStep.Kind.size() - 4, "flute avant les étapes du J25")
-	assert_eq(CutsceneStep.Kind.TRADE, CutsceneStep.Kind.size() - 1, "trade en fin d'enum")
+	assert_eq(CutsceneStep.Kind.FLUTE, CutsceneStep.Kind.TRADE - 3, "flute avant les étapes du J25")
+	assert_eq(CutsceneStep.Kind.TRADE, CutsceneStep.Kind.HALL_OF_FAME - 1, "trade avant le J30")
 	assert_eq(CutsceneStep.TYPE_KEYS[CutsceneStep.Kind.GIFT_POKEMON], "gift_pokemon")
 	assert_eq(CutsceneStep.TYPE_KEYS.size(), CutsceneStep.Kind.size())
 
@@ -915,8 +915,9 @@ func test_real_eevee_gift_scene() -> void:
 # --- Jalon 25 : étapes « unset », « toggle », « trade » ----------------------------------
 
 func test_j25_kinds_are_last_in_the_enum() -> void:
-	assert_eq(CutsceneStep.Kind.TRADE, CutsceneStep.Kind.size() - 1, "en fin d'enum")
-	assert_eq(CutsceneStep.TYPE_KEYS.slice(-3), ["unset", "toggle", "trade"])
+	# Jalon 30 : « hall_of_fame » et « credits » viennent après.
+	assert_eq(CutsceneStep.Kind.TRADE, CutsceneStep.Kind.size() - 3, "avant le J30")
+	assert_eq(CutsceneStep.TYPE_KEYS.slice(-5, -2), ["unset", "toggle", "trade"])
 	assert_eq(CutsceneStep.TYPE_KEYS.size(), CutsceneStep.Kind.size())
 
 
@@ -957,6 +958,37 @@ func test_invalid_j25_steps_are_refused() -> void:
 		{"trade": "t", "refuse": "r"}, {"trade": "t", "wrong": "w"},
 		{"trade": "", "wrong": "w", "refuse": "r"}, {"trade": "t", "wrong": "w", "refuse": "r",
 			"say": "a"},
+	]
+	for i: int in bad.size():
+		assert_null(_one_step(bad[i], "bad_%d" % i), str(bad[i]))
+	assert_eq(_library.size(), 0, "toutes refusées")
+	assert_push_error_count(bad.size())
+
+
+# --- Jalon 30 : étapes « hall_of_fame » et « credits » ------------------------------------------
+
+func test_j30_kinds_are_last_in_the_enum() -> void:
+	assert_eq(CutsceneStep.Kind.CREDITS, CutsceneStep.Kind.size() - 1, "en fin d'enum")
+	assert_eq(CutsceneStep.TYPE_KEYS.slice(-2), ["hall_of_fame", "credits"])
+	assert_eq(CutsceneStep.TYPE_KEYS.size(), CutsceneStep.Kind.size())
+
+
+func test_hall_of_fame_and_credits_steps_are_read() -> void:
+	var hall := _one_step({"hall_of_fame": true})
+	assert_not_null(hall, str(_library.get_errors()))
+	if hall != null:
+		assert_eq(hall.kind, CutsceneStep.Kind.HALL_OF_FAME)
+	var credits := _one_step({"credits": true, "if": ["a"]}, "credits")
+	assert_not_null(credits, str(_library.get_errors()))
+	if credits != null:
+		assert_eq(credits.kind, CutsceneStep.Kind.CREDITS)
+		assert_eq(credits.if_flags, [&"a"] as Array[StringName])
+
+
+func test_invalid_j30_steps_are_refused() -> void:
+	var bad: Array[Dictionary] = [
+		{"hall_of_fame": false}, {"hall_of_fame": "oui"}, {"credits": 1},
+		{"credits": true, "skip": true},
 	]
 	for i: int in bad.size():
 		assert_null(_one_step(bad[i], "bad_%d" % i), str(bad[i]))

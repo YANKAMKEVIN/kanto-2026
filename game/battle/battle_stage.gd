@@ -1192,6 +1192,7 @@ func _ease(k: float) -> float:
 # --- Outils --------------------------------------------------------------------------
 
 func _save_camera() -> void:
+	_hold_player_camera(true)
 	_cam_zoom = _camera.zoom
 	_cam_position = _camera.position
 	_cam_offset = _camera.offset
@@ -1220,6 +1221,17 @@ func _restore_camera() -> void:
 		_camera.limit_right = _cam_limits[2]
 		_camera.limit_bottom = _cam_limits[3]
 	_camera.reset_smoothing()
+	_hold_player_camera(false)
+
+
+## Prévient le porteur de la caméra (le [Player]) que le combat la tient ou la rend : une reprise
+## de l'appli (taille de vue changée) ne la recadre plus pendant le combat (QA S24 du J30).
+func _hold_player_camera(held: bool) -> void:
+	if _camera == null or not is_instance_valid(_camera):
+		return
+	var holder := _camera.get_parent()
+	if holder != null and holder.has_method(&"hold_camera"):
+		holder.call(&"hold_camera", held)
 
 
 func _apply_reset() -> void:

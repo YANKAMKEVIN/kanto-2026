@@ -61,7 +61,8 @@ func teardown() -> void:
 
 ## Boot sur la partie du départ [param start_path] ; [param tweak] (facultatif,
 ## `func() -> void`) modifie la partie avant le rechargement de la carte (drapeaux, Sac, équipe).
-func start(start_path: String, tweak: Callable = Callable()) -> void:
+## [param settle] faux (J30) : n'attend pas une partie stable (une scène part à l'arrivée).
+func start(start_path: String, tweak: Callable = Callable(), settle: bool = true) -> void:
 	var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(start_path))
 	var raw: Dictionary = parsed if parsed is Dictionary else {}
 	var map_id := StringName(str(raw.get("map", "")))
@@ -88,12 +89,14 @@ func start(start_path: String, tweak: Callable = Callable()) -> void:
 	# Les PNJ suivent les drapeaux au chargement de la carte : on la recharge.
 	await SceneRouter.change_map(map_id, spawn, facing)
 	await _test.wait_process_frames(3)
-	await _test.wait_until(func() -> bool: return boot.is_stable(), 15.0)
+	if settle:
+		await _test.wait_until(func() -> bool: return boot.is_stable(), 15.0)
 	_quiet_battles()
 
 
-## Nouvelle Boot sur la sauvegarde en mémoire (application relancée).
-func resume() -> void:
+## Nouvelle Boot sur la sauvegarde en mémoire (application relancée). [param settle] : voir
+## [method start].
+func resume(settle: bool = true) -> void:
 	if is_instance_valid(boot):
 		_test.remove_child(boot)
 		boot.free()
@@ -104,7 +107,8 @@ func resume() -> void:
 	player = boot.get_player()
 	boot.get_dialogue_runner().chars_per_second = 0.0
 	await _test.wait_process_frames(3)
-	await _test.wait_until(func() -> bool: return boot.is_stable(), 15.0)
+	if settle:
+		await _test.wait_until(func() -> bool: return boot.is_stable(), 15.0)
 	_quiet_battles()
 
 
@@ -260,6 +264,10 @@ func saved() -> Dictionary:
 
 
 func _quiet_battles() -> void:
+	# J30 : écran du Panthéon et générique instantanés (sans toucher).
+	if boot.has_method(&"get_hall_of_fame_screen"):
+		boot.get_hall_of_fame_screen().speed_scale = 0.0
+		boot.get_credits_screen().speed_scale = 0.0
 	var battles := boot.get_battle_director()
 	battles.speed_scale = 0.0
 	boot.get_battle_stage().speed_scale = 0.0

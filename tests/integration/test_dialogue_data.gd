@@ -68,6 +68,9 @@ const PLAYED_J30: Array[StringName] = [
 	&"league_agatha_before", &"league_agatha_defeated",
 	&"league_lance_before", &"league_lance_defeated",
 	&"rival_champion_before", &"rival_champion_defeated", &"rival_champion_won",
+	# T17 : la cérémonie (`league_victory`, `league_hall_of_fame`).
+	&"league_oak_congrats", &"league_oak_to_rival", &"league_oak_hall", &"league_hall_welcome",
+	&"league_ending",
 ]
 ## Jalon 30 (T9) : `beaten_<membre>` levés par les scènes d'appel (victoire).
 const SET_J30: Array[StringName] = [
@@ -75,8 +78,9 @@ const SET_J30: Array[StringName] = [
 	&"beaten_league_lance", &"beaten_rival_champion",
 ]
 const UNUSED_YET: Array[StringName] = [
-	# Jalon 30 (T9) : la porte du hall (J29, `indigo_plateau_lobby`) et la cérémonie (T17).
-	&"league_guard_door", &"league_oak_to_rival", &"league_hall_welcome", &"league_ending",
+	# Jalon 30 (T9) : la porte du hall (J29, `indigo_plateau_lobby`) ; la cérémonie (T17) est
+	# posée (`league_victory`).
+	&"league_guard_door",
 	# Jalon 21 (T21) : `route_11_snorlax` repris par `snorlax_route_12` (retiré de la liste).
 	&"dark_cave_1f_sign", &"dark_cave_column", &"dark_cave_roots", &"dark_cave_crack",
 	&"dark_cave_b1f_hidden_1",
@@ -1157,6 +1161,10 @@ func before_all() -> void:
 		for point: Node in map.get_node(^"Triggers").get_children():
 			_use_cutscene((point as EventTriggerPoint).cutscene_id, map_id)
 		map.free()
+	# Jalon 30 (T17) : cérémonie, suite (« next ») de l'appel du rival ou relancée par Boot à
+	# l'arrivée au Panthéon (reprise).
+	_use_cutscene(LeagueDirector.VICTORY_CUTSCENE, LeagueDirector.CHAMPION_ROOM)
+	_use_cutscene(LeagueDirector.HALL_CUTSCENE, LeagueDirector.HALL_ROOM)
 	# Jalon 7 (T18) : scène lancée par un dialogue (variante « cutscene ») sur les cartes où ce
 	# dialogue est joué (la scène du colis, en parlant à Chen).
 	for id: StringName in _real_ids():

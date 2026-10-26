@@ -150,6 +150,7 @@ const _EXTRA_KEYS: Array[Array] = [
 	["level", "flag", "say", "say_stored"],
 	[], # Jalon 21 : flute
 	[], [], ["wrong", "refuse", "say"],
+	[], [], # Jalon 30 : hall_of_fame, credits
 ]
 ## Conditions permises sur toute étape sauf spawn.
 const _CONDITION_KEYS: Array[String] = ["if", "unless"]
@@ -620,6 +621,9 @@ func _parse_step(value: Variant, where: String) -> CutsceneStep:
 		CutsceneStep.Kind.FLUTE: # Jalon 21
 			if not main is bool or not main:
 				ok = _fail("%s : « flute » vaut true" % where)
+		CutsceneStep.Kind.HALL_OF_FAME, CutsceneStep.Kind.CREDITS: # Jalon 30
+			if not main is bool or not main:
+				ok = _fail("%s : « %s » vaut true" % [where, type_key])
 	return step if ok else null
 
 

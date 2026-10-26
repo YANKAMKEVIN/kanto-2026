@@ -6,7 +6,8 @@ extends GutTest
 ## - arrêt pendant le combat d'Agatha → relance à l'entrée de la salle (dernière écriture stable),
 ##   avant ce combat : rien de gagné, porte nord fermée, l'appel se rejoue au premier pas ;
 ## - arrêt entre la victoire contre le Champion et la cérémonie (T17) : `league_stage_4_cleared`
-##   relu, Chen présent, l'appel du rival ne se rejoue pas, aucun titre posé.
+##   relu, Chen présent, aucun titre posé ; la cérémonie (`league_victory`) repart à l'arrivée,
+##   pas l'appel du rival, et ne pose qu'une entrée du Panthéon.
 
 const HideoutPlay := preload("res://tests/helpers/hideout_play.gd")
 const AGATHA := "res://tools/debug_start/league_agatha.json"
@@ -89,14 +90,20 @@ func test_quitting_during_the_battle_resumes_before_it() -> void:
 func test_after_the_champion_the_victory_is_kept_until_the_ceremony() -> void:
 	await _play.start(CHAMPION, func() -> void:
 		GameState.flags.set_flag(&"league_stage_4_cleared")
-		GameState.flags.set_flag(&"beaten_rival_champion"))
-	await _play.resume()
+		GameState.flags.set_flag(&"beaten_rival_champion"), false)
 	assert_eq(_play.map_id(), &"league_champion")
 	assert_eq(LeagueAttempt.current_stage(GameState.flags), LeagueAttempt.STAGE_DONE)
 	assert_false(LeagueAttempt.is_champion(GameState.flags), "titre posé par la cérémonie (T17)")
 	var map := _play.boot.get_map()
 	assert_not_null(map.get_npc(&"chen"), "Chen est là")
 	assert_false(map.get_grid().is_occupied(Vector2i(3, 0)), "porte nord ouverte")
-	await _play.step(Vector2i.UP)
-	assert_false(_play.boot.get_cutscene_director().is_running(), "l'appel du rival ne se rejoue pas")
+	# T17 : arrivée dans la salle avec la victoire acquise (reprise) → la cérémonie repart, pas
+	# l'appel du rival.
+	var director := _play.boot.get_cutscene_director()
+	assert_true(director.is_running(), "cérémonie relancée")
+	assert_eq(director.get_cutscene_id(), &"league_victory")
+	await _play.run_scene()
+	assert_eq(_play.map_id(), &"pallet_town")
+	assert_true(LeagueAttempt.is_champion(GameState.flags))
+	assert_eq(GameState.hall_of_fame.size(), 1, "une seule entrée")
 	assert_push_error_count(0)

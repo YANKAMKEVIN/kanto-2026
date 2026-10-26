@@ -244,6 +244,7 @@
 		]
 	},
 	"rival_champion_call": {
+		"next": "league_victory",
 		"variants": [
 			{
 				"unless": [
@@ -304,6 +305,176 @@
 						]
 					}
 				]
+			}
+		]
+	},
+	"league_victory": {
+		"variants": [
+			{
+				"if": [
+					"league_stage_4_cleared"
+				],
+				"steps": [
+					{
+						"wait": 0.4
+					},
+					{
+						"move": "chen",
+						"to": {
+							"near": "player",
+							"offsets": [
+								[
+									-1,
+									0
+								],
+								[
+									0,
+									-1
+								],
+								[
+									1,
+									0
+								],
+								[
+									0,
+									1
+								]
+							]
+						}
+					},
+					{
+						"face": "player",
+						"to": "chen"
+					},
+					{
+						"face": "chen",
+						"to": "player"
+					},
+					{
+						"dialogue": "league_oak_congrats"
+					},
+					{
+						"face": "chen",
+						"to": "rival"
+					},
+					{
+						"dialogue": "league_oak_to_rival"
+					},
+					{
+						"face": "chen",
+						"to": "player"
+					},
+					{
+						"dialogue": "league_oak_hall"
+					},
+					{
+						"change_map": "hall_of_fame",
+						"at": "from_south",
+						"facing": "up"
+					},
+					{
+						"move": "player",
+						"to": {
+							"near": "chen",
+							"offsets": [
+								[
+									-1,
+									0
+								],
+								[
+									0,
+									1
+								],
+								[
+									1,
+									0
+								]
+							]
+						},
+						"optional": true
+					},
+					{
+						"face": "player",
+						"to": "chen"
+					},
+					{
+						"face": "chen",
+						"to": "player"
+					},
+					{
+						"dialogue": "league_hall_welcome",
+						"if": [
+							"league_stage_4_cleared"
+						]
+					},
+					{
+						"hall_of_fame": true
+					},
+					{
+						"dialogue": "league_ending"
+					},
+					{
+						"credits": true
+					},
+					{
+						"change_map": "pallet_town",
+						"at": "player_house_door",
+						"facing": "down"
+					}
+				]
+			}
+		]
+	},
+	"league_hall_of_fame": {
+		"steps": [
+			{
+				"move": "player",
+				"to": {
+					"near": "chen",
+					"offsets": [
+						[
+							-1,
+							0
+						],
+						[
+							0,
+							1
+						],
+						[
+							1,
+							0
+						]
+					]
+				},
+				"optional": true
+			},
+			{
+				"face": "player",
+				"to": "chen"
+			},
+			{
+				"face": "chen",
+				"to": "player"
+			},
+			{
+				"dialogue": "league_hall_welcome",
+				"if": [
+					"league_stage_4_cleared"
+				]
+			},
+			{
+				"hall_of_fame": true
+			},
+			{
+				"dialogue": "league_ending"
+			},
+			{
+				"credits": true
+			},
+			{
+				"change_map": "pallet_town",
+				"at": "player_house_door",
+				"facing": "down"
 			}
 		]
 	}

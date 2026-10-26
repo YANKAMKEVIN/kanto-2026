@@ -181,6 +181,15 @@ var field_move_handler: Callable
 var save_handler: Callable
 ## Délai de nouvelle tentative, indépendant des préférences d'animation ; 0 = image suivante.
 var save_retry_delay: float = SaveCoordinator.RETRY_DELAY
+## Jalon 30 (étape « hall_of_fame ») : cérémonie du Panthéon, coroutine `func() -> bool` posée
+## par Boot (écran du Panthéon, puis titre et entrée posés en mémoire) ; vrai = une entrée vient
+## d'être ajoutée : la partie est alors écrite par le chemin de l'étape « save » ; faux =
+## cérémonie déjà faite (reprise), rien à écrire. Non valide : étape sautée (push_error).
+var hall_of_fame_handler: Callable
+## Jalon 30 (étape « credits ») : générique, coroutine `func() -> void` posée par Boot.
+var credits_handler: Callable
+## Raison de l'écriture qui suit l'entrée du Panthéon.
+const HALL_OF_FAME_SAVE_REASON: String = "Panthéon"
 
 
 func _ready() -> void:
@@ -446,9 +455,37 @@ func _play_step(source_step: CutsceneStep) -> bool:
 			await _trade(step)
 		CutsceneStep.Kind.FLUTE: # Jalon 21
 			await play_flute_notes()
+		CutsceneStep.Kind.HALL_OF_FAME: # Jalon 30
+			return await _hall_of_fame()
+		CutsceneStep.Kind.CREDITS: # Jalon 30
+			await _credits()
 		_:
 			_step_error("étape « %s » inconnue" % CutsceneStep.kind_name(step.kind))
 	return true
+
+
+## Jalon 30 : cérémonie du Panthéon ([member hall_of_fame_handler]) puis, si une entrée vient
+## d'être ajoutée, **une seule écriture** (titre, entrée et fin de la tentative ensemble). Faux :
+## la scène s'arrête (nouvelle scène lancée, écriture abandonnée).
+func _hall_of_fame() -> bool:
+	if not hall_of_fame_handler.is_valid():
+		_step_error("aucun gestionnaire du Panthéon")
+		return true
+	var session := _session
+	var recorded: bool = await hall_of_fame_handler.call()
+	if session != _session:
+		return false
+	if not recorded:
+		return true
+	return await _save_checkpoint(HALL_OF_FAME_SAVE_REASON)
+
+
+## Jalon 30 : générique ([member credits_handler]) ; sans gestionnaire, rien (push_error).
+func _credits() -> void:
+	if not credits_handler.is_valid():
+		_step_error("aucun gestionnaire du générique")
+		return
+	await credits_handler.call()
 
 
 ## N'autorise l'étape suivante qu'après l'écriture effective de l'état courant.

@@ -345,11 +345,19 @@ const VARIANT_FLAGS: Dictionary = {
 		&"league_stage_1_cleared", &"league_stage_2_cleared"]],
 	&"rival_champion_call": [[&"league_attempt_active", &"league_stage_0_cleared",
 		&"league_stage_1_cleared", &"league_stage_2_cleared", &"league_stage_3_cleared"]],
+	# Jalon 30 (T17) : cérémonie (suite de l'appel du rival, ou reprise au Panthéon).
+	&"league_victory": [[&"league_attempt_active", &"league_stage_0_cleared",
+		&"league_stage_1_cleared", &"league_stage_2_cleared", &"league_stage_3_cleared",
+		&"league_stage_4_cleared"]],
+	&"league_hall_of_fame": [[&"league_champion_defeated"]],
 }
 ## Scènes jouées par le code (pas de déclencheur) → carte où elles sont jouées.
 ## Jalon 7 (T18) : la scène du colis est lancée par la variante « cutscene » du dialogue de Chen.
 ## Jalon 8 : les objets visibles de la Route 2, par le dialogue de leur PNJ « objet ».
 const CODE_PLAYED: Dictionary[StringName, StringName] = {
+	# Jalon 30 (T17) : suite (« next ») de l'appel du rival, ou relancée par Boot à l'arrivée
+	# (reprise : LeagueDirector.pending_cutscene).
+	&"league_victory": &"league_champion", &"league_hall_of_fame": &"hall_of_fame",
 	# Jalon 20 (T25) : choix OUI du garde d'un poste de Safrania (« confirm_cutscene »).
 	&"saffron_gate_drink_water": &"route_8_gate", &"saffron_gate_drink_soda": &"route_8_gate",
 	&"saffron_gate_drink_lemonade": &"route_8_gate",
@@ -625,7 +633,7 @@ func test_library_loads_without_error() -> void:
 	assert_eq(_without_qa(library.get_ids()), _sorted([&"bill_house_enter", &"bill_machine", &"bill_module",
 		# Jalon 30 (T9) : appel des cinq combats de la Ligue.
 		&"league_lorelei_call", &"league_bruno_call", &"league_agatha_call", &"league_lance_call",
-		&"rival_champion_call",
+		&"rival_champion_call", &"league_victory", &"league_hall_of_fame",
 		&"bill_screen", &"cerulean_arrival", &"cerulean_gym_misty",
 		&"cerulean_rocket_chase", &"cerulean_rocket_fight", &"cerulean_south_guard",
 		&"cerulean_gym_misty_tm_late", &"mart_parcel", &"mt_moon_1f_hidden_1", &"mt_moon_1f_item_1",
@@ -911,9 +919,10 @@ func test_every_change_map_targets_an_existing_map_and_spawn() -> void:
 		assert_true(map.has_spawn(step.spawn), "%s : point « %s »" % [step.map_id, step.spawn])
 		map.free()
 	# Jalon 21 (T13) : + la téléportation du 7F vers la Maison des Pokémon.
-	assert_eq(count, 5, "le retour au labo ; le quai de Carmin (départ du S.S. Anne, J16 T15) ; "
+	assert_eq(count, 8, "le retour au labo ; le quai de Carmin (départ du S.S. Anne, J16 T15) ; "
 		+ "la Maison des Pokémon (sauvetage de Fuji, J21 T13) ; "
-		+ "la porte de l'Arène de Cramois'Île déverrouillée (J25, deux variantes)")
+		+ "la porte de l'Arène de Cramois'Île déverrouillée (J25, deux variantes) ; "
+		+ "la Ligue (J30 T17 : Panthéon, Bourg Palette deux fois)")
 
 
 func test_every_variant_is_chosen_by_its_flags() -> void:

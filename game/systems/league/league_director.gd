@@ -18,8 +18,13 @@ extends Node
 ##   bloquante `if league_attempt_active` (outil `tools/build_j30_league.gd`).
 ## - **Reprise** : les drapeaux sont ordinaires (sauvegardés) ; recharger dans une salle pendant
 ##   la tentative la reprend telle quelle ([method LeagueAttempt.start] ne remet rien à zéro).
-## La cérémonie (Panthéon, `league_champion_defeated`) viendra avec la scène `league_victory`
-## (T17) : la victoire contre le Champion pose `league_stage_4_cleared` et s'arrête là.
+## - **Cérémonie** (T15 à T17, §2.3, §2.4) : la victoire contre le Champion pose
+##   `league_stage_4_cleared` ; la scène d'appel du rival enchaîne `league_victory` (Chen, passage
+##   au Panthéon), dont l'étape « hall_of_fame » appelle [method complete_ceremony] (titre, entrée
+##   du Panthéon, fin de la tentative) juste avant **une seule écriture** de la partie ; puis le
+##   générique et l'arrivée à Bourg Palette. Reprise : [method pending_cutscene] relance la scène
+##   due à l'arrivée dans la salle du Champion ou au Panthéon (jamais deux entrées : la cérémonie
+##   n'ajoute rien une fois `league_champion_defeated` posé et la tentative effacée).
 ##
 ## Écart tant que le J29 n'est pas fusionné : le hall `indigo_plateau_lobby` (et son point de
 ## repos `heal`) n'existe pas encore ; le point de repos n'est alors pas changé (celui de la
@@ -31,6 +36,15 @@ signal attempt_started
 signal stage_cleared(stage: int)
 ## Défaite pendant la tentative : drapeaux effacés (le réveil suit).
 signal attempt_lost
+## Cérémonie faite : titre posé, entrée [param entry] ajoutée au Panthéon (avant l'écriture).
+signal champion_crowned(entry: Dictionary)
+
+## Scènes de la cérémonie (`data/cutscenes/league.json`) : salle du Champion (Chen, passage au
+## Panthéon) et Panthéon seul (reprise après un arrêt : écran, générique, Bourg Palette).
+const VICTORY_CUTSCENE: StringName = &"league_victory"
+const HALL_CUTSCENE: StringName = &"league_hall_of_fame"
+const CHAMPION_ROOM: StringName = &"league_champion"
+const HALL_ROOM: StringName = &"hall_of_fame"
 
 ## Point de repos de la Ligue : le Centre du hall du Plateau (J29, `data/world/rest_points.json`).
 const REST_MAP: StringName = &"indigo_plateau_lobby"
@@ -104,6 +118,50 @@ func on_battle_finished(trainer_id: StringName, outcome: int) -> void:
 		_clear_beaten(flags)
 		if was_active:
 			attempt_lost.emit()
+
+
+## Vrai si les cinq combats de la tentative sont gagnés et que la cérémonie n'est pas faite.
+func ceremony_due() -> bool:
+	var flags := _flags()
+	return flags != null and LeagueAttempt.current_stage(flags) == LeagueAttempt.STAGE_DONE
+
+
+## Scène de cérémonie à relancer à l'arrivée sur [param map_id] (reprise d'une sauvegarde écrite
+## entre la victoire et la fin du générique), &"" sinon :
+## - salle du Champion, cérémonie due → [constant VICTORY_CUTSCENE] ;
+## - Panthéon, cérémonie due ou titre déjà posé → [constant HALL_CUTSCENE] (le Panthéon n'a pas
+##   de porte : la scène est sa seule sortie, vers Bourg Palette).
+func pending_cutscene(map_id: StringName) -> StringName:
+	var flags := _flags()
+	if flags == null:
+		return &""
+	if map_id == CHAMPION_ROOM and ceremony_due():
+		return VICTORY_CUTSCENE
+	if map_id == HALL_ROOM and (ceremony_due() or LeagueAttempt.is_champion(flags)):
+		return HALL_CUTSCENE
+	return &""
+
+
+## Fin de la cérémonie (étape « hall_of_fame », après l'écran du Panthéon) : titre de Champion
+## ([method LeagueAttempt.complete] : `league_champion_defeated`, tentative effacée) et
+## [param entry] ajoutée au Panthéon ([HallOfFame], instantané de [method HallOfFame.snapshot]).
+## Faux si la cérémonie n'était pas due (déjà faite : rien ne change, aucune entrée de plus).
+## L'appelant écrit la partie juste après (une seule écriture).
+func complete_ceremony(entry: Dictionary) -> bool:
+	var flags := _flags()
+	if flags == null or not LeagueAttempt.complete(flags):
+		return false
+	var hall: HallOfFame = _state.get(&"hall_of_fame") as HallOfFame
+	if hall != null:
+		var added := hall.add(entry)
+		if added != HallOfFame.AddResult.ADDED:
+			push_warning("LeagueDirector : entrée du Panthéon non ajoutée (%s)"
+				% HallOfFame.AddResult.keys()[added])
+	# Point de branchement du J32 (N-17, N-18 ; branche `jalon-32`, pas encore dans `jalon-30`) :
+	# StaticRespawn.on_league_won(<cutscenes>.get_static_encounters(), flags)
+	# ici, avant l'écriture du Panthéon (`static_respawn.gd` du J32).
+	champion_crowned.emit(entry)
+	return true
 
 
 func _set_rest_point() -> void:

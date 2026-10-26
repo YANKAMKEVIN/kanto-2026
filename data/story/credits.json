@@ -1,0 +1,12 @@
+{
+	"_doc": "Générique et écran du Panthéon (jalon 30, T15, T16 ; docs/tech/jalon-30.md §2.4, §3). Q30-1 (décision de Kevin du 2026-10-22) : « Kanto 2026 — un remake personnel de Kevin », l'équipe du joueur, « Merci d'avoir joué ». « member » : T30-16. Les blocs « draft » et « skip » sont des propositions [D] à valider par Kevin.",
+	"member": "{pokemon} — N{level}",
+	"skip": "Passer",
+	"blocks": [
+		{ "logo": "KANTO 2026" },
+		{ "lines": ["Kanto 2026 — un remake personnel de Kevin"] },
+		{ "team": true },
+		{ "lines": ["Pokémon © Nintendo, Creatures, Game Freak", "Projet personnel, non officiel, jamais diffusé"], "draft": true },
+		{ "title": "Merci d'avoir joué" }
+	]
+}

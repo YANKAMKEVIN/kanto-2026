@@ -128,3 +128,54 @@ func test_beaten_flags_cover_the_five_trainers() -> void:
 	for map_id: StringName in LeagueAttempt.ROOMS + [&"hall_of_fame"]:
 		assert_true(LeagueDirector.is_league_map(map_id), map_id)
 	assert_false(LeagueDirector.is_league_map(&"indigo_plateau_lobby"))
+
+
+# --- Cérémonie (T15 à T17, §2.3, §2.4) ------------------------------------------------------------
+
+func _win_all() -> void:
+	LeagueAttempt.start(_flags())
+	for stage: int in LeagueAttempt.STAGE_COUNT:
+		LeagueAttempt.record_victory(_flags(), stage)
+
+
+func _entry(date: String) -> Dictionary:
+	return {"date": date, "play_time": 1.0, "player": "Kevin", "starter": "charmander",
+		"team": [{"species": "charizard", "nickname": "", "level": 62, "uid": "u1"}]}
+
+
+func test_pending_cutscene_resumes_the_ceremony_where_it_stopped() -> void:
+	assert_eq(_director.pending_cutscene(&"league_champion"), &"", "hors tentative : rien")
+	assert_eq(_director.pending_cutscene(&"hall_of_fame"), &"")
+	LeagueAttempt.start(_flags())
+	for stage: int in 4:
+		LeagueAttempt.record_victory(_flags(), stage)
+	assert_eq(_director.pending_cutscene(&"league_champion"), &"", "Champion encore à battre")
+	LeagueAttempt.record_victory(_flags(), 4)
+	assert_true(_director.ceremony_due())
+	assert_eq(_director.pending_cutscene(&"league_champion"), LeagueDirector.VICTORY_CUTSCENE)
+	assert_eq(_director.pending_cutscene(&"hall_of_fame"), LeagueDirector.HALL_CUTSCENE)
+	assert_eq(_director.pending_cutscene(&"pallet_town"), &"")
+	assert_true(_director.complete_ceremony(_entry("2026-10-26T10:00:00")))
+	assert_eq(_director.pending_cutscene(&"league_champion"), &"", "titre posé : plus rien ici")
+	assert_eq(_director.pending_cutscene(&"hall_of_fame"), LeagueDirector.HALL_CUTSCENE,
+		"le Panthéon n'a pas de porte : la scène reste sa sortie")
+
+
+func test_complete_ceremony_writes_the_title_and_one_entry_only_once() -> void:
+	var crowned: Array[Dictionary] = []
+	_director.champion_crowned.connect(func(entry: Dictionary) -> void: crowned.append(entry))
+	assert_false(_director.complete_ceremony(_entry("x")), "pas due : rien")
+	assert_eq(_state.hall_of_fame.size(), 0)
+	_win_all()
+	assert_true(_director.complete_ceremony(_entry("2026-10-26T10:00:00")))
+	assert_true(LeagueAttempt.is_champion(_flags()))
+	assert_false(LeagueAttempt.is_active(_flags()), "tentative effacée")
+	assert_eq(_state.hall_of_fame.size(), 1)
+	assert_false(_director.complete_ceremony(_entry("2026-10-26T10:01:00")), "une seule fois")
+	assert_eq(_state.hall_of_fame.size(), 1, "pas de deuxième entrée")
+	assert_eq(crowned.size(), 1)
+	# Deuxième victoire, plus tard : deuxième entrée, la première intacte.
+	_win_all()
+	assert_true(_director.complete_ceremony(_entry("2026-10-27T10:00:00")))
+	assert_eq(_state.hall_of_fame.size(), 2)
+	assert_eq(_state.hall_of_fame.get_entry(0)["date"], "2026-10-26T10:00:00")

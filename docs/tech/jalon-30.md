@@ -594,3 +594,50 @@ league_lorelei`), gestes par `adb shell input swipe` (glisser tenu = marche ; le
 - Suite complète après les deux correctifs : **6 741 / 6 741** (627 scripts).
 - Remarque : l'objectif du Menu Dresseur affiche « traverser le Pont Pépite » (drapeaux du départ
   de débogage, sans effet sur une vraie partie).
+
+### 10.10 T15 à T17 — Panthéon, générique, retour à Bourg Palette (2026-10-26, branche `jalon-30`)
+
+Suite de la QA S24 du 2026-10-26 (« Panthéon sans sortie »). Sans fusion du J29 ni du J32.
+- **Enchaînement** : `rival_champion_call` a `"next": "league_victory"` (victoire) ; scène
+  `league_victory` (`if league_stage_4_cleared`) : Chen vient près du joueur, T30-13, T30-14
+  (tourné vers le rival), T30-15, passage au Panthéon (`hall_of_fame:from_south`), le joueur va
+  près de Chen, T30-16 « Bienvenue au Panthéon ! » (narration), **écran du Panthéon**, T30-17,
+  **générique**, `pallet_town:player_house_door` (tourné ↓) ; autosave d'arrivée.
+- **Deux étapes de scène nouvelles** (fin d'enum `CutsceneStep.Kind`, à additionner à la
+  fusion) : `hall_of_fame` (gestionnaire de Boot : cérémonie due → instantané `HallOfFame.snapshot`,
+  écran, `LeagueDirector.complete_ceremony` → titre, tentative effacée, entrée ajoutée ; puis
+  **une seule écriture** par le chemin de l'étape « save » ; déjà faite → rien) et `credits`.
+- **Reprise** : `LeagueDirector.pending_cutscene` ; arrivée (chargement) dans la salle du Champion
+  avec la victoire acquise → `league_victory` ; au Panthéon (cérémonie due **ou** titre posé) →
+  `league_hall_of_fame` (même fin sans Chen ; seule sortie du Panthéon, qui n'a pas de porte).
+  Jamais deux entrées : la cérémonie n'ajoute rien quand elle n'est plus due.
+- **Écran du Panthéon** (`game/ui/league/hall_of_fame_screen.gd`) : fond nuit, halo doré, chaque
+  Pokémon seul (artwork officiel, « {pokemon} — N{level} », nom de l'espèce sous un surnom),
+  tenue 1,6 s (toucher : suivant), puis l'équipe entière jusqu'au toucher ; en-tête « joueur ·
+  date ». **Générique** (`credits_screen.gd`, données `data/story/credits.json`, lecture pure
+  `CreditsData`) : logo du jeu (T30-19), Q30-1, joueur et équipe, merci ; défilement 110 px/s,
+  ×4 doigt posé ; bouton « Passer » seulement si `league_credits_seen` (posé à la fin du
+  générique). Jetons `UiTokens.HALL_*`, `CREDITS_*`, calque 90.
+- **J32 (N-17, N-18)** : `jalon-32` n'est pas dans `jalon-30` ; point de branchement noté dans
+  `LeagueDirector.complete_ceremony` (avant l'écriture) :
+  `StaticRespawn.on_league_won(<cutscenes>.get_static_encounters(), flags)`.
+- **Défaut mineur de la QA S24** corrigé : à la reprise de l'appli pendant un combat, la vue
+  change de taille et `Player._on_viewport_size_changed` remettait la caméra au zoom 1 sur les
+  limites de la carte (fond flou recadré). `BattleStage` prévient le joueur (`hold_camera`) ; la
+  taille changée est appliquée à la remise de la caméra.
+- **Valeurs [D]** : fond nuit uni (pas de fond peint) pour les deux écrans ; durées et tailles
+  ci-dessus ; en-tête date au format JJ/MM/AAAA ; Chen rejoint le joueur par la gauche (ou au-dessus).
+- **Textes [D] à valider par Kevin** (`data/story/credits.json`) : bloc « Pokémon © Nintendo,
+  Creatures, Game Freak » / « Projet personnel, non officiel, jamais diffusé » ; bouton « Passer ».
+- **Tests** : `test_league_ceremony.gd` (3 : cérémonie complète et sauvegarde, reprise au Panthéon
+  sans 2e entrée, 2e victoire et générique passable), `test_league_screens.gd` (3),
+  `test_credits_data.gd` (3), `test_league_director.gd` (+2), `test_cutscene_library.gd` (+3),
+  `test_game_map.gd` et `test_battle_stage.gd` (+1 chacun, caméra) ; `test_league_save.gd`,
+  `test_cutscene_data.gd`, `test_dialogue_data.gd`, `test_cutscene_flash.gd` mis à jour.
+  `test_no_draft_in_data.gd` : bloc [D] du générique nommé en attente. **Suite complète : 6 915 / 6 916**
+  (650 scripts), seul échec ce brouillon non nommé, corrigé puis revérifié à part ; import sans erreur.
+  Captures 2340 × 1080 relues : `build/captures/jalon30_ceremonie/`
+  (`tools/capture_j30_ceremony.gd`).
+- **Reste** : QA 30A de sauvegarde (Kevin, seule) ; QA téléphone 30C (Panthéon lisible, générique,
+  Bourg Palette, 2e victoire, 60 i/s) ; Q30-4 (Panthéon dans le Menu Dresseur) ; Grand moment
+  « champion » (§0.1, pas fait) ; porte du hall à la fusion du J29 (§10.8).
