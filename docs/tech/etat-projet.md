@@ -5,6 +5,11 @@ Mis à jour : 2026-10-26 (**Dépôt public (décision de Kevin) : CI GitHub sur 
 
 
 
+## Registre des reportés (2026-10-26, branche `claude/reportes-a7d52f`)
+- **`docs/tech/reportes.md`** remplace la liste « Reportés » du bas de ce fichier : toutes les remarques en attente depuis le J4 (section du bas, historique de ce fichier, clôtures des `jalon-*.md`, `phase-da-grille.md`, branches `jalon-23`, `prep/j26-j27`, `jalon-28` à `jalon-32` en lecture seule), vérifiées dans le code. **159 points** : 47 fermés avec preuve, 2 corrigés, 83 ouverts sur `main` (P0 1 · P1 7 · P2 27 · P3 48), 27 propres aux branches.
+- **Corrigés** : `audit-pending-moves.md` régénéré (Guillotine retirée, 5 capacités en attente) ; nouveau départ `dark_cave_b1f_b` (échelle B). Le départ `route_5` reste sans `route_5_entered` : c'est voulu (`test_route_5_life`), correctif annulé après la CI.
+- **Arbitrages pour Kevin (R-1 à R-9)**, dont **R-1** : fusionner `correctif-orientation-adversaires` (adversaires jamais tournés à droite, description du Sac de combat sur 4 lignes = le seul P0 ouvert) dans `main`.
+
 ## Chantier « Combat vivant » — plan écrit (2026-10-26, session de coordination, documents seuls)
 
 - **Plan** : `docs/tech/combat-vivant.md` (animations d'attaques du dossier 05 §4, §9 à §13, §21) : effets pilotés par `data/battle/move_fx.json` (17 familles, 13 attaques phares, annexe des 165 attaques), logique pure dans `game/battle/fx/`, `CPUParticles2D` et lumière simulée (pas de recopie d'écran : A17), option « Animations de combat : Complètes / Rapides », statuts visibles (aura de poison, respiration du sommeil) et retours de PV. Sous-jalons CV.0 (socle + Éclair, Opus) → CV.1 (familles) ∥ CV.3 (statuts, PV) ∥ CV.A (points d'origine) → CV.2 (animations propres, lots P1 à P4) → CV.Z ; CV.0 après la fusion du J23 (`battle_stage.gd`).
@@ -1908,27 +1913,7 @@ Référence `docs/design/reference/ouverture-storyboard-v1.webp`. Escalier = tra
 - Chambre : `docs/design/reference/chambre-joueur-v1.webp` ; rez-de-chaussée et sortie : `ouverture-storyboard-v1.webp` ; maison du rival (un seul niveau, **sans Évoli**) : `maison-rival-v1.webp` ; labo : `labo-chen-v1.png`. Plans correspondants : `jalon-02.md` §4.3, §4.4, §4.5, §4.7.
 
 ## Reportés (décision de Kevin)
-- **Raccords J21 ↔ J22 (2026-10-23)** : Route 16 est, la porte haute du poste (19..20, 13) se lit comme une tache de terre dans la clairière au-dessus du toit (façade provisoire `bldg_velos_01` de 7 rangées sur une emprise de 8) ; l'arbre à Couper (jeune arbre ×1,15) se distingue peu de la forêt voisine : à reprendre avec la façade de la série 23 et l'art de la Route 16.
-- **Jalon 12 (décisions de Kevin, 2026-10-13)** : **grotte du Mont Sélénite trop claire** sur les captures Mac (seuils tenus : sol 0,22–0,37, sol/paroi 4–9 ; contraste du héros 2,8–3,5 contre 4,4 en forêt) → **jugée sur téléphone au 12B** (assombrir le pourtour des salles, laisser lampes et puits porter la lumière si besoin) — **TRAITÉ le 2026-10-14** (passe « lumière rare », branche `j12-lumiere-grotte` : voile de pénombre au pourtour, lumière portée par lampes, puits, éclats et projecteurs ; reste à confirmer sur téléphone) ; masse d'ardoise uniforme à l'est de la Route 3 ; bande noire de 36 px à droite du sas (24 cases de large) ; bouche du sas vue de face alors qu'on y entre vers l'ouest ; ouverture de la grotte ≈ 1,3 case pour 2 cases praticables ; mare en bassin rectangulaire.
-- **Jalon 16 (décision de Kevin, 2026-10-16)** : un Pokémon qui coupe **sans planche d'exploration peinte** (Sabelette, Mystherbe…) coupe avec le trait de lame seul, sans Pokémon visible ; planches d'exploration de toutes les espèces compatibles Coupe : phase DA.
-- Écran de démarrage « GODOT » (~0,5 s) : à remplacer avec l'icône et l'identité du jeu.
-- Incident de saisie vu une fois en QA (joueur reparti dans le mauvais sens), non reproduit : à surveiller.
-- Cinématique de première sortie (révélation de Bourg Palette, « Le commencement de toute aventure ») : jalon « ouverture ».
-- Rendu « vraie DA » des intérieurs d'après les références (lumière chaude, décor riche) : phase DA — **lumière chaude faite par DAF.6 (2026-10-26, validée)** ; le décor riche reste de l'art. Le bas de la douche du rival reste partiellement sous le bouton courir.
-- Laissé tel quel (décision de Kevin) : un pas en trop si on lève le doigt à la toute fin du fondu.
-- **Jalon 9 (Forêt de Jade), consolidés à la clôture (T23, 2026-10-08)** — rendu, à reprendre en phase DA sauf mention :
-  - **assombrir nettement la forêt hors des clairières** (vert sombre bleuté de la vue validée, lumière chaude seulement dans les trouées ; aujourd'hui « parc ensoleillé ») : profil `forest` et teinte de `DenseForest` (demandé par Kevin) — **fait par DAF.6 (2026-10-26, validé)** ;
-  - **planche du Chenipan d'ambiance** en attente (prompt `build/art/prompts/POKE_CHENIPAN_FIXE_NE_r1.txt`, sortie `build/art/POKE_CHENIPAN_FIXE_NE_r1.png`, puis `preparer.py` + `build_character_frames.gd`) ;
-  - combat : voile du poison **plus rose que violet** ; pastille PSN de l'adversaire posée **après** « est empoisonné ! » ; « Touchez l'écran pour continuer » petit et bouton **ARRÊTER** de l'évolution peu visible ; bulle « ! » de Théo rognée en haut d'écran ; icône dédiée de l'**Antidote** ;
-  - menus : rangée « Pokémon observés » de la Carte **rognée au format S24** ; image de zone « Forêt de Jade » générique ; fiche Pokédex ouverte sur Aperçu ;
-  - forêt : bord net en bas des rais de lumière ;
-  - mémoire des textures (85–88 Mo dans la forêt sur S21, 66,9 Mo en combat) : « pas grave » pour Kevin, à surveiller au J10 ;
-  - (corrigé au T23, plus reporté : bandeau « X souffre du poison » sous le voile de l'autre Pokémon.)
-- Combat (QA S24 du chantier combat-maquettes, rendu) : les grands Pokémon sans dos provisoire (Florizarre, Dracaufeu…) ne sont pas dessinés **côté joueur** (dos peints au J11) ; le monde reste dessiné sous le décor opaque (≈ 150 appels inutiles) ; le décor préchargé garde ≈ 20 Mo de VRAM hors combat sur la Route 1.
-
-- **Polish de l'animation des sauts** (accepté provisoirement par Kevin, 2026-09-26) : le tassement à l'atterrissage (compression verticale en nearest, quelques rangées de pixels sautées pendant 0,08 s) est à reprendre avec les vrais sprites, avec l'anticipation du saut, la trajectoire, le squash à l'atterrissage et le retour à l'idle.
-- Orientations et animations fines des cinématiques (ex. Chen sur « Un peu de patience. ») : passe de polish des cinématiques.
-- Pas en arrière du joueur dans la scène du starter : animation de recul dédiée à créer avec les vrais sprites (aujourd'hui marche vers le haut jouée en reculant, « moonwalk »).
+- **Registre unique : [`docs/tech/reportes.md`](reportes.md)** (2026-10-26). 159 points : 47 fermés avec preuve, 2 corrigés, 83 ouverts sur `main` (1 P0 : description du Sac de combat coupée, correctif prêt), 27 propres aux branches non fusionnées ; arbitrages R-1 à R-9. Toute nouvelle remarque de rendu s'y ajoute (identifiant `RP-NNN`) ; au J33, les points ouverts passent au registre des anomalies.
 
 ## Décisions de Kevin (2026-09-25)
 Les six propositions de l'architecte sont acceptées : porte du labo au sud avec parvis et portillon vers les jardins, carte 48×34, sous-titre « Kanto » (la phrase d'ouverture est réservée à la première sortie de la maison), course au bouton tenu, marche 0,22 s/case et course 0,12 s/case (à ajuster après l'essai sur S24), sortie Route 1 = bord de carte. Détails dans [`jalon-01.md`](jalon-01.md) §6.
