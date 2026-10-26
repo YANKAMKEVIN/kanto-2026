@@ -128,7 +128,8 @@ func test_first_zones_of_the_journey() -> void:
 	assert_eq(_zones.get_ids().slice(0, 4), [&"pallet_town", &"route_1", &"viridian_city",
 		&"route_22"] as Array[StringName], "ordre du fichier")
 	assert_eq(_zones.get_zone(&"viridian_city").maps, [&"viridian_city", &"viridian_center",
-		&"viridian_mart"] as Array[StringName], "jalon 7 T4 : la ville et ses deux intérieurs")
+		&"viridian_mart", &"viridian_gym"] as Array[StringName],
+		"jalon 7 T4 : la ville et ses deux intérieurs ; jalon 28 : l'Arène")
 	# Jalon 21 (T22) : la vraie Route 16 est une zone (le rectangle retiré au J6 était la Route 22).
 	assert_true(_zones.has_zone(&"route_16"), "Route 16 (jalon 21)")
 	# Jalon 22 : la Route 16 ouest du J22 appartient à la même zone.

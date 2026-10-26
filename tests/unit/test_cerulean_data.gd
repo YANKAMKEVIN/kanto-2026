@@ -246,6 +246,8 @@ func test_tm11_and_its_compatibilities() -> void:
 		&"psyduck", &"golduck", &"poliwag", &"poliwhirl", &"poliwrath", &"tentacool",
 		&"tentacruel", &"slowpoke", &"slowbro", &"seel", &"dewgong", &"shellder", &"cloyster",
 		&"krabby", &"kingler", &"cubone", &"marowak",
+		# Jalon 28 (T3) : Rhinoféros.
+		&"rhydon",
 		# Jalon 20 (T7) : Kangourex et Aquali.
 		&"kangaskhan", &"horsea", &"seadra", &"goldeen", &"seaking", &"staryu", &"starmie",
 		&"gyarados",

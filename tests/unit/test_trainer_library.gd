@@ -392,7 +392,9 @@ func test_only_misty_surge_and_the_rivals_switch() -> void:
 		&"rival_ss_anne", &"vermilion_gym_surge", &"rival_tower", &"celadon_gym_erika",
 		&"giovanni_hideout", &"rival_silph", &"silph_co_giovanni", &"cinnabar_gym_blaine",
 		# Jalon 27 (T3) : Morgane et le maître du Dojo [D].
-		&"saffron_gym_sabrina", &"fighting_dojo_master"]
+		&"saffron_gym_sabrina", &"fighting_dojo_master",
+		# Jalon 28 (T8) : Giovanni Champion.
+		&"viridian_gym_giovanni"]
 	for id: StringName in library.get_ids():
 		if not String(id).begins_with("qa_"):
 			assert_eq(library.get_trainer(id).can_switch, switching.has(id), String(id))

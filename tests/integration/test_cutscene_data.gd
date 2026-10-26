@@ -347,6 +347,9 @@ const VARIANT_FLAGS: Dictionary = {
 	&"saffron_gym_sabrina": [PEWTER_FLAGS], &"saffron_gym_sabrina_tm_late": [PEWTER_FLAGS],
 	&"fighting_dojo_master": [PEWTER_FLAGS],
 	&"fighting_dojo_take_hitmonlee": [PEWTER_FLAGS], &"fighting_dojo_take_hitmonchan": [PEWTER_FLAGS],
+	# Jalon 28 (T8) : Giovanni Champion (scène et rattrapage de la CT27), Rappel de l'Arène.
+	&"viridian_gym_giovanni": [PEWTER_FLAGS], &"viridian_gym_giovanni_tm_late": [PEWTER_FLAGS],
+	&"viridian_gym_item_1": [PEWTER_FLAGS],
 	# Jalon 25 : Manoir (objets, caches, interrupteur), Arène (quiz, Auguste), réserve du Musée,
 	# arbre à Couper d'Argenta, échanges du Labo.
 	&"cinnabar_gym_blaine": [PEWTER_FLAGS + [&"badge_volcano"], PEWTER_FLAGS],
@@ -413,6 +416,9 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"rocket_hideout_b4f_item_2": &"rocket_hideout_b4f",
 	&"rocket_hideout_b4f_item_3": &"rocket_hideout_b4f",
 	&"rocket_hideout_b4f_hidden_1": &"rocket_hideout_b4f",
+	# Jalon 28 (T8) : Giovanni (son dialogue) et le Rappel (PNJ « objet ») de l'Arène de Jadielle.
+	&"viridian_gym_giovanni": &"viridian_gym", &"viridian_gym_giovanni_tm_late": &"viridian_gym",
+	&"viridian_gym_item_1": &"viridian_gym",
 	&"starter_chosen": &"oak_lab", &"oak_parcel": &"oak_lab",
 	&"route_2_item_1": &"route_2", &"route_2_item_2": &"route_2",
 	# Jalon 9 (T18) : objets visibles de la Forêt de Jade (PNJ « objet » de son fichier).
@@ -749,6 +755,8 @@ func test_library_loads_without_error() -> void:
 		&"route_8_reached", &"celadon_reached", &"route_8_item_1", &"route_8_hidden_1",
 		&"souterrain_hidden_1", &"souterrain_hidden_2", &"celadon_hidden_1",
 		&"celadon_gym_erika", &"celadon_gym_erika_tm_late", &"celadon_roof_trade",
+		# Jalon 28 (T8) : Giovanni Champion, rattrapage de la CT27, Rappel.
+		&"viridian_gym_giovanni", &"viridian_gym_giovanni_tm_late", &"viridian_gym_item_1",
 		# Jalon 24.
 		&"route_20_item_1", &"route_21_item_1", &"seafoam_b2f_hidden_1", &"seafoam_b4f_hidden_1",
 		&"articuno", &"cinnabar_gym_locked", &"cinnabar_lab_tm35", &"cinnabar_fossil_take_kabuto",
@@ -856,11 +864,11 @@ func test_every_trainer_and_item_step_exists() -> void:
 func test_every_champion_card_and_badge_step_exists() -> void:
 	assert_eq(_cutscenes.get_card_trainer_ids(), [&"celadon_gym_erika", &"cerulean_gym_misty",
 		&"cinnabar_gym_blaine", &"giovanni_hideout", &"pewter_gym_brock", &"saffron_gym_sabrina",
-		&"silph_co_giovanni", &"vermilion_gym_surge"] as Array[StringName])
+		&"silph_co_giovanni", &"vermilion_gym_surge", &"viridian_gym_giovanni"] as Array[StringName])
 	for id: StringName in _cutscenes.get_card_trainer_ids():
 		var trainer := _trainers.get_trainer(id)
 		assert_true(trainer != null and trainer.has_card(), "« %s » a une carte" % id)
-	assert_eq(_cutscenes.get_badge_ids(), [&"boulder", &"cascade", &"marsh", &"rainbow",
+	assert_eq(_cutscenes.get_badge_ids(), [&"boulder", &"cascade", &"earth", &"marsh", &"rainbow",
 		&"thunder", &"volcano"] as Array[StringName])
 	for id: StringName in _cutscenes.get_badge_ids():
 		assert_true(_badges.has_badge(id), "badge « %s » connu" % id)
@@ -930,7 +938,7 @@ func test_only_world_items_are_found_items() -> void:
 		"underground_hidden_1:full_restore", "viridian_forest_item_1:antidote",
 		"viridian_forest_item_2:poke_ball", "viridian_forest_item_3:potion",
 		"viridian_forest_item_4:antidote", "viridian_forest_item_5:poke_ball",
-		"viridian_forest_item_6:potion",
+		"viridian_forest_item_6:potion", "viridian_gym_item_1:revive",
 		"silph_co_7f_item_10:rare_candy", "silph_co_7f_item_11:nugget"]
 	# Jalon 26 (T9) : objets au sol et cachés de Safrania et de la Sylphe.
 	for id: StringName in J26_T9_ITEMS:

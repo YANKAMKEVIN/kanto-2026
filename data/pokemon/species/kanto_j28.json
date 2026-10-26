@@ -1,0 +1,64 @@
+{
+	"rhydon": {
+		"dex": 112,
+		"name": "Rhinoféros",
+		"types": [
+			"ground",
+			"rock"
+		],
+		"base_stats": {
+			"hp": 105,
+			"atk": 130,
+			"def": 120,
+			"spa": 45,
+			"spd": 45,
+			"spe": 40
+		},
+		"male_ratio": 0.5,
+		"growth_rate": "slow",
+		"base_exp": 204,
+		"catch_rate": 60,
+		"learnset": [
+			[
+				1,
+				"horn_attack"
+			],
+			[
+				1,
+				"stomp"
+			],
+			[
+				1,
+				"tail_whip"
+			],
+			[
+				1,
+				"fury_attack"
+			],
+			[
+				30,
+				"stomp"
+			],
+			[
+				35,
+				"tail_whip"
+			],
+			[
+				40,
+				"fury_attack"
+			],
+			[
+				48,
+				"horn_drill"
+			],
+			[
+				55,
+				"leer"
+			],
+			[
+				64,
+				"take_down"
+			]
+		]
+	}
+}

@@ -102,9 +102,9 @@ func test_real_data_loads_without_error() -> void:
 		&"gastly", &"haunter", &"onix",
 		&"drowzee", &"hypno", &"krabby", &"kingler", &"voltorb", &"electrode", &"exeggcute",
 		&"cubone", &"marowak", &"hitmonlee", &"hitmonchan", &"koffing", &"weezing", &"rhyhorn",
-		&"tangela", &"kangaskhan",
+		&"rhydon", &"tangela", &"kangaskhan",
 		&"horsea", &"seadra", &"goldeen", &"seaking", &"staryu", &"starmie", &"mr_mime", &"magmar",
-		&"magikarp", &"gyarados",
+		&"tauros", &"magikarp", &"gyarados",
 		# Jalon 26 (T3) : Lokhlass, Alakazam (kanto_silph.json).
 		&"lapras",
 		&"eevee", &"vaporeon", &"jolteon", &"flareon",
@@ -113,7 +113,8 @@ func test_real_data_loads_without_error() -> void:
 	# Smogogo et Électrode sont ceux du J22 (kanto_j25_reprises.json retiré à la fusion de main).
 	# Jalon 27 (T3) : 8 capacités propres (dont Vague Psy) + Ultimawashi et Clonage empruntées au
 	# J29 (Poing de Feu : celui du J25, retiré de j27_emprunts.json à la fusion de main).
-	assert_eq(_data.get_move_ids().size(), 152,
+	# Jalon 28 : Abîme.
+	assert_eq(_data.get_move_ids().size(), 153,
 		"47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10) + Patience (J11) "
 		+ "+ 21 du Mont Sélénite (jalon 12) + 8 du jalon 13 (les 5 du J12 qu'il reprenait : "
 		+ "entrées du J12) + 6 du Cap d'Azuria (jalon 14) + Jackpot (J15) "
@@ -123,7 +124,7 @@ func test_real_data_loads_without_error() -> void:
 		+ "+ 5 du jalon 22 (Écrasement vient du J20) + 3 du J24 (j24.json : Force Poigne, "
 		+ "Pince-Masse et Trempette sont ceux du J22) "
 		+ "+ Déflagration et Poing de Feu (J25, j25.json) "
-		+ "+ 10 (J27 : 8 propres, dont Vague Psy ; 2 empruntées au J29)")
+		+ "+ 10 (J27 : 8 propres, dont Vague Psy ; 2 empruntées au J29) + Abîme (J28)")
 	assert_true(_data.has_move(&"struggle"))
 
 
@@ -217,6 +218,8 @@ func test_real_evolution_chains() -> void:
 		# Tour Pokémon (jalon 19, §2.12) : Rouge/Bleu. Spectrum (échange, Ectoplasma absent) et
 		# Noeunoeuf (Pierre Plante absente) n'en déclarent pas.
 		&"gastly": [&"haunter", 25], &"cubone": [&"marowak", 28],
+		# Arène de Jadielle (jalon 28, T3) : Rouge/Bleu.
+		&"rhyhorn": [&"rhydon", 42],
 		# Jalon 22 (§2.12) : Rouge/Bleu entre espèces présentes ; Machopeur (Mackogneur absent)
 		# n'en déclare pas ; Magicarpe → Léviator (J19) au N20.
 		&"venonat": [&"venomoth", 31], &"doduo": [&"dodrio", 31], &"grimer": [&"muk", 38],
@@ -529,6 +532,8 @@ func test_real_catch_rates_are_the_official_ones() -> void:
 		&"dewgong": 75, &"cloyster": 60, &"kingler": 60,
 		&"seadra": 75, &"omanyte": 45,
 		&"omastar": 45, &"kabuto": 45, &"kabutops": 45, &"articuno": 3,
+		# Jalon 28 (T3 ; Machopeur est celui du J22).
+		&"rhydon": 60, &"tauros": 45,
 		# Jalon 21 (T5).
 		&"poliwag": 255, &"tentacool": 190, &"snorlax": 25,
 		# Jalon 25 (T7) ; Tadmorv, Grotadmorv, Smogogo et Électrode sont ceux du J22.

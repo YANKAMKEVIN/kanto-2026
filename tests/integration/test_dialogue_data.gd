@@ -459,6 +459,8 @@ const MAPS: Array[StringName] = [
 	&"celadon_restaurant", &"celadon_chief_house", &"celadon_hotel",
 	# Jalon 20 (T21) : la vie du 20-II (Casino déjà listé ; repaire Rocket B1F à B4F).
 	&"rocket_hideout_b1f", &"rocket_hideout_b2f", &"rocket_hideout_b3f", &"rocket_hideout_b4f",
+	# Jalon 28 (T7, T8) : l'Arène de Jadielle (Dresseurs, guide, Giovanni, Rappel).
+	&"viridian_gym",
 	# Jalon 24 : la mer, les Îles Écume, Cramois'Île et son Labo.
 	&"route_19", &"route_20", &"route_21", &"seafoam_1f", &"seafoam_b1f", &"seafoam_b2f",
 	&"seafoam_b3f", &"seafoam_b4f", &"cinnabar_island", &"cinnabar_center", &"cinnabar_mart",
@@ -967,6 +969,8 @@ const IDS_J21: Array[StringName] = [
 	&"tower_7f_fuji", &"tower_7f_fuji_thanks", &"fuji_flute_give", &"fuji_flute_received",
 	&"fuji_flute_explain", &"pokemon_house_fuji",
 ]
+## Jalon 28 : textes T28-01 à T28-09 du plan (§3), validés d'avance par Kevin le 2026-10-21.
+const PLAN_J28 := "res://docs/tech/jalon-28.md"
 const IDS_J19: Array[StringName] = [
 	&"tower_channeler_1_after",
 	&"tower_channeler_1_before",
@@ -1095,8 +1099,30 @@ const SET_J14_BILL_CUTSCENES: Array[StringName] = [
 ## Jalon 26 (T9) : `silph_giovanni_defeated` (libération) est lu par les PNJ de Safrania et de la
 ## Sylphe, levé par la scène de Giovanni du 11F (T12) : retiré.
 ## Jalon 21 : `ghost_marowak_calmed` (6F) et `snorlax_route_*_woken` (Ronflex) sont levés par leurs
-## scènes : plus aucun drapeau futur.
-const FUTURE_FLAGS: Array[StringName] = []
+## scènes. Jalon 28 (Q28-1, 2026-10-22) : la porte de l'Arène de Jadielle et le guetteur lisent les 7
+## Badges (`badge_soul` : arène future, J23) ; plus aucune lecture de `silph_giovanni_defeated`.
+## Les Badges Volcan (Auguste, J25) et Marais (Morgane, J27) sont levés par leurs scènes depuis leur
+## fusion dans `main`.
+const FUTURE_FLAGS: Array[StringName] = [&"badge_soul"]
+## Jalon 28 (T7, T8) : dialogues de l'Arène de Jadielle.
+const IDS_J28: Array[StringName] = [
+	&"viridian_gym_blackbelt_bertrand_after", &"viridian_gym_blackbelt_bertrand_before",
+	&"viridian_gym_blackbelt_bertrand_defeated", &"viridian_gym_blackbelt_didier_after",
+	&"viridian_gym_blackbelt_didier_before", &"viridian_gym_blackbelt_didier_defeated",
+	&"viridian_gym_blackbelt_joel_after", &"viridian_gym_blackbelt_joel_before",
+	&"viridian_gym_blackbelt_joel_defeated", &"viridian_gym_cooltrainer_damien_after",
+	&"viridian_gym_cooltrainer_damien_before", &"viridian_gym_cooltrainer_damien_defeated",
+	&"viridian_gym_cooltrainer_florian_after", &"viridian_gym_cooltrainer_florian_before",
+	&"viridian_gym_cooltrainer_florian_defeated", &"viridian_gym_cooltrainer_yannick_after",
+	&"viridian_gym_cooltrainer_yannick_before", &"viridian_gym_cooltrainer_yannick_defeated",
+	&"viridian_gym_giovanni", &"viridian_gym_giovanni_badge", &"viridian_gym_giovanni_departure",
+	&"viridian_gym_giovanni_intro", &"viridian_gym_giovanni_lost", &"viridian_gym_giovanni_resume",
+	&"viridian_gym_giovanni_tm", &"viridian_gym_giovanni_tm_got", &"viridian_gym_giovanni_won",
+	&"viridian_gym_guide", &"viridian_gym_item_1", &"viridian_gym_tamer_lionel_after",
+	&"viridian_gym_tamer_lionel_before", &"viridian_gym_tamer_lionel_defeated",
+	&"viridian_gym_tamer_regis_after", &"viridian_gym_tamer_regis_before",
+	&"viridian_gym_tamer_regis_defeated",
+]
 var _library: DialogueLibrary
 var _cutscenes: CutsceneLibrary
 var _offer: StarterOffer
@@ -1245,7 +1271,7 @@ func test_library_loads_without_error() -> void:
 	var expected := IDS + IDS_J14_BILL + IDS_J14_ROCKET + IDS_J15_ROUTE_5 + IDS_J16_GYM \
 		+ IDS_J16_SHIP + IDS_J16_RIVAL_CAPTAIN + IDS_J16_T15 + IDS_J17 + IDS_J18 + IDS_J19 + IDS_J20 \
 		+ IDS_J20_T17 + IDS_J20_T21 + IDS_J21 + IDS_J21_T21 + IDS_S2B + S2_FIELD_TRAVEL + IDS_J21_T22 \
-		+ IDS_J24_TRAINERS + IDS_J24 + IDS_J25 \
+		+ IDS_J24_TRAINERS + IDS_J24 + IDS_J25 + IDS_J28 \
 		+ _silph_co_ids() + _j26_life_ids() + IDS_J26_STORY + _j27_ids()
 	expected.append_array(TEXTS_J26_T6.keys())
 	expected.append_array(TEXTS_S2C_FISH.keys())
@@ -1390,7 +1416,11 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		&"fighting_dojo_master_intro", &"fighting_dojo_master_won", &"fighting_dojo_master_lost",
 		&"fighting_dojo_master_after", &"fighting_dojo_received_hitmonlee",
 		&"fighting_dojo_stored_hitmonlee", &"fighting_dojo_received_hitmonchan",
-		&"fighting_dojo_stored_hitmonchan"]))
+		&"fighting_dojo_stored_hitmonchan"]
+		# Jalon 28 (T8) : Giovanni Champion (scène de l'Arène et rattrapage de la CT27).
+		+ [&"viridian_gym_giovanni_badge", &"viridian_gym_giovanni_departure",
+		&"viridian_gym_giovanni_intro", &"viridian_gym_giovanni_lost", &"viridian_gym_giovanni_resume",
+		&"viridian_gym_giovanni_tm", &"viridian_gym_giovanni_tm_got", &"viridian_gym_giovanni_won"]))
 	for id: StringName in played:
 		assert_true(_library.has_dialogue(id), "dialogue « %s » défini" % id)
 		if UNUSED_YET.has(id):
@@ -1609,6 +1639,8 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		&"got_rocket_hideout_b3f_item_2", &"got_rocket_hideout_b3f_hidden_1",
 		&"got_rocket_hideout_b4f_item_1", &"got_rocket_hideout_b4f_item_2",
 		&"got_rocket_hideout_b4f_item_3", &"got_rocket_hideout_b4f_hidden_1"]
+		# Jalon 28 (T8) : Giovanni Champion (Badge Terre, CT27), Rappel de l'Arène.
+		+ [&"giovanni_gym_met", &"badge_earth", &"tm27_received", &"got_viridian_gym_item_1"]
 		# Jalon 21 (T22) : titre de zone de la Route 16, réveil de Ronflex 16 (`_awake` jamais sur disque).
 		+ [&"route_16_visited", &"snorlax_route_16_awake", &"snorlax_route_16_woken",
 		&"snorlax_route_16_done", &"snorlax_route_16_caught"]
@@ -1952,6 +1984,10 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			# J20 (T15) : dossier 23 §20, un panneau sur deux lignes, une citation par ligne.
 			or _each_line_quoted(dossier_23, text)
 			or _in_dossier_18(dossier_23, text) or _in_dossier_18(plan_j20, text)
+			# J28 : une page = un morceau d'une réplique « … » du §3 du plan (retours à la ligne
+			# de bulle = espaces).
+			or FileAccess.get_file_as_string(PLAN_J28).replace("{player}", "{joueur}")
+				.contains(text.replace("\n", " "))
 			# J20 (T12) : « {player} » écrit tel quel dans le dossier 23 (texte 29).
 			or _each_line_quoted(dossier_23, text.replace("{joueur}", "{player}"))
 			# J22 (T13, T17) : dossier 25 §16, bulles « / » et lignes à plat.
@@ -2184,7 +2220,8 @@ func test_oak_parcel_lines() -> void:
 	# la Pépite cachée du Copieur.
 	# Jalon 26 (T11, T12) : l'employé du Lokhlass, le président et deux objets du 7F.
 	# Jalon 27 (T8 à T10) : Morgane, le maître du Dojo et les deux Poké Balls (« confirm_cutscene »).
-	assert_eq(launched, 163, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
+	# Jalon 28 (T8) : Giovanni (Arène et rattrapage de la CT27) et le Rappel de l'Arène.
+	assert_eq(launched, 166, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
 		+ "sa CT34, Ondine (pont, Arène et rattrapage), écran, module, console, objets de la "
 		+ "Route 25, le Rocket d'Azuria (2) et le barrage sud ; J15 : objets de la Route 5 ; "
 		+ "J16 : Major Bob (2), neuf objets du S.S. Anne, le capitaine, le marin (2) ; "
@@ -2195,7 +2232,8 @@ func test_oak_parcel_lines() -> void:
 		+ "J20 (T21) : repaire (11 objets, 3 caches, Clé ×2, Giovanni, Scope) ; "
 		+ "J21 (T13, T14) : M. Fuji au 7F et dans sa maison ; J22 : la Canne, la Bicyclette ; "
 		+ "J24 : objets (2), caches (2), Artikodin, CT35, fossiles (2) ; J25 : Ptéra (1) ; "
-		+ "J26 : Lokhlass, Master Ball, deux objets du 7F ; J27 : Morgane, maître, deux Balls")
+		+ "J26 : Lokhlass, Master Ball, deux objets du 7F ; J27 : Morgane, maître, deux Balls ; "
+		+ "J28 : Giovanni (2), Rappel")
 	# Le jeton n'apparaît que dans la réplique de l'espèce, « {pokemon} » dans les phrases du
 	# compagnon (J11), et ceux de la Pension dans ses répliques (J15).
 	for row: Array in _pages():
@@ -2233,7 +2271,8 @@ func test_oak_parcel_lines() -> void:
 				or (row[0] in [&"rocket_hideout_b4f_lift_key_got",
 					&"rocket_hideout_b4f_silph_scope_got"] and row[1].contains("{player}")) \
 				or (String(row[0]).begins_with("celadon_gym_erika_") and row[1].contains("{player}")) \
-				or (_j27_ids().has(row[0]) and row[1].contains("{player}")):
+				or (_j27_ids().has(row[0]) and row[1].contains("{player}")) \
+				or (String(row[0]).begins_with("viridian_gym_giovanni_") and row[1].contains("{player}")):
 			expected = [DialogueTokens.PLAYER]
 		elif J17_TOKENS.has(row[1]):
 			# Jalon 17 (T8) : compte d'espèces de l'assistant (T-1 à T-3), joueur de T-3.
