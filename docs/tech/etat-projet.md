@@ -8,6 +8,18 @@ Mis à jour (`main`) : 2026-10-25 (**QA S24 du 23C+23D (Gardien, CS03, CS04, Mai
 
 
 
+## QA S24 du J29 (2026-10-26, agent par adb, APK de `jalon-29` `3dd1458a`, départs de débogage)
+
+Galaxy S24 en USB, « Ne pas déranger » activé, focus vérifié avant chaque geste. Captures : `~/dev/qa-s24-j29-j31/j29/` (hors dépôt). Journal Godot : aucune erreur ni avertissement. Cadence : 59 i/s en exploration et en combat (creux à 34–39 au chargement d'une carte).
+- **Route Victoire 1F (`victory_road_1f`)** : EXAMINER face au rocher → UTILISER → « Salamèche utilise Force ! » ; poussées dans les quatre directions ; rocher mal poussé (bloqué contre un mur) → sortie sur la Route 23, puis retour → **rocher revenu à son origine** ; puzzle refait jusqu'à l'interrupteur (17, 13) → « Clac ! Un mécanisme s'est enclenché quelque part. », **barrière (9, 12) ouverte**, point de sauvegarde forcée journalisé (simulé en départ de débogage) : **OK**. Tenir la direction enchaîne les poussées (0,25 s + 0,3 s par rocher), comme prévu.
+- **Sulfura (`moltres`)** : OBSERVER → « Une chaleur intense emplit la grotte… » → combat N50 ; appli mise en arrière-plan pendant le combat, puis reprise → **combat intact** : **OK**. « Impossible de fuir ! » répété sans perte de tour, probablement à cause du piège de Danse Flamme.
+- **Plateau Indigo (`indigo_plateau`)** : hall en 161 ms, **porte de la Ligue peinte et lisible** dans le mur du fond, hôte visible : **OK**.
+- **Défauts** :
+  - **Sulfura tourne le dos au joueur en combat** (gravité moyenne, remarque de Kevin). Le correctif `BattleArt.FACING_RIGHT` (n° 146 compris) est sur `jalon-30` et `correctif-orientation-adversaires`, pas sur `jalon-29` ni sur `main`. **Règle de Kevin (2026-10-26) : « le Pokémon adverse ne doit jamais regarder à droite »** (toutes les espèces, toutes les branches).
+  - **Sulfura dessiné sur la carte avec un sprite d'oiseau générique** (Roucool ou Piafabec), petit et caché par la tête du héros (gravité moyenne, art provisoire ; même cas que Mewtwo au J31).
+  - Rencontres sauvages très fréquentes dans la Route Victoire (une toutes les 3 à 5 cases environ) : à confirmer avec la table RB.
+- **Non couvert** : relance après fermeture forcée et reprise de sauvegarde (un départ de débogage ne lit ni n'écrit la sauvegarde) ; capture de Sulfura (pas de Master Ball avant le J26) ; Surf de la Route 23 ; postes de la Route 23 ; Route Victoire 2F et 3F ; rival n° 7 variantes Bulbizarre et Salamèche.
+
 ## Dos de combat — essai du cadrage « façon Rouge/Bleu » (2026-10-24, documents et prompts seuls, sur `main`)
 - Fiche : `docs/design/fiches-assets/dos-cadrage-rb/README.md` (planches : 81 dos de `art-dos-combat-maj`, comparaison avec les dos RB, montage A/B dans le décor de la Route 1, test Codex).
 - Test Codex en trois quarts arrière, plongée, corps coupé en bas (`tools/art/prompts/dos_rb/`, sorties `build/art/DOS_RB_*.png`) : Onix accepté avec l'artwork joint, Carapuce accepté sans image ; Salamèche et Pikachu refusés dans les deux cas (modération sur l'image produite). Le cadrage ne fait pas baisser les refus, mais B rend les dos plus lisibles et donne sa taille à Onix.
