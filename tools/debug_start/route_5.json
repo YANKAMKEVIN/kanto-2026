@@ -28,7 +28,8 @@
 		"cerulean_rocket_spotted",
 		"cerulean_rocket_beaten",
 		"got_tm28",
-		"cerulean_south_guard_left"
+		"cerulean_south_guard_left",
+		"route_5_entered"
 	],
 	"party": [
 		{

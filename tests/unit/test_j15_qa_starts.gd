@@ -9,6 +9,7 @@ const FixedClock := preload("res://tests/helpers/fixed_clock.gd")
 const DIR := "res://tools/debug_start/"
 ## Départ → [carte, point d'apparition, orientation].
 const STARTS := {
+	"route_5": [&"route_5", &"from_cerulean_c", Vector2i.DOWN],
 	"route_5_daycare": [&"route_5_daycare", &"counter", Vector2i.UP],
 	"route_5_daycare_last": [&"route_5_daycare", &"counter", Vector2i.UP],
 	"route_5_daycare_ready": [&"route_5_daycare", &"counter", Vector2i.UP],
@@ -124,3 +125,9 @@ func test_ticket_start_holds_the_ss_ticket() -> void:
 	assert_true(state.flags.has_flag(&"got_ss_ticket"))
 	assert_eq(state.bag.count_of(&"ss_ticket"), 1)
 	assert_false(state.flags.has_flag(&"vermilion_reached"), "l'arrivée reste à jouer")
+
+
+## Registre des reportés (RP-002) : l'objectif de la Route 5 est juste dès le premier pas.
+func test_route_5_start_has_entered_the_route() -> void:
+	var state := _state("route_5")
+	assert_true(state.flags.has_flag(&"route_5_entered"), "objectif de la Route 5, pas du Badge")
