@@ -1,6 +1,6 @@
 # Registre des reportés
 
-> Registre unique, établi le 2026-10-26 sur `main` @ `1b9b61d1`, de **toutes les remarques laissées
+> Registre unique, établi le 2026-10-26 sur `main` @ `1b9b61d1` (mis à jour sur `b68ee46d`, DAF.5 2e partie), de **toutes les remarques laissées
 > en attente** depuis le J4 (règle 3 de `CLAUDE.md` : les remarques de rendu se notent sans être
 > corrigées tout de suite). Il remplace la section « Reportés (décision de Kevin) » d'`etat-projet.md`.
 > Sources lues : cette section, les ≈ 130 mentions « report… » de l'historique d'`etat-projet.md`
@@ -33,15 +33,14 @@
 | | Points |
 |---|---|
 | Recensés (doublons fusionnés) | **159** |
-| Fermés avec preuve (obsolètes ou corrigés depuis) | **44** (§4) |
+| Fermés avec preuve (obsolètes ou corrigés depuis) | **46** (§4) |
 | Corrigés dans ce lot | **3** (§1, RP-001 à RP-003) |
-| Ouverts sur `main` | **85** (§2) |
+| Ouverts sur `main` | **83** (§2) |
 | Propres à une branche non fusionnée | **27** (§3) |
 
-Ouverts sur `main`, par section : art des Pokémon 5 (DAF.1 reliquat, DAF.2) · monde, DAF.5 13
-(dont 2 déjà produits sur la branche `claude/daf-5-reliquats-18c8b1`) · lumière hors DAF.6 5 ·
+Ouverts sur `main`, par section : art des Pokémon 5 (DAF.1 reliquat, DAF.2) · monde, DAF.5 11 · lumière hors DAF.6 5 ·
 polish DAF.8 17 · Combat vivant et Son 8 · J33 26 · 1.0.x 5 · arbitrages 6.
-Par gravité : **P0 1** (RP-090, texte coupé, correctif prêt : R-1) · P1 8 · P2 27 · P3 49.
+Par gravité : **P0 1** (RP-090, texte coupé, correctif prêt : R-1) · P1 7 · P2 27 · P3 48.
 Aucun P0 sur les branches ; P1 des branches : RP-130, 133, 136, 143, 150, 151.
 
 ## Arbitrages pour Kevin (R-n)
@@ -108,14 +107,12 @@ Rien n'est tranché ici ; chaque arbitrage porte une recommandation.
 
 ### 2.2 Monde : séries en attente et reliquats (DAF.5)
 
-DAF.5, 2e partie (`claude/daf-5-reliquats-18c8b1`, `dd04b645`, **planche à valider par Kevin**) livre la
+DAF.5, 2e partie (fusionnée dans `main` le 2026-10-26, `b68ee46d`, planche validée par Kevin) a livré la
 série 25, le Chenipan d'ambiance et la vérification du pont du S.S. Anne ; « DA-9 sans retouche »
-pour les séries 22 bis et 28.
+pour les séries 22 bis et 28. RP-020 et RP-021 sont donc fermés (§4).
 
 | ID | Origine | Description | Cat. | P | Destination | État / preuve |
 |---|---|---|---|---|---|---|
-| RP-020 | [jalon-09.md](jalon-09.md) T23 ; J9 (2026-10-08) | Planche du Chenipan d'ambiance en attente | rendu | P3 | DAF.5 | produite sur la branche DAF.5 ; fermée à sa fusion |
-| RP-021 | [jalon-22.md](jalon-22.md) §8 ; DAF.0 | Série 25 non intégrée : héros à vélo (vélo provisoire `mount_placeholder.gd`), héros qui pêche, Motard, Ornithologue, Loubard, frères pêcheurs | rendu | P1 (PER-2) | DAF.5 | intégrée sur la branche DAF.5 ; fermée à sa fusion |
 | RP-022 | [jalon-16.md](jalon-16.md) §9.3 ; J16 | S.S. Anne : navire peu visible du quai, passerelle peinte comme un appontement, titre de zone en même temps que DEP-02, trémie 2,5 × 3, portes cabine B et restaurant mal calées, barrière haute, superstructure étroite, mer répétée ; mémoire du pont > 64 Mo | rendu | P2 | DAF.5 puis J33 T2 | ouvert : le pont est « vérifié » par DAF.5, la géométrie n'a pas changé |
 | RP-023 | J20 (2026-10-21) ; série 22 bis | Céladopole : façades et intérieurs provisoires, fontaine petite, coin nord-ouest sans arbres, tabourets dessinés sous les clients assis | rendu | P2 (BAT-6) | J33 T2 (DA-9 : retouche seulement si le lot est rouvert) | ouvert ; Casino et repaire peints (série 22 bis) |
 | RP-024 | [jalon-25.md](jalon-25.md) §3 (T10–T13) | Cramois'Île (Manoir, Arène) notée en aplats provisoires à la clôture du J25 | rendu | P1 si confirmé (BAT-2) | J33 T2 | ouvert, à reproduire : `phase-da-cadrage.md` dit le Manoir en coques peintes (série 28) |
@@ -311,3 +308,5 @@ versions, déjà réglées sur `main` par DAF.6 : non reprises.
 | RP-241 | J29, J31 | Hyper Ball sans icône | `assets/ui/items/ultra_ball.webp` (DAF.5) |
 | RP-242 | J16 | Pikachu et Salamèche de dos en pixel art | `dos_rb_025`, `dos_*_004` |
 | RP-243 | J22 | Héros dessiné à pied sur la Piste Cyclable | vélo provisoire (`mount_placeholder.gd:68`) ; planches : RP-021 |
+| RP-244 | J9 T23 (ancien RP-020) | Planche du Chenipan d'ambiance | DAF.5 2e partie (`b68ee46d`) |
+| RP-245 | J22, DAF.0 (ancien RP-021) | Série 25 non intégrée (vélo, pêche, Motard, Ornithologue, Loubard, frères pêcheurs) | DAF.5 2e partie (`b68ee46d`) |
