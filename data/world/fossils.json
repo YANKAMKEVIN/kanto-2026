@@ -1,9 +1,10 @@
 {
-	"_doc": "Résurrection des fossiles au Labo de Cramois'Île (jalon 24, dossier 27 §10.5, jalon-24.md §2.8). Lu par FossilLab, qui ne connaît aucune espèce. fossil (identifiant d'objet) → species, level, flag (posé au dépôt, effacé au don). ready_flag est posé quand le joueur arrive sur ready_map pendant une résurrection (« va faire un tour dehors »). Le J25 ajoutera old_amber → aerodactyl (dossier 28, X-27) sans toucher au code.",
+	"_doc": "Résurrection des fossiles au Labo de Cramois'Île (jalon 24, dossier 27 §10.5, jalon-24.md §2.8). Lu par FossilLab, qui ne connaît aucune espèce. fossil (identifiant d'objet) → species, level, flag (posé au dépôt, effacé au don). ready_flag est posé quand le joueur arrive sur ready_map pendant une résurrection (« va faire un tour dehors »). Jalon 25 (dossier 28, X-27) : old_amber → aerodactyl ajouté sans toucher au code.",
 	"ready_map": "cinnabar_island",
 	"ready_flag": "fossil_ready",
 	"fossils": {
 		"dome_fossil": { "species": "kabuto", "level": 30, "flag": "fossil_reviving_kabuto" },
-		"helix_fossil": { "species": "omanyte", "level": 30, "flag": "fossil_reviving_omanyte" }
+		"helix_fossil": { "species": "omanyte", "level": 30, "flag": "fossil_reviving_omanyte" },
+		"old_amber": { "species": "aerodactyl", "level": 30, "flag": "fossil_reviving_aerodactyl" }
 	}
 }

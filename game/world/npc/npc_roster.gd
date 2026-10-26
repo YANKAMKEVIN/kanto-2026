@@ -32,7 +32,7 @@ extends RefCounted
 ## route (routine de marche, jalon 5, étendue au jalon 7 :
 ## { "cells": [[x, y], …], "pause": 1.2, "start": 1, "enter": { "cell": [x, y], "seconds": 8 } },
 ## voir [method _read_route]).
-## trainer (jalon 9, jalon-09.md §2.4.1) : { "id": dresseur de data/trainers/, "sight": 1..8,
+## trainer (jalon 9, jalon-09.md §2.4.1) : { "id": dresseur de data/trainers/, "sight": 0..8 (J25 : 0 = on lui parle),
 ## "before": dialogue avant le combat, "defeated": réplique dite une fois après la victoire du
 ## joueur, facultative (jalon 10, jalon-10.md §2.5), "rematch": réplique de reprise après une
 ## défaite du joueur, "leave": [[dx, dy], …] départ après sa défaite (jalon 12, jalon-12.md §2.11,

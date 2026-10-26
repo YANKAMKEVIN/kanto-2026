@@ -166,10 +166,14 @@ var _companion := CompanionController.new()
 var _field_presenter := FieldMovePresenter.new()
 ## Écran de la Pension (J15 T5) : choix du dépôt, bandeau et hôte des capacités du retrait.
 var _daycare_overlay: DaycareOverlay
+## J25 : choix du Pokémon d'un échange fixe.
+var _trade_overlay: TradeOverlay
 ## Coordination locale : aucun nouvel autoload, dépendances câblées dans _ready.
 var _save_coordinator := SaveCoordinator.new()
 var _lifecycle := SessionLifecycle.new()
 var _settings_applier := SettingsApplier.new()
+## Jalon Son (T6) : relais vers l'autoload « Audio » ([method _setup_audio]).
+var _audio_bridge := AudioBridge.new()
 ## Ouverture (OUV.1) : null hors scène principale ou avec un départ de débogage.
 var _opening: OpeningDirector = null
 ## Bourg Palette en mode décor derrière le titre (libéré en quittant le titre).
@@ -323,6 +327,13 @@ func _ready() -> void:
 	# GameState.pokedex.recorded (toasts existants).
 	_cutscenes_node.set_pokemon_data(_pokemon)
 	_cutscenes_node.pokemon_gifted.connect(_on_pokemon_gifted)
+	# J25 (§2.5) : échanges fixes du Labo (étape « trade ») : choix sur le sélecteur de l'équipe.
+	_trade_overlay = TradeOverlay.new()
+	_trade_overlay.name = "TradeOverlay"
+	_trade_overlay.process_mode = Node.PROCESS_MODE_PAUSABLE
+	add_child(_trade_overlay)
+	_cutscenes_node.trade_pick_handler = _on_trade_pick_requested
+	_cutscenes_node.pokemon_traded.connect(_on_pokemon_traded)
 	_evolutions = EvolutionDirector.new()
 	_evolutions.name = "EvolutionDirector"
 	_evolutions.process_mode = Node.PROCESS_MODE_PAUSABLE
@@ -457,6 +468,7 @@ func _ready() -> void:
 	_setup_fishing()
 	_setup_strength()
 	_setup_evolution_items()
+	_setup_audio()
 	# L'écran (jalon-06.md §6.6) : ouverture et vue dans la même frame, sans await (un fondu
 	# coupé laisse une coroutine non reprise).
 	_menu.menu_opened.connect(_menu_screen.open_animated)
@@ -596,6 +608,10 @@ func _exit_tree() -> void:
 	# Statiques : un test ne doit jamais hériter des réglages du précédent.
 	Haptics.reset()
 	UiPrefs.reset()
+	# Jalon Son : l'autoload survit à Boot (tests) ; il repart muet.
+	Audio.stop_music()
+	Audio.set_ambience(&"")
+	_audio_bridge.unwatch_ui(get_tree())
 	Engine.max_fps = 0
 	var links: Array[Array] = [
 		[SceneRouter.transition_started, _on_transition_started],
@@ -604,6 +620,7 @@ func _exit_tree() -> void:
 		[SceneRouter.map_entered, _interactions.on_map_entered],
 		[SceneRouter.map_entered, _starter_choice.on_map_entered],
 		[SceneRouter.coming_soon_finished, _on_coming_soon_finished],
+		[SceneRouter.transition_started, _audio_bridge.on_transition_started],
 	]
 	for link: Array in links:
 		var sig: Signal = link[0]
@@ -707,6 +724,11 @@ func get_evolution_director() -> EvolutionDirector:
 ## Pension (J15) : écran du dépôt et des capacités.
 func get_daycare_overlay() -> DaycareOverlay:
 	return _daycare_overlay
+
+
+## J25 : choix du Pokémon d'un échange fixe (tests).
+func get_trade_overlay() -> TradeOverlay:
+	return _trade_overlay
 
 
 func get_daycare_director() -> DaycareDirector:
@@ -882,6 +904,9 @@ func _on_go_back() -> void:
 	# Pension (J15) : écran du dépôt = ANNULER ; le reste de la conversation avale le geste.
 	if _daycare.handle_back():
 		return
+	# J25 : choix du Pokémon d'un échange = ANNULER.
+	if _trade_overlay != null and _trade_overlay.handle_back():
+		return
 	# J20 (T13) : panneau d'étages = FERMER ; pendant un trajet, avalé.
 	if _elevator.handle_back():
 		return
@@ -992,7 +1017,10 @@ func _start_opening() -> void:
 	_title_backdrop.name = "TitleBackdrop"
 	_world.add_child(_title_backdrop)
 	_title_backdrop.set_reduce_motion(_settings.reduce_motion)
-	_title_backdrop.show_map()
+	# DAF.7b : le décor du titre prend le profil de lumière de sa carte (Bourg Palette :
+	# « golden_hour », dossier 13 : le titre est à l'heure dorée), comme le décor de l'introduction.
+	if _title_backdrop.show_map():
+		_apply_lighting(_title_backdrop.get_map())
 	_opening = OpeningDirector.new()
 	_opening.name = "OpeningDirector"
 	_opening.process_mode = Node.PROCESS_MODE_PAUSABLE
@@ -1011,7 +1039,11 @@ func _start_opening() -> void:
 	_opening.new_game_entered.connect(_on_opening_new_game)
 	_opening.settings_changed.connect(_on_settings_changed)
 	_opening.apply_settings(_settings, _profile.menu_blur)
+	_opening.intro_opened.connect(_audio_bridge.on_intro_opened)
+	_opening.intro_closed.connect(_audio_bridge.on_intro_closed)
 	_opening.run()
+	# Jalon Son (§1.10) : la musique du titre part après le premier rendu de l'écran titre.
+	get_tree().process_frame.connect(_audio_bridge.play_title, CONNECT_ONE_SHOT)
 
 
 ## Vrai tant que l'écran titre occupe le jeu (avant la reprise ou la chambre).
@@ -1321,6 +1353,8 @@ func _on_map_changed(map: GameMap) -> void:
 	_field_presenter.set_map(map)
 	# Décor de combat de la carte chargé en tâche de fond (correctif QA S24 du CB.3).
 	_battle_stage.prepare_place(map.map_id)
+	# Jalon Son (T6) : musique de la zone et ambiance (écran encore noir : le fondu s'y cale).
+	_audio_bridge.on_map_changed(map)
 
 
 ## Compagnon (jalon 11, 11D ; `docs/tech/jalon-11-compagnon.md`) : espèces éligibles (Équipe :
@@ -1659,6 +1693,18 @@ func _on_pokemon_caught() -> void:
 	request_autosave("capture")
 
 
+## J25 (§2.5) : choix du Pokémon d'un échange fixe (places de l'espèce demandée) ; −1 = renonce.
+func _on_trade_pick_requested(_trade_id: StringName, accepted: Array[int]) -> int:
+	return await _trade_overlay.pick(InGameTrade.picker_view(GameState.party, accepted, _pokemon))
+
+
+## J25 (§2.5) : échange fait d'un seul bloc : compagnon à jour (le Pokémon donné a pu l'être,
+## choix effacé en silence), autosave demandé (écrit à la fin de la scène).
+func _on_pokemon_traded(_given: Pokemon, _received: Pokemon) -> void:
+	_companion.refresh()
+	request_autosave("échange")
+
+
 ## J20 (§2.5.2, T12) : Pokémon donné (équipe ou Stockage, drapeau levé d'un seul bloc) :
 ## compagnon à jour, autosave demandé (écrit à la fin de la scène, partie stable).
 func _on_pokemon_gifted(_pokemon: Pokemon, _stored: bool) -> void:
@@ -1804,6 +1850,7 @@ func _wire_settings_applier() -> void:
 	_settings_applier.cutscenes = _cutscenes_node
 	_settings_applier.menu_screen = _menu_screen
 	_settings_applier.lighting = _lighting
+	_settings_applier.audio = Audio
 
 
 ## Lit les réglages (fichier de l'appareil, indépendant de la sauvegarde et du départ de
@@ -1944,6 +1991,98 @@ func get_key_item_director() -> KeyItemDirector:
 
 ## Sac → pierre → UTILISER → Pokémon COMPATIBLE ([signal MenuDirector.evolution_item_requested]) ;
 ## la pierre est retirée à [signal EvolutionDirector.evolution_applied].
+## Jalon Son (T6, `docs/tech/jalon-son.md` §1.4–§1.8) : [AudioBridge] relaie au son les cartes,
+## la monture (Surf, Vélo), le « ! » des Dresseurs, les combats, les jingles (soin, objets,
+## capture, Badge, évolution, Poké Flûte) et la clé « music » des cinématiques. Sans fichier son,
+## rien ne s'entend et rien ne change.
+func _setup_audio() -> void:
+	_audio_bridge.setup(Audio, _zones)
+	_audio_bridge.current_mount = _player.get_mount
+	_audio_bridge.has_flag = func(flag: StringName) -> bool: return GameState.flags.has_flag(flag)
+	_audio_bridge.trainer_name = func(id: StringName) -> String:
+		var trainer := _trainers.get_trainer(id) if _trainers != null else null
+		return trainer.name if trainer != null else ""
+	_audio_bridge.caught_count = func() -> int: return GameState.pokedex.caught_count()
+	_audio_bridge.items = _items
+	# SonB : cris (numéro national par l'espèce).
+	_audio_bridge.species_dex = func(species: StringName) -> int:
+		var data := _pokemon.get_species(species)
+		return data.dex if data != null else 0
+	_audio_bridge.party_species = func(index: int) -> StringName:
+		var member := GameState.party.get_at(index)
+		return member.species_id if member != null else &""
+	_audio_bridge.companion_species = func() -> StringName:
+		var chosen := _companion.get_chosen()
+		return chosen.species_id if chosen != null else &""
+	_player.mount_changed.connect(_audio_bridge.on_mount_changed)
+	_trainer_watcher.trainer_spotted.connect(_audio_bridge.on_trainer_spotted)
+	_battle_director.battle_started.connect(_audio_bridge.on_battle_started)
+	_battle_director.event_played.connect(_audio_bridge.on_battle_event)
+	_battle_director.battle_finished.connect(_audio_bridge.on_battle_finished)
+	_battle_director.pokemon_caught.connect(_audio_bridge.on_pokemon_caught.unbind(2))
+	_services.center_healed.connect(_audio_bridge.on_center_healed)
+	_cutscenes_node.item_given.connect(_audio_bridge.on_item_given)
+	_cutscenes_node.item_found.connect(_audio_bridge.on_item_found)
+	_cutscenes_node.step_played.connect(_audio_bridge.on_cutscene_step)
+	_cutscenes_node.cutscene_finished.connect(_audio_bridge.on_cutscene_finished)
+	_evolutions.evolution_started.connect(_audio_bridge.on_evolution_started)
+	_evolutions.evolution_finished.connect(_audio_bridge.on_evolution_finished)
+	_encounters.cry_requested.connect(_audio_bridge.on_encounter_cry)
+	_companion.line_requested.connect(_audio_bridge.on_companion_line)
+	if _menu_screen.has_signal(&"pokedex_cry_requested"):
+		_menu_screen.pokedex_cry_requested.connect(_audio_bridge.on_pokedex_cry)
+	# SonC (T13) : bruitages du combat, des pas, du monde et de l'interface.
+	_audio_bridge.move_info = func(move_id: StringName) -> Array:
+		var move := _pokemon.get_move(move_id)
+		if move == null:
+			return []
+		return [move.type, StringName(String(MoveData.Category.find_key(move.category)).to_lower())]
+	_audio_bridge.ground_at = _ground_at
+	_player.step_started.connect(_audio_bridge.on_player_step)
+	_player.bumped.connect(_audio_bridge.on_bumped)
+	SceneRouter.transition_started.connect(_audio_bridge.on_transition_started)
+	_menu.menu_opened.connect(_audio_bridge.on_menu_opened)
+	_menu.menu_closed.connect(_audio_bridge.on_menu_closed)
+	_runner.page_started.connect(_audio_bridge.on_dialogue_page)
+	# Une seule accroche pour tous les boutons ; le HUD d'exploration (joystick, actions) reste
+	# muet.
+	_audio_bridge.watch_ui(self, _hud)
+
+
+## Sol d'une case pour le bruit de pas [D] : intérieur ; herbes hautes ; neige aux Îles Écume ;
+## sinon sol dur.
+func _ground_at(cell: Vector2i) -> StringName:
+	var map := get_map()
+	if map == null:
+		return &"hard"
+	if map.interior:
+		return &"indoor"
+	var grid := map.get_grid()
+	if grid != null and grid.is_tall_grass(cell):
+		return &"grass"
+	if _zones.zone_of(map.map_id) == &"seafoam_islands":
+		return &"snow"
+	return &"hard"
+	_player.mount_changed.connect(_audio_bridge.on_mount_changed)
+	_trainer_watcher.trainer_spotted.connect(_audio_bridge.on_trainer_spotted)
+	_battle_director.battle_started.connect(_audio_bridge.on_battle_started)
+	_battle_director.event_played.connect(_audio_bridge.on_battle_event)
+	_battle_director.battle_finished.connect(_audio_bridge.on_battle_finished)
+	_battle_director.pokemon_caught.connect(_audio_bridge.on_pokemon_caught.unbind(2))
+	_services.center_healed.connect(_audio_bridge.on_center_healed)
+	_cutscenes_node.item_given.connect(_audio_bridge.on_item_given)
+	_cutscenes_node.item_found.connect(_audio_bridge.on_item_found)
+	_cutscenes_node.step_played.connect(_audio_bridge.on_cutscene_step)
+	_cutscenes_node.cutscene_finished.connect(_audio_bridge.on_cutscene_finished)
+	_evolutions.evolution_started.connect(_audio_bridge.on_evolution_started)
+	_evolutions.evolution_finished.connect(_audio_bridge.on_evolution_finished)
+
+
+## Accès au relais du son (tests).
+func get_audio_bridge() -> AudioBridge:
+	return _audio_bridge
+
+
 func _setup_evolution_items() -> void:
 	_menu.evolution_item_requested.connect(_on_evolution_item_requested)
 	_menu.rare_candy_requested.connect(_on_rare_candy_requested)

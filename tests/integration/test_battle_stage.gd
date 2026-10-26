@@ -72,12 +72,25 @@ func _view() -> Vector2:
 	return _stage.get_viewport().get_visible_rect().size
 
 
-## Échelle attendue de [param species] (BattleArt + BattleLayout).
+## Échelle attendue de [param species] (BattleArt + BattleLayout ; ton Pokémon en cadrage B).
 func _scale(species: StringName, back: bool) -> float:
 	var art := BattleArt.new()
 	var image := art.image(species, back)
-	return BattleLayout.sprite_scale((image["box"] as Rect2).size, art.height_m(species), back,
-		_view().y, not image["official"])
+	var box: Rect2 = image["box"]
+	if back:
+		return BattleLayout.back_scale(box.size, art.height_m(species), _view().y, image["crop"],
+			not image["official"])
+	return BattleLayout.sprite_scale(box.size, art.height_m(species), back, _view().y,
+		not image["official"])
+
+
+## Pieds attendus du dos de [param species] (cadrage B) : bord bas de l'écran, enfoncés de la
+## part coupée de l'image.
+func _back_feet(species: StringName) -> Vector2:
+	var image := BattleArt.new().image(species, true)
+	var sink := BattleLayout.back_sink((image["box"] as Rect2).size, _scale(species, true),
+		image["crop"])
+	return (_anchors()["player_back"] as Vector2) + Vector2(0.0, sink)
 
 
 ## Fichier de l'image affichée par [param sprite] (l'artwork officiel est une AtlasTexture).
@@ -91,9 +104,14 @@ func _art_path(sprite: Sprite2D) -> String:
 ## Le Pokémon de [param side] tient dans sa boîte maximale (BattleLayout), elle-même dans
 ## l'écran et hors de l'interface à 1920 et 2340 de large (test_battle_layout ; la vue de GUT
 ## n'a pas le format du téléphone).
+## Ton Pokémon (cadrage B) : seule sa partie visible à l'écran compte.
 func _assert_framed(side: BattleEvent.SideId) -> void:
 	var rect := _stage.get_sprite_rect(side)
 	var limit := BattleLayout.max_rect(side == PLAYER_SIDE, _view()).grow(0.5)
+	if side == PLAYER_SIDE:
+		var screen := Rect2(Vector2.ZERO, _view())
+		rect = rect.intersection(screen)
+		limit = limit.intersection(screen.grow(0.5))
 	assert_true(limit.encloses(rect), "%s dans %s" % [rect, limit])
 
 
@@ -117,22 +135,24 @@ func test_enter_hides_world_pokemon_and_shows_battle_sprites_at_anchors() -> voi
 		assert_true(sprite.visible)
 		assert_eq(sprite.modulate, Color.WHITE)
 		assert_false(sprite.centered, "pieds sur l'origine (offset)")
-	assert_eq(mine.texture_filter, CanvasItem.TEXTURE_FILTER_NEAREST, "dos provisoire net")
+	assert_eq(mine.texture_filter, CanvasItem.TEXTURE_FILTER_LINEAR, "dos peint (Salamèche)")
 	assert_eq(foe.texture_filter, CanvasItem.TEXTURE_FILTER_LINEAR, "artwork officiel")
 	assert_not_null(foe.material, "artwork étalonné dans la lumière du lieu")
-	assert_null(mine.material)
-	assert_eq(mine.position, a["player_feet"])
+	assert_eq(mine.position, _back_feet(&"charmander"), "dos coupé par le bord bas")
+	assert_gt(mine.position.y, _view().y, "pieds sous le bord")
 	assert_eq(foe.position, a["foe_feet"])
 	assert_eq(mine.scale, Vector2.ONE * _scale(&"charmander", true), "taille de BattleLayout")
-	assert_eq(mine.scale.x, floorf(mine.scale.x), "pixel art : échelle entière")
 	assert_eq(foe.scale, Vector2.ONE * _scale(&"squirtle", false))
-	assert_eq(mine.texture.resource_path, BattleStage.sprite_path(&"charmander", true))
-	assert_string_ends_with(mine.texture.resource_path, "charmander_back.png")
+	assert_eq(mine.texture.resource_path, BattleArt.painted_back_path(4))
+	assert_string_ends_with(mine.texture.resource_path, "dos_ia_004.png")
 	assert_string_ends_with(_art_path(foe), "official/007.png", "Carapuce n° 7")
-	assert_eq(mine.texture.get_size(), Vector2(64, 64))
+	assert_eq(mine.texture.get_size(), Vector2(1024, 1024))
 	_assert_framed(PLAYER_SIDE)
 	_assert_framed(FOE_SIDE)
-	assert_true((_stage.get_node(^"%PlayerShadow") as CanvasItem).visible, "ombre au sol")
+	# Godot ramène une échelle nulle à 1e-5 : l'ombre ne dessine rien.
+	assert_lt((_stage.get_node(^"%PlayerShadow") as Node2D).scale.x, 0.001,
+		"cadrage B : pas d'ombre sous ton Pokémon")
+	assert_gt((_stage.get_node(^"%FoeShadow") as Node2D).scale.x, 0.001, "ombre de l'adversaire")
 	assert_true((_stage.get_node(^"%Backdrop") as CanvasItem).visible, "voile posé")
 
 
@@ -156,7 +176,7 @@ func test_moves_hits_stats_and_faint_finish_and_come_back_to_the_anchor() -> voi
 	await _stage.play_hit(PLAYER_SIDE, true)
 	await _stage.play_stat(PLAYER_SIDE, true)
 	await _stage.play_stat(FOE_SIDE, false)
-	assert_eq(_stage.get_sprite(PLAYER_SIDE).position, a["player_feet"])
+	assert_eq(_stage.get_sprite(PLAYER_SIDE).position, _back_feet(&"charmander"))
 	assert_eq(_stage.get_sprite(FOE_SIDE).position, a["foe_feet"])
 	assert_eq(_stage.get_sprite(FOE_SIDE).modulate, Color.WHITE)
 	assert_eq(_camera.offset, Vector2.ZERO, "retour immédiat au cadrage")
@@ -209,7 +229,7 @@ func test_enter_during_a_battle_is_refused() -> void:
 	await _stage.enter(_camera, _foe, _mine, &"bulbasaur", &"bulbasaur")
 	assert_push_error("déjà affiché")
 	assert_string_ends_with(_stage.get_sprite(PLAYER_SIDE).texture.resource_path,
-		"charmander_back.png", "le combat affiché ne change pas")
+		"dos_ia_004.png", "le combat affiché ne change pas")
 	assert_eq(_camera.zoom, Vector2.ONE * BattleStage.ZOOM)
 
 
@@ -241,18 +261,19 @@ func test_real_transition_moves_camera_and_sprites_together() -> void:
 	var clock := TweenClock.new(get_tree())
 	var entered: Array[bool] = [false]
 	_stage.entered.connect(func() -> void: entered[0] = true, CONNECT_ONE_SHOT)
-	_stage.enter(_camera, _mine, _foe, &"charmander", &"squirtle", rival)
+	# Tortank : dos provisoire (pixel art), la taille intermédiaire suit l'échelle entière.
+	_stage.enter(_camera, _mine, _foe, &"blastoise", &"squirtle", rival)
 	clock.run_until(func() -> bool: return false, BattleStage.ENTER_DURATION * 0.45)
 	var mine := _stage.get_sprite(PLAYER_SIDE)
 	assert_between(_camera.zoom.x, 1.01, BattleStage.ZOOM - 0.01, "caméra en mouvement")
-	assert_between(mine.scale.x, 1.1, _scale(&"charmander", true) - 0.1, "taille intermédiaire")
-	assert_ne(mine.position, _anchors()["player_feet"], "en chemin")
+	assert_between(mine.scale.x, 1.1, _scale(&"blastoise", true) - 0.1, "taille intermédiaire")
+	assert_ne(mine.position, _back_feet(&"blastoise"), "en chemin")
 	assert_true(mine.visible)
 	assert_true((_stage.get_node(^"%Backdrop") as CanvasItem).visible)
 	clock.run_until(func() -> bool: return entered[0], 2.0)
 	clock.release()
 	assert_true(entered[0], "entrée terminée")
-	assert_eq(mine.position, _anchors()["player_feet"])
+	assert_eq(mine.position, _back_feet(&"blastoise"))
 	_stage.exit()
 	await wait_for_signal(_stage.exited, 2.0)
 	assert_true(_mine.visible)
@@ -304,9 +325,9 @@ func test_wild_intro_and_partner_enter_end_at_the_anchors() -> void:
 	await _stage.play_partner_enter(&"charmander")
 	var mine := _stage.get_sprite(PLAYER_SIDE)
 	assert_true(mine.visible)
-	assert_eq(mine.position, a["player_feet"], "à l'ancre du joueur")
+	assert_eq(mine.position, _back_feet(&"charmander"), "à l'ancre du joueur")
 	assert_eq(mine.scale, Vector2.ONE * _scale(&"charmander", true))
-	assert_string_ends_with(mine.texture.resource_path, "charmander_back.png")
+	assert_string_ends_with(mine.texture.resource_path, "dos_ia_004.png")
 	_assert_framed(PLAYER_SIDE)
 	await _stage.exit()
 	assert_false(_stage.is_active())
@@ -521,6 +542,7 @@ func test_poison_veil_is_softer_when_flashes_are_reduced() -> void:
 	_stage.reduce_flashes = true
 	_stage.speed_scale = 1.0
 	var sprite := _stage.get_sprite(PLAYER_SIDE)
+	var base_material := sprite.material
 	var clock := TweenClock.new(get_tree())
 	var runner := func() -> void: await _stage.play_poison(PLAYER_SIDE)
 	runner.call()
@@ -531,7 +553,7 @@ func test_poison_veil_is_softer_when_flashes_are_reduced() -> void:
 	assert_lt(UiTokens.STATUS_VEIL_AMOUNT_REDUCED, UiTokens.STATUS_VEIL_AMOUNT)
 	clock.run_until(func() -> bool: return false, 0.5)
 	clock.release()
-	assert_null(sprite.material, "dos provisoire : voile retiré, aucun matériau")
+	assert_eq(sprite.material, base_material, "voile retiré, matériau d'origine rendu")
 	_stage.speed_scale = 0.0
 
 

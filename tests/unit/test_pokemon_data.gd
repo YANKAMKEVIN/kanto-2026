@@ -93,7 +93,7 @@ func test_real_data_loads_without_error() -> void:
 		&"poliwag", &"poliwhirl", &"poliwrath",
 		&"abra", &"kadabra", &"machop", &"machoke",
 		&"bellsprout", &"weepinbell", &"victreebel", &"tentacool", &"tentacruel",
-		&"geodude", &"graveler", &"golem", &"slowpoke", &"slowbro", &"magnemite", &"magneton",
+		&"geodude", &"graveler", &"golem", &"ponyta", &"rapidash", &"slowpoke", &"slowbro", &"magnemite", &"magneton",
 		&"farfetchd", &"doduo", &"dodrio", &"seel", &"dewgong", &"grimer", &"muk", &"shellder",
 		&"cloyster",
 		# Jalon 19 (T3) : Fantominus, Spectrum, Noeunoeuf, Osselait, Ossatueur, Léviator
@@ -101,10 +101,12 @@ func test_real_data_loads_without_error() -> void:
 		&"gastly", &"haunter", &"onix",
 		&"drowzee", &"hypno", &"krabby", &"kingler", &"voltorb", &"electrode", &"exeggcute",
 		&"cubone", &"marowak", &"koffing", &"weezing", &"rhyhorn", &"tangela", &"kangaskhan",
-		&"horsea", &"seadra", &"goldeen", &"seaking", &"staryu", &"starmie", &"magikarp",
+		&"horsea", &"seadra", &"goldeen", &"seaking", &"staryu", &"starmie", &"magmar", &"magikarp",
 		&"gyarados", &"eevee", &"vaporeon", &"jolteon", &"flareon",
-		&"omanyte", &"omastar", &"kabuto", &"kabutops", &"snorlax", &"articuno"] as Array[StringName])
-	assert_eq(_data.get_move_ids().size(), 140,
+		&"omanyte", &"omastar", &"kabuto", &"kabutops", &"aerodactyl", &"snorlax", &"articuno"] as Array[StringName])
+	# Jalon 25 (T7) : kanto_j25.json (Ponyta, Galopa, Magmar, Ptéra) ; Tadmorv, Grotadmorv,
+	# Smogogo et Électrode sont ceux du J22 (kanto_j25_reprises.json retiré à la fusion de main).
+	assert_eq(_data.get_move_ids().size(), 142,
 		"47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10) + Patience (J11) "
 		+ "+ 21 du Mont Sélénite (jalon 12) + 8 du jalon 13 (les 5 du J12 qu'il reprenait : "
 		+ "entrées du J12) + 6 du Cap d'Azuria (jalon 14) + Jackpot (J15) "
@@ -112,7 +114,8 @@ func test_real_data_loads_without_error() -> void:
 		+ "Hypnose, Hurlement et Bélier viennent du J17) + 7 du jalon 20 + Vol (passe systèmes 2, T25) "
 		+ "+ Surf (S2C) + Force (S2D) + Amnésie, Bouclier (J21 ; Constriction vient du J20) "
 		+ "+ 5 du jalon 22 (Écrasement vient du J20) + 3 du J24 (j24.json : Force Poigne, "
-		+ "Pince-Masse et Trempette sont ceux du J22)")
+		+ "Pince-Masse et Trempette sont ceux du J22) "
+		+ "+ Déflagration et Poing de Feu (J25, j25.json)")
 	assert_true(_data.has_move(&"struggle"))
 
 
@@ -217,6 +220,8 @@ func test_real_evolution_chains() -> void:
 		&"shellder": [&"cloyster", &"water_stone"], &"krabby": [&"kingler", 28],
 		&"horsea": [&"seadra", 32], &"goldeen": [&"seaking", 33],
 		&"omanyte": [&"omastar", 40], &"kabuto": [&"kabutops", 40],
+		# Jalon 25 (T7) : Ponyta (Rouge/Bleu) ; Tadmorv → Grotadmorv est celui du J22.
+		&"ponyta": [&"rapidash", 40],
 	}
 	var eevee := _data.get_species(&"eevee").evolutions
 	assert_eq(eevee.map(func(r: EvolutionRule) -> Array: return [r.into, r.method, r.item]), [
@@ -516,6 +521,8 @@ func test_real_catch_rates_are_the_official_ones() -> void:
 		&"omastar": 45, &"kabuto": 45, &"kabutops": 45, &"articuno": 3,
 		# Jalon 21 (T5).
 		&"poliwag": 255, &"tentacool": 190, &"snorlax": 25,
+		# Jalon 25 (T7) ; Tadmorv, Grotadmorv, Smogogo et Électrode sont ceux du J22.
+		&"ponyta": 190, &"rapidash": 60, &"magmar": 45, &"aerodactyl": 45,
 	}
 	assert_eq(_data.get_species_ids().size(), expected.size(), "toutes les espèces")
 	for id: StringName in _data.get_species_ids():

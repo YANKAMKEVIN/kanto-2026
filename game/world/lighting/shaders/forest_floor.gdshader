@@ -9,6 +9,12 @@ uniform sampler2D forest_mask : filter_linear;
 uniform float tile_size = 96.0;
 uniform vec4 dark_color : source_color = vec4(0.10, 0.26, 0.16, 1.0);
 uniform vec4 light_color : source_color = vec4(0.17, 0.36, 0.20, 1.0);
+// Opacité du calque (1 = sous-bois plein). Moins de 1 : ombre de canopée posée sur le sol
+// (DAF.6, Forêt de Jade : bandes de sous-bois « à l'ombre », clairières éclairées).
+uniform float opacity = 1.0;
+// Demi-largeur de la frontière (sur masque + bruit, autour de 0,5) : 0,08 = bord net du
+// sous-bois ; plus large = ombre fondue.
+uniform float softness = 0.08;
 
 // Coordonnées du calque (pixels ; le calque est posé à l'origine de la carte).
 varying vec2 local;
@@ -33,8 +39,8 @@ void fragment() {
 	vec2 cells = vec2(textureSize(forest_mask, 0));
 	float m = texture(forest_mask, local / tile_size / cells).r;
 	float n = (noise(local * 0.025) - 0.5) * 0.35 + (noise(local * 0.1) - 0.5) * 0.15;
-	float part = smoothstep(0.42, 0.58, m + n);
+	float part = smoothstep(0.5 - softness, 0.5 + softness, m + n);
 	vec3 c = mix(dark_color.rgb, light_color.rgb,
 		noise(local * 0.04) * 0.7 + noise(local * 0.2) * 0.3);
-	COLOR = vec4(c, part);
+	COLOR = vec4(c, part * opacity);
 }

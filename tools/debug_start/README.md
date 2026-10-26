@@ -146,7 +146,8 @@ et l'IA qui creuse sont couverts par les tests de combat ; Abra se rencontre sur
 | `pokemon_tower_1f.json` | J18 (T24) : même partie + `lavender_reached`, dans la Tour Pokémon à l'entrée (spawn `entrance`, tourné vers le nord) : gardien, visiteurs, tombes, Exorciste devant l'escalier (T-34 puis T-35, objectif « Revenir plus tard à la Tour Pokémon. ») |
 | `dark_cave_1f.json` | J18 (T20) : Pikachu N20, Reptincel N22, Roucarnage N19, **sans CS05** (Flash indisponible), 5 Potions, 2 Super Potions, 2 Antidotes, 2 Cordes Sortie, à l'entrée nord de la Grotte Sombre (spawn `from_route_10_n_w`, tourné vers le sud) : voile sombre et « Il fait très sombre ici… » une fois |
 | `dark_cave_1f_flash.json` | J18 (T20) : comme `dark_cave_1f` avec la **CS05** au Sac et Pikachu (compatible) : Flash automatique à l'entrée, « Pikachu utilise Flash ! » |
-| `dark_cave_b1f.json` | J18 (T20) : comme `dark_cave_1f_flash`, à l'arrivée de l'échelle A du B1F (spawn `arrivee_a`) : colonne, flaque, passage étroit (Marcel), racines (Super Potion cachée). L'arrivée de l'échelle B (`arrivee_b`, côté Marcel) n'a pas de départ : copier le fichier et changer `spawn` (QA du 2026-10-19) |
+| `dark_cave_b1f.json` | J18 (T20) : comme `dark_cave_1f_flash`, à l'arrivée de l'échelle A du B1F (spawn `arrivee_a`) : colonne, flaque, passage étroit (Marcel), racines (Super Potion cachée). L'arrivée de l'échelle B a son propre départ (ligne suivante) |
+| `dark_cave_b1f_b.json` | Registre des reportés (RP, 2026-10-26) : comme `dark_cave_b1f`, à l'arrivée de l'échelle B (spawn `arrivee_b`, côté Marcel) |
 
 La carte de QA `qa_switch_j13` (J13, T14), ses données, son outil de construction et de capture,
 son test et le départ `switch_qa` ont été **retirés au T22** (les Dresseurs qui changent de
@@ -308,3 +309,17 @@ reste éprouvée par `test_cutscene_static_encounter.gd` et `test_cutscene_stati
 | `route_12_qa.json` | Lavanville, bord sud (spawn `from_route_12`, tourné ↓) : équipe de référence du J21 [D] (Reptincel N33, Roucarnage N30, Papilusion N28, Évoli N25, Nidorino N28 **endormi**, Abo N26 **empoisonné**), 10 Poké Balls, 10 Super Potions, 3 Réveils, Corde Sortie, Scope Sylphe et **Poké Flûte**, 5 000 ₽, Badges jusqu'au Prisme. Pêcheurs non battus, `got_tm39` absent : descendre le ponton (Pêcheur Ned inévitable), poste traversé (CT39 au 2F), Ronflex au croisement |
 
 | `poke_flute_qa.json` | J21 (T20) : Route 12, `from_route_11` (0, 93..94) tourné →, à 24 cases à l'ouest de Ronflex ; mêmes équipe et Sac que `route_12_qa` (Poké Flûte, Nidorino endormi) [D : sans table « Paras » forcée] |
+
+## Jalon 25 : Manoir, échanges du Labo, Vieil Ambre, Arène d'Auguste (QA 25A–25C)
+
+Équipe [D] (sauf mention) : Tortank N46 (Surf, Force, Morsure, Pistolet à O), Raichu N42, Akwakwak N42 ; CS01,
+CS03, CS04, 10 Hyper Balls, 10 Hyper Potions, 5 Total Soin, 3 Cordes Sortie ; 20 000 ₽ ; Badges
+jusqu'à l'Âme. Aucune carte de QA (`qa_manoir`, `qa_cramois` du plan jamais créées).
+
+| Fichier | Partie |
+|---|---|
+| `j25_manoir.json` | Cramois'Île devant le Manoir (`from_manoir`, ↑) : interrupteur remis à ARRÊT en entrant, 1F → 3F, chute, B1F, Clé Secrète, Pillards, Corde Sortie |
+| `j25_manoir_b1f.json` | B1F du Manoir (`arrivee_s`, ↓) : statues, grilles A/B, Clé Secrète, objets |
+| `j25_echanges.json` | Cramois'Île devant le Labo (`from_labo`, ↑), Tortank, Raichu N42 **compagnon**, Ponyta N30, Pikachu N25, Vieil Ambre au Sac : échanges d'Hector (Raichu), Marc (Ponyta), Lina (refus sans Mimitoss), Ptéra N30 |
+| `j25_argenta.json` | Argenta devant le Musée (`from_museum`, ↓), Tortank N46 et Herbizarre N30 (Coupe) : arbre à Couper, porte arrière, comptoir, Vieil Ambre |
+| `j25_arene.json` | Cramois'Île devant l'Arène (`from_arene`, ↑), **Clé Secrète** et `got_pokemon_mansion_b1f_item_5` : porte (76–77), quiz, Dresseurs, Auguste, Badge Volcan, CT38 ; perdu au premier essai sur le S24 (`jalon-25-equilibrage.md` §5) |

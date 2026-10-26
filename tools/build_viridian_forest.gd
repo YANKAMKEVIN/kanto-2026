@@ -76,17 +76,35 @@ const STEP_ON: int = 0
 ## Forêt uniformément plus sombre et plus froide que la Route 2 (§2.8.2) : Shade réglé pour que
 ## toute la carte soit « au nord » (effet entier), essences bleu-vert (04, 05, 06) poids × 2
 ## partout ; au cœur (pied à plus de [constant CORE_DISTANCE] cases d'une case praticable),
-## valeur ramenée de [constant SHADE_VALUE] à [constant CORE_VALUE].
-const SHADE_VALUE: float = 0.78
-const SHADE_RED: float = 0.97
-const SHADE_BLUE: float = 1.05
-const CORE_VALUE: float = 0.72
+## valeur ramenée de [constant SHADE_VALUE] à [constant CORE_VALUE]. DAF.6 : 0,78 → 0,70 et
+## 0,72 → 0,62, plus bleu (rouge 0,97 → 0,93, bleu 1,05 → 1,09), valeurs [D] réglées sur capture.
+const SHADE_VALUE: float = 0.70
+const SHADE_RED: float = 0.93
+const SHADE_BLUE: float = 1.09
+const CORE_VALUE: float = 0.62
 const CORE_DISTANCE: float = 4.0
 const SHADE_WEIGHTS: Dictionary = {
 	&"tree_foret_04": 2.0, &"tree_foret_05": 2.0, &"tree_foret_06": 2.0,
 }
 ## Sous-bois partiel des bandes `.` (taches bruitées du shader, comme la lisière de la Route 2).
 const UNDERGROWTH_STRIP: float = 0.5
+## Ombre de canopée au sol (DAF.6, reporté du J9 : « assombrir nettement la forêt hors des
+## clairières ») : un second [ForestFloor] nommé `CanopyShade`, translucide, juste après le
+## sous-bois (même z : cuit avec le sol, aucun coût par image). Valeur du masque par caractère
+## de la grille : forêt et bandes de sous-bois `.` (« herbe rase à l'ombre ») pleines, sentier et
+## hautes herbes en taches (lumière tamisée), clairières `C` et `L`, porte et sortie éclairées.
+## Valeurs [D] (phase DA, réglées sur capture).
+const CANOPY_VALUES: Dictionary = {"T": 1.0, "r": 1.0, ".": 1.0, "=": 0.3, "h": 0.5}
+const CANOPY_DARK := Color(0.03, 0.10, 0.12)
+const CANOPY_LIGHT := Color(0.06, 0.16, 0.16)
+const CANOPY_OPACITY: float = 0.45
+const CANOPY_SOFTNESS: float = 0.3
+## Lumière chaude des trouées (même principe, `ClearingLight`, après `CanopyShade`) : clairières
+## `C` et `L` seules, voile doré léger [D].
+const CLEARING_VALUES: Dictionary = {"C": 1.0, "L": 1.0}
+const CLEARING_DARK := Color(1.0, 0.80, 0.42)
+const CLEARING_LIGHT := Color(1.0, 0.90, 0.58)
+const CLEARING_OPACITY: float = 0.14
 
 ## Repères et objets fixes de la grille : [objet, case d'ancrage, nom, miroir].
 const FIXED_PROPS: Array = [
@@ -286,6 +304,10 @@ func _init() -> void:
 	_attach(root, root, painted)
 	var floor_script := load("res://game/world/ground/forest_floor.gd") as GDScript
 	_attach(root, root, floor_script.call(&"create", SIZE, _undergrowth()) as Node)
+	_attach(root, root, _light_layer(floor_script, "CanopyShade", CANOPY_VALUES, true,
+		CANOPY_DARK, CANOPY_LIGHT, CANOPY_OPACITY))
+	_attach(root, root, _light_layer(floor_script, "ClearingLight", CLEARING_VALUES, false,
+		CLEARING_DARK, CLEARING_LIGHT, CLEARING_OPACITY))
 
 	var decals := Node2D.new()
 	decals.name = "GroundDecals"
@@ -427,6 +449,33 @@ func _undergrowth() -> Dictionary:
 	for cell: Vector2i in _plan.call(&"cells_of", "."):
 		values[cell] = UNDERGROWTH_STRIP
 	return values
+
+
+## Calque de lumière au sol (ombre de canopée, lumière des trouées) : un [ForestFloor]
+## translucide nommé [param layer_name], valeur du masque par caractère de la grille
+## ([param values] ; [param forest_full] : 1 sur les autres cases de forêt), bord fondu.
+func _light_layer(floor_script: GDScript, layer_name: String, values_by_mark: Dictionary,
+		forest_full: bool, dark: Color, light: Color, opacity: float) -> Node2D:
+	var values: Dictionary = {}
+	for y: int in SIZE.y:
+		for x: int in SIZE.x:
+			var cell := Vector2i(x, y)
+			var mark: String = _plan.call(&"at", cell)
+			var fallback := 1.0 if forest_full and _forest_cells.has(cell) else 0.0
+			var value: float = values_by_mark.get(mark, fallback)
+			if value > 0.0:
+				values[cell] = value
+	var layer := floor_script.call(&"create", SIZE, values) as Node2D
+	layer.name = layer_name
+	# Le shader lit le masque au coin de la case (demi-case de décalage, voulu pour le
+	# sous-bois) : le calque est recentré sur ses cases.
+	layer.position = -Vector2.ONE * TILE * 0.5
+	var layer_material := layer.material as ShaderMaterial
+	layer_material.set_shader_parameter(&"dark_color", dark)
+	layer_material.set_shader_parameter(&"light_color", light)
+	layer_material.set_shader_parameter(&"opacity", opacity)
+	layer_material.set_shader_parameter(&"softness", CANOPY_SOFTNESS)
+	return layer
 
 
 ## Cases de forêt où la forêt serrée pousse : toutes, sauf celles des objets de lisière et des

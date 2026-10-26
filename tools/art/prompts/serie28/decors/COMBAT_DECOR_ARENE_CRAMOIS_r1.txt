@@ -1,0 +1,28 @@
+DÉCOR DE COMBAT — ARENE_CRAMOIS (Kanto 2026). Image de PRODUCTION : le fond peint d'un écran de combat Pokémon sur smartphone en paysage. AUCUN Pokémon, AUCUN personnage, AUCUNE interface, AUCUN texte.
+
+Images jointes.
+IMAGE 1 : un écran de combat de référence. Reprends sa VUE (caméra à hauteur d'yeux, légèrement plongeante, horizon dans le tiers haut, grand sol dégagé au centre), sa profondeur et sa qualité de peinture. Ne reprends PAS : les Pokémon, les cartes, les boutons, la rivière, le pont, le coucher de soleil orange.
+IMAGE 2 : une planche d'intention de décors de combat (guide de facture).
+IMAGE 3 : la vue d'ensemble (de dessus) validée du lieu : matières et palette à reprendre, vues ici à hauteur d'yeux (guide de palette et de matières, pas de composition).
+Ce décor est INTÉRIEUR : au lieu de l'horizon d'un paysage, un fond de salle.
+
+FORMAT : paysage très large, rapport 2,17 : 1 (comme 2340 × 1080), la plus grande résolution possible, OPAQUE, cadrage plein, sans bord.
+
+LIEU : la grande SALLE de l'Arène de Cramois'Île, une salle de volcan aménagée : au fond, un mur de blocs de roche volcanique violet-brun sombre, joints nets, avec deux BRASEROS de pierre dont les flammes sont petites et calmes, une herse de fer noir relevée dans une gaine ; des RIGOLES de braise orange très fines au pied du mur ; au sol, de larges DALLES de grès volcanique sable rosé aux joints fins ; de la chaleur qui fait trembler l'air près du mur (rendue par de fins reflets seulement), quelques braises qui flottent.
+
+COMPOSITION (fractions depuis le coin haut gauche) :
+COMPOSITION (fractions depuis le coin haut gauche) :
+- Le haut (0 à 40 %) : le mur du fond et ses éléments, base du mur vers 38 % de la hauteur, calme en haut à gauche.
+- De 40 % de la hauteur jusqu'en bas : GRAND SOL DÉGAGÉ et PLAT, très lisible.
+- Point A (x 67 %, y 58 %) : sol nu, plat et bien lisible, une créature y posera les pieds. Rien de haut dans un rayon de 12 % de la largeur autour.
+- Point B (x 31 %, y 97 %) : sol plat et nu, une grande créature vue de dos y sera au premier plan. Rien de haut autour.
+- ZONE CALME en HAUT À GAUCHE (de 0 à 50 % de la largeur, de 0 à 45 % de la hauteur) : peu de détails et peu de contraste, valeurs simples.
+- ZONE CALME en BAS À DROITE (de 50 à 100 % de la largeur, de 55 à 100 % de la hauteur) : sol simple, presque sans objet, valeurs moyennes, sans contraste fort.
+- Les deux coins du bas restent du SOL nu : pas de meuble ni de gros objet en gros plan.
+- Les 9 % de gauche et de droite de l'image ne contiennent rien d'important (ils seront rognés sur certains écrans).
+
+LUMIÈRE : chaude et martiale : lumière orange des braises sur le fond, sol clair et lisible au centre, ombres violet-brun ; énergique, jamais sombre ni inquiétante, aucune lave coulante au sol.
+
+RENDU (ADN visuel Kanto 2026) : illustration 2D peinte numériquement, RPG Pokémon moderne « HD-2D peint », formes simples, lisibles et arrondies, grandes masses douces (jamais en petits points ni en pixels), aucun trait noir (contours fins et doux plus sombres que la couleur), couleurs riches sans être fluo. Netteté partout (aucun flou de profondeur, pas de vignettage). Perspective à hauteur d'yeux, un peu plongeante, le sol recule nettement vers le fond.
+
+INTERDITS : Pokémon, animal, oiseau, mouette, personnage, silhouette, texte, lettres, chiffres, panneau lisible, logo, signature, filigrane, cadre, interface, pixel art, flou, vignettage, lave coulante, grand incendie, flamme géante, silhouette de créature, machine, pupitre, statue, herse fermée.

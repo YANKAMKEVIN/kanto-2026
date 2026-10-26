@@ -286,7 +286,7 @@ func test_zones_of_route_2_north_and_pewter() -> void:
 	var pewter := zones.get_zone(&"pewter_city")
 	assert_eq(pewter.maps, [&"pewter_city", &"pewter_center", &"pewter_mart",
 		&"pewter_museum", &"pewter_museum_science", &"pewter_gym", &"pewter_house_mason",
-		&"pewter_house_researcher"] as Array[StringName])
+		&"pewter_house_researcher", &"pewter_museum_reserve"] as Array[StringName])
 	assert_eq(pewter.subtitle, "", "titre « ARGENTA » seul (arbitrage 10)")
 	assert_eq(pewter.description,
 		"Une ville entre pierre et montagne, au pied des reliefs de l'est.")

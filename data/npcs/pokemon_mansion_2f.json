@@ -1,0 +1,31 @@
+{
+	"mansion_burglar_1": {
+		"cell": [
+			3,
+			17
+		],
+		"facing": "down",
+		"sprite": "gambler",
+		"dialogue": "mansion_burglar_1_after",
+		"trainer": {
+			"id": "mansion_burglar_1",
+			"sight": 0,
+			"before": "mansion_burglar_1_before",
+			"defeated": "mansion_burglar_1_defeated"
+		}
+	},
+	"pokemon_mansion_2f_item_1": {
+		"cell": [
+			28,
+			7
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "pokemon_mansion_2f_item_1",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_pokemon_mansion_2f_item_1"
+		]
+	}
+}

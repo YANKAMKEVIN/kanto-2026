@@ -12,6 +12,9 @@ const STARTS := {
 		[&"lavender_reached", &"tower_medium_talked"], [&"dark_cave_crossed"]],
 	"pokemon_tower_1f": [&"pokemon_tower_1f", &"entrance", Vector2i.UP,
 		[&"tower_medium_talked", &"tower_stairs_open"], [&"lavender_reached"]],
+	# Registre des reportés (RP-003) : l'arrivée de l'échelle B du B1F, côté Marcel.
+	"dark_cave_b1f_b": [&"dark_cave_b1f", &"arrivee_b", Vector2i.DOWN,
+		[&"dark_cave_crossed"], []],
 }
 
 var _data: PokemonData

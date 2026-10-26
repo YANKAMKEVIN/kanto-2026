@@ -102,5 +102,57 @@
 				]
 			}
 		]
+	},
+	"cinnabar_fossil_take_aerodactyl": {
+		"variants": [
+			{
+				"unless": [
+					"fossil_reviving_aerodactyl"
+				],
+				"steps": [
+					{
+						"take": "old_amber"
+					},
+					{
+						"set": [
+							"fossil_reviving_aerodactyl"
+						]
+					},
+					{
+						"dialogue": "cinnabar_fossil_taken"
+					},
+					{
+						"save": "fossile confié"
+					}
+				]
+			}
+		]
+	},
+	"cinnabar_fossil_give_aerodactyl": {
+		"variants": [
+			{
+				"unless": [
+					"fossil_revived_aerodactyl"
+				],
+				"steps": [
+					{
+						"dialogue": "cinnabar_fossil_ready_aerodactyl"
+					},
+					{
+						"gift_pokemon": "aerodactyl",
+						"level": 30,
+						"flag": "fossil_revived_aerodactyl",
+						"say": "cinnabar_fossil_received_aerodactyl",
+						"say_stored": "cinnabar_fossil_stored_aerodactyl"
+					},
+					{
+						"save": "fossile ressuscité",
+						"if": [
+							"fossil_revived_aerodactyl"
+						]
+					}
+				]
+			}
+		]
 	}
 }

@@ -40,7 +40,7 @@
 ## 2. Périmètre du jalon 10
 | Maintenant | Visible mais fermé | Pas au J10 |
 |---|---|---|
-| Route 2 nord, Argenta (extérieur), Centre, Boutique, Musée (2 salles), Arène, 2 maisons, raccord est (« ROUTE 3 — À venir » en développement) | laboratoire du Musée (Ambre Vieille plus tard), sentier est de la Route 2 nord (futur secteur de la Grotte Taupiqueur) | Route 3 jouable, CT, nouveaux statuts, capacités d'exploration, échange de Pokémon, Corde Sortie, Team Rocket, rival |
+| Route 2 nord, Argenta (extérieur), Centre, Boutique, Musée (2 salles), Arène, 2 maisons, raccord est (« ROUTE 3 — À venir » en développement) | laboratoire du Musée (Vieil Ambre plus tard), sentier est de la Route 2 nord (futur secteur de la Grotte Taupiqueur) | Route 3 jouable, CT, nouveaux statuts, capacités d'exploration, échange de Pokémon, Corde Sortie, Team Rocket, rival |
 
 **Aucune nouvelle mécanique de combat.** Deux ajouts signalés et acceptés : la **carte de présentation du Champion** (arbitrage 13) et des **capacités choisies à la main** pour les Pokémon d'un Dresseur (Pierre ; aujourd'hui un Pokémon de Dresseur n'a qu'une espèce et un niveau).
 
@@ -144,7 +144,7 @@ Six habitants significatifs dehors, plus les personnages des bâtiments. **Ne r�
 - **Salle principale**, trois vitrines : **Fossile Dôme**, **Fossile Nautile**, **Pierre Lune** (première préparation du Mont Sélénite). On ne donne aucun fossile au joueur.
 - **Salle « science »** : l'évolution et les traces laissées par les Pokémon anciens ; deux chercheurs. L'un dit la phrase sur les **collectionneurs de fossiles** (arbitrage 18), qui prendra son sens au Mont Sélénite.
 - **Fragment de journal d'expédition** derrière une vitre (arbitrage 17) : origine inconnue, pages manquantes, **aucun nom**. Mewtwo : aucune mention.
-- **Porte « LABORATOIRE — Personnel autorisé »**, fermée (l'Ambre Vieille pourra s'y trouver plus tard).
+- **Porte « LABORATOIRE — Personnel autorisé »**, fermée (le Vieil Ambre sera donné au J25 par une réserve arrière du Musée, porte est derrière un arbre à Couper : dossier 28 §7).
 
 ## 8. Centre et Boutique
 **Même enseigne que Jadielle** : mêmes intérieurs peints, quelques variations de décor extérieur, pas de nouvelle architecture. Le Centre devient point de repos (toast « Point de repos enregistré — Argenta », système existant).

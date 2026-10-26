@@ -26,15 +26,33 @@ func _gift_refused(_species: StringName, _level: int) -> bool:
 	return false
 
 
-func test_data_lists_the_two_fossils() -> void:
-	assert_eq(_lab.fossil_ids(), [&"dome_fossil", &"helix_fossil"] as Array[StringName])
+func test_data_lists_the_three_fossils() -> void:
+	assert_eq(_lab.fossil_ids(), [&"dome_fossil", &"helix_fossil", &"old_amber"] as Array[StringName])
 	assert_eq(_lab.species_of(&"dome_fossil"), &"kabuto")
 	assert_eq(_lab.species_of(&"helix_fossil"), &"omanyte")
 	assert_eq(_lab.level_of(&"dome_fossil"), 30)
 	assert_eq(_lab.flag_of(&"helix_fossil"), &"fossil_reviving_omanyte")
 	assert_eq(_lab.ready_map(), &"cinnabar_island")
 	assert_eq(_lab.ready_flag(), &"fossil_ready")
-	assert_eq(_lab.species_of(&"old_amber"), &"", "le J25 l'ajoutera aux données")
+	# Jalon 25 (dossier 28, X-27) : le Vieil Ambre, une ligne de données.
+	assert_eq(_lab.species_of(&"old_amber"), &"aerodactyl")
+	assert_eq(_lab.level_of(&"old_amber"), 30)
+	assert_eq(_lab.flag_of(&"old_amber"), &"fossil_reviving_aerodactyl")
+
+
+## Jalon 25 : le Vieil Ambre déposé, puis Ptéra rendu (cycle complet, sans code propre à l'espèce).
+func test_old_amber_revives_aerodactyl() -> void:
+	_bag.add(&"old_amber")
+	assert_eq(_lab.fossils_in_bag(_bag), [&"old_amber"] as Array[StringName])
+	assert_true(_lab.deposit(&"old_amber", _bag, _flags))
+	assert_false(_bag.has(&"old_amber"))
+	assert_true(_flags.has_flag(&"fossil_reviving_aerodactyl"))
+	assert_eq(_lab.state(_flags), FossilLab.State.REVIVING)
+	assert_true(_lab.on_map_entered(&"cinnabar_island", _flags))
+	assert_eq(_lab.collect(_flags, _gift_ok), &"aerodactyl")
+	assert_eq(_given, [[&"aerodactyl", 30]])
+	assert_eq(_lab.state(_flags), FossilLab.State.IDLE)
+	assert_false(_flags.has_flag(&"fossil_reviving_aerodactyl"))
 
 
 func test_species_and_fossil_items_exist_in_game_data() -> void:
