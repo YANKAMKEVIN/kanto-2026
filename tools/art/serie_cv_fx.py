@@ -344,7 +344,7 @@ def planche() -> None:
 	haut = 70
 	feuille = Image.new("RGBA", (cols * cellule, haut + lignes * (cellule + 36) + 60 + ((len(man["particules"]) + 5) // 6) * 220 + 40), (24, 28, 30, 255))
 	d = ImageDraw.Draw(feuille)
-	d.text((16, 14), f"{TITRE} — flipbooks (images fixes à l'image 6 ; boucles dans les GIF) et particules", font=_police(30), fill=(235, 235, 220))
+	d.text((16, 14), f"{TITRE} — flipbooks (image 6) et particules", font=_police(30), fill=(235, 235, 220))
 	gifs = {}
 	for k, n in enumerate(noms):
 		m = man["flipbooks"][n]
