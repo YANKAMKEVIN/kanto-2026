@@ -378,7 +378,7 @@ d'une visite à l'autre (drapeau de ramassage existant) [RB].
 31. OUI : « Huh ? Hoffu… ! »  · NON : « Hoffuh… fuff… »
 32. Avec les Dents d'Or : « Hfuff… ? Mes dents ! Merci ! » / « Personne ne me comprenait. »
 33. Remise : « Tiens, prends ça. C'est la CS04, Force. » / « Un Pokémon fort pourra pousser les rochers. »
-34. Après : « Il faut le Badge Prisme pour s'en servir. » / « Et je te conseille le rocher, là-bas ! »
+34. Après : « Il faut le Badge Prisme pour s'en servir. » / « Essaie-la sur un rocher ! » (remplace « Et je te conseille le rocher, là-bas ! », décision de Kevin du 2026-10-26 : le rocher de la maison est fixe)
 
 **Arène de Koga**
 35. Panneau : « ARÈNE DE PARMANIE » / « Champion : Koga — le maître des poisons »

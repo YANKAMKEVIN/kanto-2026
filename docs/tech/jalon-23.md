@@ -762,17 +762,17 @@ QA 23B (la dernière Safari Ball ne finissait pas la visite) corrigé dans `dd42
 - **T22** : la suite complète passe ; les interruptions (sauvegarde, rechargement) ont été vues en
   QA 23A ; pas de nouvelle passe.
 - **T23 (QA de bout en bout) non faite** : Parmanie → Parc → Gardien → Koga → exploration libre.
-- **Questions pour Kevin** :
-  1. **Toxik de Koga** : le garder inutilisé (IA actuelle) ou le faire sortir (par exemple une
-     première fois sur une cible saine) ? Changer l'IA touche tous les Dresseurs « smart ».
-  2. **Rencontres Safari** jugées peu fréquentes en QA 23B (taux de la grille RB).
-  3. **Rhinocorne qui fuit au premier caillou** (comportement RB, QA 23B) : garder ?
-  4. **Textures ≈ 75 Mo** dans la Maison Secrète et la maison du Gardien (QA 23C+23D), au-dessus
-     du budget de 64 Mo par carte (skill `android-deploy`) : à traiter à la phase DA ?
-  5. **« le rocher, là-bas »** du Gardien (texte validé) alors que le rocher de sa maison est fixe
-     (texte 46) : le texte désigne-t-il un autre rocher (Force au J24), ou faut-il le reformuler ?
-  6. Le renvoi à la Porte « sans visite » réutilise « Ta visite du PARC SAFARI est terminée. »
-     (QA 23A) : message neutre à écrire ?
+- **Questions pour Kevin : tranchées le 2026-10-26** (« okay pour tes recos », toutes) :
+  1. **Toxik de Koga** : IA inchangée pour l'instant ; à revoir avec l'équilibrage par simulation
+     (T21), changer l'IA touchant tous les Dresseurs « smart ».
+  2. **Rencontres Safari** : taux RB gardé.
+  3. **Rhinocorne qui fuit au premier caillou** : gardé (RB).
+  4. **Textures ≈ 75 Mo** dans la Maison Secrète et la maison du Gardien : reporté à la phase DA
+     (« Reportés » de `etat-projet.md`).
+  5. **Gardien** : « Et je te conseille le rocher, là-bas ! » remplacé par « Essaie-la sur un
+     rocher ! » (dossier 26 texte 34, `gen_j23_data.py`, `j23_wardens_house.json`).
+  6. **Renvoi à la Porte sans visite** : message neutre « Tu n'as pas de visite en cours. Retour à
+     l'accueil du PARC SAFARI. » (`safari_gate_no_visit`).
 - **Non couvert sur le téléphone** : les deux cartes de combat après le correctif des noms longs ;
   les autres vitrines ; la ligne de réception de la CS03 ; zones Nord et Ouest à pied, maisons
   Nord/Ouest/Est (QA 23A).

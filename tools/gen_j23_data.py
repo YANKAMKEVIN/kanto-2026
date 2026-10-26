@@ -181,7 +181,7 @@ def gate_data():
 			"Ding-dong ! Tu n'as plus de SAFARI BALLS !", "Ta visite du PARC SAFARI est terminée."]),
 		"safari_gate_end": dialogue(EMPLOYEE, ["Alors, bonne pêche ? Reviens vite !"]),
 		# [D] (plan §2.15) : partie rechargée dans le Parc sans visite en cours.
-		"safari_gate_no_visit": dialogue(NARRATION, ["Ta visite du PARC SAFARI est terminée."]),
+		"safari_gate_no_visit": dialogue(NARRATION, ["Tu n'as pas de visite en cours. Retour à l'accueil du PARC SAFARI."]),
 	}
 	cutscenes = {
 		# Comptoir, en venant du sud sans visite : péage (§2.2). NON ou refus : un pas en arrière.
@@ -250,7 +250,7 @@ def warden_data():
 			# Interrompu entre le retrait des Dents d'Or et la CS : il la redonne (RB).
 			{"if": ["gave_gold_teeth"], "unless": ["got_hm04"], "cutscene": "j23_warden_hm04"},
 			{"if": ["got_hm04"], "pages": [
-				"Il faut le Badge Prisme pour s'en servir.", "Et je te conseille le rocher, là-bas !"]},
+				"Il faut le Badge Prisme pour s'en servir.", "Essaie-la sur un rocher !"]},
 			{"if_items": ["gold_teeth"], "cutscene": "j23_warden_teeth"},
 			{"pages": ["Hif fuff hefifoo !", "Hoffuh hoff !"],
 				"choice": {"confirm": "OUI", "cancel": "NON", "confirm_pages": ["Huh ? Hoffu… !"],
@@ -261,7 +261,7 @@ def warden_data():
 		"j23_warden_gift": dialogue(speaker, [
 			"Tiens, prends ça. C'est la CS04, Force.", "Un Pokémon fort pourra pousser les rochers."]),
 		"j23_warden_after": dialogue(speaker, [
-			"Il faut le Badge Prisme pour s'en servir.", "Et je te conseille le rocher, là-bas !"]),
+			"Il faut le Badge Prisme pour s'en servir.", "Essaie-la sur un rocher !"]),
 	}
 	give = [
 		{"dialogue": "j23_warden_gift"},

@@ -14,6 +14,8 @@ const MAPS: Array[StringName] = [&"safari_zone_gate", &"safari_zone_center", &"s
 ## Textes recommandés (« [R] ») et défauts du plan ([D]) : hors des documents validés.
 const RECOMMENDED: Array[String] = ["Passe au comptoir pour entrer.",
 	"Ta visite du PARC SAFARI est terminée.",
+	# Renvoi à la Porte sans visite : message neutre, décision de Kevin du 2026-10-26.
+	"Tu n'as pas de visite en cours. Retour à l'accueil du PARC SAFARI.",
 	# Koga (T19, [R]) : reprise après une défaite, défaite.
 	"Fwahahaha ! Tu reviens ?", "Le poison a fait son œuvre.", "Reviens quand tu seras prêt."]
 ## Objets du dossier 26 §7 (remplacements N-19), par carte et position.

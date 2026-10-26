@@ -113,7 +113,7 @@
 	"safari_gate_no_visit": {
 		"narration": true,
 		"pages": [
-			"Ta visite du PARC SAFARI est terminée."
+			"Tu n'as pas de visite en cours. Retour à l'accueil du PARC SAFARI."
 		]
 	}
 }
