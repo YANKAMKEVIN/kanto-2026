@@ -124,6 +124,16 @@ extends RefCounted
 ##   « leave » (fin de visite volontaire, Balls perdues), « clear » (drapeaux de passage
 ##   `safari_gate_yes`, `safari_gate_leave_yes`, `safari_pay_failed` remis à faux).
 
+## Jalon 25 (`jalon-25.md` §2.1, §2.3, §2.5), le Manoir, l'Arène de Cramois'Île et les échanges :
+## - [constant Kind.UNSET_FLAGS] : [member flags] baissés (drapeaux de travail d'une scène : la
+##   réponse d'un quiz, une offre acceptée) ;
+## - [constant Kind.TOGGLE_FLAGS] : chaque drapeau de [member flags] basculé (interrupteur du
+##   Manoir, [MansionSwitch]) ;
+## - [constant Kind.TRADE] : échange fixe [member trade_id] ([InGameTrade]) : aucun candidat →
+##   dialogue [member dialogue_id] (« wrong ») ; le joueur choisit le Pokémon (sélecteur de Boot)
+##   ou renonce → [member dialogue_stored] (« refuse ») ; fait → les dialogues [member say]
+##   dans l'ordre. Déjà fait : rien.
+
 ## Nouvelles valeurs en fin d'enum (ordre de [constant TYPE_KEYS]).
 enum Kind {
 	WAIT, DIALOGUE, FACE, SET_FLAGS, SPAWN, MOVE, CHANGE_MAP, HOP, LEAN, DESPAWN, BATTLE, GIVE,
@@ -133,6 +143,7 @@ enum Kind {
 	WILD_BATTLE,
 	GIFT_POKEMON,
 	FLUTE, # Jalon 21
+	UNSET_FLAGS, TOGGLE_FLAGS, TRADE,
 	## J23 (`jalon-23.md` §2.1, §2.2) : visite du Parc Safari.
 	SAFARI,
 }
@@ -147,6 +158,7 @@ const TYPE_KEYS: Array[String] = [
 	"wild_battle",
 	"gift_pokemon",
 	"flute", # Jalon 21
+	"unset", "toggle", "trade",
 	"safari",
 ]
 ## Actions d'une étape « safari » (J23) : péage et début de visite, sortie volontaire, remise à
@@ -227,6 +239,8 @@ var intro: StringName = &""
 ## [member level] et [member dialogue_id] (clé « say ») servent aussi.
 var gift_flag: StringName = &""
 var dialogue_stored: StringName = &""
+var trade_id: StringName = &""
+var say: Array[StringName] = []
 ## Étape « wild_battle », jalon 21 (§2.3) : drapeaux levés sur une fuite (clé « flee »),
 ## drapeaux effacés à la fin du combat (clé « clear »), intro « révélation » (clé « reveal ») et
 ## Ball refusée (clé « uncatchable »).
@@ -237,6 +251,10 @@ var uncatchable: bool = false
 ## Étape « animate », jalon 21 : sautée si « Réduire les animations » est actif.
 var skip_reduced: bool = false
 ## Conditions de l'étape (toutes levées / aucune levée), vides = toujours jouée.
+## Jalon Son (T6) : clé facultative « music » de toute étape (sauf spawn), sans nouvelle sorte
+## d'étape : morceau (`tracks.json`) ou moment (`events`) joué en musique de scène, « stop »
+## l'arrête ; "" = rien ne change. Lue par [AudioBridge].
+var music: StringName = &""
 var if_flags: Array[StringName] = []
 var unless_flags: Array[StringName] = []
 
@@ -307,6 +325,7 @@ func outcome_flags(outcome: int) -> Array[StringName]:
 func copy() -> CutsceneStep:
 	var other := CutsceneStep.new()
 	other.kind = kind
+	other.music = music
 	other.seconds = seconds
 	other.dialogue_id = dialogue_id
 	other.actor = actor
@@ -347,6 +366,8 @@ func copy() -> CutsceneStep:
 	other.intro = intro
 	other.gift_flag = gift_flag
 	other.dialogue_stored = dialogue_stored
+	other.trade_id = trade_id
+	other.say = say.duplicate()
 	other.flee_flags = flee_flags.duplicate()
 	other.clear_flags = clear_flags.duplicate()
 	other.reveal = reveal

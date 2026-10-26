@@ -1,0 +1,16 @@
+{
+	"pokemon_mansion_2f_floor": {
+		"maps": ["pokemon_mansion_2f"],
+		"terrain": "floor",
+		"rate": 10,
+		"slots": [
+			{ "species": "ponyta", "levels": [28, 32], "weight": 63 },
+			{ "species": "koffing", "levels": [30, 34], "weight": 64 },
+			{ "species": "grimer", "levels": [30, 34], "weight": 64 },
+			{ "species": "weezing", "levels": [37, 39], "weight": 7 },
+			{ "species": "muk", "levels": [37, 39], "weight": 7 },
+			{ "species": "growlithe", "levels": [32, 32], "weight": 26 },
+			{ "species": "vulpix", "levels": [32, 32], "weight": 25 }
+		]
+	}
+}

@@ -1,0 +1,61 @@
+{
+	"secret_key": {
+		"name": "Clé Secrète",
+		"plural": "Clés Secrètes",
+		"feminine": true,
+		"category": "key",
+		"description": "Une clé ancienne trouvée au Manoir. Elle ouvre une porte de Cramois'Île."
+	},
+	"old_amber": {
+		"name": "Vieil Ambre",
+		"plural": "Vieux Ambres",
+		"feminine": false,
+		"category": "key",
+		"description": "Un morceau d'ambre ancien. Il contiendrait l'ADN d'un Pokémon."
+	},
+	"tm38": {
+		"name": "CT38 — Déflagration",
+		"plural": "CT38 — Déflagration",
+		"feminine": true,
+		"category": "tm",
+		"tm": 38,
+		"teaches": "fire_blast",
+		"description": "Apprend Déflagration à un Pokémon."
+	},
+	"max_potion": {
+		"name": "Potion Max",
+		"plural": "Potions Max",
+		"feminine": true,
+		"category": "heal",
+		"heal_amount": 999,
+		"price": 2500,
+		"description": "Restaure tous les PV d'un Pokémon."
+	},
+	"max_revive": {
+		"name": "Rappel Max",
+		"plural": "Rappels Max",
+		"feminine": false,
+		"category": "heal",
+		"revive": 1.0,
+		"price": 4000,
+		"description": "Ranime un Pokémon K.O. avec tous ses PV."
+	},
+	"tm14": {
+		"name": "CT14 — Blizzard",
+		"plural": "CT14 — Blizzard",
+		"feminine": true,
+		"category": "tm",
+		"tm": 14,
+		"teaches": "blizzard",
+		"description": "Apprend Blizzard à un Pokémon."
+	},
+	"tm22": {
+		"name": "CT22 — Lance-Soleil",
+		"plural": "CT22 — Lance-Soleil",
+		"feminine": true,
+		"category": "tm",
+		"tm": 22,
+		"teaches": "solar_beam",
+		"description": "Apprend Lance-Soleil à un Pokémon."
+	}
+}

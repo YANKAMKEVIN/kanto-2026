@@ -1,5 +1,5 @@
 {
-	"_doc": "Grottes (catégorie « grotte », docs/tech/jalon-12.md §2.3, lue par CaveLibrary) : ni bâtiment ni extérieur à ciel ouvert. Leurs cartes gardent « interior = false » (compagnon visible) et ne sont pas dans interiors.json. « escape » : où la Corde Sortie ramène (dossier 15 §11 : devant l'entrée côté Route 3, tourné vers le sud, même depuis B2F). « dark » (J17 T9) : grotte obscure, couverte par le voile d'obscurité (data/world/darkness.json). « dark_cave » (J18) : Grotte Sombre, obscure. « pokemon_tower » (J19 T16) : étages 2F à 7F de la Tour Pokémon (J21 T13 : 7F ajouté) ; le rez-de-chaussée (bâtiment, interior = true) n'y est pas : la Corde y est refusée.",
+	"_doc": "Grottes (catégorie « grotte », docs/tech/jalon-12.md §2.3, lue par CaveLibrary) : ni bâtiment ni extérieur à ciel ouvert. Leurs cartes gardent « interior = false » (compagnon visible) et ne sont pas dans interiors.json. « escape » : où la Corde Sortie ramène (dossier 15 §11 : devant l'entrée côté Route 3, tourné vers le sud, même depuis B2F). « dark » (J17 T9) : grotte obscure, couverte par le voile d'obscurité (data/world/darkness.json). « dark_cave » (J18) : Grotte Sombre, obscure. « pokemon_mansion » (J25 §2.7) : les quatre niveaux du Manoir, Corde Sortie et Tunnel ramènent devant sa porte. « pokemon_tower » (J19 T16) : étages 2F à 7F de la Tour Pokémon (J21 T13 : 7F ajouté) ; le rez-de-chaussée (bâtiment, interior = true) n'y est pas : la Corde y est refusée.",
 	"caves": {
 		"mt_moon": {
 			"maps": ["mt_moon_1f", "mt_moon_b1f", "mt_moon_b2f"],
@@ -30,6 +30,12 @@
 				"rocket_hideout_b4f", "rocket_hideout_elevator"
 			],
 			"escape": { "map": "celadon_city", "spawn": "from_casino_w", "facing": "down" }
+		},
+		"pokemon_mansion": {
+			"maps": [
+				"pokemon_mansion_1f", "pokemon_mansion_2f", "pokemon_mansion_3f", "pokemon_mansion_b1f"
+			],
+			"escape": { "map": "cinnabar_island", "spawn": "from_manoir", "facing": "down" }
 		}
 	}
 }

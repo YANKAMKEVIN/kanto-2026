@@ -1,0 +1,41 @@
+{
+	"pokemon_mansion_1f_item_1": {
+		"cutscene": "pokemon_mansion_1f_item_1"
+	},
+	"pokemon_mansion_1f_item_2": {
+		"cutscene": "pokemon_mansion_1f_item_2"
+	},
+	"pokemon_mansion_1f_hidden_1": {
+		"cutscene": "pokemon_mansion_1f_hidden_1"
+	},
+	"pokemon_mansion_2f_item_1": {
+		"cutscene": "pokemon_mansion_2f_item_1"
+	},
+	"pokemon_mansion_3f_item_1": {
+		"cutscene": "pokemon_mansion_3f_item_1"
+	},
+	"pokemon_mansion_3f_item_2": {
+		"cutscene": "pokemon_mansion_3f_item_2"
+	},
+	"pokemon_mansion_3f_hidden_1": {
+		"cutscene": "pokemon_mansion_3f_hidden_1"
+	},
+	"pokemon_mansion_b1f_item_1": {
+		"cutscene": "pokemon_mansion_b1f_item_1"
+	},
+	"pokemon_mansion_b1f_item_2": {
+		"cutscene": "pokemon_mansion_b1f_item_2"
+	},
+	"pokemon_mansion_b1f_item_3": {
+		"cutscene": "pokemon_mansion_b1f_item_3"
+	},
+	"pokemon_mansion_b1f_item_4": {
+		"cutscene": "pokemon_mansion_b1f_item_4"
+	},
+	"pokemon_mansion_b1f_item_5": {
+		"cutscene": "pokemon_mansion_b1f_item_5"
+	},
+	"pokemon_mansion_b1f_hidden_1": {
+		"cutscene": "pokemon_mansion_b1f_hidden_1"
+	}
+}

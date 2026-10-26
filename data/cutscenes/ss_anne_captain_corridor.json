@@ -4,7 +4,7 @@
 			{
 				"unless": ["rival_ss_anne_won"],
 				"steps": [
-					{ "emote": "rival_ss_anne", "kind": "exclamation" },
+					{ "emote": "rival_ss_anne", "kind": "exclamation", "music": "rival" },
 					{ "move": "player", "to": [7, 3] },
 					{
 						"move": "rival_ss_anne",

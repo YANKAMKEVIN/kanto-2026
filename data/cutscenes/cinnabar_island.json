@@ -2,6 +2,42 @@
 	"cinnabar_gym_locked": {
 		"variants": [
 			{
+				"if": [
+					"cinnabar_gym_unlocked"
+				],
+				"steps": [
+					{
+						"change_map": "cinnabar_gym",
+						"at": "depuis_ile",
+						"facing": "up"
+					}
+				]
+			},
+			{
+				"if": [
+					"got_pokemon_mansion_b1f_item_5"
+				],
+				"steps": [
+					{
+						"face": "player",
+						"to": "up"
+					},
+					{
+						"dialogue": "cinnabar_gym_door_unlock"
+					},
+					{
+						"set": [
+							"cinnabar_gym_unlocked"
+						]
+					},
+					{
+						"change_map": "cinnabar_gym",
+						"at": "depuis_ile",
+						"facing": "up"
+					}
+				]
+			},
+			{
 				"steps": [
 					{
 						"face": "player",

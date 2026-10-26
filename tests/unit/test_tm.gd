@@ -55,10 +55,10 @@ func test_compatibilities_of_rouge_bleu() -> void:
 	# Tentacool (copie du J21) ; jalon 24 (T4) : 17 espèces nouvelles, toutes compatibles
 	# (Krabby, Poissoroy et Magicarpe sont ceux du J22) ; Ronflex (J21), compatible, entre au
 	# fichier généré à la fusion du J24 dans `main` ; jalon 23 (T6) : Leveinard, Insécateur,
-	# Scarabrute, Tauros, les quatre.
-	assert_eq(count, 121, "121 espèces sur 126 (dossier 14 §6.1 ; + 12 du jalon 12, + 9 du jalon"
+	# Scarabrute, Tauros, les quatre ; jalon 25 (T7) : les quatre, toutes compatibles.
+	assert_eq(count, 125, "125 espèces sur 130 (dossier 14 §6.1 ; + 12 du jalon 12, + 9 du jalon"
 		+ " 13, + 3 du jalon 14, + 2 du jalon 15, + 8 du jalon 17, + 6 du jalon 19, + 11 du jalon 20"
-		+ ", + 14 du jalon 22, + 17 du jalon 24, + Ronflex, + 4 du jalon 23)")
+		+ ", + 14 du jalon 22, + 17 du jalon 24, + Ronflex, + 4 du jalon 23, + 4 du jalon 25)")
 
 
 ## Jalon 14 (T5, jalon-14.md §2.4) : CT19 Frappe Atlas (Route 25) et CT28 Tunnel (Rocket).

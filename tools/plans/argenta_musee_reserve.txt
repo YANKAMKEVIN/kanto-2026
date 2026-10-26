@@ -1,0 +1,33 @@
+# Musée d'Argenta, réserve arrière (pewter_museum_reserve) — grille fonctionnelle v1 (jalon 25,
+# dossier 28 §7, X-3). Convention des intérieurs peints (15 × 10). Accès : porte arrière sur la
+# façade est du Musée, derrière un arbre à Couper (la carte d'Argenta n'est modifiée qu'après la
+# fusion du J17, règle d'ancienneté). Contrôle : tools/art/plan_check_cramois.py.
+#
+# Comptoir au centre ; scientifique du comptoir (textes 67–69) ; vitrine de l'ambre (texte 73) et
+# scientifique de l'ambre (textes 70–72, Vieil Ambre) ; caisses de fouilles.
+#
+# Légende : K mur · . sol · X paillasson (PUSH ↓) · t comptoir (bloqué) · V vitrine (bloquée) ·
+#   r caisses (bloquées)
+
+PRATICABLES .X
+
+GRILLE 15 10
+00 KKKKKKKKKKKKKKK
+01 KKKKKKKKKKKKKKK
+02 KKKKKKKKKKKKKKK
+03 Krr........V..K
+04 K.............K
+05 K..ttttt......K
+06 K.............K
+07 Krr...........K
+08 KKKKKKXXXKKKKKK
+09 KKKKKKKKKKKKKKK
+FIN
+
+POSITIONS
+sortie              warp           6..8,8       libre   vers=pewter_city  # PUSH ↓ → Argenta, devant la porte arrière
+entree              spawn          7,7          libre   # tourné ↑
+scientifique_comptoir pnj          5,4          bloque  facing=down  # textes 67–69 (OUI/NON)
+scientifique_ambre  pnj            12,4         bloque  facing=left  # textes 70–72 ; Vieil Ambre, pewter_museum_got_old_amber
+vitrine_ambre       examen         11,3         bloque  # texte 73 ; vide après la remise
+FIN

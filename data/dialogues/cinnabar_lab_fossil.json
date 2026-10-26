@@ -24,6 +24,16 @@
 			},
 			{
 				"if": [
+					"fossil_reviving_aerodactyl",
+					"fossil_ready"
+				],
+				"unless": [
+					"fossil_revived_aerodactyl"
+				],
+				"cutscene": "cinnabar_fossil_give_aerodactyl"
+			},
+			{
+				"if": [
 					"fossil_reviving_kabuto"
 				],
 				"unless": [
@@ -39,6 +49,17 @@
 				],
 				"unless": [
 					"fossil_revived_omanyte"
+				],
+				"pages": [
+					"Patience !\nVa faire un tour."
+				]
+			},
+			{
+				"if": [
+					"fossil_reviving_aerodactyl"
+				],
+				"unless": [
+					"fossil_revived_aerodactyl"
 				],
 				"pages": [
 					"Patience !\nVa faire un tour."
@@ -77,6 +98,22 @@
 				}
 			},
 			{
+				"if_items": [
+					"old_amber"
+				],
+				"pages": [
+					"Je recrée des Pokémon\nà partir de fossiles.",
+					"Tu en as un ?",
+					"Le Vieil Ambre ?\nJe te le prends ?"
+				],
+				"choice": {
+					"confirm": "OUI",
+					"cancel": "NON",
+					"confirm_cutscene": "cinnabar_fossil_take_aerodactyl",
+					"cancel_pages": []
+				}
+			},
+			{
 				"pages": [
 					"Sans fossile, je n'ai rien\nà recréer.",
 					"Il paraît qu'on en trouve\nau Mont Sélénite."
@@ -88,12 +125,6 @@
 		"speaker": "Scientifique",
 		"pages": [
 			"Bien. Ça prend un peu de temps :\nva faire un tour dehors !"
-		]
-	},
-	"cinnabar_lab_seel": {
-		"speaker": "Scientifique",
-		"pages": [
-			"Otaria adore l'eau froide\ndes Îles Écume."
 		]
 	},
 	"cinnabar_fossil_ready_kabuto": {
@@ -130,6 +161,24 @@
 		"narration": true,
 		"pages": [
 			"Amonita a été envoyé au stockage."
+		]
+	},
+	"cinnabar_fossil_ready_aerodactyl": {
+		"speaker": "Scientifique",
+		"pages": [
+			"Te voilà ! Ton fossile\nétait un Ptéra !"
+		]
+	},
+	"cinnabar_fossil_received_aerodactyl": {
+		"narration": true,
+		"pages": [
+			"{player} reçoit Ptéra !"
+		]
+	},
+	"cinnabar_fossil_stored_aerodactyl": {
+		"narration": true,
+		"pages": [
+			"Ptéra a été envoyé au stockage."
 		]
 	}
 }

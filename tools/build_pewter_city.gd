@@ -153,6 +153,7 @@ func _init() -> void:
 	var entities: Node2D = _kit.get(&"entities")
 	var decals: Node2D = _kit.get(&"decals")
 	_add_passages()
+	_add_museum_reserve(entities)
 	for entry: Array in SIGNS:
 		_kit.call(&"add_interactable", entry[1], _cell(entry[0]), Vector2i.ONE, entry[3],
 			entry[2])
@@ -225,6 +226,45 @@ func _add_passages() -> void:
 			else:
 				_kit.call(&"add_warp", node, door, Kit.STEP_ON, Vector2i.UP, &"",
 					StringName(entry[5]), Vector2i.DOWN, entry[6])
+
+
+## Jalon 25 (dossier 28 §7, T18) : porte arrière de la façade est du Musée (PUSH ← depuis la case
+## de l'arbre, vers la réserve, `pewter_museum_reserve` / `entree`), retour devant elle (`from_museum_reserve`), et
+## l'arbre à Couper qui la garde : [FlagGate] `unless cut_pewter_museum_tree` (contrat des arbustes
+## du J16 / J17), examen `pewter_museum_tree` (Coupe → `cut_tree_pewter_museum`). Porte provisoire :
+## aplat sombre (la porte peinte de la série 28 est à refaire).
+func _add_museum_reserve(entities: Node2D) -> void:
+	var tree := _cell("arbre_reserve")
+	_kit.call(&"add_spawn", "from_museum_reserve", tree)
+	# Porte dans le mur (14, 34) : on la pousse depuis la case de l'arbre (comme un tapis de sortie).
+	_kit.call(&"add_warp", "DoorMuseumReserve", _cell("porte_reserve"), Kit.PUSH, Vector2i.LEFT,
+		&"pewter_museum_reserve", &"entree", Vector2i.UP)
+	var mark := Node2D.new()
+	mark.name = "MuseumReserveDoor"
+	mark.position = _kit.call(&"world", tree + Vector2i.LEFT)
+	var poly := Polygon2D.new()
+	poly.color = Color(0.14, 0.1, 0.08)
+	poly.polygon = PackedVector2Array([Vector2(30, -110), Vector2(48, -110), Vector2(48, 0),
+		Vector2(30, 0)])
+	mark.add_child(poly)
+	_kit.call(&"attach", entities, mark)
+	poly.owner = mark.owner
+	var gate := Node2D.new()
+	gate.set_script(load("res://game/world/flag_gate.gd"))
+	gate.name = "MuseumTree"
+	gate.position = _kit.call(&"world", tree)
+	var unless: Array[StringName] = [&"cut_pewter_museum_tree"]
+	gate.set(&"unless_flags", unless)
+	var blocking: Array[Vector2i] = [tree]
+	gate.set(&"blocking_cells", blocking)
+	_kit.call(&"attach", entities, gate)
+	var prop: Node2D = _kit.call(&"add_prop", gate, "prop_jeune_arbre_arene_01", Vector2.ZERO,
+		"Tree")
+	_kit.call(&"clear_footprint", prop)
+	_kit.call(&"add_interactable", "MuseumTreePoint", tree, Vector2i.ONE, Vector2i.ZERO,
+		&"pewter_museum_tree")
+	var root: Node = _kit.get(&"root")
+	root.get_node(^"Interactables/MuseumTreePoint").set(&"unless_flags", unless.duplicate())
 
 
 func _place_buildings(entities: Node2D) -> void:

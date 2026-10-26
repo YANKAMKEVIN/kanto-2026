@@ -10,7 +10,9 @@ extends RefCounted
 ## (Rouge/Bleu).
 
 ## Portée de vision permise dans les données ([NpcRoster], bloc « trainer »).
-const SIGHT_MIN: int = 1
+## Jalon 25 : 0 = le Dresseur ne voit personne, on lui parle (Pillards du Manoir, Arène de
+## Cramois'Île, Pêcheurs de Rouge/Bleu).
+const SIGHT_MIN: int = 0
 const SIGHT_MAX: int = 8
 ## Préfixe du drapeau d'histoire « battu » (sauvegardé avec les autres drapeaux).
 const BEATEN_PREFIX: String = "beaten_"

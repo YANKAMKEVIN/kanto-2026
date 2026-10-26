@@ -1,0 +1,205 @@
+{
+	"cinnabar_gym_door_unlock": {
+		"narration": true,
+		"pages": [
+			"La Clé Secrète tourne dans la serrure.",
+			"La porte de l'Arène est ouverte !"
+		]
+	},
+	"cinnabar_gym_guide": {
+		"speaker": "Guide",
+		"variants": [
+			{
+				"if": [
+					"badge_volcano"
+				],
+				"pages": [
+					"{player} ! Tu as éteint ce volcan !"
+				]
+			},
+			{
+				"pages": [
+					"Salut, futur Champion ! Auguste est\nun expert du Feu. Mise sur l'Eau !",
+					"Et prends quelques Antibrûle !"
+				]
+			}
+		]
+	},
+	"cinnabar_gym_quiz_intro": {
+		"narration": true,
+		"pages": [
+			"Quiz Pokémon ! Bonne réponse : la porte\ns'ouvre. Mauvaise : un Dresseur t'attaque !",
+			"Garde tes forces pour le Champion :\nréponds juste !"
+		]
+	},
+	"cinnabar_gym_quiz_right": {
+		"narration": true,
+		"pages": [
+			"Exact ! Tu peux passer !"
+		]
+	},
+	"cinnabar_gym_quiz_wrong": {
+		"narration": true,
+		"pages": [
+			"Raté ! Mauvaise réponse !"
+		]
+	},
+	"cinnabar_gym_1_before": {
+		"speaker": "Intello Paulin",
+		"pages": [
+			"Tu sais à quelle température monte\nle souffle d'un Pokémon Feu ?"
+		]
+	},
+	"cinnabar_gym_1_defeated": {
+		"speaker": "Intello Paulin",
+		"pages": [
+			"Trop chaud pour moi !"
+		]
+	},
+	"cinnabar_gym_1_after": {
+		"speaker": "Intello Paulin",
+		"pages": [
+			"Tu sais à quelle température monte\nle souffle d'un Pokémon Feu ?"
+		]
+	},
+	"cinnabar_gym_2_before": {
+		"speaker": "Pillard Rico",
+		"pages": [
+			"J'étais voleur. Grâce aux Pokémon,\nje suis devenu honnête !"
+		]
+	},
+	"cinnabar_gym_2_defeated": {
+		"speaker": "Pillard Rico",
+		"pages": [
+			"Trop chaud pour moi !"
+		]
+	},
+	"cinnabar_gym_2_after": {
+		"speaker": "Pillard Rico",
+		"pages": [
+			"J'étais voleur. Grâce aux Pokémon,\nje suis devenu honnête !"
+		]
+	},
+	"cinnabar_gym_3_before": {
+		"speaker": "Intello Léopold",
+		"pages": [
+			"Tu ne gagneras pas !\nJ'ai tout étudié sur les Pokémon !"
+		]
+	},
+	"cinnabar_gym_3_defeated": {
+		"speaker": "Intello Léopold",
+		"pages": [
+			"Trop chaud pour moi !"
+		]
+	},
+	"cinnabar_gym_3_after": {
+		"speaker": "Intello Léopold",
+		"pages": [
+			"Tu ne gagneras pas !\nJ'ai tout étudié sur les Pokémon !"
+		]
+	},
+	"cinnabar_gym_4_before": {
+		"speaker": "Pillard Fred",
+		"pages": [
+			"J'aime juste les Pokémon Feu !"
+		]
+	},
+	"cinnabar_gym_4_defeated": {
+		"speaker": "Pillard Fred",
+		"pages": [
+			"Trop chaud pour moi !"
+		]
+	},
+	"cinnabar_gym_4_after": {
+		"speaker": "Pillard Fred",
+		"pages": [
+			"J'aime juste les Pokémon Feu !"
+		]
+	},
+	"cinnabar_gym_5_before": {
+		"speaker": "Intello Octave",
+		"pages": [
+			"Je sais pourquoi Auguste est devenu Dresseur !"
+		]
+	},
+	"cinnabar_gym_5_defeated": {
+		"speaker": "Intello Octave",
+		"pages": [
+			"Trop chaud pour moi !"
+		]
+	},
+	"cinnabar_gym_5_after": {
+		"speaker": "Intello Octave",
+		"pages": [
+			"Un jour, il s'est perdu en montagne.\nUn oiseau de feu est apparu…",
+			"Sa lumière l'a guidé jusqu'en bas."
+		]
+	},
+	"cinnabar_gym_6_before": {
+		"speaker": "Pillard Jojo",
+		"pages": [
+			"J'ai visité beaucoup d'Arènes,\nmais celle-ci est ma préférée !"
+		]
+	},
+	"cinnabar_gym_6_defeated": {
+		"speaker": "Pillard Jojo",
+		"pages": [
+			"Trop chaud pour moi !"
+		]
+	},
+	"cinnabar_gym_6_after": {
+		"speaker": "Pillard Jojo",
+		"pages": [
+			"J'ai visité beaucoup d'Arènes,\nmais celle-ci est ma préférée !"
+		]
+	},
+	"cinnabar_gym_7_before": {
+		"speaker": "Intello Barnabé",
+		"pages": [
+			"Le Feu craint l'eau !"
+		]
+	},
+	"cinnabar_gym_7_defeated": {
+		"speaker": "Intello Barnabé",
+		"pages": [
+			"Trop chaud pour moi !"
+		]
+	},
+	"cinnabar_gym_7_after": {
+		"speaker": "Intello Barnabé",
+		"pages": [
+			"Le Feu craint l'eau !"
+		]
+	},
+	"cinnabar_blaine_before": {
+		"speaker": "Auguste",
+		"pages": [
+			"Ha ! Je suis Auguste, Champion de\nCramois'Île !",
+			"Mes Pokémon Feu vont tout réduire\nen cendres ! Tu as de l'Antibrûle ?"
+		]
+	},
+	"cinnabar_blaine_defeated": {
+		"speaker": "Auguste",
+		"pages": [
+			"J'ai brûlé tout mon feu !\nTu as gagné le Badge Volcan !"
+		]
+	},
+	"cinnabar_blaine_badge": {
+		"speaker": "Auguste",
+		"pages": [
+			"Ha ! Ce Badge prouve ta valeur.\nPrends ceci aussi !"
+		]
+	},
+	"cinnabar_blaine_tm38": {
+		"speaker": "Auguste",
+		"pages": [
+			"La CT38 contient Déflagration !\nApprends-la à un Pokémon Feu !"
+		]
+	},
+	"cinnabar_blaine_after": {
+		"speaker": "Auguste",
+		"pages": [
+			"Déflagration, c'est le Feu à son sommet !\nNe la gâche pas sur un Pokémon Eau !"
+		]
+	}
+}

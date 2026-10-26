@@ -15,6 +15,15 @@ extends RefCounted
 ## (racine de l'aire de sa boîte visible) suit sa taille réelle (Pokédex), comprimée
 ## ([constant SIZE_EXPONENT]) et bornée, à partir de Salamèche (référence de gabarit, ≈ 60 %
 ## du premier essai du pilote).
+##
+## **Cadrage B « façon Rouge/Bleu »** (décision de Kevin, 2026-10-25,
+## `docs/design/fiches-assets/dos-cadrage-rb/README.md`) : ton Pokémon est vu de dos, grand et
+## proche, **coupé par le bas de l'écran** ([method back_scale], [method back_sink]) ; il passe
+## devant le feuillage flou du premier plan et n'a plus d'ombre au sol. [constant PLAYER_FEET]
+## reste l'ancre du sol du décor peint ([BattleDecor] en tire son échelle) ; le dos se pose sur
+## [constant PLAYER_BACK]. Une image de dos « corps entier » (dos IA, dos 3D, provisoire) est
+## enfoncée de [constant BACK_CROP] sous le bord ; un dos peint en plongée (`dos_rb_NNN.png`)
+## est déjà coupé et se pose sur le bord.
 
 ## Pieds du Pokémon du joueur et de l'adversaire (prototype `duel_qa.gd`, cadrage « combat »).
 ## Correctif QA S24 (2026-10-07) : pieds du joueur remontés de 0,97 à 0,90 (à 0,97 la base
@@ -27,7 +36,9 @@ const REFERENCE_HEIGHT_M: float = 0.6
 ## Salamèche ≈ 0,336 de haut = 60 % de 0,56) et de face (l'adversaire : Roucool, 0,3 m, ≈ 0,21
 ## de haut au pilote, ramené à 0,6 m par la loi de taille).
 const PLAYER_PRESENCE: float = 0.31
-const FOE_PRESENCE: float = 0.27
+## Adversaire : 0,27 au pilote, 0,34 en cadrage B (décision de Kevin, 2026-10-25 : à côté du dos
+## agrandi, il paraissait petit).
+const FOE_PRESENCE: float = 0.34
 ## Compression de l'écart de taille réel (0 : tous pareils, 1 : proportionnel) et bornes du
 ## rapport à la référence (Rattata reste lisible, Onix ne mange pas l'écran).
 const SIZE_EXPONENT: float = 0.4
@@ -36,7 +47,23 @@ const MAX_RATIO: float = 1.73
 ## Boîtes maximales (largeur, hauteur en hauteurs d'écran) : protègent l'interface. La hauteur
 ## du joueur suit ses pieds (0,90 − 0,40 = 0,50 : jamais dans le quart haut gauche).
 const PLAYER_MAX_BOX := Vector2(0.80, 0.40)
-const FOE_MAX_BOX := Vector2(0.50, 0.38)
+## Adversaire en cadrage B (décision de Kevin, 2026-10-25) : 0,70 × 0,46 (0,50 × 0,38 au pilote) ;
+## la hauteur reste sous le haut de l'écran (pieds à 0,50).
+const FOE_MAX_BOX := Vector2(0.70, 0.46)
+## Cadrage B : bas-centre de la partie visible du dos (bord bas de l'écran, à gauche), en hauteurs
+## d'écran comme les autres ancres. Essai validé : 0,58 à gauche du centre.
+const PLAYER_BACK := Vector2(-0.58, 1.0)
+## Hauteur visible (au-dessus du bord bas) d'un dos de la taille de référence, suivant la loi de
+## taille, et ses bornes (essai : Carapuce 0,58, Onix 0,86 ; plafond 0,80 pour rester sous la
+## carte adverse, [method back_zone]).
+const BACK_HEIGHT: float = 0.62
+const BACK_MIN_HEIGHT: float = 0.45
+const BACK_MAX_HEIGHT: float = 0.80
+## Largeur maximale du dos : sa moitié (0,50) reste à gauche du centre, hors des commandes.
+const BACK_MAX_WIDTH: float = 1.0
+## Part de la hauteur d'un dos « corps entier » enfoncée sous le bord bas (pattes et bas du corps
+## coupés, comme le montage B validé).
+const BACK_CROP: float = 0.30
 ## Taille native des sprites provisoires (pixel art) : dos du joueur, adversaire sans artwork.
 const NATIVE := Vector2i(64, 64)
 ## Point de l'écran où tombe le centre de l'arène : de l'adversaire (0) vers le Pokémon du
@@ -46,10 +73,12 @@ const ARENA_BIAS: float = 0.3
 const FOCUS_RAISE: float = Grid.HALF_TILE
 
 
-## Pieds en pixels écran pour une vue de [param view_size] : { player_feet, foe_feet }.
+## Pieds en pixels écran pour une vue de [param view_size] : { player_feet (sol du décor),
+## player_back (bord bas du dos, cadrage B), foe_feet }.
 static func anchors(view_size: Vector2) -> Dictionary:
 	return {
 		"player_feet": feet(PLAYER_FEET, view_size),
+		"player_back": feet(PLAYER_BACK, view_size),
 		"foe_feet": feet(FOE_FEET, view_size),
 	}
 
@@ -90,6 +119,48 @@ static func sprite_scale(box: Vector2, height_m: float, is_player: bool, view_he
 	return scale
 
 
+## Cadrage B : hauteur visible voulue (px) du dos d'un Pokémon de [param height_m] mètres.
+static func back_height(height_m: float, view_height: float) -> float:
+	return clampf(BACK_HEIGHT * size_ratio(height_m), BACK_MIN_HEIGHT, BACK_MAX_HEIGHT) \
+		* view_height
+
+
+## Cadrage B : échelle d'un dos dont la boîte visible mesure [param box] px, dont la part
+## [param crop] de la hauteur passe sous le bord bas ; largeur bornée ([constant BACK_MAX_WIDTH]).
+## [param whole] : pixel art net, échelle entière (arrondie vers le bas au-delà d'une borne).
+static func back_scale(box: Vector2, height_m: float, view_height: float, crop: float,
+		whole: bool = false) -> float:
+	if box.x <= 0.0 or box.y <= 0.0:
+		return 1.0
+	var shown := box.y * (1.0 - clampf(crop, 0.0, 0.9))
+	var largest := minf(BACK_MAX_WIDTH * view_height / box.x,
+		BACK_MAX_HEIGHT * view_height / shown)
+	var scale := minf(back_height(height_m, view_height) / shown, largest)
+	if whole:
+		scale = clampf(roundf(scale), 1.0, maxf(floorf(largest), 1.0))
+	return scale
+
+
+## Cadrage B : de combien de px les pieds du dos (bas de sa boîte) passent sous
+## [constant PLAYER_BACK].
+static func back_sink(box: Vector2, scale: float, crop: float) -> float:
+	return roundf(box.y * scale * clampf(crop, 0.0, 0.9))
+
+
+## Cadrage B : zone que la partie visible du dos ne quitte jamais (bas gauche, sous la carte
+## adverse, à gauche des commandes).
+static func back_zone(view_size: Vector2) -> Rect2:
+	var bottom := feet(PLAYER_BACK, view_size)
+	var size := Vector2(BACK_MAX_WIDTH, BACK_MAX_HEIGHT) * view_size.y
+	return Rect2(bottom - Vector2(size.x / 2.0, size.y), size)
+
+
+## Carte adverse (contrat de l'interface, [BattleHudLayout]) : le dos agrandi passe sous elle.
+static func foe_card_zone(view_size: Vector2) -> Rect2:
+	var bottom := float(UiTokens.BATTLE_FOE_CARD_TOP + UiTokens.BATTLE_CARD_HEIGHT)
+	return Rect2(0.0, 0.0, view_size.x / 2.0, bottom)
+
+
 ## Rectangle écran d'une boîte visible de [param box_size] px affichée à [param scale], pieds
 ## (bas-centre de la boîte) sur [param feet].
 static func sprite_rect(feet: Vector2, scale: float, box_size: Vector2) -> Rect2:
@@ -98,10 +169,11 @@ static func sprite_rect(feet: Vector2, scale: float, box_size: Vector2) -> Rect2
 
 
 ## Zone que le Pokémon d'un camp ne quitte jamais (boîte maximale posée sur ses pieds).
+## Ton Pokémon : partie visible du dos en cadrage B ([method back_zone]).
 static func max_rect(is_player: bool, view_size: Vector2) -> Rect2:
-	var a := anchors(view_size)
-	var box := (PLAYER_MAX_BOX if is_player else FOE_MAX_BOX) * view_size.y
-	return sprite_rect(a["player_feet" if is_player else "foe_feet"], 1.0, box)
+	if is_player:
+		return back_zone(view_size)
+	return sprite_rect(feet(FOE_FEET, view_size), 1.0, FOE_MAX_BOX * view_size.y)
 
 
 ## Zones réservées à l'interface (contrat CB.1 / CB.2) : le quart haut gauche (carte adverse)

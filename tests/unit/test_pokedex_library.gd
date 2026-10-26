@@ -24,6 +24,8 @@ const ENCOUNTERABLE: Array[StringName] = [
 	# Jalon 23 (T13, `jalon-23.md` A.5 : une note par forme de base du Parc, validation d'avance
 	# de Kevin) : Leveinard, Insécateur, Scarabrute, Tauros.
 	&"chansey", &"scyther", &"pinsir", &"tauros",
+	# Jalon 25 (kanto_j25_entrees.json, validé d'avance le 2026-10-21) : Ponyta, Magmar (Manoir).
+	&"ponyta", &"magmar",
 ]
 ## Notes validées par Kevin qui parlent de l'évolution (exception à « jamais de divulgation ») :
 ## celle de Kadabra (dossier 17 §15, n° 64) cite son origine, Abra, déjà vue pour l'avoir.

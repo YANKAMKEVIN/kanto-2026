@@ -1,0 +1,72 @@
+{
+	"cinnabar_gym_1": {
+		"name": "Intello Paulin", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 900,
+		"team": [
+			{ "species": "vulpix", "level": 40 },
+			{ "species": "vulpix", "level": 40 },
+			{ "species": "ninetales", "level": 40 }
+		]
+	},
+	"cinnabar_gym_2": {
+		"name": "Pillard Rico", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 3240,
+		"team": [
+			{ "species": "growlithe", "level": 40 },
+			{ "species": "vulpix", "level": 40 },
+			{ "species": "ninetales", "level": 40 }
+		]
+	},
+	"cinnabar_gym_3": {
+		"name": "Intello Léopold", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 850,
+		"team": [
+			{ "species": "ponyta", "level": 38 },
+			{ "species": "charmander", "level": 38, "moves": ["ember", "leer", "slash", "flamethrower"] },
+			{ "species": "vulpix", "level": 38 },
+			{ "species": "growlithe", "level": 38 }
+		]
+	},
+	"cinnabar_gym_4": {
+		"name": "Pillard Fred", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 3690,
+		"team": [
+			{ "species": "ponyta", "level": 45 }
+		]
+	},
+	"cinnabar_gym_5": {
+		"name": "Intello Octave", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 1025,
+		"team": [
+			{ "species": "rapidash", "level": 45 }
+		]
+	},
+	"cinnabar_gym_6": {
+		"name": "Pillard Jojo", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 3330,
+		"team": [
+			{ "species": "vulpix", "level": 41 },
+			{ "species": "growlithe", "level": 41 }
+		]
+	},
+	"cinnabar_gym_7": {
+		"name": "Intello Barnabé", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 925,
+		"team": [
+			{ "species": "growlithe", "level": 41 },
+			{ "species": "vulpix", "level": 41 }
+		]
+	},
+	"cinnabar_gym_blaine": {
+		"name": "Auguste", "ai": "smart",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 4653,
+		"start_message": false, "end_message": true, "bag": true, "switch": true,
+		"card": { "name": "AUGUSTE", "title": "Champion d'Arène de Cramois'Île" },
+		"team": [
+			{ "species": "growlithe", "level": 42, "moves": ["ember", "leer", "take_down", "agility"] },
+			{ "species": "ponyta", "level": 40, "moves": ["tail_whip", "stomp", "growl", "fire_spin"] },
+			{ "species": "rapidash", "level": 42, "moves": ["tail_whip", "stomp", "growl", "fire_spin"] },
+			{ "species": "arcanine", "level": 47, "moves": ["leer", "ember", "fire_blast", "take_down"] }
+		]
+	}
+}

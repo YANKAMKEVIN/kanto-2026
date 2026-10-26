@@ -1,0 +1,281 @@
+{
+	"cinnabar_gym_quiz_1": {
+		"narration": true,
+		"variants": [
+			{
+				"if": [
+					"cinnabar_gym_gate_1"
+				],
+				"pages": [
+					"Porte ouverte."
+				]
+			},
+			{
+				"if": [
+					"beaten_cinnabar_gym_2"
+				],
+				"pages": [
+					"Porte ouverte."
+				]
+			},
+			{
+				"cutscene": "cinnabar_gym_quiz_1"
+			}
+		]
+	},
+	"cinnabar_gym_quiz_1_question": {
+		"narration": true,
+		"variants": [
+			{
+				"pages": [
+					"Chenipan finit par devenir Papilusion ?"
+				],
+				"choice": {
+					"confirm": "OUI",
+					"cancel": "NON",
+					"confirm_set": [
+						"cinnabar_gym_quiz_yes"
+					],
+					"cancel_set": [
+						"cinnabar_gym_quiz_no"
+					],
+					"confirm_pages": [],
+					"cancel_pages": []
+				}
+			}
+		]
+	},
+	"cinnabar_gym_quiz_2": {
+		"narration": true,
+		"variants": [
+			{
+				"if": [
+					"cinnabar_gym_gate_2"
+				],
+				"pages": [
+					"Porte ouverte."
+				]
+			},
+			{
+				"if": [
+					"beaten_cinnabar_gym_3"
+				],
+				"pages": [
+					"Porte ouverte."
+				]
+			},
+			{
+				"cutscene": "cinnabar_gym_quiz_2"
+			}
+		]
+	},
+	"cinnabar_gym_quiz_2_question": {
+		"narration": true,
+		"variants": [
+			{
+				"pages": [
+					"La Ligue délivre-t-elle 9 Badges ?"
+				],
+				"choice": {
+					"confirm": "OUI",
+					"cancel": "NON",
+					"confirm_set": [
+						"cinnabar_gym_quiz_yes"
+					],
+					"cancel_set": [
+						"cinnabar_gym_quiz_no"
+					],
+					"confirm_pages": [],
+					"cancel_pages": []
+				}
+			}
+		]
+	},
+	"cinnabar_gym_quiz_3": {
+		"narration": true,
+		"variants": [
+			{
+				"if": [
+					"cinnabar_gym_gate_3"
+				],
+				"pages": [
+					"Porte ouverte."
+				]
+			},
+			{
+				"if": [
+					"beaten_cinnabar_gym_4"
+				],
+				"pages": [
+					"Porte ouverte."
+				]
+			},
+			{
+				"cutscene": "cinnabar_gym_quiz_3"
+			}
+		]
+	},
+	"cinnabar_gym_quiz_3_question": {
+		"narration": true,
+		"variants": [
+			{
+				"pages": [
+					"Ptitard évolue-t-il trois fois ?"
+				],
+				"choice": {
+					"confirm": "OUI",
+					"cancel": "NON",
+					"confirm_set": [
+						"cinnabar_gym_quiz_yes"
+					],
+					"cancel_set": [
+						"cinnabar_gym_quiz_no"
+					],
+					"confirm_pages": [],
+					"cancel_pages": []
+				}
+			}
+		]
+	},
+	"cinnabar_gym_quiz_4": {
+		"narration": true,
+		"variants": [
+			{
+				"if": [
+					"cinnabar_gym_gate_4"
+				],
+				"pages": [
+					"Porte ouverte."
+				]
+			},
+			{
+				"if": [
+					"beaten_cinnabar_gym_5"
+				],
+				"pages": [
+					"Porte ouverte."
+				]
+			},
+			{
+				"cutscene": "cinnabar_gym_quiz_4"
+			}
+		]
+	},
+	"cinnabar_gym_quiz_4_question": {
+		"narration": true,
+		"variants": [
+			{
+				"pages": [
+					"L'Électrik touche-t-il le type Sol ?"
+				],
+				"choice": {
+					"confirm": "OUI",
+					"cancel": "NON",
+					"confirm_set": [
+						"cinnabar_gym_quiz_yes"
+					],
+					"cancel_set": [
+						"cinnabar_gym_quiz_no"
+					],
+					"confirm_pages": [],
+					"cancel_pages": []
+				}
+			}
+		]
+	},
+	"cinnabar_gym_quiz_5": {
+		"narration": true,
+		"variants": [
+			{
+				"if": [
+					"cinnabar_gym_gate_5"
+				],
+				"pages": [
+					"Porte ouverte."
+				]
+			},
+			{
+				"if": [
+					"beaten_cinnabar_gym_6"
+				],
+				"pages": [
+					"Porte ouverte."
+				]
+			},
+			{
+				"cutscene": "cinnabar_gym_quiz_5"
+			}
+		]
+	},
+	"cinnabar_gym_quiz_5_question": {
+		"narration": true,
+		"variants": [
+			{
+				"pages": [
+					"Deux Pokémon de même espèce et même\nniveau peuvent-ils être différents ?"
+				],
+				"choice": {
+					"confirm": "OUI",
+					"cancel": "NON",
+					"confirm_set": [
+						"cinnabar_gym_quiz_yes"
+					],
+					"cancel_set": [
+						"cinnabar_gym_quiz_no"
+					],
+					"confirm_pages": [],
+					"cancel_pages": []
+				}
+			}
+		]
+	},
+	"cinnabar_gym_quiz_6": {
+		"narration": true,
+		"variants": [
+			{
+				"if": [
+					"cinnabar_gym_gate_6"
+				],
+				"pages": [
+					"Porte ouverte."
+				]
+			},
+			{
+				"if": [
+					"beaten_cinnabar_gym_7"
+				],
+				"pages": [
+					"Porte ouverte."
+				]
+			},
+			{
+				"cutscene": "cinnabar_gym_quiz_6"
+			}
+		]
+	},
+	"cinnabar_gym_quiz_6_question": {
+		"narration": true,
+		"variants": [
+			{
+				"pages": [
+					"La CT28 contient-elle Fosse ?"
+				],
+				"choice": {
+					"confirm": "OUI",
+					"cancel": "NON",
+					"confirm_set": [
+						"cinnabar_gym_quiz_yes"
+					],
+					"cancel_set": [
+						"cinnabar_gym_quiz_no"
+					],
+					"confirm_pages": [],
+					"cancel_pages": []
+				}
+			}
+		]
+	},
+	"cinnabar_blaine": {
+		"cutscene": "cinnabar_gym_blaine"
+	}
+}

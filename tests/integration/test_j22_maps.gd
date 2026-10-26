@@ -8,8 +8,9 @@ const MAPS: Array[StringName] = [&"route_12_south", &"route_13", &"route_14", &"
 	&"fuchsia_center",
 	&"fuchsia_mart", &"fuchsia_meeting_room", &"fuchsia_grandpa_house",
 	&"fuchsia_good_rod_house"]
-## Cartes d'autres jalons pas encore construites : leurs passages sont « À venir ».
-const FOREIGN: Array[StringName] = [&"route_12", &"route_16"]
+## Cartes d'autres jalons pas encore construites : leurs passages sont « À venir ». Vide depuis
+## les raccords J21 ↔ J22 (2026-10-23).
+const FOREIGN: Array[StringName] = []
 
 var _cache: Dictionary = {}
 
@@ -71,14 +72,17 @@ func test_both_routes_reach_fuchsia_and_back() -> void:
 			assert_true(found, "%s → %s" % way)
 
 
-func test_foreign_routes_are_coming_soon_until_built() -> void:
-	var labels: Array[String] = []
+## Raccords J21 ↔ J22 (2026-10-23) : la Route 12 et la Route 16 du J21 sont construites ; leurs
+## passages ne sont plus « à venir » (case pour case : `test_j21_j22_links.gd`).
+func test_j21_routes_are_linked_not_coming_soon() -> void:
 	for id: StringName in [&"route_12_south", &"route_16_gate"]:
+		var linked := 0
 		for warp: Warp in _map(id).get_warps().get_all():
-			if warp.is_coming_soon():
-				labels.append(warp.coming_soon)
-	assert_has(labels, "Route 12")
-	assert_has(labels, "Route 16")
+			assert_false(warp.is_coming_soon() and warp.coming_soon in ["Route 12", "Route 16"],
+				"%s %s : « %s »" % [id, warp.cell, warp.coming_soon])
+			if warp.target_map in [&"route_12", &"route_16"]:
+				linked += 1
+		assert_eq(linked, 2 if id == &"route_12_south" else 4, String(id))
 
 
 func test_cycling_road_and_slope() -> void:

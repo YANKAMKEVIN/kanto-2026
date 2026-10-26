@@ -317,11 +317,23 @@ def verifier_raccords(r: Rapport, cartes: dict[str, Carte]) -> None:
 		r.critere(sorted(x for x, _ in sud) == sorted(x for x, _ in nord) == [25, 26]
 			and all(y == r12.height - 1 for _, y in sud) and all(y == 0 for _, y in nord),
 			f"Route 12 (J21) warp_sud {_plage(sud)} ↔ Route 12 sud warp_nord {_plage(nord)} : 2 cases, mêmes colonnes")
+		ws = r12.positions["warp_sud"].attrs
+		r.critere(ws.get("to") == "route_12_south" and ws.get("spawn") == "from_route_12"
+			and "coming_soon" not in ws and "from_route_12_sud" in r12.positions,
+			"Route 12 (J21) warp_sud → route_12_south / from_route_12 (raccord fait, 2026-10-23)")
 	r16 = _voisine("route_16.txt", ["origin/jalon-21", "jalon-21"])
 	if r16 is not None:
-		porte = r16.positions["poste_route_16"].cells
-		r.critere(porte == [(15, 20), (16, 20)], f"Route 16 (J21) : porte du poste {_plage(porte)} (2 cases) ↔ couloir bas "
-			"(10..11, 8) du poste 16 ; T19 retire son coming_soon et crée la porte haute (en-tête de route_16_gate.txt)")
+		gate = cartes["route_16_gate"].plan.positions
+		for porte_id, arrivee, sortie, entree in (("poste_route_16", "from_poste", "sortie_bas_est",
+				"entrance_bas_est"), ("poste_haut", "from_poste_haut", "sortie_haut_est",
+				"entrance_haut_est")):
+			q = r16.positions.get(porte_id)
+			ok = q is not None and q.attrs.get("to") == "route_16_gate" and q.attrs.get("spawn") == entree \
+				and "coming_soon" not in q.attrs and len(q.cells) == 2 and arrivee in r16.positions \
+				and len(r16.positions[arrivee].cells) == 2 and gate[sortie].attrs.get("spawn") == arrivee \
+				and len(gate[sortie].cells) == len(gate[entree].cells) == 2
+			r.critere(ok, f"Route 16 (J21) {porte_id} {_plage(q.cells) if q else '?'} → route_16_gate / {entree} ; "
+				f"poste {sortie} → route_16 / {arrivee} (2 cases de part et d'autre, raccord fait)")
 	# Parmanie, bord sud
 	parm = cartes["fuchsia_city"]
 	bas = parm.plan.height - 1
@@ -343,6 +355,10 @@ def verifier_raccords(r: Rapport, cartes: dict[str, Carte]) -> None:
 
 
 def _voisine(fichier: str, branches: list[str]) -> Plan | None:
+	"""Grille d'un autre jalon : `tools/plans/` (le J21 est dans `main`), sinon une branche."""
+	local = RACINE / "tools" / "plans" / fichier
+	if local.exists():
+		return lire(local)
 	for b in branches:
 		try:
 			txt = subprocess.run(["git", "-C", str(RACINE), "show", f"{b}:tools/plans/{fichier}"],

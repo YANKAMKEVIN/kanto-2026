@@ -1,0 +1,636 @@
+{
+	"version": 1,
+	"title": "Auguste avec des équipes réalistes après les J21–J24 (jalon 25, clôture T23, E-2)",
+	"description": "Clôture du J25 (2026-10-24). Dresseurs et Auguste = data/trainers/cinnabar_gym.json (copie, lancer avec --donnees). Équipes ESTIMÉES après Koga (J23, Smogogo N43), les Routes 19–21, les Îles Écume (J24) et le Manoir (Clé Secrète) : starter final N48 (N45 pour une arrivée basse), Roucarnage, Ronflex (J21), Raichu avec Tonnerre (CT24, J16), un Pokémon qui Surfe (Tortank, Tentacruel ou Akwakwak, J24). Les deux premières équipes reprennent le départ de QA j25_arene (perdu au premier essai sur le S24). Cible (mémoire difficulte-combats) : Auguste 35–60 % au premier essai, joueur attentif ; Dresseurs ≤ 80 %.",
+	"seeds": 500,
+	"heal_at_start": true,
+	"teams": [
+		{
+			"name": "QA j25_arene : Tortank 46 (Surf, Force, Morsure, Pistolet à O), Raichu 42, Akwakwak 42",
+			"starter": "squirtle",
+			"members": [
+				{
+					"species": "blastoise",
+					"level": 46,
+					"moves": [
+						"surf",
+						"strength",
+						"bite",
+						"water_gun"
+					]
+				},
+				{
+					"species": "raichu",
+					"level": 42
+				},
+				{
+					"species": "golduck",
+					"level": 42
+				}
+			]
+		},
+		{
+			"name": "QA j25_arene à +4 : Tortank 50, Raichu 46, Akwakwak 46",
+			"starter": "squirtle",
+			"members": [
+				{
+					"species": "blastoise",
+					"level": 50,
+					"moves": [
+						"surf",
+						"strength",
+						"bite",
+						"water_gun"
+					]
+				},
+				{
+					"species": "raichu",
+					"level": 46
+				},
+				{
+					"species": "golduck",
+					"level": 46
+				}
+			]
+		},
+		{
+			"name": "Tortank 48, Roucarnage 44, Ronflex 42, Raichu 42 (Tonnerre), Nidoking 42",
+			"starter": "squirtle",
+			"members": [
+				{
+					"species": "blastoise",
+					"level": 48,
+					"moves": [
+						"surf",
+						"bite",
+						"skull_bash",
+						"withdraw"
+					]
+				},
+				{
+					"species": "pidgeot",
+					"level": 44,
+					"moves": [
+						"wing_attack",
+						"quick_attack",
+						"agility",
+						"sand_attack"
+					]
+				},
+				{
+					"species": "snorlax",
+					"level": 42,
+					"moves": [
+						"body_slam",
+						"headbutt",
+						"amnesia",
+						"rest"
+					]
+				},
+				{
+					"species": "raichu",
+					"level": 42,
+					"moves": [
+						"thunderbolt",
+						"thunder_wave",
+						"growl",
+						"thunder_shock"
+					]
+				},
+				{
+					"species": "nidoking",
+					"level": 42,
+					"moves": [
+						"thrash",
+						"horn_attack",
+						"poison_sting",
+						"dig"
+					]
+				}
+			]
+		},
+		{
+			"name": "Florizarre 48, Roucarnage 44, Ronflex 42, Raichu 42 (Tonnerre), Tentacruel 40 (Surf)",
+			"starter": "bulbasaur",
+			"members": [
+				{
+					"species": "venusaur",
+					"level": 48,
+					"moves": [
+						"razor_leaf",
+						"leech_seed",
+						"poison_powder",
+						"growth"
+					]
+				},
+				{
+					"species": "pidgeot",
+					"level": 44,
+					"moves": [
+						"wing_attack",
+						"quick_attack",
+						"agility",
+						"sand_attack"
+					]
+				},
+				{
+					"species": "snorlax",
+					"level": 42,
+					"moves": [
+						"body_slam",
+						"headbutt",
+						"amnesia",
+						"rest"
+					]
+				},
+				{
+					"species": "raichu",
+					"level": 42,
+					"moves": [
+						"thunderbolt",
+						"thunder_wave",
+						"growl",
+						"thunder_shock"
+					]
+				},
+				{
+					"species": "tentacruel",
+					"level": 40,
+					"moves": [
+						"surf",
+						"acid",
+						"constrict",
+						"barrier"
+					]
+				}
+			]
+		},
+		{
+			"name": "Dracaufeu 48, Roucarnage 44, Ronflex 42, Raichu 42 (Tonnerre), Akwakwak 40 (Surf)",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charizard",
+					"level": 48,
+					"moves": [
+						"flamethrower",
+						"slash",
+						"dig",
+						"leer"
+					]
+				},
+				{
+					"species": "pidgeot",
+					"level": 44,
+					"moves": [
+						"wing_attack",
+						"quick_attack",
+						"agility",
+						"sand_attack"
+					]
+				},
+				{
+					"species": "snorlax",
+					"level": 42,
+					"moves": [
+						"body_slam",
+						"headbutt",
+						"amnesia",
+						"rest"
+					]
+				},
+				{
+					"species": "raichu",
+					"level": 42,
+					"moves": [
+						"thunderbolt",
+						"thunder_wave",
+						"growl",
+						"thunder_shock"
+					]
+				},
+				{
+					"species": "golduck",
+					"level": 40,
+					"moves": [
+						"surf",
+						"confusion",
+						"disable",
+						"tail_whip"
+					]
+				}
+			]
+		},
+		{
+			"name": "Florizarre 45, Roucarnage 41, Ronflex 39, Raichu 39 (Tonnerre), Tentacruel 38 (basse)",
+			"starter": "bulbasaur",
+			"members": [
+				{
+					"species": "venusaur",
+					"level": 45,
+					"moves": [
+						"razor_leaf",
+						"leech_seed",
+						"poison_powder",
+						"growth"
+					]
+				},
+				{
+					"species": "pidgeot",
+					"level": 41,
+					"moves": [
+						"wing_attack",
+						"quick_attack",
+						"agility",
+						"sand_attack"
+					]
+				},
+				{
+					"species": "snorlax",
+					"level": 39,
+					"moves": [
+						"body_slam",
+						"headbutt",
+						"amnesia",
+						"rest"
+					]
+				},
+				{
+					"species": "raichu",
+					"level": 39,
+					"moves": [
+						"thunderbolt",
+						"thunder_wave",
+						"growl",
+						"thunder_shock"
+					]
+				},
+				{
+					"species": "tentacruel",
+					"level": 38,
+					"moves": [
+						"surf",
+						"acid",
+						"constrict",
+						"barrier"
+					]
+				}
+			]
+		},
+		{
+			"name": "Dracaufeu 45, Roucarnage 41, Ronflex 39, Raichu 39 (Tonnerre), Akwakwak 38 (basse)",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charizard",
+					"level": 45,
+					"moves": [
+						"flamethrower",
+						"slash",
+						"dig",
+						"leer"
+					]
+				},
+				{
+					"species": "pidgeot",
+					"level": 41,
+					"moves": [
+						"wing_attack",
+						"quick_attack",
+						"agility",
+						"sand_attack"
+					]
+				},
+				{
+					"species": "snorlax",
+					"level": 39,
+					"moves": [
+						"body_slam",
+						"headbutt",
+						"amnesia",
+						"rest"
+					]
+				},
+				{
+					"species": "raichu",
+					"level": 39,
+					"moves": [
+						"thunderbolt",
+						"thunder_wave",
+						"growl",
+						"thunder_shock"
+					]
+				},
+				{
+					"species": "golduck",
+					"level": 38,
+					"moves": [
+						"surf",
+						"confusion",
+						"disable",
+						"tail_whip"
+					]
+				}
+			]
+		}
+	],
+	"tables": {},
+	"trainers": {
+		"cinnabar_gym_1": {
+			"name": "Intello Paulin",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 900,
+			"team": [
+				{
+					"species": "vulpix",
+					"level": 40
+				},
+				{
+					"species": "vulpix",
+					"level": 40
+				},
+				{
+					"species": "ninetales",
+					"level": 40
+				}
+			]
+		},
+		"cinnabar_gym_2": {
+			"name": "Pillard Rico",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 3240,
+			"team": [
+				{
+					"species": "growlithe",
+					"level": 40
+				},
+				{
+					"species": "vulpix",
+					"level": 40
+				},
+				{
+					"species": "ninetales",
+					"level": 40
+				}
+			]
+		},
+		"cinnabar_gym_3": {
+			"name": "Intello Léopold",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 850,
+			"team": [
+				{
+					"species": "ponyta",
+					"level": 38
+				},
+				{
+					"species": "charmander",
+					"level": 38,
+					"moves": [
+						"ember",
+						"leer",
+						"slash",
+						"flamethrower"
+					]
+				},
+				{
+					"species": "vulpix",
+					"level": 38
+				},
+				{
+					"species": "growlithe",
+					"level": 38
+				}
+			]
+		},
+		"cinnabar_gym_4": {
+			"name": "Pillard Fred",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 3690,
+			"team": [
+				{
+					"species": "ponyta",
+					"level": 45
+				}
+			]
+		},
+		"cinnabar_gym_5": {
+			"name": "Intello Octave",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 1025,
+			"team": [
+				{
+					"species": "rapidash",
+					"level": 45
+				}
+			]
+		},
+		"cinnabar_gym_6": {
+			"name": "Pillard Jojo",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 3330,
+			"team": [
+				{
+					"species": "vulpix",
+					"level": 41
+				},
+				{
+					"species": "growlithe",
+					"level": 41
+				}
+			]
+		},
+		"cinnabar_gym_7": {
+			"name": "Intello Barnabé",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 925,
+			"team": [
+				{
+					"species": "growlithe",
+					"level": 41
+				},
+				{
+					"species": "vulpix",
+					"level": 41
+				}
+			]
+		},
+		"cinnabar_gym_blaine": {
+			"name": "Auguste",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 4653,
+			"start_message": false,
+			"end_message": true,
+			"bag": true,
+			"switch": true,
+			"card": {
+				"name": "AUGUSTE",
+				"title": "Champion d'Arène de Cramois'Île"
+			},
+			"team": [
+				{
+					"species": "growlithe",
+					"level": 42,
+					"moves": [
+						"ember",
+						"leer",
+						"take_down",
+						"agility"
+					]
+				},
+				{
+					"species": "ponyta",
+					"level": 40,
+					"moves": [
+						"tail_whip",
+						"stomp",
+						"growl",
+						"fire_spin"
+					]
+				},
+				{
+					"species": "rapidash",
+					"level": 42,
+					"moves": [
+						"tail_whip",
+						"stomp",
+						"growl",
+						"fire_spin"
+					]
+				},
+				{
+					"species": "arcanine",
+					"level": 47,
+					"moves": [
+						"leer",
+						"ember",
+						"fire_blast",
+						"take_down"
+					]
+				}
+			]
+		}
+	},
+	"steps": [
+		{
+			"label": "Centre de Cramois'Île (départ)",
+			"center": true
+		},
+		{
+			"label": "D2 (quiz raté ou combat choisi)",
+			"trainer": "cinnabar_gym_2",
+			"optional": "combats"
+		},
+		{
+			"label": "D3 (quiz raté ou combat choisi)",
+			"trainer": "cinnabar_gym_3",
+			"optional": "combats"
+		},
+		{
+			"label": "D4 (quiz raté ou combat choisi)",
+			"trainer": "cinnabar_gym_4",
+			"optional": "combats"
+		},
+		{
+			"label": "D5 (quiz raté ou combat choisi)",
+			"trainer": "cinnabar_gym_5",
+			"optional": "combats"
+		},
+		{
+			"label": "D6 (quiz raté ou combat choisi)",
+			"trainer": "cinnabar_gym_6",
+			"optional": "combats"
+		},
+		{
+			"label": "D7 (quiz raté ou combat choisi)",
+			"trainer": "cinnabar_gym_7",
+			"optional": "combats"
+		},
+		{
+			"label": "D1 (facultatif, sans machine)",
+			"trainer": "cinnabar_gym_1",
+			"optional": "d1"
+		},
+		{
+			"label": "Centre avant Auguste",
+			"center": true,
+			"optional": "soin"
+		},
+		{
+			"label": "Auguste",
+			"trainer": "cinnabar_gym_blaine"
+		}
+	],
+	"variants": [
+		{
+			"name": "Quiz parfait : Auguste seul, attentif",
+			"player": "attentif",
+			"center": true,
+			"retries": 0,
+			"items": {
+				"super_potion": 5,
+				"burn_heal": 2
+			},
+			"optional": []
+		},
+		{
+			"name": "Six combats puis Auguste sans soin, attentif",
+			"player": "attentif",
+			"center": true,
+			"retries": 0,
+			"items": {
+				"super_potion": 5,
+				"burn_heal": 2
+			},
+			"optional": [
+				"combats"
+			]
+		},
+		{
+			"name": "Six combats, soin, puis Auguste, attentif",
+			"player": "attentif",
+			"center": true,
+			"retries": 0,
+			"items": {
+				"super_potion": 5,
+				"burn_heal": 2
+			},
+			"optional": [
+				"combats",
+				"soin"
+			]
+		},
+		{
+			"name": "Quiz parfait : Auguste seul, naïf",
+			"player": "naif",
+			"center": true,
+			"retries": 0,
+			"items": {},
+			"optional": []
+		}
+	]
+}

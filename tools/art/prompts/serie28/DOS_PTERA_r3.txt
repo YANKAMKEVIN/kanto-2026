@@ -1,0 +1,13 @@
+POKÉMON DE DOS POUR UN ÉCRAN DE COMBAT (Kanto 2026, projet personnel). La créature est un monstre de jeu vidéo original, décrit ci-dessous.
+
+Aucune image jointe.
+
+SUJET : un grand ptérosaure fossile : corps gris-violet, ailes membraneuses repliées dans le dos, longue queue effilée, bec de crocs ; vu de dos : les ailes repliées en V, le dos écailleux, la queue.
+
+VUE : de DOS, de trois quarts, légèrement par-dessus l'épaule gauche ; la créature regarde vers le HAUT À DROITE de l'image (son adversaire est loin devant elle). On voit le dos et l'arrière de la tête, au plus un peu du profil ; aucun visage de face. Pose de combat : prête, attentive.
+
+STYLE : celui des artworks officiels de face (même trait fin et doux, même ombrage en aplats nuancés, même palette) : le dos et l'adversaire en face doivent paraître venir du même jeu. Pas de pixel art, pas de 3D, pas de rendu photo.
+LUMIÈRE : neutre (milieu de journée, diffuse, légèrement du haut à gauche) ; le jeu ajoute l'ambiance. Les flammes éventuelles sont peintes nettes, sans halo ni lueur sur le fond.
+CADRAGE : image CARRÉE 1024 × 1024, la créature ENTIÈRE, centrée, qui occupe environ 85 % de la hauteur ; rien n'est coupé par les bords. Une seule image fixe.
+FOND : PNG avec une vraie transparence (canal alpha), aucun damier dessiné, aucun fond coloré, aucun sol, aucune ombre portée.
+INTERDITS : texte, lettres, chiffres, signature, cadre, sol, décor, ombre portée, autre créature, personnage.

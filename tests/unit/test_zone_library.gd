@@ -10,6 +10,9 @@ const AWAITING_MAPS: Array[StringName] = []
 const TOWER_FLOORS: Array[StringName] = [&"pokemon_tower_1f", &"pokemon_tower_2f",
 	&"pokemon_tower_3f", &"pokemon_tower_4f", &"pokemon_tower_5f", &"pokemon_tower_6f",
 	&"pokemon_tower_7f"]
+## Jalon 25 : les niveaux du Manoir gardent leur titre, dans la zone de Cramois'Île (comme la Tour).
+const MANSION_FLOORS: Array[StringName] = [&"pokemon_mansion_1f", &"pokemon_mansion_2f",
+	&"pokemon_mansion_3f", &"pokemon_mansion_b1f"]
 
 var _zones: ZoneLibrary
 
@@ -90,6 +93,10 @@ func test_zone_names_match_the_map_titles() -> void:
 			# J19 T16 : les étages 2F à 6F de même ; J21 T13 : le 7F aussi.
 			assert_eq(_root_property(map_id, &"display_name"), "Tour Pokémon")
 			assert_eq(_zones.zone_of(map_id), &"lavender_town", String(map_id))
+			continue
+		if MANSION_FLOORS.has(map_id):
+			assert_eq(_root_property(map_id, &"display_name"), "Manoir Pokémon")
+			assert_eq(_zones.zone_of(map_id), &"cinnabar_island", String(map_id))
 			continue
 		if _zones.zone_of(map_id) == &"safari_zone":
 			# J23 (annexe A-12) : « PARC SAFARI — ZONE CENTRE »…, « MAISON SECRÈTE ».

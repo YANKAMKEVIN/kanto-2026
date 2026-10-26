@@ -692,8 +692,8 @@ Fusion de `origin/jalon-22` dans `jalon-23` (`aa9ac132`). Réponses du T9 :
 ## 9. Clôture (T24, préparée le 2026-10-25 sur `fix/j23-fin-par-les-balls`)
 
 **État** : 23.0 à 23E faits sur `jalon-23` (`dd420e14`). **23A** (sauvegarde v8, validée seule),
-**23B** et **23C+23D** validés par Kevin sur le S24 (2026-10-24 et 2026-10-25) ; **23E** passé en
-QA S24 par l'agent le 2026-10-25 (aucun bloquant), **validation de Kevin attendue**. Bloquant de la
+**23B**, **23C+23D** et **23E** validés par Kevin (S24, 2026-10-24 et 2026-10-25 ; 23E sur la base
+de la QA S24 de l'agent, aucun bloquant). Bloquant de la
 QA 23B (la dernière Safari Ball ne finissait pas la visite) corrigé dans `dd420e14`. Fusion dans
 `main` : par la session de coordination, après l'accord de Kevin (ce T24 ne fusionne pas).
 
@@ -736,7 +736,7 @@ QA 23B (la dernière Safari Ball ne finissait pas la visite) corrigé dans `dd42
   ni Parmanie ni les quatre zones du Parc n'ont de case surfable (leur eau est du décor, §2.10 ;
   vérifié par le même test) : la première eau surfable depuis Parmanie est celle de la Route 19.
 
-### 9.3 Décisions [D] (réponses de Kevin relayées par la session de coordination, 2026-10-25 ; à confirmer par Kevin)
+### 9.3 Décisions [D] (validées par Kevin le 2026-10-25)
 
 - **Parcours vers Koga gardé tel quel** (fidèle à Rouge/Bleu : ~70 cases, 3 impasses, ~9 chocs,
   Koga visible à 6 cases de l'entrée) malgré le risque « murs frustrants » du §5.
@@ -750,8 +750,7 @@ QA 23B (la dernière Safari Ball ne finissait pas la visite) corrigé dans `dd42
   clé `safari` de `DebugStart` (visite en cours) reste éprouvée par
   `test_debug_start` (`test_safari_key_starts_a_visit_in_progress`).
 - **Gardé** : `koga_qa`. Raisons : `test_koga_flow` (victoire, défaite, rattrapage) et
-  `test_j23_surf_after_koga` partent de ce départ, `test_j21_flags_contract` le liste, et la
-  validation de Kevin du 23E (`koga_qa`, §7.7) est encore attendue.
+  `test_j23_surf_after_koga` partent de ce départ et `test_j21_flags_contract` le liste.
 - **Aucune carte de QA** : aucun fichier `qa_*` dans `game/`, `data/`, `assets/`.
 - `tools/debug_start/README.md` : section « Jalon 23 » ajoutée.
 
@@ -778,6 +777,23 @@ QA 23B (la dernière Safari Ball ne finissait pas la visite) corrigé dans `dd42
   les autres vitrines ; la ligne de réception de la CS03 ; zones Nord et Ouest à pied, maisons
   Nord/Ouest/Est (QA 23A).
 
+
+### 9.6 Fusion de `main` (`7c22d8fc` : J25, jalon Son, DA) dans `jalon-23` (2026-10-26)
+
+- 17 conflits, les deux côtés gardés : `CutsceneStep.Kind` / `TYPE_KEYS` / `_EXTRA_KEYS` =
+  … `FLUTE`, `UNSET_FLAGS`, `TOGGLE_FLAGS`, `TRADE` (J25), **`SAFARI`** (J23) en dernier, même
+  ordre partout ; `tm_compatibility.json` réuni (aucune valeur divergente, espèces triées par numéro
+  du Pokédex) ; `etat-projet.md` (version de `main` + entrée du J23) ; `debug_start/README.md` (les
+  deux sections) ; 12 tests (listes réunies, compteurs recalculés : 130 espèces, 145 capacités,
+  51 tables de rencontres, 125 espèces sur 130 à CT34, objets, cartes de Champion, badges).
+- Sauvegarde : **v8** gardée (le J25 et le jalon Son n'y touchent pas ; les réglages du son vont dans
+  `user://settings.json`, format à part).
+- **Doublon de prénom trouvé** : « Intello Marius » (Arène de Cramois'Île, J25) et « Dompteur
+  Marius » (Arène de Koga, J23, prénom validé par Kevin le 2026-10-22) ; règle du J23 « prénoms
+  uniques dans le jeu » (`test_trainer_names_are_unique_in_the_game`). L'Intello du J25 devient
+  **Intello Barnabé** [D] (Dresseur, 3 dialogues, test, simulation) : à confirmer par Kevin.
+- Aucun identifiant défini deux fois dans `data/` (`dupcheck.py` : seulement les clés de structure
+  `_doc`, `version`…, comme dans `main`).
 
 ## Annexe A — Textes complémentaires (T2, **validés par Kevin le 2026-10-19** : « annexe A ok »)
 
