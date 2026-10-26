@@ -139,8 +139,11 @@ static func sheet(species: StringName, pokedex: Pokedex, data: PokemonData,
 	view.counts_text = SEEN_FORMAT % entry.times_seen
 	view.seen_times_text = TIMES_FORMAT % entry.times_seen
 	if view.caught:
-		view.caught_times_text = TIMES_FORMAT % entry.times_caught
-		view.counts_text += CAUGHT_FORMAT % entry.times_caught
+		# Arbitrage R-3 (Kevin, 2026-10-26) : une espèce obtenue par évolution, jamais capturée,
+		# n'affiche pas « capturé 0 fois » (ni la carte Capturé).
+		if entry.times_caught > 0:
+			view.caught_times_text = TIMES_FORMAT % entry.times_caught
+			view.counts_text += CAUGHT_FORMAT % entry.times_caught
 		var chart := data.get_type_chart()
 		for type: StringName in species_data.types:
 			view.type_ids.append(type)
