@@ -14,6 +14,7 @@ Commandes :
   squelette   crée ou met à jour les entrées (image, taille, boîte, centre), garde les points
   grilles     une image quadrillée par espèce, pour poser les points (--de N --a M)
   planche     planches de contrôle pour Kevin (points dessinés sur les images)
+  synthese    planche unique des espèces délicates (liste SYNTHESE), lisible sur téléphone
   verifier    contrôle du fichier (noms, bornes, image à jour)
 
 Exemple : python3 tools/art/fx_anchors.py grilles --de 1 --a 38
@@ -177,11 +178,12 @@ def _checker(size: tuple[int, int]) -> Image.Image:
     return bg
 
 
-def _view_panel(view: dict | None, cell: int, grid: bool, title: str) -> Image.Image:
+def _view_panel(view: dict | None, cell: int, grid: bool, title: str,
+                big: bool = False) -> Image.Image:
     pad = 40
     panel = Image.new("RGB", (cell + pad * 2, cell + pad * 2 + 40), "#20242B")
     d = ImageDraw.Draw(panel)
-    d.text((pad, 8), title, fill="#FFFFFF", font=_font(22))
+    d.text((pad, 8), title, fill="#FFFFFF", font=_font(30 if big else 22))
     if view is None:
         d.text((pad, cell // 2), "aucune image", fill="#FF6B6B", font=_font(28))
         return panel
@@ -195,7 +197,7 @@ def _view_panel(view: dict | None, cell: int, grid: bool, title: str) -> Image.I
     board = _checker((nw, nh))
     board.paste(crop, (0, 0), crop)
     panel.paste(board, (ox, oy))
-    small = _font(15)
+    small = _font(26 if big else 15)
     if grid:
         for i in range(21):
             t = i / 20
@@ -215,20 +217,21 @@ def _view_panel(view: dict | None, cell: int, grid: bool, title: str) -> Image.I
         pts = value if name in PAIRS else [value]
         for p in pts:
             px, py = ox + p[0] * nw, oy + p[1] * nh
-            r = 9
+            r = 15 if big else 9
             d.ellipse([px - r, py - r, px + r, py + r], fill=COLORS.get(name, "#FFF"),
                       outline="#000000", width=3)
             if not grid or name != "centre":
-                d.text((px + 12, py - 10), name, fill="#FFFFFF", font=small,
+                d.text((px + r + 3, py - r - 1), name, fill="#FFFFFF", font=small,
                        stroke_width=3, stroke_fill="#000000")
     return panel
 
 
-def _species_sheet(key: str, entry: dict, cell: int, grid: bool) -> Image.Image:
-    front = _view_panel(entry.get("front"), cell, grid, f"{key} {entry['name']} — FACE")
+def _species_sheet(key: str, entry: dict, cell: int, grid: bool,
+                   big: bool = False) -> Image.Image:
+    front = _view_panel(entry.get("front"), cell, grid, f"{key} {entry['name']} — FACE", big)
     back = _view_panel(entry.get("back"), cell, grid, f"{key} {entry['name']} — DOS"
-                       + (f" ({os.path.basename(entry['back']['image'])})" if entry.get("back")
-                          else ""))
+                       + ("" if big or not entry.get("back")
+                          else f" ({os.path.basename(entry['back']['image'])})"), big)
     sheet = Image.new("RGB", (front.width + back.width, max(front.height, back.height)), "#20242B")
     sheet.paste(front, (0, 0))
     sheet.paste(back, (front.width, 0))
@@ -297,6 +300,63 @@ def cmd_fusionner(args: argparse.Namespace) -> None:
     print(f"{count} vues mises à jour")
 
 
+## Planche de synthèse (à valider sur téléphone) : les espèces délicates et les cas d'hésitation.
+SYNTHESE = [
+    (1, "bulbe ; de dos, la tête est cachée par le bulbe"),
+    (9, "canons (Hydrocanon) ; dos encore en pixel art"),
+    (25, "joues (Éclair) ; de dos, une seule joue visible : pas de joues"),
+    (26, "joues ; queue posée au bout de l'éclair"),
+    (47, "tête sous le champignon (face et dos)"),
+    (51, "trois têtes : celle du haut"),
+    (63, "corrigé : tête remontée (elle était sur le visage bas)"),
+    (81, "pas de tête distincte : l'œil"),
+    (84, "deux têtes : celle de gauche"),
+    (85, "trois têtes : celle du milieu"),
+    (90, "coquillage : de dos, tête au centre"),
+    (100, "boule sans bouche (bouche retirée)"),
+    (103, "plusieurs têtes : celle de droite"),
+    (108, "corrigé : la langue du dos était notée « queue »"),
+    (110, "deux têtes : la grande"),
+    (111, "corne = petite corne du nez ; dos : tête invisible"),
+    (114, "lianes : tête au centre du visage"),
+    (120, "étoile : la gemme ; de dos, le centre"),
+    (123, "mains = les lames"),
+    (138, "de dos, tête sous la coquille"),
+    (142, "de dos, tête au bout du cou (en haut à droite)"),
+    (145, "de dos, tête dans les plumes"),
+    (150, "de dos, une main près du bord bas"),
+    (151, "queue : bout posé en haut de la boucle"),
+]
+
+
+def cmd_synthese(args: argparse.Namespace) -> None:
+    data = load()
+    os.makedirs(OUT, exist_ok=True)
+    blocks = []
+    for dex, note in SYNTHESE:
+        key = f"{dex:03d}"
+        pair = _species_sheet(key, data["species"][key], 440, False, True)
+        block = Image.new("RGB", (pair.width, pair.height + 64), "#20242B")
+        block.paste(pair, (0, 0))
+        ImageDraw.Draw(block).text((40, pair.height + 4), note, fill="#FFD60A", font=_font(34))
+        blocks.append(block)
+    cols = 1
+    w, h = blocks[0].width, max(b.height for b in blocks)
+    legend_h = 130
+    rows = (len(blocks) + cols - 1) // cols
+    board = Image.new("RGB", (w * cols, h * rows + legend_h), "#15181D")
+    d = ImageDraw.Draw(board)
+    for i, name in enumerate(POINTS):
+        x, y = 20 + (i % 5) * 200, 14 + (i // 5) * 56
+        d.ellipse([x, y + 4, x + 34, y + 38], fill=COLORS[name], outline="#000", width=2)
+        d.text((x + 44, y), name, fill="#FFFFFF", font=_font(34))
+    for i, b in enumerate(blocks):
+        board.paste(b, ((i % cols) * w, legend_h + (i // cols) * h))
+    path = os.path.join(OUT, "synthese.png")
+    board.save(path)
+    print(f"{len(blocks)} espèces dans {rel(path)} ({board.width} × {board.height})")
+
+
 def cmd_verifier(args: argparse.Namespace) -> int:
     data = load()
     known = species_ids()
@@ -350,6 +410,7 @@ def main() -> int:
     g.add_argument("--points", help="fichier de points à dessiner par-dessus (contrôle)")
     sub.add_parser("planche")
     sub.add_parser("verifier")
+    sub.add_parser("synthese")
     f = sub.add_parser("fusionner", help="verse des fichiers de points dans les données")
     f.add_argument("fichiers", nargs="+")
     args = parser.parse_args()
@@ -361,6 +422,8 @@ def main() -> int:
         cmd_planche(args)
     elif args.cmd == "fusionner":
         cmd_fusionner(args)
+    elif args.cmd == "synthese":
+        cmd_synthese(args)
     elif args.cmd == "verifier":
         return cmd_verifier(args)
     return 0

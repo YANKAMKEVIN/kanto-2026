@@ -4,7 +4,14 @@
 > 2026-10-26). Branche `cv-a-points`. Données : `data/battle/fx_anchors.json`. Outil :
 > `tools/art/fx_anchors.py`. Test : `tests/unit/test_fx_anchors.gd` (vert).
 
-## Ce qu'il faut regarder
+## À regarder en premier : `synthese.webp`
+
+**Planche de synthèse**, une espèce par ligne, lisible sur téléphone : les 24 espèces délicates
+(formes sans tête, plusieurs têtes, canons, joues, Pokémon sans bouche visible, têtes cachées de
+dos) et les cas où la session a hésité, chacun avec sa note en jaune. Si elle te convient, le
+reste suit le même soin.
+
+## Planches complètes (référence)
 
 13 planches (`planche_01.webp` à `planche_13.webp`), 12 espèces par planche, dans l'ordre du
 Pokédex. Chaque espèce a sa **face** (vue de l'adversaire, artwork officiel) et son **dos** (vue de
@@ -36,8 +43,10 @@ Réponse attendue : « je valide la planche », ou une liste de corrections du t
   Alakazam, 105 Ossatueur, 131 Lokhlass, 151 Mew) : leurs points de dos seront posés quand
   leur dos peint arrivera (DAF.1). Le test signale toute image changée.
 - Les points ont été posés par des sous-agents sur des grilles quadrillées (précision ≈ 0,02),
-  puis relus par la session sur trois planches (01, 03, 12). Les 10 autres planches n'ont été
-  relues qu'en partie, par les sous-agents (≈ 10 à 50 % des espèces de chaque lot).
+  puis **les 13 planches ont été relues par la session, espèce par espèce, de face et de dos**
+  (2026-10-26). Six corrections : 013 face (queue ajoutée), 055 face (fausse corne retirée), 063
+  face (tête remontée), 088 face (mains retirées, informes), 100 face (bouche retirée, Voltorbe
+  n'en a pas), 108 dos (la langue était notée « queue », devenue « bouche »).
 
 ## Cas signalés comme douteux
 
