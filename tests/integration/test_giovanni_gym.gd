@@ -281,6 +281,26 @@ func test_victory_badge_tm_departure_and_giovanni_gone() -> void:
 	assert_push_error_count(0)
 
 
+## Point non vu en QA téléphone (2026-10-25) : Giovanni absent quand on REVIENT dans l'Arène,
+## c'est-à-dire après en être sorti vers Jadielle (porte de la ville, `from_gym`) puis être rentré
+## par la porte (`entrance`) : l'Arène est vide, sans scène, et le drapeau est dans la sauvegarde.
+func test_giovanni_stays_gone_after_going_out_to_viridian_and_back_in() -> void:
+	await _start(true)
+	assert_true(await _talk_to_giovanni(), "le combat a eu lieu")
+	assert_true(GameState.flags.has_flag(&"tm27_received"))
+	await SceneRouter.change_map(&"viridian_city", &"from_gym", Vector2i.DOWN)
+	await wait_process_frames(3)
+	assert_eq(_boot.get_map().map_id, &"viridian_city", "sorti à Jadielle")
+	await SceneRouter.change_map(GYM, &"entrance", Vector2i.UP)
+	await wait_process_frames(3)
+	assert_eq(_boot.get_map().map_id, GYM, "revenu dans l'Arène")
+	assert_null(_boot.get_map().get_npc(&"giovanni"), "Giovanni absent au retour")
+	assert_false(_boot.get_cutscene_director().is_running(), "aucune scène au retour")
+	assert_true(_player.is_input_enabled(), "joueur libre")
+	assert_true(JSON.stringify(GameState.to_dict()).contains("tm27_received"), "drapeau sauvegardé")
+	assert_push_error_count(0)
+
+
 # --- Défaite et reprise -----------------------------------------------------------------------
 
 func test_defeat_wakes_at_the_center_then_retry_without_introduction_nor_card() -> void:
