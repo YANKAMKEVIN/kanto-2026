@@ -226,6 +226,7 @@
 		"recharging": { "text": "{pokemon} doit se reposer !" },
 		"ohko": { "text": "C'est un K.O. en un coup !" },
 		"heal": { "text": "{pokemon} récupère des PV !" },
+		"crash": { "text": "{pokemon} s'écrase au sol !" },
 		"screen_started_player": { "text": "{move} protège votre équipe !" },
 		"screen_started_foe": { "text": "{move} protège l'équipe adverse !" },
 		"screen_ended_player": { "text": "L'effet de {move} prend fin pour votre équipe." },

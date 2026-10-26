@@ -12,6 +12,9 @@ const GAIN_MAX: float = 2.0
 const RIM_WIDTH_MAX: float = 16.0
 const SKEW_MAX_DEG: float = 89.0
 const WIND_MAX: float = 20.0
+## Largeur maximale de la pénombre d'une pièce (cases) et rayon maximal de sa flaque.
+const ROOM_EDGE_MAX: float = 8.0
+const ROOM_POOL_RADIUS_MAX: float = 2.0
 
 var id: StringName = &""
 ## Étalonnage d'écran par zones de luminance (gains RVB : ombres, tons moyens, hautes
@@ -42,6 +45,14 @@ var cast_shadow_skew_deg: float = 0.0
 var contact_color: Color = Color(0.0, 0.0, 0.0, 0.0)
 ## Amplitude du vent dans les arbres (pixels) ; 0 = arbres immobiles.
 var wind_strength: float = 0.0
+## Lumière de pièce des intérieurs ([RoomLight], DAF.6) : pénombre au pourtour (couleur **avec**
+## son alpha ; largeur en cases) et flaque chaude des fenêtres (couleur avec son alpha ; centre
+## en fraction de la pièce ; rayon en fraction de sa hauteur). Alphas 0 = aucune.
+var room_edge_color: Color = Color(0.0, 0.0, 0.0, 0.0)
+var room_edge_width: float = 0.0
+var room_pool_color: Color = Color(0.0, 0.0, 0.0, 0.0)
+var room_pool_center: Vector2 = Vector2(0.5, 0.5)
+var room_pool_radius: float = 0.0
 
 
 ## Vrai si l'étalonnage d'écran est visible (sinon le calque est caché : aucun coût).
@@ -69,3 +80,8 @@ func has_contact_shadow() -> bool:
 
 func has_wind() -> bool:
 	return wind_strength > 0.0
+
+
+func has_room() -> bool:
+	return (room_edge_color.a > 0.0 and room_edge_width > 0.0) \
+		or (room_pool_color.a > 0.0 and room_pool_radius > 0.0)

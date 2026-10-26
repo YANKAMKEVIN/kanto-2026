@@ -1,0 +1,102 @@
+# Sylphe SARL 6F (silph_co_6f) — grille fonctionnelle v1 (jalon 26, T2 ; préparée le 2026-10-22).
+# GÉOMÉTRIE ROUGE/BLEU CASE POUR CASE (puzzle à 1:1, règle du J24 §2.11 ; jalon-26.md §2.1).
+# Source : pret/pokered, maps/SilphCo6F.blk (13 × 9 blocs = 26 × 18 cases),
+# tileset Facility (gfx/blocksets/facility.bst ; collision Facility_Coll ; dalle $20),
+# warps et objets de data/maps/objects/SilphCo6F.asm, portes électroniques et en-têtes de Dresseurs
+# de scripts/SilphCo6F.asm, objets cachés de data/events/hidden_events.asm. Décodeur :
+# tools/art/silph_rb_decode.py (--brouillon, --ecarts, --graphe). Contrôles : tools/art/plan_check_j26.py,
+# tools/art/plan_check_teleports.py (les 11 étages et la cabine), tools/art/plan_check.py --legende.
+#
+# 26 × 18 cases. Le décor change (bureaux peints), la topologie reste celle de RB.
+#
+# RACCORDS (case de départ → carte:point d'apparition ; points d'apparition aux noms finals Godot) :
+#   escalier monte (16,0) → silph_co_7f:from_6f [paire e6_7]
+#   escalier descend (14,0) → silph_co_5f:from_6f [paire e5_6]
+#   ascenseur (18,0) → silph_co_elevator:entrance ; retour from_elevator une case devant
+#   téléporteur (3,3) → silph_co_4f:tp_5 [paire t4f5_6f4]
+#   téléporteur (23,3) → silph_co_2f:tp_7 [paire t2f7_6f5]
+#   porte électronique d1 (5,12) + case b (voir POSITIONS)
+#
+# Salles (graphe RB, portes fermées ; tools/art/silph_rb_decode.py --graphe) :
+#   6F-A (208 cases) : Rocket 6F-1, Scientifique 6F-2, Rocket 6F-3
+#   -> escalier ↑ (16, 0) → 7F-C (22, 0)
+#   -> escalier ↓ (14, 0) → 5F-B (24, 0)
+#   -> ascenseur (cabine : tous les étages) depuis (18, 0)
+#   -> téléporteur (3, 3) → 4F-C (17, 3)
+#   -> téléporteur (23, 3) → 2F-C (9, 15)
+#   -> porte à carte d1 (5, 12) → 6F-B
+#   -> porte à carte d1 (5, 13) → 6F-B
+#   6F-B (23 cases) : hp_up, x_accuracy
+#   -> porte à carte d1 (5, 12) → 6F-A
+#   -> porte à carte d1 (5, 13) → 6F-A
+#   6F-C (12 cases) : —
+#
+# Dresseurs : trainer=silph_co_<n>f_<k>, k = rang du Dresseur dans l'ordre des object_event RB de
+# l'étage ; facing= et sight= de RB (en-têtes « trainer … , <vue> ») ; équipe RB en commentaire.
+# Objets : item= identifiant du projet, fallback= tant qu'il n'existe pas dans data/items [D].
+#
+# Légende (commune aux onze étages ; caractères propres à ces grilles) :
+#   # mur, cloison ou vide (bloqué)            . sol de bureau (praticable)
+#   M mobilier : bureaux, tables, plantes, machines (bloqué)
+#   T dalle de téléportation (praticable : un pas dessus transporte ; arriver dessus ne la
+#     déclenche pas) — position « teleporteur » (vers=<carte>:<point d'apparition>, paire=)
+#   U escalier qui monte    D escalier qui descend (praticables, STEP_ON sans direction, dans le
+#     mur nord ; l'arrivée est posée UNE CASE DEVANT, tournée vers le bas)
+#   L porte de l'ascenseur (praticable, fondu comme une porte ; arrivée une case devant)
+#   K case d'une porte électronique (praticable dans la grille, bloquée par la position
+#     « porte_carte » tant que la porte est fermée ; une porte RB couvre DEUX cases : deux
+#     positions de même id=, un seul drapeau door_silph_co_<n>f_<id>_open)
+#   E sortie vers Safrania (1F seulement, praticable, PUSH ↓)
+# Personnages, objets, raccords et repères sont dans POSITIONS. Cases : 1 case = 1 tuile de 16 px
+# de Rouge/Bleu (un bloc RB = 2 × 2 cases) ; x = colonne, y = rangée, nord en haut ; les marges
+# de RB sont CONSERVÉES (coordonnées du désassemblage, tables RB recopiables telles quelles).
+
+CARTE silph_co_6f
+
+PRATICABLES .TUDLK
+
+GRILLE 26 18
+00 ##############D#U#L#######
+01 #M##.#...................#
+02 #M...#...................#
+03 ##.T.#.................T.#
+04 #.......##########..####.#
+05 #.......#M##...........#.#
+06 #M..M#..#M.............#.#
+07 #M..M#..##..MMMMMMMMMM.#.#
+08 ######..#...MMMMMMMMMM.#.#
+09 #....#..#...MM......MM.#.#
+10 #.##.#..#M..MM......MM.#.#
+11 #.#..#..#M..MMMMMMMMMM.#.#
+12 #.#..K..#M..MMMMMMMMMM.#.#
+13 #.##.K..#M.............#.#
+14 #.##.#..####..##########.#
+15 #..#.#...................#
+16 #....#...................#
+17 ##########################
+FIN
+
+POSITIONS
+vers_7f                 escalier       16,0         libre   vers=silph_co_7f:from_6f paire=e6_7 sens=monte  # RB warp 1 → silph_co_7f warp 2 (22, 0)
+from_7f                 spawn          16,1         libre   paire=e6_7 facing=down  # arrivée depuis le 7F, une case devant l'escalier
+vers_5f                 escalier       14,0         libre   vers=silph_co_5f:from_6f paire=e5_6 sens=descend  # RB warp 2 → silph_co_5f warp 1 (24, 0)
+from_5f                 spawn          14,1         libre   paire=e5_6 facing=down  # arrivée depuis le 5F, une case devant l'escalier
+ascenseur               ascenseur      18,0         libre   etage=6F vers=silph_co_elevator:entrance  # porte de l'ascenseur (RB warp 3)
+from_elevator           spawn          18,1         libre   paire=ascenseur etage=6F facing=down  # sortie de la cabine, une case devant la porte
+teleporteur_4           teleporteur    3,3          libre   vers=silph_co_4f:tp_5 paire=t4f5_6f4  # RB warp 4 → 4F warp 5 (17, 3)
+tp_4                    spawn          3,3          libre     # arrivée sur la dalle (ne la déclenche pas) ; orientation conservée
+teleporteur_5           teleporteur    23,3         libre   vers=silph_co_2f:tp_7 paire=t2f7_6f5  # RB warp 5 → 2F warp 7 (9, 15)
+tp_5                    spawn          23,3         libre     # arrivée sur la dalle (ne la déclenche pas) ; orientation conservée
+porte_d1_a              porte_carte    5,12         bloque  id=d1 cle=card_key  # RB bloc (2, 6) fermé par $5f, EVENT_SILPH_CO_6_UNLOCKED_DOOR
+porte_d1_b              porte_carte    5,13         bloque  id=d1 cle=card_key  # RB bloc (2, 6) fermé par $5f, EVENT_SILPH_CO_6_UNLOCKED_DOOR
+employe_1               pnj            10,6         bloque  role=silph_co_6f_worker_1 facing=down  # RB SPRITE_SILPH_WORKER_M, STAY
+employe_2               pnj            20,6         bloque  role=silph_co_6f_worker_2 facing=down  # RB SPRITE_SILPH_WORKER_M, STAY
+employe_3               pnj            21,6         bloque  role=silph_co_6f_worker_3 facing=down  # RB SPRITE_SILPH_WORKER_F, STAY
+employe_4               pnj            11,10        bloque  role=silph_co_6f_worker_4 facing=right  # RB SPRITE_SILPH_WORKER_F, STAY
+employe_5               pnj            18,13        bloque  role=silph_co_6f_worker_5 facing=up  # RB SPRITE_SILPH_WORKER_M, STAY
+dresseur_1              dresseur       17,3         bloque  trainer=silph_co_6f_1 facing=right sight=2 classe=rocket  # RB objet 6 : OPP_ROCKET, 30
+dresseur_2              dresseur       7,8          bloque  trainer=silph_co_6f_2 facing=down sight=3 classe=scientifique  # RB objet 7 : OPP_SCIENTIST, 7
+dresseur_3              dresseur       14,15        bloque  trainer=silph_co_6f_3 facing=left sight=2 classe=rocket  # RB objet 8 : OPP_ROCKET, 31
+silph_co_6f_item_9      objet_visible  3,12         bloque  item=hp_up fallback=rare_candy  # RB HP_UP
+silph_co_6f_item_10     objet_visible  2,15         bloque  item=x_accuracy  # RB X_ACCURACY
+FIN

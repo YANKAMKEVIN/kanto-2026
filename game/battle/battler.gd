@@ -59,6 +59,11 @@ var recharge_slot: int = -1
 ## (un nouveau Battler à chaque envoi ; jamais sauvegardés) : le Pokémon garde un poison simple.
 var toxic: bool = false
 var toxic_counter: int = ToxicRules.OFF
+## Riposte (jalon 27, Rouge/Bleu) : dégâts du dernier coup reçu de la capacité adverse la plus
+## récente, si elle est de type Normal ou Combat (Lutte comprise) ; 0 sinon (aucun coup, autre
+## type, capacité sans dégâts, Riposte). Remis à 0 chaque fois que l'adversaire lance une
+## capacité. Perdu au changement (un nouveau Battler à chaque envoi ; jamais sauvegardé).
+var counter_damage: int = 0
 var _stages: Dictionary[StringName, int] = {}
 
 @warning_ignore_start("integer_division")

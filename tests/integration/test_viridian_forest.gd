@@ -245,6 +245,7 @@ func test_metadata_light_zone_and_painted_ground() -> void:
 	assert_false(floor_node.is_forest(Vector2i(38, 82)), "pas de sous-bois dans C1")
 	var strip := floor_node.mask.get_image().get_pixelv(Vector2i(13, 23)).r
 	assert_almost_eq(strip, 0.5, 0.01, "bande de sous-bois « . » partielle (taches)")
+	_check_light_layers(ground, floor_node)
 	assert_not_null(_map.grass_front, "cache-jambes peint")
 	for layer: Node in _map.find_children("*", "TileMapLayer", true, false):
 		assert_false((layer as TileMapLayer).visible, "%s invisible" % layer.name)
@@ -639,3 +640,40 @@ func test_node_budget() -> void:
 	map.free()
 	assert_lte(total, NODE_BUDGET, "nœuds de la scène")
 	gut.p("viridian_forest : %d nœuds" % total)
+
+
+## DAF.6 (reporté du J9 : « assombrir nettement la forêt hors des clairières ») : ombre de
+## canopée sur la forêt et les bandes « . », en taches sur le sentier ; lumière chaude des
+## clairières `C` / `L` seules ; deux [ForestFloor] translucides cuits avec le sol.
+func _check_light_layers(ground: PaintedGround, floor_node: ForestFloor) -> void:
+	var shade := _map.get_node_or_null(^"CanopyShade") as ForestFloor
+	var light := _map.get_node_or_null(^"ClearingLight") as ForestFloor
+	assert_not_null(shade, "ombre de canopée")
+	assert_not_null(light, "lumière des clairières")
+	if shade == null or light == null:
+		return
+	assert_eq(shade.get_index(), floor_node.get_index() + 1, "juste après le sous-bois")
+	assert_eq(light.get_index(), shade.get_index() + 1)
+	assert_eq(ground.forest_layers(), [floor_node, shade, light] as Array[CanvasItem],
+		"cuits avec le sol : aucun coût par image")
+	var shade_mask := shade.mask.get_image()
+	var light_mask := light.mask.get_image()
+	var strip := Vector2i(13, 23)
+	var clearing := Vector2i(38, 82)
+	var path := Vector2i(44, 85)
+	assert_eq(_plan.at(strip), ".")
+	assert_eq(_plan.at(clearing), "C")
+	assert_eq(_plan.at(path), "=")
+	assert_almost_eq(shade_mask.get_pixelv(strip).r, 1.0, 0.01, "bande « . » à l'ombre")
+	assert_almost_eq(shade_mask.get_pixelv(clearing).r, 0.0, 0.01, "clairière éclairée")
+	var dappled := shade_mask.get_pixelv(path).r
+	assert_true(dappled > 0.1 and dappled < 0.9, "sentier en lumière tamisée : %s" % dappled)
+	assert_almost_eq(light_mask.get_pixelv(clearing).r, 1.0, 0.01, "lumière dans la trouée")
+	assert_almost_eq(light_mask.get_pixelv(strip).r, 0.0, 0.01, "aucune hors des trouées")
+	for layer: ForestFloor in [shade, light]:
+		var opacity := float(layer.get_shader_material().get_shader_parameter(&"opacity"))
+		assert_true(opacity > 0.0 and opacity < 1.0, "%s translucide" % layer.name)
+	var dark := shade.get_shader_material().get_shader_parameter(&"dark_color") as Color
+	assert_true(dark.b >= dark.r and dark.get_luminance() < 0.15, "ombre bleu-vert sombre")
+	var warm := light.get_shader_material().get_shader_parameter(&"dark_color") as Color
+	assert_true(warm.r > warm.b, "lumière chaude")

@@ -19,9 +19,9 @@ pixel art ». Phase DA : `phase-da-cadrage.md` (option B, lots DAF.0 à DAF.8, g
 | Intérieurs (enveloppes) | toutes les cartes de `main` (coques peintes ou modules) | **0** ; `interiors/placeholder/` ne contient plus que 17 `ph_celadon_*` (références de taille de `serie22bis.py`, non utilisées) |
 | Dos de combat | **81 / 126** espèces peintes sur `main` depuis le 2026-10-25 (DAF.1 partie 1, §3) | **45 / 126** en pixel art 64 × 64 (`placeholder/<espèce>_back.png`), + 25 espèces à venir |
 | Fonds de combat | 50 cartes à combats sur 66 ont un fond (23 décors, 22 images `.webp`) | **16 cartes sans fond** (§2) |
-| Icônes du Sac | 45 | **≈ 23 objets sans icône** (§4) |
-| Séries 23 et 25 | **23 intégrée** ; **25 non intégrée** sauf `bike.svg` (§5) | — |
-| Objets de décor | tous sauf 2 | `breakfast` (`player_house_1f`), `bed_items` (`rival_house`) en pixel |
+| Icônes du Sac | 45 (+ 23 sur `daf-5-icones`, DAF.5) | **≈ 23 objets sans icône** (§4) ; 0 après fusion du DAF.5 |
+| Séries 23 et 25 | **23 intégrée** ; **25 intégrée** (DAF.5, 2e partie, 2026-10-26, §5) | — |
+| Objets de décor | tous sauf 2 (peints sur `daf-5-icones`) | `breakfast` (`player_house_1f`), `bed_items` (`rival_house`) en pixel jusqu'à la fusion du DAF.5 |
 | Personnages, compagnons | ≈ 100 apparences, 27 compagnons | aucun visible |
 
 ## 2. Fonds de combat (`data/battle/decors.json`, clé `places` par `map_id`)
@@ -109,6 +109,9 @@ d'icône dans le Sac).
   les planches `docs/design/reference/serie-25-contact-v1.png` et `-v2.png` sont versionnées.
   → DAF.5 doit d'abord **retrouver les originaux** (copie `j22-t7-art` ou re-générer avec
   `tools/art/serie25.py`) avant d'intégrer (`serie25.py --manifeste`).
+  **Fait (DAF.5, 2e partie, 2026-10-26)** : originaux retrouvés dans `j22-t7b/build/art`, intégrés par
+  `tools/art/daf5_reliquats.py` (vélo, pêche, 5 PNJ, Kangourex, Ramoloss) ; icônes déjà faites par la
+  1re partie ; planche `fiches-assets/daf-5-reliquats/planche.png`.
 
 ## 6. Branches non fusionnées (lecture seule)
 
@@ -137,7 +140,9 @@ fonds ≈ 6 + 8 à 10 décors, icônes ≈ 23, série 25.
 - Objets en pixel art : `breakfast` (`player_house_1f`) et `bed_items` (`rival_house`),
   `assets/tiles/placeholder/props/interior/`.
 - `ss_anne_outer_deck` : carte sans sol peint détecté (construite autrement), à vérifier à l'œil.
-- Chenipan d'ambiance de la Forêt de Jade (prompt prêt).
+  **Vérifié (DAF.5, 2026-10-26)** : pont peint par sa coque, rien à refaire.
+- Chenipan d'ambiance de la Forêt de Jade (prompt prêt). **Fait (DAF.5, 2026-10-26)** : généré par
+  Codex, `caterpie_frames.tres`.
 
 ## Commandes de mesure
 

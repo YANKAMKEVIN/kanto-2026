@@ -242,15 +242,21 @@ func test_tm11_and_its_compatibilities() -> void:
 	assert_eq(compatible, [&"squirtle", &"wartortle", &"blastoise", &"rattata", &"raticate",
 		&"nidorina", &"nidoqueen", &"nidorino", &"nidoking", &"clefairy", &"clefable",
 		&"jigglypuff", &"wigglytuff", &"meowth", &"persian",
-		# Jalon 24 (T4) : espèces des Routes 19 à 21, des Îles Écume et des fossiles.
+		# Jalon 24 (T4) : espèces des Routes 19 à 21, des Îles Écume et des fossiles (Ramoloss et
+		# Flagadoss : les emprunts du J27 au J24 retirés à la fusion de main).
 		&"psyduck", &"golduck", &"poliwag", &"poliwhirl", &"poliwrath", &"tentacool",
 		&"tentacruel", &"slowpoke", &"slowbro", &"seel", &"dewgong", &"shellder", &"cloyster",
 		&"krabby", &"kingler", &"cubone", &"marowak",
+		# Jalon 28 (T3) : Rhinoféros.
+		&"rhydon",
 		# Jalon 23 (T6) : Leveinard.
 		&"chansey",
 		# Jalon 20 (T7) : Kangourex et Aquali.
 		&"kangaskhan", &"horsea", &"seadra", &"goldeen", &"seaking", &"staryu", &"starmie",
-		&"gyarados", &"vaporeon", &"omanyte", &"omastar", &"kabuto", &"kabutops",
+		&"gyarados",
+		# Jalon 26 (T3) : Lokhlass.
+		&"lapras",
+		&"vaporeon", &"omanyte", &"omastar", &"kabuto", &"kabutops",
 		# Ronflex (J21) : entré dans la table régénérée à la fusion du J24 dans `main`.
 		&"snorlax", &"articuno",
 		] as Array[StringName])

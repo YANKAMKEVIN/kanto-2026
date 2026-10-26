@@ -93,7 +93,8 @@
 		"learnset": [
 			[1, "horn_attack"], [30, "stomp"], [35, "tail_whip"], [40, "fury_attack"],
 			[45, "horn_drill"], [50, "leer"], [55, "take_down"]
-		]
+		],
+		"evolutions": [{ "into": "rhydon", "method": "level", "level": 42 }]
 	},
 	"kangaskhan": {
 		"dex": 115, "name": "Kangourex", "types": ["normal"],

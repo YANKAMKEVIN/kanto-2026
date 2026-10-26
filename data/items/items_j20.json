@@ -96,7 +96,7 @@
 	},
 	"lift_key": {
 		"name": "Clé Ascenseur", "plural": "Clés Ascenseur", "feminine": true,
-		"category": "key",
+		"category": "key", "obtained": true,
 		"description": "La clé de l'ascenseur du repaire de la Team Rocket."
 	},
 	"silph_scope": {

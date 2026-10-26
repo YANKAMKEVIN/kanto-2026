@@ -170,6 +170,9 @@ extends RefCounted
 ## - SAFARI_FLED : le Pokémon s'enfuit (test de fuite), puis BATTLE_ENDED (FOE_FLED) ;
 ## - SAFARI_LEFT : FUIR, toujours réussi, puis BATTLE_ENDED (FLED) ;
 ## - SAFARI_NO_BALLS : la dernière Ball est partie (capture ou non), puis BATTLE_ENDED.
+## Jalon 27 (Pied Sauté, Pied Voltige) :
+## - CRASHED : le lanceur s'écrase après un raté, une esquive ou une immunité ([member move_id],
+##   [member amount] PV perdus, [member hp], [member max_hp]) ; joué comme un contrecoup.
 ## Tous les autres événements sur un Pokémon portent dans [member status] son statut au moment
 ## de l'événement (SENT_OUT : la carte de PV l'affiche dès l'entrée ; FAINTED : toujours vide,
 ## le K.O. efface le statut).
@@ -198,6 +201,7 @@ enum Kind {
 	FLUTE_PLAYED, FLUTE_WOKE, ALL_WOKE,
 	SAFARI_BALL_THROWN, BAIT_THROWN, ROCK_THROWN, SAFARI_EATING, SAFARI_ANGRY, SAFARI_FLED,
 	SAFARI_LEFT, SAFARI_NO_BALLS,
+	CRASHED,
 }
 enum SideId { PLAYER, FOE }
 

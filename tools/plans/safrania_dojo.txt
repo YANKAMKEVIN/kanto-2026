@@ -1,0 +1,49 @@
+# Dojo de Combat de Safrania (fighting_dojo) — grille fonctionnelle v1 (jalon 27, T2 ; préparée le
+# 2026-10-22). GÉOMÉTRIE ROUGE/BLEU CASE POUR CASE (jalon-27.md §2.3).
+# Source : pret/pokered, maps/FightingDojo.blk (5 × 6 blocs = 10 × 12 cases), tileset DOJO
+# (gfx/blocksets/gym.bst ; collision Dojo_Coll), warps et objets de
+# data/maps/objects/FightingDojo.asm, portées de vue de scripts/FightingDojo.asm. Décodeur :
+# tools/art/saffron_gym_rb_decode.py. Contrôle : tools/art/plan_check_j27.py.
+#
+# 10 × 12 cases : une salle ; l'estrade au nord (le maître, les deux Poké Balls de Kicklee et de
+# Tygnon), quatre élèves en deux rangées qui gardent l'allée par leur vision (RB ; aucun verrou
+# d'ordre, Q27-2 [D]) ; piliers « # » de part et d'autre de l'estrade et de l'entrée.
+# Accès LIBRE dès que Safrania est ouverte, avant comme après la libération de la Sylphe.
+#
+# Dresseurs : trainer=fighting_dojo_<rôle>, facing= et sight= de RB ; équipe RB en commentaire.
+# Le maître (RB objet 1, OPP_BLACKBELT 1) n'a pas de vision : on lui parle (scène, modèle d'Erika).
+# Poké Balls : PNJ « examiner » (choix transactionnel, jalon-27.md §2.4).
+#
+# Légende :  # mur ou pilier (bloqué) · . tatami (praticable) · E sortie vers Safrania (PUSH ↓)
+
+CARTE fighting_dojo
+
+PRATICABLES .E
+
+GRILLE 10 12
+00 ##########
+01 #..#..#..#
+02 #..#..#..#
+03 #..#..#..#
+04 #........#
+05 #........#
+06 #........#
+07 #........#
+08 #..#..#..#
+09 #..#..#..#
+10 #........#
+11 ####EE####
+FIN
+
+POSITIONS
+sortie_ville            warp           4..5,11      libre   vers=saffron_city:from_dojo  # PUSH ↓ (RB warps 1 et 2 → Safrania warp 2, porte du Dojo)
+entrance                spawn          4..5,10      libre   facing=up  # arrivée depuis Safrania, une case devant la sortie
+depart                  depart         4,10         libre     # repère du contrôle : entrée du joueur ; ignoré par la construction
+maitre                  pnj            5,3          bloque  role=fighting_dojo_master facing=down  # RB objet 1 : OPP_BLACKBELT, 1 (Kicklee, Tygnon N37)
+ball_hitmonlee          pnj            4,1          bloque  role=fighting_dojo_ball_hitmonlee facing=down  # RB objet 6 : Poké Ball de Kicklee
+ball_hitmonchan         pnj            5,1          bloque  role=fighting_dojo_ball_hitmonchan facing=down  # RB objet 7 : Poké Ball de Tygnon
+dresseur_1              dresseur       3,4          bloque  trainer=fighting_dojo_blackbelt_hippolyte facing=right sight=4 classe=karateka  # RB objet 2 : OPP_BLACKBELT, 2 (Férosinge, Férosinge, Colossinge N31)
+dresseur_2              dresseur       3,6          bloque  trainer=fighting_dojo_blackbelt_tancrede facing=right sight=4 classe=karateka  # RB objet 3 : OPP_BLACKBELT, 3 (Machoc, Machopeur N32)
+dresseur_3              dresseur       5,5          bloque  trainer=fighting_dojo_blackbelt_urbain facing=left sight=3 classe=karateka  # RB objet 4 : OPP_BLACKBELT, 4 (Colossinge N36)
+dresseur_4              dresseur       5,7          bloque  trainer=fighting_dojo_blackbelt_wilfried facing=left sight=3 classe=karateka  # RB objet 5 : OPP_BLACKBELT, 5 (Machoc, Férosinge, Colossinge N31)
+FIN

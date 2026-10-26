@@ -83,7 +83,7 @@ func test_invalid_fields_are_rejected_and_nothing_is_kept() -> void:
 			{ "species": "charmander", "level": 5, "moves": ["scratch", "scratch"] },
 			{ "species": "charmander", "level": 5, "exp_to_next": 500, "shiny": true },
 		],
-		"bag": { "master_ball": 1, "poke_ball": 0 },
+		"bag": { "zz_no_ball": 1, "poke_ball": 0 },
 	}, _data, _items, "t")
 	assert_false(ok)
 	var errors := "\n".join(start.get_errors())
@@ -98,7 +98,7 @@ func test_invalid_fields_are_rejected_and_nothing_is_kept() -> void:
 		"t party 3 : capacité inconnue ou en double « scratch »",
 		"t party 4 : clé inconnue « shiny »",
 		"t party 4 : « exp_to_next » est un entier de 1 à 44",
-		"t bag : objet inconnu « master_ball »",
+		"t bag : objet inconnu « zz_no_ball »",
 		"t bag « poke_ball » : quantité entière ≥ 1 attendue",
 	]:
 		assert_string_contains(errors, expected)

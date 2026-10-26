@@ -1,0 +1,43 @@
+{
+	"psywave": {
+		"name": "Vague Psy", "type": "psychic", "category": "status",
+		"accuracy": 80, "pp": 15, "effects": [{ "kind": "fixed_damage", "mode": "psywave" }],
+		"description": "Une onde psychique aux effets variables. Les dégâts dépendent du niveau du lanceur."
+	},
+	"kinesis": {
+		"name": "Télékinésie", "type": "psychic", "category": "status",
+		"accuracy": 80, "pp": 15,
+		"effects": [{ "kind": "stat_stage", "stat": "acc", "stages": -1, "target": "foe" }],
+		"description": "Le lanceur agite une cuillère hypnotique. Baisse la Précision de la cible."
+	},
+	"rolling_kick": {
+		"name": "Mawashi Geri", "type": "fighting", "category": "physical",
+		"power": 60, "accuracy": 85, "pp": 15, "effects": [{ "kind": "flinch", "chance": 30 }],
+		"description": "Un coup de pied circulaire. Peut apeurer la cible."
+	},
+	"jump_kick": {
+		"name": "Pied Sauté", "type": "fighting", "category": "physical",
+		"power": 100, "accuracy": 95, "pp": 10, "effects": [{ "kind": "crash", "amount": 1 }],
+		"description": "Un coup de pied sauté. Si l'attaque échoue, le lanceur se blesse."
+	},
+	"hi_jump_kick": {
+		"name": "Pied Voltige", "type": "fighting", "category": "physical",
+		"power": 130, "accuracy": 90, "pp": 10, "effects": [{ "kind": "crash", "amount": 1 }],
+		"description": "Un genou lancé avec force. Si l'attaque échoue, le lanceur se blesse."
+	},
+	"ice_punch": {
+		"name": "Poing-Glace", "type": "ice", "category": "physical",
+		"power": 75, "accuracy": 100, "pp": 15, "effects": [{ "kind": "status", "status": "freeze", "chance": 10 }],
+		"description": "Un coup de poing glacé frappe la cible. Peut la geler."
+	},
+	"thunder_punch": {
+		"name": "Poing-Éclair", "type": "electric", "category": "physical",
+		"power": 75, "accuracy": 100, "pp": 15, "effects": [{ "kind": "status", "status": "paralysis", "chance": 10 }],
+		"description": "Un coup de poing électrique frappe la cible. Peut la paralyser."
+	},
+	"counter": {
+		"name": "Riposte", "type": "fighting", "category": "status",
+		"accuracy": 100, "pp": 20, "priority": -1, "effects": [{ "kind": "counter" }],
+		"description": "Renvoie le double des dégâts reçus d'une attaque Normal ou Combat."
+	}
+}

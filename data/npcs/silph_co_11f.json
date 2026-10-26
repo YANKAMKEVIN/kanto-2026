@@ -1,0 +1,30 @@
+{
+	"giovanni": {
+		"cell": [6, 9], "facing": "down", "sprite": "giovanni",
+		"unless": ["silph_giovanni_defeated"]
+	},
+	"silph_co_president": {
+		"cell": [7, 5], "facing": "down", "sprite": "gentleman",
+		"dialogue": "silph_co_president"
+	},
+	"silph_co_11f_secretary": {
+		"cell": [10, 5], "facing": "down", "sprite": "beauty",
+		"dialogue": "silph_co_11f_secretary"
+	},
+	"silph_co_11f_1": {
+		"cell": [3, 16], "facing": "up", "sprite": "rocket_grunt_m",
+		"dialogue": "silph_co_11f_1_after", "unless": ["silph_giovanni_defeated"],
+		"trainer": {
+			"id": "silph_co_11f_1", "sight": 4, "before": "silph_co_11f_1_before",
+			"defeated": "silph_co_11f_1_defeated"
+		}
+	},
+	"silph_co_11f_2": {
+		"cell": [15, 9], "facing": "up", "sprite": "rocket_grunt_m",
+		"dialogue": "silph_co_11f_2_after", "unless": ["silph_giovanni_defeated"],
+		"trainer": {
+			"id": "silph_co_11f_2", "sight": 3, "before": "silph_co_11f_2_before",
+			"defeated": "silph_co_11f_2_defeated"
+		}
+	}
+}

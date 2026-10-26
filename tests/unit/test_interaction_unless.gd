@@ -60,3 +60,17 @@ func test_interaction_built_in_code_is_always_available() -> void:
 	var flags := StoryFlags.new()
 	flags.set_flag(FOUND)
 	assert_true(interaction.is_available(flags), "PNJ et Pokémon : inchangés")
+
+
+func test_unless_all_flags_hide_the_target_only_when_every_flag_is_up() -> void:
+	var point := _point([] as Array[StringName])
+	point.unless_all_flags = [&"a", &"b"] as Array[StringName]
+	var interaction := point.to_interactions()[0]
+	assert_eq(interaction.unless_all_flags, [&"a", &"b"] as Array[StringName])
+	assert_true(interaction.is_available(null))
+	var flags := StoryFlags.new()
+	assert_true(interaction.is_available(flags))
+	flags.set_flag(&"a")
+	assert_true(interaction.is_available(flags), "un seul : toujours une cible")
+	flags.set_flag(&"b")
+	assert_false(interaction.is_available(flags), "tous levés : plus de cible")

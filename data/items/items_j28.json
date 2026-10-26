@@ -1,0 +1,7 @@
+{
+	"tm27": {
+		"name": "CT27 — Abîme", "plural": "CT27 — Abîme", "feminine": true,
+		"category": "tm", "tm": 27, "teaches": "fissure",
+		"description": "Une faille s'ouvre sous la cible et la met K.O. d'un coup."
+	}
+}

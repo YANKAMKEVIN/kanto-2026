@@ -1,0 +1,136 @@
+# Sylphe SARL 7F (silph_co_7f) — grille fonctionnelle v1 (jalon 26, T2 ; préparée le 2026-10-22).
+# GÉOMÉTRIE ROUGE/BLEU CASE POUR CASE (puzzle à 1:1, règle du J24 §2.11 ; jalon-26.md §2.1).
+# Source : pret/pokered, maps/SilphCo7F.blk (13 × 9 blocs = 26 × 18 cases),
+# tileset Facility (gfx/blocksets/facility.bst ; collision Facility_Coll ; dalle $20),
+# warps et objets de data/maps/objects/SilphCo7F.asm, portes électroniques et en-têtes de Dresseurs
+# de scripts/SilphCo7F.asm, objets cachés de data/events/hidden_events.asm. Décodeur :
+# tools/art/silph_rb_decode.py (--brouillon, --ecarts, --graphe). Contrôles : tools/art/plan_check_j26.py,
+# tools/art/plan_check_teleports.py (les 11 étages et la cabine), tools/art/plan_check.py --legende.
+#
+# 26 × 18 cases. Le décor change (bureaux peints), la topologie reste celle de RB.
+#
+# RACCORDS (case de départ → carte:point d'apparition ; points d'apparition aux noms finals Godot) :
+#   escalier monte (16,0) → silph_co_8f:from_7f [paire e7_8]
+#   escalier descend (22,0) → silph_co_6f:from_7f [paire e6_7]
+#   ascenseur (18,0) → silph_co_elevator:entrance ; retour from_elevator une case devant
+#   téléporteur (5,7) → silph_co_11f:tp_4 [paire t7f4_11f4]
+#   téléporteur (5,3) → silph_co_3f:tp_9 [paire t3f9_7f5]
+#   téléporteur (21,15) → silph_co_5f:tp_4 [paire t5f4_7f6]
+#   porte électronique d1 (10,6) + case b (voir POSITIONS)
+#   porte électronique d2 (20,4) + case b (voir POSITIONS)
+#   porte électronique d3 (20,12) + case b (voir POSITIONS)
+#
+# RIVAL n° 6 (rival_silph) en (3, 7), tourné vers le haut, dans la petite salle ouest (x 1..5,
+# y 1..7) qui ne communique avec le reste que par deux dalles : (5, 3) ↔ 3F (11, 11) et
+# (5, 7) ↔ 11F (3, 2). RB : un pas sur (3, 2) ou (3, 3) lance la scène (le rival monte de
+# 4 cases, ou 3) ; venant de la dalle (5, 3), on ne peut atteindre (5, 7) qu'en passant par
+# x = 3 aux rangées 2 ou 3 : le rival est SUR LE CHEMIN OBLIGATOIRE du 11F (contrôlé par
+# plan_check_j26.py ; c'est RB, aucune correction).
+# Employé du Lokhlass (1, 5), dans la même salle (silph_co_7f_lapras_giver ; RB : sans condition,
+# projet : après la victoire contre le rival, passe J26, Q26-2).
+# [D] RB SILPHCO7F_UNUSED (objet basculable sans object_event) : ignoré.
+#
+# Salles (graphe RB, portes fermées ; tools/art/silph_rb_decode.py --graphe) :
+#   7F-A (27 cases) : RIVAL
+#   -> téléporteur (5, 7) → 11F-A (3, 2)
+#   -> téléporteur (5, 3) → 3F-C (11, 11)
+#   7F-B (8 cases) : —
+#   7F-C (103 cases) : Rocket 7F-1, Scientifique 7F-2, Rocket 7F-3, calcium
+#   -> escalier ↑ (16, 0) → 8F-B (14, 0)
+#   -> escalier ↓ (22, 0) → 6F-A (16, 0)
+#   -> ascenseur (cabine : tous les étages) depuis (18, 0)
+#   -> porte à carte d1 (10, 6) → 7F-E
+#   -> porte à carte d1 (11, 6) → 7F-E
+#   -> porte à carte d2 (20, 4) → 7F-D
+#   -> porte à carte d2 (21, 4) → 7F-D
+#   7F-D (35 cases) : tm_swords_dance
+#   -> porte à carte d2 (20, 4) → 7F-C
+#   -> porte à carte d3 (20, 12) → 7F-F
+#   -> porte à carte d2 (21, 4) → 7F-C
+#   -> porte à carte d3 (21, 12) → 7F-F
+#   7F-E (48 cases) : —
+#   -> porte à carte d1 (10, 6) → 7F-C
+#   -> porte à carte d1 (11, 6) → 7F-C
+#   7F-F (27 cases) : Rocket 7F-4
+#   -> téléporteur (21, 15) → 5F-B (27, 3)
+#   -> porte à carte d3 (20, 12) → 7F-D
+#   -> porte à carte d3 (21, 12) → 7F-D
+#
+# Dresseurs : trainer=silph_co_<n>f_<k>, k = rang du Dresseur dans l'ordre des object_event RB de
+# l'étage ; facing= et sight= de RB (en-têtes « trainer … , <vue> ») ; équipe RB en commentaire.
+# Objets : item= identifiant du projet, fallback= tant qu'il n'existe pas dans data/items [D].
+#
+# Légende (commune aux onze étages ; caractères propres à ces grilles) :
+#   # mur, cloison ou vide (bloqué)            . sol de bureau (praticable)
+#   M mobilier : bureaux, tables, plantes, machines (bloqué)
+#   T dalle de téléportation (praticable : un pas dessus transporte ; arriver dessus ne la
+#     déclenche pas) — position « teleporteur » (vers=<carte>:<point d'apparition>, paire=)
+#   U escalier qui monte    D escalier qui descend (praticables, STEP_ON sans direction, dans le
+#     mur nord ; l'arrivée est posée UNE CASE DEVANT, tournée vers le bas)
+#   L porte de l'ascenseur (praticable, fondu comme une porte ; arrivée une case devant)
+#   K case d'une porte électronique (praticable dans la grille, bloquée par la position
+#     « porte_carte » tant que la porte est fermée ; une porte RB couvre DEUX cases : deux
+#     positions de même id=, un seul drapeau door_silph_co_<n>f_<id>_open)
+#   E sortie vers Safrania (1F seulement, praticable, PUSH ↓)
+# Personnages, objets, raccords et repères sont dans POSITIONS. Cases : 1 case = 1 tuile de 16 px
+# de Rouge/Bleu (un bloc RB = 2 × 2 cases) ; x = colonne, y = rangée, nord en haut ; les marges
+# de RB sont CONSERVÉES (coordonnées du désassemblage, tables RB recopiables telles quelles).
+
+CARTE silph_co_7f
+
+PRATICABLES .TUDLK
+
+GRILLE 26 18
+00 ################U#L###D###
+01 #...###M....M..#.........#
+02 #.....#M....M..#.........#
+03 #....T#######............#
+04 #...MM#.......M#.###KK####
+05 #...MM#.......M#.#.......#
+06 #.....####KK####.#M......#
+07 #....T#........#.#M...MM.#
+08 #######........#.#M...MM.#
+09 #.#####.MM..MM.#.#M...MM.#
+10 #.....#.MM..MM.#.#M...MM.#
+11 #.....#.MM..MM.#.#M......#
+12 #..MM.#.MM..MM.#.###KK####
+13 #..MM.#........#.#.......#
+14 #.....#........#.#.......#
+15 #.....##########.#...T...#
+16 #................#.......#
+17 ##########################
+FIN
+
+POSITIONS
+vers_8f                 escalier       16,0         libre   vers=silph_co_8f:from_7f paire=e7_8 sens=monte  # RB warp 1 → silph_co_8f warp 2 (14, 0)
+from_8f                 spawn          16,1         libre   paire=e7_8 facing=down  # arrivée depuis le 8F, une case devant l'escalier
+vers_6f                 escalier       22,0         libre   vers=silph_co_6f:from_7f paire=e6_7 sens=descend  # RB warp 2 → silph_co_6f warp 1 (16, 0)
+from_6f                 spawn          22,1         libre   paire=e6_7 facing=down  # arrivée depuis le 6F, une case devant l'escalier
+ascenseur               ascenseur      18,0         libre   etage=7F vers=silph_co_elevator:entrance  # porte de l'ascenseur (RB warp 3)
+from_elevator           spawn          18,1         libre   paire=ascenseur etage=7F facing=down  # sortie de la cabine, une case devant la porte
+teleporteur_4           teleporteur    5,7          libre   vers=silph_co_11f:tp_4 paire=t7f4_11f4  # RB warp 4 → 11F warp 4 (3, 2)
+tp_4                    spawn          5,7          libre     # arrivée sur la dalle (ne la déclenche pas) ; orientation conservée
+teleporteur_5           teleporteur    5,3          libre   vers=silph_co_3f:tp_9 paire=t3f9_7f5  # RB warp 5 → 3F warp 9 (11, 11)
+tp_5                    spawn          5,3          libre     # arrivée sur la dalle (ne la déclenche pas) ; orientation conservée
+teleporteur_6           teleporteur    21,15        libre   vers=silph_co_5f:tp_4 paire=t5f4_7f6  # RB warp 6 → 5F warp 4 (27, 3)
+tp_6                    spawn          21,15        libre     # arrivée sur la dalle (ne la déclenche pas) ; orientation conservée
+porte_d1_a              porte_carte    10,6         bloque  id=d1 cle=card_key  # RB bloc (5, 3) fermé par $54, EVENT_SILPH_CO_7_UNLOCKED_DOOR1
+porte_d1_b              porte_carte    11,6         bloque  id=d1 cle=card_key  # RB bloc (5, 3) fermé par $54, EVENT_SILPH_CO_7_UNLOCKED_DOOR1
+porte_d2_a              porte_carte    20,4         bloque  id=d2 cle=card_key  # RB bloc (10, 2) fermé par $54, EVENT_SILPH_CO_7_UNLOCKED_DOOR2
+porte_d2_b              porte_carte    21,4         bloque  id=d2 cle=card_key  # RB bloc (10, 2) fermé par $54, EVENT_SILPH_CO_7_UNLOCKED_DOOR2
+porte_d3_a              porte_carte    20,12        bloque  id=d3 cle=card_key  # RB bloc (10, 6) fermé par $54, EVENT_SILPH_CO_7_UNLOCKED_DOOR3
+porte_d3_b              porte_carte    21,12        bloque  id=d3 cle=card_key  # RB bloc (10, 6) fermé par $54, EVENT_SILPH_CO_7_UNLOCKED_DOOR3
+employe_lokhlass        pnj            1,5          bloque  role=silph_co_7f_lapras_giver facing=down  # RB SPRITE_SILPH_WORKER_M, STAY
+employe_2               pnj            13,13        bloque  role=silph_co_7f_worker_2 facing=up  # RB SPRITE_SILPH_WORKER_M, STAY
+employe_3               pnj            7,10         bloque  role=silph_co_7f_worker_3 facing=down  # RB SPRITE_SILPH_WORKER_M, STAY
+employe_4               pnj            10,8         bloque  role=silph_co_7f_worker_4 facing=down  # RB SPRITE_SILPH_WORKER_F, STAY
+dresseur_1              dresseur       13,1         bloque  trainer=silph_co_7f_1 facing=down sight=2 classe=rocket  # RB objet 5 : OPP_ROCKET, 32
+dresseur_2              dresseur       2,13         bloque  trainer=silph_co_7f_2 facing=down sight=3 classe=scientifique  # RB objet 6 : OPP_SCIENTIST, 8
+dresseur_3              dresseur       20,2         bloque  trainer=silph_co_7f_3 facing=left sight=3 classe=rocket  # RB objet 7 : OPP_ROCKET, 33
+dresseur_4              dresseur       19,14        bloque  trainer=silph_co_7f_4 facing=right sight=4 classe=rocket  # RB objet 8 : OPP_ROCKET, 34
+rival                   rival          3,7          bloque  trainer=rival_silph facing=up inevitable=oui scene=oui  # RB SPRITE_BLUE (OPP_RIVAL2, 7 à 9 selon le starter)
+silph_co_7f_item_10     objet_visible  1,9          bloque  item=calcium fallback=rare_candy  # RB CALCIUM
+silph_co_7f_item_11     objet_visible  24,11        bloque  item=tm03 fallback=nugget  # RB TM_SWORDS_DANCE
+declencheur_rival_1     declencheur    3,2          libre   scene=rival_silph  # RB : le pas sur cette case lance la scène
+declencheur_rival_2     declencheur    3,3          libre   scene=rival_silph  # RB : le pas sur cette case lance la scène
+FIN

@@ -1,0 +1,42 @@
+# Maison du Copieur, rez-de-chaussée, Safrania (saffron_copycat_house_1f) — grille fonctionnelle v1
+# (jalon 26, T2 ; 2026-10-22). Enveloppe des maisons du projet (15 × 10, sortie (6..8, 8)) avec un
+# escalier montant dans le mur du fond (12..13, 2), comme l'escalier de la Résidence de Céladopole
+# (celadopole_residence_rdc.txt) ; le salon (canapé, lampe) laisse la place à l'escalier.
+# Source RB : pret/pokered data/maps/objects/CopycatsHouse1F.asm (mère (2, 2), père (5, 4) tourné à
+# gauche, Leveinard (1, 4) WALK UP_DOWN ; escalier (7, 1) → 2F). Q26-3 : maison posée et habitée,
+# SANS remise de CT [D].
+#
+# Légende :
+#   K mur (bloqué)          . sol (praticable)
+#   X sortie vers Safrania (praticable : paillasson, PUSH ↓)
+#   E escalier vers l'étage (praticable, STEP_ON ↑ ; arrivée une case devant, tournée ↓)
+#   F réfrigérateur (1, 3)   C plan de travail (2..4, 3)   H cuisinière (5, 3)
+#   T table à manger (2..4, 5..6)   b table basse (10..11, 5)   p porte-manteau (5, 7)
+#   x plante (1, 7), (13, 7)
+
+CARTE saffron_copycat_house_1f
+
+PRATICABLES .XE
+
+GRILLE 15 10
+00 KKKKKKKKKKKKKKK
+01 KKKKKKKKKKKKKKK
+02 KKKKKKKKKKKKEEK
+03 KFCCCH........K
+04 K.............K
+05 K.TTT.....bb..K
+06 K.TTT.........K
+07 Kx...p.......xK
+08 KKKKKKXXXKKKKKK
+09 KKKKKKKKKKKKKKK
+FIN
+
+POSITIONS
+sortie              warp           6..8,8       libre   to=saffron_city spawn=from_copycat_house  # PUSH ↓ → saffron_city, from_copycat_house
+entrance            spawn          7,8          libre   facing=up  # arrivée depuis Safrania (sur le paillasson)
+vers_2f             escalier       12..13,2     libre   vers=saffron_copycat_house_2f:from_1f paire=copieur sens=monte  # STEP_ON ↑ → étage (RB warp 3)
+from_2f             spawn          12..13,3     libre   paire=copieur facing=down  # arrivée depuis l'étage, une case devant l'escalier
+mere                pnj            7,4          bloque  role=saffron_copycat_mother facing=down  # RB (2, 2)
+pere                pnj            9,6          bloque  role=saffron_copycat_father facing=left  # RB (5, 4)
+leveinard           pnj            1,5          bloque  role=saffron_copycat_chansey facing=down mouvement=haut_bas  # RB Leveinard (1, 4), WALK UP_DOWN
+FIN

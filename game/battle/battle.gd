@@ -139,6 +139,18 @@ extends RefCounted
 ##   pas de repos après un K.O.) : repos même si le coup met la cible K.O., face au remplaçant.
 ##   Pas de repos après un raté ou sans effet. Perdu au changement, au K.O., à la fin du combat.
 ##
+## Jalon 27 (Pied Sauté, Pied Voltige, Riposte ; règles de Rouge/Bleu, `pret/pokered`,
+## `PrintMoveFailureText` et `HandleCounterMove`) :
+## - CRASH : la capacité rate (MOVE_MISSED), est esquivée (DODGED, Tunnel) ou n'a aucun effet
+##   (NO_EFFECT, Spectre) → CRASHED sur le lanceur, [member MoveEffect.amount] PV (1 en RB), puis
+##   son K.O. éventuel. Aucun tirage propre ;
+## - COUNTER (Riposte, priorité −1) : si le dernier coup reçu d'une capacité adverse était de type
+##   Normal ou Combat ([member Battler.counter_damage] > 0), précision ordinaire (un roll(100)),
+##   puis DAMAGE « counter » de 2 × ces dégâts, sans type, statistiques, critique ni mur (touche
+##   un Spectre, comme RB) ; sinon MOVE_MISSED sans tirage. Le type compte, pas la catégorie : une
+##   capacité Normal spéciale (Météores) se riposte, une capacité Eau ou Psy jamais. Riposte
+##   contre Riposte rate.
+##
 ## Mode SPECTRE (jalon 19, `jalon-19.md` §2.3, dossier 22 §6.2 ; [member BattleRules.ghost]) :
 ## chaque branche est gardée par les règles, hors mode spectre rien ne change (ni tirage ni
 ## ordre). Tout événement du camp adverse est masqué ([GhostDisguise]). L'adversaire ne fait
@@ -827,6 +839,8 @@ func _execute(side: BattleSide, action: BattleAction, events: Array[BattleEvent]
 		used.pp = slot.pp
 	events.append(used)
 	user.last_move_slot = action.move_index
+	# Riposte (jalon 27) : seule la capacité adverse la plus récente peut être ripostée.
+	target.counter_damage = 0
 	# Jalon 24 (T13) : Métronome lance une capacité tirée au hasard, comme si le Pokémon la
 	# connaissait (les PP de Métronome sont dépensés, pas ceux de la capacité tirée).
 	if move.effect_of(MoveEffect.Kind.METRONOME) != null:
@@ -842,13 +856,18 @@ func _execute(side: BattleSide, action: BattleAction, events: Array[BattleEvent]
 	if not released and _start_charge(side, action, move, events):
 		return
 	if _dodged(target_side, move, events):
+		_crash(move, side, events)
 		_self_ko(move, side, target_side, events)
 		return
 	if _misses_awake_target(move, side, target_side, events):
 		return
 	if move.is_damaging():
 		if not _strike(side, target_side, move, events):
+			_crash(move, side, events)
 			_self_ko(move, side, target_side, events)
+			return
+	elif move.effect_of(MoveEffect.Kind.COUNTER) != null:
+		if not _counter(move, side, target_side, events):
 			return
 	elif move.effect_of(MoveEffect.Kind.OHKO) != null:
 		if not _ohko_lands(side, target_side, move, events):
@@ -933,7 +952,7 @@ func _continue_bide(side: BattleSide, target_side: BattleSide, events: Array[Bat
 	damage.amount = target.pokemon.take_damage(mini(2 * stock, target.pokemon.hp))
 	damage.hp = target.pokemon.hp
 	events.append(damage)
-	_record_hit(target_side, damage.amount)
+	_record_hit(target_side, damage.amount, null)
 	if target.pokemon.is_fainted():
 		_faint(target_side, events)
 	_check_end(events)
@@ -951,11 +970,64 @@ func _break_bide(side: BattleSide, events: Array[BattleEvent]) -> void:
 
 
 ## Coup direct d'une capacité adverse reçu par le Pokémon de [param target_side] : compté dans
-## sa Patience s'il en a une (poison, brûlure, graine, recul, confusion n'y passent pas).
-func _record_hit(target_side: BattleSide, amount: int) -> void:
+## sa Patience s'il en a une (poison, brûlure, graine, recul, confusion n'y passent pas), et
+## retenu pour Riposte si [param move] se riposte ([method _counterable] ; sinon effacé ; null :
+## la riposte de Patience, sans type en RB).
+func _record_hit(target_side: BattleSide, amount: int, move: MoveData) -> void:
 	var target := target_side.active
-	if target != null and target.is_biding():
+	if target == null:
+		return
+	if target.is_biding():
 		target.bide_stock += amount
+	target.counter_damage = amount if _counterable(move) else 0
+
+
+## Riposte (jalon 27, `HandleCounterMove` de RB) : capacités dont les dégâts se ripostent, de
+## type Normal ou Combat (Lutte comprise, Normal en RB) ; ni Riposte, ni Patience.
+func _counterable(move: MoveData) -> bool:
+	if move == null or move.effect_of(MoveEffect.Kind.COUNTER) != null:
+		return false
+	if move.id == STRUGGLE_ID:
+		return true
+	return not move.typeless and (move.type == &"normal" or move.type == &"fighting")
+
+
+## Pied Sauté, Pied Voltige (jalon 27, effet CRASH) : après un raté, une esquive ou une immunité,
+## le lanceur s'écrase (CRASHED, [member MoveEffect.amount] PV) ; K.O. → [method _faint].
+func _crash(move: MoveData, side: BattleSide, events: Array[BattleEvent]) -> void:
+	var effect := move.effect_of(MoveEffect.Kind.CRASH)
+	var user := side.active.pokemon
+	if effect == null or user.is_fainted():
+		return
+	var crashed := _event(BattleEvent.Kind.CRASHED, side)
+	crashed.move_id = move.id
+	crashed.amount = user.take_damage(effect.amount)
+	crashed.hp = user.hp
+	events.append(crashed)
+	if user.is_fainted():
+		_faint(side, events)
+		_check_end(events)
+
+
+## Riposte (jalon 27, COUNTER) : sans coup Normal ou Combat à renvoyer, MOVE_MISSED sans tirage ;
+## sinon la précision ordinaire, puis 2 × [member Battler.counter_damage] à la cible (DAMAGE
+## « counter », sans type ni mur). Faux si elle rate.
+func _counter(move: MoveData, side: BattleSide, target_side: BattleSide,
+		events: Array[BattleEvent]) -> bool:
+	var user := side.active
+	var target := target_side.active
+	var received := user.counter_damage
+	if received <= 0 or target.pokemon.is_fainted() \
+			or not DamageCalc.accuracy_check(user, target, move, _rng):
+		_append_missed(side, move.id, events)
+		return false
+	var damage := _event(BattleEvent.Kind.DAMAGE, target_side)
+	damage.move_id = move.id
+	damage.amount = target.pokemon.take_damage(2 * received)
+	damage.hp = target.pokemon.hp
+	events.append(damage)
+	_record_hit(target_side, damage.amount, move)
+	return true
 
 
 ## Les coups d'une capacité offensive (une capacité HITS en porte plusieurs : précision au
@@ -994,7 +1066,7 @@ func _strike(side: BattleSide, target_side: BattleSide, move: MoveData,
 		damage.effectiveness = result.effectiveness
 		damage.critical = result.critical
 		events.append(damage)
-		_record_hit(target_side, damage.amount)
+		_record_hit(target_side, damage.amount, move)
 		_strike_damage += damage.amount
 		done += 1
 		_thaw_by_fire(move, target_side, events)
@@ -1091,7 +1163,7 @@ func _ohko(move: MoveData, target_side: BattleSide, events: Array[BattleEvent]) 
 	damage.amount = target.pokemon.take_damage(target.pokemon.hp)
 	damage.hp = target.pokemon.hp
 	events.append(damage)
-	_record_hit(target_side, damage.amount)
+	_record_hit(target_side, damage.amount, move)
 	events.append(_event(BattleEvent.Kind.OHKO, target_side))
 
 
@@ -1185,7 +1257,7 @@ func _apply_effect(effect: MoveEffect, move: MoveData, side: BattleSide,
 			damage.amount = target.pokemon.take_damage(amount)
 			damage.hp = target.pokemon.hp
 			events.append(damage)
-			_record_hit(target_side, damage.amount)
+			_record_hit(target_side, damage.amount, move)
 		MoveEffect.Kind.HITS, MoveEffect.Kind.CHARGE:
 			pass
 		MoveEffect.Kind.BIDE:
@@ -1222,6 +1294,8 @@ func _apply_effect(effect: MoveEffect, move: MoveData, side: BattleSide,
 			_heal(effect, move, side, events)
 		MoveEffect.Kind.SCREEN:
 			_raise_screen(effect, move, side, events)
+		MoveEffect.Kind.CRASH, MoveEffect.Kind.COUNTER:
+			pass
 		MoveEffect.Kind.HAZE:
 			_player.active.reset_stages()
 			_foe.active.reset_stages()
