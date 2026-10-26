@@ -5,6 +5,12 @@ Mis à jour : 2026-10-26 (**Décisions de Kevin sur les points ouverts du J25 et
 
 
 
+## Combat vivant — CV.1 art, vague 1 faite (2026-10-26, branche `claude/compassionate-pascal-7b300f`, **à valider par Kevin sur planche et GIF, DA-6**)
+
+- **12 flipbooks** (8 images clés Codex → 16 images, atlas 4 × 4 de 320 px) et **23 sprites de particules** (192 px) dans `assets/sprites/battle_fx/` (`fb_*.webp`, `p_*.webp`, `manifeste_vague1.json` avec mélange `add` ou `norm`) ; **non branchés au jeu** (CV.0 / CV.1 le font). Fiche : `docs/design/fiches-assets/serie-cv-fx-1.md` ; outil : `tools/art/serie_cv_fx.py` (`--prompts`, génération, `--preparer`, `--planche`) ; **planche** et **un GIF en boucle par flipbook** : `docs/design/fiches-assets/cv-fx-1/`.
+- Méthode : fond noir pur pour la lumière (alpha tiré de la luminance, mélange additif), fond magenta pur pour la matière (détourage et retrait de la frange). Valeurs par défaut : orientation vers la droite, interpolation par fondu enchaîné.
+- Reporté : **cœur (Grobisou) rejeté** (le rose part avec la clé magenta), à refaire sur fond noir en vague 2 ; Kevin peut demander une révision r2 d'un identifiant ; les images brutes Codex restent dans `build/art/` (non versionné).
+
 ## Chantier « Combat vivant » — plan écrit (2026-10-26, session de coordination, documents seuls)
 
 - **Plan** : `docs/tech/combat-vivant.md` (animations d'attaques du dossier 05 §4, §9 à §13, §21) : effets pilotés par `data/battle/move_fx.json` (17 familles, 13 attaques phares, annexe des 165 attaques), logique pure dans `game/battle/fx/`, `CPUParticles2D` et lumière simulée (pas de recopie d'écran : A17), option « Animations de combat : Complètes / Rapides », statuts visibles (aura de poison, respiration du sommeil) et retours de PV. Sous-jalons CV.0 (socle + Éclair, Opus) → CV.1 (familles) ∥ CV.3 (statuts, PV) ∥ CV.A (points d'origine) → CV.2 (animations propres, lots P1 à P4) → CV.Z ; CV.0 après la fusion du J23 (`battle_stage.gd`).
