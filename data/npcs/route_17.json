@@ -5,7 +5,7 @@
 			16
 		],
 		"facing": "right",
-		"sprite": "docker",
+		"sprite": "cue_ball",
 		"dialogue": "route_17_cueball_1_after",
 		"trainer": {
 			"id": "route_17_cueball_1",
@@ -20,7 +20,7 @@
 			28
 		],
 		"facing": "left",
-		"sprite": "docker",
+		"sprite": "cue_ball",
 		"dialogue": "route_17_cueball_2_after",
 		"trainer": {
 			"id": "route_17_cueball_2",
@@ -35,7 +35,7 @@
 			52
 		],
 		"facing": "right",
-		"sprite": "rocker",
+		"sprite": "biker",
 		"dialogue": "route_17_biker_1_after",
 		"trainer": {
 			"id": "route_17_biker_1",
@@ -50,7 +50,7 @@
 			64
 		],
 		"facing": "left",
-		"sprite": "rocker",
+		"sprite": "biker",
 		"dialogue": "route_17_biker_3_after",
 		"trainer": {
 			"id": "route_17_biker_3",
@@ -65,7 +65,7 @@
 			93
 		],
 		"facing": "left",
-		"sprite": "rocker",
+		"sprite": "biker",
 		"dialogue": "route_17_biker_2_after",
 		"trainer": {
 			"id": "route_17_biker_2",
@@ -80,7 +80,7 @@
 			100
 		],
 		"facing": "left",
-		"sprite": "docker",
+		"sprite": "cue_ball",
 		"dialogue": "route_17_cueball_3_after",
 		"trainer": {
 			"id": "route_17_cueball_3",
@@ -95,7 +95,7 @@
 			122
 		],
 		"facing": "right",
-		"sprite": "rocker",
+		"sprite": "biker",
 		"dialogue": "route_17_biker_4_after",
 		"trainer": {
 			"id": "route_17_biker_4",
@@ -110,7 +110,7 @@
 			134
 		],
 		"facing": "left",
-		"sprite": "docker",
+		"sprite": "cue_ball",
 		"dialogue": "route_17_cueball_4_after",
 		"trainer": {
 			"id": "route_17_cueball_4",

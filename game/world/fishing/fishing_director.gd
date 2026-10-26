@@ -16,7 +16,9 @@ extends Node
 ##   sinon « Rien ne mord… ». Fin : entrée rendue, compagnon ressorti (sauf en selle).
 ## - **Sac** ([method use_rod], via [KeyItemDirector]) : la canne choisie ; sans eau pêchable
 ##   devant, « On ne peut pas pêcher ici. ».
-## Animation : pas de pose « lancer » ni « attente » (pas d'art) : le joueur reste en `idle` [D].
+## Animation (DAF.5, série 25) : pose `fish_cast` pendant « lance sa ligne… », puis `fish_wait`
+## (fil tendu) jusqu'à la touche ou « Rien ne mord… » ; retirée à la fin ([method Player.set_pose] :
+## sans l'art de l'apparence, ou en selle, le joueur reste en `idle`).
 ## Une espèce de table absente des données ne fait rien mordre (push_error) : les tables globales
 ## citent des espèces du J22.
 
@@ -31,6 +33,9 @@ const CAST_DIALOGUE: StringName = &"fishing_cast"
 const BITE_DIALOGUE: StringName = &"fishing_bite"
 const NOTHING_DIALOGUE: StringName = &"fishing_nothing"
 const NO_WATER_DIALOGUE: StringName = &"fishing_no_water"
+## Poses du joueur ([method Player.set_pose]) : lancer, puis attente fil tendu.
+const POSE_CAST: StringName = &"fish_cast"
+const POSE_WAIT: StringName = &"fish_wait"
 ## Attente avant la touche (s) [D] : de 1 à 2 s, au dixième, tirée par [GameRng].
 const WAIT_MIN: float = 1.0
 const WAIT_MAX: float = 2.0
@@ -127,7 +132,10 @@ func fish(rod: StringName, cell: Vector2i) -> void:
 	if _companion != null:
 		_companion.on_cutscene_started()
 	_player.face(Grid.dominant_direction(_player.get_cell(), cell))
+	_player.set_pose(POSE_CAST)
 	await _say(CAST_DIALOGUE)
+	if is_instance_valid(_player):
+		_player.set_pose(POSE_WAIT)
 	var rng := _rng()
 	var tenths := rng.range_int(roundi(WAIT_MIN * 10.0), roundi(WAIT_MAX * 10.0)) \
 		if rng != null else roundi(WAIT_MIN * 10.0)
@@ -149,6 +157,7 @@ func fish(rod: StringName, cell: Vector2i) -> void:
 	else:
 		await _say(NOTHING_DIALOGUE)
 	if is_instance_valid(_player):
+		_player.set_pose(&"")
 		_player.set_input_enabled(true, INPUT_REASON)
 	if _companion != null:
 		_companion.on_cutscene_finished()
