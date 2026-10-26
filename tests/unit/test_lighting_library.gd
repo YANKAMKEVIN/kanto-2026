@@ -35,10 +35,12 @@ func test_real_file_loads_without_error() -> void:
 	assert_true(_library.load_file(), str(_library.get_errors()))
 	# Jalon 12 (T9) : les trois profils de grotte du Mont Sélénite ; J18 (T20) : ceux, plus clairs,
 	# de la Grotte Sombre ; J20 (T16) : la serre d'Erika (`greenhouse`) ; DAF.6 : ceux du Mont
-	# Sélénite (`moon_*`, pierre chaude), les `cave_*` restant aux Îles Écume.
+	# Sélénite (`moon_*`, pierre chaude), les `cave_*` restant aux Îles Écume ; J26 (T7) : les
+	# bureaux de la Sylphe (`office`).
 	assert_eq(_library.get_ids(), [&"golden_hour", &"interior_warm", &"forest", &"cave_1f",
 		&"cave_b1f", &"cave_b2f", &"moon_1f", &"moon_b1f", &"moon_b2f", &"underground", &"dark_cave_1f", &"dark_cave_b1f", &"cave_sand",
-		&"greenhouse", &"hideout", &"lavender", &"tower_cold", &"tower"] as Array[StringName])
+		&"greenhouse", &"hideout", &"lavender", &"tower_cold", &"tower", &"office"] \
+		as Array[StringName])
 	assert_eq(LightingLibrary.DATA_PATH, "res://data/world/lighting.json")
 
 

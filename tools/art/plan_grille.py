@@ -9,6 +9,11 @@ Ligne facultative avant la grille : `PRATICABLES <caractères>` (cases praticabl
 grille ; défaut `.=hvDp`, la légende de la Route 2 et d'Argenta). Jalon 9 : la Forêt de Jade a sa légende.
 Utilisé par `plan_aplats.py` (plan en aplats) et `plan_check.py` (recherche de chemin).
 
+**Identifiant de carte** (jalon 26) : une ligne facultative `CARTE <identifiant>` avant la grille
+donne l'identifiant de la carte du jeu quand le nom du fichier diffère (`sylphe_3f.txt` →
+`silph_co_3f`) ; les `vers=<carte>:<repère>` des autres grilles visent cet identifiant. Sans elle,
+la carte porte le nom du fichier. `lire` (et `tests/helpers/plan_grid.gd`) ignorent cette ligne.
+
 **Variante** (jalon 14, T20a : Azuria « après J14 ») : après la grille de base, une grille peut
 porter des sections `PRATICABLES_<V>`, `GRILLE_<V>` (rangées remplacées, même format « NN » +
 rangée complète) et `POSITIONS_<V>` (positions ajoutées, ou remplaçant celles de même
@@ -162,3 +167,22 @@ def lire(chemin: str | Path, variante: str | None = None) -> Plan:
 			if not (0 <= x < width and 0 <= y < height):
 				raise ValueError(f"{p.ident} : case ({x}, {y}) hors carte")
 	return plan
+
+
+def carte(chemin: str | Path) -> str:
+	"""Identifiant de carte d'une grille : ligne `CARTE <id>` avant la grille, sinon le nom du
+	fichier."""
+	for brute in Path(chemin).read_text(encoding="utf-8").splitlines():
+		mots = brute.split("#", 1)[0].split()
+		if not mots:
+			continue
+		if mots[0] in ("GRILLE", "POSITIONS"):
+			break
+		if mots[0] == "CARTE" and len(mots) == 2:
+			return mots[1]
+	return Path(chemin).stem
+
+
+def index_cartes(dossier: str | Path) -> dict[str, Path]:
+	"""Identifiant de carte → grille, pour toutes les grilles d'un dossier."""
+	return {carte(f): f for f in sorted(Path(dossier).glob("*.txt"))}

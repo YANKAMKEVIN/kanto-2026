@@ -1,0 +1,90 @@
+# Sylphe SARL 1F (silph_co_1f) — grille fonctionnelle v1 (jalon 26, T2 ; préparée le 2026-10-22).
+# GÉOMÉTRIE ROUGE/BLEU CASE POUR CASE (puzzle à 1:1, règle du J24 §2.11 ; jalon-26.md §2.1).
+# Source : pret/pokered, maps/SilphCo1F.blk (15 × 9 blocs = 30 × 18 cases),
+# tileset Facility (gfx/blocksets/facility.bst ; collision Facility_Coll ; dalle $20),
+# warps et objets de data/maps/objects/SilphCo1F.asm, portes électroniques et en-têtes de Dresseurs
+# de scripts/SilphCo1F.asm, objets cachés de data/events/hidden_events.asm. Décodeur :
+# tools/art/silph_rb_decode.py (--brouillon, --ecarts, --graphe). Contrôles : tools/art/plan_check_j26.py,
+# tools/art/plan_check_teleports.py (les 11 étages et la cabine), tools/art/plan_check.py --legende.
+#
+# 30 × 18 cases. Le décor change (bureaux peints), la topologie reste celle de RB.
+#
+# RACCORDS (case de départ → carte:point d'apparition ; points d'apparition aux noms finals Godot) :
+#   escalier monte (26,0) → silph_co_2f:from_1f [paire e1_2]
+#   ascenseur (20,0) → silph_co_elevator:entrance ; retour from_elevator une case devant
+#
+# Hall d'accueil : le grand bloc central (x 9..22, y 3..10) est le comptoir / la sculpture du
+# hall de RB. L'hôtesse (4, 2) est derrière le comptoir de l'angle nord-ouest (salle isolée de
+# 10 cases, comme RB) : on lui parle par-dessus le comptoir depuis (4, 4), tourné vers le haut.
+# [D] RB la cache pendant l'occupation (SILPHCO1F_LINK_RECEPTIONIST OFF) ; le projet la montre
+# dès le début (textes T26-04 puis T26-20, variante unless/if silph_giovanni_defeated).
+# [D] Le warp RB n° 5 (16, 10) → 3F est INACCESSIBLE en RB (case libre sans dalle, au milieu du
+# hall, jamais atteinte par un warp) : omis.
+# Sortie : RB warps 1 et 2 (10..11, 17) → Safrania warp 6 (porte de la Sylphe) ; arrivée
+# from_city (10..11, 16), tournée vers le haut ; côté ville, saffron_city:from_silph.
+# « depart » : repère du contrôle des téléporteurs (plan_check_teleports.py : le joueur entre
+# ici) ; l'outil de construction l'ignore.
+#
+# Salles (graphe RB, portes fermées ; tools/art/silph_rb_decode.py --graphe) :
+#   1F-A (10 cases) : —
+#   1F-B (320 cases) : —
+#   -> sortie (10, 17) → Safrania
+#   -> sortie (11, 17) → Safrania
+#   -> escalier ↑ (26, 0) → 2F-B (24, 0)
+#   -> ascenseur (cabine : tous les étages) depuis (20, 0)
+#
+# Dresseurs : trainer=silph_co_<n>f_<k>, k = rang du Dresseur dans l'ordre des object_event RB de
+# l'étage ; facing= et sight= de RB (en-têtes « trainer … , <vue> ») ; équipe RB en commentaire.
+# Objets : item= identifiant du projet, fallback= tant qu'il n'existe pas dans data/items [D].
+#
+# Légende (commune aux onze étages ; caractères propres à ces grilles) :
+#   # mur, cloison ou vide (bloqué)            . sol de bureau (praticable)
+#   M mobilier : bureaux, tables, plantes, machines (bloqué)
+#   T dalle de téléportation (praticable : un pas dessus transporte ; arriver dessus ne la
+#     déclenche pas) — position « teleporteur » (vers=<carte>:<point d'apparition>, paire=)
+#   U escalier qui monte    D escalier qui descend (praticables, STEP_ON sans direction, dans le
+#     mur nord ; l'arrivée est posée UNE CASE DEVANT, tournée vers le bas)
+#   L porte de l'ascenseur (praticable, fondu comme une porte ; arrivée une case devant)
+#   K case d'une porte électronique (praticable dans la grille, bloquée par la position
+#     « porte_carte » tant que la porte est fermée ; une porte RB couvre DEUX cases : deux
+#     positions de même id=, un seul drapeau door_silph_co_<n>f_<id>_open)
+#   E sortie vers Safrania (1F seulement, praticable, PUSH ↓)
+# Personnages, objets, raccords et repères sont dans POSITIONS. Cases : 1 case = 1 tuile de 16 px
+# de Rouge/Bleu (un bloc RB = 2 × 2 cases) ; x = colonne, y = rangée, nord en haut ; les marges
+# de RB sont CONSERVÉES (coordonnées du désassemblage, tables RB recopiables telles quelles).
+
+CARTE silph_co_1f
+
+PRATICABLES .TUDLKE
+
+GRILLE 30 18
+00 ####################L#####U###
+01 #.....M......................#
+02 #.....M....................M.#
+03 #######.....##....##.......M.#
+04 #..........####..####........#
+05 #.........############.......#
+06 #.M......##############....M.#
+07 #.M......##############....M.#
+08 #.........############.......#
+09 #..........####..####........#
+10 #.M.........##....##.......M.#
+11 #.M........................M.#
+12 #............................#
+13 #............................#
+14 #.MMMMMM..............MMMMMM.#
+15 #.MMMMMM..............MMMMMM.#
+16 #............................#
+17 ##########EE##################
+FIN
+
+POSITIONS
+vers_2f                 escalier       26,0         libre   vers=silph_co_2f:from_1f paire=e1_2 sens=monte  # RB warp 3 → silph_co_2f warp 1 (24, 0)
+from_2f                 spawn          26,1         libre   paire=e1_2 facing=down  # arrivée depuis le 2F, une case devant l'escalier
+ascenseur               ascenseur      20,0         libre   etage=1F vers=silph_co_elevator:entrance  # porte de l'ascenseur (RB warp 4)
+from_elevator           spawn          20,1         libre   paire=ascenseur etage=1F facing=down  # sortie de la cabine, une case devant la porte
+hotesse                 pnj            4,2          bloque  role=silph_co_1f_receptionist facing=down  # RB SPRITE_LINK_RECEPTIONIST, STAY
+sortie_ville            warp           10..11,17    libre   vers=saffron_city:from_silph  # PUSH ↓ (RB warps 1 et 2 → Safrania warp 6, porte de la Sylphe)
+from_city               spawn          10..11,16    libre   facing=up  # arrivée depuis Safrania, une case devant la sortie
+depart                  depart         10,16        libre     # repère du contrôle (plan_check_teleports.py) : entrée du joueur ; ignoré par la construction
+FIN

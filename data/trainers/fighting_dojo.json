@@ -1,0 +1,43 @@
+{
+	"fighting_dojo_blackbelt_hippolyte": {
+		"name": "Karatéka Hippolyte", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 775,
+		"team": [
+			{ "species": "mankey", "level": 31 },
+			{ "species": "mankey", "level": 31 },
+			{ "species": "primeape", "level": 31 }
+		]
+	},
+	"fighting_dojo_blackbelt_tancrede": {
+		"name": "Karatéka Tancrède", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 800,
+		"team": [
+			{ "species": "machop", "level": 32 },
+			{ "species": "machoke", "level": 32 }
+		]
+	},
+	"fighting_dojo_blackbelt_urbain": {
+		"name": "Karatéka Urbain", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 900,
+		"team": [
+			{ "species": "primeape", "level": 36 }
+		]
+	},
+	"fighting_dojo_blackbelt_wilfried": {
+		"name": "Karatéka Wilfried", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 775,
+		"team": [
+			{ "species": "machop", "level": 31 },
+			{ "species": "mankey", "level": 31 },
+			{ "species": "primeape", "level": 31 }
+		]
+	},
+	"fighting_dojo_master": {
+		"name": "Maître du Dojo", "ai": "smart",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 925, "switch": true,
+		"team": [
+			{ "species": "hitmonlee", "level": 37 },
+			{ "species": "hitmonchan", "level": 37 }
+		]
+	}
+}

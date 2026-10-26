@@ -1,0 +1,119 @@
+{
+	"safari_zone_gate_employe_entree": {
+		"speaker": "Employé",
+		"variants": [
+			{
+				"if": [
+					"safari_active"
+				],
+				"pages": [
+					"Bonne chasse !"
+				]
+			},
+			{
+				"pages": [
+					"Bienvenue au PARC SAFARI !",
+					"Passe au comptoir pour entrer."
+				]
+			}
+		]
+	},
+	"safari_zone_gate_employe_zones": {
+		"speaker": "Employé",
+		"variants": [
+			{
+				"unless": [
+					"safari_intro_heard"
+				],
+				"set": [
+					"safari_intro_heard"
+				],
+				"pages": [
+					"Le PARC a quatre zones.",
+					"La Maison Secrète, au fond, garde un prix pour le premier visiteur !"
+				]
+			},
+			{
+				"pages": [
+					"Les Pokémon d'ici sont farouches.",
+					"Un appât les calme, un caillou les agace."
+				]
+			}
+		]
+	},
+	"safari_gate_welcome": {
+		"speaker": "Employé",
+		"pages": [
+			"Bienvenue au PARC SAFARI !",
+			"L'entrée coûte 500 ₽. Tu tentes ta chance ?"
+		],
+		"choice": {
+			"confirm": "OUI",
+			"cancel": "NON",
+			"confirm_set": [
+				"safari_gate_yes"
+			],
+			"cancel_pages": [
+				"Reviens quand tu veux !"
+			]
+		}
+	},
+	"safari_gate_no_money": {
+		"speaker": "Employé",
+		"pages": [
+			"Oh… Il te manque de quoi payer l'entrée."
+		]
+	},
+	"safari_gate_paid": {
+		"speaker": "Employé",
+		"pages": [
+			"Voici 30 SAFARI BALLS !",
+			"Tu as 500 pas. On t'appellera au haut-parleur."
+		]
+	},
+	"safari_gate_leave": {
+		"speaker": "Employé",
+		"pages": [
+			"Tu pars déjà ?"
+		],
+		"choice": {
+			"confirm": "OUI",
+			"cancel": "NON",
+			"confirm_set": [
+				"safari_gate_leave_yes"
+			],
+			"confirm_pages": [
+				"Les SAFARI BALLS restantes restent ici. Merci !"
+			],
+			"cancel_pages": [
+				"Bonne chasse !"
+			]
+		}
+	},
+	"safari_speaker_time_up": {
+		"narration": true,
+		"pages": [
+			"Ding-dong ! Le temps est écoulé !",
+			"Ta visite du PARC SAFARI est terminée."
+		]
+	},
+	"safari_speaker_out_of_balls": {
+		"narration": true,
+		"pages": [
+			"Ding-dong ! Tu n'as plus de SAFARI BALLS !",
+			"Ta visite du PARC SAFARI est terminée."
+		]
+	},
+	"safari_gate_end": {
+		"speaker": "Employé",
+		"pages": [
+			"Alors, bonne pêche ? Reviens vite !"
+		]
+	},
+	"safari_gate_no_visit": {
+		"narration": true,
+		"pages": [
+			"Tu n'as pas de visite en cours. Retour à l'accueil du PARC SAFARI."
+		]
+	}
+}

@@ -1,0 +1,45 @@
+{
+	"safari_zone_west_panneau_maison_repos": {
+		"narration": true,
+		"pages": [
+			"MAISON DE REPOS"
+		]
+	},
+	"safari_zone_west_panneau_dents_or": {
+		"narration": true,
+		"pages": [
+			"Avis : le Gardien a perdu ses dents en or.",
+			"Merci de les lui rapporter !"
+		]
+	},
+	"safari_zone_west_panneau_conseils": {
+		"narration": true,
+		"pages": [
+			"CONSEIL DE DRESSEUR",
+			"Une CS en prix pour qui trouve",
+			"la Maison Secrète !"
+		]
+	},
+	"safari_zone_west_panneau_zone": {
+		"narration": true,
+		"pages": [
+			"PARC SAFARI — ZONE OUEST",
+			"Est : ZONE CENTRE"
+		]
+	},
+	"safari_zone_west_potion_max": {
+		"cutscene": "safari_zone_west_potion_max"
+	},
+	"safari_zone_west_ct32": {
+		"cutscene": "safari_zone_west_ct32"
+	},
+	"safari_zone_west_rappel_max": {
+		"cutscene": "safari_zone_west_rappel_max"
+	},
+	"safari_zone_west_dents_or": {
+		"cutscene": "safari_zone_west_dents_or"
+	},
+	"safari_zone_west_rappel_cache": {
+		"cutscene": "safari_zone_west_rappel_cache"
+	}
+}

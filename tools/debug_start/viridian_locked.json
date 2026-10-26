@@ -1,0 +1,80 @@
+{
+	"map": "viridian_city",
+	"spawn": "from_gym",
+	"facing": "up",
+	"flags": [
+		"mom_greeted",
+		"rival_met",
+		"oak_met",
+		"oak_lab_reunion",
+		"starter_offered",
+		"starter_chosen",
+		"taken_charmander",
+		"taken_squirtle",
+		"rival_lab_won",
+		"rival_challenged",
+		"rival_battle_done",
+		"rival_left_lab",
+		"viridian_arrived",
+		"got_oak_parcel",
+		"pokedex_activated",
+		"poison_unlocked",
+		"pewter_arrived",
+		"beaten_pewter_gym_liam",
+		"brock_met",
+		"badge_boulder",
+		"tm34_received",
+		"cerulean_reached",
+		"rival_cerulean_won",
+		"got_ss_ticket",
+		"badge_cascade",
+		"rival_ss_anne_won",
+		"got_hm01",
+		"ss_anne_departed",
+		"badge_thunder",
+		"surge_met",
+		"tm24_received",
+		"route_9_entered",
+		"route_10_reached",
+		"dark_cave_crossed",
+		"lavender_reached",
+		"tower_stairs_open",
+		"route_8_reached",
+		"celadon_reached",
+		"cut_celadon_gym_bush",
+		"cut_celadon_gym_inner_bush",
+		"badge_rainbow",
+		"badge_soul",
+		"badge_marsh",
+		"erika_met",
+		"tm21_received"
+	],
+	"party": [
+		{
+			"species": "charizard",
+			"level": 48
+		},
+		{
+			"species": "pidgeot",
+			"level": 46
+		},
+		{
+			"species": "vaporeon",
+			"level": 47
+		},
+		{
+			"species": "jolteon",
+			"level": 46
+		}
+	],
+	"bag": {
+		"poke_ball": 10,
+		"super_potion": 10,
+		"revive": 3,
+		"antidote": 3,
+		"escape_rope": 2,
+		"hm01": 1
+	},
+	"money": 20000,
+	"rest_point": "viridian_center"
+}

@@ -1,0 +1,26 @@
+{
+	"safari_zone_center_pepite": {
+		"variants": [
+			{
+				"unless": [
+					"got_safari_zone_center_pepite"
+				],
+				"steps": [
+					{
+						"despawn": "pepite"
+					},
+					{
+						"give": "nugget",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_safari_zone_center_pepite"
+						]
+					}
+				]
+			}
+		]
+	}
+}

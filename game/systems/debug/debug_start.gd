@@ -86,7 +86,7 @@ const VEIL_OFF: StringName = &"off"
 
 const _KEYS: Array[String] = ["map", "spawn", "facing", "seed", "flags", "party", "bag",
 	"favorites", "money", "storage", "autosave", "wild", "daycare", "companion", "veil", "rest_point",
-	"discovered"]
+	"discovered", "safari"]
 const _MEMBER_KEYS: Array[String] = ["species", "level", "moves", "exp_to_next", "hp",
 	"favorite", "status", "status_turns"]
 
@@ -123,6 +123,8 @@ var veil: StringName = &""
 var rest_point: StringName = &""
 ## Cartes découvertes au départ (passe systèmes 2, « discovered »).
 var discovered: Array[StringName] = []
+## J23 : visite du Parc Safari en cours ({ steps_left, balls_left } ; vide = aucune visite).
+var safari: Dictionary = {}
 var _errors: PackedStringArray = PackedStringArray()
 
 
@@ -299,6 +301,15 @@ func add_from_dict(dict: Dictionary, data: PokemonData, items: ItemLibrary,
 		return false
 	rest_point = new_rest_point
 	discovered = new_discovered
+	safari = {}
+	if dict.has("safari"):
+		var visit: Variant = dict["safari"]
+		if not visit is Dictionary or not _is_int((visit as Dictionary).get("steps_left")) \
+				or not _is_int((visit as Dictionary).get("balls_left")) \
+				or int(visit["steps_left"]) < 0 or int(visit["balls_left"]) < 1:
+			return _fail("%s : « safari » vaut { steps_left ≥ 0, balls_left ≥ 1 }" % source)
+		safari = {"active": true, "steps_left": int(visit["steps_left"]),
+			"balls_left": int(visit["balls_left"])}
 	map = new_map
 	spawn = new_spawn
 	facing = new_facing
@@ -356,6 +367,9 @@ func apply(state: Object, data: PokemonData) -> void:
 		state.heal_spawn = rest_points.get_point(rest_point).spawn
 	for map_id: StringName in discovered:
 		state.discover_map(map_id)
+	if not safari.is_empty():
+		state.safari = SafariVisit.from_dict(safari)
+		state.flags.set_flag(SafariDirector.FLAG_ACTIVE)
 
 
 ## Un Pokémon d'après un membre validé (capacités, XP, PV).

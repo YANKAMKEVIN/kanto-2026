@@ -201,7 +201,9 @@ func test_max_sell() -> void:
 func test_only_the_shop_spends_money() -> void:
 	# J15 (jalon-15.md §2.5.3) : la Pension débite le prix du retrait.
 	var allowed := ["res://game/autoload/game_state.gd", "res://game/systems/shop/shop_rules.gd",
-		"res://game/systems/daycare/daycare_director.gd"]
+		"res://game/systems/daycare/daycare_director.gd",
+		# J23 (dossier 26 §4) : le péage du Parc Safari (500 ₽, sans débit partiel).
+		"res://game/systems/safari/safari_director.gd"]
 	for path: String in _scripts("res://game"):
 		if allowed.has(path):
 			continue

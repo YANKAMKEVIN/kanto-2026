@@ -442,6 +442,61 @@
 		],
 		"pewter_gym": [
 			{ "decor": "pewter_gym_roche" }
+		],
+		"silph_co_2f": [
+			{ "decor": "rocket_hideout_repaire" }
+		],
+		"silph_co_3f": [
+			{ "decor": "rocket_hideout_repaire" }
+		],
+		"silph_co_4f": [
+			{ "decor": "rocket_hideout_repaire" }
+		],
+		"silph_co_5f": [
+			{ "decor": "rocket_hideout_repaire" }
+		],
+		"silph_co_6f": [
+			{ "decor": "rocket_hideout_repaire" }
+		],
+		"silph_co_7f": [
+			{ "decor": "rocket_hideout_repaire" }
+		],
+		"silph_co_8f": [
+			{ "decor": "rocket_hideout_repaire" }
+		],
+		"silph_co_9f": [
+			{ "decor": "rocket_hideout_repaire" }
+		],
+		"silph_co_10f": [
+			{ "decor": "rocket_hideout_repaire" }
+		],
+		"silph_co_11f": [
+			{ "decor": "rocket_hideout_repaire" }
+		],
+		"saffron_gym": [
+			{ "decor": "vermilion_gym_salle" }
+		],
+		"fighting_dojo": [
+			{ "decor": "vermilion_gym_salle" }
+		],
+		"viridian_gym": [
+			{ "decor": "pewter_gym_roche" }
+		],
+		"safari_zone_center": [
+			{ "decor": "route_5_6_prairie" }
+		],
+		"safari_zone_east": [
+			{ "decor": "route_5_6_prairie" }
+		],
+		"safari_zone_north": [
+			{ "decor": "route_5_6_prairie" }
+		],
+		"safari_zone_west": [
+			{ "decor": "route_5_6_prairie" }
+		],
+		"fuchsia_gym": [
+			{ "decor": "vermilion_gym_salle" }
 		]
+
 	}
 }

@@ -1,0 +1,122 @@
+{
+	"j23_safari_gate_enter": {
+		"variants": [
+			{
+				"unless": [
+					"safari_active"
+				],
+				"steps": [
+					{
+						"dialogue": "safari_gate_welcome"
+					},
+					{
+						"safari": "enter",
+						"if": [
+							"safari_gate_yes"
+						]
+					},
+					{
+						"dialogue": "safari_gate_no_money",
+						"if": [
+							"safari_pay_failed"
+						]
+					},
+					{
+						"dialogue": "safari_gate_paid",
+						"if": [
+							"safari_active"
+						]
+					},
+					{
+						"move": "player",
+						"path": [
+							"down"
+						],
+						"keep_facing": true,
+						"unless": [
+							"safari_active"
+						]
+					},
+					{
+						"safari": "clear"
+					}
+				]
+			}
+		]
+	},
+	"j23_safari_gate_leave": {
+		"variants": [
+			{
+				"if": [
+					"safari_active"
+				],
+				"steps": [
+					{
+						"dialogue": "safari_gate_leave"
+					},
+					{
+						"safari": "leave",
+						"if": [
+							"safari_gate_leave_yes"
+						]
+					},
+					{
+						"move": "player",
+						"path": [
+							"up"
+						],
+						"keep_facing": true,
+						"if": [
+							"safari_active"
+						]
+					},
+					{
+						"safari": "clear"
+					}
+				]
+			}
+		]
+	},
+	"j23_safari_time_up": {
+		"steps": [
+			{
+				"dialogue": "safari_speaker_time_up"
+			},
+			{
+				"change_map": "safari_zone_gate",
+				"at": "arrivee_fin",
+				"facing": "down"
+			},
+			{
+				"dialogue": "safari_gate_end"
+			}
+		]
+	},
+	"j23_safari_out_of_balls": {
+		"steps": [
+			{
+				"dialogue": "safari_speaker_out_of_balls"
+			},
+			{
+				"change_map": "safari_zone_gate",
+				"at": "arrivee_fin",
+				"facing": "down"
+			},
+			{
+				"dialogue": "safari_gate_end"
+			}
+		]
+	},
+	"j23_safari_no_visit": {
+		"steps": [
+			{
+				"change_map": "safari_zone_gate",
+				"at": "arrivee_fin",
+				"facing": "down"
+			},
+			{
+				"dialogue": "safari_gate_no_visit"
+			}
+		]
+	}
+}

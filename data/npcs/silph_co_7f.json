@@ -1,0 +1,64 @@
+{
+	"rival_silph": {
+		"cell": [3, 7], "facing": "up", "sprite": "rival",
+		"unless": ["rival_silph_won"]
+	},
+	"silph_co_7f_lapras_giver": {
+		"cell": [1, 5], "facing": "down", "sprite": "engineer",
+		"dialogue": "silph_co_7f_lapras_giver"
+	},
+	"silph_co_7f_worker_2": {
+		"cell": [13, 13], "facing": "up", "sprite": "engineer",
+		"dialogue": "silph_co_7f_worker_2"
+	},
+	"silph_co_7f_worker_3": {
+		"cell": [7, 10], "facing": "down", "sprite": "engineer",
+		"dialogue": "silph_co_7f_worker_3"
+	},
+	"silph_co_7f_worker_4": {
+		"cell": [10, 8], "facing": "down", "sprite": "hostess",
+		"dialogue": "silph_co_7f_worker_4"
+	},
+	"silph_co_7f_1": {
+		"cell": [13, 1], "facing": "down", "sprite": "rocket_grunt_m",
+		"dialogue": "silph_co_7f_1_after", "unless": ["silph_giovanni_defeated"],
+		"trainer": {
+			"id": "silph_co_7f_1", "sight": 2, "before": "silph_co_7f_1_before",
+			"defeated": "silph_co_7f_1_defeated"
+		}
+	},
+	"silph_co_7f_2": {
+		"cell": [2, 13], "facing": "down", "sprite": "researcher",
+		"dialogue": "silph_co_7f_2_after", "unless": ["silph_giovanni_defeated"],
+		"trainer": {
+			"id": "silph_co_7f_2", "sight": 3, "before": "silph_co_7f_2_before",
+			"defeated": "silph_co_7f_2_defeated"
+		}
+	},
+	"silph_co_7f_3": {
+		"cell": [20, 2], "facing": "left", "sprite": "rocket_grunt_m",
+		"dialogue": "silph_co_7f_3_after", "unless": ["silph_giovanni_defeated"],
+		"trainer": {
+			"id": "silph_co_7f_3", "sight": 3, "before": "silph_co_7f_3_before",
+			"defeated": "silph_co_7f_3_defeated"
+		}
+	},
+	"silph_co_7f_4": {
+		"cell": [19, 14], "facing": "right", "sprite": "rocket_grunt_m",
+		"dialogue": "silph_co_7f_4_after", "unless": ["silph_giovanni_defeated"],
+		"trainer": {
+			"id": "silph_co_7f_4", "sight": 4, "before": "silph_co_7f_4_before",
+			"defeated": "silph_co_7f_4_defeated"
+		}
+	},
+	"silph_co_7f_item_10": {
+		"cell": [1, 9], "facing": "down", "sprite": "object/poke_ball_ground",
+		"dialogue": "silph_co_7f_item_10", "verb": "take", "turn_to_player": false,
+		"unless": ["got_silph_co_7f_item_10"]
+	},
+	"silph_co_7f_item_11": {
+		"cell": [24, 11], "facing": "down", "sprite": "object/poke_ball_ground",
+		"dialogue": "silph_co_7f_item_11", "verb": "take", "turn_to_player": false,
+		"unless": ["got_silph_co_7f_item_11"]
+	}
+}

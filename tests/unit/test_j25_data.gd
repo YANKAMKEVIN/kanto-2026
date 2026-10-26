@@ -38,7 +38,7 @@ const GYM_TRAINERS := {
 	&"cinnabar_gym_4": ["Pillard Fred", 3690, [[&"ponyta", 45]]],
 	&"cinnabar_gym_5": ["Intello Octave", 1025, [[&"rapidash", 45]]],
 	&"cinnabar_gym_6": ["Pillard Jojo", 3330, [[&"vulpix", 41], [&"growlithe", 41]]],
-	&"cinnabar_gym_7": ["Intello Marius", 925, [[&"growlithe", 41], [&"vulpix", 41]]],
+	&"cinnabar_gym_7": ["Intello Séraphin", 925, [[&"growlithe", 41], [&"vulpix", 41]]],
 }
 ## carte → [taux, { espèce: [poids, niveau min, niveau max] }] : union Rouge + Bleu (annexe RB
 ## §1.8), poids sur 256 (moyenne des deux tables, demi-unités arrondies alternativement).

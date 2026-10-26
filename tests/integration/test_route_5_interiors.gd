@@ -2,7 +2,7 @@ extends GutTest
 ## Intérieurs de la Route 5 (jalon 15 T13, docs/tech/jalon-15.md §2.2, §2.4 ; dossier 18 §4.1,
 ## §7) sur les vraies scènes : Pension (gardien `old_man` derrière le comptoir, parlé par-dessus,
 ## dialogue `daycare_keeper`), poste nord (garde devant l'ouverture, déclencheur du recul,
-## « Safrania » jamais atteint), bâtiment d'entrée du souterrain (escalier `STEP_ON` sans
+## Safrania atteinte seulement une fois le garde écarté, J26 T6), bâtiment d'entrée du souterrain (escalier `STEP_ON` sans
 ## direction vers `underground_path` / `from_route_5_w|e` ; panneau T-14). Catégorie : intérieurs (`interiors.json`), titre « Route 5 » (zone).
 
 const GridPaths := preload("res://tests/helpers/grid_paths.gd")
@@ -79,8 +79,11 @@ func test_gate_guard_blocks_the_north_opening() -> void:
 		assert_false(reach.has(cell), "ouverture nord %s inatteignable" % cell)
 		var warp := map.get_warps().find_on_step(cell, Vector2i.UP)
 		assert_not_null(warp)
+		# Jalon 26 (T6) : Safrania existe, l'ouverture y mène (atteinte une fois le garde écarté).
 		if warp != null:
-			assert_eq(warp.coming_soon, "Safrania")
+			assert_eq([warp.target_map, warp.target_spawn, warp.facing],
+				[&"saffron_city", &"from_gate_r5", Vector2i.DOWN])
+	assert_eq(map.get_spawn_cell(&"from_saffron"), Vector2i(4, 2), "arrivée depuis la ville")
 	for cell: Vector2i in [Vector2i(4, 3), Vector2i(5, 3)]:
 		var trigger := map.get_triggers().find_on_step(cell, Vector2i.UP)
 		assert_not_null(trigger, "déclencheur en %s, pas vers le nord" % cell)

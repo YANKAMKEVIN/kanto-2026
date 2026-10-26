@@ -20,10 +20,11 @@ const CHANNELERS := {
 	&"tower_channeler_9": ["Exorciste Clémence", [[&"gastly", 24]], true],
 }
 ## Rival n° 5 (dossier 22 §7.3, T21) : starter du joueur → [espèce, niveau]… Contre Bulbizarre,
-## Sabelette remplace Léviator (Q-T21-1) et les niveaux descendent sous la fourchette 22–26 du
-## plan [D] ; contre Carapuce, Roucoups et Caninos N21 [D].
+## les niveaux descendent sous la fourchette 22–26 du plan [D] ; Léviator (RB) en 3e place :
+## Kevin, Q26-4 (2026-10-22), retour à la lignée RB (la Sabelette du J19 est retirée) ;
+## contre Carapuce, Roucoups et Caninos N21 [D].
 const RIVAL := {
-	&"bulbasaur": [[&"pidgeotto", 20], [&"exeggcute", 20], [&"sandshrew", 20], [&"kadabra", 17],
+	&"bulbasaur": [[&"pidgeotto", 20], [&"exeggcute", 20], [&"gyarados", 20], [&"kadabra", 17],
 		[&"charmeleon", 21]],
 	&"charmander": [[&"pidgeotto", 22], [&"growlithe", 22], [&"exeggcute", 22],
 		[&"kadabra", 20], [&"wartortle", 25]],

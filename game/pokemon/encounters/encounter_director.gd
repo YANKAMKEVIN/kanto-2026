@@ -24,6 +24,12 @@ extends Node
 ## rencontre avec le Sac du moment ([member EncounterTable.ghost_unless_item]) ; alors ni
 ## « vu », ni première espèce sauvage, ni cri, et [signal encounter_started] porte la
 ## pseudo-espèce masquée.
+## J23 (`jalon-23.md` §2.3, §2.4) : sur une carte du Parc Safari ([method SafariConfig.is_safari_map])
+## avec une visite active ([member GameState.safari]), toute rencontre (herbe, pêche par
+## [method start_encounter]) est une **rencontre Safari** ([method BattleRequest.safari]) ; sans
+## visite active (cas anormal), aucune rencontre : rien n'est tiré au pas et
+## [method start_encounter] refuse. [signal encounter_finished] est émis comme d'habitude : la
+## fin de visite par la dernière Ball est relevée par l'écouteur ([member SafariVisit.active]).
 
 ## Une rencontre commence (joueur bloqué, transition lancée).
 signal encounter_started(species_id: StringName, level: int)
@@ -70,6 +76,9 @@ var _running: bool = false
 ## sauvegardé : une partie chargée repart d'une série neuve (la table n'a que de la chance à
 ## offrir, aucune longue attente ne se perd). Gardé d'une carte à l'autre.
 var _quiet_steps: int = 0
+## J23 : réglages du Parc Safari (cartes, bonus de la Safari Ball), lus au premier besoin dans
+## `data/safari/safari.json` ; [method set_safari_config] pour les tests.
+var _safari_config: SafariConfig
 
 
 ## Branche le directeur. [param state] : l'autoload GameState en jeu, une instance neuve de
@@ -93,6 +102,29 @@ func setup(library: EncounterLibrary, data: PokemonData, state: Node, player: Pl
 		_recovery.woke_up.connect(_on_recovery_woke_up)
 	if is_instance_valid(_player) and not _player.moved.is_connected(_on_player_moved):
 		_player.moved.connect(_on_player_moved)
+
+
+## J23 : réglages du Parc Safari à utiliser (tests ; null : relus dans les données).
+func set_safari_config(config: SafariConfig) -> void:
+	_safari_config = config
+
+
+## J23 : réglages du Parc Safari (lus au premier besoin).
+func get_safari_config() -> SafariConfig:
+	if _safari_config == null:
+		_safari_config = SafariConfig.load_default()
+	return _safari_config
+
+
+## J23 : vrai si la carte courante est une carte du Parc Safari.
+func is_safari_map() -> bool:
+	return _map != null and get_safari_config().is_safari_map(_map.map_id)
+
+
+## J23 : visite du Parc en cours (null si aucune ou inactive).
+func _active_safari_visit() -> SafariVisit:
+	var visit: SafariVisit = _state.get(&"safari") as SafariVisit if _state != null else null
+	return visit if visit != null and visit.active else null
 
 
 func set_map(map: GameMap) -> void:
@@ -135,6 +167,9 @@ func start_encounter(encounter: WildEncounter, terrain: StringName = &"") -> boo
 	if encounter == null or _running or _map == null:
 		return false
 	if _battles != null and _battles.is_running():
+		return false
+	# J23 : dans le Parc, pas de rencontre sans visite active.
+	if is_safari_map() and _active_safari_visit() == null:
 		return false
 	var cell := _player.get_cell() if is_instance_valid(_player) else Vector2i.ZERO
 	if terrain.is_empty():
@@ -190,6 +225,9 @@ func _can_encounter(cell: Vector2i) -> bool:
 	var terrain := terrain_at(cell)
 	if terrain.is_empty():
 		return false
+	# J23 : dans le Parc, pas de rencontre sans visite active.
+	if is_safari_map() and _active_safari_visit() == null:
+		return false
 	return _library.has_table(_map.map_id, terrain)
 
 
@@ -235,7 +273,11 @@ func _run(encounter: WildEncounter, origin: Vector2i,
 		await _play_grass_beat(origin, encounter.species, ghost)
 	# Les objets connus du combat : sans eux, aucune Ball n'est légale (jalon 5D).
 	var items := _battles.get_item_library() if _battles != null else null
-	var request := BattleRequest.wild(encounter, _data, _state.rng as GameRng, origin, items)
+	# J23 : rencontre Safari (visite vérifiée avant le verrou par les gardes).
+	var visit := _active_safari_visit() if is_safari_map() else null
+	var request := BattleRequest.safari(encounter, _data, _state.rng as GameRng, origin, visit,
+		get_safari_config().ball_bonus) if visit != null \
+		else BattleRequest.wild(encounter, _data, _state.rng as GameRng, origin, items)
 	var outcome := Battle.Outcome.NONE
 	if _battles != null:
 		outcome = await _battles.run_request(request, _map)

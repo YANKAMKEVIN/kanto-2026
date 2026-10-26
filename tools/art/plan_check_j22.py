@@ -68,6 +68,8 @@ EXTERNES = {"route_12", "route_16", "route_12_rod_house", "fuchsia_center", "fuc
 	"fuchsia_meeting_room", "fuchsia_grandpa_house", "fuchsia_good_rod_house",
 	# Maison de Vol : ouverte par le J22 (Q-9 de la passe systèmes 2, 2026-10-21).
 	"route_16_fly_house",
+	# J23 : Porte du Parc Safari, Arène de Koga, maison du Gardien (portes réservées ouvertes).
+	"safari_zone_gate", "fuchsia_gym", "wardens_house",
 	# Route 19 du J24 (fusion du J24 dans `main`, 2026-10-23) : raccord vérifié plus bas.
 	"route_19"}
 
@@ -526,9 +528,11 @@ def verifier_contenu(r: Rapport, cartes: dict[str, Carte]) -> None:
 				atteints &= any((m, _d(p.cells[0], d)) in vus for d in DIRS)
 		r.critere(sorted(trouves) == sorted(attendus) and atteints,
 			f"{m} : {len(trouves)} objet(s) du §11, atteignables ({', '.join(f'{i}' for _, i, _ in trouves)})")
+	# J23 : les trois portes réservées s'ouvrent vers ses cartes (Porte du Parc, Arène, Gardien).
 	reservees = {(m, p.ident) for m, c in cartes.items() for p in c.plan.of_kind("warp")
-		if "coming_soon" in p.attrs and p.attrs["coming_soon"] != "route_19"}
-	r.critere(reservees == PORTES_J23, f"portes réservées au J23 (coming_soon) : {sorted(i for _, i in reservees)}")
+		if ("coming_soon" in p.attrs and p.attrs["coming_soon"] != "route_19")
+		or p.attrs.get("to") in ("safari_zone_gate", "fuchsia_gym", "wardens_house")}
+	r.critere(reservees == PORTES_J23, f"portes réservées au J23 (coming_soon ou ouvertes) : {sorted(i for _, i in reservees)}")
 	cannes = [(m, p.attrs.get("to")) for m, c in cartes.items() for p in c.plan.of_kind("warp")
 		if p.attrs.get("to") in ("route_12_rod_house", "fuchsia_good_rod_house")]
 	r.critere(len(cannes) == 2, f"maisons des cannes : {cannes}")

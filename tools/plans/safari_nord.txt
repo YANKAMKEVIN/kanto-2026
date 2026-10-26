@@ -1,0 +1,86 @@
+# Parc Safari — zone Nord (safari_zone_north) — grille fonctionnelle (jalon 23, dossier 26 §2 ; préparée le
+# 2026-10-19). GÉOMÉTRIE ROUGE/BLEU CASE POUR CASE (N-3 : échelle RB 1:1, pour que 500 pas gardent
+# leur sens). Source : pret/pokered af519899, maps/SafariZoneNorth.blk, tileset Forest (gfx/blocksets/forest.bst ;
+# collision = tuile en bas à gauche de chaque case, liste Forest_Coll ; herbe = tuile $20 ; eau = $14 et
+# la rive $48), objets, panneaux et warps de data/maps/objects/SafariZoneNorth.asm. Vérifiée par
+# tools/art/plan_check_safari.py (qui relie les quatre zones, la Porte et les maisons).
+#
+# Composition RB : la plus grande zone (40 × 36). Collines et prairies à l'ouest, deux étangs
+# (8..11, 8..13 et 4..7, 14..19 ; 8..11, 24..29), un long enclos de haies au centre (x 11..32,
+# y 4..27), la MAISON DE REPOS au nord-est (34..37, 2..3, porte (35, 3)). Raccords : sud (2..3, 35)
+# et (8..9, 35) → Ouest, sud (20..21, 35) → Centre, est (39, 30..31) → Est.
+#
+# Les raccords RB sont des warps en bord de carte ; K26 en fait des RACCORDS CONTINUS (bord de carte,
+# fondu existant) entre les mêmes cases. Chaque pas compte, raccords compris (dossier 26 §4).
+# Aucune eau n'est surfable au J23 (P-3 B) ; aucune case pêchable n'est encore marquée (N-6 : elles le
+# seront quand le J22 aura fixé la légende de la pêche, M-8).
+#
+# Légende (commune aux quatre zones) :
+#   T arbres, haies, clôtures (bloqué)     . sol (praticable, aucune rencontre)
+#   h herbes hautes (praticable, rencontres Safari)      W eau (bloquée au J23)
+#   B maison (bloquée)    D porte d'une maison (praticable, fondu)    P panneau (bloqué, lu de face)
+#   e raccord vers une autre zone ou la Porte (praticable, bord de carte)
+#   n sol ou herbe HORS D'ATTEINTE à pied (bloqué : îlots, bords de carte de RB)
+# Objets, panneaux, raccords et maisons sont aussi dans POSITIONS. 1 case = 1 tuile de 16 px de RB ;
+# x = colonne, y = rangée, nord en haut ; coordonnées identiques au désassemblage.
+
+PRATICABLES .hDe
+
+GRILLE 40 36
+00 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+01 TT............................hhhhhhhhTT
+02 T..hh..hh....................hhhhhBBBB.T
+03 T.hhhhhhhh..................hhhhh.BDBB.T
+04 T.hhhhhhhh.TTTTTTTTTTTTTTTTThhhh....P..T
+05 T..hhhhhh..T....TT..TT......hhhh.......T
+06 T..hhhhhh..T................hhhhh......T
+07 T.hhhhhhhh.T.................hhhhh.....T
+08 TThhhhhhWWWW..................hhhhh....T
+09 TT.hh..hWWWW...................hhhhh...T
+10 T.......WWWWhhh.TT..............hhhh...T
+11 T.......WWWWhhhhTTTTTTTTTTTTTTTT.hhh...T
+12 T.......WWWWhhh.T...............T......T
+13 T.......WWWWhhhhT...............T......T
+14 T...WWWW..hhhhhhT...............T......T
+15 T...WWWW..hhhhh.T...............TT.TT..T
+16 T...WWWWhhhhhh..T...................T..T
+17 T...WWWW.hh..h..T...................T..T
+18 T...WWWW........T...................T..T
+19 T...WWWW........T...................T..T
+20 T....T........T..........T..........T..T
+21 T....T........T..........T..........T..T
+22 T....T.h.hhhh.T..........T..........T..T
+23 T....ThhhhhhhhT....TTT.TTT..........T..T
+24 T....ThhWWWWhhT....Thhhhh.T............T
+25 T...PThhWWWWhhT....ThhhhhhT............T
+26 T....ThhWWWWhhT....ThhhhhhT............T
+27 T....ThhWWWWh.TT.TTThhhhhhTT.TTTTTTTTTTT
+28 T....ThhWWWW.....ThhhhhhhhP...........TT
+29 T....T.hWWWW.....T.hhhhhhh............TT
+30 T....T...........T..hhhhhhh............e
+31 T....T.......P...T..hhhhhhhh...........e
+32 T....T...........T....hhhhhh..........TT
+33 T....T...........T.P..h..hh...........TT
+34 TT..TTTT..TTTTTTTTTT..TTTTTTTTTTTTTTTTTT
+35 nTeeTnnTeeTnnnnnnnnTeeTnnnnnnnnnnnnnnnnn
+FIN
+
+POSITIONS
+porte_maison_repos     porte          35,3         libre   vers=safari_maison_repos # maison de repos (RB warp)
+arrivee_maison_repos   spawn          35,4         libre   facing=down           # sortie de la maison de repos
+raccord_ouest_1        raccord        2..3,35      libre   vers=safari_ouest:20..21,0 # RB warps (2,35), (3,35)
+arrivee_ouest_1        spawn          2..3,34      libre   facing=up             # arrivée par ce raccord
+raccord_ouest_2        raccord        8..9,35      libre   vers=safari_ouest:26..27,0 # RB warps (8,35), (9,35)
+arrivee_ouest_2        spawn          8..9,34      libre   facing=up             # arrivée par ce raccord
+raccord_centre         raccord        20..21,35    libre   vers=safari_centre:14..15,0 # RB warps (20,35), (21,35)
+arrivee_centre         spawn          20..21,34    libre   facing=up             # arrivée par ce raccord
+raccord_est            raccord        39,30..31    libre   vers=safari_est:0,4..5 # RB warps (39,30), (39,31)
+arrivee_est            spawn          38,30..31    libre   facing=left           # arrivée par ce raccord
+panneau_maison_repos   panneau        36,4         bloque
+panneau_conseils_1     panneau        4,25         bloque
+panneau_zone           panneau        13,31        bloque
+panneau_conseils_2     panneau        19,33        bloque
+panneau_conseils_3     panneau        26,28        bloque
+proteine               objet_visible  25,1         bloque  item=revive           # RB : Protéine → Rappel (N-19)
+ct40                   objet_visible  19,7         bloque  item=tm40             # RB : CT40 Coud'Krâne
+FIN

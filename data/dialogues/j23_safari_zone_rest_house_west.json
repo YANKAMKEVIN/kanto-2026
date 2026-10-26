@@ -1,0 +1,22 @@
+{
+	"safari_zone_rest_house_west_pnj_1": {
+		"speaker": "Visiteur",
+		"pages": [
+			"Les Pokémon rapides fuient vite.",
+			"Un caillou, et ils filent encore plus vite !"
+		]
+	},
+	"safari_zone_rest_house_west_pnj_2": {
+		"speaker": "Visiteur",
+		"pages": [
+			"J'ai marché toute la journée…",
+			"Et pas un seul Tauros."
+		]
+	},
+	"safari_zone_rest_house_west_pnj_3": {
+		"speaker": "Visiteur",
+		"pages": [
+			"On dit qu'un Leveinard rôde au nord."
+		]
+	}
+}
