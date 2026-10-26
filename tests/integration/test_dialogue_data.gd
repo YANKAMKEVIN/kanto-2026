@@ -305,7 +305,7 @@ const TEXTS_J25: Dictionary[StringName, Array] = {
 	&"cinnabar_gym_quiz_right": ["Exact ! Tu peux passer !"],
 	&"cinnabar_gym_quiz_wrong": ["Raté ! Mauvaise réponse !"],
 	&"cinnabar_trade_cable": ["Branchez le câble comme ça !"],
-	&"cinnabar_trade_hector_after": ["Ton Raichu se porte à merveille !"],
+	&"cinnabar_trade_hector_after": ["Comment va mon ancien Électrode ?"],
 	&"cinnabar_trade_hector_done": ["{player} a échangé Raichu contre Kourjus !"],
 	&"cinnabar_trade_hector_offer": ["Bonjour ! Tu veux échanger ton Raichu\ncontre mon Électrode ?"],
 	&"cinnabar_trade_hector_refuse": ["Bon, si tu ne veux pas…"],

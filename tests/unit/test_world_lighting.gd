@@ -300,3 +300,37 @@ func test_flat_grade_uses_a_world_canvas_modulate_without_screen_copy() -> void:
 	lighting.set_battle_active(true)
 	assert_false(lighting.is_battle_grade_visible())
 	remove_child(modulate)
+
+
+## DAF.6 : la lumière de pièce (bloc « room ») est posée dans la carte d'un intérieur, à sa
+## taille, au-dessus des personnages ; un profil sans bloc la retire.
+func test_room_light_is_posed_in_an_interior_and_removed_outside() -> void:
+	var lighting := _lighting()
+	var map := GameMap.new()
+	map.size = Vector2i(10, 8)
+	add_child_autofree(map)
+	lighting.apply(_interior, map)
+	var room := map.get_node_or_null(NodePath(String(RoomLight.NODE_NAME))) as RoomLight
+	assert_not_null(room, "lumière de pièce posée")
+	if room == null:
+		return
+	assert_eq(room.z_index, RoomLight.Z_ROOM_LIGHT)
+	assert_false(room.z_as_relative, "z absolu : au-dessus des personnages")
+	assert_gt(RoomLight.Z_ROOM_LIGHT, 0, "au-dessus de Entities")
+	assert_lt(RoomLight.Z_ROOM_LIGHT, WorldLighting.Z_VEIL, "sous le voile d'obscurité")
+	var material := room.get_shader_material()
+	assert_eq(material.shader, RoomLight.SHADER)
+	assert_eq(material.get_shader_parameter(&"room_size"), Vector2(960, 768))
+	assert_almost_eq(float(material.get_shader_parameter(&"edge_alpha")),
+		_interior.room_edge_color.a, 0.0001)
+	assert_almost_eq(float(material.get_shader_parameter(&"edge_width")),
+		_interior.room_edge_width * Grid.TILE_SIZE, 0.01, "largeur en cases → px")
+	assert_almost_eq(material.get_shader_parameter(&"sun_dir") as Vector2,
+		-_interior.sun_direction, Vector2.ONE * 0.0001, "la lumière va vers le bas à droite")
+	lighting.apply(_interior, map)
+	assert_eq(map.find_children(String(RoomLight.NODE_NAME), "", false, false).size(), 1,
+		"une seule, mise à jour")
+	lighting.apply(_golden, map)
+	assert_null(map.get_node_or_null(NodePath(String(RoomLight.NODE_NAME))), "retirée dehors")
+	lighting.apply(_interior, null)
+	assert_null(RoomLight.apply_to(Node2D.new(), _interior), "nœud sans taille : rien")

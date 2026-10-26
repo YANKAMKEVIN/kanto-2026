@@ -11320,6 +11320,284 @@
     "gauche",
     "face"
    ]
+  },
+  "motard": {
+   "fichier": "res://assets/sprites/characters/painted/motard_sheet.png",
+   "cellule": [
+    74,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "ornithologue": {
+   "fichier": "res://assets/sprites/characters/painted/ornithologue_sheet.png",
+   "cellule": [
+    78,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "loubard": {
+   "fichier": "res://assets/sprites/characters/painted/loubard_sheet.png",
+   "cellule": [
+    82,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "pecheur_parmanie": {
+   "fichier": "res://assets/sprites/characters/painted/pecheur_parmanie_sheet.png",
+   "cellule": [
+    96,
+    132
+   ],
+   "hauteur": 130,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "pecheur_route_12": {
+   "fichier": "res://assets/sprites/characters/painted/pecheur_route_12_sheet.png",
+   "cellule": [
+    81,
+    132
+   ],
+   "hauteur": 130,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "heros_bike": {
+   "fichier": "res://assets/sprites/characters/painted/heros_bike_sheet.png",
+   "cellule": [
+    90,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "motard_idle": {
+   "fichier": "res://assets/sprites/characters/painted/motard_idle_sheet.png",
+   "cellule": [
+    74,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "ornithologue_idle": {
+   "fichier": "res://assets/sprites/characters/painted/ornithologue_idle_sheet.png",
+   "cellule": [
+    78,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "loubard_idle": {
+   "fichier": "res://assets/sprites/characters/painted/loubard_idle_sheet.png",
+   "cellule": [
+    82,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "pecheur_parmanie_idle": {
+   "fichier": "res://assets/sprites/characters/painted/pecheur_parmanie_idle_sheet.png",
+   "cellule": [
+    96,
+    132
+   ],
+   "hauteur": 130,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "pecheur_route_12_idle": {
+   "fichier": "res://assets/sprites/characters/painted/pecheur_route_12_idle_sheet.png",
+   "cellule": [
+    83,
+    132
+   ],
+   "hauteur": 130,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "heros_bike_idle": {
+   "fichier": "res://assets/sprites/characters/painted/heros_bike_idle_sheet.png",
+   "cellule": [
+    90,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "heros_fish_cast": {
+   "fichier": "res://assets/sprites/characters/painted/heros_fish_cast_sheet.png",
+   "cellule": [
+    126,
+    226
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "heros_fish_wait": {
+   "fichier": "res://assets/sprites/characters/painted/heros_fish_wait_sheet.png",
+   "cellule": [
+    174,
+    258
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "kangourex": {
+   "fichier": "res://assets/sprites/pokemon/painted/kangourex_sheet.png",
+   "cellule": [
+    126,
+    155
+   ],
+   "hauteur": 150,
+   "colonnes": 6,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "bas_reaction",
+    "gauche",
+    "gauche_reaction",
+    "droite",
+    "droite_reaction"
+   ]
+  },
+  "ramoloss": {
+   "fichier": "res://assets/sprites/pokemon/painted/ramoloss_sheet.png",
+   "cellule": [
+    118,
+    70
+   ],
+   "hauteur": 64,
+   "colonnes": 6,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "bas_reaction",
+    "gauche",
+    "gauche_reaction",
+    "droite",
+    "droite_reaction"
+   ]
+  },
+  "chenipan": {
+   "fichier": "res://assets/sprites/pokemon/painted/chenipan_sheet.png",
+   "cellule": [
+    64,
+    51
+   ],
+   "hauteur": 44,
+   "colonnes": 6,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "bas_reaction",
+    "gauche",
+    "gauche_reaction",
+    "droite",
+    "droite_reaction"
+   ]
   }
  },
  "images": {
