@@ -260,7 +260,7 @@ Un combat de Ligue sera plus long, ce qui est voulu. Rapides : ≤ 0,5 s pour to
 - Si l'A17 ne tient pas : le profil Économie (ou « Lumière d'ambiance » coupée) divise les
   particules par deux et coupe le balancement du feuillage, sans changer la chorégraphie.
 
-### 2.9 Barre de qualité : « des crans au-dessus » (décision de Kevin, 2026-10-26)
+### 2.9 Barre de qualité : « des crans au-dessus » (décision de Kevin, 2026-10-26 ; conséquences proposées — couches, flipbooks, vidéo, Opus, effort — validées par Kevin le même jour : « okay pour les reco/propositions »)
 
 > « Il faut de super beaux effets, on est en 2026, les attaques gardent la même idée / nature,
 > mais on ne doit pas avoir juste l'impression de jouer à une Game Boy, on va des crans
