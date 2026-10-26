@@ -478,6 +478,9 @@
 		],
 		"fighting_dojo": [
 			{ "decor": "vermilion_gym_salle" }
+		],
+		"viridian_gym": [
+			{ "decor": "pewter_gym_roche" }
 		]
 	}
 }

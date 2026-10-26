@@ -1987,6 +1987,7 @@ Référence `docs/design/reference/ouverture-storyboard-v1.webp`. Escalier = tra
 - Chambre : `docs/design/reference/chambre-joueur-v1.webp` ; rez-de-chaussée et sortie : `ouverture-storyboard-v1.webp` ; maison du rival (un seul niveau, **sans Évoli**) : `maison-rival-v1.webp` ; labo : `labo-chen-v1.png`. Plans correspondants : `jalon-02.md` §4.3, §4.4, §4.5, §4.7.
 
 ## Reportés (décision de Kevin)
+- **J28 (2026-10-26, fusion dans `main`)** : fond de combat de l'Arène de Jadielle provisoirement rattaché à `pewter_gym_roche` [D] (couverture DAF.2) ; icône provisoire de la CT27 [D] (disque Sol de la CT28, pelle remplacée par une fissure ; couverture DAF.5) ; fond et icône dédiés à peindre.
 - **J28 (QA agent A17 + S24 du 2026-10-25)** : icône générique pour la CT27 dans le Sac.
   Point non vu en QA, couvert par un test (2026-10-26) : Giovanni absent quand on revient dans l'Arène (`test_giovanni_gym` : sortie vers Jadielle par `from_gym`, retour par `entrance`, Arène vide et sans scène).
 - **Points d'effets de combat (CV.A) des dos provisoires d'Alakazam, d'Ossatueur et de Lokhlass (2026-10-26, fusion J26 + J27)** : `fx_anchors.py squelette` + point « tete » posé à l'œil [D] sur les dos provisoires 64 px du J26 ; à reposer quand les dos peints arriveront.
