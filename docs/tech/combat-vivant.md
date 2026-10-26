@@ -155,10 +155,14 @@ Le moteur de combat (`Battle`) et `BattleEvent` ne changent pas. `BattlePlayback
 - Les couleurs, durées et intensités sont des données : on règle sur le S24 sans toucher au code.
 - **Points d'origine par espèce** (CV-10, décision de Kevin) : `data/battle/fx_anchors.json`, pour
   chacune des 151 espèces, **de face** (artwork officiel) **et de dos** (dos peint, cadrage B), des
-  points nommés en coordonnées normalisées dans la boîte visible du sprite : `bouche`, `joues`,
-  `queue`, `cornes`, `mains`, `canons`, `bulbe`, `yeux`, `centre`. Chaque chorégraphie dit d'où elle
+  points nommés : `tete` (obligatoire), `bouche`, `yeux`, `joues`, `mains`, `queue`, `cornes`,
+  `canons`, `bulbe`, et `centre` (barycentre calculé). Coordonnées **normalisées dans la boîte
+  visible de l'image source** (alpha > 0, la boîte en pixels est écrite à côté) ; pour la face,
+  l'image source est l'artwork entier, avant le recadrage de `PokedexArt.portrait` (le jeu
+  retranche la région du recadrage). Outil : `tools/art/fx_anchors.py` (squelette, grilles,
+  planche, vérification) ; test : `tests/unit/test_fx_anchors.gd`. Chaque chorégraphie dit d'où elle
   part (Éclair : `joues` ; Lance-Flammes : `bouche` ; Hydrocanon : `canons` ; Fouet Lianes :
-  `bulbe` ; Psyko : `yeux`) ; repli : point demandé → `bouche` → `centre`. Un dos qui change
+  `bulbe` ; Psyko : `yeux`) ; repli : point demandé → `bouche` → `tete` → `centre`. Un dos qui change
   (lots DAF) garde ses points s'il est remplacé à l'identique ; sinon, sa ligne est refaite.
 
 ### 2.3 Logique pure (`game/battle/fx/`, `RefCounted`, testée par GUT)
@@ -418,7 +422,7 @@ enchaîne les attaques sans avoir à jouer, plus un vrai combat.
 | T3 | `MoveFxPlayer`, `BattleCamera`, pool de particules, lumière simulée ; branchement dans `BattleStage` / `BattleDirector` | le combat joue les plans ; `speed_scale` = 0 toujours instantané (suite complète verte, aucun test de combat ralenti) |
 | T4 | repères sonores (`fx_cue`) ; correction du décalage du §1.3 | test espion : le son de l'attaque part au repère `launch`, celui du coup au repère `impact` |
 | T5 | réglage `battle_animations` et contrôle dans Paramètres ; modes Réduites et « Réduire les flashs » | test de `GameSettings` (aller-retour JSON, ancien fichier) ; ≤ 3 flashs/s |
-| T6 | `FxAnchors` (lecture de `fx_anchors.json`, repli `bouche` → `centre`) ; points de **Pikachu, Raichu et des 3 starters** posés à la main | test pur du repli ; captures |
+| T6 | `FxAnchors` (lecture de `fx_anchors.json` posé par CV.A, repli `bouche` → `tete` → `centre`) | test pur du repli ; captures |
 | T7 | familles **contact** (5 variantes), **électrique** et **feu** ; animation propre d'**Éclair** | captures Mac relues |
 | T8 | départ « galerie d'effets » ; mesure `PerfProbe` sur S24 **et A17** | ≥ 58 i/s moyens en Complètes sur les deux, rapport dans `build/qa/` |
 | **Validation** | Kevin sur S24 : Charge (§9), Éclair depuis les joues (§10), Flammèche ; bascule Complètes / Rapides | « ça marche, c'est lisible, c'est bien placé » (règle 3) |
@@ -433,6 +437,9 @@ enchaîne les attaques sans avoir à jouer, plus un vrai combat.
 | **Validation** | Kevin sur S24 : galerie (≈ 10 min) + un combat de Dresseur | |
 
 **CV.A — Points d'origine des 151 espèces** (Sonnet) — **en parallèle de CV.1**, fichiers disjoints
+
+> **Fait le 2026-10-26** (branche `cv-a-points`) : T12 et T13 faits ; planche
+> `docs/design/fiches-assets/cv-a/` **à valider par Kevin**.
 
 | Tâche | Contenu | Critère |
 |---|---|---|
