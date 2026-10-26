@@ -42,6 +42,7 @@ ton temps : ≈ 1 h en tout (3 validations S24 et une planche).
 | CV-3 à CV-9, CV-11 à CV-14 | Recommandations retenues. |
 
 **Conséquences** : 16 à 24 sessions au lieu de 8 à 12, ≈ 7 à 10 jours au lieu de 3 à 5, ≈ 2 h de
-ton temps (4 validations S24, 3 planches). **À confirmer** : le plancher (socle, option, familles,
+ton temps (4 validations S24, 3 planches). **Dates butoirs validées par Kevin le 2026-10-26**
+(« Oui, les deux ») : le plancher (socle, option, familles,
 statuts, points d'origine) avant le début du J33 ; les lots d'animations propres traités comme un
 lot d'art, jusqu'au gel de l'art à l'entrée du J34 (DA-7), le reste en 1.0.x.

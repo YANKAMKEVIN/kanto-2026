@@ -490,8 +490,8 @@ Durée : ≈ **7 à 10 jours** avec 2 à 3 sessions en parallèle (contre 3 à 5
   - **les lots P1 à P4** sont de la mise en scène à données constantes (aucune règle, aucune
     durée de message, aucun déclencheur) : traités comme un **lot d'art**, ils peuvent finir
     pendant le J33 et doivent être dans `main` **au gel de l'art, à l'entrée du J34** (DA-7). Un
-    lot pas prêt garde la version de ses familles et passe en 1.0.x (soupape de DA-2). **À
-    confirmer par Kevin** (lecture des règles existantes, pas une décision écrite).
+    lot pas prêt garde la version de ses familles et passe en 1.0.x (soupape de DA-2). **Validé
+    par Kevin le 2026-10-26** (« Oui, les deux », relayé par la session de coordination).
 - **En parallèle des fusions J23 et J26 à J31 : oui, avec deux précautions.** Les fichiers
   touchés par les branches en cours, mesurés le 2026-10-26 :
 
@@ -530,8 +530,8 @@ Durée : ≈ **7 à 10 jours** avec 2 à 3 sessions en parallèle (contre 3 à 5
 
 ## 6. Prochaine étape
 
-Arbitrages CV-1 à CV-14 tranchés par Kevin le 2026-10-26 (voir l'en-tête). Reste à confirmer : les
-deux dates butoirs du §5.3. Ensuite : une session neuve code **CV.0** dans son propre worktree
+Arbitrages CV-1 à CV-14 et dates butoirs du §5.3 validés par Kevin le 2026-10-26. CV.A (points
+d'origine, données seules) commence tout de suite, hors de la scène de combat. Ensuite : une session neuve code **CV.0** dans son propre worktree
 (branche `combat-vivant` depuis `main`, après la fusion du J23), avec le prompt de reprise
 proposé à Kevin.
 
