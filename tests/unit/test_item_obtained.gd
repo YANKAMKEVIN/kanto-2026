@@ -40,8 +40,12 @@ func test_tm_and_other_key_items_toasts_are_unchanged() -> void:
 	assert_eq(parcel.added_text(1), "ajouté aux objets clés")
 	# Jalon 20 (T7, plan §2.7.5) : le Scope Sylphe aussi (toast « obtenu », T-55).
 	assert_true(_items.get_item(&"silph_scope").obtained)
+	# Arbitrage R-2 (Kevin, 2026-10-26) : la Clé Ascenseur aussi (« obtenue », plan du J20 T-49).
+	var lift_key := _items.get_item(&"lift_key")
+	assert_true(lift_key.obtained)
+	assert_eq(lift_key.added_text(1), "obtenue")
 	for id: StringName in _items.get_ids():
-		if id not in [&"dome_fossil", &"helix_fossil", &"silph_scope"]:
+		if id not in [&"dome_fossil", &"helix_fossil", &"silph_scope", &"lift_key"]:
 			assert_false(_items.get_item(id).obtained, "%s : pas « obtained »" % id)
 
 
