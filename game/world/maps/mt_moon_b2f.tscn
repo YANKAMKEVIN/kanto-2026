@@ -51,7 +51,7 @@ script = ExtResource("1_7qunq")
 map_id = &"mt_moon_b2f"
 display_name = "Mont Sélénite"
 size = Vector2i(50, 38)
-light_profile = &"cave_b2f"
+light_profile = &"moon_b2f"
 
 [node name="Ground" type="TileMapLayer" parent="." unique_id=1607258515]
 visible = false

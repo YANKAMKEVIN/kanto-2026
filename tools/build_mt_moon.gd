@@ -16,7 +16,8 @@ extends SceneTree
 ##   dessus (PNJ objets depuis le T25), indices `x`, puits de jour `j`), échelles `U` / `V`,
 ##   panneau de l'entrée ; déclencheur de la scène du chercheur (B2F, T25).
 ## - **Halos** [LightGlow] (≤ 16 par étage) : lampes, puits de jour et entrée (1F), éclats,
-##   projecteurs. Profils `cave_1f` > `cave_b1f` = `cave_b2f` (`data/world/lighting.json`).
+##   projecteurs. Profils `moon_1f` > `moon_b1f` = `moon_b2f` (`data/world/lighting.json` ;
+##   DAF.6 : propres au Mont Sélénite, sol de pierre chaude ; `cave_*` aux Îles Écume).
 ## - Passages : échelles `STEP_ON` sans direction vers le point d'apparition de même paire
 ##   (orientation à l'arrivée à l'opposé de l'échelle) ; entrée du 1F (29..30, 45) ↓ vers la
 ##   Route 3 (`from_mt_moon_w|e`) ; échelle de sortie de B2F (11, 29) vers le sas de la Route 4
@@ -37,9 +38,9 @@ const TILE: int = 96
 
 ## Étage → [identifiant, nœud racine, taille, graine logique, graine du décor, profil].
 const FLOORS: Dictionary = {
-	"1f": [&"mt_moon_1f", "MtMoon1F", Vector2i(60, 46), 1201, 1202, &"cave_1f"],
-	"b1f": [&"mt_moon_b1f", "MtMoonB1F", Vector2i(40, 30), 1211, 1212, &"cave_b1f"],
-	"b2f": [&"mt_moon_b2f", "MtMoonB2F", Vector2i(50, 38), 1221, 1222, &"cave_b2f"],
+	"1f": [&"mt_moon_1f", "MtMoon1F", Vector2i(60, 46), 1201, 1202, &"moon_1f"],
+	"b1f": [&"mt_moon_b1f", "MtMoonB1F", Vector2i(40, 30), 1211, 1212, &"moon_b1f"],
+	"b2f": [&"mt_moon_b2f", "MtMoonB2F", Vector2i(50, 38), 1221, 1222, &"moon_b2f"],
 }
 ## Voile de pénombre par étage (passe « lumière rare », 2026-10-14 ; `tools/cave_shade.gd`) :
 ## 1F le plus clair, B1F puis B2F plus sombres loin des lampes ; pied des parois assombri
