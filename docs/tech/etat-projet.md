@@ -1975,6 +1975,7 @@ Référence `docs/design/reference/ouverture-storyboard-v1.webp`. Escalier = tra
 - Chambre : `docs/design/reference/chambre-joueur-v1.webp` ; rez-de-chaussée et sortie : `ouverture-storyboard-v1.webp` ; maison du rival (un seul niveau, **sans Évoli**) : `maison-rival-v1.webp` ; labo : `labo-chen-v1.png`. Plans correspondants : `jalon-02.md` §4.3, §4.4, §4.5, §4.7.
 
 ## Reportés (décision de Kevin)
+- **Points d'effets de combat (CV.A) des dos provisoires d'Alakazam, d'Ossatueur et de Lokhlass (2026-10-26, fusion J26 + J27)** : `fx_anchors.py squelette` + point « tete » posé à l'œil [D] sur les dos provisoires 64 px du J26 ; à reposer quand les dos peints arriveront.
 - **Icône de la Master Ball (2026-10-26, fusion J26 + J27)** : provisoire [D], la Poké Ball peinte teintée en violet (`assets/ui/items/master_ball.webp`), exigée par le test de couverture des icônes de DAF.5 ; icône dédiée à peindre.
 - **Fonds de combat de la Sylphe, de l'Arène de Morgane et du Dojo (2026-10-26, fusion J26 + J27)** : provisoirement rattachés à des décors existants [D] (`silph_co_2f` à `11f` → `rocket_hideout_repaire` ; `saffron_gym`, `fighting_dojo` → `vermilion_gym_salle`), exigés par le test de couverture de DAF.2 ; fonds dédiés à peindre (DAF, `inventaire-art.md` §2).
 - **J26 (QA agent A17 + S24 du 2026-10-25)** : mémoire de textures au 7F de la Sylphe à 161 Mo pour un budget de 64 Mo.

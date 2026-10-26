@@ -4353,7 +4353,29 @@
      ]
     }
    },
-   "back": null
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/alakazam_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     2,
+     0,
+     59,
+     63
+    ],
+    "points": {
+     "tete": [
+      0.5,
+      0.2
+     ],
+     "centre": [
+      0.505,
+      0.496
+     ]
+    }
+   }
   },
   "066": {
    "id": "machop",
@@ -6895,7 +6917,29 @@
      ]
     }
    },
-   "back": null
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/marowak_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     13,
+     6,
+     49,
+     56
+    ],
+    "points": {
+     "tete": [
+      0.5,
+      0.2
+     ],
+     "centre": [
+      0.448,
+      0.507
+     ]
+    }
+   }
   },
   "106": {
    "id": "hitmonlee",
@@ -8617,7 +8661,29 @@
      ]
     }
    },
-   "back": null
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/lapras_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     7,
+     7,
+     50,
+     55
+    ],
+    "points": {
+     "tete": [
+      0.45,
+      0.12
+     ],
+     "centre": [
+      0.474,
+      0.609
+     ]
+    }
+   }
   },
   "132": {
    "id": "ditto",
