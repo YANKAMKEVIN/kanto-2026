@@ -5,7 +5,7 @@ Mis à jour : 2026-10-26 (**Décisions de Kevin sur les points ouverts du J25 et
 
 
 
-## Combat vivant — CV.1 art, vague 1 faite (2026-10-26, branche `claude/compassionate-pascal-7b300f`, **à valider par Kevin sur planche et GIF, DA-6**)
+## Combat vivant — CV.1 art, vague 1 faite (2026-10-26, branche `claude/compassionate-pascal-7b300f`, **planche validée par Kevin le 2026-10-26, DA-6 ; fusionnée dans `main`**)
 
 - **12 flipbooks** (8 images clés Codex → 16 images, atlas 4 × 4 de 320 px) et **23 sprites de particules** (192 px) dans `assets/sprites/battle_fx/` (`fb_*.webp`, `p_*.webp`, `manifeste_vague1.json` avec mélange `add` ou `norm`) ; **non branchés au jeu** (CV.0 / CV.1 le font). Fiche : `docs/design/fiches-assets/serie-cv-fx-1.md` ; outil : `tools/art/serie_cv_fx.py` (`--prompts`, génération, `--preparer`, `--planche`) ; **planche** et **un GIF en boucle par flipbook** : `docs/design/fiches-assets/cv-fx-1/`.
 - Méthode : fond noir pur pour la lumière (alpha tiré de la luminance, mélange additif), fond magenta pur pour la matière (détourage et retrait de la frange). Valeurs par défaut : orientation vers la droite, interpolation par fondu enchaîné.

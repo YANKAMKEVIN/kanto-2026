@@ -2,7 +2,7 @@
 
 > Chantier « Combat vivant » (`docs/tech/combat-vivant.md` §2.7, §2.9 barre de qualité, §3.4 art à
 > produire). Processus : `docs/design/phase-da-cadrage.md` §3.3. Outil : `tools/art/serie_cv_fx.py`.
-> Statut : **à valider par Kevin sur planche et GIF (DA-6)** ; non branché au jeu (CV.0 / CV.1 le font).
+> Statut : **planche validée par Kevin le 2026-10-26 (DA-6)** ; non branché au jeu (CV.0 / CV.1 le font).
 
 ## 1. Périmètre
 
