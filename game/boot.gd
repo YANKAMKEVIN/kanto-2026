@@ -466,6 +466,7 @@ func _ready() -> void:
 	_setup_flash()
 	_setup_mount()
 	_setup_fishing()
+	_setup_safari()
 	_setup_strength()
 	_setup_evolution_items()
 	_setup_audio()
@@ -2582,3 +2583,33 @@ func _setup_strength() -> void:
 
 func get_strength_director() -> StrengthDirector:
 	return _strength
+
+
+# --- J23 : visite du Parc Safari (`jalon-23.md` §2.1, §2.5, §2.15) -------------------------
+
+var _safari: SafariDirector
+
+
+func _setup_safari() -> void:
+	_safari = SafariDirector.new()
+	_safari.name = "SafariDirector"
+	_safari.process_mode = Node.PROCESS_MODE_PAUSABLE
+	add_child(_safari)
+	_safari.setup(GameState, SafariConfig.load_default(), _player, SceneRouter, _cutscenes_node,
+		_encounters, _battle_director, request_autosave)
+	SceneRouter.map_changed.connect(_safari.set_map)
+	_safari.tree_exiting.connect(func() -> void:
+		if SceneRouter.map_changed.is_connected(_safari.set_map):
+			SceneRouter.map_changed.disconnect(_safari.set_map))
+	# Pastille « pas · Balls » (N-7), seulement dans le Parc.
+	_safari.visit_changed.connect(_hud.set_safari_badge)
+	# Vol et Téléport refusés dans le Parc (dossier 26 §4).
+	for map: StringName in _safari.get_config().maps:
+		if _fly != null:
+			_fly.no_fly_maps[map] = true
+		if _field_travel != null:
+			_field_travel.no_fly_maps[map] = true
+
+
+func get_safari_director() -> SafariDirector:
+	return _safari

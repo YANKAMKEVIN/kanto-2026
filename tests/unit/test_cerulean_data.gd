@@ -233,7 +233,8 @@ func test_tm11_and_its_compatibilities() -> void:
 	assert_eq(items.get_tm(11), &"tm11")
 	assert_eq(_data.tm_move(11), &"bubble_beam")
 	# Table de Rouge/Bleu régénérée (tools/gen_tm_compatibility.py, 59 espèces avec le J12 ;
-	# 61 avec Miaouss et Persan du J15, compatibles ; Osselait, Ossatueur et Léviator du J19).
+	# 61 avec Miaouss et Persan du J15, compatibles ; Osselait, Ossatueur et Léviator du J19 ;
+	# jalon 23 : Leveinard, compatible).
 	var compatible: Array[StringName] = []
 	for id: StringName in _data.get_species_ids():
 		if _data.can_learn_tm(id, 11):
@@ -248,6 +249,8 @@ func test_tm11_and_its_compatibilities() -> void:
 		&"krabby", &"kingler", &"cubone", &"marowak",
 		# Jalon 28 (T3) : Rhinoféros.
 		&"rhydon",
+		# Jalon 23 (T6) : Leveinard.
+		&"chansey",
 		# Jalon 20 (T7) : Kangourex et Aquali.
 		&"kangaskhan", &"horsea", &"seadra", &"goldeen", &"seaking", &"staryu", &"starmie",
 		&"gyarados",

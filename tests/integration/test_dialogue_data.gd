@@ -1100,10 +1100,10 @@ const SET_J14_BILL_CUTSCENES: Array[StringName] = [
 ## Sylphe, levé par la scène de Giovanni du 11F (T12) : retiré.
 ## Jalon 21 : `ghost_marowak_calmed` (6F) et `snorlax_route_*_woken` (Ronflex) sont levés par leurs
 ## scènes. Jalon 28 (Q28-1, 2026-10-22) : la porte de l'Arène de Jadielle et le guetteur lisent les 7
-## Badges (`badge_soul` : arène future, J23) ; plus aucune lecture de `silph_giovanni_defeated`.
-## Les Badges Volcan (Auguste, J25) et Marais (Morgane, J27) sont levés par leurs scènes depuis leur
-## fusion dans `main`.
-const FUTURE_FLAGS: Array[StringName] = [&"badge_soul"]
+## Badges ; plus aucune lecture de `silph_giovanni_defeated`.
+## Les Badges Volcan (Auguste, J25), Marais (Morgane, J27) et Âme (Koga, J23) sont levés par leurs
+## scènes depuis leur fusion dans `main`.
+const FUTURE_FLAGS: Array[StringName] = []
 ## Jalon 28 (T7, T8) : dialogues de l'Arène de Jadielle.
 const IDS_J28: Array[StringName] = [
 	&"viridian_gym_blackbelt_bertrand_after", &"viridian_gym_blackbelt_bertrand_before",
@@ -1485,12 +1485,20 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 	# retirées au T20).
 	var dialogues := DialogueLibrary.new()
 	var cutscenes := CutsceneLibrary.new()
-	for pair: Array in [[dialogues, "res://data/dialogues/"], [cutscenes, "res://data/cutscenes/"]]:
+	# J23 : fichiers générés (`j23_*`), vérifiés par `test_j23_data.gd` ; ici, seulement les
+	# drapeaux qu'ils lèvent (lus ailleurs). Ceux du J22 (`j22_*`) sont lus comme dans `main`.
+	var generated_dialogues := DialogueLibrary.new()
+	var generated_cutscenes := CutsceneLibrary.new()
+	for pair: Array in [[dialogues, "res://data/dialogues/", generated_dialogues],
+			[cutscenes, "res://data/cutscenes/", generated_cutscenes]]:
 		for file: String in DirAccess.get_files_at(pair[1]):
-			if file.get_extension() == "json" and not MapCatalog.is_qa_map(StringName(file)):
-				assert_true(pair[0].load_file((pair[1] as String).path_join(file)), file)
+			if file.get_extension() != "json" or MapCatalog.is_qa_map(StringName(file)):
+				continue
+			var library: Variant = pair[2] if file.begins_with("j23_") else pair[0]
+			assert_true(library.load_file((pair[1] as String).path_join(file)), file)
 	var set_flags := dialogues.get_set_flags() + cutscenes.get_set_flags() \
-		+ StarterChoice.get_set_flags(_offer)
+		+ StarterChoice.get_set_flags(_offer) + generated_dialogues.get_set_flags() \
+		+ generated_cutscenes.get_set_flags()
 	# Jalon 24 (T13) : « fossile prêt », posé par le code à l'arrivée sur Cramois'Île
 	# ([FossilReadyGate]).
 	set_flags.append(&"fossil_ready")
@@ -2434,7 +2442,7 @@ func _real_ids() -> Array[StringName]:
 ## Sans les cartes de QA ni les données du jalon 22 (fichiers `j22_*.json`, vérifiés par
 ## `test_j22_data.gd`).
 func _without_qa(ids: Array[StringName]) -> Array[StringName]:
-	var j22 := J22Ids.in_dir("res://data/dialogues/")
+	var j22 := J22Ids.generated_in_dir("res://data/dialogues/")
 	var result: Array[StringName] = []
 	for id: StringName in ids:
 		if not MapCatalog.is_qa_map(id) and not j22.has(id):

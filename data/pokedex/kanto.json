@@ -609,10 +609,6 @@
 			"height": 0.4, "weight": 6.5,
 			"description": "Il porte le crâne de sa mère comme un casque. Les nuits de lune, on l'entend pleurer doucement."
 		},
-		"tauros": {
-			"height": 1.4, "weight": 88.4,
-			"description": "Impétueux, il fonce tête baissée sur tout ce qui bouge. Il se fouette les flancs de ses trois queues pour se donner du courage."
-		},
 		"rhydon": {
 			"height": 1.9, "weight": 120.0,
 			"description": "Sa peau, dure comme une armure, supporte la chaleur de la lave. Sa corne peut briser le diamant."
@@ -676,6 +672,38 @@
 		"snorlax": {
 			"height": 2.1, "weight": 460.0,
 			"description": "Il ne fait que manger et dormir. Quand il s'endort au milieu d'un chemin, plus personne ne passe."
+		},
+		"chansey": {
+			"height": 1.1, "weight": 34.6,
+			"description": "Doux et attentionné, il porte un œuf dans sa poche. On dit qu'il porte bonheur à ceux qui le croisent, mais il fuit dès qu'on l'approche.",
+			"notes": [
+				{ "id": "chansey_shy", "unlock": { "seen": 1 },
+				  "text": "Au moindre bruit, il serre son œuf contre lui et détale dans les hautes herbes." }
+			]
+		},
+		"scyther": {
+			"height": 1.5, "weight": 56.0,
+			"description": "Ses bras tranchants fauchent les hautes herbes d'un seul geste. Il bondit si vite qu'on ne voit qu'un éclair vert.",
+			"notes": [
+				{ "id": "scyther_hiss", "unlock": { "seen": 1 },
+				  "text": "Un sifflement court dans l'herbe, puis plus rien : il est déjà passé." }
+			]
+		},
+		"pinsir": {
+			"height": 1.5, "weight": 55.0,
+			"description": "Ses deux grandes cornes serrent leur proie sans la lâcher. Par temps froid, il se cache au creux des arbres.",
+			"notes": [
+				{ "id": "pinsir_wait", "unlock": { "seen": 1 },
+				  "text": "Il reste immobile des heures, cornes ouvertes, jusqu'à ce qu'une proie passe à portée." }
+			]
+		},
+		"tauros": {
+			"height": 1.4, "weight": 88.4,
+			"description": "Impétueux, il fonce tête baissée sur tout ce qui bouge. Il se fouette les flancs de ses trois queues pour se donner du courage.",
+			"notes": [
+				{ "id": "tauros_herd", "unlock": { "seen": 1 },
+				  "text": "Au moindre signal, tout le troupeau charge : mieux vaut s'écarter de son chemin." }
+			]
 		}
 	}
 }

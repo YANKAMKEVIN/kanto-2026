@@ -48,7 +48,7 @@ const _EFFECT_KEYS: Dictionary[MoveEffect.Kind, Array] = {
 	MoveEffect.Kind.STAT_STAGE: ["kind", "stat", "stages", "target", "chance"],
 	MoveEffect.Kind.RECOIL: ["kind", "fraction"],
 	MoveEffect.Kind.SEED: ["kind", "fraction", "immune_types"],
-	MoveEffect.Kind.STATUS: ["kind", "status", "chance"],
+	MoveEffect.Kind.STATUS: ["kind", "status", "chance", "toxic"],
 	MoveEffect.Kind.CONFUSION: ["kind", "chance"],
 	MoveEffect.Kind.HITS: ["kind", "min", "max"],
 	MoveEffect.Kind.FLINCH: ["kind", "chance"],
@@ -79,7 +79,7 @@ const _EFFECT_KEYS: Dictionary[MoveEffect.Kind, Array] = {
 ## « amount » : obligatoire pour FIXED_DAMAGE « value » seulement ([method _parse_effect]) ;
 ## « invulnerable » : CHARGE seulement (jalon 14).
 const _EFFECT_OPTIONAL: Array[String] = ["chance", "immune_types", "amount", "invulnerable",
-	"stat_up"]
+	"stat_up", "toxic"]
 ## Bornes des nombres de tours de TRAP et DISABLE, et des dégâts de FIXED_DAMAGE « value ».
 const _EFFECT_MAX_TURNS: int = 8
 const _FIXED_VALUE_MAX: int = 999
@@ -683,6 +683,13 @@ func _parse_effect(value: Variant, where: String) -> MoveEffect:
 					", ".join(PackedStringArray(StatusRules.KNOWN))])
 			else:
 				effect.status = StringName(entry["status"])
+		# Jalon 23 (T18) : poison grave (Toxik), seulement avec « status » : « poison ».
+		if entry.has("toxic"):
+			if not entry["toxic"] is bool or effect.status != StatusRules.POISON:
+				ok = _fail("%s : « toxic » est un booléen, avec « status » : « poison »"
+					% where)
+			else:
+				effect.toxic = entry["toxic"]
 		if entry.has("chance"):
 			if _read_int(entry["chance"], 1, 100, where + " chance"):
 				effect.chance = int(entry["chance"])

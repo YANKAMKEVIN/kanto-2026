@@ -15,6 +15,7 @@ extends SceneTree
 ## Jalon 17 (jalon-17.md §2.12.1) : les huit espèces de la Route 11 et de la Cave Taupiqueur.
 ## Jalon 19 (jalon-19.md §2.12, T3) : Fantominus, Spectrum, Noeunoeuf, Léviator. Osselait
 ## et Ossatueur n'en ont pas : ils ne s'affichent jamais au J19 (SPECTRE).
+## Jalon 23 (jalon-23.md §2.14) : Leveinard, Insécateur, Scarabrute, Tauros (Parc Safari).
 ## Pixel art 64 × 64 natif, affiché en NEAREST par le BattleStage (×4 de dos, ×3 de face) :
 ##   assets/sprites/pokemon/placeholder/<espèce>_front.png   (vue de face : l'adversaire)
 ##   assets/sprites/pokemon/placeholder/<espèce>_back.png    (vue de dos : le Pokémon du joueur)
@@ -72,6 +73,9 @@ const SPECIES: Array[String] = [
 	# acceptés [D]) et Ronflex (dos de combat ; le dos peint de la série 23 est le prototype
 	# battle_proto/dos_ia_143.png, comme les autres dos IA). Ajouts en fin.
 	"poliwag", "tentacool", "snorlax",
+	# Jalon 23 (jalon-23.md §2.14, T6) : les quatre espèces rares du Parc Safari sans lien avec un
+	# autre jalon (Mimitoss, Doduo, Tadmorv, Smogogo et leurs lignées viennent du J22).
+	"chansey", "scyther", "pinsir", "tauros",
 ]
 const OUTLINE := Color("#1c1c28")
 const EYE := Color("#1c1c28")
@@ -1916,6 +1920,102 @@ func _draw_gyarados(img: Image, back: bool) -> void:
 	_line(img, Vector2(22, 20), Vector2(12, 26), WHITE, 1)
 	_line(img, Vector2(42, 20), Vector2(52, 26), WHITE, 1)
 
+## Leveinard : œuf rose sur pattes, poche ventrale avec un œuf blanc, mèches sur les côtés.
+func _draw_chansey(img: Image, back: bool) -> void:
+	var skin := Color("#f0a8b8")
+	_r(img, 20, 56, 9, 6, skin.darkened(0.15))
+	_r(img, 35, 56, 9, 6, skin.darkened(0.15))
+	_e(img, 32, 36, 21, 24, skin, true)
+	for side: float in [-1.0, 1.0]:
+		_e(img, 32 + side * 22, 26, 4, 3, skin.darkened(0.1), true)
+		_e(img, 32 + side * 22, 32, 4, 3, skin.darkened(0.1), true)
+	if back:
+		_e(img, 32, 52, 5, 4, skin.lightened(0.1), true)
+		return
+	_e(img, 18, 42, 4, 6, skin, true)
+	_e(img, 46, 42, 4, 6, skin, true)
+	_e(img, 32, 48, 10, 7, skin.lightened(0.15))
+	_e(img, 32, 45, 6, 7, WHITE, true)
+	_r(img, 24, 24, 4, 4, EYE)
+	_r(img, 37, 24, 4, 4, EYE)
+	_r(img, 24, 24, 1, 1, WHITE)
+	_r(img, 37, 24, 1, 1, WHITE)
+	_r(img, 29, 32, 6, 2, Color("#b05068"))
+
+
+## Insécateur : mante verte dressée, deux faux blanches, ailes translucides.
+func _draw_scyther(img: Image, back: bool) -> void:
+	var skin := Color("#68b848")
+	var blade := Color("#a8b4a0")
+	var wing := Color("#f4f4f4", 0.85)
+	_e(img, 18, 30, 8, 13, wing)
+	_e(img, 46, 30, 8, 13, wing)
+	_line(img, Vector2(26, 46), Vector2(20, 61), skin.darkened(0.2), 4)
+	_line(img, Vector2(38, 46), Vector2(44, 61), skin.darkened(0.2), 4)
+	_e(img, 32, 40, 10, 12, skin, true)
+	_e(img, 32, 52, 7, 8, Color("#d8d090"), true)
+	_e(img, 32, 18, 9, 9, skin, true)
+	for side: float in [-1.0, 1.0]:
+		var elbow := Vector2(32 + side * 12, 34)
+		_line(img, Vector2(32 + side * 7, 32), elbow, skin, 3)
+		_line(img, elbow, Vector2(32 + side * 20, 18), blade, 3)
+		_line(img, Vector2(32 + side * 20, 18), Vector2(32 + side * 24, 24), blade, 2)
+	if back:
+		return
+	_r(img, 26, 15, 4, 4, Color("#c03030"))
+	_r(img, 34, 15, 4, 4, Color("#c03030"))
+	_r(img, 27, 16, 2, 2, EYE)
+	_r(img, 35, 16, 2, 2, EYE)
+	_line(img, Vector2(29, 10), Vector2(24, 4), skin.darkened(0.2), 2)
+
+
+## Scarabrute : scarabée brun trapu, deux grandes cornes-pinces grises à dents.
+func _draw_pinsir(img: Image, back: bool) -> void:
+	var shell := Color("#a07850")
+	var horn := Color("#d8d4c8")
+	_r(img, 18, 54, 8, 8, shell.darkened(0.2))
+	_r(img, 38, 54, 8, 8, shell.darkened(0.2))
+	_e(img, 32, 42, 17, 16, shell, true)
+	for y: int in [36, 44, 52]:
+		_line(img, Vector2(20, y), Vector2(44, y), shell.darkened(0.25))
+	for side: float in [-1.0, 1.0]:
+		_line(img, Vector2(32 + side * 6, 26), Vector2(32 + side * 18, 12), horn, 4)
+		_line(img, Vector2(32 + side * 18, 12), Vector2(32 + side * 12, 3), horn, 3)
+		for t: float in [0.35, 0.7]:
+			var p := Vector2(32 + side * 6, 26).lerp(Vector2(32 + side * 18, 12), t)
+			_r(img, int(p.x - side * 3), int(p.y), 2, 2, horn.darkened(0.2))
+	_e(img, 32, 28, 9, 7, shell.darkened(0.08), true)
+	if back:
+		return
+	_r(img, 26, 26, 4, 3, Color("#f0f0f0"))
+	_r(img, 34, 26, 4, 3, Color("#f0f0f0"))
+	_r(img, 27, 27, 2, 2, EYE)
+	_r(img, 35, 27, 2, 2, EYE)
+	_line(img, Vector2(28, 32), Vector2(36, 32), EYE)
+
+
+## Tauros : taureau brun, crinière sombre, cornes claires, trois queues fouettant.
+func _draw_tauros(img: Image, back: bool) -> void:
+	var fur := Color("#b8865a")
+	var mane := Color("#5a4030")
+	var horn := Color("#e8e0c8")
+	for i: int in 3:
+		var end := Vector2(60, 26 + i * 8)
+		_line(img, Vector2(50, 40), end, mane, 2)
+	_e(img, 34, 42, 20, 12, fur, true)
+	for x: int in [16, 26, 40, 50]:
+		_r(img, x - 3, 52, 6, 10, fur.darkened(0.18))
+	_e(img, 20, 34, 10, 10, mane, true)
+	_e(img, 18, 28, 9, 8, fur, true)
+	_line(img, Vector2(12, 22), Vector2(4, 14), horn, 3)
+	_line(img, Vector2(24, 22), Vector2(32, 14), horn, 3)
+	if back:
+		return
+	_r(img, 13, 26, 3, 3, EYE)
+	_r(img, 21, 26, 3, 3, EYE)
+	_e(img, 18, 33, 5, 3, fur.lightened(0.15))
+	_r(img, 16, 33, 1, 1, EYE)
+	_r(img, 20, 33, 1, 1, EYE)
 
 # --- Alakazam, Lokhlass (jalon 26) ------------------------------------------------
 

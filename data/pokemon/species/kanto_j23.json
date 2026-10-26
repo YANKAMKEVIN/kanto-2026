@@ -1,0 +1,38 @@
+{
+	"chansey": {
+		"dex": 113, "name": "Leveinard", "types": ["normal"],
+		"base_stats": { "hp": 250, "atk": 5, "def": 5, "spa": 35, "spd": 105, "spe": 50 },
+		"male_ratio": 0.0, "growth_rate": "fast", "base_exp": 395, "catch_rate": 30,
+		"learnset": [
+			[1, "pound"], [1, "double_slap"], [24, "sing"], [30, "growl"], [38, "minimize"],
+			[44, "defense_curl"], [48, "light_screen"], [54, "double_edge"]
+		]
+	},
+	"scyther": {
+		"dex": 123, "name": "Insécateur", "types": ["bug", "flying"],
+		"base_stats": { "hp": 70, "atk": 110, "def": 80, "spa": 55, "spd": 80, "spe": 105 },
+		"male_ratio": 0.5, "growth_rate": "medium_fast", "base_exp": 100, "catch_rate": 45,
+		"learnset": [
+			[1, "quick_attack"], [17, "leer"], [20, "focus_energy"], [24, "double_team"],
+			[29, "slash"], [35, "swords_dance"], [42, "agility"]
+		]
+	},
+	"pinsir": {
+		"dex": 127, "name": "Scarabrute", "types": ["bug"],
+		"base_stats": { "hp": 65, "atk": 125, "def": 100, "spa": 55, "spd": 70, "spe": 85 },
+		"male_ratio": 0.5, "growth_rate": "slow", "base_exp": 175, "catch_rate": 45,
+		"learnset": [
+			[1, "vise_grip"], [25, "seismic_toss"], [30, "guillotine"], [36, "focus_energy"],
+			[43, "harden"], [49, "slash"], [54, "swords_dance"]
+		]
+	},
+	"tauros": {
+		"dex": 128, "name": "Tauros", "types": ["normal"],
+		"base_stats": { "hp": 75, "atk": 100, "def": 95, "spa": 40, "spd": 70, "spe": 110 },
+		"male_ratio": 1.0, "growth_rate": "slow", "base_exp": 172, "catch_rate": 45,
+		"learnset": [
+			[1, "tackle"], [21, "stomp"], [28, "tail_whip"], [35, "leer"], [44, "rage"],
+			[51, "take_down"]
+		]
+	}
+}

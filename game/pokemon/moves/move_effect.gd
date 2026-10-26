@@ -164,6 +164,8 @@ var fraction: float = 0.0
 var immune_types: Array[StringName] = []
 ## STATUS : statut infligé à la cible ([constant StatusRules.KNOWN]).
 var status: StringName = &""
+## Jalon 23 (T18) : STATUS « poison » grave (Toxik, [ToxicRules]) ; [code]"toxic": true[/code].
+var toxic: bool = false
 ## HITS : nombre de coups (2 et 2 : deux coups ; 2 et 5 : de deux à cinq).
 var min_hits: int = 1
 var max_hits: int = 1

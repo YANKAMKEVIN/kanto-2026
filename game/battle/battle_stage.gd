@@ -870,20 +870,12 @@ func play_throw() -> void:
 	var target := _foe_center()
 	_ball_rest = _anchor(foe) + Vector2(0.0, -BALL_RADIUS * BALL_REST_SCALE + 6.0)
 	_absorb_point = target
-	# Le dresseur entre en glissant depuis la gauche.
-	_thrower.texture = THROWER_TEXTURE
-	_thrower.scale = Vector2.ONE * scale
-	_thrower.position = feet + Vector2(-THROWER_SLIDE, 0.0)
-	_thrower.modulate = Color(1, 1, 1, 0)
-	_thrower.visible = true
-	var enter := _new_tween()
-	enter.set_parallel(true)
-	enter.tween_property(_thrower, ^"position", feet, THROWER_ENTER_DURATION) \
-		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	enter.tween_property(_thrower, ^"modulate:a", 1.0, THROWER_ENTER_DURATION)
-	await _play(enter)
-	if not _active:
-		return
+	# Le dresseur entre en glissant depuis la gauche (J23 : sauf s'il est déjà en place, dos du
+	# joueur de la rencontre Safari, [method play_trainer_enter]).
+	if not is_trainer_shown():
+		await play_trainer_enter()
+		if not _active:
+			return
 	# La Ball part de sa main, en arc, et tourne sur elle-même.
 	var hand := feet + THROWER_HAND * scale
 	_ball.visible = true
@@ -1618,3 +1610,32 @@ func _set_burst(t: float, origin: Vector2, color: Color) -> void:
 		spark.position = origin + Vector2.from_angle(angle) * SPARK_DISTANCE * out
 		spark.scale = Vector2.ONE * lerpf(0.18, 0.05, t)
 		spark.modulate = Color(color, 1.0 - t)
+
+
+# --- J23 : rencontre Safari, dos du joueur ---------------------------------------------------
+
+## Coroutine (~0,3 s) : le dresseur de dos (image provisoire du lancer, `heros_lancer.png`) entre
+## en glissant depuis la gauche et reste à sa place (rencontre Safari : aucun Pokémon allié,
+## dossier 26 §5.1 ; art final « dos du joueur » au lot 23.0, `jalon-23.md` §2.17). Sans effet
+## hors combat ou s'il est déjà en place.
+func play_trainer_enter() -> void:
+	if not _active or is_trainer_shown():
+		return
+	_build_capture_props()
+	var feet := thrower_feet(_view_size())
+	_thrower.texture = THROWER_TEXTURE
+	_thrower.scale = Vector2.ONE * THROWER_SCALE
+	_thrower.position = feet + Vector2(-THROWER_SLIDE, 0.0)
+	_thrower.modulate = Color(1, 1, 1, 0)
+	_thrower.visible = true
+	var enter := _new_tween()
+	enter.set_parallel(true)
+	enter.tween_property(_thrower, ^"position", feet, THROWER_ENTER_DURATION) \
+		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	enter.tween_property(_thrower, ^"modulate:a", 1.0, THROWER_ENTER_DURATION)
+	await _play(enter)
+
+
+## Le dresseur de dos est en place (visible, opaque).
+func is_trainer_shown() -> bool:
+	return _thrower != null and _thrower.visible and _thrower.modulate.a >= 0.99

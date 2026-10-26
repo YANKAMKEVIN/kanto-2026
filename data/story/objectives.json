@@ -1,5 +1,17 @@
 [
 	{
+		"id": "return_gold_teeth",
+		"text": "rapporter ses dents au Gardien.",
+		"if": ["got_safari_zone_west_dents_or"],
+		"unless": ["gave_gold_teeth"]
+	},
+	{
+		"id": "challenge_koga",
+		"text": "défier Koga.",
+		"if": ["got_hm03"],
+		"unless": ["badge_soul"]
+	},
+	{
 		"id": "visit_fuji",
 		"text": "rendre visite à M. Fuji.",
 		"if": ["fuji_rescued"],

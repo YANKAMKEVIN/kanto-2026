@@ -110,13 +110,13 @@ func test_continue_resumes_his_game_and_the_autosave_keeps_everything() -> void:
 	var saved: Dictionary = JSON.parse_string(_fs.files[SAVE_PATH])
 	var original := _original()
 	# J15 : réécrite en v7, avec la seule Pension vide en plus.
-	assert_eq(int(saved["version"]), 7, "v7 (J15)")
+	assert_eq(int(saved["version"]), SaveSystem.VERSION, "v7 (J15), v8 depuis le J23")
 	assert_eq(saved.get("daycare"), {}, "Pension vide")
 	assert_true(float(saved["play_time"]) >= float(original["play_time"]), "temps de jeu")
 	saved.erase("play_time")
 	original.erase("play_time")
 	saved.erase("daycare")
-	original["version"] = 7
+	original["version"] = SaveSystem.VERSION
 	assert_eq(_json(saved), _json(original), "même partie, champ pour champ")
 
 

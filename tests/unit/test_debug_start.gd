@@ -763,3 +763,19 @@ func test_veil_is_validated() -> void:
 		assert_false(start.add_from_dict(dict, _data, _items, "t"), str(dict))
 		assert_string_contains("\n".join(start.get_errors()), "veil")
 	assert_push_error_count(3, "une erreur par cas")
+
+
+## Jalon 23 (T11 ; repris de `test_j23_qa_starts.gd`, retiré au T24 avec `safari_end_qa`) : la
+## clé « safari » ouvre une visite en cours (pas et Balls), drapeau `safari_active` posé.
+func test_safari_key_starts_a_visit_in_progress() -> void:
+	var start := DebugStart.new()
+	assert_true(start.add_from_dict({
+		"map": "safari_zone_east", "spawn": "arrivee_centre",
+		"party": [{ "species": "bulbasaur", "level": 38 }],
+		"safari": { "steps_left": 3, "balls_left": 2 },
+	}, _data, _items, "safari"), "\n".join(start.get_errors()))
+	var state: Node = autofree(GameStateScript.new())
+	start.apply(state, _data)
+	assert_true(state.safari.active)
+	assert_eq([state.safari.steps_left, state.safari.balls_left], [3, 2])
+	assert_true(state.flags.has_flag(&"safari_active"))

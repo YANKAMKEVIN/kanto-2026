@@ -33,7 +33,7 @@ extends RefCounted
 ## des Pokémon « uid », compteur « status_turns », compagnon « companion » ; dossier 14 §9,
 ## jalon-11.md §2.1), par-dessus la v5 d'OUV.1 ; 7 = jalon 15, T2 (Pension « daycare » :
 ## Pokémon déposé, XP en attente, niveau au dépôt ; dossier 18 §11, jalon-15.md §2.6).
-const VERSION: int = 7
+const VERSION: int = 8
 const DEFAULT_PATH: String = "user://save.json"
 const TEMP_SUFFIX: String = ".tmp"
 const CORRUPT_SUFFIX: String = ".corrupt"
@@ -186,6 +186,9 @@ static func upgrade(content: Dictionary, target: int = VERSION) -> Error:
 				# 6 → 7 (J15, jalon-15.md §2.6) : rien à transformer ; une partie sans « daycare »
 				# a une Pension vide (GameState.load_dict). Le numéro protège d'une build v6 qui
 				# perdrait le Pokémon déposé au premier autosave.
+				# 7 → 8 (J23, jalon-23.md §2.15) : rien à transformer ; « safari » absent = aucune
+				# visite du Parc Safari en cours (GameState.load_dict). Le numéro protège d'une
+				# build v7 qui perdrait le compteur de pas et de Balls au premier autosave.
 				pass
 		from += 1
 	content[VERSION_KEY] = target

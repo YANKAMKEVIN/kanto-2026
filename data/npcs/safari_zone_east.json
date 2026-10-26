@@ -1,0 +1,58 @@
+{
+	"guerison": {
+		"cell": [
+			21,
+			10
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "safari_zone_east_guerison",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_safari_zone_east_guerison"
+		]
+	},
+	"potion_max": {
+		"cell": [
+			3,
+			7
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "safari_zone_east_potion_max",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_safari_zone_east_potion_max"
+		]
+	},
+	"carbone": {
+		"cell": [
+			20,
+			13
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "safari_zone_east_carbone",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_safari_zone_east_carbone"
+		]
+	},
+	"ct37": {
+		"cell": [
+			15,
+			12
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "safari_zone_east_ct37",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_safari_zone_east_ct37"
+		]
+	}
+}

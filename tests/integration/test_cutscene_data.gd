@@ -287,6 +287,8 @@ const VARIANT_FLAGS: Dictionary = {
 	&"celadon_hidden_1": [PEWTER_FLAGS],
 	&"celadon_gym_erika": [PEWTER_FLAGS], &"celadon_gym_erika_tm_late": [PEWTER_FLAGS],
 	&"celadon_roof_trade": [PEWTER_FLAGS],
+	# Jalon 23 (T19) : Koga (scène et rattrapage de la CT06).
+	&"fuchsia_gym_koga": [PEWTER_FLAGS], &"fuchsia_gym_koga_tm_late": [PEWTER_FLAGS],
 	# Jalon 24 : objets, caches, Artikodin, porte de l'Arène, CT35, fossiles.
 	&"route_20_item_1": [PEWTER_FLAGS], &"route_21_item_1": [PEWTER_FLAGS],
 	&"seafoam_b2f_hidden_1": [PEWTER_FLAGS], &"seafoam_b4f_hidden_1": [PEWTER_FLAGS],
@@ -397,6 +399,8 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"souterrain_hidden_1": &"underground_path_7_8", &"souterrain_hidden_2": &"underground_path_7_8",
 	&"celadon_hidden_1": &"celadon_city", &"celadon_gym_erika": &"celadon_gym",
 	&"celadon_gym_erika_tm_late": &"celadon_gym", &"celadon_roof_trade": &"celadon_dept_roof",
+	# Jalon 23 (T19) : Koga (son dialogue).
+	&"fuchsia_gym_koga": &"fuchsia_gym", &"fuchsia_gym_koga_tm_late": &"fuchsia_gym",
 	# Jalon 20 (T21) : choix OUI de l'affiche, dialogues du sbire à la Clé, de Giovanni et des
 	# Poké Balls, objets et caches du repaire.
 	&"game_corner_switch": &"celadon_game_corner", &"rocket_hideout_key_drop": &"rocket_hideout_b4f",
@@ -769,6 +773,7 @@ func test_library_loads_without_error() -> void:
 		&"tower_7f_fuji_rescue", &"pokemon_house_flute", &"route_16_visited",
 		&"snorlax_route_16_wake"]
 		+ J18_IDS + J20_T21_IDS + J25_IDS + J26_T9_ITEMS.keys()
+		# Jalon 23 (T19) : Koga dans `j23_fuchsia_gym.json` (fichiers générés, test_j23_data).
 		# Jalon 26 (T11, T12) : rival n° 6, Lokhlass, Giovanni, Master Ball, objets du 7F.
 		+ [&"rival_silph", &"silph_co_lapras_gift", &"silph_co_giovanni", &"silph_co_master_ball",
 		&"silph_co_7f_item_10", &"silph_co_7f_item_11"]
@@ -862,14 +867,15 @@ func test_every_trainer_and_item_step_exists() -> void:
 ## Jalon 10 (T9) : chaque Dresseur présenté par une carte en a une, chaque badge remis existe, et
 ## l'étape « badge » d'une scène suit le combat qui lève déjà son drapeau (« win »).
 func test_every_champion_card_and_badge_step_exists() -> void:
+	# Jalon 23 (T19) : Koga.
 	assert_eq(_cutscenes.get_card_trainer_ids(), [&"celadon_gym_erika", &"cerulean_gym_misty",
-		&"cinnabar_gym_blaine", &"giovanni_hideout", &"pewter_gym_brock", &"saffron_gym_sabrina",
+		&"cinnabar_gym_blaine", &"fuchsia_gym_koga", &"giovanni_hideout", &"pewter_gym_brock", &"saffron_gym_sabrina",
 		&"silph_co_giovanni", &"vermilion_gym_surge", &"viridian_gym_giovanni"] as Array[StringName])
 	for id: StringName in _cutscenes.get_card_trainer_ids():
 		var trainer := _trainers.get_trainer(id)
 		assert_true(trainer != null and trainer.has_card(), "« %s » a une carte" % id)
 	assert_eq(_cutscenes.get_badge_ids(), [&"boulder", &"cascade", &"earth", &"marsh", &"rainbow",
-		&"thunder", &"volcano"] as Array[StringName])
+		&"soul", &"thunder", &"volcano"] as Array[StringName])
 	for id: StringName in _cutscenes.get_badge_ids():
 		assert_true(_badges.has_badge(id), "badge « %s » connu" % id)
 	for id: StringName in _real_ids():
@@ -1460,7 +1466,7 @@ func _real_ids() -> Array[StringName]:
 ## Sans les cartes de QA ni les données du jalon 22 (fichiers `j22_*.json`, vérifiés par
 ## `test_j22_data.gd`).
 func _without_qa(ids: Array[StringName]) -> Array[StringName]:
-	var j22 := J22Ids.in_dir("res://data/cutscenes/")
+	var j22 := J22Ids.generated_in_dir("res://data/cutscenes/")
 	var result: Array[StringName] = []
 	for id: StringName in ids:
 		if not MapCatalog.is_qa_map(id) and not j22.has(id):

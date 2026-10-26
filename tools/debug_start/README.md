@@ -310,6 +310,16 @@ reste éprouvée par `test_cutscene_static_encounter.gd` et `test_cutscene_stati
 
 | `poke_flute_qa.json` | J21 (T20) : Route 12, `from_route_11` (0, 93..94) tourné →, à 24 cases à l'ouest de Ronflex ; mêmes équipe et Sac que `route_12_qa` (Poké Flûte, Nidorino endormi) [D : sans table « Paras » forcée] |
 
+## Jalon 23 (Parc Safari, CS03, CS04, Koga)
+
+| Fichier | Partie |
+|---|---|
+| `koga_qa.json` | Entrée de l'Arène de Parmanie (spawn `entree`, tourné ↑), équipe d'environ N40 (Dracaufeu, Kadabra, Voltali, Aquali, Nidoking, Roucarnage), CS01 et **CS03** au Sac, Badges jusqu'au Prisme (pas le Badge Âme). Murs invisibles, six Dresseurs, Koga (défaite → Centre de Parmanie), Badge Âme et CT06 ; ensuite, Surf au bouton d'action sur la rive de la Route 19. Sert à `test_koga_flow` et `test_j23_surf_after_koga` : **gardé à la clôture** |
+
+Départs `safari_qa`, `safari_end_qa` et `warden_qa` (et leur test `test_j23_qa_starts`)
+**retirés à la clôture (T24)** ; la clé `safari` (visite en cours : `steps_left`, `balls_left`)
+reste éprouvée par `test_debug_start`.
+
 ## Jalon 26 (T14) : Safrania et la Sylphe SARL (`docs/tech/jalon-26.md` §2.6)
 
 Le **starter** de la partie est le premier de l'équipe (`DebugStart`) : le rival n° 6 (`rival_silph`)

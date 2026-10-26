@@ -1,0 +1,34 @@
+{
+	"safari_zone_east_panneau_maison_repos": {
+		"narration": true,
+		"pages": [
+			"MAISON DE REPOS"
+		]
+	},
+	"safari_zone_east_panneau_conseils": {
+		"narration": true,
+		"pages": [
+			"CONSEIL DE DRESSEUR",
+			"Le compteur ne baisse que quand tu marches !"
+		]
+	},
+	"safari_zone_east_panneau_zone": {
+		"narration": true,
+		"pages": [
+			"PARC SAFARI — ZONE EST",
+			"Ouest : ZONE CENTRE"
+		]
+	},
+	"safari_zone_east_guerison": {
+		"cutscene": "safari_zone_east_guerison"
+	},
+	"safari_zone_east_potion_max": {
+		"cutscene": "safari_zone_east_potion_max"
+	},
+	"safari_zone_east_carbone": {
+		"cutscene": "safari_zone_east_carbone"
+	},
+	"safari_zone_east_ct37": {
+		"cutscene": "safari_zone_east_ct37"
+	}
+}

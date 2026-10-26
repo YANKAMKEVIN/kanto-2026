@@ -850,10 +850,12 @@ func test_gift_pokemon_without_say_stored() -> void:
 
 
 func test_gift_pokemon_kind_is_last_in_the_enum() -> void:
-	# Jalon 21 : FLUTE vient après ; puis J25 : « unset », « toggle », « trade », en fin d'enum.
+	# Jalon 21 : FLUTE vient après ; puis J25 : « unset », « toggle », « trade » ; puis J23 :
+	# « safari », en fin d'enum.
 	assert_eq(CutsceneStep.Kind.GIFT_POKEMON, CutsceneStep.Kind.FLUTE - 1, "en fin d'enum")
-	assert_eq(CutsceneStep.Kind.FLUTE, CutsceneStep.Kind.size() - 4, "flute avant les étapes du J25")
-	assert_eq(CutsceneStep.Kind.TRADE, CutsceneStep.Kind.size() - 1, "trade en fin d'enum")
+	assert_eq(CutsceneStep.Kind.FLUTE, CutsceneStep.Kind.size() - 5, "flute avant le J25 et le J23")
+	assert_eq(CutsceneStep.Kind.TRADE, CutsceneStep.Kind.size() - 2, "trade avant safari")
+	assert_eq(CutsceneStep.Kind.SAFARI, CutsceneStep.Kind.size() - 1, "J23 en fin d'enum")
 	assert_eq(CutsceneStep.TYPE_KEYS[CutsceneStep.Kind.GIFT_POKEMON], "gift_pokemon")
 	assert_eq(CutsceneStep.TYPE_KEYS.size(), CutsceneStep.Kind.size())
 
@@ -915,8 +917,9 @@ func test_real_eevee_gift_scene() -> void:
 # --- Jalon 25 : étapes « unset », « toggle », « trade » ----------------------------------
 
 func test_j25_kinds_are_last_in_the_enum() -> void:
-	assert_eq(CutsceneStep.Kind.TRADE, CutsceneStep.Kind.size() - 1, "en fin d'enum")
-	assert_eq(CutsceneStep.TYPE_KEYS.slice(-3), ["unset", "toggle", "trade"])
+	# Fusion de main dans jalon-23 : « safari » (J23) vient après.
+	assert_eq(CutsceneStep.Kind.TRADE, CutsceneStep.Kind.size() - 2, "juste avant « safari »")
+	assert_eq(CutsceneStep.TYPE_KEYS.slice(-4), ["unset", "toggle", "trade", "safari"])
 	assert_eq(CutsceneStep.TYPE_KEYS.size(), CutsceneStep.Kind.size())
 
 

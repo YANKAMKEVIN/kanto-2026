@@ -164,6 +164,12 @@ func show_actions(enabled: Dictionary[StringName, bool]) -> void:
 	_open_actions()
 
 
+## J23 : libellés de la grille d'actions (rencontre Safari) ; vide : ceux d'origine
+## ([method ActionGrid.set_labels]).
+func set_action_labels(labels: Dictionary[StringName, String]) -> void:
+	_actions.set_labels(labels)
+
+
 ## Montre les capacités [param views] (4 au plus) et « ‹ », après la sortie de la zone
 ## affichée.
 func show_moves(views: Array[BattleMoveView]) -> void:

@@ -1,0 +1,40 @@
+# Maison de repos du Parc Safari (safari_zone_{center,east,north,west}_rest_house) — grille
+# fonctionnelle (jalon 23, dossier 26 §3 ; préparée le 2026-10-19). UN SEUL intérieur, réutilisé
+# pour les quatre zones (dossier 26 §3, peint une fois). Organisation RB (une salle, deux ou trois
+# visiteurs, aucun PC utilisable : RB déclare un PC hors de la carte), enveloppe des intérieurs
+# du projet (comme la maison 1 de Carmin). Vérifiée par tools/art/plan_check_safari.py.
+#
+# 15 × 10. Le compteur de pas CONTINUE à l'intérieur (RB, dossier 26 §4).
+# Visiteurs par copie (textes 15 à 17 ; RB : 2 ou 3 PNJ) — positions communes, présence par zone :
+#   pnj_1 (3, 4) : présent dans les quatre maisons ; pnj_2 (11, 4) : Centre, Est, Nord, Ouest ;
+#   pnj_3 (7, 6) : Est, Nord, Ouest (RB : 3 PNJ dans ces trois maisons, 2 au Centre).
+# Sortie : vers la zone d'où l'on vient (attribut vers= donné par la copie, voir POSITIONS).
+#
+# Légende :
+#   K mur (bloqué)          . sol (praticable)
+#   X sortie vers la zone (praticable : paillasson, PUSH ↓)
+#   t table et bancs (bloqués) (5..9, 3)      b banc (bloqué) (2..3, 7) et (11..12, 7)
+#   x plante (bloquée) (2, 3), (12, 3)
+
+PRATICABLES .X
+
+GRILLE 15 10
+00 KKKKKKKKKKKKKKK
+01 KKKKKKKKKKKKKKK
+02 KKKKKKKKKKKKKKK
+03 KKx..ttttt..xKK
+04 KK...........KK
+05 KK...........KK
+06 KK...........KK
+07 KKbb.......bbKK
+08 KKKKKKXXXKKKKKK
+09 KKKKKKKKKKKKKKK
+FIN
+
+POSITIONS
+sortie                 warp           6..8,8       libre   vers=zone_d_origine  # PUSH ↓ → arrivee_maison_repos de la zone (centre (17,20), est (25,10), nord (35,4), ouest (11,12))
+entree                 spawn          7,7          libre   facing=up  # arrivée depuis la zone
+pnj_1                  pnj            3,4          bloque  facing=right  # texte 15 (quatre maisons)
+pnj_2                  pnj            11,4         bloque  facing=left  # texte 16 (quatre maisons)
+pnj_3                  pnj            7,6          bloque  facing=up   # texte 17 (Est, Nord, Ouest)
+FIN

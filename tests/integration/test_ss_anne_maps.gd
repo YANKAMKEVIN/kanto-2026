@@ -104,7 +104,8 @@ func test_metadata_light_zone_and_interiors() -> void:
 	assert_true(zones.interior_title_of(&"ss_anne_main_deck"))
 	assert_false(zones.interior_title_of(&"vermilion_gym"), "l'Arène reste sans titre")
 	for id: StringName in zones.get_ids():
-		assert_eq(zones.get_zone(id).interior_title, id == &"ss_anne",
+		# J23 (annexe A-12) : le Parc Safari aussi (Porte, Maison Secrète).
+		assert_eq(zones.get_zone(id).interior_title, id in [&"ss_anne", &"safari_zone"],
 			"%s : titre à l'intérieur" % id)
 
 
