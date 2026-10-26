@@ -474,6 +474,10 @@ enchaîne les attaques sans avoir à jouer, plus un vrai combat.
 
 **CV.0 — Socle et Éclair** (Opus, système nouveau)
 
+> **T1, T2, T5, T6 faits le 2026-10-26** sur la branche `combat-vivant` (hors scène ; données dans
+> `data/battle/move_fx/families.json` et `plancher.json`, code dans `game/battle/fx/`). Reste T3,
+> T4, T7, T8 après la fusion du J23.
+
 | Tâche | Contenu | Critère d'acceptation |
 |---|---|---|
 | T1 | `data/battle/move_fx/` (un fichier par lot) et `MoveFxCatalog` ; table de l'annexe A (famille de chaque attaque) | test : toute attaque des données a une entrée valide, une seule ; repli par type testé |

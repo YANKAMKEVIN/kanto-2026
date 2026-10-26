@@ -1,0 +1,193 @@
+{
+	"version": 1,
+	"_doc": "Familles d'effets de combat (docs/tech/combat-vivant.md §2.2, §2.6, §3). Les attaques sont dans les autres fichiers du dossier (plancher.json, puis un fichier par lot). Valeurs [D] (règle 4), réglées sur S24. phases : parts de la durée (anticipation, trajet, impact, retour ; somme 1) ; world.light_peak : lumière simulée du décor (0..1) ; world.flashes : éclats de lumière par attaque ; camera : zoom et tremblement (px) au plafond de limits.",
+	"durations": {
+		"_doc": "CV-2 (décision de Kevin du 2026-10-26) : durée en Complètes selon la puissance ; la durée suit la puissance dans la ligne (power_min → min, power_max → max). Coups multiples : chaque coup prend la première ligne. Ligne 3 aussi pour K.O. en un coup, Explosion / Destruction et les légendaires.",
+		"bands": [
+			{"power_min": 0, "power_max": 40, "min": 0.5, "max": 0.8},
+			{"power_min": 45, "power_max": 80, "min": 0.8, "max": 1.3},
+			{"power_min": 85, "power_max": 110, "min": 1.2, "max": 1.8},
+			{"power_min": 120, "power_max": 250, "min": 1.8, "max": 2.5}
+		],
+		"status_position": 0.5,
+		"fast": {"ratio": 0.4, "min": 0.3, "max": 0.5},
+		"charge_turn": {"full": 0.6, "fast": 0.3}
+	},
+	"limits": {
+		"zoom_max": 1.06,
+		"shake_max": 6.0,
+		"critical_zoom": 0.02,
+		"critical_shake": 1.5,
+		"reduced_flash_peak": 0.35,
+		"flashes_per_second": 3.0,
+		"reduced_particles": 0.5
+	},
+	"fallback": {
+		"_doc": "Repli d'une attaque sans entrée (comme SfxCatalog.move_sfx) : capacité de statut → by_category.status ; sinon le type, puis la catégorie.",
+		"by_type": {
+			"fire": "feu", "water": "eau", "electric": "electrique", "grass": "plante", "ice": "glace",
+			"psychic": "psy", "poison": "poison", "ground": "sol_roche", "rock": "sol_roche",
+			"flying": "vent", "ghost": "spectre", "dragon": "dragon", "dark": "spectre",
+			"fighting": "contact", "bug": "contact", "steel": "contact", "fairy": "energie"
+		},
+		"by_category": {"physical": "contact", "special": "energie", "status": "statut_moins"},
+		"impact": "coup"
+	},
+	"families": {
+		"contact": {
+			"name": "Contact", "target": "foe",
+			"bricks": {"launch": "crouch", "travel": "dash", "impact": "variant"},
+			"phases": {"anticipation": 0.25, "travel": 0.25, "impact": 0.3, "return": 0.2},
+			"world": {"light": "#FFFFFF", "light_peak": 0.0, "flashes": 0, "dust": true},
+			"camera": {"zoom": 1.03, "shake": 3.0}
+		},
+		"feu": {
+			"name": "Feu", "target": "foe",
+			"bricks": {"launch": "ember_glow", "travel": "flames", "impact": "ember_burst"},
+			"phases": {"anticipation": 0.2, "travel": 0.35, "impact": 0.3, "return": 0.15},
+			"world": {"light": "#FF9A3C", "light_peak": 0.45, "flashes": 1},
+			"camera": {"zoom": 1.03, "shake": 2.0}
+		},
+		"eau": {
+			"name": "Eau", "target": "foe",
+			"bricks": {"launch": "bubble_swell", "travel": "jet", "impact": "splash"},
+			"phases": {"anticipation": 0.2, "travel": 0.35, "impact": 0.3, "return": 0.15},
+			"world": {"light": "#7FC8FF", "light_peak": 0.15, "flashes": 0, "droplets": true},
+			"camera": {"zoom": 1.02, "shake": 2.0}
+		},
+		"electrique": {
+			"name": "Électrique", "target": "foe",
+			"bricks": {"launch": "charge_spark", "travel": "bolt", "impact": "spark_burst"},
+			"phases": {"anticipation": 0.25, "travel": 0.3, "impact": 0.3, "return": 0.15},
+			"world": {"light": "#FFF3A0", "light_peak": 0.55, "flashes": 2},
+			"camera": {"zoom": 1.04, "shake": 3.0}
+		},
+		"plante": {
+			"name": "Plante", "target": "foe",
+			"bricks": {"launch": "leaf_swirl", "travel": "leaves", "impact": "leaf_fall"},
+			"phases": {"anticipation": 0.2, "travel": 0.35, "impact": 0.3, "return": 0.15},
+			"world": {"light": "#B8F28A", "light_peak": 0.1, "flashes": 0, "foliage": true},
+			"camera": {"zoom": 1.02, "shake": 1.0}
+		},
+		"glace": {
+			"name": "Glace", "target": "foe",
+			"bricks": {"launch": "frost", "travel": "ice_beam", "impact": "ice_shards"},
+			"phases": {"anticipation": 0.2, "travel": 0.35, "impact": 0.3, "return": 0.15},
+			"world": {"light": "#CFEFFF", "light_peak": 0.3, "flashes": 1},
+			"camera": {"zoom": 1.02, "shake": 2.0}
+		},
+		"psy": {
+			"name": "Psy", "target": "foe",
+			"bricks": {"launch": "psy_aura", "travel": "rings", "impact": "distortion"},
+			"phases": {"anticipation": 0.25, "travel": 0.3, "impact": 0.3, "return": 0.15},
+			"world": {"light": "#FF9AD8", "light_peak": 0.2, "flashes": 0},
+			"camera": {"zoom": 1.03, "shake": 0.0}
+		},
+		"poison": {
+			"name": "Poison", "target": "foe",
+			"bricks": {"launch": "poison_bubbles", "travel": "sludge", "impact": "poison_drops"},
+			"phases": {"anticipation": 0.2, "travel": 0.35, "impact": 0.3, "return": 0.15},
+			"world": {"light": "#B86BFF", "light_peak": 0.1, "flashes": 0},
+			"camera": {"zoom": 1.02, "shake": 1.0}
+		},
+		"sol_roche": {
+			"name": "Sol et roche", "target": "foe",
+			"bricks": {"launch": "heavy_stomp", "travel": "rocks", "impact": "debris"},
+			"phases": {"anticipation": 0.25, "travel": 0.3, "impact": 0.3, "return": 0.15},
+			"world": {"light": "#D8B98A", "light_peak": 0.0, "flashes": 0, "dust": true, "foliage": true},
+			"camera": {"zoom": 1.03, "shake": 5.0}
+		},
+		"vent": {
+			"name": "Vol et vent", "target": "foe",
+			"bricks": {"launch": "wing_beat", "travel": "gust", "impact": "feathers"},
+			"phases": {"anticipation": 0.2, "travel": 0.35, "impact": 0.3, "return": 0.15},
+			"world": {"light": "#FFFFFF", "light_peak": 0.0, "flashes": 0, "foliage": true},
+			"camera": {"zoom": 1.02, "shake": 2.0}
+		},
+		"spectre": {
+			"name": "Spectre", "target": "foe",
+			"bricks": {"launch": "shadow_stretch", "travel": "dark_wave", "impact": "dark_veil"},
+			"phases": {"anticipation": 0.3, "travel": 0.3, "impact": 0.25, "return": 0.15},
+			"world": {"light": "#3A2350", "light_peak": 0.25, "flashes": 0, "darken": true},
+			"camera": {"zoom": 1.03, "shake": 0.0}
+		},
+		"dragon": {
+			"name": "Dragon", "target": "foe",
+			"bricks": {"launch": "dragon_aura", "travel": "blue_flame", "impact": "flare"},
+			"phases": {"anticipation": 0.25, "travel": 0.3, "impact": 0.3, "return": 0.15},
+			"world": {"light": "#5A7BFF", "light_peak": 0.35, "flashes": 1},
+			"camera": {"zoom": 1.04, "shake": 3.0}
+		},
+		"energie": {
+			"name": "Énergie", "target": "foe",
+			"bricks": {"launch": "light_point", "travel": "beam", "impact": "white_flare"},
+			"phases": {"anticipation": 0.25, "travel": 0.3, "impact": 0.3, "return": 0.15},
+			"world": {"light": "#FFFFFF", "light_peak": 0.4, "flashes": 1},
+			"camera": {"zoom": 1.04, "shake": 3.0}
+		},
+		"son": {
+			"name": "Son", "target": "foe",
+			"bricks": {"launch": "open_mouth", "travel": "sound_waves", "impact": "vibrate"},
+			"phases": {"anticipation": 0.2, "travel": 0.4, "impact": 0.25, "return": 0.15},
+			"world": {"light": "#FFFFFF", "light_peak": 0.0, "flashes": 0},
+			"camera": {"zoom": 1.0, "shake": 1.0}
+		},
+		"statut_plus": {
+			"name": "Statut positif", "target": "self",
+			"bricks": {"launch": "posture", "travel": "", "impact": "rising_aura"},
+			"phases": {"anticipation": 0.3, "travel": 0.0, "impact": 0.5, "return": 0.2},
+			"world": {"light": "#FFE8A0", "light_peak": 0.0, "flashes": 0},
+			"camera": {"zoom": 1.0, "shake": 0.0}
+		},
+		"statut_moins": {
+			"name": "Statut négatif", "target": "foe",
+			"bricks": {"launch": "glare", "travel": "haze", "impact": "falling_aura"},
+			"phases": {"anticipation": 0.25, "travel": 0.3, "impact": 0.3, "return": 0.15},
+			"world": {"light": "#A0A0C8", "light_peak": 0.0, "flashes": 0},
+			"camera": {"zoom": 1.0, "shake": 0.0}
+		},
+		"soin": {
+			"name": "Soin", "target": "self",
+			"bricks": {"launch": "soft_glow", "travel": "", "impact": "rising_sparkles"},
+			"phases": {"anticipation": 0.3, "travel": 0.0, "impact": 0.5, "return": 0.2},
+			"world": {"light": "#A8FFB0", "light_peak": 0.15, "flashes": 0},
+			"camera": {"zoom": 1.0, "shake": 0.0}
+		}
+	},
+	"impacts": {
+		"_doc": "Variantes d'impact de la famille Contact (§3.2).",
+		"coup": {"name": "Coup", "brick": "impact_star"},
+		"griffe": {"name": "Griffe", "brick": "claw_slashes"},
+		"crocs": {"name": "Crocs", "brick": "jaws"},
+		"percant": {"name": "Perçant", "brick": "pierce_flash"},
+		"corps": {"name": "Corps", "brick": "shockwave"}
+	},
+	"modifiers": {
+		"_doc": "Morceaux communs ajoutés à la famille (§3.2). band_max : l'attaque prend la dernière ligne de durée de CV-2.",
+		"drain": {"name": "Drain", "brick": "drain_stream"},
+		"multi": {"name": "Coups multiples", "brick": "repeat_impact"},
+		"charge": {"name": "Charge", "brick": "charge_glow"},
+		"contrecoup": {"name": "Contrecoup", "brick": "recoil"},
+		"auto_ko": {"name": "Auto-K.O.", "brick": "self_faint", "band_max": true},
+		"ko_un_coup": {"name": "K.O. en un coup", "brick": "heavy_impact", "band_max": true},
+		"piege": {"name": "Piège", "brick": "trap_ring"},
+		"recharge": {"name": "Recharge", "brick": "panting"},
+		"chute": {"name": "Chute", "brick": "crash"}
+	},
+	"signatures": {
+		"_doc": "Attaques qui demandent une brique neuve (§3.3). Priorité A : CV.0 à CV.2 ; B ensuite.",
+		"eclair": {"base": "electrique", "priority": "A", "origin": "joues"},
+		"tonnerre": {"base": "electrique", "priority": "A", "origin": "joues"},
+		"fatal_foudre": {"base": "electrique", "priority": "A", "origin": "centre"},
+		"lance_flammes": {"base": "feu", "priority": "A", "origin": "bouche"},
+		"deflagration": {"base": "feu", "priority": "A", "origin": "bouche"},
+		"hydrocanon": {"base": "eau", "priority": "A", "origin": "canons"},
+		"surf": {"base": "eau", "priority": "A", "origin": "centre"},
+		"ultralaser": {"base": "energie", "priority": "A", "origin": "bouche"},
+		"seisme": {"base": "sol_roche", "priority": "A", "origin": "centre"},
+		"psyko": {"base": "psy", "priority": "A", "origin": "yeux"},
+		"blizzard": {"base": "glace", "priority": "B", "origin": "bouche"},
+		"lance_soleil": {"base": "plante", "priority": "B", "origin": "bouche"},
+		"explosion": {"base": "energie", "priority": "B", "origin": "centre"}
+	}
+}

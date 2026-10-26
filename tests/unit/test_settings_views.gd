@@ -199,3 +199,22 @@ func test_sound_is_also_in_the_title_settings() -> void:
 	var view := SettingsViews.build(GameSettings.new(), GameSettings.Graphics.HIGH, false, false)
 	assert_not_null(view.category(SettingsViews.CATEGORY_SOUND), "Paramètres de l'écran titre")
 	assert_eq(view.category(SettingsViews.CATEGORY_SOUND).controls.size(), 3)
+
+
+func test_battle_animations_choice_in_game_category() -> void:
+	var game := _build().category(SettingsViews.CATEGORY_GAME)
+	var keys: Array[StringName] = []
+	for item: SettingControlView in game.controls:
+		keys.append(item.key)
+	assert_has(keys, GameSettings.BATTLE_ANIMATIONS, "CV-4 : catégorie JEU")
+	var control := _build().control(GameSettings.BATTLE_ANIMATIONS)
+	assert_eq(control.kind, SettingControlView.Kind.CHOICE)
+	assert_eq(control.label, "Animations de combat")
+	assert_eq(control.detail, "Rapides : combats plus courts, mêmes effets.")
+	assert_eq(control.options.size(), 2)
+	assert_eq(control.options[0].label, "Complètes")
+	assert_eq(control.options[1].label, "Rapides")
+	assert_eq(control.value_text, "Complètes", "défaut")
+	var settings := GameSettings.new()
+	settings.battle_animations = GameSettings.BattleAnimations.FAST
+	assert_eq(_build(settings).control(GameSettings.BATTLE_ANIMATIONS).value_text, "Rapides")

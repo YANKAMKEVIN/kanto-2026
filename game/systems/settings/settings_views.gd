@@ -27,6 +27,9 @@ const SAVE_DETAIL_TEXT: String = "La partie se sauvegarde aussi toute seule."
 ## Activée = rendu normal (`economy` faux) ; désactivée = étalonnage plein écran coupé.
 const ECONOMY_LABEL: String = "Lumière d'ambiance"
 const ECONOMY_DETAIL: String = "Désactivez-la pour plus de fluidité sur les petits téléphones."
+## Combat vivant (CV-4, recommandation retenue par Kevin le 2026-10-26).
+const BATTLE_ANIMATIONS_LABEL: String = "Animations de combat"
+const BATTLE_ANIMATIONS_DETAIL: String = "Rapides : combats plus courts, mêmes effets."
 const SUBTITLE_GAME: String = "Paramètres principaux du jeu."
 const SUBTITLE_CONTROLS: String = "Personnalise tes contrôles."
 const SUBTITLE_ACCESSIBILITY: String = "Rends le jeu accessible à tous."
@@ -50,6 +53,10 @@ static func build(settings: GameSettings, device_quality: GameSettings.Graphics,
 		["Rapide", GameSettings.TextSpeed.FAST], ["Instantanée", GameSettings.TextSpeed.INSTANT]]))
 	game.controls.append(_toggle(GameSettings.CONFIRM_ACTIONS, "Confirmer certaines actions",
 		"Avant d'oublier une capacité.", settings.confirm_actions))
+	game.controls.append(_choice(GameSettings.BATTLE_ANIMATIONS, BATTLE_ANIMATIONS_LABEL,
+		BATTLE_ANIMATIONS_DETAIL, settings.battle_animations,
+		[["Complètes", GameSettings.BattleAnimations.FULL],
+		["Rapides", GameSettings.BattleAnimations.FAST]]))
 	var save := SettingControlView.new()
 	save.key = SAVE_NOW
 	save.kind = SettingControlView.Kind.ACTION
