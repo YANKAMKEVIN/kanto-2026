@@ -33,19 +33,21 @@
 | | Points |
 |---|---|
 | Recensés (doublons fusionnés) | **159** |
-| Fermés avec preuve (obsolètes ou corrigés depuis) | **47** (§4) |
-| Corrigés dans ce lot | **2** (§1, RP-001 et RP-003) |
-| Ouverts sur `main` | **83** (§2) |
+| Fermés avec preuve (obsolètes ou corrigés depuis) | **49** (§4) |
+| Corrigés dans ce lot | **6** (§1 : RP-001, RP-003, puis R-1 à R-3 : RP-089, RP-090, RP-120, RP-121) |
+| Ouverts sur `main` | **77** (§2) |
 | Propres à une branche non fusionnée | **27** (§3) |
 
 Ouverts sur `main`, par section : art des Pokémon 5 (DAF.1 reliquat, DAF.2) · monde, DAF.5 11 · lumière hors DAF.6 5 ·
-polish DAF.8 17 · Combat vivant et Son 8 · J33 26 · 1.0.x 5 · arbitrages 6.
-Par gravité : **P0 1** (RP-090, texte coupé, correctif prêt : R-1) · P1 7 · P2 27 · P3 48.
-Aucun P0 sur les branches ; P1 des branches : RP-130, 133, 136, 143, 150, 151.
+polish DAF.8 17 · Combat vivant et Son 8 · J33 24 · 1.0.x 5 · arbitrages 2 (R-6 en attente, R-7 en 1.0.x).
+Par gravité : **P0 0** (RP-090 réglé par R-1) · P1 6 · P2 27 · P3 44.
+Aucun P0 sur les branches ; P1 des branches : RP-133, 136, 143, 150, 151.
 
 ## Arbitrages pour Kevin (R-n)
 
-Rien n'est tranché ici ; chaque arbitrage porte une recommandation.
+**Validés par Kevin le 2026-10-26 (« Oui, toutes les recos »)** : R-1 fait (`e772538c`), R-2 fait
+(`04c1c2df`), R-3 fait (`41371de3`), R-4 et R-5 gardés tels quels, R-6 en attente des fusions du J23
+et du J28, R-7 en 1.0.x, R-8 et R-9 tranchés au J33 sur S24.
 
 - **R-1 — Orientation des adversaires et description du Sac de combat : fusionner
   `correctif-orientation-adversaires` dans `main` maintenant ?** La branche (3 commits du
@@ -85,12 +87,16 @@ Rien n'est tranché ici ; chaque arbitrage porte une recommandation.
   « à plat » des extérieurs et/ou une baisse de résolution. *Recommandation : trancher au J33 T3 sur
   les mesures du profilage, l'A17 n'étant pas la cible (le S24 tient 59 i/s).*
 
-## 1. Corrigés dans ce lot (2026-10-26)
+## 1. Corrigés dans ce lot (2026-10-26, dont les arbitrages R-1 à R-3)
 
 | ID | Origine | Description | Cat. | P | Destination | État / preuve |
 |---|---|---|---|---|---|---|
 | RP-001 | [jalon-11.md](jalon-11.md) T22 ; audit | `audit-pending-moves.md` périmé : listait encore Guillotine (effet `ohko` actif depuis le J24) | défaut | P3 | corrigé ici | régénéré par `tools/audit_pending_moves.py` : 126 espèces, 142 capacités, **5** en attente |
 | RP-003 | [jalon-18.md](jalon-18.md) §9.5 n° 2 ; QA 2026-10-19 | Pas de départ de débogage à l'arrivée de l'échelle B du B1F de la Grotte Sombre (côté Marcel) | défaut | P3 | corrigé ici | nouveau `tools/debug_start/dark_cave_b1f_b.json` (spawn `arrivee_b`), ligne du README |
+| RP-089 | Règle de Kevin (2026-10-26, QA S24 J29) | Adversaires dont l'artwork regarde à droite : ils tournent le dos au joueur (17 espèces, dont Herbizarre, Tortank, Roucarnage) | défaut | P1 | corrigé ici | corrigé : fusion de `correctif-orientation-adversaires` (R-1, `e772538c`), `BattleArt.FACING_RIGHT` |
+| RP-090 | [jalon-20.md](jalon-20.md) ; QA J30, J31 | Description d'objet du Sac de combat coupée à 2 lignes (« … pendant un », Guérison à « d'un », Flûte, Hyper Ball à « Elle ») | défaut | **P0** (MEN-3) | corrigé ici | corrigé : même fusion (R-1, `e772538c`), description sur 4 lignes |
+| RP-120 | [jalon-20.md](jalon-20.md) §10.4 | Toast de la Clé Ascenseur « ajoutée aux objets clés » au lieu de « obtenue » | défaut | P3 | corrigé ici | corrigé (R-2, `04c1c2df`) : `"obtained": true`, tests `test_item_obtained`, `test_celadon_data`, `test_hideout_key` |
+| RP-121 | J9 (T21) | Pas de toast « Pokédex mis à jour » à l'évolution ; « capturé 0 fois » pour une espèce obtenue par évolution | idée | P3 | corrigé ici | corrigé (R-3, `41371de3`) : « capturé N fois » et la carte Capturé seulement si N > 0 ; pas de toast à l'évolution (gardé) |
 
 ## 2. Ouverts sur `main`
 
@@ -175,8 +181,6 @@ DAF.6 (fusionné le 2026-10-26, `da861440`) a traité la Forêt de Jade, les int
 
 | ID | Origine | Description | Cat. | P | Destination | État / preuve |
 |---|---|---|---|---|---|---|
-| RP-089 | Règle de Kevin (2026-10-26, QA S24 J29) | Adversaires dont l'artwork regarde à droite : ils tournent le dos au joueur (17 espèces, dont Herbizarre, Tortank, Roucarnage) | défaut | P1 | **R-1** | ouvert sur `main` : `BattleArt.FACING_RIGHT` absent ; correctif `329aca11` sur `correctif-orientation-adversaires` |
-| RP-090 | [jalon-20.md](jalon-20.md) ; QA J30, J31 | Description d'objet du Sac de combat coupée à 2 lignes (« … pendant un », Guérison à « d'un », Flûte, Hyper Ball à « Elle ») | défaut | **P0** (MEN-3) | **R-1** | ouvert : `battle_bag_panel.gd:106` `max_lines_visible = 2` ; correctif `b14fb0ae` + `b5dab5eb` (4 lignes, test) |
 | RP-091 | J7 à J19 (≈ 10 relevés) | Mémoire des textures au-dessus du repère de 64 Mo : 66 à 139 Mo selon la carte et l'appareil (≈ 106 Mo pour l'appli) ; « carte + voisines » ≤ 36 Mo | perf | P1 (MEN-7) | J33 T3 | ouvert : `perf_counter.gd:12` ; budget « carte + voisines » décidé au J10 |
 | RP-092 | J9 à J22 | Creux de fps aux transitions de carte (7 à 40 i/s), à l'ouverture du menu, en fin de combat ; Menu → Équipe à 50 i/s | perf | P2 | J33 T3 | ouvert ; seule la Route 11 a eu un correctif (`fff8d3bc`) |
 | RP-093 | [jalon-22.md](jalon-22.md) §8 | Carmin (quai) à 26–27 i/s, mesuré avant le moteur commun | perf | P1 si confirmé | J33 T3 | ouvert, à remesurer |
@@ -216,12 +220,8 @@ DAF.6 (fusionné le 2026-10-26, `da861440`) a traité la Forêt de Jade, les int
 
 | ID | Origine | Description | Cat. | P | Destination | État / preuve |
 |---|---|---|---|---|---|---|
-| RP-120 | [jalon-20.md](jalon-20.md) §10.4 | Toast de la Clé Ascenseur « ajoutée aux objets clés » au lieu de « obtenue » | défaut | P3 | **R-2** | ouvert : `items_j20.json:97` sans `obtained` |
-| RP-121 | J9 (T21) | Pas de toast « Pokédex mis à jour » à l'évolution ; « capturé 0 fois » pour une espèce obtenue par évolution | idée | P3 | **R-3** | ouvert (défauts appliqués) |
-| RP-122 | [jalon-19.md](jalon-19.md) §9.5 n° 5 | « Tu prends la fuite ! » : tu ou vous | idée | P3 | **R-4** | ouvert |
-| RP-123 | J12 | Vampirisme 80 de puissance (RB : 20) | idée | P3 | **R-5** | ouvert |
-| RP-124 | [jalon-20.md](jalon-20.md) §10.4 | Titre « CÉLADOPOLE » affiché dans le repaire Rocket | défaut | P3 | **R-6** | ouvert : `zones.json:151` |
-| RP-125 | Reportés (J3) | Cinématique de première sortie (révélation de Bourg Palette) | idée | P3 | **R-7** | ouvert : hors du périmètre d'OUV |
+| RP-124 | [jalon-20.md](jalon-20.md) §10.4 | Titre « CÉLADOPOLE » affiché dans le repaire Rocket | défaut | P3 | R-6 validé : après les fusions du J23 et du J28 | en attente : `zones.json:151` (fichier modifié par `jalon-23` et `jalon-28`) |
+| RP-125 | Reportés (J3) | Cinématique de première sortie (révélation de Bourg Palette) | idée | P3 | DAF.8 (1.0.x, R-7 validé) | ouvert : hors du périmètre d'OUV |
 
 ## 3. Propres à une branche non fusionnée
 
@@ -231,7 +231,7 @@ versions, déjà réglées sur `main` par DAF.6 : non reprises.
 
 | ID | Branche | Description | Cat. | P | Destination | État / preuve |
 |---|---|---|---|---|---|---|
-| RP-130 | `jalon-23`, `prep/j26-j27`, `jalon-28`, `jalon-31`, `jalon-32` | Pas de `FACING_RIGHT` (adversaires tournés à droite) ; `jalon-29` et `jalon-30` l'ont | défaut | P1 | R-1 (par `main`) | ouvert |
+| RP-130 | `jalon-23`, `prep/j26-j27`, `jalon-28`, `jalon-31`, `jalon-32` | Pas de `FACING_RIGHT` (adversaires tournés à droite) ; `jalon-29` et `jalon-30` l'ont | défaut | P1 | R-1 (par `main`) | `main` l'a depuis `e772538c` (R-1) : chaque branche le récupère à sa mise à jour sur `main` |
 | RP-131 | `jalon-30` (correctif) ; probablement `main` | Après une reprise de l'appli pendant un combat, fond flou recadré (zoom différent) | défaut | P3 | branche ; à porter à la fusion du J30 | corrigé sur `jalon-30` (`Player.hold_camera`) seulement |
 | RP-132 | `jalon-29` | Sulfura de carte = sprite d'oiseau générique (`pokemon/fearow`), petit, caché par la tête du héros | rendu | P2 | DAF.4 | ouvert |
 | RP-133 | `jalon-29` | Sol haut et sol bas de la Route Victoire peu distincts (tuiles provisoires) ; vue générale peinte, poste de la Route 22, Route 23 | rendu | P1 (DON-3) | DAF.4 | ouvert |
@@ -310,3 +310,5 @@ versions, déjà réglées sur `main` par DAF.6 : non reprises.
 | RP-244 | J9 T23 (ancien RP-020) | Planche du Chenipan d'ambiance | DAF.5 2e partie (`b68ee46d`) |
 | RP-245 | J22, DAF.0 (ancien RP-021) | Série 25 non intégrée (vélo, pêche, Motard, Ornithologue, Loubard, frères pêcheurs) | DAF.5 2e partie (`b68ee46d`) |
 | RP-246 | [jalon-15.md](jalon-15.md) §9 (ancien RP-002) | Départ de débogage `route_5` sans `route_5_entered` (objectif « Badge Cascade » au premier pas) | voulu : `test_route_5_life.gd` part de ce départ pour vérifier que l'entrée pose le drapeau ; correctif annulé après la CI (2026-10-26) |
+| RP-247 | [jalon-19.md](jalon-19.md) §9.5 n° 5 (ancien RP-122) | « Tu prends la fuite ! » : tu ou vous | tutoiement gardé (R-4, Kevin, 2026-10-26) |
+| RP-248 | J12 (ancien RP-123) | Vampirisme à 80 de puissance | valeur moderne gardée (R-5, Kevin, 2026-10-26) |
