@@ -30,6 +30,9 @@ extends GutTest
 const MAPS: Array[StringName] = [
 	# Jalon 30 (T9) : déclencheurs d'appel des membres de la Ligue.
 	&"league_lorelei", &"league_bruno", &"league_agatha", &"league_lance", &"league_champion",
+	# Jalon 29 : Route 22 ouest, poste, Route 23, Route Victoire, Plateau Indigo.
+	&"route_22_west", &"route_22_gate", &"route_23", &"victory_road_1f", &"victory_road_2f",
+	&"victory_road_3f", &"indigo_plateau", &"indigo_plateau_lobby",
 	&"player_house_2f", &"player_house_1f", &"rival_house", &"oak_lab", &"pallet_town",
 	&"route_1", &"viridian_city", &"route_22", &"viridian_mart", &"route_2",
 	# Jalon 9 (T19) : déclencheurs des objets cachés de la forêt.
@@ -122,7 +125,89 @@ const RIVAL_PAIRS: Dictionary = {
 	&"rival_bulbasaur": [&"taken_squirtle", &"taken_bulbasaur"],
 }
 ## Scène → drapeaux qui choisissent chaque variante, dans l'ordre (§3.6).
+## Jalon 29 : objets trouvés (scènes de data/cutscenes/j29.json).
+## Jalon 29 : scènes de data/cutscenes/j29.json.
+const J29_IDS: Array[StringName] = [
+	&"victory_road_1f_item_1",
+	&"victory_road_1f_item_2",
+	&"victory_road_2f_item_1",
+	&"victory_road_2f_item_2",
+	&"victory_road_2f_item_3",
+	&"victory_road_2f_item_4",
+	&"victory_road_2f_hidden_1",
+	&"victory_road_2f_hidden_2",
+	&"victory_road_3f_item_1",
+	&"victory_road_3f_item_2",
+	&"route_23_hidden_1",
+	&"route_23_hidden_2",
+	&"route_23_hidden_3",
+	&"route_23_check_1",
+	&"route_23_guard_1_talk",
+	&"route_23_check_2",
+	&"route_23_guard_2_talk",
+	&"route_23_check_3",
+	&"route_23_guard_3_talk",
+	&"route_23_check_4",
+	&"route_23_guard_4_talk",
+	&"route_23_check_5",
+	&"route_23_guard_5_talk",
+	&"route_23_check_6",
+	&"route_23_guard_6_talk",
+	&"route_23_check_7",
+	&"route_23_guard_7_talk",
+	&"route_22_gate_check",
+	&"route_22_gate_guard_talk",
+	&"rival_route22_final",
+	&"moltres",
+]
+const FOUND_J29: Array[String] = [
+	"victory_road_1f_item_1:tm43",
+	"victory_road_1f_item_2:rare_candy",
+	"victory_road_2f_item_1:tm17",
+	"victory_road_2f_item_2:full_heal",
+	"victory_road_2f_item_3:tm05",
+	"victory_road_2f_item_4:rare_candy",
+	"victory_road_2f_hidden_1:ultra_ball",
+	"victory_road_2f_hidden_2:full_restore",
+	"victory_road_3f_item_1:max_revive",
+	"victory_road_3f_item_2:tm47",
+	"route_23_hidden_1:full_restore",
+	"route_23_hidden_2:ultra_ball",
+	"route_23_hidden_3:max_potion",
+]
 const VARIANT_FLAGS: Dictionary = {
+	# Jalon 29 : objets, cachés, contrôles des Badges, gardes, rival n° 7, Sulfura.
+	&"victory_road_1f_item_1": [[]],
+	&"victory_road_1f_item_2": [[]],
+	&"victory_road_2f_item_1": [[]],
+	&"victory_road_2f_item_2": [[]],
+	&"victory_road_2f_item_3": [[]],
+	&"victory_road_2f_item_4": [[]],
+	&"victory_road_2f_hidden_1": [[]],
+	&"victory_road_2f_hidden_2": [[]],
+	&"victory_road_3f_item_1": [[]],
+	&"victory_road_3f_item_2": [[]],
+	&"route_23_hidden_1": [[]],
+	&"route_23_hidden_2": [[]],
+	&"route_23_hidden_3": [[]],
+	&"route_23_check_1": [[], [&"badge_earth"]],
+	&"route_23_guard_1_talk": [[&"badge_earth"], []],
+	&"route_23_check_2": [[], [&"badge_volcano"]],
+	&"route_23_guard_2_talk": [[&"badge_volcano"], []],
+	&"route_23_check_3": [[], [&"badge_marsh"]],
+	&"route_23_guard_3_talk": [[&"badge_marsh"], []],
+	&"route_23_check_4": [[], [&"badge_soul"]],
+	&"route_23_guard_4_talk": [[&"badge_soul"], []],
+	&"route_23_check_5": [[], [&"badge_rainbow"]],
+	&"route_23_guard_5_talk": [[&"badge_rainbow"], []],
+	&"route_23_check_6": [[], [&"badge_thunder"]],
+	&"route_23_guard_6_talk": [[&"badge_thunder"], []],
+	&"route_23_check_7": [[], [&"badge_cascade"]],
+	&"route_23_guard_7_talk": [[&"badge_cascade"], []],
+	&"route_22_gate_check": [[], [&"badge_boulder"]],
+	&"route_22_gate_guard_talk": [[&"badge_boulder"], []],
+	&"rival_route22_final": [[&"badge_earth"]],
+	&"moltres": [[]],
 	&"route1_grass": [[], [&"oak_met"]],
 	&"route_1_potion": [[]],
 	&"oak_lab_exit": [[&"oak_met", &"oak_lab_reunion", &"starter_offered"]],
@@ -345,6 +430,8 @@ const VARIANT_FLAGS: Dictionary = {
 		&"league_stage_1_cleared", &"league_stage_2_cleared"]],
 	&"rival_champion_call": [[&"league_attempt_active", &"league_stage_0_cleared",
 		&"league_stage_1_cleared", &"league_stage_2_cleared", &"league_stage_3_cleared"]],
+	# Jalon 30 (fusion du J29) : question du garde de la porte du hall (hors tentative).
+	&"league_guard_door": [[]],
 	# Jalon 30 (T17) : cérémonie (suite de l'appel du rival, ou reprise au Panthéon).
 	&"league_victory": [[&"league_attempt_active", &"league_stage_0_cleared",
 		&"league_stage_1_cleared", &"league_stage_2_cleared", &"league_stage_3_cleared",
@@ -358,6 +445,29 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	# Jalon 30 (T17) : suite (« next ») de l'appel du rival, ou relancée par Boot à l'arrivée
 	# (reprise : LeagueDirector.pending_cutscene).
 	&"league_victory": &"league_champion", &"league_hall_of_fame": &"hall_of_fame",
+	# Jalon 29 : objets et caches (PNJ « objet », points d'examen), gardes et Sulfura (dialogue).
+	&"victory_road_1f_item_1": &"victory_road_1f",
+	&"victory_road_1f_item_2": &"victory_road_1f",
+	&"victory_road_2f_item_1": &"victory_road_2f",
+	&"victory_road_2f_item_2": &"victory_road_2f",
+	&"victory_road_2f_item_3": &"victory_road_2f",
+	&"victory_road_2f_item_4": &"victory_road_2f",
+	&"victory_road_2f_hidden_1": &"victory_road_2f",
+	&"victory_road_2f_hidden_2": &"victory_road_2f",
+	&"victory_road_3f_item_1": &"victory_road_3f",
+	&"victory_road_3f_item_2": &"victory_road_3f",
+	&"route_23_hidden_1": &"route_23",
+	&"route_23_hidden_2": &"route_23",
+	&"route_23_hidden_3": &"route_23",
+	&"route_23_guard_1_talk": &"route_23",
+	&"route_23_guard_2_talk": &"route_23",
+	&"route_23_guard_3_talk": &"route_23",
+	&"route_23_guard_4_talk": &"route_23",
+	&"route_23_guard_5_talk": &"route_23",
+	&"route_23_guard_6_talk": &"route_23",
+	&"route_23_guard_7_talk": &"route_23",
+	&"route_22_gate_guard_talk": &"route_22_gate",
+	&"moltres": &"victory_road_2f",
 	# Jalon 20 (T25) : choix OUI du garde d'un poste de Safrania (« confirm_cutscene »).
 	&"saffron_gate_drink_water": &"route_8_gate", &"saffron_gate_drink_soda": &"route_8_gate",
 	&"saffron_gate_drink_lemonade": &"route_8_gate",
@@ -630,10 +740,10 @@ func test_library_loads_without_error() -> void:
 	var library := CutsceneLibrary.new()
 	assert_true(library.load_dir(), "data/cutscenes/ se charge")
 	assert_eq(library.get_errors().size(), 0, str(library.get_errors()))
-	assert_eq(_without_qa(library.get_ids()), _sorted([&"bill_house_enter", &"bill_machine", &"bill_module",
+	assert_eq(_without_qa(library.get_ids()), _sorted(J29_IDS + [&"bill_house_enter", &"bill_machine", &"bill_module",
 		# Jalon 30 (T9) : appel des cinq combats de la Ligue.
 		&"league_lorelei_call", &"league_bruno_call", &"league_agatha_call", &"league_lance_call",
-		&"rival_champion_call", &"league_victory", &"league_hall_of_fame",
+		&"rival_champion_call", &"league_victory", &"league_hall_of_fame", &"league_guard_door",
 		&"bill_screen", &"cerulean_arrival", &"cerulean_gym_misty",
 		&"cerulean_rocket_chase", &"cerulean_rocket_fight", &"cerulean_south_guard",
 		&"cerulean_gym_misty_tm_late", &"mart_parcel", &"mt_moon_1f_hidden_1", &"mt_moon_1f_item_1",
@@ -816,6 +926,10 @@ func test_only_world_items_are_found_items() -> void:
 			for step: CutsceneStep in variant.steps:
 				if step.kind == CutsceneStep.Kind.GIVE and step.found:
 					found.append("%s:%s" % [id, step.item_id])
+	# Jalon 29 : objets et cachés de la Route 23 et de la Route Victoire.
+	for item: String in FOUND_J29:
+		assert_true(found.has(item), item)
+	found = found.filter(func(item: String) -> bool: return not FOUND_J29.has(item))
 	assert_eq(found, ["celadon_hidden_1:revive", "dark_cave_1f_item_1:escape_rope",
 		"dark_cave_1f_item_2:antidote", "dark_cave_b1f_hidden_1:super_potion",
 		"dark_cave_b1f_item_1:super_potion", "digletts_cave_item_1:escape_rope",
@@ -919,10 +1033,10 @@ func test_every_change_map_targets_an_existing_map_and_spawn() -> void:
 		assert_true(map.has_spawn(step.spawn), "%s : point « %s »" % [step.map_id, step.spawn])
 		map.free()
 	# Jalon 21 (T13) : + la téléportation du 7F vers la Maison des Pokémon.
-	assert_eq(count, 8, "le retour au labo ; le quai de Carmin (départ du S.S. Anne, J16 T15) ; "
+	assert_eq(count, 9, "le retour au labo ; le quai de Carmin (départ du S.S. Anne, J16 T15) ; "
 		+ "la Maison des Pokémon (sauvetage de Fuji, J21 T13) ; "
 		+ "la porte de l'Arène de Cramois'Île déverrouillée (J25, deux variantes) ; "
-		+ "la Ligue (J30 T17 : Panthéon, Bourg Palette deux fois)")
+		+ "la Ligue (J30 T17 : Panthéon, Bourg Palette deux fois ; porte du hall, OUI au garde)")
 
 
 func test_every_variant_is_chosen_by_its_flags() -> void:

@@ -1897,3 +1897,5 @@ const CREDITS_LOGO_HEIGHT := 300
 const CREDITS_LINE_GAP := 18
 const CREDITS_BLOCK_GAP := 140
 const CREDITS_SKIP_WIDTH := 260
+## Écran Dresseur : largeur minimale du lien « Panthéon » (J30, Q30-4).
+const TRAINER_HALL_LINK_WIDTH := 240

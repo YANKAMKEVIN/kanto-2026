@@ -68,7 +68,9 @@ const PLAYED_J30: Array[StringName] = [
 	&"league_agatha_before", &"league_agatha_defeated",
 	&"league_lance_before", &"league_lance_defeated",
 	&"rival_champion_before", &"rival_champion_defeated", &"rival_champion_won",
-	# T17 : la cérémonie (`league_victory`, `league_hall_of_fame`).
+	# La question du garde de la porte du hall (T30-01, fusion du J29) ; T17 : la cérémonie
+	# (`league_victory`, `league_hall_of_fame`).
+	&"league_guard_door",
 	&"league_oak_congrats", &"league_oak_to_rival", &"league_oak_hall", &"league_hall_welcome",
 	&"league_ending",
 ]
@@ -77,10 +79,48 @@ const SET_J30: Array[StringName] = [
 	&"beaten_league_lorelei", &"beaten_league_bruno", &"beaten_league_agatha",
 	&"beaten_league_lance", &"beaten_rival_champion",
 ]
+## Jalon 29 (T4, données) : Dresseurs de la Route Victoire, rival n° 7, gardes, panneaux, Sulfura et
+## Plateau Indigo ; cartes construites au J29 (`indigo_league_door`, la porte « À venir », retirée à la
+## fusion dans le J30 : la porte mène à la Ligue).
+const IDS_J29: Array[StringName] = [
+	&"victory_road_1f_cooltrainer_f_before", &"victory_road_1f_cooltrainer_f_defeated",
+	&"victory_road_1f_cooltrainer_f_after", &"victory_road_1f_cooltrainer_m_before",
+	&"victory_road_1f_cooltrainer_m_defeated", &"victory_road_1f_cooltrainer_m_after",
+	&"victory_road_2f_blackbelt_before", &"victory_road_2f_blackbelt_defeated",
+	&"victory_road_2f_blackbelt_after", &"victory_road_2f_juggler_1_before",
+	&"victory_road_2f_juggler_1_defeated", &"victory_road_2f_juggler_1_after",
+	&"victory_road_2f_tamer_before", &"victory_road_2f_tamer_defeated",
+	&"victory_road_2f_tamer_after", &"victory_road_2f_pokemaniac_before",
+	&"victory_road_2f_pokemaniac_defeated", &"victory_road_2f_pokemaniac_after",
+	&"victory_road_2f_juggler_2_before", &"victory_road_2f_juggler_2_defeated",
+	&"victory_road_2f_juggler_2_after", &"victory_road_3f_cooltrainer_m_1_before",
+	&"victory_road_3f_cooltrainer_m_1_defeated", &"victory_road_3f_cooltrainer_m_1_after",
+	&"victory_road_3f_cooltrainer_f_1_before", &"victory_road_3f_cooltrainer_f_1_defeated",
+	&"victory_road_3f_cooltrainer_f_1_after", &"victory_road_3f_cooltrainer_m_2_before",
+	&"victory_road_3f_cooltrainer_m_2_defeated", &"victory_road_3f_cooltrainer_m_2_after",
+	&"victory_road_3f_cooltrainer_f_2_before", &"victory_road_3f_cooltrainer_f_2_defeated",
+	&"victory_road_3f_cooltrainer_f_2_after", &"rival_route22_final_greet",
+	&"rival_route22_final_won", &"rival_route22_final_lost", &"guard_boulder_refuse",
+	&"guard_boulder_pass", &"guard_cascade_refuse", &"guard_cascade_pass",
+	&"guard_thunder_refuse", &"guard_thunder_pass", &"guard_rainbow_refuse",
+	&"guard_rainbow_pass", &"guard_soul_refuse", &"guard_soul_pass", &"guard_marsh_refuse",
+	&"guard_marsh_pass", &"guard_volcano_refuse", &"guard_volcano_pass", &"guard_earth_refuse",
+	&"guard_earth_pass", &"route_23_victory_road_sign", &"moltres_presence", &"moltres_flew_away",
+	&"indigo_plateau_host", &"route_22_league_sign"
+]
+const TEXTES_J29 := "res://docs/tech/jalon-29-textes.md"
+## J29 : renvois vers les scènes (objets, cachés, gardes, rival n° 7, Sulfura ; data/dialogues/
+## j29_monde.json), sans page.
+const IDS_J29_MONDE: Array[StringName] = [
+	&"victory_road_1f_item_1", &"victory_road_1f_item_2", &"victory_road_2f_item_1",
+	&"victory_road_2f_item_2", &"victory_road_2f_item_3", &"victory_road_2f_item_4",
+	&"victory_road_2f_hidden_1", &"victory_road_2f_hidden_2", &"victory_road_3f_item_1",
+	&"victory_road_3f_item_2", &"route_23_hidden_1", &"route_23_hidden_2", &"route_23_hidden_3",
+	&"route_23_guard_1", &"route_23_guard_2", &"route_23_guard_3", &"route_23_guard_4",
+	&"route_23_guard_5", &"route_23_guard_6", &"route_23_guard_7", &"route_22_gate_guard",
+	&"rival_route22_final", &"moltres",
+]
 const UNUSED_YET: Array[StringName] = [
-	# Jalon 30 (T9) : la porte du hall (J29, `indigo_plateau_lobby`) ; la cérémonie (T17) est
-	# posée (`league_victory`).
-	&"league_guard_door",
 	# Jalon 21 (T21) : `route_11_snorlax` repris par `snorlax_route_12` (retiré de la liste).
 	&"dark_cave_1f_sign", &"dark_cave_column", &"dark_cave_roots", &"dark_cave_crack",
 	&"dark_cave_b1f_hidden_1",
@@ -151,6 +191,8 @@ const TEXTS_S2D_STRENGTH: Dictionary[StringName, Array] = {
 		"Il faut le Badge Prisme pour utiliser Force hors des combats."],
 	&"strength_used": ["{pokemon} utilise Force ! Les rochers peuvent être déplacés."],
 	&"strength_boulder_fell": ["Le rocher a dévalé dans le trou !"],
+	# Jalon 29 (T29-09) : un rocher enfonce un interrupteur (texte dans jalon-29-textes.md).
+	&"strength_switch_pressed": ["Clac ! Un mécanisme s'est enclenché quelque part."],
 }
 ## Jalon 24 : textes du dossier 27 §15 (validés le 2026-10-16) mis en page dans la bulle (retours
 ## à la ligne, panneaux « TITRE / texte », T-60 et T-62 écrits par fossile) et répliques de don
@@ -428,6 +470,9 @@ const MAPS: Array[StringName] = [
 	# Jalon 30 (T9) : les cinq salles de la Ligue et le Panthéon.
 	&"league_lorelei", &"league_bruno", &"league_agatha", &"league_lance", &"league_champion",
 	&"hall_of_fame",
+	# Jalon 29 : Route 22 ouest, poste, Route 23, Route Victoire, Plateau Indigo.
+	&"route_22_west", &"route_22_gate", &"route_23", &"victory_road_1f", &"victory_road_2f",
+	&"victory_road_3f", &"indigo_plateau", &"indigo_plateau_lobby",
 	&"player_house_2f", &"player_house_1f", &"rival_house", &"oak_lab", &"pallet_town",
 	&"route_1", &"route_22", &"viridian_city", &"viridian_center", &"viridian_mart",
 	&"route_2",
@@ -1093,9 +1138,33 @@ const SET_J14_BILL_CUTSCENES: Array[StringName] = [
 ## Jalon 16 (T12, T15) : `got_hm01` (lu par le marin de la passerelle et le départ du navire) est
 ## levé par la scène du capitaine (T13). Jalon 18 (T16) : `tower_stairs_open` (présence de
 ## l'Exorciste de la Tour) est levé au J19 (T16 : scène `tower_guardian`, dossier 22 K-3).
+## J29 : les Badges Âme, Marais, Volcan et Terre sont levés par les J23, J27, J25 et J28 (les gardes
+## de la Route 23 et le rival n° 7 les lisent déjà).
+## J29 : dialogues joués par les scènes du jalon (data/cutscenes/j29.json).
+const PLAYED_J29: Array[StringName] = [
+	&"guard_boulder_pass", &"guard_boulder_refuse", &"guard_cascade_pass",
+	&"guard_cascade_refuse", &"guard_earth_pass", &"guard_earth_refuse", &"guard_marsh_pass",
+	&"guard_marsh_refuse", &"guard_rainbow_pass", &"guard_rainbow_refuse", &"guard_soul_pass",
+	&"guard_soul_refuse", &"guard_thunder_pass", &"guard_thunder_refuse", &"guard_volcano_pass",
+	&"guard_volcano_refuse", &"moltres_flew_away", &"moltres_presence",
+	&"rival_route22_final_greet", &"rival_route22_final_lost", &"rival_route22_final_won"
+]
+## J29 : drapeaux posés par ces scènes (objets, cachés, contrôles franchis, rival n° 7, Sulfura).
+const SET_J29: Array[StringName] = [
+	&"rival_route22_final_won", &"moltres_done", &"moltres_caught",
+	&"got_route_23_hidden_1", &"got_route_23_hidden_2", &"got_route_23_hidden_3",
+	&"got_victory_road_1f_item_1", &"got_victory_road_1f_item_2", &"got_victory_road_2f_hidden_1",
+	&"got_victory_road_2f_hidden_2", &"got_victory_road_2f_item_1", &"got_victory_road_2f_item_2",
+	&"got_victory_road_2f_item_3", &"got_victory_road_2f_item_4", &"got_victory_road_3f_item_1",
+	&"got_victory_road_3f_item_2", &"route_22_gate_check_passed", &"route_23_check_1_passed",
+	&"route_23_check_2_passed", &"route_23_check_3_passed", &"route_23_check_4_passed",
+	&"route_23_check_5_passed", &"route_23_check_6_passed", &"route_23_check_7_passed"
+]
 ## Jalon 21 : `ghost_marowak_calmed` (6F) et `snorlax_route_*_woken` (Ronflex) sont levés par leurs
-## scènes : plus aucun drapeau futur.
-const FUTURE_FLAGS: Array[StringName] = []
+## scènes : plus aucun drapeau futur du J21.
+## J29 : restent les Badges Âme, Marais et Terre (J23, J27, J28) ; le Badge Volcan est levé
+## par la scène d'Auguste depuis la fusion du J25.
+const FUTURE_FLAGS: Array[StringName] = [&"badge_soul", &"badge_marsh", &"badge_earth"]
 var _library: DialogueLibrary
 var _cutscenes: CutsceneLibrary
 var _offer: StarterOffer
@@ -1248,7 +1317,7 @@ func test_library_loads_without_error() -> void:
 	var expected := IDS + IDS_J14_BILL + IDS_J14_ROCKET + IDS_J15_ROUTE_5 + IDS_J16_GYM \
 		+ IDS_J16_SHIP + IDS_J16_RIVAL_CAPTAIN + IDS_J16_T15 + IDS_J17 + IDS_J18 + IDS_J19 + IDS_J20 \
 		+ IDS_J20_T17 + IDS_J20_T21 + IDS_J21 + IDS_J21_T21 + IDS_S2B + S2_FIELD_TRAVEL + IDS_J21_T22 \
-		+ IDS_J24_TRAINERS + IDS_J24 + IDS_J25 + IDS_J30
+		+ IDS_J24_TRAINERS + IDS_J24 + IDS_J25 + IDS_J29 + IDS_J29_MONDE + IDS_J30
 	expected.append_array(TEXTS_S2C_FISH.keys())
 	expected.append_array(TEXTS_S2D_STRENGTH.keys())
 	expected.append_array(UNVALIDATED)
@@ -1276,7 +1345,7 @@ func test_every_dialogue_is_used() -> void:
 func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 	assert_eq(_cutscenes.get_errors().size(), 0, str(_cutscenes.get_errors()))
 	var played := _without_qa(_cutscenes.get_dialogue_ids())
-	assert_eq(played, _sorted(PLAYED_J30 + [
+	assert_eq(played, _sorted(PLAYED_J29 + PLAYED_J30 + [
 		# Jalon 24 : Artikodin, porte de l'Arène, CT35, fossiles.
 		&"articuno_cry", &"articuno_flew_away", &"cinnabar_gym_locked", &"cinnabar_lab_tm35_offer",
 		&"cinnabar_lab_tm35_use", &"cinnabar_fossil_taken", &"cinnabar_fossil_ready_kabuto", &"cinnabar_fossil_ready_omanyte",
@@ -1485,8 +1554,10 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 			+ [&"snorlax_route_16_seen"]
 			# Jalon 25 : réponses du quiz, offre d'échange acceptée ou refusée (choix OUI / NON).
 			+ [&"cinnabar_gym_quiz_no", &"cinnabar_gym_quiz_yes", &"cinnabar_trade_offer_accepted",
-				&"cinnabar_trade_offer_declined"]))
-	assert_eq(cutscenes.get_set_flags(), _sorted(SET_J30 + [&"got_tm39", &"route_12_visited",
+				&"cinnabar_trade_offer_declined"]
+			# Jalon 30 (fusion du J29) : NON à la question du garde de la porte de la Ligue.
+			+ [&"league_door_declined"]))
+	assert_eq(cutscenes.get_set_flags(), _sorted(SET_J29 + SET_J30 + [&"got_tm39", &"route_12_visited",
 		&"snorlax_route_12_awake", &"snorlax_route_12_caught", &"snorlax_route_12_done",
 		&"snorlax_route_12_woken", &"badge_boulder", &"badge_cascade",
 		&"beaten_mt_moon_researcher", &"beaten_nugget_rocket", &"brock_met", &"cerulean_reached", &"got_mt_moon_1f_hidden_1",
@@ -1811,6 +1882,7 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 		.replace("\n  ", " ")
 	var dossier_20 := FileAccess.get_file_as_string(DOSSIER_20).replace("**", "")
 	var plan_j30 := FileAccess.get_file_as_string(PLAN_J30)
+	var textes_j29 := FileAccess.get_file_as_string(TEXTES_J29)
 	var annex_a_17 := AnnexATexts.annex_a(FileAccess.get_file_as_string(JALON_17))
 	# Jalon 21 (T21) : textes validés du dossier 24 (§15) et de l'annexe A du plan.
 	var j21_texts := FileAccess.get_file_as_string("res://docs/design/dossier-24-repos-des-esprits.md") \
@@ -1911,6 +1983,8 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			or _each_line_quoted(dossier_23, text.replace("{joueur}", "{player}"))
 			# Jalon 30 (T9) : textes du plan (§3), une réplique « … » pouvant tenir sur deux pages.
 			or _in_dossier_18(plan_j30, text.replace("{joueur}", "{player}"))
+			# J29 (T4) : lot de textes du J29 (`jalon-29-textes.md`), une citation par ligne.
+			or _each_line_quoted(textes_j29, text.replace("{joueur}", "{player}"))
 			# J22 (T13, T17) : dossier 25 §16, bulles « / » et lignes à plat.
 			or dossier_25.contains(J22Ids.flat_text(row[1])),
 			"%s : « %s » dans un dossier de conception" % [row[0], text])
@@ -2135,7 +2209,8 @@ func test_oak_parcel_lines() -> void:
 	# Jalon 24 : deux objets au sol, deux caches, Artikodin, la CT35, deux dons de fossile.
 	# Jalon 25 : objets et caches du Manoir (13), statue, six machines, Auguste, trois échanges,
 	# Vieil Ambre, arbre du Musée.
-	assert_eq(launched, 141, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
+	# Jalon 29 : dix objets au sol, cinq cachés, huit gardes, le rival n° 7 et Sulfura.
+	assert_eq(launched, 164, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
 		+ "sa CT34, Ondine (pont, Arène et rattrapage), écran, module, console, objets de la "
 		+ "Route 25, le Rocket d'Azuria (2) et le barrage sud ; J15 : objets de la Route 5 ; "
 		+ "J16 : Major Bob (2), neuf objets du S.S. Anne, le capitaine, le marin (2) ; "
@@ -2145,7 +2220,8 @@ func test_oak_parcel_lines() -> void:
 		+ "ville), Erika (2) ; "
 		+ "J20 (T21) : repaire (11 objets, 3 caches, Clé ×2, Giovanni, Scope) ; "
 		+ "J21 (T13, T14) : M. Fuji au 7F et dans sa maison ; J22 : la Canne, la Bicyclette ; "
-		+ "J24 : objets (2), caches (2), Artikodin, CT35, fossiles (2) ; J25 : Ptéra (1)")
+		+ "J24 : objets (2), caches (2), Artikodin, CT35, fossiles (2) ; J25 : Ptéra (1) ; "
+		+ "J29 : objets, cachés, gardes, rival n° 7 et Sulfura")
 	# Le jeton n'apparaît que dans la réplique de l'espèce, « {pokemon} » dans les phrases du
 	# compagnon (J11), et ceux de la Pension dans ses répliques (J15).
 	for row: Array in _pages():
@@ -2173,6 +2249,7 @@ func test_oak_parcel_lines() -> void:
 				or (row[0] == &"rival_tower_intro" and row[1].contains("{player}")) \
 				or (String(row[0]).begins_with("saffron_gate_drink_") and row[1].contains("{player}")) \
 				or row[0] == &"celadon_eevee_received" or row[0] == &"fishing_cast" \
+				or (row[0] == &"rival_route22_final_greet" and row[1].contains("{player}")) \
 				or String(row[0]).begins_with("cinnabar_fossil_received_") \
 				or (String(row[0]).begins_with("cinnabar_trade_") and row[1].contains("{player}")) \
 				or (row[0] == &"cinnabar_gym_guide" and row[1].contains("{player}")) \

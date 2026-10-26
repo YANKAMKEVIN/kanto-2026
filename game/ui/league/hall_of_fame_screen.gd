@@ -59,6 +59,30 @@ func present(view: Dictionary) -> void:
 	finished.emit()
 
 
+## Coroutine (Q30-4, lecture seule depuis l'écran Dresseur) : chaque entrée de [param views]
+## (même forme que [method present]), équipe entière, un toucher pour la suivante ; la dernière
+## touchée, l'écran se ferme. Rien n'est écrit.
+func browse(views: Array) -> void:
+	if views.is_empty():
+		return
+	_show_single(false)
+	_root.modulate.a = 0.0
+	visible = true
+	set_process_input(true)
+	_shown_msec = Time.get_ticks_msec()
+	await _fade(_root, 1.0, UiTokens.HALL_LEAVE)
+	for view: Variant in views:
+		if not view is Dictionary:
+			continue
+		_header.text = str((view as Dictionary).get("header", ""))
+		_clear_team()
+		await _present_team((view as Dictionary).get("members", []))
+	await _fade(_root, 0.0, UiTokens.HALL_LEAVE)
+	visible = false
+	set_process_input(false)
+	finished.emit()
+
+
 func is_showing() -> bool:
 	return visible
 

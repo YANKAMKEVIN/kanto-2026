@@ -60,7 +60,7 @@
 		"full_restore": 10
 	},
 	"money": 30000,
-	"rest_point": "viridian_center",
+	"rest_point": "indigo_plateau_lobby",
 	"discovered": [
 		"viridian_city",
 		"pallet_town"

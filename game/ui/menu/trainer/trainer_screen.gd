@@ -23,6 +23,9 @@ extends MenuScreen
 ## (owns_back), l'icône du Dresseur et « Dresseur » ; bandeau d'état de l'hôte à droite.
 ## Placement : rempli par [TrainerMenu] sous l'en-tête, marges de SAFE_MARGIN.
 
+## J30 (Q30-4) : le lien « Panthéon » a été touché (consultation, lecture seule).
+signal hall_of_fame_requested
+
 const TITLE := "Dresseur"
 const BACK_TEXT := "RETOUR"
 const BACK_ICON: Texture2D = preload("res://assets/ui/icons/battle/back.svg")
@@ -55,6 +58,8 @@ var _seen: Button
 var _caught: Button
 var _seen_route: MenuRoute
 var _caught_route: MenuRoute
+## J30 (Q30-4) : lien « Panthéon ».
+var _hall: Button
 var _slots: Array[BadgeSlot] = []
 var _team_panel: PanelContainer
 var _team_grid: GridContainer
@@ -331,6 +336,16 @@ func _build_identity() -> PanelContainer:
 	_caught = _link_button()
 	_caught.pressed.connect(_on_link_pressed.bind(false))
 	_links.add_child(_caught)
+	# J30 (Q30-4) : « Panthéon » sur sa propre ligne, sous l'argent (la rangée des liens reste à
+	# deux boutons).
+	_hall = _link_button()
+	_hall.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	_hall.clip_text = false
+	_hall.custom_minimum_size.x = UiTokens.TRAINER_HALL_LINK_WIDTH
+	_hall.pressed.connect(_on_hall_pressed)
+	column.add_child(_hall)
+	column.move_child(_hall, _money_row.get_index() + 1)
+	_hall.item_rect_changed.connect(_place_portrait)
 	return _identity
 
 
@@ -441,6 +456,7 @@ func _apply(view: TrainerView) -> void:
 	_caught_route = view.caught_route
 	_set_link(_seen, view.seen_text)
 	_set_link(_caught, view.caught_text)
+	_set_link(_hall, view.hall_of_fame_text)
 	_links.visible = _seen.visible or _caught.visible
 	for i: int in _slots.size():
 		_slots[i].setup(view.badges[i] if i < view.badges.size() else BadgeSlotView.new(i))
@@ -611,7 +627,7 @@ func _set_link(button: Button, text: String) -> void:
 ## commence sous cette ligne, jamais dessus (montant à 6 chiffres compris).
 func _text_bottom() -> float:
 	var bottom := 0.0
-	for row: Control in [_started_row, _money_row]:
+	for row: Control in [_started_row, _money_row, _hall]:
 		if row != null and row.visible:
 			bottom = maxf(bottom, row.global_position.y + row.size.y - _stage.global_position.y)
 	return bottom + UiTokens.GAP
@@ -637,6 +653,17 @@ func _on_link_pressed(is_seen: bool) -> void:
 		return
 	Haptics.vibrate(UiTokens.HAPTIC_TICK_MS)
 	route_requested.emit(route)
+
+
+## J30 (Q30-4) : lien « Panthéon » touché.
+func _on_hall_pressed() -> void:
+	Haptics.vibrate(UiTokens.HAPTIC_TICK_MS)
+	hall_of_fame_requested.emit()
+
+
+## Bouton « Panthéon » (tests).
+func get_hall_of_fame_button() -> Button:
+	return _hall
 
 
 func _on_back() -> void:

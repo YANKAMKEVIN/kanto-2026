@@ -82,7 +82,9 @@ const TRAVERSABLE: Array[StringName] = [&"relief_escalier_01", &"ground_hautes_h
 	&"decal_fleche_repaire_01", &"decal_fleche_repaire_01_haut", &"decal_fleche_repaire_01_bas",
 	&"decal_fleche_repaire_01_gauche", &"decal_arret_repaire_01",
 	&"int_porte_ascenseur_repaire_01", &"hideout_office_door", &"game_corner_wall",
-	&"int_affiche_casino_01"]
+	&"int_affiche_casino_01",
+	# J29 (QA A17) : porte de la Ligue dans le mur du fond du hall du Plateau (déjà bloqué).
+	&"int_porte_ligue_01"]
 const GROUND_LAYER: Array[StringName] = [
 	# Série 22 bis : modules du repaire et du Casino (murs, escaliers, décalcomanies, portes).
 	&"relief_mur_repaire_01", &"relief_mur_repaire_02", &"relief_mur_repaire_03",

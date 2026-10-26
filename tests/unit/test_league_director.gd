@@ -179,3 +179,28 @@ func test_complete_ceremony_writes_the_title_and_one_entry_only_once() -> void:
 	assert_true(_director.complete_ceremony(_entry("2026-10-27T10:00:00")))
 	assert_eq(_state.hall_of_fame.size(), 2)
 	assert_eq(_state.hall_of_fame.get_entry(0)["date"], "2026-10-26T10:00:00")
+
+
+## Grand moment « champion » (§0.1) : à la première victoire seulement.
+func test_the_champion_moment_is_recorded_on_the_first_title_only() -> void:
+	_win_all()
+	assert_true(_director.complete_ceremony(_entry("2026-10-26T10:00:00")))
+	assert_true(_state.has_moment(MomentLibrary.CHAMPION))
+	_win_all()
+	assert_true(_director.complete_ceremony(_entry("2026-10-27T10:00:00")))
+	var count := 0
+	for moment: Dictionary in _state.moments:
+		if moment["type"] == String(MomentLibrary.CHAMPION):
+			count += 1
+	assert_eq(count, 1, "un seul moment, deux entrées au Panthéon")
+	assert_eq(_state.hall_of_fame.size(), 2)
+
+
+## Q30-4 : le lien « Panthéon » de l'écran Dresseur n'existe qu'avec une entrée.
+func test_trainer_view_shows_the_hall_of_fame_link_after_the_first_entry() -> void:
+	var data := PokemonData.new()
+	assert_eq(TrainerSummary.build(_state, data, null, null, null).hall_of_fame_text, "")
+	_win_all()
+	_director.complete_ceremony(_entry("2026-10-26T10:00:00"))
+	assert_eq(TrainerSummary.build(_state, data, null, null, null).hall_of_fame_text,
+		TrainerView.HALL_OF_FAME_LABEL)

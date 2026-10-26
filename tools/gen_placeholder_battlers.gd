@@ -63,6 +63,10 @@ const SPECIES: Array[String] = [
 	# acceptés [D]) et Ronflex (dos de combat ; le dos peint de la série 23 est le prototype
 	# battle_proto/dos_ia_143.png, comme les autres dos IA). Ajouts en fin.
 	"poliwag", "tentacool", "snorlax",
+	# Jalon 29 : Sulfura, rival n° 7, Dresseurs et rencontres de la Route Victoire, reprises des
+	# J22 à J26 (silhouette d'une forme proche, recolorée, avec un trait distinctif). Ajouts en fin.
+	"machoke", "alakazam", "venomoth", "chansey", "golduck", "tentacruel", "dewgong", "cloyster",
+	"kingler", "lapras", "lickitung", "mr_mime", "exeggutor", "moltres",
 ]
 const OUTLINE := Color("#1c1c28")
 const EYE := Color("#1c1c28")
@@ -75,7 +79,11 @@ var _h: int = SIZE
 
 func _init() -> void:
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(DIR))
+	# Jalon 29 : `-- <espèce> …` ne (re)génère que ces espèces (les autres fichiers ne bougent pas).
+	var only := OS.get_cmdline_user_args()
 	for species: String in SPECIES:
+		if not only.is_empty() and not only.has(species):
+			continue
 		for back: bool in [false, true]:
 			var img := Image.create_empty(SIZE, SIZE, false, Image.FORMAT_RGBA8)
 			img.fill(Color(0, 0, 0, 0))
@@ -1977,3 +1985,100 @@ func _write_shadow() -> void:
 	img.save_png(DIR + "battle_shadow.png")
 	_w = SIZE
 	_h = SIZE
+
+
+# --- Jalon 29 ----------------------------------------------------------------------------------
+
+
+## Mackogneur : Machopeur bleu-gris plus massif, ceinture dorée.
+func _draw_machoke(img: Image, back: bool) -> void:
+	_base(img, back, "machop", 0.05, 0.9, 0.12)
+	_r(img, 20, 44, 24, 3, Color("#e0b030"))
+
+
+## Alakazam : Kadabra plus sombre, longue moustache.
+func _draw_alakazam(img: Image, back: bool) -> void:
+	_base(img, back, "kadabra", -0.02, 1.0, 0.1)
+	if not back:
+		_line(img, Vector2(28, 30), Vector2(18, 44), Color("#e8d8a0"), 2)
+		_line(img, Vector2(36, 30), Vector2(46, 44), Color("#e8d8a0"), 2)
+
+
+## Aéromite : Papilusion mauve, ailes poudrées.
+func _draw_venomoth(img: Image, back: bool) -> void:
+	_base(img, back, "butterfree", 0.12, 1.0, 0.05)
+
+
+## Leveinard : Mélofée rose pâle, poche et œuf blanc.
+func _draw_chansey(img: Image, back: bool) -> void:
+	_base(img, back, "clefairy", 0.0, 0.7)
+	if not back:
+		_e(img, 32, 48, 6, 5, WHITE, true)
+
+
+## Akwakwak : Carapuce bleu nuit, joyau rouge au front.
+func _draw_golduck(img: Image, back: bool) -> void:
+	_base(img, back, "squirtle", 0.05, 1.2, 0.15)
+	if not back:
+		_e(img, 32, 14, 3, 3, Color("#d83030"), true)
+
+
+## Tentacruel : Stari bleu, deux gemmes rouges.
+func _draw_tentacruel(img: Image, back: bool) -> void:
+	_base(img, back, "staryu", 0.45, 0.8)
+	_e(img, 26, 24, 3, 3, Color("#d83030"), true)
+	_e(img, 38, 24, 3, 3, Color("#d83030"), true)
+
+
+## Lamantine : Persian recoloré blanc bleuté, corne.
+func _draw_dewgong(img: Image, back: bool) -> void:
+	_base(img, back, "persian", 0.5, 0.25)
+	_line(img, Vector2(32, 12), Vector2(32, 4), WHITE, 3)
+
+
+## Crustabri : Kokiyas violet sombre, pointes.
+func _draw_cloyster(img: Image, back: bool) -> void:
+	_base(img, back, "shellder", 0.05, 1.0, 0.25)
+	for x: int in [14, 50]:
+		_line(img, Vector2(x, 40), Vector2(x + (-6 if x < 32 else 6), 30), Color("#d8d0e8"), 3)
+
+
+## Krabboss : Paras rouge vif, grosse pince.
+func _draw_kingler(img: Image, back: bool) -> void:
+	_base(img, back, "paras", -0.05, 1.1)
+	_e(img, 50, 30, 9, 7, Color("#e05030"), true)
+
+
+## Lokhlass : Carapuce bleu clair, plus grand, carapace grise à bosses.
+func _draw_lapras(img: Image, back: bool) -> void:
+	_base(img, back, "squirtle", 0.02, 0.8)
+	_e(img, 32, 40, 14, 8, Color("#a8a0b0"), not back)
+
+
+## Excelangue : Mélofée rose, longue langue.
+func _draw_lickitung(img: Image, back: bool) -> void:
+	_base(img, back, "clefairy", -0.02, 1.0)
+	if not back:
+		_line(img, Vector2(32, 34), Vector2(44, 50), Color("#e85a8a"), 4)
+
+
+## M. Mime : Rondoudou blanc, joues rouges, mains levées.
+func _draw_mr_mime(img: Image, back: bool) -> void:
+	_base(img, back, "jigglypuff", 0.0, 0.2)
+	_e(img, 14, 26, 5, 5, Color("#d84040"), true)
+	_e(img, 50, 26, 5, 5, Color("#d84040"), true)
+
+
+## Noadkoko : Noeunoeuf et un panache de palmes vertes.
+func _draw_exeggutor(img: Image, back: bool) -> void:
+	_base(img, back, "exeggcute", 0.0, 1.0)
+	for dx: int in [-12, 0, 12]:
+		_leaf(img, Vector2(32 + dx, 18), Vector2(32 + dx * 2, 2), 4.0, Color("#3a9a40"))
+
+
+## Sulfura : Roucarnage orangé, ailes de flammes.
+func _draw_moltres(img: Image, back: bool) -> void:
+	_base(img, back, "pidgeot", 0.06, 1.3)
+	_flame(img, Vector2(12, 20), 7.0)
+	_flame(img, Vector2(52, 20), 7.0)
+	_flame(img, Vector2(32, 6), 6.0)

@@ -19,9 +19,10 @@ const DATA_DIR := "res://data"
 ## Jalon 21 : Poké Flûte, CT39, Constriction, Bouclier et les fiches de Pokédex d'Ossatueur, de
 ## Ronflex, de Ptitard et de Tentacool validés par Kevin le 2026-10-16 (dossier 24 §15), « draft »
 ## retiré.
-## Jalon 30 (T16) : bloc « Pokémon © … / projet personnel » du générique, proposé [D] le
-## 2026-10-26, à valider par Kevin.
-const PENDING_DRAFTS: Array[String] = ["story/credits.json/blocks/3"]
+## Jalon 30 (T16) : bloc « Pokémon © … / projet personnel » du générique, validé par Kevin le
+## 2026-10-26, « draft » retiré.
+## Jalon 30 : texte du Grand moment « champion » proposé [D] le 2026-10-26, à valider par Kevin.
+const PENDING_DRAFTS: Array[String] = ["trainer/moments.json/moments/champion"]
 
 
 func test_data_has_json_files() -> void:

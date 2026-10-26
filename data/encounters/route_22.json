@@ -1,6 +1,6 @@
 {
 	"route_22_grass": {
-		"maps": ["route_22"],
+		"maps": ["route_22", "route_22_west"],
 		"terrain": "grass",
 		"rate": 25,
 		"ramp": { "from_step": 15, "max_steps": 20 },

@@ -37,9 +37,10 @@ const NAMED_SPECIES_OK: Dictionary[StringName, Array] = {&"magneton": [&"magnemi
 ## Espèces des données sans fiche : jamais vues au J19 (SPECTRE) ; Osselait a la sienne depuis le
 ## J20 (annexe A n° 204), Ossatueur a la sienne depuis le J21 (T5, dossier 24 §15.10).
 ## Jalon 30 (T3) : les espèces de la Ligue n'ont pas encore de fiche (textes à valider) ;
-## Lamantine, Crustabri, Flagadoss et Ptéra ont reçu celles des J24 et J25 à la fusion de main.
+## Lamantine, Crustabri, Flagadoss et Ptéra ont reçu celles des J24 et J25 à la fusion de main ;
+## Lokhlass, Alakazam et Noadkoko celles du J29 à sa fusion (2026-10-26).
 const NO_ENTRY_YET: Array[StringName] = [
-	&"lapras", &"alakazam", &"rhydon", &"exeggutor", &"hitmonlee", &"hitmonchan", &"jynx",
+	&"rhydon", &"hitmonlee", &"hitmonchan", &"jynx",
 	&"machamp", &"gengar", &"dragonair", &"dragonite"]
 
 var _data: PokemonData

@@ -58,6 +58,7 @@ func test_victory_runs_hall_of_fame_credits_and_pallet_town() -> void:
 		assert_false(flags.has_flag(LeagueAttempt.stage_flag(stage)))
 	assert_true(flags.has_flag(LeagueAttempt.CREDITS_SEEN), "générique vu")
 	assert_eq(GameState.hall_of_fame.size(), 1)
+	assert_true(GameState.has_moment(MomentLibrary.CHAMPION), "Grand moment « champion »")
 	var entry := GameState.hall_of_fame.get_entry(0)
 	assert_eq(_species(entry), party, "l'équipe victorieuse, dans l'ordre")
 	assert_eq(entry["player"], "Kevin")

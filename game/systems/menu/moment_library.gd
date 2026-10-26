@@ -51,9 +51,13 @@ const BILL_RESTORED: StringName = &"bill_restored"
 ## lieu = zone de la carte du moment). Écrit une seule fois par l'étape de scène « moment »
 ## (scène de Giovanni, T21).
 const GIOVANNI: StringName = &"giovanni"
+## Champion de la Ligue (J30, `jalon-30.md` §0.1 : la victoire de la Ligue est un Grand moment ;
+## lieu = zone de la carte du moment, « Plateau Indigo »). Écrit à la cérémonie du Panthéon, la
+## première fois seulement ([LeagueDirector]).
+const CHAMPION: StringName = &"champion"
 ## Ajouts en fin (types des jalons suivants après).
 const TYPES: Array[StringName] = [STARTER, RIVAL_BATTLE, FIRST_CAPTURE, ZONE_ARRIVAL, BADGE,
-	FOSSIL, BILL_RESTORED, GIOVANNI]
+	FOSSIL, BILL_RESTORED, GIOVANNI, CHAMPION]
 ## Clé des détails d'un moment [constant FOSSIL] : l'objet obtenu (identifiant de [ItemLibrary]).
 const DETAIL_ITEM: String = "item"
 
@@ -78,6 +82,7 @@ const _MARKS: Dictionary[StringName, Array] = {
 	FOSSIL: [MARK_ZONE, MARK_FOSSIL],
 	BILL_RESTORED: [MARK_ZONE],
 	GIOVANNI: [MARK_ZONE],
+	CHAMPION: [MARK_ZONE],
 }
 
 var _texts: Dictionary[StringName, MomentTextData] = {}

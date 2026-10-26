@@ -1,0 +1,11 @@
+{
+	"route_22_gate_guard": {
+		"cell": [
+			6,
+			2
+		],
+		"facing": "left",
+		"sprite": "guard",
+		"dialogue": "route_22_gate_guard"
+	}
+}

@@ -27,7 +27,7 @@
 			"description": "Une ville de passage entre les forêts, où les routes de Kanto se croisent. On y vient pour se reposer, se ravitailler… et on en repart toujours un peu plus loin."
 		},
 		"route_22": {
-			"name": "Route 22", "kind": "route", "maps": ["route_22"],
+			"name": "Route 22", "kind": "route", "maps": ["route_22", "route_22_west", "route_22_gate"],
 			"description": "Un chemin de terre qui s'éloigne de Jadielle vers l'ouest, au pied d'une falaise basse. Là-haut, on devine déjà le Plateau Indigo."
 		},
 		"route_2": {
@@ -167,13 +167,19 @@
 			],
 			"description": "Une ville basse et verte, ouverte sur la mer. Au nord, le Parc Safari ; près des enclos, des Pokémon venus d'ailleurs."
 		},
-		"route_23": { "name": "Route 23", "kind": "route", "maps": [] },
+		"route_23": {
+			"name": "Route 23", "kind": "route",
+			"maps": ["route_23", "victory_road_1f", "victory_road_2f", "victory_road_3f"],
+			"subtitle": "Route 22 — Plateau Indigo",
+			"description": "Huit gardes, huit Badges. Au-delà de l'eau, la Route Victoire monte vers le Plateau Indigo."
+		},
 		"indigo_plateau": {
-			"name": "Plateau Indigo", "kind": "place",
+			"name": "Plateau Indigo", "kind": "place", "maps": ["indigo_plateau", "indigo_plateau_lobby",
+				"league_lorelei", "league_bruno", "league_agatha", "league_lance", "league_champion",
+				"hall_of_fame"],
 			"subtitle": "Route 23",
-			"description": "Le sommet de la Route 23. Derrière les portes du hall, la Ligue Pokémon attend les meilleurs Dresseurs.",
-			"maps": ["league_lorelei", "league_bruno", "league_agatha", "league_lance",
-				"league_champion", "hall_of_fame"]
+			"services": [{ "id": "pokemon_center", "found_on": "indigo_plateau_lobby" }],
+			"description": "Le sommet de la Route 23. Derrière les portes du hall, la Ligue Pokémon attend les meilleurs Dresseurs."
 		},
 		"route_25": {
 			"name": "Route 25", "kind": "route", "maps": ["route_25"],

@@ -1,6 +1,13 @@
 {
 	"size": 151,
 	"species": {
+		"alakazam": {"height": 1.5, "weight": 48.0, "description": "Son cerveau dépasse celui d'un ordinateur. Il se souvient de tout, depuis sa naissance, et ne s'en sert jamais pour rien."},
+		"chansey": {"height": 1.1, "weight": 34.6, "description": "Doux et attentionné, il porte un œuf dans sa poche. On dit qu'il porte bonheur à ceux qui le croisent, mais il fuit dès qu'on l'approche."},
+		"exeggutor": {"height": 2.0, "weight": 120.0, "description": "Ses trois têtes pensent chacune de leur côté. Quand elles s'entendent, il devient redoutable."},
+		"lapras": {"height": 2.5, "weight": 220.0, "description": "Il traverse les mers en portant des passagers sur son dos. Sa voix douce se répand sur les flots, par nuit calme."},
+		"lickitung": {"height": 1.2, "weight": 65.5, "description": "Sa langue fait deux fois sa taille. Il goûte tout ce qu'il rencontre, même les inconnus."},
+		"moltres": {"height": 2.0, "weight": 60.0, "description": "Un oiseau légendaire. Chaque battement de ses ailes enflammées éclaire le ciel d'une lueur rouge."},
+		"mr_mime": {"height": 1.3, "weight": 54.5, "description": "Il mime si bien qu'un mur invisible finit par exister. Il en fait des barrières pour se protéger."},
 		"bulbasaur": {
 			"height": 0.7, "weight": 6.9,
 			"description": "Le bulbe sur son dos se gorge de lumière. Calme, il observe longtemps avant d'approcher.",

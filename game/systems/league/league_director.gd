@@ -149,8 +149,14 @@ func pending_cutscene(map_id: StringName) -> StringName:
 ## L'appelant écrit la partie juste après (une seule écriture).
 func complete_ceremony(entry: Dictionary) -> bool:
 	var flags := _flags()
+	var first_title := flags != null and not LeagueAttempt.is_champion(flags)
 	if flags == null or not LeagueAttempt.complete(flags):
 		return false
+	# Grand moment « champion » (§0.1 [D]) : la première victoire seulement (la frise ne se répète
+	# pas ; chaque victoire a son entrée au Panthéon).
+	if first_title and _state.has_method(&"record_moment"):
+		_state.call(&"record_moment", MomentLibrary.CHAMPION,
+			_map.map_id if is_instance_valid(_map) else HALL_ROOM)
 	var hall: HallOfFame = _state.get(&"hall_of_fame") as HallOfFame
 	if hall != null:
 		var added := hall.add(entry)

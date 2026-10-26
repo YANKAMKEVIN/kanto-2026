@@ -12,31 +12,6 @@
 		],
 		"description": "Le lanceur fait s'ouvrir une faille sous la cible. Met K.O. d'un coup."
 	},
-	"mega_kick": {
-		"name": "Ultimawashi",
-		"type": "normal",
-		"category": "physical",
-		"power": 120,
-		"accuracy": 75,
-		"pp": 5,
-		"description": "Un coup de pied d'une puissance phénoménale."
-	},
-	"sky_attack": {
-		"name": "Piqué",
-		"type": "flying",
-		"category": "physical",
-		"power": 140,
-		"accuracy": 90,
-		"pp": 5,
-		"crit_stage": 1,
-		"effects": [
-			{
-				"kind": "charge",
-				"texts": "sky_attack"
-			}
-		],
-		"description": "Le lanceur s'entoure d'une lueur au premier tour, puis fond sur la cible au second. Taux de critique élevé."
-	},
 	"toxic": {
 		"name": "Toxik",
 		"type": "poison",

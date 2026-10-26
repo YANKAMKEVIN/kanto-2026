@@ -38,8 +38,8 @@ func after_each() -> void:
 
 func test_type_is_appended_last() -> void:
 	# Jalon 14 : `bill_restored` vient après lui (ajouts en fin).
-	assert_eq(MomentLibrary.TYPES[MomentLibrary.TYPES.size() - 2], MomentLibrary.BILL_RESTORED,
-		"ajout en fin (le J20 ajoute `giovanni` derrière)")
+	assert_eq(MomentLibrary.TYPES[MomentLibrary.TYPES.size() - 3], MomentLibrary.BILL_RESTORED,
+		"ajout en fin (le J20 ajoute `giovanni` derrière, le J30 `champion`)")
 	assert_eq(MomentLibrary.TYPES.find(MomentLibrary.FOSSIL),
 		MomentLibrary.TYPES.find(MomentLibrary.BADGE) + 1)
 	assert_eq(MomentLibrary.MARK_FOSSIL, "{fossil}")
@@ -64,6 +64,7 @@ func test_fossil_mark_is_only_for_the_fossil_moment() -> void:
 			"fossil": {"title": "{fossil} à {zone}"},
 			"bill_restored": {"title": "L"},
 			"giovanni": {"title": "G"},
+			"champion": {"title": "C"},
 		},
 	}
 	var library := MomentLibrary.new()

@@ -1,0 +1,71 @@
+{
+	"victory_road_1f_item_1": {
+		"cutscene": "victory_road_1f_item_1"
+	},
+	"victory_road_1f_item_2": {
+		"cutscene": "victory_road_1f_item_2"
+	},
+	"victory_road_2f_item_1": {
+		"cutscene": "victory_road_2f_item_1"
+	},
+	"victory_road_2f_item_2": {
+		"cutscene": "victory_road_2f_item_2"
+	},
+	"victory_road_2f_item_3": {
+		"cutscene": "victory_road_2f_item_3"
+	},
+	"victory_road_2f_item_4": {
+		"cutscene": "victory_road_2f_item_4"
+	},
+	"victory_road_2f_hidden_1": {
+		"cutscene": "victory_road_2f_hidden_1"
+	},
+	"victory_road_2f_hidden_2": {
+		"cutscene": "victory_road_2f_hidden_2"
+	},
+	"victory_road_3f_item_1": {
+		"cutscene": "victory_road_3f_item_1"
+	},
+	"victory_road_3f_item_2": {
+		"cutscene": "victory_road_3f_item_2"
+	},
+	"route_23_hidden_1": {
+		"cutscene": "route_23_hidden_1"
+	},
+	"route_23_hidden_2": {
+		"cutscene": "route_23_hidden_2"
+	},
+	"route_23_hidden_3": {
+		"cutscene": "route_23_hidden_3"
+	},
+	"route_23_guard_1": {
+		"cutscene": "route_23_guard_1_talk"
+	},
+	"route_23_guard_2": {
+		"cutscene": "route_23_guard_2_talk"
+	},
+	"route_23_guard_3": {
+		"cutscene": "route_23_guard_3_talk"
+	},
+	"route_23_guard_4": {
+		"cutscene": "route_23_guard_4_talk"
+	},
+	"route_23_guard_5": {
+		"cutscene": "route_23_guard_5_talk"
+	},
+	"route_23_guard_6": {
+		"cutscene": "route_23_guard_6_talk"
+	},
+	"route_23_guard_7": {
+		"cutscene": "route_23_guard_7_talk"
+	},
+	"route_22_gate_guard": {
+		"cutscene": "route_22_gate_guard_talk"
+	},
+	"rival_route22_final": {
+		"cutscene": "rival_route22_final"
+	},
+	"moltres": {
+		"cutscene": "moltres"
+	}
+}

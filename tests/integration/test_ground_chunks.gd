@@ -149,3 +149,10 @@ func test_j21_tower_6f_and_7f_take_the_single_bake() -> void:
 		var ground := _map(map_id).get_node(^"PaintedGround") as PaintedGround
 		assert_true(ground.can_bake(), map_id + " : cuisson d'un bloc")
 		assert_false(ground.stack_layers().is_empty(), map_id + " : couches de grotte cuites")
+
+
+## Fusion de `systemes-2` dans le J29 : la Route 22 ouest (20 × 14 cases, sans rivage) garde la
+## cuisson d'un bloc ; Route 23 et Route Victoire n'ont pas de sol peint (tuiles).
+func test_j29_route_22_west_takes_the_single_bake() -> void:
+	var ground := _map("route_22_west").get_node(^"PaintedGround") as PaintedGround
+	assert_true(ground.can_bake(), "Route 22 ouest : cuisson d'un bloc")

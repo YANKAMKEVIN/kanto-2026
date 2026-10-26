@@ -2519,7 +2519,8 @@ func _setup_league_ceremony() -> void:
 	_credits.load_file()
 	_hall_screen = HALL_OF_FAME_SCREEN.new()
 	_hall_screen.name = "HallOfFameScreen"
-	_hall_screen.process_mode = Node.PROCESS_MODE_PAUSABLE
+	# Toujours actif : il se consulte aussi depuis le Menu, qui met la partie en pause (Q30-4).
+	_hall_screen.process_mode = Node.PROCESS_MODE_ALWAYS
 	add_child(_hall_screen)
 	_credits_screen = CREDITS_SCREEN.new()
 	_credits_screen.name = "CreditsScreen"
@@ -2529,6 +2530,9 @@ func _setup_league_ceremony() -> void:
 	_cutscenes_node.hall_of_fame_handler = _play_hall_of_fame
 	_cutscenes_node.credits_handler = _play_credits
 	SceneRouter.map_entered.connect(_on_league_map_entered)
+	# Q30-4 : le Panthéon se consulte depuis l'écran Dresseur (lecture seule, la plus récente
+	# d'abord).
+	_menu_screen.hall_of_fame_requested.connect(_browse_hall_of_fame)
 	_league.tree_exiting.connect(func() -> void:
 		if SceneRouter.map_entered.is_connected(_on_league_map_entered):
 			SceneRouter.map_entered.disconnect(_on_league_map_entered))
@@ -2583,6 +2587,18 @@ func _hall_view(entry: Dictionary) -> Dictionary:
 	if not day.is_empty():
 		header = "%s · %s" % [header, day] if not header.is_empty() else day
 	return {"header": header, "members": members}
+
+
+## Q30-4 : entrées du Panthéon, de la plus récente à la plus ancienne, sur l'écran du Panthéon.
+func _browse_hall_of_fame() -> void:
+	if _hall_screen.is_showing():
+		return
+	var views: Array = []
+	var entries := GameState.hall_of_fame.entries()
+	entries.reverse()
+	for entry: Dictionary in entries:
+		views.append(_hall_view(entry))
+	await _hall_screen.browse(views)
 
 
 ## Surnom, sinon nom de l'espèce, d'un Pokémon d'une entrée du Panthéon.

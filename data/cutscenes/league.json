@@ -477,5 +477,65 @@
 				"facing": "down"
 			}
 		]
+	},
+	"league_guard_door": {
+		"variants": [
+			{
+				"unless": [
+					"league_attempt_active"
+				],
+				"steps": [
+					{
+						"face": "player",
+						"to": "up"
+					},
+					{
+						"face": "league_guard_west",
+						"to": "player"
+					},
+					{
+						"face": "league_guard_east",
+						"to": "player"
+					},
+					{
+						"dialogue": "league_guard_door"
+					},
+					{
+						"move": "player",
+						"path": [
+							"down"
+						],
+						"keep_facing": true,
+						"if": [
+							"league_door_declined"
+						]
+					},
+					{
+						"face": "league_guard_west",
+						"to": "right"
+					},
+					{
+						"face": "league_guard_east",
+						"to": "left"
+					},
+					{
+						"change_map": "league_lorelei",
+						"at": "from_lobby",
+						"facing": "up",
+						"unless": [
+							"league_door_declined"
+						]
+					},
+					{
+						"unset": [
+							"league_door_declined"
+						],
+						"if": [
+							"league_door_declined"
+						]
+					}
+				]
+			}
+		]
 	}
 }

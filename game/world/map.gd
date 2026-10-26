@@ -87,6 +87,13 @@ const _NPC_SCENE: PackedScene = preload("res://game/world/npc/npc.tscn")
 ## [method fishable_set] y ajoute les rectangles de [constant FISHABLE_PATH] pour cette carte
 ## (cartes livrées avant le J22, dont on ne réécrit pas les grilles).
 @export var fishable_cells: Array[Vector2i] = []
+## Niveaux de sol (jalon 29, Route Victoire ; collisions « par paires » de Rouge/Bleu) : on ne passe
+## du sol bas au sol haut que par un escalier, un rocher ne change jamais de niveau
+## ([method GridWorld.set_level], [method GridWorld.levels_compatible]). Les autres cases restent
+## de tout niveau ([constant GridWorld.Level.ANY]). Vides : carte sans niveaux.
+@export var low_cells: Array[Vector2i] = []
+@export var high_cells: Array[Vector2i] = []
+@export var stairs_cells: Array[Vector2i] = []
 ## Jalon 22 (T16 [D]) : cases de Piste Cyclable d'une carte qui n'est Piste qu'en partie (Route 16
 ## ouest, voie basse ; Route 18, partie ouest). [member cycling_road] vrai = toute la carte.
 @export var cycling_road_cells: Array[Vector2i] = []
@@ -427,6 +434,12 @@ func _build_grid() -> void:
 		_grid.set_surfable(cell)
 	for cell: Vector2i in current_cells:
 		_grid.set_current(cell, current_cells[cell])
+	for cell: Vector2i in low_cells:
+		_grid.set_level(cell, GridWorld.Level.LOW)
+	for cell: Vector2i in high_cells:
+		_grid.set_level(cell, GridWorld.Level.HIGH)
+	for cell: Vector2i in stairs_cells:
+		_grid.set_level(cell, GridWorld.Level.STAIRS)
 	# Objets triés par les pieds (Entities) et relief peint posé au sol (GroundDecals :
 	# falaises, massif ; jalon-07.md §6.6).
 	for layer_path: NodePath in _PROP_LAYERS:

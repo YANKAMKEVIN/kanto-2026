@@ -253,7 +253,8 @@ func test_route1_grass_freezes_the_player_before_the_grass() -> void:
 ## gèlerait pas) sauf le directeur du menu (et, plus tard, l'écran du menu).
 func test_boot_is_always_and_its_children_are_pausable_except_the_menu() -> void:
 	assert_eq(_boot.process_mode, Node.PROCESS_MODE_ALWAYS)
-	var exceptions: Array[StringName] = [&"MenuDirector", &"TrainerMenu"]
+	# J30 (Q30-4) : l'écran du Panthéon se consulte aussi depuis le Menu (partie en pause).
+	var exceptions: Array[StringName] = [&"MenuDirector", &"TrainerMenu", &"HallOfFameScreen"]
 	var checked := 0
 	for child: Node in _boot.get_children():
 		if exceptions.has(child.name):

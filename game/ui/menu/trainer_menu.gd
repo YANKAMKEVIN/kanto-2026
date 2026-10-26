@@ -25,6 +25,8 @@ extends CanvasLayer
 signal route_requested(route: MenuRoute)
 ## RETOUR d'un écran.
 signal back_requested
+## J30 (Q30-4) : « Panthéon » touché dans l'écran Dresseur.
+signal hall_of_fame_requested
 ## × touché.
 signal close_requested
 ## Relais de l'écran Équipe (6A) : Pokémon sélectionné, échange A ↔ B, favori basculé.
@@ -366,6 +368,7 @@ func show_trainer(view: TrainerView) -> void:
 		_trainer.speed_scale = speed_scale
 		_trainer.back_requested.connect(back_requested.emit)
 		_trainer.route_requested.connect(route_requested.emit)
+		_trainer.hall_of_fame_requested.connect(hall_of_fame_requested.emit)
 		_host.add_child(_trainer)
 		_trainer.hide_now()
 	_trainer.show_trainer(view)

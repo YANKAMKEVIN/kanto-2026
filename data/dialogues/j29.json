@@ -1,0 +1,150 @@
+{
+	"rival_route22_final_greet": {
+		"speaker": "{rival}",
+		"pages": [
+			"{player} ! J'ai les huit Badges, moi aussi.",
+			"La Ligue n'aura qu'un seul vainqueur,\net ce sera moi.",
+			"Prouve-moi le contraire !"
+		]
+	},
+	"rival_route22_final_won": {
+		"speaker": "{rival}",
+		"pages": [
+			"Encore toi…",
+			"D'accord. On se reverra là-haut."
+		]
+	},
+	"rival_route22_final_lost": {
+		"speaker": "{rival}",
+		"pages": [
+			"Tu vois ?",
+			"Tu n'es pas prêt pour la Ligue."
+		]
+	},
+	"guard_boulder_refuse": {
+		"speaker": "Garde",
+		"pages": [
+			"Seuls les Dresseurs qui ont le Badge Roche\npeuvent passer."
+		]
+	},
+	"guard_boulder_pass": {
+		"speaker": "Garde",
+		"pages": [
+			"Le Badge Roche ! Tu peux passer."
+		]
+	},
+	"guard_cascade_refuse": {
+		"speaker": "Garde",
+		"pages": [
+			"Seuls les Dresseurs qui ont le Badge Cascade\npeuvent passer."
+		]
+	},
+	"guard_cascade_pass": {
+		"speaker": "Garde",
+		"pages": [
+			"Le Badge Cascade ! Tu peux passer."
+		]
+	},
+	"guard_thunder_refuse": {
+		"speaker": "Garde",
+		"pages": [
+			"Seuls les Dresseurs qui ont le Badge Foudre\npeuvent passer."
+		]
+	},
+	"guard_thunder_pass": {
+		"speaker": "Garde",
+		"pages": [
+			"Le Badge Foudre ! Tu peux passer."
+		]
+	},
+	"guard_rainbow_refuse": {
+		"speaker": "Garde",
+		"pages": [
+			"Seuls les Dresseurs qui ont le Badge Prisme\npeuvent passer."
+		]
+	},
+	"guard_rainbow_pass": {
+		"speaker": "Garde",
+		"pages": [
+			"Le Badge Prisme ! Tu peux passer."
+		]
+	},
+	"guard_soul_refuse": {
+		"speaker": "Garde",
+		"pages": [
+			"Seuls les Dresseurs qui ont le Badge Âme\npeuvent passer."
+		]
+	},
+	"guard_soul_pass": {
+		"speaker": "Garde",
+		"pages": [
+			"Le Badge Âme ! Tu peux passer."
+		]
+	},
+	"guard_marsh_refuse": {
+		"speaker": "Garde",
+		"pages": [
+			"Seuls les Dresseurs qui ont le Badge Marais\npeuvent passer."
+		]
+	},
+	"guard_marsh_pass": {
+		"speaker": "Garde",
+		"pages": [
+			"Le Badge Marais ! Tu peux passer."
+		]
+	},
+	"guard_volcano_refuse": {
+		"speaker": "Garde",
+		"pages": [
+			"Seuls les Dresseurs qui ont le Badge Volcan\npeuvent passer."
+		]
+	},
+	"guard_volcano_pass": {
+		"speaker": "Garde",
+		"pages": [
+			"Le Badge Volcan ! Tu peux passer."
+		]
+	},
+	"guard_earth_refuse": {
+		"speaker": "Garde",
+		"pages": [
+			"Seuls les Dresseurs qui ont le Badge Terre\npeuvent passer."
+		]
+	},
+	"guard_earth_pass": {
+		"speaker": "Garde",
+		"pages": [
+			"Le Badge Terre ! Tu peux passer."
+		]
+	},
+	"route_23_victory_road_sign": {
+		"pages": [
+			"ROUTE VICTOIRE\nSeuls les meilleurs Dresseurs arrivent au bout."
+		]
+	},
+	"moltres_presence": {
+		"narration": true,
+		"pages": [
+			"Une chaleur intense emplit la grotte…"
+		]
+	},
+	"moltres_flew_away": {
+		"narration": true,
+		"pages": [
+			"Sulfura s'est envolé en laissant une traînée de braises."
+		]
+	},
+	"indigo_plateau_host": {
+		"speaker": "Hôte",
+		"pages": [
+			"Bienvenue au Plateau Indigo.",
+			"Au-delà de cette porte, le Conseil des Quatre attend.",
+			"Prépare-toi bien."
+		]
+	},
+	"route_22_league_sign": {
+		"pages": [
+			"LIGUE POKÉMON\nEntrée"
+		]
+	}
+}

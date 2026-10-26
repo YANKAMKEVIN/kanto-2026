@@ -1,0 +1,236 @@
+{
+	"victory_road_1f_cooltrainer_f": {
+		"name": "Topdresseuse Mélanie",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 1540,
+		"team": [
+			{
+				"species": "persian",
+				"level": 44
+			},
+			{
+				"species": "ninetales",
+				"level": 44
+			}
+		]
+	},
+	"victory_road_1f_cooltrainer_m": {
+		"name": "Topdresseur Gaëtan",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 1470,
+		"team": [
+			{
+				"species": "ivysaur",
+				"level": 42
+			},
+			{
+				"species": "wartortle",
+				"level": 42
+			},
+			{
+				"species": "charmeleon",
+				"level": 42
+			},
+			{
+				"species": "charizard",
+				"level": 42
+			}
+		]
+	},
+	"victory_road_2f_blackbelt": {
+		"name": "Karatéka Clément",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 1075,
+		"team": [
+			{
+				"species": "machoke",
+				"level": 43
+			},
+			{
+				"species": "machop",
+				"level": 43
+			},
+			{
+				"species": "machoke",
+				"level": 43
+			}
+		]
+	},
+	"victory_road_2f_juggler_1": {
+		"name": "Jongleur Quentin",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 1435,
+		"team": [
+			{
+				"species": "drowzee",
+				"level": 41
+			},
+			{
+				"species": "hypno",
+				"level": 41
+			},
+			{
+				"species": "kadabra",
+				"level": 41
+			},
+			{
+				"species": "kadabra",
+				"level": 41
+			}
+		]
+	},
+	"victory_road_2f_tamer": {
+		"name": "Dompteur Maxence",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 1760,
+		"team": [
+			{
+				"species": "persian",
+				"level": 44
+			},
+			{
+				"species": "golduck",
+				"level": 44
+			}
+		]
+	},
+	"victory_road_2f_pokemaniac": {
+		"name": "Pokémaniac Josselin",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 2000,
+		"team": [
+			{
+				"species": "charmeleon",
+				"level": 40
+			},
+			{
+				"species": "lapras",
+				"level": 40
+			},
+			{
+				"species": "lickitung",
+				"level": 40
+			}
+		]
+	},
+	"victory_road_2f_juggler_2": {
+		"name": "Jongleur Stanislas",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 1680,
+		"team": [
+			{
+				"species": "mr_mime",
+				"level": 48
+			}
+		]
+	},
+	"victory_road_3f_cooltrainer_m_1": {
+		"name": "Topdresseur Ambroise",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 1505,
+		"team": [
+			{
+				"species": "exeggutor",
+				"level": 43
+			},
+			{
+				"species": "cloyster",
+				"level": 43
+			},
+			{
+				"species": "arcanine",
+				"level": 43
+			}
+		]
+	},
+	"victory_road_3f_cooltrainer_f_1": {
+		"name": "Topdresseuse Judith",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 1505,
+		"team": [
+			{
+				"species": "bellsprout",
+				"level": 43
+			},
+			{
+				"species": "weepinbell",
+				"level": 43
+			},
+			{
+				"species": "victreebel",
+				"level": 43
+			}
+		]
+	},
+	"victory_road_3f_cooltrainer_m_2": {
+		"name": "Topdresseur Corentin",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 1505,
+		"team": [
+			{
+				"species": "kingler",
+				"level": 43
+			},
+			{
+				"species": "tentacruel",
+				"level": 43
+			},
+			{
+				"species": "blastoise",
+				"level": 43
+			}
+		]
+	},
+	"victory_road_3f_cooltrainer_f_2": {
+		"name": "Topdresseuse Agathe",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 1505,
+		"team": [
+			{
+				"species": "parasect",
+				"level": 43
+			},
+			{
+				"species": "dewgong",
+				"level": 43
+			},
+			{
+				"species": "chansey",
+				"level": 43
+			}
+		]
+	}
+}

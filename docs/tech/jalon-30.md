@@ -627,8 +627,9 @@ Suite de la QA S24 du 2026-10-26 (« Panthéon sans sortie »). Sans fusion du J
   taille changée est appliquée à la remise de la caméra.
 - **Valeurs [D]** : fond nuit uni (pas de fond peint) pour les deux écrans ; durées et tailles
   ci-dessus ; en-tête date au format JJ/MM/AAAA ; Chen rejoint le joueur par la gauche (ou au-dessus).
-- **Textes [D] à valider par Kevin** (`data/story/credits.json`) : bloc « Pokémon © Nintendo,
-  Creatures, Game Freak » / « Projet personnel, non officiel, jamais diffusé » ; bouton « Passer ».
+- **Textes du générique validés par Kevin le 2026-10-26** (« Oui, je valide ») : bloc « Pokémon ©
+  Nintendo, Creatures, Game Freak » / « Projet personnel, non officiel, jamais diffusé » ; bouton
+  « Passer » (visible seulement après un premier générique vu). « draft » retiré.
 - **Tests** : `test_league_ceremony.gd` (3 : cérémonie complète et sauvegarde, reprise au Panthéon
   sans 2e entrée, 2e victoire et générique passable), `test_league_screens.gd` (3),
   `test_credits_data.gd` (3), `test_league_director.gd` (+2), `test_cutscene_library.gd` (+3),
@@ -641,3 +642,31 @@ Suite de la QA S24 du 2026-10-26 (« Panthéon sans sortie »). Sans fusion du J
 - **Reste** : QA 30A de sauvegarde (Kevin, seule) ; QA téléphone 30C (Panthéon lisible, générique,
   Bourg Palette, 2e victoire, 60 i/s) ; Q30-4 (Panthéon dans le Menu Dresseur) ; Grand moment
   « champion » (§0.1, pas fait) ; porte du hall à la fusion du J29 (§10.8).
+
+### 10.11 Fusion du J29, porte du hall, Q30-4, Grand moment « champion » (2026-10-26)
+
+Décisions de Kevin du 2026-10-26 (« Oui, les trois »), relayées par la coordination.
+- **`origin/jalon-29` fusionné dans `jalon-30`** (`e5696824`, correctif d'orientation compris ;
+  §0.3 : le J30 se fusionne après le J29). Conflits : `zones.json` (Route 23 et Plateau du J29 +
+  les six salles), `interiors.json` (additionné), sprites provisoires de Lokhlass et d'Alakazam
+  (ceux du J30), tests de décompte additionnés (141 espèces, 154 capacités), `etat-projet.md`.
+  **Reprises dédoublonnées** : Noadkoko, Piqué, Ultimawashi (originaux du J29), Lokhlass,
+  Alakazam (copies identiques du J26 des deux côtés) retirés de `kanto_j30_reprises.json` et
+  `j30_reprises.json` ; leurs fiches de Pokédex sont celles du J29 (`NO_ENTRY_YET` réduit).
+- **Porte du hall** (§10.8) : warp `ToLeague` (12, 3) → `league_lorelei:from_lobby` ; déclencheur
+  sur (12, 4), scène `league_guard_door` (hors tentative) : T30-01 OUI → salle d'Olga (la tentative
+  s'ouvre, point de repos = Centre du hall), NON → le joueur recule d'un pas (`cancel_set`
+  `league_door_declined`, effacé ensuite). Deux gardes (`guard`) encadrent la porte en (11, 3) et
+  (13, 3), sans réplique [D]. La porte « À venir » du J29 (`indigo_league_door`) est retirée.
+  Départs `league_*` : point de repos `indigo_plateau_lobby`. Test : `test_league_hall_door.gd`.
+- **Q30-4** : lien « Panthéon » dans l'identité de l'écran Dresseur (sous l'argent) dès la
+  première entrée ; il ouvre l'écran du Panthéon en lecture seule (`HallOfFameScreen.browse`,
+  l'équipe de chaque entrée, la plus récente d'abord, un toucher pour la suivante).
+- **Grand moment « champion »** (§0.1) : `MomentLibrary.CHAMPION`, écrit par
+  `LeagueDirector.complete_ceremony` à la **première** victoire seulement [D] (chaque victoire a
+  son entrée au Panthéon). **Texte [D] à valider** (`data/trainer/moments.json`) : titre
+  « Champion de la Ligue Pokémon », détail « Ton équipe est entrée au Panthéon. ».
+- Captures relues : `build/captures/jalon30_porte/` (`tools/capture_j30_hall_door.gd` : question
+  du garde, écran Dresseur avec « Panthéon », consultation).
+- Remarque de rendu (Reportés) : sur l'écran Dresseur, les liens « vus » / « capturés » sont
+  coupés par le bas de l'écran en 2340 × 1080 (déjà avant le J30).

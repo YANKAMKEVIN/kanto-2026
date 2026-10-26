@@ -100,16 +100,18 @@ func test_real_data_loads_without_error() -> void:
 		# (kanto_tower.json ; Caninos vient du J17).
 		&"gastly", &"haunter", &"gengar", &"onix",
 		&"drowzee", &"hypno", &"krabby", &"kingler", &"voltorb", &"electrode", &"exeggcute", &"exeggutor",
-		&"cubone", &"marowak", &"hitmonlee", &"hitmonchan", &"koffing", &"weezing", &"rhyhorn", &"rhydon", &"tangela", &"kangaskhan",
-		&"horsea", &"seadra", &"goldeen", &"seaking", &"staryu", &"starmie", &"jynx", &"magmar", &"magikarp",
+		&"cubone", &"marowak", &"hitmonlee", &"hitmonchan", &"lickitung", &"koffing", &"weezing", &"rhyhorn", &"rhydon", &"chansey", &"tangela", &"kangaskhan",
+		&"horsea", &"seadra", &"goldeen", &"seaking", &"staryu", &"starmie", &"mr_mime", &"jynx", &"magmar", &"magikarp",
 		&"gyarados", &"lapras", &"eevee", &"vaporeon", &"jolteon", &"flareon",
-		&"omanyte", &"omastar", &"kabuto", &"kabutops", &"aerodactyl", &"snorlax", &"articuno", &"dragonair", &"dragonite"] as Array[StringName])
+		&"omanyte", &"omastar", &"kabuto", &"kabutops", &"aerodactyl", &"snorlax", &"articuno", &"moltres", &"dragonair", &"dragonite"] as Array[StringName])
 	# Jalon 25 (T7) : kanto_j25.json (Ponyta, Galopa, Magmar, Ptéra) ; Tadmorv, Grotadmorv,
 	# Smogogo et Électrode sont ceux du J22 (kanto_j25_reprises.json retiré à la fusion de main).
+	# Jalon 29 (T4) : Excelangue, M. Mime, Noadkoko, Sulfura (kanto_j29.json) ; Alakazam,
+	# Leveinard, Lokhlass repris des J23, J26 (kanto_j29_reprises.json).
 	# Jalon 30 (T3) : espèces de la Ligue (kanto_j30.json : Lippoutou, Mackogneur, Ectoplasma,
-	# Draco, Dracolosse ; kanto_j30_reprises.json : Kicklee, Tygnon, Lokhlass, Alakazam,
-	# Rhinoféros, Noadkoko ; les reprises des J24 et J25 retirées à la fusion de main).
-	assert_eq(_data.get_move_ids().size(), 153,
+	# Draco, Dracolosse ; kanto_j30_reprises.json : Kicklee, Tygnon, Rhinoféros ; Lokhlass,
+	# Alakazam et Noadkoko sont ceux du J29, retirés du J30 à la fusion du J29).
+	assert_eq(_data.get_move_ids().size(), 154,
 		"47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10) + Patience (J11) "
 		+ "+ 21 du Mont Sélénite (jalon 12) + 8 du jalon 13 (les 5 du J12 qu'il reprenait : "
 		+ "entrées du J12) + 6 du Cap d'Azuria (jalon 14) + Jackpot (J15) "
@@ -119,7 +121,9 @@ func test_real_data_loads_without_error() -> void:
 		+ "+ 5 du jalon 22 (Écrasement vient du J20) + 3 du J24 (j24.json : Force Poigne, "
 		+ "Pince-Masse et Trempette sont ceux du J22) "
 		+ "+ Déflagration et Poing de Feu (J25, j25.json) "
-		+ "+ 11 du jalon 30 (Blizzard, Picanon, Déflagration et Poing de Feu sont ceux des J24 et J25)")
+		+ "+ 3 du jalon 29 (Piqué, Ultimawashi, Clonage ; Bouclier est celui du J21) "
+		+ "+ 9 du jalon 30 (Blizzard, Picanon, Déflagration et Poing de Feu sont ceux des J24 et "
+		+ "J25 ; Piqué et Ultimawashi ceux du J29)")
 	assert_true(_data.has_move(&"struggle"))
 
 
@@ -526,14 +530,16 @@ func test_real_catch_rates_are_the_official_ones() -> void:
 		&"dewgong": 75, &"cloyster": 60, &"kingler": 60,
 		&"seadra": 75, &"omanyte": 45,
 		&"omastar": 45, &"kabuto": 45, &"kabutops": 45, &"articuno": 3,
+		# Jalon 29 (T4) : reprises des J23, J26 et les quatre espèces nouvelles.
+		&"alakazam": 50, &"chansey": 30, &"lapras": 45,
+		&"lickitung": 45, &"mr_mime": 45, &"exeggutor": 45, &"moltres": 3,
 		# Jalon 21 (T5).
 		&"poliwag": 255, &"tentacool": 190, &"snorlax": 25,
 		# Jalon 25 (T7) ; Tadmorv, Grotadmorv, Smogogo et Électrode sont ceux du J22.
 		&"ponyta": 190, &"rapidash": 60, &"magmar": 45, &"aerodactyl": 45,
 		# Jalon 30 (T3, Ligue) : reprises des J26 à J29 et espèces nouvelles (Lamantine,
 		# Crustabri, Flagadoss : J24 ; Ptéra : J25).
-		&"lapras": 45, &"alakazam": 50,
-		&"rhydon": 60, &"exeggutor": 45, &"hitmonlee": 45, &"hitmonchan": 45,
+		&"rhydon": 60, &"hitmonlee": 45, &"hitmonchan": 45,
 		&"jynx": 45, &"machamp": 45, &"gengar": 45, &"dragonair": 45, &"dragonite": 45,
 	}
 	assert_eq(_data.get_species_ids().size(), expected.size(), "toutes les espèces")
