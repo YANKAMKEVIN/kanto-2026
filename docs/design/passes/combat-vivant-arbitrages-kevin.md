@@ -40,6 +40,7 @@ ton temps : ≈ 1 h en tout (3 validations S24 et une planche).
 | **CV-2** | **Durée selon l'attaque** : statut et puissance ≤ 40 : 0,5 – 0,8 s ; 45 à 80 : 0,8 – 1,3 s ; 85 à 110 : 1,2 – 1,8 s ; au-delà, K.O. en un coup, Explosion, légendaires : 1,8 – 2,5 s [bornes D] ; Rapides ≤ 0,5 s (plan §2.6). |
 | **CV-10** | **Point d'origine par espèce** : `data/battle/fx_anchors.json`, 151 espèces, de face et de dos (bouche, joues, queue, cornes, mains, canons, bulbe, yeux, centre), validé sur planche (plan §2.2, CV.A). |
 | CV-3 à CV-9, CV-11 à CV-14 | Recommandations retenues. |
+| **Barre de qualité** (ajout du 2026-10-26) | « Il faut de super beaux effets, on est en 2026, les attaques gardent la même idée / nature, mais on ne doit pas avoir juste l'impression de jouer à une Game Boy, on va des crans au-dessus. » → plan §2.9 : effets en couches (anticipation, cœur animé image par image, halo, particules, traînées, impact avec hit-stop, lumière du lieu, retombée, son) ; flipbooks peints (≈ 25) en plus des sprites (CV-7 élargi) ; validation sur vidéo ; lots de CV.2 en Opus. Effort : 18 à 27 sessions. |
 
 **Conséquences** : 16 à 24 sessions au lieu de 8 à 12, ≈ 7 à 10 jours au lieu de 3 à 5, ≈ 2 h de
 ton temps (4 validations S24, 3 planches). **Dates butoirs validées par Kevin le 2026-10-26**

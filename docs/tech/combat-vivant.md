@@ -260,6 +260,57 @@ Un combat de Ligue sera plus long, ce qui est voulu. Rapides : ≤ 0,5 s pour to
 - Si l'A17 ne tient pas : le profil Économie (ou « Lumière d'ambiance » coupée) divise les
   particules par deux et coupe le balancement du feuillage, sans changer la chorégraphie.
 
+### 2.9 Barre de qualité : « des crans au-dessus » (décision de Kevin, 2026-10-26)
+
+> « Il faut de super beaux effets, on est en 2026, les attaques gardent la même idée / nature,
+> mais on ne doit pas avoir juste l'impression de jouer à une Game Boy, on va des crans
+> au-dessus. »
+
+Ce qui reste : **la nature de chaque attaque** (Flammèche reste trois petites flammes, Surf reste
+une vague, Éclair reste un arc électrique ; aucune règle ne change, CV-2 fixe toujours les durées).
+Ce qui change : **le rendu** doit se lire comme un jeu 2D HD de 2026, dans la même main que le
+monde peint, jamais comme un clignotement de sprite. Concrètement, chaque animation propre est
+construite en **couches**, et une animation qui n'en a qu'une ou deux n'est pas finie :
+
+| Couche | Ce que c'est | Exemple (Lance-Flammes) |
+|---|---|---|
+| 1. Anticipation | le lanceur se charge : lueur qui monte, particules aspirées, léger recul | braises aspirées vers la bouche, gueule qui rougeoie |
+| 2. Cœur de l'effet | la forme principale, **animée image par image** (flipbook peint) et non une forme fixe qui glisse | jet de flammes peint qui ondule, 12 à 16 images en boucle |
+| 3. Halo | lueur additive large et douce autour du cœur (texture pré-floutée, pas de flou plein écran) | halo orange qui suit le jet |
+| 4. Particules secondaires | étincelles, gouttes, débris, fumée, avec gravité, frottement, rotation et fondu | braises qui s'échappent du jet et retombent |
+| 5. Traînées | rubans qui suivent ce qui se déplace (`Line2D` à dégradé et largeur variable) | — (Vive-Attaque, Cru-Ailes, Météores) |
+| 6. Impact | **image d'impact** (1 à 2 images figées, « hit-stop » de 40 à 70 ms), éclat, onde de choc (shader de distorsion **sur un sprite**), recul et écrasement de la cible | souffle de flammes sur la cible, cible repoussée |
+| 7. Lumière du lieu | lumière simulée colorée sur le décor peint et sur les deux Pokémon (§2.7), qui suit l'effet | sol et arbres orangés, ombre portée qui bouge |
+| 8. Retombée | ce qui reste une fraction de seconde : fumée, braises au sol, gouttes, poussière qui se pose | fumée qui monte de la cible, braises au sol 0,5 s |
+| 9. Son et vibration | repères `launch` / `impact` (§2.5), vibration calée sur l'impact | souffle, puis choc |
+
+Règles de rendu (valables pour toutes les familles) :
+
+- **Courbes, jamais du linéaire** : accélérations, dépassements et rebonds (`Tween` à courbes,
+  courbes d'échelle et de couleur des particules).
+- **Couleur** : chaque effet a un dégradé de 3 à 4 teintes (cœur presque blanc, couleur de
+  l'élément, bord sombre) ; mélange additif pour la lumière, normal pour la matière (fumée, pierre,
+  eau sombre).
+- **Profondeur** : un effet qui va vers l'adversaire rétrécit, un effet qui vient vers toi grandit
+  et passe **devant** ton Pokémon et le premier plan ; il est dessiné sur deux plans (derrière et
+  devant la cible) quand il l'enveloppe (Ligotage, Danse Flamme, Psyko).
+- **Matière** : l'eau éclabousse et ruisselle, le feu monte, la roche tombe et rebondit, le vent
+  couche le feuillage, la glace se pose en givre : chaque élément a sa physique.
+- **Pas de pixel art** dans les effets, comme dans l'UI ; pas de formes géométriques plates
+  laissées telles quelles (les formes en code de CV.0 sont un échafaudage, remplacé par l'art).
+- **Lisibilité d'abord** : l'effet ne cache jamais la barre de PV ni le message ; il ne dure pas
+  plus que CV-2 ; « Réduire les flashs » et « Réduire les animations » restent respectés.
+
+Contrôle : chaque famille, puis chaque lot P1 à P4, est validé sur une **courte vidéo** (capture
+Mac à 60 i/s ou enregistrement d'écran du S24), pas sur une capture fixe : une animation se juge
+en mouvement. La session de code relit elle-même chaque vidéo image par image avant de la
+montrer (la galerie d'effets peut se figer image par image en débogage).
+
+Performance : cette barre tient dans le budget du §2.8 parce qu'elle mise sur des **textures
+peintes animées** et des lueurs pré-floutées (peu coûteuses) plutôt que sur des milliers de
+particules ou des passes plein écran. Si l'A17 ne suit pas, on réduit d'abord le nombre de
+particules secondaires (couche 4), jamais le cœur ni l'impact.
+
 ## 3. Familles d'effets
 
 ### 3.1 Chorégraphie commune
@@ -354,8 +405,16 @@ la fin du chantier).
 
 ### 3.4 Art à produire
 
-Atlas de **≈ 35 sprites de particules** [CV-7 ; ≈ 20 au départ, une deuxième série pour les
-compositions par attaque] : flamme, braise, goutte, bulle, éclaboussure, feuille, pétale, spore,
+Revu après la barre de qualité du §2.9 (le cœur des effets est **animé image par image**) :
+
+- **Flipbooks peints** (≈ 25, de 8 à 16 images chacun, 256 à 512 px par image, en atlas) :
+  jet de flammes, boule de feu, explosion, gerbe de braises, jet d'eau, vague, éclaboussure, bulle
+  qui éclate, arc électrique (3 variantes), décharge en étoile, rafale de feuilles, nuage de
+  spores, rayon de glace, éclats de givre, onde psy, nuage de poison, fumée, poussière, éboulis,
+  tourbillon de vent, ombre spectrale, flamme de dragon, rayon d'énergie, onde sonore, lumière de
+  soin. Production : Codex génère une **planche d'images clés** par effet, la session les assemble
+  et interpole si besoin ; Kevin valide sur vidéo.
+- **Sprites de particules** : flamme, braise, goutte, bulle, éclaboussure, feuille, pétale, spore,
 plume, éclat de glace, flocon, caillou, os, poussière, étoile d'impact, entailles de griffe,
 mâchoires, poing, pied, corne, note de son (ou arc), étincelle, lueur ronde douce, fumée, cœur
 (Grobisou), œuf (Bomb'Œuf), étoile (Météores), aiguille (Dard-Nuée), lame (Danse-Lames)… Peints
@@ -481,12 +540,13 @@ en Complètes ; mesure A17 ; suite complète ; fusion dans `main` ; ligne dans `
 | CV.1 | 2 – 3 (+ 1 d'art) | Sonnet, relecture Opus | 1 planche + 1 validation S24 (avec CV.3) |
 | CV.A | 1 – 2 | Sonnet | 1 planche (151 × 2 sprites) |
 | CV.3 | 1 – 2 | Sonnet | (groupée avec CV.1) |
-| CV.2 | 8 – 12 (≈ 2 à 3 par lot, + 1 d'art) | Sonnet ; Opus pour les signatures | 1 planche + 2 validations S24 (≈ 20 min) |
+| CV.2 | 10 – 15 (≈ 2 à 3 par lot, + 2 d'art pour les flipbooks) | **Opus** (barre de qualité du §2.9 : le rendu demande du goût) ; Sonnet pour la saisie des données | 2 planches + 2 validations S24 sur vidéo (≈ 25 min) |
 | CV.Z | 1 | Sonnet | — |
-| **Total** | **16 à 24 sessions** | | **≈ 2 h en tout, en 4 créneaux S24 et 3 planches** |
+| **Total** | **18 à 27 sessions** | | **≈ 2 h 30 en tout, en 4 créneaux S24 (vidéos) et 4 planches** |
 
-Durée : ≈ **7 à 10 jours** avec 2 à 3 sessions en parallèle (contre 3 à 5 jours pour « familles +
-13 phares »). Le chemin critique est CV.0 puis les lots de CV.2.
+Durée : ≈ **8 à 11 jours** avec 2 à 3 sessions en parallèle (contre 3 à 5 jours pour « familles +
+13 phares »). Le chemin critique est CV.0 puis les lots de CV.2. Revu le 2026-10-26 après la barre
+de qualité du §2.9 (flipbooks peints, lots de CV.2 en Opus).
 
 ### 5.3 Place dans le calendrier
 
