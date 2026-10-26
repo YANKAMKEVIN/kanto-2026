@@ -107,7 +107,8 @@
 				"steps": [
 					{
 						"face": "tower_rival",
-						"to": "player"
+						"to": "player",
+						"music": "rival"
 					},
 					{
 						"face": "player",

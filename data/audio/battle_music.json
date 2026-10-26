@@ -1,0 +1,91 @@
+{
+	"_doc": "Combats (docs/tech/jalon-son.md §2.3). trainers : catégorie par Dresseur (défaut : default_category). legendary : SON-13 A tant que T1 n'a pas trouvé de thème (même musique que les sauvages). encounter : thème du « ! » d'un Dresseur, par Dresseur puis par préfixe du nom (le plus long gagne), défaut default_encounter.",
+	"version": 1,
+	"categories": {
+		"wild": {
+			"battle": "battle_wild",
+			"victory": "victory_wild"
+		},
+		"legendary": {
+			"battle": "battle_wild",
+			"victory": "victory_wild"
+		},
+		"trainer": {
+			"battle": "battle_trainer",
+			"victory": "victory_trainer"
+		},
+		"gym_leader": {
+			"battle": "battle_gym_leader",
+			"victory": "victory_gym_leader"
+		},
+		"rival_final": {
+			"battle": "final_battle_rival",
+			"victory": "victory_gym_leader"
+		}
+	},
+	"default_category": "trainer",
+	"trainers": {
+		"pewter_gym_brock": "gym_leader",
+		"cerulean_gym_misty": "gym_leader",
+		"vermilion_gym_surge": "gym_leader",
+		"celadon_gym_erika": "gym_leader",
+		"fuchsia_gym_koga": "gym_leader",
+		"saffron_gym_sabrina": "gym_leader",
+		"cinnabar_gym_blaine": "gym_leader",
+		"viridian_gym_giovanni": "gym_leader",
+		"giovanni_hideout": "gym_leader",
+		"silph_co_giovanni": "gym_leader",
+		"league_lorelei": "gym_leader",
+		"league_bruno": "gym_leader",
+		"league_agatha": "gym_leader",
+		"league_lance": "gym_leader",
+		"rival_champion": "rival_final"
+	},
+	"legendary_species": [
+		"articuno",
+		"zapdos",
+		"moltres",
+		"mewtwo"
+	],
+	"encounter_themes": {
+		"boy": "trainer_appears_boy",
+		"girl": "trainer_appears_girl",
+		"bad_guy": "trainer_appears_bad_guy",
+		"rival": "blue_theme"
+	},
+	"default_encounter": "boy",
+	"encounter_trainers": {
+		"rival_lab": "rival",
+		"rival_route22": "rival",
+		"rival_cerulean": "rival",
+		"rival_ss_anne": "rival",
+		"rival_tower": "rival",
+		"rival_silph": "rival",
+		"rival_route22_final": "rival",
+		"rival_champion": "rival",
+		"giovanni_hideout": "bad_guy",
+		"silph_co_giovanni": "bad_guy",
+		"viridian_gym_giovanni": "bad_guy"
+	},
+	"encounter_prefixes": {
+		"Gamin": "boy",
+		"Jeune Dresseur": "boy",
+		"Topdresseur": "boy",
+		"Campeur": "boy",
+		"Fillette": "girl",
+		"Jeune Dresseuse": "girl",
+		"Beauté": "girl",
+		"Topdresseuse": "girl",
+		"Nageuse": "girl",
+		"Exorciste": "girl",
+		"Sbire": "bad_guy",
+		"Jongleur": "bad_guy",
+		"Joueur": "bad_guy",
+		"Rockeur": "bad_guy",
+		"Dompteur": "bad_guy",
+		"Intello": "bad_guy",
+		"Pillard": "bad_guy",
+		"Motard": "bad_guy",
+		"Loubard": "bad_guy"
+	}
+}

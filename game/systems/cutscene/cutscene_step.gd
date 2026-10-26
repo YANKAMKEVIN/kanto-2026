@@ -239,6 +239,10 @@ var uncatchable: bool = false
 ## Étape « animate », jalon 21 : sautée si « Réduire les animations » est actif.
 var skip_reduced: bool = false
 ## Conditions de l'étape (toutes levées / aucune levée), vides = toujours jouée.
+## Jalon Son (T6) : clé facultative « music » de toute étape (sauf spawn), sans nouvelle sorte
+## d'étape : morceau (`tracks.json`) ou moment (`events`) joué en musique de scène, « stop »
+## l'arrête ; "" = rien ne change. Lue par [AudioBridge].
+var music: StringName = &""
 var if_flags: Array[StringName] = []
 var unless_flags: Array[StringName] = []
 
@@ -309,6 +313,7 @@ func outcome_flags(outcome: int) -> Array[StringName]:
 func copy() -> CutsceneStep:
 	var other := CutsceneStep.new()
 	other.kind = kind
+	other.music = music
 	other.seconds = seconds
 	other.dialogue_id = dialogue_id
 	other.actor = actor
