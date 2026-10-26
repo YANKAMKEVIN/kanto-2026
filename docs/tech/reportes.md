@@ -33,8 +33,8 @@
 | | Points |
 |---|---|
 | Recensés (doublons fusionnés) | **159** |
-| Fermés avec preuve (obsolètes ou corrigés depuis) | **46** (§4) |
-| Corrigés dans ce lot | **3** (§1, RP-001 à RP-003) |
+| Fermés avec preuve (obsolètes ou corrigés depuis) | **47** (§4) |
+| Corrigés dans ce lot | **2** (§1, RP-001 et RP-003) |
 | Ouverts sur `main` | **83** (§2) |
 | Propres à une branche non fusionnée | **27** (§3) |
 
@@ -90,7 +90,6 @@ Rien n'est tranché ici ; chaque arbitrage porte une recommandation.
 | ID | Origine | Description | Cat. | P | Destination | État / preuve |
 |---|---|---|---|---|---|---|
 | RP-001 | [jalon-11.md](jalon-11.md) T22 ; audit | `audit-pending-moves.md` périmé : listait encore Guillotine (effet `ohko` actif depuis le J24) | défaut | P3 | corrigé ici | régénéré par `tools/audit_pending_moves.py` : 126 espèces, 142 capacités, **5** en attente |
-| RP-002 | [jalon-15.md](jalon-15.md) §9 ; J15 | Départ de débogage `route_5` sans `route_5_entered` : objectif « obtenir le Badge Cascade » au premier pas | défaut | P3 | corrigé ici | drapeau ajouté à `tools/debug_start/route_5.json` (outil de QA seulement) |
 | RP-003 | [jalon-18.md](jalon-18.md) §9.5 n° 2 ; QA 2026-10-19 | Pas de départ de débogage à l'arrivée de l'échelle B du B1F de la Grotte Sombre (côté Marcel) | défaut | P3 | corrigé ici | nouveau `tools/debug_start/dark_cave_b1f_b.json` (spawn `arrivee_b`), ligne du README |
 
 ## 2. Ouverts sur `main`
@@ -310,3 +309,4 @@ versions, déjà réglées sur `main` par DAF.6 : non reprises.
 | RP-243 | J22 | Héros dessiné à pied sur la Piste Cyclable | vélo provisoire (`mount_placeholder.gd:68`) ; planches : RP-021 |
 | RP-244 | J9 T23 (ancien RP-020) | Planche du Chenipan d'ambiance | DAF.5 2e partie (`b68ee46d`) |
 | RP-245 | J22, DAF.0 (ancien RP-021) | Série 25 non intégrée (vélo, pêche, Motard, Ornithologue, Loubard, frères pêcheurs) | DAF.5 2e partie (`b68ee46d`) |
+| RP-246 | [jalon-15.md](jalon-15.md) §9 (ancien RP-002) | Départ de débogage `route_5` sans `route_5_entered` (objectif « Badge Cascade » au premier pas) | voulu : `test_route_5_life.gd` part de ce départ pour vérifier que l'entrée pose le drapeau ; correctif annulé après la CI (2026-10-26) |
