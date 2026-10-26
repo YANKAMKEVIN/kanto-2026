@@ -792,6 +792,8 @@ QA 23B (la dernière Safari Ball ne finissait pas la visite) corrigé dans `dd42
   Marius » (Arène de Koga, J23, prénom validé par Kevin le 2026-10-22) ; règle du J23 « prénoms
   uniques dans le jeu » (`test_trainer_names_are_unique_in_the_game`). L'Intello du J25 devient
   **Intello Barnabé** [D] (Dresseur, 3 dialogues, test, simulation) : à confirmer par Kevin.
+  2026-10-26 (fusion de `main` `30c8c279`) : « Barnabé » pris par le Médium de l'Arène de Safrania (J27)
+  → **Intello Séraphin** [D], libre sur toutes les branches.
 - Aucun identifiant défini deux fois dans `data/` (`dupcheck.py` : seulement les clés de structure
   `_doc`, `version`…, comme dans `main`).
 

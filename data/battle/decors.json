@@ -481,6 +481,22 @@
 		],
 		"viridian_gym": [
 			{ "decor": "pewter_gym_roche" }
+		],
+		"safari_zone_center": [
+			{ "decor": "route_5_6_prairie" }
+		],
+		"safari_zone_east": [
+			{ "decor": "route_5_6_prairie" }
+		],
+		"safari_zone_north": [
+			{ "decor": "route_5_6_prairie" }
+		],
+		"safari_zone_west": [
+			{ "decor": "route_5_6_prairie" }
+		],
+		"fuchsia_gym": [
+			{ "decor": "vermilion_gym_salle" }
 		]
+
 	}
 }

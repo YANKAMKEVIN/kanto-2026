@@ -535,8 +535,8 @@ func test_real_catch_rates_are_the_official_ones() -> void:
 		&"dewgong": 75, &"cloyster": 60, &"kingler": 60,
 		&"seadra": 75, &"omanyte": 45,
 		&"omastar": 45, &"kabuto": 45, &"kabutops": 45, &"articuno": 3,
-		# Jalon 28 (T3 ; Machopeur est celui du J22).
-		&"rhydon": 60, &"tauros": 45,
+		# Jalon 28 (T3 ; Machopeur est celui du J22, Tauros celui du J23).
+		&"rhydon": 60,
 		# Jalon 21 (T5).
 		&"poliwag": 255, &"tentacool": 190, &"snorlax": 25,
 		# Jalon 23 (T6) : Parc Safari.
