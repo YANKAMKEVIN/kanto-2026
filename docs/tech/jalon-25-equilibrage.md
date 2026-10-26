@@ -98,7 +98,7 @@ basse), Roucarnage, **Ronflex** (J21), **Raichu avec Tonnerre** (CT24, J16), et 
 | Florizarre 45… (basse) | 39 · 3 · 32 | 5 · 0 · 4 |
 | Dracaufeu 45… (basse) | 100 · 74 · 100 | 79 · 18 · 76 |
 
-### 5.3 Lecture et recommandation (question **E-4** pour Kevin)
+### 5.3 Lecture et recommandation (question **E-4** : option A retenue par Kevin le 2026-10-26)
 
 - Aux niveaux RB, Auguste est **trop facile** pour un joueur attentif (90–100 % presque partout,
   au-dessus des 35–60 % visés pour un Champion). Cause structurelle, comme dans RB : on ne rejoint

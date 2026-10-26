@@ -617,6 +617,26 @@
 			"height": 1.9, "weight": 120.0,
 			"description": "Sa peau, dure comme une armure, supporte la chaleur de la lave. Sa corne peut briser le diamant."
 		},
+		"lapras": {
+			"height": 2.5, "weight": 220.0,
+			"description": "Il traverse les mers en portant des passagers sur son dos. Sa voix douce se répand sur les flots, par nuit calme."
+		},
+		"alakazam": {
+			"height": 1.5, "weight": 48.0,
+			"description": "Son cerveau dépasse celui d'un ordinateur. Il se souvient de tout, depuis sa naissance, et ne s'en sert jamais pour rien."
+		},
+		"mr_mime": {
+			"height": 1.3, "weight": 54.5,
+			"description": "Il mime si bien qu'un mur invisible finit par exister. Il en fait des barrières pour se protéger."
+		},
+		"hitmonlee": {
+			"height": 1.5, "weight": 49.8,
+			"description": "Ses jambes s'allongent comme des ressorts. Il frappe de loin et retombe toujours sur ses pieds."
+		},
+		"hitmonchan": {
+			"height": 1.4, "weight": 50.2,
+			"description": "Ses poings partent plus vite que l'œil ne les suit. Il ne s'arrête jamais de s'entraîner."
+		},
 		"ponyta": {
 			"height": 1.0, "weight": 30.0,
 			"description": "Sa crinière de flammes ne brûle que ceux qu'il n'aime pas. Il court dès sa naissance, de plus en plus vite.",

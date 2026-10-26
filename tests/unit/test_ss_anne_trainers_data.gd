@@ -60,7 +60,7 @@ func test_names_unique_across_all_trainers() -> void:
 	var seen := {}
 	for id: StringName in _trainers.get_ids():
 		var name := _trainers.get_trainer(id).name
-		# Jalon 28 (comme le J26) : Giovanni, même personnage, combats distincts.
+		# Giovanni : le même personnage au repaire (J20) et à la Sylphe SARL (J26).
 		if name.begins_with("{") or name == "Sbire Rocket" or name == "Giovanni":
 			continue
 		assert_false(seen.has(name), "%s : nom déjà pris par %s" % [name, seen.get(name, "")])

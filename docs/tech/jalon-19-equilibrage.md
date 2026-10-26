@@ -350,6 +350,9 @@ Aucun n'est un grand combat ; ils sont relus par combat (premier essai, attentif
   40 % pour la ligne droite (c24 : 45,5 %, mais 86,5 % pour la sortie J17) ?
 - **Q-T21-7 — Exorcistes inévitables à 100 %** (E3, E8, E9) : accepter (P-1), ou changer leur
   équipe (deux ou trois Pokémon, décision de design) ?
+- **2026-10-22 (J26, Q26-4)** : Kevin revient à la lignée RB ; Sabelette est retirée, **Léviator 20**
+  (Morsure, Draco-Rage, Groz'Yeux) reprend sa place. Bulbizarre attentif : 7 % · 29,5 % (au lieu de
+  41,5 · 68). Détail : `jalon-26.md` §10.2.
 - **Sabelette** dans l'équipe du rival contre Bulbizarre (remplace Léviator, Q-T21-1) : choix par
   défaut, à valider en 19B.
 

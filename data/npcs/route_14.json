@@ -5,7 +5,7 @@
 			15
 		],
 		"facing": "right",
-		"sprite": "naturalist",
+		"sprite": "bird_keeper",
 		"dialogue": "route_14_bird_1_after",
 		"trainer": {
 			"id": "route_14_bird_1",
@@ -20,7 +20,7 @@
 			25
 		],
 		"facing": "left",
-		"sprite": "rocker",
+		"sprite": "biker",
 		"dialogue": "route_14_biker_1_after",
 		"trainer": {
 			"id": "route_14_biker_1",
@@ -35,7 +35,7 @@
 			30
 		],
 		"facing": "down",
-		"sprite": "rocker",
+		"sprite": "biker",
 		"dialogue": "route_14_biker_3_after",
 		"trainer": {
 			"id": "route_14_biker_3",
@@ -50,7 +50,7 @@
 			40
 		],
 		"facing": "right",
-		"sprite": "naturalist",
+		"sprite": "bird_keeper",
 		"dialogue": "route_14_bird_2_after",
 		"trainer": {
 			"id": "route_14_bird_2",
@@ -65,7 +65,7 @@
 			48
 		],
 		"facing": "left",
-		"sprite": "rocker",
+		"sprite": "biker",
 		"dialogue": "route_14_biker_2_after",
 		"trainer": {
 			"id": "route_14_biker_2",
@@ -80,7 +80,7 @@
 			58
 		],
 		"facing": "right",
-		"sprite": "naturalist",
+		"sprite": "bird_keeper",
 		"dialogue": "route_14_bird_4_after",
 		"trainer": {
 			"id": "route_14_bird_4",
@@ -95,7 +95,7 @@
 			65
 		],
 		"facing": "down",
-		"sprite": "naturalist",
+		"sprite": "bird_keeper",
 		"dialogue": "route_14_bird_3_after",
 		"trainer": {
 			"id": "route_14_bird_3",

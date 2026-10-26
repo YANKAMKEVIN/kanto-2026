@@ -1,0 +1,9 @@
+UI_OBJETS_DAF5_PLANCHE_3 — NOUVELLE image : une planche d'icônes d'objets peintes pour le Sac, pas une scène.
+Images jointes : escape_rope, silph_scope = icônes existantes du jeu, ANCRES de style dans le style EXACT des icônes jointes (même rendu peint, même contour fin et coloré, même angle de trois quarts, même lumière, même finesse, même taille d'environ 240 px).
+
+PLANCHE de 4 icônes d'objets peintes pour le Sac, dans une image 1536 × 1024 divisée en quatre colonnes invisibles de 384 px : une icône CENTRÉE dans chacune des 4 PREMIÈRES colonnes (de gauche à droite), de 260 px de large au plus et 260 px de haut au plus, avec au moins 60 px de marge vide de chaque côté.
+1 (colonne 1) : la CANNE : une canne à pêche SIMPLE en BAMBOU clair, courte, avec un fil enroulé au bout et un petit bouchon rouge et blanc, posée en diagonale (du bas à gauche vers le haut à droite).
+2 (colonne 2) : la SUPER CANNE : une canne à pêche de métal ROUGE vif, poignée de liège, petit MOULINET argenté, même diagonale et même longueur que la Canne.
+3 (colonne 3) : la MÉGA CANNE : une canne à pêche BLEU MARINE à anneaux DORÉS, poignée noire, gros MOULINET doré, même diagonale et même longueur que les deux autres.
+4 (colonne 4) : la BICYCLETTE : un vélo de ville pliant ROUGE vif vu de profil, légèrement de trois quarts, deux roues noires aux jantes argentées, selle noire, guidon chromé, petit panier avant ; compact.
+AUCUN halo, AUCUNE lueur, AUCUNE étincelle, AUCUN dégradé autour : chaque objet est net, avec seulement son contour fin, sur un fond entièrement transparent (canal alpha, aucune ombre). Interdit : texte, lettres, chiffres, logo, la lettre R, personnage.

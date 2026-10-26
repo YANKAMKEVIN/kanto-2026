@@ -338,29 +338,14 @@ Manoir, texte de l'arbre du Musée sans CS, prénoms Aurélien, Clothilde, Léop
 4 000 ₽, rencontres du relevé RB, récompenses de l'Arène non recalculées après +4 niveaux,
 Pillard = `gambler`, Auguste = `gentleman`, aplats provisoires) ; Dresseurs de l'Arène +4 (E-1).
 
-### 9.4 Points ouverts pour Kevin
+### 9.4 Points ouverts pour Kevin : tranchés le 2026-10-26
 
-- **E-4** : niveaux d'Auguste (recommandation : garder RB, `jalon-25-equilibrage.md` §5.3).
-- Smogo n'évolue pas en Smogogo dans les données (J22) ; panneau intérieur de l'Arène (texte 78)
-  non posé ; art définitif (T10–T13) non intégré.
-- **Textes** (relevés en QA, non corrigés) :
-  1. Point de vue des répliques « après » : Hector « Ton Raichu se porte à merveille ! » (texte 42,
-     parle du Pokémon reçu comme s'il était au joueur) contre Lina « Comment va mon ancien
-     Saquedeneu ? » (texte 47, parle du Pokémon donné) et Marc « Mon ancien Otaria est génial,
-     hein ? » (texte 52). Textes validés du dossier 28 §16 ; à harmoniser ? Fichier :
-     `data/dialogues/cinnabar_trades.json` (`cinnabar_trade_*_after`).
-  2. « Une Tadmorv sauvage apparaît ! » : l'accord suit le **sexe** du Pokémon rencontré, pas le
-     nom de l'espèce (décision n° 15 du J4 : `text_f` employé quand le Pokémon est une femelle ;
-     `game/battle/battle_text.gd`, `event.gender == FEMALE` ; phrase dans
-     `data/battle/messages.json`, `wild_appeared` → `text_f`). Même effet : « Arcanin est blessée
-     par le contrecoup ». Aucun genre grammatical par espèce n'existe dans les données ; le
-     corriger voudrait soit retirer les `text_f` de ces phrases, soit un genre par espèce
-     (`data/pokemon/species/`) lu par `BattleText` : décision de Kevin.
-  3. Scientifique du comptoir de la réserve (Argenta) : une seule variante, la question OUI/NON
-     revient à chaque fois (`data/dialogues/pewter_museum_reserve.json`,
-     `pewter_museum_reserve_counter`) ; comme dans RB ; ajouter une réplique « après » ?
-  4. Rencontres au Manoir « très fréquentes » : taux **10 / 256 par pas** (≈ 3,9 %, une rencontre
-     tous les ≈ 26 pas en moyenne, sans montée), sur **toutes** les cases praticables (terrain
-     `floor`, hors seuils, trous, warps) des 4 étages (`data/encounters/pokemon_mansion_*.json`) ;
-     valeur RB (même taux que les Îles Écume et la Tour). La densité vient de ce que tout le sol
-     compte ; baisser le taux ou réserver des zones calmes : décision de Kevin.
+Décisions de Kevin (« okay pour tes recos », toutes) :
+- **E-4** : niveaux d'Auguste **gardés (option A, RB)** ; exception de type assumée (le Surf garanti
+  à l'arrivée sur l'île), comme Tortank contre Pierre (`jalon-25-equilibrage.md` §5.3).
+- **Hector après l'échange** : « Comment va mon ancien Électrode ? » (même point de vue que Lina et
+  Marc ; dossier 28 texte 42, `cinnabar_trades.json`).
+- **« Une Tadmorv sauvage »** : accord sur le sexe du Pokémon gardé (décision n° 15 du J4).
+- **Comptoir de la réserve d'Argenta** et **rencontres du Manoir** (10/256 par pas) : gardés (RB).
+- Restent ouverts : Smogo n'évolue pas en Smogogo dans les données (J22) ; panneau intérieur de
+  l'Arène (texte 78) non posé ; art définitif (T10–T13) non intégré.

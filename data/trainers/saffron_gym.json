@@ -1,0 +1,84 @@
+{
+	"saffron_gym_channeler_melusine": {
+		"name": "Exorciste Mélusine", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 1020,
+		"team": [
+			{ "species": "gastly", "level": 34 },
+			{ "species": "haunter", "level": 34 }
+		]
+	},
+	"saffron_gym_psychic_albin": {
+		"name": "Médium Albin", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 310,
+		"team": [
+			{ "species": "kadabra", "level": 31 },
+			{ "species": "slowpoke", "level": 31 },
+			{ "species": "mr_mime", "level": 31 },
+			{ "species": "kadabra", "level": 31 }
+		]
+	},
+	"saffron_gym_channeler_ophelie": {
+		"name": "Exorciste Ophélie", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 1140,
+		"team": [
+			{ "species": "haunter", "level": 38 }
+		]
+	},
+	"saffron_gym_psychic_nestor": {
+		"name": "Médium Nestor", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 340,
+		"team": [
+			{ "species": "mr_mime", "level": 34 },
+			{ "species": "kadabra", "level": 34 }
+		]
+	},
+	"saffron_gym_channeler_cassandre": {
+		"name": "Exorciste Cassandre", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 990,
+		"team": [
+			{ "species": "gastly", "level": 33 },
+			{ "species": "gastly", "level": 33 },
+			{ "species": "haunter", "level": 33 }
+		]
+	},
+	"saffron_gym_psychic_barnabe": {
+		"name": "Médium Barnabé", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 330,
+		"team": [
+			{ "species": "slowpoke", "level": 33 },
+			{ "species": "slowpoke", "level": 33 },
+			{ "species": "slowbro", "level": 33 }
+		]
+	},
+	"saffron_gym_psychic_leandre": {
+		"name": "Médium Léandre", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 380,
+		"team": [
+			{ "species": "slowbro", "level": 38 }
+		]
+	},
+	"saffron_gym_sabrina": {
+		"name": "Morgane", "ai": "smart",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 4257,
+		"start_message": false, "end_message": true, "bag": true, "switch": true,
+		"card": {"name": "MORGANE", "title": "Championne d'Arène de Safrania"},
+		"team": [
+			{
+				"species": "kadabra", "level": 38,
+				"moves": ["disable", "psybeam", "recover", "psychic"]
+			},
+			{
+				"species": "mr_mime", "level": 37,
+				"moves": ["confusion", "barrier", "light_screen", "double_slap"]
+			},
+			{
+				"species": "venomoth", "level": 38,
+				"moves": ["poison_powder", "leech_life", "stun_spore", "psybeam"]
+			},
+			{
+				"species": "alakazam", "level": 43,
+				"moves": ["psybeam", "recover", "psywave", "reflect"]
+			}
+		]
+	}
+}

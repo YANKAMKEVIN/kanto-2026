@@ -5,6 +5,7 @@ const AREAS_PATH := "res://assets/ui/map/kanto_placeholder_areas.json"
 ## Cartes rangées dans une zone avant d'être construites (jalon 10, T8 : données prêtes) : la Route
 ## 2 nord et Argenta (T11) et les intérieurs (T13) sont construits : liste vide. À retirer
 ## quand leur tâche est fusionnée ; leur existence est vérifiée dès que la scène existe.
+## Jalon 26 : Safrania (T6) et la Sylphe (T7) sont construites et fusionnées : liste vide.
 const AWAITING_MAPS: Array[StringName] = []
 ## Étages de la Tour (titre « Tour Pokémon », dans la zone de Lavanville : aucune zone propre).
 const TOWER_FLOORS: Array[StringName] = [&"pokemon_tower_1f", &"pokemon_tower_2f",
@@ -21,9 +22,9 @@ func before_each() -> void:
 	_zones = ZoneLibrary.new()
 
 
-## Zones construites dont la description de la Carte attend la validation de Kevin. Vide depuis le
-## 2026-10-16 : description du S.S. Anne validée par Kevin (jalon 16, annexe A du plan, T3).
-const AWAITING_TEXTS: Array[StringName] = []
+## Zones construites dont la description de la Carte attend la validation de Kevin. Vide du
+## 2026-10-16 (description du S.S. Anne validée, jalon 16) au J26 T6 : description de Safrania [D].
+const AWAITING_TEXTS: Array[StringName] = [&"saffron_city"]
 const SS_ANNE_DESCRIPTION := "Un paquebot de croisière amarré au port de Carmin. Salons, " \
 	+ "cabines et ponts promenade : on s'y croirait déjà au large."
 
@@ -94,6 +95,11 @@ func test_zone_names_match_the_map_titles() -> void:
 			assert_eq(_root_property(map_id, &"display_name"), "Tour Pokémon")
 			assert_eq(_zones.zone_of(map_id), &"lavender_town", String(map_id))
 			continue
+		if String(map_id).begins_with("silph_co_"):
+			# Jalon 26 (T7) : la Sylphe SARL garde son titre, dans la zone de Safrania.
+			assert_eq(_root_property(map_id, &"display_name"), "Sylphe SARL")
+			assert_eq(_zones.zone_of(map_id), &"saffron_city", String(map_id))
+			continue
 		if MANSION_FLOORS.has(map_id):
 			assert_eq(_root_property(map_id, &"display_name"), "Manoir Pokémon")
 			assert_eq(_zones.zone_of(map_id), &"cinnabar_island", String(map_id))
@@ -152,7 +158,8 @@ func test_built_zones_have_their_map_texts() -> void:
 	_zones.load_file()
 	for id: StringName in _zones.get_ids():
 		var zone := _zones.get_zone(id)
-		if not zone.maps.is_empty():
+		# Jalon 26 (T7) : zone « construite » = jouable (Safrania range la Sylphe avant d'exister).
+		if _zones.is_playable(id):
 			assert_false(zone.description.is_empty(), "%s : description" % id)
 			assert_eq(zone.draft, AWAITING_TEXTS.has(id), "%s : textes validé par Kevin" % id)
 		assert_false(zone.description.contains("???"), id)
@@ -210,7 +217,7 @@ func test_service_catalog_and_the_services_of_viridian() -> void:
 	for id: StringName in _zones.get_ids():
 		if not id in [&"viridian_city", &"pewter_city", &"mt_moon", &"cerulean_city",
 				&"vermilion_city", &"route_5", &"route_10", &"lavender_town", &"celadon_city",
-				&"fuchsia_city", &"cinnabar_island"]:
+				&"fuchsia_city", &"cinnabar_island", &"saffron_city"]:
 			assert_true(_zones.get_zone(id).services.is_empty(), "%s : aucun service" % id)
 	var mt_moon := _zones.get_zone(&"mt_moon").services
 	assert_eq(mt_moon.size(), 1, "Mont Sélénite : le Centre seul (sans Boutique)")
@@ -220,6 +227,12 @@ func test_service_catalog_and_the_services_of_viridian() -> void:
 	assert_eq(route_5.size(), 1, "Route 5 : la Pension seule")
 	if route_5.size() == 1:
 		assert_eq([route_5[0].id, route_5[0].found_on], [&"daycare", &"route_5_daycare"])
+	# Jalon 26 (T6) : Safrania, le Centre et la Boutique ; jalon 27 (T6) : l'Arène de Morgane.
+	var saffron: Dictionary = {}
+	for service: ZoneService in _zones.get_zone(&"saffron_city").services:
+		saffron[service.id] = service.found_on
+	assert_eq(saffron, {&"pokemon_center": &"saffron_center", &"poke_mart": &"saffron_mart",
+		&"gym": &"saffron_gym"})
 	var found: Dictionary = {}
 	for service: ZoneService in _zones.get_zone(&"viridian_city").services:
 		found[service.id] = service.found_on

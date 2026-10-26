@@ -775,7 +775,7 @@ func test_ball_needs_a_known_ball() -> void:
 	var battle := _capture_battle([])
 	assert_true(battle.can_use_balls())
 	assert_true(battle.is_legal(BattleAction.ball(&"poke_ball")))
-	assert_false(battle.is_legal(BattleAction.ball(&"master_ball")), "objet inconnu")
+	assert_false(battle.is_legal(BattleAction.ball(&"zz_no_ball")), "objet inconnu")
 	assert_false(battle.is_legal(BattleAction.ball(&"potion")), "pas une Ball")
 	assert_eq(battle.submit(BattleAction.ball(&"potion")).size(), 0)
 	assert_push_error("action refusée")

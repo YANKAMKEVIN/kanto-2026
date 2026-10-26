@@ -66,6 +66,15 @@ const MAP_IDS: Array[StringName] = [
 	&"route_16",
 	# Jalon 21 (T21) : la Route 12 nord et son poste (1F traversant, 2F).
 	&"route_12", &"route_12_gate", &"route_12_gate_2f",
+	# Jalon 26 (T6) : Safrania, ses six intérieurs et les postes des Routes 7 et 8 (raccords des
+	# quatre postes vérifiés dans les deux sens ; Route 5 et Route 6 déjà listées).
+	&"saffron_city", &"saffron_center", &"saffron_mart", &"saffron_psychic_house",
+	&"saffron_pidgey_house", &"saffron_copycat_house_1f", &"saffron_copycat_house_2f",
+	&"route_7_gate", &"route_8_gate",
+	# Jalon 26 (T7) : les 11 étages de la Sylphe SARL et sa cabine (téléporteurs compris).
+	&"silph_co_1f", &"silph_co_2f", &"silph_co_3f", &"silph_co_4f", &"silph_co_5f", &"silph_co_6f",
+	&"silph_co_7f", &"silph_co_8f", &"silph_co_9f", &"silph_co_10f", &"silph_co_11f",
+	&"silph_co_elevator",
 	# Raccords J21 ↔ J22 (2026-10-23) : la Route 12 sud et le poste de la Route 16.
 	&"route_12_south", &"route_16_gate",
 ]
@@ -81,6 +90,12 @@ const PENDING_RETURNS: Array = [
 	# Jalon 20 (T20) : la sortie de la cabine du repaire mène au B1F (réorientée par le moteur).
 	[&"rocket_hideout_b2f", &"rocket_hideout_elevator"],
 	[&"rocket_hideout_b4f", &"rocket_hideout_elevator"],
+	# Jalon 26 (T7) : la sortie de la cabine de la Sylphe mène au 1F (réorientée par le moteur).
+	[&"silph_co_2f", &"silph_co_elevator"], [&"silph_co_3f", &"silph_co_elevator"],
+	[&"silph_co_4f", &"silph_co_elevator"], [&"silph_co_5f", &"silph_co_elevator"],
+	[&"silph_co_6f", &"silph_co_elevator"], [&"silph_co_7f", &"silph_co_elevator"],
+	[&"silph_co_8f", &"silph_co_elevator"], [&"silph_co_9f", &"silph_co_elevator"],
+	[&"silph_co_10f", &"silph_co_elevator"], [&"silph_co_11f", &"silph_co_elevator"],
 ]
 ## Cartes construites par une autre tâche en parallèle (jalon 7 : la Route 22, T22 ; jalon 10 :
 ## Argenta, T11, pendant les intérieurs du T13) : un warp qui y mène est vérifié seulement si la
@@ -88,6 +103,7 @@ const PENDING_RETURNS: Array = [
 ## Jalon 12 : Route 3, sas (T8) et étages du Mont Sélénite (T9) sont tous construits.
 ## Jalon 15 : les bâtiments d'entrée du souterrain (T13, T14) sont intégrés.
 ## Jalon 17 : la Cave Taupiqueur (T15), la Route 11 (T16) et la Route 2 est (T19) sont intégrées.
+## Jalon 26 : Safrania (T6) et la Sylphe (T7) fusionnées ; plus de carte parallèle.
 const PARALLEL_MAPS: Array[StringName] = [&"route_22"]
 const DIRECTIONS: Array[Vector2i] = [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]
 
@@ -181,10 +197,15 @@ func test_every_coming_soon_warp_returns_to_a_walkable_spawn_of_its_own_map() ->
 	# J16) ; la Grotte Sombre et Lavanville sont reliées à la Route 10, et les passages de
 	# Lavanville et de la Tour sont comptés dans leurs propres tests.
 	# Jalon 20 (T16) : le Casino de Céladopole (2 cases) restait « à venir » jusqu'au T20 (construit).
+	# Jalon 26 (T6) : les quatre postes mènent à Safrania ; restent dans la ville le Dojo (2 cases)
+	# et l'Arène (1) jusqu'au J27, la Sylphe SARL (2) jusqu'au T7.
+	# (relancer `tools/build_saffron_city.gd` une fois la Sylphe construite).
+	# Jalon 27 (T6) : le Dojo et l'Arène sont construits ; plus aucune porte « à venir » à Safrania.
 	# Jalon 21 (T21) : la Route 11 et Lavanville mènent à la vraie Route 12 ; reste son bord sud
 	# « Route 12 » (deux cases, J22). Jalon 21 (T22) : la porte du poste de la Route 16 (2 cases), J22.
 	# Raccords J21 ↔ J22 (2026-10-23) : la Route 12 sud et le poste de la Route 16 sont branchés.
-	assert_eq(found, 3, "« SAFRANIA » (2), Safrania (1)")
+	var silph := 0 if MapCatalog.has_map(&"silph_co_1f") else 2
+	assert_eq(found, silph, "Sylphe SARL (2 tant qu'elle manque)")
 
 
 ## Warp de [param map] qui ramène à [param origin] depuis [param arrival] : sur la case

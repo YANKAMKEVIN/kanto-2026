@@ -8,7 +8,7 @@
 [ext_resource type="Script" path="res://game/world/warp_point.gd" id="6_ggjfb"]
 [ext_resource type="Script" path="res://game/world/triggers/event_trigger_point.gd" id="7_c2c40"]
 
-[node name="Route5Gate" type="Node2D" unique_id=1921527606]
+[node name="Route5Gate" type="Node2D" unique_id=2019224382]
 script = ExtResource("1_i5hln")
 map_id = &"route_5_gate"
 display_name = "Route 5"
@@ -17,12 +17,12 @@ blocked_cells = Array[Vector2i]([Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0),
 interior = true
 light_profile = &"interior_warm"
 
-[node name="Shell" type="Sprite2D" parent="." unique_id=975970358]
+[node name="Shell" type="Sprite2D" parent="." unique_id=859408678]
 z_index = -3
 texture = ExtResource("2_aup1d")
 centered = false
 
-[node name="Entities" type="Node2D" parent="." unique_id=853027328]
+[node name="Entities" type="Node2D" parent="." unique_id=1041986042]
 unique_name_in_owner = true
 y_sort_enabled = true
 
@@ -35,15 +35,15 @@ position = Vector2(816, 288)
 [node name="PlantWest" parent="Entities" unique_id=1145806697 instance=ExtResource("5_pws2r")]
 position = Vector2(144, 672)
 
-[node name="PlantEast" parent="Entities" unique_id=983713166 instance=ExtResource("5_pws2r")]
+[node name="PlantEast" parent="Entities" unique_id=1316714357 instance=ExtResource("5_pws2r")]
 position = Vector2(816, 672)
 
-[node name="PlantDoor" parent="Entities" unique_id=119610100 instance=ExtResource("5_pws2r")]
+[node name="PlantDoor" parent="Entities" unique_id=173601794 instance=ExtResource("5_pws2r")]
 position = Vector2(528, 283)
 
-[node name="Warps" type="Node2D" parent="." unique_id=1048377860]
+[node name="Warps" type="Node2D" parent="." unique_id=1150867135]
 
-[node name="ToRoute5W" type="Marker2D" parent="Warps" unique_id=1228783138]
+[node name="ToRoute5W" type="Marker2D" parent="Warps" unique_id=1917464304]
 position = Vector2(432, 768)
 script = ExtResource("6_ggjfb")
 direction = Vector2i(0, 1)
@@ -51,7 +51,7 @@ target_map = &"route_5"
 target_spawn = &"from_gate"
 arrival_facing = Vector2i(0, 1)
 
-[node name="ToRoute5E" type="Marker2D" parent="Warps" unique_id=840391955]
+[node name="ToRoute5E" type="Marker2D" parent="Warps" unique_id=1818114373]
 position = Vector2(528, 768)
 script = ExtResource("6_ggjfb")
 direction = Vector2i(0, 1)
@@ -59,35 +59,38 @@ target_map = &"route_5"
 target_spawn = &"from_gate"
 arrival_facing = Vector2i(0, 1)
 
-[node name="ToSaffronW" type="Marker2D" parent="Warps" unique_id=1150703931]
+[node name="ToSaffronW" type="Marker2D" parent="Warps" unique_id=892002982]
 position = Vector2(432, 192)
 script = ExtResource("6_ggjfb")
 direction = Vector2i(0, -1)
-target_spawn = &"north_door"
+target_map = &"saffron_city"
+target_spawn = &"from_gate_r5"
 arrival_facing = Vector2i(0, 1)
-coming_soon = "Safrania"
 
-[node name="ToSaffronE" type="Marker2D" parent="Warps" unique_id=2043903100]
+[node name="ToSaffronE" type="Marker2D" parent="Warps" unique_id=1414545367]
 position = Vector2(528, 192)
 script = ExtResource("6_ggjfb")
 direction = Vector2i(0, -1)
-target_spawn = &"north_door"
+target_map = &"saffron_city"
+target_spawn = &"from_gate_r5"
 arrival_facing = Vector2i(0, 1)
-coming_soon = "Safrania"
 
-[node name="Interactables" type="Node2D" parent="." unique_id=1699509992]
+[node name="Interactables" type="Node2D" parent="." unique_id=1022260542]
 
-[node name="Spawns" type="Node2D" parent="." unique_id=2125236027]
+[node name="Spawns" type="Node2D" parent="." unique_id=1115519960]
 
-[node name="from_route_5" type="Marker2D" parent="Spawns" unique_id=2085172616]
+[node name="from_route_5" type="Marker2D" parent="Spawns" unique_id=138791348]
 position = Vector2(432, 672)
 
-[node name="north_door" type="Marker2D" parent="Spawns" unique_id=1177972495]
+[node name="north_door" type="Marker2D" parent="Spawns" unique_id=1636126412]
 position = Vector2(432, 384)
 
-[node name="Triggers" type="Node2D" parent="." unique_id=2135911051]
+[node name="from_saffron" type="Marker2D" parent="Spawns" unique_id=467716340]
+position = Vector2(432, 288)
 
-[node name="GateRule" type="Marker2D" parent="Triggers" unique_id=893196191]
+[node name="Triggers" type="Node2D" parent="." unique_id=2115151668]
+
+[node name="GateRule" type="Marker2D" parent="Triggers" unique_id=2032694057]
 position = Vector2(432, 384)
 script = ExtResource("7_c2c40")
 cutscene_id = &"route_5_gate_rule"

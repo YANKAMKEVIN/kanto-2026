@@ -80,19 +80,20 @@ func _motion(track: Control, x: float) -> void:
 	track._gui_input(event)
 
 
-func test_four_categories_in_order_without_audio() -> void:
+func test_five_categories_in_order_with_sound() -> void:
 	var screen := await _screen_in()
 	var texts := screen.get_texts()
 	var order: Array[StringName] = []
 	for id: StringName in screen.get_category_buttons():
 		order.append(id)
-	assert_eq(order, [SettingsViews.CATEGORY_GAME, SettingsViews.CATEGORY_CONTROLS,
-		SettingsViews.CATEGORY_ACCESSIBILITY, SettingsViews.CATEGORY_GRAPHICS] as Array[StringName])
-	for title: String in ["Jeu", "Commandes", "Accessibilité", "Graphismes"]:
+	assert_eq(order, [SettingsViews.CATEGORY_GAME, SettingsViews.CATEGORY_SOUND,
+		SettingsViews.CATEGORY_CONTROLS, SettingsViews.CATEGORY_ACCESSIBILITY,
+		SettingsViews.CATEGORY_GRAPHICS] as Array[StringName])
+	for title: String in ["Jeu", "Son", "Commandes", "Accessibilité", "Graphismes"]:
 		assert_true(texts.has(title), title)
 	for text: String in texts:
 		var low := text.to_lower()
-		assert_false(low.contains("audio") or low.contains("musique"), text)
+		assert_false(low.contains("audio"), text)
 		assert_false(low.contains("automatique"), text)
 	assert_eq(screen.get_selected_category(), SettingsViews.CATEGORY_GAME, "la première s'ouvre")
 
@@ -225,6 +226,28 @@ func test_slider_one_signal_on_release_on_a_step() -> void:
 	assert_almost_eq(steps, roundf(steps), 0.001, "sur un cran : %f" % value)
 	assert_between(value, 0.3, 1.0)
 	assert_eq(slider.get_value_text(), SettingsViews.percent_text(value))
+
+
+func test_music_slider_emits_a_volume_step_down_to_zero() -> void:
+	# Jalon Son (SON-7) : curseur Musique de 0 à 100 %, 0 au bout gauche (bus coupé).
+	var screen := await _screen_in()
+	await _open(screen, SettingsViews.CATEGORY_SOUND)
+	var slider := screen.get_row(GameSettings.MUSIC_VOLUME) as SettingSlider
+	assert_eq(slider.get_label_text(), "Musique")
+	assert_eq(slider.get_value_text(), SettingsViews.percent_text(0.7))
+	assert_not_null(screen.get_row(GameSettings.SFX_VOLUME))
+	assert_not_null(screen.get_row(GameSettings.CRY_VOLUME))
+	var track := slider.get_track()
+	var knob := float(UiTokens.SETTINGS_SLIDER_KNOB)
+	var span := track.size.x - knob
+	_mouse(track, knob * 0.5 + span * 0.7, true)
+	_motion(track, knob * 0.5 + span * 0.3)
+	_motion(track, 0.0)
+	_mouse(track, 0.0, false)
+	assert_eq(_changes.size(), 1, "un seul signal par geste")
+	assert_eq(_changes[0][0], GameSettings.MUSIC_VOLUME)
+	assert_almost_eq(float(_changes[0][1]), 0.0, 0.0001, "tout à gauche : coupé")
+	assert_true(GameSettings.is_valid(GameSettings.MUSIC_VOLUME, _changes[0][1]))
 
 
 func test_slider_released_where_it_started_emits_nothing() -> void:

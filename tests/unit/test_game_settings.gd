@@ -19,13 +19,19 @@ func test_defaults() -> void:
 	assert_false(settings.reduce_motion)
 	assert_false(settings.reduce_flashes)
 	assert_eq(settings.graphics, GameSettings.Graphics.AUTO, "Q-17 : Auto par défaut")
+	assert_almost_eq(settings.music_volume, 0.7, 0.0001, "SON-7 : Musique 70 %")
+	assert_almost_eq(settings.sfx_volume, 0.8, 0.0001, "SON-7 : Effets 80 %")
+	assert_almost_eq(settings.cry_volume, 0.8, 0.0001, "SON-7 : Cris 80 %")
 
 
-func test_no_autosave_nor_audio_setting() -> void:
+func test_no_autosave_setting_and_three_volumes() -> void:
+	var volumes: Array[StringName] = []
 	for key: StringName in GameSettings.KEYS:
 		assert_false(String(key).contains("autosave"), "sauvegarde automatique permanente")
-		assert_false(String(key).contains("music") or String(key).contains("sound")
-			or String(key).contains("volume"), "pas d'AUDIO (Q-17)")
+		if String(key).contains("volume"):
+			volumes.append(key)
+	assert_eq(volumes, [GameSettings.MUSIC_VOLUME, GameSettings.SFX_VOLUME,
+		GameSettings.CRY_VOLUME] as Array[StringName], "SON-7 : Musique, Effets, Cris")
 
 
 func test_every_key_is_a_field() -> void:
@@ -83,7 +89,8 @@ func test_fixture_unknown_fields_ignored_malformed_to_default() -> void:
 	assert_true(settings.reduce_motion)
 	assert_false(settings.reduce_flashes, "1 n'est pas un booléen : défaut")
 	assert_eq(settings.graphics, GameSettings.Graphics.ECO)
-	assert_false(settings.to_dict().has("music_volume"), "champ inconnu non recopié")
+	assert_false(settings.to_dict().has("autosave"), "champ inconnu non recopié")
+	assert_almost_eq(settings.music_volume, 0.5, 0.0001, "jalon Son : champ désormais connu")
 	assert_false(settings.to_dict().has("autosave"))
 
 
@@ -188,3 +195,47 @@ func test_old_settings_file_without_the_economy_key_reads_as_off() -> void:
 	assert_false(settings.economy)
 	assert_true(settings.reduce_motion, "le reste est lu normalement")
 	assert_false(GameSettings.from_dict({"economy": "oui"}).economy, "mal formé : défaut")
+
+
+func test_volume_steps_and_bounds() -> void:
+	var settings := GameSettings.new()
+	for key: StringName in [GameSettings.MUSIC_VOLUME, GameSettings.SFX_VOLUME,
+			GameSettings.CRY_VOLUME]:
+		assert_true(GameSettings.is_valid(key, 0.0), "0 : coupé")
+		assert_true(GameSettings.is_valid(key, 1), "100 % (entier)")
+		assert_true(GameSettings.is_valid(key, 0.3))
+		assert_false(GameSettings.is_valid(key, 0.35), "entre deux crans")
+		assert_false(GameSettings.is_valid(key, 1.1), "hors bornes")
+		assert_false(GameSettings.is_valid(key, -0.1), "hors bornes")
+		assert_false(GameSettings.is_valid(key, "0.5"), "texte")
+		assert_true(settings.set_value(key, 0.30000000000000004))
+		assert_eq(settings.get_value(key), 0.3, "cran exact")
+		assert_false(settings.set_value(key, 2.0), "refusée : rien ne change")
+		assert_eq(settings.get_value(key), 0.3)
+
+
+func test_out_of_bounds_volumes_in_a_file_fall_back_to_defaults() -> void:
+	var settings := GameSettings.from_dict({ "music_volume": 1.5, "sfx_volume": "fort",
+		"cry_volume": 0.0 })
+	assert_almost_eq(settings.music_volume, GameSettings.DEFAULT_MUSIC_VOLUME, 0.0001)
+	assert_almost_eq(settings.sfx_volume, GameSettings.DEFAULT_SFX_VOLUME, 0.0001)
+	assert_eq(settings.cry_volume, 0.0, "0 est permis : coupé")
+
+
+func test_old_settings_file_without_volumes_reads_defaults() -> void:
+	# Écrit par le jeu d'avant le jalon Son : même version (1), pas de clés de volume.
+	var old: Dictionary = JSON.parse_string(
+		FileAccess.get_file_as_string("res://tests/fixtures/settings/v1_before_sound.json"))
+	assert_false(old.has("music_volume"), "ancien fichier : pas de clé")
+	var settings := GameSettings.from_dict(old)
+	assert_true(settings.equals(_with_old_values()), "volumes aux défauts, le reste relu")
+	assert_almost_eq(settings.music_volume, 0.7, 0.0001)
+	var written := settings.to_dict()
+	assert_almost_eq(float(written["sfx_volume"]), 0.8, 0.0001, "réécrit avec les volumes")
+
+
+func _with_old_values() -> GameSettings:
+	var settings := GameSettings.new()
+	settings.joystick_opacity = 0.8
+	settings.economy = true
+	return settings

@@ -27,7 +27,9 @@ func _load_real() -> ElevatorLibrary:
 
 func test_real_data_two_elevators() -> void:
 	var library := _load_real()
-	assert_eq(library.get_ids(), [&"celadon_dept", &"rocket_hideout"] as Array[StringName])
+	# Jalon 26 (T7) : la Sylphe SARL.
+	assert_eq(library.get_ids(), [&"celadon_dept", &"rocket_hideout", &"silph_co"] \
+		as Array[StringName])
 	assert_true(library.is_car(&"celadon_dept_elevator"))
 	assert_true(library.is_car(&"rocket_hideout_elevator"))
 	assert_false(library.is_car(&"celadon_dept_gf"), "un étage n'est pas une cabine")

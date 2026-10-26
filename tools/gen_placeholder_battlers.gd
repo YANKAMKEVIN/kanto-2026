@@ -59,6 +59,15 @@ const SPECIES: Array[String] = [
 	"victreebel", "tangela", "vileplume", "rhyhorn", "kangaskhan",
 	# Jalon 19 (jalon-19.md §2.12) : Exorcistes et rival n° 5 (Caninos vient du J17). Ajouts en fin.
 	"gastly", "haunter", "exeggcute", "gyarados",
+	# Jalon 26 (jalon-26.md §2.7, T3) : Lokhlass (cadeau du 7F) et Alakazam (équipes de la Sylphe,
+	# rival n° 6). Ajouts en fin ; rien d'autre ne change.
+	"alakazam", "lapras",
+	# Jalon 26 (T3) : Osselait et Ossatueur (équipes de la Sylphe SARL, jamais montrés au J19).
+	"cubone", "marowak",
+	# Jalon 27 (jalon-27.md §2.4, T3) : Kicklee et Tygnon (Dojo de Combat). Ajouts en fin ; les
+	# autres espèces du J27 (Aéromite, Machopeur, Ramoloss, Flagadoss, M. Mime) ont leurs images
+	# copiées des branches qui les créent (J22, J24, J29).
+	"hitmonlee", "hitmonchan",
 	# Jalon 21 (jalon-21.md §2.16) : Ptitard et Tentacool (Pêcheurs de la Route 12, provisoires
 	# acceptés [D]) et Ronflex (dos de combat ; le dos peint de la série 23 est le prototype
 	# battle_proto/dos_ia_143.png, comme les autres dos IA). Ajouts en fin.
@@ -1908,6 +1917,75 @@ func _draw_gyarados(img: Image, back: bool) -> void:
 	_line(img, Vector2(42, 20), Vector2(52, 26), WHITE, 1)
 
 
+# --- Alakazam, Lokhlass (jalon 26) ------------------------------------------------
+
+## Kadabra en plus massif : même silhouette, deuxième cuillère à gauche, moustache blanche.
+func _draw_alakazam(img: Image, back: bool) -> void:
+	_draw_psychic_fox(img, back, true)
+	_line(img, Vector2(12, 34), Vector2(6, 22), Color("#b8b8c4"), 2)
+	_e(img, 6, 20, 3, 4, Color("#d0d0dc"), true)
+	if not back:
+		_line(img, Vector2(26, 23), Vector2(16, 29), WHITE, 2)
+		_line(img, Vector2(38, 23), Vector2(48, 29), WHITE, 2)
+
+
+## Long cou et petite tête de face, carapace brun clair sur le dos, nageoires, corps bleu.
+func _draw_lapras(img: Image, back: bool) -> void:
+	var skin := Color("#4a90d8")
+	var belly := Color("#e8dca8")
+	var shell := Color("#9a9aa8")
+	_e(img, 32, 52, 24, 9, skin.darkened(0.08), true)
+	_e(img, 32, 46, 19, 10, skin, true)
+	_e(img, 44, 38, 8, 8, shell, true)
+	_r(img, 41, 33, 2, 3, shell.lightened(0.3))
+	_r(img, 46, 33, 2, 3, shell.lightened(0.3))
+	_r(img, 51, 38, 2, 3, shell.lightened(0.3))
+	_e(img, 20, 54, 7, 3, skin.darkened(0.15), true)
+	_e(img, 46, 56, 7, 3, skin.darkened(0.15), true)
+	_line(img, Vector2(26, 40), Vector2(22, 24), skin, 8)
+	_e(img, 22, 16, 9, 8, skin, true)
+	if back:
+		_r(img, 18, 11, 8, 2, skin.darkened(0.25))
+		return
+	_e(img, 32, 52, 14, 5, belly)
+	_e(img, 20, 20, 5, 3, belly)
+	_eye(img, 24, 14, Color("#2a2a3a"))
+	_r(img, 14, 10, 2, 3, skin.lightened(0.2))
+
+
+## Osselait : petit corps brun, crâne blanc en casque (deux orbites noires), queue courte.
+func _draw_cubone(img: Image, back: bool) -> void:
+	_draw_bone_keeper(img, back, false)
+
+
+## Ossatueur : même motif, plus grand, os tenu à droite.
+func _draw_marowak(img: Image, back: bool) -> void:
+	_draw_bone_keeper(img, back, true)
+
+
+func _draw_bone_keeper(img: Image, back: bool, evolved: bool) -> void:
+	var skin := Color("#a8784a")
+	var bone := Color("#ece4cc")
+	var body_y := 44 if not evolved else 40
+	var head_y := 24 if not evolved else 18
+	_line(img, Vector2(44, body_y + 8), Vector2(54, body_y - 2), skin.darkened(0.1), 3)
+	_r(img, 22, 54, 8, 7, skin.darkened(0.12))
+	_r(img, 34, 54, 8, 7, skin.darkened(0.12))
+	_e(img, 32, body_y, 12 if not evolved else 14, 12 if not evolved else 14, skin, true)
+	_e(img, 17, body_y - 2, 3, 6, skin, true)
+	_e(img, 47, body_y - 2, 3, 6, skin, true)
+	_e(img, 32, head_y, 12, 11, bone, true)
+	if evolved:
+		_line(img, Vector2(52, body_y + 4), Vector2(58, body_y - 18), bone, 3)
+		_e(img, 58, body_y - 20, 3, 3, bone, true)
+	if back:
+		_r(img, 26, head_y + 6, 12, 2, bone.darkened(0.2))
+		return
+	_r(img, 24, head_y - 1, 5, 5, Color("#2a2a3a"))
+	_r(img, 35, head_y - 1, 5, 5, Color("#2a2a3a"))
+	_e(img, 32, head_y + 8, 6, 3, skin.lightened(0.1))
+
+
 # --- Jalon 21 : Route 12, Ronflex ---------------------------------------------------
 
 ## Ptitard : corps rond bleu, spirale blanche sur le ventre, queue plate, petits pieds.
@@ -1977,3 +2055,42 @@ func _write_shadow() -> void:
 	img.save_png(DIR + "battle_shadow.png")
 	_w = SIZE
 	_h = SIZE
+
+
+# --- Kicklee, Tygnon (jalon 27) ---------------------------------------------------
+
+## Corps brun sans cou, très longues jambes repliées, petits yeux ; bras fins.
+func _draw_hitmonlee(img: Image, back: bool) -> void:
+	var skin := Color("#b08a5a")
+	_line(img, Vector2(26, 38), Vector2(16, 52), skin.darkened(0.1), 5)
+	_line(img, Vector2(16, 52), Vector2(22, 61), skin.darkened(0.1), 5)
+	_line(img, Vector2(38, 38), Vector2(48, 52), skin.darkened(0.1), 5)
+	_line(img, Vector2(48, 52), Vector2(42, 61), skin.darkened(0.1), 5)
+	_e(img, 32, 28, 12, 14, skin, true)
+	_line(img, Vector2(21, 26), Vector2(12, 36), skin, 2)
+	_line(img, Vector2(43, 26), Vector2(52, 36), skin, 2)
+	if back:
+		_r(img, 27, 30, 10, 2, skin.darkened(0.25))
+		return
+	_r(img, 25, 20, 14, 4, skin.darkened(0.35))
+	_eye(img, 27, 21, Color("#f0e8d0"))
+	_eye(img, 35, 21, Color("#f0e8d0"))
+
+
+## Corps brun trapu, tunique violette, deux gros gants de boxe rouges.
+func _draw_hitmonchan(img: Image, back: bool) -> void:
+	var skin := Color("#b8946a")
+	var tunic := Color("#8a5aa8")
+	var glove := Color("#d83a3a")
+	_r(img, 24, 50, 7, 12, skin.darkened(0.12))
+	_r(img, 33, 50, 7, 12, skin.darkened(0.12))
+	_e(img, 32, 40, 13, 13, tunic, true)
+	_e(img, 32, 20, 11, 11, skin, true)
+	_e(img, 13, 34, 7, 7, glove, true)
+	_e(img, 51, 34, 7, 7, glove, true)
+	if back:
+		_r(img, 27, 36, 10, 2, tunic.darkened(0.3))
+		return
+	_eye(img, 27, 18, Color("#1c1c28"))
+	_eye(img, 36, 18, Color("#1c1c28"))
+	_r(img, 28, 25, 8, 2, skin.darkened(0.4))

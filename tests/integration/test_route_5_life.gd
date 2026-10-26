@@ -16,9 +16,8 @@ const SAVE_PATH := "user://test_route_5_life_save.json"
 const FADE := 0.05
 const TIMEOUT := 15.0
 const SUFFIXES: Array[String] = ["w", "c", "e"]
-const T15: Array[String] = ["Halte ! La route de Safrania est fermée.",
-	"Ordre de la ville. Je n'en sais pas plus, désolé."]
-const T16 := "Toujours fermé. Si tu vas vers Carmin-sur-Mer, prends le passage souterrain."
+const T216: Array[String] = ["Je monte la garde depuis ce matin,\nsous ce soleil…",
+	"J'ai une de ces soifs."]
 
 var _fs: MemoryFs
 var _boot: Boot
@@ -155,7 +154,7 @@ func test_a_save_on_the_old_coming_soon_gate_resumes_and_leads_to_route_5() -> v
 	assert_eq(_player.get_cell(), Vector2i(20, 0))
 
 
-func test_saffron_gate_guard_warns_then_points_to_the_underground() -> void:
+func test_saffron_gate_trigger_says_the_guard_is_thirsty_then_pushes_back() -> void:
 	await _start(&"route_5_gate", &"from_route_5", Vector2i.UP)
 	assert_eq(_player.get_cell(), Vector2i(4, 6))
 	for visit: int in 2:
@@ -165,11 +164,10 @@ func test_saffron_gate_guard_warns_then_points_to_the_underground() -> void:
 			TIMEOUT)
 		Input.action_release(&"move_up")
 		await _finish_scene()
-		if visit == 0:
-			assert_eq(_pages, T15, "T-15 la première fois")
-			assert_true(GameState.flags.has_flag(&"route_5_gate_warned"))
-		else:
-			assert_eq(_pages, [T16] as Array[String], "T-16 ensuite")
+		# Jalon 26 (T8) : Safrania est jouable, le déclencheur dit la soif du garde (216) à chaque
+		# fois (T-15 et T-16 restent la réplique de repli, zone fermée : test_saffron_gates_j15).
+		assert_eq(_pages, T216, "216 : la soif, sans boisson (visite %d)" % visit)
+		assert_false(GameState.flags.has_flag(&"route_5_gate_warned"))
 		assert_eq(_player.get_cell(), Vector2i(4, 4), "recul d'une case")
 		assert_eq(_player.get_facing(), Vector2i.UP, "toujours tourné vers le garde")
 		assert_eq(_boot.get_map().map_id, &"route_5_gate", "Safrania reste fermée")
