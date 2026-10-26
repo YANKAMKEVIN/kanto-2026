@@ -5,8 +5,9 @@
 > pour les attaques et les conflits de fichiers, plans `jalon-33.md` et `jalon-34.md` lus sur
 > `origin/jalon-31`.
 > Source de vérité du design : `docs/design/dossier-05-combat.md` (§4, §9 à §13, §16, §21, §22).
-> Arbitrages pour Kevin : `docs/design/passes/combat-vivant-arbitrages-kevin.md` (**CV-1 à CV-14,
-> en attente**). Valeurs marquées **[D]** : valeurs par défaut (règle 4 de `CLAUDE.md`).
+> Arbitrages : `docs/design/passes/combat-vivant-arbitrages-kevin.md` (**CV-1 à CV-14 tranchés par
+> Kevin le 2026-10-26** : recommandations retenues, sauf **CV-1 : une animation par attaque**,
+> **CV-2 : durée selon l'attaque**, **CV-10 : point d'origine par espèce** ; le plan en tient compte). Valeurs marquées **[D]** : valeurs par défaut (règle 4 de `CLAUDE.md`).
 > Le chantier s'appelle **CV** ; ses sous-jalons **CV.0 à CV.Z**.
 
 ## 0. Pourquoi ce chantier
@@ -100,7 +101,7 @@ corriger par des **repères sonores** posés dans la chorégraphie (§2.5).
 
 Trois couches, comme le reste du combat :
 
-1. **Données** : `data/battle/move_fx.json` dit, pour chaque attaque, sa **famille** et ses
+1. **Données** : `data/battle/move_fx/` (familles dans `families.json`, attaques dans un fichier par lot) dit, pour chaque attaque, sa **famille** et ses
    réglages ; les familles décrivent leur chorégraphie en **phases** et en **calques d'effets**.
 2. **Logique pure** (testable sans scène, `game/battle/fx/`) : catalogue, résolution de l'issue
    d'une attaque à partir du journal, calcul de la chorégraphie (durées, repères, positions
@@ -112,7 +113,7 @@ Trois couches, comme le reste du combat :
 Le moteur de combat (`Battle`) et `BattleEvent` ne changent pas. `BattlePlayback` change à peine
 (§2.4).
 
-### 2.2 Données : `data/battle/move_fx.json`
+### 2.2 Données : `data/battle/move_fx/` (exemple réuni en un seul bloc)
 
 ```json
 {
@@ -141,17 +142,30 @@ Le moteur de combat (`Battle`) et `BattleEvent` ne changent pas. `BattlePlayback
 - **Une entrée par attaque**, obligatoire (test : toute attaque de `data/pokemon/moves/` a une
   famille). Repli codé si une attaque manque quand même : famille de son type et de sa catégorie,
   comme `move_sfx` (une attaque ajoutée par un jalon en cours ne casse rien ; le test la signale).
-- **Exception** (« signature ») : une attaque phare hérite de sa famille et en remplace des
-  morceaux ; elle ne demande pas de code nouveau, sauf un effet vraiment neuf (§3.3).
+- **Une chorégraphie propre par attaque** (CV-1, décision de Kevin) : chaque entrée de `moves`
+  part de sa famille (briques communes : émetteurs, impacts, lumières) et la **compose à sa
+  façon** (nombre et forme des projectiles, origine, trajectoire, impact, couleur, durée). Une
+  attaque qui demande un effet vraiment neuf (une vague, la foudre qui tombe du ciel) ajoute une
+  brique à la bibliothèque (« signature », §3.3).
+- Les chorégraphies sont réparties en **un fichier par lot** (`data/battle/move_fx/*.json`, fusionnés
+  au chargement ; une attaque dans deux fichiers est une erreur de test) : deux sessions qui
+  écrivent des lots différents ne se gênent pas.
 - Les **modificateurs** viennent des effets de l'attaque (`drain`, `hits`, `charge`…) et ajoutent
   un morceau commun (flux qui revient au lanceur, impact répété, lueur de charge…).
 - Les couleurs, durées et intensités sont des données : on règle sur le S24 sans toucher au code.
+- **Points d'origine par espèce** (CV-10, décision de Kevin) : `data/battle/fx_anchors.json`, pour
+  chacune des 151 espèces, **de face** (artwork officiel) **et de dos** (dos peint, cadrage B), des
+  points nommés en coordonnées normalisées dans la boîte visible du sprite : `bouche`, `joues`,
+  `queue`, `cornes`, `mains`, `canons`, `bulbe`, `yeux`, `centre`. Chaque chorégraphie dit d'où elle
+  part (Éclair : `joues` ; Lance-Flammes : `bouche` ; Hydrocanon : `canons` ; Fouet Lianes :
+  `bulbe` ; Psyko : `yeux`) ; repli : point demandé → `bouche` → `centre`. Un dos qui change
+  (lots DAF) garde ses points s'il est remplacé à l'identique ; sinon, sa ligne est refaite.
 
 ### 2.3 Logique pure (`game/battle/fx/`, `RefCounted`, testée par GUT)
 
 | Classe | Rôle |
 |---|---|
-| `MoveFxCatalog` | charge et valide `move_fx.json` (familles, impacts, signatures, repli par type) ; `entry(move_id)` |
+| `MoveFxCatalog` | charge et valide `data/battle/move_fx/` (familles, impacts, signatures, repli par type) ; `entry(move_id)` |
 | `MoveFxOutcome` | lit le journal **à partir d'un `MOVE_USED`** jusqu'au prochain `MOVE_USED` ou `TURN_STARTED` : touché / raté (`MOVE_MISSED`) / sans effet (`NO_EFFECT`) / esquivé (`DODGED`) / échec (`FAILED`) / statut posé ; critique, efficacité, nombre de coups (`MULTI_HIT`), K.O. de la cible |
 | `MoveFxPlan` | chorégraphie calculée : phases (anticipation, trajet, impact, réaction du monde, retour) avec début et durée, repères sonores, intensité de caméra, positions **normalisées** (ancres de `BattleLayout`) ; dépend du mode (§2.6) et de l'issue (un raté : le projectile passe à côté ; un critique : caméra un cran plus forte) |
 | `BattleFxBudget` | durées nominales d'un combat scripté (somme des temps) : sert au test « sauvage faible en 20 à 40 s » (§5, CV.Z) |
@@ -184,15 +198,27 @@ Le plan porte des **repères** (`launch`, `impact`, `impact_2`…). Le lecteur d
 [D] pour un gros coup, §4.2) au repère `impact`. Les autres sons du combat restent sur
 `event_played`, sauf ceux qui doivent coller à l'image (à lister en CV.0 : envoi, K.O.). Le
 nombre de bruitages ne change pas : ≈ 20 familles sonores (SON-11) pour 17 familles visuelles ; la
-correspondance est une table de `move_fx.json`, pas du code.
+correspondance est une table de `data/battle/move_fx/families.json`, pas du code.
 
 ### 2.6 Modes d'animation et Paramètres
 
 | Mode | Quand | Effet |
 |---|---|---|
-| **Complètes** | défaut [CV-4] | chorégraphie entière : appui, trajet, impact, monde, caméra ; 0,8 à 1,5 s par attaque (phares ≤ 1,8 s [CV-2]) |
+| **Complètes** | défaut [CV-4] | chorégraphie entière : appui, trajet, impact, monde, caméra ; **durée selon l'attaque** (CV-2, tableau ci-dessous), de 0,5 à 2,5 s |
 | **Rapides** | réglage du joueur | même famille, **sans anticipation ni caméra**, trajet et impact compressés : ≤ 0,5 s par attaque ; monde réduit à la lumière |
 | **Réduites** | « Réduire les animations » (Accessibilité), réglage distinct [CV-5] | comme Rapides, **sans aucun mouvement de caméra ni secousse** ; particules réduites de moitié |
+
+**Durée en Complètes selon l'attaque** (CV-2, décision de Kevin ; bornes [D], réglées sur le S24) :
+
+| Attaque | Durée |
+|---|---|
+| statut, puissance ≤ 40, chaque coup d'une attaque à coups multiples | 0,5 – 0,8 s |
+| puissance 45 à 80 | 0,8 – 1,3 s |
+| puissance 85 à 110 | 1,2 – 1,8 s |
+| puissance > 110, K.O. en un coup, Explosion / Destruction, attaques des légendaires | 1,8 – 2,5 s |
+
+Un sauvage faible ne voit que des attaques de la première ligne : il reste dans les 20 à 40 s du §21.
+Un combat de Ligue sera plus long, ce qui est voulu. Rapides : ≤ 0,5 s pour toutes.
 
 - Nouveau réglage `battle_animations` (`GameSettings`, enum `FULL` / `FAST`, défaut `FULL`, nom
   JSON `full` / `fast`) ; contrôle « Animations de combat : Complètes / Rapides » dans la catégorie
@@ -287,13 +313,24 @@ lanceur halète au tour suivant), `chute` (Pied Sauté raté : le lanceur tombe)
 Morphing (fondu vers l'apparence de la cible, selon ce que code le J31) ; Téléport et Tunnel
 gardent leurs animations du J14 ; Clonage (silhouette translucide, si le J27 l'affiche).
 
-### 3.3 Attaques phares (signatures)
+### 3.3 Une animation par attaque, et les signatures
 
-Effet propre, qui hérite de sa famille et en remplace des morceaux (liste proposée, CV-1) :
+Décision de Kevin (CV-1, 2026-10-26) : **chacune des 165 attaques a sa propre animation**. Les 17
+familles du §3.2 restent les **briques** (et le filet de sécurité : une attaque pas encore faite
+joue la version de sa famille, jamais rien). Exemples dans la famille Feu : Flammèche (trois petites
+flammes en arc), Poing de Feu (élan, poing enflammé, impact), Danse Flamme (tourbillon qui reste
+autour de la cible jusqu'à `TRAP_ENDED`), Lance-Flammes (jet continu), Déflagration (étoile de feu).
+
+Les attaques sont faites **par lots, dans l'ordre d'exposition** : un script (T8 bis) classe les
+165 attaques selon le moment où le joueur les voit le plus tôt (learnsets des starters et des
+Pokémon des premières routes, Dresseurs, Champions), puis on découpe en quatre lots d'environ 40.
+
+Les **signatures** sont les attaques qui demandent une brique neuve dans la bibliothèque (pas
+seulement une composition de données). Liste de départ :
 
 | Priorité | Attaque | Ce qu'elle a en propre | Pourquoi |
 |---|---|---|---|
-| A | **Éclair** (`thunder_shock`) | joues de Pikachu qui crépitent (si le lanceur est Pikachu ou Raichu : position des joues dans une petite table par espèce [CV-10], sinon le centre du sprite), CRACK, arc qui traverse la scène, **scène entière illuminée 2 images**, plumes si la cible est de type Vol ; 1,2 s | modèle du dossier 05 §10, première attaque du starter du rival |
+| A | **Éclair** (`thunder_shock`) | les **joues** qui crépitent (point `joues` de l'espèce, CV-10 ; repli : `bouche`, puis `centre`), CRACK, arc qui traverse la scène, **scène entière illuminée 2 images**, plumes si la cible est de type Vol ; 1,2 s | modèle du dossier 05 §10, première attaque du starter du rival |
 | A | **Tonnerre** (`thunderbolt`) | arc double plus épais, lumière plus longue | CT24, attaque de fin de jeu courante |
 | A | **Fatal-Foudre** (`thunder`) | foudre qui **tombe du ciel** sur la cible, voile sombre 0,1 s avant | Électhor |
 | A | **Lance-Flammes** (`flamethrower`) | jet continu qui ondule, lumière orange qui avance au sol | Dracaufeu, Arcanin |
@@ -307,14 +344,17 @@ Effet propre, qui hérite de sa famille et en remplace des morceaux (liste propo
 | B | **Lance-Soleil** (`solar_beam`) | tour 1 : lumière qui se concentre ; tour 2 : rayon doré | attaque à deux tours |
 | B | **Explosion** / **Destruction** | éclair blanc (plafonné par « Réduire les flashs »), souffle, lanceur à terre | effet unique, partagé |
 
-Les 13 sont marquées « oui » dans la colonne « Phare » de l'annexe A. Ajouter une signature plus
-tard = une entrée de données, et éventuellement un effet neuf dans la bibliothèque.
+Les 13 sont marquées « oui » dans la colonne « Phare » de l'annexe A. Les 152 autres attaques sont
+des compositions propres faites avec les briques (aucune n'a seulement la version de sa famille à
+la fin du chantier).
 
 ### 3.4 Art à produire
 
-Atlas de **≈ 20 sprites de particules** [CV-7] : flamme, braise, goutte, bulle, éclaboussure,
-feuille, pétale, spore, plume, éclat de glace, flocon, caillou, poussière, étoile d'impact,
-entailles de griffe, mâchoires, note de son (ou arc), étincelle, lueur ronde douce, fumée. Peints
+Atlas de **≈ 35 sprites de particules** [CV-7 ; ≈ 20 au départ, une deuxième série pour les
+compositions par attaque] : flamme, braise, goutte, bulle, éclaboussure, feuille, pétale, spore,
+plume, éclat de glace, flocon, caillou, os, poussière, étoile d'impact, entailles de griffe,
+mâchoires, poing, pied, corne, note de son (ou arc), étincelle, lueur ronde douce, fumée, cœur
+(Grobisou), œuf (Bomb'Œuf), étoile (Météores), aiguille (Dard-Nuée), lame (Danse-Lames)… Peints
 « dans la même main » que le monde (`vision.md`), fond transparent, lumière neutre, produits par la
 chaîne de la phase DA (fiche de série, `tools/art/generer.sh`, planche à l'échelle du jeu, validation
 de Kevin, DA-6). Le reste (rayons, arcs, ondes, anneaux, lueurs) est **dessiné en code**. Avant
@@ -359,49 +399,68 @@ CV-8.
 
 ### 5.1 Sous-jalons
 
-Validation par sous-jalon sur le S24 (règle 1) : une session de validation de Kevin à la fin de
-chaque sous-jalon, sur un **départ de débogage « galerie d'effets »** (`tools/debug_start/`) qui
+Revu le 2026-10-26 après les décisions de Kevin (CV-1 : une animation par attaque ; CV-2 : durée
+selon l'attaque ; CV-10 : point d'origine par espèce). Principe : d'abord un **plancher** complet
+(socle, option, 17 familles, statuts et PV : toutes les attaques sont animées par leur famille),
+puis les **animations propres** par lots, dans l'ordre d'exposition. Si le calendrier serre, ce qui
+manque garde la version de sa famille : rien n'est jamais vide.
+
+Validation par sous-jalon sur le S24 (règle 1, CV-14) : une session de validation de Kevin à la fin
+de chaque étape, sur un **départ de débogage « galerie d'effets »** (`tools/debug_start/`) qui
 enchaîne les attaques sans avoir à jouer, plus un vrai combat.
 
 **CV.0 — Socle et Éclair** (Opus, système nouveau)
 
 | Tâche | Contenu | Critère d'acceptation |
 |---|---|---|
-| T1 | `move_fx.json` complet (165 attaques, annexe A) ; `MoveFxCatalog` | test : toute attaque des données a une famille et une entrée valide ; repli par type testé |
-| T2 | `MoveFxOutcome`, `MoveFxPlan` (phases, repères, modes) | tests purs : touché / raté / sans effet / esquive / multi / deux tours / Métronome ; durées Complètes ≤ 1,5 s (phares ≤ 1,8 s), Rapides ≤ 0,5 s |
+| T1 | `data/battle/move_fx/` (un fichier par lot) et `MoveFxCatalog` ; table de l'annexe A (famille de chaque attaque) | test : toute attaque des données a une entrée valide, une seule ; repli par type testé |
+| T2 | `MoveFxOutcome`, `MoveFxPlan` (phases, repères, modes, **durée selon la puissance**, §2.6) | tests purs : touché / raté / sans effet / esquive / multi / deux tours / Métronome ; chaque attaque dans les bornes de sa ligne du tableau de CV-2 ; Rapides ≤ 0,5 s |
 | T3 | `MoveFxPlayer`, `BattleCamera`, pool de particules, lumière simulée ; branchement dans `BattleStage` / `BattleDirector` | le combat joue les plans ; `speed_scale` = 0 toujours instantané (suite complète verte, aucun test de combat ralenti) |
 | T4 | repères sonores (`fx_cue`) ; correction du décalage du §1.3 | test espion : le son de l'attaque part au repère `launch`, celui du coup au repère `impact` |
 | T5 | réglage `battle_animations` et contrôle dans Paramètres ; modes Réduites et « Réduire les flashs » | test de `GameSettings` (aller-retour JSON, ancien fichier) ; ≤ 3 flashs/s |
-| T6 | familles **contact** (5 variantes), **électrique** et **feu** ; signature **Éclair** | captures Mac relues |
-| T7 | départ « galerie d'effets » ; mesure `PerfProbe` sur S24 **et A17** | ≥ 58 i/s moyens en Complètes sur les deux, rapport dans `build/qa/` |
-| **Validation** | Kevin sur S24 : Charge (§9), Éclair (§10), Flammèche ; bascule Complètes / Rapides | « ça marche, c'est lisible, c'est bien placé » (règle 3) |
+| T6 | `FxAnchors` (lecture de `fx_anchors.json`, repli `bouche` → `centre`) ; points de **Pikachu, Raichu et des 3 starters** posés à la main | test pur du repli ; captures |
+| T7 | familles **contact** (5 variantes), **électrique** et **feu** ; animation propre d'**Éclair** | captures Mac relues |
+| T8 | départ « galerie d'effets » ; mesure `PerfProbe` sur S24 **et A17** | ≥ 58 i/s moyens en Complètes sur les deux, rapport dans `build/qa/` |
+| **Validation** | Kevin sur S24 : Charge (§9), Éclair depuis les joues (§10), Flammèche ; bascule Complètes / Rapides | « ça marche, c'est lisible, c'est bien placé » (règle 3) |
 
-**CV.1 — Toutes les familles** (Sonnet, relu par Opus)
+**CV.1 — Plancher : toutes les familles** (Sonnet, relu par Opus)
 
 | Tâche | Contenu | Critère |
 |---|---|---|
-| T8 | les 14 autres familles et les 9 modificateurs | chaque attaque de l'annexe A joue sans erreur dans la galerie (test d'intégration qui parcourt les 159 attaques présentes à `speed_scale` 0) |
-| T9 | série d'art « particules de combat » (fiche, génération, planche) — **si CV-7 = sprites peints** | planche validée par Kevin (DA-6) |
-| T10 | intégration de l'atlas | aucun écart de taille ; mémoire de texture du combat + ≤ 4 Mo |
+| T9 | les 14 autres familles et les 9 modificateurs | chaque attaque de l'annexe A joue sans erreur dans la galerie (test d'intégration qui parcourt les 159 attaques présentes à `speed_scale` 0) |
+| T10 | script de classement par **ordre d'exposition** (learnsets, rencontres, Dresseurs) → découpage des lots P1 à P4 | liste écrite dans ce plan (§5.1 bis) |
+| T11 | série d'art « particules de combat », 1re série (≈ 20 sprites, CV-7) ; intégration de l'atlas | planche validée par Kevin (DA-6) ; mémoire de texture du combat + ≤ 4 Mo |
 | **Validation** | Kevin sur S24 : galerie (≈ 10 min) + un combat de Dresseur | |
 
-**CV.2 — Attaques phares et monde qui réagit** (Opus pour la lumière, Sonnet pour les signatures)
+**CV.A — Points d'origine des 151 espèces** (Sonnet) — **en parallèle de CV.1**, fichiers disjoints
 
 | Tâche | Contenu | Critère |
 |---|---|---|
-| T11 | les 12 autres signatures (§3.3) | une capture par signature relue |
-| T12 | réactions du monde : lumière orange, gouttelettes, feuillage du calque `front`, arbres éclairés la nuit (étalonnage du lieu) | sur décor peint **et** sur le repli (carte floutée) ; 60 i/s sur A17 tenus |
-| **Validation** | Kevin sur S24 | |
+| T12 | outil qui dessine les points sur chaque face (artwork) et chaque dos (cadrage B) ; points posés pour les 151 espèces, de face et de dos | `tools/art/fx_anchors_planche.py` [D] : planches à l'échelle du combat, un point coloré par nom |
+| T13 | test : toute espèce de `data/pokemon/species/` a ses points ; coordonnées dans la boîte visible | |
+| **Validation** | Kevin sur planche (pas sur S24) | |
 
-**CV.3 — Statuts et PV** (Sonnet) — peut tourner **en parallèle de CV.1** (fichiers disjoints :
-`status_aura.gd`, carte de PV de la HUD, `ui_tokens.gd`)
+**CV.3 — Statuts et PV** (Sonnet) — **en parallèle de CV.1**, fichiers disjoints (`status_aura.gd`,
+carte de PV de la HUD, `ui_tokens.gd`)
 
 | Tâche | Contenu | Critère |
 |---|---|---|
-| T13 | aura de poison et de Toxik, respiration du sommeil, givre, pose du statut | tests de `StatusAura` (état, réduction des animations) |
-| T14 | trace des PV perdus (CV-9), `hit_heavy`, vibration du gros coup, descente calée sur l'impact | test : la barre arrive à `event.hp` ; durées inchangées en Rapides |
-| T15 | respiration au repos (si CV-8) ; finition de la capture (si CV-11) | |
-| **Validation** | Kevin sur S24 (avec CV.2 si les deux finissent ensemble) | |
+| T14 | aura de poison et de Toxik, respiration du sommeil, givre, pose du statut | tests de `StatusAura` (état, réduction des animations) |
+| T15 | trace des PV perdus (CV-9), `hit_heavy`, vibration du gros coup, descente calée sur l'impact | test : la barre arrive à `event.hp` ; durées inchangées en Rapides |
+| T16 | respiration au repos (CV-8) ; finition de la capture (CV-11) | |
+| **Validation** | Kevin sur S24, groupée avec celle de CV.1 | |
+
+**CV.2 — Animations propres, par lots P1 à P4** (Sonnet ; Opus pour les signatures et la lumière du
+monde) — **2 sessions en parallèle au plus**, une par lot, chacune dans son fichier
+`data/battle/move_fx/pN.json`
+
+| Lot | Contenu | Critère |
+|---|---|---|
+| P1 (≈ 40) | attaques des premières heures (starters, Routes 1 à 4, Forêt de Jade, Argenta, Azuria) + réactions du monde (lumière, gouttelettes, feuillage, arbres éclairés la nuit) | une capture par attaque relue ; 60 i/s sur A17 tenus |
+| P2 (≈ 40) | milieu du jeu (Carmin à Céladopole) + 2e série d'art (≈ 15 sprites) | idem |
+| P3 (≈ 40) | fin du jeu (Safrania à la Ligue) ; les signatures restantes (§3.3) | idem |
+| P4 (≈ 45) | le reste (attaques rares, CT, attaques ajoutées par les J23 à J32) | idem ; **aucune attaque ne garde la version de sa famille** |
+| **Validation** | Kevin sur S24 : P1 + P2 ensemble, puis P3 + P4 ensemble | |
 
 **CV.Z — Clôture** (Sonnet) : chronométrage de 5 combats scriptés (sauvage faible, sauvage moyen,
 Dresseur, Champion, capture) en Complètes et en Rapides, sur le S24 ; sauvage faible **20 à 40 s**
@@ -409,23 +468,30 @@ en Complètes ; mesure A17 ; suite complète ; fusion dans `main` ; ligne dans `
 
 ### 5.2 Effort
 
-| Sous-jalon | Sessions | Modèle | Temps de Kevin |
+| Étape | Sessions | Modèle | Temps de Kevin |
 |---|---|---|---|
 | CV.0 | 2 – 3 | Opus | 1 validation S24 (≈ 15 min) |
-| CV.1 | 2 – 3 (+ 1 d'art si CV-7 = sprites) | Sonnet, relecture Opus | 1 planche + 1 validation S24 |
-| CV.2 | 1 – 2 | Opus / Sonnet | 1 validation S24 |
-| CV.3 | 1 – 2 | Sonnet | (groupée avec CV.2) |
+| CV.1 | 2 – 3 (+ 1 d'art) | Sonnet, relecture Opus | 1 planche + 1 validation S24 (avec CV.3) |
+| CV.A | 1 – 2 | Sonnet | 1 planche (151 × 2 sprites) |
+| CV.3 | 1 – 2 | Sonnet | (groupée avec CV.1) |
+| CV.2 | 8 – 12 (≈ 2 à 3 par lot, + 1 d'art) | Sonnet ; Opus pour les signatures | 1 planche + 2 validations S24 (≈ 20 min) |
 | CV.Z | 1 | Sonnet | — |
-| **Total** | **8 à 12 sessions** | | **≈ 1 h en tout, en 3 créneaux** |
+| **Total** | **16 à 24 sessions** | | **≈ 2 h en tout, en 4 créneaux S24 et 3 planches** |
 
-Durée : ≈ **3 à 5 jours** avec CV.1 et CV.3 en parallèle. Le chemin critique est CV.0 (le socle).
+Durée : ≈ **7 à 10 jours** avec 2 à 3 sessions en parallèle (contre 3 à 5 jours pour « familles +
+13 phares »). Le chemin critique est CV.0 puis les lots de CV.2.
 
 ### 5.3 Place dans le calendrier
 
-- **Date butoir** : dans `main` **avant le début réel du J33** (sa campagne T6 et l'harmonisation
-  T2 contrôlent les « combats ») ; au plus tard avant le **gel du J34**. Le J33 déclare déjà un
-  « gel fonctionnel » et une nouvelle option des Paramètres n'est pas un correctif : arrivé pendant
-  le J33, CV relancerait les parcours de combat de sa campagne. CV-13 en décide.
+- **Deux dates butoirs** (application de CV-13 et de DA-7) :
+  - **le plancher (CV.0, CV.1, CV.3, CV.A)** dans `main` **avant le début réel du J33** : c'est
+    lui qui ajoute l'option des Paramètres et change le déroulé d'un combat ; le J33 déclare un
+    « gel fonctionnel » et sa campagne T6 et son harmonisation T2 contrôlent les combats ;
+  - **les lots P1 à P4** sont de la mise en scène à données constantes (aucune règle, aucune
+    durée de message, aucun déclencheur) : traités comme un **lot d'art**, ils peuvent finir
+    pendant le J33 et doivent être dans `main` **au gel de l'art, à l'entrée du J34** (DA-7). Un
+    lot pas prêt garde la version de ses familles et passe en 1.0.x (soupape de DA-2). **À
+    confirmer par Kevin** (lecture des règles existantes, pas une décision écrite).
 - **En parallèle des fusions J23 et J26 à J31 : oui, avec deux précautions.** Les fichiers
   touchés par les branches en cours, mesurés le 2026-10-26 :
 
@@ -464,16 +530,18 @@ Durée : ≈ **3 à 5 jours** avec CV.1 et CV.3 en parallèle. Le chemin critiqu
 
 ## 6. Prochaine étape
 
-Kevin répond aux arbitrages CV-1 à CV-14 (`docs/design/passes/combat-vivant-arbitrages-kevin.md`).
-Ensuite : une session neuve code **CV.0** dans son propre worktree (branche `combat-vivant`
-depuis `main`), avec le prompt de reprise proposé à Kevin.
+Arbitrages CV-1 à CV-14 tranchés par Kevin le 2026-10-26 (voir l'en-tête). Reste à confirmer : les
+deux dates butoirs du §5.3. Ensuite : une session neuve code **CV.0** dans son propre worktree
+(branche `combat-vivant` depuis `main`, après la fusion du J23), avec le prompt de reprise
+proposé à Kevin.
 
 ## Annexe A — Toutes les attaques et leur famille
 
 165 attaques : 159 présentes dans les données (colonne « Source » : `main` ou la branche qui
 l'ajoute) et 6 absentes à ce jour (« absente »). « Impact » : variante de la famille Contact.
-« Modificateurs » : lus dans les effets de l'attaque. « Phare » : signature du §3.3. Cette table
-est la proposition de départ de `data/battle/move_fx.json` (T1) ; Kevin peut y changer une ligne
+« Modificateurs » : lus dans les effets de l'attaque. « Phare » : signature du §3.3 (brique neuve). Toutes les attaques auront leur animation propre
+(CV-1) ; la famille sert de briques et de plancher. Cette table est la proposition de départ de
+`data/battle/move_fx/` (T1) ; Kevin peut y changer une ligne
 sans arbitrage.
 
 | id | Nom | Type | Cat. | Famille | Impact | Modificateurs | Phare | Source |

@@ -2,8 +2,9 @@
 
 > Rédigé le 2026-10-26 (session de coordination, documents seuls). Plan : `docs/tech/combat-vivant.md`.
 > Source : `docs/design/dossier-05-combat.md` (§4, §9 à §13, §16, §21, §22).
-> **En attente de Kevin.** Réponse possible en une ligne : « CV-1 à CV-14 : tes recommandations »,
-> ou numéro par numéro.
+> **Tranché par Kevin le 2026-10-26** : « je suis d'accord avec tout, sauf CV-1, CV-2, CV-10 » ;
+> pour ces trois, il a choisi : CV-1 **une animation par attaque**, CV-2 **durée selon l'attaque**,
+> CV-10 **point d'origine par espèce** (détail en fin de page). Plan revu en conséquence.
 
 **Le constat en deux lignes.** Aujourd'hui, toutes les attaques jouent le même retour : un élan de
 60 px (physique), une pulsation blanche (spéciale) ou deux petits bonds (statut), puis un
@@ -31,6 +32,16 @@ d'être en même temps (défaut trouvé dans le code, à confirmer à l'oreille)
 **Effort** (détail au plan, §5.2) : 8 à 12 sessions, ≈ 3 à 5 jours avec deux sessions en parallèle ;
 ton temps : ≈ 1 h en tout (3 validations S24 et une planche).
 
-## Réponses de Kevin
+## Réponses de Kevin (2026-10-26)
 
-*(à remplir)*
+| N° | Décision |
+|---|---|
+| **CV-1** | **Une animation par attaque** (165). Les 17 familles restent les briques communes et le plancher (une attaque pas encore faite joue sa famille) ; les 13 phares deviennent les « signatures » qui demandent une brique neuve. Faites par lots P1 à P4 dans l'ordre d'exposition (plan §3.3, §5.1). |
+| **CV-2** | **Durée selon l'attaque** : statut et puissance ≤ 40 : 0,5 – 0,8 s ; 45 à 80 : 0,8 – 1,3 s ; 85 à 110 : 1,2 – 1,8 s ; au-delà, K.O. en un coup, Explosion, légendaires : 1,8 – 2,5 s [bornes D] ; Rapides ≤ 0,5 s (plan §2.6). |
+| **CV-10** | **Point d'origine par espèce** : `data/battle/fx_anchors.json`, 151 espèces, de face et de dos (bouche, joues, queue, cornes, mains, canons, bulbe, yeux, centre), validé sur planche (plan §2.2, CV.A). |
+| CV-3 à CV-9, CV-11 à CV-14 | Recommandations retenues. |
+
+**Conséquences** : 16 à 24 sessions au lieu de 8 à 12, ≈ 7 à 10 jours au lieu de 3 à 5, ≈ 2 h de
+ton temps (4 validations S24, 3 planches). **À confirmer** : le plancher (socle, option, familles,
+statuts, points d'origine) avant le début du J33 ; les lots d'animations propres traités comme un
+lot d'art, jusqu'au gel de l'art à l'entrée du J34 (DA-7), le reste en 1.0.x.
