@@ -166,3 +166,56 @@ func test_a_stop_before_the_write_leaves_nothing_changed() -> void:
 	assert_not_null(_play.boot.get_map().get_npc(&"ball_hitmonlee"))
 	assert_not_null(_play.boot.get_map().get_npc(&"ball_hitmonchan"))
 	assert_push_error_count(0)
+
+
+## Point non vu en QA téléphone (2026-10-25) : le défi de Karatéka Wilfried comparé à la grille
+## (`safrania_dojo.txt`, « dresseur_4 », RB objet 5) : case (5, 7), tourné vers l'ouest, vision 3 ;
+## équipe RB Machoc, Férosinge, Colossinge N31. Joué : à 4 cases rien ne se passe, au pas suivant
+## (3 cases) il repère le joueur et le combat a lieu ; battu, il ne relance plus le défi.
+func test_wilfried_challenges_exactly_as_the_grid_says() -> void:
+	var plan := PlanGrid.new()
+	assert_true(plan.load_file("res://tools/plans/safrania_dojo.txt"))
+	var cell: Vector2i = plan.cells_at("dresseur_4")[0]
+	var sight := int(plan.attr("dresseur_4", "sight"))
+	assert_eq(plan.attr("dresseur_4", "trainer"), "fighting_dojo_blackbelt_wilfried")
+	assert_eq([cell, plan.attr("dresseur_4", "facing"), sight], [Vector2i(5, 7), "left", 3])
+	var team: Array = []
+	for slot: TrainerSlot in _trainer(&"fighting_dojo_blackbelt_wilfried").team:
+		team.append([slot.species, slot.level])
+	assert_eq(team, [[&"machop", 31], [&"mankey", 31], [&"primeape", 31]], "équipe RB")
+	await _play.start(START, func() -> void:
+		for trainer: String in ["hippolyte", "tancrede", "urbain"]:
+			GameState.flags.set_flag(StringName("beaten_fighting_dojo_blackbelt_%s" % trainer)))
+	_play.make_strong()
+	var npc := _play.boot.get_map().get_npc(&"wilfried")
+	assert_not_null(npc)
+	if npc == null:
+		return
+	assert_eq(npc.get_cell(), cell, "Wilfried sur la case de la grille")
+	var outside := cell + Vector2i.LEFT * (sight + 1)
+	_play.boot.get_map().spawn_player_at(_play.player, outside, Vector2i.RIGHT)
+	await wait_process_frames(10)
+	assert_false(_play.boot.get_cutscene_director().is_running(), "à %d cases : rien" % (sight + 1))
+	var battles := _play.events.count("battle")
+	await _play.step(Vector2i.RIGHT)
+	assert_eq(_play.player.get_cell(), cell + Vector2i.LEFT * sight, "un pas dans sa vision")
+	assert_true(await _play.run_scene(), "Wilfried repère le joueur et le combat a lieu")
+	assert_eq(_play.events.count("battle"), battles + 1)
+	assert_true(GameState.flags.has_flag(&"beaten_fighting_dojo_blackbelt_wilfried"))
+	assert_true(_play.pages().has(_first_page(&"fighting_dojo_blackbelt_wilfried_before")),
+		"réplique d'avant-combat")
+	assert_push_error_count(0)
+
+
+func _trainer(id: StringName) -> TrainerData:
+	var data := PokemonData.new()
+	data.load_dir()
+	var library := TrainerLibrary.new(data)
+	library.load_dir()
+	return library.get_trainer(id)
+
+
+func _first_page(id: StringName) -> String:
+	var library := DialogueLibrary.new()
+	library.load_dir()
+	return String(library.get_dialogue(id).variants[0].pages[0].text).replace("\n", " ")

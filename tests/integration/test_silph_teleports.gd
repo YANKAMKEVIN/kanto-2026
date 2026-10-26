@@ -174,6 +174,27 @@ func test_route_from_the_entrance_to_giovanni_is_played() -> void:
 	assert_push_error_count(0)
 
 
+## Point non vu en QA téléphone (2026-10-25, « téléporteurs 1F → 5F ») : le 1F n'a aucun
+## téléporteur (comme Rouge/Bleu) ; le plus court chemin de l'entrée au 5F monte deux escaliers
+## puis prend le téléporteur du 3F, qui pose le joueur sur la dalle d'arrivée du 5F. Joué en Boot.
+func test_from_the_entrance_to_the_5th_floor_by_the_3rd_floor_teleporter_is_played() -> void:
+	var maps := _load_maps(true)
+	for warp: Warp in maps[ENTRY].get_warps().get_all():
+		assert_false(warp.is_teleport(), "1F : aucun téléporteur (%s)" % warp.cell)
+	var hops := _route(maps, false, &"silph_co_5f")
+	assert_eq(hops.size(), 3, "1F → 2F → 3F par les escaliers, puis téléporteur vers le 5F")
+	if hops.size() != 3:
+		return
+	var last: Dictionary = hops[2]
+	assert_eq([last["map"], last["to_map"]], [&"silph_co_3f", &"silph_co_5f"])
+	var pads := maps[&"silph_co_3f"].get_warps().get_at(last["cell"])
+	assert_true(not pads.is_empty() and pads[0].is_teleport(), "la dernière étape est une dalle")
+	await _play_route(hops)
+	assert_eq(_play.map_id(), &"silph_co_5f", "5F atteint")
+	assert_eq(_play.player.get_cell(), last["to_cell"], "posé sur la dalle d'arrivée du 5F")
+	assert_push_error_count(0)
+
+
 ## T10 : les onze étages un à un, par les seuls escaliers, de l'entrée au 11F.
 func test_climb_by_the_stairs_floor_by_floor_is_played() -> void:
 	var hops := _route(_load_maps(true), true)
@@ -222,7 +243,8 @@ func _play_route(hops: Array[Dictionary]) -> void:
 ## { map, cell (case du passage), to_map, to_cell } ; vide si inatteignable. L'ascenseur et la
 ## sortie vers Safrania sont écartés.
 ## [param stairs_only] : sans téléporteur, le but est la seule arrivée au 11F.
-func _route(maps: Dictionary[StringName, GameMap], stairs_only: bool = false) -> Array[Dictionary]:
+func _route(maps: Dictionary[StringName, GameMap], stairs_only: bool = false,
+		goal_map: StringName = TOP) -> Array[Dictionary]:
 	var start := [ENTRY, maps[ENTRY].get_spawn_cell(&"from_city")]
 	var parents: Dictionary = {start: null}
 	var queue: Array = [start]
@@ -230,7 +252,7 @@ func _route(maps: Dictionary[StringName, GameMap], stairs_only: bool = false) ->
 		var node: Array = queue.pop_front()
 		var map: GameMap = maps[node[0]]
 		var flood := _flood(map, node[1])
-		if node[0] == TOP and (stairs_only or flood["cells"].has(GOAL)):
+		if node[0] == goal_map and (stairs_only or goal_map != TOP or flood["cells"].has(GOAL)):
 			var hops: Array[Dictionary] = []
 			var cursor: Variant = node
 			while parents[cursor] != null:
