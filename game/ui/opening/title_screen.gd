@@ -4,7 +4,7 @@ extends CanvasLayer
 ## qui ne fait foi ni pour le décor ni pour le logo, règle 10).
 ##
 ## Calque LAYER_MENU posé sur la vraie carte en mode décor ([TitleBackdrop], côté monde) :
-## - logo « Kanto 2026 » détouré en haut à gauche, sans cadre ;
+## - logo « Kanto 2026 » détouré en haut à gauche, sans cadre, sur une ombre douce (DAF.7b) ;
 ## - colonne de cartes à droite (à gauche en mode gaucher, [method set_left_handed], le logo passe
 ##   alors à droite) : **Continuer** (la plus grande : buste, prénom, lieu, temps de jeu, badges,
 ##   captures), **Nouvelle partie**, **Paramètres** ; l'entrée mise en avant porte un liseré doré ;
@@ -26,6 +26,10 @@ signal settings_back_requested
 signal setting_changed(key: StringName, value: Variant)
 
 const LOGO: Texture2D = preload("res://assets/ui/opening/logo_kanto_2026.png")
+## Ombre douce du logo (DAF.7b, `tools/art/ombre_logo.py`) : même cadre que le logo, posée sous
+## lui, décalée vers le bas de [constant LOGO_SHADOW_DROP] pixels de référence.
+const LOGO_SHADOW: Texture2D = preload("res://assets/ui/opening/logo_kanto_2026_ombre.png")
+const LOGO_SHADOW_DROP: float = 6.0
 const BUST: Texture2D = preload("res://assets/ui/menu/hero_bust.webp")
 const NEW_GAME_ICON: Texture2D = preload("res://assets/ui/icons/poke_ball.svg")
 const SETTINGS_ICON: Texture2D = preload("res://assets/ui/icons/menu/settings.svg")
@@ -77,6 +81,17 @@ func _ready() -> void:
 	_logo.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT
 	_logo.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_root.add_child(_logo)
+	var shadow := TextureRect.new()
+	shadow.name = "LogoShadow"
+	shadow.texture = LOGO_SHADOW
+	shadow.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	shadow.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT
+	shadow.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	shadow.show_behind_parent = true
+	shadow.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	shadow.offset_top = LOGO_SHADOW_DROP
+	shadow.offset_bottom = LOGO_SHADOW_DROP
+	_logo.add_child(shadow)
 	_column = VBoxContainer.new()
 	_column.name = "Column"
 	_column.alignment = BoxContainer.ALIGNMENT_CENTER

@@ -532,3 +532,19 @@ func test_no_forbidden_label_anywhere() -> void:
 			assert_false(joined.contains(word), "%s : « %s » interdit" % [species, word])
 		var hour := RegEx.create_from_string("\\d{1,2}:\\d{2}")
 		assert_null(hour.search(joined), "pas d'heure")
+
+
+func test_cry_button_for_caught_species_only() -> void:
+	# Jalon Son (SonB, SON-12) : « Cri » sur la fiche d'une espèce capturée, pas d'une vue.
+	var screen := await _screen_in(2340, _grid())
+	var cries: Array[int] = []
+	screen.cry_requested.connect(func(number: int) -> void: cries.append(number))
+	screen.show_sheet(_sheet(&"squirtle"))
+	var button := screen.get_portrait().get_cry_button()
+	assert_false(button.visible, "seulement vue : pas de cri")
+	screen.show_sheet(_sheet(&"charmander"))
+	assert_true(button.visible)
+	assert_eq(button.text, "Cri")
+	assert_gte(button.size.y, UiTokens.TOUCH_MIN - 1.0, "zone tactile")
+	button.pressed.emit()
+	assert_eq(cries, [4] as Array[int], "numéro national de Salamèche")
