@@ -59,6 +59,10 @@ var _trainer_id: StringName = &""
 ## Espèce qui vient de crier à son apparition (herbe, gravats) : son cri d'entrée en combat
 ## n'est pas rejoué [D] (QA T14 : deux cris de suite).
 var _encounter_cry: StringName = &""
+## Combat vivant (T4, §1.3, §2.5) : bruitages déjà joués au repère de la chorégraphie, que
+## l'événement du journal (qui arrive après) ne rejoue pas.
+var _cued_moves: int = 0
+var _cued_hits: int = 0
 ## Nœud dont les boutons restent muets (HUD d'exploration : joystick, boutons d'action).
 var _ui_excluded: Node
 
@@ -117,6 +121,8 @@ func on_trainer_spotted(_npc_id: StringName, trainer_id: StringName) -> void:
 
 func on_battle_started(trainer_id: StringName) -> void:
 	_trainer_id = trainer_id
+	_cued_moves = 0
+	_cued_hits = 0
 	audio.call(&"set_music", L.BATTLE, selector.battle_track(trainer_id))
 
 
@@ -142,6 +148,8 @@ func on_battle_event(event: BattleEvent) -> void:
 ## Fin du combat : la zone (ou la scène) reprend là où elle était (SON-6).
 func on_battle_finished(_trainer_id_end: StringName, _outcome: int) -> void:
 	_trainer_id = &""
+	_cued_moves = 0
+	_cued_hits = 0
 	_encounter_cry = &""
 	audio.call(&"clear_music", L.BATTLE)
 	if _encounter_theme:
@@ -302,22 +310,41 @@ func _on_ui_pressed(button: BaseButton) -> void:
 	_sfx(&"world", &"ui_click")
 
 
+## Repère d'une chorégraphie de combat (Combat vivant, §2.5) : `launch` (ou `charge`, tour 1)
+## → bruitage de l'attaque ; `impact`, `impact_2`… → bruitage du coup, selon l'issue du plan.
+## Le MOVE_USED et les DAMAGE qui suivent dans le journal restent alors muets.
+func on_move_fx_cue(cue: StringName, plan: MoveFxPlan) -> void:
+	if plan == null:
+		return
+	var id: StringName = &""
+	if cue == MoveFxPlan.CUE_LAUNCH or cue == MoveFxPlan.CUE_CHARGE:
+		id = _move_sfx(plan.move_id)
+		_cued_moves += 1
+	elif String(cue).begins_with(MoveFxPlan.CUE_IMPACT):
+		var outcome := plan.outcome
+		if outcome != null and outcome.result != MoveFxOutcome.Result.HIT:
+			return
+		var first := cue == MoveFxPlan.CUE_IMPACT
+		id = _hit_sfx(outcome != null and outcome.critical and first,
+			outcome.effectiveness if outcome != null else 1.0)
+		_cued_hits += 1
+	if not id.is_empty():
+		audio.call(&"play_sfx", id)
+
+
 func _battle_sfx(event: BattleEvent) -> void:
 	var id: StringName = &""
 	match event.kind:
 		BattleEvent.Kind.DAMAGE:
-			if event.critical:
-				id = &"critical"
-			elif event.effectiveness > 1.0:
-				id = &"hit_super"
-			elif event.effectiveness < 1.0:
-				id = &"hit_weak"
-			else:
-				id = &"hit_normal"
+			if _cued_hits > 0:
+				_cued_hits -= 1
+				return
+			id = _hit_sfx(event.critical, event.effectiveness)
 		BattleEvent.Kind.MOVE_USED:
-			var info: Array = move_info.call(event.move_id) if move_info.is_valid() else []
-			if info.size() == 2:
-				id = _library.move_sfx(event.move_id, info[0], info[1])
+			if _cued_moves > 0:
+				_cued_moves -= 1
+				return
+			id = _move_sfx(event.move_id)
 		BattleEvent.Kind.STAT_CHANGED:
 			id = _library.sfx_for(&"stat_changes", &"up" if event.stages > 0 else &"down")
 		BattleEvent.Kind.STATUS_INFLICTED:
@@ -326,6 +353,23 @@ func _battle_sfx(event: BattleEvent) -> void:
 			id = _library.sfx_for(&"battle_events", BattleEvent.Kind.find_key(event.kind))
 	if not id.is_empty():
 		audio.call(&"play_sfx", id)
+
+
+func _move_sfx(move_id: StringName) -> StringName:
+	var info: Array = move_info.call(move_id) if move_info.is_valid() else []
+	if info.size() == 2:
+		return _library.move_sfx(move_id, info[0], info[1])
+	return &""
+
+
+static func _hit_sfx(critical: bool, effectiveness: float) -> StringName:
+	if critical:
+		return &"critical"
+	if effectiveness > 1.0:
+		return &"hit_super"
+	if effectiveness < 1.0:
+		return &"hit_weak"
+	return &"hit_normal"
 
 
 func _sfx(table: StringName, key: StringName) -> void:

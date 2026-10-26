@@ -144,6 +144,16 @@ func set_paused(paused: bool) -> void:
 			_tween.play()
 
 
+## Plan de l'attaque en cours (null sinon).
+func get_plan() -> MoveFxPlan:
+	return _plan
+
+
+## Temps écoulé dans l'attaque en cours (s ; 0 sans attaque).
+func elapsed() -> float:
+	return _tween.get_total_elapsed_time() if is_playing() else 0.0
+
+
 func is_playing() -> bool:
 	return _tween != null and _tween.is_valid() and _tween.is_running()
 

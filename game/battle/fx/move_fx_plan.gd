@@ -115,6 +115,8 @@ var bricks: Dictionary = {}
 ## Réactions du monde autres que la lumière (Complètes seulement) : `dust`, `droplets`,
 ## `foliage`, `darken`.
 var world: Array[StringName] = []
+## Issue lue dans le journal (null : un coup qui porte) ; le son du coup en dépend (T4).
+var outcome: MoveFxOutcome
 
 
 ## Mode d'animation d'après les réglages : « Réduire les animations » l'emporte (CV-5).
@@ -130,6 +132,7 @@ static func build(catalog: MoveFxCatalog, entry: MoveFxEntry, move: MoveData,
 		outcome: MoveFxOutcome, plan_mode: Mode, reduce_flashes: bool = false,
 		legendary: bool = false) -> MoveFxPlan:
 	var plan := MoveFxPlan.new()
+	plan.outcome = outcome
 	plan._setup(catalog, entry, plan_mode)
 	var result := MoveFxOutcome.Result.HIT if outcome == null else outcome.result
 	var family_data := catalog.family(plan.family)

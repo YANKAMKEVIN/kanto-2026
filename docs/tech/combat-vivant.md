@@ -477,8 +477,9 @@ enchaîne les attaques sans avoir à jouer, plus un vrai combat.
 > **T1, T2, T5, T6 faits le 2026-10-26** sur la branche `combat-vivant` (hors scène ; données dans
 > `data/battle/move_fx/families.json` et `plancher.json`, code dans `game/battle/fx/`). **T3 sans
 > branchement fait le même jour** : `MoveFxPlayer`, `MoveFxStage`, `BattleCamera`, `FxParticlePool`,
-> `FxWorldLight`, galerie autonome `game/battle/fx/fx_gallery.tscn`. Reste le branchement dans
-> `BattleStage` / `BattleDirector`, T4, T7, T8 après la fusion du J23.
+> `FxWorldLight`, galerie autonome `game/battle/fx/fx_gallery.tscn`. **Branchement de T3 et T4 faits
+> le 2026-10-27** (après la fusion du J23) : le temps MOVE joue le plan jusqu'au premier impact, le
+> DAMAGE descend la barre pendant l'impact ; sons aux repères `launch` / `impact`. Reste T7, T8.
 
 | Tâche | Contenu | Critère d'acceptation |
 |---|---|---|
