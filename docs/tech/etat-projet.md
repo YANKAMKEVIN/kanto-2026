@@ -6,9 +6,9 @@ Mis à jour : 2026-10-26 (**Dépôt public (décision de Kevin) : CI GitHub sur 
 
 
 ## Registre des reportés (2026-10-26, branche `claude/reportes-a7d52f`)
-- **`docs/tech/reportes.md`** remplace la liste « Reportés » du bas de ce fichier : toutes les remarques en attente depuis le J4 (section du bas, historique de ce fichier, clôtures des `jalon-*.md`, `phase-da-grille.md`, branches `jalon-23`, `prep/j26-j27`, `jalon-28` à `jalon-32` en lecture seule), vérifiées dans le code. **159 points** : 47 fermés avec preuve, 2 corrigés, 83 ouverts sur `main` (P0 1 · P1 7 · P2 27 · P3 48), 27 propres aux branches.
-- **Corrigés** : `audit-pending-moves.md` régénéré (Guillotine retirée, 5 capacités en attente) ; nouveau départ `dark_cave_b1f_b` (échelle B). Le départ `route_5` reste sans `route_5_entered` : c'est voulu (`test_route_5_life`), correctif annulé après la CI.
-- **Arbitrages pour Kevin (R-1 à R-9)**, dont **R-1** : fusionner `correctif-orientation-adversaires` (adversaires jamais tournés à droite, description du Sac de combat sur 4 lignes = le seul P0 ouvert) dans `main`.
+- **`docs/tech/reportes.md`** remplace la liste « Reportés » du bas de ce fichier : toutes les remarques en attente depuis le J4 (section du bas, historique de ce fichier, clôtures des `jalon-*.md`, `phase-da-grille.md`, branches `jalon-23`, `prep/j26-j27`, `jalon-28` à `jalon-32` en lecture seule), vérifiées dans le code. **159 points** : 49 fermés avec preuve, 6 corrigés, 77 ouverts sur `main` (P0 0 · P1 6 · P2 27 · P3 44), 27 propres aux branches.
+- **Corrigés** : `audit-pending-moves.md` régénéré ; nouveau départ `dark_cave_b1f_b` (échelle B). Le départ `route_5` reste sans `route_5_entered` : c'est voulu (`test_route_5_life`), correctif annulé après la CI.
+- **Arbitrages R-1 à R-9 validés par Kevin (2026-10-26, « Oui, toutes les recos »)** : **R-1** `correctif-orientation-adversaires` fusionné (`e772538c` : adversaires jamais tournés à droite, description du Sac de combat sur 4 lignes, le P0) ; **R-2** Clé Ascenseur « obtenue » ; **R-3** pas de « capturé 0 fois » pour une espèce obtenue par évolution ; R-4 tutoiement et R-5 Vampirisme à 80 gardés ; **R-6** sous-zone « Repaire Rocket » **en attente des fusions du J23 et du J28** (`zones.json`) ; R-7 cinématique de première sortie en 1.0.x ; R-8 (lumière Grotte Sombre, Lavanville, Tour) et R-9 (60 i/s A17) au J33 sur S24.
 
 ## Chantier « Combat vivant » — plan écrit (2026-10-26, session de coordination, documents seuls)
 
@@ -1913,7 +1913,7 @@ Référence `docs/design/reference/ouverture-storyboard-v1.webp`. Escalier = tra
 - Chambre : `docs/design/reference/chambre-joueur-v1.webp` ; rez-de-chaussée et sortie : `ouverture-storyboard-v1.webp` ; maison du rival (un seul niveau, **sans Évoli**) : `maison-rival-v1.webp` ; labo : `labo-chen-v1.png`. Plans correspondants : `jalon-02.md` §4.3, §4.4, §4.5, §4.7.
 
 ## Reportés (décision de Kevin)
-- **Registre unique : [`docs/tech/reportes.md`](reportes.md)** (2026-10-26). 159 points : 47 fermés avec preuve, 2 corrigés, 83 ouverts sur `main` (1 P0 : description du Sac de combat coupée, correctif prêt), 27 propres aux branches non fusionnées ; arbitrages R-1 à R-9. Toute nouvelle remarque de rendu s'y ajoute (identifiant `RP-NNN`) ; au J33, les points ouverts passent au registre des anomalies.
+- **Registre unique : [`docs/tech/reportes.md`](reportes.md)** (2026-10-26). 159 points : 49 fermés avec preuve, 6 corrigés, 77 ouverts sur `main` (aucun P0), 27 propres aux branches non fusionnées ; arbitrages R-1 à R-9 validés par Kevin le 2026-10-26. Toute nouvelle remarque de rendu s'y ajoute (identifiant `RP-NNN`) ; au J33, les points ouverts passent au registre des anomalies.
 
 ## Décisions de Kevin (2026-09-25)
 Les six propositions de l'architecte sont acceptées : porte du labo au sud avec parvis et portillon vers les jardins, carte 48×34, sous-titre « Kanto » (la phrase d'ouverture est réservée à la première sortie de la maison), course au bouton tenu, marche 0,22 s/case et course 0,12 s/case (à ajuster après l'essai sur S24), sortie Route 1 = bord de carte. Détails dans [`jalon-01.md`](jalon-01.md) §6.
