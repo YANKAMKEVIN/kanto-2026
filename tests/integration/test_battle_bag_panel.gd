@@ -166,6 +166,31 @@ func test_first_card_is_previewed_at_opening() -> void:
 	_nothing_chosen()
 
 
+## Correctif QA A17 du J30 : la description de la Guérison s'arrêtait à « d'un » (deux lignes
+## au plus) ; elle s'affiche en entier, aux deux largeurs d'écran.
+func test_long_heal_description_is_shown_in_full() -> void:
+	var full_restore := BagEntryView.new(&"full_restore", "Guérison", 6,
+		"Rend tous les PV et soigne le statut d'un Pokémon.", &"heal")
+	for width: float in SCREEN_WIDTHS:
+		_set_screen(width)
+		await _open([full_restore] as Array[BagEntryView], &"heal")
+		assert_gt(_panel.get_detail_line_count(), 2, "trois lignes à cette largeur")
+		assert_eq(_panel.get_detail_visible_line_count(), _panel.get_detail_line_count(),
+			"aucune ligne coupée à %d" % width)
+
+
+## QA A17 du J31 : la description de l'Hyper Ball (la plus longue des Balls) s'arrêtait à
+## « Elle » ; elle s'affiche en entier, aux deux largeurs d'écran.
+func test_ultra_ball_description_is_shown_in_full() -> void:
+	var ultra_ball := BagEntryView.new(&"ultra_ball", "Hyper Ball", 30,
+		"Une Ball très performante. Elle capture mieux qu'une Super Ball.", &"ball")
+	for width: float in SCREEN_WIDTHS:
+		_set_screen(width)
+		await _open([ultra_ball] as Array[BagEntryView], &"ball")
+		assert_eq(_panel.get_detail_visible_line_count(), _panel.get_detail_line_count(),
+			"aucune ligne coupée à %d" % width)
+
+
 func test_empty_category_and_unusable_items_are_not_shown() -> void:
 	# Potion inutilisable (jalon 5) : ni carte ni onglet SOINS ; une Ball à 0 non plus.
 	await _open([_ball(), _potion(false), _ball(0)] as Array[BagEntryView])
