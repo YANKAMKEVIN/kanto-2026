@@ -473,7 +473,7 @@ func _player_house_1f() -> Dictionary:
 			[&"int_porte_manteau_01", Rect2i(6, 8, 1, 1), "CoatRack"],
 			[&"int_commode_pokeball_01", Rect2i(9, 8, 1, 1), "Dresser"],
 		],
-		# Jalon 3A : petit-déjeuner posé sur la table (provisoire, sans image peinte).
+		# Jalon 3A : petit-déjeuner posé sur la table (peint au DAF.5, `tools/art/daf5.py`).
 		"decor": [["res://game/world/props/interior/breakfast.tscn", Vector2i(3, 5),
 			"Breakfast"]],
 		"rugs": [
@@ -533,7 +533,7 @@ func _rival_house() -> Dictionary:
 			[&"int_meuble_chaussures_01", Rect2i(11, 9, 1, 1), "ShoeRack"],
 			[&"int_plante", Rect2i(12, 9, 1, 1), "PlantBathroom"],
 		],
-		# Jalon 3A (Q3) : carte de Kanto dépliée, sac et affaires sur le lit (provisoire).
+		# Jalon 3A (Q3) : carte de Kanto dépliée, sac et affaires sur le lit (peints au DAF.5).
 		"decor": [["res://game/world/props/interior/bed_items.tscn", Vector2i(15, 4),
 			"BedItems"]],
 		"rugs": [[&"int_tapis_pokeball_01", Vector2(13.5, 4.5), "RugBedroom"]],
