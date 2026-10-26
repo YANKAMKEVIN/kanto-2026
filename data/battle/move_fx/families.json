@@ -1,6 +1,6 @@
 {
 	"version": 1,
-	"_doc": "Familles d'effets de combat (docs/tech/combat-vivant.md §2.2, §2.6, §3). Les attaques sont dans les autres fichiers du dossier (plancher.json, puis un fichier par lot). Valeurs [D] (règle 4), réglées sur S24. phases : parts de la durée (anticipation, trajet, impact, retour ; somme 1) ; world.light_peak : lumière simulée du décor (0..1) ; world.flashes : éclats de lumière par attaque ; camera : zoom et tremblement (px) au plafond de limits.",
+	"_doc": "Familles d'effets de combat (docs/tech/combat-vivant.md §2.2, §2.6, §3). Les attaques sont dans les autres fichiers du dossier (plancher.json, puis un fichier par lot). Valeurs [D] (règle 4), réglées sur S24. phases : parts de la durée (anticipation, trajet, impact, retour ; somme 1) ; world.light_peak : lumière simulée du décor (0..1) ; world.flashes : éclats de lumière par attaque ; camera : zoom et tremblement (px) au plafond de limits ; fx.palette : dégradé des effets (cœur presque blanc, couleur de l'élément, bord sombre, §2.9) ; fx.particles : particules d'un éclat d'impact (avant le facteur des Réduites ; ≤ 64, un émetteur).",
 	"durations": {
 		"_doc": "CV-2 (décision de Kevin du 2026-10-26) : durée en Complètes selon la puissance ; la durée suit la puissance dans la ligne (power_min → min, power_max → max). Coups multiples : chaque coup prend la première ligne. Ligne 3 aussi pour K.O. en un coup, Explosion / Destruction et les légendaires.",
 		"bands": [
@@ -39,119 +39,136 @@
 			"bricks": {"launch": "crouch", "travel": "dash", "impact": "variant"},
 			"phases": {"anticipation": 0.25, "travel": 0.25, "impact": 0.3, "return": 0.2},
 			"world": {"light": "#FFFFFF", "light_peak": 0.0, "flashes": 0, "dust": true},
-			"camera": {"zoom": 1.03, "shake": 3.0}
+			"camera": {"zoom": 1.03, "shake": 3.0},
+			"fx": {"palette": ["#FFFFFF", "#F2E6D0", "#8A7A66"], "particles": 18}
 		},
 		"feu": {
 			"name": "Feu", "target": "foe",
 			"bricks": {"launch": "ember_glow", "travel": "flames", "impact": "ember_burst"},
 			"phases": {"anticipation": 0.2, "travel": 0.35, "impact": 0.3, "return": 0.15},
 			"world": {"light": "#FF9A3C", "light_peak": 0.45, "flashes": 1},
-			"camera": {"zoom": 1.03, "shake": 2.0}
+			"camera": {"zoom": 1.03, "shake": 2.0},
+			"fx": {"palette": ["#FFF1B0", "#FF8A3C", "#8A1E0A"], "particles": 36}
 		},
 		"eau": {
 			"name": "Eau", "target": "foe",
 			"bricks": {"launch": "bubble_swell", "travel": "jet", "impact": "splash"},
 			"phases": {"anticipation": 0.2, "travel": 0.35, "impact": 0.3, "return": 0.15},
 			"world": {"light": "#7FC8FF", "light_peak": 0.15, "flashes": 0, "droplets": true},
-			"camera": {"zoom": 1.02, "shake": 2.0}
+			"camera": {"zoom": 1.02, "shake": 2.0},
+			"fx": {"palette": ["#F0FAFF", "#5FB8F0", "#1E4E8A"], "particles": 32}
 		},
 		"electrique": {
 			"name": "Électrique", "target": "foe",
 			"bricks": {"launch": "charge_spark", "travel": "bolt", "impact": "spark_burst"},
 			"phases": {"anticipation": 0.25, "travel": 0.3, "impact": 0.3, "return": 0.15},
 			"world": {"light": "#FFF3A0", "light_peak": 0.55, "flashes": 2},
-			"camera": {"zoom": 1.04, "shake": 3.0}
+			"camera": {"zoom": 1.04, "shake": 3.0},
+			"fx": {"palette": ["#FFFFF0", "#F7D02C", "#8A6A00"], "particles": 28}
 		},
 		"plante": {
 			"name": "Plante", "target": "foe",
 			"bricks": {"launch": "leaf_swirl", "travel": "leaves", "impact": "leaf_fall"},
 			"phases": {"anticipation": 0.2, "travel": 0.35, "impact": 0.3, "return": 0.15},
 			"world": {"light": "#B8F28A", "light_peak": 0.1, "flashes": 0, "foliage": true},
-			"camera": {"zoom": 1.02, "shake": 1.0}
+			"camera": {"zoom": 1.02, "shake": 1.0},
+			"fx": {"palette": ["#F4FFD8", "#7CCB4A", "#2E5A1A"], "particles": 24}
 		},
 		"glace": {
 			"name": "Glace", "target": "foe",
 			"bricks": {"launch": "frost", "travel": "ice_beam", "impact": "ice_shards"},
 			"phases": {"anticipation": 0.2, "travel": 0.35, "impact": 0.3, "return": 0.15},
 			"world": {"light": "#CFEFFF", "light_peak": 0.3, "flashes": 1},
-			"camera": {"zoom": 1.02, "shake": 2.0}
+			"camera": {"zoom": 1.02, "shake": 2.0},
+			"fx": {"palette": ["#FFFFFF", "#A8E4FF", "#3A7AA8"], "particles": 28}
 		},
 		"psy": {
 			"name": "Psy", "target": "foe",
 			"bricks": {"launch": "psy_aura", "travel": "rings", "impact": "distortion"},
 			"phases": {"anticipation": 0.25, "travel": 0.3, "impact": 0.3, "return": 0.15},
 			"world": {"light": "#FF9AD8", "light_peak": 0.2, "flashes": 0},
-			"camera": {"zoom": 1.03, "shake": 0.0}
+			"camera": {"zoom": 1.03, "shake": 0.0},
+			"fx": {"palette": ["#FFF0FA", "#FF6FB8", "#6A1E5A"], "particles": 20}
 		},
 		"poison": {
 			"name": "Poison", "target": "foe",
 			"bricks": {"launch": "poison_bubbles", "travel": "sludge", "impact": "poison_drops"},
 			"phases": {"anticipation": 0.2, "travel": 0.35, "impact": 0.3, "return": 0.15},
 			"world": {"light": "#B86BFF", "light_peak": 0.1, "flashes": 0},
-			"camera": {"zoom": 1.02, "shake": 1.0}
+			"camera": {"zoom": 1.02, "shake": 1.0},
+			"fx": {"palette": ["#F4E0FF", "#A85AE0", "#3A1250"], "particles": 26}
 		},
 		"sol_roche": {
 			"name": "Sol et roche", "target": "foe",
 			"bricks": {"launch": "heavy_stomp", "travel": "rocks", "impact": "debris"},
 			"phases": {"anticipation": 0.25, "travel": 0.3, "impact": 0.3, "return": 0.15},
 			"world": {"light": "#D8B98A", "light_peak": 0.0, "flashes": 0, "dust": true, "foliage": true},
-			"camera": {"zoom": 1.03, "shake": 5.0}
+			"camera": {"zoom": 1.03, "shake": 5.0},
+			"fx": {"palette": ["#F2E2C4", "#B08A5A", "#4A3420"], "particles": 30}
 		},
 		"vent": {
 			"name": "Vol et vent", "target": "foe",
 			"bricks": {"launch": "wing_beat", "travel": "gust", "impact": "feathers"},
 			"phases": {"anticipation": 0.2, "travel": 0.35, "impact": 0.3, "return": 0.15},
 			"world": {"light": "#FFFFFF", "light_peak": 0.0, "flashes": 0, "foliage": true},
-			"camera": {"zoom": 1.02, "shake": 2.0}
+			"camera": {"zoom": 1.02, "shake": 2.0},
+			"fx": {"palette": ["#FFFFFF", "#DCEBF2", "#7A8A96"], "particles": 22}
 		},
 		"spectre": {
 			"name": "Spectre", "target": "foe",
 			"bricks": {"launch": "shadow_stretch", "travel": "dark_wave", "impact": "dark_veil"},
 			"phases": {"anticipation": 0.3, "travel": 0.3, "impact": 0.25, "return": 0.15},
 			"world": {"light": "#3A2350", "light_peak": 0.25, "flashes": 0, "darken": true},
-			"camera": {"zoom": 1.03, "shake": 0.0}
+			"camera": {"zoom": 1.03, "shake": 0.0},
+			"fx": {"palette": ["#E6D8FF", "#6A4A9A", "#1A0E2A"], "particles": 22}
 		},
 		"dragon": {
 			"name": "Dragon", "target": "foe",
 			"bricks": {"launch": "dragon_aura", "travel": "blue_flame", "impact": "flare"},
 			"phases": {"anticipation": 0.25, "travel": 0.3, "impact": 0.3, "return": 0.15},
 			"world": {"light": "#5A7BFF", "light_peak": 0.35, "flashes": 1},
-			"camera": {"zoom": 1.04, "shake": 3.0}
+			"camera": {"zoom": 1.04, "shake": 3.0},
+			"fx": {"palette": ["#E8F0FF", "#5A7BFF", "#1A1E6A"], "particles": 30}
 		},
 		"energie": {
 			"name": "Énergie", "target": "foe",
 			"bricks": {"launch": "light_point", "travel": "beam", "impact": "white_flare"},
 			"phases": {"anticipation": 0.25, "travel": 0.3, "impact": 0.3, "return": 0.15},
 			"world": {"light": "#FFFFFF", "light_peak": 0.4, "flashes": 1},
-			"camera": {"zoom": 1.04, "shake": 3.0}
+			"camera": {"zoom": 1.04, "shake": 3.0},
+			"fx": {"palette": ["#FFFFFF", "#FFF4D8", "#C8A85A"], "particles": 32}
 		},
 		"son": {
 			"name": "Son", "target": "foe",
 			"bricks": {"launch": "open_mouth", "travel": "sound_waves", "impact": "vibrate"},
 			"phases": {"anticipation": 0.2, "travel": 0.4, "impact": 0.25, "return": 0.15},
 			"world": {"light": "#FFFFFF", "light_peak": 0.0, "flashes": 0},
-			"camera": {"zoom": 1.0, "shake": 1.0}
+			"camera": {"zoom": 1.0, "shake": 1.0},
+			"fx": {"palette": ["#FFFFFF", "#E8E8F8", "#8A8AA8"], "particles": 12}
 		},
 		"statut_plus": {
 			"name": "Statut positif", "target": "self",
 			"bricks": {"launch": "posture", "travel": "", "impact": "rising_aura"},
 			"phases": {"anticipation": 0.3, "travel": 0.0, "impact": 0.5, "return": 0.2},
 			"world": {"light": "#FFE8A0", "light_peak": 0.0, "flashes": 0},
-			"camera": {"zoom": 1.0, "shake": 0.0}
+			"camera": {"zoom": 1.0, "shake": 0.0},
+			"fx": {"palette": ["#FFFFF0", "#FFE8A0", "#A8862A"], "particles": 16}
 		},
 		"statut_moins": {
 			"name": "Statut négatif", "target": "foe",
 			"bricks": {"launch": "glare", "travel": "haze", "impact": "falling_aura"},
 			"phases": {"anticipation": 0.25, "travel": 0.3, "impact": 0.3, "return": 0.15},
 			"world": {"light": "#A0A0C8", "light_peak": 0.0, "flashes": 0},
-			"camera": {"zoom": 1.0, "shake": 0.0}
+			"camera": {"zoom": 1.0, "shake": 0.0},
+			"fx": {"palette": ["#F4F4FF", "#A0A0C8", "#4A4A6A"], "particles": 16}
 		},
 		"soin": {
 			"name": "Soin", "target": "self",
 			"bricks": {"launch": "soft_glow", "travel": "", "impact": "rising_sparkles"},
 			"phases": {"anticipation": 0.3, "travel": 0.0, "impact": 0.5, "return": 0.2},
 			"world": {"light": "#A8FFB0", "light_peak": 0.15, "flashes": 0},
-			"camera": {"zoom": 1.0, "shake": 0.0}
+			"camera": {"zoom": 1.0, "shake": 0.0},
+			"fx": {"palette": ["#F4FFF4", "#A8FFB0", "#3A8A4A"], "particles": 20}
 		}
 	},
 	"impacts": {

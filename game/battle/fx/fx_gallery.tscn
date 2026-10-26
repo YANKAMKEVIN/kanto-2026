@@ -1,0 +1,6 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/battle/fx/fx_gallery.gd" id="1_gallery"]
+
+[node name="FxGallery" type="Node"]
+script = ExtResource("1_gallery")

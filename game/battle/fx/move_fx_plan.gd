@@ -37,6 +37,8 @@ const TARGET_SELF: StringName = &"self"
 ## Point d'origine par défaut ([FxAnchors]) : lanceur entier (contact, soi-même) ou bouche.
 const ORIGIN_BODY: StringName = &"centre"
 const ORIGIN_MOUTH: StringName = &"bouche"
+## Particules d'un éclat d'impact si la famille n'en dit rien.
+const DEFAULT_PARTICLES: int = 20
 ## Pour les comparaisons de durées (flottants).
 const EPSILON: float = 0.0001
 
@@ -99,8 +101,17 @@ var target_shake: bool = true
 var light_color: Color = Color.WHITE
 var light_peak: float = 0.0
 var flashes: int = 0
+## « Réduire les flashs » : le lecteur n'éclaircit pas la cible au coup (assombrit à la place).
+var reduce_flashes: bool = false
 ## Facteur du nombre de particules (0,5 en Réduites).
 var particle_scale: float = 1.0
+## Dégradé des effets (`fx.palette` de la famille, §2.9 : cœur, couleur de l'élément, bord) ;
+## repli : la couleur de la lumière.
+var palette: PackedColorArray = PackedColorArray()
+## Particules d'un éclat d'impact, facteur des Réduites compris (`fx.particles`).
+var particles: int = 0
+## Briques de la famille (`bricks` : `launch`, `travel`, `impact`), pour le lecteur d'effets.
+var bricks: Dictionary = {}
 ## Réactions du monde autres que la lumière (Complètes seulement) : `dust`, `droplets`,
 ## `foliage`, `darken`.
 var world: Array[StringName] = []
@@ -216,6 +227,12 @@ func _setup(catalog: MoveFxCatalog, entry: MoveFxEntry, plan_mode: Mode) -> void
 	particle_scale = JsonFields.get_float(catalog.limits(), "reduced_particles", 0.5) \
 		if mode == Mode.REDUCED else 1.0
 	target_shake = mode != Mode.REDUCED
+	bricks = JsonFields.get_dict(family_data, "bricks")
+	var fx := JsonFields.get_dict(family_data, "fx")
+	particles = roundi(JsonFields.get_int(fx, "particles", DEFAULT_PARTICLES) * particle_scale)
+	for color: Variant in JsonFields.get_array(fx, "palette"):
+		if color is String:
+			palette.append(Color.from_string(color, Color.WHITE))
 
 
 func _layout_charge(catalog: MoveFxCatalog) -> void:
@@ -319,9 +336,12 @@ func _camera(catalog: MoveFxCatalog, family_data: Dictionary, outcome: MoveFxOut
 func _light(catalog: MoveFxCatalog, family_data: Dictionary, result: MoveFxOutcome.Result,
 		reduce_flashes: bool) -> void:
 	var limits := catalog.limits()
+	self.reduce_flashes = reduce_flashes
 	var data := JsonFields.get_dict(family_data, "world")
 	light_color = Color.from_string(JsonFields.get_string(data, "light", "#FFFFFF"), Color.WHITE)
 	light_peak = JsonFields.get_float(data, "light_peak")
+	if palette.is_empty():
+		palette = PackedColorArray([Color.WHITE, light_color, light_color.darkened(0.5)])
 	if reduce_flashes:
 		light_peak = minf(light_peak, JsonFields.get_float(limits, "reduced_flash_peak", 0.35))
 	var lands := result == MoveFxOutcome.Result.HIT or result == MoveFxOutcome.Result.AFFECTED
