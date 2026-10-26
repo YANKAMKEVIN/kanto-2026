@@ -34,9 +34,10 @@ func _add(entry: Variant, id: String = "p") -> LightProfile:
 func test_real_file_loads_without_error() -> void:
 	assert_true(_library.load_file(), str(_library.get_errors()))
 	# Jalon 12 (T9) : les trois profils de grotte du Mont Sélénite ; J18 (T20) : ceux, plus clairs,
-	# de la Grotte Sombre ; J20 (T16) : la serre d'Erika (`greenhouse`).
+	# de la Grotte Sombre ; J20 (T16) : la serre d'Erika (`greenhouse`) ; DAF.6 : ceux du Mont
+	# Sélénite (`moon_*`, pierre chaude), les `cave_*` restant aux Îles Écume.
 	assert_eq(_library.get_ids(), [&"golden_hour", &"interior_warm", &"forest", &"cave_1f",
-		&"cave_b1f", &"cave_b2f", &"underground", &"dark_cave_1f", &"dark_cave_b1f", &"cave_sand",
+		&"cave_b1f", &"cave_b2f", &"moon_1f", &"moon_b1f", &"moon_b2f", &"underground", &"dark_cave_1f", &"dark_cave_b1f", &"cave_sand",
 		&"greenhouse", &"hideout", &"lavender", &"tower_cold", &"tower"] as Array[StringName])
 	assert_eq(LightingLibrary.DATA_PATH, "res://data/world/lighting.json")
 
@@ -74,7 +75,10 @@ func test_golden_hour_has_the_values_measured_on_the_prototype() -> void:
 		and gh.has_contact_shadow() and gh.has_wind())
 
 
-func test_interior_warm_is_almost_neutral_without_rim_nor_cast_shadow() -> void:
+## DAF.6 (reporté « intérieurs vraie DA ») : lumière chaude des références (`chambre-joueur-v1`,
+## `labo-chen-v1`) — étalonnage chaud (ombres plus sombres, hautes lumières dorées), pénombre au
+## pourtour et flaque chaude des fenêtres ([RoomLight]) ; ni liseré ni ombre portée.
+func test_interior_warm_is_warm_with_a_room_light_without_rim_nor_cast_shadow() -> void:
 	_library.load_file()
 	var warm := _library.get_profile(&"interior_warm")
 	assert_not_null(warm)
@@ -83,13 +87,56 @@ func test_interior_warm_is_almost_neutral_without_rim_nor_cast_shadow() -> void:
 	assert_true(warm.has_grade())
 	for gains: Vector3 in [warm.grade_shadows, warm.grade_midtones, warm.grade_highlights]:
 		assert_true(gains.x >= gains.y and gains.y >= gains.z, "chaud : %s" % gains)
-		assert_almost_eq(gains, Vector3.ONE, Vector3.ONE * 0.06, "presque neutre")
+		assert_almost_eq(gains, Vector3.ONE, Vector3.ONE * 0.25, "étalonnage modéré")
+	assert_lt(warm.grade_shadows.dot(Vector3.ONE), 3.0, "ombres plus sombres")
+	assert_gt(warm.grade_highlights.x, 1.0, "hautes lumières dorées")
+	assert_true(warm.has_room(), "lumière de pièce")
+	assert_gt(warm.room_edge_color.a, 0.0, "pénombre au pourtour")
+	assert_lt(warm.room_edge_color.get_luminance(), 0.15, "pénombre sombre")
+	assert_gt(warm.room_pool_color.a, 0.0, "flaque des fenêtres")
+	assert_true(warm.room_pool_color.r > warm.room_pool_color.b, "flaque chaude")
+	assert_lt(warm.room_pool_center.y, 0.5, "venue des fenêtres du mur nord")
 	assert_false(warm.has_rim(), "pas de liseré")
 	assert_false(warm.has_cast_shadow(), "pas d'ombre portée")
 	assert_false(warm.has_wind())
 	assert_true(warm.has_contact_shadow(), "contact gardé")
 	var gh := _library.get_profile(&"golden_hour")
 	assert_eq(warm.contact_color, gh.contact_color, "même contact que dehors")
+	assert_false(gh.has_room(), "dehors : aucune lumière de pièce")
+
+
+func test_room_block_is_parsed_and_validated() -> void:
+	var room := {"edge_color": "#1e120c", "edge_alpha": 0.5, "edge_width": 2.5,
+		"pool_color": "#ffbe6e", "pool_alpha": 0.25, "pool_center": [0.4, 0.3],
+		"pool_radius": 0.6}
+	var p := _add(_profile({"room": room}))
+	assert_not_null(p, str(_library.get_errors()))
+	if p == null:
+		return
+	assert_true(p.has_room())
+	assert_eq(p.room_edge_color, Color(Color.html("#1e120c"), 0.5))
+	assert_almost_eq(p.room_edge_width, 2.5, EPS)
+	assert_eq(p.room_pool_color, Color(Color.html("#ffbe6e"), 0.25))
+	assert_almost_eq(p.room_pool_center, Vector2(0.4, 0.3), Vector2.ONE * EPS)
+	assert_almost_eq(p.room_pool_radius, 0.6, EPS)
+	var bad: Array = [
+		room.merged({"edge_alpha": 1.5}, true),
+		room.merged({"edge_width": 0}, true),
+		room.merged({"edge_width": 9}, true),
+		room.merged({"pool_color": "orange"}, true),
+		room.merged({"pool_center": [1.2, 0.3]}, true),
+		room.merged({"pool_radius": 0}, true),
+		room.merged({"glow": 1}, true),
+		{"edge_color": "#1e120c"},
+	]
+	for i: int in bad.size():
+		assert_null(_add(_profile({"room": bad[i]}), "bad_room_%d" % i), str(bad[i]))
+	var errors := "\n".join(_library.get_errors())
+	for expected: String in ["« room.edge_alpha »", "« room.edge_width »",
+			"« room.pool_color » doit être", "« room.pool_center »", "« room.pool_radius »",
+			"clé inconnue dans « room » : « glow »", "« room.pool_alpha » est obligatoire"]:
+		assert_string_contains(errors, expected)
+	assert_push_error_count(_library.get_errors().size(), "chaque erreur est signalée")
 
 
 ## Jalon 9 (T18, dossier 10 §14, jalon-09.md §2.7.5) : la Forêt de Jade, plus sombre et plus
