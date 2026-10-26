@@ -35,9 +35,8 @@ func test_real_data_loads_without_error() -> void:
 	assert_eq(library.get_errors().size(), 0)
 	for type: StringName in MomentLibrary.TYPES:
 		assert_not_null(library.get_text(type), "texte de %s" % type)
-	# J30 : le texte du moment « champion » est proposé [D] (seul brouillon, à valider par Kevin).
-	for type: StringName in MomentLibrary.TYPES:
-		assert_eq(library.get_text(type).draft, type == MomentLibrary.CHAMPION, String(type))
+	# J30 : texte du moment « champion » validé par Kevin le 2026-10-26.
+	assert_false(library.has_drafts(), "textes validés par Kevin")
 
 
 func test_real_data_q14_route_1_is_the_departure_from_pallet_town() -> void:

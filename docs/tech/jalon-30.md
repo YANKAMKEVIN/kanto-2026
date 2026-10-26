@@ -664,8 +664,9 @@ Décisions de Kevin du 2026-10-26 (« Oui, les trois »), relayées par la coord
   l'équipe de chaque entrée, la plus récente d'abord, un toucher pour la suivante).
 - **Grand moment « champion »** (§0.1) : `MomentLibrary.CHAMPION`, écrit par
   `LeagueDirector.complete_ceremony` à la **première** victoire seulement [D] (chaque victoire a
-  son entrée au Panthéon). **Texte [D] à valider** (`data/trainer/moments.json`) : titre
-  « Champion de la Ligue Pokémon », détail « Ton équipe est entrée au Panthéon. ».
+  son entrée au Panthéon). Texte (`data/trainer/moments.json`) **validé par Kevin le
+  2026-10-26** (« Je valide ») : titre « Champion de la Ligue Pokémon », détail « Ton équipe est
+  entrée au Panthéon. ».
 - Captures relues : `build/captures/jalon30_porte/` (`tools/capture_j30_hall_door.gd` : question
   du garde, écran Dresseur avec « Panthéon », consultation).
 - Remarque de rendu (Reportés) : sur l'écran Dresseur, les liens « vus » / « capturés » sont

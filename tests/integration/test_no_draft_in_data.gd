@@ -21,8 +21,8 @@ const DATA_DIR := "res://data"
 ## retiré.
 ## Jalon 30 (T16) : bloc « Pokémon © … / projet personnel » du générique, validé par Kevin le
 ## 2026-10-26, « draft » retiré.
-## Jalon 30 : texte du Grand moment « champion » proposé [D] le 2026-10-26, à valider par Kevin.
-const PENDING_DRAFTS: Array[String] = ["trainer/moments.json/moments/champion"]
+## Jalon 30 : texte du Grand moment « champion » validé par Kevin le 2026-10-26, « draft » retiré.
+const PENDING_DRAFTS: Array[String] = []
 
 
 func test_data_has_json_files() -> void:
