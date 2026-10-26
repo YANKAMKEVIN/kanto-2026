@@ -75,8 +75,8 @@ func test_the_key_is_only_dropped_after_talking_again_and_taken_once() -> void:
 	_play.events.clear()
 	await _play.interact(Vector2i.UP)
 	assert_eq(_play.pages(), [GOT_LINE] as Array[String], "n° 49")
-	assert_has(_play.events, "toast:CLÉ ASCENSEUR / ajoutée aux objets clés",
-		"toast de l'objet clé (catégorie « key », sans « obtained »)")
+	assert_has(_play.events, "toast:Clé Ascenseur / obtenue",
+		"toast « obtenue » (arbitrage R-2, Kevin, 2026-10-26)")
 	assert_eq(GameState.bag.count_of(KEY), 1)
 	assert_true(GameState.flags.has_flag(GOT))
 	assert_null(_play.boot.get_map().get_npc(BALL), "la Poké Ball a disparu")

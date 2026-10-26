@@ -330,7 +330,8 @@ func test_new_items() -> void:
 			[ItemData.Category.HEAL, row[1], row[2], 0], String(row[0]))
 	var key := _items.get_item(&"lift_key")
 	var scope := _items.get_item(&"silph_scope")
-	assert_eq([key.category, key.obtained, key.price], [ItemData.Category.KEY, false, 0])
+	# Arbitrage R-2 (Kevin, 2026-10-26) : « obtenue », comme le Scope Sylphe.
+	assert_eq([key.category, key.obtained, key.price], [ItemData.Category.KEY, true, 0])
 	assert_eq([scope.category, scope.obtained, scope.price], [ItemData.Category.KEY, true, 0])
 	# T-55, deuxième ligne (lot validé) : pas de brouillon.
 	assert_eq(scope.description, "Il permet de voir ce que l'œil seul ne voit pas.")

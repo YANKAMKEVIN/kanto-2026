@@ -103,7 +103,10 @@ func _ready() -> void:
 	_detail_row.add_theme_constant_override(&"separation", UiTokens.BAG_DETAIL_GAP)
 	_name_row.add_theme_constant_override(&"separation", UiTokens.BAG_TAB_GAP)
 	_detail_icon.custom_minimum_size = Vector2.ONE * UiTokens.BAG_DETAIL_ICON
-	_detail_text.max_lines_visible = 2
+	# Quatre lignes : à côté du bouton d'action, la Guérison (51 caractères) en demande trois et
+	# l'Hyper Ball (66) quatre ; à moins, la fin était coupée sans signe (QA A17 des J30 et J31).
+	# Le cadre est ancré en bas et grandit vers le haut : le bouton retour n'est pas couvert.
+	_detail_text.max_lines_visible = 4
 	# Rangées : l'illustration, le nom et la quantité sont déjà dans la rangée choisie.
 	_detail_icon.visible = false
 	_name_row.visible = false
@@ -234,6 +237,15 @@ func get_detail_quantity() -> String:
 
 func get_detail_text() -> String:
 	return _detail_text.text
+
+
+## Lignes de la description, toutes affichées tant qu'elles tiennent dans la limite (tests).
+func get_detail_line_count() -> int:
+	return _detail_text.get_line_count()
+
+
+func get_detail_visible_line_count() -> int:
+	return _detail_text.get_visible_line_count()
 
 
 func get_empty_label() -> Label:
