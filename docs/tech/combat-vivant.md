@@ -438,8 +438,8 @@ enchaîne les attaques sans avoir à jouer, plus un vrai combat.
 
 **CV.A — Points d'origine des 151 espèces** (Sonnet) — **en parallèle de CV.1**, fichiers disjoints
 
-> **Fait le 2026-10-26** (branche `cv-a-points`) : T12 et T13 faits ; planche
-> `docs/design/fiches-assets/cv-a/` **à valider par Kevin**.
+> **Fait le 2026-10-26** : T12 et T13 faits ; planche de synthèse
+> `docs/design/fiches-assets/cv-a/synthese.webp` **validée par Kevin le 2026-10-26** (« c'est ok »).
 
 | Tâche | Contenu | Critère |
 |---|---|---|

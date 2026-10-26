@@ -1,4 +1,6 @@
-# CV.A — points d'origine des effets de combat : planche à valider
+# CV.A — points d'origine des effets de combat : planche validée
+
+> **Validée par Kevin le 2026-10-26** (« c'est ok », sur la planche de synthèse).
 
 > Chantier Combat vivant (`docs/tech/combat-vivant.md` §2.2, CV-10, décision de Kevin du
 > 2026-10-26). Branche `cv-a-points`. Données : `data/battle/fx_anchors.json`. Outil :
