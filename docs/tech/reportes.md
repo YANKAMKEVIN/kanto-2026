@@ -32,22 +32,22 @@
 
 | | Points |
 |---|---|
-| Recensés (doublons fusionnés) | **159** |
+| Recensés (doublons fusionnés) | **163** |
 | Fermés avec preuve (obsolètes ou corrigés depuis) | **49** (§4) |
-| Corrigés dans ce lot | **6** (§1 : RP-001, RP-003, puis R-1 à R-3 : RP-089, RP-090, RP-120, RP-121) |
-| Ouverts sur `main` | **77** (§2) |
-| Propres à une branche non fusionnée | **27** (§3) |
+| Corrigés dans ce lot | **7** (§1 : RP-001, RP-003, puis R-1 à R-3 : RP-089, RP-090, RP-120, RP-121, et R-6 : RP-124) |
+| Ouverts sur `main` | **83** (§2) |
+| Propres à une branche non fusionnée | **24** (§3) |
 
 Ouverts sur `main`, par section : art des Pokémon 5 (DAF.1 reliquat, DAF.2) · monde, DAF.5 11 · lumière hors DAF.6 5 ·
-polish DAF.8 17 · Combat vivant et Son 8 · J33 24 · 1.0.x 5 · arbitrages 2 (R-6 en attente, R-7 en 1.0.x).
-Par gravité : **P0 0** (RP-090 réglé par R-1) · P1 6 · P2 27 · P3 44.
-Aucun P0 sur les branches ; P1 des branches : RP-133, 136, 143, 150, 151.
+polish DAF.8 17 · Combat vivant et Son 8 · J33 24 · 1.0.x 5 · arbitrage 1 (R-7 en 1.0.x) · fusion du J23 7.
+Par gravité : **P0 0** (RP-090 réglé par R-1) · P1 7 · P2 31 · P3 45.
+Aucun P0 sur les branches (RP-160 à confirmer sur S24) ; P1 des branches : RP-133, 136, 143, 150.
 
 ## Arbitrages pour Kevin (R-n)
 
 **Validés par Kevin le 2026-10-26 (« Oui, toutes les recos »)** : R-1 fait (`e772538c`), R-2 fait
-(`04c1c2df`), R-3 fait (`41371de3`), R-4 et R-5 gardés tels quels, R-6 en attente des fusions du J23
-et du J28, R-7 en 1.0.x, R-8 et R-9 tranchés au J33 sur S24.
+(`04c1c2df`), R-3 fait (`41371de3`), R-4 et R-5 gardés tels quels, R-6 fait après les fusions du J23
+et du J28 (RP-124), R-7 en 1.0.x, R-8 et R-9 tranchés au J33 sur S24.
 
 - **R-1 — Orientation des adversaires et description du Sac de combat : fusionner
   `correctif-orientation-adversaires` dans `main` maintenant ?** La branche (3 commits du
@@ -87,7 +87,7 @@ et du J28, R-7 en 1.0.x, R-8 et R-9 tranchés au J33 sur S24.
   « à plat » des extérieurs et/ou une baisse de résolution. *Recommandation : trancher au J33 T3 sur
   les mesures du profilage, l'A17 n'étant pas la cible (le S24 tient 59 i/s).*
 
-## 1. Corrigés dans ce lot (2026-10-26, dont les arbitrages R-1 à R-3)
+## 1. Corrigés dans ce lot (2026-10-26 et 2026-10-27, dont les arbitrages R-1 à R-3 et R-6)
 
 | ID | Origine | Description | Cat. | P | Destination | État / preuve |
 |---|---|---|---|---|---|---|
@@ -97,6 +97,7 @@ et du J28, R-7 en 1.0.x, R-8 et R-9 tranchés au J33 sur S24.
 | RP-090 | [jalon-20.md](jalon-20.md) ; QA J30, J31 | Description d'objet du Sac de combat coupée à 2 lignes (« … pendant un », Guérison à « d'un », Flûte, Hyper Ball à « Elle ») | défaut | **P0** (MEN-3) | corrigé ici | corrigé : même fusion (R-1, `e772538c`), description sur 4 lignes |
 | RP-120 | [jalon-20.md](jalon-20.md) §10.4 | Toast de la Clé Ascenseur « ajoutée aux objets clés » au lieu de « obtenue » | défaut | P3 | corrigé ici | corrigé (R-2, `04c1c2df`) : `"obtained": true`, tests `test_item_obtained`, `test_celadon_data`, `test_hideout_key` |
 | RP-121 | J9 (T21) | Pas de toast « Pokédex mis à jour » à l'évolution ; « capturé 0 fois » pour une espèce obtenue par évolution | idée | P3 | corrigé ici | corrigé (R-3, `41371de3`) : « capturé N fois » et la carte Capturé seulement si N > 0 ; pas de toast à l'évolution (gardé) |
+| RP-124 | [jalon-20.md](jalon-20.md) §10.4 | Titre « CÉLADOPOLE » affiché dans le repaire Rocket | défaut | P3 | corrigé ici | corrigé (R-6, après la fusion du J23 et du J28) : `display_name` « Repaire Rocket » sur les 5 cartes du repaire, qui restent dans la zone de Céladopole (comme la Tour, la Sylphe et le Manoir : la Carte n'a pas de rectangle pour elles) ; tests `test_zone_library`, `test_rocket_hideout` |
 
 ## 2. Ouverts sur `main`
 
@@ -216,11 +217,10 @@ DAF.6 (fusionné le 2026-10-26, `da861440`) a traité la Forêt de Jade, les int
 | RP-118 | [jalon-11.md](jalon-11.md) T22 n° 11, 15 | Compagnon peu lisible derrière le joueur ou la balustrade ; bulle haute ; bulle « ! » des PNJ chargée à part (`npc.gd:133`) au lieu d'`EmoteBubble` | rendu | P3 | 1.0.x | ouvert |
 | RP-119 | [jalon-20.md](jalon-20.md) §10.4 | Panneau de cabine du repaire qui ne s'ouvre pas en entrant ; équilibrage de Giovanni à juger en jeu réel | défaut | P3 | J33 | ouvert |
 
-### 2.8 Points qui attendent un arbitrage
+### 2.8 Points qui attendent un arbitrage (R-6 réglé : RP-124 en §1)
 
 | ID | Origine | Description | Cat. | P | Destination | État / preuve |
 |---|---|---|---|---|---|---|
-| RP-124 | [jalon-20.md](jalon-20.md) §10.4 | Titre « CÉLADOPOLE » affiché dans le repaire Rocket | défaut | P3 | R-6 validé : après les fusions du J23 et du J28 | en attente : `zones.json:151` (fichier modifié par `jalon-23` et `jalon-28`) |
 | RP-125 | Reportés (J3) | Cinématique de première sortie (révélation de Bourg Palette) | idée | P3 | DAF.8 (1.0.x, R-7 validé) | ouvert : hors du périmètre d'OUV |
 
 ### 2.9 Fusion des J26, J27 et J28 dans `main` (2026-10-26, à classer RP-NNN)
@@ -236,6 +236,20 @@ DAF.6 (fusionné le 2026-10-26, `da861440`) a traité la Forêt de Jade, les int
 - **J27 (QA agent A17 + S24 du 2026-10-25)** : Karatékas du Dojo avec un sprite de randonneuse ; Médium Nestor avec une casquette ; nom de la CT46 tronqué dans le Sac.
   Points non vus en QA, couverts par des tests (2026-10-26) : choix NON puis OUI du Dojo (déjà joué par `test_fighting_dojo`, un seul Pokémon donné) ; défi de Wilfried (`test_fighting_dojo` : case, orientation et vision 3 de la grille, équipe RB N31, rien à 4 cases, défi et combat au pas suivant).
 
+### 2.10 Fusion du J23 dans `main` (2026-10-27, `3274bddb`) et suites
+
+Les points RP-151 à RP-154, propres à `jalon-23` jusqu'ici, sont passés de la §3 à cette section.
+
+| ID | Origine | Description | Cat. | P | Destination | État / preuve |
+|---|---|---|---|---|---|---|
+| RP-151 | `jalon-23` (fusionné le 2026-10-27) | Textures ≈ 75 Mo dans la Maison Secrète et la maison du Gardien | perf | P1 (MEN-7) | phase DA (décision de Kevin du 2026-10-26) | ouvert |
+| RP-152 | `jalon-23` (fusionné le 2026-10-27) | Pêche du Parc (aucune case pêchable), Corde Sortie dans le Parc, art T7/T8 (vues peintes, sprites, dos du joueur) | idée | P2 | DAF.4, 1.0.x | ouvert |
+| RP-153 | `jalon-23` (fusionné le 2026-10-27) | T21 équilibrage non fait (Koga) ; l'IA choisit Détritus plutôt que Toxik pour le Smogogo de Koga (IA inchangée jusqu'au T21) | défaut | P2 | J23 (reste non bloquant) | ouvert |
+| RP-154 | `jalon-23` (fusionné le 2026-10-27) | « HYPNO » tronqué sur la carte de combat | rendu | P2 (MEN-3) | J33 | corrigé (`f7ccf543`), dans `main` depuis la fusion du J23 ; à valider sur téléphone (J33) |
+| RP-157 | Fusion du J23 (2026-10-26, tests de couverture DAF.2) | Fonds de combat provisoires [D] : Parc Safari → `route_5_6_prairie`, Arène de Parmanie (Koga) → `vermilion_gym_salle` ; fonds dédiés à peindre | rendu | P2 | DAF.2 (phase DA) | ouvert |
+| RP-158 | Fusion du J23 (2026-10-26, tests de couverture DAF.5) | Icônes provisoires [D] : CT32, CT37, CT40 (icône de la CT09), CT06 (celle de la CT46), Dents d'Or (la Pépite) ; icônes dédiées à peindre | rendu | P3 (MEN-2) | DAF.5 (phase DA) | ouvert |
+| RP-159 | Fusion du J23 (2026-10-26) | Prénom « Intello Séraphin » [D] (Arène de Cramois'Île), posé pour éviter le doublon « Barnabé » du Médium du J27 | idée | P3 | Kevin (à confirmer) | ouvert |
+
 ## 3. Propres à une branche non fusionnée
 
 Lecture seule ; ces points se règlent sur la branche ou à sa fusion (session du jalon). Les lignes
@@ -244,7 +258,7 @@ versions, déjà réglées sur `main` par DAF.6 : non reprises.
 
 | ID | Branche | Description | Cat. | P | Destination | État / preuve |
 |---|---|---|---|---|---|---|
-| RP-130 | `jalon-23`, `prep/j26-j27`, `jalon-28`, `jalon-31`, `jalon-32` | Pas de `FACING_RIGHT` (adversaires tournés à droite) ; `jalon-29` et `jalon-30` l'ont | défaut | P1 | R-1 (par `main`) | `main` l'a depuis `e772538c` (R-1) : chaque branche le récupère à sa mise à jour sur `main` |
+| RP-130 | `prep/j26-j27`, `jalon-28`, `jalon-31`, `jalon-32` (`jalon-23` réglé par sa fusion) | Pas de `FACING_RIGHT` (adversaires tournés à droite) ; `jalon-29` et `jalon-30` l'ont | défaut | P1 | R-1 (par `main`) | `main` l'a depuis `e772538c` (R-1) : chaque branche le récupère à sa mise à jour sur `main` |
 | RP-131 | `jalon-30` (correctif) ; probablement `main` | Après une reprise de l'appli pendant un combat, fond flou recadré (zoom différent) | défaut | P3 | branche ; à porter à la fusion du J30 | corrigé sur `jalon-30` (`Player.hold_camera`) seulement |
 | RP-132 | `jalon-29` | Sulfura de carte = sprite d'oiseau générique (`pokemon/fearow`), petit, caché par la tête du héros | rendu | P2 | DAF.4 | ouvert |
 | RP-133 | `jalon-29` | Sol haut et sol bas de la Route Victoire peu distincts (tuiles provisoires) ; vue générale peinte, poste de la Route 22, Route 23 | rendu | P1 (DON-3) | DAF.4 | ouvert |
@@ -253,7 +267,7 @@ versions, déjà réglées sur `main` par DAF.6 : non reprises.
 | RP-136 | `jalon-30` | Sprites provisoires de la Ligue : Olga (`cooltrainer_f`), Aldo (`docker`), Agatha (`channeler`), Peter (`traveler`) | rendu | P1 (PER-1) | DAF.4 | ouvert |
 | RP-137 | `jalon-30` | Panthéon et générique : fond nuit uni ; textes [D] du générique à valider ; entrée Panthéon du Menu Dresseur (Q30-4) et Grand moment « champion » non faits | idée | P2 | branche, décision de Kevin portée par le J30 | ouvert |
 | RP-138 | `jalon-30` | QA 30A de sauvegarde (Panthéon) réservée à Kevin (règle 1) | idée | P2 | branche | ouvert |
-| RP-139 | `jalon-30` | Objectif du Menu Dresseur « traverser le Pont Pépite » (drapeaux du départ de débogage) | défaut | P3 | branche | ouvert, sans effet en vraie partie |
+| RP-139 | `jalon-30` ; QA S24 30C (2026-10-26) | Objectif du Menu Dresseur « traverser le Pont Pépite » (drapeaux du départ de débogage), revu **après le générique** en 30C | défaut | P3 | branche ; J33 (vraie partie) | ouvert : à vérifier en vraie partie (probablement sans effet hors départ de débogage) |
 | RP-140 | `jalon-30`, `jalon-28` | A17 : ≈ 40 i/s en combat, 49–50 dans la Ligue ; Jadielle 39–41 i/s | perf | P2 (A17) | J33 T3 | ouvert (S24 à 59 i/s) |
 | RP-141 | `jalon-31` | Mewtwo de carte (artwork réduit) qui recouvre le héros ; capture non vérifiée ; grilles et vue générale à valider | rendu | P2 | DAF.4 | ouvert |
 | RP-142 | `jalon-31` | Capture à la Master Ball (T9, après J26), capture en équipe pleine, Max Élixir caché des Îles Écume | idée | P3 | branche / J33 | ouvert |
@@ -265,12 +279,9 @@ versions, déjà réglées sur `main` par DAF.6 : non reprises.
 | RP-148 | `prep/j26-j27` (J27), `jalon-28` | Icônes génériques de la CT46 (nom tronqué) et de la CT27 | rendu | P3 (MEN-2) | DAF.5 après fusion | ouvert |
 | RP-149 | `prep/j26-j27`, `jalon-29`, `jalon-30` | Dédoublonnages de fusion : `kanto_j27_emprunts.json`, `j27_emprunts.json`, `tm_compatibility.json`, `jump_kick` / `counter` / `high_jump_kick` | défaut | P3 | branche (fusion) | ouvert |
 | RP-150 | `jalon-28` | Arène de Jadielle en art provisoire, sans fond de combat ; Giovanni absent au retour dans l'Arène (à couvrir par un test) | rendu | P1 (DON-1) | DAF.4, DAF.2 | ouvert |
-| RP-151 | `jalon-23` | Textures ≈ 75 Mo dans la Maison Secrète et la maison du Gardien | perf | P1 (MEN-7) | phase DA (décision de Kevin du 2026-10-26) | ouvert |
-| RP-152 | `jalon-23` | Pêche du Parc (aucune case pêchable), Corde Sortie dans le Parc, art T7/T8 (vues peintes, sprites, dos du joueur) | idée | P2 | DAF.4, 1.0.x | ouvert |
-| RP-153 | `jalon-23` | T21 équilibrage non fait (Koga) ; l'IA choisit Détritus plutôt que Toxik pour le Smogogo de Koga (IA inchangée jusqu'au T21) | défaut | P2 | branche | ouvert |
-| RP-154 | `jalon-23` | « HYPNO » tronqué sur la carte de combat | rendu | P2 (MEN-3) | branche | corrigé sur `jalon-23` (`f7ccf543`), à valider |
 | RP-155 | `jalon-32` | Matrice des 151 espèces « à compléter » ; Électhor sans artwork sur `jalon-29` ; `StaticRespawn.on_league_won` à brancher à la fusion du J30 | idée | P2 | J33 (intégration) | ouvert |
-| RP-156 | `jalon-23`, `jalon-29`, `jalon-31` | Parcours non joués sur téléphone (zones nord/ouest du Parc, Surf de la Route 23, Route Victoire 2F/3F, rival n° 7, capture de Sulfura et de Mewtwo) | idée | P3 | J33 (QA de bout en bout) | ouvert |
+| RP-156 | `jalon-29`, `jalon-31` (et `main` pour le Parc, J23 fusionné) | Parcours non joués sur téléphone (zones nord/ouest du Parc, Surf de la Route 23, Route Victoire 2F/3F, rival n° 7, capture de Sulfura et de Mewtwo) | idée | P3 | J33 (QA de bout en bout) | ouvert |
+| RP-160 | `jalon-30` ; QA S24 30C (2026-10-26) | Grand moment « Champion de la Ligue Pokémon » : le détail (« Ton équipe est entrée au… ») est coupé par le bas de l'écran ; la liste défile | rendu | P2 (MEN-3 : P0 si le texte reste coupé après défilement) | branche ; J33 (S24) | ouvert, à reproduire |
 
 ## 4. Fermés (obsolètes ou corrigés depuis)
 
