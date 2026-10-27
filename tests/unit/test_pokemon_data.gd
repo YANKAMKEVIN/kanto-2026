@@ -78,6 +78,8 @@ func test_real_data_loads_without_error() -> void:
 		&"oddish", &"gloom", &"vileplume", &"paras", &"parasect",
 		# Jalon 22 (T4) : Mimitoss, Aéromite, Machopeur, Canarticho, Doduo, Dodrio, Tadmorv,
 		# Grotadmorv, Krabby, Électrode, Smogogo, Poissoroy, Magicarpe (kanto_j22.json).
+		# Jalon 31 (T4) : Rhinoféros, Leveinard (kanto_j31_emprunts.json, copies identiques des
+		# J28 et J23) ; Métamorph et Mewtwo (kanto_j31.json).
 		&"venonat", &"venomoth",
 		# Jalon 17 (T7) : Taupiqueur, Triopikeur ; plus loin Goupix, Caninos, Magnéti, Magnéton,
 		# Soporifik, Hypno (kanto_j17.json).
@@ -100,23 +102,28 @@ func test_real_data_loads_without_error() -> void:
 		# Jalon 19 (T3) : Fantominus, Spectrum, Noeunoeuf, Osselait, Ossatueur, Léviator
 		# (kanto_tower.json ; Caninos vient du J17).
 		&"gastly", &"haunter", &"onix",
-		&"drowzee", &"hypno", &"krabby", &"kingler", &"voltorb", &"electrode", &"exeggcute",
-		&"cubone", &"marowak", &"hitmonlee", &"hitmonchan", &"koffing", &"weezing", &"rhyhorn",
+		&"drowzee", &"hypno", &"krabby", &"kingler", &"voltorb", &"electrode", &"exeggcute", &"exeggutor",
+		&"cubone", &"marowak", &"hitmonlee", &"hitmonchan", &"lickitung", &"koffing", &"weezing", &"rhyhorn",
 		# Jalon 23 (T6) : Leveinard, puis Insécateur, Scarabrute, Tauros (kanto_j23.json).
 		&"rhydon", &"chansey", &"tangela", &"kangaskhan",
 		&"horsea", &"seadra", &"goldeen", &"seaking", &"staryu", &"starmie", &"mr_mime", &"scyther",
 		&"magmar", &"pinsir", &"tauros", &"magikarp", &"gyarados",
 		# Jalon 26 (T3) : Lokhlass, Alakazam (kanto_silph.json).
-		&"lapras",
+		&"lapras", &"ditto",
 		&"eevee", &"vaporeon", &"jolteon", &"flareon",
-		&"omanyte", &"omastar", &"kabuto", &"kabutops", &"aerodactyl", &"snorlax", &"articuno"] as Array[StringName])
+		&"omanyte", &"omastar", &"kabuto", &"kabutops", &"aerodactyl", &"snorlax", &"articuno", &"moltres", &"mewtwo"] as Array[StringName])
 	# Jalon 23 (T18) : + Toxik (j23.json). Jalon 25 (T7) : kanto_j25.json (Ponyta, Galopa,
 	# Magmar, Ptéra) ; Tadmorv, Grotadmorv, Smogogo et Électrode sont ceux du J22
 	# (kanto_j25_reprises.json retiré à la fusion de main).
 	# Jalon 27 (T3) : 8 capacités propres (dont Vague Psy) + Ultimawashi et Clonage empruntées au
 	# J29 (Poing de Feu : celui du J25, retiré de j27_emprunts.json à la fusion de main).
 	# Jalon 28 : Abîme.
-	assert_eq(_data.get_move_ids().size(), 156,
+	# Jalon 29 (T4) : Excelangue, M. Mime, Noadkoko, Sulfura (kanto_j29.json) ; Piqué, Ultimawashi,
+	# Clonage (j29.json). À la fusion dans main : kanto_j29_reprises.json (Alakazam, Leveinard,
+	# Lokhlass) et les emprunts du J27 au J29 (kanto_j27_emprunts.json, j27_emprunts.json) retirés.
+	# Jalon 31 (T4) : Métamorph, Mewtwo, Morphing ; kanto_j31_emprunts.json (Leveinard,
+	# Rhinoféros, ceux des J23 et J28) retiré à la fusion dans main.
+	assert_eq(_data.get_move_ids().size(), 158,
 		"47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10) + Patience (J11) "
 		+ "+ 21 du Mont Sélénite (jalon 12) + 8 du jalon 13 (les 5 du J12 qu'il reprenait : "
 		+ "entrées du J12) + 6 du Cap d'Azuria (jalon 14) + Jackpot (J15) "
@@ -127,7 +134,8 @@ func test_real_data_loads_without_error() -> void:
 		+ "Pince-Masse et Trempette sont ceux du J22) + Bomb'Œuf, Reflet, Toxik (jalon 23 ; "
 		+ "Force Poigne du J22, Guillotine du J24) "
 		+ "+ Déflagration et Poing de Feu (J25, j25.json) "
-		+ "+ 10 (J27 : 8 propres, dont Vague Psy ; 2 empruntées au J29) + Abîme (J28)")
+		+ "+ 8 (J27, dont Vague Psy) + Abîme (J28) + 3 du jalon 29 (Piqué, Ultimawashi, Clonage) "
+		+ "+ Morphing (jalon 31)")
 	assert_true(_data.has_move(&"struggle"))
 
 
@@ -537,6 +545,8 @@ func test_real_catch_rates_are_the_official_ones() -> void:
 		&"omastar": 45, &"kabuto": 45, &"kabutops": 45, &"articuno": 3,
 		# Jalon 28 (T3 ; Machopeur est celui du J22, Tauros celui du J23).
 		&"rhydon": 60,
+		# Jalon 29 (T4) : Excelangue, Noadkoko, Sulfura (M. Mime : voir J27).
+		&"lickitung": 45, &"exeggutor": 45, &"moltres": 3,
 		# Jalon 21 (T5).
 		&"poliwag": 255, &"tentacool": 190, &"snorlax": 25,
 		# Jalon 23 (T6) : Parc Safari.
@@ -547,6 +557,8 @@ func test_real_catch_rates_are_the_official_ones() -> void:
 		&"lapras": 45, &"alakazam": 50,
 		# J27 : M. Mime, Kicklee, Tygnon (ses emprunts aux J22 et J24 sont ceux de `main`).
 		&"mr_mime": 45, &"hitmonlee": 45, &"hitmonchan": 45,
+		# Jalon 31 (T4 ; Rhinoféros et Leveinard sont ceux des J28 et J23).
+		&"ditto": 35, &"mewtwo": 3,
 	}
 	assert_eq(_data.get_species_ids().size(), expected.size(), "toutes les espèces")
 	for id: StringName in _data.get_species_ids():

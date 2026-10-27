@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Art PROVISOIRE de l'Arène de Jadielle (jalon 28, T6) : enveloppe d'intérieur cuite d'après la
+"""OBSOLÈTE depuis DAF.4 (Arène en modules, `tools/build_viridian_gym.gd`, image retirée) — Art PROVISOIRE de l'Arène de Jadielle (jalon 28, T6) : enveloppe d'intérieur cuite d'après la
 grille `tools/plans/jadielle_arene.txt` (murs, sol, dalles fléchées, cases d'arrêt, ouverture de
 sortie). Le lot d'art du J28 (jalon-28.md §2.6) remplacera l'image (mêmes dimensions), pas la carte.
 

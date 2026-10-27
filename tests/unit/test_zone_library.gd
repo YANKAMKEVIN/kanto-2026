@@ -54,11 +54,11 @@ func _root_property(map_id: StringName, property: StringName) -> Variant:
 func test_real_data_loads_without_error() -> void:
 	assert_true(_zones.load_file(), "\n".join(_zones.get_errors()))
 	assert_eq(_zones.get_errors().size(), 0)
-	assert_eq(_zones.size(), 46, "Parc Safari (jalon 23), Routes 12 et 16 (jalon 21), Route 24 (jalon 13), Route 25 et Cap d'Azuria (jalon 14), "
+	assert_eq(_zones.size(), 47, "Parc Safari (jalon 23), Routes 12 et 16 (jalon 21), Route 24 (jalon 13), Route 25 et Cap d'Azuria (jalon 14), "
 		+ "passage souterrain (jalon 15 T18), Route 6 (jalon 15 T14), Route 5 (jalon 15 T13), "
 		+ "S.S. Anne (jalon 16 T11), Cave Taupiqueur (jalon 17 T15), Route 11 (jalon 17 T16), "
 		+ "Routes 9 et 10 (jalon 18 T12), Grotte Sombre (jalon 18 T13), souterrain des Routes 7 "
-		+ "et 8 (jalon 20 T15), Routes 12 à 18 (jalon 22), Routes 19 et 20, Îles Écume (jalon 24)")
+		+ "et 8 (jalon 20 T15), Routes 12 à 18 (jalon 22), Routes 19 et 20, Îles Écume (jalon 24), Grotte Azurée (jalon 31)")
 
 
 func test_every_map_belongs_to_exactly_one_zone() -> void:
@@ -108,6 +108,12 @@ func test_zone_names_match_the_map_titles() -> void:
 		if MANSION_FLOORS.has(map_id):
 			assert_eq(_root_property(map_id, &"display_name"), "Manoir Pokémon")
 			assert_eq(_zones.zone_of(map_id), &"cinnabar_island", String(map_id))
+			continue
+		if String(map_id).begins_with("victory_road_"):
+			# Jalon 29 : la Route Victoire garde son titre, dans la zone de la Route 23 (même
+			# raison que la Tour : aucun rectangle de plus sur la Carte).
+			assert_eq(_root_property(map_id, &"display_name"), "Route Victoire")
+			assert_eq(_zones.zone_of(map_id), &"route_23", String(map_id))
 			continue
 		if _zones.zone_of(map_id) == &"safari_zone":
 			# J23 (annexe A-12) : « PARC SAFARI — ZONE CENTRE »…, « MAISON SECRÈTE ».
@@ -228,7 +234,8 @@ func test_service_catalog_and_the_services_of_viridian() -> void:
 	for id: StringName in _zones.get_ids():
 		if not id in [&"viridian_city", &"pewter_city", &"mt_moon", &"cerulean_city",
 				&"vermilion_city", &"route_5", &"route_10", &"lavender_town", &"celadon_city",
-				&"fuchsia_city", &"cinnabar_island", &"saffron_city"]:
+				&"fuchsia_city", &"cinnabar_island", &"saffron_city",
+				&"indigo_plateau"]:
 			assert_true(_zones.get_zone(id).services.is_empty(), "%s : aucun service" % id)
 	var mt_moon := _zones.get_zone(&"mt_moon").services
 	assert_eq(mt_moon.size(), 1, "Mont Sélénite : le Centre seul (sans Boutique)")

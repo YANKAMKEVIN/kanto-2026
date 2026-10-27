@@ -5,18 +5,35 @@ extends SceneTree
 ## jalon-20.md, aucun code nouveau). Giovanni, Dresseurs, guide et objet viennent des données
 ## (`data/npcs/viridian_gym.json`) ; leurs cases sont libres dans la grille.
 ##
-##   python3 tools/art/placeholders_j28.py      (enveloppe provisoire)
-##   godot --headless --path . --import
-##   godot --headless --path . -s res://tools/build_viridian_gym.gd
+##   godot --headless --path . -s res://tools/build_viridian_gym.gd   (code 2 : masque écrit,
+##   godot --headless --path . --import                              importer puis relancer)
 ##
-## - Art : enveloppe PROVISOIRE cuite d'après la grille (`ph_viridian_gym.png` : murs, sol,
-##   flèches, disques d'arrêt) ; le lot d'art du J28 la remplacera (mêmes dimensions).
+## - Art en modules (lot DAF.4, `tools/art/daf3.py`) sur `tools/cave_map_kit.gd`, comme le repaire :
+##   dalles de grès peintes, masse sombre, murs `relief_mur_jadielle_*` (rôles de la Tour,
+##   `tools/module_walls.gd`, maçonnerie `K`), flèches et disques d'arrêt du repaire au sol
+##   (décalcomanies d'une case, même moteur de dalles), paillasson sur la sortie ; couches logiques
+##   du kit retirées, collision = `blocked_cells`.
 ## - Passages : sortie (18..19, 20) PUSH ↓ → `viridian_city` / `from_gym` ; spawn `entrance` (18, 20).
 
 const PLAN_PATH: String = "res://tools/plans/jadielle_arene.txt"
 const OUT_PATH: String = "res://game/world/maps/viridian_gym.tscn"
-const SHELL_PATH: String = "res://assets/world/interiors/placeholder/ph_viridian_gym.png"
+const MASK_PATH: String = "res://assets/world/maps/viridian_gym_ground.png"
+const GROUND_FLOOR: String = "res://assets/world/ground/ground_dalles_jadielle_01.png"
+const GROUND_MASS: String = "res://assets/world/ground/ground_masse_batiment_01.png"
+## Frontière : le grès un peu assombri [D].
+const BORDER_COLOR := Color(0.60, 0.49, 0.38)
+const WALL_MARK: String = "K"
+const WALL_PREFIX: String = "relief_mur_jadielle"
+const SEEDS: Array[int] = [2801, 2802, 2803]
+const ARROW_DECALS: Dictionary[String, String] = {
+	"<": "decal_fleche_repaire_01_gauche", ">": "decal_fleche_repaire_01",
+	"^": "decal_fleche_repaire_01_haut", "v": "decal_fleche_repaire_01_bas",
+}
+const STOP_DECAL: String = "decal_arret_repaire_01"
+const DOORMAT: String = "int_paillasson_sylphe_01"
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
+const Kit := preload("res://tools/cave_map_kit.gd")
+const ModuleWalls := preload("res://tools/module_walls.gd")
 const TILE: int = 96
 const SIZE := Vector2i(24, 22)
 const MAP_ID: StringName = &"viridian_gym"
@@ -40,33 +57,43 @@ func _init() -> void:
 		push_error("build_viridian_gym : grille illisible (%s)" % _plan.error)
 		quit(1)
 		return
-	_root = Node2D.new()
-	_root.name = "ViridianGym"
-	_root.set_script(load("res://game/world/map.gd"))
-	_root.set(&"map_id", MAP_ID)
-	_root.set(&"display_name", DISPLAY_NAME)
-	_root.set(&"size", SIZE)
+	var kit: Object = Kit.new(PLAN_PATH, SIZE, SEEDS[0], SEEDS[1], _plan.walkable)
+	kit.set(&"floor_texture_path", GROUND_FLOOR)
+	kit.set(&"rubble_texture_path", GROUND_FLOOR)
+	kit.set(&"mass_texture_path", GROUND_MASS)
+	kit.set(&"border_color", BORDER_COLOR)
+	kit.set(&"rubble_mark", "~")
+	kit.set(&"rubble_is_logic", false)
+	kit.set(&"wall_marks", WALL_MARK)
+	kit.set(&"mass_mark", WALL_MARK)
+	_root = kit.call(&"make_root", "ViridianGym", MAP_ID, DISPLAY_NAME, LIGHT_PROFILE)
 	_root.set(&"interior", true)
-	_root.set(&"light_profile", LIGHT_PROFILE)
-	var shell := Sprite2D.new()
-	shell.name = "Shell"
-	shell.texture = load(SHELL_PATH)
-	shell.centered = false
-	shell.z_index = -3
-	_attach(_root, shell)
-	if shell.texture == null or shell.texture.get_size() != Vector2(SIZE * TILE):
-		push_error("build_viridian_gym : enveloppe absente ou ≠ %s cases" % SIZE)
+	if not kit.call(&"add_ground", MASK_PATH):
+		var errors: PackedStringArray = kit.get(&"errors")
+		kit.call(&"discard")
+		if errors.is_empty():
+			print("build_viridian_gym : masque écrit ; importer (--import) puis relancer")
+			quit(2)
+		else:
+			push_error("build_viridian_gym :\n%s" % "\n".join(errors))
+			quit(1)
+		return
+	for layer_name: String in ["Ground", "Detail", "Obstacles"]:
+		var layer := _root.get_node(layer_name)
+		_root.remove_child(layer)
+		layer.free()
+	ModuleWalls.new(kit, WALL_PREFIX, WALL_MARK, WALL_MARK, SEEDS[2]).place()
+	for character: String in ARROW_DECALS:
+		for cell: Vector2i in _plan.cells_of(character):
+			kit.call(&"add_floor_prop", ARROW_DECALS[character], cell, "Arrow%02d_%02d" % [cell.x, cell.y])
+	for cell: Vector2i in _plan.cells_of("o"):
+		kit.call(&"add_floor_prop", STOP_DECAL, cell, "Stop%02d_%02d" % [cell.x, cell.y])
+	kit.call(&"add_floor_prop", DOORMAT, EXIT_CELLS[1], "Doormat")
+	if not (kit.get(&"errors") as PackedStringArray).is_empty():
+		push_error("build_viridian_gym :\n%s" % "\n".join(kit.get(&"errors")))
+		_root.free()
 		quit(1)
 		return
-	var entities := Node2D.new()
-	entities.name = "Entities"
-	entities.y_sort_enabled = true
-	_attach(_root, entities)
-	entities.unique_name_in_owner = true
-	for group: String in ["Warps", "Interactables", "Spawns", "Triggers"]:
-		var node := Node2D.new()
-		node.name = group
-		_attach(_root, node)
 	_add_passages()
 	_add_spin_tiles()
 	var blocked: Array[Vector2i] = []

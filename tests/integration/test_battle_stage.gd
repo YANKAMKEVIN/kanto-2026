@@ -186,6 +186,70 @@ func test_moves_hits_stats_and_faint_finish_and_come_back_to_the_anchor() -> voi
 	assert_true(_stage.get_sprite(PLAYER_SIDE).visible)
 
 
+## Combat vivant (CV.0, T3) : plan de [param move_id] avec l'issue [param result].
+func _fx_plan(move_id: StringName, result: MoveFxOutcome.Result,
+		mode: MoveFxPlan.Mode = MoveFxPlan.Mode.FULL) -> MoveFxPlan:
+	var data := PokemonData.new()
+	data.load_dir()
+	var catalog := MoveFxCatalog.load_dir()
+	var outcome := MoveFxOutcome.new()
+	outcome.move_id = move_id
+	outcome.result = result
+	outcome.hits = 1 if result == MoveFxOutcome.Result.HIT else 0
+	return MoveFxPlan.build(catalog, catalog.entry(move_id), data.get_move(move_id), outcome,
+		mode)
+
+
+func test_move_fx_plays_cues_in_order_and_gives_the_scene_back_at_rest() -> void:
+	await _enter()
+	var a := _anchors()
+	var cues: Array[StringName] = []
+	_stage.move_fx_cue.connect(func(cue: StringName, plan: MoveFxPlan) -> void:
+		assert_not_null(plan, "le plan accompagne le repère")
+		cues.append(cue))
+	for case: Array in [[&"tackle", MoveFxOutcome.Result.HIT],
+			[&"ember", MoveFxOutcome.Result.MISSED],
+			[&"thunder_shock", MoveFxOutcome.Result.HIT],
+			[&"swords_dance", MoveFxOutcome.Result.AFFECTED]]:
+		await _stage.play_move_fx(PLAYER_SIDE, _fx_plan(case[0], case[1]))
+		await _stage.finish_move_fx()
+		await _stage.play_move_fx(FOE_SIDE, _fx_plan(case[0], case[1]))
+		await _stage.finish_move_fx()
+	assert_eq(cues.slice(0, 2), [&"launch", &"impact"] as Array[StringName], "Charge")
+	assert_eq(cues.slice(4, 6), [&"launch", &"miss"] as Array[StringName], "Flammèche ratée")
+	assert_eq(_stage.get_sprite(PLAYER_SIDE).position, _back_feet(&"charmander"))
+	assert_eq(_stage.get_sprite(FOE_SIDE).position, a["foe_feet"])
+	assert_eq(_stage.get_sprite(FOE_SIDE).modulate, Color.WHITE)
+	assert_eq(_stage.offset, Vector2.ZERO, "caméra du combat revenue")
+	assert_eq(_stage.scale, Vector2.ONE)
+	assert_false(_stage.get_move_fx_player().get_light().is_lit(), "lumière éteinte")
+
+
+func test_move_fx_hands_over_at_the_impact_and_drives_the_hit() -> void:
+	await _enter()
+	_stage.speed_scale = 1.0
+	var plan := _fx_plan(&"tackle", MoveFxOutcome.Result.HIT)
+	await _stage.play_move_fx(PLAYER_SIDE, plan)
+	var fx := _stage.get_move_fx_player()
+	assert_true(fx.is_playing(), "la fin de la chorégraphie se joue ensuite")
+	assert_between(fx.elapsed(), plan.cue_time(MoveFxPlan.CUE_IMPACT),
+		plan.cue_time(MoveFxPlan.CUE_IMPACT) + 0.1, "rend la main à l'impact")
+	assert_true(_stage.is_move_fx_hitting(FOE_SIDE), "la chorégraphie porte le coup")
+	assert_false(_stage.is_move_fx_hitting(PLAYER_SIDE))
+	await _stage.play_hit(FOE_SIDE, false)
+	await _stage.finish_move_fx()
+	assert_false(_stage.is_move_fx_hitting(FOE_SIDE))
+	assert_eq(_stage.get_sprite(FOE_SIDE).position, _anchors()["foe_feet"])
+
+
+func test_move_fx_mode_follows_the_settings() -> void:
+	assert_eq(_stage.move_fx_mode(), MoveFxPlan.Mode.FULL)
+	_stage.battle_animations = GameSettings.BattleAnimations.FAST
+	assert_eq(_stage.move_fx_mode(), MoveFxPlan.Mode.FAST)
+	_stage.reduce_motion = true
+	assert_eq(_stage.move_fx_mode(), MoveFxPlan.Mode.REDUCED, "Réduire les animations l'emporte")
+
+
 func test_exit_gives_back_npcs_on_their_cell_and_the_camera_unchanged() -> void:
 	var zoom := _camera.zoom
 	var position := _camera.position

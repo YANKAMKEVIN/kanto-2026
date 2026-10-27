@@ -474,6 +474,15 @@ enchaîne les attaques sans avoir à jouer, plus un vrai combat.
 
 **CV.0 — Socle et Éclair** (Opus, système nouveau)
 
+> **T1, T2, T5, T6 faits le 2026-10-26** sur la branche `combat-vivant` (hors scène ; données dans
+> `data/battle/move_fx/families.json` et `plancher.json`, code dans `game/battle/fx/`). **T3 sans
+> branchement fait le même jour** : `MoveFxPlayer`, `MoveFxStage`, `BattleCamera`, `FxParticlePool`,
+> `FxWorldLight`, galerie autonome `game/battle/fx/fx_gallery.tscn`. **Branchement de T3 et T4 faits
+> le 2026-10-27** (après la fusion du J23) : le temps MOVE joue le plan jusqu'au premier impact, le
+> DAMAGE descend la barre pendant l'impact ; sons aux repères `launch` / `impact`. **T7 fait** (art de
+> la vague 1 par les données : `fx.art`, `impacts.*.art`, `signatures.eclair.art`) ; **T8** : départ
+> `fx_gallery` fait, reste la mesure sur S24 et A17.
+
 | Tâche | Contenu | Critère d'acceptation |
 |---|---|---|
 | T1 | `data/battle/move_fx/` (un fichier par lot) et `MoveFxCatalog` ; table de l'annexe A (famille de chaque attaque) | test : toute attaque des données a une entrée valide, une seule ; repli par type testé |

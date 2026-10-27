@@ -1,0 +1,47 @@
+{
+	"cerulean_cave_1f_item_1": {
+		"cutscene": "cerulean_cave_1f_item_1"
+	},
+	"cerulean_cave_1f_item_2": {
+		"cutscene": "cerulean_cave_1f_item_2"
+	},
+	"cerulean_cave_1f_item_3": {
+		"cutscene": "cerulean_cave_1f_item_3"
+	},
+	"cerulean_cave_1f_hidden_1": {
+		"cutscene": "cerulean_cave_1f_hidden_1"
+	},
+	"cerulean_cave_2f_item_1": {
+		"cutscene": "cerulean_cave_2f_item_1"
+	},
+	"cerulean_cave_2f_item_2": {
+		"cutscene": "cerulean_cave_2f_item_2"
+	},
+	"cerulean_cave_2f_item_3": {
+		"cutscene": "cerulean_cave_2f_item_3"
+	},
+	"cerulean_cave_b1f_item_1": {
+		"cutscene": "cerulean_cave_b1f_item_1"
+	},
+	"cerulean_cave_b1f_item_2": {
+		"cutscene": "cerulean_cave_b1f_item_2"
+	},
+	"cerulean_cave_b1f_hidden_1": {
+		"cutscene": "cerulean_cave_b1f_hidden_1"
+	},
+	"mewtwo": {
+		"cutscene": "mewtwo"
+	},
+	"mewtwo_cry": {
+		"speaker": "Mewtwo",
+		"pages": [
+			"Mew !"
+		]
+	},
+	"cerulean_cave_closed": {
+		"narration": true,
+		"pages": [
+			"Les eaux sont trop agitées. Pas maintenant."
+		]
+	}
+}

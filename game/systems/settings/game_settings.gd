@@ -15,13 +15,17 @@ extends RefCounted
 ##
 ## Pas de « sauvegarde automatique » : elle est permanente (dossier 08 §7). Volumes du jalon Son
 ## (Son.0, SON-7) : Musique, Effets, Cris ; un ancien fichier sans eux les lit à leurs défauts
-## (pas de changement de version).
+## (pas de changement de version). Combat vivant (CV-4, `docs/tech/combat-vivant.md` §2.6) :
+## Animations de combat, Complètes par défaut ; un ancien fichier sans elles les lit Complètes.
 
 enum TextSpeed { SLOW, NORMAL, FAST, INSTANT }
 enum TextSize { NORMAL, LARGE }
 ## AUTO : le profil est choisi selon l'appareil ([GraphicsProfile]) ; jamais AUTO une fois
 ## résolu.
 enum Graphics { AUTO, HIGH, ECO }
+## Combat vivant (CV-4) : Complètes (chorégraphie entière) ou Rapides (≤ 0,5 s par attaque).
+## Distinct de « Réduire les animations » (CV-5).
+enum BattleAnimations { FULL, FAST }
 
 const TEXT_SPEED: StringName = &"text_speed"
 const CONFIRM_ACTIONS: StringName = &"confirm_actions"
@@ -41,15 +45,17 @@ const ECONOMY: StringName = &"economy"
 const MUSIC_VOLUME: StringName = &"music_volume"
 const SFX_VOLUME: StringName = &"sfx_volume"
 const CRY_VOLUME: StringName = &"cry_volume"
+const BATTLE_ANIMATIONS: StringName = &"battle_animations"
 ## Tous les réglages, dans l'ordre du fichier.
 const KEYS: Array[StringName] = [TEXT_SPEED, CONFIRM_ACTIONS, JOYSTICK_SCALE, JOYSTICK_OPACITY,
 	BUTTON_SCALE, HAPTICS, LEFT_HANDED, TEXT_SIZE, HIGH_CONTRAST, REDUCE_MOTION, REDUCE_FLASHES,
-	GRAPHICS, ECONOMY, MUSIC_VOLUME, SFX_VOLUME, CRY_VOLUME]
+	GRAPHICS, ECONOMY, MUSIC_VOLUME, SFX_VOLUME, CRY_VOLUME, BATTLE_ANIMATIONS]
 
 ## Noms écrits dans le JSON pour les enums (un rang changerait si l'enum était réordonnée).
 const TEXT_SPEED_NAMES: Array[String] = ["slow", "normal", "fast", "instant"]
 const TEXT_SIZE_NAMES: Array[String] = ["normal", "large"]
 const GRAPHICS_NAMES: Array[String] = ["auto", "high", "eco"]
+const BATTLE_ANIMATIONS_NAMES: Array[String] = ["full", "fast"]
 
 ## Caractères par seconde des dialogues, par [enum TextSpeed] (§13) ; 0 = la page entière
 ## d'un coup (convention de [DialogueSession]). NORMAL = la vitesse d'avant le J6.
@@ -95,6 +101,7 @@ var music_volume: float = DEFAULT_MUSIC_VOLUME
 ## Effets : interface, déplacement, combat et ambiances.
 var sfx_volume: float = DEFAULT_SFX_VOLUME
 var cry_volume: float = DEFAULT_CRY_VOLUME
+var battle_animations: BattleAnimations = BattleAnimations.FULL
 
 
 ## Réglages lus de [param dict] ; tout champ absent, mal formé ou hors bornes garde sa valeur
@@ -130,6 +137,7 @@ func to_dict() -> Dictionary:
 		String(MUSIC_VOLUME): music_volume,
 		String(SFX_VOLUME): sfx_volume,
 		String(CRY_VOLUME): cry_volume,
+		String(BATTLE_ANIMATIONS): BATTLE_ANIMATIONS_NAMES[battle_animations],
 	}
 
 
@@ -158,6 +166,8 @@ static func is_valid(key: StringName, value: Variant) -> bool:
 			return _is_index(value, TEXT_SIZE_NAMES.size())
 		GRAPHICS:
 			return _is_index(value, GRAPHICS_NAMES.size())
+		BATTLE_ANIMATIONS:
+			return _is_index(value, BATTLE_ANIMATIONS_NAMES.size())
 		CONFIRM_ACTIONS, HAPTICS, LEFT_HANDED, HIGH_CONTRAST, REDUCE_MOTION, REDUCE_FLASHES, ECONOMY:
 			return value is bool
 		JOYSTICK_SCALE:
@@ -208,6 +218,8 @@ static func _from_json(key: StringName, raw: Variant) -> Variant:
 			return _name_index(TEXT_SIZE_NAMES, raw)
 		GRAPHICS:
 			return _name_index(GRAPHICS_NAMES, raw)
+		BATTLE_ANIMATIONS:
+			return _name_index(BATTLE_ANIMATIONS_NAMES, raw)
 	return raw
 
 
@@ -221,7 +233,7 @@ static func _name_index(names: Array[String], raw: Variant) -> Variant:
 ## Forme rangée : entier pour une enum, flottant exact du cran pour une échelle.
 static func _normalize(key: StringName, value: Variant) -> Variant:
 	match key:
-		TEXT_SPEED, TEXT_SIZE, GRAPHICS:
+		TEXT_SPEED, TEXT_SIZE, GRAPHICS, BATTLE_ANIMATIONS:
 			return int(value)
 		JOYSTICK_SCALE:
 			return JOYSTICK_SCALES[_find_step(JOYSTICK_SCALES, float(value))]

@@ -100,5 +100,28 @@
 				{ "species": "venusaur", "level": 40, "moves": ["leech_seed", "vine_whip", "poison_powder", "razor_leaf"] }
 			]
 		}
+	},
+	"rival_route22_final": {
+		"name": "{rival}", "ai": "smart",
+		"can_lose": false, "heal_after": false, "gives_exp": true,
+		"prize_money": 0, "prize_per_level": 35,
+		"end_message": false, "start_message": true, "bag": true, "switch": true,
+		"team_by_starter": {
+			"bulbasaur": [
+				{ "species": "pidgeot", "level": 47 }, { "species": "rhyhorn", "level": 45 },
+				{ "species": "exeggcute", "level": 45 }, { "species": "gyarados", "level": 47 },
+				{ "species": "alakazam", "level": 50 }, { "species": "charizard", "level": 53 }
+			],
+			"charmander": [
+				{ "species": "pidgeot", "level": 47 }, { "species": "rhyhorn", "level": 45 },
+				{ "species": "growlithe", "level": 45 }, { "species": "exeggcute", "level": 47 },
+				{ "species": "alakazam", "level": 50 }, { "species": "blastoise", "level": 53 }
+			],
+			"squirtle": [
+				{ "species": "pidgeot", "level": 47 }, { "species": "rhyhorn", "level": 45 },
+				{ "species": "gyarados", "level": 45 }, { "species": "growlithe", "level": 47 },
+				{ "species": "alakazam", "level": 50 }, { "species": "venusaur", "level": 53 }
+			]
+		}
 	}
 }

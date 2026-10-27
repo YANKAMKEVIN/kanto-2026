@@ -1,0 +1,18 @@
+{
+	"max_elixir": {
+		"name": "Max Élixir",
+		"plural": "Max Élixirs",
+		"feminine": false,
+		"category": "field",
+		"price": 0,
+		"description": "Rend tous les PP de toutes les capacités d'un Pokémon. Sans effet dans le moteur actuel."
+	},
+	"pp_up": {
+		"name": "PP Plus",
+		"plural": "PP Plus",
+		"feminine": false,
+		"category": "field",
+		"price": 0,
+		"description": "Augmente le nombre maximal de PP d'une capacité. Sans effet dans le moteur actuel."
+	}
+}
