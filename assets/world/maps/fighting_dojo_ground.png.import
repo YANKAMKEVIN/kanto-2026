@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cshib18uoocat"
-path="res://.godot/imported/ph_saffron_gym.png-8796e77fcb3fd38b395e808a01354b62.ctex"
+uid="uid://h7idlfsf2sb0"
+path="res://.godot/imported/fighting_dojo_ground.png-4d2c138e31a639127f760daf55082d6e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/world/interiors/placeholder/ph_saffron_gym.png"
-dest_files=["res://.godot/imported/ph_saffron_gym.png-8796e77fcb3fd38b395e808a01354b62.ctex"]
+source_file="res://assets/world/maps/fighting_dojo_ground.png"
+dest_files=["res://.godot/imported/fighting_dojo_ground.png-4d2c138e31a639127f760daf55082d6e.ctex"]
 
 [params]
 

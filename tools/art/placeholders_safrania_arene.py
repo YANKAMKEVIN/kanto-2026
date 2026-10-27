@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Art PROVISOIRE de l'Arène de Safrania et du Dojo de Combat (jalon 27, T6) : enveloppes
+"""OBSOLÈTE depuis DAF.3 (salles en modules, `tools/build_saffron_gym.gd`, images retirées) — Art PROVISOIRE de l'Arène de Safrania et du Dojo de Combat (jalon 27, T6) : enveloppes
 dessinées d'après les grilles `tools/plans/safrania_arene.txt` et `safrania_dojo.txt`, aux
 dimensions finales (cases × 96 px). Remplacer par l'art définitif = changer les images (mêmes
 noms, mêmes dimensions), pas les cartes.
