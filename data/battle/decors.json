@@ -556,6 +556,9 @@
 		],
 		"cerulean_cave_b1f": [
 			{ "decor": "dark_cave_galerie" }
+		],
+		"power_plant": [
+			{ "decor": "dark_cave_galerie" }
 		]
 
 	}
