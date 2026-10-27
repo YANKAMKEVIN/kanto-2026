@@ -76,7 +76,7 @@ Carabaffe, Rival n° 6 contre Tortank, Giovanni de Céladopole contre Reptincel 
 Bulbizarre seul : Boul'Armure et Armure ralentissent un combat que les Potions ne suffisent plus à
 tenir).
 
-Aucune donnée n'a été rééquilibrée (règle de Kevin) : lignes en gras soumises à Kevin.
+Aucune donnée n'a été rééquilibrée. **Kevin a validé le tableau le 2026-10-27** : règle fusionnée telle quelle ; lignes en gras à rééquilibrer plus tard (`reportes.md` §2.14, RP-249 à RP-254).
 
 Rapports bruts : copie de session (non versionnée) ; relancer avec
 `godot --headless --path . -s res://tools/simulate_mt_moon.gd -- --scenario tools/sim/<x>.json --donnees --seeds 400`
