@@ -4,9 +4,9 @@
 
 ## Résumé
 
-- **117 / 151** obtenables dans une seule sauvegarde solo, sans choix unique ni échange local.
-- **18** seulement par un choix unique (une seule par sauvegarde) ; **2** seulement par évolution par échange (terminal local, T4) ; **14** sans aucune voie.
-- Espèces sans données sur aucune branche : Élektek, Porygon, Électhor, Minidraco, Mew.
+- **122 / 151** obtenables dans une seule sauvegarde solo, sans choix unique ni échange local.
+- **18** seulement par un choix unique (une seule par sauvegarde) ; **2** seulement par évolution par échange (terminal local, T4) ; **9** sans aucune voie.
+- Espèces sans données sur aucune branche : Mew.
 
 ### Choix uniques (une espèce par groupe et par sauvegarde)
 
@@ -18,7 +18,7 @@
 ### Par branche (statut atteint grâce à cette branche)
 
 - **main** (136)
-- **HEAD** (1) : Noadkoko
+- **HEAD** (6) : Canarticho, Noadkoko, Excelangue, M. Mime, Porygon, Minidraco
 
 ### Sans voie
 
@@ -26,15 +26,10 @@
 - 068 Mackogneur (manque) → données : évolution absente de `species/` (machoke → machamp (trade)), puis N-15 / T4.
 - 076 Grolem (échange local) → N-15 / T4 : terminal d'échange local dans tous les Centres.
 - 081 Magnéti (manque) → N-11 : Centrale, lot 32G (Magnéti, sauvage RB à la Centrale seulement).
-- 083 Canarticho (manque) → N-14 : échange PNJ Piafabec → Canarticho (Carmin).
 - 094 Ectoplasma (manque) → données : évolution absente de `species/` (haunter → gengar (trade)), puis N-15 / T4.
-- 108 Excelangue (manque) → N-14 : échange PNJ Flagadoss → Excelangue (Route 18).
-- 122 M. Mime (manque) → N-14 : échange PNJ Abra → M. Mime (Route 2).
 - 124 Lippoutou (manque) → N-14 : échange PNJ Têtarte → Lippoutou (Azuria).
 - 125 Élektek (manque) → N-11 : Centrale, lot 32G (union Rouge + Bleu).
-- 137 Porygon (manque) → N-13 : employé de Sylphe SARL après Giovanni.
 - 145 Électhor (manque) → N-11 : Centrale, lot 32G (Électhor N50).
-- 147 Minidraco (manque) → N-12 : Super Canne RB au Parc Safari.
 - 148 Draco (manque) → N-12 (par évolution de Minidraco) : Super Canne RB au Parc Safari.
 - 149 Dracolosse (manque) → N-12 (par évolution de Minidraco) : Super Canne RB au Parc Safari.
 - 151 Mew (manque) → N-1 à N-5 : rencontre secrète au camion du quai de Carmin, 150 capturées, N30.
@@ -83,12 +78,12 @@ Boutiques et dons uniques des scènes (union des branches, maximum par branche),
 | 022 | Rapasdepic (`fearow`) | normal/flying | Piafabec (niveau 20) | sauvage : route_17 (grass) [main, J30, HEAD]<br>sauvage : route_18 (grass) [main, J30, HEAD]<br>sauvage : route_23 (grass) [main, J30, HEAD] | main | obtenable | — |
 | 023 | Abo (`ekans`) | poison | — | sauvage : route_10 (grass) [main, J30, HEAD]<br>sauvage : route_11 (grass) [main, J30, HEAD]<br>sauvage : route_23 (grass) [main, J30, HEAD]<br>sauvage : route_3 (grass) [main, J30, HEAD]<br>sauvage : route_4 (grass) [main, J30, HEAD]<br>sauvage : route_8 (grass) [main, J30, HEAD]<br>sauvage : route_9 (grass) [main, J30, HEAD] | main | obtenable | — |
 | 024 | Arbok (`arbok`) | poison | Abo (niveau 22) | sauvage : cerulean_cave_1f (floor) [main, HEAD]<br>sauvage : cerulean_cave_b1f (floor) [main, HEAD]<br>sauvage : route_23 (grass) [main, J30, HEAD] | main | obtenable | — |
-| 025 | Pikachu (`pikachu`) | electric | — | sauvage : viridian_forest (grass) [main, J30, HEAD] | main | obtenable | — |
-| 026 | Raichu (`raichu`) | electric | Pikachu (thunder_stone) | sauvage : cerulean_cave_1f (floor) [main, HEAD]<br>sauvage : cerulean_cave_b1f (floor) [main, HEAD] | main | obtenable | — |
+| 025 | Pikachu (`pikachu`) | electric | — | sauvage : viridian_forest (grass) [main, J30, HEAD]<br>sauvage : power_plant (floor) [HEAD] (carte absente) | main | obtenable | — |
+| 026 | Raichu (`raichu`) | electric | Pikachu (thunder_stone) | sauvage : cerulean_cave_1f (floor) [main, HEAD]<br>sauvage : cerulean_cave_b1f (floor) [main, HEAD]<br>sauvage : power_plant (floor) [HEAD] (carte absente) | main | obtenable | — |
 | 027 | Sabelette (`sandshrew`) | ground | — | sauvage : route_10 (grass) [main, J30, HEAD]<br>sauvage : route_11 (grass) [main, J30, HEAD]<br>sauvage : route_23 (grass) [main, J30, HEAD]<br>sauvage : route_3 (grass) [main, J30, HEAD]<br>sauvage : route_4 (grass) [main, J30, HEAD]<br>sauvage : route_8 (grass) [main, J30, HEAD]<br>sauvage : route_9 (grass) [main, J30, HEAD] | main | obtenable | — |
 | 028 | Sablaireau (`sandslash`) | ground | Sabelette (niveau 22) | sauvage : cerulean_cave_1f (floor) [main, HEAD]<br>sauvage : cerulean_cave_b1f (floor) [main, HEAD]<br>sauvage : route_23 (grass) [main, J30, HEAD] | main | obtenable | — |
-| 029 | Nidoran♀ (`nidoran_f`) | poison | — | sauvage : route_2 (grass) [main, J30, HEAD]<br>sauvage : route_22, route_22_west (grass) [main, J30, HEAD]<br>sauvage : route_2_north (grass) [main, J30, HEAD]<br>sauvage : safari_zone_center (grass) [main, HEAD]<br>sauvage : safari_zone_east (grass) [main, HEAD]<br>sauvage : safari_zone_north (grass) [main, HEAD]<br>sauvage : safari_zone_west (grass) [main, HEAD] | main | obtenable | — |
-| 030 | Nidorina (`nidorina`) | poison | Nidoran♀ (niveau 16) | sauvage : safari_zone_center (grass) [main, HEAD]<br>sauvage : safari_zone_east (grass) [main, HEAD]<br>sauvage : safari_zone_north (grass) [main, HEAD]<br>sauvage : safari_zone_west (grass) [main, HEAD] | main | obtenable | — |
+| 029 | Nidoran♀ (`nidoran_f`) | poison | — | sauvage : route_2 (grass) [main, J30, HEAD]<br>sauvage : route_22, route_22_west (grass) [main, J30, HEAD]<br>sauvage : route_2_north (grass) [main, J30, HEAD]<br>sauvage : safari_zone_center (grass) [main, HEAD]<br>sauvage : safari_zone_east (grass) [main, HEAD]<br>sauvage : safari_zone_north (grass) [main, HEAD]<br>sauvage : safari_zone_west (grass) [main, HEAD]<br>échange PNJ : route_5_trade_nidoran_f (contre nidoran_m) [HEAD] | main | obtenable | — |
+| 030 | Nidorina (`nidorina`) | poison | Nidoran♀ (niveau 16) | sauvage : safari_zone_center (grass) [main, HEAD]<br>sauvage : safari_zone_east (grass) [main, HEAD]<br>sauvage : safari_zone_north (grass) [main, HEAD]<br>sauvage : safari_zone_west (grass) [main, HEAD]<br>échange PNJ : route_11_trade_nidorina (contre nidorino) [HEAD] | main | obtenable | — |
 | 031 | Nidoqueen (`nidoqueen`) | poison/ground | Nidorina (moon_stone) | — | main | obtenable | — |
 | 032 | Nidoran♂ (`nidoran_m`) | poison | — | sauvage : route_2 (grass) [main, J30, HEAD]<br>sauvage : route_22, route_22_west (grass) [main, J30, HEAD]<br>sauvage : route_2_north (grass) [main, J30, HEAD]<br>sauvage : safari_zone_center (grass) [main, HEAD]<br>sauvage : safari_zone_east (grass) [main, HEAD]<br>sauvage : safari_zone_north (grass) [main, HEAD]<br>sauvage : safari_zone_west (grass) [main, HEAD] | main | obtenable | — |
 | 033 | Nidorino (`nidorino`) | poison | Nidoran♂ (niveau 16) | sauvage : safari_zone_center (grass) [main, HEAD]<br>sauvage : safari_zone_east (grass) [main, HEAD]<br>sauvage : safari_zone_north (grass) [main, HEAD]<br>sauvage : safari_zone_west (grass) [main, HEAD] | main | obtenable | — |
@@ -112,7 +107,7 @@ Boutiques et dons uniques des scènes (union des branches, maximum par branche),
 | 051 | Triopikeur (`dugtrio`) | ground | Taupiqueur (niveau 26) | sauvage : digletts_cave (rubble) [main, J30, HEAD] | main | obtenable | — |
 | 052 | Miaouss (`meowth`) | normal | — | sauvage : route_5 (grass) [main, J30, HEAD]<br>sauvage : route_6 (grass) [main, J30, HEAD]<br>sauvage : route_7 (grass) [main, J30, HEAD]<br>sauvage : route_8 (grass) [main, J30, HEAD] | main | obtenable | — |
 | 053 | Persan (`persian`) | normal | Miaouss (niveau 28) | — | main | obtenable | — |
-| 054 | Psykokwak (`psyduck`) | water | — | sauvage : seafoam_1f (floor) [main, J30, HEAD]<br>sauvage : seafoam_b1f (floor) [main, J30, HEAD]<br>sauvage : seafoam_b2f (floor) [main, J30, HEAD]<br>sauvage : seafoam_b3f (floor) [main, J30, HEAD]<br>sauvage : seafoam_b4f (floor) [main, J30, HEAD] | main | obtenable | — |
+| 054 | Psykokwak (`psyduck`) | water | — | sauvage : seafoam_1f (floor) [main, J30, HEAD]<br>sauvage : seafoam_b1f (floor) [main, J30, HEAD]<br>sauvage : seafoam_b2f (floor) [main, J30, HEAD]<br>sauvage : seafoam_b3f (floor) [main, J30, HEAD]<br>sauvage : seafoam_b4f (floor) [main, J30, HEAD]<br>sauvage : safari_zone_center, safari_zone_east, safari_zone_north… (super_rod) [HEAD] | main | obtenable | — |
 | 055 | Akwakwak (`golduck`) | water | Psykokwak (niveau 33) | sauvage : seafoam_1f (floor) [main, J30, HEAD]<br>sauvage : seafoam_b2f (floor) [main, J30, HEAD]<br>sauvage : seafoam_b4f (floor) [main, J30, HEAD] | main | obtenable | — |
 | 056 | Férosinge (`mankey`) | fighting | — | sauvage : route_2 (grass) [main, J30, HEAD]<br>sauvage : route_22, route_22_west (grass) [main, J30, HEAD]<br>sauvage : route_2_north (grass) [main, J30, HEAD]<br>sauvage : route_4 (grass) [main, J30, HEAD]<br>sauvage : route_5 (grass) [main, J30, HEAD]<br>sauvage : route_6 (grass) [main, J30, HEAD]<br>sauvage : route_7 (grass) [main, J30, HEAD]<br>sauvage : route_8 (grass) [main, J30, HEAD] | main | obtenable | — |
 | 057 | Colossinge (`primeape`) | fighting | Férosinge (niveau 28) | — | main | obtenable | — |
@@ -137,11 +132,11 @@ Boutiques et dons uniques des scènes (union des branches, maximum par branche),
 | 076 | Grolem (`golem`) | rock/ground | Gravalanch (trade) | — | main | échange local | N-15 / T4 : terminal d'échange local dans tous les Centres |
 | 077 | Ponyta (`ponyta`) | fire | — | sauvage : pokemon_mansion_1f (floor) [main, J30, HEAD]<br>sauvage : pokemon_mansion_2f (floor) [main, J30, HEAD]<br>sauvage : pokemon_mansion_3f (floor) [main, J30, HEAD]<br>sauvage : pokemon_mansion_b1f (floor) [main, J30, HEAD] | main | obtenable | — |
 | 078 | Galopa (`rapidash`) | fire | Ponyta (niveau 40) | — | main | obtenable | — |
-| 079 | Ramoloss (`slowpoke`) | water/psychic | — | sauvage : seafoam_1f (floor) [main, J30, HEAD]<br>sauvage : seafoam_b1f (floor) [main, J30, HEAD]<br>sauvage : seafoam_b2f (floor) [main, J30, HEAD]<br>sauvage : seafoam_b3f (floor) [main, J30, HEAD]<br>sauvage : seafoam_b4f (floor) [main, J30, HEAD] | main | obtenable | — |
+| 079 | Ramoloss (`slowpoke`) | water/psychic | — | sauvage : seafoam_1f (floor) [main, J30, HEAD]<br>sauvage : seafoam_b1f (floor) [main, J30, HEAD]<br>sauvage : seafoam_b2f (floor) [main, J30, HEAD]<br>sauvage : seafoam_b3f (floor) [main, J30, HEAD]<br>sauvage : seafoam_b4f (floor) [main, J30, HEAD]<br>sauvage : safari_zone_center, safari_zone_east, safari_zone_north… (super_rod) [HEAD] | main | obtenable | — |
 | 080 | Flagadoss (`slowbro`) | water/psychic | Ramoloss (niveau 37) | sauvage : seafoam_1f (floor) [main, J30, HEAD]<br>sauvage : seafoam_b2f (floor) [main, J30, HEAD]<br>sauvage : seafoam_b4f (floor) [main, J30, HEAD]<br>sauvage : cerulean_cave_1f, cerulean_cave_2f, cerulean_cave_b1f (super_rod) [main, HEAD] | main | obtenable | — |
-| 081 | Magnéti (`magnemite`) | electric/steel | — | — | — | manque | N-11 : Centrale, lot 32G (Magnéti, sauvage RB à la Centrale seulement) |
-| 082 | Magnéton (`magneton`) | electric/steel | Magnéti (niveau 30) | sauvage : cerulean_cave_1f (floor) [main, HEAD] | main | obtenable | — |
-| 083 | Canarticho (`farfetchd`) | normal/flying | — | — | — | manque | N-14 : échange PNJ Piafabec → Canarticho (Carmin) |
+| 081 | Magnéti (`magnemite`) | electric/steel | — | sauvage : power_plant (floor) [HEAD] (carte absente) | — | manque | N-11 : Centrale, lot 32G (Magnéti, sauvage RB à la Centrale seulement) |
+| 082 | Magnéton (`magneton`) | electric/steel | Magnéti (niveau 30) | sauvage : cerulean_cave_1f (floor) [main, HEAD]<br>sauvage : power_plant (floor) [HEAD] (carte absente) | main | obtenable | — |
+| 083 | Canarticho (`farfetchd`) | normal/flying | — | échange PNJ : vermilion_trade_farfetchd (contre spearow) [HEAD] | HEAD | obtenable | — |
 | 084 | Doduo (`doduo`) | normal/flying | — | sauvage : route_16_west (grass) [main, J30, HEAD]<br>sauvage : route_17 (grass) [main, J30, HEAD]<br>sauvage : route_18 (grass) [main, J30, HEAD]<br>sauvage : safari_zone_east (grass) [main, HEAD]<br>sauvage : safari_zone_west (grass) [main, HEAD] | main | obtenable | — |
 | 085 | Dodrio (`dodrio`) | normal/flying | Doduo (niveau 31) | sauvage : cerulean_cave_1f (floor) [main, HEAD]<br>sauvage : cerulean_cave_2f (floor) [main, HEAD] | main | obtenable | — |
 | 086 | Otaria (`seel`) | water | — | sauvage : seafoam_1f (floor) [main, J30, HEAD]<br>sauvage : seafoam_b1f (floor) [main, J30, HEAD]<br>sauvage : seafoam_b2f (floor) [main, J30, HEAD]<br>sauvage : seafoam_b3f (floor) [main, J30, HEAD]<br>sauvage : seafoam_b4f (floor) [main, J30, HEAD]<br>échange PNJ : cinnabar_trade_seel (contre ponyta) [main, J30, HEAD] | main | obtenable | — |
@@ -156,9 +151,9 @@ Boutiques et dons uniques des scènes (union des branches, maximum par branche),
 | 095 | Onix (`onix`) | rock/ground | — | sauvage : dark_cave_1f (rubble) [main, J30, HEAD]<br>sauvage : dark_cave_b1f (rubble) [main, J30, HEAD]<br>sauvage : victory_road_1f (rubble) [main, J30, HEAD]<br>sauvage : victory_road_2f (rubble) [main, J30, HEAD]<br>sauvage : victory_road_3f (rubble) [main, J30, HEAD] | main | obtenable | — |
 | 096 | Soporifik (`drowzee`) | psychic | — | sauvage : route_11 (grass) [main, J30, HEAD] | main | obtenable | — |
 | 097 | Hypnomade (`hypno`) | psychic | Soporifik (niveau 26) | sauvage : cerulean_cave_1f (floor) [main, HEAD] | main | obtenable | — |
-| 098 | Krabby (`krabby`) | water | — | sauvage : seafoam_1f (floor) [main, J30, HEAD]<br>sauvage : seafoam_b1f (floor) [main, J30, HEAD]<br>sauvage : seafoam_b2f (floor) [main, J30, HEAD]<br>sauvage : seafoam_b3f (floor) [main, J30, HEAD]<br>sauvage : seafoam_b4f (floor) [main, J30, HEAD]<br>sauvage : * (super_rod) [main, J30, HEAD]<br>sauvage : fuchsia_city (super_rod) [main, J30, HEAD] | main | obtenable | — |
+| 098 | Krabby (`krabby`) | water | — | sauvage : seafoam_1f (floor) [main, J30, HEAD]<br>sauvage : seafoam_b1f (floor) [main, J30, HEAD]<br>sauvage : seafoam_b2f (floor) [main, J30, HEAD]<br>sauvage : seafoam_b3f (floor) [main, J30, HEAD]<br>sauvage : seafoam_b4f (floor) [main, J30, HEAD]<br>sauvage : * (super_rod) [main, J30, HEAD]<br>sauvage : fuchsia_city (super_rod) [main, J30, HEAD]<br>sauvage : safari_zone_center, safari_zone_east, safari_zone_north… (super_rod) [HEAD] | main | obtenable | — |
 | 099 | Krabboss (`kingler`) | water | Krabby (niveau 28) | sauvage : seafoam_b1f (floor) [main, J30, HEAD]<br>sauvage : seafoam_b3f (floor) [main, J30, HEAD]<br>sauvage : cerulean_cave_1f, cerulean_cave_2f, cerulean_cave_b1f (super_rod) [main, HEAD] | main | obtenable | — |
-| 100 | Voltorbe (`voltorb`) | electric | — | sauvage : route_10 (grass) [main, J30, HEAD] | main | obtenable | — |
+| 100 | Voltorbe (`voltorb`) | electric | — | sauvage : route_10 (grass) [main, J30, HEAD]<br>sauvage : power_plant (floor) [HEAD] (carte absente) | main | obtenable | — |
 | 101 | Électrode (`electrode`) | electric | Voltorbe (niveau 30) | sauvage : cerulean_cave_2f (floor) [main, HEAD]<br>sauvage : cerulean_cave_b1f (floor) [main, HEAD]<br>échange PNJ : cinnabar_trade_electrode (contre raichu) [main, J30, HEAD] | main | obtenable | — |
 | 102 | Noeunoeuf (`exeggcute`) | grass/psychic | — | sauvage : safari_zone_center (grass) [main, HEAD]<br>sauvage : safari_zone_east (grass) [main, HEAD]<br>sauvage : safari_zone_north (grass) [main, HEAD]<br>sauvage : safari_zone_west (grass) [main, HEAD] | main | obtenable | — |
 | 103 | Noadkoko (`exeggutor`) | grass/psychic | Noeunoeuf (leaf_stone) | — | HEAD | obtenable | — |
@@ -166,7 +161,7 @@ Boutiques et dons uniques des scènes (union des branches, maximum par branche),
 | 105 | Ossatueur (`marowak`) | ground | Osselait (niveau 28) | sauvage : cerulean_cave_2f (floor) [main, HEAD]<br>sauvage : cerulean_cave_b1f (floor) [main, HEAD]<br>sauvage : victory_road_1f (rubble) [main, J30, HEAD]<br>sauvage : victory_road_2f (rubble) [main, J30, HEAD] | main | obtenable | — |
 | 106 | Kicklee (`hitmonlee`) | fighting | — | don : fighting_dojo (N30) [main, HEAD] | main | choix unique | N-8 : le Maître du Dojo offre l'autre Poké Ball après la Ligue |
 | 107 | Tygnon (`hitmonchan`) | fighting | — | don : fighting_dojo (N30) [main, HEAD] | main | choix unique | N-8 : le Maître du Dojo offre l'autre Poké Ball après la Ligue |
-| 108 | Excelangue (`lickitung`) | normal | — | — | — | manque | N-14 : échange PNJ Flagadoss → Excelangue (Route 18) |
+| 108 | Excelangue (`lickitung`) | normal | — | échange PNJ : route_18_trade_lickitung (contre slowbro) [HEAD] | HEAD | obtenable | — |
 | 109 | Smogo (`koffing`) | poison | — | sauvage : pokemon_mansion_1f (floor) [main, J30, HEAD]<br>sauvage : pokemon_mansion_2f (floor) [main, J30, HEAD]<br>sauvage : pokemon_mansion_3f (floor) [main, J30, HEAD]<br>sauvage : pokemon_mansion_b1f (floor) [main, J30, HEAD] | main | obtenable | — |
 | 110 | Smogogo (`weezing`) | poison | Smogo (niveau 35) | sauvage : pokemon_mansion_1f (floor) [main, J30, HEAD]<br>sauvage : pokemon_mansion_2f (floor) [main, J30, HEAD]<br>sauvage : pokemon_mansion_3f (floor) [main, J30, HEAD]<br>sauvage : pokemon_mansion_b1f (floor) [main, J30, HEAD] | main | obtenable | — |
 | 111 | Rhinocorne (`rhyhorn`) | ground/rock | — | sauvage : safari_zone_center (grass) [main, HEAD]<br>sauvage : safari_zone_north (grass) [main, HEAD] | main | obtenable | — |
@@ -180,10 +175,10 @@ Boutiques et dons uniques des scènes (union des branches, maximum par branche),
 | 119 | Poissoroy (`seaking`) | water | Poissirène (niveau 33) | sauvage : fuchsia_city (super_rod) [main, J30, HEAD]<br>sauvage : cerulean_cave_1f, cerulean_cave_2f, cerulean_cave_b1f (super_rod) [main, HEAD] | main | obtenable | — |
 | 120 | Stari (`staryu`) | water | — | sauvage : seafoam_1f (floor) [main, J30, HEAD]<br>sauvage : seafoam_b1f (floor) [main, J30, HEAD]<br>sauvage : seafoam_b2f (floor) [main, J30, HEAD]<br>sauvage : seafoam_b3f (floor) [main, J30, HEAD]<br>sauvage : seafoam_b4f (floor) [main, J30, HEAD] | main | obtenable | — |
 | 121 | Staross (`starmie`) | water/psychic | Stari (water_stone) | — | main | obtenable | — |
-| 122 | M. Mime (`mr_mime`) | psychic | — | — | — | manque | N-14 : échange PNJ Abra → M. Mime (Route 2) |
+| 122 | M. Mime (`mr_mime`) | psychic | — | échange PNJ : route_2_trade_mr_mime (contre abra) [HEAD] | HEAD | obtenable | — |
 | 123 | Insécateur (`scyther`) | bug/flying | — | sauvage : safari_zone_center (grass) [main, HEAD]<br>sauvage : safari_zone_east (grass) [main, HEAD] | main | obtenable | — |
 | 124 | Lippoutou (`jynx`) | ice/psychic | — | — | — | manque | N-14 : échange PNJ Têtarte → Lippoutou (Azuria) |
-| 125 | Élektek (`electabuzz`) | — | — | — | — | manque | N-11 : Centrale, lot 32G (union Rouge + Bleu) |
+| 125 | Élektek (`electabuzz`) | electric | — | sauvage : power_plant (floor) [HEAD] (carte absente) | — | manque | N-11 : Centrale, lot 32G (union Rouge + Bleu) |
 | 126 | Magmar (`magmar`) | fire | — | sauvage : pokemon_mansion_3f (floor) [main, J30, HEAD]<br>sauvage : pokemon_mansion_b1f (floor) [main, J30, HEAD] | main | obtenable | — |
 | 127 | Scarabrute (`pinsir`) | bug | — | sauvage : safari_zone_center (grass) [main, HEAD]<br>sauvage : safari_zone_east (grass) [main, HEAD] | main | obtenable | — |
 | 128 | Tauros (`tauros`) | normal | — | sauvage : safari_zone_north (grass) [main, HEAD]<br>sauvage : safari_zone_west (grass) [main, HEAD] | main | obtenable | — |
@@ -195,7 +190,7 @@ Boutiques et dons uniques des scènes (union des branches, maximum par branche),
 | 134 | Aquali (`vaporeon`) | water | Évoli (water_stone) | — | main | choix unique | N-9 : deux Évoli de plus sur le toit de Céladopole après la Ligue |
 | 135 | Voltali (`jolteon`) | electric | Évoli (thunder_stone) | — | main | choix unique | N-9 : deux Évoli de plus sur le toit de Céladopole après la Ligue |
 | 136 | Pyroli (`flareon`) | fire | Évoli (fire_stone) | — | main | choix unique | N-9 : deux Évoli de plus sur le toit de Céladopole après la Ligue |
-| 137 | Porygon (`porygon`) | — | — | — | — | manque | N-13 : employé de Sylphe SARL après Giovanni |
+| 137 | Porygon (`porygon`) | normal | — | don : j32_porygon (N26) [HEAD] | HEAD | obtenable | — |
 | 138 | Amonita (`omanyte`) | rock/water | — | fossile : helix_fossil → labo de Cramois'Île [main, J30, HEAD] | main | choix unique | N-7 : le chercheur du Mont Sélénite confie l'autre fossile à Cramois'Île |
 | 139 | Amonistar (`omastar`) | rock/water | Amonita (niveau 40) | — | main | choix unique | N-7 : le chercheur du Mont Sélénite confie l'autre fossile à Cramois'Île |
 | 140 | Kabuto (`kabuto`) | rock/water | — | fossile : dome_fossil → labo de Cramois'Île [main, J30, HEAD] | main | choix unique | N-7 : le chercheur du Mont Sélénite confie l'autre fossile à Cramois'Île |
@@ -203,9 +198,9 @@ Boutiques et dons uniques des scènes (union des branches, maximum par branche),
 | 142 | Ptéra (`aerodactyl`) | rock/flying | — | fossile : old_amber → labo de Cramois'Île [main, J30, HEAD] | main | obtenable | — |
 | 143 | Ronflex (`snorlax`) | normal | — | fixe : j21_snorlax (N30) [main, J30, HEAD]<br>fixe : j21_snorlax_16 (N30) [main, J30, HEAD]<br>fixe : j32_snorlax (N30) [HEAD] | main | obtenable | — |
 | 144 | Artikodin (`articuno`) | ice/flying | — | fixe : seafoam (N50) [main, J30, HEAD] | main | obtenable | — |
-| 145 | Électhor (`zapdos`) | — | — | — | — | manque | N-11 : Centrale, lot 32G (Électhor N50) |
+| 145 | Électhor (`zapdos`) | electric/flying | — | fixe : j32_power_plant (N50) [HEAD] (carte power_plant absente) | — | manque | N-11 : Centrale, lot 32G (Électhor N50) |
 | 146 | Sulfura (`moltres`) | fire/flying | — | fixe : j29 (N50) [main, J30, HEAD] | main | obtenable | — |
-| 147 | Minidraco (`dratini`) | — | — | — | — | manque | N-12 : Super Canne RB au Parc Safari |
+| 147 | Minidraco (`dratini`) | dragon | — | sauvage : safari_zone_center, safari_zone_east, safari_zone_north… (super_rod) [HEAD] | HEAD | obtenable | — |
 | 148 | Draco (`dragonair`) | dragon | — ; absente des données : dratini → dragonair (level) | — | — | manque | N-12 (par évolution de Minidraco) : Super Canne RB au Parc Safari |
 | 149 | Dracolosse (`dragonite`) | dragon/flying | Draco (niveau 55) | — | — | manque | N-12 (par évolution de Minidraco) : Super Canne RB au Parc Safari |
 | 150 | Mewtwo (`mewtwo`) | psychic | — | fixe : cerulean_cave (N70) [main, HEAD] | main | obtenable | — |
