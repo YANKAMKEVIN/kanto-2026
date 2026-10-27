@@ -76,3 +76,25 @@ func test_knocked_out_articuno_scene_plays_again_after_the_league() -> void:
 	assert_false(flags.has_none(gate), "K.O. : la scène ne joue plus")
 	StaticRespawn.on_league_won(library.get_static_encounters(), flags)
 	assert_true(flags.has_none(gate), "après la Ligue : la scène rejoue")
+
+
+## J32 (T8, N-17 et 32J) : Mew mis K.O. ou en fuite revient au camion après la Ligue ; capturé,
+## jamais. La Ligue ne touche ni au Diplôme ni aux seconds exemplaires d'après la Ligue.
+func test_mew_comes_back_after_the_league_unless_caught() -> void:
+	var library := CutsceneLibrary.new()
+	library.load_dir()
+	var flags := StoryFlags.new()
+	for flag: StringName in [&"mew_appeared", &"mew_resolved", &"diploma_received",
+			&"oak_post_league_gifts_done", &"eevee_received_2", &"j32_second_fossil_given"]:
+		flags.set_flag(flag)
+	var gate := library.get_cutscene(&"mew").variants[0].unless_flags
+	assert_false(flags.has_none(gate), "K.O. : plus de Mew")
+	StaticRespawn.on_league_won(library.get_static_encounters(), flags)
+	assert_true(flags.has_none(gate), "après la Ligue : Mew revient")
+	for flag: StringName in [&"diploma_received", &"oak_post_league_gifts_done",
+			&"eevee_received_2", &"j32_second_fossil_given"]:
+		assert_true(flags.has_flag(flag), "%s gardé" % flag)
+	flags.set_flag(&"mew_resolved")
+	flags.set_flag(&"mew_caught")
+	StaticRespawn.on_league_won(library.get_static_encounters(), flags)
+	assert_false(flags.has_none(gate), "capturé : jamais de retour")

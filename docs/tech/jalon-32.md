@@ -146,12 +146,12 @@ Tableau par carte : objets visibles et cachés, CT/CS, pierres, cadeaux, échang
 Source : données et cartes déjà fusionnées ; référence Rouge/Bleu. Les écarts vont dans un registre
 `P0–P3`, sans correction de masse.
 
-### T7 — UX Pokédex et stockage
+### T7 — UX Pokédex et stockage — **état au 2026-10-27** : Pokédex déjà conforme (vus / capturés, recherche par nom et par numéro, filtres, compteurs ; `PokedexQuery`) ; **Stockage : recherche et tri non faits**, critères de tri et forme de la recherche à trancher par Kevin.
 Vus / capturés distincts, recherche par numéro et par nom, tableau de bord (espèces, vues,
 capturées). Stockage : recherche, tri, déplacement sans risque. Grandes zones de contact.
 
 ### T8 — Rejouabilité (Sonnet)
-Contrôle de la Ligue (J30), du Safari et de la pêche : aucun drapeau consommé à tort.
+Contrôle de la Ligue (J30), du Safari et de la pêche : aucun drapeau consommé à tort. **Contrôlé le 2026-10-27** : Ligue rejouable et Panthéon sans écrasement (`test_league_attempt` « replayed after the title », `test_league_ceremony` « second victory ») ; légendaires K.O. (Mew compris) de retour après chaque victoire, capturés jamais, et les dons d'après la Ligue (Diplôme, Chen, Évoli, fossile) jamais remis à zéro (`test_static_respawn`) ; Safari et pêche : aucun drapeau d'un seul usage (tables et visites ; `test_safari_*`, `test_fishing_director`). Reste la QA S24 (§5).
 
 ### T9 — Tests de complétion, migrations, performances, QA S24
 Test « complétion » en suite complète ; ancienne sauvegarde chargée ; stockage très rempli
