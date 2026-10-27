@@ -354,6 +354,7 @@ const VARIANT_FLAGS: Dictionary = {
 	&"j32_trade_aline": [PEWTER_FLAGS + [&"route_18_trade_lickitung_done"], PEWTER_FLAGS],
 	&"j32_trade_hugo": [PEWTER_FLAGS + [&"route_5_trade_nidoran_f_done"], PEWTER_FLAGS],
 	&"j32_trade_theo": [PEWTER_FLAGS + [&"route_11_trade_nidorina_done"], PEWTER_FLAGS],
+	&"j32_trade_coline": [PEWTER_FLAGS + [&"cerulean_trade_jynx_done"], PEWTER_FLAGS],
 	&"zapdos": [[]],
 	# Jalon 19 (T18) : zone purifiée et objets de la Tour.
 	&"tower_purified_zone": [PEWTER_FLAGS], &"tower_3f_objet_1": [PEWTER_FLAGS],
@@ -749,6 +750,7 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"j32_trade_aline": &"route_18_gate",
 	&"j32_trade_hugo": &"route_5_underground_gate",
 	&"j32_trade_theo": &"route_12_gate_2f",
+	&"j32_trade_coline": &"cerulean_house",
 }
 ## Jalon 21 (T10, T12) : objets du Sac qui choisissent chaque variante (« if_items » /
 ## « unless_items »), ligne par ligne comme VARIANT_FLAGS ; absent : Sac vide. La variante A du
@@ -974,7 +976,7 @@ func test_library_loads_without_error() -> void:
 		&"fighting_dojo_take_hitmonlee", &"fighting_dojo_take_hitmonchan"]
 		# Jalon 32 (N-18) : Ronflex d'après la Ligue ; N-13, N-14, N-11.
 		+ [&"snorlax_post_league_wake", &"silph_co_porygon_gift", &"zapdos",
-		&"j32_trade_remi", &"j32_trade_leon", &"j32_trade_aline", &"j32_trade_hugo", &"j32_trade_theo"]))
+		&"j32_trade_remi", &"j32_trade_leon", &"j32_trade_aline", &"j32_trade_hugo", &"j32_trade_theo", &"j32_trade_coline"]))
 
 
 func _sorted(values: Array) -> Array[StringName]:

@@ -16,7 +16,8 @@
 		"learnset": [
 			[1, "lick"], [1, "confuse_ray"], [1, "night_shade"], [29, "hypnosis"],
 			[38, "dream_eater"]
-		]
+		],
+		"evolutions": [{ "into": "gengar", "method": "trade" }]
 	},
 	"exeggcute": {
 		"dex": 102, "name": "Noeunoeuf", "types": ["grass", "psychic"],

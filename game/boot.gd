@@ -2611,6 +2611,7 @@ func _setup_league() -> void:
 	_league.process_mode = Node.PROCESS_MODE_PAUSABLE
 	add_child(_league)
 	_league.setup(GameState)
+	_league.static_encounters = _cutscenes.get_static_encounters()  # J32 (N-17, N-18)
 	SceneRouter.map_changed.connect(_league.on_map_changed)
 	_league.tree_exiting.connect(func() -> void:
 		if SceneRouter.map_changed.is_connected(_league.on_map_changed):

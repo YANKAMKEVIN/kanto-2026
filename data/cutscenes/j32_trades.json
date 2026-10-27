@@ -258,5 +258,57 @@
 				]
 			}
 		]
+	},
+	"j32_trade_coline": {
+		"variants": [
+			{
+				"if": [
+					"cerulean_trade_jynx_done"
+				],
+				"steps": [
+					{
+						"dialogue": "j32_trade_coline_after"
+					}
+				]
+			},
+			{
+				"steps": [
+					{
+						"unset": [
+							"j32_trade_offer_accepted",
+							"j32_trade_offer_declined"
+						]
+					},
+					{
+						"dialogue": "j32_trade_coline_offer"
+					},
+					{
+						"dialogue": "j32_trade_coline_refuse",
+						"if": [
+							"j32_trade_offer_declined"
+						]
+					},
+					{
+						"trade": "cerulean_trade_jynx",
+						"wrong": "j32_trade_coline_wrong",
+						"refuse": "j32_trade_coline_refuse",
+						"say": [
+							"cinnabar_trade_cable",
+							"j32_trade_coline_done",
+							"j32_trade_coline_thanks"
+						],
+						"if": [
+							"j32_trade_offer_accepted"
+						]
+					},
+					{
+						"unset": [
+							"j32_trade_offer_accepted",
+							"j32_trade_offer_declined"
+						]
+					}
+				]
+			}
+		]
 	}
 }

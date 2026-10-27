@@ -25,7 +25,21 @@ const DATA_DIR := "res://data"
 ## Jalon 26 (T6) : description de Safrania sur la Carte [D], à relire par Kevin.
 ## Jalon 32 (N-11, N-13, N-14) : textes d'Électhor, de Porygon et des échanges PNJ validés par
 ## Kevin le 2026-10-27, « draft » retiré.
-const PENDING_DRAFTS: Array[String] = ["world/zones.json/zones/saffron_city"]
+## Jalon 32 (N-14, après la fusion du J30) : échange Têtarte → Lippoutou [D], à relire par Kevin.
+const PENDING_DRAFTS: Array[String] = ["world/zones.json/zones/saffron_city",
+	# Jalon 32 (RP §2.13) : fiches de Pokédex [D] de la Ligue.
+	"pokedex/kanto.json/species/jynx",
+	"pokedex/kanto.json/species/machamp",
+	"pokedex/kanto.json/species/gengar",
+	"pokedex/kanto.json/species/dragonair",
+	"pokedex/kanto.json/species/dragonite",
+	"dialogues/j32_trades.json/j32_trade_coline_offer/variants/0",
+	"dialogues/j32_trades.json/j32_trade_coline_refuse/variants/0",
+	"dialogues/j32_trades.json/j32_trade_coline_wrong/variants/0",
+	"dialogues/j32_trades.json/j32_trade_coline_thanks/variants/0",
+	"dialogues/j32_trades.json/j32_trade_coline_after/variants/0",
+	"dialogues/j32_trades.json/j32_trade_coline_done/variants/0",
+]
 
 
 func test_data_has_json_files() -> void:

@@ -33,6 +33,7 @@
 		"learnset": [
 			[1, "wrap"], [1, "leer"], [10, "thunder_wave"], [20, "agility"], [30, "slam"],
 			[40, "dragon_rage"], [50, "hyper_beam"]
-		]
+		],
+		"evolutions": [{ "into": "dragonair", "method": "level", "level": 30 }]
 	}
 }

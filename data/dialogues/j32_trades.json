@@ -358,5 +358,83 @@
 				]
 			}
 		]
+	},
+	"j32_trade_coline_offer": {
+		"speaker": "Coline",
+		"variants": [
+			{
+				"draft": true,
+				"pages": [
+					"Salut ! Tu échangerais ton Têtarte\ncontre mon Lippoutou ?"
+				],
+				"choice": {
+					"confirm": "ÉCHANGER",
+					"cancel": "NON",
+					"confirm_set": [
+						"j32_trade_offer_accepted"
+					],
+					"cancel_set": [
+						"j32_trade_offer_declined"
+					],
+					"confirm_pages": [],
+					"cancel_pages": []
+				}
+			}
+		]
+	},
+	"j32_trade_coline_refuse": {
+		"speaker": "Coline",
+		"variants": [
+			{
+				"draft": true,
+				"pages": [
+					"Dommage… Repasse si tu changes d'avis."
+				]
+			}
+		]
+	},
+	"j32_trade_coline_wrong": {
+		"speaker": "Coline",
+		"variants": [
+			{
+				"draft": true,
+				"pages": [
+					"Ce n'est pas un Têtarte.\nReviens quand tu en auras un."
+				]
+			}
+		]
+	},
+	"j32_trade_coline_thanks": {
+		"speaker": "Coline",
+		"variants": [
+			{
+				"draft": true,
+				"pages": [
+					"Merci ! Prends bien soin de lui."
+				]
+			}
+		]
+	},
+	"j32_trade_coline_after": {
+		"speaker": "Coline",
+		"variants": [
+			{
+				"draft": true,
+				"pages": [
+					"Mon ancien Lippoutou va bien ?"
+				]
+			}
+		]
+	},
+	"j32_trade_coline_done": {
+		"narration": true,
+		"variants": [
+			{
+				"draft": true,
+				"pages": [
+					"{player} a échangé Têtarte contre Lola !"
+				]
+			}
+		]
 	}
 }

@@ -598,7 +598,8 @@ const IDS_J21_T22: Array[StringName] = [&"snorlax_route_16"]
 ## Jalon 32 (N-18) : Ronflex d'après la Ligue (Route 10), textes du J21 repris tels quels.
 const IDS_J32: Array[StringName] = [&"snorlax_post_league",
 	# N-13 (Porygon), N-14 (échanges PNJ de Rouge/Bleu), N-11 (Électhor) : textes validés par Kevin le 2026-10-27.
-	&"silph_co_porygon_giver",
+	&"silph_co_porygon_giver", &"j32_trade_coline",
+	&"j32_trade_coline_offer", &"j32_trade_coline_refuse", &"j32_trade_coline_wrong", &"j32_trade_coline_thanks", &"j32_trade_coline_after", &"j32_trade_coline_done",
 	&"silph_co_porygon_received", &"silph_co_porygon_stored", &"zapdos_presence",
 	&"zapdos_flew_away", &"j32_trade_remi", &"j32_trade_leon", &"j32_trade_aline",
 	&"j32_trade_hugo", &"j32_trade_theo", &"j32_trade_remi_offer", &"j32_trade_remi_refuse",
@@ -1713,7 +1714,7 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		# Jalon 32 (N-13, N-14, N-11) : Porygon, échanges PNJ de RB, Électhor.
 		&"silph_porygon_received", &"route_2_trade_mr_mime_done", &"vermilion_trade_farfetchd_done",
 		&"route_18_trade_lickitung_done", &"route_5_trade_nidoran_f_done",
-		&"route_11_trade_nidorina_done", &"zapdos_caught", &"zapdos_done",
+		&"route_11_trade_nidorina_done", &"cerulean_trade_jynx_done", &"zapdos_caught", &"zapdos_done",
 		&"beaten_mt_moon_researcher", &"beaten_nugget_rocket", &"brock_met", &"cerulean_reached", &"got_mt_moon_1f_hidden_1",
 		&"got_mt_moon_1f_item_1", &"got_mt_moon_b1f_item_1", &"got_mt_moon_b1f_item_2",
 		&"got_mt_moon_b2f_hidden_1", &"got_mt_moon_b2f_item_1", &"got_nugget", &"got_oak_parcel",
@@ -2043,6 +2044,7 @@ const TEXTS_J32: Dictionary[StringName, Array] = {
 }
 ## Jalon 32 (N-14) : répliques des échanges PNJ jouées par leurs scènes.
 const J32_TRADE_LINES: Array[StringName] = [
+	&"j32_trade_coline_offer", &"j32_trade_coline_refuse", &"j32_trade_coline_wrong", &"j32_trade_coline_thanks", &"j32_trade_coline_after", &"j32_trade_coline_done",
 	&"j32_trade_remi_offer", &"j32_trade_remi_refuse", &"j32_trade_remi_wrong",
 	&"j32_trade_remi_thanks", &"j32_trade_remi_after", &"j32_trade_remi_done",
 	&"j32_trade_leon_offer", &"j32_trade_leon_refuse", &"j32_trade_leon_wrong",
@@ -2054,7 +2056,10 @@ const J32_TRADE_LINES: Array[StringName] = [
 	&"j32_trade_theo_offer", &"j32_trade_theo_refuse", &"j32_trade_theo_wrong",
 	&"j32_trade_theo_thanks", &"j32_trade_theo_after", &"j32_trade_theo_done"
 ]
-const PENDING_DRAFT_VARIANTS: Array[String] = []
+## Jalon 32 (N-14, après la fusion du J30) : échange Têtarte → Lippoutou, textes [D] à valider.
+const PENDING_DRAFT_VARIANTS: Array[String] = [
+	"j32_trade_coline_offer:0", "j32_trade_coline_refuse:0", "j32_trade_coline_wrong:0", "j32_trade_coline_thanks:0", "j32_trade_coline_after:0", "j32_trade_coline_done:0",
+]
 
 
 func test_no_dialogue_nor_variant_is_draft() -> void:
@@ -2481,7 +2486,7 @@ func test_oak_parcel_lines() -> void:
 	# Jalon 29 : dix objets au sol, cinq cachés, huit gardes, le rival n° 7 et Sulfura.
 	# Jalon 31 (T4) : huit objets au sol et deux cachés de la Grotte Azurée, Mewtwo.
 	# Jalon 32 : cinq échanges PNJ de Rouge/Bleu (N-14) et Porygon (N-13).
-	assert_eq(launched, 206, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
+	assert_eq(launched, 207, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
 		+ "sa CT34, Ondine (pont, Arène et rattrapage), écran, module, console, objets de la "
 		+ "Route 25, le Rocket d'Azuria (2) et le barrage sud ; J15 : objets de la Route 5 ; "
 		+ "J16 : Major Bob (2), neuf objets du S.S. Anne, le capitaine, le marin (2) ; "
@@ -2494,7 +2499,7 @@ func test_oak_parcel_lines() -> void:
 		+ "J24 : objets (2), caches (2), Artikodin, CT35, fossiles (2) ; J25 : Ptéra (1) ; "
 		+ "J26 : Lokhlass, Master Ball, deux objets du 7F ; J27 : Morgane, maître, deux Balls ; "
 		+ "J28 : Giovanni (2), Rappel ; J29 : objets, cachés, gardes, rival n° 7 et Sulfura ; "
-		+ "J31 : Grotte Azurée (8 objets, 2 caches, Mewtwo) ; J32 : échanges (5), Porygon")
+		+ "J31 : Grotte Azurée (8 objets, 2 caches, Mewtwo) ; J32 : échanges (6), Porygon")
 	# Le jeton n'apparaît que dans la réplique de l'espèce, « {pokemon} » dans les phrases du
 	# compagnon (J11), et ceux de la Pension dans ses répliques (J15).
 	for row: Array in _pages():

@@ -9,6 +9,7 @@ const TRADES := {
 	&"route_18_trade_lickitung": [&"route_18_gate", &"slowbro", &"lickitung"],
 	&"route_5_trade_nidoran_f": [&"route_5_underground_gate", &"nidoran_m", &"nidoran_f"],
 	&"route_11_trade_nidorina": [&"route_12_gate_2f", &"nidorino", &"nidorina"],
+	&"cerulean_trade_jynx": [&"cerulean_house", &"poliwhirl", &"jynx"],
 }
 
 var _data: PokemonData

@@ -257,6 +257,8 @@ func test_real_evolution_chains() -> void:
 		&"machop": [&"machoke", 28], &"voltorb": [&"electrode", 30], &"koffing": [&"weezing", 35],
 		# Jalon 32 (32K, après la fusion du J29 : Noadkoko présent) : Pierre Plante.
 		&"exeggcute": [&"exeggutor", &"leaf_stone"],
+		# Jalon 32 (32K, après la fusion du J30) : échanges (terminal local) et Minidraco (N30).
+		&"machoke": [&"machamp", &""], &"haunter": [&"gengar", &""], &"dratini": [&"dragonair", 30],
 		# Ligue (jalon 30, T3) : Rouge/Bleu ; Spectrum → Ectoplasma (échange) n'est pas déclaré
 		# (Spectrum vient du J19).
 		&"dragonair": [&"dragonite", 55],

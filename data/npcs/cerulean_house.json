@@ -1,5 +1,20 @@
 {
 	"resident": {
-		"cell": [4, 5], "facing": "right", "sprite": "maya", "dialogue": "cerulean_house_resident"
+		"cell": [
+			4,
+			5
+		],
+		"facing": "right",
+		"sprite": "maya",
+		"dialogue": "cerulean_house_resident"
+	},
+	"echangeur": {
+		"cell": [
+			12,
+			4
+		],
+		"facing": "down",
+		"sprite": "lass",
+		"dialogue": "j32_trade_coline"
 	}
 }

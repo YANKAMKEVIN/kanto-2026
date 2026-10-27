@@ -13,5 +13,8 @@
 	},
 	"j32_trade_theo": {
 		"cutscene": "j32_trade_theo"
+	},
+	"j32_trade_coline": {
+		"cutscene": "j32_trade_coline"
 	}
 }

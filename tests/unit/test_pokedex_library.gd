@@ -45,7 +45,12 @@ const NAMED_SPECIES_OK: Dictionary[StringName, Array] = {&"magneton": [&"magnemi
 ## le 2026-10-22).
 ## Jalon 30 (T3) : les cinq espèces nouvelles de la Ligue n'ont pas encore de fiche (textes à écrire
 ## et à valider, `docs/tech/reportes.md`) ; Rhinoféros, Kicklee et Tygnon ont celles de main.
-const NO_ENTRY_YET: Array[StringName] = [&"jynx", &"machamp", &"gengar", &"dragonair", &"dragonite"]
+## Jalon 32 : les fiches de Lippoutou, Mackogneur, Ectoplasma, Draco et Dracolosse (RP du
+## registre §2.13) sont écrites en [D] (« draft »), à valider par Kevin.
+const NO_ENTRY_YET: Array[StringName] = []
+## Fiches en brouillon, à valider par Kevin (retirer leur « draft » puis les sortir d'ici).
+const PENDING_DRAFT: Array[StringName] = [&"jynx", &"machamp", &"gengar", &"dragonair",
+	&"dragonite"]
 
 var _data: PokemonData
 var _lib: PokedexLibrary
@@ -126,7 +131,7 @@ func test_real_texts_are_validated_and_never_spoil() -> void:
 	_lib.load_file()
 	for id: StringName in _lib.get_species_ids():
 		var info := _lib.get_species(id)
-		assert_false(info.draft, "%s : description validée par Kevin" % id)
+		assert_eq(info.draft, PENDING_DRAFT.has(id), "%s : description validée par Kevin" % id)
 		var texts: Array[String] = []
 		if not EVOLUTION_DESCRIPTIONS.has(id):
 			texts.append(info.description)
