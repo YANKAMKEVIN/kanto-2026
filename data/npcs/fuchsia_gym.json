@@ -1,0 +1,110 @@
+{
+	"j1": {
+		"cell": [
+			10,
+			14
+		],
+		"facing": "down",
+		"sprite": "gambler",
+		"dialogue": "fuchsia_gym_juggler_1_after",
+		"trainer": {
+			"id": "fuchsia_gym_juggler_1",
+			"sight": 2,
+			"before": "fuchsia_gym_juggler_1_before",
+			"defeated": "fuchsia_gym_juggler_1_defeated"
+		}
+	},
+	"j2": {
+		"cell": [
+			9,
+			9
+		],
+		"facing": "right",
+		"sprite": "gambler",
+		"dialogue": "fuchsia_gym_juggler_2_after",
+		"trainer": {
+			"id": "fuchsia_gym_juggler_2",
+			"sight": 2,
+			"before": "fuchsia_gym_juggler_2_before",
+			"defeated": "fuchsia_gym_juggler_2_defeated"
+		}
+	},
+	"j3": {
+		"cell": [
+			3,
+			13
+		],
+		"facing": "down",
+		"sprite": "gambler",
+		"dialogue": "fuchsia_gym_juggler_3_after",
+		"trainer": {
+			"id": "fuchsia_gym_juggler_3",
+			"sight": 4,
+			"before": "fuchsia_gym_juggler_3_before",
+			"defeated": "fuchsia_gym_juggler_3_defeated"
+		}
+	},
+	"d1": {
+		"cell": [
+			5,
+			6
+		],
+		"facing": "up",
+		"sprite": "docker",
+		"dialogue": "fuchsia_gym_tamer_1_after",
+		"trainer": {
+			"id": "fuchsia_gym_tamer_1",
+			"sight": 2,
+			"before": "fuchsia_gym_tamer_1_before",
+			"defeated": "fuchsia_gym_tamer_1_defeated"
+		}
+	},
+	"d2": {
+		"cell": [
+			10,
+			3
+		],
+		"facing": "down",
+		"sprite": "docker",
+		"dialogue": "fuchsia_gym_tamer_2_after",
+		"trainer": {
+			"id": "fuchsia_gym_tamer_2",
+			"sight": 2,
+			"before": "fuchsia_gym_tamer_2_before",
+			"defeated": "fuchsia_gym_tamer_2_defeated"
+		}
+	},
+	"j4": {
+		"cell": [
+			4,
+			8
+		],
+		"facing": "left",
+		"sprite": "gambler",
+		"dialogue": "fuchsia_gym_juggler_4_after",
+		"trainer": {
+			"id": "fuchsia_gym_juggler_4",
+			"sight": 2,
+			"before": "fuchsia_gym_juggler_4_before",
+			"defeated": "fuchsia_gym_juggler_4_defeated"
+		}
+	},
+	"koga": {
+		"cell": [
+			6,
+			11
+		],
+		"facing": "down",
+		"sprite": "gentleman",
+		"dialogue": "fuchsia_gym_koga"
+	},
+	"guide": {
+		"cell": [
+			9,
+			16
+		],
+		"facing": "down",
+		"sprite": "gym_guide",
+		"dialogue": "fuchsia_gym_guide"
+	}
+}

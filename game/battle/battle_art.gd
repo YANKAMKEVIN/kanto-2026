@@ -11,6 +11,8 @@ extends RefCounted
 ##   `test_battle_art.gd`), l'artwork officiel : jamais de côté vide.
 ## - Taille réelle (m) : données du Pokédex (`data/pokedex/kanto.json`) ; inconnue : la taille de
 ##   référence ([constant BattleLayout.REFERENCE_HEIGHT_M]).
+## - Orientation : l'adversaire regarde vers la gauche (vers ton Pokémon) ; les artworks tournés
+##   vers la droite ([constant FACING_RIGHT]) sont retournés (`"flip"`, boîte en miroir).
 ## Les données d'espèces viennent de [method setup] (Boot) ; sans appel, elles sont lues une
 ## fois et partagées (tests, outils de capture).
 
@@ -22,9 +24,18 @@ const PLACEHOLDER_DIR: String = "res://assets/sprites/pokemon/placeholder/"
 ## pour le côté du joueur ; une espèce sans fichier garde son sprite provisoire.
 const PAINTED_BACK_DIR: String = "res://assets/sprites/pokemon/dos/"
 
+## Dos peint **en plongée** pour le cadrage B (`dos_rb_NNN.png`, déjà coupé par le bas : posé
+## sur le bord de l'écran, [constant BattleLayout.BACK_CROP] ne s'applique pas). Priorité : dos RB
+## > dos IA > dos 3D > sprite provisoire.
+
 ## Dos 3D (`dos3d_NNN.png`, rendu X/Y, même format 1024²) : repli du dos IA pour une espèce qui n'a
 ## pas de `dos_ia` (16 prototypes validés, dont 4 sans équivalent IA : 050, 051, 096, 109).
 ## Priorité : dos IA > dos 3D > sprite provisoire.
+
+## Numéros du Pokédex dont l'artwork officiel regarde vers la droite (relevé sur planche,
+## QA A17 du J30 : Roucarnage du rival tournait le dos) : retournés côté adversaire.
+const FACING_RIGHT: Array[int] = [2, 9, 10, 18, 21, 28, 30, 38, 53, 55, 58, 78, 83, 106, 118,
+	146, 147]
 
 ## Boîtes visibles des images provisoires, par chemin (lues une fois).
 static var _boxes: Dictionary[String, Rect2] = {}
@@ -57,9 +68,15 @@ static func painted_back_3d_path(dex: int) -> String:
 	return PAINTED_BACK_DIR + "dos3d_%03d.png" % dex
 
 
-## Chemin du dos peint à utiliser pour le numéro [param dex] : IA d'abord, puis 3D ; "" sinon.
+## Chemin du dos en plongée (cadrage B) du numéro [param dex] (le fichier peut ne pas exister).
+static func painted_back_rb_path(dex: int) -> String:
+	return PAINTED_BACK_DIR + "dos_rb_%03d.png" % dex
+
+
+## Chemin du dos peint à utiliser pour le numéro [param dex] : plongée, puis IA, puis 3D ; "" sinon.
 static func best_painted_back_path(dex: int) -> String:
-	for path: String in [painted_back_path(dex), painted_back_3d_path(dex)]:
+	for path: String in [painted_back_rb_path(dex), painted_back_path(dex),
+			painted_back_3d_path(dex)]:
 		if ResourceLoader.exists(path):
 			return path
 	return ""
@@ -84,14 +101,24 @@ func height_m(species: StringName) -> float:
 
 ## Image de combat de [param species] : { texture (Texture2D ou null), box (Rect2 : boîte
 ## visible dans la texture, pieds au bas-centre), official (bool : artwork HD, filtre
-## linéaire ; sinon pixel art provisoire, NEAREST, échelle entière) }.
+## linéaire ; sinon pixel art provisoire, NEAREST, échelle entière), crop (float, dos
+## seulement : part de la boîte sous le bord bas en cadrage B, 0 pour un dos en plongée) }.
 func image(species: StringName, back: bool) -> Dictionary:
+	var result := _image(species, back)
+	if back:
+		var texture: Texture2D = result["texture"]
+		var rb := texture != null and texture.resource_path.get_file().begins_with("dos_rb_")
+		result["crop"] = 0.0 if rb else BattleLayout.BACK_CROP
+	return result
+
+
+func _image(species: StringName, back: bool) -> Dictionary:
 	if species == GhostDisguise.SPECIES:
 		return _ghost_image(back)
 	if not back:
 		var official := _official(species)
 		if not official.is_empty():
-			return official
+			return _facing_left(official, dex_number(species))
 	if back:
 		var painted_path := best_painted_back_path(dex_number(species))
 		if not painted_path.is_empty():
@@ -117,6 +144,19 @@ func _ghost_image(back: bool) -> Dictionary:
 		return {"texture": null, "official": false, "box": Rect2(Vector2.ZERO, BattleLayout.NATIVE)}
 	var texture := load(path) as Texture2D
 	return {"texture": texture, "official": true, "box": visible_box(texture, path)}
+
+
+## [param image] (artwork de face) tourné vers la gauche : un artwork de [constant FACING_RIGHT]
+## est retourné (`"flip"`) et sa boîte mise en miroir dans la texture.
+static func _facing_left(image: Dictionary, number: int) -> Dictionary:
+	if not FACING_RIGHT.has(number):
+		return image
+	var box: Rect2 = image["box"]
+	var width: float = (image["texture"] as Texture2D).get_size().x
+	var mirrored := image.duplicate()
+	mirrored["flip"] = true
+	mirrored["box"] = Rect2(Vector2(width - box.end.x, box.position.y), box.size)
+	return mirrored
 
 
 ## Artwork officiel de [param species], resserré sur son cadre utile ; vide sans artwork.

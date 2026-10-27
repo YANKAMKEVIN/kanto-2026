@@ -1,0 +1,67 @@
+# Arène de Koga (fuchsia_gym), Parmanie — grille fonctionnelle (jalon 23, dossier 26 §10 ; préparée
+# le 2026-10-19). GÉOMÉTRIE ROUGE/BLEU CASE POUR CASE pour la salle et les MURS INVISIBLES (N-16) :
+# pret/pokered af519899, maps/FuchsiaGym.blk (5 × 9 blocks = 10 × 18 cases), tileset Gym
+# (gfx/blocksets/gym.bst ; collision = tuile en bas à gauche de chaque case, liste Gym_Coll), objets
+# de data/maps/objects/FuchsiaGym.asm. Mise à l'enveloppe des intérieurs du projet : parois de
+# 2 colonnes, fond de 2 rangées, sortie sur l'avant-dernière rangée. Vérifiée par
+# tools/art/plan_check_safari.py (profil parmanie_arene).
+#
+# DÉCALAGE : case de la grille = case RB + (2, 1). Les rangées RB 1..16 sont les rangées 2..17 ;
+# la rangée RB 17 (sol et porte) devient la rangée 18 (mur et sortie), comme la convention des
+# intérieurs ; aucun Dresseur ni passage n'y était.
+#
+# 14 × 20. Koga est au CENTRE-BAS (6, 11), tourné ↓, PAS au fond (RB). Les murs invisibles (« i »)
+# occupent les rangées 3 à 13 et forment le dédale ; ils BLOQUENT comme des murs et restent après la
+# victoire. Indices (N-15, dossier 26 §10.1) : jointure de parquet très légère sous chaque « i » ;
+# au contact, retour haptique, son mat et frémissement 0,4 s ; rien de permanent.
+# Statues de l'entrée (« S ») en (5, 15..16) et (8, 15..16) ; le Guide en (9, 16).
+# La salle est plus haute que l'écran (20 > 11,25 rangées) : la caméra suit le joueur.
+#
+# Dresseurs (RB, dossier 26 §10.2 ; niveaux finaux par simulation) — POSITIONS, sight= RB :
+#   J1 Jongleur (10, 14) ↓ vue 2 · Hypnomade 38          J2 Jongleur (9, 9) → vue 2 · Soporifik ×2, Kadabra, Soporifik 31
+#   J3 Jongleur (3, 13) ↓ vue 4 · Soporifik, Kadabra 34  D1 Dompteur (5, 6) ↑ vue 2 · Sablaireau, Arbok 34
+#   D2 Dompteur (10, 3) ↓ vue 2 · Arbok, Sablaireau, Arbok 33   J4 Jongleur (4, 8) ← vue 2 · Soporifik, Hypnomade 34
+# Les inévitables se lisent dans le rapport du contrôle (aucun n'est imposé par le dossier).
+#
+# Légende :
+#   K mur (bloqué)      . parquet (praticable)      i MUR INVISIBLE (bloqué, dessiné comme le parquet)
+#   S statue (bloquée)  X sortie vers Parmanie (praticable, PUSH ↓)
+# Les Dresseurs, Koga et le Guide ne sont PAS dessinés (cases « . ») : voir POSITIONS.
+
+PRATICABLES .X
+
+GRILLE 14 20
+00 KKKKKKKKKKKKKK
+01 KKKKKKKKKKKKKK
+02 KK..........KK
+03 KK..ii...i..KK
+04 KK....ii.i..KK
+05 KKii..i..i..KK
+06 KK....i..i..KK
+07 KKi.ii..i...KK
+08 KKi.....i...KK
+09 KK..iiiii...KK
+10 KK......i...KK
+11 KK..i....i..KK
+12 KKiii....i..KK
+13 KK..iiiiii..KK
+14 KK..........KK
+15 KK...S..S...KK
+16 KK...S..S...KK
+17 KK..........KK
+18 KKKKKKXXKKKKKK
+19 KKKKKKKKKKKKKK
+FIN
+
+POSITIONS
+sortie                 warp           6..7,18      libre   vers=fuchsia_city  # PUSH ↓ → Parmanie (façade du J22, porte ouverte au J23) ; RB warps (4..5, 17)
+entree                 spawn          6..7,17      libre   facing=up
+koga                   champion       6,11         bloque  facing=down trainer=fuchsia_gym_koga  # RB (4, 10) ; textes 38 à 44
+guide                  pnj            9,16         bloque  facing=down  # RB (7, 15) ; textes 36 et 37
+j1                     dresseur       10,14        bloque  facing=down sight=2 trainer=fuchsia_gym_juggler_1  # RB (8, 13)
+j2                     dresseur       9,9          bloque  facing=right sight=2 trainer=fuchsia_gym_juggler_2  # RB (7, 8)
+j3                     dresseur       3,13         bloque  facing=down sight=4 trainer=fuchsia_gym_juggler_3  # RB (1, 12)
+d1                     dresseur       5,6          bloque  facing=up sight=2 trainer=fuchsia_gym_tamer_1  # RB (3, 5)
+d2                     dresseur       10,3         bloque  facing=down sight=2 trainer=fuchsia_gym_tamer_2  # RB (8, 2)
+j4                     dresseur       4,8          bloque  facing=left sight=2 trainer=fuchsia_gym_juggler_4  # RB (2, 7)
+FIN

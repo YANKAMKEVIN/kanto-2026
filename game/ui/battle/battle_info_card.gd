@@ -13,6 +13,10 @@ extends BattleWidget
 ## (EXP_GAIN_HOLD) au-dessus de la carte. La barre disparaît ensuite (EXP_BAR_LINGER puis
 ## EXP_BAR_FADE), sauf si une autre tranche la reprend entre-temps : jamais permanente
 ## (bible §11). pulse_level met « Nv. » à jour et le fait pulser ; aucune fenêtre (Q25).
+##
+## Noms longs (QA 23E) : le nom n'est jamais rogné ; s'il ne tient pas dans la largeur de la
+## carte, la pastille de statut perd son icône (le statut reste un texte, dossier 08 §2), puis
+## le nom rétrécit jusqu'à BATTLE_CARD_NAME_FONT_MIN.
 
 ## Libellé du niveau (texte d'interface) et format des PV chiffrés.
 const LEVEL_TAG := "Nv."
@@ -85,6 +89,7 @@ func set_view(view: BattleCardView) -> void:
 	set_status(view.status)
 	set_show_hp_numbers(view.show_hp_numbers)
 	set_hp(view.hp, view.max_hp)
+	_fit_name()
 
 
 ## Pose (ou retire, avec [constant StatusRules.NONE]) l'étiquette de statut « PSN » à droite du
@@ -96,6 +101,7 @@ func set_status(status: StringName) -> void:
 	_status_badge.visible = not label.is_empty()
 	if not label.is_empty():
 		_status_badge.set_type(StatusView.badge_type(status), label)
+	_fit_name()
 
 
 ## Montre ou cache « 19 / 19 » sous la barre (côté joueur seulement).
@@ -151,6 +157,7 @@ func set_level(level: int) -> void:
 	BattleWidget.complete_tween(_level_pulse)
 	_level = level
 	_level_value.text = str(level)
+	_fit_name()
 
 
 ## Coroutine : « Nv. » prend [param level] et pulse un instant (grossit en ACCENT, puis revient,
@@ -158,6 +165,7 @@ func set_level(level: int) -> void:
 func pulse_level(level: int) -> void:
 	_level = level
 	_level_value.text = str(level)
+	_fit_name()
 	_haptic(UiTokens.HAPTIC_LEVEL_UP_MS)
 	BattleWidget.complete_tween(_level_pulse)
 	_level_value.scale = Vector2.ONE
@@ -177,6 +185,11 @@ func pulse_level(level: int) -> void:
 
 func get_name_text() -> String:
 	return _name_label.text
+
+
+## Taille de police du nom (BATTLE_CARD_NAME_FONT, moins pour un nom long).
+func get_name_font_size() -> int:
+	return _name_label.get_theme_font_size(&"font_size")
 
 
 ## Statut posé sur la carte (&"" = aucune étiquette).
@@ -270,6 +283,52 @@ func _apply_numbers() -> void:
 	var height := UiTokens.BATTLE_CARD_HEIGHT_NUMBERS if _show_numbers \
 		else UiTokens.BATTLE_CARD_HEIGHT
 	_body.custom_minimum_size = Vector2(UiTokens.BATTLE_CARD_WIDTH, height)
+
+
+## Nom entier dans la largeur de la carte : taille du thème si tout tient ; sinon la pastille de
+## statut perd d'abord son icône (le nom garde ainsi une taille proche de celle du niveau), puis
+## le nom rétrécit (plancher BATTLE_CARD_NAME_FONT_MIN).
+func _fit_name() -> void:
+	_name_label.remove_theme_font_size_override(&"font_size")
+	_status_badge.set_show_icon(true)
+	if _name_label.get_combined_minimum_size().x <= _name_room():
+		return
+	if _status_badge.visible:
+		_status_badge.set_show_icon(false)
+	_shrink_name_to(_name_room())
+
+
+## Réduit le nom jusqu'à ce qu'il tienne dans [param room] pixels ; faux s'il ne tient pas même
+## au plancher (il reste alors au plancher).
+func _shrink_name_to(room: float) -> bool:
+	var size := UiTokens.BATTLE_CARD_NAME_FONT
+	while true:
+		if size == UiTokens.BATTLE_CARD_NAME_FONT:
+			_name_label.remove_theme_font_size_override(&"font_size")
+		else:
+			_name_label.add_theme_font_size_override(&"font_size", size)
+		if _name_label.get_combined_minimum_size().x <= room:
+			return true
+		if size <= UiTokens.BATTLE_CARD_NAME_FONT_MIN:
+			return false
+		size -= 1
+	return false
+
+
+## Largeur laissée au nom dans l'en-tête : carte moins ses marges, les autres éléments visibles
+## de l'en-tête et leurs écarts.
+func _name_room() -> float:
+	var room := float(UiTokens.BATTLE_CARD_WIDTH) \
+		- _body.get_theme_stylebox(&"panel").get_minimum_size().x
+	var shown := 0
+	for child: Node in _header.get_children():
+		var control := child as Control
+		if control == null or not control.visible:
+			continue
+		shown += 1
+		if control != _name_label:
+			room -= control.get_combined_minimum_size().x
+	return room - float(maxi(shown - 1, 0) * UiTokens.BATTLE_CARD_NAME_GAP)
 
 
 func _on_hp_shown(hp: int, max_hp: int) -> void:

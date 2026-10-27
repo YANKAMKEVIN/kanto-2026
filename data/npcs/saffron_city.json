@@ -1,0 +1,308 @@
+{
+	"garde_arene": {
+		"cell": [
+			50,
+			10
+		],
+		"facing": "down",
+		"sprite": "rocket_grunt_m",
+		"dialogue": "saffron_rocket_gym",
+		"unless": [
+			"silph_giovanni_defeated"
+		]
+	},
+	"garde_sylphe": {
+		"cell": [
+			31,
+			30
+		],
+		"facing": "down",
+		"sprite": "rocket_grunt_f",
+		"dialogue": "saffron_rocket_silph",
+		"unless": [
+			"silph_giovanni_defeated"
+		]
+	},
+	"habitant_libre": {
+		"cell": [
+			9,
+			41
+		],
+		"facing": "right",
+		"sprite": "old_man",
+		"dialogue": "saffron_resident_free",
+		"if": [
+			"silph_giovanni_defeated"
+		]
+	},
+	"habitant_occupe": {
+		"cell": [
+			9,
+			41
+		],
+		"facing": "right",
+		"sprite": "old_man",
+		"dialogue": "saffron_resident_occupied",
+		"unless": [
+			"silph_giovanni_defeated"
+		]
+	},
+	"lib_employe": {
+		"cell": [
+			33,
+			31
+		],
+		"facing": "down",
+		"sprite": "engineer",
+		"dialogue": "saffron_silph_worker_m",
+		"if": [
+			"silph_giovanni_defeated"
+		]
+	},
+	"lib_employee": {
+		"cell": [
+			20,
+			41
+		],
+		"facing": "left",
+		"sprite": "cooltrainer_f",
+		"dialogue": "saffron_silph_worker_f",
+		"if": [
+			"silph_giovanni_defeated"
+		],
+		"route": {
+			"cells": [
+				[
+					20,
+					41
+				],
+				[
+					21,
+					41
+				],
+				[
+					20,
+					41
+				],
+				[
+					19,
+					41
+				]
+			],
+			"pause": 1.5
+		}
+	},
+	"lib_gentleman": {
+		"cell": [
+			49,
+			20
+		],
+		"facing": "down",
+		"sprite": "gentleman",
+		"dialogue": "saffron_gentleman",
+		"if": [
+			"silph_giovanni_defeated"
+		]
+	},
+	"lib_rocker": {
+		"cell": [
+			27,
+			12
+		],
+		"facing": "up",
+		"sprite": "rocker",
+		"dialogue": "saffron_rocker",
+		"if": [
+			"silph_giovanni_defeated"
+		]
+	},
+	"lib_roucarnage": {
+		"cell": [
+			50,
+			20
+		],
+		"facing": "down",
+		"sprite": "pokemon/pidgeotto",
+		"dialogue": "saffron_pidgeot",
+		"if": [
+			"silph_giovanni_defeated"
+		]
+	},
+	"lib_scientifique": {
+		"cell": [
+			8,
+			21
+		],
+		"facing": "down",
+		"sprite": "researcher",
+		"dialogue": "saffron_scientist",
+		"if": [
+			"silph_giovanni_defeated"
+		],
+		"look": {
+			"facings": [
+				"down",
+				"left",
+				"down",
+				"right"
+			],
+			"every": 4.0
+		}
+	},
+	"sbire_1": {
+		"cell": [
+			14,
+			10
+		],
+		"facing": "down",
+		"sprite": "rocket_grunt_m",
+		"dialogue": "saffron_rocket",
+		"unless": [
+			"silph_giovanni_defeated"
+		]
+	},
+	"sbire_2": {
+		"cell": [
+			25,
+			11
+		],
+		"facing": "left",
+		"sprite": "rocket_grunt_f",
+		"dialogue": "saffron_rocket",
+		"unless": [
+			"silph_giovanni_defeated"
+		],
+		"route": {
+			"cells": [
+				[
+					25,
+					11
+				],
+				[
+					26,
+					11
+				],
+				[
+					25,
+					11
+				],
+				[
+					24,
+					11
+				]
+			],
+			"pause": 1.5
+		}
+	},
+	"sbire_4": {
+		"cell": [
+			17,
+			20
+		],
+		"facing": "down",
+		"sprite": "rocket_grunt_m",
+		"dialogue": "saffron_rocket",
+		"unless": [
+			"silph_giovanni_defeated"
+		]
+	},
+	"sbire_5": {
+		"cell": [
+			12,
+			31
+		],
+		"facing": "right",
+		"sprite": "rocket_grunt_f",
+		"dialogue": "saffron_rocket",
+		"unless": [
+			"silph_giovanni_defeated"
+		],
+		"route": {
+			"cells": [
+				[
+					12,
+					31
+				],
+				[
+					13,
+					31
+				],
+				[
+					12,
+					31
+				],
+				[
+					11,
+					31
+				]
+			],
+			"pause": 1.5
+		}
+	},
+	"sbire_6": {
+		"cell": [
+			48,
+			21
+		],
+		"facing": "left",
+		"sprite": "rocket_grunt_m",
+		"dialogue": "saffron_rocket",
+		"unless": [
+			"silph_giovanni_defeated"
+		],
+		"route": {
+			"cells": [
+				[
+					48,
+					21
+				],
+				[
+					49,
+					21
+				],
+				[
+					48,
+					21
+				],
+				[
+					47,
+					21
+				]
+			],
+			"pause": 1.5
+		}
+	},
+	"sbire_7": {
+		"cell": [
+			24,
+			41
+		],
+		"facing": "right",
+		"sprite": "rocket_grunt_f",
+		"dialogue": "saffron_rocket",
+		"unless": [
+			"silph_giovanni_defeated"
+		],
+		"route": {
+			"cells": [
+				[
+					24,
+					41
+				],
+				[
+					25,
+					41
+				],
+				[
+					24,
+					41
+				],
+				[
+					23,
+					41
+				]
+			],
+			"pause": 1.5
+		}
+	}
+}

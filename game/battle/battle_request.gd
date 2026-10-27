@@ -31,6 +31,11 @@ var legendary_intro: bool = false
 ## Jalon 21 (`jalon-21.md` §2.5) : intro « révélation » (silhouette du SPECTRE, « Le Scope Sylphe
 ## révèle… », fondu vers l'espèce) ; jamais vraie pour un combat SPECTRE.
 var reveal: bool = false
+## J23 : visite du Parc Safari de la rencontre Safari ([member GameState.safari] ; null sinon) :
+## chaque Safari Ball lancée appelle [method SafariVisit.on_ball_thrown].
+var safari_visit: SafariVisit = null
+## J23 : multiplicateur de la Safari Ball ([member SafariConfig.ball_bonus]).
+var safari_ball_bonus: float = 1.0
 
 
 ## Requête d'un combat sauvage : le sauvage est créé par [method PokemonFactory.create] à
@@ -69,6 +74,23 @@ static func trainer_battle(trainer: TrainerData, foe_party: Party,
 	request.rules = BattleRules.for_trainer(trainer, items)
 	request.world_actors = world_actors
 	return request
+
+
+## J23 : requête d'une rencontre Safari (`jalon-23.md` §2.3) : le sauvage de [param encounter]
+## (créé comme pour [method wild]), règles [method BattleRules.for_safari], visite
+## [param visit] et multiplicateur [param ball_bonus] de la Safari Ball.
+static func safari(encounter: WildEncounter, data: PokemonData, rng: GameRng, cell: Vector2i,
+		visit: SafariVisit, ball_bonus: float) -> BattleRequest:
+	var request := wild(encounter, data, rng, cell, null)
+	request.rules = BattleRules.for_safari()
+	request.safari_visit = visit
+	request.safari_ball_bonus = ball_bonus
+	return request
+
+
+## J23 : vrai pour une rencontre Safari.
+func is_safari() -> bool:
+	return rules != null and rules.safari
 
 
 func is_wild() -> bool:

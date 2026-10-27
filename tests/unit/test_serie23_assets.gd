@@ -73,4 +73,5 @@ func test_poke_flute_icon_is_picked_by_the_bag() -> void:
 	var icon := BagEntryView.icon_for(&"poke_flute")
 	assert_not_null(icon)
 	assert_ne(icon, BagEntryView.GENERIC_ICON, "icône propre, pas l'illustration neutre")
-	assert_eq(icon.resource_path, "res://assets/ui/icons/items/poke_flute.svg")
+	# DAF.5 : l'icône peinte du Sac passe avant le pictogramme vectoriel de la série 23.
+	assert_eq(icon.resource_path, "res://assets/ui/items/poke_flute.webp")

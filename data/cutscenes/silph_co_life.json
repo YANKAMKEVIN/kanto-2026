@@ -1,0 +1,335 @@
+{
+	"silph_co_3f_item_4": {
+		"variants": [
+			{
+				"unless": [
+					"got_silph_co_3f_item_4"
+				],
+				"steps": [
+					{
+						"despawn": "silph_co_3f_item_4"
+					},
+					{
+						"give": "hyper_potion",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_silph_co_3f_item_4"
+						]
+					}
+				]
+			}
+		]
+	},
+	"silph_co_4f_item_5": {
+		"variants": [
+			{
+				"unless": [
+					"got_silph_co_4f_item_5"
+				],
+				"steps": [
+					{
+						"despawn": "silph_co_4f_item_5"
+					},
+					{
+						"give": "full_heal",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_silph_co_4f_item_5"
+						]
+					}
+				]
+			}
+		]
+	},
+	"silph_co_4f_item_6": {
+		"variants": [
+			{
+				"unless": [
+					"got_silph_co_4f_item_6"
+				],
+				"steps": [
+					{
+						"despawn": "silph_co_4f_item_6"
+					},
+					{
+						"give": "max_revive",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_silph_co_4f_item_6"
+						]
+					}
+				]
+			}
+		]
+	},
+	"silph_co_4f_item_7": {
+		"variants": [
+			{
+				"unless": [
+					"got_silph_co_4f_item_7"
+				],
+				"steps": [
+					{
+						"despawn": "silph_co_4f_item_7"
+					},
+					{
+						"give": "escape_rope",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_silph_co_4f_item_7"
+						]
+					}
+				]
+			}
+		]
+	},
+	"silph_co_5f_card_key": {
+		"variants": [
+			{
+				"unless": [
+					"got_silph_co_5f_card_key"
+				],
+				"steps": [
+					{
+						"despawn": "silph_co_5f_card_key"
+					},
+					{
+						"dialogue": "silph_co_5f_card_key_got"
+					},
+					{
+						"give": "card_key",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_silph_co_5f_card_key"
+						]
+					}
+				]
+			}
+		]
+	},
+	"silph_co_5f_hidden_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_silph_co_5f_hidden_1"
+				],
+				"steps": [
+					{
+						"give": "revive",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_silph_co_5f_hidden_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"silph_co_5f_item_6": {
+		"variants": [
+			{
+				"unless": [
+					"got_silph_co_5f_item_6"
+				],
+				"steps": [
+					{
+						"despawn": "silph_co_5f_item_6"
+					},
+					{
+						"give": "tm09",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_silph_co_5f_item_6"
+						]
+					}
+				]
+			}
+		]
+	},
+	"silph_co_5f_item_7": {
+		"variants": [
+			{
+				"unless": [
+					"got_silph_co_5f_item_7"
+				],
+				"steps": [
+					{
+						"despawn": "silph_co_5f_item_7"
+					},
+					{
+						"give": "rare_candy",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_silph_co_5f_item_7"
+						]
+					}
+				]
+			}
+		]
+	},
+	"silph_co_6f_item_10": {
+		"variants": [
+			{
+				"unless": [
+					"got_silph_co_6f_item_10"
+				],
+				"steps": [
+					{
+						"despawn": "silph_co_6f_item_10"
+					},
+					{
+						"give": "x_accuracy",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_silph_co_6f_item_10"
+						]
+					}
+				]
+			}
+		]
+	},
+	"silph_co_6f_item_9": {
+		"variants": [
+			{
+				"unless": [
+					"got_silph_co_6f_item_9"
+				],
+				"steps": [
+					{
+						"despawn": "silph_co_6f_item_9"
+					},
+					{
+						"give": "rare_candy",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_silph_co_6f_item_9"
+						]
+					}
+				]
+			}
+		]
+	},
+	"silph_co_9f_hidden_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_silph_co_9f_hidden_1"
+				],
+				"steps": [
+					{
+						"give": "max_potion",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_silph_co_9f_hidden_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"silph_co_10f_item_4": {
+		"variants": [
+			{
+				"unless": [
+					"got_silph_co_10f_item_4"
+				],
+				"steps": [
+					{
+						"despawn": "silph_co_10f_item_4"
+					},
+					{
+						"give": "nugget",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_silph_co_10f_item_4"
+						]
+					}
+				]
+			}
+		]
+	},
+	"silph_co_10f_item_5": {
+		"variants": [
+			{
+				"unless": [
+					"got_silph_co_10f_item_5"
+				],
+				"steps": [
+					{
+						"despawn": "silph_co_10f_item_5"
+					},
+					{
+						"give": "rare_candy",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_silph_co_10f_item_5"
+						]
+					}
+				]
+			}
+		]
+	},
+	"silph_co_10f_item_6": {
+		"variants": [
+			{
+				"unless": [
+					"got_silph_co_10f_item_6"
+				],
+				"steps": [
+					{
+						"despawn": "silph_co_10f_item_6"
+					},
+					{
+						"give": "rare_candy",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_silph_co_10f_item_6"
+						]
+					}
+				]
+			}
+		]
+	}
+}

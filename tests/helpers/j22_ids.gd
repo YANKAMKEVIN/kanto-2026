@@ -6,14 +6,26 @@ extends RefCounted
 ## Utilisation : [code]const J22Ids := preload("res://tests/helpers/j22_ids.gd")[/code].
 
 const PREFIX: String = "j22_"
+## Jalon 23 : mêmes règles pour ses fichiers générés (`tools/gen_j23_data.py`), vérifiés par
+## `test_j23_data.gd`.
+const PREFIXES: Array[String] = ["j22_", "j23_"]
 ## Textes validés du J22 (§16) et recommandés validés d'avance (§16.8).
 const DOSSIER_25: String = "res://docs/design/dossier-25-deux-chemins-parmanie.md"
 
 
-static func in_dir(dir: String) -> Dictionary:
+## Identifiants des fichiers générés des J22 et J23 ([constant PREFIXES]) : les grands registres
+## les écartent.
+static func generated_in_dir(dir: String) -> Dictionary:
+	var ids: Dictionary = {}
+	for prefix: String in PREFIXES:
+		ids.merge(in_dir(dir, prefix))
+	return ids
+
+
+static func in_dir(dir: String, prefix: String = PREFIX) -> Dictionary:
 	var ids: Dictionary = {}
 	for file: String in DirAccess.get_files_at(dir):
-		if not file.begins_with(PREFIX) or not file.ends_with(".json"):
+		if not file.begins_with(prefix) or not file.ends_with(".json"):
 			continue
 		var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(dir + file))
 		if parsed is Dictionary:

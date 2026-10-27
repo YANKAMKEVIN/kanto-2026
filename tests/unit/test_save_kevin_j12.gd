@@ -91,14 +91,14 @@ func test_the_fixture_is_the_real_save_of_kevin() -> void:
 ## J15 : le J12 n'avait pas de version nouvelle (§2.20) ; la v7 (Pension) ne change que le
 ## numéro à la lecture (aucun champ inventé).
 func test_the_j15_reads_it_with_only_the_v6_to_v7_step() -> void:
-	assert_eq(SaveSystem.VERSION, 7, "v7 : jalon 15 (Pension)")
+	assert_eq(SaveSystem.VERSION, 8, "v7 : jalon 15 (Pension), v8 : jalon 23")
 	_fs.files[PATH] = _text()
 	var read := _save.read()
 	assert_eq(_save.last_status, OK)
 	assert_eq(_save.read_version, 6, "lue comme une v6")
-	assert_eq(int(read["version"]), 7, "migrée en v7")
+	assert_eq(int(read["version"]), SaveSystem.VERSION, "migrée à la version courante")
 	var expected: Dictionary = _original()
-	expected["version"] = 7
+	expected["version"] = SaveSystem.VERSION
 	assert_eq(_json(read), _json(expected), "seul le numéro de version change à la lecture")
 	assert_eq(_fs.files[PATH], _text(), "la lecture n'écrit rien")
 	assert_false(_fs.files.has(PATH + ".rejected"), "rien d'écarté")
@@ -144,7 +144,7 @@ func test_written_then_read_again_it_is_identical() -> void:
 	assert_eq(_save.write(state.to_dict()), OK, "écrite par le J12")
 	var once: String = _fs.files[PATH]
 	var expected: Dictionary = _original()
-	expected["version"] = 7
+	expected["version"] = SaveSystem.VERSION
 	expected["daycare"] = {}
 	assert_eq(JSON.parse_string(once), _json(expected),
 		"fichier écrit = l'original en v7, plus la seule Pension vide")

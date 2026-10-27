@@ -1,0 +1,362 @@
+{
+	"silph_co_2f_1_before": {
+		"speaker": "Scientifique Honoré",
+		"pages": ["Cette société travaille\ndésormais pour nous.", "Les expériences continuent,\navec ou sans toi."]
+	},
+	"silph_co_2f_1_defeated": {
+		"speaker": "Scientifique Honoré",
+		"pages": ["Mes calculs étaient justes…\nsauf toi."]
+	},
+	"silph_co_2f_1_after": {
+		"speaker": "Scientifique Honoré",
+		"pages": ["Je note l'incident\ndans mon rapport."]
+	},
+	"silph_co_2f_2_before": {
+		"speaker": "Scientifique Cyprien",
+		"pages": ["Un visiteur non autorisé ?", "Tu vas servir de cobaye."]
+	},
+	"silph_co_2f_2_defeated": {
+		"speaker": "Scientifique Cyprien",
+		"pages": ["Résultat négatif.\nJe recommence."]
+	},
+	"silph_co_2f_2_after": {
+		"speaker": "Scientifique Cyprien",
+		"pages": ["Les aimants m'obéissent.\nPas les enfants."]
+	},
+	"silph_co_2f_3_before": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Halte ! La Sylphe SARL\nest sous notre contrôle."]
+	},
+	"silph_co_2f_3_defeated": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Le patron va m'en vouloir."]
+	},
+	"silph_co_2f_3_after": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Monte si tu veux.\nTu n'iras pas loin."]
+	},
+	"silph_co_2f_4_before": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Encore un curieux.", "Fais demi-tour, gamin."]
+	},
+	"silph_co_2f_4_defeated": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Cinq Pokémon, et rien\nn'y a fait…"]
+	},
+	"silph_co_2f_4_after": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Je gardais l'entrée.\nÇa n'a pas marché."]
+	},
+	"silph_co_3f_1_before": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Ici, c'est la Team Rocket\nqui donne les ordres."]
+	},
+	"silph_co_3f_1_defeated": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Je ne suis qu'un exécutant."]
+	},
+	"silph_co_3f_1_after": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Les étages du haut\nsont encore pires."]
+	},
+	"silph_co_3f_2_before": {
+		"speaker": "Scientifique Dorian",
+		"pages": ["Mes Pokémon sont plus\nrapides que ta réflexion."]
+	},
+	"silph_co_3f_2_defeated": {
+		"speaker": "Scientifique Dorian",
+		"pages": ["Rapides, mais pas assez."]
+	},
+	"silph_co_3f_2_after": {
+		"speaker": "Scientifique Dorian",
+		"pages": ["Je dois recalibrer\ntout mon équipement."]
+	},
+	"silph_co_4f_1_before": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Personne n'a rendez-vous.\nPersonne ne passe."]
+	},
+	"silph_co_4f_1_defeated": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Tu passes quand même…"]
+	},
+	"silph_co_4f_1_after": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Je n'ai pas fait mon\ntravail. Tant pis."]
+	},
+	"silph_co_4f_2_before": {
+		"speaker": "Scientifique Eliott",
+		"pages": ["Électrique, par nature.\nPrépare-toi au choc."]
+	},
+	"silph_co_4f_2_defeated": {
+		"speaker": "Scientifique Eliott",
+		"pages": ["Court-circuit !"]
+	},
+	"silph_co_4f_2_after": {
+		"speaker": "Scientifique Eliott",
+		"pages": ["Je pensais mieux tenir\nla charge."]
+	},
+	"silph_co_4f_3_before": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Le président est entre\nde bonnes mains. Les nôtres."]
+	},
+	"silph_co_4f_3_defeated": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Aïe… Les mains, justement."]
+	},
+	"silph_co_4f_3_after": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Va voir où tu veux.\nJe n'ai rien dit."]
+	},
+	"silph_co_5f_1_before": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Un seul Pokémon\nsuffit pour te chasser."]
+	},
+	"silph_co_5f_1_defeated": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Un seul… et c'est fini."]
+	},
+	"silph_co_5f_1_after": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Je ne parie plus\nsur les solitaires."]
+	},
+	"silph_co_5f_2_before": {
+		"speaker": "Scientifique Fabrice",
+		"pages": ["Les Pokémon sont des\noutils. Je les teste."]
+	},
+	"silph_co_5f_2_defeated": {
+		"speaker": "Scientifique Fabrice",
+		"pages": ["Cet outil-là est cassé."]
+	},
+	"silph_co_5f_2_after": {
+		"speaker": "Scientifique Fabrice",
+		"pages": ["Je retourne\nà mon laboratoire."]
+	},
+	"silph_co_5f_3_before": {
+		"speaker": "Jongleur Anselme",
+		"pages": ["Mes Pokémon lisent\ndans tes pensées."]
+	},
+	"silph_co_5f_3_defeated": {
+		"speaker": "Jongleur Anselme",
+		"pages": ["Ils n'ont pas vu\nvenir ça."]
+	},
+	"silph_co_5f_3_after": {
+		"speaker": "Jongleur Anselme",
+		"pages": ["La prochaine fois,\nje fermerai les yeux."]
+	},
+	"silph_co_5f_4_before": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Pas de passe, pas de\ncarte, pas d'entrée."]
+	},
+	"silph_co_5f_4_defeated": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Même sans carte,\ntu passes."]
+	},
+	"silph_co_5f_4_after": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Les portes, c'est mon rayon.\nPlus maintenant."]
+	},
+	"silph_co_6f_1_before": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Les muscles, c'est le plus\nfiable des outils."]
+	},
+	"silph_co_6f_1_defeated": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Muscles inutiles…"]
+	},
+	"silph_co_6f_1_after": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Je vais faire\nquelques pompes."]
+	},
+	"silph_co_6f_2_before": {
+		"speaker": "Scientifique Gontran",
+		"pages": ["Tu es tombé au mauvais\nétage, petit visiteur."]
+	},
+	"silph_co_6f_2_defeated": {
+		"speaker": "Scientifique Gontran",
+		"pages": ["Mauvais étage… pour moi."]
+	},
+	"silph_co_6f_2_after": {
+		"speaker": "Scientifique Gontran",
+		"pages": ["Les plans prévoyaient\nun autre ordre."]
+	},
+	"silph_co_6f_3_before": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Ça bat de l'aile ici.\nPour toi, surtout."]
+	},
+	"silph_co_6f_3_defeated": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Tombé du nid…"]
+	},
+	"silph_co_6f_3_after": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Les chauves-souris\nne m'ont pas aidé."]
+	},
+	"silph_co_7f_1_before": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Une équipe complète,\nune seule consigne : te stopper."]
+	},
+	"silph_co_7f_1_defeated": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Consigne ratée."]
+	},
+	"silph_co_7f_1_after": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Le rival est derrière.\nIl te cherche."]
+	},
+	"silph_co_7f_2_before": {
+		"speaker": "Scientifique Ludovic",
+		"pages": ["Mon dernier projet\nest au point. Regarde !"]
+	},
+	"silph_co_7f_2_defeated": {
+		"speaker": "Scientifique Ludovic",
+		"pages": ["Il lui manque\nune dernière vis."]
+	},
+	"silph_co_7f_2_after": {
+		"speaker": "Scientifique Ludovic",
+		"pages": ["Je ne suis pas\ntrop doué avec les Dresseurs."]
+	},
+	"silph_co_7f_3_before": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Mes Osselait ont le crâne\ndur. Essaie un peu."]
+	},
+	"silph_co_7f_3_defeated": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Crâne dur, mais pas\nassez."]
+	},
+	"silph_co_7f_3_after": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Je suis un peu\ntristounet, là."]
+	},
+	"silph_co_7f_4_before": {
+		"speaker": "Sbire Rocket",
+		"pages": ["On a pris la Sylphe SARL\npar surprise. Toi aussi."]
+	},
+	"silph_co_7f_4_defeated": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Surpris, à mon tour."]
+	},
+	"silph_co_7f_4_after": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Le plus dur,\nc'était de les attraper."]
+	},
+	"silph_co_8f_1_before": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Les employés ont fui\nen courant. Pas toi."]
+	},
+	"silph_co_8f_1_defeated": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Je préférais les employés."]
+	},
+	"silph_co_8f_1_after": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Bon. Qu'est-ce qu'on\nfait maintenant ?"]
+	},
+	"silph_co_8f_2_before": {
+		"speaker": "Scientifique Maxime",
+		"pages": ["Les expériences sur les\nPokémon ne s'arrêtent pas."]
+	},
+	"silph_co_8f_2_defeated": {
+		"speaker": "Scientifique Maxime",
+		"pages": ["Hypothèse réfutée."]
+	},
+	"silph_co_8f_2_after": {
+		"speaker": "Scientifique Maxime",
+		"pages": ["Je vais chercher\nune autre méthode."]
+	},
+	"silph_co_8f_3_before": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Un gaz suffit pour\nendormir ton courage."]
+	},
+	"silph_co_8f_3_defeated": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Je ne tiens plus\nla vapeur."]
+	},
+	"silph_co_8f_3_after": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Respire, ça va\nme réconforter."]
+	},
+	"silph_co_9f_1_before": {
+		"speaker": "Sbire Rocket",
+		"pages": ["L'infirmière est de notre côté.\nPas du tien."]
+	},
+	"silph_co_9f_1_defeated": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Mon équipe est à plat."]
+	},
+	"silph_co_9f_1_after": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Le lit de repos est libre.\nJe ne dirai rien."]
+	},
+	"silph_co_9f_2_before": {
+		"speaker": "Scientifique Sylvain",
+		"pages": ["Ma spécialité : les chocs.\nJe t'en offre un."]
+	},
+	"silph_co_9f_2_defeated": {
+		"speaker": "Scientifique Sylvain",
+		"pages": ["Mon dernier choc…"]
+	},
+	"silph_co_9f_2_after": {
+		"speaker": "Scientifique Sylvain",
+		"pages": ["Ça sent le brûlé.\nC'est moi."]
+	},
+	"silph_co_9f_3_before": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Mon Hypno t'a vu\ngrimper les étages."]
+	},
+	"silph_co_9f_3_defeated": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Il aurait dû\nme prévenir."]
+	},
+	"silph_co_9f_3_after": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Il sait tout.\nSauf que je perds."]
+	},
+	"silph_co_10f_1_before": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Un seul étage nous sépare.\nTu ne passeras pas."]
+	},
+	"silph_co_10f_1_defeated": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Un étage, c'est\nbeaucoup trop."]
+	},
+	"silph_co_10f_1_after": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Le patron est tout là-haut.\nBonne chance."]
+	},
+	"silph_co_10f_2_before": {
+		"speaker": "Scientifique Valentin",
+		"pages": ["Presque arrivé ? Pas pour\nlongtemps, gamin."]
+	},
+	"silph_co_10f_2_defeated": {
+		"speaker": "Scientifique Valentin",
+		"pages": ["Presque… perdu."]
+	},
+	"silph_co_10f_2_after": {
+		"speaker": "Scientifique Valentin",
+		"pages": ["Je rejoins\nmon poste."]
+	},
+	"silph_co_11f_1_before": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Ce bureau est interdit.\nTrois pas de plus, et…"]
+	},
+	"silph_co_11f_1_defeated": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Deux pas de trop."]
+	},
+	"silph_co_11f_1_after": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Le patron attend,\nmais pas ici."]
+	},
+	"silph_co_11f_2_before": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Le président reste là.\nTu n'iras pas le voir."]
+	},
+	"silph_co_11f_2_defeated": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Président ou pas,\nje m'incline."]
+	},
+	"silph_co_11f_2_after": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Pas de rancune.\nJe garde la porte."]
+	}
+}

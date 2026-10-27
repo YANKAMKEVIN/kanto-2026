@@ -2,7 +2,7 @@ extends GutTest
 ## Carte route_6 (jalon 15 T14, docs/tech/jalon-15.md §2.1, §2.4, §2.8 ; dossier 18 §6, §7) sur la
 ## vraie scène : métadonnées et lumière, étang peint, **grille de la scène = grille fonctionnelle**
 ## `tools/plans/route_6.txt` case par case, raccords (bâtiment de sortie du souterrain, Carmin,
-## poste de Safrania « à venir »), critères de `tools/art/plan_check_carmin.py` (profil route_6)
+## porte du poste vers Safrania, J26 T6), critères de `tools/art/plan_check_carmin.py` (profil route_6)
 ## refaits sur la vraie grille : Chloé inévitable par géométrie, les cinq autres évitables un à un
 ## et ensemble, hautes herbes évitables, porte du poste inatteignable (garde) ; garde et recul,
 ## objet caché, décor (emprises, vue du port), budget de nœuds.
@@ -159,12 +159,15 @@ func test_south_edge_leads_to_vermilion_column_by_column() -> void:
 				[&"route_6", StringName("from_vermilion_" + suffixes[i])])
 
 
-func test_saffron_gate_door_is_coming_soon_and_unreachable() -> void:
+func test_saffron_gate_door_leads_to_the_city_and_is_unreachable() -> void:
 	var door := _plan.cell_of("porte_safrania")
 	var warp := _map.get_warps().find_on_step(door, Vector2i.UP)
 	assert_not_null(warp)
+	# Jalon 26 (T6) : la porte mène à Safrania (`from_gate_r6`) ; le garde la ferme toujours.
 	if warp != null:
-		assert_true(warp.is_coming_soon(), "Safrania fermée")
+		assert_eq([warp.target_map, warp.target_spawn, warp.facing],
+			[&"saffron_city", &"from_gate_r6", Vector2i.UP])
+	assert_eq(_map.get_spawn_cell(&"from_saffron"), door + Vector2i.DOWN, "arrivée depuis la ville")
 	var dist := GridPaths.distances(_terrain, [ARRIVAL])
 	assert_false(dist.has(door), "porte derrière le garde")
 	assert_true(GridPaths.distances(_without([]), [ARRIVAL]).has(door + Vector2i.DOWN * 2))

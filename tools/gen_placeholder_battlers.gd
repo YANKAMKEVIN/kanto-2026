@@ -15,6 +15,7 @@ extends SceneTree
 ## Jalon 17 (jalon-17.md §2.12.1) : les huit espèces de la Route 11 et de la Cave Taupiqueur.
 ## Jalon 19 (jalon-19.md §2.12, T3) : Fantominus, Spectrum, Noeunoeuf, Léviator. Osselait
 ## et Ossatueur n'en ont pas : ils ne s'affichent jamais au J19 (SPECTRE).
+## Jalon 23 (jalon-23.md §2.14) : Leveinard, Insécateur, Scarabrute, Tauros (Parc Safari).
 ## Pixel art 64 × 64 natif, affiché en NEAREST par le BattleStage (×4 de dos, ×3 de face) :
 ##   assets/sprites/pokemon/placeholder/<espèce>_front.png   (vue de face : l'adversaire)
 ##   assets/sprites/pokemon/placeholder/<espèce>_back.png    (vue de dos : le Pokémon du joueur)
@@ -59,10 +60,26 @@ const SPECIES: Array[String] = [
 	"victreebel", "tangela", "vileplume", "rhyhorn", "kangaskhan",
 	# Jalon 19 (jalon-19.md §2.12) : Exorcistes et rival n° 5 (Caninos vient du J17). Ajouts en fin.
 	"gastly", "haunter", "exeggcute", "gyarados",
+	# Jalon 26 (jalon-26.md §2.7, T3) : Lokhlass (cadeau du 7F) et Alakazam (équipes de la Sylphe,
+	# rival n° 6). Ajouts en fin ; rien d'autre ne change.
+	"alakazam", "lapras",
+	# Jalon 26 (T3) : Osselait et Ossatueur (équipes de la Sylphe SARL, jamais montrés au J19).
+	"cubone", "marowak",
+	# Jalon 27 (jalon-27.md §2.4, T3) : Kicklee et Tygnon (Dojo de Combat). Ajouts en fin ; les
+	# autres espèces du J27 (Aéromite, Machopeur, Ramoloss, Flagadoss, M. Mime) ont leurs images
+	# copiées des branches qui les créent (J22, J24, J29).
+	"hitmonlee", "hitmonchan",
 	# Jalon 21 (jalon-21.md §2.16) : Ptitard et Tentacool (Pêcheurs de la Route 12, provisoires
 	# acceptés [D]) et Ronflex (dos de combat ; le dos peint de la série 23 est le prototype
 	# battle_proto/dos_ia_143.png, comme les autres dos IA). Ajouts en fin.
 	"poliwag", "tentacool", "snorlax",
+	# Jalon 23 (jalon-23.md §2.14, T6) : les quatre espèces rares du Parc Safari sans lien avec un
+	# autre jalon (Mimitoss, Doduo, Tadmorv, Smogogo et leurs lignées viennent du J22).
+	"chansey", "scyther", "pinsir", "tauros",
+	# Jalon 29 : Sulfura, rival n° 7, Dresseurs et rencontres de la Route Victoire, reprises des
+	# J22 à J26 (silhouette d'une forme proche, recolorée, avec un trait distinctif). Ajouts en fin ;
+	# Alakazam, Leveinard et Lokhlass sont ceux des J23 et J26 (fusion dans main).
+	"machoke", "venomoth", "golduck", "tentacruel", "dewgong", "cloyster", "kingler", "lickitung", "mr_mime", "exeggutor", "moltres",
 	# Jalon 31 (jalon-31.md §10, T4) : Métamorph et Mewtwo (Grotte Azurée). Les autres espèces
 	# de la grotte viennent des J22 et J24 ; Leveinard et Rhinoféros sont copiés à l'identique des
 	# J23 et J28. Ajouts en fin.
@@ -79,7 +96,11 @@ var _h: int = SIZE
 
 func _init() -> void:
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(DIR))
+	# Jalon 29 : `-- <espèce> …` ne (re)génère que ces espèces (les autres fichiers ne bougent pas).
+	var only := OS.get_cmdline_user_args()
 	for species: String in SPECIES:
+		if not only.is_empty() and not only.has(species):
+			continue
 		for back: bool in [false, true]:
 			var img := Image.create_empty(SIZE, SIZE, false, Image.FORMAT_RGBA8)
 			img.fill(Color(0, 0, 0, 0))
@@ -1911,6 +1932,171 @@ func _draw_gyarados(img: Image, back: bool) -> void:
 	_line(img, Vector2(22, 20), Vector2(12, 26), WHITE, 1)
 	_line(img, Vector2(42, 20), Vector2(52, 26), WHITE, 1)
 
+## Leveinard : œuf rose sur pattes, poche ventrale avec un œuf blanc, mèches sur les côtés.
+func _draw_chansey(img: Image, back: bool) -> void:
+	var skin := Color("#f0a8b8")
+	_r(img, 20, 56, 9, 6, skin.darkened(0.15))
+	_r(img, 35, 56, 9, 6, skin.darkened(0.15))
+	_e(img, 32, 36, 21, 24, skin, true)
+	for side: float in [-1.0, 1.0]:
+		_e(img, 32 + side * 22, 26, 4, 3, skin.darkened(0.1), true)
+		_e(img, 32 + side * 22, 32, 4, 3, skin.darkened(0.1), true)
+	if back:
+		_e(img, 32, 52, 5, 4, skin.lightened(0.1), true)
+		return
+	_e(img, 18, 42, 4, 6, skin, true)
+	_e(img, 46, 42, 4, 6, skin, true)
+	_e(img, 32, 48, 10, 7, skin.lightened(0.15))
+	_e(img, 32, 45, 6, 7, WHITE, true)
+	_r(img, 24, 24, 4, 4, EYE)
+	_r(img, 37, 24, 4, 4, EYE)
+	_r(img, 24, 24, 1, 1, WHITE)
+	_r(img, 37, 24, 1, 1, WHITE)
+	_r(img, 29, 32, 6, 2, Color("#b05068"))
+
+
+## Insécateur : mante verte dressée, deux faux blanches, ailes translucides.
+func _draw_scyther(img: Image, back: bool) -> void:
+	var skin := Color("#68b848")
+	var blade := Color("#a8b4a0")
+	var wing := Color("#f4f4f4", 0.85)
+	_e(img, 18, 30, 8, 13, wing)
+	_e(img, 46, 30, 8, 13, wing)
+	_line(img, Vector2(26, 46), Vector2(20, 61), skin.darkened(0.2), 4)
+	_line(img, Vector2(38, 46), Vector2(44, 61), skin.darkened(0.2), 4)
+	_e(img, 32, 40, 10, 12, skin, true)
+	_e(img, 32, 52, 7, 8, Color("#d8d090"), true)
+	_e(img, 32, 18, 9, 9, skin, true)
+	for side: float in [-1.0, 1.0]:
+		var elbow := Vector2(32 + side * 12, 34)
+		_line(img, Vector2(32 + side * 7, 32), elbow, skin, 3)
+		_line(img, elbow, Vector2(32 + side * 20, 18), blade, 3)
+		_line(img, Vector2(32 + side * 20, 18), Vector2(32 + side * 24, 24), blade, 2)
+	if back:
+		return
+	_r(img, 26, 15, 4, 4, Color("#c03030"))
+	_r(img, 34, 15, 4, 4, Color("#c03030"))
+	_r(img, 27, 16, 2, 2, EYE)
+	_r(img, 35, 16, 2, 2, EYE)
+	_line(img, Vector2(29, 10), Vector2(24, 4), skin.darkened(0.2), 2)
+
+
+## Scarabrute : scarabée brun trapu, deux grandes cornes-pinces grises à dents.
+func _draw_pinsir(img: Image, back: bool) -> void:
+	var shell := Color("#a07850")
+	var horn := Color("#d8d4c8")
+	_r(img, 18, 54, 8, 8, shell.darkened(0.2))
+	_r(img, 38, 54, 8, 8, shell.darkened(0.2))
+	_e(img, 32, 42, 17, 16, shell, true)
+	for y: int in [36, 44, 52]:
+		_line(img, Vector2(20, y), Vector2(44, y), shell.darkened(0.25))
+	for side: float in [-1.0, 1.0]:
+		_line(img, Vector2(32 + side * 6, 26), Vector2(32 + side * 18, 12), horn, 4)
+		_line(img, Vector2(32 + side * 18, 12), Vector2(32 + side * 12, 3), horn, 3)
+		for t: float in [0.35, 0.7]:
+			var p := Vector2(32 + side * 6, 26).lerp(Vector2(32 + side * 18, 12), t)
+			_r(img, int(p.x - side * 3), int(p.y), 2, 2, horn.darkened(0.2))
+	_e(img, 32, 28, 9, 7, shell.darkened(0.08), true)
+	if back:
+		return
+	_r(img, 26, 26, 4, 3, Color("#f0f0f0"))
+	_r(img, 34, 26, 4, 3, Color("#f0f0f0"))
+	_r(img, 27, 27, 2, 2, EYE)
+	_r(img, 35, 27, 2, 2, EYE)
+	_line(img, Vector2(28, 32), Vector2(36, 32), EYE)
+
+
+## Tauros : taureau brun, crinière sombre, cornes claires, trois queues fouettant.
+func _draw_tauros(img: Image, back: bool) -> void:
+	var fur := Color("#b8865a")
+	var mane := Color("#5a4030")
+	var horn := Color("#e8e0c8")
+	for i: int in 3:
+		var end := Vector2(60, 26 + i * 8)
+		_line(img, Vector2(50, 40), end, mane, 2)
+	_e(img, 34, 42, 20, 12, fur, true)
+	for x: int in [16, 26, 40, 50]:
+		_r(img, x - 3, 52, 6, 10, fur.darkened(0.18))
+	_e(img, 20, 34, 10, 10, mane, true)
+	_e(img, 18, 28, 9, 8, fur, true)
+	_line(img, Vector2(12, 22), Vector2(4, 14), horn, 3)
+	_line(img, Vector2(24, 22), Vector2(32, 14), horn, 3)
+	if back:
+		return
+	_r(img, 13, 26, 3, 3, EYE)
+	_r(img, 21, 26, 3, 3, EYE)
+	_e(img, 18, 33, 5, 3, fur.lightened(0.15))
+	_r(img, 16, 33, 1, 1, EYE)
+	_r(img, 20, 33, 1, 1, EYE)
+
+# --- Alakazam, Lokhlass (jalon 26) ------------------------------------------------
+
+## Kadabra en plus massif : même silhouette, deuxième cuillère à gauche, moustache blanche.
+func _draw_alakazam(img: Image, back: bool) -> void:
+	_draw_psychic_fox(img, back, true)
+	_line(img, Vector2(12, 34), Vector2(6, 22), Color("#b8b8c4"), 2)
+	_e(img, 6, 20, 3, 4, Color("#d0d0dc"), true)
+	if not back:
+		_line(img, Vector2(26, 23), Vector2(16, 29), WHITE, 2)
+		_line(img, Vector2(38, 23), Vector2(48, 29), WHITE, 2)
+
+
+## Long cou et petite tête de face, carapace brun clair sur le dos, nageoires, corps bleu.
+func _draw_lapras(img: Image, back: bool) -> void:
+	var skin := Color("#4a90d8")
+	var belly := Color("#e8dca8")
+	var shell := Color("#9a9aa8")
+	_e(img, 32, 52, 24, 9, skin.darkened(0.08), true)
+	_e(img, 32, 46, 19, 10, skin, true)
+	_e(img, 44, 38, 8, 8, shell, true)
+	_r(img, 41, 33, 2, 3, shell.lightened(0.3))
+	_r(img, 46, 33, 2, 3, shell.lightened(0.3))
+	_r(img, 51, 38, 2, 3, shell.lightened(0.3))
+	_e(img, 20, 54, 7, 3, skin.darkened(0.15), true)
+	_e(img, 46, 56, 7, 3, skin.darkened(0.15), true)
+	_line(img, Vector2(26, 40), Vector2(22, 24), skin, 8)
+	_e(img, 22, 16, 9, 8, skin, true)
+	if back:
+		_r(img, 18, 11, 8, 2, skin.darkened(0.25))
+		return
+	_e(img, 32, 52, 14, 5, belly)
+	_e(img, 20, 20, 5, 3, belly)
+	_eye(img, 24, 14, Color("#2a2a3a"))
+	_r(img, 14, 10, 2, 3, skin.lightened(0.2))
+
+
+## Osselait : petit corps brun, crâne blanc en casque (deux orbites noires), queue courte.
+func _draw_cubone(img: Image, back: bool) -> void:
+	_draw_bone_keeper(img, back, false)
+
+
+## Ossatueur : même motif, plus grand, os tenu à droite.
+func _draw_marowak(img: Image, back: bool) -> void:
+	_draw_bone_keeper(img, back, true)
+
+
+func _draw_bone_keeper(img: Image, back: bool, evolved: bool) -> void:
+	var skin := Color("#a8784a")
+	var bone := Color("#ece4cc")
+	var body_y := 44 if not evolved else 40
+	var head_y := 24 if not evolved else 18
+	_line(img, Vector2(44, body_y + 8), Vector2(54, body_y - 2), skin.darkened(0.1), 3)
+	_r(img, 22, 54, 8, 7, skin.darkened(0.12))
+	_r(img, 34, 54, 8, 7, skin.darkened(0.12))
+	_e(img, 32, body_y, 12 if not evolved else 14, 12 if not evolved else 14, skin, true)
+	_e(img, 17, body_y - 2, 3, 6, skin, true)
+	_e(img, 47, body_y - 2, 3, 6, skin, true)
+	_e(img, 32, head_y, 12, 11, bone, true)
+	if evolved:
+		_line(img, Vector2(52, body_y + 4), Vector2(58, body_y - 18), bone, 3)
+		_e(img, 58, body_y - 20, 3, 3, bone, true)
+	if back:
+		_r(img, 26, head_y + 6, 12, 2, bone.darkened(0.2))
+		return
+	_r(img, 24, head_y - 1, 5, 5, Color("#2a2a3a"))
+	_r(img, 35, head_y - 1, 5, 5, Color("#2a2a3a"))
+	_e(img, 32, head_y + 8, 6, 3, skin.lightened(0.1))
+
 
 # --- Jalon 21 : Route 12, Ronflex ---------------------------------------------------
 
@@ -2024,3 +2210,118 @@ func _write_shadow() -> void:
 	img.save_png(DIR + "battle_shadow.png")
 	_w = SIZE
 	_h = SIZE
+
+
+# --- Kicklee, Tygnon (jalon 27) ---------------------------------------------------
+
+## Corps brun sans cou, très longues jambes repliées, petits yeux ; bras fins.
+func _draw_hitmonlee(img: Image, back: bool) -> void:
+	var skin := Color("#b08a5a")
+	_line(img, Vector2(26, 38), Vector2(16, 52), skin.darkened(0.1), 5)
+	_line(img, Vector2(16, 52), Vector2(22, 61), skin.darkened(0.1), 5)
+	_line(img, Vector2(38, 38), Vector2(48, 52), skin.darkened(0.1), 5)
+	_line(img, Vector2(48, 52), Vector2(42, 61), skin.darkened(0.1), 5)
+	_e(img, 32, 28, 12, 14, skin, true)
+	_line(img, Vector2(21, 26), Vector2(12, 36), skin, 2)
+	_line(img, Vector2(43, 26), Vector2(52, 36), skin, 2)
+	if back:
+		_r(img, 27, 30, 10, 2, skin.darkened(0.25))
+		return
+	_r(img, 25, 20, 14, 4, skin.darkened(0.35))
+	_eye(img, 27, 21, Color("#f0e8d0"))
+	_eye(img, 35, 21, Color("#f0e8d0"))
+
+
+## Corps brun trapu, tunique violette, deux gros gants de boxe rouges.
+func _draw_hitmonchan(img: Image, back: bool) -> void:
+	var skin := Color("#b8946a")
+	var tunic := Color("#8a5aa8")
+	var glove := Color("#d83a3a")
+	_r(img, 24, 50, 7, 12, skin.darkened(0.12))
+	_r(img, 33, 50, 7, 12, skin.darkened(0.12))
+	_e(img, 32, 40, 13, 13, tunic, true)
+	_e(img, 32, 20, 11, 11, skin, true)
+	_e(img, 13, 34, 7, 7, glove, true)
+	_e(img, 51, 34, 7, 7, glove, true)
+	if back:
+		_r(img, 27, 36, 10, 2, tunic.darkened(0.3))
+		return
+	_eye(img, 27, 18, Color("#1c1c28"))
+	_eye(img, 36, 18, Color("#1c1c28"))
+	_r(img, 28, 25, 8, 2, skin.darkened(0.4))
+
+
+# --- Jalon 29 ----------------------------------------------------------------------------------
+
+
+## Mackogneur : Machopeur bleu-gris plus massif, ceinture dorée.
+func _draw_machoke(img: Image, back: bool) -> void:
+	_base(img, back, "machop", 0.05, 0.9, 0.12)
+	_r(img, 20, 44, 24, 3, Color("#e0b030"))
+
+
+## Aéromite : Papilusion mauve, ailes poudrées.
+func _draw_venomoth(img: Image, back: bool) -> void:
+	_base(img, back, "butterfree", 0.12, 1.0, 0.05)
+
+
+## Akwakwak : Carapuce bleu nuit, joyau rouge au front.
+func _draw_golduck(img: Image, back: bool) -> void:
+	_base(img, back, "squirtle", 0.05, 1.2, 0.15)
+	if not back:
+		_e(img, 32, 14, 3, 3, Color("#d83030"), true)
+
+
+## Tentacruel : Stari bleu, deux gemmes rouges.
+func _draw_tentacruel(img: Image, back: bool) -> void:
+	_base(img, back, "staryu", 0.45, 0.8)
+	_e(img, 26, 24, 3, 3, Color("#d83030"), true)
+	_e(img, 38, 24, 3, 3, Color("#d83030"), true)
+
+
+## Lamantine : Persian recoloré blanc bleuté, corne.
+func _draw_dewgong(img: Image, back: bool) -> void:
+	_base(img, back, "persian", 0.5, 0.25)
+	_line(img, Vector2(32, 12), Vector2(32, 4), WHITE, 3)
+
+
+## Crustabri : Kokiyas violet sombre, pointes.
+func _draw_cloyster(img: Image, back: bool) -> void:
+	_base(img, back, "shellder", 0.05, 1.0, 0.25)
+	for x: int in [14, 50]:
+		_line(img, Vector2(x, 40), Vector2(x + (-6 if x < 32 else 6), 30), Color("#d8d0e8"), 3)
+
+
+## Krabboss : Paras rouge vif, grosse pince.
+func _draw_kingler(img: Image, back: bool) -> void:
+	_base(img, back, "paras", -0.05, 1.1)
+	_e(img, 50, 30, 9, 7, Color("#e05030"), true)
+
+
+## Excelangue : Mélofée rose, longue langue.
+func _draw_lickitung(img: Image, back: bool) -> void:
+	_base(img, back, "clefairy", -0.02, 1.0)
+	if not back:
+		_line(img, Vector2(32, 34), Vector2(44, 50), Color("#e85a8a"), 4)
+
+
+## M. Mime : Rondoudou blanc, joues rouges, mains levées.
+func _draw_mr_mime(img: Image, back: bool) -> void:
+	_base(img, back, "jigglypuff", 0.0, 0.2)
+	_e(img, 14, 26, 5, 5, Color("#d84040"), true)
+	_e(img, 50, 26, 5, 5, Color("#d84040"), true)
+
+
+## Noadkoko : Noeunoeuf et un panache de palmes vertes.
+func _draw_exeggutor(img: Image, back: bool) -> void:
+	_base(img, back, "exeggcute", 0.0, 1.0)
+	for dx: int in [-12, 0, 12]:
+		_leaf(img, Vector2(32 + dx, 18), Vector2(32 + dx * 2, 2), 4.0, Color("#3a9a40"))
+
+
+## Sulfura : Roucarnage orangé, ailes de flammes.
+func _draw_moltres(img: Image, back: bool) -> void:
+	_base(img, back, "pidgeot", 0.06, 1.3)
+	_flame(img, Vector2(12, 20), 7.0)
+	_flame(img, Vector2(52, 20), 7.0)
+	_flame(img, Vector2(32, 6), 6.0)

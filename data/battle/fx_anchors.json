@@ -1,0 +1,9942 @@
+{
+ "version": 1,
+ "species": {
+  "001": {
+   "id": "bulbasaur",
+   "name": "Bulbizarre",
+   "front": {
+    "image": "assets/sprites/pokemon/official/001.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     36,
+     431,
+     402
+    ],
+    "points": {
+     "tete": [
+      0.3,
+      0.5
+     ],
+     "bouche": [
+      0.28,
+      0.68
+     ],
+     "yeux": [
+      [
+       0.07,
+       0.5
+      ],
+      [
+       0.5,
+       0.5
+      ]
+     ],
+     "bulbe": [
+      0.62,
+      0.3
+     ],
+     "centre": [
+      0.532,
+      0.525
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_001.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     80,
+     63,
+     864,
+     898
+    ],
+    "points": {
+     "tete": [
+      0.5,
+      0.45
+     ],
+     "bulbe": [
+      0.45,
+      0.3
+     ],
+     "centre": [
+      0.471,
+      0.528
+     ]
+    }
+   }
+  },
+  "002": {
+   "id": "ivysaur",
+   "name": "Herbizarre",
+   "front": {
+    "image": "assets/sprites/pokemon/official/002.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     36,
+     431,
+     402
+    ],
+    "points": {
+     "tete": [
+      0.7,
+      0.43
+     ],
+     "bulbe": [
+      0.45,
+      0.19
+     ],
+     "centre": [
+      0.53,
+      0.516
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_002.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     77,
+     63,
+     870,
+     841
+    ],
+    "points": {
+     "tete": [
+      0.91,
+      0.48
+     ],
+     "bulbe": [
+      0.43,
+      0.17
+     ],
+     "centre": [
+      0.535,
+      0.541
+     ]
+    }
+   }
+  },
+  "003": {
+   "id": "venusaur",
+   "name": "Florizarre",
+   "front": {
+    "image": "assets/sprites/pokemon/official/003.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     70,
+     431,
+     335
+    ],
+    "points": {
+     "tete": [
+      0.49,
+      0.62
+     ],
+     "bouche": [
+      0.5,
+      0.76
+     ],
+     "yeux": [
+      [
+       0.35,
+       0.62
+      ],
+      [
+       0.63,
+       0.61
+      ]
+     ],
+     "bulbe": [
+      0.5,
+      0.23
+     ],
+     "centre": [
+      0.5,
+      0.488
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_003.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     77,
+     98,
+     870,
+     806
+    ],
+    "points": {
+     "tete": [
+      0.5,
+      0.48
+     ],
+     "bulbe": [
+      0.5,
+      0.17
+     ],
+     "centre": [
+      0.527,
+      0.484
+     ]
+    }
+   }
+  },
+  "004": {
+   "id": "charmander",
+   "name": "Salamèche",
+   "front": {
+    "image": "assets/sprites/pokemon/official/004.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     46,
+     22,
+     382,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.27,
+      0.2
+     ],
+     "bouche": [
+      0.27,
+      0.35
+     ],
+     "yeux": [
+      [
+       0.12,
+       0.18
+      ],
+      [
+       0.42,
+       0.17
+      ]
+     ],
+     "mains": [
+      [
+       0.03,
+       0.53
+      ],
+      [
+       0.7,
+       0.55
+      ]
+     ],
+     "queue": [
+      0.9,
+      0.45
+     ],
+     "centre": [
+      0.428,
+      0.531
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_004.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     151,
+     62,
+     744,
+     887
+    ],
+    "points": {
+     "tete": [
+      0.88,
+      0.2
+     ],
+     "queue": [
+      0.17,
+      0.72
+     ],
+     "centre": [
+      0.614,
+      0.583
+     ]
+    }
+   }
+  },
+  "005": {
+   "id": "charmeleon",
+   "name": "Reptincel",
+   "front": {
+    "image": "assets/sprites/pokemon/official/005.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     53,
+     22,
+     368,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.33,
+      0.21
+     ],
+     "bouche": [
+      0.19,
+      0.29
+     ],
+     "mains": [
+      [
+       0.05,
+       0.63
+      ],
+      [
+       0.72,
+       0.68
+      ]
+     ],
+     "queue": [
+      0.87,
+      0.5
+     ],
+     "centre": [
+      0.467,
+      0.558
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_005.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     97,
+     34,
+     829,
+     870
+    ],
+    "points": {
+     "tete": [
+      0.64,
+      0.2
+     ],
+     "mains": [
+      [
+       0.37,
+       0.62
+      ],
+      [
+       0.95,
+       0.64
+      ]
+     ],
+     "queue": [
+      0.13,
+      0.54
+     ],
+     "centre": [
+      0.529,
+      0.577
+     ]
+    }
+   }
+  },
+  "006": {
+   "id": "charizard",
+   "name": "Dracaufeu",
+   "front": {
+    "image": "assets/sprites/pokemon/official/006.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     68,
+     431,
+     338
+    ],
+    "points": {
+     "tete": [
+      0.44,
+      0.07
+     ],
+     "mains": [
+      [
+       0.29,
+       0.55
+      ],
+      [
+       0.76,
+       0.56
+      ]
+     ],
+     "queue": [
+      0.9,
+      0.62
+     ],
+     "centre": [
+      0.503,
+      0.518
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_006.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     77,
+     100,
+     870,
+     804
+    ],
+    "points": {
+     "tete": [
+      0.66,
+      0.23
+     ],
+     "mains": [
+      [
+       0.37,
+       0.55
+      ],
+      [
+       0.86,
+       0.63
+      ]
+     ],
+     "queue": [
+      0.12,
+      0.62
+     ],
+     "centre": [
+      0.516,
+      0.531
+     ]
+    }
+   }
+  },
+  "007": {
+   "id": "squirtle",
+   "name": "Carapuce",
+   "front": {
+    "image": "assets/sprites/pokemon/official/007.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     29,
+     22,
+     417,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.38,
+      0.14
+     ],
+     "bouche": [
+      0.31,
+      0.27
+     ],
+     "mains": [
+      [
+       0.04,
+       0.51
+      ],
+      [
+       0.48,
+       0.57
+      ]
+     ],
+     "queue": [
+      0.93,
+      0.74
+     ],
+     "centre": [
+      0.468,
+      0.542
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_007.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     123,
+     63,
+     776,
+     898
+    ],
+    "points": {
+     "tete": [
+      0.58,
+      0.2
+     ],
+     "queue": [
+      0.06,
+      0.79
+     ],
+     "centre": [
+      0.487,
+      0.535
+     ]
+    }
+   }
+  },
+  "008": {
+   "id": "wartortle",
+   "name": "Carabaffe",
+   "front": {
+    "image": "assets/sprites/pokemon/official/008.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     25,
+     22,
+     425,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.33,
+      0.34
+     ],
+     "bouche": [
+      0.28,
+      0.47
+     ],
+     "yeux": [
+      [
+       0.24,
+       0.39
+      ],
+      [
+       0.42,
+       0.39
+      ]
+     ],
+     "mains": [
+      [
+       0.05,
+       0.51
+      ],
+      [
+       0.77,
+       0.5
+      ]
+     ],
+     "queue": [
+      0.9,
+      0.42
+     ],
+     "centre": [
+      0.524,
+      0.534
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_008.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     84,
+     34,
+     855,
+     870
+    ],
+    "points": {
+     "tete": [
+      0.69,
+      0.32
+     ],
+     "queue": [
+      0.1,
+      0.45
+     ],
+     "centre": [
+      0.497,
+      0.551
+     ]
+    }
+   }
+  },
+  "009": {
+   "id": "blastoise",
+   "name": "Tortank",
+   "front": {
+    "image": "assets/sprites/pokemon/official/009.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     38,
+     22,
+     398,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.66,
+      0.08
+     ],
+     "bouche": [
+      0.82,
+      0.08
+     ],
+     "canons": [
+      [
+       0.13,
+       0.23
+      ],
+      [
+       0.81,
+       0.29
+      ]
+     ],
+     "centre": [
+      0.47,
+      0.538
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/blastoise_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     10,
+     6,
+     48,
+     57
+    ],
+    "points": {
+     "tete": [
+      0.46,
+      0.16
+     ],
+     "canons": [
+      [
+       0.16,
+       0.37
+      ],
+      [
+       0.76,
+       0.37
+      ]
+     ],
+     "centre": [
+      0.483,
+      0.534
+     ]
+    }
+   }
+  },
+  "010": {
+   "id": "caterpie",
+   "name": "Chenipan",
+   "front": {
+    "image": "assets/sprites/pokemon/official/010.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     22,
+     431,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.34,
+      0.27
+     ],
+     "centre": [
+      0.457,
+      0.489
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_010.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     177,
+     34,
+     670,
+     870
+    ],
+    "points": {
+     "tete": [
+      0.67,
+      0.3
+     ],
+     "centre": [
+      0.587,
+      0.534
+     ]
+    }
+   }
+  },
+  "011": {
+   "id": "metapod",
+   "name": "Chrysacier",
+   "front": {
+    "image": "assets/sprites/pokemon/official/011.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     48,
+     22,
+     379,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.3,
+      0.35
+     ],
+     "centre": [
+      0.401,
+      0.565
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_011.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     225,
+     34,
+     574,
+     870
+    ],
+    "points": {
+     "tete": [
+      0.68,
+      0.3
+     ],
+     "centre": [
+      0.59,
+      0.551
+     ]
+    }
+   }
+  },
+  "012": {
+   "id": "butterfree",
+   "name": "Papilusion",
+   "front": {
+    "image": "assets/sprites/pokemon/official/012.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     41,
+     431,
+     393
+    ],
+    "points": {
+     "tete": [
+      0.41,
+      0.51
+     ],
+     "bouche": [
+      0.33,
+      0.58
+     ],
+     "yeux": [
+      [
+       0.24,
+       0.54
+      ],
+      [
+       0.42,
+       0.49
+      ]
+     ],
+     "centre": [
+      0.526,
+      0.506
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_012.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     93,
+     75,
+     838,
+     873
+    ],
+    "points": {
+     "tete": [
+      0.5,
+      0.39
+     ],
+     "centre": [
+      0.502,
+      0.488
+     ]
+    }
+   }
+  },
+  "013": {
+   "id": "weedle",
+   "name": "Aspicot",
+   "front": {
+    "image": "assets/sprites/pokemon/official/013.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     68,
+     22,
+     339,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.32,
+      0.32
+     ],
+     "bouche": [
+      0.12,
+      0.29
+     ],
+     "cornes": [
+      0.46,
+      0.01
+     ],
+     "centre": [
+      0.403,
+      0.545
+     ],
+     "queue": [
+      0.97,
+      0.64
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_013.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     193,
+     34,
+     637,
+     870
+    ],
+    "points": {
+     "tete": [
+      0.69,
+      0.34
+     ],
+     "queue": [
+      0.04,
+      0.65
+     ],
+     "cornes": [
+      0.6,
+      0.01
+     ],
+     "centre": [
+      0.595,
+      0.55
+     ]
+    }
+   }
+  },
+  "014": {
+   "id": "kakuna",
+   "name": "Coconfort",
+   "front": {
+    "image": "assets/sprites/pokemon/official/014.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     121,
+     22,
+     233,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.5,
+      0.2
+     ],
+     "centre": [
+      0.502,
+      0.449
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_014.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     293,
+     34,
+     437,
+     870
+    ],
+    "points": {
+     "tete": [
+      0.43,
+      0.18
+     ],
+     "centre": [
+      0.539,
+      0.462
+     ]
+    }
+   }
+  },
+  "015": {
+   "id": "beedrill",
+   "name": "Dardargnan",
+   "front": {
+    "image": "assets/sprites/pokemon/official/015.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     59,
+     22,
+     357,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.44,
+      0.29
+     ],
+     "mains": [
+      [
+       0.2,
+       0.47
+      ],
+      [
+       0.73,
+       0.26
+      ]
+     ],
+     "centre": [
+      0.599,
+      0.415
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_015.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     147,
+     34,
+     730,
+     870
+    ],
+    "points": {
+     "tete": [
+      0.55,
+      0.24
+     ],
+     "mains": [
+      [
+       0.19,
+       0.41
+      ],
+      [
+       0.81,
+       0.48
+      ]
+     ],
+     "centre": [
+      0.398,
+      0.413
+     ]
+    }
+   }
+  },
+  "016": {
+   "id": "pidgey",
+   "name": "Roucool",
+   "front": {
+    "image": "assets/sprites/pokemon/official/016.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     36,
+     22,
+     402,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.23,
+      0.23
+     ],
+     "bouche": [
+      0.09,
+      0.27
+     ],
+     "queue": [
+      0.97,
+      0.54
+     ],
+     "centre": [
+      0.384,
+      0.537
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_016.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     157,
+     71,
+     710,
+     890
+    ],
+    "points": {
+     "tete": [
+      0.87,
+      0.18
+     ],
+     "bouche": [
+      0.95,
+      0.2
+     ],
+     "queue": [
+      0.04,
+      0.87
+     ],
+     "centre": [
+      0.562,
+      0.539
+     ]
+    }
+   }
+  },
+  "017": {
+   "id": "pidgeotto",
+   "name": "Roucoups",
+   "front": {
+    "image": "assets/sprites/pokemon/official/017.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     51,
+     22,
+     373,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.27,
+      0.34
+     ],
+     "bouche": [
+      0.25,
+      0.38
+     ],
+     "centre": [
+      0.458,
+      0.441
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_017.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     114,
+     34,
+     795,
+     870
+    ],
+    "points": {
+     "tete": [
+      0.64,
+      0.3
+     ],
+     "centre": [
+      0.481,
+      0.455
+     ]
+    }
+   }
+  },
+  "018": {
+   "id": "pidgeot",
+   "name": "Roucarnage",
+   "front": {
+    "image": "assets/sprites/pokemon/official/018.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     31,
+     22,
+     413,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.85,
+      0.44
+     ],
+     "bouche": [
+      0.96,
+      0.47
+     ],
+     "queue": [
+      0.37,
+      0.91
+     ],
+     "centre": [
+      0.54,
+      0.48
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_018.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     77,
+     49,
+     870,
+     855
+    ],
+    "points": {
+     "tete": [
+      0.72,
+      0.27
+     ],
+     "centre": [
+      0.481,
+      0.511
+     ]
+    }
+   }
+  },
+  "019": {
+   "id": "rattata",
+   "name": "Rattata",
+   "front": {
+    "image": "assets/sprites/pokemon/official/019.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     47,
+     431,
+     380
+    ],
+    "points": {
+     "tete": [
+      0.27,
+      0.53
+     ],
+     "bouche": [
+      0.21,
+      0.62
+     ],
+     "centre": [
+      0.537,
+      0.565
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_019.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     77,
+     49,
+     870,
+     855
+    ],
+    "points": {
+     "tete": [
+      0.77,
+      0.33
+     ],
+     "centre": [
+      0.466,
+      0.518
+     ]
+    }
+   }
+  },
+  "020": {
+   "id": "raticate",
+   "name": "Rattatac",
+   "front": {
+    "image": "assets/sprites/pokemon/official/020.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     26,
+     431,
+     423
+    ],
+    "points": {
+     "tete": [
+      0.29,
+      0.25
+     ],
+     "bouche": [
+      0.21,
+      0.42
+     ],
+     "mains": [
+      [
+       0.1,
+       0.54
+      ],
+      [
+       0.47,
+       0.61
+      ]
+     ],
+     "queue": [
+      0.8,
+      0.14
+     ],
+     "centre": [
+      0.45,
+      0.505
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_020.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     80,
+     34,
+     863,
+     870
+    ],
+    "points": {
+     "tete": [
+      0.74,
+      0.21
+     ],
+     "queue": [
+      0.22,
+      0.2
+     ],
+     "centre": [
+      0.56,
+      0.517
+     ]
+    }
+   }
+  },
+  "021": {
+   "id": "spearow",
+   "name": "Piafabec",
+   "front": {
+    "image": "assets/sprites/pokemon/official/021.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     27,
+     22,
+     420,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.58,
+      0.25
+     ],
+     "bouche": [
+      0.55,
+      0.31
+     ],
+     "centre": [
+      0.499,
+      0.465
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_021.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     205,
+     34,
+     614,
+     870
+    ],
+    "points": {
+     "tete": [
+      0.88,
+      0.27
+     ],
+     "centre": [
+      0.585,
+      0.5
+     ]
+    }
+   }
+  },
+  "022": {
+   "id": "fearow",
+   "name": "Rapasdepic",
+   "front": {
+    "image": "assets/sprites/pokemon/official/022.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     37,
+     431,
+     400
+    ],
+    "points": {
+     "tete": [
+      0.21,
+      0.68
+     ],
+     "bouche": [
+      0.02,
+      0.87
+     ],
+     "centre": [
+      0.558,
+      0.493
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_022.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     112,
+     34,
+     799,
+     870
+    ],
+    "points": {
+     "tete": [
+      0.55,
+      0.36
+     ],
+     "centre": [
+      0.437,
+      0.498
+     ]
+    }
+   }
+  },
+  "023": {
+   "id": "ekans",
+   "name": "Abo",
+   "front": {
+    "image": "assets/sprites/pokemon/official/023.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     24,
+     431,
+     427
+    ],
+    "points": {
+     "tete": [
+      0.27,
+      0.12
+     ],
+     "bouche": [
+      0.18,
+      0.32
+     ],
+     "queue": [
+      0.8,
+      0.09
+     ],
+     "centre": [
+      0.452,
+      0.56
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_023.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     87,
+     34,
+     850,
+     870
+    ],
+    "points": {
+     "tete": [
+      0.75,
+      0.16
+     ],
+     "queue": [
+      0.24,
+      0.14
+     ],
+     "centre": [
+      0.551,
+      0.578
+     ]
+    }
+   }
+  },
+  "024": {
+   "id": "arbok",
+   "name": "Arbok",
+   "front": {
+    "image": "assets/sprites/pokemon/official/024.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     44,
+     22,
+     386,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.42,
+      0.22
+     ],
+     "bouche": [
+      0.43,
+      0.29
+     ],
+     "queue": [
+      0.1,
+      0.59
+     ],
+     "centre": [
+      0.574,
+      0.519
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_024.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     161,
+     34,
+     702,
+     870
+    ],
+    "points": {
+     "tete": [
+      0.77,
+      0.12
+     ],
+     "queue": [
+      0.12,
+      0.57
+     ],
+     "centre": [
+      0.53,
+      0.533
+     ]
+    }
+   }
+  },
+  "025": {
+   "id": "pikachu",
+   "name": "Pikachu",
+   "front": {
+    "image": "assets/sprites/pokemon/official/025.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     35,
+     431,
+     405
+    ],
+    "points": {
+     "tete": [
+      0.27,
+      0.4
+     ],
+     "bouche": [
+      0.21,
+      0.46
+     ],
+     "yeux": [
+      [
+       0.12,
+       0.36
+      ],
+      [
+       0.3,
+       0.31
+      ]
+     ],
+     "joues": [
+      [
+       0.09,
+       0.46
+      ],
+      [
+       0.37,
+       0.42
+      ]
+     ],
+     "queue": [
+      0.97,
+      0.13
+     ],
+     "centre": [
+      0.46,
+      0.516
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_025.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     178,
+     62,
+     669,
+     900
+    ],
+    "points": {
+     "tete": [
+      0.48,
+      0.29
+     ],
+     "queue": [
+      0.05,
+      0.21
+     ],
+     "centre": [
+      0.459,
+      0.516
+     ]
+    }
+   }
+  },
+  "026": {
+   "id": "raichu",
+   "name": "Raichu",
+   "front": {
+    "image": "assets/sprites/pokemon/official/026.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     46,
+     431,
+     383
+    ],
+    "points": {
+     "tete": [
+      0.23,
+      0.24
+     ],
+     "bouche": [
+      0.24,
+      0.27
+     ],
+     "yeux": [
+      [
+       0.18,
+       0.23
+      ],
+      [
+       0.31,
+       0.22
+      ]
+     ],
+     "joues": [
+      [
+       0.14,
+       0.31
+      ],
+      [
+       0.35,
+       0.29
+      ]
+     ],
+     "queue": [
+      0.98,
+      0.65
+     ],
+     "centre": [
+      0.355,
+      0.487
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_026.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     128,
+     34,
+     767,
+     870
+    ],
+    "points": {
+     "tete": [
+      0.75,
+      0.39
+     ],
+     "queue": [
+      0.02,
+      0.09
+     ],
+     "centre": [
+      0.597,
+      0.519
+     ]
+    }
+   }
+  },
+  "027": {
+   "id": "sandshrew",
+   "name": "Sabelette",
+   "front": {
+    "image": "assets/sprites/pokemon/official/027.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     41,
+     22,
+     393,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.26,
+      0.29
+     ],
+     "yeux": [
+      [
+       0.08,
+       0.26
+      ],
+      [
+       0.39,
+       0.24
+      ]
+     ],
+     "mains": [
+      [
+       0.15,
+       0.56
+      ],
+      [
+       0.33,
+       0.58
+      ]
+     ],
+     "queue": [
+      0.98,
+      0.45
+     ],
+     "centre": [
+      0.409,
+      0.484
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_027.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     77,
+     39,
+     870,
+     865
+    ],
+    "points": {
+     "tete": [
+      0.59,
+      0.18
+     ],
+     "queue": [
+      0.02,
+      0.56
+     ],
+     "centre": [
+      0.577,
+      0.534
+     ]
+    }
+   }
+  },
+  "028": {
+   "id": "sandslash",
+   "name": "Sablaireau",
+   "front": {
+    "image": "assets/sprites/pokemon/official/028.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     31,
+     431,
+     413
+    ],
+    "points": {
+     "tete": [
+      0.7,
+      0.37
+     ],
+     "yeux": [
+      [
+       0.63,
+       0.36
+      ],
+      [
+       0.79,
+       0.39
+      ]
+     ],
+     "centre": [
+      0.489,
+      0.429
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_028.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     77,
+     68,
+     870,
+     836
+    ],
+    "points": {
+     "tete": [
+      0.75,
+      0.28
+     ],
+     "centre": [
+      0.506,
+      0.5
+     ]
+    }
+   }
+  },
+  "029": {
+   "id": "nidoran_f",
+   "name": "Nidoran♀",
+   "front": {
+    "image": "assets/sprites/pokemon/official/029.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     31,
+     431,
+     413
+    ],
+    "points": {
+     "tete": [
+      0.27,
+      0.24
+     ],
+     "bouche": [
+      0.18,
+      0.33
+     ],
+     "centre": [
+      0.489,
+      0.466
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_029.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     131,
+     34,
+     762,
+     870
+    ],
+    "points": {
+     "tete": [
+      0.38,
+      0.25
+     ],
+     "centre": [
+      0.477,
+      0.491
+     ]
+    }
+   }
+  },
+  "030": {
+   "id": "nidorina",
+   "name": "Nidorina",
+   "front": {
+    "image": "assets/sprites/pokemon/official/030.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     47,
+     22,
+     381,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.55,
+      0.45
+     ],
+     "yeux": [
+      [
+       0.37,
+       0.44
+      ],
+      [
+       0.58,
+       0.47
+      ]
+     ],
+     "centre": [
+      0.49,
+      0.53
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_030.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     161,
+     34,
+     702,
+     870
+    ],
+    "points": {
+     "tete": [
+      0.64,
+      0.39
+     ],
+     "centre": [
+      0.536,
+      0.515
+     ]
+    }
+   }
+  },
+  "031": {
+   "id": "nidoqueen",
+   "name": "Nidoqueen",
+   "front": {
+    "image": "assets/sprites/pokemon/official/031.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     28,
+     22,
+     418,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.5,
+      0.13
+     ],
+     "bouche": [
+      0.48,
+      0.27
+     ],
+     "mains": [
+      [
+       0.13,
+       0.53
+      ],
+      [
+       0.65,
+       0.62
+      ]
+     ],
+     "centre": [
+      0.54,
+      0.553
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_031.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     83,
+     34,
+     857,
+     870
+    ],
+    "points": {
+     "tete": [
+      0.58,
+      0.13
+     ],
+     "centre": [
+      0.528,
+      0.551
+     ]
+    }
+   }
+  },
+  "032": {
+   "id": "nidoran_m",
+   "name": "Nidoran♂",
+   "front": {
+    "image": "assets/sprites/pokemon/official/032.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     42,
+     22,
+     390,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.22,
+      0.75
+     ],
+     "bouche": [
+      0.16,
+      0.86
+     ],
+     "centre": [
+      0.498,
+      0.557
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_032.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     189,
+     34,
+     646,
+     870
+    ],
+    "points": {
+     "tete": [
+      0.9,
+      0.5
+     ],
+     "centre": [
+      0.502,
+      0.534
+     ]
+    }
+   }
+  },
+  "033": {
+   "id": "nidorino",
+   "name": "Nidorino",
+   "front": {
+    "image": "assets/sprites/pokemon/official/033.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     43,
+     22,
+     388,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.24,
+      0.75
+     ],
+     "cornes": [
+      0.04,
+      0.78
+     ],
+     "centre": [
+      0.459,
+      0.542
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_033.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     110,
+     34,
+     803,
+     870
+    ],
+    "points": {
+     "tete": [
+      0.89,
+      0.52
+     ],
+     "centre": [
+      0.55,
+      0.534
+     ]
+    }
+   }
+  },
+  "034": {
+   "id": "nidoking",
+   "name": "Nidoking",
+   "front": {
+    "image": "assets/sprites/pokemon/official/034.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     71,
+     431,
+     332
+    ],
+    "points": {
+     "tete": [
+      0.36,
+      0.37
+     ],
+     "bouche": [
+      0.41,
+      0.49
+     ],
+     "mains": [
+      [
+       0.04,
+       0.47
+      ],
+      [
+       0.86,
+       0.45
+      ]
+     ],
+     "queue": [
+      0.96,
+      0.22
+     ],
+     "centre": [
+      0.535,
+      0.5
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_034.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     77,
+     153,
+     870,
+     751
+    ],
+    "points": {
+     "tete": [
+      0.66,
+      0.14
+     ],
+     "mains": [
+      [
+       0.24,
+       0.39
+      ],
+      [
+       0.96,
+       0.54
+      ]
+     ],
+     "queue": [
+      0.04,
+      0.38
+     ],
+     "centre": [
+      0.535,
+      0.535
+     ]
+    }
+   }
+  },
+  "035": {
+   "id": "clefairy",
+   "name": "Mélofée",
+   "front": {
+    "image": "assets/sprites/pokemon/official/035.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     22,
+     430,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.52,
+      0.39
+     ],
+     "bouche": [
+      0.46,
+      0.48
+     ],
+     "yeux": [
+      [
+       0.39,
+       0.37
+      ],
+      [
+       0.56,
+       0.38
+      ]
+     ],
+     "mains": [
+      [
+       0.06,
+       0.26
+      ],
+      [
+       0.95,
+       0.48
+      ]
+     ],
+     "centre": [
+      0.486,
+      0.502
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_035.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     139,
+     34,
+     745,
+     870
+    ],
+    "points": {
+     "tete": [
+      0.5,
+      0.3
+     ],
+     "centre": [
+      0.466,
+      0.504
+     ]
+    }
+   }
+  },
+  "036": {
+   "id": "clefable",
+   "name": "Mélodelfe",
+   "front": {
+    "image": "assets/sprites/pokemon/official/036.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     24,
+     431,
+     426
+    ],
+    "points": {
+     "tete": [
+      0.48,
+      0.36
+     ],
+     "bouche": [
+      0.48,
+      0.42
+     ],
+     "yeux": [
+      [
+       0.41,
+       0.36
+      ],
+      [
+       0.54,
+       0.36
+      ]
+     ],
+     "mains": [
+      [
+       0.16,
+       0.3
+      ],
+      [
+       0.85,
+       0.46
+      ]
+     ],
+     "centre": [
+      0.507,
+      0.514
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_036.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     132,
+     34,
+     760,
+     870
+    ],
+    "points": {
+     "tete": [
+      0.57,
+      0.3
+     ],
+     "centre": [
+      0.483,
+      0.527
+     ]
+    }
+   }
+  },
+  "037": {
+   "id": "vulpix",
+   "name": "Goupix",
+   "front": {
+    "image": "assets/sprites/pokemon/official/037.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     46,
+     431,
+     382
+    ],
+    "points": {
+     "tete": [
+      0.16,
+      0.36
+     ],
+     "bouche": [
+      0.08,
+      0.44
+     ],
+     "centre": [
+      0.486,
+      0.485
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_037.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     77,
+     50,
+     870,
+     854
+    ],
+    "points": {
+     "tete": [
+      0.77,
+      0.22
+     ],
+     "centre": [
+      0.514,
+      0.486
+     ]
+    }
+   }
+  },
+  "038": {
+   "id": "ninetales",
+   "name": "Feunard",
+   "front": {
+    "image": "assets/sprites/pokemon/official/038.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     30,
+     431,
+     415
+    ],
+    "points": {
+     "tete": [
+      0.65,
+      0.2
+     ],
+     "bouche": [
+      0.54,
+      0.25
+     ],
+     "centre": [
+      0.45,
+      0.485
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_038.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     77,
+     47,
+     870,
+     857
+    ],
+    "points": {
+     "tete": [
+      0.87,
+      0.15
+     ],
+     "centre": [
+      0.512,
+      0.497
+     ]
+    }
+   }
+  },
+  "039": {
+   "id": "jigglypuff",
+   "name": "Rondoudou",
+   "front": {
+    "image": "assets/sprites/pokemon/official/039.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     33,
+     431,
+     408
+    ],
+    "points": {
+     "tete": [
+      0.45,
+      0.42
+     ],
+     "yeux": [
+      [
+       0.29,
+       0.44
+      ],
+      [
+       0.62,
+       0.58
+      ]
+     ],
+     "centre": [
+      0.472,
+      0.516
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/jigglypuff_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     11,
+     18,
+     42,
+     45
+    ],
+    "points": {
+     "tete": [
+      0.5,
+      0.4
+     ],
+     "centre": [
+      0.502,
+      0.504
+     ]
+    }
+   }
+  },
+  "040": {
+   "id": "wigglytuff",
+   "name": "Grodoudou",
+   "front": {
+    "image": "assets/sprites/pokemon/official/040.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     60,
+     22,
+     355,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.62,
+      0.4
+     ],
+     "bouche": [
+      0.67,
+      0.48
+     ],
+     "yeux": [
+      [
+       0.48,
+       0.4
+      ],
+      [
+       0.77,
+       0.39
+      ]
+     ],
+     "centre": [
+      0.537,
+      0.499
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_040.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     164,
+     34,
+     696,
+     870
+    ],
+    "points": {
+     "tete": [
+      0.49,
+      0.32
+     ],
+     "queue": [
+      0.2,
+      0.68
+     ],
+     "centre": [
+      0.513,
+      0.537
+     ]
+    }
+   }
+  },
+  "041": {
+   "id": "zubat",
+   "name": "Nosferapti",
+   "front": {
+    "image": "assets/sprites/pokemon/official/041.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     33,
+     431,
+     408
+    ],
+    "points": {
+     "tete": [
+      0.56,
+      0.33
+     ],
+     "bouche": [
+      0.56,
+      0.36
+     ],
+     "centre": [
+      0.561,
+      0.383
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_041.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     69,
+     134,
+     887,
+     756
+    ],
+    "points": {
+     "tete": [
+      0.49,
+      0.28
+     ],
+     "centre": [
+      0.5,
+      0.379
+     ]
+    }
+   }
+  },
+  "042": {
+   "id": "golbat",
+   "name": "Nosferalto",
+   "front": {
+    "image": "assets/sprites/pokemon/official/042.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     52,
+     431,
+     370
+    ],
+    "points": {
+     "tete": [
+      0.36,
+      0.45
+     ],
+     "bouche": [
+      0.36,
+      0.62
+     ],
+     "yeux": [
+      [
+       0.29,
+       0.45
+      ],
+      [
+       0.4,
+       0.45
+      ]
+     ],
+     "centre": [
+      0.445,
+      0.497
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_042.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     77,
+     82,
+     870,
+     822
+    ],
+    "points": {
+     "tete": [
+      0.48,
+      0.51
+     ],
+     "centre": [
+      0.474,
+      0.529
+     ]
+    }
+   }
+  },
+  "043": {
+   "id": "oddish",
+   "name": "Mystherbe",
+   "front": {
+    "image": "assets/sprites/pokemon/official/043.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     42,
+     22,
+     390,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.2,
+      0.55
+     ],
+     "bouche": [
+      0.2,
+      0.6
+     ],
+     "yeux": [
+      [
+       0.14,
+       0.51
+      ],
+      [
+       0.32,
+       0.56
+      ]
+     ],
+     "bulbe": [
+      0.4,
+      0.35
+     ],
+     "centre": [
+      0.418,
+      0.459
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_043.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     160,
+     34,
+     703,
+     870
+    ],
+    "points": {
+     "tete": [
+      0.68,
+      0.64
+     ],
+     "bulbe": [
+      0.57,
+      0.45
+     ],
+     "centre": [
+      0.582,
+      0.459
+     ]
+    }
+   }
+  },
+  "044": {
+   "id": "gloom",
+   "name": "Ortide",
+   "front": {
+    "image": "assets/sprites/pokemon/official/044.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     61,
+     431,
+     352
+    ],
+    "points": {
+     "tete": [
+      0.5,
+      0.5
+     ],
+     "bouche": [
+      0.49,
+      0.62
+     ],
+     "bulbe": [
+      0.52,
+      0.27
+     ],
+     "centre": [
+      0.519,
+      0.461
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_044.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     77,
+     188,
+     870,
+     716
+    ],
+    "points": {
+     "tete": [
+      0.5,
+      0.45
+     ],
+     "bulbe": [
+      0.5,
+      0.27
+     ],
+     "centre": [
+      0.505,
+      0.464
+     ]
+    }
+   }
+  },
+  "045": {
+   "id": "vileplume",
+   "name": "Rafflesia",
+   "front": {
+    "image": "assets/sprites/pokemon/official/045.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     41,
+     431,
+     392
+    ],
+    "points": {
+     "tete": [
+      0.5,
+      0.45
+     ],
+     "bouche": [
+      0.54,
+      0.69
+     ],
+     "yeux": [
+      [
+       0.45,
+       0.66
+      ],
+      [
+       0.62,
+       0.63
+      ]
+     ],
+     "bulbe": [
+      0.43,
+      0.22
+     ],
+     "centre": [
+      0.524,
+      0.454
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_045.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     77,
+     129,
+     870,
+     775
+    ],
+    "points": {
+     "tete": [
+      0.5,
+      0.45
+     ],
+     "bulbe": [
+      0.46,
+      0.23
+     ],
+     "centre": [
+      0.533,
+      0.45
+     ]
+    }
+   }
+  },
+  "046": {
+   "id": "paras",
+   "name": "Paras",
+   "front": {
+    "image": "assets/sprites/pokemon/official/046.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     60,
+     431,
+     354
+    ],
+    "points": {
+     "tete": [
+      0.42,
+      0.47
+     ],
+     "bouche": [
+      0.4,
+      0.63
+     ],
+     "yeux": [
+      [
+       0.27,
+       0.41
+      ],
+      [
+       0.57,
+       0.47
+      ]
+     ],
+     "mains": [
+      [
+       0.11,
+       0.7
+      ],
+      [
+       0.7,
+       0.76
+      ]
+     ],
+     "bulbe": [
+      0.72,
+      0.21
+     ],
+     "centre": [
+      0.5,
+      0.461
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_046.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     77,
+     192,
+     870,
+     712
+    ],
+    "points": {
+     "tete": [
+      0.4,
+      0.55
+     ],
+     "bulbe": [
+      0.61,
+      0.26
+     ],
+     "centre": [
+      0.467,
+      0.473
+     ]
+    }
+   }
+  },
+  "047": {
+   "id": "parasect",
+   "name": "Parasect",
+   "front": {
+    "image": "assets/sprites/pokemon/official/047.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     34,
+     431,
+     406
+    ],
+    "points": {
+     "tete": [
+      0.41,
+      0.52
+     ],
+     "bouche": [
+      0.4,
+      0.58
+     ],
+     "yeux": [
+      [
+       0.35,
+       0.5
+      ],
+      [
+       0.47,
+       0.5
+      ]
+     ],
+     "mains": [
+      [
+       0.12,
+       0.7
+      ],
+      [
+       0.65,
+       0.78
+      ]
+     ],
+     "bulbe": [
+      0.57,
+      0.3
+     ],
+     "centre": [
+      0.523,
+      0.491
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_047.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     77,
+     91,
+     870,
+     813
+    ],
+    "points": {
+     "tete": [
+      0.4,
+      0.7
+     ],
+     "bulbe": [
+      0.38,
+      0.38
+     ],
+     "centre": [
+      0.452,
+      0.493
+     ]
+    }
+   }
+  },
+  "048": {
+   "id": "venonat",
+   "name": "Mimitoss",
+   "front": {
+    "image": "assets/sprites/pokemon/official/048.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     53,
+     22,
+     368,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.6,
+      0.5
+     ],
+     "bouche": [
+      0.74,
+      0.53
+     ],
+     "yeux": [
+      [
+       0.54,
+       0.46
+      ],
+      [
+       0.83,
+       0.4
+      ]
+     ],
+     "centre": [
+      0.573,
+      0.571
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_048.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     33,
+     24,
+     957,
+     1000
+    ],
+    "points": {
+     "tete": [
+      0.5,
+      0.5
+     ],
+     "centre": [
+      0.46,
+      0.649
+     ]
+    }
+   }
+  },
+  "049": {
+   "id": "venomoth",
+   "name": "Aéromite",
+   "front": {
+    "image": "assets/sprites/pokemon/official/049.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     97,
+     431,
+     281
+    ],
+    "points": {
+     "tete": [
+      0.37,
+      0.62
+     ],
+     "bouche": [
+      0.37,
+      0.73
+     ],
+     "yeux": [
+      [
+       0.32,
+       0.6
+      ],
+      [
+       0.42,
+       0.6
+      ]
+     ],
+     "centre": [
+      0.536,
+      0.507
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_049.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     12,
+     94,
+     1000,
+     930
+    ],
+    "points": {
+     "tete": [
+      0.62,
+      0.55
+     ],
+     "centre": [
+      0.471,
+      0.558
+     ]
+    }
+   }
+  },
+  "050": {
+   "id": "diglett",
+   "name": "Taupiqueur",
+   "front": {
+    "image": "assets/sprites/pokemon/official/050.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     38,
+     431,
+     399
+    ],
+    "points": {
+     "tete": [
+      0.43,
+      0.28
+     ],
+     "bouche": [
+      0.41,
+      0.36
+     ],
+     "yeux": [
+      [
+       0.34,
+       0.21
+      ],
+      [
+       0.52,
+       0.22
+      ]
+     ],
+     "centre": [
+      0.506,
+      0.555
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos3d_050.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     67,
+     148,
+     890,
+     725
+    ],
+    "points": {
+     "tete": [
+      0.5,
+      0.3
+     ],
+     "centre": [
+      0.507,
+      0.576
+     ]
+    }
+   }
+  },
+  "051": {
+   "id": "dugtrio",
+   "name": "Triopikeur",
+   "front": {
+    "image": "assets/sprites/pokemon/official/051.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     29,
+     431,
+     416
+    ],
+    "points": {
+     "tete": [
+      0.6,
+      0.14
+     ],
+     "bouche": [
+      0.6,
+      0.19
+     ],
+     "yeux": [
+      [
+       0.545,
+       0.1
+      ],
+      [
+       0.66,
+       0.1
+      ]
+     ],
+     "centre": [
+      0.518,
+      0.569
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos3d_051.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     67,
+     175,
+     890,
+     670
+    ],
+    "points": {
+     "tete": [
+      0.4,
+      0.28
+     ],
+     "centre": [
+      0.497,
+      0.558
+     ]
+    }
+   }
+  },
+  "052": {
+   "id": "meowth",
+   "name": "Miaouss",
+   "front": {
+    "image": "assets/sprites/pokemon/official/052.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     73,
+     22,
+     328,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.5,
+      0.33
+     ],
+     "bouche": [
+      0.49,
+      0.45
+     ],
+     "yeux": [
+      [
+       0.34,
+       0.33
+      ],
+      [
+       0.62,
+       0.35
+      ]
+     ],
+     "mains": [
+      [
+       0.06,
+       0.63
+      ],
+      [
+       0.86,
+       0.23
+      ]
+     ],
+     "queue": [
+      0.9,
+      0.73
+     ],
+     "centre": [
+      0.509,
+      0.458
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_052.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     164,
+     34,
+     696,
+     870
+    ],
+    "points": {
+     "tete": [
+      0.56,
+      0.37
+     ],
+     "mains": [
+      [
+       0.32,
+       0.52
+      ],
+      [
+       0.87,
+       0.65
+      ]
+     ],
+     "queue": [
+      0.1,
+      0.65
+     ],
+     "centre": [
+      0.528,
+      0.504
+     ]
+    }
+   }
+  },
+  "053": {
+   "id": "persian",
+   "name": "Persan",
+   "front": {
+    "image": "assets/sprites/pokemon/official/053.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     44,
+     431,
+     386
+    ],
+    "points": {
+     "tete": [
+      0.7,
+      0.25
+     ],
+     "bouche": [
+      0.68,
+      0.3
+     ],
+     "yeux": [
+      [
+       0.64,
+       0.21
+      ],
+      [
+       0.77,
+       0.21
+      ]
+     ],
+     "queue": [
+      0.1,
+      0.49
+     ],
+     "centre": [
+      0.536,
+      0.527
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_053.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     77,
+     91,
+     870,
+     813
+    ],
+    "points": {
+     "tete": [
+      0.8,
+      0.21
+     ],
+     "queue": [
+      0.16,
+      0.42
+     ],
+     "centre": [
+      0.549,
+      0.521
+     ]
+    }
+   }
+  },
+  "054": {
+   "id": "psyduck",
+   "name": "Psykokwak",
+   "front": {
+    "image": "assets/sprites/pokemon/official/054.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     71,
+     22,
+     333,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.43,
+      0.32
+     ],
+     "bouche": [
+      0.1,
+      0.5
+     ],
+     "yeux": [
+      [
+       0.29,
+       0.28
+      ],
+      [
+       0.58,
+       0.29
+      ]
+     ],
+     "centre": [
+      0.52,
+      0.547
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_054.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     48,
+     24,
+     928,
+     1000
+    ],
+    "points": {
+     "tete": [
+      0.42,
+      0.32
+     ],
+     "centre": [
+      0.511,
+      0.591
+     ]
+    }
+   }
+  },
+  "055": {
+   "id": "golduck",
+   "name": "Akwakwak",
+   "front": {
+    "image": "assets/sprites/pokemon/official/055.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     25,
+     431,
+     425
+    ],
+    "points": {
+     "tete": [
+      0.38,
+      0.27
+     ],
+     "bouche": [
+      0.38,
+      0.4
+     ],
+     "yeux": [
+      [
+       0.35,
+       0.21
+      ],
+      [
+       0.42,
+       0.23
+      ]
+     ],
+     "mains": [
+      [
+       0.05,
+       0.43
+      ],
+      [
+       0.68,
+       0.53
+      ]
+     ],
+     "queue": [
+      0.99,
+      0.3
+     ],
+     "centre": [
+      0.529,
+      0.505
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_055.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     21,
+     24,
+     982,
+     1000
+    ],
+    "points": {
+     "tete": [
+      0.58,
+      0.34
+     ],
+     "queue": [
+      0.04,
+      0.38
+     ],
+     "centre": [
+      0.52,
+      0.602
+     ]
+    }
+   }
+  },
+  "056": {
+   "id": "mankey",
+   "name": "Férosinge",
+   "front": {
+    "image": "assets/sprites/pokemon/official/056.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     85,
+     431,
+     305
+    ],
+    "points": {
+     "tete": [
+      0.38,
+      0.43
+     ],
+     "bouche": [
+      0.37,
+      0.53
+     ],
+     "yeux": [
+      [
+       0.325,
+       0.45
+      ],
+      [
+       0.45,
+       0.47
+      ]
+     ],
+     "mains": [
+      [
+       0.07,
+       0.09
+      ],
+      [
+       0.85,
+       0.2
+      ]
+     ],
+     "queue": [
+      0.88,
+      0.45
+     ],
+     "centre": [
+      0.478,
+      0.427
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_056.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     77,
+     175,
+     870,
+     729
+    ],
+    "points": {
+     "tete": [
+      0.64,
+      0.38
+     ],
+     "mains": [
+      [
+       0.36,
+       0.07
+      ],
+      [
+       0.95,
+       0.53
+      ]
+     ],
+     "queue": [
+      0.04,
+      0.43
+     ],
+     "centre": [
+      0.532,
+      0.478
+     ]
+    }
+   }
+  },
+  "057": {
+   "id": "primeape",
+   "name": "Colossinge",
+   "front": {
+    "image": "assets/sprites/pokemon/official/057.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     30,
+     22,
+     414,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.35,
+      0.5
+     ],
+     "mains": [
+      [
+       0.34,
+       0.07
+      ],
+      [
+       0.65,
+       0.19
+      ]
+     ],
+     "centre": [
+      0.477,
+      0.498
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_057.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     102,
+     34,
+     820,
+     870
+    ],
+    "points": {
+     "tete": [
+      0.5,
+      0.37
+     ],
+     "queue": [
+      0.1,
+      0.55
+     ],
+     "centre": [
+      0.482,
+      0.485
+     ]
+    }
+   }
+  },
+  "058": {
+   "id": "growlithe",
+   "name": "Caninos",
+   "front": {
+    "image": "assets/sprites/pokemon/official/058.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     86,
+     22,
+     302,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.55,
+      0.32
+     ],
+     "bouche": [
+      0.5,
+      0.4
+     ],
+     "queue": [
+      0.06,
+      0.61
+     ],
+     "centre": [
+      0.583,
+      0.564
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_058.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     164,
+     34,
+     695,
+     870
+    ],
+    "points": {
+     "tete": [
+      0.78,
+      0.29
+     ],
+     "queue": [
+      0.2,
+      0.45
+     ],
+     "centre": [
+      0.557,
+      0.523
+     ]
+    }
+   }
+  },
+  "059": {
+   "id": "arcanine",
+   "name": "Arcanin",
+   "front": {
+    "image": "assets/sprites/pokemon/official/059.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     34,
+     431,
+     406
+    ],
+    "points": {
+     "tete": [
+      0.23,
+      0.29
+     ],
+     "bouche": [
+      0.27,
+      0.35
+     ],
+     "yeux": [
+      [
+       0.18,
+       0.26
+      ],
+      [
+       0.28,
+       0.26
+      ]
+     ],
+     "queue": [
+      0.99,
+      0.45
+     ],
+     "centre": [
+      0.462,
+      0.514
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_059.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     77,
+     53,
+     870,
+     851
+    ],
+    "points": {
+     "tete": [
+      0.8,
+      0.33
+     ],
+     "queue": [
+      0.02,
+      0.5
+     ],
+     "centre": [
+      0.562,
+      0.505
+     ]
+    }
+   }
+  },
+  "060": {
+   "id": "poliwag",
+   "name": "Ptitard",
+   "front": {
+    "image": "assets/sprites/pokemon/official/060.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     68,
+     431,
+     338
+    ],
+    "points": {
+     "tete": [
+      0.26,
+      0.15
+     ],
+     "yeux": [
+      [
+       0.14,
+       0.15
+      ],
+      [
+       0.37,
+       0.1
+      ]
+     ],
+     "queue": [
+      0.95,
+      0.8
+     ],
+     "centre": [
+      0.412,
+      0.532
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_060.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     12,
+     153,
+     1000,
+     871
+    ],
+    "points": {
+     "tete": [
+      0.68,
+      0.37
+     ],
+     "queue": [
+      0.06,
+      0.88
+     ],
+     "centre": [
+      0.577,
+      0.511
+     ]
+    }
+   }
+  },
+  "061": {
+   "id": "poliwhirl",
+   "name": "Têtarte",
+   "front": {
+    "image": "assets/sprites/pokemon/official/061.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     49,
+     431,
+     377
+    ],
+    "points": {
+     "tete": [
+      0.45,
+      0.22
+     ],
+     "yeux": [
+      [
+       0.33,
+       0.13
+      ],
+      [
+       0.6,
+       0.19
+      ]
+     ],
+     "mains": [
+      [
+       0.13,
+       0.11
+      ],
+      [
+       0.87,
+       0.52
+      ]
+     ],
+     "centre": [
+      0.483,
+      0.466
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_061.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     12,
+     191,
+     1000,
+     833
+    ],
+    "points": {
+     "tete": [
+      0.38,
+      0.16
+     ],
+     "mains": [
+      [
+       0.09,
+       0.28
+      ],
+      [
+       0.875,
+       0.49
+      ]
+     ],
+     "centre": [
+      0.44,
+      0.545
+     ]
+    }
+   }
+  },
+  "062": {
+   "id": "poliwrath",
+   "name": "Tartard",
+   "front": {
+    "image": "assets/sprites/pokemon/official/062.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     91,
+     431,
+     293
+    ],
+    "points": {
+     "tete": [
+      0.5,
+      0.15
+     ],
+     "yeux": [
+      [
+       0.38,
+       0.12
+      ],
+      [
+       0.62,
+       0.09
+      ]
+     ],
+     "mains": [
+      [
+       0.1,
+       0.43
+      ],
+      [
+       0.9,
+       0.35
+      ]
+     ],
+     "centre": [
+      0.52,
+      0.445
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_062.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     12,
+     359,
+     1000,
+     665
+    ],
+    "points": {
+     "tete": [
+      0.5,
+      0.13
+     ],
+     "mains": [
+      [
+       0.11,
+       0.7
+      ],
+      [
+       0.89,
+       0.25
+      ]
+     ],
+     "centre": [
+      0.519,
+      0.527
+     ]
+    }
+   }
+  },
+  "063": {
+   "id": "abra",
+   "name": "Abra",
+   "front": {
+    "image": "assets/sprites/pokemon/official/063.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     86,
+     431,
+     303
+    ],
+    "points": {
+     "tete": [
+      0.52,
+      0.3
+     ],
+     "queue": [
+      0.95,
+      0.2
+     ],
+     "centre": [
+      0.556,
+      0.548
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_063.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     77,
+     170,
+     870,
+     734
+    ],
+    "points": {
+     "tete": [
+      0.5,
+      0.21
+     ],
+     "queue": [
+      0.04,
+      0.53
+     ],
+     "centre": [
+      0.495,
+      0.563
+     ]
+    }
+   }
+  },
+  "064": {
+   "id": "kadabra",
+   "name": "Kadabra",
+   "front": {
+    "image": "assets/sprites/pokemon/official/064.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     53,
+     22,
+     368,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.55,
+      0.3
+     ],
+     "mains": [
+      [
+       0.37,
+       0.06
+      ],
+      [
+       0.88,
+       0.32
+      ]
+     ],
+     "centre": [
+      0.457,
+      0.537
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/kadabra_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     10,
+     0,
+     51,
+     63
+    ],
+    "points": {
+     "tete": [
+      0.42,
+      0.23
+     ],
+     "centre": [
+      0.451,
+      0.503
+     ]
+    }
+   }
+  },
+  "065": {
+   "id": "alakazam",
+   "name": "Alakazam",
+   "front": {
+    "image": "assets/sprites/pokemon/official/065.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     46,
+     431,
+     383
+    ],
+    "points": {
+     "tete": [
+      0.5,
+      0.33
+     ],
+     "yeux": [
+      [
+       0.47,
+       0.32
+      ],
+      [
+       0.54,
+       0.32
+      ]
+     ],
+     "mains": [
+      [
+       0.1,
+       0.48
+      ],
+      [
+       0.88,
+       0.52
+      ]
+     ],
+     "centre": [
+      0.509,
+      0.489
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/alakazam_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     2,
+     0,
+     59,
+     63
+    ],
+    "points": {
+     "tete": [
+      0.5,
+      0.2
+     ],
+     "centre": [
+      0.505,
+      0.496
+     ]
+    }
+   }
+  },
+  "066": {
+   "id": "machop",
+   "name": "Machoc",
+   "front": {
+    "image": "assets/sprites/pokemon/official/066.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     58,
+     22,
+     358,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.65,
+      0.3
+     ],
+     "bouche": [
+      0.61,
+      0.41
+     ],
+     "yeux": [
+      [
+       0.58,
+       0.26
+      ],
+      [
+       0.78,
+       0.33
+      ]
+     ],
+     "mains": [
+      [
+       0.16,
+       0.33
+      ],
+      [
+       0.92,
+       0.46
+      ]
+     ],
+     "centre": [
+      0.506,
+      0.446
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_066.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     157,
+     34,
+     710,
+     870
+    ],
+    "points": {
+     "tete": [
+      0.5,
+      0.21
+     ],
+     "mains": [
+      [
+       0.14,
+       0.56
+      ],
+      [
+       0.86,
+       0.36
+      ]
+     ],
+     "centre": [
+      0.476,
+      0.513
+     ]
+    }
+   }
+  },
+  "067": {
+   "id": "machoke",
+   "name": "Machopeur",
+   "front": {
+    "image": "assets/sprites/pokemon/official/067.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     57,
+     22,
+     361,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.42,
+      0.12
+     ],
+     "bouche": [
+      0.37,
+      0.14
+     ],
+     "mains": [
+      [
+       0.13,
+       0.55
+      ],
+      [
+       0.68,
+       0.52
+      ]
+     ],
+     "centre": [
+      0.483,
+      0.495
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_067.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     16,
+     24,
+     992,
+     1000
+    ],
+    "points": {
+     "tete": [
+      0.5,
+      0.16
+     ],
+     "mains": [
+      [
+       0.16,
+       0.89
+      ],
+      [
+       0.86,
+       0.79
+      ]
+     ],
+     "centre": [
+      0.498,
+      0.595
+     ]
+    }
+   }
+  },
+  "068": {
+   "id": "machamp",
+   "name": "Mackogneur",
+   "front": {
+    "image": "assets/sprites/pokemon/official/068.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     48,
+     22,
+     379,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.55,
+      0.38
+     ],
+     "bouche": [
+      0.51,
+      0.45
+     ],
+     "mains": [
+      [
+       0.15,
+       0.06
+      ],
+      [
+       0.74,
+       0.14
+      ]
+     ],
+     "centre": [
+      0.455,
+      0.498
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_068.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     12,
+     35,
+     1000,
+     989
+    ],
+    "points": {
+     "tete": [
+      0.55,
+      0.2
+     ],
+     "mains": [
+      [
+       0.23,
+       0.05
+      ],
+      [
+       0.91,
+       0.41
+      ]
+     ],
+     "centre": [
+      0.471,
+      0.563
+     ]
+    }
+   }
+  },
+  "069": {
+   "id": "bellsprout",
+   "name": "Chétiflor",
+   "front": {
+    "image": "assets/sprites/pokemon/official/069.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     52,
+     22,
+     370,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.4,
+      0.2
+     ],
+     "bouche": [
+      0.25,
+      0.36
+     ],
+     "yeux": [
+      [
+       0.27,
+       0.17
+      ],
+      [
+       0.43,
+       0.19
+      ]
+     ],
+     "bulbe": [
+      0.42,
+      0.15
+     ],
+     "centre": [
+      0.466,
+      0.428
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_069.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     186,
+     34,
+     651,
+     870
+    ],
+    "points": {
+     "tete": [
+      0.4,
+      0.16
+     ],
+     "bulbe": [
+      0.4,
+      0.15
+     ],
+     "centre": [
+      0.486,
+      0.41
+     ]
+    }
+   }
+  },
+  "070": {
+   "id": "weepinbell",
+   "name": "Boustiflor",
+   "front": {
+    "image": "assets/sprites/pokemon/official/070.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     71,
+     431,
+     333
+    ],
+    "points": {
+     "tete": [
+      0.42,
+      0.4
+     ],
+     "bouche": [
+      0.31,
+      0.71
+     ],
+     "yeux": [
+      [
+       0.31,
+       0.4
+      ],
+      [
+       0.5,
+       0.41
+      ]
+     ],
+     "centre": [
+      0.472,
+      0.46
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_070.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     77,
+     176,
+     870,
+     728
+    ],
+    "points": {
+     "tete": [
+      0.54,
+      0.36
+     ],
+     "centre": [
+      0.528,
+      0.477
+     ]
+    }
+   }
+  },
+  "071": {
+   "id": "victreebel",
+   "name": "Empiflor",
+   "front": {
+    "image": "assets/sprites/pokemon/official/071.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     54,
+     431,
+     366
+    ],
+    "points": {
+     "tete": [
+      0.42,
+      0.3
+     ],
+     "bouche": [
+      0.39,
+      0.31
+     ],
+     "centre": [
+      0.459,
+      0.542
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_071.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     120,
+     34,
+     784,
+     870
+    ],
+    "points": {
+     "tete": [
+      0.52,
+      0.25
+     ],
+     "centre": [
+      0.525,
+      0.554
+     ]
+    }
+   }
+  },
+  "072": {
+   "id": "tentacool",
+   "name": "Tentacool",
+   "front": {
+    "image": "assets/sprites/pokemon/official/072.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     61,
+     431,
+     353
+    ],
+    "points": {
+     "tete": [
+      0.45,
+      0.3
+     ],
+     "bouche": [
+      0.45,
+      0.49
+     ],
+     "centre": [
+      0.544,
+      0.476
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_072.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     319,
+     61,
+     386,
+     901
+    ],
+    "points": {
+     "tete": [
+      0.5,
+      0.21
+     ],
+     "centre": [
+      0.551,
+      0.394
+     ]
+    }
+   }
+  },
+  "073": {
+   "id": "tentacruel",
+   "name": "Tentacruel",
+   "front": {
+    "image": "assets/sprites/pokemon/official/073.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     71,
+     431,
+     333
+    ],
+    "points": {
+     "tete": [
+      0.5,
+      0.3
+     ],
+     "centre": [
+      0.533,
+      0.49
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_073.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     12,
+     85,
+     1000,
+     939
+    ],
+    "points": {
+     "tete": [
+      0.5,
+      0.23
+     ],
+     "centre": [
+      0.573,
+      0.539
+     ]
+    }
+   }
+  },
+  "074": {
+   "id": "geodude",
+   "name": "Racaillou",
+   "front": {
+    "image": "assets/sprites/pokemon/official/074.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     156,
+     431,
+     163
+    ],
+    "points": {
+     "tete": [
+      0.42,
+      0.52
+     ],
+     "yeux": [
+      [
+       0.34,
+       0.59
+      ],
+      [
+       0.46,
+       0.52
+      ]
+     ],
+     "mains": [
+      [
+       0.09,
+       0.24
+      ],
+      [
+       0.9,
+       0.24
+      ]
+     ],
+     "centre": [
+      0.47,
+      0.509
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_074.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     77,
+     356,
+     870,
+     548
+    ],
+    "points": {
+     "tete": [
+      0.39,
+      0.62
+     ],
+     "mains": [
+      [
+       0.14,
+       0.2
+      ],
+      [
+       0.91,
+       0.45
+      ]
+     ],
+     "centre": [
+      0.448,
+      0.547
+     ]
+    }
+   }
+  },
+  "075": {
+   "id": "graveler",
+   "name": "Gravalanch",
+   "front": {
+    "image": "assets/sprites/pokemon/official/075.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     130,
+     431,
+     214
+    ],
+    "points": {
+     "tete": [
+      0.45,
+      0.5
+     ],
+     "bouche": [
+      0.45,
+      0.59
+     ],
+     "centre": [
+      0.48,
+      0.517
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_075.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     77,
+     280,
+     870,
+     624
+    ],
+    "points": {
+     "tete": [
+      0.39,
+      0.42
+     ],
+     "centre": [
+      0.487,
+      0.502
+     ]
+    }
+   }
+  },
+  "076": {
+   "id": "golem",
+   "name": "Grolem",
+   "front": {
+    "image": "assets/sprites/pokemon/official/076.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     35,
+     431,
+     405
+    ],
+    "points": {
+     "tete": [
+      0.33,
+      0.5
+     ],
+     "bouche": [
+      0.3,
+      0.59
+     ],
+     "centre": [
+      0.583,
+      0.462
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_076.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     77,
+     80,
+     870,
+     824
+    ],
+    "points": {
+     "tete": [
+      0.72,
+      0.19
+     ],
+     "centre": [
+      0.433,
+      0.471
+     ]
+    }
+   }
+  },
+  "077": {
+   "id": "ponyta",
+   "name": "Ponyta",
+   "front": {
+    "image": "assets/sprites/pokemon/official/077.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     70,
+     22,
+     335,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.17,
+      0.3
+     ],
+     "bouche": [
+      0.03,
+      0.34
+     ],
+     "queue": [
+      0.95,
+      0.33
+     ],
+     "centre": [
+      0.45,
+      0.5
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_077.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     62,
+     24,
+     900,
+     1000
+    ],
+    "points": {
+     "tete": [
+      0.85,
+      0.28
+     ],
+     "queue": [
+      0.12,
+      0.69
+     ],
+     "centre": [
+      0.569,
+      0.614
+     ]
+    }
+   }
+  },
+  "078": {
+   "id": "rapidash",
+   "name": "Galopa",
+   "front": {
+    "image": "assets/sprites/pokemon/official/078.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     51,
+     22,
+     372,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.55,
+      0.25
+     ],
+     "bouche": [
+      0.53,
+      0.32
+     ],
+     "queue": [
+      0.06,
+      0.58
+     ],
+     "centre": [
+      0.544,
+      0.502
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_078.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     65,
+     24,
+     893,
+     1000
+    ],
+    "points": {
+     "tete": [
+      0.87,
+      0.3
+     ],
+     "queue": [
+      0.08,
+      0.75
+     ],
+     "cornes": [
+      0.98,
+      0.03
+     ],
+     "centre": [
+      0.554,
+      0.632
+     ]
+    }
+   }
+  },
+  "079": {
+   "id": "slowpoke",
+   "name": "Ramoloss",
+   "front": {
+    "image": "assets/sprites/pokemon/official/079.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     64,
+     431,
+     347
+    ],
+    "points": {
+     "tete": [
+      0.22,
+      0.58
+     ],
+     "bouche": [
+      0.25,
+      0.73
+     ],
+     "queue": [
+      0.4,
+      0.08
+     ],
+     "centre": [
+      0.519,
+      0.614
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_079.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     12,
+     122,
+     1000,
+     902
+    ],
+    "points": {
+     "tete": [
+      0.68,
+      0.42
+     ],
+     "queue": [
+      0.5,
+      0.05
+     ],
+     "centre": [
+      0.471,
+      0.6
+     ]
+    }
+   }
+  },
+  "080": {
+   "id": "slowbro",
+   "name": "Flagadoss",
+   "front": {
+    "image": "assets/sprites/pokemon/official/080.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     42,
+     22,
+     391,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.32,
+      0.2
+     ],
+     "bouche": [
+      0.32,
+      0.29
+     ],
+     "yeux": [
+      [
+       0.21,
+       0.13
+      ],
+      [
+       0.45,
+       0.13
+      ]
+     ],
+     "centre": [
+      0.468,
+      0.521
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_080.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     24,
+     24,
+     976,
+     1000
+    ],
+    "points": {
+     "tete": [
+      0.6,
+      0.16
+     ],
+     "centre": [
+      0.576,
+      0.576
+     ]
+    }
+   }
+  },
+  "081": {
+   "id": "magnemite",
+   "name": "Magnéti",
+   "front": {
+    "image": "assets/sprites/pokemon/official/081.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     120,
+     431,
+     235
+    ],
+    "points": {
+     "tete": [
+      0.46,
+      0.52
+     ],
+     "centre": [
+      0.519,
+      0.547
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_081.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     67,
+     201,
+     890,
+     623
+    ],
+    "points": {
+     "tete": [
+      0.5,
+      0.5
+     ],
+     "centre": [
+      0.49,
+      0.533
+     ]
+    }
+   }
+  },
+  "082": {
+   "id": "magneton",
+   "name": "Magnéton",
+   "front": {
+    "image": "assets/sprites/pokemon/official/082.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     41,
+     431,
+     393
+    ],
+    "points": {
+     "tete": [
+      0.5,
+      0.38
+     ],
+     "centre": [
+      0.502,
+      0.461
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_082.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     78,
+     34,
+     868,
+     870
+    ],
+    "points": {
+     "tete": [
+      0.45,
+      0.35
+     ],
+     "centre": [
+      0.471,
+      0.488
+     ]
+    }
+   }
+  },
+  "083": {
+   "id": "farfetchd",
+   "name": "Canarticho",
+   "front": {
+    "image": "assets/sprites/pokemon/official/083.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     57,
+     22,
+     361,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.57,
+      0.34
+     ],
+     "bouche": [
+      0.4,
+      0.42
+     ],
+     "yeux": [
+      [
+       0.46,
+       0.33
+      ],
+      [
+       0.65,
+       0.33
+      ]
+     ],
+     "centre": [
+      0.507,
+      0.487
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_083.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     21,
+     24,
+     982,
+     1000
+    ],
+    "points": {
+     "tete": [
+      0.44,
+      0.38
+     ],
+     "centre": [
+      0.495,
+      0.581
+     ]
+    }
+   }
+  },
+  "084": {
+   "id": "doduo",
+   "name": "Doduo",
+   "front": {
+    "image": "assets/sprites/pokemon/official/084.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     107,
+     22,
+     261,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.43,
+      0.3
+     ],
+     "bouche": [
+      0.02,
+      0.26
+     ],
+     "centre": [
+      0.637,
+      0.493
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_084.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     24,
+     24,
+     976,
+     1000
+    ],
+    "points": {
+     "tete": [
+      0.33,
+      0.17
+     ],
+     "centre": [
+      0.402,
+      0.574
+     ]
+    }
+   }
+  },
+  "085": {
+   "id": "dodrio",
+   "name": "Dodrio",
+   "front": {
+    "image": "assets/sprites/pokemon/official/085.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     61,
+     22,
+     353,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.48,
+      0.16
+     ],
+     "centre": [
+      0.561,
+      0.441
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_085.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     41,
+     24,
+     942,
+     1000
+    ],
+    "points": {
+     "tete": [
+      0.52,
+      0.22
+     ],
+     "centre": [
+      0.447,
+      0.538
+     ]
+    }
+   }
+  },
+  "086": {
+   "id": "seel",
+   "name": "Otaria",
+   "front": {
+    "image": "assets/sprites/pokemon/official/086.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     40,
+     431,
+     394
+    ],
+    "points": {
+     "tete": [
+      0.38,
+      0.76
+     ],
+     "bouche": [
+      0.38,
+      0.87
+     ],
+     "yeux": [
+      [
+       0.29,
+       0.75
+      ],
+      [
+       0.47,
+       0.76
+      ]
+     ],
+     "centre": [
+      0.586,
+      0.567
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_086.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     12,
+     99,
+     1000,
+     925
+    ],
+    "points": {
+     "tete": [
+      0.7,
+      0.3
+     ],
+     "centre": [
+      0.564,
+      0.579
+     ]
+    }
+   }
+  },
+  "087": {
+   "id": "dewgong",
+   "name": "Lamantine",
+   "front": {
+    "image": "assets/sprites/pokemon/official/087.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     23,
+     431,
+     429
+    ],
+    "points": {
+     "tete": [
+      0.18,
+      0.33
+     ],
+     "bouche": [
+      0.125,
+      0.43
+     ],
+     "yeux": [
+      [
+       0.11,
+       0.29
+      ],
+      [
+       0.27,
+       0.35
+      ]
+     ],
+     "queue": [
+      0.62,
+      0.2
+     ],
+     "centre": [
+      0.502,
+      0.54
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_087.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     12,
+     79,
+     1000,
+     945
+    ],
+    "points": {
+     "tete": [
+      0.78,
+      0.25
+     ],
+     "queue": [
+      0.34,
+      0.2
+     ],
+     "centre": [
+      0.491,
+      0.611
+     ]
+    }
+   }
+  },
+  "088": {
+   "id": "grimer",
+   "name": "Tadmorv",
+   "front": {
+    "image": "assets/sprites/pokemon/official/088.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     89,
+     431,
+     297
+    ],
+    "points": {
+     "tete": [
+      0.4,
+      0.16
+     ],
+     "bouche": [
+      0.43,
+      0.44
+     ],
+     "yeux": [
+      [
+       0.31,
+       0.15
+      ],
+      [
+       0.48,
+       0.15
+      ]
+     ],
+     "centre": [
+      0.508,
+      0.58
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_088.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     12,
+     168,
+     1000,
+     856
+    ],
+    "points": {
+     "tete": [
+      0.5,
+      0.12
+     ],
+     "mains": [
+      [
+       0.1,
+       0.32
+      ],
+      [
+       0.95,
+       0.4
+      ]
+     ],
+     "centre": [
+      0.44,
+      0.579
+     ]
+    }
+   }
+  },
+  "089": {
+   "id": "muk",
+   "name": "Grotadmorv",
+   "front": {
+    "image": "assets/sprites/pokemon/official/089.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     128,
+     431,
+     218
+    ],
+    "points": {
+     "tete": [
+      0.52,
+      0.18
+     ],
+     "bouche": [
+      0.5,
+      0.35
+     ],
+     "centre": [
+      0.449,
+      0.568
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_089.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     12,
+     192,
+     1000,
+     832
+    ],
+    "points": {
+     "tete": [
+      0.48,
+      0.13
+     ],
+     "centre": [
+      0.454,
+      0.581
+     ]
+    }
+   }
+  },
+  "090": {
+   "id": "shellder",
+   "name": "Kokiyas",
+   "front": {
+    "image": "assets/sprites/pokemon/official/090.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     27,
+     431,
+     420
+    ],
+    "points": {
+     "tete": [
+      0.38,
+      0.57
+     ],
+     "bouche": [
+      0.37,
+      0.72
+     ],
+     "yeux": [
+      [
+       0.21,
+       0.55
+      ],
+      [
+       0.57,
+       0.55
+      ]
+     ],
+     "centre": [
+      0.49,
+      0.465
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_090.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     77,
+     163,
+     870,
+     741
+    ],
+    "points": {
+     "tete": [
+      0.5,
+      0.5
+     ],
+     "centre": [
+      0.511,
+      0.507
+     ]
+    }
+   }
+  },
+  "091": {
+   "id": "cloyster",
+   "name": "Crustabri",
+   "front": {
+    "image": "assets/sprites/pokemon/official/091.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     31,
+     431,
+     413
+    ],
+    "points": {
+     "tete": [
+      0.45,
+      0.56
+     ],
+     "bouche": [
+      0.45,
+      0.63
+     ],
+     "yeux": [
+      [
+       0.375,
+       0.55
+      ],
+      [
+       0.53,
+       0.54
+      ]
+     ],
+     "cornes": [
+      0.95,
+      0.03
+     ],
+     "centre": [
+      0.525,
+      0.532
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_091.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     18,
+     24,
+     988,
+     1000
+    ],
+    "points": {
+     "tete": [
+      0.5,
+      0.55
+     ],
+     "centre": [
+      0.506,
+      0.564
+     ]
+    }
+   }
+  },
+  "092": {
+   "id": "gastly",
+   "name": "Fantominus",
+   "front": {
+    "image": "assets/sprites/pokemon/official/092.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     23,
+     431,
+     429
+    ],
+    "points": {
+     "tete": [
+      0.4,
+      0.57
+     ],
+     "bouche": [
+      0.34,
+      0.82
+     ],
+     "yeux": [
+      [
+       0.13,
+       0.55
+      ],
+      [
+       0.48,
+       0.61
+      ]
+     ],
+     "centre": [
+      0.481,
+      0.544
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_092.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     77,
+     35,
+     870,
+     869
+    ],
+    "points": {
+     "tete": [
+      0.52,
+      0.52
+     ],
+     "centre": [
+      0.498,
+      0.515
+     ]
+    }
+   }
+  },
+  "093": {
+   "id": "haunter",
+   "name": "Spectrum",
+   "front": {
+    "image": "assets/sprites/pokemon/official/093.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     50,
+     431,
+     375
+    ],
+    "points": {
+     "tete": [
+      0.5,
+      0.47
+     ],
+     "bouche": [
+      0.48,
+      0.59
+     ],
+     "yeux": [
+      [
+       0.33,
+       0.41
+      ],
+      [
+       0.5,
+       0.48
+      ]
+     ],
+     "mains": [
+      [
+       0.12,
+       0.52
+      ],
+      [
+       0.58,
+       0.8
+      ]
+     ],
+     "centre": [
+      0.555,
+      0.492
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_093.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     68,
+     159,
+     891,
+     707
+    ],
+    "points": {
+     "tete": [
+      0.4,
+      0.4
+     ],
+     "centre": [
+      0.397,
+      0.5
+     ]
+    }
+   }
+  },
+  "094": {
+   "id": "gengar",
+   "name": "Ectoplasma",
+   "front": {
+    "image": "assets/sprites/pokemon/official/094.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     26,
+     22,
+     422,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.47,
+      0.45
+     ],
+     "bouche": [
+      0.46,
+      0.64
+     ],
+     "yeux": [
+      [
+       0.31,
+       0.45
+      ],
+      [
+       0.55,
+       0.52
+      ]
+     ],
+     "mains": [
+      [
+       0.04,
+       0.27
+      ],
+      [
+       0.95,
+       0.53
+      ]
+     ],
+     "centre": [
+      0.449,
+      0.511
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_094.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     128,
+     24,
+     768,
+     1000
+    ],
+    "points": {
+     "tete": [
+      0.57,
+      0.28
+     ],
+     "centre": [
+      0.501,
+      0.567
+     ]
+    }
+   }
+  },
+  "095": {
+   "id": "onix",
+   "name": "Onix",
+   "front": {
+    "image": "assets/sprites/pokemon/official/095.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     32,
+     22,
+     411,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.18,
+      0.54
+     ],
+     "bouche": [
+      0.13,
+      0.63
+     ],
+     "yeux": [
+      [
+       0.05,
+       0.47
+      ],
+      [
+       0.19,
+       0.47
+      ]
+     ],
+     "queue": [
+      0.73,
+      0.96
+     ],
+     "cornes": [
+      0.14,
+      0.03
+     ],
+     "centre": [
+      0.522,
+      0.398
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_095.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     151,
+     63,
+     722,
+     897
+    ],
+    "points": {
+     "tete": [
+      0.82,
+      0.15
+     ],
+     "queue": [
+      0.04,
+      0.95
+     ],
+     "cornes": [
+      0.6,
+      0.03
+     ],
+     "centre": [
+      0.569,
+      0.49
+     ]
+    }
+   }
+  },
+  "096": {
+   "id": "drowzee",
+   "name": "Soporifik",
+   "front": {
+    "image": "assets/sprites/pokemon/official/096.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     76,
+     22,
+     323,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.45,
+      0.17
+     ],
+     "bouche": [
+      0.49,
+      0.26
+     ],
+     "mains": [
+      [
+       0.06,
+       0.04
+      ],
+      [
+       0.93,
+       0.29
+      ]
+     ],
+     "centre": [
+      0.427,
+      0.499
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos3d_096.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     75,
+     63,
+     874,
+     898
+    ],
+    "points": {
+     "tete": [
+      0.55,
+      0.17
+     ],
+     "centre": [
+      0.559,
+      0.519
+     ]
+    }
+   }
+  },
+  "097": {
+   "id": "hypno",
+   "name": "Hypno",
+   "front": {
+    "image": "assets/sprites/pokemon/official/097.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     35,
+     22,
+     404,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.4,
+      0.37
+     ],
+     "mains": [
+      [
+       0.06,
+       0.11
+      ],
+      [
+       0.86,
+       0.19
+      ]
+     ],
+     "centre": [
+      0.479,
+      0.47
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_097.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     164,
+     34,
+     696,
+     870
+    ],
+    "points": {
+     "tete": [
+      0.56,
+      0.22
+     ],
+     "mains": [
+      [
+       0.13,
+       0.37
+      ],
+      [
+       0.94,
+       0.48
+      ]
+     ],
+     "centre": [
+      0.506,
+      0.5
+     ]
+    }
+   }
+  },
+  "098": {
+   "id": "krabby",
+   "name": "Krabby",
+   "front": {
+    "image": "assets/sprites/pokemon/official/098.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     106,
+     431,
+     263
+    ],
+    "points": {
+     "tete": [
+      0.48,
+      0.55
+     ],
+     "bouche": [
+      0.48,
+      0.71
+     ],
+     "yeux": [
+      [
+       0.41,
+       0.55
+      ],
+      [
+       0.56,
+       0.55
+      ]
+     ],
+     "mains": [
+      [
+       0.18,
+       0.3
+      ],
+      [
+       0.78,
+       0.28
+      ]
+     ],
+     "centre": [
+      0.49,
+      0.55
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_098.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     12,
+     103,
+     1000,
+     921
+    ],
+    "points": {
+     "tete": [
+      0.47,
+      0.58
+     ],
+     "mains": [
+      [
+       0.2,
+       0.41
+      ],
+      [
+       0.79,
+       0.33
+      ]
+     ],
+     "centre": [
+      0.532,
+      0.599
+     ]
+    }
+   }
+  },
+  "099": {
+   "id": "kingler",
+   "name": "Krabboss",
+   "front": {
+    "image": "assets/sprites/pokemon/official/099.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     104,
+     431,
+     267
+    ],
+    "points": {
+     "tete": [
+      0.45,
+      0.6
+     ],
+     "mains": [
+      [
+       0.14,
+       0.5
+      ],
+      [
+       0.73,
+       0.45
+      ]
+     ],
+     "centre": [
+      0.534,
+      0.586
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_099.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     12,
+     104,
+     1000,
+     920
+    ],
+    "points": {
+     "tete": [
+      0.52,
+      0.65
+     ],
+     "mains": [
+      [
+       0.2,
+       0.35
+      ],
+      [
+       0.88,
+       0.6
+      ]
+     ],
+     "centre": [
+      0.456,
+      0.595
+     ]
+    }
+   }
+  },
+  "100": {
+   "id": "voltorb",
+   "name": "Voltorbe",
+   "front": {
+    "image": "assets/sprites/pokemon/official/100.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     27,
+     431,
+     421
+    ],
+    "points": {
+     "tete": [
+      0.55,
+      0.5
+     ],
+     "centre": [
+      0.486,
+      0.499
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_100.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     78,
+     34,
+     867,
+     870
+    ],
+    "points": {
+     "tete": [
+      0.5,
+      0.45
+     ],
+     "centre": [
+      0.499,
+      0.5
+     ]
+    }
+   }
+  },
+  "101": {
+   "id": "electrode",
+   "name": "Électrode",
+   "front": {
+    "image": "assets/sprites/pokemon/official/101.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     23,
+     22,
+     429,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.5,
+      0.5
+     ],
+     "bouche": [
+      0.47,
+      0.75
+     ],
+     "yeux": [
+      [
+       0.18,
+       0.32
+      ],
+      [
+       0.63,
+       0.3
+      ]
+     ],
+     "centre": [
+      0.501,
+      0.501
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_101.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     12,
+     135,
+     1000,
+     889
+    ],
+    "points": {
+     "tete": [
+      0.5,
+      0.45
+     ],
+     "centre": [
+      0.5,
+      0.536
+     ]
+    }
+   }
+  },
+  "102": {
+   "id": "exeggcute",
+   "name": "Noeunoeuf",
+   "front": {
+    "image": "assets/sprites/pokemon/official/102.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     68,
+     431,
+     338
+    ],
+    "points": {
+     "tete": [
+      0.48,
+      0.34
+     ],
+     "yeux": [
+      [
+       0.4,
+       0.27
+      ],
+      [
+       0.55,
+       0.27
+      ]
+     ],
+     "centre": [
+      0.517,
+      0.491
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_102.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     77,
+     202,
+     870,
+     702
+    ],
+    "points": {
+     "tete": [
+      0.52,
+      0.38
+     ],
+     "centre": [
+      0.502,
+      0.495
+     ]
+    }
+   }
+  },
+  "103": {
+   "id": "exeggutor",
+   "name": "Noadkoko",
+   "front": {
+    "image": "assets/sprites/pokemon/official/103.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     26,
+     431,
+     422
+    ],
+    "points": {
+     "tete": [
+      0.6,
+      0.55
+     ],
+     "centre": [
+      0.504,
+      0.531
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_103.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     25,
+     24,
+     973,
+     1000
+    ],
+    "points": {
+     "tete": [
+      0.65,
+      0.55
+     ],
+     "centre": [
+      0.54,
+      0.539
+     ]
+    }
+   }
+  },
+  "104": {
+   "id": "cubone",
+   "name": "Osselait",
+   "front": {
+    "image": "assets/sprites/pokemon/official/104.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     56,
+     22,
+     363,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.53,
+      0.32
+     ],
+     "mains": [
+      [
+       0.17,
+       0.73
+      ],
+      [
+       0.94,
+       0.69
+      ]
+     ],
+     "centre": [
+      0.527,
+      0.525
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_104.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     153,
+     34,
+     718,
+     870
+    ],
+    "points": {
+     "tete": [
+      0.42,
+      0.28
+     ],
+     "queue": [
+      0.02,
+      0.73
+     ],
+     "centre": [
+      0.442,
+      0.522
+     ]
+    }
+   }
+  },
+  "105": {
+   "id": "marowak",
+   "name": "Ossatueur",
+   "front": {
+    "image": "assets/sprites/pokemon/official/105.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     59,
+     22,
+     357,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.26,
+      0.5
+     ],
+     "mains": [
+      [
+       0.43,
+       0.26
+      ],
+      [
+       0.85,
+       0.51
+      ]
+     ],
+     "queue": [
+      0.96,
+      0.73
+     ],
+     "centre": [
+      0.446,
+      0.576
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/marowak_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     13,
+     6,
+     49,
+     56
+    ],
+    "points": {
+     "tete": [
+      0.5,
+      0.2
+     ],
+     "centre": [
+      0.448,
+      0.507
+     ]
+    }
+   }
+  },
+  "106": {
+   "id": "hitmonlee",
+   "name": "Kicklee",
+   "front": {
+    "image": "assets/sprites/pokemon/official/106.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     51,
+     431,
+     373
+    ],
+    "points": {
+     "tete": [
+      0.32,
+      0.2
+     ],
+     "centre": [
+      0.42,
+      0.365
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_106.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     12,
+     137,
+     1000,
+     887
+    ],
+    "points": {
+     "tete": [
+      0.32,
+      0.22
+     ],
+     "centre": [
+      0.435,
+      0.413
+     ]
+    }
+   }
+  },
+  "107": {
+   "id": "hitmonchan",
+   "name": "Tygnon",
+   "front": {
+    "image": "assets/sprites/pokemon/official/107.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     75,
+     22,
+     325,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.69,
+      0.2
+     ],
+     "yeux": [
+      [
+       0.59,
+       0.22
+      ],
+      [
+       0.73,
+       0.25
+      ]
+     ],
+     "mains": [
+      [
+       0.12,
+       0.13
+      ],
+      [
+       0.82,
+       0.34
+      ]
+     ],
+     "centre": [
+      0.583,
+      0.391
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_107.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     12,
+     27,
+     1000,
+     997
+    ],
+    "points": {
+     "tete": [
+      0.4,
+      0.25
+     ],
+     "mains": [
+      [
+       0.11,
+       0.57
+      ],
+      [
+       0.875,
+       0.27
+      ]
+     ],
+     "centre": [
+      0.425,
+      0.523
+     ]
+    }
+   }
+  },
+  "108": {
+   "id": "lickitung",
+   "name": "Excelangue",
+   "front": {
+    "image": "assets/sprites/pokemon/official/108.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     38,
+     431,
+     399
+    ],
+    "points": {
+     "tete": [
+      0.39,
+      0.17
+     ],
+     "bouche": [
+      0.38,
+      0.2
+     ],
+     "yeux": [
+      [
+       0.24,
+       0.13
+      ],
+      [
+       0.48,
+       0.125
+      ]
+     ],
+     "mains": [
+      [
+       0.08,
+       0.44
+      ],
+      [
+       0.81,
+       0.49
+      ]
+     ],
+     "centre": [
+      0.506,
+      0.527
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_108.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     12,
+     30,
+     1000,
+     994
+    ],
+    "points": {
+     "tete": [
+      0.4,
+      0.22
+     ],
+     "centre": [
+      0.43,
+      0.572
+     ],
+     "bouche": [
+      0.89,
+      0.04
+     ]
+    }
+   }
+  },
+  "109": {
+   "id": "koffing",
+   "name": "Smogo",
+   "front": {
+    "image": "assets/sprites/pokemon/official/109.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     57,
+     431,
+     361
+    ],
+    "points": {
+     "tete": [
+      0.5,
+      0.4
+     ],
+     "bouche": [
+      0.48,
+      0.45
+     ],
+     "yeux": [
+      [
+       0.4,
+       0.33
+      ],
+      [
+       0.62,
+       0.33
+      ]
+     ],
+     "centre": [
+      0.474,
+      0.486
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos3d_109.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     285,
+     306,
+     466,
+     458
+    ],
+    "points": {
+     "tete": [
+      0.5,
+      0.5
+     ],
+     "centre": [
+      0.494,
+      0.506
+     ]
+    }
+   }
+  },
+  "110": {
+   "id": "weezing",
+   "name": "Smogogo",
+   "front": {
+    "image": "assets/sprites/pokemon/official/110.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     54,
+     431,
+     366
+    ],
+    "points": {
+     "tete": [
+      0.42,
+      0.5
+     ],
+     "bouche": [
+      0.45,
+      0.52
+     ],
+     "centre": [
+      0.49,
+      0.493
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_110.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     12,
+     148,
+     1000,
+     876
+    ],
+    "points": {
+     "tete": [
+      0.45,
+      0.62
+     ],
+     "centre": [
+      0.504,
+      0.578
+     ]
+    }
+   }
+  },
+  "111": {
+   "id": "rhyhorn",
+   "name": "Rhinocorne",
+   "front": {
+    "image": "assets/sprites/pokemon/official/111.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     39,
+     22,
+     397,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.3,
+      0.68
+     ],
+     "yeux": [
+      [
+       0.18,
+       0.72
+      ],
+      [
+       0.41,
+       0.71
+      ]
+     ],
+     "cornes": [
+      0.28,
+      0.64
+     ],
+     "centre": [
+      0.508,
+      0.539
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_111.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     17,
+     24,
+     990,
+     1000
+    ],
+    "points": {
+     "tete": [
+      0.47,
+      0.35
+     ],
+     "centre": [
+      0.514,
+      0.561
+     ]
+    }
+   }
+  },
+  "112": {
+   "id": "rhydon",
+   "name": "Rhinoféros",
+   "front": {
+    "image": "assets/sprites/pokemon/official/112.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     59,
+     431,
+     356
+    ],
+    "points": {
+     "tete": [
+      0.25,
+      0.29
+     ],
+     "bouche": [
+      0.24,
+      0.39
+     ],
+     "queue": [
+      0.98,
+      0.5
+     ],
+     "cornes": [
+      0.11,
+      0.24
+     ],
+     "centre": [
+      0.422,
+      0.51
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_112.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     12,
+     137,
+     1000,
+     887
+    ],
+    "points": {
+     "tete": [
+      0.58,
+      0.25
+     ],
+     "cornes": [
+      0.85,
+      0.22
+     ],
+     "centre": [
+      0.488,
+      0.589
+     ]
+    }
+   }
+  },
+  "113": {
+   "id": "chansey",
+   "name": "Leveinard",
+   "front": {
+    "image": "assets/sprites/pokemon/official/113.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     48,
+     431,
+     379
+    ],
+    "points": {
+     "tete": [
+      0.44,
+      0.2
+     ],
+     "bouche": [
+      0.41,
+      0.26
+     ],
+     "yeux": [
+      [
+       0.375,
+       0.16
+      ],
+      [
+       0.5,
+       0.17
+      ]
+     ],
+     "centre": [
+      0.498,
+      0.485
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_113.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     12,
+     109,
+     1000,
+     915
+    ],
+    "points": {
+     "tete": [
+      0.5,
+      0.25
+     ],
+     "centre": [
+      0.468,
+      0.538
+     ]
+    }
+   }
+  },
+  "114": {
+   "id": "tangela",
+   "name": "Saquedeneu",
+   "front": {
+    "image": "assets/sprites/pokemon/official/114.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     42,
+     431,
+     390
+    ],
+    "points": {
+     "tete": [
+      0.52,
+      0.47
+     ],
+     "yeux": [
+      [
+       0.41,
+       0.47
+      ],
+      [
+       0.63,
+       0.47
+      ]
+     ],
+     "centre": [
+      0.499,
+      0.504
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_114.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     12,
+     86,
+     1000,
+     938
+    ],
+    "points": {
+     "tete": [
+      0.48,
+      0.5
+     ],
+     "centre": [
+      0.486,
+      0.573
+     ]
+    }
+   }
+  },
+  "115": {
+   "id": "kangaskhan",
+   "name": "Kangourex",
+   "front": {
+    "image": "assets/sprites/pokemon/official/115.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     26,
+     22,
+     422,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.58,
+      0.1
+     ],
+     "bouche": [
+      0.51,
+      0.19
+     ],
+     "mains": [
+      [
+       0.31,
+       0.2
+      ],
+      [
+       0.85,
+       0.2
+      ]
+     ],
+     "queue": [
+      0.05,
+      0.57
+     ],
+     "centre": [
+      0.531,
+      0.513
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_115.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     12,
+     29,
+     1000,
+     995
+    ],
+    "points": {
+     "tete": [
+      0.59,
+      0.13
+     ],
+     "queue": [
+      0.08,
+      0.8
+     ],
+     "centre": [
+      0.535,
+      0.581
+     ]
+    }
+   }
+  },
+  "116": {
+   "id": "horsea",
+   "name": "Hypotrempe",
+   "front": {
+    "image": "assets/sprites/pokemon/official/116.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     41,
+     22,
+     393,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.39,
+      0.21
+     ],
+     "bouche": [
+      0.04,
+      0.26
+     ],
+     "queue": [
+      0.2,
+      0.8
+     ],
+     "centre": [
+      0.456,
+      0.484
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_116.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     207,
+     34,
+     610,
+     870
+    ],
+    "points": {
+     "tete": [
+      0.43,
+      0.23
+     ],
+     "queue": [
+      0.79,
+      0.83
+     ],
+     "centre": [
+      0.491,
+      0.503
+     ]
+    }
+   }
+  },
+  "117": {
+   "id": "seadra",
+   "name": "Hypocéan",
+   "front": {
+    "image": "assets/sprites/pokemon/official/117.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     51,
+     431,
+     373
+    ],
+    "points": {
+     "tete": [
+      0.36,
+      0.23
+     ],
+     "bouche": [
+      0.04,
+      0.16
+     ],
+     "queue": [
+      0.54,
+      0.8
+     ],
+     "centre": [
+      0.491,
+      0.451
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_117.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     12,
+     41,
+     1000,
+     983
+    ],
+    "points": {
+     "tete": [
+      0.73,
+      0.27
+     ],
+     "centre": [
+      0.558,
+      0.514
+     ]
+    }
+   }
+  },
+  "118": {
+   "id": "goldeen",
+   "name": "Poissirène",
+   "front": {
+    "image": "assets/sprites/pokemon/official/118.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     117,
+     431,
+     241
+    ],
+    "points": {
+     "tete": [
+      0.71,
+      0.67
+     ],
+     "bouche": [
+      0.78,
+      0.69
+     ],
+     "queue": [
+      0.02,
+      0.6
+     ],
+     "cornes": [
+      0.75,
+      0.13
+     ],
+     "centre": [
+      0.486,
+      0.561
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_118.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     77,
+     88,
+     870,
+     816
+    ],
+    "points": {
+     "tete": [
+      0.68,
+      0.34
+     ],
+     "cornes": [
+      0.87,
+      0.02
+     ],
+     "centre": [
+      0.515,
+      0.534
+     ]
+    }
+   }
+  },
+  "119": {
+   "id": "seaking",
+   "name": "Poissoroy",
+   "front": {
+    "image": "assets/sprites/pokemon/official/119.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     36,
+     431,
+     402
+    ],
+    "points": {
+     "tete": [
+      0.36,
+      0.4
+     ],
+     "bouche": [
+      0.11,
+      0.42
+     ],
+     "cornes": [
+      0.09,
+      0.13
+     ],
+     "centre": [
+      0.515,
+      0.469
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_119.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     12,
+     61,
+     1000,
+     963
+    ],
+    "points": {
+     "tete": [
+      0.63,
+      0.37
+     ],
+     "cornes": [
+      0.85,
+      0.02
+     ],
+     "centre": [
+      0.459,
+      0.497
+     ]
+    }
+   }
+  },
+  "120": {
+   "id": "staryu",
+   "name": "Stari",
+   "front": {
+    "image": "assets/sprites/pokemon/official/120.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     34,
+     22,
+     406,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.41,
+      0.5
+     ],
+     "centre": [
+      0.477,
+      0.525
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_120.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     152,
+     34,
+     719,
+     870
+    ],
+    "points": {
+     "tete": [
+      0.4,
+      0.5
+     ],
+     "centre": [
+      0.486,
+      0.508
+     ]
+    }
+   }
+  },
+  "121": {
+   "id": "starmie",
+   "name": "Staross",
+   "front": {
+    "image": "assets/sprites/pokemon/official/121.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     31,
+     431,
+     412
+    ],
+    "points": {
+     "tete": [
+      0.47,
+      0.53
+     ],
+     "centre": [
+      0.512,
+      0.532
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_121.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     12,
+     49,
+     1000,
+     975
+    ],
+    "points": {
+     "tete": [
+      0.46,
+      0.57
+     ],
+     "centre": [
+      0.498,
+      0.555
+     ]
+    }
+   }
+  },
+  "122": {
+   "id": "mr_mime",
+   "name": "M. Mime",
+   "front": {
+    "image": "assets/sprites/pokemon/official/122.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     32,
+     431,
+     411
+    ],
+    "points": {
+     "tete": [
+      0.45,
+      0.25
+     ],
+     "bouche": [
+      0.44,
+      0.33
+     ],
+     "yeux": [
+      [
+       0.38,
+       0.24
+      ],
+      [
+       0.49,
+       0.24
+      ]
+     ],
+     "mains": [
+      [
+       0.125,
+       0.13
+      ],
+      [
+       0.88,
+       0.55
+      ]
+     ],
+     "centre": [
+      0.487,
+      0.46
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_122.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     12,
+     75,
+     1000,
+     949
+    ],
+    "points": {
+     "tete": [
+      0.55,
+      0.4
+     ],
+     "mains": [
+      [
+       0.13,
+       0.65
+      ],
+      [
+       0.86,
+       0.17
+      ]
+     ],
+     "centre": [
+      0.545,
+      0.547
+     ]
+    }
+   }
+  },
+  "123": {
+   "id": "scyther",
+   "name": "Insécateur",
+   "front": {
+    "image": "assets/sprites/pokemon/official/123.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     46,
+     22,
+     382,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.52,
+      0.33
+     ],
+     "mains": [
+      [
+       0.32,
+       0.17
+      ],
+      [
+       0.85,
+       0.75
+      ]
+     ],
+     "centre": [
+      0.547,
+      0.561
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_123.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     12,
+     36,
+     1000,
+     988
+    ],
+    "points": {
+     "tete": [
+      0.59,
+      0.25
+     ],
+     "mains": [
+      [
+       0.36,
+       0.23
+      ],
+      [
+       0.9,
+       0.6
+      ]
+     ],
+     "centre": [
+      0.477,
+      0.568
+     ]
+    }
+   }
+  },
+  "124": {
+   "id": "jynx",
+   "name": "Lippoutou",
+   "front": {
+    "image": "assets/sprites/pokemon/official/124.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     62,
+     431,
+     350
+    ],
+    "points": {
+     "tete": [
+      0.48,
+      0.26
+     ],
+     "bouche": [
+      0.48,
+      0.29
+     ],
+     "yeux": [
+      [
+       0.43,
+       0.21
+      ],
+      [
+       0.54,
+       0.21
+      ]
+     ],
+     "mains": [
+      [
+       0.1,
+       0.52
+      ],
+      [
+       0.9,
+       0.45
+      ]
+     ],
+     "centre": [
+      0.502,
+      0.541
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_124.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     12,
+     87,
+     1000,
+     937
+    ],
+    "points": {
+     "tete": [
+      0.48,
+      0.34
+     ],
+     "mains": [
+      [
+       0.125,
+       0.23
+      ],
+      [
+       0.89,
+       0.63
+      ]
+     ],
+     "centre": [
+      0.435,
+      0.569
+     ]
+    }
+   }
+  },
+  "125": {
+   "id": "electabuzz",
+   "name": "Élektek",
+   "front": {
+    "image": "assets/sprites/pokemon/official/125.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     26,
+     431,
+     422
+    ],
+    "points": {
+     "tete": [
+      0.37,
+      0.34
+     ],
+     "bouche": [
+      0.4,
+      0.46
+     ],
+     "mains": [
+      [
+       0.41,
+       0.05
+      ],
+      [
+       0.86,
+       0.44
+      ]
+     ],
+     "queue": [
+      0.78,
+      0.68
+     ],
+     "centre": [
+      0.47,
+      0.508
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_125.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     27,
+     24,
+     969,
+     1000
+    ],
+    "points": {
+     "tete": [
+      0.52,
+      0.32
+     ],
+     "mains": [
+      [
+       0.2,
+       0.43
+      ],
+      [
+       0.85,
+       0.57
+      ]
+     ],
+     "centre": [
+      0.488,
+      0.607
+     ]
+    }
+   }
+  },
+  "126": {
+   "id": "magmar",
+   "name": "Magmar",
+   "front": {
+    "image": "assets/sprites/pokemon/official/126.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     27,
+     431,
+     420
+    ],
+    "points": {
+     "tete": [
+      0.54,
+      0.26
+     ],
+     "bouche": [
+      0.51,
+      0.38
+     ],
+     "yeux": [
+      [
+       0.47,
+       0.3
+      ],
+      [
+       0.58,
+       0.3
+      ]
+     ],
+     "mains": [
+      [
+       0.27,
+       0.46
+      ],
+      [
+       0.88,
+       0.46
+      ]
+     ],
+     "queue": [
+      0.07,
+      0.57
+     ],
+     "centre": [
+      0.521,
+      0.545
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_126.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     12,
+     45,
+     1000,
+     979
+    ],
+    "points": {
+     "tete": [
+      0.57,
+      0.31
+     ],
+     "mains": [
+      [
+       0.27,
+       0.42
+      ],
+      [
+       0.91,
+       0.68
+      ]
+     ],
+     "queue": [
+      0.07,
+      0.55
+     ],
+     "centre": [
+      0.509,
+      0.599
+     ]
+    }
+   }
+  },
+  "127": {
+   "id": "pinsir",
+   "name": "Scarabrute",
+   "front": {
+    "image": "assets/sprites/pokemon/official/127.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     30,
+     22,
+     414,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.54,
+      0.45
+     ],
+     "bouche": [
+      0.55,
+      0.54
+     ],
+     "yeux": [
+      [
+       0.44,
+       0.45
+      ],
+      [
+       0.565,
+       0.4
+      ]
+     ],
+     "mains": [
+      [
+       0.1,
+       0.29
+      ],
+      [
+       0.93,
+       0.17
+      ]
+     ],
+     "cornes": [
+      0.55,
+      0.01
+     ],
+     "centre": [
+      0.555,
+      0.511
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_127.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     22,
+     24,
+     979,
+     1000
+    ],
+    "points": {
+     "tete": [
+      0.42,
+      0.47
+     ],
+     "mains": [
+      [
+       0.07,
+       0.29
+      ],
+      [
+       0.9,
+       0.57
+      ]
+     ],
+     "cornes": [
+      0.47,
+      0.01
+     ],
+     "centre": [
+      0.474,
+      0.58
+     ]
+    }
+   }
+  },
+  "128": {
+   "id": "tauros",
+   "name": "Tauros",
+   "front": {
+    "image": "assets/sprites/pokemon/official/128.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     39,
+     431,
+     396
+    ],
+    "points": {
+     "tete": [
+      0.16,
+      0.5
+     ],
+     "bouche": [
+      0.13,
+      0.64
+     ],
+     "queue": [
+      0.97,
+      0.03
+     ],
+     "cornes": [
+      0.05,
+      0.35
+     ],
+     "centre": [
+      0.457,
+      0.555
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_128.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     12,
+     48,
+     1000,
+     976
+    ],
+    "points": {
+     "tete": [
+      0.73,
+      0.27
+     ],
+     "queue": [
+      0.15,
+      0.04
+     ],
+     "cornes": [
+      0.98,
+      0.13
+     ],
+     "centre": [
+      0.545,
+      0.602
+     ]
+    }
+   }
+  },
+  "129": {
+   "id": "magikarp",
+   "name": "Magicarpe",
+   "front": {
+    "image": "assets/sprites/pokemon/official/129.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     44,
+     22,
+     386,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.23,
+      0.41
+     ],
+     "bouche": [
+      0.06,
+      0.51
+     ],
+     "queue": [
+      0.96,
+      0.42
+     ],
+     "centre": [
+      0.443,
+      0.517
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_129.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     65,
+     138,
+     894,
+     749
+    ],
+    "points": {
+     "tete": [
+      0.64,
+      0.47
+     ],
+     "queue": [
+      0.05,
+      0.68
+     ],
+     "centre": [
+      0.386,
+      0.557
+     ]
+    }
+   }
+  },
+  "130": {
+   "id": "gyarados",
+   "name": "Léviator",
+   "front": {
+    "image": "assets/sprites/pokemon/official/130.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     60,
+     22,
+     354,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.15,
+      0.38
+     ],
+     "bouche": [
+      0.12,
+      0.51
+     ],
+     "queue": [
+      0.84,
+      0.95
+     ],
+     "centre": [
+      0.491,
+      0.495
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_130.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     74,
+     24,
+     875,
+     1000
+    ],
+    "points": {
+     "tete": [
+      0.65,
+      0.36
+     ],
+     "centre": [
+      0.556,
+      0.589
+     ]
+    }
+   }
+  },
+  "131": {
+   "id": "lapras",
+   "name": "Lokhlass",
+   "front": {
+    "image": "assets/sprites/pokemon/official/131.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     30,
+     431,
+     415
+    ],
+    "points": {
+     "tete": [
+      0.39,
+      0.19
+     ],
+     "bouche": [
+      0.33,
+      0.24
+     ],
+     "centre": [
+      0.503,
+      0.627
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/lapras_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     7,
+     7,
+     50,
+     55
+    ],
+    "points": {
+     "tete": [
+      0.45,
+      0.12
+     ],
+     "centre": [
+      0.474,
+      0.609
+     ]
+    }
+   }
+  },
+  "132": {
+   "id": "ditto",
+   "name": "Métamorph",
+   "front": {
+    "image": "assets/sprites/pokemon/official/132.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     55,
+     431,
+     365
+    ],
+    "points": {
+     "tete": [
+      0.52,
+      0.2
+     ],
+     "bouche": [
+      0.52,
+      0.22
+     ],
+     "yeux": [
+      [
+       0.44,
+       0.14
+      ],
+      [
+       0.6,
+       0.18
+      ]
+     ],
+     "centre": [
+      0.505,
+      0.539
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_132.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     12,
+     214,
+     1000,
+     810
+    ],
+    "points": {
+     "tete": [
+      0.55,
+      0.3
+     ],
+     "centre": [
+      0.51,
+      0.594
+     ]
+    }
+   }
+  },
+  "133": {
+   "id": "eevee",
+   "name": "Évoli",
+   "front": {
+    "image": "assets/sprites/pokemon/official/133.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     62,
+     22,
+     351,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.28,
+      0.45
+     ],
+     "bouche": [
+      0.28,
+      0.55
+     ],
+     "yeux": [
+      [
+       0.19,
+       0.45
+      ],
+      [
+       0.42,
+       0.47
+      ]
+     ],
+     "queue": [
+      0.96,
+      0.34
+     ],
+     "centre": [
+      0.453,
+      0.554
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_133.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     154,
+     34,
+     715,
+     870
+    ],
+    "points": {
+     "tete": [
+      0.67,
+      0.39
+     ],
+     "queue": [
+      0.18,
+      0.29
+     ],
+     "centre": [
+      0.515,
+      0.53
+     ]
+    }
+   }
+  },
+  "134": {
+   "id": "vaporeon",
+   "name": "Aquali",
+   "front": {
+    "image": "assets/sprites/pokemon/official/134.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     41,
+     22,
+     393,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.45,
+      0.33
+     ],
+     "bouche": [
+      0.5,
+      0.41
+     ],
+     "yeux": [
+      [
+       0.39,
+       0.34
+      ],
+      [
+       0.57,
+       0.31
+      ]
+     ],
+     "queue": [
+      0.93,
+      0.72
+     ],
+     "centre": [
+      0.451,
+      0.586
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_134.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     144,
+     34,
+     736,
+     870
+    ],
+    "points": {
+     "tete": [
+      0.76,
+      0.25
+     ],
+     "queue": [
+      0.22,
+      0.97
+     ],
+     "centre": [
+      0.498,
+      0.519
+     ]
+    }
+   }
+  },
+  "135": {
+   "id": "jolteon",
+   "name": "Voltali",
+   "front": {
+    "image": "assets/sprites/pokemon/official/135.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     47,
+     22,
+     381,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.16,
+      0.33
+     ],
+     "bouche": [
+      0.07,
+      0.39
+     ],
+     "queue": [
+      0.99,
+      0.46
+     ],
+     "centre": [
+      0.45,
+      0.509
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/jolteon_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     13,
+     0,
+     46,
+     63
+    ],
+    "points": {
+     "tete": [
+      0.32,
+      0.39
+     ],
+     "queue": [
+      0.93,
+      0.45
+     ],
+     "centre": [
+      0.448,
+      0.53
+     ]
+    }
+   }
+  },
+  "136": {
+   "id": "flareon",
+   "name": "Pyroli",
+   "front": {
+    "image": "assets/sprites/pokemon/official/136.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     45,
+     431,
+     384
+    ],
+    "points": {
+     "tete": [
+      0.2,
+      0.54
+     ],
+     "bouche": [
+      0.125,
+      0.65
+     ],
+     "queue": [
+      0.95,
+      0.04
+     ],
+     "centre": [
+      0.494,
+      0.511
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_ia_136.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     77,
+     54,
+     870,
+     850
+    ],
+    "points": {
+     "tete": [
+      0.77,
+      0.35
+     ],
+     "queue": [
+      0.22,
+      0.14
+     ],
+     "centre": [
+      0.511,
+      0.515
+     ]
+    }
+   }
+  },
+  "137": {
+   "id": "porygon",
+   "name": "Porygon",
+   "front": {
+    "image": "assets/sprites/pokemon/official/137.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     32,
+     22,
+     411,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.39,
+      0.3
+     ],
+     "centre": [
+      0.518,
+      0.514
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_137.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     78,
+     24,
+     868,
+     1000
+    ],
+    "points": {
+     "tete": [
+      0.56,
+      0.23
+     ],
+     "centre": [
+      0.524,
+      0.535
+     ]
+    }
+   }
+  },
+  "138": {
+   "id": "omanyte",
+   "name": "Amonita",
+   "front": {
+    "image": "assets/sprites/pokemon/official/138.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     48,
+     22,
+     378,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.6,
+      0.7
+     ],
+     "yeux": [
+      [
+       0.47,
+       0.7
+      ],
+      [
+       0.74,
+       0.7
+      ]
+     ],
+     "centre": [
+      0.458,
+      0.522
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_138.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     12,
+     26,
+     1000,
+     998
+    ],
+    "points": {
+     "tete": [
+      0.55,
+      0.75
+     ],
+     "centre": [
+      0.456,
+      0.546
+     ]
+    }
+   }
+  },
+  "139": {
+   "id": "omastar",
+   "name": "Amonistar",
+   "front": {
+    "image": "assets/sprites/pokemon/official/139.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     48,
+     431,
+     379
+    ],
+    "points": {
+     "tete": [
+      0.41,
+      0.64
+     ],
+     "bouche": [
+      0.42,
+      0.82
+     ],
+     "yeux": [
+      [
+       0.31,
+       0.65
+      ],
+      [
+       0.52,
+       0.65
+      ]
+     ],
+     "centre": [
+      0.514,
+      0.568
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_139.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     18,
+     24,
+     987,
+     1000
+    ],
+    "points": {
+     "tete": [
+      0.7,
+      0.55
+     ],
+     "centre": [
+      0.458,
+      0.605
+     ]
+    }
+   }
+  },
+  "140": {
+   "id": "kabuto",
+   "name": "Kabuto",
+   "front": {
+    "image": "assets/sprites/pokemon/official/140.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     79,
+     431,
+     317
+    ],
+    "points": {
+     "tete": [
+      0.38,
+      0.52
+     ],
+     "yeux": [
+      [
+       0.23,
+       0.55
+      ],
+      [
+       0.52,
+       0.5
+      ]
+     ],
+     "centre": [
+      0.493,
+      0.514
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_140.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     12,
+     185,
+     1000,
+     839
+    ],
+    "points": {
+     "tete": [
+      0.5,
+      0.4
+     ],
+     "centre": [
+      0.489,
+      0.504
+     ]
+    }
+   }
+  },
+  "141": {
+   "id": "kabutops",
+   "name": "Kabutops",
+   "front": {
+    "image": "assets/sprites/pokemon/official/141.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     46,
+     22,
+     382,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.45,
+      0.29
+     ],
+     "mains": [
+      [
+       0.07,
+       0.55
+      ],
+      [
+       0.95,
+       0.52
+      ]
+     ],
+     "centre": [
+      0.541,
+      0.445
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_141.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     12,
+     43,
+     1000,
+     981
+    ],
+    "points": {
+     "tete": [
+      0.48,
+      0.22
+     ],
+     "mains": [
+      [
+       0.06,
+       0.6
+      ],
+      [
+       0.92,
+       0.7
+      ]
+     ],
+     "centre": [
+      0.481,
+      0.55
+     ]
+    }
+   }
+  },
+  "142": {
+   "id": "aerodactyl",
+   "name": "Ptéra",
+   "front": {
+    "image": "assets/sprites/pokemon/official/142.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     103,
+     431,
+     268
+    ],
+    "points": {
+     "tete": [
+      0.29,
+      0.14
+     ],
+     "bouche": [
+      0.27,
+      0.39
+     ],
+     "mains": [
+      [
+       0.13,
+       0.13
+      ],
+      [
+       0.68,
+       0.06
+      ]
+     ],
+     "queue": [
+      0.9,
+      0.59
+     ],
+     "centre": [
+      0.487,
+      0.431
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_142.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     12,
+     30,
+     1000,
+     994
+    ],
+    "points": {
+     "tete": [
+      0.92,
+      0.15
+     ],
+     "centre": [
+      0.521,
+      0.53
+     ]
+    }
+   }
+  },
+  "143": {
+   "id": "snorlax",
+   "name": "Ronflex",
+   "front": {
+    "image": "assets/sprites/pokemon/official/143.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     65,
+     431,
+     344
+    ],
+    "points": {
+     "tete": [
+      0.52,
+      0.27
+     ],
+     "bouche": [
+      0.49,
+      0.4
+     ],
+     "yeux": [
+      [
+       0.4,
+       0.32
+      ],
+      [
+       0.59,
+       0.32
+      ]
+     ],
+     "mains": [
+      [
+       0.12,
+       0.48
+      ],
+      [
+       0.95,
+       0.52
+      ]
+     ],
+     "centre": [
+      0.517,
+      0.557
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_143.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     17,
+     24,
+     990,
+     1000
+    ],
+    "points": {
+     "tete": [
+      0.62,
+      0.25
+     ],
+     "centre": [
+      0.498,
+      0.615
+     ]
+    }
+   }
+  },
+  "144": {
+   "id": "articuno",
+   "name": "Artikodin",
+   "front": {
+    "image": "assets/sprites/pokemon/official/144.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     46,
+     22,
+     382,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.29,
+      0.36
+     ],
+     "bouche": [
+      0.25,
+      0.36
+     ],
+     "queue": [
+      0.29,
+      0.97
+     ],
+     "centre": [
+      0.497,
+      0.487
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_144.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     12,
+     40,
+     1000,
+     984
+    ],
+    "points": {
+     "tete": [
+      0.66,
+      0.43
+     ],
+     "centre": [
+      0.465,
+      0.62
+     ]
+    }
+   }
+  },
+  "145": {
+   "id": "zapdos",
+   "name": "Électhor",
+   "front": {
+    "image": "assets/sprites/pokemon/official/145.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     88,
+     431,
+     298
+    ],
+    "points": {
+     "tete": [
+      0.41,
+      0.37
+     ],
+     "bouche": [
+      0.32,
+      0.63
+     ],
+     "centre": [
+      0.495,
+      0.413
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_145.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     12,
+     98,
+     1000,
+     926
+    ],
+    "points": {
+     "tete": [
+      0.52,
+      0.23
+     ],
+     "centre": [
+      0.477,
+      0.514
+     ]
+    }
+   }
+  },
+  "146": {
+   "id": "moltres",
+   "name": "Sulfura",
+   "front": {
+    "image": "assets/sprites/pokemon/official/146.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     136,
+     431,
+     203
+    ],
+    "points": {
+     "tete": [
+      0.77,
+      0.81
+     ],
+     "bouche": [
+      0.87,
+      0.97
+     ],
+     "queue": [
+      0.03,
+      0.31
+     ],
+     "centre": [
+      0.507,
+      0.491
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_146.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     12,
+     50,
+     1000,
+     974
+    ],
+    "points": {
+     "tete": [
+      0.79,
+      0.44
+     ],
+     "centre": [
+      0.462,
+      0.59
+     ]
+    }
+   }
+  },
+  "147": {
+   "id": "dratini",
+   "name": "Minidraco",
+   "front": {
+    "image": "assets/sprites/pokemon/official/147.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     28,
+     431,
+     419
+    ],
+    "points": {
+     "tete": [
+      0.77,
+      0.28
+     ],
+     "yeux": [
+      [
+       0.72,
+       0.27
+      ],
+      [
+       0.81,
+       0.18
+      ]
+     ],
+     "queue": [
+      0.01,
+      0.73
+     ],
+     "cornes": [
+      0.8,
+      0.01
+     ],
+     "centre": [
+      0.704,
+      0.581
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_147.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     126,
+     24,
+     772,
+     1000
+    ],
+    "points": {
+     "tete": [
+      0.65,
+      0.27
+     ],
+     "centre": [
+      0.465,
+      0.551
+     ]
+    }
+   }
+  },
+  "148": {
+   "id": "dragonair",
+   "name": "Draco",
+   "front": {
+    "image": "assets/sprites/pokemon/official/148.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     39,
+     22,
+     397,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.48,
+      0.28
+     ],
+     "bouche": [
+      0.45,
+      0.33
+     ],
+     "queue": [
+      0.05,
+      0.58
+     ],
+     "centre": [
+      0.558,
+      0.663
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_148.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     202,
+     24,
+     620,
+     1000
+    ],
+    "points": {
+     "tete": [
+      0.63,
+      0.27
+     ],
+     "centre": [
+      0.563,
+      0.586
+     ]
+    }
+   }
+  },
+  "149": {
+   "id": "dragonite",
+   "name": "Dracolosse",
+   "front": {
+    "image": "assets/sprites/pokemon/official/149.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     70,
+     22,
+     335,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.3,
+      0.21
+     ],
+     "bouche": [
+      0.28,
+      0.29
+     ],
+     "queue": [
+      0.99,
+      0.52
+     ],
+     "centre": [
+      0.452,
+      0.533
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_149.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     27,
+     24,
+     970,
+     1000
+    ],
+    "points": {
+     "tete": [
+      0.66,
+      0.21
+     ],
+     "centre": [
+      0.548,
+      0.596
+     ]
+    }
+   }
+  },
+  "150": {
+   "id": "mewtwo",
+   "name": "Mewtwo",
+   "front": {
+    "image": "assets/sprites/pokemon/official/150.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     61,
+     22,
+     353,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.61,
+      0.2
+     ],
+     "bouche": [
+      0.67,
+      0.24
+     ],
+     "mains": [
+      [
+       0.25,
+       0.32
+      ],
+      [
+       0.94,
+       0.57
+      ]
+     ],
+     "queue": [
+      0.25,
+      0.74
+     ],
+     "centre": [
+      0.52,
+      0.516
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_150.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     17,
+     24,
+     989,
+     1000
+    ],
+    "points": {
+     "tete": [
+      0.4,
+      0.2
+     ],
+     "mains": [
+      [
+       0.1,
+       0.52
+      ],
+      [
+       0.93,
+       0.89
+      ]
+     ],
+     "centre": [
+      0.487,
+      0.598
+     ]
+    }
+   }
+  },
+  "151": {
+   "id": "mew",
+   "name": "Mew",
+   "front": {
+    "image": "assets/sprites/pokemon/official/151.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     25,
+     22,
+     425,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.42,
+      0.29
+     ],
+     "yeux": [
+      [
+       0.32,
+       0.32
+      ],
+      [
+       0.51,
+       0.28
+      ]
+     ],
+     "queue": [
+      0.41,
+      0.02
+     ],
+     "centre": [
+      0.506,
+      0.45
+     ]
+    }
+   },
+   "back": null
+  }
+ },
+ "_doc": "Points d'origine des effets de combat (docs/tech/combat-vivant.md §2.2, CV-10). Coordonnées normalisées dans la boîte visible (box, px). Outil : tools/art/fx_anchors.py."
+}

@@ -1,16 +1,20 @@
 name: Godot tests
 
 on:
-  # Pas de CI pour un commit qui ne touche que la documentation (minutes GitHub limitées, dépôt privé).
+  # Pas de CI pour un commit qui ne touche que la documentation.
+  # Dépôt public (décision de Kevin, 2026-10-26) : la CI tourne sur toutes les branches et remplace
+  # la suite complète du Mac avant une fusion (tools/ci_wait.sh). Repasser à `branches: [main]` si le
+  # dépôt redevient privé (minutes GitHub limitées).
   pull_request:
     paths-ignore:
       - 'docs/**'
       - '**/*.md'
   push:
-    branches: [main]
+    branches: ['**']
     paths-ignore:
       - 'docs/**'
       - '**/*.md'
+  workflow_dispatch:
 
 permissions:
   contents: read

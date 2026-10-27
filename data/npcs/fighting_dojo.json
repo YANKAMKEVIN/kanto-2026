@@ -1,0 +1,101 @@
+{
+	"maitre": {
+		"cell": [
+			5,
+			3
+		],
+		"facing": "down",
+		"sprite": "hiker",
+		"dialogue": "fighting_dojo_master"
+	},
+	"hippolyte": {
+		"cell": [
+			3,
+			4
+		],
+		"facing": "right",
+		"sprite": "hiker",
+		"dialogue": "fighting_dojo_blackbelt_hippolyte_after",
+		"trainer": {
+			"id": "fighting_dojo_blackbelt_hippolyte",
+			"sight": 4,
+			"before": "fighting_dojo_blackbelt_hippolyte_before",
+			"defeated": "fighting_dojo_blackbelt_hippolyte_defeated"
+		}
+	},
+	"tancrede": {
+		"cell": [
+			3,
+			6
+		],
+		"facing": "right",
+		"sprite": "hiker",
+		"dialogue": "fighting_dojo_blackbelt_tancrede_after",
+		"trainer": {
+			"id": "fighting_dojo_blackbelt_tancrede",
+			"sight": 4,
+			"before": "fighting_dojo_blackbelt_tancrede_before",
+			"defeated": "fighting_dojo_blackbelt_tancrede_defeated"
+		}
+	},
+	"urbain": {
+		"cell": [
+			5,
+			5
+		],
+		"facing": "left",
+		"sprite": "hiker",
+		"dialogue": "fighting_dojo_blackbelt_urbain_after",
+		"trainer": {
+			"id": "fighting_dojo_blackbelt_urbain",
+			"sight": 3,
+			"before": "fighting_dojo_blackbelt_urbain_before",
+			"defeated": "fighting_dojo_blackbelt_urbain_defeated"
+		}
+	},
+	"wilfried": {
+		"cell": [
+			5,
+			7
+		],
+		"facing": "left",
+		"sprite": "hiker",
+		"dialogue": "fighting_dojo_blackbelt_wilfried_after",
+		"trainer": {
+			"id": "fighting_dojo_blackbelt_wilfried",
+			"sight": 3,
+			"before": "fighting_dojo_blackbelt_wilfried_before",
+			"defeated": "fighting_dojo_blackbelt_wilfried_defeated"
+		}
+	},
+	"ball_hitmonlee": {
+		"cell": [
+			4,
+			1
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "fighting_dojo_ball_hitmonlee",
+		"verb": "examine",
+		"turn_to_player": false,
+		"unless": [
+			"dojo_got_hitmonlee",
+			"dojo_got_hitmonchan"
+		]
+	},
+	"ball_hitmonchan": {
+		"cell": [
+			5,
+			1
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "fighting_dojo_ball_hitmonchan",
+		"verb": "examine",
+		"turn_to_player": false,
+		"unless": [
+			"dojo_got_hitmonlee",
+			"dojo_got_hitmonchan"
+		]
+	}
+}

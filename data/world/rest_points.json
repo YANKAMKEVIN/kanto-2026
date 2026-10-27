@@ -28,10 +28,16 @@
 		"celadon_center": {
 			"spawn": "heal", "facing": "up", "wakeup_dialogue": "nurse_wakeup", "registers": true
 		},
+		"saffron_center": {
+			"spawn": "heal", "facing": "up", "wakeup_dialogue": "nurse_wakeup", "registers": true
+		},
 		"fuchsia_center": {
 			"spawn": "heal", "facing": "up", "wakeup_dialogue": "nurse_wakeup", "registers": true
 		},
 		"cinnabar_center": {
+			"spawn": "heal", "facing": "up", "wakeup_dialogue": "nurse_wakeup", "registers": true
+		},
+		"indigo_plateau_lobby": {
 			"spawn": "heal", "facing": "up", "wakeup_dialogue": "nurse_wakeup", "registers": true
 		}
 	}

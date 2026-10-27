@@ -8312,6 +8312,490 @@
      11
     ]
    }
+  },
+  "int_porte_ligue_01": {
+   "fichier": "res://assets/world/interiors/int_porte_ligue_01.png",
+   "taille": [
+    154,
+    169
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_porte_ligue_01_contact.png",
+    "decalage": [
+     -85,
+     -16
+    ],
+    "echelle": 2,
+    "taille": [
+     85,
+     27
+    ]
+   }
+  },
+  "bldg_sylphe_safrania_01": {
+   "fichier": "res://assets/world/buildings/bldg_sylphe_safrania_01.png",
+   "taille": [
+    1344,
+    1656
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_sylphe_safrania_01_shadow.png",
+    "decalage": [
+     -697,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     850,
+     157
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_sylphe_safrania_01_contact.png",
+    "decalage": [
+     -680,
+     -181
+    ],
+    "echelle": 2,
+    "taille": [
+     680,
+     110
+    ]
+   }
+  },
+  "bldg_arene_safrania_01": {
+   "fichier": "res://assets/world/buildings/bldg_arene_safrania_01.png",
+   "taille": [
+    1152,
+    696
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_arene_safrania_01_shadow.png",
+    "decalage": [
+     -601,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     665,
+     68
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_arene_safrania_01_contact.png",
+    "decalage": [
+     -584,
+     -66
+    ],
+    "echelle": 2,
+    "taille": [
+     584,
+     52
+    ]
+   }
+  },
+  "bldg_dojo_safrania_01": {
+   "fichier": "res://assets/world/buildings/bldg_dojo_safrania_01.png",
+   "taille": [
+    960,
+    696
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_dojo_safrania_01_shadow.png",
+    "decalage": [
+     -505,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     569,
+     68
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_dojo_safrania_01_contact.png",
+    "decalage": [
+     -488,
+     -66
+    ],
+    "echelle": 2,
+    "taille": [
+     488,
+     52
+    ]
+   }
+  },
+  "bldg_maison_safrania_01": {
+   "fichier": "res://assets/world/buildings/bldg_maison_safrania_01.png",
+   "taille": [
+    672,
+    600
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_maison_safrania_01_shadow.png",
+    "decalage": [
+     -361,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     417,
+     60
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_maison_safrania_01_contact.png",
+    "decalage": [
+     -344,
+     -54
+    ],
+    "echelle": 2,
+    "taille": [
+     344,
+     46
+    ]
+   }
+  },
+  "bldg_maison_safrania_02": {
+   "fichier": "res://assets/world/buildings/bldg_maison_safrania_02.png",
+   "taille": [
+    672,
+    600
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_maison_safrania_02_shadow.png",
+    "decalage": [
+     -361,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     417,
+     60
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_maison_safrania_02_contact.png",
+    "decalage": [
+     -344,
+     -54
+    ],
+    "echelle": 2,
+    "taille": [
+     344,
+     46
+    ]
+   }
+  },
+  "bldg_maison_safrania_03": {
+   "fichier": "res://assets/world/buildings/bldg_maison_safrania_03.png",
+   "taille": [
+    672,
+    600
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_maison_safrania_03_shadow.png",
+    "decalage": [
+     -361,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     417,
+     60
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_maison_safrania_03_contact.png",
+    "decalage": [
+     -344,
+     -54
+    ],
+    "echelle": 2,
+    "taille": [
+     344,
+     46
+    ]
+   }
+  },
+  "bldg_immeuble_safrania_01": {
+   "fichier": "res://assets/world/buildings/bldg_immeuble_safrania_01.png",
+   "taille": [
+    672,
+    600
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_immeuble_safrania_01_shadow.png",
+    "decalage": [
+     -361,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     417,
+     60
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_immeuble_safrania_01_contact.png",
+    "decalage": [
+     -344,
+     -54
+    ],
+    "echelle": 2,
+    "taille": [
+     344,
+     46
+    ]
+   }
+  },
+  "bldg_immeuble_safrania_02": {
+   "fichier": "res://assets/world/buildings/bldg_immeuble_safrania_02.png",
+   "taille": [
+    672,
+    600
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_immeuble_safrania_02_shadow.png",
+    "decalage": [
+     -361,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     417,
+     60
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_immeuble_safrania_02_contact.png",
+    "decalage": [
+     -344,
+     -54
+    ],
+    "echelle": 2,
+    "taille": [
+     344,
+     46
+    ]
+   }
+  },
+  "bldg_immeuble_safrania_03": {
+   "fichier": "res://assets/world/buildings/bldg_immeuble_safrania_03.png",
+   "taille": [
+    672,
+    600
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_immeuble_safrania_03_shadow.png",
+    "decalage": [
+     -361,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     417,
+     60
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_immeuble_safrania_03_contact.png",
+    "decalage": [
+     -344,
+     -54
+    ],
+    "echelle": 2,
+    "taille": [
+     344,
+     46
+    ]
+   }
+  },
+  "bldg_immeuble_bas_safrania_01": {
+   "fichier": "res://assets/world/buildings/bldg_immeuble_bas_safrania_01.png",
+   "taille": [
+    768,
+    408
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_immeuble_bas_safrania_01_shadow.png",
+    "decalage": [
+     -409,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     447,
+     42
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_immeuble_bas_safrania_01_contact.png",
+    "decalage": [
+     -392,
+     -31
+    ],
+    "echelle": 2,
+    "taille": [
+     392,
+     35
+    ]
+   }
+  },
+  "bldg_immeuble_bas_safrania_02": {
+   "fichier": "res://assets/world/buildings/bldg_immeuble_bas_safrania_02.png",
+   "taille": [
+    576,
+    408
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_immeuble_bas_safrania_02_shadow.png",
+    "decalage": [
+     -313,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     351,
+     42
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_immeuble_bas_safrania_02_contact.png",
+    "decalage": [
+     -296,
+     -31
+    ],
+    "echelle": 2,
+    "taille": [
+     296,
+     35
+    ]
+   }
+  },
+  "bldg_poste_safrania_nord_01": {
+   "fichier": "res://assets/world/buildings/bldg_poste_safrania_nord_01.png",
+   "taille": [
+    384,
+    312
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_poste_safrania_nord_01_shadow.png",
+    "decalage": [
+     -217,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     246,
+     33
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_poste_safrania_nord_01_contact.png",
+    "decalage": [
+     -200,
+     -19
+    ],
+    "echelle": 2,
+    "taille": [
+     200,
+     29
+    ]
+   }
+  },
+  "bldg_poste_safrania_sud_01": {
+   "fichier": "res://assets/world/buildings/bldg_poste_safrania_sud_01.png",
+   "taille": [
+    384,
+    288
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_poste_safrania_sud_01_shadow.png",
+    "decalage": [
+     -217,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     244,
+     31
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_poste_safrania_sud_01_contact.png",
+    "decalage": [
+     -200,
+     -17
+    ],
+    "echelle": 2,
+    "taille": [
+     200,
+     28
+    ]
+   }
+  },
+  "bldg_poste_safrania_ouest_01": {
+   "fichier": "res://assets/world/buildings/bldg_poste_safrania_ouest_01.png",
+   "taille": [
+    288,
+    504
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_poste_safrania_ouest_01_shadow.png",
+    "decalage": [
+     -169,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     216,
+     51
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_poste_safrania_ouest_01_contact.png",
+    "decalage": [
+     -152,
+     -42
+    ],
+    "echelle": 2,
+    "taille": [
+     152,
+     40
+    ]
+   }
+  },
+  "bldg_poste_safrania_est_01": {
+   "fichier": "res://assets/world/buildings/bldg_poste_safrania_est_01.png",
+   "taille": [
+    288,
+    504
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_poste_safrania_est_01_shadow.png",
+    "decalage": [
+     -169,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     216,
+     51
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_poste_safrania_est_01_contact.png",
+    "decalage": [
+     -152,
+     -42
+    ],
+    "echelle": 2,
+    "taille": [
+     152,
+     40
+    ]
+   }
   }
  },
  "personnages": {
@@ -10854,6 +11338,284 @@
     "dos_souffle",
     "gauche",
     "face"
+   ]
+  },
+  "motard": {
+   "fichier": "res://assets/sprites/characters/painted/motard_sheet.png",
+   "cellule": [
+    74,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "ornithologue": {
+   "fichier": "res://assets/sprites/characters/painted/ornithologue_sheet.png",
+   "cellule": [
+    78,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "loubard": {
+   "fichier": "res://assets/sprites/characters/painted/loubard_sheet.png",
+   "cellule": [
+    82,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "pecheur_parmanie": {
+   "fichier": "res://assets/sprites/characters/painted/pecheur_parmanie_sheet.png",
+   "cellule": [
+    96,
+    132
+   ],
+   "hauteur": 130,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "pecheur_route_12": {
+   "fichier": "res://assets/sprites/characters/painted/pecheur_route_12_sheet.png",
+   "cellule": [
+    81,
+    132
+   ],
+   "hauteur": 130,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "heros_bike": {
+   "fichier": "res://assets/sprites/characters/painted/heros_bike_sheet.png",
+   "cellule": [
+    90,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "motard_idle": {
+   "fichier": "res://assets/sprites/characters/painted/motard_idle_sheet.png",
+   "cellule": [
+    74,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "ornithologue_idle": {
+   "fichier": "res://assets/sprites/characters/painted/ornithologue_idle_sheet.png",
+   "cellule": [
+    78,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "loubard_idle": {
+   "fichier": "res://assets/sprites/characters/painted/loubard_idle_sheet.png",
+   "cellule": [
+    82,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "pecheur_parmanie_idle": {
+   "fichier": "res://assets/sprites/characters/painted/pecheur_parmanie_idle_sheet.png",
+   "cellule": [
+    96,
+    132
+   ],
+   "hauteur": 130,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "pecheur_route_12_idle": {
+   "fichier": "res://assets/sprites/characters/painted/pecheur_route_12_idle_sheet.png",
+   "cellule": [
+    83,
+    132
+   ],
+   "hauteur": 130,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "heros_bike_idle": {
+   "fichier": "res://assets/sprites/characters/painted/heros_bike_idle_sheet.png",
+   "cellule": [
+    90,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "heros_fish_cast": {
+   "fichier": "res://assets/sprites/characters/painted/heros_fish_cast_sheet.png",
+   "cellule": [
+    126,
+    226
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "heros_fish_wait": {
+   "fichier": "res://assets/sprites/characters/painted/heros_fish_wait_sheet.png",
+   "cellule": [
+    174,
+    258
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "kangourex": {
+   "fichier": "res://assets/sprites/pokemon/painted/kangourex_sheet.png",
+   "cellule": [
+    126,
+    155
+   ],
+   "hauteur": 150,
+   "colonnes": 6,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "bas_reaction",
+    "gauche",
+    "gauche_reaction",
+    "droite",
+    "droite_reaction"
+   ]
+  },
+  "ramoloss": {
+   "fichier": "res://assets/sprites/pokemon/painted/ramoloss_sheet.png",
+   "cellule": [
+    118,
+    70
+   ],
+   "hauteur": 64,
+   "colonnes": 6,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "bas_reaction",
+    "gauche",
+    "gauche_reaction",
+    "droite",
+    "droite_reaction"
+   ]
+  },
+  "chenipan": {
+   "fichier": "res://assets/sprites/pokemon/painted/chenipan_sheet.png",
+   "cellule": [
+    64,
+    51
+   ],
+   "hauteur": 44,
+   "colonnes": 6,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "bas_reaction",
+    "gauche",
+    "gauche_reaction",
+    "droite",
+    "droite_reaction"
    ]
   }
  },

@@ -1,0 +1,50 @@
+{
+	"mere": {
+		"cell": [
+			7,
+			4
+		],
+		"facing": "down",
+		"sprite": "passenger_f",
+		"dialogue": "saffron_copycat_mother"
+	},
+	"pere": {
+		"cell": [
+			9,
+			6
+		],
+		"facing": "left",
+		"sprite": "gentleman",
+		"dialogue": "saffron_copycat_father"
+	},
+	"leveinard": {
+		"cell": [
+			1,
+			5
+		],
+		"facing": "down",
+		"sprite": "pokemon/clefairy",
+		"dialogue": "saffron_copycat_chansey",
+		"route": {
+			"cells": [
+				[
+					1,
+					4
+				],
+				[
+					1,
+					5
+				],
+				[
+					1,
+					6
+				],
+				[
+					1,
+					5
+				]
+			],
+			"pause": 2.0
+		}
+	}
+}

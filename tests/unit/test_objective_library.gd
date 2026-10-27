@@ -21,8 +21,9 @@ func test_real_data_loads_without_error() -> void:
 	# Jalon 19 (clôture T24, dossier 22 §15.7) : ses deux objectifs devant ceux du J18.
 	# Jalon 20 (T17, jalon-20.md §2.11) : ses quatre objectifs en tête, le plus avancé d'abord.
 	# Jalon 21 (T14, jalon-21.md §2.13) : « rendre visite à M. Fuji. » et « trouver M. Fuji… » en tête.
-	assert_eq(library.get_ids(), [&"visit_fuji", &"find_fuji", &"back_to_tower",
-		&"search_game_corner", &"explore_celadon",
+	# Jalon 23 (dossier 26 §8) : Dents d'Or, puis Koga, devant eux.
+	assert_eq(library.get_ids(), [&"return_gold_teeth", &"challenge_koga", &"visit_fuji",
+		&"find_fuji", &"back_to_tower", &"search_game_corner", &"explore_celadon",
 		&"go_celadon", &"see_the_ghosts", &"climb_tower", &"tower_later", &"visit_tower", &"reach_lavender",
 		&"cross_dark_cave", &"cross_route_9", &"face_surge", &"open_surge_barrier",
 		&"go_vermilion_gym", &"hm01_cascade_badge", &"help_captain",
@@ -85,7 +86,9 @@ func test_q4_nothing_before_the_rival_battle_then_reach_viridian() -> void:
 ## Jalon 20 (T17) : `game_corner_switch` et `got_rocket_hideout_b4f_silph_scope` sont levés par le
 ## Casino et le repaire (T21).
 const _PENDING_FLAGS: Array[StringName] = [&"viridian_arrived", &"cut_vermilion_gym_bush",
-	&"tower_medium_talked", &"game_corner_switch", &"got_rocket_hideout_b4f_silph_scope"]
+	&"tower_medium_talked", &"game_corner_switch", &"got_rocket_hideout_b4f_silph_scope",
+	# Jalon 23 : Badge Âme posé par la scène de Koga (T19).
+	&"badge_soul"]
 
 
 ## Jalon 10 (dossier 12 §16, jalon-10.md §2.10) : « continuer vers le nord. » jusqu'à Argenta,

@@ -1,0 +1,29 @@
+{
+	"pnj_1": {
+		"cell": [
+			3,
+			4
+		],
+		"facing": "right",
+		"sprite": "naturalist",
+		"dialogue": "safari_zone_rest_house_west_pnj_1"
+	},
+	"pnj_2": {
+		"cell": [
+			11,
+			4
+		],
+		"facing": "left",
+		"sprite": "hiker",
+		"dialogue": "safari_zone_rest_house_west_pnj_2"
+	},
+	"pnj_3": {
+		"cell": [
+			7,
+			6
+		],
+		"facing": "up",
+		"sprite": "traveler",
+		"dialogue": "safari_zone_rest_house_west_pnj_3"
+	}
+}

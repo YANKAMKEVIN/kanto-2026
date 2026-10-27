@@ -23,6 +23,25 @@ func test_foe_is_the_official_artwork_by_dex_number() -> void:
 	assert_gt(box.size.y, 300.0, "artwork HD")
 
 
+## Correctif QA A17 du J30 : Roucarnage (artwork tourné vers la droite) tournait le dos au
+## Pokémon du joueur. Les artworks de FACING_RIGHT sont retournés, boîte en miroir ; les autres
+## et le dos du joueur ne le sont jamais.
+func test_right_facing_artwork_is_flipped_toward_the_player() -> void:
+	var plain := _art.image(&"pidgey", false)
+	assert_false(plain.get("flip", false), "Roucool regarde déjà à gauche")
+	var image := _art.image(&"pidgeot", false)
+	assert_true(image["flip"])
+	var width: float = (image["texture"] as Texture2D).get_size().x
+	var unflipped: Rect2 = _art._official(&"pidgeot")["box"]
+	var box: Rect2 = image["box"]
+	assert_eq(box.size, unflipped.size)
+	assert_almost_eq(box.position.x, width - unflipped.end.x, 0.01, "boîte en miroir")
+	assert_eq(box.position.y, unflipped.position.y)
+	assert_false(_art.image(&"pidgeot", true).get("flip", false), "dos : jamais retourné")
+	for number: int in BattleArt.FACING_RIGHT:
+		assert_between(number, 1, 151)
+
+
 func test_player_side_keeps_the_placeholder_back() -> void:
 	var image := _art.image(&"blastoise", true)
 	assert_false(image["official"])
@@ -106,12 +125,23 @@ func test_every_species_fits_the_framing() -> void:
 			var image := _art.image(species, back)
 			var box: Rect2 = image["box"]
 			for view: Vector2 in VIEWS:
-				var key := "player_feet" if back else "foe_feet"
-				var feet: Vector2 = BattleLayout.anchors(view)[key]
+				var where := "%s %s %s" % [species, "dos" if back else "face", view]
+				if back:
+					# Cadrage B : seule la partie visible du dos compte.
+					var scale := BattleLayout.back_scale(box.size, _art.height_m(species), view.y,
+						image["crop"], not image["official"])
+					var feet: Vector2 = BattleLayout.anchors(view)["player_back"] \
+						+ Vector2(0.0, BattleLayout.back_sink(box.size, scale, image["crop"]))
+					var screen := Rect2(Vector2.ZERO, view)
+					var shown := BattleLayout.sprite_rect(feet, scale, box.size).intersection(screen)
+					assert_true(BattleLayout.max_rect(true, view).grow(0.5).encloses(shown), where)
+					assert_false(shown.intersects(BattleLayout.foe_card_zone(view)), where)
+					assert_false(shown.intersects(BattleLayout.hud_zones(view)[1]), where)
+					continue
+				var feet: Vector2 = BattleLayout.anchors(view)["foe_feet"]
 				var scale := BattleLayout.sprite_scale(box.size, _art.height_m(species), back,
 					view.y, not image["official"])
 				var rect := BattleLayout.sprite_rect(feet, scale, box.size)
-				var where := "%s %s %s" % [species, "dos" if back else "face", view]
 				assert_true(BattleLayout.max_rect(back, view).grow(0.5).encloses(rect), where)
 				for zone: Rect2 in BattleLayout.hud_zones(view):
 					assert_false(rect.intersects(zone), "%s hors de %s" % [where, zone])

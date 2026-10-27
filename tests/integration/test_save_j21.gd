@@ -1,6 +1,6 @@
 extends GutTest
 ## Sauvegarde du jalon 21 (T15, T23, `jalon-21.md` §2.14 ; dossier 24 §16) : **aucune nouvelle
-## version** (v7) ; chaque drapeau du J21 survit à un aller-retour ; points de coupure sur la
+## version** (v7 ; v8 depuis le J23) ; chaque drapeau du J21 survit à un aller-retour ; points de coupure sur la
 ## **vraie Boot** (coordinateur de sauvegarde, fichier en mémoire, partie reprise au démarrage) :
 ## - n° 1 : après la victoire contre Ossatueur → 6F : brume légère, aucun déclencheur ; escalier
 ##   vers le 7F ; objectif « trouver M. Fuji… » ;
@@ -87,7 +87,7 @@ func after_each() -> void:
 
 
 func test_the_jalon_21_adds_no_save_version() -> void:
-	assert_eq(SaveSystem.VERSION, 7, "aucune version du J21 : v7 depuis le J15 (Pension)")
+	assert_eq(SaveSystem.VERSION, 8, "aucune version du J21 : v7 depuis le J15 (Pension), v8 du J23")
 
 
 func test_every_flag_of_the_jalon_21_survives_a_save() -> void:
@@ -103,7 +103,7 @@ func test_every_flag_of_the_jalon_21_survives_a_save() -> void:
 	assert_eq(_save.write(state.to_dict()), OK, "écriture")
 	var content := _save.read()
 	assert_eq(_save.last_status, OK, "relecture")
-	assert_eq(int(content["version"]), 7)
+	assert_eq(int(content["version"]), SaveSystem.VERSION)
 	var loaded: Node = autofree(GameStateScript.new())
 	loaded.clock = FixedClock.new("2026-10-22T03:00:00")
 	loaded.new_game(1)
@@ -170,7 +170,7 @@ func _save_now(fs: MemoryFs, flag: StringName = &"") -> Dictionary:
 			return fs.files.get(BOOT_PATH, "") != before
 		return (_file(fs).get("flags", []) as Array).has(String(flag)), TIMEOUT)
 	var saved := _file(fs)
-	assert_eq(int(saved.get("version", 0)), 7, "toujours v7")
+	assert_eq(int(saved.get("version", 0)), SaveSystem.VERSION, "toujours v7 (v8 depuis le J23)")
 	return saved
 
 

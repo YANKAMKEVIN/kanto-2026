@@ -21,6 +21,9 @@ const ENCOUNTERABLE: Array[StringName] = [
 	&"meowth",
 	# Jalon 17 (annexe A.2 de jalon-17.md, validée le 2026-10-16) : Taupiqueur, Soporifik.
 	&"diglett", &"drowzee",
+	# Jalon 23 (T13, `jalon-23.md` A.5 : une note par forme de base du Parc, validation d'avance
+	# de Kevin) : Leveinard, Insécateur, Scarabrute, Tauros.
+	&"chansey", &"scyther", &"pinsir", &"tauros",
 	# Jalon 25 (kanto_j25_entrees.json, validé d'avance le 2026-10-21) : Ponyta, Magmar (Manoir).
 	&"ponyta", &"magmar",
 	# Jalon 23 (emprunté au J31, copie identique de `origin/jalon-23`) : Leveinard a sa note.

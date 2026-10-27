@@ -23,6 +23,8 @@ extends Marker2D
 ## Passe systèmes 2 (§2.7.3) : drapeaux qui désactivent le passage (trou bouché, [member
 ## Warp.unless_flags]).
 @export var unless_flags: Array[StringName] = []
+## Jalon 28 : drapeaux tous exigés pour activer le passage ([member Warp.if_flags]).
+@export var if_flags: Array[StringName] = []
 
 
 ## Case du passage, déduite de la position.
@@ -35,4 +37,5 @@ func to_warp() -> Warp:
 	var warp := Warp.new(get_cell(), trigger, direction, target_map, target_spawn, arrival_facing,
 		coming_soon, style)
 	warp.unless_flags = unless_flags.duplicate()
+	warp.if_flags = if_flags.duplicate()
 	return warp

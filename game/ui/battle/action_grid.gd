@@ -119,3 +119,24 @@ func _press_feedback(button: Button, down: bool) -> void:
 	var target := Vector2.ONE * (UiTokens.PRESSED_SCALE if down else 1.0)
 	tween.tween_property(button, ^"scale", target, UiTokens.ANIM_MICRO)
 	_press_tweens[button] = tween
+
+
+# --- J23 : rencontre Safari ---------------------------------------------------------------
+
+## Remplace les libellés des boutons par [param labels] (action → texte ; rencontre Safari :
+## SAFARI BALL ×n, APPÂT, CAILLOU, FUIR sur les quatre places), sans icône ; un libellé trop
+## long passe à la ligne. Les identifiants des actions ne changent pas. Vide : libellés et
+## icônes d'origine ([constant LABELS], [constant ICONS]).
+func set_labels(labels: Dictionary[StringName, String]) -> void:
+	for action: StringName in ACTIONS:
+		var button := _buttons.get(action, null) as Button
+		if button == null:
+			continue
+		if labels.is_empty():
+			button.text = LABELS[action]
+			button.icon = ICONS[action]
+			button.autowrap_mode = TextServer.AUTOWRAP_OFF
+		else:
+			button.text = labels.get(action, LABELS[action])
+			button.icon = null
+			button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART

@@ -255,6 +255,17 @@ func test_sheet_habitat_count_and_times_texts() -> void:
 	assert_eq(lonely.habitat_count_text, "", "aucune zone : texte vide = absent")
 
 
+## Arbitrage R-3 (Kevin, 2026-10-26) : obtenue par évolution, jamais capturée → ni
+## « capturé 0 fois » ni carte Capturé.
+func test_sheet_of_an_evolved_species_hides_the_caught_count() -> void:
+	_kevin()
+	_dex.mark_evolved(&"charmeleon", "2026-10-03T10:00:00")
+	var view := PokedexQuery.sheet(&"charmeleon", _dex, _data, _lib, _zones)
+	assert_true(view.caught, "fiche complète")
+	assert_eq(view.counts_text, "Vu 1 fois")
+	assert_eq(view.caught_times_text, "", "pas de carte Capturé")
+
+
 func test_sheet_never_shows_stats_conditions_or_question_marks_in_habitats() -> void:
 	_kevin()
 	_dex.mark_seen(&"charizard", &"route_1")

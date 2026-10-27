@@ -1,0 +1,119 @@
+{
+	"safari_zone_west_potion_max": {
+		"variants": [
+			{
+				"unless": [
+					"got_safari_zone_west_potion_max"
+				],
+				"steps": [
+					{
+						"despawn": "potion_max"
+					},
+					{
+						"give": "hyper_potion",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_safari_zone_west_potion_max"
+						]
+					}
+				]
+			}
+		]
+	},
+	"safari_zone_west_ct32": {
+		"variants": [
+			{
+				"unless": [
+					"got_safari_zone_west_ct32"
+				],
+				"steps": [
+					{
+						"despawn": "ct32"
+					},
+					{
+						"give": "tm32",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_safari_zone_west_ct32"
+						]
+					}
+				]
+			}
+		]
+	},
+	"safari_zone_west_rappel_max": {
+		"variants": [
+			{
+				"unless": [
+					"got_safari_zone_west_rappel_max"
+				],
+				"steps": [
+					{
+						"despawn": "rappel_max"
+					},
+					{
+						"give": "revive",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_safari_zone_west_rappel_max"
+						]
+					}
+				]
+			}
+		]
+	},
+	"safari_zone_west_dents_or": {
+		"variants": [
+			{
+				"unless": [
+					"got_safari_zone_west_dents_or"
+				],
+				"steps": [
+					{
+						"despawn": "dents_or"
+					},
+					{
+						"give": "gold_teeth",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_safari_zone_west_dents_or"
+						]
+					}
+				]
+			}
+		]
+	},
+	"safari_zone_west_rappel_cache": {
+		"variants": [
+			{
+				"unless": [
+					"got_safari_zone_west_rappel_cache"
+				],
+				"steps": [
+					{
+						"give": "revive",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_safari_zone_west_rappel_cache"
+						]
+					}
+				]
+			}
+		]
+	}
+}

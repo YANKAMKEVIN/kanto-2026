@@ -1,0 +1,26 @@
+{
+	"tm32": {
+		"name": "CT32 — Reflet", "plural": "CT32 — Reflet", "feminine": true,
+		"category": "tm", "tm": 32, "teaches": "double_team",
+		"description": "Le lanceur se démultiplie par des mouvements rapides. Augmente son esquive."
+	},
+	"tm37": {
+		"name": "CT37 — Bomb'Œuf", "plural": "CT37 — Bomb'Œuf", "feminine": true,
+		"category": "tm", "tm": 37, "teaches": "egg_bomb",
+		"description": "Le lanceur projette violemment un gros œuf sur la cible."
+	},
+	"tm40": {
+		"name": "CT40 — Coud'Krâne", "plural": "CT40 — Coud'Krâne", "feminine": true,
+		"category": "tm", "tm": 40, "teaches": "skull_bash",
+		"description": "Rentre la tête au premier tour, ce qui augmente sa Défense, puis charge au second."
+	},
+	"gold_teeth": {
+		"name": "Dents d'Or", "plural": "Dents d'Or", "feminine": true, "category": "key",
+		"description": "Le dentier en or du Gardien du Parc Safari."
+	},
+	"tm06": {
+		"name": "CT06 — Toxik", "plural": "CT06 — Toxik", "feminine": true,
+		"category": "tm", "tm": 6, "teaches": "toxic",
+		"description": "Empoisonne gravement."
+	}
+}

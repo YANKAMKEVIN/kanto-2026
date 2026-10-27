@@ -1,0 +1,67 @@
+{
+	"map": "route_22_west",
+	"spawn": "from_route_22",
+	"facing": "left",
+	"flags": [
+		"mom_greeted",
+		"rival_met",
+		"oak_met",
+		"oak_lab_reunion",
+		"starter_offered",
+		"starter_chosen",
+		"rival_lab_won",
+		"rival_challenged",
+		"rival_battle_done",
+		"rival_left_lab",
+		"viridian_arrived",
+		"got_oak_parcel",
+		"pokedex_activated",
+		"poison_unlocked",
+		"rival_route22_won",
+		"taken_squirtle",
+		"taken_bulbasaur",
+		"badge_boulder",
+		"badge_cascade",
+		"badge_thunder",
+		"badge_rainbow",
+		"badge_soul",
+		"badge_marsh",
+		"badge_volcano",
+		"badge_earth"
+	],
+	"party": [
+		{
+			"species": "squirtle",
+			"level": 55
+		},
+		{
+			"species": "nidoking",
+			"level": 50
+		},
+		{
+			"species": "gyarados",
+			"level": 48
+		},
+		{
+			"species": "starmie",
+			"level": 47
+		},
+		{
+			"species": "kangaskhan",
+			"level": 45
+		}
+	],
+	"companion": 0,
+	"bag": {
+		"hm03": 1,
+		"hm04": 1,
+		"poke_ball": 10,
+		"great_ball": 10,
+		"ultra_ball": 10,
+		"super_potion": 10,
+		"full_restore": 3,
+		"revive": 5
+	},
+	"money": 30000,
+	"rest_point": "viridian_center"
+}

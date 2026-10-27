@@ -135,11 +135,15 @@ func test_real_tables_load_without_error() -> void:
 		&"route_12_south_grass", &"route_13_grass", &"route_14_grass", &"route_15_grass",
 		&"route_16_west_grass", &"route_17_grass", &"route_18_grass", &"route_19_water",
 		&"route_1_grass", &"route_20_water", &"route_21_grass", &"route_21_water",
-		&"route_22_grass", &"route_24_grass", &"route_25_grass", &"route_2_grass",
+		&"route_22_grass", &"route_23_grass", &"route_24_grass", &"route_25_grass", &"route_2_grass",
 		&"route_2_north_grass", &"route_3_grass", &"route_4_grass", &"route_5_grass",
 		&"route_6_grass", &"route_7_grass", &"route_8_grass", &"route_9_grass",
+		# Jalon 23 (T13) : Parc Safari.
+		&"safari_zone_center_grass", &"safari_zone_east_grass", &"safari_zone_north_grass",
+		&"safari_zone_west_grass",
 		&"seafoam_1f_floor", &"seafoam_b1f_floor", &"seafoam_b2f_floor", &"seafoam_b3f_floor",
-		&"seafoam_b4f_floor", &"viridian_forest_grass"] as Array[StringName])
+		&"seafoam_b4f_floor", &"victory_road_1f_rubble", &"victory_road_2f_rubble",
+		&"victory_road_3f_rubble", &"viridian_forest_grass"] as Array[StringName])
 
 
 func test_route_22_table_is_red_blue_with_both_nidoran_and_mankey() -> void:
@@ -154,7 +158,8 @@ func test_route_22_table_is_red_blue_with_both_nidoran_and_mankey() -> void:
 	assert_not_null(table)
 	if table == null:
 		return
-	assert_eq(table.maps, [&"route_22"] as Array[StringName])
+	# J29 : les herbes de la partie ouest (route_22_west) suivent la même table.
+	assert_eq(table.maps, [&"route_22", &"route_22_west"] as Array[StringName])
 	assert_eq(table.rate, 25)
 	assert_eq([table.ramp_from, table.ramp_max], [15, 20])
 	assert_eq(table.total_weight(), 100)
@@ -214,11 +219,10 @@ func test_every_wild_species_has_battle_sprites() -> void:
 	# SPECTRES sans le Scope (dossier 22 §6) ; Osselait n'a pas de sprite avant le J20.
 	# (La table d'eau de la carte de QA S2C est retirée en S2Z.)
 	# Jalon 21 (T5) : + la table du 7F (`pokemon_tower_top`), hors de la boucle comme les
-	# autres tables de la Tour (SPECTRES sans le Scope).
-	# + les 3 tables de la Grotte Azurée (J31) : leurs espèces (Leveinard et Rhinoféros empruntés
-	# aux J23 et J28, Métamorph, Mewtwo) n'ont pas toutes un sprite de combat dans cette base.
-	assert_eq(lib.size(), 50, "une table par couple ci-dessous, plus les 4 de la Tour (J19, J21) "
-		+ "(dont les 4 du Manoir, J25) et les 3 de la Grotte Azurée")
+	# autres tables de la Tour (SPECTRES sans le Scope). Jalon 23 (T13) : + 4 du Parc Safari ;
+	# jalon 25 : + 4 du Manoir. Jalon 29 (T4) : + Route 23 et les 3 niveaux de la Route Victoire.
+	# Jalon 31 : + les 3 tables de la Grotte Azurée.
+	assert_eq(lib.size(), 58, "une table par couple ci-dessous, plus les 4 de la Tour (J19, J21)")
 	for pair: Array in [[&"route_1", &"grass"], [&"route_2", &"grass"],
 			[&"route_22", &"grass"], [&"viridian_forest", &"grass"], [&"route_2_north", &"grass"],
 			[&"route_3", &"grass"], [&"mt_moon_1f", &"rubble"], [&"mt_moon_b1f", &"rubble"],
@@ -242,7 +246,10 @@ func test_every_wild_species_has_battle_sprites() -> void:
 			[&"seafoam_b3f", &"floor"], [&"seafoam_b4f", &"floor"],
 			# Jalon 25 (T9) : Manoir Pokémon.
 			[&"pokemon_mansion_1f", &"floor"], [&"pokemon_mansion_2f", &"floor"],
-			[&"pokemon_mansion_3f", &"floor"], [&"pokemon_mansion_b1f", &"floor"]]:
+			[&"pokemon_mansion_3f", &"floor"], [&"pokemon_mansion_b1f", &"floor"],
+			# Jalon 23 (T13) : Parc Safari.
+			[&"safari_zone_center", &"grass"], [&"safari_zone_east", &"grass"],
+			[&"safari_zone_north", &"grass"], [&"safari_zone_west", &"grass"]]:
 		for slot: EncounterSlot in lib.get_table(pair[0], pair[1]).slots:
 			for view: String in ["front", "back"]:
 				var path := "res://assets/sprites/pokemon/placeholder/%s_%s.png" % [

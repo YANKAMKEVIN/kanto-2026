@@ -25,6 +25,8 @@ extends MenuScreen
 signal filter_changed(filter: int, zone: StringName, type: StringName, text: String)
 ## Case connue touchée.
 signal species_opened(species: StringName)
+## Bouton « Cri » d'une espèce capturée (jalon Son, SonB) : numéro national.
+signal cry_requested(number: int)
 
 const BACK_TEXT := "RETOUR"
 const SEARCH_PLACEHOLDER := "Rechercher"
@@ -90,6 +92,7 @@ func _ready() -> void:
 	column.add_child(body)
 	_build_list(body)
 	_portrait = PokedexPortrait.new()
+	_portrait.cry_requested.connect(cry_requested.emit)
 	body.add_child(_portrait)
 	_build_sheet(body)
 	_show_empty_species(true, "")

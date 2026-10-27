@@ -146,7 +146,8 @@ et l'IA qui creuse sont couverts par les tests de combat ; Abra se rencontre sur
 | `pokemon_tower_1f.json` | J18 (T24) : même partie + `lavender_reached`, dans la Tour Pokémon à l'entrée (spawn `entrance`, tourné vers le nord) : gardien, visiteurs, tombes, Exorciste devant l'escalier (T-34 puis T-35, objectif « Revenir plus tard à la Tour Pokémon. ») |
 | `dark_cave_1f.json` | J18 (T20) : Pikachu N20, Reptincel N22, Roucarnage N19, **sans CS05** (Flash indisponible), 5 Potions, 2 Super Potions, 2 Antidotes, 2 Cordes Sortie, à l'entrée nord de la Grotte Sombre (spawn `from_route_10_n_w`, tourné vers le sud) : voile sombre et « Il fait très sombre ici… » une fois |
 | `dark_cave_1f_flash.json` | J18 (T20) : comme `dark_cave_1f` avec la **CS05** au Sac et Pikachu (compatible) : Flash automatique à l'entrée, « Pikachu utilise Flash ! » |
-| `dark_cave_b1f.json` | J18 (T20) : comme `dark_cave_1f_flash`, à l'arrivée de l'échelle A du B1F (spawn `arrivee_a`) : colonne, flaque, passage étroit (Marcel), racines (Super Potion cachée). L'arrivée de l'échelle B (`arrivee_b`, côté Marcel) n'a pas de départ : copier le fichier et changer `spawn` (QA du 2026-10-19) |
+| `dark_cave_b1f.json` | J18 (T20) : comme `dark_cave_1f_flash`, à l'arrivée de l'échelle A du B1F (spawn `arrivee_a`) : colonne, flaque, passage étroit (Marcel), racines (Super Potion cachée). L'arrivée de l'échelle B a son propre départ (ligne suivante) |
+| `dark_cave_b1f_b.json` | Registre des reportés (RP, 2026-10-26) : comme `dark_cave_b1f`, à l'arrivée de l'échelle B (spawn `arrivee_b`, côté Marcel) |
 
 La carte de QA `qa_switch_j13` (J13, T14), ses données, son outil de construction et de capture,
 son test et le départ `switch_qa` ont été **retirés au T22** (les Dresseurs qui changent de
@@ -315,6 +316,53 @@ reste éprouvée par `test_cutscene_static_encounter.gd` et `test_cutscene_stati
 | `cerulean_cave_mewtwo_capture.json` | J31 (T10) : comme `cerulean_cave_mewtwo`, mais **Raichu N60 en tête** avec Cage-Éclair, Croc Fatal, Frappe Atlas et Tonnerre : paralyser puis affaiblir Mewtwo avant les Hyper Balls (QA de la capture puis de son absence) |
 | `cerulean_cave_p7.json` | J31 (T10) : partie de `cerulean_cave_1f`, au 1F **devant l'échelle P7** (spawn `arrivee_p7` (0, 7), tourné ↑) : un pas en haut → B1F (2, 6) ; un pas à l'est sur l'échelle (3, 6) → retour au 1F |
 
+## Jalon 23 (Parc Safari, CS03, CS04, Koga)
+
+| Fichier | Partie |
+|---|---|
+| `koga_qa.json` | Entrée de l'Arène de Parmanie (spawn `entree`, tourné ↑), équipe d'environ N40 (Dracaufeu, Kadabra, Voltali, Aquali, Nidoking, Roucarnage), CS01 et **CS03** au Sac, Badges jusqu'au Prisme (pas le Badge Âme). Murs invisibles, six Dresseurs, Koga (défaite → Centre de Parmanie), Badge Âme et CT06 ; ensuite, Surf au bouton d'action sur la rive de la Route 19. Sert à `test_koga_flow` et `test_j23_surf_after_koga` : **gardé à la clôture** |
+
+Départs `safari_qa`, `safari_end_qa` et `warden_qa` (et leur test `test_j23_qa_starts`)
+**retirés à la clôture (T24)** ; la clé `safari` (visite en cours : `steps_left`, `balls_left`)
+reste éprouvée par `test_debug_start`.
+
+## Jalon 26 (T14) : Safrania et la Sylphe SARL (`docs/tech/jalon-26.md` §2.6)
+
+Le **starter** de la partie est le premier de l'équipe (`DebugStart`) : le rival n° 6 (`rival_silph`)
+lit `starter_species`, d'où le starter **non évolué** en tête de chaque départ (N38 ou N42) [D].
+Drapeaux de base : `silph_1f` (J20 terminé) plus la Tour (`rival_tower_won`) et Erika.
+
+| Fichier | Partie |
+|---|---|
+| `saffron_gate.json` | Poste de la Route 8 (spawn `entrance`, tourné ↑), postes **fermés**, une **Eau Fraîche** au Sac, équipe N38 : la donner au garde, entrer dans Safrania occupée |
+| `silph_1f.json` | Sylphe 1F (spawn `from_city`), Safrania occupée, sans Carte, équipe N38 (Salamèche en tête) |
+| `silph_5f.json` | 5F, sortie de l'ascenseur (spawn `from_elevator`), sans Carte : la Carte Magnétique est en (21, 16) |
+| `silph_7f_rival_bulbasaur.json`, `silph_7f_rival_charmander.json`, `silph_7f_rival_squirtle.json` | 7F, sur la dalle (5, 3) venue du 3F (spawn `tp_5`, tourné ←), Carte au Sac : deux pas vers l'ouest → le rival (trois équipes selon le starter en tête) ; après la victoire, l'employé (1, 5) donne Lokhlass |
+| `silph_11f.json` | 11F, sur la dalle (3, 2) venue du 7F (spawn `tp_4`), rival battu, porte du bureau ouverte, Sbire de l'ouest battu, équipe N42 : entrer dans le bureau → Giovanni ; puis le président (Master Ball) |
+| `saffron_free.json` | Safrania libérée (spawn `from_silph`), Lokhlass N15 dans l'équipe, Master Ball au Sac, point de repos `saffron_center` |
+
+## Jalon 27 (T11) : Arène de Morgane et Dojo de Combat (`docs/tech/jalon-27.md` §2.6)
+
+Base : `saffron_free.json` (Safrania libérée, équipe N42, Salamèche en tête) [D].
+
+| Fichier | Partie |
+|---|---|
+| `saffron_gym.json` | Arène de Safrania, à l'entrée (spawn `entrance`, tourné ↑), Safrania libérée : chercher Morgane par les tapis |
+| `sabrina.json` | Arène, sur le tapis du centre (11, 11) (spawn `tp_19`) : deux pas vers Morgane (9, 8), on lui parle depuis (9, 9) |
+| `fighting_dojo.json` | Dojo, à l'entrée, **Safrania occupée** (Sylphe non libérée, ni Carte ni Master Ball) : le Dojo est jouable avant la libération |
+| `dojo_choice.json` | Dojo, maître déjà battu (`fighting_dojo_master_defeated`), **équipe pleine** (6) : examiner une Ball, OUI → le Pokémon va au Stockage |
+
+## Jalon 29 : Route 22 (rival n° 7), Route 23, Route Victoire, Plateau Indigo
+
+| Fichier | Partie |
+|---|---|
+| `route_22_final_bulbasaur`, `_charmander`, `_squirtle` | J29 (T15) : fin de partie à huit Badges (starter de base N55 en tête — la clé du rival est le starter du joueur —, Nidoking, Léviator, Staross, Kangourex), CS03 et CS04, Jadielle en point de repos, à l'est de la partie ouest de la Route 22 (spawn `from_route_22`) : le rival n° 7 attend devant le poste (dans la bonne variante) |
+| `route_22_final_weak` | J29 : même départ, Salamèche N10 seul : perdre contre le rival n° 7 (réveil au Centre de Jadielle, le rival reste là) |
+| `route_23_seven` | J29 : sept Badges (sans le Badge Terre), rival n° 7 battu, dans le poste de la Ligue côté Route 23 : arrêté au contrôle de la rangée 35 (Badge Terre), retour libre |
+| `route_23_all` | J29 : huit Badges, CS03 et CS04, rival battu, même endroit : Route 23 entière, Surf, Route Victoire |
+| `victory_road_1f`, `_2f`, `_3f` | J29 : huit Badges, à l'entrée de chaque étage de la Route Victoire (interrupteurs des étages précédents posés) |
+| `moltres` | J29 : 2F de la Route Victoire, devant Sulfura (spawn `moltres_front`, tourné vers le haut), Hyper Balls (pas de Master Ball avant le J26) |
+| `indigo_plateau` | J29 : huit Badges, au sud du Plateau Indigo (spawn `from_route_23`) : hall, soin, Boutique, porte « Ligue Pokémon — À venir » ; Plateau, Jadielle et Bourg Palette découverts (Vol) |
 ## Jalon 25 : Manoir, échanges du Labo, Vieil Ambre, Arène d'Auguste (QA 25A–25C)
 
 Équipe [D] (sauf mention) : Tortank N46 (Surf, Force, Morsure, Pistolet à O), Raichu N42, Akwakwak N42 ; CS01,

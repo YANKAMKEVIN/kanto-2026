@@ -1,0 +1,9 @@
+UI_OBJETS_DAF5_PLANCHE_2 — NOUVELLE image : une planche d'icônes d'objets peintes pour le Sac, pas une scène.
+Images jointes : revive, lift_key, moon_stone = icônes existantes du jeu, ANCRES de style dans le style EXACT des icônes jointes (même rendu peint, même contour fin et coloré, même angle de trois quarts, même lumière, même finesse, même taille d'environ 240 px).
+
+PLANCHE de 4 icônes d'objets peintes pour le Sac, dans une image 1536 × 1024 divisée en quatre colonnes invisibles de 384 px : une icône CENTRÉE dans chacune des 4 PREMIÈRES colonnes (de gauche à droite), de 260 px de large au plus et 260 px de haut au plus, avec au moins 60 px de marge vide de chaque côté.
+1 (colonne 1) : le RAPPEL MAX : le MÊME cristal taillé en losange que le Rappel joint, mais PLUS LARGE et plus massif, jaune d'or plus profond, avec une petite ÉTOILE blanche à cinq branches gravée au centre.
+2 (colonne 2) : le VIEIL AMBRE : un gros morceau d'AMBRE poli, arrondi et irrégulier, orange miel translucide, avec une minuscule silhouette sombre d'insecte prisonnière au cœur ; ancien et précieux.
+3 (colonne 3) : la POKÉ FLÛTE : une petite FLÛTE à bec trapue en bois clair verni, embouchure et bagues ROUGES et blanches, quatre trous visibles, posée en diagonale.
+4 (colonne 4) : la CLÉ SECRÈTE : une grande CLÉ ancienne de bronze sombre et cuivré, tête ronde ajourée sertie d'une petite pierre ROUGE, panneton travaillé ; aucun texte, aucun emblème, aucune lettre R.
+AUCUN halo, AUCUNE lueur, AUCUNE étincelle, AUCUN dégradé autour : chaque objet est net, avec seulement son contour fin, sur un fond entièrement transparent (canal alpha, aucune ombre). Interdit : texte, lettres, chiffres, logo, la lettre R, personnage.

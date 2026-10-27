@@ -290,8 +290,10 @@ func test_objectives_are_t56_in_lower_case_and_in_order() -> void:
 	# Les objectifs du J20 (T17), puis ceux du J19 (clôture T24) passent devant : ceux du J18
 	# suivent, groupés.
 	var first := ids.find(OBJECTIVES[0][0])
-	# Jalon 21 (T14) : `visit_fuji` et `find_fuji` en tête (ordre « plus avancé d'abord »).
-	assert_eq(ids.slice(0, first), [&"visit_fuji", &"find_fuji", &"back_to_tower", &"search_game_corner", &"explore_celadon",
+	# Jalon 21 (T14) : `visit_fuji` et `find_fuji` en tête (ordre « plus avancé d'abord ») ;
+	# jalon 23 (dossier 26 §8) : Dents d'Or, puis Koga, devant eux.
+	assert_eq(ids.slice(0, first), [&"return_gold_teeth", &"challenge_koga", &"visit_fuji",
+		&"find_fuji", &"back_to_tower", &"search_game_corner", &"explore_celadon",
 		&"go_celadon", &"see_the_ghosts", &"climb_tower"] as Array[StringName])
 	for i: int in OBJECTIVES.size():
 		assert_eq(ids[first + i], OBJECTIVES[i][0], "objectifs du J18 groupés (§4.13)")
