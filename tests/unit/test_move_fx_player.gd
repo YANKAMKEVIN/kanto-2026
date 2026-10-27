@@ -387,3 +387,29 @@ func test_plan_palette_and_particles_from_data() -> void:
 		assert_true(JsonFields.get_int(fx, "particles") <= FxParticlePool.MAX_PER_EMITTER,
 			"%s : un éclat tient dans un émetteur" % family)
 		assert_eq(JsonFields.get_array(fx, "palette").size(), 3, "%s : palette" % family)
+
+
+## Le jet d'eau (Pistolet à O) est nettement plus épais qu'un rayon, avec cœur et halo.
+func test_water_jet_is_much_thicker_than_a_beam() -> void:
+	var stage := _stage()
+	var widths: Dictionary = {}
+	for move_id: StringName in [&"water_gun", &"ice_beam"]:
+		var plan := _plan(move_id)
+		_player.play(plan, stage)
+		var peak := 0.0
+		var halo_seen := false
+		var guard := 0
+		while _player.is_playing() and guard < 1000:
+			_clock += 1.0 / 60.0
+			_player.advance(1.0 / 60.0)
+			var beam := _player.get_beam()
+			if beam.visible:
+				peak = maxf(peak, beam.width)
+				halo_seen = halo_seen or (beam.get_node(^"Halo") as Line2D).visible
+			guard += 1
+		widths[move_id] = [peak, halo_seen]
+	assert_gte(widths[&"water_gun"][0], MoveFxPlayer.JET_WIDTH * 0.9, "jet épais")
+	assert_true(widths[&"water_gun"][1], "halo du jet")
+	assert_lte(widths[&"ice_beam"][0], MoveFxPlayer.BEAM_WIDTH + 0.1, "rayon inchangé")
+	assert_false(widths[&"ice_beam"][1], "pas de halo sur un rayon")
+	_assert_at_rest(stage)

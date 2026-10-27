@@ -19,6 +19,7 @@ var _hud: BattleHud
 var _stage: BattleStage
 var _encounters: Node
 var _caption: Label
+var _audio_label: Label
 var _data: PokemonData
 var _catalog: MoveFxCatalog
 
@@ -47,6 +48,7 @@ func _start() -> void:
 	var explo: CanvasLayer = _boot.call(&"get_hud")
 	explo.call(&"hide_interact")
 	_build_caption()
+	_log_audio()
 	await _frames(20)
 	var encounter: RefCounted = load("res://game/pokemon/encounters/wild_encounter.gd").new(
 		&"pikachu", 5)
@@ -87,6 +89,14 @@ func _start() -> void:
 	await _hit(PLAYER, 4, 27, true)
 	await _seconds(3.0)
 	_hud.get_card(HUD_PLAYER).set_hp(27, 27)
+	_hud.get_card(HUD_FOE).set_hp(20, 20)
+	_caption_set("Pistolet à O : jet épais (Complètes)")
+	_stage.battle_animations = GameSettings.BattleAnimations.FULL
+	await _attack(&"water_gun", PLAYER, FOE, 12)
+	await _seconds(1.5)
+	_caption_set("Hydrocanon : même jet, épais")
+	await _attack(&"hydro_pump", PLAYER, FOE, 5)
+	await _seconds(1.5)
 	_hud.get_card(HUD_FOE).set_hp(20, 20)
 	_caption_set("Animations de combat : Complètes (Flammèche)")
 	_stage.battle_animations = GameSettings.BattleAnimations.FULL
@@ -144,6 +154,31 @@ func _attack(move_id: StringName, user: BattleEvent.SideId, target: BattleEvent.
 	await _stage.finish_move_fx()
 
 
+## Journal du niveau des bus (« [audio] ») toutes les 0,5 s : sert à trouver un volume qui bouge.
+func _log_audio() -> void:
+	var audio: Node = root.get_node(^"Audio")
+	var t := 0.0
+	while true:
+		var line := "[audio] t=%.1f" % t
+		for bus: StringName in [&"Master", &"Music", &"Sfx", &"Cries", &"Ambience"]:
+			var index := AudioServer.get_bus_index(bus)
+			if index >= 0:
+				line += " %s=%.1f" % [bus, AudioServer.get_bus_volume_db(index)]
+		line += " ducked=%s" % audio.call(&"is_focus_ducked")
+		line += " focus=%s" % DisplayServer.window_is_focused()
+		print(line)
+		if _audio_label != null:
+			var music := AudioServer.get_bus_index(&"Music")
+			_audio_label.text = "Musique : %.1f dB" % AudioServer.get_bus_volume_db(music)
+		for i: int in 15:
+			# La fenêtre d'enregistrement perd le focus : le jeu baisserait la musique (ducking de
+			# focus voulu en jeu) ; on le lève ici pour que la capture reste à niveau constant.
+			if audio.call(&"is_focus_ducked"):
+				audio.call(&"_set_focus_ducked", false)
+			await process_frame
+		t += 0.5
+
+
 func _build_caption() -> void:
 	var layer := CanvasLayer.new()
 	layer.layer = 100
@@ -154,6 +189,12 @@ func _build_caption() -> void:
 	_caption.add_theme_color_override(&"font_outline_color", Color.BLACK)
 	_caption.add_theme_constant_override(&"outline_size", 10)
 	layer.add_child(_caption)
+	_audio_label = Label.new()
+	_audio_label.position = Vector2(40, 1000)
+	_audio_label.add_theme_font_size_override(&"font_size", 32)
+	_audio_label.add_theme_color_override(&"font_outline_color", Color.BLACK)
+	_audio_label.add_theme_constant_override(&"outline_size", 8)
+	layer.add_child(_audio_label)
 
 
 func _caption_set(text: String) -> void:

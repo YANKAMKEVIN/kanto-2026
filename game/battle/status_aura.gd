@@ -12,13 +12,12 @@ extends Node2D
 ##  - poison : bulles violettes qui montent et éclatent, par intermittence (CV.3) ; Toxik
 ##    ([constant StatusRules.TOXIC]) : plus denses et plus foncées ;
 ##  - gel : en plus, quelques éclats de givre qui scintillent (CV.3) ;
-##  - sommeil : en plus, respiration lente du sprite (CV.3, voir ci-dessous) ;
 ##  - pose du statut : petit effet de 0,3 s aux couleurs du statut (CV.3) ;
 ##  - confusion : petites étoiles au-dessus de la tête au moment du test
 ##    ([method play_confusion]).
 ## « Réduire les animations » ([member reduce_motion]) coupe les particules et les étoiles, garde
 ## la teinte du gel. Les motifs sont fixes (aucun tirage : l'aléatoire du jeu n'est pas touché).
-## Respiration (CV.3, CV-8) : 1 % sur 3 s au repos, 2 % sur 2,4 s pendant le sommeil, sur
+## Respiration (CV.3, CV-8) : 1 % sur 3 s au repos, aucune pendant le sommeil, sur
 ## l'échelle verticale, pieds fixes, décalée entre les deux camps. Le nœud ne possède pas le
 ## sprite : il dessine à sa place une copie étirée (nœud « Breath ») et rend le sprite
 ## transparent par son seul `self_modulate` ; échelle, position, matériau et `modulate` du
@@ -80,11 +79,11 @@ const FROST_COUNT: int = 6
 const FROST_PERIOD: float = 1.3
 ## Pose du statut : durée (s, à vitesse 1).
 const APPLY_DURATION: float = 0.3
-## Respiration : amplitude (part de l'échelle verticale) et période (s), au repos puis endormi.
+## Respiration au repos : amplitude (part de l'échelle verticale) et période (s). Un Pokémon
+## endormi ne bouge plus du tout (décision de Kevin, vidéo CV.3) : seuls restent les « z » et
+## la teinte.
 const BREATH_IDLE_AMOUNT: float = 0.01
 const BREATH_IDLE_PERIOD: float = 3.0
-const BREATH_SLEEP_AMOUNT: float = 0.02
-const BREATH_SLEEP_PERIOD: float = 2.4
 
 ## Coupe les particules et les étoiles (« Réduire les animations ») ; la teinte du gel reste.
 var reduce_motion: bool = false:
@@ -182,13 +181,12 @@ func is_apply_shown() -> bool:
 
 
 ## Part d'échelle verticale ajoutée par la respiration à l'instant [param time] (s), pour
-## [param status] (sommeil : plus lente et plus forte), avec un décalage [param phase] (0..1).
+## [param status] (sommeil : 0, plus aucun mouvement), avec un décalage [param phase] (0..1).
 ## 0 au départ, puis monte et redescend en douceur ; jamais négatif.
 static func breath_amount(status: StringName, time: float, phase: float = 0.0) -> float:
-	var asleep := status == StatusRules.SLEEP
-	var amount := BREATH_SLEEP_AMOUNT if asleep else BREATH_IDLE_AMOUNT
-	var period := BREATH_SLEEP_PERIOD if asleep else BREATH_IDLE_PERIOD
-	return amount * 0.5 * (1.0 - cos(TAU * (time / period + phase)))
+	if status == StatusRules.SLEEP:
+		return 0.0
+	return BREATH_IDLE_AMOUNT * 0.5 * (1.0 - cos(TAU * (time / BREATH_IDLE_PERIOD + phase)))
 
 
 ## Rectangle écran suivi (boîte visible du sprite à sa place courante).

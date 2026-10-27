@@ -27,11 +27,11 @@ func before_each() -> void:
 func test_breath_amount_is_neutral_at_start_and_bounded() -> void:
 	assert_eq(StatusAura.breath_amount(StatusRules.NONE, 0.0), 0.0)
 	assert_almost_eq(StatusAura.breath_amount(StatusRules.NONE, 1.5), 0.01, 0.0001)
-	assert_almost_eq(StatusAura.breath_amount(StatusRules.SLEEP, 1.2), 0.02, 0.0001)
+	assert_eq(StatusAura.breath_amount(StatusRules.SLEEP, 1.2), 0.0, "endormi : plus aucun mouvement")
 	for i: int in 100:
 		var t := i * 0.07
 		assert_between(StatusAura.breath_amount(StatusRules.NONE, t, 0.5), 0.0, 0.01 + 1e-6)
-		assert_between(StatusAura.breath_amount(StatusRules.SLEEP, t), 0.0, 0.02 + 1e-6)
+		assert_eq(StatusAura.breath_amount(StatusRules.SLEEP, t, 0.5), 0.0)
 
 
 func test_breath_is_shifted_between_the_two_sides() -> void:
@@ -45,13 +45,12 @@ func test_breath_is_shifted_between_the_two_sides() -> void:
 		StatusAura.breath_amount(StatusRules.NONE, 0.5, 0.5))
 
 
-func test_sleep_breath_draws_a_stretched_copy_with_feet_fixed_and_leaves_the_sprite_alone() -> void:
-	_aura.set_status(StatusRules.SLEEP)
+func test_breath_draws_a_stretched_copy_with_feet_fixed_and_leaves_the_sprite_alone() -> void:
 	var breath := _aura.get_node(^"Breath") as Sprite2D
-	_aura._breath_time = 1.2  # sommet de l'inspiration
+	_aura._breath_time = 1.5  # sommet de l'inspiration
 	_aura._process(0.0)
 	assert_true(_aura.is_breath_shown())
-	assert_almost_eq(breath.scale.y, 2.0 * 1.02, 0.0001)
+	assert_almost_eq(breath.scale.y, 2.0 * 1.01, 0.0001)
 	assert_eq(breath.scale.x, 2.0, "l'échelle horizontale ne bouge pas")
 	assert_almost_eq(breath.position.y + 100.0 * breath.scale.y, 400.0 + 200.0, 0.001,
 		"pieds fixes")
@@ -66,10 +65,18 @@ func test_sleep_breath_draws_a_stretched_copy_with_feet_fixed_and_leaves_the_spr
 
 func test_breath_survives_reduced_motion() -> void:
 	_aura.reduce_motion = true
-	_aura.set_status(StatusRules.SLEEP)
-	_aura._breath_time = 1.2
+	_aura._breath_time = 1.5
 	_aura._process(0.0)
 	assert_true(_aura.is_breath_shown(), "la respiration reste")
+
+
+func test_a_sleeping_pokemon_does_not_move_at_all() -> void:
+	_aura.set_status(StatusRules.SLEEP)
+	for t: float in [0.0, 0.7, 1.2, 1.5, 2.9]:
+		_aura._breath_time = t
+		_aura._process(0.0)
+		assert_false(_aura.is_breath_shown(), "endormi, t=%.1f" % t)
+		assert_eq(_sprite.self_modulate, Color.WHITE)
 
 
 func test_breath_is_frozen_at_speed_zero() -> void:
