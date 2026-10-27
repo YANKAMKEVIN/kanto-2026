@@ -272,6 +272,19 @@ Les points RP-151 à RP-154, propres à `jalon-23` jusqu'ici, sont passés de la
 - **RP-131** (fond flou recadré après une reprise pendant un combat) : le correctif du J30 (`Player.hold_camera`) entre dans `main`. **RP-137** : Q30-4 et Grand moment « champion » faits, textes du générique validés (reste : fond nuit uni des deux écrans, DAF). **RP-138** : QA 30A faite par Kevin sur le S24 le 2026-10-27, fermé. **RP-113** : Mackogneur et Ectoplasma sont maintenant dans les données (évolutions par échange : J32).
 - **RP-155** : `StaticRespawn.on_league_won(...)` (N-17, N-18) n'est pas dans `main` ; le commentaire de branchement reste dans `LeagueDirector.complete_ceremony`, à brancher à la fusion du J32.
 
+### 2.14 IA « smart » : tirage de statut à 1 sur 3 (2026-10-27, à rééquilibrer)
+
+Règle validée et fusionnée sans rééquilibrage (Kevin, 2026-10-27 : « merge as it stands, rebalance the bold lines later »). Victoire au premier essai du joueur attentif, 400 graines, avant → après ; tableau complet : [ia-statut-tiers.md](ia-statut-tiers.md).
+
+| ID | Origine | Description | Cat. | P | Destination | État / preuve |
+|---|---|---|---|---|---|---|
+| RP-249 | IA tiers (2026-10-27) | Pierre contre un Bulbizarre seul N11 (3 Potions) : 76 → 38 % (Boul'Armure et Armure ralentissent le combat) | idée (équilibrage) | P2 | Kevin (rééquilibrage) | ouvert |
+| RP-250 | IA tiers (2026-10-27) | Rival n° 4 (S.S. Anne) : contre Carabaffe 21, 44 → 28 % (sous 35 %) ; contre Herbizarre + Racaillou, 76 → 85 % (au-dessus de 80 %) | idée (équilibrage) | P2 | Kevin (rééquilibrage) | ouvert |
+| RP-251 | IA tiers (2026-10-27) | Rival n° 5 (Tour Pokémon) : contre Carabaffe 24, 19 → 4 % ; contre Reptincel 24, 81 → 54 % (revenu dans les seuils) | idée (équilibrage) | P2 | Kevin (rééquilibrage) | ouvert |
+| RP-252 | IA tiers (2026-10-27) | Giovanni de Céladopole contre Reptincel 30 : 23 → 7 % | idée (équilibrage) | P2 | Kevin (rééquilibrage) | ouvert |
+| RP-253 | IA tiers (2026-10-27) | Rival n° 6 (Sylphe) contre Tortank 38 : 57 → 39 % | idée (équilibrage) | P2 | Kevin (rééquilibrage) | ouvert |
+| RP-254 | IA tiers (2026-10-27) | Auguste : équipe de la QA j25 (six combats sans soin) 91 → 77 % (revenu sous 80 %) ; arrivée basse Florizarre 45 sans soin 38 → 60 % (au bord) ; à surveiller aussi : Koga arrivée basse 49 → 60 %, Major Bob contre Reptincel 21 72 → 80 % | idée (équilibrage) | P2 | Kevin (rééquilibrage) | ouvert |
+
 ## 3. Propres à une branche non fusionnée
 
 Lecture seule ; ces points se règlent sur la branche ou à sa fusion (session du jalon). Les lignes

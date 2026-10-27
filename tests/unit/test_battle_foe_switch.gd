@@ -105,8 +105,9 @@ func test_recalled_keeps_hp_and_status_loses_battler_state_and_switches_once() -
 	assert_eq(charmander.status, StatusRules.POISON)
 	assert_false(_has(events, K.WITHDRAWN))
 	# Salamèche craint toujours l'Eau et Rattata est en forme : déjà changé, il reste.
-	# Griffe et Rugissement à égalité : un tirage de l'IA (1 = Griffe), puis les deux attaques.
-	_rng.push([1, 50, 2, 16, 50, 2, 16])
+	# Rugissement pas encore joué : tirage de statut manqué (2), puis Griffe et Rugissement à
+	# égalité : un tirage de l'IA (1 = Griffe), puis les deux attaques.
+	_rng.push([2, 1, 50, 2, 16, 50, 2, 16])
 	events = battle.submit(BattleAction.move(0))
 	assert_false(_has(events, K.WITHDRAWN), "au plus un changement par combat")
 	assert_eq(battle.get_foe_side().active.pokemon, charmander)

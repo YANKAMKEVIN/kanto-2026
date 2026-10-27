@@ -127,16 +127,16 @@ func test_all_useless_falls_back_to_a_draw() -> void:
 
 
 ## Règle 2 : une attaque super efficace l'emporte sur toute attaque neutre, même plus forte,
-## et sur les statuts.
+## et sur les statuts (le tirage de statut de la règle 0 manqué : roll(3) = 2 ou 3).
 func test_super_effective_beats_a_stronger_neutral_move() -> void:
 	var own := _smart_side(&"rattata", [&"hyper_fang", &"growl", &"ember"], [&"normal"])
 	var grass := _smart_side(&"bulbasaur", [&"tackle"], [&"grass"])
 	assert_gt(_score(&"hyper_fang", own, grass), _score(&"ember", own, grass),
 		"Croc de Mort (80, STAB) a une meilleure note")
-	var rng := ScriptedRng.new([])
+	var rng := ScriptedRng.new([2, 3, 2, 3, 2])
 	for i: int in 5:
 		assert_eq(own.ai.choose(own, grass, rng, _data).move_index, 2, "Flammèche ×2")
-	assert_eq(rng.calls, 0)
+	assert_eq(rng.calls, 5, "un tirage de statut par tour : Rugissement jamais joué")
 
 
 ## Règle 3 : la meilleure note l'emporte sans tirage ; égalité → un tirage parmi les
@@ -144,17 +144,17 @@ func test_super_effective_beats_a_stronger_neutral_move() -> void:
 func test_best_score_then_draw_among_ties() -> void:
 	var own := _smart_side(&"pidgey", [&"tackle", &"gust", &"sand_attack"], [&"flying"])
 	var foe := _smart_side(&"rattata", [&"tackle"], [&"normal"])
-	var rng := ScriptedRng.new([])
+	var rng := ScriptedRng.new([3])
 	assert_eq(own.ai.choose(own, foe, rng, _data).move_index, 1, "Tornade (STAB) seule")
-	assert_eq(rng.calls, 0)
+	assert_eq(rng.calls, 1, "seulement le tirage de statut (manqué)")
 	var tie := _smart_side(&"charmander", [&"scratch", &"growl"], [&"fire"])
-	assert_eq(tie.ai.choose(tie, foe, ScriptedRng.new([1]), _data).move_index, 0)
-	assert_eq(tie.ai.choose(tie, foe, ScriptedRng.new([2]), _data).move_index, 1,
+	assert_eq(tie.ai.choose(tie, foe, ScriptedRng.new([2, 1]), _data).move_index, 0)
+	assert_eq(tie.ai.choose(tie, foe, ScriptedRng.new([2, 2]), _data).move_index, 1,
 		"Griffe 40 = Rugissement 40 : tirage")
 
 
 ## Règle 3 : une capacité de statut n'est plus choisie après deux usages (par Pokémon et par
-## combat).
+## combat). Premier choix par le tirage de statut (roll(3) = 1), le second par la note.
 func test_status_move_at_most_twice() -> void:
 	var own := _smart_side(&"charmander", [&"growl", &"scratch"], [&"fire"])
 	var foe := _smart_side(&"rattata", [&"tackle"], [&"normal"])
@@ -262,6 +262,53 @@ func test_poison_powder_is_useless_on_a_poisoned_or_immune_target() -> void:
 	for types: Array[StringName] in [bug_poison, steel]:
 		var immune := _smart_side(&"weedle", [&"tackle"], types)
 		assert_false(BattleAI.status_has_effect(move, own.active, immune.active), str(types))
+
+
+# --- Règle 0 : tirage de statut (décision de Kevin, 2026-10-27) -------------------------
+
+## Une capacité de statut utile pas encore jouée : roll(3) = 1 la joue, même devant une
+## attaque super efficace ; 2 ou 3 : règles habituelles. Plusieurs : pick_index parmi elles.
+func test_status_draw_one_in_three() -> void:
+	var own := _smart_side(&"rattata", [&"growl", &"ember", &"tail_whip"], [&"normal"])
+	var grass := _smart_side(&"bulbasaur", [&"tackle"], [&"grass"])
+	assert_eq(BattleAI.STATUS_CHANCE_NUM, 1)
+	assert_eq(BattleAI.STATUS_CHANCE_DEN, 3)
+	var rng := ScriptedRng.new([1, 2])
+	assert_eq(own.ai.choose(own, grass, rng, _data).move_index, 2, "Mimi-Queue tirée")
+	assert_eq(rng.calls, 2)
+	rng = ScriptedRng.new([1])
+	assert_eq(own.ai.choose(own, grass, rng, _data).move_index, 0,
+		"Rugissement, le seul statut pas encore joué : aucun pick_index")
+	rng = ScriptedRng.new([])
+	assert_eq(own.ai.choose(own, grass, rng, _data).move_index, 1, "tous joués : Flammèche ×2")
+	assert_eq(rng.calls, 0, "plus aucun tirage de statut")
+
+
+## Le tirage ignore les statuts inutiles (note nulle) et les capacités « statut » qui
+## infligent des dégâts (Sonicboom) ; sans tirage possible, aucun roll.
+func test_status_draw_only_useful_status_moves() -> void:
+	var own := _smart_side(&"charmander", [&"growl", &"scratch"], [&"fire"])
+	var foe := _smart_side(&"rattata", [&"tackle"], [&"normal"])
+	foe.active.change_stage(&"atk", -6)
+	var rng := ScriptedRng.new([])
+	assert_eq(own.ai.choose(own, foe, rng, _data).move_index, 1)
+	assert_eq(rng.calls, 0, "Rugissement inutile : aucun tirage")
+	assert_false(BattleAI.is_status_move(_data.get_move(&"sonic_boom")), "dégâts fixes")
+	assert_false(BattleAI.is_status_move(_data.get_move(&"horn_drill")), "K.O. en un coup")
+	assert_false(BattleAI.is_status_move(_data.get_move(&"counter")), "Riposte")
+	assert_false(BattleAI.is_status_move(_data.get_move(&"scratch")), "attaque")
+	assert_true(BattleAI.is_status_move(_data.get_move(&"growl")))
+	assert_true(BattleAI.is_status_move(_data.get_move(&"roar")), "Hurlement : statut")
+
+
+## [member BattleAI.status_draw] faux (joueur simulé des outils) : comportement d'avant.
+func test_status_draw_can_be_disabled() -> void:
+	var own := _smart_side(&"rattata", [&"growl", &"ember"], [&"normal"])
+	var grass := _smart_side(&"bulbasaur", [&"tackle"], [&"grass"])
+	own.ai.status_draw = false
+	var rng := ScriptedRng.new([])
+	assert_eq(own.ai.choose(own, grass, rng, _data).move_index, 1)
+	assert_eq(rng.calls, 0)
 
 
 # --- Changement de Pokémon (jalon 13, dossier 16 §14) -----------------------------------
