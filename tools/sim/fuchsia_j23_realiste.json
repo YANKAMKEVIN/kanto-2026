@@ -1,0 +1,567 @@
+{
+	"version": 1,
+	"title": "Koga et son Arène avec des équipes réalistes (jalon 23, T21)",
+	"description": "Clôture du J23 (2026-10-27). Dresseurs et Koga = data/trainers/fuchsia_gym.json (lancer avec --donnees). Équipes ESTIMÉES à l'arrivée à Parmanie (après Céladopole, la Tour, les Routes 12 à 18) ; la première reprend le départ de QA koga_qa. Cible (mémoire difficulte-combats) : Koga 35–60 % au premier essai, joueur attentif ; Dresseurs ≤ 80 %.",
+	"seeds": 500,
+	"heal_at_start": true,
+	"teams": [
+		{
+			"name": "QA koga_qa : Dracaufeu 42, Kadabra 40, Voltali 40, Aquali 40, Nidoking 40, Roucarnage 40",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charizard",
+					"level": 42
+				},
+				{
+					"species": "kadabra",
+					"level": 40
+				},
+				{
+					"species": "jolteon",
+					"level": 40
+				},
+				{
+					"species": "vaporeon",
+					"level": 40
+				},
+				{
+					"species": "nidoking",
+					"level": 40
+				},
+				{
+					"species": "pidgeot",
+					"level": 40
+				}
+			]
+		},
+		{
+			"name": "Florizarre 42, Roucarnage 38, Ronflex 38, Raichu 38, Nidoking 36",
+			"starter": "bulbasaur",
+			"members": [
+				{
+					"species": "venusaur",
+					"level": 42,
+					"moves": [
+						"razor_leaf",
+						"leech_seed",
+						"poison_powder",
+						"growth"
+					]
+				},
+				{
+					"species": "pidgeot",
+					"level": 38,
+					"moves": [
+						"wing_attack",
+						"quick_attack",
+						"agility",
+						"sand_attack"
+					]
+				},
+				{
+					"species": "snorlax",
+					"level": 38,
+					"moves": [
+						"body_slam",
+						"headbutt",
+						"amnesia",
+						"rest"
+					]
+				},
+				{
+					"species": "raichu",
+					"level": 38,
+					"moves": [
+						"thunderbolt",
+						"thunder_wave",
+						"growl",
+						"thunder_shock"
+					]
+				},
+				{
+					"species": "nidoking",
+					"level": 36,
+					"moves": [
+						"thrash",
+						"horn_attack",
+						"poison_sting",
+						"double_kick"
+					]
+				}
+			]
+		},
+		{
+			"name": "Tortank 42, Roucarnage 38, Ronflex 38, Raichu 38, Kadabra 36",
+			"starter": "squirtle",
+			"members": [
+				{
+					"species": "blastoise",
+					"level": 42,
+					"moves": [
+						"bite",
+						"skull_bash",
+						"water_gun",
+						"withdraw"
+					]
+				},
+				{
+					"species": "pidgeot",
+					"level": 38,
+					"moves": [
+						"wing_attack",
+						"quick_attack",
+						"agility",
+						"sand_attack"
+					]
+				},
+				{
+					"species": "snorlax",
+					"level": 38,
+					"moves": [
+						"body_slam",
+						"headbutt",
+						"amnesia",
+						"rest"
+					]
+				},
+				{
+					"species": "raichu",
+					"level": 38,
+					"moves": [
+						"thunderbolt",
+						"thunder_wave",
+						"growl",
+						"thunder_shock"
+					]
+				},
+				{
+					"species": "kadabra",
+					"level": 36,
+					"moves": [
+						"psybeam",
+						"confusion",
+						"recover",
+						"disable"
+					]
+				}
+			]
+		},
+		{
+			"name": "Dracaufeu 42, Roucarnage 38, Ronflex 38, Raichu 38, Nidoking 36",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charizard",
+					"level": 42,
+					"moves": [
+						"flamethrower",
+						"slash",
+						"ember",
+						"leer"
+					]
+				},
+				{
+					"species": "pidgeot",
+					"level": 38,
+					"moves": [
+						"wing_attack",
+						"quick_attack",
+						"agility",
+						"sand_attack"
+					]
+				},
+				{
+					"species": "snorlax",
+					"level": 38,
+					"moves": [
+						"body_slam",
+						"headbutt",
+						"amnesia",
+						"rest"
+					]
+				},
+				{
+					"species": "raichu",
+					"level": 38,
+					"moves": [
+						"thunderbolt",
+						"thunder_wave",
+						"growl",
+						"thunder_shock"
+					]
+				},
+				{
+					"species": "nidoking",
+					"level": 36,
+					"moves": [
+						"thrash",
+						"horn_attack",
+						"poison_sting",
+						"double_kick"
+					]
+				}
+			]
+		},
+		{
+			"name": "Arrivée basse : Florizarre 38, Roucarnage 34, Raichu 34, Ronflex 33",
+			"starter": "bulbasaur",
+			"members": [
+				{
+					"species": "venusaur",
+					"level": 38,
+					"moves": [
+						"razor_leaf",
+						"leech_seed",
+						"poison_powder",
+						"growth"
+					]
+				},
+				{
+					"species": "pidgeot",
+					"level": 34,
+					"moves": [
+						"wing_attack",
+						"quick_attack",
+						"agility",
+						"sand_attack"
+					]
+				},
+				{
+					"species": "raichu",
+					"level": 34,
+					"moves": [
+						"thunderbolt",
+						"thunder_wave",
+						"growl",
+						"thunder_shock"
+					]
+				},
+				{
+					"species": "snorlax",
+					"level": 33,
+					"moves": [
+						"body_slam",
+						"headbutt",
+						"amnesia",
+						"rest"
+					]
+				}
+			]
+		},
+		{
+			"name": "Arrivée basse : Dracaufeu 38, Roucarnage 34, Raichu 34, Ronflex 33",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charizard",
+					"level": 38,
+					"moves": [
+						"flamethrower",
+						"slash",
+						"ember",
+						"leer"
+					]
+				},
+				{
+					"species": "pidgeot",
+					"level": 34,
+					"moves": [
+						"wing_attack",
+						"quick_attack",
+						"agility",
+						"sand_attack"
+					]
+				},
+				{
+					"species": "raichu",
+					"level": 34,
+					"moves": [
+						"thunderbolt",
+						"thunder_wave",
+						"growl",
+						"thunder_shock"
+					]
+				},
+				{
+					"species": "snorlax",
+					"level": 33,
+					"moves": [
+						"body_slam",
+						"headbutt",
+						"amnesia",
+						"rest"
+					]
+				}
+			]
+		}
+	],
+	"tables": {},
+	"trainers": {
+		"fuchsia_gym_juggler_1": {
+			"name": "Jongleur Nino",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 1330,
+			"team": [
+				{
+					"species": "hypno",
+					"level": 38
+				}
+			]
+		},
+		"fuchsia_gym_juggler_2": {
+			"name": "Jongleur Igor",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 1085,
+			"team": [
+				{
+					"species": "drowzee",
+					"level": 31
+				},
+				{
+					"species": "drowzee",
+					"level": 31
+				},
+				{
+					"species": "kadabra",
+					"level": 31
+				},
+				{
+					"species": "drowzee",
+					"level": 31
+				}
+			]
+		},
+		"fuchsia_gym_juggler_3": {
+			"name": "Jongleur Silvio",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 1190,
+			"team": [
+				{
+					"species": "drowzee",
+					"level": 34
+				},
+				{
+					"species": "kadabra",
+					"level": 34
+				}
+			]
+		},
+		"fuchsia_gym_tamer_1": {
+			"name": "Dompteur Marius",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 1360,
+			"team": [
+				{
+					"species": "sandslash",
+					"level": 34
+				},
+				{
+					"species": "arbok",
+					"level": 34
+				}
+			]
+		},
+		"fuchsia_gym_tamer_2": {
+			"name": "Dompteur Edgar",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 1320,
+			"team": [
+				{
+					"species": "arbok",
+					"level": 33
+				},
+				{
+					"species": "sandslash",
+					"level": 33
+				},
+				{
+					"species": "arbok",
+					"level": 33
+				}
+			]
+		},
+		"fuchsia_gym_juggler_4": {
+			"name": "Jongleur Léon",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 1190,
+			"team": [
+				{
+					"species": "drowzee",
+					"level": 34
+				},
+				{
+					"species": "hypno",
+					"level": 34
+				}
+			]
+		},
+		"fuchsia_gym_koga": {
+			"name": "Koga",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 4257,
+			"start_message": false,
+			"end_message": true,
+			"bag": true,
+			"switch": true,
+			"card": {
+				"name": "KOGA",
+				"title": "Champion d'Arène de Parmanie"
+			},
+			"team": [
+				{
+					"species": "koffing",
+					"level": 37,
+					"moves": [
+						"tackle",
+						"smog",
+						"sludge",
+						"haze"
+					]
+				},
+				{
+					"species": "muk",
+					"level": 39,
+					"moves": [
+						"disable",
+						"poison_gas",
+						"minimize",
+						"sludge"
+					]
+				},
+				{
+					"species": "koffing",
+					"level": 37,
+					"moves": [
+						"tackle",
+						"smog",
+						"sludge",
+						"haze"
+					]
+				},
+				{
+					"species": "weezing",
+					"level": 43,
+					"moves": [
+						"smog",
+						"sludge",
+						"toxic",
+						"self_destruct"
+					]
+				}
+			]
+		}
+	},
+	"steps": [
+		{
+			"label": "Centre de Parmanie (départ)",
+			"center": true
+		},
+		{
+			"label": "J2 (inévitable)",
+			"trainer": "fuchsia_gym_juggler_2"
+		},
+		{
+			"label": "J4 (inévitable)",
+			"trainer": "fuchsia_gym_juggler_4"
+		},
+		{
+			"label": "J1 (facultatif)",
+			"trainer": "fuchsia_gym_juggler_1",
+			"optional": "tous"
+		},
+		{
+			"label": "J3 (facultatif)",
+			"trainer": "fuchsia_gym_juggler_3",
+			"optional": "tous"
+		},
+		{
+			"label": "D1 (facultatif)",
+			"trainer": "fuchsia_gym_tamer_1",
+			"optional": "tous"
+		},
+		{
+			"label": "D2 (facultatif)",
+			"trainer": "fuchsia_gym_tamer_2",
+			"optional": "tous"
+		},
+		{
+			"label": "Centre avant Koga",
+			"center": true,
+			"optional": "soin"
+		},
+		{
+			"label": "Koga",
+			"trainer": "fuchsia_gym_koga"
+		}
+	],
+	"variants": [
+		{
+			"name": "Deux inévitables puis Koga, attentif",
+			"player": "attentif",
+			"center": true,
+			"retries": 0,
+			"items": {
+				"super_potion": 5,
+				"antidote": 3
+			},
+			"optional": []
+		},
+		{
+			"name": "Six Dresseurs puis Koga sans soin, attentif",
+			"player": "attentif",
+			"center": true,
+			"retries": 0,
+			"items": {
+				"super_potion": 5,
+				"antidote": 3
+			},
+			"optional": [
+				"tous"
+			]
+		},
+		{
+			"name": "Six Dresseurs, soin, puis Koga, attentif",
+			"player": "attentif",
+			"center": true,
+			"retries": 0,
+			"items": {
+				"super_potion": 5,
+				"antidote": 3
+			},
+			"optional": [
+				"tous",
+				"soin"
+			]
+		},
+		{
+			"name": "Deux inévitables puis Koga, naïf",
+			"player": "naif",
+			"center": true,
+			"retries": 0,
+			"items": {},
+			"optional": []
+		}
+	]
+}
