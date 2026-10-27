@@ -846,7 +846,8 @@ difficile pour une arrivée basse ou un joueur naïf ; comme Auguste, E-4 A) · 
 (41 / 43 / 41 / 47) : à peine plus dur pour une arrivée normale, très dur pour une arrivée basse ·
 **C** rendre Toxik utile à l'IA « smart » (Toxik sur une cible saine noté au-dessus d'une attaque
 moyenne), ce qui touche tous les Dresseurs « smart » du jeu (à simuler à part, hors du J23).
-Recommandation : **A**.
+Recommandation : **A**. **Tranché par Kevin le 2026-10-27 : option A** (« on garde Koga aux niveaux
+Rouge/Bleu ») ; IA de Toxik inchangée. T21 clos.
 
 ### 9.8 Noms longs et orientation des adversaires sur le S24 (2026-10-27)
 
