@@ -176,7 +176,9 @@ const PLAYED_BY_COMPANION: Array[StringName] = [
 ## Passe systèmes 2 (S2B) : refus du Vélo (MountDirector) et Flûte « ailleurs » (KeyItemDirector).
 const PLAYED_BY_BOOT: Array[StringName] = [&"escape_rope_used", &"dark_cave_too_dark",
 	&"elevator_locked", &"bike_indoors", &"bike_cycling_road_walk", &"poke_flute_played",
-	&"surf_water", &"surf_first_ride", &"surf_current_too_strong", &"water_choice"]
+	&"surf_water", &"surf_first_ride", &"surf_current_too_strong", &"water_choice",
+	# Jalon 32 (T5) : répliques du terminal d'échange local ([LocalTradeDirector]).
+	&"trade_terminal_none", &"trade_terminal_confirm"]
 ## Passe systèmes 2 (S2B) : textes validés des dossiers 25 (§16.1.3, §16.1.4) et 24 (§15.6.6),
 ## qui vivent encore sur les branches de conception du J21 et du J22 (pas dans `main`) : comparés
 ## ici mot pour mot, page par page.
@@ -599,6 +601,8 @@ const MAPS: Array[StringName] = [
 const IDS_J21_T22: Array[StringName] = [&"snorlax_route_16"]
 ## Jalon 32 (N-18) : Ronflex d'après la Ligue (Route 10), textes du J21 repris tels quels.
 const IDS_J32: Array[StringName] = [&"snorlax_post_league",
+	# T5 : terminal d'échange local.
+	&"trade_terminal", &"trade_terminal_none", &"trade_terminal_confirm",
 	# N-13 (Porygon), N-14 (échanges PNJ de Rouge/Bleu), N-11 (Électhor) : textes validés par Kevin le 2026-10-27.
 	&"zapdos", &"power_plant_fausse_ball_1", &"power_plant_fausse_ball_2", &"power_plant_fausse_ball_3", &"power_plant_fausse_ball_4", &"power_plant_fausse_ball_5", &"power_plant_fausse_ball_6", &"power_plant_fausse_ball_7", &"power_plant_fausse_ball_8", &"power_plant_item_1", &"power_plant_item_2", &"power_plant_item_3", &"power_plant_item_4", &"power_plant_item_5", &"power_plant_hidden_1", &"power_plant_hidden_2",
 	&"silph_co_porygon_giver", &"j32_trade_coline",
@@ -1689,6 +1693,8 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 			# Jalon 26 (T8) : la boisson choisie au OUI du garde (lue par la scène qui la prend).
 			&"saffron_gate_offer_lemonade", &"saffron_gate_offer_soda", &"saffron_gate_offer_water",
 			&"route_2_hiker_talked", &"route_2_youngster_talked", &"storage_terminal_seen",
+			# Jalon 32 (T5) : premier passage au terminal d'échange local.
+			&"trade_terminal_seen",
 			&"viridian_old_man_talked",
 			# Jalon 16 (T15) : PARTIR (confirmation du départ du S.S. Anne) ; TXT-03 entendu
 			# (marin de la passerelle, aussi joué par la sortie).
@@ -2047,6 +2053,8 @@ const TEXTS_J32: Dictionary[StringName, Array] = {
 	&"silph_co_porygon_giver": ["Prends bien soin de Porygon.\nIl apprend vite.", "Notre prototype, Porygon. Un Pokémon\nfait de données. Il est à toi."],
 	&"silph_co_porygon_received": ["{player} reçoit Porygon !"],
 	&"silph_co_porygon_stored": ["Porygon a été envoyé au stockage."],
+	# Jalon 32 (T5, §3 du plan).
+	&"trade_terminal_confirm": ["Échanger {pokemon} ?"],
 }
 ## Jalon 32 (N-14) : répliques des échanges PNJ jouées par leurs scènes.
 const J32_TRADE_LINES: Array[StringName] = [
@@ -2065,6 +2073,8 @@ const J32_TRADE_LINES: Array[StringName] = [
 ## Jalon 32 (N-14, après la fusion du J30) : échange Têtarte → Lippoutou, textes [D] à valider.
 const PENDING_DRAFT_VARIANTS: Array[String] = [
 	"j32_trade_coline_offer:0", "j32_trade_coline_refuse:0", "j32_trade_coline_wrong:0", "j32_trade_coline_thanks:0", "j32_trade_coline_after:0", "j32_trade_coline_done:0",
+	# Jalon 32 (T5) : terminal d'échange local [D].
+	"trade_terminal:0", "trade_terminal_none:0",
 ]
 
 
@@ -2554,6 +2564,9 @@ func test_oak_parcel_lines() -> void:
 		elif J17_TOKENS.has(row[1]):
 			# Jalon 17 (T8) : compte d'espèces de l'assistant (T-1 à T-3), joueur de T-3.
 			expected.assign(J17_TOKENS[row[1]])
+		elif row[0] == &"trade_terminal_confirm":
+			# Jalon 32 (T5) : le Pokémon choisi au terminal d'échange local.
+			expected = [DialogueTokens.POKEMON]
 		elif not (row[3] as DialogueVariant).field.is_empty() and row[1].contains("{pokemon}"):
 			# Jalon 16 (T15) : variante de capacité de terrain, Pokémon qui coupe.
 			expected = [DialogueTokens.POKEMON]

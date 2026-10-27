@@ -42,6 +42,9 @@ signal daycare_requested
 ## J20 (T13) : le panneau d'une cabine d'ascenseur (`open_elevator`) ; Boot ouvre le panneau à la
 ## fin du dialogue ([ElevatorDirector]).
 signal elevator_requested
+## J32 (T5) : le terminal d'échange local (`open_local_trade`) ; Boot lance le
+## [LocalTradeDirector] à la fin du dialogue.
+signal local_trade_requested
 
 const ACTION_HEAL: StringName = &"heal"
 const ACTION_CENTER_HEAL: StringName = &"center_heal"
@@ -49,6 +52,7 @@ const ACTION_OPEN_SHOP: StringName = &"open_shop"
 const ACTION_OPEN_STORAGE: StringName = &"open_storage"
 const ACTION_OPEN_DAYCARE: StringName = &"open_daycare"
 const ACTION_OPEN_ELEVATOR: StringName = &"open_elevator" # J20
+const ACTION_OPEN_LOCAL_TRADE: StringName = &"open_local_trade" # J32
 const HEAL_MACHINE: NodePath = ^"%HealMachine"
 
 ## « Réduire les animations » (GameSettings.reduce_motion) : rituel deux fois plus court. Posé par
@@ -106,6 +110,8 @@ func run_action(action: StringName, shop: StringName = &"") -> void:
 			daycare_requested.emit()
 		ACTION_OPEN_ELEVATOR:
 			elevator_requested.emit()
+		ACTION_OPEN_LOCAL_TRADE:
+			local_trade_requested.emit()
 		_:
 			push_error("ServiceDirector : action inconnue « %s »" % action)
 

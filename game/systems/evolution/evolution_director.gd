@@ -42,6 +42,8 @@ var _texts: BattleText
 var _learn: MoveLearnPrompt
 var _screen: EvolutionScreen
 var _playing: bool = false
+## Vrai si la dernière [method play] a appliqué au moins une évolution (J32, [method play_trade]).
+var _last_applied: bool = false
 
 
 ## Branche le directeur. [param state] : l'autoload GameState en jeu, une instance neuve de
@@ -79,6 +81,7 @@ func play(candidates: Array[EvolutionCandidate], party: Party) -> void:
 		push_error("EvolutionDirector : des évolutions sont déjà en cours")
 		return
 	_playing = true
+	_last_applied = false
 	var screen := get_screen()
 	if screen != null:
 		screen.speed_scale = speed_scale
@@ -120,8 +123,24 @@ func _play_one(candidate: EvolutionCandidate, party: Party, screen: EvolutionScr
 		# Non annulable (pierre) : l'écran n'offre pas l'arrêt ; une réponse contraire est ignorée.
 		cancelled = await screen.transform() and candidate.cancellable
 	var moves: Array[StringName] = []
-	if not cancelled:
+	if not cancelled and candidate.applier.is_valid():
+		# J32 (T5) : échange local, appliqué d'un seul bloc par [LocalTrade] (nouvel individu au
+		# même rang, même identifiant).
+		var applied: Dictionary = candidate.applier.call()
+		if applied.is_empty() or applied.get("pokemon") == null:
+			push_error("EvolutionDirector : échange local refusé (place %d)"
+				% candidate.party_index)
+			cancelled = true
+		else:
+			pokemon = applied["pokemon"]
+			moves = applied.get("moves", moves)
+			_last_applied = true
+			if _state != null:
+				_state.record_evolved(candidate.into)
+			evolution_applied.emit(candidate.party_index, candidate.into)
+	elif not cancelled:
 		moves = Evolution.evolve(pokemon, candidate.into, _data)
+		_last_applied = true
 		if _state != null:
 			_state.record_evolved(candidate.into)
 		evolution_applied.emit(candidate.party_index, candidate.into)
@@ -200,3 +219,20 @@ func play_item(candidate: EvolutionCandidate, party: Party, item_id: StringName)
 	stone.item_id = item_id
 	var list: Array[EvolutionCandidate] = [stone]
 	await play(list, party)
+
+
+## Coroutine (jalon 32, T5 ; `jalon-32.md` §1.2) : évolution par échange local, hors combat,
+## **non annulable** (comme une pierre). [param applier] fait l'échange d'un seul bloc
+## ([method LocalTrade.execute] : `{pokemon, moves}`, ou vide si rien n'a changé) au moment où
+## l'écran l'applique. Vrai si l'évolution a été appliquée.
+func play_trade(candidate: EvolutionCandidate, party: Party, applier: Callable) -> bool:
+	if candidate == null or not applier.is_valid():
+		return false
+	var trade := EvolutionCandidate.new(candidate.party_index, candidate.from_species,
+		candidate.into)
+	trade.cancellable = false
+	trade.applier = applier
+	var list: Array[EvolutionCandidate] = [trade]
+	_last_applied = false
+	await play(list, party)
+	return _last_applied

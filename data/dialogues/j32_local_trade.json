@@ -1,0 +1,50 @@
+{
+	"trade_terminal": {
+		"narration": true,
+		"variants": [
+			{
+				"draft": true,
+				"unless": [
+					"trade_terminal_seen"
+				],
+				"pages": [
+					"Un terminal d'échange local."
+				],
+				"set": [
+					"trade_terminal_seen"
+				],
+				"action": "open_local_trade"
+			},
+			{
+				"action": "open_local_trade"
+			}
+		]
+	},
+	"trade_terminal_none": {
+		"narration": true,
+		"variants": [
+			{
+				"draft": true,
+				"pages": [
+					"Échanger ne changerait rien\npour ces Pokémon."
+				]
+			}
+		]
+	},
+	"trade_terminal_confirm": {
+		"narration": true,
+		"variants": [
+			{
+				"pages": [
+					"Échanger {pokemon} ?"
+				],
+				"choice": {
+					"confirm": "ÉCHANGER",
+					"cancel": "ANNULER",
+					"confirm_pages": [],
+					"cancel_pages": []
+				}
+			}
+		]
+	}
+}

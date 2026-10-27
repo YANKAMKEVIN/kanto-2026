@@ -322,7 +322,8 @@ func test_every_known_action_is_accepted() -> void:
 		assert_true(_library.add_from_dict({String(action): {"pages": ["x"],
 			"action": String(action)}}, "test"), String(action))
 	assert_eq(DialogueLibrary.ACTIONS, [&"heal", &"center_heal", &"open_shop",
-		&"open_storage", &"open_daycare", &"open_elevator"] as Array[StringName],
+		&"open_storage", &"open_daycare", &"open_elevator", &"open_local_trade"]
+		as Array[StringName],
 		"J15 : la Pension ; J20 (T13) : l'ascenseur")
 
 

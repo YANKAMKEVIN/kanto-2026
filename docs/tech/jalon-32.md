@@ -139,7 +139,7 @@ Tests : individu identique (surnom, IV, EV, PP, statut) ; équipe pleine sans pe
 simulée au milieu : état d'origine intact ; Pokémon incompatible refusé.
 
 ### T5 — Échange local, écran (après passe systèmes 2)
-Terminal dans un Centre Pokémon (4 cases tactiles minimum, lisible au S24).
+Terminal dans un Centre Pokémon (4 cases tactiles minimum, lisible au S24). **Fait le 2026-10-27** : `LocalTradeDirector`, action `open_local_trade`, choix (`TradeOverlay`), confirmation, évolution non annulable appliquée par `LocalTrade.execute` (`EvolutionDirector.play_trade`) ; second terminal dans les 11 Centres à la place de la plante nord-est [D] (pas au Plateau Indigo) ; tests `test_local_trade_flow.gd` ; départs `local_trade_qa`, `local_trade_none` ; captures `tools/capture_local_trade.gd`.
 
 ### T6 — Audit des secrets et objets (Sonnet)
 Tableau par carte : objets visibles et cachés, CT/CS, pierres, cadeaux, échanges, pêche, Safari.
