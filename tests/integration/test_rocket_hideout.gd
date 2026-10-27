@@ -86,6 +86,20 @@ func test_metadata_light_and_cave_category() -> void:
 	assert_eq(caves.get_maps(&"rocket_hideout").size(), 5)
 
 
+## Arbitrage R-6 (Kevin, 2026-10-26) : le titre « REPAIRE ROCKET » s'affiche en descendant du
+## Casino (intérieur, sans titre), puis « CÉLADOPOLE » de nouveau en ressortant en ville.
+func test_hideout_title_replaces_the_city_title() -> void:
+	for map_id: StringName in MAPS:
+		assert_eq(_maps[map_id].display_name, "Repaire Rocket", String(map_id))
+	var announcer := ZoneAnnouncer.new()
+	assert_true(announcer.should_announce("Céladopole", false), "en ville")
+	assert_false(announcer.should_announce("Céladopole", true), "Casino : intérieur")
+	assert_true(announcer.should_announce(_maps[&"rocket_hideout_b1f"].display_name, false), "B1F")
+	assert_false(announcer.should_announce(_maps[&"rocket_hideout_b2f"].display_name, false), "B2F")
+	assert_false(announcer.should_announce("Céladopole", true), "retour au Casino")
+	assert_true(announcer.should_announce("Céladopole", false), "de nouveau en ville")
+
+
 func test_scene_grid_equals_the_functional_grid() -> void:
 	for map_id: StringName in MAPS:
 		var plan := _plans[map_id]

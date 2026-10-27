@@ -100,6 +100,11 @@ func test_zone_names_match_the_map_titles() -> void:
 			assert_eq(_root_property(map_id, &"display_name"), "Sylphe SARL")
 			assert_eq(_zones.zone_of(map_id), &"saffron_city", String(map_id))
 			continue
+		if String(map_id).begins_with("rocket_hideout_"):
+			# Arbitrage R-6 (Kevin, 2026-10-26) : le repaire a son titre, dans la zone de Céladopole.
+			assert_eq(_root_property(map_id, &"display_name"), "Repaire Rocket")
+			assert_eq(_zones.zone_of(map_id), &"celadon_city", String(map_id))
+			continue
 		if MANSION_FLOORS.has(map_id):
 			assert_eq(_root_property(map_id, &"display_name"), "Manoir Pokémon")
 			assert_eq(_zones.zone_of(map_id), &"cinnabar_island", String(map_id))
