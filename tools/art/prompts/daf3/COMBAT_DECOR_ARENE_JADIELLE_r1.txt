@@ -1,0 +1,26 @@
+DÉCOR DE COMBAT — ARÈNE DE JADIELLE (TYPE SOL) (Kanto 2026). Image de PRODUCTION : le fond peint d'un écran de combat Pokémon sur smartphone en paysage. AUCUN Pokémon, AUCUN personnage, AUCUNE interface, AUCUN texte.
+
+Images jointes.
+IMAGE 1 : un écran de combat de référence. Reprends sa VUE (caméra à hauteur d'yeux, légèrement plongeante, horizon dans le tiers haut, grand sol dégagé au centre), sa profondeur et sa qualité de peinture. Ne reprends PAS : les Pokémon, les cartes, les boutons, la rivière, le pont.
+IMAGE 2 : une planche d'intention de décors de combat (guide de facture).
+IMAGE 3 : une capture du lieu dans le jeu (vu de dessus) : guide de PALETTE et de matières seulement, pas de vue.
+
+FORMAT : paysage très large, rapport 2,17 : 1 (comme 2340 × 1080), la plus grande résolution possible, OPAQUE, cadrage plein, sans bord.
+
+LIEU : la grande salle de l'Arène de Jadielle, celle du plus puissant Champion de Kanto (type Sol) : grand DALLAGE de grès OCRE en dalles carrées, murs de gros blocs de PIERRE brun-gris, plinthes de bronze, deux grandes colonnes de pierre au fond, quelques flèches jaunes peintes au sol sur les côtés ; austère, solennel, imposant, jamais effrayant.
+
+COMPOSITION (fractions depuis le coin haut gauche) :
+- Fond (de 0 à 38 % de la hauteur) : le mur du fond en gros blocs, deux colonnes (x 25 % et x 72 %), base du mur vers 36 % de la hauteur.
+- De 40 % de la hauteur jusqu'en bas : GRAND SOL DÉGAGÉ et PLAT de dalles de grès ocre.
+- Point A (x 67 %, y 50 %) : sol nu, plat et bien lisible, une créature y posera les pieds. Rien de haut dans un rayon de 12 % de la largeur autour.
+- Point B (x 31 %, y 97 %) : sol plat et nu, une grande créature vue de dos y sera au premier plan. Rien de haut autour.
+- ZONE CALME en HAUT À GAUCHE (de 0 à 50 % de la largeur, de 0 à 45 % de la hauteur) : peu de détails et peu de contraste, valeurs simples.
+- ZONE CALME en BAS À DROITE (de 50 à 100 % de la largeur, de 55 à 100 % de la hauteur) : surface simple, presque sans objet, valeurs moyennes, sans contraste fort.
+- Les deux coins du bas restent dégagés : pas de rocher en gros plan.
+- Les 9 % de gauche et de droite de l'image ne contiennent rien d'important (ils seront rognés sur certains écrans).
+
+LUMIÈRE : lumière chaude et un peu basse venant du haut à gauche, comme des appliques, le centre du sol bien éclairé ; ombres brun sombre, jamais noires ; aucun halo.
+
+RENDU (ADN visuel Kanto 2026) : illustration 2D peinte numériquement, RPG Pokémon moderne « HD-2D peint », formes simples, lisibles et arrondies, grandes masses douces (jamais en petits points ni en pixels), aucun trait noir (contours fins et doux plus sombres que la couleur), couleurs riches sans être fluo. Netteté partout (aucun flou de profondeur, pas de vignettage). Perspective à hauteur d'yeux, un peu plongeante, la surface recule nettement vers l'horizon.
+
+INTERDITS : Pokémon, animal, personnage, silhouette, texte, lettres (aucun R, aucun logo), chiffres, panneau, écran allumé, signature, filigrane, cadre, interface, pixel art, flou, vignettage, noir pur. Lave, crâne, statue de personnage.

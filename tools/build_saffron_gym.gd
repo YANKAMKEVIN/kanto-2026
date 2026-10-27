@@ -4,14 +4,17 @@ extends SceneTree
 ## d'après `tools/plans/safrania_arene.txt` et `safrania_dojo.txt` (géométrie de Rouge/Bleu case
 ## pour case ; la grille fait foi).
 ##
-##   python3 tools/art/placeholders_safrania_arene.py
 ##   godot --headless --path . -s res://tools/build_saffron_gym.gd
 ##   godot --headless --path . --import
 ##   godot --headless --path . -s res://tools/build_saffron_city.gd   (portes de Safrania ouvertes)
 ##
 ## Géométrie et passages seulement : Morgane, le guide, les Dresseurs, le maître et les deux Poké
 ## Balls sont des données (`data/npcs/`) ; leurs cases restent praticables dans la scène.
-## - **Image** : une enveloppe provisoire par carte (`Shell`, `ph_<carte>.png`).
+## - **Image en modules** (lot DAF.3, `tools/art/daf3.py`) : les deux salles sont bâties sur
+##   `tools/cave_map_kit.gd` comme la Sylphe et le repaire (sol peint, masse sombre, murs aux rôles
+##   de la Tour par `tools/module_walls.gd`, tapis de téléporteur `T` et paillasson `E` au sol) ;
+##   couches logiques du kit retirées, collision = `blocked_cells`. Deux passes au premier lancement
+##   (masque du sol écrit : importer puis relancer, code 2).
 ## - **Collision** : `blocked_cells` = cases non praticables de la grille (`PRATICABLES`).
 ## - `spawn` : Marker2D de `Spawns`, au nom de la grille (`entrance`, `tp_<k>`) ; `depart` et
 ##   `but` (repères des contrôles) : ignorés.
@@ -23,12 +26,26 @@ extends SceneTree
 ## - Intérieurs (`interior = true`, comme l'Arène d'Erika) ; lumière par `data/world/lighting.json`.
 
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
+const Kit := preload("res://tools/cave_map_kit.gd")
+const ModuleWalls := preload("res://tools/module_walls.gd")
 const TILE: int = 96
 const STEP_ON: int = 0
 const PUSH: int = 1
 const STYLE_TELEPORT: int = 1
-const SHELL_DIR: String = "res://assets/world/interiors/placeholder/"
 const OUT_DIR: String = "res://game/world/maps/"
+const MASK_PATH: String = "res://assets/world/maps/%s_ground.png"
+const GROUND_MASS: String = "res://assets/world/ground/ground_masse_batiment_01.png"
+const NO_RUBBLE_MARK: String = "~"
+const WALL_MARK: String = "#"
+const TELEPORTER: String = "decal_teleporteur_sylphe_01"
+const DOORMAT: String = "int_paillasson_sylphe_01"
+## Carte → [sol, préfixe des murs, frontière (sol un peu assombri) [D], graine].
+const ART: Dictionary = {
+	&"saffron_gym": ["res://assets/world/ground/ground_dalles_morgane_01.png", "relief_mur_morgane",
+		Color(0.61, 0.57, 0.63), 2701],
+	&"fighting_dojo": ["res://assets/world/ground/ground_parquet_dojo_01.png", "relief_mur_dojo",
+		Color(0.71, 0.61, 0.50), 2711],
+}
 ## Carte → [nœud racine, grille, nom affiché (celui de la zone, comme l'Arène d'Erika)].
 const MAPS: Dictionary = {
 	&"saffron_gym": ["SaffronGym", "safrania_arene", "Safrania"],
@@ -37,6 +54,8 @@ const MAPS: Dictionary = {
 
 var _root: Node2D
 var _errors: int = 0
+var _masks_written: int = 0
+var _kit: Object
 
 
 func _init() -> void:
@@ -48,38 +67,20 @@ func _init() -> void:
 			quit(1)
 			return
 		_build(map_id, plan)
-	quit(1 if _errors > 0 else 0)
+	if _errors > 0:
+		quit(1)
+	elif _masks_written > 0:
+		print("build_saffron_gym : %d masque(s) écrit(s) ; importer (--import) puis relancer"
+			% _masks_written)
+		quit(2)
+	else:
+		quit(0)
 
 
 func _build(map_id: StringName, plan: PlanGrid) -> void:
 	var size := Vector2i(plan.width, plan.height)
-	_root = Node2D.new()
-	_root.name = MAPS[map_id][0]
-	_root.set_script(load("res://game/world/map.gd"))
-	_root.set(&"map_id", map_id)
-	_root.set(&"display_name", MAPS[map_id][2])
-	_root.set(&"size", size)
-	_root.set(&"interior", true)
-	var shell := Sprite2D.new()
-	shell.name = "Shell"
-	shell.texture = load(SHELL_DIR + "ph_%s.png" % map_id)
-	shell.centered = false
-	shell.z_index = -3
-	_attach(_root, shell)
-	if shell.texture == null or shell.texture.get_size() != Vector2(size * TILE):
-		push_error("%s : enveloppe absente ou ≠ %s cases" % [map_id, size])
-		_errors += 1
-		_root.free()
+	if _make_root(map_id, plan, size) == null:
 		return
-	var entities := Node2D.new()
-	entities.name = "Entities"
-	entities.y_sort_enabled = true
-	_attach(_root, entities)
-	entities.unique_name_in_owner = true
-	for group: String in ["Warps", "Interactables", "Spawns", "Triggers"]:
-		var node := Node2D.new()
-		node.name = group
-		_attach(_root, node)
 	var ids: Array = plan.positions.keys()
 	ids.sort()
 	for id: String in ids:
@@ -110,6 +111,11 @@ func _build(map_id: StringName, plan: PlanGrid) -> void:
 			if not plan.is_walkable(Vector2i(x, y)):
 				blocked.append(Vector2i(x, y))
 	_root.set(&"blocked_cells", blocked)
+	if not (_kit.get(&"errors") as PackedStringArray).is_empty():
+		push_error("%s :\n%s" % [map_id, "\n".join(_kit.get(&"errors"))])
+		_errors += 1
+		_root.free()
+		return
 	var packed := PackedScene.new()
 	var err := packed.pack(_root)
 	if err == OK:
@@ -119,6 +125,47 @@ func _build(map_id: StringName, plan: PlanGrid) -> void:
 	if err != OK:
 		_errors += 1
 	_root.free()
+
+
+## Salle en modules sur le kit : sol peint (masque), murs, tapis et paillasson ; couches logiques
+## retirées. Null si le masque vient d'être écrit ou en cas d'erreur.
+func _make_root(map_id: StringName, plan: PlanGrid, size: Vector2i) -> Node2D:
+	var art: Array = ART[map_id]
+	_kit = Kit.new("res://tools/plans/%s.txt" % MAPS[map_id][1], size, art[3], art[3] + 1,
+		plan.walkable)
+	_kit.set(&"floor_texture_path", art[0])
+	_kit.set(&"rubble_texture_path", art[0])
+	_kit.set(&"mass_texture_path", GROUND_MASS)
+	_kit.set(&"border_color", art[2])
+	_kit.set(&"rubble_mark", NO_RUBBLE_MARK)
+	_kit.set(&"rubble_is_logic", false)
+	_kit.set(&"wall_marks", WALL_MARK)
+	if not (_kit.get(&"errors") as PackedStringArray).is_empty():
+		push_error("%s :\n%s" % [map_id, "\n".join(_kit.get(&"errors"))])
+		_errors += 1
+		return null
+	_root = _kit.call(&"make_root", MAPS[map_id][0], map_id, MAPS[map_id][2], &"")
+	_root.set(&"interior", true)
+	if not _kit.call(&"add_ground", MASK_PATH % map_id):
+		if not (_kit.get(&"errors") as PackedStringArray).is_empty():
+			push_error("%s :\n%s" % [map_id, "\n".join(_kit.get(&"errors"))])
+			_errors += 1
+		else:
+			_masks_written += 1
+		_kit.call(&"discard")
+		return null
+	for layer_name: String in ["Ground", "Detail", "Obstacles"]:
+		var layer := _root.get_node(layer_name)
+		_root.remove_child(layer)
+		layer.free()
+	ModuleWalls.new(_kit, art[1], WALL_MARK, WALL_MARK, art[3] + 2).place()
+	for cell: Vector2i in plan.cells_of("T"):
+		_kit.call(&"add_floor_prop", TELEPORTER, cell, "Pad%02d_%02d" % [cell.x, cell.y])
+	var exits: Array[Vector2i] = plan.cells_of("E")
+	exits.sort()
+	for index: int in range(1, exits.size(), 2):
+		_kit.call(&"add_floor_prop", DOORMAT, exits[index], "Doormat%d" % index)
+	return _kit.get(&"entities")
 
 
 func _warp(node_name: String, cell: Vector2i, trigger: int, direction: Vector2i,

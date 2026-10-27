@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Art PROVISOIRE de la Sylphe SARL (jalon 26, T7) : enveloppes des onze étages et de la cabine,
+"""OBSOLÈTE depuis DAF.3 (étages en modules, `tools/build_silph_co.gd`, images retirées) — Art PROVISOIRE de la Sylphe SARL (jalon 26, T7) : enveloppes des onze étages et de la cabine,
 dessinées d'après les grilles fonctionnelles `tools/plans/sylphe_*.txt`, aux dimensions finales
 (cases x 96 px). Remplacer par l'art définitif = changer les images (mêmes noms, mêmes
 dimensions), pas les cartes.

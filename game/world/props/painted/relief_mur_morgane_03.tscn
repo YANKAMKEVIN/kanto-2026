@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_fpuu4"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_kf512"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_mur_morgane_03.png" id="3_mcdyc"]
+
+[node name="ReliefMurMorgane03" type="Node2D" unique_id=708449459]
+script = ExtResource("1_fpuu4")
+footprint = Array[Vector2i]([])
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=232401167]
+unique_name_in_owner = true
+material = ExtResource("2_kf512")
+texture = ExtResource("3_mcdyc")
+centered = false
+offset = Vector2(-96, -52)
