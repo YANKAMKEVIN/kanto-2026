@@ -1,0 +1,222 @@
+{
+ "flipbooks": {
+  "bulles_eclatent": {
+   "fichier": "fb_bulles_eclatent.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "norm",
+   "boucle": true
+  },
+  "nuage_poison": {
+   "fichier": "fb_nuage_poison.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "vert",
+   "boucle": true
+  },
+  "giclee_poison": {
+   "fichier": "fb_giclee_poison.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "vert",
+   "boucle": true
+  },
+  "tourbillon_vent": {
+   "fichier": "fb_tourbillon_vent.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "norm",
+   "boucle": true
+  },
+  "onde_sonore": {
+   "fichier": "fb_onde_sonore.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "add",
+   "boucle": true
+  },
+  "fumee_volutes": {
+   "fichier": "fb_fumee_volutes.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "norm",
+   "boucle": true
+  },
+  "lumiere_soin": {
+   "fichier": "fb_lumiere_soin.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "add",
+   "boucle": true
+  },
+  "aura_montante": {
+   "fichier": "fb_aura_montante.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "add",
+   "boucle": true
+  },
+  "onde_choc": {
+   "fichier": "fb_onde_choc.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "add",
+   "boucle": true
+  },
+  "entailles_griffes": {
+   "fichier": "fb_entailles_griffes.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "add",
+   "boucle": true
+  },
+  "jet_sable": {
+   "fichier": "fb_jet_sable.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "norm",
+   "boucle": true
+  },
+  "lianes_fouet": {
+   "fichier": "fb_lianes_fouet.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "norm",
+   "boucle": true
+  }
+ },
+ "particules": {
+  "brillant_soin": {
+   "fichier": "p_brillant_soin.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "fleche_haut": {
+   "fichier": "p_fleche_haut.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "oeil_menacant": {
+   "fichier": "p_oeil_menacant.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "anneau_choc": {
+   "fichier": "p_anneau_choc.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "bouclier_eclat": {
+   "fichier": "p_bouclier_eclat.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "note_musique": {
+   "fichier": "p_note_musique.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "croissant_coupe": {
+   "fichier": "p_croissant_coupe.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "etincelle_bleue": {
+   "fichier": "p_etincelle_bleue.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "grain_sable": {
+   "fichier": "p_grain_sable.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "fil_soie": {
+   "fichier": "p_fil_soie.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "liane": {
+   "fichier": "p_liane.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "ecume": {
+   "fichier": "p_ecume.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "gouttelettes": {
+   "fichier": "p_gouttelettes.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "epine": {
+   "fichier": "p_epine.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "lame_herbe": {
+   "fichier": "p_lame_herbe.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "eclats_pierre": {
+   "fichier": "p_eclats_pierre.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "bulle_poison": {
+   "fichier": "p_bulle_poison.webp",
+   "taille": 192,
+   "melange": "vert"
+  },
+  "goutte_poison": {
+   "fichier": "p_goutte_poison.webp",
+   "taille": 192,
+   "melange": "vert"
+  },
+  "vapeur_poison": {
+   "fichier": "p_vapeur_poison.webp",
+   "taille": 192,
+   "melange": "vert"
+  },
+  "coeur": {
+   "fichier": "p_coeur.webp",
+   "taille": 192,
+   "melange": "vert"
+  },
+  "orbe_ombre": {
+   "fichier": "p_orbe_ombre.webp",
+   "taille": 192,
+   "melange": "vert"
+  },
+  "fleche_bas": {
+   "fichier": "p_fleche_bas.webp",
+   "taille": 192,
+   "melange": "vert"
+  },
+  "oeil_psy": {
+   "fichier": "p_oeil_psy.webp",
+   "taille": 192,
+   "melange": "vert"
+  },
+  "anneau_psy": {
+   "fichier": "p_anneau_psy.webp",
+   "taille": 192,
+   "melange": "vert"
+  }
+ }
+}
