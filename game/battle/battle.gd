@@ -14,7 +14,8 @@ extends RefCounted
 ## l'adversaire dont le Pokémon est K.O. envoie le suivant ; le joueur choisit le sien
 ## (jalon 7, [constant State.REPLACING]). Sans PP, seule Lutte est permise
 ## ([constant BattleAction.STRUGGLE]) : sans type, recul d'¼ des PV max du lanceur.
-## Ordre des tirages : IA adverse (pick_index ; « smart » seulement à égalité, [BattleAI]),
+## Ordre des tirages : IA adverse (pick_index ; « smart » : tirage de statut à 1 sur 3 s'il a
+## un statut neuf et utile, puis pick_index seulement à égalité, [BattleAI]),
 ## égalité de Vitesse, puis pour chaque
 ## action ceux de [DamageCalc] (ou la seule précision pour une capacité de statut) et un
 ## roll(100) par effet de [member MoveEffect.chance] < 100 (pas de tirage si sa cible est déjà

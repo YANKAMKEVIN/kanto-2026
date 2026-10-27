@@ -201,13 +201,13 @@ func test_smart_ai_skips_toxic_on_poisoned_or_poison_targets() -> void:
 	assert_eq(BattleAI.score_move(toxic, own, poison_type, chart, 0), 0.0, "type Poison")
 
 
-## Clôture du J23 (QA 23E : « Smogogo a préféré Détritus ») : le vrai Smogogo de Koga (données de
-## l'Arène : Purédpois, Détritus, Toxik, Destruction) sous l'IA « smart ». Constat documenté,
-## comportement voulu par les règles de l'IA (note la plus haute) : Détritus (65 × 1,5 STAB)
-## l'emporte toujours sur Toxik (40 × 85 %), cible saine ou déjà empoisonnée ; Toxik ne serait
-## choisi que Détritus épuisé (Purédpois vaut 31,5, Destruction 0 au-dessus d'¼ des PV). Sur
-## une cible déjà empoisonnée ou de type Poison, Toxik vaut 0 (jamais choisi).
-func test_kogas_weezing_prefers_sludge_over_toxic() -> void:
+## Clôture du J23 (QA 23E : « Smogogo a préféré Détritus ») puis tirage de statut (décision de
+## Kevin, 2026-10-27) : le vrai Smogogo de Koga (Purédpois, Détritus, Toxik, Destruction) sous
+## l'IA « smart ». Par la note, Détritus (65 × 1,5 STAB) l'emporte toujours sur Toxik
+## (40 × 85 %) ; Toxik pas encore joué sur une cible saine : roll(3) = 1 le joue (règle 0).
+## Jamais sur une cible déjà empoisonnée ou de type Poison (note nulle : aucun tirage), jamais
+## une deuxième fois par le tirage.
+func test_kogas_weezing_toxic_by_status_draw() -> void:
 	var trainers := TrainerLibrary.new(_data)
 	trainers.load_dir()
 	var team := trainers.build_team(&"fuchsia_gym_koga", &"charmander", GameRng.new(1))
@@ -223,15 +223,53 @@ func test_kogas_weezing_prefers_sludge_over_toxic() -> void:
 	var own := BattleSide.new(team, false, "Koga", ai)
 	own.send_out(weezing, _data)
 	var rattata := _rattata()
-	var foe_party := Party.new()
-	foe_party.add(rattata)
-	var foe := BattleSide.new(foe_party, true)
-	foe.send_out(rattata, _data)
-	var rng := Kit.ScriptedRng.new()
-	assert_eq(ai.choose(own, foe, rng, _data).move_index, 1, "cible saine : Détritus")
+	var foe := _foe_side(rattata)
+	var rng := Kit.ScriptedRng.new([2])
+	assert_eq(ai.choose(own, foe, rng, _data).move_index, 1, "tirage manqué : Détritus")
 	rattata.status = StatusRules.POISON
 	assert_eq(ai.choose(own, foe, rng, _data).move_index, 1, "déjà empoisonnée : Détritus")
 	rattata.status = StatusRules.NONE
+	rng.push([1])
+	assert_eq(ai.choose(own, foe, rng, _data).move_index, 2, "tirage réussi : Toxik")
+	assert_eq(ai.times_used(weezing, &"toxic"), 1)
+	assert_eq(ai.choose(own, foe, rng, _data).move_index, 1, "Toxik déjà joué : Détritus")
 	weezing.moves[1].pp = 0
-	assert_eq(ai.choose(own, foe, rng, _data).move_index, 2, "Détritus épuisé : Toxik")
-	assert_eq(rng.remaining(), 0, "aucun tirage : une seule meilleure note")
+	assert_eq(ai.choose(own, foe, rng, _data).move_index, 2, "Détritus épuisé : Toxik (note)")
+	assert_eq(rng.remaining(), 0)
+	assert_eq(rng.calls, 2, "un tirage de statut seulement quand Toxik est neuf et utile")
+	var koffing := Kit.mon(_data, &"koffing", 37, [&"tackle"])
+	var fresh_ai := trainers.get_trainer(&"fuchsia_gym_koga").make_ai()
+	var own_fresh := BattleSide.new(team, false, "Koga", fresh_ai)
+	weezing.moves[1].pp = 10
+	own_fresh.send_out(weezing, _data)
+	var poison_rng := Kit.ScriptedRng.new()
+	assert_eq(fresh_ai.choose(own_fresh, _foe_side(koffing), poison_rng, _data).move_index, 1,
+		"type Poison : Détritus, aucun tirage")
+	assert_eq(poison_rng.calls, 0)
+
+
+## Toxik de Koga au premier tour, sur une cible saine : environ une fois sur trois (graines
+## 0..599, une IA neuve par combat).
+func test_kogas_weezing_toxic_about_one_in_three() -> void:
+	var trainers := TrainerLibrary.new(_data)
+	trainers.load_dir()
+	var team := trainers.build_team(&"fuchsia_gym_koga", &"charmander", GameRng.new(1))
+	var weezing := team.get_at(3)
+	var foe := _foe_side(_rattata())
+	var toxic := 0
+	var runs := 600
+	for seed_value: int in runs:
+		var ai := trainers.get_trainer(&"fuchsia_gym_koga").make_ai()
+		var own := BattleSide.new(team, false, "Koga", ai)
+		own.send_out(weezing, _data)
+		if ai.choose(own, foe, GameRng.new(seed_value), _data).move_index == 2:
+			toxic += 1
+	assert_between(float(toxic) / runs, 0.28, 0.39, "Toxik %d / %d" % [toxic, runs])
+
+
+func _foe_side(pokemon: Pokemon) -> BattleSide:
+	var party := Party.new()
+	party.add(pokemon)
+	var side := BattleSide.new(party, true)
+	side.send_out(pokemon, _data)
+	return side

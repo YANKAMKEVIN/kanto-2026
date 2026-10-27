@@ -724,6 +724,8 @@ QA 23B (la dernière Safari Ball ne finissait pas la visite) corrigé dans `dd42
   Détritus épuisé. Sur une cible déjà empoisonnée ou de type Poison, Toxik vaut 0 (jamais choisi :
   attendu). Ce n'est pas un défaut de code (règle « la meilleure note l'emporte » du J7), mais en
   pratique **Koga ne lance jamais Toxik** → question pour Kevin (§9.5).
+  **Suite (2026-10-27)** : Kevin a retenu l'option 1 (tirage de statut à 1 sur 3, règle 0 de
+  l'IA, `docs/tech/ia-statut-tiers.md`) ; le test devient `test_kogas_weezing_toxic_by_status_draw`.
 - **Koga après une défaite** : `test_koga_flow` (`test_defeat_wakes_at_the_center_and_koga_can_be_fought_again`)
   vérifiait déjà le réveil au Centre de Parmanie, sans badge, sans CT, sans argent perdu, les six
   Dresseurs gardés battus et Koga rejouable (reprise courte, sans carte) ; ajouté : au retour,

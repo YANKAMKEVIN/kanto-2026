@@ -8,6 +8,12 @@ extends RefCounted
 ##
 ## [b]smart[/b] (IA de niveau 2, rival de la Route 22, jalon-07.md §3.8) : chaque capacité qui a
 ## des PP reçoit une note ([method score_move]) ; une note nulle = capacité inutile.
+## 0. Tirage de statut (décision de Kevin, 2026-10-27) : s'il existe au moins une capacité de
+##    statut ([method is_status_move]) utile (note > 0) que ce Pokémon n'a pas encore jouée dans
+##    le combat, un tirage [code]chance(STATUS_CHANCE_NUM, STATUS_CHANCE_DEN)[/code] (1 sur 3)
+##    décide de la jouer (pick_index parmi elles s'il y en a plusieurs) ; il passe avant la
+##    règle 2 [D]. Sinon, règles 1 à 4. [member status_draw] faux : pas de tirage (le joueur
+##    simulé des outils d'équilibrage).
 ## 1. Une capacité inutile (attaque sans effet ×0, statut déjà au maximum, statut usé, statut
 ##    sous ⅓ des PV) n'est jamais choisie s'il existe une autre option.
 ## 2. S'il existe une attaque super efficace utile, seules les attaques super efficaces sont
@@ -40,6 +46,10 @@ const STATUS_MAX_USES: int = 2
 const LOW_HP_RATIO: float = 1.0 / 3.0
 ## Note d'une capacité de statut utile, avant la précision (défaut, jalon-07.md §15).
 const STATUS_SCORE: float = 40.0
+## Tirage de statut (règle 0, décision de Kevin du 2026-10-27) : une capacité de statut utile
+## pas encore jouée est choisie avec cette chance (1 sur 3).
+const STATUS_CHANCE_NUM: int = 1
+const STATUS_CHANCE_DEN: int = 3
 ## Bonus de type (STAB).
 const STAB: float = 1.5
 ## Jalon 12 : Destruction et Explosion seulement à ce quart de ses PV ou moins [D].
@@ -51,6 +61,8 @@ var kind: StringName = RANDOM
 ## L'IA peut rappeler son Pokémon (donnée « switch » du Dresseur, [TrainerData]) ; jamais en
 ## combat sauvage (IA par défaut).
 var can_switch: bool = false
+## Règle 0 (tirage de statut) active ; faux pour le joueur simulé des outils d'équilibrage.
+var status_draw: bool = true
 ## « smart » : capacités de statut choisies, par Pokémon (identifiant d'instance) puis capacité.
 var _status_uses: Dictionary[int, Dictionary] = {}
 ## Le changement de ce combat a déjà eu lieu.
@@ -127,6 +139,18 @@ static func score_move(move: MoveData, own: Battler, foe: Battler, chart: TypeCh
 			return 0.0
 		accuracy = OhkoRules.accuracy(move.accuracy, own.pokemon.level, foe.pokemon.level) / 100.0
 	return STATUS_SCORE * accuracy
+
+
+## Vrai si [param move] est une capacité de statut pour la règle 0 : catégorie « statut », sauf
+## celles qui infligent des dégâts (dégâts fixes, K.O. en un coup, Riposte, Patience) [D].
+static func is_status_move(move: MoveData) -> bool:
+	if move == null or move.is_damaging():
+		return false
+	for kind: MoveEffect.Kind in [MoveEffect.Kind.FIXED_DAMAGE, MoveEffect.Kind.OHKO,
+			MoveEffect.Kind.COUNTER, MoveEffect.Kind.BIDE]:
+		if move.effect_of(kind) != null:
+			return false
+	return true
 
 
 ## Efficacité de [param move] sur [param foe] (1 pour une capacité sans type).
@@ -214,6 +238,9 @@ func _choose_smart(own: Battler, foe: Battler, usable: Array[int], rng: GameRng,
 		scores.append(score)
 		if score > 0.0 and move.is_damaging() and effectiveness_of(move, foe, chart) > 1.0:
 			super_effective = true
+	var fresh := _fresh_status_moves(own, usable, scores, data)
+	if not fresh.is_empty() and rng.chance(STATUS_CHANCE_NUM, STATUS_CHANCE_DEN):
+		return fresh[0] if fresh.size() == 1 else fresh[rng.pick_index(fresh.size())]
 	var best := 0.0
 	var candidates: Array[int] = []
 	for i: int in usable.size():
@@ -229,6 +256,20 @@ func _choose_smart(own: Battler, foe: Battler, usable: Array[int], rng: GameRng,
 	if candidates.size() == 1:
 		return candidates[0]
 	return candidates[rng.pick_index(candidates.size())]
+
+
+## Règle 0 : capacités de statut utiles ([param scores] > 0) que [param own] n'a pas encore
+## jouées dans ce combat (vide si [member status_draw] est faux).
+func _fresh_status_moves(own: Battler, usable: Array[int], scores: Array[float],
+		data: PokemonData) -> Array[int]:
+	var fresh: Array[int] = []
+	if not status_draw:
+		return fresh
+	for i: int in usable.size():
+		var move := data.get_move(own.pokemon.moves[usable[i]].move_id)
+		if scores[i] > 0.0 and is_status_move(move) and times_used(own.pokemon, move.id) == 0:
+			fresh.append(usable[i])
+	return fresh
 
 
 func _uses_of(pokemon: Pokemon) -> Dictionary:

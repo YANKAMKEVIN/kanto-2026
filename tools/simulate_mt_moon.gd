@@ -1115,6 +1115,8 @@ func _after_battle(result: Array[int], party: RefCounted, variant: Dictionary,
 func _fight(battle: RefCounted, player: RefCounted, foe: RefCounted, rng: RefCounted,
 		variant: Dictionary, bag: Dictionary, wild: bool) -> Array[int]:
 	var ai: RefCounted = _ai_script.new(&"smart")
+	# Le joueur simulé ne tire pas ses statuts au hasard (règle 0 de l'IA : adversaires seuls).
+	ai.status_draw = false
 	var careful: bool = variant["player"] != "naif"
 	var expert: bool = variant["player"] == "expert"
 	# Expert : au plus un changement volontaire par Pokémon adverse en jeu.
