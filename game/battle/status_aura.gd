@@ -71,9 +71,9 @@ const STAR_RADIUS: float = 20.0
 const BUBBLE_COUNT: int = 4
 const BUBBLE_COUNT_TOXIC: int = 7
 const BUBBLE_PERIOD: float = 1.8
-const BUBBLE_RADIUS: float = 0.05
-const BUBBLE_RADIUS_MIN: float = 10.0
-const BUBBLE_RADIUS_MAX: float = 26.0
+const BUBBLE_RADIUS: float = 0.07
+const BUBBLE_RADIUS_MIN: float = 14.0
+const BUBBLE_RADIUS_MAX: float = 36.0
 const BUBBLE_RISE: float = 0.6
 ## Gel : éclats de givre qui scintillent (nombre, période d'un scintillement).
 const FROST_COUNT: int = 6
@@ -410,7 +410,7 @@ func _draw_bubbles(rect: Rect2, toxic: bool) -> void:
 		if k < 0.82:
 			var radius := max_radius * (0.35 + 0.65 * k / 0.82)
 			var fill := body
-			fill.a = 0.55 if toxic else 0.42
+			fill.a = 0.8 if toxic else 0.65
 			draw_circle(center, radius, fill)
 			var rim := core
 			rim.a = 0.85
