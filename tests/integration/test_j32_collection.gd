@@ -96,7 +96,7 @@ func test_an_rb_trade_runs_like_the_cinnabar_ones() -> void:
 
 
 func test_power_plant_waits_for_its_map() -> void:
-	var lib := EncounterLibrary.new()
+	var lib := EncounterLibrary.new(_data)
 	lib.load_dir()
 	var table := lib.get_table(&"power_plant", &"floor")
 	assert_not_null(table)
