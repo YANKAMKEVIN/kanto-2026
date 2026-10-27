@@ -85,7 +85,7 @@ func before_all() -> void:
 
 func test_species_values() -> void:
 	assert_eq(_data.get_errors().size(), 0, "\n".join(_data.get_errors()))
-	assert_eq(_data.get_species_ids().size(), 150,
+	assert_eq(_data.get_species_ids().size(), 151,
 		"38 + 12 + 9 (jalon 13) + 3 (jalon 14) + 2 (jalon 15) + 8 (jalon 17) + 6 (jalon 19) "
 		+ "+ 11 (jalon 20 : Caninos et Goupix sont ceux du J17) + 3 (jalon 21 : Ptitard, Tentacool, "
 		+ "Ronflex) + 13 (jalon 22) + 17 (jalon 24 : Saquedeneu et Léviator sont ceux des J20 et "
@@ -97,7 +97,7 @@ func test_species_values() -> void:
 		+ "+ 3 (jalon 29 : Excelangue, Noadkoko, Sulfura ; M. Mime est compté au J27) "
 		+ "+ 2 (jalon 31 : Métamorph, Mewtwo ; Leveinard et Rhinoféros sont ceux des J23 et J28) "
 		+ "+ 5 (jalon 30 : Lippoutou, Mackogneur, Ectoplasma, Draco, Dracolosse) "
-		+ "+ 4 (jalon 32 : Élektek, Porygon, Électhor, Minidraco)")
+		+ "+ 5 (jalon 32 : Élektek, Porygon, Électhor, Minidraco, Mew)")
 	for id: StringName in SPECIES:
 		var v: Array = SPECIES[id]
 		var species := _data.get_species(id)

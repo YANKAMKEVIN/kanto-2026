@@ -68,6 +68,8 @@ extends RefCounted
 ## Jalon 17 (T9, voile d'obscurité ; clé « veil » du J18 §2.12) : « veil » = « dark » ou « lit » :
 ## voile d'obscurité **forcé sur la carte de départ** pour la session (« lit » : halo de Flash
 ## ouvert), même hors d'une grotte obscure ; exige « map » ; jamais sauvegardé.
+## Jalon 32 (32J) : « caught_except » : liste d'espèces ; toutes les autres espèces des données
+## sont capturées au Pokédex (ex. ["mew"] : 150 capturées, Mew au camion, Diplôme).
 ## Combat vivant (CV.0, T8) : « fx_gallery » (avec une « party », exigée par le format) : au lieu de la partie, la **galerie d'effets**
 ## (`game/battle/fx/fx_gallery.tscn`) joue des attaques en boucle et écrit sa cadence dans le
 ## journal ; { "moves": [identifiants] (vide : une attaque par famille), "mode": "full" | "fast" |
@@ -90,7 +92,7 @@ const VEIL_OFF: StringName = &"off"
 
 const _KEYS: Array[String] = ["map", "spawn", "facing", "seed", "flags", "party", "bag",
 	"favorites", "money", "storage", "autosave", "wild", "daycare", "companion", "veil", "rest_point",
-	"discovered", "safari", "fx_gallery"]
+	"discovered", "safari", "fx_gallery", "caught_except"]
 const _MEMBER_KEYS: Array[String] = ["species", "level", "moves", "exp_to_next", "hp",
 	"favorite", "status", "status_turns"]
 
@@ -131,6 +133,9 @@ var discovered: Array[StringName] = []
 var safari: Dictionary = {}
 ## Combat vivant (T8) : réglages de la galerie d'effets ; vide : partie normale.
 var fx_gallery: Dictionary = {}
+## J32 (32J, Mew et Diplôme) : « caught_except » : toutes les espèces des données sont capturées au
+## Pokédex sauf celles-ci (ex. ["mew"]) ; null = clé absente (rien de plus).
+var caught_except: Variant = null
 var _errors: PackedStringArray = PackedStringArray()
 
 
@@ -316,6 +321,17 @@ func add_from_dict(dict: Dictionary, data: PokemonData, items: ItemLibrary,
 			return _fail("%s : « safari » vaut { steps_left ≥ 0, balls_left ≥ 1 }" % source)
 		safari = {"active": true, "steps_left": int(visit["steps_left"]),
 			"balls_left": int(visit["balls_left"])}
+	caught_except = null
+	if dict.has("caught_except"):
+		var raw_except: Variant = dict["caught_except"]
+		if not raw_except is Array or (raw_except as Array).any(
+				func(id: Variant) -> bool: return not id is String or data == null \
+					or not data.has_species(StringName(id))):
+			return _fail("%s : « caught_except » est une liste d'espèces connues" % source)
+		var except_ids: Array[StringName] = []
+		for id: String in raw_except:
+			except_ids.append(StringName(id))
+		caught_except = except_ids
 	fx_gallery = {}
 	if dict.has("fx_gallery"):
 		var gallery: Variant = dict["fx_gallery"]
@@ -385,6 +401,10 @@ func apply(state: Object, data: PokemonData) -> void:
 	if not safari.is_empty():
 		state.safari = SafariVisit.from_dict(safari)
 		state.flags.set_flag(SafariDirector.FLAG_ACTIVE)
+	if caught_except != null and data != null:
+		for id: StringName in data.get_species_ids():
+			if not (caught_except as Array).has(id):
+				state.pokedex.mark_caught(id)
 
 
 ## Un Pokémon d'après un membre validé (capacités, XP, PV).

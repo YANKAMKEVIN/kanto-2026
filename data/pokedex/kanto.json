@@ -728,6 +728,10 @@
 			"height": 1.6, "weight": 52.6,
 			"description": "Un oiseau légendaire qui naît des nuages d'orage. Chaque battement d'ailes fait claquer la foudre."
 		},
+		"mew": {
+			"height": 0.4, "weight": 4.0, "draft": true,
+			"description": "On dit qu'il porte en lui le code génétique de tous les Pokémon. Très peu l'ont vu."
+		},
 		"dratini": {
 			"height": 1.8, "weight": 3.3,
 			"description": "Longtemps tenu pour un mythe, il mue sans cesse au fond des eaux calmes. On l'aperçoit rarement à la surface."

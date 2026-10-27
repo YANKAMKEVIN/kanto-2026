@@ -296,6 +296,8 @@ func test_people_follow_the_grid() -> void:
 		&"docker_2": ["docker_2", &"docker"], &"resident": ["habitante", &"lass"],
 		&"kid": ["enfant", &"kid"], &"old_man": ["vieil_habitant", &"old_man"],
 		&"pidgey_1": ["pidgey_1", &"pokemon/pidgey"], &"pidgey_2": ["pidgey_2", &"pokemon/pidgey"],
+		# Jalon 32 (32J, N-3) : le docker de la rumeur du camion.
+		&"rumor_docker": ["marin_rumeur", &"docker"],
 	}
 	var roster := NpcRoster.load_for_map(&"vermilion_city")
 	assert_eq(roster.get_all().size(), expected.size())

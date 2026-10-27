@@ -272,6 +272,8 @@ Les points RP-151 à RP-154, propres à `jalon-23` jusqu'ici, sont passés de la
 - **RP-131** (fond flou recadré après une reprise pendant un combat) : le correctif du J30 (`Player.hold_camera`) entre dans `main`. **RP-137** : Q30-4 et Grand moment « champion » faits, textes du générique validés (reste : fond nuit uni des deux écrans, DAF). **RP-138** : QA 30A faite par Kevin sur le S24 le 2026-10-27, fermé. **RP-113** : Mackogneur et Ectoplasma sont maintenant dans les données (évolutions par échange : J32).
 - **RP-155** : `StaticRespawn.on_league_won(...)` (N-17, N-18) branché sur `jalon-32` le 2026-10-27 (`LeagueDirector.complete_ceremony`, test) ; entre dans `main` avec le J32. Fiches de Pokédex de la Ligue écrites en [D] sur `jalon-32` (à valider).
 
+- **J32 (T5, 32J), rendu provisoire [D]** (`jalon-32`, 2026-10-27) : terminal d'échange local = même meuble que le Stockage (`int_centre_terminal`) ; vieux camion du quai de Carmin = camionnette moderne de Bourg Palette (`prop_camionnette_01`) ; dos de combat de Mew = artwork officiel en miroir (`dos_rb_151` absent, `gen_placeholder_battlers_j32.py`) ; Mew n'a pas de sprite de carte (il apparaît par le combat). Phase DA.
+
 ## 3. Propres à une branche non fusionnée
 
 Lecture seule ; ces points se règlent sur la branche ou à sa fusion (session du jalon). Les lignes

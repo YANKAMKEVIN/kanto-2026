@@ -35,5 +35,13 @@
 			[40, "dragon_rage"], [50, "hyper_beam"]
 		],
 		"evolutions": [{ "into": "dragonair", "method": "level", "level": 30 }]
+	},
+	"mew": {
+		"dex": 151, "name": "Mew", "types": ["psychic"],
+		"base_stats": { "hp": 100, "atk": 100, "def": 100, "spa": 100, "spd": 100, "spe": 100 },
+		"male_ratio": -1, "growth_rate": "medium_slow", "base_exp": 300, "catch_rate": 45,
+		"learnset": [
+			[1, "pound"], [10, "transform"], [20, "mega_punch"], [30, "metronome"], [40, "psychic"]
+		]
 	}
 }

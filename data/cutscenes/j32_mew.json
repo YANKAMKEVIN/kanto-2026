@@ -1,0 +1,42 @@
+{
+	"mew": {
+		"variants": [
+			{
+				"unless": [
+					"mew_resolved"
+				],
+				"steps": [
+					{
+						"set": [
+							"mew_appeared"
+						]
+					},
+					{
+						"wild_battle": "mew",
+						"level": 30,
+						"intro": "legendary",
+						"static": {
+							"done": "mew_resolved",
+							"caught": "mew_caught"
+						}
+					}
+				]
+			}
+		]
+	},
+	"j32_diploma": {
+		"unless": [
+			"diploma_received"
+		],
+		"steps": [
+			{
+				"dialogue": "j32_diploma_received"
+			},
+			{
+				"set": [
+					"diploma_received"
+				]
+			}
+		]
+	}
+}

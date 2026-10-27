@@ -349,6 +349,8 @@ const VARIANT_FLAGS: Dictionary = {
 	&"snorlax_post_league_wake": [PEWTER_FLAGS + [&"snorlax_post_league_present"]],
 	# Jalon 32 (N-13, N-14, N-11) : Porygon, échanges PNJ de Rouge/Bleu, Électhor.
 	&"silph_co_porygon_gift": [[&"silph_giovanni_defeated"]],
+	# Jalon 32 (32J) : Mew au camion (150 capturées, dialogue), Diplôme du concepteur.
+	&"mew": [[]], &"j32_diploma": [[]],
 	# Jalon 32 (32A à 32D) : seconds exemplaires d'après la Ligue.
 	&"j32_oak_gifts": [[&"league_champion_defeated"]],
 	&"j32_dojo_gift_hitmonlee": [[&"league_champion_defeated"]],
@@ -769,6 +771,8 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"snorlax_post_league_wake": &"route_10",
 	# Jalon 32 (N-13, N-14) : Porygon (dialogue de l'employé du 1F) et échanges PNJ.
 	&"silph_co_porygon_gift": &"silph_co_1f",
+	# Jalon 32 (32J) : le vieux camion du quai de Carmin, le concepteur de la Résidence.
+	&"mew": &"vermilion_city", &"j32_diploma": &"celadon_mansion_3f",
 	# Jalon 32 (32A à 32D) : dialogues de Chen, du Maître, des Poké Balls et du chercheur.
 	&"j32_oak_gifts": &"oak_lab",
 	&"j32_dojo_gift_hitmonlee": &"fighting_dojo",
@@ -1026,8 +1030,8 @@ func test_library_loads_without_error() -> void:
 		+ [&"snorlax_post_league_wake", &"silph_co_porygon_gift", &"zapdos",
 		&"power_plant_fausse_ball_1", &"power_plant_fausse_ball_2", &"power_plant_fausse_ball_3", &"power_plant_fausse_ball_4", &"power_plant_fausse_ball_5", &"power_plant_fausse_ball_6", &"power_plant_fausse_ball_7", &"power_plant_fausse_ball_8", &"power_plant_item_1", &"power_plant_item_2", &"power_plant_item_3", &"power_plant_item_4", &"power_plant_item_5", &"power_plant_hidden_1", &"power_plant_hidden_2",
 		&"j32_trade_remi", &"j32_trade_leon", &"j32_trade_aline", &"j32_trade_hugo", &"j32_trade_theo", &"j32_trade_coline"]
-		# Jalon 32 (32A à 32D).
-		+ [&"j32_oak_gifts", &"j32_dojo_gift_hitmonlee", &"j32_dojo_gift_hitmonchan", &"j32_eevee_gift_2", &"j32_eevee_gift_3", &"j32_fossil_give_helix", &"j32_fossil_give_dome"]))
+		# Jalon 32 (32A à 32D, 32J).
+		+ [&"mew", &"j32_diploma", &"j32_oak_gifts", &"j32_dojo_gift_hitmonlee", &"j32_dojo_gift_hitmonchan", &"j32_eevee_gift_2", &"j32_eevee_gift_3", &"j32_fossil_give_helix", &"j32_fossil_give_dome"]))
 
 
 func _sorted(values: Array) -> Array[StringName]:

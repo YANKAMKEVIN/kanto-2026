@@ -4,16 +4,16 @@
 
 ## Résumé
 
-- **146 / 151** obtenables dans une seule sauvegarde solo, sans choix unique ni échange local.
-- **0** seulement par un choix unique (une seule par sauvegarde) ; **4** seulement par évolution par échange (terminal local des Centres, T4 et T5) ; **1** sans aucune voie.
-- Espèces sans données sur aucune branche : Mew.
+- **147 / 151** obtenables dans une seule sauvegarde solo, sans choix unique ni échange local.
+- **0** seulement par un choix unique (une seule par sauvegarde) ; **4** seulement par évolution par échange (terminal local des Centres, T4 et T5) ; **0** sans aucune voie.
+- Espèces sans données sur aucune branche : aucune.
 
 ### Choix uniques (une espèce par groupe et par sauvegarde)
 
 
 ### Par branche (statut atteint grâce à cette branche)
 
-- **HEAD** (32) : Bulbizarre, Herbizarre, Florizarre, Salamèche, Reptincel, Dracaufeu, Carapuce, Carabaffe, Tortank, Mackogneur, Magnéti, Canarticho, Ectoplasma, Noadkoko, Kicklee, Tygnon, Excelangue, M. Mime, Lippoutou, Élektek, Aquali, Voltali, Pyroli, Porygon, Amonita, Amonistar, Kabuto, Kabutops, Électhor, Minidraco, Draco, Dracolosse
+- **HEAD** (33) : Bulbizarre, Herbizarre, Florizarre, Salamèche, Reptincel, Dracaufeu, Carapuce, Carabaffe, Tortank, Mackogneur, Magnéti, Canarticho, Ectoplasma, Noadkoko, Kicklee, Tygnon, Excelangue, M. Mime, Lippoutou, Élektek, Aquali, Voltali, Pyroli, Porygon, Amonita, Amonistar, Kabuto, Kabutops, Électhor, Minidraco, Draco, Dracolosse, Mew
 - **main** (118)
 
 ### Sans voie, ou seulement par le terminal d'échange local
@@ -22,7 +22,6 @@
 - 068 Mackogneur (échange local) → N-15 / T4, T5 : terminal d'échange local des Centres (écran fait, J32 T5).
 - 076 Grolem (échange local) → N-15 / T4, T5 : terminal d'échange local des Centres (écran fait, J32 T5).
 - 094 Ectoplasma (échange local) → N-15 / T4, T5 : terminal d'échange local des Centres (écran fait, J32 T5).
-- 151 Mew (manque) → N-1 à N-5 : rencontre secrète au camion du quai de Carmin, 150 capturées, N30.
 
 ### Évolutions de Rouge/Bleu absentes des données
 
@@ -192,4 +191,4 @@ Boutiques et dons uniques des scènes (union des branches, maximum par branche),
 | 148 | Draco (`dragonair`) | dragon | Minidraco (niveau 30) | — | HEAD | obtenable | — |
 | 149 | Dracolosse (`dragonite`) | dragon/flying | Draco (niveau 55) | — | HEAD | obtenable | — |
 | 150 | Mewtwo (`mewtwo`) | psychic | — | fixe : cerulean_cave (N70) [main, HEAD] | main | obtenable | — |
-| 151 | Mew (`mew`) | — | — | — | — | manque | N-1 à N-5 : rencontre secrète au camion du quai de Carmin, 150 capturées, N30 |
+| 151 | Mew (`mew`) | psychic | — | fixe : j32_mew (N30) [HEAD] | HEAD | obtenable | — |

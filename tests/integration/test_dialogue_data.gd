@@ -601,6 +601,8 @@ const MAPS: Array[StringName] = [
 const IDS_J21_T22: Array[StringName] = [&"snorlax_route_16"]
 ## Jalon 32 (N-18) : Ronflex d'après la Ligue (Route 10), textes du J21 repris tels quels.
 const IDS_J32: Array[StringName] = [&"snorlax_post_league",
+	# 32J : Mew et le Diplôme.
+	&"j32_vermilion_rumor", &"vermilion_truck", &"j32_designer", &"j32_diploma_received",
 	# T5 (terminal d'échange local) ; 32A à 32D (seconds exemplaires d'après la Ligue).
 	&"trade_terminal", &"trade_terminal_none", &"trade_terminal_confirm", &"j32_oak_second_gift", &"j32_oak_received_bulbasaur", &"j32_oak_stored_bulbasaur", &"j32_oak_received_charmander", &"j32_oak_stored_charmander", &"j32_oak_received_squirtle", &"j32_oak_stored_squirtle", &"j32_eevee_ball_2", &"j32_eevee_ball_3", &"j32_fossil_researcher",
 	# N-13 (Porygon), N-14 (échanges PNJ de Rouge/Bleu), N-11 (Électhor) : textes validés par Kevin le 2026-10-27.
@@ -1585,6 +1587,8 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		# Jalon 32 (N-13, N-14, N-11) : Porygon, échanges PNJ de RB, Électhor.
 		+ [&"silph_co_porygon_received", &"silph_co_porygon_stored", &"zapdos_presence",
 		&"zapdos_flew_away"]
+		# Jalon 32 (32J) : le Diplôme.
+		+ [&"j32_diploma_received"]
 		# Jalon 32 (32A) : les deux dons de Chen d'après la Ligue.
 		+ [&"j32_oak_second_gift", &"j32_oak_received_bulbasaur", &"j32_oak_stored_bulbasaur",
 		&"j32_oak_received_charmander", &"j32_oak_stored_charmander",
@@ -1723,6 +1727,8 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 	assert_eq(cutscenes.get_set_flags(), _sorted(SET_J29 + SET_J30 + [&"got_tm39", &"route_12_visited",
 		&"snorlax_route_12_awake", &"snorlax_route_12_caught", &"snorlax_route_12_done",
 		&"snorlax_route_12_woken", &"badge_boulder", &"badge_cascade",
+		# Jalon 32 (32J) : Mew (rencontre unique) et le Diplôme.
+		&"mew_appeared", &"mew_resolved", &"mew_caught", &"diploma_received",
 		# Jalon 32 (32A à 32D) : seconds exemplaires d'après la Ligue.
 		&"oak_gift_bulbasaur", &"oak_gift_charmander", &"oak_gift_squirtle",
 		&"oak_post_league_gifts_done", &"eevee_received_2", &"eevee_received_3",
@@ -2074,6 +2080,14 @@ const TEXTS_J32: Dictionary[StringName, Array] = {
 	&"j32_oak_stored_charmander": ["Salamèche a été envoyé au stockage."],
 	&"j32_oak_received_squirtle": ["{player} reçoit Carapuce !"],
 	&"j32_oak_stored_squirtle": ["Carapuce a été envoyé au stockage."],
+	# 32J (N-16, textes 1 à 7).
+	&"j32_vermilion_rumor": ["Le vieux camion du quai ? Personne ne sait\nqui l'a garé là.",
+		"Mon frère jure qu'un Pokémon rose\ndort dessous. Il dit n'importe quoi."],
+	&"vermilion_truck": ["Quelque chose bouge sous le camion…"],
+	&"j32_designer": ["Tu sais quoi ? C'est moi qui ai conçu\nce jeu !",
+		"Remplir le Pokédex, c'est dur.\nMais n'abandonne pas !",
+		"Incroyable ! Tu as complété\nton Pokédex ! Félicitations !"],
+	&"j32_diploma_received": ["{player} reçoit le Diplôme !"],
 	&"j32_eevee_ball_2": ["D'autres Évoli sont nés.\nPrends-en un si tu veux.", "Le prendre ?"],
 	&"j32_eevee_ball_3": ["D'autres Évoli sont nés.\nPrends-en un si tu veux.", "Le prendre ?"],
 	&"j32_fossil_researcher": ["Toi ! On a partagé les fossiles,\nau Mont Sélénite.",
@@ -2101,6 +2115,8 @@ const PENDING_DRAFT_VARIANTS: Array[String] = [
 	"trade_terminal:0", "trade_terminal_none:0",
 	# Jalon 32 (32B) : après le don du second fossile [D].
 	"j32_fossil_researcher:0",
+	# Jalon 32 (32J) : le camion avant les 150 [D].
+	"vermilion_truck:1",
 ]
 
 
@@ -2528,8 +2544,8 @@ func test_oak_parcel_lines() -> void:
 	# Jalon 29 : dix objets au sol, cinq cachés, huit gardes, le rival n° 7 et Sulfura.
 	# Jalon 31 (T4) : huit objets au sol et deux cachés de la Grotte Azurée, Mewtwo.
 	# Jalon 32 : cinq échanges PNJ de Rouge/Bleu (N-14) et Porygon (N-13) ; 32A à 32D : Chen, le
-	# Maître du Dojo (2), deux Poké Balls d'Évoli, le chercheur (2).
-	assert_eq(launched, 228, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
+	# Maître du Dojo (2), deux Poké Balls d'Évoli, le chercheur (2) ; 32J : le camion, le concepteur.
+	assert_eq(launched, 230, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
 		+ "sa CT34, Ondine (pont, Arène et rattrapage), écran, module, console, objets de la "
 		+ "Route 25, le Rocket d'Azuria (2) et le barrage sud ; J15 : objets de la Route 5 ; "
 		+ "J16 : Major Bob (2), neuf objets du S.S. Anne, le capitaine, le marin (2) ; "
@@ -2576,6 +2592,7 @@ func test_oak_parcel_lines() -> void:
 				or (String(row[0]).begins_with("j32_trade_") and row[1].contains("{player}")) \
 				or row[0] == &"silph_co_porygon_received" \
 				or String(row[0]).begins_with("j32_oak_received_") \
+				or row[0] == &"j32_diploma_received" \
 				or (row[0] == &"oak_lab_waiting" and row[1].contains("{player}")) \
 				or (row[0] == &"cinnabar_gym_guide" and row[1].contains("{player}")) \
 				or row[0] == &"cinnabar_lab_tm35_use" \

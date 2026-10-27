@@ -1,0 +1,63 @@
+{
+	"j32_vermilion_rumor": {
+		"speaker": "Docker",
+		"pages": [
+			"Le vieux camion du quai ? Personne ne sait\nqui l'a garé là.",
+			"Mon frère jure qu'un Pokémon rose\ndort dessous. Il dit n'importe quoi."
+		]
+	},
+	"vermilion_truck": {
+		"narration": true,
+		"variants": [
+			{
+				"if_caught_at_least": 150,
+				"unless": [
+					"mew_resolved"
+				],
+				"pages": [
+					"Quelque chose bouge sous le camion…"
+				],
+				"cutscene": "mew"
+			},
+			{
+				"draft": true,
+				"pages": [
+					"Un vieux camion. Il n'a pas bougé\ndepuis des années."
+				]
+			}
+		]
+	},
+	"j32_designer": {
+		"speaker": "Concepteur",
+		"variants": [
+			{
+				"if": [
+					"diploma_received"
+				],
+				"pages": [
+					"Incroyable ! Tu as complété\nton Pokédex ! Félicitations !"
+				]
+			},
+			{
+				"if_caught_at_least": 150,
+				"pages": [
+					"Tu sais quoi ? C'est moi qui ai conçu\nce jeu !",
+					"Incroyable ! Tu as complété\nton Pokédex ! Félicitations !"
+				],
+				"cutscene": "j32_diploma"
+			},
+			{
+				"pages": [
+					"Tu sais quoi ? C'est moi qui ai conçu\nce jeu !",
+					"Remplir le Pokédex, c'est dur.\nMais n'abandonne pas !"
+				]
+			}
+		]
+	},
+	"j32_diploma_received": {
+		"narration": true,
+		"pages": [
+			"{player} reçoit le Diplôme !"
+		]
+	}
+}

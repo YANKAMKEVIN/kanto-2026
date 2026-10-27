@@ -32,4 +32,9 @@ for species, dex in SPECIES.items():
         os.path.join(OUT, f"{species}_front.png"))
     fit(os.path.join(ROOT, f"assets/sprites/pokemon/dos/dos_rb_{dex}.png")).save(
         os.path.join(OUT, f"{species}_back.png"))
+# Mew (32J) : aucun dos peint (`dos_rb_151` absent) : dos = artwork officiel en miroir [D].
+fit(os.path.join(ROOT, "assets/sprites/pokemon/official/151.png")).save(
+    os.path.join(OUT, "mew_front.png"))
+fit(os.path.join(ROOT, "assets/sprites/pokemon/official/151.png")).transpose(
+    Image.FLIP_LEFT_RIGHT).save(os.path.join(OUT, "mew_back.png"))
 print(f"Sprites de combat provisoires du J32 OK ({len(SPECIES)} espèces)")

@@ -113,7 +113,9 @@ func test_real_data_loads_without_error() -> void:
 		&"lapras", &"ditto",
 		&"eevee", &"vaporeon", &"jolteon", &"flareon", &"porygon",
 		&"omanyte", &"omastar", &"kabuto", &"kabutops", &"aerodactyl", &"snorlax", &"articuno",
-		&"zapdos", &"moltres", &"dratini", &"dragonair", &"dragonite", &"mewtwo"] as Array[StringName])
+		&"zapdos", &"moltres", &"dratini", &"dragonair", &"dragonite", &"mewtwo",
+		# Jalon 32 (32J) : Mew.
+		&"mew"] as Array[StringName])
 	# Jalon 23 (T18) : + Toxik (j23.json). Jalon 25 (T7) : kanto_j25.json (Ponyta, Galopa,
 	# Magmar, Ptéra) ; Tadmorv, Grotadmorv, Smogogo et Électrode sont ceux du J22
 	# (kanto_j25_reprises.json retiré à la fusion de main).
@@ -576,7 +578,7 @@ func test_real_catch_rates_are_the_official_ones() -> void:
 		# Jalon 31 (T4 ; Rhinoféros et Leveinard sont ceux des J28 et J23).
 		&"ditto": 35, &"mewtwo": 3,
 		# Jalon 32 (kanto_j32.json).
-		&"electabuzz": 45, &"porygon": 45, &"zapdos": 3, &"dratini": 45,
+		&"electabuzz": 45, &"porygon": 45, &"zapdos": 3, &"dratini": 45, &"mew": 45,
 		# Jalon 30 (T3, Ligue) : espèces nouvelles (Rhinoféros, Kicklee, Tygnon : J28, J27).
 		&"jynx": 45, &"machamp": 45, &"gengar": 45, &"dragonair": 45, &"dragonite": 45,
 	}

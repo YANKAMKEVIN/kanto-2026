@@ -29,6 +29,7 @@
 #   g passerelle du S.S. Anne (praticable)  E accès au navire (praticable, terminal : futur J16)
 #   W mer (bloquée)                         N coque du S.S. Anne (bloquée)
 #   z bitte d'amarrage / cordage (bloqué)   k caisses du port (bloquées)
+#   v vieux camion du quai (bloqué ; J32, 32J : Mew)
 #   n banc (bloqué)    G pied d'un grand arbre repère (bloqué)    x buissons (bloqués)
 #   A jeune arbre qui ferme l'entrée de l'Arène (bloqué, emprise 2 × 1, tombe avec Coupe)
 #   C Centre Pokémon (8 × 7)   O Boutique (8 × 7)   Z Arène de Major Bob (12 × 7)
@@ -64,8 +65,8 @@ GRILLE 64 43
 21 TT.G.mmmmmmm.G................===.x...............G...........TT
 22 TT...mmmDmmm................x.===.............................TT
 23 TT............................===.............................TT
-24 TTqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqkkqqqTT
-25 TTqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqTT
+24 TTqvvvqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqkkqqqTT
+25 TTqvvvqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqTT
 26 TTqqqqqqqqqqqqqqqqqqqqqkkqqqqqqqzqqqqqqqqqqqkkqqqqqqqqqqqqqqqqTT
 27 TTWWWWWWWqqWWWWWWWWWWWWWWWWWWWWggWWWWWWWWWWWWWWWWWWWWWqqWWWWWWTT
 28 TTWWWWWWWqqWWWWWWWWWWNNNNNNNNNNEENNNNNNNNNNNNNNNNNWWWWqqWWWWWWTT
@@ -115,4 +116,6 @@ panneau_ville       panneau        29,2         bloque  # « CARMIN-SUR-MER », 
 panneau_arene       panneau        47,10        bloque  # « ARÈNE DE CARMIN-SUR-MER », lu depuis (47, 11) tourné ↑
 panneau_quai        panneau        34,23        bloque  # « QUAIS — S.S. ANNE », lu depuis (34, 24) tourné ↑
 examen_arbre        examen         49..50,10    libre   # EXAMINER le jeune arbre, depuis (49..50, 11) tourné ↑
+camion_mew          repere         3..5,24..25  bloque  # J32 (32J, N-3) : vieux camion du quai [D], EXAMINER de tous côtés (vermilion_truck)
+marin_rumeur        pnj            7,25         bloque  role=J32 facing=left  # J32 (N-3) : la rumeur du camion
 FIN
