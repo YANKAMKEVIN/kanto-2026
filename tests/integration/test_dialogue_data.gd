@@ -111,6 +111,23 @@ const J17_TOKENS: Dictionary[String, Array] = {
 ## Jalon 20 (T17) : le panneau neutre de la cabine du T16 est remplacé par `elevator_panel` (T13).
 ## S2C (option A de Kevin, 2026-10-21) : question du choix « Pêcher / Surfer » [D], à valider.
 const UNVALIDATED: Array[StringName] = [&"water_choice"]
+## Jalon 31 (T4, T5) : dialogues de la Grotte Azurée, joués quand ses cartes et la bouche
+## d'Azuria existeront (T6, 31A) ; textes [D] du plan §4 (cri de Mewtwo, refus d'accès).
+const IDS_J31: Array[StringName] = [
+	&"cerulean_cave_1f_item_1",
+	&"cerulean_cave_1f_item_2",
+	&"cerulean_cave_1f_item_3",
+	&"cerulean_cave_1f_hidden_1",
+	&"cerulean_cave_2f_item_1",
+	&"cerulean_cave_2f_item_2",
+	&"cerulean_cave_2f_item_3",
+	&"cerulean_cave_b1f_item_1",
+	&"cerulean_cave_b1f_item_2",
+	&"cerulean_cave_b1f_hidden_1",
+	&"mewtwo",
+	&"mewtwo_cry",
+	&"cerulean_cave_closed",
+]
 ## Passe systèmes 2 (T25b) : Téléport et Tunnel hors combat, joués par [FieldTravelDirector] ;
 ## textes provisoires du lot `systemes-2.md` §8.1 (pas encore dans un dossier).
 const S2_FIELD_TRAVEL: Array[StringName] = [&"dig_used", &"teleport_used", &"fly_takeoff",
@@ -162,6 +179,12 @@ const TEXTS_S2D_STRENGTH: Dictionary[StringName, Array] = {
 	&"strength_boulder_fell": ["Le rocher a dévalé dans le trou !"],
 	# Jalon 29 (T29-09) : un rocher enfonce un interrupteur (texte dans jalon-29-textes.md).
 	&"strength_switch_pressed": ["Clac ! Un mécanisme s'est enclenché quelque part."],
+}
+## Jalon 31 : textes proposés [D] du plan (`docs/tech/jalon-31.md` §4 ; la passe J31 n'en fournit
+## aucun), comparés mot pour mot en attendant la page d'arbitrages de Kevin.
+const TEXTS_J31_D: Dictionary[StringName, Array] = {
+	&"cerulean_cave_closed": ["Les eaux sont trop agitées. Pas maintenant."],
+	&"mewtwo_cry": ["Mew !"],
 }
 ## Jalon 24 : textes du dossier 27 §15 (validés le 2026-10-16) mis en page dans la bulle (retours
 ## à la ligne, panneaux « TITRE / texte », T-60 et T-62 écrits par fossile) et répliques de don
@@ -1337,7 +1360,7 @@ func test_library_loads_without_error() -> void:
 	var expected := IDS + IDS_J14_BILL + IDS_J14_ROCKET + IDS_J15_ROUTE_5 + IDS_J16_GYM \
 		+ IDS_J16_SHIP + IDS_J16_RIVAL_CAPTAIN + IDS_J16_T15 + IDS_J17 + IDS_J18 + IDS_J19 + IDS_J20 \
 		+ IDS_J20_T17 + IDS_J20_T21 + IDS_J21 + IDS_J21_T21 + IDS_S2B + S2_FIELD_TRAVEL + IDS_J21_T22 \
-		+ IDS_J24_TRAINERS + IDS_J24 + IDS_J25 + IDS_J28 + IDS_J29 + IDS_J29_MONDE \
+		+ IDS_J24_TRAINERS + IDS_J24 + IDS_J25 + IDS_J28 + IDS_J29 + IDS_J29_MONDE + IDS_J31 \
 		+ _silph_co_ids() + _j26_life_ids() + IDS_J26_STORY + _j27_ids()
 	expected.append_array(TEXTS_J26_T6.keys())
 	expected.append_array(TEXTS_S2C_FISH.keys())
@@ -1358,7 +1381,7 @@ func test_every_dialogue_is_used() -> void:
 	for id: StringName in _real_ids():
 		if UNUSED_YET.has(id) or PLAYED_BY_COMPANION.has(id) or PLAYED_BY_BOOT.has(id) \
 				or S2_FIELD_TRAVEL.has(id) or TEXTS_S2C_FISH.has(id) \
-				or TEXTS_S2D_STRENGTH.has(id) or _silph_co_ids().has(id):
+				or TEXTS_S2D_STRENGTH.has(id) or _silph_co_ids().has(id) or IDS_J31.has(id):
 			continue
 		assert_true(_used_on.has(id) or played.has(id),
 			"dialogue « %s » utilisé par un PNJ, un point ou une scène" % id)
@@ -1486,10 +1509,12 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		# Jalon 28 (T8) : Giovanni Champion (scène de l'Arène et rattrapage de la CT27).
 		+ [&"viridian_gym_giovanni_badge", &"viridian_gym_giovanni_departure",
 		&"viridian_gym_giovanni_intro", &"viridian_gym_giovanni_lost", &"viridian_gym_giovanni_resume",
-		&"viridian_gym_giovanni_tm", &"viridian_gym_giovanni_tm_got", &"viridian_gym_giovanni_won"]))
+		&"viridian_gym_giovanni_tm", &"viridian_gym_giovanni_tm_got", &"viridian_gym_giovanni_won"]
+		# Jalon 31 (T4) : cri de Mewtwo avant le combat.
+		+ [&"mewtwo_cry"]))
 	for id: StringName in played:
 		assert_true(_library.has_dialogue(id), "dialogue « %s » défini" % id)
-		if UNUSED_YET.has(id):
+		if UNUSED_YET.has(id) or IDS_J31.has(id):
 			continue
 		assert_true(_used_on.has(id), "« %s » joué depuis un déclencheur ou par le code" % id)
 	for id: StringName in [&"oak_starter_reciprocal", &"rival_starter_pick",
@@ -1635,6 +1660,18 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		&"saffron_gates_open",
 		# Jalon 20 (T12) : Évoli reçu (étape « gift_pokemon »).
 		&"eevee_received",
+		# Jalon 31 (T4) : objets de la Grotte Azurée ; Mewtwo (rencontre fixe, « static »).
+		&"got_cerulean_cave_1f_item_1",
+		&"got_cerulean_cave_1f_item_2",
+		&"got_cerulean_cave_1f_item_3",
+		&"got_cerulean_cave_1f_hidden_1",
+		&"got_cerulean_cave_2f_item_1",
+		&"got_cerulean_cave_2f_item_2",
+		&"got_cerulean_cave_2f_item_3",
+		&"got_cerulean_cave_b1f_item_1",
+		&"got_cerulean_cave_b1f_item_2",
+		&"got_cerulean_cave_b1f_hidden_1",
+		&"mewtwo_encounter_resolved", &"mewtwo_caught",
 		# Jalon 24 : objets et caches, Artikodin (rencontre fixe), CT35, fossiles confiés et reçus.
 		&"got_route_20_item_1", &"got_route_21_item_1", &"got_seafoam_b2f_hidden_1",
 		&"got_seafoam_b4f_hidden_1", &"articuno_done", &"articuno_caught", &"got_tm35",
@@ -1994,6 +2031,9 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 		if TEXTS_S2D_STRENGTH.has(row[0]):
 			assert_true(TEXTS_S2D_STRENGTH[row[0]].has(row[1]), "%s : %s" % [row[0], row[1]])
 			continue
+		if TEXTS_J31_D.has(row[0]):
+			assert_true(TEXTS_J31_D[row[0]].has(row[1]), "%s : %s" % [row[0], row[1]])
+			continue
 		if TEXTS_J24.has(row[0]):
 			assert_true(TEXTS_J24[row[0]].has(row[1]), "%s : %s" % [row[0], row[1]])
 			continue
@@ -2299,7 +2339,8 @@ func test_oak_parcel_lines() -> void:
 	# Jalon 27 (T8 à T10) : Morgane, le maître du Dojo et les deux Poké Balls (« confirm_cutscene »).
 	# Jalon 28 (T8) : Giovanni (Arène et rattrapage de la CT27) et le Rappel de l'Arène.
 	# Jalon 29 : dix objets au sol, cinq cachés, huit gardes, le rival n° 7 et Sulfura.
-	assert_eq(launched, 189, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
+	# Jalon 31 (T4) : huit objets au sol et deux cachés de la Grotte Azurée, Mewtwo.
+	assert_eq(launched, 200, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
 		+ "sa CT34, Ondine (pont, Arène et rattrapage), écran, module, console, objets de la "
 		+ "Route 25, le Rocket d'Azuria (2) et le barrage sud ; J15 : objets de la Route 5 ; "
 		+ "J16 : Major Bob (2), neuf objets du S.S. Anne, le capitaine, le marin (2) ; "
@@ -2311,7 +2352,8 @@ func test_oak_parcel_lines() -> void:
 		+ "J21 (T13, T14) : M. Fuji au 7F et dans sa maison ; J22 : la Canne, la Bicyclette ; "
 		+ "J24 : objets (2), caches (2), Artikodin, CT35, fossiles (2) ; J25 : Ptéra (1) ; "
 		+ "J26 : Lokhlass, Master Ball, deux objets du 7F ; J27 : Morgane, maître, deux Balls ; "
-		+ "J28 : Giovanni (2), Rappel ; J29 : objets, cachés, gardes, rival n° 7 et Sulfura")
+		+ "J28 : Giovanni (2), Rappel ; J29 : objets, cachés, gardes, rival n° 7 et Sulfura ; "
+		+ "J31 : Grotte Azurée (8 objets, 2 caches, Mewtwo)")
 	# Le jeton n'apparaît que dans la réplique de l'espèce, « {pokemon} » dans les phrases du
 	# compagnon (J11), et ceux de la Pension dans ses répliques (J15).
 	for row: Array in _pages():

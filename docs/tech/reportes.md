@@ -256,6 +256,12 @@ Les points RP-151 à RP-154, propres à `jalon-23` jusqu'ici, sont passés de la
 - **Icônes provisoires du Sac [D]** (couverture DAF.5) : CT05, CT43, CT47 = icône de la CT09 (Normal) ; CT17 = CT19 (Combat) ; Défense Spéc. (`guard_spec`) = Spécial X ; Max Éther (`max_ether`) = Potion Max. Icônes dédiées à peindre.
 - **Dédoublonnage** (RP-149, partie J27/J29) : `kanto_j27_emprunts.json` (M. Mime) et `moves/j27_emprunts.json` (Ultimawashi, Clonage) retirés, définitions identiques à celles du J29 ; `kanto_j29_reprises.json` (Alakazam, Leveinard, Lokhlass, identiques à ceux des J23 et J26) retiré, avec ses quatre fiches de Pokédex en double et les trois dessins provisoires en double de `gen_placeholder_battlers.gd`.
 
+### 2.12 Fusion du J31 dans `main` (2026-10-27, à classer RP-NNN)
+
+- **Fonds de combat provisoires [D]** (couverture DAF.2) : `cerulean_cave_1f`, `_2f`, `_b1f` → `dark_cave_galerie`. Fond dédié de la Grotte Azurée à peindre.
+- **Icônes provisoires du Sac [D]** (couverture DAF.5) : Max Élixir = Potion Max ; PP Plus = Hyper Potion. Icônes dédiées à peindre.
+- **Dédoublonnage** : `kanto_j31_emprunts.json` (Leveinard, Rhinoféros, identiques à ceux des J23 et J28) retiré, avec leurs deux fiches de Pokédex en double.
+
 ## 3. Propres à une branche non fusionnée
 
 Lecture seule ; ces points se règlent sur la branche ou à sa fusion (session du jalon). Les lignes

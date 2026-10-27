@@ -1,0 +1,77 @@
+{
+	"map": "cerulean_cave_1f",
+	"spawn": "arrivee_p7",
+	"facing": "up",
+	"flags": [
+		"mom_greeted",
+		"rival_met",
+		"oak_met",
+		"oak_lab_reunion",
+		"starter_offered",
+		"starter_chosen",
+		"taken_charmander",
+		"taken_squirtle",
+		"rival_lab_won",
+		"rival_challenged",
+		"rival_battle_done",
+		"rival_left_lab",
+		"viridian_arrived",
+		"got_oak_parcel",
+		"pokedex_activated",
+		"poison_unlocked",
+		"pewter_arrived",
+		"cerulean_reached",
+		"badge_boulder",
+		"badge_cascade",
+		"badge_thunder",
+		"badge_rainbow",
+		"badge_soul",
+		"badge_marsh",
+		"badge_volcano",
+		"badge_earth",
+		"league_champion_defeated",
+		"league_credits_seen",
+		"cerulean_cave_discovered"
+	],
+	"party": [
+		{
+			"species": "blastoise",
+			"level": 65,
+			"moves": [
+				"surf",
+				"hydro_pump",
+				"bite",
+				"ice_beam"
+			]
+		},
+		{
+			"species": "charizard",
+			"level": 63
+		},
+		{
+			"species": "raichu",
+			"level": 60
+		},
+		{
+			"species": "pidgeot",
+			"level": 60
+		},
+		{
+			"species": "venusaur",
+			"level": 62
+		},
+		{
+			"species": "nidoking",
+			"level": 60
+		}
+	],
+	"companion": 0,
+	"bag": {
+		"hm03": 1,
+		"ultra_ball": 30,
+		"full_restore": 10,
+		"max_revive": 5,
+		"super_rod": 1
+	},
+	"money": 50000
+}

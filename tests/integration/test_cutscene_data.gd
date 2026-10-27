@@ -465,6 +465,18 @@ const VARIANT_FLAGS: Dictionary = {
 	&"pokemon_mansion_b1f_item_3": [PEWTER_FLAGS],
 	&"pokemon_mansion_b1f_item_4": [PEWTER_FLAGS],
 	&"pokemon_mansion_b1f_item_5": [PEWTER_FLAGS],
+	# Jalon 31 (T4) : objets de la Grotte Azurée et Mewtwo (une variante, avant le drapeau).
+	&"cerulean_cave_1f_item_1": [[]],
+	&"cerulean_cave_1f_item_2": [[]],
+	&"cerulean_cave_1f_item_3": [[]],
+	&"cerulean_cave_1f_hidden_1": [[]],
+	&"cerulean_cave_2f_item_1": [[]],
+	&"cerulean_cave_2f_item_2": [[]],
+	&"cerulean_cave_2f_item_3": [[]],
+	&"cerulean_cave_b1f_item_1": [[]],
+	&"cerulean_cave_b1f_item_2": [[]],
+	&"cerulean_cave_b1f_hidden_1": [[]],
+	&"mewtwo": [[]],
 }
 ## Scènes jouées par le code (pas de déclencheur) → carte où elles sont jouées.
 ## Jalon 7 (T18) : la scène du colis est lancée par la variante « cutscene » du dialogue de Chen.
@@ -684,6 +696,19 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	# `pokemon_house_flute`, aussi lancée par le déclencheur d'entrée de la maison) et réveil du
 	# Ronflex 16 (« flute_cutscene » et choix OUI).
 	&"tower_7f_fuji_rescue": &"pokemon_tower_7f", &"snorlax_route_16_wake": &"route_16",
+	# Jalon 31 (T6) : objets de la Grotte Azurée (PNJ « objet »), caches (points d'examen sur
+	# l'indice), Mewtwo (son PNJ).
+	&"cerulean_cave_1f_item_1": &"cerulean_cave_1f",
+	&"cerulean_cave_1f_item_2": &"cerulean_cave_1f",
+	&"cerulean_cave_1f_item_3": &"cerulean_cave_1f",
+	&"cerulean_cave_1f_hidden_1": &"cerulean_cave_1f",
+	&"cerulean_cave_2f_item_1": &"cerulean_cave_2f",
+	&"cerulean_cave_2f_item_2": &"cerulean_cave_2f",
+	&"cerulean_cave_2f_item_3": &"cerulean_cave_2f",
+	&"cerulean_cave_b1f_item_1": &"cerulean_cave_b1f",
+	&"cerulean_cave_b1f_item_2": &"cerulean_cave_b1f",
+	&"cerulean_cave_b1f_hidden_1": &"cerulean_cave_b1f",
+	&"mewtwo": &"cerulean_cave_b1f",
 }
 ## Jalon 21 (T10, T12) : objets du Sac qui choisissent chaque variante (« if_items » /
 ## « unless_items »), ligne par ligne comme VARIANT_FLAGS ; absent : Sac vide. La variante A du
@@ -694,6 +719,7 @@ const VARIANT_ITEMS: Dictionary = {
 ## Scènes à déclencheur dont la carte n'est pas encore construite → leur carte (simulées sur les
 ## PNJ de son fichier). Vidée au T19 du jalon 9 (la forêt existe), puis au T11 du jalon 10 (les
 ## deux scènes d'Argenta ont leurs déclencheurs sur la carte).
+## Jalon 31 (T6) : vidée, les cartes de la Grotte Azurée existent (ses scènes sont dans CODE_PLAYED).
 const AWAITING_MAP: Dictionary[StringName, StringName] = {}
 ## Jalon 20 (T21) : interrupteur du Casino, Clé, Giovanni, Scope, objets et caches du repaire.
 const J20_T21_IDS: Array[StringName] = [
@@ -753,6 +779,20 @@ const J25_IDS: Array[StringName] = [
 	&"pokemon_mansion_b1f_item_3",
 	&"pokemon_mansion_b1f_item_4",
 	&"pokemon_mansion_b1f_item_5",
+]
+## Jalon 31 (T4) : objets de la Grotte Azurée et Mewtwo.
+const J31_IDS: Array[StringName] = [
+	&"cerulean_cave_1f_item_1",
+	&"cerulean_cave_1f_item_2",
+	&"cerulean_cave_1f_item_3",
+	&"cerulean_cave_1f_hidden_1",
+	&"cerulean_cave_2f_item_1",
+	&"cerulean_cave_2f_item_2",
+	&"cerulean_cave_2f_item_3",
+	&"cerulean_cave_b1f_item_1",
+	&"cerulean_cave_b1f_item_2",
+	&"cerulean_cave_b1f_hidden_1",
+	&"mewtwo",
 ]
 ## Jalon 18 (T16) : scènes de ses fichiers (objets, objectifs).
 const J18_IDS: Array[StringName] = [
@@ -880,7 +920,7 @@ func test_library_loads_without_error() -> void:
 		# Jalon 21 (T13, T14, T22) : 7F, Maison des Pokémon, Route 16.
 		&"tower_7f_fuji_rescue", &"pokemon_house_flute", &"route_16_visited",
 		&"snorlax_route_16_wake"]
-		+ J18_IDS + J20_T21_IDS + J25_IDS + J26_T9_ITEMS.keys()
+		+ J18_IDS + J20_T21_IDS + J25_IDS + J31_IDS + J26_T9_ITEMS.keys()
 		# Jalon 23 (T19) : Koga dans `j23_fuchsia_gym.json` (fichiers générés, test_j23_data).
 		# Jalon 26 (T11, T12) : rival n° 6, Lokhlass, Giovanni, Master Ball, objets du 7F.
 		+ [&"rival_silph", &"silph_co_lapras_gift", &"silph_co_giovanni", &"silph_co_master_ball",
@@ -1014,7 +1054,10 @@ func test_only_world_items_are_found_items() -> void:
 	for item: String in FOUND_J29:
 		assert_true(found.has(item), item)
 	found = found.filter(func(item: String) -> bool: return not FOUND_J29.has(item))
-	var expected: Array[String] = ["celadon_hidden_1:revive", "dark_cave_1f_item_1:escape_rope",
+	var expected: Array[String] = ["celadon_hidden_1:revive",
+		# Jalon 31 (T4) : objets de RB de la Grotte Azurée.
+		"cerulean_cave_1f_hidden_1:rare_candy", "cerulean_cave_1f_item_1:full_restore", "cerulean_cave_1f_item_2:max_elixir", "cerulean_cave_1f_item_3:nugget", "cerulean_cave_2f_item_1:pp_up", "cerulean_cave_2f_item_2:ultra_ball", "cerulean_cave_2f_item_3:full_restore", "cerulean_cave_b1f_hidden_1:ultra_ball", "cerulean_cave_b1f_item_1:ultra_ball", "cerulean_cave_b1f_item_2:max_revive",
+		"dark_cave_1f_item_1:escape_rope",
 		"dark_cave_1f_item_2:antidote", "dark_cave_b1f_hidden_1:super_potion",
 		"dark_cave_b1f_item_1:super_potion", "digletts_cave_item_1:escape_rope",
 		"mt_moon_1f_hidden_1:awakening", "mt_moon_1f_item_1:escape_rope",

@@ -13,7 +13,8 @@
 #   - CANAL EN L (eau, 4 cases de large, angles droits) : segment vertical x 26..29 du bord nord
 #     (il descend de la Route 24, sous le Pont Pépite) jusqu'au coin, segment horizontal y 15..18
 #     du coin à l'est, où il s'ouvre sur une baie (x 49..55) : la Grotte Azurée y est visible au
-#     loin, sur un îlot (repère bloqué, aucun accès, ni garde ni réplique).
+#     loin, sur un îlot (repère bloqué, aucun accès, ni garde ni réplique). Jalon 31 (31A, décision
+#     de Kevin du 2026-10-22) : on l'atteint en Surf après la Ligue (voir la position grotte_azuree).
 #   - QUAIS en pierre claire (2 à 3 cases de large) sur les deux rives ; TROIS PONTS : le pont
 #     central (x 31..33, 3 de large, dans l'axe place → sortie nord, vue depuis la place), le pont
 #     de l'Arène (x 40..41) et le pont ouest sur le canal vertical (y 8..9), 2 de large.
@@ -115,7 +116,7 @@ barriere_est         examen         53,22..24    bloque  # arbre + clôture : «
 barriere_sud         examen         30..34,38    bloque  # palissade de chantier : même réplique ; AUCUN warp
 arrivee_ouest        declencheur    1,19..21     libre   # déclencheur silencieux « cerulean_arrival » (T17) : tout pas vers l'est sur la 2e colonne, juste après le raccord
 arrivee_nord         declencheur    31..33,1     libre   # même scène depuis la Route 24 (arrivée par le nord, débogage) : pas vers le bas
-grotte_azuree        repere         51..54,3..6  bloque  role=vue  # la Grotte Azurée au loin, au-delà de l'eau : aucun accès, ni garde ni réplique
+grotte_azuree        repere         51..54,3..6  bloque  role=vue  # la Grotte Azurée au loin, au-delà de l'eau ; J31 (31A) : la bouche A (52..53, 6) est l'entrée, en Surf depuis le canal (eau surfable x 42..55, y 0..18, arrivée from_cerulean_cave (52, 7)), fermée sans le titre de Champion (build_cerulean_city.gd)
 h1_pecheur           pnj            25,14        bloque  role=H1 facing=right  # pêcheur sans canne, assis sur le quai ouest (quai de 3 cases)
 h2_enfant            pnj            31,16        bloque  role=H2 facing=right  # enfant qui regarde l'eau, sur le pont central (reste 2 cases libres)
 h3_voisine           pnj            21,10        bloque  role=H3 facing=left   # voisine, devant la maison ouverte, à côté de la maison cambriolée

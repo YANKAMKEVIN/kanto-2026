@@ -480,13 +480,14 @@ func test_new_items() -> void:
 
 
 func test_items_without_engine_support_wait_outside_the_libraries() -> void:
-	# Max Repousse et Max Élixir : data/j24_pending/, lu par aucune bibliothèque. Le Rappel
-	# (clé « revive ») est lu depuis le T11 du J20 (items_j20.json).
+	# Max Repousse : data/j24_pending/, lu par aucune bibliothèque. Le Rappel (clé « revive ») est
+	# lu depuis le T11 du J20 (items_j20.json) ; le Max Élixir depuis le J31 (items_j31.json, sans
+	# effet, fusion de main dans jalon-31 le 2026-10-24).
 	var pending: Dictionary = JSON.parse_string(
 		FileAccess.get_file_as_string(PENDING_DIR + "items.json"))
-	assert_eq((pending["items"] as Dictionary).keys(), ["max_repel", "max_elixir"])
-	for id: StringName in [&"max_repel", &"max_elixir"]:
-		assert_false(_items.has_item(id), String(id))
+	assert_eq((pending["items"] as Dictionary).keys(), ["max_repel"])
+	assert_false(_items.has_item(&"max_repel"))
+	assert_eq(_items.get_item(&"max_elixir").source, "res://data/items/items_j31.json")
 	assert_eq(_items.get_item(&"revive").source, "res://data/items/items_j20.json")
 
 
