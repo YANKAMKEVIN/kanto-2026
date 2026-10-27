@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bcl0nsrc2srre"
-path="res://.godot/imported/ph_viridian_gym.png-9350a5257deacbf1c77c46f49cf8dc3d.ctex"
+uid="uid://cbyui2177m5t"
+path="res://.godot/imported/viridian_gym_ground.png-f441c61f3879006905067470b60a31dd.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/world/interiors/placeholder/ph_viridian_gym.png"
-dest_files=["res://.godot/imported/ph_viridian_gym.png-9350a5257deacbf1c77c46f49cf8dc3d.ctex"]
+source_file="res://assets/world/maps/viridian_gym_ground.png"
+dest_files=["res://.godot/imported/viridian_gym_ground.png-f441c61f3879006905067470b60a31dd.ctex"]
 
 [params]
 
