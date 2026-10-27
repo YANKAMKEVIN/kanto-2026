@@ -141,14 +141,21 @@ func test_indigo_plateau_rest_fly_and_league_door() -> void:
 	var lobby := (load(MapCatalog.scene_path(&"indigo_plateau_lobby")) as PackedScene) \
 		.instantiate() as GameMap
 	add_child_autofree(lobby)
+	# J30 (fusion du J29, `jalon-30.md` §10.8) : la porte mène à la salle d'Olga ; la question du
+	# garde (T30-01) est posée sur la case devant elle.
 	var door: Warp = null
 	for warp: Warp in lobby.get_warps().get_all():
-		if warp.target_map.is_empty():
+		if warp.target_map == &"league_lorelei":
 			door = warp
-	assert_not_null(door, "porte de la Ligue « À venir »")
+	assert_not_null(door, "porte de la Ligue")
 	if door != null:
-		assert_eq(door.coming_soon, "Ligue Pokémon")
-	assert_true(lobby.get_triggers().is_empty(), "rien d'automatique dans le hall")
+		assert_eq([door.cell, door.target_spawn], [Vector2i(12, 3), &"from_lobby"])
+		assert_eq(door.coming_soon, "")
+	var triggers := lobby.get_triggers().get_all()
+	assert_eq(triggers.size(), 1, "seulement la question du garde")
+	if triggers.size() == 1:
+		assert_eq([triggers[0].cell, triggers[0].cutscene_id],
+			[Vector2i(12, 4), &"league_guard_door"])
 	var plateau := (load(MapCatalog.scene_path(&"indigo_plateau")) as PackedScene).instantiate() \
 		as GameMap
 	add_child_autofree(plateau)

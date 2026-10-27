@@ -507,6 +507,28 @@ func test_camera_limits_recomputed_on_viewport_size_changed() -> void:
 	assert_eq(_camera_limits(camera), expected)
 
 
+## QA S24 du J30 : reprise de l'appli pendant un combat (la vue change de taille) → la caméra
+## tenue par le combat garde son zoom et ses limites ; les limites de la carte reviennent à la
+## remise de la caméra.
+func test_camera_held_by_battle_is_not_reframed_on_viewport_size_changed() -> void:
+	var room := _make_room(Vector2i(10, 8))
+	add_child_autofree(room)
+	var player := (load(PLAYER_SCENE) as PackedScene).instantiate() as Player
+	room.spawn_player(player, &"start", Vector2i.DOWN)
+	var camera := player.get_camera()
+	player.hold_camera(true)
+	camera.zoom = Vector2.ONE * BattleStage.ZOOM
+	camera.limit_left = -BattleStage.LIMIT_FREE
+	player.get_viewport().size_changed.emit()
+	assert_eq(camera.zoom, Vector2.ONE * BattleStage.ZOOM, "zoom du combat gardé")
+	assert_eq(camera.limit_left, -BattleStage.LIMIT_FREE, "limites du combat gardées")
+	camera.zoom = Vector2.ONE
+	player.hold_camera(false)
+	var expected := CameraFraming.limits_for(
+		room.get_pixel_rect(), player.get_viewport_rect().size)
+	assert_eq(_camera_limits(camera), expected, "limites de la carte à la remise")
+
+
 # --- PNJ et points d'examen (jalon 3A §2.2, §2.3) ----------------------------------
 
 const NPC_FIXTURES := "res://tests/fixtures/npcs/"

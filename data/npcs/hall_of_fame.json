@@ -1,0 +1,11 @@
+{
+	"chen": {
+		"cell": [
+			5,
+			2
+		],
+		"facing": "down",
+		"sprite": "oak",
+		"dialogue": "league_oak_hall"
+	}
+}

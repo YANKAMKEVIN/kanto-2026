@@ -69,6 +69,10 @@ var _bump_direction: Vector2i = Vector2i.ZERO
 var _block_reasons: Dictionary[StringName, bool] = {}
 ## Rectangle monde de la carte courante (recalcul des limites si la vue change).
 var _map_bounds: Rect2i = Rect2i()
+## Caméra tenue par la vue de combat ([method hold_camera]) : un changement de taille de la vue
+## (reprise de l'appli sur Android) ne la recadre pas ; les limites sont recalculées à la remise.
+var _camera_held: bool = false
+var _camera_limits_stale: bool = false
 ## Taille affichée de l'apparence (image de repos × échelle).
 var _body_size: Vector2 = BODY_SIZE
 ## Apparence résolue au chargement.
@@ -458,6 +462,25 @@ func _update_animation(direction: Vector2i) -> void:
 
 
 func _on_viewport_size_changed() -> void:
+	if _mover == null:
+		return
+	if _camera_held:
+		# QA S24 du J30 : à la reprise de l'appli pendant un combat, la vue change de taille ; la
+		# caméra tenue par le combat (zoom, limites libres) était remise au zoom 1 sur la carte,
+		# et le fond flou du combat se recadrait.
+		_camera_limits_stale = true
+		return
+	_set_camera_limits(_map_bounds)
+
+
+## La vue de combat ([BattleStage]) prend la caméra ([param held] vrai) ou la rend (faux, après
+## avoir remis zoom et limites). Une taille de vue changée pendant la tenue est appliquée à la
+## remise.
+func hold_camera(held: bool) -> void:
+	_camera_held = held
+	if held or not _camera_limits_stale:
+		return
+	_camera_limits_stale = false
 	if _mover != null:
 		_set_camera_limits(_map_bounds)
 

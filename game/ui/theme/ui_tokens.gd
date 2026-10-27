@@ -1870,3 +1870,41 @@ const ELEVATOR_HERE_BG := Color(1, 1, 1, 0.06)
 const ELEVATOR_HERE_DOT := 16
 const ELEVATOR_SLIDE := PANEL_SLIDE
 const ELEVATOR_FADE := ANIM_PANEL
+
+# --- Panthéon et générique (J30 T15, T16, jalon-30.md §2.4) : défauts (règle 4) --------------------
+## Calque des deux écrans : au-dessus des menus, dialogues et combats, sous les transitions.
+const LAYER_HALL_OF_FAME := 90
+## Panthéon : ouverture et fermeture (fondu du fond nuit), entrée d'un Pokémon (fondu et léger
+## grossissement depuis HALL_ENTER_SCALE), tenue (un toucher l'abrège), sortie.
+const HALL_OPEN := 0.6
+const HALL_CLOSE := 0.5
+const HALL_ENTER := 0.6
+const HALL_ENTER_SCALE := 0.9
+const HALL_HOLD := 1.6
+const HALL_LEAVE := 0.3
+## Équipe entière : tenue minimale avant d'accepter le toucher qui ferme l'écran.
+const HALL_TEAM_MIN := 1.2
+## Un toucher n'est pris qu'après ce délai depuis l'ouverture (le doigt du dernier dialogue).
+const HALL_TAP_DELAY := 0.5
+## Artwork d'un Pokémon seul (hauteur), centre du halo (décalage vertical depuis le centre).
+const HALL_ART := 560
+const HALL_ART_CENTER_Y := -60.0
+const HALL_LINE_GAP := 16
+## Halo doré derrière le Pokémon seul.
+const HALL_HALO := Color(0.96, 0.77, 0.26, 0.35)
+const HALL_HALO_SIZE := 900.0
+## Équipe entière : artwork d'une carte et écart entre les cartes.
+const HALL_TEAM_ART := 260
+const HALL_TEAM_GAP := 24
+## Générique : fondu d'entrée et de sortie, vitesse de défilement (px de référence / s),
+## multiplicateur pendant un toucher tenu, tenue de la dernière ligne au centre.
+const CREDITS_FADE := 0.8
+const CREDITS_SPEED := 110.0
+const CREDITS_RUSH := 4.0
+const CREDITS_END_HOLD := 3.0
+const CREDITS_LOGO_HEIGHT := 300
+const CREDITS_LINE_GAP := 18
+const CREDITS_BLOCK_GAP := 140
+const CREDITS_SKIP_WIDTH := 260
+## Écran Dresseur : largeur minimale du lien « Panthéon » (J30, Q30-4).
+const TRAINER_HALL_LINK_WIDTH := 240

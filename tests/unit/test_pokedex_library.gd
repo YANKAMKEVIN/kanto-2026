@@ -43,7 +43,9 @@ const NAMED_SPECIES_OK: Dictionary[StringName, Array] = {&"magneton": [&"magnemi
 ## J20 (annexe A n° 204), Ossatueur a la sienne depuis le J21 (T5, dossier 24 §15.10).
 ## Jalon 31 : Métamorph et Mewtwo ont la leur (`docs/tech/jalon-31.md` §8.8, validées par Kevin
 ## le 2026-10-22).
-const NO_ENTRY_YET: Array[StringName] = []
+## Jalon 30 (T3) : les cinq espèces nouvelles de la Ligue n'ont pas encore de fiche (textes à écrire
+## et à valider, `docs/tech/reportes.md`) ; Rhinoféros, Kicklee et Tygnon ont celles de main.
+const NO_ENTRY_YET: Array[StringName] = [&"jynx", &"machamp", &"gengar", &"dragonair", &"dragonite"]
 
 var _data: PokemonData
 var _lib: PokedexLibrary

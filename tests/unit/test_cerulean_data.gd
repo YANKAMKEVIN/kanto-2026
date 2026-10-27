@@ -40,7 +40,7 @@ const MOVE_TEXTS := {
 	&"waterfall": ["Cascade",
 		"Le lanceur fonce sur la cible dans une gerbe d'eau. Peut l'apeurer."],
 	&"petal_dance": ["Danse Fleur",
-		"Le lanceur attaque dans une pluie de pétales. Sans effet dans le moteur actuel."],
+		"Le lanceur attaque dans une pluie de pétales pendant plusieurs tours, puis finit étourdi."],
 }
 
 var _data: PokemonData
@@ -190,11 +190,10 @@ func test_effects_existing_or_pending() -> void:
 	assert_eq(_data.get_move(&"absorb").pending_effects.size(), 0)
 	# Effets encore absents du moteur : en attente.
 	# Soin et Mur Lumière : joués depuis la passe systèmes 2.
-	var pending := {&"petal_dance": ["rampage"]}
-	for id: StringName in pending:
-		assert_eq(_data.get_move(id).pending_effects, PackedStringArray(pending[id]),
-			String(id))
-		assert_eq(_data.get_move(id).effects.size(), 0, String(id))
+	# Jalon 30 (Q30-3) : Danse Fleur jouée (effet « rampage », test_league_moves.gd).
+	var petal := _data.get_move(&"petal_dance")
+	assert_eq(petal.pending_effects.size(), 0)
+	assert_not_null(petal.effect_of(MoveEffect.Kind.RAMPAGE))
 
 
 # --- Pokédex ---------------------------------------------------------------------------------

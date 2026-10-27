@@ -1,0 +1,269 @@
+{
+	"jynx": {
+		"dex": 124,
+		"name": "Lippoutou",
+		"types": [
+			"ice",
+			"psychic"
+		],
+		"base_stats": {
+			"hp": 65,
+			"atk": 50,
+			"def": 35,
+			"spa": 115,
+			"spd": 95,
+			"spe": 95
+		},
+		"male_ratio": 0.0,
+		"growth_rate": "medium_fast",
+		"base_exp": 159,
+		"catch_rate": 45,
+		"learnset": [
+			[
+				1,
+				"pound"
+			],
+			[
+				1,
+				"lovely_kiss"
+			],
+			[
+				18,
+				"lick"
+			],
+			[
+				23,
+				"double_slap"
+			],
+			[
+				31,
+				"ice_punch"
+			],
+			[
+				39,
+				"body_slam"
+			],
+			[
+				47,
+				"thrash"
+			],
+			[
+				58,
+				"blizzard"
+			]
+		]
+	},
+	"machamp": {
+		"dex": 68,
+		"name": "Mackogneur",
+		"types": [
+			"fighting"
+		],
+		"base_stats": {
+			"hp": 90,
+			"atk": 130,
+			"def": 80,
+			"spa": 65,
+			"spd": 85,
+			"spe": 55
+		},
+		"male_ratio": 0.75,
+		"growth_rate": "medium_slow",
+		"base_exp": 227,
+		"catch_rate": 45,
+		"learnset": [
+			[
+				1,
+				"karate_chop"
+			],
+			[
+				1,
+				"low_kick"
+			],
+			[
+				1,
+				"leer"
+			],
+			[
+				20,
+				"low_kick"
+			],
+			[
+				25,
+				"leer"
+			],
+			[
+				36,
+				"focus_energy"
+			],
+			[
+				44,
+				"seismic_toss"
+			],
+			[
+				52,
+				"submission"
+			]
+		]
+	},
+	"gengar": {
+		"dex": 94,
+		"name": "Ectoplasma",
+		"types": [
+			"ghost",
+			"poison"
+		],
+		"base_stats": {
+			"hp": 60,
+			"atk": 65,
+			"def": 60,
+			"spa": 130,
+			"spd": 75,
+			"spe": 110
+		},
+		"male_ratio": 0.5,
+		"growth_rate": "medium_slow",
+		"base_exp": 225,
+		"catch_rate": 45,
+		"learnset": [
+			[
+				1,
+				"lick"
+			],
+			[
+				1,
+				"confuse_ray"
+			],
+			[
+				1,
+				"night_shade"
+			],
+			[
+				29,
+				"hypnosis"
+			],
+			[
+				38,
+				"dream_eater"
+			]
+		]
+	},
+	"dragonair": {
+		"dex": 148,
+		"name": "Draco",
+		"types": [
+			"dragon"
+		],
+		"base_stats": {
+			"hp": 61,
+			"atk": 84,
+			"def": 65,
+			"spa": 70,
+			"spd": 70,
+			"spe": 70
+		},
+		"male_ratio": 0.5,
+		"growth_rate": "slow",
+		"base_exp": 147,
+		"catch_rate": 45,
+		"learnset": [
+			[
+				1,
+				"wrap"
+			],
+			[
+				1,
+				"leer"
+			],
+			[
+				1,
+				"thunder_wave"
+			],
+			[
+				10,
+				"thunder_wave"
+			],
+			[
+				20,
+				"agility"
+			],
+			[
+				35,
+				"slam"
+			],
+			[
+				45,
+				"dragon_rage"
+			],
+			[
+				55,
+				"hyper_beam"
+			]
+		],
+		"evolutions": [
+			{
+				"into": "dragonite",
+				"method": "level",
+				"level": 55
+			}
+		]
+	},
+	"dragonite": {
+		"dex": 149,
+		"name": "Dracolosse",
+		"types": [
+			"dragon",
+			"flying"
+		],
+		"base_stats": {
+			"hp": 91,
+			"atk": 134,
+			"def": 95,
+			"spa": 100,
+			"spd": 100,
+			"spe": 80
+		},
+		"male_ratio": 0.5,
+		"growth_rate": "slow",
+		"base_exp": 270,
+		"catch_rate": 45,
+		"learnset": [
+			[
+				1,
+				"wrap"
+			],
+			[
+				1,
+				"leer"
+			],
+			[
+				1,
+				"thunder_wave"
+			],
+			[
+				1,
+				"agility"
+			],
+			[
+				10,
+				"thunder_wave"
+			],
+			[
+				20,
+				"agility"
+			],
+			[
+				35,
+				"slam"
+			],
+			[
+				45,
+				"dragon_rage"
+			],
+			[
+				60,
+				"hyper_beam"
+			]
+		]
+	}
+}

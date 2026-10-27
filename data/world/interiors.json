@@ -113,6 +113,12 @@
 		"route_12_gate",
 		"route_12_gate_2f",
 		"route_22_gate",
-		"indigo_plateau_lobby"
+		"indigo_plateau_lobby",
+		"league_lorelei",
+		"league_bruno",
+		"league_agatha",
+		"league_lance",
+		"league_champion",
+		"hall_of_fame"
 	]
 }

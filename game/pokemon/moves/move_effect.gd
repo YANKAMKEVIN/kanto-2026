@@ -97,6 +97,15 @@ extends RefCounted
 ## au moment du calcul ; [constant CRASH_RB_AMOUNT] si « amount » est absent). COUNTER : Riposte
 ## (capacité de statut, priorité −1 dans les données) : renvoie 2 × les dégâts du dernier coup reçu
 ## d'une capacité adverse de type Normal ou Combat ([Battle]).
+## Jalon 30 (`jalon-30.md` Q30-3, décision de Kevin du 2026-10-22 : coder les capacités de la
+## Ligue ; règles [D] dans [Battle]) :
+## [codeblock]
+## { "kind": "rage" }   { "kind": "rampage" }   { "kind": "mirror" }
+## [/codeblock]
+## RAGE : tant que le lanceur relance Frénésie, chaque coup direct reçu monte son Attaque d'un
+## niveau. RAMPAGE : 2 ou 3 tours d'affilée imposés, puis le lanceur est confus (Mania, Danse
+## Fleur). MIRROR : lance la dernière capacité de la cible (Mimique). Riposte, Pied Sauté et Pied
+## Voltige (COUNTER, CRASH) : codés par le J27, pas ici.
 
 enum Kind {
 	STAT_STAGE, RECOIL, SEED, STATUS, CONFUSION, HITS, FLINCH, CRIT_UP, FIXED_DAMAGE, BIDE,
@@ -107,6 +116,7 @@ enum Kind {
 	OHKO,
 	HEAL, SCREEN, HAZE,
 	CRASH, COUNTER,
+	RAGE, RAMPAGE, MIRROR,
 	## Jalon 24 (T13, dossier 27 §10.6) : Métronome lance une capacité tirée au hasard.
 	METRONOME,
 }
@@ -127,8 +137,12 @@ const KIND_NAMES: Dictionary[String, Kind] = {
 	"ohko": Kind.OHKO,
 	"heal": Kind.HEAL, "screen": Kind.SCREEN, "haze": Kind.HAZE,
 	"crash": Kind.CRASH, "counter": Kind.COUNTER,
+	"rage": Kind.RAGE, "rampage": Kind.RAMPAGE, "mirror": Kind.MIRROR,
 	"metronome": Kind.METRONOME,
 }
+## RAMPAGE (jalon 30) : tours d'affilée, premier compris (Mania, Danse Fleur ; RB : 2 ou 3).
+const RAMPAGE_MIN_TURNS: int = 2
+const RAMPAGE_MAX_TURNS: int = 3
 ## Modes de FIXED_DAMAGE.
 const FIXED_MODES: Array[StringName] = [&"half_hp", &"level", &"value", &"psywave"]
 ## SCREEN : murs connus (l'identifiant est aussi celui de la capacité).

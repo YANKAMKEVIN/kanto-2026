@@ -318,3 +318,366 @@ victoire et de défaite des quatre membres suivent le même modèle (avant / vai
 - **Q30-5 — Au-delà de 50 victoires** : arrêter d'ajouter (défaut) ou effacer la plus ancienne ?
 - **Q30-6 — Confirmation à la porte** : la passe dit « entrée volontaire » ; RB n'a pas de question.
   Défaut : une question OUI / NON (T30-01), pour ne pas entrer par erreur au doigt.
+
+## 10. Avancement — nuit du 2026-10-21 au 2026-10-22 (branche `jalon-30`, worktree `~/dev/kanto-2026-wt-j30`)
+
+Base : `origin/systemes-2` @ `8c2cb6ee` (passe systèmes 2 comprise) + `origin/plans-j26-j30` (docs).
+Textes et prénoms : propositions du plan, **validés par Kevin le 2026-10-21, validation d'avance
+(proposition du plan)**.
+
+**Décisions de Kevin du 2026-10-22** (relayées par la coordination, appliquées ici) :
+- **Q30-1** générique : défaut du plan (« Kanto 2026 — un remake personnel de Kevin », l'équipe du
+  joueur, « Merci d'avoir joué ») — à coder au T16 ;
+- **Q30-2** textes du plan : validés ;
+- **Q30-3** capacités de la Ligue sans effet : **les coder** (pas de remplacement) — Frénésie,
+  Mania / Danse Fleur, Mimique codées ici (§10.6) ; Riposte, Pied Sauté, Pied Voltige **codés par
+  le J27** (commit `865c97e7`, consigne de la coordination : pas de double codage) ;
+- **Q30-4** Panthéon consultable depuis le **Menu Dresseur** (écran Dresseur, lecture seule) — T15 ;
+- **Q30-5** au-delà de 50 entrées : **arrêter d'ajouter** — fait (`HallOfFame.add` → `FULL`) ;
+- **Q30-6** question OUI / NON à la porte de la Ligue : **oui** (T30-01, `league_guard_door`) ;
+- **ordre des validations de sauvegarde** : le J23 (v8) d'abord, puis le J30 (`hall_of_fame`)
+  **séparément**.
+- **défauts de la Ligue (§8) gardés** (décision de Kevin du 2026-10-22, le code les applique déjà) :
+  Frénésie selon la règle de 2e génération ; déclencheur à l'entrée de chaque salle ; Agatha et le
+  rival changent de Pokémon ; pas d'objets pour l'IA.
+
+### 10.1 Fait
+
+| Tâche | Livré |
+|---|---|
+| **T2** grilles | `tools/plans/ligue_olga.txt`, `ligue_aldo.txt`, `ligue_agatha.txt`, `ligue_peter.txt`, `ligue_champion.txt`, `pantheon.txt`, écrites par `tools/art/j30_rb_decode.py <pokered> --ecrire` (RB 1:1) ; contrôle `tools/art/plan_check_j30.py` (+ `--autotest`, 6 pièges) ; `tests/unit/test_league_plans.gd` |
+| **T3** données | `data/trainers/league.json` (Olga, Aldo, Agatha, Peter, `rival_champion` × 3 starters), vérifié contre pokered ; `tests/unit/test_league_data.gd` |
+| **T4** textes | `data/league/dialogues.json` (T30-01 à T30-17) ; `tests/unit/test_league_texts.gd` |
+| **T5** `LeagueAttempt` | `game/systems/league/league_attempt.gd` (pur, statique) ; `tests/unit/test_league_attempt.gd` |
+| **T6** `HallOfFame` | `game/systems/league/hall_of_fame.gd` (pur) ; `tests/unit/test_hall_of_fame.gd` |
+| **T7** (30A) champ de sauvegarde | `GameState.hall_of_fame`, champ facultatif `hall_of_fame` de la **v7** ; `tests/unit/test_save_v7_hall_of_fame.gd` |
+
+### 10.2 Valeurs et choix [D]
+
+- **Équipes** : pokered `parties.asm` (espèces, niveaux, ordre = la passe) ; capacités = celles
+  de RB au niveau (capacités de départ + apprentissage, la plus ancienne sort quand il y en a
+  quatre) ; **capacité d'équipe RB** (`special_moves.asm` : 3e capacité du 5e Pokémon) : Blizzard
+  (Lokhlass d'Olga), Abîme (Mackogneur d'Aldo), Toxik (Ectoplasma N60 d'Agatha), Bouclier
+  (Dracolosse de Peter) ; rival (`read_trainer_party.asm`) : Piqué au Roucarnage, Déflagration /
+  Blizzard / Méga-Sangsue au starter.
+- **Q30-3** (décision de Kevin : coder) : les équipes gardent **toutes** leurs capacités RB
+  (Mania de Lippoutou, Frénésie des Onix et du Dracaufeu du rival, Riposte de Tygnon, Pied Sauté
+  et Pied Voltige de Kicklee, Mimique du Roucarnage du rival) ; effets codés ici (§10.6), sauf
+  Riposte, Pied Sauté et Pied Voltige : **effets livrés par le J27** (ici encore « à faire »).
+  **Toxik** (Ectoplasma N60 d'Agatha) : poison grave **déjà codé par le J23** (fusionné avant le
+  J30) ; ici, simple poison en attendant (`j30_reprises.json`, `pending_effects: ["toxic"]`).
+- **Argent** : 99 par niveau du dernier Pokémon (pokered `pic_money … 9900`).
+- **IA** : `smart` ; changement de Pokémon pour **Agatha** (pokered `AgathaAI`) et le **rival
+  Champion** (comme les rivaux) ; les objets de l'IA RB (Super Potion d'Olga, Défense Spé. d'Aldo,
+  Hyper Potion de Peter, Guérison totale du rival) ne sont pas joués (l'IA du projet n'en a pas).
+- **Cartes de présentation** : « OLGA », « ALDO », « AGATHA », « PETER », titre « Conseil des
+  Quatre » ; le rival n'en a pas (comme ses autres combats).
+- **Grilles** : portes `X` ; porte nord `si=league_stage_<k>_cleared`, porte sud
+  `unless=league_attempt_active` ; déclencheur d'appel `appel_<membre>` (RB : `EntranceCoords`,
+  marche forcée) au-dessus de l'entrée (couloir chez Peter, rangée 5 chez le Champion) ; vue 4 ;
+  le membre reste en place une fois battu ; tuile RB `$30` (passage fermé par script) = sol ;
+  pourtour et îlots inaccessibles → mur ; entrée de Peter sur (23, 16), porte sur la case
+  d'arrivée RB (24, 16) ; Chen (3, 7) chez le Champion `si=league_stage_4_cleared` ; Panthéon
+  **sans porte** (la cérémonie enchaîne).
+- **Panthéon** : entrée = { date, play_time, player, starter, team [{ species, nickname, level,
+  uid }] } ; 6 Pokémon au plus ; **Q30-5** : au-delà de 50 entrées, `add` rend `FULL` et
+  n'efface rien ; une entrée mal formée d'une sauvegarde est écartée (les autres gardées).
+- **`LeagueAttempt`** : l'étape courante est la première non gagnée (un drapeau plus loin, fichier
+  retouché, ne fait rien sauter) ; `start` pendant une tentative ne remet rien à zéro (reprise) ;
+  `complete` n'est vrai qu'une fois (l'appelant n'ajoute l'entrée du Panthéon que sur vrai, dans
+  la même écriture).
+- **Textes** rangés dans `data/league/` (pas `data/dialogues/`) : `test_dialogue_data` exige que
+  chaque dialogue de `data/dialogues/` soit utilisé ; le fichier y passera avec les cartes (T9).
+
+### 10.3 Espèces et capacités : dépendances des autres branches (à régler à la fusion)
+
+Convention des « reprises » (J29) : copies exactes des entrées d'une autre branche, **à retirer**
+du J30 quand cette branche est fusionnée avant lui (sinon « identifiant déjà défini »).
+
+| Fichier | Contenu | Origine |
+|---|---|---|
+| `data/pokemon/species/kanto_j30.json` | Lippoutou, Mackogneur, Ectoplasma, Draco (→ Dracolosse N55), Dracolosse | nouvelles (J30) |
+| `data/pokemon/species/kanto_j30_reprises.json` | Lamantine, Crustabri, Flagadoss (J24) ; Lokhlass, Alakazam (J26, `kanto_silph.json`) ; Ptéra (J25) ; Rhinoféros (J28) ; Noadkoko (J29) ; Kicklee, Tygnon (J27, `kanto_saffron.json`) | copies exactes |
+| `data/pokemon/moves/j30.json` | Grobisou (nouvelle) | nouvelle |
+| `data/pokemon/moves/j30_emprunts.json` | **J27** (`saffron.json`) : Riposte, Pied Sauté, Pied Voltige (`hi_jump_kick`, Riposte priorité −1), copiés à l'identique de `865c97e7^` (version « à faire », `pending_effects`, car ce moteur n'a pas les sortes `crash` / `counter`) ; Poing-Glace, Poing-Éclair, Mawashi Geri (identiques à `origin/jalon-27`). **À la fusion : supprimer ce fichier, la version du J27 (effets livrés) fait foi** | emprunts |
+| `data/pokemon/moves/j30_reprises.json` | Blizzard, Picanon (J24) ; Déflagration, Poing de Feu (J25) ; Abîme (J28) ; Ultimawashi, Piqué (J29) ; **Toxik** (J23, **simplifié** : sans `toxic: true`, `pending_effects: ["toxic"]`, la base ne connaît pas la clé) | copies (Amnésie et Bouclier retirées : celles du J21 fusionné font foi, `j21.json`) |
+
+Statistiques des espèces nouvelles : valeurs modernes (comme le dépôt), `base_exp` de PokeAPI
+(`build/rb/pokeapi/pokemon.csv`) ; apprentissages RB complets. Pas de fiche de Pokédex pour les
+15 espèces (`NO_ENTRY_YET`, textes à écrire) ; pas de compatibilité de CT.
+Tests de décompte mis à jour (conflits attendus à la fusion, à résoudre en additionnant) :
+`test_pokemon_data` (104 espèces, 147 capacités, taux de capture, Draco), `test_mt_moon_data`,
+`test_pokedex_library`, `test_trainer_card` (Conseil des Quatre), `test_trainer_library`
+(changements : Agatha, rival Champion).
+
+### 10.4 Sous-jalon 30A : sauvegarde — **à valider SEUL par Kevin sur téléphone (règle 1)**
+
+- Champ **facultatif** `hall_of_fame` de la **v7**, comme `mount` (S2B) : **aucun changement de
+  version**, donc aucun conflit de numéro avec la **v8 du J23** (le champ reste facultatif dans
+  la v8). Écrit seulement si le Panthéon n'est pas vide ; absent ou illisible → Panthéon vide.
+- Tests : v7 sans le champ (partie réelle du S21) relue et **réécrite à l'identique** ; v6 migrée ;
+  dictionnaire « v8 » sans le champ ; aller-retour à l'identique ; entrée mal formée écartée et
+  signalée ; nouvelle partie = Panthéon vide.
+- La QA téléphone 30A (§7) attend les cartes (T9) et le directeur (T8) ; le champ seul peut être
+  validé avant (sauvegarde chargée puis réécrite sans différence).
+
+### 10.6 Capacités codées (Q30-3, décision de Kevin du 2026-10-22)
+
+Vérifié le 2026-10-22 : aucune branche `origin/jalon-21` … `jalon-29` ne codait Frénésie, Mania
+ni Mimique (le J24 code Métronome, le J23 Toxik ; le **J27 code Riposte, Pied Sauté et Pied
+Voltige**, commit `865c97e7` : non recodés ici). Code nouveau dans `game/battle/battle.gd` (bloc
+« Jalon 30 » en fin de fichier), `battler.gd`, `battle_ai.gd`, `move_effect.gd` (sortes `rage`,
+`rampage`, `mirror` ajoutées en fin d'enum : à fusionner avec `METRONOME` du J24 et `CRASH`,
+`COUNTER` du J27), données `moves.json` (Frénésie, Mania, Danse Fleur, Mimique) ; tests
+`tests/unit/test_league_moves.gd`.
+Règles [D] :
+- **Frénésie** (2e génération) : tant que le lanceur relance Frénésie, chaque coup direct reçu
+  monte son Attaque d'un niveau ; lancer autre chose y met fin (RB : bloqué jusqu'à la fin du
+  combat, non repris) ;
+- **Mania, Danse Fleur** (RB) : 2 ou 3 tours d'affilée imposés, sans PP après le premier, puis
+  confusion de fatigue (en fin de tour, 1 à 4 tours) ; interrompue (statut, apeurement,
+  confusion, Entrave) : elle s'arrête sans confusion ;
+- **Mimique** (RB) : copie la dernière capacité lancée par la cible (MOVE_USED « Mimique » puis
+  MOVE_USED de la copie, sans PP) ; échoue si rien à copier, Mimique, Lutte, ou capacité liée à
+  un emplacement (charge, Patience, Mania, Ultralaser) ; IA : seulement s'il y a quelque chose à
+  copier ;
+- **Riposte, Pied Sauté, Pied Voltige** : règles RB du J27 (voir `jalon-27.md`).
+
+### 10.7 Vérification
+
+Import headless sans erreur ; **suite complète 6 539 / 6 539** (598 scripts), journaux dans
+`build/logs/` du worktree ; `python3 -I tools/art/plan_check_j30.py` (+ `--autotest`) OK.
+
+### 10.5 Restant
+
+- **Q30-4** : entrée « Panthéon » de l'écran Dresseur du Menu (lecture seule de
+  `GameState.hall_of_fame`), avec le T15.
+- **À la fusion du J29** (§10.8) ; **T10** QA 30A (téléphone, seule) ;
+  **T11–T14** combats et équilibrage ; **T15–T18** Panthéon (écran), générique
+  (`data/story/credits.json`, Q30-1), scène `league_victory`, QA finale.
+
+### 10.8 T8 et T9 — 2026-10-23 (branche `jalon-30`, sans fusion du J29)
+
+**T8 — `LeagueDirector`** (`game/systems/league/league_director.gd`, bloc `_setup_league()` en fin
+de `game/boot.gd`, modèle `_setup_strength`) : relais de `SceneRouter.map_changed` (branché avant
+celui de Boot : drapeaux à jour avant la présence des PNJ) et de `BattleDirector.battle_finished`.
+- **Entrée** : arrivée dans `league_lorelei` hors tentative → `LeagueAttempt.start`, `beaten_*` des
+  cinq Dresseurs de la Ligue effacés, point de repos = `indigo_plateau_lobby` / `heal` ; toute
+  salle pendant la tentative (re)force ce point (départs de débogage).
+- **Victoire** contre le membre de l'étape courante → `league_stage_<k>_cleared` (+ `beaten_<id>`
+  posé par la scène d'appel) ; PNJ rafraîchis (Chen chez le Champion paraît aussitôt).
+- **Défaite** → drapeaux de tentative et `beaten_*` de la Ligue effacés **avant** l'étape
+  `wake_up` (réveil soigné, sauvegarde écrite au réveil par Boot).
+- **Portes** (aucun code de warp nouveau) : porte sud = warp `unless league_attempt_active` +
+  `FlagGate` bloquante `if league_attempt_active` ; porte nord = warp derrière une `FlagGate`
+  bloquante `unless league_stage_<k>_cleared` (le relais des drapeaux de Boot ouvre le battant).
+- **`no_fly` / `no_teleport`** : deux `@export` nouveaux de `GameMap` (après `battle_arena`, pour
+  ne pas toucher la zone modifiée par le J29), lus par `FlyDirector` et `FieldTravelDirector`
+  dans leurs `MapTraits`. Les salles sont aussi des intérieurs (Vol et Téléport déjà refusés).
+- **Champion** : la victoire pose `league_stage_4_cleared` et **s'arrête là** (pas de titre, pas de
+  Panthéon, pas de générique : T15–T17). La porte nord mène au Panthéon (Chen y attend, réplique
+  T30-15) **sans sortie** tant que la cérémonie n'existe pas : fin provisoire, connue.
+
+**T9 — cartes** : `tools/build_j30_league.gd` (modèle `tools/build_j29.gd` de `origin/jalon-29`,
+tuiles provisoires d'intérieur `InteriorTiles` : sol de labo, murs de labo, tapis sur les portes,
+battants dessinés) → `game/world/maps/league_{lorelei,bruno,agatha,lance,champion}.tscn`,
+`hall_of_fame.tscn` ; intérieurs, `no_fly`, `no_teleport`, lumière `interior_warm`, nom « Plateau
+Indigo » (zone `indigo_plateau`). PNJ : `data/npcs/<salle>.json` (membres en Dresseurs, vue 4, `heal_after:
+false` / IA `smart` / défaite = réveil par `league.json`) ; Chen `if league_stage_4_cleared` chez le
+Champion, Chen au Panthéon. Scènes d'appel `data/cutscenes/league.json` (`<dresseur>_call`, une
+variante `unless league_stage_<k>_cleared`) : marche forcée devant le membre, réplique, carte de
+présentation (pas pour le rival), combat (`win: beaten_<id>`), réplique « vaincu », sinon
+`rival_champion_won` (rival) puis `wake_up`. Textes : `data/league/dialogues.json` →
+`data/dialogues/league.json` ; en attente (`UNUSED_YET` de `test_dialogue_data`) :
+`league_guard_door` (hall du J29), `league_oak_to_rival`, `league_hall_welcome`, `league_ending`
+(T17).
+
+**Valeurs [D] choisies** :
+- sprites provisoires : Olga `cooltrainer_f`, Aldo `docker`, Agatha `channeler`, Peter `traveler`,
+  rival `rival`, Chen `oak` ;
+- Chen chez le Champion en **(3, 6)** au lieu de (3, 7) (grille et décodeur retouchés) : un PNJ ne
+  peut pas tenir sur la case d'un battant fermé ;
+- salle d'Olga : point d'arrivée **`from_lobby`** (même case que `from_south`, 4, 10) ; porte sud →
+  `indigo_plateau_lobby:league_door` (point du hall du J29 ; `from_league` n'existe pas) ;
+- déclencheurs d'appel sur toutes les directions de pas ; la scène d'appel ne lit que le drapeau
+  d'étape (`unless league_stage_<k>_cleared`) ;
+- départs : **10 Guérisons** à la place des 10 Hyper Potions (absente : elle vient du J22) ;
+  starter **de base** N60 en tête (clé du rival, convention du J29) ; point de repos de départ =
+  Jadielle (`league_*` : `rest_point: viridian_center`), remplacé par le Plateau dès que le hall
+  existe.
+
+**Écarts (J29 non fusionné)** :
+- le hall `indigo_plateau_lobby` et son point de repos `heal` n'existent pas ici : le directeur ne
+  change alors pas le point de repos (défaite → Jadielle dans les départs) ; les tests attendent
+  le Plateau **si** la carte existe, Jadielle sinon (aucune copie de la carte) ;
+- la porte sud d'Olga vise une carte absente (`indigo_plateau_lobby`) : sans effet, elle est
+  fermée pendant toute tentative et la tentative s'ouvre à l'arrivée ;
+- `zones.json` : la zone `indigo_plateau` reçoit les six salles, avec le sous-titre et la
+  description **du J29** (copie exacte) : conflit attendu sur ces lignes, à résoudre en
+  additionnant les cartes (`indigo_plateau`, `indigo_plateau_lobby` + les six salles) et les
+  services du J29. `interiors.json`, `lighting.json` : ajouts en fin de liste (conflits additifs).
+
+**À faire à la fusion du J29** :
+1. `tools/build_painted_interiors.gd`, `_indigo_plateau_lobby()` : warp `ToLeague` (12, 3), cible
+   vide aujourd'hui → `target_map = league_lorelei`, `target_spawn = from_lobby` (orientation
+   ↑) ; reconstruire le hall ;
+2. question **T30-01** (`league_guard_door`, OUI / NON, Q30-6) devant la porte : garde du hall (ou
+   déclencheur) dont le OUI ouvre le passage (le NON garde le joueur dans le hall) ; retirer
+   `league_guard_door` de `UNUSED_YET` et la porte « À venir » du J29 (`indigo_league_door`) ;
+3. vérifier `league_door` du hall (arrivée par la porte sud d'Olga hors tentative) et le point
+   `heal` (réveil) ; les tests `test_league_defeat` / `test_league_doors` passent alors sur le
+   Plateau sans changement ;
+4. retirer « Jadielle » des départs `league_*` si l'on veut (`rest_point: indigo_plateau_lobby`).
+
+**Départs de débogage** : `league_lorelei`, `league_agatha`, `league_champion_{bulbasaur,
+charmander,squirtle}`, `league_weak` (`tools/debug_start/README.md`).
+
+**Tests** : `tests/unit/test_league_director.gd` (8), `tests/unit/test_rival_champion.gd` (3),
+`tests/integration/test_league_doors.gd` (4 : scènes, battants contre `LeagueAttempt` à chaque
+étape, vraie partie : porte refermée, Vol refusé, victoire contre Olga → salle d'Aldo),
+`test_league_defeat.gd` (2), `test_league_save.gd` (3 : reprise dans la salle d'Agatha, arrêt
+pendant le combat → entrée de la salle, appel rejoué ; arrêt après le Champion → Chen, pas de
+titre), `test_league_resources.gd` (4). `test_dialogue_data`, `test_cutscene_data`,
+`test_league_texts`, `test_rival_name_layers` mis à jour (listes du J30). **Vérification** : import
+headless sans erreur ; suite complète **6 739 / 6 739** (627 scripts, 362 126 assertions),
+`build/logs/j30_t8t9_suite2.log` ; `plan_check_j30.py` (+ `--autotest`) OK. Captures (Mac) :
+`build/captures/jalon30_ligue/` (`tools/capture_j30_league.gd`).
+- Planche des grilles pour Kevin (sous-jalon 30.0) ; fiches de Pokédex des 15 espèces.
+
+## QA A17 du 2026-10-23
+
+Pas de session téléphone : rien de la Ligue n'est encore jouable dans l'APK (cartes T9,
+`LeagueDirector` T8 et départs `league_*` à venir ; seules les parties pures T2–T7 existent). À
+reprendre avec la session 30A.
+
+### 10.9 QA A17 du départ `league_lorelei` — 2026-10-24 (branche `jalon-30` `0123cd10`)
+
+Une passe d'agent par adb sur l'A17 (`ANDROID_SERIAL=R5GYB2R7W2Y`, `deploy_s24.sh --debug-start
+league_lorelei`), gestes par `adb shell input swipe` (glisser tenu = marche ; les touches
+`DPAD_*` ne font rien). Captures dans `build/qa_j30/` (non versionnées).
+- **Salle d'Olga** : arrivée `from_lobby`, porte nord fermée ; un pas vers le nord déclenche
+  `league_lorelei_call` : marche forcée devant Olga, réplique, carte « OLGA — Conseil des
+  Quatre », combat (Lamantine N54 en tête, Fuite grisée). Victoire → battants nord ouverts,
+  réplique « vaincu » au PARLER (« Tu as du talent… Va. Les autres t'attendent. ») ;
+  scène d'appel **ignorée** ensuite (aucune variante pour les drapeaux) : **OK**.
+- **Porte sud** pendant la tentative : joueur poussé contre elle, aucun warp : **OK**.
+- **Passage nord** → `league_bruno` (44,5 ms), `league_bruno_call` jouée aussitôt : **OK**.
+- **Défaite contre Aldo** (équipe perdue exprès) → réveil au Centre de Jadielle
+  (`viridian_center`, 143,9 ms ; attendu sans le hall du J29), équipe soignée (Salamèche
+  116 / 116) : **OK**.
+- Journal Godot : **aucune erreur ni avertissement**. Cadence : ≈ 49–50 i/s dans les salles,
+  **≈ 40 i/s en combat** (salles d'Olga et d'Aldo).
+- **Suite (même jour), départs `league_agatha`, `league_champion_*` et un départ temporaire
+  N100 (supprimé)** :
+  - Agatha : appel, carte, combat ; **Sac en combat** : Guérison ×6, cibles correctes (K.O. et
+    PV pleins grisés), Léviator 90 → 202 PV et poison soigné, une Guérison consommée ; victoire
+    → battants nord ouverts → `league_lance` (45,8 ms) : **OK** ;
+  - Peter : salle à l'entrée **par l'est** (fidèle à RB, `ligue_peter.txt`), couloir ouest,
+    appel, combat ; poison de Voltali gardé d'un combat à l'autre ; **défaite** → Jadielle
+    (128 ms) : **OK** ;
+  - Champion, trois variantes : appel de Régis, Roucarnage N61 en tête, Fuite grisée : **OK** ;
+    départ N100 : victoire → battants nord ouverts, Chen paraît en (3, 6) (« Kevin !
+    Félicitations… »), porte nord → `hall_of_fame` (6,2 ms), Chen (« Viens. Ton équipe mérite
+    d'entrer au Panthéon. »), Panthéon sans sortie (fin provisoire connue) : **OK** ;
+  - journal : aucune erreur ni avertissement.
+- **Deux défauts trouvés et corrigés** (branche `correctif-orientation-adversaires` depuis
+  `origin/main`, reprise ici par cherry-pick, `main` non touché) :
+  1. **Roucarnage tournait le dos au joueur** (remarque de Kevin) : l'artwork officiel de
+     l'adversaire était affiché tel quel, or 17 artworks regardent à droite. `BattleArt.
+     FACING_RIGHT` (2, 9, 10, 18, 21, 28, 30, 38, 53, 55, 58, 78, 83, 106, 118, 146, 147, relevés
+     sur planche des 151) → `"flip"` + boîte en miroir, `flip_h` dans `BattleStage` ; vu sur
+     l'A17 (Roucarnage, Tortank) ;
+  2. **Description de la Guérison coupée** à « d'un » dans le Sac de combat
+     (`max_lines_visible = 2`) → trois lignes ; vu sur l'A17.
+- Non couvert : rechargement d'une sauvegarde (les départs ne lisent ni n'écrivent la
+  sauvegarde ; QA 30A réservée à Kevin) ; hall du J29 (fusion à venir).
+- Suite complète après les deux correctifs : **6 741 / 6 741** (627 scripts).
+- Remarque : l'objectif du Menu Dresseur affiche « traverser le Pont Pépite » (drapeaux du départ
+  de débogage, sans effet sur une vraie partie).
+
+### 10.10 T15 à T17 — Panthéon, générique, retour à Bourg Palette (2026-10-26, branche `jalon-30`)
+
+Suite de la QA S24 du 2026-10-26 (« Panthéon sans sortie »). Sans fusion du J29 ni du J32.
+- **Enchaînement** : `rival_champion_call` a `"next": "league_victory"` (victoire) ; scène
+  `league_victory` (`if league_stage_4_cleared`) : Chen vient près du joueur, T30-13, T30-14
+  (tourné vers le rival), T30-15, passage au Panthéon (`hall_of_fame:from_south`), le joueur va
+  près de Chen, T30-16 « Bienvenue au Panthéon ! » (narration), **écran du Panthéon**, T30-17,
+  **générique**, `pallet_town:player_house_door` (tourné ↓) ; autosave d'arrivée.
+- **Deux étapes de scène nouvelles** (fin d'enum `CutsceneStep.Kind`, à additionner à la
+  fusion) : `hall_of_fame` (gestionnaire de Boot : cérémonie due → instantané `HallOfFame.snapshot`,
+  écran, `LeagueDirector.complete_ceremony` → titre, tentative effacée, entrée ajoutée ; puis
+  **une seule écriture** par le chemin de l'étape « save » ; déjà faite → rien) et `credits`.
+- **Reprise** : `LeagueDirector.pending_cutscene` ; arrivée (chargement) dans la salle du Champion
+  avec la victoire acquise → `league_victory` ; au Panthéon (cérémonie due **ou** titre posé) →
+  `league_hall_of_fame` (même fin sans Chen ; seule sortie du Panthéon, qui n'a pas de porte).
+  Jamais deux entrées : la cérémonie n'ajoute rien quand elle n'est plus due.
+- **Écran du Panthéon** (`game/ui/league/hall_of_fame_screen.gd`) : fond nuit, halo doré, chaque
+  Pokémon seul (artwork officiel, « {pokemon} — N{level} », nom de l'espèce sous un surnom),
+  tenue 1,6 s (toucher : suivant), puis l'équipe entière jusqu'au toucher ; en-tête « joueur ·
+  date ». **Générique** (`credits_screen.gd`, données `data/story/credits.json`, lecture pure
+  `CreditsData`) : logo du jeu (T30-19), Q30-1, joueur et équipe, merci ; défilement 110 px/s,
+  ×4 doigt posé ; bouton « Passer » seulement si `league_credits_seen` (posé à la fin du
+  générique). Jetons `UiTokens.HALL_*`, `CREDITS_*`, calque 90.
+- **J32 (N-17, N-18)** : `jalon-32` n'est pas dans `jalon-30` ; point de branchement noté dans
+  `LeagueDirector.complete_ceremony` (avant l'écriture) :
+  `StaticRespawn.on_league_won(<cutscenes>.get_static_encounters(), flags)`.
+- **Défaut mineur de la QA S24** corrigé : à la reprise de l'appli pendant un combat, la vue
+  change de taille et `Player._on_viewport_size_changed` remettait la caméra au zoom 1 sur les
+  limites de la carte (fond flou recadré). `BattleStage` prévient le joueur (`hold_camera`) ; la
+  taille changée est appliquée à la remise de la caméra.
+- **Valeurs [D]** : fond nuit uni (pas de fond peint) pour les deux écrans ; durées et tailles
+  ci-dessus ; en-tête date au format JJ/MM/AAAA ; Chen rejoint le joueur par la gauche (ou au-dessus).
+- **Textes du générique validés par Kevin le 2026-10-26** (« Oui, je valide ») : bloc « Pokémon ©
+  Nintendo, Creatures, Game Freak » / « Projet personnel, non officiel, jamais diffusé » ; bouton
+  « Passer » (visible seulement après un premier générique vu). « draft » retiré.
+- **Tests** : `test_league_ceremony.gd` (3 : cérémonie complète et sauvegarde, reprise au Panthéon
+  sans 2e entrée, 2e victoire et générique passable), `test_league_screens.gd` (3),
+  `test_credits_data.gd` (3), `test_league_director.gd` (+2), `test_cutscene_library.gd` (+3),
+  `test_game_map.gd` et `test_battle_stage.gd` (+1 chacun, caméra) ; `test_league_save.gd`,
+  `test_cutscene_data.gd`, `test_dialogue_data.gd`, `test_cutscene_flash.gd` mis à jour.
+  `test_no_draft_in_data.gd` : bloc [D] du générique nommé en attente. **Suite complète : 6 915 / 6 916**
+  (650 scripts), seul échec ce brouillon non nommé, corrigé puis revérifié à part ; import sans erreur.
+  Captures 2340 × 1080 relues : `build/captures/jalon30_ceremonie/`
+  (`tools/capture_j30_ceremony.gd`).
+- **Reste** : QA 30A de sauvegarde (Kevin, seule) ; QA téléphone 30C (Panthéon lisible, générique,
+  Bourg Palette, 2e victoire, 60 i/s) ; Q30-4 (Panthéon dans le Menu Dresseur) ; Grand moment
+  « champion » (§0.1, pas fait) ; porte du hall à la fusion du J29 (§10.8).
+
+### 10.11 Fusion du J29, porte du hall, Q30-4, Grand moment « champion » (2026-10-26)
+
+Décisions de Kevin du 2026-10-26 (« Oui, les trois »), relayées par la coordination.
+- **`origin/jalon-29` fusionné dans `jalon-30`** (`e5696824`, correctif d'orientation compris ;
+  §0.3 : le J30 se fusionne après le J29). Conflits : `zones.json` (Route 23 et Plateau du J29 +
+  les six salles), `interiors.json` (additionné), sprites provisoires de Lokhlass et d'Alakazam
+  (ceux du J30), tests de décompte additionnés (141 espèces, 154 capacités), `etat-projet.md`.
+  **Reprises dédoublonnées** : Noadkoko, Piqué, Ultimawashi (originaux du J29), Lokhlass,
+  Alakazam (copies identiques du J26 des deux côtés) retirés de `kanto_j30_reprises.json` et
+  `j30_reprises.json` ; leurs fiches de Pokédex sont celles du J29 (`NO_ENTRY_YET` réduit).
+- **Porte du hall** (§10.8) : warp `ToLeague` (12, 3) → `league_lorelei:from_lobby` ; déclencheur
+  sur (12, 4), scène `league_guard_door` (hors tentative) : T30-01 OUI → salle d'Olga (la tentative
+  s'ouvre, point de repos = Centre du hall), NON → le joueur recule d'un pas (`cancel_set`
+  `league_door_declined`, effacé ensuite). Deux gardes (`guard`) encadrent la porte en (11, 3) et
+  (13, 3), sans réplique [D]. La porte « À venir » du J29 (`indigo_league_door`) est retirée.
+  Départs `league_*` : point de repos `indigo_plateau_lobby`. Test : `test_league_hall_door.gd`.
+- **Q30-4** : lien « Panthéon » dans l'identité de l'écran Dresseur (sous l'argent) dès la
+  première entrée ; il ouvre l'écran du Panthéon en lecture seule (`HallOfFameScreen.browse`,
+  l'équipe de chaque entrée, la plus récente d'abord, un toucher pour la suivante).
+- **Grand moment « champion »** (§0.1) : `MomentLibrary.CHAMPION`, écrit par
+  `LeagueDirector.complete_ceremony` à la **première** victoire seulement [D] (chaque victoire a
+  son entrée au Panthéon). Texte (`data/trainer/moments.json`) **validé par Kevin le
+  2026-10-26** (« Je valide ») : titre « Champion de la Ligue Pokémon », détail « Ton équipe est
+  entrée au Panthéon. ».
+- Captures relues : `build/captures/jalon30_porte/` (`tools/capture_j30_hall_door.gd` : question
+  du garde, écran Dresseur avec « Panthéon », consultation).
+- Remarque de rendu (Reportés) : sur l'écran Dresseur, les liens « vus » / « capturés » sont
+  coupés par le bas de l'écran en 2340 × 1080 (déjà avant le J30).
+
+### 10.12 Fusion dans `main` (2026-10-27)
+
+Validations de Kevin : QA 30B et 30C par agent sur S24 sans bloquant ; textes du générique et du
+Grand moment validés le 2026-10-26 ; **QA 30A de sauvegarde faite par Kevin sur le S24 le
+2026-10-27** (salle d'Agatha avec une vraie sauvegarde : menu sauvegarder, verrouillage pendant le
+combat, appli fermée, arrière-plan, arrêt forcé : « oui je me retrouve bien au même endroit »).
+Fusion de `origin/main` (`d3c9bd36`) dans `prep/main-j30`, puis `--no-ff` dans `main` après une CI
+verte. Conflits, doublons retirés et valeurs [D] : `etat-projet.md` (2026-10-27) et
+`reportes.md` §2.13. `StaticRespawn.on_league_won` (N-17, N-18) : à brancher à la fusion du J32.

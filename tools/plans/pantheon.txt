@@ -1,0 +1,26 @@
+# Panthéon — grille fonctionnelle de `hall_of_fame` (jalon 30, T2, `docs/tech/jalon-30.md` §2.1).
+# ÉCRITE par tools/art/j30_rb_decode.py --ecrire depuis Rouge/Bleu (HallOfFame, 10 × 8,
+# coordonnées RB 1:1 [D]). Contrôle : tools/art/plan_check_j30.py. Proposée par Claude le
+# 2026-10-22, à valider par Kevin sur planche (sous-jalon 30.0).
+# Retouches [D] : 22 case(s) de sol RB inaccessibles ou au pourtour → mur (îlots décoratifs).
+# Toutes les salles de la Ligue : no_fly, no_teleport (pas de grotte : ni Tunnel ni Corde).
+#
+# Légende : # mur · . sol · X porte (warp, praticable ; conditions dans POSITIONS)
+
+PRATICABLES .X
+
+GRILLE 10 8
+00 ##########
+01 #...##...#
+02 #........#
+03 #........#
+04 #........#
+05 #........#
+06 #........#
+07 ##########
+FIN
+
+POSITIONS
+from_south           spawn          4,6          libre   # tourné ↑
+chen                 pnj            5,2          bloque  facing=down  # cérémonie, puis générique et Bourg Palette (scène, pas de porte)
+FIN

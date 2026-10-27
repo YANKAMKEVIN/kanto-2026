@@ -31,6 +31,10 @@
 		"giovanni": {
 			"title": "Le repaire sous le Casino",
 			"detail": "Giovanni est parti. Le Scope Sylphe est à toi."
+		},
+		"champion": {
+			"title": "Champion de la Ligue Pokémon",
+			"detail": "Ton équipe est entrée au Panthéon."
 		}
 	},
 	"outcomes": {

@@ -379,3 +379,23 @@ jusqu'à l'Âme. Aucune carte de QA (`qa_manoir`, `qa_cramois` du plan jamais cr
 | `j25_arene.json` | Cramois'Île devant l'Arène (`from_arene`, ↑), **Clé Secrète** et `got_pokemon_mansion_b1f_item_5` : porte (76–77), quiz, Dresseurs, Auguste, Badge Volcan, CT38 ; perdu au premier essai sur le S24 (`jalon-25-equilibrage.md` §5) |
 | `fx_gallery.json` | Combat vivant (CV.0, T8) : **galerie d'effets** à la place de la partie (clé `fx_gallery`) : une attaque par famille en boucle sur le décor de la Route 1, en Complètes ; le journal écrit `[galerie] <attaque> fps=… min=…` puis `[galerie] cycle …` à chaque tour (mesure du §2.8) |
 | `fx_gallery_fast.json` | Même galerie en mode Rapides |
+
+## Jalon 30 (T9) : la Ligue Pokémon
+
+Départs qui commencent **dans** la Ligue (salles en tuiles provisoires, `tools/build_j30_league.gd`).
+Point de repos de départ : **Centre de Jadielle** (`rest_point`) ; le `LeagueDirector` le remplace par
+le Centre du Plateau (`indigo_plateau_lobby`, `heal`) **dès que le hall du J29 existe** (avant la
+fusion du J29 : réveil à Jadielle). Équipe : starter **de base** N60 en tête (la clé du rival
+Champion est le starter choisi, comme au J29), Nidoking, Léviator, Staross, Kangourex, Voltali N60 ;
+**10 Guérisons** (`full_restore`) à la place des 10 Hyper Potions du plan (§2.8) : l'Hyper Potion
+n'existe pas encore sur cette base (elle vient du J22).
+
+| Fichier | Partie |
+|---|---|
+| `league_lorelei` | Début de tentative : salle d'Olga, à l'arrivée par la porte du hall (spawn `from_lobby`). L'arrivée ouvre la tentative (`league_attempt_active`) ; un pas vers le nord : appel d'Olga (marche forcée, réplique, carte « OLGA — Conseil des Quatre », combat). Porte sud fermée derrière le joueur |
+| `league_agatha` | Tentative en cours, Olga et Aldo battus (`league_stage_0/1_cleared`, `beaten_*`), salle d'Agatha (spawn `from_south`). Équipe abîmée : Salamèche 60 PV, Nidoking K.O., Léviator empoisonné, Kangourex 40 PV ; 6 Guérisons. Départ de la QA 30A (§7) |
+| `league_champion_bulbasaur`, `_charmander`, `_squirtle` | Tentative en cours, les quatre membres battus, salle du Champion (spawn `from_south`) : un pas vers le nord, le rival Champion (variante du starter) |
+| `league_weak` | Salamèche N10 seul, sans Sac, salle d'Olga : perdre → drapeaux de tentative effacés, réveil au point de repos (Jadielle avant le J29, Plateau ensuite) ; revenir chez Olga recommence tout |
+
+La victoire contre le Champion pose `league_stage_4_cleared` et **s'arrête là** (Chen paraît dans
+la salle ; la porte nord mène au Panthéon, sans sortie tant que la cérémonie du T17 n'existe pas).

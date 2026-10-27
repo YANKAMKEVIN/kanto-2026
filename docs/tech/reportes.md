@@ -262,6 +262,16 @@ Les points RP-151 à RP-154, propres à `jalon-23` jusqu'ici, sont passés de la
 - **Icônes provisoires du Sac [D]** (couverture DAF.5) : Max Élixir = Potion Max ; PP Plus = Hyper Potion. Icônes dédiées à peindre.
 - **Dédoublonnage** : `kanto_j31_emprunts.json` (Leveinard, Rhinoféros, identiques à ceux des J23 et J28) retiré, avec leurs deux fiches de Pokédex en double.
 
+### 2.13 Fusion du J30 dans `main` (2026-10-27, à classer RP-NNN)
+
+- **Ouverts sur `main` depuis la QA S24 30C** (passés de §3) : **RP-139** (objectif « traverser le Pont Pépite » revu après le générique, drapeaux du départ de débogage ; à vérifier en vraie partie, J33) et **RP-160** (Grand moment « Champion de la Ligue Pokémon » : détail coupé par le bas de l'écran Dresseur, la liste défile ; P2, P0 si le texte reste coupé après défilement ; J33 sur S24).
+- **Fonds de combat provisoires [D]** (couverture DAF.2 ; les salles n'ont pas de PNJ Dresseur dans `data/npcs`, le test général ne les voyait pas : `test_league_rooms_have_a_decor`) : `league_lorelei` → `seafoam_ice` ; `league_bruno` → `fighting_dojo_salle` ; `league_agatha` → `tour_pokemon` ; `league_lance` → `victory_road_grotte` ; `league_champion` → `viridian_gym_sol`. Fonds dédiés des cinq salles à peindre (DAF). Le Panthéon n'a pas de combat.
+- **Couverture déjà complète sur `main`** (aucune valeur ajoutée) : musiques des salles de la Ligue et du Panthéon (`music_zones.json`, `battle_music.json`, Son), points d'origine CV.A des 151 espèces (`fx_anchors.json`), cris ; le J30 n'ajoute aucun objet (pas d'icône du Sac).
+- **Fiches de Pokédex manquantes** : Lippoutou, Mackogneur, Ectoplasma, Draco, Dracolosse (`NO_ENTRY_YET` de `test_pokedex_library.gd`) ; textes à écrire et à faire valider par Kevin. Sprites de combat provisoires recolorés (`gen_placeholder_battlers_j30.gd`) : DAF.1/DAF.2.
+- **Dédoublonnage** (RP-149, partie J30, réglé) : `kanto_j30_reprises.json` (Rhinoféros, Kicklee, Tygnon), `moves/j30_reprises.json` (Abîme, Toxik simplifié) et `moves/j30_emprunts.json` (Riposte, Pied Sauté, Pied Voltige, poings, Mawashi Geri) retirés : les versions des J23, J27 et J28 font foi (effets `crash` / `counter` du J27). Description du Sac de combat : les 4 lignes de `main` (R-1) remplacent les 3 de `jalon-30`. `FACING_RIGHT` : celui de `main` (identique).
+- **RP-131** (fond flou recadré après une reprise pendant un combat) : le correctif du J30 (`Player.hold_camera`) entre dans `main`. **RP-137** : Q30-4 et Grand moment « champion » faits, textes du générique validés (reste : fond nuit uni des deux écrans, DAF). **RP-138** : QA 30A faite par Kevin sur le S24 le 2026-10-27, fermé. **RP-113** : Mackogneur et Ectoplasma sont maintenant dans les données (évolutions par échange : J32).
+- **RP-155** : `StaticRespawn.on_league_won(...)` (N-17, N-18) n'est pas dans `main` ; le commentaire de branchement reste dans `LeagueDirector.complete_ceremony`, à brancher à la fusion du J32.
+
 ## 3. Propres à une branche non fusionnée
 
 Lecture seule ; ces points se règlent sur la branche ou à sa fusion (session du jalon). Les lignes

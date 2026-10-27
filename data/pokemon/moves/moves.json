@@ -97,7 +97,7 @@
 	"rage": {
 		"name": "Frénésie", "type": "normal", "category": "physical",
 		"power": 20, "accuracy": 100, "pp": 20,
-		"pending_effects": ["rage"],
+		"effects": [{ "kind": "rage" }],
 		"description": "Le lanceur s'emporte. Son Attaque augmente à chaque coup reçu."
 	},
 	"slash": {
@@ -169,8 +169,8 @@
 	},
 	"mirror_move": {
 		"name": "Mimique", "type": "flying", "category": "status",
-		"accuracy": 0, "pp": 20, "pending_effects": ["mirror"],
-		"description": "Riposte avec la dernière capacité de la cible. Sans effet dans le moteur actuel."
+		"accuracy": 0, "pp": 20, "effects": [{ "kind": "mirror" }],
+		"description": "Riposte avec la dernière capacité de la cible."
 	},
 	"hyper_fang": {
 		"name": "Croc de Mort", "type": "normal", "category": "physical",
@@ -219,7 +219,7 @@
 	},
 	"thrash": {
 		"name": "Mania", "type": "normal", "category": "physical",
-		"power": 120, "accuracy": 100, "pp": 10, "pending_effects": ["rampage"],
+		"power": 120, "accuracy": 100, "pp": 10, "effects": [{ "kind": "rampage" }],
 		"description": "Le lanceur se déchaîne pendant plusieurs tours, puis finit étourdi."
 	},
 	"screech": {
@@ -400,8 +400,8 @@
 	},
 	"petal_dance": {
 		"name": "Danse Fleur", "type": "grass", "category": "special",
-		"power": 120, "accuracy": 100, "pp": 10, "pending_effects": ["rampage"],
-		"description": "Le lanceur attaque dans une pluie de pétales. Sans effet dans le moteur actuel."
+		"power": 120, "accuracy": 100, "pp": 10, "effects": [{ "kind": "rampage" }],
+		"description": "Le lanceur attaque dans une pluie de pétales pendant plusieurs tours, puis finit étourdi."
 	},
 	"struggle": {
 		"name": "Lutte", "type": "normal", "category": "physical",

@@ -1,0 +1,16 @@
+{
+	"agatha": {
+		"cell": [
+			5,
+			2
+		],
+		"facing": "down",
+		"sprite": "channeler",
+		"dialogue": "league_agatha_defeated",
+		"trainer": {
+			"id": "league_agatha",
+			"sight": 4,
+			"before": "league_agatha_before"
+		}
+	}
+}

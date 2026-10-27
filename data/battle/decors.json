@@ -560,6 +560,21 @@
 		"fuchsia_gym": [
 			{ "decor": "vermilion_gym_salle" }
 		],
+		"league_lorelei": [
+			{ "decor": "seafoam_ice" }
+		],
+		"league_bruno": [
+			{ "decor": "fighting_dojo_salle" }
+		],
+		"league_agatha": [
+			{ "decor": "tour_pokemon" }
+		],
+		"league_lance": [
+			{ "decor": "victory_road_grotte" }
+		],
+		"league_champion": [
+			{ "decor": "viridian_gym_sol" }
+		],
 		"route_22_west": [
 			{ "decor": "route_5_6_prairie" }
 		],

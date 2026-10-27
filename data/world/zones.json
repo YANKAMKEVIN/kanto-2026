@@ -197,7 +197,9 @@
 			"description": "Huit gardes, huit Badges. Au-delà de l'eau, la Route Victoire monte vers le Plateau Indigo."
 		},
 		"indigo_plateau": {
-			"name": "Plateau Indigo", "kind": "place", "maps": ["indigo_plateau", "indigo_plateau_lobby"],
+			"name": "Plateau Indigo", "kind": "place", "maps": ["indigo_plateau", "indigo_plateau_lobby",
+				"league_lorelei", "league_bruno", "league_agatha", "league_lance", "league_champion",
+				"hall_of_fame"],
 			"subtitle": "Route 23",
 			"services": [{ "id": "pokemon_center", "found_on": "indigo_plateau_lobby" }],
 			"description": "Le sommet de la Route 23. Derrière les portes du hall, la Ligue Pokémon attend les meilleurs Dresseurs."
