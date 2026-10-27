@@ -638,7 +638,8 @@ func test_status_effects_sit_above_the_sprite_without_touching_it() -> void:
 		var expected := _stage.get_sprite_rect(side)
 		assert_lt(rect.position.distance_to(expected.position), 8.0,
 			"l'effet suit la boîte visible du sprite (offset arrondi)")
-		assert_lt(rect.size.distance_to(expected.size), 1.0)
+		# La respiration (CV.3) étire le sprite de 2 % au plus, pieds fixes.
+		assert_lt(rect.size.distance_to(expected.size), expected.size.y * 0.025 + 1.0)
 		for status: StringName in StatusRules.KNOWN:
 			_stage.set_status(side, status)
 			await wait_process_frames(1)
@@ -661,8 +662,10 @@ func test_freeze_tint_follows_the_sprite_and_stays_with_reduced_motion() -> void
 	assert_true(aura.is_ice_shown(), "« Réduire les animations » garde la teinte")
 	var ice := aura.get_node(^"Ice") as Sprite2D
 	var sprite := _stage.get_sprite(FOE_SIDE)
-	assert_eq([ice.texture, ice.position, ice.scale, ice.offset],
-		[sprite.texture, sprite.position, sprite.scale, sprite.offset])
+	assert_eq([ice.texture, ice.position.x, ice.scale.x, ice.offset],
+		[sprite.texture, sprite.position.x, sprite.scale.x, sprite.offset])
+	# La copie de givre suit le corps, respiration comprise (CV.3 : 2 % au plus, pieds fixes).
+	assert_almost_eq(ice.scale.y, sprite.scale.y, sprite.scale.y * 0.021)
 	await aura.play_confusion()
 	assert_false(aura.is_confusion_shown(), "pas d'étoiles avec « Réduire les animations »")
 

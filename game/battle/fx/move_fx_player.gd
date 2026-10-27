@@ -52,6 +52,12 @@ const BOLT_JITTER: float = 0.035
 const BOLT_REDRAWS: int = 3
 const BOLT_WIDTH: float = 18.0
 const BEAM_WIDTH: float = 34.0
+## Jet d'eau (brique `jet` : Pistolet à O, Bulles d'O, Hydrocanon…) : nettement plus épais qu'un
+## rayon (Kevin, vidéo CV.3 : « trop fin »), cœur clair plus large, halo additif.
+const JET_WIDTH: float = 96.0
+const JET_CORE_WIDTH: float = 0.55
+const JET_HALO_WIDTH: float = 2.0
+const JET_HALO_ALPHA: float = 0.4
 ## Marques d'impact du Contact : griffe (3 entailles), crocs (2 arcs), perçant (1 trait).
 const MARK_WIDTH: float = 14.0
 ## Formes en deux couches (§2.9, lisibles sur un décor de plein jour) : un corps opaque de la
@@ -405,7 +411,7 @@ func _pose_effect(phase: MoveFxPlan.Phase, k: float) -> void:
 				"bolt":
 					_show_bolt(from, from.lerp(to, _ease_out(k)), floori(k * BOLT_REDRAWS), 1.0)
 				"beam", "ice_beam", "jet":
-					_show_beam(from, from.lerp(to, _ease_out(k)), k, 1.0)
+					_show_beam(from, from.lerp(to, _ease_out(k)), k, 1.0, travel == "jet")
 				_:
 					var depth := lerpf(1.0, PROJECTILE_FAR if _stage.user_is_player
 						else PROJECTILE_NEAR, k)
@@ -416,7 +422,7 @@ func _pose_effect(phase: MoveFxPlan.Phase, k: float) -> void:
 				"bolt":
 					_show_bolt(from, to, BOLT_REDRAWS + floori(k * 2.0), fade)
 				"beam", "ice_beam", "jet":
-					_show_beam(from, to, 1.0, fade)
+					_show_beam(from, to, 1.0, fade, travel == "jet")
 				_:
 					if phase.name == MoveFxPlan.MISS:
 						var past := to + (to - from) * MISS_OVERSHOOT * k
@@ -592,10 +598,19 @@ func _show_bolt(from: Vector2, to: Vector2, redraw: int, alpha: float) -> void:
 	_color_line(_bolt, BOLT_WIDTH, alpha)
 
 
-func _show_beam(from: Vector2, to: Vector2, k: float, alpha: float) -> void:
+func _show_beam(from: Vector2, to: Vector2, k: float, alpha: float, jet: bool = false) -> void:
 	_beam.visible = alpha > 0.0
 	_beam.points = PackedVector2Array([from, to])
-	_color_line(_beam, BEAM_WIDTH * lerpf(0.4, 1.0, k), alpha)
+	var width := (JET_WIDTH if jet else BEAM_WIDTH) * lerpf(0.4, 1.0, k)
+	_color_line(_beam, width, alpha)
+	var core := _beam.get_child(0) as Line2D
+	core.width = width * (JET_CORE_WIDTH if jet else CORE_WIDTH)
+	var halo := _beam.get_node(^"Halo") as Line2D
+	halo.visible = jet and alpha > 0.0
+	if halo.visible:
+		halo.points = _beam.points
+		halo.width = width * JET_HALO_WIDTH
+		halo.default_color = Color(_color(0), JET_HALO_ALPHA * alpha)
 
 
 func _pose_marks(k: float) -> void:
@@ -787,6 +802,11 @@ func _build() -> void:
 	_projectile.add_child(halo)
 	_bolt = _make_line(&"Bolt", BOLT_WIDTH)
 	_beam = _make_line(&"Beam", BEAM_WIDTH)
+	var jet_halo := _new_line(&"Halo", BEAM_WIDTH)
+	jet_halo.material = additive
+	jet_halo.show_behind_parent = true
+	jet_halo.visible = false
+	_beam.add_child(jet_halo)
 	for i: int in 3:
 		_marks.append(_make_line(&"Mark%d" % i, MARK_WIDTH))
 	_flip_additive = additive
