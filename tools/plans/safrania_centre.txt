@@ -1,0 +1,41 @@
+# Centre Pokémon de Safrania (saffron_center) — grille fonctionnelle v1 (jalon 26, T2 ; 2026-10-22).
+# COQUE CONNUE DU PROJET, recopiée telle quelle : tools/build_painted_interiors.gd `_pokemon_center`
+# (15 × 10, enveloppe int_centre_coque.png, mur du fond sur 3 rangées, comptoir et machine de soin,
+# terminal du Stockage, banquettes, plantes ; sortie (6..8, 8)). Le T6 construit la carte par
+# `_pokemon_center(&"saffron_center", "SaffronCenter", "Safrania", [&"saffron_city", &"from_center"])` :
+# cette grille ne fait que DOCUMENTER la coque (emprises approchées des meubles) et porter les PNJ.
+# Point de repos (réveil) : saffron_center ; le Vol arrive sur saffron_city:from_center.
+# Source RB des occupants : pret/pokered data/maps/objects/SaffronPokecenter.asm (infirmière, beauté
+# (5, 5), gentleman (8, 3), hôtesse du Câble (11, 2) non reprise [D]).
+#
+# Légende : K mur (bloqué) · . sol · X sortie vers Safrania (praticable : paillasson, PUSH ↓) ·
+# t terminal du Stockage (1..2, 3) · b comptoir arrière (5..6, 3), (8..9, 3) · c comptoir (6..8, 4)
+# · x plante · n banquette (bloqués). L'infirmière se tient en (7, 3), derrière le comptoir.
+
+CARTE saffron_center
+
+PRATICABLES .X
+
+GRILLE 15 10
+00 KKKKKKKKKKKKKKK
+01 KKKKKKKKKKKKKKK
+02 KKKKKKKKKKKKKKK
+03 Ktt..bb.bb..x.K
+04 K.....ccc.....K
+05 K.............K
+06 K.............K
+07 K..n........n.K
+08 Kx....XXX....xK
+09 KKKKKKKKKKKKKKK
+FIN
+
+POSITIONS
+sortie              warp           6..8,8       libre   to=saffron_city spawn=from_center  # PUSH ↓ → saffron_city, from_center
+entrance            spawn          7,8          libre   facing=up  # arrivée depuis Safrania (sur le paillasson, comme les autres Centres)
+heal                spawn          7,5          libre   facing=up  # devant l'infirmière (soin)
+terminal            spawn          1,4          libre   facing=up  # devant le terminal du Stockage
+infirmiere          pnj            7,3          bloque  role=nurse facing=down  # derrière le comptoir ; on lui parle depuis (6..8, 5)
+stockage            examen         1..2,3       bloque  depuis=1,4 face=N  # terminal du Stockage
+beaute              pnj            4,6          bloque  role=saffron_center_beauty facing=down  # RB beauté (5, 5)
+gentleman           pnj            10,5         bloque  role=saffron_center_gentleman facing=left  # RB gentleman (8, 3)
+FIN

@@ -1,0 +1,20 @@
+{
+	"employe_entree": {
+		"cell": [
+			9,
+			4
+		],
+		"facing": "left",
+		"sprite": "clerk",
+		"dialogue": "safari_zone_gate_employe_entree"
+	},
+	"employe_zones": {
+		"cell": [
+			2,
+			4
+		],
+		"facing": "right",
+		"sprite": "clerk",
+		"dialogue": "safari_zone_gate_employe_zones"
+	}
+}

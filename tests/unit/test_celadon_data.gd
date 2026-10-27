@@ -243,8 +243,10 @@ func test_stone_evolutions() -> void:
 		StoneUse.Check.INCOMPATIBLE)
 	# Les évolutions finales n'évoluent plus ; Mystherbe, Chétiflor : par niveau seulement.
 	for id: StringName in [&"arcanine", &"ninetales", &"vaporeon", &"jolteon", &"flareon",
-			&"victreebel", &"vileplume", &"tangela", &"rhyhorn", &"kangaskhan"]:
+			&"victreebel", &"vileplume", &"tangela", &"kangaskhan"]:
 		assert_eq(_data.get_species(id).evolutions.size(), 0, String(id))
+	# Jalon 28 (T3) : Rhinocorne évolue en Rhinoféros au N42 (Rouge/Bleu).
+	assert_eq(_data.get_species(&"rhyhorn").evolutions.size(), 1, "rhyhorn → rhydon")
 	for id: StringName in [&"oddish", &"bellsprout"]:
 		assert_eq(StoneUse.check(_mon(id), &"leaf_stone", _data), StoneUse.Check.INCOMPATIBLE)
 
@@ -328,7 +330,8 @@ func test_new_items() -> void:
 			[ItemData.Category.HEAL, row[1], row[2], 0], String(row[0]))
 	var key := _items.get_item(&"lift_key")
 	var scope := _items.get_item(&"silph_scope")
-	assert_eq([key.category, key.obtained, key.price], [ItemData.Category.KEY, false, 0])
+	# Arbitrage R-2 (Kevin, 2026-10-26) : « obtenue », comme le Scope Sylphe.
+	assert_eq([key.category, key.obtained, key.price], [ItemData.Category.KEY, true, 0])
 	assert_eq([scope.category, scope.obtained, scope.price], [ItemData.Category.KEY, true, 0])
 	# T-55, deuxième ligne (lot validé) : pas de brouillon.
 	assert_eq(scope.description, "Il permet de voir ce que l'œil seul ne voit pas.")

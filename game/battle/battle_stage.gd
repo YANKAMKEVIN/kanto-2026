@@ -239,6 +239,8 @@ var _anchors: Dictionary = {}
 ## Image de chaque côté : boîte visible (px de la texture, pieds au bas-centre) et échelle.
 var _boxes: Dictionary[BattleEvent.SideId, Rect2] = {}
 var _scales: Dictionary[BattleEvent.SideId, float] = {}
+## Cadrage B : de combien de px les pieds du dos passent sous le bord bas (côté du joueur).
+var _sinks: Dictionary[BattleEvent.SideId, float] = {}
 var _art := BattleArt.new()
 var _artwork_material: ShaderMaterial
 var _shadow_texture: GradientTexture2D
@@ -868,20 +870,12 @@ func play_throw() -> void:
 	var target := _foe_center()
 	_ball_rest = _anchor(foe) + Vector2(0.0, -BALL_RADIUS * BALL_REST_SCALE + 6.0)
 	_absorb_point = target
-	# Le dresseur entre en glissant depuis la gauche.
-	_thrower.texture = THROWER_TEXTURE
-	_thrower.scale = Vector2.ONE * scale
-	_thrower.position = feet + Vector2(-THROWER_SLIDE, 0.0)
-	_thrower.modulate = Color(1, 1, 1, 0)
-	_thrower.visible = true
-	var enter := _new_tween()
-	enter.set_parallel(true)
-	enter.tween_property(_thrower, ^"position", feet, THROWER_ENTER_DURATION) \
-		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	enter.tween_property(_thrower, ^"modulate:a", 1.0, THROWER_ENTER_DURATION)
-	await _play(enter)
-	if not _active:
-		return
+	# Le dresseur entre en glissant depuis la gauche (J23 : sauf s'il est déjà en place, dos du
+	# joueur de la rencontre Safari, [method play_trainer_enter]).
+	if not is_trainer_shown():
+		await play_trainer_enter()
+		if not _active:
+			return
 	# La Ball part de sa main, en arc, et tourne sur elle-même.
 	var hand := feet + THROWER_HAND * scale
 	_ball.visible = true
@@ -1244,6 +1238,7 @@ func _apply_reset() -> void:
 	_buried.clear()
 	_boxes.clear()
 	_scales.clear()
+	_sinks.clear()
 	_arena = Rect2()
 	_bounds = Rect2()
 	_decor = null
@@ -1295,6 +1290,11 @@ func _set_texture(side: BattleEvent.SideId) -> void:
 	sprite.material = _artwork_material if official else null
 	var scale := BattleLayout.sprite_scale(box.size, _art.height_m(species), back,
 		_view_size().y, not official)
+	if back:
+		var crop: float = image.get("crop", BattleLayout.BACK_CROP)
+		scale = BattleLayout.back_scale(box.size, _art.height_m(species), _view_size().y, crop,
+			not official)
+		_sinks[side] = BattleLayout.back_sink(box.size, scale, crop)
 	_boxes[side] = box
 	_scales[side] = scale
 	if official:
@@ -1309,12 +1309,16 @@ func _box(side: BattleEvent.SideId) -> Rect2:
 
 
 ## Sprite et ombre de [param side] : pieds sur [param feet] (écran), échelle [param scale].
+## Cadrage B : ton Pokémon, coupé par le bord bas, n'a pas d'ombre au sol (ombre de taille nulle).
 func _place(side: BattleEvent.SideId, feet: Vector2, scale: float) -> void:
 	var sprite := _sprites[side]
 	sprite.position = feet
 	sprite.scale = Vector2.ONE * scale
 	var shadow := _shadows[side]
 	shadow.position = feet
+	if side == BattleEvent.SideId.PLAYER:
+		shadow.scale = Vector2.ZERO
+		return
 	var width := _box(side).size.x * scale * SHADOW_WIDTH
 	shadow.scale = Vector2(width, width * SHADOW_FLATTEN) / _shadow_texture.get_size()
 
@@ -1328,9 +1332,13 @@ func _rest(side: BattleEvent.SideId) -> void:
 	_sprites[side].modulate = Color(1, 1, 1, alpha)
 
 
+## Pieds de [param side] au repos. Ton Pokémon (cadrage B) : bord bas du dos, ses pieds enfoncés
+## de la part coupée de l'image ([method BattleLayout.back_sink]).
 func _anchor(side: BattleEvent.SideId) -> Vector2:
-	var key := "player_feet" if side == BattleEvent.SideId.PLAYER else "foe_feet"
-	return _anchors.get(key, Vector2.ZERO)
+	if side == BattleEvent.SideId.PLAYER:
+		var bottom: Vector2 = _anchors.get("player_back", Vector2.ZERO)
+		return bottom + Vector2(0.0, _sinks.get(side, 0.0))
+	return _anchors.get("foe_feet", Vector2.ZERO)
 
 
 func _anchor_scale(side: BattleEvent.SideId) -> float:
@@ -1377,13 +1385,14 @@ func _play(tween: Tween) -> void:
 # --- Décor peint (CB.3) ----------------------------------------------------------------
 
 ## Calques du décor peint (aucun dans la scène .tscn) : le fond juste au-dessus du flou du
-## monde, sous les ombres ; le premier plan devant le Pokémon du joueur (sous les accessoires
-## de la capture et l'éclair).
+## monde, sous les ombres ; le premier plan juste **derrière** le Pokémon du joueur (cadrage B,
+## 2026-10-25 : le dos agrandi passe devant le feuillage flou), sous les accessoires de la
+## capture et l'éclair.
 func _build_decor() -> void:
 	_decor_back = _make_decor_layer(&"DecorBack")
 	move_child(_decor_back, _backdrop.get_index() + 1)
 	_decor_front = _make_decor_layer(&"DecorFront")
-	move_child(_decor_front, _sprites[BattleEvent.SideId.PLAYER].get_index() + 1)
+	move_child(_decor_front, _sprites[BattleEvent.SideId.PLAYER].get_index())
 
 
 func _make_decor_layer(layer_name: StringName) -> Sprite2D:
@@ -1601,3 +1610,32 @@ func _set_burst(t: float, origin: Vector2, color: Color) -> void:
 		spark.position = origin + Vector2.from_angle(angle) * SPARK_DISTANCE * out
 		spark.scale = Vector2.ONE * lerpf(0.18, 0.05, t)
 		spark.modulate = Color(color, 1.0 - t)
+
+
+# --- J23 : rencontre Safari, dos du joueur ---------------------------------------------------
+
+## Coroutine (~0,3 s) : le dresseur de dos (image provisoire du lancer, `heros_lancer.png`) entre
+## en glissant depuis la gauche et reste à sa place (rencontre Safari : aucun Pokémon allié,
+## dossier 26 §5.1 ; art final « dos du joueur » au lot 23.0, `jalon-23.md` §2.17). Sans effet
+## hors combat ou s'il est déjà en place.
+func play_trainer_enter() -> void:
+	if not _active or is_trainer_shown():
+		return
+	_build_capture_props()
+	var feet := thrower_feet(_view_size())
+	_thrower.texture = THROWER_TEXTURE
+	_thrower.scale = Vector2.ONE * THROWER_SCALE
+	_thrower.position = feet + Vector2(-THROWER_SLIDE, 0.0)
+	_thrower.modulate = Color(1, 1, 1, 0)
+	_thrower.visible = true
+	var enter := _new_tween()
+	enter.set_parallel(true)
+	enter.tween_property(_thrower, ^"position", feet, THROWER_ENTER_DURATION) \
+		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	enter.tween_property(_thrower, ^"modulate:a", 1.0, THROWER_ENTER_DURATION)
+	await _play(enter)
+
+
+## Le dresseur de dos est en place (visible, opaque).
+func is_trainer_shown() -> bool:
+	return _thrower != null and _thrower.visible and _thrower.modulate.a >= 0.99

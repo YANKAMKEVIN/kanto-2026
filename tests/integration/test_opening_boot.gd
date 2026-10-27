@@ -193,6 +193,13 @@ func test_the_backdrop_is_pallet_town_in_decor_mode() -> void:
 	assert_eq(GameState.flags.size(), 0)
 
 
+func test_the_title_backdrop_is_at_golden_hour() -> void:
+	await _launch()
+	var lighting := _boot.get_world_lighting()
+	assert_eq(lighting.get_profile().id, &"golden_hour", "profil de Bourg Palette (DAF.7b)")
+	assert_true(lighting.is_grade_visible(), "étalonnage posé sur le décor du titre")
+
+
 func test_nothing_is_written_while_the_title_is_shown() -> void:
 	_put_save(_fixture_text())
 	await _launch()

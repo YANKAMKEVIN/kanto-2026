@@ -5,7 +5,7 @@
 			6
 		],
 		"facing": "down",
-		"sprite": "naturalist",
+		"sprite": "bird_keeper",
 		"dialogue": "route_18_bird_1_after",
 		"trainer": {
 			"id": "route_18_bird_1",
@@ -20,7 +20,7 @@
 			14
 		],
 		"facing": "up",
-		"sprite": "naturalist",
+		"sprite": "bird_keeper",
 		"dialogue": "route_18_bird_3_after",
 		"trainer": {
 			"id": "route_18_bird_3",
@@ -35,7 +35,7 @@
 			10
 		],
 		"facing": "down",
-		"sprite": "naturalist",
+		"sprite": "bird_keeper",
 		"dialogue": "route_18_bird_2_after",
 		"trainer": {
 			"id": "route_18_bird_2",

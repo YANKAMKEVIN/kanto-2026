@@ -1,0 +1,43 @@
+{
+	"safari_zone_north_panneau_maison_repos": {
+		"narration": true,
+		"pages": [
+			"MAISON DE REPOS"
+		]
+	},
+	"safari_zone_north_panneau_conseils_1": {
+		"narration": true,
+		"pages": [
+			"CONSEIL DE DRESSEUR",
+			"La Maison Secrète est encore plus loin !"
+		]
+	},
+	"safari_zone_north_panneau_zone": {
+		"narration": true,
+		"pages": [
+			"PARC SAFARI — ZONE NORD",
+			"Sud : ZONES OUEST et CENTRE"
+		]
+	},
+	"safari_zone_north_panneau_conseils_2": {
+		"narration": true,
+		"pages": [
+			"CONSEIL DE DRESSEUR",
+			"Les Pokémon se cachent dans les herbes.",
+			"Zigzague pour les débusquer !"
+		]
+	},
+	"safari_zone_north_panneau_conseils_3": {
+		"narration": true,
+		"pages": [
+			"GRANDE EXPLORATION !",
+			"Qui trouvera la Maison Secrète ?"
+		]
+	},
+	"safari_zone_north_proteine": {
+		"cutscene": "safari_zone_north_proteine"
+	},
+	"safari_zone_north_ct40": {
+		"cutscene": "safari_zone_north_ct40"
+	}
+}

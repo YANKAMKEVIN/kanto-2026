@@ -1,0 +1,30 @@
+{
+	"proteine": {
+		"cell": [
+			25,
+			1
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "safari_zone_north_proteine",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_safari_zone_north_proteine"
+		]
+	},
+	"ct40": {
+		"cell": [
+			19,
+			7
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "safari_zone_north_ct40",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_safari_zone_north_ct40"
+		]
+	}
+}

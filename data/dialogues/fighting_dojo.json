@@ -1,0 +1,214 @@
+{
+	"fighting_dojo_blackbelt_hippolyte_before": {
+		"speaker": "Karatéka Hippolyte",
+		"pages": [
+			"Hiyah ! Montre-moi\nta force !"
+		]
+	},
+	"fighting_dojo_blackbelt_hippolyte_defeated": {
+		"speaker": "Karatéka Hippolyte",
+		"pages": [
+			"Ouch ! Belle frappe !"
+		]
+	},
+	"fighting_dojo_blackbelt_hippolyte_after": {
+		"speaker": "Karatéka Hippolyte",
+		"pages": [
+			"Le maître est au fond.\nIl ne recule jamais."
+		]
+	},
+	"fighting_dojo_blackbelt_tancrede_before": {
+		"speaker": "Karatéka Tancrède",
+		"pages": [
+			"Un disciple de plus ?\nPrépare-toi !"
+		]
+	},
+	"fighting_dojo_blackbelt_tancrede_defeated": {
+		"speaker": "Karatéka Tancrède",
+		"pages": [
+			"J'ai encore à apprendre."
+		]
+	},
+	"fighting_dojo_blackbelt_tancrede_after": {
+		"speaker": "Karatéka Tancrède",
+		"pages": [
+			"Nos Pokémon s'entraînent\njour et nuit."
+		]
+	},
+	"fighting_dojo_blackbelt_urbain_before": {
+		"speaker": "Karatéka Urbain",
+		"pages": [
+			"Mon Colossinge est en colère !\nRecule !"
+		]
+	},
+	"fighting_dojo_blackbelt_urbain_defeated": {
+		"speaker": "Karatéka Urbain",
+		"pages": [
+			"Il s'est calmé…"
+		]
+	},
+	"fighting_dojo_blackbelt_urbain_after": {
+		"speaker": "Karatéka Urbain",
+		"pages": [
+			"Le maître garde deux Pokémon\npour les plus forts."
+		]
+	},
+	"fighting_dojo_blackbelt_wilfried_before": {
+		"speaker": "Karatéka Wilfried",
+		"pages": [
+			"Le corps et l'esprit !\nEn garde !"
+		]
+	},
+	"fighting_dojo_blackbelt_wilfried_defeated": {
+		"speaker": "Karatéka Wilfried",
+		"pages": [
+			"Tu as les deux, on dirait."
+		]
+	},
+	"fighting_dojo_blackbelt_wilfried_after": {
+		"speaker": "Karatéka Wilfried",
+		"pages": [
+			"Kicklee ou Tygnon ?\nOn ne peut en choisir qu'un."
+		]
+	},
+	"fighting_dojo_master": {
+		"speaker": "Maître du Dojo",
+		"variants": [
+			{
+				"if": [
+					"dojo_got_hitmonlee"
+				],
+				"pages": [
+					"Prends-en soin.\nEt reviens t'entraîner quand tu veux !"
+				]
+			},
+			{
+				"if": [
+					"dojo_got_hitmonchan"
+				],
+				"pages": [
+					"Prends-en soin.\nEt reviens t'entraîner quand tu veux !"
+				]
+			},
+			{
+				"if": [
+					"fighting_dojo_master_defeated"
+				],
+				"pages": [
+					"Choisis l'un de nos Pokémon.\nIl te suivra."
+				]
+			},
+			{
+				"cutscene": "fighting_dojo_master"
+			}
+		]
+	},
+	"fighting_dojo_master_intro": {
+		"speaker": "Maître du Dojo",
+		"pages": [
+			"Ha ! Un challenger !",
+			"Le Dojo de Combat ne recule\ndevant personne !"
+		]
+	},
+	"fighting_dojo_master_won": {
+		"speaker": "Maître du Dojo",
+		"pages": [
+			"Quelle force !",
+			"Choisis l'un de nos Pokémon.\nIl te suivra."
+		]
+	},
+	"fighting_dojo_master_lost": {
+		"speaker": "Maître du Dojo",
+		"pages": [
+			"Hu ! Reviens quand tu seras\nplus fort !"
+		]
+	},
+	"fighting_dojo_master_after": {
+		"speaker": "Maître du Dojo",
+		"pages": [
+			"Prends-en soin.\nEt reviens t'entraîner quand tu veux !"
+		]
+	},
+	"fighting_dojo_ball_hitmonlee": {
+		"narration": true,
+		"variants": [
+			{
+				"unless": [
+					"fighting_dojo_master_defeated"
+				],
+				"pages": [
+					{
+						"text": "Ces Pokémon sont réservés\nà qui me bat.",
+						"speaker": "Maître du Dojo"
+					}
+				]
+			},
+			{
+				"pages": [
+					"KICKLEE, le Pokémon Lutteur.",
+					"Ses jambes s'allongent\npour frapper de loin.",
+					"Choisir KICKLEE ?"
+				],
+				"choice": {
+					"confirm": "OUI",
+					"cancel": "NON",
+					"confirm_cutscene": "fighting_dojo_take_hitmonlee",
+					"cancel_pages": []
+				}
+			}
+		]
+	},
+	"fighting_dojo_received_hitmonlee": {
+		"narration": true,
+		"pages": [
+			"{player} reçoit Kicklee !"
+		]
+	},
+	"fighting_dojo_stored_hitmonlee": {
+		"narration": true,
+		"pages": [
+			"Kicklee a été envoyé au stockage."
+		]
+	},
+	"fighting_dojo_ball_hitmonchan": {
+		"narration": true,
+		"variants": [
+			{
+				"unless": [
+					"fighting_dojo_master_defeated"
+				],
+				"pages": [
+					{
+						"text": "Ces Pokémon sont réservés\nà qui me bat.",
+						"speaker": "Maître du Dojo"
+					}
+				]
+			},
+			{
+				"pages": [
+					"TYGNON, le Pokémon Puncheur.",
+					"Ses poings sont plus rapides\nque l'œil.",
+					"Choisir TYGNON ?"
+				],
+				"choice": {
+					"confirm": "OUI",
+					"cancel": "NON",
+					"confirm_cutscene": "fighting_dojo_take_hitmonchan",
+					"cancel_pages": []
+				}
+			}
+		]
+	},
+	"fighting_dojo_received_hitmonchan": {
+		"narration": true,
+		"pages": [
+			"{player} reçoit Tygnon !"
+		]
+	},
+	"fighting_dojo_stored_hitmonchan": {
+		"narration": true,
+		"pages": [
+			"Tygnon a été envoyé au stockage."
+		]
+	}
+}

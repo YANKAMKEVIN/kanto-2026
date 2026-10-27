@@ -1,0 +1,48 @@
+# Porte du Parc Safari (safari_zone_gate) — grille fonctionnelle (jalon 23, dossier 26 §3 et §4 ;
+# préparée le 2026-10-19). Organisation RB (pret/pokered af519899, data/maps/objects/SafariZoneGate.asm :
+# deux employés, passage central, entrée au sud depuis Parmanie, sortie au nord vers le Centre),
+# mise à l'enveloppe des intérieurs du projet (parois de 2 colonnes, fond de 2 rangées, bas de 2
+# rangées, sortie sur l'avant-dernière rangée). Vérifiée par tools/art/plan_check_safari.py.
+#
+# 12 × 10. Le couloir (x 4..7) mène de la porte de Parmanie (5..6, 8) au passage du Parc (5..6, 1).
+# Deux comptoirs le bordent (x 3 et x 8, y 3..5) ; les employés se tiennent derrière.
+#   - employe_entree (9, 4), à droite : accueil, péage de 500 ₽, remise des 30 Safari Balls
+#     (textes 1 à 4) ; à la sortie : « Partir maintenant ? » (textes 7 à 9) ; fin de visite (12).
+#   - employe_zones (2, 4), à gauche : explication des zones (textes 5 et 6).
+#   - declencheur_comptoir (4..7, 4) : en venant du SUD sans visite en cours → accueil (texte 1) ;
+#     en venant du NORD avec une visite en cours → « Partir maintenant ? ». NON : le joueur remonte
+#     d'un pas (RB). Le compteur ne tourne pas dans la Porte (la visite commence au passage nord).
+#   - Fin de visite (pas ou Balls épuisés) : fondu, arrivée sur arrivee_fin (5..6, 5), tourné ↓,
+#     puis texte 12.
+#
+# Légende :
+#   K mur (bloqué)     . sol (praticable)     C comptoir (bloqué ; on parle à l'employé à travers)
+#   x espace derrière le comptoir (bloqué)
+#   N passage vers le Parc (praticable, fondu, haut de la carte)
+#   X sortie vers Parmanie (praticable : paillasson, PUSH ↓)
+
+PRATICABLES .NX
+
+GRILLE 12 10
+00 KKKKKKKKKKKK
+01 KKKKKNNKKKKK
+02 KK........KK
+03 KKxC....CxKK
+04 KKxC....CxKK
+05 KKxC....CxKK
+06 KK........KK
+07 KK........KK
+08 KKKKKXXKKKKK
+09 KKKKKKKKKKKK
+FIN
+
+POSITIONS
+vers_parc              raccord        5..6,1       libre   vers=safari_centre:14..15,25  # début de la visite (si payée) ; RB warps (3..4, 0)
+arrivee_parc           spawn          5..6,2       libre   facing=down  # retour du Parc (sortie volontaire)
+sortie                 warp           5..6,8       libre   vers=fuchsia_city  # PUSH ↓ → Parmanie (porte réservée par le J22, M-19 / §16)
+entree                 spawn          5..6,7       libre   facing=up  # arrivée depuis Parmanie
+arrivee_fin            spawn          5..6,5       libre   facing=down  # fin de visite (haut-parleur), puis texte 12
+declencheur_comptoir   declencheur    4..7,4       libre   # accueil (sud, sans visite) / « Partir maintenant ? » (nord, visite en cours)
+employe_entree         pnj            9,4          bloque  facing=left  # textes 1 à 4, 7 à 9, 12 ; RB worker 1 (6, 2)
+employe_zones          pnj            2,4          bloque  facing=right  # textes 5 et 6 ; RB worker 2 (1, 4)
+FIN

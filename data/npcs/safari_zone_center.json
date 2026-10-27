@@ -1,0 +1,16 @@
+{
+	"pepite": {
+		"cell": [
+			14,
+			16
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "safari_zone_center_pepite",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_safari_zone_center_pepite"
+		]
+	}
+}

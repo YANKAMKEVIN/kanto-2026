@@ -1,0 +1,176 @@
+{
+	"fuchsia_gym_juggler_1": {
+		"name": "Jongleur Nino",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 1330,
+		"team": [
+			{
+				"species": "hypno",
+				"level": 38
+			}
+		]
+	},
+	"fuchsia_gym_juggler_2": {
+		"name": "Jongleur Igor",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 1085,
+		"team": [
+			{
+				"species": "drowzee",
+				"level": 31
+			},
+			{
+				"species": "drowzee",
+				"level": 31
+			},
+			{
+				"species": "kadabra",
+				"level": 31
+			},
+			{
+				"species": "drowzee",
+				"level": 31
+			}
+		]
+	},
+	"fuchsia_gym_juggler_3": {
+		"name": "Jongleur Silvio",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 1190,
+		"team": [
+			{
+				"species": "drowzee",
+				"level": 34
+			},
+			{
+				"species": "kadabra",
+				"level": 34
+			}
+		]
+	},
+	"fuchsia_gym_tamer_1": {
+		"name": "Dompteur Marius",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 1360,
+		"team": [
+			{
+				"species": "sandslash",
+				"level": 34
+			},
+			{
+				"species": "arbok",
+				"level": 34
+			}
+		]
+	},
+	"fuchsia_gym_tamer_2": {
+		"name": "Dompteur Edgar",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 1320,
+		"team": [
+			{
+				"species": "arbok",
+				"level": 33
+			},
+			{
+				"species": "sandslash",
+				"level": 33
+			},
+			{
+				"species": "arbok",
+				"level": 33
+			}
+		]
+	},
+	"fuchsia_gym_juggler_4": {
+		"name": "Jongleur Léon",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 1190,
+		"team": [
+			{
+				"species": "drowzee",
+				"level": 34
+			},
+			{
+				"species": "hypno",
+				"level": 34
+			}
+		]
+	},
+	"fuchsia_gym_koga": {
+		"name": "Koga",
+		"ai": "smart",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 4257,
+		"start_message": false,
+		"end_message": true,
+		"bag": true,
+		"switch": true,
+		"card": {
+			"name": "KOGA",
+			"title": "Champion d'Arène de Parmanie"
+		},
+		"team": [
+			{
+				"species": "koffing",
+				"level": 37,
+				"moves": [
+					"tackle",
+					"smog",
+					"sludge",
+					"haze"
+				]
+			},
+			{
+				"species": "muk",
+				"level": 39,
+				"moves": [
+					"disable",
+					"poison_gas",
+					"minimize",
+					"sludge"
+				]
+			},
+			{
+				"species": "koffing",
+				"level": 37,
+				"moves": [
+					"tackle",
+					"smog",
+					"sludge",
+					"haze"
+				]
+			},
+			{
+				"species": "weezing",
+				"level": 43,
+				"moves": [
+					"smog",
+					"sludge",
+					"toxic",
+					"self_destruct"
+				]
+			}
+		]
+	}
+}

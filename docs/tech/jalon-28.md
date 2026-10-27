@@ -22,8 +22,8 @@
 
 | Besoin | Où, état réel | Ce que fait le J28 |
 |---|---|---|
-| Jadielle, porte de l'Arène | `main` (J7) : `viridian_city`, dialogue `viridian_gym_door` (« La porte est verrouillée. »), guetteur `gym_watcher` (`viridian_gym_watcher`) ; service `gym` dans `zones.json` | Porte → warp vers `viridian_gym` **si** `silph_giovanni_defeated` ; sinon texte actuel. Guetteur à deux variantes |
-| Condition d'ouverture | J26 : **`silph_giovanni_defeated`** (plan `jalon-26.md` §0.2) | Seul drapeau lu. **Ni Badge Marais ni Badge Volcan** (arbitrage 2). Pas de `viridian_gym_unlocked` [D] |
+| Jadielle, porte de l'Arène | `main` (J7) : `viridian_city`, dialogue `viridian_gym_door` (« La porte est verrouillée. »), guetteur `gym_watcher` (`viridian_gym_watcher`) ; service `gym` dans `zones.json` | Porte → warp vers `viridian_gym` **si** les 7 Badges autres que la Terre sont levés (Q28-1, 2026-10-22) ; sinon texte actuel. Guetteur à trois variantes |
+| Condition d'ouverture | **Décision de Kevin Q28-1 (2026-10-22)** : comme Rouge/Bleu (`ViridianCityCheckGymOpenScript` : `wObtainedBadges` = tous les Badges sauf la Terre), la porte s'ouvre avec les **7 Badges** `badge_boulder`, `badge_cascade`, `badge_thunder`, `badge_rainbow`, `badge_soul`, `badge_marsh`, `badge_volcano`, **indépendamment de la Sylphe** (`silph_giovanni_defeated` n'est plus lu). Remplace l'arbitrage 2. Pas de `viridian_gym_unlocked` [D] |
 | Dalles directionnelles | `main` (J20) : `game/world/spin/` (`SpinTileRules` : flèches `< > ^ v`, arrêt `o`, erreurs BLOCKED / LOOP / TOO_LONG ; `SpinTileField`, `SpinTileDirector`) ; `systemes-2` (S2C, T15, validé) : `ForcedSlideDirector`, un seul lecteur pour les dalles et les courants | Pose un nœud `SpinTiles` depuis la grille (passation du J20 §10.3) ; aucun code |
 | K.O. en un coup | `systemes-2` (S2E, T29, validé) : `MoveEffect.Kind.OHKO`, règle moderne (Q-2 A) ; **`fissure` volontairement non créée** par la passe | Crée `fissure` (Abîme) avec `effects: [{ "kind": "ohko" }]` |
 | CT27 | `main` : `tm_compatibility.json` lie la CT27 à `fissure` (pas Séisme) | Crée l'objet `tm27` si absent ; ne pas reprendre la CT26 Séisme (passe §7) |
@@ -63,7 +63,7 @@ n'existe pas encore (une partie réelle ne peut pas poser le drapeau avant).
   en BLOCKED. Aucun code. Si le décodage RB montre une glissade qui bute contre un mur, on le signale
   (Q28-2).
 - La passe propose `viridian_gym_unlocked` et `giovanni_disbanded_rocket` : remplacés par
-  `silph_giovanni_defeated` (lu) et `badge_earth` (Giovanni absent si posé) [D]. Même sens.
+  les 7 Badges (lus, Q28-1) et `badge_earth` (Giovanni absent si posé) [D]. Même sens.
 
 ## 1. Découpage
 
@@ -113,7 +113,7 @@ poser le warp en données, selon ce que l'outil du J7 permet, vu au T1).
 
 | Drapeau | Rôle |
 |---|---|
-| `silph_giovanni_defeated` | lu (J26) : porte ouverte |
+| 7 Badges (`badge_boulder` … `badge_volcano`) | lus : porte ouverte (Q28-1) ; `silph_giovanni_defeated` n'est plus lu |
 | `giovanni_gym_met` | Introduction dite |
 | `badge_earth` | Badge ; Giovanni absent |
 | `tm27_received` | CT27 remise |
@@ -132,7 +132,7 @@ Nidoking, Rhinoféros, fond de combat « Arène de Jadielle ».
 
 ## 3. Textes
 
-La passe ne propose aucun texte : tout ce qui suit est **[D] (défaut, à relire)**. Le texte de la
+La passe ne propose aucun texte : tout ce qui suit est **[D]**, **validé par Kevin le 2026-10-21, validation d'avance (proposition du plan)**. Le texte de la
 porte fermée reste celui du J7 (« La porte est verrouillée. »).
 
 | N° | Locuteur | Texte |
@@ -146,6 +146,44 @@ porte fermée reste celui du J7 (« La porte est verrouillée. »).
 | T28-07 [D] | Giovanni (CT) | « Prends aussi la CT27, Abîme. Une fissure dans le sol, et le combat est fini. » |
 | T28-08 [D] | Giovanni (départ) | « La Team Rocket, c'est terminé. Je pars m'entraîner seul. Un jour, peut-être, nos chemins se croiseront encore. » |
 | T28-09 [D] | Narration | « {player} reçoit le Badge Terre ! » (modèle des Badges existants, à vérifier) |
+
+
+### 3.1 Textes complémentaires (écrits au codage, 2026-10-22) — **relus et validés par Kevin le 2026-10-22 (T28-10 à T28-36)**
+
+Le plan ne donnait pas de répliques aux huit Dresseurs, ni la défaite du joueur contre Giovanni, ni la
+remise de la CT, ni le guide après le départ du Champion. Propositions [D] ci-dessous, en place dans
+`data/dialogues/viridian_gym.json` ; **elles ne sont pas couvertes par la validation d'avance**
+(qui porte sur T28-01 à T28-09). « / » sépare deux bulles.
+
+| N° | Locuteur (dialogue) | Texte |
+|---|---|---|
+| T28-10 [D] | Topdresseur Yannick (`viridian_gym_cooltrainer_yannick_before`) | « Le sol de cette Arène ne pardonne aucune erreur. » |
+| T28-11 [D] | Topdresseur Yannick (`viridian_gym_cooltrainer_yannick_defeated`) | « J'ai glissé… au mauvais moment. » |
+| T28-12 [D] | Topdresseur Yannick (`viridian_gym_cooltrainer_yannick_after`) | « Ici, on apprend à lire les flèches avant de courir. » |
+| T28-13 [D] | Karatéka Bertrand (`viridian_gym_blackbelt_bertrand_before`) | « Hiyaa ! Mes poings sont prêts ! » |
+| T28-14 [D] | Karatéka Bertrand (`viridian_gym_blackbelt_bertrand_defeated`) | « Ouf… Tu frappes fort. » |
+| T28-15 [D] | Karatéka Bertrand (`viridian_gym_blackbelt_bertrand_after`) | « Le Champion nous apprend à tenir debout, même quand le sol bouge. » |
+| T28-16 [D] | Dompteur Lionel (`viridian_gym_tamer_lionel_before`) | « Mon Rhinocorne ne s'arrête jamais. Et toi ? » |
+| T28-17 [D] | Dompteur Lionel (`viridian_gym_tamer_lionel_defeated`) | « Il s'est arrêté, finalement… » |
+| T28-18 [D] | Dompteur Lionel (`viridian_gym_tamer_lionel_after`) | « Un Rhinocorne, ça se dresse avec patience. » |
+| T28-19 [D] | Karatéka Didier (`viridian_gym_blackbelt_didier_before`) | « Tu crois pouvoir passer sans te battre ? » |
+| T28-20 [D] | Karatéka Didier (`viridian_gym_blackbelt_didier_defeated`) | « Bien joué. Vraiment. » |
+| T28-21 [D] | Karatéka Didier (`viridian_gym_blackbelt_didier_after`) | « Je m'entraîne ici depuis des années. » / « Le Champion vient rarement. » |
+| T28-22 [D] | Topdresseur Florian (`viridian_gym_cooltrainer_florian_before`) | « Peu de Dresseurs arrivent jusqu'ici. » |
+| T28-23 [D] | Topdresseur Florian (`viridian_gym_cooltrainer_florian_defeated`) | « Tu mérites d'aller plus loin. » |
+| T28-24 [D] | Topdresseur Florian (`viridian_gym_cooltrainer_florian_after`) | « Le Champion n'est plus très loin. Prépare-toi bien. » |
+| T28-25 [D] | Karatéka Joël (`viridian_gym_blackbelt_joel_before`) | « Halte ! Personne ne passe sans m'affronter. » |
+| T28-26 [D] | Karatéka Joël (`viridian_gym_blackbelt_joel_defeated`) | « Mes Pokémon ont tout donné… » |
+| T28-27 [D] | Karatéka Joël (`viridian_gym_blackbelt_joel_after`) | « Va. Le Champion t'attend. » |
+| T28-28 [D] | Dompteur Régis (`viridian_gym_tamer_regis_before`) | « Mes Pokémon ont du caractère. Attention ! » |
+| T28-29 [D] | Dompteur Régis (`viridian_gym_tamer_regis_defeated`) | « Ils ne m'ont pas écouté, cette fois. » |
+| T28-30 [D] | Dompteur Régis (`viridian_gym_tamer_regis_after`) | « Un Tauros, ça ne se dompte pas en un jour. » |
+| T28-31 [D] | Topdresseur Damien (`viridian_gym_cooltrainer_damien_before`) | « Ce couloir est à moi. Recule ou combats ! » |
+| T28-32 [D] | Topdresseur Damien (`viridian_gym_cooltrainer_damien_defeated`) | « Tu as de bons réflexes. » |
+| T28-33 [D] | Topdresseur Damien (`viridian_gym_cooltrainer_damien_after`) | « Ce passage mène tout droit au Champion. » |
+| T28-34 [D] | Guide (`viridian_gym_guide`) | « Le Champion est parti… L'Arène semble bien vide sans lui. » |
+| T28-35 [D] | Giovanni (`viridian_gym_giovanni_lost`) | « Tu n'es pas encore à la hauteur. » / « Reviens quand tu le seras. » |
+| T28-36 [D] | Giovanni (`viridian_gym_giovanni_tm_got`) | « {player} reçoit la CT27 Abîme ! » |
 
 ## 4. Tâches
 
@@ -170,8 +208,8 @@ porte fermée reste celui du J7 (« La porte est verrouillée. »).
 
 ## 5. Tests
 
-- `test_viridian_gym_door.gd` : sans `silph_giovanni_defeated` → fermée ; avec → ouverte, même sans
-  Badge Marais ni Volcan ; ouverte pour toujours.
+- `test_viridian_gym_door.gd` : 6 Badges (sans le Volcan) → fermée, même Sylphe libérée ; 7 Badges → ouverte, sans
+  `silph_giovanni_defeated` ; ouverte pour toujours.
 - `test_viridian_gym.gd` : grille = plan ; chaque dalle → trajet OK ; dalles successives
   déterministes ; aucune glissade ne déclenche un warp ni un dialogue ; entrée toujours atteignable.
 - `test_viridian_gym_save.gd` : sauvegarde demandée pendant une glissade → refusée ; arrêt simulé →
@@ -204,7 +242,7 @@ porte fermée reste celui du J7 (« La porte est verrouillée. »).
 
 ## 8. Valeurs par défaut [D]
 
-- Porte ouverte par `silph_giovanni_defeated` seulement ; pas de drapeau d'ouverture propre.
+- Porte ouverte par les 7 Badges (Q28-1) ; pas de drapeau d'ouverture propre.
 - Case d'arrêt explicite devant chaque obstacle ; aucun changement du moteur des dalles.
 - Giovanni retiré par `badge_earth` ; pas de `giovanni_disbanded_rocket`.
 - Textes T28-01 à T28-09.
@@ -219,3 +257,75 @@ porte fermée reste celui du J7 (« La porte est verrouillée. »).
 - **Q28-3 — Textes** : propositions [D]. Couverts par ta validation d'avance, ou à relire ?
 - **Q28-4 — Équipes des Dresseurs** : RB, mais niveaux à ajuster si la simulation montre un écart
   avec la courbe de la passe ? Défaut : RB tel quel.
+
+## 10. Réalisé (2026-10-22, branche `jalon-28` depuis `systemes-2` @ `8c2cb6ee`, worktree `~/dev/kanto-2026-wt-j28`)
+
+Session de nuit, sans Kevin. Textes T28-01 à T28-09 **validés par Kevin le 2026-10-21, validation
+d'avance (proposition du plan)** ; textes complémentaires du §3.1 **à relire**.
+
+### 10.1 Fait
+
+- **T1–T2** : `tools/art/viridian_gym_rb_decode.py` (lit un pokered local, `python3 -I`) ;
+  `tools/plans/jadielle_arene.txt` (RB 1:1, décalée de (+2, +2) [D] pour deux rangées / colonnes de
+  mur) ; `tools/art/plan_check_j28.py` : les 12 dalles RB, la règle du moteur du J20 redonne les 12
+  trajets exacts (un « o » sur chaque arrivée RB), aucune BLOCKED / LOOP / TOO_LONG, sortie
+  atteignable de partout, Giovanni atteignable ; 6 Dresseurs évitables, 2 inévitables
+  (`topdresseur_2` Florian, `karateka_3` Joël).
+- **Écart RB** : dans RB, une dalle pousse d'un **nombre fixe de pas** (table
+  `ViridianGymArrowTilePlayerMovement`), sans case d'arrêt ; la grille pose donc un `o` à chaque
+  arrivée. **Q28-2 sans objet** : aucune glissade RB ne bute contre un mur.
+- **T3** : Rhinoféros (`kanto_j28.json`, Rhinocorne → Rhinoféros N42, RB) ; **Machopeur et Tauros
+  copiés à l'identique** des J22 / J23 (`kanto_j28_emprunts.json`, fiches de Pokédex et sprites
+  provisoires repris de `origin/jalon-23`) : **à supprimer à la fusion** si J22 / J23 sont fusionnés
+  avant (sinon doublon) ; fiche de Pokédex de Rhinoféros [D] ; Abîme (`moves_j28.json`, effet
+  `ohko`) ; CT27 (`items_j28.json`) ; `tm_compatibility.json` régénéré (fichier généré).
+- **Dresseurs** (RB, Q28-4 : niveaux RB tels quels) : Topdresseur Yannick (Sablaireau, Triopikeur
+  39), Karatéka Bertrand (Machoc, Machopeur 40), Dompteur Lionel (Rhinocorne 43), Karatéka Didier
+  (Machopeur 43), Topdresseur Florian (Rhinocorne 43), Karatéka Joël (Machopeur, Machoc,
+  Machopeur 38), Dompteur Régis (Arbok, Tauros 39), Topdresseur Damien (Nidorino, Nidoking 39).
+  Prénoms vérifiés libres sur `main` et toutes les branches `origin/jalon-2x`, `j2x-*`. Sprites
+  provisoires : `camper` (Topdresseur), `hiker` et `rocker` (sprites RB des Karatékas et Dompteurs).
+  Prix RB (base × niveau). IA `smart` pour les Topdresseurs.
+- **Giovanni Champion** (`viridian_gym_giovanni`) : équipe verrouillée, Abîme sur Rhinoféros (RB :
+  `LoneMoves`), 4 950 ₽, carte « GIOVANNI — Champion d'Arène de Jadielle ». Scène sur le modèle
+  d'Erika ; rattrapage `viridian_gym_giovanni_tm_late`. **[D] Giovanni est retiré par
+  `tm27_received`** (posé à la fin de la remise) plutôt que par `badge_earth` : une coupure entre le
+  Badge et la CT ne fait pas perdre la CT. Le guide et le Rappel (RB) sont posés.
+- **T6, T9** : carte `viridian_gym` (`tools/build_viridian_gym.gd`, enveloppe provisoire
+  `tools/art/placeholders_j28.py`, nœud `SpinTiles`, aucune ligne du moteur des dalles) ; lumière
+  `interior_warm` ; zone Jadielle. **Porte** : nouveau champ `Warp.if_flags` / `WarpPoint.if_flags`
+  (lu par `SceneRouter._is_warp_enabled`) ; deux warps PUSH ↑ (9, 10), (10, 10) actifs avec
+  les 7 Badges ; l'examen « La porte est verrouillée. » porte le nouveau champ `unless_all_flags` (`InteractPoint` / `Interaction` : cible retirée quand tous sont levés) ;
+  spawn `from_gym`. Scène de Jadielle modifiée à la main (comme les sorties nord), outil du J7 mis
+  à jour en conséquence. Guetteur à trois variantes.
+- **T10** : départs `viridian_gym`, `viridian_gym_giovanni`, `viridian_locked` ; tests `test_viridian_gym` (9), `test_viridian_gym_door` (6), `test_giovanni_gym` (5), `test_fissure` (6). Suite complète 6 514 / 6 514, import sans erreur.
+- Capture headless relue (`tools/capture_map.gd`) : Dresseurs, objet, dalles et arrêts lisibles.
+
+### 10.2 Reste
+
+- **T4** (simulation d'équilibrage) non faite : niveaux RB tels quels (défaut Q28-4), à juger en jeu.
+- **T5** (vue générale) et lot d'art (intérieur, Giovanni Champion, Rhinoféros, fond de combat) :
+  art provisoire seulement ; aucun fond de combat dédié (repli par défaut).
+- **T11** session téléphone, **T12** clôture et fusion **après le J26** (accord de Kevin).
+- À la fusion : retirer `kanto_j28_emprunts.json` (et les fiches de Pokédex / sprites en double) si
+  J22 / J23 sont déjà dans `main` ; régénérer `tm_compatibility.json` ; recaler les listes des
+  tests partagés (`test_dialogue_data`, `test_cutscene_data`, `test_pokemon_data`,
+  `test_item_library`) ; `FUTURE_FLAGS` de `test_dialogue_data` porte `badge_soul`, `badge_marsh`, `badge_volcano`
+  (à retirer quand leurs arènes existent).
+
+### 10.3 Pour Kevin
+
+- Relire les textes complémentaires du §3.1 (Dresseurs, défaite, CT, guide après le départ).
+- Q28-1 (condition d'ouverture) : tranchée par Kevin le 2026-10-22, « Avec les 7 Badges (Rouge/Bleu) » ; le code, le §2.4 et le départ `viridian_locked` l'appliquent.
+- Q28-3 : réglée par la validation d'avance (T28-01 à T28-09).
+
+## QA A17 du 2026-10-23
+
+Session de nuit sur le Galaxy A17 (APK debug ; captures et notes : `~/dev/qa-nuit2/j28/`). **OK** :
+`viridian_locked` (porte inerte, « La porte est verrouillée. ») ; guide ; dalles 12 et 10 (glissade,
+arrêt net, aucune interaction involontaire) ; Karatéka Didier vu à l'arrêt ; Giovanni : défaite →
+réveil au Centre de Jadielle, victoire → Badge Terre, CT27, départ, Giovanni absent ensuite. **Perf
+A17** : Arène 49–55 i/s, Jadielle 39–41 i/s. **Corrigé** : §10.3 suit désormais la décision Q28-1
+(7 Badges), comme le code, le §2.4 et le départ `viridian_locked`. Les lignes « Kevin reçoit le Badge Terre / la CT27 » s'affichent sous le nom
+« Giovanni » (même convention que les autres Champions). Non vu : Abîme lancé par Rhinoféros, appel
+pendant une glissade.

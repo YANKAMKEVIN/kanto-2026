@@ -19,8 +19,9 @@ extends SceneTree
 ## - Passages : porte du bâtiment de sortie du souterrain (7, 4) STEP_ON ↑ →
 ##   `route_6_underground_gate` / `from_route_6` (arrivée ici `from_underground` (7, 5), tournée
 ##   ↓) ; bord sud (25..27, 55) PUSH ↓ → `vermilion_city` / `from_route_6_w|c|e` (arrivées ici
-##   `from_vermilion_w|c|e`, tournées ↑) ; porte du poste vers Safrania (36, 7) : « Safrania — À
-##   venir » (jamais atteinte : le garde est devant).
+##   `from_vermilion_w|c|e`, tournées ↑) ; porte du poste vers Safrania (36, 7) : `saffron_city` /
+##   `from_gate_r6` depuis le J26 (T6 ; « Safrania — À venir » tant que la ville n'existe pas),
+##   gardée tant que les postes sont fermés ; arrivée depuis la ville `from_saffron` (36, 8).
 ## - Garde (T-17, §2.4) : trois déclencheurs sur `verrou_safrania` (réplique puis recul d'une case,
 ##   à l'opposé du garde).
 
@@ -42,6 +43,9 @@ const NPCS_PATH: String = "res://data/npcs/route_6.json"
 
 const GATE_ROOM: StringName = &"route_6_underground_gate"
 const SOUTH_MAP: StringName = &"vermilion_city"
+## Safrania (J26 T6) : la porte du poste (36, 7) y mène ; arrivée depuis la ville devant la porte.
+const SAFFRON_MAP: StringName = &"saffron_city"
+const SAFFRON_ARRIVAL := Vector2i(36, 8)
 const SUFFIXES: Array[String] = ["w", "c", "e"]
 
 ## Berges naturelles (série 15) : pour tout sol de la Route 6.
@@ -218,8 +222,17 @@ func _add_passages() -> void:
 		_kit.call(&"add_warp", "Vermilion" + SUFFIXES[i].to_upper(), south[i], Kit.PUSH,
 			Vector2i.DOWN, SOUTH_MAP, StringName("from_route_6_" + SUFFIXES[i]), Vector2i.DOWN)
 		_kit.call(&"add_spawn", "from_vermilion_" + SUFFIXES[i], south[i])
-	_kit.call(&"add_warp", "DoorSaffron", _cell("porte_safrania"), Kit.STEP_ON, Vector2i.UP,
-		&"", &"from_underground", Vector2i.DOWN, "Safrania")
+	# J26 (T6) : la porte du poste mène à Safrania (`from_gate_r6`, tournée ↑) dès que la ville
+	# existe ; elle ne s'atteint que `if [saffron_gates_open]` (le garde, devant elle en (36, 8),
+	# s'écarte alors en (35, 8) ; les règles de recul restent `unless [saffron_gates_open]`).
+	# Arrivée depuis la ville : `from_saffron` (36, 8), tournée ↓ (case libérée par le garde).
+	if ResourceLoader.exists("res://game/world/maps/%s.tscn" % SAFFRON_MAP):
+		_kit.call(&"add_warp", "DoorSaffron", _cell("porte_safrania"), Kit.STEP_ON, Vector2i.UP,
+			SAFFRON_MAP, &"from_gate_r6", Vector2i.UP)
+	else:
+		_kit.call(&"add_warp", "DoorSaffron", _cell("porte_safrania"), Kit.STEP_ON, Vector2i.UP,
+			&"", &"from_underground", Vector2i.DOWN, "Safrania")
+	_kit.call(&"add_spawn", "from_saffron", SAFFRON_ARRIVAL)
 	for entry: Array in DEBUG_SPAWNS:
 		_kit.call(&"add_spawn", entry[0], entry[1])
 

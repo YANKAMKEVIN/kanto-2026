@@ -19,6 +19,7 @@ boot_splash/use_filter=true
 
 SceneRouter="*res://game/autoload/scene_router.gd"
 GameState="*res://game/autoload/game_state.gd"
+Audio="*res://game/autoload/audio.gd"
 
 [display]
 

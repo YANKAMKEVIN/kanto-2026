@@ -1,0 +1,101 @@
+{
+	"j23_warden_teeth": {
+		"variants": [
+			{
+				"unless": [
+					"gave_gold_teeth"
+				],
+				"steps": [
+					{
+						"face": "gardien",
+						"to": "player"
+					},
+					{
+						"dialogue": "j23_warden_thanks"
+					},
+					{
+						"take": "gold_teeth",
+						"count": 1
+					},
+					{
+						"set": [
+							"gave_gold_teeth"
+						]
+					},
+					{
+						"dialogue": "j23_warden_gift"
+					},
+					{
+						"give": "hm04",
+						"count": 1
+					},
+					{
+						"set": [
+							"got_hm04"
+						]
+					},
+					{
+						"dialogue": "j23_warden_after"
+					}
+				]
+			}
+		]
+	},
+	"j23_warden_hm04": {
+		"variants": [
+			{
+				"if": [
+					"gave_gold_teeth"
+				],
+				"unless": [
+					"got_hm04"
+				],
+				"steps": [
+					{
+						"face": "gardien",
+						"to": "player"
+					},
+					{
+						"dialogue": "j23_warden_gift"
+					},
+					{
+						"give": "hm04",
+						"count": 1
+					},
+					{
+						"set": [
+							"got_hm04"
+						]
+					},
+					{
+						"dialogue": "j23_warden_after"
+					}
+				]
+			}
+		]
+	},
+	"wardens_house_super_bonbon": {
+		"variants": [
+			{
+				"unless": [
+					"got_wardens_house_super_bonbon"
+				],
+				"steps": [
+					{
+						"despawn": "super_bonbon"
+					},
+					{
+						"give": "rare_candy",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_wardens_house_super_bonbon"
+						]
+					}
+				]
+			}
+		]
+	}
+}

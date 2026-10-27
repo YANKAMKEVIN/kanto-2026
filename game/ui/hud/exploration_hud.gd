@@ -59,6 +59,7 @@ var _bike_shown: bool = false
 var _bike_dimmed: bool = false
 ## Rectangle du joueur à l'écran (vide = inconnu : boutons opaques).
 var _player_rect: Rect2 = Rect2()
+var _safari_badge: SafariBadge
 
 @onready var _run_button: TouchScreenButton = %RunButton
 @onready var _interact_button: InteractButton = %InteractButton
@@ -229,6 +230,23 @@ func get_interact_button() -> InteractButton:
 
 func get_menu_button() -> TouchScreenButton:
 	return _menu_button
+
+
+## Pastille « pas · Balls » du Parc Safari (J23, N-7) ; créée à la première demande, sous le titre
+## de zone (même parent).
+func set_safari_badge(shown: bool, steps_left: int, balls_left: int) -> void:
+	if _safari_badge == null:
+		if not shown or not is_node_ready():
+			return
+		_safari_badge = SafariBadge.new()
+		_safari_badge.name = "SafariBadge"
+		_zone_title.get_parent().add_child(_safari_badge)
+	_safari_badge.show_counts(shown, steps_left, balls_left)
+
+
+## Pastille du Parc Safari (null tant qu'elle n'a jamais été montrée).
+func get_safari_badge() -> SafariBadge:
+	return _safari_badge
 
 
 ## Bouton Vélo (passe systèmes 2) : [param shown] = la Bicyclette est dans le Sac ;

@@ -64,6 +64,12 @@ extends SceneTree
 ##     grille (`tools/art/placeholders_celadopole.py`, série 22 bis à venir) ; **sans PNJ** (T17).
 ##     L'Arène d'Erika (`celadon_gym`) est dans `tools/build_celadon_gym.gd`.
 ##   godot --headless --path . -s res://tools/build_painted_interiors.gd -- --celadon
+##   saffron_center, saffron_mart, saffron_psychic_house, saffron_pidgey_house,
+##   saffron_copycat_house_1f|2f — Safrania (jalon 26 T6, `--saffron`) : Centre et Boutique =
+##     définitions communes ; maisons relues sur leur grille (`tools/plans/safrania_*.txt`),
+##     enveloppe des maisons d'Argenta ; **sans PNJ** (T9). Relancer aussi `--routes78` et
+##     `--rooms=route_5_gate` (portes vers la ville) une fois `saffron_city.tscn` construite.
+##   godot --headless --path . -s res://tools/build_painted_interiors.gd -- --saffron
 ##   godot --headless --path . -s res://tools/build_painted_interiors.gd   (toutes les pièces)
 ##   godot --headless --path . --import
 ##
@@ -144,6 +150,8 @@ const CELADON := [&"celadon_center", &"celadon_dept_gf", &"celadon_dept_2f", &"c
 	&"celadon_mansion_gf", &"celadon_mansion_1f", &"celadon_mansion_2f", &"celadon_mansion_3f",
 	&"celadon_mansion_roof", &"celadon_mansion_roof_house", &"celadon_restaurant",
 	&"celadon_chief_house", &"celadon_hotel"]
+const SAFFRON := [&"saffron_center", &"saffron_mart", &"saffron_psychic_house",
+	&"saffron_pidgey_house", &"saffron_copycat_house_1f", &"saffron_copycat_house_2f"]
 ## Jalon 29 : poste de la Ligue (Route 22 → Route 23) et hall du Plateau Indigo.
 const J29 := [&"route_22_gate", &"indigo_plateau_lobby"]
 ## Jalon 22 (T12, T24) : maison de la Méga Canne (Route 12 sud) et intérieurs de Parmanie.
@@ -182,6 +190,7 @@ func _init() -> void:
 	rooms.append_array(_lavender_rooms())
 	rooms.append_array(_routes_7_8_rooms())
 	rooms.append_array(_celadon_rooms())
+	rooms.append_array(_saffron_rooms())
 	rooms.append_array(_j22_rooms())
 	# Jalon 24 (T12) : Cramois'Île (Centre, Boutique, Labo en quatre pièces).
 	rooms.append_array(_cinnabar_rooms())
@@ -240,6 +249,8 @@ func _wanted_rooms() -> Array:
 			wanted.append_array(ROUTES_7_8)
 		elif arg == "--celadon":
 			wanted.append_array(CELADON)
+		elif arg == "--saffron":
+			wanted.append_array(SAFFRON)
 		elif arg == "--j29":
 			wanted.append_array(J29)
 		elif arg == "--j22":
@@ -468,7 +479,7 @@ func _player_house_1f() -> Dictionary:
 			[&"int_porte_manteau_01", Rect2i(6, 8, 1, 1), "CoatRack"],
 			[&"int_commode_pokeball_01", Rect2i(9, 8, 1, 1), "Dresser"],
 		],
-		# Jalon 3A : petit-déjeuner posé sur la table (provisoire, sans image peinte).
+		# Jalon 3A : petit-déjeuner posé sur la table (peint au DAF.5, `tools/art/daf5.py`).
 		"decor": [["res://game/world/props/interior/breakfast.tscn", Vector2i(3, 5),
 			"Breakfast"]],
 		"rugs": [
@@ -528,7 +539,7 @@ func _rival_house() -> Dictionary:
 			[&"int_meuble_chaussures_01", Rect2i(11, 9, 1, 1), "ShoeRack"],
 			[&"int_plante", Rect2i(12, 9, 1, 1), "PlantBathroom"],
 		],
-		# Jalon 3A (Q3) : carte de Kanto dépliée, sac et affaires sur le lit (provisoire).
+		# Jalon 3A (Q3) : carte de Kanto dépliée, sac et affaires sur le lit (peints au DAF.5).
 		"decor": [["res://game/world/props/interior/bed_items.tscn", Vector2i(15, 4),
 			"BedItems"]],
 		"rugs": [[&"int_tapis_pokeball_01", Vector2(13.5, 4.5), "RugBedroom"]],
@@ -1071,17 +1082,26 @@ func _gate_room(id: StringName, node: String, exit_spawn: StringName, extra: Dic
 ## la case (5, 2) est fermée par une plante [D]. Le joueur qui avance sur la rangée 3 (4..5, 3), pas
 ## vers le nord, déclenche `route_5_gate_rule` (T-15 puis T-16, recul d'une case). Ouverture nord
 ## (4..5, 1) = « SAFRANIA — À venir » (jamais atteinte : relais du jour où la ville rouvrira).
+##
+## Jalon 26 (T6) : dès que `saffron_city` existe, l'ouverture nord mène à `saffron_city` /
+## `from_gate_r5` (arrivée tournée ↓) ; elle ne s'atteint que `if [saffron_gates_open]` (le garde
+## s'écarte en (3, 3), la plante ferme (5, 2)). Arrivée depuis la ville : `from_saffron` (4, 2),
+## juste devant l'ouverture [D] (un pas pour y revenir).
 func _route_5_gate() -> Dictionary:
+	var city := ResourceLoader.exists(MAPS_DIR + "saffron_city.tscn")
+	var warps: Array = []
+	for entry: Array in [["ToSaffronW", Vector2i(4, 1)], ["ToSaffronE", Vector2i(5, 1)]]:
+		if city:
+			warps.append([entry[0], entry[1], STEP_ON, Vector2i.UP, &"saffron_city",
+				&"from_gate_r5", Vector2i.DOWN])
+		else:
+			warps.append([entry[0], entry[1], STEP_ON, Vector2i.UP, &"", &"north_door",
+				Vector2i.DOWN, "Safrania"])
 	return _gate_room(&"route_5_gate", "Route5Gate", &"from_gate", {
 		"doors": [Vector2i(4, 1), Vector2i(5, 1)],
 		"props": [[&"int_plante", Vector2i(5, 2), 2.95, "PlantDoor"]],
-		"spawns": {"north_door": Vector2i(4, 3)},
-		"warps": [
-			["ToSaffronW", Vector2i(4, 1), STEP_ON, Vector2i.UP, &"", &"north_door",
-				Vector2i.DOWN, "Safrania"],
-			["ToSaffronE", Vector2i(5, 1), STEP_ON, Vector2i.UP, &"", &"north_door",
-				Vector2i.DOWN, "Safrania"],
-		],
+		"spawns": {"north_door": Vector2i(4, 3), "from_saffron": Vector2i(4, 2)},
+		"warps": warps,
 		"triggers": [["GateRule", Vector2i(4, 3), Vector2i(2, 1), &"route_5_gate_rule",
 			Vector2i.UP]],
 	})
@@ -2114,13 +2134,18 @@ func _saffron_gate(route: int) -> Dictionary:
 		return prop[3] != "LowCabinet")
 	(room["props"] as Array).append([&"int_plante", Vector2i(5, 2), 2.95, "Barrier"])
 	(room["spawns"] as Dictionary)["north_door"] = Vector2i(4, 3)
+	# J26 (T6) : arrivée depuis Safrania, juste devant la porte (le garde est alors en (3, 2)) [D].
+	(room["spawns"] as Dictionary)["from_saffron"] = Vector2i(4, 2)
 	# Porte de Safrania : la ville (J26) / `from_gate_r<n>` dès que sa carte existe ; avant,
 	# « Safrania — À venir » (jamais atteinte : le garde la ferme tant que les postes sont clos).
+	# Orientation à l'arrivée en ville (J26 T6) : le poste de la Route 7 est à l'ouest de la ville
+	# (tourné →), celui de la Route 8 à l'est (tourné ←).
 	var city := ResourceLoader.exists(MAPS_DIR + "saffron_city.tscn")
+	var facing := Vector2i.RIGHT if route == 7 else Vector2i.LEFT
 	for entry: Array in [["ToSaffronW", Vector2i(4, 1)], ["ToSaffronE", Vector2i(5, 1)]]:
 		if city:
 			(room["warps"] as Array).append([entry[0], entry[1], STEP_ON, Vector2i.UP,
-				&"saffron_city", StringName("from_gate_r%d" % route), Vector2i.UP])
+				&"saffron_city", StringName("from_gate_r%d" % route), facing])
 		else:
 			(room["warps"] as Array).append([entry[0], entry[1], STEP_ON, Vector2i.UP, &"",
 				&"north_door", Vector2i.DOWN, "Safrania"])
@@ -2401,6 +2426,109 @@ func _celadon_small_room(id: StringName, node: String, plan: String, base: Strin
 				Vector2i.DOWN, &"celadon_city", &"from_chief", Vector2i.DOWN])
 	else:
 		(room["warps"] as Array).append_array(_celadon_exit_warps(cells, base))
+	return room
+
+
+# --- Jalon 26 (T6) : Safrania ------------------------------------------------------------------
+
+const SAFFRON_TITLE := "Safrania"
+const HOUSE_SHELL := "res://assets/world/interiors/int_maison_argenta_coque.png"
+
+
+## Les six intérieurs de Safrania (`jalon-26.md` §2.1, grilles `safrania_*.txt`) : Centre et
+## Boutique (définitions communes : infirmière, machine de soin, Stockage ; marchand → boutique de
+## la carte, `data/shops/saffron_mart.json`), maison de M. Psy et maison du Roucool (mobilier de
+## la maison du tailleur d'Argenta, comme Lavanville), maison du Copieur (rez-de-chaussée et étage,
+## escalier dans le mur du fond). Titre « Safrania ». PNJ en données (`data/npcs/saffron_*.json`) ;
+## examens et Pépite cachée du Copieur : points EXAMINER posés ici (T9).
+func _saffron_rooms() -> Array[Dictionary]:
+	return [
+		_pokemon_center(&"saffron_center", "SaffronCenter", SAFFRON_TITLE,
+			[&"saffron_city", &"from_center"]),
+		_poke_mart(&"saffron_mart", "SaffronMart", SAFFRON_TITLE,
+			[&"saffron_city", &"from_mart"]),
+		_saffron_house(&"saffron_psychic_house", "SaffronPsychicHouse",
+			"safrania_maison_psy.txt", &"from_psychic_house", _mason_furniture()),
+		_saffron_pidgey_house(),
+		_saffron_copycat_1f(), _saffron_copycat_2f(),
+	]
+
+
+## Maison relue sur sa grille (15 × 10), enveloppe des maisons d'Argenta, sortie PUSH ↓ (6..8, 8)
+## vers `saffron_city` / [param spawn] ; arrivée `entrance` (7, 8).
+func _saffron_house(id: StringName, node: String, plan: String, spawn: StringName,
+		furniture: Array) -> Dictionary:
+	return {
+		"id": id, "node": node, "size": Vector2i(15, 10), "shell": HOUSE_SHELL,
+		"title": SAFFRON_TITLE, "light": &"interior_warm",
+		"plan": PLANS_DIR + plan, "walkable": ".XE", "interactables": [],
+		"furniture": furniture,
+		"spawns": {"entrance": Vector2i(7, 8)},
+		"warps": _pewter_exits([Vector2i(6, 8), Vector2i(7, 8), Vector2i(8, 8)], spawn,
+			&"saffron_city"),
+	}
+
+
+## Maison du Roucool : la lettre posée sur la table (3, 5), lue depuis (3, 4) tournée vers le bas.
+func _saffron_pidgey_house() -> Dictionary:
+	var room := _saffron_house(&"saffron_pidgey_house", "SaffronPidgeyHouse",
+		"safrania_maison_roucool.txt", &"from_pidgey_house", _mason_furniture())
+	room["interactables"] = [["Letter", Vector2i(3, 5), Vector2i.ONE, &"saffron_pidgey_letter",
+		EXAMINE, Vector2i.DOWN]]
+	return room
+
+
+## Escalier du Copieur (12..13, 2), dans le mur du fond : STEP_ON ↑ vers l'autre niveau, arrivée
+## une case devant (12, 3), tournée ↓ (grille : `vers_2f` / `vers_1f`, paire `copieur`).
+func _copycat_stairs(target: StringName, spawn: StringName) -> Array:
+	var warps: Array = []
+	for index: int in 2:
+		warps.append(["Stairs%d" % index, Vector2i(12 + index, 2), STEP_ON, Vector2i.UP, target,
+			spawn, Vector2i.DOWN])
+	return warps
+
+
+## Rez-de-chaussée du Copieur (`safrania_maison_copieur_1f.txt`) : cuisine, table à manger, table
+## basse, porte-manteau, plantes ; l'escalier montant (image à plat, couche du sol) remplace le
+## canapé et la lampe.
+func _saffron_copycat_1f() -> Dictionary:
+	var furniture := _mason_furniture().filter(func(entry: Array) -> bool:
+		return not entry[2] in ["Sofa", "Lamp"])
+	var room := _saffron_house(&"saffron_copycat_house_1f", "SaffronCopycatHouse1F",
+		"safrania_maison_copieur_1f.txt", &"from_copycat_house", furniture)
+	(room["spawns"] as Dictionary)["from_2f"] = Vector2i(12, 3)
+	(room["warps"] as Array).append_array(_copycat_stairs(&"saffron_copycat_house_2f",
+		&"from_1f"))
+	room["rugs"] = [[&"int_escalier_montant_01", Vector2(13.0, 3.0 - 359.0 / 2.0 / TILE),
+		"StairsUp"]]
+	return room
+
+
+## Étage du Copieur (`safrania_maison_copieur_2f.txt`), chambre sans sortie : ordinateur et
+## bibliothèque (bureau d'angle sur (1..2, 3)), lit (cases `L` de la grille), console, coin des
+## poupées ; escalier descendant à plat. Le paillasson de l'enveloppe commune reste peint
+## (provisoire) mais la rangée 8 est un mur.
+func _saffron_copycat_2f() -> Dictionary:
+	var room := _saffron_house(&"saffron_copycat_house_2f", "SaffronCopycatHouse2F",
+		"safrania_maison_copieur_2f.txt", &"", [
+			[&"int_bureau_angle_pc_01", Rect2i(1, 3, 2, 1), "DeskComputer"],
+			[&"int_lit_01", Rect2i(10, 3, 2, 2), "Bed",
+				[Vector2i(10, 3), Vector2i(11, 3), Vector2i(11, 4), Vector2i(12, 4)]],
+			[&"int_tele_01", Rect2i(5, 5, 1, 1), "GameConsole", [], 0.5],
+			[&"int_panier_pokemon_01", Rect2i(1, 7, 1, 1), "DollsWest"],
+			[&"int_panier_pokemon_01", Rect2i(2, 7, 1, 1), "DollsEast"],
+		])
+	room["spawns"] = {"from_1f": Vector2i(12, 3)}
+	room["warps"] = _copycat_stairs(&"saffron_copycat_house_1f", &"from_2f")
+	# T9 : ordinateur et console (lus par-dessous, tournés vers le haut) ; Pépite cachée (RB (1, 1)).
+	room["interactables"] = [
+		["Computer", Vector2i(1, 3), Vector2i.ONE, &"saffron_copycat_computer", EXAMINE, Vector2i.UP],
+		["Console", Vector2i(5, 5), Vector2i.ONE, &"saffron_copycat_console", EXAMINE, Vector2i.UP],
+		["HiddenNugget", Vector2i(2, 3), Vector2i.ONE, &"saffron_copycat_hidden_1", EXAMINE,
+			Vector2i.UP, [&"got_saffron_copycat_hidden_1"]],
+	]
+	room["rugs"] = [[&"int_escalier_descendant_01", Vector2(13.0, 3.0 - 86.0 / TILE),
+		"StairsDown"]]
 	return room
 
 

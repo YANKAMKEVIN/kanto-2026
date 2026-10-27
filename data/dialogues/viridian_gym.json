@@ -1,0 +1,238 @@
+{
+	"viridian_gym_cooltrainer_yannick_before": {
+		"speaker": "Topdresseur Yannick",
+		"pages": [
+			"Le sol de cette Arène ne pardonne aucune erreur."
+		]
+	},
+	"viridian_gym_cooltrainer_yannick_defeated": {
+		"speaker": "Topdresseur Yannick",
+		"pages": [
+			"J'ai glissé… au mauvais moment."
+		]
+	},
+	"viridian_gym_cooltrainer_yannick_after": {
+		"speaker": "Topdresseur Yannick",
+		"pages": [
+			"Ici, on apprend à lire les flèches avant de courir."
+		]
+	},
+	"viridian_gym_blackbelt_bertrand_before": {
+		"speaker": "Karatéka Bertrand",
+		"pages": [
+			"Hiyaa ! Mes poings sont prêts !"
+		]
+	},
+	"viridian_gym_blackbelt_bertrand_defeated": {
+		"speaker": "Karatéka Bertrand",
+		"pages": [
+			"Ouf… Tu frappes fort."
+		]
+	},
+	"viridian_gym_blackbelt_bertrand_after": {
+		"speaker": "Karatéka Bertrand",
+		"pages": [
+			"Le Champion nous apprend à tenir debout,\nmême quand le sol bouge."
+		]
+	},
+	"viridian_gym_tamer_lionel_before": {
+		"speaker": "Dompteur Lionel",
+		"pages": [
+			"Mon Rhinocorne ne s'arrête jamais.\nEt toi ?"
+		]
+	},
+	"viridian_gym_tamer_lionel_defeated": {
+		"speaker": "Dompteur Lionel",
+		"pages": [
+			"Il s'est arrêté, finalement…"
+		]
+	},
+	"viridian_gym_tamer_lionel_after": {
+		"speaker": "Dompteur Lionel",
+		"pages": [
+			"Un Rhinocorne, ça se dresse avec patience."
+		]
+	},
+	"viridian_gym_blackbelt_didier_before": {
+		"speaker": "Karatéka Didier",
+		"pages": [
+			"Tu crois pouvoir passer sans te battre ?"
+		]
+	},
+	"viridian_gym_blackbelt_didier_defeated": {
+		"speaker": "Karatéka Didier",
+		"pages": [
+			"Bien joué. Vraiment."
+		]
+	},
+	"viridian_gym_blackbelt_didier_after": {
+		"speaker": "Karatéka Didier",
+		"pages": [
+			"Je m'entraîne ici depuis des années.",
+			"Le Champion vient rarement."
+		]
+	},
+	"viridian_gym_cooltrainer_florian_before": {
+		"speaker": "Topdresseur Florian",
+		"pages": [
+			"Peu de Dresseurs arrivent jusqu'ici."
+		]
+	},
+	"viridian_gym_cooltrainer_florian_defeated": {
+		"speaker": "Topdresseur Florian",
+		"pages": [
+			"Tu mérites d'aller plus loin."
+		]
+	},
+	"viridian_gym_cooltrainer_florian_after": {
+		"speaker": "Topdresseur Florian",
+		"pages": [
+			"Le Champion n'est plus très loin.\nPrépare-toi bien."
+		]
+	},
+	"viridian_gym_blackbelt_joel_before": {
+		"speaker": "Karatéka Joël",
+		"pages": [
+			"Halte ! Personne ne passe\nsans m'affronter."
+		]
+	},
+	"viridian_gym_blackbelt_joel_defeated": {
+		"speaker": "Karatéka Joël",
+		"pages": [
+			"Mes Pokémon ont tout donné…"
+		]
+	},
+	"viridian_gym_blackbelt_joel_after": {
+		"speaker": "Karatéka Joël",
+		"pages": [
+			"Va. Le Champion t'attend."
+		]
+	},
+	"viridian_gym_tamer_regis_before": {
+		"speaker": "Dompteur Régis",
+		"pages": [
+			"Mes Pokémon ont du caractère.\nAttention !"
+		]
+	},
+	"viridian_gym_tamer_regis_defeated": {
+		"speaker": "Dompteur Régis",
+		"pages": [
+			"Ils ne m'ont pas écouté, cette fois."
+		]
+	},
+	"viridian_gym_tamer_regis_after": {
+		"speaker": "Dompteur Régis",
+		"pages": [
+			"Un Tauros, ça ne se dompte pas en un jour."
+		]
+	},
+	"viridian_gym_cooltrainer_damien_before": {
+		"speaker": "Topdresseur Damien",
+		"pages": [
+			"Ce couloir est à moi.\nRecule ou combats !"
+		]
+	},
+	"viridian_gym_cooltrainer_damien_defeated": {
+		"speaker": "Topdresseur Damien",
+		"pages": [
+			"Tu as de bons réflexes."
+		]
+	},
+	"viridian_gym_cooltrainer_damien_after": {
+		"speaker": "Topdresseur Damien",
+		"pages": [
+			"Ce passage mène tout droit au Champion."
+		]
+	},
+	"viridian_gym_guide": {
+		"speaker": "Guide",
+		"variants": [
+			{
+				"if": [
+					"badge_earth"
+				],
+				"pages": [
+					"Le Champion est parti…\nL'Arène semble bien vide sans lui."
+				]
+			},
+			{
+				"pages": [
+					"Le dernier Champion de Kanto t'attend.",
+					"Attention : le sol ici a sa propre volonté."
+				]
+			}
+		]
+	},
+	"viridian_gym_giovanni": {
+		"speaker": "Giovanni",
+		"variants": [
+			{
+				"if": [
+					"badge_earth"
+				],
+				"cutscene": "viridian_gym_giovanni_tm_late"
+			},
+			{
+				"cutscene": "viridian_gym_giovanni"
+			}
+		]
+	},
+	"viridian_gym_giovanni_intro": {
+		"speaker": "Giovanni",
+		"pages": [
+			"Te voilà.",
+			"C'est ici que tout a commencé pour moi.",
+			"Ici, je ne suis pas le chef de la Team Rocket.\nJe suis le Champion de Jadielle."
+		]
+	},
+	"viridian_gym_giovanni_resume": {
+		"speaker": "Giovanni",
+		"pages": [
+			"Encore toi.",
+			"Montre-moi que la première fois\nn'était pas un hasard."
+		]
+	},
+	"viridian_gym_giovanni_lost": {
+		"speaker": "Giovanni",
+		"pages": [
+			"Tu n'es pas encore à la hauteur.",
+			"Reviens quand tu le seras."
+		]
+	},
+	"viridian_gym_giovanni_won": {
+		"speaker": "Giovanni",
+		"pages": [
+			"… Ta force est réelle.",
+			"Ce Badge Terre te revient."
+		]
+	},
+	"viridian_gym_giovanni_badge": {
+		"speaker": "Giovanni",
+		"pages": [
+			"{player} reçoit le Badge Terre !"
+		]
+	},
+	"viridian_gym_giovanni_tm": {
+		"speaker": "Giovanni",
+		"pages": [
+			"Prends aussi la CT27, Abîme.",
+			"Une fissure dans le sol,\net le combat est fini."
+		]
+	},
+	"viridian_gym_giovanni_tm_got": {
+		"speaker": "Giovanni",
+		"pages": [
+			"{player} reçoit la CT27 Abîme !"
+		]
+	},
+	"viridian_gym_giovanni_departure": {
+		"speaker": "Giovanni",
+		"pages": [
+			"La Team Rocket, c'est terminé.\nJe pars m'entraîner seul.",
+			"Un jour, peut-être,\nnos chemins se croiseront encore."
+		]
+	},
+	"viridian_gym_item_1": {
+		"cutscene": "viridian_gym_item_1"
+	}
+}

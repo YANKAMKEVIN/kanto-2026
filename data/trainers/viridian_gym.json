@@ -1,0 +1,182 @@
+{
+	"viridian_gym_cooltrainer_yannick": {
+		"name": "Topdresseur Yannick",
+		"ai": "smart",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 1365,
+		"team": [
+			{
+				"species": "sandslash",
+				"level": 39
+			},
+			{
+				"species": "dugtrio",
+				"level": 39
+			}
+		]
+	},
+	"viridian_gym_blackbelt_bertrand": {
+		"name": "Karatéka Bertrand",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 1000,
+		"team": [
+			{
+				"species": "machop",
+				"level": 40
+			},
+			{
+				"species": "machoke",
+				"level": 40
+			}
+		]
+	},
+	"viridian_gym_tamer_lionel": {
+		"name": "Dompteur Lionel",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 1720,
+		"team": [
+			{
+				"species": "rhyhorn",
+				"level": 43
+			}
+		]
+	},
+	"viridian_gym_blackbelt_didier": {
+		"name": "Karatéka Didier",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 1075,
+		"team": [
+			{
+				"species": "machoke",
+				"level": 43
+			}
+		]
+	},
+	"viridian_gym_cooltrainer_florian": {
+		"name": "Topdresseur Florian",
+		"ai": "smart",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 1505,
+		"team": [
+			{
+				"species": "rhyhorn",
+				"level": 43
+			}
+		]
+	},
+	"viridian_gym_blackbelt_joel": {
+		"name": "Karatéka Joël",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 950,
+		"team": [
+			{
+				"species": "machoke",
+				"level": 38
+			},
+			{
+				"species": "machop",
+				"level": 38
+			},
+			{
+				"species": "machoke",
+				"level": 38
+			}
+		]
+	},
+	"viridian_gym_tamer_regis": {
+		"name": "Dompteur Régis",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 1560,
+		"team": [
+			{
+				"species": "arbok",
+				"level": 39
+			},
+			{
+				"species": "tauros",
+				"level": 39
+			}
+		]
+	},
+	"viridian_gym_cooltrainer_damien": {
+		"name": "Topdresseur Damien",
+		"ai": "smart",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 1365,
+		"team": [
+			{
+				"species": "nidorino",
+				"level": 39
+			},
+			{
+				"species": "nidoking",
+				"level": 39
+			}
+		]
+	},
+	"viridian_gym_giovanni": {
+		"name": "Giovanni",
+		"ai": "smart",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 4950,
+		"start_message": false,
+		"end_message": true,
+		"bag": true,
+		"switch": true,
+		"card": {
+			"name": "GIOVANNI",
+			"title": "Champion d'Arène de Jadielle"
+		},
+		"team": [
+			{
+				"species": "rhyhorn",
+				"level": 45
+			},
+			{
+				"species": "dugtrio",
+				"level": 42
+			},
+			{
+				"species": "nidoqueen",
+				"level": 44
+			},
+			{
+				"species": "nidoking",
+				"level": 45
+			},
+			{
+				"species": "rhydon",
+				"level": 50,
+				"moves": [
+					"stomp",
+					"tail_whip",
+					"fissure",
+					"horn_drill"
+				]
+			}
+		]
+	}
+}

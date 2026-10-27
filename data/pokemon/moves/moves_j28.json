@@ -1,0 +1,7 @@
+{
+	"fissure": {
+		"name": "Abîme", "type": "ground", "category": "status",
+		"accuracy": 30, "pp": 5, "effects": [{ "kind": "ohko" }],
+		"description": "Le lanceur fait s'ouvrir une faille sous la cible. Met K.O. d'un coup."
+	}
+}

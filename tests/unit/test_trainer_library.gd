@@ -390,8 +390,15 @@ func test_only_misty_surge_and_the_rivals_switch() -> void:
 	# Jalon 20 (T7, dossier 23 §11.3, §13.5) : Erika et Giovanni.
 	var switching: Array[StringName] = [&"cerulean_gym_misty", &"rival_cerulean",
 		&"rival_ss_anne", &"vermilion_gym_surge", &"rival_tower", &"celadon_gym_erika",
-		&"giovanni_hideout", &"cinnabar_gym_blaine", &"rival_route22_final"]
-	# Jalon 29 (T4, plan §2.3) : le rival n° 7 change de Pokémon (IA smart), moment à chaque issue.
+		&"giovanni_hideout", &"rival_silph", &"silph_co_giovanni", &"cinnabar_gym_blaine",
+		# Jalon 27 (T3) : Morgane et le maître du Dojo [D].
+		&"saffron_gym_sabrina", &"fighting_dojo_master",
+		# Jalon 28 (T8) : Giovanni Champion.
+		&"viridian_gym_giovanni",
+		# Jalon 23 (T19) : Koga.
+		&"fuchsia_gym_koga",
+		# Jalon 29 (T4, plan §2.3) : le rival n° 7 change de Pokémon (IA smart), moment à chaque issue.
+		&"rival_route22_final"]
 	for id: StringName in library.get_ids():
 		if not String(id).begins_with("qa_"):
 			assert_eq(library.get_trainer(id).can_switch, switching.has(id), String(id))
@@ -420,11 +427,11 @@ func test_moment_accepts_only_win() -> void:
 	assert_string_contains(_errors(), "« moment » vaut \"win\"")
 
 
-## Seuls les rivaux n° 3, n° 4 (J16) et n° 5 (J19) ont « moment »: "win" ; les rivaux n° 1 et
+## Seuls les rivaux n° 3, n° 4 (J16), n° 5 (J19) et n° 6 (J26) ont « moment »: "win" ; les rivaux n° 1 et
 ## n° 2 gardent un moment par combat, victoire comme défaite.
 func test_real_rivals_moment_rule() -> void:
 	var library := TrainerLibrary.new(_data)
 	assert_true(library.load_dir())
 	for id: StringName in library.get_ids():
 		assert_eq(library.get_trainer(id).moment_on_win,
-			[&"rival_cerulean", &"rival_ss_anne", &"rival_tower"].has(id), String(id))
+			[&"rival_cerulean", &"rival_ss_anne", &"rival_tower", &"rival_silph"].has(id), String(id))

@@ -245,3 +245,93 @@ La passe ne propose aucun texte : tout ce qui suit est **[D] (défaut, à relire
   génération). Rien ne change par défaut.
 - **Q27-4 — Revanche** : Morgane et le maître ne se rejouent pas après la victoire (RB). Le post-game
   (passe J31 : Champions améliorés) s'en chargera.
+
+## 10. Avancement (2026-10-22, branche `jalon-27` depuis `origin/jalon-26` @ `b510cc8c`)
+
+Codé d'un trait la nuit du 2026-10-22 (Kevin absent, textes du plan **validés par Kevin le
+2026-10-21, validation d'avance (proposition du plan)** ; défauts Q27-2 élèves non obligatoires,
+Q27-3 table des types moderne, Q27-4 pas de revanche avant le post-game).
+
+Suite complète **6 615 / 6 615** (610 scripts, 371 141 assertions) le 2026-10-22 après les effets de
+Pied Sauté, Pied Voltige et Riposte, import sans erreur.
+
+Fait : **T1 à T4, T6 à T11**. Reste : **T5** (vue générale peinte de l'Arène ; le code ne
+l'attend pas), **T12** (QA téléphone, une session → Kevin), **T13** (clôture, fusion après accord).
+
+| Tâche | Contenu |
+|---|---|
+| T1 | Branche `jalon-27` ; audit des espèces et capacités sur toutes les branches `origin/*` ; prénoms vérifiés libres partout (Mélusine, Ophélie, Cassandre, Albin, Nestor, Barnabé, Léandre, Hippolyte, Tancrède, Urbain, Wilfried) |
+| T2 | `tools/art/saffron_gym_rb_decode.py` (pokered local, jamais embarqué) ; grilles `safrania_arene.txt` (20 × 18, neuf salles, 30 tapis = 15 paires RB) et `safrania_dojo.txt` (10 × 12) ; `plan_check_teleports.py` et `plan_check_j27.py` conformes (un seul tapis vers Morgane, chaque Dresseur évitable, un parcours sans aucun combat) |
+| T3 | `kanto_saffron.json` (Kicklee, Tygnon ; fiches de Pokédex [D] et sprites provisoires générés), `moves/saffron.json` (**`psywave`** avec l'effet S2G, kinesis, rolling_kick, jump_kick, hi_jump_kick, ice_punch, thunder_punch, counter), `items_j27.json` (`tm46`), `tm_compatibility.json` régénéré ; 7 Dresseurs de l'Arène, Morgane (équipe verrouillée, capacités RB dont Vague Psy, Soin, Protection, Mur Lumière, Bouclier ; IA smart, carte), 4 élèves et le maître |
+| T4 | `tools/sim/saffron_gym_scenario.json` (200 graines, équipe J26 + 4 niveaux [D]) : maître 100 % ; **Morgane du premier coup** (attentif) : Dracaufeu 35 %, Florizarre 12 %, Tortank 36,5 % (expert 48 / 23,5 / 56,5 %). Aucune donnée changée (information pour Kevin) |
+| T6 | `tools/build_saffron_gym.gd` (enveloppes provisoires `placeholders_safrania_arene.py`) ; portes de Safrania ouvertes (`a_venir` retiré de `safrania.txt`, outil du J26 relancé : seules les deux portes changent) ; zone, lumière `interior_warm` [D], intérieurs, service « Arène » |
+| T7 | 30 tapis `Warp.Style.TELEPORT` sur la même carte (`relocate`) ; parcours en 4 tapis joué de l'entrée à Morgane (S → SE → NE → NO → centre) ; arriver sur un tapis ne le déclenche pas ; retour possible |
+| T8 | Morgane : scène sur le modèle d'Erika (`sabrina_met`, `badge_marsh`, `tm46_received`, rattrapage de la CT46) ; défaite → réveil ; guide (T27-01) |
+| T9 | Dojo : 4 élèves (vision RB, aucun verrou d'ordre), maître parlé (scène : `fighting_dojo_master_defeated`) ; jouable Safrania occupée (porte sans drapeau) |
+| T10 | Deux Poké Balls (`unless` des deux drapeaux) : avant la victoire, T27-09 ; après, fiche + « Choisir … ? » OUI / NON ; OUI → scène `fighting_dojo_take_<espèce>` (`unless` des deux drapeaux) : `gift_pokemon` N30 qui pose `dojo_got_<espèce>` **dans le même bloc** que le don, puis les deux Balls disparaissent ; autosave « don » immédiate |
+| T11 | Départs `saffron_gym`, `sabrina`, `fighting_dojo` (Safrania occupée), `dojo_choice` (équipe pleine) ; README |
+
+Tests : `test_saffron_gym` (7), `test_fighting_dojo` (6 : indépendance, Balls réservées, défaite,
+NON puis OUI, Stockage + relance, arrêt avant l'écriture), `test_j27_debug_starts`,
+`test_saffron_data` ; registres des tests de données mis à jour. Captures Mac :
+`tools/capture_safrania_arene.sh` (relues : tapis lisibles, Balls sur l'estrade).
+
+**Écarts et points ouverts** :
+- **Emprunts à supprimer à la fusion** : `species/kanto_j27_emprunts.json` (venomoth, machoke de
+  `jalon-22` ; slowpoke, slowbro de `jalon-24` ; **mr_mime de `jalon-29`**, psy seul), leurs fiches
+  de Pokédex et sprites provisoires (copies identiques) et `moves/j27_emprunts.json` (barrier, amnesia de
+  `jalon-22`, fire_punch de `jalon-25`, mega_kick, substitute de `jalon-29`) : copies identiques,
+  sinon doublons d'identifiants au chargement. `tm_compatibility.json` : régénérer, ne pas fusionner
+  à la main.
+- Capacités créées sans branche d'origine : noms français confirmés par la coordination (Télékinésie, Mawashi Geri, Pied
+  Sauté, Pied Voltige, Poing-Glace, Poing-Éclair, Riposte), puissances modernes. Kicklee / Tygnon
+  apprennent ces capacités. Effets codés le 2026-10-22 (voir « Décisions de Kevin ») ; **à la fusion
+  avec le J30** : `origin/jalon-30` crée aussi `jump_kick`, `counter` (priorité −5) et
+  **`high_jump_kick`** (identifiant différent de notre `hi_jump_kick`) en `pending_effects` ; garder
+  une seule définition, avec les effets du J27.
+- Drapeau du maître : `fighting_dojo_master_defeated` posé par la victoire de sa scène (le maître
+  n'est pas un Dresseur à vision, comme en RB) ; pas de `sabrina_defeated` (`badge_marsh` suffit).
+- **Équilibrage** : Morgane est rude pour Florizarre (12 % au premier essai) ; à resimuler sur les
+  vraies sorties des J21 à J26 avant de toucher l'équipe verrouillée ou ses capacités.
+- Art provisoire : enveloppes générées, Morgane = `beauty`, Médiums = `youngster`, Karatékas =
+  `hiker` (silhouette féminine), maître = `hiker` ; pas de fond de combat « Arène Psy » / « Dojo »
+  (repli existant). Les bords est et ouest des salles touchent le bord de la carte (RB à 1:1).
+
+## Décisions de Kevin (2026-10-22)
+
+Choix validés par Kevin sur la page d'arbitrages.
+
+Décisions de Kevin du 2026-10-22 : elles **remplacent les « recommandations appliquées par
+défaut »** notées plus tôt. Le code les applique déjà.
+
+- Morgane : à resimuler sur les vraies sorties des J21–J26, puis ajuster.
+- Effets de Pied Sauté, Pied Voltige et Riposte : à coder avant la fusion → **fait le 2026-10-22**,
+  règles de Rouge/Bleu vérifiées dans le pokered local (`build/rb/pokered` du worktree J28,
+  `PrintMoveFailureText`, `HandleCounterMove`). Aucune branche `origin/*` ne les codait (le J30 les a
+  aussi en `pending_effects`).
+  - `crash` (`{ "kind": "crash", "amount": 1 }`) : raté, esquive (Tunnel) ou immunité (Spectre) →
+    CRASHED, le lanceur perd 1 PV (RB : `wDamage` vaut 0, donc toujours 1 PV), K.O. possible ;
+    texte « {pokemon} s'écrase au sol ! » (clé `crash`) **validé par Kevin le 2026-10-22**.
+  - `counter` (priorité −1) : 2 × les dégâts du dernier coup reçu de la capacité adverse la plus
+    récente si elle est **de type** Normal ou Combat (RB regarde le type, pas la catégorie : Météores
+    se riposte, Pistolet à O non) ; sinon raté sans tirage ; précision ordinaire ; dégâts sans type
+    (touche un Spectre, comme RB) ; Riposte contre Riposte rate. IA : Riposte seulement juste après un
+    coup Normal ou Combat reçu [D].
+  - Tests : `tests/unit/test_battle_crash_counter.gd` (14 : données, touche, rate, immunité,
+    esquive, chute mortelle, Riposte après coup physique, sur Spectre, après coup spécial Eau,
+    Normal spéciale, sans dégât reçu, attaque adverse ratée, seule la dernière capacité compte).
+- Riposte comme Rouge/Bleu : capacité de type Normal ou Combat, même spéciale (c'est le type qui
+  compte, pas la catégorie) : **décidé, déjà codé**.
+- Morgane et le maître changent de Pokémon en combat : gardé. **Décidé, déjà codé.**
+
+## QA A17 du 2026-10-23
+
+Session de nuit sur le Galaxy A17 (APK debug ; captures et notes : `~/dev/qa-nuit2/j27/`). **OK** :
+Arène, parcours entrée → SE → NE → NO → Morgane par quatre tapis (arrivées exactes, aucune boucle,
+orientation gardée) ; Médiums Barnabé, Albin, Nestor ; Morgane (intro, combat, victoire, 5e Badge,
+CT46 au Sac) ; Dojo jouable Safrania occupée (sortie, retour) ; `dojo_choice` : fiche Kicklee, NON
+→ rien ; Tygnon OUI → « envoyé au stockage », les deux Balls disparaissent. **Perf A17** : Arène et
+Dojo 60 i/s. **Ouvert (art)** : CT46 sans icône (`assets/ui/items/tm46.webp` absente → icône
+générique). Le Salamèche N42 du départ `saffron_gym` perd contre le Médium Nestor (M. Mime, Kadabra
+34) : Arène rude, cohérent avec la simulation. Non joué : défaite contre Morgane, arrêt forcé après
+OUI (un départ de débogage n'écrit pas la sauvegarde).

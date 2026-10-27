@@ -1,0 +1,217 @@
+{
+ "flipbooks": {
+  "jet_flammes": {
+   "fichier": "fb_jet_flammes.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "add",
+   "boucle": true
+  },
+  "boule_feu": {
+   "fichier": "fb_boule_feu.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "add",
+   "boucle": true
+  },
+  "gerbe_braises": {
+   "fichier": "fb_gerbe_braises.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "add",
+   "boucle": true
+  },
+  "jet_eau": {
+   "fichier": "fb_jet_eau.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "norm",
+   "boucle": true
+  },
+  "eclaboussure": {
+   "fichier": "fb_eclaboussure.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "norm",
+   "boucle": true
+  },
+  "arc_electrique_a": {
+   "fichier": "fb_arc_electrique_a.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "add",
+   "boucle": true
+  },
+  "arc_electrique_b": {
+   "fichier": "fb_arc_electrique_b.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "add",
+   "boucle": true
+  },
+  "decharge_etoile": {
+   "fichier": "fb_decharge_etoile.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "add",
+   "boucle": true
+  },
+  "rafale_feuilles": {
+   "fichier": "fb_rafale_feuilles.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "norm",
+   "boucle": true
+  },
+  "nuage_spores": {
+   "fichier": "fb_nuage_spores.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "norm",
+   "boucle": true
+  },
+  "onde_psy": {
+   "fichier": "fb_onde_psy.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "add",
+   "boucle": true
+  },
+  "poussiere_eboulis": {
+   "fichier": "fb_poussiere_eboulis.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "norm",
+   "boucle": true
+  }
+ },
+ "particules": {
+  "flamme": {
+   "fichier": "p_flamme.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "braise": {
+   "fichier": "p_braise.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "etincelle": {
+   "fichier": "p_etincelle.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "lueur_douce": {
+   "fichier": "p_lueur_douce.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "etoile_impact": {
+   "fichier": "p_etoile_impact.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "griffes": {
+   "fichier": "p_griffes.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "machoires": {
+   "fichier": "p_machoires.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "note_son": {
+   "fichier": "p_note_son.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "goutte": {
+   "fichier": "p_goutte.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "bulle": {
+   "fichier": "p_bulle.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "feuille": {
+   "fichier": "p_feuille.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "petale": {
+   "fichier": "p_petale.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "plume": {
+   "fichier": "p_plume.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "eclat_glace": {
+   "fichier": "p_eclat_glace.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "caillou": {
+   "fichier": "p_caillou.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "flocon": {
+   "fichier": "p_flocon.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "fumee": {
+   "fichier": "p_fumee.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "poussiere": {
+   "fichier": "p_poussiere.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "spore": {
+   "fichier": "p_spore.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "os": {
+   "fichier": "p_os.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "poing": {
+   "fichier": "p_poing.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "etoile": {
+   "fichier": "p_etoile.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "aiguille": {
+   "fichier": "p_aiguille.webp",
+   "taille": 192,
+   "melange": "norm"
+  }
+ }
+}

@@ -1,0 +1,213 @@
+{
+	"saffron_gym_sabrina": {
+		"speaker": "Morgane",
+		"variants": [
+			{
+				"if": [
+					"badge_marsh"
+				],
+				"unless": [
+					"tm46_received"
+				],
+				"cutscene": "saffron_gym_sabrina_tm_late"
+			},
+			{
+				"if": [
+					"badge_marsh"
+				],
+				"pages": [
+					"L'avenir n'est pas écrit.\nTu viens de me le rappeler."
+				]
+			},
+			{
+				"cutscene": "saffron_gym_sabrina"
+			}
+		]
+	},
+	"saffron_gym_sabrina_intro": {
+		"speaker": "Morgane",
+		"pages": [
+			"Je savais que tu viendrais.",
+			"Je l'ai vu bien avant que\ntu franchisses la porte."
+		]
+	},
+	"saffron_gym_sabrina_resume": {
+		"speaker": "Morgane",
+		"pages": [
+			"Tu reviens.\nJe l'avais vu aussi."
+		]
+	},
+	"saffron_gym_sabrina_won": {
+		"speaker": "Morgane",
+		"pages": [
+			"Je ne l'avais pas prévu…\nTu as gagné.",
+			"Prends le Badge Marais."
+		]
+	},
+	"saffron_gym_sabrina_badge": {
+		"speaker": "Morgane",
+		"pages": [
+			"{player} reçoit le Badge Marais !"
+		]
+	},
+	"saffron_gym_sabrina_tm": {
+		"speaker": "Morgane",
+		"pages": [
+			"Et ceci : la CT46, Vague Psy."
+		]
+	},
+	"saffron_gym_sabrina_tm_use": {
+		"speaker": "Morgane",
+		"pages": [
+			"{player} reçoit la CT46 Vague Psy !",
+			"Sa force dépend du niveau\nde ton Pokémon."
+		]
+	},
+	"saffron_gym_sabrina_tm_late": {
+		"speaker": "Morgane",
+		"pages": [
+			"Attends. Je savais que\ntu reviendrais pour ceci."
+		]
+	},
+	"saffron_gym_sabrina_lost": {
+		"speaker": "Morgane",
+		"pages": [
+			"C'était écrit.",
+			"Reviens quand ton esprit\nsera prêt."
+		]
+	},
+	"saffron_gym_guide": {
+		"speaker": "Guide",
+		"pages": [
+			"Salut, futur Champion !",
+			"Morgane lit dans les pensées.",
+			"Ici, les tapis t'emmènent ailleurs :\nsouviens-toi d'où tu viens."
+		]
+	},
+	"saffron_gym_channeler_melusine_before": {
+		"speaker": "Exorciste Mélusine",
+		"pages": [
+			"Les esprits murmurent ton nom…"
+		]
+	},
+	"saffron_gym_channeler_melusine_defeated": {
+		"speaker": "Exorciste Mélusine",
+		"pages": [
+			"Ils se sont tus."
+		]
+	},
+	"saffron_gym_channeler_melusine_after": {
+		"speaker": "Exorciste Mélusine",
+		"pages": [
+			"Morgane voit plus loin\nque les esprits eux-mêmes."
+		]
+	},
+	"saffron_gym_psychic_albin_before": {
+		"speaker": "Médium Albin",
+		"pages": [
+			"Je sais déjà ce que\ntu vas faire !"
+		]
+	},
+	"saffron_gym_psychic_albin_defeated": {
+		"speaker": "Médium Albin",
+		"pages": [
+			"Je n'avais pas vu ça…"
+		]
+	},
+	"saffron_gym_psychic_albin_after": {
+		"speaker": "Médium Albin",
+		"pages": [
+			"Les tapis ne mènent jamais\noù l'on croit."
+		]
+	},
+	"saffron_gym_channeler_ophelie_before": {
+		"speaker": "Exorciste Ophélie",
+		"pages": [
+			"Tu t'es perdu ?\nLes esprits, eux, savent où tu es."
+		]
+	},
+	"saffron_gym_channeler_ophelie_defeated": {
+		"speaker": "Exorciste Ophélie",
+		"pages": [
+			"Disparu… comme un spectre."
+		]
+	},
+	"saffron_gym_channeler_ophelie_after": {
+		"speaker": "Exorciste Ophélie",
+		"pages": [
+			"Le Spectre ne craint pas\nles Pokémon Psy."
+		]
+	},
+	"saffron_gym_psychic_nestor_before": {
+		"speaker": "Médium Nestor",
+		"pages": [
+			"Ta prochaine attaque ?\nJe la connais déjà."
+		]
+	},
+	"saffron_gym_psychic_nestor_defeated": {
+		"speaker": "Médium Nestor",
+		"pages": [
+			"Mes visions m'ont trompé."
+		]
+	},
+	"saffron_gym_psychic_nestor_after": {
+		"speaker": "Médium Nestor",
+		"pages": [
+			"Morgane ne perd jamais.\nEnfin… presque jamais."
+		]
+	},
+	"saffron_gym_channeler_cassandre_before": {
+		"speaker": "Exorciste Cassandre",
+		"pages": [
+			"Les ombres ont faim.\nNourris-les !"
+		]
+	},
+	"saffron_gym_channeler_cassandre_defeated": {
+		"speaker": "Exorciste Cassandre",
+		"pages": [
+			"Les ombres se dispersent…"
+		]
+	},
+	"saffron_gym_channeler_cassandre_after": {
+		"speaker": "Exorciste Cassandre",
+		"pages": [
+			"Morgane est au centre.\nTout le monde le sait."
+		]
+	},
+	"saffron_gym_psychic_barnabe_before": {
+		"speaker": "Médium Barnabé",
+		"pages": [
+			"Mes Pokémon pensent lentement.\nMais ils pensent fort !"
+		]
+	},
+	"saffron_gym_psychic_barnabe_defeated": {
+		"speaker": "Médium Barnabé",
+		"pages": [
+			"Trop lent, finalement."
+		]
+	},
+	"saffron_gym_psychic_barnabe_after": {
+		"speaker": "Médium Barnabé",
+		"pages": [
+			"Prends ton temps.\nLes tapis ne bougent pas."
+		]
+	},
+	"saffron_gym_psychic_leandre_before": {
+		"speaker": "Médium Léandre",
+		"pages": [
+			"Tu arrives jusqu'ici ?\nJe l'avais prédit !"
+		]
+	},
+	"saffron_gym_psychic_leandre_defeated": {
+		"speaker": "Médium Léandre",
+		"pages": [
+			"Ça, je ne l'avais pas prédit."
+		]
+	},
+	"saffron_gym_psychic_leandre_after": {
+		"speaker": "Médium Léandre",
+		"pages": [
+			"La salle de Morgane est tout près.\nMais par où ?"
+		]
+	}
+}

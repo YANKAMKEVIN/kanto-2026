@@ -18,7 +18,7 @@
 		},
 		"viridian_city": {
 			"name": "Jadielle", "kind": "town",
-			"maps": ["viridian_city", "viridian_center", "viridian_mart"],
+			"maps": ["viridian_city", "viridian_center", "viridian_mart", "viridian_gym"],
 			"services": [
 				{ "id": "pokemon_center", "found_on": "viridian_center" },
 				{ "id": "poke_mart", "found_on": "viridian_mart" },
@@ -139,7 +139,19 @@
 			"subtitle": "Route 7 — Route 8",
 			"description": "Un long couloir carrelé sous Safrania. Des néons froids, et presque personne."
 		},
-		"saffron_city": { "name": "Safrania", "kind": "town", "maps": [] },
+		"saffron_city": {
+			"name": "Safrania", "kind": "town",
+			"maps": [
+				"saffron_city", "saffron_center", "saffron_mart", "saffron_psychic_house", "saffron_pidgey_house",
+				"saffron_copycat_house_1f", "saffron_copycat_house_2f",
+				"silph_co_1f", "silph_co_2f", "silph_co_3f", "silph_co_4f", "silph_co_5f",
+				"silph_co_6f", "silph_co_7f", "silph_co_8f", "silph_co_9f", "silph_co_10f", "silph_co_11f",
+				"silph_co_elevator", "saffron_gym", "fighting_dojo"
+			],
+			"services": [{ "id": "pokemon_center", "found_on": "saffron_center" }, { "id": "poke_mart", "found_on": "saffron_mart" }, { "id": "gym", "found_on": "saffron_gym" }],
+			"description": "Une grande ville affairée, cœur commercial de Kanto. La Sylphe SARL y a son siège.",
+			"draft": true
+		},
 		"route_7": {
 			"name": "Route 7", "kind": "route",
 			"maps": ["route_7", "route_7_gate", "route_7_underground_gate"],
@@ -159,13 +171,24 @@
 		"fuchsia_city": {
 			"name": "Parmanie", "kind": "town",
 			"maps": ["fuchsia_city", "fuchsia_center", "fuchsia_mart", "fuchsia_meeting_room",
-				"fuchsia_grandpa_house", "fuchsia_good_rod_house"],
+				"fuchsia_grandpa_house", "fuchsia_good_rod_house", "wardens_house", "fuchsia_gym"],
 			"subtitle": "Route 15 — Route 18",
 			"services": [
 				{ "id": "pokemon_center", "found_on": "fuchsia_center" },
-				{ "id": "poke_mart", "found_on": "fuchsia_mart" }
+				{ "id": "poke_mart", "found_on": "fuchsia_mart" },
+				{ "id": "gym", "found_on": "fuchsia_gym" }
 			],
 			"description": "Une ville basse et verte, ouverte sur la mer. Au nord, le Parc Safari ; près des enclos, des Pokémon venus d'ailleurs."
+		},
+		"safari_zone": {
+			"name": "Parc Safari", "kind": "place",
+			"maps": ["safari_zone_gate", "safari_zone_center", "safari_zone_east",
+				"safari_zone_north", "safari_zone_west", "safari_zone_rest_house_center",
+				"safari_zone_rest_house_east", "safari_zone_rest_house_north",
+				"safari_zone_rest_house_west", "safari_zone_secret_house"],
+			"subtitle": "Parmanie",
+			"interior_title": true,
+			"description": "Quatre zones d'herbes hautes au nord de Parmanie, où vivent des Pokémon qu'on ne voit nulle part ailleurs. On y entre sans ses Pokémon : seulement des Safari Balls, des appâts et des cailloux."
 		},
 		"route_23": {
 			"name": "Route 23", "kind": "route",

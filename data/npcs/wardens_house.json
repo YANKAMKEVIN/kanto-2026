@@ -1,0 +1,25 @@
+{
+	"gardien": {
+		"cell": [
+			3,
+			4
+		],
+		"facing": "down",
+		"sprite": "old_man",
+		"dialogue": "wardens_house_gardien"
+	},
+	"super_bonbon": {
+		"cell": [
+			11,
+			2
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "wardens_house_super_bonbon",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_wardens_house_super_bonbon"
+		]
+	}
+}

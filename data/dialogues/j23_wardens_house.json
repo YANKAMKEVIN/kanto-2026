@@ -1,0 +1,90 @@
+{
+	"wardens_house_gardien": {
+		"speaker": "Gardien",
+		"variants": [
+			{
+				"if": [
+					"gave_gold_teeth"
+				],
+				"unless": [
+					"got_hm04"
+				],
+				"cutscene": "j23_warden_hm04"
+			},
+			{
+				"if": [
+					"got_hm04"
+				],
+				"pages": [
+					"Il faut le Badge Prisme pour s'en servir.",
+					"Essaie-la sur un rocher !"
+				]
+			},
+			{
+				"if_items": [
+					"gold_teeth"
+				],
+				"cutscene": "j23_warden_teeth"
+			},
+			{
+				"pages": [
+					"Hif fuff hefifoo !",
+					"Hoffuh hoff !"
+				],
+				"choice": {
+					"confirm": "OUI",
+					"cancel": "NON",
+					"confirm_pages": [
+						"Huh ? Hoffu… !"
+					],
+					"cancel_pages": [
+						"Hoffuh… fuff…"
+					]
+				}
+			}
+		]
+	},
+	"j23_warden_thanks": {
+		"speaker": "Gardien",
+		"pages": [
+			"Hfuff… ? Mes dents ! Merci !",
+			"Personne ne me comprenait."
+		]
+	},
+	"j23_warden_gift": {
+		"speaker": "Gardien",
+		"pages": [
+			"Tiens, prends ça. C'est la CS04, Force.",
+			"Un Pokémon fort pourra pousser les rochers."
+		]
+	},
+	"j23_warden_after": {
+		"speaker": "Gardien",
+		"pages": [
+			"Il faut le Badge Prisme pour s'en servir.",
+			"Essaie-la sur un rocher !"
+		]
+	},
+	"wardens_house_vitrine": {
+		"narration": true,
+		"pages": [
+			"Des photos de Pokémon et des fossiles."
+		]
+	},
+	"wardens_house_vitrine_1": {
+		"narration": true,
+		"pages": [
+			"De vieux souvenirs du Parc Safari."
+		]
+	},
+	"wardens_house_super_bonbon": {
+		"cutscene": "wardens_house_super_bonbon"
+	},
+	"wardens_house_rocher": {
+		"narration": true,
+		"pages": [
+			"Un gros rocher.",
+			"Il faudrait beaucoup de force pour le pousser."
+		]
+	}
+}

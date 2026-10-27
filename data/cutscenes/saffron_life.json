@@ -1,0 +1,26 @@
+{
+	"saffron_copycat_hidden_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_saffron_copycat_hidden_1"
+				],
+				"steps": [
+					{
+						"dialogue": "saffron_copycat_hidden_1_text"
+					},
+					{
+						"give": "nugget",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_saffron_copycat_hidden_1"
+						]
+					}
+				]
+			}
+		]
+	}
+}

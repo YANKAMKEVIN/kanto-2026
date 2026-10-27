@@ -1,0 +1,8 @@
+UI_OBJETS_DAF5_PLANCHE_4 — NOUVELLE image : une planche d'icônes d'objets peintes pour le Sac, pas une scène.
+Images jointes : ss_ticket, hm05, tm01 = icônes existantes du jeu, ANCRES de style dans le style EXACT des icônes jointes (même rendu peint, même contour fin et coloré, même angle de trois quarts, même lumière, même finesse, même taille d'environ 240 px).
+
+PLANCHE de 3 icônes d'objets peintes pour le Sac, dans une image 1536 × 1024 divisée en quatre colonnes invisibles de 384 px : une icône CENTRÉE dans chacune des 3 PREMIÈRES colonnes (de gauche à droite), de 260 px de large au plus et 260 px de haut au plus, avec au moins 60 px de marge vide de chaque côté ; les 1 dernière colonne restent VIDES (transparentes).
+1 (colonne 1) : le BON DE COMMANDE : un TICKET de papier comme la Passe Bateau jointe (même forme, même bord dentelé, même inclinaison), crème et ROUGE, avec le dessin bleu marine d'une BICYCLETTE à la place du bateau ; aucun texte.
+2 (colonne 2) : la CARTE MAGNÉTIQUE : une carte de plastique rectangulaire aux coins arrondis, gris argenté, bande BLEUE en haut et petite puce DORÉE, légèrement inclinée ; aucun texte, aucun logo.
+3 (colonne 3) : la CT39 (MÉTÉORES) : un DISQUE plat et lustré vu de trois quarts, anneau argenté et petit trou au centre, tranche épaisse bleu marine, EXACTEMENT comme la CS05 jointe (hm05) mais le dessus est CRÈME clair (type Normal, comme la CT01), et au centre trois petites ÉTOILES blanches filantes.
+AUCUN halo, AUCUNE lueur, AUCUNE étincelle, AUCUN dégradé autour : chaque objet est net, avec seulement son contour fin, sur un fond entièrement transparent (canal alpha, aucune ombre). Interdit : texte, lettres, chiffres, logo, la lettre R, personnage.

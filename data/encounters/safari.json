@@ -1,0 +1,470 @@
+{
+	"safari_zone_center_grass": {
+		"maps": [
+			"safari_zone_center"
+		],
+		"terrain": "grass",
+		"rate": 30,
+		"slots": [
+			{
+				"species": "nidoran_m",
+				"levels": [
+					22,
+					22
+				],
+				"weight": 20
+			},
+			{
+				"species": "nidoran_f",
+				"levels": [
+					22,
+					22
+				],
+				"weight": 20
+			},
+			{
+				"species": "rhyhorn",
+				"levels": [
+					25,
+					25
+				],
+				"weight": 40
+			},
+			{
+				"species": "venonat",
+				"levels": [
+					22,
+					22
+				],
+				"weight": 30
+			},
+			{
+				"species": "exeggcute",
+				"levels": [
+					24,
+					24
+				],
+				"weight": 20
+			},
+			{
+				"species": "nidorino",
+				"levels": [
+					31,
+					31
+				],
+				"weight": 10
+			},
+			{
+				"species": "nidorina",
+				"levels": [
+					31,
+					31
+				],
+				"weight": 10
+			},
+			{
+				"species": "exeggcute",
+				"levels": [
+					25,
+					25
+				],
+				"weight": 20
+			},
+			{
+				"species": "nidorina",
+				"levels": [
+					31,
+					31
+				],
+				"weight": 5
+			},
+			{
+				"species": "nidorino",
+				"levels": [
+					31,
+					31
+				],
+				"weight": 5
+			},
+			{
+				"species": "parasect",
+				"levels": [
+					30,
+					30
+				],
+				"weight": 10
+			},
+			{
+				"species": "scyther",
+				"levels": [
+					23,
+					23
+				],
+				"weight": 4
+			},
+			{
+				"species": "pinsir",
+				"levels": [
+					23,
+					23
+				],
+				"weight": 4
+			},
+			{
+				"species": "chansey",
+				"levels": [
+					23,
+					23
+				],
+				"weight": 2
+			}
+		]
+	},
+	"safari_zone_east_grass": {
+		"maps": [
+			"safari_zone_east"
+		],
+		"terrain": "grass",
+		"rate": 30,
+		"slots": [
+			{
+				"species": "nidoran_m",
+				"levels": [
+					24,
+					24
+				],
+				"weight": 20
+			},
+			{
+				"species": "nidoran_f",
+				"levels": [
+					24,
+					24
+				],
+				"weight": 20
+			},
+			{
+				"species": "doduo",
+				"levels": [
+					26,
+					26
+				],
+				"weight": 40
+			},
+			{
+				"species": "paras",
+				"levels": [
+					22,
+					22
+				],
+				"weight": 30
+			},
+			{
+				"species": "exeggcute",
+				"levels": [
+					25,
+					25
+				],
+				"weight": 20
+			},
+			{
+				"species": "nidorino",
+				"levels": [
+					33,
+					33
+				],
+				"weight": 10
+			},
+			{
+				"species": "nidorina",
+				"levels": [
+					33,
+					33
+				],
+				"weight": 10
+			},
+			{
+				"species": "exeggcute",
+				"levels": [
+					23,
+					23
+				],
+				"weight": 20
+			},
+			{
+				"species": "nidoran_f",
+				"levels": [
+					24,
+					24
+				],
+				"weight": 5
+			},
+			{
+				"species": "nidoran_m",
+				"levels": [
+					24,
+					24
+				],
+				"weight": 5
+			},
+			{
+				"species": "parasect",
+				"levels": [
+					25,
+					25
+				],
+				"weight": 10
+			},
+			{
+				"species": "kangaskhan",
+				"levels": [
+					25,
+					25
+				],
+				"weight": 8
+			},
+			{
+				"species": "scyther",
+				"levels": [
+					28,
+					28
+				],
+				"weight": 1
+			},
+			{
+				"species": "pinsir",
+				"levels": [
+					28,
+					28
+				],
+				"weight": 1
+			}
+		]
+	},
+	"safari_zone_north_grass": {
+		"maps": [
+			"safari_zone_north"
+		],
+		"terrain": "grass",
+		"rate": 30,
+		"slots": [
+			{
+				"species": "nidoran_m",
+				"levels": [
+					22,
+					22
+				],
+				"weight": 20
+			},
+			{
+				"species": "nidoran_f",
+				"levels": [
+					22,
+					22
+				],
+				"weight": 20
+			},
+			{
+				"species": "rhyhorn",
+				"levels": [
+					26,
+					26
+				],
+				"weight": 40
+			},
+			{
+				"species": "paras",
+				"levels": [
+					23,
+					23
+				],
+				"weight": 30
+			},
+			{
+				"species": "exeggcute",
+				"levels": [
+					25,
+					25
+				],
+				"weight": 20
+			},
+			{
+				"species": "nidorino",
+				"levels": [
+					30,
+					30
+				],
+				"weight": 10
+			},
+			{
+				"species": "nidorina",
+				"levels": [
+					30,
+					30
+				],
+				"weight": 10
+			},
+			{
+				"species": "exeggcute",
+				"levels": [
+					27,
+					27
+				],
+				"weight": 20
+			},
+			{
+				"species": "nidorina",
+				"levels": [
+					30,
+					30
+				],
+				"weight": 5
+			},
+			{
+				"species": "nidorino",
+				"levels": [
+					30,
+					30
+				],
+				"weight": 5
+			},
+			{
+				"species": "venomoth",
+				"levels": [
+					32,
+					32
+				],
+				"weight": 10
+			},
+			{
+				"species": "chansey",
+				"levels": [
+					26,
+					26
+				],
+				"weight": 8
+			},
+			{
+				"species": "tauros",
+				"levels": [
+					28,
+					28
+				],
+				"weight": 2
+			}
+		]
+	},
+	"safari_zone_west_grass": {
+		"maps": [
+			"safari_zone_west"
+		],
+		"terrain": "grass",
+		"rate": 30,
+		"slots": [
+			{
+				"species": "nidoran_m",
+				"levels": [
+					25,
+					25
+				],
+				"weight": 20
+			},
+			{
+				"species": "nidoran_f",
+				"levels": [
+					25,
+					25
+				],
+				"weight": 20
+			},
+			{
+				"species": "doduo",
+				"levels": [
+					26,
+					26
+				],
+				"weight": 40
+			},
+			{
+				"species": "venonat",
+				"levels": [
+					23,
+					23
+				],
+				"weight": 30
+			},
+			{
+				"species": "exeggcute",
+				"levels": [
+					24,
+					24
+				],
+				"weight": 20
+			},
+			{
+				"species": "nidorino",
+				"levels": [
+					33,
+					33
+				],
+				"weight": 10
+			},
+			{
+				"species": "nidorina",
+				"levels": [
+					33,
+					33
+				],
+				"weight": 10
+			},
+			{
+				"species": "exeggcute",
+				"levels": [
+					26,
+					26
+				],
+				"weight": 20
+			},
+			{
+				"species": "nidoran_f",
+				"levels": [
+					25,
+					25
+				],
+				"weight": 5
+			},
+			{
+				"species": "nidoran_m",
+				"levels": [
+					25,
+					25
+				],
+				"weight": 5
+			},
+			{
+				"species": "venomoth",
+				"levels": [
+					31,
+					31
+				],
+				"weight": 10
+			},
+			{
+				"species": "tauros",
+				"levels": [
+					26,
+					26
+				],
+				"weight": 8
+			},
+			{
+				"species": "kangaskhan",
+				"levels": [
+					28,
+					28
+				],
+				"weight": 2
+			}
+		]
+	}
+}
