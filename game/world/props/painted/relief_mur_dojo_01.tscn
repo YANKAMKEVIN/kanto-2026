@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_wt4bs"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_mrd3w"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_mur_dojo_01.png" id="3_lb8je"]
+
+[node name="ReliefMurDojo01" type="Node2D" unique_id=354284229]
+script = ExtResource("1_wt4bs")
+footprint = Array[Vector2i]([])
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=84714469]
+unique_name_in_owner = true
+material = ExtResource("2_mrd3w")
+texture = ExtResource("3_lb8je")
+centered = false
+offset = Vector2(-96, -179)

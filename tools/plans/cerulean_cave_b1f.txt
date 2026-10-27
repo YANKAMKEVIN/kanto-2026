@@ -1,0 +1,60 @@
+# Grotte Azurée B1F — grille fonctionnelle v1 (jalon 31, T3). Même légende et même source que
+# cerulean_cave_1f.txt. Parcours final : arrivée par l'échelle P7 (3, 6) au nord-ouest, plateformes
+# hautes, escaliers, puis Surf sur les bassins du sud-est jusqu'à la salle de Mewtwo (25..28,
+# 12..14), qu'on atteint par les escaliers (26..27, 15) depuis l'eau.
+# Mewtwo N70 en (27, 13), immobile, tourné vers le sud (RB) ; absent une fois la rencontre résolue.
+# Objets (RB) : Hyper Ball (16, 9), Rappel Max (18, 1) ; caché : Hyper Ball (RB (27, 3)).
+#
+# Écarts avec RB : 18 cases de sol SANS ACCÈS dans RB → roche (comme au J24) : (1, 14..16),
+# (3..5, 10), (5, 12), (7, 10..12), (9, 16), (11..13, 16), (21, 12..14), (29, 8) ; case de l'objet
+# caché → indice x.
+#
+# Légende (commune aux trois étages ; caractères des Îles Écume du J24, décodage RB 1:1) :
+#   # roche (bloquée)          . sol bas (RB $20)          : sol haut (RB $05, plateforme)
+#   = escalier taillé (RB $15) : seul passage entre sol bas et sol haut
+#   w eau surfable (RB $14), au niveau du sol bas : on ne monte en Surf et on ne débarque que
+#     sur sol bas, escalier ou échelle, jamais sur le sol haut (collisions par paires de RB)
+#   U échelle qui monte   V échelle qui descend : praticables, entrer dessus fait arriver (fondu)
+#     sur le « spawn » de même paire de l'autre étage ; on ne s'arrête jamais sur une échelle
+#   E bouche de la grotte (1F seulement), sortie vers Azuria
+#   x indice d'objet caché (caillou clair dans la roche, bloqué) ; l'objet se prend depuis la
+#     case de sol voisine donnée par sa position « objet_cache »
+# Rencontres : terrain « floor » (toute case praticable, comme les Îles Écume du J24), taux et
+# espèces de RB par étage (`data/encounters/cerulean_cave.json`) ; aucune sur l'eau (RB : taux 0),
+# Super Canne : groupe 9 de RB (`data/fishing/water_rod.json`, table `super_rod_cerulean_cave`).
+# Aucun Dresseur (§8.1 du plan, défaut [D] : fidèle à RB).
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 30 caractères), puis POSITIONS.
+#   identifiant  type  cases  bloque|libre  [cle=valeur ...]  # commentaire
+
+PRATICABLES .:=wUVE
+
+GRILLE 30 18
+00 #::::::::::::::##::::##::::::#
+01 #::::::::::::::##::::##::::::#
+02 #::::::::::::::##::::##:::##:#
+03 #::::########=#####=###:::#x:#
+04 #::::#####....##....###::##::#
+05 #::::##...........#####::##::#
+06 #::U:##.#::::::::##:::##:##::#
+07 ######..#::::::::##:::##:##=##
+08 ###....##:::::#::##::::::#ww##
+09 #....####:###:#::##::#####ww##
+10 ..#######:###:#::##::#wwwwww##
+11 .########:###:##:##=##wwwwww##
+12 ...######:###::::#ww##ww#::::#
+13 #..######=###=####ww##ww#::::#
+14 ##..##....##wwww##ww##ww#::::#
+15 ##..#...####wwww##ww##ww##==##
+16 ##......######wwwwww##wwwwwwww
+17 ###....#######wwwwww##wwwwwwww
+FIN
+
+POSITIONS
+echelle_p7     echelle        3,6          libre   paire=P7 sens=monte vers=cerulean_cave_1f
+arrivee_p7     spawn          2,6          libre   paire=P7
+cerulean_cave_b1f_item_1  objet          16,9          bloque  item=ultra_ball
+cerulean_cave_b1f_item_2  objet          18,1          bloque  item=max_revive
+cerulean_cave_b1f_hidden_1 objet_cache    27,4          libre   item=ultra_ball  # RB : (27, 3), dans la roche (indice x) ; pris depuis (27, 4), tourné vers l'indice
+mewtwo           rencontre      27,13         bloque  espece=mewtwo niveau=70 facing=down cutscene=mewtwo
+FIN

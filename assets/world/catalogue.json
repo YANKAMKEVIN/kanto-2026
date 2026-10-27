@@ -8313,6 +8313,25 @@
     ]
    }
   },
+  "int_porte_ligue_01": {
+   "fichier": "res://assets/world/interiors/int_porte_ligue_01.png",
+   "taille": [
+    154,
+    169
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_porte_ligue_01_contact.png",
+    "decalage": [
+     -85,
+     -16
+    ],
+    "echelle": 2,
+    "taille": [
+     85,
+     27
+    ]
+   }
+  },
   "bldg_sylphe_safrania_01": {
    "fichier": "res://assets/world/buildings/bldg_sylphe_safrania_01.png",
    "taille": [
@@ -8777,6 +8796,535 @@
      40
     ]
    }
+  },
+  "relief_mur_sylphe_01": {
+   "fichier": "res://assets/world/relief/relief_mur_sylphe_01.png",
+   "taille": [
+    192,
+    195
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_sylphe_01_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "relief_mur_sylphe_02": {
+   "fichier": "res://assets/world/relief/relief_mur_sylphe_02.png",
+   "taille": [
+    192,
+    197
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_sylphe_02_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "relief_mur_sylphe_03": {
+   "fichier": "res://assets/world/relief/relief_mur_sylphe_03.png",
+   "taille": [
+    192,
+    37
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_sylphe_03_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "relief_mur_sylphe_04": {
+   "fichier": "res://assets/world/relief/relief_mur_sylphe_04.png",
+   "taille": [
+    34,
+    179
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_sylphe_04_contact.png",
+    "decalage": [
+     -25,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     25,
+     11
+    ]
+   }
+  },
+  "relief_mur_sylphe_05": {
+   "fichier": "res://assets/world/relief/relief_mur_sylphe_05.png",
+   "taille": [
+    34,
+    66
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_sylphe_05_contact.png",
+    "decalage": [
+     -25,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     25,
+     11
+    ]
+   }
+  },
+  "relief_mur_morgane_01": {
+   "fichier": "res://assets/world/relief/relief_mur_morgane_01.png",
+   "taille": [
+    192,
+    171
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_morgane_01_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "relief_mur_morgane_02": {
+   "fichier": "res://assets/world/relief/relief_mur_morgane_02.png",
+   "taille": [
+    192,
+    171
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_morgane_02_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "relief_mur_morgane_03": {
+   "fichier": "res://assets/world/relief/relief_mur_morgane_03.png",
+   "taille": [
+    192,
+    52
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_morgane_03_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "relief_mur_morgane_04": {
+   "fichier": "res://assets/world/relief/relief_mur_morgane_04.png",
+   "taille": [
+    34,
+    131
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_morgane_04_contact.png",
+    "decalage": [
+     -25,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     25,
+     11
+    ]
+   }
+  },
+  "relief_mur_morgane_05": {
+   "fichier": "res://assets/world/relief/relief_mur_morgane_05.png",
+   "taille": [
+    34,
+    61
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_morgane_05_contact.png",
+    "decalage": [
+     -25,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     25,
+     11
+    ]
+   }
+  },
+  "relief_mur_dojo_01": {
+   "fichier": "res://assets/world/relief/relief_mur_dojo_01.png",
+   "taille": [
+    192,
+    179
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_dojo_01_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "relief_mur_dojo_02": {
+   "fichier": "res://assets/world/relief/relief_mur_dojo_02.png",
+   "taille": [
+    192,
+    182
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_dojo_02_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "relief_mur_dojo_03": {
+   "fichier": "res://assets/world/relief/relief_mur_dojo_03.png",
+   "taille": [
+    192,
+    35
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_dojo_03_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "relief_mur_dojo_04": {
+   "fichier": "res://assets/world/relief/relief_mur_dojo_04.png",
+   "taille": [
+    34,
+    135
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_dojo_04_contact.png",
+    "decalage": [
+     -25,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     25,
+     11
+    ]
+   }
+  },
+  "relief_mur_dojo_05": {
+   "fichier": "res://assets/world/relief/relief_mur_dojo_05.png",
+   "taille": [
+    34,
+    75
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_dojo_05_contact.png",
+    "decalage": [
+     -25,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     25,
+     11
+    ]
+   }
+  },
+  "relief_mur_jadielle_01": {
+   "fichier": "res://assets/world/relief/relief_mur_jadielle_01.png",
+   "taille": [
+    192,
+    161
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_jadielle_01_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "relief_mur_jadielle_02": {
+   "fichier": "res://assets/world/relief/relief_mur_jadielle_02.png",
+   "taille": [
+    192,
+    161
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_jadielle_02_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "relief_mur_jadielle_03": {
+   "fichier": "res://assets/world/relief/relief_mur_jadielle_03.png",
+   "taille": [
+    192,
+    34
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_jadielle_03_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "relief_mur_jadielle_04": {
+   "fichier": "res://assets/world/relief/relief_mur_jadielle_04.png",
+   "taille": [
+    34,
+    168
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_jadielle_04_contact.png",
+    "decalage": [
+     -25,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     25,
+     11
+    ]
+   }
+  },
+  "relief_mur_jadielle_05": {
+   "fichier": "res://assets/world/relief/relief_mur_jadielle_05.png",
+   "taille": [
+    34,
+    50
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_jadielle_05_contact.png",
+    "decalage": [
+     -25,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     25,
+     11
+    ]
+   }
+  },
+  "int_bureau_sylphe_01": {
+   "fichier": "res://assets/world/interiors/int_bureau_sylphe_01.png",
+   "taille": [
+    96,
+    84
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_bureau_sylphe_01_contact.png",
+    "decalage": [
+     -56,
+     1
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     19
+    ]
+   }
+  },
+  "int_serveur_sylphe_01": {
+   "fichier": "res://assets/world/interiors/int_serveur_sylphe_01.png",
+   "taille": [
+    96,
+    177
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_serveur_sylphe_01_contact.png",
+    "decalage": [
+     -56,
+     -17
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     28
+    ]
+   }
+  },
+  "int_plante_sylphe_01": {
+   "fichier": "res://assets/world/interiors/int_plante_sylphe_01.png",
+   "taille": [
+    96,
+    160
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_plante_sylphe_01_contact.png",
+    "decalage": [
+     -56,
+     -14
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     26
+    ]
+   }
+  },
+  "int_escalier_sylphe_monte_01": {
+   "fichier": "res://assets/world/interiors/int_escalier_sylphe_monte_01.png",
+   "taille": [
+    96,
+    124
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_escalier_sylphe_monte_01_contact.png",
+    "decalage": [
+     -56,
+     -7
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     23
+    ]
+   }
+  },
+  "int_escalier_sylphe_descend_01": {
+   "fichier": "res://assets/world/interiors/int_escalier_sylphe_descend_01.png",
+   "taille": [
+    96,
+    130
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_escalier_sylphe_descend_01_contact.png",
+    "decalage": [
+     -56,
+     -8
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     23
+    ]
+   }
+  },
+  "int_porte_ascenseur_sylphe_01": {
+   "fichier": "res://assets/world/interiors/int_porte_ascenseur_sylphe_01.png",
+   "taille": [
+    96,
+    116
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_porte_ascenseur_sylphe_01_contact.png",
+    "decalage": [
+     -56,
+     -5
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     22
+    ]
+   }
+  },
+  "decal_teleporteur_sylphe_01": {
+   "fichier": "res://assets/world/interiors/decal_teleporteur_sylphe_01.png",
+   "taille": [
+    96,
+    96
+   ]
+  },
+  "decal_seuil_sylphe_01": {
+   "fichier": "res://assets/world/interiors/decal_seuil_sylphe_01.png",
+   "taille": [
+    96,
+    96
+   ]
+  },
+  "int_paillasson_sylphe_01": {
+   "fichier": "res://assets/world/interiors/int_paillasson_sylphe_01.png",
+   "taille": [
+    192,
+    90
+   ]
+  },
+  "int_porte_sylphe_h_01": {
+   "fichier": "res://assets/world/interiors/int_porte_sylphe_h_01.png",
+   "taille": [
+    192,
+    96
+   ]
+  },
+  "int_porte_sylphe_v_01": {
+   "fichier": "res://assets/world/interiors/int_porte_sylphe_v_01.png",
+   "taille": [
+    96,
+    192
+   ]
   }
  },
  "personnages": {
@@ -12488,6 +13036,41 @@
    "taille": [
     192,
     192
+   ]
+  },
+  "ground_moquette_sylphe_01": {
+   "fichier": "res://assets/world/ground/ground_moquette_sylphe_01.png",
+   "taille": [
+    384,
+    384
+   ]
+  },
+  "ground_masse_batiment_01": {
+   "fichier": "res://assets/world/ground/ground_masse_batiment_01.png",
+   "taille": [
+    384,
+    384
+   ]
+  },
+  "ground_dalles_morgane_01": {
+   "fichier": "res://assets/world/ground/ground_dalles_morgane_01.png",
+   "taille": [
+    384,
+    384
+   ]
+  },
+  "ground_parquet_dojo_01": {
+   "fichier": "res://assets/world/ground/ground_parquet_dojo_01.png",
+   "taille": [
+    384,
+    384
+   ]
+  },
+  "ground_dalles_jadielle_01": {
+   "fichier": "res://assets/world/ground/ground_dalles_jadielle_01.png",
+   "taille": [
+    384,
+    384
    ]
   }
  }

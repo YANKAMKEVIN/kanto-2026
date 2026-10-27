@@ -76,6 +76,14 @@ const SPECIES: Array[String] = [
 	# Jalon 23 (jalon-23.md §2.14, T6) : les quatre espèces rares du Parc Safari sans lien avec un
 	# autre jalon (Mimitoss, Doduo, Tadmorv, Smogogo et leurs lignées viennent du J22).
 	"chansey", "scyther", "pinsir", "tauros",
+	# Jalon 29 : Sulfura, rival n° 7, Dresseurs et rencontres de la Route Victoire, reprises des
+	# J22 à J26 (silhouette d'une forme proche, recolorée, avec un trait distinctif). Ajouts en fin ;
+	# Alakazam, Leveinard et Lokhlass sont ceux des J23 et J26 (fusion dans main).
+	"machoke", "venomoth", "golduck", "tentacruel", "dewgong", "cloyster", "kingler", "lickitung", "mr_mime", "exeggutor", "moltres",
+	# Jalon 31 (jalon-31.md §10, T4) : Métamorph et Mewtwo (Grotte Azurée). Les autres espèces
+	# de la grotte viennent des J22 et J24 ; Leveinard et Rhinoféros sont copiés à l'identique des
+	# J23 et J28. Ajouts en fin.
+	"ditto", "mewtwo",
 ]
 const OUTLINE := Color("#1c1c28")
 const EYE := Color("#1c1c28")
@@ -88,7 +96,11 @@ var _h: int = SIZE
 
 func _init() -> void:
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(DIR))
+	# Jalon 29 : `-- <espèce> …` ne (re)génère que ces espèces (les autres fichiers ne bougent pas).
+	var only := OS.get_cmdline_user_args()
 	for species: String in SPECIES:
+		if not only.is_empty() and not only.has(species):
+			continue
 		for back: bool in [false, true]:
 			var img := Image.create_empty(SIZE, SIZE, false, Image.FORMAT_RGBA8)
 			img.fill(Color(0, 0, 0, 0))
@@ -2141,6 +2153,49 @@ func _draw_snorlax(img: Image, back: bool) -> void:
 # --- Ombre ------------------------------------------------------------------------
 
 ## Ombre ovale au sol, pixel art (bord en escalier), noir translucide.
+# --- Jalon 31 : Métamorph, Mewtwo -------------------------------------------------------
+
+func _draw_ditto(img: Image, back: bool) -> void:
+	var goo := Color("#b48ad8")
+	# Une flaque molle qui s'étale, deux bras courts ; de face, deux points et un trait de bouche.
+	_e(img, 32, 50, 24, 11, goo, true)
+	_e(img, 32, 40, 17, 13, goo, true)
+	_e(img, 14, 46, 5, 4, goo, true)
+	_e(img, 50, 46, 5, 4, goo, true)
+	_e(img, 26, 34, 5, 3, goo.lightened(0.22))
+	if back:
+		return
+	_r(img, 26, 39, 2, 2, EYE)
+	_r(img, 37, 39, 2, 2, EYE)
+	_line(img, Vector2(28, 46), Vector2(36, 46), EYE)
+
+
+func _draw_mewtwo(img: Image, back: bool) -> void:
+	var skin := Color("#c9c0d6")
+	var belly := Color("#9a66b8")
+	# Queue épaisse (à droite), jambes, torse, bras, tête au tube dorsal, cornes courtes.
+	_line(img, Vector2(42, 54), Vector2(58, 40), belly, 6)
+	_e(img, 58, 36, 4, 5, belly, true)
+	_r(img, 22, 50, 7, 12, skin.darkened(0.15))
+	_r(img, 35, 50, 7, 12, skin.darkened(0.15))
+	_e(img, 32, 38, 12, 16, skin, true)
+	if not back:
+		_e(img, 32, 44, 8, 9, belly, true)
+	_line(img, Vector2(21, 32), Vector2(13, 44), skin, 4)
+	_line(img, Vector2(43, 32), Vector2(51, 44), skin, 4)
+	_line(img, Vector2(32, 22), Vector2(32, 28), skin.darkened(0.2), 3)
+	_line(img, Vector2(25, 12), Vector2(22, 5), skin, 3)
+	_line(img, Vector2(39, 12), Vector2(42, 5), skin, 3)
+	_e(img, 32, 15, 9, 8, skin, true)
+	if back:
+		_line(img, Vector2(32, 22), Vector2(32, 34), belly.darkened(0.1), 2)
+		return
+	_r(img, 27, 14, 3, 3, Color("#7a3aa0"))
+	_r(img, 35, 14, 3, 3, Color("#7a3aa0"))
+	_r(img, 28, 14, 1, 1, WHITE)
+	_r(img, 36, 14, 1, 1, WHITE)
+
+
 func _write_shadow() -> void:
 	_w = SHADOW_SIZE.x
 	_h = SHADOW_SIZE.y
@@ -2194,3 +2249,79 @@ func _draw_hitmonchan(img: Image, back: bool) -> void:
 	_eye(img, 27, 18, Color("#1c1c28"))
 	_eye(img, 36, 18, Color("#1c1c28"))
 	_r(img, 28, 25, 8, 2, skin.darkened(0.4))
+
+
+# --- Jalon 29 ----------------------------------------------------------------------------------
+
+
+## Mackogneur : Machopeur bleu-gris plus massif, ceinture dorée.
+func _draw_machoke(img: Image, back: bool) -> void:
+	_base(img, back, "machop", 0.05, 0.9, 0.12)
+	_r(img, 20, 44, 24, 3, Color("#e0b030"))
+
+
+## Aéromite : Papilusion mauve, ailes poudrées.
+func _draw_venomoth(img: Image, back: bool) -> void:
+	_base(img, back, "butterfree", 0.12, 1.0, 0.05)
+
+
+## Akwakwak : Carapuce bleu nuit, joyau rouge au front.
+func _draw_golduck(img: Image, back: bool) -> void:
+	_base(img, back, "squirtle", 0.05, 1.2, 0.15)
+	if not back:
+		_e(img, 32, 14, 3, 3, Color("#d83030"), true)
+
+
+## Tentacruel : Stari bleu, deux gemmes rouges.
+func _draw_tentacruel(img: Image, back: bool) -> void:
+	_base(img, back, "staryu", 0.45, 0.8)
+	_e(img, 26, 24, 3, 3, Color("#d83030"), true)
+	_e(img, 38, 24, 3, 3, Color("#d83030"), true)
+
+
+## Lamantine : Persian recoloré blanc bleuté, corne.
+func _draw_dewgong(img: Image, back: bool) -> void:
+	_base(img, back, "persian", 0.5, 0.25)
+	_line(img, Vector2(32, 12), Vector2(32, 4), WHITE, 3)
+
+
+## Crustabri : Kokiyas violet sombre, pointes.
+func _draw_cloyster(img: Image, back: bool) -> void:
+	_base(img, back, "shellder", 0.05, 1.0, 0.25)
+	for x: int in [14, 50]:
+		_line(img, Vector2(x, 40), Vector2(x + (-6 if x < 32 else 6), 30), Color("#d8d0e8"), 3)
+
+
+## Krabboss : Paras rouge vif, grosse pince.
+func _draw_kingler(img: Image, back: bool) -> void:
+	_base(img, back, "paras", -0.05, 1.1)
+	_e(img, 50, 30, 9, 7, Color("#e05030"), true)
+
+
+## Excelangue : Mélofée rose, longue langue.
+func _draw_lickitung(img: Image, back: bool) -> void:
+	_base(img, back, "clefairy", -0.02, 1.0)
+	if not back:
+		_line(img, Vector2(32, 34), Vector2(44, 50), Color("#e85a8a"), 4)
+
+
+## M. Mime : Rondoudou blanc, joues rouges, mains levées.
+func _draw_mr_mime(img: Image, back: bool) -> void:
+	_base(img, back, "jigglypuff", 0.0, 0.2)
+	_e(img, 14, 26, 5, 5, Color("#d84040"), true)
+	_e(img, 50, 26, 5, 5, Color("#d84040"), true)
+
+
+## Noadkoko : Noeunoeuf et un panache de palmes vertes.
+func _draw_exeggutor(img: Image, back: bool) -> void:
+	_base(img, back, "exeggcute", 0.0, 1.0)
+	for dx: int in [-12, 0, 12]:
+		_leaf(img, Vector2(32 + dx, 18), Vector2(32 + dx * 2, 2), 4.0, Color("#3a9a40"))
+
+
+## Sulfura : Roucarnage orangé, ailes de flammes.
+func _draw_moltres(img: Image, back: bool) -> void:
+	_base(img, back, "pidgeot", 0.06, 1.3)
+	_flame(img, Vector2(12, 20), 7.0)
+	_flame(img, Vector2(52, 20), 7.0)
+	_flame(img, Vector2(32, 6), 6.0)

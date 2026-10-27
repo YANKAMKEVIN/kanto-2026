@@ -159,3 +159,10 @@ func test_j26_saffron_takes_the_chunked_path() -> void:
 	assert_true(ground.can_bake_chunks(), "Safrania")
 	ground.bake_chunks()
 	assert_true(ground.is_chunked(), "Safrania : cuit par morceaux")
+
+
+## Fusion de `systemes-2` dans le J29 : la Route 22 ouest (20 × 14 cases, sans rivage) garde la
+## cuisson d'un bloc ; Route 23 et Route Victoire n'ont pas de sol peint (tuiles).
+func test_j29_route_22_west_takes_the_single_bake() -> void:
+	var ground := _map("route_22_west").get_node(^"PaintedGround") as PaintedGround
+	assert_true(ground.can_bake(), "Route 22 ouest : cuisson d'un bloc")

@@ -15,6 +15,9 @@ extends RefCounted
 
 ## Origine d'un rocher → numéro du trou où il est destiné à tomber (0 : aucun).
 var _boulders: Dictionary[Vector2i, int] = {}
+## Origine d'un rocher **conditionnel** → drapeau sans lequel il n'est pas là (jalon 29 : rocher du
+## 3F de la Route Victoire tombé au 2F ; grille : `si=`). Absent : toujours là.
+var _requires: Dictionary[Vector2i, StringName] = {}
 ## Case d'un trou → { "n": int, "flag": StringName }.
 var _holes: Dictionary[Vector2i, Dictionary] = {}
 ## Case d'un interrupteur → { "id": StringName, "flag": StringName }.
@@ -23,9 +26,12 @@ var _switches: Dictionary[Vector2i, Dictionary] = {}
 var _no_push: Dictionary[Vector2i, bool] = {}
 
 
-## Rocher d'origine [param cell] ; [param hole] : numéro du trou désigné (0 : aucun).
-func add_boulder(cell: Vector2i, hole: int = 0) -> void:
+## Rocher d'origine [param cell] ; [param hole] : numéro du trou désigné (0 : aucun) ;
+## [param requires] : drapeau sans lequel il n'est pas là (vide : toujours là).
+func add_boulder(cell: Vector2i, hole: int = 0, requires: StringName = &"") -> void:
 	_boulders[cell] = hole
+	if requires != &"":
+		_requires[cell] = requires
 
 
 ## Trou n° [param n] en [param cell], bouché quand [param flag] est posé.
@@ -52,7 +58,8 @@ static func from_positions(positions: Dictionary) -> BoulderField:
 		var cells: Array = p.get("cells", [])
 		match String(p.get("kind", "")):
 			"rocher":
-				field.add_boulder(cells[0], int(attrs.get("trou", "0")))
+				field.add_boulder(cells[0], int(attrs.get("trou", "0")),
+					StringName(attrs.get("si", "")))
 			"trou":
 				field.add_hole(cells[0], int(attrs.get("n", "0")), StringName(attrs.get("drapeau", "")))
 			"interrupteur":
@@ -64,11 +71,13 @@ static func from_positions(positions: Dictionary) -> BoulderField:
 
 
 ## Rochers présents à l'entrée sur la carte : toutes les origines, sauf ceux dont le trou désigné
-## est déjà bouché.
+## est déjà bouché et les rochers conditionnels dont le drapeau n'est pas posé.
 func boulders_at_load(flags: StoryFlags) -> Array[Vector2i]:
 	var cells: Array[Vector2i] = []
 	for cell: Vector2i in _boulders:
 		var hole := _boulders[cell]
+		if _requires.has(cell) and not _is_set(flags, _requires[cell]):
+			continue
 		if hole == 0 or not _is_set(flags, hole_flag(hole)):
 			cells.append(cell)
 	return cells

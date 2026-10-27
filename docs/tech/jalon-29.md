@@ -275,3 +275,95 @@ Victoire sont écrites au T4, en lot, marquées [D].
 - **Q29-4 — Route 22 du J7** : elle n'a pas de grille ; le T2 en fait un relevé avant de l'étendre.
   Le rendu peint de l'est et du sentier haut ne bouge pas. Si l'extension demande de repeindre le
   sol de toute la carte, faut-il le faire au J29 ou dans un lot d'art ?
+
+## 10. État du code (2026-10-22, branche `jalon-29`, nuit de travail autonome)
+
+Branche `jalon-29` depuis `origin/systemes-2` (S2D compris) + `plans-j26-j30`. Textes T29-01 à
+T29-11 et répliques [D] : **validés par Kevin le 2026-10-21, validation d'avance (proposition du
+plan)** ; Q29-1 (poste du Badge Roche au poste de la Ligue, RB) et Q29-2 (rival avec le Badge Terre,
+RB) : défauts du plan appliqués ; Q29-4 : tuiles provisoires, sol peint plus tard.
+
+### 10.1 Fait
+
+- **T1 / T2** : `tools/art/j29_rb_decode.py` (décodeur pokered local, jamais copié) écrit les grilles
+  RB 1:1 (`--ecrire`) : `route_victoire_1f/2f/3f.txt`, `route_23.txt` (20 × 144), `plateau_indigo.txt` ;
+  `--ecarts` compare grilles et RB. `route_22.txt` = **relevé** de la carte du J7 (`dump_map_logic`),
+  `test_route_22_plan` (scène = grille case par case) ; `route_22_ouest.txt`, `poste_ligue.txt` à la main.
+- **Route 22 étendue sans toucher la scène n° 2** : trois warps PUSH ← en (1, 16..18) vers la nouvelle
+  carte `route_22_west` (partie ouest : rival n° 7 devant la porte du poste, panneau). Aucune autre
+  case de `route_22` ne change (diff de la scène : warps et spawn seulement).
+- **Niveaux de sol (moteur)** : la Route Victoire de RB a un sol bas et un sol haut reliés par des
+  escaliers (collisions par paires) : `GameMap.low_cells / high_cells / stairs_cells` → `GridWorld.set_level`
+  (le moteur des niveaux existait déjà, S2C) ; un rocher ne change pas de niveau (`BoulderRules`).
+- **Rocher conditionnel** (`BoulderField.add_boulder(…, requires)`, `BoulderSetup.boulder_requires`,
+  grille `si=`) : le rocher n° 4 du 3F tombé par le trou (23, 15) réapparaît au 2F en (23, 16), comme RB.
+- **T3** : `tools/art/plan_check_j29.py` (huit cartes ensemble) : raccords ; exploration exhaustive
+  des états (carte, région, rochers, drapeaux) avec niveaux, trous, interrupteurs, barrières, rochers
+  conditionnels ; anti-blocage = depuis chaque jeu d'états atteint, le Plateau reste atteignable ;
+  retour vers Jadielle de partout ; chaque drapeau de Force peut être posé ; sans un Badge, le Plateau
+  n'est plus atteignable ; le nord de la Route 23 n'est atteignable que par la Route Victoire ;
+  `--autotest` (trois pièges). **Long** (plusieurs dizaines de minutes : le 3F a des millions
+  d'états) — résultat ci-dessous (§10.3).
+- **T4** : données (agent, branche `j29-donnees` fusionnée) : espèces (Sulfura N50, reprises identiques
+  des J22–J26 : à dédoublonner à la fusion des jalons), objets, Boutique du Plateau, 11 Dresseurs RB
+  (prénoms vérifiés libres sur toutes les branches), rival n° 7 (`rival_route22_final`, équipes RB par
+  starter), rencontres (Route 23, trois étages en gravats), textes (`docs/tech/jalon-29-textes.md`).
+- **T7, T9, T11, T14** : `tools/build_j29.gd` (route_22_west, route_23, victory_road_1f/2f/3f,
+  indigo_plateau) ; `build_painted_interiors.gd --j29` (route_22_gate sur l'enveloppe des postes,
+  indigo_plateau_lobby = Centre + marchand + hôte + porte « Ligue Pokémon — À venir », warp sans cible
+  que le J30 branche). Zones (Route Victoire dans la zone de la Route 23, titre propre comme la Tour),
+  grotte (Corde Sortie → Route 23), lumière, point de repos, intérieurs.
+- **T8, T10, T12, T13** : scènes `data/cutscenes/j29.json` : huit contrôles (déclencheur « pas vers le
+  nord » sur chaque case de la rangée RB ; sans le Badge : T29-04 et recul d'une case ; avec : T29-05
+  une fois, drapeau `<scène>_passed`) ; rival n° 7 (victoire `rival_route22_final_won`, défaite :
+  réveil, il reste) ; Sulfura (`wild_battle` S2G, `moltres_done` / `moltres_caught`) ; objets et caches.
+  T29-09 joué par `StrengthDirector` au premier enfoncement d'un interrupteur.
+- **T15** : départs `route_22_final_{bulbasaur,charmander,squirtle,weak}`, `route_23_seven`,
+  `route_23_all`, `victory_road_1f/2f/3f`, `moltres`, `indigo_plateau` (README).
+- Tests : `test_route_22_plan`, `test_j29_maps`, `test_j29_story`, `test_boulder_field_j29`, tests de
+  données et de zones mis à jour.
+
+### 10.2 Écarts [D] (règle 4)
+
+- Défense Spéc. et Huile Max (aucun effet dans le moteur) → Super Bonbon et Potion Max ; Métamorph
+  absent (pas d'effet « transform ») : retiré de la table de la Route 23 ; Max Repousse absent de la
+  Boutique (pas de Repousse).
+- Sulfura dessiné avec la planche de Rapasdepic en attendant son art ; Topdresseur et Dompteur :
+  planche `scout` ; Jongleur : `nerd` ; Karatéka : `hiker` (RB).
+- Interrupteurs permanents (aucune remise à zéro en changeant d'étage, contrairement à RB) ; un trou
+  bouché se franchit (RB : le trou reste).
+- Rival n° 7 battu : il disparaît (pas de marche) ; rival à six Pokémon sans liste de capacités
+  (apprentissage par niveau) ; tableau du §2.3 corrigé par l'audit RB (équipes ci-dessus = RB).
+- Gardes des rangées 85 et 96 sur l'eau (Nageurs de RB) : contrôle en Surf, recul en Surf.
+
+### 10.3 Reste à faire
+
+- **T5** simulation d'équilibrage (non faite) ; **T6** vue générale de la Route Victoire (art) ;
+  **lot d'art** (Q29-4 : sol de `route_22_west` fait, reste le bâtiment du poste et la Route 23) ; `tm_compatibility.json` des 14 nouvelles espèces (fichier généré).
+- **T16** session téléphone (§7) ; **T17** clôture, fusion après le J28 et accord de Kevin.
+
+## Décisions de Kevin (2026-10-22)
+
+Choix validés par Kevin sur la page d'arbitrages.
+
+- Q29-1 : le Badge Roche est posté comme RB.
+- Q29-2 : le rival n° 7 se bat avec le Badge Terre (RB).
+- Q29-4 : **repeindre le sol de la Route 22 étendue au J29**. **Fait (2026-10-22)** : `route_22_west` a son sol peint (`tools/build_route_22_west.gd`, passe après `build_j29.gd` ; masque `assets/world/maps/route_22_west_ground.png`, `PaintedGround` aux textures communes d'herbe et de chemin = même palette et même échelle de 96 px que la partie J7, décalcomanies de bord, hautes herbes et forêt d'arbres peints ; couches de tuiles masquées). **Aucune image Codex** : le sol de la Route 22 du J7 n'est pas une image générée mais le mélange des textures communes par un masque, donc le raccord est exact par construction. Logique inchangée (grilles `dump_map_logic` avant/après identiques pour `route_22` et `route_22_west`). Reste provisoire : le bâtiment du poste (dessin de couleur), la Route 23 (hors décision). Planche : `build/art/J29_ROUTE22_SOL_CONTACT.png`.
+
+## QA A17 du 2026-10-23
+
+Session de nuit sur le Galaxy A17 (APK debug, départs de débogage ; captures et notes :
+`~/dev/qa-nuit2/j29/`). **OK** : rival n° 7 variante Carapuce (équipe RB, défaite → réveil, victoire
+→ il disparaît) ; garde de la Route 23 sans Badge Cascade (refus, recul, retour libre) ; Sulfura
+(fuite → reste ; K.O. → consommé) ; Plateau, hôte, porte « LIGUE POKÉMON — À venir ».
+**Corrigé** : l'hôte du hall était caché derrière la banquette ouest → (3, 5)
+(`data/npcs/indigo_plateau_lobby.json`, test `test_indigo_plateau_lobby_npcs_not_hidden_by_benches`).
+**Ouvert** : le départ `moltres` n'a pas de Master Ball (objet du J26, absent de la branche) : à
+ajouter à la fusion ; icône d'Hyper Ball absente ; ~~porte de la Ligue non dessinée sur le mur du hall~~
+**fait (2026-10-23)** : `int_porte_ligue_01` (Codex, r3 retenu ; fiche
+`docs/design/fiches-assets/j29-porte-ligue.md`, outil `tools/art/j29_porte_ligue.py`) posée dans le
+mur du fond au-dessus du warp (12, 3), sans emprise, à la place de la plante nord-est ; test
+`test_indigo_plateau_lobby_league_door_is_drawn_above_its_warp` ; capture Mac
+`build/cap/j29_hall_porte_ligue.png` (non versionnée). À revoir sur le téléphone.
+Non joué : Route Victoire (rochers, interrupteurs), Surf, appel pendant Sulfura, capture de Sulfura
+(8 Hyper Balls ratées).

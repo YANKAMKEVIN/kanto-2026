@@ -1,6 +1,42 @@
 {
 	"_doc": "Décors peints de combat (CB.3, dossier 05 §2). decors : zone + variante locale, images (fond opaque, premier plan transparent facultatif), taille du master et LIGNE DE SOL en px du master (pieds de l'adversaire et de ton Pokémon : BattleDecor.fit aligne ces deux points sur les ancres de BattleLayout ; horizon pour mémoire). places : décors par carte (map_id) ; une entrée avec cells [x, y, largeur, hauteur] (cases) est une variante locale, sans cells le décor par défaut. Carte absente : repli sur l'ancien fond (carte recadrée et floutée). Production : tools/art/combat_decors/.",
 	"decors": {
+		"silph_co_bureaux": {
+			"zone": "silph_co",
+			"variant": "bureaux",
+			"back": "res://assets/battle/decors/silph_co_bureaux_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 540],
+			"player_feet": [716, 972],
+			"horizon": 330
+		},
+		"saffron_gym_psy": {
+			"zone": "saffron_gym",
+			"variant": "psy",
+			"back": "res://assets/battle/decors/saffron_gym_psy_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 540],
+			"player_feet": [716, 972],
+			"horizon": 290
+		},
+		"fighting_dojo_salle": {
+			"zone": "fighting_dojo",
+			"variant": "salle",
+			"back": "res://assets/battle/decors/fighting_dojo_salle_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 540],
+			"player_feet": [716, 972],
+			"horizon": 340
+		},
+		"viridian_gym_sol": {
+			"zone": "viridian_gym",
+			"variant": "sol",
+			"back": "res://assets/battle/decors/viridian_gym_sol_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 540],
+			"player_feet": [716, 972],
+			"horizon": 300
+		},
 		"route_1_chemin": {
 			"zone": "route_1",
 			"variant": "chemin",
@@ -444,43 +480,43 @@
 			{ "decor": "pewter_gym_roche" }
 		],
 		"silph_co_2f": [
-			{ "decor": "rocket_hideout_repaire" }
+			{ "decor": "silph_co_bureaux" }
 		],
 		"silph_co_3f": [
-			{ "decor": "rocket_hideout_repaire" }
+			{ "decor": "silph_co_bureaux" }
 		],
 		"silph_co_4f": [
-			{ "decor": "rocket_hideout_repaire" }
+			{ "decor": "silph_co_bureaux" }
 		],
 		"silph_co_5f": [
-			{ "decor": "rocket_hideout_repaire" }
+			{ "decor": "silph_co_bureaux" }
 		],
 		"silph_co_6f": [
-			{ "decor": "rocket_hideout_repaire" }
+			{ "decor": "silph_co_bureaux" }
 		],
 		"silph_co_7f": [
-			{ "decor": "rocket_hideout_repaire" }
+			{ "decor": "silph_co_bureaux" }
 		],
 		"silph_co_8f": [
-			{ "decor": "rocket_hideout_repaire" }
+			{ "decor": "silph_co_bureaux" }
 		],
 		"silph_co_9f": [
-			{ "decor": "rocket_hideout_repaire" }
+			{ "decor": "silph_co_bureaux" }
 		],
 		"silph_co_10f": [
-			{ "decor": "rocket_hideout_repaire" }
+			{ "decor": "silph_co_bureaux" }
 		],
 		"silph_co_11f": [
-			{ "decor": "rocket_hideout_repaire" }
+			{ "decor": "silph_co_bureaux" }
 		],
 		"saffron_gym": [
-			{ "decor": "vermilion_gym_salle" }
+			{ "decor": "saffron_gym_psy" }
 		],
 		"fighting_dojo": [
-			{ "decor": "vermilion_gym_salle" }
+			{ "decor": "fighting_dojo_salle" }
 		],
 		"viridian_gym": [
-			{ "decor": "pewter_gym_roche" }
+			{ "decor": "viridian_gym_sol" }
 		],
 		"safari_zone_center": [
 			{ "decor": "route_5_6_prairie" }
@@ -496,6 +532,30 @@
 		],
 		"fuchsia_gym": [
 			{ "decor": "vermilion_gym_salle" }
+		],
+		"route_22_west": [
+			{ "decor": "route_5_6_prairie" }
+		],
+		"route_23": [
+			{ "decor": "route_9_roche" }
+		],
+		"victory_road_1f": [
+			{ "decor": "digletts_cave_rock" }
+		],
+		"victory_road_2f": [
+			{ "decor": "digletts_cave_rock" }
+		],
+		"victory_road_3f": [
+			{ "decor": "digletts_cave_rock" }
+		],
+		"cerulean_cave_1f": [
+			{ "decor": "dark_cave_galerie" }
+		],
+		"cerulean_cave_2f": [
+			{ "decor": "dark_cave_galerie" }
+		],
+		"cerulean_cave_b1f": [
+			{ "decor": "dark_cave_galerie" }
 		]
 
 	}

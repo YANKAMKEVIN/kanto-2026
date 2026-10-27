@@ -1,0 +1,15 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_rxu0s"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_twn3e"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/int_serveur_sylphe_01.png" id="3_817s3"]
+
+[node name="IntServeurSylphe01" type="Node2D" unique_id=1930068993]
+script = ExtResource("1_rxu0s")
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=542292298]
+unique_name_in_owner = true
+material = ExtResource("2_twn3e")
+texture = ExtResource("3_817s3")
+centered = false
+offset = Vector2(-48, -177)

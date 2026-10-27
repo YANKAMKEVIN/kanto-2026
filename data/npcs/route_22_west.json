@@ -1,0 +1,17 @@
+{
+	"rival_final": {
+		"cell": [
+			8,
+			6
+		],
+		"facing": "down",
+		"sprite": "rival",
+		"dialogue": "rival_route22_final",
+		"if": [
+			"badge_earth"
+		],
+		"unless": [
+			"rival_route22_final_won"
+		]
+	}
+}

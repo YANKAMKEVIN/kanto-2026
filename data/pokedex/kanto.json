@@ -1,6 +1,9 @@
 {
 	"size": 151,
 	"species": {
+		"exeggutor": {"height": 2.0, "weight": 120.0, "description": "Ses trois têtes pensent chacune de leur côté. Quand elles s'entendent, il devient redoutable."},
+		"lickitung": {"height": 1.2, "weight": 65.5, "description": "Sa langue fait deux fois sa taille. Il goûte tout ce qu'il rencontre, même les inconnus."},
+		"moltres": {"height": 2.0, "weight": 60.0, "description": "Un oiseau légendaire. Chaque battement de ses ailes enflammées éclaire le ciel d'une lueur rouge."},
 		"bulbasaur": {
 			"height": 0.7, "weight": 6.9,
 			"description": "Le bulbe sur son dos se gorge de lumière. Calme, il observe longtemps avant d'approcher.",
@@ -452,6 +455,14 @@
 		"articuno": {
 			"height": 1.7, "weight": 55.4,
 			"description": "Un oiseau légendaire qui vit dans les montagnes glacées. Il apparaît, dit-on, à ceux qui se sont perdus dans la neige."
+		},
+		"ditto": {
+			"height": 0.3, "weight": 4.0,
+			"description": "Une masse molle qui prend la forme de ce qu'elle regarde. Elle a du mal à garder les yeux en place."
+		},
+		"mewtwo": {
+			"height": 2.0, "weight": 122.0,
+			"description": "Né d'expériences génétiques poussées trop loin. Il dort au fond d'une grotte où personne ne descend."
 		},
 		"vulpix": {
 			"height": 0.6, "weight": 9.9,

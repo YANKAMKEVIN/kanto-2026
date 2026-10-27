@@ -396,7 +396,9 @@ func test_only_misty_surge_and_the_rivals_switch() -> void:
 		# Jalon 28 (T8) : Giovanni Champion.
 		&"viridian_gym_giovanni",
 		# Jalon 23 (T19) : Koga.
-		&"fuchsia_gym_koga"]
+		&"fuchsia_gym_koga",
+		# Jalon 29 (T4, plan §2.3) : le rival n° 7 change de Pokémon (IA smart), moment à chaque issue.
+		&"rival_route22_final"]
 	for id: StringName in library.get_ids():
 		if not String(id).begins_with("qa_"):
 			assert_eq(library.get_trainer(id).can_switch, switching.has(id), String(id))

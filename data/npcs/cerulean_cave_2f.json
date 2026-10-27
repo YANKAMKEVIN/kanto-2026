@@ -1,0 +1,44 @@
+{
+	"cerulean_cave_2f_item_1": {
+		"cell": [
+			29,
+			9
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "cerulean_cave_2f_item_1",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_cerulean_cave_2f_item_1"
+		]
+	},
+	"cerulean_cave_2f_item_2": {
+		"cell": [
+			4,
+			15
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "cerulean_cave_2f_item_2",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_cerulean_cave_2f_item_2"
+		]
+	},
+	"cerulean_cave_2f_item_3": {
+		"cell": [
+			13,
+			6
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "cerulean_cave_2f_item_3",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_cerulean_cave_2f_item_3"
+		]
+	}
+}

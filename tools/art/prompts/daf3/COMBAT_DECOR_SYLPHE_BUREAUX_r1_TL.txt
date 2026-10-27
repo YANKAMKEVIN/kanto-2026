@@ -1,0 +1,9 @@
+AGRANDISSEMENT D'UNE PORTION DE DÉCOR (Kanto 2026). L'image jointe est une portion d'un décor peint. Produis EXACTEMENT LA MÊME IMAGE, à une résolution plus élevée, avec plus de finesse dans la peinture.
+
+RÈGLES ABSOLUES :
+- Même cadrage au pixel près : même largeur et même hauteur relatives, chaque élément (arbres, clôture, rochers, touffes d'herbe, bords du chemin, nuages, collines, maisons) exactement à la même place et à la même taille. N'ajoute rien, n'enlève rien, ne déplace rien, ne recadre pas, ne prolonge pas l'image.
+- Mêmes couleurs, même lumière, même style (illustration 2D peinte « HD-2D peint », feuillage en masses douces, aucun trait noir).
+- Seulement plus de netteté et de détails fins dans le pinceau (feuilles, brins d'herbe, grain de la terre), comme une version haute définition du même tableau.
+- Aucun flou, aucun texte, aucun personnage, aucun animal, aucun cadre.
+
+FORMAT : même rapport largeur / hauteur que l'image jointe (environ 1,17 : 1, légèrement plus large que haute), la plus grande résolution possible, OPAQUE.

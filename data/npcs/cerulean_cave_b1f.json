@@ -1,0 +1,44 @@
+{
+	"cerulean_cave_b1f_item_1": {
+		"cell": [
+			16,
+			9
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "cerulean_cave_b1f_item_1",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_cerulean_cave_b1f_item_1"
+		]
+	},
+	"cerulean_cave_b1f_item_2": {
+		"cell": [
+			18,
+			1
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "cerulean_cave_b1f_item_2",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_cerulean_cave_b1f_item_2"
+		]
+	},
+	"mewtwo": {
+		"cell": [
+			27,
+			13
+		],
+		"facing": "down",
+		"sprite": "pokemon/mewtwo",
+		"dialogue": "mewtwo",
+		"verb": "observe",
+		"turn_to_player": false,
+		"unless": [
+			"mewtwo_encounter_resolved"
+		]
+	}
+}

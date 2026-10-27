@@ -1,0 +1,147 @@
+{
+	"karateka": {
+		"cell": [
+			12,
+			9
+		],
+		"facing": "left",
+		"sprite": "hiker",
+		"dialogue": "victory_road_2f_blackbelt_after",
+		"trainer": {
+			"id": "victory_road_2f_blackbelt",
+			"sight": 4,
+			"before": "victory_road_2f_blackbelt_before",
+			"defeated": "victory_road_2f_blackbelt_defeated"
+		}
+	},
+	"jongleur_1": {
+		"cell": [
+			21,
+			13
+		],
+		"facing": "left",
+		"sprite": "nerd",
+		"dialogue": "victory_road_2f_juggler_1_after",
+		"trainer": {
+			"id": "victory_road_2f_juggler_1",
+			"sight": 3,
+			"before": "victory_road_2f_juggler_1_before",
+			"defeated": "victory_road_2f_juggler_1_defeated"
+		}
+	},
+	"dompteur": {
+		"cell": [
+			19,
+			8
+		],
+		"facing": "down",
+		"sprite": "scout",
+		"dialogue": "victory_road_2f_tamer_after",
+		"trainer": {
+			"id": "victory_road_2f_tamer",
+			"sight": 3,
+			"before": "victory_road_2f_tamer_before",
+			"defeated": "victory_road_2f_tamer_defeated"
+		}
+	},
+	"pokemaniac": {
+		"cell": [
+			4,
+			2
+		],
+		"facing": "down",
+		"sprite": "pokemaniac",
+		"dialogue": "victory_road_2f_pokemaniac_after",
+		"trainer": {
+			"id": "victory_road_2f_pokemaniac",
+			"sight": 1,
+			"before": "victory_road_2f_pokemaniac_before",
+			"defeated": "victory_road_2f_pokemaniac_defeated"
+		}
+	},
+	"jongleur_2": {
+		"cell": [
+			26,
+			3
+		],
+		"facing": "left",
+		"sprite": "nerd",
+		"dialogue": "victory_road_2f_juggler_2_after",
+		"trainer": {
+			"id": "victory_road_2f_juggler_2",
+			"sight": 3,
+			"before": "victory_road_2f_juggler_2_before",
+			"defeated": "victory_road_2f_juggler_2_defeated"
+		}
+	},
+	"moltres": {
+		"cell": [
+			11,
+			5
+		],
+		"facing": "down",
+		"sprite": "pokemon/fearow",
+		"dialogue": "moltres",
+		"verb": "observe",
+		"turn_to_player": false,
+		"unless": [
+			"moltres_done"
+		]
+	},
+	"victory_road_2f_item_1": {
+		"cell": [
+			27,
+			5
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "victory_road_2f_item_1",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_victory_road_2f_item_1"
+		]
+	},
+	"victory_road_2f_item_2": {
+		"cell": [
+			18,
+			9
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "victory_road_2f_item_2",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_victory_road_2f_item_2"
+		]
+	},
+	"victory_road_2f_item_3": {
+		"cell": [
+			9,
+			11
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "victory_road_2f_item_3",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_victory_road_2f_item_3"
+		]
+	},
+	"victory_road_2f_item_4": {
+		"cell": [
+			11,
+			0
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "victory_road_2f_item_4",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_victory_road_2f_item_4"
+		]
+	}
+}

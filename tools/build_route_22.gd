@@ -9,7 +9,9 @@ extends SceneTree
 ## Plan (les coordonnées du prototype sont décalées de [constant OY] rangées : le fond peint du
 ## Plateau Indigo occupe le haut de la carte, que le prototype laissait « hors carte ») :
 ## - chemin de terre à l'est (sortie vers Jadielle, warps PUSH vers la droite) qui file vers
-##   l'ouest ; **aucun passage vers l'ouest** (colonne 0 solide, la route s'arrête dans l'herbe) ;
+##   l'ouest ; colonne 0 solide, la route s'arrête dans l'herbe ; **jalon 29** : trois warps PUSH
+##   vers la gauche en (1, 16..18) mènent à la partie ouest (`route_22_west`, rival n° 7, poste de
+##   la Ligue) — aucune autre case ne change (grille relevée : `tools/plans/route_22.txt`) ;
 ## - falaise basse **continue** (relief peint de la couche du sol, emprise = la rangée de la face)
 ##   dont l'escalier est la **seule** case libre : il mène au niveau supérieur, un sentier
 ##   vers le point de vue sur le Plateau Indigo (le futur rival n° 2, T25, s'y tient) ;
@@ -49,6 +51,12 @@ const EAST_CELL: int = 44
 const WARP_TARGET: StringName = &"viridian_city"
 const WARP_SPAWN: StringName = &"from_route_22"
 const PUSH: int = 1
+## Jalon 29 : warps PUSH vers l'ouest (`route_22_west`, spawn `from_route_22`), sur l'herbe rase
+## libre du bord ouest (la colonne 0 reste solide : on pousse contre le bord, comme à l'est).
+const WEST_ROWS: Array[int] = [16, 17, 18]
+const WEST_CELL: int = 1
+const WEST_TARGET: StringName = &"route_22_west"
+const WEST_SPAWN: StringName = &"from_route_22"
 
 ## Points d'apparition (Marker2D enfants de `Spawns`). `from_viridian` : bord est ;
 ## `vista` : le sentier du point de vue (débogage, captures) ; `stair_foot` : pied de l'escalier
@@ -58,6 +66,10 @@ const SPAWNS: Dictionary = {
 	"vista": Vector2i(11, 13),
 	"stair_foot": Vector2i(16, 16),
 }
+## Jalon 29 : arrivée depuis la partie ouest (tourné vers l'est). Hors de [constant SPAWNS] : le
+## plan des arbres (qui laisse libres les abords des points d'apparition) ne change pas.
+const WEST_ARRIVAL_SPAWN := "from_route_22_west"
+const WEST_ARRIVAL := Vector2i(1, 17)
 ## Déclencheurs de scène [nom, ancre (bas-gauche), taille, direction du pas, scène] : en haut de
 ## l'escalier, le premier pas vers l'ouest sur le sentier (rangées 12 et 13) lance la scène du
 ## rival n° 2 (ses variantes décident : Pokédex activé, pas encore affronté).
@@ -261,6 +273,10 @@ func _add_spawns(root: Node) -> void:
 		marker.name = spawn_name
 		marker.position = _world(SPAWNS[spawn_name])
 		_attach(root, root.get_node(^"Spawns"), marker)
+	var west := Marker2D.new()
+	west.name = WEST_ARRIVAL_SPAWN
+	west.position = _world(WEST_ARRIVAL)
+	_attach(root, root.get_node(^"Spawns"), west)
 
 
 func _add_triggers(root: Node) -> void:
@@ -290,6 +306,19 @@ func _add_warps(root: Node) -> void:
 		point.set(&"target_map", WARP_TARGET)
 		point.set(&"target_spawn", WARP_SPAWN)
 		point.set(&"arrival_facing", Vector2i.RIGHT)
+		_attach(root, root.get_node(^"Warps"), point)
+	number = 0
+	for y: int in WEST_ROWS:
+		var point := Marker2D.new()
+		point.set_script(warp_script)
+		point.name = "RouteWest%d" % number
+		number += 1
+		point.position = _world(Vector2i(WEST_CELL, y))
+		point.set(&"trigger", PUSH)
+		point.set(&"direction", Vector2i.LEFT)
+		point.set(&"target_map", WEST_TARGET)
+		point.set(&"target_spawn", WEST_SPAWN)
+		point.set(&"arrival_facing", Vector2i.LEFT)
 		_attach(root, root.get_node(^"Warps"), point)
 
 
