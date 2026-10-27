@@ -1,0 +1,44 @@
+# Route 22, partie ouest — grille fonctionnelle (jalon 29, T2 ; docs/tech/jalon-29.md §0.4, §2.1,
+# §2.3). Carte `route_22_west` (même zone et même nom affiché que `route_22`) : le prolongement de la
+# Route 22 du J7 vers l'ouest jusqu'au poste de la Ligue (RB : Route22Gate, porte (8, 5) de la Route
+# 22), sans toucher à la carte du J7 ni à la scène du rival n° 2. Contrôle : plan_check_j29.py.
+#
+# Raccord EST : (19, 9..11) PUSH → route_22 (1, 16..18), spawn `from_route_22_west` (1, 17) ; retour
+# : spawn `from_route_22` (19, 10). Le chemin de terre file vers l'ouest puis monte (x 8) jusqu'à la
+# porte du poste (8, 5) (STEP_ON ↑ → route_22_gate). Q29-2 [D] : le rival n° 7 se tient en (8, 6)
+# devant la porte avec le Badge Terre tant qu'il n'est pas battu ; il bloque la seule case d'accès
+# (les cases (7, 5) et (9, 5) sont le bâtiment). Déclencheur (7..9, 7), toutes directions.
+# Panneau « Ligue Pokémon » (RB bg_event (7, 11) de la Route 22) en (4, 9).
+#
+# Légende : T forêt (bloquée) · . herbe rase · = chemin de terre · h hautes herbes (table route_22)
+#   P poste de la Ligue (bâtiment, bloqué) · D porte du poste (STEP_ON ↑) · n panneau (bloqué)
+# Art : tuiles provisoires (Q29-4 : sol peint plus tard).
+
+PRATICABLES .=hD
+
+GRILLE 20 14
+00 TTTTTTTTTTTTTTTTTTTT
+01 TTTTTTTTTTTTTTTTTTTT
+02 TTTTTTPPPPPTTTTTTTTT
+03 TTTTTTPPPPPTTTTTTTTT
+04 TTTTTTPPPPPTTTTTTTTT
+05 TTTTTTPPDPPTTTTTTTTT
+06 TTTTTT..=..TTTTTTTTT
+07 TTTTT...=...TTTTTTTT
+08 TTTT....=.....TTTTTT
+09 TTT.n...============
+10 TT......============
+11 TT......============
+12 TTT...hhhhhh...TTTTT
+13 TTTTTTTTTTTTTTTTTTTT
+FIN
+
+POSITIONS
+from_route_22       spawn           19,10            libre   # arrivée de la Route 22 (J7), tourné ←
+from_gate           spawn           8,6              libre   # sortie du poste, tourné ↓ (rival absent)
+sortie_est          warp            19,9..11         libre   vers=route_22:from_route_22_west  # PUSH →
+porte_poste         warp            8,5              libre   vers=route_22_gate:entrance  # STEP_ON ↑
+rival               pnj             8,6              libre   role=R facing=down  # n° 7 (bloque tant qu il est là : si badge_earth, sauf victoire)
+declencheur_rival   declencheur     7..9,7           libre   scene=rival_route22_final
+panneau             panneau         4,9              bloque  texte=route_22_league_sign
+FIN

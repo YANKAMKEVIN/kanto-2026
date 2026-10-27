@@ -1,0 +1,176 @@
+# Jalon 29 — textes des données (T4)
+
+Textes validés par Kevin le 2026-10-21, validation d'avance (proposition du plan `jalon-29.md` §3, T29-01 à T29-11) ; répliques des Dresseurs, des gardes par Badge et du panneau de la Ligue : [D] (défaut, écrites au T4). Une citation par ligne ; `{player}` et `{rival}` sont les prénoms.
+
+- `victory_road_1f_cooltrainer_f_before`
+  - « Tu as réussi à venir jusqu'ici ? »
+  - « Voyons si tu mérites la suite. »
+- `victory_road_1f_cooltrainer_f_defeated`
+  - « Pas mal… vraiment pas mal. »
+- `victory_road_1f_cooltrainer_f_after`
+  - « Les Pokémon feu comme les miens »
+  - « ne perdent jamais leur flamme. »
+- `victory_road_1f_cooltrainer_m_before`
+  - « Cette route sépare les bons Dresseurs »
+  - « des autres. Prouve ta valeur ! »
+- `victory_road_1f_cooltrainer_m_defeated`
+  - « Je pensais que mes quatre starters suffiraient… »
+- `victory_road_1f_cooltrainer_m_after`
+  - « Ils ont tous évolué avec moi. »
+  - « Je les aime comme au premier jour. »
+- `victory_road_2f_blackbelt_before`
+  - « Mes poings et mes Pokémon ne font »
+  - « qu'un. Viens te mesurer à moi ! »
+- `victory_road_2f_blackbelt_defeated`
+  - « Hmm ! Ton esprit est plus fort que mes muscles. »
+- `victory_road_2f_blackbelt_after`
+  - « Continue à t'entraîner. »
+  - « Le corps et l'esprit avancent ensemble. »
+- `victory_road_2f_juggler_1_before`
+  - « Tu ne sens pas ? Tout tourne autour de toi… »
+  - « Regarde-moi dans les yeux ! »
+- `victory_road_2f_juggler_1_defeated`
+  - « Tout s'arrête… Tu m'as eu. »
+- `victory_road_2f_juggler_1_after`
+  - « Mes Pokémon me fatiguent à force »
+  - « de jongler avec les esprits. »
+- `victory_road_2f_tamer_before`
+  - « Mes Pokémon sont dressés à la perfection. »
+  - « En garde ! »
+- `victory_road_2f_tamer_defeated`
+  - « Même bien dressés, ils ont plié. »
+- `victory_road_2f_tamer_after`
+  - « Un bon Dresseur ne force pas ses »
+  - « Pokémon. Il les comprend. »
+- `victory_road_2f_pokemaniac_before`
+  - « Les Pokémon rares, c'est ma passion ! »
+  - « Et toi, qu'as-tu de rare ? »
+- `victory_road_2f_pokemaniac_defeated`
+  - « Mes trésors sont K.O. ! »
+- `victory_road_2f_pokemaniac_after`
+  - « J'ai trouvé un Pokémon de légende »
+  - « plus loin. Enfin… il m'a trouvé. »
+- `victory_road_2f_juggler_2_before`
+  - « Un seul Pokémon, mais il vaut »
+  - « mille tours de passe-passe. »
+- `victory_road_2f_juggler_2_defeated`
+  - « Quel tour de force… »
+- `victory_road_2f_juggler_2_after`
+  - « Mon partenaire me comprend sans »
+  - « même que je parle. »
+- `victory_road_3f_cooltrainer_m_1_before`
+  - « Tu arrives au bout de la Route Victoire ? »
+  - « Pas avant d'avoir battu mon équipe ! »
+- `victory_road_3f_cooltrainer_m_1_defeated`
+  - « Incroyable… Tu es vraiment fort. »
+- `victory_road_3f_cooltrainer_m_1_after`
+  - « La Ligue t'attend là-haut. »
+  - « Garde la tête froide. »
+- `victory_road_3f_cooltrainer_f_1_before`
+  - « Mes plantes sont aussi coriaces »
+  - « que cette route. Prépare-toi ! »
+- `victory_road_3f_cooltrainer_f_1_defeated`
+  - « Elles ont fané plus vite que prévu. »
+- `victory_road_3f_cooltrainer_f_1_after`
+  - « Les plantes poussent doucement, »
+  - « mais elles ne cèdent jamais. »
+- `victory_road_3f_cooltrainer_m_2_before`
+  - « Je vise la Ligue, comme toi. »
+  - « Un seul passera : ce sera moi ! »
+- `victory_road_3f_cooltrainer_m_2_defeated`
+  - « Je ne passerai pas cette fois… »
+- `victory_road_3f_cooltrainer_m_2_after`
+  - « Je m'entraînerai encore. »
+  - « La Ligue, ce sera pour la prochaine. »
+- `victory_road_3f_cooltrainer_f_2_before`
+  - « Tu en as de la chance d'arriver »
+  - « si loin. Voyons si elle tiendra. »
+- `victory_road_3f_cooltrainer_f_2_defeated`
+  - « La chance n'y est pour rien, je crois. »
+- `victory_road_3f_cooltrainer_f_2_after`
+  - « Les meilleurs Dresseurs ne comptent »
+  - « pas sur la chance. Toi non plus. »
+- `rival_route22_final_greet`
+  - « {player} ! J'ai les huit Badges, moi aussi. »
+- `rival_route22_final_greet`
+  - « La Ligue n'aura qu'un seul vainqueur, »
+  - « et ce sera moi. »
+- `rival_route22_final_greet`
+  - « Prouve-moi le contraire ! »
+- `rival_route22_final_won`
+  - « Encore toi… »
+- `rival_route22_final_won`
+  - « D'accord. On se reverra là-haut. »
+- `rival_route22_final_lost`
+  - « Tu vois ? »
+- `rival_route22_final_lost`
+  - « Tu n'es pas prêt pour la Ligue. »
+- `guard_boulder_refuse`
+  - « Seuls les Dresseurs qui ont le Badge Roche »
+  - « peuvent passer. »
+- `guard_boulder_pass`
+  - « Le Badge Roche ! Tu peux passer. »
+- `guard_cascade_refuse`
+  - « Seuls les Dresseurs qui ont le Badge Cascade »
+  - « peuvent passer. »
+- `guard_cascade_pass`
+  - « Le Badge Cascade ! Tu peux passer. »
+- `guard_thunder_refuse`
+  - « Seuls les Dresseurs qui ont le Badge Foudre »
+  - « peuvent passer. »
+- `guard_thunder_pass`
+  - « Le Badge Foudre ! Tu peux passer. »
+- `guard_rainbow_refuse`
+  - « Seuls les Dresseurs qui ont le Badge Prisme »
+  - « peuvent passer. »
+- `guard_rainbow_pass`
+  - « Le Badge Prisme ! Tu peux passer. »
+- `guard_soul_refuse`
+  - « Seuls les Dresseurs qui ont le Badge Âme »
+  - « peuvent passer. »
+- `guard_soul_pass`
+  - « Le Badge Âme ! Tu peux passer. »
+- `guard_marsh_refuse`
+  - « Seuls les Dresseurs qui ont le Badge Marais »
+  - « peuvent passer. »
+- `guard_marsh_pass`
+  - « Le Badge Marais ! Tu peux passer. »
+- `guard_volcano_refuse`
+  - « Seuls les Dresseurs qui ont le Badge Volcan »
+  - « peuvent passer. »
+- `guard_volcano_pass`
+  - « Le Badge Volcan ! Tu peux passer. »
+- `guard_earth_refuse`
+  - « Seuls les Dresseurs qui ont le Badge Terre »
+  - « peuvent passer. »
+- `guard_earth_pass`
+  - « Le Badge Terre ! Tu peux passer. »
+- `route_23_victory_road_sign`
+  - « ROUTE VICTOIRE »
+  - « Seuls les meilleurs Dresseurs arrivent au bout. »
+- `moltres_presence`
+  - « Une chaleur intense emplit la grotte… »
+- `moltres_flew_away`
+  - « Sulfura s'est envolé en laissant une traînée de braises. »
+- `indigo_plateau_host`
+  - « Bienvenue au Plateau Indigo. »
+- `indigo_plateau_host`
+  - « Au-delà de cette porte, le Conseil des Quatre attend. »
+- `indigo_plateau_host`
+  - « Prépare-toi bien. »
+- `indigo_league_door`
+  - « La Ligue Pokémon »
+  - « À venir »
+- `route_22_league_sign`
+  - « LIGUE POKÉMON »
+  - « Entrée »
+
+- `strength_switch_pressed` (T29-09, narration, interrupteur enfoncé par un rocher)
+  - « Clac ! Un mécanisme s'est enclenché quelque part. »
+
+## Fiches de Pokédex nouvelles [D] (jalon 29)
+
+- `exeggutor` : « Ses trois têtes pensent chacune de leur côté. Quand elles s'entendent, il devient redoutable. »
+- `lickitung` : « Sa langue fait deux fois sa taille. Il goûte tout ce qu'il rencontre, même les inconnus. »
+- `mr_mime` : « Il mime si bien qu'un mur invisible finit par exister. Il en fait des barrières pour se protéger. »
+- `moltres` : « Un oiseau légendaire. Chaque battement de ses ailes enflammées éclaire le ciel d'une lueur rouge. »

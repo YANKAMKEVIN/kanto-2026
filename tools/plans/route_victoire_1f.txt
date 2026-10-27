@@ -1,0 +1,50 @@
+# Route Victoire 1F — grille fonctionnelle (jalon 29, docs/tech/jalon-29.md §2.1, §2.4), ÉCRITE par
+# tools/art/j29_rb_decode.py --ecrire depuis Rouge/Bleu (VictoryRoad1F, 20 × 18, coordonnées RB 1:1).
+# Contrôle : tools/art/plan_check_j29.py (anti-blocage de la Force sur les trois étages ensemble).
+#
+# Puzzle RB : le rocher poussé sur l'interrupteur (17, 13) ouvre la barrière (9, 12) pour toujours
+# (drapeau `victory_road_1f_switch_1`, RB : EVENT_VICTORY_ROAD_1_BOULDER_ON_SWITCH) ; les rochers
+# libres reviennent à leur origine à chaque entrée sur la carte (passe systèmes 2, §2.7.4).
+#
+# Légende : # mur · . sol bas · : sol haut · = escalier (seul passage entre les deux niveaux)
+#   L échelle (warp, tout niveau) · E entrée (warp PUSH ↓ vers la Route 23)
+# Rochers, interrupteur, barrière : POSITIONS seulement (légende commune, systemes-2.md §1.3).
+
+PRATICABLES .:=LE
+
+GRILLE 20 18
+00 ###########.##..####
+01 #L..#######.###..###
+02 ##..#####.........##
+03 ##...######..#.....#
+04 #...#::::::::::::#..
+05 #...#::::::::::::#..
+06 ##..#::::::::::::#..
+07 ##..###=###::##=##..
+08 ###.......#::##.....
+09 ##..#:::#.#::###...#
+10 ##.##:::###::#######
+11 ##..#:::###::##...##
+12 #...#::::::::#....##
+13 ...##=########.#..##
+14 ..##..##.........###
+15 #.....#...##.....###
+16 ##........##..######
+17 ######..EE##########
+FIN
+
+POSITIONS
+entree               warp            8..9,17          libre   vers=route_23:from_victory_road_w  # PUSH ↓
+from_route_23        spawn           8,17             libre  # arrivée depuis la Route 23, tourné ↑
+echelle_2f           echelle         1,1              libre   vers=victory_road_2f:from_1f
+from_2f              spawn           2,1              libre  # à côté de l'échelle
+dresseuse_1          pnj             7,5              bloque  role=D facing=right trainer=victory_road_1f_cooltrainer_f  # RB OPP_COOLTRAINER_F 5
+dresseur_1           pnj             3,2              bloque  role=D facing=down trainer=victory_road_1f_cooltrainer_m  # RB OPP_COOLTRAINER_M 5
+objet_1              objet_visible   11,0             bloque  objet=tm43  # CT43 Piqué
+objet_2              objet_visible   9,2              bloque  objet=rare_candy  # Super Bonbon
+rocher_1             rocher          5,15             bloque  ordre=1
+rocher_2             rocher          14,2             bloque  ordre=2
+rocher_3             rocher          2,10             bloque  ordre=3
+interrupteur_1       interrupteur    17,13            libre   drapeau=victory_road_1f_switch_1
+barriere_1           barriere        9,12             bloque  ouverte_si=victory_road_1f_switch_1
+FIN

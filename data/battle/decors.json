@@ -496,6 +496,21 @@
 		],
 		"fuchsia_gym": [
 			{ "decor": "vermilion_gym_salle" }
+		],
+		"route_22_west": [
+			{ "decor": "route_5_6_prairie" }
+		],
+		"route_23": [
+			{ "decor": "route_9_roche" }
+		],
+		"victory_road_1f": [
+			{ "decor": "digletts_cave_rock" }
+		],
+		"victory_road_2f": [
+			{ "decor": "digletts_cave_rock" }
+		],
+		"victory_road_3f": [
+			{ "decor": "digletts_cave_rock" }
 		]
 
 	}

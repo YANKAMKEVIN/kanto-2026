@@ -711,6 +711,9 @@ const RULES: Dictionary[StringName, Dictionary] = {
 	&"int_comptoir_casino_01": {"width": 1, "depth": 1},
 	&"int_affiche_casino_01": {"traversable": true, "align": ALIGN_CENTRE},
 	&"game_corner_wall": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_CENTRE},
+	# J29 (QA A17) : porte de la Ligue posée dans le mur du fond du hall du Plateau Indigo,
+	# comme la porte du laboratoire du Musée (rangées du mur déjà bloquées) : sans emprise.
+	&"int_porte_ligue_01": {"traversable": true, "align": ALIGN_CENTRE},
 }
 
 

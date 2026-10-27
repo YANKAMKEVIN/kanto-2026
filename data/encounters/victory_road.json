@@ -1,0 +1,233 @@
+{
+	"victory_road_1f_rubble": {
+		"maps": [
+			"victory_road_1f"
+		],
+		"terrain": "rubble",
+		"rate": 25,
+		"ramp": {
+			"from_step": 15,
+			"max_steps": 20
+		},
+		"slots": [
+			{
+				"species": "machop",
+				"levels": [
+					24,
+					24
+				],
+				"weight": 20
+			},
+			{
+				"species": "geodude",
+				"levels": [
+					26,
+					26
+				],
+				"weight": 20
+			},
+			{
+				"species": "zubat",
+				"levels": [
+					22,
+					22
+				],
+				"weight": 15
+			},
+			{
+				"species": "onix",
+				"levels": [
+					36,
+					42
+				],
+				"weight": 30
+			},
+			{
+				"species": "graveler",
+				"levels": [
+					41,
+					41
+				],
+				"weight": 5
+			},
+			{
+				"species": "golbat",
+				"levels": [
+					41,
+					41
+				],
+				"weight": 5
+			},
+			{
+				"species": "machoke",
+				"levels": [
+					42,
+					42
+				],
+				"weight": 4
+			},
+			{
+				"species": "marowak",
+				"levels": [
+					43,
+					43
+				],
+				"weight": 1
+			}
+		]
+	},
+	"victory_road_2f_rubble": {
+		"maps": [
+			"victory_road_2f"
+		],
+		"terrain": "rubble",
+		"rate": 25,
+		"ramp": {
+			"from_step": 15,
+			"max_steps": 20
+		},
+		"slots": [
+			{
+				"species": "machop",
+				"levels": [
+					22,
+					22
+				],
+				"weight": 20
+			},
+			{
+				"species": "geodude",
+				"levels": [
+					24,
+					24
+				],
+				"weight": 20
+			},
+			{
+				"species": "zubat",
+				"levels": [
+					26,
+					26
+				],
+				"weight": 15
+			},
+			{
+				"species": "onix",
+				"levels": [
+					36,
+					42
+				],
+				"weight": 30
+			},
+			{
+				"species": "machoke",
+				"levels": [
+					41,
+					41
+				],
+				"weight": 5
+			},
+			{
+				"species": "golbat",
+				"levels": [
+					40,
+					40
+				],
+				"weight": 5
+			},
+			{
+				"species": "marowak",
+				"levels": [
+					40,
+					40
+				],
+				"weight": 4
+			},
+			{
+				"species": "graveler",
+				"levels": [
+					43,
+					43
+				],
+				"weight": 1
+			}
+		]
+	},
+	"victory_road_3f_rubble": {
+		"maps": [
+			"victory_road_3f"
+		],
+		"terrain": "rubble",
+		"rate": 25,
+		"ramp": {
+			"from_step": 15,
+			"max_steps": 20
+		},
+		"slots": [
+			{
+				"species": "machop",
+				"levels": [
+					24,
+					24
+				],
+				"weight": 20
+			},
+			{
+				"species": "geodude",
+				"levels": [
+					26,
+					26
+				],
+				"weight": 20
+			},
+			{
+				"species": "zubat",
+				"levels": [
+					22,
+					22
+				],
+				"weight": 15
+			},
+			{
+				"species": "onix",
+				"levels": [
+					42,
+					45
+				],
+				"weight": 20
+			},
+			{
+				"species": "venomoth",
+				"levels": [
+					40,
+					40
+				],
+				"weight": 10
+			},
+			{
+				"species": "graveler",
+				"levels": [
+					43,
+					43
+				],
+				"weight": 5
+			},
+			{
+				"species": "golbat",
+				"levels": [
+					41,
+					41
+				],
+				"weight": 5
+			},
+			{
+				"species": "machoke",
+				"levels": [
+					42,
+					45
+				],
+				"weight": 5
+			}
+		]
+	}
+}
