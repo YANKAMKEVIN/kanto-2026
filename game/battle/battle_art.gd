@@ -33,9 +33,11 @@ const PAINTED_BACK_DIR: String = "res://assets/sprites/pokemon/dos/"
 ## Priorité : dos IA > dos 3D > sprite provisoire.
 
 ## Numéros du Pokédex dont l'artwork officiel regarde vers la droite (relevé sur planche,
-## QA A17 du J30 : Roucarnage du rival tournait le dos) : retournés côté adversaire.
-const FACING_RIGHT: Array[int] = [2, 9, 10, 18, 21, 28, 30, 38, 53, 55, 58, 78, 83, 106, 118,
-	146, 147]
+## QA A17 du J30 : Roucarnage du rival tournait le dos) : retournés côté adversaire. Relevé refait
+## sur les 151 en grand le 2026-10-27 (Kevin : « aucun Pokémon adverse ne doit regarder vers la
+## droite ») : + 6, 96, 100, 104, 125, 131, 148 ; − 21, 55, 58, 83 (déjà tournés vers la gauche).
+const FACING_RIGHT: Array[int] = [2, 6, 9, 10, 18, 28, 30, 38, 53, 78, 96, 100, 104, 106, 118,
+	125, 131, 146, 147, 148]
 
 ## Boîtes visibles des images provisoires, par chemin (lues une fois).
 static var _boxes: Dictionary[String, Rect2] = {}

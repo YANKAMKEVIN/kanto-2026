@@ -244,11 +244,11 @@ Les points RP-151 à RP-154, propres à `jalon-23` jusqu'ici, sont passés de la
 |---|---|---|---|---|---|---|
 | RP-151 | `jalon-23` (fusionné le 2026-10-27) | Textures ≈ 75 Mo dans la Maison Secrète et la maison du Gardien | perf | P1 (MEN-7) | phase DA (décision de Kevin du 2026-10-26) | ouvert |
 | RP-152 | `jalon-23` (fusionné le 2026-10-27) | Pêche du Parc (aucune case pêchable), Corde Sortie dans le Parc, art T7/T8 (vues peintes, sprites, dos du joueur) | idée | P2 | DAF.4, 1.0.x | ouvert |
-| RP-153 | `jalon-23` (fusionné le 2026-10-27) | T21 équilibrage non fait (Koga) ; l'IA choisit Détritus plutôt que Toxik pour le Smogogo de Koga (IA inchangée jusqu'au T21) | défaut | P2 | J23 (reste non bloquant) | ouvert |
+| RP-153 | `jalon-23` (fusionné le 2026-10-27) | T21 équilibrage non fait (Koga) ; l'IA choisit Détritus plutôt que Toxik pour le Smogogo de Koga (IA inchangée jusqu'au T21) | défaut | P2 | J23 (reste non bloquant) | T21 fait le 2026-10-27 (`jalon-23.md` §9.7, Koga ≈ 100 % aux niveaux RB pour une arrivée normale) ; en attente de la réponse de Kevin à Q23-1 |
 | RP-154 | `jalon-23` (fusionné le 2026-10-27) | « HYPNO » tronqué sur la carte de combat | rendu | P2 (MEN-3) | J33 | corrigé (`f7ccf543`), dans `main` depuis la fusion du J23 ; à valider sur téléphone (J33) |
 | RP-157 | Fusion du J23 (2026-10-26, tests de couverture DAF.2) | Fonds de combat provisoires [D] : Parc Safari → `route_5_6_prairie`, Arène de Parmanie (Koga) → `vermilion_gym_salle` ; fonds dédiés à peindre | rendu | P2 | DAF.2 (phase DA) | ouvert |
 | RP-158 | Fusion du J23 (2026-10-26, tests de couverture DAF.5) | Icônes provisoires [D] : CT32, CT37, CT40 (icône de la CT09), CT06 (celle de la CT46), Dents d'Or (la Pépite) ; icônes dédiées à peindre | rendu | P3 (MEN-2) | DAF.5 (phase DA) | ouvert |
-| RP-159 | Fusion du J23 (2026-10-26) | Prénom « Intello Séraphin » [D] (Arène de Cramois'Île), posé pour éviter le doublon « Barnabé » du Médium du J27 | idée | P3 | Kevin (à confirmer) | ouvert |
+| RP-159 | Fusion du J23 (2026-10-26) | Prénom « Intello Séraphin » [D] (Arène de Cramois'Île), posé pour éviter le doublon « Barnabé » du Médium du J27 | idée | P3 | Kevin | **clos** : « Séraphin » gardé (Kevin, 2026-10-27 : « le prénom tu utilises celui que tu veux ») |
 
 ### 2.11 Fusion du J29 dans `main` (2026-10-27, à classer RP-NNN)
 
