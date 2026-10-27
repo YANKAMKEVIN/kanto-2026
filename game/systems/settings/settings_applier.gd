@@ -26,6 +26,7 @@ func apply(s: GameSettings, device: Dictionary, evolution_screen: EvolutionScree
 	battle_hud.message_hold_scale = 1.0
 	battle_stage.reduce_flashes = s.reduce_flashes
 	battle_stage.reduce_motion = s.reduce_motion
+	battle_stage.battle_animations = s.battle_animations
 	if evolution_screen != null:
 		evolution_screen.reduce_flashes = s.reduce_flashes
 	services.reduce_motion = s.reduce_motion

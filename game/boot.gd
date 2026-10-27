@@ -1262,6 +1262,13 @@ func _apply_debug_start() -> bool:
 	var start := DebugStart.new()
 	if not start.load_file(debug_start_path, _pokemon, _items):
 		return false
+	if not start.fx_gallery.is_empty():
+		# Combat vivant (T8) : la galerie d'effets remplace la partie (mesure de cadence).
+		FxGallery.config = start.fx_gallery
+		get_tree().change_scene_to_file.call_deferred(FxGallery.SCENE)
+		print("Départ de débogage (%s) : galerie d'effets %s" % [debug_start_path,
+			start.fx_gallery])
+		return true
 	start.apply(GameState, _pokemon)
 	_debug_start_autosave = start.autosave
 	_veil_debug = start.veil
@@ -2019,6 +2026,7 @@ func _setup_audio() -> void:
 	_trainer_watcher.trainer_spotted.connect(_audio_bridge.on_trainer_spotted)
 	_battle_director.battle_started.connect(_audio_bridge.on_battle_started)
 	_battle_director.event_played.connect(_audio_bridge.on_battle_event)
+	_battle_stage.move_fx_cue.connect(_audio_bridge.on_move_fx_cue)
 	_battle_director.battle_finished.connect(_audio_bridge.on_battle_finished)
 	_battle_director.pokemon_caught.connect(_audio_bridge.on_pokemon_caught.unbind(2))
 	_services.center_healed.connect(_audio_bridge.on_center_healed)

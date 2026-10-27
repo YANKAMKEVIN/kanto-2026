@@ -239,3 +239,37 @@ func _with_old_values() -> GameSettings:
 	settings.joystick_opacity = 0.8
 	settings.economy = true
 	return settings
+
+
+# --- Combat vivant (CV-4, T5) -------------------------------------------------------------
+
+func test_battle_animations_full_by_default() -> void:
+	assert_eq(GameSettings.new().battle_animations, GameSettings.BattleAnimations.FULL)
+	assert_eq(GameSettings.new().to_dict()["battle_animations"], "full")
+
+
+func test_battle_animations_round_trip_by_name() -> void:
+	var settings := GameSettings.new()
+	assert_true(settings.set_value(GameSettings.BATTLE_ANIMATIONS,
+		GameSettings.BattleAnimations.FAST))
+	assert_false(settings.set_value(GameSettings.BATTLE_ANIMATIONS, 2), "hors bornes")
+	assert_false(settings.set_value(GameSettings.BATTLE_ANIMATIONS, "fast"), "pas un entier")
+	var dict := settings.to_dict()
+	assert_eq(dict["battle_animations"], "fast")
+	var back := GameSettings.from_dict(JSON.parse_string(JSON.stringify(dict)))
+	assert_eq(back.battle_animations, GameSettings.BattleAnimations.FAST)
+
+
+func test_old_settings_file_without_battle_animations_reads_full() -> void:
+	var old := GameSettings.new().to_dict()
+	old.erase("battle_animations")
+	assert_eq(GameSettings.from_dict(old).battle_animations, GameSettings.BattleAnimations.FULL)
+	assert_eq(GameSettings.from_dict({"battle_animations": "turbo"}).battle_animations,
+		GameSettings.BattleAnimations.FULL, "nom inconnu : défaut")
+
+
+func test_battle_animations_independent_of_reduce_motion() -> void:
+	var settings := GameSettings.new()
+	settings.set_value(GameSettings.BATTLE_ANIMATIONS, GameSettings.BattleAnimations.FAST)
+	assert_false(settings.reduce_motion, "CV-5 : deux réglages distincts")
+	assert_eq(settings.battle_speed_scale(), 1.0)

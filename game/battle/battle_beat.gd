@@ -78,6 +78,9 @@ var wait_touch: bool = false
 var event: BattleEvent
 ## MOVE : catégorie de la capacité (animation).
 var category: MoveData.Category = MoveData.Category.PHYSICAL
+## MOVE d'un MOVE_USED : la chorégraphie de l'attaque (Combat vivant, §2.4), calculée par le
+## BattleDirector sur le journal ; null : l'élan générique de [method BattleStage.play_move].
+var fx_plan: MoveFxPlan
 
 
 func _init(beat_kind: Kind = Kind.MESSAGE, source: BattleEvent = null) -> void:
