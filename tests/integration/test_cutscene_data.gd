@@ -28,6 +28,8 @@ extends GutTest
 ## simulation vérifie le Dresseur et sa carte, le badge et son drapeau).
 
 const MAPS: Array[StringName] = [
+	# Jalon 30 (T9) : déclencheurs d'appel des membres de la Ligue.
+	&"league_lorelei", &"league_bruno", &"league_agatha", &"league_lance", &"league_champion",
 	# Jalon 29 : Route 22 ouest, poste, Route 23, Route Victoire, Plateau Indigo.
 	&"route_22_west", &"route_22_gate", &"route_23", &"victory_road_1f", &"victory_road_2f",
 	&"victory_road_3f", &"indigo_plateau", &"indigo_plateau_lobby",
@@ -475,6 +477,22 @@ const VARIANT_FLAGS: Dictionary = {
 	&"pokemon_mansion_b1f_item_3": [PEWTER_FLAGS],
 	&"pokemon_mansion_b1f_item_4": [PEWTER_FLAGS],
 	&"pokemon_mansion_b1f_item_5": [PEWTER_FLAGS],
+	# Jalon 30 (T9) : appel de chaque membre (une variante, tant que son étape n'est pas gagnée).
+	&"league_lorelei_call": [[&"league_attempt_active"]],
+	&"league_bruno_call": [[&"league_attempt_active", &"league_stage_0_cleared"]],
+	&"league_agatha_call": [[&"league_attempt_active", &"league_stage_0_cleared",
+		&"league_stage_1_cleared"]],
+	&"league_lance_call": [[&"league_attempt_active", &"league_stage_0_cleared",
+		&"league_stage_1_cleared", &"league_stage_2_cleared"]],
+	&"rival_champion_call": [[&"league_attempt_active", &"league_stage_0_cleared",
+		&"league_stage_1_cleared", &"league_stage_2_cleared", &"league_stage_3_cleared"]],
+	# Jalon 30 (fusion du J29) : question du garde de la porte du hall (hors tentative).
+	&"league_guard_door": [[]],
+	# Jalon 30 (T17) : cérémonie (suite de l'appel du rival, ou reprise au Panthéon).
+	&"league_victory": [[&"league_attempt_active", &"league_stage_0_cleared",
+		&"league_stage_1_cleared", &"league_stage_2_cleared", &"league_stage_3_cleared",
+		&"league_stage_4_cleared"]],
+	&"league_hall_of_fame": [[&"league_champion_defeated"]],
 	# Jalon 31 (T4) : objets de la Grotte Azurée et Mewtwo (une variante, avant le drapeau).
 	&"cerulean_cave_1f_item_1": [[]],
 	&"cerulean_cave_1f_item_2": [[]],
@@ -492,6 +510,9 @@ const VARIANT_FLAGS: Dictionary = {
 ## Jalon 7 (T18) : la scène du colis est lancée par la variante « cutscene » du dialogue de Chen.
 ## Jalon 8 : les objets visibles de la Route 2, par le dialogue de leur PNJ « objet ».
 const CODE_PLAYED: Dictionary[StringName, StringName] = {
+	# Jalon 30 (T17) : suite (« next ») de l'appel du rival, ou relancée par Boot à l'arrivée
+	# (reprise : LeagueDirector.pending_cutscene).
+	&"league_victory": &"league_champion", &"league_hall_of_fame": &"hall_of_fame",
 	# Jalon 29 : objets et caches (PNJ « objet », points d'examen), gardes et Sulfura (dialogue).
 	&"victory_road_1f_item_1": &"victory_road_1f",
 	&"victory_road_1f_item_2": &"victory_road_1f",
@@ -877,6 +898,9 @@ func test_library_loads_without_error() -> void:
 	assert_true(library.load_dir(), "data/cutscenes/ se charge")
 	assert_eq(library.get_errors().size(), 0, str(library.get_errors()))
 	assert_eq(_without_qa(library.get_ids()), _sorted(J29_IDS + [&"bill_house_enter", &"bill_machine", &"bill_module",
+		# Jalon 30 (T9) : appel des cinq combats de la Ligue.
+		&"league_lorelei_call", &"league_bruno_call", &"league_agatha_call", &"league_lance_call",
+		&"rival_champion_call", &"league_victory", &"league_hall_of_fame", &"league_guard_door",
 		&"bill_screen", &"cerulean_arrival", &"cerulean_gym_misty",
 		&"cerulean_rocket_chase", &"cerulean_rocket_fight", &"cerulean_south_guard",
 		&"cerulean_gym_misty_tm_late", &"mart_parcel", &"mt_moon_1f_hidden_1", &"mt_moon_1f_item_1",
@@ -1038,10 +1062,13 @@ func test_every_trainer_and_item_step_exists() -> void:
 ## Jalon 10 (T9) : chaque Dresseur présenté par une carte en a une, chaque badge remis existe, et
 ## l'étape « badge » d'une scène suit le combat qui lève déjà son drapeau (« win »).
 func test_every_champion_card_and_badge_step_exists() -> void:
-	# Jalon 23 (T19) : Koga.
+	# Jalon 23 (T19) : Koga ; jalon 30 (T9) : les cartes « Conseil des Quatre » des quatre membres
+	# (pas le rival).
 	assert_eq(_cutscenes.get_card_trainer_ids(), [&"celadon_gym_erika", &"cerulean_gym_misty",
-		&"cinnabar_gym_blaine", &"fuchsia_gym_koga", &"giovanni_hideout", &"pewter_gym_brock", &"saffron_gym_sabrina",
-		&"silph_co_giovanni", &"vermilion_gym_surge", &"viridian_gym_giovanni"] as Array[StringName])
+		&"cinnabar_gym_blaine", &"fuchsia_gym_koga", &"giovanni_hideout", &"league_agatha",
+		&"league_bruno", &"league_lance", &"league_lorelei", &"pewter_gym_brock",
+		&"saffron_gym_sabrina", &"silph_co_giovanni", &"vermilion_gym_surge",
+		&"viridian_gym_giovanni"] as Array[StringName])
 	for id: StringName in _cutscenes.get_card_trainer_ids():
 		var trainer := _trainers.get_trainer(id)
 		assert_true(trainer != null and trainer.has_card(), "« %s » a une carte" % id)
@@ -1189,9 +1216,10 @@ func test_every_change_map_targets_an_existing_map_and_spawn() -> void:
 		assert_true(map.has_spawn(step.spawn), "%s : point « %s »" % [step.map_id, step.spawn])
 		map.free()
 	# Jalon 21 (T13) : + la téléportation du 7F vers la Maison des Pokémon.
-	assert_eq(count, 5, "le retour au labo ; le quai de Carmin (départ du S.S. Anne, J16 T15) ; "
+	assert_eq(count, 9, "le retour au labo ; le quai de Carmin (départ du S.S. Anne, J16 T15) ; "
 		+ "la Maison des Pokémon (sauvetage de Fuji, J21 T13) ; "
-		+ "la porte de l'Arène de Cramois'Île déverrouillée (J25, deux variantes)")
+		+ "la porte de l'Arène de Cramois'Île déverrouillée (J25, deux variantes) ; "
+		+ "la Ligue (J30 T17 : Panthéon, Bourg Palette deux fois ; porte du hall, OUI au garde)")
 
 
 func test_every_variant_is_chosen_by_its_flags() -> void:

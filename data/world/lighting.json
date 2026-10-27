@@ -416,6 +416,12 @@
 		"route_16": "golden_hour",
 		"route_12": "golden_hour",
 		"route_12_gate": "interior_warm",
-		"route_12_gate_2f": "interior_warm"
+		"route_12_gate_2f": "interior_warm",
+		"league_lorelei": "interior_warm",
+		"league_bruno": "interior_warm",
+		"league_agatha": "interior_warm",
+		"league_lance": "interior_warm",
+		"league_champion": "interior_warm",
+		"hall_of_fame": "interior_warm"
 	}
 }

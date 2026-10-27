@@ -1,0 +1,71 @@
+{
+	"map": "route_1",
+	"spawn": "from_pallet_w",
+	"facing": "up",
+	"flags": [
+		"mom_greeted",
+		"rival_met",
+		"oak_met",
+		"oak_lab_reunion",
+		"starter_offered",
+		"starter_chosen",
+		"taken_charmander",
+		"taken_squirtle",
+		"rival_lab_won",
+		"rival_challenged",
+		"rival_battle_done",
+		"rival_left_lab",
+		"viridian_arrived",
+		"got_oak_parcel",
+		"pokedex_activated",
+		"poison_unlocked"
+	],
+	"party": [
+		{
+			"species": "muk",
+			"level": 100,
+			"status": "poison",
+			"moves": [
+				"toxic",
+				"sludge",
+				"minimize",
+				"disable"
+			]
+		},
+		{
+			"species": "pidgeot",
+			"level": 100,
+			"moves": [
+				"toxic",
+				"wing_attack",
+				"quick_attack",
+				"agility"
+			]
+		}
+	],
+	"bag": {
+		"potion": 5
+	},
+	"money": 3000,
+	"wild": {
+		"rate": 200,
+		"slots": [
+			{
+				"species": "pidgeot",
+				"levels": [
+					100,
+					100
+				],
+				"weight": 60
+			},
+			{
+				"species": "charizard",
+				"levels": [
+					100,
+					100
+				],
+				"weight": 40
+			}
+		]
+	}
+}

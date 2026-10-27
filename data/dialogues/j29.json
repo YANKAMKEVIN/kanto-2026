@@ -142,12 +142,6 @@
 			"Prépare-toi bien."
 		]
 	},
-	"indigo_league_door": {
-		"narration": true,
-		"pages": [
-			"La Ligue Pokémon\nÀ venir"
-		]
-	},
 	"route_22_league_sign": {
 		"pages": [
 			"LIGUE POKÉMON\nEntrée"

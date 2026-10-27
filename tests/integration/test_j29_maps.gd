@@ -249,7 +249,8 @@ func test_indigo_plateau_lobby_league_door_is_drawn_above_its_warp() -> void:
 	assert_true(left >= 11 * 96.0 and right <= 14 * 96.0, "pas plus large que les cases 11 à 13")
 	var warp: Warp = null
 	for candidate: Warp in lobby.get_warps().get_all():
-		if candidate.target_map.is_empty():
+		# J30 (fusion du J29) : la porte mène à la salle d'Olga.
+		if candidate.target_map == &"league_lorelei":
 			warp = candidate
 	assert_not_null(warp, "warp ToLeague")
 	if warp == null:

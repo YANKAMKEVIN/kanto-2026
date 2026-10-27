@@ -19,6 +19,9 @@ const DATA_DIR := "res://data"
 ## Jalon 21 : Poké Flûte, CT39, Constriction, Bouclier et les fiches de Pokédex d'Ossatueur, de
 ## Ronflex, de Ptitard et de Tentacool validés par Kevin le 2026-10-16 (dossier 24 §15), « draft »
 ## retiré.
+## Jalon 30 (T16) : bloc « Pokémon © … / projet personnel » du générique, validé par Kevin le
+## 2026-10-26, « draft » retiré.
+## Jalon 30 : texte du Grand moment « champion » validé par Kevin le 2026-10-26, « draft » retiré.
 ## Jalon 26 (T6) : description de Safrania sur la Carte [D], à relire par Kevin.
 ## Jalon 32 (N-11, N-13, N-14) : textes d'Électhor, de Porygon et des échanges PNJ validés par
 ## Kevin le 2026-10-27, « draft » retiré.

@@ -1,0 +1,28 @@
+{
+	"rival": {
+		"cell": [
+			4,
+			2
+		],
+		"facing": "down",
+		"sprite": "rival",
+		"dialogue": "rival_champion_defeated",
+		"trainer": {
+			"id": "rival_champion",
+			"sight": 4,
+			"before": "rival_champion_before"
+		}
+	},
+	"chen": {
+		"cell": [
+			3,
+			6
+		],
+		"facing": "up",
+		"sprite": "oak",
+		"dialogue": "league_oak_congrats",
+		"if": [
+			"league_stage_4_cleared"
+		]
+	}
+}

@@ -244,23 +244,33 @@ Les points RP-151 à RP-154, propres à `jalon-23` jusqu'ici, sont passés de la
 |---|---|---|---|---|---|---|
 | RP-151 | `jalon-23` (fusionné le 2026-10-27) | Textures ≈ 75 Mo dans la Maison Secrète et la maison du Gardien | perf | P1 (MEN-7) | phase DA (décision de Kevin du 2026-10-26) | ouvert |
 | RP-152 | `jalon-23` (fusionné le 2026-10-27) | Pêche du Parc (aucune case pêchable), Corde Sortie dans le Parc, art T7/T8 (vues peintes, sprites, dos du joueur) | idée | P2 | DAF.4, 1.0.x | ouvert |
-| RP-153 | `jalon-23` (fusionné le 2026-10-27) | T21 équilibrage non fait (Koga) ; l'IA choisit Détritus plutôt que Toxik pour le Smogogo de Koga (IA inchangée jusqu'au T21) | défaut | P2 | J23 (reste non bloquant) | ouvert |
+| RP-153 | `jalon-23` (fusionné le 2026-10-27) | T21 équilibrage non fait (Koga) ; l'IA choisit Détritus plutôt que Toxik pour le Smogogo de Koga (IA inchangée jusqu'au T21) | défaut | P2 | J23 (reste non bloquant) | T21 fait le 2026-10-27 (`jalon-23.md` §9.7, Koga ≈ 100 % aux niveaux RB pour une arrivée normale) ; **clos** : Q23-1 option A (Kevin, 2026-10-27 : Koga aux niveaux RB, IA inchangée) |
 | RP-154 | `jalon-23` (fusionné le 2026-10-27) | « HYPNO » tronqué sur la carte de combat | rendu | P2 (MEN-3) | J33 | corrigé (`f7ccf543`), dans `main` depuis la fusion du J23 ; à valider sur téléphone (J33) |
 | RP-157 | Fusion du J23 (2026-10-26, tests de couverture DAF.2) | Fonds de combat provisoires [D] : Parc Safari → `route_5_6_prairie`, Arène de Parmanie (Koga) → `vermilion_gym_salle` ; fonds dédiés à peindre | rendu | P2 | DAF.2 (phase DA) | ouvert |
 | RP-158 | Fusion du J23 (2026-10-26, tests de couverture DAF.5) | Icônes provisoires [D] : CT32, CT37, CT40 (icône de la CT09), CT06 (celle de la CT46), Dents d'Or (la Pépite) ; icônes dédiées à peindre | rendu | P3 (MEN-2) | DAF.5 (phase DA) | ouvert |
-| RP-159 | Fusion du J23 (2026-10-26) | Prénom « Intello Séraphin » [D] (Arène de Cramois'Île), posé pour éviter le doublon « Barnabé » du Médium du J27 | idée | P3 | Kevin (à confirmer) | ouvert |
+| RP-159 | Fusion du J23 (2026-10-26) | Prénom « Intello Séraphin » [D] (Arène de Cramois'Île), posé pour éviter le doublon « Barnabé » du Médium du J27 | idée | P3 | Kevin | **clos** : « Séraphin » gardé (Kevin, 2026-10-27 : « le prénom tu utilises celui que tu veux ») |
 
 ### 2.11 Fusion du J29 dans `main` (2026-10-27, à classer RP-NNN)
 
-- **Fonds de combat provisoires [D]** (couverture DAF.2) : `route_22_west` → `route_5_6_prairie` (comme la Route 22) ; `route_23` → `route_9_roche` ; `victory_road_1f`, `_2f`, `_3f` → `digletts_cave_rock`. Fonds dédiés à peindre (Route 23, Route Victoire).
+- **Fonds de combat provisoires [D]** (couverture DAF.2) : `route_22_west` → `route_5_6_prairie` (comme la Route 22) ; `route_23` → `route_9_roche` ; `victory_road_1f`, `_2f`, `_3f` → `digletts_cave_rock`. Fonds dédiés à peindre (Route 23, Route Victoire). **Faits sur la branche `claude/daf-4-j29-j31` (DAF.4, planche à valider)** : `route_23_roche`, `victory_road_grotte` ; `route_22_west` gardé sur le fond de la Route 22 du J7 [D].
 - **Icônes provisoires du Sac [D]** (couverture DAF.5) : CT05, CT43, CT47 = icône de la CT09 (Normal) ; CT17 = CT19 (Combat) ; Défense Spéc. (`guard_spec`) = Spécial X ; Max Éther (`max_ether`) = Potion Max. Icônes dédiées à peindre.
 - **Dédoublonnage** (RP-149, partie J27/J29) : `kanto_j27_emprunts.json` (M. Mime) et `moves/j27_emprunts.json` (Ultimawashi, Clonage) retirés, définitions identiques à celles du J29 ; `kanto_j29_reprises.json` (Alakazam, Leveinard, Lokhlass, identiques à ceux des J23 et J26) retiré, avec ses quatre fiches de Pokédex en double et les trois dessins provisoires en double de `gen_placeholder_battlers.gd`.
 
 ### 2.12 Fusion du J31 dans `main` (2026-10-27, à classer RP-NNN)
 
-- **Fonds de combat provisoires [D]** (couverture DAF.2) : `cerulean_cave_1f`, `_2f`, `_b1f` → `dark_cave_galerie`. Fond dédié de la Grotte Azurée à peindre.
+- **Fonds de combat provisoires [D]** (couverture DAF.2) : `cerulean_cave_1f`, `_2f`, `_b1f` → `dark_cave_galerie`. Fond dédié de la Grotte Azurée à peindre. **Fait sur la branche `claude/daf-4-j29-j31` (DAF.4, planche à valider)** : `cerulean_cave_azuree` ; la Grotte Azurée est aussi repeinte (sol à deux niveaux, eau, rebords).
 - **Icônes provisoires du Sac [D]** (couverture DAF.5) : Max Élixir = Potion Max ; PP Plus = Hyper Potion. Icônes dédiées à peindre.
 - **Dédoublonnage** : `kanto_j31_emprunts.json` (Leveinard, Rhinoféros, identiques à ceux des J23 et J28) retiré, avec leurs deux fiches de Pokédex en double.
+
+### 2.13 Fusion du J30 dans `main` (2026-10-27, à classer RP-NNN)
+
+- **Ouverts sur `main` depuis la QA S24 30C** (passés de §3) : **RP-139** (objectif « traverser le Pont Pépite » revu après le générique, drapeaux du départ de débogage ; à vérifier en vraie partie, J33) et **RP-160** (Grand moment « Champion de la Ligue Pokémon » : détail coupé par le bas de l'écran Dresseur, la liste défile ; P2, P0 si le texte reste coupé après défilement ; J33 sur S24).
+- **Fonds de combat provisoires [D]** (couverture DAF.2 ; les salles n'ont pas de PNJ Dresseur dans `data/npcs`, le test général ne les voyait pas : `test_league_rooms_have_a_decor`) : `league_lorelei` → `seafoam_ice` ; `league_bruno` → `fighting_dojo_salle` ; `league_agatha` → `tour_pokemon` ; `league_lance` → `victory_road_grotte` ; `league_champion` → `viridian_gym_sol`. Fonds dédiés des cinq salles à peindre (DAF). Le Panthéon n'a pas de combat.
+- **Couverture déjà complète sur `main`** (aucune valeur ajoutée) : musiques des salles de la Ligue et du Panthéon (`music_zones.json`, `battle_music.json`, Son), points d'origine CV.A des 151 espèces (`fx_anchors.json`), cris ; le J30 n'ajoute aucun objet (pas d'icône du Sac).
+- **Fiches de Pokédex manquantes** : Lippoutou, Mackogneur, Ectoplasma, Draco, Dracolosse (`NO_ENTRY_YET` de `test_pokedex_library.gd`) ; textes à écrire et à faire valider par Kevin. Sprites de combat provisoires recolorés (`gen_placeholder_battlers_j30.gd`) : DAF.1/DAF.2.
+- **Dédoublonnage** (RP-149, partie J30, réglé) : `kanto_j30_reprises.json` (Rhinoféros, Kicklee, Tygnon), `moves/j30_reprises.json` (Abîme, Toxik simplifié) et `moves/j30_emprunts.json` (Riposte, Pied Sauté, Pied Voltige, poings, Mawashi Geri) retirés : les versions des J23, J27 et J28 font foi (effets `crash` / `counter` du J27). Description du Sac de combat : les 4 lignes de `main` (R-1) remplacent les 3 de `jalon-30`. `FACING_RIGHT` : celui de `main` (identique).
+- **RP-131** (fond flou recadré après une reprise pendant un combat) : le correctif du J30 (`Player.hold_camera`) entre dans `main`. **RP-137** : Q30-4 et Grand moment « champion » faits, textes du générique validés (reste : fond nuit uni des deux écrans, DAF). **RP-138** : QA 30A faite par Kevin sur le S24 le 2026-10-27, fermé. **RP-113** : Mackogneur et Ectoplasma sont maintenant dans les données (évolutions par échange : J32).
+- **RP-155** : `StaticRespawn.on_league_won(...)` (N-17, N-18) n'est pas dans `main` ; le commentaire de branchement reste dans `LeagueDirector.complete_ceremony`, à brancher à la fusion du J32.
 
 ## 3. Propres à une branche non fusionnée
 
@@ -273,7 +283,7 @@ versions, déjà réglées sur `main` par DAF.6 : non reprises.
 | RP-130 | `prep/j26-j27`, `jalon-28`, `jalon-31`, `jalon-32` (`jalon-23` réglé par sa fusion) | Pas de `FACING_RIGHT` (adversaires tournés à droite) ; `jalon-29` et `jalon-30` l'ont | défaut | P1 | R-1 (par `main`) | `main` l'a depuis `e772538c` (R-1) : chaque branche le récupère à sa mise à jour sur `main` |
 | RP-131 | `jalon-30` (correctif) ; probablement `main` | Après une reprise de l'appli pendant un combat, fond flou recadré (zoom différent) | défaut | P3 | branche ; à porter à la fusion du J30 | corrigé sur `jalon-30` (`Player.hold_camera`) seulement |
 | RP-132 | `jalon-29` | Sulfura de carte = sprite d'oiseau générique (`pokemon/fearow`), petit, caché par la tête du héros | rendu | P2 | DAF.4 | ouvert |
-| RP-133 | `jalon-29` | Sol haut et sol bas de la Route Victoire peu distincts (tuiles provisoires) ; vue générale peinte, poste de la Route 22, Route 23 | rendu | P1 (DON-3) | DAF.4 | ouvert |
+| RP-133 | `jalon-29` | Sol haut et sol bas de la Route Victoire peu distincts (tuiles provisoires) ; vue générale peinte, poste de la Route 22, Route 23 | rendu | P1 (DON-3) | DAF.4 | corrigé pour la Route Victoire sur la branche `claude/daf-4-j29-j31` (DAF.4, planche à valider) (sol haut nettement plus clair, rebords, escaliers) ; poste de la Route 22 peint ; restent le sol de la Route 23 et la vue générale |
 | RP-134 | `jalon-29` | Rencontres très fréquentes dans la Route Victoire (1 toutes les 3 à 5 cases) | idée | P3 | branche (comparer à RB) | ouvert |
 | RP-135 | `jalon-29` | Départ `moltres` sans Master Ball (objet du J26) | défaut | P3 | branche (fusion J26) | ouvert |
 | RP-136 | `jalon-30` | Sprites provisoires de la Ligue : Olga (`cooltrainer_f`), Aldo (`docker`), Agatha (`channeler`), Peter (`traveler`) | rendu | P1 (PER-1) | DAF.4 | ouvert |

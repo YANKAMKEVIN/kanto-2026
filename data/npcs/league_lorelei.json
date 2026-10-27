@@ -1,0 +1,16 @@
+{
+	"olga": {
+		"cell": [
+			5,
+			2
+		],
+		"facing": "down",
+		"sprite": "cooltrainer_f",
+		"dialogue": "league_lorelei_defeated",
+		"trainer": {
+			"id": "league_lorelei",
+			"sight": 4,
+			"before": "league_lorelei_before"
+		}
+	}
+}

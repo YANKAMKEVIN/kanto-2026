@@ -1,0 +1,31 @@
+# Champion — grille fonctionnelle de `league_champion` (jalon 30, T2, `docs/tech/jalon-30.md` §2.1).
+# ÉCRITE par tools/art/j30_rb_decode.py --ecrire depuis Rouge/Bleu (ChampionsRoom, 8 × 8,
+# coordonnées RB 1:1 [D]). Contrôle : tools/art/plan_check_j30.py. Proposée par Claude le
+# 2026-10-22, à valider par Kevin sur planche (sous-jalon 30.0).
+# Retouches [D] : 0 case(s) de sol RB inaccessibles ou au pourtour → mur.
+# Toutes les salles de la Ligue : no_fly, no_teleport (pas de grotte : ni Tunnel ni Corde).
+#
+# Légende : # mur · . sol · X porte (warp, praticable ; conditions dans POSITIONS)
+
+PRATICABLES .X
+
+GRILLE 8 8
+00 ###XX###
+01 #.#..#.#
+02 #......#
+03 #......#
+04 #......#
+05 #......#
+06 #.#..#.#
+07 ###XX###
+FIN
+
+POSITIONS
+porte_sud            warp           3..4,7       libre   vers=league_lance:from_north unless=league_attempt_active  # fermée pendant la tentative
+from_south           spawn          4,6          libre   # tourné ↑
+porte_nord           warp           3..4,0       libre   vers=hall_of_fame:from_south si=league_stage_4_cleared  # ouverte après la victoire
+from_north           spawn          3,1          libre   # tourné ↓ (hors tentative : retour depuis la salle suivante)
+rival                dresseur       4,2          bloque  facing=down sight=4 trainer=rival_champion  # vaincu : reste en place, réplique « vaincu »
+appel_rival          declencheur    1..6,5       libre   combat=rival_champion unless=league_stage_4_cleared  # RB : EntranceCoords, le joueur est amené devant le membre
+chen                 pnj            3,6          bloque  facing=up si=league_stage_4_cleared  # arrive pour la cérémonie (league_victory)
+FIN

@@ -1,6 +1,33 @@
 {
 	"_doc": "Décors peints de combat (CB.3, dossier 05 §2). decors : zone + variante locale, images (fond opaque, premier plan transparent facultatif), taille du master et LIGNE DE SOL en px du master (pieds de l'adversaire et de ton Pokémon : BattleDecor.fit aligne ces deux points sur les ancres de BattleLayout ; horizon pour mémoire). places : décors par carte (map_id) ; une entrée avec cells [x, y, largeur, hauteur] (cases) est une variante locale, sans cells le décor par défaut. Carte absente : repli sur l'ancien fond (carte recadrée et floutée). Production : tools/art/combat_decors/.",
 	"decors": {
+		"route_23_roche": {
+			"zone": "route_23",
+			"variant": "roche",
+			"back": "res://assets/battle/decors/route_23_roche_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 540],
+			"player_feet": [716, 972],
+			"horizon": 380
+		},
+		"victory_road_grotte": {
+			"zone": "victory_road",
+			"variant": "grotte",
+			"back": "res://assets/battle/decors/victory_road_grotte_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 540],
+			"player_feet": [716, 972],
+			"horizon": 330
+		},
+		"cerulean_cave_azuree": {
+			"zone": "cerulean_cave",
+			"variant": "azuree",
+			"back": "res://assets/battle/decors/cerulean_cave_azuree_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 540],
+			"player_feet": [716, 972],
+			"horizon": 330
+		},
 		"silph_co_bureaux": {
 			"zone": "silph_co",
 			"variant": "bureaux",
@@ -533,29 +560,44 @@
 		"fuchsia_gym": [
 			{ "decor": "vermilion_gym_salle" }
 		],
+		"league_lorelei": [
+			{ "decor": "seafoam_ice" }
+		],
+		"league_bruno": [
+			{ "decor": "fighting_dojo_salle" }
+		],
+		"league_agatha": [
+			{ "decor": "tour_pokemon" }
+		],
+		"league_lance": [
+			{ "decor": "victory_road_grotte" }
+		],
+		"league_champion": [
+			{ "decor": "viridian_gym_sol" }
+		],
 		"route_22_west": [
 			{ "decor": "route_5_6_prairie" }
 		],
 		"route_23": [
-			{ "decor": "route_9_roche" }
+			{ "decor": "route_23_roche" }
 		],
 		"victory_road_1f": [
-			{ "decor": "digletts_cave_rock" }
+			{ "decor": "victory_road_grotte" }
 		],
 		"victory_road_2f": [
-			{ "decor": "digletts_cave_rock" }
+			{ "decor": "victory_road_grotte" }
 		],
 		"victory_road_3f": [
-			{ "decor": "digletts_cave_rock" }
+			{ "decor": "victory_road_grotte" }
 		],
 		"cerulean_cave_1f": [
-			{ "decor": "dark_cave_galerie" }
+			{ "decor": "cerulean_cave_azuree" }
 		],
 		"cerulean_cave_2f": [
-			{ "decor": "dark_cave_galerie" }
+			{ "decor": "cerulean_cave_azuree" }
 		],
 		"cerulean_cave_b1f": [
-			{ "decor": "dark_cave_galerie" }
+			{ "decor": "cerulean_cave_azuree" }
 		],
 		"power_plant": [
 			{ "decor": "dark_cave_galerie" }

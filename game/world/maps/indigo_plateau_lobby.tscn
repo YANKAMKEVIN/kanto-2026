@@ -1,18 +1,19 @@
 [gd_scene format=3]
 
-[ext_resource type="Script" path="res://game/world/map.gd" id="1_2s13n"]
-[ext_resource type="Texture2D" path="res://assets/world/interiors/int_centre_coque.png" id="2_mytpm"]
-[ext_resource type="PackedScene" path="res://game/world/props/painted/int_centre_comptoir.tscn" id="3_ateuw"]
-[ext_resource type="PackedScene" path="res://game/world/props/painted/int_centre_terminal.tscn" id="4_qd3np"]
-[ext_resource type="PackedScene" path="res://game/world/props/painted/int_centre_banquette.tscn" id="5_fvtg1"]
-[ext_resource type="PackedScene" path="res://game/world/props/painted/int_plante.tscn" id="6_48r6m"]
-[ext_resource type="PackedScene" path="res://game/world/props/painted/int_porte_ligue_01.tscn" id="7_bwf4h"]
-[ext_resource type="Script" path="res://game/world/props/heal_machine.gd" id="8_orkoa"]
-[ext_resource type="Script" path="res://game/world/warp_point.gd" id="9_xinwo"]
-[ext_resource type="Script" path="res://game/world/interactions/interact_point.gd" id="10_fmr6b"]
+[ext_resource type="Script" path="res://game/world/map.gd" id="1_mytpm"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/int_centre_coque.png" id="2_ateuw"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_centre_comptoir.tscn" id="3_qd3np"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_centre_terminal.tscn" id="4_fvtg1"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_centre_banquette.tscn" id="5_48r6m"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_plante.tscn" id="6_bwf4h"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_porte_ligue_01.tscn" id="7_orkoa"]
+[ext_resource type="Script" path="res://game/world/props/heal_machine.gd" id="8_xinwo"]
+[ext_resource type="Script" path="res://game/world/warp_point.gd" id="9_fmr6b"]
+[ext_resource type="Script" path="res://game/world/interactions/interact_point.gd" id="10_jwqt0"]
+[ext_resource type="Script" path="res://game/world/triggers/event_trigger_point.gd" id="11_ejty3"]
 
-[node name="IndigoPlateauLobby" type="Node2D" unique_id=356862832]
-script = ExtResource("1_2s13n")
+[node name="IndigoPlateauLobby" type="Node2D" unique_id=1163619448]
+script = ExtResource("1_mytpm")
 map_id = &"indigo_plateau_lobby"
 display_name = "Plateau Indigo"
 size = Vector2i(15, 10)
@@ -20,109 +21,114 @@ blocked_cells = Array[Vector2i]([Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0),
 interior = true
 light_profile = &"interior_warm"
 
-[node name="Shell" type="Sprite2D" parent="." unique_id=1028640756]
+[node name="Shell" type="Sprite2D" parent="." unique_id=1352130219]
 z_index = -3
-texture = ExtResource("2_mytpm")
+texture = ExtResource("2_ateuw")
 centered = false
 
-[node name="Entities" type="Node2D" parent="." unique_id=88007311]
+[node name="Entities" type="Node2D" parent="." unique_id=719978172]
 unique_name_in_owner = true
 y_sort_enabled = true
 
-[node name="Counter" parent="Entities" unique_id=909808068 instance=ExtResource("3_ateuw")]
+[node name="Counter" parent="Entities" unique_id=909808068 instance=ExtResource("3_qd3np")]
 position = Vector2(720, 480)
 
-[node name="StorageTerminal" parent="Entities" unique_id=229353350 instance=ExtResource("4_qd3np")]
+[node name="StorageTerminal" parent="Entities" unique_id=229353350 instance=ExtResource("4_fvtg1")]
 position = Vector2(192, 326)
 
-[node name="BenchWest" parent="Entities" unique_id=20476692 instance=ExtResource("5_fvtg1")]
+[node name="BenchWest" parent="Entities" unique_id=20476692 instance=ExtResource("5_48r6m")]
 position = Vector2(288, 691)
 
-[node name="BenchEast" parent="Entities" unique_id=1295332488 instance=ExtResource("5_fvtg1")]
+[node name="BenchEast" parent="Entities" unique_id=1365784701 instance=ExtResource("5_48r6m")]
 position = Vector2(1152, 691)
 
-[node name="PlantSouthWest" parent="Entities" unique_id=1145806697 instance=ExtResource("6_48r6m")]
+[node name="PlantSouthWest" parent="Entities" unique_id=1145806697 instance=ExtResource("6_bwf4h")]
 position = Vector2(144, 845)
 
-[node name="PlantSouthEast" parent="Entities" unique_id=1727229024 instance=ExtResource("6_48r6m")]
+[node name="PlantSouthEast" parent="Entities" unique_id=497062281 instance=ExtResource("6_bwf4h")]
 position = Vector2(1296, 845)
 
-[node name="LeagueDoor" parent="Entities" unique_id=1889473848 instance=ExtResource("7_bwf4h")]
+[node name="LeagueDoor" parent="Entities" unique_id=1889473848 instance=ExtResource("7_orkoa")]
 position = Vector2(1200, 221)
 
-[node name="HealMachine" type="Node2D" parent="Entities" unique_id=796818316]
+[node name="HealMachine" type="Node2D" parent="Entities" unique_id=626490719]
 unique_name_in_owner = true
 position = Vector2(720, 481)
-script = ExtResource("8_orkoa")
+script = ExtResource("8_xinwo")
 slot_offsets = Array[Vector2]([Vector2(120, -130), Vector2(146, -130), Vector2(171, -130), Vector2(122, -116), Vector2(148, -116), Vector2(173, -116)])
 flash_offset = Vector2(147, -123)
 
-[node name="Warps" type="Node2D" parent="." unique_id=411492480]
+[node name="Warps" type="Node2D" parent="." unique_id=1362539029]
 
-[node name="Exit0" type="Marker2D" parent="Warps" unique_id=1613791747]
+[node name="Exit0" type="Marker2D" parent="Warps" unique_id=381015010]
 position = Vector2(624, 864)
-script = ExtResource("9_xinwo")
+script = ExtResource("9_fmr6b")
 trigger = 1
 direction = Vector2i(0, 1)
 target_map = &"indigo_plateau"
 target_spawn = &"from_lobby"
 arrival_facing = Vector2i(0, 1)
 
-[node name="Exit1" type="Marker2D" parent="Warps" unique_id=606028938]
+[node name="Exit1" type="Marker2D" parent="Warps" unique_id=337209240]
 position = Vector2(720, 864)
-script = ExtResource("9_xinwo")
+script = ExtResource("9_fmr6b")
 trigger = 1
 direction = Vector2i(0, 1)
 target_map = &"indigo_plateau"
 target_spawn = &"from_lobby"
 arrival_facing = Vector2i(0, 1)
 
-[node name="Exit2" type="Marker2D" parent="Warps" unique_id=1309262666]
+[node name="Exit2" type="Marker2D" parent="Warps" unique_id=2145857797]
 position = Vector2(816, 864)
-script = ExtResource("9_xinwo")
+script = ExtResource("9_fmr6b")
 trigger = 1
 direction = Vector2i(0, 1)
 target_map = &"indigo_plateau"
 target_spawn = &"from_lobby"
 arrival_facing = Vector2i(0, 1)
 
-[node name="ToLeague" type="Marker2D" parent="Warps" unique_id=218377875]
+[node name="ToLeague" type="Marker2D" parent="Warps" unique_id=1892583517]
 position = Vector2(1200, 384)
-script = ExtResource("9_xinwo")
+script = ExtResource("9_fmr6b")
 direction = Vector2i(0, -1)
-target_spawn = &"league_door"
-arrival_facing = Vector2i(0, 1)
-coming_soon = "Ligue Pokémon"
+target_map = &"league_lorelei"
+target_spawn = &"from_lobby"
+arrival_facing = Vector2i(0, -1)
 
-[node name="Interactables" type="Node2D" parent="." unique_id=658410991]
+[node name="Interactables" type="Node2D" parent="." unique_id=1127103954]
 
-[node name="NurseCounter" type="Marker2D" parent="Interactables" unique_id=191371580]
+[node name="NurseCounter" type="Marker2D" parent="Interactables" unique_id=2124322785]
 position = Vector2(624, 480)
-script = ExtResource("10_fmr6b")
+script = ExtResource("10_jwqt0")
 dialogue_id = &"nurse"
 kind = 0
 size = Vector2i(3, 1)
 facing = Vector2i(0, -1)
 
-[node name="StorageTerminalScreen" type="Marker2D" parent="Interactables" unique_id=2082125544]
+[node name="StorageTerminalScreen" type="Marker2D" parent="Interactables" unique_id=1038667358]
 position = Vector2(144, 384)
-script = ExtResource("10_fmr6b")
+script = ExtResource("10_jwqt0")
 dialogue_id = &"storage_terminal"
 size = Vector2i(2, 1)
 facing = Vector2i(0, -1)
 
-[node name="Spawns" type="Node2D" parent="." unique_id=2108688443]
+[node name="Spawns" type="Node2D" parent="." unique_id=1445119550]
 
-[node name="entrance" type="Marker2D" parent="Spawns" unique_id=286004837]
+[node name="entrance" type="Marker2D" parent="Spawns" unique_id=1590009449]
 position = Vector2(720, 864)
 
-[node name="heal" type="Marker2D" parent="Spawns" unique_id=1711333313]
+[node name="heal" type="Marker2D" parent="Spawns" unique_id=1779569863]
 position = Vector2(720, 576)
 
-[node name="terminal" type="Marker2D" parent="Spawns" unique_id=686374561]
+[node name="terminal" type="Marker2D" parent="Spawns" unique_id=1206606100]
 position = Vector2(144, 480)
 
-[node name="league_door" type="Marker2D" parent="Spawns" unique_id=795842541]
+[node name="league_door" type="Marker2D" parent="Spawns" unique_id=2102166202]
 position = Vector2(1200, 480)
 
-[node name="Triggers" type="Node2D" parent="." unique_id=1327586570]
+[node name="Triggers" type="Node2D" parent="." unique_id=1909996816]
+
+[node name="LeagueGuardQuestion" type="Marker2D" parent="Triggers" unique_id=888777810]
+position = Vector2(1200, 480)
+script = ExtResource("11_ejty3")
+cutscene_id = &"league_guard_door"

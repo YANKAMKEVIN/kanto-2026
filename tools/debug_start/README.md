@@ -69,6 +69,7 @@ rm "$HOME/Library/Application Support/Godot/app_userdata/Kanto 2026/debug_start.
 | `brock_bulbasaur.json` | J10 (T16) : même départ, Bulbizarre N12 (sans Fouet Lianes, appris au N13) et Roucool N10 (rival : Salamèche), 3 Potions |
 | `brock_kevin.json` | J10 (T16) : **la vraie équipe de Kevin** en fin de J9 (QA T22) après la Route 2 nord : Salamèche N11 (Griffe, Rugissement, Flammèche) en tête, Roucool N9, Chenipan N6 et N5, Rattata N3, Nidoran♂ N3, 1 Potion, 3 Antidotes, 2 Poké Balls, 1 396 ₽ (4 Potions achetables à la Boutique). Les IV de la vraie partie (Salamèche : Attaque et Att. Spé. à 1) ne sont pas reproduits : `DebugStart` les tire |
 | `badge_after.json` | J10 (T8) : Badge Roche obtenu (`badge_boulder`, `brock_met`, Liam battu), dans l'Arène (spawn `entrance`) : réactions au badge (guide, enfant, Dresseuse, Montagnard), allusion de Pierre au rival, objectif « continuer vers la Route 3. », garde de la Route 3 qui se décale. **Aucun Grand moment « badge »** (il est enregistré par l'étape `badge` de la vraie scène, T9) |
+| `long_names_qa.json` | Clôture du J23 (2026-10-27) : cartes de combat aux noms longs sur téléphone. Route 1 (spawn `from_pallet_w`), **Grotadmorv N100 empoisonné** (Toxik, Détritus, Lilliput, Entrave) et **Roucarnage N100** ; herbes forcées : **Roucarnage** et **Dracaufeu N100** (taux 200). Monter 6 cases, 5 à droite, 3 en haut : herbes. Toxik sur l'adversaire → « PSN+ » sur sa carte. Sert aussi à voir l'orientation des adversaires (deux espèces retournées) |
 | `status_qa.json` | J11 (11A, T9) : QA des statuts **sans carte de QA** (écart au plan : clé `wild`). Route 1 (spawn `from_pallet_w`), fin du J9 (`poison_unlocked`). Équipe : Salamèche N18 (Flammèche : brûlure), Papilusion N17 (Choc Mental, Poudre Toxik, Para-Spore, Poudre Dodo), Nidoran♂ N16 (Puissance, Double Pied), Rattata N16 **brûlé** (Croc de Mort, Croc Fatal), Pikachu N14 **endormi 3 tours** (clé de membre `status_turns`), Roucool N12 **paralysé** (Frappe Atlas) ; Piafabec N10 **gelé** au Stockage. Sac : 10 Potions, 5 Poké Balls, 3 de chaque remède, 2 Antigels ; 5 000 ₽. Clé **`wild`** : les herbes de la Route 1 donnent, pour la session, Pikachu N12 (Cage-Éclair), Papilusion N17 (Para-Spore, Poudre Dodo, Choc Mental), Dardargnan N16 (Furie, Puissance), Rattata N14 (Croc de Mort), taux 60. Rien n'est sauvegardé |
 | `daycare_v7_qa.json` | J15 (15.0, T2/T3) : Salamèche N12, Roucool N9, Chenipan N5 au Stockage, et **Rattata N10 à la Pension avec 500 XP en attente** (clé `daycare` : un membre + `pending_exp`), 3 000 ₽, devant la porte du Centre de Jadielle (spawn `from_center`). **Clé `autosave: true` : ce départ REMPLACE `user://save.json`** (copier d'abord la vraie sauvegarde). Relancer ensuite **sans** départ : le journal affiche « [qa] pension relue : Rattata N10 (dépôt N10), 500 XP en attente, uid … » et `save.json` contient `"daycare"` (version 7). Aucune Pension visible en jeu avant le T4 |
 | `s2_save.json` | Passe systèmes 2 (S2A, T5) : copie de `route_3.json` (fin du J10, Reptincel N17 compagnon, Papilusion N15, Roucool N14, 5 Poké Balls, 5 Potions, 2 Antidotes, 4 300 ₽, entrée ouest de la Route 3) **avec `autosave: true` : ce départ REMPLACE `user://save.json`** (copier d'abord la vraie sauvegarde). Retirer ensuite `files/debug_start.json` pour que chaque relance lise la sauvegarde. Hugo (goulet, inévitable) : dialogue + combat ; herbes H4 ; Argenta à l'ouest : changement de carte. Interruptions réelles pendant un dialogue, un combat, une scène ; le journal affiche « [save] point de reprise : … µs » et « Sauvegarde du point de reprise (…) » |
@@ -378,3 +379,23 @@ jusqu'à l'Âme. Aucune carte de QA (`qa_manoir`, `qa_cramois` du plan jamais cr
 | `j25_arene.json` | Cramois'Île devant l'Arène (`from_arene`, ↑), **Clé Secrète** et `got_pokemon_mansion_b1f_item_5` : porte (76–77), quiz, Dresseurs, Auguste, Badge Volcan, CT38 ; perdu au premier essai sur le S24 (`jalon-25-equilibrage.md` §5) |
 | `fx_gallery.json` | Combat vivant (CV.0, T8) : **galerie d'effets** à la place de la partie (clé `fx_gallery`) : une attaque par famille en boucle sur le décor de la Route 1, en Complètes ; le journal écrit `[galerie] <attaque> fps=… min=…` puis `[galerie] cycle …` à chaque tour (mesure du §2.8) |
 | `fx_gallery_fast.json` | Même galerie en mode Rapides |
+
+## Jalon 30 (T9) : la Ligue Pokémon
+
+Départs qui commencent **dans** la Ligue (salles en tuiles provisoires, `tools/build_j30_league.gd`).
+Point de repos de départ : **Centre de Jadielle** (`rest_point`) ; le `LeagueDirector` le remplace par
+le Centre du Plateau (`indigo_plateau_lobby`, `heal`) **dès que le hall du J29 existe** (avant la
+fusion du J29 : réveil à Jadielle). Équipe : starter **de base** N60 en tête (la clé du rival
+Champion est le starter choisi, comme au J29), Nidoking, Léviator, Staross, Kangourex, Voltali N60 ;
+**10 Guérisons** (`full_restore`) à la place des 10 Hyper Potions du plan (§2.8) : l'Hyper Potion
+n'existe pas encore sur cette base (elle vient du J22).
+
+| Fichier | Partie |
+|---|---|
+| `league_lorelei` | Début de tentative : salle d'Olga, à l'arrivée par la porte du hall (spawn `from_lobby`). L'arrivée ouvre la tentative (`league_attempt_active`) ; un pas vers le nord : appel d'Olga (marche forcée, réplique, carte « OLGA — Conseil des Quatre », combat). Porte sud fermée derrière le joueur |
+| `league_agatha` | Tentative en cours, Olga et Aldo battus (`league_stage_0/1_cleared`, `beaten_*`), salle d'Agatha (spawn `from_south`). Équipe abîmée : Salamèche 60 PV, Nidoking K.O., Léviator empoisonné, Kangourex 40 PV ; 6 Guérisons. Départ de la QA 30A (§7) |
+| `league_champion_bulbasaur`, `_charmander`, `_squirtle` | Tentative en cours, les quatre membres battus, salle du Champion (spawn `from_south`) : un pas vers le nord, le rival Champion (variante du starter) |
+| `league_weak` | Salamèche N10 seul, sans Sac, salle d'Olga : perdre → drapeaux de tentative effacés, réveil au point de repos (Jadielle avant le J29, Plateau ensuite) ; revenir chez Olga recommence tout |
+
+La victoire contre le Champion pose `league_stage_4_cleared` et **s'arrête là** (Chen paraît dans
+la salle ; la porte nord mène au Panthéon, sans sortie tant que la cérémonie du T17 n'existe pas).

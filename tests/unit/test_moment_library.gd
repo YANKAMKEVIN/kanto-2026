@@ -13,6 +13,7 @@ func _valid() -> Dictionary:
 			"fossil": {"title": "Rocket", "detail": "{fossil} obtenu."},
 			"bill_restored": {"title": "Léo est humain", "detail": ""},
 			"giovanni": {"title": "Le repaire", "detail": "Giovanni est parti."},
+			"champion": {"title": "Champion"},
 		},
 		"outcomes": {"win": {"text": "Gagné."}},
 		"zone_arrivals": {"route_1": {"title": "Départ", "detail": "Vers la {zone}."}},
@@ -34,7 +35,8 @@ func test_real_data_loads_without_error() -> void:
 	assert_eq(library.get_errors().size(), 0)
 	for type: StringName in MomentLibrary.TYPES:
 		assert_not_null(library.get_text(type), "texte de %s" % type)
-	assert_false(library.has_drafts(), "textes validé par Kevin le 2026-10-06")
+	# J30 : texte du moment « champion » validé par Kevin le 2026-10-26.
+	assert_false(library.has_drafts(), "textes validés par Kevin")
 
 
 func test_real_data_q14_route_1_is_the_departure_from_pallet_town() -> void:
@@ -214,7 +216,8 @@ func test_real_data_j14_bill_restored_moment() -> void:
 func test_real_data_j20_giovanni_moment_and_celadon_arrival() -> void:
 	var library := MomentLibrary.new()
 	assert_true(library.load_file(), "\n".join(library.get_errors()))
-	assert_eq(MomentLibrary.TYPES.back(), MomentLibrary.GIOVANNI, "ajout en fin")
+	assert_eq(MomentLibrary.TYPES[MomentLibrary.TYPES.find(MomentLibrary.GIOVANNI) + 1],
+		MomentLibrary.CHAMPION, "ajout en fin (puis le J30)")
 	var giovanni := library.get_text(MomentLibrary.GIOVANNI)
 	assert_not_null(giovanni)
 	assert_eq(giovanni.title, "Le repaire sous le Casino")

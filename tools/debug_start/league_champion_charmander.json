@@ -1,0 +1,77 @@
+{
+	"map": "league_champion",
+	"spawn": "from_south",
+	"facing": "up",
+	"flags": [
+		"mom_greeted",
+		"rival_met",
+		"oak_met",
+		"oak_lab_reunion",
+		"starter_offered",
+		"starter_chosen",
+		"rival_lab_won",
+		"rival_challenged",
+		"rival_battle_done",
+		"rival_left_lab",
+		"viridian_arrived",
+		"got_oak_parcel",
+		"pokedex_activated",
+		"poison_unlocked",
+		"rival_route22_won",
+		"taken_charmander",
+		"taken_squirtle",
+		"badge_boulder",
+		"badge_cascade",
+		"badge_thunder",
+		"badge_rainbow",
+		"badge_soul",
+		"badge_marsh",
+		"badge_volcano",
+		"badge_earth",
+		"league_attempt_active",
+		"league_stage_0_cleared",
+		"league_stage_1_cleared",
+		"league_stage_2_cleared",
+		"league_stage_3_cleared",
+		"beaten_league_lorelei",
+		"beaten_league_bruno",
+		"beaten_league_agatha",
+		"beaten_league_lance"
+	],
+	"party": [
+		{
+			"species": "charmander",
+			"level": 60
+		},
+		{
+			"species": "nidoking",
+			"level": 60
+		},
+		{
+			"species": "gyarados",
+			"level": 60
+		},
+		{
+			"species": "starmie",
+			"level": 60
+		},
+		{
+			"species": "kangaskhan",
+			"level": 60
+		},
+		{
+			"species": "jolteon",
+			"level": 60
+		}
+	],
+	"companion": 0,
+	"bag": {
+		"full_restore": 10
+	},
+	"money": 30000,
+	"rest_point": "indigo_plateau_lobby",
+	"discovered": [
+		"viridian_city",
+		"pallet_town"
+	]
+}

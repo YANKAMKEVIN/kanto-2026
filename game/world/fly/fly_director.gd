@@ -70,8 +70,10 @@ func check(zone: StringName) -> FlyRules.Check:
 	# J23 (dossier 26 §4) : Vol refusé dans le Parc Safari, comme dans une grotte.
 	cave = cave or no_fly_maps.has(map.map_id)
 	var discovered: Dictionary = _discovered.call() if _discovered.is_valid() else {}
-	return _rules.can_fly_to(zone, state, FlyRules.traits_of(map.interior, cave), discovered,
-		_flying)
+	var traits := FlyRules.traits_of(map.interior, cave)
+	# Jalon 30 (T8) : carte marquée « no_fly » (salles de la Ligue).
+	traits.no_fly = traits.no_fly or map.no_fly
+	return _rules.can_fly_to(zone, state, traits, discovered, _flying)
 
 
 ## Vrai si le bouton « S'ENVOLER » est proposé pour [param zone] (menu).

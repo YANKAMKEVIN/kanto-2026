@@ -2775,7 +2775,13 @@ func _indigo_plateau_lobby() -> Dictionary:
 	# bas des lambris peints, au-dessus du warp (12, 3) ; sans emprise : le mur est déjà bloqué.
 	props.append([&"int_porte_ligue_01", Vector2i(12, 2), 2.3, "LeagueDoor"])
 	room["props"] = props
-	room["warps"] = [["ToLeague", Vector2i(12, 3), STEP_ON, Vector2i.UP, &"", &"league_door",
-		Vector2i.DOWN, "Ligue Pokémon"]]
+	# J30 (`jalon-30.md` §10.8, fusion du J29) : la porte mène à la salle d'Olga. Avant, sur la
+	# case (12, 4), la question du garde (T30-01, Q30-6 : OUI / NON, scène `league_guard_door`)
+	# fait entrer (OUI) ou recule le joueur (NON) ; deux gardes encadrent la porte (PNJ,
+	# `data/npcs/indigo_plateau_lobby.json`).
+	room["warps"] = [["ToLeague", Vector2i(12, 3), STEP_ON, Vector2i.UP, &"league_lorelei",
+		&"from_lobby", Vector2i.UP]]
 	(room["spawns"] as Dictionary)["league_door"] = Vector2i(12, 4)
+	room["triggers"] = [["LeagueGuardQuestion", Vector2i(12, 4), Vector2i.ONE,
+		&"league_guard_door"]]
 	return room

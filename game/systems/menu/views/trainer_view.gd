@@ -21,6 +21,8 @@ const MONEY_LABEL: String = "Argent"
 const MOMENTS_EMPTY_TEXT: String = "Ton aventure ne fait que commencer."
 ## Titre de la section de l'équipe (MM.2, texte à relire par Kevin).
 const TEAM_TITLE: String = "Équipe actuelle"
+## Lien vers le Panthéon (J30, Q30-4 : consultation en lecture seule depuis l'écran Dresseur).
+const HALL_OF_FAME_LABEL: String = "Panthéon"
 
 ## Identité.
 var player_name: String = ""
@@ -39,6 +41,8 @@ var caught_text: String = ""
 ## Liens de « vus » et « capturés » (Pokédex filtré) ; null quand le texte est vide.
 var seen_route: MenuRoute = null
 var caught_route: MenuRoute = null
+## J30 (Q30-4) : [constant HALL_OF_FAME_LABEL] dès la première entrée du Panthéon, "" avant.
+var hall_of_fame_text: String = ""
 ## Toujours [constant BADGE_COUNT] emplacements, dans l'ordre des arènes ([method
 ## BadgeLibrary.slots] depuis le MM.2 : un badge non obtenu ne porte ni nom ni image, l'écran
 ## montre une silhouette commune et « ??? »).

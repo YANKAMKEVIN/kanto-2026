@@ -1,0 +1,16 @@
+{
+	"lovely_kiss": {
+		"name": "Grobisou",
+		"type": "normal",
+		"category": "status",
+		"accuracy": 75,
+		"pp": 10,
+		"effects": [
+			{
+				"kind": "status",
+				"status": "sleep"
+			}
+		],
+		"description": "Un bisou effrayant qui endort la cible."
+	}
+}

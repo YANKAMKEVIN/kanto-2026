@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_dhrgn"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_cspak"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_rebord_azuree_cote_01.png" id="3_rck1p"]
+
+[node name="ReliefRebordAzureeCote01" type="Node2D" unique_id=301312945]
+script = ExtResource("1_dhrgn")
+footprint = Array[Vector2i]([])
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=692306152]
+unique_name_in_owner = true
+material = ExtResource("2_cspak")
+texture = ExtResource("3_rck1p")
+centered = false
+offset = Vector2(-12, -82)
