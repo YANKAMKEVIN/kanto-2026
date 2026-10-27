@@ -4,7 +4,7 @@
 > 16 images par interpolation, ADN des effets, orientation vers la droite). Outil :
 > `tools/art/serie_cv_fx2.py` (importe `serie_cv_fx.py`). Classement des attaques :
 > `docs/tech/combat-vivant-lots.md` (généré par `tools/art/classer_lots_cv.py`).
-> Statut : **à valider par Kevin sur planche et GIF (DA-6)** ; non branché au jeu.
+> Statut : **planche validée par Kevin le 2026-10-27 (DA-6)** ; non branché au jeu.
 
 ## 1. Ce que le lot P1 demande (40 attaques, familles : contact 13, statut moins 5, poison 5, son 4, vent 3, plante 3, statut plus 3, eau 2, psy, feu)
 

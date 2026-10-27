@@ -136,7 +136,7 @@ Mis à jour (J23) : 2026-10-25 (**Clôture du J23 préparée et `main` (`7c22d8f
 - **En attente de Kevin** (mis à jour le 2026-10-25) : 23A, 23B, 23C+23D, **23E validés** ; les deux [D] du §9.3 **validés le 2026-10-25** ; réponses aux questions de `jalon-23.md` §9.5 (Toxik de Koga, rencontres Safari, Rhinocorne, textures des maisons, « le rocher, là-bas », message de renvoi) ; T21 et T23 ; puis fusion. Départ de débogage restant : `koga_qa` (les trois autres retirés au T24).
 
 
-## Combat vivant — lots P1 à P4 classés et art de la vague 2 (2026-10-27, branche `cv-fx-2`, **à valider par Kevin sur planche et GIF, DA-6 ; non fusionnée**)
+## Combat vivant — lots P1 à P4 classés et art de la vague 2 (2026-10-27, branche `cv-fx-2`, **planche validée par Kevin le 2026-10-27, DA-6 ; fusionnée dans `main`**)
 
 - `tools/art/classer_lots_cv.py` (T10, version courte) classe les 165 attaques par ordre d'exposition (rencontres, Dresseurs, starters) et écrit **`docs/tech/combat-vivant-lots.md`** (P1 à P4 : 40, 40, 40, 45) ; généré, ne pas modifier à la main.
 - **Vague 2 d'art** (ce dont P1 a besoin) : 12 flipbooks + 24 particules (dont le cœur de Grobisou refait) dans `assets/sprites/battle_fx/` (`manifeste_vague2.json`) ; fiche `docs/design/fiches-assets/serie-cv-fx-2.md`, outil `tools/art/serie_cv_fx2.py`, planche, GIF et README : `docs/design/fiches-assets/cv-fx-2/`. Nouveau fond « vert » pour la matière violette ou rose.
