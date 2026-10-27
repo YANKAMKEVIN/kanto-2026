@@ -32,7 +32,7 @@
 #
 # Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 34 caractères), puis POSITIONS.
 
-PRATICABLES .=hoDQ
+PRATICABLES .=hoDQP
 
 GRILLE 34 76
 00 KKKKKKKKKKKKKKKKKKKKKKKKwwwwwTTTTT
@@ -44,8 +44,8 @@ GRILLE 34 76
 06 TTTTCCCCCCCCKKKKKKKKKKKKwwwwwEEEEE
 07 TTTTCCCCCCCCKKKKQQKKKKKKwwwwwEEEEE
 08 TTTTCCCCCCCCRR..==......wwwwwEEEEE
-09 TTTTCCCCCCCCRR..==......wwwwwEEEEE
-10 TTTTCCCCCCCC....==......wwwwwTTTTT
+09 TTTTCCCCCCCCRR..==......wwwwwEPEEE
+10 TTTTCCCCCCCC....==......wwwww===TT
 11 TTTTCCCDDCCC....==......wwwwwTTTTT
 12 ===================.....wwwwwTTTTT
 13 ===================.....wwwwwTTTTT
@@ -136,7 +136,11 @@ panneau_centre      panneau        12,11        bloque  # A-9 « CENTRE POKÉMON
 ronflex_ligue       pnj            21..22,19..20 bloque  role=N-18 facing=down if=snorlax_post_league_present unless=snorlax_post_league_done  # J32 N-18 [D] : Ronflex d'après la Ligue, au bout du belvédère (impasse, hors de tout chemin) ; Poké Flûte depuis (20, 19..20), (23, 19..20) ou (21..22, 21)
 herbes_h1           herbes         7,20         libre   role=H1  # secteur nord, au sud du sentier (évitable)
 herbes_h2           herbes         7,70         libre   role=H2  # secteur sud, poche facultative
-centrale            repere         29..33,3..9  bloque  role=vue  # la centrale au-delà de l'eau : aucun accès, ni porte ni texte (I-15)
+centrale            repere         29..33,3..8  bloque  role=vue  # la Centrale au-delà de l'eau ; J32 (N-11) : I-15 levé, porte en (30, 9)
+centrale_ouest      repere         29,9         bloque  role=vue  # J32 : bas de la façade, à l'ouest de la porte
+centrale_est        repere         31..33,9     bloque  role=vue  # J32 : bas de la façade, à l'est de la porte
+porte_centrale      warp           30,9         libre   vers=power_plant:from_route_10  # J32 (N-11) : STEP_ON ↑, depuis le quai
+from_power_plant    spawn          30,10        libre   facing=down  # J32 : sortie de la Centrale, sur le quai
 tour_lointaine      repere         8..12,74..75 bloque role=vue  # silhouette de la Tour au sud, au-dessus des arbres (I-16)
 secteur_nord        zone           0..23,0..28  libre   # zone à pied depuis le raccord ouest
 secteur_sud         zone           0..23,47..75 libre   # zone à pied depuis la sortie sud de la grotte

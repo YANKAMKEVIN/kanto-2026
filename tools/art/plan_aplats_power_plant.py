@@ -128,7 +128,7 @@ def main() -> int:
 		(((120, 124, 136), "?"), "Objet caché dans une machine (pris depuis la case voisine encadrée)"),
 		(((230, 190, 20), "Z"), "Électhor N50 (4, 9), une seule rencontre (N-17 : revient après la Ligue)"),
 		(((200, 60, 60), "V"), "Fausse Poké Ball : Voltorbe N40 (×6) ou Électrode N43 (É, ×2), RB"),
-		(((60, 120, 200), "o"), "Objets RB : PV Plus, Super Bonbon, Carbone, CT25 Tonnerre, CT33 Protection"),
+		(((60, 120, 200), "o"), "Objets RB : PV Plus, Super Bonbon, Carbone, CT25 Fatal-Foudre, CT33 Protection"),
 		(((64, 150, 214), ""), "Encart : rivière de la Route 10 rendue surfable (proposition)"),
 	]
 	for i, ((couleur, lettre), texte) in enumerate(lignes):

@@ -2,17 +2,353 @@
 	"zapdos": {
 		"variants": [
 			{
-				"unless": ["zapdos_done"],
+				"unless": [
+					"zapdos_done"
+				],
 				"steps": [
-					{ "dialogue": "zapdos_presence" },
 					{
-						"wild_battle": "zapdos", "level": 50, "intro": "legendary",
+						"dialogue": "zapdos_presence"
+					},
+					{
+						"wild_battle": "zapdos",
+						"level": 50,
+						"intro": "legendary",
 						"actor": "zapdos",
-						"static": { "done": "zapdos_done", "caught": "zapdos_caught" }
+						"static": {
+							"done": "zapdos_done",
+							"caught": "zapdos_caught"
+						}
 					},
 					{
 						"dialogue": "zapdos_flew_away",
-						"if": ["zapdos_done"], "unless": ["zapdos_caught"]
+						"if": [
+							"zapdos_done"
+						],
+						"unless": [
+							"zapdos_caught"
+						]
+					}
+				]
+			}
+		]
+	},
+	"power_plant_fausse_ball_1": {
+		"variants": [
+			{
+				"unless": [
+					"fausse_ball_1_done"
+				],
+				"steps": [
+					{
+						"wild_battle": "voltorb",
+						"level": 40,
+						"actor": "fausse_ball_1",
+						"static": {
+							"done": "fausse_ball_1_done",
+							"caught": "fausse_ball_1_caught"
+						}
+					}
+				]
+			}
+		]
+	},
+	"power_plant_fausse_ball_2": {
+		"variants": [
+			{
+				"unless": [
+					"fausse_ball_2_done"
+				],
+				"steps": [
+					{
+						"wild_battle": "voltorb",
+						"level": 40,
+						"actor": "fausse_ball_2",
+						"static": {
+							"done": "fausse_ball_2_done",
+							"caught": "fausse_ball_2_caught"
+						}
+					}
+				]
+			}
+		]
+	},
+	"power_plant_fausse_ball_3": {
+		"variants": [
+			{
+				"unless": [
+					"fausse_ball_3_done"
+				],
+				"steps": [
+					{
+						"wild_battle": "voltorb",
+						"level": 40,
+						"actor": "fausse_ball_3",
+						"static": {
+							"done": "fausse_ball_3_done",
+							"caught": "fausse_ball_3_caught"
+						}
+					}
+				]
+			}
+		]
+	},
+	"power_plant_fausse_ball_4": {
+		"variants": [
+			{
+				"unless": [
+					"fausse_ball_4_done"
+				],
+				"steps": [
+					{
+						"wild_battle": "electrode",
+						"level": 43,
+						"actor": "fausse_ball_4",
+						"static": {
+							"done": "fausse_ball_4_done",
+							"caught": "fausse_ball_4_caught"
+						}
+					}
+				]
+			}
+		]
+	},
+	"power_plant_fausse_ball_5": {
+		"variants": [
+			{
+				"unless": [
+					"fausse_ball_5_done"
+				],
+				"steps": [
+					{
+						"wild_battle": "voltorb",
+						"level": 40,
+						"actor": "fausse_ball_5",
+						"static": {
+							"done": "fausse_ball_5_done",
+							"caught": "fausse_ball_5_caught"
+						}
+					}
+				]
+			}
+		]
+	},
+	"power_plant_fausse_ball_6": {
+		"variants": [
+			{
+				"unless": [
+					"fausse_ball_6_done"
+				],
+				"steps": [
+					{
+						"wild_battle": "voltorb",
+						"level": 40,
+						"actor": "fausse_ball_6",
+						"static": {
+							"done": "fausse_ball_6_done",
+							"caught": "fausse_ball_6_caught"
+						}
+					}
+				]
+			}
+		]
+	},
+	"power_plant_fausse_ball_7": {
+		"variants": [
+			{
+				"unless": [
+					"fausse_ball_7_done"
+				],
+				"steps": [
+					{
+						"wild_battle": "electrode",
+						"level": 43,
+						"actor": "fausse_ball_7",
+						"static": {
+							"done": "fausse_ball_7_done",
+							"caught": "fausse_ball_7_caught"
+						}
+					}
+				]
+			}
+		]
+	},
+	"power_plant_fausse_ball_8": {
+		"variants": [
+			{
+				"unless": [
+					"fausse_ball_8_done"
+				],
+				"steps": [
+					{
+						"wild_battle": "voltorb",
+						"level": 40,
+						"actor": "fausse_ball_8",
+						"static": {
+							"done": "fausse_ball_8_done",
+							"caught": "fausse_ball_8_caught"
+						}
+					}
+				]
+			}
+		]
+	},
+	"power_plant_item_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_power_plant_item_1"
+				],
+				"steps": [
+					{
+						"despawn": "power_plant_item_1"
+					},
+					{
+						"give": "hp_up",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_power_plant_item_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"power_plant_item_2": {
+		"variants": [
+			{
+				"unless": [
+					"got_power_plant_item_2"
+				],
+				"steps": [
+					{
+						"despawn": "power_plant_item_2"
+					},
+					{
+						"give": "rare_candy",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_power_plant_item_2"
+						]
+					}
+				]
+			}
+		]
+	},
+	"power_plant_item_3": {
+		"variants": [
+			{
+				"unless": [
+					"got_power_plant_item_3"
+				],
+				"steps": [
+					{
+						"despawn": "power_plant_item_3"
+					},
+					{
+						"give": "carbos",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_power_plant_item_3"
+						]
+					}
+				]
+			}
+		]
+	},
+	"power_plant_item_4": {
+		"variants": [
+			{
+				"unless": [
+					"got_power_plant_item_4"
+				],
+				"steps": [
+					{
+						"despawn": "power_plant_item_4"
+					},
+					{
+						"give": "tm25",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_power_plant_item_4"
+						]
+					}
+				]
+			}
+		]
+	},
+	"power_plant_item_5": {
+		"variants": [
+			{
+				"unless": [
+					"got_power_plant_item_5"
+				],
+				"steps": [
+					{
+						"despawn": "power_plant_item_5"
+					},
+					{
+						"give": "tm33",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_power_plant_item_5"
+						]
+					}
+				]
+			}
+		]
+	},
+	"power_plant_hidden_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_power_plant_hidden_1"
+				],
+				"steps": [
+					{
+						"give": "max_elixir",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_power_plant_hidden_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"power_plant_hidden_2": {
+		"variants": [
+			{
+				"unless": [
+					"got_power_plant_hidden_2"
+				],
+				"steps": [
+					{
+						"give": "pp_up",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_power_plant_hidden_2"
+						]
 					}
 				]
 			}

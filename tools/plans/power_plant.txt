@@ -11,7 +11,7 @@
 # sud) [D, gardée comme dans RB].
 # Électhor N50 (4, 9), au fond de la salle ouest (RB). Huit fausses Poké Balls (RB) : six Voltorbe
 # N40, deux Électrode N43, combats sauvages au contact (rencontres fixes, une fois chacune) [D].
-# Objets visibles (RB) : PV Plus (28, 3), Super Bonbon (34, 3), Carbone (7, 25), CT25 Tonnerre
+# Objets visibles (RB) : PV Plus (28, 3), Super Bonbon (34, 3), Carbone (7, 25), CT25 Fatal-Foudre
 # (26, 32), CT33 Protection (20, 32). Objets cachés (RB) : Huile Max (17, 16), PP Plus (12, 1),
 # dans les machines (indice x), pris depuis la case de sol voisine.
 #
@@ -100,7 +100,7 @@ fausse_ball_8         rencontre      37,32         bloque  espece=voltorb niveau
 power_plant_item_1    objet          28,3          bloque  item=hp_up  # RB
 power_plant_item_2    objet          34,3          bloque  item=rare_candy  # RB
 power_plant_item_3    objet          7,25          bloque  item=carbos  # RB
-power_plant_item_4    objet          26,32         bloque  item=tm25  # RB CT25 Tonnerre
+power_plant_item_4    objet          26,32         bloque  item=tm25  # RB CT25 Fatal-Foudre
 power_plant_item_5    objet          20,32         bloque  item=tm33  # RB CT33 Protection
 power_plant_hidden_1  objet_cache    18,16         libre   item=max_elixir  # RB (17, 16), dans la machine (indice x) ; pris depuis (18, 16), tourné vers l'ouest
 power_plant_hidden_2  objet_cache    12,2          libre   item=pp_up  # RB (12, 1), dans la machine (indice x) ; pris depuis (12, 2), tourné vers le nord

@@ -299,6 +299,11 @@
 			"subtitle": "Route 20",
 			"description": "Des grottes de glace sous deux îlots jumeaux. Les rochers y changent le cours de l'eau."
 		},
+		"power_plant": {
+			"name": "Centrale", "kind": "place", "maps": ["power_plant"],
+			"subtitle": "Route 10",
+			"description": "Une centrale électrique abandonnée au bord de la rivière. Des Pokémon Électrik y rôdent entre les machines."
+		},
 		"cerulean_cave": {
 			"name": "Grotte Azurée", "kind": "place",
 			"maps": ["cerulean_cave_1f", "cerulean_cave_2f", "cerulean_cave_b1f"],

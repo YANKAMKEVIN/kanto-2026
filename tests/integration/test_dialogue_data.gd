@@ -532,6 +532,8 @@ const MAPS: Array[StringName] = [
 	&"digletts_cave",
 	# Jalon 17 (T19) : le couloir de la Route 2 est et le poste de l'assistant.
 	&"route_2_east", &"route_2_east_gate",
+	# Jalon 32 (32G) : la Centrale.
+	&"power_plant",
 	# Jalon 32 (N-14) : poste de la Route 18 (échange Flagadoss → Excelangue).
 	&"route_18_gate",
 	# Jalon 16 (T11) : l'Arène de Carmin (puzzle et barrière ; Major Bob et les siens au T14).
@@ -598,6 +600,7 @@ const IDS_J21_T22: Array[StringName] = [&"snorlax_route_16"]
 ## Jalon 32 (N-18) : Ronflex d'après la Ligue (Route 10), textes du J21 repris tels quels.
 const IDS_J32: Array[StringName] = [&"snorlax_post_league",
 	# N-13 (Porygon), N-14 (échanges PNJ de Rouge/Bleu), N-11 (Électhor) : textes validés par Kevin le 2026-10-27.
+	&"zapdos", &"power_plant_fausse_ball_1", &"power_plant_fausse_ball_2", &"power_plant_fausse_ball_3", &"power_plant_fausse_ball_4", &"power_plant_fausse_ball_5", &"power_plant_fausse_ball_6", &"power_plant_fausse_ball_7", &"power_plant_fausse_ball_8", &"power_plant_item_1", &"power_plant_item_2", &"power_plant_item_3", &"power_plant_item_4", &"power_plant_item_5", &"power_plant_hidden_1", &"power_plant_hidden_2",
 	&"silph_co_porygon_giver", &"j32_trade_coline",
 	&"j32_trade_coline_offer", &"j32_trade_coline_refuse", &"j32_trade_coline_wrong", &"j32_trade_coline_thanks", &"j32_trade_coline_after", &"j32_trade_coline_done",
 	&"silph_co_porygon_received", &"silph_co_porygon_stored", &"zapdos_presence",
@@ -1714,7 +1717,10 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		# Jalon 32 (N-13, N-14, N-11) : Porygon, échanges PNJ de RB, Électhor.
 		&"silph_porygon_received", &"route_2_trade_mr_mime_done", &"vermilion_trade_farfetchd_done",
 		&"route_18_trade_lickitung_done", &"route_5_trade_nidoran_f_done",
-		&"route_11_trade_nidorina_done", &"cerulean_trade_jynx_done", &"zapdos_caught", &"zapdos_done",
+		&"route_11_trade_nidorina_done", &"cerulean_trade_jynx_done",
+		# Jalon 32 (32G) : la Centrale.
+		&"got_power_plant_item_1", &"got_power_plant_item_2", &"got_power_plant_item_3", &"got_power_plant_item_4", &"got_power_plant_item_5", &"got_power_plant_hidden_1", &"got_power_plant_hidden_2", &"fausse_ball_1_done", &"fausse_ball_1_caught", &"fausse_ball_2_done", &"fausse_ball_2_caught", &"fausse_ball_3_done", &"fausse_ball_3_caught", &"fausse_ball_4_done", &"fausse_ball_4_caught", &"fausse_ball_5_done", &"fausse_ball_5_caught", &"fausse_ball_6_done", &"fausse_ball_6_caught", &"fausse_ball_7_done", &"fausse_ball_7_caught", &"fausse_ball_8_done", &"fausse_ball_8_caught",
+		&"zapdos_caught", &"zapdos_done",
 		&"beaten_mt_moon_researcher", &"beaten_nugget_rocket", &"brock_met", &"cerulean_reached", &"got_mt_moon_1f_hidden_1",
 		&"got_mt_moon_1f_item_1", &"got_mt_moon_b1f_item_1", &"got_mt_moon_b1f_item_2",
 		&"got_mt_moon_b2f_hidden_1", &"got_mt_moon_b2f_item_1", &"got_nugget", &"got_oak_parcel",
@@ -2486,7 +2492,7 @@ func test_oak_parcel_lines() -> void:
 	# Jalon 29 : dix objets au sol, cinq cachés, huit gardes, le rival n° 7 et Sulfura.
 	# Jalon 31 (T4) : huit objets au sol et deux cachés de la Grotte Azurée, Mewtwo.
 	# Jalon 32 : cinq échanges PNJ de Rouge/Bleu (N-14) et Porygon (N-13).
-	assert_eq(launched, 207, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
+	assert_eq(launched, 223, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
 		+ "sa CT34, Ondine (pont, Arène et rattrapage), écran, module, console, objets de la "
 		+ "Route 25, le Rocket d'Azuria (2) et le barrage sud ; J15 : objets de la Route 5 ; "
 		+ "J16 : Major Bob (2), neuf objets du S.S. Anne, le capitaine, le marin (2) ; "
@@ -2499,7 +2505,7 @@ func test_oak_parcel_lines() -> void:
 		+ "J24 : objets (2), caches (2), Artikodin, CT35, fossiles (2) ; J25 : Ptéra (1) ; "
 		+ "J26 : Lokhlass, Master Ball, deux objets du 7F ; J27 : Morgane, maître, deux Balls ; "
 		+ "J28 : Giovanni (2), Rappel ; J29 : objets, cachés, gardes, rival n° 7 et Sulfura ; "
-		+ "J31 : Grotte Azurée (8 objets, 2 caches, Mewtwo) ; J32 : échanges (6), Porygon")
+		+ "J31 : Grotte Azurée (8 objets, 2 caches, Mewtwo) ; J32 : échanges (6), Porygon, Centrale (7 objets, 8 fausses Poké Balls, Électhor)")
 	# Le jeton n'apparaît que dans la réplique de l'espèce, « {pokemon} » dans les phrases du
 	# compagnon (J11), et ceux de la Pension dans ses répliques (J15).
 	for row: Array in _pages():

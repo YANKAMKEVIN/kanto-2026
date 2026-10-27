@@ -45,7 +45,7 @@ const PAROI_SEED: int = 1815
 const MAP_ID: StringName = &"route_10"
 const DISPLAY_NAME: String = "Route 10"
 const REGION: String = "Route 9 — Lavanville"
-const WALKABLE: String = ".=hoDQ"
+const WALKABLE: String = ".=hoDQP"  # J32 : P = porte de la Centrale
 const MAPS_DIR: String = "res://game/world/maps/"
 
 const WEST_EXITS: Array = [
@@ -193,6 +193,11 @@ const BANKS: Dictionary[StringName, Dictionary] = {
 	&"sw": {"ids": ["relief_berge_05"], "flip_h": false, "flip_v": true},
 	&"se": {"ids": ["relief_berge_05"], "flip_h": true, "flip_v": true},
 }
+## Jalon 32 (N-11) : la Centrale s'ouvre (porte, quai, Surf sur la rivière nord).
+const POWER_PLANT_MAP: StringName = &"power_plant"
+const POWER_PLANT_DOOR := Vector2i(30, 9)
+const POWER_PLANT_SPAWN := Vector2i(30, 10)
+const SURF_LAST_ROW: int = 22
 const CENTRAL_ID: String = "bldg_centrale_lointaine_01"
 const CENTRAL_ANCHOR := Vector2i(31, 9)
 const TOWER_ID: String = "prop_tour_lointaine_01"
@@ -356,6 +361,18 @@ func _add_passages() -> void:
 		_kit.call(&"add_spawn", CAVE_NORTH_FRONT[i][0], CAVE_NORTH_FRONT[i][1])
 		_add_cave_door(CAVE_SOUTH[i], CAVE_SOUTH_SPAWNS[i], CAVE_SOUTH_FRONT[i][0])
 		_kit.call(&"add_spawn", CAVE_SOUTH_FRONT[i][0], CAVE_SOUTH_FRONT[i][1])
+	# Jalon 32 (N-11, grille validée par Kevin le 2026-10-27) : porte de la Centrale depuis le quai,
+	# rivière surfable au nord (x 24..28, y 0..22 ; Surf depuis le belvédère).
+	_kit.call(&"add_spawn", "from_power_plant", POWER_PLANT_SPAWN)
+	if _map_exists(POWER_PLANT_MAP):
+		_kit.call(&"add_warp", "ToPowerPlant", POWER_PLANT_DOOR, Kit.STEP_ON, Vector2i.UP,
+			POWER_PLANT_MAP, &"from_route_10", Vector2i.UP)
+	var surf: Array[Vector2i] = []
+	for y: int in range(0, SURF_LAST_ROW + 1):
+		for x: int in range(SIZE.x):
+			if _plan().call(&"at", Vector2i(x, y)) == "w":
+				surf.append(Vector2i(x, y))
+	_kit.get(&"root").set(&"surf_cells", surf)
 	var south_built := _map_exists(SOUTH_MAP)
 	for entry: Array in SOUTH_EXITS:
 		_kit.call(&"add_spawn", entry[2], entry[1])

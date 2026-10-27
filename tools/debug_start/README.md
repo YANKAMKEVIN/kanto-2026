@@ -316,6 +316,8 @@ reste éprouvée par `test_cutscene_static_encounter.gd` et `test_cutscene_stati
 | `cerulean_cave_mewtwo.json` | J31 (T9) : même partie, au B1F **devant Mewtwo** (spawn de débogage `mewtwo_front` (27, 12), tourné ↓) : cri puis combat N70 ; fuite → il reste ; capture ou K.O. → absent (Hyper Balls : pas de Master Ball avant le J26) |
 | `cerulean_cave_mewtwo_capture.json` | J31 (T10) : comme `cerulean_cave_mewtwo`, mais **Raichu N60 en tête** avec Cage-Éclair, Croc Fatal, Frappe Atlas et Tonnerre : paralyser puis affaiblir Mewtwo avant les Hyper Balls (QA de la capture puis de son absence) |
 | `cerulean_cave_p7.json` | J31 (T10) : partie de `cerulean_cave_1f`, au 1F **devant l'échelle P7** (spawn `arrivee_p7` (0, 7), tourné ↑) : un pas en haut → B1F (2, 6) ; un pas à l'est sur l'échelle (3, 6) → retour au 1F |
+| `power_plant.json` | J32 (32G) : partie de `cerulean_cave_1f` (après la Ligue, Tortank **Surf**), **dans la Centrale** à l'entrée sud (spawn `from_route_10` (4, 34), tourné ↑) : Électhor N50 (4, 9), 8 fausses Poké Balls, 5 objets, 2 cachés, rencontres (Élektek, Raichu) ; portes sud et ouest → Route 10 (quai) |
+| `route_10_quai.json` | J32 (32G) : même partie, **sur le quai** de la Route 10 (spawn `from_power_plant` (30, 10), tourné ↓) : porte (30, 9) ↑ → Centrale ; Surf vers l'ouest jusqu'au belvédère (x 24..28, y 0..22) ; Ronflex d'après la Ligue au belvédère si `snorlax_post_league_present` |
 
 ## Jalon 23 (Parc Safari, CS03, CS04, Koga)
 

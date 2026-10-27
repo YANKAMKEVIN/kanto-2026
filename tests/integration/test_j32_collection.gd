@@ -96,7 +96,7 @@ func test_an_rb_trade_runs_like_the_cinnabar_ones() -> void:
 	assert_true(flags.has_flag(&"route_2_trade_mr_mime_done"))
 
 
-func test_power_plant_waits_for_its_map() -> void:
+func test_power_plant_has_its_map_and_zapdos() -> void:
 	var lib := EncounterLibrary.new(_data)
 	lib.load_dir()
 	var table := lib.get_table(&"power_plant", &"floor")
@@ -111,7 +111,7 @@ func test_power_plant_waits_for_its_map() -> void:
 	assert_not_null(zapdos)
 	assert_eq(zapdos.level, 50)
 	assert_eq(zapdos.done_flag, &"zapdos_done")
-	assert_false(MapCatalog.has_map(&"power_plant"), "retirer ce test quand la carte arrive")
+	assert_true(MapCatalog.has_map(&"power_plant"), "carte construite (grille validée le 2026-10-27)")
 
 
 func test_power_plant_grid_proposal_is_readable() -> void:

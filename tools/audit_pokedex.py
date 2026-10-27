@@ -37,8 +37,8 @@ import sys
 from dataclasses import dataclass, field
 
 DEFAULT_REFS = [
-    # Depuis le 2026-10-27, `main` contient J23, J24 à J29 et J31 ; seul le J30 (Ligue) attend.
-    "origin/main", "origin/jalon-30", "HEAD",
+    # Depuis le 2026-10-27, `main` contient toute l'aventure (J23 à J31) ; HEAD = `jalon-32`.
+    "origin/main", "HEAD",
 ]
 
 # Les 151 espèces de Kanto : identifiant du projet, nom français (repli si aucune donnée).

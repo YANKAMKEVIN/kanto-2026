@@ -356,6 +356,22 @@ const VARIANT_FLAGS: Dictionary = {
 	&"j32_trade_theo": [PEWTER_FLAGS + [&"route_11_trade_nidorina_done"], PEWTER_FLAGS],
 	&"j32_trade_coline": [PEWTER_FLAGS + [&"cerulean_trade_jynx_done"], PEWTER_FLAGS],
 	&"zapdos": [[]],
+	# Jalon 32 (32G) : objets, caches et fausses Poké Balls de la Centrale (une variante).
+	&"power_plant_fausse_ball_1": [[]],
+	&"power_plant_fausse_ball_2": [[]],
+	&"power_plant_fausse_ball_3": [[]],
+	&"power_plant_fausse_ball_4": [[]],
+	&"power_plant_fausse_ball_5": [[]],
+	&"power_plant_fausse_ball_6": [[]],
+	&"power_plant_fausse_ball_7": [[]],
+	&"power_plant_fausse_ball_8": [[]],
+	&"power_plant_item_1": [[]],
+	&"power_plant_item_2": [[]],
+	&"power_plant_item_3": [[]],
+	&"power_plant_item_4": [[]],
+	&"power_plant_item_5": [[]],
+	&"power_plant_hidden_1": [[]],
+	&"power_plant_hidden_2": [[]],
 	# Jalon 19 (T18) : zone purifiée et objets de la Tour.
 	&"tower_purified_zone": [PEWTER_FLAGS], &"tower_3f_objet_1": [PEWTER_FLAGS],
 	&"tower_4f_objet_1": [PEWTER_FLAGS], &"tower_4f_objet_2": [PEWTER_FLAGS],
@@ -745,6 +761,23 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"snorlax_post_league_wake": &"route_10",
 	# Jalon 32 (N-13, N-14) : Porygon (dialogue de l'employé du 1F) et échanges PNJ.
 	&"silph_co_porygon_gift": &"silph_co_1f",
+	# Jalon 32 (32G) : la Centrale (PNJ « objet », points d'examen, Électhor, fausses Poké Balls).
+	&"power_plant_fausse_ball_1": &"power_plant",
+	&"power_plant_fausse_ball_2": &"power_plant",
+	&"power_plant_fausse_ball_3": &"power_plant",
+	&"power_plant_fausse_ball_4": &"power_plant",
+	&"power_plant_fausse_ball_5": &"power_plant",
+	&"power_plant_fausse_ball_6": &"power_plant",
+	&"power_plant_fausse_ball_7": &"power_plant",
+	&"power_plant_fausse_ball_8": &"power_plant",
+	&"power_plant_item_1": &"power_plant",
+	&"power_plant_item_2": &"power_plant",
+	&"power_plant_item_3": &"power_plant",
+	&"power_plant_item_4": &"power_plant",
+	&"power_plant_item_5": &"power_plant",
+	&"power_plant_hidden_1": &"power_plant",
+	&"power_plant_hidden_2": &"power_plant",
+	&"zapdos": &"power_plant",
 	&"j32_trade_remi": &"route_2_east_gate",
 	&"j32_trade_leon": &"vermilion_house_2",
 	&"j32_trade_aline": &"route_18_gate",
@@ -762,8 +795,7 @@ const VARIANT_ITEMS: Dictionary = {
 ## PNJ de son fichier). Vidée au T19 du jalon 9 (la forêt existe), puis au T11 du jalon 10 (les
 ## deux scènes d'Argenta ont leurs déclencheurs sur la carte).
 ## Jalon 31 (T6) : vidée, les cartes de la Grotte Azurée existent (ses scènes sont dans CODE_PLAYED).
-## Jalon 32 (N-11, lot 32G) : Électhor attend la carte de la Centrale (grille à valider par Kevin).
-const AWAITING_MAP: Dictionary[StringName, StringName] = {&"zapdos": &"power_plant"}
+const AWAITING_MAP: Dictionary[StringName, StringName] = {}
 ## Jalon 20 (T21) : interrupteur du Casino, Clé, Giovanni, Scope, objets et caches du repaire.
 const J20_T21_IDS: Array[StringName] = [
 	&"game_corner_switch", &"rocket_hideout_key_drop", &"rocket_hideout_b4f_lift_key",
@@ -976,6 +1008,7 @@ func test_library_loads_without_error() -> void:
 		&"fighting_dojo_take_hitmonlee", &"fighting_dojo_take_hitmonchan"]
 		# Jalon 32 (N-18) : Ronflex d'après la Ligue ; N-13, N-14, N-11.
 		+ [&"snorlax_post_league_wake", &"silph_co_porygon_gift", &"zapdos",
+		&"power_plant_fausse_ball_1", &"power_plant_fausse_ball_2", &"power_plant_fausse_ball_3", &"power_plant_fausse_ball_4", &"power_plant_fausse_ball_5", &"power_plant_fausse_ball_6", &"power_plant_fausse_ball_7", &"power_plant_fausse_ball_8", &"power_plant_item_1", &"power_plant_item_2", &"power_plant_item_3", &"power_plant_item_4", &"power_plant_item_5", &"power_plant_hidden_1", &"power_plant_hidden_2",
 		&"j32_trade_remi", &"j32_trade_leon", &"j32_trade_aline", &"j32_trade_hugo", &"j32_trade_theo", &"j32_trade_coline"]))
 
 
@@ -1108,6 +1141,7 @@ func test_only_world_items_are_found_items() -> void:
 	found = found.filter(func(item: String) -> bool: return not FOUND_J29.has(item))
 	var expected: Array[String] = ["celadon_hidden_1:revive",
 		# Jalon 31 (T4) : objets de RB de la Grotte Azurée.
+		"power_plant_hidden_1:max_elixir", "power_plant_hidden_2:pp_up", "power_plant_item_1:hp_up", "power_plant_item_2:rare_candy", "power_plant_item_3:carbos", "power_plant_item_4:tm25", "power_plant_item_5:tm33",
 		"cerulean_cave_1f_hidden_1:rare_candy", "cerulean_cave_1f_item_1:full_restore", "cerulean_cave_1f_item_2:max_elixir", "cerulean_cave_1f_item_3:nugget", "cerulean_cave_2f_item_1:pp_up", "cerulean_cave_2f_item_2:ultra_ball", "cerulean_cave_2f_item_3:full_restore", "cerulean_cave_b1f_hidden_1:ultra_ball", "cerulean_cave_b1f_item_1:ultra_ball", "cerulean_cave_b1f_item_2:max_revive",
 		"dark_cave_1f_item_1:escape_rope",
 		"dark_cave_1f_item_2:antidote", "dark_cave_b1f_hidden_1:super_potion",

@@ -1,0 +1,198 @@
+{
+	"zapdos": {
+		"cell": [
+			4,
+			9
+		],
+		"facing": "up",
+		"sprite": "pokemon/fearow",
+		"dialogue": "zapdos",
+		"verb": "observe",
+		"turn_to_player": false,
+		"unless": [
+			"zapdos_done"
+		]
+	},
+	"fausse_ball_1": {
+		"cell": [
+			9,
+			20
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "power_plant_fausse_ball_1",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"fausse_ball_1_done"
+		]
+	},
+	"fausse_ball_2": {
+		"cell": [
+			32,
+			18
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "power_plant_fausse_ball_2",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"fausse_ball_2_done"
+		]
+	},
+	"fausse_ball_3": {
+		"cell": [
+			21,
+			25
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "power_plant_fausse_ball_3",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"fausse_ball_3_done"
+		]
+	},
+	"fausse_ball_4": {
+		"cell": [
+			25,
+			18
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "power_plant_fausse_ball_4",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"fausse_ball_4_done"
+		]
+	},
+	"fausse_ball_5": {
+		"cell": [
+			23,
+			34
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "power_plant_fausse_ball_5",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"fausse_ball_5_done"
+		]
+	},
+	"fausse_ball_6": {
+		"cell": [
+			26,
+			28
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "power_plant_fausse_ball_6",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"fausse_ball_6_done"
+		]
+	},
+	"fausse_ball_7": {
+		"cell": [
+			21,
+			14
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "power_plant_fausse_ball_7",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"fausse_ball_7_done"
+		]
+	},
+	"fausse_ball_8": {
+		"cell": [
+			37,
+			32
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "power_plant_fausse_ball_8",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"fausse_ball_8_done"
+		]
+	},
+	"power_plant_item_1": {
+		"cell": [
+			28,
+			3
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "power_plant_item_1",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_power_plant_item_1"
+		]
+	},
+	"power_plant_item_2": {
+		"cell": [
+			34,
+			3
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "power_plant_item_2",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_power_plant_item_2"
+		]
+	},
+	"power_plant_item_3": {
+		"cell": [
+			7,
+			25
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "power_plant_item_3",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_power_plant_item_3"
+		]
+	},
+	"power_plant_item_4": {
+		"cell": [
+			26,
+			32
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "power_plant_item_4",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_power_plant_item_4"
+		]
+	},
+	"power_plant_item_5": {
+		"cell": [
+			20,
+			32
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "power_plant_item_5",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_power_plant_item_5"
+		]
+	}
+}

@@ -18,5 +18,53 @@
 				]
 			}
 		]
+	},
+	"zapdos": {
+		"cutscene": "zapdos"
+	},
+	"power_plant_fausse_ball_1": {
+		"cutscene": "power_plant_fausse_ball_1"
+	},
+	"power_plant_fausse_ball_2": {
+		"cutscene": "power_plant_fausse_ball_2"
+	},
+	"power_plant_fausse_ball_3": {
+		"cutscene": "power_plant_fausse_ball_3"
+	},
+	"power_plant_fausse_ball_4": {
+		"cutscene": "power_plant_fausse_ball_4"
+	},
+	"power_plant_fausse_ball_5": {
+		"cutscene": "power_plant_fausse_ball_5"
+	},
+	"power_plant_fausse_ball_6": {
+		"cutscene": "power_plant_fausse_ball_6"
+	},
+	"power_plant_fausse_ball_7": {
+		"cutscene": "power_plant_fausse_ball_7"
+	},
+	"power_plant_fausse_ball_8": {
+		"cutscene": "power_plant_fausse_ball_8"
+	},
+	"power_plant_item_1": {
+		"cutscene": "power_plant_item_1"
+	},
+	"power_plant_item_2": {
+		"cutscene": "power_plant_item_2"
+	},
+	"power_plant_item_3": {
+		"cutscene": "power_plant_item_3"
+	},
+	"power_plant_item_4": {
+		"cutscene": "power_plant_item_4"
+	},
+	"power_plant_item_5": {
+		"cutscene": "power_plant_item_5"
+	},
+	"power_plant_hidden_1": {
+		"cutscene": "power_plant_hidden_1"
+	},
+	"power_plant_hidden_2": {
+		"cutscene": "power_plant_hidden_2"
 	}
 }

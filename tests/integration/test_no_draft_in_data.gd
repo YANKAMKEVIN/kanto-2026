@@ -27,6 +27,11 @@ const DATA_DIR := "res://data"
 ## Kevin le 2026-10-27, « draft » retiré.
 ## Jalon 32 (N-14, après la fusion du J30) : échange Têtarte → Lippoutou [D], à relire par Kevin.
 const PENDING_DRAFTS: Array[String] = ["world/zones.json/zones/saffron_city",
+	# Jalon 32 (32G) : objets et zone de la Centrale [D].
+	"items/items_j32.json/hp_up",
+	"items/items_j32.json/carbos",
+	"items/items_j32.json/tm25",
+	"items/items_j32.json/tm33",
 	# Jalon 32 (RP §2.13) : fiches de Pokédex [D] de la Ligue.
 	"pokedex/kanto.json/species/jynx",
 	"pokedex/kanto.json/species/machamp",
