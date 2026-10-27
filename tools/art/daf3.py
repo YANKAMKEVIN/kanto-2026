@@ -19,7 +19,8 @@ jointe (2 essais), refus consignés dans `$ART/refus_daf3.log`.
 Usage :
   tools/art/daf3.py --prompts            écrit les prompts (sans Codex)
   tools/art/daf3.py [GROUPE ...]         génère avec Codex (sans argument : tout ce qui manque)
-  tools/art/daf3.py --preparer           images retenues → assets/ (dimensions exactes, ombres)
+  tools/art/daf3.py --preparer           façades retenues → assets/ (dimensions exactes, ombres)
+  tools/art/daf3.py --modules            sols, planches de modules et cabine → assets/ (catalogue)
 """
 from __future__ import annotations
 
@@ -555,10 +556,105 @@ def preparer_facades(seulement: set[str] | None = None) -> None:
 	catalogue_path.write_text(json.dumps(catalogue, ensure_ascii=False, indent=1) + "\n")
 
 
+# --- Préparation des modules (sols, planches, coque de la cabine) ---------------------------
+
+LIEUX_MURS = {"WORLD_RELIEF_MUR_SYLPHE_PLANCHE": "sylphe", "WORLD_RELIEF_MUR_MORGANE_PLANCHE": "morgane",
+	"WORLD_RELIEF_MUR_DOJO_PLANCHE": "dojo", "WORLD_RELIEF_MUR_JADIELLE_PLANCHE": "jadielle"}
+INT_SYLPHE_IDS = ["int_bureau_sylphe_01", "int_serveur_sylphe_01", "int_plante_sylphe_01",
+	"int_escalier_sylphe_monte_01", "int_escalier_sylphe_descend_01", "int_porte_ascenseur_sylphe_01"]
+INT_SYLPHE_DALLES_IDS = ["decal_teleporteur_sylphe_01", "decal_seuil_sylphe_01", "int_paillasson_sylphe_01",
+	"int_porte_sylphe_h_01", "int_porte_sylphe_v_01"]
+## Éléments à taille EXACTE (battants des portes électroniques, à la place des `ph_silph_door_*`) et
+## décalcomanies d'une case (inscrites dans un carré de 96 px).
+EXACTS = {"int_porte_sylphe_h_01": (192, 96), "int_porte_sylphe_v_01": (96, 192)}
+DECALS = ("decal_teleporteur_sylphe_01", "decal_seuil_sylphe_01")
+
+
+def _source(base: str) -> str:
+	for rev in (4, 3, 2, 1):
+		if (ART / f"{base}_NE_r{rev}.png").exists():
+			return f"{base}_NE_r{rev}.png"
+	return f"{base}_NE_r1.png"
+
+
+def _decal_carre(image: Image.Image, cote: int = 96) -> Image.Image:
+	import preparer
+	forme = preparer._silhouette(image)
+	echelle = cote / max(forme.size)
+	forme = forme.resize((max(1, round(forme.width * echelle)), max(1, round(forme.height * echelle))),
+		Image.LANCZOS)
+	carre = Image.new("RGBA", (cote, cote), (0, 0, 0, 0))
+	carre.alpha_composite(forme, ((cote - forme.width) // 2, (cote - forme.height) // 2))
+	return carre
+
+
+def _decouper(source: str, ids: list[str], cases: list[float]) -> list[tuple[str, Image.Image]]:
+	"""Éléments d'une planche 3 × 2 (taches de la silhouette, ordre de lecture), comme
+	`serie22bis._decouper_planche`."""
+	import preparer
+	from PIL import ImageChops
+	image = Image.open(ART / source).convert("RGBA")
+	taches = preparer._taches(image)
+	if len(taches) != len(ids):
+		raise SystemExit(f"{source} : {len(taches)} éléments trouvés, {len(ids)} attendus")
+	taches.sort(key=lambda t: t[0][1] + t[0][3])
+	ordre = []
+	for ligne in range(2):
+		ordre += sorted(taches[ligne * 3:(ligne + 1) * 3], key=lambda t: t[0][0] + t[0][2])
+	sortie = []
+	for ident, nb, (boite, masque) in zip(ids, cases, ordre):
+		element = image.copy()
+		element.putalpha(ImageChops.multiply(image.getchannel("A"), masque))
+		element = element.crop(boite)
+		if ident in DECALS:
+			element = _decal_carre(element)
+		elif ident in EXACTS:
+			element = preparer._silhouette(element).resize(EXACTS[ident], Image.LANCZOS)
+		else:
+			element = preparer._mettre_a_taille(preparer._silhouette(element), "w", nb, CASE)
+		sortie.append((ident, element))
+	return sortie
+
+
+def preparer_modules() -> None:
+	"""Sols (384 px raccordables), planches de murs et de mobilier, coque de la cabine → `assets/`,
+	ombres de contact et catalogue (classe `Preparateur` du préparateur commun)."""
+	import preparer
+	manifeste = json.loads((ICI / "manifeste.json").read_text())
+	catalogue_path = RACINE / "assets" / "world" / "catalogue.json"
+	p = preparer.Preparateur(manifeste, ART)
+	p.catalogue = json.loads(catalogue_path.read_text())
+	sols = [{"id": asset, "source": _source(ident), "sortie": f"{_G}{asset}.png", "taille": 384,
+		"contraste": 0.85, "couleur": 1.0, "raccord": 24} for ident, asset, *_r in SOLS
+		if (ART / _source(ident)).exists()]
+	p.m = dict(manifeste, sols=sols)
+	p.sols()
+	planches = [(ident, [f"relief_mur_{lieu}_0{i}" for i in range(1, 6)], [2, 2, 2, 0.35, 0.35], _R, None)
+		for ident, lieu in LIEUX_MURS.items()]
+	planches += [("INT_SYLPHE_PLANCHE", INT_SYLPHE_IDS, [1, 1, 1, 1, 1, 1], _I, 0.2),
+		("INT_SYLPHE_DALLES_PLANCHE", INT_SYLPHE_DALLES_IDS, [1, 1, 2, 2, 1], _I, None)]
+	for ident, ids, cases, dossier, contact in planches:
+		if not (ART / _source(ident)).exists():
+			print(f"{ident} : absente")
+			continue
+		for asset, element in _decouper(_source(ident), ids, cases):
+			ombre = contact if contact is not None else (0.0 if dossier == _R else None)
+			p._objet(asset, f"{dossier}{asset}.png", element, False, ombre)
+	ident, asset, *_r = COQUE_CABINE
+	if (ART / _source(ident)).exists():
+		image = Image.open(ART / _source(ident)).convert("RGB").resize((4 * CASE, 4 * CASE), Image.LANCZOS)
+		image.save(RACINE / f"{_I}{asset}.png", optimize=True)
+		print(f"{asset} : {image.size}")
+	catalogue_path.write_text(json.dumps(p.catalogue, ensure_ascii=False, indent=1) + "\n")
+	preparer.reglages_import(p.m)
+
+
 if __name__ == "__main__":
 	args = sys.argv[1:]
 	if args[:1] == ["--prompts"]:
 		ecrire_prompts()
+	elif args[:1] == ["--modules"]:
+		preparer_modules()
 	elif args[:1] == ["--preparer"]:
 		preparer_facades(set(args[1:]) or None)
 	else:

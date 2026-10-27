@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_fpkqy"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_cdmgf"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_mur_jadielle_01.png" id="3_es41m"]
+
+[node name="ReliefMurJadielle01" type="Node2D" unique_id=2104287783]
+script = ExtResource("1_fpkqy")
+footprint = Array[Vector2i]([])
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=64277621]
+unique_name_in_owner = true
+material = ExtResource("2_cdmgf")
+texture = ExtResource("3_es41m")
+centered = false
+offset = Vector2(-96, -161)
