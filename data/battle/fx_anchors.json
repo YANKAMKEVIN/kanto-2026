@@ -9935,7 +9935,12 @@
      ]
     }
    },
-   "back": null
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/mew_back.png",
+    "size": [64, 64],
+    "box": [3, 1, 59, 60],
+    "points": {"tete": [0.58, 0.29], "yeux": [[0.49, 0.28], [0.68, 0.32]], "queue": [0.59, 0.02], "centre": [0.494, 0.45]}
+   }
   }
  },
  "_doc": "Points d'origine des effets de combat (docs/tech/combat-vivant.md §2.2, CV-10). Coordonnées normalisées dans la boîte visible (box, px). Outil : tools/art/fx_anchors.py."
