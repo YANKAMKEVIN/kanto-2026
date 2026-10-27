@@ -83,9 +83,40 @@ const TRAVERSABLE: Array[StringName] = [&"relief_escalier_01", &"ground_hautes_h
 	&"decal_fleche_repaire_01_gauche", &"decal_arret_repaire_01",
 	&"int_porte_ascenseur_repaire_01", &"hideout_office_door", &"game_corner_wall",
 	&"int_affiche_casino_01",
+	# Lot DAF.3 / DAF.4 : modules de la Sylphe, des Arènes de Safrania et de Jadielle, du Dojo.
+	&"relief_mur_sylphe_01", &"relief_mur_sylphe_02", &"relief_mur_sylphe_03",
+	&"relief_mur_sylphe_04", &"relief_mur_sylphe_05", &"relief_mur_morgane_01",
+	&"relief_mur_morgane_02", &"relief_mur_morgane_03", &"relief_mur_morgane_04",
+	&"relief_mur_morgane_05", &"relief_mur_dojo_01", &"relief_mur_dojo_02", &"relief_mur_dojo_03",
+	&"relief_mur_dojo_04", &"relief_mur_dojo_05", &"relief_mur_jadielle_01",
+	&"relief_mur_jadielle_02", &"relief_mur_jadielle_03", &"relief_mur_jadielle_04",
+	&"relief_mur_jadielle_05", &"int_escalier_sylphe_monte_01", &"int_escalier_sylphe_descend_01",
+	&"int_porte_ascenseur_sylphe_01", &"decal_teleporteur_sylphe_01", &"decal_seuil_sylphe_01",
+	&"int_paillasson_sylphe_01", &"int_porte_sylphe_h_01", &"int_porte_sylphe_v_01",
 	# J29 (QA A17) : porte de la Ligue dans le mur du fond du hall du Plateau (déjà bloqué).
-	&"int_porte_ligue_01"]
+	&"int_porte_ligue_01",
+	# Lot DAF.4 : rebords, escaliers, interrupteurs et barrière (Route Victoire, Grotte Azurée).
+	&"relief_rebord_victoire_01", &"relief_rebord_victoire_cote_01", &"relief_escalier_victoire_01",
+	&"decal_interrupteur_victoire_01", &"decal_interrupteur_victoire_enfonce_01",
+	&"relief_rebord_azuree_01", &"relief_rebord_azuree_cote_01", &"relief_escalier_azuree_01",
+	&"prop_barriere_victoire_01",
+	&"decal_trou_victoire_01", &"decal_trou_victoire_bouche_01"]
 const GROUND_LAYER: Array[StringName] = [
+	# Lot DAF.4 : rebords, escaliers et interrupteurs (Route Victoire, Grotte Azurée).
+	&"decal_trou_victoire_01", &"decal_trou_victoire_bouche_01",
+	&"relief_rebord_victoire_01", &"relief_rebord_victoire_cote_01", &"relief_escalier_victoire_01",
+	&"decal_interrupteur_victoire_01", &"decal_interrupteur_victoire_enfonce_01",
+	&"relief_rebord_azuree_01", &"relief_rebord_azuree_cote_01", &"relief_escalier_azuree_01",
+	# Lot DAF.3 / DAF.4 : modules de la Sylphe, des Arènes de Safrania et de Jadielle, du Dojo.
+	&"relief_mur_sylphe_01", &"relief_mur_sylphe_02", &"relief_mur_sylphe_03",
+	&"relief_mur_sylphe_04", &"relief_mur_sylphe_05", &"relief_mur_morgane_01",
+	&"relief_mur_morgane_02", &"relief_mur_morgane_03", &"relief_mur_morgane_04",
+	&"relief_mur_morgane_05", &"relief_mur_dojo_01", &"relief_mur_dojo_02", &"relief_mur_dojo_03",
+	&"relief_mur_dojo_04", &"relief_mur_dojo_05", &"relief_mur_jadielle_01",
+	&"relief_mur_jadielle_02", &"relief_mur_jadielle_03", &"relief_mur_jadielle_04",
+	&"relief_mur_jadielle_05", &"int_escalier_sylphe_monte_01", &"int_escalier_sylphe_descend_01",
+	&"int_porte_ascenseur_sylphe_01", &"decal_teleporteur_sylphe_01", &"decal_seuil_sylphe_01",
+	&"int_paillasson_sylphe_01", &"int_porte_sylphe_h_01", &"int_porte_sylphe_v_01",
 	# Série 22 bis : modules du repaire et du Casino (murs, escaliers, décalcomanies, portes).
 	&"relief_mur_repaire_01", &"relief_mur_repaire_02", &"relief_mur_repaire_03",
 	&"relief_mur_repaire_04", &"relief_mur_repaire_05", &"relief_mur_casino_01",

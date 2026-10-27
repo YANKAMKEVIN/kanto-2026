@@ -29,6 +29,9 @@ extends CanvasLayer
 
 ## Émis quand l'entrée est finie (vue de combat en place) et quand la sortie est finie.
 signal entered
+## Combat vivant (T4) : repère sonore d'une chorégraphie (`launch`, `impact`, `impact_2`…) et son
+## plan ; [AudioBridge] y joue le bruitage de l'attaque et celui du coup (§2.5).
+signal move_fx_cue(cue: StringName, plan: MoveFxPlan)
 signal exited
 
 ## Zoom de la caméra en combat : lieu réel resserré (cadrage « combat » du pilote, CB.1).
@@ -208,6 +211,9 @@ var reduce_motion: bool = false:
 		reduce_motion = value
 		for aura: StatusAura in _auras.values():
 			aura.reduce_motion = value
+## Combat vivant (CV-4) : réglage « Animations de combat » ; avec [member reduce_motion], il fixe
+## le mode des chorégraphies ([method move_fx_mode]).
+var battle_animations: GameSettings.BattleAnimations = GameSettings.BattleAnimations.FULL
 ## Flou du fond du combat ; coupé en profil Économie.
 var backdrop_blur: bool = true:
 	set(value):
@@ -239,6 +245,8 @@ var _anchors: Dictionary = {}
 ## Image de chaque côté : boîte visible (px de la texture, pieds au bas-centre) et échelle.
 var _boxes: Dictionary[BattleEvent.SideId, Rect2] = {}
 var _scales: Dictionary[BattleEvent.SideId, float] = {}
+## Cadrage B : de combien de px les pieds du dos passent sous le bord bas (côté du joueur).
+var _sinks: Dictionary[BattleEvent.SideId, float] = {}
 var _art := BattleArt.new()
 var _artwork_material: ShaderMaterial
 var _shadow_texture: GradientTexture2D
@@ -264,6 +272,14 @@ var _decor_cache := BattleDecorCache.new()
 var _auras: Dictionary[BattleEvent.SideId, StatusAura] = {}
 ## Jalon 21 : copie de la silhouette pendant le fondu de [method dissolve_foe] (null sinon).
 var _reveal_overlay: Sprite2D
+## Combat vivant (CV.0, T3) : lecteur des chorégraphies, sa lumière (juste au-dessus du décor
+## `back`), le côté visé par l'attaque en cours ; points d'origine lus une fois.
+var _fx: MoveFxPlayer
+var _fx_light: Node2D
+var _fx_target: BattleEvent.SideId = BattleEvent.SideId.FOE
+static var _fx_anchors: FxAnchors
+## Espèces (types de la cible pour les chorégraphies) ; null : pas de types.
+var _fx_pokemon: PokemonData
 
 @onready var _backdrop: ColorRect = %Backdrop
 @onready var _flash: ColorRect = %Flash
@@ -286,6 +302,7 @@ func _ready() -> void:
 	_build_shadows()
 	_build_decor()
 	_build_auras()
+	_build_fx()
 	_artwork_material = ShaderMaterial.new()
 	_artwork_material.shader = ARTWORK_SHADER
 	# Voile du poison au repos (play_poison en voile une copie).
@@ -316,6 +333,7 @@ static func sprite_path(species: StringName, back: bool) -> String:
 ## tailles de combat (Boot) ; sans appel, BattleArt les lit une fois.
 func set_species_source(pokemon: PokemonData, dex: PokedexLibrary) -> void:
 	_art.setup(pokemon, dex)
+	_fx_pokemon = pokemon
 
 
 ## Cadrage du prochain combat (à appeler avant [method enter]) : [param arena], sol dégagé à
@@ -622,6 +640,9 @@ static func thrower_feet(view: Vector2) -> Vector2:
 func play_hit(side: BattleEvent.SideId, critical: bool) -> void:
 	if not _active:
 		return
+	if is_move_fx_hitting(side):
+		await _play_crit(critical)
+		return
 	var sprite := _sprites[side]
 	var base := _anchor(side)
 	var tween := _new_tween()
@@ -645,18 +666,119 @@ func play_hit(side: BattleEvent.SideId, critical: bool) -> void:
 	tween.tween_property(sprite, ^"position", base, HIT_BLINK / 2.0) \
 		.set_delay(HIT_BLINK * HIT_BLINKS * 2)
 	if critical:
-		_flash.color = Color(1, 1, 1, _flash_alpha(CRIT_FLASH))
-		tween.tween_property(_flash, ^"color:a", 0.0, CRIT_FLASH_DURATION)
-		for i: int in 4:
-			var jolt := Vector2(CRIT_CAMERA_SHAKE * (1 if i % 2 == 0 else -1), 0)
-			tween.tween_method(_set_jolt, Vector2.ZERO, jolt, HIT_BLINK / 2.0) \
-				.set_delay(HIT_BLINK * i / 2.0)
-		tween.tween_method(_set_jolt, Vector2.ZERO, Vector2.ZERO, HIT_BLINK / 2.0) \
-			.set_delay(HIT_BLINK * 2.0)
+		_add_crit(tween)
 	await _play(tween)
 	_rest(side)
 	_flash.color = Color(1, 1, 1, 0)
 	_set_jolt(Vector2.ZERO)
+
+
+## Coroutine : l'éclair et le tremblement d'un coup critique seuls (rien sinon).
+func _play_crit(critical: bool) -> void:
+	if not critical:
+		return
+	var tween := _new_tween()
+	tween.set_parallel(true)
+	_add_crit(tween)
+	await _play(tween)
+	_flash.color = Color(1, 1, 1, 0)
+	_set_jolt(Vector2.ZERO)
+
+
+func _add_crit(tween: Tween) -> void:
+	_flash.color = Color(1, 1, 1, _flash_alpha(CRIT_FLASH))
+	tween.tween_property(_flash, ^"color:a", 0.0, CRIT_FLASH_DURATION)
+	for i: int in 4:
+		var jolt := Vector2(CRIT_CAMERA_SHAKE * (1 if i % 2 == 0 else -1), 0)
+		tween.tween_method(_set_jolt, Vector2.ZERO, jolt, HIT_BLINK / 2.0) \
+			.set_delay(HIT_BLINK * i / 2.0)
+	tween.tween_method(_set_jolt, Vector2.ZERO, Vector2.ZERO, HIT_BLINK / 2.0) \
+		.set_delay(HIT_BLINK * 2.0)
+
+
+# --- Combat vivant : chorégraphies des attaques (CV.0, T3) -----------------------------
+
+## Mode des chorégraphies d'après les réglages (« Réduire les animations » l'emporte, CV-5).
+func move_fx_mode() -> MoveFxPlan.Mode:
+	return MoveFxPlan.mode_for(battle_animations, reduce_motion)
+
+
+## Coroutine : le Pokémon de [param side] joue la chorégraphie [param plan] ; rend la main au
+## premier impact (le temps DAMAGE qui suit descend la barre pendant que l'impact se joue), ou à
+## la fin s'il n'y en a pas (raté, sans effet, charge). La suite se joue seule :
+## [method finish_move_fx] l'attend.
+func play_move_fx(side: BattleEvent.SideId, plan: MoveFxPlan) -> void:
+	if not _active or plan == null:
+		return
+	_fx_target = side if plan.on_self else _other(side)
+	# Les durées du plan suivent déjà le mode (Rapides, Réduites) : pas de second facteur.
+	_fx.speed_scale = 0.0 if speed_scale <= 0.0 else 1.0
+	var impact := plan.cue_time(MoveFxPlan.CUE_IMPACT)
+	var species := _fx_pokemon.get_species(_species.get(_fx_target, &"")) \
+		if _fx_pokemon != null else null
+	if species != null:
+		plan.target_types = species.types.duplicate()
+	_fx.play(plan, _fx_stage(side, plan))
+	if impact < 0.0:
+		await finish_move_fx()
+		return
+	while _fx.is_playing() and _fx.elapsed() < impact:
+		await get_tree().process_frame
+
+
+## Coroutine : attend la fin de la chorégraphie en cours (rien si aucune).
+func finish_move_fx() -> void:
+	if _fx != null and _fx.is_playing():
+		await _fx.finished
+
+
+## Une chorégraphie en cours porte le coup reçu par [param side] (tremblement et éclat de la
+## cible) : [method play_hit] ne joue alors que l'éclair du coup critique.
+func is_move_fx_hitting(side: BattleEvent.SideId) -> bool:
+	return _fx != null and _fx.is_playing() and side == _fx_target
+
+
+func get_move_fx_player() -> MoveFxPlayer:
+	return _fx
+
+
+func _fx_stage(side: BattleEvent.SideId, plan: MoveFxPlan) -> MoveFxStage:
+	var other := _other(side)
+	var stage := MoveFxStage.new()
+	stage.user = _sprites[side]
+	stage.target = _sprites[other]
+	stage.user_rest = _anchor(side)
+	stage.target_rest = _anchor(other)
+	stage.user_rect = get_sprite_rect(side)
+	stage.target_rect = get_sprite_rect(other)
+	stage.user_is_player = side == BattleEvent.SideId.PLAYER
+	if _decor != null:
+		stage.decor_back = _decor_back
+		stage.decor_front = _decor_front
+	stage.view_size = _view_size()
+	var view := FxAnchors.BACK if stage.user_is_player else FxAnchors.FRONT
+	if _fx_anchors == null:
+		_fx_anchors = FxAnchors.load_file()
+	stage.origins = MoveFxStage.to_screen(
+		_fx_anchors.points(_species.get(side, &""), view, plan.origin), stage.user_rect)
+	return stage
+
+
+## Lecteur d'effets au-dessus des sprites et sous l'éclair ; sa lumière juste au-dessus du décor
+## `back` (elle éclaire le lieu, pas les Pokémon).
+func _build_fx() -> void:
+	_fx_light = Node2D.new()
+	_fx_light.name = &"FxLight"
+	add_child(_fx_light)
+	move_child(_fx_light, _decor_back.get_index() + 1)
+	_fx = MoveFxPlayer.new()
+	_fx.name = &"MoveFx"
+	add_child(_fx)
+	move_child(_fx, _flash.get_index())
+	_fx.setup(self, _fx_light)
+	FxArt.preload_all()
+	_fx.fx_cue.connect(func(cue: StringName, _move_id: StringName) -> void:
+		move_fx_cue.emit(cue, _fx.get_plan()))
 
 
 ## Coroutine : le Pokémon de [param side] est rongé par le poison (jalon 9) : voile violet
@@ -868,20 +990,12 @@ func play_throw() -> void:
 	var target := _foe_center()
 	_ball_rest = _anchor(foe) + Vector2(0.0, -BALL_RADIUS * BALL_REST_SCALE + 6.0)
 	_absorb_point = target
-	# Le dresseur entre en glissant depuis la gauche.
-	_thrower.texture = THROWER_TEXTURE
-	_thrower.scale = Vector2.ONE * scale
-	_thrower.position = feet + Vector2(-THROWER_SLIDE, 0.0)
-	_thrower.modulate = Color(1, 1, 1, 0)
-	_thrower.visible = true
-	var enter := _new_tween()
-	enter.set_parallel(true)
-	enter.tween_property(_thrower, ^"position", feet, THROWER_ENTER_DURATION) \
-		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	enter.tween_property(_thrower, ^"modulate:a", 1.0, THROWER_ENTER_DURATION)
-	await _play(enter)
-	if not _active:
-		return
+	# Le dresseur entre en glissant depuis la gauche (J23 : sauf s'il est déjà en place, dos du
+	# joueur de la rencontre Safari, [method play_trainer_enter]).
+	if not is_trainer_shown():
+		await play_trainer_enter()
+		if not _active:
+			return
 	# La Ball part de sa main, en arc, et tourne sur elle-même.
 	var hand := feet + THROWER_HAND * scale
 	_ball.visible = true
@@ -1240,6 +1354,8 @@ func _apply_reset() -> void:
 			tween.kill()
 	_tweens.clear()
 	_clear_reveal_overlay() # Jalon 21
+	if _fx != null:
+		_fx.stop()
 	if _active:
 		_restore_camera()
 	for side: BattleEvent.SideId in _world:
@@ -1256,6 +1372,7 @@ func _apply_reset() -> void:
 	_buried.clear()
 	_boxes.clear()
 	_scales.clear()
+	_sinks.clear()
 	_arena = Rect2()
 	_bounds = Rect2()
 	_decor = null
@@ -1307,6 +1424,11 @@ func _set_texture(side: BattleEvent.SideId) -> void:
 	sprite.material = _artwork_material if official else null
 	var scale := BattleLayout.sprite_scale(box.size, _art.height_m(species), back,
 		_view_size().y, not official)
+	if back:
+		var crop: float = image.get("crop", BattleLayout.BACK_CROP)
+		scale = BattleLayout.back_scale(box.size, _art.height_m(species), _view_size().y, crop,
+			not official)
+		_sinks[side] = BattleLayout.back_sink(box.size, scale, crop)
 	_boxes[side] = box
 	_scales[side] = scale
 	if official:
@@ -1321,12 +1443,16 @@ func _box(side: BattleEvent.SideId) -> Rect2:
 
 
 ## Sprite et ombre de [param side] : pieds sur [param feet] (écran), échelle [param scale].
+## Cadrage B : ton Pokémon, coupé par le bord bas, n'a pas d'ombre au sol (ombre de taille nulle).
 func _place(side: BattleEvent.SideId, feet: Vector2, scale: float) -> void:
 	var sprite := _sprites[side]
 	sprite.position = feet
 	sprite.scale = Vector2.ONE * scale
 	var shadow := _shadows[side]
 	shadow.position = feet
+	if side == BattleEvent.SideId.PLAYER:
+		shadow.scale = Vector2.ZERO
+		return
 	var width := _box(side).size.x * scale * SHADOW_WIDTH
 	shadow.scale = Vector2(width, width * SHADOW_FLATTEN) / _shadow_texture.get_size()
 
@@ -1340,9 +1466,13 @@ func _rest(side: BattleEvent.SideId) -> void:
 	_sprites[side].modulate = Color(1, 1, 1, alpha)
 
 
+## Pieds de [param side] au repos. Ton Pokémon (cadrage B) : bord bas du dos, ses pieds enfoncés
+## de la part coupée de l'image ([method BattleLayout.back_sink]).
 func _anchor(side: BattleEvent.SideId) -> Vector2:
-	var key := "player_feet" if side == BattleEvent.SideId.PLAYER else "foe_feet"
-	return _anchors.get(key, Vector2.ZERO)
+	if side == BattleEvent.SideId.PLAYER:
+		var bottom: Vector2 = _anchors.get("player_back", Vector2.ZERO)
+		return bottom + Vector2(0.0, _sinks.get(side, 0.0))
+	return _anchors.get("foe_feet", Vector2.ZERO)
 
 
 func _anchor_scale(side: BattleEvent.SideId) -> float:
@@ -1389,13 +1519,14 @@ func _play(tween: Tween) -> void:
 # --- Décor peint (CB.3) ----------------------------------------------------------------
 
 ## Calques du décor peint (aucun dans la scène .tscn) : le fond juste au-dessus du flou du
-## monde, sous les ombres ; le premier plan devant le Pokémon du joueur (sous les accessoires
-## de la capture et l'éclair).
+## monde, sous les ombres ; le premier plan juste **derrière** le Pokémon du joueur (cadrage B,
+## 2026-10-25 : le dos agrandi passe devant le feuillage flou), sous les accessoires de la
+## capture et l'éclair.
 func _build_decor() -> void:
 	_decor_back = _make_decor_layer(&"DecorBack")
 	move_child(_decor_back, _backdrop.get_index() + 1)
 	_decor_front = _make_decor_layer(&"DecorFront")
-	move_child(_decor_front, _sprites[BattleEvent.SideId.PLAYER].get_index() + 1)
+	move_child(_decor_front, _sprites[BattleEvent.SideId.PLAYER].get_index())
 
 
 func _make_decor_layer(layer_name: StringName) -> Sprite2D:
@@ -1613,3 +1744,32 @@ func _set_burst(t: float, origin: Vector2, color: Color) -> void:
 		spark.position = origin + Vector2.from_angle(angle) * SPARK_DISTANCE * out
 		spark.scale = Vector2.ONE * lerpf(0.18, 0.05, t)
 		spark.modulate = Color(color, 1.0 - t)
+
+
+# --- J23 : rencontre Safari, dos du joueur ---------------------------------------------------
+
+## Coroutine (~0,3 s) : le dresseur de dos (image provisoire du lancer, `heros_lancer.png`) entre
+## en glissant depuis la gauche et reste à sa place (rencontre Safari : aucun Pokémon allié,
+## dossier 26 §5.1 ; art final « dos du joueur » au lot 23.0, `jalon-23.md` §2.17). Sans effet
+## hors combat ou s'il est déjà en place.
+func play_trainer_enter() -> void:
+	if not _active or is_trainer_shown():
+		return
+	_build_capture_props()
+	var feet := thrower_feet(_view_size())
+	_thrower.texture = THROWER_TEXTURE
+	_thrower.scale = Vector2.ONE * THROWER_SCALE
+	_thrower.position = feet + Vector2(-THROWER_SLIDE, 0.0)
+	_thrower.modulate = Color(1, 1, 1, 0)
+	_thrower.visible = true
+	var enter := _new_tween()
+	enter.set_parallel(true)
+	enter.tween_property(_thrower, ^"position", feet, THROWER_ENTER_DURATION) \
+		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	enter.tween_property(_thrower, ^"modulate:a", 1.0, THROWER_ENTER_DURATION)
+	await _play(enter)
+
+
+## Le dresseur de dos est en place (visible, opaque).
+func is_trainer_shown() -> bool:
+	return _thrower != null and _thrower.visible and _thrower.modulate.a >= 0.99

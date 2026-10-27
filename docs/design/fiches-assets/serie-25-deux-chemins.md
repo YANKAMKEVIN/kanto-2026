@@ -109,3 +109,12 @@ Planche de contact : `docs/design/reference/serie-25-contact-v1.png` (`--contact
 5. Icônes : la Bicyclette a un porte-bagages (le prompt n'en voulait pas) ; le Bon porte un vélo rouge
    et un tampon bleu.
 6. Dos de combat : provisoires pixel art (la chaîne Colab n'a pas tourné).
+
+## Intégration (DAF.5, 2e partie, 2026-10-26)
+
+Originaux retrouvés dans `j22-t7b/build/art` (mêmes octets que `j22-t7`, plus Kangourex r2) ; intégrés par
+`tools/art/daf5_reliquats.py` et `build_character_frames.gd` (`BIKE`, `POSES`) : héros à vélo (animations
+`bike_*` de `player`), héros qui pêche (`fish_cast_*`, `fish_wait_*`, découpe à part : le fil long est gardé,
+la canne dépasse dans une cellule plus haute), `biker`, `bird_keeper`, `cue_ball`, `fisher_fuchsia`,
+`fisher_route_12`, `pokemon/kangaskhan` et `pokemon/slowpoke` (enclos de Parmanie). Icônes (planches A et B) non
+reprises : peintes par la 1re partie du DAF.5. Planche : `fiches-assets/daf-5-reliquats/planche.png`.

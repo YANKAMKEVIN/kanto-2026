@@ -850,10 +850,14 @@ func test_gift_pokemon_without_say_stored() -> void:
 
 
 func test_gift_pokemon_kind_is_last_in_the_enum() -> void:
-	# Jalon 21 : FLUTE vient après ; puis J25 : « unset », « toggle », « trade », en fin d'enum.
+	# Jalon 21 : FLUTE vient après ; puis J25 : « unset », « toggle », « trade » ; puis J23 :
+	# « safari », en fin d'enum.
 	assert_eq(CutsceneStep.Kind.GIFT_POKEMON, CutsceneStep.Kind.FLUTE - 1, "en fin d'enum")
-	assert_eq(CutsceneStep.Kind.FLUTE, CutsceneStep.Kind.TRADE - 3, "flute avant les étapes du J25")
-	assert_eq(CutsceneStep.Kind.TRADE, CutsceneStep.Kind.HALL_OF_FAME - 1, "trade avant le J30")
+	assert_eq(CutsceneStep.Kind.FLUTE, CutsceneStep.Kind.size() - 7, "flute avant le J25, le J23 et le J30")
+	assert_eq(CutsceneStep.Kind.TRADE, CutsceneStep.Kind.size() - 4, "trade avant safari")
+	assert_eq(CutsceneStep.Kind.SAFARI, CutsceneStep.Kind.size() - 3, "J23 avant le J30")
+	assert_eq(CutsceneStep.Kind.TRADE, CutsceneStep.Kind.HALL_OF_FAME - 2, "trade, safari, puis le J30")
+	assert_eq(CutsceneStep.Kind.CREDITS, CutsceneStep.Kind.size() - 1, "J30 en fin d'enum")
 	assert_eq(CutsceneStep.TYPE_KEYS[CutsceneStep.Kind.GIFT_POKEMON], "gift_pokemon")
 	assert_eq(CutsceneStep.TYPE_KEYS.size(), CutsceneStep.Kind.size())
 
@@ -915,9 +919,11 @@ func test_real_eevee_gift_scene() -> void:
 # --- Jalon 25 : étapes « unset », « toggle », « trade » ----------------------------------
 
 func test_j25_kinds_are_last_in_the_enum() -> void:
-	# Jalon 30 : « hall_of_fame » et « credits » viennent après.
-	assert_eq(CutsceneStep.Kind.TRADE, CutsceneStep.Kind.size() - 3, "avant le J30")
-	assert_eq(CutsceneStep.TYPE_KEYS.slice(-5, -2), ["unset", "toggle", "trade"])
+	# Fusion de main dans jalon-23 : « safari » (J23) vient après ; puis « hall_of_fame » et
+	# « credits » (J30).
+	assert_eq(CutsceneStep.Kind.TRADE, CutsceneStep.Kind.size() - 4, "avant « safari » et le J30")
+	assert_eq(CutsceneStep.TYPE_KEYS.slice(-6), ["unset", "toggle", "trade", "safari",
+		"hall_of_fame", "credits"])
 	assert_eq(CutsceneStep.TYPE_KEYS.size(), CutsceneStep.Kind.size())
 
 

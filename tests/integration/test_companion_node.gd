@@ -41,7 +41,7 @@ func test_only_a_painted_sheet_and_at_most_six_nodes() -> void:
 	assert_eq(_companion.get_sprite().texture_filter, CanvasItem.TEXTURE_FILTER_LINEAR)
 	var other := Companion.new()
 	add_child_autofree(other)
-	assert_false(other.set_species(&"caterpie", &"pokemon/caterpie"),
+	assert_false(other.set_species(&"magikarp", &"pokemon/magikarp"),
 		"pas de planche de marche peinte : aucun substitut")
 	assert_push_error("planche peinte absente")
 	var count := 0

@@ -151,6 +151,16 @@ func test_j21_tower_6f_and_7f_take_the_single_bake() -> void:
 		assert_false(ground.stack_layers().is_empty(), map_id + " : couches de grotte cuites")
 
 
+## Fusion de `systemes-2` dans le J26 : Safrania (60 × 50 cases, 5760 × 4800 px) est trop grande
+## pour la cuisson d'un bloc et prend la cuisson par morceaux.
+func test_j26_saffron_takes_the_chunked_path() -> void:
+	var ground := _map("saffron_city").get_node(^"PaintedGround") as PaintedGround
+	assert_false(ground.can_bake(), "Safrania : pas de cuisson d'un bloc")
+	assert_true(ground.can_bake_chunks(), "Safrania")
+	ground.bake_chunks()
+	assert_true(ground.is_chunked(), "Safrania : cuit par morceaux")
+
+
 ## Fusion de `systemes-2` dans le J29 : la Route 22 ouest (20 × 14 cases, sans rivage) garde la
 ## cuisson d'un bloc ; Route 23 et Route Victoire n'ont pas de sol peint (tuiles).
 func test_j29_route_22_west_takes_the_single_bake() -> void:

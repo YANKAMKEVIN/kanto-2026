@@ -3,10 +3,12 @@ extends RefCounted
 ## Construit la vue de l'écran Paramètres à partir des réglages (dossier 08 §7 ; jalon-06.md
 ## §3.8, §6.12). Pur : ni nœud, ni fichier.
 ##
-## Catégories dans l'ordre du dossier 08 §7, sans AUDIO (Q-17) : JEU, COMMANDES,
-## ACCESSIBILITÉ, GRAPHISMES. Textes d'interface validés par Kevin le 2026-10-06.
+## Catégories dans l'ordre du dossier 08 §7 : JEU, SON (jalon Son, SON-7 ; l'« AUDIO » du
+## dossier), COMMANDES, ACCESSIBILITÉ, GRAPHISMES. Textes d'interface validés par Kevin le
+## 2026-10-06 ; ceux de SON sont des valeurs par défaut [D], à relire par Kevin.
 
 const CATEGORY_GAME: StringName = &"game"
+const CATEGORY_SOUND: StringName = &"sound"
 const CATEGORY_CONTROLS: StringName = &"controls"
 const CATEGORY_ACCESSIBILITY: StringName = &"accessibility"
 const CATEGORY_GRAPHICS: StringName = &"graphics"
@@ -25,10 +27,14 @@ const SAVE_DETAIL_TEXT: String = "La partie se sauvegarde aussi toute seule."
 ## Activée = rendu normal (`economy` faux) ; désactivée = étalonnage plein écran coupé.
 const ECONOMY_LABEL: String = "Lumière d'ambiance"
 const ECONOMY_DETAIL: String = "Désactivez-la pour plus de fluidité sur les petits téléphones."
+## Combat vivant (CV-4, recommandation retenue par Kevin le 2026-10-26).
+const BATTLE_ANIMATIONS_LABEL: String = "Animations de combat"
+const BATTLE_ANIMATIONS_DETAIL: String = "Rapides : combats plus courts, mêmes effets."
 const SUBTITLE_GAME: String = "Paramètres principaux du jeu."
 const SUBTITLE_CONTROLS: String = "Personnalise tes contrôles."
 const SUBTITLE_ACCESSIBILITY: String = "Rends le jeu accessible à tous."
 const SUBTITLE_GRAPHICS: String = "Ajuste la qualité visuelle du jeu."
+const SUBTITLE_SOUND: String = "Règle le volume de la musique, des effets et des cris."
 
 
 ## Vue de l'écran. [param device_quality] : ce que donne Auto sur cet appareil
@@ -47,6 +53,10 @@ static func build(settings: GameSettings, device_quality: GameSettings.Graphics,
 		["Rapide", GameSettings.TextSpeed.FAST], ["Instantanée", GameSettings.TextSpeed.INSTANT]]))
 	game.controls.append(_toggle(GameSettings.CONFIRM_ACTIONS, "Confirmer certaines actions",
 		"Avant d'oublier une capacité.", settings.confirm_actions))
+	game.controls.append(_choice(GameSettings.BATTLE_ANIMATIONS, BATTLE_ANIMATIONS_LABEL,
+		BATTLE_ANIMATIONS_DETAIL, settings.battle_animations,
+		[["Complètes", GameSettings.BattleAnimations.FULL],
+		["Rapides", GameSettings.BattleAnimations.FAST]]))
 	var save := SettingControlView.new()
 	save.key = SAVE_NOW
 	save.kind = SettingControlView.Kind.ACTION
@@ -56,6 +66,15 @@ static func build(settings: GameSettings, device_quality: GameSettings.Graphics,
 	if with_save_now:
 		game.controls.append(save)
 	view.categories.append(game)
+
+	var sound := SettingsCategoryView.new(CATEGORY_SOUND, "SON", SUBTITLE_SOUND)
+	sound.controls.append(_volume(GameSettings.MUSIC_VOLUME, "Musique", "",
+		settings.music_volume))
+	sound.controls.append(_volume(GameSettings.SFX_VOLUME, "Effets",
+		"Interface, déplacements, combats et ambiances.", settings.sfx_volume))
+	sound.controls.append(_volume(GameSettings.CRY_VOLUME, "Cris", "Cris des Pokémon.",
+		settings.cry_volume))
+	view.categories.append(sound)
 
 	var controls := SettingsCategoryView.new(CATEGORY_CONTROLS, "COMMANDES",
 		SUBTITLE_CONTROLS)
@@ -134,6 +153,22 @@ static func save_result_text(error: Error, time: Dictionary) -> String:
 	if hour < 0 or minute < 0:
 		return SAVE_DONE_TEXT
 	return "%s — %d h %02d" % [SAVE_DONE_TEXT, hour, minute]
+
+
+## Curseur de volume de 0 à 100 % par crans de 10 % (0 : bus coupé).
+static func _volume(key: StringName, label: String, detail: String,
+		value: float) -> SettingControlView:
+	var item := SettingControlView.new()
+	item.key = key
+	item.kind = SettingControlView.Kind.SLIDER
+	item.label = label
+	item.detail = detail
+	item.value = value
+	item.value_text = percent_text(value)
+	item.min_value = 0.0
+	item.max_value = 1.0
+	item.step = GameSettings.VOLUME_STEP
+	return item
 
 
 ## [param inverted] : l'interrupteur affiche le contraire du réglage

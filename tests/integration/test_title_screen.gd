@@ -173,6 +173,18 @@ func test_left_handed_puts_the_column_left_and_the_logo_right() -> void:
 		assert_gt(logo.position.x, width / 2.0, "logo à droite à %d" % width)
 
 
+func test_the_logo_sits_on_a_soft_shadow() -> void:
+	var screen := await _screen_in(_model(OpeningFlow.SaveStatus.VALID), 1920)
+	var logo := screen.get_logo()
+	var shadow := logo.get_node(^"LogoShadow") as TextureRect
+	assert_not_null(shadow, "ombre douce du logo (DAF.7b)")
+	assert_true(shadow.show_behind_parent, "sous le logo")
+	var drop := shadow.get_global_rect().position - logo.get_global_rect().position
+	assert_almost_eq(drop.x, 0.0, 0.5)
+	assert_gt(drop.y, 0.0, "décalée vers le bas")
+	assert_eq(shadow.mouse_filter, Control.MOUSE_FILTER_IGNORE)
+
+
 func test_touch_zones_and_safe_margins_at_both_widths() -> void:
 	for status: OpeningFlow.SaveStatus in [OpeningFlow.SaveStatus.VALID,
 			OpeningFlow.SaveStatus.CORRUPT]:

@@ -21,6 +21,8 @@ const INPUT_REASON: StringName = &"fly"
 ## Orientation à l'arrivée [D] : face à l'écran, dos au Centre.
 const ARRIVAL_FACING: Vector2i = Vector2i.DOWN
 
+## J23 : cartes où ce voyage est refusé (Parc Safari, `SafariConfig.maps`), posées par Boot.
+var no_fly_maps: Dictionary[StringName, bool] = {}
 var _rules: FlyRules
 ## func() -> Dictionary : cartes découvertes (`GameState.discovered_maps`).
 var _discovered: Callable = Callable()
@@ -65,6 +67,8 @@ func check(zone: StringName) -> FlyRules.Check:
 		if result is FieldMoves.Result:
 			state = (result as FieldMoves.Result).state
 	var cave := _caves != null and _caves.is_cave(map.map_id)
+	# J23 (dossier 26 §4) : Vol refusé dans le Parc Safari, comme dans une grotte.
+	cave = cave or no_fly_maps.has(map.map_id)
 	var discovered: Dictionary = _discovered.call() if _discovered.is_valid() else {}
 	var traits := FlyRules.traits_of(map.interior, cave)
 	# Jalon 30 (T8) : carte marquée « no_fly » (salles de la Ligue).

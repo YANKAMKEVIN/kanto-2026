@@ -72,12 +72,25 @@ func _view() -> Vector2:
 	return _stage.get_viewport().get_visible_rect().size
 
 
-## Échelle attendue de [param species] (BattleArt + BattleLayout).
+## Échelle attendue de [param species] (BattleArt + BattleLayout ; ton Pokémon en cadrage B).
 func _scale(species: StringName, back: bool) -> float:
 	var art := BattleArt.new()
 	var image := art.image(species, back)
-	return BattleLayout.sprite_scale((image["box"] as Rect2).size, art.height_m(species), back,
-		_view().y, not image["official"])
+	var box: Rect2 = image["box"]
+	if back:
+		return BattleLayout.back_scale(box.size, art.height_m(species), _view().y, image["crop"],
+			not image["official"])
+	return BattleLayout.sprite_scale(box.size, art.height_m(species), back, _view().y,
+		not image["official"])
+
+
+## Pieds attendus du dos de [param species] (cadrage B) : bord bas de l'écran, enfoncés de la
+## part coupée de l'image.
+func _back_feet(species: StringName) -> Vector2:
+	var image := BattleArt.new().image(species, true)
+	var sink := BattleLayout.back_sink((image["box"] as Rect2).size, _scale(species, true),
+		image["crop"])
+	return (_anchors()["player_back"] as Vector2) + Vector2(0.0, sink)
 
 
 ## Fichier de l'image affichée par [param sprite] (l'artwork officiel est une AtlasTexture).
@@ -91,9 +104,14 @@ func _art_path(sprite: Sprite2D) -> String:
 ## Le Pokémon de [param side] tient dans sa boîte maximale (BattleLayout), elle-même dans
 ## l'écran et hors de l'interface à 1920 et 2340 de large (test_battle_layout ; la vue de GUT
 ## n'a pas le format du téléphone).
+## Ton Pokémon (cadrage B) : seule sa partie visible à l'écran compte.
 func _assert_framed(side: BattleEvent.SideId) -> void:
 	var rect := _stage.get_sprite_rect(side)
 	var limit := BattleLayout.max_rect(side == PLAYER_SIDE, _view()).grow(0.5)
+	if side == PLAYER_SIDE:
+		var screen := Rect2(Vector2.ZERO, _view())
+		rect = rect.intersection(screen)
+		limit = limit.intersection(screen.grow(0.5))
 	assert_true(limit.encloses(rect), "%s dans %s" % [rect, limit])
 
 
@@ -120,7 +138,8 @@ func test_enter_hides_world_pokemon_and_shows_battle_sprites_at_anchors() -> voi
 	assert_eq(mine.texture_filter, CanvasItem.TEXTURE_FILTER_LINEAR, "dos peint (Salamèche)")
 	assert_eq(foe.texture_filter, CanvasItem.TEXTURE_FILTER_LINEAR, "artwork officiel")
 	assert_not_null(foe.material, "artwork étalonné dans la lumière du lieu")
-	assert_eq(mine.position, a["player_feet"])
+	assert_eq(mine.position, _back_feet(&"charmander"), "dos coupé par le bord bas")
+	assert_gt(mine.position.y, _view().y, "pieds sous le bord")
 	assert_eq(foe.position, a["foe_feet"])
 	assert_eq(mine.scale, Vector2.ONE * _scale(&"charmander", true), "taille de BattleLayout")
 	assert_eq(foe.scale, Vector2.ONE * _scale(&"squirtle", false))
@@ -130,7 +149,10 @@ func test_enter_hides_world_pokemon_and_shows_battle_sprites_at_anchors() -> voi
 	assert_eq(mine.texture.get_size(), Vector2(1024, 1024))
 	_assert_framed(PLAYER_SIDE)
 	_assert_framed(FOE_SIDE)
-	assert_true((_stage.get_node(^"%PlayerShadow") as CanvasItem).visible, "ombre au sol")
+	# Godot ramène une échelle nulle à 1e-5 : l'ombre ne dessine rien.
+	assert_lt((_stage.get_node(^"%PlayerShadow") as Node2D).scale.x, 0.001,
+		"cadrage B : pas d'ombre sous ton Pokémon")
+	assert_gt((_stage.get_node(^"%FoeShadow") as Node2D).scale.x, 0.001, "ombre de l'adversaire")
 	assert_true((_stage.get_node(^"%Backdrop") as CanvasItem).visible, "voile posé")
 
 
@@ -154,7 +176,7 @@ func test_moves_hits_stats_and_faint_finish_and_come_back_to_the_anchor() -> voi
 	await _stage.play_hit(PLAYER_SIDE, true)
 	await _stage.play_stat(PLAYER_SIDE, true)
 	await _stage.play_stat(FOE_SIDE, false)
-	assert_eq(_stage.get_sprite(PLAYER_SIDE).position, a["player_feet"])
+	assert_eq(_stage.get_sprite(PLAYER_SIDE).position, _back_feet(&"charmander"))
 	assert_eq(_stage.get_sprite(FOE_SIDE).position, a["foe_feet"])
 	assert_eq(_stage.get_sprite(FOE_SIDE).modulate, Color.WHITE)
 	assert_eq(_camera.offset, Vector2.ZERO, "retour immédiat au cadrage")
@@ -162,6 +184,70 @@ func test_moves_hits_stats_and_faint_finish_and_come_back_to_the_anchor() -> voi
 	await _stage.play_faint(FOE_SIDE)
 	assert_false(_stage.get_sprite(FOE_SIDE).visible, "K.O. : sprite tombé et effacé")
 	assert_true(_stage.get_sprite(PLAYER_SIDE).visible)
+
+
+## Combat vivant (CV.0, T3) : plan de [param move_id] avec l'issue [param result].
+func _fx_plan(move_id: StringName, result: MoveFxOutcome.Result,
+		mode: MoveFxPlan.Mode = MoveFxPlan.Mode.FULL) -> MoveFxPlan:
+	var data := PokemonData.new()
+	data.load_dir()
+	var catalog := MoveFxCatalog.load_dir()
+	var outcome := MoveFxOutcome.new()
+	outcome.move_id = move_id
+	outcome.result = result
+	outcome.hits = 1 if result == MoveFxOutcome.Result.HIT else 0
+	return MoveFxPlan.build(catalog, catalog.entry(move_id), data.get_move(move_id), outcome,
+		mode)
+
+
+func test_move_fx_plays_cues_in_order_and_gives_the_scene_back_at_rest() -> void:
+	await _enter()
+	var a := _anchors()
+	var cues: Array[StringName] = []
+	_stage.move_fx_cue.connect(func(cue: StringName, plan: MoveFxPlan) -> void:
+		assert_not_null(plan, "le plan accompagne le repère")
+		cues.append(cue))
+	for case: Array in [[&"tackle", MoveFxOutcome.Result.HIT],
+			[&"ember", MoveFxOutcome.Result.MISSED],
+			[&"thunder_shock", MoveFxOutcome.Result.HIT],
+			[&"swords_dance", MoveFxOutcome.Result.AFFECTED]]:
+		await _stage.play_move_fx(PLAYER_SIDE, _fx_plan(case[0], case[1]))
+		await _stage.finish_move_fx()
+		await _stage.play_move_fx(FOE_SIDE, _fx_plan(case[0], case[1]))
+		await _stage.finish_move_fx()
+	assert_eq(cues.slice(0, 2), [&"launch", &"impact"] as Array[StringName], "Charge")
+	assert_eq(cues.slice(4, 6), [&"launch", &"miss"] as Array[StringName], "Flammèche ratée")
+	assert_eq(_stage.get_sprite(PLAYER_SIDE).position, _back_feet(&"charmander"))
+	assert_eq(_stage.get_sprite(FOE_SIDE).position, a["foe_feet"])
+	assert_eq(_stage.get_sprite(FOE_SIDE).modulate, Color.WHITE)
+	assert_eq(_stage.offset, Vector2.ZERO, "caméra du combat revenue")
+	assert_eq(_stage.scale, Vector2.ONE)
+	assert_false(_stage.get_move_fx_player().get_light().is_lit(), "lumière éteinte")
+
+
+func test_move_fx_hands_over_at_the_impact_and_drives_the_hit() -> void:
+	await _enter()
+	_stage.speed_scale = 1.0
+	var plan := _fx_plan(&"tackle", MoveFxOutcome.Result.HIT)
+	await _stage.play_move_fx(PLAYER_SIDE, plan)
+	var fx := _stage.get_move_fx_player()
+	assert_true(fx.is_playing(), "la fin de la chorégraphie se joue ensuite")
+	assert_between(fx.elapsed(), plan.cue_time(MoveFxPlan.CUE_IMPACT),
+		plan.cue_time(MoveFxPlan.CUE_IMPACT) + 0.1, "rend la main à l'impact")
+	assert_true(_stage.is_move_fx_hitting(FOE_SIDE), "la chorégraphie porte le coup")
+	assert_false(_stage.is_move_fx_hitting(PLAYER_SIDE))
+	await _stage.play_hit(FOE_SIDE, false)
+	await _stage.finish_move_fx()
+	assert_false(_stage.is_move_fx_hitting(FOE_SIDE))
+	assert_eq(_stage.get_sprite(FOE_SIDE).position, _anchors()["foe_feet"])
+
+
+func test_move_fx_mode_follows_the_settings() -> void:
+	assert_eq(_stage.move_fx_mode(), MoveFxPlan.Mode.FULL)
+	_stage.battle_animations = GameSettings.BattleAnimations.FAST
+	assert_eq(_stage.move_fx_mode(), MoveFxPlan.Mode.FAST)
+	_stage.reduce_motion = true
+	assert_eq(_stage.move_fx_mode(), MoveFxPlan.Mode.REDUCED, "Réduire les animations l'emporte")
 
 
 func test_exit_gives_back_npcs_on_their_cell_and_the_camera_unchanged() -> void:
@@ -263,13 +349,13 @@ func test_real_transition_moves_camera_and_sprites_together() -> void:
 	var mine := _stage.get_sprite(PLAYER_SIDE)
 	assert_between(_camera.zoom.x, 1.01, BattleStage.ZOOM - 0.01, "caméra en mouvement")
 	assert_between(mine.scale.x, 1.1, _scale(&"blastoise", true) - 0.1, "taille intermédiaire")
-	assert_ne(mine.position, _anchors()["player_feet"], "en chemin")
+	assert_ne(mine.position, _back_feet(&"blastoise"), "en chemin")
 	assert_true(mine.visible)
 	assert_true((_stage.get_node(^"%Backdrop") as CanvasItem).visible)
 	clock.run_until(func() -> bool: return entered[0], 2.0)
 	clock.release()
 	assert_true(entered[0], "entrée terminée")
-	assert_eq(mine.position, _anchors()["player_feet"])
+	assert_eq(mine.position, _back_feet(&"blastoise"))
 	_stage.exit()
 	await wait_for_signal(_stage.exited, 2.0)
 	assert_true(_mine.visible)
@@ -321,7 +407,7 @@ func test_wild_intro_and_partner_enter_end_at_the_anchors() -> void:
 	await _stage.play_partner_enter(&"charmander")
 	var mine := _stage.get_sprite(PLAYER_SIDE)
 	assert_true(mine.visible)
-	assert_eq(mine.position, a["player_feet"], "à l'ancre du joueur")
+	assert_eq(mine.position, _back_feet(&"charmander"), "à l'ancre du joueur")
 	assert_eq(mine.scale, Vector2.ONE * _scale(&"charmander", true))
 	assert_string_ends_with(mine.texture.resource_path, "dos_ia_004.png")
 	_assert_framed(PLAYER_SIDE)
@@ -570,7 +656,8 @@ func test_status_effects_sit_above_the_sprite_without_touching_it() -> void:
 		var expected := _stage.get_sprite_rect(side)
 		assert_lt(rect.position.distance_to(expected.position), 8.0,
 			"l'effet suit la boîte visible du sprite (offset arrondi)")
-		assert_lt(rect.size.distance_to(expected.size), 1.0)
+		# La respiration (CV.3) étire le sprite de 2 % au plus, pieds fixes.
+		assert_lt(rect.size.distance_to(expected.size), expected.size.y * 0.025 + 1.0)
 		for status: StringName in StatusRules.KNOWN:
 			_stage.set_status(side, status)
 			await wait_process_frames(1)
@@ -593,8 +680,10 @@ func test_freeze_tint_follows_the_sprite_and_stays_with_reduced_motion() -> void
 	assert_true(aura.is_ice_shown(), "« Réduire les animations » garde la teinte")
 	var ice := aura.get_node(^"Ice") as Sprite2D
 	var sprite := _stage.get_sprite(FOE_SIDE)
-	assert_eq([ice.texture, ice.position, ice.scale, ice.offset],
-		[sprite.texture, sprite.position, sprite.scale, sprite.offset])
+	assert_eq([ice.texture, ice.position.x, ice.scale.x, ice.offset],
+		[sprite.texture, sprite.position.x, sprite.scale.x, sprite.offset])
+	# La copie de givre suit le corps, respiration comprise (CV.3 : 2 % au plus, pieds fixes).
+	assert_almost_eq(ice.scale.y, sprite.scale.y, sprite.scale.y * 0.021)
 	await aura.play_confusion()
 	assert_false(aura.is_confusion_shown(), "pas d'étoiles avec « Réduire les animations »")
 

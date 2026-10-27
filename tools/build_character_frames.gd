@@ -175,7 +175,24 @@ const LOOKS: Dictionary = {
 	# 0 de la marche).
 	"fuji": [CHARACTERS_DIR, "mr_fuji", ""],
 	"osselait": [POKEMON_DIR, "cubone", ""],
+	# DAF.5 (série 25, J22) : Motard, Ornithologue, Loubard et les deux frères pêcheurs (cadet de
+	# Parmanie, Super Canne ; aîné de la Route 12, Méga Canne), avec leur planche d'attente.
+	"motard": [CHARACTERS_DIR, "biker", ""],
+	"ornithologue": [CHARACTERS_DIR, "bird_keeper", ""],
+	"loubard": [CHARACTERS_DIR, "cue_ball", ""],
+	"pecheur_parmanie": [CHARACTERS_DIR, "fisher_fuchsia", ""],
+	"pecheur_route_12": [CHARACTERS_DIR, "fisher_route_12", ""],
 }
+## DAF.5 (série 25) : animations en selle d'une apparence (planche de marche → [pédalage, arrêt]) :
+## `bike_walk_<dir>` (cycle de 4 images sur 2 cases, au pas du vélo) et `bike_idle_<dir>` (arrêt en
+## selle, pied au sol), lues par `Player._mounted_animation` (le vélo provisoire s'efface).
+const BIKE: Dictionary = {"heros": ["heros_bike", "heros_bike_idle"]}
+## BikeRules.BIKE_STEP_DURATION.
+const BIKE_STEP := 0.12
+## DAF.5 (série 25) : poses fixes 4 × 1 (bas, gauche, droite, haut) d'une apparence : planche de
+## marche → {préfixe : planche}. `fish_cast_<dir>` (lancer) et `fish_wait_<dir>` (fil tendu), jouées
+## par `FishingDirector` ; cellule plus haute que la marche (la canne), pieds au même ancrage.
+const POSES: Dictionary = {"heros": {"fish_cast": "heros_fish_cast", "fish_wait": "heros_fish_wait"}}
 ## Attentes en plusieurs images (planche d'attente plus large que 4 colonnes) : planche →
 ## direction → [colonnes, images par seconde]. Le capitaine malade respire, penché sur son lavabo
 ## (dossier 19 §6 : « penché, animation courte ») : deux images de dos, 1,2 image/s (défaut).
@@ -201,6 +218,9 @@ const FIXED_POKEMON: Dictionary = {
 	# J17 (série 19) : le Taupiqueur de la Cave (« sort du sol » = réaction) et le Ronflex endormi.
 	"taupiqueur": "diglett",
 	"ronflex": "snorlax",
+	# DAF.5 (série 25) : l'enclos de Parmanie (le petit sort de la poche ; bâille, tête penchée).
+	"kangourex": "kangaskhan",
+	"ramoloss": "slowpoke",
 }
 ## Pokémon d'ambiance **animés en boucle** (feuille N × 1 du catalogue, une seule direction) →
 ## identifiant de données. J24 (série 27) : Artikodin, 4 images (repos, inspire, souffle, repos).
@@ -262,7 +282,7 @@ func _init() -> void:
 		var idle_of := sheet_id.trim_suffix(IDLE_SUFFIX)
 		if idle_of != sheet_id and LOOKS.has(idle_of):
 			continue
-		if KNEELING.values().has(sheet_id):
+		if KNEELING.values().has(sheet_id) or _is_extra_sheet(sheet_id):
 			continue
 		if not LOOKS.has(sheet_id) and not RUN_ONLY.has(sheet_id) \
 				and not FIXED_POKEMON.has(sheet_id) and not LOOPING_POKEMON.has(sheet_id):
@@ -279,7 +299,7 @@ func _init() -> void:
 		var idle: Dictionary = sheets.get(sheet_id + IDLE_SUFFIX, {})
 		_build(sheets[sheet_id], run, idle, String(look[0]) + String(look[1]) + "_frames.tres",
 			IDLE_FROM_WALK.get(sheet_id, {}), IDLE_EXTRA.get(sheet_id, {}),
-			sheets.get(String(KNEELING.get(sheet_id, "")), {}))
+			sheets.get(String(KNEELING.get(sheet_id, "")), {}), _extra_sheets(sheets, sheet_id))
 	var fixed := 0
 	for sheet_id: String in FIXED_POKEMON:
 		if not sheets.has(sheet_id):
@@ -314,7 +334,7 @@ func _init() -> void:
 
 func _build(walk_sheet: Dictionary, run_sheet: Dictionary, idle_sheet: Dictionary,
 		path: String, idle_from_walk: Dictionary = {}, idle_extra: Dictionary = {},
-		kneel_sheet: Dictionary = {}) -> void:
+		kneel_sheet: Dictionary = {}, added: Dictionary = {}) -> void:
 	var frames := SpriteFrames.new()
 	frames.remove_animation(&"default")
 	var walk_texture := load(walk_sheet["fichier"]) as Texture2D
@@ -356,10 +376,78 @@ func _build(walk_sheet: Dictionary, run_sheet: Dictionary, idle_sheet: Dictionar
 				4.0 / (2.0 * RUN_STEP))
 	if not kneel_sheet.is_empty():
 		_add_kneeling(frames, kneel_sheet)
-	_save(frames, path, "%s (%d × %d%s%s%s)" % [path, walk_cell.x, walk_cell.y,
+	if added.has("bike"):
+		_add_bike(frames, added["bike"][0], added["bike"][1], walk_cell)
+	for prefix: String in added.get("poses", {}):
+		_add_poses(frames, prefix, added["poses"][prefix])
+	_save(frames, path, "%s (%d × %d%s%s%s%s)" % [path, walk_cell.x, walk_cell.y,
 		", course" if not run_sheet.is_empty() else "",
 		", attente" if not idle_sheet.is_empty() else "",
-		", prière" if not kneel_sheet.is_empty() else ""])
+		", prière" if not kneel_sheet.is_empty() else "",
+		"".join(PackedStringArray(added.keys().map(func(k: String) -> String: return ", " + k)))])
+
+
+## Planches lues seulement par une autre apparence ([constant BIKE], [constant POSES]).
+func _is_extra_sheet(sheet_id: String) -> bool:
+	for pair: Array in BIKE.values():
+		if pair.has(sheet_id):
+			return true
+	for poses: Dictionary in POSES.values():
+		if poses.values().has(sheet_id):
+			return true
+	return false
+
+
+## {"bike": [pédalage, arrêt], "poses": {préfixe : planche}} de [param sheet_id], planches
+## présentes au catalogue seulement (une planche absente est signalée comme erreur).
+func _extra_sheets(sheets: Dictionary, sheet_id: String) -> Dictionary:
+	var extra := {}
+	var wanted: Array = BIKE.get(sheet_id, []) + POSES.get(sheet_id, {}).values()
+	for id: String in wanted:
+		if not sheets.has(id):
+			push_error("build_character_frames : planche « %s » absente du catalogue" % id)
+			_errors += 1
+			return extra
+	if BIKE.has(sheet_id):
+		extra["bike"] = [sheets[BIKE[sheet_id][0]], sheets[BIKE[sheet_id][1]]]
+	if POSES.has(sheet_id):
+		var poses := {}
+		for prefix: String in POSES[sheet_id]:
+			poses[prefix] = sheets[POSES[sheet_id][prefix]]
+		extra["poses"] = poses
+	return extra
+
+
+## `bike_walk_<dir>` (4 × 4, au pas du vélo) et `bike_idle_<dir>` (4 × 1). Même hauteur de cellule
+## que la marche (ancrage aux pieds).
+func _add_bike(frames: SpriteFrames, ride: Dictionary, stop: Dictionary, walk_cell: Vector2) -> void:
+	var ride_texture := load(ride["fichier"]) as Texture2D
+	var ride_cell := Vector2(ride["cellule"][0], ride["cellule"][1])
+	var stop_texture := load(stop["fichier"]) as Texture2D
+	var stop_cell := Vector2(stop["cellule"][0], stop["cellule"][1])
+	if ride_cell.y != walk_cell.y or stop_cell.y != walk_cell.y:
+		push_error("build_character_frames : vélo : hauteur ≠ marche (ancrage)")
+		_errors += 1
+	for dir: String in ROWS:
+		var idle := StringName("bike_idle_" + dir)
+		frames.add_animation(idle)
+		frames.set_animation_loop(idle, true)
+		frames.set_animation_speed(idle, 1.0)
+		frames.add_frame(idle, _atlas(stop_texture, stop_cell, IDLE_COLUMNS[dir], 0))
+		_add_cycle(frames, StringName("bike_walk_" + dir), ride_texture, ride_cell, ROWS[dir],
+			4.0 / (2.0 * BIKE_STEP))
+
+
+## `<prefix>_<dir>` : une image chacune, colonnes bas, gauche, droite, haut.
+func _add_poses(frames: SpriteFrames, prefix: String, sheet: Dictionary) -> void:
+	var texture := load(sheet["fichier"]) as Texture2D
+	var cell := Vector2(sheet["cellule"][0], sheet["cellule"][1])
+	for dir: String in ROWS:
+		var anim := StringName("%s_%s" % [prefix, dir])
+		frames.add_animation(anim)
+		frames.set_animation_loop(anim, false)
+		frames.set_animation_speed(anim, 1.0)
+		frames.add_frame(anim, _atlas(texture, cell, IDLE_COLUMNS[dir], 0))
 
 
 ## Poses à genoux : `pray` (dos, deux images, boucle lente), `pray_left`, `pray_front`.

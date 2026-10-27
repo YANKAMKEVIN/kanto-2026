@@ -14,6 +14,7 @@ extends SceneTree
 ## `game/boot.tscn` (HUD, titre de zone, garde, scènes) avec le départ `--start=` (défaut
 ## `pewter`) puis le joueur posé sur `--cell` ; `--interact` (avec `--boot`) : « interagir »
 ## après 10 images ; `--flags=a,b` (avec `--boot`) : drapeaux levés avant de poser le joueur ;
+## `--mount=bike`, `--pose=fish_wait` : héros en selle ou en pose de pêche (DAF.5) ;
 ## `--hold=right` (avec `--boot`) : direction maintenue après 10 images (poussée contre un bord
 ## de carte, jalon 12 T8). Série complète : `tools/capture_pewter.sh`. 2340 × 1080 : `override.cfg` temporaire à la
 ## racine (taille de fenêtre), retiré après.
@@ -51,6 +52,10 @@ func _setup() -> void:
 		var player: Node = (load("res://game/player/player.tscn") as PackedScene).instantiate()
 		map.call(&"spawn_player_at", player, cell, facing)
 		player.call(&"set_input_enabled", false)
+		if _args.get("mount", "") == "bike":  # DAF.5 : héros à vélo (série 25)
+			player.call(&"set_mount", Mount.Kind.BIKE, true)
+		if _args.has("pose"):  # DAF.5 : pose tenue (fish_cast, fish_wait)
+			player.call(&"set_pose", StringName(_args["pose"]))
 		if _args.has("steps"):
 			var step: PackedStringArray = String(_args["steps"]).split(":")
 			_walk(player, _direction(step[0]), int(step[1]))

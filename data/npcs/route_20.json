@@ -91,7 +91,7 @@
 	"bastien": {
 		"cell": [51, 14],
 		"facing": "up",
-		"sprite": "naturalist",
+		"sprite": "bird_keeper",
 		"dialogue": "route_20_bird_keeper_bastien_after",
 		"trainer": {
 			"id": "route_20_bird_keeper_bastien",

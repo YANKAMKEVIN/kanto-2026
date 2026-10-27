@@ -54,6 +54,16 @@ var invulnerable: bool = false
 ## aucun repos). Action imposée comme une charge ; perdu au changement, au K.O. et à la fin du
 ## combat (un nouveau Battler à chaque envoi ; jamais sauvegardé).
 var recharge_slot: int = -1
+## Jalon 23 (T18) : poison grave de Toxik ([ToxicRules]) : vrai si le statut POISON du Pokémon est
+## grave, et compteur N (dégâts N/16 en fin de tour). Perdus au changement et à la fin du combat
+## (un nouveau Battler à chaque envoi ; jamais sauvegardés) : le Pokémon garde un poison simple.
+var toxic: bool = false
+var toxic_counter: int = ToxicRules.OFF
+## Riposte (jalon 27, Rouge/Bleu) : dégâts du dernier coup reçu de la capacité adverse la plus
+## récente, si elle est de type Normal ou Combat (Lutte comprise) ; 0 sinon (aucun coup, autre
+## type, capacité sans dégâts, Riposte). Remis à 0 chaque fois que l'adversaire lance une
+## capacité. Perdu au changement (un nouveau Battler à chaque envoi ; jamais sauvegardé).
+var counter_damage: int = 0
 ## Jalon 30 (Q30-3, capacités de la Ligue ; jamais sauvegardé, perdu au changement et au K.O.) :
 ## Frénésie en cours (chaque coup direct reçu monte l'Attaque ; finit dès qu'il lance autre chose),
 ## Mania / Danse Fleur (emplacement imposé et tours restants après celui-ci ; −1 = aucune),

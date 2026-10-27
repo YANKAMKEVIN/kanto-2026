@@ -62,7 +62,7 @@
 			"bulbasaur": [
 				{ "species": "pidgeotto", "level": 20, "moves": ["sand_attack", "quick_attack"] },
 				{ "species": "exeggcute", "level": 20 },
-				{ "species": "sandshrew", "level": 20 },
+				{ "species": "gyarados", "level": 20, "moves": ["bite", "dragon_rage", "leer"] },
 				{ "species": "kadabra", "level": 17, "moves": ["confusion", "psybeam"] },
 				{ "species": "charmeleon", "level": 21, "moves": ["scratch", "growl", "ember", "leer"] }
 			],

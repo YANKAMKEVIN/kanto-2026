@@ -42,13 +42,15 @@ const J21_FILES: Array[String] = [
 	"res://tools/debug_start/fuji_flute_qa.json", "res://tools/debug_start/j21_full_qa.json",
 	"res://tools/debug_start/route_12_qa.json", "res://tools/debug_start/snorlax_16_qa.json",
 ]
-## Départs de débogage du J22 (Routes 12 sud à 18, Parmanie) : ils supposent le J21 joué et posent
+## Départs de débogage du J22 (Routes 12 sud à 18, Parmanie) et du J23 (Koga) : ils supposent le J21 joué et posent
 ## donc ses drapeaux de Ronflex (fusion de `main` dans `jalon-22`, 2026-10-23).
 const J22_STARTS: Array[String] = [
 	"res://tools/debug_start/bike_qa.json", "res://tools/debug_start/cycling_road_nobike_qa.json",
 	"res://tools/debug_start/cycling_road_qa.json", "res://tools/debug_start/fishing_qa.json",
 	"res://tools/debug_start/fuchsia_qa.json", "res://tools/debug_start/j22_full_qa.json",
 	"res://tools/debug_start/route_15_qa.json",
+	# J23 (fusion de `main` dans `jalon-23`, 2026-10-23) : départ de l'Arène de Koga, même règle.
+	"res://tools/debug_start/koga_qa.json",
 ]
 ## Préfixes de fichiers du J21 (Route 12 et son poste, Route 16 : cartes nouvelles du J21).
 const J21_PREFIXES: Array[String] = ["route_12", "route_16"]

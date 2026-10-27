@@ -19,6 +19,9 @@ extends Marker2D
 ## cible dès qu'un de ces drapeaux est levé (`got_<id>` : l'objet est trouvé, le bouton
 ## EXAMINER disparaît). Vide = toujours une cible. Recopié dans chaque [Interaction].
 @export var unless_flags: Array[StringName] = []
+## Jalon 28 : le point n'est plus une cible quand **tous** ces drapeaux sont levés (porte de
+## l'Arène de Jadielle). Vide = sans effet. Recopié dans chaque [Interaction].
+@export var unless_all_flags: Array[StringName] = []
 ## Jalon 16 (jalon-16.md §2.6) : objet à fouiller d'un puzzle d'interrupteurs ([SwitchPuzzle]) :
 ## identifiant du puzzle (`data/world/switch_puzzles.json`) et place de l'objet dans sa grille
 ## (1..n, ligne par ligne). &"" / 0 = point ordinaire. Recopiés dans chaque [Interaction].
@@ -52,6 +55,7 @@ func to_interactions() -> Array[Interaction]:
 	for cell: Vector2i in get_cells():
 		var interaction := Interaction.new(kind, cell, dialogue_id, facing, null)
 		interaction.unless_flags = unless_flags.duplicate()
+		interaction.unless_all_flags = unless_all_flags.duplicate()
 		interaction.puzzle = puzzle
 		interaction.puzzle_slot = puzzle_slot
 		result.append(interaction)

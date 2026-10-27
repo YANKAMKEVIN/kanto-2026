@@ -129,6 +129,8 @@ extends RefCounted
 ## valent partout où un acteur ou une cible d'acteur est attendu : face (acteur et cible),
 ## move (acteur, near, follower), hop (acteur, near), lean (acteur et cible), despawn. La
 ## bibliothèque ne vérifie que leur forme ([method Cutscene.get_aliases] les énumère).
+## Jalon Son (T6) : toute étape sauf spawn accepte « music » (morceau ou moment, « stop » ;
+## [member CutsceneStep.music]).
 ## Toute clé inconnue est une erreur (faute de frappe). Une scène invalide est écartée
 ## **entière**, l'erreur est signalée ([method get_errors], push_error).
 
@@ -150,10 +152,11 @@ const _EXTRA_KEYS: Array[Array] = [
 	["level", "flag", "say", "say_stored"],
 	[], # Jalon 21 : flute
 	[], [], ["wrong", "refuse", "say"],
+	[], # J23 : safari
 	[], [], # Jalon 30 : hall_of_fame, credits
 ]
-## Conditions permises sur toute étape sauf spawn.
-const _CONDITION_KEYS: Array[String] = ["if", "unless"]
+## Conditions permises sur toute étape sauf spawn ; « music » (jalon Son, T6) aussi.
+const _CONDITION_KEYS: Array[String] = ["if", "unless", "music"]
 
 var _cutscenes: Dictionary[StringName, Cutscene] = {}
 var _errors: PackedStringArray = PackedStringArray()
@@ -490,6 +493,9 @@ func _parse_step(value: Variant, where: String) -> CutsceneStep:
 		ok = _check_keys(entry, allowed, where)
 		ok = _read_flags(entry, "if", step.if_flags, where) and ok
 		ok = _read_flags(entry, "unless", step.unless_flags, where) and ok
+		if entry.has("music"):
+			ok = _read_id(entry["music"], where + " music", func(v: StringName) -> void:
+				step.music = v) and ok
 	var main: Variant = entry[type_key]
 	match step.kind:
 		CutsceneStep.Kind.WAIT:
@@ -621,6 +627,12 @@ func _parse_step(value: Variant, where: String) -> CutsceneStep:
 		CutsceneStep.Kind.FLUTE: # Jalon 21
 			if not main is bool or not main:
 				ok = _fail("%s : « flute » vaut true" % where)
+		CutsceneStep.Kind.SAFARI: # J23
+			if not main is String or not CutsceneStep.SAFARI_ACTIONS.has(main):
+				ok = _fail("%s : « safari » vaut %s" % [where,
+					", ".join(PackedStringArray(CutsceneStep.SAFARI_ACTIONS))])
+			else:
+				step.text = main
 		CutsceneStep.Kind.HALL_OF_FAME, CutsceneStep.Kind.CREDITS: # Jalon 30
 			if not main is bool or not main:
 				ok = _fail("%s : « %s » vaut true" % [where, type_key])

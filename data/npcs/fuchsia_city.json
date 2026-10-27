@@ -34,5 +34,11 @@
 		"facing": "up",
 		"sprite": "beauty",
 		"dialogue": "fuchsia_city_femme_enclos"
+	},
+	"enclos_kangourex": {
+		"cell": [40, 7], "facing": "down", "sprite": "pokemon/kangaskhan", "idle_react": 6.0
+	},
+	"enclos_ramoloss": {
+		"cell": [50, 7], "facing": "left", "sprite": "pokemon/slowpoke", "idle_react": 8.0
 	}
 }

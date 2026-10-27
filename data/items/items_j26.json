@@ -1,0 +1,7 @@
+{
+	"master_ball": {
+		"name": "Master Ball", "plural": "Master Balls", "feminine": true,
+		"category": "ball", "catch_bonus": 1000,
+		"description": "La meilleure Ball qui soit. Elle attrape à coup sûr n'importe quel Pokémon sauvage."
+	}
+}

@@ -671,3 +671,13 @@ Décisions de Kevin du 2026-10-26 (« Oui, les trois »), relayées par la coord
   du garde, écran Dresseur avec « Panthéon », consultation).
 - Remarque de rendu (Reportés) : sur l'écran Dresseur, les liens « vus » / « capturés » sont
   coupés par le bas de l'écran en 2340 × 1080 (déjà avant le J30).
+
+### 10.12 Fusion dans `main` (2026-10-27)
+
+Validations de Kevin : QA 30B et 30C par agent sur S24 sans bloquant ; textes du générique et du
+Grand moment validés le 2026-10-26 ; **QA 30A de sauvegarde faite par Kevin sur le S24 le
+2026-10-27** (salle d'Agatha avec une vraie sauvegarde : menu sauvegarder, verrouillage pendant le
+combat, appli fermée, arrière-plan, arrêt forcé : « oui je me retrouve bien au même endroit »).
+Fusion de `origin/main` (`d3c9bd36`) dans `prep/main-j30`, puis `--no-ff` dans `main` après une CI
+verte. Conflits, doublons retirés et valeurs [D] : `etat-projet.md` (2026-10-27) et
+`reportes.md` §2.13. `StaticRespawn.on_league_won` (N-17, N-18) : à brancher à la fusion du J32.

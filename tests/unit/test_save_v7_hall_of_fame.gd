@@ -1,9 +1,9 @@
 extends GutTest
 ## Panthéon dans la sauvegarde (jalon 30, sous-jalon 30A, T7 ; `jalon-30.md` §2.6, §5, §6 n° 5).
-## « hall_of_fame » est un champ **facultatif** de la v7, comme « mount » (passe systèmes 2) :
-## aucune nouvelle version ; écrit seulement si le Panthéon n'est pas vide ; une sauvegarde sans
-## le champ (v7 du J15, ou v8 du J23 quand elle existera) se relit avec un Panthéon vide et se
-## réécrit à l'identique.
+## « hall_of_fame » est un champ **facultatif**, comme « mount » (passe systèmes 2) : aucune
+## nouvelle version (v7 au J30, v8 depuis le J23, fusionné avant lui dans main) ; écrit seulement si
+## le Panthéon n'est pas vide ; une sauvegarde sans le champ (v7 du J15, v8 du J23) se relit avec un
+## Panthéon vide et se réécrit à l'identique (une v7 passe en v8, rien d'autre ne change).
 ## **Système de sauvegarde : à valider seul par Kevin sur le téléphone (règle 1 de CLAUDE.md).**
 
 const MemoryFs := preload("res://tests/helpers/memory_file_system.gd")
@@ -49,7 +49,7 @@ func _entry_of(state: Node) -> Dictionary:
 
 
 func test_no_new_save_version() -> void:
-	assert_eq(SaveSystem.VERSION, 7, "champ facultatif : la version ne change pas")
+	assert_eq(SaveSystem.VERSION, 8, "champ facultatif : la version reste celle du J23 (v8)")
 
 
 func test_an_empty_hall_writes_no_field() -> void:
@@ -106,8 +106,10 @@ func test_a_v7_save_without_the_field_loads_and_rewrites_unchanged() -> void:
 	assert_true(state.load_dict(content, _data), "chargée sans entrée écartée")
 	assert_true(state.hall_of_fame.is_empty(), "Panthéon vide")
 	assert_eq(_save.write(state.to_dict()), OK)
-	assert_eq(JSON.parse_string(_fs.files[PATH]), JSON.parse_string(JSON.stringify(v7)),
-		"réécrite à l'identique, sans « hall_of_fame »")
+	var v8: Dictionary = v7.duplicate(true)
+	v8["version"] = SaveSystem.VERSION
+	assert_eq(JSON.parse_string(_fs.files[PATH]), JSON.parse_string(JSON.stringify(v8)),
+		"réécrite à l'identique (passée en v8), sans « hall_of_fame »")
 
 
 func test_a_v6_save_is_migrated_and_gets_an_empty_hall() -> void:

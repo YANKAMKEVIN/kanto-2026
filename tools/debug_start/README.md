@@ -69,6 +69,7 @@ rm "$HOME/Library/Application Support/Godot/app_userdata/Kanto 2026/debug_start.
 | `brock_bulbasaur.json` | J10 (T16) : même départ, Bulbizarre N12 (sans Fouet Lianes, appris au N13) et Roucool N10 (rival : Salamèche), 3 Potions |
 | `brock_kevin.json` | J10 (T16) : **la vraie équipe de Kevin** en fin de J9 (QA T22) après la Route 2 nord : Salamèche N11 (Griffe, Rugissement, Flammèche) en tête, Roucool N9, Chenipan N6 et N5, Rattata N3, Nidoran♂ N3, 1 Potion, 3 Antidotes, 2 Poké Balls, 1 396 ₽ (4 Potions achetables à la Boutique). Les IV de la vraie partie (Salamèche : Attaque et Att. Spé. à 1) ne sont pas reproduits : `DebugStart` les tire |
 | `badge_after.json` | J10 (T8) : Badge Roche obtenu (`badge_boulder`, `brock_met`, Liam battu), dans l'Arène (spawn `entrance`) : réactions au badge (guide, enfant, Dresseuse, Montagnard), allusion de Pierre au rival, objectif « continuer vers la Route 3. », garde de la Route 3 qui se décale. **Aucun Grand moment « badge »** (il est enregistré par l'étape `badge` de la vraie scène, T9) |
+| `long_names_qa.json` | Clôture du J23 (2026-10-27) : cartes de combat aux noms longs sur téléphone. Route 1 (spawn `from_pallet_w`), **Grotadmorv N100 empoisonné** (Toxik, Détritus, Lilliput, Entrave) et **Roucarnage N100** ; herbes forcées : **Roucarnage** et **Dracaufeu N100** (taux 200). Monter 6 cases, 5 à droite, 3 en haut : herbes. Toxik sur l'adversaire → « PSN+ » sur sa carte. Sert aussi à voir l'orientation des adversaires (deux espèces retournées) |
 | `status_qa.json` | J11 (11A, T9) : QA des statuts **sans carte de QA** (écart au plan : clé `wild`). Route 1 (spawn `from_pallet_w`), fin du J9 (`poison_unlocked`). Équipe : Salamèche N18 (Flammèche : brûlure), Papilusion N17 (Choc Mental, Poudre Toxik, Para-Spore, Poudre Dodo), Nidoran♂ N16 (Puissance, Double Pied), Rattata N16 **brûlé** (Croc de Mort, Croc Fatal), Pikachu N14 **endormi 3 tours** (clé de membre `status_turns`), Roucool N12 **paralysé** (Frappe Atlas) ; Piafabec N10 **gelé** au Stockage. Sac : 10 Potions, 5 Poké Balls, 3 de chaque remède, 2 Antigels ; 5 000 ₽. Clé **`wild`** : les herbes de la Route 1 donnent, pour la session, Pikachu N12 (Cage-Éclair), Papilusion N17 (Para-Spore, Poudre Dodo, Choc Mental), Dardargnan N16 (Furie, Puissance), Rattata N14 (Croc de Mort), taux 60. Rien n'est sauvegardé |
 | `daycare_v7_qa.json` | J15 (15.0, T2/T3) : Salamèche N12, Roucool N9, Chenipan N5 au Stockage, et **Rattata N10 à la Pension avec 500 XP en attente** (clé `daycare` : un membre + `pending_exp`), 3 000 ₽, devant la porte du Centre de Jadielle (spawn `from_center`). **Clé `autosave: true` : ce départ REMPLACE `user://save.json`** (copier d'abord la vraie sauvegarde). Relancer ensuite **sans** départ : le journal affiche « [qa] pension relue : Rattata N10 (dépôt N10), 500 XP en attente, uid … » et `save.json` contient `"daycare"` (version 7). Aucune Pension visible en jeu avant le T4 |
 | `s2_save.json` | Passe systèmes 2 (S2A, T5) : copie de `route_3.json` (fin du J10, Reptincel N17 compagnon, Papilusion N15, Roucool N14, 5 Poké Balls, 5 Potions, 2 Antidotes, 4 300 ₽, entrée ouest de la Route 3) **avec `autosave: true` : ce départ REMPLACE `user://save.json`** (copier d'abord la vraie sauvegarde). Retirer ensuite `files/debug_start.json` pour que chaque relance lise la sauvegarde. Hugo (goulet, inévitable) : dialogue + combat ; herbes H4 ; Argenta à l'ouest : changement de carte. Interruptions réelles pendant un dialogue, un combat, une scène ; le journal affiche « [save] point de reprise : … µs » et « Sauvegarde du point de reprise (…) » |
@@ -146,7 +147,8 @@ et l'IA qui creuse sont couverts par les tests de combat ; Abra se rencontre sur
 | `pokemon_tower_1f.json` | J18 (T24) : même partie + `lavender_reached`, dans la Tour Pokémon à l'entrée (spawn `entrance`, tourné vers le nord) : gardien, visiteurs, tombes, Exorciste devant l'escalier (T-34 puis T-35, objectif « Revenir plus tard à la Tour Pokémon. ») |
 | `dark_cave_1f.json` | J18 (T20) : Pikachu N20, Reptincel N22, Roucarnage N19, **sans CS05** (Flash indisponible), 5 Potions, 2 Super Potions, 2 Antidotes, 2 Cordes Sortie, à l'entrée nord de la Grotte Sombre (spawn `from_route_10_n_w`, tourné vers le sud) : voile sombre et « Il fait très sombre ici… » une fois |
 | `dark_cave_1f_flash.json` | J18 (T20) : comme `dark_cave_1f` avec la **CS05** au Sac et Pikachu (compatible) : Flash automatique à l'entrée, « Pikachu utilise Flash ! » |
-| `dark_cave_b1f.json` | J18 (T20) : comme `dark_cave_1f_flash`, à l'arrivée de l'échelle A du B1F (spawn `arrivee_a`) : colonne, flaque, passage étroit (Marcel), racines (Super Potion cachée). L'arrivée de l'échelle B (`arrivee_b`, côté Marcel) n'a pas de départ : copier le fichier et changer `spawn` (QA du 2026-10-19) |
+| `dark_cave_b1f.json` | J18 (T20) : comme `dark_cave_1f_flash`, à l'arrivée de l'échelle A du B1F (spawn `arrivee_a`) : colonne, flaque, passage étroit (Marcel), racines (Super Potion cachée). L'arrivée de l'échelle B a son propre départ (ligne suivante) |
+| `dark_cave_b1f_b.json` | Registre des reportés (RP, 2026-10-26) : comme `dark_cave_b1f`, à l'arrivée de l'échelle B (spawn `arrivee_b`, côté Marcel) |
 
 La carte de QA `qa_switch_j13` (J13, T14), ses données, son outil de construction et de capture,
 son test et le départ `switch_qa` ont été **retirés au T22** (les Dresseurs qui changent de
@@ -308,6 +310,48 @@ reste éprouvée par `test_cutscene_static_encounter.gd` et `test_cutscene_stati
 | `route_12_qa.json` | Lavanville, bord sud (spawn `from_route_12`, tourné ↓) : équipe de référence du J21 [D] (Reptincel N33, Roucarnage N30, Papilusion N28, Évoli N25, Nidorino N28 **endormi**, Abo N26 **empoisonné**), 10 Poké Balls, 10 Super Potions, 3 Réveils, Corde Sortie, Scope Sylphe et **Poké Flûte**, 5 000 ₽, Badges jusqu'au Prisme. Pêcheurs non battus, `got_tm39` absent : descendre le ponton (Pêcheur Ned inévitable), poste traversé (CT39 au 2F), Ronflex au croisement |
 
 | `poke_flute_qa.json` | J21 (T20) : Route 12, `from_route_11` (0, 93..94) tourné →, à 24 cases à l'ouest de Ronflex ; mêmes équipe et Sac que `route_12_qa` (Poké Flûte, Nidorino endormi) [D : sans table « Paras » forcée] |
+| `cerulean_cave.json` | J31 (T5, 31A) : après la Ligue (`league_champion_defeated`, 8 Badges), Tortank N65 (**Surf**) en tête, Dracaufeu, Raichu, Roucarnage, Florizarre, Nidoking N60–63, **CS03**, 30 Hyper Balls, 10 Guérisons, 5 Rappels Max, Super Canne, 50 000 ₽, à Azuria devant le Centre (spawn `from_center`) : canal, Surf depuis le quai est vers la baie, bouche de la Grotte Azurée sur l'îlot (52..53, 6) → `cerulean_cave_1f` |
+| `cerulean_cave_locked.json` | J31 (T5) : même partie, 8 Badges et Conseil des Quatre vaincu dans une tentative, **sans** titre de Champion : la bouche est fermée (case occupée ; EXAMINER face à elle → « Les eaux sont trop agitées. Pas maintenant. ») |
+| `cerulean_cave_1f.json` | J31 (T6–T8) : partie de `cerulean_cave`, `cerulean_cave_discovered` posé, **dans la grotte** à l'entrée du 1F (spawn `entree` (24, 16), tourné ↑) : sol haut et escaliers, Surf sur le lac, échelles P1–P7, objets (Guérison et Max Élixir à prendre **depuis l'eau**), Super Bonbon caché (indice (14, 11), depuis (14, 12)), rencontres, Super Canne ; bouche (24..25, 17) → Azuria |
+| `cerulean_cave_mewtwo.json` | J31 (T9) : même partie, au B1F **devant Mewtwo** (spawn de débogage `mewtwo_front` (27, 12), tourné ↓) : cri puis combat N70 ; fuite → il reste ; capture ou K.O. → absent (Hyper Balls : pas de Master Ball avant le J26) |
+| `cerulean_cave_mewtwo_capture.json` | J31 (T10) : comme `cerulean_cave_mewtwo`, mais **Raichu N60 en tête** avec Cage-Éclair, Croc Fatal, Frappe Atlas et Tonnerre : paralyser puis affaiblir Mewtwo avant les Hyper Balls (QA de la capture puis de son absence) |
+| `cerulean_cave_p7.json` | J31 (T10) : partie de `cerulean_cave_1f`, au 1F **devant l'échelle P7** (spawn `arrivee_p7` (0, 7), tourné ↑) : un pas en haut → B1F (2, 6) ; un pas à l'est sur l'échelle (3, 6) → retour au 1F |
+
+## Jalon 23 (Parc Safari, CS03, CS04, Koga)
+
+| Fichier | Partie |
+|---|---|
+| `koga_qa.json` | Entrée de l'Arène de Parmanie (spawn `entree`, tourné ↑), équipe d'environ N40 (Dracaufeu, Kadabra, Voltali, Aquali, Nidoking, Roucarnage), CS01 et **CS03** au Sac, Badges jusqu'au Prisme (pas le Badge Âme). Murs invisibles, six Dresseurs, Koga (défaite → Centre de Parmanie), Badge Âme et CT06 ; ensuite, Surf au bouton d'action sur la rive de la Route 19. Sert à `test_koga_flow` et `test_j23_surf_after_koga` : **gardé à la clôture** |
+
+Départs `safari_qa`, `safari_end_qa` et `warden_qa` (et leur test `test_j23_qa_starts`)
+**retirés à la clôture (T24)** ; la clé `safari` (visite en cours : `steps_left`, `balls_left`)
+reste éprouvée par `test_debug_start`.
+
+## Jalon 26 (T14) : Safrania et la Sylphe SARL (`docs/tech/jalon-26.md` §2.6)
+
+Le **starter** de la partie est le premier de l'équipe (`DebugStart`) : le rival n° 6 (`rival_silph`)
+lit `starter_species`, d'où le starter **non évolué** en tête de chaque départ (N38 ou N42) [D].
+Drapeaux de base : `silph_1f` (J20 terminé) plus la Tour (`rival_tower_won`) et Erika.
+
+| Fichier | Partie |
+|---|---|
+| `saffron_gate.json` | Poste de la Route 8 (spawn `entrance`, tourné ↑), postes **fermés**, une **Eau Fraîche** au Sac, équipe N38 : la donner au garde, entrer dans Safrania occupée |
+| `silph_1f.json` | Sylphe 1F (spawn `from_city`), Safrania occupée, sans Carte, équipe N38 (Salamèche en tête) |
+| `silph_5f.json` | 5F, sortie de l'ascenseur (spawn `from_elevator`), sans Carte : la Carte Magnétique est en (21, 16) |
+| `silph_7f_rival_bulbasaur.json`, `silph_7f_rival_charmander.json`, `silph_7f_rival_squirtle.json` | 7F, sur la dalle (5, 3) venue du 3F (spawn `tp_5`, tourné ←), Carte au Sac : deux pas vers l'ouest → le rival (trois équipes selon le starter en tête) ; après la victoire, l'employé (1, 5) donne Lokhlass |
+| `silph_11f.json` | 11F, sur la dalle (3, 2) venue du 7F (spawn `tp_4`), rival battu, porte du bureau ouverte, Sbire de l'ouest battu, équipe N42 : entrer dans le bureau → Giovanni ; puis le président (Master Ball) |
+| `saffron_free.json` | Safrania libérée (spawn `from_silph`), Lokhlass N15 dans l'équipe, Master Ball au Sac, point de repos `saffron_center` |
+
+## Jalon 27 (T11) : Arène de Morgane et Dojo de Combat (`docs/tech/jalon-27.md` §2.6)
+
+Base : `saffron_free.json` (Safrania libérée, équipe N42, Salamèche en tête) [D].
+
+| Fichier | Partie |
+|---|---|
+| `saffron_gym.json` | Arène de Safrania, à l'entrée (spawn `entrance`, tourné ↑), Safrania libérée : chercher Morgane par les tapis |
+| `sabrina.json` | Arène, sur le tapis du centre (11, 11) (spawn `tp_19`) : deux pas vers Morgane (9, 8), on lui parle depuis (9, 9) |
+| `fighting_dojo.json` | Dojo, à l'entrée, **Safrania occupée** (Sylphe non libérée, ni Carte ni Master Ball) : le Dojo est jouable avant la libération |
+| `dojo_choice.json` | Dojo, maître déjà battu (`fighting_dojo_master_defeated`), **équipe pleine** (6) : examiner une Ball, OUI → le Pokémon va au Stockage |
 
 ## Jalon 29 : Route 22 (rival n° 7), Route 23, Route Victoire, Plateau Indigo
 
@@ -333,6 +377,9 @@ jusqu'à l'Âme. Aucune carte de QA (`qa_manoir`, `qa_cramois` du plan jamais cr
 | `j25_echanges.json` | Cramois'Île devant le Labo (`from_labo`, ↑), Tortank, Raichu N42 **compagnon**, Ponyta N30, Pikachu N25, Vieil Ambre au Sac : échanges d'Hector (Raichu), Marc (Ponyta), Lina (refus sans Mimitoss), Ptéra N30 |
 | `j25_argenta.json` | Argenta devant le Musée (`from_museum`, ↓), Tortank N46 et Herbizarre N30 (Coupe) : arbre à Couper, porte arrière, comptoir, Vieil Ambre |
 | `j25_arene.json` | Cramois'Île devant l'Arène (`from_arene`, ↑), **Clé Secrète** et `got_pokemon_mansion_b1f_item_5` : porte (76–77), quiz, Dresseurs, Auguste, Badge Volcan, CT38 ; perdu au premier essai sur le S24 (`jalon-25-equilibrage.md` §5) |
+| `fx_gallery.json` | Combat vivant (CV.0, T8) : **galerie d'effets** à la place de la partie (clé `fx_gallery`) : une attaque par famille en boucle sur le décor de la Route 1, en Complètes ; le journal écrit `[galerie] <attaque> fps=… min=…` puis `[galerie] cycle …` à chaque tour (mesure du §2.8) |
+| `fx_gallery_fast.json` | Même galerie en mode Rapides |
+
 ## Jalon 30 (T9) : la Ligue Pokémon
 
 Départs qui commencent **dans** la Ligue (salles en tuiles provisoires, `tools/build_j30_league.gd`).

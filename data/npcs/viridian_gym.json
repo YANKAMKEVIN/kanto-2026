@@ -1,0 +1,157 @@
+{
+	"yannick": {
+		"cell": [
+			14,
+			9
+		],
+		"facing": "down",
+		"sprite": "camper",
+		"dialogue": "viridian_gym_cooltrainer_yannick_after",
+		"trainer": {
+			"id": "viridian_gym_cooltrainer_yannick",
+			"sight": 4,
+			"before": "viridian_gym_cooltrainer_yannick_before",
+			"defeated": "viridian_gym_cooltrainer_yannick_defeated"
+		}
+	},
+	"bertrand": {
+		"cell": [
+			13,
+			13
+		],
+		"facing": "up",
+		"sprite": "hiker",
+		"dialogue": "viridian_gym_blackbelt_bertrand_after",
+		"trainer": {
+			"id": "viridian_gym_blackbelt_bertrand",
+			"sight": 4,
+			"before": "viridian_gym_blackbelt_bertrand_before",
+			"defeated": "viridian_gym_blackbelt_bertrand_defeated"
+		}
+	},
+	"lionel": {
+		"cell": [
+			12,
+			9
+		],
+		"facing": "down",
+		"sprite": "rocker",
+		"dialogue": "viridian_gym_tamer_lionel_after",
+		"trainer": {
+			"id": "viridian_gym_tamer_lionel",
+			"sight": 4,
+			"before": "viridian_gym_tamer_lionel_before",
+			"defeated": "viridian_gym_tamer_lionel_defeated"
+		}
+	},
+	"didier": {
+		"cell": [
+			5,
+			9
+		],
+		"facing": "left",
+		"sprite": "hiker",
+		"dialogue": "viridian_gym_blackbelt_didier_after",
+		"trainer": {
+			"id": "viridian_gym_blackbelt_didier",
+			"sight": 2,
+			"before": "viridian_gym_blackbelt_didier_before",
+			"defeated": "viridian_gym_blackbelt_didier_defeated"
+		}
+	},
+	"florian": {
+		"cell": [
+			15,
+			7
+		],
+		"facing": "right",
+		"sprite": "camper",
+		"dialogue": "viridian_gym_cooltrainer_florian_after",
+		"trainer": {
+			"id": "viridian_gym_cooltrainer_florian",
+			"sight": 3,
+			"before": "viridian_gym_cooltrainer_florian_before",
+			"defeated": "viridian_gym_cooltrainer_florian_defeated"
+		}
+	},
+	"joel": {
+		"cell": [
+			12,
+			3
+		],
+		"facing": "down",
+		"sprite": "hiker",
+		"dialogue": "viridian_gym_blackbelt_joel_after",
+		"trainer": {
+			"id": "viridian_gym_blackbelt_joel",
+			"sight": 4,
+			"before": "viridian_gym_blackbelt_joel_before",
+			"defeated": "viridian_gym_blackbelt_joel_defeated"
+		}
+	},
+	"regis": {
+		"cell": [
+			4,
+			18
+		],
+		"facing": "right",
+		"sprite": "rocker",
+		"dialogue": "viridian_gym_tamer_regis_after",
+		"trainer": {
+			"id": "viridian_gym_tamer_regis",
+			"sight": 3,
+			"before": "viridian_gym_tamer_regis_before",
+			"defeated": "viridian_gym_tamer_regis_defeated"
+		}
+	},
+	"damien": {
+		"cell": [
+			8,
+			7
+		],
+		"facing": "down",
+		"sprite": "camper",
+		"dialogue": "viridian_gym_cooltrainer_damien_after",
+		"trainer": {
+			"id": "viridian_gym_cooltrainer_damien",
+			"sight": 4,
+			"before": "viridian_gym_cooltrainer_damien_before",
+			"defeated": "viridian_gym_cooltrainer_damien_defeated"
+		}
+	},
+	"giovanni": {
+		"cell": [
+			4,
+			3
+		],
+		"facing": "down",
+		"sprite": "giovanni",
+		"dialogue": "viridian_gym_giovanni",
+		"unless": [
+			"tm27_received"
+		]
+	},
+	"gym_guide": {
+		"cell": [
+			18,
+			17
+		],
+		"facing": "down",
+		"sprite": "gym_guide",
+		"dialogue": "viridian_gym_guide"
+	},
+	"viridian_gym_item_1": {
+		"cell": [
+			18,
+			11
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "viridian_gym_item_1",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_viridian_gym_item_1"
+		]
+	}
+}

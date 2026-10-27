@@ -119,6 +119,9 @@ var companion_uid: String = ""
 ## ([method ensure_unique_uids]) et n'est jamais compagnon ([method get_companion] ne cherche
 ## que dans l'équipe).
 var daycare: Daycare = Daycare.new()
+## Visite du Parc Safari en cours (J23, dossier 26 §11, `jalon-23.md` §2.15 ; sauvegarde v8, champ
+## « safari »). Inactive hors visite ; seul [SafariDirector] la modifie en jeu.
+var safari: SafariVisit = SafariVisit.new()
 ## Panthéon (jalon 30, sous-jalon 30A ; `jalon-30.md` §2.4, §2.6) : une entrée immuable par
 ## victoire à la Ligue ([HallOfFame]). Même instance pendant toute la session (vidée par
 ## [method new_game]). Champ facultatif « hall_of_fame » de la v7, écrit seulement s'il n'est
@@ -168,6 +171,7 @@ func new_game(rng_seed: int = -1) -> void:
 	first_wild_encounter = {}
 	companion_uid = ""
 	daycare = Daycare.new()
+	safari = SafariVisit.new()
 
 
 # --- Faits (§16.3), appelés par la scène (tâche S2) ------------------------------------
@@ -328,6 +332,10 @@ func to_dict() -> Dictionary:
 		result["mount"] = String(Mount.to_name(player_mount))
 	if last_land_cell != player_cell:
 		result["last_land_cell"] = JsonFields.vector2i_to_array(last_land_cell)
+	# J23 (v8, `jalon-23.md` §2.15) : visite du Parc Safari ({ active, steps_left, balls_left }),
+	# écrite seulement pendant une visite (absente = aucune visite, comme « mount »).
+	if safari.active:
+		result["safari"] = safari.to_dict()
 	# Jalon 30 (30A, §2.6) : champ facultatif de la v7, absent tant que le Panthéon est vide.
 	if not hall_of_fame.is_empty():
 		result["hall_of_fame"] = hall_of_fame.to_array()
@@ -366,6 +374,9 @@ func load_dict(dict: Dictionary, data: PokemonData) -> bool:
 	ok = party.load_array(JsonFields.get_array(dict, "party"), data) and ok
 	ok = storage.load_array(JsonFields.get_array(dict, "storage"), data) and ok
 	ok = _load_daycare(dict, data) and ok
+	# J23 (v8) : visite absente ou invalide = aucune visite (SafariVisit.from_dict).
+	var safari_entry: Variant = dict.get("safari", {})
+	safari = SafariVisit.from_dict(safari_entry if safari_entry is Dictionary else {})
 	ensure_unique_uids()
 	ok = bag.load_dict(JsonFields.get_dict(dict, "bag")) and ok
 	ok = pokedex.from_dict(JsonFields.get_dict(dict, "pokedex")) and ok

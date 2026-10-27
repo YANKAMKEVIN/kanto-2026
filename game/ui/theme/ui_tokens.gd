@@ -316,6 +316,10 @@ const BATTLE_CARD_ROW_GAP := 4
 ## Écart entre le nom et le symbole du sexe, et entre « Nv. » et le niveau.
 const BATTLE_CARD_NAME_GAP := 10
 const BATTLE_CARD_NAME_FONT := FONT_BODY
+## Taille plancher du nom : un nom long (« GROTADMORV ») rétrécit jusqu'ici pour tenir en entier
+## dans BATTLE_CARD_WIDTH avec ♀, statut et « Nv. 100 » (QA 23E), jamais rogné. 22 et non 24 :
+## le pire cas des données (« DARDARGNAN ♀ BRÛ Nv. 100 ») descend à 23 (défaut, règle 4).
+const BATTLE_CARD_NAME_FONT_MIN := 22
 const BATTLE_CARD_LEVEL_FONT := FONT_CAPTION
 const BATTLE_CARD_LEVEL_VALUE_FONT := FONT_BODY
 const BATTLE_HP_NUMBERS_FONT := 28
@@ -340,6 +344,11 @@ const HP_LOW_THRESHOLD := 0.2
 const HP_TWEEN := 0.4
 const HP_TWEEN_FAST := 0.25
 const HP_BIG_HIT := 0.25
+## Trace des PV perdus (CV-9) : segment clair qui reste HP_TRAIL_HOLD s derrière la barre, puis
+## la rattrape en HP_TRAIL_CATCH s. Valeurs par défaut, provisoires.
+const HP_TRAIL_HOLD := 0.3
+const HP_TRAIL_CATCH := 0.25
+const HP_TRAIL_COLOR := Color(1, 1, 1, 0.7)
 ## Pulsation de la carte sous HP_LOW_THRESHOLD (dossier 05 §12) : demi-période et échelle.
 const HP_LOW_PULSE := 0.55
 const HP_LOW_PULSE_SCALE := 1.025

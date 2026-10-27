@@ -76,7 +76,7 @@ func test_hector_trades_his_electrode_for_a_raichu() -> void:
 	assert_has(_pages, "Merci !")
 	_pages.clear()
 	await _interact([])
-	assert_eq(_pages, ["Ton Raichu se porte à merveille !"] as Array[String], "une seule fois")
+	assert_eq(_pages, ["Comment va mon ancien Électrode ?"] as Array[String], "une seule fois")
 	assert_eq(GameState.party.size(), 2)
 
 

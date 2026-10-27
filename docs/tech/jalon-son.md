@@ -465,7 +465,7 @@ contrôle par agent.
 | **T5** | `GameSettings` + catégorie SON (Paramètres du menu et de l'écran titre) | Sonnet (ui-mobile) | ancien `settings.json` relu ; capture des Paramètres relue |
 | **T6** | `AudioBridge` : changement de carte, combat, jingles (soin, objet, Badge, capture, évolution), étape de cinématique `music` (clé facultative sur n'importe quelle étape, **sans nouvelle sorte** de `CutsceneStep.Kind`), Surf / Vélo | Opus | tests d'intégration ; rien ne change sans fichier son |
 | **T7** | Android : arrière-plan, bandeau d'appel, retour ; démarrage après le premier rendu | Sonnet | test `SessionLifecycle` étendu ; vérification S24 (T10) |
-| **T8** | Lot musique : obtenir les fichiers (SON-3), couper les boucles, normaliser, convertir en OGG q3, mesurer | Kevin + Sonnet | `measure_audio.py` : boucles sans clic, −16 LUFS ±1, poids dans le budget |
+| **T8** | Lot musique : partir des fichiers fournis par Kevin dans `~/Music/kanto-lets-go/` (SON-3 révisé : KHInsider), faire correspondre leurs noms à la table §2, couper les boucles, normaliser, convertir en OGG q3, mesurer | Kevin + Sonnet | `measure_audio.py` : boucles sans clic, −16 LUFS ±1, poids dans le budget |
 | **T9** | Intégration du lot musique (`tracks.json` passe de « attendu » à « présent ») | Sonnet | suite complète verte ; APK mesuré |
 | **T10** | **QA SonA sur S24** (agent, 30–45 min) : Bourg Palette → Route 1 → Jadielle (même morceau en intérieur, fondu au raccord), combat sauvage et Dresseur, victoire, reprise, Centre, objet, évolution (départ de débogage), Surf, Paramètres, arrière-plan, appel simulé | qa-mobile | rapport, aucun clic de boucle, aucun trou de son > 0,5 s, 60 i/s tenus |
 | — | **Validation SonA par Kevin sur S24** | Kevin | |
@@ -511,9 +511,81 @@ Musique dynamique par couches (exploration / danger), réverbération par lieu, 
 Pension ou des échanges en ligne, adaptation au casque. Le **volume relatif final** (mixage fin)
 est une remarque de rendu : notée dans « Reportés », corrigée en lot.
 
+## 5 bis. Décision de Kevin — source des morceaux (2026-10-25, révise SON-3)
+
+Mot pour mot : « je prendrai toutes les bandes son de let's go sur KHInsider ». SON-3 ne passe
+plus par l'achat de l'album : **Kevin télécharge lui-même** tout l'album Let's Go (FLAC si possible,
+sinon MP3 en meilleure qualité) dans `~/Music/kanto-lets-go/`, **sans renommer les fichiers**.
+Claude ne télécharge rien. T8 part de ce dossier : correspondance des noms avec la table §2,
+découpe des boucles, normalisation à −16 LUFS, conversion en OGG q3, mesure. Licences (J34 T6,
+lignes audio) : source « **KHInsider (fichiers fournis par Kevin)** », jeu privé, cercle restreint.
+
+## 5 ter. Lot musique fait (T8–T9, 2026-10-25)
+
+54 OGG q3 (`oggenc`, vorbis-tools installé avec l'accord de Kevin) dans `assets/audio/music/`,
+**34,4 Mo**. Outils : `tools/audio/prepare_music.py` (correspondance des titres, boucle à
+l'échantillon près, jointure fondue 20 ms, −16 LUFS, crête ≤ −1 dBTP) et
+`tools/audio/measure_audio.py` (poids, durée, LUFS, crête, contrôle des jointures). 51 boucles
+exactes sur 52 ; « Cubone's Mother » ne se répète pas sur l'album (piste entière, T1 n° 8).
+
+## 5 quater. Lots de fichiers téléchargés (accord de Kevin du 2026-10-25 : « Oui, cris + bruitages »)
+
+| Lot | Source | Taille téléchargée | Dans le jeu | Licence |
+|---|---|---|---|---|
+| Cris (T11) | `raw.githubusercontent.com/PokeAPI/cries`, `cries/pokemon/latest/1..151.ogg` | 2,3 Mo (151 fichiers) | `assets/audio/cries/`, 2,0 Mo (OGG mono q4) | jeu privé, cercle restreint (comme la musique) |
+| Bruitages n° 1 (T12) | kenney.nl : Interface Sounds (834 Ko), UI Audio (412 Ko), Impact Sounds (801 Ko), RPG Audio (965 Ko) | 3,0 Mo (334 OGG) | `assets/audio/sfx/`, 84 fichiers, 696 Ko (69 identifiants sur 107) | CC0 |
+| Ambiances (T12, option A de Kevin : « OpenGameArt CC0 ») | voir le détail ci-dessous | 4,1 Mo (6 fichiers) | `assets/audio/ambience/`, 7 boucles, 816 Ko (OGG mono q3, −16 LUFS, jointure fondue) | CC0 (vérifiée sur chaque page) |
+
+Détail des ambiances (OpenGameArt, licence affichée sur la page : CC0 seule) :
+
+| Boucle | Page source | Fichier téléchargé | Taille |
+|---|---|---|---|
+| `sea` | opengameart.org/content/beach-ocean-waves (qubodup) | `wave_01_cc0-18363__jasinski__alkaibeach.flac` | 626 Ko |
+| `wind`, `cold_wind` | opengameart.org/content/wind (ignasd) | `wind.zip` (`Wind.ogg`, `Wind2.ogg`) | 264 Ko |
+| `forest` | opengameart.org/content/ambient-bird-sounds (isaiah658) | `birds-isaiah658_0.ogg` | 545 Ko |
+| `cave` | opengameart.org/content/loopable-dungeon-ambience (jaggedstone) | `dungeon_ambient_1_0.ogg` | 1,6 Mo |
+| `ship` | opengameart.org/content/underwater-or-space-engine-rumble (gmason) | `underwater_or_space_engine_0.ogg` | 512 Ko |
+| `building` | même page (gmason) | `deep_rumble.ogg` | 554 Ko |
+
+Restent sans fichier (silence) : `city` et `casino` (pas de boucle CC0 convenable sans compte ;
+les « park ambiences » font 74 à 99 Mo en WAV) et `rain` (aucune météo dans le jeu pour
+l'instant). `sea` boucle sur une seule vague de 3 s : à écouter.
+
+## 5 quinquies. Validations de Kevin (2026-10-25)
+
+- **Écoute de SonA, SonB et SonC sur l'A17 : « Je valide ».**
+- **T1** (`docs/design/passes/son-t1-ecoute.md`) : « Oui » aux 8 pistes, valeurs par défaut retenues :
+  « Guide » pour l'introduction de Chen ; « The Final Road » pour la Route 23 et le Plateau ;
+  « Pokémon Road » pour le Vélo (**SON-5 B**) ; « We're Back » en jingle ; « Blue's Theme » pour
+  le rival ; « Theme of Jessie and James » non utilisé ; victoire sauvage = « Victory! (Trainer
+  Battle) » coupé à 4 s (**SON-14 A**) ; « Cubone's Mother » en boucle entière. Légendaires :
+  musique des sauvages (**SON-13 A**). SON-5, SON-13 et SON-14 sont fermés.
+
+## 5 sexies. SonD — clôture (2026-10-25)
+
+**Lignes audio pour l'inventaire des licences du J34 (T6)** — à recopier telles quelles :
+
+| Contenu | Fichiers du jeu | Source | Licence / statut |
+|---|---|---|---|
+| Musique (54 morceaux, bande-son de Pokémon Let's Go Pikachu / Évoli) | `assets/audio/music/*.ogg` (34,4 Mo) | KHInsider, fichiers fournis par Kevin (`~/Music/kanto-lets-go/`, album « Super Music Collection ») ; découpe, normalisation et encodage par `tools/audio/prepare_music.py` | © The Pokémon Company / Nintendo / Game Freak ; jeu privé, cercle restreint, jamais public |
+| Cris des 151 Pokémon | `assets/audio/cries/1..151.ogg` (2,0 Mo) | PokeAPI, dépôt `PokeAPI/cries`, `cries/pokemon/latest/` | © The Pokémon Company ; même statut que la musique |
+| Bruitages (69) | `assets/audio/sfx/*.ogg` (696 Ko) | Kenney (kenney.nl) : Interface Sounds, UI Audio, Impact Sounds, RPG Audio | CC0 |
+| Ambiances (7 boucles) | `assets/audio/ambience/*.ogg` (816 Ko) | OpenGameArt : beach-ocean-waves (qubodup), wind (ignasd), ambient-bird-sounds (isaiah658), loopable-dungeon-ambience (jaggedstone), underwater-or-space-engine-rumble (gmason) — détail §5 quater | CC0 |
+
+**Poids final** (APK debug du 2026-10-25, `main` fusionné dans `jalon-son`) : **352 Mo**, dont **38,6 Mo d'audio** (296 fichiers importés : 54 morceaux, 151 cris, 84 bruitages, 7 ambiances) ; le budget estimé au §1.11 était de 70 à 100 Mo. Suite complète sur l'état fusionné : 6 928 / 6 928.
+
+**Volumes relatifs** (mesurés ; validés à l'écoute par Kevin le 2026-10-25, « Je valide ») :
+musique et jingles à −16 LUFS (boucles mesurées sur la partie qui boucle) ; ambiances à
+−16 LUFS jouées −18 dB plus bas (≈ −34 LUFS) ; cris à −3 dBFS de crête ; bruitages à −6 dBFS
+(combat), −8 (monde), −12 (interface), −14 (pas) ; curseurs par défaut Musique 70 %, Effets
+80 %, Cris 80 %. Aucun réglage fin demandé ; le mixage fin reste une remarque de rendu (§5).
+
+**Restes connus** (hors fusion, lots possibles jusqu'au gel de l'entrée du J34, SON-16) : 38
+bruitages sans fichier (liste dans `etat-projet.md`) ; ambiances `city`, `casino`, `rain` ;
+atténuation dans la zone purifiée de la Tour ; « ducking » pendant les cris ; musiques de scène
+des cinématiques des branches (après leur fusion).
+
 ## 6. Questions ouvertes
 
-Aucune : SON-1 à SON-17 **validés par Kevin le 2026-10-24** (toutes les recommandations ;
-`docs/design/passes/son-arbitrages-kevin.md`). Restent les vérifications à l'écoute de T1
-(« The Final Road », « Guide », « Pokémon Road », « We're Back », morceaux du jeu absents de
-l'album), qui ferment SON-5, SON-13 et SON-14 selon leurs recommandations conditionnelles.
+Aucune : SON-1 à SON-17 validés par Kevin le 2026-10-24 ; écoute T1 et écoute des trois
+sous-jalons validées le 2026-10-25 (§5 quinquies).

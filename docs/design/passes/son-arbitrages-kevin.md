@@ -1,6 +1,7 @@
 # Jalon « Son » — arbitrages pour Kevin
 
 > **VALIDÉ PAR KEVIN le 2026-10-24 : SON-1 à SON-17, toutes les recommandations.**
+> **Écoute T1 validée par Kevin le 2026-10-25** (« Oui » aux 8 pistes de `son-t1-ecoute.md`) : SON-5 fermé (Vélo → « Pokémon Road », SON-5 B ; Safari → « GO Park »), SON-13 fermé en A (musique des sauvages pour les légendaires), SON-14 fermé en A (« Victory! (Trainer Battle) » coupé à 4 s).
 >
 > Claude, 2026-10-24. **Documentation seule : aucune ligne de code,
 > aucun fichier son téléchargé.**
@@ -52,6 +53,9 @@
   seulement pour les trous si T1 en trouve dans le jeu.
   *Recommandation : C.* (Je ne peux ni acheter ni extraire : c'est ton action ; je prépare la liste
   exacte des 52 pistes utiles et la procédure de découpe.)
+  **Révisé par Kevin le 2026-10-25** : « je prendrai toutes les bandes son de let's go sur
+  KHInsider » — Kevin télécharge l'album dans `~/Music/kanto-lets-go/` (FLAC ou meilleur MP3, noms
+  d'origine) ; Claude ne télécharge rien (`jalon-son.md` §5 bis).
 
 - **SON-4 — Règle d'attribution.** Chaque carte reçoit **le thème que RB lui donne**, dans son
   arrangement Let's Go (Jadielle, Argenta et Safrania partagent donc un morceau). Ou un morceau

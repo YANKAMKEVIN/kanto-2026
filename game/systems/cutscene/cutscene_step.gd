@@ -117,6 +117,12 @@ extends RefCounted
 ##   scène attend leur fin ;
 ## - « react » / « emote » acceptent un **acteur de décor** (nœud du groupe
 ##   [constant PropActor.GROUP] de la carte, [PropActor]) quand l'identifiant n'est pas un PNJ.
+## Jalon 23 (`jalon-23.md` §2.1, §2.2), la Porte du Parc Safari :
+## - [constant Kind.SAFARI] : action [member text] ([constant SAFARI_ACTIONS]) jouée par le
+##   gestionnaire [member CutsceneDirector.safari_handler] ([SafariDirector]) : « enter » (péage de
+##   500 ₽ et début de visite ; refus sans débit partiel : drapeau `safari_pay_failed`),
+##   « leave » (fin de visite volontaire, Balls perdues), « clear » (drapeaux de passage
+##   `safari_gate_yes`, `safari_gate_leave_yes`, `safari_pay_failed` remis à faux).
 
 ## Jalon 25 (`jalon-25.md` §2.1, §2.3, §2.5), le Manoir, l'Arène de Cramois'Île et les échanges :
 ## - [constant Kind.UNSET_FLAGS] : [member flags] baissés (drapeaux de travail d'une scène : la
@@ -144,6 +150,8 @@ enum Kind {
 	GIFT_POKEMON,
 	FLUTE, # Jalon 21
 	UNSET_FLAGS, TOGGLE_FLAGS, TRADE,
+	## J23 (`jalon-23.md` §2.1, §2.2) : visite du Parc Safari.
+	SAFARI,
 	HALL_OF_FAME, CREDITS, # Jalon 30
 }
 
@@ -158,8 +166,12 @@ const TYPE_KEYS: Array[String] = [
 	"gift_pokemon",
 	"flute", # Jalon 21
 	"unset", "toggle", "trade",
+	"safari",
 	"hall_of_fame", "credits", # Jalon 30
 ]
+## Actions d'une étape « safari » (J23) : péage et début de visite, sortie volontaire, remise à
+## zéro des drapeaux de passage du comptoir.
+const SAFARI_ACTIONS: Array[String] = ["enter", "leave", "clear"]
 ## Bulles d'une étape « emote » (clé « kind ») : le « ! » du Dresseur qui repère le joueur.
 const EMOTE_KINDS: Array[StringName] = [&"exclamation"]
 ## Entrées en scène d'une étape « wild_battle » (clé « intro », T30) ; &"" = l'entrée sauvage
@@ -247,6 +259,10 @@ var uncatchable: bool = false
 ## Étape « animate », jalon 21 : sautée si « Réduire les animations » est actif.
 var skip_reduced: bool = false
 ## Conditions de l'étape (toutes levées / aucune levée), vides = toujours jouée.
+## Jalon Son (T6) : clé facultative « music » de toute étape (sauf spawn), sans nouvelle sorte
+## d'étape : morceau (`tracks.json`) ou moment (`events`) joué en musique de scène, « stop »
+## l'arrête ; "" = rien ne change. Lue par [AudioBridge].
+var music: StringName = &""
 var if_flags: Array[StringName] = []
 var unless_flags: Array[StringName] = []
 
@@ -317,6 +333,7 @@ func outcome_flags(outcome: int) -> Array[StringName]:
 func copy() -> CutsceneStep:
 	var other := CutsceneStep.new()
 	other.kind = kind
+	other.music = music
 	other.seconds = seconds
 	other.dialogue_id = dialogue_id
 	other.actor = actor

@@ -26,10 +26,10 @@ func test_real_data_mt_moon() -> void:
 	var caves := CaveLibrary.new()
 	assert_true(caves.load_file(), "data/world/caves.json valide")
 	assert_eq(caves.get_errors().size(), 0)
-	# J18 : Grotte Sombre ; J19 (T16) : étages 2F à 6F de la Tour Pokémon.
+	# J18 : Grotte Sombre ; J19 (T16) : étages 2F à 6F de la Tour Pokémon ; J26 (T7) : la Sylphe.
 	# J29 : Route Victoire.
-	assert_eq(caves.get_caves(), [&"mt_moon", &"digletts_cave", &"dark_cave", &"pokemon_tower", &"victory_road",
-		&"rocket_hideout", &"pokemon_mansion"] as Array[StringName])
+	assert_eq(caves.get_caves(), [&"mt_moon", &"digletts_cave", &"dark_cave", &"pokemon_tower",
+		&"victory_road", &"rocket_hideout", &"silph_co", &"pokemon_mansion"] as Array[StringName])
 	assert_eq(caves.get_maps(&"mt_moon"),
 		[&"mt_moon_1f", &"mt_moon_b1f", &"mt_moon_b2f"] as Array[StringName])
 	for map_id: StringName in [&"mt_moon_1f", &"mt_moon_b1f", &"mt_moon_b2f"]:

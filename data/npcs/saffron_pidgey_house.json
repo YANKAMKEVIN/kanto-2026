@@ -1,0 +1,50 @@
+{
+	"fille": {
+		"cell": [
+			5,
+			5
+		],
+		"facing": "left",
+		"sprite": "lass",
+		"dialogue": "saffron_pidgey_house_girl"
+	},
+	"roucool": {
+		"cell": [
+			8,
+			4
+		],
+		"facing": "down",
+		"sprite": "pokemon/pidgey",
+		"dialogue": "saffron_pidgey",
+		"route": {
+			"cells": [
+				[
+					8,
+					3
+				],
+				[
+					8,
+					4
+				],
+				[
+					8,
+					5
+				],
+				[
+					8,
+					4
+				]
+			],
+			"pause": 2.0
+		}
+	},
+	"garcon": {
+		"cell": [
+			11,
+			4
+		],
+		"facing": "down",
+		"sprite": "youngster",
+		"dialogue": "saffron_pidgey_house_boy"
+	}
+}

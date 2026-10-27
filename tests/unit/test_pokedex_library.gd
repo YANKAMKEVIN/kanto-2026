@@ -21,8 +21,13 @@ const ENCOUNTERABLE: Array[StringName] = [
 	&"meowth",
 	# Jalon 17 (annexe A.2 de jalon-17.md, validée le 2026-10-16) : Taupiqueur, Soporifik.
 	&"diglett", &"drowzee",
+	# Jalon 23 (T13, `jalon-23.md` A.5 : une note par forme de base du Parc, validation d'avance
+	# de Kevin) : Leveinard, Insécateur, Scarabrute, Tauros.
+	&"chansey", &"scyther", &"pinsir", &"tauros",
 	# Jalon 25 (kanto_j25_entrees.json, validé d'avance le 2026-10-21) : Ponyta, Magmar (Manoir).
 	&"ponyta", &"magmar",
+	# Jalon 23 (emprunté au J31, copie identique de `origin/jalon-23`) : Leveinard a sa note.
+	&"chansey",
 ]
 ## Notes validées par Kevin qui parlent de l'évolution (exception à « jamais de divulgation ») :
 ## celle de Kadabra (dossier 17 §15, n° 64) cite son origine, Abra, déjà vue pour l'avoir.
@@ -36,12 +41,11 @@ const EVOLUTION_DESCRIPTIONS: Array[StringName] = [&"gyarados"]
 const NAMED_SPECIES_OK: Dictionary[StringName, Array] = {&"magneton": [&"magnemite"]}
 ## Espèces des données sans fiche : jamais vues au J19 (SPECTRE) ; Osselait a la sienne depuis le
 ## J20 (annexe A n° 204), Ossatueur a la sienne depuis le J21 (T5, dossier 24 §15.10).
-## Jalon 30 (T3) : les espèces de la Ligue n'ont pas encore de fiche (textes à valider) ;
-## Lamantine, Crustabri, Flagadoss et Ptéra ont reçu celles des J24 et J25 à la fusion de main ;
-## Lokhlass, Alakazam et Noadkoko celles du J29 à sa fusion (2026-10-26).
-const NO_ENTRY_YET: Array[StringName] = [
-	&"rhydon", &"hitmonlee", &"hitmonchan", &"jynx",
-	&"machamp", &"gengar", &"dragonair", &"dragonite"]
+## Jalon 31 : Métamorph et Mewtwo ont la leur (`docs/tech/jalon-31.md` §8.8, validées par Kevin
+## le 2026-10-22).
+## Jalon 30 (T3) : les cinq espèces nouvelles de la Ligue n'ont pas encore de fiche (textes à écrire
+## et à valider, `docs/tech/reportes.md`) ; Rhinoféros, Kicklee et Tygnon ont celles de main.
+const NO_ENTRY_YET: Array[StringName] = [&"jynx", &"machamp", &"gengar", &"dragonair", &"dragonite"]
 
 var _data: PokemonData
 var _lib: PokedexLibrary
@@ -110,6 +114,8 @@ func test_real_heights_and_weights_are_the_official_ones() -> void:
 		# Jalon 19 (dossier 22 §15.7 ; Caninos vient du J17).
 		&"gastly": [1.3, 0.1], &"haunter": [1.6, 0.1],
 		&"exeggcute": [0.4, 2.5], &"gyarados": [6.5, 235.0],
+		# Jalon 31 (§8.8).
+		&"ditto": [0.3, 4.0], &"mewtwo": [2.0, 122.0],
 	}
 	for id: StringName in official:
 		assert_almost_eq(_lib.get_species(id).height, float(official[id][0]), 0.001, id)

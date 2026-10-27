@@ -169,6 +169,10 @@ static func status_has_effect(move: MoveData, own: Battler, foe: Battler) -> boo
 					return true
 			MoveEffect.Kind.FIXED_DAMAGE:
 				return true
+			MoveEffect.Kind.COUNTER:
+				# Riposte (jalon 27) : seulement juste après un coup Normal ou Combat reçu [D].
+				if own.counter_damage > 0:
+					return true
 			MoveEffect.Kind.HEAL:
 				# Passe systèmes 2 : Soin seulement s'il manque des PV.
 				if own.pokemon.hp < own.pokemon.max_hp():

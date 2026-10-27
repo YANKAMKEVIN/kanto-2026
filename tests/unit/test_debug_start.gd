@@ -83,7 +83,7 @@ func test_invalid_fields_are_rejected_and_nothing_is_kept() -> void:
 			{ "species": "charmander", "level": 5, "moves": ["scratch", "scratch"] },
 			{ "species": "charmander", "level": 5, "exp_to_next": 500, "shiny": true },
 		],
-		"bag": { "master_ball": 1, "poke_ball": 0 },
+		"bag": { "zz_no_ball": 1, "poke_ball": 0 },
 	}, _data, _items, "t")
 	assert_false(ok)
 	var errors := "\n".join(start.get_errors())
@@ -98,7 +98,7 @@ func test_invalid_fields_are_rejected_and_nothing_is_kept() -> void:
 		"t party 3 : capacité inconnue ou en double « scratch »",
 		"t party 4 : clé inconnue « shiny »",
 		"t party 4 : « exp_to_next » est un entier de 1 à 44",
-		"t bag : objet inconnu « master_ball »",
+		"t bag : objet inconnu « zz_no_ball »",
 		"t bag « poke_ball » : quantité entière ≥ 1 attendue",
 	]:
 		assert_string_contains(errors, expected)
@@ -763,3 +763,19 @@ func test_veil_is_validated() -> void:
 		assert_false(start.add_from_dict(dict, _data, _items, "t"), str(dict))
 		assert_string_contains("\n".join(start.get_errors()), "veil")
 	assert_push_error_count(3, "une erreur par cas")
+
+
+## Jalon 23 (T11 ; repris de `test_j23_qa_starts.gd`, retiré au T24 avec `safari_end_qa`) : la
+## clé « safari » ouvre une visite en cours (pas et Balls), drapeau `safari_active` posé.
+func test_safari_key_starts_a_visit_in_progress() -> void:
+	var start := DebugStart.new()
+	assert_true(start.add_from_dict({
+		"map": "safari_zone_east", "spawn": "arrivee_centre",
+		"party": [{ "species": "bulbasaur", "level": 38 }],
+		"safari": { "steps_left": 3, "balls_left": 2 },
+	}, _data, _items, "safari"), "\n".join(start.get_errors()))
+	var state: Node = autofree(GameStateScript.new())
+	start.apply(state, _data)
+	assert_true(state.safari.active)
+	assert_eq([state.safari.steps_left, state.safari.balls_left], [3, 2])
+	assert_true(state.flags.has_flag(&"safari_active"))

@@ -53,10 +53,43 @@ func test_route_1_decor_matches_its_zone() -> void:
 
 func test_places_without_decor_fall_back() -> void:
 	var catalog := _catalog()
-	for map_id: StringName in [&"oak_lab", &"route_22", &"viridian_forest", &"pallet_town",
-			&"inconnue"]:
+	for map_id: StringName in [&"oak_lab", &"player_house_2f", &"inconnue"]:
 		assert_null(catalog.pick(map_id, Vector2i.ZERO), "%s : repli (pas de décor)" % map_id)
 
+
+## DAF.2 : toute carte à combats (citée par une table de rencontres ou portant un PNJ Dresseur)
+## a un fond peint ; plus aucune ne retombe sur la carte floutée.
+func test_every_battle_map_has_a_decor() -> void:
+	var maps := _catalog().get_maps()
+	var battle_maps: Dictionary[StringName, bool] = {}
+	for file: String in DirAccess.get_files_at("res://data/encounters"):
+		if not file.ends_with(".json"):
+			continue
+		var tables: Variant = JSON.parse_string(FileAccess.get_file_as_string(
+			"res://data/encounters/" + file))
+		for table: Variant in (tables as Dictionary).values():
+			if table is Dictionary:
+				for map_id: Variant in (table as Dictionary).get("maps", []):
+					battle_maps[StringName(map_id)] = true
+	for file: String in DirAccess.get_files_at("res://data/npcs"):
+		if file.ends_with(".json") and FileAccess.get_file_as_string(
+				"res://data/npcs/" + file).contains("\"trainer\""):
+			battle_maps[StringName(file.get_basename())] = true
+	assert_gt(battle_maps.size(), 60, "cartes à combats trouvées")
+	var missing: Array[StringName] = []
+	for map_id: StringName in battle_maps:
+		if not maps.has(map_id):
+			missing.append(map_id)
+	assert_eq(missing, [] as Array[StringName], "cartes à combats sans fond peint")
+
+
+## Jalon 30 (fusion dans main) : les salles de la Ligue (combats lancés par les scènes d'appel, sans
+## PNJ Dresseur dans `data/npcs`) ont un fond provisoire [D] (`docs/tech/reportes.md` §2.13).
+func test_league_rooms_have_a_decor() -> void:
+	var catalog := _catalog()
+	for map_id: StringName in [&"league_lorelei", &"league_bruno", &"league_agatha",
+			&"league_lance", &"league_champion"]:
+		assert_not_null(catalog.pick(map_id, Vector2i.ZERO), "%s : fond peint" % map_id)
 
 func test_real_route_1_painted_for_the_anchors() -> void:
 	# Le master est peint pour le cadrage : à 2340 × 1080 il s'affiche à 1:1, sans décalage.

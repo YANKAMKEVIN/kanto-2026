@@ -88,6 +88,8 @@ var _default_grass_front: Texture2D
 var _mount: Mount.Kind = Mount.Kind.NONE
 ## Monture provisoire ([MountPlaceholder]), créée dans [method _ready].
 var _mount_placeholder: MountPlaceholder
+## Pose tenue à l'arrêt et à pied ([method set_pose]) : `&""` = aucune.
+var _pose: StringName = &""
 
 @onready var _sprite: AnimatedSprite2D = %Sprite
 @onready var _camera: Camera2D = %Camera
@@ -265,6 +267,19 @@ func script_step(direction: Vector2i, run: bool = false, keep_facing: bool = fal
 	return started
 
 
+## Pose tenue (DAF.5, série 25 : `&"fish_cast"`, `&"fish_wait"` de [FishingDirector]) : à l'arrêt
+## et à pied, l'animation `<pose>_<dir>` de l'apparence remplace `idle_<dir>` (sans elle, rien ne
+## change). `&""` la retire.
+func set_pose(pose: StringName) -> void:
+	_pose = pose
+	if is_node_ready():
+		_update_animation(Vector2i.ZERO)
+
+
+func get_pose() -> StringName:
+	return _pose
+
+
 ## Petite réaction de surprise (scènes, étape « react ») : animation `react_<dir>` si
 ## l'apparence l'a, sinon un petit bond sur place (le sprite monte, l'ombre reste au sol). Ne
 ## bouge ni la case ni l'orientation.
@@ -428,6 +443,12 @@ func _update_animation(direction: Vector2i) -> void:
 		anim = anims[1]
 		speed = BUMP_ANIM_SPEED
 	anim = _mounted_animation(anim)
+	if _pose != &"" and _mount == Mount.Kind.NONE and not is_moving() \
+			and _sprite.sprite_frames != null:
+		var posed := StringName("%s_%s" % [_pose, Grid.direction_name(facing)])
+		if _sprite.sprite_frames.has_animation(posed):
+			anim = posed
+			speed = 1.0
 	if _mount == Mount.Kind.SURF and not String(anim).begins_with("surf_"):
 		# Surf provisoire : assis sur le nageur, à l'arrêt (pas de jambes qui marchent).
 		anim = anims[0]

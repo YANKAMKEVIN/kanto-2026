@@ -1,0 +1,1126 @@
+{
+	"_doc": "Bruitages (docs/tech/jalon-son.md §1.7, §3). files : variantes tirées au hasard ; max_polyphony : nombre de lectures simultanées d'un même identifiant. move_sounds : famille d'une attaque (SON-11) : moves (exception) → by_type[type][catégorie] → by_category[catégorie]. cries : cri d'une espèce par son numéro national (SON-1 latest, SonB). battle_events : sorte d'événement de combat (BattleEvent.Kind) → bruitage ; statuses : statut infligé → bruitage ; DAMAGE choisit hit_super / hit_weak / critical / hit_normal, MOVE_USED la famille de l'attaque (T13).",
+	"version": 1,
+	"sfx": {
+		"ui_confirm": {
+			"files": [
+				"res://assets/audio/sfx/ui_confirm.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"ui_back": {
+			"files": [
+				"res://assets/audio/sfx/ui_back.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"ui_move": {
+			"files": [
+				"res://assets/audio/sfx/ui_move.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"ui_refuse": {
+			"files": [
+				"res://assets/audio/sfx/ui_refuse.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"ui_menu_open": {
+			"files": [
+				"res://assets/audio/sfx/ui_menu_open.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"ui_menu_close": {
+			"files": [
+				"res://assets/audio/sfx/ui_menu_close.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"ui_dialog_next": {
+			"files": [
+				"res://assets/audio/sfx/ui_dialog_next.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"ui_yes_no": {
+			"files": [
+				"res://assets/audio/sfx/ui_yes_no.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"ui_saved": {
+			"files": [
+				"res://assets/audio/sfx/ui_saved.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"ui_cash": {
+			"files": [
+				"res://assets/audio/sfx/ui_cash.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"ui_pc_on": {
+			"files": [
+				"res://assets/audio/sfx/ui_pc_on.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"ui_pc_off": {
+			"files": [
+				"res://assets/audio/sfx/ui_pc_off.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"ui_pc_move": {
+			"files": [
+				"res://assets/audio/sfx/ui_pc_move.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"ui_favorite": {
+			"files": [
+				"res://assets/audio/sfx/ui_favorite.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"ui_toast": {
+			"files": [
+				"res://assets/audio/sfx/ui_toast.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"ui_map_open": {
+			"files": [
+				"res://assets/audio/sfx/ui_map_open.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"ui_fly_out": {
+			"files": [
+				"res://assets/audio/sfx/ui_fly_out.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": true
+		},
+		"ui_fly_in": {
+			"files": [
+				"res://assets/audio/sfx/ui_fly_in.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": true
+		},
+		"ui_volume_test": {
+			"files": [
+				"res://assets/audio/sfx/ui_volume_test.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"step_grass": {
+			"files": [
+				"res://assets/audio/sfx/step_grass_1.ogg",
+				"res://assets/audio/sfx/step_grass_2.ogg",
+				"res://assets/audio/sfx/step_grass_3.ogg",
+				"res://assets/audio/sfx/step_grass_4.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 2,
+			"expected": false
+		},
+		"step_hard": {
+			"files": [
+				"res://assets/audio/sfx/step_hard_1.ogg",
+				"res://assets/audio/sfx/step_hard_2.ogg",
+				"res://assets/audio/sfx/step_hard_3.ogg",
+				"res://assets/audio/sfx/step_hard_4.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 2,
+			"expected": false
+		},
+		"step_indoor": {
+			"files": [
+				"res://assets/audio/sfx/step_indoor_1.ogg",
+				"res://assets/audio/sfx/step_indoor_2.ogg",
+				"res://assets/audio/sfx/step_indoor_3.ogg",
+				"res://assets/audio/sfx/step_indoor_4.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 2,
+			"expected": false
+		},
+		"step_sand": {
+			"files": [
+				"res://assets/audio/sfx/step_sand_1.ogg",
+				"res://assets/audio/sfx/step_sand_2.ogg",
+				"res://assets/audio/sfx/step_sand_3.ogg",
+				"res://assets/audio/sfx/step_sand_4.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 2,
+			"expected": false
+		},
+		"step_shallow_water": {
+			"files": [
+				"res://assets/audio/sfx/step_shallow_water_1.ogg",
+				"res://assets/audio/sfx/step_shallow_water_2.ogg",
+				"res://assets/audio/sfx/step_shallow_water_3.ogg",
+				"res://assets/audio/sfx/step_shallow_water_4.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 2,
+			"expected": true
+		},
+		"step_snow": {
+			"files": [
+				"res://assets/audio/sfx/step_snow_1.ogg",
+				"res://assets/audio/sfx/step_snow_2.ogg",
+				"res://assets/audio/sfx/step_snow_3.ogg",
+				"res://assets/audio/sfx/step_snow_4.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 2,
+			"expected": false
+		},
+		"bump": {
+			"files": [
+				"res://assets/audio/sfx/bump.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"ledge_jump": {
+			"files": [
+				"res://assets/audio/sfx/ledge_jump.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"door": {
+			"files": [
+				"res://assets/audio/sfx/door.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"stairs": {
+			"files": [
+				"res://assets/audio/sfx/stairs.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": true
+		},
+		"exit_mat": {
+			"files": [
+				"res://assets/audio/sfx/exit_mat.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"warp": {
+			"files": [
+				"res://assets/audio/sfx/warp.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": true
+		},
+		"fall_hole": {
+			"files": [
+				"res://assets/audio/sfx/fall_hole.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": true
+		},
+		"surf_in": {
+			"files": [
+				"res://assets/audio/sfx/surf_in.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": true
+		},
+		"surf_out": {
+			"files": [
+				"res://assets/audio/sfx/surf_out.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": true
+		},
+		"bike_mount": {
+			"files": [
+				"res://assets/audio/sfx/bike_mount.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"bike_bell": {
+			"files": [
+				"res://assets/audio/sfx/bike_bell.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"cut": {
+			"files": [
+				"res://assets/audio/sfx/cut.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"strength_push": {
+			"files": [
+				"res://assets/audio/sfx/strength_push.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"strength_drop": {
+			"files": [
+				"res://assets/audio/sfx/strength_drop.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"flash": {
+			"files": [
+				"res://assets/audio/sfx/flash.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": true
+		},
+		"spin_tile": {
+			"files": [
+				"res://assets/audio/sfx/spin_tile.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": true
+		},
+		"elevator_start": {
+			"files": [
+				"res://assets/audio/sfx/elevator_start.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"elevator_stop": {
+			"files": [
+				"res://assets/audio/sfx/elevator_stop.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"elevator_ding": {
+			"files": [
+				"res://assets/audio/sfx/elevator_ding.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"switch": {
+			"files": [
+				"res://assets/audio/sfx/switch.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"gate": {
+			"files": [
+				"res://assets/audio/sfx/gate.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"item_found": {
+			"files": [
+				"res://assets/audio/sfx/item_found.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": true
+		},
+		"inspect": {
+			"files": [
+				"res://assets/audio/sfx/inspect.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"ball_drop": {
+			"files": [
+				"res://assets/audio/sfx/ball_drop.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"rod_cast": {
+			"files": [
+				"res://assets/audio/sfx/rod_cast.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": true
+		},
+		"rod_bite": {
+			"files": [
+				"res://assets/audio/sfx/rod_bite.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": true
+		},
+		"ambient_fly_away": {
+			"files": [
+				"res://assets/audio/sfx/ambient_fly_away.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"bill_machine": {
+			"files": [
+				"res://assets/audio/sfx/bill_machine.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"rocks_fall": {
+			"files": [
+				"res://assets/audio/sfx/rocks_fall.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"door_slam": {
+			"files": [
+				"res://assets/audio/sfx/door_slam.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"trainer_spotted": {
+			"files": [
+				"res://assets/audio/sfx/trainer_spotted.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"battle_intro": {
+			"files": [
+				"res://assets/audio/sfx/battle_intro.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": true
+		},
+		"send_out": {
+			"files": [
+				"res://assets/audio/sfx/send_out.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"recall": {
+			"files": [
+				"res://assets/audio/sfx/recall.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"hit_normal": {
+			"files": [
+				"res://assets/audio/sfx/hit_normal.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"hit_super": {
+			"files": [
+				"res://assets/audio/sfx/hit_super.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"hit_weak": {
+			"files": [
+				"res://assets/audio/sfx/hit_weak.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"no_effect": {
+			"files": [
+				"res://assets/audio/sfx/no_effect.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"miss": {
+			"files": [
+				"res://assets/audio/sfx/miss.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": true
+		},
+		"critical": {
+			"files": [
+				"res://assets/audio/sfx/critical.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"faint": {
+			"files": [
+				"res://assets/audio/sfx/faint.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"stat_up": {
+			"files": [
+				"res://assets/audio/sfx/stat_up.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"stat_down": {
+			"files": [
+				"res://assets/audio/sfx/stat_down.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"status_poison": {
+			"files": [
+				"res://assets/audio/sfx/status_poison.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": true
+		},
+		"status_burn": {
+			"files": [
+				"res://assets/audio/sfx/status_burn.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": true
+		},
+		"status_paralysis": {
+			"files": [
+				"res://assets/audio/sfx/status_paralysis.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": true
+		},
+		"status_sleep": {
+			"files": [
+				"res://assets/audio/sfx/status_sleep.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": true
+		},
+		"status_freeze": {
+			"files": [
+				"res://assets/audio/sfx/status_freeze.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": true
+		},
+		"status_confusion": {
+			"files": [
+				"res://assets/audio/sfx/status_confusion.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": true
+		},
+		"heal_hp": {
+			"files": [
+				"res://assets/audio/sfx/heal_hp.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"item_use": {
+			"files": [
+				"res://assets/audio/sfx/item_use.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"ball_throw": {
+			"files": [
+				"res://assets/audio/sfx/ball_throw.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": true
+		},
+		"ball_bounce": {
+			"files": [
+				"res://assets/audio/sfx/ball_bounce.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"ball_close": {
+			"files": [
+				"res://assets/audio/sfx/ball_close.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"ball_shake": {
+			"files": [
+				"res://assets/audio/sfx/ball_shake.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"ball_caught": {
+			"files": [
+				"res://assets/audio/sfx/ball_caught.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"ball_escape": {
+			"files": [
+				"res://assets/audio/sfx/ball_escape.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"flee": {
+			"files": [
+				"res://assets/audio/sfx/flee.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": true
+		},
+		"low_hp": {
+			"files": [
+				"res://assets/audio/sfx/low_hp.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"pay_day": {
+			"files": [
+				"res://assets/audio/sfx/pay_day.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"ghost_voice": {
+			"files": [
+				"res://assets/audio/sfx/ghost_voice.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": true
+		},
+		"exp_fill": {
+			"files": [
+				"res://assets/audio/sfx/exp_fill.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": true,
+			"loop": true
+		},
+		"move_hit": {
+			"files": [
+				"res://assets/audio/sfx/move_hit.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"move_beam": {
+			"files": [
+				"res://assets/audio/sfx/move_beam.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": true
+		},
+		"move_status": {
+			"files": [
+				"res://assets/audio/sfx/move_status.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": true
+		},
+		"move_heal": {
+			"files": [
+				"res://assets/audio/sfx/move_heal.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"move_sound": {
+			"files": [
+				"res://assets/audio/sfx/move_sound.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": true
+		},
+		"move_explosion": {
+			"files": [
+				"res://assets/audio/sfx/move_explosion.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"move_fire": {
+			"files": [
+				"res://assets/audio/sfx/move_fire.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": true
+		},
+		"move_water": {
+			"files": [
+				"res://assets/audio/sfx/move_water.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": true
+		},
+		"move_grass": {
+			"files": [
+				"res://assets/audio/sfx/move_grass.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": true
+		},
+		"move_electric": {
+			"files": [
+				"res://assets/audio/sfx/move_electric.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": true
+		},
+		"move_ice": {
+			"files": [
+				"res://assets/audio/sfx/move_ice.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"move_fighting": {
+			"files": [
+				"res://assets/audio/sfx/move_fighting.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"move_poison": {
+			"files": [
+				"res://assets/audio/sfx/move_poison.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": true
+		},
+		"move_ground": {
+			"files": [
+				"res://assets/audio/sfx/move_ground.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"move_flying": {
+			"files": [
+				"res://assets/audio/sfx/move_flying.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": true
+		},
+		"move_psychic": {
+			"files": [
+				"res://assets/audio/sfx/move_psychic.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": true
+		},
+		"move_bug": {
+			"files": [
+				"res://assets/audio/sfx/move_bug.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": true
+		},
+		"move_rock": {
+			"files": [
+				"res://assets/audio/sfx/move_rock.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
+		"move_ghost": {
+			"files": [
+				"res://assets/audio/sfx/move_ghost.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": true
+		},
+		"move_dragon": {
+			"files": [
+				"res://assets/audio/sfx/move_dragon.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": true
+		}
+	},
+	"move_sounds": {
+		"moves": {
+			"absorb": "move_heal",
+			"explosion": "move_explosion",
+			"growl": "move_sound",
+			"mega_drain": "move_heal",
+			"recover": "move_heal",
+			"rest": "move_heal",
+			"roar": "move_sound",
+			"screech": "move_sound",
+			"self_destruct": "move_explosion",
+			"sing": "move_sound",
+			"soft_boiled": "move_heal",
+			"supersonic": "move_sound"
+		},
+		"by_type": {
+			"fire": {
+				"physical": "move_fire",
+				"special": "move_fire"
+			},
+			"water": {
+				"physical": "move_water",
+				"special": "move_water"
+			},
+			"grass": {
+				"physical": "move_grass",
+				"special": "move_grass"
+			},
+			"electric": {
+				"physical": "move_electric",
+				"special": "move_electric"
+			},
+			"ice": {
+				"physical": "move_ice",
+				"special": "move_ice"
+			},
+			"poison": {
+				"physical": "move_poison",
+				"special": "move_poison"
+			},
+			"ground": {
+				"physical": "move_ground",
+				"special": "move_ground"
+			},
+			"flying": {
+				"physical": "move_flying",
+				"special": "move_flying"
+			},
+			"psychic": {
+				"physical": "move_psychic",
+				"special": "move_psychic"
+			},
+			"bug": {
+				"physical": "move_bug",
+				"special": "move_bug"
+			},
+			"rock": {
+				"physical": "move_rock",
+				"special": "move_rock"
+			},
+			"ghost": {
+				"physical": "move_ghost",
+				"special": "move_ghost"
+			},
+			"dragon": {
+				"physical": "move_dragon",
+				"special": "move_dragon"
+			},
+			"fighting": {
+				"physical": "move_fighting",
+				"special": "move_fighting"
+			}
+		},
+		"by_category": {
+			"physical": "move_hit",
+			"special": "move_beam",
+			"status": "move_status"
+		}
+	},
+	"cries": {
+		"path_format": "res://assets/audio/cries/%d.ogg",
+		"count": 151,
+		"bus": "Cries",
+		"volume_db": 0.0,
+		"faint_pitch": 0.8,
+		"expected": false
+	},
+	"battle_events": {
+		"SENT_OUT": "send_out",
+		"WITHDRAWN": "recall",
+		"MOVE_MISSED": "miss",
+		"NO_EFFECT": "no_effect",
+		"FAINTED": "faint",
+		"FLED": "flee",
+		"BALL_THROWN": "ball_throw",
+		"BALL_SHAKE": "ball_shake",
+		"CAUGHT": "ball_caught",
+		"BROKE_FREE": "ball_escape",
+		"ITEM_USED": "item_use",
+		"HEALED": "heal_hp",
+		"DRAINED_HP": "heal_hp",
+		"EXP_GAINED": "exp_fill",
+		"COINS_SCATTERED": "pay_day",
+		"GHOST_SPOKE": "ghost_voice",
+		"CONFUSED": "status_confusion",
+		"BATTLE_STARTED": "battle_intro"
+	},
+	"stat_changes": {
+		"up": "stat_up",
+		"down": "stat_down"
+	},
+	"statuses": {
+		"poison": "status_poison",
+		"burn": "status_burn",
+		"paralysis": "status_paralysis",
+		"sleep": "status_sleep",
+		"freeze": "status_freeze"
+	},
+	"grounds": {
+		"grass": "step_grass",
+		"hard": "step_hard",
+		"indoor": "step_indoor",
+		"sand": "step_sand",
+		"water": "step_shallow_water",
+		"snow": "step_snow"
+	},
+	"world": {
+		"bump": "bump",
+		"ledge": "ledge_jump",
+		"door": "door",
+		"bike_bell": "bike_bell",
+		"ui_click": "ui_confirm",
+		"menu_open": "ui_menu_open",
+		"menu_close": "ui_menu_close",
+		"dialog_next": "ui_dialog_next",
+		"trainer_spotted": "trainer_spotted",
+		"bike_mount": "bike_mount"
+	}
+}

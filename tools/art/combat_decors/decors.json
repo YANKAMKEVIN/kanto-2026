@@ -190,5 +190,86 @@
 		],
 		"taille": [2340, 1080],
 		"qualite": 90
+	},
+	"viridian_forest_clairiere": {
+		"composition": "COMBAT_DECOR_FORET_JADE_r1.png",
+		"tuiles": [
+			{ "image": "COMBAT_DECOR_FORET_JADE_r1_TL.png", "portion": [0, 0, 1002, 851] },
+			{ "image": "COMBAT_DECOR_FORET_JADE_r1_TR.png", "portion": [847, 0, 1849, 851] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"pewter_gym_roche": {
+		"composition": "COMBAT_DECOR_ARENE_ARGENTA_r2.png",
+		"tuiles": [
+			{ "image": "COMBAT_DECOR_ARENE_ARGENTA_r2_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "COMBAT_DECOR_ARENE_ARGENTA_r2_TR.png", "portion": [846, 0, 1846, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"silph_co_bureaux": {
+		"composition": "COMBAT_DECOR_SYLPHE_BUREAUX_r1.png",
+		"tuiles": [
+			{ "image": "COMBAT_DECOR_SYLPHE_BUREAUX_r1_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "COMBAT_DECOR_SYLPHE_BUREAUX_r1_TR.png", "portion": [846, 0, 1846, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"saffron_gym_psy": {
+		"composition": "COMBAT_DECOR_ARENE_PSY_r1.png",
+		"tuiles": [
+			{ "image": "COMBAT_DECOR_ARENE_PSY_r1_TL.png", "portion": [0, 0, 999, 853] },
+			{ "image": "COMBAT_DECOR_ARENE_PSY_r1_TR.png", "portion": [845, 0, 1844, 853] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"fighting_dojo_salle": {
+		"composition": "COMBAT_DECOR_DOJO_r1.png",
+		"tuiles": [
+			{ "image": "COMBAT_DECOR_DOJO_r1_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "COMBAT_DECOR_DOJO_r1_TR.png", "portion": [846, 0, 1846, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"viridian_gym_sol": {
+		"composition": "COMBAT_DECOR_ARENE_JADIELLE_r1.png",
+		"tuiles": [
+			{ "image": "COMBAT_DECOR_ARENE_JADIELLE_r1_TL.png", "portion": [0, 0, 999, 853] },
+			{ "image": "COMBAT_DECOR_ARENE_JADIELLE_r1_TR.png", "portion": [845, 0, 1844, 853] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"route_23_roche": {
+		"composition": "COMBAT_DECOR_ROUTE_23_r1.png",
+		"tuiles": [
+			{ "image": "COMBAT_DECOR_ROUTE_23_r1_TL.png", "portion": [0, 0, 1001, 852] },
+			{ "image": "COMBAT_DECOR_ROUTE_23_r1_TR.png", "portion": [846, 0, 1847, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"victory_road_grotte": {
+		"composition": "COMBAT_DECOR_ROUTE_VICTOIRE_r1.png",
+		"tuiles": [
+			{ "image": "COMBAT_DECOR_ROUTE_VICTOIRE_r1_TL.png", "portion": [0, 0, 1001, 852] },
+			{ "image": "COMBAT_DECOR_ROUTE_VICTOIRE_r1_TR.png", "portion": [846, 0, 1847, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"cerulean_cave_azuree": {
+		"composition": "COMBAT_DECOR_GROTTE_AZUREE_r1.png",
+		"tuiles": [
+			{ "image": "COMBAT_DECOR_GROTTE_AZUREE_r1_TL.png", "portion": [0, 0, 1002, 851] },
+			{ "image": "COMBAT_DECOR_GROTTE_AZUREE_r1_TR.png", "portion": [847, 0, 1849, 851] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
 	}
 }

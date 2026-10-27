@@ -22,7 +22,8 @@ const DATA_DIR := "res://data"
 ## Jalon 30 (T16) : bloc « Pokémon © … / projet personnel » du générique, validé par Kevin le
 ## 2026-10-26, « draft » retiré.
 ## Jalon 30 : texte du Grand moment « champion » validé par Kevin le 2026-10-26, « draft » retiré.
-const PENDING_DRAFTS: Array[String] = []
+## Jalon 26 (T6) : description de Safrania sur la Carte [D], à relire par Kevin.
+const PENDING_DRAFTS: Array[String] = ["world/zones.json/zones/saffron_city"]
 
 
 func test_data_has_json_files() -> void:

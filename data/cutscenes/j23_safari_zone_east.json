@@ -1,0 +1,98 @@
+{
+	"safari_zone_east_guerison": {
+		"variants": [
+			{
+				"unless": [
+					"got_safari_zone_east_guerison"
+				],
+				"steps": [
+					{
+						"despawn": "guerison"
+					},
+					{
+						"give": "full_restore",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_safari_zone_east_guerison"
+						]
+					}
+				]
+			}
+		]
+	},
+	"safari_zone_east_potion_max": {
+		"variants": [
+			{
+				"unless": [
+					"got_safari_zone_east_potion_max"
+				],
+				"steps": [
+					{
+						"despawn": "potion_max"
+					},
+					{
+						"give": "hyper_potion",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_safari_zone_east_potion_max"
+						]
+					}
+				]
+			}
+		]
+	},
+	"safari_zone_east_carbone": {
+		"variants": [
+			{
+				"unless": [
+					"got_safari_zone_east_carbone"
+				],
+				"steps": [
+					{
+						"despawn": "carbone"
+					},
+					{
+						"give": "rare_candy",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_safari_zone_east_carbone"
+						]
+					}
+				]
+			}
+		]
+	},
+	"safari_zone_east_ct37": {
+		"variants": [
+			{
+				"unless": [
+					"got_safari_zone_east_ct37"
+				],
+				"steps": [
+					{
+						"despawn": "ct37"
+					},
+					{
+						"give": "tm37",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_safari_zone_east_ct37"
+						]
+					}
+				]
+			}
+		]
+	}
+}

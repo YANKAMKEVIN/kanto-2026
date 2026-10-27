@@ -1,7 +1,7 @@
 [gd_scene format=3]
 
 [ext_resource type="PackedScene" path="res://game/world/props/prop.tscn" id="1_base"]
-[ext_resource type="Texture2D" path="res://assets/tiles/placeholder/props/interior/bed_items.png" id="2_tex"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/int_lit_affaires_rival_01.png" id="2_tex"]
 
 [node name="BedItems" instance=ExtResource("1_base")]
 footprint = Array[Vector2i]([])

@@ -1,0 +1,39 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_qjs2a"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_jw7kp"]
+[ext_resource type="Texture2D" path="res://assets/world/buildings/bldg_immeuble_safrania_01.png" id="3_armmp"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/cast_shadow.tres" id="4_mbuso"]
+[ext_resource type="Texture2D" path="res://assets/world/buildings/bldg_immeuble_safrania_01_shadow.png" id="5_vbpgy"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/contact_shadow.tres" id="6_bin6k"]
+[ext_resource type="Texture2D" path="res://assets/world/buildings/bldg_immeuble_safrania_01_contact.png" id="7_0s5wt"]
+
+[node name="BldgImmeubleSafrania01" type="Node2D" unique_id=756160188]
+script = ExtResource("1_qjs2a")
+footprint = Array[Vector2i]([Vector2i(-3, -5), Vector2i(-2, -5), Vector2i(-1, -5), Vector2i(0, -5), Vector2i(1, -5), Vector2i(2, -5), Vector2i(3, -5), Vector2i(-3, -4), Vector2i(-2, -4), Vector2i(-1, -4), Vector2i(0, -4), Vector2i(1, -4), Vector2i(2, -4), Vector2i(3, -4), Vector2i(-3, -3), Vector2i(-2, -3), Vector2i(-1, -3), Vector2i(0, -3), Vector2i(1, -3), Vector2i(2, -3), Vector2i(3, -3), Vector2i(-3, -2), Vector2i(-2, -2), Vector2i(-1, -2), Vector2i(0, -2), Vector2i(1, -2), Vector2i(2, -2), Vector2i(3, -2), Vector2i(-3, -1), Vector2i(-2, -1), Vector2i(-1, -1), Vector2i(0, -1), Vector2i(1, -1), Vector2i(2, -1), Vector2i(3, -1), Vector2i(-3, 0), Vector2i(-2, 0), Vector2i(-1, 0), Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0)])
+fade_when_covering = true
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=538058618]
+unique_name_in_owner = true
+material = ExtResource("2_jw7kp")
+texture = ExtResource("3_armmp")
+centered = false
+offset = Vector2(-336, -600)
+
+[node name="CastShadow" type="Sprite2D" parent="." unique_id=1957938499 groups=["cast_shadows"]]
+z_index = -2
+z_as_relative = false
+material = ExtResource("4_mbuso")
+scale = Vector2(2, 2)
+texture = ExtResource("5_vbpgy")
+centered = false
+offset = Vector2(-180.5, -2)
+
+[node name="ContactShadow" type="Sprite2D" parent="." unique_id=1463102815 groups=["contact_shadows"]]
+z_index = -2
+z_as_relative = false
+material = ExtResource("6_bin6k")
+scale = Vector2(2, 2)
+texture = ExtResource("7_0s5wt")
+centered = false
+offset = Vector2(-172, -27)

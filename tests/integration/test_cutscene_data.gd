@@ -75,6 +75,8 @@ const MAPS: Array[StringName] = [
 	&"celadon_city", &"celadon_gym",
 	# Jalon 20 (T17) : arrivées silencieuses (Route 8 est, Céladopole est).
 	&"route_8",
+	# Jalon 26 (T11, T12) : le rival n° 6 (7F) et Giovanni (11F) de la Sylphe SARL.
+	&"silph_co_7f", &"silph_co_11f",
 	# Jalon 24 (T12) : la porte fermée de l'Arène de Cramois'Île (T-42 et recul).
 	&"cinnabar_island",
 	# Jalon 21 (T21) : arrivée silencieuse sur la Route 12.
@@ -96,6 +98,9 @@ const ROUTE22_FLAGS: Array[StringName] = [
 	&"got_oak_parcel", &"pokedex_activated",
 ]
 ## Jalon 10 (T8) : partie qui arrive à Argenta (fin du J9 : poison annoncé, Théo battu).
+const OFFER_WATER: StringName = &"saffron_gate_offer_water"
+const OFFER_SODA: StringName = &"saffron_gate_offer_soda"
+const OFFER_LEMONADE: StringName = &"saffron_gate_offer_lemonade"
 const PEWTER_FLAGS: Array[StringName] = [
 	&"oak_met", &"oak_lab_reunion", &"starter_offered", &"starter_chosen", &"rival_challenged",
 	&"rival_lab_won", &"rival_battle_done", &"rival_left_lab", &"viridian_arrived",
@@ -351,6 +356,15 @@ const VARIANT_FLAGS: Dictionary = {
 	# Jalon 20 (T25) : boisson donnée au garde d'un poste de Safrania (une fois).
 	&"saffron_gate_drink_water": [PEWTER_FLAGS], &"saffron_gate_drink_soda": [PEWTER_FLAGS],
 	&"saffron_gate_drink_lemonade": [PEWTER_FLAGS],
+	# Jalon 26 (T8) : suites des déclencheurs du J15 (boisson choisie par drapeau, sinon recul).
+	&"route_5_gate_after": [PEWTER_FLAGS + [OFFER_WATER], PEWTER_FLAGS + [OFFER_SODA],
+		PEWTER_FLAGS + [OFFER_LEMONADE], PEWTER_FLAGS],
+	&"route_6_gate_after_w": [PEWTER_FLAGS + [OFFER_WATER], PEWTER_FLAGS + [OFFER_SODA],
+		PEWTER_FLAGS + [OFFER_LEMONADE], PEWTER_FLAGS],
+	&"route_6_gate_after_e": [PEWTER_FLAGS + [OFFER_WATER], PEWTER_FLAGS + [OFFER_SODA],
+		PEWTER_FLAGS + [OFFER_LEMONADE], PEWTER_FLAGS],
+	&"route_6_gate_after_s": [PEWTER_FLAGS + [OFFER_WATER], PEWTER_FLAGS + [OFFER_SODA],
+		PEWTER_FLAGS + [OFFER_LEMONADE], PEWTER_FLAGS],
 	# Jalon 20 (T12) : don d'Évoli (une fois).
 	&"celadon_eevee_gift": [PEWTER_FLAGS],
 	# Jalon 20 (T17) : arrivées, objet et caches, Erika (scène et rattrapage de la CT21), fillette.
@@ -360,6 +374,8 @@ const VARIANT_FLAGS: Dictionary = {
 	&"celadon_hidden_1": [PEWTER_FLAGS],
 	&"celadon_gym_erika": [PEWTER_FLAGS], &"celadon_gym_erika_tm_late": [PEWTER_FLAGS],
 	&"celadon_roof_trade": [PEWTER_FLAGS],
+	# Jalon 23 (T19) : Koga (scène et rattrapage de la CT06).
+	&"fuchsia_gym_koga": [PEWTER_FLAGS], &"fuchsia_gym_koga_tm_late": [PEWTER_FLAGS],
 	# Jalon 24 : objets, caches, Artikodin, porte de l'Arène, CT35, fossiles.
 	&"route_20_item_1": [PEWTER_FLAGS], &"route_21_item_1": [PEWTER_FLAGS],
 	&"seafoam_b2f_hidden_1": [PEWTER_FLAGS], &"seafoam_b4f_hidden_1": [PEWTER_FLAGS],
@@ -393,6 +409,36 @@ const VARIANT_FLAGS: Dictionary = {
 	&"rocket_hideout_b4f_item_2": [PEWTER_FLAGS],
 	&"rocket_hideout_b4f_item_3": [PEWTER_FLAGS],
 	&"rocket_hideout_b4f_hidden_1": [PEWTER_FLAGS],
+	# Jalon 26 (T9) : objets au sol et cachés de Safrania et de la Sylphe (une fois chacun).
+	&"silph_co_3f_item_4": [PEWTER_FLAGS],
+	&"silph_co_4f_item_5": [PEWTER_FLAGS],
+	&"silph_co_4f_item_6": [PEWTER_FLAGS],
+	&"silph_co_4f_item_7": [PEWTER_FLAGS],
+	&"silph_co_5f_card_key": [PEWTER_FLAGS],
+	&"silph_co_5f_hidden_1": [PEWTER_FLAGS],
+	&"silph_co_5f_item_6": [PEWTER_FLAGS],
+	&"silph_co_5f_item_7": [PEWTER_FLAGS],
+	&"silph_co_6f_item_9": [PEWTER_FLAGS],
+	&"silph_co_6f_item_10": [PEWTER_FLAGS],
+	&"silph_co_9f_hidden_1": [PEWTER_FLAGS],
+	&"silph_co_10f_item_4": [PEWTER_FLAGS],
+	&"silph_co_10f_item_5": [PEWTER_FLAGS],
+	&"silph_co_10f_item_6": [PEWTER_FLAGS],
+	&"saffron_copycat_hidden_1": [PEWTER_FLAGS],
+	# Jalon 26 (T11, T12) : rival n° 6, Lokhlass, Giovanni, Master Ball, objets du 7F.
+	&"rival_silph": [[]],
+	&"silph_co_lapras_gift": [[&"rival_silph_won"]],
+	&"silph_co_giovanni": [[&"rival_silph_won"]],
+	&"silph_co_master_ball": [[&"silph_giovanni_defeated"]],
+	&"silph_co_7f_item_10": [[]],
+	&"silph_co_7f_item_11": [[]],
+	# Jalon 27 (T8 à T10) : Morgane (scène et rattrapage de la CT46), maître du Dojo, choix.
+	&"saffron_gym_sabrina": [PEWTER_FLAGS], &"saffron_gym_sabrina_tm_late": [PEWTER_FLAGS],
+	&"fighting_dojo_master": [PEWTER_FLAGS],
+	&"fighting_dojo_take_hitmonlee": [PEWTER_FLAGS], &"fighting_dojo_take_hitmonchan": [PEWTER_FLAGS],
+	# Jalon 28 (T8) : Giovanni Champion (scène et rattrapage de la CT27), Rappel de l'Arène.
+	&"viridian_gym_giovanni": [PEWTER_FLAGS], &"viridian_gym_giovanni_tm_late": [PEWTER_FLAGS],
+	&"viridian_gym_item_1": [PEWTER_FLAGS],
 	# Jalon 25 : Manoir (objets, caches, interrupteur), Arène (quiz, Auguste), réserve du Musée,
 	# arbre à Couper d'Argenta, échanges du Labo.
 	&"cinnabar_gym_blaine": [PEWTER_FLAGS + [&"badge_volcano"], PEWTER_FLAGS],
@@ -437,6 +483,18 @@ const VARIANT_FLAGS: Dictionary = {
 		&"league_stage_1_cleared", &"league_stage_2_cleared", &"league_stage_3_cleared",
 		&"league_stage_4_cleared"]],
 	&"league_hall_of_fame": [[&"league_champion_defeated"]],
+	# Jalon 31 (T4) : objets de la Grotte Azurée et Mewtwo (une variante, avant le drapeau).
+	&"cerulean_cave_1f_item_1": [[]],
+	&"cerulean_cave_1f_item_2": [[]],
+	&"cerulean_cave_1f_item_3": [[]],
+	&"cerulean_cave_1f_hidden_1": [[]],
+	&"cerulean_cave_2f_item_1": [[]],
+	&"cerulean_cave_2f_item_2": [[]],
+	&"cerulean_cave_2f_item_3": [[]],
+	&"cerulean_cave_b1f_item_1": [[]],
+	&"cerulean_cave_b1f_item_2": [[]],
+	&"cerulean_cave_b1f_hidden_1": [[]],
+	&"mewtwo": [[]],
 }
 ## Scènes jouées par le code (pas de déclencheur) → carte où elles sont jouées.
 ## Jalon 7 (T18) : la scène du colis est lancée par la variante « cutscene » du dialogue de Chen.
@@ -471,6 +529,9 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	# Jalon 20 (T25) : choix OUI du garde d'un poste de Safrania (« confirm_cutscene »).
 	&"saffron_gate_drink_water": &"route_8_gate", &"saffron_gate_drink_soda": &"route_8_gate",
 	&"saffron_gate_drink_lemonade": &"route_8_gate",
+	# Jalon 26 (T8) : suites des déclencheurs du J15 (`next`) et choix OUI du garde (PARLER).
+	&"route_5_gate_after": &"route_5_gate", &"route_6_gate_after_w": &"route_6",
+	&"route_6_gate_after_e": &"route_6", &"route_6_gate_after_s": &"route_6",
 	# Jalon 20 (T12) : choix OUI de la Poké Ball d'Évoli (PNJ `eevee_ball` de la maison du toit).
 	&"celadon_eevee_gift": &"celadon_mansion_roof_house",
 	# Jalon 20 (T17) : objets et caches (PNJ « objet » et points d'examen), Erika (son dialogue),
@@ -479,6 +540,8 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"souterrain_hidden_1": &"underground_path_7_8", &"souterrain_hidden_2": &"underground_path_7_8",
 	&"celadon_hidden_1": &"celadon_city", &"celadon_gym_erika": &"celadon_gym",
 	&"celadon_gym_erika_tm_late": &"celadon_gym", &"celadon_roof_trade": &"celadon_dept_roof",
+	# Jalon 23 (T19) : Koga (son dialogue).
+	&"fuchsia_gym_koga": &"fuchsia_gym", &"fuchsia_gym_koga_tm_late": &"fuchsia_gym",
 	# Jalon 20 (T21) : choix OUI de l'affiche, dialogues du sbire à la Clé, de Giovanni et des
 	# Poké Balls, objets et caches du repaire.
 	&"game_corner_switch": &"celadon_game_corner", &"rocket_hideout_key_drop": &"rocket_hideout_b4f",
@@ -498,6 +561,9 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"rocket_hideout_b4f_item_2": &"rocket_hideout_b4f",
 	&"rocket_hideout_b4f_item_3": &"rocket_hideout_b4f",
 	&"rocket_hideout_b4f_hidden_1": &"rocket_hideout_b4f",
+	# Jalon 28 (T8) : Giovanni (son dialogue) et le Rappel (PNJ « objet ») de l'Arène de Jadielle.
+	&"viridian_gym_giovanni": &"viridian_gym", &"viridian_gym_giovanni_tm_late": &"viridian_gym",
+	&"viridian_gym_item_1": &"viridian_gym",
 	&"starter_chosen": &"oak_lab", &"oak_parcel": &"oak_lab",
 	&"route_2_item_1": &"route_2", &"route_2_item_2": &"route_2",
 	# Jalon 9 (T18) : objets visibles de la Forêt de Jade (PNJ « objet » de son fichier).
@@ -583,6 +649,29 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"tower_3f_objet_1": &"pokemon_tower_3f", &"tower_4f_objet_1": &"pokemon_tower_4f",
 	&"tower_4f_objet_2": &"pokemon_tower_4f", &"tower_5f_objet_1": &"pokemon_tower_5f",
 	&"tower_5f_cache_1": &"pokemon_tower_5f", &"tower_6f_objet_1": &"pokemon_tower_6f",
+	# Jalon 26 (T9) : objets au sol (PNJ « objet ») et caches (points d'examen).
+	&"silph_co_3f_item_4": &"silph_co_3f",
+	&"silph_co_4f_item_5": &"silph_co_4f",
+	&"silph_co_4f_item_6": &"silph_co_4f",
+	&"silph_co_4f_item_7": &"silph_co_4f",
+	&"silph_co_5f_card_key": &"silph_co_5f",
+	&"silph_co_5f_hidden_1": &"silph_co_5f",
+	&"silph_co_5f_item_6": &"silph_co_5f",
+	&"silph_co_5f_item_7": &"silph_co_5f",
+	&"silph_co_6f_item_9": &"silph_co_6f",
+	&"silph_co_6f_item_10": &"silph_co_6f",
+	&"silph_co_9f_hidden_1": &"silph_co_9f",
+	&"silph_co_10f_item_4": &"silph_co_10f",
+	&"silph_co_10f_item_5": &"silph_co_10f",
+	&"silph_co_10f_item_6": &"silph_co_10f",
+	&"saffron_copycat_hidden_1": &"saffron_copycat_house_2f",
+	# Jalon 26 (T11, T12) : dialogues de l'employé du Lokhlass, du président et des objets du 7F.
+	&"silph_co_lapras_gift": &"silph_co_7f", &"silph_co_master_ball": &"silph_co_11f",
+	&"silph_co_7f_item_10": &"silph_co_7f", &"silph_co_7f_item_11": &"silph_co_7f",
+	# Jalon 27 (T8 à T10) : dialogues de Morgane et du maître, choix OUI des deux Poké Balls.
+	&"saffron_gym_sabrina": &"saffron_gym", &"saffron_gym_sabrina_tm_late": &"saffron_gym",
+	&"fighting_dojo_master": &"fighting_dojo", &"fighting_dojo_take_hitmonlee": &"fighting_dojo",
+	&"fighting_dojo_take_hitmonchan": &"fighting_dojo",
 	# Jalon 24 : objets (PNJ « objet »), caches (points d'examen), Artikodin (son PNJ), CT35 et
 	# fossiles (dialogues des scientifiques, « cutscene » ou « confirm_cutscene »).
 	&"route_20_item_1": &"route_20", &"route_21_item_1": &"route_21",
@@ -628,6 +717,19 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	# `pokemon_house_flute`, aussi lancée par le déclencheur d'entrée de la maison) et réveil du
 	# Ronflex 16 (« flute_cutscene » et choix OUI).
 	&"tower_7f_fuji_rescue": &"pokemon_tower_7f", &"snorlax_route_16_wake": &"route_16",
+	# Jalon 31 (T6) : objets de la Grotte Azurée (PNJ « objet »), caches (points d'examen sur
+	# l'indice), Mewtwo (son PNJ).
+	&"cerulean_cave_1f_item_1": &"cerulean_cave_1f",
+	&"cerulean_cave_1f_item_2": &"cerulean_cave_1f",
+	&"cerulean_cave_1f_item_3": &"cerulean_cave_1f",
+	&"cerulean_cave_1f_hidden_1": &"cerulean_cave_1f",
+	&"cerulean_cave_2f_item_1": &"cerulean_cave_2f",
+	&"cerulean_cave_2f_item_2": &"cerulean_cave_2f",
+	&"cerulean_cave_2f_item_3": &"cerulean_cave_2f",
+	&"cerulean_cave_b1f_item_1": &"cerulean_cave_b1f",
+	&"cerulean_cave_b1f_item_2": &"cerulean_cave_b1f",
+	&"cerulean_cave_b1f_hidden_1": &"cerulean_cave_b1f",
+	&"mewtwo": &"cerulean_cave_b1f",
 }
 ## Jalon 21 (T10, T12) : objets du Sac qui choisissent chaque variante (« if_items » /
 ## « unless_items »), ligne par ligne comme VARIANT_FLAGS ; absent : Sac vide. La variante A du
@@ -638,6 +740,7 @@ const VARIANT_ITEMS: Dictionary = {
 ## Scènes à déclencheur dont la carte n'est pas encore construite → leur carte (simulées sur les
 ## PNJ de son fichier). Vidée au T19 du jalon 9 (la forêt existe), puis au T11 du jalon 10 (les
 ## deux scènes d'Argenta ont leurs déclencheurs sur la carte).
+## Jalon 31 (T6) : vidée, les cartes de la Grotte Azurée existent (ses scènes sont dans CODE_PLAYED).
 const AWAITING_MAP: Dictionary[StringName, StringName] = {}
 ## Jalon 20 (T21) : interrupteur du Casino, Clé, Giovanni, Scope, objets et caches du repaire.
 const J20_T21_IDS: Array[StringName] = [
@@ -649,6 +752,26 @@ const J20_T21_IDS: Array[StringName] = [
 	&"rocket_hideout_b3f_hidden_1", &"rocket_hideout_b4f_item_1", &"rocket_hideout_b4f_item_2",
 	&"rocket_hideout_b4f_item_3", &"rocket_hideout_b4f_hidden_1",
 ]
+## Jalon 26 (T9) : objets au sol et cachés de Safrania et de la Sylphe (`saffron_life.json`,
+## `silph_co_life.json`) : scène → [carte, objet donné]. Les objets absents du dépôt sont remplacés
+## [D] (fallback des grilles) ; depuis la fusion de `main` (J22 à J25), les objets RB existent tous.
+const J26_T9_ITEMS: Dictionary[StringName, Array] = {
+	&"silph_co_3f_item_4": [&"silph_co_3f", &"hyper_potion"],
+	&"silph_co_4f_item_5": [&"silph_co_4f", &"full_heal"],
+	&"silph_co_4f_item_6": [&"silph_co_4f", &"max_revive"],
+	&"silph_co_4f_item_7": [&"silph_co_4f", &"escape_rope"],
+	&"silph_co_5f_card_key": [&"silph_co_5f", &"card_key"],
+	&"silph_co_5f_hidden_1": [&"silph_co_5f", &"revive"],
+	&"silph_co_5f_item_6": [&"silph_co_5f", &"tm09"],
+	&"silph_co_5f_item_7": [&"silph_co_5f", &"rare_candy"],
+	&"silph_co_6f_item_9": [&"silph_co_6f", &"rare_candy"],
+	&"silph_co_6f_item_10": [&"silph_co_6f", &"x_accuracy"],
+	&"silph_co_9f_hidden_1": [&"silph_co_9f", &"max_potion"],
+	&"silph_co_10f_item_4": [&"silph_co_10f", &"nugget"],
+	&"silph_co_10f_item_5": [&"silph_co_10f", &"rare_candy"],
+	&"silph_co_10f_item_6": [&"silph_co_10f", &"rare_candy"],
+	&"saffron_copycat_hidden_1": [&"saffron_copycat_house_2f", &"nugget"],
+}
 ## Jalon 25 : scènes du Manoir, de l'Arène, de la réserve du Musée et des échanges.
 const J25_IDS: Array[StringName] = [
 	&"cinnabar_gym_blaine",
@@ -677,6 +800,20 @@ const J25_IDS: Array[StringName] = [
 	&"pokemon_mansion_b1f_item_3",
 	&"pokemon_mansion_b1f_item_4",
 	&"pokemon_mansion_b1f_item_5",
+]
+## Jalon 31 (T4) : objets de la Grotte Azurée et Mewtwo.
+const J31_IDS: Array[StringName] = [
+	&"cerulean_cave_1f_item_1",
+	&"cerulean_cave_1f_item_2",
+	&"cerulean_cave_1f_item_3",
+	&"cerulean_cave_1f_hidden_1",
+	&"cerulean_cave_2f_item_1",
+	&"cerulean_cave_2f_item_2",
+	&"cerulean_cave_2f_item_3",
+	&"cerulean_cave_b1f_item_1",
+	&"cerulean_cave_b1f_item_2",
+	&"cerulean_cave_b1f_hidden_1",
+	&"mewtwo",
 ]
 ## Jalon 18 (T16) : scènes de ses fichiers (objets, objectifs).
 const J18_IDS: Array[StringName] = [
@@ -755,6 +892,9 @@ func test_library_loads_without_error() -> void:
 		&"route_24_rival", &"route_24_rocket", &"route_25_hidden_1", &"route_25_item_1",
 		&"route_25_item_2", &"route_25_item_3",
 		&"route_6_gate_rule_e", &"route_6_gate_rule_s", &"route_6_gate_rule_w",
+		# Jalon 26 (T8) : suites des déclencheurs du J15.
+		&"route_5_gate_after", &"route_6_gate_after_e", &"route_6_gate_after_s",
+		&"route_6_gate_after_w",
 		&"route_6_hidden_1", &"route_6_item_1", &"vermilion_arrival",
 		&"vermilion_gym_barrier_open", &"vermilion_gym_surge", &"vermilion_gym_surge_tm_late",
 		# Jalon 16 (T15) : départ du S.S. Anne, Coupe de l'arbuste de l'Arène.
@@ -791,6 +931,8 @@ func test_library_loads_without_error() -> void:
 		&"route_8_reached", &"celadon_reached", &"route_8_item_1", &"route_8_hidden_1",
 		&"souterrain_hidden_1", &"souterrain_hidden_2", &"celadon_hidden_1",
 		&"celadon_gym_erika", &"celadon_gym_erika_tm_late", &"celadon_roof_trade",
+		# Jalon 28 (T8) : Giovanni Champion, rattrapage de la CT27, Rappel.
+		&"viridian_gym_giovanni", &"viridian_gym_giovanni_tm_late", &"viridian_gym_item_1",
 		# Jalon 24.
 		&"route_20_item_1", &"route_21_item_1", &"seafoam_b2f_hidden_1", &"seafoam_b4f_hidden_1",
 		&"articuno", &"cinnabar_gym_locked", &"cinnabar_lab_tm35", &"cinnabar_fossil_take_kabuto",
@@ -802,7 +944,14 @@ func test_library_loads_without_error() -> void:
 		# Jalon 21 (T13, T14, T22) : 7F, Maison des Pokémon, Route 16.
 		&"tower_7f_fuji_rescue", &"pokemon_house_flute", &"route_16_visited",
 		&"snorlax_route_16_wake"]
-		+ J18_IDS + J20_T21_IDS + J25_IDS))
+		+ J18_IDS + J20_T21_IDS + J25_IDS + J31_IDS + J26_T9_ITEMS.keys()
+		# Jalon 23 (T19) : Koga dans `j23_fuchsia_gym.json` (fichiers générés, test_j23_data).
+		# Jalon 26 (T11, T12) : rival n° 6, Lokhlass, Giovanni, Master Ball, objets du 7F.
+		+ [&"rival_silph", &"silph_co_lapras_gift", &"silph_co_giovanni", &"silph_co_master_ball",
+		&"silph_co_7f_item_10", &"silph_co_7f_item_11"]
+		# Jalon 27 (T8 à T10) : Morgane, maître du Dojo, choix Kicklee / Tygnon.
+		+ [&"saffron_gym_sabrina", &"saffron_gym_sabrina_tm_late", &"fighting_dojo_master",
+		&"fighting_dojo_take_hitmonlee", &"fighting_dojo_take_hitmonchan"]))
 
 
 func _sorted(values: Array) -> Array[StringName]:
@@ -890,16 +1039,18 @@ func test_every_trainer_and_item_step_exists() -> void:
 ## Jalon 10 (T9) : chaque Dresseur présenté par une carte en a une, chaque badge remis existe, et
 ## l'étape « badge » d'une scène suit le combat qui lève déjà son drapeau (« win »).
 func test_every_champion_card_and_badge_step_exists() -> void:
-	# Jalon 30 (T9) : les cartes « Conseil des Quatre » des quatre membres (pas le rival).
+	# Jalon 23 (T19) : Koga ; jalon 30 (T9) : les cartes « Conseil des Quatre » des quatre membres
+	# (pas le rival).
 	assert_eq(_cutscenes.get_card_trainer_ids(), [&"celadon_gym_erika", &"cerulean_gym_misty",
-		&"cinnabar_gym_blaine", &"giovanni_hideout", &"league_agatha", &"league_bruno", &"league_lance",
-		&"league_lorelei", &"pewter_gym_brock", &"vermilion_gym_surge"] as Array[StringName])
+		&"cinnabar_gym_blaine", &"fuchsia_gym_koga", &"giovanni_hideout", &"league_agatha",
+		&"league_bruno", &"league_lance", &"league_lorelei", &"pewter_gym_brock",
+		&"saffron_gym_sabrina", &"silph_co_giovanni", &"vermilion_gym_surge",
+		&"viridian_gym_giovanni"] as Array[StringName])
 	for id: StringName in _cutscenes.get_card_trainer_ids():
 		var trainer := _trainers.get_trainer(id)
 		assert_true(trainer != null and trainer.has_card(), "« %s » a une carte" % id)
-	assert_eq(_cutscenes.get_badge_ids(), [&"boulder", &"cascade", &"rainbow", &"thunder",
-		&"volcano"]
-		as Array[StringName])
+	assert_eq(_cutscenes.get_badge_ids(), [&"boulder", &"cascade", &"earth", &"marsh", &"rainbow",
+		&"soul", &"thunder", &"volcano"] as Array[StringName])
 	for id: StringName in _cutscenes.get_badge_ids():
 		assert_true(_badges.has_badge(id), "badge « %s » connu" % id)
 	for id: StringName in _real_ids():
@@ -930,7 +1081,10 @@ func test_only_world_items_are_found_items() -> void:
 	for item: String in FOUND_J29:
 		assert_true(found.has(item), item)
 	found = found.filter(func(item: String) -> bool: return not FOUND_J29.has(item))
-	assert_eq(found, ["celadon_hidden_1:revive", "dark_cave_1f_item_1:escape_rope",
+	var expected: Array[String] = ["celadon_hidden_1:revive",
+		# Jalon 31 (T4) : objets de RB de la Grotte Azurée.
+		"cerulean_cave_1f_hidden_1:rare_candy", "cerulean_cave_1f_item_1:full_restore", "cerulean_cave_1f_item_2:max_elixir", "cerulean_cave_1f_item_3:nugget", "cerulean_cave_2f_item_1:pp_up", "cerulean_cave_2f_item_2:ultra_ball", "cerulean_cave_2f_item_3:full_restore", "cerulean_cave_b1f_hidden_1:ultra_ball", "cerulean_cave_b1f_item_1:ultra_ball", "cerulean_cave_b1f_item_2:max_revive",
+		"dark_cave_1f_item_1:escape_rope",
 		"dark_cave_1f_item_2:antidote", "dark_cave_b1f_hidden_1:super_potion",
 		"dark_cave_b1f_item_1:super_potion", "digletts_cave_item_1:escape_rope",
 		"mt_moon_1f_hidden_1:awakening", "mt_moon_1f_item_1:escape_rope",
@@ -972,8 +1126,14 @@ func test_only_world_items_are_found_items() -> void:
 		"underground_hidden_1:full_restore", "viridian_forest_item_1:antidote",
 		"viridian_forest_item_2:poke_ball", "viridian_forest_item_3:potion",
 		"viridian_forest_item_4:antidote", "viridian_forest_item_5:poke_ball",
-		"viridian_forest_item_6:potion"]
-		as Array[String])
+		"viridian_forest_item_6:potion", "viridian_gym_item_1:revive",
+		"silph_co_7f_item_10:rare_candy", "silph_co_7f_item_11:nugget"]
+	# Jalon 26 (T9) : objets au sol et cachés de Safrania et de la Sylphe.
+	for id: StringName in J26_T9_ITEMS:
+		expected.append("%s:%s" % [id, J26_T9_ITEMS[id][1]])
+	expected.sort()
+	found.sort()
+	assert_eq(found, expected)
 
 
 ## Jalon 8 (jalon-08.md §2.3, §2.4) : un objet visible disparaît d'abord (son PNJ, retiré au
@@ -1489,7 +1649,7 @@ func _real_ids() -> Array[StringName]:
 ## Sans les cartes de QA ni les données du jalon 22 (fichiers `j22_*.json`, vérifiés par
 ## `test_j22_data.gd`).
 func _without_qa(ids: Array[StringName]) -> Array[StringName]:
-	var j22 := J22Ids.in_dir("res://data/cutscenes/")
+	var j22 := J22Ids.generated_in_dir("res://data/cutscenes/")
 	var result: Array[StringName] = []
 	for id: StringName in ids:
 		if not MapCatalog.is_qa_map(id) and not j22.has(id):

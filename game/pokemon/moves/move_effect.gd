@@ -88,6 +88,15 @@ extends RefCounted
 ## Pokémon en jeu reviennent à 0 (Buée Noire). CHARGE [member stat_up] : +1 niveau de cette
 ## statistique au tour de charge (Coud'Krâne). FIXED_DAMAGE « psywave » : niveau × (50 à 150) %
 ## (Vague Psy), au moins 1.
+## Jalon 27 (Pied Sauté, Pied Voltige, Riposte ; règles de Rouge/Bleu, `pret/pokered`) :
+## [codeblock]
+## { "kind": "crash", "amount": 1 }   { "kind": "counter" }
+## [/codeblock]
+## CRASH : si la capacité rate, est esquivée (Tunnel) ou n'a aucun effet sur le type de la cible
+## (Spectre), le lanceur s'écrase et perd [member amount] PV (Rouge/Bleu : 1 PV, `wDamage` vaut 0
+## au moment du calcul ; [constant CRASH_RB_AMOUNT] si « amount » est absent). COUNTER : Riposte
+## (capacité de statut, priorité −1 dans les données) : renvoie 2 × les dégâts du dernier coup reçu
+## d'une capacité adverse de type Normal ou Combat ([Battle]).
 ## Jalon 30 (`jalon-30.md` Q30-3, décision de Kevin du 2026-10-22 : coder les capacités de la
 ## Ligue ; règles [D] dans [Battle]) :
 ## [codeblock]
@@ -106,6 +115,7 @@ enum Kind {
 	REQUIRES_SLEEP, FORCE_SWITCH, RECOIL_DAMAGE, RECHARGE,
 	OHKO,
 	HEAL, SCREEN, HAZE,
+	CRASH, COUNTER,
 	RAGE, RAMPAGE, MIRROR,
 	## Jalon 24 (T13, dossier 27 §10.6) : Métronome lance une capacité tirée au hasard.
 	METRONOME,
@@ -126,6 +136,7 @@ const KIND_NAMES: Dictionary[String, Kind] = {
 	"recoil_damage": Kind.RECOIL_DAMAGE, "recharge": Kind.RECHARGE,
 	"ohko": Kind.OHKO,
 	"heal": Kind.HEAL, "screen": Kind.SCREEN, "haze": Kind.HAZE,
+	"crash": Kind.CRASH, "counter": Kind.COUNTER,
 	"rage": Kind.RAGE, "rampage": Kind.RAMPAGE, "mirror": Kind.MIRROR,
 	"metronome": Kind.METRONOME,
 }
@@ -138,6 +149,8 @@ const FIXED_MODES: Array[StringName] = [&"half_hp", &"level", &"value", &"psywav
 const SCREENS: Array[StringName] = [&"reflect", &"light_screen"]
 ## SCREEN : durée en tours, tour du lancer compris [D, règle moderne].
 const SCREEN_TURNS: int = 5
+## CRASH : PV perdus par défaut (Rouge/Bleu : toujours 1, jalon 27).
+const CRASH_RB_AMOUNT: int = 1
 const TARGET_NAMES: Dictionary[String, Target] = {"self": Target.SELF, "foe": Target.FOE}
 ## Statistiques qui ont un niveau en combat (−6..+6) ; « acc » précision, « eva » esquive.
 const STAGE_STATS: Array[StringName] = [&"atk", &"def", &"spa", &"spd", &"spe", &"acc", &"eva"]
@@ -165,6 +178,8 @@ var fraction: float = 0.0
 var immune_types: Array[StringName] = []
 ## STATUS : statut infligé à la cible ([constant StatusRules.KNOWN]).
 var status: StringName = &""
+## Jalon 23 (T18) : STATUS « poison » grave (Toxik, [ToxicRules]) ; [code]"toxic": true[/code].
+var toxic: bool = false
 ## HITS : nombre de coups (2 et 2 : deux coups ; 2 et 5 : de deux à cinq).
 var min_hits: int = 1
 var max_hits: int = 1
@@ -175,7 +190,7 @@ var min_turns: int = 0
 var max_turns: int = 0
 ## TRAP : famille de phrases ([constant TRAP_MESSAGES]).
 var messages: StringName = &""
-## FIXED_DAMAGE « value » : dégâts infligés.
+## FIXED_DAMAGE « value » : dégâts infligés ; CRASH : PV perdus par le lanceur (jalon 27).
 var amount: int = 0
 ## CHARGE : suffixe des messages du tour de charge (« dig » → « charge_dig_start »).
 var texts: StringName = &""

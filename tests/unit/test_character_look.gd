@@ -131,6 +131,11 @@ func test_every_sheet_maps_to_generated_frames() -> void:
 	var fixed_pokemon: Dictionary = constants["FIXED_POKEMON"]
 	var looping_pokemon: Dictionary = constants["LOOPING_POKEMON"]
 	var kneeling: Array = (constants["KNEELING"] as Dictionary).values()
+	# DAF.5 : planches lues par une autre apparence (vélo, poses de pêche du héros).
+	for pair: Array in (constants["BIKE"] as Dictionary).values():
+		kneeling.append_array(pair)
+	for poses: Dictionary in (constants["POSES"] as Dictionary).values():
+		kneeling.append_array(poses.values())
 	for sheet: String in catalogue["personnages"]:
 		var idle_of := sheet.trim_suffix(idle_suffix)
 		var is_idle := idle_of != sheet and looks.has(idle_of)

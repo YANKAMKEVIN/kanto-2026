@@ -12,12 +12,15 @@ const STATUS_TEXTS: Dictionary[StringName, String] = {
 	StatusRules.SLEEP: TeamMemberView.STATUS_SLEEP,
 	StatusRules.BURN: TeamMemberView.STATUS_BURN,
 	StatusRules.FREEZE: TeamMemberView.STATUS_FREEZE,
+	# Jalon 23 (T18) : poison grave, en combat seulement (A-27).
+	StatusRules.TOXIC: TeamMemberView.STATUS_TOXIC,
 }
 ## Type dont la pastille porte chaque statut (couleur de [constant UiTokens.TYPE_COLORS]) ;
 ## défauts du J11 (règle 4) : paralysie Électrik, sommeil Normal, brûlure Feu, gel Glace.
 const BADGE_TYPES: Dictionary[StringName, StringName] = {
 	StatusRules.POISON: &"poison", StatusRules.PARALYSIS: &"electric",
 	StatusRules.SLEEP: &"normal", StatusRules.BURN: &"fire", StatusRules.FREEZE: &"ice",
+	StatusRules.TOXIC: &"poison",
 }
 
 
@@ -38,7 +41,7 @@ static func text_of(status: StringName) -> String:
 ## poison éclairci pour « PSN » ; couleur de la pastille éclaircie pour les statuts du J11
 ## (défaut, affiné au T7).
 static func color(label: String) -> Color:
-	if label == TeamMemberView.STATUS_POISON:
+	if label == TeamMemberView.STATUS_POISON or label == TeamMemberView.STATUS_TOXIC:
 		return UiTokens.STATUS_POISON_TEXT
 	var status: StringName = STATUS_TEXTS.find_key(label) if STATUS_TEXTS.values().has(label) \
 		else StatusRules.NONE

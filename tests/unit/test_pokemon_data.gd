@@ -78,6 +78,8 @@ func test_real_data_loads_without_error() -> void:
 		&"oddish", &"gloom", &"vileplume", &"paras", &"parasect",
 		# Jalon 22 (T4) : Mimitoss, Aéromite, Machopeur, Canarticho, Doduo, Dodrio, Tadmorv,
 		# Grotadmorv, Krabby, Électrode, Smogogo, Poissoroy, Magicarpe (kanto_j22.json).
+		# Jalon 31 (T4) : Rhinoféros, Leveinard (kanto_j31_emprunts.json, copies identiques des
+		# J28 et J23) ; Métamorph et Mewtwo (kanto_j31.json).
 		&"venonat", &"venomoth",
 		# Jalon 17 (T7) : Taupiqueur, Triopikeur ; plus loin Goupix, Caninos, Magnéti, Magnéton,
 		# Soporifik, Hypno (kanto_j17.json).
@@ -91,7 +93,8 @@ func test_real_data_loads_without_error() -> void:
 		&"psyduck", &"golduck",
 		&"mankey", &"primeape", &"growlithe", &"arcanine",
 		&"poliwag", &"poliwhirl", &"poliwrath",
-		&"abra", &"kadabra", &"alakazam", &"machop", &"machoke", &"machamp",
+		&"abra", &"kadabra", &"alakazam",
+		&"machop", &"machoke", &"machamp",
 		&"bellsprout", &"weepinbell", &"victreebel", &"tentacool", &"tentacruel",
 		&"geodude", &"graveler", &"golem", &"ponyta", &"rapidash", &"slowpoke", &"slowbro", &"magnemite", &"magneton",
 		&"farfetchd", &"doduo", &"dodrio", &"seel", &"dewgong", &"grimer", &"muk", &"shellder",
@@ -100,18 +103,31 @@ func test_real_data_loads_without_error() -> void:
 		# (kanto_tower.json ; Caninos vient du J17).
 		&"gastly", &"haunter", &"gengar", &"onix",
 		&"drowzee", &"hypno", &"krabby", &"kingler", &"voltorb", &"electrode", &"exeggcute", &"exeggutor",
-		&"cubone", &"marowak", &"hitmonlee", &"hitmonchan", &"lickitung", &"koffing", &"weezing", &"rhyhorn", &"rhydon", &"chansey", &"tangela", &"kangaskhan",
-		&"horsea", &"seadra", &"goldeen", &"seaking", &"staryu", &"starmie", &"mr_mime", &"jynx", &"magmar", &"magikarp",
-		&"gyarados", &"lapras", &"eevee", &"vaporeon", &"jolteon", &"flareon",
-		&"omanyte", &"omastar", &"kabuto", &"kabutops", &"aerodactyl", &"snorlax", &"articuno", &"moltres", &"dragonair", &"dragonite"] as Array[StringName])
-	# Jalon 25 (T7) : kanto_j25.json (Ponyta, Galopa, Magmar, Ptéra) ; Tadmorv, Grotadmorv,
-	# Smogogo et Électrode sont ceux du J22 (kanto_j25_reprises.json retiré à la fusion de main).
-	# Jalon 29 (T4) : Excelangue, M. Mime, Noadkoko, Sulfura (kanto_j29.json) ; Alakazam,
-	# Leveinard, Lokhlass repris des J23, J26 (kanto_j29_reprises.json).
+		&"cubone", &"marowak", &"hitmonlee", &"hitmonchan", &"lickitung", &"koffing", &"weezing", &"rhyhorn",
+		# Jalon 23 (T6) : Leveinard, puis Insécateur, Scarabrute, Tauros (kanto_j23.json).
+		&"rhydon", &"chansey", &"tangela", &"kangaskhan",
+		&"horsea", &"seadra", &"goldeen", &"seaking", &"staryu", &"starmie", &"mr_mime", &"scyther", &"jynx",
+		&"magmar", &"pinsir", &"tauros", &"magikarp", &"gyarados",
+		# Jalon 26 (T3) : Lokhlass, Alakazam (kanto_silph.json).
+		&"lapras", &"ditto",
+		&"eevee", &"vaporeon", &"jolteon", &"flareon",
+		&"omanyte", &"omastar", &"kabuto", &"kabutops", &"aerodactyl", &"snorlax", &"articuno", &"moltres", &"dragonair", &"dragonite", &"mewtwo"] as Array[StringName])
+	# Jalon 23 (T18) : + Toxik (j23.json). Jalon 25 (T7) : kanto_j25.json (Ponyta, Galopa,
+	# Magmar, Ptéra) ; Tadmorv, Grotadmorv, Smogogo et Électrode sont ceux du J22
+	# (kanto_j25_reprises.json retiré à la fusion de main).
+	# Jalon 27 (T3) : 8 capacités propres (dont Vague Psy) + Ultimawashi et Clonage empruntées au
+	# J29 (Poing de Feu : celui du J25, retiré de j27_emprunts.json à la fusion de main).
+	# Jalon 28 : Abîme.
+	# Jalon 29 (T4) : Excelangue, M. Mime, Noadkoko, Sulfura (kanto_j29.json) ; Piqué, Ultimawashi,
+	# Clonage (j29.json). À la fusion dans main : kanto_j29_reprises.json (Alakazam, Leveinard,
+	# Lokhlass) et les emprunts du J27 au J29 (kanto_j27_emprunts.json, j27_emprunts.json) retirés.
+	# Jalon 31 (T4) : Métamorph, Mewtwo, Morphing ; kanto_j31_emprunts.json (Leveinard,
+	# Rhinoféros, ceux des J23 et J28) retiré à la fusion dans main.
 	# Jalon 30 (T3) : espèces de la Ligue (kanto_j30.json : Lippoutou, Mackogneur, Ectoplasma,
-	# Draco, Dracolosse ; kanto_j30_reprises.json : Kicklee, Tygnon, Rhinoféros ; Lokhlass,
-	# Alakazam et Noadkoko sont ceux du J29, retirés du J30 à la fusion du J29).
-	assert_eq(_data.get_move_ids().size(), 154,
+	# Draco, Dracolosse) et Grobisou (j30.json) ; ses reprises et emprunts (Rhinoféros, Kicklee,
+	# Tygnon ; Riposte, Pied Sauté, Pied Voltige, poings, Mawashi Geri, Abîme, Toxik) retirés à
+	# la fusion dans main : ceux des J23, J27 et J28 font foi.
+	assert_eq(_data.get_move_ids().size(), 159,
 		"47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10) + Patience (J11) "
 		+ "+ 21 du Mont Sélénite (jalon 12) + 8 du jalon 13 (les 5 du J12 qu'il reprenait : "
 		+ "entrées du J12) + 6 du Cap d'Azuria (jalon 14) + Jackpot (J15) "
@@ -119,11 +135,11 @@ func test_real_data_loads_without_error() -> void:
 		+ "Hypnose, Hurlement et Bélier viennent du J17) + 7 du jalon 20 + Vol (passe systèmes 2, T25) "
 		+ "+ Surf (S2C) + Force (S2D) + Amnésie, Bouclier (J21 ; Constriction vient du J20) "
 		+ "+ 5 du jalon 22 (Écrasement vient du J20) + 3 du J24 (j24.json : Force Poigne, "
-		+ "Pince-Masse et Trempette sont ceux du J22) "
+		+ "Pince-Masse et Trempette sont ceux du J22) + Bomb'Œuf, Reflet, Toxik (jalon 23 ; "
+		+ "Force Poigne du J22, Guillotine du J24) "
 		+ "+ Déflagration et Poing de Feu (J25, j25.json) "
-		+ "+ 3 du jalon 29 (Piqué, Ultimawashi, Clonage ; Bouclier est celui du J21) "
-		+ "+ 9 du jalon 30 (Blizzard, Picanon, Déflagration et Poing de Feu sont ceux des J24 et "
-		+ "J25 ; Piqué et Ultimawashi ceux du J29)")
+		+ "+ 8 (J27, dont Vague Psy) + Abîme (J28) + 3 du jalon 29 (Piqué, Ultimawashi, Clonage) "
+		+ "+ Morphing (jalon 31) + Grobisou (jalon 30)")
 	assert_true(_data.has_move(&"struggle"))
 
 
@@ -202,6 +218,8 @@ func test_real_evolution_chains() -> void:
 		# Cap d'Azuria (jalon 14, §2.13) : Kadabra (Cordon d'échange, sans source) et Machoc
 		# (Machopeur absent) n'en déclarent pas.
 		&"abra": [&"kadabra", 16],
+		# Sylphe SARL (jalon 26, T3) : Kadabra → Alakazam par échange, comme Gravalanch → Grolem.
+		&"kadabra": [&"alakazam", &""],
 		# Carmin-sur-Mer (jalon 15, §2.7.1) : Rouge/Bleu.
 		&"meowth": [&"persian", 28],
 		# Jalon 17 (§2.12.1) : Rouge/Bleu.
@@ -215,6 +233,8 @@ func test_real_evolution_chains() -> void:
 		# Tour Pokémon (jalon 19, §2.12) : Rouge/Bleu. Spectrum (échange, Ectoplasma absent) et
 		# Noeunoeuf (Pierre Plante absente) n'en déclarent pas.
 		&"gastly": [&"haunter", 25], &"cubone": [&"marowak", 28],
+		# Arène de Jadielle (jalon 28, T3) : Rouge/Bleu.
+		&"rhyhorn": [&"rhydon", 42],
 		# Jalon 22 (§2.12) : Rouge/Bleu entre espèces présentes ; Machopeur (Mackogneur absent)
 		# n'en déclare pas ; Magicarpe → Léviator (J19) au N20.
 		&"venonat": [&"venomoth", 31], &"doduo": [&"dodrio", 31], &"grimer": [&"muk", 38],
@@ -530,16 +550,23 @@ func test_real_catch_rates_are_the_official_ones() -> void:
 		&"dewgong": 75, &"cloyster": 60, &"kingler": 60,
 		&"seadra": 75, &"omanyte": 45,
 		&"omastar": 45, &"kabuto": 45, &"kabutops": 45, &"articuno": 3,
-		# Jalon 29 (T4) : reprises des J23, J26 et les quatre espèces nouvelles.
-		&"alakazam": 50, &"chansey": 30, &"lapras": 45,
-		&"lickitung": 45, &"mr_mime": 45, &"exeggutor": 45, &"moltres": 3,
+		# Jalon 28 (T3 ; Machopeur est celui du J22, Tauros celui du J23).
+		&"rhydon": 60,
+		# Jalon 29 (T4) : Excelangue, Noadkoko, Sulfura (M. Mime : voir J27).
+		&"lickitung": 45, &"exeggutor": 45, &"moltres": 3,
 		# Jalon 21 (T5).
 		&"poliwag": 255, &"tentacool": 190, &"snorlax": 25,
+		# Jalon 23 (T6) : Parc Safari.
+		&"chansey": 30, &"scyther": 45, &"pinsir": 45, &"tauros": 45,
 		# Jalon 25 (T7) ; Tadmorv, Grotadmorv, Smogogo et Électrode sont ceux du J22.
 		&"ponyta": 190, &"rapidash": 60, &"magmar": 45, &"aerodactyl": 45,
-		# Jalon 30 (T3, Ligue) : reprises des J26 à J29 et espèces nouvelles (Lamantine,
-		# Crustabri, Flagadoss : J24 ; Ptéra : J25).
-		&"rhydon": 60, &"hitmonlee": 45, &"hitmonchan": 45,
+		# Jalon 26 (T3, Sylphe SARL).
+		&"lapras": 45, &"alakazam": 50,
+		# J27 : M. Mime, Kicklee, Tygnon (ses emprunts aux J22 et J24 sont ceux de `main`).
+		&"mr_mime": 45, &"hitmonlee": 45, &"hitmonchan": 45,
+		# Jalon 31 (T4 ; Rhinoféros et Leveinard sont ceux des J28 et J23).
+		&"ditto": 35, &"mewtwo": 3,
+		# Jalon 30 (T3, Ligue) : espèces nouvelles (Rhinoféros, Kicklee, Tygnon : J28, J27).
 		&"jynx": 45, &"machamp": 45, &"gengar": 45, &"dragonair": 45, &"dragonite": 45,
 	}
 	assert_eq(_data.get_species_ids().size(), expected.size(), "toutes les espèces")

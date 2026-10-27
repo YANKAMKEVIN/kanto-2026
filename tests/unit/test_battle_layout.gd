@@ -38,17 +38,53 @@ func test_sprite_rect_feet_on_bottom_center() -> void:
 	assert_eq(r, Rect2(372, 444, 256, 256))
 
 
+## Cadrage B : le dos (partie visible) reste à gauche du centre, sous la carte adverse, posé sur
+## le bord bas ; il peut sortir par la gauche à 1920 de large (coupé comme par le bas).
 func test_max_boxes_inside_screen_apart_and_off_the_hud_zones() -> void:
 	for view: Vector2 in VIEWS:
 		var screen := Rect2(Vector2.ZERO, view)
 		var mine := BattleLayout.max_rect(true, view)
 		var foe := BattleLayout.max_rect(false, view)
-		assert_true(screen.encloses(mine), "%s : joueur dans l'écran" % view)
+		assert_eq(mine.end.y, view.y, "%s : dos posé sur le bord bas" % view)
+		assert_lt(mine.end.x, view.x / 2.0, "%s : dos à gauche du centre" % view)
+		assert_false(mine.intersects(BattleLayout.foe_card_zone(view)),
+			"%s : dos sous la carte adverse" % view)
+		assert_false(mine.intersects(BattleLayout.hud_zones(view)[1]),
+			"%s : dos hors des commandes" % view)
 		assert_true(screen.encloses(foe), "%s : adversaire dans l'écran" % view)
 		assert_false(mine.intersects(foe), "%s : jamais l'un sur l'autre" % view)
 		for zone: Rect2 in BattleLayout.hud_zones(view):
-			assert_false(mine.intersects(zone), "%s : joueur hors de %s" % [view, zone])
 			assert_false(foe.intersects(zone), "%s : adversaire hors de %s" % [view, zone])
+
+
+func test_anchors_keep_the_decor_ground_and_add_the_back_edge() -> void:
+	var a := BattleLayout.anchors(Vector2(2340, 1080))
+	assert_eq(a["player_feet"], Vector2(1170 - 0.42 * 1080, 0.90 * 1080).round(), "sol du décor")
+	assert_eq(a["player_back"], Vector2(1170 - 0.58 * 1080, 1080).round(), "bord bas du dos")
+
+
+## Loi de taille du dos (cadrage B) : la hauteur visible suit la taille réelle, bornée ; un dos
+## « corps entier » est enfoncé de BACK_CROP, un dos en plongée posé sur le bord.
+func test_back_scale_and_sink() -> void:
+	var h := 1080.0
+	var box := Vector2(600, 800)
+	var full := BattleLayout.back_scale(box, 0.6, h, BattleLayout.BACK_CROP)
+	assert_almost_eq(box.y * (1.0 - BattleLayout.BACK_CROP) * full, BattleLayout.BACK_HEIGHT * h, 0.5,
+		"Salamèche : hauteur visible de référence")
+	assert_almost_eq(BattleLayout.back_sink(box, full, BattleLayout.BACK_CROP),
+		roundf(box.y * full * BattleLayout.BACK_CROP), 0.01)
+	var rb := BattleLayout.back_scale(box, 0.6, h, 0.0)
+	assert_almost_eq(box.y * rb, BattleLayout.BACK_HEIGHT * h, 0.5, "dos en plongée : même hauteur visible")
+	assert_eq(BattleLayout.back_sink(box, rb, 0.0), 0.0, "posé sur le bord")
+	var onix := BattleLayout.back_scale(box, 8.8, h, 0.0)
+	assert_lte(box.y * onix, BattleLayout.BACK_MAX_HEIGHT * h + 0.01, "Onix plafonné sous la carte")
+	var rattata := BattleLayout.back_scale(box, 0.3, h, 0.0)
+	assert_gte(box.y * rattata, BattleLayout.BACK_MIN_HEIGHT * h - 0.01, "Rattata lisible")
+	var wide := BattleLayout.back_scale(Vector2(2000, 100), 0.6, h, 0.0)
+	assert_lte(2000 * wide, BattleLayout.BACK_MAX_WIDTH * h + 0.01, "largeur bornée")
+	var whole := BattleLayout.back_scale(Vector2(48, 56), 0.6, h, BattleLayout.BACK_CROP, true)
+	assert_eq(whole, floorf(whole), "pixel art : échelle entière")
+	assert_eq(BattleLayout.back_scale(Vector2.ZERO, 0.6, h, 0.0), 1.0, "boîte vide")
 
 
 func test_hud_zones_are_top_left_quarter_and_bottom_right() -> void:
@@ -73,8 +109,9 @@ func test_pilot_reference_sizes() -> void:
 	var mine := BattleLayout.sprite_scale(CHARMANDER_BACK, 0.6, true, h, true)
 	assert_eq(mine, 6.0, "pixel art net : échelle entière")
 	assert_almost_eq(CHARMANDER_BACK.y * mine / h, 0.336, 0.03)
+	# Cadrage B (2026-10-25) : présence de l'adversaire 0,27 → 0,34, soit ≈ 0,21 × 0,34 / 0,27.
 	var foe := BattleLayout.sprite_scale(PIDGEY_ARTWORK, 0.3, false, h)
-	assert_almost_eq(PIDGEY_ARTWORK.y * foe / h, 0.21, 0.01)
+	assert_almost_eq(PIDGEY_ARTWORK.y * foe / h, 0.21 * 0.34 / 0.27, 0.01)
 
 
 func test_scale_follows_real_size_and_respects_max_boxes() -> void:

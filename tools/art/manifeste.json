@@ -3136,6 +3136,54 @@
    "sortie": "assets/sprites/characters/painted/fuji_sheet.png",
    "hauteur": 122,
    "note": "série 23 (J21 T7) ; M. Fuji, même taille que le vieil homme"
+  },
+  {
+   "id": "motard",
+   "source": "PNJ_MOTARD_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/motard_sheet.png",
+   "hauteur": 128,
+   "nettoyer": true,
+   "note": "série 25 (DAF.5) ; Motards des Routes 16 à 18 ; biker"
+  },
+  {
+   "id": "ornithologue",
+   "source": "PNJ_ORNITHOLOGUE_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/ornithologue_sheet.png",
+   "hauteur": 128,
+   "nettoyer": true,
+   "note": "série 25 (DAF.5) ; bird_keeper"
+  },
+  {
+   "id": "loubard",
+   "source": "PNJ_LOUBARD_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/loubard_sheet.png",
+   "hauteur": 128,
+   "nettoyer": true,
+   "note": "série 25 (DAF.5) ; cue_ball"
+  },
+  {
+   "id": "pecheur_parmanie",
+   "source": "PNJ_PECHEUR_PARMANIE_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/pecheur_parmanie_sheet.png",
+   "hauteur": 130,
+   "nettoyer": true,
+   "note": "série 25 (DAF.5) ; frère cadet, Super Canne ; fisher_fuchsia"
+  },
+  {
+   "id": "pecheur_route_12",
+   "source": "PNJ_PECHEUR_ROUTE12_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/pecheur_route_12_sheet.png",
+   "hauteur": 130,
+   "nettoyer": true,
+   "note": "série 25 (DAF.5) ; frère aîné, Méga Canne ; fisher_route_12"
+  },
+  {
+   "id": "heros_bike",
+   "source": "HEROS_VELO_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/heros_bike_sheet.png",
+   "hauteur": 128,
+   "nettoyer": true,
+   "note": "série 25 (DAF.5) ; hauteur = héros à pied, le vélo dépasse en largeur ; animations bike_* de player"
   }
  ],
  "pokemon": [
@@ -3717,6 +3765,49 @@
     "face"
    ],
    "note": "série 23 : 4 poses à genoux (dos, dos au souffle, profil gauche, face yeux fermés) ; animation pray = colonnes 0 et 1"
+  },
+  {
+   "id": "motard_idle",
+   "source": "MOTARD_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/motard_idle_sheet.png",
+   "marche": "motard",
+   "note": "série 25 (DAF.5)"
+  },
+  {
+   "id": "ornithologue_idle",
+   "source": "ORNITHOLOGUE_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/ornithologue_idle_sheet.png",
+   "marche": "ornithologue",
+   "note": "série 25 (DAF.5)"
+  },
+  {
+   "id": "loubard_idle",
+   "source": "LOUBARD_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/loubard_idle_sheet.png",
+   "marche": "loubard",
+   "note": "série 25 (DAF.5)"
+  },
+  {
+   "id": "pecheur_parmanie_idle",
+   "source": "PECHEUR_PARMANIE_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/pecheur_parmanie_idle_sheet.png",
+   "marche": "pecheur_parmanie",
+   "note": "série 25 (DAF.5)"
+  },
+  {
+   "id": "pecheur_route_12_idle",
+   "source": "PECHEUR_ROUTE12_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/pecheur_route_12_idle_sheet.png",
+   "marche": "pecheur_route_12",
+   "note": "série 25 (DAF.5)"
+  },
+  {
+   "id": "heros_bike_idle",
+   "source": "HEROS_VELO_ARRET_r1.png",
+   "sortie": "assets/sprites/characters/painted/heros_bike_idle_sheet.png",
+   "marche": "heros_bike",
+   "note": "série 25 (DAF.5)",
+   "rapport_hauteur": 0.94
   }
  ],
  "images_objets": [
@@ -3850,6 +3941,20 @@
    "source": "POKE_RONFLEX_FIXE_NE_r1.png",
    "sortie": "assets/sprites/pokemon/painted/ronflex_sheet.png",
    "hauteur": 168
+  },
+  {
+   "id": "kangourex",
+   "source": "POKE_KANGOUREX_FIXE_NE_r2.png",
+   "sortie": "assets/sprites/pokemon/painted/kangourex_sheet.png",
+   "hauteur": 150,
+   "note": "série 25 (DAF.5) ; r2 (tête brune sans casque, planche v2)"
+  },
+  {
+   "id": "ramoloss",
+   "source": "POKE_RAMOLOSS_FIXE_NE_r3.png",
+   "sortie": "assets/sprites/pokemon/painted/ramoloss_sheet.png",
+   "hauteur": 64,
+   "note": "série 25 (DAF.5) ; r3, obtenu sans pièce jointe"
   }
  ],
  "planches_objets": [

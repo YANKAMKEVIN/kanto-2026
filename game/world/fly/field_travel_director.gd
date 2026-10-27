@@ -25,6 +25,8 @@ const VANISH_SECONDS: float = FlyDirector.TAKEOFF_SECONDS
 const INPUT_REASON: StringName = &"field_travel"
 
 ## func(move: StringName) -> FieldMoves.Result.
+## J23 : cartes où ce voyage est refusé (Parc Safari, `SafariConfig.maps`), posées par Boot.
+var no_fly_maps: Dictionary[StringName, bool] = {}
 var _field_check: Callable = Callable()
 ## func() -> RestPoint : le point du réveil (map, spawn, facing).
 var _teleport_target: Callable = Callable()
@@ -65,7 +67,8 @@ func check(move: StringName) -> FieldTravelRules.Check:
 	var state := _field_state(move)
 	if move == FieldTravelRules.TELEPORT:
 		var traits := MapTraits.new(map.interior)
-		traits.no_teleport = map.no_teleport  # Jalon 30 (T8) : salles de la Ligue
+		# Jalon 30 (T8) : salles de la Ligue ; J23 (dossier 26 §4) : Parc Safari.
+		traits.no_teleport = map.no_teleport or no_fly_maps.has(map.map_id)
 		var target := _teleport_point()
 		return FieldTravelRules.check_teleport(state, traits,
 			target.map if target != null else &"", _travelling)
