@@ -77,7 +77,7 @@ Enveloppes provisoires retirées (`ph_silph_co_*`, `ph_silph_door_*`, `ph_saffro
 
 ## Hors de ce lot
 
-- **J29 (Route Victoire, Route 23) et J31 (Grotte Azurée)** : pas encore dans `origin/main` au
-  2026-10-27 ; leur kit se fera à leur arrivée. **J30** (salles de la Ligue) : hors périmètre.
+- **J29 (Route Victoire, Route 23)** : arrivé dans `origin/main` à la fin du lot (`92c044eb`) ; son
+  kit reste à faire. **J31 (Grotte Azurée)** : pas encore dans `main`. **J30** (salles de la Ligue) : hors périmètre.
 - Sprites des Karatékas du Dojo et du Médium Nestor (RP-147), dos provisoires : lots DAF.1 et DAF.5.
 - Vue générale peinte de Safrania (T5 du J26) : jamais exigée par le code, toujours absente.
