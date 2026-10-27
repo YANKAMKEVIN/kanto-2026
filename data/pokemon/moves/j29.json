@@ -1,4 +1,20 @@
 {
+	"sky_attack": {
+		"name": "Piqué",
+		"type": "flying",
+		"category": "physical",
+		"power": 140,
+		"accuracy": 90,
+		"pp": 5,
+		"crit_stage": 1,
+		"effects": [
+			{
+				"kind": "charge",
+				"texts": "sky_attack"
+			}
+		],
+		"description": "Le lanceur s'entoure d'une lueur au premier tour, puis fond sur la cible au second. Taux de critique élevé."
+	},
 	"mega_kick": {
 		"name": "Ultimawashi",
 		"type": "normal",

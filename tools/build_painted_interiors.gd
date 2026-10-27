@@ -152,6 +152,8 @@ const CELADON := [&"celadon_center", &"celadon_dept_gf", &"celadon_dept_2f", &"c
 	&"celadon_chief_house", &"celadon_hotel"]
 const SAFFRON := [&"saffron_center", &"saffron_mart", &"saffron_psychic_house",
 	&"saffron_pidgey_house", &"saffron_copycat_house_1f", &"saffron_copycat_house_2f"]
+## Jalon 29 : poste de la Ligue (Route 22 → Route 23) et hall du Plateau Indigo.
+const J29 := [&"route_22_gate", &"indigo_plateau_lobby"]
 ## Jalon 22 (T12, T24) : maison de la Méga Canne (Route 12 sud) et intérieurs de Parmanie.
 const J22 := [&"route_12_rod_house", &"route_16_fly_house", &"fuchsia_center", &"fuchsia_mart", &"fuchsia_meeting_room",
 	&"fuchsia_grandpa_house", &"fuchsia_good_rod_house"]
@@ -194,6 +196,8 @@ func _init() -> void:
 	rooms.append_array(_cinnabar_rooms())
 	# Jalon 21 (T21) : le poste de la Route 12 (pièces en fin de liste).
 	rooms.append_array(_route_12_rooms())
+	# Jalon 29 : le poste de la Ligue (Route 22) et le hall du Plateau Indigo (fin de liste).
+	rooms.append_array(_j29_rooms())
 	for room: Dictionary in rooms:
 		if not wanted.is_empty() and not wanted.has(room["id"]):
 			continue
@@ -247,6 +251,8 @@ func _wanted_rooms() -> Array:
 			wanted.append_array(CELADON)
 		elif arg == "--saffron":
 			wanted.append_array(SAFFRON)
+		elif arg == "--j29":
+			wanted.append_array(J29)
 		elif arg == "--j22":
 			wanted.append_array(J22)
 		elif arg == "--cinnabar":
@@ -2709,3 +2715,67 @@ func _route_12_gate_2f() -> Dictionary:
 				Vector2i.DOWN],
 		],
 	}
+
+
+# --- Jalon 29 : poste de la Ligue, hall du Plateau Indigo -----------------------------------------
+
+
+func _j29_rooms() -> Array[Dictionary]:
+	return [_route_22_gate(), _indigo_plateau_lobby()]
+
+
+## Poste de la Ligue (jalon 29, `tools/plans/poste_ligue.txt`, Q29-1 : Badge Roche, comme RB
+## Route22Gate) : l'enveloppe et les meubles des postes de la Forêt de Jade ; porte sud → partie
+## ouest de la Route 22 (devant la porte), ouverture nord → Route 23. Garde (6, 2) dans
+## `data/npcs/route_22_gate.json` ; déclencheur (4..5, 2) toutes directions → scène
+## `route_22_gate_check` (Badge Roche : T29-04 et recul, ou T29-05 une fois).
+func _route_22_gate() -> Dictionary:
+	return {
+		"id": &"route_22_gate", "node": "Route22Gate", "size": Vector2i(10, 8),
+		"shell": "res://assets/world/interiors/int_poste_foret_coque.png",
+		"title": "Route 22", "light": &"interior_warm",
+		"floor": Rect2i(1, 2, 8, 5),
+		"doors": [Vector2i(4, 1), Vector2i(5, 1), Vector2i(4, 7), Vector2i(5, 7)],
+		"props": [
+			[&"int_meuble_bas_01", Vector2i(2, 2), 3.0, "LowCabinet"],
+			[&"int_porte_manteau_01", Vector2i(8, 2), 3.0, "CoatRack"],
+			[&"int_plante", Vector2i(1, 6), 7.0, "PlantWest"],
+			[&"int_plante", Vector2i(8, 6), 7.0, "PlantEast"],
+		],
+		"spawns": {"entrance": Vector2i(4, 6), "from_route_23": Vector2i(4, 2)},
+		"warps": [
+			["ToRoute22W", Vector2i(4, 7), STEP_ON, Vector2i.DOWN, &"route_22_west",
+				&"from_gate", Vector2i.DOWN],
+			["ToRoute22E", Vector2i(5, 7), STEP_ON, Vector2i.DOWN, &"route_22_west",
+				&"from_gate", Vector2i.DOWN],
+			["ToRoute23W", Vector2i(4, 1), STEP_ON, Vector2i.UP, &"route_23", &"from_gate",
+				Vector2i.UP],
+			["ToRoute23E", Vector2i(5, 1), STEP_ON, Vector2i.UP, &"route_23", &"from_gate",
+				Vector2i.UP],
+		],
+		"triggers": [["BadgeCheck", Vector2i(4, 2), Vector2i(2, 1), &"route_22_gate_check",
+			Vector2i.ZERO]],
+	}
+
+
+## Hall du Plateau Indigo (jalon 29, `jalon-29.md` §2.5) : le Centre Pokémon (même enseigne
+## partout) avec, en plus, le marchand (13, 5) tourné vers l'ouest (Boutique `indigo_plateau_lobby`,
+## RB), l'hôte (3, 5) (T29-10) et, au nord-est, la porte de la Ligue (12, 3), dessinée dans le
+## mur (`int_porte_ligue_01`, à la place de la plante nord-est) : « Ligue Pokémon — À venir »
+## jusqu'au J30 (il en change la cible). Aucun dialogue ni soin ne lance la Ligue.
+## Point de repos `indigo_plateau_lobby` (`data/world/rest_points.json`).
+func _indigo_plateau_lobby() -> Dictionary:
+	var room := _pokemon_center(&"indigo_plateau_lobby", "IndigoPlateauLobby", "Plateau Indigo",
+		[&"indigo_plateau", &"from_lobby"])
+	var props: Array = []
+	for prop: Array in room["props"]:
+		if prop[3] != "PlantNorthEast":
+			props.append(prop)
+	# Porte de la Ligue (fiche `j29-porte-ligue.md`, QA A17) posée dans le mur du fond, pied au
+	# bas des lambris peints, au-dessus du warp (12, 3) ; sans emprise : le mur est déjà bloqué.
+	props.append([&"int_porte_ligue_01", Vector2i(12, 2), 2.3, "LeagueDoor"])
+	room["props"] = props
+	room["warps"] = [["ToLeague", Vector2i(12, 3), STEP_ON, Vector2i.UP, &"", &"league_door",
+		Vector2i.DOWN, "Ligue Pokémon"]]
+	(room["spawns"] as Dictionary)["league_door"] = Vector2i(12, 4)
+	return room

@@ -40,5 +40,9 @@
 	"strength_boulder_fell": {
 		"narration": true,
 		"pages": ["Le rocher a dévalé dans le trou !"]
+	},
+	"strength_switch_pressed": {
+		"narration": true,
+		"pages": ["Clac ! Un mécanisme s'est enclenché quelque part."]
 	}
 }

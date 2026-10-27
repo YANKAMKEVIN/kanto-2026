@@ -17,6 +17,8 @@ const NODE_NAME: StringName = &"Boulders"
 @export var boulder_cells: Array[Vector2i] = []
 ## Trou désigné de chaque rocher (même indice ; 0 : aucun).
 @export var boulder_holes: Array[int] = []
+## Drapeau sans lequel chaque rocher n'est pas là (même indice ; vide : toujours là ; jalon 29).
+@export var boulder_requires: Array[StringName] = []
 ## Trous : case, numéro, drapeau posé quand un rocher y tombe.
 @export var hole_cells: Array[Vector2i] = []
 @export var hole_numbers: Array[int] = []
@@ -33,7 +35,8 @@ const NODE_NAME: StringName = &"Boulders"
 func to_field() -> BoulderField:
 	var field := BoulderField.new()
 	for i: int in boulder_cells.size():
-		field.add_boulder(boulder_cells[i], boulder_holes[i] if i < boulder_holes.size() else 0)
+		field.add_boulder(boulder_cells[i], boulder_holes[i] if i < boulder_holes.size() else 0,
+			boulder_requires[i] if i < boulder_requires.size() else &"")
 	for i: int in hole_cells.size():
 		field.add_hole(hole_cells[i], hole_numbers[i], hole_flags[i])
 	for i: int in switch_cells.size():

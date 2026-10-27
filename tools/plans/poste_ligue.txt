@@ -1,0 +1,33 @@
+# Poste de la Ligue (Route 22 → Route 23) — grille fonctionnelle (jalon 29, T2 ; jalon-29.md §0.4,
+# §2.2 ; Q29-1 : poste n° 1, Badge Roche, comme RB Route22Gate). Carte `route_22_gate`, construite
+# par tools/build_painted_interiors.gd sur l'enveloppe peinte des postes de la Forêt de Jade (10 × 8,
+# même définition que le poste de la Route 5). Contrôle : plan_check_j29.py.
+#
+# Porte sud (4..5, 7) → route_22_west (8, 6) ; ouverture nord (4..5, 1) → route_23 (7, 138).
+# Garde (6, 2) tourné vers l'ouest (RB). Déclencheur (4..5, 2), toutes directions (RB : coordonnées
+# (4, 2) et (5, 2)) : sans `badge_boulder`, T29-04 puis recul d'une case ; avec, T29-05 une fois.
+#
+# Légende : K mur (bloqué) · . sol · X porte sud (STEP_ON ↓) · N ouverture nord (STEP_ON ↑)
+#   x plante, meuble (bloqué)
+
+PRATICABLES .XN
+
+GRILLE 10 8
+00 KKKKKKKKKK
+01 KKKKNNKKKK
+02 Kx......xK
+03 K........K
+04 K........K
+05 K........K
+06 Kx......xK
+07 KKKKXXKKKK
+FIN
+
+POSITIONS
+entrance            spawn           4,6              libre   # depuis la Route 22, tourné ↑
+from_route_23       spawn           4,2              libre   # depuis la Route 23, tourné ↓
+sortie_sud          warp            4..5,7           libre   vers=route_22_west:from_gate
+sortie_nord         warp            4..5,1           libre   vers=route_23:from_gate
+garde               pnj             6,2              bloque  role=G badge=badge_boulder facing=left
+controle            controle        4..5,2           libre   badge=badge_boulder
+FIN
