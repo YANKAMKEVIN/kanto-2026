@@ -62,6 +62,10 @@ static func build(state: Object, data: PokemonData, zones: ZoneLibrary, moments:
 		view.caught_text = DashboardViews.caught_text(pokedex.caught_count())
 		view.seen_route = MenuRoute.pokedex(MenuRoute.DEX_FILTER_SEEN)
 		view.caught_route = MenuRoute.pokedex(MenuRoute.DEX_FILTER_CAUGHT)
+	# J30 (Q30-4) : le Panthéon se consulte depuis l'écran Dresseur dès sa première entrée.
+	var hall: Variant = state.get(&"hall_of_fame")
+	if hall is HallOfFame and not (hall as HallOfFame).is_empty():
+		view.hall_of_fame_text = TrainerView.HALL_OF_FAME_LABEL
 	if badges != null:
 		view.badges = badges.slots(state.flags)
 	else:

@@ -274,6 +274,24 @@ func test_exit_gives_back_npcs_on_their_cell_and_the_camera_unchanged() -> void:
 	assert_false((_stage.get_node(^"%Backdrop") as CanvasItem).visible)
 
 
+## QA S24 du J30 : le porteur de la caméra (le joueur) est prévenu que le combat la tient,
+## puis qu'il la rend (une reprise de l'appli ne la recadre plus pendant le combat).
+func test_camera_holder_is_told_while_the_battle_holds_the_camera() -> void:
+	var holder := _camera.get_parent()
+	var script := GDScript.new()
+	script.source_code = "extends Node2D\nvar calls: Array = []\nfunc hold_camera(held: bool) -> void:\n\tcalls.append(held)\n"
+	script.reload()
+	var spy := Node2D.new()
+	spy.set_script(script)
+	spy.position = (holder as Node2D).position
+	holder.get_parent().add_child(spy)
+	_camera.reparent(spy, false)
+	await _enter()
+	assert_eq(spy.get(&"calls"), [true])
+	await _stage.exit()
+	assert_eq(spy.get(&"calls"), [true, false])
+
+
 func test_reset_puts_everything_back_immediately() -> void:
 	var position := _camera.position
 	await _enter()

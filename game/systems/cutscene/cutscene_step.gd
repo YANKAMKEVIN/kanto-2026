@@ -133,6 +133,12 @@ extends RefCounted
 ##   dialogue [member dialogue_id] (« wrong ») ; le joueur choisit le Pokémon (sélecteur de Boot)
 ##   ou renonce → [member dialogue_stored] (« refuse ») ; fait → les dialogues [member say]
 ##   dans l'ordre. Déjà fait : rien.
+## Jalon 30 (`jalon-30.md` §2.4, T15 à T17), la cérémonie de la Ligue (scènes `league_victory`
+## et `league_hall_of_fame`, sans paramètre : « hall_of_fame »: true, « credits »: true) :
+## - [constant Kind.HALL_OF_FAME] : si la cérémonie est due (cinq combats gagnés), l'écran du
+##   Panthéon montre l'équipe, puis le titre et l'entrée du Panthéon sont posés et la partie est
+##   **écrite** (une seule écriture, comme l'étape « save ») ; sinon (déjà faite) : rien ;
+## - [constant Kind.CREDITS] : le générique (`data/story/credits.json`) ; la scène attend sa fin.
 
 ## Nouvelles valeurs en fin d'enum (ordre de [constant TYPE_KEYS]).
 enum Kind {
@@ -146,6 +152,7 @@ enum Kind {
 	UNSET_FLAGS, TOGGLE_FLAGS, TRADE,
 	## J23 (`jalon-23.md` §2.1, §2.2) : visite du Parc Safari.
 	SAFARI,
+	HALL_OF_FAME, CREDITS, # Jalon 30
 }
 
 ## Clé de type de chaque étape dans les fichiers, dans l'ordre de [enum Kind].
@@ -160,6 +167,7 @@ const TYPE_KEYS: Array[String] = [
 	"flute", # Jalon 21
 	"unset", "toggle", "trade",
 	"safari",
+	"hall_of_fame", "credits", # Jalon 30
 ]
 ## Actions d'une étape « safari » (J23) : péage et début de visite, sortie volontaire, remise à
 ## zéro des drapeaux de passage du comptoir.

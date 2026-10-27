@@ -49,6 +49,10 @@ const _NPC_SCENE: PackedScene = preload("res://game/world/npc/npc.tscn")
 ## Arène de combat, en cases (jalon-04.md §14.4) : sol dégagé que la vue de combat met entre
 ## les deux Pokémon (le tapis central du labo). Vide : cadrage sur les combattants.
 @export var battle_arena: Rect2i = Rect2i()
+## Jalon 30 (T8, `jalon-30.md` §2.1) : Vol et Téléport interdits depuis cette carte (salles de
+## la Ligue), lus par [FlyDirector] et [FieldTravelDirector] dans leurs [MapTraits].
+@export var no_fly: bool = false
+@export var no_teleport: bool = false
 ## Dossier des fichiers de PNJ (`<map_id>.json`) ; les tests pointent sur leurs données.
 @export var npcs_dir: String = NpcRoster.DATA_DIR
 ## Profil de lumière du monde (`data/world/lighting.json`, [LightingLibrary], jalon-07.md

@@ -94,24 +94,24 @@ func test_real_data_loads_without_error() -> void:
 		&"mankey", &"primeape", &"growlithe", &"arcanine",
 		&"poliwag", &"poliwhirl", &"poliwrath",
 		&"abra", &"kadabra", &"alakazam",
-		&"machop", &"machoke",
+		&"machop", &"machoke", &"machamp",
 		&"bellsprout", &"weepinbell", &"victreebel", &"tentacool", &"tentacruel",
 		&"geodude", &"graveler", &"golem", &"ponyta", &"rapidash", &"slowpoke", &"slowbro", &"magnemite", &"magneton",
 		&"farfetchd", &"doduo", &"dodrio", &"seel", &"dewgong", &"grimer", &"muk", &"shellder",
 		&"cloyster",
 		# Jalon 19 (T3) : Fantominus, Spectrum, Noeunoeuf, Osselait, Ossatueur, Léviator
 		# (kanto_tower.json ; Caninos vient du J17).
-		&"gastly", &"haunter", &"onix",
+		&"gastly", &"haunter", &"gengar", &"onix",
 		&"drowzee", &"hypno", &"krabby", &"kingler", &"voltorb", &"electrode", &"exeggcute", &"exeggutor",
 		&"cubone", &"marowak", &"hitmonlee", &"hitmonchan", &"lickitung", &"koffing", &"weezing", &"rhyhorn",
 		# Jalon 23 (T6) : Leveinard, puis Insécateur, Scarabrute, Tauros (kanto_j23.json).
 		&"rhydon", &"chansey", &"tangela", &"kangaskhan",
-		&"horsea", &"seadra", &"goldeen", &"seaking", &"staryu", &"starmie", &"mr_mime", &"scyther",
+		&"horsea", &"seadra", &"goldeen", &"seaking", &"staryu", &"starmie", &"mr_mime", &"scyther", &"jynx",
 		&"magmar", &"pinsir", &"tauros", &"magikarp", &"gyarados",
 		# Jalon 26 (T3) : Lokhlass, Alakazam (kanto_silph.json).
 		&"lapras", &"ditto",
 		&"eevee", &"vaporeon", &"jolteon", &"flareon",
-		&"omanyte", &"omastar", &"kabuto", &"kabutops", &"aerodactyl", &"snorlax", &"articuno", &"moltres", &"mewtwo"] as Array[StringName])
+		&"omanyte", &"omastar", &"kabuto", &"kabutops", &"aerodactyl", &"snorlax", &"articuno", &"moltres", &"dragonair", &"dragonite", &"mewtwo"] as Array[StringName])
 	# Jalon 23 (T18) : + Toxik (j23.json). Jalon 25 (T7) : kanto_j25.json (Ponyta, Galopa,
 	# Magmar, Ptéra) ; Tadmorv, Grotadmorv, Smogogo et Électrode sont ceux du J22
 	# (kanto_j25_reprises.json retiré à la fusion de main).
@@ -123,7 +123,11 @@ func test_real_data_loads_without_error() -> void:
 	# Lokhlass) et les emprunts du J27 au J29 (kanto_j27_emprunts.json, j27_emprunts.json) retirés.
 	# Jalon 31 (T4) : Métamorph, Mewtwo, Morphing ; kanto_j31_emprunts.json (Leveinard,
 	# Rhinoféros, ceux des J23 et J28) retiré à la fusion dans main.
-	assert_eq(_data.get_move_ids().size(), 158,
+	# Jalon 30 (T3) : espèces de la Ligue (kanto_j30.json : Lippoutou, Mackogneur, Ectoplasma,
+	# Draco, Dracolosse) et Grobisou (j30.json) ; ses reprises et emprunts (Rhinoféros, Kicklee,
+	# Tygnon ; Riposte, Pied Sauté, Pied Voltige, poings, Mawashi Geri, Abîme, Toxik) retirés à
+	# la fusion dans main : ceux des J23, J27 et J28 font foi.
+	assert_eq(_data.get_move_ids().size(), 159,
 		"47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10) + Patience (J11) "
 		+ "+ 21 du Mont Sélénite (jalon 12) + 8 du jalon 13 (les 5 du J12 qu'il reprenait : "
 		+ "entrées du J12) + 6 du Cap d'Azuria (jalon 14) + Jackpot (J15) "
@@ -135,7 +139,7 @@ func test_real_data_loads_without_error() -> void:
 		+ "Force Poigne du J22, Guillotine du J24) "
 		+ "+ Déflagration et Poing de Feu (J25, j25.json) "
 		+ "+ 8 (J27, dont Vague Psy) + Abîme (J28) + 3 du jalon 29 (Piqué, Ultimawashi, Clonage) "
-		+ "+ Morphing (jalon 31)")
+		+ "+ Morphing (jalon 31) + Grobisou (jalon 30)")
 	assert_true(_data.has_move(&"struggle"))
 
 
@@ -246,6 +250,9 @@ func test_real_evolution_chains() -> void:
 		&"omanyte": [&"omastar", 40], &"kabuto": [&"kabutops", 40],
 		# Jalon 25 (T7) : Ponyta (Rouge/Bleu) ; Tadmorv → Grotadmorv est celui du J22.
 		&"ponyta": [&"rapidash", 40],
+		# Ligue (jalon 30, T3) : Rouge/Bleu ; Spectrum → Ectoplasma (échange) n'est pas déclaré
+		# (Spectrum vient du J19).
+		&"dragonair": [&"dragonite", 55],
 	}
 	var eevee := _data.get_species(&"eevee").evolutions
 	assert_eq(eevee.map(func(r: EvolutionRule) -> Array: return [r.into, r.method, r.item]), [
@@ -559,6 +566,8 @@ func test_real_catch_rates_are_the_official_ones() -> void:
 		&"mr_mime": 45, &"hitmonlee": 45, &"hitmonchan": 45,
 		# Jalon 31 (T4 ; Rhinoféros et Leveinard sont ceux des J28 et J23).
 		&"ditto": 35, &"mewtwo": 3,
+		# Jalon 30 (T3, Ligue) : espèces nouvelles (Rhinoféros, Kicklee, Tygnon : J28, J27).
+		&"jynx": 45, &"machamp": 45, &"gengar": 45, &"dragonair": 45, &"dragonite": 45,
 	}
 	assert_eq(_data.get_species_ids().size(), expected.size(), "toutes les espèces")
 	for id: StringName in _data.get_species_ids():
@@ -787,7 +796,8 @@ func test_route_22_moves_values() -> void:
 	var pending := {
 		&"fury_attack": [], &"fury_swipes": [],
 		&"double_kick": [], &"poison_sting": [],
-		&"thrash": ["rampage"], &"body_slam": [],
+		# Jalon 30 (Q30-3) : Mania codée (effet « rampage »).
+		&"thrash": [], &"body_slam": [],
 		&"seismic_toss": [], &"horn_drill": [],
 	}
 	for id: StringName in pending:
@@ -901,12 +911,15 @@ func test_moves_without_effect_say_so() -> void:
 	# Jalon 11 : la mention part avec l'effet (Cage-Éclair, Para-Spore, Poudre Dodo au T4).
 	# Jalon 19 : Cyclone (changement forcé, décision de Kevin du 2026-10-16).
 	# Passe systèmes 2 : Empal'Korne (K.O. en un coup, test_ohko.gd).
+	# Jalon 30 (Q30-3) : Mimique, Frénésie, Mania, Danse Fleur codées (test_league_moves.gd).
+	# Jalon 24 (T13) : Métronome codé (MetronomeRules).
 	_data.load_dir()
-	for id: StringName in [&"mirror_move"]:
+	for id: StringName in [&"mist"]:
 		assert_true(_data.get_move(id).description.ends_with(
 			" Sans effet dans le moteur actuel."), String(id))
 	for id: StringName in [&"thunder_wave", &"stun_spore", &"sleep_powder", &"supersonic",
-			&"focus_energy", &"super_fang", &"seismic_toss", &"whirlwind", &"horn_drill"]:
+			&"focus_energy", &"super_fang", &"seismic_toss", &"whirlwind", &"horn_drill",
+			&"mirror_move", &"rage", &"thrash", &"petal_dance", &"metronome"]:
 		assert_false(_data.get_move(id).description.contains("Sans effet"), String(id))
 	assert_eq(_data.get_move(&"sleep_powder").description,
 		"Une poudre soporifique qui endort la cible.")

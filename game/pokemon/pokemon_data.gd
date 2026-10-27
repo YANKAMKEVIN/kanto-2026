@@ -73,6 +73,9 @@ const _EFFECT_KEYS: Dictionary[MoveEffect.Kind, Array] = {
 	MoveEffect.Kind.HAZE: ["kind"],
 	MoveEffect.Kind.CRASH: ["kind", "amount"],
 	MoveEffect.Kind.COUNTER: ["kind"],
+	MoveEffect.Kind.RAGE: ["kind"],
+	MoveEffect.Kind.RAMPAGE: ["kind"],
+	MoveEffect.Kind.MIRROR: ["kind"],
 	MoveEffect.Kind.METRONOME: ["kind"],
 }
 ## Clés d'effet facultatives (toutes les autres de [constant _EFFECT_KEYS] sont obligatoires).
@@ -616,7 +619,8 @@ func _parse_effect(value: Variant, where: String) -> MoveEffect:
 	# Jalon 19 : seule RECOIL_DAMAGE a une valeur (« fraction », lue comme celle du drain).
 	if effect.kind in [MoveEffect.Kind.REQUIRES_SLEEP, MoveEffect.Kind.FORCE_SWITCH,
 			MoveEffect.Kind.RECOIL_DAMAGE, MoveEffect.Kind.RECHARGE, MoveEffect.Kind.OHKO,
-			MoveEffect.Kind.HEAL, MoveEffect.Kind.HAZE, MoveEffect.Kind.METRONOME]:
+			MoveEffect.Kind.HEAL, MoveEffect.Kind.HAZE, MoveEffect.Kind.RAGE,
+			MoveEffect.Kind.RAMPAGE, MoveEffect.Kind.MIRROR, MoveEffect.Kind.METRONOME]:
 		return effect if _read_effect_j12(entry, effect, where) and ok else null
 	# Jalon 27 : Pied Sauté, Pied Voltige (« amount » facultatif, 1 PV par défaut), Riposte.
 	if effect.kind == MoveEffect.Kind.CRASH:

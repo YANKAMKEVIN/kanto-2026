@@ -1,0 +1,161 @@
+[gd_scene format=4]
+
+[ext_resource type="Script" path="res://game/world/map.gd" id="1_nhtmn"]
+[ext_resource type="TileSet" path="res://assets/tiles/interior.tres" id="2_vi8hv"]
+[ext_resource type="Script" path="res://game/world/flag_gate.gd" id="3_3mv4c"]
+[ext_resource type="Script" path="res://game/world/warp_point.gd" id="4_7r8pp"]
+[ext_resource type="Script" path="res://game/world/triggers/event_trigger_point.gd" id="5_ewcft"]
+
+[node name="LeagueChampion" type="Node2D" unique_id=2087257892]
+script = ExtResource("1_nhtmn")
+map_id = &"league_champion"
+display_name = "Plateau Indigo"
+size = Vector2i(8, 8)
+interior = true
+no_fly = true
+no_teleport = true
+light_profile = &"interior_warm"
+
+[node name="Ground" type="TileMapLayer" parent="." unique_id=43019706]
+tile_map_data = PackedByteArray("AAADAAAAAAAAAAYAAAAEAAAAAAAAAAYAAAABAAEAAAABAAEAAAADAAEAAAABAAEAAAAEAAEAAAABAAEAAAAGAAEAAAAAAAEAAAABAAIAAAABAAEAAAACAAIAAAAAAAEAAAADAAIAAAAAAAEAAAAEAAIAAAABAAEAAAAFAAIAAAABAAEAAAAGAAIAAAAAAAEAAAABAAMAAAAAAAEAAAACAAMAAAABAAEAAAADAAMAAAABAAEAAAAEAAMAAAAAAAEAAAAFAAMAAAABAAEAAAAGAAMAAAAAAAEAAAABAAQAAAABAAEAAAACAAQAAAABAAEAAAADAAQAAAAAAAEAAAAEAAQAAAABAAEAAAAFAAQAAAABAAEAAAAGAAQAAAABAAEAAAABAAUAAAABAAEAAAACAAUAAAAAAAEAAAADAAUAAAABAAEAAAAEAAUAAAABAAEAAAAFAAUAAAABAAEAAAAGAAUAAAABAAEAAAABAAYAAAABAAEAAAADAAYAAAAAAAEAAAAEAAYAAAAAAAEAAAAGAAYAAAAAAAEAAAADAAcAAAAAAAYAAAAEAAcAAAAAAAYAAAA=")
+tile_set = ExtResource("2_vi8hv")
+
+[node name="Detail" type="TileMapLayer" parent="." unique_id=254904619]
+tile_set = ExtResource("2_vi8hv")
+
+[node name="Obstacles" type="TileMapLayer" parent="." unique_id=1565387215]
+tile_map_data = PackedByteArray("AAAAAAAAAAAAAAMAAAABAAAAAAABAAMAAAACAAAAAAAAAAMAAAAFAAAAAAAAAAMAAAAGAAAAAAABAAMAAAAHAAAAAAAAAAMAAAAAAAEAAAAAAAMAAAACAAEAAAABAAMAAAAFAAEAAAABAAMAAAAHAAEAAAAAAAMAAAAAAAIAAAAAAAMAAAAHAAIAAAAAAAMAAAAAAAMAAAAAAAMAAAAHAAMAAAAAAAMAAAAAAAQAAAAAAAMAAAAHAAQAAAAAAAMAAAAAAAUAAAAAAAMAAAAHAAUAAAAAAAMAAAAAAAYAAAAAAAMAAAACAAYAAAAAAAMAAAAFAAYAAAAAAAMAAAAHAAYAAAAAAAMAAAAAAAcAAAAAAAMAAAABAAcAAAAAAAMAAAACAAcAAAAAAAMAAAAFAAcAAAAAAAMAAAAGAAcAAAAAAAMAAAAHAAcAAAAAAAMAAAA=")
+tile_set = ExtResource("2_vi8hv")
+
+[node name="GroundDecals" type="Node2D" parent="." unique_id=506131009]
+z_index = -1
+
+[node name="Entities" type="Node2D" parent="." unique_id=449363383]
+unique_name_in_owner = true
+y_sort_enabled = true
+
+[node name="PorteSudFermee" type="Node2D" parent="Entities" unique_id=863563999]
+position = Vector2(336, 768)
+script = ExtResource("3_3mv4c")
+if_flags = Array[StringName]([&"league_attempt_active"])
+blocking_cells = Array[Vector2i]([Vector2i(3, 7), Vector2i(4, 7)])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/PorteSudFermee" unique_id=110061730]
+color = Color(0.16, 0.12, 0.2, 1)
+polygon = PackedVector2Array(-48, -96, 48, -96, 48, -4, -48, -4)
+
+[node name="@Polygon2D@24" type="Polygon2D" parent="Entities/PorteSudFermee" unique_id=2131295560]
+color = Color(0.78, 0.66, 0.3, 1)
+polygon = PackedVector2Array(-40, -60, 40, -60, 40, -52, -40, -52)
+
+[node name="@Polygon2D@25" type="Polygon2D" parent="Entities/PorteSudFermee" unique_id=520858311]
+color = Color(0.16, 0.12, 0.2, 1)
+polygon = PackedVector2Array(48, -96, 144, -96, 144, -4, 48, -4)
+
+[node name="@Polygon2D@26" type="Polygon2D" parent="Entities/PorteSudFermee" unique_id=1312244960]
+color = Color(0.78, 0.66, 0.3, 1)
+polygon = PackedVector2Array(56, -60, 136, -60, 136, -52, 56, -52)
+
+[node name="PorteNordFermee" type="Node2D" parent="Entities" unique_id=2080314893]
+position = Vector2(336, 96)
+script = ExtResource("3_3mv4c")
+unless_flags = Array[StringName]([&"league_stage_4_cleared"])
+blocking_cells = Array[Vector2i]([Vector2i(3, 0), Vector2i(4, 0)])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/PorteNordFermee" unique_id=1543195112]
+color = Color(0.16, 0.12, 0.2, 1)
+polygon = PackedVector2Array(-48, -96, 48, -96, 48, -4, -48, -4)
+
+[node name="@Polygon2D@27" type="Polygon2D" parent="Entities/PorteNordFermee" unique_id=1365875990]
+color = Color(0.78, 0.66, 0.3, 1)
+polygon = PackedVector2Array(-40, -60, 40, -60, 40, -52, -40, -52)
+
+[node name="@Polygon2D@28" type="Polygon2D" parent="Entities/PorteNordFermee" unique_id=1845500778]
+color = Color(0.16, 0.12, 0.2, 1)
+polygon = PackedVector2Array(48, -96, 144, -96, 144, -4, 48, -4)
+
+[node name="@Polygon2D@29" type="Polygon2D" parent="Entities/PorteNordFermee" unique_id=1042577050]
+color = Color(0.78, 0.66, 0.3, 1)
+polygon = PackedVector2Array(56, -60, 136, -60, 136, -52, 56, -52)
+
+[node name="Overhead" type="TileMapLayer" parent="." unique_id=120898874]
+z_index = 10
+tile_set = ExtResource("2_vi8hv")
+
+[node name="Warps" type="Node2D" parent="." unique_id=1095293026]
+
+[node name="PorteSud0" type="Marker2D" parent="Warps" unique_id=1551930629]
+position = Vector2(336, 768)
+script = ExtResource("4_7r8pp")
+direction = Vector2i(0, 1)
+target_map = &"league_lance"
+target_spawn = &"from_north"
+arrival_facing = Vector2i(0, 1)
+unless_flags = Array[StringName]([&"league_attempt_active"])
+
+[node name="PorteSud1" type="Marker2D" parent="Warps" unique_id=801770959]
+position = Vector2(432, 768)
+script = ExtResource("4_7r8pp")
+direction = Vector2i(0, 1)
+target_map = &"league_lance"
+target_spawn = &"from_north"
+arrival_facing = Vector2i(0, 1)
+unless_flags = Array[StringName]([&"league_attempt_active"])
+
+[node name="PorteNord0" type="Marker2D" parent="Warps" unique_id=1113666609]
+position = Vector2(336, 96)
+script = ExtResource("4_7r8pp")
+direction = Vector2i(0, -1)
+target_map = &"hall_of_fame"
+target_spawn = &"from_south"
+arrival_facing = Vector2i(0, -1)
+
+[node name="PorteNord1" type="Marker2D" parent="Warps" unique_id=501902191]
+position = Vector2(432, 96)
+script = ExtResource("4_7r8pp")
+direction = Vector2i(0, -1)
+target_map = &"hall_of_fame"
+target_spawn = &"from_south"
+arrival_facing = Vector2i(0, -1)
+
+[node name="Interactables" type="Node2D" parent="." unique_id=456161975]
+
+[node name="Spawns" type="Node2D" parent="." unique_id=1586829970]
+
+[node name="from_south" type="Marker2D" parent="Spawns" unique_id=1816219075]
+position = Vector2(432, 672)
+
+[node name="from_north" type="Marker2D" parent="Spawns" unique_id=1826381589]
+position = Vector2(336, 192)
+
+[node name="Triggers" type="Node2D" parent="." unique_id=1674905596]
+
+[node name="AppelRival_1_5" type="Marker2D" parent="Triggers" unique_id=1923871092]
+position = Vector2(144, 576)
+script = ExtResource("5_ewcft")
+cutscene_id = &"rival_champion_call"
+
+[node name="AppelRival_2_5" type="Marker2D" parent="Triggers" unique_id=1151705545]
+position = Vector2(240, 576)
+script = ExtResource("5_ewcft")
+cutscene_id = &"rival_champion_call"
+
+[node name="AppelRival_3_5" type="Marker2D" parent="Triggers" unique_id=944468904]
+position = Vector2(336, 576)
+script = ExtResource("5_ewcft")
+cutscene_id = &"rival_champion_call"
+
+[node name="AppelRival_4_5" type="Marker2D" parent="Triggers" unique_id=1376030538]
+position = Vector2(432, 576)
+script = ExtResource("5_ewcft")
+cutscene_id = &"rival_champion_call"
+
+[node name="AppelRival_5_5" type="Marker2D" parent="Triggers" unique_id=2121897620]
+position = Vector2(528, 576)
+script = ExtResource("5_ewcft")
+cutscene_id = &"rival_champion_call"
+
+[node name="AppelRival_6_5" type="Marker2D" parent="Triggers" unique_id=641111395]
+position = Vector2(624, 576)
+script = ExtResource("5_ewcft")
+cutscene_id = &"rival_champion_call"

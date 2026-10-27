@@ -122,6 +122,11 @@ var daycare: Daycare = Daycare.new()
 ## Visite du Parc Safari en cours (J23, dossier 26 §11, `jalon-23.md` §2.15 ; sauvegarde v8, champ
 ## « safari »). Inactive hors visite ; seul [SafariDirector] la modifie en jeu.
 var safari: SafariVisit = SafariVisit.new()
+## Panthéon (jalon 30, sous-jalon 30A ; `jalon-30.md` §2.4, §2.6) : une entrée immuable par
+## victoire à la Ligue ([HallOfFame]). Même instance pendant toute la session (vidée par
+## [method new_game]). Champ facultatif « hall_of_fame » de la v7, écrit seulement s'il n'est
+## pas vide : une sauvegarde sans le champ se relit avec un Panthéon vide.
+var hall_of_fame: HallOfFame = HallOfFame.new()
 
 
 func _init() -> void:
@@ -161,6 +166,7 @@ func new_game(rng_seed: int = -1) -> void:
 	discovered_maps.clear()
 	found_items.clear()
 	moments.clear()
+	hall_of_fame.clear()
 	money = STARTING_MONEY
 	first_wild_encounter = {}
 	companion_uid = ""
@@ -330,6 +336,9 @@ func to_dict() -> Dictionary:
 	# écrite seulement pendant une visite (absente = aucune visite, comme « mount »).
 	if safari.active:
 		result["safari"] = safari.to_dict()
+	# Jalon 30 (30A, §2.6) : champ facultatif de la v7, absent tant que le Panthéon est vide.
+	if not hall_of_fame.is_empty():
+		result["hall_of_fame"] = hall_of_fame.to_array()
 	return result
 
 
@@ -396,6 +405,10 @@ func load_dict(dict: Dictionary, data: PokemonData) -> bool:
 				"details": JsonFields.get_dict(entry, "details"),
 			})
 	money = clampi(JsonFields.get_int(dict, "money", STARTING_MONEY), 0, MONEY_MAX)
+	# Jalon 30 (30A, §2.6) : absent → Panthéon vide ; une entrée mal formée est écartée.
+	if not hall_of_fame.load_array(JsonFields.get_array(dict, "hall_of_fame")):
+		push_error("GameState : entrée du Panthéon mal formée, écartée")
+		ok = false
 	ok = _load_first_wild_encounter(JsonFields.get_dict(dict, "first_wild_encounter"), data) \
 		and ok
 	# Compagnon (J11) : absent d'une sauvegarde plus ancienne → aucun ; un identifiant qui ne

@@ -83,6 +83,14 @@ func test_every_battle_map_has_a_decor() -> void:
 	assert_eq(missing, [] as Array[StringName], "cartes à combats sans fond peint")
 
 
+## Jalon 30 (fusion dans main) : les salles de la Ligue (combats lancés par les scènes d'appel, sans
+## PNJ Dresseur dans `data/npcs`) ont un fond provisoire [D] (`docs/tech/reportes.md` §2.13).
+func test_league_rooms_have_a_decor() -> void:
+	var catalog := _catalog()
+	for map_id: StringName in [&"league_lorelei", &"league_bruno", &"league_agatha",
+			&"league_lance", &"league_champion"]:
+		assert_not_null(catalog.pick(map_id, Vector2i.ZERO), "%s : fond peint" % map_id)
+
 func test_real_route_1_painted_for_the_anchors() -> void:
 	# Le master est peint pour le cadrage : à 2340 × 1080 il s'affiche à 1:1, sans décalage.
 	var decor := _catalog().get_decor(&"route_1_chemin")

@@ -24,5 +24,21 @@
 		"facing": "right",
 		"sprite": "gym_guide",
 		"dialogue": "indigo_plateau_host"
+	},
+	"league_guard_west": {
+		"cell": [
+			11,
+			3
+		],
+		"facing": "right",
+		"sprite": "guard"
+	},
+	"league_guard_east": {
+		"cell": [
+			13,
+			3
+		],
+		"facing": "left",
+		"sprite": "guard"
 	}
 }
