@@ -759,6 +759,26 @@ const RULES: Dictionary[StringName, Dictionary] = {
 	# J29 (QA A17) : porte de la Ligue posée dans le mur du fond du hall du Plateau Indigo,
 	# comme la porte du laboratoire du Musée (rangées du mur déjà bloquées) : sans emprise.
 	&"int_porte_ligue_01": {"traversable": true, "align": ALIGN_CENTRE},
+	# Lot DAF.4 (`tools/art/daf4.py`, `tools/build_daf4_caves.gd`) : rebords et escaliers du sol haut
+	# de la Route Victoire et de la Grotte Azurée, interrupteurs (dalles au sol) ; la barrière est
+	# une image posée dans le [FlagGate] (cases déjà bloquées par la logique) : sans emprise.
+	&"relief_rebord_victoire_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_CENTRE},
+	&"relief_rebord_victoire_cote_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_CENTRE},
+	&"relief_escalier_victoire_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_CENTRE},
+	&"decal_interrupteur_victoire_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_CENTRE},
+	&"decal_interrupteur_victoire_enfonce_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_CENTRE},
+	&"relief_rebord_azuree_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_CENTRE},
+	&"relief_rebord_azuree_cote_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_CENTRE},
+	&"relief_escalier_azuree_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_CENTRE},
+	&"prop_barriere_victoire_01": {"traversable": true, "align": ALIGN_CENTRE},
 }
 
 

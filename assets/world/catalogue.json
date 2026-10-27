@@ -9325,6 +9325,177 @@
     96,
     192
    ]
+  },
+  "relief_rebord_victoire_01": {
+   "fichier": "res://assets/world/relief/relief_rebord_victoire_01.png",
+   "taille": [
+    96,
+    42
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_rebord_victoire_01_contact.png",
+    "decalage": [
+     -56,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     11
+    ]
+   }
+  },
+  "relief_rebord_victoire_cote_01": {
+   "fichier": "res://assets/world/relief/relief_rebord_victoire_cote_01.png",
+   "taille": [
+    24,
+    89
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_rebord_victoire_cote_01_contact.png",
+    "decalage": [
+     -20,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     20,
+     11
+    ]
+   }
+  },
+  "relief_escalier_victoire_01": {
+   "fichier": "res://assets/world/relief/relief_escalier_victoire_01.png",
+   "taille": [
+    96,
+    95
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_escalier_victoire_01_contact.png",
+    "decalage": [
+     -56,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     11
+    ]
+   }
+  },
+  "decal_interrupteur_victoire_01": {
+   "fichier": "res://assets/world/interiors/decal_interrupteur_victoire_01.png",
+   "taille": [
+    96,
+    96
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/decal_interrupteur_victoire_01_contact.png",
+    "decalage": [
+     -56,
+     6
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     16
+    ]
+   }
+  },
+  "decal_interrupteur_victoire_enfonce_01": {
+   "fichier": "res://assets/world/interiors/decal_interrupteur_victoire_enfonce_01.png",
+   "taille": [
+    96,
+    96
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/decal_interrupteur_victoire_enfonce_01_contact.png",
+    "decalage": [
+     -56,
+     6
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     16
+    ]
+   }
+  },
+  "prop_barriere_victoire_01": {
+   "fichier": "res://assets/world/props/prop_barriere_victoire_01.png",
+   "taille": [
+    96,
+    125
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_barriere_victoire_01_contact.png",
+    "decalage": [
+     -56,
+     3
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     18
+    ]
+   }
+  },
+  "relief_rebord_azuree_01": {
+   "fichier": "res://assets/world/relief/relief_rebord_azuree_01.png",
+   "taille": [
+    96,
+    55
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_rebord_azuree_01_contact.png",
+    "decalage": [
+     -56,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     11
+    ]
+   }
+  },
+  "relief_rebord_azuree_cote_01": {
+   "fichier": "res://assets/world/relief/relief_rebord_azuree_cote_01.png",
+   "taille": [
+    24,
+    82
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_rebord_azuree_cote_01_contact.png",
+    "decalage": [
+     -20,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     20,
+     11
+    ]
+   }
+  },
+  "relief_escalier_azuree_01": {
+   "fichier": "res://assets/world/relief/relief_escalier_azuree_01.png",
+   "taille": [
+    96,
+    100
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_escalier_azuree_01_contact.png",
+    "decalage": [
+     -56,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     11
+    ]
+   }
   }
  },
  "personnages": {
@@ -13068,6 +13239,34 @@
   },
   "ground_dalles_jadielle_01": {
    "fichier": "res://assets/world/ground/ground_dalles_jadielle_01.png",
+   "taille": [
+    384,
+    384
+   ]
+  },
+  "ground_victoire_bas_01": {
+   "fichier": "res://assets/world/ground/ground_victoire_bas_01.png",
+   "taille": [
+    384,
+    384
+   ]
+  },
+  "ground_victoire_haut_01": {
+   "fichier": "res://assets/world/ground/ground_victoire_haut_01.png",
+   "taille": [
+    384,
+    384
+   ]
+  },
+  "ground_azuree_bas_01": {
+   "fichier": "res://assets/world/ground/ground_azuree_bas_01.png",
+   "taille": [
+    384,
+    384
+   ]
+  },
+  "ground_azuree_haut_01": {
+   "fichier": "res://assets/world/ground/ground_azuree_haut_01.png",
    "taille": [
     384,
     384

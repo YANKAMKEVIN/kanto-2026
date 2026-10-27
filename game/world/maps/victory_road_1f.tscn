@@ -3,8 +3,42 @@
 [ext_resource type="Script" path="res://game/world/map.gd" id="1_4n6n0"]
 [ext_resource type="TileSet" path="res://assets/tiles/overworld.tres" id="2_8bnqj"]
 [ext_resource type="Script" path="res://game/world/flag_gate.gd" id="3_g3l57"]
+[ext_resource type="Shader" path="res://game/world/lighting/shaders/ground_blend.gdshader" id="3_wpn7p"]
 [ext_resource type="Script" path="res://game/world/warp_point.gd" id="4_35ro1"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/ground_victoire_bas_01.png" id="4_xdgaw"]
+[ext_resource type="Texture2D" path="res://assets/world/maps/victory_road_1f_ground.png" id="5_3uupb"]
 [ext_resource type="Script" path="res://game/world/boulders/boulder_setup.gd" id="5_by53t"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/ground_masse_roche_01.png" id="6_sigrb"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/ground_victoire_haut_01.png" id="7_x6ih4"]
+[ext_resource type="Script" path="res://game/world/ground/painted_ground.gd" id="8_genrr"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="9_sfhhs"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_paroi_grotte_06.png" id="10_fch7x"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/relief_escalier_victoire_01.tscn" id="11_7077g"]
+[ext_resource type="Texture2D" path="res://assets/world/props/prop_echelle_monte_01.png" id="13_46i5u"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/decal_interrupteur_victoire_enfonce_01.png" id="14_vuta2"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/decal_interrupteur_victoire_01.png" id="14_xdgaw"]
+[ext_resource type="Texture2D" path="res://assets/world/props/prop_barriere_victoire_01.png" id="15_vhs1n"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_paroi_grotte_02.png" id="16_a63mg"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_paroi_grotte_01.png" id="17_r7th1"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_paroi_grotte_05.png" id="18_363ai"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3uupb"]
+shader = ExtResource("3_wpn7p")
+shader_parameter/grass_texture = ExtResource("4_xdgaw")
+shader_parameter/paving_texture = ExtResource("7_x6ih4")
+shader_parameter/path_texture = ExtResource("6_sigrb")
+shader_parameter/ground_mask = ExtResource("5_3uupb")
+shader_parameter/tile_size = 96.0
+shader_parameter/texture_size = 384.0
+shader_parameter/paving_scale = 1.0
+shader_parameter/path_scale = 1.0
+shader_parameter/earth_color = Color(0.33, 0.25, 0.18, 1)
+shader_parameter/has_shore = false
+shader_parameter/foam_color = null
+shader_parameter/water_texture_size = null
+shader_parameter/foam_strength = null
+shader_parameter/square_shore = null
+shader_parameter/pass_mode = null
 
 [node name="VictoryRoad1F" type="Node2D" unique_id=1836768101]
 script = ExtResource("1_4n6n0")
@@ -18,305 +52,262 @@ high_cells = Array[Vector2i]([Vector2i(5, 4), Vector2i(6, 4), Vector2i(7, 4), Ve
 stairs_cells = Array[Vector2i]([Vector2i(7, 7), Vector2i(15, 7), Vector2i(5, 13)])
 
 [node name="Ground" type="TileMapLayer" parent="." unique_id=113751905]
+visible = false
 tile_map_data = PackedByteArray("AAAAAAAAAAABAAcAAAABAAAAAAAAAAcAAAACAAAAAAABAAcAAAADAAAAAAAAAAcAAAAEAAAAAAAAAAcAAAAFAAAAAAABAAcAAAAGAAAAAAABAAcAAAAHAAAAAAAAAAcAAAAIAAAAAAABAAcAAAAJAAAAAAAAAAcAAAAKAAAAAAAAAAcAAAALAAAAAAABAA0AAAAMAAAAAAAAAAcAAAANAAAAAAABAAcAAAAOAAAAAAABAA0AAAAPAAAAAAABAA0AAAAQAAAAAAABAAcAAAARAAAAAAABAAcAAAASAAAAAAABAAcAAAATAAAAAAAAAAcAAAAAAAEAAAAAAAcAAAABAAEAAAAAAAIAAAACAAEAAAAAAA0AAAADAAEAAAABAA0AAAAEAAEAAAABAAcAAAAFAAEAAAABAAcAAAAGAAEAAAAAAAcAAAAHAAEAAAAAAAcAAAAIAAEAAAABAAcAAAAJAAEAAAABAAcAAAAKAAEAAAAAAAcAAAALAAEAAAABAA0AAAAMAAEAAAAAAAcAAAANAAEAAAABAAcAAAAOAAEAAAABAAcAAAAPAAEAAAABAA0AAAAQAAEAAAABAA0AAAARAAEAAAAAAAcAAAASAAEAAAABAAcAAAATAAEAAAABAAcAAAAAAAIAAAAAAAcAAAABAAIAAAAAAAcAAAACAAIAAAABAA0AAAADAAIAAAABAA0AAAAEAAIAAAABAAcAAAAFAAIAAAAAAAcAAAAGAAIAAAABAAcAAAAHAAIAAAAAAAcAAAAIAAIAAAAAAAcAAAAJAAIAAAAAAA0AAAAKAAIAAAABAA0AAAALAAIAAAABAA0AAAAMAAIAAAAAAA0AAAANAAIAAAAAAA0AAAAOAAIAAAAAAA0AAAAPAAIAAAABAA0AAAAQAAIAAAAAAA0AAAARAAIAAAABAA0AAAASAAIAAAAAAAcAAAATAAIAAAABAAcAAAAAAAMAAAABAAcAAAABAAMAAAABAAcAAAACAAMAAAABAA0AAAADAAMAAAAAAA0AAAAEAAMAAAAAAA0AAAAFAAMAAAABAAcAAAAGAAMAAAAAAAcAAAAHAAMAAAABAAcAAAAIAAMAAAAAAAcAAAAJAAMAAAABAAcAAAAKAAMAAAAAAAcAAAALAAMAAAAAAA0AAAAMAAMAAAAAAA0AAAANAAMAAAABAAcAAAAOAAMAAAABAA0AAAAPAAMAAAABAA0AAAAQAAMAAAAAAA0AAAARAAMAAAAAAA0AAAASAAMAAAAAAA0AAAATAAMAAAABAAcAAAAAAAQAAAABAAcAAAABAAQAAAAAAA0AAAACAAQAAAABAA0AAAADAAQAAAAAAA0AAAAEAAQAAAAAAAcAAAAFAAQAAAAAAA0AAAAGAAQAAAAAAA0AAAAHAAQAAAABAA0AAAAIAAQAAAABAA0AAAAJAAQAAAAAAA0AAAAKAAQAAAAAAA0AAAALAAQAAAABAA0AAAAMAAQAAAAAAA0AAAANAAQAAAAAAA0AAAAOAAQAAAAAAA0AAAAPAAQAAAABAA0AAAAQAAQAAAAAAA0AAAARAAQAAAAAAAcAAAASAAQAAAABAA0AAAATAAQAAAABAA0AAAAAAAUAAAAAAAcAAAABAAUAAAAAAA0AAAACAAUAAAAAAA0AAAADAAUAAAABAA0AAAAEAAUAAAABAAcAAAAFAAUAAAABAA0AAAAGAAUAAAABAA0AAAAHAAUAAAAAAA0AAAAIAAUAAAAAAA0AAAAJAAUAAAABAA0AAAAKAAUAAAAAAA0AAAALAAUAAAABAA0AAAAMAAUAAAABAA0AAAANAAUAAAABAA0AAAAOAAUAAAABAA0AAAAPAAUAAAABAA0AAAAQAAUAAAABAA0AAAARAAUAAAABAAcAAAASAAUAAAAAAA0AAAATAAUAAAAAAA0AAAAAAAYAAAAAAAcAAAABAAYAAAABAAcAAAACAAYAAAABAA0AAAADAAYAAAABAA0AAAAEAAYAAAAAAAcAAAAFAAYAAAABAA0AAAAGAAYAAAABAA0AAAAHAAYAAAAAAA0AAAAIAAYAAAABAA0AAAAJAAYAAAAAAA0AAAAKAAYAAAABAA0AAAALAAYAAAAAAA0AAAAMAAYAAAABAA0AAAANAAYAAAABAA0AAAAOAAYAAAAAAA0AAAAPAAYAAAAAAA0AAAAQAAYAAAABAA0AAAARAAYAAAAAAAcAAAASAAYAAAABAA0AAAATAAYAAAAAAA0AAAAAAAcAAAAAAAcAAAABAAcAAAAAAAcAAAACAAcAAAAAAA0AAAADAAcAAAAAAA0AAAAEAAcAAAABAAcAAAAFAAcAAAABAAcAAAAGAAcAAAABAAcAAAAHAAcAAAACAAIAAAAIAAcAAAABAAcAAAAJAAcAAAABAAcAAAAKAAcAAAAAAAcAAAALAAcAAAAAAA0AAAAMAAcAAAABAA0AAAANAAcAAAAAAAcAAAAOAAcAAAAAAAcAAAAPAAcAAAABAAIAAAAQAAcAAAABAAcAAAARAAcAAAABAAcAAAASAAcAAAAAAA0AAAATAAcAAAAAAA0AAAAAAAgAAAABAAcAAAABAAgAAAABAAcAAAACAAgAAAAAAAcAAAADAAgAAAAAAA0AAAAEAAgAAAABAA0AAAAFAAgAAAAAAA0AAAAGAAgAAAAAAA0AAAAHAAgAAAAAAA0AAAAIAAgAAAABAA0AAAAJAAgAAAABAA0AAAAKAAgAAAABAAcAAAALAAgAAAAAAA0AAAAMAAgAAAAAAA0AAAANAAgAAAABAAcAAAAOAAgAAAABAAcAAAAPAAgAAAABAA0AAAAQAAgAAAAAAA0AAAARAAgAAAABAA0AAAASAAgAAAAAAA0AAAATAAgAAAAAAA0AAAAAAAkAAAABAAcAAAABAAkAAAABAAcAAAACAAkAAAABAA0AAAADAAkAAAABAA0AAAAEAAkAAAABAAcAAAAFAAkAAAAAAA0AAAAGAAkAAAAAAA0AAAAHAAkAAAAAAA0AAAAIAAkAAAABAAcAAAAJAAkAAAABAA0AAAAKAAkAAAAAAAcAAAALAAkAAAAAAA0AAAAMAAkAAAABAA0AAAANAAkAAAABAAcAAAAOAAkAAAABAAcAAAAPAAkAAAABAAcAAAAQAAkAAAABAA0AAAARAAkAAAABAA0AAAASAAkAAAABAA0AAAATAAkAAAAAAAcAAAAAAAoAAAAAAAcAAAABAAoAAAAAAAcAAAACAAoAAAAAAA0AAAADAAoAAAAAAAcAAAAEAAoAAAABAAcAAAAFAAoAAAABAA0AAAAGAAoAAAAAAA0AAAAHAAoAAAABAA0AAAAIAAoAAAAAAAcAAAAJAAoAAAAAAAcAAAAKAAoAAAABAAcAAAALAAoAAAAAAA0AAAAMAAoAAAAAAA0AAAANAAoAAAABAAcAAAAOAAoAAAAAAAcAAAAPAAoAAAABAAcAAAAQAAoAAAABAAcAAAARAAoAAAABAAcAAAASAAoAAAABAAcAAAATAAoAAAAAAAcAAAAAAAsAAAAAAAcAAAABAAsAAAABAAcAAAACAAsAAAABAA0AAAADAAsAAAABAA0AAAAEAAsAAAAAAAcAAAAFAAsAAAABAA0AAAAGAAsAAAABAA0AAAAHAAsAAAABAA0AAAAIAAsAAAABAAcAAAAJAAsAAAAAAAcAAAAKAAsAAAABAAcAAAALAAsAAAABAA0AAAAMAAsAAAABAA0AAAANAAsAAAABAAcAAAAOAAsAAAABAAcAAAAPAAsAAAABAA0AAAAQAAsAAAAAAA0AAAARAAsAAAABAA0AAAASAAsAAAAAAAcAAAATAAsAAAAAAAcAAAAAAAwAAAAAAAcAAAABAAwAAAABAA0AAAACAAwAAAAAAA0AAAADAAwAAAAAAA0AAAAEAAwAAAAAAAcAAAAFAAwAAAABAA0AAAAGAAwAAAAAAA0AAAAHAAwAAAAAAA0AAAAIAAwAAAABAA0AAAAJAAwAAAAAAA0AAAAKAAwAAAAAAA0AAAALAAwAAAAAAA0AAAAMAAwAAAAAAA0AAAANAAwAAAABAAcAAAAOAAwAAAABAA0AAAAPAAwAAAABAA0AAAAQAAwAAAABAA0AAAARAAwAAAAAAA0AAAASAAwAAAAAAAcAAAATAAwAAAABAAcAAAAAAA0AAAABAA0AAAABAA0AAAABAA0AAAACAA0AAAAAAA0AAAADAA0AAAABAAcAAAAEAA0AAAAAAAcAAAAFAA0AAAACAAIAAAAGAA0AAAAAAAcAAAAHAA0AAAAAAAcAAAAIAA0AAAABAAcAAAAJAA0AAAAAAAcAAAAKAA0AAAABAAcAAAALAA0AAAABAAcAAAAMAA0AAAAAAAcAAAANAA0AAAABAAcAAAAOAA0AAAABAA0AAAAPAA0AAAAAAAcAAAAQAA0AAAABAA0AAAARAA0AAAABAA0AAAASAA0AAAABAAcAAAATAA0AAAABAAcAAAAAAA4AAAAAAA0AAAABAA4AAAAAAA0AAAACAA4AAAABAAcAAAADAA4AAAABAAcAAAAEAA4AAAAAAA0AAAAFAA4AAAAAAA0AAAAGAA4AAAABAAcAAAAHAA4AAAAAAAcAAAAIAA4AAAAAAA0AAAAJAA4AAAABAA0AAAAKAA4AAAAAAA0AAAALAA4AAAABAA0AAAAMAA4AAAABAA0AAAANAA4AAAABAA0AAAAOAA4AAAAAAA0AAAAPAA4AAAABAA0AAAAQAA4AAAABAA0AAAARAA4AAAAAAAcAAAASAA4AAAABAAcAAAATAA4AAAABAAcAAAAAAA8AAAABAAcAAAABAA8AAAABAA0AAAACAA8AAAABAA0AAAADAA8AAAABAA0AAAAEAA8AAAABAA0AAAAFAA8AAAABAA0AAAAGAA8AAAABAAcAAAAHAA8AAAABAA0AAAAIAA8AAAABAA0AAAAJAA8AAAAAAA0AAAAKAA8AAAAAAAcAAAALAA8AAAABAAcAAAAMAA8AAAABAA0AAAANAA8AAAABAA0AAAAOAA8AAAAAAA0AAAAPAA8AAAAAAA0AAAAQAA8AAAABAA0AAAARAA8AAAAAAAcAAAASAA8AAAABAAcAAAATAA8AAAAAAAcAAAAAABAAAAAAAAcAAAABABAAAAABAAcAAAACABAAAAABAA0AAAADABAAAAAAAA0AAAAEABAAAAABAA0AAAAFABAAAAABAA0AAAAGABAAAAAAAA0AAAAHABAAAAAAAA0AAAAIABAAAAABAA0AAAAJABAAAAAAAA0AAAAKABAAAAAAAAcAAAALABAAAAABAAcAAAAMABAAAAAAAA0AAAANABAAAAAAAA0AAAAOABAAAAAAAAcAAAAPABAAAAAAAAcAAAAQABAAAAABAAcAAAARABAAAAAAAAcAAAASABAAAAAAAAcAAAATABAAAAAAAAcAAAAAABEAAAAAAAcAAAABABEAAAABAAcAAAACABEAAAAAAAcAAAADABEAAAAAAAcAAAAEABEAAAABAAcAAAAFABEAAAAAAAcAAAAGABEAAAAAAA0AAAAHABEAAAABAA0AAAAIABEAAAACAAIAAAAJABEAAAACAAIAAAAKABEAAAAAAAcAAAALABEAAAAAAAcAAAAMABEAAAAAAAcAAAANABEAAAABAAcAAAAOABEAAAABAAcAAAAPABEAAAAAAAcAAAAQABEAAAABAAcAAAARABEAAAABAAcAAAASABEAAAABAAcAAAATABEAAAAAAAcAAAA=")
 tile_set = ExtResource("2_8bnqj")
 
 [node name="Detail" type="TileMapLayer" parent="." unique_id=154280929]
+visible = false
 tile_set = ExtResource("2_8bnqj")
 
 [node name="Obstacles" type="TileMapLayer" parent="." unique_id=700895054]
+visible = false
 tile_set = ExtResource("2_8bnqj")
+
+[node name="PaintedGround" type="Node2D" parent="." unique_id=1990980748]
+z_index = -3
+material = SubResource("ShaderMaterial_3uupb")
+script = ExtResource("8_genrr")
+size = Vector2i(20, 18)
+mask = ExtResource("5_3uupb")
+base_texture = ExtResource("4_xdgaw")
+r_texture = ExtResource("7_x6ih4")
+g_texture = ExtResource("6_sigrb")
 
 [node name="GroundDecals" type="Node2D" parent="." unique_id=1192331708]
 z_index = -1
 
-[node name="Dessin" type="Polygon2D" parent="GroundDecals" unique_id=921646072]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(480, 384, 576, 384, 576, 480, 480, 480)
-
-[node name="@Polygon2D@8" type="Polygon2D" parent="GroundDecals" unique_id=425309474]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(576, 384, 672, 384, 672, 480, 576, 480)
-
-[node name="@Polygon2D@9" type="Polygon2D" parent="GroundDecals" unique_id=1648740684]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(672, 384, 768, 384, 768, 480, 672, 480)
-
-[node name="@Polygon2D@10" type="Polygon2D" parent="GroundDecals" unique_id=1227661601]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(768, 384, 864, 384, 864, 480, 768, 480)
-
-[node name="@Polygon2D@11" type="Polygon2D" parent="GroundDecals" unique_id=658664562]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(864, 384, 960, 384, 960, 480, 864, 480)
-
-[node name="@Polygon2D@12" type="Polygon2D" parent="GroundDecals" unique_id=33341106]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(960, 384, 1056, 384, 1056, 480, 960, 480)
-
-[node name="@Polygon2D@13" type="Polygon2D" parent="GroundDecals" unique_id=1498794730]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(1056, 384, 1152, 384, 1152, 480, 1056, 480)
-
-[node name="@Polygon2D@14" type="Polygon2D" parent="GroundDecals" unique_id=37574147]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(1152, 384, 1248, 384, 1248, 480, 1152, 480)
-
-[node name="@Polygon2D@15" type="Polygon2D" parent="GroundDecals" unique_id=203911366]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(1248, 384, 1344, 384, 1344, 480, 1248, 480)
-
-[node name="@Polygon2D@16" type="Polygon2D" parent="GroundDecals" unique_id=534926075]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(1344, 384, 1440, 384, 1440, 480, 1344, 480)
-
-[node name="@Polygon2D@17" type="Polygon2D" parent="GroundDecals" unique_id=1438765052]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(1440, 384, 1536, 384, 1536, 480, 1440, 480)
-
-[node name="@Polygon2D@18" type="Polygon2D" parent="GroundDecals" unique_id=1862080484]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(1536, 384, 1632, 384, 1632, 480, 1536, 480)
-
-[node name="@Polygon2D@19" type="Polygon2D" parent="GroundDecals" unique_id=959618754]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(480, 480, 576, 480, 576, 576, 480, 576)
-
-[node name="@Polygon2D@20" type="Polygon2D" parent="GroundDecals" unique_id=291720997]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(576, 480, 672, 480, 672, 576, 576, 576)
-
-[node name="@Polygon2D@21" type="Polygon2D" parent="GroundDecals" unique_id=1640304604]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(672, 480, 768, 480, 768, 576, 672, 576)
-
-[node name="@Polygon2D@22" type="Polygon2D" parent="GroundDecals" unique_id=1563938353]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(768, 480, 864, 480, 864, 576, 768, 576)
-
-[node name="@Polygon2D@23" type="Polygon2D" parent="GroundDecals" unique_id=732893124]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(864, 480, 960, 480, 960, 576, 864, 576)
-
-[node name="@Polygon2D@24" type="Polygon2D" parent="GroundDecals" unique_id=2034068205]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(960, 480, 1056, 480, 1056, 576, 960, 576)
-
-[node name="@Polygon2D@25" type="Polygon2D" parent="GroundDecals" unique_id=2092799220]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(1056, 480, 1152, 480, 1152, 576, 1056, 576)
-
-[node name="@Polygon2D@26" type="Polygon2D" parent="GroundDecals" unique_id=528530256]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(1152, 480, 1248, 480, 1248, 576, 1152, 576)
-
-[node name="@Polygon2D@27" type="Polygon2D" parent="GroundDecals" unique_id=1382544678]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(1248, 480, 1344, 480, 1344, 576, 1248, 576)
-
-[node name="@Polygon2D@28" type="Polygon2D" parent="GroundDecals" unique_id=188513198]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(1344, 480, 1440, 480, 1440, 576, 1344, 576)
-
-[node name="@Polygon2D@29" type="Polygon2D" parent="GroundDecals" unique_id=1438939091]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(1440, 480, 1536, 480, 1536, 576, 1440, 576)
-
-[node name="@Polygon2D@30" type="Polygon2D" parent="GroundDecals" unique_id=1204177553]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(1536, 480, 1632, 480, 1632, 576, 1536, 576)
-
-[node name="@Polygon2D@31" type="Polygon2D" parent="GroundDecals" unique_id=217054701]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(480, 576, 576, 576, 576, 672, 480, 672)
-
-[node name="@Polygon2D@32" type="Polygon2D" parent="GroundDecals" unique_id=1231843691]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(576, 576, 672, 576, 672, 672, 576, 672)
-
-[node name="@Polygon2D@33" type="Polygon2D" parent="GroundDecals" unique_id=246579206]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(672, 576, 768, 576, 768, 672, 672, 672)
-
-[node name="@Polygon2D@34" type="Polygon2D" parent="GroundDecals" unique_id=230055673]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(768, 576, 864, 576, 864, 672, 768, 672)
-
-[node name="@Polygon2D@35" type="Polygon2D" parent="GroundDecals" unique_id=303765341]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(864, 576, 960, 576, 960, 672, 864, 672)
-
-[node name="@Polygon2D@36" type="Polygon2D" parent="GroundDecals" unique_id=374177590]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(960, 576, 1056, 576, 1056, 672, 960, 672)
-
-[node name="@Polygon2D@37" type="Polygon2D" parent="GroundDecals" unique_id=508524976]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(1056, 576, 1152, 576, 1152, 672, 1056, 672)
-
-[node name="@Polygon2D@38" type="Polygon2D" parent="GroundDecals" unique_id=51560645]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(1152, 576, 1248, 576, 1248, 672, 1152, 672)
-
-[node name="@Polygon2D@39" type="Polygon2D" parent="GroundDecals" unique_id=1590809720]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(1248, 576, 1344, 576, 1344, 672, 1248, 672)
-
-[node name="@Polygon2D@40" type="Polygon2D" parent="GroundDecals" unique_id=2062283809]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(1344, 576, 1440, 576, 1440, 672, 1344, 672)
-
-[node name="@Polygon2D@41" type="Polygon2D" parent="GroundDecals" unique_id=546228216]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(1440, 576, 1536, 576, 1536, 672, 1440, 672)
-
-[node name="@Polygon2D@42" type="Polygon2D" parent="GroundDecals" unique_id=582689914]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(1536, 576, 1632, 576, 1632, 672, 1536, 672)
-
-[node name="@Polygon2D@43" type="Polygon2D" parent="GroundDecals" unique_id=586680091]
-color = Color(0.55, 0.42, 0.28, 1)
-polygon = PackedVector2Array(682, 686, 758, 686, 758, 696, 682, 696)
-
-[node name="@Polygon2D@44" type="Polygon2D" parent="GroundDecals" unique_id=1607614804]
-color = Color(0.55, 0.42, 0.28, 1)
-polygon = PackedVector2Array(682, 714, 758, 714, 758, 724, 682, 724)
-
-[node name="@Polygon2D@45" type="Polygon2D" parent="GroundDecals" unique_id=108101798]
-color = Color(0.55, 0.42, 0.28, 1)
-polygon = PackedVector2Array(682, 742, 758, 742, 758, 752, 682, 752)
-
-[node name="@Polygon2D@46" type="Polygon2D" parent="GroundDecals" unique_id=17006540]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(1056, 672, 1152, 672, 1152, 768, 1056, 768)
-
-[node name="@Polygon2D@47" type="Polygon2D" parent="GroundDecals" unique_id=1594692815]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(1152, 672, 1248, 672, 1248, 768, 1152, 768)
-
-[node name="@Polygon2D@48" type="Polygon2D" parent="GroundDecals" unique_id=1673019617]
-color = Color(0.55, 0.42, 0.28, 1)
-polygon = PackedVector2Array(1450, 686, 1526, 686, 1526, 696, 1450, 696)
-
-[node name="@Polygon2D@49" type="Polygon2D" parent="GroundDecals" unique_id=492670924]
-color = Color(0.55, 0.42, 0.28, 1)
-polygon = PackedVector2Array(1450, 714, 1526, 714, 1526, 724, 1450, 724)
-
-[node name="@Polygon2D@50" type="Polygon2D" parent="GroundDecals" unique_id=99084326]
-color = Color(0.55, 0.42, 0.28, 1)
-polygon = PackedVector2Array(1450, 742, 1526, 742, 1526, 752, 1450, 752)
-
-[node name="@Polygon2D@51" type="Polygon2D" parent="GroundDecals" unique_id=469554355]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(1056, 768, 1152, 768, 1152, 864, 1056, 864)
-
-[node name="@Polygon2D@52" type="Polygon2D" parent="GroundDecals" unique_id=1005893629]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(1152, 768, 1248, 768, 1248, 864, 1152, 864)
-
-[node name="@Polygon2D@53" type="Polygon2D" parent="GroundDecals" unique_id=1620913452]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(480, 864, 576, 864, 576, 960, 480, 960)
-
-[node name="@Polygon2D@54" type="Polygon2D" parent="GroundDecals" unique_id=146491653]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(576, 864, 672, 864, 672, 960, 576, 960)
-
-[node name="@Polygon2D@55" type="Polygon2D" parent="GroundDecals" unique_id=1395137767]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(672, 864, 768, 864, 768, 960, 672, 960)
-
-[node name="@Polygon2D@56" type="Polygon2D" parent="GroundDecals" unique_id=1078023764]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(1056, 864, 1152, 864, 1152, 960, 1056, 960)
-
-[node name="@Polygon2D@57" type="Polygon2D" parent="GroundDecals" unique_id=1133544536]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(1152, 864, 1248, 864, 1248, 960, 1152, 960)
-
-[node name="@Polygon2D@58" type="Polygon2D" parent="GroundDecals" unique_id=767348461]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(480, 960, 576, 960, 576, 1056, 480, 1056)
-
-[node name="@Polygon2D@59" type="Polygon2D" parent="GroundDecals" unique_id=1594292703]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(576, 960, 672, 960, 672, 1056, 576, 1056)
-
-[node name="@Polygon2D@60" type="Polygon2D" parent="GroundDecals" unique_id=1503048421]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(672, 960, 768, 960, 768, 1056, 672, 1056)
-
-[node name="@Polygon2D@61" type="Polygon2D" parent="GroundDecals" unique_id=926648522]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(1056, 960, 1152, 960, 1152, 1056, 1056, 1056)
-
-[node name="@Polygon2D@62" type="Polygon2D" parent="GroundDecals" unique_id=206964351]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(1152, 960, 1248, 960, 1248, 1056, 1152, 1056)
-
-[node name="@Polygon2D@63" type="Polygon2D" parent="GroundDecals" unique_id=1742673128]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(480, 1056, 576, 1056, 576, 1152, 480, 1152)
-
-[node name="@Polygon2D@64" type="Polygon2D" parent="GroundDecals" unique_id=1345336722]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(576, 1056, 672, 1056, 672, 1152, 576, 1152)
-
-[node name="@Polygon2D@65" type="Polygon2D" parent="GroundDecals" unique_id=940499500]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(672, 1056, 768, 1056, 768, 1152, 672, 1152)
-
-[node name="@Polygon2D@66" type="Polygon2D" parent="GroundDecals" unique_id=1622435543]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(1056, 1056, 1152, 1056, 1152, 1152, 1056, 1152)
-
-[node name="@Polygon2D@67" type="Polygon2D" parent="GroundDecals" unique_id=2022721456]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(1152, 1056, 1248, 1056, 1248, 1152, 1152, 1152)
-
-[node name="@Polygon2D@68" type="Polygon2D" parent="GroundDecals" unique_id=890094293]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(480, 1152, 576, 1152, 576, 1248, 480, 1248)
-
-[node name="@Polygon2D@69" type="Polygon2D" parent="GroundDecals" unique_id=527265861]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(576, 1152, 672, 1152, 672, 1248, 576, 1248)
-
-[node name="@Polygon2D@70" type="Polygon2D" parent="GroundDecals" unique_id=221844709]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(672, 1152, 768, 1152, 768, 1248, 672, 1248)
-
-[node name="@Polygon2D@71" type="Polygon2D" parent="GroundDecals" unique_id=2123332655]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(768, 1152, 864, 1152, 864, 1248, 768, 1248)
-
-[node name="@Polygon2D@72" type="Polygon2D" parent="GroundDecals" unique_id=743416784]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(864, 1152, 960, 1152, 960, 1248, 864, 1248)
-
-[node name="@Polygon2D@73" type="Polygon2D" parent="GroundDecals" unique_id=2099276394]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(960, 1152, 1056, 1152, 1056, 1248, 960, 1248)
-
-[node name="@Polygon2D@74" type="Polygon2D" parent="GroundDecals" unique_id=1080776075]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(1056, 1152, 1152, 1152, 1152, 1248, 1056, 1248)
-
-[node name="@Polygon2D@75" type="Polygon2D" parent="GroundDecals" unique_id=1063759479]
-color = Color(1, 0.95, 0.85, 0.22)
-polygon = PackedVector2Array(1152, 1152, 1248, 1152, 1248, 1248, 1152, 1248)
-
-[node name="@Polygon2D@76" type="Polygon2D" parent="GroundDecals" unique_id=421667214]
-color = Color(0.55, 0.42, 0.28, 1)
-polygon = PackedVector2Array(490, 1262, 566, 1262, 566, 1272, 490, 1272)
-
-[node name="@Polygon2D@77" type="Polygon2D" parent="GroundDecals" unique_id=1518242656]
-color = Color(0.55, 0.42, 0.28, 1)
-polygon = PackedVector2Array(490, 1290, 566, 1290, 566, 1300, 490, 1300)
-
-[node name="@Polygon2D@78" type="Polygon2D" parent="GroundDecals" unique_id=1993029617]
-color = Color(0.55, 0.42, 0.28, 1)
-polygon = PackedVector2Array(490, 1318, 566, 1318, 566, 1328, 490, 1328)
+[node name="Daf4Lip000" type="Sprite2D" parent="GroundDecals" unique_id=240133446]
+modulate = Color(1.0308309, 1.0308309, 1.0308309, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(144, 273)
+texture = ExtResource("10_fch7x")
+centered = false
+offset = Vector2(-48, -81)
+region_enabled = true
+region_rect = Rect2(96, 0, 96, 81)
+
+[node name="Daf4Lip001" type="Sprite2D" parent="GroundDecals" unique_id=83785601]
+modulate = Color(1.027955, 1.027955, 1.027955, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(432, 465)
+texture = ExtResource("10_fch7x")
+centered = false
+offset = Vector2(-48, -81)
+region_enabled = true
+region_rect = Rect2(96, 0, 96, 81)
+
+[node name="Daf4Lip002" type="Sprite2D" parent="GroundDecals" unique_id=1003798910]
+modulate = Color(1.0232093, 1.0232093, 1.0232093, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(1680, 465)
+texture = ExtResource("10_fch7x")
+centered = false
+offset = Vector2(-48, -81)
+region_enabled = true
+region_rect = Rect2(96, 0, 96, 81)
+
+[node name="Daf4Lip003" type="Sprite2D" parent="GroundDecals" unique_id=172187290]
+modulate = Color(0.98536384, 0.98536384, 0.98536384, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(144, 657)
+texture = ExtResource("10_fch7x")
+centered = false
+offset = Vector2(-48, -81)
+region_enabled = true
+region_rect = Rect2(96, 0, 96, 81)
+
+[node name="Daf4Lip004" type="Sprite2D" parent="GroundDecals" unique_id=1484486434]
+modulate = Color(0.9808194, 0.9808194, 0.9808194, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(1008, 753)
+texture = ExtResource("10_fch7x")
+centered = false
+offset = Vector2(-48, -81)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(96, 0, 96, 81)
+
+[node name="Daf4Lip005" type="Sprite2D" parent="GroundDecals" unique_id=1319230077]
+modulate = Color(0.9680262, 0.9680262, 0.9680262, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(1344, 753)
+texture = ExtResource("10_fch7x")
+centered = false
+offset = Vector2(-96, -81)
+region_enabled = true
+region_rect = Rect2(48, 0, 192, 81)
+
+[node name="Daf4Lip006" type="Sprite2D" parent="GroundDecals" unique_id=976842022]
+modulate = Color(1.0364965, 1.0364965, 1.0364965, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(432, 945)
+texture = ExtResource("10_fch7x")
+centered = false
+offset = Vector2(-48, -81)
+region_enabled = true
+region_rect = Rect2(96, 0, 96, 81)
+
+[node name="Daf4Lip007" type="Sprite2D" parent="GroundDecals" unique_id=826322809]
+modulate = Color(1.0040385, 1.0040385, 1.0040385, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(816, 945)
+texture = ExtResource("10_fch7x")
+centered = false
+offset = Vector2(-48, -81)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(96, 0, 96, 81)
+
+[node name="Daf4Lip008" type="Sprite2D" parent="GroundDecals" unique_id=580452174]
+modulate = Color(0.9828642, 0.9828642, 0.9828642, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(1488, 945)
+texture = ExtResource("10_fch7x")
+centered = false
+offset = Vector2(-48, -81)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(96, 0, 96, 81)
+
+[node name="Daf4Lip009" type="Sprite2D" parent="GroundDecals" unique_id=1791688119]
+modulate = Color(1.0104321, 1.0104321, 1.0104321, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(1872, 945)
+texture = ExtResource("10_fch7x")
+centered = false
+offset = Vector2(-48, -81)
+region_enabled = true
+region_rect = Rect2(96, 0, 96, 81)
+
+[node name="Daf4Lip010" type="Sprite2D" parent="GroundDecals" unique_id=1381767006]
+modulate = Color(0.9965345, 0.9965345, 0.9965345, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(912, 1041)
+texture = ExtResource("10_fch7x")
+centered = false
+offset = Vector2(-48, -81)
+region_enabled = true
+region_rect = Rect2(96, 0, 96, 81)
+
+[node name="Daf4Lip011" type="Sprite2D" parent="GroundDecals" unique_id=667734033]
+modulate = Color(1.0332649, 1.0332649, 1.0332649, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(1776, 1041)
+texture = ExtResource("10_fch7x")
+centered = false
+offset = Vector2(-48, -81)
+region_enabled = true
+region_rect = Rect2(96, 0, 96, 81)
+
+[node name="Daf4Lip012" type="Sprite2D" parent="GroundDecals" unique_id=582230582]
+modulate = Color(1.0327152, 1.0327152, 1.0327152, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(336, 1329)
+texture = ExtResource("10_fch7x")
+centered = false
+offset = Vector2(-48, -81)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(96, 0, 96, 81)
+
+[node name="Daf4Lip013" type="Sprite2D" parent="GroundDecals" unique_id=1256647699]
+modulate = Color(1.0048231, 1.0048231, 1.0048231, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(672, 1329)
+texture = ExtResource("10_fch7x")
+centered = false
+offset = Vector2(-96, -81)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(48, 0, 192, 81)
+
+[node name="Daf4Lip014" type="Sprite2D" parent="GroundDecals" unique_id=13579763]
+modulate = Color(1.0143166, 1.0143166, 1.0143166, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(1680, 1425)
+texture = ExtResource("10_fch7x")
+centered = false
+offset = Vector2(-48, -81)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(96, 0, 96, 81)
+
+[node name="Daf4Lip015" type="Sprite2D" parent="GroundDecals" unique_id=1233064019]
+modulate = Color(0.9849549, 0.9849549, 0.9849549, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(48, 1521)
+texture = ExtResource("10_fch7x")
+centered = false
+offset = Vector2(-48, -81)
+region_enabled = true
+region_rect = Rect2(96, 0, 96, 81)
+
+[node name="Daf4Lip016" type="Sprite2D" parent="GroundDecals" unique_id=652316505]
+modulate = Color(1.0187136, 1.0187136, 1.0187136, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(1056, 1521)
+texture = ExtResource("10_fch7x")
+centered = false
+offset = Vector2(-96, -81)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(48, 0, 192, 81)
+
+[node name="Daf4Lip017" type="Sprite2D" parent="GroundDecals" unique_id=285675490]
+modulate = Color(0.98182684, 0.98182684, 0.98182684, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(144, 1617)
+texture = ExtResource("10_fch7x")
+centered = false
+offset = Vector2(-48, -81)
+region_enabled = true
+region_rect = Rect2(96, 0, 96, 81)
+
+[node name="Daf4Lip018" type="Sprite2D" parent="GroundDecals" unique_id=416586961]
+modulate = Color(1.0139155, 1.0139155, 1.0139155, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(1488, 1617)
+texture = ExtResource("10_fch7x")
+centered = false
+offset = Vector2(-144, -81)
+flip_h = true
+
+[node name="Daf4Lip019" type="Sprite2D" parent="GroundDecals" unique_id=397470508]
+modulate = Color(0.99521935, 0.99521935, 0.99521935, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(336, 1713)
+texture = ExtResource("10_fch7x")
+centered = false
+offset = Vector2(-144, -81)
+
+[node name="Daf4Lip020" type="Sprite2D" parent="GroundDecals" unique_id=742467442]
+modulate = Color(1.0095054, 1.0095054, 1.0095054, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(432, 1713)
+texture = ExtResource("10_fch7x")
+centered = false
+offset = Vector2(-144, -81)
+
+[node name="Daf4Lip021" type="Sprite2D" parent="GroundDecals" unique_id=1068371757]
+modulate = Color(0.99145067, 0.99145067, 0.99145067, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(1248, 1713)
+texture = ExtResource("10_fch7x")
+centered = false
+offset = Vector2(-96, -81)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(48, 0, 192, 81)
+
+[node name="Daf4Stairs000" parent="GroundDecals" unique_id=353276683 instance=ExtResource("11_7077g")]
+position = Vector2(720, 768)
+
+[node name="Daf4Stairs001" parent="GroundDecals" unique_id=1183336694 instance=ExtResource("11_7077g")]
+position = Vector2(1488, 768)
+
+[node name="Daf4Stairs002" parent="GroundDecals" unique_id=769457462 instance=ExtResource("11_7077g")]
+position = Vector2(528, 1344)
 
 [node name="Entities" type="Node2D" parent="." unique_id=158305154]
 unique_name_in_owner = true
@@ -326,39 +317,32 @@ y_sort_enabled = true
 position = Vector2(144, 192)
 script = ExtResource("3_g3l57")
 
-[node name="Dessin" type="Polygon2D" parent="Entities/Echelle1_1" unique_id=457739422]
-color = Color(0.55, 0.38, 0.2, 1)
-polygon = PackedVector2Array(-30, -88, 30, -88, 30, -8, -30, -8)
-
-[node name="@Polygon2D@5" type="Polygon2D" parent="Entities/Echelle1_1" unique_id=1372852136]
-color = Color(0.3, 0.2, 0.1, 1)
-polygon = PackedVector2Array(-22, -80, 22, -80, 22, -72, -22, -72)
-
-[node name="@Polygon2D@6" type="Polygon2D" parent="Entities/Echelle1_1" unique_id=727379195]
-color = Color(0.3, 0.2, 0.1, 1)
-polygon = PackedVector2Array(-22, -56, 22, -56, 22, -48, -22, -48)
-
-[node name="@Polygon2D@7" type="Polygon2D" parent="Entities/Echelle1_1" unique_id=1470320305]
-color = Color(0.3, 0.2, 0.1, 1)
-polygon = PackedVector2Array(-22, -32, 22, -32, 22, -24, -22, -24)
+[node name="Peint0" type="Sprite2D" parent="Entities/Echelle1_1" unique_id=1166256984]
+position = Vector2(-48, -191)
+texture = ExtResource("13_46i5u")
+centered = false
 
 [node name="InterrupteurReleve_interrupteur_1" type="Node2D" parent="Entities" unique_id=824296625]
 position = Vector2(1680, 1344)
 script = ExtResource("3_g3l57")
 unless_flags = Array[StringName]([&"victory_road_1f_switch_1"])
 
-[node name="Dessin" type="Polygon2D" parent="Entities/InterrupteurReleve_interrupteur_1" unique_id=77024847]
-color = Color(0.85, 0.7, 0.2, 1)
-polygon = PackedVector2Array(-34, -82, 34, -82, 34, -14, -34, -14)
+[node name="Peint0" type="Sprite2D" parent="Entities/InterrupteurReleve_interrupteur_1" unique_id=496899410]
+z_index = -1
+position = Vector2(-48, -96)
+texture = ExtResource("14_xdgaw")
+centered = false
 
 [node name="InterrupteurEnfonce_interrupteur_1" type="Node2D" parent="Entities" unique_id=1893607479]
 position = Vector2(1680, 1344)
 script = ExtResource("3_g3l57")
 if_flags = Array[StringName]([&"victory_road_1f_switch_1"])
 
-[node name="Dessin" type="Polygon2D" parent="Entities/InterrupteurEnfonce_interrupteur_1" unique_id=1014948212]
-color = Color(0.4, 0.34, 0.12, 1)
-polygon = PackedVector2Array(-34, -82, 34, -82, 34, -14, -34, -14)
+[node name="Peint0" type="Sprite2D" parent="Entities/InterrupteurEnfonce_interrupteur_1" unique_id=1176003087]
+z_index = -1
+position = Vector2(-48, -96)
+texture = ExtResource("14_vuta2")
+centered = false
 
 [node name="Barriere_barriere_1" type="Node2D" parent="Entities" unique_id=845822546]
 position = Vector2(912, 1248)
@@ -366,13 +350,895 @@ script = ExtResource("3_g3l57")
 unless_flags = Array[StringName]([&"victory_road_1f_switch_1"])
 blocking_cells = Array[Vector2i]([Vector2i(9, 12)])
 
-[node name="Dessin" type="Polygon2D" parent="Entities/Barriere_barriere_1" unique_id=382323683]
-color = Color(0.55, 0.15, 0.15, 1)
-polygon = PackedVector2Array(-44, -88, 44, -88, 44, -8, -44, -8)
+[node name="Peint0" type="Sprite2D" parent="Entities/Barriere_barriere_1" unique_id=1644941824]
+position = Vector2(-48, -125)
+texture = ExtResource("15_vhs1n")
+centered = false
 
-[node name="@Polygon2D@79" type="Polygon2D" parent="Entities/Barriere_barriere_1" unique_id=293728763]
-color = Color(0.85, 0.75, 0.3, 1)
-polygon = PackedVector2Array(-30, -74, 30, -74, 30, -62, -30, -62)
+[node name="Daf4Face000" type="Sprite2D" parent="Entities" unique_id=2021145445]
+modulate = Color(0.9643452, 0.9643452, 0.9643452, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(240, 96)
+texture = ExtResource("16_a63mg")
+centered = false
+offset = Vector2(-144, -104)
+region_enabled = true
+region_rect = Rect2(0, 91, 288, 104)
+
+[node name="Daf4Face001" type="Sprite2D" parent="Entities" unique_id=397541142]
+modulate = Color(1.0071334, 1.0071334, 1.0071334, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(1584, 96)
+texture = ExtResource("17_r7th1")
+centered = false
+offset = Vector2(-48, -104)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(96, 82, 96, 104)
+
+[node name="Daf4Face002" type="Sprite2D" parent="Entities" unique_id=695043748]
+modulate = Color(1.0094967, 1.0094967, 1.0094967, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(960, 192)
+texture = ExtResource("16_a63mg")
+centered = false
+offset = Vector2(-96, -195)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(48, 0, 192, 195)
+
+[node name="Daf4Face003" type="Sprite2D" parent="Entities" unique_id=470644237]
+modulate = Color(1.0318953, 1.0318953, 1.0318953, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(1296, 192)
+texture = ExtResource("17_r7th1")
+centered = false
+offset = Vector2(-144, -104)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 82, 288, 104)
+
+[node name="Daf4Face004" type="Sprite2D" parent="Entities" unique_id=489158143]
+modulate = Color(0.96842164, 0.96842164, 0.96842164, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(1680, 192)
+texture = ExtResource("16_a63mg")
+centered = false
+offset = Vector2(-48, -195)
+region_enabled = true
+region_rect = Rect2(96, 0, 96, 195)
+
+[node name="Daf4Face005" type="Sprite2D" parent="Entities" unique_id=1424386253]
+modulate = Color(0.9880022, 0.9880022, 0.9880022, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(432, 288)
+texture = ExtResource("16_a63mg")
+centered = false
+offset = Vector2(-48, -195)
+region_enabled = true
+region_rect = Rect2(96, 0, 96, 195)
+
+[node name="Daf4Face006" type="Sprite2D" parent="Entities" unique_id=1551987178]
+modulate = Color(1.0114318, 1.0114318, 1.0114318, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(1776, 288)
+texture = ExtResource("17_r7th1")
+centered = false
+offset = Vector2(-48, -186)
+region_enabled = true
+region_rect = Rect2(96, 0, 96, 186)
+
+[node name="Daf4Face007" type="Sprite2D" parent="Entities" unique_id=520666562]
+modulate = Color(0.97976184, 0.97976184, 0.97976184, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(144, 384)
+texture = ExtResource("16_a63mg")
+centered = false
+offset = Vector2(-48, -195)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(96, 0, 96, 195)
+
+[node name="Daf4Face008" type="Sprite2D" parent="Entities" unique_id=1848473056]
+modulate = Color(1.0011269, 1.0011269, 1.0011269, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(624, 384)
+texture = ExtResource("16_a63mg")
+centered = false
+offset = Vector2(-144, -195)
+flip_h = true
+
+[node name="Daf4Face009" type="Sprite2D" parent="Entities" unique_id=943860451]
+modulate = Color(1.0103302, 1.0103302, 1.0103302, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(912, 384)
+texture = ExtResource("16_a63mg")
+centered = false
+offset = Vector2(-144, -104)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 91, 288, 104)
+
+[node name="Daf4Face010" type="Sprite2D" parent="Entities" unique_id=1090843845]
+modulate = Color(0.995044, 0.995044, 0.995044, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(1296, 384)
+texture = ExtResource("17_r7th1")
+centered = false
+offset = Vector2(-48, -104)
+region_enabled = true
+region_rect = Rect2(96, 82, 96, 104)
+
+[node name="Daf4Face011" type="Sprite2D" parent="Entities" unique_id=1444854220]
+modulate = Color(0.9946823, 0.9946823, 0.9946823, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(1872, 384)
+texture = ExtResource("17_r7th1")
+centered = false
+offset = Vector2(-48, -186)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(96, 0, 96, 186)
+
+[node name="Daf4Face012" type="Sprite2D" parent="Entities" unique_id=167625825]
+modulate = Color(0.9837598, 0.9837598, 0.9837598, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(528, 768)
+texture = ExtResource("16_a63mg")
+centered = false
+offset = Vector2(-144, -104)
+region_enabled = true
+region_rect = Rect2(0, 91, 288, 104)
+
+[node name="Daf4Face013" type="Sprite2D" parent="Entities" unique_id=276058023]
+modulate = Color(1.0349594, 1.0349594, 1.0349594, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(864, 768)
+texture = ExtResource("17_r7th1")
+centered = false
+offset = Vector2(-96, -104)
+region_enabled = true
+region_rect = Rect2(48, 82, 192, 104)
+
+[node name="Daf4Face014" type="Sprite2D" parent="Entities" unique_id=354056317]
+modulate = Color(0.9762744, 0.9762744, 0.9762744, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(1632, 768)
+texture = ExtResource("17_r7th1")
+centered = false
+offset = Vector2(-96, -104)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(48, 82, 192, 104)
+
+[node name="Daf4Face015" type="Sprite2D" parent="Entities" unique_id=1532485145]
+modulate = Color(0.9890873, 0.9890873, 0.9890873, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(240, 864)
+texture = ExtResource("17_r7th1")
+centered = false
+offset = Vector2(-48, -104)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(96, 82, 96, 104)
+
+[node name="Daf4Face016" type="Sprite2D" parent="Entities" unique_id=957768905]
+modulate = Color(0.9625937, 0.9625937, 0.9625937, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(336, 1056)
+texture = ExtResource("16_a63mg")
+centered = false
+offset = Vector2(-48, -104)
+region_enabled = true
+region_rect = Rect2(96, 91, 96, 104)
+
+[node name="Daf4Face017" type="Sprite2D" parent="Entities" unique_id=1708139035]
+modulate = Color(0.97041005, 0.97041005, 0.97041005, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(1584, 1056)
+texture = ExtResource("17_r7th1")
+centered = false
+offset = Vector2(-144, -104)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 82, 288, 104)
+
+[node name="Daf4Face018" type="Sprite2D" parent="Entities" unique_id=1445387077]
+modulate = Color(0.98698616, 0.98698616, 0.98698616, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(144, 1152)
+texture = ExtResource("17_r7th1")
+centered = false
+offset = Vector2(-48, -186)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(96, 0, 96, 186)
+
+[node name="Daf4Face019" type="Sprite2D" parent="Entities" unique_id=896170251]
+modulate = Color(0.9768758, 0.9768758, 0.9768758, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(912, 1152)
+texture = ExtResource("16_a63mg")
+centered = false
+offset = Vector2(-144, -195)
+
+[node name="Daf4Face020" type="Sprite2D" parent="Entities" unique_id=540732718]
+modulate = Color(0.96733516, 0.96733516, 0.96733516, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(1392, 1152)
+texture = ExtResource("17_r7th1")
+centered = false
+offset = Vector2(-48, -186)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(96, 0, 96, 186)
+
+[node name="Daf4Face021" type="Sprite2D" parent="Entities" unique_id=1736266137]
+modulate = Color(0.9825221, 0.9825221, 0.9825221, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(48, 1248)
+texture = ExtResource("17_r7th1")
+centered = false
+offset = Vector2(-48, -186)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(96, 0, 96, 186)
+
+[node name="Daf4Face022" type="Sprite2D" parent="Entities" unique_id=1398591089]
+modulate = Color(1.0152253, 1.0152253, 1.0152253, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(432, 1344)
+texture = ExtResource("16_a63mg")
+centered = false
+offset = Vector2(-48, -195)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(96, 0, 96, 195)
+
+[node name="Daf4Face023" type="Sprite2D" parent="Entities" unique_id=394064310]
+modulate = Color(1.0052136, 1.0052136, 1.0052136, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(912, 1344)
+texture = ExtResource("17_r7th1")
+centered = false
+offset = Vector2(-144, -104)
+region_enabled = true
+region_rect = Rect2(0, 82, 288, 104)
+
+[node name="Daf4Face024" type="Sprite2D" parent="Entities" unique_id=125182678]
+modulate = Color(0.97914433, 0.97914433, 0.97914433, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(1200, 1344)
+texture = ExtResource("16_a63mg")
+centered = false
+offset = Vector2(-144, -104)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 91, 288, 104)
+
+[node name="Daf4Face025" type="Sprite2D" parent="Entities" unique_id=372134474]
+modulate = Color(0.9774559, 0.9774559, 0.9774559, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(1488, 1344)
+texture = ExtResource("16_a63mg")
+centered = false
+offset = Vector2(-48, -104)
+region_enabled = true
+region_rect = Rect2(96, 91, 96, 104)
+
+[node name="Daf4Face026" type="Sprite2D" parent="Entities" unique_id=1099226302]
+modulate = Color(0.97824365, 0.97824365, 0.97824365, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(288, 1440)
+texture = ExtResource("17_r7th1")
+centered = false
+offset = Vector2(-96, -104)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(48, 82, 192, 104)
+
+[node name="Daf4Face027" type="Sprite2D" parent="Entities" unique_id=777995109]
+modulate = Color(0.97024155, 0.97024155, 0.97024155, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(720, 1440)
+texture = ExtResource("16_a63mg")
+centered = false
+offset = Vector2(-48, -195)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(96, 0, 96, 195)
+
+[node name="Daf4Face028" type="Sprite2D" parent="Entities" unique_id=609920915]
+modulate = Color(0.9802463, 0.9802463, 0.9802463, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(624, 1536)
+texture = ExtResource("17_r7th1")
+centered = false
+offset = Vector2(-48, -186)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(96, 0, 96, 186)
+
+[node name="Daf4Side000" type="Sprite2D" parent="Entities" unique_id=1106474044]
+modulate = Color(0.963936, 0.963936, 0.963936, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(48, 192)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 207, 96, 96)
+
+[node name="Daf4Side001" type="Sprite2D" parent="Entities" unique_id=482881005]
+modulate = Color(1.0093127, 1.0093127, 1.0093127, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(48, 480)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 0, 96, 96)
+
+[node name="Daf4Side002" type="Sprite2D" parent="Entities" unique_id=2090860003]
+modulate = Color(1.0347552, 1.0347552, 1.0347552, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(48, 576)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 207, 96, 96)
+
+[node name="Daf4Side003" type="Sprite2D" parent="Entities" unique_id=845304817]
+modulate = Color(1.0339912, 1.0339912, 1.0339912, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(48, 1536)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 207, 96, 96)
+
+[node name="Daf4Side004" type="Sprite2D" parent="Entities" unique_id=2024624197]
+modulate = Color(0.9907215, 0.9907215, 0.9907215, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(144, 288)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 207, 96, 96)
+
+[node name="Daf4Side005" type="Sprite2D" parent="Entities" unique_id=44154542]
+modulate = Color(1.0264678, 1.0264678, 1.0264678, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(144, 672)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 0, 96, 96)
+
+[node name="Daf4Side006" type="Sprite2D" parent="Entities" unique_id=554678601]
+modulate = Color(0.9959431, 0.9959431, 0.9959431, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(144, 768)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 207, 96, 96)
+
+[node name="Daf4Side007" type="Sprite2D" parent="Entities" unique_id=1933371885]
+modulate = Color(1.0066082, 1.0066082, 1.0066082, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(144, 960)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 0, 96, 96)
+
+[node name="Daf4Side008" type="Sprite2D" parent="Entities" unique_id=1349107737]
+modulate = Color(1.0186846, 1.0186846, 1.0186846, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(144, 1056)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 207, 96, 96)
+
+[node name="Daf4Side009" type="Sprite2D" parent="Entities" unique_id=1567170669]
+modulate = Color(0.9777193, 0.9777193, 0.9777193, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(144, 1632)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 207, 96, 96)
+
+[node name="Daf4Side010" type="Sprite2D" parent="Entities" unique_id=228639883]
+modulate = Color(1.0014377, 1.0014377, 1.0014377, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(336, 1344)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 207, 96, 96)
+
+[node name="Daf4Side011" type="Sprite2D" parent="Entities" unique_id=1432836683]
+modulate = Color(0.99420613, 0.99420613, 0.99420613, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(432, 192)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 207, 96, 96)
+
+[node name="Daf4Side012" type="Sprite2D" parent="Entities" unique_id=1330051214]
+modulate = Color(0.99938893, 0.99938893, 0.99938893, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(432, 480)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 0, 96, 96)
+
+[node name="Daf4Side013" type="Sprite2D" parent="Entities" unique_id=1124270538]
+modulate = Color(0.98878795, 0.98878795, 0.98878795, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(432, 576)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 103, 96, 96)
+
+[node name="Daf4Side014" type="Sprite2D" parent="Entities" unique_id=177593936]
+modulate = Color(1.0170419, 1.0170419, 1.0170419, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(432, 672)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 207, 96, 96)
+
+[node name="Daf4Side015" type="Sprite2D" parent="Entities" unique_id=10737005]
+modulate = Color(0.9670128, 0.9670128, 0.9670128, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(432, 960)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 0, 96, 96)
+
+[node name="Daf4Side016" type="Sprite2D" parent="Entities" unique_id=403460254]
+modulate = Color(0.9680357, 0.9680357, 0.9680357, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(432, 1056)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 103, 96, 96)
+
+[node name="Daf4Side017" type="Sprite2D" parent="Entities" unique_id=2038470882]
+modulate = Color(0.9716356, 0.9716356, 0.9716356, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(432, 1152)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 103, 96, 96)
+
+[node name="Daf4Side018" type="Sprite2D" parent="Entities" unique_id=1453881886]
+modulate = Color(0.96173155, 0.96173155, 0.96173155, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(432, 1248)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 207, 96, 96)
+
+[node name="Daf4Side019" type="Sprite2D" parent="Entities" unique_id=541980610]
+modulate = Color(0.96071136, 0.96071136, 0.96071136, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(528, 1728)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 207, 96, 96)
+
+[node name="Daf4Side020" type="Sprite2D" parent="Entities" unique_id=325795086]
+modulate = Color(1.0178396, 1.0178396, 1.0178396, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(624, 1344)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 0, 96, 96)
+
+[node name="Daf4Side021" type="Sprite2D" parent="Entities" unique_id=1153609806]
+modulate = Color(0.976597, 0.976597, 0.976597, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(624, 1440)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 207, 96, 96)
+
+[node name="Daf4Side022" type="Sprite2D" parent="Entities" unique_id=1144664741]
+modulate = Color(0.9713929, 0.9713929, 0.9713929, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(816, 288)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 207, 96, 96)
+
+[node name="Daf4Side023" type="Sprite2D" parent="Entities" unique_id=1310107299]
+modulate = Color(0.9959941, 0.9959941, 0.9959941, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(816, 960)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 0, 96, 96)
+
+[node name="Daf4Side024" type="Sprite2D" parent="Entities" unique_id=903263313]
+modulate = Color(0.9780749, 0.9780749, 0.9780749, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(816, 1056)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 207, 96, 96)
+
+[node name="Daf4Side025" type="Sprite2D" parent="Entities" unique_id=1553164128]
+modulate = Color(0.99710315, 0.99710315, 0.99710315, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(1008, 96)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 207, 96, 96)
+
+[node name="Daf4Side026" type="Sprite2D" parent="Entities" unique_id=1203614589]
+modulate = Color(0.9928243, 0.9928243, 0.9928243, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(1008, 768)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 0, 96, 96)
+
+[node name="Daf4Side027" type="Sprite2D" parent="Entities" unique_id=1990216850]
+modulate = Color(0.98824173, 0.98824173, 0.98824173, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(1008, 864)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 103, 96, 96)
+
+[node name="Daf4Side028" type="Sprite2D" parent="Entities" unique_id=723005467]
+modulate = Color(0.9625929, 0.9625929, 0.9625929, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(1008, 960)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 103, 96, 96)
+
+[node name="Daf4Side029" type="Sprite2D" parent="Entities" unique_id=222874454]
+modulate = Color(1.0036466, 1.0036466, 1.0036466, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(1008, 1056)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 207, 96, 96)
+
+[node name="Daf4Side030" type="Sprite2D" parent="Entities" unique_id=453214759]
+modulate = Color(1.0301715, 1.0301715, 1.0301715, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(1008, 1536)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 0, 96, 96)
+
+[node name="Daf4Side031" type="Sprite2D" parent="Entities" unique_id=1296741125]
+modulate = Color(1.0339768, 1.0339768, 1.0339768, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(1008, 1632)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 103, 96, 96)
+
+[node name="Daf4Side032" type="Sprite2D" parent="Entities" unique_id=1271638454]
+modulate = Color(1.0388861, 1.0388861, 1.0388861, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(1008, 1728)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 207, 96, 96)
+
+[node name="Daf4Side033" type="Sprite2D" parent="Entities" unique_id=1292524975]
+modulate = Color(1.002284, 1.002284, 1.002284, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(1104, 1536)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 0, 96, 96)
+
+[node name="Daf4Side034" type="Sprite2D" parent="Entities" unique_id=1946387717]
+modulate = Color(1.0342536, 1.0342536, 1.0342536, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(1104, 1632)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 207, 96, 96)
+
+[node name="Daf4Side035" type="Sprite2D" parent="Entities" unique_id=781584615]
+modulate = Color(1.0323302, 1.0323302, 1.0323302, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(1200, 96)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 207, 96, 96)
+
+[node name="Daf4Side036" type="Sprite2D" parent="Entities" unique_id=480140751]
+modulate = Color(1.0240654, 1.0240654, 1.0240654, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(1296, 96)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 207, 96, 96)
+
+[node name="Daf4Side037" type="Sprite2D" parent="Entities" unique_id=2042840501]
+modulate = Color(1.0276374, 1.0276374, 1.0276374, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(1296, 768)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 0, 96, 96)
+
+[node name="Daf4Side038" type="Sprite2D" parent="Entities" unique_id=215183634]
+modulate = Color(1.0082592, 1.0082592, 1.0082592, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(1296, 864)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 103, 96, 96)
+
+[node name="Daf4Side039" type="Sprite2D" parent="Entities" unique_id=476886404]
+modulate = Color(1.0175136, 1.0175136, 1.0175136, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(1296, 960)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 103, 96, 96)
+
+[node name="Daf4Side040" type="Sprite2D" parent="Entities" unique_id=286244613]
+modulate = Color(0.97876346, 0.97876346, 0.97876346, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(1296, 1056)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 103, 96, 96)
+
+[node name="Daf4Side041" type="Sprite2D" parent="Entities" unique_id=697325893]
+modulate = Color(1.0118383, 1.0118383, 1.0118383, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(1296, 1152)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 103, 96, 96)
+
+[node name="Daf4Side042" type="Sprite2D" parent="Entities" unique_id=865138717]
+modulate = Color(0.96226245, 0.96226245, 0.96226245, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(1296, 1248)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 207, 96, 96)
+
+[node name="Daf4Side043" type="Sprite2D" parent="Entities" unique_id=1024888979]
+modulate = Color(1.0380597, 1.0380597, 1.0380597, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(1392, 768)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 0, 96, 96)
+
+[node name="Daf4Side044" type="Sprite2D" parent="Entities" unique_id=1648898502]
+modulate = Color(1.0352973, 1.0352973, 1.0352973, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(1392, 864)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 207, 96, 96)
+
+[node name="Daf4Side045" type="Sprite2D" parent="Entities" unique_id=412783289]
+modulate = Color(1.019973, 1.019973, 1.019973, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(1392, 1632)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 207, 96, 96)
+
+[node name="Daf4Side046" type="Sprite2D" parent="Entities" unique_id=94890671]
+modulate = Color(0.97790325, 0.97790325, 0.97790325, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(1488, 960)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 207, 96, 96)
+
+[node name="Daf4Side047" type="Sprite2D" parent="Entities" unique_id=1983693645]
+modulate = Color(1.0215003, 1.0215003, 1.0215003, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(1680, 480)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 0, 96, 96)
+
+[node name="Daf4Side048" type="Sprite2D" parent="Entities" unique_id=1841880543]
+modulate = Color(0.962995, 0.962995, 0.962995, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(1680, 576)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 103, 96, 96)
+
+[node name="Daf4Side049" type="Sprite2D" parent="Entities" unique_id=682931167]
+modulate = Color(0.9670953, 0.9670953, 0.9670953, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(1680, 672)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 207, 96, 96)
+
+[node name="Daf4Side050" type="Sprite2D" parent="Entities" unique_id=131455944]
+modulate = Color(1.016957, 1.016957, 1.016957, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(1680, 1440)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 0, 96, 96)
+
+[node name="Daf4Side051" type="Sprite2D" parent="Entities" unique_id=374279540]
+modulate = Color(1.0240151, 1.0240151, 1.0240151, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(1680, 1536)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 207, 96, 96)
+
+[node name="Daf4Side052" type="Sprite2D" parent="Entities" unique_id=2079481622]
+modulate = Color(0.97505736, 0.97505736, 0.97505736, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(1776, 1152)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 0, 96, 96)
+
+[node name="Daf4Side053" type="Sprite2D" parent="Entities" unique_id=820083679]
+modulate = Color(0.99641675, 0.99641675, 0.99641675, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(1776, 1248)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 103, 96, 96)
+
+[node name="Daf4Side054" type="Sprite2D" parent="Entities" unique_id=978607744]
+modulate = Color(0.99068224, 0.99068224, 0.99068224, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(1776, 1344)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 207, 96, 96)
+
+[node name="Daf4Side055" type="Sprite2D" parent="Entities" unique_id=444500868]
+modulate = Color(0.99798644, 0.99798644, 0.99798644, 1)
+material = ExtResource("9_sfhhs")
+position = Vector2(1872, 960)
+texture = ExtResource("18_363ai")
+centered = false
+offset = Vector2(-48, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 207, 96, 96)
 
 [node name="Overhead" type="TileMapLayer" parent="." unique_id=104544576]
 z_index = 10
