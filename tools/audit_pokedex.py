@@ -123,6 +123,10 @@ omanyte:omastar:level kabuto:kabutops:level dratini:dragonair:level
 dragonair:dragonite:level
 """.split()]
 
+# Seconde chance d'après la Ligue (J32, N-7 et N-8) : un don de ces scènes lève le choix unique
+# (le second fossile du chercheur, l'autre Poké Ball du Dojo).
+SECOND_CHANCE_PREFIX = "j32_"
+
 # Choix uniques connus (Rouge/Bleu et décisions du projet) : une seule espèce par sauvegarde.
 # Les starters viennent de `starters.json` ; les évolutions multiples (Évoli) sont détectées.
 FIXED_CHOICES = {
@@ -151,7 +155,7 @@ CHOICE_RULES = {
     "dojo": ("N-8", "le Maître du Dojo offre l'autre Poké Ball après la Ligue"),
     "evolutions:eevee": ("N-9", "deux Évoli de plus sur le toit de Céladopole après la Ligue"),
 }
-TRADE_RULE = ("N-15 / T4", "terminal d'échange local dans tous les Centres")
+TRADE_RULE = ("N-15 / T4, T5", "terminal d'échange local des Centres (écran fait, J32 T5)")
 
 # Rencontres fixes dont la carte n'existe pas encore : la voie ne compte que si la carte existe.
 STATIC_MAPS = {"zapdos": "power_plant"}
@@ -273,6 +277,7 @@ class RefData:
     ways: list = field(default_factory=list)
     item_gives: dict = field(default_factory=dict)     # objet → nombre de dons uniques
     shop_items: set = field(default_factory=set)
+    second_items: set = field(default_factory=set)     # objets redonnés après la Ligue (J32)
     starter_ids: list = field(default_factory=list)
 
 
@@ -339,12 +344,15 @@ def collect(source) -> RefData:
             if "give" in step and isinstance(step["give"], str):
                 item = step["give"]
                 data.item_gives[item] = data.item_gives.get(item, 0) + 1
+                if name.startswith(SECOND_CHANCE_PREFIX):
+                    data.second_items.add(item)
             if isinstance(step.get("gift_pokemon"), str):
                 sid = step["gift_pokemon"]
                 if sid in fossil_species.values():
                     continue  # rendu par le labo : compté comme voie « fossile »
                 data.ways.append(Way(kind="don", species=sid, detail=f"{name} (N{step.get('level', '?')})",
-                                     key=f"gift:{step.get('flag') or name}:{sid}"))
+                                     key=f"gift:{step.get('flag') or name}:{sid}"
+                                     + (f":{name}" if name.startswith(SECOND_CHANCE_PREFIX) else "")))
             if isinstance(step.get("wild_battle"), str):
                 if step.get("uncatchable") or step.get("ghost"):
                     continue
@@ -369,7 +377,7 @@ def collect(source) -> RefData:
             continue
         choice = ""
         for group_id, group in FIXED_CHOICES.items():
-            if item in group.get("fossil_items", []):
+            if item in group.get("fossil_items", []) and item not in data.second_items:
                 choice = group_id
         given = data.item_gives.get(item, 0)
         data.ways.append(Way(kind="fossile", species=sid, detail=f"{item} → labo de Cramois'Île",
@@ -387,7 +395,8 @@ def collect(source) -> RefData:
 
     for way in data.ways:
         for group_id, group in FIXED_CHOICES.items():
-            if way.species in group.get("species", []) and way.kind == "don":
+            if way.species in group.get("species", []) and way.kind == "don" \
+                    and not way.detail.startswith(SECOND_CHANCE_PREFIX):
                 way.choice = group_id
     for way in data.ways:
         way.refs = [source.label]
@@ -415,6 +424,9 @@ def merge(refs: list[RefData]) -> tuple[dict, list[Way], dict, set]:
                     known.refs.append(ref.label)
                 if way.valid and not known.valid:
                     known.valid, known.note = True, ""
+                # J32 : une branche qui lève le choix unique (seconde chance) l'emporte.
+                if not way.choice and known.choice:
+                    known.choice = ""
             else:
                 ways[way.key] = Way(**{**way.__dict__, "refs": list(way.refs)})
         for item, count in ref.item_gives.items():
@@ -624,7 +636,7 @@ def write_md(rows: list[Row], path: str, ref_labels: list[str], item_gives: dict
         f"- **{c[STATUS_OK]} / 151** obtenables dans une seule sauvegarde solo, sans choix unique "
         "ni échange local.",
         f"- **{c[STATUS_CHOICE]}** seulement par un choix unique (une seule par sauvegarde) ; "
-        f"**{c[STATUS_TRADE]}** seulement par évolution par échange (terminal local, T4) ; "
+        f"**{c[STATUS_TRADE]}** seulement par évolution par échange (terminal local des Centres, T4 et T5) ; "
         f"**{c[STATUS_MISSING]}** sans aucune voie.",
         f"- Espèces sans données sur aucune branche : {', '.join(info['no_data']) or 'aucune'}.",
         "",
@@ -642,7 +654,7 @@ def write_md(rows: list[Row], path: str, ref_labels: list[str], item_gives: dict
     for label, names in by_ref.items():
         listed = f" : {', '.join(names)}" if len(names) <= 40 else ""
         lines.append(f"- **{label}** ({len(names)}){listed}")
-    lines += ["", "### Sans voie", ""]
+    lines += ["", "### Sans voie, ou seulement par le terminal d'échange local", ""]
     for r in rows:
         if r.status in (STATUS_MISSING, STATUS_TRADE):
             lines.append(f"- {r.dex:03d} {r.name} ({r.status}) → {r.gap}.")

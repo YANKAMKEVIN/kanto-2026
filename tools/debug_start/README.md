@@ -320,6 +320,7 @@ reste éprouvée par `test_cutscene_static_encounter.gd` et `test_cutscene_stati
 | `route_10_quai.json` | J32 (32G) : même partie, **sur le quai** de la Route 10 (spawn `from_power_plant` (30, 10), tourné ↓) : porte (30, 9) ↑ → Centrale ; Surf vers l'ouest jusqu'au belvédère (x 24..28, y 0..22) ; Ronflex d'après la Ligue au belvédère si `snorlax_post_league_present` |
 | `local_trade_qa.json` | J32 (T5) : **équipe pleine** Kadabra N30 (compagnon), Machopeur N32, Gravalanch N30, Spectrum N28, Pikachu, Roucoups, dans le Centre de Jadielle **devant le terminal d'échange local** (spawn `trade_terminal` (12, 4), tourné ↑) : EXAMINER → choix (Pikachu et Roucoups refusés « Rien ne se passerait »), « Échanger … ? », évolution non annulable ; refaire pour les quatre ; appli tuée pendant l'évolution → Pokémon d'origine |
 | `local_trade_none.json` | J32 (T5) : Pikachu et Roucoups seuls, même place : « Échanger ne changerait rien pour ces Pokémon. » [D] |
+| `j32_post_league_gifts.json` | J32 (32A à 32D) : après la Ligue (starter Salamèche, rival Carapuce → Bulbizarre sur la table), Roucarnage **Vol** et Dracaufeu, toutes les villes ouvertes, Kicklee déjà pris au Dojo, premier Évoli pris, Fossile Dôme choisi au Mont Sélénite ; **au Labo de Chen** (entrée) : parler à Chen → Bulbizarre puis Carapuce N5 ; puis Vol : Dojo de Safrania (le Maître offre Tygnon), Résidence de Céladopole, maison du toit (deux Poké Balls d'Évoli, (6, 3) et (8, 3)), Labo de Cramois'Île, salle de réunion (le chercheur (13, 6) donne le Nautile) |
 
 ## Jalon 23 (Parc Safari, CS03, CS04, Koga)
 

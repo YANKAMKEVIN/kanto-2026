@@ -1,0 +1,201 @@
+{
+	"j32_oak_gifts": {
+		"unless": [
+			"oak_post_league_gifts_done"
+		],
+		"steps": [
+			{
+				"gift_pokemon": "squirtle",
+				"level": 5,
+				"flag": "oak_gift_squirtle",
+				"say": "j32_oak_received_squirtle",
+				"say_stored": "j32_oak_stored_squirtle",
+				"if": [
+					"taken_bulbasaur",
+					"taken_charmander"
+				]
+			},
+			{
+				"gift_pokemon": "bulbasaur",
+				"level": 5,
+				"flag": "oak_gift_bulbasaur",
+				"say": "j32_oak_received_bulbasaur",
+				"say_stored": "j32_oak_stored_bulbasaur",
+				"if": [
+					"taken_charmander",
+					"taken_squirtle"
+				]
+			},
+			{
+				"gift_pokemon": "charmander",
+				"level": 5,
+				"flag": "oak_gift_charmander",
+				"say": "j32_oak_received_charmander",
+				"say_stored": "j32_oak_stored_charmander",
+				"if": [
+					"taken_squirtle",
+					"taken_bulbasaur"
+				]
+			},
+			{
+				"despawn": "bulbasaur",
+				"if": [
+					"oak_gift_bulbasaur"
+				]
+			},
+			{
+				"despawn": "charmander",
+				"if": [
+					"oak_gift_charmander"
+				]
+			},
+			{
+				"despawn": "squirtle",
+				"if": [
+					"oak_gift_squirtle"
+				]
+			},
+			{
+				"dialogue": "j32_oak_second_gift"
+			},
+			{
+				"gift_pokemon": "charmander",
+				"level": 5,
+				"flag": "oak_gift_charmander",
+				"say": "j32_oak_received_charmander",
+				"say_stored": "j32_oak_stored_charmander",
+				"if": [
+					"taken_bulbasaur",
+					"taken_charmander"
+				]
+			},
+			{
+				"gift_pokemon": "squirtle",
+				"level": 5,
+				"flag": "oak_gift_squirtle",
+				"say": "j32_oak_received_squirtle",
+				"say_stored": "j32_oak_stored_squirtle",
+				"if": [
+					"taken_charmander",
+					"taken_squirtle"
+				]
+			},
+			{
+				"gift_pokemon": "bulbasaur",
+				"level": 5,
+				"flag": "oak_gift_bulbasaur",
+				"say": "j32_oak_received_bulbasaur",
+				"say_stored": "j32_oak_stored_bulbasaur",
+				"if": [
+					"taken_squirtle",
+					"taken_bulbasaur"
+				]
+			},
+			{
+				"set": [
+					"oak_post_league_gifts_done"
+				]
+			}
+		]
+	},
+	"j32_dojo_gift_hitmonchan": {
+		"unless": [
+			"dojo_got_hitmonchan"
+		],
+		"steps": [
+			{
+				"gift_pokemon": "hitmonchan",
+				"level": 30,
+				"flag": "dojo_got_hitmonchan",
+				"say": "fighting_dojo_received_hitmonchan",
+				"say_stored": "fighting_dojo_stored_hitmonchan"
+			}
+		]
+	},
+	"j32_dojo_gift_hitmonlee": {
+		"unless": [
+			"dojo_got_hitmonlee"
+		],
+		"steps": [
+			{
+				"gift_pokemon": "hitmonlee",
+				"level": 30,
+				"flag": "dojo_got_hitmonlee",
+				"say": "fighting_dojo_received_hitmonlee",
+				"say_stored": "fighting_dojo_stored_hitmonlee"
+			}
+		]
+	},
+	"j32_eevee_gift_2": {
+		"unless": [
+			"eevee_received_2"
+		],
+		"steps": [
+			{
+				"gift_pokemon": "eevee",
+				"level": 25,
+				"flag": "eevee_received_2",
+				"say": "celadon_eevee_received",
+				"say_stored": "celadon_eevee_stored"
+			},
+			{
+				"despawn": "eevee_ball_2",
+				"if": [
+					"eevee_received_2"
+				]
+			}
+		]
+	},
+	"j32_eevee_gift_3": {
+		"unless": [
+			"eevee_received_3"
+		],
+		"steps": [
+			{
+				"gift_pokemon": "eevee",
+				"level": 25,
+				"flag": "eevee_received_3",
+				"say": "celadon_eevee_received",
+				"say_stored": "celadon_eevee_stored"
+			},
+			{
+				"despawn": "eevee_ball_3",
+				"if": [
+					"eevee_received_3"
+				]
+			}
+		]
+	},
+	"j32_fossil_give_helix": {
+		"unless": [
+			"j32_second_fossil_given"
+		],
+		"steps": [
+			{
+				"give": "helix_fossil",
+				"count": 1
+			},
+			{
+				"set": [
+					"j32_second_fossil_given"
+				]
+			}
+		]
+	},
+	"j32_fossil_give_dome": {
+		"unless": [
+			"j32_second_fossil_given"
+		],
+		"steps": [
+			{
+				"give": "dome_fossil",
+				"count": 1
+			},
+			{
+				"set": [
+					"j32_second_fossil_given"
+				]
+			}
+		]
+	}
+}

@@ -120,6 +120,15 @@
 		"speaker": "Prof. Chen",
 		"variants": [
 			{
+				"if": ["league_champion_defeated"],
+				"unless": ["oak_post_league_gifts_done"],
+				"pages": [
+					"{player} ! Tu te souviens de la Poké Ball\nrestée sur cette table ?",
+					"C'était mon dernier Pokémon.\nIl t'a attendu. Prends-en soin."
+				],
+				"cutscene": "j32_oak_gifts"
+			},
+			{
 				"if": ["got_oak_parcel"],
 				"unless": ["pokedex_activated"],
 				"cutscene": "oak_parcel"

@@ -4,28 +4,24 @@
 
 ## Résumé
 
-- **128 / 151** obtenables dans une seule sauvegarde solo, sans choix unique ni échange local.
-- **18** seulement par un choix unique (une seule par sauvegarde) ; **4** seulement par évolution par échange (terminal local, T4) ; **1** sans aucune voie.
+- **146 / 151** obtenables dans une seule sauvegarde solo, sans choix unique ni échange local.
+- **0** seulement par un choix unique (une seule par sauvegarde) ; **4** seulement par évolution par échange (terminal local des Centres, T4 et T5) ; **1** sans aucune voie.
 - Espèces sans données sur aucune branche : Mew.
 
 ### Choix uniques (une espèce par groupe et par sauvegarde)
 
-- `starters` : Bulbizarre, Herbizarre, Florizarre, Salamèche, Reptincel, Dracaufeu, Carapuce, Carabaffe, Tortank → **N-6** (Chen confie les deux autres après la Ligue).
-- `dojo` : Kicklee, Tygnon → **N-8** (le Maître du Dojo offre l'autre Poké Ball après la Ligue).
-- `evolutions:eevee` : Aquali, Voltali, Pyroli → **N-9** (deux Évoli de plus sur le toit de Céladopole après la Ligue).
-- `fossile_mt_moon` : Amonita, Amonistar, Kabuto, Kabutops → **N-7** (le chercheur du Mont Sélénite confie l'autre fossile à Cramois'Île).
 
 ### Par branche (statut atteint grâce à cette branche)
 
-- **main** (136)
-- **HEAD** (14) : Mackogneur, Magnéti, Canarticho, Ectoplasma, Noadkoko, Excelangue, M. Mime, Lippoutou, Élektek, Porygon, Électhor, Minidraco, Draco, Dracolosse
+- **HEAD** (32) : Bulbizarre, Herbizarre, Florizarre, Salamèche, Reptincel, Dracaufeu, Carapuce, Carabaffe, Tortank, Mackogneur, Magnéti, Canarticho, Ectoplasma, Noadkoko, Kicklee, Tygnon, Excelangue, M. Mime, Lippoutou, Élektek, Aquali, Voltali, Pyroli, Porygon, Amonita, Amonistar, Kabuto, Kabutops, Électhor, Minidraco, Draco, Dracolosse
+- **main** (118)
 
-### Sans voie
+### Sans voie, ou seulement par le terminal d'échange local
 
-- 065 Alakazam (échange local) → N-15 / T4 : terminal d'échange local dans tous les Centres.
-- 068 Mackogneur (échange local) → N-15 / T4 : terminal d'échange local dans tous les Centres.
-- 076 Grolem (échange local) → N-15 / T4 : terminal d'échange local dans tous les Centres.
-- 094 Ectoplasma (échange local) → N-15 / T4 : terminal d'échange local dans tous les Centres.
+- 065 Alakazam (échange local) → N-15 / T4, T5 : terminal d'échange local des Centres (écran fait, J32 T5).
+- 068 Mackogneur (échange local) → N-15 / T4, T5 : terminal d'échange local des Centres (écran fait, J32 T5).
+- 076 Grolem (échange local) → N-15 / T4, T5 : terminal d'échange local des Centres (écran fait, J32 T5).
+- 094 Ectoplasma (échange local) → N-15 / T4, T5 : terminal d'échange local des Centres (écran fait, J32 T5).
 - 151 Mew (manque) → N-1 à N-5 : rencontre secrète au camion du quai de Carmin, 150 capturées, N30.
 
 ### Évolutions de Rouge/Bleu absentes des données
@@ -46,15 +42,15 @@ Boutiques et dons uniques des scènes (union des branches, maximum par branche),
 
 | N° | Espèce | Types | Évolution de | Voies (branches) | Apportée par | Statut | Manque → règle |
 |---|---|---|---|---|---|---|---|
-| 001 | Bulbizarre (`bulbasaur`) | grass/poison | — | starter : labo de Chen [main, HEAD] | main | choix unique | N-6 : Chen confie les deux autres après la Ligue |
-| 002 | Herbizarre (`ivysaur`) | grass/poison | Bulbizarre (niveau 16) | — | main | choix unique | N-6 : Chen confie les deux autres après la Ligue |
-| 003 | Florizarre (`venusaur`) | grass/poison | Herbizarre (niveau 32) | — | main | choix unique | N-6 : Chen confie les deux autres après la Ligue |
-| 004 | Salamèche (`charmander`) | fire | — | starter : labo de Chen [main, HEAD] | main | choix unique | N-6 : Chen confie les deux autres après la Ligue |
-| 005 | Reptincel (`charmeleon`) | fire | Salamèche (niveau 16) | — | main | choix unique | N-6 : Chen confie les deux autres après la Ligue |
-| 006 | Dracaufeu (`charizard`) | fire/flying | Reptincel (niveau 36) | — | main | choix unique | N-6 : Chen confie les deux autres après la Ligue |
-| 007 | Carapuce (`squirtle`) | water | — | starter : labo de Chen [main, HEAD] | main | choix unique | N-6 : Chen confie les deux autres après la Ligue |
-| 008 | Carabaffe (`wartortle`) | water | Carapuce (niveau 16) | — | main | choix unique | N-6 : Chen confie les deux autres après la Ligue |
-| 009 | Tortank (`blastoise`) | water | Carabaffe (niveau 36) | — | main | choix unique | N-6 : Chen confie les deux autres après la Ligue |
+| 001 | Bulbizarre (`bulbasaur`) | grass/poison | — | starter : labo de Chen [main, HEAD]<br>don : j32_collection (N5) [HEAD] | HEAD | obtenable | — |
+| 002 | Herbizarre (`ivysaur`) | grass/poison | Bulbizarre (niveau 16) | — | HEAD | obtenable | — |
+| 003 | Florizarre (`venusaur`) | grass/poison | Herbizarre (niveau 32) | — | HEAD | obtenable | — |
+| 004 | Salamèche (`charmander`) | fire | — | starter : labo de Chen [main, HEAD]<br>don : j32_collection (N5) [HEAD] | HEAD | obtenable | — |
+| 005 | Reptincel (`charmeleon`) | fire | Salamèche (niveau 16) | — | HEAD | obtenable | — |
+| 006 | Dracaufeu (`charizard`) | fire/flying | Reptincel (niveau 36) | — | HEAD | obtenable | — |
+| 007 | Carapuce (`squirtle`) | water | — | starter : labo de Chen [main, HEAD]<br>don : j32_collection (N5) [HEAD] | HEAD | obtenable | — |
+| 008 | Carabaffe (`wartortle`) | water | Carapuce (niveau 16) | — | HEAD | obtenable | — |
+| 009 | Tortank (`blastoise`) | water | Carabaffe (niveau 36) | — | HEAD | obtenable | — |
 | 010 | Chenipan (`caterpie`) | bug | — | sauvage : route_24 (grass) [main, HEAD]<br>sauvage : route_25 (grass) [main, HEAD]<br>sauvage : viridian_forest (grass) [main, HEAD] | main | obtenable | — |
 | 011 | Chrysacier (`metapod`) | bug | Chenipan (niveau 7) | sauvage : route_24 (grass) [main, HEAD]<br>sauvage : route_25 (grass) [main, HEAD]<br>sauvage : viridian_forest (grass) [main, HEAD] | main | obtenable | — |
 | 012 | Papilusion (`butterfree`) | bug/flying | Chrysacier (niveau 10) | — | main | obtenable | — |
@@ -110,10 +106,10 @@ Boutiques et dons uniques des scènes (union des branches, maximum par branche),
 | 062 | Tartard (`poliwrath`) | water/fighting | Têtarte (water_stone) | — | main | obtenable | — |
 | 063 | Abra (`abra`) | psychic | — | sauvage : route_25 (grass) [main, HEAD] | main | obtenable | — |
 | 064 | Kadabra (`kadabra`) | psychic | Abra (niveau 16) | sauvage : cerulean_cave_1f (floor) [main, HEAD]<br>sauvage : cerulean_cave_2f (floor) [main, HEAD] | main | obtenable | — |
-| 065 | Alakazam (`alakazam`) | psychic | Kadabra (trade) | — | main | échange local | N-15 / T4 : terminal d'échange local dans tous les Centres |
+| 065 | Alakazam (`alakazam`) | psychic | Kadabra (trade) | — | main | échange local | N-15 / T4, T5 : terminal d'échange local des Centres (écran fait, J32 T5) |
 | 066 | Machoc (`machop`) | fighting | — | sauvage : dark_cave_1f (rubble) [main, HEAD]<br>sauvage : dark_cave_b1f (rubble) [main, HEAD]<br>sauvage : victory_road_1f (rubble) [main, HEAD]<br>sauvage : victory_road_2f (rubble) [main, HEAD]<br>sauvage : victory_road_3f (rubble) [main, HEAD] | main | obtenable | — |
 | 067 | Machopeur (`machoke`) | fighting | Machoc (niveau 28) | sauvage : victory_road_1f (rubble) [main, HEAD]<br>sauvage : victory_road_2f (rubble) [main, HEAD]<br>sauvage : victory_road_3f (rubble) [main, HEAD] | main | obtenable | — |
-| 068 | Mackogneur (`machamp`) | fighting | Machopeur (trade) | — | HEAD | échange local | N-15 / T4 : terminal d'échange local dans tous les Centres |
+| 068 | Mackogneur (`machamp`) | fighting | Machopeur (trade) | — | HEAD | échange local | N-15 / T4, T5 : terminal d'échange local des Centres (écran fait, J32 T5) |
 | 069 | Chétiflor (`bellsprout`) | grass/poison | — | sauvage : route_24 (grass) [main, HEAD]<br>sauvage : route_25 (grass) [main, HEAD]<br>sauvage : route_5 (grass) [main, HEAD]<br>sauvage : route_6 (grass) [main, HEAD]<br>sauvage : route_7 (grass) [main, HEAD] | main | obtenable | — |
 | 070 | Boustiflor (`weepinbell`) | grass/poison | Chétiflor (niveau 21) | — | main | obtenable | — |
 | 071 | Empiflor (`victreebel`) | grass/poison | Boustiflor (leaf_stone) | — | main | obtenable | — |
@@ -121,7 +117,7 @@ Boutiques et dons uniques des scènes (union des branches, maximum par branche),
 | 073 | Tentacruel (`tentacruel`) | water/poison | Tentacool (niveau 30) | — | main | obtenable | — |
 | 074 | Racaillou (`geodude`) | rock/ground | — | sauvage : dark_cave_1f (rubble) [main, HEAD]<br>sauvage : dark_cave_b1f (rubble) [main, HEAD]<br>sauvage : mt_moon_1f (rubble) [main, HEAD]<br>sauvage : mt_moon_b1f (rubble) [main, HEAD]<br>sauvage : mt_moon_b2f (rubble) [main, HEAD]<br>sauvage : victory_road_1f (rubble) [main, HEAD]<br>sauvage : victory_road_2f (rubble) [main, HEAD]<br>sauvage : victory_road_3f (rubble) [main, HEAD] | main | obtenable | — |
 | 075 | Gravalanch (`graveler`) | rock/ground | Racaillou (niveau 25) | sauvage : victory_road_1f (rubble) [main, HEAD]<br>sauvage : victory_road_2f (rubble) [main, HEAD]<br>sauvage : victory_road_3f (rubble) [main, HEAD] | main | obtenable | — |
-| 076 | Grolem (`golem`) | rock/ground | Gravalanch (trade) | — | main | échange local | N-15 / T4 : terminal d'échange local dans tous les Centres |
+| 076 | Grolem (`golem`) | rock/ground | Gravalanch (trade) | — | main | échange local | N-15 / T4, T5 : terminal d'échange local des Centres (écran fait, J32 T5) |
 | 077 | Ponyta (`ponyta`) | fire | — | sauvage : pokemon_mansion_1f (floor) [main, HEAD]<br>sauvage : pokemon_mansion_2f (floor) [main, HEAD]<br>sauvage : pokemon_mansion_3f (floor) [main, HEAD]<br>sauvage : pokemon_mansion_b1f (floor) [main, HEAD] | main | obtenable | — |
 | 078 | Galopa (`rapidash`) | fire | Ponyta (niveau 40) | — | main | obtenable | — |
 | 079 | Ramoloss (`slowpoke`) | water/psychic | — | sauvage : seafoam_1f (floor) [main, HEAD]<br>sauvage : seafoam_b1f (floor) [main, HEAD]<br>sauvage : seafoam_b2f (floor) [main, HEAD]<br>sauvage : seafoam_b3f (floor) [main, HEAD]<br>sauvage : seafoam_b4f (floor) [main, HEAD]<br>sauvage : safari_zone_center, safari_zone_east, safari_zone_north… (super_rod) [HEAD] | main | obtenable | — |
@@ -139,7 +135,7 @@ Boutiques et dons uniques des scènes (union des branches, maximum par branche),
 | 091 | Crustabri (`cloyster`) | water/ice | Kokiyas (water_stone) | — | main | obtenable | — |
 | 092 | Fantominus (`gastly`) | ghost/poison | — | sauvage : pokemon_tower_3f (floor) [main, HEAD]<br>sauvage : pokemon_tower_4f, pokemon_tower_5f (floor) [main, HEAD]<br>sauvage : pokemon_tower_6f (floor) [main, HEAD]<br>sauvage : pokemon_tower_7f (floor) [main, HEAD] | main | obtenable | — |
 | 093 | Spectrum (`haunter`) | ghost/poison | Fantominus (niveau 25) | sauvage : pokemon_tower_3f (floor) [main, HEAD]<br>sauvage : pokemon_tower_4f, pokemon_tower_5f (floor) [main, HEAD]<br>sauvage : pokemon_tower_6f (floor) [main, HEAD]<br>sauvage : pokemon_tower_7f (floor) [main, HEAD] | main | obtenable | — |
-| 094 | Ectoplasma (`gengar`) | ghost/poison | Spectrum (trade) | — | HEAD | échange local | N-15 / T4 : terminal d'échange local dans tous les Centres |
+| 094 | Ectoplasma (`gengar`) | ghost/poison | Spectrum (trade) | — | HEAD | échange local | N-15 / T4, T5 : terminal d'échange local des Centres (écran fait, J32 T5) |
 | 095 | Onix (`onix`) | rock/ground | — | sauvage : dark_cave_1f (rubble) [main, HEAD]<br>sauvage : dark_cave_b1f (rubble) [main, HEAD]<br>sauvage : victory_road_1f (rubble) [main, HEAD]<br>sauvage : victory_road_2f (rubble) [main, HEAD]<br>sauvage : victory_road_3f (rubble) [main, HEAD] | main | obtenable | — |
 | 096 | Soporifik (`drowzee`) | psychic | — | sauvage : route_11 (grass) [main, HEAD] | main | obtenable | — |
 | 097 | Hypnomade (`hypno`) | psychic | Soporifik (niveau 26) | sauvage : cerulean_cave_1f (floor) [main, HEAD] | main | obtenable | — |
@@ -151,8 +147,8 @@ Boutiques et dons uniques des scènes (union des branches, maximum par branche),
 | 103 | Noadkoko (`exeggutor`) | grass/psychic | Noeunoeuf (leaf_stone) | — | HEAD | obtenable | — |
 | 104 | Osselait (`cubone`) | ground | — | sauvage : pokemon_tower_3f (floor) [main, HEAD]<br>sauvage : pokemon_tower_4f, pokemon_tower_5f (floor) [main, HEAD]<br>sauvage : pokemon_tower_6f (floor) [main, HEAD]<br>sauvage : pokemon_tower_7f (floor) [main, HEAD] | main | obtenable | — |
 | 105 | Ossatueur (`marowak`) | ground | Osselait (niveau 28) | sauvage : cerulean_cave_2f (floor) [main, HEAD]<br>sauvage : cerulean_cave_b1f (floor) [main, HEAD]<br>sauvage : victory_road_1f (rubble) [main, HEAD]<br>sauvage : victory_road_2f (rubble) [main, HEAD] | main | obtenable | — |
-| 106 | Kicklee (`hitmonlee`) | fighting | — | don : fighting_dojo (N30) [main, HEAD] | main | choix unique | N-8 : le Maître du Dojo offre l'autre Poké Ball après la Ligue |
-| 107 | Tygnon (`hitmonchan`) | fighting | — | don : fighting_dojo (N30) [main, HEAD] | main | choix unique | N-8 : le Maître du Dojo offre l'autre Poké Ball après la Ligue |
+| 106 | Kicklee (`hitmonlee`) | fighting | — | don : fighting_dojo (N30) [main, HEAD]<br>don : j32_collection (N30) [HEAD] | HEAD | obtenable | — |
+| 107 | Tygnon (`hitmonchan`) | fighting | — | don : fighting_dojo (N30) [main, HEAD]<br>don : j32_collection (N30) [HEAD] | HEAD | obtenable | — |
 | 108 | Excelangue (`lickitung`) | normal | — | échange PNJ : route_18_trade_lickitung (contre slowbro) [HEAD] | HEAD | obtenable | — |
 | 109 | Smogo (`koffing`) | poison | — | sauvage : pokemon_mansion_1f (floor) [main, HEAD]<br>sauvage : pokemon_mansion_2f (floor) [main, HEAD]<br>sauvage : pokemon_mansion_3f (floor) [main, HEAD]<br>sauvage : pokemon_mansion_b1f (floor) [main, HEAD] | main | obtenable | — |
 | 110 | Smogogo (`weezing`) | poison | Smogo (niveau 35) | sauvage : pokemon_mansion_1f (floor) [main, HEAD]<br>sauvage : pokemon_mansion_2f (floor) [main, HEAD]<br>sauvage : pokemon_mansion_3f (floor) [main, HEAD]<br>sauvage : pokemon_mansion_b1f (floor) [main, HEAD] | main | obtenable | — |
@@ -178,15 +174,15 @@ Boutiques et dons uniques des scènes (union des branches, maximum par branche),
 | 130 | Léviator (`gyarados`) | water/flying | Magicarpe (niveau 20) | — | main | obtenable | — |
 | 131 | Lokhlass (`lapras`) | water/ice | — | don : silph_co_story (N15) [main, HEAD] | main | obtenable | — |
 | 132 | Métamorph (`ditto`) | normal | — | sauvage : cerulean_cave_1f (floor) [main, HEAD]<br>sauvage : cerulean_cave_2f (floor) [main, HEAD]<br>sauvage : cerulean_cave_b1f (floor) [main, HEAD] | main | obtenable | — |
-| 133 | Évoli (`eevee`) | normal | — | don : celadon_eevee (N25) [main, HEAD] | main | obtenable | — |
-| 134 | Aquali (`vaporeon`) | water | Évoli (water_stone) | — | main | choix unique | N-9 : deux Évoli de plus sur le toit de Céladopole après la Ligue |
-| 135 | Voltali (`jolteon`) | electric | Évoli (thunder_stone) | — | main | choix unique | N-9 : deux Évoli de plus sur le toit de Céladopole après la Ligue |
-| 136 | Pyroli (`flareon`) | fire | Évoli (fire_stone) | — | main | choix unique | N-9 : deux Évoli de plus sur le toit de Céladopole après la Ligue |
+| 133 | Évoli (`eevee`) | normal | — | don : celadon_eevee (N25) [main, HEAD]<br>don : j32_collection (N25) [HEAD]<br>don : j32_collection (N25) [HEAD] | main | obtenable | — |
+| 134 | Aquali (`vaporeon`) | water | Évoli (water_stone) | — | HEAD | obtenable | — |
+| 135 | Voltali (`jolteon`) | electric | Évoli (thunder_stone) | — | HEAD | obtenable | — |
+| 136 | Pyroli (`flareon`) | fire | Évoli (fire_stone) | — | HEAD | obtenable | — |
 | 137 | Porygon (`porygon`) | normal | — | don : j32_porygon (N26) [HEAD] | HEAD | obtenable | — |
-| 138 | Amonita (`omanyte`) | rock/water | — | fossile : helix_fossil → labo de Cramois'Île [main, HEAD] | main | choix unique | N-7 : le chercheur du Mont Sélénite confie l'autre fossile à Cramois'Île |
-| 139 | Amonistar (`omastar`) | rock/water | Amonita (niveau 40) | — | main | choix unique | N-7 : le chercheur du Mont Sélénite confie l'autre fossile à Cramois'Île |
-| 140 | Kabuto (`kabuto`) | rock/water | — | fossile : dome_fossil → labo de Cramois'Île [main, HEAD] | main | choix unique | N-7 : le chercheur du Mont Sélénite confie l'autre fossile à Cramois'Île |
-| 141 | Kabutops (`kabutops`) | rock/water | Kabuto (niveau 40) | — | main | choix unique | N-7 : le chercheur du Mont Sélénite confie l'autre fossile à Cramois'Île |
+| 138 | Amonita (`omanyte`) | rock/water | — | fossile : helix_fossil → labo de Cramois'Île [main, HEAD] | HEAD | obtenable | — |
+| 139 | Amonistar (`omastar`) | rock/water | Amonita (niveau 40) | — | HEAD | obtenable | — |
+| 140 | Kabuto (`kabuto`) | rock/water | — | fossile : dome_fossil → labo de Cramois'Île [main, HEAD] | HEAD | obtenable | — |
+| 141 | Kabutops (`kabutops`) | rock/water | Kabuto (niveau 40) | — | HEAD | obtenable | — |
 | 142 | Ptéra (`aerodactyl`) | rock/flying | — | fossile : old_amber → labo de Cramois'Île [main, HEAD] | main | obtenable | — |
 | 143 | Ronflex (`snorlax`) | normal | — | fixe : j21_snorlax (N30) [main, HEAD]<br>fixe : j21_snorlax_16 (N30) [main, HEAD]<br>fixe : j32_snorlax (N30) [HEAD] | main | obtenable | — |
 | 144 | Artikodin (`articuno`) | ice/flying | — | fixe : seafoam (N50) [main, HEAD] | main | obtenable | — |

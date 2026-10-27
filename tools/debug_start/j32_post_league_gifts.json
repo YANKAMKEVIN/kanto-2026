@@ -1,0 +1,76 @@
+{
+	"map": "oak_lab",
+	"spawn": "entrance",
+	"facing": "up",
+	"flags": [
+		"mom_greeted",
+		"rival_met",
+		"oak_met",
+		"oak_lab_reunion",
+		"starter_offered",
+		"starter_chosen",
+		"taken_charmander",
+		"taken_squirtle",
+		"rival_lab_won",
+		"rival_challenged",
+		"rival_battle_done",
+		"rival_left_lab",
+		"viridian_arrived",
+		"got_oak_parcel",
+		"pokedex_activated",
+		"poison_unlocked",
+		"pewter_arrived",
+		"cerulean_reached",
+		"badge_boulder",
+		"badge_cascade",
+		"badge_thunder",
+		"badge_rainbow",
+		"badge_soul",
+		"badge_marsh",
+		"badge_volcano",
+		"badge_earth",
+		"league_champion_defeated",
+		"league_credits_seen",
+		"cerulean_cave_discovered",
+		"fighting_dojo_master_defeated",
+		"dojo_got_hitmonlee",
+		"eevee_received",
+		"mt_moon_fossil_chosen",
+		"mt_moon_got_dome_fossil"
+	],
+	"party": [
+		{
+			"species": "pidgeot",
+			"level": 60,
+			"moves": [
+				"fly",
+				"wing_attack",
+				"quick_attack",
+				"sand_attack"
+			]
+		},
+		{
+			"species": "charizard",
+			"level": 62
+		}
+	],
+	"companion": 0,
+	"bag": {
+		"hm02": 1,
+		"ultra_ball": 10
+	},
+	"money": 50000,
+	"discovered": [
+		"pallet_town",
+		"viridian_city",
+		"pewter_city",
+		"cerulean_city",
+		"vermilion_city",
+		"lavender_town",
+		"celadon_city",
+		"fuchsia_city",
+		"saffron_city",
+		"cinnabar_island",
+		"indigo_plateau"
+	]
+}

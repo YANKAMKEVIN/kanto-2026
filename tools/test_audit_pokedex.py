@@ -112,6 +112,27 @@ class AuditPokedexTest(unittest.TestCase):
         self.assertEqual(self.rows["vaporeon"].status, audit.STATUS_CHOICE)
         self.assertIn("N-9", self.rows["vaporeon"].gap)
 
+    def test_post_league_second_chances_lift_the_choices(self) -> None:
+        # J32 (N-7, N-8) : le second fossile et l'autre Poké Ball du Dojo, scènes « j32_* ».
+        write(self.root, "data/pokemon/species/fight.json", {
+            "hitmonlee": species(106, "Kicklee"), "hitmonchan": species(107, "Tygnon")})
+        write(self.root, "data/cutscenes/dojo.json", {
+            "take_lee": {"steps": [{"gift_pokemon": "hitmonlee", "flag": "dojo_got_hitmonlee"}]},
+            "take_chan": {"steps": [{"gift_pokemon": "hitmonchan", "flag": "dojo_got_hitmonchan"}]}})
+        rows = {r.sid: r for r in audit.run([audit.DirSource(self.root)], None, None, quiet=True)}
+        self.assertEqual(rows["hitmonchan"].status, audit.STATUS_CHOICE)
+        self.assertEqual(rows["kabuto"].choice, "fossile_mt_moon")
+        write(self.root, "data/cutscenes/j32_second.json", {
+            "j32_dojo_gift_hitmonchan": {"steps": [{"gift_pokemon": "hitmonchan",
+                                                    "flag": "dojo_got_hitmonchan"}]},
+            "j32_dojo_gift_hitmonlee": {"steps": [{"gift_pokemon": "hitmonlee",
+                                                   "flag": "dojo_got_hitmonlee"}]},
+            "j32_fossil_give_helix": {"steps": [{"give": "helix_fossil"}]},
+            "j32_fossil_give_dome": {"steps": [{"give": "dome_fossil"}]}})
+        rows = {r.sid: r for r in audit.run([audit.DirSource(self.root)], None, None, quiet=True)}
+        for sid in ("hitmonlee", "hitmonchan", "kabuto", "omanyte"):
+            self.assertEqual(rows[sid].choice, "", sid)
+
     def test_table_on_missing_map_does_not_count(self) -> None:
         self.assertEqual(self.rows["rattata"].status, audit.STATUS_MISSING)
         self.assertTrue(any("carte absente" in w for w in self.rows["rattata"].ways))

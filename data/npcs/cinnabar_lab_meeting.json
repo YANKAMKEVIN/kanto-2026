@@ -16,5 +16,18 @@
 		"facing": "right",
 		"sprite": "old_man",
 		"dialogue": "cinnabar_trade_hector"
+	},
+	"mt_moon_researcher_lab": {
+		"cell": [
+			13,
+			6
+		],
+		"facing": "left",
+		"sprite": "fossil_researcher",
+		"dialogue": "j32_fossil_researcher",
+		"if": [
+			"league_champion_defeated",
+			"mt_moon_fossil_chosen"
+		]
 	}
 }

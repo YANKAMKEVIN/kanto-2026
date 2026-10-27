@@ -47,6 +47,8 @@ const PENDING_DRAFTS: Array[String] = ["world/zones.json/zones/saffron_city",
 	# Jalon 32 (T5) : terminal d'échange local [D].
 	"dialogues/j32_local_trade.json/trade_terminal/variants/0",
 	"dialogues/j32_local_trade.json/trade_terminal_none/variants/0",
+	# Jalon 32 (32B) : réplique d'après le don du second fossile [D].
+	"dialogues/j32_collection.json/j32_fossil_researcher/variants/0",
 ]
 
 

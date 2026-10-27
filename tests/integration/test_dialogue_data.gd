@@ -601,8 +601,8 @@ const MAPS: Array[StringName] = [
 const IDS_J21_T22: Array[StringName] = [&"snorlax_route_16"]
 ## Jalon 32 (N-18) : Ronflex d'après la Ligue (Route 10), textes du J21 repris tels quels.
 const IDS_J32: Array[StringName] = [&"snorlax_post_league",
-	# T5 : terminal d'échange local.
-	&"trade_terminal", &"trade_terminal_none", &"trade_terminal_confirm",
+	# T5 (terminal d'échange local) ; 32A à 32D (seconds exemplaires d'après la Ligue).
+	&"trade_terminal", &"trade_terminal_none", &"trade_terminal_confirm", &"j32_oak_second_gift", &"j32_oak_received_bulbasaur", &"j32_oak_stored_bulbasaur", &"j32_oak_received_charmander", &"j32_oak_stored_charmander", &"j32_oak_received_squirtle", &"j32_oak_stored_squirtle", &"j32_eevee_ball_2", &"j32_eevee_ball_3", &"j32_fossil_researcher",
 	# N-13 (Porygon), N-14 (échanges PNJ de Rouge/Bleu), N-11 (Électhor) : textes validés par Kevin le 2026-10-27.
 	&"zapdos", &"power_plant_fausse_ball_1", &"power_plant_fausse_ball_2", &"power_plant_fausse_ball_3", &"power_plant_fausse_ball_4", &"power_plant_fausse_ball_5", &"power_plant_fausse_ball_6", &"power_plant_fausse_ball_7", &"power_plant_fausse_ball_8", &"power_plant_item_1", &"power_plant_item_2", &"power_plant_item_3", &"power_plant_item_4", &"power_plant_item_5", &"power_plant_hidden_1", &"power_plant_hidden_2",
 	&"silph_co_porygon_giver", &"j32_trade_coline",
@@ -1585,6 +1585,10 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		# Jalon 32 (N-13, N-14, N-11) : Porygon, échanges PNJ de RB, Électhor.
 		+ [&"silph_co_porygon_received", &"silph_co_porygon_stored", &"zapdos_presence",
 		&"zapdos_flew_away"]
+		# Jalon 32 (32A) : les deux dons de Chen d'après la Ligue.
+		+ [&"j32_oak_second_gift", &"j32_oak_received_bulbasaur", &"j32_oak_stored_bulbasaur",
+		&"j32_oak_received_charmander", &"j32_oak_stored_charmander",
+		&"j32_oak_received_squirtle", &"j32_oak_stored_squirtle"]
 		+ J32_TRADE_LINES))
 	for id: StringName in played:
 		assert_true(_library.has_dialogue(id), "dialogue « %s » défini" % id)
@@ -1672,6 +1676,8 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 	# Jalon 32 (N-18) : Ronflex d'après la Ligue, levé par le code à la victoire à la Ligue
 	# ([method StaticRespawn.apply_snorlax_rule]).
 	set_flags.append(StaticRespawn.SNORLAX_EXTRA_PRESENT)
+	# Jalon 30 : victoire à la Ligue, levée par la cérémonie ([LeagueAttempt]) ; lue au J32 (32A à 32D).
+	set_flags.append(LeagueAttempt.CHAMPION_DEFEATED)
 	var read_flags := dialogues.get_condition_flags() + cutscenes.get_condition_flags()
 	for map_id: StringName in MAPS:
 		for spec: NpcSpec in NpcRoster.load_for_map(map_id).get_all():
@@ -1717,6 +1723,10 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 	assert_eq(cutscenes.get_set_flags(), _sorted(SET_J29 + SET_J30 + [&"got_tm39", &"route_12_visited",
 		&"snorlax_route_12_awake", &"snorlax_route_12_caught", &"snorlax_route_12_done",
 		&"snorlax_route_12_woken", &"badge_boulder", &"badge_cascade",
+		# Jalon 32 (32A à 32D) : seconds exemplaires d'après la Ligue.
+		&"oak_gift_bulbasaur", &"oak_gift_charmander", &"oak_gift_squirtle",
+		&"oak_post_league_gifts_done", &"eevee_received_2", &"eevee_received_3",
+		&"j32_second_fossil_given",
 		# Jalon 32 (N-18) : Ronflex d'après la Ligue.
 		&"snorlax_post_league_awake", &"snorlax_post_league_caught", &"snorlax_post_league_done",
 		&"snorlax_post_league_woken",
@@ -1918,17 +1928,18 @@ func test_waiting_lines_during_and_after_the_choice() -> void:
 	var oak := _library.get_dialogue(&"oak_lab_waiting")
 	# 4B : la variante répétée « starter_chosen » du 4A est supprimée (3 variantes) ; J7 (T18) :
 	# la variante du colis passe en tête (test_oak_parcel_lines).
-	assert_eq(oak.variants.size(), 4)
-	assert_eq(oak.variants[0].cutscene, &"oak_parcel")
-	assert_eq(oak.variants[1].if_flags, [&"rival_battle_done"] as Array[StringName])
-	assert_eq(_texts(oak.variants[1]), [
+	assert_eq(oak.variants.size(), 5, "J32 (32A) : le don d'après la Ligue en tête")
+	assert_eq(oak.variants[0].cutscene, &"j32_oak_gifts")
+	assert_eq(oak.variants[1].cutscene, &"oak_parcel")
+	assert_eq(oak.variants[2].if_flags, [&"rival_battle_done"] as Array[StringName])
+	assert_eq(_texts(oak.variants[2]), [
 		"Le monde qui vous attend est bien plus vaste que Bourg Palette.",
 		"Prends le temps de l'observer. Les Pokémon ont beaucoup à nous apprendre.",
 	] as Array[String])
-	assert_eq(oak.variants[2].if_flags, [&"starter_offered"] as Array[StringName])
-	assert_eq(_texts(oak.variants[2]), ["Prends ton temps.",
+	assert_eq(oak.variants[3].if_flags, [&"starter_offered"] as Array[StringName])
+	assert_eq(_texts(oak.variants[3]), ["Prends ton temps.",
 		"Choisis celui avec qui tu as envie de partir."] as Array[String])
-	assert_eq(_texts(oak.variants[3]),
+	assert_eq(_texts(oak.variants[4]),
 		["Un peu de patience. J'ai quelque chose à vous montrer."] as Array[String])
 	var rival := _library.get_dialogue(&"rival_lab_waiting")
 	assert_eq(rival.speaker, "{rival}")
@@ -1950,11 +1961,11 @@ func test_waiting_lines_during_and_after_the_choice() -> void:
 		"Vous avez l'air de déjà bien vous entendre."] as Array[String])
 	var flags := StoryFlags.new()
 	flags.set_flag(&"oak_met")
-	assert_eq(oak.pick(flags), oak.variants[3], "avant l'offre : réplique du 3B")
+	assert_eq(oak.pick(flags), oak.variants[4], "avant l'offre : réplique du 3B")
 	assert_eq(rival.pick(flags), rival.variants[1], "avant l'offre : réplique du 3B")
 	assert_eq(maya.pick(flags), maya.variants[2], "réplique du 3B")
 	flags.set_flag(&"starter_offered")
-	assert_eq(oak.pick(flags), oak.variants[2], "pendant le choix")
+	assert_eq(oak.pick(flags), oak.variants[3], "pendant le choix")
 	assert_eq(rival.pick(flags), rival.variants[0], "pendant le choix")
 	assert_eq(maya.pick(flags), maya.variants[2])
 	# L'état « starter choisi, combat pas encore fini » n'est plus atteint par le joueur : la
@@ -1964,7 +1975,7 @@ func test_waiting_lines_during_and_after_the_choice() -> void:
 	flags.set_flag(&"rival_left_lab")
 	flags.set_flag(&"rival_battle_done")
 	flags.set_flag(&"starter_female")
-	assert_eq(oak.pick(flags), oak.variants[1], "après le combat : « Le monde qui vous attend… »")
+	assert_eq(oak.pick(flags), oak.variants[2], "après le combat : « Le monde qui vous attend… »")
 	assert_eq(maya.pick(flags), maya.variants[0], "starter femelle : « elle »")
 	flags.set_flag(&"starter_female", false)
 	assert_eq(maya.pick(flags), maya.variants[1], "starter mâle ou sans sexe : « lui »")
@@ -2053,8 +2064,21 @@ const TEXTS_J32: Dictionary[StringName, Array] = {
 	&"silph_co_porygon_giver": ["Prends bien soin de Porygon.\nIl apprend vite.", "Notre prototype, Porygon. Un Pokémon\nfait de données. Il est à toi."],
 	&"silph_co_porygon_received": ["{player} reçoit Porygon !"],
 	&"silph_co_porygon_stored": ["Porygon a été envoyé au stockage."],
-	# Jalon 32 (T5, §3 du plan).
+	# Jalon 32 (T5, §3 du plan) et 32A à 32D (N-16, textes 8 à 15 ; formules de don).
 	&"trade_terminal_confirm": ["Échanger {pokemon} ?"],
+	&"oak_lab_waiting": ["{player} ! Tu te souviens de la Poké Ball\nrestée sur cette table ?", "C'était mon dernier Pokémon.\nIl t'a attendu. Prends-en soin.", "Le monde qui vous attend est bien plus vaste que Bourg Palette.", "Prends le temps de l'observer. Les Pokémon ont beaucoup à nous apprendre.", "Prends ton temps.", "Choisis celui avec qui tu as envie de partir.", "Un peu de patience. J'ai quelque chose à vous montrer."],
+	&"j32_oak_second_gift": ["Et ce n'est pas tout : un autre\nest arrivé au labo. Il est pour toi."],
+	&"j32_oak_received_bulbasaur": ["{player} reçoit Bulbizarre !"],
+	&"j32_oak_stored_bulbasaur": ["Bulbizarre a été envoyé au stockage."],
+	&"j32_oak_received_charmander": ["{player} reçoit Salamèche !"],
+	&"j32_oak_stored_charmander": ["Salamèche a été envoyé au stockage."],
+	&"j32_oak_received_squirtle": ["{player} reçoit Carapuce !"],
+	&"j32_oak_stored_squirtle": ["Carapuce a été envoyé au stockage."],
+	&"j32_eevee_ball_2": ["D'autres Évoli sont nés.\nPrends-en un si tu veux.", "Le prendre ?"],
+	&"j32_eevee_ball_3": ["D'autres Évoli sont nés.\nPrends-en un si tu veux.", "Le prendre ?"],
+	&"j32_fossil_researcher": ["Toi ! On a partagé les fossiles,\nau Mont Sélénite.",
+		"Je n'ai jamais su le réveiller.\nGarde-le : ici, ils savent faire."],
+	&"fighting_dojo_master": ["Champion de la Ligue… Mes poings\nt'attendaient.", "Prends l'autre Poké Ball. Un Dojo\nn'est rien sans ses deux styles.", "Prends-en soin.\nEt reviens t'entraîner quand tu veux !", "Choisis l'un de nos Pokémon.\nIl te suivra."],
 }
 ## Jalon 32 (N-14) : répliques des échanges PNJ jouées par leurs scènes.
 const J32_TRADE_LINES: Array[StringName] = [
@@ -2075,6 +2099,8 @@ const PENDING_DRAFT_VARIANTS: Array[String] = [
 	"j32_trade_coline_offer:0", "j32_trade_coline_refuse:0", "j32_trade_coline_wrong:0", "j32_trade_coline_thanks:0", "j32_trade_coline_after:0", "j32_trade_coline_done:0",
 	# Jalon 32 (T5) : terminal d'échange local [D].
 	"trade_terminal:0", "trade_terminal_none:0",
+	# Jalon 32 (32B) : après le don du second fossile [D].
+	"j32_fossil_researcher:0",
 ]
 
 
@@ -2433,7 +2459,7 @@ func test_maya_after_oak_returns_and_the_lab_reunion() -> void:
 ## réplique de l'espèce porte le jeton, « Observe. Explore. » garde sa phrase.
 func test_oak_parcel_lines() -> void:
 	var oak := _library.get_dialogue(&"oak_lab_waiting")
-	var first := oak.variants[0]
+	var first := oak.variants[1]
 	assert_eq(first.if_flags, [&"got_oak_parcel"] as Array[StringName])
 	assert_eq(first.unless_flags, [StoryFlags.POKEDEX_ACTIVATED] as Array[StringName])
 	assert_eq(first.cutscene, &"oak_parcel")
@@ -2501,8 +2527,9 @@ func test_oak_parcel_lines() -> void:
 	# Jalon 28 (T8) : Giovanni (Arène et rattrapage de la CT27) et le Rappel de l'Arène.
 	# Jalon 29 : dix objets au sol, cinq cachés, huit gardes, le rival n° 7 et Sulfura.
 	# Jalon 31 (T4) : huit objets au sol et deux cachés de la Grotte Azurée, Mewtwo.
-	# Jalon 32 : cinq échanges PNJ de Rouge/Bleu (N-14) et Porygon (N-13).
-	assert_eq(launched, 223, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
+	# Jalon 32 : cinq échanges PNJ de Rouge/Bleu (N-14) et Porygon (N-13) ; 32A à 32D : Chen, le
+	# Maître du Dojo (2), deux Poké Balls d'Évoli, le chercheur (2).
+	assert_eq(launched, 228, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
 		+ "sa CT34, Ondine (pont, Arène et rattrapage), écran, module, console, objets de la "
 		+ "Route 25, le Rocket d'Azuria (2) et le barrage sud ; J15 : objets de la Route 5 ; "
 		+ "J16 : Major Bob (2), neuf objets du S.S. Anne, le capitaine, le marin (2) ; "
@@ -2548,6 +2575,8 @@ func test_oak_parcel_lines() -> void:
 				or (String(row[0]).begins_with("cinnabar_trade_") and row[1].contains("{player}")) \
 				or (String(row[0]).begins_with("j32_trade_") and row[1].contains("{player}")) \
 				or row[0] == &"silph_co_porygon_received" \
+				or String(row[0]).begins_with("j32_oak_received_") \
+				or (row[0] == &"oak_lab_waiting" and row[1].contains("{player}")) \
 				or (row[0] == &"cinnabar_gym_guide" and row[1].contains("{player}")) \
 				or row[0] == &"cinnabar_lab_tm35_use" \
 				or (row[0] in [&"route_12_gate_tm39_got", &"snorlax_flute_played"] \
