@@ -848,6 +848,24 @@ difficile pour une arrivée basse ou un joueur naïf ; comme Auguste, E-4 A) · 
 moyenne), ce qui touche tous les Dresseurs « smart » du jeu (à simuler à part, hors du J23).
 Recommandation : **A**.
 
+### 9.8 Noms longs et orientation des adversaires sur le S24 (2026-10-27)
+
+- **Cartes de combat aux noms longs : vues sur le S24** (départ `long_names_qa`, build de
+  `70a1cd91`). Carte du joueur « GROTADMORV ♀ PSN Nv. 100 », carte adverse « DRACAUFEU ♂ PSN+
+  Nv. 100 », « ROUCARNAGE ♀ Nv. 100 » des deux côtés : cartes entières dans l'écran, noms entiers,
+  pastille de statut sans icône quand la place manque (attendu, §9.1). Captures :
+  `build/qa_j23_fin/noms_longs_*.png` (non versionnées). Autres cartes vues par l'agent QA dans
+  l'Arène (`koga_qa`) : DRACAUFEU ♂ PSN, NIDOKING, KADABRA, HYPNOMADE, SOPORIFIK, SABLAIREAU.
+- **Orientation** : Kevin, « aucun Pokémon adverse ne doit regarder vers la droite ». Relevé
+  `BattleArt.FACING_RIGHT` refait (commit `23c4e396`) ; sur le S24, Dracaufeu et Roucarnage
+  sauvages regardent vers la gauche, Hypnomade est de face.
+- **T23 (QA de bout en bout) toujours non faite** : l'agent QA (≈ 50 min) n'a pas atteint Koga dans
+  le labyrinthe ; Parc Safari, Gardien, Badge Âme, Surf et sauvegarde dans le Parc non vus. Les
+  départs `safari_qa`, `warden_qa` ont été retirés à la clôture : la suite se fera au doigt
+  (vraie partie) ou avec un nouveau départ.
+- **Reporté (rendu)** : dos de Kadabra en sprite provisoire géant qui déborde de l'écran
+  (`build/qa_j23_fin/d2_3.png`).
+
 ## Annexe A — Textes complémentaires (T2, **validés par Kevin le 2026-10-19** : « annexe A ok »)
 
 > Complète le §8 du dossier 26 (textes 1 à 59, validés). Bulles de 2 lignes d'environ 40
