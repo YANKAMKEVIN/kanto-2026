@@ -662,8 +662,10 @@ func test_freeze_tint_follows_the_sprite_and_stays_with_reduced_motion() -> void
 	assert_true(aura.is_ice_shown(), "« Réduire les animations » garde la teinte")
 	var ice := aura.get_node(^"Ice") as Sprite2D
 	var sprite := _stage.get_sprite(FOE_SIDE)
-	assert_eq([ice.texture, ice.position, ice.scale, ice.offset],
-		[sprite.texture, sprite.position, sprite.scale, sprite.offset])
+	assert_eq([ice.texture, ice.position.x, ice.scale.x, ice.offset],
+		[sprite.texture, sprite.position.x, sprite.scale.x, sprite.offset])
+	# La copie de givre suit le corps, respiration comprise (CV.3 : 2 % au plus, pieds fixes).
+	assert_almost_eq(ice.scale.y, sprite.scale.y, sprite.scale.y * 0.021)
 	await aura.play_confusion()
 	assert_false(aura.is_confusion_shown(), "pas d'étoiles avec « Réduire les animations »")
 

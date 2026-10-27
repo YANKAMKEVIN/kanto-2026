@@ -45,18 +45,23 @@ func test_breath_is_shifted_between_the_two_sides() -> void:
 		StatusAura.breath_amount(StatusRules.NONE, 0.5, 0.5))
 
 
-func test_sleep_breath_stretches_vertically_with_feet_fixed_then_restores() -> void:
+func test_sleep_breath_draws_a_stretched_copy_with_feet_fixed_and_leaves_the_sprite_alone() -> void:
 	_aura.set_status(StatusRules.SLEEP)
-	var feet_before := _sprite.position.y + 100.0 * _sprite.scale.y
+	var breath := _aura.get_node(^"Breath") as Sprite2D
 	_aura._breath_time = 1.2  # sommet de l'inspiration
 	_aura._process(0.0)
-	assert_almost_eq(_sprite.scale.y, 2.0 * 1.02, 0.0001)
-	assert_eq(_sprite.scale.x, 2.0, "l'échelle horizontale ne bouge pas")
-	assert_almost_eq(_sprite.position.y + 100.0 * _sprite.scale.y, feet_before, 0.001)
+	assert_true(_aura.is_breath_shown())
+	assert_almost_eq(breath.scale.y, 2.0 * 1.02, 0.0001)
+	assert_eq(breath.scale.x, 2.0, "l'échelle horizontale ne bouge pas")
+	assert_almost_eq(breath.position.y + 100.0 * breath.scale.y, 400.0 + 200.0, 0.001,
+		"pieds fixes")
+	assert_eq(_sprite.scale, Vector2(2, 2), "le sprite garde son échelle")
+	assert_eq(_sprite.position, Vector2(300, 400), "et sa position")
+	assert_eq(_sprite.self_modulate.a, 0.0, "il est seulement rendu transparent")
 	_aura.breath_enabled = false
 	_aura._process(0.0)
-	assert_eq(_sprite.scale, Vector2(2, 2))
-	assert_eq(_sprite.position, Vector2(300, 400))
+	assert_false(_aura.is_breath_shown())
+	assert_eq(_sprite.self_modulate, Color.WHITE, "puis rendu tel quel")
 
 
 func test_breath_survives_reduced_motion() -> void:
@@ -64,24 +69,33 @@ func test_breath_survives_reduced_motion() -> void:
 	_aura.set_status(StatusRules.SLEEP)
 	_aura._breath_time = 1.2
 	_aura._process(0.0)
-	assert_gt(_sprite.scale.y, 2.0, "la respiration reste")
+	assert_true(_aura.is_breath_shown(), "la respiration reste")
 
 
 func test_breath_is_frozen_at_speed_zero() -> void:
 	_aura.speed_scale = 0.0
 	for i: int in 10:
 		_aura._process(0.1)
-	assert_eq(_sprite.scale, Vector2(2, 2))
+	assert_false(_aura.is_breath_shown())
+	assert_eq(_sprite.self_modulate, Color.WHITE)
 
 
-func test_breath_gives_way_to_a_change_made_by_the_scene() -> void:
+func test_breath_never_changes_what_the_scene_reads() -> void:
 	_aura._breath_time = 1.5
 	_aura._process(0.0)
-	assert_gt(_sprite.scale.y, 2.0)
+	assert_true(_aura.is_breath_shown())
 	_sprite.scale = Vector2(3, 3)  # la scène prend la main (bond, retrait)
-	_aura.breath_enabled = false
+	_sprite.modulate = Color(1, 0.5, 0.5, 0.4)
 	_aura._process(0.0)
-	assert_eq(_sprite.scale, Vector2(3, 3), "le réglage de la scène n'est pas écrasé")
+	assert_eq(_sprite.scale, Vector2(3, 3))
+	assert_eq(_sprite.modulate, Color(1, 0.5, 0.5, 0.4))
+	var breath := _aura.get_node(^"Breath") as Sprite2D
+	assert_almost_eq(breath.scale.x, 3.0, 0.0001, "la copie suit la scène")
+	assert_eq(breath.modulate.a, 1.0, "l'opacité n'est pas comptée deux fois")
+	_sprite.visible = false
+	_aura._process(0.0)
+	assert_false(_aura.is_breath_shown())
+	assert_eq(_sprite.self_modulate, Color.WHITE)
 
 
 func test_poison_and_toxic_state_and_density() -> void:

@@ -20,9 +20,9 @@ extends Node2D
 ## la teinte du gel. Les motifs sont fixes (aucun tirage : l'aléatoire du jeu n'est pas touché).
 ## Respiration (CV.3, CV-8) : 1 % sur 3 s au repos, 2 % sur 2,4 s pendant le sommeil, sur
 ## l'échelle verticale, pieds fixes, décalée entre les deux camps. Le nœud ne possède pas le
-## sprite : il pose son décalage sur l'échelle et la position du sprite et le défait à l'image
-## suivante ; si la scène a changé l'un des deux entre-temps (bond, K.O., retrait), son
-## nouveau réglage devient la base. Elle reste avec « Réduire les animations » (lente, sans
+## sprite : il dessine à sa place une copie étirée (nœud « Breath ») et rend le sprite
+## transparent par son seul `self_modulate` ; échelle, position, matériau et `modulate` du
+## sprite restent ceux que la scène et les effets de CV.0 lisent. Elle reste avec « Réduire les animations » (lente, sans
 ## risque) et se fige à vitesse 0. Aucune image nouvelle, aucun tirage.
 ## Le nœud suit le sprite à chaque image (bonds, coups, K.O. : position, échelle, opacité).
 ## Valeurs visuelles par défaut (règle 4), réglables ici ; provisoires jusqu'à la phase DA.
@@ -113,11 +113,12 @@ var _apply_status: StringName = StatusRules.NONE
 ## Respiration : horloge propre (ne revient pas à 0 avec le statut), et ce que le nœud a posé
 ## sur le sprite à l'image précédente.
 var _breath_time: float = 0.0
-var _breath_on: bool = false
-var _breath_base_scale: Vector2 = Vector2.ONE
-var _breath_base_pos: Vector2 = Vector2.ZERO
-var _breath_set_scale: Vector2 = Vector2.ONE
-var _breath_set_pos: Vector2 = Vector2.ZERO
+var _breath: Sprite2D
+var _original_hidden: bool = false
+var _original_self: Color = Color.WHITE
+## Échelle et position à l'écran du corps (sprite, ou copie respirante) : suivies par le givre.
+var _view_scale: Vector2 = Vector2.ONE
+var _view_pos: Vector2 = Vector2.ZERO
 
 
 ## Branche le nœud sur le sprite qu'il suit.
@@ -125,6 +126,11 @@ func setup(sprite: Sprite2D) -> void:
 	_sprite = sprite
 	if String(name).begins_with("Foe") or String(sprite.name).begins_with("Foe"):
 		breath_phase = 0.5
+	if _breath == null:
+		_breath = Sprite2D.new()
+		_breath.name = &"Breath"
+		_breath.visible = false
+		add_child(_breath)
 	if _ice == null:
 		_ice = Sprite2D.new()
 		_ice.name = &"Ice"
@@ -216,8 +222,8 @@ func _process(delta: float) -> void:
 		return
 	var shown := _sprite.visible and is_instance_valid(_sprite)
 	modulate.a = _sprite.modulate.a
-	_sync_ice(shown)
 	_update_breath(shown, delta)
+	_sync_ice(shown)
 	if _apply > 0.0:
 		_apply = maxf(_apply - delta * maxf(speed_scale, 0.0), 0.0) if shown else 0.0
 	if not shown or (_status == StatusRules.NONE and _stars <= 0.0):
@@ -233,41 +239,58 @@ func _process(delta: float) -> void:
 
 
 func _exit_tree() -> void:
-	_release_breath()
+	_show_original()
 
 
-## Défait le décalage posé à l'image précédente (si personne d'autre n'a touché au sprite depuis),
-## puis pose celui de l'instant.
+## Respiration : tant qu'elle est non nulle, une copie étirée du sprite (nœud « Breath ») est
+## dessinée à sa place et le sprite lui-même est rendu transparent par son seul
+## `self_modulate` ; ni son échelle, ni sa position, ni son matériau, ni son `modulate` ne sont
+## touchés (les bonds, le K.O., le retrait et les effets de CV.0 lisent des valeurs propres).
 func _update_breath(shown: bool, delta: float) -> void:
-	_release_breath()
 	_breath_time += delta * maxf(speed_scale, 0.0)
-	if not breath_enabled or not shown or _box.size.y <= 0.0:
-		return
-	var amount := breath_amount(_status, _breath_time, breath_phase)
+	_view_scale = _sprite.scale
+	_view_pos = _sprite.position
+	var amount := 0.0
+	if breath_enabled and shown and _box.size.y > 0.0 and _sprite.texture != null:
+		amount = breath_amount(_status, _breath_time, breath_phase)
 	if amount <= 0.00001:
+		_breath.visible = false
+		_show_original()
 		return
-	_breath_base_scale = _sprite.scale
-	_breath_base_pos = _sprite.position
-	var stretched := Vector2(_sprite.scale.x, _sprite.scale.y * (1.0 + amount))
+	var base := _sprite.scale
+	_view_scale = Vector2(base.x, base.y * (1.0 + amount))
 	# Pieds fixes : le bas de la boîte visible ne bouge pas à l'écran.
 	var feet := _box.end.y + _sprite.offset.y
-	_sprite.scale = stretched
-	_sprite.position = Vector2(_breath_base_pos.x,
-		_breath_base_pos.y - feet * (stretched.y - _breath_base_scale.y))
-	_breath_set_scale = _sprite.scale
-	_breath_set_pos = _sprite.position
-	_breath_on = true
+	_view_pos = Vector2(_sprite.position.x, _sprite.position.y - feet * (_view_scale.y - base.y))
+	_breath.texture = _sprite.texture
+	_breath.centered = _sprite.centered
+	_breath.offset = _sprite.offset
+	_breath.flip_h = _sprite.flip_h
+	_breath.texture_filter = _sprite.texture_filter
+	_breath.material = _sprite.material
+	_breath.position = _view_pos
+	_breath.scale = _view_scale
+	# L'opacité du sprite est déjà portée par ce nœud (modulate.a) : la copie ne la double pas.
+	var tint := _sprite.modulate
+	_breath.modulate = Color(tint.r, tint.g, tint.b, 1.0)
+	_breath.visible = true
+	if not _original_hidden:
+		_original_self = _sprite.self_modulate
+		_original_hidden = true
+	_sprite.self_modulate = Color(_original_self.r, _original_self.g, _original_self.b, 0.0)
 
 
-func _release_breath() -> void:
-	if not _breath_on:
+func _show_original() -> void:
+	if not _original_hidden:
 		return
-	_breath_on = false
-	if _sprite == null or not is_instance_valid(_sprite):
-		return
-	if _sprite.scale == _breath_set_scale and _sprite.position == _breath_set_pos:
-		_sprite.scale = _breath_base_scale
-		_sprite.position = _breath_base_pos
+	_original_hidden = false
+	if _sprite != null and is_instance_valid(_sprite):
+		_sprite.self_modulate = _original_self
+
+
+## Vrai si la copie respirante remplace le sprite à l'écran (tests, captures).
+func is_breath_shown() -> bool:
+	return _breath != null and _breath.visible
 
 
 func _sync_ice(shown: bool) -> void:
@@ -280,8 +303,8 @@ func _sync_ice(shown: bool) -> void:
 	_ice.centered = _sprite.centered
 	_ice.offset = _sprite.offset
 	_ice.flip_h = _sprite.flip_h
-	_ice.position = _sprite.position
-	_ice.scale = _sprite.scale
+	_ice.position = _view_pos
+	_ice.scale = _view_scale
 	_ice.texture_filter = _sprite.texture_filter
 
 
