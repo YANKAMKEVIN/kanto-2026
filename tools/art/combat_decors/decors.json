@@ -208,5 +208,41 @@
 		],
 		"taille": [2340, 1080],
 		"qualite": 90
+	},
+	"silph_co_bureaux": {
+		"composition": "COMBAT_DECOR_SYLPHE_BUREAUX_r1.png",
+		"tuiles": [
+			{ "image": "COMBAT_DECOR_SYLPHE_BUREAUX_r1_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "COMBAT_DECOR_SYLPHE_BUREAUX_r1_TR.png", "portion": [846, 0, 1846, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"saffron_gym_psy": {
+		"composition": "COMBAT_DECOR_ARENE_PSY_r1.png",
+		"tuiles": [
+			{ "image": "COMBAT_DECOR_ARENE_PSY_r1_TL.png", "portion": [0, 0, 999, 853] },
+			{ "image": "COMBAT_DECOR_ARENE_PSY_r1_TR.png", "portion": [845, 0, 1844, 853] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"fighting_dojo_salle": {
+		"composition": "COMBAT_DECOR_DOJO_r1.png",
+		"tuiles": [
+			{ "image": "COMBAT_DECOR_DOJO_r1_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "COMBAT_DECOR_DOJO_r1_TR.png", "portion": [846, 0, 1846, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"viridian_gym_sol": {
+		"composition": "COMBAT_DECOR_ARENE_JADIELLE_r1.png",
+		"tuiles": [
+			{ "image": "COMBAT_DECOR_ARENE_JADIELLE_r1_TL.png", "portion": [0, 0, 999, 853] },
+			{ "image": "COMBAT_DECOR_ARENE_JADIELLE_r1_TR.png", "portion": [845, 0, 1844, 853] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
 	}
 }

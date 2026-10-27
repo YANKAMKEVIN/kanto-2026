@@ -20,6 +20,7 @@ Usage :
   tools/art/daf3.py --prompts            écrit les prompts (sans Codex)
   tools/art/daf3.py [GROUPE ...]         génère avec Codex (sans argument : tout ce qui manque)
   tools/art/daf3.py --preparer           façades retenues → assets/ (dimensions exactes, ombres)
+  tools/art/daf3.py --tuiles             portions TL / TR des fonds de combat (avant la vague 2)
   tools/art/daf3.py --modules            sols, planches de modules et cabine → assets/ (catalogue)
 """
 from __future__ import annotations
@@ -429,6 +430,74 @@ def _prompt_module(ident: str, sujet: str, ancres: list[str], valeurs: str, v1: 
 		f"{INTERDITS}\n")
 
 
+# --- C. Fonds de combat (recette CB.3 des séries 20 à 27 : composition, deux tuiles agrandies) ------
+
+## (identifiant, lieu, IMAGE 3 (capture du lieu peint en jeu, guide de palette), description,
+## composition, lumière, interdits). Remplacent les décors [D] du registre (RP-147, RP-150 ; fusion
+## J26 + J27, J28).
+_CAPTURES = RACINE / "build" / "captures" / "daf3" / "apres"
+_SOL_AB = ("- Point A (x 67 %, y 50 %) : sol nu, plat et bien lisible, une créature y posera les pieds. Rien de "
+	"haut dans un rayon de 12 % de la largeur autour.\n"
+	"- Point B (x 31 %, y 97 %) : sol plat et nu, une grande créature vue de dos y sera au premier plan. Rien "
+	"de haut autour.")
+_INTERDITS_COMBAT = ("Pokémon, animal, personnage, silhouette, texte, lettres (aucun R, aucun logo), chiffres, "
+	"panneau, écran allumé, signature, filigrane, cadre, interface, pixel art, flou, vignettage, noir pur.")
+COMBATS = [
+	("COMBAT_DECOR_SYLPHE_BUREAUX", "BUREAUX DE LA SYLPHE SARL, SAFRANIA", "sylphe_7f",
+		"un grand PLATEAU DE BUREAUX moderne du siège de la Sylphe SARL (une grande entreprise technologique) : "
+		"moquette gris-bleu en dalles, CLOISONS crème à bandeau bleu nuit et montants d'acier, une grande BAIE "
+		"VITRÉE au fond qui laisse voir le ciel pâle et des toits lointains de la ville, des rangées de BUREAUX "
+		"de bois clair avec écrans éteints et fauteuils bleus sur les côtés, des armoires de serveurs grises, "
+		"quelques grands ficus en pot. Propre, clair, crédible.",
+		"- Fond (de 0 à 38 % de la hauteur) : la baie vitrée et les cloisons, base du mur vers 36 % de la "
+		"hauteur ; des bureaux et des armoires à gauche (x 10 à 30 %) et à droite (x 78 à 92 %).\n"
+		"- De 40 % de la hauteur jusqu'en bas : GRAND SOL DÉGAGÉ et PLAT de moquette gris-bleu.\n" + _SOL_AB,
+		"lumière de jour BLANCHE et douce venant de la baie vitrée (haut gauche) et de panneaux lumineux au "
+		"plafond, le centre du sol nettement lisible ; ombres gris-bleu, jamais noires.",
+		_INTERDITS_COMBAT + " Végétation hors des pots."),
+	("COMBAT_DECOR_ARENE_PSY", "ARÈNE DE SAFRANIA (TYPE PSY)", "arene_morgane",
+		"une SALLE de l'Arène de Safrania (Champion de type Psy) : grand DALLAGE de pierre polie LAVANDE pâle "
+		"veinée de mauve, murs de pierre lavande à moulures d'argent et frise de losanges prune, au fond un "
+		"grand MÉDAILLON de pierre à cercles concentriques gravés (abstrait, sans lettre), deux tapis de "
+		"téléportation violets cerclés de cyan posés au sol sur les côtés, des colonnes claires ; calme, "
+		"symétrique, un peu mystérieux.",
+		"- Fond (de 0 à 38 % de la hauteur) : le mur du fond et le médaillon au centre-gauche, base du mur vers "
+		"36 % de la hauteur ; un tapis de téléportation au sol vers x 15 % et un autre vers x 88 %, au plan "
+		"moyen.\n- De 40 % de la hauteur jusqu'en bas : GRAND SOL DÉGAGÉ et PLAT de dalles lavande.\n" + _SOL_AB,
+		"lumière diffuse et douce, légèrement mauve, venant du haut ; quelques reflets nacrés sur le dallage ; "
+		"ombres prune, jamais noires ; aucun rayon, aucun halo.",
+		_INTERDITS_COMBAT + " Cristal géant, oeil, crâne, effet magique, étincelle, halo."),
+	("COMBAT_DECOR_DOJO", "DOJO DE SAFRANIA", "dojo",
+		"la grande salle d'un DOJO d'arts martiaux traditionnel : PARQUET de bois blond à larges lames, "
+		"POTEAUX et poutres de bois brun, cloisons de papier de riz à croisillons, un RÂTELIER de bâtons "
+		"d'entraînement au mur, deux sacs de frappe suspendus sur le côté droit, une estrade basse en bois au "
+		"fond. Sobre, chaleureux, propre.",
+		"- Fond (de 0 à 38 % de la hauteur) : la cloison du fond, l'estrade au centre-gauche (vide, aucun "
+		"objet écrit), base du mur vers 36 % de la hauteur ; les sacs de frappe à droite (x 80 à 92 %).\n"
+		"- De 40 % de la hauteur jusqu'en bas : GRAND PARQUET DÉGAGÉ et PLAT.\n" + _SOL_AB,
+		"lumière de jour chaude et douce qui passe à travers le papier de riz (haut gauche), le centre du "
+		"parquet lisible ; ombres brunes, jamais noires.",
+		_INTERDITS_COMBAT + " Calligraphie, kanji, affiche, drapeau, arme."),
+	("COMBAT_DECOR_ARENE_JADIELLE", "ARÈNE DE JADIELLE (TYPE SOL)", "arene_jadielle",
+		"la grande salle de l'Arène de Jadielle, celle du plus puissant Champion de Kanto (type Sol) : grand "
+		"DALLAGE de grès OCRE en dalles carrées, murs de gros blocs de PIERRE brun-gris, plinthes de bronze, "
+		"deux grandes colonnes de pierre au fond, quelques flèches jaunes peintes au sol sur les côtés ; "
+		"austère, solennel, imposant, jamais effrayant.",
+		"- Fond (de 0 à 38 % de la hauteur) : le mur du fond en gros blocs, deux colonnes (x 25 % et x 72 %), "
+		"base du mur vers 36 % de la hauteur.\n- De 40 % de la hauteur jusqu'en bas : GRAND SOL DÉGAGÉ et PLAT "
+		"de dalles de grès ocre.\n" + _SOL_AB,
+		"lumière chaude et un peu basse venant du haut à gauche, comme des appliques, le centre du sol bien "
+		"éclairé ; ombres brun sombre, jamais noires ; aucun halo.",
+		_INTERDITS_COMBAT + " Lave, crâne, statue de personnage."),
+]
+COMBAT_IDS = {"COMBAT_DECOR_SYLPHE_BUREAUX": "silph_co_bureaux", "COMBAT_DECOR_ARENE_PSY": "saffron_gym_psy",
+	"COMBAT_DECOR_DOJO": "fighting_dojo_salle", "COMBAT_DECOR_ARENE_JADIELLE": "viridian_gym_sol"}
+
+
+def _image3(capture: str) -> str:
+	return f"build/captures/daf3/apres/{capture}.png"
+
+
 def _images() -> list[dict]:
 	images = []
 	for ident, asset, largeur, profondeur, porte, description, ancres in FACADES:
@@ -442,6 +511,15 @@ def _images() -> list[dict]:
 	for ident, description, ancres, valeurs, v1 in PLANCHES:
 		images.append({"nom": f"{ident}_NE_r1", "groupe": ident, "vague": 2 if ident.startswith("WORLD") else 3,
 			"texte": _prompt_module(ident, description, ancres, valeurs, v1, False), "jointes": ancres + v1})
+	import serie27
+	for ident, lieu, capture, description, compo, lumiere, interdits in COMBATS:
+		images.append({"nom": f"{ident}_r1", "groupe": ident, "vague": 1,
+			"texte": serie27.prompt_combat(ident, lieu, "une capture du lieu dans le jeu (vu de dessus) : "
+				"guide de PALETTE et de matières seulement, pas de vue.", description, compo, lumiere, interdits),
+			"jointes": [serie27.COMBAT_REF, serie27.COMBAT_PLANCHE, _image3(capture)]})
+		for cote in ("TL", "TR"):
+			images.append({"nom": f"{ident}_r1_{cote}", "groupe": f"{ident}_TUILES", "vague": 2,
+				"texte": serie27.TUILE.read_text(), "jointes": [f"{ident}_r1_{cote}_SOURCE.png"]})
 	ident, _asset, description, ancres, valeurs = COQUE_CABINE
 	images.append({"nom": f"{ident}_NE_r1", "groupe": ident, "vague": 1,
 		"texte": _prompt_module(ident, description, ancres, valeurs, [], False), "jointes": ancres})
@@ -649,10 +727,28 @@ def preparer_modules() -> None:
 	preparer.reglages_import(p.m)
 
 
+def tuiles() -> None:
+	"""Portions TL / TR des compositions de combat (moitié + 154 px sur 1846, comme la série 27)."""
+	import serie27
+	for ident, *_r in COMBATS:
+		source = ART / f"{ident}_r1.png"
+		if not source.exists():
+			print(f"{source.name} absent")
+			continue
+		im = Image.open(source).convert("RGB")
+		w, h = im.size
+		part = round(w * serie27.TUILE_PART)
+		im.crop((0, 0, part, h)).save(ART / f"{ident}_r1_TL_SOURCE.png")
+		im.crop((w - part, 0, w, h)).save(ART / f"{ident}_r1_TR_SOURCE.png")
+		print(f"{ident} : portions [0, 0, {part}, {h}] et [{w - part}, 0, {w}, {h}]")
+
+
 if __name__ == "__main__":
 	args = sys.argv[1:]
 	if args[:1] == ["--prompts"]:
 		ecrire_prompts()
+	elif args[:1] == ["--tuiles"]:
+		tuiles()
 	elif args[:1] == ["--modules"]:
 		preparer_modules()
 	elif args[:1] == ["--preparer"]:
