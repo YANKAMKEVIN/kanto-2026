@@ -8,7 +8,7 @@ Fait avec DAF.3, même branche (`claude/daf-3-4-9713b9`), même outil : la fiche
 - **Fait** : Arène de Jadielle en modules (dalles, murs, flèches et cases d'arrêt peints) et son fond
   de combat `viridian_gym_sol` — planche [planche-1-arene-jadielle.jpg](planche-1-arene-jadielle.jpg),
   fond dans [../daf-3/planche-6-fonds-combat.jpg](../daf-3/planche-6-fonds-combat.jpg).
-## Suite du lot (2026-10-27, branche `claude/daf-4-j29-j31`, depuis `main` @ `ef1fff46`) — **à valider par Kevin**
+## Suite du lot (2026-10-27, branche `claude/daf-4-j29-j31`, depuis `main` @ `ef1fff46`) — **validée par Kevin le 2026-10-27 (DA-6)**
 
 Outils : `tools/art/daf4.py` (prompts, Codex, préparation), `tools/build_daf4_caves.gd` et
 `tools/build_daf4_facades.gd` (secondes passes d'image : la logique des cartes ne change pas),
