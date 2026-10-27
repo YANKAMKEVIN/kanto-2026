@@ -1,8 +1,9 @@
 # DAF.3 « Safrania et Sylphe » et DAF.4 « Fin du jeu » (part déjà dans `main`)
 
+> **Validé par Kevin le 2026-10-27 (DA-6, planches de contact).**
+>
 > Lot de la phase DA (`docs/design/phase-da-cadrage.md` §3, DA-1 à DA-9), fait le 2026-10-27 sur la
-> branche `claude/daf-3-4-9713b9` (depuis `main` @ `fa64b302`). **Non fusionné : planches à valider
-> par Kevin.** Outils : `tools/art/daf3.py` (prompts, génération Codex, préparation),
+> branche `claude/daf-3-4-9713b9` (depuis `main` @ `fa64b302`). Fusionné dans `main` après la validation. Outils : `tools/art/daf3.py` (prompts, génération Codex, préparation),
 > `tools/capture_daf3.sh` (captures 2340 × 1080), `tools/art/planches_daf3.py` (planches).
 > Prompts versionnés : `tools/art/prompts/daf3/`.
 

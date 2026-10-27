@@ -1,5 +1,7 @@
 # DAF.4 « Fin du jeu » — part déjà dans `main` (2026-10-27)
 
+**Validé par Kevin le 2026-10-27 (DA-6, planches de contact).** (Arène de Jadielle et son fond de combat.)
+
 Fait avec DAF.3, même branche (`claude/daf-3-4-9713b9`), même outil : la fiche commune est
 [../daf-3/fiche.md](../daf-3/fiche.md).
 
