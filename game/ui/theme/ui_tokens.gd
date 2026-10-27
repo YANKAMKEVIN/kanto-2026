@@ -344,6 +344,11 @@ const HP_LOW_THRESHOLD := 0.2
 const HP_TWEEN := 0.4
 const HP_TWEEN_FAST := 0.25
 const HP_BIG_HIT := 0.25
+## Trace des PV perdus (CV-9) : segment clair qui reste HP_TRAIL_HOLD s derrière la barre, puis
+## la rattrape en HP_TRAIL_CATCH s. Valeurs par défaut, provisoires.
+const HP_TRAIL_HOLD := 0.3
+const HP_TRAIL_CATCH := 0.25
+const HP_TRAIL_COLOR := Color(1, 1, 1, 0.7)
 ## Pulsation de la carte sous HP_LOW_THRESHOLD (dossier 05 §12) : demi-période et échelle.
 const HP_LOW_PULSE := 0.55
 const HP_LOW_PULSE_SCALE := 1.025

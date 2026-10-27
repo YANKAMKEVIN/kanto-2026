@@ -574,7 +574,8 @@ func test_status_effects_sit_above_the_sprite_without_touching_it() -> void:
 		var expected := _stage.get_sprite_rect(side)
 		assert_lt(rect.position.distance_to(expected.position), 8.0,
 			"l'effet suit la boîte visible du sprite (offset arrondi)")
-		assert_lt(rect.size.distance_to(expected.size), 1.0)
+		# La respiration (CV.3) étire le sprite de 2 % au plus, pieds fixes.
+		assert_lt(rect.size.distance_to(expected.size), expected.size.y * 0.025 + 1.0)
 		for status: StringName in StatusRules.KNOWN:
 			_stage.set_status(side, status)
 			await wait_process_frames(1)

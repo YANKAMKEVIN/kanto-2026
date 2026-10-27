@@ -23,6 +23,10 @@ var _target_hp: int = 1
 var _shown_hp: float = 1.0
 var _color: Color = UiTokens.HP_HIGH
 var _tween: Tween
+## Trace des PV perdus (CV.3, CV-9) : valeur continue du bord de la trace, toujours >= la valeur
+## affichée ; son Tween est indépendant (jamais attendu, donc sans effet sur les durées).
+var _trail_hp: float = 1.0
+var _trail_tween: Tween
 var _fill: StyleBoxFlat
 
 @onready var _label: Label = %Label
@@ -57,9 +61,11 @@ static func color_for_ratio(ratio: float) -> Color:
 ## Affiche [param hp] / [param max_hp] tout de suite (interrompt une animation).
 func set_hp(hp: int, max_hp: int) -> void:
 	_kill_tween()
+	_kill_trail()
 	_max_hp = maxi(max_hp, 1)
 	_target_hp = clampi(hp, 0, _max_hp)
 	_set_shown(float(_target_hp))
+	_trail_hp = _shown_hp
 
 
 ## Coroutine : fait glisser la barre jusqu'à [param hp] en HP_TWEEN, ou HP_TWEEN_FAST si
@@ -74,7 +80,10 @@ func animate_hp(hp: int, max_hp: int, big: bool = false) -> void:
 	var time := (UiTokens.HP_TWEEN_FAST if big else UiTokens.HP_TWEEN) * speed_scale
 	if time <= 0.0 or is_equal_approx(_shown_hp, float(_target_hp)):
 		_set_shown(float(_target_hp))
+		_kill_trail()
+		_trail_hp = _shown_hp
 		return
+	_start_trail(time)
 	_tween = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	_tween.tween_method(_set_shown, _shown_hp, float(_target_hp), time)
 	_tween.tween_callback(_on_done)
@@ -117,6 +126,47 @@ func get_track() -> Control:
 	return _track
 
 
+## Valeur du bord de la trace (continue) ; égale à la valeur affichée quand il n'y en a pas.
+func get_trail_value() -> float:
+	return _trail_hp
+
+
+func is_trail_shown() -> bool:
+	return _trail_hp > _shown_hp + 0.001
+
+
+## Lance la trace d'une descente de [param time] s : le bord reste où était la barre, attend la
+## fin de la descente puis HP_TRAIL_HOLD, et rattrape en HP_TRAIL_CATCH. Rien si ça monte.
+func _start_trail(time: float) -> void:
+	_kill_trail()
+	if float(_target_hp) >= _shown_hp:
+		_trail_hp = _shown_hp
+		return
+	_trail_hp = maxf(_trail_hp, _shown_hp)
+	_trail_tween = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	_trail_tween.tween_interval(time + UiTokens.HP_TRAIL_HOLD * speed_scale)
+	_trail_tween.tween_method(_set_trail, _trail_hp, float(_target_hp),
+		UiTokens.HP_TRAIL_CATCH * speed_scale)
+	_trail_tween.tween_callback(_on_trail_done)
+
+
+func _set_trail(value: float) -> void:
+	_trail_hp = value
+	_track.queue_redraw()
+
+
+func _on_trail_done() -> void:
+	_trail_tween = null
+	_trail_hp = _shown_hp
+	_track.queue_redraw()
+
+
+func _kill_trail() -> void:
+	if _trail_tween != null:
+		_trail_tween.kill()
+		_trail_tween = null
+
+
 func _set_shown(value: float) -> void:
 	var before := roundi(_shown_hp)
 	_shown_hp = value
@@ -139,6 +189,11 @@ func _draw_track() -> void:
 		return
 	var inner := rect.grow(-UiTokens.HP_BAR_INSET)
 	var width := maxf(inner.size.x * _shown_hp / float(_max_hp), inner.size.y)
+	if _trail_hp > _shown_hp:
+		var trail_width := maxf(inner.size.x * _trail_hp / float(_max_hp), inner.size.y)
+		var trail := _fill.duplicate() as StyleBoxFlat
+		trail.bg_color = UiTokens.HP_TRAIL_COLOR
+		_track.draw_style_box(trail, Rect2(inner.position, Vector2(trail_width, inner.size.y)))
 	_track.draw_style_box(_fill, Rect2(inner.position, Vector2(width, inner.size.y)))
 
 

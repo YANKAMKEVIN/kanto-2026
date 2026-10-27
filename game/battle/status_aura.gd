@@ -9,11 +9,21 @@ extends Node2D
 ##  - brûlure : braises qui montent, par intermittence ;
 ##  - sommeil : « z » qui s'envolent au-dessus de la tête ;
 ##  - gel : teinte bleu glacé figée (copie du sprite teintée, posée dessus) ;
-##  - poison : rien de permanent (le voile de fin de tour existe déjà) ;
+##  - poison : bulles violettes qui montent et éclatent, par intermittence (CV.3) ; Toxik
+##    ([constant StatusRules.TOXIC]) : plus denses et plus foncées ;
+##  - gel : en plus, quelques éclats de givre qui scintillent (CV.3) ;
+##  - sommeil : en plus, respiration lente du sprite (CV.3, voir ci-dessous) ;
+##  - pose du statut : petit effet de 0,3 s aux couleurs du statut (CV.3) ;
 ##  - confusion : petites étoiles au-dessus de la tête au moment du test
 ##    ([method play_confusion]).
 ## « Réduire les animations » ([member reduce_motion]) coupe les particules et les étoiles, garde
 ## la teinte du gel. Les motifs sont fixes (aucun tirage : l'aléatoire du jeu n'est pas touché).
+## Respiration (CV.3, CV-8) : 1 % sur 3 s au repos, 2 % sur 2,4 s pendant le sommeil, sur
+## l'échelle verticale, pieds fixes, décalée entre les deux camps. Le nœud ne possède pas le
+## sprite : il pose son décalage sur l'échelle et la position du sprite et le défait à l'image
+## suivante ; si la scène a changé l'un des deux entre-temps (bond, K.O., retrait), son
+## nouveau réglage devient la base. Elle reste avec « Réduire les animations » (lente, sans
+## risque) et se fige à vitesse 0. Aucune image nouvelle, aucun tirage.
 ## Le nœud suit le sprite à chaque image (bonds, coups, K.O. : position, échelle, opacité).
 ## Valeurs visuelles par défaut (règle 4), réglables ici ; provisoires jusqu'à la phase DA.
 
@@ -26,6 +36,17 @@ const SLEEP_COLOR := Color(1.0, 1.0, 1.0, 0.9)
 const ICE_TINT := Color("#5FB8F0")
 const ICE_AMOUNT: float = 0.7
 const STAR_COLOR := Color("#FFE680")
+const POISON_COLOR := Color("#B05CE0")
+const POISON_CORE := Color("#E8C4FF")
+const TOXIC_COLOR := Color("#7A2FB0")
+const TOXIC_CORE := Color("#C58BEA")
+const FROST_COLOR := Color("#E6F7FF")
+## Couleurs de la pose du statut (CV.3).
+const APPLY_COLORS: Dictionary[StringName, Color] = {
+	StatusRules.POISON: Color("#B05CE0"), StatusRules.TOXIC: Color("#7A2FB0"),
+	StatusRules.PARALYSIS: Color("#F7D02C"), StatusRules.BURN: Color("#FF8A3C"),
+	StatusRules.SLEEP: Color("#9FB8E8"), StatusRules.FREEZE: Color("#5FB8F0"),
+}
 ## Paralysie : une salve toutes les SPARK_PERIOD s, visible SPARK_ON s.
 const SPARK_PERIOD: float = 1.6
 const SPARK_ON: float = 0.28
@@ -46,6 +67,24 @@ const SLEEP_FONT_MAX: int = 72
 const STAR_COUNT: int = 3
 const STAR_DURATION: float = 0.8
 const STAR_RADIUS: float = 20.0
+## Poison : bulles (poison / Toxik), période d'une montée, rayon max (px écran).
+const BUBBLE_COUNT: int = 4
+const BUBBLE_COUNT_TOXIC: int = 7
+const BUBBLE_PERIOD: float = 1.8
+const BUBBLE_RADIUS: float = 0.05
+const BUBBLE_RADIUS_MIN: float = 10.0
+const BUBBLE_RADIUS_MAX: float = 26.0
+const BUBBLE_RISE: float = 0.6
+## Gel : éclats de givre qui scintillent (nombre, période d'un scintillement).
+const FROST_COUNT: int = 6
+const FROST_PERIOD: float = 1.3
+## Pose du statut : durée (s, à vitesse 1).
+const APPLY_DURATION: float = 0.3
+## Respiration : amplitude (part de l'échelle verticale) et période (s), au repos puis endormi.
+const BREATH_IDLE_AMOUNT: float = 0.01
+const BREATH_IDLE_PERIOD: float = 3.0
+const BREATH_SLEEP_AMOUNT: float = 0.02
+const BREATH_SLEEP_PERIOD: float = 2.4
 
 ## Coupe les particules et les étoiles (« Réduire les animations ») ; la teinte du gel reste.
 var reduce_motion: bool = false:
@@ -54,6 +93,11 @@ var reduce_motion: bool = false:
 		queue_redraw()
 ## Vitesse des effets (0 : figés ; [method play_confusion] rend la main tout de suite).
 var speed_scale: float = 1.0
+## Active la respiration (désactivable par les tests de géométrie).
+var breath_enabled: bool = true
+## Décalage de la respiration (0..1 de période) ; [method setup] met 0,5 au camp adverse
+## (nœud ou sprite nommé « Foe… » par la scène), 0 sinon.
+var breath_phase: float = 0.0
 
 var _sprite: Sprite2D
 var _box: Rect2 = Rect2()
@@ -63,11 +107,24 @@ var _time: float = 0.0
 var _stars: float = 0.0
 var _ice: Sprite2D
 var _ice_material: ShaderMaterial
+## Temps de la pose du statut restant (s) ; 0 = aucune.
+var _apply: float = 0.0
+var _apply_status: StringName = StatusRules.NONE
+## Respiration : horloge propre (ne revient pas à 0 avec le statut), et ce que le nœud a posé
+## sur le sprite à l'image précédente.
+var _breath_time: float = 0.0
+var _breath_on: bool = false
+var _breath_base_scale: Vector2 = Vector2.ONE
+var _breath_base_pos: Vector2 = Vector2.ZERO
+var _breath_set_scale: Vector2 = Vector2.ONE
+var _breath_set_pos: Vector2 = Vector2.ZERO
 
 
 ## Branche le nœud sur le sprite qu'il suit.
 func setup(sprite: Sprite2D) -> void:
 	_sprite = sprite
+	if String(name).begins_with("Foe") or String(sprite.name).begins_with("Foe"):
+		breath_phase = 0.5
 	if _ice == null:
 		_ice = Sprite2D.new()
 		_ice.name = &"Ice"
@@ -91,6 +148,11 @@ func set_status(status: StringName) -> void:
 		return
 	_status = status
 	_time = 0.0
+	_apply = 0.0
+	if status != StatusRules.NONE and not reduce_motion and speed_scale > 0.0 \
+			and _sprite != null and _sprite.visible:
+		_apply = APPLY_DURATION
+		_apply_status = status
 	queue_redraw()
 
 
@@ -106,6 +168,21 @@ func is_ice_shown() -> bool:
 ## Vrai si des étoiles de confusion tournent (tests, captures).
 func is_confusion_shown() -> bool:
 	return _stars > 0.0
+
+
+## Vrai si la pose du statut (0,3 s) est en cours (tests, captures).
+func is_apply_shown() -> bool:
+	return _apply > 0.0
+
+
+## Part d'échelle verticale ajoutée par la respiration à l'instant [param time] (s), pour
+## [param status] (sommeil : plus lente et plus forte), avec un décalage [param phase] (0..1).
+## 0 au départ, puis monte et redescend en douceur ; jamais négatif.
+static func breath_amount(status: StringName, time: float, phase: float = 0.0) -> float:
+	var asleep := status == StatusRules.SLEEP
+	var amount := BREATH_SLEEP_AMOUNT if asleep else BREATH_IDLE_AMOUNT
+	var period := BREATH_SLEEP_PERIOD if asleep else BREATH_IDLE_PERIOD
+	return amount * 0.5 * (1.0 - cos(TAU * (time / period + phase)))
 
 
 ## Rectangle écran suivi (boîte visible du sprite à sa place courante).
@@ -140,6 +217,9 @@ func _process(delta: float) -> void:
 	var shown := _sprite.visible and is_instance_valid(_sprite)
 	modulate.a = _sprite.modulate.a
 	_sync_ice(shown)
+	_update_breath(shown, delta)
+	if _apply > 0.0:
+		_apply = maxf(_apply - delta * maxf(speed_scale, 0.0), 0.0) if shown else 0.0
 	if not shown or (_status == StatusRules.NONE and _stars <= 0.0):
 		if _stars > 0.0:
 			_stars = 0.0
@@ -150,6 +230,44 @@ func _process(delta: float) -> void:
 	if _stars > 0.0:
 		_stars = maxf(_stars - step, 0.0)
 	queue_redraw()
+
+
+func _exit_tree() -> void:
+	_release_breath()
+
+
+## Défait le décalage posé à l'image précédente (si personne d'autre n'a touché au sprite depuis),
+## puis pose celui de l'instant.
+func _update_breath(shown: bool, delta: float) -> void:
+	_release_breath()
+	_breath_time += delta * maxf(speed_scale, 0.0)
+	if not breath_enabled or not shown or _box.size.y <= 0.0:
+		return
+	var amount := breath_amount(_status, _breath_time, breath_phase)
+	if amount <= 0.00001:
+		return
+	_breath_base_scale = _sprite.scale
+	_breath_base_pos = _sprite.position
+	var stretched := Vector2(_sprite.scale.x, _sprite.scale.y * (1.0 + amount))
+	# Pieds fixes : le bas de la boîte visible ne bouge pas à l'écran.
+	var feet := _box.end.y + _sprite.offset.y
+	_sprite.scale = stretched
+	_sprite.position = Vector2(_breath_base_pos.x,
+		_breath_base_pos.y - feet * (stretched.y - _breath_base_scale.y))
+	_breath_set_scale = _sprite.scale
+	_breath_set_pos = _sprite.position
+	_breath_on = true
+
+
+func _release_breath() -> void:
+	if not _breath_on:
+		return
+	_breath_on = false
+	if _sprite == null or not is_instance_valid(_sprite):
+		return
+	if _sprite.scale == _breath_set_scale and _sprite.position == _breath_set_pos:
+		_sprite.scale = _breath_base_scale
+		_sprite.position = _breath_base_pos
 
 
 func _sync_ice(shown: bool) -> void:
@@ -181,6 +299,14 @@ func _draw() -> void:
 				_draw_embers(rect)
 			StatusRules.SLEEP:
 				_draw_sleep(rect)
+			StatusRules.POISON:
+				_draw_bubbles(rect, false)
+			StatusRules.TOXIC:
+				_draw_bubbles(rect, true)
+			StatusRules.FREEZE:
+				_draw_frost(rect)
+		if _apply > 0.0:
+			_draw_apply(rect)
 	if _stars > 0.0:
 		_draw_stars(rect)
 
@@ -239,6 +365,75 @@ func _draw_sleep(rect: Rect2) -> void:
 		var color := SLEEP_COLOR
 		color.a *= sin(phase * PI)
 		draw_string(font, position, "z", HORIZONTAL_ALIGNMENT_LEFT, -1, size, color)
+
+
+## Bulles qui montent du bas du corps, grossissent, puis éclatent (anneau qui s'ouvre) ; sept
+## dixièmes du cycle de montée, le reste de pause, d'où l'intermittence. Toxik : plus nombreuses,
+## plus foncées.
+func _draw_bubbles(rect: Rect2, toxic: bool) -> void:
+	var count := BUBBLE_COUNT_TOXIC if toxic else BUBBLE_COUNT
+	var body := TOXIC_COLOR if toxic else POISON_COLOR
+	var core := TOXIC_CORE if toxic else POISON_CORE
+	var max_radius := clampf(rect.size.y * BUBBLE_RADIUS, BUBBLE_RADIUS_MIN, BUBBLE_RADIUS_MAX)
+	for i: int in count:
+		var phase := fmod(_time / BUBBLE_PERIOD + float(i) / count, 1.0)
+		if phase > 0.7:
+			continue
+		var k := phase / 0.7
+		var x := rect.position.x + rect.size.x * (0.1 + 0.8 * fmod(float(i) * 0.61, 1.0)) \
+			+ sin(k * TAU * 1.5 + i) * 7.0
+		var y := rect.end.y - rect.size.y * (0.08 + BUBBLE_RISE * k)
+		var center := Vector2(x, y)
+		if k < 0.82:
+			var radius := max_radius * (0.35 + 0.65 * k / 0.82)
+			var fill := body
+			fill.a = 0.55 if toxic else 0.42
+			draw_circle(center, radius, fill)
+			var rim := core
+			rim.a = 0.85
+			draw_arc(center, radius, 0.0, TAU, 20, rim, 3.0, true)
+			draw_circle(center + Vector2(-radius, -radius) * 0.35, radius * 0.2,
+				Color(1, 1, 1, 0.7))
+		else:
+			var pop := (k - 0.82) / 0.18
+			var ring := core
+			ring.a = 1.0 - pop
+			draw_arc(center, max_radius * (1.0 + 0.5 * pop), 0.0, TAU, 20, ring, 3.0, true)
+
+
+## Éclats de givre posés sur le corps, qui scintillent chacun à son tour (étoile à quatre
+## branches dont la taille et l'opacité suivent un pic).
+func _draw_frost(rect: Rect2) -> void:
+	var reach := clampf(rect.size.y * 0.1, 16.0, 40.0)
+	for i: int in FROST_COUNT:
+		var phase := fmod(_time / FROST_PERIOD + float(i) * 0.37, 1.0)
+		var peak := pow(maxf(sin(phase * PI), 0.0), 3.0)
+		if peak <= 0.02:
+			continue
+		var x := rect.position.x + rect.size.x * (0.15 + 0.7 * fmod(float(i) * 0.43 + 0.1, 1.0))
+		var y := rect.position.y + rect.size.y * (0.12 + 0.76 * fmod(float(i) * 0.29 + 0.2, 1.0))
+		var color := FROST_COLOR
+		color.a = peak
+		var r := reach * (0.4 + 0.6 * peak)
+		var c := Vector2(x, y)
+		draw_colored_polygon(PackedVector2Array([
+			c + Vector2(0, -r), c + Vector2(r * 0.18, -r * 0.18), c + Vector2(r, 0),
+			c + Vector2(r * 0.18, r * 0.18), c + Vector2(0, r), c + Vector2(-r * 0.18, r * 0.18),
+			c + Vector2(-r, 0), c + Vector2(-r * 0.18, -r * 0.18)]), color)
+
+
+## Pose du statut : halo qui s'ouvre autour du corps et s'efface, aux couleurs du statut.
+func _draw_apply(rect: Rect2) -> void:
+	var t := 1.0 - _apply / APPLY_DURATION
+	var base: Color = APPLY_COLORS.get(_apply_status, Color.WHITE)
+	var center := rect.get_center()
+	var radius := maxf(rect.size.x, rect.size.y) * (0.35 + 0.35 * t)
+	var halo := base
+	halo.a = 0.35 * (1.0 - t)
+	draw_circle(center, radius, halo)
+	var ring := base.lightened(0.4)
+	ring.a = 1.0 - t
+	draw_arc(center, radius, 0.0, TAU, 40, ring, 6.0 * (1.0 - t) + 1.0, true)
 
 
 ## Étoiles qui tournent sur une ellipse au-dessus de la tête.
