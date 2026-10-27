@@ -252,13 +252,13 @@ Les points RP-151 à RP-154, propres à `jalon-23` jusqu'ici, sont passés de la
 
 ### 2.11 Fusion du J29 dans `main` (2026-10-27, à classer RP-NNN)
 
-- **Fonds de combat provisoires [D]** (couverture DAF.2) : `route_22_west` → `route_5_6_prairie` (comme la Route 22) ; `route_23` → `route_9_roche` ; `victory_road_1f`, `_2f`, `_3f` → `digletts_cave_rock`. Fonds dédiés à peindre (Route 23, Route Victoire).
+- **Fonds de combat provisoires [D]** (couverture DAF.2) : `route_22_west` → `route_5_6_prairie` (comme la Route 22) ; `route_23` → `route_9_roche` ; `victory_road_1f`, `_2f`, `_3f` → `digletts_cave_rock`. Fonds dédiés à peindre (Route 23, Route Victoire). **Faits sur la branche `claude/daf-4-j29-j31` (DAF.4, planche à valider)** : `route_23_roche`, `victory_road_grotte` ; `route_22_west` gardé sur le fond de la Route 22 du J7 [D].
 - **Icônes provisoires du Sac [D]** (couverture DAF.5) : CT05, CT43, CT47 = icône de la CT09 (Normal) ; CT17 = CT19 (Combat) ; Défense Spéc. (`guard_spec`) = Spécial X ; Max Éther (`max_ether`) = Potion Max. Icônes dédiées à peindre.
 - **Dédoublonnage** (RP-149, partie J27/J29) : `kanto_j27_emprunts.json` (M. Mime) et `moves/j27_emprunts.json` (Ultimawashi, Clonage) retirés, définitions identiques à celles du J29 ; `kanto_j29_reprises.json` (Alakazam, Leveinard, Lokhlass, identiques à ceux des J23 et J26) retiré, avec ses quatre fiches de Pokédex en double et les trois dessins provisoires en double de `gen_placeholder_battlers.gd`.
 
 ### 2.12 Fusion du J31 dans `main` (2026-10-27, à classer RP-NNN)
 
-- **Fonds de combat provisoires [D]** (couverture DAF.2) : `cerulean_cave_1f`, `_2f`, `_b1f` → `dark_cave_galerie`. Fond dédié de la Grotte Azurée à peindre.
+- **Fonds de combat provisoires [D]** (couverture DAF.2) : `cerulean_cave_1f`, `_2f`, `_b1f` → `dark_cave_galerie`. Fond dédié de la Grotte Azurée à peindre. **Fait sur la branche `claude/daf-4-j29-j31` (DAF.4, planche à valider)** : `cerulean_cave_azuree` ; la Grotte Azurée est aussi repeinte (sol à deux niveaux, eau, rebords).
 - **Icônes provisoires du Sac [D]** (couverture DAF.5) : Max Élixir = Potion Max ; PP Plus = Hyper Potion. Icônes dédiées à peindre.
 - **Dédoublonnage** : `kanto_j31_emprunts.json` (Leveinard, Rhinoféros, identiques à ceux des J23 et J28) retiré, avec leurs deux fiches de Pokédex en double.
 
@@ -273,7 +273,7 @@ versions, déjà réglées sur `main` par DAF.6 : non reprises.
 | RP-130 | `prep/j26-j27`, `jalon-28`, `jalon-31`, `jalon-32` (`jalon-23` réglé par sa fusion) | Pas de `FACING_RIGHT` (adversaires tournés à droite) ; `jalon-29` et `jalon-30` l'ont | défaut | P1 | R-1 (par `main`) | `main` l'a depuis `e772538c` (R-1) : chaque branche le récupère à sa mise à jour sur `main` |
 | RP-131 | `jalon-30` (correctif) ; probablement `main` | Après une reprise de l'appli pendant un combat, fond flou recadré (zoom différent) | défaut | P3 | branche ; à porter à la fusion du J30 | corrigé sur `jalon-30` (`Player.hold_camera`) seulement |
 | RP-132 | `jalon-29` | Sulfura de carte = sprite d'oiseau générique (`pokemon/fearow`), petit, caché par la tête du héros | rendu | P2 | DAF.4 | ouvert |
-| RP-133 | `jalon-29` | Sol haut et sol bas de la Route Victoire peu distincts (tuiles provisoires) ; vue générale peinte, poste de la Route 22, Route 23 | rendu | P1 (DON-3) | DAF.4 | ouvert |
+| RP-133 | `jalon-29` | Sol haut et sol bas de la Route Victoire peu distincts (tuiles provisoires) ; vue générale peinte, poste de la Route 22, Route 23 | rendu | P1 (DON-3) | DAF.4 | corrigé pour la Route Victoire sur la branche `claude/daf-4-j29-j31` (DAF.4, planche à valider) (sol haut nettement plus clair, rebords, escaliers) ; poste de la Route 22 peint ; restent le sol de la Route 23 et la vue générale |
 | RP-134 | `jalon-29` | Rencontres très fréquentes dans la Route Victoire (1 toutes les 3 à 5 cases) | idée | P3 | branche (comparer à RB) | ouvert |
 | RP-135 | `jalon-29` | Départ `moltres` sans Master Ball (objet du J26) | défaut | P3 | branche (fusion J26) | ouvert |
 | RP-136 | `jalon-30` | Sprites provisoires de la Ligue : Olga (`cooltrainer_f`), Aldo (`docker`), Agatha (`channeler`), Peter (`traveler`) | rendu | P1 (PER-1) | DAF.4 | ouvert |
