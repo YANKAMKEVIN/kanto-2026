@@ -1,0 +1,24 @@
+{
+	"zapdos_presence": {
+		"narration": true,
+		"variants": [
+			{
+				"draft": true,
+				"pages": [
+					"L'air crépite d'électricité…"
+				]
+			}
+		]
+	},
+	"zapdos_flew_away": {
+		"narration": true,
+		"variants": [
+			{
+				"draft": true,
+				"pages": [
+					"Électhor s'est envolé dans un éclair."
+				]
+			}
+		]
+	}
+}

@@ -90,6 +90,8 @@ const IDS_J29_MONDE: Array[StringName] = [
 ]
 ## J29 : la porte de la Ligue est un passage « À venir » (libellé du warp) ; ce texte attend le J30.
 const UNUSED_YET: Array[StringName] = [&"indigo_league_door",
+	# Jalon 32 (N-11, lot 32G) : Électhor attend la carte de la Centrale (grille à valider).
+	&"zapdos_presence", &"zapdos_flew_away",
 	# Jalon 21 (T21) : `route_11_snorlax` repris par `snorlax_route_12` (retiré de la liste).
 	&"dark_cave_1f_sign", &"dark_cave_column", &"dark_cave_roots", &"dark_cave_crack",
 	&"dark_cave_b1f_hidden_1",
@@ -498,6 +500,8 @@ const MAPS: Array[StringName] = [
 	&"digletts_cave",
 	# Jalon 17 (T19) : le couloir de la Route 2 est et le poste de l'assistant.
 	&"route_2_east", &"route_2_east_gate",
+	# Jalon 32 (N-14) : poste de la Route 18 (échange Flagadoss → Excelangue).
+	&"route_18_gate",
 	# Jalon 16 (T11) : l'Arène de Carmin (puzzle et barrière ; Major Bob et les siens au T14).
 	&"vermilion_gym",
 	# Jalon 16 (T12) : la vie du navire (les 7 cartes à fouler ; couloir et cabine du capitaine = T13).
@@ -560,7 +564,23 @@ const MAPS: Array[StringName] = [
 ## Les répliques communes (flûte jouée, réveil, calme, rendormi) sont celles de `j21_snorlax.json`.
 const IDS_J21_T22: Array[StringName] = [&"snorlax_route_16"]
 ## Jalon 32 (N-18) : Ronflex d'après la Ligue (Route 10), textes du J21 repris tels quels.
-const IDS_J32: Array[StringName] = [&"snorlax_post_league"]
+const IDS_J32: Array[StringName] = [&"snorlax_post_league",
+	# N-13 (Porygon), N-14 (échanges PNJ de Rouge/Bleu), N-11 (Électhor) : textes [D] à valider.
+	&"silph_co_porygon_giver",
+	&"silph_co_porygon_received", &"silph_co_porygon_stored", &"zapdos_presence",
+	&"zapdos_flew_away", &"j32_trade_remi", &"j32_trade_leon", &"j32_trade_aline",
+	&"j32_trade_hugo", &"j32_trade_theo", &"j32_trade_remi_offer", &"j32_trade_remi_refuse",
+	&"j32_trade_remi_wrong", &"j32_trade_remi_thanks", &"j32_trade_remi_after",
+	&"j32_trade_remi_done", &"j32_trade_leon_offer", &"j32_trade_leon_refuse",
+	&"j32_trade_leon_wrong", &"j32_trade_leon_thanks", &"j32_trade_leon_after",
+	&"j32_trade_leon_done", &"j32_trade_aline_offer", &"j32_trade_aline_refuse",
+	&"j32_trade_aline_wrong", &"j32_trade_aline_thanks", &"j32_trade_aline_after",
+	&"j32_trade_aline_done", &"j32_trade_hugo_offer", &"j32_trade_hugo_refuse",
+	&"j32_trade_hugo_wrong", &"j32_trade_hugo_thanks", &"j32_trade_hugo_after",
+	&"j32_trade_hugo_done", &"j32_trade_theo_offer", &"j32_trade_theo_refuse",
+	&"j32_trade_theo_wrong", &"j32_trade_theo_thanks", &"j32_trade_theo_after",
+	&"j32_trade_theo_done"
+]
 ## Jalon 21 (T22) : textes validés (dossier 24 §15.6.3, §15.7 ; T-6 et T-7 du J17), page par page.
 const TEXTS_J21_T22: Dictionary[StringName, Array] = {
 	&"snorlax_route_16": ["Ronflex dort de nouveau.", "Il ronfle comme si de rien n'était.",
@@ -1517,7 +1537,11 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		&"viridian_gym_giovanni_intro", &"viridian_gym_giovanni_lost", &"viridian_gym_giovanni_resume",
 		&"viridian_gym_giovanni_tm", &"viridian_gym_giovanni_tm_got", &"viridian_gym_giovanni_won"]
 		# Jalon 31 (T4) : cri de Mewtwo avant le combat.
-		+ [&"mewtwo_cry"]))
+		+ [&"mewtwo_cry"]
+		# Jalon 32 (N-13, N-14, N-11) : Porygon, échanges PNJ de RB, Électhor.
+		+ [&"silph_co_porygon_received", &"silph_co_porygon_stored", &"zapdos_presence",
+		&"zapdos_flew_away"]
+		+ J32_TRADE_LINES))
 	for id: StringName in played:
 		assert_true(_library.has_dialogue(id), "dialogue « %s » défini" % id)
 		if UNUSED_YET.has(id) or IDS_J31.has(id):
@@ -1637,13 +1661,19 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 			+ [&"snorlax_route_16_seen"]
 			# Jalon 25 : réponses du quiz, offre d'échange acceptée ou refusée (choix OUI / NON).
 			+ [&"cinnabar_gym_quiz_no", &"cinnabar_gym_quiz_yes", &"cinnabar_trade_offer_accepted",
-				&"cinnabar_trade_offer_declined"]))
+				&"cinnabar_trade_offer_declined"]
+			# Jalon 32 (N-14) : offre d'échange des PNJ de Rouge/Bleu.
+			+ [&"j32_trade_offer_accepted", &"j32_trade_offer_declined"]))
 	assert_eq(cutscenes.get_set_flags(), _sorted(SET_J29 + [&"got_tm39", &"route_12_visited",
 		&"snorlax_route_12_awake", &"snorlax_route_12_caught", &"snorlax_route_12_done",
 		&"snorlax_route_12_woken", &"badge_boulder", &"badge_cascade",
 		# Jalon 32 (N-18) : Ronflex d'après la Ligue.
 		&"snorlax_post_league_awake", &"snorlax_post_league_caught", &"snorlax_post_league_done",
 		&"snorlax_post_league_woken",
+		# Jalon 32 (N-13, N-14, N-11) : Porygon, échanges PNJ de RB, Électhor.
+		&"silph_porygon_received", &"route_2_trade_mr_mime_done", &"vermilion_trade_farfetchd_done",
+		&"route_18_trade_lickitung_done", &"route_5_trade_nidoran_f_done",
+		&"route_11_trade_nidorina_done", &"zapdos_caught", &"zapdos_done",
 		&"beaten_mt_moon_researcher", &"beaten_nugget_rocket", &"brock_met", &"cerulean_reached", &"got_mt_moon_1f_hidden_1",
 		&"got_mt_moon_1f_item_1", &"got_mt_moon_b1f_item_1", &"got_mt_moon_b1f_item_2",
 		&"got_mt_moon_b2f_hidden_1", &"got_mt_moon_b2f_item_1", &"got_nugget", &"got_oak_parcel",
@@ -1932,7 +1962,39 @@ func test_mom_first_variant_is_automatic_and_only_hers() -> void:
 ## sauf ceux qui attendent sa relecture, nommés ici (« id:variante »).
 ## Jalon 16 (décisions du 2026-10-16) : indice du guide de l'Arène de Carmin (type Sol), validé le
 ## 2026-10-16 ; jalon 17 : accord de T-2 à 1 espèce validé (Q-2, 2026-10-16) : liste vide.
-const PENDING_DRAFT_VARIANTS: Array[String] = []
+## Jalon 32 : textes validés par Kevin (passe `j32-arbitrages-kevin.md` §5, N-16), page par page.
+const TEXTS_J32: Dictionary[StringName, Array] = {
+	&"silph_co_porygon_giver": ["Notre prototype, Porygon. Un Pokémon\nfait de données. Il est à toi."],
+}
+## Jalon 32 (N-14) : répliques des échanges PNJ jouées par leurs scènes.
+const J32_TRADE_LINES: Array[StringName] = [
+	&"j32_trade_remi_offer", &"j32_trade_remi_refuse", &"j32_trade_remi_wrong",
+	&"j32_trade_remi_thanks", &"j32_trade_remi_after", &"j32_trade_remi_done",
+	&"j32_trade_leon_offer", &"j32_trade_leon_refuse", &"j32_trade_leon_wrong",
+	&"j32_trade_leon_thanks", &"j32_trade_leon_after", &"j32_trade_leon_done",
+	&"j32_trade_aline_offer", &"j32_trade_aline_refuse", &"j32_trade_aline_wrong",
+	&"j32_trade_aline_thanks", &"j32_trade_aline_after", &"j32_trade_aline_done",
+	&"j32_trade_hugo_offer", &"j32_trade_hugo_refuse", &"j32_trade_hugo_wrong",
+	&"j32_trade_hugo_thanks", &"j32_trade_hugo_after", &"j32_trade_hugo_done",
+	&"j32_trade_theo_offer", &"j32_trade_theo_refuse", &"j32_trade_theo_wrong",
+	&"j32_trade_theo_thanks", &"j32_trade_theo_after", &"j32_trade_theo_done"
+]
+## Jalon 32 : textes [D] à valider par Kevin (Porygon, échanges PNJ de RB, Électhor).
+const PENDING_DRAFT_VARIANTS: Array[String] = [
+	"silph_co_porygon_giver:0",
+	"j32_trade_remi_offer:0", "j32_trade_remi_refuse:0", "j32_trade_remi_wrong:0",
+	"j32_trade_remi_thanks:0", "j32_trade_remi_after:0", "j32_trade_remi_done:0",
+	"j32_trade_leon_offer:0", "j32_trade_leon_refuse:0", "j32_trade_leon_wrong:0",
+	"j32_trade_leon_thanks:0", "j32_trade_leon_after:0", "j32_trade_leon_done:0",
+	"j32_trade_aline_offer:0", "j32_trade_aline_refuse:0", "j32_trade_aline_wrong:0",
+	"j32_trade_aline_thanks:0", "j32_trade_aline_after:0", "j32_trade_aline_done:0",
+	"j32_trade_hugo_offer:0", "j32_trade_hugo_refuse:0", "j32_trade_hugo_wrong:0",
+	"j32_trade_hugo_thanks:0", "j32_trade_hugo_after:0", "j32_trade_hugo_done:0",
+	"j32_trade_theo_offer:0", "j32_trade_theo_refuse:0", "j32_trade_theo_wrong:0",
+	"j32_trade_theo_thanks:0", "j32_trade_theo_after:0", "j32_trade_theo_done:0",
+	"zapdos_presence:0", "zapdos_flew_away:0", "silph_co_porygon_received:0",
+	"silph_co_porygon_stored:0",
+]
 
 
 func test_no_dialogue_nor_variant_is_draft() -> void:
@@ -2030,6 +2092,9 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			continue
 		if TEXTS_J26_T6.has(row[0]):
 			assert_eq(row[1], TEXTS_J26_T6[row[0]], String(row[0]))
+			continue
+		if TEXTS_J32.has(row[0]):
+			assert_true(TEXTS_J32[row[0]].has(row[1]), "%s : %s" % [row[0], row[1]])
 			continue
 		if TEXTS_J21_T22.has(row[0]):
 			assert_true(TEXTS_J21_T22[row[0]].has(text_t22(row[1])), "%s : %s" % [row[0], row[1]])
@@ -2352,7 +2417,8 @@ func test_oak_parcel_lines() -> void:
 	# Jalon 28 (T8) : Giovanni (Arène et rattrapage de la CT27) et le Rappel de l'Arène.
 	# Jalon 29 : dix objets au sol, cinq cachés, huit gardes, le rival n° 7 et Sulfura.
 	# Jalon 31 (T4) : huit objets au sol et deux cachés de la Grotte Azurée, Mewtwo.
-	assert_eq(launched, 200, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
+	# Jalon 32 : cinq échanges PNJ de Rouge/Bleu (N-14) et Porygon (N-13).
+	assert_eq(launched, 206, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
 		+ "sa CT34, Ondine (pont, Arène et rattrapage), écran, module, console, objets de la "
 		+ "Route 25, le Rocket d'Azuria (2) et le barrage sud ; J15 : objets de la Route 5 ; "
 		+ "J16 : Major Bob (2), neuf objets du S.S. Anne, le capitaine, le marin (2) ; "
@@ -2365,7 +2431,7 @@ func test_oak_parcel_lines() -> void:
 		+ "J24 : objets (2), caches (2), Artikodin, CT35, fossiles (2) ; J25 : Ptéra (1) ; "
 		+ "J26 : Lokhlass, Master Ball, deux objets du 7F ; J27 : Morgane, maître, deux Balls ; "
 		+ "J28 : Giovanni (2), Rappel ; J29 : objets, cachés, gardes, rival n° 7 et Sulfura ; "
-		+ "J31 : Grotte Azurée (8 objets, 2 caches, Mewtwo)")
+		+ "J31 : Grotte Azurée (8 objets, 2 caches, Mewtwo) ; J32 : échanges (5), Porygon")
 	# Le jeton n'apparaît que dans la réplique de l'espèce, « {pokemon} » dans les phrases du
 	# compagnon (J11), et ceux de la Pension dans ses répliques (J15).
 	for row: Array in _pages():
@@ -2394,6 +2460,8 @@ func test_oak_parcel_lines() -> void:
 				or (row[0] == &"rival_route22_final_greet" and row[1].contains("{player}")) \
 				or String(row[0]).begins_with("cinnabar_fossil_received_") \
 				or (String(row[0]).begins_with("cinnabar_trade_") and row[1].contains("{player}")) \
+				or (String(row[0]).begins_with("j32_trade_") and row[1].contains("{player}")) \
+				or row[0] == &"silph_co_porygon_received" \
 				or (row[0] == &"cinnabar_gym_guide" and row[1].contains("{player}")) \
 				or row[0] == &"cinnabar_lab_tm35_use" \
 				or (row[0] in [&"route_12_gate_tm39_got", &"snorlax_flute_played"] \

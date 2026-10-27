@@ -20,6 +20,8 @@ enum Status {
 }
 
 const DATA_PATH: String = "res://data/trades/cinnabar.json"
+## Jalon 32 (N-14) : tous les fichiers d'échanges (Cramois'Île, échanges RB de `rb_trades.json`).
+const DATA_DIR: String = "res://data/trades/"
 ## Origine du Pokémon reçu (ajoutée en fin d'énumération à l'intégration du J25).
 const RECEIVED_ORIGIN: Pokemon.Origin = Pokemon.Origin.TRADE
 
@@ -27,10 +29,30 @@ var _trades: Dictionary[StringName, Dictionary] = {}
 var _errors: PackedStringArray = PackedStringArray()
 
 
-static func load_default(path: String = DATA_PATH) -> InGameTrade:
+## Sans [param path] : tous les `.json` de [constant DATA_DIR], par ordre alphabétique (jalon 32).
+static func load_default(path: String = "") -> InGameTrade:
 	var trade := InGameTrade.new()
-	trade.load_file(path)
+	if path.is_empty():
+		trade.load_dir()
+	else:
+		trade.load_file(path)
 	return trade
+
+
+## Charge tous les `.json` de [param dir] ; un identifiant en double est une erreur.
+func load_dir(dir: String = DATA_DIR) -> bool:
+	var files := DirAccess.get_files_at(dir)
+	if files.is_empty():
+		return _fail("dossier vide ou introuvable : %s" % dir)
+	var names: Array[String] = []
+	for name: String in files:
+		if name.ends_with(".json"):
+			names.append(name)
+	names.sort()
+	var ok := true
+	for name: String in names:
+		ok = load_file(dir.path_join(name)) and ok
+	return ok
 
 
 func load_file(path: String = DATA_PATH) -> bool:
@@ -48,6 +70,8 @@ func load_file(path: String = DATA_PATH) -> bool:
 		for key: String in ["npc", "trainer_name", "wants", "gives", "nickname"]:
 			if not (t as Dictionary).has(key):
 				return _fail("%s : « %s » sans « %s »" % [path, id, key])
+		if _trades.has(StringName(id)):
+			return _fail("%s : échange « %s » déjà défini" % [path, id])
 		_trades[StringName(id)] = t
 	return true
 

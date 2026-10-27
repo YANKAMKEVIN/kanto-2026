@@ -89,7 +89,8 @@ func test_quiz_rejects_bad_file() -> void:
 func test_real_trade_file_loads() -> void:
 	var trade := InGameTrade.load_default()
 	assert_eq(trade.get_errors().size(), 0)
-	assert_eq(trade.ids().size(), 3)
+	# Jalon 32 (N-14) : + cinq échanges PNJ de Rouge/Bleu (`rb_trades.json`).
+	assert_eq(trade.ids().size(), 8)
 	assert_eq(str(trade.get_trade(&"cinnabar_trade_seel")["nickname"]), "Bibi")
 
 

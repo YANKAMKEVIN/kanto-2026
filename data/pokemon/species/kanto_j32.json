@@ -1,0 +1,38 @@
+{
+	"electabuzz": {
+		"dex": 125, "name": "Élektek", "types": ["electric"],
+		"base_stats": { "hp": 65, "atk": 83, "def": 57, "spa": 85, "spd": 85, "spe": 105 },
+		"male_ratio": 0.75, "growth_rate": "medium_fast", "base_exp": 156, "catch_rate": 45,
+		"learnset": [
+			[1, "quick_attack"], [1, "leer"], [34, "thunder_shock"], [37, "screech"],
+			[42, "thunder_punch"], [49, "light_screen"], [54, "thunder"]
+		]
+	},
+	"porygon": {
+		"dex": 137, "name": "Porygon", "types": ["normal"],
+		"base_stats": { "hp": 65, "atk": 60, "def": 70, "spa": 75, "spd": 75, "spe": 40 },
+		"male_ratio": -1, "growth_rate": "medium_fast", "base_exp": 130, "catch_rate": 45,
+		"learnset": [
+			[1, "tackle"], [1, "sharpen"], [1, "conversion"], [23, "psybeam"], [28, "recover"],
+			[35, "agility"], [42, "tri_attack"]
+		]
+	},
+	"zapdos": {
+		"dex": 145, "name": "Électhor", "types": ["electric", "flying"],
+		"base_stats": { "hp": 90, "atk": 90, "def": 85, "spa": 125, "spd": 125, "spe": 100 },
+		"male_ratio": -1, "growth_rate": "slow", "base_exp": 216, "catch_rate": 3,
+		"learnset": [
+			[1, "thunder_shock"], [1, "drill_peck"], [51, "thunder"], [55, "agility"],
+			[60, "light_screen"]
+		]
+	},
+	"dratini": {
+		"dex": 147, "name": "Minidraco", "types": ["dragon"],
+		"base_stats": { "hp": 41, "atk": 64, "def": 45, "spa": 50, "spd": 50, "spe": 50 },
+		"male_ratio": 0.5, "growth_rate": "slow", "base_exp": 67, "catch_rate": 45,
+		"learnset": [
+			[1, "wrap"], [1, "leer"], [10, "thunder_wave"], [20, "agility"], [30, "slam"],
+			[40, "dragon_rage"], [50, "hyper_beam"]
+		]
+	}
+}

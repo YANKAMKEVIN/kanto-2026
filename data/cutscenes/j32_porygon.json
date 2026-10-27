@@ -1,0 +1,9 @@
+{
+	"silph_co_porygon_gift": {
+		"unless": ["silph_porygon_received"],
+		"steps": [
+			{ "gift_pokemon": "porygon", "level": 26, "flag": "silph_porygon_received",
+				"say": "silph_co_porygon_received", "say_stored": "silph_co_porygon_stored" }
+		]
+	}
+}

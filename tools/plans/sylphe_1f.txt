@@ -84,6 +84,7 @@ from_2f                 spawn          26,1         libre   paire=e1_2 facing=do
 ascenseur               ascenseur      20,0         libre   etage=1F vers=silph_co_elevator:entrance  # porte de l'ascenseur (RB warp 4)
 from_elevator           spawn          20,1         libre   paire=ascenseur etage=1F facing=down  # sortie de la cabine, une case devant la porte
 hotesse                 pnj            4,2          bloque  role=silph_co_1f_receptionist facing=down  # RB SPRITE_LINK_RECEPTIONIST, STAY
+porygon                 pnj            24,11        bloque  role=silph_co_porygon_giver facing=down if=silph_giovanni_defeated  # J32 N-13 [D] : employé qui confie Porygon après Giovanni
 sortie_ville            warp           10..11,17    libre   vers=saffron_city:from_silph  # PUSH ↓ (RB warps 1 et 2 → Safrania warp 6, porte de la Sylphe)
 from_city               spawn          10..11,16    libre   facing=up  # arrivée depuis Safrania, une case devant la sortie
 depart                  depart         10,16        libre     # repère du contrôle (plan_check_teleports.py) : entrée du joueur ; ignoré par la construction

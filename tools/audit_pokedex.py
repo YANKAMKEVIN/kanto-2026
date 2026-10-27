@@ -37,8 +37,8 @@ import sys
 from dataclasses import dataclass, field
 
 DEFAULT_REFS = [
-    "origin/main", "origin/jalon-23", "origin/jalon-26", "origin/jalon-27", "origin/jalon-28",
-    "origin/jalon-29", "origin/jalon-30", "origin/jalon-31", "HEAD",
+    # Depuis le 2026-10-27, `main` contient J23, J24 à J29 et J31 ; seul le J30 (Ligue) attend.
+    "origin/main", "origin/jalon-30", "HEAD",
 ]
 
 # Les 151 espèces de Kanto : identifiant du projet, nom français (repli si aucune donnée).
@@ -152,6 +152,9 @@ CHOICE_RULES = {
     "evolutions:eevee": ("N-9", "deux Évoli de plus sur le toit de Céladopole après la Ligue"),
 }
 TRADE_RULE = ("N-15 / T4", "terminal d'échange local dans tous les Centres")
+
+# Rencontres fixes dont la carte n'existe pas encore : la voie ne compte que si la carte existe.
+STATIC_MAPS = {"zapdos": "power_plant"}
 
 STATUS_OK = "obtenable"
 STATUS_CHOICE = "choix unique"
@@ -346,9 +349,12 @@ def collect(source) -> RefData:
                 if step.get("uncatchable") or step.get("ghost"):
                     continue
                 sid = step["wild_battle"]
+                needed = STATIC_MAPS.get(sid)
+                exists = needed is None or not maps or needed in maps
                 data.ways.append(Way(kind="fixe", species=sid,
                                      detail=f"{name} (N{step.get('level', '?')})",
-                                     key=f"static:{name}:{sid}"))
+                                     key=f"static:{name}:{sid}", valid=exists,
+                                     note="" if exists else f"carte {needed} absente"))
 
     for path in json_files(source, "data/shops"):
         for node in walk_dicts(load_json(source, path)):

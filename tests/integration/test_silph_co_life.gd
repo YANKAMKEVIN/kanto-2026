@@ -161,6 +161,10 @@ func test_occupied_then_liberated_presence() -> void:
 			if spec.is_trainer():
 				assert_true(occupied, "%s présent pendant l'occupation" % spec.id)
 				assert_false(freed, "%s parti à la libération" % spec.id)
+			elif spec.id == &"silph_co_porygon_giver":
+				# Jalon 32 (N-13) : l'employé de Porygon n'arrive qu'après Giovanni.
+				assert_false(occupied, "%s absent pendant l'occupation" % spec.id)
+				assert_true(freed, "%s présent après Giovanni" % spec.id)
 			else:
 				assert_true(occupied and freed, "%s : présent des deux côtés" % spec.id)
 	var map := _load_map(2)

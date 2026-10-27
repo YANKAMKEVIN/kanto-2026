@@ -7,5 +7,17 @@
 		"facing": "down",
 		"sprite": "hostess",
 		"dialogue": "silph_co_1f_receptionist"
+	},
+	"silph_co_porygon_giver": {
+		"cell": [
+			24,
+			11
+		],
+		"facing": "down",
+		"sprite": "engineer",
+		"dialogue": "silph_co_porygon_giver",
+		"if": [
+			"silph_giovanni_defeated"
+		]
 	}
 }

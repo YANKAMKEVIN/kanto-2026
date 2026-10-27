@@ -1,0 +1,45 @@
+{
+	"_comment": "Jalon 32, N-14 (validé par Kevin le 2026-10-24) : échanges PNJ de Rouge/Bleu. Lieux, prénoms des PNJ, surnoms (d'après les surnoms anglais de RB) et textes : valeurs par défaut [D] à valider par Kevin. Têtarte → Lippoutou (Azuria) attend la fusion du J30 (Lippoutou n'est pas encore dans `main`).",
+	"trades": {
+		"route_2_trade_mr_mime": {
+			"npc": "echangeur",
+			"trainer_name": "Rémi",
+			"wants": "abra",
+			"gives": "mr_mime",
+			"nickname": "Marcel",
+			"lines": "remi"
+		},
+		"vermilion_trade_farfetchd": {
+			"npc": "echangeur",
+			"trainer_name": "Léon",
+			"wants": "spearow",
+			"gives": "farfetchd",
+			"nickname": "Dux",
+			"lines": "leon"
+		},
+		"route_18_trade_lickitung": {
+			"npc": "echangeur",
+			"trainer_name": "Aline",
+			"wants": "slowbro",
+			"gives": "lickitung",
+			"nickname": "Marc",
+			"lines": "aline"
+		},
+		"route_5_trade_nidoran_f": {
+			"npc": "echangeur",
+			"trainer_name": "Hugo",
+			"wants": "nidoran_m",
+			"gives": "nidoran_f",
+			"nickname": "Spot",
+			"lines": "hugo"
+		},
+		"route_11_trade_nidorina": {
+			"npc": "echangeur",
+			"trainer_name": "Théo",
+			"wants": "nidorino",
+			"gives": "nidorina",
+			"nickname": "Terry",
+			"lines": "theo"
+		}
+	}
+}

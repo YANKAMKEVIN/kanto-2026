@@ -345,6 +345,14 @@ const VARIANT_FLAGS: Dictionary = {
 	&"route_16_visited": [PEWTER_FLAGS], &"snorlax_route_16_wake": [PEWTER_FLAGS],
 	# Jalon 32 (N-18) : Ronflex d'après la Ligue, présent seulement après la règle de la Ligue.
 	&"snorlax_post_league_wake": [PEWTER_FLAGS + [&"snorlax_post_league_present"]],
+	# Jalon 32 (N-13, N-14, N-11) : Porygon, échanges PNJ de Rouge/Bleu, Électhor.
+	&"silph_co_porygon_gift": [[&"silph_giovanni_defeated"]],
+	&"j32_trade_remi": [PEWTER_FLAGS + [&"route_2_trade_mr_mime_done"], PEWTER_FLAGS],
+	&"j32_trade_leon": [PEWTER_FLAGS + [&"vermilion_trade_farfetchd_done"], PEWTER_FLAGS],
+	&"j32_trade_aline": [PEWTER_FLAGS + [&"route_18_trade_lickitung_done"], PEWTER_FLAGS],
+	&"j32_trade_hugo": [PEWTER_FLAGS + [&"route_5_trade_nidoran_f_done"], PEWTER_FLAGS],
+	&"j32_trade_theo": [PEWTER_FLAGS + [&"route_11_trade_nidorina_done"], PEWTER_FLAGS],
+	&"zapdos": [[]],
 	# Jalon 19 (T18) : zone purifiée et objets de la Tour.
 	&"tower_purified_zone": [PEWTER_FLAGS], &"tower_3f_objet_1": [PEWTER_FLAGS],
 	&"tower_4f_objet_1": [PEWTER_FLAGS], &"tower_4f_objet_2": [PEWTER_FLAGS],
@@ -713,6 +721,13 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"mewtwo": &"cerulean_cave_b1f",
 	# Jalon 32 (N-18) : Ronflex du belvédère de la Route 10 (« flute_cutscene » et choix OUI).
 	&"snorlax_post_league_wake": &"route_10",
+	# Jalon 32 (N-13, N-14) : Porygon (dialogue de l'employé du 1F) et échanges PNJ.
+	&"silph_co_porygon_gift": &"silph_co_1f",
+	&"j32_trade_remi": &"route_2_east_gate",
+	&"j32_trade_leon": &"vermilion_house_2",
+	&"j32_trade_aline": &"route_18_gate",
+	&"j32_trade_hugo": &"route_5_underground_gate",
+	&"j32_trade_theo": &"route_12_gate_2f",
 }
 ## Jalon 21 (T10, T12) : objets du Sac qui choisissent chaque variante (« if_items » /
 ## « unless_items »), ligne par ligne comme VARIANT_FLAGS ; absent : Sac vide. La variante A du
@@ -724,7 +739,8 @@ const VARIANT_ITEMS: Dictionary = {
 ## PNJ de son fichier). Vidée au T19 du jalon 9 (la forêt existe), puis au T11 du jalon 10 (les
 ## deux scènes d'Argenta ont leurs déclencheurs sur la carte).
 ## Jalon 31 (T6) : vidée, les cartes de la Grotte Azurée existent (ses scènes sont dans CODE_PLAYED).
-const AWAITING_MAP: Dictionary[StringName, StringName] = {}
+## Jalon 32 (N-11, lot 32G) : Électhor attend la carte de la Centrale (grille à valider par Kevin).
+const AWAITING_MAP: Dictionary[StringName, StringName] = {&"zapdos": &"power_plant"}
 ## Jalon 20 (T21) : interrupteur du Casino, Clé, Giovanni, Scope, objets et caches du repaire.
 const J20_T21_IDS: Array[StringName] = [
 	&"game_corner_switch", &"rocket_hideout_key_drop", &"rocket_hideout_b4f_lift_key",
@@ -932,8 +948,9 @@ func test_library_loads_without_error() -> void:
 		# Jalon 27 (T8 à T10) : Morgane, maître du Dojo, choix Kicklee / Tygnon.
 		+ [&"saffron_gym_sabrina", &"saffron_gym_sabrina_tm_late", &"fighting_dojo_master",
 		&"fighting_dojo_take_hitmonlee", &"fighting_dojo_take_hitmonchan"]
-		# Jalon 32 (N-18) : Ronflex d'après la Ligue.
-		+ [&"snorlax_post_league_wake"]))
+		# Jalon 32 (N-18) : Ronflex d'après la Ligue ; N-13, N-14, N-11.
+		+ [&"snorlax_post_league_wake", &"silph_co_porygon_gift", &"zapdos",
+		&"j32_trade_remi", &"j32_trade_leon", &"j32_trade_aline", &"j32_trade_hugo", &"j32_trade_theo"]))
 
 
 func _sorted(values: Array) -> Array[StringName]:

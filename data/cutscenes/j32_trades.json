@@ -1,0 +1,262 @@
+{
+	"j32_trade_remi": {
+		"variants": [
+			{
+				"if": [
+					"route_2_trade_mr_mime_done"
+				],
+				"steps": [
+					{
+						"dialogue": "j32_trade_remi_after"
+					}
+				]
+			},
+			{
+				"steps": [
+					{
+						"unset": [
+							"j32_trade_offer_accepted",
+							"j32_trade_offer_declined"
+						]
+					},
+					{
+						"dialogue": "j32_trade_remi_offer"
+					},
+					{
+						"dialogue": "j32_trade_remi_refuse",
+						"if": [
+							"j32_trade_offer_declined"
+						]
+					},
+					{
+						"trade": "route_2_trade_mr_mime",
+						"wrong": "j32_trade_remi_wrong",
+						"refuse": "j32_trade_remi_refuse",
+						"say": [
+							"cinnabar_trade_cable",
+							"j32_trade_remi_done",
+							"j32_trade_remi_thanks"
+						],
+						"if": [
+							"j32_trade_offer_accepted"
+						]
+					},
+					{
+						"unset": [
+							"j32_trade_offer_accepted",
+							"j32_trade_offer_declined"
+						]
+					}
+				]
+			}
+		]
+	},
+	"j32_trade_leon": {
+		"variants": [
+			{
+				"if": [
+					"vermilion_trade_farfetchd_done"
+				],
+				"steps": [
+					{
+						"dialogue": "j32_trade_leon_after"
+					}
+				]
+			},
+			{
+				"steps": [
+					{
+						"unset": [
+							"j32_trade_offer_accepted",
+							"j32_trade_offer_declined"
+						]
+					},
+					{
+						"dialogue": "j32_trade_leon_offer"
+					},
+					{
+						"dialogue": "j32_trade_leon_refuse",
+						"if": [
+							"j32_trade_offer_declined"
+						]
+					},
+					{
+						"trade": "vermilion_trade_farfetchd",
+						"wrong": "j32_trade_leon_wrong",
+						"refuse": "j32_trade_leon_refuse",
+						"say": [
+							"cinnabar_trade_cable",
+							"j32_trade_leon_done",
+							"j32_trade_leon_thanks"
+						],
+						"if": [
+							"j32_trade_offer_accepted"
+						]
+					},
+					{
+						"unset": [
+							"j32_trade_offer_accepted",
+							"j32_trade_offer_declined"
+						]
+					}
+				]
+			}
+		]
+	},
+	"j32_trade_aline": {
+		"variants": [
+			{
+				"if": [
+					"route_18_trade_lickitung_done"
+				],
+				"steps": [
+					{
+						"dialogue": "j32_trade_aline_after"
+					}
+				]
+			},
+			{
+				"steps": [
+					{
+						"unset": [
+							"j32_trade_offer_accepted",
+							"j32_trade_offer_declined"
+						]
+					},
+					{
+						"dialogue": "j32_trade_aline_offer"
+					},
+					{
+						"dialogue": "j32_trade_aline_refuse",
+						"if": [
+							"j32_trade_offer_declined"
+						]
+					},
+					{
+						"trade": "route_18_trade_lickitung",
+						"wrong": "j32_trade_aline_wrong",
+						"refuse": "j32_trade_aline_refuse",
+						"say": [
+							"cinnabar_trade_cable",
+							"j32_trade_aline_done",
+							"j32_trade_aline_thanks"
+						],
+						"if": [
+							"j32_trade_offer_accepted"
+						]
+					},
+					{
+						"unset": [
+							"j32_trade_offer_accepted",
+							"j32_trade_offer_declined"
+						]
+					}
+				]
+			}
+		]
+	},
+	"j32_trade_hugo": {
+		"variants": [
+			{
+				"if": [
+					"route_5_trade_nidoran_f_done"
+				],
+				"steps": [
+					{
+						"dialogue": "j32_trade_hugo_after"
+					}
+				]
+			},
+			{
+				"steps": [
+					{
+						"unset": [
+							"j32_trade_offer_accepted",
+							"j32_trade_offer_declined"
+						]
+					},
+					{
+						"dialogue": "j32_trade_hugo_offer"
+					},
+					{
+						"dialogue": "j32_trade_hugo_refuse",
+						"if": [
+							"j32_trade_offer_declined"
+						]
+					},
+					{
+						"trade": "route_5_trade_nidoran_f",
+						"wrong": "j32_trade_hugo_wrong",
+						"refuse": "j32_trade_hugo_refuse",
+						"say": [
+							"cinnabar_trade_cable",
+							"j32_trade_hugo_done",
+							"j32_trade_hugo_thanks"
+						],
+						"if": [
+							"j32_trade_offer_accepted"
+						]
+					},
+					{
+						"unset": [
+							"j32_trade_offer_accepted",
+							"j32_trade_offer_declined"
+						]
+					}
+				]
+			}
+		]
+	},
+	"j32_trade_theo": {
+		"variants": [
+			{
+				"if": [
+					"route_11_trade_nidorina_done"
+				],
+				"steps": [
+					{
+						"dialogue": "j32_trade_theo_after"
+					}
+				]
+			},
+			{
+				"steps": [
+					{
+						"unset": [
+							"j32_trade_offer_accepted",
+							"j32_trade_offer_declined"
+						]
+					},
+					{
+						"dialogue": "j32_trade_theo_offer"
+					},
+					{
+						"dialogue": "j32_trade_theo_refuse",
+						"if": [
+							"j32_trade_offer_declined"
+						]
+					},
+					{
+						"trade": "route_11_trade_nidorina",
+						"wrong": "j32_trade_theo_wrong",
+						"refuse": "j32_trade_theo_refuse",
+						"say": [
+							"cinnabar_trade_cable",
+							"j32_trade_theo_done",
+							"j32_trade_theo_thanks"
+						],
+						"if": [
+							"j32_trade_offer_accepted"
+						]
+					},
+					{
+						"unset": [
+							"j32_trade_offer_accepted",
+							"j32_trade_offer_declined"
+						]
+					}
+				]
+			}
+		]
+	}
+}

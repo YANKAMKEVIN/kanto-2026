@@ -1,0 +1,44 @@
+{
+	"silph_co_porygon_giver": {
+		"speaker": "Employé",
+		"variants": [
+			{
+				"if": [
+					"silph_porygon_received"
+				],
+				"draft": true,
+				"pages": [
+					"Prends bien soin de Porygon.\nIl apprend vite."
+				]
+			},
+			{
+				"pages": [
+					"Notre prototype, Porygon. Un Pokémon\nfait de données. Il est à toi."
+				],
+				"cutscene": "silph_co_porygon_gift"
+			}
+		]
+	},
+	"silph_co_porygon_received": {
+		"narration": true,
+		"variants": [
+			{
+				"draft": true,
+				"pages": [
+					"{player} reçoit Porygon !"
+				]
+			}
+		]
+	},
+	"silph_co_porygon_stored": {
+		"narration": true,
+		"variants": [
+			{
+				"draft": true,
+				"pages": [
+					"Porygon a été envoyé au stockage."
+				]
+			}
+		]
+	}
+}

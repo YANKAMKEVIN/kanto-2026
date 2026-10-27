@@ -1,0 +1,21 @@
+{
+	"zapdos": {
+		"variants": [
+			{
+				"unless": ["zapdos_done"],
+				"steps": [
+					{ "dialogue": "zapdos_presence" },
+					{
+						"wild_battle": "zapdos", "level": 50, "intro": "legendary",
+						"actor": "zapdos",
+						"static": { "done": "zapdos_done", "caught": "zapdos_caught" }
+					},
+					{
+						"dialogue": "zapdos_flew_away",
+						"if": ["zapdos_done"], "unless": ["zapdos_caught"]
+					}
+				]
+			}
+		]
+	}
+}

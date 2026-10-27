@@ -28,7 +28,9 @@ const PEOPLE := {
 	},
 	&"vermilion_fisher_house": {&"fisher": [&"haru", &"vermilion_fisher"]},
 	&"vermilion_house_1": {&"resident": [&"old_man", &"vermilion_house_1_resident"]},
-	&"vermilion_house_2": {&"resident": [&"lass", &"vermilion_house_2_resident"]},
+	# Jalon 32 (N-14) : l'échangeur Piafabec → Canarticho [D].
+	&"vermilion_house_2": {&"resident": [&"lass", &"vermilion_house_2_resident"],
+		&"echangeur": [&"old_man", &"j32_trade_leon"]},
 	&"vermilion_center": {&"nurse": [&"nurse", &""]},
 	&"vermilion_mart": {&"clerk": [&"clerk", &""]},
 }
