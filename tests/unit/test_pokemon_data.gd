@@ -248,6 +248,8 @@ func test_real_evolution_chains() -> void:
 		&"ponyta": [&"rapidash", 40],
 		# Jalon 32 (lot 32K, `jalon-32.md` T3) : Rouge/Bleu entre espèces présentes.
 		&"machop": [&"machoke", 28], &"voltorb": [&"electrode", 30], &"koffing": [&"weezing", 35],
+		# Jalon 32 (32K, après la fusion du J29 : Noadkoko présent) : Pierre Plante.
+		&"exeggcute": [&"exeggutor", &"leaf_stone"],
 	}
 	var eevee := _data.get_species(&"eevee").evolutions
 	assert_eq(eevee.map(func(r: EvolutionRule) -> Array: return [r.into, r.method, r.item]), [

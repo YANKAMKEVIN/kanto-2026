@@ -25,7 +25,8 @@
 		"learnset": [
 			[1, "barrage"], [1, "hypnosis"], [25, "reflect"], [28, "leech_seed"],
 			[32, "stun_spore"], [37, "poison_powder"], [42, "solar_beam"], [48, "sleep_powder"]
-		]
+		],
+		"evolutions": [{ "into": "exeggutor", "method": "item", "item": "leaf_stone" }]
 	},
 	"cubone": {
 		"dex": 104, "name": "Osselait", "types": ["ground"],
