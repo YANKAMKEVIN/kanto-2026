@@ -626,7 +626,8 @@ const RULES: Dictionary[StringName, Dictionary] = {
 	&"bldg_maison_toit_01": {"shadow": true, "width": 5, "depth": 4, "fade": true,
 		"open": [Vector2i(0, 0)]},
 	&"prop_fontaine_01": {"width": 2, "depth": 2},
-	# Safrania (J26 T6, provisoires de `tools/art/placeholders_safrania.py`) : emprise = l'image
+	# Safrania (J26 T6 ; façades peintes du lot DAF.3, `tools/art/daf3.py`, aux tailles des provisoires de
+	# `placeholders_safrania.py`) : emprise = l'image
 	# entière (rectangles de `tools/plans/safrania.txt`), porte(s) libre(s). Arène : porte d'une
 	# case (7e colonne) ; postes : porte tournée vers la ville (nord : en bas ; sud : en haut ;
 	# ouest : à droite ; est : à gauche).
@@ -711,6 +712,50 @@ const RULES: Dictionary[StringName, Dictionary] = {
 	&"int_comptoir_casino_01": {"width": 1, "depth": 1},
 	&"int_affiche_casino_01": {"traversable": true, "align": ALIGN_CENTRE},
 	&"game_corner_wall": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_CENTRE},
+	# Lot DAF.3 / DAF.4 (`tools/art/daf3.py`, modules sur le modèle du repaire) : murs de la Sylphe,
+	# de l'Arène de Morgane, du Dojo et de l'Arène de Jadielle ; mobilier de la Sylphe d'une case
+	# (bureau, armoire de serveurs, plante) ; escaliers et porte d'ascenseur dans le mur du fond ;
+	# tapis de téléporteur et seuil de porte électronique peints au sol (1 case) ; paillasson de
+	# 2 cases ; battants des portes électroniques (lus en direct par `build_silph_co.gd`).
+	&"relief_mur_sylphe_01": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_mur_sylphe_02": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_mur_sylphe_03": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_mur_sylphe_04": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_CENTRE},
+	&"relief_mur_sylphe_05": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_CENTRE},
+	&"relief_mur_morgane_01": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_mur_morgane_02": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_mur_morgane_03": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_mur_morgane_04": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_CENTRE},
+	&"relief_mur_morgane_05": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_CENTRE},
+	&"relief_mur_dojo_01": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_mur_dojo_02": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_mur_dojo_03": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_mur_dojo_04": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_CENTRE},
+	&"relief_mur_dojo_05": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_CENTRE},
+	&"relief_mur_jadielle_01": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_mur_jadielle_02": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_mur_jadielle_03": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_mur_jadielle_04": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_CENTRE},
+	&"relief_mur_jadielle_05": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_CENTRE},
+	&"int_bureau_sylphe_01": {"width": 1, "depth": 1},
+	&"int_serveur_sylphe_01": {"width": 1, "depth": 1},
+	&"int_plante_sylphe_01": {"width": 1, "depth": 1},
+	&"int_escalier_sylphe_monte_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_CENTRE},
+	&"int_escalier_sylphe_descend_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_CENTRE},
+	&"int_porte_ascenseur_sylphe_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_CENTRE},
+	&"decal_teleporteur_sylphe_01": {"traversable": true, "layer": LAYER_GROUND,
+		"material": false},
+	&"decal_seuil_sylphe_01": {"traversable": true, "layer": LAYER_GROUND,
+		"material": false},
+	&"int_paillasson_sylphe_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_EDGE},
+	&"int_porte_sylphe_h_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_EDGE},
+	&"int_porte_sylphe_v_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_EDGE},
 	# J29 (QA A17) : porte de la Ligue posée dans le mur du fond du hall du Plateau Indigo,
 	# comme la porte du laboratoire du Musée (rangées du mur déjà bloquées) : sans emprise.
 	&"int_porte_ligue_01": {"traversable": true, "align": ALIGN_CENTRE},

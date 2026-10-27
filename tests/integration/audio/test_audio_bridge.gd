@@ -312,6 +312,53 @@ func test_move_used_plays_its_family() -> void:
 		assert_eq(_sfx_ids(), [case[1]], String(case[0]))
 
 
+func _fx_plan(move_id: StringName, outcome: MoveFxOutcome) -> MoveFxPlan:
+	var plan := MoveFxPlan.new()
+	plan.move_id = move_id
+	plan.outcome = outcome
+	return plan
+
+
+func test_move_fx_cues_play_move_at_launch_and_hit_at_impact() -> void:
+	# Combat vivant, T4 (§1.3) : le son de l'attaque part au repère `launch`, celui du coup au
+	# repère `impact` ; les événements du journal, qui arrivent après, restent muets.
+	var outcome := MoveFxOutcome.new()
+	outcome.result = MoveFxOutcome.Result.HIT
+	outcome.effectiveness = 2.0
+	var plan := _fx_plan(&"ember", outcome)
+	_bridge.on_move_fx_cue(MoveFxPlan.CUE_LAUNCH, plan)
+	assert_eq(_sfx_ids(), [&"move_fire"], "au repère launch")
+	_bridge.on_move_fx_cue(MoveFxPlan.CUE_IMPACT, plan)
+	assert_eq(_sfx_ids(), [&"move_fire", &"hit_super"], "au repère impact, selon l'efficacité")
+	var used := _event(BattleEvent.Kind.MOVE_USED)
+	used.move_id = &"ember"
+	_bridge.on_battle_event(used)
+	var hit := _event(BattleEvent.Kind.DAMAGE)
+	hit.effectiveness = 2.0
+	_bridge.on_battle_event(hit)
+	assert_eq(_sfx_ids(), [&"move_fire", &"hit_super"], "le journal ne les rejoue pas")
+	# L'attaque suivante sans chorégraphie (Patience, attaque inconnue) : sons du journal.
+	_bridge.on_battle_event(used)
+	_bridge.on_battle_event(hit)
+	assert_eq(_sfx_ids().size(), 4, "sans repère, le journal joue")
+
+
+func test_move_fx_miss_has_no_hit_sound_and_critical_on_first_hit() -> void:
+	var missed := MoveFxOutcome.new()
+	missed.result = MoveFxOutcome.Result.MISSED
+	_bridge.on_move_fx_cue(MoveFxPlan.CUE_LAUNCH, _fx_plan(&"tackle", missed))
+	_bridge.on_move_fx_cue(MoveFxPlan.CUE_MISS, _fx_plan(&"tackle", missed))
+	assert_eq(_sfx_ids(), [&"move_hit"], "raté : l'attaque seule")
+	_orders.clear()
+	var crit := MoveFxOutcome.new()
+	crit.result = MoveFxOutcome.Result.HIT
+	crit.critical = true
+	var plan := _fx_plan(&"tackle", crit)
+	_bridge.on_move_fx_cue(MoveFxPlan.CUE_IMPACT, plan)
+	_bridge.on_move_fx_cue(MoveFxPlan.impact_cue(1), plan)
+	assert_eq(_sfx_ids(), [&"critical", &"hit_normal"], "coups multiples : critique au premier")
+
+
 func test_steps_by_ground_ledge_and_mounts() -> void:
 	_bridge.on_player_step(Vector2i.ZERO, Vector2i(3, 0), &"walk")
 	_bridge.on_player_step(Vector2i.ZERO, Vector2i(-3, 0), &"run")

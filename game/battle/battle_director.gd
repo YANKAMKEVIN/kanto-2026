@@ -125,6 +125,8 @@ var _summary: ExpSummary = ExpSummary.new()
 var _summary_card: ExpSummaryCard
 ## J23 : moteur de la rencontre Safari en cours (null sinon ; [member _battle] reste null).
 var _safari: SafariBattle
+## Combat vivant (CV.0, T3) : catalogue des chorégraphies, lu une fois.
+static var _fx_catalog: MoveFxCatalog
 ## Vue vers camp de la HUD (l'UI a son propre enum, sans lien avec BattleEvent.SideId).
 const _HUD_SIDE: Dictionary[BattleEvent.SideId, BattleHud.Side] = {
 	BattleEvent.SideId.PLAYER: BattleHud.Side.PLAYER,
@@ -601,14 +603,40 @@ func _first_of(a: Signal, b: Signal) -> Array:
 
 ## Coroutine : joue chaque événement de [param events] à la suite, temps par temps.
 func _play_events(events: Array[BattleEvent], trainer: TrainerData) -> void:
-	for event: BattleEvent in events:
+	for index: int in events.size():
+		var event := events[index]
 		_summary.add(event)
 		for beat: BattleBeat in BattlePlayback.beats(event, _texts, _data, trainer):
 			# « X apprend Y ! » (juste après le K.O. adverse) attend un toucher.
 			beat.wait_touch = event.kind == BattleEvent.Kind.MOVE_LEARNED
+			if beat.kind == BattleBeat.Kind.MOVE:
+				beat.fx_plan = _move_fx_plan(events, index)
 			await _play_beat(beat)
 		_log_progress(event)
 		event_played.emit(event)
+	if is_instance_valid(_stage):
+		await _stage.finish_move_fx()
+
+
+## Chorégraphie du MOVE_USED en [param index] (Combat vivant, §2.4), d'après son issue lue dans
+## le journal ; null pour un autre événement (Patience) ou une attaque inconnue. Métronome : sa
+## propre chorégraphie (une posture), puis celle de l'attaque lancée à son MOVE_USED.
+func _move_fx_plan(events: Array[BattleEvent], index: int) -> MoveFxPlan:
+	var outcome := MoveFxOutcome.read(events, index)
+	if outcome == null or not is_instance_valid(_stage):
+		return null
+	var move := _data.get_move(outcome.move_id)
+	if move == null:
+		return null
+	if outcome.result == MoveFxOutcome.Result.CALLED:
+		# Rien ne part de Métronome lui-même : la posture, sans impact.
+		outcome.result = MoveFxOutcome.Result.FAILED
+	if _fx_catalog == null:
+		_fx_catalog = MoveFxCatalog.load_dir()
+	var category := StringName(MoveData.CATEGORY_NAMES.find_key(move.category))
+	var entry := _fx_catalog.entry(move.id, move.type, category)
+	return MoveFxPlan.build(_fx_catalog, entry, move, outcome, _stage.move_fx_mode(),
+		_stage.reduce_flashes)
 
 
 ## Journal de QA (builds debug seulement) : chaque gain d'XP et montée de niveau, lisibles
@@ -631,6 +659,11 @@ static func _log_progress(event: BattleEvent) -> void:
 ## Coroutine : joue un temps ([BattleBeat]) sur la scène et la HUD, et attend sa fin.
 func _play_beat(beat: BattleBeat) -> void:
 	var side: BattleHud.Side = _HUD_SIDE[beat.side]
+	# Combat vivant : la fin d'une chorégraphie se joue sous les messages et sous le coup qu'elle
+	# porte ; tout autre temps de la scène l'attend.
+	if beat.kind != BattleBeat.Kind.MESSAGE and is_instance_valid(_stage) \
+			and not (beat.kind == BattleBeat.Kind.DAMAGE and _stage.is_move_fx_hitting(beat.side)):
+		await _stage.finish_move_fx()
 	match beat.kind:
 		BattleBeat.Kind.MESSAGE:
 			if is_instance_valid(_hud):
@@ -642,7 +675,9 @@ func _play_beat(beat: BattleBeat) -> void:
 			if is_instance_valid(_hud):
 				_hud.set_card(side, BattleViews.card(beat.event))
 		BattleBeat.Kind.MOVE:
-			if is_instance_valid(_stage):
+			if is_instance_valid(_stage) and beat.fx_plan != null:
+				await _stage.play_move_fx(beat.side, beat.fx_plan)
+			elif is_instance_valid(_stage):
 				await _stage.play_move(beat.side, beat.category)
 		BattleBeat.Kind.DAMAGE:
 			var big := beat.is_big_hit(UiTokens.HP_BIG_HIT)

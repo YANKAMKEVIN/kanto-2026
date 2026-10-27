@@ -68,6 +68,10 @@ extends RefCounted
 ## Jalon 17 (T9, voile d'obscurité ; clé « veil » du J18 §2.12) : « veil » = « dark » ou « lit » :
 ## voile d'obscurité **forcé sur la carte de départ** pour la session (« lit » : halo de Flash
 ## ouvert), même hors d'une grotte obscure ; exige « map » ; jamais sauvegardé.
+## Combat vivant (CV.0, T8) : « fx_gallery » (avec une « party », exigée par le format) : au lieu de la partie, la **galerie d'effets**
+## (`game/battle/fx/fx_gallery.tscn`) joue des attaques en boucle et écrit sa cadence dans le
+## journal ; { "moves": [identifiants] (vide : une attaque par famille), "mode": "full" | "fast" |
+## "reduced", "foe": false }. Les autres clés sont alors sans effet.
 
 const USER_PATH: String = "user://debug_start.json"
 const FACINGS: Dictionary[String, Vector2i] = {
@@ -86,7 +90,7 @@ const VEIL_OFF: StringName = &"off"
 
 const _KEYS: Array[String] = ["map", "spawn", "facing", "seed", "flags", "party", "bag",
 	"favorites", "money", "storage", "autosave", "wild", "daycare", "companion", "veil", "rest_point",
-	"discovered", "safari"]
+	"discovered", "safari", "fx_gallery"]
 const _MEMBER_KEYS: Array[String] = ["species", "level", "moves", "exp_to_next", "hp",
 	"favorite", "status", "status_turns"]
 
@@ -125,6 +129,8 @@ var rest_point: StringName = &""
 var discovered: Array[StringName] = []
 ## J23 : visite du Parc Safari en cours ({ steps_left, balls_left } ; vide = aucune visite).
 var safari: Dictionary = {}
+## Combat vivant (T8) : réglages de la galerie d'effets ; vide : partie normale.
+var fx_gallery: Dictionary = {}
 var _errors: PackedStringArray = PackedStringArray()
 
 
@@ -310,6 +316,15 @@ func add_from_dict(dict: Dictionary, data: PokemonData, items: ItemLibrary,
 			return _fail("%s : « safari » vaut { steps_left ≥ 0, balls_left ≥ 1 }" % source)
 		safari = {"active": true, "steps_left": int(visit["steps_left"]),
 			"balls_left": int(visit["balls_left"])}
+	fx_gallery = {}
+	if dict.has("fx_gallery"):
+		var gallery: Variant = dict["fx_gallery"]
+		if not gallery is Dictionary \
+				or not (gallery as Dictionary).get("moves", []) is Array \
+				or not ["full", "fast", "reduced"].has(str((gallery as Dictionary).get("mode", "full"))):
+			return _fail("%s : « fx_gallery » vaut { moves: [...], mode: full | fast | reduced, foe }"
+				% source)
+		fx_gallery = (gallery as Dictionary).duplicate(true)
 	map = new_map
 	spawn = new_spawn
 	facing = new_facing
