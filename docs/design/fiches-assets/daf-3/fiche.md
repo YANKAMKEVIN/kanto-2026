@@ -70,8 +70,10 @@ Enveloppes provisoires retirées (`ph_silph_co_*`, `ph_silph_door_*`, `ph_saffro
   moquette se voit entre deux bureaux ; ils restent bien lisibles comme obstacles.
 - **Murs minces verticaux** (couloirs de l'Arène de Morgane, labyrinthe de l'Arène de Jadielle) :
   rendus comme à la Tour et au repaire (bords latéraux et masse sombre au milieu).
-- **Porte de l'Arène de Morgane** : peinte un peu à droite du milieu, sur la 7e colonne comme le
-  provisoire ; à vérifier sur le téléphone.
+- **Porte de l'Arène de Morgane** : peinte une demi-case trop à droite par Codex ; recalée à la
+  préparation (`RECALAGES` de `daf3.py` : 2 × 24 px de mur retirés à gauche, 2 × 24 px ajoutés entre
+  les fenêtres de droite, d'où une travée de droite un peu plus large). Les autres portes tombent sur
+  leur case (contrôle tracé sur les images).
 
 ## Hors de ce lot
 

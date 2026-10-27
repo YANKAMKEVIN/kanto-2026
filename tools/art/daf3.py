@@ -539,6 +539,29 @@ CORRECTIONS: dict[tuple[str, int], str] = {}
 ## Révision retenue par asset (défaut r1).
 RETENUES: dict[str, int] = {}
 
+## Recalage de la porte après préparation (colonnes de pixels de l'image finale) : bandes de mur
+## retirées et bandes dupliquées (début, largeur), pour amener la porte peinte sur sa case sans
+## toucher aux bords. Arène : porte peinte centrée en x 672 au lieu de 624 (7e colonne) ;
+## 2 × 24 px retirés entre les fenêtres de gauche, 2 × 24 px ajoutés entre celles de droite.
+RECALAGES: dict[str, tuple[list[tuple[int, int]], list[tuple[int, int]]]] = {
+	"bldg_arene_safrania_01": ([(265, 24), (485, 24)], [(846, 24), (846, 24)]),
+}
+
+
+def _recaler(image: Image.Image, asset: str) -> Image.Image:
+	if asset not in RECALAGES:
+		return image
+	import numpy as np
+	retirees, ajoutees = RECALAGES[asset]
+	enlever = {x for debut, largeur in retirees for x in range(debut, debut + largeur)}
+	colonnes = [x for x in range(image.width) if x not in enlever]
+	for debut, largeur in sorted(ajoutees, reverse=True):
+		i = colonnes.index(debut)
+		colonnes = colonnes[:i] + list(range(debut, debut + largeur)) + colonnes[i:]
+	if len(colonnes) != image.width:
+		raise SystemExit(f"{asset} : recalage {len(colonnes)} ≠ {image.width} colonnes")
+	return Image.fromarray(np.asarray(image)[:, colonnes])
+
 
 def ecrire_prompts() -> None:
 	PROMPTS.mkdir(parents=True, exist_ok=True)
@@ -621,6 +644,7 @@ def preparer_facades(seulement: set[str] | None = None) -> None:
 			continue
 		attendue = _taille(asset)
 		image = preparer._silhouette(Image.open(source).convert("RGBA")).resize(attendue, Image.LANCZOS)
+		image = _recaler(image, asset)
 		_ecrire_avec_ombres(image, asset, catalogue, manifest)
 		faites[asset] = image
 		print(f"{asset} : {image.size} ← {source.name}")
