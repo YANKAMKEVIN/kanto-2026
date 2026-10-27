@@ -111,3 +111,14 @@ func test_power_plant_waits_for_its_map() -> void:
 	assert_eq(zapdos.level, 50)
 	assert_eq(zapdos.done_flag, &"zapdos_done")
 	assert_false(MapCatalog.has_map(&"power_plant"), "retirer ce test quand la carte arrive")
+
+
+func test_power_plant_grid_proposal_is_readable() -> void:
+	# Lot 32G : proposition de grille (RB 1:1), à valider par Kevin avant toute carte.
+	var plan := preload("res://tests/helpers/plan_grid.gd").new()
+	assert_true(plan.load_file("res://tools/plans/power_plant.txt"), plan.error)
+	assert_eq([plan.width, plan.height], [40, 36])
+	assert_eq(plan.cell_of("zapdos"), Vector2i(4, 9))
+	assert_eq(plan.attr("zapdos", "niveau"), "50")
+	assert_eq(plan.cells_at("sortie_sud"), [Vector2i(4, 35), Vector2i(5, 35)] as Array[Vector2i])
+	assert_true(plan.is_walkable(Vector2i(4, 34)))

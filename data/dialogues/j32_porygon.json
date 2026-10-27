@@ -6,7 +6,6 @@
 				"if": [
 					"silph_porygon_received"
 				],
-				"draft": true,
 				"pages": [
 					"Prends bien soin de Porygon.\nIl apprend vite."
 				]
@@ -23,7 +22,6 @@
 		"narration": true,
 		"variants": [
 			{
-				"draft": true,
 				"pages": [
 					"{player} reçoit Porygon !"
 				]
@@ -34,7 +32,6 @@
 		"narration": true,
 		"variants": [
 			{
-				"draft": true,
 				"pages": [
 					"Porygon a été envoyé au stockage."
 				]

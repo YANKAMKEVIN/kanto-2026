@@ -20,45 +20,9 @@ const DATA_DIR := "res://data"
 ## Ronflex, de Ptitard et de Tentacool validés par Kevin le 2026-10-16 (dossier 24 §15), « draft »
 ## retiré.
 ## Jalon 26 (T6) : description de Safrania sur la Carte [D], à relire par Kevin.
-## Jalon 32 (N-11, N-13, N-14) : Électhor, Porygon, échanges PNJ de Rouge/Bleu [D], à relire
-## par Kevin (liste aussi dans `PENDING_DRAFT_VARIANTS` de `test_dialogue_data.gd`).
-const PENDING_DRAFTS: Array[String] = ["world/zones.json/zones/saffron_city",
-	"dialogues/j32_porygon.json/silph_co_porygon_giver/variants/0",
-	"dialogues/j32_porygon.json/silph_co_porygon_received/variants/0",
-	"dialogues/j32_porygon.json/silph_co_porygon_stored/variants/0",
-	"dialogues/j32_power_plant.json/zapdos_presence/variants/0",
-	"dialogues/j32_power_plant.json/zapdos_flew_away/variants/0",
-	"dialogues/j32_trades.json/j32_trade_remi_offer/variants/0",
-	"dialogues/j32_trades.json/j32_trade_remi_refuse/variants/0",
-	"dialogues/j32_trades.json/j32_trade_remi_wrong/variants/0",
-	"dialogues/j32_trades.json/j32_trade_remi_thanks/variants/0",
-	"dialogues/j32_trades.json/j32_trade_remi_after/variants/0",
-	"dialogues/j32_trades.json/j32_trade_remi_done/variants/0",
-	"dialogues/j32_trades.json/j32_trade_leon_offer/variants/0",
-	"dialogues/j32_trades.json/j32_trade_leon_refuse/variants/0",
-	"dialogues/j32_trades.json/j32_trade_leon_wrong/variants/0",
-	"dialogues/j32_trades.json/j32_trade_leon_thanks/variants/0",
-	"dialogues/j32_trades.json/j32_trade_leon_after/variants/0",
-	"dialogues/j32_trades.json/j32_trade_leon_done/variants/0",
-	"dialogues/j32_trades.json/j32_trade_aline_offer/variants/0",
-	"dialogues/j32_trades.json/j32_trade_aline_refuse/variants/0",
-	"dialogues/j32_trades.json/j32_trade_aline_wrong/variants/0",
-	"dialogues/j32_trades.json/j32_trade_aline_thanks/variants/0",
-	"dialogues/j32_trades.json/j32_trade_aline_after/variants/0",
-	"dialogues/j32_trades.json/j32_trade_aline_done/variants/0",
-	"dialogues/j32_trades.json/j32_trade_hugo_offer/variants/0",
-	"dialogues/j32_trades.json/j32_trade_hugo_refuse/variants/0",
-	"dialogues/j32_trades.json/j32_trade_hugo_wrong/variants/0",
-	"dialogues/j32_trades.json/j32_trade_hugo_thanks/variants/0",
-	"dialogues/j32_trades.json/j32_trade_hugo_after/variants/0",
-	"dialogues/j32_trades.json/j32_trade_hugo_done/variants/0",
-	"dialogues/j32_trades.json/j32_trade_theo_offer/variants/0",
-	"dialogues/j32_trades.json/j32_trade_theo_refuse/variants/0",
-	"dialogues/j32_trades.json/j32_trade_theo_wrong/variants/0",
-	"dialogues/j32_trades.json/j32_trade_theo_thanks/variants/0",
-	"dialogues/j32_trades.json/j32_trade_theo_after/variants/0",
-	"dialogues/j32_trades.json/j32_trade_theo_done/variants/0",
-]
+## Jalon 32 (N-11, N-13, N-14) : textes d'Électhor, de Porygon et des échanges PNJ validés par
+## Kevin le 2026-10-27, « draft » retiré.
+const PENDING_DRAFTS: Array[String] = ["world/zones.json/zones/saffron_city"]
 
 
 func test_data_has_json_files() -> void:

@@ -565,7 +565,7 @@ const MAPS: Array[StringName] = [
 const IDS_J21_T22: Array[StringName] = [&"snorlax_route_16"]
 ## Jalon 32 (N-18) : Ronflex d'après la Ligue (Route 10), textes du J21 repris tels quels.
 const IDS_J32: Array[StringName] = [&"snorlax_post_league",
-	# N-13 (Porygon), N-14 (échanges PNJ de Rouge/Bleu), N-11 (Électhor) : textes [D] à valider.
+	# N-13 (Porygon), N-14 (échanges PNJ de Rouge/Bleu), N-11 (Électhor) : textes validés par Kevin le 2026-10-27.
 	&"silph_co_porygon_giver",
 	&"silph_co_porygon_received", &"silph_co_porygon_stored", &"zapdos_presence",
 	&"zapdos_flew_away", &"j32_trade_remi", &"j32_trade_leon", &"j32_trade_aline",
@@ -1964,7 +1964,42 @@ func test_mom_first_variant_is_automatic_and_only_hers() -> void:
 ## 2026-10-16 ; jalon 17 : accord de T-2 à 1 espèce validé (Q-2, 2026-10-16) : liste vide.
 ## Jalon 32 : textes validés par Kevin (passe `j32-arbitrages-kevin.md` §5, N-16), page par page.
 const TEXTS_J32: Dictionary[StringName, Array] = {
-	&"silph_co_porygon_giver": ["Notre prototype, Porygon. Un Pokémon\nfait de données. Il est à toi."],
+	# N-16 (2026-10-24) : réplique 16 ; le reste validé par Kevin le 2026-10-27.
+	&"j32_trade_remi_offer": ["Salut ! Tu échangerais ton Abra\ncontre mon M. Mime ?"],
+	&"j32_trade_remi_refuse": ["Dommage… Repasse si tu changes d'avis."],
+	&"j32_trade_remi_wrong": ["Ce n'est pas un Abra.\nReviens quand tu en auras un."],
+	&"j32_trade_remi_thanks": ["Merci ! Prends bien soin de lui."],
+	&"j32_trade_remi_after": ["Mon ancien M. Mime va bien ?"],
+	&"j32_trade_remi_done": ["{player} a échangé Abra contre Marcel !"],
+	&"j32_trade_leon_offer": ["Salut ! Tu échangerais ton Piafabec\ncontre mon Canarticho ?"],
+	&"j32_trade_leon_refuse": ["Dommage… Repasse si tu changes d'avis."],
+	&"j32_trade_leon_wrong": ["Ce n'est pas un Piafabec.\nReviens quand tu en auras un."],
+	&"j32_trade_leon_thanks": ["Merci ! Prends bien soin de lui."],
+	&"j32_trade_leon_after": ["Mon ancien Canarticho va bien ?"],
+	&"j32_trade_leon_done": ["{player} a échangé Piafabec contre Dux !"],
+	&"j32_trade_aline_offer": ["Salut ! Tu échangerais ton Flagadoss\ncontre mon Excelangue ?"],
+	&"j32_trade_aline_refuse": ["Dommage… Repasse si tu changes d'avis."],
+	&"j32_trade_aline_wrong": ["Ce n'est pas un Flagadoss.\nReviens quand tu en auras un."],
+	&"j32_trade_aline_thanks": ["Merci ! Prends bien soin de lui."],
+	&"j32_trade_aline_after": ["Mon ancien Excelangue va bien ?"],
+	&"j32_trade_aline_done": ["{player} a échangé Flagadoss contre Marc !"],
+	&"j32_trade_hugo_offer": ["Salut ! Tu échangerais ton Nidoran♂\ncontre mon Nidoran♀ ?"],
+	&"j32_trade_hugo_refuse": ["Dommage… Repasse si tu changes d'avis."],
+	&"j32_trade_hugo_wrong": ["Ce n'est pas un Nidoran♂.\nReviens quand tu en auras un."],
+	&"j32_trade_hugo_thanks": ["Merci ! Prends bien soin de lui."],
+	&"j32_trade_hugo_after": ["Mon ancien Nidoran♀ va bien ?"],
+	&"j32_trade_hugo_done": ["{player} a échangé Nidoran♂ contre Spot !"],
+	&"j32_trade_theo_offer": ["Salut ! Tu échangerais ton Nidorino\ncontre mon Nidorina ?"],
+	&"j32_trade_theo_refuse": ["Dommage… Repasse si tu changes d'avis."],
+	&"j32_trade_theo_wrong": ["Ce n'est pas un Nidorino.\nReviens quand tu en auras un."],
+	&"j32_trade_theo_thanks": ["Merci ! Prends bien soin de lui."],
+	&"j32_trade_theo_after": ["Mon ancien Nidorina va bien ?"],
+	&"j32_trade_theo_done": ["{player} a échangé Nidorino contre Terry !"],
+	&"zapdos_presence": ["L'air crépite d'électricité…"],
+	&"zapdos_flew_away": ["Électhor s'est envolé dans un éclair."],
+	&"silph_co_porygon_giver": ["Prends bien soin de Porygon.\nIl apprend vite.", "Notre prototype, Porygon. Un Pokémon\nfait de données. Il est à toi."],
+	&"silph_co_porygon_received": ["{player} reçoit Porygon !"],
+	&"silph_co_porygon_stored": ["Porygon a été envoyé au stockage."],
 }
 ## Jalon 32 (N-14) : répliques des échanges PNJ jouées par leurs scènes.
 const J32_TRADE_LINES: Array[StringName] = [
@@ -1979,22 +2014,7 @@ const J32_TRADE_LINES: Array[StringName] = [
 	&"j32_trade_theo_offer", &"j32_trade_theo_refuse", &"j32_trade_theo_wrong",
 	&"j32_trade_theo_thanks", &"j32_trade_theo_after", &"j32_trade_theo_done"
 ]
-## Jalon 32 : textes [D] à valider par Kevin (Porygon, échanges PNJ de RB, Électhor).
-const PENDING_DRAFT_VARIANTS: Array[String] = [
-	"silph_co_porygon_giver:0",
-	"j32_trade_remi_offer:0", "j32_trade_remi_refuse:0", "j32_trade_remi_wrong:0",
-	"j32_trade_remi_thanks:0", "j32_trade_remi_after:0", "j32_trade_remi_done:0",
-	"j32_trade_leon_offer:0", "j32_trade_leon_refuse:0", "j32_trade_leon_wrong:0",
-	"j32_trade_leon_thanks:0", "j32_trade_leon_after:0", "j32_trade_leon_done:0",
-	"j32_trade_aline_offer:0", "j32_trade_aline_refuse:0", "j32_trade_aline_wrong:0",
-	"j32_trade_aline_thanks:0", "j32_trade_aline_after:0", "j32_trade_aline_done:0",
-	"j32_trade_hugo_offer:0", "j32_trade_hugo_refuse:0", "j32_trade_hugo_wrong:0",
-	"j32_trade_hugo_thanks:0", "j32_trade_hugo_after:0", "j32_trade_hugo_done:0",
-	"j32_trade_theo_offer:0", "j32_trade_theo_refuse:0", "j32_trade_theo_wrong:0",
-	"j32_trade_theo_thanks:0", "j32_trade_theo_after:0", "j32_trade_theo_done:0",
-	"zapdos_presence:0", "zapdos_flew_away:0", "silph_co_porygon_received:0",
-	"silph_co_porygon_stored:0",
-]
+const PENDING_DRAFT_VARIANTS: Array[String] = []
 
 
 func test_no_dialogue_nor_variant_is_draft() -> void:

@@ -17,8 +17,7 @@
 					],
 					"confirm_pages": [],
 					"cancel_pages": []
-				},
-				"draft": true
+				}
 			}
 		]
 	},
@@ -26,7 +25,6 @@
 		"speaker": "Rémi",
 		"variants": [
 			{
-				"draft": true,
 				"pages": [
 					"Dommage… Repasse si tu changes d'avis."
 				]
@@ -37,7 +35,6 @@
 		"speaker": "Rémi",
 		"variants": [
 			{
-				"draft": true,
 				"pages": [
 					"Ce n'est pas un Abra.\nReviens quand tu en auras un."
 				]
@@ -48,7 +45,6 @@
 		"speaker": "Rémi",
 		"variants": [
 			{
-				"draft": true,
 				"pages": [
 					"Merci ! Prends bien soin de lui."
 				]
@@ -59,7 +55,6 @@
 		"speaker": "Rémi",
 		"variants": [
 			{
-				"draft": true,
 				"pages": [
 					"Mon ancien M. Mime va bien ?"
 				]
@@ -70,7 +65,6 @@
 		"narration": true,
 		"variants": [
 			{
-				"draft": true,
 				"pages": [
 					"{player} a échangé Abra contre Marcel !"
 				]
@@ -95,8 +89,7 @@
 					],
 					"confirm_pages": [],
 					"cancel_pages": []
-				},
-				"draft": true
+				}
 			}
 		]
 	},
@@ -104,7 +97,6 @@
 		"speaker": "Léon",
 		"variants": [
 			{
-				"draft": true,
 				"pages": [
 					"Dommage… Repasse si tu changes d'avis."
 				]
@@ -115,7 +107,6 @@
 		"speaker": "Léon",
 		"variants": [
 			{
-				"draft": true,
 				"pages": [
 					"Ce n'est pas un Piafabec.\nReviens quand tu en auras un."
 				]
@@ -126,7 +117,6 @@
 		"speaker": "Léon",
 		"variants": [
 			{
-				"draft": true,
 				"pages": [
 					"Merci ! Prends bien soin de lui."
 				]
@@ -137,7 +127,6 @@
 		"speaker": "Léon",
 		"variants": [
 			{
-				"draft": true,
 				"pages": [
 					"Mon ancien Canarticho va bien ?"
 				]
@@ -148,7 +137,6 @@
 		"narration": true,
 		"variants": [
 			{
-				"draft": true,
 				"pages": [
 					"{player} a échangé Piafabec contre Dux !"
 				]
@@ -173,8 +161,7 @@
 					],
 					"confirm_pages": [],
 					"cancel_pages": []
-				},
-				"draft": true
+				}
 			}
 		]
 	},
@@ -182,7 +169,6 @@
 		"speaker": "Aline",
 		"variants": [
 			{
-				"draft": true,
 				"pages": [
 					"Dommage… Repasse si tu changes d'avis."
 				]
@@ -193,7 +179,6 @@
 		"speaker": "Aline",
 		"variants": [
 			{
-				"draft": true,
 				"pages": [
 					"Ce n'est pas un Flagadoss.\nReviens quand tu en auras un."
 				]
@@ -204,7 +189,6 @@
 		"speaker": "Aline",
 		"variants": [
 			{
-				"draft": true,
 				"pages": [
 					"Merci ! Prends bien soin de lui."
 				]
@@ -215,7 +199,6 @@
 		"speaker": "Aline",
 		"variants": [
 			{
-				"draft": true,
 				"pages": [
 					"Mon ancien Excelangue va bien ?"
 				]
@@ -226,7 +209,6 @@
 		"narration": true,
 		"variants": [
 			{
-				"draft": true,
 				"pages": [
 					"{player} a échangé Flagadoss contre Marc !"
 				]
@@ -251,8 +233,7 @@
 					],
 					"confirm_pages": [],
 					"cancel_pages": []
-				},
-				"draft": true
+				}
 			}
 		]
 	},
@@ -260,7 +241,6 @@
 		"speaker": "Hugo",
 		"variants": [
 			{
-				"draft": true,
 				"pages": [
 					"Dommage… Repasse si tu changes d'avis."
 				]
@@ -271,7 +251,6 @@
 		"speaker": "Hugo",
 		"variants": [
 			{
-				"draft": true,
 				"pages": [
 					"Ce n'est pas un Nidoran♂.\nReviens quand tu en auras un."
 				]
@@ -282,7 +261,6 @@
 		"speaker": "Hugo",
 		"variants": [
 			{
-				"draft": true,
 				"pages": [
 					"Merci ! Prends bien soin de lui."
 				]
@@ -293,7 +271,6 @@
 		"speaker": "Hugo",
 		"variants": [
 			{
-				"draft": true,
 				"pages": [
 					"Mon ancien Nidoran♀ va bien ?"
 				]
@@ -304,7 +281,6 @@
 		"narration": true,
 		"variants": [
 			{
-				"draft": true,
 				"pages": [
 					"{player} a échangé Nidoran♂ contre Spot !"
 				]
@@ -329,8 +305,7 @@
 					],
 					"confirm_pages": [],
 					"cancel_pages": []
-				},
-				"draft": true
+				}
 			}
 		]
 	},
@@ -338,7 +313,6 @@
 		"speaker": "Théo",
 		"variants": [
 			{
-				"draft": true,
 				"pages": [
 					"Dommage… Repasse si tu changes d'avis."
 				]
@@ -349,7 +323,6 @@
 		"speaker": "Théo",
 		"variants": [
 			{
-				"draft": true,
 				"pages": [
 					"Ce n'est pas un Nidorino.\nReviens quand tu en auras un."
 				]
@@ -360,7 +333,6 @@
 		"speaker": "Théo",
 		"variants": [
 			{
-				"draft": true,
 				"pages": [
 					"Merci ! Prends bien soin de lui."
 				]
@@ -371,7 +343,6 @@
 		"speaker": "Théo",
 		"variants": [
 			{
-				"draft": true,
 				"pages": [
 					"Mon ancien Nidorina va bien ?"
 				]
@@ -382,7 +353,6 @@
 		"narration": true,
 		"variants": [
 			{
-				"draft": true,
 				"pages": [
 					"{player} a échangé Nidorino contre Terry !"
 				]
