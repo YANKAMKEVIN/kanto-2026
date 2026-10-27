@@ -58,7 +58,8 @@ const SWAPS: Dictionary = {
 	"EchelleDessin_": "prop_echelle_monte_01", "Echelle": "prop_echelle_monte_01",
 	"InterrupteurEnfonce_": "decal_interrupteur_victoire_enfonce_01",
 	"InterrupteurReleve_": "decal_interrupteur_victoire_01", "Barriere_": "prop_barriere_victoire_01",
-	"Indice_": "prop_rocher_grotte_02",
+	"Indice_": "prop_rocher_grotte_02", "TrouOuvert": "decal_trou_victoire_01",
+	"TrouBouche": "decal_trou_victoire_bouche_01",
 }
 
 var _errors: int = 0

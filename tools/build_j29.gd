@@ -12,6 +12,9 @@ extends SceneTree
 ##
 ##   godot --headless --path . -s res://tools/build_j29.gd
 ##   godot --headless --path . --import
+## Puis les passes d'image (lot DAF.4), sans quoi l'art peint est perdu : `build_route_22_west.gd`,
+## `build_daf4_caves.gd`, `build_daf4_facades.gd` (dans cet ordre, après `build_j29.gd` et
+## `build_cerulean_cave.gd`).
 
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 

@@ -23,6 +23,7 @@
 [ext_resource type="PackedScene" path="res://game/world/props/painted/ground_hautes_herbes_01.tscn" id="18_6dvub"]
 [ext_resource type="PackedScene" path="res://game/world/props/painted/tree_a_01.tscn" id="19_mp6v6"]
 [ext_resource type="PackedScene" path="res://game/world/props/painted/tree_b_01.tscn" id="20_ofp4s"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/bldg_poste_route_22_01.tscn" id="21_p07ve"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_umxpf"]
 shader = ExtResource("3_gjcus")
@@ -40,6 +41,7 @@ shader_parameter/foam_color = null
 shader_parameter/water_texture_size = null
 shader_parameter/foam_strength = null
 shader_parameter/square_shore = null
+shader_parameter/pass_mode = null
 
 [node name="Route22West" type="Node2D" unique_id=660371886]
 script = ExtResource("1_0kku7")
@@ -513,21 +515,9 @@ y_sort_enabled = true
 position = Vector2(624, 576)
 script = ExtResource("3_3n6tq")
 
-[node name="Dessin" type="Polygon2D" parent="Entities/Batiment" unique_id=763940416]
-color = Color(0.62, 0.36, 0.3, 1)
-polygon = PackedVector2Array(-48, -384, 432, -384, 432, 0, -48, 0)
-
-[node name="@Polygon2D@2" type="Polygon2D" parent="Entities/Batiment" unique_id=1608538766]
-color = Color(0.36, 0.38, 0.5, 1)
-polygon = PackedVector2Array(-56, -408, 440, -408, 440, -321.6, -56, -321.6)
-
 [node name="Porte8_5" type="Node2D" parent="Entities" unique_id=914475168]
 position = Vector2(816, 576)
 script = ExtResource("3_3n6tq")
-
-[node name="Dessin" type="Polygon2D" parent="Entities/Porte8_5" unique_id=766722912]
-color = Color(0.18, 0.13, 0.1, 1)
-polygon = PackedVector2Array(-36, -96, 36, -96, 36, -66, -36, -66)
 
 [node name="Panneau4_9" type="Node2D" parent="Entities" unique_id=1914855931]
 position = Vector2(432, 960)
@@ -693,6 +683,9 @@ position = Vector2(1069, 89)
 
 [node name="Tree034" parent="Entities" unique_id=1633025122 instance=ExtResource("20_ofp4s")]
 position = Vector2(1377, 624)
+
+[node name="Daf4Facade" parent="Entities" unique_id=539471548 instance=ExtResource("21_p07ve")]
+position = Vector2(816, 576)
 
 [node name="Overhead" type="TileMapLayer" parent="." unique_id=188756421]
 z_index = 10

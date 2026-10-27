@@ -118,6 +118,37 @@ PLANCHE_IDS = {
 		"relief_escalier_azuree_01"], [1, 0.25, 1]),
 }
 
+# --- Façades (J29) et trou de la Route Victoire ---------------------------------------------------
+
+## (identifiant, asset, largeur, profondeur (cases), porte (colonne depuis 1, nombre), description,
+## ancres). Taille = largeur × 96, profondeur × 96 + 24 (rebord du toit), comme les provisoires.
+FACADES = [
+	("WORLD_BLDG_POSTE_ROUTE_22_01", "bldg_poste_route_22_01", 5, 4, (3, 1),
+		"le POSTE DE LA LIGUE sur la Route 22 (le contrôle des Badges avant la Route 23), façade de face : de "
+		"la MÊME main que le poste joint bldg_poste_safrania_01 (pierre de taille claire, ARDOISE BLEUE à quatre "
+		"pans, petites lanternes), 5 cases de large et environ 4,25 de haut, un peu plus solennel : un fronton "
+		"de pierre au-dessus de la porte, deux petites fenêtres ; sur la 3e colonne, une PORTE de bois bleu nuit "
+		"d'UNE case. Aucune enseigne, aucune lettre, sans personnage.",
+		[daf3.POSTE]),
+	("WORLD_BLDG_LIGUE_01", "bldg_ligue_01", 8, 6, (4, 2),
+		"le bâtiment de la LIGUE POKÉMON sur le Plateau Indigo, façade de face : le hall d'entrée monumental de "
+		"la fin du jeu, 8 cases de large et environ 6,25 de haut, vu en trois quarts de dessus : un grand TOIT "
+		"ROUGE vif à quatre pans avec un faîtage doré, des murs de pierre blanche et crème, de hautes colonnes "
+		"de part et d'autre de l'entrée, de grandes fenêtres en arc ; au MILIEU du bas (4e et 5e colonnes), une "
+		"grande PORTE DOUBLE dorée et vitrée sous un auvent, trois marches. Imposant, lumineux, solennel. Aucune "
+		"enseigne, aucune lettre, aucun emblème rond.",
+		[daf3.POSTE, daf3.MAGASIN, daf3.MUSEE]),
+]
+TROUS = ("INT_TROU_VICTOIRE_PLANCHE",
+	f"PLANCHE de 2 ÉLÉMENTS PLATS du sol de la ROUTE VICTOIRE, {daf3._CELLULES}, à une échelle COMMUNE de 1 case = "
+	"150 px, vus strictement de dessus.\n1 (ligne 1, à gauche) : TROU OUVERT dans le sol de terre brune, 1 case × 1 "
+	"case : un puits rond aux bords de roche brisée, l'intérieur SOMBRE brun-noir (jamais noir pur), quelques "
+	"cailloux au bord.\n2 (ligne 1, au milieu) : TROU BOUCHÉ, le même trou rempli par un gros ROCHER rond gris "
+	"enfoncé au ras du sol, 1 case × 1 case.\n(ligne 1 à droite et toute la ligne 2) : cellules VIDES.\nFond avec "
+	"une vraie transparence (canal alpha), aucune ombre portée, aucun texte.",
+	[f"{_G}ground_victoire_bas_01.png", ROCHER], VALEURS_VICTOIRE)
+TROU_IDS = (["decal_trou_victoire_01", "decal_trou_victoire_bouche_01"], [1, 1])
+
 # --- Fonds de combat ------------------------------------------------------------------------------
 
 _SOL_AB = daf3._SOL_AB
@@ -167,6 +198,20 @@ def _images() -> list[dict]:
 	for ident, description, ancres, valeurs, v1 in PLANCHES:
 		images.append({"nom": f"{ident}_NE_r1", "groupe": ident, "vague": 2,
 			"texte": daf3._prompt_module(ident, description, ancres, valeurs, v1, False), "jointes": ancres + v1})
+	for ident, asset, largeur, profondeur, porte, description, ancres in FACADES:
+		taille = (largeur * CASE, profondeur * CASE + 24)
+		gen = daf3._format(*taille)
+		ew, eh = daf3._boite(gen, taille)
+		texte = (f"{ident} — NOUVELLE image : un seul asset de jeu isolé, pas une scène.\nImages jointes : "
+			f"{', '.join(Path(a).stem for a in ancres)} = bâtiments déjà peints du jeu : ancres de style (rendu "
+			f"peint, même angle de vue, même lumière neutre).\n\n{ADN}\n{daf3.VALEURS_VILLE}\n\nASSET : {description}\n"
+			f"{daf3._porte(largeur, *porte)}\nFormat : PNG {gen[0]} × {gen[1]}, l'élément occupe environ {ew} × {eh} px "
+			f"(rapport {taille[0] / taille[1]:.2f} : 1, à RESPECTER : l'image est ramenée telle quelle à {taille[0]} × "
+			f"{taille[1]} px, 1 case = 96 px), centré, tout le bâtiment visible.\n{daf3.OBJET_FIN}\n{INTERDITS}\n")
+		images.append({"nom": f"{ident}_NE_r1", "groupe": ident, "vague": 1, "texte": texte, "jointes": ancres})
+	ident, description, ancres, valeurs = TROUS
+	images.append({"nom": f"{ident}_NE_r1", "groupe": ident, "vague": 1,
+		"texte": daf3._prompt_module(ident, description, ancres, valeurs, [], False), "jointes": ancres})
 	for ident, lieu, image3, description, compo, lumiere, interdits in COMBATS:
 		images.append({"nom": f"{ident}_r1", "groupe": ident, "vague": 2,
 			"texte": serie27.prompt_combat(ident, lieu, "une texture du lieu : guide de PALETTE et de matières "
@@ -222,8 +267,9 @@ def preparer_modules() -> None:
 	p.m = dict(manifeste, sols=sols)
 	p.sols()
 	daf3_decals = daf3.DECALS
-	daf3.DECALS = ("decal_interrupteur_victoire_01", "decal_interrupteur_victoire_enfonce_01")
-	for ident, (ids, cases) in PLANCHE_IDS.items():
+	daf3.DECALS = ("decal_interrupteur_victoire_01", "decal_interrupteur_victoire_enfonce_01",
+		*TROU_IDS[0])
+	for ident, (ids, cases) in {**PLANCHE_IDS, TROUS[0]: TROU_IDS}.items():
 		if not (ART / daf3._source(ident)).exists():
 			print(f"{ident} : absente")
 			continue
@@ -232,6 +278,13 @@ def preparer_modules() -> None:
 				f"{_W}interiors/")
 			p._objet(asset, f"{dossier}{asset}.png", element, False, 0.0 if dossier == _R else 0.12)
 	daf3.DECALS = daf3_decals
+	for ident, asset, largeur, profondeur, *_r in FACADES:
+		source = ART / daf3._source(ident)
+		if source.exists():
+			image = preparer._silhouette(Image.open(source).convert("RGBA")).resize(
+				(largeur * CASE, profondeur * CASE + 24), Image.LANCZOS)
+			daf3._ecrire_avec_ombres(image, asset, p.catalogue, manifeste)
+			print(f"{asset} : {image.size}")
 	catalogue_path.write_text(json.dumps(p.catalogue, ensure_ascii=False, indent=1) + "\n")
 
 

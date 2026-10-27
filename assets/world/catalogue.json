@@ -9496,6 +9496,106 @@
      11
     ]
    }
+  },
+  "decal_trou_victoire_01": {
+   "fichier": "res://assets/world/interiors/decal_trou_victoire_01.png",
+   "taille": [
+    96,
+    96
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/decal_trou_victoire_01_contact.png",
+    "decalage": [
+     -56,
+     6
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     16
+    ]
+   }
+  },
+  "decal_trou_victoire_bouche_01": {
+   "fichier": "res://assets/world/interiors/decal_trou_victoire_bouche_01.png",
+   "taille": [
+    96,
+    96
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/decal_trou_victoire_bouche_01_contact.png",
+    "decalage": [
+     -56,
+     6
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     16
+    ]
+   }
+  },
+  "bldg_poste_route_22_01": {
+   "fichier": "res://assets/world/buildings/bldg_poste_route_22_01.png",
+   "taille": [
+    480,
+    408
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_poste_route_22_01_shadow.png",
+    "decalage": [
+     -265,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     303,
+     42
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_poste_route_22_01_contact.png",
+    "decalage": [
+     -248,
+     -31
+    ],
+    "echelle": 2,
+    "taille": [
+     248,
+     35
+    ]
+   }
+  },
+  "bldg_ligue_01": {
+   "fichier": "res://assets/world/buildings/bldg_ligue_01.png",
+   "taille": [
+    768,
+    600
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_ligue_01_shadow.png",
+    "decalage": [
+     -409,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     465,
+     60
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_ligue_01_contact.png",
+    "decalage": [
+     -392,
+     -54
+    ],
+    "echelle": 2,
+    "taille": [
+     392,
+     46
+    ]
+   }
   }
  },
  "personnages": {

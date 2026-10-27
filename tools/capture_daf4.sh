@@ -29,7 +29,7 @@ SHOTS=(
 	"route_23_sud|40|--map=route_23 --cell=10,138 --facing=up"
 	"route_23_milieu|40|--map=route_23 --cell=10,80 --facing=up"
 	"route_23_nord|40|--map=route_23 --cell=10,12 --facing=up"
-	"plateau_indigo|40|--map=indigo_plateau --cell=10,12 --facing=up"
+	"plateau_indigo|40|--map=indigo_plateau --cell=10,8 --facing=up"
 	"route_22_ouest|40|--map=route_22_west --cell=10,8 --facing=up"
 )
 : > "$OUT/perf.txt"

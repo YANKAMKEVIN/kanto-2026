@@ -244,5 +244,32 @@
 		],
 		"taille": [2340, 1080],
 		"qualite": 90
+	},
+	"route_23_roche": {
+		"composition": "COMBAT_DECOR_ROUTE_23_r1.png",
+		"tuiles": [
+			{ "image": "COMBAT_DECOR_ROUTE_23_r1_TL.png", "portion": [0, 0, 1001, 852] },
+			{ "image": "COMBAT_DECOR_ROUTE_23_r1_TR.png", "portion": [846, 0, 1847, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"victory_road_grotte": {
+		"composition": "COMBAT_DECOR_ROUTE_VICTOIRE_r1.png",
+		"tuiles": [
+			{ "image": "COMBAT_DECOR_ROUTE_VICTOIRE_r1_TL.png", "portion": [0, 0, 1001, 852] },
+			{ "image": "COMBAT_DECOR_ROUTE_VICTOIRE_r1_TR.png", "portion": [846, 0, 1847, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"cerulean_cave_azuree": {
+		"composition": "COMBAT_DECOR_GROTTE_AZUREE_r1.png",
+		"tuiles": [
+			{ "image": "COMBAT_DECOR_GROTTE_AZUREE_r1_TL.png", "portion": [0, 0, 1002, 851] },
+			{ "image": "COMBAT_DECOR_GROTTE_AZUREE_r1_TR.png", "portion": [847, 0, 1849, 851] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
 	}
 }

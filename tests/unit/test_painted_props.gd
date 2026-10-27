@@ -99,9 +99,11 @@ const TRAVERSABLE: Array[StringName] = [&"relief_escalier_01", &"ground_hautes_h
 	&"relief_rebord_victoire_01", &"relief_rebord_victoire_cote_01", &"relief_escalier_victoire_01",
 	&"decal_interrupteur_victoire_01", &"decal_interrupteur_victoire_enfonce_01",
 	&"relief_rebord_azuree_01", &"relief_rebord_azuree_cote_01", &"relief_escalier_azuree_01",
-	&"prop_barriere_victoire_01"]
+	&"prop_barriere_victoire_01",
+	&"decal_trou_victoire_01", &"decal_trou_victoire_bouche_01"]
 const GROUND_LAYER: Array[StringName] = [
 	# Lot DAF.4 : rebords, escaliers et interrupteurs (Route Victoire, Grotte Azurée).
+	&"decal_trou_victoire_01", &"decal_trou_victoire_bouche_01",
 	&"relief_rebord_victoire_01", &"relief_rebord_victoire_cote_01", &"relief_escalier_victoire_01",
 	&"decal_interrupteur_victoire_01", &"decal_interrupteur_victoire_enfonce_01",
 	&"relief_rebord_azuree_01", &"relief_rebord_azuree_cote_01", &"relief_escalier_azuree_01",

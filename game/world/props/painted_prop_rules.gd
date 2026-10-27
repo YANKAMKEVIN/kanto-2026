@@ -779,6 +779,16 @@ const RULES: Dictionary[StringName, Dictionary] = {
 	&"relief_escalier_azuree_01": {"traversable": true, "layer": LAYER_GROUND,
 		"align": ALIGN_CENTRE},
 	&"prop_barriere_victoire_01": {"traversable": true, "align": ALIGN_CENTRE},
+	&"decal_trou_victoire_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_CENTRE},
+	&"decal_trou_victoire_bouche_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_CENTRE},
+	# Façades du J29 (lot DAF.4, `tools/build_daf4_facades.gd`) : poste de la Ligue (Route 22 ouest,
+	# 5 × 4, porte au milieu) et bâtiment de la Ligue (Plateau Indigo, 8 × 6, porte double).
+	&"bldg_poste_route_22_01": {"shadow": true, "width": 5, "depth": 4, "fade": true,
+		"open": [Vector2i(0, 0)]},
+	&"bldg_ligue_01": {"shadow": true, "width": 8, "depth": 6, "fade": true,
+		"open": [Vector2i(-1, 0), Vector2i(0, 0)]},
 }
 
 
