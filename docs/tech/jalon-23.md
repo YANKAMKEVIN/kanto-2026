@@ -793,9 +793,60 @@ QA 23B (la dernière Safari Ball ne finissait pas la visite) corrigé dans `dd42
   uniques dans le jeu » (`test_trainer_names_are_unique_in_the_game`). L'Intello du J25 devient
   **Intello Barnabé** [D] (Dresseur, 3 dialogues, test, simulation) : à confirmer par Kevin.
   2026-10-26 (fusion de `main` `30c8c279`) : « Barnabé » pris par le Médium de l'Arène de Safrania (J27)
-  → **Intello Séraphin** [D], libre sur toutes les branches.
+  → **Intello Séraphin**, libre sur toutes les branches ; gardé par Kevin le 2026-10-27 (« le
+  prénom tu utilises celui que tu veux »).
 - Aucun identifiant défini deux fois dans `data/` (`dupcheck.py` : seulement les clés de structure
   `_doc`, `version`…, comme dans `main`).
+
+### 9.7 T21 : équilibrage de Koga par simulation (2026-10-27, après la fusion)
+
+```
+godot --headless --path . -s res://tools/simulate_mt_moon.gd -- \
+	--scenario tools/sim/fuchsia_j23_realiste.json --donnees
+```
+
+500 parties par ligne ; Dresseurs et Koga = **vraies données** (`data/trainers/fuchsia_gym.json`,
+niveaux RB, Koga en IA `smart` qui change de Pokémon) ; Super Potion × 5, Antidote × 3 (joueur
+attentif), aucun objet (naïf). Parcours : J2 et J4 (inévitables), puis les quatre autres en
+détour. Équipes **estimées** à l'arrivée à Parmanie ; la première reprend le départ `koga_qa`.
+Rien n'est changé dans `data/`.
+
+| Équipe | Koga après J2+J4, attentif | 6 Dresseurs sans soin | 6 Dresseurs, soin | J2+J4, naïf |
+|---|---|---|---|---|
+| QA : Dracaufeu 42, Kadabra 40, Voltali 40, Aquali 40, Nidoking 40, Roucarnage 40 | 100 % | 100 % | 100 % | 98 % |
+| Florizarre 42, Roucarnage 38, Ronflex 38, Raichu 38, Nidoking 36 | 100 % | 98 % | 100 % | 91 % |
+| Tortank 42, Roucarnage 38, Ronflex 38, Raichu 38, Kadabra 36 | 100 % | 100 % | 100 % | 100 % |
+| Dracaufeu 42, Roucarnage 38, Ronflex 38, Raichu 38, Nidoking 36 | 100 % | 100 % | 100 % | 91 % |
+| Basse : Florizarre 38, Roucarnage 34, Raichu 34, Ronflex 33 | **50 %** | 2 % | 86 % | 2 % |
+| Basse : Dracaufeu 38, Roucarnage 34, Raichu 34, Ronflex 33 | 93 % | 42 % | 99 % | 6 % |
+
+- **Dresseurs : 100 %** pour les arrivées normales ; pour une arrivée basse, le Dompteur Edgar (D2,
+  facultatif) tombe à 86 % (Florizarre), les autres ≥ 97 %. Tous au-dessus de 80 % : rien à faire.
+- **Koga aux niveaux RB est trop facile** pour une arrivée normale (≈ 100 %, au-dessus des 35–60 %
+  visés). Toxik n'y change rien : l'IA choisit Détritus (§9.2).
+
+**Sondes** (copies jetables de Koga, 300 parties, même tableau ; rien dans `data/`) :
+
+| Équipe | +4 (41 / 43 / 41 / 47) : attentif · sans soin · soin · naïf | +8 (45 / 47 / 45 / 51) : idem |
+|---|---|---|
+| QA koga_qa | 100 · 100 · 100 · 80 | 100 · 99 · 100 · 55 |
+| Florizarre 42… | 100 · 94 · 100 · 37 | 99 · 74 · 100 · 9 |
+| Tortank 42… | 99 · 93 · 100 · 97 | 90 · 54 · 97 · 65 |
+| Dracaufeu 42… | 100 · 100 · 100 · 46 | 100 · 96 · 100 · 7 |
+| Basse, Florizarre 38… | 12 · 0 · 29 · 0 | 0 · 0 · 1 · 0 |
+| Basse, Dracaufeu 38… | 40 · 5 · 64 · 1 | 6 · 0 · 13 · 0 |
+
+**Lecture** : même constat que pour Auguste (`jalon-25-equilibrage.md` §5.3). Les niveaux seuls ne
+ramènent pas les équipes dans la bande : une arrivée normale reste à 90–100 % même à +8, alors
+qu'une arrivée basse s'effondre dès +4. Une équipe de cinq ou six Pokémon de N36–42 écrase un
+Champion à quatre Pokémon qui ne pose pas Toxik.
+
+**Question pour Kevin (Q23-1)** : **A** garder les niveaux RB (Koga facile pour un joueur attentif,
+difficile pour une arrivée basse ou un joueur naïf ; comme Auguste, E-4 A) · **B** +4 niveaux
+(41 / 43 / 41 / 47) : à peine plus dur pour une arrivée normale, très dur pour une arrivée basse ·
+**C** rendre Toxik utile à l'IA « smart » (Toxik sur une cible saine noté au-dessus d'une attaque
+moyenne), ce qui touche tous les Dresseurs « smart » du jeu (à simuler à part, hors du J23).
+Recommandation : **A**.
 
 ## Annexe A — Textes complémentaires (T2, **validés par Kevin le 2026-10-19** : « annexe A ok »)
 
