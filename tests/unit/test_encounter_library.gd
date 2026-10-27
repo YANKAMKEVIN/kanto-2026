@@ -52,7 +52,7 @@ func test_unknown_key_is_rejected() -> void:
 
 func test_unknown_species_is_rejected() -> void:
 	var dict := _valid_dict()
-	dict["route_1_grass"]["slots"][0]["species"] = "mewtwo"
+	dict["route_1_grass"]["slots"][0]["species"] = "missingno"
 	var lib := _lib()
 	assert_false(lib.add_from_dict(dict, "test"))
 	assert_string_contains(lib.get_errors()[0], "espèce inconnue")
@@ -123,8 +123,10 @@ func test_real_tables_load_without_error() -> void:
 	# Jalon 17 (T8) : Route 11, Cave Taupiqueur ; jalon 18 (T16) : Route 9, Route 10, Grotte Sombre ;
 	# jalon 19 (T5) : Tour Pokémon (la table d'eau de la carte de QA S2C est retirée en S2Z) ;
 	# Jalon 21 (T5) : sommet de la Tour (7F) ; jalon 24 (T4) : eau des Routes 19 à 21 et de
-	# Cramois'Île, herbe de la Route 21, sol des Îles Écume (test_j24_data).
-	assert_eq(lib.get_ids(), [&"cinnabar_island_water", &"dark_cave_1f_rubble",
+	# Cramois'Île, herbe de la Route 21, sol des Îles Écume (test_j24_data) ; jalon 31 (T4) : sol
+	# des trois étages de la Grotte Azurée.
+	assert_eq(lib.get_ids(), [&"cerulean_cave_1f_floor", &"cerulean_cave_2f_floor",
+		&"cerulean_cave_b1f_floor", &"cinnabar_island_water", &"dark_cave_1f_rubble",
 		&"dark_cave_b1f_rubble", &"digletts_cave_rubble", &"mt_moon_1f_rubble",
 		&"mt_moon_b1f_rubble", &"mt_moon_b2f_rubble", &"pokemon_mansion_1f_floor",
 		&"pokemon_mansion_2f_floor", &"pokemon_mansion_3f_floor", &"pokemon_mansion_b1f_floor",
@@ -219,7 +221,8 @@ func test_every_wild_species_has_battle_sprites() -> void:
 	# Jalon 21 (T5) : + la table du 7F (`pokemon_tower_top`), hors de la boucle comme les
 	# autres tables de la Tour (SPECTRES sans le Scope). Jalon 23 (T13) : + 4 du Parc Safari ;
 	# jalon 25 : + 4 du Manoir. Jalon 29 (T4) : + Route 23 et les 3 niveaux de la Route Victoire.
-	assert_eq(lib.size(), 55, "une table par couple ci-dessous, plus les 4 de la Tour (J19, J21)")
+	# Jalon 31 : + les 3 tables de la Grotte Azurée.
+	assert_eq(lib.size(), 58, "une table par couple ci-dessous, plus les 4 de la Tour (J19, J21)")
 	for pair: Array in [[&"route_1", &"grass"], [&"route_2", &"grass"],
 			[&"route_22", &"grass"], [&"viridian_forest", &"grass"], [&"route_2_north", &"grass"],
 			[&"route_3", &"grass"], [&"mt_moon_1f", &"rubble"], [&"mt_moon_b1f", &"rubble"],
@@ -355,6 +358,8 @@ func test_real_tables_carry_no_ghost_item_outside_the_tower() -> void:
 		if String(id).begins_with("pokemon_tower_"):
 			continue
 		assert_true(table.ghost_unless_item.is_empty(), String(id))
-		# Jalon 24 (T4) : le sol des Îles Écume est aussi un terrain « floor », sans SPECTRE ; J25 : Manoir.
-		if not (String(id).begins_with("seafoam_") or String(id).begins_with("pokemon_mansion_")):
+		# Jalon 24 (T4) : le sol des Îles Écume est aussi un terrain « floor », sans SPECTRE ; J25 : Manoir ;
+		# jalon 31 : celui de la Grotte Azurée aussi.
+		if not (String(id).begins_with("seafoam_") or String(id).begins_with("pokemon_mansion_")
+				or String(id).begins_with("cerulean_cave_")):
 			assert_ne(table.terrain, &"floor", String(id))

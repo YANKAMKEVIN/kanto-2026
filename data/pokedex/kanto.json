@@ -456,6 +456,14 @@
 			"height": 1.7, "weight": 55.4,
 			"description": "Un oiseau légendaire qui vit dans les montagnes glacées. Il apparaît, dit-on, à ceux qui se sont perdus dans la neige."
 		},
+		"ditto": {
+			"height": 0.3, "weight": 4.0,
+			"description": "Une masse molle qui prend la forme de ce qu'elle regarde. Elle a du mal à garder les yeux en place."
+		},
+		"mewtwo": {
+			"height": 2.0, "weight": 122.0,
+			"description": "Né d'expériences génétiques poussées trop loin. Il dort au fond d'une grotte où personne ne descend."
+		},
 		"vulpix": {
 			"height": 0.6, "weight": 9.9,
 			"description": "À sa naissance, il n'a qu'une seule queue, toute blanche. Elle se divise et se colore à mesure qu'il grandit."

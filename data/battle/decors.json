@@ -547,6 +547,15 @@
 		],
 		"victory_road_3f": [
 			{ "decor": "digletts_cave_rock" }
+		],
+		"cerulean_cave_1f": [
+			{ "decor": "dark_cave_galerie" }
+		],
+		"cerulean_cave_2f": [
+			{ "decor": "dark_cave_galerie" }
+		],
+		"cerulean_cave_b1f": [
+			{ "decor": "dark_cave_galerie" }
 		]
 
 	}
