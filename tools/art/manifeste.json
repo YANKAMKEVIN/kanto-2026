@@ -1703,6 +1703,15 @@
    ],
    "ombre": false,
    "contact": 0.1
+  },
+  {
+   "id": "int_porte_ligue_01",
+   "source": "INT_PORTE_LIGUE_01_NE_r3.png",
+   "sortie": "assets/world/interiors/int_porte_ligue_01.png",
+   "axe": "w",
+   "cases": 1.6,
+   "ombre": false,
+   "contact": 0.2
   }
  ],
  "hautes_herbes": {

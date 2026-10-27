@@ -756,6 +756,9 @@ const RULES: Dictionary[StringName, Dictionary] = {
 		"align": ALIGN_EDGE},
 	&"int_porte_sylphe_v_01": {"traversable": true, "layer": LAYER_GROUND,
 		"align": ALIGN_EDGE},
+	# J29 (QA A17) : porte de la Ligue posée dans le mur du fond du hall du Plateau Indigo,
+	# comme la porte du laboratoire du Musée (rangées du mur déjà bloquées) : sans emprise.
+	&"int_porte_ligue_01": {"traversable": true, "align": ALIGN_CENTRE},
 }
 
 

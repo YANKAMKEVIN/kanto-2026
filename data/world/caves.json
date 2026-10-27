@@ -24,6 +24,10 @@
 			],
 			"escape": { "map": "lavender_town", "spawn": "retour_tour", "facing": "down" }
 		},
+		"victory_road": {
+			"maps": ["victory_road_1f", "victory_road_2f", "victory_road_3f"],
+			"escape": { "map": "route_23", "spawn": "from_victory_road_w", "facing": "down" }
+		},
 		"rocket_hideout": {
 			"maps": [
 				"rocket_hideout_b1f", "rocket_hideout_b2f", "rocket_hideout_b3f",

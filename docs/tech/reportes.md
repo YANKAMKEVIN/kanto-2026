@@ -250,6 +250,12 @@ Les points RP-151 à RP-154, propres à `jalon-23` jusqu'ici, sont passés de la
 | RP-158 | Fusion du J23 (2026-10-26, tests de couverture DAF.5) | Icônes provisoires [D] : CT32, CT37, CT40 (icône de la CT09), CT06 (celle de la CT46), Dents d'Or (la Pépite) ; icônes dédiées à peindre | rendu | P3 (MEN-2) | DAF.5 (phase DA) | ouvert |
 | RP-159 | Fusion du J23 (2026-10-26) | Prénom « Intello Séraphin » [D] (Arène de Cramois'Île), posé pour éviter le doublon « Barnabé » du Médium du J27 | idée | P3 | Kevin (à confirmer) | ouvert |
 
+### 2.11 Fusion du J29 dans `main` (2026-10-27, à classer RP-NNN)
+
+- **Fonds de combat provisoires [D]** (couverture DAF.2) : `route_22_west` → `route_5_6_prairie` (comme la Route 22) ; `route_23` → `route_9_roche` ; `victory_road_1f`, `_2f`, `_3f` → `digletts_cave_rock`. Fonds dédiés à peindre (Route 23, Route Victoire).
+- **Icônes provisoires du Sac [D]** (couverture DAF.5) : CT05, CT43, CT47 = icône de la CT09 (Normal) ; CT17 = CT19 (Combat) ; Défense Spéc. (`guard_spec`) = Spécial X ; Max Éther (`max_ether`) = Potion Max. Icônes dédiées à peindre.
+- **Dédoublonnage** (RP-149, partie J27/J29) : `kanto_j27_emprunts.json` (M. Mime) et `moves/j27_emprunts.json` (Ultimawashi, Clonage) retirés, définitions identiques à celles du J29 ; `kanto_j29_reprises.json` (Alakazam, Leveinard, Lokhlass, identiques à ceux des J23 et J26) retiré, avec ses quatre fiches de Pokédex en double et les trois dessins provisoires en double de `gen_placeholder_battlers.gd`.
+
 ## 3. Propres à une branche non fusionnée
 
 Lecture seule ; ces points se règlent sur la branche ou à sa fusion (session du jalon). Les lignes

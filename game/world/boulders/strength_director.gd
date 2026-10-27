@@ -37,6 +37,8 @@ const MOVE: StringName = &"strength"
 const EXAMINE_DIALOGUE: StringName = Boulder.EXAMINE_DIALOGUE
 const USED_DIALOGUE: StringName = &"strength_used"
 const FELL_DIALOGUE: StringName = &"strength_boulder_fell"
+## Jalon 29 (T29-09, validé d'avance) : un rocher enfonce un interrupteur pour la première fois.
+const SWITCH_DIALOGUE: StringName = &"strength_switch_pressed"
 ## Appui tenu contre un rocher avant la poussée (s), dossier 27 §6.3 [D].
 const HOLD_TIME: float = 0.25
 ## Raison de blocage du joueur pendant une poussée ou l'activation.
@@ -233,6 +235,9 @@ func push(boulder: Boulder, direction: Vector2i) -> BoulderRules.Outcome:
 	push_finished.emit(result.outcome)
 	if result.outcome == BoulderRules.Outcome.FELL and not flag.is_empty() and _runner != null:
 		_runner.play(FELL_DIALOGUE, null, _map)
+	elif result.outcome == BoulderRules.Outcome.ON_SWITCH and not flag.is_empty() \
+			and _runner != null:
+		_runner.play(SWITCH_DIALOGUE, null, _map)
 	return result.outcome
 
 

@@ -1,0 +1,56 @@
+# Route Victoire 3F — grille fonctionnelle (jalon 29, §2.1, §2.4), ÉCRITE par
+# tools/art/j29_rb_decode.py --ecrire depuis Rouge/Bleu (VictoryRoad3F, 30 × 18, coordonnées RB 1:1).
+# Contrôle : tools/art/plan_check_j29.py.
+#
+# Puzzles RB : interrupteur (3, 5) → barrière (7, 10) ; le rocher n° 4 (22, 15) poussé dans le trou
+# (23, 15) tombe au 2F (rocher n° 3 du 2F). Le joueur qui marche sur le trou ouvert tombe au 2F
+# (22, 16) ; une fois le trou bouché, on passe dessus [D] (RB : le trou reste).
+#
+# Légende : # mur · . sol bas · : sol haut · = escalier · L échelle
+
+PRATICABLES .:=LE
+
+GRILLE 30 18
+00 ##L###.......................#
+01 ##..##.......................#
+02 ##......#::::::::::#.........#
+03 #..#.#..#::::::::::#......#..#
+04 #....#..#::::::::::#....#:#..#
+05 #...##..#::######=##....##...#
+06 ..####..#::#............######
+07 #:::::#.#::#...........L#....#
+08 #:::::###::#.....###....#.L..#
+09 #=###:###::#......#..####....#
+10 #...#::::::#.........#....#..#
+11 #...########.........#..#....#
+12 #...........#.########..#....#
+13 #...........#...........#....#
+14 #...........#:..........#....#
+15 #...........##..........#..L.#
+16 #:......................#...#:
+17 ##############################
+FIN
+
+POSITIONS
+echelle_2f_a         echelle         23,7             libre   vers=victory_road_2f:from_3f_a
+from_2f_a            spawn           23,8             libre
+echelle_2f_b         echelle         26,8             libre   vers=victory_road_2f:from_3f_b
+from_2f_b            spawn           26,9             libre
+echelle_2f_c         echelle         27,15            libre   vers=victory_road_2f:from_3f_c
+from_2f_c            spawn           27,14            libre
+echelle_2f_d         echelle         2,0              libre   vers=victory_road_2f:from_3f_d
+from_2f_d            spawn           2,1              libre
+dresseur_1           pnj             28,5             bloque  role=D facing=left trainer=victory_road_3f_cooltrainer_m_1  # RB OPP_COOLTRAINER_M 2
+dresseuse_1          pnj             7,13             bloque  role=D facing=right trainer=victory_road_3f_cooltrainer_f_1  # RB OPP_COOLTRAINER_F 2
+dresseur_2           pnj             6,14             bloque  role=D facing=left trainer=victory_road_3f_cooltrainer_m_2  # RB OPP_COOLTRAINER_M 3
+dresseuse_2          pnj             13,3             bloque  role=D facing=right trainer=victory_road_3f_cooltrainer_f_2  # RB OPP_COOLTRAINER_F 3
+objet_1              objet_visible   26,5             bloque  objet=max_revive  # Rappel Max
+objet_2              objet_visible   7,7              bloque  objet=tm47  # CT47 Explosion
+rocher_1             rocher          22,3             bloque  ordre=1
+rocher_2             rocher          13,12            bloque  ordre=2
+rocher_3             rocher          24,10            bloque  ordre=3
+rocher_4             rocher          22,15            bloque  ordre=4 trou=1  # tombe au 2F
+trou_1               trou            23,15            libre   n=1 drapeau=victory_road_3f_hole_1_filled chute=victory_road_2f
+interrupteur_1       interrupteur    3,5              libre   drapeau=victory_road_3f_switch_1
+barriere_1           barriere        7,10             bloque  ouverte_si=victory_road_3f_switch_1
+FIN

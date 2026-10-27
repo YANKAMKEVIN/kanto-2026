@@ -1,0 +1,90 @@
+{
+	"dresseur_1": {
+		"cell": [
+			28,
+			5
+		],
+		"facing": "left",
+		"sprite": "scout",
+		"dialogue": "victory_road_3f_cooltrainer_m_1_after",
+		"trainer": {
+			"id": "victory_road_3f_cooltrainer_m_1",
+			"sight": 1,
+			"before": "victory_road_3f_cooltrainer_m_1_before",
+			"defeated": "victory_road_3f_cooltrainer_m_1_defeated"
+		}
+	},
+	"dresseuse_1": {
+		"cell": [
+			7,
+			13
+		],
+		"facing": "right",
+		"sprite": "cooltrainer_f",
+		"dialogue": "victory_road_3f_cooltrainer_f_1_after",
+		"trainer": {
+			"id": "victory_road_3f_cooltrainer_f_1",
+			"sight": 4,
+			"before": "victory_road_3f_cooltrainer_f_1_before",
+			"defeated": "victory_road_3f_cooltrainer_f_1_defeated"
+		}
+	},
+	"dresseur_2": {
+		"cell": [
+			6,
+			14
+		],
+		"facing": "left",
+		"sprite": "scout",
+		"dialogue": "victory_road_3f_cooltrainer_m_2_after",
+		"trainer": {
+			"id": "victory_road_3f_cooltrainer_m_2",
+			"sight": 4,
+			"before": "victory_road_3f_cooltrainer_m_2_before",
+			"defeated": "victory_road_3f_cooltrainer_m_2_defeated"
+		}
+	},
+	"dresseuse_2": {
+		"cell": [
+			13,
+			3
+		],
+		"facing": "right",
+		"sprite": "cooltrainer_f",
+		"dialogue": "victory_road_3f_cooltrainer_f_2_after",
+		"trainer": {
+			"id": "victory_road_3f_cooltrainer_f_2",
+			"sight": 4,
+			"before": "victory_road_3f_cooltrainer_f_2_before",
+			"defeated": "victory_road_3f_cooltrainer_f_2_defeated"
+		}
+	},
+	"victory_road_3f_item_1": {
+		"cell": [
+			26,
+			5
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "victory_road_3f_item_1",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_victory_road_3f_item_1"
+		]
+	},
+	"victory_road_3f_item_2": {
+		"cell": [
+			7,
+			7
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "victory_road_3f_item_2",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_victory_road_3f_item_2"
+		]
+	}
+}

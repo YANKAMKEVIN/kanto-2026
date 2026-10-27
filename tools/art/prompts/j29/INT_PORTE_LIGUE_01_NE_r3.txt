@@ -1,0 +1,26 @@
+INT_PORTE_LIGUE_01 — NOUVELLE image : un élément de jeu isolé, pas une scène.
+Aucune image jointe.
+
+ADN VISUEL KANTO 2026 — v1 (à respecter strictement)
+- Rendu : illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus de trois quarts, en projection oblique frontale, sans aucun point de fuite. Les verticales restent strictement verticales et les horizontales strictement horizontales. On voit le dessus des objets et leur face avant (côté sud), jamais leurs côtés. Pas de vue isométrique, pas de rotation. Le sol est vu à plat, comme sur un plan.
+- Proportions : légèrement stylisées, trapues et rassurantes. Échelle commune : 1 case de jeu = 1 mètre environ ; un adulte mesure 1,33 case ; une porte simple mesure 1 case de large et 1,5 case de haut.
+- Contours : aucun trait noir. Contour fin et doux, d'une teinte plus sombre et plus saturée que la couleur locale, qui s'efface presque du côté éclairé.
+- Volumes : trois valeurs nettes par matériau (lumière, ombre propre, reflet ambiant), transitions douces, petits accents de lumière sur les arêtes.
+- Matériaux : reconnaissables (bois, pierre, tuile, feuillage, verre) à leur forme et à quelques touches de texture, jamais à une texture photographique.
+- Couleurs : chaudes, lumineuses et saturées sans être fluo. Verts allant du vert-jaune ensoleillé au vert sapin. Ombres colorées tirant vers le bleu-vert ou le violet froid, jamais grises ni noires. Couleurs franches pour les toits.
+- Texture : pinceau net et propre, légère granularité picturale ; pas de bruit, pas de flou, pas de netteté artificielle.
+- Lumière : une seule source, le soleil, en haut à gauche de l'image (la fiche précise la variante).
+- Ombres : aucune ombre portée au sol (le jeu l'ajoute lui-même). Les ombres propres et internes (sous le feuillage, sous un avant-toit) sont peintes.
+- Isolement : un seul objet, entier, centré, sur fond transparent ; rien autour : ni sol, ni herbe, ni décor, ni personnage.
+- Interdits partout : texte, lettres, chiffres, logo (sauf l'emblème demandé), signature, filigrane, cadre, personnage, Pokémon, ombre portée, sol sous l'objet, flou de profondeur, vignettage.
+
+LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche ; volumes conservés par un ombrage doux ; aucune teinte dorée ou orangée, aucun liseré chaud ; ombres propres neutres, légèrement bleutées.
+VALEURS DU HALL (celles du Centre Pokémon joint) : murs crème, lambris et piliers de bois brun chaud, bandeau rouge vif, verre bleu clair ; la porte de la Ligue y ajoute un rouge carmin profond, de l'or patiné (laiton) et une pierre claire crème ; lumière NEUTRE, diffuse et blanche (le jeu ajoute la lumière chaude de l'intérieur : ne peins NI halo, NI rayon, NI lueur derrière la porte).
+
+ASSET : la GRANDE PORTE DE LA LIGUE POKÉMON, au fond du hall du Plateau Indigo : la porte solennelle qui mène aux salles de la Ligue, posée DANS le mur du fond du hall (le mur crème à lambris de bois brun et bandeau rouge du Centre joint). C'est la porte la plus importante du jeu : digne, imposante, mais sobre et lisible.
+Composition : un PORTAIL de pierre claire crème à montants droits et LINTEAU en léger arc surbaissé, souligné d'un filet d'or patiné ; dedans, une DOUBLE PORTE FERMÉE à deux vantaux en bois rouge carmin laqué, chaque vantail orné de deux panneaux moulurés bordés d'or, deux grandes poignées verticales en laiton au milieu, les deux vantaux jointifs (fente verticale nette au centre) ; au sommet du linteau, un petit écusson doré en forme de BLASON (bouclier stylisé avec une aile, SANS cercle partagé, SANS lettre). Un seuil de pierre bas au pied, à fleur du sol. La porte est vue de FACE, dans la vue du jeu : on voit sa face avant et à peine le dessus du linteau, jamais ses côtés.
+Proportions : 1,6 case de large pour environ 2 cases de haut (la porte seule ≈ 1,2 case de large et 1,6 case de haut, le portail l'encadre) : plus haute et plus large qu'une porte simple (1 × 1,5 case).
+Format : PNG CARRÉ 1024 × 1024, la porte et son portail centrés, environ 640 px de large et 800 px de haut, la base (seuil) sur une ligne horizontale droite à 60 px du bas ; vraie transparence (canal alpha) autour ; aucun mur autour, aucun sol, aucune ombre portée, aucun halo.
+
+Interdits : texte, lettres, chiffres, inscription, enseigne, plaque écrite, AUCUN emblème rond de type balle (ni cercle partagé en deux, ni médaillon à bande centrale), porte ouverte ou entrouverte, lumière ou silhouette derrière la porte, personnage (même s'il figure sur une image jointe : ne le reproduis pas), Pokémon, tapis, plante, mur ou fenêtre autour, flou de profondeur, vignettage.

@@ -92,7 +92,9 @@ const TRAVERSABLE: Array[StringName] = [&"relief_escalier_01", &"ground_hautes_h
 	&"relief_mur_jadielle_02", &"relief_mur_jadielle_03", &"relief_mur_jadielle_04",
 	&"relief_mur_jadielle_05", &"int_escalier_sylphe_monte_01", &"int_escalier_sylphe_descend_01",
 	&"int_porte_ascenseur_sylphe_01", &"decal_teleporteur_sylphe_01", &"decal_seuil_sylphe_01",
-	&"int_paillasson_sylphe_01", &"int_porte_sylphe_h_01", &"int_porte_sylphe_v_01"]
+	&"int_paillasson_sylphe_01", &"int_porte_sylphe_h_01", &"int_porte_sylphe_v_01",
+	# J29 (QA A17) : porte de la Ligue dans le mur du fond du hall du Plateau (déjà bloqué).
+	&"int_porte_ligue_01"]
 const GROUND_LAYER: Array[StringName] = [
 	# Lot DAF.3 / DAF.4 : modules de la Sylphe, des Arènes de Safrania et de Jadielle, du Dojo.
 	&"relief_mur_sylphe_01", &"relief_mur_sylphe_02", &"relief_mur_sylphe_03",
