@@ -270,7 +270,7 @@ Les points RP-151 à RP-154, propres à `jalon-23` jusqu'ici, sont passés de la
 - **Fiches de Pokédex manquantes** : Lippoutou, Mackogneur, Ectoplasma, Draco, Dracolosse (`NO_ENTRY_YET` de `test_pokedex_library.gd`) ; textes à écrire et à faire valider par Kevin. Sprites de combat provisoires recolorés (`gen_placeholder_battlers_j30.gd`) : DAF.1/DAF.2.
 - **Dédoublonnage** (RP-149, partie J30, réglé) : `kanto_j30_reprises.json` (Rhinoféros, Kicklee, Tygnon), `moves/j30_reprises.json` (Abîme, Toxik simplifié) et `moves/j30_emprunts.json` (Riposte, Pied Sauté, Pied Voltige, poings, Mawashi Geri) retirés : les versions des J23, J27 et J28 font foi (effets `crash` / `counter` du J27). Description du Sac de combat : les 4 lignes de `main` (R-1) remplacent les 3 de `jalon-30`. `FACING_RIGHT` : celui de `main` (identique).
 - **RP-131** (fond flou recadré après une reprise pendant un combat) : le correctif du J30 (`Player.hold_camera`) entre dans `main`. **RP-137** : Q30-4 et Grand moment « champion » faits, textes du générique validés (reste : fond nuit uni des deux écrans, DAF). **RP-138** : QA 30A faite par Kevin sur le S24 le 2026-10-27, fermé. **RP-113** : Mackogneur et Ectoplasma sont maintenant dans les données (évolutions par échange : J32).
-- **RP-155** : `StaticRespawn.on_league_won(...)` (N-17, N-18) n'est pas dans `main` ; le commentaire de branchement reste dans `LeagueDirector.complete_ceremony`, à brancher à la fusion du J32.
+- **RP-155** : `StaticRespawn.on_league_won(...)` (N-17, N-18) branché sur `jalon-32` le 2026-10-27 (`LeagueDirector.complete_ceremony`, test) ; entre dans `main` avec le J32. Fiches de Pokédex de la Ligue écrites en [D] sur `jalon-32` (à valider).
 
 ## 3. Propres à une branche non fusionnée
 
