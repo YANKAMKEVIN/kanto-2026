@@ -34,6 +34,8 @@ FICHE = RACINE / "docs" / "design" / "fiches-assets" / "cv-fx-1"
 FRAME = 320          ## côté d'une image de flipbook préparée
 PART = 192           ## côté d'un sprite de particule
 NB_FINAL = 16        ## images par flipbook après interpolation
+MANIFESTE = "manifeste_vague1.json"
+TITRE = "CV.1 vague 1"
 
 ADN_FX = """ADN VISUEL — EFFETS DE COMBAT KANTO 2026 (à respecter strictement)
 - Rendu : effet spécial PEINT numériquement, dans la même main que le monde du jeu (RPG Pokémon moderne « HD-2D peint ») : volumes lisibles, formes douces et organiques, coups de pinceau visibles, légère granularité picturale. Ni pixel art, ni 3D, ni photo, ni formes géométriques plates, ni dessin animé en aplats, ni rendu de moteur de particules.
@@ -43,6 +45,8 @@ ADN_FX = """ADN VISUEL — EFFETS DE COMBAT KANTO 2026 (à respecter strictement
 
 FOND_NOIR = ("Fond : NOIR PUR uniforme (#000000), sur toute la planche, sans dégradé ni vignettage ; l'effet est "
 	"lumineux et se détache du noir. Aucun damier, aucune transparence dessinée.")
+FOND_VERT = ("Fond : VERT PUR uniforme (#00FF00), sur toute la planche, sans dégradé ni ombre ; aucun vert vif "
+	"dans l'effet lui-même. Aucun damier, aucune transparence dessinée.")
 FOND_MAGENTA = ("Fond : MAGENTA PUR uniforme (#FF00FF), sur toute la planche, sans dégradé ni ombre ; aucun magenta "
 	"ni rose dans l'effet lui-même. Aucun damier, aucune transparence dessinée.")
 
@@ -138,7 +142,7 @@ PARTICULES_NOMS = [n for _i, _m, ps in PARTICULES for n, _d in ps]
 
 
 def _prompt_flipbook(ident: str, mode: str, titre: str, consigne: str) -> str:
-	fond = FOND_NOIR if mode == "add" else FOND_MAGENTA
+	fond = {"add": FOND_NOIR, "vert": FOND_VERT}.get(mode, FOND_MAGENTA)
 	return (f"CV_FX_{ident.upper()} — NOUVELLE image : une PLANCHE de 8 images d'animation (images clés) d'un "
 		f"effet d'attaque de combat : {titre}.\n\n{ADN_FX}\n\n"
 		"Format : image 1536 × 1024, divisée de façon invisible en 8 cases égales (4 colonnes × 2 rangées), de "
@@ -149,7 +153,7 @@ def _prompt_flipbook(ident: str, mode: str, titre: str, consigne: str) -> str:
 
 
 def _prompt_particules(ident: str, mode: str, sprites: list[tuple[str, str]]) -> str:
-	fond = FOND_NOIR if mode == "add" else FOND_MAGENTA
+	fond = {"add": FOND_NOIR, "vert": FOND_VERT}.get(mode, FOND_MAGENTA)
 	liste = "\n".join(f"  case {i + 1} : {d}" for i, (_n, d) in enumerate(sprites))
 	return (f"CV_FX_{ident.upper()} — NOUVELLE image : une PLANCHE de 8 sprites de particules pour des effets "
 		f"d'attaque de combat.\n\n{ADN_FX}\n\n"
@@ -205,6 +209,15 @@ def _alpha(img: Image.Image, mode: str) -> Image.Image:
 		al = np.clip((al - 0.03) / 0.9, 0, 1) ** 0.8
 		col = np.where(al[..., None] > 0.01, a / np.maximum(al[..., None], 0.01), 0)
 		rgb = np.clip(col, 0, 1)
+	elif mode == "vert":
+		d = np.sqrt(((a - np.array([0.0, 1.0, 0.0])) ** 2).sum(axis=2)) / 1.2
+		al = np.clip((d - 0.12) / 0.35, 0, 1)
+		exces = np.clip(a[..., 1] - np.maximum(a[..., 0], a[..., 2]), 0, 1)
+		al = al * np.clip(1 - exces * 3.5, 0, 1)
+		rgb = a.copy()
+		rgb[..., 1] = np.clip(rgb[..., 1] - exces, 0, 1)
+		out = np.dstack([rgb, al])
+		return Image.fromarray((out * 255).astype(np.uint8))
 	else:
 		# distance au magenta pur dans l'espace RGB ; 0 = fond, 1 = matière
 		d = np.sqrt(((a - np.array([1.0, 0.0, 1.0])) ** 2).sum(axis=2)) / 1.2
@@ -295,7 +308,7 @@ def preparer() -> None:
 			manifeste["flipbooks"][ident] = {"fichier": f"fb_{ident}.webp", "images": NB_FINAL, "colonnes": 4,
 				"taille": FRAME, "melange": mode, "boucle": True}
 		print("ok", nom, "←", src.name)
-	(SORTIE / "manifeste_vague1.json").write_text(json.dumps(manifeste, indent=1, ensure_ascii=False), encoding="utf-8")
+	(SORTIE / MANIFESTE).write_text(json.dumps(manifeste, indent=1, ensure_ascii=False), encoding="utf-8")
 
 
 def _police(t: int) -> ImageFont.FreeTypeFont:
@@ -321,7 +334,7 @@ def _sur_fond(im: Image.Image, mode: str, fond: tuple[int, int, int]) -> Image.I
 
 def planche() -> None:
 	FICHE.mkdir(parents=True, exist_ok=True)
-	man = json.loads((SORTIE / "manifeste_vague1.json").read_text())
+	man = json.loads((SORTIE / MANIFESTE).read_text())
 	fond = (46, 66, 52)
 	petite = _police(26)
 	cellule = 320
@@ -329,9 +342,9 @@ def planche() -> None:
 	cols = 4
 	lignes = (len(noms) + cols - 1) // cols
 	haut = 70
-	feuille = Image.new("RGBA", (cols * cellule, haut + lignes * (cellule + 36) + 60 + 4 * 220 + 40), (24, 28, 30, 255))
+	feuille = Image.new("RGBA", (cols * cellule, haut + lignes * (cellule + 36) + 60 + ((len(man["particules"]) + 5) // 6) * 220 + 40), (24, 28, 30, 255))
 	d = ImageDraw.Draw(feuille)
-	d.text((16, 14), "CV.1 vague 1 — flipbooks (images fixes à l'image 6 ; boucles dans les GIF) et particules", font=_police(30), fill=(235, 235, 220))
+	d.text((16, 14), f"{TITRE} — flipbooks (image 6) et particules", font=_police(30), fill=(235, 235, 220))
 	gifs = {}
 	for k, n in enumerate(noms):
 		m = man["flipbooks"][n]
