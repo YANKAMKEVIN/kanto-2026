@@ -1,0 +1,28 @@
+INT_SYLPHE_DALLES_PLANCHE — NOUVELLE image pour un jeu vidéo.
+Images jointes : int_cabine_teleport_01, decal_arret_repaire_01, hideout_office_door = assets déjà peints du jeu : ancres de style (rendu peint, contour coloré fin, même angle de vue, même lumière neutre, même échelle de détail) ; WORLD_GROUND_MOQUETTE_SYLPHE_01_NE_r1, WORLD_RELIEF_MUR_SYLPHE_PLANCHE_NE_r1 = éléments DÉJÀ GÉNÉRÉS de ce lot : MÊME matière, mêmes couleurs, même main (raccord exact).
+
+ADN VISUEL KANTO 2026 — v1 (à respecter strictement)
+- Rendu : illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus de trois quarts, en projection oblique frontale, sans aucun point de fuite. Les verticales restent strictement verticales et les horizontales strictement horizontales. On voit le dessus des objets et leur face avant (côté sud), jamais leurs côtés. Pas de vue isométrique, pas de rotation. Le sol est vu à plat, comme sur un plan.
+- Proportions : légèrement stylisées, trapues et rassurantes. Échelle commune : 1 case de jeu = 1 mètre environ ; un adulte mesure 1,33 case ; une porte simple mesure 1 case de large et 1,5 case de haut.
+- Contours : aucun trait noir. Contour fin et doux, d'une teinte plus sombre et plus saturée que la couleur locale, qui s'efface presque du côté éclairé.
+- Volumes : trois valeurs nettes par matériau (lumière, ombre propre, reflet ambiant), transitions douces, petits accents de lumière sur les arêtes.
+- Matériaux : reconnaissables (bois, pierre, tuile, feuillage, verre) à leur forme et à quelques touches de texture, jamais à une texture photographique.
+- Couleurs : chaudes, lumineuses et saturées sans être fluo. Verts allant du vert-jaune ensoleillé au vert sapin. Ombres colorées tirant vers le bleu-vert ou le violet froid, jamais grises ni noires. Couleurs franches pour les toits.
+- Texture : pinceau net et propre, légère granularité picturale ; pas de bruit, pas de flou, pas de netteté artificielle.
+- Lumière : une seule source, le soleil, en haut à gauche de l'image (la fiche précise la variante).
+- Ombres : aucune ombre portée au sol (le jeu l'ajoute lui-même). Les ombres propres et internes (sous le feuillage, sous un avant-toit) sont peintes.
+- Isolement : un seul objet, entier, centré, sur fond transparent ; rien autour : ni sol, ni herbe, ni décor, ni personnage.
+- Interdits partout : texte, lettres, chiffres, logo (sauf l'emblème demandé), signature, filigrane, cadre, personnage, Pokémon, ombre portée, sol sous l'objet, flou de profondeur, vignettage.
+
+VALEURS DE LA SYLPHE SARL (le siège d'une grande entreprise technologique, propre, clair et moderne, JAMAIS sinistre même occupé par la Team Rocket) : moquette gris-bleu, cloisons crème et gris perle, plinthes et montants d'acier brossé, bois clair des bureaux, touches de bleu nuit et de cyan ; Lumière NEUTRE, diffuse et blanche venant légèrement du haut à gauche (le jeu ajoute lui-même l'ambiance) : AUCUNE teinte dorée, AUCUN halo, AUCUNE flaque de lumière, AUCUNE lueur d'écran, aucune ombre portée au sol.
+
+ASSET : PLANCHE de 5 ÉLÉMENTS PLATS ou BAS de la SYLPHE SARL, dans une image 1536 × 1024 : grille invisible de 3 colonnes × 2 lignes (cellules de 512 × 512), un élément par cellule, centré, la base de chacun sur une même ligne horizontale à 40 px du bas de sa cellule, les éléments bien SÉPARÉS les uns des autres par du vide, à une échelle COMMUNE de 1 case = 150 px, vus de dessus en trois quarts.
+1 (ligne 1, à gauche) : TAPIS DE TÉLÉPORTEUR, une dalle technologique CARRÉE posée à plat au sol, vue de dessus, 1 case × 1 case (≈ 150 × 150 px) : un cadre d'acier clair, à l'intérieur un disque VIOLET profond cerclé d'un anneau CYAN et d'un anneau blanc, petit motif de cercles concentriques ; peint, mat, SANS halo ni lueur ; très lisible sur une moquette gris-bleu.
+2 (ligne 1, au milieu) : SEUIL DE PORTE ÉLECTRONIQUE, une bande de sol plate vue de dessus, 1 case × 1 case : rail d'acier gris au milieu et bandes de sécurité JAUNES et grises en diagonale sur les bords.
+3 (ligne 1, à droite) : PAILLASSON d'entrée, un grand tapis plat rectangulaire gris anthracite à bord bleu nuit, vu de dessus, 2 cases de large × 1 case de haut.
+4 (ligne 2, à gauche) : PORTE ÉLECTRONIQUE HORIZONTALE fermée, un battant coulissant d'ACIER brossé à bande JAUNE de sécurité et petit lecteur de carte à voyant ROUGE peint (sans lueur), vu de face en trois quarts, 2 cases de large × 1 case de haut (≈ 300 × 150 px), bords nets.
+5 (ligne 2, au milieu) : PORTE ÉLECTRONIQUE VERTICALE fermée, le même battant pour une porte tournée nord-sud : vu de dessus, une longue cloison d'acier 1 case de large × 2 cases de haut (≈ 150 × 300 px), bande jaune et lecteur de carte. (ligne 2, à droite) : cellule VIDE.
+Fond avec une vraie transparence (canal alpha), aucun sol autour, aucune ombre portée, aucun texte.
+
+Interdits du lot : texte, lettres, chiffres, logo, enseigne écrite, inscription, la lettre R ou tout emblème de la Team Rocket, AUCUN emblème rond de type balle (ni cercle partagé en deux, ni médaillon à bande centrale), animaux réels, Pikachu et tout Pokémon, personnage (même s'il figure sur une image jointe), flou de profondeur, vignettage, pixel art, contour noir épais, aplats.
