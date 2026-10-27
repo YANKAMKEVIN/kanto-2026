@@ -1,0 +1,50 @@
+{
+	"safari_zone_north_proteine": {
+		"variants": [
+			{
+				"unless": [
+					"got_safari_zone_north_proteine"
+				],
+				"steps": [
+					{
+						"despawn": "proteine"
+					},
+					{
+						"give": "revive",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_safari_zone_north_proteine"
+						]
+					}
+				]
+			}
+		]
+	},
+	"safari_zone_north_ct40": {
+		"variants": [
+			{
+				"unless": [
+					"got_safari_zone_north_ct40"
+				],
+				"steps": [
+					{
+						"despawn": "ct40"
+					},
+					{
+						"give": "tm40",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_safari_zone_north_ct40"
+						]
+					}
+				]
+			}
+		]
+	}
+}

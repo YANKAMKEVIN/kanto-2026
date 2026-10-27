@@ -114,5 +114,6 @@ func test_fixture_with_unknown_fields() -> void:
 	assert_false(settings.high_contrast)
 	_store.save_settings(settings)
 	var parsed: Dictionary = JSON.parse_string(_fs.files[PATH])
-	assert_false(parsed.has("music_volume"), "un champ inconnu ne survit pas à l'écriture")
+	assert_eq(SettingsStore.VERSION, 1, "jalon Son : pas de changement de version")
+	assert_almost_eq(float(parsed["music_volume"]), 0.5, 0.0001, "volume relu puis réécrit")
 	assert_false(parsed.has("autosave"))

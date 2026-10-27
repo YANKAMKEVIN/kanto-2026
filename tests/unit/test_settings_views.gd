@@ -8,16 +8,17 @@ func _build(settings: GameSettings = null, can_save: bool = true) -> SettingsVie
 		GameSettings.Graphics.HIGH, can_save)
 
 
-func test_categories_in_order_without_audio() -> void:
+func test_categories_in_order_with_sound_after_game() -> void:
 	var ids: Array[StringName] = []
 	var titles: Array[String] = []
 	for category: SettingsCategoryView in _build().categories:
 		ids.append(category.id)
 		titles.append(category.title)
 		assert_false(category.controls.is_empty(), String(category.id))
-	assert_eq(ids, [SettingsViews.CATEGORY_GAME, SettingsViews.CATEGORY_CONTROLS,
-		SettingsViews.CATEGORY_ACCESSIBILITY, SettingsViews.CATEGORY_GRAPHICS] as Array[StringName])
-	assert_false(titles.has("AUDIO"), "Q-17")
+	assert_eq(ids, [SettingsViews.CATEGORY_GAME, SettingsViews.CATEGORY_SOUND,
+		SettingsViews.CATEGORY_CONTROLS, SettingsViews.CATEGORY_ACCESSIBILITY,
+		SettingsViews.CATEGORY_GRAPHICS] as Array[StringName], "dossier 08 §7 : AUDIO après JEU")
+	assert_true(titles.has("SON"), "jalon Son, SON-7")
 
 
 func test_every_setting_has_exactly_one_control() -> void:
@@ -161,3 +162,59 @@ func test_graphics_labels_are_unique() -> void:
 	for item: SettingControlView in _build().category(SettingsViews.CATEGORY_GRAPHICS).controls:
 		assert_false(labels.has(item.label), "doublon " + item.label)
 		labels.append(item.label)
+
+
+func test_sound_has_three_volume_sliders() -> void:
+	# SON-7 : Musique, Effets, Cris, de 0 à 100 % par crans de 10 %, défauts 70 / 80 / 80.
+	var sound := _build().category(SettingsViews.CATEGORY_SOUND)
+	var keys: Array[StringName] = []
+	var texts: Array[String] = []
+	for item: SettingControlView in sound.controls:
+		keys.append(item.key)
+		texts.append(item.value_text)
+		assert_eq(item.kind, SettingControlView.Kind.SLIDER)
+		assert_eq(item.min_value, 0.0)
+		assert_eq(item.max_value, 1.0)
+		assert_eq(item.step, 0.1)
+		for i: int in 11:
+			assert_true(GameSettings.is_valid(item.key, item.min_value + i * item.step),
+				"%s cran %d" % [item.key, i])
+	assert_eq(keys, [GameSettings.MUSIC_VOLUME, GameSettings.SFX_VOLUME,
+		GameSettings.CRY_VOLUME] as Array[StringName])
+	assert_eq(texts, [SettingsViews.percent_text(0.7), SettingsViews.percent_text(0.8),
+		SettingsViews.percent_text(0.8)] as Array[String])
+	assert_eq(sound.controls[0].label, "Musique")
+	assert_eq(sound.controls[1].label, "Effets")
+	assert_eq(sound.controls[2].label, "Cris")
+
+
+func test_muted_volume_reads_zero() -> void:
+	var settings := GameSettings.new()
+	settings.set_value(GameSettings.MUSIC_VOLUME, 0.0)
+	assert_eq(_build(settings).control(GameSettings.MUSIC_VOLUME).value_text,
+		SettingsViews.percent_text(0.0))
+
+
+func test_sound_is_also_in_the_title_settings() -> void:
+	var view := SettingsViews.build(GameSettings.new(), GameSettings.Graphics.HIGH, false, false)
+	assert_not_null(view.category(SettingsViews.CATEGORY_SOUND), "Paramètres de l'écran titre")
+	assert_eq(view.category(SettingsViews.CATEGORY_SOUND).controls.size(), 3)
+
+
+func test_battle_animations_choice_in_game_category() -> void:
+	var game := _build().category(SettingsViews.CATEGORY_GAME)
+	var keys: Array[StringName] = []
+	for item: SettingControlView in game.controls:
+		keys.append(item.key)
+	assert_has(keys, GameSettings.BATTLE_ANIMATIONS, "CV-4 : catégorie JEU")
+	var control := _build().control(GameSettings.BATTLE_ANIMATIONS)
+	assert_eq(control.kind, SettingControlView.Kind.CHOICE)
+	assert_eq(control.label, "Animations de combat")
+	assert_eq(control.detail, "Rapides : combats plus courts, mêmes effets.")
+	assert_eq(control.options.size(), 2)
+	assert_eq(control.options[0].label, "Complètes")
+	assert_eq(control.options[1].label, "Rapides")
+	assert_eq(control.value_text, "Complètes", "défaut")
+	var settings := GameSettings.new()
+	settings.battle_animations = GameSettings.BattleAnimations.FAST
+	assert_eq(_build(settings).control(GameSettings.BATTLE_ANIMATIONS).value_text, "Rapides")

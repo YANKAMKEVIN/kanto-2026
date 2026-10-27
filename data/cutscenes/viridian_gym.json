@@ -1,0 +1,205 @@
+{
+	"viridian_gym_giovanni": {
+		"variants": [
+			{
+				"unless": [
+					"badge_earth"
+				],
+				"steps": [
+					{
+						"face": "giovanni",
+						"to": "player"
+					},
+					{
+						"dialogue": "viridian_gym_giovanni_intro",
+						"unless": [
+							"giovanni_gym_met"
+						]
+					},
+					{
+						"dialogue": "viridian_gym_giovanni_resume",
+						"if": [
+							"giovanni_gym_met"
+						]
+					},
+					{
+						"champion_card": "viridian_gym_giovanni",
+						"unless": [
+							"giovanni_gym_met"
+						]
+					},
+					{
+						"set": [
+							"giovanni_gym_met"
+						]
+					},
+					{
+						"battle": "viridian_gym_giovanni",
+						"win": [
+							"badge_earth"
+						]
+					},
+					{
+						"wait": 0.6,
+						"if": [
+							"badge_earth"
+						]
+					},
+					{
+						"dialogue": "viridian_gym_giovanni_won",
+						"if": [
+							"badge_earth"
+						]
+					},
+					{
+						"badge": "earth",
+						"if": [
+							"badge_earth"
+						]
+					},
+					{
+						"dialogue": "viridian_gym_giovanni_badge",
+						"if": [
+							"badge_earth"
+						]
+					},
+					{
+						"dialogue": "viridian_gym_giovanni_tm",
+						"unless": [
+							"tm27_received"
+						],
+						"if": [
+							"badge_earth"
+						]
+					},
+					{
+						"give": "tm27",
+						"count": 1,
+						"unless": [
+							"tm27_received"
+						],
+						"if": [
+							"badge_earth"
+						]
+					},
+					{
+						"dialogue": "viridian_gym_giovanni_tm_got",
+						"unless": [
+							"tm27_received"
+						],
+						"if": [
+							"badge_earth"
+						]
+					},
+					{
+						"set": [
+							"tm27_received"
+						],
+						"if": [
+							"badge_earth"
+						]
+					},
+					{
+						"dialogue": "viridian_gym_giovanni_departure",
+						"if": [
+							"badge_earth"
+						]
+					},
+					{
+						"wait": 0.4,
+						"if": [
+							"badge_earth"
+						]
+					},
+					{
+						"despawn": "giovanni",
+						"if": [
+							"badge_earth"
+						]
+					},
+					{
+						"dialogue": "viridian_gym_giovanni_lost",
+						"unless": [
+							"badge_earth"
+						]
+					},
+					{
+						"wake_up": true,
+						"unless": [
+							"badge_earth"
+						]
+					}
+				]
+			}
+		]
+	},
+	"viridian_gym_giovanni_tm_late": {
+		"variants": [
+			{
+				"steps": [
+					{
+						"face": "giovanni",
+						"to": "player"
+					},
+					{
+						"dialogue": "viridian_gym_giovanni_tm",
+						"unless": [
+							"tm27_received"
+						]
+					},
+					{
+						"give": "tm27",
+						"count": 1,
+						"unless": [
+							"tm27_received"
+						]
+					},
+					{
+						"dialogue": "viridian_gym_giovanni_tm_got",
+						"unless": [
+							"tm27_received"
+						]
+					},
+					{
+						"set": [
+							"tm27_received"
+						]
+					},
+					{
+						"dialogue": "viridian_gym_giovanni_departure"
+					},
+					{
+						"wait": 0.4
+					},
+					{
+						"despawn": "giovanni"
+					}
+				]
+			}
+		]
+	},
+	"viridian_gym_item_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_viridian_gym_item_1"
+				],
+				"steps": [
+					{
+						"despawn": "viridian_gym_item_1"
+					},
+					{
+						"give": "revive",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_viridian_gym_item_1"
+						]
+					}
+				]
+			}
+		]
+	}
+}

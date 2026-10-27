@@ -28,10 +28,11 @@ var type_names: PackedStringArray = PackedStringArray()
 var height_text: String = ""
 var weight_text: String = ""
 var description: String = ""
-## « Vu 3 fois » ; à la capture « Vu 3 fois · capturé 1 fois ».
+## « Vu 3 fois » ; à la capture « Vu 3 fois · capturé 1 fois » (sans compte de capture : espèce
+## obtenue par évolution, la seconde moitié manque).
 var counts_text: String = ""
 ## Les deux cartes sous le portrait : « 3 fois » (vu) et « 1 fois » (capturé) ; le second est
-## vide tant que l'espèce n'est pas capturée (carte absente).
+## vide tant que l'espèce n'est pas capturée, ou qu'elle ne l'a été que par évolution (carte absente).
 var seen_times_text: String = ""
 var caught_times_text: String = ""
 ## Habitat : zones où l'espèce a été observée, dans l'ordre de découverte.

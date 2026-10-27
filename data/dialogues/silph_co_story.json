@@ -1,0 +1,169 @@
+{
+	"rival_silph_intro": {
+		"speaker": "{rival}",
+		"pages": [
+			"Tiens, {player}.",
+			"Toi aussi, tu cherches le chef de la Team Rocket ?",
+			"Montre-moi d'abord ce que tu vaux."
+		]
+	},
+	"rival_silph_won": {
+		"speaker": "{rival}",
+		"pages": [
+			"Pas mal…",
+			"Le chef est tout en haut.",
+			"Fais ce que tu veux, moi j'ai mieux à faire."
+		]
+	},
+	"rival_silph_lost": {
+		"speaker": "{rival}",
+		"pages": ["Trop facile.", "Reviens quand tu seras prêt."]
+	},
+	"silph_co_7f_lapras_giver": {
+		"speaker": "Employé",
+		"variants": [
+			{
+				"if": ["rival_silph_won"],
+				"unless": ["silph_lapras_received"],
+				"pages": [
+					"Tu as battu ce garçon ?",
+					"Alors tu peux protéger celui-ci.",
+					"Les Rocket voulaient l'emporter."
+				],
+				"cutscene": "silph_co_lapras_gift"
+			},
+			{
+				"if": ["silph_lapras_received"],
+				"pages": ["Prends soin de lui.", "Il sait nager très loin."]
+			},
+			{
+				"pages": [
+					"Ce garçon bloque le passage depuis tout à l'heure.",
+					"On dirait qu'il attend quelqu'un."
+				]
+			}
+		]
+	},
+	"silph_co_lapras_received": {
+		"narration": true,
+		"pages": ["{player} reçoit Lokhlass !"]
+	},
+	"silph_co_lapras_stored": {
+		"narration": true,
+		"pages": ["Lokhlass a été envoyé au stockage."]
+	},
+	"silph_co_7f_lapras_care": {
+		"speaker": "Employé",
+		"pages": ["Prends soin de lui.", "Il sait nager très loin."]
+	},
+	"silph_co_7f_worker_2": {
+		"speaker": "Employé",
+		"variants": [
+			{
+				"if": ["silph_giovanni_defeated"],
+				"pages": ["Les Rocket sont partis !", "On va enfin pouvoir se remettre au travail."]
+			},
+			{
+				"pages": ["Les Rocket ont fouillé tous les bureaux.", "Ils cherchent quelque chose…"]
+			}
+		]
+	},
+	"silph_co_7f_worker_3": {
+		"speaker": "Employé",
+		"variants": [
+			{
+				"if": ["silph_giovanni_defeated"],
+				"pages": ["Ouf… Le calme est revenu dans les bureaux."]
+			},
+			{
+				"pages": ["Pas de bruit…", "Ils sont juste à côté."]
+			}
+		]
+	},
+	"silph_co_7f_worker_4": {
+		"speaker": "Employée",
+		"variants": [
+			{
+				"if": ["silph_giovanni_defeated"],
+				"pages": ["La Sylphe SARL respire enfin.", "Merci !"]
+			},
+			{
+				"pages": ["Ils nous ont enfermés ici.", "Ces portes ne s'ouvrent qu'avec une carte."]
+			}
+		]
+	},
+	"silph_co_giovanni_intro": {
+		"speaker": "Giovanni",
+		"pages": [
+			"Te voilà encore.",
+			"Tu t'obstines à te mettre en travers de mes affaires.",
+			"Cette fois, je ne te ferai pas de cadeau."
+		]
+	},
+	"silph_co_giovanni_won": {
+		"speaker": "Giovanni",
+		"pages": [
+			"… Je me suis trompé sur toi.",
+			"La Sylphe SARL n'en vaut plus la peine.",
+			"Nous partons."
+		]
+	},
+	"silph_co_giovanni_lost": {
+		"speaker": "Giovanni",
+		"pages": ["Rentre chez toi.", "Ce n'est pas un jeu d'enfant."]
+	},
+	"silph_co_president": {
+		"speaker": "Président",
+		"variants": [
+			{
+				"if": ["silph_giovanni_defeated"],
+				"unless": ["silph_master_ball_received"],
+				"pages": [
+					"Merci !",
+					"Sans toi, la Sylphe SARL était perdue.",
+					"Accepte ceci : c'est notre plus grande invention."
+				],
+				"cutscene": "silph_co_master_ball"
+			},
+			{
+				"if": ["silph_master_ball_received"],
+				"pages": [
+					"La Master Ball attrape n'importe quel Pokémon à coup sûr.",
+					"Il n'en existe qu'une."
+				]
+			},
+			{
+				"pages": ["Ils veulent nos secrets…", "Je ne leur céderai rien."]
+			}
+		]
+	},
+	"silph_co_master_ball_got": {
+		"narration": true,
+		"pages": ["{player} obtient la Master Ball !"]
+	},
+	"silph_co_president_after": {
+		"speaker": "Président",
+		"pages": [
+			"La Master Ball attrape n'importe quel Pokémon à coup sûr.",
+			"Il n'en existe qu'une."
+		]
+	},
+	"silph_co_11f_secretary": {
+		"speaker": "Secrétaire",
+		"variants": [
+			{
+				"if": ["silph_giovanni_defeated"],
+				"pages": ["Le président est sain et sauf, grâce à toi.", "Merci du fond du cœur."]
+			},
+			{
+				"pages": ["Le président est retenu ici.", "Je t'en prie, fais quelque chose…"]
+			}
+		]
+	},
+	"silph_co_7f_item_10": {
+		"cutscene": "silph_co_7f_item_10"
+	},
+	"silph_co_7f_item_11": {
+		"cutscene": "silph_co_7f_item_11"
+	}
+}

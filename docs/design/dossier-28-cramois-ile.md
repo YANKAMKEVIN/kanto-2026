@@ -634,7 +634,7 @@ sauvegarde sont faits **dans chaque lot**.
 39. *(Hector, refus)* « Bon, si tu ne veux pas… »
 40. *(Hector, mauvaise espèce)* « Hmm ? Ce n'est pas un X. » / « Pense à moi si tu en as un. »
 41. *(Hector, merci)* « Merci ! »
-42. *(Hector, après)* « Ton X se porte à merveille ! »
+42. *(Hector, après)* « Comment va mon ancien Y ? » (remplace « Ton X se porte à merveille ! », décision de Kevin du 2026-10-26 : même point de vue que Lina et Marc)
 43. *(Lina, offre)* « Salut ! Tu as un X ? » / « Tu l'échangerais contre un Y ? »
 44. *(Lina, refus)* « Dommage. »
 45. *(Lina, mauvaise espèce)* « Ce n'est pas un X… » / « Si tu en trouves un, reviens me voir ! »

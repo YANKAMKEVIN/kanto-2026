@@ -12,6 +12,8 @@ extends RefCounted
 const STATUS_FAINTED: String = "K.O."
 ## Statut « PSN » (poison, jalon 9) : toujours un texte, jamais une icône seule.
 const STATUS_POISON: String = "PSN"
+## Jalon 23 (T18) : poison grave en combat (A-27, [constant StatusRules.TOXIC]).
+const STATUS_TOXIC: String = "PSN+"
 ## Statuts du J11 (dossier 08 §2 : abréviations réservées ; dossier 14 §3.3).
 const STATUS_PARALYSIS: String = "PAR"
 const STATUS_SLEEP: String = "SOM"

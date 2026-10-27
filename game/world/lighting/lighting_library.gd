@@ -30,6 +30,10 @@ extends RefCounted
 ## [constant LightProfile.RIM_WIDTH_MAX]] pixels de texture ; « length » dans ]0, 1] ;
 ## « skew_deg » dans [−89, 89] ; « wind » dans [0, [constant LightProfile.WIND_MAX]] pixels ;
 ## « sun_direction » non nulle ; couleurs « #rrggbb » (l'alpha est une clé à part).
+## « room » (facultatif, DAF.6, intérieurs : [RoomLight]) : « edge_color », « edge_alpha »,
+## « edge_width » (cases, ]0, [constant LightProfile.ROOM_EDGE_MAX]]), « pool_color »,
+## « pool_alpha », « pool_center » ([x, y] dans [0, 1]), « pool_radius » (]0,
+## [constant LightProfile.ROOM_POOL_RADIUS_MAX]]) ; alphas dans [0, 1].
 ## « maps » (facultatif) : profil prévu pour chaque carte peinte, que l'outil de construction de
 ## la carte écrit dans `GameMap.light_profile` (la carte reste la source lue par `Boot`) ; un
 ## profil inconnu y est une erreur. Toute clé inconnue est une erreur ; un profil invalide est écarté, l'erreur signalée
@@ -39,7 +43,7 @@ const DATA_PATH: String = "res://data/world/lighting.json"
 
 const _ROOT_KEYS: Array[String] = ["profiles", "maps"]
 const _PROFILE_KEYS: Array[String] = [
-	"grade", "sun_direction", "rim", "cast_shadow", "contact", "wind",
+	"grade", "sun_direction", "rim", "cast_shadow", "contact", "wind", "room",
 ]
 const _GRADE_KEYS: Array[String] = ["shadows", "midtones", "highlights", "strength"]
 ## Clé facultative de « grade » : « flat » (booléen, [member LightProfile.grade_flat]).
@@ -47,6 +51,10 @@ const _GRADE_OPTIONAL_KEYS: Array[String] = ["flat"]
 const _RIM_KEYS: Array[String] = ["color", "strength", "width"]
 const _CAST_KEYS: Array[String] = ["color", "alpha", "length", "skew_deg"]
 const _CONTACT_KEYS: Array[String] = ["color", "alpha"]
+const _ROOM_KEYS: Array[String] = [
+	"edge_color", "edge_alpha", "edge_width", "pool_color", "pool_alpha", "pool_center",
+	"pool_radius",
+]
 
 var _profiles: Dictionary[StringName, LightProfile] = {}
 var _maps: Dictionary[StringName, StringName] = {}
@@ -193,10 +201,30 @@ static func parse_profile(value: Variant, errors: PackedStringArray) -> LightPro
 		profile.contact_color = _color(contact, "contact", errors)
 		profile.contact_color.a = _number(contact, "alpha", "contact", 0.0, 1.0, false,
 			errors)
+	if entry.has("room") and _block(entry["room"], _ROOM_KEYS, "room", errors):
+		_parse_room(entry["room"], profile, errors)
 	if entry.has("wind"):
 		profile.wind_strength = _number(entry, "wind", "", 0.0, LightProfile.WIND_MAX, true,
 			errors)
 	return profile if errors.size() == count else null
+
+
+static func _parse_room(room: Dictionary, profile: LightProfile,
+		errors: PackedStringArray) -> void:
+	profile.room_edge_color = _color(room, "room", errors, "edge_color")
+	profile.room_edge_color.a = _number(room, "edge_alpha", "room", 0.0, 1.0, true, errors)
+	profile.room_edge_width = _number(room, "edge_width", "room", 0.0,
+		LightProfile.ROOM_EDGE_MAX, false, errors)
+	profile.room_pool_color = _color(room, "room", errors, "pool_color")
+	profile.room_pool_color.a = _number(room, "pool_alpha", "room", 0.0, 1.0, true, errors)
+	profile.room_pool_radius = _number(room, "pool_radius", "room", 0.0,
+		LightProfile.ROOM_POOL_RADIUS_MAX, false, errors)
+	var center: Variant = room["pool_center"]
+	if _is_vector2(center) and float(center[0]) >= 0.0 and float(center[0]) <= 1.0 \
+			and float(center[1]) >= 0.0 and float(center[1]) <= 1.0:
+		profile.room_pool_center = Vector2(float(center[0]), float(center[1]))
+	else:
+		errors.append("« room.pool_center » doit être [x, y] dans [0, 1]")
 
 
 ## Vrai si [param value] est un objet aux clés exactement [param keys] (toutes présentes,
@@ -260,13 +288,14 @@ static func _number(block: Dictionary, key: String, name: String, min_value: flo
 	return min_value
 
 
-## Couleur « #rrggbb » (opaque : l'alpha est une clé à part).
-static func _color(block: Dictionary, name: String, errors: PackedStringArray) -> Color:
-	var value: Variant = block["color"]
+## Couleur « #rrggbb » (opaque : l'alpha est une clé à part), clé [param key] du bloc.
+static func _color(block: Dictionary, name: String, errors: PackedStringArray,
+		key: String = "color") -> Color:
+	var value: Variant = block[key]
 	if value is String and (value as String).length() == 7 \
 			and (value as String).begins_with("#") and Color.html_is_valid(value):
 		return Color.html(value)
-	errors.append("« %s.color » doit être une couleur « #rrggbb »" % name)
+	errors.append("« %s.%s » doit être une couleur « #rrggbb »" % [name, key])
 	return Color.WHITE
 
 

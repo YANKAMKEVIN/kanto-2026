@@ -1,0 +1,205 @@
+{
+	"fuchsia_gym_juggler_1_before": {
+		"speaker": "Jongleur Nino",
+		"pages": [
+			"Mes balles volent, mon Hypnomade veille !"
+		]
+	},
+	"fuchsia_gym_juggler_1_defeated": {
+		"speaker": "Jongleur Nino",
+		"pages": [
+			"Raté… j'ai tout fait tomber."
+		]
+	},
+	"fuchsia_gym_juggler_1_after": {
+		"speaker": "Jongleur Nino",
+		"pages": [
+			"Koga voit tout. Même ce qu'on ne voit pas."
+		]
+	},
+	"fuchsia_gym_juggler_2_before": {
+		"speaker": "Jongleur Igor",
+		"pages": [
+			"Un, deux, trois… à toi de jongler !"
+		]
+	},
+	"fuchsia_gym_juggler_2_defeated": {
+		"speaker": "Jongleur Igor",
+		"pages": [
+			"Trop de balles en l'air !"
+		]
+	},
+	"fuchsia_gym_juggler_2_after": {
+		"speaker": "Jongleur Igor",
+		"pages": [
+			"Les murs ? Quels murs ? Moi, je ne vois rien."
+		]
+	},
+	"fuchsia_gym_juggler_3_before": {
+		"speaker": "Jongleur Silvio",
+		"pages": [
+			"Tu cherches ton chemin ? Cherche-moi plutôt !"
+		]
+	},
+	"fuchsia_gym_juggler_3_defeated": {
+		"speaker": "Jongleur Silvio",
+		"pages": [
+			"Bien joué."
+		]
+	},
+	"fuchsia_gym_juggler_3_after": {
+		"speaker": "Jongleur Silvio",
+		"pages": [
+			"Avance à petits pas. Écoute le parquet."
+		]
+	},
+	"fuchsia_gym_tamer_1_before": {
+		"speaker": "Dompteur Marius",
+		"pages": [
+			"Mes Pokémon obéissent au fouet… et au sifflet !"
+		]
+	},
+	"fuchsia_gym_tamer_1_defeated": {
+		"speaker": "Dompteur Marius",
+		"pages": [
+			"Ils n'ont rien écouté !"
+		]
+	},
+	"fuchsia_gym_tamer_1_after": {
+		"speaker": "Dompteur Marius",
+		"pages": [
+			"Koga ne dompte pas : il commande."
+		]
+	},
+	"fuchsia_gym_tamer_2_before": {
+		"speaker": "Dompteur Edgar",
+		"pages": [
+			"Arbok ! Montre-lui tes crocs !"
+		]
+	},
+	"fuchsia_gym_tamer_2_defeated": {
+		"speaker": "Dompteur Edgar",
+		"pages": [
+			"Couché, Arbok…"
+		]
+	},
+	"fuchsia_gym_tamer_2_after": {
+		"speaker": "Dompteur Edgar",
+		"pages": [
+			"Le poison, c'est de la patience."
+		]
+	},
+	"fuchsia_gym_juggler_4_before": {
+		"speaker": "Jongleur Léon",
+		"pages": [
+			"Hop ! Tu ne me verras pas venir !"
+		]
+	},
+	"fuchsia_gym_juggler_4_defeated": {
+		"speaker": "Jongleur Léon",
+		"pages": [
+			"Tu m'as vu venir…"
+		]
+	},
+	"fuchsia_gym_juggler_4_after": {
+		"speaker": "Jongleur Léon",
+		"pages": [
+			"Le maître est juste derrière, au centre."
+		]
+	},
+	"fuchsia_gym_statue": {
+		"pages": [
+			"ARÈNE DE PARMANIE\nChampion : Koga — le maître des poisons"
+		]
+	},
+	"fuchsia_gym_guide": {
+		"speaker": "Guide",
+		"variants": [
+			{
+				"if": [
+					"badge_soul"
+				],
+				"pages": [
+					"Le Badge Âme !",
+					"Tes Pokémon peuvent maintenant surfer."
+				]
+			},
+			{
+				"pages": [
+					"L'Arène de Koga est pleine de murs invisibles.",
+					"Observe le sol et avance pas à pas."
+				]
+			}
+		]
+	},
+	"fuchsia_gym_koga": {
+		"speaker": "Koga",
+		"variants": [
+			{
+				"if": [
+					"badge_soul"
+				],
+				"unless": [
+					"tm06_received"
+				],
+				"cutscene": "fuchsia_gym_koga_tm_late"
+			},
+			{
+				"if": [
+					"badge_soul"
+				],
+				"pages": [
+					"Le ninja se fond dans l'ombre.",
+					"Va, et ne sous-estime pas le poison."
+				]
+			},
+			{
+				"cutscene": "fuchsia_gym_koga"
+			}
+		]
+	},
+	"fuchsia_gym_koga_intro": {
+		"speaker": "Koga",
+		"pages": [
+			"Fwahahaha ! Un enfant ose me défier ?",
+			"Je suis Koga, maître ninja des poisons.",
+			"Le poison et le sommeil",
+			"feront sombrer tes Pokémon."
+		]
+	},
+	"fuchsia_gym_koga_resume": {
+		"speaker": "Koga",
+		"pages": [
+			"Fwahahaha ! Tu reviens ?",
+			"Le poison et le sommeil",
+			"feront sombrer tes Pokémon."
+		]
+	},
+	"fuchsia_gym_koga_lost": {
+		"speaker": "Koga",
+		"pages": [
+			"Le poison a fait son œuvre.",
+			"Reviens quand tu seras prêt."
+		]
+	},
+	"fuchsia_gym_koga_won": {
+		"speaker": "Koga",
+		"pages": [
+			"Hmm ! Tu as prouvé ta valeur.",
+			"Voici le Badge Âme."
+		]
+	},
+	"fuchsia_gym_koga_tm": {
+		"speaker": "Koga",
+		"pages": [
+			"Prends aussi la CT06, Toxik.",
+			"Son poison empire à chaque tour."
+		]
+	},
+	"fuchsia_gym_koga_tm_late": {
+		"speaker": "Koga",
+		"pages": [
+			"J'allais oublier."
+		]
+	}
+}

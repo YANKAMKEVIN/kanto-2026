@@ -123,6 +123,10 @@ var _haptic_busy: bool = false
 ## Progression du combat en cours (bilan de fin de combat).
 var _summary: ExpSummary = ExpSummary.new()
 var _summary_card: ExpSummaryCard
+## J23 : moteur de la rencontre Safari en cours (null sinon ; [member _battle] reste null).
+var _safari: SafariBattle
+## Combat vivant (CV.0, T3) : catalogue des chorégraphies, lu une fois.
+static var _fx_catalog: MoveFxCatalog
 ## Vue vers camp de la HUD (l'UI a son propre enum, sans lien avec BattleEvent.SideId).
 const _HUD_SIDE: Dictionary[BattleEvent.SideId, BattleHud.Side] = {
 	BattleEvent.SideId.PLAYER: BattleHud.Side.PLAYER,
@@ -206,6 +210,9 @@ func run_request(request: BattleRequest, map: GameMap) -> int:
 	if foe == null:
 		push_error("BattleDirector.run_request : équipe adverse vide")
 		return Battle.Outcome.NONE
+	if request.is_safari():
+		# J23 : rencontre Safari, son propre moteur et sa propre boucle (aucun Pokémon allié).
+		return await _run_safari(request, map, foe)
 	var party := _state.party as Party
 	if party == null or party.first_able() == null:
 		push_error("BattleDirector.run_request : aucun Pokémon valide dans l'équipe du joueur")
@@ -558,7 +565,7 @@ func _spend_item(action: BattleAction) -> bool:
 
 ## La carte du joueur et ses pastilles reviennent (après le Sac ou le lancer).
 func _show_own_card() -> void:
-	if not is_instance_valid(_hud):
+	if not is_instance_valid(_hud) or _safari != null:
 		return
 	_hud.get_card(BattleHud.Side.PLAYER).slide_in()
 	_hud.get_party_pips().slide_in()
@@ -596,14 +603,40 @@ func _first_of(a: Signal, b: Signal) -> Array:
 
 ## Coroutine : joue chaque événement de [param events] à la suite, temps par temps.
 func _play_events(events: Array[BattleEvent], trainer: TrainerData) -> void:
-	for event: BattleEvent in events:
+	for index: int in events.size():
+		var event := events[index]
 		_summary.add(event)
 		for beat: BattleBeat in BattlePlayback.beats(event, _texts, _data, trainer):
 			# « X apprend Y ! » (juste après le K.O. adverse) attend un toucher.
 			beat.wait_touch = event.kind == BattleEvent.Kind.MOVE_LEARNED
+			if beat.kind == BattleBeat.Kind.MOVE:
+				beat.fx_plan = _move_fx_plan(events, index)
 			await _play_beat(beat)
 		_log_progress(event)
 		event_played.emit(event)
+	if is_instance_valid(_stage):
+		await _stage.finish_move_fx()
+
+
+## Chorégraphie du MOVE_USED en [param index] (Combat vivant, §2.4), d'après son issue lue dans
+## le journal ; null pour un autre événement (Patience) ou une attaque inconnue. Métronome : sa
+## propre chorégraphie (une posture), puis celle de l'attaque lancée à son MOVE_USED.
+func _move_fx_plan(events: Array[BattleEvent], index: int) -> MoveFxPlan:
+	var outcome := MoveFxOutcome.read(events, index)
+	if outcome == null or not is_instance_valid(_stage):
+		return null
+	var move := _data.get_move(outcome.move_id)
+	if move == null:
+		return null
+	if outcome.result == MoveFxOutcome.Result.CALLED:
+		# Rien ne part de Métronome lui-même : la posture, sans impact.
+		outcome.result = MoveFxOutcome.Result.FAILED
+	if _fx_catalog == null:
+		_fx_catalog = MoveFxCatalog.load_dir()
+	var category := StringName(MoveData.CATEGORY_NAMES.find_key(move.category))
+	var entry := _fx_catalog.entry(move.id, move.type, category)
+	return MoveFxPlan.build(_fx_catalog, entry, move, outcome, _stage.move_fx_mode(),
+		_stage.reduce_flashes)
 
 
 ## Journal de QA (builds debug seulement) : chaque gain d'XP et montée de niveau, lisibles
@@ -626,6 +659,11 @@ static func _log_progress(event: BattleEvent) -> void:
 ## Coroutine : joue un temps ([BattleBeat]) sur la scène et la HUD, et attend sa fin.
 func _play_beat(beat: BattleBeat) -> void:
 	var side: BattleHud.Side = _HUD_SIDE[beat.side]
+	# Combat vivant : la fin d'une chorégraphie se joue sous les messages et sous le coup qu'elle
+	# porte ; tout autre temps de la scène l'attend.
+	if beat.kind != BattleBeat.Kind.MESSAGE and is_instance_valid(_stage) \
+			and not (beat.kind == BattleBeat.Kind.DAMAGE and _stage.is_move_fx_hitting(beat.side)):
+		await _stage.finish_move_fx()
 	match beat.kind:
 		BattleBeat.Kind.MESSAGE:
 			if is_instance_valid(_hud):
@@ -637,7 +675,9 @@ func _play_beat(beat: BattleBeat) -> void:
 			if is_instance_valid(_hud):
 				_hud.set_card(side, BattleViews.card(beat.event))
 		BattleBeat.Kind.MOVE:
-			if is_instance_valid(_stage):
+			if is_instance_valid(_stage) and beat.fx_plan != null:
+				await _stage.play_move_fx(beat.side, beat.fx_plan)
+			elif is_instance_valid(_stage):
 				await _stage.play_move(beat.side, beat.category)
 		BattleBeat.Kind.DAMAGE:
 			var big := beat.is_big_hit(UiTokens.HP_BIG_HIT)
@@ -1043,3 +1083,93 @@ func _relay_speed() -> void:
 		_stage.speed_scale = speed_scale
 	if is_instance_valid(_hud):
 		_hud.speed_scale = speed_scale
+
+
+# --- J23 : rencontre Safari (`jalon-23.md` §2.3, dossier 26 §5) --------------------------------
+
+## Rencontre Safari en cours (null hors rencontre Safari), pour les tests.
+func get_safari_battle() -> SafariBattle:
+	return _safari
+
+
+## Coroutine : la rencontre Safari de [param request] ([method BattleRequest.safari]) contre
+## [param foe] sur [param map]. Même scène que le combat sauvage (intro dans le décor, carte de
+## l'adversaire, bandeau), mais aucun Pokémon du joueur : le dresseur de dos entre à la place du
+## partenaire ([method BattleStage.play_trainer_enter]), ni carte ni pastilles du joueur. Grille
+## de quatre boutons (SAFARI BALL ×n, APPÂT, CAILLOU, FUIR) ; le moteur [SafariBattle] décide
+## tout. Ni XP, ni argent, ni bilan, ni évolution ; capture : le chemin habituel (équipe ou
+## Stockage, Pokédex, carte de capture, [signal pokemon_caught]). La fin de visite (dernière
+## Ball) est relevée par l'appelant au retour sur la carte ([member SafariVisit.active]).
+func _run_safari(request: BattleRequest, map: GameMap, foe: Pokemon) -> int:
+	_running = true
+	_summary = ExpSummary.new()
+	_wild_foe = foe
+	_map_id = map.map_id if is_instance_valid(map) else &""
+	_trainer_id = &""
+	_safari = SafariBattle.new(foe, _data, request.safari_visit, request.safari_ball_bonus,
+		_state.rng as GameRng)
+	if is_instance_valid(_player):
+		_player.set_input_enabled(false, REASON)
+	battle_started.emit(_trainer_id)
+	_relay_speed()
+	var opening := _safari.start()
+	var camera := _player.get_camera() if is_instance_valid(_player) else null
+	if is_instance_valid(_stage) and camera != null and is_instance_valid(map):
+		_stage.set_frame(map.get_battle_arena_rect(), Rect2(map.get_pixel_rect()))
+		_stage.set_place(map.map_id, request.origin_cell)
+		await _stage.play_wild_intro(camera, foe.species_id,
+			Grid.cell_to_world(request.origin_cell))
+		await _stage.play_trainer_enter()
+	await _play_events(opening, null)
+	while _safari.get_state() == SafariBattle.State.CHOOSING:
+		var action := await _choose_safari_action()
+		if not _safari.is_legal(action):
+			continue
+		await _play_events(_safari.submit(action), null)
+	var outcome := _safari.get_outcome()
+	if is_instance_valid(_hud):
+		await _hud.hide_all()
+		_hud.set_action_labels({})
+	if is_instance_valid(_stage) and _stage.is_active():
+		await _stage.exit()
+	_free_panels()
+	_running = false
+	_safari = null
+	_wild_foe = null
+	if is_instance_valid(_player):
+		_player.set_input_enabled(true, REASON)
+	battle_finished.emit(_trainer_id, outcome)
+	return outcome
+
+
+## Coroutine : la grille Safari (libellés lus dans les textes de combat), le dresseur de dos
+## revenu ; renvoie l'action choisie. ATTAQUER → Safari Ball, SAC → appât, ÉQUIPE → caillou,
+## FUITE → FUIR (mêmes places que la grille habituelle).
+func _choose_safari_action() -> BattleAction:
+	if is_instance_valid(_stage):
+		await _stage.play_trainer_enter()
+	if _texts != null:
+		_hud.set_action_labels(safari_action_labels(_texts, _safari.balls_left()))
+	_hud.show_actions({
+		ActionGrid.ATTACK: _safari.balls_left() > 0, ActionGrid.BAG: true,
+		ActionGrid.TEAM: true, ActionGrid.RUN: true,
+	})
+	var chosen: StringName = await _hud.action_selected
+	match chosen:
+		ActionGrid.ATTACK:
+			return BattleAction.safari_ball()
+		ActionGrid.BAG:
+			return BattleAction.bait()
+		ActionGrid.TEAM:
+			return BattleAction.rock()
+	return BattleAction.run()
+
+
+## Libellés des quatre boutons de la rencontre Safari, avec [param balls] Balls restantes.
+static func safari_action_labels(texts: BattleText, balls: int) -> Dictionary[StringName, String]:
+	return {
+		ActionGrid.ATTACK: texts.safari_ball_label(balls),
+		ActionGrid.BAG: texts.get_template(&"safari_action_bait"),
+		ActionGrid.TEAM: texts.get_template(&"safari_action_rock"),
+		ActionGrid.RUN: texts.get_template(&"safari_action_run"),
+	}

@@ -1,0 +1,44 @@
+# Maison du Gardien (wardens_house), Parmanie — grille fonctionnelle (jalon 23, dossier 26 §3, §9.2 ;
+# préparée le 2026-10-19). Organisation RB (data/maps/objects/WardensHouse.asm : Gardien (2, 3),
+# vitrines (4..5, 3), Super Bonbon (8, 3) derrière un rocher (8, 4)), enveloppe des intérieurs du
+# projet. Porte réservée par le J22 (M-19), intérieur construit au J23. Vérifiée par
+# tools/art/plan_check_safari.py.
+#
+# 15 × 10. Le Gardien (3, 4) : textes 30 à 34 (Dents d'Or → CS04 Force). Les vitrines (5..6, 2) :
+# dentiers et souvenirs du Parc (textes de RB « display », à écrire au plan).
+# Le Super Bonbon (11, 2) est dans une niche (mur (10, 2)) ; le ROCHER (11, 3) la ferme.
+#   - J23 : rocher FIXE, texte 46 (N-13) ; le Super Bonbon est posé mais hors d'atteinte.
+#   - J24 (dossier 27 §6.5) : rocher poussable (règles de Force), sans drapeau, remis en place à la
+#     sortie de la carte. Poussé vers l'est depuis (10, 3), il libère (11, 3) et la niche se lit de
+#     (11, 3) tourné ↑. Poussé vers l'ouest depuis (12, 3), il va en (10, 3) : même effet.
+#   - Contrainte commune (accord avec le J24) : quelle que soit sa position, le rocher ne touche ni
+#     la porte ni le Gardien, et la case devant la porte (7, 7) reste libre. Le contrôle le vérifie.
+#
+# Légende :
+#   K mur (bloqué)     . sol (praticable)     X sortie vers Parmanie (praticable, PUSH ↓)
+#   V vitrines (bloquées)   s étagère (bloquée) (2, 3)   m mur de la niche (bloqué) (10, 2)
+#   c case du Super Bonbon (bloquée : objet posé)
+
+PRATICABLES .X
+
+GRILLE 15 10
+00 KKKKKKKKKKKKKKK
+01 KKKKKKKKKKKKKKK
+02 KK...VV...mcKKK
+03 KKs..........KK
+04 KK...........KK
+05 KK...........KK
+06 KK...........KK
+07 KK...........KK
+08 KKKKKKXXXKKKKKK
+09 KKKKKKKKKKKKKKK
+FIN
+
+POSITIONS
+sortie                 warp           6..8,8       libre   vers=fuchsia_city  # PUSH ↓ → Parmanie (porte réservée par le J22, M-19)
+entree                 spawn          7,7          libre   facing=up
+gardien                pnj            3,4          bloque  facing=down  # textes 30 à 34 ; Dents d'Or → CS04 (gave_gold_teeth, got_hm04)
+vitrine                panneau        5..6,2       bloque  # lue de face depuis (5..6, 3)
+super_bonbon           objet_visible  11,2         bloque  item=rare_candy  # RB (8, 3) ; lu depuis (11, 3) tourné ↑
+rocher                 rocher         11,3         bloque  # RB (8, 4) ; fixe au J23 (texte 46), poussable au J24
+FIN

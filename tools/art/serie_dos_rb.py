@@ -212,6 +212,22 @@ ANCRES = ("Image jointe : une illustration de face de la créature, comme réfé
 	"style seulement (on veut l'arrière).", "Aucune image jointe.", "Aucune image jointe.")
 ESSAIS = (1, 2, 3)
 
+## Révisions après relecture de la planche (Kevin, 2026-10-25 : « refais Porygon et M. Mime ») : sujet
+## corrigé -> nouveaux essais r4 (artwork joint), r5 (sans image), r6 (« design original ») ; elles priment.
+## Une liste de sujets = révisions successives (la 2e : r7 à r9, etc.).
+REVISIONS: dict[str, list[str]] = {
+	"PORYGON": [("petit canard-robot fait de quelques GROS BLOCS lisses et anguleux, comme un modèle 3D très simple "
+		"aux faces planes : corps et tête ROSE vif, bec et queue BLEU turquoise, pattes bleues ; formes nettes et "
+		"pleines, PAS de cristaux, PAS d'éclats, PAS de pointes fines")],
+	"M_MIME": [("humanoïde mince comme un mime de théâtre : tête ROSE ronde portant DEUX touffes de cheveux BLEUS "
+		"arrondies sur les côtés, corps blanc à gros boutons ronds ROSES (épaules, hanches), grosses mains "
+		"BLANCHES gantées aux doigts ronds, chaussures bleues recourbées"),
+		# 2e révision (r4 à r6 refusés) : sans « mime » ni « théâtre ».
+		("créature bipède fine et souriante au corps BLANC, grosse tête ROSE pâle avec deux petites touffes "
+		"BLEUES arrondies sur les côtés, de gros ronds ROSES sur les épaules et les hanches, grandes mains "
+		"BLANCHES arrondies levées comme pour toucher une vitre invisible, pieds bleus")],
+}
+
 ## Essais retenus après relecture de la planche (clé : identifiant, valeur : nom de l'essai).
 ## Par défaut : le plus petit r disponible.
 RETENUS: dict[str, str] = {}
@@ -221,13 +237,21 @@ def jointes(num: int, r: int) -> list[Path]:
 	return [OFFICIEL / f"{num:03d}.png"] if r == 1 else []
 
 
+def _rangs(ident: str) -> tuple[int, ...]:
+	"""Essais de la dernière révision (ceux qu'on lance et qu'on retient)."""
+	n = len(REVISIONS.get(ident, []))
+	return tuple(range(3 * n + 1, 3 * n + 4))
+
+
 def images() -> list[dict]:
 	liste = []
 	for ident, num, _fr, sujet in ESPECES:
-		for r in ESSAIS:
+		for r in range(1, 3 * len(REVISIONS.get(ident, [])) + 4):
+			k = (r - 1) % 3 + 1  # motif de l'essai (avec / sans image)
+			texte = REVISIONS[ident][(r - 1) // 3 - 1] if r > 3 else sujet
 			liste.append({"ident": ident, "num": num, "r": r, "nom": f"DOSRB_{ident}_r{r}",
-				"fichier": PROMPTS / f"DOSRB_{ident}_r{r}.txt", "jointes": jointes(num, r),
-				"texte": DOS_RB.format(nom=NOM[r - 1], ancres=ANCRES[r - 1], sujet=sujet)})
+				"fichier": PROMPTS / f"DOSRB_{ident}_r{r}.txt", "jointes": jointes(num, k),
+				"texte": DOS_RB.format(nom=NOM[k - 1], ancres=ANCRES[k - 1], sujet=texte)})
 	return liste
 
 
@@ -259,7 +283,7 @@ def _essai(im: dict) -> bool:
 
 
 def _espece(ident: str) -> bool:
-	return any(_essai(im) for im in images() if im["ident"] == ident)
+	return any(_essai(im) for im in images() if im["ident"] == ident and im["r"] in _rangs(ident))
 
 
 def generer(noms: list[str]) -> None:
@@ -278,7 +302,7 @@ def retenu(ident: str) -> Path | None:
 		return chat
 	if ident in RETENUS:
 		return ART / f"{RETENUS[ident]}.png"
-	for r in ESSAIS:
+	for r in _rangs(ident):
 		p = ART / f"DOSRB_{ident}_r{r}.png"
 		if p.exists():
 			return p
@@ -353,7 +377,7 @@ def ajouter(ident: str, fichier: str) -> None:
 
 def liste() -> None:
 	for ident, num, fr, _s in ESPECES:
-		etat = " ".join(f"r{r}:{'ok' if (ART / f'DOSRB_{ident}_r{r}.png').exists() else '--'}" for r in ESSAIS)
+		etat = " ".join(f"r{r}:{'ok' if (ART / f'DOSRB_{ident}_r{r}.png').exists() else '--'}" for r in _rangs(ident))
 		print(f"{num:03d} {fr:<12} {etat}  retenu={retenu(ident).name if retenu(ident) else '-'}")
 
 

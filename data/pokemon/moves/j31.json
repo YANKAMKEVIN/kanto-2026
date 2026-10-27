@@ -1,0 +1,7 @@
+{
+	"transform": {
+		"name": "Morphing", "type": "normal", "category": "status", "accuracy": 0, "pp": 10,
+		"pending_effects": ["transform"],
+		"description": "Le lanceur prend l'apparence et les capacités de la cible. Sans effet dans le moteur actuel."
+	}
+}

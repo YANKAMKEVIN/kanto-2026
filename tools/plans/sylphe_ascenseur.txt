@@ -1,0 +1,33 @@
+# Sylphe SARL, ascenseur (silph_co_elevator) — grille fonctionnelle v1 (jalon 26, T2 ; 2026-10-22).
+# GÉOMÉTRIE ROUGE/BLEU CASE POUR CASE. Source : pret/pokered, maps/SilphCoElevator.blk (2 × 2 blocs =
+# 4 × 4 cases, tileset Lobby : gfx/blocksets/lobby.bst, collision Lobby_Coll),
+# data/maps/objects/SilphCoElevator.asm (portes (1, 3) et (2, 3), panneau (3, 0)),
+# scripts/SilphCoElevator.asm (SilphCoElevatorFloors : 11 étages, 1F à 11F). Modèle : la cabine du
+# J20 (repaire_ascenseur.txt, celadopole_magasin_ascenseur.txt ; data/world/elevators.json).
+#
+# 4 × 4 cases : mur du fond (y 0) avec le panneau d'étages (3, 0) ; sol x 0..3, y 1..3 ; les deux
+# portes sont EN BAS (1..2, 3), comme RB (le repaire les a en haut). On arrive d'un étage sur
+# « entrance » (1, 2), une case devant les portes, tourné vers le haut ; un pas sur une porte
+# ramène à l'étage choisi au panneau (par défaut celui d'où l'on vient), sur son from_elevator.
+# Mécanique du J20 (fondu, secousse) ; entrée silph_co de elevators.json : 11 étages, SANS CLÉ (RB).
+#
+# Légende : # mur (bloqué) · . sol (praticable) · L porte de la cabine (praticable, STEP_ON ↓) ·
+# P panneau d'étages (bloqué, lu depuis (3, 1) tourné vers le haut).
+# « sortie » : etages= liste les destinations possibles (lue par plan_check_teleports.py).
+
+CARTE silph_co_elevator
+
+PRATICABLES .L
+
+GRILLE 4 4
+00 ###P
+01 ....
+02 ....
+03 .LL.
+FIN
+
+POSITIONS
+entrance                spawn          1,2          libre   facing=up  # arrivée depuis l'ascenseur d'un étage (une case devant les portes)
+portes_cabine           sortie         1..2,3       libre   etages=silph_co_1f:from_elevator;silph_co_2f:from_elevator;silph_co_3f:from_elevator;silph_co_4f:from_elevator;silph_co_5f:from_elevator;silph_co_6f:from_elevator;silph_co_7f:from_elevator;silph_co_8f:from_elevator;silph_co_9f:from_elevator;silph_co_10f:from_elevator;silph_co_11f:from_elevator  # STEP_ON ↓ → étage choisi, from_elevator
+panneau                 panneau        3,0          bloque  depuis=3,1 face=N etages=1F,2F,3F,4F,5F,6F,7F,8F,9F,10F,11F  # panneau d'étages, SANS clé (RB)
+FIN

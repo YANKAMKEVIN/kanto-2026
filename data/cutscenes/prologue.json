@@ -5,7 +5,7 @@
 				"unless": ["oak_met"],
 				"steps": [
 					{ "wait": 0.4 },
-					{ "dialogue": "oak_route1_call" },
+					{ "dialogue": "oak_route1_call", "music": "oak" },
 					{ "face": "player", "to": "down" },
 					{ "wait": 0.3 },
 					{ "spawn": "oak", "sprite": "oak", "cell": [24, 13], "facing": "up" },
@@ -18,7 +18,7 @@
 					{ "set": ["oak_met"] },
 					{ "move": "oak", "follower": "player",
 						"path": ["down", "down", "down", "down", "down", "down", "down", "down"] },
-					{ "change_map": "oak_lab", "at": "entrance", "facing": "up" },
+					{ "change_map": "oak_lab", "at": "entrance", "facing": "up", "music": "stop" },
 					{ "move": "player", "path": ["up", "up"] },
 					{ "wait": 0.3 },
 					{ "face": "rival", "to": "oak" },

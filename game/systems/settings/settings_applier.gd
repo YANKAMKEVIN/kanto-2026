@@ -14,6 +14,8 @@ var hud: ExplorationHud
 var cutscenes: CutsceneDirector
 var menu_screen: TrainerMenu
 var lighting: WorldLighting
+## Jalon Son (T6) : autoload « Audio » (volumes des bus) ; null = rien (tests).
+var audio: Node
 
 
 func apply(s: GameSettings, device: Dictionary, evolution_screen: EvolutionScreen = null,
@@ -24,6 +26,7 @@ func apply(s: GameSettings, device: Dictionary, evolution_screen: EvolutionScree
 	battle_hud.message_hold_scale = 1.0
 	battle_stage.reduce_flashes = s.reduce_flashes
 	battle_stage.reduce_motion = s.reduce_motion
+	battle_stage.battle_animations = s.battle_animations
 	if evolution_screen != null:
 		evolution_screen.reduce_flashes = s.reduce_flashes
 	services.reduce_motion = s.reduce_motion
@@ -41,6 +44,8 @@ func apply(s: GameSettings, device: Dictionary, evolution_screen: EvolutionScree
 	hud.set_flash_reduced(s.reduce_motion or s.reduce_flashes)
 	menu_screen.speed_scale = s.menu_speed_scale()
 	Haptics.enabled = s.haptics
+	if audio != null:
+		audio.call(&"apply_settings", s)
 	UiPrefs.apply(s)
 	if hud.has_method(&"set_left_handed"):
 		hud.call(&"set_left_handed", s.left_handed)

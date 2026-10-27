@@ -1,0 +1,78 @@
+# Parc Safari — zone Ouest (safari_zone_west) — grille fonctionnelle (jalon 23, dossier 26 §2 ; préparée le
+# 2026-10-19). GÉOMÉTRIE ROUGE/BLEU CASE POUR CASE (N-3 : échelle RB 1:1, pour que 500 pas gardent
+# leur sens). Source : pret/pokered af519899, maps/SafariZoneWest.blk, tileset Forest (gfx/blocksets/forest.bst ;
+# collision = tuile en bas à gauche de chaque case, liste Forest_Coll ; herbe = tuile $20 ; eau = $14 et
+# la rive $48), objets, panneaux et warps de data/maps/objects/SafariZoneWest.asm. Vérifiée par
+# tools/art/plan_check_safari.py (qui relie les quatre zones, la Porte et les maisons).
+#
+# Composition RB : la MAISON SECRÈTE au nord-ouest (2..5, 2..3, porte (3, 3)) au fond d'un dédale
+# de haies ; les DENTS D'OR au centre-nord (19, 7) ; un étang (2..9, 10..13) ; la MAISON DE REPOS
+# (10..13, 10..11, porte (11, 11)) ; une prairie au sud-ouest. Raccords : nord (20..21, 0) et
+# (26..27, 0) → Nord, est (29, 22..23) → Centre. Panneau RB des dents du Gardien en (17, 3).
+#
+# Les raccords RB sont des warps en bord de carte ; K26 en fait des RACCORDS CONTINUS (bord de carte,
+# fondu existant) entre les mêmes cases. Chaque pas compte, raccords compris (dossier 26 §4).
+# Aucune eau n'est surfable au J23 (P-3 B) ; aucune case pêchable n'est encore marquée (N-6 : elles le
+# seront quand le J22 aura fixé la légende de la pêche, M-8).
+#
+# Légende (commune aux quatre zones) :
+#   T arbres, haies, clôtures (bloqué)     . sol (praticable, aucune rencontre)
+#   h herbes hautes (praticable, rencontres Safari)      W eau (bloquée au J23)
+#   B maison (bloquée)    D porte d'une maison (praticable, fondu)    P panneau (bloqué, lu de face)
+#   e raccord vers une autre zone ou la Porte (praticable, bord de carte)
+#   n sol ou herbe HORS D'ATTEINTE à pied (bloqué : îlots, bords de carte de RB)
+# Objets, panneaux, raccords et maisons sont aussi dans POSITIONS. 1 case = 1 tuile de 16 px de RB ;
+# x = colonne, y = rangée, nord en haut ; coordonnées identiques au désassemblage.
+
+PRATICABLES .hDe
+
+GRILLE 30 26
+00 TTnnnnTTnnnnnnnnnnTTeeTTTTeeTT
+01 TTnnnnTTTTTTTTTTTTTT..TTTT..TT
+02 nTBBBBT.................T....T
+03 nTBDBBT..........P......T....T
+04 nT....T.................T.P..T
+05 nT....T.................T....T
+06 nT........T......T......T....T
+07 nT........T......T......T....T
+08 nT........T......T......T....T
+09 nT........TTTTT..T......T....T
+10 nTWWWWWWWWBBBBT..T......T....T
+11 nTWWWWWWWWBDBBT..T......T....T
+12 nTWWWWWWWW..P.T..T......T....T
+13 nTWWWWWWWW....T..T......T....T
+14 TT............T........T.....T
+15 TT............T........T.....T
+16 T...T..................T.....T
+17 T...T............TTTT.TT.....T
+18 T..hT............T...........T
+19 T.hhTT.TTTTTTTTTTT...........T
+20 T.hhhhhhhhhhhhhhhhT..........T
+21 T.hhhhhhhhhhhhhhhhT..........T
+22 T...hhhhhhhhhhhh..T.....P....e
+23 T....hhhhhh..hh...T..........e
+24 TTTTTTTTTT......TT....TTTTTTTT
+25 TTnnnnnnnnTTTTTTnnTTTTnnnnnnnn
+FIN
+
+POSITIONS
+porte_maison_secrete   porte          3,3          libre   vers=safari_maison_secrete # Maison Secrète (RB warp)
+arrivee_maison_secrete spawn          3,4          libre   facing=down           # sortie de la Maison Secrète
+porte_maison_repos     porte          11,11        libre   vers=safari_maison_repos # maison de repos (RB warp)
+arrivee_maison_repos   spawn          11,12        libre   facing=down           # sortie de la maison de repos
+raccord_nord_1         raccord        20..21,0     libre   vers=safari_nord:2..3,35 # RB warps (20,0), (21,0)
+arrivee_nord_1         spawn          20..21,1     libre   facing=down           # arrivée par ce raccord
+raccord_nord_2         raccord        26..27,0     libre   vers=safari_nord:8..9,35 # RB warps (26,0), (27,0)
+arrivee_nord_2         spawn          26..27,1     libre   facing=down           # arrivée par ce raccord
+raccord_centre         raccord        29,22..23    libre   vers=safari_centre:0,10..11 # RB warps (29,22), (29,23)
+arrivee_centre         spawn          28,22..23    libre   facing=left           # arrivée par ce raccord
+panneau_maison_repos   panneau        12,12        bloque
+panneau_dents_or       panneau        17,3         bloque
+panneau_conseils       panneau        26,4         bloque
+panneau_zone           panneau        24,22        bloque
+potion_max             objet_visible  8,20         bloque  item=hyper_potion     # RB : Potion Max → Hyper Potion (N-19)
+ct32                   objet_visible  9,7          bloque  item=tm32             # RB : CT32 Reflet (capacité à créer, N-19)
+rappel_max             objet_visible  18,18        bloque  item=revive           # RB : Rappel Max → Rappel (N-19)
+dents_or               objet_visible  19,7         bloque  item=gold_teeth       # RB : Dents d'Or (objet clé, quête du Gardien)
+rappel_cache           objet_cache    6,5          bloque  item=revive           # RB : Rappel caché
+FIN

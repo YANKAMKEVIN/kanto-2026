@@ -1,0 +1,308 @@
+{
+	"saffron_rocket": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Safrania est à nous. Circule, gamin."
+		]
+	},
+	"saffron_rocket_gym": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"L'Arène est fermée. Ordre du patron."
+		]
+	},
+	"saffron_rocket_silph": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"La Sylphe SARL est fermée au public.\nCircule."
+		]
+	},
+	"saffron_resident_occupied": {
+		"speaker": "Habitant",
+		"pages": [
+			"Ils sont entrés dans la Sylphe SARL… Plus personne n'ose sortir."
+		]
+	},
+	"saffron_resident_free": {
+		"speaker": "Habitant",
+		"pages": [
+			"La Team Rocket est partie ! Safrania respire enfin."
+		]
+	},
+	"saffron_scientist": {
+		"speaker": "Scientifique",
+		"pages": [
+			"Les machines de la Sylphe SARL tournent de nouveau.",
+			"Je retourne au laboratoire !"
+		]
+	},
+	"saffron_silph_worker_m": {
+		"speaker": "Employé",
+		"pages": [
+			"Merci d'avoir sauvé la Sylphe SARL !",
+			"Le président t'en est très reconnaissant."
+		]
+	},
+	"saffron_silph_worker_f": {
+		"speaker": "Employée",
+		"pages": [
+			"Je reprends mon poste.\nEnfin !"
+		]
+	},
+	"saffron_gentleman": {
+		"speaker": "Gentleman",
+		"pages": [
+			"Mon Roucarnage et moi, nous avons eu une de ces frayeurs."
+		]
+	},
+	"saffron_pidgeot": {
+		"narration": true,
+		"pages": [
+			"Roucarnage a l'air très fier de son Dresseur."
+		]
+	},
+	"saffron_rocker": {
+		"speaker": "Rockeur",
+		"pages": [
+			"Les Rocket sont partis sans un mot.",
+			"Ils ne reviendront pas de sitôt."
+		]
+	},
+	"saffron_dojo_sign": {
+		"pages": [
+			"DOJO DE SAFRANIA\nL'art du combat à mains nues."
+		]
+	},
+	"saffron_mart_sign": {
+		"pages": [
+			"BOUTIQUE POKÉMON\nTout pour le Dresseur."
+		]
+	},
+	"saffron_silph_sign": {
+		"pages": [
+			"SYLPHE SARL\nLe progrès au service des Pokémon."
+		]
+	},
+	"saffron_center_sign": {
+		"pages": [
+			"CENTRE POKÉMON\nSoignez vos compagnons."
+		]
+	},
+	"saffron_psychic_sign": {
+		"pages": [
+			"MAISON DE M. PSY\nLe voyant de Safrania."
+		]
+	},
+	"saffron_tips_1": {
+		"pages": [
+			"CONSEILS DU DRESSEUR\nGarde toujours quelques Antidotes."
+		]
+	},
+	"saffron_tips_2": {
+		"pages": [
+			"CONSEILS DU DRESSEUR\nUn Pokémon fatigué, c'est un Centre à visiter."
+		]
+	},
+	"saffron_product_sign": {
+		"pages": [
+			"DERNIER PRODUIT DE LA SYLPHE\nUne Ball inégalée, bientôt en vente !"
+		]
+	},
+	"saffron_copycat_mother": {
+		"speaker": "Mère",
+		"pages": [
+			"Notre fille adore imiter les gens.",
+			"Parfois, elle nous imite même, son père et moi."
+		]
+	},
+	"saffron_copycat_father": {
+		"speaker": "Père",
+		"pages": [
+			"Ma fille collectionne les poupées Pokémon.",
+			"Elle est à l'étage, comme toujours."
+		]
+	},
+	"saffron_copycat_chansey": {
+		"narration": true,
+		"pages": [
+			"Leveinard te regarde avec bienveillance."
+		]
+	},
+	"saffron_copycat": {
+		"speaker": "Copieuse",
+		"pages": [
+			"Je t'imite, tu m'imites…",
+			"On ne sait plus qui est qui ! Ha ha !"
+		]
+	},
+	"saffron_copycat_doduo": {
+		"narration": true,
+		"pages": [
+			"Doduo imite les gestes de la Copieuse."
+		]
+	},
+	"saffron_copycat_doll_1": {
+		"narration": true,
+		"pages": [
+			"Une poupée Pikachu, bien rangée."
+		]
+	},
+	"saffron_copycat_doll_2": {
+		"narration": true,
+		"pages": [
+			"Une poupée Mélofée toute douce."
+		]
+	},
+	"saffron_copycat_computer": {
+		"narration": true,
+		"pages": [
+			"Sur l'écran : « Liste des poupées Pokémon rares »."
+		]
+	},
+	"saffron_copycat_console": {
+		"narration": true,
+		"pages": [
+			"Une console de jeu, restée allumée."
+		]
+	},
+	"saffron_copycat_hidden_1": {
+		"cutscene": "saffron_copycat_hidden_1"
+	},
+	"saffron_mr_psychic": {
+		"speaker": "M. Psy",
+		"pages": [
+			"Les Pokémon Psy sont puissants,\nmais fragiles face aux insectes\net aux spectres."
+		]
+	},
+	"saffron_pidgey_house_girl": {
+		"speaker": "Fillette",
+		"variants": [
+			{
+				"if": [
+					"silph_giovanni_defeated"
+				],
+				"pages": [
+					"Mon Roucool peut de nouveau livrer le courrier !"
+				]
+			},
+			{
+				"pages": [
+					"Mon Roucool livre le courrier de la Sylphe SARL.",
+					"Enfin… d'habitude."
+				]
+			}
+		]
+	},
+	"saffron_pidgey": {
+		"narration": true,
+		"pages": [
+			"Roucool : Rou, rou !"
+		]
+	},
+	"saffron_pidgey_house_boy": {
+		"speaker": "Garçon",
+		"variants": [
+			{
+				"if": [
+					"silph_giovanni_defeated"
+				],
+				"pages": [
+					"Papa dit que tout est rentré dans l'ordre."
+				]
+			},
+			{
+				"pages": [
+					"Papa dit qu'il ne faut pas sortir.",
+					"Les méchants sont partout dans la rue."
+				]
+			}
+		]
+	},
+	"saffron_pidgey_letter": {
+		"narration": true,
+		"pages": [
+			"Une lettre sur la table : « Cher Papa, je passerai te voir très vite. »"
+		]
+	},
+	"saffron_center_beauty": {
+		"speaker": "Beauté",
+		"variants": [
+			{
+				"if": [
+					"silph_giovanni_defeated"
+				],
+				"pages": [
+					"Safrania a retrouvé son éclat !"
+				]
+			},
+			{
+				"pages": [
+					"Safrania était si belle avant…",
+					"Maintenant, on n'ose plus sortir."
+				]
+			}
+		]
+	},
+	"saffron_center_gentleman": {
+		"speaker": "Gentleman",
+		"variants": [
+			{
+				"if": [
+					"silph_giovanni_defeated"
+				],
+				"pages": [
+					"Un Centre Pokémon ouvert, c'est la paix retrouvée."
+				]
+			},
+			{
+				"pages": [
+					"Même le Centre Pokémon a fermé ses rideaux.",
+					"Pas moi."
+				]
+			}
+		]
+	},
+	"saffron_mart_super_nerd": {
+		"speaker": "Intello",
+		"variants": [
+			{
+				"if": [
+					"silph_giovanni_defeated"
+				],
+				"pages": [
+					"Les prix ont baissé depuis le départ des Rocket."
+				]
+			},
+			{
+				"pages": [
+					"Les rayons se vident. Les Rocket se servent."
+				]
+			}
+		]
+	},
+	"saffron_mart_cooltrainer": {
+		"speaker": "Dresseuse",
+		"variants": [
+			{
+				"if": [
+					"silph_giovanni_defeated"
+				],
+				"pages": [
+					"La Sylphe SARL est libre ! Je vais faire des courses."
+				]
+			},
+			{
+				"pages": [
+					"La Sylphe SARL est occupée.",
+					"Quelqu'un devrait faire quelque chose."
+				]
+			}
+		]
+	},
+	"saffron_copycat_hidden_1_text": {
+		"narration": true,
+		"pages": [
+			"{player} trouve une Pépite !"
+		]
+	}
+}

@@ -1,0 +1,72 @@
+# Parc Safari — zone Est (safari_zone_east) — grille fonctionnelle (jalon 23, dossier 26 §2 ; préparée le
+# 2026-10-19). GÉOMÉTRIE ROUGE/BLEU CASE POUR CASE (N-3 : échelle RB 1:1, pour que 500 pas gardent
+# leur sens). Source : pret/pokered af519899, maps/SafariZoneEast.blk, tileset Forest (gfx/blocksets/forest.bst ;
+# collision = tuile en bas à gauche de chaque case, liste Forest_Coll ; herbe = tuile $20 ; eau = $14 et
+# la rive $48), objets, panneaux et warps de data/maps/objects/SafariZoneEast.asm. Vérifiée par
+# tools/art/plan_check_safari.py (qui relie les quatre zones, la Porte et les maisons).
+#
+# Composition RB : grande prairie au nord-est, étang au centre-ouest (x 11..19, y 10..17) avec une
+# langue d'herbe (10..15, 12..13), la MAISON DE REPOS au nord-est (24..27, 8..9, porte (25, 9)),
+# plaine sèche au sud. Raccords : ouest-nord (0, 4..5) → Nord, ouest-sud (0, 22..23) → Centre.
+# Les cases (0, 21) et (0, 24) sont du sol au bord de la carte, sans raccord (bord fermé).
+#
+# Les raccords RB sont des warps en bord de carte ; K26 en fait des RACCORDS CONTINUS (bord de carte,
+# fondu existant) entre les mêmes cases. Chaque pas compte, raccords compris (dossier 26 §4).
+# Aucune eau n'est surfable au J23 (P-3 B) ; aucune case pêchable n'est encore marquée (N-6 : elles le
+# seront quand le J22 aura fixé la légende de la pêche, M-8).
+#
+# Légende (commune aux quatre zones) :
+#   T arbres, haies, clôtures (bloqué)     . sol (praticable, aucune rencontre)
+#   h herbes hautes (praticable, rencontres Safari)      W eau (bloquée au J23)
+#   B maison (bloquée)    D porte d'une maison (praticable, fondu)    P panneau (bloqué, lu de face)
+#   e raccord vers une autre zone ou la Porte (praticable, bord de carte)
+#   n sol ou herbe HORS D'ATTEINTE à pied (bloqué : îlots, bords de carte de RB)
+# Objets, panneaux, raccords et maisons sont aussi dans POSITIONS. 1 case = 1 tuile de 16 px de RB ;
+# x = colonne, y = rangée, nord en haut ; coordonnées identiques au désassemblage.
+
+PRATICABLES .hDe
+
+GRILLE 30 26
+00 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+01 T.......hhhhhhhhhhhh..hhhhhh.T
+02 T.......hhhhhhhhhh...hhhhhhhhT
+03 TTTTTT...hhhhhhhh...hhhhhhhhhT
+04 e.....P...T........ThhhhhhhhhT
+05 e.........T........T.hhhhhhhhT
+06 TTTTTTTTTTT........Thhhhhhhh.T
+07 T.........TT.TTTT.TT.h.hh.h..T
+08 T..h....h.....TT........BBBB.T
+09 T.hh....hh....TT........BDBB.T
+10 Th..hhhh...WWWWWWWWW......P..T
+11 Th..hhhh...WWWWWWWWW.........T
+12 Th..hhhh..hhhhhhWWT........TTT
+13 Th..hhhh..hhhhhhWWT........TTT
+14 T.hh....hh.WWWWWWWT........TTT
+15 T..h....h..WWWWWWWTTT..T.TTTTT
+16 T..........WWWWWWWWWT..T.....T
+17 TTTTTT.....WWWWWWWWWT..T.....T
+18 TTTTTTT...T............T.....T
+19 TTTTTTT...T............T.....T
+20 TTTTTTT...T............Thhh..T
+21 ......T...TT.TTTTTTT.TTThhhh.T
+22 e.....T.........T.hhhhhhhhhh.T
+23 e....PTTTTTTTTTTT..hhhhhhhh..T
+24 ..............hhhhhhhhhhhh...T
+25 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+FIN
+
+POSITIONS
+porte_maison_repos     porte          25,9         libre   vers=safari_maison_repos # maison de repos (RB warp)
+arrivee_maison_repos   spawn          25,10        libre   facing=down           # sortie de la maison de repos
+raccord_nord           raccord        0,4..5       libre   vers=safari_nord:39,30..31 # RB warps (0,4), (0,5)
+arrivee_nord           spawn          1,4..5       libre   facing=right          # arrivée par ce raccord
+raccord_centre         raccord        0,22..23     libre   vers=safari_centre:29,10..11 # RB warps (0,22), (0,23)
+arrivee_centre         spawn          1,22..23     libre   facing=right          # arrivée par ce raccord
+panneau_maison_repos   panneau        26,10        bloque
+panneau_conseils       panneau        6,4          bloque
+panneau_zone           panneau        5,23         bloque
+guerison               objet_visible  21,10        bloque  item=full_restore     # RB : Guérison
+potion_max             objet_visible  3,7          bloque  item=hyper_potion     # RB : Potion Max → Hyper Potion (N-19)
+carbone                objet_visible  20,13        bloque  item=rare_candy       # RB : Carbone → Super Bonbon (N-19)
+ct37                   objet_visible  15,12        bloque  item=tm37             # RB : CT37 Bomb'Œuf (capacité à créer, N-19)
+FIN

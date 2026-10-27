@@ -186,6 +186,19 @@ func test_nothing_bites_plays_the_text_and_frees_the_player() -> void:
 	assert_signal_emitted_with_parameters(_director, "fishing_finished", [false])
 
 
+func test_player_holds_the_fishing_poses_then_stands() -> void:
+	_state.bag.add(&"good_rod")
+	_state.rng = ScriptedRng.new([11, 100])
+	var sprite := _player.get_node(^"%Sprite") as AnimatedSprite2D
+	_clock = TweenClock.new(get_tree())
+	_director.fish(&"good_rod", WATER)
+	assert_eq(_player.get_pose(), FishingDirector.POSE_WAIT, "fil tendu pendant l'attente")
+	assert_eq(sprite.animation, &"fish_wait_up", "pose peinte, tourné vers l'eau")
+	_clock.run_until(func() -> bool: return not _director.is_running())
+	assert_eq(_player.get_pose(), &"", "pose retirée à la fin")
+	assert_eq(sprite.animation, &"idle_up")
+
+
 func test_the_wait_lasts_one_to_two_seconds() -> void:
 	_state.bag.add(&"good_rod")
 	# roll(11) = 11 → 2,0 s ; puis rien ne mord.

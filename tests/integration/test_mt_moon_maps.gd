@@ -14,9 +14,9 @@ const WALKABLE: String = ".gjUVE"
 const NODE_BUDGET: int = 3000
 const MAX_GLOWS: int = 16
 const FLOORS: Dictionary = {
-	&"mt_moon_1f": ["res://tools/plans/mont_selenite_1f.txt", Vector2i(60, 46), &"cave_1f"],
-	&"mt_moon_b1f": ["res://tools/plans/mont_selenite_b1f.txt", Vector2i(40, 30), &"cave_b1f"],
-	&"mt_moon_b2f": ["res://tools/plans/mont_selenite_b2f.txt", Vector2i(50, 38), &"cave_b2f"],
+	&"mt_moon_1f": ["res://tools/plans/mont_selenite_1f.txt", Vector2i(60, 46), &"moon_1f"],
+	&"mt_moon_b1f": ["res://tools/plans/mont_selenite_b1f.txt", Vector2i(40, 30), &"moon_b1f"],
+	&"mt_moon_b2f": ["res://tools/plans/mont_selenite_b2f.txt", Vector2i(50, 38), &"moon_b2f"],
 }
 ## Cases bloquées par un décor posé sur une case praticable de la grille (position `bloque`).
 const DECOR_BLOCKED: Dictionary = {&"mt_moon_1f": [Vector2i(26, 43)]}
@@ -87,9 +87,9 @@ func test_floors_exist_as_outdoor_cave_maps() -> void:
 func test_light_profiles_get_darker_below() -> void:
 	var library := LightingLibrary.new()
 	assert_true(library.load_file())
-	var first := library.get_profile(&"cave_1f")
-	var b1 := library.get_profile(&"cave_b1f")
-	var b2 := library.get_profile(&"cave_b2f")
+	var first := library.get_profile(&"moon_1f")
+	var b1 := library.get_profile(&"moon_b1f")
+	var b2 := library.get_profile(&"moon_b2f")
 	assert_not_null(first)
 	assert_not_null(b1)
 	assert_not_null(b2)
@@ -102,6 +102,11 @@ func test_light_profiles_get_darker_below() -> void:
 			% profile.id)
 		assert_false(profile.has_wind(), "%s : aucun vent" % profile.id)
 		assert_true(profile.has_contact_shadow(), "%s : ombres de contact" % profile.id)
+		# DAF.6 : sol de pierre chaude de la vue peinte, parois d'ardoise froides.
+		assert_gt(profile.grade_highlights.x, profile.grade_highlights.z,
+			"%s : sol chaud" % profile.id)
+		assert_gt(profile.grade_shadows.z, profile.grade_shadows.x, "%s : ardoise froide"
+			% profile.id)
 
 
 func test_glows_within_budget_and_no_light2d() -> void:

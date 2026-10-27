@@ -1,0 +1,1907 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/map.gd" id="1_bsx47"]
+[ext_resource type="Shader" path="res://game/world/lighting/shaders/ground_blend.gdshader" id="2_mwnsv"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/ground_moquette_sylphe_01.png" id="3_k0mq3"]
+[ext_resource type="Texture2D" path="res://assets/world/maps/silph_co_2f_ground.png" id="4_dcck5"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/ground_masse_batiment_01.png" id="5_tv0iv"]
+[ext_resource type="Script" path="res://game/world/ground/painted_ground.gd" id="6_ggpdo"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="7_8wb3i"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_mur_sylphe_03.png" id="8_d1rat"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_escalier_sylphe_monte_01.tscn" id="9_o3brj"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_escalier_sylphe_descend_01.tscn" id="10_mjptt"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_porte_ascenseur_sylphe_01.tscn" id="11_ee7io"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/decal_teleporteur_sylphe_01.tscn" id="12_jp3h5"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/decal_seuil_sylphe_01.tscn" id="13_o0mi5"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_mur_sylphe_01.png" id="14_klhn8"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_mur_sylphe_02.png" id="15_4hehw"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_mur_sylphe_04.png" id="16_kjvmh"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_bureau_sylphe_01.tscn" id="17_38gxy"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_serveur_sylphe_01.tscn" id="18_hgw6j"]
+[ext_resource type="Script" path="res://game/world/key_door/key_door.gd" id="19_pxfha"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/int_porte_sylphe_h_01.png" id="20_3ofo6"]
+[ext_resource type="TileSet" path="res://assets/tiles/overworld.tres" id="21_axn1o"]
+[ext_resource type="Script" path="res://game/world/warp_point.gd" id="22_o62oo"]
+[ext_resource type="Script" path="res://game/world/interactions/interact_point.gd" id="23_bwa57"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ucpru"]
+shader = ExtResource("2_mwnsv")
+shader_parameter/grass_texture = ExtResource("3_k0mq3")
+shader_parameter/paving_texture = ExtResource("3_k0mq3")
+shader_parameter/path_texture = ExtResource("5_tv0iv")
+shader_parameter/ground_mask = ExtResource("4_dcck5")
+shader_parameter/tile_size = 96.0
+shader_parameter/texture_size = 384.0
+shader_parameter/paving_scale = 1.0
+shader_parameter/path_scale = 1.0
+shader_parameter/earth_color = Color(0.47, 0.48, 0.51, 1)
+shader_parameter/has_shore = false
+shader_parameter/foam_color = null
+shader_parameter/water_texture_size = null
+shader_parameter/foam_strength = null
+shader_parameter/square_shore = null
+shader_parameter/pass_mode = null
+
+[node name="SilphCo2F" type="Node2D" unique_id=1928380460]
+script = ExtResource("1_bsx47")
+map_id = &"silph_co_2f"
+display_name = "Sylphe SARL"
+size = Vector2i(30, 18)
+blocked_cells = Array[Vector2i]([Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vector2i(4, 0), Vector2i(5, 0), Vector2i(6, 0), Vector2i(7, 0), Vector2i(8, 0), Vector2i(9, 0), Vector2i(10, 0), Vector2i(11, 0), Vector2i(12, 0), Vector2i(13, 0), Vector2i(14, 0), Vector2i(15, 0), Vector2i(16, 0), Vector2i(17, 0), Vector2i(18, 0), Vector2i(19, 0), Vector2i(21, 0), Vector2i(22, 0), Vector2i(23, 0), Vector2i(25, 0), Vector2i(27, 0), Vector2i(28, 0), Vector2i(29, 0), Vector2i(0, 1), Vector2i(2, 1), Vector2i(3, 1), Vector2i(4, 1), Vector2i(5, 1), Vector2i(6, 1), Vector2i(7, 1), Vector2i(8, 1), Vector2i(9, 1), Vector2i(11, 1), Vector2i(29, 1), Vector2i(0, 2), Vector2i(11, 2), Vector2i(29, 2), Vector2i(0, 3), Vector2i(11, 3), Vector2i(29, 3), Vector2i(0, 4), Vector2i(1, 4), Vector2i(2, 4), Vector2i(3, 4), Vector2i(6, 4), Vector2i(7, 4), Vector2i(8, 4), Vector2i(9, 4), Vector2i(10, 4), Vector2i(11, 4), Vector2i(12, 4), Vector2i(13, 4), Vector2i(14, 4), Vector2i(15, 4), Vector2i(16, 4), Vector2i(17, 4), Vector2i(18, 4), Vector2i(19, 4), Vector2i(20, 4), Vector2i(21, 4), Vector2i(22, 4), Vector2i(23, 4), Vector2i(26, 4), Vector2i(27, 4), Vector2i(28, 4), Vector2i(29, 4), Vector2i(0, 5), Vector2i(8, 5), Vector2i(9, 5), Vector2i(10, 5), Vector2i(11, 5), Vector2i(12, 5), Vector2i(13, 5), Vector2i(14, 5), Vector2i(15, 5), Vector2i(16, 5), Vector2i(17, 5), Vector2i(18, 5), Vector2i(19, 5), Vector2i(29, 5), Vector2i(0, 6), Vector2i(29, 6), Vector2i(0, 7), Vector2i(29, 7), Vector2i(0, 8), Vector2i(14, 8), Vector2i(15, 8), Vector2i(18, 8), Vector2i(19, 8), Vector2i(21, 8), Vector2i(22, 8), Vector2i(23, 8), Vector2i(24, 8), Vector2i(25, 8), Vector2i(26, 8), Vector2i(27, 8), Vector2i(28, 8), Vector2i(29, 8), Vector2i(0, 9), Vector2i(14, 9), Vector2i(15, 9), Vector2i(18, 9), Vector2i(19, 9), Vector2i(21, 9), Vector2i(22, 9), Vector2i(24, 9), Vector2i(25, 9), Vector2i(26, 9), Vector2i(27, 9), Vector2i(28, 9), Vector2i(29, 9), Vector2i(0, 10), Vector2i(1, 10), Vector2i(2, 10), Vector2i(3, 10), Vector2i(6, 10), Vector2i(7, 10), Vector2i(8, 10), Vector2i(9, 10), Vector2i(10, 10), Vector2i(11, 10), Vector2i(14, 10), Vector2i(15, 10), Vector2i(18, 10), Vector2i(19, 10), Vector2i(21, 10), Vector2i(22, 10), Vector2i(28, 10), Vector2i(29, 10), Vector2i(0, 11), Vector2i(11, 11), Vector2i(14, 11), Vector2i(15, 11), Vector2i(18, 11), Vector2i(19, 11), Vector2i(21, 11), Vector2i(22, 11), Vector2i(28, 11), Vector2i(29, 11), Vector2i(0, 12), Vector2i(2, 12), Vector2i(3, 12), Vector2i(6, 12), Vector2i(7, 12), Vector2i(8, 12), Vector2i(9, 12), Vector2i(11, 12), Vector2i(14, 12), Vector2i(15, 12), Vector2i(18, 12), Vector2i(19, 12), Vector2i(29, 12), Vector2i(0, 13), Vector2i(2, 13), Vector2i(3, 13), Vector2i(6, 13), Vector2i(7, 13), Vector2i(8, 13), Vector2i(9, 13), Vector2i(11, 13), Vector2i(14, 13), Vector2i(15, 13), Vector2i(18, 13), Vector2i(19, 13), Vector2i(29, 13), Vector2i(0, 14), Vector2i(2, 14), Vector2i(3, 14), Vector2i(11, 14), Vector2i(14, 14), Vector2i(15, 14), Vector2i(18, 14), Vector2i(19, 14), Vector2i(22, 14), Vector2i(24, 14), Vector2i(25, 14), Vector2i(29, 14), Vector2i(0, 15), Vector2i(11, 15), Vector2i(22, 15), Vector2i(24, 15), Vector2i(25, 15), Vector2i(29, 15), Vector2i(0, 16), Vector2i(11, 16), Vector2i(22, 16), Vector2i(29, 16), Vector2i(0, 17), Vector2i(1, 17), Vector2i(2, 17), Vector2i(3, 17), Vector2i(4, 17), Vector2i(5, 17), Vector2i(6, 17), Vector2i(7, 17), Vector2i(8, 17), Vector2i(9, 17), Vector2i(10, 17), Vector2i(11, 17), Vector2i(12, 17), Vector2i(13, 17), Vector2i(14, 17), Vector2i(15, 17), Vector2i(16, 17), Vector2i(17, 17), Vector2i(18, 17), Vector2i(19, 17), Vector2i(20, 17), Vector2i(21, 17), Vector2i(22, 17), Vector2i(23, 17), Vector2i(24, 17), Vector2i(25, 17), Vector2i(26, 17), Vector2i(27, 17), Vector2i(28, 17), Vector2i(29, 17)])
+light_profile = &"office"
+
+[node name="PaintedGround" type="Node2D" parent="." unique_id=1107566246]
+z_index = -3
+material = SubResource("ShaderMaterial_ucpru")
+script = ExtResource("6_ggpdo")
+size = Vector2i(30, 18)
+mask = ExtResource("4_dcck5")
+base_texture = ExtResource("3_k0mq3")
+r_texture = ExtResource("3_k0mq3")
+g_texture = ExtResource("5_tv0iv")
+
+[node name="GroundDecals" type="Node2D" parent="." unique_id=1498200046]
+z_index = -1
+
+[node name="Lip000" type="Sprite2D" parent="GroundDecals" unique_id=2123427078]
+modulate = Color(1.0340295, 1.0340295, 1.0340295, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(864, 421)
+texture = ExtResource("8_d1rat")
+centered = false
+offset = Vector2(-96, -37)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 37)
+
+[node name="Lip001" type="Sprite2D" parent="GroundDecals" unique_id=873305920]
+modulate = Color(1.0260136, 1.0260136, 1.0260136, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(960, 421)
+texture = ExtResource("8_d1rat")
+centered = false
+offset = Vector2(-96, -37)
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 37)
+
+[node name="Lip002" type="Sprite2D" parent="GroundDecals" unique_id=589327555]
+modulate = Color(0.99222356, 0.99222356, 0.99222356, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(1248, 421)
+texture = ExtResource("8_d1rat")
+centered = false
+offset = Vector2(-96, -37)
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 37)
+
+[node name="Lip003" type="Sprite2D" parent="GroundDecals" unique_id=1686450368]
+modulate = Color(0.98178875, 0.98178875, 0.98178875, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(1440, 421)
+texture = ExtResource("8_d1rat")
+centered = false
+offset = Vector2(-96, -37)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 37)
+
+[node name="Lip004" type="Sprite2D" parent="GroundDecals" unique_id=1004848109]
+modulate = Color(0.96867895, 0.96867895, 0.96867895, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(1632, 421)
+texture = ExtResource("8_d1rat")
+centered = false
+offset = Vector2(-96, -37)
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 37)
+
+[node name="Lip005" type="Sprite2D" parent="GroundDecals" unique_id=324711948]
+modulate = Color(0.98515457, 0.98515457, 0.98515457, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(1824, 421)
+texture = ExtResource("8_d1rat")
+centered = false
+offset = Vector2(-96, -37)
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 37)
+
+[node name="Lip006" type="Sprite2D" parent="GroundDecals" unique_id=1884506972]
+modulate = Color(0.9900653, 0.9900653, 0.9900653, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2160, 805)
+texture = ExtResource("8_d1rat")
+centered = false
+offset = Vector2(-48, -37)
+region_enabled = true
+region_rect = Rect2(48, 0, 96, 37)
+
+[node name="Lip007" type="Sprite2D" parent="GroundDecals" unique_id=1577146212]
+modulate = Color(1.003078, 1.003078, 1.003078, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2400, 805)
+texture = ExtResource("8_d1rat")
+centered = false
+offset = Vector2(-96, -37)
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 37)
+
+[node name="Lip008" type="Sprite2D" parent="GroundDecals" unique_id=419079940]
+modulate = Color(0.9823487, 0.9823487, 0.9823487, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2592, 805)
+texture = ExtResource("8_d1rat")
+centered = false
+offset = Vector2(-96, -37)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 37)
+
+[node name="Lip009" type="Sprite2D" parent="GroundDecals" unique_id=2085963970]
+modulate = Color(0.9889135, 0.9889135, 0.9889135, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(1104, 997)
+texture = ExtResource("8_d1rat")
+centered = false
+offset = Vector2(-48, -37)
+region_enabled = true
+region_rect = Rect2(48, 0, 96, 37)
+
+[node name="Lip010" type="Sprite2D" parent="GroundDecals" unique_id=899620301]
+modulate = Color(1.0337185, 1.0337185, 1.0337185, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2160, 1381)
+texture = ExtResource("8_d1rat")
+centered = false
+offset = Vector2(-48, -37)
+region_enabled = true
+region_rect = Rect2(48, 0, 96, 37)
+
+[node name="Lip011" type="Sprite2D" parent="GroundDecals" unique_id=2124199799]
+modulate = Color(1.0360551, 1.0360551, 1.0360551, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(192, 1669)
+texture = ExtResource("8_d1rat")
+centered = false
+offset = Vector2(-96, -37)
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 37)
+
+[node name="Lip012" type="Sprite2D" parent="GroundDecals" unique_id=721329936]
+modulate = Color(1.0292084, 1.0292084, 1.0292084, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(384, 1669)
+texture = ExtResource("8_d1rat")
+centered = false
+offset = Vector2(-96, -37)
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 37)
+
+[node name="Lip013" type="Sprite2D" parent="GroundDecals" unique_id=1042319112]
+modulate = Color(0.9657768, 0.9657768, 0.9657768, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(576, 1669)
+texture = ExtResource("8_d1rat")
+centered = false
+offset = Vector2(-96, -37)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 37)
+
+[node name="Lip014" type="Sprite2D" parent="GroundDecals" unique_id=1496509471]
+modulate = Color(0.98589534, 0.98589534, 0.98589534, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(768, 1669)
+texture = ExtResource("8_d1rat")
+centered = false
+offset = Vector2(-96, -37)
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 37)
+
+[node name="Lip015" type="Sprite2D" parent="GroundDecals" unique_id=411298966]
+modulate = Color(0.96789503, 0.96789503, 0.96789503, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(960, 1669)
+texture = ExtResource("8_d1rat")
+centered = false
+offset = Vector2(-96, -37)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 37)
+
+[node name="Lip016" type="Sprite2D" parent="GroundDecals" unique_id=1581124455]
+modulate = Color(1.0231887, 1.0231887, 1.0231887, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(1248, 1669)
+texture = ExtResource("8_d1rat")
+centered = false
+offset = Vector2(-96, -37)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 37)
+
+[node name="Lip017" type="Sprite2D" parent="GroundDecals" unique_id=445355706]
+modulate = Color(1.014892, 1.014892, 1.014892, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(1440, 1669)
+texture = ExtResource("8_d1rat")
+centered = false
+offset = Vector2(-96, -37)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 37)
+
+[node name="Lip018" type="Sprite2D" parent="GroundDecals" unique_id=181881670]
+modulate = Color(1.0073643, 1.0073643, 1.0073643, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(1632, 1669)
+texture = ExtResource("8_d1rat")
+centered = false
+offset = Vector2(-96, -37)
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 37)
+
+[node name="Lip019" type="Sprite2D" parent="GroundDecals" unique_id=837534121]
+modulate = Color(1.0151839, 1.0151839, 1.0151839, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(1824, 1669)
+texture = ExtResource("8_d1rat")
+centered = false
+offset = Vector2(-96, -37)
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 37)
+
+[node name="Lip020" type="Sprite2D" parent="GroundDecals" unique_id=2070147024]
+modulate = Color(1.0206289, 1.0206289, 1.0206289, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2016, 1669)
+texture = ExtResource("8_d1rat")
+centered = false
+offset = Vector2(-96, -37)
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 37)
+
+[node name="Lip021" type="Sprite2D" parent="GroundDecals" unique_id=1956302061]
+modulate = Color(1.0167434, 1.0167434, 1.0167434, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2304, 1669)
+texture = ExtResource("8_d1rat")
+centered = false
+offset = Vector2(-96, -37)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 37)
+
+[node name="Lip022" type="Sprite2D" parent="GroundDecals" unique_id=405402097]
+modulate = Color(1.0201836, 1.0201836, 1.0201836, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2496, 1669)
+texture = ExtResource("8_d1rat")
+centered = false
+offset = Vector2(-96, -37)
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 37)
+
+[node name="Lip023" type="Sprite2D" parent="GroundDecals" unique_id=138752142]
+modulate = Color(0.9660835, 0.9660835, 0.9660835, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2688, 1669)
+texture = ExtResource("8_d1rat")
+centered = false
+offset = Vector2(-96, -37)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 37)
+
+[node name="StairsUp000" parent="GroundDecals" unique_id=671746895 instance=ExtResource("9_o3brj")]
+position = Vector2(2544, 96)
+
+[node name="StairsDown001" parent="GroundDecals" unique_id=1516760907 instance=ExtResource("10_mjptt")]
+position = Vector2(2352, 96)
+
+[node name="ElevatorDoorPanel002" parent="GroundDecals" unique_id=579805935 instance=ExtResource("11_ee7io")]
+position = Vector2(1968, 96)
+
+[node name="Teleporter003" parent="GroundDecals" unique_id=123659549 instance=ExtResource("12_jp3h5")]
+position = Vector2(336, 384)
+
+[node name="Teleporter004" parent="GroundDecals" unique_id=121082039 instance=ExtResource("12_jp3h5")]
+position = Vector2(1296, 384)
+
+[node name="Teleporter005" parent="GroundDecals" unique_id=154868394 instance=ExtResource("12_jp3h5")]
+position = Vector2(912, 1536)
+
+[node name="Teleporter006" parent="GroundDecals" unique_id=232451558 instance=ExtResource("12_jp3h5")]
+position = Vector2(2640, 1536)
+
+[node name="DoorSill007" parent="GroundDecals" unique_id=998669997 instance=ExtResource("13_o0mi5")]
+position = Vector2(432, 480)
+
+[node name="DoorSill008" parent="GroundDecals" unique_id=424798161 instance=ExtResource("13_o0mi5")]
+position = Vector2(528, 480)
+
+[node name="DoorSill009" parent="GroundDecals" unique_id=1086672250 instance=ExtResource("13_o0mi5")]
+position = Vector2(432, 1056)
+
+[node name="DoorSill010" parent="GroundDecals" unique_id=541536431 instance=ExtResource("13_o0mi5")]
+position = Vector2(528, 1056)
+
+[node name="Entities" type="Node2D" parent="." unique_id=1745286776]
+unique_name_in_owner = true
+y_sort_enabled = true
+
+[node name="Face000" type="Sprite2D" parent="Entities" unique_id=919414339]
+modulate = Color(1.0079243, 1.0079243, 1.0079243, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(144, 96)
+texture = ExtResource("14_klhn8")
+centered = false
+offset = Vector2(-48, -59)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(48, 136, 96, 59)
+
+[node name="FaceTop000" type="Sprite2D" parent="Entities" unique_id=1102098950]
+modulate = Color(1.0118407, 1.0118407, 1.0118407, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(144, 96)
+texture = ExtResource("8_d1rat")
+centered = false
+offset = Vector2(-48, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(48, 0, 96, 37)
+
+[node name="Face001" type="Sprite2D" parent="Entities" unique_id=1132494514]
+modulate = Color(0.99447954, 0.99447954, 0.99447954, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(1008, 96)
+texture = ExtResource("15_4hehw")
+centered = false
+offset = Vector2(-48, -59)
+region_enabled = true
+region_rect = Rect2(48, 138, 96, 59)
+
+[node name="FaceTop001" type="Sprite2D" parent="Entities" unique_id=641689213]
+modulate = Color(1.0353376, 1.0353376, 1.0353376, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(1008, 96)
+texture = ExtResource("8_d1rat")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(48, 0, 96, 37)
+
+[node name="Face002" type="Sprite2D" parent="Entities" unique_id=1450027440]
+modulate = Color(1.0372856, 1.0372856, 1.0372856, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(1248, 96)
+texture = ExtResource("14_klhn8")
+centered = false
+offset = Vector2(-96, -59)
+region_enabled = true
+region_rect = Rect2(0, 136, 192, 59)
+
+[node name="FaceTop002" type="Sprite2D" parent="Entities" unique_id=357775811]
+modulate = Color(1.0331606, 1.0331606, 1.0331606, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(1248, 96)
+texture = ExtResource("8_d1rat")
+centered = false
+offset = Vector2(-96, -96)
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 37)
+
+[node name="Face003" type="Sprite2D" parent="Entities" unique_id=577912050]
+modulate = Color(0.9833293, 0.9833293, 0.9833293, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(1440, 96)
+texture = ExtResource("14_klhn8")
+centered = false
+offset = Vector2(-96, -59)
+region_enabled = true
+region_rect = Rect2(0, 136, 192, 59)
+
+[node name="FaceTop003" type="Sprite2D" parent="Entities" unique_id=1952988812]
+modulate = Color(0.996171, 0.996171, 0.996171, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(1440, 96)
+texture = ExtResource("8_d1rat")
+centered = false
+offset = Vector2(-96, -96)
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 37)
+
+[node name="Face004" type="Sprite2D" parent="Entities" unique_id=1318883939]
+modulate = Color(0.9987827, 0.9987827, 0.9987827, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(1632, 96)
+texture = ExtResource("14_klhn8")
+centered = false
+offset = Vector2(-96, -59)
+region_enabled = true
+region_rect = Rect2(0, 136, 192, 59)
+
+[node name="FaceTop004" type="Sprite2D" parent="Entities" unique_id=1834810442]
+modulate = Color(0.96025276, 0.96025276, 0.96025276, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(1632, 96)
+texture = ExtResource("8_d1rat")
+centered = false
+offset = Vector2(-96, -96)
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 37)
+
+[node name="Face005" type="Sprite2D" parent="Entities" unique_id=1788510071]
+modulate = Color(1.0342001, 1.0342001, 1.0342001, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(1824, 96)
+texture = ExtResource("14_klhn8")
+centered = false
+offset = Vector2(-96, -59)
+region_enabled = true
+region_rect = Rect2(0, 136, 192, 59)
+
+[node name="FaceTop005" type="Sprite2D" parent="Entities" unique_id=1953943872]
+modulate = Color(1.0297383, 1.0297383, 1.0297383, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(1824, 96)
+texture = ExtResource("8_d1rat")
+centered = false
+offset = Vector2(-96, -96)
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 37)
+
+[node name="Face006" type="Sprite2D" parent="Entities" unique_id=192961683]
+modulate = Color(1.0035847, 1.0035847, 1.0035847, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2112, 96)
+texture = ExtResource("14_klhn8")
+centered = false
+offset = Vector2(-96, -59)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 136, 192, 59)
+
+[node name="FaceTop006" type="Sprite2D" parent="Entities" unique_id=809452070]
+modulate = Color(1.0177681, 1.0177681, 1.0177681, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2112, 96)
+texture = ExtResource("8_d1rat")
+centered = false
+offset = Vector2(-96, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 37)
+
+[node name="Face007" type="Sprite2D" parent="Entities" unique_id=189225408]
+modulate = Color(1.0364354, 1.0364354, 1.0364354, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2208, 96)
+texture = ExtResource("14_klhn8")
+centered = false
+offset = Vector2(-96, -59)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 136, 192, 59)
+
+[node name="FaceTop007" type="Sprite2D" parent="Entities" unique_id=1493652717]
+modulate = Color(1.0385401, 1.0385401, 1.0385401, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2208, 96)
+texture = ExtResource("8_d1rat")
+centered = false
+offset = Vector2(-96, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 37)
+
+[node name="Face008" type="Sprite2D" parent="Entities" unique_id=2138493612]
+modulate = Color(0.9852965, 0.9852965, 0.9852965, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2448, 96)
+texture = ExtResource("14_klhn8")
+centered = false
+offset = Vector2(-48, -59)
+region_enabled = true
+region_rect = Rect2(48, 136, 96, 59)
+
+[node name="FaceTop008" type="Sprite2D" parent="Entities" unique_id=760631962]
+modulate = Color(0.971017, 0.971017, 0.971017, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2448, 96)
+texture = ExtResource("8_d1rat")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(48, 0, 96, 37)
+
+[node name="Face009" type="Sprite2D" parent="Entities" unique_id=520425283]
+modulate = Color(1.0124786, 1.0124786, 1.0124786, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2688, 96)
+texture = ExtResource("14_klhn8")
+centered = false
+offset = Vector2(-96, -59)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 136, 192, 59)
+
+[node name="FaceTop009" type="Sprite2D" parent="Entities" unique_id=1308575229]
+modulate = Color(1.0320901, 1.0320901, 1.0320901, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2688, 96)
+texture = ExtResource("8_d1rat")
+centered = false
+offset = Vector2(-96, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 37)
+
+[node name="Face010" type="Sprite2D" parent="Entities" unique_id=1785938949]
+modulate = Color(0.984, 0.984, 0.984, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(288, 192)
+texture = ExtResource("14_klhn8")
+centered = false
+offset = Vector2(-96, -195)
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 195)
+
+[node name="Face011" type="Sprite2D" parent="Entities" unique_id=1242248557]
+modulate = Color(1.0389962, 1.0389962, 1.0389962, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(480, 192)
+texture = ExtResource("15_4hehw")
+centered = false
+offset = Vector2(-96, -197)
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 197)
+
+[node name="Face012" type="Sprite2D" parent="Entities" unique_id=1684507447]
+modulate = Color(1.0287907, 1.0287907, 1.0287907, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(672, 192)
+texture = ExtResource("15_4hehw")
+centered = false
+offset = Vector2(-96, -197)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 197)
+
+[node name="Face013" type="Sprite2D" parent="Entities" unique_id=2041863061]
+modulate = Color(1.0078512, 1.0078512, 1.0078512, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(864, 192)
+texture = ExtResource("14_klhn8")
+centered = false
+offset = Vector2(-96, -195)
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 195)
+
+[node name="Face014" type="Sprite2D" parent="Entities" unique_id=1230012719]
+modulate = Color(1.0160918, 1.0160918, 1.0160918, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(192, 480)
+texture = ExtResource("15_4hehw")
+centered = false
+offset = Vector2(-96, -59)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 138, 192, 59)
+
+[node name="FaceTop014" type="Sprite2D" parent="Entities" unique_id=1988688364]
+modulate = Color(0.96388257, 0.96388257, 0.96388257, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(192, 480)
+texture = ExtResource("8_d1rat")
+centered = false
+offset = Vector2(-96, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 37)
+
+[node name="Face015" type="Sprite2D" parent="Entities" unique_id=562977355]
+modulate = Color(1.0091627, 1.0091627, 1.0091627, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(288, 480)
+texture = ExtResource("14_klhn8")
+centered = false
+offset = Vector2(-96, -59)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 136, 192, 59)
+
+[node name="FaceTop015" type="Sprite2D" parent="Entities" unique_id=42603534]
+modulate = Color(0.9848671, 0.9848671, 0.9848671, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(288, 480)
+texture = ExtResource("8_d1rat")
+centered = false
+offset = Vector2(-96, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 37)
+
+[node name="Face016" type="Sprite2D" parent="Entities" unique_id=1686676218]
+modulate = Color(0.98559266, 0.98559266, 0.98559266, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(672, 480)
+texture = ExtResource("15_4hehw")
+centered = false
+offset = Vector2(-96, -59)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 138, 192, 59)
+
+[node name="FaceTop016" type="Sprite2D" parent="Entities" unique_id=609747796]
+modulate = Color(0.9888926, 0.9888926, 0.9888926, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(672, 480)
+texture = ExtResource("8_d1rat")
+centered = false
+offset = Vector2(-96, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 37)
+
+[node name="Face017" type="Sprite2D" parent="Entities" unique_id=17791488]
+modulate = Color(1.007951, 1.007951, 1.007951, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2016, 480)
+texture = ExtResource("14_klhn8")
+centered = false
+offset = Vector2(-96, -59)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 136, 192, 59)
+
+[node name="FaceTop017" type="Sprite2D" parent="Entities" unique_id=93216698]
+modulate = Color(0.99964154, 0.99964154, 0.99964154, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2016, 480)
+texture = ExtResource("8_d1rat")
+centered = false
+offset = Vector2(-96, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 37)
+
+[node name="Face018" type="Sprite2D" parent="Entities" unique_id=149041191]
+modulate = Color(1.0388513, 1.0388513, 1.0388513, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2208, 480)
+texture = ExtResource("15_4hehw")
+centered = false
+offset = Vector2(-96, -59)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 138, 192, 59)
+
+[node name="FaceTop018" type="Sprite2D" parent="Entities" unique_id=2065176792]
+modulate = Color(1.0308805, 1.0308805, 1.0308805, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2208, 480)
+texture = ExtResource("8_d1rat")
+centered = false
+offset = Vector2(-96, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 37)
+
+[node name="Face019" type="Sprite2D" parent="Entities" unique_id=1269450516]
+modulate = Color(1.0362731, 1.0362731, 1.0362731, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2592, 480)
+texture = ExtResource("14_klhn8")
+centered = false
+offset = Vector2(-96, -59)
+region_enabled = true
+region_rect = Rect2(0, 136, 192, 59)
+
+[node name="FaceTop019" type="Sprite2D" parent="Entities" unique_id=1562856324]
+modulate = Color(0.96537274, 0.96537274, 0.96537274, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2592, 480)
+texture = ExtResource("8_d1rat")
+centered = false
+offset = Vector2(-96, -96)
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 37)
+
+[node name="Face020" type="Sprite2D" parent="Entities" unique_id=1189656562]
+modulate = Color(1.0145216, 1.0145216, 1.0145216, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2688, 480)
+texture = ExtResource("15_4hehw")
+centered = false
+offset = Vector2(-96, -59)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 138, 192, 59)
+
+[node name="FaceTop020" type="Sprite2D" parent="Entities" unique_id=1079125427]
+modulate = Color(1.0387081, 1.0387081, 1.0387081, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2688, 480)
+texture = ExtResource("8_d1rat")
+centered = false
+offset = Vector2(-96, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 37)
+
+[node name="Face021" type="Sprite2D" parent="Entities" unique_id=692822055]
+modulate = Color(0.98279667, 0.98279667, 0.98279667, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(864, 576)
+texture = ExtResource("14_klhn8")
+centered = false
+offset = Vector2(-96, -195)
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 195)
+
+[node name="Face022" type="Sprite2D" parent="Entities" unique_id=530658652]
+modulate = Color(0.96025413, 0.96025413, 0.96025413, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(1056, 576)
+texture = ExtResource("15_4hehw")
+centered = false
+offset = Vector2(-96, -197)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 197)
+
+[node name="Face023" type="Sprite2D" parent="Entities" unique_id=272647380]
+modulate = Color(1.0287411, 1.0287411, 1.0287411, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(1248, 576)
+texture = ExtResource("15_4hehw")
+centered = false
+offset = Vector2(-96, -197)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 197)
+
+[node name="Face024" type="Sprite2D" parent="Entities" unique_id=1355214096]
+modulate = Color(1.0158117, 1.0158117, 1.0158117, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(1440, 576)
+texture = ExtResource("14_klhn8")
+centered = false
+offset = Vector2(-96, -195)
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 195)
+
+[node name="Face025" type="Sprite2D" parent="Entities" unique_id=822088816]
+modulate = Color(0.98708504, 0.98708504, 0.98708504, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(1632, 576)
+texture = ExtResource("15_4hehw")
+centered = false
+offset = Vector2(-96, -197)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 197)
+
+[node name="Face026" type="Sprite2D" parent="Entities" unique_id=53991968]
+modulate = Color(1.0106027, 1.0106027, 1.0106027, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(1824, 576)
+texture = ExtResource("14_klhn8")
+centered = false
+offset = Vector2(-96, -195)
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 195)
+
+[node name="Face027" type="Sprite2D" parent="Entities" unique_id=962769430]
+modulate = Color(1.0020373, 1.0020373, 1.0020373, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2256, 864)
+texture = ExtResource("15_4hehw")
+centered = false
+offset = Vector2(-48, -59)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(48, 138, 96, 59)
+
+[node name="FaceTop027" type="Sprite2D" parent="Entities" unique_id=285610617]
+modulate = Color(1.0074873, 1.0074873, 1.0074873, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2256, 864)
+texture = ExtResource("8_d1rat")
+centered = false
+offset = Vector2(-48, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(48, 0, 96, 37)
+
+[node name="Face028" type="Sprite2D" parent="Entities" unique_id=73166011]
+modulate = Color(1.0167725, 1.0167725, 1.0167725, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2736, 864)
+texture = ExtResource("14_klhn8")
+centered = false
+offset = Vector2(-48, -59)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(48, 136, 96, 59)
+
+[node name="FaceTop028" type="Sprite2D" parent="Entities" unique_id=1631470121]
+modulate = Color(1.0045227, 1.0045227, 1.0045227, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2736, 864)
+texture = ExtResource("8_d1rat")
+centered = false
+offset = Vector2(-48, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(48, 0, 96, 37)
+
+[node name="Face029" type="Sprite2D" parent="Entities" unique_id=1018885781]
+modulate = Color(1.0120203, 1.0120203, 1.0120203, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2400, 960)
+texture = ExtResource("15_4hehw")
+centered = false
+offset = Vector2(-96, -197)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 197)
+
+[node name="Face030" type="Sprite2D" parent="Entities" unique_id=1650339554]
+modulate = Color(0.9840216, 0.9840216, 0.9840216, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2592, 960)
+texture = ExtResource("15_4hehw")
+centered = false
+offset = Vector2(-96, -197)
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 197)
+
+[node name="Face031" type="Sprite2D" parent="Entities" unique_id=1314752802]
+modulate = Color(1.035068, 1.035068, 1.035068, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(192, 1056)
+texture = ExtResource("14_klhn8")
+centered = false
+offset = Vector2(-96, -59)
+region_enabled = true
+region_rect = Rect2(0, 136, 192, 59)
+
+[node name="FaceTop031" type="Sprite2D" parent="Entities" unique_id=1674261791]
+modulate = Color(1.0362029, 1.0362029, 1.0362029, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(192, 1056)
+texture = ExtResource("8_d1rat")
+centered = false
+offset = Vector2(-96, -96)
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 37)
+
+[node name="Face032" type="Sprite2D" parent="Entities" unique_id=2144229319]
+modulate = Color(1.0043933, 1.0043933, 1.0043933, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(288, 1056)
+texture = ExtResource("15_4hehw")
+centered = false
+offset = Vector2(-96, -59)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 138, 192, 59)
+
+[node name="FaceTop032" type="Sprite2D" parent="Entities" unique_id=177587240]
+modulate = Color(1.0149182, 1.0149182, 1.0149182, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(288, 1056)
+texture = ExtResource("8_d1rat")
+centered = false
+offset = Vector2(-96, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 37)
+
+[node name="Face033" type="Sprite2D" parent="Entities" unique_id=305865361]
+modulate = Color(0.9705873, 0.9705873, 0.9705873, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(672, 1056)
+texture = ExtResource("15_4hehw")
+centered = false
+offset = Vector2(-96, -59)
+region_enabled = true
+region_rect = Rect2(0, 138, 192, 59)
+
+[node name="FaceTop033" type="Sprite2D" parent="Entities" unique_id=2094237927]
+modulate = Color(0.98657566, 0.98657566, 0.98657566, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(672, 1056)
+texture = ExtResource("8_d1rat")
+centered = false
+offset = Vector2(-96, -96)
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 37)
+
+[node name="Face034" type="Sprite2D" parent="Entities" unique_id=686956634]
+modulate = Color(0.97621703, 0.97621703, 0.97621703, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(864, 1056)
+texture = ExtResource("15_4hehw")
+centered = false
+offset = Vector2(-96, -59)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 138, 192, 59)
+
+[node name="FaceTop034" type="Sprite2D" parent="Entities" unique_id=402575541]
+modulate = Color(1.0343847, 1.0343847, 1.0343847, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(864, 1056)
+texture = ExtResource("8_d1rat")
+centered = false
+offset = Vector2(-96, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 37)
+
+[node name="Face035" type="Sprite2D" parent="Entities" unique_id=390919387]
+modulate = Color(1.037198, 1.037198, 1.037198, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(960, 1056)
+texture = ExtResource("14_klhn8")
+centered = false
+offset = Vector2(-96, -59)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 136, 192, 59)
+
+[node name="FaceTop035" type="Sprite2D" parent="Entities" unique_id=231218118]
+modulate = Color(1.0271523, 1.0271523, 1.0271523, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(960, 1056)
+texture = ExtResource("8_d1rat")
+centered = false
+offset = Vector2(-96, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 37)
+
+[node name="Face036" type="Sprite2D" parent="Entities" unique_id=493283433]
+modulate = Color(1.0118374, 1.0118374, 1.0118374, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2160, 1152)
+texture = ExtResource("15_4hehw")
+centered = false
+offset = Vector2(-48, -197)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(48, 0, 96, 197)
+
+[node name="Face037" type="Sprite2D" parent="Entities" unique_id=801716802]
+modulate = Color(1.0065659, 1.0065659, 1.0065659, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2736, 1152)
+texture = ExtResource("15_4hehw")
+centered = false
+offset = Vector2(-48, -59)
+region_enabled = true
+region_rect = Rect2(48, 138, 96, 59)
+
+[node name="FaceTop037" type="Sprite2D" parent="Entities" unique_id=1069991837]
+modulate = Color(0.99836296, 0.99836296, 0.99836296, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2736, 1152)
+texture = ExtResource("8_d1rat")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(48, 0, 96, 37)
+
+[node name="Side000" type="Sprite2D" parent="Entities" unique_id=826948115]
+modulate = Color(1.0000669, 1.0000669, 1.0000669, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(79, 192)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+region_enabled = true
+region_rect = Rect2(0, 0, 34, 96)
+
+[node name="Side001" type="Sprite2D" parent="Entities" unique_id=1177200988]
+modulate = Color(1.0227562, 1.0227562, 1.0227562, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(79, 288)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+region_enabled = true
+region_rect = Rect2(0, 41, 34, 96)
+
+[node name="Side002" type="Sprite2D" parent="Entities" unique_id=1113105363]
+modulate = Color(1.0278258, 1.0278258, 1.0278258, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(79, 384)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+region_enabled = true
+region_rect = Rect2(0, 83, 34, 96)
+
+[node name="Side003" type="Sprite2D" parent="Entities" unique_id=1405824042]
+modulate = Color(0.9925129, 0.9925129, 0.9925129, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(79, 576)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+region_enabled = true
+region_rect = Rect2(0, 0, 34, 96)
+
+[node name="Side004" type="Sprite2D" parent="Entities" unique_id=1413777802]
+modulate = Color(0.9869833, 0.9869833, 0.9869833, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(79, 672)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+region_enabled = true
+region_rect = Rect2(0, 41, 34, 96)
+
+[node name="Side005" type="Sprite2D" parent="Entities" unique_id=348216557]
+modulate = Color(0.9949323, 0.9949323, 0.9949323, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(79, 768)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+region_enabled = true
+region_rect = Rect2(0, 41, 34, 96)
+
+[node name="Side006" type="Sprite2D" parent="Entities" unique_id=1571990110]
+modulate = Color(0.977819, 0.977819, 0.977819, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(79, 864)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+region_enabled = true
+region_rect = Rect2(0, 41, 34, 96)
+
+[node name="Side007" type="Sprite2D" parent="Entities" unique_id=668155831]
+modulate = Color(0.99699914, 0.99699914, 0.99699914, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(79, 960)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+region_enabled = true
+region_rect = Rect2(0, 83, 34, 96)
+
+[node name="Side008" type="Sprite2D" parent="Entities" unique_id=1614868723]
+modulate = Color(1.0272901, 1.0272901, 1.0272901, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(79, 1152)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+region_enabled = true
+region_rect = Rect2(0, 0, 34, 96)
+
+[node name="Side009" type="Sprite2D" parent="Entities" unique_id=976370791]
+modulate = Color(0.96030337, 0.96030337, 0.96030337, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(79, 1248)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+region_enabled = true
+region_rect = Rect2(0, 41, 34, 96)
+
+[node name="Side010" type="Sprite2D" parent="Entities" unique_id=96881639]
+modulate = Color(0.96821475, 0.96821475, 0.96821475, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(79, 1344)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+region_enabled = true
+region_rect = Rect2(0, 41, 34, 96)
+
+[node name="Side011" type="Sprite2D" parent="Entities" unique_id=1998378367]
+modulate = Color(1.0012345, 1.0012345, 1.0012345, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(79, 1440)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+region_enabled = true
+region_rect = Rect2(0, 41, 34, 96)
+
+[node name="Side012" type="Sprite2D" parent="Entities" unique_id=433942665]
+modulate = Color(1.0007305, 1.0007305, 1.0007305, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(79, 1536)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+region_enabled = true
+region_rect = Rect2(0, 41, 34, 96)
+
+[node name="Side013" type="Sprite2D" parent="Entities" unique_id=655805885]
+modulate = Color(0.97643775, 0.97643775, 0.97643775, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(79, 1632)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+region_enabled = true
+region_rect = Rect2(0, 83, 34, 96)
+
+[node name="Side014" type="Sprite2D" parent="Entities" unique_id=84117305]
+modulate = Color(1.007136, 1.007136, 1.007136, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(1073, 192)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 0, 34, 96)
+
+[node name="Side015" type="Sprite2D" parent="Entities" unique_id=1847595605]
+modulate = Color(1.0199285, 1.0199285, 1.0199285, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(1135, 192)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+region_enabled = true
+region_rect = Rect2(0, 0, 34, 96)
+
+[node name="Side016" type="Sprite2D" parent="Entities" unique_id=1597655722]
+modulate = Color(1.0125625, 1.0125625, 1.0125625, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(1073, 288)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 41, 34, 96)
+
+[node name="Side017" type="Sprite2D" parent="Entities" unique_id=1739627376]
+modulate = Color(1.0297633, 1.0297633, 1.0297633, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(1135, 288)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+region_enabled = true
+region_rect = Rect2(0, 41, 34, 96)
+
+[node name="Side018" type="Sprite2D" parent="Entities" unique_id=2035539773]
+modulate = Color(0.99135256, 0.99135256, 0.99135256, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(1073, 384)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 83, 34, 96)
+
+[node name="Side019" type="Sprite2D" parent="Entities" unique_id=1982718560]
+modulate = Color(0.9766296, 0.9766296, 0.9766296, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(1135, 384)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+region_enabled = true
+region_rect = Rect2(0, 83, 34, 96)
+
+[node name="Side020" type="Sprite2D" parent="Entities" unique_id=1034378944]
+modulate = Color(0.98075247, 0.98075247, 0.98075247, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(1135, 1056)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+region_enabled = true
+region_rect = Rect2(0, 0, 34, 96)
+
+[node name="Side021" type="Sprite2D" parent="Entities" unique_id=1621834505]
+modulate = Color(0.9956806, 0.9956806, 0.9956806, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(1073, 1152)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 41, 34, 96)
+
+[node name="Side022" type="Sprite2D" parent="Entities" unique_id=731999962]
+modulate = Color(0.97666836, 0.97666836, 0.97666836, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(1135, 1152)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+region_enabled = true
+region_rect = Rect2(0, 41, 34, 96)
+
+[node name="Side023" type="Sprite2D" parent="Entities" unique_id=1807466487]
+modulate = Color(0.9602562, 0.9602562, 0.9602562, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(1073, 1248)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 41, 34, 96)
+
+[node name="Side024" type="Sprite2D" parent="Entities" unique_id=997964767]
+modulate = Color(1.0357755, 1.0357755, 1.0357755, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(1135, 1248)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+region_enabled = true
+region_rect = Rect2(0, 41, 34, 96)
+
+[node name="Side025" type="Sprite2D" parent="Entities" unique_id=933219056]
+modulate = Color(0.99713916, 0.99713916, 0.99713916, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(1073, 1344)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 41, 34, 96)
+
+[node name="Side026" type="Sprite2D" parent="Entities" unique_id=1883816855]
+modulate = Color(0.98625356, 0.98625356, 0.98625356, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(1135, 1344)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+region_enabled = true
+region_rect = Rect2(0, 41, 34, 96)
+
+[node name="Side027" type="Sprite2D" parent="Entities" unique_id=1096868348]
+modulate = Color(1.0367634, 1.0367634, 1.0367634, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(1073, 1440)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 41, 34, 96)
+
+[node name="Side028" type="Sprite2D" parent="Entities" unique_id=1017093538]
+modulate = Color(1.0342815, 1.0342815, 1.0342815, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(1135, 1440)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+region_enabled = true
+region_rect = Rect2(0, 41, 34, 96)
+
+[node name="Side029" type="Sprite2D" parent="Entities" unique_id=484147116]
+modulate = Color(0.9719062, 0.9719062, 0.9719062, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(1073, 1536)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 41, 34, 96)
+
+[node name="Side030" type="Sprite2D" parent="Entities" unique_id=1819708101]
+modulate = Color(0.9996246, 0.9996246, 0.9996246, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(1135, 1536)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+region_enabled = true
+region_rect = Rect2(0, 41, 34, 96)
+
+[node name="Side031" type="Sprite2D" parent="Entities" unique_id=1948605240]
+modulate = Color(1.0338175, 1.0338175, 1.0338175, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(1073, 1632)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 83, 34, 96)
+
+[node name="Side032" type="Sprite2D" parent="Entities" unique_id=470714554]
+modulate = Color(0.993751, 0.993751, 0.993751, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(1135, 1632)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+region_enabled = true
+region_rect = Rect2(0, 83, 34, 96)
+
+[node name="Side033" type="Sprite2D" parent="Entities" unique_id=215399942]
+modulate = Color(1.0311677, 1.0311677, 1.0311677, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2129, 864)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 0, 34, 96)
+
+[node name="Side034" type="Sprite2D" parent="Entities" unique_id=1872582677]
+modulate = Color(1.0249903, 1.0249903, 1.0249903, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2129, 960)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 41, 34, 96)
+
+[node name="Side035" type="Sprite2D" parent="Entities" unique_id=798152880]
+modulate = Color(0.9765599, 0.9765599, 0.9765599, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2191, 960)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+region_enabled = true
+region_rect = Rect2(0, 41, 34, 96)
+
+[node name="Side036" type="Sprite2D" parent="Entities" unique_id=1959879335]
+modulate = Color(1.0126798, 1.0126798, 1.0126798, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2129, 1056)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 83, 34, 96)
+
+[node name="Side037" type="Sprite2D" parent="Entities" unique_id=1091449016]
+modulate = Color(1.0244672, 1.0244672, 1.0244672, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2191, 1056)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+region_enabled = true
+region_rect = Rect2(0, 83, 34, 96)
+
+[node name="Side038" type="Sprite2D" parent="Entities" unique_id=207603411]
+modulate = Color(1.007167, 1.007167, 1.007167, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2129, 1440)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 0, 34, 96)
+
+[node name="Side039" type="Sprite2D" parent="Entities" unique_id=152625302]
+modulate = Color(1.0312768, 1.0312768, 1.0312768, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2191, 1440)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+region_enabled = true
+region_rect = Rect2(0, 0, 34, 96)
+
+[node name="Side040" type="Sprite2D" parent="Entities" unique_id=447733364]
+modulate = Color(0.969103, 0.969103, 0.969103, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2129, 1536)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 41, 34, 96)
+
+[node name="Side041" type="Sprite2D" parent="Entities" unique_id=836867669]
+modulate = Color(0.97617894, 0.97617894, 0.97617894, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2191, 1536)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+region_enabled = true
+region_rect = Rect2(0, 41, 34, 96)
+
+[node name="Side042" type="Sprite2D" parent="Entities" unique_id=2015570563]
+modulate = Color(1.0251961, 1.0251961, 1.0251961, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2129, 1632)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 83, 34, 96)
+
+[node name="Side043" type="Sprite2D" parent="Entities" unique_id=1549421493]
+modulate = Color(0.9634248, 0.9634248, 0.9634248, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2191, 1632)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+region_enabled = true
+region_rect = Rect2(0, 83, 34, 96)
+
+[node name="Side044" type="Sprite2D" parent="Entities" unique_id=1982450281]
+modulate = Color(1.030997, 1.030997, 1.030997, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2801, 192)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 0, 34, 96)
+
+[node name="Side045" type="Sprite2D" parent="Entities" unique_id=2140165797]
+modulate = Color(0.97276324, 0.97276324, 0.97276324, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2801, 288)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 41, 34, 96)
+
+[node name="Side046" type="Sprite2D" parent="Entities" unique_id=1651138822]
+modulate = Color(1.0362521, 1.0362521, 1.0362521, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2801, 384)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 83, 34, 96)
+
+[node name="Side047" type="Sprite2D" parent="Entities" unique_id=1296423883]
+modulate = Color(0.9676257, 0.9676257, 0.9676257, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2801, 576)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 0, 34, 96)
+
+[node name="Side048" type="Sprite2D" parent="Entities" unique_id=457875147]
+modulate = Color(1.0247862, 1.0247862, 1.0247862, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2801, 672)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 41, 34, 96)
+
+[node name="Side049" type="Sprite2D" parent="Entities" unique_id=746835791]
+modulate = Color(0.96078277, 0.96078277, 0.96078277, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2801, 768)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 83, 34, 96)
+
+[node name="Side050" type="Sprite2D" parent="Entities" unique_id=1736396155]
+modulate = Color(1.005564, 1.005564, 1.005564, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2801, 960)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 0, 34, 96)
+
+[node name="Side051" type="Sprite2D" parent="Entities" unique_id=924604810]
+modulate = Color(0.97551566, 0.97551566, 0.97551566, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2801, 1056)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 83, 34, 96)
+
+[node name="Side052" type="Sprite2D" parent="Entities" unique_id=1521232867]
+modulate = Color(1.0289788, 1.0289788, 1.0289788, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2801, 1248)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 0, 34, 96)
+
+[node name="Side053" type="Sprite2D" parent="Entities" unique_id=711235811]
+modulate = Color(1.039541, 1.039541, 1.039541, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2801, 1344)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 41, 34, 96)
+
+[node name="Side054" type="Sprite2D" parent="Entities" unique_id=422002320]
+modulate = Color(1.0299993, 1.0299993, 1.0299993, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2801, 1440)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 41, 34, 96)
+
+[node name="Side055" type="Sprite2D" parent="Entities" unique_id=1622109332]
+modulate = Color(1.0163592, 1.0163592, 1.0163592, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2801, 1536)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 41, 34, 96)
+
+[node name="Side056" type="Sprite2D" parent="Entities" unique_id=582192833]
+modulate = Color(0.99368656, 0.99368656, 0.99368656, 1)
+material = ExtResource("7_8wb3i")
+position = Vector2(2801, 1632)
+texture = ExtResource("16_kjvmh")
+centered = false
+offset = Vector2(-17, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 83, 34, 96)
+
+[node name="Furniture000" parent="Entities" unique_id=336320545 instance=ExtResource("17_38gxy")]
+position = Vector2(1392, 864)
+
+[node name="Furniture001" parent="Entities" unique_id=1392960702 instance=ExtResource("17_38gxy")]
+position = Vector2(1392, 960)
+
+[node name="Furniture002" parent="Entities" unique_id=2034503585 instance=ExtResource("17_38gxy")]
+position = Vector2(1392, 1056)
+
+[node name="Furniture003" parent="Entities" unique_id=1257862495 instance=ExtResource("17_38gxy")]
+position = Vector2(1392, 1152)
+
+[node name="Furniture004" parent="Entities" unique_id=1690365337 instance=ExtResource("17_38gxy")]
+position = Vector2(1392, 1248)
+
+[node name="Furniture005" parent="Entities" unique_id=964985649 instance=ExtResource("17_38gxy")]
+position = Vector2(1392, 1344)
+
+[node name="Furniture006" parent="Entities" unique_id=25213705 instance=ExtResource("17_38gxy")]
+position = Vector2(1392, 1440)
+
+[node name="Furniture007" parent="Entities" unique_id=1277621177 instance=ExtResource("17_38gxy")]
+position = Vector2(1488, 1440)
+
+[node name="Furniture008" parent="Entities" unique_id=1055667512 instance=ExtResource("17_38gxy")]
+position = Vector2(1488, 1344)
+
+[node name="Furniture009" parent="Entities" unique_id=863537897 instance=ExtResource("17_38gxy")]
+position = Vector2(1488, 1248)
+
+[node name="Furniture010" parent="Entities" unique_id=1774601970 instance=ExtResource("17_38gxy")]
+position = Vector2(1488, 1152)
+
+[node name="Furniture011" parent="Entities" unique_id=1182847992 instance=ExtResource("17_38gxy")]
+position = Vector2(1488, 1056)
+
+[node name="Furniture012" parent="Entities" unique_id=1978760554 instance=ExtResource("17_38gxy")]
+position = Vector2(1488, 960)
+
+[node name="Furniture013" parent="Entities" unique_id=1228955804 instance=ExtResource("17_38gxy")]
+position = Vector2(1488, 864)
+
+[node name="Furniture014" parent="Entities" unique_id=1754917979 instance=ExtResource("17_38gxy")]
+position = Vector2(1776, 864)
+
+[node name="Furniture015" parent="Entities" unique_id=1995193960 instance=ExtResource("17_38gxy")]
+position = Vector2(1776, 960)
+
+[node name="Furniture016" parent="Entities" unique_id=793952548 instance=ExtResource("17_38gxy")]
+position = Vector2(1776, 1056)
+
+[node name="Furniture017" parent="Entities" unique_id=71711386 instance=ExtResource("17_38gxy")]
+position = Vector2(1776, 1152)
+
+[node name="Furniture018" parent="Entities" unique_id=2079960623 instance=ExtResource("17_38gxy")]
+position = Vector2(1776, 1248)
+
+[node name="Furniture019" parent="Entities" unique_id=1306942269 instance=ExtResource("17_38gxy")]
+position = Vector2(1776, 1344)
+
+[node name="Furniture020" parent="Entities" unique_id=1846239640 instance=ExtResource("17_38gxy")]
+position = Vector2(1776, 1440)
+
+[node name="Furniture021" parent="Entities" unique_id=1862023545 instance=ExtResource("17_38gxy")]
+position = Vector2(1872, 1440)
+
+[node name="Furniture022" parent="Entities" unique_id=1695774292 instance=ExtResource("17_38gxy")]
+position = Vector2(1872, 1344)
+
+[node name="Furniture023" parent="Entities" unique_id=1018453907 instance=ExtResource("17_38gxy")]
+position = Vector2(1872, 1248)
+
+[node name="Furniture024" parent="Entities" unique_id=171942001 instance=ExtResource("17_38gxy")]
+position = Vector2(1872, 1152)
+
+[node name="Furniture025" parent="Entities" unique_id=175544758 instance=ExtResource("17_38gxy")]
+position = Vector2(1872, 1056)
+
+[node name="Furniture026" parent="Entities" unique_id=1548936952 instance=ExtResource("17_38gxy")]
+position = Vector2(1872, 960)
+
+[node name="Furniture027" parent="Entities" unique_id=13013756 instance=ExtResource("17_38gxy")]
+position = Vector2(1872, 864)
+
+[node name="Furniture028" parent="Entities" unique_id=1930068993 instance=ExtResource("18_hgw6j")]
+position = Vector2(2064, 864)
+
+[node name="Furniture029" parent="Entities" unique_id=589014588 instance=ExtResource("18_hgw6j")]
+position = Vector2(2064, 960)
+
+[node name="Furniture030" parent="Entities" unique_id=319301501 instance=ExtResource("18_hgw6j")]
+position = Vector2(2064, 1056)
+
+[node name="Furniture031" parent="Entities" unique_id=1491942444 instance=ExtResource("18_hgw6j")]
+position = Vector2(2064, 1152)
+
+[node name="Furniture032" parent="Entities" unique_id=85925140 instance=ExtResource("18_hgw6j")]
+position = Vector2(2736, 960)
+
+[node name="Furniture033" parent="Entities" unique_id=1550559185 instance=ExtResource("18_hgw6j")]
+position = Vector2(2736, 1056)
+
+[node name="Furniture034" parent="Entities" unique_id=1709193091 instance=ExtResource("17_38gxy")]
+position = Vector2(240, 1248)
+
+[node name="Furniture035" parent="Entities" unique_id=1757638761 instance=ExtResource("17_38gxy")]
+position = Vector2(240, 1344)
+
+[node name="Furniture036" parent="Entities" unique_id=456343111 instance=ExtResource("17_38gxy")]
+position = Vector2(240, 1440)
+
+[node name="Furniture037" parent="Entities" unique_id=1823641275 instance=ExtResource("17_38gxy")]
+position = Vector2(336, 1440)
+
+[node name="Furniture038" parent="Entities" unique_id=1851574170 instance=ExtResource("17_38gxy")]
+position = Vector2(336, 1344)
+
+[node name="Furniture039" parent="Entities" unique_id=910808506 instance=ExtResource("17_38gxy")]
+position = Vector2(336, 1248)
+
+[node name="Furniture040" parent="Entities" unique_id=55798726 instance=ExtResource("17_38gxy")]
+position = Vector2(624, 1248)
+
+[node name="Furniture041" parent="Entities" unique_id=1700342503 instance=ExtResource("17_38gxy")]
+position = Vector2(624, 1344)
+
+[node name="Furniture042" parent="Entities" unique_id=802456291 instance=ExtResource("17_38gxy")]
+position = Vector2(720, 1344)
+
+[node name="Furniture043" parent="Entities" unique_id=1488857370 instance=ExtResource("17_38gxy")]
+position = Vector2(816, 1344)
+
+[node name="Furniture044" parent="Entities" unique_id=1664650050 instance=ExtResource("17_38gxy")]
+position = Vector2(816, 1248)
+
+[node name="Furniture045" parent="Entities" unique_id=1927847087 instance=ExtResource("17_38gxy")]
+position = Vector2(912, 1248)
+
+[node name="Furniture046" parent="Entities" unique_id=462064890 instance=ExtResource("17_38gxy")]
+position = Vector2(912, 1344)
+
+[node name="Furniture047" parent="Entities" unique_id=1975772833 instance=ExtResource("17_38gxy")]
+position = Vector2(720, 1248)
+
+[node name="Furniture048" parent="Entities" unique_id=1440958251 instance=ExtResource("17_38gxy")]
+position = Vector2(2352, 1440)
+
+[node name="Furniture049" parent="Entities" unique_id=24149859 instance=ExtResource("17_38gxy")]
+position = Vector2(2352, 1536)
+
+[node name="Furniture050" parent="Entities" unique_id=1099996576 instance=ExtResource("17_38gxy")]
+position = Vector2(2448, 1536)
+
+[node name="Furniture051" parent="Entities" unique_id=700684112 instance=ExtResource("17_38gxy")]
+position = Vector2(2448, 1440)
+
+[node name="KeyDoor_d1" type="Node2D" parent="Entities" unique_id=323399541]
+position = Vector2(384, 384)
+script = ExtResource("19_pxfha")
+door_id = &"d1"
+unless_flags = Array[StringName]([&"door_silph_co_2f_d1_open"])
+blocking_cells = Array[Vector2i]([Vector2i(4, 4), Vector2i(5, 4)])
+
+[node name="Panel" type="Sprite2D" parent="Entities/KeyDoor_d1" unique_id=1632096829]
+z_index = -2
+texture = ExtResource("20_3ofo6")
+centered = false
+
+[node name="KeyDoor_d2" type="Node2D" parent="Entities" unique_id=1015250070]
+position = Vector2(384, 960)
+script = ExtResource("19_pxfha")
+door_id = &"d2"
+unless_flags = Array[StringName]([&"door_silph_co_2f_d2_open"])
+blocking_cells = Array[Vector2i]([Vector2i(4, 10), Vector2i(5, 10)])
+
+[node name="Panel" type="Sprite2D" parent="Entities/KeyDoor_d2" unique_id=530214969]
+z_index = -2
+texture = ExtResource("20_3ofo6")
+centered = false
+
+[node name="Glows" type="Node2D" parent="." unique_id=1199985578]
+
+[node name="Overhead" type="TileMapLayer" parent="." unique_id=2050375535]
+visible = false
+z_index = 10
+tile_set = ExtResource("21_axn1o")
+
+[node name="Warps" type="Node2D" parent="." unique_id=1319932440]
+
+[node name="ElevatorDoor" type="Marker2D" parent="Warps" unique_id=740325951]
+position = Vector2(1968, 96)
+script = ExtResource("22_o62oo")
+target_map = &"silph_co_elevator"
+target_spawn = &"entrance"
+arrival_facing = Vector2i(0, -1)
+
+[node name="Teleporter_4" type="Marker2D" parent="Warps" unique_id=1938641187]
+position = Vector2(336, 384)
+script = ExtResource("22_o62oo")
+target_map = &"silph_co_3f"
+target_spawn = &"tp_7"
+style = 1
+
+[node name="Teleporter_5" type="Marker2D" parent="Warps" unique_id=1483083569]
+position = Vector2(1296, 384)
+script = ExtResource("22_o62oo")
+target_map = &"silph_co_8f"
+target_spawn = &"tp_5"
+style = 1
+
+[node name="Teleporter_6" type="Marker2D" parent="Warps" unique_id=1141694527]
+position = Vector2(2640, 1536)
+script = ExtResource("22_o62oo")
+target_map = &"silph_co_8f"
+target_spawn = &"tp_6"
+style = 1
+
+[node name="Teleporter_7" type="Marker2D" parent="Warps" unique_id=972429151]
+position = Vector2(912, 1536)
+script = ExtResource("22_o62oo")
+target_map = &"silph_co_6f"
+target_spawn = &"tp_5"
+style = 1
+
+[node name="Stairs_to_1f" type="Marker2D" parent="Warps" unique_id=1644640826]
+position = Vector2(2352, 96)
+script = ExtResource("22_o62oo")
+target_map = &"silph_co_1f"
+target_spawn = &"from_2f"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Stairs_to_3f" type="Marker2D" parent="Warps" unique_id=692754508]
+position = Vector2(2544, 96)
+script = ExtResource("22_o62oo")
+target_map = &"silph_co_3f"
+target_spawn = &"from_2f"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Interactables" type="Node2D" parent="." unique_id=1532601056]
+
+[node name="Open_d1_a" type="Marker2D" parent="Interactables" unique_id=867697297]
+position = Vector2(432, 480)
+script = ExtResource("23_bwa57")
+dialogue_id = &"key_door_locked"
+kind = 5
+unless_flags = Array[StringName]([&"door_silph_co_2f_d1_open"])
+
+[node name="Open_d1_b" type="Marker2D" parent="Interactables" unique_id=1509020879]
+position = Vector2(528, 480)
+script = ExtResource("23_bwa57")
+dialogue_id = &"key_door_locked"
+kind = 5
+unless_flags = Array[StringName]([&"door_silph_co_2f_d1_open"])
+
+[node name="Open_d2_a" type="Marker2D" parent="Interactables" unique_id=1325354418]
+position = Vector2(432, 1056)
+script = ExtResource("23_bwa57")
+dialogue_id = &"key_door_locked"
+kind = 5
+unless_flags = Array[StringName]([&"door_silph_co_2f_d2_open"])
+
+[node name="Open_d2_b" type="Marker2D" parent="Interactables" unique_id=722022289]
+position = Vector2(528, 1056)
+script = ExtResource("23_bwa57")
+dialogue_id = &"key_door_locked"
+kind = 5
+unless_flags = Array[StringName]([&"door_silph_co_2f_d2_open"])
+
+[node name="Spawns" type="Node2D" parent="." unique_id=74193019]
+
+[node name="from_1f" type="Marker2D" parent="Spawns" unique_id=16505545]
+position = Vector2(2352, 192)
+
+[node name="from_3f" type="Marker2D" parent="Spawns" unique_id=960763023]
+position = Vector2(2544, 192)
+
+[node name="from_elevator" type="Marker2D" parent="Spawns" unique_id=805950742]
+position = Vector2(1968, 192)
+
+[node name="tp_4" type="Marker2D" parent="Spawns" unique_id=1510187204]
+position = Vector2(336, 384)
+
+[node name="tp_5" type="Marker2D" parent="Spawns" unique_id=307015622]
+position = Vector2(1296, 384)
+
+[node name="tp_6" type="Marker2D" parent="Spawns" unique_id=610153689]
+position = Vector2(2640, 1536)
+
+[node name="tp_7" type="Marker2D" parent="Spawns" unique_id=1995444016]
+position = Vector2(912, 1536)
+
+[node name="Triggers" type="Node2D" parent="." unique_id=1619466048]

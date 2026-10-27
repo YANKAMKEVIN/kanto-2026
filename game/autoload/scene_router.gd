@@ -497,13 +497,18 @@ func _find_fall(warps: WarpTable, cell: Vector2i) -> Warp:
 	return null
 
 
-## Faux si un drapeau de [member Warp.unless_flags] est posé (drapeaux de [member arrival_flags] ;
-## sans source : aucun drapeau).
+## Faux si un drapeau de [member Warp.unless_flags] est posé, ou s'il manque un drapeau de
+## [member Warp.if_flags] (jalon 28) (drapeaux de [member arrival_flags] ; sans source : aucun
+## drapeau, donc un passage à [member Warp.if_flags] reste fermé).
 func _is_warp_enabled(warp: Warp) -> bool:
-	if warp.unless_flags.is_empty() or not arrival_flags.is_valid():
+	if warp.unless_flags.is_empty() and warp.if_flags.is_empty():
 		return true
-	var flags := arrival_flags.call() as StoryFlags
-	return flags == null or flags.has_none(warp.unless_flags)
+	var flags: StoryFlags = null
+	if arrival_flags.is_valid():
+		flags = arrival_flags.call() as StoryFlags
+	if flags == null:
+		return warp.if_flags.is_empty()
+	return flags.has_none(warp.unless_flags) and flags.has_all(warp.if_flags)
 
 
 func _follow(warp: Warp) -> void:

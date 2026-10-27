@@ -50,7 +50,7 @@
 		]
 	},
 	"cinnabar_gym_7": {
-		"name": "Intello Marius", "ai": "random",
+		"name": "Intello Séraphin", "ai": "random",
 		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 925,
 		"team": [
 			{ "species": "growlithe", "level": 41 },

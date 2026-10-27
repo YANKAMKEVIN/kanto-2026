@@ -1,0 +1,11 @@
+{
+	"m_psy": {
+		"cell": [
+			12,
+			6
+		],
+		"facing": "left",
+		"sprite": "old_man",
+		"dialogue": "saffron_mr_psychic"
+	}
+}

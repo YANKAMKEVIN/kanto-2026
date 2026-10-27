@@ -1,0 +1,200 @@
+{
+	"victory_road_1f_cooltrainer_f_before": {
+		"speaker": "Topdresseuse Mélanie",
+		"pages": [
+			"Tu as réussi à venir jusqu'ici ?\nVoyons si tu mérites la suite."
+		]
+	},
+	"victory_road_1f_cooltrainer_f_defeated": {
+		"speaker": "Topdresseuse Mélanie",
+		"pages": [
+			"Pas mal… vraiment pas mal."
+		]
+	},
+	"victory_road_1f_cooltrainer_f_after": {
+		"speaker": "Topdresseuse Mélanie",
+		"pages": [
+			"Les Pokémon feu comme les miens\nne perdent jamais leur flamme."
+		]
+	},
+	"victory_road_1f_cooltrainer_m_before": {
+		"speaker": "Topdresseur Gaëtan",
+		"pages": [
+			"Cette route sépare les bons Dresseurs\ndes autres. Prouve ta valeur !"
+		]
+	},
+	"victory_road_1f_cooltrainer_m_defeated": {
+		"speaker": "Topdresseur Gaëtan",
+		"pages": [
+			"Je pensais que mes quatre starters suffiraient…"
+		]
+	},
+	"victory_road_1f_cooltrainer_m_after": {
+		"speaker": "Topdresseur Gaëtan",
+		"pages": [
+			"Ils ont tous évolué avec moi.\nJe les aime comme au premier jour."
+		]
+	},
+	"victory_road_2f_blackbelt_before": {
+		"speaker": "Karatéka Clément",
+		"pages": [
+			"Mes poings et mes Pokémon ne font\nqu'un. Viens te mesurer à moi !"
+		]
+	},
+	"victory_road_2f_blackbelt_defeated": {
+		"speaker": "Karatéka Clément",
+		"pages": [
+			"Hmm ! Ton esprit est plus fort que mes muscles."
+		]
+	},
+	"victory_road_2f_blackbelt_after": {
+		"speaker": "Karatéka Clément",
+		"pages": [
+			"Continue à t'entraîner.\nLe corps et l'esprit avancent ensemble."
+		]
+	},
+	"victory_road_2f_juggler_1_before": {
+		"speaker": "Jongleur Quentin",
+		"pages": [
+			"Tu ne sens pas ? Tout tourne autour de toi…\nRegarde-moi dans les yeux !"
+		]
+	},
+	"victory_road_2f_juggler_1_defeated": {
+		"speaker": "Jongleur Quentin",
+		"pages": [
+			"Tout s'arrête… Tu m'as eu."
+		]
+	},
+	"victory_road_2f_juggler_1_after": {
+		"speaker": "Jongleur Quentin",
+		"pages": [
+			"Mes Pokémon me fatiguent à force\nde jongler avec les esprits."
+		]
+	},
+	"victory_road_2f_tamer_before": {
+		"speaker": "Dompteur Maxence",
+		"pages": [
+			"Mes Pokémon sont dressés à la perfection.\nEn garde !"
+		]
+	},
+	"victory_road_2f_tamer_defeated": {
+		"speaker": "Dompteur Maxence",
+		"pages": [
+			"Même bien dressés, ils ont plié."
+		]
+	},
+	"victory_road_2f_tamer_after": {
+		"speaker": "Dompteur Maxence",
+		"pages": [
+			"Un bon Dresseur ne force pas ses\nPokémon. Il les comprend."
+		]
+	},
+	"victory_road_2f_pokemaniac_before": {
+		"speaker": "Pokémaniac Josselin",
+		"pages": [
+			"Les Pokémon rares, c'est ma passion !\nEt toi, qu'as-tu de rare ?"
+		]
+	},
+	"victory_road_2f_pokemaniac_defeated": {
+		"speaker": "Pokémaniac Josselin",
+		"pages": [
+			"Mes trésors sont K.O. !"
+		]
+	},
+	"victory_road_2f_pokemaniac_after": {
+		"speaker": "Pokémaniac Josselin",
+		"pages": [
+			"J'ai trouvé un Pokémon de légende\nplus loin. Enfin… il m'a trouvé."
+		]
+	},
+	"victory_road_2f_juggler_2_before": {
+		"speaker": "Jongleur Stanislas",
+		"pages": [
+			"Un seul Pokémon, mais il vaut\nmille tours de passe-passe."
+		]
+	},
+	"victory_road_2f_juggler_2_defeated": {
+		"speaker": "Jongleur Stanislas",
+		"pages": [
+			"Quel tour de force…"
+		]
+	},
+	"victory_road_2f_juggler_2_after": {
+		"speaker": "Jongleur Stanislas",
+		"pages": [
+			"Mon partenaire me comprend sans\nmême que je parle."
+		]
+	},
+	"victory_road_3f_cooltrainer_m_1_before": {
+		"speaker": "Topdresseur Ambroise",
+		"pages": [
+			"Tu arrives au bout de la Route Victoire ?\nPas avant d'avoir battu mon équipe !"
+		]
+	},
+	"victory_road_3f_cooltrainer_m_1_defeated": {
+		"speaker": "Topdresseur Ambroise",
+		"pages": [
+			"Incroyable… Tu es vraiment fort."
+		]
+	},
+	"victory_road_3f_cooltrainer_m_1_after": {
+		"speaker": "Topdresseur Ambroise",
+		"pages": [
+			"La Ligue t'attend là-haut.\nGarde la tête froide."
+		]
+	},
+	"victory_road_3f_cooltrainer_f_1_before": {
+		"speaker": "Topdresseuse Judith",
+		"pages": [
+			"Mes plantes sont aussi coriaces\nque cette route. Prépare-toi !"
+		]
+	},
+	"victory_road_3f_cooltrainer_f_1_defeated": {
+		"speaker": "Topdresseuse Judith",
+		"pages": [
+			"Elles ont fané plus vite que prévu."
+		]
+	},
+	"victory_road_3f_cooltrainer_f_1_after": {
+		"speaker": "Topdresseuse Judith",
+		"pages": [
+			"Les plantes poussent doucement,\nmais elles ne cèdent jamais."
+		]
+	},
+	"victory_road_3f_cooltrainer_m_2_before": {
+		"speaker": "Topdresseur Corentin",
+		"pages": [
+			"Je vise la Ligue, comme toi.\nUn seul passera : ce sera moi !"
+		]
+	},
+	"victory_road_3f_cooltrainer_m_2_defeated": {
+		"speaker": "Topdresseur Corentin",
+		"pages": [
+			"Je ne passerai pas cette fois…"
+		]
+	},
+	"victory_road_3f_cooltrainer_m_2_after": {
+		"speaker": "Topdresseur Corentin",
+		"pages": [
+			"Je m'entraînerai encore.\nLa Ligue, ce sera pour la prochaine."
+		]
+	},
+	"victory_road_3f_cooltrainer_f_2_before": {
+		"speaker": "Topdresseuse Agathe",
+		"pages": [
+			"Tu en as de la chance d'arriver\nsi loin. Voyons si elle tiendra."
+		]
+	},
+	"victory_road_3f_cooltrainer_f_2_defeated": {
+		"speaker": "Topdresseuse Agathe",
+		"pages": [
+			"La chance n'y est pour rien, je crois."
+		]
+	},
+	"victory_road_3f_cooltrainer_f_2_after": {
+		"speaker": "Topdresseuse Agathe",
+		"pages": [
+			"Les meilleurs Dresseurs ne comptent\npas sur la chance. Toi non plus."
+		]
+	}
+}

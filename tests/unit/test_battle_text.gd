@@ -452,7 +452,7 @@ func test_immunity_reuses_no_effect_and_unknown_status_has_no_line() -> void:
 	var immune := _event(K.NO_EFFECT, true, "Aspicot")
 	assert_eq(_lines(immune), ["Ça n'affecte pas Aspicot..."] as Array[String])
 	var unknown := _status_event(K.STATUS_INFLICTED, "Roucool")
-	unknown.status = &"toxic"
+	unknown.status = &"curse"  # Jalon 23 (T18) : « toxic » a désormais ses phrases.
 	assert_eq(_lines(unknown), [] as Array[String], "statut sans modèle (J11) : rien")
 
 

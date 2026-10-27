@@ -76,7 +76,7 @@ func _written(state: Node) -> Dictionary:
 # --- Format et version ---------------------------------------------------------------------
 
 func test_the_format_is_v7_and_the_step_6_to_7_changes_nothing_but_the_version() -> void:
-	assert_eq(SaveSystem.VERSION, 7, "v7 : jalon 15 (Pension)")
+	assert_eq(SaveSystem.VERSION, 8, "v7 : jalon 15 (Pension) ; v8 : jalon 23 (Parc Safari)")
 	var bare := {"version": 6}
 	assert_eq(SaveSystem.upgrade(bare, 7), OK)
 	assert_eq(bare, {"version": 7}, "aucun champ inventé : Pension vide par défaut")
@@ -85,7 +85,7 @@ func test_the_format_is_v7_and_the_step_6_to_7_changes_nothing_but_the_version()
 
 func test_an_empty_daycare_is_written_as_an_empty_object() -> void:
 	var saved := _written(_state())
-	assert_eq(saved["version"], 7.0)
+	assert_eq(saved["version"], float(SaveSystem.VERSION))
 	assert_eq(saved["daycare"], {}, "Pension vide : objet vide")
 
 
@@ -160,13 +160,13 @@ func test_the_real_v6_s21_save_of_kevin_gains_only_an_empty_daycare() -> void:
 	assert_eq(_save.read_version, 6, "lue comme une v6")
 	assert_true(state.daycare.is_empty(), "Pension vide")
 	var written := _written(state)
-	assert_eq(int(written["version"]), 7, "réécrite en v7")
+	assert_eq(int(written["version"]), SaveSystem.VERSION, "réécrite en v7 (v8 depuis le J23)")
 	var added: Array = written.keys().filter(func(key: Variant) -> bool:
 		return not original.has(key))
 	assert_eq(added, ["daycare"], "une seule clé nouvelle")
 	assert_eq(written["daycare"], {}, "Pension vide écrite")
 	var expected: Dictionary = original.duplicate(true)
-	expected["version"] = 7
+	expected["version"] = SaveSystem.VERSION
 	expected["daycare"] = {}
 	assert_eq(written, JSON.parse_string(JSON.stringify(expected)), "rien d'autre ne change (équipe, uid, Sac, drapeaux, position…)")
 

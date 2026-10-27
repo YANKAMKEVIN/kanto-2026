@@ -1,0 +1,39 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_r0yjg"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_46ura"]
+[ext_resource type="Texture2D" path="res://assets/world/buildings/bldg_immeuble_bas_safrania_02.png" id="3_2v6gi"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/cast_shadow.tres" id="4_h5fkh"]
+[ext_resource type="Texture2D" path="res://assets/world/buildings/bldg_immeuble_bas_safrania_02_shadow.png" id="5_tglvm"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/contact_shadow.tres" id="6_mqtib"]
+[ext_resource type="Texture2D" path="res://assets/world/buildings/bldg_immeuble_bas_safrania_02_contact.png" id="7_2dj68"]
+
+[node name="BldgImmeubleBasSafrania02" type="Node2D" unique_id=1066167720]
+script = ExtResource("1_r0yjg")
+footprint = Array[Vector2i]([Vector2i(-3, -3), Vector2i(-2, -3), Vector2i(-1, -3), Vector2i(0, -3), Vector2i(1, -3), Vector2i(2, -3), Vector2i(-3, -2), Vector2i(-2, -2), Vector2i(-1, -2), Vector2i(0, -2), Vector2i(1, -2), Vector2i(2, -2), Vector2i(-3, -1), Vector2i(-2, -1), Vector2i(-1, -1), Vector2i(0, -1), Vector2i(1, -1), Vector2i(2, -1), Vector2i(-3, 0), Vector2i(-2, 0), Vector2i(-1, 0), Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0)])
+fade_when_covering = true
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1801772071]
+unique_name_in_owner = true
+material = ExtResource("2_46ura")
+texture = ExtResource("3_2v6gi")
+centered = false
+offset = Vector2(-288, -408)
+
+[node name="CastShadow" type="Sprite2D" parent="." unique_id=400941266 groups=["cast_shadows"]]
+z_index = -2
+z_as_relative = false
+material = ExtResource("4_h5fkh")
+scale = Vector2(2, 2)
+texture = ExtResource("5_tglvm")
+centered = false
+offset = Vector2(-156.5, -2)
+
+[node name="ContactShadow" type="Sprite2D" parent="." unique_id=10076112 groups=["contact_shadows"]]
+z_index = -2
+z_as_relative = false
+material = ExtResource("6_mqtib")
+scale = Vector2(2, 2)
+texture = ExtResource("7_2dj68")
+centered = false
+offset = Vector2(-148, -15.5)

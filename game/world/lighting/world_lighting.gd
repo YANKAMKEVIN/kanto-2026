@@ -7,7 +7,9 @@ extends CanvasLayer
 ##   de BattleStage, sous le HUD) : caché quand le profil n'en a pas (aucun coût) ;
 ## - les ombres portées des objets peints (groupe [constant GROUP_CAST_SHADOWS]) : écrasement
 ##   et inclinaison posés **une fois** ([method shadow_transform]), cachées sans ombre portée ;
-##   les ombres de contact (groupe [constant GROUP_CONTACT_SHADOWS]), cachées sans contact.
+##   les ombres de contact (groupe [constant GROUP_CONTACT_SHADOWS]), cachées sans contact ;
+## - la lumière de pièce des intérieurs ([RoomLight], bloc « room » du profil, DAF.6) : posée
+##   dans la carte, retirée quand le profil n'en a pas.
 ## **Profil vide (ou null) = aucun effet** : Bourg Palette, la Route 1 et les intérieurs
 ## existants restent tels quels (`GameMap.light_profile` vide).
 ## **Étalonnage à plat** ([member LightProfile.grade_flat], J21, Tour Pokémon) : au lieu du
@@ -109,6 +111,7 @@ func apply(profile: LightProfile, map: Node = null) -> void:
 	_world_modulate.color = _profile.flat_grade_color()
 	_update_flat()
 	apply_shadows(map)
+	RoomLight.apply_to(map, _profile)
 
 
 ## Combat en cours (Boot, `battle_started` / `battle_finished`) : l'étalonnage à plat passe

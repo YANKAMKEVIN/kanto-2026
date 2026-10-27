@@ -13,7 +13,7 @@ const SPECIES: Dictionary[StringName, Array] = {
 	&"magnemite": [81, "Magnéti", [&"electric", &"steel"], 25, 35, 70, 95, 55, 45],
 	&"magneton": [82, "Magnéton", [&"electric", &"steel"], 50, 60, 95, 120, 70, 70],
 	&"drowzee": [96, "Soporifik", [&"psychic"], 60, 48, 45, 43, 90, 42],
-	&"hypno": [97, "Hypno", [&"psychic"], 85, 73, 70, 73, 115, 67],
+	&"hypno": [97, "Hypnomade", [&"psychic"], 85, 73, 70, 73, 115, 67],
 }
 
 var _data: PokemonData
