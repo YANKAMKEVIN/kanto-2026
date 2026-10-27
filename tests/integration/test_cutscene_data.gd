@@ -818,12 +818,12 @@ const J26_T9_ITEMS: Dictionary[StringName, Array] = {
 	&"silph_co_5f_hidden_1": [&"silph_co_5f", &"revive"],
 	&"silph_co_5f_item_6": [&"silph_co_5f", &"tm09"],
 	&"silph_co_5f_item_7": [&"silph_co_5f", &"rare_candy"],
-	&"silph_co_6f_item_9": [&"silph_co_6f", &"rare_candy"],
+	&"silph_co_6f_item_9": [&"silph_co_6f", &"hp_up"],  # J32 : PV Plus existe (RB)
 	&"silph_co_6f_item_10": [&"silph_co_6f", &"x_accuracy"],
 	&"silph_co_9f_hidden_1": [&"silph_co_9f", &"max_potion"],
 	&"silph_co_10f_item_4": [&"silph_co_10f", &"nugget"],
 	&"silph_co_10f_item_5": [&"silph_co_10f", &"rare_candy"],
-	&"silph_co_10f_item_6": [&"silph_co_10f", &"rare_candy"],
+	&"silph_co_10f_item_6": [&"silph_co_10f", &"carbos"],  # J32 : Carbone existe (RB)
 	&"saffron_copycat_hidden_1": [&"saffron_copycat_house_2f", &"nugget"],
 }
 ## Jalon 25 : scènes du Manoir, de l'Arène, de la réserve du Musée et des échanges.

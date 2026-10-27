@@ -226,7 +226,7 @@
 						"despawn": "silph_co_6f_item_9"
 					},
 					{
-						"give": "rare_candy",
+						"give": "hp_up",
 						"count": 1,
 						"found": true
 					},
@@ -319,7 +319,7 @@
 						"despawn": "silph_co_10f_item_6"
 					},
 					{
-						"give": "rare_candy",
+						"give": "carbos",
 						"count": 1,
 						"found": true
 					},
