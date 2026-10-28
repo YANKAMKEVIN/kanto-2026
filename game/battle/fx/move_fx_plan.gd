@@ -119,6 +119,8 @@ var world: Array[StringName] = []
 ## `fallout`, `dust`, `stamp` (marque d'impact du Contact), `cheeks`, `feathers` (Éclair) ; la
 ## famille, puis la variante d'impact, puis la signature. Rôle absent : forme dessinée en code.
 var art: Dictionary[StringName, StringName] = {}
+## Teinte des flipbooks de la famille (`fx.tint` ; blanc : aucune).
+var art_tint: Color = Color.WHITE
 ## Types de la cible (Éclair : plumes sur un Pokémon Vol) ; rempli par la scène, vide sinon.
 var target_types: Array[StringName] = []
 ## Issue lue dans le journal (null : un coup qui porte) ; le son du coup en dépend (T4).
@@ -247,6 +249,25 @@ func _setup(catalog: MoveFxCatalog, entry: MoveFxEntry, plan_mode: Mode) -> void
 	if not stamp.is_empty():
 		art[&"stamp"] = stamp
 	_read_art(JsonFields.get_dict(catalog.signature(signature), "art"))
+	# Modificateurs (CV.1) : leurs rôles propres (`stream`, `trap`, `self_burst`), sans écraser
+	# ceux de la famille ni de la signature.
+	for modifier: StringName in modifiers:
+		var raw := JsonFields.get_dict(catalog.modifier(modifier), "art")
+		for role: String in raw:
+			if raw[role] is String and not art.has(StringName(role)):
+				art[StringName(role)] = StringName(raw[role])
+	art_tint = Color.from_string(JsonFields.get_string(fx, "tint", "#FFFFFF"), Color.WHITE)
+
+
+## Le plan porte le modificateur [param modifier] (`drain`, `piege`, `chute`…).
+func has_modifier(modifier: StringName) -> bool:
+	return modifiers.has(modifier)
+
+
+## Le coup a porté (ou l'attaque a changé quelque chose) : vrai sans issue lue.
+func lands() -> bool:
+	return outcome == null or outcome.result == MoveFxOutcome.Result.HIT \
+		or outcome.result == MoveFxOutcome.Result.AFFECTED
 
 
 func _read_art(raw: Dictionary) -> void:

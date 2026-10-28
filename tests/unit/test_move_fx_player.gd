@@ -254,7 +254,8 @@ func test_painted_fireball_travels_and_contact_stamps_its_variant() -> void:
 	assert_gt(ball.position.distance_to(stage.origin()), 1.0)
 	assert_gt(ball.position.distance_to(stage.impact_point()), 1.0)
 	_player.stop()
-	for case: Array in [[&"scratch", &"griffes"], [&"bite", &"machoires"], [&"tackle", &"lueur_douce"]]:
+	for case: Array in [[&"scratch", &"entailles_griffes"], [&"bite", &"machoires"],
+			[&"tackle", &"onde_choc"]]:
 		var contact := _plan(case[0])
 		assert_eq(contact.art.get(&"stamp"), case[1], String(case[0]))
 		_player.play(contact, stage)
@@ -390,11 +391,12 @@ func test_plan_palette_and_particles_from_data() -> void:
 
 
 ## Le jet d'eau (Pistolet à O) est nettement plus épais qu'un rayon, avec cœur et halo.
+## Formes en code (repli sans art) : jets et rayons épais, avec halo (vidéos CV.3 et CV.1).
 func test_water_jet_is_much_thicker_than_a_beam() -> void:
 	var stage := _stage()
-	var widths: Dictionary = {}
-	for move_id: StringName in [&"water_gun", &"ice_beam"]:
+	for move_id: StringName in [&"water_gun", &"ice_beam", &"hyper_beam"]:
 		var plan := _plan(move_id)
+		plan.art.erase(&"bolt")
 		_player.play(plan, stage)
 		var peak := 0.0
 		var halo_seen := false
@@ -407,9 +409,6 @@ func test_water_jet_is_much_thicker_than_a_beam() -> void:
 				peak = maxf(peak, beam.width)
 				halo_seen = halo_seen or (beam.get_node(^"Halo") as Line2D).visible
 			guard += 1
-		widths[move_id] = [peak, halo_seen]
-	assert_gte(widths[&"water_gun"][0], MoveFxPlayer.JET_WIDTH * 0.9, "jet épais")
-	assert_true(widths[&"water_gun"][1], "halo du jet")
-	assert_lte(widths[&"ice_beam"][0], MoveFxPlayer.BEAM_WIDTH + 0.1, "rayon inchangé")
-	assert_false(widths[&"ice_beam"][1], "pas de halo sur un rayon")
+		assert_gte(peak, MoveFxPlayer.JET_WIDTH * 0.9, "%s : épais" % move_id)
+		assert_true(halo_seen, "%s : halo" % move_id)
 	_assert_at_rest(stage)

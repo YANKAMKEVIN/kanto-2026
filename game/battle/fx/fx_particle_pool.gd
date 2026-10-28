@@ -101,17 +101,19 @@ func burst(at: Vector2, amount: int, palette: PackedColorArray, shape: Shape = S
 	emitter.scale_amount_curve = _size_curve
 	_shape(emitter, shape, reach, lifetime)
 	emitter.speed_scale = maxf(speed_scale, 0.0)
+	emitter.visible = true
 	if speed_scale > 0.0:
 		emitter.restart()
 	return emitter
 
 
-## Arrête tout et efface les particules encore en vie (fin d'attaque, sortie du combat) :
-## `restart` vide l'émetteur, qui est coupé avant d'en émettre de nouvelles.
+## Arrête tout et efface les particules encore en vie (fin d'attaque, sortie du combat) : les
+## émetteurs sont coupés et cachés jusqu'à leur prochain éclat. (`restart` seul les relançait :
+## les particules de l'attaque précédente reparaissaient un instant, vu en vidéo CV.1.)
 func clear() -> void:
 	for emitter: CPUParticles2D in _emitters:
-		emitter.restart()
 		emitter.emitting = false
+		emitter.visible = false
 
 
 ## Particules des éclats en cours (au plus le total des émetteurs actifs).

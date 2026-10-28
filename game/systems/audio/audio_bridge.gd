@@ -326,7 +326,8 @@ func on_move_fx_cue(cue: StringName, plan: MoveFxPlan) -> void:
 			return
 		var first := cue == MoveFxPlan.CUE_IMPACT
 		id = _hit_sfx(outcome != null and outcome.critical and first,
-			outcome.effectiveness if outcome != null else 1.0)
+			outcome.effectiveness if outcome != null else 1.0,
+			first and outcome != null and outcome.max_hit_fraction > UiTokens.HP_BIG_HIT)
 		_cued_hits += 1
 	if not id.is_empty():
 		audio.call(&"play_sfx", id)
@@ -339,7 +340,8 @@ func _battle_sfx(event: BattleEvent) -> void:
 			if _cued_hits > 0:
 				_cued_hits -= 1
 				return
-			id = _hit_sfx(event.critical, event.effectiveness)
+			id = _hit_sfx(event.critical, event.effectiveness, event.max_hp > 0
+				and float(event.amount) > UiTokens.HP_BIG_HIT * float(event.max_hp))
 		BattleEvent.Kind.MOVE_USED:
 			if _cued_moves > 0:
 				_cued_moves -= 1
@@ -362,9 +364,13 @@ func _move_sfx(move_id: StringName) -> StringName:
 	return &""
 
 
-static func _hit_sfx(critical: bool, effectiveness: float) -> StringName:
+## Bruitage d'un coup : critique, puis gros coup (Combat vivant, §4.2 : plus de HP_BIG_HIT des PV
+## max en un coup → `hit_heavy`), puis l'efficacité.
+static func _hit_sfx(critical: bool, effectiveness: float, big: bool = false) -> StringName:
 	if critical:
 		return &"critical"
+	if big:
+		return &"hit_heavy"
 	if effectiveness > 1.0:
 		return &"hit_super"
 	if effectiveness < 1.0:

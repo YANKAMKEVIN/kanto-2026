@@ -497,6 +497,17 @@ enchaîne les attaques sans avoir à jouer, plus un vrai combat.
 
 **CV.1 — Plancher : toutes les familles** (Sonnet, relu par Opus)
 
+> **T9 fait le 2026-10-28** (branche `claude/combat-vivant-plancher-6c3664`) : les 17 familles ont leur
+> art peint (vagues 1 et 2, `fx.art` et `fx.tint` de `families.json` ; `FxArt` lit les deux
+> manifestes) ; briques propres : ondes en série (Psy `rings`, Son `sound_waves`), cible qui ondule
+> (Psy) ou vibre (Son), impact peint indépendant du trajet (rayons de la Glace et de l'Énergie), effets
+> sur soi joués sur le lanceur, rayons en code épais avec halo ; les **9 modificateurs** se voient
+> (drain, multi, charge, contrecoup, auto-K.O., K.O. en un coup, piège, recharge : halètement sur
+> `RECHARGING`, chute). Test `tests/unit/test_move_fx_floor.gd` : chaque attaque des données, 8 issues
+> et 3 modes, rend la scène au repos. **T10** fait le 2026-10-27, **T11** (vagues 1 et 2) validé.
+> Départ `fx_gallery_cv1` (26 attaques : une par famille et chaque modificateur). Vidéos :
+> `docs/design/fiches-assets/cv1-galerie-plancher-v1.mp4`, `cv1-cv3-combat-v1.mp4`.
+
 | Tâche | Contenu | Critère |
 |---|---|---|
 | T9 | les 14 autres familles et les 9 modificateurs | chaque attaque de l'annexe A joue sans erreur dans la galerie (test d'intégration qui parcourt les 159 attaques présentes à `speed_scale` 0) |
@@ -517,6 +528,12 @@ enchaîne les attaques sans avoir à jouer, plus un vrai combat.
 
 **CV.3 — Statuts et PV** (Sonnet) — **en parallèle de CV.1**, fichiers disjoints (`status_aura.gd`,
 carte de PV de la HUD, `ui_tokens.gd`)
+
+> **T14 et T16 (respiration) faits et validés le 2026-10-27 ; reste fait le 2026-10-28** : `hit_heavy`
+> au repère `impact` (et dans le journal) au-delà de `HP_BIG_HIT`, vibration de 50 ms
+> (`HAPTIC_BIG_HIT_MS`), barre de chaque coup d'une attaque à coups multiples à son impact
+> (`BattleStage.wait_move_fx_impact`), capture (CV-11) : Poké Ball peinte, caméra à 1,05 sur la Ball
+> et décor assombri pendant les secousses, retour à l'éclat ou à la libération (durées inchangées).
 
 | Tâche | Contenu | Critère |
 |---|---|---|

@@ -177,6 +177,11 @@ DAF.6 (fusionné le 2026-10-26, `da861440`) a traité la Forêt de Jade, les int
 | RP-075 | [jalon-son.md](jalon-son.md) §5 sexies | « Sea » boucle sur une vague de 3 s ; « Cubone's Mother » reboucle avec une coupure | défaut | P3 | Son (avant le gel) | ouvert |
 | RP-076 | [jalon-son.md](jalon-son.md) | 38 bruitages sans fichier ; ambiances `city`, `casino`, `rain` ; atténuation dans la zone purifiée ; atténuation pendant les cris ; clé `music` des cinématiques des branches | idée | P2 | Son (SON-16) | ouvert : 7 ambiances dans `assets/audio/ambience/` |
 | RP-077 | [jalon-son.md](jalon-son.md) | Titres « The Final Road » (Route 23) et « Guide » (Chen) à confirmer à l'écoute | idée | P3 | Son | ouvert |
+| RP-258 | [combat-vivant.md](combat-vivant.md) §5.1, CV.1 T9 (2026-10-28) | Piège (Ligotage, Danse Flamme, Claquoir…) : l'anneau tourne pendant l'attaque seulement, pas jusqu'à `TRAP_ENDED` (§3.2) | idée | P2 | CV.2 | ouvert |
+| RP-259 | CV.3, CV-11 (2026-10-28) | Capture : toujours la Poké Ball peinte, quelle que soit la Ball lancée (Super, Hyper, Master ont leur icône peinte) | rendu | P3 | CV.2 ou 1.0.x | ouvert |
+| RP-260 | CV.3 T15 (2026-10-28) | `hit_heavy` provisoire : `hit_super` et `move_ground` (Kenney) mélangés et graves | rendu | P3 | Son | ouvert |
+| RP-261 | CV.1 T11 (2026-10-28) | Flipbooks non compressés (≈ 6,5 Mo de VRAM chacun, 24 préchargés à l'entrée du combat) : à mesurer sur le S24 (entrée en combat) ; compression VRAM possible | perf | P2 | CV.Z, mesure J33 T3 | ouvert |
+| RP-262 | CV.1 T9 (2026-10-28) | Pas encore d'art propre pour Glace (rayon), Énergie (rayon), Dragon (flamme bleue), Statut négatif (regard) : rayons en code épais, flammes et lueurs empruntées | rendu | P2 | CV.2 (vague 3 d'art) | ouvert |
 
 ### 2.6 À mesurer ou reproduire au J33
 

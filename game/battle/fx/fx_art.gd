@@ -1,12 +1,17 @@
 class_name FxArt
 extends RefCounted
-## Art peint des effets de combat (chantier Combat vivant, CV.1 vague 1, `docs/tech/combat-vivant.md`
-## §2.9, §3.4) : lit `assets/sprites/battle_fx/manifeste_vague1.json` une fois et rend les textures
-## par identifiant. Flipbooks : atlas de `colonnes` × `colonnes` images de `taille` px, en boucle ;
-## particules : une image. `melange` : `add` (lumière, mélange additif) ou `norm` (matière).
+## Art peint des effets de combat (chantier Combat vivant, CV.1 vagues 1 et 2,
+## `docs/tech/combat-vivant.md` §2.9, §3.4) : lit les manifestes de `assets/sprites/battle_fx/` une
+## fois et rend les textures par identifiant (un identifiant dans deux manifestes est une erreur de
+## test). Flipbooks : atlas de `colonnes` × `colonnes` images de `taille` px, en boucle ; particules :
+## une image. `melange` : `add` (lumière, mélange additif), `norm` ou `vert` (matière, mélange
+## normal ; `vert` dit seulement le fond de détourage).
 ## Orientation des flipbooks : l'effet part du bord gauche vers la droite (le code tourne).
 
-const MANIFEST: String = "res://assets/sprites/battle_fx/manifeste_vague1.json"
+const MANIFESTS: Array[String] = [
+	"res://assets/sprites/battle_fx/manifeste_vague1.json",
+	"res://assets/sprites/battle_fx/manifeste_vague2.json",
+]
 const DIR: String = "res://assets/sprites/battle_fx/"
 
 static var _flipbooks: Dictionary = {}
@@ -43,10 +48,27 @@ static func _load() -> void:
 	if _loaded:
 		return
 	_loaded = true
-	var data: Variant = JSON.parse_string(FileAccess.get_file_as_string(MANIFEST)) \
-		if FileAccess.file_exists(MANIFEST) else null
+	for manifest: String in MANIFESTS:
+		_read(manifest)
+
+
+## Identifiants de [param manifest] (flipbooks puis particules ; tests).
+static func ids_of(manifest: String) -> Array[StringName]:
+	var ids: Array[StringName] = []
+	var data: Variant = JSON.parse_string(FileAccess.get_file_as_string(manifest)) \
+		if FileAccess.file_exists(manifest) else null
+	if data is Dictionary:
+		for table: String in ["flipbooks", "particules"]:
+			for key: String in JsonFields.get_dict(data, table):
+				ids.append(StringName(key))
+	return ids
+
+
+static func _read(manifest: String) -> void:
+	var data: Variant = JSON.parse_string(FileAccess.get_file_as_string(manifest)) \
+		if FileAccess.file_exists(manifest) else null
 	if not data is Dictionary:
-		push_error("FxArt : manifeste illisible « %s »" % MANIFEST)
+		push_error("FxArt : manifeste illisible « %s »" % manifest)
 		return
 	var books := JsonFields.get_dict(data, "flipbooks")
 	for key: String in books:
