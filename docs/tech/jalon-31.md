@@ -415,6 +415,12 @@ Captures dans `build/qa_j31/` (non versionnées). Journal Godot : aucune erreur 
   Le 2026-10-25 (après-midi) : A17 injoignable (ni USB ni débogage sans fil ; seul le S24, exclu,
   est visible) → K.O. non vu sur le téléphone. Logique couverte par `test_j31_data`
   (`test_outcomes_follow_the_articuno_policy_and_survive_a_reload`, `test_no_duplicate_…`).
+  **2026-10-27, S24** (l'A17 est retiré ; départ `cerulean_cave_mewtwo`, sauvegarde du téléphone
+  copiée puis vérifiée identique) : Tortank N65, 5 Hydrocanons ; Mewtwo use Soin, Laser Glace,
+  Psyko (Tortank 133 / 190) ; **K.O.** (cri n° 150, +3 400 XP, musique de victoire), retour sur
+  la carte : **Mewtwo absent**, bouton OBSERVER disparu ; point de sauvegarde « rencontre fixe :
+  mewtwo » journalisé ; journal sans erreur ni avertissement ; 53–60 i/s : **OK**. Reste la
+  reprise d'une vraie sauvegarde.
 - **Objectif « traverser le Pont Pépite. » après la Ligue** : **artefact du départ de débogage**
   (`cerulean_cave_mewtwo` a `badge_cascade` sans `beaten_nugget_rocket` ni drapeaux des J14–J21,
   donc `cross_nugget_bridge` est la première entrée valide). **Mais vrai défaut transversal** :
