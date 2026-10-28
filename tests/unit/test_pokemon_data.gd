@@ -144,7 +144,7 @@ func test_real_data_loads_without_error() -> void:
 		+ "Force Poigne du J22, Guillotine du J24) "
 		+ "+ Déflagration et Poing de Feu (J25, j25.json) "
 		+ "+ 8 (J27, dont Vague Psy) + Abîme (J28) + 3 du jalon 29 (Piqué, Ultimawashi, Clonage) "
-		+ "+ Morphing (jalon 31) + Grobisou (jalon 30) + Affûtage, Conversion (jalon 32) + Coupe-Vent, Éboulement, Œuf Cuit (J32, N-22)")
+		+ "+ Morphing (jalon 31) + Grobisou (jalon 30) + Affûtage, Conversion (jalon 32) + Coupe-Vent, Éboulement, E-Coque (J32, N-22)")
 	assert_true(_data.has_move(&"struggle"))
 
 
@@ -345,7 +345,7 @@ func test_real_move_values() -> void:
 ## Capacités du J19 nécessaires aux learnsets complets (plan jalon-19 §0.4 n° 1) dont la
 ## description, hors du lot §15.7 du dossier 22, attend la relecture de Kevin : « draft ».
 ## Retirer l'identifiant d'ici quand le texte est validé.
-## Jalon 32 (N-22) : Coupe-Vent, Éboulement, Œuf Cuit [D].
+## Jalon 32 (N-22) : Coupe-Vent, Éboulement, E-Coque [D].
 const DRAFT_DESCRIPTIONS: Array[StringName] = [&"razor_wind", &"rock_slide", &"soft_boiled"]
 
 

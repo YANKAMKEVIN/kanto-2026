@@ -1,6 +1,6 @@
 extends GutTest
 ## Lot 32N (N-22) : les trois capacités créées pour les CT02, CT41 et CT48. Coupe-Vent réutilise
-## le système « deux tours » de Tunnel, Éboulement l'effet « apeurer », Œuf Cuit le soin de moitié
+## le système « deux tours » de Tunnel, Éboulement l'effet « apeurer », E-Coque le soin de moitié
 ## de Soin. Valeurs de Rouge/Bleu ; les textes sont en brouillon [D].
 
 const Kit := preload("res://tests/helpers/battle_kit_j12.gd")
@@ -44,7 +44,7 @@ func test_the_three_moves_are_loaded_with_rb_values() -> void:
 	assert_eq([slide.name, slide.power, slide.accuracy, slide.pp], ["Éboulement", 75, 90, 10])
 	assert_eq(slide.effect_of(MoveEffect.Kind.FLINCH).chance, 30)
 	var egg := _data.get_move(&"soft_boiled")
-	assert_eq([egg.name, egg.pp], ["Œuf Cuit", 10])
+	assert_eq([egg.name, egg.pp], ["E-Coque", 10])
 	assert_eq(egg.effect_of(MoveEffect.Kind.HEAL).fraction, 0.5)
 	assert_ne(egg.name, _data.get_move(&"recover").name, "deux capacités, deux noms")
 	for id: StringName in [&"razor_wind", &"rock_slide", &"soft_boiled"]:

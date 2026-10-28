@@ -64,8 +64,8 @@
 		"variants": [
 			{
 				"pages": [
-					"{player} obtient la CT41 — Œuf Cuit !",
-					"Œuf Cuit rend la moitié des PV du lanceur."
+					"{player} obtient la CT41 — E-Coque !",
+					"E-Coque rend la moitié des PV du lanceur."
 				],
 				"draft": true
 			}

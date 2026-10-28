@@ -96,7 +96,7 @@
 		"draft": true
 	},
 	"tm41": {
-		"name": "CT41 — Œuf Cuit", "plural": "CT41 — Œuf Cuit", "feminine": true,
+		"name": "CT41 — E-Coque", "plural": "CT41 — E-Coque", "feminine": true,
 		"category": "tm", "tm": 41, "teaches": "soft_boiled",
 		"description": "Le lanceur se refait une santé et récupère la moitié de ses PV.",
 		"draft": true

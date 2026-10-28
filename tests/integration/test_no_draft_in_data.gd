@@ -28,7 +28,7 @@ const DATA_DIR := "res://data"
 ## Jalon 32 (N-21) : échange Têtarte → Lippoutou, terminal d'échange, objets de la Centrale,
 ## fiches de Pokédex (Lippoutou, Mackogneur, Ectoplasma, Draco, Dracolosse, Mew), chercheur et
 ## camion validés par Kevin le 2026-10-28, « draft » retiré.
-## Jalon 32 (32N, N-22) : CT obtenables partout : capacités (Coupe-Vent, Éboulement, Œuf Cuit), messages
+## Jalon 32 (32N, N-22) : CT obtenables partout : capacités (Coupe-Vent, Éboulement, E-Coque), messages
 ## de charge, 23 objets (descriptions copiées des capacités), répliques des dons [D], à relire par Kevin.
 const PENDING_DRAFTS: Array[String] = ["world/zones.json/zones/saffron_city",
 	"battle/messages.json/templates/charge_razor_wind_start",
