@@ -26,9 +26,9 @@ SHOTS=(
 	"azuree_1f|40|--map=cerulean_cave_1f --cell=24,14 --facing=up"
 	"azuree_2f|40|--map=cerulean_cave_2f --cell=15,9 --facing=up"
 	"azuree_b1f|40|--map=cerulean_cave_b1f --cell=15,9 --facing=up"
-	"route_23_sud|40|--map=route_23 --cell=10,138 --facing=up"
-	"route_23_milieu|40|--map=route_23 --cell=10,80 --facing=up"
-	"route_23_nord|40|--map=route_23 --cell=10,12 --facing=up"
+	"route_23_sud|40|--map=route_23 --cell=8,138 --facing=up"
+	"route_23_milieu|40|--map=route_23 --cell=10,69 --facing=up"
+	"route_23_nord|40|--map=route_23 --cell=10,20 --facing=up"
 	"plateau_indigo|40|--map=indigo_plateau --cell=10,8 --facing=up"
 	"route_22_ouest|40|--map=route_22_west --cell=10,8 --facing=up"
 )
