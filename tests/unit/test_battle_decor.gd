@@ -91,6 +91,19 @@ func test_league_rooms_have_a_decor() -> void:
 			&"league_lance", &"league_champion"]:
 		assert_not_null(catalog.pick(map_id, Vector2i.ZERO), "%s : fond peint" % map_id)
 
+
+## RP-014 : cartes à combats que le test général ne voit pas — pêche (`fishable.json`) et combat
+## lancé par une scène (Rocket d'Azuria) ; fonds provisoires [D] d'Azuria et de Carmin.
+func test_fishing_and_cutscene_battle_maps_have_a_decor() -> void:
+	var catalog := _catalog()
+	var fishable: Variant = JSON.parse_string(FileAccess.get_file_as_string(
+		"res://data/world/fishable.json"))
+	var maps: Array[StringName] = [&"cerulean_city"]
+	for map_id: Variant in ((fishable as Dictionary)["maps"] as Dictionary):
+		maps.append(StringName(map_id))
+	for map_id: StringName in maps:
+		assert_not_null(catalog.pick(map_id, Vector2i.ZERO), "%s : fond peint" % map_id)
+
 func test_real_route_1_painted_for_the_anchors() -> void:
 	# Le master est peint pour le cadrage : à 2340 × 1080 il s'affiche à 1:1, sans décalage.
 	var decor := _catalog().get_decor(&"route_1_chemin")

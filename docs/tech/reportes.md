@@ -43,6 +43,8 @@ polish DAF.8 17 · Combat vivant et Son 8 · J33 24 · 1.0.x 5 · arbitrage 1 (R
 Par gravité : **P0 0** (RP-090 réglé par R-1) · P1 7 · P2 31 · P3 45.
 Aucun P0 sur les branches (RP-160 à confirmer sur S24) ; P1 des branches : RP-133, 136, 143, 150.
 
+**Revue des P1 du 2026-10-28** (branche `claude/kind-burnell-8cdce9`, `main` @ `212b52d0`) : **RP-014 corrigé** (fonds [D] d'Azuria et de Carmin, test) ; **RP-102 fermé** (A17 retiré) ; RP-136 compté sur `main` (J30 fusionné). **P1 ouverts sur `main` : 6**, aucun corrigeable dans le code : art (RP-010 dos, RP-024 Cramois'Île confirmé en tuiles provisoires → lot à planifier par Kevin, RP-136 Ligue), mesure S24 du J33 T3 (RP-091, RP-093), phase DA (RP-151).
+
 ## Arbitrages pour Kevin (R-n)
 
 **Validés par Kevin le 2026-10-26 (« Oui, toutes les recos »)** : R-1 fait (`e772538c`), R-2 fait
@@ -105,11 +107,11 @@ et du J28 (RP-124), R-7 en 1.0.x, R-8 et R-9 tranchés au J33 sur S24.
 
 | ID | Origine | Description | Cat. | P | Destination | État / preuve |
 |---|---|---|---|---|---|---|
-| RP-010 | J11 à J20 ; DAF.1 (`0063e5cf`, « refusés à faire avec ChatGPT ») | **5 espèces sans dos peint** sur 126 : Tortank, Rondoudou, Kadabra, Voltali (+ Ossatueur, jamais montré de dos) ; repli pixel 64 px | rendu | P1 (POK-1) | DAF.1 reliquat (ChatGPT, Kevin) | ouvert : 121 / 126 dos dans `assets/sprites/pokemon/dos/` (rb 62, ia 77, 3d 16) ; le dos de Tortank est aussi relevé en QA du J31 |
+| RP-010 | J11 à J20 ; DAF.1 (`0063e5cf`, « refusés à faire avec ChatGPT ») | **5 espèces sans dos peint** sur 126 : Tortank, Rondoudou, Kadabra, Voltali (+ Ossatueur, jamais montré de dos) ; repli pixel 64 px | rendu | P1 (POK-1) | DAF.1 reliquat (ChatGPT, Kevin) | ouvert (revu le 2026-10-28 sur `212b52d0`) : **143 / 151** espèces ont un dos peint ; sans dos : 009 Tortank, 039 Rondoudou, 064 Kadabra, 065 Alakazam, 105 Ossatueur, 131 Lokhlass, 135 Voltali, 151 Mew (repli pixel 64 px) ; art à produire, rien à corriger dans le code |
 | RP-011 | J20 (2026-10-16) | Dos d'Empiflor trop proche de Boustiflor | rendu | P3 (POK-2 non atteint) | DAF.8 | ouvert, à reproduire |
 | RP-012 | [jalon-18.md](jalon-18.md) §9.5 ; J18 | Horizons des fonds de combat CB.3 à recaler sur capture | rendu | P3 (CMB-2) | DAF.2 | ouvert, à reproduire : DAF.2 a fixé 455/460 pour les nouveaux fonds seulement |
 | RP-013 | DAF.2 (2026-10-25) | Emblème du fond de l'Arène d'Argenta qui ressemble à une Poké Ball | rendu | P3 | DAF.8 | ouvert (fond validé par Kevin, remarque notée) |
-| RP-014 | DAF.2 (2026-10-25) | Fonds de combat de la 2e moitié (cartes des J23, J26 à J31) | rendu | P1/P2 (CMB-1) | DAF.2, après les fusions | ouvert (dépend des fusions) |
+| RP-014 | DAF.2 (2026-10-25) | Fonds de combat de la 2e moitié (cartes des J23, J26 à J31) | rendu | P1/P2 (CMB-1) | DAF.2, après les fusions | **corrigé (2026-10-28, branche `claude/kind-burnell-8cdce9`)** : toutes les cartes des J23, J26 à J32 ont un fond (DAF.2, DAF.4, fusions) ; restaient **Azuria** (Rocket, scène `cerulean_rocket_fight`, et pêche) et **Carmin** (pêche), invisibles du test général, qui retombaient sur la carte floutée → fonds [D] `route_4_plaine` et `route_11_coast` ; test `test_fishing_and_cutscene_battle_maps_have_a_decor` (cartes de `fishable.json` + Azuria). Fonds réemployés à peindre : RP-157 et salles de la Ligue (§2.13), P2 |
 
 ### 2.2 Monde : séries en attente et reliquats (DAF.5)
 
@@ -121,7 +123,7 @@ pour les séries 22 bis et 28. RP-020 et RP-021 sont donc fermés (§4).
 |---|---|---|---|---|---|---|
 | RP-022 | [jalon-16.md](jalon-16.md) §9.3 ; J16 | S.S. Anne : navire peu visible du quai, passerelle peinte comme un appontement, titre de zone en même temps que DEP-02, trémie 2,5 × 3, portes cabine B et restaurant mal calées, barrière haute, superstructure étroite, mer répétée ; mémoire du pont > 64 Mo | rendu | P2 | DAF.5 puis J33 T2 | ouvert : le pont est « vérifié » par DAF.5, la géométrie n'a pas changé |
 | RP-023 | J20 (2026-10-21) ; série 22 bis | Céladopole : façades et intérieurs provisoires, fontaine petite, coin nord-ouest sans arbres, tabourets dessinés sous les clients assis | rendu | P2 (BAT-6) | J33 T2 (DA-9 : retouche seulement si le lot est rouvert) | ouvert ; Casino et repaire peints (série 22 bis) |
-| RP-024 | [jalon-25.md](jalon-25.md) §3 (T10–T13) | Cramois'Île (Manoir, Arène) notée en aplats provisoires à la clôture du J25 | rendu | P1 si confirmé (BAT-2) | J33 T2 | ouvert, à reproduire : `phase-da-cadrage.md` dit le Manoir en coques peintes (série 28) |
+| RP-024 | [jalon-25.md](jalon-25.md) §3 (T10–T13) | Cramois'Île (Manoir, Arène) notée en aplats provisoires à la clôture du J25 | rendu | **P1 (BAT-2), confirmé** | **Kevin** : lot d'art à ouvrir (DAF) | ouvert, **confirmé dans le code le 2026-10-28** : `pokemon_mansion_1f` à `b1f`, `cinnabar_gym` et `cinnabar_island` n'ont aucune texture peinte (tuiles `overworld.tres` + 74 à 134 `Polygon2D`/`ColorRect` par carte), contrairement à la Tour ou à la Sylphe ; `phase-da-cadrage.md` (« coques peintes, série 28 ») est faux sur ce point. Aucun lot DAF ne l'a pris : à planifier |
 | RP-025 | Reportés, raccords J21 ↔ J22 (2026-10-23) | Route 16 est : porte haute du poste lue comme une tache de terre (façade `bldg_velos_01` 7 rangées sur 8) ; arbre à Couper peu distinct de la forêt | rendu | P2 (SOL-2) | DAF.5 (raccords) | ouvert, à reproduire |
 | RP-026 | [jalon-15.md](jalon-15.md) §9 ; J15 | Postes du souterrain : ouverture nord peinte visible derrière l'escalier ; grande plante du poste de la Route 5 (5, 2) qui masque l'ouverture vers Safrania | rendu | P3 | DAF.5 | ouvert, à reproduire |
 | RP-027 | J20 (Route 8) | Arbre repère (3, 19) qui masque la porte du poste de la Route 8 ; corniche peu lisible | rendu | P2 (BAT-3) | DAF.5 | ouvert, à reproduire |
@@ -182,9 +184,9 @@ DAF.6 (fusionné le 2026-10-26, `da861440`) a traité la Forêt de Jade, les int
 
 | ID | Origine | Description | Cat. | P | Destination | État / preuve |
 |---|---|---|---|---|---|---|
-| RP-091 | J7 à J19 (≈ 10 relevés) | Mémoire des textures au-dessus du repère de 64 Mo : 66 à 139 Mo selon la carte et l'appareil (≈ 106 Mo pour l'appli) ; « carte + voisines » ≤ 36 Mo | perf | P1 (MEN-7) | J33 T3 | ouvert : `perf_counter.gd:12` ; budget « carte + voisines » décidé au J10 |
+| RP-091 | J7 à J19 (≈ 10 relevés) | Mémoire des textures au-dessus du repère de 64 Mo : 66 à 139 Mo selon la carte et l'appareil (≈ 106 Mo pour l'appli) ; « carte + voisines » ≤ 36 Mo | perf | P1 (MEN-7) | J33 T3 (mesure S24) | ouvert : `perf_counter.gd:12` ; budget « carte + voisines » décidé au J10 ; à mesurer carte par carte sur le S24 au profilage du J33 (pas de correctif possible sans mesure) |
 | RP-092 | J9 à J22 | Creux de fps aux transitions de carte (7 à 40 i/s), à l'ouverture du menu, en fin de combat ; Menu → Équipe à 50 i/s | perf | P2 | J33 T3 | ouvert ; seule la Route 11 a eu un correctif (`fff8d3bc`) |
-| RP-093 | [jalon-22.md](jalon-22.md) §8 | Carmin (quai) à 26–27 i/s, mesuré avant le moteur commun | perf | P1 si confirmé | J33 T3 | ouvert, à remesurer |
+| RP-093 | [jalon-22.md](jalon-22.md) §8 | Carmin (quai) à 26–27 i/s, mesuré avant le moteur commun | perf | P1 si confirmé | J33 T3 (mesure S24) | ouvert, à remesurer sur le S24 (non mesuré le 2026-10-28 : téléphone personnel de Kevin, la nuit) ; depuis : moteur commun, S24 à 59–60 i/s dehors (QA J29, T8 de CV.0) |
 | RP-094 | [jalon-son.md](jalon-son.md) | A17 : ≈ 30 i/s dans le Pokédex, ≈ 34 dans les Paramètres | perf | P2 (A17) | J33 T3 | ouvert |
 | RP-095 | [jalon-09.md](jalon-09.md) §8.3 | Forêt de Jade : 2 983 nœuds pour un budget de 3 000 ; traversée (7–9 min) et durée d'un combat jamais mesurées sur téléphone | perf | P3 | J33 | ouvert (`test_node_budget` vert) |
 | RP-096 | [jalon-06.md](jalon-06.md), [jalon-07.md](jalon-07.md) | Fond flouté du menu et Stockage sans réutilisation de cartes (> ≈ 100 Pokémon) jamais mesurés sur S24 | perf | P3 | J33 T3 | ouvert |
@@ -193,7 +195,7 @@ DAF.6 (fusionné le 2026-10-26, `da861440`) a traité la Forêt de Jade, les int
 | RP-099 | [jalon-11.md](jalon-11.md) T22 n° 8 ; QA J27 | Nom de CT tronqué sur la carte du Sac (« CT34 — Pati… », CT46) | rendu | P2 (P0 si illisible, MEN-3) | J33 | ouvert, à reproduire |
 | RP-100 | [jalon-12.md](jalon-12.md) §10.3 n° 11 | Sélecteur d'équipe : nom long et « K.O. » tronqués (« Rondou… ») | rendu | P2 (MEN-3) | J33 | ouvert : ellipse voulue, `party_target_card.gd:242` |
 | RP-101 | [jalon-son.md](jalon-son.md) (2026-10-25) | Bouton « Cri » qui chevauche un peu le portrait du Pokédex | rendu | P2 | J33 | ouvert, à reproduire |
-| RP-102 | [moteur-commun.md](moteur-commun.md) §1.4 | A17 : 60 i/s non tenus dehors (étalonnage par copie ≈ 8 ms + carte ≈ 8,5 ms) ; images isolées à 25–33 ms | perf | P1 (A17) | **R-9** | ouvert |
+| RP-102 | [moteur-commun.md](moteur-commun.md) §1.4 | A17 : 60 i/s non tenus dehors (étalonnage par copie ≈ 8 ms + carte ≈ 8,5 ms) ; images isolées à 25–33 ms | perf | P1 (A17) | **R-9** | **fermé (2026-10-28)** : A17 retiré des QA et des mesures par Kevin le 2026-10-27 (câble instable ; « seul le S24, RFCX80Y0FVX ») ; la référence de performance est le S24, qui tient 59–60 i/s dehors (QA J29, T8 de CV.0) |
 | RP-103 | Reportés J9 (T21) | Carte : rangée « Pokémon observés » rognée au format S24 ; image de zone « Forêt de Jade » générique ; fiche du Pokédex ouverte sur Aperçu | rendu | P2 (MEN-5) | J33 | ouvert, à reproduire (MM.2 n'en parle pas) |
 | RP-104 | [jalon-14.md](jalon-14.md) clôture | Toasts de résultat du Sac qui restent jusqu'au toucher ; liste d'équipe défilée après un refus du Super Bonbon ; sélecteur de quantité d'une CT déjà possédée | défaut | P3 | J33 | ouvert, à reproduire |
 | RP-105 | J17 (2026-10-16) ; J19 | Boîte de dialogue qui couvre le joueur quand la caméra est bornée (6F de la Tour) ou le compagnon | rendu | P2 | J33 | ouvert, à reproduire |
@@ -242,7 +244,7 @@ Les points RP-151 à RP-154, propres à `jalon-23` jusqu'ici, sont passés de la
 
 | ID | Origine | Description | Cat. | P | Destination | État / preuve |
 |---|---|---|---|---|---|---|
-| RP-151 | `jalon-23` (fusionné le 2026-10-27) | Textures ≈ 75 Mo dans la Maison Secrète et la maison du Gardien | perf | P1 (MEN-7) | phase DA (décision de Kevin du 2026-10-26) | ouvert |
+| RP-151 | `jalon-23` (fusionné le 2026-10-27) | Textures ≈ 75 Mo dans la Maison Secrète et la maison du Gardien | perf | P1 (MEN-7) | phase DA (décision de Kevin du 2026-10-26) | ouvert (revu le 2026-10-28 : renvoyé à la phase DA par Kevin, rien à faire avant) |
 | RP-152 | `jalon-23` (fusionné le 2026-10-27) | Pêche du Parc (aucune case pêchable), Corde Sortie dans le Parc, art T7/T8 (vues peintes, sprites, dos du joueur) | idée | P2 | DAF.4, 1.0.x | ouvert |
 | RP-153 | `jalon-23` (fusionné le 2026-10-27) | T21 équilibrage non fait (Koga) ; l'IA choisit Détritus plutôt que Toxik pour le Smogogo de Koga (IA inchangée jusqu'au T21) | défaut | P2 | J23 (reste non bloquant) | T21 fait le 2026-10-27 (`jalon-23.md` §9.7, Koga ≈ 100 % aux niveaux RB pour une arrivée normale) ; **clos** : Q23-1 option A (Kevin, 2026-10-27 : Koga aux niveaux RB, IA inchangée) |
 | RP-154 | `jalon-23` (fusionné le 2026-10-27) | « HYPNO » tronqué sur la carte de combat | rendu | P2 (MEN-3) | J33 | corrigé (`f7ccf543`), dans `main` depuis la fusion du J23 ; à valider sur téléphone (J33) |
@@ -304,7 +306,7 @@ versions, déjà réglées sur `main` par DAF.6 : non reprises.
 | RP-133 | `jalon-29` | Sol haut et sol bas de la Route Victoire peu distincts (tuiles provisoires) ; vue générale peinte, poste de la Route 22, Route 23 | rendu | P1 (DON-3) | DAF.4 | corrigé pour la Route Victoire sur la branche `claude/daf-4-j29-j31` (DAF.4, planche à valider) (sol haut nettement plus clair, rebords, escaliers) ; poste de la Route 22 peint ; restent le sol de la Route 23 et la vue générale |
 | RP-134 | `jalon-29` | Rencontres très fréquentes dans la Route Victoire (1 toutes les 3 à 5 cases) | idée | P3 | branche (comparer à RB) | ouvert |
 | RP-135 | `jalon-29` | Départ `moltres` sans Master Ball (objet du J26) | défaut | P3 | branche (fusion J26) | ouvert |
-| RP-136 | `jalon-30` | Sprites provisoires de la Ligue : Olga (`cooltrainer_f`), Aldo (`docker`), Agatha (`channeler`), Peter (`traveler`) | rendu | P1 (PER-1) | DAF.4 | ouvert |
+| RP-136 | `jalon-30` | Sprites provisoires de la Ligue : Olga (`cooltrainer_f`), Aldo (`docker`), Agatha (`channeler`), Peter (`traveler`) | rendu | P1 (PER-1) | DAF.4 | ouvert, **sur `main` depuis la fusion du J30** (`b8b596c2`) : `data/npcs/league_*.json` gardent `cooltrainer_f`, `docker`, `channeler`, `traveler` (revu le 2026-10-28) ; art à peindre |
 | RP-137 | `jalon-30` | Panthéon et générique : fond nuit uni ; textes [D] du générique à valider ; entrée Panthéon du Menu Dresseur (Q30-4) et Grand moment « champion » non faits | idée | P2 | branche, décision de Kevin portée par le J30 | ouvert |
 | RP-138 | `jalon-30` | QA 30A de sauvegarde (Panthéon) réservée à Kevin (règle 1) | idée | P2 | branche | ouvert |
 | RP-139 | `jalon-30` ; QA S24 30C (2026-10-26) | Objectif du Menu Dresseur « traverser le Pont Pépite » (drapeaux du départ de débogage), revu **après le générique** en 30C | défaut | P3 | branche ; J33 (vraie partie) | ouvert : à vérifier en vraie partie (probablement sans effet hors départ de débogage) |
