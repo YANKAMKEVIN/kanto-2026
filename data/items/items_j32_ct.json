@@ -98,7 +98,7 @@
 	"tm41": {
 		"name": "CT41 — Œuf Cuit", "plural": "CT41 — Œuf Cuit", "feminine": true,
 		"category": "tm", "tm": 41, "teaches": "soft_boiled",
-		"description": "Le lanceur récupère la moitié de ses PV.",
+		"description": "Le lanceur se refait une santé et récupère la moitié de ses PV.",
 		"draft": true
 	},
 	"tm42": {

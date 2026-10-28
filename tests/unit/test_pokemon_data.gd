@@ -132,7 +132,7 @@ func test_real_data_loads_without_error() -> void:
 	# Draco, Dracolosse) et Grobisou (j30.json) ; ses reprises et emprunts (Rhinoféros, Kicklee,
 	# Tygnon ; Riposte, Pied Sauté, Pied Voltige, poings, Mawashi Geri, Abîme, Toxik) retirés à
 	# la fusion dans main : ceux des J23, J27 et J28 font foi.
-	assert_eq(_data.get_move_ids().size(), 161,
+	assert_eq(_data.get_move_ids().size(), 164,
 		"47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10) + Patience (J11) "
 		+ "+ 21 du Mont Sélénite (jalon 12) + 8 du jalon 13 (les 5 du J12 qu'il reprenait : "
 		+ "entrées du J12) + 6 du Cap d'Azuria (jalon 14) + Jackpot (J15) "
@@ -144,7 +144,7 @@ func test_real_data_loads_without_error() -> void:
 		+ "Force Poigne du J22, Guillotine du J24) "
 		+ "+ Déflagration et Poing de Feu (J25, j25.json) "
 		+ "+ 8 (J27, dont Vague Psy) + Abîme (J28) + 3 du jalon 29 (Piqué, Ultimawashi, Clonage) "
-		+ "+ Morphing (jalon 31) + Grobisou (jalon 30) + Affûtage, Conversion (jalon 32)")
+		+ "+ Morphing (jalon 31) + Grobisou (jalon 30) + Affûtage, Conversion (jalon 32) + Coupe-Vent, Éboulement, Œuf Cuit (J32, N-22)")
 	assert_true(_data.has_move(&"struggle"))
 
 
@@ -345,7 +345,8 @@ func test_real_move_values() -> void:
 ## Capacités du J19 nécessaires aux learnsets complets (plan jalon-19 §0.4 n° 1) dont la
 ## description, hors du lot §15.7 du dossier 22, attend la relecture de Kevin : « draft ».
 ## Retirer l'identifiant d'ici quand le texte est validé.
-const DRAFT_DESCRIPTIONS: Array[StringName] = []
+## Jalon 32 (N-22) : Coupe-Vent, Éboulement, Œuf Cuit [D].
+const DRAFT_DESCRIPTIONS: Array[StringName] = [&"razor_wind", &"rock_slide", &"soft_boiled"]
 
 
 func test_every_real_move_has_a_validated_description() -> void:

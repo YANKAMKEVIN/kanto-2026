@@ -193,7 +193,7 @@ func test_an_owned_tm_shows_already_in_the_bag() -> void:
 	shops.load_dir()
 	var shop := shops.get_shop(&"celadon_dept_2f_tm")
 	var view := ShopViews.build(_state, shop, _items)
-	assert_eq(view.entries.size(), 1)
+	assert_eq(view.entries.size(), 12, "12 CT au 2F (N-22)")
 	assert_eq(view.entries[0].max_quantity, 1)
 	assert_eq(view.entries[0].price_text, _money("3 000"))
 	_state.bag.add(&"tm01")

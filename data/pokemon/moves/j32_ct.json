@@ -17,7 +17,7 @@
 		"name": "Œuf Cuit", "type": "normal", "category": "status",
 		"accuracy": 0, "pp": 10,
 		"effects": [{ "kind": "heal", "fraction": 0.5 }],
-		"description": "Le lanceur récupère la moitié de ses PV.",
+		"description": "Le lanceur se refait une santé et récupère la moitié de ses PV.",
 		"draft": true
 	}
 }
