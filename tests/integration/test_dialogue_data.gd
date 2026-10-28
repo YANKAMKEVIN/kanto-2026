@@ -2109,6 +2109,16 @@ const TEXTS_J32: Dictionary[StringName, Array] = {
 		"Toi ! On a partagé les fossiles,\nau Mont Sélénite.",
 		"Je n'ai jamais su le réveiller.\nGarde-le : ici, ils savent faire."],
 	&"fighting_dojo_master": ["Champion de la Ligue… Mes poings\nt'attendaient.", "Prends l'autre Poké Ball. Un Dojo\nn'est rien sans ses deux styles.", "Prends-en soin.\nEt reviens t'entraîner quand tu veux !", "Choisis l'un de nos Pokémon.\nIl te suivra."],
+	# 32N (N-22) : répliques des dons de CT validées par Kevin le 2026-10-28.
+	&"celadon_dept_3f_gift_man": ["Riposte, ça ne s'improvise pas.", "Il faut d'abord savoir encaisser."],
+	&"celadon_dept_3f_tm18_give": ["J'avais un cadeau pour un Dresseur doué.", "Toi, tu as l'air de ceux qui encaissent les coups.\nTiens, prends ça !"],
+	&"celadon_dept_3f_tm18_got": ["{player} obtient la CT18 — Riposte !", "Riposte renvoie le double des dégâts\nd'une attaque Normal ou Combat."],
+	&"celadon_roof_girl": ["Ça va mieux, merci.", "Le toit, c'est joli,\nmais il y fait chaud.", "J'ai tellement soif… Tu as\nquelque chose à boire ?", "Lui donner une Eau Fraîche ?", "Tant pis… Je vais\nattendre encore un peu.", "Lui donner un Soda Cool ?", "Lui donner une Limonade ?"],
+	&"saffron_psychic_tm29_give": ["Je sentais ta venue, jeune Dresseur.", "Je te confie une technique de ma jeunesse."],
+	&"saffron_psychic_tm29_got": ["{player} obtient la CT29 — Psyko !", "Psyko est une puissante attaque Psy."],
+	&"celadon_chief_son_tm41_give": ["Un jour, je serai un grand Dresseur !", "Tiens, je te donne ma CT.\nMoi, je n'arrive pas à m'en servir."],
+	&"celadon_chief_son_tm41_got": ["{player} obtient la CT41 — E-Coque !", "E-Coque rend la moitié des PV du lanceur."],
+	&"celadon_chief_son": ["Quand je serai Dresseur,\nje battrai le Champion !"],
 }
 ## Jalon 32 (N-14) : répliques des échanges PNJ jouées par leurs scènes.
 const J32_TRADE_LINES: Array[StringName] = [
@@ -2127,13 +2137,8 @@ const J32_TRADE_LINES: Array[StringName] = [
 ## Jalon 32 (N-21) : derniers brouillons validés par Kevin le 2026-10-28 : liste vide.
 ## Jalon 32 (32N, N-22) : dialogues des CT (ramassages et dons).
 const IDS_J32_CT: Array[StringName] = [&"route_4_tm04", &"ss_anne_lower_deck_tm08", &"mt_moon_b1f_tm12", &"route_12_tm16", &"route_24_tm45", &"route_9_tm30", &"silph_co_2f_tm36", &"viridian_city_tm42", &"ss_anne_cabin_a_tm44", &"celadon_dept_3f_tm18_give", &"celadon_dept_3f_tm18_got", &"saffron_psychic_tm29_give", &"saffron_psychic_tm29_got", &"celadon_chief_son_tm41_give", &"celadon_chief_son_tm41_got", &"celadon_chief_son"]
-## Jalon 32 (32N, N-22) : répliques [D] des dons de CT, à faire relire par Kevin (clé « id:variante »).
-const PENDING_DRAFT_VARIANTS: Array[String] = [
-	"celadon_dept_3f_gift_man:1", "celadon_dept_3f_tm18_give:0", "celadon_dept_3f_tm18_got:0",
-	"celadon_roof_girl:2", "celadon_roof_girl:3", "saffron_psychic_tm29_give:0",
-	"saffron_psychic_tm29_got:0", "celadon_chief_son_tm41_give:0", "celadon_chief_son_tm41_got:0",
-	"celadon_chief_son:1",
-]
+## Jalon 32 (32N, N-22) : répliques des dons de CT validées par Kevin le 2026-10-28 : liste vide.
+const PENDING_DRAFT_VARIANTS: Array[String] = []
 
 
 func test_no_dialogue_nor_variant_is_draft() -> void:

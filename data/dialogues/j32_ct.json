@@ -6,8 +6,7 @@
 				"pages": [
 					"J'avais un cadeau pour un Dresseur doué.",
 					"Toi, tu as l'air de ceux qui encaissent les coups.\nTiens, prends ça !"
-				],
-				"draft": true
+				]
 			}
 		]
 	},
@@ -18,8 +17,7 @@
 				"pages": [
 					"{player} obtient la CT18 — Riposte !",
 					"Riposte renvoie le double des dégâts\nd'une attaque Normal ou Combat."
-				],
-				"draft": true
+				]
 			}
 		]
 	},
@@ -30,8 +28,7 @@
 				"pages": [
 					"Je sentais ta venue, jeune Dresseur.",
 					"Je te confie une technique de ma jeunesse."
-				],
-				"draft": true
+				]
 			}
 		]
 	},
@@ -42,8 +39,7 @@
 				"pages": [
 					"{player} obtient la CT29 — Psyko !",
 					"Psyko est une puissante attaque Psy."
-				],
-				"draft": true
+				]
 			}
 		]
 	},
@@ -54,8 +50,7 @@
 				"pages": [
 					"Un jour, je serai un grand Dresseur !",
 					"Tiens, je te donne ma CT.\nMoi, je n'arrive pas à m'en servir."
-				],
-				"draft": true
+				]
 			}
 		]
 	},
@@ -66,8 +61,7 @@
 				"pages": [
 					"{player} obtient la CT41 — E-Coque !",
 					"E-Coque rend la moitié des PV du lanceur."
-				],
-				"draft": true
+				]
 			}
 		]
 	},
@@ -75,7 +69,7 @@
 		"speaker": "Garçon",
 		"variants": [
 			{ "unless": ["got_tm41"], "cutscene": "celadon_chief_son_tm41" },
-			{ "pages": ["Quand je serai Dresseur,\nje battrai le Champion !"], "draft": true }
+			{ "pages": ["Quand je serai Dresseur,\nje battrai le Champion !"] }
 		]
 	},
 	"route_4_tm04": {

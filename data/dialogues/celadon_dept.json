@@ -95,8 +95,7 @@
 				"pages": [
 					"Riposte, ça ne s'improvise pas.",
 					"Il faut d'abord savoir encaisser."
-				],
-				"draft": true
+				]
 			}
 		]
 	},
@@ -197,8 +196,7 @@
 					"cancel_pages": [
 						"Tant pis… Je vais\nattendre encore un peu."
 					]
-				},
-				"draft": true
+				}
 			},
 			{
 				"unless": [
@@ -218,8 +216,7 @@
 					"cancel_pages": [
 						"Tant pis… Je vais\nattendre encore un peu."
 					]
-				},
-				"draft": true
+				}
 			},
 			{
 				"pages": [

@@ -29,47 +29,9 @@ const DATA_DIR := "res://data"
 ## fiches de Pokédex (Lippoutou, Mackogneur, Ectoplasma, Draco, Dracolosse, Mew), chercheur et
 ## camion validés par Kevin le 2026-10-28, « draft » retiré.
 ## Jalon 32 (32N, N-22) : CT obtenables partout : capacités (Coupe-Vent, Éboulement, E-Coque), messages
-## de charge, 23 objets (descriptions copiées des capacités), répliques des dons [D], à relire par Kevin.
-const PENDING_DRAFTS: Array[String] = ["world/zones.json/zones/saffron_city",
-	"battle/messages.json/templates/charge_razor_wind_start",
-	"battle/messages.json/templates/charge_razor_wind_broken",
-	"pokemon/moves/j32_ct.json/razor_wind",
-	"pokemon/moves/j32_ct.json/rock_slide",
-	"pokemon/moves/j32_ct.json/soft_boiled",
-	"items/items_j32_ct.json/tm02",
-	"items/items_j32_ct.json/tm03",
-	"items/items_j32_ct.json/tm04",
-	"items/items_j32_ct.json/tm07",
-	"items/items_j32_ct.json/tm08",
-	"items/items_j32_ct.json/tm10",
-	"items/items_j32_ct.json/tm12",
-	"items/items_j32_ct.json/tm15",
-	"items/items_j32_ct.json/tm16",
-	"items/items_j32_ct.json/tm18",
-	"items/items_j32_ct.json/tm20",
-	"items/items_j32_ct.json/tm23",
-	"items/items_j32_ct.json/tm26",
-	"items/items_j32_ct.json/tm29",
-	"items/items_j32_ct.json/tm30",
-	"items/items_j32_ct.json/tm36",
-	"items/items_j32_ct.json/tm41",
-	"items/items_j32_ct.json/tm42",
-	"items/items_j32_ct.json/tm44",
-	"items/items_j32_ct.json/tm45",
-	"items/items_j32_ct.json/tm48",
-	"items/items_j32_ct.json/tm49",
-	"items/items_j32_ct.json/tm50",
-	"dialogues/celadon_dept.json/celadon_dept_3f_gift_man/variants/1",
-	"dialogues/celadon_dept.json/celadon_roof_girl/variants/2",
-	"dialogues/celadon_dept.json/celadon_roof_girl/variants/3",
-	"dialogues/j32_ct.json/celadon_dept_3f_tm18_give/variants/0",
-	"dialogues/j32_ct.json/celadon_dept_3f_tm18_got/variants/0",
-	"dialogues/j32_ct.json/saffron_psychic_tm29_give/variants/0",
-	"dialogues/j32_ct.json/saffron_psychic_tm29_got/variants/0",
-	"dialogues/j32_ct.json/celadon_chief_son_tm41_give/variants/0",
-	"dialogues/j32_ct.json/celadon_chief_son_tm41_got/variants/0",
-	"dialogues/j32_ct.json/celadon_chief_son/variants/1",
-]
+## de charge, 23 objets (descriptions copiées des capacités), répliques des dons : validés par
+## Kevin le 2026-10-28, « draft » retiré.
+const PENDING_DRAFTS: Array[String] = ["world/zones.json/zones/saffron_city"]
 
 
 func test_data_has_json_files() -> void:
