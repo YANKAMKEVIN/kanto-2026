@@ -21,6 +21,11 @@ const SAVE_DONE_TEXT: String = "Partie sauvegardée"
 const SAVE_FAILED_TEXT: String = "La sauvegarde n'a pas pu être écrite."
 const SAVE_DISABLED_TEXT: String = "Sauvegarde désactivée pour cette session."
 const SAVE_DETAIL_TEXT: String = "La partie se sauvegarde aussi toute seule."
+## J33 T4 (textes recommandés du plan, `jalon-33.md` §3, validés d'avance le 2026-10-21).
+const STORAGE_FULL_TEXT: String = "Sauvegarde impossible : espace insuffisant. Libère de la place."
+const STORAGE_FULL_TITLE: String = "Sauvegarde impossible : espace insuffisant."
+const STORAGE_FULL_DETAIL: String = "Libère de la place."
+const BACKUP_RESTORED_TEXT: String = "Sauvegarde restaurée depuis la copie de secours."
 ## Sous-titres des sections (MM.3, repris de la maquette ; à relire par Kevin).
 ## Moteur commun [D] : libellé et aide de la bascule du réglage `economy` (décision de Kevin du
 ## 2026-10-23 : nommée « Lumière d'ambiance » pour ne pas doubler la qualité « Économie »).
@@ -146,6 +151,8 @@ static func percent_text(value: float) -> String:
 ## « Partie sauvegardée — 14 h 32 » ; un échec dit seulement qu'il a échoué. [param time] :
 ## `Time.get_datetime_dict_from_system()` (au moins « hour » et « minute »).
 static func save_result_text(error: Error, time: Dictionary) -> String:
+	if error == SaveSystem.STORAGE_FULL:
+		return STORAGE_FULL_TEXT
 	if error != OK:
 		return SAVE_FAILED_TEXT
 	var hour := JsonFields.get_int(time, "hour", -1)

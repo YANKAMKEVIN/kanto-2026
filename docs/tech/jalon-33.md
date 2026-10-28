@@ -16,7 +16,7 @@
 
 | Domaine | Réel aujourd'hui | Manque |
 |---|---|---|
-| Tests | ≈ 6 050 tests GUT, 544 scripts ; `tools/test.sh` (ciblé, `--changed`, verrou de 2 suites) ; `tools/check_test_timing.sh` ; CI 8 lots (`.github/workflows/godot-tests.yml`) | Aucun test de parcours complet |
+| Tests | ≈ 6 890 tests GUT, 731 scripts (baseline T1 : `jalon-33-baseline.md`) ; `tools/test.sh` (ciblé, `--changed`, verrou de 2 suites) ; `tools/check_test_timing.sh` ; CI 8 lots (`.github/workflows/godot-tests.yml`) | Aucun test de parcours complet |
 | Sauvegarde | `SaveSystem` : v7, écriture temporaire relue puis renommée, migrations, fichier corrompu mis de côté (`.corrupt`) | **Copie de secours** de la dernière sauvegarde valide |
 | Arrière-plan Android | `game/systems/session/session_lifecycle.gd` : `APPLICATION_PAUSED` et `WM_CLOSE_REQUEST` demandent une sauvegarde stable (test `test_session_lifecycle.gd`) | À vérifier sur appareil, hors départ de débogage |
 | Mesure | `tools/measure_map_load.gd`, `measure_map_cache.gd`, `measure_tower_t19.gd` ; rapports de QA dans `build/qa/` | Pas de mesure batterie ni température |
@@ -53,7 +53,7 @@
 ### T1 — Inventaire et baseline (Sonnet)
 Pour chaque jalon J0–J32 : fusionné ? tests ? QA S24 faite ? Baseline : suite complète, 3 mesures de
 chargement de carte, FPS sur 5 zones (extérieur, ville, donjon, combat, menu stockage).
-Critère : `docs/tech/jalon-33-baseline.md` avec commit exact.
+Critère : `docs/tech/jalon-33-baseline.md` avec commit exact. **Fait le 2026-10-28** (sur `212b52d0`, CI verte ; FPS S24 à refaire à la QA du J33).
 
 ### T2 — Harmonisation visuelle (33A, Sonnet puis Kevin)
 Grille de contrôle : sols, bâtiments, personnages, Pokémon, eau, donjons, combats, menus. Chaque
@@ -73,6 +73,47 @@ Tests (`tests/unit/test_save_system.gd`, faux système de fichiers) : coupure à
 l'écriture ; principal corrompu avec copie valide ; les deux corrompus ; version plus récente
 refusée sans toucher ; disque plein.
 Critère : aucun scénario ne laisse zéro sauvegarde valide alors qu'une existait.
+
+#### T4 — plan retenu et état (2026-10-28, branche `claude/jalon-33-efe2a8`)
+**Format inchangé** (v8, aucun champ nouveau) : la copie est le fichier précédent, octet pour
+octet. Valeurs par défaut (règle 4) : `user://save.json.bak` à côté du principal (point ouvert 1,
+[D] retenu) ; une seule copie ; les réglages (`settings.json`) n'en ont pas.
+
+**Écriture** (`SaveSystem.write`) : 1. `save.json.tmp` écrit puis relu (inchangé) ; 2. si le
+principal existe et est valide, il est **renommé** en `.bak` (aucune place disque en plus) ; s'il
+est illisible, il est mis de côté en `.corrupt` et la copie existante reste ; 3. `.tmp` renommé en
+principal. Validité : relu une fois par session, puis connue (lecture ou écriture réussie par la
+même instance).
+
+**Lecture** (`SaveSystem.read`) : principal valide → lu (copie ignorée) ; principal illisible →
+`.corrupt`, puis la copie ; principal absent (coupure entre 2 et 3) → la copie. Une copie lue
+pose `restored_from_backup` (Boot affiche « Sauvegarde restaurée depuis la copie de secours. » à
+la reprise). Version plus récente (principal ou copie) : refusée, rien n'est touché, pas de repli.
+Les deux illisibles : `ERR_FILE_CORRUPT`, copie laissée en place. `has_save()` vrai avec la seule
+copie ; `erase()` supprime les deux. `OpeningCommit` copie la copie de secours vers
+`save.previous.json` quand le principal manque.
+
+**Stockage plein** : si l'écriture du temporaire échoue et que la place libre
+(`SaveFileSystem.space_left`, `DirAccess.get_space_left`) est inférieure à la taille + 64 Kio :
+`SaveSystem.STORAGE_FULL`, aucun fichier touché. Message « Sauvegarde impossible : espace
+insuffisant. Libère de la place. » (toast une fois par série d'échecs, écran Menu ; les écritures
+sont retentées toutes les 5 s comme avant).
+
+| Cas de perte | Ce qui reste |
+|---|---|
+| Coupure pendant le temporaire | principal + copie intacts |
+| Coupure entre rotation et remplacement | copie = dernière partie, reprise au lancement |
+| Échec de la rotation | principal intact, rien d'écrit |
+| Échec du remplacement | principal remis depuis la copie (sinon lu dans la copie) |
+| Principal abîmé sur le disque | `.corrupt` + copie (jamais remplacée par l'illisible) |
+| Les deux illisibles | `.corrupt` et `.bak` gardés, nouvelle partie |
+| Stockage plein | tout intact, message |
+
+Limite assumée : la copie a une écriture de retard (quelques secondes de jeu). Tests :
+`tests/unit/test_save_backup.gd` (coupure à chaque opération avec `crashing_file_system.gd`,
+corruptions, versions, disque plein, réglages, `OpeningCommit`) ; journaux d'opérations ajustés
+dans `test_opening_commit.gd` et `test_opening_boot.gd`. **Reste : validation seule par Kevin
+(QA S24 bornée : arrêt forcé pendant une sauvegarde, principal abîmé par adb → reprise).**
 
 ### T5 — Parcours scriptés (33E, Opus)
 Harnais d'intégration qui enchaîne les étapes sur le vrai jeu en mode headless, à partir des
