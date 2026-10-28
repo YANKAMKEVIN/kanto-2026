@@ -549,6 +549,7 @@ func _ready() -> void:
 	_menu_screen.storage_favorite_toggled.connect(_menu.toggle_storage_favorite)
 	_menu_screen.storage_release_requested.connect(_menu.request_release)
 	_menu_screen.storage_release_confirmed.connect(_menu.confirm_release)
+	_menu_screen.storage_query_changed.connect(_menu.set_storage_query)
 	# Une seule écoute de tout ce qui s'enregistre au Pokédex (jalon-06.md §6.9).
 	GameState.pokedex.recorded.connect(_on_pokedex_recorded)
 	GameState.flags.flag_changed.connect(_on_flag_changed)

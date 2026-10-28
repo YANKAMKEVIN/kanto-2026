@@ -146,7 +146,7 @@ Tableau par carte : objets visibles et cachés, CT/CS, pierres, cadeaux, échang
 Source : données et cartes déjà fusionnées ; référence Rouge/Bleu. Les écarts vont dans un registre
 `P0–P3`, sans correction de masse.
 
-### T7 — UX Pokédex et stockage — **état au 2026-10-27** : Pokédex déjà conforme (vus / capturés, recherche par nom et par numéro, filtres, compteurs ; `PokedexQuery`) ; **Stockage : recherche et tri non faits** ; critères tranchés par Kevin le 2026-10-28 (N-21) : recherche par nom d'espèce, tri par espèce, type et niveau.
+### T7 — UX Pokédex et stockage — **Stockage FAIT le 2026-10-28** (branche `j32-t7-stockage` : `game/systems/storage/storage_query.gd` (`StorageQuery`), `StorageViews.build` (paramètres `query_text`, `sort`), `MenuDirector.set_storage_query`, `StorageScreen` (champ de recherche DexSearch + bouton « Tri : … » à droite du titre STOCKAGE), `tests/unit/test_storage_query.gd`, `tools/capture_storage_query.gd`) ; état au 2026-10-27 : Pokédex déjà conforme (vus / capturés, recherche par nom et par numéro, filtres, compteurs ; `PokedexQuery`) ; **Stockage : recherche et tri non faits** ; critères tranchés par Kevin le 2026-10-28 (N-21) : recherche par nom d'espèce, tri par espèce, type et niveau.
 Vus / capturés distincts, recherche par numéro et par nom, tableau de bord (espèces, vues,
 capturées). Stockage : recherche, tri, déplacement sans risque. Grandes zones de contact.
 
