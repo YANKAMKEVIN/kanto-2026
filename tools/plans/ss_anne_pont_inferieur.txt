@@ -39,4 +39,5 @@ loic                dresseur       18,5         bloque  role=T03 facing=left sig
 super_potion        objet          19,8         bloque  item=super_potion
 antidote_cache      cache          5,6          bloque  item=antidote  # EXAMINER la caisse depuis (5, 5) ↓
 matelot             pnj            8,3          bloque  facing=right
+ss_anne_lower_deck_tm08 objet          2,8          bloque  item=tm08  # CT08 Plaquage (lot 32N, N-22) : case libre et atteignable (valeur par défaut [D], lieu RB non reproduit)
 FIN

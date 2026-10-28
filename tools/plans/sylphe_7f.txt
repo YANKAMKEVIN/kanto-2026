@@ -130,7 +130,7 @@ dresseur_3              dresseur       20,2         bloque  trainer=silph_co_7f_
 dresseur_4              dresseur       19,14        bloque  trainer=silph_co_7f_4 facing=right sight=4 classe=rocket  # RB objet 8 : OPP_ROCKET, 34
 rival                   rival          3,7          bloque  trainer=rival_silph facing=up inevitable=oui scene=oui  # RB SPRITE_BLUE (OPP_RIVAL2, 7 à 9 selon le starter)
 silph_co_7f_item_10     objet_visible  1,9          bloque  item=calcium fallback=rare_candy  # RB CALCIUM
-silph_co_7f_item_11     objet_visible  24,11        bloque  item=tm03 fallback=nugget  # RB TM_SWORDS_DANCE
+silph_co_7f_item_11     objet_visible  24,11        bloque  item=tm03  # RB TM_SWORDS_DANCE
 declencheur_rival_1     declencheur    3,2          libre   scene=rival_silph  # RB : le pas sur cette case lance la scène
 declencheur_rival_2     declencheur    3,3          libre   scene=rival_silph  # RB : le pas sur cette case lance la scène
 FIN

@@ -84,7 +84,7 @@ garde_est              dresseur       26,12        bloque  role=R9 facing=down s
 giovanni               dresseur       25,3         bloque  role=G facing=down sight=0 trainer=giovanni_hideout after=vanishes  # RB n° 1 : Onix 25, Rhinocorne 24, Kangourex 29 ; disparaît après sa défaite
 porte_bureau           porte          24..25,11    bloque  cond=rocket_hideout_b4f_guards_beaten  # bloc porte RB $2d ; devient du sol à la défaite des deux gardes
 cle_ascenseur          objet_visible  10,2         bloque  item=lift_key apparait=rocket_dropped_lift_key  # Clé Ascenseur, posée à côté du sbire (RB : Poké Ball masquée)
-ct02                   objet_visible  9,4          bloque  item=tm_razor_wind fallback=super_potion  # CT02 Coupe-Vent (RB) : salle nord-ouest
+ct02                   objet_visible  9,4          bloque  item=tm02  # CT02 Coupe-Vent (RB) : salle nord-ouest
 pv_plus                objet_visible  10,12        bloque  item=hp_up fallback=revive sur=decor  # sur le bureau de la salle ouest ; se lit depuis (9, 12)
 fer                    objet_visible  12,20        bloque  item=iron fallback=super_potion sur=decor  # sur le bureau du couloir SUD (moitié EST)
 scope_sylphe           objet_visible  25,2         bloque  item=silph_scope apparait=giovanni_hideout_won  # Scope Sylphe : visible après la disparition de Giovanni

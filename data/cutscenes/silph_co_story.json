@@ -88,7 +88,7 @@
 				"unless": ["got_silph_co_7f_item_11"],
 				"steps": [
 					{ "despawn": "silph_co_7f_item_11" },
-					{ "give": "nugget", "count": 1, "found": true },
+					{ "give": "tm03", "count": 1, "found": true },
 					{ "set": ["got_silph_co_7f_item_11"] }
 				]
 			}

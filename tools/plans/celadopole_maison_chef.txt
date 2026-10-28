@@ -26,4 +26,5 @@ sortie               warp           6..8,8        libre   to=celadon_city spawn=
 entree               spawn          7,8           libre    # spawn « entrance », tourné ↑
 le_chef              pnj            6,5           bloque  role=P1 facing=right  # le chef de la maison ; propos à rédiger (hors lot de textes §20)
 habitante            pnj            12,7          bloque  role=P2 facing=left  # habitante
+fils                 pnj            3,5           bloque  role=P3 facing=right don=tm41  # le fils du chef (« veut devenir Dresseur ») : CT41 Œuf Cuit une fois (got_tm41, N-22) [D]
 FIN

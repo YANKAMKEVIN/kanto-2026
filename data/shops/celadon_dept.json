@@ -13,7 +13,18 @@
 	},
 	"celadon_dept_2f_tm": {
 		"stock": [
-			{ "item": "tm01" }
+			{ "item": "tm01" },
+			{ "item": "tm02" },
+			{ "item": "tm05" },
+			{ "item": "tm07" },
+			{ "item": "tm09" },
+			{ "item": "tm15" },
+			{ "item": "tm17" },
+			{ "item": "tm23" },
+			{ "item": "tm32" },
+			{ "item": "tm33" },
+			{ "item": "tm37" },
+			{ "item": "tm50" }
 		]
 	},
 	"celadon_dept_4f": {

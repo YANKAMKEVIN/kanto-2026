@@ -106,4 +106,5 @@ herbes_h3           herbes         33,22        libre   role=H3  # vallée de No
 herbes_h4           herbes         69,13        libre   role=H4  # flanc est (obligatoire)
 itineraire_bas      itineraire     40,13..16    libre   role=bas   # coupe du couloir bas
 itineraire_haut     itineraire     40,8..11     libre   role=haut  # coupe du couloir haut
+route_9_tm30            objet_visible  22,27        bloque  item=tm30  # CT30 Téléport (lot 32N, N-22) : case libre et atteignable (valeur par défaut [D], lieu RB non reproduit)
 FIN

@@ -1432,7 +1432,7 @@ func test_library_loads_without_error() -> void:
 	var expected := IDS + IDS_J14_BILL + IDS_J14_ROCKET + IDS_J15_ROUTE_5 + IDS_J16_GYM \
 		+ IDS_J16_SHIP + IDS_J16_RIVAL_CAPTAIN + IDS_J16_T15 + IDS_J17 + IDS_J18 + IDS_J19 + IDS_J20 \
 		+ IDS_J20_T17 + IDS_J20_T21 + IDS_J21 + IDS_J21_T21 + IDS_S2B + S2_FIELD_TRAVEL + IDS_J21_T22 \
-		+ IDS_J24_TRAINERS + IDS_J24 + IDS_J25 + IDS_J28 + IDS_J29 + IDS_J29_MONDE + IDS_J31 + IDS_J30 + IDS_J32 \
+		+ IDS_J24_TRAINERS + IDS_J24 + IDS_J25 + IDS_J28 + IDS_J29 + IDS_J29_MONDE + IDS_J31 + IDS_J30 + IDS_J32 + IDS_J32_CT \
 		+ _silph_co_ids() + _j26_life_ids() + IDS_J26_STORY + _j27_ids()
 	expected.append_array(TEXTS_J26_T6.keys())
 	expected.append_array(TEXTS_S2C_FISH.keys())
@@ -1463,6 +1463,9 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 	assert_eq(_cutscenes.get_errors().size(), 0, str(_cutscenes.get_errors()))
 	var played := _without_qa(_cutscenes.get_dialogue_ids())
 	assert_eq(played, _sorted(PLAYED_J29 + PLAYED_J30 + [
+		# Jalon 32 (32N, N-22) : répliques des dons de CT.
+		&"celadon_dept_3f_tm18_give", &"celadon_dept_3f_tm18_got", &"saffron_psychic_tm29_give",
+		&"saffron_psychic_tm29_got", &"celadon_chief_son_tm41_give", &"celadon_chief_son_tm41_got",
 		# Jalon 24 : Artikodin, porte de l'Arène, CT35, fossiles.
 		&"articuno_cry", &"articuno_flew_away", &"cinnabar_gym_locked", &"cinnabar_lab_tm35_offer",
 		&"cinnabar_lab_tm35_use", &"cinnabar_fossil_taken", &"cinnabar_fossil_ready_kabuto", &"cinnabar_fossil_ready_omanyte",
@@ -1725,6 +1728,8 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 			# Jalon 30 (fusion du J29) : NON à la question du garde de la porte de la Ligue.
 			+ [&"league_door_declined"]))
 	assert_eq(cutscenes.get_set_flags(), _sorted(SET_J29 + SET_J30 + [&"got_tm39", &"route_12_visited",
+		# Jalon 32 (32N) : CT obtenables partout.
+		&"got_route_4_tm04", &"got_ss_anne_lower_deck_tm08", &"got_mt_moon_b1f_tm12", &"got_route_12_tm16", &"got_route_24_tm45", &"got_route_9_tm30", &"got_silph_co_2f_tm36", &"got_viridian_city_tm42", &"got_ss_anne_cabin_a_tm44", &"got_tm18", &"got_tm29", &"got_tm41", &"rooftop_tm48", &"rooftop_tm49",
 		&"snorlax_route_12_awake", &"snorlax_route_12_caught", &"snorlax_route_12_done",
 		&"snorlax_route_12_woken", &"badge_boulder", &"badge_cascade",
 		# Jalon 32 (32J) : Mew (rencontre unique) et le Diplôme.
@@ -2120,7 +2125,15 @@ const J32_TRADE_LINES: Array[StringName] = [
 	&"j32_trade_theo_thanks", &"j32_trade_theo_after", &"j32_trade_theo_done"
 ]
 ## Jalon 32 (N-21) : derniers brouillons validés par Kevin le 2026-10-28 : liste vide.
-const PENDING_DRAFT_VARIANTS: Array[String] = []
+## Jalon 32 (32N, N-22) : dialogues des CT (ramassages et dons).
+const IDS_J32_CT: Array[StringName] = [&"route_4_tm04", &"ss_anne_lower_deck_tm08", &"mt_moon_b1f_tm12", &"route_12_tm16", &"route_24_tm45", &"route_9_tm30", &"silph_co_2f_tm36", &"viridian_city_tm42", &"ss_anne_cabin_a_tm44", &"celadon_dept_3f_tm18_give", &"celadon_dept_3f_tm18_got", &"saffron_psychic_tm29_give", &"saffron_psychic_tm29_got", &"celadon_chief_son_tm41_give", &"celadon_chief_son_tm41_got", &"celadon_chief_son"]
+## Jalon 32 (32N, N-22) : répliques [D] des dons de CT, à faire relire par Kevin (clé « id:variante »).
+const PENDING_DRAFT_VARIANTS: Array[String] = [
+	"celadon_dept_3f_gift_man:1", "celadon_dept_3f_tm18_give:0", "celadon_dept_3f_tm18_got:0",
+	"celadon_roof_girl:2", "celadon_roof_girl:3", "saffron_psychic_tm29_give:0",
+	"saffron_psychic_tm29_got:0", "celadon_chief_son_tm41_give:0", "celadon_chief_son_tm41_got:0",
+	"celadon_chief_son:1",
+]
 
 
 func test_no_dialogue_nor_variant_is_draft() -> void:
@@ -2547,8 +2560,9 @@ func test_oak_parcel_lines() -> void:
 	# Jalon 29 : dix objets au sol, cinq cachés, huit gardes, le rival n° 7 et Sulfura.
 	# Jalon 31 (T4) : huit objets au sol et deux cachés de la Grotte Azurée, Mewtwo.
 	# Jalon 32 : cinq échanges PNJ de Rouge/Bleu (N-14) et Porygon (N-13) ; 32A à 32D : Chen, le
-	# Maître du Dojo (2), deux Poké Balls d'Évoli, le chercheur (2) ; 32J : le camion, le concepteur.
-	assert_eq(launched, 230, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
+	# Maître du Dojo (2), deux Poké Balls d'Évoli, le chercheur (2) ; 32J : le camion, le concepteur. 32N (N-22) : neuf CT
+	# ramassées, le don de la CT18, de la CT29 et de la CT41.
+	assert_eq(launched, 242, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
 		+ "sa CT34, Ondine (pont, Arène et rattrapage), écran, module, console, objets de la "
 		+ "Route 25, le Rocket d'Azuria (2) et le barrage sud ; J15 : objets de la Route 5 ; "
 		+ "J16 : Major Bob (2), neuf objets du S.S. Anne, le capitaine, le marin (2) ; "
@@ -2599,7 +2613,9 @@ func test_oak_parcel_lines() -> void:
 				or (row[0] == &"oak_lab_waiting" and row[1].contains("{player}")) \
 				or (row[0] == &"cinnabar_gym_guide" and row[1].contains("{player}")) \
 				or row[0] == &"cinnabar_lab_tm35_use" \
-				or (row[0] in [&"route_12_gate_tm39_got", &"snorlax_flute_played"] \
+				or (row[0] in [&"route_12_gate_tm39_got", &"snorlax_flute_played",
+					&"celadon_dept_3f_tm18_got", &"saffron_psychic_tm29_got",
+					&"celadon_chief_son_tm41_got"] \
 					and row[1].contains("{player}")) \
 				or (_j26_life_ids().has(row[0]) and row[1].contains("{player}")) \
 				or (row[0] in [&"rival_silph_intro", &"silph_co_lapras_received",

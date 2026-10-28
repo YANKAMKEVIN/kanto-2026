@@ -17,7 +17,7 @@ const TRAINER_FILES: Array[String] = ["route_12_sud", "route_13", "route_14", "r
 const ITEMS: Dictionary = {
 	&"route_12_item_1": &"nugget", &"route_12_hidden_1": &"hyper_potion",
 	&"route_13_hidden_1": &"rare_candy", &"route_13_hidden_2": &"hyper_potion",
-	&"route_15_item_1": &"tm09", &"route_16_hidden_1": &"hyper_potion",
+	&"route_15_item_1": &"tm20", &"route_16_hidden_1": &"hyper_potion",
 	&"route_17_hidden_1": &"rare_candy", &"route_17_hidden_2": &"full_restore",
 	&"route_17_hidden_3": &"nugget", &"route_17_hidden_4": &"full_restore",
 	&"route_17_hidden_5": &"nugget",

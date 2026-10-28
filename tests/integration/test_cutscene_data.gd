@@ -181,6 +181,21 @@ const FOUND_J29: Array[String] = [
 	"route_23_hidden_3:max_potion",
 ]
 const VARIANT_FLAGS: Dictionary = {
+	# Jalon 32 (32N, N-22) : CT obtenables partout, une variante « unless » chacune.
+	&"route_4_tm04": [[]],
+	&"ss_anne_lower_deck_tm08": [[]],
+	&"mt_moon_b1f_tm12": [[]],
+	&"route_12_tm16": [[]],
+	&"route_24_tm45": [[]],
+	&"route_9_tm30": [[]],
+	&"silph_co_2f_tm36": [[]],
+	&"viridian_city_tm42": [[]],
+	&"ss_anne_cabin_a_tm44": [[]],
+	&"celadon_dept_3f_tm18": [[]],
+	&"saffron_psychic_tm29": [[]],
+	&"celadon_chief_son_tm41": [[]],
+	&"celadon_roof_trade_soda": [[]],
+	&"celadon_roof_trade_lemonade": [[]],
 	# Jalon 29 : objets, cachés, contrôles des Badges, gardes, rival n° 7, Sulfura.
 	&"victory_road_1f_item_1": [[]],
 	&"victory_road_1f_item_2": [[]],
@@ -537,6 +552,21 @@ const VARIANT_FLAGS: Dictionary = {
 ## Jalon 7 (T18) : la scène du colis est lancée par la variante « cutscene » du dialogue de Chen.
 ## Jalon 8 : les objets visibles de la Route 2, par le dialogue de leur PNJ « objet ».
 const CODE_PLAYED: Dictionary[StringName, StringName] = {
+	# Jalon 32 (32N) : CT ramassées, données ou échangées.
+	&"route_4_tm04": &"route_4",
+	&"ss_anne_lower_deck_tm08": &"ss_anne_lower_deck",
+	&"mt_moon_b1f_tm12": &"mt_moon_b1f",
+	&"route_12_tm16": &"route_12",
+	&"route_24_tm45": &"route_24",
+	&"route_9_tm30": &"route_9",
+	&"silph_co_2f_tm36": &"silph_co_2f",
+	&"viridian_city_tm42": &"viridian_city",
+	&"ss_anne_cabin_a_tm44": &"ss_anne_cabin_a",
+	&"celadon_dept_3f_tm18": &"celadon_dept_3f",
+	&"saffron_psychic_tm29": &"saffron_psychic_house",
+	&"celadon_chief_son_tm41": &"celadon_chief_house",
+	&"celadon_roof_trade_soda": &"celadon_dept_roof",
+	&"celadon_roof_trade_lemonade": &"celadon_dept_roof",
 	# Jalon 30 (T17) : suite (« next ») de l'appel du rival, ou relancée par Boot à l'arrivée
 	# (reprise : LeagueDirector.pending_cutscene).
 	&"league_victory": &"league_champion", &"league_hall_of_fame": &"hall_of_fame",
@@ -841,7 +871,7 @@ const J26_T9_ITEMS: Dictionary[StringName, Array] = {
 	&"silph_co_6f_item_9": [&"silph_co_6f", &"hp_up"],  # J32 : PV Plus existe (RB)
 	&"silph_co_6f_item_10": [&"silph_co_6f", &"x_accuracy"],
 	&"silph_co_9f_hidden_1": [&"silph_co_9f", &"max_potion"],
-	&"silph_co_10f_item_4": [&"silph_co_10f", &"nugget"],
+	&"silph_co_10f_item_4": [&"silph_co_10f", &"tm26"],
 	&"silph_co_10f_item_5": [&"silph_co_10f", &"rare_candy"],
 	&"silph_co_10f_item_6": [&"silph_co_10f", &"carbos"],  # J32 : Carbone existe (RB)
 	&"saffron_copycat_hidden_1": [&"saffron_copycat_house_2f", &"nugget"],
@@ -1026,6 +1056,8 @@ func test_library_loads_without_error() -> void:
 		# Jalon 27 (T8 à T10) : Morgane, maître du Dojo, choix Kicklee / Tygnon.
 		+ [&"saffron_gym_sabrina", &"saffron_gym_sabrina_tm_late", &"fighting_dojo_master",
 		&"fighting_dojo_take_hitmonlee", &"fighting_dojo_take_hitmonchan"]
+		# Jalon 32 (32N, N-22) : CT obtenables partout.
+		+ [&"route_4_tm04", &"ss_anne_lower_deck_tm08", &"mt_moon_b1f_tm12", &"route_12_tm16", &"route_24_tm45", &"route_9_tm30", &"silph_co_2f_tm36", &"viridian_city_tm42", &"ss_anne_cabin_a_tm44", &"celadon_dept_3f_tm18", &"saffron_psychic_tm29", &"celadon_chief_son_tm41", &"celadon_roof_trade_soda", &"celadon_roof_trade_lemonade"]
 		# Jalon 32 (N-18) : Ronflex d'après la Ligue ; N-13, N-14, N-11.
 		+ [&"snorlax_post_league_wake", &"silph_co_porygon_gift", &"zapdos",
 		&"power_plant_fausse_ball_1", &"power_plant_fausse_ball_2", &"power_plant_fausse_ball_3", &"power_plant_fausse_ball_4", &"power_plant_fausse_ball_5", &"power_plant_fausse_ball_6", &"power_plant_fausse_ball_7", &"power_plant_fausse_ball_8", &"power_plant_item_1", &"power_plant_item_2", &"power_plant_item_3", &"power_plant_item_4", &"power_plant_item_5", &"power_plant_hidden_1", &"power_plant_hidden_2",
@@ -1180,10 +1212,10 @@ func test_only_world_items_are_found_items() -> void:
 		"pokemon_mansion_b1f_item_5:secret_key", "rocket_hideout_b1f_hidden_1:revive",
 		"rocket_hideout_b1f_item_1:escape_rope", "rocket_hideout_b1f_item_2:super_potion",
 		"rocket_hideout_b2f_item_1:moon_stone", "rocket_hideout_b2f_item_2:nugget",
-		"rocket_hideout_b2f_item_3:super_potion", "rocket_hideout_b2f_item_4:super_potion",
-		"rocket_hideout_b3f_hidden_1:nugget", "rocket_hideout_b3f_item_1:super_potion",
+		"rocket_hideout_b2f_item_3:tm07", "rocket_hideout_b2f_item_4:super_potion",
+		"rocket_hideout_b3f_hidden_1:nugget", "rocket_hideout_b3f_item_1:tm10",
 		"rocket_hideout_b3f_item_2:rare_candy", "rocket_hideout_b4f_hidden_1:super_potion",
-		"rocket_hideout_b4f_item_1:super_potion", "rocket_hideout_b4f_item_2:revive",
+		"rocket_hideout_b4f_item_1:tm02", "rocket_hideout_b4f_item_2:revive",
 		"rocket_hideout_b4f_item_3:super_potion", "rocket_hideout_b4f_lift_key:lift_key",
 		"rocket_hideout_b4f_silph_scope:silph_scope", "route_10_item_1:super_potion",
 		"route_11_hidden_1:poke_ball", "route_11_item_1:super_potion", "route_11_item_2:awakening",
@@ -1208,7 +1240,9 @@ func test_only_world_items_are_found_items() -> void:
 		"viridian_forest_item_2:poke_ball", "viridian_forest_item_3:potion",
 		"viridian_forest_item_4:antidote", "viridian_forest_item_5:poke_ball",
 		"viridian_forest_item_6:potion", "viridian_gym_item_1:revive",
-		"silph_co_7f_item_10:rare_candy", "silph_co_7f_item_11:nugget"]
+		"silph_co_7f_item_10:rare_candy", "silph_co_7f_item_11:tm03",
+		# Jalon 32 (32N) : CT du sol.
+		"route_4_tm04:tm04", "ss_anne_lower_deck_tm08:tm08", "mt_moon_b1f_tm12:tm12", "route_12_tm16:tm16", "route_24_tm45:tm45", "route_9_tm30:tm30", "silph_co_2f_tm36:tm36", "viridian_city_tm42:tm42", "ss_anne_cabin_a_tm44:tm44"]
 	# Jalon 26 (T9) : objets au sol et cachés de Safrania et de la Sylphe.
 	for id: StringName in J26_T9_ITEMS:
 		expected.append("%s:%s" % [id, J26_T9_ITEMS[id][1]])

@@ -271,7 +271,7 @@
 						"despawn": "silph_co_10f_item_4"
 					},
 					{
-						"give": "nugget",
+						"give": "tm26",
 						"count": 1,
 						"found": true
 					},

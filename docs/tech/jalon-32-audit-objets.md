@@ -22,7 +22,7 @@ Sept cutscènes « `*_tm_late` » (Pierre, Ondine, Major Bob, Erika, Koga, Sabri
 
 - **209 pas `give` (hors rattrapages)** : **127 visibles**, **47 cachés**, **35 dons/récompenses** (CT d'Arène comprises).
 - Catalogue d'objets : **88 objets** (`data/items/*.json`). **2 objets définis ne sont jamais obtenables** : `guard_spec`, `max_ether`.
-- CT obtenables : **26 sur 50** (01, 05, 06, 09, 11, 13, 14, 17, 19, 21, 22, 24, 25, 27, 28, 32, 33, 34, 35, 37, 38, 39, 40, 43, 46, 47). **24 manquantes** : 02, 03, 04, 07, 08, 10, 12, 15, 16, 18, 20, 23, 26, 29, 30, 31, 36, 41, 42, 44, 45, 48, 49, 50. 4 d'entre elles n'ont pas de capacité dans le jeu (02 Coupe-Vent, 31 Copie, 41 Soin, 48 Éboulement).
+- **Mise à jour N-22 (2026-10-28) : 49 CT sur 50 obtenables** (toutes sauf la CT31 Copie, écartée) ; le chiffre ci-dessous est celui de l'audit initial. CT obtenables à l'audit : **26 sur 50** (01, 05, 06, 09, 11, 13, 14, 17, 19, 21, 22, 24, 25, 27, 28, 32, 33, 34, 35, 37, 38, 39, 40, 43, 46, 47). **24 manquantes** : 02, 03, 04, 07, 08, 10, 12, 15, 16, 18, 20, 23, 26, 29, 30, 31, 36, 41, 42, 44, 45, 48, 49, 50. 4 d'entre elles n'ont pas de capacité dans le jeu (02 Coupe-Vent, 31 Copie, 41 Soin, 48 Éboulement).
 - CS obtenables : **5 sur 5** (CS01 capitaine du S.S. Anne, CS02 Route 16, CS03 maison secrète du Safari, CS04 Gardien, CS05 assistant de Chen).
 - Pierres : les 5 pierres d'évolution sont obtenables (4 en boutique, Pierre Lune en 5 ramassages) ; fossiles et Vieil Ambre obtenables.
 - Objets clés de progression (Colis, Pass Bateau, Flûte, Scope Sylphe, Carte magnétique, Clé Ascenseur, Clé Secrète, Dents d'Or, Bon de Commande, Bicyclette, 3 cannes) : tous présents.
@@ -685,55 +685,55 @@ Moves = capacité présente dans `data/pokemon/moves/*.json` ; objet = l'objet `
 | CT | Capacité | Dans le jeu | Statut | Origine RB |
 |---|---|---|---|---|
 | 01 | Ultimapoing | Mont Sélénite B2F ; boutique Céladopole 2F | obtenable | Mt Moon (confirmé par la grille), boutique |
-| 02 | Coupe-Vent (RB) | — | **capacité absente** (`razor_wind`) | Repaire B4F (grille `repaire_b4f.txt:87`) ; boutique |
-| 03 | Danse-Lames | — (Sylphe 7F : Pépite) | **manquante** (objet absent) | Sylphe 7F (`sylphe_7f.txt:133`) |
-| 04 | Cyclone | — | manquante | à vérifier |
+| 02 | Coupe-Vent (RB) | Repaire Rocket B4F ; boutique Céladopole 2F | obtenable (N-22) | Repaire B4F (grille `repaire_b4f.txt:87`) ; boutique |
+| 03 | Danse-Lames | Sylphe SARL 7F | obtenable (N-22) | Sylphe 7F (`sylphe_7f.txt:133`) |
+| 04 | Cyclone | Route 4 (19, 16) [D] | obtenable (N-22) | à vérifier |
 | 05 | Ultimawashi | Route Victoire 2F | obtenable | Route Victoire |
 | 06 | Toxik | Arène de Parmanie (Koga) | obtenable | Koga |
-| 07 | Empal'Korne | — (Repaire B2F : Super Potion) | **manquante** (objet absent) | Repaire B2F (`repaire_b2f.txt:88`) ; boutique |
-| 08 | Plaquage | — | manquante | à vérifier |
+| 07 | Empal'Korne | Repaire Rocket B2F ; boutique Céladopole 2F | obtenable (N-22) | Repaire B2F (`repaire_b2f.txt:88`) ; boutique |
+| 08 | Plaquage | S.S. Anne, pont inférieur (2, 8) [D] | obtenable (N-22) | à vérifier |
 | 09 | Bélier | Route 15 ; Sylphe 5F (**doublon**) | obtenable | Sylphe 5F |
-| 10 | Damoclès | — (Repaire B3F : Super Potion) | **manquante** (objet absent) | Repaire B3F (`repaire_b3f.txt:81`) |
+| 10 | Damoclès | Repaire Rocket B3F | obtenable (N-22) | Repaire B3F (`repaire_b3f.txt:81`) |
 | 11 | Bulles d'O | Arène d'Azuria (Ondine) | obtenable | Ondine |
-| 12 | Pistolet à O | — | manquante | à vérifier |
+| 12 | Pistolet à O | Mont Sélénite B1F (31, 6) [D] | obtenable (N-22) | à vérifier |
 | 13 | Laser Glace | toit du grand magasin (Eau Fraîche) | obtenable | toit (dossier 23) |
 | 14 | Blizzard | Manoir B1F | obtenable | Manoir (RB : à vérifier) |
-| 15 | Ultralaser | — | manquante | à vérifier (probablement Coin à lots) |
-| 16 | Jackpot | — | manquante | à vérifier |
+| 15 | Ultralaser | Boutique Céladopole 2F, 7 500 ₽ [D] | obtenable (N-22) | à vérifier (probablement Coin à lots) |
+| 16 | Jackpot | Route 12 (16, 26) [D] | obtenable (N-22) | à vérifier |
 | 17 | Sacrifice | Route Victoire 2F | obtenable | Route Victoire |
-| 18 | Riposte | — | **manquante** (la capacité existe) | grand magasin 3F (dossier 23 : PNJ prévu, « ne donne rien ») |
+| 18 | Riposte | Grand magasin 3F (homme, don) | obtenable (N-22) | grand magasin 3F (dossier 23 : PNJ prévu, « ne donne rien ») |
 | 19 | Frappe Atlas | Route 25 | obtenable | Route 25 |
-| 20 | Frénésie | — (Route 15 donne CT09 à la place) | **manquante** (objet absent) | Route 15 (`route_15.txt:92`) |
+| 20 | Frénésie | Route 15 | obtenable (N-22) | Route 15 (`route_15.txt:92`) |
 | 21 | Méga-Sangsue | Arène de Céladopole (Erika) | obtenable | Erika |
 | 22 | Lance-Soleil | Manoir B1F | obtenable | Manoir (RB : à vérifier) |
-| 23 | Draco-Rage | — | manquante | à vérifier (Coin à lots) |
+| 23 | Draco-Rage | Boutique Céladopole 2F, 3 300 ₽ [D] | obtenable (N-22) | à vérifier (Coin à lots) |
 | 24 | Tonnerre | Arène de Carmin (Major Bob) | obtenable | Major Bob |
 | 25 | Fatal-Foudre | Centrale | obtenable | Centrale |
-| 26 | Séisme | — (Sylphe 10F : Pépite) | **manquante** (objet absent) | Sylphe 10F (`sylphe_10f.txt:98`) |
+| 26 | Séisme | Sylphe SARL 10F | obtenable (N-22) | Sylphe 10F (`sylphe_10f.txt:98`) |
 | 27 | Abîme | Arène de Jadielle (Giovanni) | obtenable | Giovanni |
 | 28 | Tunnel | Azuria, maison cambriolée | obtenable | Rocket d'Azuria |
-| 29 | Psyko | — | manquante | à vérifier (Safrania, maison du télépathe, de mémoire) |
-| 30 | Téléport | — | manquante | à vérifier |
-| 31 | Copie (RB) | — | **capacité absente** (`mimic`) | à vérifier (la Copieuse de Safrania, de mémoire) |
+| 29 | Psyko | M. Psy, Safrania (don) | obtenable (N-22) | à vérifier (Safrania, maison du télépathe, de mémoire) |
+| 30 | Téléport | Route 9 (22, 27) [D] | obtenable (N-22) | à vérifier |
+| 31 | Copie (RB) | — | **écartée (N-22)**, seule CT inobtenable | à vérifier (la Copieuse de Safrania, de mémoire) |
 | 32 | Reflet | Parc Safari ouest | obtenable | Safari ; boutique |
 | 33 | Protection | Centrale | obtenable | boutique |
 | 34 | Patience | Arène d'Argenta (Pierre) | obtenable | Pierre |
 | 35 | Métronome | Labo de Cramois'Île | obtenable | Labo |
-| 36 | Destruction | — | manquante | à vérifier |
+| 36 | Destruction | Sylphe SARL 2F (17, 15) [D] | obtenable (N-22) | à vérifier |
 | 37 | Bomb'Œuf | Parc Safari est | obtenable | Safari ; boutique |
 | 38 | Déflagration | Arène de Cramois'Île (Auguste) | obtenable | Auguste |
 | 39 | Météores | poste de la Route 12 (2F) | obtenable | à vérifier |
 | 40 | Coud'Krâne | Parc Safari nord | obtenable | Safari |
-| 41 | Soin (RB) | — | **capacité absente** (`soft_boiled`) | à vérifier |
-| 42 | Dévorêve | — | manquante | à vérifier |
+| 41 | Soin (RB) | Fils du chef, Céladopole (don) [D] | obtenable (N-22) | à vérifier |
+| 42 | Dévorêve | Jadielle (48, 18) [D] | obtenable (N-22) | à vérifier |
 | 43 | Piqué | Route Victoire 1F | obtenable | Route Victoire |
-| 44 | Repos | — | manquante | à vérifier |
-| 45 | Cage-Éclair | — | manquante | à vérifier |
+| 44 | Repos | S.S. Anne, cabine A (9, 5) [D] | obtenable (N-22) | à vérifier |
+| 45 | Cage-Éclair | Route 24 (19, 3) [D] | obtenable (N-22) | à vérifier |
 | 46 | Vague Psy | Arène de Safrania (Morgane) | obtenable | Morgane |
 | 47 | Explosion | Route Victoire 3F | obtenable | Route Victoire |
-| 48 | Éboulement (RB) | — | **capacité absente** (`rock_slide`) | toit (soda) |
-| 49 | Triplattaque | — | **manquante** (la capacité existe) | toit (limonade) |
-| 50 | Clonage | — | manquante | à vérifier (Coin à lots) |
+| 48 | Éboulement (RB) | Toit de Céladopole (fillette, Soda Cool) | obtenable (N-22) | toit (soda) |
+| 49 | Triplattaque | Toit de Céladopole (fillette, Limonade) | obtenable (N-22) | toit (limonade) |
+| 50 | Clonage | Boutique Céladopole 2F, 5 000 ₽ [D] | obtenable (N-22) | à vérifier (Coin à lots) |
 
 Noms de capacités lus dans `data/pokemon/moves/` (numéros → capacités : `data/pokemon/tm_compatibility.json`) ; pour les 4 capacités absentes, le nom français de RB est donné avec « (RB) ».
 
@@ -814,16 +814,16 @@ Aucun. Vérifié à la lecture : les 5 CS, les 8 CT d'Arène, les objets clés d
 
 | Id | Prio | Carte | Constat | Source | Proposition |
 |---|---|---|---|---|---|
-| AUD-01 | P1 | Sylphe SARL 7F | CT03 Danse-Lames absente : l'objet `tm03` n'existe pas, le ramassage de la grille (`item=tm03 fallback=nugget`) donne une Pépite ; la capacité existe | `tools/plans/sylphe_7f.txt:133`, `data/cutscenes/silph_co_story.json:85` | Créer `tm03` (données) et remplacer le `give` de `silph_co_7f_item_11` |
-| AUD-02 | P1 | Repaire Rocket B2F | CT07 Empal'Korne absente (RB : ramassage + boutique de Céladopole) : repli Super Potion ; capacité présente | `tools/plans/repaire_b2f.txt:88`, `data/cutscenes/rocket_hideout.json:353` | Créer `tm07` ; l'ajouter aussi à la boutique CT (AUD-22) |
-| AUD-03 | P1 | Repaire Rocket B3F | CT10 Damoclès absente : repli Super Potion ; capacité présente | `tools/plans/repaire_b3f.txt:81`, `data/cutscenes/rocket_hideout.json:377` | Créer `tm10` et remplacer le `give` de `rocket_hideout_b3f_item_1` |
-| AUD-04 | P1 | Route 15 | CT20 Frénésie absente : la grille prévoit `tm20`, la cutscène donne **CT09** (doublon de Sylphe 5F) ; capacité `rage` présente | `tools/plans/route_15.txt:92`, `data/cutscenes/j22_route_15.json:13` | Créer `tm20`, donner CT20 à la Route 15 |
-| AUD-05 | P1 | Sylphe SARL 10F | CT26 Séisme absente : repli Pépite ; capacité présente | `tools/plans/sylphe_10f.txt:98`, `data/cutscenes/silph_co_life.json:263` | Créer `tm26` |
-| AUD-06 | P1 | Céladopole, grand magasin 3F | CT18 Riposte : le PNJ prévu au dossier 23 (H-7) n'existe pas ; la capacité `counter` existe | `docs/design/dossier-23-celadopole.md:311`, `data/cutscenes/celadon_dept.json` (absent) | Poser le PNJ du 3e étage et créer `tm18` |
-| AUD-07 | P1 | Céladopole, toit | CT49 Triplattaque : la fillette refuse la Limonade (« trop sucré »), alors que `tri_attack` existe (dossier 23 : « seulement si la capacité existe ») | `data/dialogues/celadon_dept.json:173-184`, `data/cutscenes/celadon_dept.json` | Créer `tm49` et brancher l'échange Limonade → CT49 |
-| AUD-08 | P1 | Hors cartes (RB : à vérifier) | 9 CT dont la capacité existe n'ont **aucun** emplacement : CT04 Cyclone, CT08 Plaquage, CT12 Pistolet à O, CT29 Psyko, CT30 Téléport, CT36 Destruction, CT42 Dévorêve, CT44 Repos, CT45 Cage-Éclair ; aucun objet `tmNN` n'existe | `data/pokemon/tm_compatibility.json` (`tms`), `data/items/*.json` | Relever l'origine RB de chacune (à vérifier) et créer objet + emplacement, par lots ; CT29 Psyko et CT44 Repos d'abord (usage compétitif) |
-| AUD-09 | P1 | Céladopole (Coin à lots) | CT15 Ultralaser, CT23 Draco-Rage, CT50 Clonage (RB : à vérifier, vraisemblablement prix du Casino) inobtenables : le Casino est narratif, sans jeton ni échange de prix | `data/dialogues/game_corner.json`, `docs/design/dossier-23-celadopole.md:167` | Décision de Kevin : les donner ailleurs (récompense, boutique) ou les écarter |
-| AUD-10 | P1 | Hors cartes | 4 CT sans capacité dans le jeu : CT02 Coupe-Vent, CT31 Copie, CT41 Soin, CT48 Éboulement (`razor_wind`, `mimic`, `soft_boiled`, `rock_slide` absentes) | `data/pokemon/tm_compatibility.json` (`tms`), `data/pokemon/moves/*.json` | Décision de Kevin : créer les capacités (Copie, Soin : nouvelle mécanique) ou écarter ces 4 CT |
+| AUD-01 | P1 | Sylphe SARL 7F | CT03 Danse-Lames absente : l'objet `tm03` n'existe pas, le ramassage de la grille (`item=tm03 fallback=nugget`) donne une Pépite ; la capacité existe | `tools/plans/sylphe_7f.txt:133`, `data/cutscenes/silph_co_story.json:85` | Créer `tm03` (données) et remplacer le `give` de `silph_co_7f_item_11` **Traité N-22 (lot 32N, 2026-10-28).** |
+| AUD-02 | P1 | Repaire Rocket B2F | CT07 Empal'Korne absente (RB : ramassage + boutique de Céladopole) : repli Super Potion ; capacité présente | `tools/plans/repaire_b2f.txt:88`, `data/cutscenes/rocket_hideout.json:353` | Créer `tm07` ; l'ajouter aussi à la boutique CT (AUD-22) **Traité N-22 (lot 32N, 2026-10-28).** |
+| AUD-03 | P1 | Repaire Rocket B3F | CT10 Damoclès absente : repli Super Potion ; capacité présente | `tools/plans/repaire_b3f.txt:81`, `data/cutscenes/rocket_hideout.json:377` | Créer `tm10` et remplacer le `give` de `rocket_hideout_b3f_item_1` **Traité N-22 (lot 32N, 2026-10-28).** |
+| AUD-04 | P1 | Route 15 | CT20 Frénésie absente : la grille prévoit `tm20`, la cutscène donne **CT09** (doublon de Sylphe 5F) ; capacité `rage` présente | `tools/plans/route_15.txt:92`, `data/cutscenes/j22_route_15.json:13` | Créer `tm20`, donner CT20 à la Route 15 **Traité N-22 (lot 32N, 2026-10-28).** |
+| AUD-05 | P1 | Sylphe SARL 10F | CT26 Séisme absente : repli Pépite ; capacité présente | `tools/plans/sylphe_10f.txt:98`, `data/cutscenes/silph_co_life.json:263` | Créer `tm26` **Traité N-22 (lot 32N, 2026-10-28).** |
+| AUD-06 | P1 | Céladopole, grand magasin 3F | CT18 Riposte : le PNJ prévu au dossier 23 (H-7) n'existe pas ; la capacité `counter` existe | `docs/design/dossier-23-celadopole.md:311`, `data/cutscenes/celadon_dept.json` (absent) | Poser le PNJ du 3e étage et créer `tm18` **Traité N-22 (lot 32N, 2026-10-28).** |
+| AUD-07 | P1 | Céladopole, toit | CT49 Triplattaque : la fillette refuse la Limonade (« trop sucré »), alors que `tri_attack` existe (dossier 23 : « seulement si la capacité existe ») | `data/dialogues/celadon_dept.json:173-184`, `data/cutscenes/celadon_dept.json` | Créer `tm49` et brancher l'échange Limonade → CT49 **Traité N-22 (lot 32N, 2026-10-28).** |
+| AUD-08 | P1 | Hors cartes (RB : à vérifier) | 9 CT dont la capacité existe n'ont **aucun** emplacement : CT04 Cyclone, CT08 Plaquage, CT12 Pistolet à O, CT29 Psyko, CT30 Téléport, CT36 Destruction, CT42 Dévorêve, CT44 Repos, CT45 Cage-Éclair ; aucun objet `tmNN` n'existe | `data/pokemon/tm_compatibility.json` (`tms`), `data/items/*.json` | Relever l'origine RB de chacune (à vérifier) et créer objet + emplacement, par lots ; CT29 Psyko et CT44 Repos d'abord (usage compétitif) **Traité N-22 (lot 32N, 2026-10-28).** |
+| AUD-09 | P1 | Céladopole (Coin à lots) | CT15 Ultralaser, CT23 Draco-Rage, CT50 Clonage (RB : à vérifier, vraisemblablement prix du Casino) inobtenables : le Casino est narratif, sans jeton ni échange de prix | `data/dialogues/game_corner.json`, `docs/design/dossier-23-celadopole.md:167` | Décision de Kevin : les donner ailleurs (récompense, boutique) ou les écarter **Traité N-22 (lot 32N, 2026-10-28).** |
+| AUD-10 | P1 | Hors cartes | 4 CT sans capacité dans le jeu : CT02 Coupe-Vent, CT31 Copie, CT41 Soin, CT48 Éboulement (`razor_wind`, `mimic`, `soft_boiled`, `rock_slide` absentes) | `data/pokemon/tm_compatibility.json` (`tms`), `data/pokemon/moves/*.json` | Décision de Kevin : créer les capacités (Copie, Soin : nouvelle mécanique) ou écarter ces 4 CT **Traité N-22 (lot 32N, 2026-10-28) : CT31 Copie écartée, les trois autres capacités créées.** |
 | AUD-11 | P1 | Sylphe 5F / 7F, Manoir 1F/3F, Repaire B4F | Protéine, Fer, Calcium absents du catalogue : remplacés par Super Bonbon, Pépite, Super Bonbon (Fer → Super Potion au Repaire B4F) | `tools/plans/sylphe_5f.txt:126`, `sylphe_7f.txt:132`, `repaire_b4f.txt:89`, `manoir_1f.txt:64`, `manoir_3f.txt:56` | Substitution déjà validée (M-16/N-19) : confirmer, ou créer les vitamines avec AUD-20 |
 | AUD-12 | P1 | Sylphe 5F (caché) ; Tour Pokémon 4F | Élixir et Éther absents du catalogue : Élixir → Rappel (Sylphe 5F caché) et Super Potion (Tour 4F, K-17) | `tools/plans/sylphe_5f.txt:131`, `pokemon_tower_4f.txt:69` | Confirmer la substitution, ou créer Élixir/Éther |
 | AUD-13 | P1 | Îles Écume B3F | Objet caché **Max Éther** (RB) prévu par la grille mais **non placé** : aucune cutscène `seafoam_b3f_*`, et `max_ether` est défini sans jamais être obtenu | `tools/plans/seafoam_b3f.txt:68`, `data/cutscenes/seafoam.json` (clés `seafoam_b2f_hidden_1`, `seafoam_b4f_hidden_1` seulement), `data/items/items_j29.json:46` | Ajouter `seafoam_b3f_hidden_1` (Max Éther ou un repli) |
@@ -840,7 +840,7 @@ Aucun. Vérifié à la lecture : les 5 CS, les 8 CT d'Arène, les objets clés d
 | AUD-19 | P2 | Repaire Rocket B1F, B4F | Replis restés en place alors que les objets existent désormais : Hyper Potion → Super Potion (B1F), PP Plus caché → Rappel (B1F), PV Plus → Rappel (B4F) | `tools/plans/repaire_b1f.txt:92-93`, `repaire_b4f.txt:88`, `data/cutscenes/rocket_hideout.json:236`, `:260`, `:470` | Remettre `hyper_potion` (existe depuis le J22) ; PP Plus/PV Plus selon AUD-20 |
 | AUD-20 | P2 | Centrale, Sylphe 6F/10F, Grotte Azurée, Écume | **Vitamines sans effet** : PV Plus (×2) et Carbone (×2) ramassés mais inertes ; PP Plus (×2), Max Élixir (×2) idem ; aucun EV n'est jamais écrit (voir §4) | `data/items/items_j32.json:2`, `:11`, `data/items/items_j31.json:2`, `:10`, `game/pokemon/pokemon_factory.gd:24`, `game/items/item_data.gd:127-140` | Soit un mini-système d'EV/PP (choix de Kevin), soit retrait de ces objets des cartes |
 | AUD-21 | P2 | Céladopole 5F | Défense Spéc. (`guard_spec`) définie mais ni vendue ni ramassée, et sans effet dans le moteur ; RB la vend au 5F | `data/items/items_j29.json:38`, `data/shops/celadon_dept.json` (`celadon_dept_5f`) | Ajouter au stock si l'effet est implémenté, sinon laisser |
-| AUD-22 | P2 | Céladopole 2F (CT) | Seule CT01 est en vente ; les objets `tm05`, `tm09`, `tm17`, `tm32`, `tm33`, `tm37` existent et sont dans la liste RB (+ CT02 impossible, CT07 manquante) | `data/shops/celadon_dept.json:14-18`, `docs/design/dossier-23-celadopole.md:310` | Compléter le stock avec les CT existantes (obtenues ailleurs : pas de risque d'inflation majeur) |
+| AUD-22 | P2 | Céladopole 2F (CT) | Seule CT01 est en vente ; les objets `tm05`, `tm09`, `tm17`, `tm32`, `tm33`, `tm37` existent et sont dans la liste RB (+ CT02 impossible, CT07 manquante) | `data/shops/celadon_dept.json:14-18`, `docs/design/dossier-23-celadopole.md:310` | Compléter le stock avec les CT existantes (obtenues ailleurs : pas de risque d'inflation majeur) **Traité N-22 (lot 32N, 2026-10-28).** |
 | AUD-23 | P2 | Parc Safari | 4 objets RB remplacés (Potion Max → Hyper Potion ×2, Rappel Max → Rappel ×2, Carbone → Super Bonbon, Protéine → Rappel) ; CT32/CT37 « créées » | `tools/plans/safari_est.txt:68-71`, `safari_ouest.txt:73-77`, `safari_nord.txt:84-85` | Substitution validée (N-19) ; ajuster avec AUD-20 |
 | AUD-24 | P2 | Manoir Pokémon, Tour Pokémon, Sylphe | Autres remplacements « objet absent » : Manoir 1F/3F Pépite (Carbone/Fer), 2F Super Bonbon (Calcium), Tour 4F Super Potion (Élixir), Sylphe 7F/10F Super Bonbon/Pépite (CT03, CT26, Calcium) | `tools/plans/manoir_1f.txt:64`, `manoir_2f.txt:65`, `manoir_3f.txt:56`, `pokemon_tower_4f.txt:69` | Défaire au fil de la création des objets (AUD-01, 05, 11, 12) |
 | AUD-25 | P2 | Partout | Inflation de Super Bonbons (17 ramassages) et de Pépites (16) due aux remplacements ; RB en compte nettement moins (à vérifier) | `data/cutscenes/*.json` (comptage `give`) | Réduire à la création des objets d'origine |

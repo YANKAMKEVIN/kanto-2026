@@ -11,5 +11,10 @@
 			"id": "route_4_clara", "sight": 3, "before": "route_4_clara_before",
 			"defeated": "route_4_clara_defeated"
 		}
+	},
+	"route_4_tm04": {
+		"cell": [19, 16], "facing": "down", "sprite": "object/poke_ball_ground",
+		"dialogue": "route_4_tm04", "verb": "take", "turn_to_player": false,
+		"unless": ["got_route_4_tm04"]
 	}
 }

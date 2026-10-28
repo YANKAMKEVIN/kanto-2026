@@ -85,7 +85,7 @@ arrivee_ascenseur      spawn          25,18        libre   paire=ascenseur etage
 sbire_b2               dresseur       20,12        bloque  role=R4 facing=down sight=4 trainer=rocket_hideout_b2f_1  # RB n° 13 : Nosferapti, Smogo, Tadmorv, Nosferapti, Rattatac 17 ; salle centrale
 pierre_lune            objet_visible  1,11         bloque  item=moon_stone  # secteur nord du labyrinthe
 pepite                 objet_visible  16,8         bloque  item=nugget  # coin nord-est de la coursive nord
-ct07                   objet_visible  6,12         bloque  item=tm_horn_drill fallback=super_potion  # CT07 Empal’Korne (RB) : au coeur du labyrinthe
+ct07                   objet_visible  6,12         bloque  item=tm07  # CT07 Empal’Korne (RB) : au coeur du labyrinthe
 super_potion           objet_visible  3,21         bloque  item=super_potion  # sud-ouest du labyrinthe
 dalle_4_9              dalle          4,9          libre   dir=O trajet=O2 arret=2,9
 dalle_8_9              dalle          8,9          libre   dir=O trajet=O6 arret=2,9

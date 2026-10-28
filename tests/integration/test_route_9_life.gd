@@ -243,7 +243,7 @@ func test_ambient_pokemon_on_their_cells() -> void:
 	var count := 0
 	for npc: Npc in map.get_npcs():
 		count += 1
-	assert_eq(count, 12, "7 Dresseurs, 3 objets, 2 Pokémon d'ambiance")
+	assert_eq(count, 13, "7 Dresseurs, 3 objets, 2 Pokémon d'ambiance, la CT30 (N-22)")
 
 
 # --- Déclencheur et objectif ----------------------------------------------------------------

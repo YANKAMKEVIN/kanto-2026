@@ -1,0 +1,108 @@
+{
+	"celadon_dept_3f_tm18_give": {
+		"speaker": "Homme",
+		"variants": [
+			{
+				"pages": [
+					"J'avais un cadeau pour un Dresseur doué.",
+					"Toi, tu as l'air de ceux qui encaissent les coups.\nTiens, prends ça !"
+				],
+				"draft": true
+			}
+		]
+	},
+	"celadon_dept_3f_tm18_got": {
+		"narration": true,
+		"variants": [
+			{
+				"pages": [
+					"{player} obtient la CT18 — Riposte !",
+					"Riposte renvoie le double des dégâts\nd'une attaque Normal ou Combat."
+				],
+				"draft": true
+			}
+		]
+	},
+	"saffron_psychic_tm29_give": {
+		"speaker": "M. Psy",
+		"variants": [
+			{
+				"pages": [
+					"Je sentais ta venue, jeune Dresseur.",
+					"Je te confie une technique de ma jeunesse."
+				],
+				"draft": true
+			}
+		]
+	},
+	"saffron_psychic_tm29_got": {
+		"narration": true,
+		"variants": [
+			{
+				"pages": [
+					"{player} obtient la CT29 — Psyko !",
+					"Psyko est une puissante attaque Psy."
+				],
+				"draft": true
+			}
+		]
+	},
+	"celadon_chief_son_tm41_give": {
+		"speaker": "Garçon",
+		"variants": [
+			{
+				"pages": [
+					"Un jour, je serai un grand Dresseur !",
+					"Tiens, je te donne ma CT.\nMoi, je n'arrive pas à m'en servir."
+				],
+				"draft": true
+			}
+		]
+	},
+	"celadon_chief_son_tm41_got": {
+		"narration": true,
+		"variants": [
+			{
+				"pages": [
+					"{player} obtient la CT41 — Œuf Cuit !",
+					"Œuf Cuit rend la moitié des PV du lanceur."
+				],
+				"draft": true
+			}
+		]
+	},
+	"celadon_chief_son": {
+		"speaker": "Garçon",
+		"variants": [
+			{ "unless": ["got_tm41"], "cutscene": "celadon_chief_son_tm41" },
+			{ "pages": ["Quand je serai Dresseur,\nje battrai le Champion !"], "draft": true }
+		]
+	},
+	"route_4_tm04": {
+		"cutscene": "route_4_tm04"
+	},
+	"ss_anne_lower_deck_tm08": {
+		"cutscene": "ss_anne_lower_deck_tm08"
+	},
+	"mt_moon_b1f_tm12": {
+		"cutscene": "mt_moon_b1f_tm12"
+	},
+	"route_12_tm16": {
+		"cutscene": "route_12_tm16"
+	},
+	"route_24_tm45": {
+		"cutscene": "route_24_tm45"
+	},
+	"route_9_tm30": {
+		"cutscene": "route_9_tm30"
+	},
+	"silph_co_2f_tm36": {
+		"cutscene": "silph_co_2f_tm36"
+	},
+	"viridian_city_tm42": {
+		"cutscene": "viridian_city_tm42"
+	},
+	"ss_anne_cabin_a_tm44": {
+		"cutscene": "ss_anne_cabin_a_tm44"
+	}
+}
