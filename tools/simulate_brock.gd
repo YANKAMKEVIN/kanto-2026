@@ -426,6 +426,7 @@ func _walk_route(party: RefCounted, lead: RefCounted, rng: RefCounted) -> void:
 			_rules_script.for_wild(_items))
 		battle.start()
 		var ai: RefCounted = _ai_script.new(&"smart")
+		ai.status_draw = false
 		while battle.get_state() == CHOOSING and battle.get_turn() < MAX_TURNS:
 			if battle.submit(ai.choose(player, foe, rng, _data)).is_empty():
 				break
@@ -460,6 +461,8 @@ func _trainer_battle(party: RefCounted, trainer_id: StringName, levels: Vector2i
 		_rules_script.for_trainer(trainer, _items))
 	battle.start()
 	var player_ai: RefCounted = _ai_script.new(&"smart")
+	# Le joueur simulé ne tire pas ses statuts au hasard (règle 0 de l'IA : adversaires seuls).
+	player_ai.status_draw = false
 	var left := potions
 	## Adversaires contre lesquels le joueur « changement » a déjà changé de Pokémon.
 	var switched: Array = []

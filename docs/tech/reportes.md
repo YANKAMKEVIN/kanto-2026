@@ -274,6 +274,22 @@ Les points RP-151 à RP-154, propres à `jalon-23` jusqu'ici, sont passés de la
 
 - **J32 (T5, 32J), rendu provisoire [D]** (`jalon-32`, 2026-10-27) : terminal d'échange local = même meuble que le Stockage (`int_centre_terminal`) ; vieux camion du quai de Carmin = camionnette moderne de Bourg Palette (`prop_camionnette_01`) ; dos de combat de Mew = artwork officiel en miroir (`dos_rb_151` absent, `gen_placeholder_battlers_j32.py`) ; Mew n'a pas de sprite de carte (il apparaît par le combat). Phase DA.
 
+### 2.14 IA « smart » : tirage de statut à 1 sur 3 (2026-10-27, à rééquilibrer)
+
+Règle validée et fusionnée sans rééquilibrage (Kevin, 2026-10-27 : « merge as it stands, rebalance the bold lines later »). Victoire au premier essai du joueur attentif, 400 graines, avant → après ; tableau complet : [ia-statut-tiers.md](ia-statut-tiers.md).
+
+| ID | Origine | Description | Cat. | P | Destination | État / preuve |
+|---|---|---|---|---|---|---|
+| RP-249 | IA tiers (2026-10-27) | Pierre contre un Bulbizarre seul N11 (3 Potions) : 76 → 38 % (Boul'Armure et Armure ralentissent le combat) | idée (équilibrage) | P2 | Kevin (rééquilibrage) | ouvert |
+| RP-250 | IA tiers (2026-10-27) | Rival n° 4 (S.S. Anne) : contre Carabaffe 21, 44 → 28 % (sous 35 %) ; contre Herbizarre + Racaillou, 76 → 85 % (au-dessus de 80 %) | idée (équilibrage) | P2 | Kevin (rééquilibrage) | ouvert |
+| RP-251 | IA tiers (2026-10-27) | Rival n° 5 (Tour Pokémon) : contre Carabaffe 24, 19 → 4 % ; contre Reptincel 24, 81 → 54 % (revenu dans les seuils) | idée (équilibrage) | P2 | Kevin (rééquilibrage) | ouvert |
+| RP-252 | IA tiers (2026-10-27) | Giovanni de Céladopole contre Reptincel 30 : 23 → 7 % | idée (équilibrage) | P2 | Kevin (rééquilibrage) | ouvert |
+| RP-253 | IA tiers (2026-10-27) | Rival n° 6 (Sylphe) contre Tortank 38 : 57 → 39 % | idée (équilibrage) | P2 | Kevin (rééquilibrage) | ouvert |
+| RP-254 | IA tiers (2026-10-27) | Auguste : équipe de la QA j25 (six combats sans soin) 91 → 77 % (revenu sous 80 %) ; arrivée basse Florizarre 45 sans soin 38 → 60 % (au bord) ; à surveiller aussi : Koga arrivée basse 49 → 60 %, Major Bob contre Reptincel 21 72 → 80 % | idée (équilibrage) | P2 | Kevin (rééquilibrage) | ouvert |
+| RP-255 | QA S24 J32 (2026-10-28) | Boutique des CT du 2F de Céladopole : nom de la capacité tronqué sur 8 lignes sur 12 (« CT01 — Ulti… ») | rendu (UI) | P2 | phase DA | ouvert |
+| RP-256 | QA S24 J32 (2026-10-28) | 23 icônes de CT provisoires (CT01 teintée) à repeindre | rendu (art) | P3 | phase DA | ouvert |
+| RP-257 | QA S24 J32 (2026-10-28) | Vendeur du 2F de Céladopole parlable seulement côté sud du comptoir (12, 6) ; côté nord, rien (conforme à la grille, déroutant) | idée (jouabilité) | P3 | Kevin | ouvert |
+
 ## 3. Propres à une branche non fusionnée
 
 Lecture seule ; ces points se règlent sur la branche ou à sa fusion (session du jalon). Les lignes
