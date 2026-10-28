@@ -363,7 +363,6 @@
 		"speaker": "Coline",
 		"variants": [
 			{
-				"draft": true,
 				"pages": [
 					"Salut ! Tu échangerais ton Têtarte\ncontre mon Lippoutou ?"
 				],
@@ -386,7 +385,6 @@
 		"speaker": "Coline",
 		"variants": [
 			{
-				"draft": true,
 				"pages": [
 					"Dommage… Repasse si tu changes d'avis."
 				]
@@ -397,7 +395,6 @@
 		"speaker": "Coline",
 		"variants": [
 			{
-				"draft": true,
 				"pages": [
 					"Ce n'est pas un Têtarte.\nReviens quand tu en auras un."
 				]
@@ -408,7 +405,6 @@
 		"speaker": "Coline",
 		"variants": [
 			{
-				"draft": true,
 				"pages": [
 					"Merci ! Prends bien soin de lui."
 				]
@@ -419,7 +415,6 @@
 		"speaker": "Coline",
 		"variants": [
 			{
-				"draft": true,
 				"pages": [
 					"Mon ancien Lippoutou va bien ?"
 				]
@@ -430,7 +425,6 @@
 		"narration": true,
 		"variants": [
 			{
-				"draft": true,
 				"pages": [
 					"{player} a échangé Têtarte contre Lola !"
 				]

@@ -2065,6 +2065,15 @@ const TEXTS_J32: Dictionary[StringName, Array] = {
 	&"j32_trade_theo_thanks": ["Merci ! Prends bien soin de lui."],
 	&"j32_trade_theo_after": ["Mon ancien Nidorina va bien ?"],
 	&"j32_trade_theo_done": ["{player} a échangé Nidorino contre Terry !"],
+	# N-21 (2026-10-28) : échange de Lippoutou, terminal d'échange, chercheur, camion.
+	&"j32_trade_coline_offer": ["Salut ! Tu échangerais ton Têtarte\ncontre mon Lippoutou ?"],
+	&"j32_trade_coline_refuse": ["Dommage… Repasse si tu changes d'avis."],
+	&"j32_trade_coline_wrong": ["Ce n'est pas un Têtarte.\nReviens quand tu en auras un."],
+	&"j32_trade_coline_thanks": ["Merci ! Prends bien soin de lui."],
+	&"j32_trade_coline_after": ["Mon ancien Lippoutou va bien ?"],
+	&"j32_trade_coline_done": ["{player} a échangé Têtarte contre Lola !"],
+	&"trade_terminal": ["Un terminal d'échange local."],
+	&"trade_terminal_none": ["Échanger ne changerait rien\npour ces Pokémon."],
 	&"zapdos_presence": ["L'air crépite d'électricité…"],
 	&"zapdos_flew_away": ["Électhor s'est envolé dans un éclair."],
 	&"silph_co_porygon_giver": ["Prends bien soin de Porygon.\nIl apprend vite.", "Notre prototype, Porygon. Un Pokémon\nfait de données. Il est à toi."],
@@ -2072,7 +2081,7 @@ const TEXTS_J32: Dictionary[StringName, Array] = {
 	&"silph_co_porygon_stored": ["Porygon a été envoyé au stockage."],
 	# Jalon 32 (T5, §3 du plan) et 32A à 32D (N-16, textes 8 à 15 ; formules de don).
 	&"trade_terminal_confirm": ["Échanger {pokemon} ?"],
-	&"oak_lab_waiting": ["{player} ! Tu te souviens de la Poké Ball\nrestée sur cette table ?", "C'était mon dernier Pokémon.\nIl t'a attendu. Prends-en soin.", "Le monde qui vous attend est bien plus vaste que Bourg Palette.", "Prends le temps de l'observer. Les Pokémon ont beaucoup à nous apprendre.", "Prends ton temps.", "Choisis celui avec qui tu as envie de partir.", "Un peu de patience. J'ai quelque chose à vous montrer."],
+	&"oak_lab_waiting": ["{player} ! Tu te souviens du Pokémon\nresté sur cette table ?", "C'était mon dernier Pokémon.\nIl t'a attendu. Prends-en soin.", "Le monde qui vous attend est bien plus vaste que Bourg Palette.", "Prends le temps de l'observer. Les Pokémon ont beaucoup à nous apprendre.", "Prends ton temps.", "Choisis celui avec qui tu as envie de partir.", "Un peu de patience. J'ai quelque chose à vous montrer."],
 	&"j32_oak_second_gift": ["Et ce n'est pas tout : un autre\nest arrivé au labo. Il est pour toi."],
 	&"j32_oak_received_bulbasaur": ["{player} reçoit Bulbizarre !"],
 	&"j32_oak_stored_bulbasaur": ["Bulbizarre a été envoyé au stockage."],
@@ -2083,14 +2092,16 @@ const TEXTS_J32: Dictionary[StringName, Array] = {
 	# 32J (N-16, textes 1 à 7).
 	&"j32_vermilion_rumor": ["Le vieux camion du quai ? Personne ne sait\nqui l'a garé là.",
 		"Mon frère jure qu'un Pokémon rose\ndort dessous. Il dit n'importe quoi."],
-	&"vermilion_truck": ["Quelque chose bouge sous le camion…"],
+	&"vermilion_truck": ["Quelque chose bouge sous le camion…",
+		"Un vieux camion. Il n'a pas bougé\ndepuis des années."],
 	&"j32_designer": ["Tu sais quoi ? C'est moi qui ai conçu\nce jeu !",
 		"Remplir le Pokédex, c'est dur.\nMais n'abandonne pas !",
 		"Incroyable ! Tu as complété\nton Pokédex ! Félicitations !"],
 	&"j32_diploma_received": ["{player} reçoit le Diplôme !"],
 	&"j32_eevee_ball_2": ["D'autres Évoli sont nés.\nPrends-en un si tu veux.", "Le prendre ?"],
 	&"j32_eevee_ball_3": ["D'autres Évoli sont nés.\nPrends-en un si tu veux.", "Le prendre ?"],
-	&"j32_fossil_researcher": ["Toi ! On a partagé les fossiles,\nau Mont Sélénite.",
+	&"j32_fossil_researcher": ["Le Labo saura le réveiller.\nPrends-en soin.",
+		"Toi ! On a partagé les fossiles,\nau Mont Sélénite.",
 		"Je n'ai jamais su le réveiller.\nGarde-le : ici, ils savent faire."],
 	&"fighting_dojo_master": ["Champion de la Ligue… Mes poings\nt'attendaient.", "Prends l'autre Poké Ball. Un Dojo\nn'est rien sans ses deux styles.", "Prends-en soin.\nEt reviens t'entraîner quand tu veux !", "Choisis l'un de nos Pokémon.\nIl te suivra."],
 }
@@ -2108,16 +2119,8 @@ const J32_TRADE_LINES: Array[StringName] = [
 	&"j32_trade_theo_offer", &"j32_trade_theo_refuse", &"j32_trade_theo_wrong",
 	&"j32_trade_theo_thanks", &"j32_trade_theo_after", &"j32_trade_theo_done"
 ]
-## Jalon 32 (N-14, après la fusion du J30) : échange Têtarte → Lippoutou, textes [D] à valider.
-const PENDING_DRAFT_VARIANTS: Array[String] = [
-	"j32_trade_coline_offer:0", "j32_trade_coline_refuse:0", "j32_trade_coline_wrong:0", "j32_trade_coline_thanks:0", "j32_trade_coline_after:0", "j32_trade_coline_done:0",
-	# Jalon 32 (T5) : terminal d'échange local [D].
-	"trade_terminal:0", "trade_terminal_none:0",
-	# Jalon 32 (32B) : après le don du second fossile [D].
-	"j32_fossil_researcher:0",
-	# Jalon 32 (32J) : le camion avant les 150 [D].
-	"vermilion_truck:1",
-]
+## Jalon 32 (N-21) : derniers brouillons validés par Kevin le 2026-10-28 : liste vide.
+const PENDING_DRAFT_VARIANTS: Array[String] = []
 
 
 func test_no_dialogue_nor_variant_is_draft() -> void:

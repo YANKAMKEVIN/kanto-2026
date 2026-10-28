@@ -25,33 +25,10 @@ const DATA_DIR := "res://data"
 ## Jalon 26 (T6) : description de Safrania sur la Carte [D], à relire par Kevin.
 ## Jalon 32 (N-11, N-13, N-14) : textes d'Électhor, de Porygon et des échanges PNJ validés par
 ## Kevin le 2026-10-27, « draft » retiré.
-## Jalon 32 (N-14, après la fusion du J30) : échange Têtarte → Lippoutou [D], à relire par Kevin.
+## Jalon 32 (N-21) : échange Têtarte → Lippoutou, terminal d'échange, objets de la Centrale,
+## fiches de Pokédex (Lippoutou, Mackogneur, Ectoplasma, Draco, Dracolosse, Mew), chercheur et
+## camion validés par Kevin le 2026-10-28, « draft » retiré.
 const PENDING_DRAFTS: Array[String] = ["world/zones.json/zones/saffron_city",
-	# Jalon 32 (32G) : objets et zone de la Centrale [D].
-	"items/items_j32.json/hp_up",
-	"items/items_j32.json/carbos",
-	"items/items_j32.json/tm25",
-	"items/items_j32.json/tm33",
-	# Jalon 32 (RP §2.13) : fiches de Pokédex [D] de la Ligue.
-	"pokedex/kanto.json/species/jynx",
-	"pokedex/kanto.json/species/machamp",
-	"pokedex/kanto.json/species/gengar",
-	"pokedex/kanto.json/species/dragonair",
-	"pokedex/kanto.json/species/dragonite",
-	"dialogues/j32_trades.json/j32_trade_coline_offer/variants/0",
-	"dialogues/j32_trades.json/j32_trade_coline_refuse/variants/0",
-	"dialogues/j32_trades.json/j32_trade_coline_wrong/variants/0",
-	"dialogues/j32_trades.json/j32_trade_coline_thanks/variants/0",
-	"dialogues/j32_trades.json/j32_trade_coline_after/variants/0",
-	"dialogues/j32_trades.json/j32_trade_coline_done/variants/0",
-	# Jalon 32 (T5) : terminal d'échange local [D].
-	"dialogues/j32_local_trade.json/trade_terminal/variants/0",
-	"dialogues/j32_local_trade.json/trade_terminal_none/variants/0",
-	# Jalon 32 (32B) : réplique d'après le don du second fossile [D].
-	"dialogues/j32_collection.json/j32_fossil_researcher/variants/0",
-	# Jalon 32 (32J) : camion avant les 150, fiche de Mew [D].
-	"dialogues/j32_mew.json/vermilion_truck/variants/1",
-	"pokedex/kanto.json/species/mew",
 ]
 
 

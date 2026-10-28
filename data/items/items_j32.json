@@ -5,7 +5,6 @@
 		"feminine": false,
 		"category": "field",
 		"price": 0,
-		"draft": true,
 		"description": "Augmente les PV de base d'un Pokémon. Sans effet dans le moteur actuel."
 	},
 	"carbos": {
@@ -14,7 +13,6 @@
 		"feminine": false,
 		"category": "field",
 		"price": 0,
-		"draft": true,
 		"description": "Augmente la Vitesse de base d'un Pokémon. Sans effet dans le moteur actuel."
 	},
 	"tm25": {
@@ -24,7 +22,6 @@
 		"category": "tm",
 		"tm": 25,
 		"teaches": "thunder",
-		"draft": true,
 		"description": "Une énorme décharge s'abat sur la cible. Peut la paralyser."
 	},
 	"tm33": {
@@ -34,7 +31,6 @@
 		"category": "tm",
 		"tm": 33,
 		"teaches": "reflect",
-		"draft": true,
 		"description": "Un mur de lumière réduit les dégâts physiques subis pendant cinq tours."
 	}
 }

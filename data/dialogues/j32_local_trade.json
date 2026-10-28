@@ -3,7 +3,6 @@
 		"narration": true,
 		"variants": [
 			{
-				"draft": true,
 				"unless": [
 					"trade_terminal_seen"
 				],
@@ -24,7 +23,6 @@
 		"narration": true,
 		"variants": [
 			{
-				"draft": true,
 				"pages": [
 					"Échanger ne changerait rien\npour ces Pokémon."
 				]

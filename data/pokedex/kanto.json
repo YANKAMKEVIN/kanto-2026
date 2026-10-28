@@ -729,7 +729,7 @@
 			"description": "Un oiseau légendaire qui naît des nuages d'orage. Chaque battement d'ailes fait claquer la foudre."
 		},
 		"mew": {
-			"height": 0.4, "weight": 4.0, "draft": true,
+			"height": 0.4, "weight": 4.0,
 			"description": "On dit qu'il porte en lui le code génétique de tous les Pokémon. Très peu l'ont vu."
 		},
 		"dratini": {
@@ -737,23 +737,23 @@
 			"description": "Longtemps tenu pour un mythe, il mue sans cesse au fond des eaux calmes. On l'aperçoit rarement à la surface."
 		},
 		"jynx": {
-			"height": 1.4, "weight": 40.6, "draft": true,
+			"height": 1.4, "weight": 40.6,
 			"description": "Elle se balance en marchant, comme si elle dansait. Ses cris ressemblent à une langue que personne ne comprend."
 		},
 		"machamp": {
-			"height": 1.6, "weight": 130.0, "draft": true,
+			"height": 1.6, "weight": 130.0,
 			"description": "Ses quatre bras frappent plus vite que l'œil ne suit. Il peut déplacer une montagne d'un seul bras."
 		},
 		"gengar": {
-			"height": 1.5, "weight": 40.5, "draft": true,
+			"height": 1.5, "weight": 40.5,
 			"description": "Il se cache dans les ombres des pièces sombres. Quand la température chute d'un coup, c'est qu'il est là."
 		},
 		"dragonair": {
-			"height": 4.0, "weight": 16.5, "draft": true,
+			"height": 4.0, "weight": 16.5,
 			"description": "Son corps irradie une aura paisible. On dit qu'il peut changer le temps qu'il fait à volonté."
 		},
 		"dragonite": {
-			"height": 2.2, "weight": 210.0, "draft": true,
+			"height": 2.2, "weight": 210.0,
 			"description": "Il fait le tour du monde en seize heures. Il guide vers la côte les navires perdus dans la tempête."
 		}
 	}

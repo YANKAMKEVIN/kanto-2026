@@ -49,8 +49,7 @@ const NAMED_SPECIES_OK: Dictionary[StringName, Array] = {&"magneton": [&"magnemi
 ## registre §2.13) sont écrites en [D] (« draft »), à valider par Kevin.
 const NO_ENTRY_YET: Array[StringName] = []
 ## Fiches en brouillon, à valider par Kevin (retirer leur « draft » puis les sortir d'ici).
-const PENDING_DRAFT: Array[StringName] = [&"jynx", &"machamp", &"gengar", &"dragonair",
-	&"dragonite", &"mew"]
+const PENDING_DRAFT: Array[StringName] = []
 
 var _data: PokemonData
 var _lib: PokedexLibrary

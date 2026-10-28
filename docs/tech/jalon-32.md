@@ -146,7 +146,7 @@ Tableau par carte : objets visibles et cachés, CT/CS, pierres, cadeaux, échang
 Source : données et cartes déjà fusionnées ; référence Rouge/Bleu. Les écarts vont dans un registre
 `P0–P3`, sans correction de masse.
 
-### T7 — UX Pokédex et stockage — **état au 2026-10-27** : Pokédex déjà conforme (vus / capturés, recherche par nom et par numéro, filtres, compteurs ; `PokedexQuery`) ; **Stockage : recherche et tri non faits**, critères de tri et forme de la recherche à trancher par Kevin.
+### T7 — UX Pokédex et stockage — **état au 2026-10-27** : Pokédex déjà conforme (vus / capturés, recherche par nom et par numéro, filtres, compteurs ; `PokedexQuery`) ; **Stockage : recherche et tri non faits** ; critères tranchés par Kevin le 2026-10-28 (N-21) : recherche par nom d'espèce, tri par espèce, type et niveau.
 Vus / capturés distincts, recherche par numéro et par nom, tableau de bord (espèces, vues,
 capturées). Stockage : recherche, tri, déplacement sans risque. Grandes zones de contact.
 
@@ -211,6 +211,7 @@ Source : `docs/design/passes/j32-arbitrages-kevin.md` (toutes les recommandation
 | **N-18** | Ronflex (validé par Kevin le **2026-10-25**) | **Un Ronflex après la Ligue** : les deux Ronflex des routes ne reviennent pas ; si tous les deux ont été mis K.O. sans capture, un troisième Ronflex endormi apparaît après la Ligue, hors du chemin, et se capture avec la Poké Flûte (mêmes scène et répliques que le J21) ; mis K.O., il revient à la victoire suivante (N-17). Lieu [D] : **bout du belvédère de la Route 10**, cases (21..22, 19..20) (lot 32M) |
 | **N-19** | Textes et valeurs [D] du J32 (validés par Kevin le **2026-10-27**) | « Oui, tout » : répliques des 5 échanges PNJ, don de Porygon N26, textes d'Électhor, fiches de Pokédex (Élektek, Porygon, Électhor, Minidraco), emplacement des échangeurs ; surnoms anglais de RB **gardés** (Marcel, Dux, Marc, Spot, Terry) ; « draft » retiré. Centrale : « Oui, propose une grille » → `tools/plans/power_plant.txt` + `docs/design/reference/centrale-plan-v1.png` (**en attente de validation**, aucune carte construite) |
 | **N-20** | Grille de la Centrale (validée par Kevin le **2026-10-27**, « oui je valide ») | Relevé 1:1 de RB, rivière de la Route 10 surfable, quai et porte, Centrale accessible (I-15 du J18 levé), fausses Poké Balls Voltorbe et Électrode gardées ; carte construite le 2026-10-27 (32G) |
+| **N-21** | Textes [D] restants et trois décisions (validés par Kevin le **2026-10-28**, « Oui, tout ») | Échange de Lippoutou (Coline, « Lola »), fiches de Pokédex (Lippoutou, Mackogneur, Ectoplasma, Draco, Dracolosse, Mew), PV Plus, Carbone, CT25, CT33 (mention « Sans effet dans le moteur actuel » gardée, convention des objets J29/J31), zone de la Centrale, terminal d'échange, chercheur, camion ; valeurs par défaut de la Centrale (musique du repaire Rocket, éclairage des bureaux, fond de combat de la Grotte Sombre). (1) **Écran du Diplôme et Grand moment reportés à la phase DA** ; le concepteur reste dans le hall, sans salle « Bureau privé ». (2) **Stockage (T7)** : recherche par nom d'espèce, tri par espèce, type et niveau. (3) **Texte 8 de Chen** : « le Pokémon resté sur cette table ». « draft » retiré |
 
 Anciens points ouverts : 1 → N-1 à N-5 ; 2 → N-6 (le [D] « échange PNJ » est écarté) ; 3 → N-7 (la
 « machine » est écartée) ; 4 → N-8 ; 5 → N-10 et N-11 ; 6 → N-15.
