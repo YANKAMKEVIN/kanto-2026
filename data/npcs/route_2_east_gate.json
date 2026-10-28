@@ -1,10 +1,29 @@
 {
 	"assistant": {
-		"cell": [8, 5], "facing": "down", "sprite": "researcher",
+		"cell": [
+			8,
+			5
+		],
+		"facing": "down",
+		"sprite": "researcher",
 		"dialogue": "route_2_east_assistant"
 	},
 	"visiteur": {
-		"cell": [11, 7], "facing": "left", "sprite": "naturalist",
+		"cell": [
+			11,
+			7
+		],
+		"facing": "left",
+		"sprite": "naturalist",
 		"dialogue": "route_2_east_visitor"
+	},
+	"echangeur": {
+		"cell": [
+			12,
+			4
+		],
+		"facing": "down",
+		"sprite": "gentleman",
+		"dialogue": "j32_trade_remi"
 	}
 }

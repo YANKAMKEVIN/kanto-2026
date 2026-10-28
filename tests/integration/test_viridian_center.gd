@@ -53,7 +53,8 @@ func test_furniture_is_painted_and_solid() -> void:
 	var expected := {
 		&"Counter": "int_centre_comptoir", &"StorageTerminal": "int_centre_terminal",
 		&"BenchWest": "int_centre_banquette", &"BenchEast": "int_centre_banquette",
-		&"PlantNorthEast": "int_plante", &"PlantSouthWest": "int_plante",
+		# J32 (T5) : le terminal d'échange local a pris la place de la plante nord-est.
+		&"TradeTerminal": "int_centre_terminal", &"PlantSouthWest": "int_plante",
 		&"PlantSouthEast": "int_plante",
 	}
 	for node_name: StringName in expected:

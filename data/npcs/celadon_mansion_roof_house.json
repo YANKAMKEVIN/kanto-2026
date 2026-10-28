@@ -12,5 +12,39 @@
 		"unless": [
 			"eevee_received"
 		]
+	},
+	"eevee_ball_2": {
+		"cell": [
+			6,
+			3
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "j32_eevee_ball_2",
+		"verb": "examine",
+		"turn_to_player": false,
+		"if": [
+			"league_champion_defeated"
+		],
+		"unless": [
+			"eevee_received_2"
+		]
+	},
+	"eevee_ball_3": {
+		"cell": [
+			8,
+			3
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "j32_eevee_ball_3",
+		"verb": "examine",
+		"turn_to_player": false,
+		"if": [
+			"league_champion_defeated"
+		],
+		"unless": [
+			"eevee_received_3"
+		]
 	}
 }

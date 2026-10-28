@@ -79,5 +79,10 @@
 		"facing": "up",
 		"sprite": "engineer",
 		"dialogue": "silph_co_2f_worker_1"
+	},
+	"silph_co_2f_tm36": {
+		"cell": [17, 15], "facing": "down", "sprite": "object/poke_ball_ground",
+		"dialogue": "silph_co_2f_tm36", "verb": "take", "turn_to_player": false,
+		"unless": ["got_silph_co_2f_tm36"]
 	}
 }

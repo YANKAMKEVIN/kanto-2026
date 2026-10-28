@@ -381,6 +381,8 @@ func test_the_kid_rattata_follows_at_the_kid_pace() -> void:
 ## Aucun habitant figé (Kevin, T5) : chacun marche, ou regarde autour de lui.
 func test_no_inhabitant_stands_frozen() -> void:
 	for spec: NpcSpec in _roster.get_all():
+		if String(spec.sprite).begins_with("object/"):
+			continue  # la CT42 (N-22) est un objet au sol, pas un habitant
 		assert_true(spec.has_route() or spec.has_look(), "%s vit (route ou look)" % spec.id)
 
 

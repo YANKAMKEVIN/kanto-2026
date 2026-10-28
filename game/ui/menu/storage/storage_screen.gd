@@ -33,6 +33,9 @@ signal favorite_toggled(place: int, index: int)
 signal release_requested(place: int, index: int)
 ## Carte LIBÉRER de la confirmation.
 signal release_confirmed(place: int, index: int)
+## Recherche (nom d'espèce) ou tri ([enum StorageQuery.Sort]) de la grille changé : n'agit que sur
+## l'affichage (T7).
+signal query_changed(text: String, sort: int)
 
 const BACK_ICON: Texture2D = preload("res://assets/ui/icons/battle/back.svg")
 const STAR_ON_ICON: Texture2D = preload("res://assets/ui/icons/menu/star_filled.svg")
@@ -41,6 +44,7 @@ const DEPOSIT_ICON: Texture2D = preload("res://assets/ui/icons/storage/deposit.s
 const WITHDRAW_ICON: Texture2D = preload("res://assets/ui/icons/storage/withdraw.svg")
 const MORE_ICON: Texture2D = preload("res://assets/ui/icons/storage/more.svg")
 const RELEASE_ICON: Texture2D = preload("res://assets/ui/icons/storage/release.svg")
+const SEARCH_ICON: Texture2D = preload("res://assets/ui/icons/pokedex/search.svg")
 
 var _view: StorageView
 var _refusal_tween: Tween
@@ -60,6 +64,8 @@ var _party_title: Label
 var _party_holder: Control
 var _grid_zone: PanelContainer
 var _grid_title: Label
+var _search: LineEdit
+var _sort_button: Button
 var _scroll: ScrollContainer
 var _grid_holder: Control
 var _empty: Label
@@ -108,6 +114,9 @@ func show_storage(view: StorageView) -> void:
 	_show_result(view.result_text)
 	_party_title.text = view.party_title
 	_grid_title.text = view.storage_title
+	if _search.text != view.query_text:
+		_search.text = view.query_text
+	_sort_button.text = view.sort_label
 	_back.text = view.back_label
 	_sync_party(view)
 	_sync_grid(view)
@@ -163,11 +172,26 @@ func go_back() -> bool:
 
 ## Carte de la liste [param place] à [param index] (null si elle n'existe pas).
 func get_card(place: int, index: int) -> StorageCard:
-	var cards := _party_cards if place == StorageRules.Place.PARTY else _grid_cards
-	if index < 0 or index >= cards.size():
+	if index < 0:
 		return null
-	var card := cards[index]
-	return card if not card.is_empty() and card.visible else null
+	if place == StorageRules.Place.PARTY:
+		if index >= _party_cards.size():
+			return null
+		var own := _party_cards[index]
+		return own if not own.is_empty() and own.visible else null
+	# Le STOCKAGE peut être filtré ou trié : on cherche l'index réel porté par la carte.
+	for card: StorageCard in _grid_cards:
+		if card.visible and not card.is_empty() and card.party_index == index:
+			return card
+	return null
+
+
+func get_search() -> LineEdit:
+	return _search
+
+
+func get_sort_button() -> Button:
+	return _sort_button
 
 
 func get_party_cards() -> Array[StorageCard]:
@@ -395,8 +419,30 @@ func _build_grid(parent: Control) -> void:
 	column.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	column.add_theme_constant_override(&"separation", UiTokens.STORAGE_PARTY_GAP)
 	_grid_zone.add_child(column)
+	var header := HBoxContainer.new()
+	header.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	header.add_theme_constant_override(&"separation", UiTokens.GAP)
+	column.add_child(header)
 	_grid_title = _title_label()
-	column.add_child(_grid_title)
+	_grid_title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	header.add_child(_grid_title)
+	_search = LineEdit.new()
+	_search.theme_type_variation = &"DexSearch"
+	_search.placeholder_text = StorageQuery.SEARCH_PLACEHOLDER
+	_search.right_icon = SEARCH_ICON
+	_search.clear_button_enabled = true
+	_search.custom_minimum_size = Vector2(UiTokens.STORAGE_SEARCH_WIDTH, UiTokens.TOUCH_MIN)
+	_search.add_theme_constant_override(&"icon_max_width", UiTokens.DEX_SEARCH_ICON)
+	_search.text_changed.connect(_on_search_changed)
+	_search.text_submitted.connect(_on_search_submitted)
+	header.add_child(_search)
+	_sort_button = Button.new()
+	_sort_button.theme_type_variation = &"PanelButton"
+	_sort_button.text = StorageQuery.sort_label(StorageQuery.Sort.ARRIVAL)
+	_sort_button.focus_mode = Control.FOCUS_NONE
+	_sort_button.custom_minimum_size = Vector2(UiTokens.STORAGE_SORT_WIDTH, UiTokens.TOUCH_MIN)
+	_sort_button.pressed.connect(_on_sort_pressed)
+	header.add_child(_sort_button)
 	_scroll = ScrollContainer.new()
 	_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	_scroll.scroll_deadzone = roundi(UiTokens.TAP_SLOP)
@@ -759,6 +805,28 @@ func _on_drag_released(index: int, global_pos: Vector2, card: StorageCard) -> vo
 		deposit_requested.emit(index)
 	else:
 		withdraw_requested.emit(index)
+
+
+func _current_sort() -> int:
+	return _view.sort if _view != null else StorageQuery.Sort.ARRIVAL
+
+
+func _on_search_changed(text: String) -> void:
+	_clear_refusal()
+	_close_menu()
+	query_changed.emit(text, _current_sort())
+
+
+func _on_search_submitted(_text: String) -> void:
+	_search.release_focus()
+
+
+func _on_sort_pressed() -> void:
+	_search.release_focus()
+	Haptics.vibrate(UiTokens.HAPTIC_TICK_MS)
+	_clear_refusal()
+	_close_menu()
+	query_changed.emit(_search.text, StorageQuery.next_sort(_current_sort()))
 
 
 func _on_back_pressed() -> void:

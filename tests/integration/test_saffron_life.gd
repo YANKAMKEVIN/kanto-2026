@@ -306,9 +306,9 @@ func test_houses_are_inhabited_and_hand_out_no_tm() -> void:
 				if step.has("give"):
 					gives.append("%s:%s" % [id, step["give"]])
 	assert_eq(gives, ["saffron_copycat_hidden_1:nugget"] as Array[String],
-		"aucune CT (M. Psy, Copieuse)")
-	assert_eq(_dialogues.get_dialogue(&"saffron_mr_psychic").variants.size(), 1,
-		"M. Psy : un seul texte, sans don")
+		"aucune CT dans les scènes de Safrania (la CT29 est dans j32_ct.json, N-22)")
+	assert_eq(_dialogues.get_dialogue(&"saffron_mr_psychic").variants.size(), 2,
+		"M. Psy : le don de la CT29 (N-22), puis son texte habituel")
 
 
 func test_copycat_nugget_is_a_hidden_object_found_once() -> void:

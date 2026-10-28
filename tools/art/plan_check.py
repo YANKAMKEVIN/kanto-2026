@@ -827,6 +827,9 @@ VERIFICATEURS.update({p.stem: _profil("plan_check_celadopole", p.stem)
 VERIFICATEURS.update({n: _profil("plan_check_j26", n) for n in ("safrania", "safrania_centre",
 	"safrania_boutique", "safrania_maison_psy", "safrania_maison_roucool", "safrania_maison_copieur_1f",
 	"safrania_maison_copieur_2f", *(f"sylphe_{k}f" for k in range(1, 12)), "sylphe_ascenseur")})
+# Jalon 32 (lot 32G, N-11) : la Centrale, proposition de grille (plan_check_power_plant.py).
+VERIFICATEURS["power_plant"] = lambda chemin: __import__(
+	"plan_check_power_plant").verifier_power_plant(chemin)
 
 
 def main() -> int:

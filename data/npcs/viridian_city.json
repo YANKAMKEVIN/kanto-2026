@@ -68,5 +68,10 @@
 		"cell": [31, 4], "facing": "left", "sprite": "traveler", "dialogue": "viridian_traveler",
 		"if": ["viridian_arrived"],
 		"route": { "cells": [[31, 3], [31, 4], [31, 5], [31, 4]], "pause": 2.0, "start": 1 }
+	},
+	"viridian_city_tm42": {
+		"cell": [48, 18], "facing": "down", "sprite": "object/poke_ball_ground",
+		"dialogue": "viridian_city_tm42", "verb": "take", "turn_to_player": false,
+		"unless": ["got_viridian_city_tm42"]
 	}
 }

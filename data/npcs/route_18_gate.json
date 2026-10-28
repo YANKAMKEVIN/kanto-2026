@@ -7,5 +7,14 @@
 		"facing": "down",
 		"sprite": "guard",
 		"dialogue": "j22_cycling_guard"
+	},
+	"echangeur": {
+		"cell": [
+			8,
+			4
+		],
+		"facing": "down",
+		"sprite": "lass",
+		"dialogue": "j32_trade_aline"
 	}
 }

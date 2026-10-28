@@ -139,7 +139,7 @@ func test_life_is_the_t16_data_only() -> void:
 	assert_eq(_map.get_node(^"Interactables").get_child_count(), 1)
 	var ids := _npc_ids_and_data(_map.get_entities(), &"route_9")
 	assert_eq(ids[0], ids[1], "PNJ de data/npcs/route_9.json")
-	assert_eq((ids[1] as Array).size(), 12, "7 Dresseurs, 3 objets, 2 Pokémon d'ambiance")
+	assert_eq((ids[1] as Array).size(), 13, "7 Dresseurs, 3 objets, 2 Pokémon d'ambiance, la CT30 (N-22)")
 
 
 func test_west_reaches_east_and_every_row_of_each() -> void:
@@ -233,7 +233,7 @@ func test_reserved_cells_stay_free_of_decor() -> void:
 		if kinds.has(_plan.positions[id]["kind"]):
 			for cell: Vector2i in _plan.cells_at(id):
 				reserved[cell] = true
-	assert_eq(reserved.size(), 12, "7 Dresseurs, 3 objets, 2 Pokémon d'ambiance")
+	assert_eq(reserved.size(), 13, "7 Dresseurs, 3 objets, 2 Pokémon d'ambiance, la CT30 (N-22)")
 	for prop: WorldProp in _props():
 		for cell: Vector2i in prop.get_solid_cells():
 			var perch := _plan.at(cell) in ["R", "K"]

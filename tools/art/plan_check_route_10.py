@@ -14,7 +14,9 @@ Critères :
   - secteur nord : Centre 8 × 7 (porte sur les 4e et 5e colonnes du bas) avant la grotte, entrée
     nord dans la paroi (K au-dessus et des deux côtés), spawn de sortie devant elle ; panneau,
     randonneur, poche d'herbes évitable ;
-  - centrale : décor bloqué, sans porte, séparé de tout sol praticable par l'eau ;
+  - centrale : décor bloqué ; jalon 32 (N-11, validé par Kevin le 2026-10-27) : une porte P (30, 9)
+    sur un quai (29..31, 10) qu'on n'atteint qu'en Surf sur la rivière nord (x 24..28, y 0..22),
+    depuis le belvédère ; le quai n'est relié à aucun sol à pied ;
   - secteur sud : entrée sud dans la paroi, R10-1 et R10-2 facultatifs (évitables, un à un et
     ensemble, sans détour), 0 case d'herbe obligatoire, 1 objet atteignable hors des lignes de vue ;
   - l'approche d'un Dresseur ne ferme aucun passage.
@@ -122,9 +124,10 @@ def verifier_route_10(chemin: Path) -> bool:
 		f"case commune ({len(nord)} cases au nord, {len(sudd)} au sud)")
 	critere(all(c in sudd for c in sud) and not any(c in nord for c in sud),
 		"le raccord sud n'est atteint que depuis le secteur sud")
+	quai = {(29, 10), (30, 10), (31, 10), (30, 9)}
 	orphelines = [(x, y) for y in range(plan.height) for x in range(plan.width)
 		if plan.at(x, y) in plan.praticables and (x, y) not in monde.bloquees
-		and (x, y) not in nord and (x, y) not in sudd]
+		and (x, y) not in nord and (x, y) not in sudd and (x, y) not in quai]
 	critere(not orphelines, f"aucune case praticable orpheline {orphelines[:4]}")
 	eau = plan.cells_of("w")
 	critere("w" not in plan.praticables and not any(monde.libre(c) for c in eau)
@@ -177,15 +180,26 @@ def verifier_route_10(chemin: Path) -> bool:
 		f"panneau {panneau.cells[0]} (lu depuis {devant[0]}) et randonneur {hik.cells[0]} devant la "
 		"grotte")
 
-	# 4. Centrale : décor, séparée du sol par l'eau.
+	# 4. Centrale (jalon 32, N-11) : décor bloqué, porte sur le quai, quai atteint en Surf seulement.
 	e = plan.cells_of("E")
-	voisins_e = {_decale(c, d) for c in e for d in DIRECTIONS
-		if 0 <= _decale(c, d)[0] < plan.width and 0 <= _decale(c, d)[1] < plan.height}
-	critere(bool(e) and not any(monde.libre(c) for c in e) and not any(c in warps for c in e)
-		and not any(monde.libre(c) and (c in nord or c in sudd) for c in voisins_e)
-		and all(plan.at(24 + i, y) == "w" for i in range(5) for y in range(3, 10)),
-		f"centrale ({len(e)} cases) : décor bloqué, sans porte ni warp, au-delà de 5 cases d'eau, "
-		"aucune case praticable à côté")
+	surf = {(x, y) for x, y in plan.cells_of("w") if y <= 22}
+	depart_surf = {c for c in nord for d in DIRECTIONS if _decale(c, d) in surf}
+	vus, file = set(surf & {_decale(c, d) for c in depart_surf for d in DIRECTIONS}), []
+	file = list(vus)
+	while file:
+		c = file.pop()
+		for d in DIRECTIONS:
+			n = _decale(c, d)
+			if n in surf and n not in vus:
+				vus.add(n)
+				file.append(n)
+	debarque = {n for c in vus for d in DIRECTIONS for n in [_decale(c, d)] if n in quai}
+	porte = pos.get("porte_centrale")
+	critere(bool(e) and not any(monde.libre(c) for c in e) and bool(depart_surf)
+		and debarque and not any(c in nord or c in sudd for c in quai)
+		and porte is not None and porte.cells == [(30, 9)] and plan.at(30, 9) == "P",
+		f"centrale ({len(e)} cases) : décor bloqué, porte (30, 9) depuis le quai, quai atteint en Surf "
+		f"seulement (mise à l'eau depuis {len(depart_surf)} cases du nord)")
 
 	# 5. Herbes.
 	zones = zones_herbes(plan)
@@ -266,7 +280,7 @@ def verifier_route_10(chemin: Path) -> bool:
 	fautes: list[str] = []
 	for p in plan.of_kind("spawn"):
 		for c in p.cells:
-			if plan.at(*c) not in SOL or (c not in nord and c not in sudd):
+			if plan.at(*c) not in SOL or (c not in nord and c not in sudd and c not in quai):
 				fautes.append(f"{p.ident} {c}")
 	for p in plan.of_kind("herbes"):
 		if p.cells[0] not in nord and p.cells[0] not in sudd:

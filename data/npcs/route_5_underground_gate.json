@@ -1,0 +1,11 @@
+{
+	"echangeur": {
+		"cell": [
+			7,
+			4
+		],
+		"facing": "left",
+		"sprite": "youngster",
+		"dialogue": "j32_trade_hugo"
+	}
+}

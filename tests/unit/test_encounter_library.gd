@@ -131,7 +131,9 @@ func test_real_tables_load_without_error() -> void:
 		&"mt_moon_b1f_rubble", &"mt_moon_b2f_rubble", &"pokemon_mansion_1f_floor",
 		&"pokemon_mansion_2f_floor", &"pokemon_mansion_3f_floor", &"pokemon_mansion_b1f_floor",
 		&"pokemon_tower_high", &"pokemon_tower_low",
-		&"pokemon_tower_mid", &"pokemon_tower_top", &"route_10_grass", &"route_11_grass",
+		&"pokemon_tower_mid", &"pokemon_tower_top",
+		# Jalon 32 (N-11, lot 32G) : sol de la Centrale (la carte attend sa grille).
+		&"power_plant_floor", &"route_10_grass", &"route_11_grass",
 		&"route_12_south_grass", &"route_13_grass", &"route_14_grass", &"route_15_grass",
 		&"route_16_west_grass", &"route_17_grass", &"route_18_grass", &"route_19_water",
 		&"route_1_grass", &"route_20_water", &"route_21_grass", &"route_21_water",
@@ -221,8 +223,8 @@ func test_every_wild_species_has_battle_sprites() -> void:
 	# Jalon 21 (T5) : + la table du 7F (`pokemon_tower_top`), hors de la boucle comme les
 	# autres tables de la Tour (SPECTRES sans le Scope). Jalon 23 (T13) : + 4 du Parc Safari ;
 	# jalon 25 : + 4 du Manoir. Jalon 29 (T4) : + Route 23 et les 3 niveaux de la Route Victoire.
-	# Jalon 31 : + les 3 tables de la Grotte Azurée.
-	assert_eq(lib.size(), 58, "une table par couple ci-dessous, plus les 4 de la Tour (J19, J21)")
+	# Jalon 31 : + les 3 tables de la Grotte Azurée. Jalon 32 : + la Centrale.
+	assert_eq(lib.size(), 59, "une table par couple ci-dessous, plus les 4 de la Tour (J19, J21)")
 	for pair: Array in [[&"route_1", &"grass"], [&"route_2", &"grass"],
 			[&"route_22", &"grass"], [&"viridian_forest", &"grass"], [&"route_2_north", &"grass"],
 			[&"route_3", &"grass"], [&"mt_moon_1f", &"rubble"], [&"mt_moon_b1f", &"rubble"],
@@ -249,7 +251,9 @@ func test_every_wild_species_has_battle_sprites() -> void:
 			[&"pokemon_mansion_3f", &"floor"], [&"pokemon_mansion_b1f", &"floor"],
 			# Jalon 23 (T13) : Parc Safari.
 			[&"safari_zone_center", &"grass"], [&"safari_zone_east", &"grass"],
-			[&"safari_zone_north", &"grass"], [&"safari_zone_west", &"grass"]]:
+			[&"safari_zone_north", &"grass"], [&"safari_zone_west", &"grass"],
+			# Jalon 32 (N-11) : la Centrale (Élektek et Raichu, union Rouge + Bleu).
+			[&"power_plant", &"floor"]]:
 		for slot: EncounterSlot in lib.get_table(pair[0], pair[1]).slots:
 			for view: String in ["front", "back"]:
 				var path := "res://assets/sprites/pokemon/placeholder/%s_%s.png" % [
@@ -361,5 +365,5 @@ func test_real_tables_carry_no_ghost_item_outside_the_tower() -> void:
 		# Jalon 24 (T4) : le sol des Îles Écume est aussi un terrain « floor », sans SPECTRE ; J25 : Manoir ;
 		# jalon 31 : celui de la Grotte Azurée aussi.
 		if not (String(id).begins_with("seafoam_") or String(id).begins_with("pokemon_mansion_")
-				or String(id).begins_with("cerulean_cave_")):
+				or String(id).begins_with("cerulean_cave_") or String(id).begins_with("power_plant")):
 			assert_ne(table.terrain, &"floor", String(id))

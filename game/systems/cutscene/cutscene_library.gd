@@ -357,6 +357,18 @@ func get_item_ids() -> Array[StringName]:
 	return _sorted_keys(found)
 
 
+## Rencontres fixes ([StaticEncounter], clé « static » d'une étape « wild_battle »), triées
+## par identifiant (jalon 32, N-17 : [StaticRespawn]).
+func get_static_encounters() -> Array[StaticEncounter]:
+	var result: Array[StaticEncounter] = []
+	for step: CutsceneStep in _all_steps():
+		if step.kind == CutsceneStep.Kind.WILD_BATTLE and step.static_encounter != null:
+			result.append(step.static_encounter)
+	result.sort_custom(func(a: StaticEncounter, b: StaticEncounter) -> bool:
+		return String(a.id) < String(b.id))
+	return result
+
+
 ## Alias utilisés par la scène [param id] (sans « $ »), triés ; vide si elle n'existe pas.
 func get_aliases(id: StringName) -> Array[StringName]:
 	var cutscene := get_cutscene(id)

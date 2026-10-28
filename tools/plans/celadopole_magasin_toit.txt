@@ -37,5 +37,5 @@ from_down            spawn          2..3,3        libre    # arrivée du 5e, tou
 distributeur_eau     decor          10,2          bloque  item=fresh_water price=200  # Eau Fraîche 200 ₽ (50 PV), lu depuis (10, 3) ↑
 distributeur_soda    decor          12,2          bloque  item=soda_pop price=300  # Soda Cool 300 ₽ (60 PV), lu depuis (12, 3) ↑
 distributeur_limonade decor          14,2          bloque  item=lemonade price=350  # Limonade 350 ₽ (80 PV), lu depuis (14, 3) ↑
-fillette             pnj            17,5          bloque  role=P1 facing=left  # fillette assoiffée : échange une boisson contre une CT (§9, textes 24-25), CT13 / 48 / 49 selon l'existence de la capacité
+fillette             pnj            17,5          bloque  role=P1 facing=left  # fillette assoiffée : échange une boisson contre une CT (§9, textes 24-25), CT13 / 48 / 49 (les trois capacités existent, N-22)
 FIN

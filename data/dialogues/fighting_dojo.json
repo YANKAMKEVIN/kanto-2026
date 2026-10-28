@@ -76,6 +76,34 @@
 		"variants": [
 			{
 				"if": [
+					"league_champion_defeated",
+					"dojo_got_hitmonlee"
+				],
+				"unless": [
+					"dojo_got_hitmonchan"
+				],
+				"pages": [
+					"Champion de la Ligue… Mes poings\nt'attendaient.",
+					"Prends l'autre Poké Ball. Un Dojo\nn'est rien sans ses deux styles."
+				],
+				"cutscene": "j32_dojo_gift_hitmonchan"
+			},
+			{
+				"if": [
+					"league_champion_defeated",
+					"dojo_got_hitmonchan"
+				],
+				"unless": [
+					"dojo_got_hitmonlee"
+				],
+				"pages": [
+					"Champion de la Ligue… Mes poings\nt'attendaient.",
+					"Prends l'autre Poké Ball. Un Dojo\nn'est rien sans ses deux styles."
+				],
+				"cutscene": "j32_dojo_gift_hitmonlee"
+			},
+			{
+				"if": [
 					"dojo_got_hitmonlee"
 				],
 				"pages": [

@@ -161,6 +161,10 @@ func test_occupied_then_liberated_presence() -> void:
 			if spec.is_trainer():
 				assert_true(occupied, "%s présent pendant l'occupation" % spec.id)
 				assert_false(freed, "%s parti à la libération" % spec.id)
+			elif spec.id == &"silph_co_porygon_giver":
+				# Jalon 32 (N-13) : l'employé de Porygon n'arrive qu'après Giovanni.
+				assert_false(occupied, "%s absent pendant l'occupation" % spec.id)
+				assert_true(freed, "%s présent après Giovanni" % spec.id)
 			else:
 				assert_true(occupied and freed, "%s : présent des deux côtés" % spec.id)
 	var map := _load_map(2)
@@ -246,7 +250,7 @@ func test_ground_items_give_the_rb_object_or_its_fallback_once() -> void:
 			assert_eq(gave, String(_expected_item(plan, id)), "%s : objet ou repli" % id)
 			assert_true(_items.has_item(StringName(gave)), "%s : objet connu" % id)
 			assert_eq(_dialogues.get_dialogue(StringName(id)).variants[0].cutscene, StringName(id))
-	assert_eq(count, 14, "douze objets au sol (dont la Carte) et deux cachés (liste RB)")
+	assert_eq(count, 15, "treize objets au sol (dont la Carte et la CT36, N-22) et deux cachés (liste RB)")
 
 
 func test_hidden_items_are_examine_points_found_once() -> void:

@@ -1,0 +1,103 @@
+{
+	"j32_oak_second_gift": {
+		"speaker": "Prof. Chen",
+		"pages": [
+			"Et ce n'est pas tout : un autre\nest arrivé au labo. Il est pour toi."
+		]
+	},
+	"j32_oak_received_bulbasaur": {
+		"narration": true,
+		"pages": [
+			"{player} reçoit Bulbizarre !"
+		]
+	},
+	"j32_oak_stored_bulbasaur": {
+		"narration": true,
+		"pages": [
+			"Bulbizarre a été envoyé au stockage."
+		]
+	},
+	"j32_oak_received_charmander": {
+		"narration": true,
+		"pages": [
+			"{player} reçoit Salamèche !"
+		]
+	},
+	"j32_oak_stored_charmander": {
+		"narration": true,
+		"pages": [
+			"Salamèche a été envoyé au stockage."
+		]
+	},
+	"j32_oak_received_squirtle": {
+		"narration": true,
+		"pages": [
+			"{player} reçoit Carapuce !"
+		]
+	},
+	"j32_oak_stored_squirtle": {
+		"narration": true,
+		"pages": [
+			"Carapuce a été envoyé au stockage."
+		]
+	},
+	"j32_eevee_ball_2": {
+		"narration": true,
+		"pages": [
+			"D'autres Évoli sont nés.\nPrends-en un si tu veux.",
+			"Le prendre ?"
+		],
+		"choice": {
+			"confirm": "OUI",
+			"cancel": "NON",
+			"confirm_cutscene": "j32_eevee_gift_2",
+			"cancel_pages": []
+		}
+	},
+	"j32_eevee_ball_3": {
+		"narration": true,
+		"pages": [
+			"D'autres Évoli sont nés.\nPrends-en un si tu veux.",
+			"Le prendre ?"
+		],
+		"choice": {
+			"confirm": "OUI",
+			"cancel": "NON",
+			"confirm_cutscene": "j32_eevee_gift_3",
+			"cancel_pages": []
+		}
+	},
+	"j32_fossil_researcher": {
+		"speaker": "Chercheur",
+		"variants": [
+			{
+				"if": [
+					"j32_second_fossil_given"
+				],
+				"pages": [
+					"Le Labo saura le réveiller.\nPrends-en soin."
+				]
+			},
+			{
+				"if": [
+					"mt_moon_got_dome_fossil"
+				],
+				"pages": [
+					"Toi ! On a partagé les fossiles,\nau Mont Sélénite.",
+					"Je n'ai jamais su le réveiller.\nGarde-le : ici, ils savent faire."
+				],
+				"cutscene": "j32_fossil_give_helix"
+			},
+			{
+				"if": [
+					"mt_moon_got_helix_fossil"
+				],
+				"pages": [
+					"Toi ! On a partagé les fossiles,\nau Mont Sélénite.",
+					"Je n'ai jamais su le réveiller.\nGarde-le : ici, ils savent faire."
+				],
+				"cutscene": "j32_fossil_give_dome"
+			}
+		]
+	}
+}

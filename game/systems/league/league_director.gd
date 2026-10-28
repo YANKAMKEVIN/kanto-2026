@@ -53,6 +53,10 @@ const REST_SPAWN: StringName = &"heal"
 ## Vrai si la carte existe ; remplaçable en test. Défaut : [method MapCatalog.has_map].
 var has_map: Callable = func(map_id: StringName) -> bool: return MapCatalog.has_map(map_id)
 
+## Jalon 32 (N-17, N-18) : rencontres fixes du jeu, pour [StaticRespawn] à chaque victoire (Boot
+## y met [method CutsceneLibrary.get_static_encounters] ; vide en test sauf réglage).
+var static_encounters: Array[StaticEncounter] = []
+
 ## GameState (ou une instance de game_state.gd en test) : drapeaux et point de repos.
 var _state: Node
 var _map: GameMap
@@ -163,9 +167,9 @@ func complete_ceremony(entry: Dictionary) -> bool:
 		if added != HallOfFame.AddResult.ADDED:
 			push_warning("LeagueDirector : entrée du Panthéon non ajoutée (%s)"
 				% HallOfFame.AddResult.keys()[added])
-	# Point de branchement du J32 (N-17, N-18 ; branche `jalon-32`, pas encore dans `jalon-30`) :
-	# StaticRespawn.on_league_won(<cutscenes>.get_static_encounters(), flags)
-	# ici, avant l'écriture du Panthéon (`static_respawn.gd` du J32).
+	# Jalon 32 (N-17, N-18 ; RP-155) : les Pokémon uniques mis K.O. reviennent, et le Ronflex
+	# d'après la Ligue apparaît si les deux des routes sont perdus ; avant l'écriture du Panthéon.
+	StaticRespawn.on_league_won(static_encounters, flags)
 	champion_crowned.emit(entry)
 	return true
 

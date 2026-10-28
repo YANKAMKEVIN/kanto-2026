@@ -142,6 +142,9 @@ var _shop_id: StringName = &""
 var _shop_mode: StringName = ShopViews.MODE_BUY
 ## Pokémon sélectionné dans le Stockage (de session, jamais sauvegardé).
 var _storage_selection: StorageSelection = StorageSelection.new()
+## Recherche et tri de la grille du Stockage (T7) : de session, jamais sauvegardés.
+var _storage_text: String = ""
+var _storage_sort: int = StorageQuery.Sort.ARRIVAL
 ## Grottes de Kanto et carte courante (jalon 12, T20 : Corde Sortie) ; null / vide = aucune.
 var _caves: CaveLibrary
 var _current_map: Callable = Callable()
@@ -302,7 +305,18 @@ func build_shop() -> ShopView:
 func build_storage(result: StorageResult = null) -> StorageView:
 	if _state == null:
 		return null
-	return StorageViews.build(_state, _data, _storage_selection, _zones, _unlocks, result)
+	return StorageViews.build(_state, _data, _storage_selection, _zones, _unlocks, result,
+		_storage_text, _storage_sort)
+
+
+## Recherche (nom d'espèce) et tri de la grille du Stockage : vue neuve, rien d'autre ne change
+## (ni l'ordre réel des boîtes, ni la sélection).
+func set_storage_query(text: String, sort: int) -> void:
+	if not _storage_open():
+		return
+	_storage_text = text
+	_storage_sort = clampi(sort, 0, StorageQuery.SORT_LABELS.size() - 1)
+	_emit_storage()
 
 
 ## Sélection courante du Stockage (copie).
@@ -765,6 +779,8 @@ func _on_route_shown(route: MenuRoute) -> void:
 		_emit_shop()
 	elif route.screen == MenuRoute.STORAGE and _state != null:
 		_storage_selection = StorageSelection.first(_state.party, _state.storage)
+		_storage_text = ""
+		_storage_sort = StorageQuery.Sort.ARRIVAL
 		_emit_storage()
 	else:
 		placeholder_shown.emit(route.screen)
@@ -783,6 +799,8 @@ func _on_closed() -> void:
 	_changed = false
 	_shop_id = &""
 	_storage_selection = StorageSelection.new()
+	_storage_text = ""
+	_storage_sort = StorageQuery.Sort.ARRIVAL
 	get_tree().paused = false
 	menu_closed.emit(changed)
 

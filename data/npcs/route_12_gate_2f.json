@@ -1,6 +1,20 @@
 {
 	"tm39_girl": {
-		"cell": [9, 5], "facing": "left", "sprite": "lass",
+		"cell": [
+			9,
+			5
+		],
+		"facing": "left",
+		"sprite": "lass",
 		"dialogue": "route_12_gate_tm39"
+	},
+	"echangeur": {
+		"cell": [
+			6,
+			5
+		],
+		"facing": "down",
+		"sprite": "camper",
+		"dialogue": "j32_trade_theo"
 	}
 }

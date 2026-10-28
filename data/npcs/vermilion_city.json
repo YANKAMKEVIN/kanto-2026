@@ -30,5 +30,6 @@
 	"pidgey_2": {
 		"cell": [60, 25], "facing": "left", "sprite": "pokemon/pidgey",
 		"shy": { "action": "fly", "radius": 2 }
-	}
+	},
+	"rumor_docker": { "cell": [7, 25], "facing": "left", "sprite": "docker", "dialogue": "j32_vermilion_rumor" }
 }

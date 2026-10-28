@@ -16,7 +16,8 @@
 		"learnset": [
 			[1, "lick"], [1, "confuse_ray"], [1, "night_shade"], [29, "hypnosis"],
 			[38, "dream_eater"]
-		]
+		],
+		"evolutions": [{ "into": "gengar", "method": "trade" }]
 	},
 	"exeggcute": {
 		"dex": 102, "name": "Noeunoeuf", "types": ["grass", "psychic"],
@@ -25,7 +26,8 @@
 		"learnset": [
 			[1, "barrage"], [1, "hypnosis"], [25, "reflect"], [28, "leech_seed"],
 			[32, "stun_spore"], [37, "poison_powder"], [42, "solar_beam"], [48, "sleep_powder"]
-		]
+		],
+		"evolutions": [{ "into": "exeggutor", "method": "item", "item": "leaf_stone" }]
 	},
 	"cubone": {
 		"dex": 104, "name": "Osselait", "types": ["ground"],

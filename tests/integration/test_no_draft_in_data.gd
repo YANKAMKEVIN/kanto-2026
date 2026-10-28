@@ -23,6 +23,14 @@ const DATA_DIR := "res://data"
 ## 2026-10-26, « draft » retiré.
 ## Jalon 30 : texte du Grand moment « champion » validé par Kevin le 2026-10-26, « draft » retiré.
 ## Jalon 26 (T6) : description de Safrania sur la Carte [D], à relire par Kevin.
+## Jalon 32 (N-11, N-13, N-14) : textes d'Électhor, de Porygon et des échanges PNJ validés par
+## Kevin le 2026-10-27, « draft » retiré.
+## Jalon 32 (N-21) : échange Têtarte → Lippoutou, terminal d'échange, objets de la Centrale,
+## fiches de Pokédex (Lippoutou, Mackogneur, Ectoplasma, Draco, Dracolosse, Mew), chercheur et
+## camion validés par Kevin le 2026-10-28, « draft » retiré.
+## Jalon 32 (32N, N-22) : CT obtenables partout : capacités (Coupe-Vent, Éboulement, E-Coque), messages
+## de charge, 23 objets (descriptions copiées des capacités), répliques des dons : validés par
+## Kevin le 2026-10-28, « draft » retiré.
 const PENDING_DRAFTS: Array[String] = ["world/zones.json/zones/saffron_city"]
 
 

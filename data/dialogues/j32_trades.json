@@ -1,0 +1,434 @@
+{
+	"j32_trade_remi_offer": {
+		"speaker": "Rémi",
+		"variants": [
+			{
+				"pages": [
+					"Salut ! Tu échangerais ton Abra\ncontre mon M. Mime ?"
+				],
+				"choice": {
+					"confirm": "ÉCHANGER",
+					"cancel": "NON",
+					"confirm_set": [
+						"j32_trade_offer_accepted"
+					],
+					"cancel_set": [
+						"j32_trade_offer_declined"
+					],
+					"confirm_pages": [],
+					"cancel_pages": []
+				}
+			}
+		]
+	},
+	"j32_trade_remi_refuse": {
+		"speaker": "Rémi",
+		"variants": [
+			{
+				"pages": [
+					"Dommage… Repasse si tu changes d'avis."
+				]
+			}
+		]
+	},
+	"j32_trade_remi_wrong": {
+		"speaker": "Rémi",
+		"variants": [
+			{
+				"pages": [
+					"Ce n'est pas un Abra.\nReviens quand tu en auras un."
+				]
+			}
+		]
+	},
+	"j32_trade_remi_thanks": {
+		"speaker": "Rémi",
+		"variants": [
+			{
+				"pages": [
+					"Merci ! Prends bien soin de lui."
+				]
+			}
+		]
+	},
+	"j32_trade_remi_after": {
+		"speaker": "Rémi",
+		"variants": [
+			{
+				"pages": [
+					"Mon ancien M. Mime va bien ?"
+				]
+			}
+		]
+	},
+	"j32_trade_remi_done": {
+		"narration": true,
+		"variants": [
+			{
+				"pages": [
+					"{player} a échangé Abra contre Marcel !"
+				]
+			}
+		]
+	},
+	"j32_trade_leon_offer": {
+		"speaker": "Léon",
+		"variants": [
+			{
+				"pages": [
+					"Salut ! Tu échangerais ton Piafabec\ncontre mon Canarticho ?"
+				],
+				"choice": {
+					"confirm": "ÉCHANGER",
+					"cancel": "NON",
+					"confirm_set": [
+						"j32_trade_offer_accepted"
+					],
+					"cancel_set": [
+						"j32_trade_offer_declined"
+					],
+					"confirm_pages": [],
+					"cancel_pages": []
+				}
+			}
+		]
+	},
+	"j32_trade_leon_refuse": {
+		"speaker": "Léon",
+		"variants": [
+			{
+				"pages": [
+					"Dommage… Repasse si tu changes d'avis."
+				]
+			}
+		]
+	},
+	"j32_trade_leon_wrong": {
+		"speaker": "Léon",
+		"variants": [
+			{
+				"pages": [
+					"Ce n'est pas un Piafabec.\nReviens quand tu en auras un."
+				]
+			}
+		]
+	},
+	"j32_trade_leon_thanks": {
+		"speaker": "Léon",
+		"variants": [
+			{
+				"pages": [
+					"Merci ! Prends bien soin de lui."
+				]
+			}
+		]
+	},
+	"j32_trade_leon_after": {
+		"speaker": "Léon",
+		"variants": [
+			{
+				"pages": [
+					"Mon ancien Canarticho va bien ?"
+				]
+			}
+		]
+	},
+	"j32_trade_leon_done": {
+		"narration": true,
+		"variants": [
+			{
+				"pages": [
+					"{player} a échangé Piafabec contre Dux !"
+				]
+			}
+		]
+	},
+	"j32_trade_aline_offer": {
+		"speaker": "Aline",
+		"variants": [
+			{
+				"pages": [
+					"Salut ! Tu échangerais ton Flagadoss\ncontre mon Excelangue ?"
+				],
+				"choice": {
+					"confirm": "ÉCHANGER",
+					"cancel": "NON",
+					"confirm_set": [
+						"j32_trade_offer_accepted"
+					],
+					"cancel_set": [
+						"j32_trade_offer_declined"
+					],
+					"confirm_pages": [],
+					"cancel_pages": []
+				}
+			}
+		]
+	},
+	"j32_trade_aline_refuse": {
+		"speaker": "Aline",
+		"variants": [
+			{
+				"pages": [
+					"Dommage… Repasse si tu changes d'avis."
+				]
+			}
+		]
+	},
+	"j32_trade_aline_wrong": {
+		"speaker": "Aline",
+		"variants": [
+			{
+				"pages": [
+					"Ce n'est pas un Flagadoss.\nReviens quand tu en auras un."
+				]
+			}
+		]
+	},
+	"j32_trade_aline_thanks": {
+		"speaker": "Aline",
+		"variants": [
+			{
+				"pages": [
+					"Merci ! Prends bien soin de lui."
+				]
+			}
+		]
+	},
+	"j32_trade_aline_after": {
+		"speaker": "Aline",
+		"variants": [
+			{
+				"pages": [
+					"Mon ancien Excelangue va bien ?"
+				]
+			}
+		]
+	},
+	"j32_trade_aline_done": {
+		"narration": true,
+		"variants": [
+			{
+				"pages": [
+					"{player} a échangé Flagadoss contre Marc !"
+				]
+			}
+		]
+	},
+	"j32_trade_hugo_offer": {
+		"speaker": "Hugo",
+		"variants": [
+			{
+				"pages": [
+					"Salut ! Tu échangerais ton Nidoran♂\ncontre mon Nidoran♀ ?"
+				],
+				"choice": {
+					"confirm": "ÉCHANGER",
+					"cancel": "NON",
+					"confirm_set": [
+						"j32_trade_offer_accepted"
+					],
+					"cancel_set": [
+						"j32_trade_offer_declined"
+					],
+					"confirm_pages": [],
+					"cancel_pages": []
+				}
+			}
+		]
+	},
+	"j32_trade_hugo_refuse": {
+		"speaker": "Hugo",
+		"variants": [
+			{
+				"pages": [
+					"Dommage… Repasse si tu changes d'avis."
+				]
+			}
+		]
+	},
+	"j32_trade_hugo_wrong": {
+		"speaker": "Hugo",
+		"variants": [
+			{
+				"pages": [
+					"Ce n'est pas un Nidoran♂.\nReviens quand tu en auras un."
+				]
+			}
+		]
+	},
+	"j32_trade_hugo_thanks": {
+		"speaker": "Hugo",
+		"variants": [
+			{
+				"pages": [
+					"Merci ! Prends bien soin de lui."
+				]
+			}
+		]
+	},
+	"j32_trade_hugo_after": {
+		"speaker": "Hugo",
+		"variants": [
+			{
+				"pages": [
+					"Mon ancien Nidoran♀ va bien ?"
+				]
+			}
+		]
+	},
+	"j32_trade_hugo_done": {
+		"narration": true,
+		"variants": [
+			{
+				"pages": [
+					"{player} a échangé Nidoran♂ contre Spot !"
+				]
+			}
+		]
+	},
+	"j32_trade_theo_offer": {
+		"speaker": "Théo",
+		"variants": [
+			{
+				"pages": [
+					"Salut ! Tu échangerais ton Nidorino\ncontre mon Nidorina ?"
+				],
+				"choice": {
+					"confirm": "ÉCHANGER",
+					"cancel": "NON",
+					"confirm_set": [
+						"j32_trade_offer_accepted"
+					],
+					"cancel_set": [
+						"j32_trade_offer_declined"
+					],
+					"confirm_pages": [],
+					"cancel_pages": []
+				}
+			}
+		]
+	},
+	"j32_trade_theo_refuse": {
+		"speaker": "Théo",
+		"variants": [
+			{
+				"pages": [
+					"Dommage… Repasse si tu changes d'avis."
+				]
+			}
+		]
+	},
+	"j32_trade_theo_wrong": {
+		"speaker": "Théo",
+		"variants": [
+			{
+				"pages": [
+					"Ce n'est pas un Nidorino.\nReviens quand tu en auras un."
+				]
+			}
+		]
+	},
+	"j32_trade_theo_thanks": {
+		"speaker": "Théo",
+		"variants": [
+			{
+				"pages": [
+					"Merci ! Prends bien soin de lui."
+				]
+			}
+		]
+	},
+	"j32_trade_theo_after": {
+		"speaker": "Théo",
+		"variants": [
+			{
+				"pages": [
+					"Mon ancien Nidorina va bien ?"
+				]
+			}
+		]
+	},
+	"j32_trade_theo_done": {
+		"narration": true,
+		"variants": [
+			{
+				"pages": [
+					"{player} a échangé Nidorino contre Terry !"
+				]
+			}
+		]
+	},
+	"j32_trade_coline_offer": {
+		"speaker": "Coline",
+		"variants": [
+			{
+				"pages": [
+					"Salut ! Tu échangerais ton Têtarte\ncontre mon Lippoutou ?"
+				],
+				"choice": {
+					"confirm": "ÉCHANGER",
+					"cancel": "NON",
+					"confirm_set": [
+						"j32_trade_offer_accepted"
+					],
+					"cancel_set": [
+						"j32_trade_offer_declined"
+					],
+					"confirm_pages": [],
+					"cancel_pages": []
+				}
+			}
+		]
+	},
+	"j32_trade_coline_refuse": {
+		"speaker": "Coline",
+		"variants": [
+			{
+				"pages": [
+					"Dommage… Repasse si tu changes d'avis."
+				]
+			}
+		]
+	},
+	"j32_trade_coline_wrong": {
+		"speaker": "Coline",
+		"variants": [
+			{
+				"pages": [
+					"Ce n'est pas un Têtarte.\nReviens quand tu en auras un."
+				]
+			}
+		]
+	},
+	"j32_trade_coline_thanks": {
+		"speaker": "Coline",
+		"variants": [
+			{
+				"pages": [
+					"Merci ! Prends bien soin de lui."
+				]
+			}
+		]
+	},
+	"j32_trade_coline_after": {
+		"speaker": "Coline",
+		"variants": [
+			{
+				"pages": [
+					"Mon ancien Lippoutou va bien ?"
+				]
+			}
+		]
+	},
+	"j32_trade_coline_done": {
+		"narration": true,
+		"variants": [
+			{
+				"pages": [
+					"{player} a échangé Têtarte contre Lola !"
+				]
+			}
+		]
+	}
+}

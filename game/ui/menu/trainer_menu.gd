@@ -75,6 +75,8 @@ signal storage_withdraw_requested(index: int)
 signal storage_favorite_toggled(place: int, index: int)
 signal storage_release_requested(place: int, index: int)
 signal storage_release_confirmed(place: int, index: int)
+## Recherche ou tri de la grille du Stockage (T7).
+signal storage_query_changed(text: String, sort: int)
 
 const PIN_ICON: Texture2D = preload("res://assets/ui/icons/menu/map.svg")
 const CLOCK_ICON: Texture2D = preload("res://assets/ui/icons/menu/clock.svg")
@@ -460,6 +462,7 @@ func show_storage(view: StorageView) -> void:
 		_storage.favorite_toggled.connect(storage_favorite_toggled.emit)
 		_storage.release_requested.connect(storage_release_requested.emit)
 		_storage.release_confirmed.connect(storage_release_confirmed.emit)
+		_storage.query_changed.connect(storage_query_changed.emit)
 		_host.add_child(_storage)
 		_storage.hide_now()
 	set_zone_name("")

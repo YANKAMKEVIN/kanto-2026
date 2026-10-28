@@ -1,0 +1,36 @@
+{
+	"hp_up": {
+		"name": "PV Plus",
+		"plural": "PV Plus",
+		"feminine": false,
+		"category": "field",
+		"price": 0,
+		"description": "Augmente les PV de base d'un Pokémon. Sans effet dans le moteur actuel."
+	},
+	"carbos": {
+		"name": "Carbone",
+		"plural": "Carbones",
+		"feminine": false,
+		"category": "field",
+		"price": 0,
+		"description": "Augmente la Vitesse de base d'un Pokémon. Sans effet dans le moteur actuel."
+	},
+	"tm25": {
+		"name": "CT25 — Fatal-Foudre",
+		"plural": "CT25 — Fatal-Foudre",
+		"feminine": true,
+		"category": "tm",
+		"tm": 25,
+		"teaches": "thunder",
+		"description": "Une énorme décharge s'abat sur la cible. Peut la paralyser."
+	},
+	"tm33": {
+		"name": "CT33 — Protection",
+		"plural": "CT33 — Protection",
+		"feminine": true,
+		"category": "tm",
+		"tm": 33,
+		"teaches": "reflect", "price": 1000,
+		"description": "Un mur de lumière réduit les dégâts physiques subis pendant cinq tours."
+	}
+}

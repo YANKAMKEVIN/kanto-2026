@@ -272,6 +272,8 @@ func _add_life() -> void:
 	var point: Node = _kit.get(&"root").get_node(^"Interactables").get_child(-1)
 	var unless: Array[StringName] = [BUSH_FLAG]
 	point.set(&"unless_flags", unless)
+	_kit.call(&"add_interactable", "MewTruckExamine", Vector2i(3, 25), Vector2i(3, 2),
+		Vector2i.ZERO, &"vermilion_truck")
 	var arrival: Array = _plan().call(&"cells_at", "warp_nord")
 	_kit.call(&"add_trigger", "Arrival", (arrival[0] as Vector2i) + Vector2i.DOWN,
 		Vector2i(arrival.size(), 1), Vector2i.ZERO, &"vermilion_arrival")
@@ -406,6 +408,10 @@ func _place_props(entities: Node2D) -> void:
 		_kit.call(&"add_prop_at", entities, "prop_caisses_port_01", cell,
 			"Crates%d" % cell.x)
 	_kit.call(&"add_prop_at", entities, "prop_grue_quai_01", CRANE_CELL, "Crane")
+	# J32 (32J, N-3) : le vieux camion du quai ouest (3..5, 24..25) [D], examiné de tous côtés
+	# (`vermilion_truck` : Mew quand les 150 autres espèces sont capturées). Meuble provisoire :
+	# la camionnette de Bourg Palette.
+	_kit.call(&"add_prop", entities, "prop_camionnette_01", Vector2(432, 2496), "MewTruck")
 	_kit.call(&"add_prop_at", entities, "prop_bitte_amarre_01", _cell("cordage_passerelle"),
 		"MooringPost")
 	index = 0

@@ -76,5 +76,10 @@
 	},
 	"racaillou_1": {
 		"cell": [63, 11], "facing": "down", "sprite": "pokemon/geodude"
+	},
+	"route_9_tm30": {
+		"cell": [22, 27], "facing": "down", "sprite": "object/poke_ball_ground",
+		"dialogue": "route_9_tm30", "verb": "take", "turn_to_player": false,
+		"unless": ["got_route_9_tm30"]
 	}
 }

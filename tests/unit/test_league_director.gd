@@ -204,3 +204,25 @@ func test_trainer_view_shows_the_hall_of_fame_link_after_the_first_entry() -> vo
 	_director.complete_ceremony(_entry("2026-10-26T10:00:00"))
 	assert_eq(TrainerSummary.build(_state, data, null, null, null).hall_of_fame_text,
 		TrainerView.HALL_OF_FAME_LABEL)
+
+
+## Jalon 32 (N-17, N-18 ; RP-155) : chaque victoire fait revenir les Pokémon uniques mis K.O. et,
+## si les deux Ronflex des routes sont perdus, le Ronflex d'après la Ligue.
+func test_each_league_win_brings_back_knocked_out_legendaries() -> void:
+	var bird := StaticEncounter.new(&"articuno", &"articuno", 50, &"articuno_done",
+		&"articuno_caught")
+	var caught := StaticEncounter.new(&"moltres", &"moltres", 50, &"moltres_done",
+		&"moltres_caught")
+	_director.static_encounters = [bird, caught] as Array[StaticEncounter]
+	_flags().set_flag(&"articuno_done")
+	_flags().set_flag(&"moltres_done")
+	_flags().set_flag(&"moltres_caught")
+	for flag: StringName in StaticRespawn.ROUTE_SNORLAX_DONE:
+		_flags().set_flag(flag)
+	assert_false(_director.complete_ceremony(_entry("x")), "pas due : rien ne revient")
+	assert_true(_flags().has_flag(&"articuno_done"))
+	_win_all()
+	assert_true(_director.complete_ceremony(_entry("2026-10-27T10:00:00")))
+	assert_false(_flags().has_flag(&"articuno_done"), "Artikodin revenu")
+	assert_true(_flags().has_flag(&"moltres_done"), "Sulfura capturé : jamais")
+	assert_true(_flags().has_flag(StaticRespawn.SNORLAX_EXTRA_PRESENT), "Ronflex d'après la Ligue")

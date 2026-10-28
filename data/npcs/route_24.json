@@ -40,5 +40,10 @@
 	"nugget_rocket": {
 		"cell": [33, 21], "facing": "down", "sprite": "rocket_grunt_m",
 		"dialogue": "nugget_rocket", "unless": ["beaten_nugget_rocket"]
+	},
+	"route_24_tm45": {
+		"cell": [19, 3], "facing": "down", "sprite": "object/poke_ball_ground",
+		"dialogue": "route_24_tm45", "verb": "take", "turn_to_player": false,
+		"unless": ["got_route_24_tm45"]
 	}
 }

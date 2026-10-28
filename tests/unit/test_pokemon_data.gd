@@ -107,11 +107,15 @@ func test_real_data_loads_without_error() -> void:
 		# Jalon 23 (T6) : Leveinard, puis Insécateur, Scarabrute, Tauros (kanto_j23.json).
 		&"rhydon", &"chansey", &"tangela", &"kangaskhan",
 		&"horsea", &"seadra", &"goldeen", &"seaking", &"staryu", &"starmie", &"mr_mime", &"scyther", &"jynx",
-		&"magmar", &"pinsir", &"tauros", &"magikarp", &"gyarados",
+		# Jalon 32 (kanto_j32.json) : Élektek, Porygon, Électhor, Minidraco.
+		&"electabuzz", &"magmar", &"pinsir", &"tauros", &"magikarp", &"gyarados",
 		# Jalon 26 (T3) : Lokhlass, Alakazam (kanto_silph.json).
 		&"lapras", &"ditto",
-		&"eevee", &"vaporeon", &"jolteon", &"flareon",
-		&"omanyte", &"omastar", &"kabuto", &"kabutops", &"aerodactyl", &"snorlax", &"articuno", &"moltres", &"dragonair", &"dragonite", &"mewtwo"] as Array[StringName])
+		&"eevee", &"vaporeon", &"jolteon", &"flareon", &"porygon",
+		&"omanyte", &"omastar", &"kabuto", &"kabutops", &"aerodactyl", &"snorlax", &"articuno",
+		&"zapdos", &"moltres", &"dratini", &"dragonair", &"dragonite", &"mewtwo",
+		# Jalon 32 (32J) : Mew.
+		&"mew"] as Array[StringName])
 	# Jalon 23 (T18) : + Toxik (j23.json). Jalon 25 (T7) : kanto_j25.json (Ponyta, Galopa,
 	# Magmar, Ptéra) ; Tadmorv, Grotadmorv, Smogogo et Électrode sont ceux du J22
 	# (kanto_j25_reprises.json retiré à la fusion de main).
@@ -123,11 +127,12 @@ func test_real_data_loads_without_error() -> void:
 	# Lokhlass) et les emprunts du J27 au J29 (kanto_j27_emprunts.json, j27_emprunts.json) retirés.
 	# Jalon 31 (T4) : Métamorph, Mewtwo, Morphing ; kanto_j31_emprunts.json (Leveinard,
 	# Rhinoféros, ceux des J23 et J28) retiré à la fusion dans main.
+	# Jalon 32 : Affûtage et Conversion (j32.json, Porygon).
 	# Jalon 30 (T3) : espèces de la Ligue (kanto_j30.json : Lippoutou, Mackogneur, Ectoplasma,
 	# Draco, Dracolosse) et Grobisou (j30.json) ; ses reprises et emprunts (Rhinoféros, Kicklee,
 	# Tygnon ; Riposte, Pied Sauté, Pied Voltige, poings, Mawashi Geri, Abîme, Toxik) retirés à
 	# la fusion dans main : ceux des J23, J27 et J28 font foi.
-	assert_eq(_data.get_move_ids().size(), 159,
+	assert_eq(_data.get_move_ids().size(), 164,
 		"47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10) + Patience (J11) "
 		+ "+ 21 du Mont Sélénite (jalon 12) + 8 du jalon 13 (les 5 du J12 qu'il reprenait : "
 		+ "entrées du J12) + 6 du Cap d'Azuria (jalon 14) + Jackpot (J15) "
@@ -139,7 +144,7 @@ func test_real_data_loads_without_error() -> void:
 		+ "Force Poigne du J22, Guillotine du J24) "
 		+ "+ Déflagration et Poing de Feu (J25, j25.json) "
 		+ "+ 8 (J27, dont Vague Psy) + Abîme (J28) + 3 du jalon 29 (Piqué, Ultimawashi, Clonage) "
-		+ "+ Morphing (jalon 31) + Grobisou (jalon 30)")
+		+ "+ Morphing (jalon 31) + Grobisou (jalon 30) + Affûtage, Conversion (jalon 32) + Coupe-Vent, Éboulement, E-Coque (J32, N-22)")
 	assert_true(_data.has_move(&"struggle"))
 
 
@@ -250,6 +255,12 @@ func test_real_evolution_chains() -> void:
 		&"omanyte": [&"omastar", 40], &"kabuto": [&"kabutops", 40],
 		# Jalon 25 (T7) : Ponyta (Rouge/Bleu) ; Tadmorv → Grotadmorv est celui du J22.
 		&"ponyta": [&"rapidash", 40],
+		# Jalon 32 (lot 32K, `jalon-32.md` T3) : Rouge/Bleu entre espèces présentes.
+		&"machop": [&"machoke", 28], &"voltorb": [&"electrode", 30], &"koffing": [&"weezing", 35],
+		# Jalon 32 (32K, après la fusion du J29 : Noadkoko présent) : Pierre Plante.
+		&"exeggcute": [&"exeggutor", &"leaf_stone"],
+		# Jalon 32 (32K, après la fusion du J30) : échanges (terminal local) et Minidraco (N30).
+		&"machoke": [&"machamp", &""], &"haunter": [&"gengar", &""], &"dratini": [&"dragonair", 30],
 		# Ligue (jalon 30, T3) : Rouge/Bleu ; Spectrum → Ectoplasma (échange) n'est pas déclaré
 		# (Spectrum vient du J19).
 		&"dragonair": [&"dragonite", 55],
@@ -334,6 +345,7 @@ func test_real_move_values() -> void:
 ## Capacités du J19 nécessaires aux learnsets complets (plan jalon-19 §0.4 n° 1) dont la
 ## description, hors du lot §15.7 du dossier 22, attend la relecture de Kevin : « draft ».
 ## Retirer l'identifiant d'ici quand le texte est validé.
+## Jalon 32 (N-22) : Coupe-Vent, Éboulement, E-Coque validés par Kevin le 2026-10-28 : liste vide.
 const DRAFT_DESCRIPTIONS: Array[StringName] = []
 
 
@@ -566,6 +578,8 @@ func test_real_catch_rates_are_the_official_ones() -> void:
 		&"mr_mime": 45, &"hitmonlee": 45, &"hitmonchan": 45,
 		# Jalon 31 (T4 ; Rhinoféros et Leveinard sont ceux des J28 et J23).
 		&"ditto": 35, &"mewtwo": 3,
+		# Jalon 32 (kanto_j32.json).
+		&"electabuzz": 45, &"porygon": 45, &"zapdos": 3, &"dratini": 45, &"mew": 45,
 		# Jalon 30 (T3, Ligue) : espèces nouvelles (Rhinoféros, Kicklee, Tygnon : J28, J27).
 		&"jynx": 45, &"machamp": 45, &"gengar": 45, &"dragonair": 45, &"dragonite": 45,
 	}

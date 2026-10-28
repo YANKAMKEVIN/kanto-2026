@@ -205,5 +205,29 @@
 				]
 			}
 		]
+	},
+	"ss_anne_lower_deck_tm08": {
+		"variants": [
+			{
+				"unless": ["got_ss_anne_lower_deck_tm08"],
+				"steps": [
+					{ "despawn": "ss_anne_lower_deck_tm08" },
+					{ "give": "tm08", "count": 1, "found": true },
+					{ "set": ["got_ss_anne_lower_deck_tm08"] }
+				]
+			}
+		]
+	},
+	"ss_anne_cabin_a_tm44": {
+		"variants": [
+			{
+				"unless": ["got_ss_anne_cabin_a_tm44"],
+				"steps": [
+					{ "despawn": "ss_anne_cabin_a_tm44" },
+					{ "give": "tm44", "count": 1, "found": true },
+					{ "set": ["got_ss_anne_cabin_a_tm44"] }
+				]
+			}
+		]
 	}
 }

@@ -108,8 +108,8 @@ func test_tower_grid_loads_on_the_cave_kit_with_k_walls() -> void:
 func test_route_10_reads_on_the_water_kit() -> void:
 	var kit: RefCounted = WaterKit.new("res://tools/plans/route_10.txt", Vector2i(34, 76), 1, 2)
 	assert_eq(kit.get(&"errors"), PackedStringArray())
-	assert_eq(kit.get(&"plan").get(&"walkable"), ".=hoDQ")
-	kit.call(&"set_marks", ".=hoDQ", "K", "o")
+	assert_eq(kit.get(&"plan").get(&"walkable"), ".=hoDQP")
+	kit.call(&"set_marks", ".=hoDQP", "K", "o")
 	var root: Node2D = kit.call(&"make_root", "Route10", &"route_10", "Route 10", "", &"", "")
 	var grid: GridWorld = (root as GameMap).get_grid()
 	var plan: Object = kit.get(&"plan")

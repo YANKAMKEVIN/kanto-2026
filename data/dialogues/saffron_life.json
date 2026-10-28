@@ -170,8 +170,13 @@
 	},
 	"saffron_mr_psychic": {
 		"speaker": "M. Psy",
-		"pages": [
-			"Les Pokémon Psy sont puissants,\nmais fragiles face aux insectes\net aux spectres."
+		"variants": [
+			{ "unless": ["got_tm29"], "cutscene": "saffron_psychic_tm29" },
+			{
+				"pages": [
+					"Les Pokémon Psy sont puissants,\nmais fragiles face aux insectes\net aux spectres."
+				]
+			}
 		]
 	},
 	"saffron_pidgey_house_girl": {

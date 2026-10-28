@@ -1,0 +1,44 @@
+{
+	"map": "viridian_center",
+	"spawn": "trade_terminal",
+	"facing": "up",
+	"flags": [
+		"mom_greeted",
+		"rival_met",
+		"oak_met",
+		"oak_lab_reunion",
+		"starter_offered",
+		"starter_chosen",
+		"taken_charmander",
+		"taken_squirtle",
+		"rival_lab_won",
+		"rival_challenged",
+		"rival_battle_done",
+		"rival_left_lab",
+		"viridian_arrived",
+		"got_oak_parcel",
+		"pokedex_activated",
+		"poison_unlocked",
+		"pewter_arrived",
+		"cerulean_reached",
+		"badge_boulder",
+		"badge_cascade",
+		"badge_thunder",
+		"badge_rainbow",
+		"badge_soul",
+		"badge_marsh",
+		"badge_volcano",
+		"badge_earth"
+	],
+	"party": [
+		{
+			"species": "pikachu",
+			"level": 25
+		},
+		{
+			"species": "pidgeotto",
+			"level": 25
+		}
+	],
+	"money": 5000
+}

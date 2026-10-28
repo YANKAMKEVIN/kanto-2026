@@ -23,6 +23,7 @@
 		"learnset": [
 			[1, "karate_chop"], [20, "low_kick"], [25, "leer"], [32, "focus_energy"],
 			[39, "seismic_toss"], [46, "submission"]
-		]
+		],
+		"evolutions": [{ "into": "machoke", "method": "level", "level": 28 }]
 	}
 }

@@ -43,9 +43,10 @@ const DATA_DIR: String = "res://data/dialogues/"
 ## Centre (rituel, point de repos), Boutique, Stockage.
 ## Pension (J15, jalon-15.md §2.5.2) : `open_daycare`, le gardien (variante sans page).
 ## J20 (T13) : `open_elevator`, le panneau d'une cabine d'ascenseur (variante sans page).
+## J32 (T5) : `open_local_trade`, le terminal d'échange local d'un Centre.
 const ACTIONS: Array[StringName] = [
 	&"heal", &"center_heal", &"open_shop", &"open_storage", &"open_daycare",
-	&"open_elevator",
+	&"open_elevator", &"open_local_trade",
 ]
 
 const _DIALOGUE_KEYS: Array[String] = ["speaker", "narration", "draft", "variants"]

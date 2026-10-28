@@ -171,6 +171,7 @@ const TEMPLATE_IDS: Array[StringName] = [
 	&"screen_ended_foe", &"haze",
 	&"charge_solar_beam_start", &"charge_solar_beam_broken",
 	&"charge_skull_bash_start", &"charge_skull_bash_broken",
+	&"charge_razor_wind_start", &"charge_razor_wind_broken",
 	&"battle_item_used", &"item_escape", &"item_escape_2", &"revived",
 	&"flute_played", &"flute_all_woke", &"flute_no_effect", &"flute_no_effect_2",
 	&"crash",

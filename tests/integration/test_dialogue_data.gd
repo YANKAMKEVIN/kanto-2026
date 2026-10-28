@@ -176,7 +176,9 @@ const PLAYED_BY_COMPANION: Array[StringName] = [
 ## Passe systèmes 2 (S2B) : refus du Vélo (MountDirector) et Flûte « ailleurs » (KeyItemDirector).
 const PLAYED_BY_BOOT: Array[StringName] = [&"escape_rope_used", &"dark_cave_too_dark",
 	&"elevator_locked", &"bike_indoors", &"bike_cycling_road_walk", &"poke_flute_played",
-	&"surf_water", &"surf_first_ride", &"surf_current_too_strong", &"water_choice"]
+	&"surf_water", &"surf_first_ride", &"surf_current_too_strong", &"water_choice",
+	# Jalon 32 (T5) : répliques du terminal d'échange local ([LocalTradeDirector]).
+	&"trade_terminal_none", &"trade_terminal_confirm"]
 ## Passe systèmes 2 (S2B) : textes validés des dossiers 25 (§16.1.3, §16.1.4) et 24 (§15.6.6),
 ## qui vivent encore sur les branches de conception du J21 et du J22 (pas dans `main`) : comparés
 ## ici mot pour mot, page par page.
@@ -532,6 +534,10 @@ const MAPS: Array[StringName] = [
 	&"digletts_cave",
 	# Jalon 17 (T19) : le couloir de la Route 2 est et le poste de l'assistant.
 	&"route_2_east", &"route_2_east_gate",
+	# Jalon 32 (32G) : la Centrale.
+	&"power_plant",
+	# Jalon 32 (N-14) : poste de la Route 18 (échange Flagadoss → Excelangue).
+	&"route_18_gate",
 	# Jalon 16 (T11) : l'Arène de Carmin (puzzle et barrière ; Major Bob et les siens au T14).
 	&"vermilion_gym",
 	# Jalon 16 (T12) : la vie du navire (les 7 cartes à fouler ; couloir et cabine du capitaine = T13).
@@ -593,11 +599,39 @@ const MAPS: Array[StringName] = [
 ## Jalon 21 (T22) : dialogues de Ronflex de la Route 16 (`j21_snorlax_16.json`, dossier 24 §15.6-§15.7).
 ## Les répliques communes (flûte jouée, réveil, calme, rendormi) sont celles de `j21_snorlax.json`.
 const IDS_J21_T22: Array[StringName] = [&"snorlax_route_16"]
+## Jalon 32 (N-18) : Ronflex d'après la Ligue (Route 10), textes du J21 repris tels quels.
+const IDS_J32: Array[StringName] = [&"snorlax_post_league",
+	# 32J : Mew et le Diplôme.
+	&"j32_vermilion_rumor", &"vermilion_truck", &"j32_designer", &"j32_diploma_received",
+	# T5 (terminal d'échange local) ; 32A à 32D (seconds exemplaires d'après la Ligue).
+	&"trade_terminal", &"trade_terminal_none", &"trade_terminal_confirm", &"j32_oak_second_gift", &"j32_oak_received_bulbasaur", &"j32_oak_stored_bulbasaur", &"j32_oak_received_charmander", &"j32_oak_stored_charmander", &"j32_oak_received_squirtle", &"j32_oak_stored_squirtle", &"j32_eevee_ball_2", &"j32_eevee_ball_3", &"j32_fossil_researcher",
+	# N-13 (Porygon), N-14 (échanges PNJ de Rouge/Bleu), N-11 (Électhor) : textes validés par Kevin le 2026-10-27.
+	&"zapdos", &"power_plant_fausse_ball_1", &"power_plant_fausse_ball_2", &"power_plant_fausse_ball_3", &"power_plant_fausse_ball_4", &"power_plant_fausse_ball_5", &"power_plant_fausse_ball_6", &"power_plant_fausse_ball_7", &"power_plant_fausse_ball_8", &"power_plant_item_1", &"power_plant_item_2", &"power_plant_item_3", &"power_plant_item_4", &"power_plant_item_5", &"power_plant_hidden_1", &"power_plant_hidden_2",
+	&"silph_co_porygon_giver", &"j32_trade_coline",
+	&"j32_trade_coline_offer", &"j32_trade_coline_refuse", &"j32_trade_coline_wrong", &"j32_trade_coline_thanks", &"j32_trade_coline_after", &"j32_trade_coline_done",
+	&"silph_co_porygon_received", &"silph_co_porygon_stored", &"zapdos_presence",
+	&"zapdos_flew_away", &"j32_trade_remi", &"j32_trade_leon", &"j32_trade_aline",
+	&"j32_trade_hugo", &"j32_trade_theo", &"j32_trade_remi_offer", &"j32_trade_remi_refuse",
+	&"j32_trade_remi_wrong", &"j32_trade_remi_thanks", &"j32_trade_remi_after",
+	&"j32_trade_remi_done", &"j32_trade_leon_offer", &"j32_trade_leon_refuse",
+	&"j32_trade_leon_wrong", &"j32_trade_leon_thanks", &"j32_trade_leon_after",
+	&"j32_trade_leon_done", &"j32_trade_aline_offer", &"j32_trade_aline_refuse",
+	&"j32_trade_aline_wrong", &"j32_trade_aline_thanks", &"j32_trade_aline_after",
+	&"j32_trade_aline_done", &"j32_trade_hugo_offer", &"j32_trade_hugo_refuse",
+	&"j32_trade_hugo_wrong", &"j32_trade_hugo_thanks", &"j32_trade_hugo_after",
+	&"j32_trade_hugo_done", &"j32_trade_theo_offer", &"j32_trade_theo_refuse",
+	&"j32_trade_theo_wrong", &"j32_trade_theo_thanks", &"j32_trade_theo_after",
+	&"j32_trade_theo_done"
+]
 ## Jalon 21 (T22) : textes validés (dossier 24 §15.6.3, §15.7 ; T-6 et T-7 du J17), page par page.
 const TEXTS_J21_T22: Dictionary[StringName, Array] = {
 	&"snorlax_route_16": ["Ronflex dort de nouveau.", "Il ronfle comme si de rien n'était.",
 		"Jouer de la Poké Flûte ?", "Un énorme Pokémon dort au milieu du chemin.",
 		"Il ne bouge pas d'un pouce.", "Il ronfle paisiblement.",
+		"Rien ne semble pouvoir le réveiller."],
+	# Jalon 32 (N-18) : mêmes pages (sans la première rencontre « au milieu du chemin »).
+	&"snorlax_post_league": ["Ronflex dort de nouveau.", "Il ronfle comme si de rien n'était.",
+		"Jouer de la Poké Flûte ?", "Il ronfle paisiblement.",
 		"Rien ne semble pouvoir le réveiller."],
 }
 ## Jalon 21 (T22) : jouées par la scène `snorlax_route_16_wake` (le premier est lu par le point).
@@ -1398,7 +1432,7 @@ func test_library_loads_without_error() -> void:
 	var expected := IDS + IDS_J14_BILL + IDS_J14_ROCKET + IDS_J15_ROUTE_5 + IDS_J16_GYM \
 		+ IDS_J16_SHIP + IDS_J16_RIVAL_CAPTAIN + IDS_J16_T15 + IDS_J17 + IDS_J18 + IDS_J19 + IDS_J20 \
 		+ IDS_J20_T17 + IDS_J20_T21 + IDS_J21 + IDS_J21_T21 + IDS_S2B + S2_FIELD_TRAVEL + IDS_J21_T22 \
-		+ IDS_J24_TRAINERS + IDS_J24 + IDS_J25 + IDS_J28 + IDS_J29 + IDS_J29_MONDE + IDS_J31 + IDS_J30 \
+		+ IDS_J24_TRAINERS + IDS_J24 + IDS_J25 + IDS_J28 + IDS_J29 + IDS_J29_MONDE + IDS_J31 + IDS_J30 + IDS_J32 + IDS_J32_CT \
 		+ _silph_co_ids() + _j26_life_ids() + IDS_J26_STORY + _j27_ids()
 	expected.append_array(TEXTS_J26_T6.keys())
 	expected.append_array(TEXTS_S2C_FISH.keys())
@@ -1429,6 +1463,9 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 	assert_eq(_cutscenes.get_errors().size(), 0, str(_cutscenes.get_errors()))
 	var played := _without_qa(_cutscenes.get_dialogue_ids())
 	assert_eq(played, _sorted(PLAYED_J29 + PLAYED_J30 + [
+		# Jalon 32 (32N, N-22) : répliques des dons de CT.
+		&"celadon_dept_3f_tm18_give", &"celadon_dept_3f_tm18_got", &"saffron_psychic_tm29_give",
+		&"saffron_psychic_tm29_got", &"celadon_chief_son_tm41_give", &"celadon_chief_son_tm41_got",
 		# Jalon 24 : Artikodin, porte de l'Arène, CT35, fossiles.
 		&"articuno_cry", &"articuno_flew_away", &"cinnabar_gym_locked", &"cinnabar_lab_tm35_offer",
 		&"cinnabar_lab_tm35_use", &"cinnabar_fossil_taken", &"cinnabar_fossil_ready_kabuto", &"cinnabar_fossil_ready_omanyte",
@@ -1549,7 +1586,17 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		&"viridian_gym_giovanni_intro", &"viridian_gym_giovanni_lost", &"viridian_gym_giovanni_resume",
 		&"viridian_gym_giovanni_tm", &"viridian_gym_giovanni_tm_got", &"viridian_gym_giovanni_won"]
 		# Jalon 31 (T4) : cri de Mewtwo avant le combat.
-		+ [&"mewtwo_cry"]))
+		+ [&"mewtwo_cry"]
+		# Jalon 32 (N-13, N-14, N-11) : Porygon, échanges PNJ de RB, Électhor.
+		+ [&"silph_co_porygon_received", &"silph_co_porygon_stored", &"zapdos_presence",
+		&"zapdos_flew_away"]
+		# Jalon 32 (32J) : le Diplôme.
+		+ [&"j32_diploma_received"]
+		# Jalon 32 (32A) : les deux dons de Chen d'après la Ligue.
+		+ [&"j32_oak_second_gift", &"j32_oak_received_bulbasaur", &"j32_oak_stored_bulbasaur",
+		&"j32_oak_received_charmander", &"j32_oak_stored_charmander",
+		&"j32_oak_received_squirtle", &"j32_oak_stored_squirtle"]
+		+ J32_TRADE_LINES))
 	for id: StringName in played:
 		assert_true(_library.has_dialogue(id), "dialogue « %s » défini" % id)
 		if UNUSED_YET.has(id) or IDS_J31.has(id):
@@ -1633,6 +1680,11 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 	set_flags.append(&"fossil_ready")
 	# Jalon 30 (T8) : drapeaux de la tentative de Ligue, levés par le code (LeagueDirector).
 	set_flags.append_array(LeagueAttempt.temporary_flags())
+	# Jalon 32 (N-18) : Ronflex d'après la Ligue, levé par le code à la victoire à la Ligue
+	# ([method StaticRespawn.apply_snorlax_rule]).
+	set_flags.append(StaticRespawn.SNORLAX_EXTRA_PRESENT)
+	# Jalon 30 : victoire à la Ligue, levée par la cérémonie ([LeagueAttempt]) ; lue au J32 (32A à 32D).
+	set_flags.append(LeagueAttempt.CHAMPION_DEFEATED)
 	var read_flags := dialogues.get_condition_flags() + cutscenes.get_condition_flags()
 	for map_id: StringName in MAPS:
 		for spec: NpcSpec in NpcRoster.load_for_map(map_id).get_all():
@@ -1654,6 +1706,8 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 			# Jalon 26 (T8) : la boisson choisie au OUI du garde (lue par la scène qui la prend).
 			&"saffron_gate_offer_lemonade", &"saffron_gate_offer_soda", &"saffron_gate_offer_water",
 			&"route_2_hiker_talked", &"route_2_youngster_talked", &"storage_terminal_seen",
+			# Jalon 32 (T5) : premier passage au terminal d'échange local.
+			&"trade_terminal_seen",
 			&"viridian_old_man_talked",
 			# Jalon 16 (T15) : PARTIR (confirmation du départ du S.S. Anne) ; TXT-03 entendu
 			# (marin de la passerelle, aussi joué par la sortie).
@@ -1669,11 +1723,31 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 			# Jalon 25 : réponses du quiz, offre d'échange acceptée ou refusée (choix OUI / NON).
 			+ [&"cinnabar_gym_quiz_no", &"cinnabar_gym_quiz_yes", &"cinnabar_trade_offer_accepted",
 				&"cinnabar_trade_offer_declined"]
+			# Jalon 32 (N-14) : offre d'échange des PNJ de Rouge/Bleu.
+			+ [&"j32_trade_offer_accepted", &"j32_trade_offer_declined"]
 			# Jalon 30 (fusion du J29) : NON à la question du garde de la porte de la Ligue.
 			+ [&"league_door_declined"]))
 	assert_eq(cutscenes.get_set_flags(), _sorted(SET_J29 + SET_J30 + [&"got_tm39", &"route_12_visited",
+		# Jalon 32 (32N) : CT obtenables partout.
+		&"got_route_4_tm04", &"got_ss_anne_lower_deck_tm08", &"got_mt_moon_b1f_tm12", &"got_route_12_tm16", &"got_route_24_tm45", &"got_route_9_tm30", &"got_silph_co_2f_tm36", &"got_viridian_city_tm42", &"got_ss_anne_cabin_a_tm44", &"got_tm18", &"got_tm29", &"got_tm41", &"rooftop_tm48", &"rooftop_tm49",
 		&"snorlax_route_12_awake", &"snorlax_route_12_caught", &"snorlax_route_12_done",
 		&"snorlax_route_12_woken", &"badge_boulder", &"badge_cascade",
+		# Jalon 32 (32J) : Mew (rencontre unique) et le Diplôme.
+		&"mew_appeared", &"mew_resolved", &"mew_caught", &"diploma_received",
+		# Jalon 32 (32A à 32D) : seconds exemplaires d'après la Ligue.
+		&"oak_gift_bulbasaur", &"oak_gift_charmander", &"oak_gift_squirtle",
+		&"oak_post_league_gifts_done", &"eevee_received_2", &"eevee_received_3",
+		&"j32_second_fossil_given",
+		# Jalon 32 (N-18) : Ronflex d'après la Ligue.
+		&"snorlax_post_league_awake", &"snorlax_post_league_caught", &"snorlax_post_league_done",
+		&"snorlax_post_league_woken",
+		# Jalon 32 (N-13, N-14, N-11) : Porygon, échanges PNJ de RB, Électhor.
+		&"silph_porygon_received", &"route_2_trade_mr_mime_done", &"vermilion_trade_farfetchd_done",
+		&"route_18_trade_lickitung_done", &"route_5_trade_nidoran_f_done",
+		&"route_11_trade_nidorina_done", &"cerulean_trade_jynx_done",
+		# Jalon 32 (32G) : la Centrale.
+		&"got_power_plant_item_1", &"got_power_plant_item_2", &"got_power_plant_item_3", &"got_power_plant_item_4", &"got_power_plant_item_5", &"got_power_plant_hidden_1", &"got_power_plant_hidden_2", &"fausse_ball_1_done", &"fausse_ball_1_caught", &"fausse_ball_2_done", &"fausse_ball_2_caught", &"fausse_ball_3_done", &"fausse_ball_3_caught", &"fausse_ball_4_done", &"fausse_ball_4_caught", &"fausse_ball_5_done", &"fausse_ball_5_caught", &"fausse_ball_6_done", &"fausse_ball_6_caught", &"fausse_ball_7_done", &"fausse_ball_7_caught", &"fausse_ball_8_done", &"fausse_ball_8_caught",
+		&"zapdos_caught", &"zapdos_done",
 		&"beaten_mt_moon_researcher", &"beaten_nugget_rocket", &"brock_met", &"cerulean_reached", &"got_mt_moon_1f_hidden_1",
 		&"got_mt_moon_1f_item_1", &"got_mt_moon_b1f_item_1", &"got_mt_moon_b1f_item_2",
 		&"got_mt_moon_b2f_hidden_1", &"got_mt_moon_b2f_item_1", &"got_nugget", &"got_oak_parcel",
@@ -1865,17 +1939,18 @@ func test_waiting_lines_during_and_after_the_choice() -> void:
 	var oak := _library.get_dialogue(&"oak_lab_waiting")
 	# 4B : la variante répétée « starter_chosen » du 4A est supprimée (3 variantes) ; J7 (T18) :
 	# la variante du colis passe en tête (test_oak_parcel_lines).
-	assert_eq(oak.variants.size(), 4)
-	assert_eq(oak.variants[0].cutscene, &"oak_parcel")
-	assert_eq(oak.variants[1].if_flags, [&"rival_battle_done"] as Array[StringName])
-	assert_eq(_texts(oak.variants[1]), [
+	assert_eq(oak.variants.size(), 5, "J32 (32A) : le don d'après la Ligue en tête")
+	assert_eq(oak.variants[0].cutscene, &"j32_oak_gifts")
+	assert_eq(oak.variants[1].cutscene, &"oak_parcel")
+	assert_eq(oak.variants[2].if_flags, [&"rival_battle_done"] as Array[StringName])
+	assert_eq(_texts(oak.variants[2]), [
 		"Le monde qui vous attend est bien plus vaste que Bourg Palette.",
 		"Prends le temps de l'observer. Les Pokémon ont beaucoup à nous apprendre.",
 	] as Array[String])
-	assert_eq(oak.variants[2].if_flags, [&"starter_offered"] as Array[StringName])
-	assert_eq(_texts(oak.variants[2]), ["Prends ton temps.",
+	assert_eq(oak.variants[3].if_flags, [&"starter_offered"] as Array[StringName])
+	assert_eq(_texts(oak.variants[3]), ["Prends ton temps.",
 		"Choisis celui avec qui tu as envie de partir."] as Array[String])
-	assert_eq(_texts(oak.variants[3]),
+	assert_eq(_texts(oak.variants[4]),
 		["Un peu de patience. J'ai quelque chose à vous montrer."] as Array[String])
 	var rival := _library.get_dialogue(&"rival_lab_waiting")
 	assert_eq(rival.speaker, "{rival}")
@@ -1897,11 +1972,11 @@ func test_waiting_lines_during_and_after_the_choice() -> void:
 		"Vous avez l'air de déjà bien vous entendre."] as Array[String])
 	var flags := StoryFlags.new()
 	flags.set_flag(&"oak_met")
-	assert_eq(oak.pick(flags), oak.variants[3], "avant l'offre : réplique du 3B")
+	assert_eq(oak.pick(flags), oak.variants[4], "avant l'offre : réplique du 3B")
 	assert_eq(rival.pick(flags), rival.variants[1], "avant l'offre : réplique du 3B")
 	assert_eq(maya.pick(flags), maya.variants[2], "réplique du 3B")
 	flags.set_flag(&"starter_offered")
-	assert_eq(oak.pick(flags), oak.variants[2], "pendant le choix")
+	assert_eq(oak.pick(flags), oak.variants[3], "pendant le choix")
 	assert_eq(rival.pick(flags), rival.variants[0], "pendant le choix")
 	assert_eq(maya.pick(flags), maya.variants[2])
 	# L'état « starter choisi, combat pas encore fini » n'est plus atteint par le joueur : la
@@ -1911,7 +1986,7 @@ func test_waiting_lines_during_and_after_the_choice() -> void:
 	flags.set_flag(&"rival_left_lab")
 	flags.set_flag(&"rival_battle_done")
 	flags.set_flag(&"starter_female")
-	assert_eq(oak.pick(flags), oak.variants[1], "après le combat : « Le monde qui vous attend… »")
+	assert_eq(oak.pick(flags), oak.variants[2], "après le combat : « Le monde qui vous attend… »")
 	assert_eq(maya.pick(flags), maya.variants[0], "starter femelle : « elle »")
 	flags.set_flag(&"starter_female", false)
 	assert_eq(maya.pick(flags), maya.variants[1], "starter mâle ou sans sexe : « lui »")
@@ -1962,6 +2037,107 @@ func test_mom_first_variant_is_automatic_and_only_hers() -> void:
 ## sauf ceux qui attendent sa relecture, nommés ici (« id:variante »).
 ## Jalon 16 (décisions du 2026-10-16) : indice du guide de l'Arène de Carmin (type Sol), validé le
 ## 2026-10-16 ; jalon 17 : accord de T-2 à 1 espèce validé (Q-2, 2026-10-16) : liste vide.
+## Jalon 32 : textes validés par Kevin (passe `j32-arbitrages-kevin.md` §5, N-16), page par page.
+const TEXTS_J32: Dictionary[StringName, Array] = {
+	# N-16 (2026-10-24) : réplique 16 ; le reste validé par Kevin le 2026-10-27.
+	&"j32_trade_remi_offer": ["Salut ! Tu échangerais ton Abra\ncontre mon M. Mime ?"],
+	&"j32_trade_remi_refuse": ["Dommage… Repasse si tu changes d'avis."],
+	&"j32_trade_remi_wrong": ["Ce n'est pas un Abra.\nReviens quand tu en auras un."],
+	&"j32_trade_remi_thanks": ["Merci ! Prends bien soin de lui."],
+	&"j32_trade_remi_after": ["Mon ancien M. Mime va bien ?"],
+	&"j32_trade_remi_done": ["{player} a échangé Abra contre Marcel !"],
+	&"j32_trade_leon_offer": ["Salut ! Tu échangerais ton Piafabec\ncontre mon Canarticho ?"],
+	&"j32_trade_leon_refuse": ["Dommage… Repasse si tu changes d'avis."],
+	&"j32_trade_leon_wrong": ["Ce n'est pas un Piafabec.\nReviens quand tu en auras un."],
+	&"j32_trade_leon_thanks": ["Merci ! Prends bien soin de lui."],
+	&"j32_trade_leon_after": ["Mon ancien Canarticho va bien ?"],
+	&"j32_trade_leon_done": ["{player} a échangé Piafabec contre Dux !"],
+	&"j32_trade_aline_offer": ["Salut ! Tu échangerais ton Flagadoss\ncontre mon Excelangue ?"],
+	&"j32_trade_aline_refuse": ["Dommage… Repasse si tu changes d'avis."],
+	&"j32_trade_aline_wrong": ["Ce n'est pas un Flagadoss.\nReviens quand tu en auras un."],
+	&"j32_trade_aline_thanks": ["Merci ! Prends bien soin de lui."],
+	&"j32_trade_aline_after": ["Mon ancien Excelangue va bien ?"],
+	&"j32_trade_aline_done": ["{player} a échangé Flagadoss contre Marc !"],
+	&"j32_trade_hugo_offer": ["Salut ! Tu échangerais ton Nidoran♂\ncontre mon Nidoran♀ ?"],
+	&"j32_trade_hugo_refuse": ["Dommage… Repasse si tu changes d'avis."],
+	&"j32_trade_hugo_wrong": ["Ce n'est pas un Nidoran♂.\nReviens quand tu en auras un."],
+	&"j32_trade_hugo_thanks": ["Merci ! Prends bien soin de lui."],
+	&"j32_trade_hugo_after": ["Mon ancien Nidoran♀ va bien ?"],
+	&"j32_trade_hugo_done": ["{player} a échangé Nidoran♂ contre Spot !"],
+	&"j32_trade_theo_offer": ["Salut ! Tu échangerais ton Nidorino\ncontre mon Nidorina ?"],
+	&"j32_trade_theo_refuse": ["Dommage… Repasse si tu changes d'avis."],
+	&"j32_trade_theo_wrong": ["Ce n'est pas un Nidorino.\nReviens quand tu en auras un."],
+	&"j32_trade_theo_thanks": ["Merci ! Prends bien soin de lui."],
+	&"j32_trade_theo_after": ["Mon ancien Nidorina va bien ?"],
+	&"j32_trade_theo_done": ["{player} a échangé Nidorino contre Terry !"],
+	# N-21 (2026-10-28) : échange de Lippoutou, terminal d'échange, chercheur, camion.
+	&"j32_trade_coline_offer": ["Salut ! Tu échangerais ton Têtarte\ncontre mon Lippoutou ?"],
+	&"j32_trade_coline_refuse": ["Dommage… Repasse si tu changes d'avis."],
+	&"j32_trade_coline_wrong": ["Ce n'est pas un Têtarte.\nReviens quand tu en auras un."],
+	&"j32_trade_coline_thanks": ["Merci ! Prends bien soin de lui."],
+	&"j32_trade_coline_after": ["Mon ancien Lippoutou va bien ?"],
+	&"j32_trade_coline_done": ["{player} a échangé Têtarte contre Lola !"],
+	&"trade_terminal": ["Un terminal d'échange local."],
+	&"trade_terminal_none": ["Échanger ne changerait rien\npour ces Pokémon."],
+	&"zapdos_presence": ["L'air crépite d'électricité…"],
+	&"zapdos_flew_away": ["Électhor s'est envolé dans un éclair."],
+	&"silph_co_porygon_giver": ["Prends bien soin de Porygon.\nIl apprend vite.", "Notre prototype, Porygon. Un Pokémon\nfait de données. Il est à toi."],
+	&"silph_co_porygon_received": ["{player} reçoit Porygon !"],
+	&"silph_co_porygon_stored": ["Porygon a été envoyé au stockage."],
+	# Jalon 32 (T5, §3 du plan) et 32A à 32D (N-16, textes 8 à 15 ; formules de don).
+	&"trade_terminal_confirm": ["Échanger {pokemon} ?"],
+	&"oak_lab_waiting": ["{player} ! Tu te souviens du Pokémon\nresté sur cette table ?", "C'était mon dernier Pokémon.\nIl t'a attendu. Prends-en soin.", "Le monde qui vous attend est bien plus vaste que Bourg Palette.", "Prends le temps de l'observer. Les Pokémon ont beaucoup à nous apprendre.", "Prends ton temps.", "Choisis celui avec qui tu as envie de partir.", "Un peu de patience. J'ai quelque chose à vous montrer."],
+	&"j32_oak_second_gift": ["Et ce n'est pas tout : un autre\nest arrivé au labo. Il est pour toi."],
+	&"j32_oak_received_bulbasaur": ["{player} reçoit Bulbizarre !"],
+	&"j32_oak_stored_bulbasaur": ["Bulbizarre a été envoyé au stockage."],
+	&"j32_oak_received_charmander": ["{player} reçoit Salamèche !"],
+	&"j32_oak_stored_charmander": ["Salamèche a été envoyé au stockage."],
+	&"j32_oak_received_squirtle": ["{player} reçoit Carapuce !"],
+	&"j32_oak_stored_squirtle": ["Carapuce a été envoyé au stockage."],
+	# 32J (N-16, textes 1 à 7).
+	&"j32_vermilion_rumor": ["Le vieux camion du quai ? Personne ne sait\nqui l'a garé là.",
+		"Mon frère jure qu'un Pokémon rose\ndort dessous. Il dit n'importe quoi."],
+	&"vermilion_truck": ["Quelque chose bouge sous le camion…",
+		"Un vieux camion. Il n'a pas bougé\ndepuis des années."],
+	&"j32_designer": ["Tu sais quoi ? C'est moi qui ai conçu\nce jeu !",
+		"Remplir le Pokédex, c'est dur.\nMais n'abandonne pas !",
+		"Incroyable ! Tu as complété\nton Pokédex ! Félicitations !"],
+	&"j32_diploma_received": ["{player} reçoit le Diplôme !"],
+	&"j32_eevee_ball_2": ["D'autres Évoli sont nés.\nPrends-en un si tu veux.", "Le prendre ?"],
+	&"j32_eevee_ball_3": ["D'autres Évoli sont nés.\nPrends-en un si tu veux.", "Le prendre ?"],
+	&"j32_fossil_researcher": ["Le Labo saura le réveiller.\nPrends-en soin.",
+		"Toi ! On a partagé les fossiles,\nau Mont Sélénite.",
+		"Je n'ai jamais su le réveiller.\nGarde-le : ici, ils savent faire."],
+	&"fighting_dojo_master": ["Champion de la Ligue… Mes poings\nt'attendaient.", "Prends l'autre Poké Ball. Un Dojo\nn'est rien sans ses deux styles.", "Prends-en soin.\nEt reviens t'entraîner quand tu veux !", "Choisis l'un de nos Pokémon.\nIl te suivra."],
+	# 32N (N-22) : répliques des dons de CT validées par Kevin le 2026-10-28.
+	&"celadon_dept_3f_gift_man": ["Riposte, ça ne s'improvise pas.", "Il faut d'abord savoir encaisser."],
+	&"celadon_dept_3f_tm18_give": ["J'avais un cadeau pour un Dresseur doué.", "Toi, tu as l'air de ceux qui encaissent les coups.\nTiens, prends ça !"],
+	&"celadon_dept_3f_tm18_got": ["{player} obtient la CT18 — Riposte !", "Riposte renvoie le double des dégâts\nd'une attaque Normal ou Combat."],
+	&"celadon_roof_girl": ["Ça va mieux, merci.", "Le toit, c'est joli,\nmais il y fait chaud.", "J'ai tellement soif… Tu as\nquelque chose à boire ?", "Lui donner une Eau Fraîche ?", "Tant pis… Je vais\nattendre encore un peu.", "Lui donner un Soda Cool ?", "Lui donner une Limonade ?"],
+	&"saffron_psychic_tm29_give": ["Je sentais ta venue, jeune Dresseur.", "Je te confie une technique de ma jeunesse."],
+	&"saffron_psychic_tm29_got": ["{player} obtient la CT29 — Psyko !", "Psyko est une puissante attaque Psy."],
+	&"celadon_chief_son_tm41_give": ["Un jour, je serai un grand Dresseur !", "Tiens, je te donne ma CT.\nMoi, je n'arrive pas à m'en servir."],
+	&"celadon_chief_son_tm41_got": ["{player} obtient la CT41 — E-Coque !", "E-Coque rend la moitié des PV du lanceur."],
+	&"celadon_chief_son": ["Quand je serai Dresseur,\nje battrai le Champion !"],
+}
+## Jalon 32 (N-14) : répliques des échanges PNJ jouées par leurs scènes.
+const J32_TRADE_LINES: Array[StringName] = [
+	&"j32_trade_coline_offer", &"j32_trade_coline_refuse", &"j32_trade_coline_wrong", &"j32_trade_coline_thanks", &"j32_trade_coline_after", &"j32_trade_coline_done",
+	&"j32_trade_remi_offer", &"j32_trade_remi_refuse", &"j32_trade_remi_wrong",
+	&"j32_trade_remi_thanks", &"j32_trade_remi_after", &"j32_trade_remi_done",
+	&"j32_trade_leon_offer", &"j32_trade_leon_refuse", &"j32_trade_leon_wrong",
+	&"j32_trade_leon_thanks", &"j32_trade_leon_after", &"j32_trade_leon_done",
+	&"j32_trade_aline_offer", &"j32_trade_aline_refuse", &"j32_trade_aline_wrong",
+	&"j32_trade_aline_thanks", &"j32_trade_aline_after", &"j32_trade_aline_done",
+	&"j32_trade_hugo_offer", &"j32_trade_hugo_refuse", &"j32_trade_hugo_wrong",
+	&"j32_trade_hugo_thanks", &"j32_trade_hugo_after", &"j32_trade_hugo_done",
+	&"j32_trade_theo_offer", &"j32_trade_theo_refuse", &"j32_trade_theo_wrong",
+	&"j32_trade_theo_thanks", &"j32_trade_theo_after", &"j32_trade_theo_done"
+]
+## Jalon 32 (N-21) : derniers brouillons validés par Kevin le 2026-10-28 : liste vide.
+## Jalon 32 (32N, N-22) : dialogues des CT (ramassages et dons).
+const IDS_J32_CT: Array[StringName] = [&"route_4_tm04", &"ss_anne_lower_deck_tm08", &"mt_moon_b1f_tm12", &"route_12_tm16", &"route_24_tm45", &"route_9_tm30", &"silph_co_2f_tm36", &"viridian_city_tm42", &"ss_anne_cabin_a_tm44", &"celadon_dept_3f_tm18_give", &"celadon_dept_3f_tm18_got", &"saffron_psychic_tm29_give", &"saffron_psychic_tm29_got", &"celadon_chief_son_tm41_give", &"celadon_chief_son_tm41_got", &"celadon_chief_son"]
+## Jalon 32 (32N, N-22) : répliques des dons de CT validées par Kevin le 2026-10-28 : liste vide.
 const PENDING_DRAFT_VARIANTS: Array[String] = []
 
 
@@ -2061,6 +2237,9 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			continue
 		if TEXTS_J26_T6.has(row[0]):
 			assert_eq(row[1], TEXTS_J26_T6[row[0]], String(row[0]))
+			continue
+		if TEXTS_J32.has(row[0]):
+			assert_true(TEXTS_J32[row[0]].has(row[1]), "%s : %s" % [row[0], row[1]])
 			continue
 		if TEXTS_J21_T22.has(row[0]):
 			assert_true(TEXTS_J21_T22[row[0]].has(text_t22(row[1])), "%s : %s" % [row[0], row[1]])
@@ -2317,7 +2496,7 @@ func test_maya_after_oak_returns_and_the_lab_reunion() -> void:
 ## réplique de l'espèce porte le jeton, « Observe. Explore. » garde sa phrase.
 func test_oak_parcel_lines() -> void:
 	var oak := _library.get_dialogue(&"oak_lab_waiting")
-	var first := oak.variants[0]
+	var first := oak.variants[1]
 	assert_eq(first.if_flags, [&"got_oak_parcel"] as Array[StringName])
 	assert_eq(first.unless_flags, [StoryFlags.POKEDEX_ACTIVATED] as Array[StringName])
 	assert_eq(first.cutscene, &"oak_parcel")
@@ -2385,7 +2564,10 @@ func test_oak_parcel_lines() -> void:
 	# Jalon 28 (T8) : Giovanni (Arène et rattrapage de la CT27) et le Rappel de l'Arène.
 	# Jalon 29 : dix objets au sol, cinq cachés, huit gardes, le rival n° 7 et Sulfura.
 	# Jalon 31 (T4) : huit objets au sol et deux cachés de la Grotte Azurée, Mewtwo.
-	assert_eq(launched, 200, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
+	# Jalon 32 : cinq échanges PNJ de Rouge/Bleu (N-14) et Porygon (N-13) ; 32A à 32D : Chen, le
+	# Maître du Dojo (2), deux Poké Balls d'Évoli, le chercheur (2) ; 32J : le camion, le concepteur. 32N (N-22) : neuf CT
+	# ramassées, le don de la CT18, de la CT29 et de la CT41.
+	assert_eq(launched, 242, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
 		+ "sa CT34, Ondine (pont, Arène et rattrapage), écran, module, console, objets de la "
 		+ "Route 25, le Rocket d'Azuria (2) et le barrage sud ; J15 : objets de la Route 5 ; "
 		+ "J16 : Major Bob (2), neuf objets du S.S. Anne, le capitaine, le marin (2) ; "
@@ -2398,7 +2580,7 @@ func test_oak_parcel_lines() -> void:
 		+ "J24 : objets (2), caches (2), Artikodin, CT35, fossiles (2) ; J25 : Ptéra (1) ; "
 		+ "J26 : Lokhlass, Master Ball, deux objets du 7F ; J27 : Morgane, maître, deux Balls ; "
 		+ "J28 : Giovanni (2), Rappel ; J29 : objets, cachés, gardes, rival n° 7 et Sulfura ; "
-		+ "J31 : Grotte Azurée (8 objets, 2 caches, Mewtwo)")
+		+ "J31 : Grotte Azurée (8 objets, 2 caches, Mewtwo) ; J32 : échanges (6), Porygon, Centrale (7 objets, 8 fausses Poké Balls, Électhor)")
 	# Le jeton n'apparaît que dans la réplique de l'espèce, « {pokemon} » dans les phrases du
 	# compagnon (J11), et ceux de la Pension dans ses répliques (J15).
 	for row: Array in _pages():
@@ -2429,9 +2611,16 @@ func test_oak_parcel_lines() -> void:
 				or (row[0] == &"rival_route22_final_greet" and row[1].contains("{player}")) \
 				or String(row[0]).begins_with("cinnabar_fossil_received_") \
 				or (String(row[0]).begins_with("cinnabar_trade_") and row[1].contains("{player}")) \
+				or (String(row[0]).begins_with("j32_trade_") and row[1].contains("{player}")) \
+				or row[0] == &"silph_co_porygon_received" \
+				or String(row[0]).begins_with("j32_oak_received_") \
+				or row[0] == &"j32_diploma_received" \
+				or (row[0] == &"oak_lab_waiting" and row[1].contains("{player}")) \
 				or (row[0] == &"cinnabar_gym_guide" and row[1].contains("{player}")) \
 				or row[0] == &"cinnabar_lab_tm35_use" \
-				or (row[0] in [&"route_12_gate_tm39_got", &"snorlax_flute_played"] \
+				or (row[0] in [&"route_12_gate_tm39_got", &"snorlax_flute_played",
+					&"celadon_dept_3f_tm18_got", &"saffron_psychic_tm29_got",
+					&"celadon_chief_son_tm41_got"] \
 					and row[1].contains("{player}")) \
 				or (_j26_life_ids().has(row[0]) and row[1].contains("{player}")) \
 				or (row[0] in [&"rival_silph_intro", &"silph_co_lapras_received",
@@ -2445,6 +2634,9 @@ func test_oak_parcel_lines() -> void:
 		elif J17_TOKENS.has(row[1]):
 			# Jalon 17 (T8) : compte d'espèces de l'assistant (T-1 à T-3), joueur de T-3.
 			expected.assign(J17_TOKENS[row[1]])
+		elif row[0] == &"trade_terminal_confirm":
+			# Jalon 32 (T5) : le Pokémon choisi au terminal d'échange local.
+			expected = [DialogueTokens.POKEMON]
 		elif not (row[3] as DialogueVariant).field.is_empty() and row[1].contains("{pokemon}"):
 			# Jalon 16 (T15) : variante de capacité de terrain, Pokémon qui coupe.
 			expected = [DialogueTokens.POKEMON]

@@ -1339,6 +1339,9 @@ const STORAGE_PARTY_GAP := 4
 const STORAGE_GRID_MIN_CELL := 420
 const STORAGE_GRID_GAP := 12
 const STORAGE_GRID_PAD := 8
+## Recherche (champ DexSearch) et bouton de tri, à droite du titre STOCKAGE (≥ TOUCH_MIN de haut).
+const STORAGE_SEARCH_WIDTH := 360
+const STORAGE_SORT_WIDTH := 300
 ## Pokémon sélectionné : sprite 64 px à l'échelle entière.
 const STORAGE_SPRITE_SOURCE := 64
 const STORAGE_SPRITE_SCALE := 3

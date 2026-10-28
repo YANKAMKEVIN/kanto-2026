@@ -1,0 +1,14 @@
+{
+	"designer": {
+		"cell": [
+			9,
+			3
+		],
+		"facing": "down",
+		"sprite": "nerd",
+		"dialogue": "j32_designer",
+		"if": [
+			"league_champion_defeated"
+		]
+	}
+}
