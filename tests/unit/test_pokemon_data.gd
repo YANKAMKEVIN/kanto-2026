@@ -345,8 +345,8 @@ func test_real_move_values() -> void:
 ## Capacités du J19 nécessaires aux learnsets complets (plan jalon-19 §0.4 n° 1) dont la
 ## description, hors du lot §15.7 du dossier 22, attend la relecture de Kevin : « draft ».
 ## Retirer l'identifiant d'ici quand le texte est validé.
-## Jalon 32 (N-22) : Coupe-Vent, Éboulement, E-Coque [D].
-const DRAFT_DESCRIPTIONS: Array[StringName] = [&"razor_wind", &"rock_slide", &"soft_boiled"]
+## Jalon 32 (N-22) : Coupe-Vent, Éboulement, E-Coque validés par Kevin le 2026-10-28 : liste vide.
+const DRAFT_DESCRIPTIONS: Array[StringName] = []
 
 
 func test_every_real_move_has_a_validated_description() -> void:
