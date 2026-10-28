@@ -43,5 +43,5 @@ from_down            spawn          4..5,3        libre    # arrivée depuis l'�
 from_elevator        spawn          16..17,3      libre    # arrivée de l'ascenseur (devant V), tournée ↓
 joueur_1             pnj            8,4           bloque  role=P1 facing=up  # joueur devant une borne
 joueur_2             pnj            12,4          bloque  role=P2 facing=up  # joueur devant une borne
-homme_ct             pnj            15,6          bloque  role=P3 facing=left condition=riposte_exists  # texte 23 : ne donne RIEN tant que Riposte n'existe pas (H-7) ; CT18 sinon
+homme_ct             pnj            15,6          bloque  role=P3 facing=left don=tm18  # CT18 Riposte une fois (got_tm18) : la capacité existe, le PNJ donne (N-22 ; H-7 du dossier 23)
 FIN

@@ -1,0 +1,140 @@
+{
+	"tm02": {
+		"name": "CT02 — Coupe-Vent", "plural": "CT02 — Coupe-Vent", "feminine": true,
+		"category": "tm", "tm": 2, "teaches": "razor_wind", "price": 2000,
+		"description": "Un tourbillon se forme au premier tour, puis des lames de vent frappent au second. Taux de critique élevé.",
+		"draft": true
+	},
+	"tm03": {
+		"name": "CT03 — Danse-Lames", "plural": "CT03 — Danse-Lames", "feminine": true,
+		"category": "tm", "tm": 3, "teaches": "swords_dance",
+		"description": "Une danse guerrière qui exalte le lanceur. Augmente beaucoup son Attaque.",
+		"draft": true
+	},
+	"tm04": {
+		"name": "CT04 — Cyclone", "plural": "CT04 — Cyclone", "feminine": true,
+		"category": "tm", "tm": 4, "teaches": "whirlwind",
+		"description": "Un coup de vent renvoie la cible.",
+		"draft": true
+	},
+	"tm07": {
+		"name": "CT07 — Empal'Korne", "plural": "CT07 — Empal'Korne", "feminine": true,
+		"category": "tm", "tm": 7, "teaches": "horn_drill", "price": 2000,
+		"description": "Une corne en vrille qui met K.O. d'un coup.",
+		"draft": true
+	},
+	"tm08": {
+		"name": "CT08 — Plaquage", "plural": "CT08 — Plaquage", "feminine": true,
+		"category": "tm", "tm": 8, "teaches": "body_slam",
+		"description": "Le lanceur se jette de tout son poids sur la cible. Peut la paralyser.",
+		"draft": true
+	},
+	"tm10": {
+		"name": "CT10 — Damoclès", "plural": "CT10 — Damoclès", "feminine": true,
+		"category": "tm", "tm": 10, "teaches": "double_edge",
+		"description": "Une charge téméraire qui blesse aussi le lanceur.",
+		"draft": true
+	},
+	"tm12": {
+		"name": "CT12 — Pistolet à O", "plural": "CT12 — Pistolet à O", "feminine": true,
+		"category": "tm", "tm": 12, "teaches": "water_gun",
+		"description": "Un jet d'eau puissant frappe la cible.",
+		"draft": true
+	},
+	"tm15": {
+		"name": "CT15 — Ultralaser", "plural": "CT15 — Ultralaser", "feminine": true,
+		"category": "tm", "tm": 15, "teaches": "hyper_beam", "price": 7500,
+		"description": "Un rayon dévastateur. Le lanceur doit ensuite se reposer un tour.",
+		"draft": true
+	},
+	"tm16": {
+		"name": "CT16 — Jackpot", "plural": "CT16 — Jackpot", "feminine": true,
+		"category": "tm", "tm": 16, "teaches": "pay_day",
+		"description": "Des pièces s'éparpillent sur l'adversaire. On les ramasse après un combat gagné.",
+		"draft": true
+	},
+	"tm18": {
+		"name": "CT18 — Riposte", "plural": "CT18 — Riposte", "feminine": true,
+		"category": "tm", "tm": 18, "teaches": "counter",
+		"description": "Renvoie le double des dégâts reçus d'une attaque Normal ou Combat.",
+		"draft": true
+	},
+	"tm20": {
+		"name": "CT20 — Frénésie", "plural": "CT20 — Frénésie", "feminine": true,
+		"category": "tm", "tm": 20, "teaches": "rage",
+		"description": "Le lanceur s'emporte. Son Attaque augmente à chaque coup reçu.",
+		"draft": true
+	},
+	"tm23": {
+		"name": "CT23 — Draco-Rage", "plural": "CT23 — Draco-Rage", "feminine": true,
+		"category": "tm", "tm": 23, "teaches": "dragon_rage", "price": 3300,
+		"description": "Une onde de choc draconique. Inflige toujours 40 PV de dégâts.",
+		"draft": true
+	},
+	"tm26": {
+		"name": "CT26 — Séisme", "plural": "CT26 — Séisme", "feminine": true,
+		"category": "tm", "tm": 26, "teaches": "earthquake",
+		"description": "Un violent tremblement de terre secoue le sol et frappe la cible.",
+		"draft": true
+	},
+	"tm29": {
+		"name": "CT29 — Psyko", "plural": "CT29 — Psyko", "feminine": true,
+		"category": "tm", "tm": 29, "teaches": "psychic",
+		"description": "Une puissante onde psychique. Peut baisser la Défense Spéciale de la cible.",
+		"draft": true
+	},
+	"tm30": {
+		"name": "CT30 — Téléport", "plural": "CT30 — Téléport", "feminine": true,
+		"category": "tm", "tm": 30, "teaches": "teleport",
+		"description": "Le lanceur se téléporte ailleurs. Permet de fuir un Pokémon sauvage.",
+		"draft": true
+	},
+	"tm36": {
+		"name": "CT36 — Destruction", "plural": "CT36 — Destruction", "feminine": true,
+		"category": "tm", "tm": 36, "teaches": "self_destruct",
+		"description": "Inflige de gros dégâts. Le lanceur est mis K.O.",
+		"draft": true
+	},
+	"tm41": {
+		"name": "CT41 — E-Coque", "plural": "CT41 — E-Coque", "feminine": true,
+		"category": "tm", "tm": 41, "teaches": "soft_boiled",
+		"description": "Le lanceur se refait une santé et récupère la moitié de ses PV.",
+		"draft": true
+	},
+	"tm42": {
+		"name": "CT42 — Dévorêve", "plural": "CT42 — Dévorêve", "feminine": true,
+		"category": "tm", "tm": 42, "teaches": "dream_eater",
+		"description": "Dévore le rêve d'une cible endormie et rend au lanceur la moitié des dégâts.",
+		"draft": true
+	},
+	"tm44": {
+		"name": "CT44 — Repos", "plural": "CT44 — Repos", "feminine": true,
+		"category": "tm", "tm": 44, "teaches": "rest",
+		"description": "Le lanceur dort deux tours et récupère tous ses PV.",
+		"draft": true
+	},
+	"tm45": {
+		"name": "CT45 — Cage-Éclair", "plural": "CT45 — Cage-Éclair", "feminine": true,
+		"category": "tm", "tm": 45, "teaches": "thunder_wave",
+		"description": "Une faible onde électrique paralyse la cible.",
+		"draft": true
+	},
+	"tm48": {
+		"name": "CT48 — Éboulement", "plural": "CT48 — Éboulement", "feminine": true,
+		"category": "tm", "tm": 48, "teaches": "rock_slide",
+		"description": "Des rochers s'abattent sur la cible. Peut l'apeurer.",
+		"draft": true
+	},
+	"tm49": {
+		"name": "CT49 — Triplattaque", "plural": "CT49 — Triplattaque", "feminine": true,
+		"category": "tm", "tm": 49, "teaches": "tri_attack",
+		"description": "Trois rayons jaillissent en même temps et frappent la cible.",
+		"draft": true
+	},
+	"tm50": {
+		"name": "CT50 — Clonage", "plural": "CT50 — Clonage", "feminine": true,
+		"category": "tm", "tm": 50, "teaches": "substitute", "price": 5000,
+		"description": "Le lanceur crée un clone en sacrifiant des PV. Sans effet dans le moteur actuel.",
+		"draft": true
+	}
+}

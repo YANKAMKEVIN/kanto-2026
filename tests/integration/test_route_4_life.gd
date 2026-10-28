@@ -236,7 +236,7 @@ func test_clara_is_placed_visible_and_avoidable() -> void:
 	assert_eq(clara.get_cell(), Vector2i(44, 17))
 	assert_eq(clara.get_spec().trainer_id, &"route_4_clara")
 	assert_eq(clara.get_spec().sight, 3)
-	assert_eq(map.get_npcs().size(), 2, "la Poké Ball et Clara")
+	assert_eq(map.get_npcs().size(), 3, "la Poké Ball, Clara et la CT04 (N-22)")
 	var trainers := TrainerLibrary.new(_boot.get_pokemon_data())
 	assert_true(trainers.load_dir())
 	var team: Array[StringName] = []

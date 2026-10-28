@@ -78,4 +78,5 @@ route_4_item_1       objet_visible  21,20        bloque  role=O1 item=poke_ball 
 herbes_h1            herbes         38,15        libre   role=H1  # nord de la rue (évitable)
 herbes_h2            herbes         48,20        libre   role=H2  # sur la rue (obligatoire, 4 cases)
 herbes_h3            herbes         55,15        libre   role=H3  # nord de la rue (évitable)
+route_4_tm04            objet_visible  19,16        bloque  item=tm04  # CT04 Cyclone (lot 32N, N-22) : case libre et atteignable (valeur par défaut [D], lieu RB non reproduit)
 FIN

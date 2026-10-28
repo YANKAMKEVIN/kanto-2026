@@ -16,5 +16,11 @@
 		"facing": "left",
 		"sprite": "passenger_f",
 		"dialogue": "celadon_chief_woman"
+	},
+	"son": {
+		"cell": [3, 5],
+		"facing": "right",
+		"sprite": "youngster",
+		"dialogue": "celadon_chief_son"
 	}
 }

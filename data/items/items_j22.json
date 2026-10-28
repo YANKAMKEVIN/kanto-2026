@@ -22,7 +22,7 @@
 	},
 	"tm09": {
 		"name": "CT09 — Bélier", "plural": "CT09 — Bélier", "feminine": true,
-		"category": "tm", "tm": 9, "teaches": "take_down",
+		"category": "tm", "tm": 9, "teaches": "take_down", "price": 3000,
 		"description": "Une charge violente. Le lanceur subit une partie des dégâts infligés."
 	}
 }

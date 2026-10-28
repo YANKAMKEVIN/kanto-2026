@@ -32,4 +32,5 @@ sortie              warp           5..6,7       libre   # PUSH ↓ → ss_anne_p
 entree              spawn          5,6          libre   # tourné ↑
 lena                dresseur       5,3          bloque  facing=down sight=2 trainer=ss_anne_lass_lena
 objet               objet          2,5          bloque  item=potion
+ss_anne_cabin_a_tm44    objet          9,5         bloque  item=tm44  # CT44 Repos (lot 32N, N-22) : case libre et atteignable (valeur par défaut [D], lieu RB non reproduit)
 FIN

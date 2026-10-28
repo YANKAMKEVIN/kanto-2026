@@ -30,7 +30,7 @@
 		"feminine": true,
 		"category": "tm",
 		"tm": 33,
-		"teaches": "reflect",
+		"teaches": "reflect", "price": 1000,
 		"description": "Un mur de lumière réduit les dégâts physiques subis pendant cinq tours."
 	}
 }

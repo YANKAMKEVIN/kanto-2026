@@ -1,0 +1,23 @@
+{
+	"razor_wind": {
+		"name": "Coupe-Vent", "type": "normal", "category": "special",
+		"power": 80, "accuracy": 75, "pp": 10, "crit_stage": 1,
+		"effects": [{ "kind": "charge", "texts": "razor_wind" }],
+		"description": "Un tourbillon se forme au premier tour, puis des lames de vent frappent au second. Taux de critique élevé.",
+		"draft": true
+	},
+	"rock_slide": {
+		"name": "Éboulement", "type": "rock", "category": "physical",
+		"power": 75, "accuracy": 90, "pp": 10,
+		"effects": [{ "kind": "flinch", "chance": 30 }],
+		"description": "Des rochers s'abattent sur la cible. Peut l'apeurer.",
+		"draft": true
+	},
+	"soft_boiled": {
+		"name": "E-Coque", "type": "normal", "category": "status",
+		"accuracy": 0, "pp": 10,
+		"effects": [{ "kind": "heal", "fraction": 0.5 }],
+		"description": "Le lanceur se refait une santé et récupère la moitié de ses PV.",
+		"draft": true
+	}
+}

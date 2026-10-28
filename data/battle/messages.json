@@ -236,6 +236,8 @@
 		"charge_solar_beam_broken": { "text": "{pokemon} perd la lumière absorbée." },
 		"charge_skull_bash_start": { "text": "{pokemon} baisse la tête !" },
 		"charge_skull_bash_broken": { "text": "{pokemon} relève la tête." },
+		"charge_razor_wind_start": { "text": "{pokemon} soulève un tourbillon !", "draft": true },
+		"charge_razor_wind_broken": { "text": "{pokemon} dissipe son tourbillon.", "draft": true },
 		"scared_away": { "text": "{pokemon} prend peur et s'enfuit !" },
 		"forced_out": { "text": "{pokemon} est chassé du combat !",
 			"text_f": "{pokemon} est chassée du combat !" },

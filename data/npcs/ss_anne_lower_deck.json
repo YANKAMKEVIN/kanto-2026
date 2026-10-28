@@ -51,5 +51,10 @@
 		"unless": [
 			"got_ss_anne_item_04"
 		]
+	},
+	"ss_anne_lower_deck_tm08": {
+		"cell": [2, 8], "facing": "down", "sprite": "object/poke_ball_ground",
+		"dialogue": "ss_anne_lower_deck_tm08", "verb": "take", "turn_to_player": false,
+		"unless": ["got_ss_anne_lower_deck_tm08"]
 	}
 }

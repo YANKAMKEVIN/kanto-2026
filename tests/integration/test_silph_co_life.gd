@@ -250,7 +250,7 @@ func test_ground_items_give_the_rb_object_or_its_fallback_once() -> void:
 			assert_eq(gave, String(_expected_item(plan, id)), "%s : objet ou repli" % id)
 			assert_true(_items.has_item(StringName(gave)), "%s : objet connu" % id)
 			assert_eq(_dialogues.get_dialogue(StringName(id)).variants[0].cutscene, StringName(id))
-	assert_eq(count, 14, "douze objets au sol (dont la Carte) et deux cachés (liste RB)")
+	assert_eq(count, 15, "treize objets au sol (dont la Carte et la CT36, N-22) et deux cachés (liste RB)")
 
 
 func test_hidden_items_are_examine_points_found_once() -> void:

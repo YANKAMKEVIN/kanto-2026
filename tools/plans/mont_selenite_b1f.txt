@@ -64,4 +64,5 @@ repere_guetteur      repere         13,3;15,3    bloque  role=principal  # deux 
 repere_lampe_salle   repere         18,7         bloque  role=principal  # lampe au débouché de la salle (et 8, 14 vers la fouilleuse)
 repere_tranchee      repere         4..7,19..21  bloque  role=fouille  # tranchée, caisses R (14..15, 15), lampe (17, 19)
 repere_poche         repere         25,18;27,18;23,21  bloque  role=poche  # éclats de Pierre Lune autour de la poche
+mt_moon_b1f_tm12        objet_visible  31,6         bloque  item=tm12  # CT12 Pistolet à O (lot 32N, N-22) : case libre et atteignable (valeur par défaut [D], lieu RB non reproduit)
 FIN

@@ -117,7 +117,7 @@ func test_every_dresseur_pnj_and_object_of_the_grids_is_placed() -> void:
 		assert_eq(roster.size(), expected_cells,
 			"%s : ni PNJ en trop, ni fantôme (le rival et le capitaine sont au T13)" % id)
 	assert_eq(trainers, 10, "10 Dresseurs sur le navire")
-	assert_eq(objects, 6, "6 objets visibles")
+	assert_eq(objects, 8, "6 objets visibles + CT08 et CT44 (N-22)")
 
 
 func test_trainer_lines_names_and_prizes() -> void:
