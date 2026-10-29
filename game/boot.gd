@@ -1134,6 +1134,13 @@ func _on_opening_resumed(save: Dictionary) -> void:
 	if not _resume():
 		SceneRouter.start(start_map, start_spawn, start_facing)
 	_finish_opening()
+	_announce_restored_backup()
+
+
+## J33 T4 : la partie reprise vient de la copie de secours (principal illisible ou absent).
+func _announce_restored_backup() -> void:
+	if save_system != null and save_system.restored_from_backup:
+		_hud.show_toast(SettingsViews.BACKUP_RESTORED_TEXT, "")
 
 
 ## Nouvelle partie : la chambre, face au sud, sans titre de zone ni dialogue (dossier 13 §4
@@ -1245,7 +1252,9 @@ func _log_loaded_save() -> void:
 ## (`save.json.rejected`) avant que l'autosave ne le remplace.
 func _keep_rejected_save() -> void:
 	var copy := save_system.path + ".rejected"
-	var error := save_system.fs.write_text(copy, save_system.fs.read_text(save_system.path))
+	var source := save_system.loaded_path if not save_system.loaded_path.is_empty() \
+		else save_system.path
+	var error := save_system.fs.write_text(copy, save_system.fs.read_text(source))
 	push_warning("Boot : sauvegarde chargée en partie seulement ; original copié dans %s (%s)"
 		% [copy, error_string(error)])
 
@@ -1319,6 +1328,8 @@ func _persist_snapshot(reason: String) -> Error:
 	var error := save_system.write(snapshot)
 	if error == OK:
 		_checkpoint.note_written(snapshot, background_clock.call(), _background_write)
+	if reason != "menu":  # le Menu affiche lui-même le résultat
+		_warn_storage_full(error)
 	if OS.is_debug_build():
 		print("Sauvegarde automatique (%s) : %s %s, %s" % [reason, map.map_id,
 			_player.get_cell(), error_string(error)])
@@ -1746,8 +1757,23 @@ func _on_cutscene_save_requested(reason: String) -> Error:
 
 
 ## La scène garde son verrou ; aucune réussite affichée avant l'écriture sur disque.
-func _on_checkpoint_save_failed(_reason: String, _error: Error) -> void:
+func _on_checkpoint_save_failed(_reason: String, error: Error) -> void:
+	if error == SaveSystem.STORAGE_FULL:
+		_hud.show_toast(SettingsViews.STORAGE_FULL_TITLE, SettingsViews.STORAGE_FULL_DETAIL)
+		return
 	_hud.show_toast("Sauvegarde impossible", "Nouvelle tentative en cours…")
+
+
+## J33 T4 : stockage plein, une fois par série d'échecs (l'écriture est retentée toutes les 5 s,
+## rien n'est détruit) ; une écriture réussie réarme le message.
+func _warn_storage_full(error: Error) -> void:
+	if error != SaveSystem.STORAGE_FULL:
+		if error == OK:
+			_storage_full_warned = false
+		return
+	if not _storage_full_warned:
+		_storage_full_warned = true
+		_hud.show_toast(SettingsViews.STORAGE_FULL_TITLE, SettingsViews.STORAGE_FULL_DETAIL)
 
 
 ## Pokémon sauvage capturé et rangé (équipe ou stockage, jalon 5D) : autosave demandé, écrit à
@@ -2375,6 +2401,8 @@ var _stable_location: Dictionary = {}
 var _background_write: bool = false
 ## Nouvelle tentative d'écriture du point de reprise après un échec (s restantes, −1 sinon).
 var _checkpoint_retry: float = -1.0
+## J33 T4 : le message « stockage plein » est déjà affiché pour la série d'échecs en cours.
+var _storage_full_warned: bool = false
 ## Plus longue capture de la session (µs), pour la mesure sur téléphone (budget < 5 ms).
 var _checkpoint_max_usec: int = 0
 
@@ -2441,6 +2469,7 @@ func _save_in_background(reason: String) -> void:
 func _write_checkpoint(reason: String) -> void:
 	var snapshot := _checkpoint.get_snapshot()
 	var error := save_system.write(snapshot)
+	_warn_storage_full(error)
 	if error == OK:
 		_checkpoint.note_written(snapshot, background_clock.call(), true)
 		_checkpoint_retry = -1.0
