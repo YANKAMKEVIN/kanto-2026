@@ -182,17 +182,28 @@ const LOOKS: Dictionary = {
 	"loubard": [CHARACTERS_DIR, "cue_ball", ""],
 	"pecheur_parmanie": [CHARACTERS_DIR, "fisher_fuchsia", ""],
 	"pecheur_route_12": [CHARACTERS_DIR, "fisher_route_12", ""],
+	# Chantier JR (dossier-joueuse-rivale.md) : la joueuse (apparence `heroine` de
+	# `GameState.player_look`, mêmes animations que le héros) et la rivale.
+	"joueuse": [CHARACTERS_DIR, "player_heroine", "joueuse_run"],
+	"joueuse_surf": [CHARACTERS_DIR, "player_heroine_surf", ""],
+	"rivale": [CHARACTERS_DIR, "rival_heroine", ""],
 }
 ## DAF.5 (série 25) : animations en selle d'une apparence (planche de marche → [pédalage, arrêt]) :
 ## `bike_walk_<dir>` (cycle de 4 images sur 2 cases, au pas du vélo) et `bike_idle_<dir>` (arrêt en
 ## selle, pied au sol), lues par `Player._mounted_animation` (le vélo provisoire s'efface).
-const BIKE: Dictionary = {"heros": ["heros_bike", "heros_bike_idle"]}
+const BIKE: Dictionary = {
+	"heros": ["heros_bike", "heros_bike_idle"],
+	"joueuse": ["joueuse_bike", "joueuse_bike_idle"],
+}
 ## BikeRules.BIKE_STEP_DURATION.
 const BIKE_STEP := 0.12
 ## DAF.5 (série 25) : poses fixes 4 × 1 (bas, gauche, droite, haut) d'une apparence : planche de
 ## marche → {préfixe : planche}. `fish_cast_<dir>` (lancer) et `fish_wait_<dir>` (fil tendu), jouées
 ## par `FishingDirector` ; cellule plus haute que la marche (la canne), pieds au même ancrage.
-const POSES: Dictionary = {"heros": {"fish_cast": "heros_fish_cast", "fish_wait": "heros_fish_wait"}}
+const POSES: Dictionary = {
+	"heros": {"fish_cast": "heros_fish_cast", "fish_wait": "heros_fish_wait"},
+	"joueuse": {"fish_cast": "joueuse_fish_cast", "fish_wait": "joueuse_fish_wait"},
+}
 ## Attentes en plusieurs images (planche d'attente plus large que 4 colonnes) : planche →
 ## direction → [colonnes, images par seconde]. Le capitaine malade respire, penché sur son lavabo
 ## (dossier 19 §6 : « penché, animation courte ») : deux images de dos, 1,2 image/s (défaut).
@@ -249,7 +260,8 @@ const FIXED_OBJECTS: Dictionary = {
 	"electric_barrier_side": "electric_barrier_side",
 }
 ## Planches lues seulement comme planche de course d'une autre.
-const RUN_ONLY: Array[String] = ["heros_run", "enfant_run", "rattata_run", "chen_run"]
+const RUN_ONLY: Array[String] = [
+	"heros_run", "enfant_run", "rattata_run", "chen_run", "joueuse_run"]
 ## Suffixe des planches d'attente (`heros_idle` pour `heros`) ; colonne de chaque direction.
 const IDLE_SUFFIX := "_idle"
 const IDLE_COLUMNS := {"down": 0, "left": 1, "right": 2, "up": 3}

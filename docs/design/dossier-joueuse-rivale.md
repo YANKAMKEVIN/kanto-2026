@@ -24,6 +24,11 @@
 
 ## Suivi
 
-- [ ] Planche de chara design v1 produite (`reference/joueuse-planche-v1.webp`, `rivale-planche-v1.webp`, `joueuse-rivale-comparaison-v1.webp`) — à valider par Kevin
-- [ ] Sprites peints de la joueuse et de la rivale
-- [ ] Intégration en code (branche dédiée, après le J33)
+- [x] Planche de chara design v1 (`reference/joueuse-planche-v1.webp`, `rivale-planche-v1.webp`, `joueuse-rivale-comparaison-v1.webp`) — **validée par Kevin le 2026-10-30**
+- [x] Sprites peints (2026-10-30, à valider par Kevin sur `reference/joueuse-rivale-jeu-v1.webp`, homologue à gauche de chaque paire) :
+  - 15 images Codex (`tools/art/joueuse_rivale/generer_jr.sh`, prompts `prompts_jr.py` : gabarit = asset validé de l'homologue, identité = planche validée), toutes acceptées au premier tour ;
+  - découpe `tools/art/joueuse_rivale/preparer_jr.py` (mêmes réglages que l'homologue au manifeste) : `joueuse_{sheet,run_sheet,idle_sheet,bike_sheet,bike_idle_sheet,fish_cast_sheet,fish_wait_sheet,surf_sheet}.png`, `joueuse_lancer.png`, `joueuse_portrait.png`, `rivale_{sheet,idle_sheet}.png`, `rivale_portrait.png`, `assets/ui/menu/heroine_bust.webp` ;
+  - apparences (`tools/build_character_frames.gd`) : `player_heroine` (28 animations, comme `player`), `player_heroine_surf`, `rival_heroine` ; test `tests/unit/test_joueuse_rivale_assets.gd` ;
+  - écart noté : sur les sprites, le chapeau de la joueuse se lit comme une casquette à visière (le portrait garde le bord rond de la planche) ;
+  - pas de portrait de carte : `assets/ui/map/player_portrait.png` n'est plus lu par le jeu (remplacé par `heros_portrait.png`).
+- [ ] Intégration en code (branche dédiée, après le J33) : `Player.LOOK_SPRITE` lu depuis `player_look` (`hero` → `player`, `heroine` → `player_heroine`, surf, `heros_lancer` → `joueuse_lancer`, `hero_bust` → `heroine_bust`, portrait de l'introduction), `rival_look` (sauvegarde v9, validée seule) → `rival` / `rival_heroine` et `rival_portrait` / `rivale_portrait`, écrans de choix, prénoms, jetons d'accord et lot de textes
