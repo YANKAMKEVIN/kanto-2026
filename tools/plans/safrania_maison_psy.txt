@@ -31,5 +31,5 @@ FIN
 POSITIONS
 sortie              warp           6..8,8       libre   to=saffron_city spawn=from_psychic_house  # PUSH ↓ → saffron_city, from_psychic_house
 entrance            spawn          7,8          libre   facing=up  # arrivée depuis Safrania (sur le paillasson)
-m_psy               pnj            12,6         bloque  role=saffron_mr_psychic facing=left  # RB M. Psy (5, 3) ; aucune CT au J26 (Q26-3)
+m_psy               pnj            12,6         bloque  role=saffron_mr_psychic facing=left don=tm29  # RB M. Psy (5, 3) ; don=tm29 : CT29 Psyko une fois (got_tm29, N-22) (Q26-3)
 FIN

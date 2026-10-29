@@ -1,0 +1,29 @@
+{
+	"snorlax_post_league_wake": {
+		"variants": [
+			{
+				"if": ["snorlax_post_league_present"],
+				"unless": ["snorlax_post_league_done"],
+				"steps": [
+					{ "flute": true },
+					{ "dialogue": "snorlax_flute_played" },
+					{ "react": "Snorlax" },
+					{ "emote": "Snorlax", "kind": "exclamation" },
+					{ "dialogue": "snorlax_wakes" },
+					{ "set": ["snorlax_post_league_awake", "snorlax_post_league_woken"] },
+					{
+						"wild_battle": "snorlax", "level": 30,
+						"win": ["snorlax_post_league_done"],
+						"catch": ["snorlax_post_league_done", "snorlax_post_league_caught"],
+						"clear": ["snorlax_post_league_awake"]
+					},
+					{
+						"dialogue": "snorlax_calms",
+						"if": ["snorlax_post_league_done"], "unless": ["snorlax_post_league_caught"]
+					},
+					{ "dialogue": "snorlax_sleeps", "unless": ["snorlax_post_league_done"] }
+				]
+			}
+		]
+	}
+}

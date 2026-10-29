@@ -189,6 +189,9 @@ func test_the_whole_map_is_reachable_and_closed_from_azuria() -> void:
 		if cell == _plan.cell_of("route_24_item_1"):
 			# La Potion (T17) occupe sa case ; on la ramasse depuis une case voisine.
 			assert_true(dist.has(cell + Vector2i.DOWN), "Potion : case voisine atteignable")
+		elif cell == _plan.cell_of("route_24_tm45"):
+			# La CT45 (N-22) occupe sa case ; on la ramasse depuis une case voisine.
+			assert_true(dist.has(cell + Vector2i.DOWN), "CT45 : case voisine atteignable")
 		elif cell == _plan.cell_of("route_24_hidden_1"):
 			# L'indice (T22) bloque sa case ; on l'examine depuis une case voisine.
 			assert_true(dist.has(cell + Vector2i.DOWN), "indice : case voisine atteignable")
@@ -316,7 +319,8 @@ func test_the_pre_bridge_places_are_reserved_free_of_props() -> void:
 	for spec: NpcSpec in NpcRoster.load_for_map(&"route_24").get_all():
 		ids.append(String(spec.id))
 	assert_eq(ids, ["route_24_ball_1", "rival_cerulean", "misty_bridge", "route_24_timeo",
-		"route_24_alice", "route_24_malo", "route_24_romane", "route_24_ethan", "nugget_rocket"]
+		"route_24_alice", "route_24_malo", "route_24_romane", "route_24_ethan", "nugget_rocket",
+		"route_24_tm45"]
 		as Array[String], "la Potion, le rival, Ondine (T19), les cinq Dresseurs et le recruteur (T22)")
 
 

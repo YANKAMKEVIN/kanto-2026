@@ -78,7 +78,7 @@ vers_b4f               escalier       19,18        libre   paire=b3_b4 sens=desc
 arrivee_b4f            spawn          19,19        libre   paire=b3_b4 facing=up  # retour du B4F ouest
 sbire_b3_1             dresseur       10,22        bloque  role=R5 facing=right sight=2 trainer=rocket_hideout_b3f_1  # RB n° 14 : Rattata, Rattatac, Soporifik 20 ; salle sud-ouest
 sbire_b3_2             dresseur       26,12        bloque  role=R6 facing=up sight=4 trainer=rocket_hideout_b3f_2  # RB n° 15 : Machoc x2 21 ; salle est, lit la colonne x=26 vers le nord
-ct10                   objet_visible  26,17        bloque  item=tm_double_edge fallback=super_potion  # CT10 Damoclès (RB) : salle est
+ct10                   objet_visible  26,17        bloque  item=tm10  # CT10 Damoclès (RB) : salle est
 super_bonbon           objet_visible  20,14        bloque  item=rare_candy  # bord est du labyrinthe
 pepite_cachee          objet_cache    27,17        bloque  item=nugget depuis=27,16 face=S  # RB hidden_item B3F (27, 17) : sol de la salle est
 dalle_12_11            dalle          12,11        libre   dir=O trajet=O2 arret=10,11

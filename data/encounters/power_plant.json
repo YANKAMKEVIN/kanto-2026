@@ -1,0 +1,21 @@
+{
+	"power_plant_floor": {
+		"maps": ["power_plant"],
+		"terrain": "floor",
+		"rate": 10,
+		"slots": [
+			{ "species": "voltorb", "levels": [21, 21], "weight": 40 },
+			{ "species": "magnemite", "levels": [21, 21], "weight": 40 },
+			{ "species": "pikachu", "levels": [20, 20], "weight": 30 },
+			{ "species": "pikachu", "levels": [24, 24], "weight": 20 },
+			{ "species": "magnemite", "levels": [23, 23], "weight": 20 },
+			{ "species": "voltorb", "levels": [23, 23], "weight": 20 },
+			{ "species": "magneton", "levels": [32, 32], "weight": 10 },
+			{ "species": "magneton", "levels": [35, 35], "weight": 10 },
+			{ "species": "electabuzz", "levels": [33, 33], "weight": 4 },
+			{ "species": "raichu", "levels": [33, 33], "weight": 4 },
+			{ "species": "electabuzz", "levels": [36, 36], "weight": 1 },
+			{ "species": "raichu", "levels": [36, 36], "weight": 1 }
+		]
+	}
+}

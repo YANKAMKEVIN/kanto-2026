@@ -44,7 +44,7 @@ Outils : `tools/art/daf4.py` (prompts, Codex, préparation), `tools/build_daf4_c
 ### Reste (non fait)
 - Cinq salles de la Ligue (J30, hors périmètre).
 
-## Fin du lot : sol de la Route 23 et du Plateau Indigo (2026-10-28, branche `claude/daf-4-route-23-b20c52`) — **à valider par Kevin**
+## Fin du lot : sol de la Route 23 et du Plateau Indigo (2026-10-28, branche `claude/daf-4-route-23-b20c52`) — **validé par Kevin le 2026-10-29, fusionné dans `main`**
 
 Outils : `tools/build_daf4_exterieurs.gd` (seconde passe d'image après `build_daf4_facades.gd`, logique
 inchangée : `tools/dump_map_logic.gd` identique avant / après), `tools/capture_daf4.sh`,

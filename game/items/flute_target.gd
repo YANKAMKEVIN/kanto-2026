@@ -10,6 +10,8 @@ extends RefCounted
 var cells: Array[Vector2i] = []
 ## Le dormeur n'existe plus si l'un de ces drapeaux est levé (`snorlax_route_11_done`…).
 var unless_flags: Array[StringName] = []
+## Jalon 32 (N-18) : le dormeur n'existe que si tous ces drapeaux sont levés ; vide = toujours.
+var if_flags: Array[StringName] = []
 ## Scène jouée quand la Flûte retentit à côté de lui.
 var cutscene_id: StringName = &""
 
@@ -17,6 +19,8 @@ var cutscene_id: StringName = &""
 ## Vrai si le dormeur est encore là (aucun de ses [member unless_flags] n'est levé ; un
 ## [param flags] nul compte comme « aucun drapeau »).
 func is_present(flags: StoryFlags) -> bool:
+	if not if_flags.is_empty() and (flags == null or not flags.has_all(if_flags)):
+		return false
 	return flags == null or flags.has_none(unless_flags)
 
 

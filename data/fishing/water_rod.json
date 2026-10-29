@@ -37,5 +37,15 @@
 			{ "species": "kingler", "level": 23, "weight": 1 },
 			{ "species": "seadra", "level": 23, "weight": 1 }
 		]
+	},
+	"super_rod_safari": {
+		"maps": ["safari_zone_center", "safari_zone_east", "safari_zone_north", "safari_zone_west"],
+		"terrain": "water_rod", "rod": "super_rod", "rate": 75,
+		"slots": [
+			{ "species": "dratini", "level": 15, "weight": 1 },
+			{ "species": "krabby", "level": 15, "weight": 1 },
+			{ "species": "psyduck", "level": 15, "weight": 1 },
+			{ "species": "slowpoke", "level": 15, "weight": 1 }
+		]
 	}
 }

@@ -3,17 +3,17 @@
 	"bulbasaur": {
 		"cell": [10, 5], "facing": "down", "sprite": "pokemon/bulbasaur",
 		"dialogue": "observe_bulbasaur", "verb": "observe", "species": "bulbasaur", "lift": 56,
-		"hop_style": "calm", "unless": ["taken_bulbasaur"]
+		"hop_style": "calm", "unless": ["taken_bulbasaur", "oak_gift_bulbasaur"]
 	},
 	"charmander": {
 		"cell": [11, 5], "facing": "down", "sprite": "pokemon/charmander",
 		"dialogue": "observe_charmander", "verb": "observe", "species": "charmander", "lift": 56,
-		"hop_style": "eager", "unless": ["taken_charmander"]
+		"hop_style": "eager", "unless": ["taken_charmander", "oak_gift_charmander"]
 	},
 	"squirtle": {
 		"cell": [12, 5], "facing": "down", "sprite": "pokemon/squirtle",
 		"dialogue": "observe_squirtle", "verb": "observe", "species": "squirtle", "lift": 56,
-		"hop_style": "playful", "unless": ["taken_squirtle"]
+		"hop_style": "playful", "unless": ["taken_squirtle", "oak_gift_squirtle"]
 	},
 	"oak": { "cell": [8, 4], "facing": "down", "sprite": "oak", "dialogue": "oak_lab_waiting", "if": ["oak_met"] },
 	"rival": { "cell": [9, 6], "facing": "right", "sprite": "rival", "dialogue": "rival_lab_waiting", "if": ["oak_met"], "unless": ["rival_left_lab"] }

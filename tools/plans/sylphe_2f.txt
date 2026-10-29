@@ -109,4 +109,5 @@ dresseur_1              dresseur       5,12         bloque  trainer=silph_co_2f_
 dresseur_2              dresseur       24,13        bloque  trainer=silph_co_2f_2 facing=left sight=4 classe=scientifique  # RB objet 3 : OPP_SCIENTIST, 3
 dresseur_3              dresseur       16,11        bloque  trainer=silph_co_2f_3 facing=up sight=3 classe=rocket  # RB objet 4 : OPP_ROCKET, 23
 dresseur_4              dresseur       24,7         bloque  trainer=silph_co_2f_4 facing=up sight=3 classe=rocket  # RB objet 5 : OPP_ROCKET, 24
+silph_co_2f_tm36        objet_visible  17,15        bloque  item=tm36  # CT36 Destruction (lot 32N, N-22) : case libre et atteignable (valeur par défaut [D], lieu RB non reproduit)
 FIN

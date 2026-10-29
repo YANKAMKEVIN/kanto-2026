@@ -9,6 +9,7 @@ const K := BattleEvent.Kind
 ## Messages encore en brouillon : ils doivent l'être, et eux seuls. Vide depuis la validation
 ## de l'annexe A du jalon 15 (Jackpot, 2026-10-14) ; messages d'Ultralaser et de Hurlement du
 ## jalon 19 validés par Kevin le 2026-10-16.
+## Jalon 32 (32N, N-22) : messages de charge de Coupe-Vent validés par Kevin le 2026-10-28.
 const PENDING_DRAFTS: Array[StringName] = []
 
 var _data: PokemonData

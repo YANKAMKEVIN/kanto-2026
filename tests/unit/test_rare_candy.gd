@@ -127,9 +127,12 @@ func test_no_evolution_below_the_level_or_without_a_level_rule() -> void:
 	RareCandy.apply(kadabra, _data)
 	assert_eq(RareCandy.evolution_after(kadabra, _data), &"",
 		"Kadabra : évolution par le Cordon d'échange, jamais par niveau")
-	var machop := _create(&"machop", 27)
+	var machop := _create(&"machop", 26)
 	RareCandy.apply(machop, _data)
-	assert_eq(RareCandy.evolution_after(machop, _data), &"", "Machopeur absent au jalon 14")
+	assert_eq(RareCandy.evolution_after(machop, _data), &"", "Machoc 27 : sous le niveau 28")
+	# Lot 32K (jalon-32.md T3) : Machoc → Machopeur au niveau 28, comme dans Rouge/Bleu.
+	RareCandy.apply(machop, _data)
+	assert_eq(RareCandy.evolution_after(machop, _data), &"machoke", "Machoc 28")
 
 
 func test_a_cancelled_evolution_comes_back_with_the_next_candy() -> void:

@@ -55,7 +55,9 @@ func test_offer_choices_are_lab_npcs_with_the_species_sprite() -> void:
 		# DA.3 : starters peints (`pokemon/<espèce>`, CharacterLook).
 		assert_eq(spec.sprite, StringName("pokemon/" + String(option.species)),
 			"%s : apparence peinte de l'espèce" % option.npc)
-		assert_eq(spec.unless_flags, [StarterChoice.taken_flag(option.species)]
+		# J32 (32A) : ou une fois confié par Chen après la Ligue.
+		assert_eq(spec.unless_flags, [StarterChoice.taken_flag(option.species),
+			StringName("oak_gift_" + String(option.species))]
 			as Array[StringName], "%s : quitte la table une fois pris" % option.npc)
 		assert_gt(spec.lift, 0, "%s : sur la table" % option.npc)
 

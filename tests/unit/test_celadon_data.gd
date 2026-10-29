@@ -388,8 +388,10 @@ func test_department_store_shops() -> void:
 	var engine := {
 		&"celadon_dept_2f": [&"great_ball", &"super_potion", &"revive", &"antidote",
 			&"burn_heal", &"ice_heal", &"awakening", &"paralyze_heal"],
-		# Q-2, option A (Kevin, 2026-10-16) : la CT01 seule.
-		&"celadon_dept_2f_tm": [&"tm01"],
+		# Q-2, option A (Kevin, 2026-10-16) : la CT01 seule ; élargi au lot 32N (N-22, 2026-10-28) :
+		# les CT de Rouge/Bleu dont la capacité existe, plus Ultralaser, Draco-Rage et Clonage [D].
+		&"celadon_dept_2f_tm": [&"tm01", &"tm02", &"tm05", &"tm07", &"tm09", &"tm15", &"tm17",
+			&"tm23", &"tm32", &"tm33", &"tm37", &"tm50"],
 		&"celadon_dept_4f": [&"poke_doll"],
 		&"celadon_dept_5f": [&"x_attack", &"x_defend", &"x_speed", &"x_special", &"x_accuracy",
 			&"dire_hit"],

@@ -133,7 +133,8 @@ func test_east_edge_leads_to_azuria_one_spawn_per_row() -> void:
 func test_everything_walkable_is_reachable_and_closed() -> void:
 	var dist := GridPaths.distances(_grid, [ARRIVAL])
 	for cell: Vector2i in _plan.cells_of(_plan.walkable):
-		if cell == _plan.cell_of("route_4_item_1") or cell == _plan.cell_of("clara"):
+		if cell == _plan.cell_of("route_4_item_1") or cell == _plan.cell_of("clara") \
+				or cell == _plan.cell_of("route_4_tm04"):
 			# La Poké Ball et Clara (T17) occupent leur case ; on la ramasse depuis une case voisine.
 			assert_true(dist.has(cell + Vector2i.UP), "Poké Ball : case voisine atteignable")
 		elif not _plan.cells_at("panneau_route_4").has(cell) and _plan.at(cell) != "v":
@@ -201,8 +202,8 @@ func test_nothing_lives_here_yet() -> void:
 	var ids: Array[String] = []
 	for spec: NpcSpec in roster.get_all():
 		ids.append(String(spec.id))
-	assert_eq(ids, ["route_4_ball_1", "route_4_clara"] as Array[String],
-		"la Poké Ball et Clara (T17)")
+	assert_eq(ids, ["route_4_ball_1", "route_4_clara", "route_4_tm04"] as Array[String],
+		"la Poké Ball, Clara (T17) et la CT04 (N-22)")
 	assert_not_null(_map.get_node_or_null(^"Entities/SignRoute4"), "panneau (décor)")
 	assert_not_null(_map.get_node_or_null(^"GroundDecals/CaveMouth"), "bouche de la grotte")
 	# Cases réservées : aucune forêt, aucun buisson, aucun décor solide sur Clara, la Poké Ball et

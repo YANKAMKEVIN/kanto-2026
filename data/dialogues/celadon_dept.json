@@ -89,8 +89,14 @@
 	},
 	"celadon_dept_3f_gift_man": {
 		"speaker": "Homme",
-		"pages": [
-			"J'avais un cadeau pour un\nDresseur doué. Repasse plus tard."
+		"variants": [
+			{ "unless": ["got_tm18"], "cutscene": "celadon_dept_3f_tm18" },
+			{
+				"pages": [
+					"Riposte, ça ne s'improvise pas.",
+					"Il faut d'abord savoir encaisser."
+				]
+			}
 		]
 	},
 	"celadon_dept_4f_customer": {
@@ -143,7 +149,9 @@
 		"variants": [
 			{
 				"if": [
-					"rooftop_tm13"
+					"rooftop_tm13",
+					"rooftop_tm48",
+					"rooftop_tm49"
 				],
 				"pages": [
 					"Ça va mieux, merci.",
@@ -151,6 +159,9 @@
 				]
 			},
 			{
+				"unless": [
+					"rooftop_tm13"
+				],
 				"if_items": [
 					"fresh_water"
 				],
@@ -168,22 +179,44 @@
 				}
 			},
 			{
+				"unless": [
+					"rooftop_tm48"
+				],
 				"if_items": [
 					"soda_pop"
 				],
 				"pages": [
-					"C'est trop sucré pour moi.",
-					"Je préfère l'eau."
-				]
+					"J'ai tellement soif… Tu as\nquelque chose à boire ?",
+					"Lui donner un Soda Cool ?"
+				],
+				"choice": {
+					"confirm": "OUI",
+					"cancel": "NON",
+					"confirm_cutscene": "celadon_roof_trade_soda",
+					"cancel_pages": [
+						"Tant pis… Je vais\nattendre encore un peu."
+					]
+				}
 			},
 			{
+				"unless": [
+					"rooftop_tm49"
+				],
 				"if_items": [
 					"lemonade"
 				],
 				"pages": [
-					"C'est trop sucré pour moi.",
-					"Je préfère l'eau."
-				]
+					"J'ai tellement soif… Tu as\nquelque chose à boire ?",
+					"Lui donner une Limonade ?"
+				],
+				"choice": {
+					"confirm": "OUI",
+					"cancel": "NON",
+					"confirm_cutscene": "celadon_roof_trade_lemonade",
+					"cancel_pages": [
+						"Tant pis… Je vais\nattendre encore un peu."
+					]
+				}
 			},
 			{
 				"pages": [

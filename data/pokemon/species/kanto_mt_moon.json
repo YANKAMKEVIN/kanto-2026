@@ -99,7 +99,8 @@
 		"learnset": [
 			[1, "tackle"], [1, "screech"], [17, "sonic_boom"], [22, "self_destruct"],
 			[29, "light_screen"], [36, "swift"], [43, "explosion"]
-		]
+		],
+		"evolutions": [{ "into": "electrode", "method": "level", "level": 30 }]
 	},
 	"koffing": {
 		"dex": 109, "name": "Smogo", "types": ["poison"],
@@ -108,6 +109,7 @@
 		"learnset": [
 			[1, "tackle"], [1, "smog"], [32, "sludge"], [37, "smokescreen"],
 			[40, "self_destruct"], [45, "haze"], [48, "explosion"]
-		]
+		],
+		"evolutions": [{ "into": "weezing", "method": "level", "level": 35 }]
 	}
 }

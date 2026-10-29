@@ -366,21 +366,33 @@ func _close_shop() -> void:
 		_boot.get_menu_director().close()
 
 
-func test_the_hostess_and_the_gift_man_give_nothing() -> void:
+func test_the_hostess_gives_nothing_and_the_gift_man_gives_tm18_once() -> void:
 	await _start("res://tools/debug_start/celadon_dept.json")
 	var bag_before: Dictionary = (GameState.bag as Bag).to_dict()
 	await _stand(Vector2i(9, 6), Vector2i.UP)
 	await _talk()
 	assert_eq(_pages, ["Bienvenue au grand magasin de Céladopole !",
 		"Le tableau des étages est juste derrière moi."] as Array[String], "texte 80")
+	assert_eq((GameState.bag as Bag).to_dict(), bag_before, "l'hôtesse ne donne rien")
 	await SceneRouter.change_map(&"celadon_dept_3f", &"from_up", Vector2i.DOWN)
 	await wait_until(func() -> bool: return _boot.is_stable(), TIMEOUT)
 	_pages.clear()
+	assert_eq(GameState.bag.count_of(&"tm18"), 0)
 	await _stand(Vector2i(14, 6), Vector2i.RIGHT)
 	await _talk()
-	assert_eq(_pages, ["J'avais un cadeau pour un Dresseur doué. Repasse plus tard."]
-		as Array[String], "texte 23 : rien (Riposte absente)")
-	assert_eq((GameState.bag as Bag).to_dict(), bag_before, "Sac inchangé")
+	# N-22 : Riposte existe, l'homme du 3e étage donne la CT18 (une seule fois).
+	assert_eq(_pages, ["J'avais un cadeau pour un Dresseur doué.",
+		"Toi, tu as l'air de ceux qui encaissent les coups. Tiens, prends ça !",
+		"{player} obtient la CT18 — Riposte !".replace("{player}", GameState.player_name),
+		"Riposte renvoie le double des dégâts d'une attaque Normal ou Combat."]
+		as Array[String], "répliques [D] du don")
+	assert_eq(GameState.bag.count_of(&"tm18"), 1, "CT18 — Riposte")
+	assert_true(GameState.flags.has_flag(&"got_tm18"))
+	_pages.clear()
+	await _talk()
+	assert_eq(_pages, ["Riposte, ça ne s'improvise pas.", "Il faut d'abord savoir encaisser."]
+		as Array[String], "après le don")
+	assert_eq(GameState.bag.count_of(&"tm18"), 1, "pas de seconde CT18")
 
 
 func test_the_old_lady_gives_nothing() -> void:
@@ -417,20 +429,19 @@ func _on_roof(items: Dictionary) -> void:
 
 
 func test_water_for_the_girl_gives_tm13_once() -> void:
-	await _on_roof({&"fresh_water": 1, &"soda_pop": 1})
+	await _on_roof({&"fresh_water": 1})
 	await _talk(true)
 	assert_eq(_pages, [T24, ASK, "Merci ! Tiens, c'est pour toi."] as Array[String],
 		"T-24, question, T-25")
 	assert_eq(GameState.bag.count_of(&"fresh_water"), 0, "l'Eau Fraîche part")
-	assert_eq(GameState.bag.count_of(&"soda_pop"), 1, "le Soda reste")
 	assert_eq(GameState.bag.count_of(&"tm13"), 1, "CT13 — Laser Glace")
 	assert_true(GameState.flags.has_flag(&"rooftop_tm13"))
 	# Une seule fois : l'échange ne se rejoue pas, même avec une autre Eau Fraîche.
 	GameState.bag.add(&"fresh_water", 1)
 	_pages.clear()
 	await _talk()
-	assert_eq(_pages, ["Ça va mieux, merci.", "Le toit, c'est joli, mais il y fait chaud."]
-		as Array[String], "texte 94")
+	# N-22 : les deux autres CT existent, elle a encore soif d'autre chose (T24 seul).
+	assert_eq(_pages, [T24] as Array[String], "texte 24 : encore soif")
 	assert_eq(GameState.bag.count_of(&"tm13"), 1, "pas de seconde CT13")
 	assert_eq(GameState.bag.count_of(&"fresh_water"), 1, "l'Eau Fraîche reste")
 
@@ -445,18 +456,41 @@ func test_refusing_changes_nothing() -> void:
 	assert_false(GameState.flags.has_flag(&"rooftop_tm13"))
 
 
-func test_soda_or_lemonade_alone_is_too_sweet() -> void:
-	for drink: StringName in [&"soda_pop", &"lemonade"]:
+## N-22 : le Soda Cool donne la CT48 (Éboulement), la Limonade la CT49 (Triplattaque), une fois
+## chacune, indépendamment de l'Eau Fraîche (CT13).
+func test_soda_and_lemonade_give_tm48_and_tm49_once() -> void:
+	var cases: Array = [[&"soda_pop", &"tm48", &"rooftop_tm48", "Lui donner un Soda Cool ?"],
+		[&"lemonade", &"tm49", &"rooftop_tm49", "Lui donner une Limonade ?"]]
+	for entry: Array in cases:
+		var drink: StringName = entry[0]
 		await _on_roof({drink: 1})
+		await _talk(true)
+		assert_eq(_pages, [T24, entry[3], "Merci ! Tiens, c'est pour toi."] as Array[String],
+			"T-24, question [D], T-25 (%s)" % drink)
+		assert_eq(GameState.bag.count_of(drink), 0, "la boisson part")
+		assert_eq(GameState.bag.count_of(entry[1]), 1, String(entry[1]))
+		assert_true(GameState.flags.has_flag(entry[2]))
+		assert_eq(GameState.bag.count_of(&"tm13"), 0, "l'Eau Fraîche n'est pas concernée")
+		GameState.bag.add(drink, 1)
+		_pages.clear()
 		await _talk()
-		assert_eq(_pages, ["C'est trop sucré pour moi.", "Je préfère l'eau."] as Array[String],
-			"texte 93 (%s)" % drink)
-		assert_eq(GameState.bag.count_of(drink), 1, "la boisson reste")
-		assert_eq(GameState.bag.count_of(&"tm13"), 0)
-		assert_false(GameState.flags.has_flag(&"rooftop_tm13"))
+		assert_eq(_pages, [T24] as Array[String], "une seule fois (%s)" % drink)
+		assert_eq(GameState.bag.count_of(entry[1]), 1, "pas de seconde CT")
 		_boot.queue_free()
 		await wait_process_frames(3)
 		_pages.clear()
+
+
+func test_the_three_drinks_give_the_three_tms_then_she_is_content() -> void:
+	await _on_roof({&"fresh_water": 1, &"soda_pop": 1, &"lemonade": 1})
+	for i: int in 3:
+		await _talk(true)
+		_pages.clear()
+	for tm: StringName in [&"tm13", &"tm48", &"tm49"]:
+		assert_eq(GameState.bag.count_of(tm), 1, String(tm))
+	await _talk()
+	assert_eq(_pages, ["Ça va mieux, merci.", "Le toit, c'est joli, mais il y fait chaud."]
+		as Array[String], "texte 94 : les trois CT données")
 
 
 func test_nothing_to_drink_just_the_thirst() -> void:

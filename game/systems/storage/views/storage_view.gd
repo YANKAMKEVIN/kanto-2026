@@ -40,3 +40,12 @@ var result_text: String = ""
 func card_at(place: StorageRules.Place, index: int) -> StorageCardView:
 	var cards := party if place == StorageRules.Place.PARTY else storage
 	return cards[index] if index >= 0 and index < cards.size() else null
+
+## Recherche et tri actifs (jalon 32, T7) : [member storage] ne contient alors que les Pokémon
+## qui correspondent, dans l'ordre de tri ; chaque carte garde son index **réel**.
+var query_text: String = ""
+var sort: int = StorageQuery.Sort.ARRIVAL
+## « Tri : Arrivée » (libellé du bouton de tri).
+var sort_label: String = ""
+## Nombre de Pokémon du stockage, filtre ignoré.
+var storage_total: int = 0

@@ -44,7 +44,8 @@ const RELEASED_TEXT: String = "%s a été libéré."
 ## ([member StorageView.result_text]) ; null à l'entrée de l'écran.
 static func build(state: Object, data: PokemonData, selection: StorageSelection,
 		zones: ZoneLibrary = null, unlocks: MenuUnlocks = null,
-		result: StorageResult = null) -> StorageView:
+		result: StorageResult = null, query_text: String = "",
+		sort: int = StorageQuery.Sort.ARRIVAL) -> StorageView:
 	var party: Party = state.party
 	var storage: PokemonStorage = state.storage
 	var view := StorageView.new()
@@ -57,9 +58,17 @@ static func build(state: Object, data: PokemonData, selection: StorageSelection,
 	for i: int in members.size():
 		view.party.append(card(members[i], StorageRules.Place.PARTY, i, data, view.selection))
 	var stored := storage.get_all()
-	for i: int in stored.size():
+	# Recherche et tri (T7) : seul l'affichage change, les cartes gardent leur index réel.
+	for i: int in StorageQuery.order(stored, data, query_text, sort):
 		view.storage.append(card(stored[i], StorageRules.Place.STORAGE, i, data, view.selection))
-	view.empty_text = EMPTY_TEXT if stored.is_empty() else ""
+	view.query_text = query_text
+	view.sort = sort
+	view.sort_label = StorageQuery.sort_label(sort)
+	view.storage_total = stored.size()
+	if stored.is_empty():
+		view.empty_text = EMPTY_TEXT
+	elif view.storage.is_empty():
+		view.empty_text = StorageQuery.NO_MATCH_TEXT
 	if result != null and result.is_ok():
 		view.result_text = result_text(result, data)
 	if view.selection.is_empty():

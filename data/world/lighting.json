@@ -360,7 +360,7 @@
 		"seafoam_b4f": "cave_b2f",
 		"cerulean_cave_1f": "cave_1f",
 		"cerulean_cave_2f": "cave_1f",
-		"cerulean_cave_b1f": "cave_b1f",
+		"cerulean_cave_b1f": "cave_b1f", "power_plant": "office",
 		"route_8_gate": "interior_warm",
 		"route_8_underground_gate": "interior_warm",
 		"underground_path_7_8": "underground",

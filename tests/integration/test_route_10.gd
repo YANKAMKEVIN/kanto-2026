@@ -82,7 +82,7 @@ func test_scene_grid_is_the_functional_grid() -> void:
 					fail_test("case %s « %s » : solide %s, herbes %s, eau %s" % [cell, mark,
 						_grid.is_solid(cell), _grid.is_tall_grass(cell), _grid.is_water(cell)])
 	assert_eq(mismatches, 0, "grille de la scène = tools/plans/route_10.txt")
-	assert_eq(_plan.walkable, ".=hoDQ")
+	assert_eq(_plan.walkable, ".=hoDQP")  # J32 : P = porte de la Centrale
 
 
 func test_water_is_never_walkable() -> void:
@@ -123,17 +123,26 @@ func test_two_sectors_are_not_connected_on_foot() -> void:
 		assert_true(_terrain.is_solid(cell), "centrale %s bloquée" % cell)
 
 
-func test_central_has_no_door_no_text() -> void:
-	var cells: Array[Vector2i] = _plan.cells_at("centrale")
-	assert_eq(cells.size(), 5 * 7)
+## Jalon 32 (N-11, grille validée par Kevin le 2026-10-27) : la Centrale s'ouvre. Décor bloqué
+## sauf la porte (30, 9), STEP_ON ↑ vers `power_plant` ; quai (29..31, 10) praticable ; rivière
+## nord surfable (y 0..22), mise à l'eau depuis le belvédère.
+func test_central_opens_on_its_quay_by_surf() -> void:
+	var cells: Array[Vector2i] = _plan.cells_at("centrale") + _plan.cells_at("centrale_ouest") \
+		+ _plan.cells_at("centrale_est")
+	assert_eq(cells.size(), 5 * 7 - 1, "la façade moins la porte")
 	for cell: Vector2i in cells:
 		assert_eq(_plan.at(cell), "E")
 		assert_true(_grid.is_solid(cell))
-	for warp: Warp in _map.get_warps().get_all():
-		assert_false(cells.has(warp.cell) or cells.has(warp.cell + Vector2i.UP))
-	var box := Rect2i(29, 2, 5, 8)
-	for point: Node in _map.get_node(^"Interactables").get_children():
-		assert_false(box.has_point(Vector2i((point as Node2D).position / Grid.TILE_SIZE)))
+	var door := _map.get_warps().find_on_step(Vector2i(30, 9), Vector2i.UP)
+	assert_not_null(door, "porte de la Centrale")
+	if door != null:
+		assert_eq([door.target_map, door.target_spawn], [&"power_plant", &"from_route_10"])
+	for x: int in range(29, 32):
+		assert_false(_grid.is_solid(Vector2i(x, 10)), "quai (%d, 10)" % x)
+	assert_eq(_map.get_spawn_cell(&"from_power_plant"), Vector2i(30, 10))
+	assert_true(_map.surf_cells.has(Vector2i(28, 10)), "on débarque depuis l'eau")
+	assert_true(_map.surf_cells.has(Vector2i(24, 13)), "mise à l'eau depuis le belvédère")
+	assert_false(_map.surf_cells.has(Vector2i(24, 23)), "au sud du rang 22 : pas de Surf")
 	assert_not_null(_map.get_node_or_null(^"Entities/Central"), "décor posé")
 
 
@@ -213,7 +222,8 @@ func test_life_is_the_t16_data_and_the_t24_trigger() -> void:
 	assert_true(scenes.has(&"dark_cave_crossed"), "sortie sud de la grotte (T24)")
 	# T18 : un point d'examen (panneau) et un déclencheur silencieux (route_10_reached).
 	assert_eq(_map.get_node(^"Triggers").get_child_count(), 2)
-	assert_eq(_map.get_node(^"Interactables").get_child_count(), 2)
+	# J32 (N-18) : plus le Ronflex d'après la Ligue au belvédère.
+	assert_eq(_map.get_node(^"Interactables").get_child_count(), 3)
 	var ids := _npc_ids_and_data(_map.get_entities(), &"route_10")
 	assert_eq(ids[0], ids[1], "PNJ de data/npcs/route_10.json")
 	assert_eq((ids[1] as Array).size(), 4, "Hector, Paul, le randonneur, la Super Potion")
@@ -269,7 +279,7 @@ func test_reserved_cells_stay_free_of_decor() -> void:
 		if kinds.has(_plan.positions[id]["kind"]):
 			for cell: Vector2i in _plan.cells_at(id):
 				reserved[cell] = true
-	assert_eq(reserved.size(), 4, "2 Dresseurs, 1 PNJ, 1 objet")
+	assert_eq(reserved.size(), 8, "2 Dresseurs, 1 PNJ, 1 objet, Ronflex 2 × 2 (J32, N-18)")
 	for prop: WorldProp in _props():
 		for cell: Vector2i in prop.get_solid_cells():
 			assert_false(reserved.has(cell) and _plan.at(cell) != "R",

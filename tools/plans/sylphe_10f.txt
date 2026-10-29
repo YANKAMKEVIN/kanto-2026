@@ -95,7 +95,7 @@ porte_d1_b              porte_carte    11,8         bloque  id=d1 cle=card_key  
 dresseur_1              dresseur       1,9          bloque  trainer=silph_co_10f_1 facing=right sight=3 classe=rocket  # RB objet 1 : OPP_ROCKET, 39
 dresseur_2              dresseur       10,2         bloque  trainer=silph_co_10f_2 facing=left sight=4 classe=scientifique  # RB objet 2 : OPP_SCIENTIST, 11
 employe_3               pnj            9,15         bloque  role=silph_co_10f_worker_3 facing=down  # RB SPRITE_SILPH_WORKER_F, WALK
-silph_co_10f_item_4     objet_visible  2,12         bloque  item=tm26 fallback=nugget  # RB TM_EARTHQUAKE
+silph_co_10f_item_4     objet_visible  2,12         bloque  item=tm26  # RB TM_EARTHQUAKE
 silph_co_10f_item_5     objet_visible  4,14         bloque  item=rare_candy  # RB RARE_CANDY
 silph_co_10f_item_6     objet_visible  5,11         bloque  item=carbos fallback=rare_candy  # RB CARBOS
 FIN

@@ -27,5 +27,10 @@
 		"unless": [
 			"got_ss_anne_item_02"
 		]
+	},
+	"ss_anne_cabin_a_tm44": {
+		"cell": [9, 5], "facing": "down", "sprite": "object/poke_ball_ground",
+		"dialogue": "ss_anne_cabin_a_tm44", "verb": "take", "turn_to_player": false,
+		"unless": ["got_ss_anne_cabin_a_tm44"]
 	}
 }

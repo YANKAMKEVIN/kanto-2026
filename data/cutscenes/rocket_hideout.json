@@ -337,7 +337,7 @@
 						"despawn": "rocket_hideout_b2f_item_3"
 					},
 					{
-						"give": "super_potion",
+						"give": "tm07",
 						"count": 1,
 						"found": true
 					},
@@ -385,7 +385,7 @@
 						"despawn": "rocket_hideout_b3f_item_1"
 					},
 					{
-						"give": "super_potion",
+						"give": "tm10",
 						"count": 1,
 						"found": true
 					},
@@ -454,7 +454,7 @@
 						"despawn": "rocket_hideout_b4f_item_1"
 					},
 					{
-						"give": "super_potion",
+						"give": "tm02",
 						"count": 1,
 						"found": true
 					},

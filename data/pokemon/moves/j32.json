@@ -1,0 +1,14 @@
+{
+	"sharpen": {
+		"name": "Affûtage", "type": "normal", "category": "status",
+		"accuracy": 0, "pp": 30,
+		"effects": [{ "kind": "stat_stage", "stat": "atk", "stages": 1, "target": "self" }],
+		"description": "Le lanceur affine les angles de son corps. Augmente son Attaque."
+	},
+	"conversion": {
+		"name": "Conversion", "type": "normal", "category": "status",
+		"accuracy": 0, "pp": 30,
+		"pending_effects": ["conversion"],
+		"description": "Le lanceur prend le type de son adversaire. Sans effet dans le moteur actuel."
+	}
+}

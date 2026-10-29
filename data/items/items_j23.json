@@ -1,12 +1,12 @@
 {
 	"tm32": {
 		"name": "CT32 — Reflet", "plural": "CT32 — Reflet", "feminine": true,
-		"category": "tm", "tm": 32, "teaches": "double_team",
+		"category": "tm", "tm": 32, "teaches": "double_team", "price": 1000,
 		"description": "Le lanceur se démultiplie par des mouvements rapides. Augmente son esquive."
 	},
 	"tm37": {
 		"name": "CT37 — Bomb'Œuf", "plural": "CT37 — Bomb'Œuf", "feminine": true,
-		"category": "tm", "tm": 37, "teaches": "egg_bomb",
+		"category": "tm", "tm": 37, "teaches": "egg_bomb", "price": 2000,
 		"description": "Le lanceur projette violemment un gros œuf sur la cible."
 	},
 	"tm40": {

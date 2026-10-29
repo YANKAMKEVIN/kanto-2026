@@ -34,8 +34,8 @@ position = Vector2(720, 480)
 [node name="StorageTerminal" parent="Entities" unique_id=229353350 instance=ExtResource("4_c4dcl")]
 position = Vector2(192, 326)
 
-[node name="PlantNorthEast" parent="Entities" unique_id=1145806697 instance=ExtResource("5_ebq7i")]
-position = Vector2(1200, 326)
+[node name="TradeTerminal" parent="Entities" unique_id=1145806697 instance=ExtResource("4_c4dcl")]
+position = Vector2(1248, 326)
 
 [node name="BenchWest" parent="Entities" unique_id=20476692 instance=ExtResource("6_hfje7")]
 position = Vector2(288, 691)
@@ -102,6 +102,13 @@ dialogue_id = &"storage_terminal"
 size = Vector2i(2, 1)
 facing = Vector2i(0, -1)
 
+[node name="TradeTerminalScreen" type="Marker2D" parent="Interactables" unique_id=1993651370]
+position = Vector2(1200, 384)
+script = ExtResource("9_1yto1")
+dialogue_id = &"trade_terminal"
+size = Vector2i(2, 1)
+facing = Vector2i(0, -1)
+
 [node name="Spawns" type="Node2D" parent="." unique_id=845681281]
 
 [node name="entrance" type="Marker2D" parent="Spawns" unique_id=1830623563]
@@ -112,5 +119,8 @@ position = Vector2(720, 576)
 
 [node name="terminal" type="Marker2D" parent="Spawns" unique_id=1204352724]
 position = Vector2(144, 480)
+
+[node name="trade_terminal" type="Marker2D" parent="Spawns" unique_id=1106677963]
+position = Vector2(1200, 480)
 
 [node name="Triggers" type="Node2D" parent="." unique_id=693414591]

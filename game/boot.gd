@@ -158,6 +158,10 @@ var _tm_overlay: TmLearnOverlay
 ## la demande, elle commence à la fin de son dialogue.
 var _daycare: DaycareDirector
 var _pending_daycare: bool = false
+## J32 (T5) : terminal d'échange local des Centres (`open_local_trade`) ; la conversation
+## commence à la fin du dialogue du terminal.
+var _local_trade: LocalTradeDirector
+var _pending_local_trade: bool = false
 ## Compagnon (jalon 11, 11D) : espèces éligibles et contrôleur (nœud créé tout de suite pour
 ## recevoir les réglages).
 var _companions := CompanionCatalog.new()
@@ -364,6 +368,7 @@ func _ready() -> void:
 	_daycare.deposited.connect(_on_daycare_deposited.unbind(1))
 	_daycare.finished.connect(_on_daycare_finished)
 	_services.daycare_requested.connect(_on_daycare_requested)
+	_setup_local_trade()
 	_setup_elevators()
 	_setup_teleporters()
 	_setup_fly()
@@ -544,6 +549,7 @@ func _ready() -> void:
 	_menu_screen.storage_favorite_toggled.connect(_menu.toggle_storage_favorite)
 	_menu_screen.storage_release_requested.connect(_menu.request_release)
 	_menu_screen.storage_release_confirmed.connect(_menu.confirm_release)
+	_menu_screen.storage_query_changed.connect(_menu.set_storage_query)
 	# Une seule écoute de tout ce qui s'enregistre au Pokédex (jalon-06.md §6.9).
 	GameState.pokedex.recorded.connect(_on_pokedex_recorded)
 	GameState.flags.flag_changed.connect(_on_flag_changed)
@@ -908,6 +914,9 @@ func _on_go_back() -> void:
 		return
 	# J25 : choix du Pokémon d'un échange = ANNULER.
 	if _trade_overlay != null and _trade_overlay.handle_back():
+		return
+	# J32 (T5) : le reste de la conversation du terminal d'échange avale le geste.
+	if _local_trade != null and _local_trade.handle_back():
 		return
 	# J20 (T13) : panneau d'étages = FERMER ; pendant un trajet, avalé.
 	if _elevator.handle_back():
@@ -1353,6 +1362,7 @@ func _on_map_changed(map: GameMap) -> void:
 	_encounters.set_map(map)
 	_services.set_map(map)
 	_daycare.set_map(map)
+	_local_trade.set_map(map)
 	_recovery.set_map(map)
 	# J20 (T13) : cabine d'ascenseur (étage courant d'après la carte quittée, sortie réorientée).
 	_elevator.set_map(map, _arrival_from)
@@ -1490,6 +1500,9 @@ func _on_dialogue_finished(_dialogue_id: StringName) -> void:
 	elif _pending_elevator:
 		_pending_elevator = false
 		_elevator.open_panel()
+	elif _pending_local_trade:
+		_pending_local_trade = false
+		_local_trade.run()
 
 
 ## « open_shop » (le marchand, jalon-07.md §6.10) : la Boutique s'ouvre en écran seul dès la fin
@@ -1525,6 +1538,43 @@ func _on_daycare_deposited() -> void:
 
 
 ## Conversation finie (joueur rendu) : contrôles ; après un retrait, **une seule** écriture.
+# --- Terminal d'échange local (J32, T5 ; `jalon-32.md` §1.2, N-15) -----------------------------
+
+func _setup_local_trade() -> void:
+	_local_trade = LocalTradeDirector.new()
+	_local_trade.name = "LocalTradeDirector"
+	_local_trade.process_mode = Node.PROCESS_MODE_PAUSABLE
+	add_child(_local_trade)
+	_local_trade.setup(GameState, _player, _runner, _pokemon, _evolutions)
+	_local_trade.pick_handler = func(view: PartyPickerView) -> int:
+		return await _trade_overlay.pick(view)
+	_local_trade.started.connect(_refresh_controls)
+	_local_trade.finished.connect(_on_local_trade_finished)
+	_services.local_trade_requested.connect(_on_local_trade_requested)
+
+
+func get_local_trade_director() -> LocalTradeDirector:
+	return _local_trade
+
+
+## « open_local_trade » (le terminal) : la conversation commence à la fin du dialogue.
+func _on_local_trade_requested() -> void:
+	_pending_local_trade = true
+
+
+## Fin de la conversation : compagnon à jour (même identifiant, nouvelle espèce) ; échange fait :
+## écriture tout de suite, comme un retrait de la Pension.
+func _on_local_trade_finished(traded: bool) -> void:
+	_companion.refresh()
+	_refresh_controls()
+	if not traded:
+		return
+	if _can_write() and not SceneRouter.is_transitioning():
+		_write_save("échange local")
+	else:
+		request_autosave("échange local")
+
+
 func _on_daycare_finished(withdrew: bool) -> void:
 	_companion.refresh()
 	_refresh_controls()
@@ -1573,6 +1623,9 @@ func _dialogue_token_values() -> Dictionary[StringName, String]:
 	# {pokemon} (le Pokémon gardé ou rendu) passe alors avant celui du compagnon (J11).
 	if _daycare != null:
 		values.merge(_daycare.token_values(), true)
+	# J32 (T5) : {pokemon} de la confirmation du terminal d'échange.
+	if _local_trade != null:
+		values.merge(_local_trade.token_values(), true)
 	# J17 (§2.5) : {caught}, {caught_missing} (assistant de Chen).
 	values.merge(DialogueTokens.caught_values(GameState.pokedex.caught_count()))
 	return values
@@ -1844,6 +1897,7 @@ func _refresh_controls() -> void:
 		and not _encounters.is_running() and not _player.is_blocked_by(EVOLUTION_ITEM)
 		and not _player.is_blocked_by(RARE_CANDY)
 		and not (_daycare != null and _daycare.is_running())
+		and not (_local_trade != null and _local_trade.is_running())
 		and not _player.is_blocked_by(FlashDirector.LOCK_REASON)
 		and not _elevator.is_running() and not _forced_slide.is_running())
 
@@ -2611,6 +2665,7 @@ func _setup_league() -> void:
 	_league.process_mode = Node.PROCESS_MODE_PAUSABLE
 	add_child(_league)
 	_league.setup(GameState)
+	_league.static_encounters = _cutscenes.get_static_encounters()  # J32 (N-17, N-18)
 	SceneRouter.map_changed.connect(_league.on_map_changed)
 	_league.tree_exiting.connect(func() -> void:
 		if SceneRouter.map_changed.is_connected(_league.on_map_changed):

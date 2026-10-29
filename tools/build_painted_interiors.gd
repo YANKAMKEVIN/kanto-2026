@@ -289,7 +289,8 @@ func _pokemon_center(id: StringName, node: String, title: String, exit_target: A
 		"props": [
 			[&"int_centre_comptoir", Vector2i(7, 4), 5.0, "Counter"],
 			[&"int_centre_terminal", Vector2i(2, 3), 3.4, "StorageTerminal"],
-			[&"int_plante", Vector2i(12, 3), 3.4, "PlantNorthEast"],
+			# J32 (T5, N-15) : terminal d'échange local, à la place de la plante nord-est [D].
+			[&"int_centre_terminal", Vector2i(13, 3), 3.4, "TradeTerminal"],
 			[&"int_centre_banquette", Vector2i(3, 7), 7.2, "BenchWest"],
 			[&"int_centre_banquette", Vector2i(12, 7), 7.2, "BenchEast"],
 			[&"int_plante", Vector2i(1, 8), 8.8, "PlantSouthWest"],
@@ -310,9 +311,10 @@ func _pokemon_center(id: StringName, node: String, title: String, exit_target: A
 		# Le terminal du Stockage (T16) : ses deux cases, face à lui (tourné vers le haut).
 		"interactables": [["NurseCounter", Vector2i(6, 4), Vector2i(3, 1), &"nurse", TALK,
 			Vector2i.UP], ["StorageTerminalScreen", Vector2i(1, 3), Vector2i(2, 1),
-			&"storage_terminal", EXAMINE, Vector2i.UP]],
+			&"storage_terminal", EXAMINE, Vector2i.UP], ["TradeTerminalScreen", Vector2i(12, 3),
+			Vector2i(2, 1), &"trade_terminal", EXAMINE, Vector2i.UP]],
 		"spawns": {"entrance": Vector2i(7, 8), "heal": Vector2i(7, 5),
-			"terminal": Vector2i(1, 4)},
+			"terminal": Vector2i(1, 4), "trade_terminal": Vector2i(12, 4)},
 	}
 
 
@@ -2769,12 +2771,19 @@ func _indigo_plateau_lobby() -> Dictionary:
 		[&"indigo_plateau", &"from_lobby"])
 	var props: Array = []
 	for prop: Array in room["props"]:
-		if prop[3] != "PlantNorthEast":
+		# J32 (T5) : ni terminal d'échange local au nord-est (la porte de la Ligue) [D].
+		if prop[3] != "PlantNorthEast" and prop[3] != "TradeTerminal":
 			props.append(prop)
 	# Porte de la Ligue (fiche `j29-porte-ligue.md`, QA A17) posée dans le mur du fond, pied au
 	# bas des lambris peints, au-dessus du warp (12, 3) ; sans emprise : le mur est déjà bloqué.
 	props.append([&"int_porte_ligue_01", Vector2i(12, 2), 2.3, "LeagueDoor"])
 	room["props"] = props
+	var interactables: Array = []
+	for point: Array in room["interactables"]:
+		if point[0] != "TradeTerminalScreen":
+			interactables.append(point)
+	room["interactables"] = interactables
+	(room["spawns"] as Dictionary).erase("trade_terminal")
 	# J30 (`jalon-30.md` §10.8, fusion du J29) : la porte mène à la salle d'Olga. Avant, sur la
 	# case (12, 4), la question du garde (T30-01, Q30-6 : OUI / NON, scène `league_guard_door`)
 	# fait entrer (OUI) ou recule le joueur (NON) ; deux gardes encadrent la porte (PNJ,

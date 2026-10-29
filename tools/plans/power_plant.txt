@@ -1,0 +1,107 @@
+# Centrale — grille fonctionnelle v1, PROPOSITION (jalon 32, lot 32G ; arbitrage N-11 validé par
+# Kevin le 2026-10-24 ; proposition de grille demandée le 2026-10-27). **À valider par Kevin avant
+# toute construction de carte.** Relevé 1:1 de ROUGE/BLEU, décodé du désassemblage `pokered` par
+# `tools/art/power_plant_rb_decode.py` ; contrôle : `tools/art/plan_check_power_plant.py`.
+# Image de relecture : `docs/design/reference/centrale-plan-v1.png` (`tools/art/plan_aplats_power_plant.py`).
+#
+# 40 × 36 cases ; nord en haut ; x = colonne 0..39, y = rangée 0..35. Intérieur (sol de l'usine,
+# machines et cloisons bloquées) ; une seule carte, `power_plant`.
+# Entrée : porte sud (4..5, 35) depuis la Route 10 ; arrivée (4..5, 34), tournée vers le nord.
+# Sortie secondaire : porte ouest (0, 11) (RB : elle mène au même point de la Route 10 que la porte
+# sud) [D, gardée comme dans RB].
+# Électhor N50 (4, 9), au fond de la salle ouest (RB). Huit fausses Poké Balls (RB) : six Voltorbe
+# N40, deux Électrode N43, combats sauvages au contact (rencontres fixes, une fois chacune) [D].
+# Objets visibles (RB) : PV Plus (28, 3), Super Bonbon (34, 3), Carbone (7, 25), CT25 Fatal-Foudre
+# (26, 32), CT33 Protection (20, 32). Objets cachés (RB) : Huile Max (17, 16), PP Plus (12, 1),
+# dans les machines (indice x), pris depuis la case de sol voisine.
+#
+# ACCÈS DEPUIS LA ROUTE 10 (comme RB : Surf obligatoire ; à appliquer à `route_10.txt` APRÈS
+# validation, rien n'est changé aujourd'hui sur la Route 10) :
+#   - la rivière de la Route 10 (x 24..28) devient surfable du nord jusqu'à la rangée 22 ; on monte
+#     sur l'eau depuis le bord est du belvédère (23, 12..18), comme RB (Surf depuis la rive) ;
+#   - un quai praticable est taillé dans la forêt sous la Centrale lointaine : (29..31, 10) ;
+#     on y débarque depuis l'eau (28, 10) ;
+#   - la porte de la Centrale est posée en (30, 9), dans la façade sud du décor `E` (STEP_ON ↑),
+#     vers `power_plant:from_route_10` ; retour : spawn `from_power_plant` en (30, 10), tourné vers
+#     le sud ;
+#   - la Centrale cesse d'être « visible, inaccessible, sans promesse » (J18 I-15) : N-11 l'ouvre.
+#   Le Ronflex d'après la Ligue (N-18, belvédère (21..22, 19..20)) ne gêne pas la mise à l'eau.
+#
+# Écarts avec RB : aucun sur la géométrie. La case (21, 24) n'est atteinte qu'après la fausse
+# Poké Ball de (21, 25) (comme RB) ; les objets cachés sont sur des cases de machine (indice x).
+# Rencontres : terrain « floor » sur tout le sol (`data/encounters/power_plant.json`, union Rouge +
+# Bleu : Élektek et Raichu, N-10) ; aucun Dresseur (RB).
+#
+# Légende :
+#   # mur, cloison ou machine (bloqué)        . sol de l'usine (praticable)
+#   E porte sud, sortie vers la Route 10 (praticable, PUSH ↓)
+#   O porte ouest, sortie vers la Route 10 (praticable, PUSH ←)
+#   x indice d'objet caché (bloqué) ; l'objet se prend depuis la case de sol voisine donnée par
+#     sa position « objet_cache »
+#
+# Format : ligne CARTE, ligne PRATICABLES, section GRILLE (« NN » + espace + 40 caractères), puis
+# POSITIONS : identifiant  type  cases  bloque|libre  [cle=valeur ...]  # commentaire
+
+CARTE power_plant
+PRATICABLES .EO
+
+GRILLE 40 36
+00 ########################################
+01 #.##########x###########################
+02 #.####..#.##.#########...###############
+03 #...##.......#####.......###.#####..####
+04 #.......###.######.####..##..######...##
+05 #.......##....##....###..##..#######..##
+06 ####..#####..#####..###..###..###....###
+07 #.......###..###....###..###..###....###
+08 #.......####.###.....##..##...##..######
+09 #.......####.###.....##..##...##..######
+10 #.......###....#......#..#....#....#####
+11 O.......###...........#..#....#....#####
+12 ##################.####..#.............#
+13 ######..#...####....###..#####..########
+14 ####....#....###......#................#
+15 ##...........########################..#
+16 ##............###x..................#..#
+17 ##......#.....##########..########..#..#
+18 #####...#####.###########.######....#..#
+19 ####....#####.##..##.#############..#..#
+20 ##......#.##...#....................#..#
+21 ##......#.........################..#..#
+22 #..######..#####....................#..#
+23 #..#####....#########################..#
+24 #.....#####...#######.########.#####..##
+25 #.......###...##..###.######...###....##
+26 ####..#######..#.......###......##...###
+27 ##......####...#.......#.............###
+28 ###...####........##.......###.#########
+29 ###...####........##.......###.#########
+30 ##...######.##################.#########
+31 ##...#####....###########...##..########
+32 #......###....####....###..#.......##..#
+33 #......###......##....###.##..####.###.#
+34 #.......#...............#..............#
+35 ####EE##################################
+FIN
+
+POSITIONS
+sortie_sud            warp           4..5,35       libre   vers=route_10:from_power_plant  # PUSH ↓ (RB warps 1 et 2)
+from_route_10         spawn          4..5,34       libre   facing=up  # arrivée depuis la Route 10
+porte_ouest           warp           0,11          libre   vers=route_10:from_power_plant  # PUSH ← (RB warp 3, même sortie)
+zapdos                rencontre      4,9           bloque  espece=zapdos niveau=50 facing=up cutscene=zapdos  # RB SPRITE_BIRD (4, 9)
+fausse_ball_1         rencontre      9,20          bloque  espece=voltorb niveau=40 leurre=poke_ball  # RB
+fausse_ball_2         rencontre      32,18         bloque  espece=voltorb niveau=40 leurre=poke_ball  # RB
+fausse_ball_3         rencontre      21,25         bloque  espece=voltorb niveau=40 leurre=poke_ball  # RB ; ferme (21, 24)
+fausse_ball_4         rencontre      25,18         bloque  espece=electrode niveau=43 leurre=poke_ball  # RB
+fausse_ball_5         rencontre      23,34         bloque  espece=voltorb niveau=40 leurre=poke_ball  # RB
+fausse_ball_6         rencontre      26,28         bloque  espece=voltorb niveau=40 leurre=poke_ball  # RB
+fausse_ball_7         rencontre      21,14         bloque  espece=electrode niveau=43 leurre=poke_ball  # RB
+fausse_ball_8         rencontre      37,32         bloque  espece=voltorb niveau=40 leurre=poke_ball  # RB
+power_plant_item_1    objet          28,3          bloque  item=hp_up  # RB
+power_plant_item_2    objet          34,3          bloque  item=rare_candy  # RB
+power_plant_item_3    objet          7,25          bloque  item=carbos  # RB
+power_plant_item_4    objet          26,32         bloque  item=tm25  # RB CT25 Fatal-Foudre
+power_plant_item_5    objet          20,32         bloque  item=tm33  # RB CT33 Protection
+power_plant_hidden_1  objet_cache    18,16         libre   item=max_elixir  # RB (17, 16), dans la machine (indice x) ; pris depuis (18, 16), tourné vers l'ouest
+power_plant_hidden_2  objet_cache    12,2          libre   item=pp_up  # RB (12, 1), dans la machine (indice x) ; pris depuis (12, 2), tourné vers le nord
+FIN

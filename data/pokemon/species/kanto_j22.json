@@ -117,6 +117,7 @@
 		"learnset": [
 			[1, "karate_chop"], [1, "low_kick"], [1, "leer"], [20, "low_kick"], [25, "leer"],
 			[36, "focus_energy"]
-		]
+		],
+		"evolutions": [{ "into": "machamp", "method": "trade" }]
 	}
 }

@@ -253,7 +253,7 @@ func test_snorlax_closes_the_crossing_until_done() -> void:
 
 func test_fishers_follow_the_grid_and_the_annex() -> void:
 	assert_eq(_roster.get_errors().size(), 0, str(_roster.get_errors()))
-	assert_eq(_roster.get_all().size(), 4)
+	assert_eq(_roster.get_all().size(), 5, "4 Pêcheurs et la CT16 (N-22)")
 	var terrain := _terrain(true)
 	for key: StringName in FISHERS:
 		var spec := _roster.get_spec(key)

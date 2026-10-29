@@ -226,4 +226,5 @@ face_ronflex         repere         25..26,92    libre  role=face_ronflex facing
 face_ronflex_ouest   repere         24,93..94    libre  role=face_ronflex facing=right  # côté ouest : depuis (24, 93..94) →
 face_ronflex_sud     repere         25..26,95    libre  role=face_ronflex facing=up  # côté sud : depuis (25..26, 95) ↑
 croisement           repere         24..26,93..95 libre  role=croisement  # carrefour des trois bras, fermé par Ronflex ; la chaussée de la Route 11 y arrive de l'ouest
+route_12_tm16           objet_visible  16,26        bloque  item=tm16  # CT16 Jackpot (lot 32N, N-22) : case libre et atteignable (valeur par défaut [D], lieu RB non reproduit)
 FIN

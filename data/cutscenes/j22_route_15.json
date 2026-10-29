@@ -10,7 +10,7 @@
 						"despawn": "route_15_item_1"
 					},
 					{
-						"give": "tm09",
+						"give": "tm20",
 						"count": 1,
 						"found": true
 					},

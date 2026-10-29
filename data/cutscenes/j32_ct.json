@@ -1,0 +1,151 @@
+{
+	"celadon_dept_3f_tm18": {
+		"variants": [
+			{
+				"unless": ["got_tm18"],
+				"steps": [
+					{ "dialogue": "celadon_dept_3f_tm18_give" },
+					{ "give": "tm18", "count": 1 },
+					{ "set": ["got_tm18"] },
+					{ "dialogue": "celadon_dept_3f_tm18_got" }
+				]
+			}
+		]
+	},
+	"saffron_psychic_tm29": {
+		"variants": [
+			{
+				"unless": ["got_tm29"],
+				"steps": [
+					{ "dialogue": "saffron_psychic_tm29_give" },
+					{ "give": "tm29", "count": 1 },
+					{ "set": ["got_tm29"] },
+					{ "dialogue": "saffron_psychic_tm29_got" }
+				]
+			}
+		]
+	},
+	"celadon_chief_son_tm41": {
+		"variants": [
+			{
+				"unless": ["got_tm41"],
+				"steps": [
+					{ "dialogue": "celadon_chief_son_tm41_give" },
+					{ "give": "tm41", "count": 1 },
+					{ "set": ["got_tm41"] },
+					{ "dialogue": "celadon_chief_son_tm41_got" }
+				]
+			}
+		]
+	},
+	"celadon_roof_trade_soda": {
+		"variants": [
+			{
+				"unless": ["rooftop_tm48"],
+				"steps": [
+					{ "take": "soda_pop" },
+					{ "dialogue": "celadon_roof_girl_thanks" },
+					{ "give": "tm48", "count": 1 },
+					{ "set": ["rooftop_tm48"] }
+				]
+			}
+		]
+	},
+	"celadon_roof_trade_lemonade": {
+		"variants": [
+			{
+				"unless": ["rooftop_tm49"],
+				"steps": [
+					{ "take": "lemonade" },
+					{ "dialogue": "celadon_roof_girl_thanks" },
+					{ "give": "tm49", "count": 1 },
+					{ "set": ["rooftop_tm49"] }
+				]
+			}
+		]
+	},
+	"route_4_tm04": {
+		"variants": [
+			{
+				"unless": ["got_route_4_tm04"],
+				"steps": [
+					{ "despawn": "route_4_tm04" },
+					{ "give": "tm04", "count": 1, "found": true },
+					{ "set": ["got_route_4_tm04"] }
+				]
+			}
+		]
+	},
+	"mt_moon_b1f_tm12": {
+		"variants": [
+			{
+				"unless": ["got_mt_moon_b1f_tm12"],
+				"steps": [
+					{ "despawn": "mt_moon_b1f_tm12" },
+					{ "give": "tm12", "count": 1, "found": true },
+					{ "set": ["got_mt_moon_b1f_tm12"] }
+				]
+			}
+		]
+	},
+	"route_12_tm16": {
+		"variants": [
+			{
+				"unless": ["got_route_12_tm16"],
+				"steps": [
+					{ "despawn": "route_12_tm16" },
+					{ "give": "tm16", "count": 1, "found": true },
+					{ "set": ["got_route_12_tm16"] }
+				]
+			}
+		]
+	},
+	"route_24_tm45": {
+		"variants": [
+			{
+				"unless": ["got_route_24_tm45"],
+				"steps": [
+					{ "despawn": "route_24_tm45" },
+					{ "give": "tm45", "count": 1, "found": true },
+					{ "set": ["got_route_24_tm45"] }
+				]
+			}
+		]
+	},
+	"route_9_tm30": {
+		"variants": [
+			{
+				"unless": ["got_route_9_tm30"],
+				"steps": [
+					{ "despawn": "route_9_tm30" },
+					{ "give": "tm30", "count": 1, "found": true },
+					{ "set": ["got_route_9_tm30"] }
+				]
+			}
+		]
+	},
+	"silph_co_2f_tm36": {
+		"variants": [
+			{
+				"unless": ["got_silph_co_2f_tm36"],
+				"steps": [
+					{ "despawn": "silph_co_2f_tm36" },
+					{ "give": "tm36", "count": 1, "found": true },
+					{ "set": ["got_silph_co_2f_tm36"] }
+				]
+			}
+		]
+	},
+	"viridian_city_tm42": {
+		"variants": [
+			{
+				"unless": ["got_viridian_city_tm42"],
+				"steps": [
+					{ "despawn": "viridian_city_tm42" },
+					{ "give": "tm42", "count": 1, "found": true },
+					{ "set": ["got_viridian_city_tm42"] }
+				]
+			}
+		]
+	}
+}

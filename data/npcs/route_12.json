@@ -30,5 +30,10 @@
 			"id": "route_12_fisher_4", "sight": 6,
 			"before": "route_12_fisher_4_before", "defeated": "route_12_fisher_4_defeated"
 		}
+	},
+	"route_12_tm16": {
+		"cell": [16, 26], "facing": "down", "sprite": "object/poke_ball_ground",
+		"dialogue": "route_12_tm16", "verb": "take", "turn_to_player": false,
+		"unless": ["got_route_12_tm16"]
 	}
 }

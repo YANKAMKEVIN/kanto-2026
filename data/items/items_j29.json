@@ -14,7 +14,7 @@
 		"feminine": true,
 		"category": "tm",
 		"tm": 17,
-		"teaches": "submission",
+		"teaches": "submission", "price": 3000,
 		"description": "Un coup puissant qui blesse aussi le lanceur."
 	},
 	"tm05": {
@@ -23,7 +23,7 @@
 		"feminine": true,
 		"category": "tm",
 		"tm": 5,
-		"teaches": "mega_kick",
+		"teaches": "mega_kick", "price": 3000,
 		"description": "Un coup de pied d'une puissance phénoménale."
 	},
 	"tm47": {

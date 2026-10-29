@@ -45,7 +45,8 @@
 		"articuno",
 		"zapdos",
 		"moltres",
-		"mewtwo"
+		"mewtwo",
+		"mew"
 	],
 	"encounter_themes": {
 		"boy": "trainer_appears_boy",

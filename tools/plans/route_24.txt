@@ -124,4 +124,5 @@ route_24_item_1      objet_visible  44,3         bloque  role=O1 item=potion  # 
 route_24_hidden_1    cache          16,6         bloque  role=O2 item=antidote indice=souche  # Antidote : souche d'une autre teinte, à l'ouest de la prairie
 herbes_h1            herbes         21,12        libre   role=H1  # prairie ouest (évitable)
 herbes_h2            herbes         43,13        libre   role=H2  # prairie est (évitable)
+route_24_tm45           objet_visible  19,3         bloque  item=tm45  # CT45 Cage-Éclair (lot 32N, N-22) : case libre et atteignable (valeur par défaut [D], lieu RB non reproduit)
 FIN

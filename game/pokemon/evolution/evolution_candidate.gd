@@ -15,6 +15,10 @@ var into: StringName = &""
 var cancellable: bool = true
 ## Objet qui la provoque (pierre, [method EvolutionDirector.play_item]) ; &"" en fin de combat.
 var item_id: StringName = &""
+## Jalon 32 (T5, échange local) : applique l'évolution à la place d'[method Evolution.evolve].
+## `func() -> Dictionary` : `{pokemon, moves}` (l'individu évolué, désormais dans l'équipe, et
+## les capacités à proposer), ou un dictionnaire vide si rien n'a changé. Invalide : par défaut.
+var applier: Callable
 
 
 func _init(index: int = -1, from: StringName = &"", target: StringName = &"") -> void:

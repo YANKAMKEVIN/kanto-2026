@@ -171,7 +171,9 @@ func test_data_file_loads() -> void:
 	assert_eq(tables.get_errors().size(), 0)
 	# Jalon 31 (T4) : Super Canne de la Grotte Azurée (groupe 9 de RB).
 	assert_eq(tables.get_ids(), [&"good_rod_any", &"old_rod_any", &"super_rod_cerulean_cave",
-		&"super_rod_default", &"super_rod_fuchsia"] as Array[StringName])
+		&"super_rod_default", &"super_rod_fuchsia",
+		# Jalon 32 (N-12) : Super Canne du Parc Safari (groupe 6 de RB, Minidraco).
+		&"super_rod_safari"] as Array[StringName])
 
 
 func test_data_rates_match_bite_chances() -> void:
