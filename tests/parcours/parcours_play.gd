@@ -148,10 +148,12 @@ func talk(cell: Vector2i, facing: Vector2i, answer: bool = true) -> bool:
 
 ## Raccourci du parcours : pose [param flags] (ce que le tronçon sauté aurait posé) et le note
 ## dans le journal avec [param reason]. Le tronçon a ses propres tests ; le parcours réel de
-## Kevin (T6) le rejoue au doigt.
-func shortcut(flags: Array, reason: String) -> void:
+## Kevin (T6) le rejoue au doigt. [param items] : objets reçus dans ce tronçon ({ id: nombre }).
+func shortcut(flags: Array, reason: String, items: Dictionary = {}) -> void:
 	for flag: Variant in flags:
 		GameState.flags.set_flag(StringName(str(flag)))
+	for item: Variant in items:
+		GameState.bag.add(StringName(str(item)), int(items[item]))
 	_lines.append("  ↷ raccourci : %s" % reason)
 
 
