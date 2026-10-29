@@ -165,11 +165,11 @@ Harnais d'intégration qui enchaîne les étapes sur le vrai jeu en mode headles
 | 06 collection `test_parcours_06_collection.gd` | `evolution_qa` | Chenipan bat Théo et évolue, captures dans les herbes jusqu'à l'équipe pleine puis au Stockage, dépôt et retrait (règles du Stockage), relance, Diplôme, Mew sous le camion (151), relance | Chenipan mis en tête, 150 captures, Ligue |
 | Starters `test_parcours_starters.gd` | `route_22_final_<s>`, `silph_7f_rival_<s>`, `league_champion_<s>` | pour Bulbizarre, Salamèche, Carapuce : les trois derniers combats du rival, équipe affrontée = données, dernier Pokémon (Dracaufeu, Tortank, Florizarre), Panthéon | — |
 
-- **Anomalies** (registre `reportes.md`) : **RP-266** (P3, corrigé) `DebugStart` prenait le premier
+- **Anomalies** (registre `reportes.md`) : **RP-267** (P3, corrigé) `DebugStart` prenait le premier
   Pokémon comme starter même évolué : 109 départs sans starter connu, tout combat du rival depuis
   eux partait sans équipe et comptait comme une défaite ; désormais le premier s'il est un starter
   de base, sinon la paire `taken_*` (une seule lecture), test `test_debug_start_starter.gd`, rejoué
-  par le parcours 03. **RP-267** (P3, ouvert) : un combat de Dresseur sans équipe adverse est compté
+  par le parcours 03. **RP-268** (P3, ouvert) : un combat de Dresseur sans équipe adverse est compté
   comme une défaite au lieu d'être refusé ; aucune vraie sauvegarde n'y mène (champ `starter`
   présent de v1 à v8). **Aucun P0 ni P1 trouvé.**
 - **Pour T6** : les raccourcis du tableau sont les tronçons que seule la passe humaine rejoue.

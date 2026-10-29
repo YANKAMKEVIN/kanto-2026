@@ -1,5 +1,5 @@
 extends GutTest
-## Starter d'un départ de débogage (J33 T5, anomalie RP-266) : un starter évolué ou un autre
+## Starter d'un départ de débogage (J33 T5, anomalie RP-267) : un starter évolué ou un autre
 ## Pokémon en tête ne doit pas laisser la partie sans starter connu (le rival n'aurait pas
 ## d'équipe : combat vide compté comme une défaite).
 
