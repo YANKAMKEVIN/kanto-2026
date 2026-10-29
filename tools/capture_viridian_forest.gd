@@ -41,6 +41,12 @@ func _setup() -> void:
 		var parts: PackedStringArray = String(_args["cell"]).split(",")
 		cell = Vector2i(int(parts[0]), int(parts[1]))
 	var facing := _direction(String(_args.get("facing", "up")))
+	if _args.has("gates"):
+		# Lot DAF.9 : décors à drapeaux réglés comme en jeu (`--gates=drapeau,…`, vide = nouvelle partie).
+		var flags := StoryFlags.new()
+		for flag: String in String(_args["gates"]).split(",", false):
+			flags.set_flag(StringName(flag))
+		map.call(&"apply_flag_gates", flags)
 	if not _args.has("noplayer"):
 		var player: Node = (load("res://game/player/player.tscn") as PackedScene).instantiate()
 		map.call(&"spawn_player_at", player, cell, facing)

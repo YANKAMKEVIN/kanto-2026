@@ -1,0 +1,23 @@
+RP-261 / RP-263 : fenêtres [perf] de la fin du journal (epoch, fps, min, draw, tex) :
+    1793308199.031 [perf] fps=51 min=16 draw=238 tex=294.1
+    1793308200.929 [perf] fps=54 min=32 draw=239 tex=294.1
+    1793308202.925 [perf] fps=51 min=31 draw=202 tex=297.7
+    1793308205.071 [perf] fps=47 min=20 draw=156 tex=302.9
+    1793308207.052 [perf] fps=50 min=33 draw=188 tex=303.8
+    1793308209.084 [perf] fps=49 min=35 draw=188 tex=303.8
+    1793308211.081 [perf] fps=48 min=36 draw=188 tex=303.8
+    1793308213.096 [perf] fps=48 min=33 draw=188 tex=303.8
+    1793308215.110 [perf] fps=48 min=31 draw=188 tex=303.8
+    1793308217.122 [perf] fps=50 min=30 draw=188 tex=303.8
+    1793308219.138 [perf] fps=47 min=32 draw=188 tex=303.8
+    1793308221.151 [perf] fps=46 min=38 draw=188 tex=303.8
+    1793308223.149 [perf] fps=46 min=37 draw=188 tex=303.8
+    1793308225.162 [perf] fps=47 min=34 draw=188 tex=303.8
+    1793308227.176 [perf] fps=48 min=31 draw=214 tex=304.0
+    1793308229.172 [perf] fps=47 min=32 draw=214 tex=304.0
+    1793308231.187 [perf] fps=47 min=32 draw=177 tex=304.0
+    1793308233.201 [perf] fps=46 min=34 draw=167 tex=304.0
+    1793308235.216 [perf] fps=46 min=25 draw=162 tex=304.0
+    1793308237.229 [perf] fps=47 min=28 draw=164 tex=304.0
+    1793308239.244 [perf] fps=47 min=32 draw=164 tex=304.0
+    1793308241.242 [perf] fps=47 min=30 draw=164 tex=304.0

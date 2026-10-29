@@ -109,6 +109,25 @@ Cramois'Île (Auguste), Jadielle finale (Giovanni), Route Victoire, Ligue.
 Conseil 4, Rival Maître, générique, retour à Bourg Palette, monde post-Ligue (Champions améliorés),
 Grotte Azurée / Mewtwo, puis le mystère Mew.
 
+### Phase 10 — Chapitre Johto (idée de Kevin, 2026-10-30, **à concevoir**, rien n'est verrouillé)
+Une suite après la Ligue, pour continuer l'histoire du joueur. Ce qui est décidé :
+- **Johto** comme destination (plutôt que Kalos ou une autre région).
+- **Même partie** : le joueur garde son équipe, ses Pokémon et sa sauvegarde.
+- **Nouvelles espèces** ajoutées selon les besoins de l'histoire, pas la liste complète d'Or/Argent.
+- **Histoire plus courte** que Kanto : **pas 8 badges**, un autre objectif à trouver.
+
+À concevoir avec Kevin (dossier dédié, après la fin de Kanto) :
+- le fil rouge et l'objectif final, et ce qui remplace les 8 badges ;
+- comment le joueur arrive à Johto, et ce qui change à Kanto ;
+- la liste des espèces ajoutées (art, Pokédex, dos de combat) ;
+- les types Ténèbres et Acier : ajoutés ou non, et leur effet sur l'équilibrage de Kanto ;
+- le niveau des adversaires face à une équipe de fin de Ligue ;
+- le rôle du jour et de la nuit.
+
+Pistes de structure proposées par Claude (non validées) : une menace unique (la Team Rocket
+reformée à Johto, comme dans Or/Argent) menée sur quelques villes et une tour ; une quête de
+légendaires (Tour Cendrée, Tour Carillon, Ho-Oh, Lugia) ; une épreuve finale au Mont Argenté.
+
 ## Jalons narratifs à ne pas oublier
 
 ### Team Rocket (décision de Kevin, 2026-10-06)

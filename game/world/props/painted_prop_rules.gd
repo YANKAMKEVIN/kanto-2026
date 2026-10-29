@@ -789,6 +789,14 @@ const RULES: Dictionary[StringName, Dictionary] = {
 		"open": [Vector2i(0, 0)]},
 	&"bldg_ligue_01": {"shadow": true, "width": 8, "depth": 6, "fade": true,
 		"open": [Vector2i(-1, 0), Vector2i(0, 0)]},
+	# Façades de Cramois'Île (lot DAF.9, `tools/build_daf9_ile.gd`) : 9 × 6, emprise = cases du
+	# bâtiment de la grille (`cinnabar_island.txt`), portes doubles libres.
+	&"bldg_manoir_ruine_01": {"shadow": true, "width": 9, "depth": 6, "fade": true,
+		"open": [Vector2i(-1, 0), Vector2i(0, 0)]},
+	&"bldg_arene_cramois_01": {"shadow": true, "width": 9, "depth": 6, "fade": true,
+		"open": [Vector2i(0, 0), Vector2i(1, 0)]},
+	&"bldg_labo_cramois_01": {"shadow": true, "width": 9, "depth": 6, "fade": true,
+		"open": [Vector2i(-1, 0), Vector2i(0, 0)]},
 }
 
 

@@ -66,6 +66,7 @@ Grille de contrôle : sols, bâtiments, personnages, Pokémon, eau, donjons, com
 batterie et température écrit (appareil branché ou non, luminosité fixée). Profils séparés :
 extérieur, ville, grand donjon, combat, stockage. Optimisations seulement après mesure, sans
 sacrifier la qualité peinte.
+**État (2026-10-29)** : `tools/profile_s24.sh` écrit et rodé ; mesures faites sur l'**A17** (S24 indisponible, Kevin a demandé l'A17) : `jalon-33-profilage.md`. Mesures A17 **validées par Kevin le 2026-10-29** comme référence ; pas de passage S24 pour le moment.
 
 ### T4 — Copie de secours de la sauvegarde (33D, Opus — validé seul)
 Avant chaque remplacement du fichier, la dernière sauvegarde valide est conservée (`save.json.bak`

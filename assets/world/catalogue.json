@@ -9596,6 +9596,99 @@
      46
     ]
    }
+  },
+  "bldg_manoir_ruine_01": {
+   "fichier": "res://assets/world/buildings/bldg_manoir_ruine_01.png",
+   "taille": [
+    864,
+    600
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_manoir_ruine_01_shadow.png",
+    "decalage": [
+     -457,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     513,
+     60
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_manoir_ruine_01_contact.png",
+    "decalage": [
+     -440,
+     -54
+    ],
+    "echelle": 2,
+    "taille": [
+     440,
+     46
+    ]
+   }
+  },
+  "bldg_arene_cramois_01": {
+   "fichier": "res://assets/world/buildings/bldg_arene_cramois_01.png",
+   "taille": [
+    864,
+    600
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_arene_cramois_01_shadow.png",
+    "decalage": [
+     -457,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     513,
+     60
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_arene_cramois_01_contact.png",
+    "decalage": [
+     -440,
+     -54
+    ],
+    "echelle": 2,
+    "taille": [
+     440,
+     46
+    ]
+   }
+  },
+  "bldg_labo_cramois_01": {
+   "fichier": "res://assets/world/buildings/bldg_labo_cramois_01.png",
+   "taille": [
+    864,
+    600
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_labo_cramois_01_shadow.png",
+    "decalage": [
+     -457,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     513,
+     60
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_labo_cramois_01_contact.png",
+    "decalage": [
+     -440,
+     -54
+    ],
+    "echelle": 2,
+    "taille": [
+     440,
+     46
+    ]
+   }
   }
  },
  "personnages": {
@@ -13367,6 +13460,27 @@
   },
   "ground_azuree_haut_01": {
    "fichier": "res://assets/world/ground/ground_azuree_haut_01.png",
+   "taille": [
+    384,
+    384
+   ]
+  },
+  "ground_volcanique_01": {
+   "fichier": "res://assets/world/ground/ground_volcanique_01.png",
+   "taille": [
+    384,
+    384
+   ]
+  },
+  "ground_sable_noir_01": {
+   "fichier": "res://assets/world/ground/ground_sable_noir_01.png",
+   "taille": [
+    384,
+    384
+   ]
+  },
+  "ground_roche_volcanique_01": {
+   "fichier": "res://assets/world/ground/ground_roche_volcanique_01.png",
    "taille": [
     384,
     384
