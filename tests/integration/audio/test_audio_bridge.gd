@@ -359,6 +359,22 @@ func test_move_fx_miss_has_no_hit_sound_and_critical_on_first_hit() -> void:
 	assert_eq(_sfx_ids(), [&"critical", &"hit_normal"], "coups multiples : critique au premier")
 
 
+## Combat vivant (§4.2) : un coup qui retire plus de HP_BIG_HIT des PV max sonne `hit_heavy` (au
+## repère impact comme dans le journal) ; le critique l'emporte.
+func test_big_hit_sounds_heavy() -> void:
+	var hit := _event(BattleEvent.Kind.DAMAGE)
+	hit.amount = 30
+	hit.max_hp = 40
+	_bridge.on_battle_event(hit)
+	var big := MoveFxOutcome.new()
+	big.result = MoveFxOutcome.Result.HIT
+	big.max_hit_fraction = UiTokens.HP_BIG_HIT + 0.1
+	_bridge.on_move_fx_cue(MoveFxPlan.CUE_IMPACT, _fx_plan(&"tackle", big))
+	big.critical = true
+	_bridge.on_move_fx_cue(MoveFxPlan.CUE_IMPACT, _fx_plan(&"tackle", big))
+	assert_eq(_sfx_ids(), [&"hit_heavy", &"hit_heavy", &"critical"])
+
+
 func test_steps_by_ground_ledge_and_mounts() -> void:
 	_bridge.on_player_step(Vector2i.ZERO, Vector2i(3, 0), &"walk")
 	_bridge.on_player_step(Vector2i.ZERO, Vector2i(-3, 0), &"run")

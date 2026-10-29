@@ -133,9 +133,10 @@ func set_level(side: BattleHud.Side, level: int) -> void:
 	get_card(side).set_level(level)
 
 
-## Coup reçu par [param side] : vibration HAPTIC_HIT_MS, HAPTIC_CRIT_MS si [param critical].
-func play_hit(side: BattleHud.Side, critical: bool) -> void:
-	get_card(side).play_hit(critical)
+## Coup reçu par [param side] : vibration HAPTIC_HIT_MS, HAPTIC_BIG_HIT_MS si [param big] (gros
+## coup), HAPTIC_CRIT_MS si [param critical].
+func play_hit(side: BattleHud.Side, critical: bool, big: bool = false) -> void:
+	get_card(side).play_hit(critical, big)
 
 
 ## Dégât de poison reçu par [param side] : vibration douce HAPTIC_STATUS_MS (le voile et la

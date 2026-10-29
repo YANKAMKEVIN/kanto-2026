@@ -1,0 +1,4 @@
+{
+	"party": [ { "species": "pikachu", "level": 5 } ],
+	"fx_gallery": { "moves": ["tackle", "scratch", "bite", "ember", "water_gun", "thunder_shock", "vine_whip", "ice_beam", "confusion", "poison_sting", "rock_throw", "gust", "lick", "dragon_rage", "hyper_beam", "growl", "supersonic", "harden", "recover", "leer", "absorb", "wrap", "fire_spin", "double_edge", "double_kick", "explosion"], "mode": "full" }
+}

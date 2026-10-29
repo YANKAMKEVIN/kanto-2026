@@ -123,9 +123,13 @@ func animate_hp(hp: int, max_hp: int, big: bool = false) -> void:
 	await _bar.animate_hp(hp, max_hp, big)
 
 
-## Retour haptique d'un coup reçu : HAPTIC_HIT_MS, ou HAPTIC_CRIT_MS si [param critical].
-func play_hit(critical: bool = false) -> void:
-	_haptic(UiTokens.HAPTIC_CRIT_MS if critical else UiTokens.HAPTIC_HIT_MS)
+## Retour haptique d'un coup reçu : HAPTIC_HIT_MS, HAPTIC_BIG_HIT_MS si [param big] (gros coup),
+## HAPTIC_CRIT_MS si [param critical].
+func play_hit(critical: bool = false, big: bool = false) -> void:
+	if critical:
+		_haptic(UiTokens.HAPTIC_CRIT_MS)
+	else:
+		_haptic(UiTokens.HAPTIC_BIG_HIT_MS if big else UiTokens.HAPTIC_HIT_MS)
 
 
 ## Retour haptique du dégât de poison : HAPTIC_STATUS_MS, plus doux qu'un coup.

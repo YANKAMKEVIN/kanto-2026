@@ -1,6 +1,6 @@
 {
 	"version": 1,
-	"_doc": "Familles d'effets de combat (docs/tech/combat-vivant.md §2.2, §2.6, §3). Les attaques sont dans les autres fichiers du dossier (plancher.json, puis un fichier par lot). Valeurs [D] (règle 4), réglées sur S24. phases : parts de la durée (anticipation, trajet, impact, retour ; somme 1) ; world.light_peak : lumière simulée du décor (0..1) ; world.flashes : éclats de lumière par attaque ; camera : zoom et tremblement (px) au plafond de limits ; fx.palette : dégradé des effets (cœur presque blanc, couleur de l'élément, bord sombre, §2.9) ; fx.particles : particules d'un éclat d'impact (avant le facteur des Réduites ; ≤ 64, un émetteur) ; fx.art : art peint de la famille (identifiants de assets/sprites/battle_fx/manifeste_vague1.json : charge, travel, bolt, impact, particle, rise, fallout, dust), complété par impacts.*.art (Contact) et signatures.*.art ; sans art, formes dessinées en code (échafaudage de CV.0).",
+	"_doc": "Familles d'effets de combat (docs/tech/combat-vivant.md §2.2, §2.6, §3). Les attaques sont dans les autres fichiers du dossier (plancher.json, puis un fichier par lot). Valeurs [D] (règle 4), réglées sur S24. phases : parts de la durée (anticipation, trajet, impact, retour ; somme 1) ; world.light_peak : lumière simulée du décor (0..1) ; world.flashes : éclats de lumière par attaque ; camera : zoom et tremblement (px) au plafond de limits ; fx.palette : dégradé des effets (cœur presque blanc, couleur de l'élément, bord sombre, §2.9) ; fx.particles : particules d'un éclat d'impact (avant le facteur des Réduites ; ≤ 64, un émetteur) ; fx.art : art peint de la famille (identifiants des manifestes de assets/sprites/battle_fx/ : charge, travel, bolt, impact, particle, rise, fallout, dust), complété par impacts.*.art (Contact), modifiers.*.art (stream, trap, self_burst : rôles absents de la famille seulement) et signatures.*.art ; fx.tint : teinte des flipbooks de la famille (blanc par défaut) ; sans art, formes dessinées en code (échafaudage de CV.0).",
 	"durations": {
 		"_doc": "CV-2 (décision de Kevin du 2026-10-26) : durée en Complètes selon la puissance ; la durée suit la puissance dans la ligne (power_min → min, power_max → max). Coups multiples : chaque coup prend la première ligne. Ligne 3 aussi pour K.O. en un coup, Explosion / Destruction et les légendaires.",
 		"bands": [
@@ -56,7 +56,7 @@
 			"phases": {"anticipation": 0.2, "travel": 0.35, "impact": 0.3, "return": 0.15},
 			"world": {"light": "#7FC8FF", "light_peak": 0.15, "flashes": 0, "droplets": true},
 			"camera": {"zoom": 1.02, "shake": 2.0},
-			"fx": {"palette": ["#F0FAFF", "#5FB8F0", "#1E4E8A"], "particles": 32}
+			"fx": {"palette": ["#F0FAFF", "#5FB8F0", "#1E4E8A"], "particles": 32, "art": {"charge": "bulle", "bolt": "jet_eau", "impact": "eclaboussure", "particle": "goutte", "rise": "bulle", "fallout": "gouttelettes"}}
 		},
 		"electrique": {
 			"name": "Électrique", "target": "foe",
@@ -72,7 +72,7 @@
 			"phases": {"anticipation": 0.2, "travel": 0.35, "impact": 0.3, "return": 0.15},
 			"world": {"light": "#B8F28A", "light_peak": 0.1, "flashes": 0, "foliage": true},
 			"camera": {"zoom": 1.02, "shake": 1.0},
-			"fx": {"palette": ["#F4FFD8", "#7CCB4A", "#2E5A1A"], "particles": 24}
+			"fx": {"palette": ["#F4FFD8", "#7CCB4A", "#2E5A1A"], "particles": 24, "art": {"charge": "feuille", "travel": "rafale_feuilles", "impact": "nuage_spores", "particle": "feuille", "fallout": "petale"}}
 		},
 		"glace": {
 			"name": "Glace", "target": "foe",
@@ -80,7 +80,7 @@
 			"phases": {"anticipation": 0.2, "travel": 0.35, "impact": 0.3, "return": 0.15},
 			"world": {"light": "#CFEFFF", "light_peak": 0.3, "flashes": 1},
 			"camera": {"zoom": 1.02, "shake": 2.0},
-			"fx": {"palette": ["#FFFFFF", "#A8E4FF", "#3A7AA8"], "particles": 28}
+			"fx": {"palette": ["#FFFFFF", "#A8E4FF", "#3A7AA8"], "particles": 28, "art": {"charge": "flocon", "particle": "eclat_glace", "rise": "flocon"}}
 		},
 		"psy": {
 			"name": "Psy", "target": "foe",
@@ -88,7 +88,7 @@
 			"phases": {"anticipation": 0.25, "travel": 0.3, "impact": 0.3, "return": 0.15},
 			"world": {"light": "#FF9AD8", "light_peak": 0.2, "flashes": 0},
 			"camera": {"zoom": 1.03, "shake": 0.0},
-			"fx": {"palette": ["#FFF0FA", "#FF6FB8", "#6A1E5A"], "particles": 20}
+			"fx": {"palette": ["#FFF0FA", "#FF6FB8", "#6A1E5A"], "particles": 20, "art": {"charge": "oeil_psy", "travel": "anneau_psy", "impact": "onde_psy", "particle": "anneau_psy"}}
 		},
 		"poison": {
 			"name": "Poison", "target": "foe",
@@ -96,7 +96,7 @@
 			"phases": {"anticipation": 0.2, "travel": 0.35, "impact": 0.3, "return": 0.15},
 			"world": {"light": "#B86BFF", "light_peak": 0.1, "flashes": 0},
 			"camera": {"zoom": 1.02, "shake": 1.0},
-			"fx": {"palette": ["#F4E0FF", "#A85AE0", "#3A1250"], "particles": 26}
+			"fx": {"palette": ["#F4E0FF", "#A85AE0", "#3A1250"], "particles": 26, "art": {"charge": "bulle_poison", "travel": "giclee_poison", "impact": "nuage_poison", "particle": "goutte_poison", "rise": "bulle_poison", "fallout": "vapeur_poison"}}
 		},
 		"sol_roche": {
 			"name": "Sol et roche", "target": "foe",
@@ -104,7 +104,7 @@
 			"phases": {"anticipation": 0.25, "travel": 0.3, "impact": 0.3, "return": 0.15},
 			"world": {"light": "#D8B98A", "light_peak": 0.0, "flashes": 0, "dust": true, "foliage": true},
 			"camera": {"zoom": 1.03, "shake": 5.0},
-			"fx": {"palette": ["#F2E2C4", "#B08A5A", "#4A3420"], "particles": 30}
+			"fx": {"palette": ["#F2E2C4", "#B08A5A", "#4A3420"], "particles": 30, "art": {"charge": "grain_sable", "travel": "caillou", "impact": "poussiere_eboulis", "particle": "eclats_pierre", "fallout": "poussiere", "dust": "poussiere"}}
 		},
 		"vent": {
 			"name": "Vol et vent", "target": "foe",
@@ -112,7 +112,7 @@
 			"phases": {"anticipation": 0.2, "travel": 0.35, "impact": 0.3, "return": 0.15},
 			"world": {"light": "#FFFFFF", "light_peak": 0.0, "flashes": 0, "foliage": true},
 			"camera": {"zoom": 1.02, "shake": 2.0},
-			"fx": {"palette": ["#FFFFFF", "#DCEBF2", "#7A8A96"], "particles": 22}
+			"fx": {"palette": ["#FFFFFF", "#DCEBF2", "#7A8A96"], "particles": 22, "art": {"charge": "plume", "travel": "tourbillon_vent", "particle": "plume", "fallout": "plume"}}
 		},
 		"spectre": {
 			"name": "Spectre", "target": "foe",
@@ -120,7 +120,7 @@
 			"phases": {"anticipation": 0.3, "travel": 0.3, "impact": 0.25, "return": 0.15},
 			"world": {"light": "#3A2350", "light_peak": 0.25, "flashes": 0, "darken": true},
 			"camera": {"zoom": 1.03, "shake": 0.0},
-			"fx": {"palette": ["#E6D8FF", "#6A4A9A", "#1A0E2A"], "particles": 22}
+			"fx": {"palette": ["#E6D8FF", "#6A4A9A", "#1A0E2A"], "particles": 22, "art": {"charge": "orbe_ombre", "travel": "orbe_ombre", "impact": "fumee_volutes", "particle": "orbe_ombre", "fallout": "fumee"}, "tint": "#9A7AC8"}
 		},
 		"dragon": {
 			"name": "Dragon", "target": "foe",
@@ -128,7 +128,7 @@
 			"phases": {"anticipation": 0.25, "travel": 0.3, "impact": 0.3, "return": 0.15},
 			"world": {"light": "#5A7BFF", "light_peak": 0.35, "flashes": 1},
 			"camera": {"zoom": 1.04, "shake": 3.0},
-			"fx": {"palette": ["#E8F0FF", "#5A7BFF", "#1A1E6A"], "particles": 30}
+			"fx": {"palette": ["#E8F0FF", "#5A7BFF", "#1A1E6A"], "particles": 30, "art": {"charge": "etincelle_bleue", "travel": "aura_montante", "particle": "etincelle_bleue", "rise": "etincelle_bleue"}}
 		},
 		"energie": {
 			"name": "Énergie", "target": "foe",
@@ -136,7 +136,7 @@
 			"phases": {"anticipation": 0.25, "travel": 0.3, "impact": 0.3, "return": 0.15},
 			"world": {"light": "#FFFFFF", "light_peak": 0.4, "flashes": 1},
 			"camera": {"zoom": 1.04, "shake": 3.0},
-			"fx": {"palette": ["#FFFFFF", "#FFF4D8", "#C8A85A"], "particles": 32}
+			"fx": {"palette": ["#FFFFFF", "#FFF4D8", "#C8A85A"], "particles": 32, "art": {"charge": "lueur_douce", "impact": "onde_choc", "particle": "etoile", "rise": "lueur_douce"}}
 		},
 		"son": {
 			"name": "Son", "target": "foe",
@@ -144,7 +144,7 @@
 			"phases": {"anticipation": 0.2, "travel": 0.4, "impact": 0.25, "return": 0.15},
 			"world": {"light": "#FFFFFF", "light_peak": 0.0, "flashes": 0},
 			"camera": {"zoom": 1.0, "shake": 1.0},
-			"fx": {"palette": ["#FFFFFF", "#E8E8F8", "#8A8AA8"], "particles": 12}
+			"fx": {"palette": ["#FFFFFF", "#E8E8F8", "#8A8AA8"], "particles": 12, "art": {"charge": "note_son", "travel": "onde_sonore", "particle": "note_musique"}}
 		},
 		"statut_plus": {
 			"name": "Statut positif", "target": "self",
@@ -152,7 +152,7 @@
 			"phases": {"anticipation": 0.3, "travel": 0.0, "impact": 0.5, "return": 0.2},
 			"world": {"light": "#FFE8A0", "light_peak": 0.0, "flashes": 0},
 			"camera": {"zoom": 1.0, "shake": 0.0},
-			"fx": {"palette": ["#FFFFF0", "#FFE8A0", "#A8862A"], "particles": 16}
+			"fx": {"palette": ["#FFFFF0", "#FFE8A0", "#A8862A"], "particles": 16, "art": {"charge": "lueur_douce", "impact": "aura_montante", "particle": "fleche_haut"}}
 		},
 		"statut_moins": {
 			"name": "Statut négatif", "target": "foe",
@@ -160,7 +160,7 @@
 			"phases": {"anticipation": 0.25, "travel": 0.3, "impact": 0.3, "return": 0.15},
 			"world": {"light": "#A0A0C8", "light_peak": 0.0, "flashes": 0},
 			"camera": {"zoom": 1.0, "shake": 0.0},
-			"fx": {"palette": ["#F4F4FF", "#A0A0C8", "#4A4A6A"], "particles": 16}
+			"fx": {"palette": ["#F4F4FF", "#A0A0C8", "#4A4A6A"], "particles": 16, "art": {"charge": "oeil_menacant", "travel": "lueur_douce", "particle": "fleche_bas", "fallout": "fumee"}, "tint": "#B8B8E8"}
 		},
 		"soin": {
 			"name": "Soin", "target": "self",
@@ -168,26 +168,26 @@
 			"phases": {"anticipation": 0.3, "travel": 0.0, "impact": 0.5, "return": 0.2},
 			"world": {"light": "#A8FFB0", "light_peak": 0.15, "flashes": 0},
 			"camera": {"zoom": 1.0, "shake": 0.0},
-			"fx": {"palette": ["#F4FFF4", "#A8FFB0", "#3A8A4A"], "particles": 20}
+			"fx": {"palette": ["#F4FFF4", "#A8FFB0", "#3A8A4A"], "particles": 20, "art": {"charge": "lueur_douce", "impact": "lumiere_soin", "particle": "brillant_soin"}}
 		}
 	},
 	"impacts": {
 		"_doc": "Variantes d'impact de la famille Contact (§3.2).",
 		"coup": {"name": "Coup", "brick": "impact_star", "art": "etoile_impact"},
-		"griffe": {"name": "Griffe", "brick": "claw_slashes", "art": "griffes"},
+		"griffe": {"name": "Griffe", "brick": "claw_slashes", "art": "entailles_griffes"},
 		"crocs": {"name": "Crocs", "brick": "jaws", "art": "machoires"},
 		"percant": {"name": "Perçant", "brick": "pierce_flash", "art": "aiguille"},
-		"corps": {"name": "Corps", "brick": "shockwave", "art": "lueur_douce"}
+		"corps": {"name": "Corps", "brick": "shockwave", "art": "onde_choc"}
 	},
 	"modifiers": {
 		"_doc": "Morceaux communs ajoutés à la famille (§3.2). band_max : l'attaque prend la dernière ligne de durée de CV-2.",
-		"drain": {"name": "Drain", "brick": "drain_stream"},
+		"drain": {"name": "Drain", "brick": "drain_stream", "art": {"stream": "brillant_soin"}},
 		"multi": {"name": "Coups multiples", "brick": "repeat_impact"},
 		"charge": {"name": "Charge", "brick": "charge_glow"},
 		"contrecoup": {"name": "Contrecoup", "brick": "recoil"},
-		"auto_ko": {"name": "Auto-K.O.", "brick": "self_faint", "band_max": true},
+		"auto_ko": {"name": "Auto-K.O.", "brick": "self_faint", "band_max": true, "art": {"self_burst": "onde_choc"}},
 		"ko_un_coup": {"name": "K.O. en un coup", "brick": "heavy_impact", "band_max": true},
-		"piege": {"name": "Piège", "brick": "trap_ring"},
+		"piege": {"name": "Piège", "brick": "trap_ring", "art": {"trap": "liane"}},
 		"recharge": {"name": "Recharge", "brick": "panting"},
 		"chute": {"name": "Chute", "brick": "crash"}
 	},

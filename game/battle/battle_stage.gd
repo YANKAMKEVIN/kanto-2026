@@ -133,10 +133,19 @@ const REDUCED_FADE: float = 0.15
 ## Capture (jalon 5D, jalon-05.md §3.10, storyboard combat-capture-v1) : le dresseur de dos
 ## entre en bas à gauche, la Ball part de sa main en arc, le Pokémon sauvage est absorbé dans un
 ## éclat rouge, la Ball tombe dans l'herbe (ombre au sol), tremble 0 à 3 fois, puis éclat doré
-## (capturé) ou éclat blanc (libéré : le Pokémon ressort). Ball provisoire (pixel art, NEAREST) ;
+## (capturé) ou éclat blanc (libéré : le Pokémon ressort). Ball peinte (Combat vivant, CV-11 :
+## l'icône peinte du Sac, LINEAR) ;
 ## dresseur = le héros **peint** de dos (pose de lancer, `heros_lancer.png`, 384 px affichés à
 ## 1:1, LINEAR ; correctif QA S24). Tout en Tween ; durées (s) à speed_scale = 1.
-const BALL_TEXTURE: Texture2D = preload("res://assets/sprites/pokemon/placeholder/poke_ball.png")
+const BALL_TEXTURE: Texture2D = preload("res://assets/ui/items/poke_ball.webp")
+## Les échelles de la Ball restent en multiples de l'ancienne Ball de 32 px : l'image peinte en
+## fait 256.
+const BALL_ART: float = 32.0 / 256.0
+## Capture « presque sacrée » (CV-11) [D] : pendant les secousses, la caméra s'approche un peu de la
+## Ball et le décor s'assombrit ; tout revient à l'éclat final (ou à la libération). Les durées de
+## la capture ne changent pas : l'approche se fait pendant la chute de la Ball.
+const CAPTURE_ZOOM: float = 1.05
+const CAPTURE_DIM: float = 0.5
 const THROWER_TEXTURE: Texture2D = preload(
 	"res://assets/sprites/characters/painted/heros_lancer.png")
 const SHADOW_TEXTURE: Texture2D = preload(
@@ -168,6 +177,11 @@ const ABSORB_DURATION: float = 0.45
 const ABSORB_SHRINK: float = 0.15
 const ABSORB_TINT := Color(3.0, 0.7, 0.6, 1.0)
 const BALL_DROP_DURATION: float = 0.55
+## Halètement après Ultralaser (Combat vivant, `recharge`) [D] : souffles, durée d'un souffle,
+## écrasement.
+const PANT_BREATHS: int = 2
+const PANT_BREATH: float = 0.5
+const PANT_SQUASH: float = 0.035
 const BALL_DROP_HEIGHT: float = 40.0
 ## Secousse : durée, angle (degrés), traits de mouvement (distance au bord de la Ball, px).
 const SHAKE_DURATION: float = 0.6
@@ -277,6 +291,10 @@ var _reveal_overlay: Sprite2D
 var _fx: MoveFxPlayer
 var _fx_light: Node2D
 var _fx_target: BattleEvent.SideId = BattleEvent.SideId.FOE
+## Coups de la chorégraphie en cours dont la barre de PV a déjà commencé à descendre.
+var _fx_hits: int = 0
+## Recueillement de la capture en cours (CV-11 ; 0 : aucun).
+var _capture_hush: float = 0.0
 static var _fx_anchors: FxAnchors
 ## Espèces (types de la cible pour les chorégraphies) ; null : pas de types.
 var _fx_pokemon: PokemonData
@@ -711,6 +729,7 @@ func play_move_fx(side: BattleEvent.SideId, plan: MoveFxPlan) -> void:
 	if not _active or plan == null:
 		return
 	_fx_target = side if plan.on_self else _other(side)
+	_fx_hits = 0
 	# Les durées du plan suivent déjà le mode (Rapides, Réduites) : pas de second facteur.
 	_fx.speed_scale = 0.0 if speed_scale <= 0.0 else 1.0
 	var impact := plan.cue_time(MoveFxPlan.CUE_IMPACT)
@@ -730,6 +749,18 @@ func play_move_fx(side: BattleEvent.SideId, plan: MoveFxPlan) -> void:
 func finish_move_fx() -> void:
 	if _fx != null and _fx.is_playing():
 		await _fx.finished
+
+
+## Coroutine : attend l'impact du coup suivant de la chorégraphie en cours (`impact`, `impact_2`…),
+## pour que la barre de PV de chaque coup d'une attaque à coups multiples descende à son impact
+## (le premier est déjà là : le temps MOVE s'arrête sur lui).
+func wait_move_fx_impact() -> void:
+	if _fx == null or not _fx.is_playing():
+		return
+	var at := _fx.get_plan().cue_time(MoveFxPlan.impact_cue(_fx_hits))
+	_fx_hits += 1
+	while _fx.is_playing() and _fx.elapsed() < at:
+		await get_tree().process_frame
 
 
 ## Une chorégraphie en cours porte le coup reçu par [param side] (tremblement et éclat de la
@@ -851,6 +882,23 @@ func play_stat(side: BattleEvent.SideId, rising: bool) -> void:
 		tween.parallel().tween_property(sprite, ^"position", base + nudge, STAT_PULSE)
 		tween.tween_property(sprite, ^"modulate", Color.WHITE, STAT_PULSE)
 		tween.parallel().tween_property(sprite, ^"position", base, STAT_PULSE)
+	await _play(tween)
+	_rest(side)
+
+
+## Coroutine (Combat vivant, modificateur `recharge`) : le lanceur d'un Ultralaser halète au tour
+## où il se repose : deux souffles lourds (écrasé, puis élargi), pieds fixes.
+func play_panting(side: BattleEvent.SideId) -> void:
+	if not _active or not _sprites[side].visible:
+		return
+	var sprite := _sprites[side]
+	var rest := Vector2.ONE * _anchor_scale(side)
+	var tween := _new_tween()
+	tween.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	for i: int in PANT_BREATHS:
+		tween.tween_property(sprite, ^"scale", rest * Vector2(1.0 + PANT_SQUASH, 1.0 - PANT_SQUASH),
+			PANT_BREATH * 0.5)
+		tween.tween_property(sprite, ^"scale", rest, PANT_BREATH * 0.5)
 	await _play(tween)
 	_rest(side)
 
@@ -1002,7 +1050,7 @@ func play_throw() -> void:
 	_ball.modulate = Color.WHITE
 	_ball.rotation = 0.0
 	_ball.position = hand
-	_ball.scale = Vector2.ONE * BALL_FLIGHT_SCALE * 1.4
+	_ball.scale = Vector2.ONE * BALL_FLIGHT_SCALE * 1.4 * BALL_ART
 	var flight := _new_tween()
 	flight.set_parallel(true)
 	flight.tween_method(_set_ball_flight.bind(hand, target, view.y * THROW_ARC),
@@ -1035,7 +1083,10 @@ func play_throw() -> void:
 	drop.set_parallel(true)
 	drop.tween_property(_ball, ^"position", _ball_rest, BALL_DROP_DURATION) \
 		.set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
-	drop.tween_property(_ball, ^"scale", Vector2.ONE * BALL_REST_SCALE, BALL_DROP_DURATION)
+	drop.tween_property(_ball, ^"scale", Vector2.ONE * BALL_REST_SCALE * BALL_ART,
+		BALL_DROP_DURATION)
+	_fx_light_decor()
+	drop.tween_method(_set_capture_hush, 0.0, 1.0, BALL_DROP_DURATION)
 	drop.tween_property(_ball, ^"rotation", 0.0, BALL_DROP_DURATION)
 	drop.tween_property(_ball_shadow, ^"modulate:a", 1.0, BALL_DROP_DURATION * 0.5)
 	await _play(drop)
@@ -1088,6 +1139,7 @@ func play_catch_burst() -> void:
 		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN).set_delay(0.14)
 	tween.tween_method(_set_burst.bind(origin, BURST_GOLD), 0.0, 1.0, BURST_DURATION)
 	tween.tween_property(_flash, ^"color:a", 0.0, BURST_DURATION)
+	tween.tween_method(_set_capture_hush, _capture_hush, 0.0, BURST_DURATION)
 	await _play(tween)
 	_glow.visible = false
 	for spark: Sprite2D in _sparks:
@@ -1113,6 +1165,7 @@ func play_break_free() -> void:
 	tween.set_parallel(true)
 	tween.tween_method(_set_release, 0.0, 1.0, RELEASE_DURATION)
 	tween.tween_method(_set_burst.bind(_ball_rest, BURST_WHITE), 0.0, 1.0, BURST_DURATION * 0.7)
+	tween.tween_method(_set_capture_hush, _capture_hush, 0.0, BURST_DURATION * 0.7)
 	await _play(tween)
 	_glow.visible = false
 	for spark: Sprite2D in _sparks:
@@ -1589,6 +1642,7 @@ func _build_capture_props() -> void:
 		return
 	_ball_shadow = _make_prop(SHADOW_TEXTURE)
 	_ball = _make_prop(BALL_TEXTURE)
+	_ball.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	_thrower = _make_prop(THROWER_TEXTURE)
 	_thrower.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	_thrower.offset = Vector2(0.0, -THROWER_TEXTURE.get_height() / 2.0)
@@ -1673,6 +1727,8 @@ func _make_prop(texture: Texture2D) -> Sprite2D:
 
 ## Cache et remet à zéro les accessoires de la capture (fin du combat, abandon).
 func _hide_capture_props() -> void:
+	if _capture_hush > 0.0:
+		_set_capture_hush(0.0)
 	if _ball == null:
 		return
 	for sprite: Sprite2D in [_ball, _ball_shadow, _thrower, _glow] + _sparks:
@@ -1694,12 +1750,33 @@ func _fade_capture_props(duration: float) -> void:
 	_play(tween)
 
 
+## Calques du décor peint confiés à la lumière simulée (capture : assombrissement).
+func _fx_light_decor() -> void:
+	if _fx != null:
+		_fx.get_light().set_decor([_decor_back, _decor_front] as Array[Sprite2D])
+
+
+## Recueillement de la capture à [param k] (0 : cadrage normal ; 1 : caméra un peu plus près de la
+## Ball, décor assombri). « Réduire les animations » : la caméra ne bouge pas, seul le décor
+## s'assombrit.
+func _set_capture_hush(k: float) -> void:
+	_capture_hush = k
+	if _fx == null:
+		return
+	var zoom := 1.0 if reduce_motion else lerpf(1.0, CAPTURE_ZOOM, _ease(k))
+	_fx.camera.set_pose(zoom, _ball_rest)
+	_fx.get_light().set_darken(CAPTURE_DIM * k)
+	if k <= 0.0:
+		_fx.camera.reset()
+		_fx.get_light().restore()
+
+
 ## Vol de la Ball à [param t] (0 : main, 1 : cible) : arc de hauteur [param arc] px, tours sur
 ## elle-même, elle rapetisse en s'éloignant.
 func _set_ball_flight(t: float, from: Vector2, to: Vector2, arc: float) -> void:
 	_ball.position = from.lerp(to, t) + Vector2(0.0, -arc * 4.0 * t * (1.0 - t))
 	_ball.rotation = t * TAU * THROW_SPINS
-	_ball.scale = Vector2.ONE * lerpf(BALL_FLIGHT_SCALE * 1.4, BALL_FLIGHT_SCALE, t)
+	_ball.scale = Vector2.ONE * lerpf(BALL_FLIGHT_SCALE * 1.4, BALL_FLIGHT_SCALE, t) * BALL_ART
 
 
 ## Impact à [param t] (0 → 1) : le Pokémon sauvage est absorbé dans l'éclat rouge, la Ball tourne.

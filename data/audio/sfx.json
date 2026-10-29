@@ -569,6 +569,15 @@
 			"max_polyphony": 1,
 			"expected": false
 		},
+		"hit_heavy": {
+			"files": [
+				"res://assets/audio/sfx/hit_heavy.ogg"
+			],
+			"bus": "Sfx",
+			"volume_db": 0.0,
+			"max_polyphony": 1,
+			"expected": false
+		},
 		"hit_weak": {
 			"files": [
 				"res://assets/audio/sfx/hit_weak.ogg"

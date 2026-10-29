@@ -453,7 +453,8 @@ func _wild() -> void:
 
 
 ## Après le lancer : le dresseur est reparti, le Pokémon sauvage est absorbé (sprite et ombre
-## cachés) et la Ball est posée aux pieds de l'adversaire, nette (NEAREST), à sa taille de repos.
+## cachés) et la Ball peinte (CV-11, LINEAR) est posée aux pieds de l'adversaire, à sa taille de
+## repos ; la caméra s'est approchée d'elle et le décor s'est assombri.
 func test_throw_absorbs_the_foe_and_leaves_the_ball_on_the_ground() -> void:
 	await _wild()
 	await _stage.play_throw()
@@ -463,8 +464,12 @@ func test_throw_absorbs_the_foe_and_leaves_the_ball_on_the_ground() -> void:
 	var ball := _stage.get_ball()
 	assert_not_null(ball)
 	assert_true(ball.visible, "la Ball est au sol")
-	assert_eq(ball.texture_filter, CanvasItem.TEXTURE_FILTER_NEAREST, "pixel art net")
-	assert_eq(ball.scale, Vector2.ONE * BattleStage.BALL_REST_SCALE)
+	assert_eq(ball.texture_filter, CanvasItem.TEXTURE_FILTER_LINEAR, "Ball peinte")
+	assert_eq(ball.scale, Vector2.ONE * BattleStage.BALL_REST_SCALE * BattleStage.BALL_ART)
+	assert_almost_eq(ball.texture.get_width() * ball.scale.x,
+		32.0 * BattleStage.BALL_REST_SCALE, 0.5, "même taille à l'écran que l'ancienne Ball")
+	assert_almost_eq(_stage.scale.x, BattleStage.CAPTURE_ZOOM, 0.001, "la caméra s'approche")
+	assert_true(_stage.get_move_fx_player().get_light().is_lit(), "le décor s'assombrit")
 	var feet: Vector2 = a["foe_feet"]
 	assert_eq(ball.position.x, feet.x, "sous le sauvage")
 	assert_between(ball.position.y, feet.y - 200.0, feet.y, "posée sur le sol")
@@ -503,6 +508,9 @@ func test_catch_burst_leaves_the_ball_and_clears_the_effects() -> void:
 	await _stage.play_catch_burst()
 	assert_true(_stage.get_ball().visible, "la Ball reste jusqu'à la sortie")
 	assert_eq((_stage.get_node(^"%Flash") as ColorRect).color.a, 0.0, "voile doré retombé")
+	assert_eq(_stage.scale, Vector2.ONE, "caméra revenue à l'éclat")
+	assert_eq(_stage.offset, Vector2.ZERO)
+	assert_false(_stage.get_move_fx_player().get_light().is_lit(), "lumière rendue")
 	assert_false(_stage.get_sprite(FOE_SIDE).visible, "le sauvage ne revient pas")
 
 
@@ -519,6 +527,8 @@ func test_break_free_brings_the_foe_back_and_removes_the_ball() -> void:
 	assert_eq(foe.modulate, Color.WHITE)
 	assert_false(_stage.get_ball().visible, "la Ball s'est ouverte")
 	assert_false(_stage.is_capture_shown())
+	assert_eq(_stage.scale, Vector2.ONE, "caméra revenue")
+	assert_false(_stage.get_move_fx_player().get_light().is_lit(), "lumière rendue")
 
 
 func test_exit_after_a_capture_hides_the_ball_and_never_brings_the_foe_back() -> void:
@@ -531,6 +541,48 @@ func test_exit_after_a_capture_hides_the_ball_and_never_brings_the_foe_back() ->
 	assert_false(_stage.get_sprite(FOE_SIDE).visible)
 	assert_eq(_camera.zoom, Vector2.ONE, "caméra rendue")
 	assert_no_new_orphans()
+
+
+func test_reduced_motion_capture_dims_without_moving_the_camera() -> void:
+	_stage.reduce_motion = true
+	await _wild()
+	await _stage.play_throw()
+	assert_eq(_stage.scale, Vector2.ONE, "Réduire les animations : pas de caméra")
+	assert_true(_stage.get_move_fx_player().get_light().is_lit(), "le décor s'assombrit quand même")
+	await _stage.play_catch_burst()
+	assert_false(_stage.get_move_fx_player().get_light().is_lit())
+
+
+## Coups multiples : la barre de chaque coup attend l'impact de ce coup (`impact_2`…).
+func test_each_hit_of_a_multi_hit_waits_for_its_impact() -> void:
+	await _enter()
+	_stage.speed_scale = 1.0
+	var catalog := MoveFxCatalog.load_dir()
+	var data := PokemonData.new()
+	data.load_dir()
+	var outcome := MoveFxOutcome.new()
+	outcome.move_id = &"double_kick"
+	outcome.result = MoveFxOutcome.Result.HIT
+	outcome.hits = 2
+	var plan := MoveFxPlan.build(catalog, catalog.entry(&"double_kick"),
+		data.get_move(&"double_kick"), outcome, MoveFxPlan.Mode.FULL)
+	await _stage.play_move_fx(PLAYER_SIDE, plan)
+	var fx := _stage.get_move_fx_player()
+	await _stage.wait_move_fx_impact()
+	assert_lt(fx.elapsed(), plan.cue_time(MoveFxPlan.impact_cue(1)), "le 1er coup tout de suite")
+	await _stage.wait_move_fx_impact()
+	assert_gte(fx.elapsed(), plan.cue_time(MoveFxPlan.impact_cue(1)), "le 2e à son impact")
+	await _stage.finish_move_fx()
+	await wait_process_frames(1)
+
+
+func test_ultralaser_user_pants_then_rests() -> void:
+	await _enter()
+	var sprite := _stage.get_sprite(PLAYER_SIDE)
+	var rest := sprite.scale
+	await _stage.play_panting(PLAYER_SIDE)
+	assert_eq(sprite.scale, rest, "rendu à sa taille")
+	assert_eq(sprite.position, _back_feet(&"charmander"))
 
 
 func test_reset_during_a_capture_puts_everything_back() -> void:

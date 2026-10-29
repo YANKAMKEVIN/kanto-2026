@@ -15,12 +15,14 @@ func before_all() -> void:
 
 
 func test_gallery_starts_are_read() -> void:
-	for case: Array in [["fx_gallery", "full"], ["fx_gallery_fast", "fast"]]:
+	for case: Array in [["fx_gallery", "full"], ["fx_gallery_fast", "fast"], ["fx_gallery_cv1", "full"]]:
 		var start := DebugStart.new()
 		assert_true(start.load_file("res://tools/debug_start/%s.json" % case[0], _data, _items),
 			str(start.get_errors()))
 		assert_eq(start.fx_gallery.get("mode"), case[1])
 		assert_true(start.map.is_empty(), "pas de carte : la galerie remplace la partie")
+		for move_id: Variant in start.fx_gallery.get("moves", []):
+			assert_not_null(_data.get_move(StringName(move_id)), "%s : %s" % [case[0], move_id])
 
 
 func test_bad_gallery_is_refused() -> void:
