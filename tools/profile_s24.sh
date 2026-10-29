@@ -13,6 +13,8 @@
 #                   exterieur,ville,donjon,combat,stockage,rp091,rp093 (défaut : tous, ≈ 30 min).
 #   --power       : état déclaré de l'alimentation ; le script refuse de continuer s'il ne
 #                   correspond pas à ce qu'il lit (usb = branché, battery = sur batterie).
+#   --allow-no-dnd: autorise l'absence de Ne pas déranger (téléphone de test non personnel, ex. A17
+#                   choisi par Kevin le 2026-10-29) ; le serial vient de ANDROID_SERIAL.
 #   --brightness  : luminosité manuelle fixée pendant la session (0–255, défaut 128) puis rendue.
 #
 # PROTOCOLE (S24 = téléphone PERSONNEL de Kevin ; QA bornée à 30–45 min) :
@@ -34,10 +36,11 @@ export ADB
 PKG="dev.kevin.kanto2026"
 
 CHECK=0; BUILD=1; SCALE=1; PROFILES="exterieur,ville,donjon,combat,stockage,rp091,rp093"
-BRIGHT=128; POWER=""; OUT=""
+BRIGHT=128; POWER=""; OUT=""; NO_DND=0
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --check) CHECK=1 ;;
+    --allow-no-dnd) NO_DND=1 ;;
     --no-build) BUILD=0 ;;
     --scale) SCALE="$2"; shift ;;
     --profiles) PROFILES="$2"; shift ;;
@@ -56,12 +59,12 @@ secs() { awk -v s="$1" -v k="$SCALE" 'BEGIN { printf "%d", s * k + 0.5 }'; }
 
 # --- Protocole -------------------------------------------------------------------------------
 ZEN=$(sh_ settings get global zen_mode)
-[[ "$ZEN" =~ ^[1-3]$ ]] || die "Ne pas déranger est désactivé (zen_mode=$ZEN). Activer le mode DND sur le S24."
+[[ "$ZEN" =~ ^[1-3]$ || $NO_DND == 1 ]] || die "Ne pas déranger est désactivé (zen_mode=$ZEN). Activer le mode DND sur le S24."
 WAKE=$(sh_ dumpsys power | grep -o "mWakefulness=[A-Za-z]*" | head -1)
 [[ "$WAKE" == "mWakefulness=Awake" ]] || die "Écran éteint ($WAKE) : réveiller et déverrouiller le S24."
-sh_ dumpsys window | grep -q "mDreamingLockscreen=true\|isStatusBarKeyguard=true\|mShowingLockscreen=true" \
+[[ "$(sh_ dumpsys window)" =~ (mDreamingLockscreen=true|isStatusBarKeyguard=true|mShowingLockscreen=true) ]] \
   && die "Écran verrouillé : déverrouiller le S24."
-sh_ pm list packages 2>/dev/null | grep -q "package:$PKG" || die "APK absent du téléphone (lancer sans --no-build)."
+[[ $BUILD == 1 || "$(sh_ pm list packages --user 0 2>/dev/null)" == *"package:$PKG"* ]] || die "APK absent du téléphone (lancer sans --no-build)."
 batt() { sh_ dumpsys battery | awk -F': *' -v k="$1" '$1 ~ "^ *" k "$" {print $2; exit}'; }
 USB=$(batt "USB powered"); AC=$(batt "AC powered")
 if [[ "$USB" == true || "$AC" == true ]]; then POWER_NOW=usb; else POWER_NOW=battery; fi
@@ -69,12 +72,18 @@ if [[ "$USB" == true || "$AC" == true ]]; then POWER_NOW=usb; else POWER_NOW=bat
 T0=$(batt temperature)
 echo "S24 $SERIAL | DND=$ZEN | alim=$POWER_NOW | batterie=$(batt level)% | temp=$(awk -v t="$T0" 'BEGIN{print t/10}') °C"
 # Sauvegarde lisible ? (n'écrit rien)
-A shell "run-as $PKG ls files" >/dev/null 2>&1 || die "run-as impossible (APK non debug ?)."
+[[ $BUILD == 1 ]] || A shell "run-as $PKG ls files" >/dev/null 2>&1 || die "run-as impossible (APK non debug ?)."
 if [[ $CHECK == 1 ]]; then echo "Protocole OK (--check : rien lancé)."; exit 0; fi
 
 STAMP=$(date +%Y%m%d-%H%M%S)
 OUT="${OUT:-build/qa/profile_s24/$STAMP}"
 mkdir -p "$OUT/save_backup"
+
+# Installation avant la copie de sauvegarde (install -r conserve les données).
+if [[ $BUILD == 1 ]]; then
+  tools/build_android.sh >/dev/null || die "Build impossible."
+  A install -r build/kanto2026-debug.apk | tail -1
+fi
 
 # --- Sauvegarde de Kevin : copie + empreinte, restauration à la sortie ------------------------
 SAVE_FILES="save.json save.json.bak save.json.corrupt"
@@ -115,17 +124,16 @@ trap cleanup EXIT
 A shell settings put system screen_brightness_mode 0
 A shell settings put system screen_brightness "$BRIGHT"
 
-if [[ $BUILD == 1 ]]; then
-  tools/build_android.sh >/dev/null || die "Build impossible."
-  A install -r build/kanto2026-debug.apk | tail -1
-fi
-
 # --- Outils de pilotage ---------------------------------------------------------------------
 JOY_X=330; JOY_Y=800       # centre du joystick (écran 2340×1080, à confirmer par capture)
-ACT_X=2100; ACT_Y=850      # bouton d'action
+ACT_X=2150; ACT_Y=720      # bouton EXAMINER/action (capture A17 22:04)
+DLG_X=1170; DLG_Y=930      # boîte de dialogue (avance)
+ATK_X=1732; ATK_Y=807      # ATTAQUER en combat
+MOVE_X=1404; MOVE_Y=960    # 3e capacité (menu des capacités)
 
-focus_ok() { sh_ dumpsys window | grep -m1 mCurrentFocus | grep -q "$PKG"; }
-need_focus() { focus_ok || die "Le focus n'est plus sur l'appli (appel, notification, geste de Kevin ?). Aucun tap envoyé."; }
+online() { [[ "$(A get-state 2>/dev/null | tr -d '\r')" == device ]] || die "Téléphone hors ligne (câble ?). Arrêt, sauvegarde vérifiée à la sortie."; }
+focus_ok() { [[ "$(sh_ dumpsys window | grep -m1 mCurrentFocus)" == *"$PKG"* ]]; }
+need_focus() { online; focus_ok || die "Le focus n'est plus sur l'appli (appel, notification, geste de Kevin ?). Aucun tap envoyé."; }
 tap() { need_focus; A shell input tap "$1" "$2"; }
 hold() { need_focus; A shell input swipe "$1" "$2" "$1" "$2" "$3"; }   # appui long (ms)
 walk() {  # walk haut|bas|gauche|droite durée_ms
@@ -137,6 +145,7 @@ walk() {  # walk haut|bas|gauche|droite durée_ms
 shot() { A exec-out screencap -p > "$OUT/$1.png"; }
 
 launch() {  # launch départ_de_débogage
+  online
   [[ -f "tools/debug_start/$1.json" ]] || die "Départ inconnu : $1"
   A shell am force-stop "$PKG"
   A shell "run-as $PKG sh -c 'mkdir -p files && cat > files/debug_start.json'" < "tools/debug_start/$1.json"
@@ -158,7 +167,7 @@ sampler() {
 "$(echo "$mem" | awk '/TOTAL PSS:/ {print $3; exit}')," \
 "$(echo "$mem" | awk '/^ *Graphics:/ {print $2; exit}')," \
 "$(echo "$mem" | awk '/Native Heap:/ {print $3; exit}')," \
-"$("$ADB" -s "$SERIAL" shell dumpsys battery | tr -d '\r' | awk -F': *' '/ temperature/ {t=$2} / level/ {l=$2} /Charge counter/ {c=$2} END {print t "," l "," c}')" \
+"$("$ADB" -s "$SERIAL" shell dumpsys battery | tr -d '\r' | awk -F': *' '$1 ~ /^ *temperature$/ {t=$2} $1 ~ /^ *level$/ {l=$2} $1 ~ /Charge counter/ {c=$2} END {print t "," l "," c}')" \
       | tr -d ' ' >> "$OUT/mem.csv"
     sleep 20
   done
@@ -211,46 +220,52 @@ run_walk_profile() {  # run_walk_profile nom départ durée_s
   collect "$name"; summary_perf "$name" >> "$RES"
 }
 
+in_battle() {  # vrai si le bouton ATTAQUER (rouge) est à l'écran
+  A exec-out screencap -p > "$OUT/.s.png"
+  python3 -c "
+import sys
+from PIL import Image
+r, g, b = Image.open('$OUT/.s.png').convert('RGB').getpixel(($ATK_X - 60, $ATK_Y))
+sys.exit(0 if r > 190 and g < 100 and b < 100 else 1)"
+}
+
 profile_combat() {
   local dur; dur=$(secs 150)
-  echo ">>> combat (route_5_pay_day, rencontre forcée, ≤ ${dur}s)"
+  echo ">>> combat (route_5_pay_day, rencontre forcée, <= ${dur}s)"
   launch route_5_pay_day; echo combat > "$OUT/current_label"
   sleep 12
-  local end=$(( $(date +%s) + dur )) i=0 dirs=(bas haut) entered=0 t_step base_tex
-  base_tex=$(A logcat -v epoch -d -s godot:V | grep '\[perf\]' | tail -1 | sed 's/.*tex=//')
+  local i entered=0 end=$(( $(date +%s) + dur ))
+  for i in 1 2 3 4 5 6; do walk bas 700; sleep 0.8; done
+  for i in 1 2 3 4 5 6 7 8; do walk droite 700; sleep 0.8; done
   while [[ $(date +%s) -lt $end ]]; do
-    t_step=$(sh_ date +%s.%N)
-    walk "${dirs[$((i % 2))]}" 700; i=$((i + 1)); sleep 1.5
-    cur=$(A logcat -v epoch -d -s godot:V | grep '\[perf\]' | tail -1 | sed 's/.*tex=//')
-    if awk -v c="${cur:-0}" -v b="${base_tex:-0}" 'BEGIN { exit !(c - b > 40) }'; then
-      entered=1; echo "$t_step" > "$OUT/combat-t_pas.txt"; break
-    fi
+    walk gauche 700; sleep 0.9; walk droite 700; sleep 0.9
+    if in_battle; then entered=1; break; fi
   done
   if [[ $entered == 1 ]]; then
-    sleep 8; shot combat-entree
-    echo "Combat détecté (tex ${base_tex} → ${cur} Mo, pas à $t_step)"
+    echo "Combat détecté ; 1re attaque pour RP-263"
+    sleep 6; shot combat-entree
+    tap "$ATK_X" "$ATK_Y"; sleep 2; shot combat-capacites
+    tap "$MOVE_X" "$MOVE_Y"; sleep 10; shot combat-apres-attaque
   else
-    echo "Aucun combat déclenché dans le temps imparti (voir la capture)"; shot combat-aucun
+    echo "Aucun combat déclenché dans le temps imparti"; shot combat-aucun
   fi
-  sleep 6
   collect combat; summary_perf combat 3 >> "$RES"
   {
-    echo
-    echo "RP-261 (entrée en combat) : tex avant ${base_tex:-?} Mo, après ${cur:-?} Mo ; pas déclencheur à ${t_step:-?} (epoch)."
-    echo "Fenêtres [perf] autour de l'entrée (epoch, fps, min, draw, tex) :"
-    grep '\[perf\]' "$OUT/combat.log" | tail -8 | sed 's/^/    /'
+    echo "RP-261 / RP-263 : fenêtres [perf] de la fin du journal (epoch, fps, min, draw, tex) :"
+    grep '\[perf\]' "$OUT/combat.log" | tail -22 | sed 's/^ *//' | awk '{print "    " $1, $7, $8, $9, $10, $11}'
   } > "$OUT/combat-rp261.txt"
 }
 
 profile_stockage() {
-  local dur; dur=$(secs 60)
+  local dur; dur=$(secs 40)
   echo ">>> stockage (storage_qa)"
   launch storage_qa; echo stockage > "$OUT/current_label"
   sleep 12
-  tap "$ACT_X" "$ACT_Y"; sleep 3; shot stockage-1   # EXAMINER le terminal : écran à confirmer
+  tap "$ACT_X" "$ACT_Y"; sleep 2.5; tap "$DLG_X" "$DLG_Y"; sleep 3; shot stockage-1
   sleep "$dur"
   shot stockage-2
-  collect stockage; summary_perf stockage >> "$RES"
+  collect stockage; summary_perf stockage 3 >> "$RES"
+  grep '\[perf\]' "$OUT/stockage.log" | tail -26 | sed 's/^ *//' | awk '{print "    " $1, $7, $8, $9, $10, $11}' > "$OUT/stockage-ouverture.txt"
 }
 
 profile_maps() {  # profile_maps étiquette départ…  : mémoire des textures carte par carte
@@ -270,7 +285,7 @@ profile_maps() {  # profile_maps étiquette départ…  : mémoire des textures 
 
 for P in ${PROFILES//,/ }; do
   case "$P" in
-    exterieur) run_walk_profile exterieur route_11 150 ;;
+    exterieur) run_walk_profile exterieur route_6 150 ;;
     ville)
       run_walk_profile ville-celadopole celadon 100
       run_walk_profile ville-safrania saffron_free 100 ;;
