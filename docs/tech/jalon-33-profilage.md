@@ -8,6 +8,8 @@ Le S24 n'était pas disponible (en usage, Ne pas déranger désactivé, non bran
 
 L'A17 plafonne à ≈ 50 i/s dehors, même sur un écran vide (déjà noté aux J17–J28) : à lire comme un plafond d'appareil, pas comme une régression.
 
+**Décision de Kevin (2026-10-29) : le S24 ne sert pas de référence pour le moment ; les mesures de l'A17 sont validées comme référence du J33 T3.** Le S24 reste une option pour T7 (script prêt).
+
 ## 2. Résultats (run complet de ~20 min, `qa-profilage/run-complet-a17.md`)
 
 | Profil | Départ | i/s moyen | image la + lente | draw max | tex max (Mo) |
@@ -31,7 +33,7 @@ L'A17 plafonne à ≈ 50 i/s dehors, même sur un écran vide (déjà noté aux 
 - **RP-093** (Carmin, quai, 26–27 i/s avant le moteur commun) : **51,7 i/s** sur A17, soit son plafond. Non reproduit ; à confirmer sur S24 (`--profiles rp093`).
 - **RP-261** (entrée en combat, flipbooks) : à l'entrée, `tex` passe de 294 à 303 Mo (**+10 Mo**, pas +156), image la plus lente de la fenêtre **16–20 i/s (≈ 50–60 ms)** vs 30–35 hors entrée ; ensuite stable à 47–50 i/s. Pas de problème mesurable sur A17 (`combat-rp261-a17.txt`).
 - **RP-263** (1er usage d'un effet) : 1re Morsure : image la plus lente 23 i/s (≈ 43 ms) sur A17 ; rien de comparable aux 8,1 i/s du S24 (Charge) : à remesurer sur S24 avec Charge.
-- **Nouveau (à noter dans Reportés)** : **Stockage** : à l'ouverture, une image de 143 ms (7 i/s) puis **32–33 i/s** tant que le menu est ouvert (fond de scène flouté, draw 228, +14 Mo de textures) — le plus bas de tous les profils (sur A17). À vérifier sur S24 avant toute décision.
+- **RP-266 (nouveau)** : **Stockage** : à l'ouverture, une image de 143 ms (7 i/s) puis **32–33 i/s** tant que le menu est ouvert (fond de scène flouté, draw 228, +14 Mo de textures) — le plus bas de tous les profils (sur A17). À vérifier sur S24 avant toute décision.
 
 ## 4. Reproduire
 
