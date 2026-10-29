@@ -1,6 +1,6 @@
 # DAF.9 « Cramois'Île » (2026-10-29, branche `claude/daf-9-cramois-72a15a`, depuis `main` @ `dc4bc124`)
 
-**À valider par Kevin (planches ci-dessous) avant la fusion.** Ferme RP-024 (P1, BAT-2) : à la
+**Validé par Kevin le 2026-10-30 (« Oui, fusionne »), fusionné dans `main`.** Ferme RP-024 (P1, BAT-2) : à la
 clôture du J25, Cramois'Île, son Arène et le Manoir n'avaient que des tuiles provisoires et des
 aplats ; aucun lot DAF ne les couvrait. Lot ouvert par Kevin le 2026-10-29 (« Oui, ouvre-le »).
 
