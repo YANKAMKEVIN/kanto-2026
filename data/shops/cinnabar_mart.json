@@ -4,10 +4,10 @@
 			{ "item": "ultra_ball" },
 			{ "item": "great_ball" },
 			{ "item": "hyper_potion" },
+			{ "item": "max_repel" },
 			{ "item": "escape_rope" },
 			{ "item": "full_heal" },
-			{ "item": "revive" },
-			{ "item": "max_repel" }
+			{ "item": "revive" }
 		]
 	}
 }
