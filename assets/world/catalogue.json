@@ -12417,6 +12417,70 @@
     "droite",
     "droite_reaction"
    ]
+  },
+  "olga": {
+   "fichier": "res://assets/sprites/characters/painted/olga_sheet.png",
+   "cellule": [
+    65,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "aldo": {
+   "fichier": "res://assets/sprites/characters/painted/aldo_sheet.png",
+   "cellule": [
+    84,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "agatha": {
+   "fichier": "res://assets/sprites/characters/painted/agatha_sheet.png",
+   "cellule": [
+    83,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "peter": {
+   "fichier": "res://assets/sprites/characters/painted/peter_sheet.png",
+   "cellule": [
+    97,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
   }
  },
  "images": {

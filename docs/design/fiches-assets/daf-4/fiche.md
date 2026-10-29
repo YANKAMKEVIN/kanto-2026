@@ -63,3 +63,14 @@ inchangée : `tools/dump_map_logic.gd` identique avant / après), `tools/capture
 - **Hors carte** [D] : une colonne de paroi assombrie à l'ouest et à l'est (cartes de 20 cases, plus
   étroites que l'écran : plus de bandes noires sur les côtés).
 - Ombre vert sombre (sous-bois) entre les modules au pied des falaises, comme la Route 9.
+
+## Reliquat : sprites du Conseil des 4 (2026-10-30, branche `claude/daf-4-ligue-e02c46`) — **à valider par Kevin** (RP-136)
+
+Outils : `tools/art/daf4_ligue.py` (manifeste, préparation, planche), prompts `tools/art/prompts/daf4_ligue/`,
+`tools/capture_daf4_ligue.sh`. Planche : [planche-8-ligue.jpg](planche-8-ligue.jpg).
+
+- Olga, Aldo, Agatha, Peter peints (marche 4 × 4, 128 px, même main que les PNJ de la série 17) ; seuls
+  `"sprite"` de `data/npcs/league_*.json` changent (aucune case, aucun déclencheur : gel du J33).
+- Le Maître (`rival`) et Chen (`oak`) avaient déjà leur sprite peint ; rien à faire.
+- [D] Pas de planche d'attente : colonne 0 de la marche (`IDLE_FROM_WALK`), comme les Médiums.
+- [D] Pas de portrait ni de sprite de combat : aucun n'existe pour les Dresseurs de la Ligue (combat par artwork générique).

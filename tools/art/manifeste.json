@@ -3184,6 +3184,38 @@
    "hauteur": 128,
    "nettoyer": true,
    "note": "série 25 (DAF.5) ; hauteur = héros à pied, le vélo dépasse en largeur ; animations bike_* de player"
+  },
+  {
+   "id": "olga",
+   "source": "PNJ_OLGA_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/olga_sheet.png",
+   "hauteur": 128,
+   "nettoyer": true,
+   "note": "DAF.4 reliquat (RP-136) ; Olga (lorelei), remplace cooltrainer_f"
+  },
+  {
+   "id": "aldo",
+   "source": "PNJ_ALDO_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/aldo_sheet.png",
+   "hauteur": 128,
+   "nettoyer": true,
+   "note": "DAF.4 reliquat (RP-136) ; Aldo (bruno), remplace docker"
+  },
+  {
+   "id": "agatha",
+   "source": "PNJ_AGATHA_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/agatha_sheet.png",
+   "hauteur": 128,
+   "nettoyer": true,
+   "note": "DAF.4 reliquat (RP-136) ; Agatha, remplace channeler ; canne dans la main"
+  },
+  {
+   "id": "peter",
+   "source": "PNJ_PETER_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/peter_sheet.png",
+   "hauteur": 128,
+   "nettoyer": true,
+   "note": "DAF.4 reliquat (RP-136) ; Peter (lance), remplace traveler ; cape"
   }
  ],
  "pokemon": [

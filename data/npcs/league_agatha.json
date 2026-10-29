@@ -5,7 +5,7 @@
 			2
 		],
 		"facing": "down",
-		"sprite": "channeler",
+		"sprite": "agatha",
 		"dialogue": "league_agatha_defeated",
 		"trainer": {
 			"id": "league_agatha",

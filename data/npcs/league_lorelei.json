@@ -5,7 +5,7 @@
 			2
 		],
 		"facing": "down",
-		"sprite": "cooltrainer_f",
+		"sprite": "olga",
 		"dialogue": "league_lorelei_defeated",
 		"trainer": {
 			"id": "league_lorelei",

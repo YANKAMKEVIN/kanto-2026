@@ -162,6 +162,12 @@ const LOOKS: Dictionary = {
 	"intello": [CHARACTERS_DIR, "nerd", ""],
 	"beaute": [CHARACTERS_DIR, "beauty", ""],
 	"topdresseuse": [CHARACTERS_DIR, "cooltrainer_f", ""],
+	# DAF.4 reliquat (RP-136) : le Conseil des 4 (planche 8, `tools/art/daf4_ligue.py`), 128 px, sans
+	# planche d'attente → [constant IDLE_FROM_WALK].
+	"olga": [CHARACTERS_DIR, "olga", ""],
+	"aldo": [CHARACTERS_DIR, "aldo", ""],
+	"agatha": [CHARACTERS_DIR, "agatha", ""],
+	"peter": [CHARACTERS_DIR, "peter", ""],
 	# J24 (série 27, T5) : Topdresseur (la Topdresseuse est celle du J20) (128 px, sans planche d'attente → colonne 0 de la marche),
 	# Nageur et Nageuse dans l'eau (tête et épaules, échelle de la marche), héros en Surf et monture
 	# seule (planches 4 × 4 ; le mode « Surf » de `CharacterLook` les branchera au T7).
@@ -270,6 +276,11 @@ const IDLE_FROM_WALK := {
 	# J18 T3, à l'œil : les pieds les plus rapprochés de chaque ligne de marche.
 	"pokemaniac": {"down": 0, "left": 0, "right": 0, "up": 0},
 	"exorciste": {"down": 0, "left": 0, "right": 2, "up": 0},
+	# DAF.4 reliquat, à l'œil : colonne 0 (pieds joints) de chaque ligne, sauf le profil droit (2).
+	"olga": {"down": 0, "left": 0, "right": 2, "up": 0},
+	"aldo": {"down": 0, "left": 0, "right": 2, "up": 0},
+	"agatha": {"down": 0, "left": 0, "right": 2, "up": 0},
+	"peter": {"down": 0, "left": 0, "right": 2, "up": 0},
 }
 
 var _errors: int = 0

@@ -5,7 +5,7 @@
 			2
 		],
 		"facing": "down",
-		"sprite": "docker",
+		"sprite": "aldo",
 		"dialogue": "league_bruno_defeated",
 		"trainer": {
 			"id": "league_bruno",

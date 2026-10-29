@@ -5,7 +5,7 @@
 			1
 		],
 		"facing": "down",
-		"sprite": "traveler",
+		"sprite": "peter",
 		"dialogue": "league_lance_defeated",
 		"trainer": {
 			"id": "league_lance",
