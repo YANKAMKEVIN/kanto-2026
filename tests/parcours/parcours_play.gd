@@ -255,6 +255,43 @@ func catch_with(facing: Vector2i, ball: StringName, sure: bool = false) -> int:
 	Input.action_press(&"interact")
 	await _test.wait_process_frames(2)
 	Input.action_release(&"interact")
+	return await _capture(ball, saved_rng)
+
+
+## Rencontre sauvage dans les herbes hautes les plus proches (pas d'aller-retour jusqu'à la
+## rencontre ; aléatoire « toujours 1 » : rencontre au premier pas, premier emplacement de la
+## table, capture sûre), puis capture comme [method catch_with]. Renvoie l'issue du combat.
+func catch_in_grass(ball: StringName) -> int:
+	var grid := boot.get_map().get_grid()
+	var reachable := grid.find_reachable(player.get_cell(), player)
+	var grass := Vector2i(-1, -1)
+	var side := Vector2i.ZERO
+	var best := -1
+	for cell: Vector2i in reachable:
+		if not grid.is_tall_grass(cell):
+			continue
+		for direction: Vector2i in DIRECTIONS:
+			if not reachable.has(cell + direction) or not grid.is_tall_grass(cell + direction):
+				continue
+			var distance := absi(cell.x - player.get_cell().x) + absi(cell.y - player.get_cell().y)
+			if best < 0 or distance < best:
+				grass = cell
+				side = direction
+				best = distance
+	if not expect(best >= 0, "des herbes hautes accessibles"):
+		return Battle.Outcome.NONE
+	await walk_through(grass)
+	var saved_rng := GameState.rng
+	GameState.rng = SureRng.new(0)
+	var battles := boot.get_battle_director()
+	for attempt: int in 6:
+		if battles.is_running() or not boot.is_stable():
+			break
+		await step(side if attempt % 2 == 0 else -side)
+	return await _capture(ball, saved_rng)
+
+
+func _capture(ball: StringName, saved_rng: GameRng) -> int:
 	var director := boot.get_cutscene_director()
 	var runner := boot.get_dialogue_runner()
 	var box := boot.get_dialogue_box()
@@ -267,7 +304,7 @@ func catch_with(facing: Vector2i, ball: StringName, sure: bool = false) -> int:
 	var deadline := Time.get_ticks_msec() + SCENE_TIMEOUT_MS
 	await _test.wait_process_frames(2)
 	while (director.is_running() or runner.is_running() or box.is_open()
-			or battles.is_running() or SceneRouter.is_transitioning()) \
+			or battles.is_running() or SceneRouter.is_transitioning() or not boot.is_stable()) \
 			and Time.get_ticks_msec() < deadline:
 		var card := battles.get_capture_card()
 		if card != null and card.is_waiting():
